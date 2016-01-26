@@ -1,0 +1,66 @@
+
+JWasm originally was a fork of Wasm. The old Open Watcom Wasm source 
+was released under the Sybase license (S).
+
+In the meantime, a part of the source contain no lines of
+Wasm anymore - they are new or have been completely rewritten. The license
+for these files is Public Domain (P).
+
+apiemu.c           P
+assemble.c         P
+assume.c           S
+atofloat.c         P
+backptch.c         S
+bin.c              P
+branch.c           S
+cmdline.c          S
+codegen.c          S
+coff.c             P
+condasm.c          S
+context.c          P
+cpumodel.c         P
+data.c             S
+dbgcv.c            P
+directiv.c         P
+elf.c              P
+end.c              P
+equate.c           P
+errmsg.c           S
+expans.c           P
+expreval.c         S
+extern.c           P
+fastpass.c         P
+fixup.c            S
+fpfixup.c          S
+hll.c              P
+input.c            S
+invoke.c           P
+label.c            S
+linnum.c           P
+listing.c          P
+loop.c             P
+lqueue.c           P
+macro.c            P
+main.c             P
+mangle.c           S
+memalloc.c         P
+msgtext.c          P
+omf.c              S
+omffixup.c         S
+omfint.c           S
+option.c           P
+parser.c           S
+posndir.c          S
+preproc.c          P
+proc.c             P
+queue.c            S
+reswords.c         P
+safeseh.c          P
+segment.c          S
+simsegm.c          P
+string.c           P
+symbols.c          S
+tbyte.c            S
+tokenize.c         S
+trmem.c            S
+types.c            P

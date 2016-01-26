@@ -1,0 +1,13 @@
+
+// This file usually isn't used. See USERESOURCES in msgtext.c for details.
+
+//#include "globals.h"
+//
+//STRINGTABLE
+//BEGIN
+//#undef pick
+//#define pick( code, text )  code, text
+//
+//#include "msgdef.h"
+//
+//END

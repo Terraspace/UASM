@@ -1,0 +1,26 @@
+
+  Issues in the source which should be fixed.
+
+  1. Backpatching
+
+  Currently backpatching handles JMPs and CALLs only. It
+  is unable to handle PUSHs ( and may be others as well).
+  So the backpatch routine calculates addresses wrong and
+  as a result an additional assembly pass is required.
+
+  2. Two Pass Minimum
+
+  Currently the generated code/data bytes aren't stored in
+  assembly pass one. So a second pass is always needed. 
+  With better backpatching capabilities, JWasm should be
+  able to virtually become a one-pass assembler.
+
+[ issue fixed in v2.06
+
+  3. Token Buffer
+
+  The token buffer is a global variable. This causes
+  a lot of problems. There are some workarounds implemented
+  to make the buffer reusable, but these hacks didn't
+  help to make the code more readable.
+]

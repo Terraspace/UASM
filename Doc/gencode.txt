@@ -1,0 +1,21 @@
+
+  1. What is generated code
+
+  Some directives (and also instructions RET/IRET inside a procedure block)
+  will generate source lines. In the listing file, those generated
+  lines will be marked with a '*'.
+
+  2. Where is generated code used?
+
+  - INVOKE directive
+  - hll directives (.IF, .ELSE, .WHILE, .REPEAT, ...)
+  - .MODEL directive
+  - .STARTUP and .EXIT directives
+  - simplified segment directives (.CODE, .DATA, .CONST, ...)
+  - default PROC prologue and epilogue (when a RET/IRET is detected)
+  - ENDP ( in Win64, if procedure has FRAME attribute )
+  - END 
+    + if a segment opened by simplified segment directives is still open
+    + PE format: generates import/export data, MZ header
+  - [removed since v2.09: STRUCT data initialization (was slightly peculiar)]
+

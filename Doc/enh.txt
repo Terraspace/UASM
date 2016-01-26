@@ -1,0 +1,48 @@
+
+  Possible Enhancements for JWasm
+
+  1. support UNICODE strings. Similar to PoAsm? Most likely no,
+     since using the DB/DW directives to define such strings 
+     doesn't seem to be the best strategy. Might be better to 
+     have an extra type for unicode strings (tchar), in 
+     conjunction with a cmdline option to switch ansi/unicode.
+
+  2. [ done, was: option FPO (frame pointer omission); has
+     become option STACKBASE. ]
+
+  3. unnamed RECORD within a STRUCT. Record field names
+     will be local then and must be unique within the STRUCT. This
+     feature will ease converting C include files to ASM.
+
+     Syntax:
+
+     operator WIDTH: ok
+     operator MASK: ???
+
+     S1 STRUCT
+     f1  dd ?
+     RECORD bit0:1, bit1:1
+     S1  ends
+
+     mov eax, MASK S1.bit0
+     or v1.bit0 ???
+
+  4. [ done, was: native support for PE binaries ]
+
+  5. ASSUME extension
+
+     use ASSUME CS:[USE16|USE32|USE64] to change current offset size
+     without changing segments.
+
+  6. FOR extension
+
+     Preprocessor extension:
+
+     FOR EACH x IN [<struct>|<union>|<record>|<proc>]
+       ...
+     ENDM
+
+     - x is the loop variable, it's a text macro, its value will be
+       the name of the item.
+     - the "members" are enumerated. For PROCedures, these are the
+       parameters, local variables and local labels.

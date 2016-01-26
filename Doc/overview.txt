@@ -1,0 +1,158 @@
+
+  A brief overview of JWasm's source code
+
+  1. Source files
+
+  file        comment
+  -----------------------------------------------------------------------
+  main.c      contains main()
+  cmdline.c   parse command line
+  assemble.c  assembler (generic)
+  input.c     read source file, 
+              preprocessor (generic)
+              calling preprocessor directives
+  expans.c    (text) macro expansion
+  tokenize.c  tokenizer, COMMENT directive
+  condasm.c   preprocessor conditional directives (IFx, ELSEx, ENDIF )
+  loop.c      preprocessor loop directives (FOR, FORC, REPT, WHILE, ...)
+  equate.c    (preprocessor) EQU and '=' directives
+  string.c    preprocessor string directives (TEXTEQU, CATSTR, SUBSTR, ...)
+  macro.c     preprocessor MACRO and PURGE directives
+  parser.c    parser (generic)
+  branch.c    parsing of branch instructions (JMP, Jcc, CALL, JxxxZ, LOOPx )
+  expreval.c  expression evaluator
+
+  assume.c    parsing of ASSUME directive
+  context.c   parsing of directives PUSHCONTEXT, POPCONTEXT
+  cpumodel.c  parsing of .MODEL and cpu (.8086, .80186, ...) directives
+  data.c      parsing of data directives (DB, DW, ... ), data labels
+              handles data generation (+fixups)
+  directiv.c  parsing of various directives which have no other home
+  end.c       parsing of END, .STARTUP and .EXIT directives
+  extern.c    parsing of EXTERN, EXTERNDEF, COMM, PUBLIC, PROTO
+  hll.c       parsing of hll directives (.IF, .ELSE, .WHILE, .REPEAT, ...)
+  invoke.c    parsing of INVOKE directive
+  labels.c    parsing of LABEL directive, code labels
+  listing.c   parsing of listing directives (.LIST, .CREF, ...)
+              writing of listing file
+  option.c    parsing of OPTION directive
+  posndir.c   parsing of ORG, ALIGN, EVEN directives
+  proc.c      parsing of PROC, ENDP, LOCAL directives
+              generates procedure prologues and epilogues
+  safeseh.c   parsing of .SAFESEH directive
+  segment.c   parsing of SEGMENT (+ENDS) and GROUP directives
+  simsegm.c   parsing of simplified segment directives (.CODE, .DATA, ...)
+  types.c     parsing of STRUCT (+ENDS), UNION, TYPEDEF, RECORD directives
+
+  omf.c       handles OMF output format
+  omffixup.c  handles OMF fixup generation
+  omfint.c    handles OMF I/O
+  coff.c      handles COFF output format (32- and 64-bit)
+  elf.c       handles ELF output format (32- and 64-bit)
+  bin.c       handles binary and DOS MZ output format
+  dbgcv.c     handles output of CodeView symbolic debugging info
+
+  reswords.c  handles access to table of reserved words
+  symbol.c    handles access to - global and local - symbol (hash) table
+  backptch.c  handles backpatching (jump distance optimization)
+  codegen.c   handles instruction code generation (+fixups)
+  fixup.c     fixup creation
+  fpfixup.c   16-bit floating-point fixup creation
+  errmsg.c    handles assembler error messages (non-fatal)
+  fatal.c     handles fatal assembler errors
+  memalloc.c  handles dynamic memory allocations
+  tbyte.c     handles TBYTE data format (10-byte floating-point format)
+  queue.c     handles internal queues
+  mangle.c    handles symbol name mangling (name decoration)
+  apiemu.c    handles C compiler peculiarities and bugs
+
+
+  2. Calling hierarchy
+
+  main
+  - main_init
+  - main_fini
+  - AssembleModule
+    - AssembleInit
+    - AssembleFini
+    - OnePass
+      - GetPreprocessedLine ( if pass == 1 )
+        - GetTextLine
+      - Tokenize ( if pass > 1 )
+      - ParseLine
+        - directive
+        - data_init
+          - EvalOperand
+        - EvalOperand()
+        - codegen()
+
+  1. main()
+
+  cmdline parsing, wildcards
+  calls AssembleModule() for each source module.
+
+  2. AssembleModule()
+
+  assembles one module in at least 2 passes.
+
+  3. OnePass()
+
+  Executes one pass for a module. Pass one is handled
+  differently than the others, because the preprocessed
+  lines are saved in this pass and then read in the
+  consecutive passes.
+
+  4. Tokenize()
+
+  The tokenizer. Scans a source line and detects reserved words,
+  numbers, IDs, operators, literals. Converts the items to tokens
+  stored in array tokenarray[].
+
+  5. GetPreprocessedLine()
+
+  This is the preprocessor. It 
+  - reads a line from the current source,
+  - converts in into tokens ( function Tokenize() )
+  - calls macro expansion.
+  - checks if the line contains a preprocessor directive
+    preprocessor directives are IF, WHILE, REPEAT, INCLUDE,
+    TEXTEQU, CATSTR, INSTR, ...
+  - if yes, handles the directive and returns 0.
+  - if no, returns the number of tokens found in the line
+
+  6. ParseLine()
+
+  The parser. It does:
+  - checks if first item is a code label (ID followed by ':'). If yes,
+    a label is created ( function LabelCreate() ).
+  - checks if current item is a directive. If yes, calls function
+    directive() or - if directive is a "data definition directive" -
+    function data_item()
+  - checks if current item is predefined type or an arbitrary type.
+    If yes, calls function data_item().
+  - if current item is an instruction, it calls the expression
+    evaluator ( function EvalOperand() ), up to 3 times, to get
+    the operands.
+  - if more than 1 operand has been read, function check_sizes()
+    is called, which verifies that the sizes of the operands will
+    "match".
+  - the code generator ( function codegen() ) is called.
+
+  7. codegen()
+
+  The code generator. This part 
+  - scans the instruction table to find an entry which matches
+    the number of operands and their types.
+  - if an entry is found, the code bytes and fixups are generated
+    and written into a buffer.
+
+  8. data_init()
+
+  Handles data lines. This is either a data directive ( DB, DW, DD, ...),
+  a predefined type ( BYTE, WORD, DWORD, ... ) or an arbitrary type, defined
+  with TYPEDEF, STRUCT, UNION, ....
+
+  9. GetTextLine()
+
+  Reads a line from the current source. This is either a macro, a source
+  file or the global line queue, which is used to store generated code.
