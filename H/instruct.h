@@ -1367,7 +1367,7 @@ insx(VPBROADCASTMB2Q, vpbroadcastmb2q, OpCls( XMM,      R8,         NONE ), F_F3
 insx(VPBROADCASTMW2D, vpbroadcastmw2d, OpCls( XMM,      R16,        NONE ), F_F30F38,1,  no_WDS, 0x3A,     0x00,     P_686|P_AVX ,WSIZE,RWF_EVEX|RWF_VEX )
 insx(VBLENDVPD, vblendvpd,             OpCls( XMM,      XMM_M128,   XMM  ), F_660F3A,1,  no_WDS, 0x4B,     0x00,     P_686|P_AVX, 0, RWF_VEX )
 insx(VBLENDVPS, vblendvps,             OpCls( XMM,      XMM_M128,   XMM  ), F_660F3A,1,  no_WDS, 0x4A,     0x00,     P_686|P_AVX, 0, RWF_VEX )
-insx(VEXTRACTF128, vextractf128,       OpCls( XMM_M128, YMM,        I8_U ), F_660F3A,1,  no_WDS, 0x19,     0x00,     P_686|P_AVX, 0, RWF_VEX )
+insx(VEXTRACTF128, vextractf128,       OpCls( XMM_M128, YMM,        I8_U ), F_660F3A,0,  no_WDS, 0x19,     0x00,     P_686|P_AVX, 0, RWF_VEX )
 //VEXTRACTF32x4,VEXTRACTF64x2,VEXTRACTF32x8,VEXTRACTF64x4,VEXTRACTI32x4,VEXTRACTI64x2,VEXTRACTI32x8,VEXTRACTI64x4
 insx(VEXTRACTF32x4, vextractf32x4,     OpCls( XMM,      YMM,        I8_U ), F_660F3A,0,  no_WDS, 0x19,     0x00,     P_686|P_AVX, DSIZE|T4, RWF_EVEX|RWF_VEX )
 insn(VEXTRACTF32x4, 1,                 OpCls( M128,     YMM,        I8_U ), F_660F3A,0,  no_WDS, 0x19,     0x00,     P_686|P_AVX, DSIZE|T4)

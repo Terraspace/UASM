@@ -1,0 +1,460 @@
+C:\jwasm\wininc\Include\string.inc(75) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(75): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(76) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(76): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(77) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(77): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(78) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(78): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(79) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(79): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(80) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(80): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(81) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(81): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(82) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(82): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(94) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(94): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(95) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(95): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(96) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(96): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(100) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(100): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(102) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(102): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(103) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(103): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(104) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(104): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(105) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(105): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(106) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(106): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(107) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(107): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(108) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(108): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(109) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(109): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(110) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(110): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(111) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(111): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(112) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(112): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(113) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(113): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(114) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(114): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(115) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(115): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(116) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(116): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(117) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(117): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(118) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(118): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(119) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(119): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(120) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(120): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(121) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(121): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(122) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(122): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(123) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(123): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(124) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(124): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(125) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(125): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(126) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(126): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(150) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(150): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(151) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(151): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(152) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(152): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(153) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(153): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(154) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(154): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(155) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(155): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(156) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(156): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(157) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(157): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(158) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(158): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(159) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(159): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(160) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(160): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(161) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(161): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(162) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(162): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(163) : Error A2091: Language type must be specified
+ @DefProto(7)[winasm.inc]: Macro called from
+  C:\jwasm\wininc\Include\string.inc(163): Included by
+   C:\jwasm\wininc\Include\guiddef.inc(141): Included by
+    C:\jwasm\wininc\Include\winnt.inc(577): Included by
+     C:\jwasm\wininc\Include\windef.inc(149): Included by
+      C:\jwasm\wininc\Include\windows.inc(111): Included by
+       d:\pointy\misc/easystart.inc(13): Included by
+        d:\pointy\svo3.asm(2): Main line code
+C:\jwasm\wininc\Include\string.inc(163) : Fatal error A1113: Too many errors

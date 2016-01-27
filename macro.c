@@ -186,7 +186,7 @@ static int store_placeholders( char *line, struct mname_list *mnames )
     char quote = NULLC;
     int brlevel = 0;
     int params = 0; /* number of replacements in this line */
-    int qlevel;
+    int qlevel = 0;
     bool substprf;  /* substitution character before ID? */
 
     for( p = line; *p != NULLC; ) {

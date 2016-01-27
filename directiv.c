@@ -257,16 +257,26 @@ ret_code IncBinDirective( int i, struct asm_tok tokenarray[] )
     DebugMsg1(("IncBinDirective: filename=%s, offset=%" I32_SPEC "u, size=%" I32_SPEC "u\n", StringBufferEnd, fileoffset, sizemax ));
 
     /* try to open the file */
-    if ( file = SearchFile( StringBufferEnd, FALSE ) ) {
+    if ( file = SearchFile( StringBufferEnd, FALSE ) ) 
+	{
+		/* v2.14 : Get File Size */
+		fseek( file, 0L, SEEK_END );
+		long sz = ftell( file ) - fileoffset; // sz = total data size to load into segment/section.
+		fseek( file, 0L, SEEK_SET );
+		unsigned char* pBinData = (unsigned char*)malloc(sz);
+		fread(pBinData, sz, 1, file);
+		OutputBinBytes(pBinData, sz);
+
         /* transfer file content to the current segment. */
-        if ( fileoffset )
-            fseek( file, fileoffset, SEEK_SET );  /* fixme: use fseek64() */
-        for( ; sizemax; sizemax-- ) {
-            int ch = fgetc( file );
-            if ( ( ch == EOF ) && feof( file ) )
-                break;
-            OutputByte( ch );
-        }
+        //if ( fileoffset )
+            //fseek( file, fileoffset, SEEK_SET );  /* fixme: use fseek64() */
+        //for( ; sizemax; sizemax-- ) {
+            //int ch = fgetc( file );
+            //if ( ( ch == EOF ) && feof( file ) )
+                //break;
+            //OutputByte( ch );
+        //}
+		free((void*)pBinData);
         fclose( file );
     }
 

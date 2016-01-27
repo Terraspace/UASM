@@ -233,6 +233,43 @@ void OutputByte( unsigned char byte )
         CurrSeg->sym.max_offset = CurrSeg->e.seginfo->current_loc;
 }
 
+/* Added 2.14: to accelerate bulk writing of incbin data */
+void OutputBinBytes(unsigned char* pBytes, uint_32 len)
+{
+
+	if (write_to_file == TRUE) {
+		uint_32 idx = CurrSeg->e.seginfo->current_loc - CurrSeg->e.seginfo->start_loc;
+#ifdef DEBUG_OUT
+		if (CurrSeg->e.seginfo->current_loc < CurrSeg->e.seginfo->start_loc) {
+			;//_asm int 3;
+		}
+#endif
+		/**/myassert(CurrSeg->e.seginfo->current_loc >= CurrSeg->e.seginfo->start_loc);
+		if (Options.output_format == OFORMAT_OMF && idx >= MAX_LEDATA_THRESHOLD) {
+			omf_FlushCurrSeg();
+			idx = CurrSeg->e.seginfo->current_loc - CurrSeg->e.seginfo->start_loc;
+		}
+		//DebugMsg(("OutputByte: buff=%p, idx=%" I32_SPEC "X, byte=%X, codebuff[0]=%X\n", CurrSeg->e.seginfo->CodeBuffer, idx, byte, *CurrSeg->e.seginfo->CodeBuffer ));
+		for (int i = 0; i < len; i++)
+			CurrSeg->e.seginfo->CodeBuffer[idx++] = *(pBytes++);
+
+	}
+#if 1
+	/* check this in pass 1 only */
+	else if (CurrSeg->e.seginfo->current_loc < CurrSeg->e.seginfo->start_loc) {
+		DebugMsg(("OutputByte: segment start loc changed from %" I32_SPEC "Xh to %" I32_SPEC "Xh\n",
+			CurrSeg->e.seginfo->start_loc,
+			CurrSeg->e.seginfo->current_loc));
+		CurrSeg->e.seginfo->start_loc = CurrSeg->e.seginfo->current_loc;
+	}
+#endif
+	CurrSeg->e.seginfo->current_loc+=len;
+	CurrSeg->e.seginfo->bytes_written+=len;
+	CurrSeg->e.seginfo->written = TRUE;
+	if (CurrSeg->e.seginfo->current_loc > CurrSeg->sym.max_offset)
+		CurrSeg->sym.max_offset = CurrSeg->e.seginfo->current_loc;
+}
+
 #if 0 /* v2.03: OutputCodeByte is obsolete */
 void OutputCodeByte( unsigned char byte )
 /***************************************/
