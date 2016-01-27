@@ -22,7 +22,7 @@ $SG7494	DB	'usage: HJWasm [ options ] filelist [@env_var]', 0aH, 'Ru'
 	DB	'n "HJWasm -?" or "HJWasm -h" for more info', 0aH, 00H
 	ORG $+4
 $SG7495	DB	'%s: %lu lines, %u passes, %u ms, %u warnings, %u errors', 00H
-$SG7496	DB	'HJWasm v2.13.64bit., Jan 27 2016', 00H
+$SG7496	DB	'HJWasm v2.13.32bit., Jan 27 2016', 00H
 	ORG $+3
 $SG7498	DB	'Error', 00H
 	ORG $+6

@@ -1,0 +1,142 @@
+﻿Build started 2016/01/27 07:54:39 PM.
+     1>Project "D:\HJWasm\HJWasm2.13.1s\HJWasm2.13.1s\HJWasm.vcxproj" on node 2 (Rebuild target(s)).
+     1>ClCompile:
+         D:\vs2015\VC\bin\CL.exe /c /I.\\H /nologo /W2 /WX- /Ox /Oy- /D WIN32 /D NDEBUG /D _UNICODE /D UNICODE /Gm- /MT /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Win32\Release\\" /Fd"Win32\Release\vc140.pdb" /Gd /TC /analyze- /errorReport:prompt apiemu.c assemble.c assume.c atofloat.c backptch.c bin.c branch.c cmdline.c codegen.c coff.c condasm.c context.c cpumodel.c data.c dbgcv.c directiv.c elf.c end.c equate.c errmsg.c expans.c expreval.c extern.c fastpass.c fixup.c fpfixup.c hll.c input.c invoke.c label.c linnum.c listing.c loop.c lqueue.c macro.c main.c mangle.c memalloc.c msgtext.c omf.c omffixup.c omfint.c option.c parser.c posndir.c preproc.c proc.c queue.c reswords.c safeseh.c segment.c simsegm.c string.c symbols.c tbyte.c tokenize.c trmem.c types.c
+         apiemu.c
+         assemble.c
+         assume.c
+         atofloat.c
+         backptch.c
+         bin.c
+     1>bin.c(229): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+         branch.c
+         cmdline.c
+         codegen.c
+         coff.c
+         condasm.c
+         context.c
+         cpumodel.c
+         data.c
+         dbgcv.c
+         directiv.c
+         elf.c
+         end.c
+         equate.c
+         errmsg.c
+         Generating Code...
+         Compiling...
+         expans.c
+         expreval.c
+     1>expreval.c(2424): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>expreval.c(2430): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+         extern.c
+         fastpass.c
+         fixup.c
+         fpfixup.c
+         hll.c
+     1>hll.c(304): warning C4028: formal parameter 1 different from declaration
+     1>hll.c(304): warning C4028: formal parameter 2 different from declaration
+     1>hll.c(304): warning C4029: declared formal parameter list different from definition
+         input.c
+         invoke.c
+         label.c
+         linnum.c
+         listing.c
+         loop.c
+         lqueue.c
+         macro.c
+         main.c
+         mangle.c
+         memalloc.c
+         msgtext.c
+         omf.c
+         Generating Code...
+         Compiling...
+         omffixup.c
+         omfint.c
+         option.c
+         parser.c
+         posndir.c
+         preproc.c
+         proc.c
+     1>proc.c(2570): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>proc.c(2716): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+         queue.c
+         reswords.c
+         safeseh.c
+         segment.c
+         simsegm.c
+         string.c
+         symbols.c
+         tbyte.c
+         tokenize.c
+         trmem.c
+         types.c
+     1>types.c(442): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>types.c(694): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+         Generating Code...
+       Link:
+         D:\vs2015\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\HJWasm\HJWasm2.13.1s\HJWasm2.13.1s\Win32\Release\HJWasm.exe" /INCREMENTAL:NO /NOLOGO /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:"D:\HJWasm\HJWasm2.13.1s\HJWasm2.13.1s\Win32\Release\HJWasm.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\HJWasm\HJWasm2.13.1s\HJWasm2.13.1s\Win32\Release\HJWasm.lib" /MACHINE:X86 /SAFESEH Win32\Release\apiemu.obj
+         Win32\Release\assemble.obj
+         Win32\Release\assume.obj
+         Win32\Release\atofloat.obj
+         Win32\Release\backptch.obj
+         Win32\Release\bin.obj
+         Win32\Release\branch.obj
+         Win32\Release\cmdline.obj
+         Win32\Release\codegen.obj
+         Win32\Release\coff.obj
+         Win32\Release\condasm.obj
+         Win32\Release\context.obj
+         Win32\Release\cpumodel.obj
+         Win32\Release\data.obj
+         Win32\Release\dbgcv.obj
+         Win32\Release\directiv.obj
+         Win32\Release\elf.obj
+         Win32\Release\end.obj
+         Win32\Release\equate.obj
+         Win32\Release\errmsg.obj
+         Win32\Release\expans.obj
+         Win32\Release\expreval.obj
+         Win32\Release\extern.obj
+         Win32\Release\fastpass.obj
+         Win32\Release\fixup.obj
+         Win32\Release\fpfixup.obj
+         Win32\Release\hll.obj
+         Win32\Release\input.obj
+         Win32\Release\invoke.obj
+         Win32\Release\label.obj
+         Win32\Release\linnum.obj
+         Win32\Release\listing.obj
+         Win32\Release\loop.obj
+         Win32\Release\lqueue.obj
+         Win32\Release\macro.obj
+         Win32\Release\main.obj
+         Win32\Release\mangle.obj
+         Win32\Release\memalloc.obj
+         Win32\Release\msgtext.obj
+         Win32\Release\omf.obj
+         Win32\Release\omffixup.obj
+         Win32\Release\omfint.obj
+         Win32\Release\option.obj
+         Win32\Release\parser.obj
+         Win32\Release\posndir.obj
+         Win32\Release\preproc.obj
+         Win32\Release\proc.obj
+         Win32\Release\queue.obj
+         Win32\Release\reswords.obj
+         Win32\Release\safeseh.obj
+         Win32\Release\segment.obj
+         Win32\Release\simsegm.obj
+         Win32\Release\string.obj
+         Win32\Release\symbols.obj
+         Win32\Release\tbyte.obj
+         Win32\Release\tokenize.obj
+         Win32\Release\trmem.obj
+         Win32\Release\types.obj
+         HJWasm.vcxproj -> D:\HJWasm\HJWasm2.13.1s\HJWasm2.13.1s\Win32\Release\HJWasm.exe
+     1>Done Building Project "D:\HJWasm\HJWasm2.13.1s\HJWasm2.13.1s\HJWasm.vcxproj" (Rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:05.28

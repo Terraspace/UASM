@@ -1641,7 +1641,14 @@ static ret_code memory_operand( struct code_info *CodeInfo, unsigned CurrOpnd, s
         /* v2.10: register swapping has been moved to expreval.c, index_connect().
          * what has remained here is the check if R/ESP is used as index reg.
          */
-        if ( (GetRegNo( index ) == 4) && (GetResWName( index, NULL ) <= T_RBP )) { /* [E|R]SP? */
+		if ((GetRegNo(index) == 4)
+#if 0
+			&& (GetResWName(index, NULL) <= T_RBP)
+#endif
+			) { /* [E|R]SP? */
+			
+				//if ( (GetRegNo( index ) == 4) && (GetResWName( index, NULL ) <= T_RBP )) { /* [E|R]SP? */ /* Removed in 2.13 in favour of above */
+
             DebugMsg(( "memory_operand: error, base regno=%u, index regno=%u, opnd.scale=%u\n", GetRegNo( base ), GetRegNo( index ), opndx->scale ));
             //int tmp = index;
             if( opndx->scale ) { /* no scale must be set */
