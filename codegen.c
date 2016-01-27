@@ -171,6 +171,8 @@ static void output_opc(struct code_info *CodeInfo)
   uint_8           fpfix = FALSE;
   int              rn;
   unsigned char    c;
+  int_8 comprdsp;
+
   DebugMsg1(("output_opc enter, ins.opc/rm=%X/%X, byte1_info=%X CodeInfo->rm=%X opsiz=%u\n", ins->opcode, ins->rm_byte, ins->byte1_info, CodeInfo->rm_byte, CodeInfo->prefix.opsiz));
   /*
    * Output debug info - line numbers
@@ -1141,7 +1143,7 @@ static void output_opc(struct code_info *CodeInfo)
                OutputCodeByte(ins->opcode | CodeInfo->iswide | CodeInfo->opc_or);
              }
         }
-       int_8 comprdsp;
+
         /* emit ModRM byte; bits 7-6 = Mod, bits 5-3 = Reg, bits 2-0 = R/M */
            if ((CodeInfo->token == T_VRNDSCALEPD) || (CodeInfo->token == T_VRNDSCALEPS))CodeInfo->tuple = TRUE;
             if ((CodeInfo->token >= T_KADDB) && (CodeInfo->token <= T_KUNPCKDQ)) {       //here pay atention

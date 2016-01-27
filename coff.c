@@ -1382,7 +1382,7 @@ static ret_code coff_write_module( struct module_info *modinfo )
      * - .sxdata section if .SAFESEH was used
      * - .drectve section if start label, exports or includelibs are used
      */
-
+	
     /* if -Zi is set, add .debug$S and .debug$T sections */
     if ( Options.debug_symbols ) {
         int i;

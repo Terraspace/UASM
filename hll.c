@@ -28,6 +28,7 @@
 #include "listing.h"
 #include "lqueue.h"
 #include "myassert.h"
+#include "tokenize.h"
 
 #define LABELSIZE 8
 #define LABELSGLOBAL 0 /* make the generated labels global */
