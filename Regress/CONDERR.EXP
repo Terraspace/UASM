@@ -1,0 +1,11 @@
+CONDERR.ASO(16) : Error A2114: forced error: this is a forced error
+CONDERR.ASO(17) : Error A2114: forced error: another forced error
+CONDERR.ASO(19) : Error A2116: forced error: Value equal to 0: 0: E2 is 0
+CONDERR.ASO(20) : Error A2116: forced error: Value equal to 0: 0
+CONDERR.ASO(21) : Error A2118: forced error: symbol not defined: E1
+CONDERR.ASO(22) : Error A2118: forced error: symbol not defined: E1
+CONDERR.ASO(23) : Error A2118: forced error: symbol not defined: E1
+CONDERR.ASO(24) : Error A2117: forced error: symbol defined: TE1
+CONDERR.ASO(25) : Error A2120: forced error: string not blank : <b>: argument isn't blank
+CONDERR.ASO(26) : Error A2122: forced error: strings equal : <abc> : <abc>
+CONDERR.ASO(27) : Error A2122: forced error: strings equal : <abc> : <abc>: arguments are equal

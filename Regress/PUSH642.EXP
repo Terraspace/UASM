@@ -1,0 +1,20 @@
+PUSH642.ASO(16) : Error A2049: Invalid instruction operands
+PUSH642.ASO(17) : Error A2049: Invalid instruction operands
+PUSH642.ASO(18) : Error A2049: Invalid instruction operands
+PUSH642.ASO(19) : Error A2049: Invalid instruction operands
+PUSH642.ASO(21) : Error A2049: Invalid instruction operands
+PUSH642.ASO(22) : Error A2049: Invalid instruction operands
+PUSH642.ASO(23) : Error A2049: Invalid instruction operands
+PUSH642.ASO(24) : Error A2049: Invalid instruction operands
+PUSH642.ASO(26) : Error A2049: Invalid instruction operands
+PUSH642.ASO(27) : Error A2049: Invalid instruction operands
+PUSH642.ASO(28) : Error A2049: Invalid instruction operands
+PUSH642.ASO(29) : Error A2049: Invalid instruction operands
+PUSH642.ASO(32) : Error A2049: Invalid instruction operands
+PUSH642.ASO(33) : Error A2049: Invalid instruction operands
+PUSH642.ASO(34) : Error A2049: Invalid instruction operands
+PUSH642.ASO(35) : Error A2041: POP CS is not allowed
+PUSH642.ASO(38) : Error A2209: Syntax error: pushd
+PUSH642.ASO(41) : Error A2235: Constant value too large: 123456789Ah
+PUSH642.ASO(43) : Error A2209: Syntax error: pushfd
+PUSH642.ASO(44) : Error A2209: Syntax error: popfd

@@ -1,0 +1,8 @@
+PROC4.ASO(25) : Error A2137: Conflicting parameter definition: 
+PROC4.ASO(28) : Error A2137: Conflicting parameter definition: 
+PROC4.ASO(31) : Error A2137: Conflicting parameter definition: 
+PROC4.ASO(42) : Error A2137: Conflicting parameter definition: 
+PROC4.ASO(45) : Error A2137: Conflicting parameter definition: 
+PROC4.ASO(51) : Error A2137: Conflicting parameter definition: 
+PROC4.ASO(53) : Error A2102: Symbol not defined : XXX
+PROC4.ASO(54) : Error A2085: Invalid qualified type: E1

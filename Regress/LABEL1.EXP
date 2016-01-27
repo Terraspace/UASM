@@ -1,0 +1,2 @@
+LABEL1.ASO(13) : Error A2143: Symbol redefinition: bar
+LABEL1.ASO(18) : Error A2143: Symbol redefinition: foo

@@ -1,0 +1,4 @@
+COFFOP2.ASC(16) : Error A2228: Invalid operand for IMAGEREL: 0
+COFFOP2.ASC(17) : Error A2228: Invalid operand for IMAGEREL: DWORD
+COFFOP2.ASC(19) : Error A2228: Invalid operand for SECTIONREL: 0
+COFFOP2.ASC(20) : Error A2228: Invalid operand for SECTIONREL: DWORD

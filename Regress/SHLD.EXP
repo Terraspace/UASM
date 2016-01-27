@@ -1,0 +1,7 @@
+SHLD.ASO(11) : Error A2049: Invalid instruction operands
+SHLD.ASO(13) : Error A2209: Syntax error: ,2
+SHLD.ASO(15) : Error A2049: Invalid instruction operands
+SHLD.ASO(17) : Error A2048: Operands must be the same size: 4 - 2
+SHLD.ASO(18) : Error A2048: Operands must be the same size: 1 - 2
+SHLD.ASO(19) : Error A2048: Operands must be the same size: 2 - 4
+SHLD.ASO(21) : Error A2049: Invalid instruction operands

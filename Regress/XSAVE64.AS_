@@ -1,0 +1,41 @@
+
+;--- fxsave64, fxrstor64, xsave64, xsaveopt64, xrstor64.
+;--- not active yet
+
+ifdef __JWASM__
+	.x64p
+	.MODEL flat
+endif
+	option casemap:none
+
+	.data
+
+buffer label byte
+
+	.code
+
+	fxsave     buffer
+	fxrstor    buffer
+	xsave      buffer
+	xsaveopt   buffer
+	xrstor     buffer
+
+	fxsave     [rbx]
+	fxrstor    [rbx]
+	xsave      [rbx]
+	xsaveopt   [rbx]
+	xrstor     [rbx]
+
+	fxsave64   buffer
+	fxrstor64  buffer
+	xsave64    buffer
+	xsaveopt64 buffer
+	xrstor64   buffer
+
+	fxsave64   [rbx]
+	fxrstor64  [rbx]
+	xsave64    [rbx]
+	xsaveopt64 [rbx]
+	xrstor64   [rbx]
+
+	end

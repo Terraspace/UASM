@@ -1,0 +1,33 @@
+
+;--- AMD SVM extension, 64-bit
+;--- added in v2.09, but isn't active ( see SVMSUPP in global.h )
+
+ifdef __JWASM__
+	.x64p
+	.model flat
+endif
+
+	.code
+
+	skinit eax	;op must be eax
+
+	stgi
+	clgi
+
+	vmrun  rax	;variants without address prefix
+	vmsave rax
+	vmload rax
+	invlpga rax, ecx
+
+	vmrun  eax  ;variants with address prefix
+	vmsave eax
+	vmload eax
+	invlpga eax, ecx
+
+ifdef __JWASM__
+	.x64
+endif
+
+	vmmcall
+
+end

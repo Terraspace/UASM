@@ -1,0 +1,5 @@
+CALL3.ASO(15) : Error A2049: Invalid instruction operands
+CALL3.ASO(16) : Error A2249: Jump destination must specify a label
+CALL3.ASO(17) : Error A2209: Syntax error: 1.0
+CALL3.ASO(19) : Error A2049: Invalid instruction operands
+CALL3.ASO(20) : Error A2169: Cannot have implicit far jump or call to near label

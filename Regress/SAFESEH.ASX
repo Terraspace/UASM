@@ -1,0 +1,15 @@
+
+;--- module becomes member in SAFESEH.LIB.
+;--- must be assembled with -safeseh switch!
+
+    .386
+    .model flat, stdcall
+
+    .code
+
+exc_handler3 proc public
+    ret
+exc_handler3 endp
+
+    end
+

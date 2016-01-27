@@ -1,0 +1,21 @@
+
+;--- problem: blank macro argument might
+;--- cause a line concatenation in v2.05.
+
+	.286
+	.model small
+
+;--- m1: Masm ok, JWasm currently complains
+
+m1 macro a1,a2
+	db a1,a2
+if 0	;jwasm will add this line to the previous one
+endif	;consequently, this endif will cause an error
+	endm
+
+	.code
+
+	m1 1
+
+end
+

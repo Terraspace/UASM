@@ -1,0 +1,4 @@
+ABSEXT.ASO(11) : Error A2188: Operand must be relocatable
+ABSEXT.ASO(16) : Error A2228: Invalid operand for HIGHWORD: E1
+ABSEXT.ASO(23) : Error A2232: Expected data label
+ABSEXT.ASO(24) : Error A2232: Expected data label

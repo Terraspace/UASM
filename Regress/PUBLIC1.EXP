@@ -1,0 +1,4 @@
+PUBLIC1.ASO(7) : Error A2102: Symbol not defined : E4
+PUBLIC1.ASO(9) : Error A2174: Cannot define as public or external: E6
+PUBLIC1.ASO(10) : Error A2143: Symbol redefinition: E7
+PUBLIC1.ASO(11) : Error A2174: Cannot define as public or external: E8

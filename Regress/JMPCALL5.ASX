@@ -1,0 +1,13 @@
+
+;--- externals for jmpcall5.asz
+
+	.286
+	.model small
+
+	.code
+
+	public e1, e2
+e1	label far
+e2	label far
+	retf
+	end

@@ -1,0 +1,16 @@
+
+;--- test code labels before data items
+
+_TEXT segment word public 'CODE'
+
+	assume cs:_TEXT
+
+x1: db 0	;not allowed without option m510
+
+	option m510
+
+x2: db 0
+
+_TEXT ends
+
+	end

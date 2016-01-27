@@ -1,0 +1,14 @@
+
+;--- externals for regext.lib, 16-bit
+
+	.286
+	.model small
+	option casemap:none
+
+	.data
+
+	public stdDeviceAssignTable
+
+stdDeviceAssignTable dw 8 dup (0)
+
+	End

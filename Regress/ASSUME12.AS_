@@ -1,0 +1,21 @@
+
+;--- similar to assume11.asm, but with scalar types
+;--- this variant is NOT supposed to work!
+
+;--- there's an additional problem, because jwasm emits a warning
+;--- in pass 1 in this case - which would be very misleading if the
+;--- later ASSUME remained in effect.
+
+	.386
+	.model flat, stdcall
+	option casemap:none
+
+	.code
+
+	mov [eax],1		;jwasm emits warning ( assumed byte )
+
+	assume eax:ptr WORD
+
+	mov [eax],1234h
+
+END

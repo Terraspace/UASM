@@ -1,0 +1,43 @@
+
+;--- macro arguments inside enclosing macro
+;--- are handled differently
+
+    .386
+    .model flat,stdcall
+    option casemap:none
+
+NMHDR	STRUCT
+hwndFrom DWORD ?
+NMHDR	ENDS
+
+PuPo MACRO Var1, Var2
+    push Var2
+    pop  Var1
+ENDM
+
+PuPo2 MACRO Var1, Var2
+    push Var2
+    exitm <pop Var1>
+ENDM
+
+SetWndFrom MACRO hwndFrom:REQ
+if 0
+    push hwndFrom
+    pop nmhdr.hwndFrom	;won't work
+else
+    PuPo nmhdr.hwndFrom, hwndFrom
+    PuPo2( nmhdr.hwndFrom, hwndFrom )
+endif
+ENDM
+
+    .data
+
+nmhdr NMHDR <>
+var1  dd 0
+
+    .code
+
+    SetWndFrom var1
+    ret
+
+end

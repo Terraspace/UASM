@@ -1,0 +1,2 @@
+SUBSTR2.ASO(3) : Error A2206: Index value past end of string: 4
+SUBSTR2.ASO(5) : Error A2207: Count value too large

@@ -1,0 +1,23 @@
+
+;--- embedded struct with another init value
+
+	.386
+	.model flat, stdcall
+	option casemap:none
+
+S1 struct
+f1 db 1
+S1 ends
+
+S2 struct
+	S1 <2>
+S2 ends
+
+	.data
+
+	S2 <>	;ok, defines 2
+
+;--- Masm defines 2, Jwasm defines 1 - not sure what's "correct"
+	S2 <<>>
+
+	end

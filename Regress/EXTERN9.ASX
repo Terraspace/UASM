@@ -1,0 +1,13 @@
+
+;--- weak externals
+
+    .286
+
+	public e1
+
+_TEXT segment public 'CODE'
+e1:
+	ret
+_TEXT ends
+
+    END

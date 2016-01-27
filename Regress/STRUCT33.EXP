@@ -1,0 +1,6 @@
+STRUCT33.ASO(22) : Error A2139: Non-benign structure redefinition: S1
+STRUCT33.ASO(32) : Error A2139: Non-benign structure redefinition: S2A
+STRUCT33.ASO(42) : Error A2139: Non-benign structure redefinition: S2B
+STRUCT33.ASO(60) : Error A2143: Symbol redefinition: ES1
+STRUCT33.ASO(62) : Error A2142: Unmatched block nesting: 
+STRUCT33.ASO(69) : Error A2143: Symbol redefinition: S4

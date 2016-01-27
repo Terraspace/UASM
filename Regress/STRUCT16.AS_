@@ -1,0 +1,47 @@
+
+;--- struct/unions with arrays initialized with an
+;--- assembly time variable.
+
+;--- doesn't work currently if the line defines an array
+;--- with comma-separated '$'.
+;--- Problem: the value is calculated in AddFieldToStruct(),
+;--- which is called only when the field is created.
+
+	.286
+	.model small
+
+S1 struct
+mbr1	dw $,$		;should be 0000,0002 (is 0000,0000)
+mbr2	dw $,$,$	;should be 0004,0006,0008 (is 0004,0004,0004)
+S1 ends
+
+S2 struct
+mbr1	dw 2 dup ($)
+mbr2	dw 3 dup ($)
+S2 ends
+
+U1 union
+mbr1	dw $,$
+mbr2	dw $,$,$
+U1 ends
+
+U2 union
+mbr1	dw 2 dup ($)
+mbr2	dw 3 dup ($)
+U2 ends
+
+SX struct
+	dw ?
+x	S1 <>
+y	S2 <>
+SX ends
+
+	.data
+
+v1	S1 <>
+v2	S2 <>
+v3	U1 <>
+v4	U2 <>
+v5	SX <>
+
+	end

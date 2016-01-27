@@ -1,0 +1,2 @@
+STRUCT13.ASO(15) : Error A2152: Initializer must be a string or single item: 1,2
+STRUCT13.ASO(15) : Error A2153: Too many initial values for structure: ,2

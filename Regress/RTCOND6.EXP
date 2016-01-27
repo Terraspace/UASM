@@ -1,0 +1,9 @@
+RTCOND6.ASO(7) : Error A2235: Constant value too large: 100000000h
+RTCOND6.ASO(11) : Error A2199: Syntax error in control-flow directive
+RTCOND6.ASO(14) : Error A2199: Syntax error in control-flow directive
+RTCOND6.ASO(17) : Error A2199: Syntax error in control-flow directive
+RTCOND6.ASO(22) : Error A2199: Syntax error in control-flow directive
+RTCOND6.ASO(24) : Error A2199: Syntax error in control-flow directive
+RTCOND6.ASO(29) : Error A2209: Syntax error: eax
+RTCOND6.ASO(33) : Error A2209: Syntax error: eax
+RTCOND6.ASO(35) : Error A2209: Syntax error: 1+2

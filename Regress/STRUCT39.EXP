@@ -1,0 +1,4 @@
+STRUCT39.ASO(16) : Error A2102: Symbol not defined : foo
+STRUCT39.ASO(18) : Error A2102: Symbol not defined : foo
+STRUCT39.ASO(24) : Error A2063: Symbol not defined : S1.f2
+STRUCT39.ASO(26) : Error A2063: Symbol not defined : S1.f2

@@ -1,0 +1,7 @@
+FLOAT8.ASO(12) : Error A2076: Initializer magnitude too large for specified size
+FLOAT8.ASO(13) : Error A2076: Initializer magnitude too large for specified size
+FLOAT8.ASO(14) : Error A2076: Initializer magnitude too large for specified size
+FLOAT8.ASO(15) : Error A2076: Initializer magnitude too large for specified size
+FLOAT8.ASO(20) : Error A2231: Invalid data initializer: 3ff0000000000000r
+FLOAT8.ASO(21) : Error A2231: Invalid data initializer: 3fff8000000000000000r
+FLOAT8.ASO(22) : Error A2231: Invalid data initializer: 3fff8000000000000000000000000000r

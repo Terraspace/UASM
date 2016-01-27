@@ -1,0 +1,3 @@
+DATA9.ASO(10) : Error A2143: Symbol redefinition: var1
+DATA9.ASO(16) : Error A2056: Symbol already defined: var3
+DATA9.ASO(22) : Error A2136: Symbol type conflict: var5

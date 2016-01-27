@@ -1,0 +1,4 @@
+MACRO25.ASO(17) : Warning A4149: Too many arguments in macro call: m1: ,2,3
+MACRO25.ASO(18) : Warning A4149: Too many arguments in macro call: m2: ,2,3)
+MACRO25.ASO(19) : Warning A4149: Too many arguments in macro call: m2: ,2,3), m2(1,2)
+MACRO25.ASO(19) : Warning A4149: Too many arguments in macro call: m2: ,2)

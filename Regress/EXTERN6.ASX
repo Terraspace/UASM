@@ -1,0 +1,30 @@
+
+;--- module to resolve extern6.asz externals
+
+	.286
+	.model small,c
+	.386
+	option casemap:none
+
+NPSTR typedef ptr SBYTE
+LPSTR typedef far ptr SBYTE
+NPSTR32 typedef near32 ptr SBYTE
+LPSTR32 typedef far32  ptr SBYTE
+
+	.data
+
+	public ps1,ps2,ps3,ps4,ps5,ps6,ps7,ps8,ps9,ps10
+
+ps1 NPSTR 0
+ps2 LPSTR 0
+ps3 NPSTR32 0
+ps4 LPSTR32 0
+ps5 NPSTR 0
+ps6 LPSTR 0
+ps7 NPSTR32 0
+ps8 LPSTR32 0
+
+ps9 NPSTR 0
+ps10 LPSTR 0
+
+	end

@@ -1,0 +1,11 @@
+
+;--- abs external:
+
+        .386
+
+	public value1
+
+value1 equ 55
+
+        END
+

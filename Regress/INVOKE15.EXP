@@ -1,0 +1,6 @@
+INVOKE15.ASO(15) : Error A2145: INVOKE argument type mismatch: argument 2
+INVOKE15.ASO(15) : Error A2145: INVOKE argument type mismatch: argument 1
+INVOKE15.ASO(16) : Error A2145: INVOKE argument type mismatch: argument 2
+INVOKE15.ASO(16) : Error A2145: INVOKE argument type mismatch: argument 1
+INVOKE15.ASO(19) : Error A2145: INVOKE argument type mismatch: argument 1
+INVOKE15.ASO(19) : Error A2235: Constant value too large: 123456789Ah

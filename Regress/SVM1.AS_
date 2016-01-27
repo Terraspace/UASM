@@ -1,0 +1,30 @@
+
+;--- AMD SVM extension
+;--- added in v2.09, but isn't active ( see SVMSUPP in global.h )
+
+	.386
+	.model flat
+	.686p
+
+	.code
+
+	skinit eax	; op must be eax
+
+	stgi
+	clgi
+
+	vmrun eax	; variants without address prefix
+	vmsave eax
+	vmload eax
+	invlpga eax, ecx
+
+	vmrun ax	; variants with address prefix
+	vmsave ax
+	vmload ax
+	invlpga ax, ecx
+
+	.686
+
+	vmmcall
+
+end

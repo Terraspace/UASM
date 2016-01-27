@@ -1,0 +1,3 @@
+GOTO2.ASO(23) : Error A2080: Block nesting error: endif
+ AU(6)[GOTO2.ASO]: Macro called from
+  GOTO2.ASO(23): Main line code

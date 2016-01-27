@@ -1,0 +1,32 @@
+
+;--- weird masm feature: ASSUME may have
+;--- an effect for lines located BEFORE the assume.
+;--- looks like the assumes are not reset when a new pass starts.
+
+;--- see adjustment in assume.c, AssumeInit()
+
+	.386
+	.model flat
+
+S1 STRUCT
+     DD ?
+s1f1 DD ?
+S1 ENDS
+
+S2 STRUCT
+     DW ?
+s2f1 DD ?
+S2 ENDS
+
+	.CODE
+
+	MOV EAX,[EDI].s1f1
+
+	assume edi:ptr S2
+
+	MOV EAX,[EDI].s2f1
+
+	ASSUME EDI:ptr S1	;makes masm accept first "mov"
+
+END
+

@@ -1,0 +1,7 @@
+PROC644.ASC(18) : Error A2210: Too many unwind codes in FRAME procedure
+ MacroLoop(1): iteration 256: Macro called from
+  PROC644.ASC(18): Main line code
+PROC644.ASC(31) : Error A2259: Missing .ENDPROLOG: p2
+PROC644.ASC(36) : Error A2255: Missing FRAME in PROC, no unwind code will be generated
+PROC644.ASC(45) : Error A2256: Bad alignment for offset in unwind code
+PROC644.ASC(55) : Error A2235: Constant value too large: 100h

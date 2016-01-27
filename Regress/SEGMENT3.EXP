@@ -1,0 +1,3 @@
+SEGMENT3.ASO(6) : Error A2078: Segment definition changed: _TEXT1, alignment
+SEGMENT3.ASO(11) : Error A2078: Segment definition changed: _TEXT2, combine
+SEGMENT3.ASO(18) : Error A2078: Segment definition changed: _TEXT3, segment word size

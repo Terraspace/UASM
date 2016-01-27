@@ -1,0 +1,9 @@
+ALIGN3.ASO(10) : Error A2102: Symbol not defined : E1
+ALIGN3.ASO(12) : Error A2129: number must be a power of 2: 3
+ALIGN3.ASO(14) : Warning A4130: Incompatible with segment alignment: 64
+ALIGN3.ASO(16) : Error A2129: number must be a power of 2: 5
+ALIGN3.ASO(19) : Error A2214: Struct alignment must be 1, 2, 4, 8, 16 or 32
+ALIGN3.ASO(28) : Error A2102: Symbol not defined : E2
+ALIGN3.ASO(36) : Error A2129: number must be a power of 2: 5
+ALIGN3.ASO(40) : Error A2065: Constant expected
+ALIGN3.ASO(42) : Error A2065: Constant expected

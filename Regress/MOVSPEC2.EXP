@@ -1,0 +1,7 @@
+MOVSPEC2.ASO(5) : Error A2030: Instruction or register not accepted in current CPU mode
+MOVSPEC2.ASO(12) : Error A2042: Only MOV can use special register
+MOVSPEC2.ASO(13) : Error A2042: Only MOV can use special register
+MOVSPEC2.ASO(17) : Error A2030: Instruction or register not accepted in current CPU mode
+MOVSPEC2.ASO(18) : Error A2030: Instruction or register not accepted in current CPU mode
+MOVSPEC2.ASO(27) : Error A2032: Cannot use TR3-TR5 with current CPU setting
+MOVSPEC2.ASO(28) : Error A2032: Cannot use TR6-TR7 with current CPU setting

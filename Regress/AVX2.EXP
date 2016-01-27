@@ -1,0 +1,43 @@
+AVX2.ASO(19) : Error A2049: Invalid instruction operands
+AVX2.ASO(20) : Error A2049: Invalid instruction operands
+AVX2.ASO(21) : Error A2049: Invalid instruction operands
+AVX2.ASO(22) : Error A2049: Invalid instruction operands
+AVX2.ASO(23) : Error A2049: Invalid instruction operands
+AVX2.ASO(24) : Error A2049: Invalid instruction operands
+AVX2.ASO(25) : Error A2049: Invalid instruction operands
+AVX2.ASO(26) : Error A2049: Invalid instruction operands
+AVX2.ASO(27) : Error A2209: Syntax error: , xmm1
+AVX2.ASO(29) : Error A2209: Syntax error: , xmm0
+AVX2.ASO(30) : Error A2209: Syntax error: , ymm0
+AVX2.ASO(31) : Error A2209: Syntax error: , xmm1
+AVX2.ASO(33) : Error A2209: Syntax error: , xmm0
+AVX2.ASO(34) : Error A2209: Syntax error: , ymm0
+AVX2.ASO(59) : Error A2209: Syntax error: , xmm1
+AVX2.ASO(63) : Error A2209: Syntax error: , xmm1
+AVX2.ASO(64) : Error A2049: Invalid instruction operands
+AVX2.ASO(65) : Error A2209: Syntax error: , xmm1
+AVX2.ASO(66) : Error A2049: Invalid instruction operands
+AVX2.ASO(67) : Error A2209: Syntax error: , ymm1
+AVX2.ASO(68) : Error A2049: Invalid instruction operands
+AVX2.ASO(69) : Error A2209: Syntax error: , xmm1
+AVX2.ASO(70) : Error A2049: Invalid instruction operands
+AVX2.ASO(71) : Error A2209: Syntax error: , ymm1
+AVX2.ASO(72) : Error A2049: Invalid instruction operands
+AVX2.ASO(73) : Error A2049: Invalid instruction operands
+AVX2.ASO(74) : Error A2049: Invalid instruction operands
+AVX2.ASO(75) : Error A2049: Invalid instruction operands
+AVX2.ASO(76) : Error A2209: Syntax error: , xmm1
+AVX2.ASO(77) : Error A2209: Syntax error: , xmm1
+AVX2.ASO(78) : Error A2209: Syntax error: , ymm1
+AVX2.ASO(79) : Error A2209: Syntax error: , ymm1
+AVX2.ASO(80) : Error A2049: Invalid instruction operands
+AVX2.ASO(81) : Error A2209: Syntax error: , xmm1
+AVX2.ASO(82) : Error A2049: Invalid instruction operands
+AVX2.ASO(83) : Error A2209: Syntax error: , xmm1
+AVX2.ASO(84) : Error A2049: Invalid instruction operands
+AVX2.ASO(85) : Error A2049: Invalid instruction operands
+AVX2.ASO(86) : Error A2209: Syntax error: , ymm1
+AVX2.ASO(87) : Error A2049: Invalid instruction operands
+AVX2.ASO(89) : Error A2182: Instruction operand must have size
+AVX2.ASO(90) : Error A2182: Instruction operand must have size
+AVX2.ASO(91) : Error A2182: Instruction operand must have size

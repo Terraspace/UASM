@@ -1,0 +1,6 @@
+JMPCALL9.ASO(16) : Error A2169: Cannot have implicit far jump or call to near label
+JMPCALL9.ASO(21) : Error A2249: Jump destination must specify a label
+JMPCALL9.ASO(22) : Error A2049: Invalid instruction operands
+JMPCALL9.ASO(23) : Error A2043: Cannot use SHORT with CALL
+JMPCALL9.ASO(24) : Error A2169: Cannot have implicit far jump or call to near label
+JMPCALL9.ASO(25) : Error A2169: Cannot have implicit far jump or call to near label

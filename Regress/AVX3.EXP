@@ -1,0 +1,50 @@
+AVX3.ASO(19) : Error A2049: Invalid instruction operands
+AVX3.ASO(20) : Error A2049: Invalid instruction operands
+AVX3.ASO(21) : Error A2049: Invalid instruction operands
+AVX3.ASO(22) : Error A2049: Invalid instruction operands
+AVX3.ASO(23) : Error A2209: Syntax error: , ymm1
+AVX3.ASO(24) : Error A2049: Invalid instruction operands
+AVX3.ASO(25) : Error A2049: Invalid instruction operands
+AVX3.ASO(26) : Error A2049: Invalid instruction operands
+AVX3.ASO(27) : Error A2049: Invalid instruction operands
+AVX3.ASO(28) : Error A2049: Invalid instruction operands
+AVX3.ASO(29) : Error A2049: Invalid instruction operands
+AVX3.ASO(30) : Error A2049: Invalid instruction operands
+AVX3.ASO(31) : Error A2209: Syntax error: , xmm1
+AVX3.ASO(32) : Error A2049: Invalid instruction operands
+AVX3.ASO(34) : Error A2049: Invalid instruction operands
+AVX3.ASO(35) : Error A2209: Syntax error: , xmm2
+AVX3.ASO(36) : Error A2209: Syntax error: , m128
+AVX3.ASO(37) : Error A2209: Syntax error: , xmm2
+AVX3.ASO(38) : Error A2209: Syntax error: , m64
+AVX3.ASO(39) : Error A2209: Syntax error: , xmm2
+AVX3.ASO(40) : Error A2049: Invalid instruction operands
+AVX3.ASO(41) : Error A2049: Invalid instruction operands
+AVX3.ASO(42) : Error A2049: Invalid instruction operands
+AVX3.ASO(43) : Error A2049: Invalid instruction operands
+AVX3.ASO(44) : Error A2209: Syntax error: , xmm1
+AVX3.ASO(45) : Error A2209: Syntax error: , m128
+AVX3.ASO(46) : Error A2049: Invalid instruction operands
+AVX3.ASO(47) : Error A2209: Syntax error: , xmm2
+AVX3.ASO(48) : Error A2209: Syntax error: , xmm2
+AVX3.ASO(49) : Error A2209: Syntax error: , xmm2
+AVX3.ASO(50) : Error A2049: Invalid instruction operands
+AVX3.ASO(51) : Error A2209: Syntax error: , xmm2
+AVX3.ASO(52) : Error A2049: Invalid instruction operands
+AVX3.ASO(53) : Error A2209: Syntax error: , xmm2
+AVX3.ASO(54) : Error A2209: Syntax error: , xmm2
+AVX3.ASO(55) : Error A2209: Syntax error: , ymm2
+AVX3.ASO(56) : Error A2209: Syntax error: , ymm2
+AVX3.ASO(63) : Error A2209: Syntax error: , xmm2
+AVX3.ASO(64) : Error A2209: Syntax error: , m256
+AVX3.ASO(73) : Error A2209: Syntax error: , xmm1
+AVX3.ASO(74) : Error A2209: Syntax error: , xmm2
+AVX3.ASO(75) : Error A2049: Invalid instruction operands
+AVX3.ASO(77) : Error A2049: Invalid instruction operands
+AVX3.ASO(78) : Error A2209: Syntax error: , xmm2
+AVX3.ASO(79) : Error A2209: Syntax error: , xmm2
+AVX3.ASO(80) : Error A2049: Invalid instruction operands
+AVX3.ASO(81) : Error A2049: Invalid instruction operands
+AVX3.ASO(82) : Error A2049: Invalid instruction operands
+AVX3.ASO(83) : Error A2049: Invalid instruction operands
+AVX3.ASO(84) : Error A2049: Invalid instruction operands

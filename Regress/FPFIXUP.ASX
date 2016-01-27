@@ -1,0 +1,33 @@
+
+;--- fixups for 16bit floating point emulation
+;--- becomes fpfixup.lib
+
+	.286
+	.model small
+	option casemap:none
+
+	public FIARQQ, FISRQQ, FICRQQ, FIERQQ
+	public FIDRQQ, FIWRQQ, FJARQQ, FJSRQQ
+	public FJCRQQ
+
+fINT     equ 0CDh      ;opcode for INT xx
+fFWAIT   equ 09Bh
+fESCAPE  equ 0D8h
+fFNOP    equ 090h
+fES      equ 026h
+fCS      equ 02Eh
+fSS      equ 036h
+fDS      equ 03Eh      ;DS segment prefix
+BEGINT   equ 034h      ;begin of emulation interrupt vectors (34h-3Dh)
+
+FIARQQ  equ (fINT + 256*(BEGINT + 8)) - (fFWAIT + 256 * fDS)
+FISRQQ  equ (fINT + 256*(BEGINT + 8)) - (fFWAIT + 256 * fSS)
+FICRQQ  equ (fINT + 256*(BEGINT + 8)) - (fFWAIT + 256 * fCS)
+FIERQQ  equ (fINT + 256*(BEGINT + 8)) - (fFWAIT + 256 * fES)
+FIDRQQ  equ (fINT + 256*(BEGINT + 0)) - (fFWAIT + 256 * fESCAPE)
+FIWRQQ  equ (fINT + 256*(BEGINT + 9)) - (fFNOP  + 256 * fFWAIT)
+FJARQQ  equ 256*(((0 shl 6) or (fESCAPE and 03Fh)) - fESCAPE)
+FJSRQQ  equ 256*(((1 shl 6) or (fESCAPE and 03Fh)) - fESCAPE)
+FJCRQQ  equ 256*(((2 shl 6) or (fESCAPE and 03Fh)) - fESCAPE)
+
+	End

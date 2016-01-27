@@ -1,0 +1,9 @@
+STRUCT41.ASO(7) : Error A2151: Unexpected literal found in expression: <abc>
+STRUCT41.ASO(7) : Error A2209: Syntax error: <abc>
+STRUCT41.ASO(8) : Error A2080: Block nesting error: S1
+STRUCT41.ASO(10) : Error A2102: Symbol not defined : E2
+STRUCT41.ASO(15) : Error A2214: Struct alignment must be 1, 2, 4, 8, 16 or 32
+STRUCT41.ASO(18) : Error A2129: number must be a power of 2: 3
+STRUCT41.ASO(21) : Warning A4250: Ignored: NONUNIQUE
+STRUCT41.ASO(24) : Error A2209: Syntax error: ABC
+STRUCT41.ASO(25) : Error A2080: Block nesting error: S6

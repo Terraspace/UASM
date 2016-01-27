@@ -1,0 +1,4 @@
+SEGALIGN.ASC(13) : Error A2078: Segment definition changed: _DATA1, alignment
+SEGALIGN.ASC(20) : Error A2078: Segment definition changed: _DATA2, characteristics
+SEGALIGN.ASC(27) : Error A2078: Segment definition changed: _DATA3, characteristics
+SEGALIGN.ASC(34) : Error A2078: Segment definition changed: _DATA4, characteristics

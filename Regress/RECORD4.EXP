@@ -1,0 +1,5 @@
+RECORD4.ASO(9) : Error A2209: Syntax error: 
+RECORD4.ASO(10) : Error A2035: Too few bits in RECORD: bf2
+RECORD4.ASO(11) : Error A2140: Too many bits in RECORD: bf3
+RECORD4.ASO(12) : Error A2209: Syntax error: bf4:1=
+RECORD4.ASO(17) : Error A2172: Initializer magnitude too large: bf5

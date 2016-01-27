@@ -1,0 +1,4 @@
+COMDAT1.ASC(7) : Error A2024: Value not within allowed range 1-6
+COMDAT1.ASC(11) : Error A2024: Value not within allowed range 1-6
+COMDAT1.ASC(15) : Error A2039: Expecting comma: ) alias(".text")
+COMDAT1.ASC(19) : Error A2025: Invalid associated segment: abc
