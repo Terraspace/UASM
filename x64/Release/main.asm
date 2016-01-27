@@ -146,25 +146,30 @@ $LN28:
 ; 69   : 	/* v2.11: _findfirst/next/close() handle, should be of type intptr_t.
 ; 70   : 	* since this type isn't necessarily defined, type long is used as substitute.
 ; 71   : 	*/
-; 72   : 	intptr_t    fh; //fixed by ToutEnMasm intptr_t instead of long
-; 73   : 	const char *pfn;
-; 74   : 	int     dirsize;
-; 75   : 	struct  _finddata_t finfo;
-; 76   : 	char    fname[FILENAME_MAX];
-; 77   : #endif
-; 78   : 
-; 79   : #if 0 //def DEBUG_OUT    /* DebugMsg() cannot be used that early */
-; 80   : 	int i;
-; 81   : 	for ( i = 1; i < argc; i++ ) {
-; 82   : 		printf("argv[%u]=>%s<\n", i, argv[i] );
-; 83   : 	}
-; 84   : #endif
-; 85   : 
-; 86   : #ifdef TRMEM
-; 87   : 	tm_Init();
-; 88   : #endif
-; 89   : 
-; 90   : 	pEnv = getenv("HJWASM");
+; 72   : #if defined( intptr_t )
+; 73   : 	intptr_t    fh; //fixed by ToutEnMasm intptr_t instead of long
+; 74   : #else
+; 75   : 	long        fh; // more compatible type (linux builds etc) when intptr_t isn't valid.
+; 76   : #endif
+; 77   : 
+; 78   : 	const char *pfn;
+; 79   : 	int     dirsize;
+; 80   : 	struct  _finddata_t finfo;
+; 81   : 	char    fname[FILENAME_MAX];
+; 82   : #endif
+; 83   : 
+; 84   : #if 0 //def DEBUG_OUT    /* DebugMsg() cannot be used that early */
+; 85   : 	int i;
+; 86   : 	for ( i = 1; i < argc; i++ ) {
+; 87   : 		printf("argv[%u]=>%s<\n", i, argv[i] );
+; 88   : 	}
+; 89   : #endif
+; 90   : 
+; 91   : #ifdef TRMEM
+; 92   : 	tm_Init();
+; 93   : #endif
+; 94   : 
+; 95   : 	pEnv = getenv("HJWASM");
 
 	lea	rcx, OFFSET FLAT:$SG8050
 	mov	DWORD PTR [rax+16], ebp
@@ -172,16 +177,16 @@ $LN28:
 	mov	r14, rdx
 	call	getenv
 
-; 91   : 	if (pEnv == NULL)
+; 96   : 	if (pEnv == NULL)
 
 	test	rax, rax
 	lea	rcx, OFFSET FLAT:$SG8052
 
-; 92   : 		pEnv = "";
-; 93   : 	argv[0] = pEnv;
-; 94   : 
-; 95   : #ifndef DEBUG_OUT
-; 96   : 	signal(SIGSEGV, genfailure);
+; 97   : 		pEnv = "";
+; 98   : 	argv[0] = pEnv;
+; 99   : 
+; 100  : #ifndef DEBUG_OUT
+; 101  : 	signal(SIGSEGV, genfailure);
 
 	lea	rdx, OFFSET FLAT:genfailure
 	cmovne	rcx, rax
@@ -189,20 +194,20 @@ $LN28:
 	lea	ecx, QWORD PTR [rbp+11]
 	call	signal
 
-; 97   : #endif
-; 98   : 
-; 99   : #if CATCHBREAK
-; 100  : 	signal(SIGBREAK, genfailure);
+; 102  : #endif
+; 103  : 
+; 104  : #if CATCHBREAK
+; 105  : 	signal(SIGBREAK, genfailure);
 
 	lea	rdx, OFFSET FLAT:genfailure
 	lea	ecx, QWORD PTR [rbp+21]
 	call	signal
 
-; 101  : #else
-; 102  : 	signal(SIGTERM, genfailure);
-; 103  : #endif
-; 104  : 	/* ParseCmdLine() returns NULL if no source file name has been found (anymore) */
-; 105  : 	while (ParseCmdline((const char **)argv, &numArgs)) {
+; 106  : #else
+; 107  : 	signal(SIGTERM, genfailure);
+; 108  : #endif
+; 109  : 	/* ParseCmdLine() returns NULL if no source file name has been found (anymore) */
+; 110  : 	while (ParseCmdline((const char **)argv, &numArgs)) {
 
 	lea	rdx, QWORD PTR numArgs$[rsp]
 	mov	rcx, r14
@@ -214,39 +219,39 @@ $LN28:
 	npad	2
 $LL2@main:
 
-; 106  : 		numFiles++;
+; 111  : 		numFiles++;
 
 	inc	ebp
 
-; 107  : 		write_logo();
+; 112  : 		write_logo();
 
 	call	write_logo
 
-; 108  : #if WILDCARDS
-; 109  : 		if ((fh = _findfirst(Options.names[ASM], &finfo)) == -1) {
+; 113  : #if WILDCARDS
+; 114  : 		if ((fh = _findfirst(Options.names[ASM], &finfo)) == -1) {
 
 	mov	rcx, QWORD PTR Options+16
 	lea	rdx, QWORD PTR finfo$[rsp]
 	call	_findfirst64i32
 	mov	rdi, rax
-	cmp	rax, -1
+	cmp	eax, -1
 	je	$LN17@main
 
-; 112  : 			break;
-; 113  : 		}
-; 114  : 		/* v2.12: _splitpath()/_makepath() removed */
-; 115  : 		//_splitpath( Options.names[ASM], drv, dir, NULL, NULL );
-; 116  : 		//DebugMsg(("main: _splitpath(%s): drv=\"%s\" dir=\"%s\"\n", Options.names[ASM], drv, dir ));
-; 117  : 		pfn = GetFNamePart(Options.names[ASM]);
+; 117  : 			break;
+; 118  : 		}
+; 119  : 		/* v2.12: _splitpath()/_makepath() removed */
+; 120  : 		//_splitpath( Options.names[ASM], drv, dir, NULL, NULL );
+; 121  : 		//DebugMsg(("main: _splitpath(%s): drv=\"%s\" dir=\"%s\"\n", Options.names[ASM], drv, dir ));
+; 122  : 		pfn = GetFNamePart(Options.names[ASM]);
 
 	mov	rcx, QWORD PTR Options+16
 	call	GetFNamePart
 
-; 118  : 		dirsize = pfn - Options.names[ASM];
+; 123  : 		dirsize = pfn - Options.names[ASM];
 
 	mov	rdx, QWORD PTR Options+16
 
-; 119  : 		memcpy(fname, Options.names[ASM], dirsize);
+; 124  : 		memcpy(fname, Options.names[ASM], dirsize);
 
 	lea	rcx, QWORD PTR fname$[rsp]
 	sub	eax, edx
@@ -254,16 +259,17 @@ $LL2@main:
 	mov	r8, rbx
 	call	memcpy
 	lea	rax, QWORD PTR finfo$[rsp+36]
+	movsxd	rdi, edi
 	sub	rbx, rax
 	lea	rbx, QWORD PTR fname$[rsp+rbx]
-	npad	3
+	npad	1
 $LL6@main:
 
-; 120  : 			do {
-; 121  : 				/* v2.12: _splitpath()/_makepath() removed */
-; 122  : 				//_makepath( fname, drv, dir, finfo.name, NULL );
-; 123  : 				//DebugMsg(("main: _makepath(\"%s\", \"%s\", \"%s\")=\"%s\"\n", drv, dir, finfo.name, fname ));
-; 124  : 				strcpy(&fname[dirsize], finfo.name);
+; 125  : 			do {
+; 126  : 				/* v2.12: _splitpath()/_makepath() removed */
+; 127  : 				//_makepath( fname, drv, dir, finfo.name, NULL );
+; 128  : 				//DebugMsg(("main: _makepath(\"%s\", \"%s\", \"%s\")=\"%s\"\n", drv, dir, finfo.name, fname ));
+; 129  : 				strcpy(&fname[dirsize], finfo.name);
 
 	lea	rax, QWORD PTR finfo$[rsp+36]
 	npad	11
@@ -274,13 +280,13 @@ $LL13@main:
 	test	cl, cl
 	jne	SHORT $LL13@main
 
-; 125  : 				DebugMsg(("main: fname=%s\n", fname));
-; 126  : 				rc = AssembleModule(fname);  /* assemble 1 module */
+; 130  : 				DebugMsg(("main: fname=%s\n", fname));
+; 131  : 				rc = AssembleModule(fname);  /* assemble 1 module */
 
 	lea	rcx, QWORD PTR fname$[rsp]
 	call	AssembleModule
 
-; 127  : 			} while ((_findnext(fh, &finfo) != -1));
+; 132  : 			} while ((_findnext(fh, &finfo) != -1));
 
 	lea	rdx, QWORD PTR finfo$[rsp]
 	mov	rcx, rdi
@@ -289,7 +295,7 @@ $LL13@main:
 	cmp	eax, -1
 	jne	SHORT $LL6@main
 
-; 128  : 		    _findclose(fh);
+; 133  : 		    _findclose(fh);
 
 	mov	rcx, rdi
 	call	_findclose
@@ -299,14 +305,14 @@ $LL13@main:
 	test	rax, rax
 	jne	$LL2@main
 
-; 108  : #if WILDCARDS
-; 109  : 		if ((fh = _findfirst(Options.names[ASM], &finfo)) == -1) {
+; 113  : #if WILDCARDS
+; 114  : 		if ((fh = _findfirst(Options.names[ASM], &finfo)) == -1) {
 
 	jmp	SHORT $LN26@main
 $LN17@main:
 
-; 110  : 			DebugMsg(("main: _findfirst(%s) failed\n", Options.names[ASM]));
-; 111  : 			EmitErr(CANNOT_OPEN_FILE, Options.names[ASM], ErrnoStr());
+; 115  : 			DebugMsg(("main: _findfirst(%s) failed\n", Options.names[ASM]));
+; 116  : 			EmitErr(CANNOT_OPEN_FILE, Options.names[ASM], ErrnoStr());
 
 	call	ErrnoStr
 	mov	rdx, QWORD PTR Options+16
@@ -318,25 +324,25 @@ $LN26@main:
 	mov	rdi, QWORD PTR [rsp+656]
 $LN3@main:
 
-; 129  : #else
-; 130  : 		rc = AssembleModule( Options.names[ASM] );
-; 131  : #endif
-; 132  : 	};
-; 133  : 	CmdlineFini();
+; 134  : #else
+; 135  : 		rc = AssembleModule( Options.names[ASM] );
+; 136  : #endif
+; 137  : 	};
+; 138  : 	CmdlineFini();
 
 	call	CmdlineFini
 
-; 134  : 	if (numArgs == 0) {
+; 139  : 	if (numArgs == 0) {
 
 	cmp	DWORD PTR numArgs$[rsp], 0
 	mov	r14, QWORD PTR [rsp+608]
 	jne	SHORT $LN9@main
 
-; 135  : 		write_logo();
+; 140  : 		write_logo();
 
 	call	write_logo
 
-; 136  : 		printf("%s", MsgGetEx(MSG_USAGE));
+; 141  : 		printf("%s", MsgGetEx(MSG_USAGE));
 
 	xor	ecx, ecx
 	call	MsgGetEx
@@ -344,18 +350,18 @@ $LN3@main:
 	lea	rcx, OFFSET FLAT:$SG8056
 	call	printf
 
-; 140  : 
-; 141  : #ifdef TRMEM
-; 142  : 	tm_Fini();
-; 143  : #endif
-; 144  : 
-; 145  : 	DebugMsg(("main: exit, return code=%u\n", 1 - rc));
-; 146  : 	return(1 - rc); /* zero if no errors */
+; 145  : 
+; 146  : #ifdef TRMEM
+; 147  : 	tm_Fini();
+; 148  : #endif
+; 149  : 
+; 150  : 	DebugMsg(("main: exit, return code=%u\n", 1 - rc));
+; 151  : 	return(1 - rc); /* zero if no errors */
 
 	mov	eax, 1
 	sub	eax, esi
 
-; 147  : }
+; 152  : }
 
 	add	rsp, 616				; 00000268H
 	pop	rsi
@@ -363,30 +369,30 @@ $LN3@main:
 	ret	0
 $LN9@main:
 
-; 137  : 	}
-; 138  : 	else if (numFiles == 0)
+; 142  : 	}
+; 143  : 	else if (numFiles == 0)
 
 	test	ebp, ebp
 	jne	SHORT $LN11@main
 
-; 139  : 		EmitError(NO_FILENAME_SPECIFIED);
+; 144  : 		EmitError(NO_FILENAME_SPECIFIED);
 
 	lea	ecx, QWORD PTR [rbp+104]
 	call	EmitError
 $LN11@main:
 
-; 140  : 
-; 141  : #ifdef TRMEM
-; 142  : 	tm_Fini();
-; 143  : #endif
-; 144  : 
-; 145  : 	DebugMsg(("main: exit, return code=%u\n", 1 - rc));
-; 146  : 	return(1 - rc); /* zero if no errors */
+; 145  : 
+; 146  : #ifdef TRMEM
+; 147  : 	tm_Fini();
+; 148  : #endif
+; 149  : 
+; 150  : 	DebugMsg(("main: exit, return code=%u\n", 1 - rc));
+; 151  : 	return(1 - rc); /* zero if no errors */
 
 	mov	eax, 1
 	sub	eax, esi
 
-; 147  : }
+; 152  : }
 
 	add	rsp, 616				; 00000268H
 	pop	rsi
