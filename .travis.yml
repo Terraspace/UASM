@@ -2,4 +2,4 @@ language: c
 compiler:
   - clang
   - gcc
-script: make GccUnix.mak
+script: make -f GccUnix.mak
