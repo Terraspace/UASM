@@ -2,4 +2,12 @@ language: c
 compiler:
   - clang
   - gcc
+deploy:
+  provider: releases
+  user: "john-terraspace"
+  password: "Hankinson123"
+  file: "hjwasm.exe"
+  skip_cleanup: true
+  on:
+    tags: true
 script: make -f GccUnix.mak
