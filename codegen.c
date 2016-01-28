@@ -195,7 +195,7 @@ static void output_opc(struct code_info *CodeInfo)
   if ((CodeInfo->token == T_RDRAND) || (CodeInfo->token == T_RDSEED)){
     if ((CodeInfo->opnd[OPND1].type == OP_R16) || (CodeInfo->opnd[OPND1].type == OP_AX))
       CodeInfo->prefix.opsiz = TRUE;
-  }
+  } 
   /*
    * Check if CPU, FPU and extensions are within the limits
    */

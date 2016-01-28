@@ -3319,7 +3319,7 @@ $LN21@output_opc:
 ; 184  :   /* v2.02: if it's a FPU or MMX/SSE instr, reset opsiz!
 ; 185  :    * [this code has been moved here from codegen()]
 ; 186  :    */
-; 187  :   if (ins->cpu & (P_FPU_MASK | P_MMX | P_SSEALL)) {
+; 187  :   if (ins->cpu & (P_FPU_MASK | P_MMX | P_SSEALL | P_AVX)) {
 
 	mov	rax, QWORD PTR ins$[rsp]
 	movzx	eax, WORD PTR [rax+6]
@@ -3385,7 +3385,7 @@ $LN27@output_opc:
 $LN26@output_opc:
 $LN24@output_opc:
 
-; 198  :   }
+; 198  :   } 
 ; 199  :   /*
 ; 200  :    * Check if CPU, FPU and extensions are within the limits
 ; 201  :    */

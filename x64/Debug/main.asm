@@ -80,7 +80,7 @@ $pdata$genfailure DD imagerel genfailure
 	DD	imagerel genfailure+67
 	DD	imagerel $unwind$genfailure
 $pdata$main DD	imagerel $LN13
-	DD	imagerel $LN13+673
+	DD	imagerel $LN13+671
 	DD	imagerel $unwind$main
 pdata	ENDS
 ;	COMDAT rtc$TMZ
@@ -114,10 +114,10 @@ main$rtcName$2 DB 066H
 	DB	065H
 	DB	00H
 	ORG $+10
-main$rtcVarDesc DD 01d0H
+main$rtcVarDesc DD 01c0H
 	DD	0104H
 	DQ	FLAT:main$rtcName$2
-	DD	080H
+	DD	070H
 	DD	0128H
 	DQ	FLAT:main$rtcName$1
 	DD	034H
@@ -132,10 +132,10 @@ xdata	SEGMENT
 $unwind$genfailure DD 021c01H
 	DD	070053209H
 $unwind$main DD	033919H
-	DD	0600111H
+	DD	05e0111H
 	DD	0700aH
 	DD	imagerel __GSHandlerCheck
-	DD	02f0H
+	DD	02e0H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
@@ -179,14 +179,14 @@ pEnv$ = 32
 numArgs$ = 52
 numFiles$ = 68
 rc$ = 72
-fh$ = 80
-pfn$ = 88
-dirsize$ = 96
-finfo$ = 128
-fname$ = 464
-__$ArrayPad$ = 752
-argc$ = 784
-argv$ = 792
+fh$ = 76
+pfn$ = 80
+dirsize$ = 88
+finfo$ = 112
+fname$ = 448
+__$ArrayPad$ = 736
+argc$ = 768
+argv$ = 776
 main	PROC
 
 ; 62   : {
@@ -195,12 +195,12 @@ $LN13:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
 	push	rdi
-	sub	rsp, 768				; 00000300H
+	sub	rsp, 752				; 000002f0H
 	mov	rdi, rsp
-	mov	ecx, 192				; 000000c0H
+	mov	ecx, 188				; 000000bcH
 	mov	eax, -858993460				; ccccccccH
 	rep stosd
-	mov	ecx, DWORD PTR [rsp+784]
+	mov	ecx, DWORD PTR [rsp+768]
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -223,42 +223,47 @@ $LN13:
 ; 69   : 	/* v2.11: _findfirst/next/close() handle, should be of type intptr_t.
 ; 70   : 	* since this type isn't necessarily defined, type long is used as substitute.
 ; 71   : 	*/
-; 72   : 	intptr_t    fh; //fixed by ToutEnMasm intptr_t instead of long
-; 73   : 	const char *pfn;
-; 74   : 	int     dirsize;
-; 75   : 	struct  _finddata_t finfo;
-; 76   : 	char    fname[FILENAME_MAX];
-; 77   : #endif
-; 78   : 
-; 79   : #if 0 //def DEBUG_OUT    /* DebugMsg() cannot be used that early */
-; 80   : 	int i;
-; 81   : 	for ( i = 1; i < argc; i++ ) {
-; 82   : 		printf("argv[%u]=>%s<\n", i, argv[i] );
-; 83   : 	}
-; 84   : #endif
-; 85   : 
-; 86   : #ifdef TRMEM
-; 87   : 	tm_Init();
-; 88   : #endif
-; 89   : 
-; 90   : 	pEnv = getenv("HJWASM");
+; 72   : #if defined( intptr_t )
+; 73   : 	intptr_t    fh; //fixed by ToutEnMasm intptr_t instead of long
+; 74   : #else
+; 75   : 	long        fh; // more compatible type (linux builds etc) when intptr_t isn't valid.
+; 76   : #endif
+; 77   : 
+; 78   : 	const char *pfn;
+; 79   : 	int     dirsize;
+; 80   : 	struct  _finddata_t finfo;
+; 81   : 	char    fname[FILENAME_MAX];
+; 82   : #endif
+; 83   : 
+; 84   : #if 0 //def DEBUG_OUT    /* DebugMsg() cannot be used that early */
+; 85   : 	int i;
+; 86   : 	for ( i = 1; i < argc; i++ ) {
+; 87   : 		printf("argv[%u]=>%s<\n", i, argv[i] );
+; 88   : 	}
+; 89   : #endif
+; 90   : 
+; 91   : #ifdef TRMEM
+; 92   : 	tm_Init();
+; 93   : #endif
+; 94   : 
+; 95   : 	pEnv = getenv("HJWASM");
 
 	lea	rcx, OFFSET FLAT:$SG8039
 	call	QWORD PTR __imp_getenv
 	mov	QWORD PTR pEnv$[rsp], rax
 
-; 91   : 	if (pEnv == NULL)
+; 96   : 	if (pEnv == NULL)
 
 	cmp	QWORD PTR pEnv$[rsp], 0
 	jne	SHORT $LN7@main
 
-; 92   : 		pEnv = "";
+; 97   : 		pEnv = "";
 
 	lea	rax, OFFSET FLAT:$SG8041
 	mov	QWORD PTR pEnv$[rsp], rax
 $LN7@main:
 
-; 93   : 	argv[0] = pEnv;
+; 98   : 	argv[0] = pEnv;
 
 	mov	eax, 8
 	imul	rax, rax, 0
@@ -266,24 +271,24 @@ $LN7@main:
 	mov	rdx, QWORD PTR pEnv$[rsp]
 	mov	QWORD PTR [rcx+rax], rdx
 
-; 94   : 
-; 95   : #ifndef DEBUG_OUT
-; 96   : 	signal(SIGSEGV, genfailure);
-; 97   : #endif
-; 98   : 
-; 99   : #if CATCHBREAK
-; 100  : 	signal(SIGBREAK, genfailure);
+; 99   : 
+; 100  : #ifndef DEBUG_OUT
+; 101  : 	signal(SIGSEGV, genfailure);
+; 102  : #endif
+; 103  : 
+; 104  : #if CATCHBREAK
+; 105  : 	signal(SIGBREAK, genfailure);
 
 	lea	rdx, OFFSET FLAT:genfailure
 	mov	ecx, 21
 	call	QWORD PTR __imp_signal
 $LN2@main:
 
-; 101  : #else
-; 102  : 	signal(SIGTERM, genfailure);
-; 103  : #endif
-; 104  : 	/* ParseCmdLine() returns NULL if no source file name has been found (anymore) */
-; 105  : 	while (ParseCmdline((const char **)argv, &numArgs)) {
+; 106  : #else
+; 107  : 	signal(SIGTERM, genfailure);
+; 108  : #endif
+; 109  : 	/* ParseCmdLine() returns NULL if no source file name has been found (anymore) */
+; 110  : 	while (ParseCmdline((const char **)argv, &numArgs)) {
 
 	lea	rdx, QWORD PTR numArgs$[rsp]
 	mov	rcx, QWORD PTR argv$[rsp]
@@ -291,18 +296,18 @@ $LN2@main:
 	test	rax, rax
 	je	$LN3@main
 
-; 106  : 		numFiles++;
+; 111  : 		numFiles++;
 
 	mov	eax, DWORD PTR numFiles$[rsp]
 	inc	eax
 	mov	DWORD PTR numFiles$[rsp], eax
 
-; 107  : 		write_logo();
+; 112  : 		write_logo();
 
 	call	write_logo
 
-; 108  : #if WILDCARDS
-; 109  : 		if ((fh = _findfirst(Options.names[ASM], &finfo)) == -1) {
+; 113  : #if WILDCARDS
+; 114  : 		if ((fh = _findfirst(Options.names[ASM], &finfo)) == -1) {
 
 	mov	eax, 8
 	imul	rax, rax, 0
@@ -310,11 +315,11 @@ $LN2@main:
 	lea	rdx, QWORD PTR finfo$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax]
 	call	QWORD PTR __imp__findfirst64i32
-	mov	QWORD PTR fh$[rsp], rax
-	cmp	QWORD PTR fh$[rsp], -1
+	mov	DWORD PTR fh$[rsp], eax
+	cmp	DWORD PTR fh$[rsp], -1
 	jne	SHORT $LN8@main
 
-; 110  : 			DebugMsg(("main: _findfirst(%s) failed\n", Options.names[ASM]));
+; 115  : 			DebugMsg(("main: _findfirst(%s) failed\n", Options.names[ASM]));
 
 	mov	eax, 8
 	imul	rax, rax, 0
@@ -323,7 +328,7 @@ $LN2@main:
 	lea	rcx, OFFSET FLAT:$SG8043
 	call	DoDebugMsg
 
-; 111  : 			EmitErr(CANNOT_OPEN_FILE, Options.names[ASM], ErrnoStr());
+; 116  : 			EmitErr(CANNOT_OPEN_FILE, Options.names[ASM], ErrnoStr());
 
 	call	ErrnoStr
 	mov	ecx, 8
@@ -334,16 +339,16 @@ $LN2@main:
 	mov	ecx, 106				; 0000006aH
 	call	EmitErr
 
-; 112  : 			break;
+; 117  : 			break;
 
 	jmp	$LN3@main
 $LN8@main:
 
-; 113  : 		}
-; 114  : 		/* v2.12: _splitpath()/_makepath() removed */
-; 115  : 		//_splitpath( Options.names[ASM], drv, dir, NULL, NULL );
-; 116  : 		//DebugMsg(("main: _splitpath(%s): drv=\"%s\" dir=\"%s\"\n", Options.names[ASM], drv, dir ));
-; 117  : 		pfn = GetFNamePart(Options.names[ASM]);
+; 118  : 		}
+; 119  : 		/* v2.12: _splitpath()/_makepath() removed */
+; 120  : 		//_splitpath( Options.names[ASM], drv, dir, NULL, NULL );
+; 121  : 		//DebugMsg(("main: _splitpath(%s): drv=\"%s\" dir=\"%s\"\n", Options.names[ASM], drv, dir ));
+; 122  : 		pfn = GetFNamePart(Options.names[ASM]);
 
 	mov	eax, 8
 	imul	rax, rax, 0
@@ -352,7 +357,7 @@ $LN8@main:
 	call	GetFNamePart
 	mov	QWORD PTR pfn$[rsp], rax
 
-; 118  : 		dirsize = pfn - Options.names[ASM];
+; 123  : 		dirsize = pfn - Options.names[ASM];
 
 	mov	eax, 8
 	imul	rax, rax, 0
@@ -363,7 +368,7 @@ $LN8@main:
 	mov	rax, rcx
 	mov	DWORD PTR dirsize$[rsp], eax
 
-; 119  : 		memcpy(fname, Options.names[ASM], dirsize);
+; 124  : 		memcpy(fname, Options.names[ASM], dirsize);
 
 	movsxd	rax, DWORD PTR dirsize$[rsp]
 	mov	ecx, 8
@@ -375,11 +380,11 @@ $LN8@main:
 	call	memcpy
 $LN6@main:
 
-; 120  : 			do {
-; 121  : 				/* v2.12: _splitpath()/_makepath() removed */
-; 122  : 				//_makepath( fname, drv, dir, finfo.name, NULL );
-; 123  : 				//DebugMsg(("main: _makepath(\"%s\", \"%s\", \"%s\")=\"%s\"\n", drv, dir, finfo.name, fname ));
-; 124  : 				strcpy(&fname[dirsize], finfo.name);
+; 125  : 			do {
+; 126  : 				/* v2.12: _splitpath()/_makepath() removed */
+; 127  : 				//_makepath( fname, drv, dir, finfo.name, NULL );
+; 128  : 				//DebugMsg(("main: _makepath(\"%s\", \"%s\", \"%s\")=\"%s\"\n", drv, dir, finfo.name, fname ));
+; 129  : 				strcpy(&fname[dirsize], finfo.name);
 
 	movsxd	rax, DWORD PTR dirsize$[rsp]
 	lea	rax, QWORD PTR fname$[rsp+rax]
@@ -387,53 +392,55 @@ $LN6@main:
 	mov	rcx, rax
 	call	strcpy
 
-; 125  : 				DebugMsg(("main: fname=%s\n", fname));
+; 130  : 				DebugMsg(("main: fname=%s\n", fname));
 
 	lea	rdx, QWORD PTR fname$[rsp]
 	lea	rcx, OFFSET FLAT:$SG8044
 	call	DoDebugMsg
 
-; 126  : 				rc = AssembleModule(fname);  /* assemble 1 module */
+; 131  : 				rc = AssembleModule(fname);  /* assemble 1 module */
 
 	lea	rcx, QWORD PTR fname$[rsp]
 	call	AssembleModule
 	mov	DWORD PTR rc$[rsp], eax
 
-; 127  : 			} while ((_findnext(fh, &finfo) != -1));
+; 132  : 			} while ((_findnext(fh, &finfo) != -1));
 
+	movsxd	rax, DWORD PTR fh$[rsp]
 	lea	rdx, QWORD PTR finfo$[rsp]
-	mov	rcx, QWORD PTR fh$[rsp]
+	mov	rcx, rax
 	call	QWORD PTR __imp__findnext64i32
 	cmp	eax, -1
 	jne	SHORT $LN6@main
 
-; 128  : 		    _findclose(fh);
+; 133  : 		    _findclose(fh);
 
-	mov	rcx, QWORD PTR fh$[rsp]
+	movsxd	rax, DWORD PTR fh$[rsp]
+	mov	rcx, rax
 	call	QWORD PTR __imp__findclose
 
-; 129  : #else
-; 130  : 		rc = AssembleModule( Options.names[ASM] );
-; 131  : #endif
-; 132  : 	};
+; 134  : #else
+; 135  : 		rc = AssembleModule( Options.names[ASM] );
+; 136  : #endif
+; 137  : 	};
 
 	jmp	$LN2@main
 $LN3@main:
 
-; 133  : 	CmdlineFini();
+; 138  : 	CmdlineFini();
 
 	call	CmdlineFini
 
-; 134  : 	if (numArgs == 0) {
+; 139  : 	if (numArgs == 0) {
 
 	cmp	DWORD PTR numArgs$[rsp], 0
 	jne	SHORT $LN9@main
 
-; 135  : 		write_logo();
+; 140  : 		write_logo();
 
 	call	write_logo
 
-; 136  : 		printf("%s", MsgGetEx(MSG_USAGE));
+; 141  : 		printf("%s", MsgGetEx(MSG_USAGE));
 
 	xor	ecx, ecx
 	call	MsgGetEx
@@ -441,29 +448,29 @@ $LN3@main:
 	lea	rcx, OFFSET FLAT:$SG8047
 	call	printf
 
-; 137  : 	}
+; 142  : 	}
 
 	jmp	SHORT $LN10@main
 $LN9@main:
 
-; 138  : 	else if (numFiles == 0)
+; 143  : 	else if (numFiles == 0)
 
 	cmp	DWORD PTR numFiles$[rsp], 0
 	jne	SHORT $LN11@main
 
-; 139  : 		EmitError(NO_FILENAME_SPECIFIED);
+; 144  : 		EmitError(NO_FILENAME_SPECIFIED);
 
 	mov	ecx, 104				; 00000068H
 	call	EmitError
 $LN11@main:
 $LN10@main:
 
-; 140  : 
-; 141  : #ifdef TRMEM
-; 142  : 	tm_Fini();
-; 143  : #endif
-; 144  : 
-; 145  : 	DebugMsg(("main: exit, return code=%u\n", 1 - rc));
+; 145  : 
+; 146  : #ifdef TRMEM
+; 147  : 	tm_Fini();
+; 148  : #endif
+; 149  : 
+; 150  : 	DebugMsg(("main: exit, return code=%u\n", 1 - rc));
 
 	mov	eax, 1
 	sub	eax, DWORD PTR rc$[rsp]
@@ -471,12 +478,12 @@ $LN10@main:
 	lea	rcx, OFFSET FLAT:$SG8049
 	call	DoDebugMsg
 
-; 146  : 	return(1 - rc); /* zero if no errors */
+; 151  : 	return(1 - rc); /* zero if no errors */
 
 	mov	eax, 1
 	sub	eax, DWORD PTR rc$[rsp]
 
-; 147  : }
+; 152  : }
 
 	mov	edi, eax
 	mov	rcx, rsp
@@ -486,7 +493,7 @@ $LN10@main:
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 768				; 00000300H
+	add	rsp, 752				; 000002f0H
 	pop	rdi
 	ret	0
 main	ENDP
