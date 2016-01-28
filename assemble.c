@@ -236,6 +236,7 @@ void OutputByte( unsigned char byte )
 /* Added 2.14: to accelerate bulk writing of incbin data */
 void OutputBinBytes(unsigned char* pBytes, uint_32 len)
 {
+	int i;
 
 	if (write_to_file == TRUE) {
 		uint_32 idx = CurrSeg->e.seginfo->current_loc - CurrSeg->e.seginfo->start_loc;
@@ -250,7 +251,6 @@ void OutputBinBytes(unsigned char* pBytes, uint_32 len)
 			idx = CurrSeg->e.seginfo->current_loc - CurrSeg->e.seginfo->start_loc;
 		}
 		//DebugMsg(("OutputByte: buff=%p, idx=%" I32_SPEC "X, byte=%X, codebuff[0]=%X\n", CurrSeg->e.seginfo->CodeBuffer, idx, byte, *CurrSeg->e.seginfo->CodeBuffer ));
-		int i;
 		for (i = 0; i < len; i++)
 		{
 			CurrSeg->e.seginfo->CodeBuffer[idx++] = *(pBytes++);

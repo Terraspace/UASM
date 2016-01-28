@@ -982,9 +982,9 @@ static ret_code ForInitAndNext(struct asm_tok tokenarray[], int cnt, char *buff)
       //is operator devision, multiplication or mod
       if (op[0] == '/' || op[0] == '*' || op[0] == '%') {
         Tokenize(param, 0, tokenarray, 0);
-        if (strcmpi(param, reax) && strcmpi(init, reax)){ //param not rax init not rax?    
+        if (strcasecmp(param, reax) && strcasecmp(init, reax)){ //param not rax init not rax?    
           if (tokenarray[0].token == T_REG){			//is param register              
-            if (strcmpi(param, recx)){				//make sure that param is not rcx
+            if (strcasecmp(param, recx)){				//make sure that param is not rcx
               WriteAsmLine(" mov  ", reax, param);				// MOV RAX,param
             }						if (op[0] == '/' || op[0] == '%'){
               strcpy(codebuff, " cdq ");			//extend to RDX if division	
@@ -1033,7 +1033,7 @@ static ret_code ForInitAndNext(struct asm_tok tokenarray[], int cnt, char *buff)
           }
         }
         // if param is not RAX and init is RCX
-        else if ((strcmpi(param, reax) && !(strcmpi(init, recx)))){
+        else if ((strcasecmp(param, reax) && !(strcasecmp(init, recx)))){
           if (op[0] == '/' || op[0] == '%'){
             strcpy(codebuff, " cdq ");
             AddLineQueue(codebuff);
@@ -1046,7 +1046,7 @@ static ret_code ForInitAndNext(struct asm_tok tokenarray[], int cnt, char *buff)
           goto skip;
         }
         // if param is RAX and init is RCX
-        else if ((!(strcmpi(param, reax)) && (!(strcmp(init, recx))))){
+        else if ((!(strcasecmp(param, reax)) && (!(strcmp(init, recx))))){
           if (op[0] == '/' || op[0] == '%'){
             strcpy(codebuff, " cdq ");
             AddLineQueue(codebuff);
@@ -1059,7 +1059,7 @@ static ret_code ForInitAndNext(struct asm_tok tokenarray[], int cnt, char *buff)
           goto skip;
         }
         // if param is RAX and init is not RCX
-        else if (!(strcmpi(param, reax) && (strcmpi(init, recx)))){
+        else if (!(strcasecmp(param, reax) && (strcasecmp(init, recx)))){
           WriteAsmLine(" mov  ", recx, init);        //MOV RCX,init
           if (op[0] == '/' || op[0] == '%'){
             strcpy(codebuff, " cdq ");

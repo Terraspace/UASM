@@ -314,7 +314,7 @@ $SG11262 DB	' movq %r, %s', 00H
 _DATA	ENDS
 PUBLIC	InvokeDirective
 EXTRN	strchr:PROC
-EXTRN	strcmpi:PROC
+EXTRN	_stricmp:PROC
 EXTRN	EmitErr:PROC
 EXTRN	EmitWarn:PROC
 EXTRN	SymFind:PROC
@@ -547,7 +547,7 @@ namepos$1$ = 272
 parmpos$1$ = 280
 InvokeDirective PROC
 
-; 1440 : {
+; 1439 : {
 
 $LN131:
 	push	rbp
@@ -557,37 +557,37 @@ $LN131:
 	lea	rbp, QWORD PTR [rsp-63]
 	sub	rsp, 216				; 000000d8H
 
-; 1441 :     struct asym    *sym;
-; 1442 :     struct dsym    *proc;
-; 1443 :     char           *p;
-; 1444 :     //char         *param;
-; 1445 :     int            numParam;
-; 1446 :     int            value;
-; 1447 :     int            size;
-; 1448 :     int            parmpos;
-; 1449 :     int            namepos;
-; 1450 :     int            porder;
-; 1451 :     uint_8         r0flags = 0;
-; 1452 :     //bool           uselabel = FALSE;
-; 1453 :     struct proc_info *info;
-; 1454 :     struct dsym    *curr;
-; 1455 :     struct expr    opnd;
-; 1456 :     //char           buffer[MAX_LINE_LEN];
-; 1457 : 
-; 1458 :     DebugMsg1(("InvokeDir(%s) enter\n", tokenarray[i].tokpos ));
-; 1459 : 
-; 1460 :     i++; /* skip INVOKE directive */
+; 1440 :     struct asym    *sym;
+; 1441 :     struct dsym    *proc;
+; 1442 :     char           *p;
+; 1443 :     //char         *param;
+; 1444 :     int            numParam;
+; 1445 :     int            value;
+; 1446 :     int            size;
+; 1447 :     int            parmpos;
+; 1448 :     int            namepos;
+; 1449 :     int            porder;
+; 1450 :     uint_8         r0flags = 0;
+; 1451 :     //bool           uselabel = FALSE;
+; 1452 :     struct proc_info *info;
+; 1453 :     struct dsym    *curr;
+; 1454 :     struct expr    opnd;
+; 1455 :     //char           buffer[MAX_LINE_LEN];
+; 1456 : 
+; 1457 :     DebugMsg1(("InvokeDir(%s) enter\n", tokenarray[i].tokpos ));
+; 1458 : 
+; 1459 :     i++; /* skip INVOKE directive */
 
 	lea	eax, DWORD PTR [rcx+1]
 	mov	BYTE PTR r0flags$[rbp-153], 0
 	mov	DWORD PTR i$[rbp-153], eax
 
-; 1461 :     namepos = i;
-; 1462 : 
-; 1463 :     /* if there is more than just an ID item describing the invoke target,
-; 1464 :      use the expression evaluator to get it
-; 1465 :      */
-; 1466 :     if ( tokenarray[i].token != T_ID || ( tokenarray[i+1].token != T_COMMA && tokenarray[i+1].token != T_FINAL ) ) {
+; 1460 :     namepos = i;
+; 1461 : 
+; 1462 :     /* if there is more than just an ID item describing the invoke target,
+; 1463 :      use the expression evaluator to get it
+; 1464 :      */
+; 1465 :     if ( tokenarray[i].token != T_ID || ( tokenarray[i+1].token != T_COMMA && tokenarray[i+1].token != T_FINAL ) ) {
 
 	lea	rbx, OFFSET FLAT:__ImageBase
 	mov	DWORD PTR namepos$1$[rbp-153], eax
@@ -603,26 +603,26 @@ $LN131:
 	jne	SHORT $LN21@InvokeDire
 $LN19@InvokeDire:
 
-; 1500 : 
-; 1501 :     } else {
-; 1502 :         opnd.base_reg = NULL;
+; 1499 : 
+; 1500 :     } else {
+; 1501 :         opnd.base_reg = NULL;
 
 	mov	QWORD PTR opnd$[rbp-129], 0
 
-; 1503 :         sym = SymSearch( tokenarray[i].string_ptr );
+; 1502 :         sym = SymSearch( tokenarray[i].string_ptr );
 
 	mov	rcx, QWORD PTR [rax+rdx+8]
 	call	SymFind
 
-; 1504 :         i++;
+; 1503 :         i++;
 
 	inc	DWORD PTR i$[rbp-153]
 	mov	rdi, rax
 	jmp	$LN27@InvokeDire
 $LN21@InvokeDire:
 
-; 1467 :     //if ( tokenarray[i+1].token != T_COMMA && tokenarray[i+1].token != T_FINAL ) {
-; 1468 :         if ( ERROR == EvalOperand( &i, tokenarray, Token_Count, &opnd, 0 ) )
+; 1466 :     //if ( tokenarray[i+1].token != T_COMMA && tokenarray[i+1].token != T_FINAL ) {
+; 1467 :         if ( ERROR == EvalOperand( &i, tokenarray, Token_Count, &opnd, 0 ) )
 
 	mov	r8d, DWORD PTR ModuleInfo+496
 	lea	r9, QWORD PTR opnd$[rbp-153]
@@ -632,11 +632,11 @@ $LN21@InvokeDire:
 	cmp	eax, -1
 	jne	SHORT $LN22@InvokeDire
 
-; 1469 :             return( ERROR );
+; 1468 :             return( ERROR );
 
 	or	rax, -1
 
-; 1677 : }
+; 1676 : }
 
 	add	rsp, 216				; 000000d8H
 	pop	r15
@@ -646,18 +646,18 @@ $LN21@InvokeDire:
 	ret	0
 $LN22@InvokeDire:
 
-; 1470 :         DebugMsg1(("InvokeDir: target is expression, kind=%u sym=%s mbr=%s type=%s memtype=%X ofssize=%u\n",
-; 1471 :                    opnd.kind,
-; 1472 :                    opnd.sym ? opnd.sym->name : "NULL",
-; 1473 :                    opnd.mbr ? opnd.mbr->name : "NULL",
-; 1474 :                    opnd.type ? opnd.type->name : "NULL",
-; 1475 :                    opnd.mem_type, opnd.Ofssize ));
-; 1476 : #if 1
-; 1477 :         /* a typecast with PTR? Since v1.95, this has highest priority */
-; 1478 :         //if (opnd.explicit == TRUE && opnd.type != NULL && opnd.type->state == SYM_TYPE ) {
-; 1479 :         /* v1.96: removed opnd.explicit!!! */
-; 1480 :         /* fixme: if opnd.type is set, opnd.type MUST have state SYM_TYPE */
-; 1481 :         if ( opnd.type != NULL && opnd.type->state == SYM_TYPE ) {
+; 1469 :         DebugMsg1(("InvokeDir: target is expression, kind=%u sym=%s mbr=%s type=%s memtype=%X ofssize=%u\n",
+; 1470 :                    opnd.kind,
+; 1471 :                    opnd.sym ? opnd.sym->name : "NULL",
+; 1472 :                    opnd.mbr ? opnd.mbr->name : "NULL",
+; 1473 :                    opnd.type ? opnd.type->name : "NULL",
+; 1474 :                    opnd.mem_type, opnd.Ofssize ));
+; 1475 : #if 1
+; 1476 :         /* a typecast with PTR? Since v1.95, this has highest priority */
+; 1477 :         //if (opnd.explicit == TRUE && opnd.type != NULL && opnd.type->state == SYM_TYPE ) {
+; 1478 :         /* v1.96: removed opnd.explicit!!! */
+; 1479 :         /* fixme: if opnd.type is set, opnd.type MUST have state SYM_TYPE */
+; 1480 :         if ( opnd.type != NULL && opnd.type->state == SYM_TYPE ) {
 
 	mov	rax, QWORD PTR opnd$[rbp-57]
 	test	rax, rax
@@ -665,33 +665,33 @@ $LN22@InvokeDire:
 	cmp	DWORD PTR [rax+32], 7
 	jne	SHORT $LN25@InvokeDire
 
-; 1482 :             sym = opnd.type;
-; 1483 :             DebugMsg1(("InvokeDirective: opnd.type=>%s< mem_type=%Xh\n", sym->name, sym->mem_type ));
-; 1484 :             proc = (struct dsym *)sym;
-; 1485 :             //if ( opnd.label_tok != NULL ) /* v2.09: uselabel obsolete */
-; 1486 :             //    uselabel = TRUE;
-; 1487 :             if ( sym->mem_type == MT_PROC ) /* added for v1.95 */
+; 1481 :             sym = opnd.type;
+; 1482 :             DebugMsg1(("InvokeDirective: opnd.type=>%s< mem_type=%Xh\n", sym->name, sym->mem_type ));
+; 1483 :             proc = (struct dsym *)sym;
+; 1484 :             //if ( opnd.label_tok != NULL ) /* v2.09: uselabel obsolete */
+; 1485 :             //    uselabel = TRUE;
+; 1486 :             if ( sym->mem_type == MT_PROC ) /* added for v1.95 */
 
 	mov	ecx, DWORD PTR [rax+36]
 	cmp	ecx, 128				; 00000080H
 	je	$isfnproto$132
 
-; 1488 :                 goto isfnproto;
-; 1489 :             if ( sym->mem_type == MT_PTR )  /* v2.09: mem_type must be MT_PTR */
+; 1487 :                 goto isfnproto;
+; 1488 :             if ( sym->mem_type == MT_PTR )  /* v2.09: mem_type must be MT_PTR */
 
 	cmp	ecx, 195				; 000000c3H
 	je	$isfnptr$133
 $LN25@InvokeDire:
 
-; 1490 :                 goto isfnptr;
-; 1491 :         }
-; 1492 : #endif
-; 1493 :         if ( opnd.kind == EXPR_REG ) {
+; 1489 :                 goto isfnptr;
+; 1490 :         }
+; 1491 : #endif
+; 1492 :         if ( opnd.kind == EXPR_REG ) {
 
 	cmp	DWORD PTR opnd$[rbp-93], 2
 	jne	SHORT $LN26@InvokeDire
 
-; 1494 :             if ( GetValueSp( opnd.base_reg->tokval ) & OP_RGT8 )
+; 1493 :             if ( GetValueSp( opnd.base_reg->tokval ) & OP_RGT8 )
 
 	mov	rax, QWORD PTR opnd$[rbp-129]
 	mov	ecx, DWORD PTR [rax+16]
@@ -699,7 +699,7 @@ $LN25@InvokeDire:
 	test	BYTE PTR SpecialTable[rbx+rax*4], 14
 	je	$LN98@InvokeDire
 
-; 1495 :                 sym = GetStdAssume( GetRegNo( opnd.base_reg->tokval ) );
+; 1494 :                 sym = GetStdAssume( GetRegNo( opnd.base_reg->tokval ) );
 
 	movzx	ecx, BYTE PTR SpecialTable[rbx+rax*4+10]
 	call	GetStdAssume
@@ -707,10 +707,10 @@ $LN25@InvokeDire:
 	jmp	SHORT $LN27@InvokeDire
 $LN26@InvokeDire:
 
-; 1496 :             else
-; 1497 :                 sym = NULL;
-; 1498 :         } else
-; 1499 :             sym = ( opnd.mbr ? opnd.mbr : opnd.sym );
+; 1495 :             else
+; 1496 :                 sym = NULL;
+; 1497 :         } else
+; 1498 :             sym = ( opnd.mbr ? opnd.mbr : opnd.sym );
 
 	mov	rax, QWORD PTR opnd$[rbp-65]
 	mov	rdi, QWORD PTR opnd$[rbp-73]
@@ -718,24 +718,24 @@ $LN26@InvokeDire:
 	cmovne	rdi, rax
 $LN27@InvokeDire:
 
-; 1505 :     }
-; 1506 : 
-; 1507 :     if( sym == NULL ) {
+; 1504 :     }
+; 1505 : 
+; 1506 :     if( sym == NULL ) {
 
 	test	rdi, rdi
 	je	$LN98@InvokeDire
 
-; 1508 :         /* v2.04: msg changed */
-; 1509 :         return( EmitErr( INVOKE_REQUIRES_PROTOTYPE ) );
-; 1510 :         //return( EmitErr( SYMBOL_NOT_DEFINED, name ) );
-; 1511 :     }
-; 1512 :     if( sym->isproc )  /* the most simple case: symbol is a PROC */
+; 1507 :         /* v2.04: msg changed */
+; 1508 :         return( EmitErr( INVOKE_REQUIRES_PROTOTYPE ) );
+; 1509 :         //return( EmitErr( SYMBOL_NOT_DEFINED, name ) );
+; 1510 :     }
+; 1511 :     if( sym->isproc )  /* the most simple case: symbol is a PROC */
 
 	test	BYTE PTR [rdi+41], 8
 	jne	SHORT $LN42@InvokeDire
 
-; 1513 :         ;
-; 1514 :     else if ( sym->mem_type == MT_PTR && sym->target_type && sym->target_type->isproc )
+; 1512 :         ;
+; 1513 :     else if ( sym->mem_type == MT_PTR && sym->target_type && sym->target_type->isproc )
 
 	mov	ecx, DWORD PTR [rdi+36]
 	cmp	ecx, 195				; 000000c3H
@@ -746,41 +746,41 @@ $LN27@InvokeDire:
 	test	BYTE PTR [rax+41], 8
 	je	SHORT $LN33@InvokeDire
 
-; 1515 :         sym = sym->target_type;
+; 1514 :         sym = sym->target_type;
 
 	mov	rdi, rax
 $LN42@InvokeDire:
 	mov	QWORD PTR [rsp+208], rsi
 
-; 1537 :         }
-; 1538 :     } else {
-; 1539 :         DebugMsg(("InvokeDir: error, sym=%s state=%u memtype=%Xh [type=%s memtype=%Xh]\n",
-; 1540 :                   sym->name, sym->state, sym->mem_type,
-; 1541 :                   sym->type ? sym->type->name : "NULL",
-; 1542 :                   sym->type ? sym->type->mem_type : 0));
-; 1543 : #ifdef DEBUG_OUT
-; 1544 :         if ( sym->mem_type == MT_PTR || sym->mem_type == MT_PROC )
-; 1545 :             DebugMsg(("InvokeDir: error, target_type=%s [memtype=%X pmemtype=%X isproc=%u])\n",
-; 1546 :                       sym->target_type->name,
-; 1547 :                       sym->target_type->mem_type,
-; 1548 :                       sym->target_type->ptr_memtype,
-; 1549 :                       sym->target_type->isproc ));
-; 1550 : #endif
-; 1551 :         return( EmitErr( INVOKE_REQUIRES_PROTOTYPE ) );
-; 1552 :     }
-; 1553 :     proc = (struct dsym *)sym;
-; 1554 :     info = proc->e.procinfo;
-; 1555 : 
-; 1556 : #if 0 /* v2.05: can't happen anymore */
-; 1557 :     /* does FASTCALL variant support INVOKE? */
-; 1558 :     if ( proc->sym.langtype == LANG_FASTCALL && fastcall_tab[ModuleInfo.fctype].invokestart == NULL ) {
-; 1559 :         return( EmitError( FASTCALL_VARIANT_NOT_SUPPORTED ) );
-; 1560 :     }
-; 1561 : #endif
-; 1562 : 
-; 1563 :     /* get the number of parameters */
-; 1564 : 
-; 1565 :     for ( curr = info->paralist, numParam = 0 ; curr ; curr = curr->nextparam, numParam++ );
+; 1536 :         }
+; 1537 :     } else {
+; 1538 :         DebugMsg(("InvokeDir: error, sym=%s state=%u memtype=%Xh [type=%s memtype=%Xh]\n",
+; 1539 :                   sym->name, sym->state, sym->mem_type,
+; 1540 :                   sym->type ? sym->type->name : "NULL",
+; 1541 :                   sym->type ? sym->type->mem_type : 0));
+; 1542 : #ifdef DEBUG_OUT
+; 1543 :         if ( sym->mem_type == MT_PTR || sym->mem_type == MT_PROC )
+; 1544 :             DebugMsg(("InvokeDir: error, target_type=%s [memtype=%X pmemtype=%X isproc=%u])\n",
+; 1545 :                       sym->target_type->name,
+; 1546 :                       sym->target_type->mem_type,
+; 1547 :                       sym->target_type->ptr_memtype,
+; 1548 :                       sym->target_type->isproc ));
+; 1549 : #endif
+; 1550 :         return( EmitErr( INVOKE_REQUIRES_PROTOTYPE ) );
+; 1551 :     }
+; 1552 :     proc = (struct dsym *)sym;
+; 1553 :     info = proc->e.procinfo;
+; 1554 : 
+; 1555 : #if 0 /* v2.05: can't happen anymore */
+; 1556 :     /* does FASTCALL variant support INVOKE? */
+; 1557 :     if ( proc->sym.langtype == LANG_FASTCALL && fastcall_tab[ModuleInfo.fctype].invokestart == NULL ) {
+; 1558 :         return( EmitError( FASTCALL_VARIANT_NOT_SUPPORTED ) );
+; 1559 :     }
+; 1560 : #endif
+; 1561 : 
+; 1562 :     /* get the number of parameters */
+; 1563 : 
+; 1564 :     for ( curr = info->paralist, numParam = 0 ; curr ; curr = curr->nextparam, numParam++ );
 
 	xor	esi, esi
 	mov	QWORD PTR [rsp+192], r13
@@ -796,16 +796,16 @@ $LL4@InvokeDire:
 	jne	SHORT $LL4@InvokeDire
 $LN3@InvokeDire:
 
-; 1566 :     DebugMsg1(("InvokeDir: numparams=%u\n", numParam ));
-; 1567 : 
-; 1568 :     if ( proc->sym.langtype == LANG_FASTCALL ) {
+; 1565 :     DebugMsg1(("InvokeDir: numparams=%u\n", numParam ));
+; 1566 : 
+; 1567 :     if ( proc->sym.langtype == LANG_FASTCALL ) {
 
 	cmp	DWORD PTR [rdi+76], 7
 	mov	QWORD PTR [rsp+200], r12
 	jne	$LN104@InvokeDire
 
-; 1569 :         fcscratch = 0;
-; 1570 :         porder = fastcall_tab[ModuleInfo.fctype].invokestart( proc, numParam, i, tokenarray, &value );
+; 1568 :         fcscratch = 0;
+; 1569 :         porder = fastcall_tab[ModuleInfo.fctype].invokestart( proc, numParam, i, tokenarray, &value );
 
 	movsxd	rax, DWORD PTR ModuleInfo+376
 	mov	r9, r15
@@ -821,7 +821,7 @@ $LN3@InvokeDire:
 	jmp	SHORT $LN43@InvokeDire
 $LN33@InvokeDire:
 
-; 1516 :     else if ( sym->mem_type == MT_PTR && sym->target_type && sym->target_type->mem_type == MT_PROC ) {
+; 1515 :     else if ( sym->mem_type == MT_PTR && sym->target_type && sym->target_type->mem_type == MT_PROC ) {
 
 	cmp	ecx, 195				; 000000c3H
 	jne	SHORT $LN35@InvokeDire
@@ -832,9 +832,9 @@ $LN33@InvokeDire:
 	je	SHORT $isfnptr$133
 $LN35@InvokeDire:
 
-; 1517 :         proc = (struct dsym *)sym->target_type;
-; 1518 :         goto isfnproto;
-; 1519 :     } else if ( ( sym->mem_type == MT_TYPE ) && ( sym->type->mem_type == MT_PTR || sym->type->mem_type == MT_PROC ) ) {
+; 1516 :         proc = (struct dsym *)sym->target_type;
+; 1517 :         goto isfnproto;
+; 1518 :     } else if ( ( sym->mem_type == MT_TYPE ) && ( sym->type->mem_type == MT_PTR || sym->type->mem_type == MT_PROC ) ) {
 
 	cmp	ecx, 196				; 000000c4H
 	jne	SHORT $LN98@InvokeDire
@@ -846,46 +846,46 @@ $LN35@InvokeDire:
 	jne	SHORT $LN98@InvokeDire
 $LN39@InvokeDire:
 
-; 1520 :         /* second case: symbol is a (function?) pointer */
-; 1521 :         proc = (struct dsym *)sym->type;
-; 1522 :         if ( proc->sym.mem_type != MT_PROC )
+; 1519 :         /* second case: symbol is a (function?) pointer */
+; 1520 :         proc = (struct dsym *)sym->type;
+; 1521 :         if ( proc->sym.mem_type != MT_PROC )
 
 	cmp	ecx, 128				; 00000080H
 	jne	SHORT $isfnptr$133
 $isfnproto$132:
 
-; 1523 :             goto isfnptr;
-; 1524 :     isfnproto:
-; 1525 :         /* pointer target must be a PROTO typedef */
-; 1526 :         if ( proc->sym.mem_type != MT_PROC ) {
+; 1522 :             goto isfnptr;
+; 1523 :     isfnproto:
+; 1524 :         /* pointer target must be a PROTO typedef */
+; 1525 :         if ( proc->sym.mem_type != MT_PROC ) {
 
 	cmp	DWORD PTR [rax+36], 128			; 00000080H
 	jne	SHORT $LN98@InvokeDire
 $isfnptr$133:
 
-; 1527 :             DebugMsg(("InvokeDir: error proc.name=>%s< .mem_type=%Xh\n", proc->sym.name, proc->sym.mem_type ));
-; 1528 :             DebugMsg(("InvokeDir: error sym.name=%s\n", sym ? sym->name : "" ));
-; 1529 :             return( EmitErr( INVOKE_REQUIRES_PROTOTYPE ) );
-; 1530 :         }
-; 1531 :     isfnptr:
-; 1532 :         /* get the pointer target */
-; 1533 :         sym = proc->sym.target_type;
+; 1526 :             DebugMsg(("InvokeDir: error proc.name=>%s< .mem_type=%Xh\n", proc->sym.name, proc->sym.mem_type ));
+; 1527 :             DebugMsg(("InvokeDir: error sym.name=%s\n", sym ? sym->name : "" ));
+; 1528 :             return( EmitErr( INVOKE_REQUIRES_PROTOTYPE ) );
+; 1529 :         }
+; 1530 :     isfnptr:
+; 1531 :         /* get the pointer target */
+; 1532 :         sym = proc->sym.target_type;
 
 	mov	rdi, QWORD PTR [rax+48]
 
-; 1534 :         DebugMsg1(("InvokeDir: proc=%s target_type=>%s<\n", proc->sym.name, sym ? sym->name : "NULL" ));
-; 1535 :         if ( sym == NULL ) {
+; 1533 :         DebugMsg1(("InvokeDir: proc=%s target_type=>%s<\n", proc->sym.name, sym ? sym->name : "NULL" ));
+; 1534 :         if ( sym == NULL ) {
 
 	test	rdi, rdi
 	jne	$LN42@InvokeDire
 $LN98@InvokeDire:
 
-; 1536 :             return( EmitErr( INVOKE_REQUIRES_PROTOTYPE ) );
+; 1535 :             return( EmitErr( INVOKE_REQUIRES_PROTOTYPE ) );
 
 	mov	ecx, 159				; 0000009fH
 	call	EmitErr
 
-; 1677 : }
+; 1676 : }
 
 	add	rsp, 216				; 000000d8H
 	pop	r15
@@ -895,18 +895,18 @@ $LN98@InvokeDire:
 	ret	0
 $LN104@InvokeDire:
 
-; 1569 :         fcscratch = 0;
-; 1570 :         porder = fastcall_tab[ModuleInfo.fctype].invokestart( proc, numParam, i, tokenarray, &value );
+; 1568 :         fcscratch = 0;
+; 1569 :         porder = fastcall_tab[ModuleInfo.fctype].invokestart( proc, numParam, i, tokenarray, &value );
 
 	mov	r12d, DWORD PTR porder$[rbp-153]
 $LN43@InvokeDire:
 
-; 1571 :     }
-; 1572 : 
-; 1573 :     curr = info->paralist;
-; 1574 :     parmpos = i;
-; 1575 : 
-; 1576 :     if ( !( info->has_vararg ) ) {
+; 1570 :     }
+; 1571 : 
+; 1572 :     curr = info->paralist;
+; 1573 :     parmpos = i;
+; 1574 : 
+; 1575 :     if ( !( info->has_vararg ) ) {
 
 	test	BYTE PTR [r13+84], 1
 	mov	eax, DWORD PTR i$[rbp-153]
@@ -915,8 +915,8 @@ $LN43@InvokeDire:
 	mov	QWORD PTR [rsp+184], r14
 	jne	SHORT $LN44@InvokeDire
 
-; 1577 :         /* check if there is a superfluous parameter in the INVOKE call */
-; 1578 :         if ( PushInvokeParam( i, tokenarray, proc, NULL, numParam, &r0flags ) != ERROR ) {
+; 1576 :         /* check if there is a superfluous parameter in the INVOKE call */
+; 1577 :         if ( PushInvokeParam( i, tokenarray, proc, NULL, numParam, &r0flags ) != ERROR ) {
 
 	lea	rcx, QWORD PTR r0flags$[rbp-153]
 	xor	r9d, r9d
@@ -929,37 +929,37 @@ $LN43@InvokeDire:
 	cmp	eax, -1
 	je	$LN121@InvokeDire
 
-; 1579 :             DebugMsg(("InvokeDir: superfluous argument, i=%u\n", i));
-; 1580 :             return( EmitErr( TOO_MANY_ARGUMENTS_TO_INVOKE ) );
+; 1578 :             DebugMsg(("InvokeDir: superfluous argument, i=%u\n", i));
+; 1579 :             return( EmitErr( TOO_MANY_ARGUMENTS_TO_INVOKE ) );
 
 	mov	ecx, 177				; 000000b1H
 	call	EmitErr
 	jmp	$LN127@InvokeDire
 $LN44@InvokeDire:
 
-; 1581 :         }
-; 1582 :     } else {
-; 1583 :         int j = (Token_Count - i) / 2;
+; 1580 :         }
+; 1581 :     } else {
+; 1582 :         int j = (Token_Count - i) / 2;
 
 	mov	eax, DWORD PTR ModuleInfo+496
 
-; 1584 :         /* for VARARG procs, just push the additional params with
-; 1585 :          the VARARG descriptor
-; 1586 :         */
-; 1587 :         numParam--;
+; 1583 :         /* for VARARG procs, just push the additional params with
+; 1584 :          the VARARG descriptor
+; 1585 :         */
+; 1586 :         numParam--;
 
 	dec	esi
 	sub	eax, DWORD PTR i$[rbp-153]
 	cdq
 
-; 1588 :         size_vararg = 0; /* reset the VARARG parameter size count */
+; 1587 :         size_vararg = 0; /* reset the VARARG parameter size count */
 
 	mov	DWORD PTR size_vararg, 0
 	sub	eax, edx
 	sar	eax, 1
 	mov	r14d, eax
 
-; 1589 :         while ( curr && curr->sym.is_vararg == FALSE ) curr = curr->nextparam;
+; 1588 :         while ( curr && curr->sym.is_vararg == FALSE ) curr = curr->nextparam;
 
 	test	rbx, rbx
 	je	SHORT $LN120@InvokeDire
@@ -971,15 +971,15 @@ $LL5@InvokeDire:
 	jne	SHORT $LL5@InvokeDire
 $LN120@InvokeDire:
 
-; 1590 :         DebugMsg1(("InvokeDir: VARARG proc, numparams=%u, actual (max) params=%u, parasize=%u\n", numParam, j, info->parasize));
-; 1591 :         for ( ; j >= numParam; j-- )
+; 1589 :         DebugMsg1(("InvokeDir: VARARG proc, numparams=%u, actual (max) params=%u, parasize=%u\n", numParam, j, info->parasize));
+; 1590 :         for ( ; j >= numParam; j-- )
 
 	cmp	eax, esi
 	jl	SHORT $LN117@InvokeDire
 	npad	7
 $LL9@InvokeDire:
 
-; 1592 :             PushInvokeParam( i, tokenarray, proc, curr, j, &r0flags );
+; 1591 :             PushInvokeParam( i, tokenarray, proc, curr, j, &r0flags );
 
 	mov	ecx, DWORD PTR i$[rbp-153]
 	lea	rax, QWORD PTR r0flags$[rbp-153]
@@ -994,8 +994,8 @@ $LL9@InvokeDire:
 	jge	SHORT $LL9@InvokeDire
 $LN117@InvokeDire:
 
-; 1593 :         /* move to first non-vararg parameter, if any */
-; 1594 :         for ( curr = info->paralist; curr && curr->sym.is_vararg == TRUE; curr = curr->nextparam );
+; 1592 :         /* move to first non-vararg parameter, if any */
+; 1593 :         for ( curr = info->paralist; curr && curr->sym.is_vararg == TRUE; curr = curr->nextparam );
 
 	mov	rbx, QWORD PTR [r13+8]
 	test	rbx, rbx
@@ -1008,15 +1008,15 @@ $LL12@InvokeDire:
 	jne	SHORT $LL12@InvokeDire
 $LN121@InvokeDire:
 
-; 1595 :     }
-; 1596 : 
-; 1597 :     /* the parameters are usually stored in "push" order.
-; 1598 :      * This if() must match the one in proc.c, ParseParams().
-; 1599 :      */
-; 1600 : 
-; 1601 :     if ( sym->langtype == LANG_STDCALL ||
-; 1602 :         sym->langtype == LANG_C ||
-; 1603 :         ( sym->langtype == LANG_FASTCALL && porder ) ||
+; 1594 :     }
+; 1595 : 
+; 1596 :     /* the parameters are usually stored in "push" order.
+; 1597 :      * This if() must match the one in proc.c, ParseParams().
+; 1598 :      */
+; 1599 : 
+; 1600 :     if ( sym->langtype == LANG_STDCALL ||
+; 1601 :         sym->langtype == LANG_C ||
+; 1602 :         ( sym->langtype == LANG_FASTCALL && porder ) ||
 
 	mov	ecx, DWORD PTR [rdi+76]
 	lea	eax, DWORD PTR [rcx-1]
@@ -1030,10 +1030,10 @@ $LN50@InvokeDire:
 	cmp	ecx, 2
 	je	SHORT $LN49@InvokeDire
 
-; 1610 :             }
-; 1611 :         }
-; 1612 :     } else {
-; 1613 :         for ( numParam = 0 ; curr && curr->sym.is_vararg == FALSE; curr = curr->nextparam, numParam++ ) {
+; 1609 :             }
+; 1610 :         }
+; 1611 :     } else {
+; 1612 :         for ( numParam = 0 ; curr && curr->sym.is_vararg == FALSE; curr = curr->nextparam, numParam++ ) {
 
 	xor	esi, esi
 	test	rbx, rbx
@@ -1042,7 +1042,7 @@ $LL18@InvokeDire:
 	test	BYTE PTR [rbx+47], 32			; 00000020H
 	jne	$LN119@InvokeDire
 
-; 1614 :             if ( PushInvokeParam( i, tokenarray, proc, curr, numParam, &r0flags ) == ERROR ) {
+; 1613 :             if ( PushInvokeParam( i, tokenarray, proc, curr, numParam, &r0flags ) == ERROR ) {
 
 	mov	ecx, DWORD PTR i$[rbp-153]
 	lea	rax, QWORD PTR r0flags$[rbp-153]
@@ -1055,44 +1055,44 @@ $LL18@InvokeDire:
 	cmp	eax, -1
 	jne	SHORT $LN16@InvokeDire
 
-; 1615 :                 DebugMsg(("InvokeDir: PushInvokeParam(curr=%u, i=%u, numParam=%u) failed\n", curr, i, numParam));
-; 1616 :                 EmitErr( TOO_FEW_ARGUMENTS_TO_INVOKE, sym->name );
+; 1614 :                 DebugMsg(("InvokeDir: PushInvokeParam(curr=%u, i=%u, numParam=%u) failed\n", curr, i, numParam));
+; 1615 :                 EmitErr( TOO_FEW_ARGUMENTS_TO_INVOKE, sym->name );
 
 	mov	rdx, QWORD PTR [rdi+8]
 	mov	ecx, 146				; 00000092H
 	call	EmitErr
 $LN16@InvokeDire:
 
-; 1610 :             }
-; 1611 :         }
-; 1612 :     } else {
-; 1613 :         for ( numParam = 0 ; curr && curr->sym.is_vararg == FALSE; curr = curr->nextparam, numParam++ ) {
+; 1609 :             }
+; 1610 :         }
+; 1611 :     } else {
+; 1612 :         for ( numParam = 0 ; curr && curr->sym.is_vararg == FALSE; curr = curr->nextparam, numParam++ ) {
 
 	mov	rbx, QWORD PTR [rbx+112]
 	inc	esi
 	test	rbx, rbx
 	jne	SHORT $LL18@InvokeDire
 
-; 1461 :     namepos = i;
-; 1462 : 
-; 1463 :     /* if there is more than just an ID item describing the invoke target,
-; 1464 :      use the expression evaluator to get it
-; 1465 :      */
-; 1466 :     if ( tokenarray[i].token != T_ID || ( tokenarray[i+1].token != T_COMMA && tokenarray[i+1].token != T_FINAL ) ) {
+; 1460 :     namepos = i;
+; 1461 : 
+; 1462 :     /* if there is more than just an ID item describing the invoke target,
+; 1463 :      use the expression evaluator to get it
+; 1464 :      */
+; 1465 :     if ( tokenarray[i].token != T_ID || ( tokenarray[i+1].token != T_COMMA && tokenarray[i+1].token != T_FINAL ) ) {
 
 	jmp	SHORT $LN119@InvokeDire
 $LN49@InvokeDire:
 
-; 1604 :         sym->langtype == LANG_SYSCALL ) {
-; 1605 :         for ( ; curr ; curr = curr->nextparam ) {
+; 1603 :         sym->langtype == LANG_SYSCALL ) {
+; 1604 :         for ( ; curr ; curr = curr->nextparam ) {
 
 	test	rbx, rbx
 	je	SHORT $LN119@InvokeDire
 	npad	13
 $LL15@InvokeDire:
 
-; 1606 :             numParam--;
-; 1607 :             if ( PushInvokeParam( i, tokenarray, proc, curr, numParam, &r0flags ) == ERROR ) {
+; 1605 :             numParam--;
+; 1606 :             if ( PushInvokeParam( i, tokenarray, proc, curr, numParam, &r0flags ) == ERROR ) {
 
 	mov	ecx, DWORD PTR i$[rbp-153]
 	lea	rax, QWORD PTR r0flags$[rbp-153]
@@ -1106,30 +1106,30 @@ $LL15@InvokeDire:
 	cmp	eax, -1
 	jne	SHORT $LN13@InvokeDire
 
-; 1608 :                 DebugMsg(("InvokeDir: PushInvokeParam(curr=%u, i=%u, numParam=%u) failed\n", curr, i, numParam));
-; 1609 :                 EmitErr( TOO_FEW_ARGUMENTS_TO_INVOKE, sym->name );
+; 1607 :                 DebugMsg(("InvokeDir: PushInvokeParam(curr=%u, i=%u, numParam=%u) failed\n", curr, i, numParam));
+; 1608 :                 EmitErr( TOO_FEW_ARGUMENTS_TO_INVOKE, sym->name );
 
 	mov	rdx, QWORD PTR [rdi+8]
 	mov	ecx, 146				; 00000092H
 	call	EmitErr
 $LN13@InvokeDire:
 
-; 1604 :         sym->langtype == LANG_SYSCALL ) {
-; 1605 :         for ( ; curr ; curr = curr->nextparam ) {
+; 1603 :         sym->langtype == LANG_SYSCALL ) {
+; 1604 :         for ( ; curr ; curr = curr->nextparam ) {
 
 	mov	rbx, QWORD PTR [rbx+112]
 	test	rbx, rbx
 	jne	SHORT $LL15@InvokeDire
 $LN119@InvokeDire:
 
-; 1617 :             }
-; 1618 :         }
-; 1619 :     }
-; 1620 : #if 1
-; 1621 :     /* v2.05 added. A warning only, because Masm accepts this. */
-; 1622 :     if ( opnd.base_reg != NULL &&
-; 1623 :         Parse_Pass == PASS_1 &&
-; 1624 :         (r0flags & R0_USED ) &&
+; 1616 :             }
+; 1617 :         }
+; 1618 :     }
+; 1619 : #if 1
+; 1620 :     /* v2.05 added. A warning only, because Masm accepts this. */
+; 1621 :     if ( opnd.base_reg != NULL &&
+; 1622 :         Parse_Pass == PASS_1 &&
+; 1623 :         (r0flags & R0_USED ) &&
 
 	mov	rax, QWORD PTR opnd$[rbp-129]
 	test	rax, rax
@@ -1141,20 +1141,20 @@ $LN119@InvokeDire:
 	cmp	BYTE PTR [rax+1], 0
 	jne	SHORT $LN53@InvokeDire
 
-; 1625 :         opnd.base_reg->bytval == 0 )
-; 1626 :         EmitWarn( 2, REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
+; 1624 :         opnd.base_reg->bytval == 0 )
+; 1625 :         EmitWarn( 2, REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
 
 	mov	edx, 165				; 000000a5H
 	mov	ecx, 2
 	call	EmitWarn
 $LN53@InvokeDire:
 
-; 1627 : #endif
-; 1628 :     p = StringBufferEnd;
+; 1626 : #endif
+; 1627 :     p = StringBufferEnd;
 
 	mov	r14, QWORD PTR ModuleInfo+488
 
-; 1629 :     strcpy( p, " call " );
+; 1628 :     strcpy( p, " call " );
 
 	lea	rcx, OFFSET FLAT:$SG11913
 	mov	rdx, r14
@@ -1167,25 +1167,25 @@ $LL66@InvokeDire:
 	test	al, al
 	jne	SHORT $LL66@InvokeDire
 
-; 1630 :     p += 6;
+; 1629 :     p += 6;
 
 	add	r14, 6
 
-; 1631 :     /* v2.09: 'uselabel' obsolete */
-; 1632 :     //if ( uselabel ) {
-; 1633 :     //    DebugMsg1(("InvokeDir: opnd.label_tok is used: %s\n", opnd.label_tok->string_ptr ));
-; 1634 :     //    strcpy( p, opnd.label_tok->string_ptr );
-; 1635 :     //} else {
-; 1636 : #if DLLIMPORT
-; 1637 :         if ( sym->state == SYM_EXTERNAL && sym->dll ) {
+; 1630 :     /* v2.09: 'uselabel' obsolete */
+; 1631 :     //if ( uselabel ) {
+; 1632 :     //    DebugMsg1(("InvokeDir: opnd.label_tok is used: %s\n", opnd.label_tok->string_ptr ));
+; 1633 :     //    strcpy( p, opnd.label_tok->string_ptr );
+; 1634 :     //} else {
+; 1635 : #if DLLIMPORT
+; 1636 :         if ( sym->state == SYM_EXTERNAL && sym->dll ) {
 
 	cmp	DWORD PTR [rdi+32], 2
 	jne	$LN123@InvokeDire
 	cmp	QWORD PTR [rdi+56], 0
 	je	$LN123@InvokeDire
 
-; 1638 :             char *iatname = p;
-; 1639 :             strcpy( p, ModuleInfo.g.imp_prefix );
+; 1637 :             char *iatname = p;
+; 1638 :             strcpy( p, ModuleInfo.g.imp_prefix );
 
 	mov	rcx, QWORD PTR ModuleInfo+88
 	mov	rbx, r14
@@ -1199,7 +1199,7 @@ $LL67@InvokeDire:
 	test	al, al
 	jne	SHORT $LL67@InvokeDire
 
-; 1640 :             p += strlen( p );
+; 1639 :             p += strlen( p );
 
 	or	rax, -1
 $LL101@InvokeDire:
@@ -1208,36 +1208,36 @@ $LL101@InvokeDire:
 	jne	SHORT $LL101@InvokeDire
 	add	r14, rax
 
-; 1641 :             p += Mangle( sym, p );
+; 1640 :             p += Mangle( sym, p );
 
 	mov	rcx, rdi
 	mov	rdx, r14
 	call	Mangle
 
-; 1642 :             namepos++;
+; 1641 :             namepos++;
 
 	mov	r12d, DWORD PTR namepos$1$[rbp-153]
 	movsxd	rcx, eax
 	inc	r12d
 
-; 1643 :             if ( sym->iat_used == FALSE ) {
+; 1642 :             if ( sym->iat_used == FALSE ) {
 
 	movzx	eax, BYTE PTR [rdi+40]
 	add	r14, rcx
 	test	al, 8
 	jne	SHORT $LN57@InvokeDire
 
-; 1644 :                 sym->iat_used = TRUE;
+; 1643 :                 sym->iat_used = TRUE;
 
 	or	al, 8
 	mov	BYTE PTR [rdi+40], al
 
-; 1645 :                 sym->dll->cnt++;
+; 1644 :                 sym->dll->cnt++;
 
 	mov	rax, QWORD PTR [rdi+56]
 	inc	DWORD PTR [rax+8]
 
-; 1646 :                 if ( sym->langtype != LANG_NONE && sym->langtype != ModuleInfo.langtype )
+; 1645 :                 if ( sym->langtype != LANG_NONE && sym->langtype != ModuleInfo.langtype )
 
 	mov	edx, DWORD PTR [rdi+76]
 	test	edx, edx
@@ -1245,7 +1245,7 @@ $LL101@InvokeDire:
 	cmp	edx, DWORD PTR ModuleInfo+364
 	je	SHORT $LN56@InvokeDire
 
-; 1647 :                     AddLineQueueX( " externdef %r %s: %r %r", sym->langtype + T_C - 1, iatname, T_PTR, T_PROC );
+; 1646 :                     AddLineQueueX( " externdef %r %s: %r %r", sym->langtype + T_C - 1, iatname, T_PTR, T_PROC );
 
 	add	edx, 263				; 00000107H
 	mov	DWORD PTR [rsp+32], 428			; 000001acH
@@ -1256,8 +1256,8 @@ $LL101@InvokeDire:
 	jmp	SHORT $LN57@InvokeDire
 $LN56@InvokeDire:
 
-; 1648 :                 else
-; 1649 :                     AddLineQueueX( " externdef %s: %r %r", iatname, T_PTR, T_PROC );
+; 1647 :                 else
+; 1648 :                     AddLineQueueX( " externdef %s: %r %r", iatname, T_PTR, T_PROC );
 
 	mov	r9d, 428				; 000001acH
 	lea	rcx, OFFSET FLAT:$SG11919
@@ -1269,10 +1269,10 @@ $LN123@InvokeDire:
 	mov	r12d, DWORD PTR namepos$1$[rbp-153]
 $LN57@InvokeDire:
 
-; 1650 :             }
-; 1651 :         }
-; 1652 : #endif
-; 1653 :         size = tokenarray[parmpos].tokpos - tokenarray[namepos].tokpos;
+; 1649 :             }
+; 1650 :         }
+; 1651 : #endif
+; 1652 :         size = tokenarray[parmpos].tokpos - tokenarray[namepos].tokpos;
 
 	movsxd	rax, DWORD PTR parmpos$1$[rbp-153]
 	shl	rax, 5
@@ -1281,7 +1281,7 @@ $LN57@InvokeDire:
 	mov	ecx, DWORD PTR [rax+r15+24]
 	sub	ecx, DWORD PTR [rdx+r15+24]
 
-; 1654 :         memcpy( p, tokenarray[namepos].tokpos, size );
+; 1653 :         memcpy( p, tokenarray[namepos].tokpos, size );
 
 	mov	rdx, QWORD PTR [rdx+r15+24]
 	movsxd	rbx, ecx
@@ -1289,20 +1289,20 @@ $LN57@InvokeDire:
 	mov	r8, rbx
 	call	memcpy
 
-; 1655 :         *(p+size) = NULLC;
+; 1654 :         *(p+size) = NULLC;
 
 	mov	BYTE PTR [rbx+r14], 0
 
-; 1656 : #if 0  /* v2.09: uselabel obsolete */
-; 1657 :     }
-; 1658 : #endif
-; 1659 :     AddLineQueue( StringBufferEnd );
+; 1655 : #if 0  /* v2.09: uselabel obsolete */
+; 1656 :     }
+; 1657 : #endif
+; 1658 :     AddLineQueue( StringBufferEnd );
 
 	mov	rcx, QWORD PTR ModuleInfo+488
 	call	AddLineQueue
 
-; 1660 : 
-; 1661 :     if (( sym->langtype == LANG_C || sym->langtype == LANG_SYSCALL ) &&
+; 1659 : 
+; 1660 :     if (( sym->langtype == LANG_C || sym->langtype == LANG_SYSCALL ) &&
 
 	mov	ecx, DWORD PTR [rdi+76]
 	lea	eax, DWORD PTR [rcx-1]
@@ -1318,13 +1318,13 @@ $LN57@InvokeDire:
 	je	SHORT $LN58@InvokeDire
 $LN61@InvokeDire:
 
-; 1662 :         ( info->parasize || ( info->has_vararg && size_vararg ) )) {
-; 1663 :         if ( info->has_vararg ) {
+; 1661 :         ( info->parasize || ( info->has_vararg && size_vararg ) )) {
+; 1662 :         if ( info->has_vararg ) {
 
 	test	BYTE PTR [r13+84], 1
 
-; 1664 :             DebugMsg1(("InvokeDir: size of fix args=%u, var args=%u\n", info->parasize, size_vararg));
-; 1665 :             AddLineQueueX( " add %r, %u", stackreg[ModuleInfo.Ofssize], NUMQUAL info->parasize + size_vararg );
+; 1663 :             DebugMsg1(("InvokeDir: size of fix args=%u, var args=%u\n", info->parasize, size_vararg));
+; 1664 :             AddLineQueueX( " add %r, %u", stackreg[ModuleInfo.Ofssize], NUMQUAL info->parasize + size_vararg );
 
 	lea	r10, OFFSET FLAT:__ImageBase
 	je	SHORT $LN62@InvokeDire
@@ -1334,12 +1334,12 @@ $LN61@InvokeDire:
 	mov	edx, DWORD PTR stackreg[r10+rax*4]
 	call	AddLineQueueX
 
-; 1666 :         } else
+; 1665 :         } else
 
 	jmp	SHORT $LN63@InvokeDire
 $LN62@InvokeDire:
 
-; 1667 :             AddLineQueueX( " add %r, %u", stackreg[ModuleInfo.Ofssize], NUMQUAL info->parasize );
+; 1666 :             AddLineQueueX( " add %r, %u", stackreg[ModuleInfo.Ofssize], NUMQUAL info->parasize );
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	lea	rcx, OFFSET FLAT:$SG11927
@@ -1348,12 +1348,12 @@ $LN62@InvokeDire:
 	jmp	SHORT $LN63@InvokeDire
 $LN58@InvokeDire:
 
-; 1668 :     } else if ( sym->langtype == LANG_FASTCALL ) {
+; 1667 :     } else if ( sym->langtype == LANG_FASTCALL ) {
 
 	cmp	ecx, 7
 	jne	SHORT $LN63@InvokeDire
 
-; 1669 :         fastcall_tab[ModuleInfo.fctype].invokeend( proc, numParam, value );
+; 1668 :         fastcall_tab[ModuleInfo.fctype].invokeend( proc, numParam, value );
 
 	movsxd	rax, DWORD PTR ModuleInfo+376
 	lea	r10, OFFSET FLAT:__ImageBase
@@ -1364,9 +1364,9 @@ $LN58@InvokeDire:
 	call	QWORD PTR fastcall_tab[r10+r9*8+8]
 $LN63@InvokeDire:
 
-; 1670 :     }
-; 1671 : 
-; 1672 :     LstWrite( LSTTYPE_DIRECTIVE, GetCurrOffset(), NULL );
+; 1669 :     }
+; 1670 : 
+; 1671 :     LstWrite( LSTTYPE_DIRECTIVE, GetCurrOffset(), NULL );
 
 	call	GetCurrOffset
 	xor	r8d, r8d
@@ -1374,13 +1374,13 @@ $LN63@InvokeDire:
 	lea	ecx, QWORD PTR [r8+4]
 	call	LstWrite
 
-; 1673 : 
-; 1674 :     RunLineQueue();
+; 1672 : 
+; 1673 :     RunLineQueue();
 
 	call	RunLineQueue
 
-; 1675 : 
-; 1676 :     return( NOT_ERROR );
+; 1674 : 
+; 1675 :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN127@InvokeDire:
@@ -1389,7 +1389,7 @@ $LN127@InvokeDire:
 	mov	rsi, QWORD PTR [rsp+208]
 	mov	r13, QWORD PTR [rsp+192]
 
-; 1677 : }
+; 1676 : }
 
 	add	rsp, 216				; 000000d8H
 	pop	r15
@@ -1418,7 +1418,7 @@ reqParam$ = 1504
 r0flags$ = 1512
 PushInvokeParam PROC					; COMDAT
 
-; 724  : {
+; 723  : {
 
 	mov	QWORD PTR [rsp+32], r9
 	mov	QWORD PTR [rsp+24], r8
@@ -1432,20 +1432,20 @@ PushInvokeParam PROC					; COMDAT
 	mov	r13, rdx
 	movsxd	r12, ecx
 
-; 725  :     int currParm;
-; 726  :     int psize;
-; 727  :     int asize;
-; 728  :     int pushsize;
-; 729  :     int j;
-; 730  :     int fptrsize;
-; 731  :     char Ofssize;
-; 732  :     bool addr = FALSE; /* ADDR operator found */
-; 733  :     struct expr opnd;
-; 734  :     char fullparam[MAX_LINE_LEN];
-; 735  :     char buffer[MAX_LINE_LEN];
-; 736  : 
-; 737  :     DebugMsg1(("PushInvokeParam(%s, param=%s:%u, i=%u ) enter\n", proc->sym.name, curr ? curr->sym.name : "NULL", reqParam, i ));
-; 738  :     for ( currParm = 0; currParm <= reqParam; ) {
+; 724  :     int currParm;
+; 725  :     int psize;
+; 726  :     int asize;
+; 727  :     int pushsize;
+; 728  :     int j;
+; 729  :     int fptrsize;
+; 730  :     char Ofssize;
+; 731  :     bool addr = FALSE; /* ADDR operator found */
+; 732  :     struct expr opnd;
+; 733  :     char fullparam[MAX_LINE_LEN];
+; 734  :     char buffer[MAX_LINE_LEN];
+; 735  : 
+; 736  :     DebugMsg1(("PushInvokeParam(%s, param=%s:%u, i=%u ) enter\n", proc->sym.name, curr ? curr->sym.name : "NULL", reqParam, i ));
+; 737  :     for ( currParm = 0; currParm <= reqParam; ) {
 
 	mov	edx, DWORD PTR reqParam$[rbp-256]
 	xor	r10d, r10d
@@ -1455,7 +1455,7 @@ PushInvokeParam PROC					; COMDAT
 	test	edx, edx
 	js	SHORT $LN3@PushInvoke
 
-; 724  : {
+; 723  : {
 
 	mov	rax, r12
 	shl	rax, 5
@@ -1463,25 +1463,25 @@ PushInvokeParam PROC					; COMDAT
 	npad	7
 $LL2@PushInvoke:
 
-; 739  :         if ( tokenarray[i].token == T_FINAL ) { /* this is no real error! */
+; 738  :         if ( tokenarray[i].token == T_FINAL ) { /* this is no real error! */
 
 	movzx	ecx, BYTE PTR [rax]
 	test	cl, cl
 	je	SHORT $LN252@PushInvoke
 
-; 742  :         }
-; 743  :         if ( tokenarray[i].token == T_COMMA ) {
+; 741  :         }
+; 742  :         if ( tokenarray[i].token == T_COMMA ) {
 
 	cmp	cl, 44					; 0000002cH
 	jne	SHORT $LN17@PushInvoke
 
-; 744  :             currParm++;
+; 743  :             currParm++;
 
 	inc	r10d
 $LN17@PushInvoke:
 
-; 745  :         }
-; 746  :         i++;
+; 744  :         }
+; 745  :         i++;
 
 	inc	r12d
 	add	rax, 32					; 00000020H
@@ -1489,15 +1489,15 @@ $LN17@PushInvoke:
 	jle	SHORT $LL2@PushInvoke
 $LN3@PushInvoke:
 
-; 747  :     }
-; 748  :     /* if curr is NULL this call is just a parameter check */
-; 749  :     if ( !curr ) return( NOT_ERROR );
+; 746  :     }
+; 747  :     /* if curr is NULL this call is just a parameter check */
+; 748  :     if ( !curr ) return( NOT_ERROR );
 
 	test	r9, r9
 	jne	SHORT $LN18@PushInvoke
 	xor	eax, eax
 
-; 1434 : }
+; 1433 : }
 
 	add	rsp, 1424				; 00000590H
 	pop	r15
@@ -1508,12 +1508,12 @@ $LN3@PushInvoke:
 	ret	0
 $LN252@PushInvoke:
 
-; 740  :             DebugMsg1(("PushInvokeParam(%s): T_FINAL token, i=%u\n", proc->sym.name, i));
-; 741  :             return( ERROR );
+; 739  :             DebugMsg1(("PushInvokeParam(%s): T_FINAL token, i=%u\n", proc->sym.name, i));
+; 740  :             return( ERROR );
 
 	or	eax, -1
 
-; 1434 : }
+; 1433 : }
 
 	add	rsp, 1424				; 00000590H
 	pop	r15
@@ -1525,23 +1525,23 @@ $LN252@PushInvoke:
 $LN18@PushInvoke:
 	mov	QWORD PTR [rsp+1472], rbx
 
-; 750  : 
-; 751  : #if 1 /* v2.05 */
-; 752  :     psize = curr->sym.total_size;
-; 753  :     DebugMsg1(("PushInvokeParam(%s,%u): pmtype=%Xh, psize=%u\n", proc->sym.name, reqParam, curr->sym.mem_type, psize ));
-; 754  : #else
-; 755  :     /* set psize (size of parameter) */
-; 756  :     if ( curr->is_ptr ) {
-; 757  :         psize = 2 << curr->sym.Ofssize;
-; 758  :         if ( curr->sym.isfar )
-; 759  :             psize += 2;
-; 760  :     } else
-; 761  :         psize = SizeFromMemtype( curr->sym.mem_type, curr->sym.Ofssize, curr->sym.type );
-; 762  :     DebugMsg1(("PushInvokeParam(%s,%u): is_ptr=%u, pmtype=%Xh, psize=%u\n", proc->sym.name, reqParam, curr->is_ptr, curr->sym.mem_type, psize ));
-; 763  : #endif
-; 764  : 
-; 765  :     /* ADDR: the argument's address is to be pushed? */
-; 766  :     if ( tokenarray[i].token == T_RES_ID && tokenarray[i].tokval == T_ADDR ) {
+; 749  : 
+; 750  : #if 1 /* v2.05 */
+; 751  :     psize = curr->sym.total_size;
+; 752  :     DebugMsg1(("PushInvokeParam(%s,%u): pmtype=%Xh, psize=%u\n", proc->sym.name, reqParam, curr->sym.mem_type, psize ));
+; 753  : #else
+; 754  :     /* set psize (size of parameter) */
+; 755  :     if ( curr->is_ptr ) {
+; 756  :         psize = 2 << curr->sym.Ofssize;
+; 757  :         if ( curr->sym.isfar )
+; 758  :             psize += 2;
+; 759  :     } else
+; 760  :         psize = SizeFromMemtype( curr->sym.mem_type, curr->sym.Ofssize, curr->sym.type );
+; 761  :     DebugMsg1(("PushInvokeParam(%s,%u): is_ptr=%u, pmtype=%Xh, psize=%u\n", proc->sym.name, reqParam, curr->is_ptr, curr->sym.mem_type, psize ));
+; 762  : #endif
+; 763  : 
+; 764  :     /* ADDR: the argument's address is to be pushed? */
+; 765  :     if ( tokenarray[i].token == T_RES_ID && tokenarray[i].tokval == T_ADDR ) {
 
 	movsxd	rax, r12d
 	shl	rax, 5
@@ -1553,19 +1553,19 @@ $LN18@PushInvoke:
 	cmp	DWORD PTR [rax+r13+16], 260		; 00000104H
 	jne	SHORT $LN19@PushInvoke
 
-; 767  :         addr = TRUE;
+; 766  :         addr = TRUE;
 
 	mov	BYTE PTR addr$1$[rsp], 1
 
-; 768  :         i++;
+; 767  :         i++;
 
 	inc	r12d
 $LN19@PushInvoke:
 
-; 769  :     }
-; 770  : 
-; 771  :     /* copy the parameter tokens to fullparam */
-; 772  :     for ( j = i; tokenarray[j].token != T_COMMA && tokenarray[j].token != T_FINAL; j++ );
+; 768  :     }
+; 769  : 
+; 770  :     /* copy the parameter tokens to fullparam */
+; 771  :     for ( j = i; tokenarray[j].token != T_COMMA && tokenarray[j].token != T_FINAL; j++ );
 
 	movsxd	rdx, r12d
 	mov	ecx, r12d
@@ -1589,7 +1589,7 @@ $LL7@PushInvoke:
 	jne	SHORT $LL7@PushInvoke
 $LN284@PushInvoke:
 
-; 773  :     memcpy( fullparam, tokenarray[i].tokpos, tokenarray[j].tokpos - tokenarray[i].tokpos );
+; 772  :     memcpy( fullparam, tokenarray[i].tokpos, tokenarray[j].tokpos - tokenarray[i].tokpos );
 
 	mov	rdi, QWORD PTR [rdi+24]
 	movsxd	rbx, ecx
@@ -1600,19 +1600,19 @@ $LN284@PushInvoke:
 	sub	r8, rdi
 	call	memcpy
 
-; 774  :     fullparam[tokenarray[j].tokpos - tokenarray[i].tokpos] = NULLC;
+; 773  :     fullparam[tokenarray[j].tokpos - tokenarray[i].tokpos] = NULLC;
 
 	mov	rax, QWORD PTR [rbx+r13+24]
 	sub	rax, rdi
 
-; 775  : 
-; 776  :     j = i;
+; 774  : 
+; 775  :     j = i;
 
 	mov	DWORD PTR j$[rsp], r12d
 
-; 777  :     /* v2.11: GetSymOfssize() doesn't work for state SYM_TYPE */
-; 778  :     //fptrsize = 2 + ( 2 << GetSymOfssize( &proc->sym ) );
-; 779  :     Ofssize = ( proc->sym.state == SYM_TYPE ? proc->sym.seg_ofssize : GetSymOfssize( &proc->sym ) );
+; 776  :     /* v2.11: GetSymOfssize() doesn't work for state SYM_TYPE */
+; 777  :     //fptrsize = 2 + ( 2 << GetSymOfssize( &proc->sym ) );
+; 778  :     Ofssize = ( proc->sym.state == SYM_TYPE ? proc->sym.seg_ofssize : GetSymOfssize( &proc->sym ) );
 
 	cmp	DWORD PTR [rsi+32], 7
 	mov	BYTE PTR fullparam$[rbp+rax-256], 0
@@ -1625,9 +1625,9 @@ $LN241@PushInvoke:
 	call	GetSymOfssize
 $LN292@PushInvoke:
 
-; 780  :     fptrsize = 2 + ( 2 << Ofssize );
-; 781  : 
-; 782  :     if ( addr ) {
+; 779  :     fptrsize = 2 + ( 2 << Ofssize );
+; 780  : 
+; 781  :     if ( addr ) {
 
 	mov	rdi, QWORD PTR r0flags$[rbp-256]
 	mov	esi, 2
@@ -1641,9 +1641,9 @@ $LN292@PushInvoke:
 	lea	ebx, DWORD PTR [rax+2]
 	je	$LN20@PushInvoke
 
-; 783  :         /* v2.06: don't handle forward refs if -Zne is set */
-; 784  :         //if ( EvalOperand( &j, Token_Count, &opnd, 0 ) == ERROR )
-; 785  :         if ( EvalOperand( &j, tokenarray, Token_Count, &opnd, ModuleInfo.invoke_exprparm ) == ERROR )
+; 782  :         /* v2.06: don't handle forward refs if -Zne is set */
+; 783  :         //if ( EvalOperand( &j, Token_Count, &opnd, 0 ) == ERROR )
+; 784  :         if ( EvalOperand( &j, tokenarray, Token_Count, &opnd, ModuleInfo.invoke_exprparm ) == ERROR )
 
 	movzx	eax, BYTE PTR ModuleInfo+426
 	lea	r9, QWORD PTR opnd$[rsp]
@@ -1655,42 +1655,42 @@ $LN292@PushInvoke:
 	cmp	eax, -1
 	je	$LN301@PushInvoke
 
-; 786  :             return( ERROR );
-; 787  : 
-; 788  :         /* DWORD (16bit) and FWORD(32bit) are treated like FAR ptrs
-; 789  :          * v2.11: argument may be a FAR32 pointer ( psize == 6 ), while
-; 790  :          * fptrsize may be just 4!
-; 791  :          */
-; 792  :         //if ( psize > fptrsize ) {
-; 793  :         if ( psize > fptrsize && fptrsize > 4 ) {
+; 785  :             return( ERROR );
+; 786  : 
+; 787  :         /* DWORD (16bit) and FWORD(32bit) are treated like FAR ptrs
+; 788  :          * v2.11: argument may be a FAR32 pointer ( psize == 6 ), while
+; 789  :          * fptrsize may be just 4!
+; 790  :          */
+; 791  :         //if ( psize > fptrsize ) {
+; 792  :         if ( psize > fptrsize && fptrsize > 4 ) {
 
 	cmp	r14d, ebx
 	jle	SHORT $LN23@PushInvoke
 	cmp	ebx, 4
 	jle	SHORT $LN23@PushInvoke
 
-; 794  :             /* QWORD is NOT accepted as a FAR ptr */
-; 795  :             DebugMsg1(("PushInvokeParm(%u): error, psize=%u, fptrsize=%u\n", reqParam, psize, fptrsize));
-; 796  :             EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam+1 );
+; 793  :             /* QWORD is NOT accepted as a FAR ptr */
+; 794  :             DebugMsg1(("PushInvokeParm(%u): error, psize=%u, fptrsize=%u\n", reqParam, psize, fptrsize));
+; 795  :             EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam+1 );
 
 	mov	edx, DWORD PTR reqParam$[rbp-256]
 	inc	edx
 
-; 797  :             return( NOT_ERROR );
+; 796  :             return( NOT_ERROR );
 
 	jmp	$LN293@PushInvoke
 $LN23@PushInvoke:
 
-; 798  :         }
-; 799  : 
-; 800  :         if ( proc->sym.langtype == LANG_FASTCALL )
+; 797  :         }
+; 798  : 
+; 799  :         if ( proc->sym.langtype == LANG_FASTCALL )
 
 	mov	rcx, QWORD PTR proc$[rbp-256]
 	lea	r12, OFFSET FLAT:__ImageBase
 	cmp	DWORD PTR [rcx+76], 7
 	jne	SHORT $LN25@PushInvoke
 
-; 801  :             if ( fastcall_tab[ModuleInfo.fctype].handleparam( proc, reqParam, curr, addr, &opnd, fullparam, r0flags ) )
+; 800  :             if ( fastcall_tab[ModuleInfo.fctype].handleparam( proc, reqParam, curr, addr, &opnd, fullparam, r0flags ) )
 
 	movsxd	rax, DWORD PTR ModuleInfo+376
 	mov	r8, r15
@@ -1707,9 +1707,9 @@ $LN23@PushInvoke:
 	jne	$LN294@PushInvoke
 $LN25@PushInvoke:
 
-; 802  :                 return( NOT_ERROR );
-; 803  : 
-; 804  :         if ( opnd.kind == EXPR_REG || opnd.indirect ) {
+; 801  :                 return( NOT_ERROR );
+; 802  : 
+; 803  :         if ( opnd.kind == EXPR_REG || opnd.indirect ) {
 
 	cmp	DWORD PTR opnd$[rbp-196], esi
 	je	SHORT $LN28@PushInvoke
@@ -1717,7 +1717,7 @@ $LN25@PushInvoke:
 	je	$push_address$303
 $LN28@PushInvoke:
 
-; 805  :             if ( curr->sym.isfar || psize == fptrsize ) {
+; 804  :             if ( curr->sym.isfar || psize == fptrsize ) {
 
 	test	BYTE PTR [r15+47], 16
 	jne	SHORT $LN30@PushInvoke
@@ -1725,8 +1725,8 @@ $LN28@PushInvoke:
 	jne	SHORT $LN29@PushInvoke
 $LN30@PushInvoke:
 
-; 806  :                 DebugMsg1(("PushInvokeParam: far ptr, %s isfar=%u, psize=%u, fptrsize=%u\n", curr->sym.name, curr->sym.isfar, psize, fptrsize ));
-; 807  :                 if ( opnd.sym && opnd.sym->state == SYM_STACK )
+; 805  :                 DebugMsg1(("PushInvokeParam: far ptr, %s isfar=%u, psize=%u, fptrsize=%u\n", curr->sym.name, curr->sym.isfar, psize, fptrsize ));
+; 806  :                 if ( opnd.sym && opnd.sym->state == SYM_STACK )
 
 	mov	rax, QWORD PTR opnd$[rbp-176]
 	test	rax, rax
@@ -1734,19 +1734,19 @@ $LN30@PushInvoke:
 	cmp	DWORD PTR [rax+32], 5
 	jne	SHORT $LN31@PushInvoke
 
-; 808  :                     GetResWName( T_SS, buffer );
+; 807  :                     GetResWName( T_SS, buffer );
 
 	mov	ecx, 27
 	jmp	SHORT $LN295@PushInvoke
 $LN31@PushInvoke:
 
-; 809  :                 else if ( opnd.override != NULL )
+; 808  :                 else if ( opnd.override != NULL )
 
 	mov	rcx, QWORD PTR opnd$[rbp-208]
 	test	rcx, rcx
 	je	SHORT $LN33@PushInvoke
 
-; 810  :                     strcpy( buffer, opnd.override->string_ptr );
+; 809  :                     strcpy( buffer, opnd.override->string_ptr );
 
 	mov	rcx, QWORD PTR [rcx+8]
 	lea	rdx, QWORD PTR buffer$[rbp-256]
@@ -1761,8 +1761,8 @@ $LL243@PushInvoke:
 	jmp	SHORT $LN34@PushInvoke
 $LN33@PushInvoke:
 
-; 811  :                 else
-; 812  :                     GetResWName( T_DS, buffer );
+; 810  :                 else
+; 811  :                     GetResWName( T_DS, buffer );
 
 	mov	ecx, 28
 $LN295@PushInvoke:
@@ -1770,15 +1770,15 @@ $LN295@PushInvoke:
 	call	GetResWName
 $LN34@PushInvoke:
 
-; 813  :                 AddLineQueueX( " push %s", buffer );
+; 812  :                 AddLineQueueX( " push %s", buffer );
 
 	lea	rdx, QWORD PTR buffer$[rbp-256]
 	lea	rcx, OFFSET FLAT:$SG11528
 	call	AddLineQueueX
 $LN29@PushInvoke:
 
-; 814  :             }
-; 815  :             AddLineQueueX( " lea %r, %s", regax[ModuleInfo.Ofssize], fullparam );
+; 813  :             }
+; 814  :             AddLineQueueX( " lea %r, %s", regax[ModuleInfo.Ofssize], fullparam );
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	lea	r8, QWORD PTR fullparam$[rbp-256]
@@ -1786,26 +1786,26 @@ $LN29@PushInvoke:
 	mov	edx, DWORD PTR regax[r12+rax*4]
 	call	AddLineQueueX
 
-; 816  :             *r0flags |= R0_USED;
+; 815  :             *r0flags |= R0_USED;
 
 	or	BYTE PTR [rdi], 1
 
-; 817  :             AddLineQueueX( " push %r", regax[ModuleInfo.Ofssize] );
+; 816  :             AddLineQueueX( " push %r", regax[ModuleInfo.Ofssize] );
 
 	lea	rcx, OFFSET FLAT:$SG11530
 	movzx	eax, BYTE PTR ModuleInfo+404
 	mov	edx, DWORD PTR regax[r12+rax*4]
 	call	AddLineQueueX
 
-; 818  :         } else {
+; 817  :         } else {
 
 	jmp	$LN277@PushInvoke
 $LN20@PushInvoke:
 
-; 872  : 
-; 873  :         /* handle the <reg>::<reg> case here, the evaluator wont handle it */
-; 874  :         if ( tokenarray[j].token == T_REG &&
-; 875  :             tokenarray[j+1].token == T_DBL_COLON &&
+; 871  : 
+; 872  :         /* handle the <reg>::<reg> case here, the evaluator wont handle it */
+; 873  :         if ( tokenarray[j].token == T_REG &&
+; 874  :             tokenarray[j+1].token == T_DBL_COLON &&
 
 	movsxd	rdx, DWORD PTR j$[rsp]
 	lea	r8, OFFSET FLAT:__ImageBase
@@ -1820,21 +1820,21 @@ $LN20@PushInvoke:
 	cmp	BYTE PTR [rax+r13], sil
 	jne	$LN53@PushInvoke
 
-; 876  :             tokenarray[j+2].token == T_REG ) {
-; 877  :             int asize2;
-; 878  :             /* for pointers, segreg size is assumed to be always 2 */
-; 879  :             if ( GetValueSp( tokenarray[j].tokval ) & OP_SR ) {
+; 875  :             tokenarray[j+2].token == T_REG ) {
+; 876  :             int asize2;
+; 877  :             /* for pointers, segreg size is assumed to be always 2 */
+; 878  :             if ( GetValueSp( tokenarray[j].tokval ) & OP_SR ) {
 
 	mov	edx, DWORD PTR [rcx+r13+16]
 	lea	rax, QWORD PTR [rdx+rdx*2]
 	test	DWORD PTR SpecialTable[r8+rax*4], 24576	; 00006000H
 	je	SHORT $LN55@PushInvoke
 
-; 880  :                 asize2 = 2;
-; 881  :                 /* v2.11: if target and current src have different offset sizes,
-; 882  :                  * the push of the segment register must be 66h-prefixed!
-; 883  :                  */
-; 884  :                 if ( Ofssize != ModuleInfo.Ofssize || ( curr->sym.Ofssize == USE16 && CurrWordSize > 2 ) )
+; 879  :                 asize2 = 2;
+; 880  :                 /* v2.11: if target and current src have different offset sizes,
+; 881  :                  * the push of the segment register must be 66h-prefixed!
+; 882  :                  */
+; 883  :                 if ( Ofssize != ModuleInfo.Ofssize || ( curr->sym.Ofssize == USE16 && CurrWordSize > 2 ) )
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	mov	ebx, esi
@@ -1846,31 +1846,31 @@ $LN20@PushInvoke:
 	jbe	SHORT $LN56@PushInvoke
 $LN58@PushInvoke:
 
-; 885  :                     AddLineQueue( " db 66h" );
+; 884  :                     AddLineQueue( " db 66h" );
 
 	lea	rcx, OFFSET FLAT:$SG11563
 	call	AddLineQueue
 
-; 886  :             } else
+; 885  :             } else
 
 	jmp	SHORT $LN56@PushInvoke
 $LN55@PushInvoke:
 
-; 887  :                 asize2 = SizeFromRegister( tokenarray[j].tokval );
+; 886  :                 asize2 = SizeFromRegister( tokenarray[j].tokval );
 
 	mov	ecx, edx
 	call	SizeFromRegister
 	mov	ebx, eax
 $LN56@PushInvoke:
 
-; 888  :             asize = SizeFromRegister( tokenarray[j+2].tokval );
+; 887  :             asize = SizeFromRegister( tokenarray[j+2].tokval );
 
 	movsxd	rcx, DWORD PTR j$[rsp]
 	shl	rcx, 5
 	mov	ecx, DWORD PTR [rcx+r13+80]
 	call	SizeFromRegister
 
-; 889  :             AddLineQueueX( " push %r", tokenarray[j].tokval );
+; 888  :             AddLineQueueX( " push %r", tokenarray[j].tokval );
 
 	movsxd	rcx, DWORD PTR j$[rsp]
 	mov	edi, eax
@@ -1879,8 +1879,8 @@ $LN56@PushInvoke:
 	lea	rcx, OFFSET FLAT:$SG11564
 	call	AddLineQueueX
 
-; 890  :             /* v2.04: changed */
-; 891  :             if (( curr->sym.is_vararg ) && (asize + asize2) != CurrWordSize )
+; 889  :             /* v2.04: changed */
+; 890  :             if (( curr->sym.is_vararg ) && (asize + asize2) != CurrWordSize )
 
 	test	BYTE PTR [r15+47], 32			; 00000020H
 	je	SHORT $LN59@PushInvoke
@@ -1889,19 +1889,19 @@ $LN56@PushInvoke:
 	cmp	edx, ecx
 	je	SHORT $LN59@PushInvoke
 
-; 892  :                 size_vararg += asize2;
+; 891  :                 size_vararg += asize2;
 
 	add	DWORD PTR size_vararg, ebx
 	jmp	SHORT $LN60@PushInvoke
 $LN59@PushInvoke:
 
-; 893  :             else
-; 894  :                 asize += asize2;
+; 892  :             else
+; 893  :                 asize += asize2;
 
 	add	edi, ebx
 $LN60@PushInvoke:
 
-; 895  :             strcpy( fullparam, tokenarray[j+2].string_ptr );
+; 894  :             strcpy( fullparam, tokenarray[j+2].string_ptr );
 
 	movsxd	r8, DWORD PTR j$[rsp]
 	lea	rdx, QWORD PTR fullparam$[rbp-256]
@@ -1917,14 +1917,14 @@ $LL246@PushInvoke:
 	test	al, al
 	jne	SHORT $LL246@PushInvoke
 
-; 896  : 
-; 897  :             opnd.kind = EXPR_REG;
-; 898  :             opnd.indirect = FALSE;
+; 895  : 
+; 896  :             opnd.kind = EXPR_REG;
+; 897  :             opnd.indirect = FALSE;
 
 	and	DWORD PTR opnd$[rbp-180], -2		; fffffffeH
 
-; 899  :             opnd.sym = NULL;
-; 900  :             opnd.base_reg = &tokenarray[j+2]; /* for error msg 'eax overwritten...' */
+; 898  :             opnd.sym = NULL;
+; 899  :             opnd.base_reg = &tokenarray[j+2]; /* for error msg 'eax overwritten...' */
 
 	lea	eax, DWORD PTR [r8+2]
 	xor	ecx, ecx
@@ -1936,14 +1936,14 @@ $LL246@PushInvoke:
 	mov	DWORD PTR opnd$[rbp-196], edx
 	mov	QWORD PTR opnd$[rsp+24], rcx
 
-; 901  :         } else {
+; 900  :         } else {
 
 	jmp	$LN278@PushInvoke
 $LN53@PushInvoke:
 
-; 902  :             /* v2.06: don't handle forward refs if -Zne is set */
-; 903  :             //if ( EvalOperand( &j, Token_Count, &opnd, 0 ) == ERROR ) {
-; 904  :             if ( EvalOperand( &j, tokenarray, Token_Count, &opnd, ModuleInfo.invoke_exprparm ) == ERROR ) {
+; 901  :             /* v2.06: don't handle forward refs if -Zne is set */
+; 902  :             //if ( EvalOperand( &j, Token_Count, &opnd, 0 ) == ERROR ) {
+; 903  :             if ( EvalOperand( &j, tokenarray, Token_Count, &opnd, ModuleInfo.invoke_exprparm ) == ERROR ) {
 
 	movzx	eax, BYTE PTR ModuleInfo+426
 	lea	r9, QWORD PTR opnd$[rsp]
@@ -1956,16 +1956,16 @@ $LN53@PushInvoke:
 	jne	SHORT $LN61@PushInvoke
 $LN301@PushInvoke:
 
-; 905  :                 return( ERROR );
+; 904  :                 return( ERROR );
 
 	or	eax, -1
 	jmp	$LN291@PushInvoke
 $LN61@PushInvoke:
 
-; 906  :             }
-; 907  : 
-; 908  :             /* for a simple register, get its size */
-; 909  :             if ( opnd.kind == EXPR_REG && opnd.indirect == FALSE ) {
+; 905  :             }
+; 906  : 
+; 907  :             /* for a simple register, get its size */
+; 908  :             if ( opnd.kind == EXPR_REG && opnd.indirect == FALSE ) {
 
 	mov	edx, DWORD PTR opnd$[rbp-196]
 	cmp	edx, esi
@@ -1973,7 +1973,7 @@ $LN61@PushInvoke:
 	test	BYTE PTR opnd$[rbp-180], 1
 	jne	SHORT $LN267@PushInvoke
 
-; 910  :                 asize = SizeFromRegister( opnd.base_reg->tokval );
+; 909  :                 asize = SizeFromRegister( opnd.base_reg->tokval );
 
 	mov	rax, QWORD PTR opnd$[rsp+24]
 	mov	ecx, DWORD PTR [rax+16]
@@ -1981,8 +1981,8 @@ $LN61@PushInvoke:
 	jmp	$LN296@PushInvoke
 $LN62@PushInvoke:
 
-; 911  :             //} else if ( opnd.mem_type == MT_EMPTY ) { /* v2.10: a TYPE may return mem_type != MT_EMPTY! */
-; 912  :             } else if ( opnd.kind == EXPR_CONST || opnd.mem_type == MT_EMPTY ) {
+; 910  :             //} else if ( opnd.mem_type == MT_EMPTY ) { /* v2.10: a TYPE may return mem_type != MT_EMPTY! */
+; 911  :             } else if ( opnd.kind == EXPR_CONST || opnd.mem_type == MT_EMPTY ) {
 
 	test	edx, edx
 	je	$LN66@PushInvoke
@@ -1991,17 +1991,17 @@ $LN267@PushInvoke:
 	cmp	ecx, 192				; 000000c0H
 	je	$LN66@PushInvoke
 
-; 923  :                 }
-; 924  :                 DebugMsg1(("PushInvokeParm(%u): memtype EMPTY, asize=%u psize=%u\n", reqParam, asize, psize ));
-; 925  :             } else if ( opnd.mem_type != MT_TYPE ) {
+; 922  :                 }
+; 923  :                 DebugMsg1(("PushInvokeParm(%u): memtype EMPTY, asize=%u psize=%u\n", reqParam, asize, psize ));
+; 924  :             } else if ( opnd.mem_type != MT_TYPE ) {
 
 	cmp	ecx, 196				; 000000c4H
 	je	$LN70@PushInvoke
 
-; 926  :                 if ( opnd.kind == EXPR_ADDR &&
-; 927  :                      opnd.indirect == FALSE &&
-; 928  :                      opnd.sym &&
-; 929  :                      opnd.instr == EMPTY &&
+; 925  :                 if ( opnd.kind == EXPR_ADDR &&
+; 926  :                      opnd.indirect == FALSE &&
+; 927  :                      opnd.sym &&
+; 928  :                      opnd.instr == EMPTY &&
 
 	cmp	edx, 1
 	jne	$LN72@PushInvoke
@@ -2016,14 +2016,14 @@ $LN267@PushInvoke:
 	ja	$LN72@PushInvoke
 $push_address$303:
 
-; 819  :         push_address:
-; 820  : 
-; 821  :             /* push segment part of address?
-; 822  :              * v2.11: do not assume a far pointer if psize == fptrsize
-; 823  :              * ( parameter might be near32 in a 16-bit environment )
-; 824  :              */
-; 825  :             //if ( curr->sym.isfar || psize == fptrsize ) {
-; 826  :             if ( curr->sym.isfar || psize > ( 2 << curr->sym.Ofssize ) ) {
+; 818  :         push_address:
+; 819  : 
+; 820  :             /* push segment part of address?
+; 821  :              * v2.11: do not assume a far pointer if psize == fptrsize
+; 822  :              * ( parameter might be near32 in a 16-bit environment )
+; 823  :              */
+; 824  :             //if ( curr->sym.isfar || psize == fptrsize ) {
+; 825  :             if ( curr->sym.isfar || psize > ( 2 << curr->sym.Ofssize ) ) {
 
 	test	BYTE PTR [r15+47], 16
 	jne	SHORT $LN36@PushInvoke
@@ -2033,9 +2033,9 @@ $push_address$303:
 	jle	SHORT $LN288@PushInvoke
 $LN36@PushInvoke:
 
-; 827  : 
-; 828  :                 short sreg;
-; 829  :                 sreg = GetSegmentPart( &opnd, buffer, fullparam );
+; 826  : 
+; 827  :                 short sreg;
+; 828  :                 sreg = GetSegmentPart( &opnd, buffer, fullparam );
 
 	lea	r8, QWORD PTR fullparam$[rbp-256]
 	lea	rdx, QWORD PTR buffer$[rbp-256]
@@ -2043,15 +2043,15 @@ $LN36@PushInvoke:
 	call	GetSegmentPart
 	movzx	ebx, ax
 
-; 830  :                 if ( sreg ) {
+; 829  :                 if ( sreg ) {
 
 	test	ax, ax
 	je	SHORT $LN37@PushInvoke
 
-; 831  :                     /* v2.11: push segment part as WORD or DWORD depending on target's offset size
-; 832  :                      * problem: "pushw ds" is not accepted, so just emit a size prefix.
-; 833  :                      */
-; 834  :                     if ( Ofssize != ModuleInfo.Ofssize || ( curr->sym.Ofssize == USE16 && CurrWordSize > 2 ) )
+; 830  :                     /* v2.11: push segment part as WORD or DWORD depending on target's offset size
+; 831  :                      * problem: "pushw ds" is not accepted, so just emit a size prefix.
+; 832  :                      */
+; 833  :                     if ( Ofssize != ModuleInfo.Ofssize || ( curr->sym.Ofssize == USE16 && CurrWordSize > 2 ) )
 
 	mov	esi, DWORD PTR tv172[rsp]
 	movzx	ecx, BYTE PTR ModuleInfo+404
@@ -2064,24 +2064,24 @@ $LN36@PushInvoke:
 	jbe	SHORT $LN39@PushInvoke
 $LN40@PushInvoke:
 
-; 835  :                         AddLineQueue( " db 66h" );
+; 834  :                         AddLineQueue( " db 66h" );
 
 	lea	rcx, OFFSET FLAT:$SG11537
 	call	AddLineQueue
 $LN39@PushInvoke:
 
-; 836  :                     AddLineQueueX( " push %r", sreg );
+; 835  :                     AddLineQueueX( " push %r", sreg );
 
 	movsx	edx, bx
 	lea	rcx, OFFSET FLAT:$SG11538
 	call	AddLineQueueX
 
-; 837  :                 } else
+; 836  :                 } else
 
 	jmp	SHORT $LN38@PushInvoke
 $LN37@PushInvoke:
 
-; 838  :                     AddLineQueueX( " push %s", buffer );
+; 837  :                     AddLineQueueX( " push %s", buffer );
 
 	lea	rdx, QWORD PTR buffer$[rbp-256]
 	lea	rcx, OFFSET FLAT:$SG11539
@@ -2090,38 +2090,38 @@ $LN288@PushInvoke:
 	mov	esi, DWORD PTR tv172[rsp]
 $LN38@PushInvoke:
 
-; 839  :             }
-; 840  :             /* push offset part of address */
-; 841  :             if ( (ModuleInfo.curr_cpu & P_CPU_MASK ) < P_186 ) {
+; 838  :             }
+; 839  :             /* push offset part of address */
+; 840  :             if ( (ModuleInfo.curr_cpu & P_CPU_MASK ) < P_186 ) {
 
 	mov	eax, DWORD PTR ModuleInfo+392
 	and	eax, 240				; 000000f0H
 	cmp	eax, 16
 	jge	SHORT $LN41@PushInvoke
 
-; 842  :                 AddLineQueueX( " mov %r, offset %s", T_AX, fullparam );
+; 841  :                 AddLineQueueX( " mov %r, offset %s", T_AX, fullparam );
 
 	lea	r8, QWORD PTR fullparam$[rbp-256]
 	mov	edx, 9
 	lea	rcx, OFFSET FLAT:$SG11542
 	call	AddLineQueueX
 
-; 843  :                 AddLineQueueX( " push %r", T_AX );
+; 842  :                 AddLineQueueX( " push %r", T_AX );
 
 	mov	edx, 9
 	lea	rcx, OFFSET FLAT:$SG11543
 	call	AddLineQueueX
 
-; 844  :                 *r0flags |= R0_USED;
+; 843  :                 *r0flags |= R0_USED;
 
 	or	BYTE PTR [rdi], 1
 
-; 845  :             } else {
+; 844  :             } else {
 
 	jmp	$LN277@PushInvoke
 $LN41@PushInvoke:
 
-; 846  :                 if ( curr->sym.is_vararg && opnd.Ofssize == USE_EMPTY && opnd.sym )
+; 845  :                 if ( curr->sym.is_vararg && opnd.Ofssize == USE_EMPTY && opnd.sym )
 
 	test	BYTE PTR [r15+47], 32			; 00000020H
 	movzx	eax, BYTE PTR opnd$[rbp-187]
@@ -2132,17 +2132,17 @@ $LN41@PushInvoke:
 	test	rcx, rcx
 	je	SHORT $LN275@PushInvoke
 
-; 847  :                     opnd.Ofssize = GetSymOfssize( opnd.sym );
+; 846  :                     opnd.Ofssize = GetSymOfssize( opnd.sym );
 
 	call	GetSymOfssize
 	mov	BYTE PTR opnd$[rbp-187], al
 $LN43@PushInvoke:
 
-; 848  :                 /* v2.04: expand 16-bit offset to 32
-; 849  :                  * v2.11: also expand if there's an explicit near32 ptr requested in 16-bit
-; 850  :                  */
-; 851  :                 //if ( opnd.Ofssize == USE16 && CurrWordSize > 2 ) {
-; 852  :                 if ( ( opnd.Ofssize == USE16 && CurrWordSize > 2 ) ||
+; 847  :                 /* v2.04: expand 16-bit offset to 32
+; 848  :                  * v2.11: also expand if there's an explicit near32 ptr requested in 16-bit
+; 849  :                  */
+; 850  :                 //if ( opnd.Ofssize == USE16 && CurrWordSize > 2 ) {
+; 851  :                 if ( ( opnd.Ofssize == USE16 && CurrWordSize > 2 ) ||
 
 	test	al, al
 	jne	SHORT $LN275@PushInvoke
@@ -2160,8 +2160,8 @@ $LN47@PushInvoke:
 	jne	SHORT $LN297@PushInvoke
 $LN46@PushInvoke:
 
-; 853  :                     ( curr->sym.Ofssize == USE32 && CurrWordSize == 2 ) ) {
-; 854  :                     AddLineQueueX( " pushd %r %s", T_OFFSET, fullparam );
+; 852  :                     ( curr->sym.Ofssize == USE32 && CurrWordSize == 2 ) ) {
+; 853  :                     AddLineQueueX( " pushd %r %s", T_OFFSET, fullparam );
 
 	lea	r8, QWORD PTR fullparam$[rbp-256]
 	mov	edx, 241				; 000000f1H
@@ -2170,7 +2170,7 @@ $LN46@PushInvoke:
 	jmp	SHORT $LN277@PushInvoke
 $LN44@PushInvoke:
 
-; 855  :                 } else if ( CurrWordSize > 2 && curr->sym.Ofssize == USE16 &&
+; 854  :                 } else if ( CurrWordSize > 2 && curr->sym.Ofssize == USE16 &&
 
 	cmp	al, 2
 $LN297@PushInvoke:
@@ -2183,28 +2183,28 @@ $LN297@PushInvoke:
 	jne	SHORT $LN48@PushInvoke
 $LN50@PushInvoke:
 
-; 856  :                            ( curr->sym.isfar || Ofssize == USE16 ) ) { /* v2.11: added */
-; 857  :                     AddLineQueueX( " pushw %r %s", T_OFFSET, fullparam );
+; 855  :                            ( curr->sym.isfar || Ofssize == USE16 ) ) { /* v2.11: added */
+; 856  :                     AddLineQueueX( " pushw %r %s", T_OFFSET, fullparam );
 
 	lea	r8, QWORD PTR fullparam$[rbp-256]
 	mov	edx, 241				; 000000f1H
 	lea	rcx, OFFSET FLAT:$SG11553
 	call	AddLineQueueX
 
-; 858  :                 } else {
+; 857  :                 } else {
 
 	jmp	SHORT $LN277@PushInvoke
 $LN48@PushInvoke:
 
-; 859  :                     AddLineQueueX( " push %r %s", T_OFFSET, fullparam );
+; 858  :                     AddLineQueueX( " push %r %s", T_OFFSET, fullparam );
 
 	lea	r8, QWORD PTR fullparam$[rbp-256]
 	mov	edx, 241				; 000000f1H
 	lea	rcx, OFFSET FLAT:$SG11554
 	call	AddLineQueueX
 
-; 860  :                     /* v2.04: a 32bit offset pushed in 16-bit code */
-; 861  :                     if ( curr->sym.is_vararg && CurrWordSize == 2 && opnd.Ofssize > USE16 ) {
+; 859  :                     /* v2.04: a 32bit offset pushed in 16-bit code */
+; 860  :                     if ( curr->sym.is_vararg && CurrWordSize == 2 && opnd.Ofssize > USE16 ) {
 
 	test	BYTE PTR [r15+47], 32			; 00000020H
 	je	SHORT $LN277@PushInvoke
@@ -2213,22 +2213,22 @@ $LN48@PushInvoke:
 	cmp	BYTE PTR opnd$[rbp-187], 0
 	jbe	SHORT $LN277@PushInvoke
 
-; 862  :                         size_vararg += CurrWordSize;
+; 861  :                         size_vararg += CurrWordSize;
 
 	add	DWORD PTR size_vararg, 2
 $LN277@PushInvoke:
 
-; 863  :                     }
-; 864  :                 }
-; 865  :             }
-; 866  :         }
-; 867  :         if ( curr->sym.is_vararg ) {
+; 862  :                     }
+; 863  :                 }
+; 864  :             }
+; 865  :         }
+; 866  :         if ( curr->sym.is_vararg ) {
 
 	movzx	eax, BYTE PTR [r15+47]
 	test	al, 32					; 00000020H
 	je	$LN294@PushInvoke
 
-; 868  :             size_vararg += CurrWordSize + ( curr->sym.isfar ? CurrWordSize : 0 );
+; 867  :             size_vararg += CurrWordSize + ( curr->sym.isfar ? CurrWordSize : 0 );
 
 	test	al, 16
 	je	SHORT $LN244@PushInvoke
@@ -2237,37 +2237,37 @@ $LN277@PushInvoke:
 	add	eax, ecx
 	add	DWORD PTR size_vararg, eax
 
-; 869  :             DebugMsg1(("PushInvokeParm(%u): new value of size_vararg=%u [CurrWordSize=%u]\n", reqParam, size_vararg, CurrWordSize ));
-; 870  :         }
-; 871  :     } else { /* ! ADDR branch */
+; 868  :             DebugMsg1(("PushInvokeParm(%u): new value of size_vararg=%u [CurrWordSize=%u]\n", reqParam, size_vararg, CurrWordSize ));
+; 869  :         }
+; 870  :     } else { /* ! ADDR branch */
 
 	jmp	$LN294@PushInvoke
 $LN244@PushInvoke:
 
-; 868  :             size_vararg += CurrWordSize + ( curr->sym.isfar ? CurrWordSize : 0 );
+; 867  :             size_vararg += CurrWordSize + ( curr->sym.isfar ? CurrWordSize : 0 );
 
 	movzx	eax, BYTE PTR ModuleInfo+406
 	xor	ecx, ecx
 	add	eax, ecx
 	add	DWORD PTR size_vararg, eax
 
-; 869  :             DebugMsg1(("PushInvokeParm(%u): new value of size_vararg=%u [CurrWordSize=%u]\n", reqParam, size_vararg, CurrWordSize ));
-; 870  :         }
-; 871  :     } else { /* ! ADDR branch */
+; 868  :             DebugMsg1(("PushInvokeParm(%u): new value of size_vararg=%u [CurrWordSize=%u]\n", reqParam, size_vararg, CurrWordSize ));
+; 869  :         }
+; 870  :     } else { /* ! ADDR branch */
 
 	jmp	$LN294@PushInvoke
 $LN72@PushInvoke:
 
-; 930  :                      ( opnd.mem_type == MT_NEAR || opnd.mem_type == MT_FAR ) )
-; 931  :                     goto push_address;
-; 932  :                 if ( opnd.Ofssize == USE_EMPTY )
+; 929  :                      ( opnd.mem_type == MT_NEAR || opnd.mem_type == MT_FAR ) )
+; 930  :                     goto push_address;
+; 931  :                 if ( opnd.Ofssize == USE_EMPTY )
 
 	movzx	ecx, BYTE PTR opnd$[rbp-187]
 	movzx	eax, BYTE PTR ModuleInfo+404
 	cmp	cl, 254					; 000000feH
 
-; 933  :                     opnd.Ofssize = ModuleInfo.Ofssize;
-; 934  :                 asize = SizeFromMemtype( opnd.mem_type, opnd.Ofssize, opnd.type );
+; 932  :                     opnd.Ofssize = ModuleInfo.Ofssize;
+; 933  :                 asize = SizeFromMemtype( opnd.mem_type, opnd.Ofssize, opnd.type );
 
 	mov	r8, QWORD PTR opnd$[rbp-160]
 	mov	edx, ecx
@@ -2276,26 +2276,26 @@ $LN72@PushInvoke:
 	mov	BYTE PTR opnd$[rbp-187], dl
 	movzx	edx, dl
 
-; 935  :             } else {
+; 934  :             } else {
 
 	jmp	SHORT $LN298@PushInvoke
 $LN70@PushInvoke:
 
-; 936  :                 if ( opnd.sym != NULL )
+; 935  :                 if ( opnd.sym != NULL )
 
 	mov	rax, QWORD PTR opnd$[rbp-176]
 	test	rax, rax
 	je	SHORT $LN75@PushInvoke
 
-; 937  :                     asize = opnd.sym->type->total_size;
+; 936  :                     asize = opnd.sym->type->total_size;
 
 	mov	rax, QWORD PTR [rax+80]
 	mov	edi, DWORD PTR [rax+56]
 	jmp	SHORT $LN278@PushInvoke
 $LN75@PushInvoke:
 
-; 938  :                 else
-; 939  :                     asize = opnd.mbr->type->total_size;
+; 937  :                 else
+; 938  :                     asize = opnd.mbr->type->total_size;
 
 	mov	rax, QWORD PTR opnd$[rbp-168]
 	mov	rcx, QWORD PTR [rax+80]
@@ -2303,23 +2303,23 @@ $LN75@PushInvoke:
 	jmp	SHORT $LN278@PushInvoke
 $LN66@PushInvoke:
 
-; 913  :                 asize = psize;
+; 912  :                 asize = psize;
 
 	mov	edi, r14d
 
-; 914  :                 /* v2.04: added, to catch 0-size params ( STRUCT without members ) */
-; 915  :                 if ( psize == 0 ) {
+; 913  :                 /* v2.04: added, to catch 0-size params ( STRUCT without members ) */
+; 914  :                 if ( psize == 0 ) {
 
 	test	r14d, r14d
 	jne	SHORT $LN278@PushInvoke
 
-; 916  :                     if ( curr->sym.is_vararg == FALSE ) {
+; 915  :                     if ( curr->sym.is_vararg == FALSE ) {
 
 	test	BYTE PTR [r15+47], 32			; 00000020H
 	jne	SHORT $LN68@PushInvoke
 
-; 917  :                         DebugMsg1(("PushInvokeParm(%u): error, psize=0\n" ));
-; 918  :                         EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam+1 );
+; 916  :                         DebugMsg1(("PushInvokeParm(%u): error, psize=0\n" ));
+; 917  :                         EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam+1 );
 
 	mov	edx, DWORD PTR reqParam$[rbp-256]
 	mov	ecx, 145				; 00000091H
@@ -2328,9 +2328,9 @@ $LN66@PushInvoke:
 	mov	edx, DWORD PTR opnd$[rbp-196]
 $LN68@PushInvoke:
 
-; 919  :                     }
-; 920  :                     /* v2.07: for VARARG, get the member's size if it is a structured var */
-; 921  :                     if ( opnd.mbr && opnd.mbr->mem_type == MT_TYPE )
+; 918  :                     }
+; 919  :                     /* v2.07: for VARARG, get the member's size if it is a structured var */
+; 920  :                     if ( opnd.mbr && opnd.mbr->mem_type == MT_TYPE )
 
 	mov	r8, QWORD PTR opnd$[rbp-168]
 	test	r8, r8
@@ -2338,7 +2338,7 @@ $LN68@PushInvoke:
 	cmp	DWORD PTR [r8+36], 196			; 000000c4H
 	jne	SHORT $LN278@PushInvoke
 
-; 922  :                         asize = SizeFromMemtype( opnd.mbr->mem_type, opnd.Ofssize, opnd.mbr->type );
+; 921  :                         asize = SizeFromMemtype( opnd.mbr->mem_type, opnd.Ofssize, opnd.mbr->type );
 
 	movzx	edx, BYTE PTR opnd$[rbp-187]
 	mov	ecx, 196				; 000000c4H
@@ -2350,24 +2350,24 @@ $LN296@PushInvoke:
 	mov	edi, eax
 $LN278@PushInvoke:
 
-; 940  :             }
-; 941  :         }
-; 942  : 
-; 943  :         if ( curr->sym.is_vararg == TRUE )
+; 939  :             }
+; 940  :         }
+; 941  : 
+; 942  :         if ( curr->sym.is_vararg == TRUE )
 
 	movzx	eax, BYTE PTR [r15+47]
 
-; 944  :             psize = asize;
-; 945  : 
-; 946  : #ifdef DEBUG_OUT
-; 947  :         if ( opnd.sym )
-; 948  :             DebugMsg1(("PushInvokeParam(%s, %u): arg name=%s, asize=%u, amtype=%xh psize=%u\n", proc->sym.name, reqParam, opnd.sym->name, asize, opnd.mem_type, psize));
-; 949  :         else
-; 950  :             DebugMsg1(("PushInvokeParam(%s, %u): arg no name, asize=%u, amtype=%xh psize=%u\n", proc->sym.name, reqParam, asize, opnd.mem_type, psize));
-; 951  : #endif
-; 952  :         pushsize = CurrWordSize;
-; 953  : 
-; 954  :         if ( proc->sym.langtype == LANG_FASTCALL )
+; 943  :             psize = asize;
+; 944  : 
+; 945  : #ifdef DEBUG_OUT
+; 946  :         if ( opnd.sym )
+; 947  :             DebugMsg1(("PushInvokeParam(%s, %u): arg name=%s, asize=%u, amtype=%xh psize=%u\n", proc->sym.name, reqParam, opnd.sym->name, asize, opnd.mem_type, psize));
+; 948  :         else
+; 949  :             DebugMsg1(("PushInvokeParam(%s, %u): arg no name, asize=%u, amtype=%xh psize=%u\n", proc->sym.name, reqParam, asize, opnd.mem_type, psize));
+; 950  : #endif
+; 951  :         pushsize = CurrWordSize;
+; 952  : 
+; 953  :         if ( proc->sym.langtype == LANG_FASTCALL )
 
 	mov	rcx, QWORD PTR proc$[rbp-256]
 	and	al, 32					; 00000020H
@@ -2377,7 +2377,7 @@ $LN278@PushInvoke:
 	cmp	DWORD PTR [rcx+76], 7
 	jne	SHORT $LN79@PushInvoke
 
-; 955  :             if ( fastcall_tab[ModuleInfo.fctype].handleparam( proc, reqParam, curr, addr, &opnd, fullparam, r0flags ) )
+; 954  :             if ( fastcall_tab[ModuleInfo.fctype].handleparam( proc, reqParam, curr, addr, &opnd, fullparam, r0flags ) )
 
 	movsxd	rax, DWORD PTR ModuleInfo+376
 	xor	r9d, r9d
@@ -2394,16 +2394,16 @@ $LN278@PushInvoke:
 	test	eax, eax
 	jne	$LN294@PushInvoke
 
-; 956  :                 return( NOT_ERROR );
+; 955  :                 return( NOT_ERROR );
 
 	mov	edx, DWORD PTR opnd$[rbp-196]
 $LN79@PushInvoke:
 
-; 957  : 
-; 958  :         /* v2.04: this check has been moved behind the fastcall_tab() call */
-; 959  :         /* v2.11: if target is a pointer, sizes must match */
-; 960  :         //if ( asize > psize ) { /* argument's size too big? */
-; 961  :         if ( ( asize > psize ) || ( asize < psize && curr->sym.mem_type == MT_PTR ) ) {
+; 956  : 
+; 957  :         /* v2.04: this check has been moved behind the fastcall_tab() call */
+; 958  :         /* v2.11: if target is a pointer, sizes must match */
+; 959  :         //if ( asize > psize ) { /* argument's size too big? */
+; 960  :         if ( ( asize > psize ) || ( asize < psize && curr->sym.mem_type == MT_PTR ) ) {
 
 	cmp	edi, r14d
 	jg	$LN81@PushInvoke
@@ -2413,9 +2413,9 @@ $LN79@PushInvoke:
 	je	$LN81@PushInvoke
 $LN80@PushInvoke:
 
-; 965  :         }
-; 966  : 
-; 967  :         if ( ( opnd.kind == EXPR_ADDR && opnd.instr != T_OFFSET ) ||
+; 964  :         }
+; 965  : 
+; 966  :         if ( ( opnd.kind == EXPR_ADDR && opnd.instr != T_OFFSET ) ||
 
 	cmp	edx, 1
 	jne	SHORT $LN85@PushInvoke
@@ -2423,27 +2423,27 @@ $LN80@PushInvoke:
 	jne	SHORT $LN84@PushInvoke
 $LN135@PushInvoke:
 
-; 1311 : 
-; 1312 :                 /* v2.06: size check */
-; 1313 :                 if ( psize ) {
+; 1310 : 
+; 1311 :                 /* v2.06: size check */
+; 1312 :                 if ( psize ) {
 
 	test	r14d, r14d
 	je	$LN286@PushInvoke
 
-; 1314 :                     if ( opnd.kind == EXPR_FLOAT )
+; 1313 :                     if ( opnd.kind == EXPR_FLOAT )
 
 	cmp	edx, 3
 	jne	$LN193@PushInvoke
 
-; 1315 :                         asize = 4;
+; 1314 :                         asize = 4;
 
 	lea	esi, QWORD PTR [rdx+1]
 	jmp	$LN200@PushInvoke
 $LN85@PushInvoke:
 
-; 965  :         }
-; 966  : 
-; 967  :         if ( ( opnd.kind == EXPR_ADDR && opnd.instr != T_OFFSET ) ||
+; 964  :         }
+; 965  : 
+; 966  :         if ( ( opnd.kind == EXPR_ADDR && opnd.instr != T_OFFSET ) ||
 
 	cmp	edx, esi
 	jne	SHORT $LN135@PushInvoke
@@ -2451,13 +2451,13 @@ $LN85@PushInvoke:
 	je	$LN268@PushInvoke
 $LN84@PushInvoke:
 
-; 968  :             ( opnd.kind == EXPR_REG && opnd.indirect == TRUE ) ) {
-; 969  : 
-; 970  :             /* catch the case when EAX has been used for ADDR,
-; 971  :              * and is later used as addressing register!
-; 972  :              *
-; 973  :              */
-; 974  :             if ( *r0flags &&
+; 967  :             ( opnd.kind == EXPR_REG && opnd.indirect == TRUE ) ) {
+; 968  : 
+; 969  :             /* catch the case when EAX has been used for ADDR,
+; 970  :              * and is later used as addressing register!
+; 971  :              *
+; 972  :              */
+; 973  :             if ( *r0flags &&
 
 	cmp	BYTE PTR [rbx], 0
 	je	SHORT $LN86@PushInvoke
@@ -2480,37 +2480,37 @@ $LN88@PushInvoke:
 	jne	SHORT $LN86@PushInvoke
 $LN89@PushInvoke:
 
-; 975  :                 (( opnd.base_reg != NULL &&
-; 976  :                   ( opnd.base_reg->tokval == T_EAX
-; 977  : #if AMD64_SUPPORT
-; 978  :                    || opnd.base_reg->tokval == T_RAX
-; 979  : #endif
-; 980  :                   )) ||
-; 981  :                  ( opnd.idx_reg != NULL &&
-; 982  :                   ( opnd.idx_reg->tokval == T_EAX
-; 983  : #if AMD64_SUPPORT
-; 984  :                    || opnd.idx_reg->tokval == T_RAX
-; 985  : #endif
-; 986  :                  )))) {
-; 987  :                 EmitErr( REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
+; 974  :                 (( opnd.base_reg != NULL &&
+; 975  :                   ( opnd.base_reg->tokval == T_EAX
+; 976  : #if AMD64_SUPPORT
+; 977  :                    || opnd.base_reg->tokval == T_RAX
+; 978  : #endif
+; 979  :                   )) ||
+; 980  :                  ( opnd.idx_reg != NULL &&
+; 981  :                   ( opnd.idx_reg->tokval == T_EAX
+; 982  : #if AMD64_SUPPORT
+; 983  :                    || opnd.idx_reg->tokval == T_RAX
+; 984  : #endif
+; 985  :                  )))) {
+; 986  :                 EmitErr( REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
 
 	mov	ecx, 165				; 000000a5H
 	call	EmitErr
 
-; 988  :                 *r0flags = 0;
+; 987  :                 *r0flags = 0;
 
 	mov	BYTE PTR [rbx], 0
 $LN86@PushInvoke:
 
-; 989  :             }
-; 990  : 
-; 991  :             if ( curr->sym.is_vararg ) {
+; 988  :             }
+; 989  : 
+; 990  :             if ( curr->sym.is_vararg ) {
 
 	mov	rdx, QWORD PTR curr$[rbp-256]
 	test	BYTE PTR [rdx+47], 32			; 00000020H
 	je	SHORT $LN90@PushInvoke
 
-; 992  :                 size_vararg += ( asize > pushsize ? asize : pushsize );
+; 991  :                 size_vararg += ( asize > pushsize ? asize : pushsize );
 
 	cmp	edi, r15d
 	mov	eax, r15d
@@ -2518,17 +2518,17 @@ $LN86@PushInvoke:
 	add	DWORD PTR size_vararg, eax
 $LN90@PushInvoke:
 
-; 993  :                 DebugMsg1(("PushInvokeParm(%u): asize=%u added to size_vararg, now=%u\n",
-; 994  :                            reqParam, asize > pushsize ? asize : pushsize, size_vararg ));
-; 995  :             }
-; 996  :             if ( asize > pushsize ) {
+; 992  :                 DebugMsg1(("PushInvokeParm(%u): asize=%u added to size_vararg, now=%u\n",
+; 993  :                            reqParam, asize > pushsize ? asize : pushsize, size_vararg ));
+; 994  :             }
+; 995  :             if ( asize > pushsize ) {
 
 	cmp	edi, r15d
 	jle	$LN299@PushInvoke
 
-; 997  : 
-; 998  :                 short dw = T_WORD;
-; 999  :                 if (( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_386 ) {
+; 996  : 
+; 997  :                 short dw = T_WORD;
+; 998  :                 if (( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_386 ) {
 
 	mov	eax, DWORD PTR ModuleInfo+392
 	mov	esi, 207				; 000000cfH
@@ -2536,45 +2536,45 @@ $LN90@PushInvoke:
 	cmp	eax, 48					; 00000030H
 	jl	SHORT $LN93@PushInvoke
 
-; 1000 :                     pushsize = 4;
-; 1001 :                     dw = T_DWORD;
+; 999  :                     pushsize = 4;
+; 1000 :                     dw = T_DWORD;
 
 	mov	esi, 209				; 000000d1H
 	mov	r15d, 4
 $LN93@PushInvoke:
 
-; 1002 :                 }
-; 1003 : 
-; 1004 :                 /* in params like "qword ptr [eax]" the typecast
-; 1005 :                  * has to be removed */
-; 1006 :                 if ( opnd.explicit ) {
+; 1001 :                 }
+; 1002 : 
+; 1003 :                 /* in params like "qword ptr [eax]" the typecast
+; 1004 :                  * has to be removed */
+; 1005 :                 if ( opnd.explicit ) {
 
 	test	BYTE PTR opnd$[rbp-180], 2
 	je	SHORT $LN251@PushInvoke
 
-; 1007 :                     SkipTypecast( fullparam, i, tokenarray );
+; 1006 :                     SkipTypecast( fullparam, i, tokenarray );
 
 	mov	r8, r13
 	lea	rcx, QWORD PTR fullparam$[rbp-256]
 	mov	edx, r12d
 	call	SkipTypecast
 
-; 1008 :                     opnd.explicit = FALSE;
+; 1007 :                     opnd.explicit = FALSE;
 
 	and	DWORD PTR opnd$[rbp-180], -3		; fffffffdH
 $LN251@PushInvoke:
 
-; 1009 :                 }
-; 1010 : 
-; 1011 :                 while ( asize > 0 ) {
+; 1008 :                 }
+; 1009 : 
+; 1010 :                 while ( asize > 0 ) {
 
 	test	edi, edi
 	jle	$LN294@PushInvoke
 
-; 1017 :                             /* v2.05: better push a 0 word? */
-; 1018 :                             //AddLineQueueX( " pushw 0" );
-; 1019 :                           /* ASMC v1.12: dword-aligned stack in 32bit */
-; 1020 :                           if (pushsize == 4)
+; 1016 :                             /* v2.05: better push a 0 word? */
+; 1017 :                             //AddLineQueueX( " pushw 0" );
+; 1018 :                           /* ASMC v1.12: dword-aligned stack in 32bit */
+; 1019 :                           if (pushsize == 4)
 
 	mov	ebx, edi
 	movsxd	r14, r15d
@@ -2583,36 +2583,36 @@ $LN251@PushInvoke:
 	npad	1
 $LL8@PushInvoke:
 
-; 1012 : 
-; 1013 :                     if ( asize & 2 ) {
+; 1011 : 
+; 1012 :                     if ( asize & 2 ) {
 
 	test	dil, 2
 	je	SHORT $LN95@PushInvoke
 
-; 1014 : 
-; 1015 :                         /* ensure the stack remains dword-aligned in 32bit */
-; 1016 :                         if ( ModuleInfo.Ofssize > USE16 ) {
+; 1013 : 
+; 1014 :                         /* ensure the stack remains dword-aligned in 32bit */
+; 1015 :                         if ( ModuleInfo.Ofssize > USE16 ) {
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	test	al, al
 	je	SHORT $LN97@PushInvoke
 
-; 1017 :                             /* v2.05: better push a 0 word? */
-; 1018 :                             //AddLineQueueX( " pushw 0" );
-; 1019 :                           /* ASMC v1.12: dword-aligned stack in 32bit */
-; 1020 :                           if (pushsize == 4)
+; 1016 :                             /* v2.05: better push a 0 word? */
+; 1017 :                             //AddLineQueueX( " pushw 0" );
+; 1018 :                           /* ASMC v1.12: dword-aligned stack in 32bit */
+; 1019 :                           if (pushsize == 4)
 
 	cmp	r14, 4
 	jne	SHORT $LN98@PushInvoke
 
-; 1021 :                             size_vararg += 2;
+; 1020 :                             size_vararg += 2;
 
 	add	DWORD PTR size_vararg, 2
 $LN98@PushInvoke:
 
-; 1022 :                           /******/
-; 1023 : #if AMD64_SUPPORT
-; 1024 :                             AddLineQueueX( " sub %r, 2", stackreg[ModuleInfo.Ofssize] );
+; 1021 :                           /******/
+; 1022 : #if AMD64_SUPPORT
+; 1023 :                             AddLineQueueX( " sub %r, 2", stackreg[ModuleInfo.Ofssize] );
 
 	movzx	eax, al
 	lea	rcx, OFFSET FLAT:$SG11605
@@ -2620,11 +2620,11 @@ $LN98@PushInvoke:
 	call	AddLineQueueX
 $LN97@PushInvoke:
 
-; 1025 : #else
-; 1026 :                             AddLineQueueX( " sub %r, 2", T_ESP );
-; 1027 : #endif
-; 1028 :                         }
-; 1029 :                         AddLineQueueX( " push word ptr %s+%u", fullparam, NUMQUAL asize-2 );
+; 1024 : #else
+; 1025 :                             AddLineQueueX( " sub %r, 2", T_ESP );
+; 1026 : #endif
+; 1027 :                         }
+; 1028 :                         AddLineQueueX( " push word ptr %s+%u", fullparam, NUMQUAL asize-2 );
 
 	add	edi, -2
 	lea	rdx, QWORD PTR fullparam$[rbp-256]
@@ -2632,16 +2632,16 @@ $LN97@PushInvoke:
 	lea	rcx, OFFSET FLAT:$SG11606
 	call	AddLineQueueX
 
-; 1030 :                         asize -= 2;
+; 1029 :                         asize -= 2;
 
 	sub	ebx, 2
 
-; 1031 :                     } else {
+; 1030 :                     } else {
 
 	jmp	SHORT $LN96@PushInvoke
 $LN95@PushInvoke:
 
-; 1032 :                         AddLineQueueX( " push %r ptr %s+%u", dw, fullparam, NUMQUAL asize-pushsize );
+; 1031 :                         AddLineQueueX( " push %r ptr %s+%u", dw, fullparam, NUMQUAL asize-pushsize );
 
 	movsx	edx, si
 	lea	r8, QWORD PTR fullparam$[rbp-256]
@@ -2649,38 +2649,38 @@ $LN95@PushInvoke:
 	lea	rcx, OFFSET FLAT:$SG11607
 	call	AddLineQueueX
 
-; 1033 :                         asize -= pushsize;
+; 1032 :                         asize -= pushsize;
 
 	sub	edi, r15d
 	sub	ebx, r15d
 $LN96@PushInvoke:
 
-; 1009 :                 }
-; 1010 : 
-; 1011 :                 while ( asize > 0 ) {
+; 1008 :                 }
+; 1009 : 
+; 1010 :                 while ( asize > 0 ) {
 
 	test	edi, edi
 	jg	SHORT $LL8@PushInvoke
 
-; 1034 :                     }
-; 1035 :                 }
-; 1036 :                 //return( NOT_ERROR );
-; 1037 : 
-; 1038 :             } else if ( asize < pushsize ) {
+; 1033 :                     }
+; 1034 :                 }
+; 1035 :                 //return( NOT_ERROR );
+; 1036 : 
+; 1037 :             } else if ( asize < pushsize ) {
 
 	jmp	$LN294@PushInvoke
 $LN299@PushInvoke:
 	jge	$LN99@PushInvoke
 
-; 1039 : 
-; 1040 :                 if ( psize > 4 ) {
+; 1038 : 
+; 1039 :                 if ( psize > 4 ) {
 
 	cmp	r14d, 4
 	jle	SHORT $LN101@PushInvoke
 
-; 1041 :                     DebugMsg1(("PushInvokeParm(%u): error, ADDR, psize=%u, is > 4\n",
-; 1042 :                               reqParam, psize ));
-; 1043 :                     EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam+1 );
+; 1040 :                     DebugMsg1(("PushInvokeParm(%u): error, ADDR, psize=%u, is > 4\n",
+; 1041 :                               reqParam, psize ));
+; 1042 :                     EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam+1 );
 
 	mov	edx, DWORD PTR reqParam$[rbp-256]
 	mov	ecx, 145				; 00000091H
@@ -2689,9 +2689,9 @@ $LN299@PushInvoke:
 	mov	rdx, QWORD PTR curr$[rbp-256]
 $LN101@PushInvoke:
 
-; 1044 :                 }
-; 1045 :                 /* v2.11: added, use MOVSX/MOVZX if cpu >= 80386 */
-; 1046 :                 if ( asize < 4 && psize > 2 && IS_SIGNED( opnd.mem_type ) && ( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_386 ) {
+; 1043 :                 }
+; 1044 :                 /* v2.11: added, use MOVSX/MOVZX if cpu >= 80386 */
+; 1045 :                 if ( asize < 4 && psize > 2 && IS_SIGNED( opnd.mem_type ) && ( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_386 ) {
 
 	mov	r8d, DWORD PTR ModuleInfo+392
 	cmp	edi, 4
@@ -2707,7 +2707,7 @@ $LN101@PushInvoke:
 	cmp	eax, 48					; 00000030H
 	jl	SHORT $LN102@PushInvoke
 
-; 1047 :                     AddLineQueueX( " movsx %r, %s", T_EAX, fullparam );
+; 1046 :                     AddLineQueueX( " movsx %r, %s", T_EAX, fullparam );
 
 	mov	esi, 17
 	lea	r8, QWORD PTR fullparam$[rbp-256]
@@ -2715,23 +2715,23 @@ $LN101@PushInvoke:
 	lea	rcx, OFFSET FLAT:$SG11613
 	call	AddLineQueueX
 
-; 1048 :                     AddLineQueueX( " push %r", T_EAX );
+; 1047 :                     AddLineQueueX( " push %r", T_EAX );
 
 	mov	edx, esi
 	lea	rcx, OFFSET FLAT:$SG11614
 	call	AddLineQueueX
 
-; 1049 :                     *r0flags = R0_USED; /* reset R0_H_CLEARED  */
+; 1048 :                     *r0flags = R0_USED; /* reset R0_H_CLEARED  */
 
 	mov	BYTE PTR [rbx], 1
 
-; 1050 :                 } else {
+; 1049 :                 } else {
 
 	jmp	$LN294@PushInvoke
 $LN102@PushInvoke:
 
-; 1051 :                     //switch (sym->mem_type) {
-; 1052 :                     switch ( opnd.mem_type ) {
+; 1050 :                     //switch (sym->mem_type) {
+; 1051 :                     switch ( opnd.mem_type ) {
 
 	mov	ecx, DWORD PTR opnd$[rbp-192]
 	test	ecx, ecx
@@ -2743,8 +2743,8 @@ $LN102@PushInvoke:
 	cmp	ecx, 1
 	je	SHORT $LN117@PushInvoke
 
-; 1120 :                     default:
-; 1121 :                         AddLineQueueX( " push %s", fullparam );
+; 1119 :                     default:
+; 1120 :                         AddLineQueueX( " push %s", fullparam );
 
 	lea	rdx, QWORD PTR fullparam$[rbp-256]
 	lea	rcx, OFFSET FLAT:$SG11659
@@ -2752,17 +2752,17 @@ $LN102@PushInvoke:
 	jmp	$LN294@PushInvoke
 $LN117@PushInvoke:
 
-; 1089 :                         break;
-; 1090 :                     case MT_WORD:
-; 1091 :                     case MT_SWORD:
-; 1092 :                         /* pushsize is 4 here, hence it's always 32-bit code!
-; 1093 :                          * v2.04: use the Masm-compatible, non-destructive
-; 1094 :                          * PUSH if psize is 2.
-; 1095 :                          */
-; 1096 :                         //if ( Options.masm_compat_gencode ) {
-; 1097 :                         /* v2.11: don't push 0 if src operand is signed */
-; 1098 :                         //if ( Options.masm_compat_gencode || psize == 2 ) {
-; 1099 :                         if ( opnd.mem_type == MT_WORD && ( Options.masm_compat_gencode || psize == 2 )) {
+; 1088 :                         break;
+; 1089 :                     case MT_WORD:
+; 1090 :                     case MT_SWORD:
+; 1091 :                         /* pushsize is 4 here, hence it's always 32-bit code!
+; 1092 :                          * v2.04: use the Masm-compatible, non-destructive
+; 1093 :                          * PUSH if psize is 2.
+; 1094 :                          */
+; 1095 :                         //if ( Options.masm_compat_gencode ) {
+; 1096 :                         /* v2.11: don't push 0 if src operand is signed */
+; 1097 :                         //if ( Options.masm_compat_gencode || psize == 2 ) {
+; 1098 :                         if ( opnd.mem_type == MT_WORD && ( Options.masm_compat_gencode || psize == 2 )) {
 
 	cmp	DWORD PTR opnd$[rbp-192], 1
 	jne	SHORT $LN118@PushInvoke
@@ -2772,20 +2772,20 @@ $LN117@PushInvoke:
 	jne	SHORT $LN118@PushInvoke
 $LN120@PushInvoke:
 
-; 1100 :                             /* v2.05: push a 0 word if argument is VARARG
-; 1101 :                              * v2.10: push a 0 word if psize != 2
-; 1102 :                              */
-; 1103 :                             //if ( curr->sym.is_vararg )
-; 1104 :                             if ( curr->sym.is_vararg || psize != 2 )
+; 1099 :                             /* v2.05: push a 0 word if argument is VARARG
+; 1100 :                              * v2.10: push a 0 word if psize != 2
+; 1101 :                              */
+; 1102 :                             //if ( curr->sym.is_vararg )
+; 1103 :                             if ( curr->sym.is_vararg || psize != 2 )
 
 	test	BYTE PTR [rdx+47], 32			; 00000020H
 	jne	SHORT $LN123@PushInvoke
 	cmp	r14d, esi
 	jne	SHORT $LN123@PushInvoke
 
-; 1106 :                             else {
-; 1107 : #if AMD64_SUPPORT
-; 1108 :                                 AddLineQueueX( " sub %r, 2", stackreg[ModuleInfo.Ofssize] );
+; 1105 :                             else {
+; 1106 : #if AMD64_SUPPORT
+; 1107 :                                 AddLineQueueX( " sub %r, 2", stackreg[ModuleInfo.Ofssize] );
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	lea	r12, OFFSET FLAT:__ImageBase
@@ -2795,28 +2795,28 @@ $LN120@PushInvoke:
 	jmp	SHORT $LN122@PushInvoke
 $LN123@PushInvoke:
 
-; 1105 :                                 AddLineQueueX( " pushw 0" );
+; 1104 :                                 AddLineQueueX( " pushw 0" );
 
 	lea	rcx, OFFSET FLAT:$SG11651
 	call	AddLineQueueX
 $LN122@PushInvoke:
 
-; 1109 : #else
-; 1110 :                                 AddLineQueueX( " sub %r, 2", T_ESP );
-; 1111 : #endif
-; 1112 :                             }
-; 1113 :                             AddLineQueueX( " push %s", fullparam );
+; 1108 : #else
+; 1109 :                                 AddLineQueueX( " sub %r, 2", T_ESP );
+; 1110 : #endif
+; 1111 :                             }
+; 1112 :                             AddLineQueueX( " push %s", fullparam );
 
 	lea	rdx, QWORD PTR fullparam$[rbp-256]
 	lea	rcx, OFFSET FLAT:$SG11653
 	call	AddLineQueueX
 
-; 1114 :                         } else {
+; 1113 :                         } else {
 
 	jmp	$LN294@PushInvoke
 $LN118@PushInvoke:
 
-; 1115 :                             AddLineQueueX( " mov%sx %r, %s", opnd.mem_type == MT_WORD ? "z" : "s", T_EAX, fullparam );
+; 1114 :                             AddLineQueueX( " mov%sx %r, %s", opnd.mem_type == MT_WORD ? "z" : "s", T_EAX, fullparam );
 
 	cmp	DWORD PTR opnd$[rbp-192], 1
 	lea	rax, OFFSET FLAT:$SG11654
@@ -2828,88 +2828,88 @@ $LN118@PushInvoke:
 	lea	rcx, OFFSET FLAT:$SG11656
 	call	AddLineQueueX
 
-; 1116 :                             AddLineQueueX( " push %r", T_EAX );
+; 1115 :                             AddLineQueueX( " push %r", T_EAX );
 
 	mov	edx, esi
 	lea	rcx, OFFSET FLAT:$SG11657
 	call	AddLineQueueX
 
-; 1117 :                             *r0flags = R0_USED; /* reset R0_H_CLEARED  */
+; 1116 :                             *r0flags = R0_USED; /* reset R0_H_CLEARED  */
 
 	mov	BYTE PTR [rbx], 1
 
-; 1118 :                         }
-; 1119 :                         break;
+; 1117 :                         }
+; 1118 :                         break;
 
 	jmp	$LN294@PushInvoke
 $LN104@PushInvoke:
 
-; 1053 :                     case MT_BYTE:
-; 1054 :                     case MT_SBYTE:
-; 1055 :                         if ( psize == 1 && curr->sym.is_vararg == FALSE ) {
+; 1052 :                     case MT_BYTE:
+; 1053 :                     case MT_SBYTE:
+; 1054 :                         if ( psize == 1 && curr->sym.is_vararg == FALSE ) {
 
 	cmp	r14d, 1
 	jne	SHORT $LN105@PushInvoke
 	test	BYTE PTR [rdx+47], 32			; 00000020H
 	jne	SHORT $LN105@PushInvoke
 
-; 1056 :                             AddLineQueueX( " mov %r, %s", T_AL, fullparam );
+; 1055 :                             AddLineQueueX( " mov %r, %s", T_AL, fullparam );
 
 	lea	r8, QWORD PTR fullparam$[rbp-256]
 	mov	edx, r14d
 	lea	rcx, OFFSET FLAT:$SG11618
 	call	AddLineQueueX
 
-; 1057 :                             AddLineQueueX( " push %r", regax[ModuleInfo.Ofssize] );
+; 1056 :                             AddLineQueueX( " push %r", regax[ModuleInfo.Ofssize] );
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	lea	r12, OFFSET FLAT:__ImageBase
 	lea	rcx, OFFSET FLAT:$SG11619
 	mov	edx, DWORD PTR regax[r12+rax*4]
 
-; 1086 :                             AddLineQueueX( " push %r", T_EAX );
+; 1085 :                             AddLineQueueX( " push %r", T_EAX );
 
 	call	AddLineQueueX
 
-; 1087 :                         }
-; 1088 :                         *r0flags |= R0_USED;
+; 1086 :                         }
+; 1087 :                         *r0flags |= R0_USED;
 
 	or	BYTE PTR [rbx], r14b
 
-; 1122 :                     }
-; 1123 :                 }
-; 1124 :             } else { /* asize == pushsize */
+; 1121 :                     }
+; 1122 :                 }
+; 1123 :             } else { /* asize == pushsize */
 
 	jmp	$LN294@PushInvoke
 $LN105@PushInvoke:
 
-; 1058 :                         } else if ( pushsize == 2 ) { /* 16-bit code? */
+; 1057 :                         } else if ( pushsize == 2 ) { /* 16-bit code? */
 
 	cmp	r15d, esi
 	jne	$LN107@PushInvoke
 
-; 1059 :                             if ( opnd.mem_type == MT_BYTE ) {
+; 1058 :                             if ( opnd.mem_type == MT_BYTE ) {
 
 	cmp	DWORD PTR opnd$[rbp-192], 0
 	jne	$LN109@PushInvoke
 
-; 1060 :                                 if ( psize == 4 )
+; 1059 :                                 if ( psize == 4 )
 
 	cmp	r14d, 4
 	jne	SHORT $LN113@PushInvoke
 
-; 1061 :                                     if ( ( ModuleInfo.curr_cpu & P_CPU_MASK ) < P_186 )  {
+; 1060 :                                     if ( ( ModuleInfo.curr_cpu & P_CPU_MASK ) < P_186 )  {
 
 	and	r8d, 240				; 000000f0H
 	cmp	r8d, 16
 	jge	SHORT $LN112@PushInvoke
 
-; 1062 :                                         if ( !(*r0flags & R0_X_CLEARED ) )
+; 1061 :                                         if ( !(*r0flags & R0_X_CLEARED ) )
 
 	test	BYTE PTR [rbx], r14b
 	jne	SHORT $LN114@PushInvoke
 
-; 1063 :                                             AddLineQueueX( " xor %r, %r", T_AX, T_AX );
+; 1062 :                                             AddLineQueueX( " xor %r, %r", T_AX, T_AX );
 
 	mov	edx, 9
 	lea	rcx, OFFSET FLAT:$SG11628
@@ -2917,134 +2917,134 @@ $LN105@PushInvoke:
 	call	AddLineQueueX
 $LN114@PushInvoke:
 
-; 1064 :                                         *r0flags |= ( R0_X_CLEARED | R0_H_CLEARED );
+; 1063 :                                         *r0flags |= ( R0_X_CLEARED | R0_H_CLEARED );
 
 	or	BYTE PTR [rbx], 6
 
-; 1065 :                                         AddLineQueueX( " push %r", T_AX );
+; 1064 :                                         AddLineQueueX( " push %r", T_AX );
 
 	lea	rcx, OFFSET FLAT:$SG11629
 	mov	edx, 9
 	call	AddLineQueueX
 
-; 1066 :                                     } else
+; 1065 :                                     } else
 
 	jmp	SHORT $LN113@PushInvoke
 $LN112@PushInvoke:
 
-; 1067 :                                         AddLineQueue( " push 0" );
+; 1066 :                                         AddLineQueue( " push 0" );
 
 	lea	rcx, OFFSET FLAT:$SG11630
 	call	AddLineQueue
 $LN113@PushInvoke:
 
-; 1068 :                                 AddLineQueueX( " mov %r, %s", T_AL, fullparam );
+; 1067 :                                 AddLineQueueX( " mov %r, %s", T_AL, fullparam );
 
 	lea	r8, QWORD PTR fullparam$[rbp-256]
 	mov	edx, 1
 	lea	rcx, OFFSET FLAT:$SG11631
 	call	AddLineQueueX
 
-; 1069 :                                 if ( !( *r0flags & R0_H_CLEARED )) {
+; 1068 :                                 if ( !( *r0flags & R0_H_CLEARED )) {
 
 	test	BYTE PTR [rbx], sil
 	jne	SHORT $LN116@PushInvoke
 
-; 1070 :                                     AddLineQueueX( " mov %r, 0", T_AH );
+; 1069 :                                     AddLineQueueX( " mov %r, 0", T_AH );
 
 	mov	edx, 5
 	lea	rcx, OFFSET FLAT:$SG11633
 	call	AddLineQueueX
 
-; 1071 :                                     *r0flags |= R0_H_CLEARED;
+; 1070 :                                     *r0flags |= R0_H_CLEARED;
 
 	or	BYTE PTR [rbx], sil
 
-; 1081 :                                 }
-; 1082 :                             }
-; 1083 :                             AddLineQueueX( " push %r", T_AX );
+; 1080 :                                 }
+; 1081 :                             }
+; 1082 :                             AddLineQueueX( " push %r", T_AX );
 
 	lea	rcx, OFFSET FLAT:$SG11639
 	mov	edx, 9
 
-; 1086 :                             AddLineQueueX( " push %r", T_EAX );
+; 1085 :                             AddLineQueueX( " push %r", T_EAX );
 
 	call	AddLineQueueX
 
-; 1087 :                         }
-; 1088 :                         *r0flags |= R0_USED;
+; 1086 :                         }
+; 1087 :                         *r0flags |= R0_USED;
 
 	or	BYTE PTR [rbx], 1
 
-; 1122 :                     }
-; 1123 :                 }
-; 1124 :             } else { /* asize == pushsize */
+; 1121 :                     }
+; 1122 :                 }
+; 1123 :             } else { /* asize == pushsize */
 
 	jmp	$LN294@PushInvoke
 $LN109@PushInvoke:
 
-; 1072 :                                 }
-; 1073 :                             } else {
-; 1074 :                                 AddLineQueueX( " mov %r, %s", T_AL, fullparam );
+; 1071 :                                 }
+; 1072 :                             } else {
+; 1073 :                                 AddLineQueueX( " mov %r, %s", T_AL, fullparam );
 
 	lea	r8, QWORD PTR fullparam$[rbp-256]
 	mov	edx, 1
 	lea	rcx, OFFSET FLAT:$SG11634
 	call	AddLineQueueX
 
-; 1075 :                                 *r0flags = 0; /* reset AH_CLEARED */
-; 1076 :                                 AddLineQueue( " cbw" );
+; 1074 :                                 *r0flags = 0; /* reset AH_CLEARED */
+; 1075 :                                 AddLineQueue( " cbw" );
 
 	lea	rcx, OFFSET FLAT:$SG11635
 	mov	BYTE PTR [rbx], 0
 	call	AddLineQueue
 
-; 1077 :                                 if ( psize == 4 ) {
+; 1076 :                                 if ( psize == 4 ) {
 
 	cmp	r14d, 4
 	jne	SHORT $LN116@PushInvoke
 
-; 1078 :                                     AddLineQueue( " cwd" );
+; 1077 :                                     AddLineQueue( " cwd" );
 
 	lea	rcx, OFFSET FLAT:$SG11637
 	call	AddLineQueue
 
-; 1079 :                                     AddLineQueueX( " push %r", T_DX );
+; 1078 :                                     AddLineQueueX( " push %r", T_DX );
 
 	lea	edx, QWORD PTR [r14+7]
 	lea	rcx, OFFSET FLAT:$SG11638
 	call	AddLineQueueX
 
-; 1080 :                                     *r0flags |= R2_USED;
+; 1079 :                                     *r0flags |= R2_USED;
 
 	or	BYTE PTR [rbx], 8
 $LN116@PushInvoke:
 
-; 1081 :                                 }
-; 1082 :                             }
-; 1083 :                             AddLineQueueX( " push %r", T_AX );
+; 1080 :                                 }
+; 1081 :                             }
+; 1082 :                             AddLineQueueX( " push %r", T_AX );
 
 	mov	edx, 9
 	lea	rcx, OFFSET FLAT:$SG11639
 
-; 1086 :                             AddLineQueueX( " push %r", T_EAX );
+; 1085 :                             AddLineQueueX( " push %r", T_EAX );
 
 	call	AddLineQueueX
 
-; 1087 :                         }
-; 1088 :                         *r0flags |= R0_USED;
+; 1086 :                         }
+; 1087 :                         *r0flags |= R0_USED;
 
 	or	BYTE PTR [rbx], 1
 
-; 1122 :                     }
-; 1123 :                 }
-; 1124 :             } else { /* asize == pushsize */
+; 1121 :                     }
+; 1122 :                 }
+; 1123 :             } else { /* asize == pushsize */
 
 	jmp	$LN294@PushInvoke
 $LN107@PushInvoke:
 
-; 1084 :                         } else {
-; 1085 :                             AddLineQueueX( " mov%sx %r, %s", opnd.mem_type == MT_BYTE ? "z" : "s", T_EAX, fullparam );
+; 1083 :                         } else {
+; 1084 :                             AddLineQueueX( " mov%sx %r, %s", opnd.mem_type == MT_BYTE ? "z" : "s", T_EAX, fullparam );
 
 	cmp	DWORD PTR opnd$[rbp-192], 0
 	lea	rax, OFFSET FLAT:$SG11640
@@ -3056,27 +3056,27 @@ $LN107@PushInvoke:
 	lea	rcx, OFFSET FLAT:$SG11642
 	call	AddLineQueueX
 
-; 1086 :                             AddLineQueueX( " push %r", T_EAX );
+; 1085 :                             AddLineQueueX( " push %r", T_EAX );
 
 	mov	edx, esi
 	lea	rcx, OFFSET FLAT:$SG11643
 	call	AddLineQueueX
 
-; 1087 :                         }
-; 1088 :                         *r0flags |= R0_USED;
+; 1086 :                         }
+; 1087 :                         *r0flags |= R0_USED;
 
 	or	BYTE PTR [rbx], 1
 
-; 1122 :                     }
-; 1123 :                 }
-; 1124 :             } else { /* asize == pushsize */
+; 1121 :                     }
+; 1122 :                 }
+; 1123 :             } else { /* asize == pushsize */
 
 	jmp	$LN294@PushInvoke
 $LN99@PushInvoke:
 
-; 1125 : 
-; 1126 :                 /* v2.11: changed */
-; 1127 :                 if ( IS_SIGNED( opnd.mem_type ) && psize > asize ) {
+; 1124 : 
+; 1125 :                 /* v2.11: changed */
+; 1126 :                 if ( IS_SIGNED( opnd.mem_type ) && psize > asize ) {
 
 	mov	eax, DWORD PTR opnd$[rbp-192]
 	and	al, -64					; ffffffffffffffc0H
@@ -3085,7 +3085,7 @@ $LN99@PushInvoke:
 	cmp	r14d, edi
 	jle	$LN125@PushInvoke
 
-; 1128 :                     if ( psize > 2 && (( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_386 ) ) {
+; 1127 :                     if ( psize > 2 && (( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_386 ) ) {
 
 	cmp	r14d, esi
 	jle	SHORT $LN127@PushInvoke
@@ -3094,7 +3094,7 @@ $LN99@PushInvoke:
 	cmp	eax, 48					; 00000030H
 	jl	SHORT $LN127@PushInvoke
 
-; 1129 :                         AddLineQueueX( " movsx %r, %s", T_EAX, fullparam );
+; 1128 :                         AddLineQueueX( " movsx %r, %s", T_EAX, fullparam );
 
 	mov	esi, 17
 	lea	r8, QWORD PTR fullparam$[rbp-256]
@@ -3102,89 +3102,89 @@ $LN99@PushInvoke:
 	lea	rcx, OFFSET FLAT:$SG11664
 	call	AddLineQueueX
 
-; 1130 :                         AddLineQueueX( " push %r", T_EAX );
+; 1129 :                         AddLineQueueX( " push %r", T_EAX );
 
 	mov	edx, esi
 	lea	rcx, OFFSET FLAT:$SG11665
 	call	AddLineQueueX
 
-; 1131 :                         *r0flags = R0_USED; /* reset R0_H_CLEARED  */
+; 1130 :                         *r0flags = R0_USED; /* reset R0_H_CLEARED  */
 
 	mov	BYTE PTR [rbx], 1
 	jmp	$LN294@PushInvoke
 $LN127@PushInvoke:
 
-; 1132 :                     } else if ( pushsize == 2 && psize > 2 ) {
+; 1131 :                     } else if ( pushsize == 2 && psize > 2 ) {
 
 	cmp	r15d, esi
 	jne	SHORT $LN129@PushInvoke
 	cmp	r14d, esi
 	jle	SHORT $LN129@PushInvoke
 
-; 1133 :                         AddLineQueueX( " mov %r, %s", T_AX, fullparam );
+; 1132 :                         AddLineQueueX( " mov %r, %s", T_AX, fullparam );
 
 	lea	r8, QWORD PTR fullparam$[rbp-256]
 	mov	edx, 9
 	lea	rcx, OFFSET FLAT:$SG11668
 	call	AddLineQueueX
 
-; 1134 :                         AddLineQueueX( " cwd" );
+; 1133 :                         AddLineQueueX( " cwd" );
 
 	lea	rcx, OFFSET FLAT:$SG11669
 	call	AddLineQueueX
 
-; 1135 :                         AddLineQueueX( " push %r", T_DX );
+; 1134 :                         AddLineQueueX( " push %r", T_DX );
 
 	mov	edx, 11
 	lea	rcx, OFFSET FLAT:$SG11670
 	call	AddLineQueueX
 
-; 1136 :                         AddLineQueueX( " push %r", T_AX );
+; 1135 :                         AddLineQueueX( " push %r", T_AX );
 
 	mov	edx, 9
 	lea	rcx, OFFSET FLAT:$SG11671
 	call	AddLineQueueX
 
-; 1137 :                         *r0flags = R0_USED | R2_USED;
+; 1136 :                         *r0flags = R0_USED | R2_USED;
 
 	mov	BYTE PTR [rbx], 9
 
-; 1138 :                     } else
+; 1137 :                     } else
 
 	jmp	$LN294@PushInvoke
 $LN129@PushInvoke:
 
-; 1139 :                         AddLineQueueX( " push %s", fullparam );
+; 1138 :                         AddLineQueueX( " push %s", fullparam );
 
 	lea	rdx, QWORD PTR fullparam$[rbp-256]
 	lea	rcx, OFFSET FLAT:$SG11672
 	call	AddLineQueueX
 
-; 1140 :                 } else {
+; 1139 :                 } else {
 
 	jmp	$LN294@PushInvoke
 $LN125@PushInvoke:
 
-; 1141 :                     if ( pushsize == 2 && psize > 2 ) {
+; 1140 :                     if ( pushsize == 2 && psize > 2 ) {
 
 	cmp	r15d, esi
 	jne	SHORT $LN133@PushInvoke
 	cmp	r14d, esi
 	jle	SHORT $LN133@PushInvoke
 
-; 1142 :                         if ( ( ModuleInfo.curr_cpu & P_CPU_MASK ) < P_186 )  {
+; 1141 :                         if ( ( ModuleInfo.curr_cpu & P_CPU_MASK ) < P_186 )  {
 
 	mov	eax, DWORD PTR ModuleInfo+392
 	and	eax, 240				; 000000f0H
 	cmp	eax, 16
 	jge	SHORT $LN132@PushInvoke
 
-; 1143 :                             if ( !(*r0flags & R0_X_CLEARED ) )
+; 1142 :                             if ( !(*r0flags & R0_X_CLEARED ) )
 
 	test	BYTE PTR [rbx], 4
 	jne	SHORT $LN134@PushInvoke
 
-; 1144 :                                 AddLineQueueX( " xor %r, %r", T_AX, T_AX );
+; 1143 :                                 AddLineQueueX( " xor %r, %r", T_AX, T_AX );
 
 	mov	edx, 9
 	lea	rcx, OFFSET FLAT:$SG11677
@@ -3192,50 +3192,50 @@ $LN125@PushInvoke:
 	call	AddLineQueueX
 $LN134@PushInvoke:
 
-; 1145 :                             AddLineQueueX( " push %r", T_AX );
+; 1144 :                             AddLineQueueX( " push %r", T_AX );
 
 	mov	edx, 9
 	lea	rcx, OFFSET FLAT:$SG11678
 	call	AddLineQueueX
 
-; 1146 :                             *r0flags |= ( R0_USED | R0_X_CLEARED | R0_H_CLEARED );
+; 1145 :                             *r0flags |= ( R0_USED | R0_X_CLEARED | R0_H_CLEARED );
 
 	or	BYTE PTR [rbx], 7
 
-; 1147 :                         } else
+; 1146 :                         } else
 
 	jmp	SHORT $LN133@PushInvoke
 $LN132@PushInvoke:
 
-; 1148 :                             AddLineQueueX( " pushw 0" );
+; 1147 :                             AddLineQueueX( " pushw 0" );
 
 	lea	rcx, OFFSET FLAT:$SG11679
 	call	AddLineQueueX
 $LN133@PushInvoke:
 
-; 1149 :                     }
-; 1150 :                     AddLineQueueX( " push %s", fullparam );
+; 1148 :                     }
+; 1149 :                     AddLineQueueX( " push %s", fullparam );
 
 	lea	rdx, QWORD PTR fullparam$[rbp-256]
 	lea	rcx, OFFSET FLAT:$SG11680
 	call	AddLineQueueX
 
-; 1151 :                 }
-; 1152 :             }
-; 1153 : 
-; 1154 :         } else { /* the parameter is a register or constant value! */
+; 1150 :                 }
+; 1151 :             }
+; 1152 : 
+; 1153 :         } else { /* the parameter is a register or constant value! */
 
 	jmp	$LN294@PushInvoke
 $LN268@PushInvoke:
 
-; 1155 : 
-; 1156 :             //char is_r0 = FALSE;
-; 1157 :             if ( opnd.kind == EXPR_REG ) {
-; 1158 :                 int reg = opnd.base_reg->tokval;
-; 1159 :                 unsigned optype = GetValueSp( reg );
-; 1160 : 
-; 1161 :                 /* v2.11 */
-; 1162 :                 if ( curr->sym.is_vararg == TRUE && psize < pushsize )
+; 1154 : 
+; 1155 :             //char is_r0 = FALSE;
+; 1156 :             if ( opnd.kind == EXPR_REG ) {
+; 1157 :                 int reg = opnd.base_reg->tokval;
+; 1158 :                 unsigned optype = GetValueSp( reg );
+; 1159 : 
+; 1160 :                 /* v2.11 */
+; 1161 :                 if ( curr->sym.is_vararg == TRUE && psize < pushsize )
 
 	test	BYTE PTR [r8+47], 32			; 00000020H
 	lea	r12, OFFSET FLAT:__ImageBase
@@ -3250,22 +3250,22 @@ $LN268@PushInvoke:
 	cmovl	r14d, r15d
 $LN137@PushInvoke:
 
-; 1163 :                     psize = pushsize;
-; 1164 : 
-; 1165 :                 /* v2.06: check if register is valid to be pushed.
-; 1166 :                  * ST(n), MMn, XMMn, YMMn and special registers are NOT valid!
-; 1167 :                  */
-; 1168 :                 if ( optype & ( OP_STI | OP_MMX | OP_XMM
+; 1162 :                     psize = pushsize;
+; 1163 : 
+; 1164 :                 /* v2.06: check if register is valid to be pushed.
+; 1165 :                  * ST(n), MMn, XMMn, YMMn and special registers are NOT valid!
+; 1166 :                  */
+; 1167 :                 if ( optype & ( OP_STI | OP_MMX | OP_XMM
 
 	test	r13d, 102576				; 000190b0H
 	je	SHORT $LN138@PushInvoke
 
-; 1169 : #if AVXSUPP
-; 1170 :                                | OP_YMM
-; 1171 : #endif
-; 1172 :                                | OP_RSPEC ) ) {
-; 1173 : 
-; 1174 :                     return( EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam+1 ) );
+; 1168 : #if AVXSUPP
+; 1169 :                                | OP_YMM
+; 1170 : #endif
+; 1171 :                                | OP_RSPEC ) ) {
+; 1172 : 
+; 1173 :                     return( EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam+1 ) );
 
 	mov	edx, DWORD PTR reqParam$[rbp-256]
 	mov	ecx, 145				; 00000091H
@@ -3274,9 +3274,9 @@ $LN137@PushInvoke:
 	jmp	$LN291@PushInvoke
 $LN138@PushInvoke:
 
-; 1175 :                 }
-; 1176 : 
-; 1177 :                 if ( ( *r0flags & R0_USED ) && ( reg == T_AH || ( optype & OP_A ) ) ) {
+; 1174 :                 }
+; 1175 : 
+; 1176 :                 if ( ( *r0flags & R0_USED ) && ( reg == T_AH || ( optype & OP_A ) ) ) {
 
 	movzx	eax, BYTE PTR [rbx]
 	test	al, 1
@@ -3287,18 +3287,18 @@ $LN138@PushInvoke:
 	jae	SHORT $LN139@PushInvoke
 $LN141@PushInvoke:
 
-; 1178 :                     EmitErr( REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
+; 1177 :                     EmitErr( REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
 
 	mov	ecx, 165				; 000000a5H
 	call	EmitErr
 
-; 1179 :                     *r0flags &= ~R0_USED;
+; 1178 :                     *r0flags &= ~R0_USED;
 
 	and	BYTE PTR [rbx], 254			; 000000feH
 	jmp	SHORT $LN142@PushInvoke
 $LN139@PushInvoke:
 
-; 1180 :                 } else if ( ( *r0flags & R2_USED ) && ( reg == T_DH || GetRegNo( reg ) == 2 ) ) {
+; 1179 :                 } else if ( ( *r0flags & R2_USED ) && ( reg == T_DH || GetRegNo( reg ) == 2 ) ) {
 
 	test	al, 8
 	je	SHORT $LN142@PushInvoke
@@ -3308,20 +3308,20 @@ $LN139@PushInvoke:
 	jne	SHORT $LN142@PushInvoke
 $LN143@PushInvoke:
 
-; 1181 :                     EmitErr( REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
+; 1180 :                     EmitErr( REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
 
 	mov	ecx, 165				; 000000a5H
 	call	EmitErr
 
-; 1182 :                     *r0flags &= ~R2_USED;
+; 1181 :                     *r0flags &= ~R2_USED;
 
 	and	BYTE PTR [rbx], 247			; 000000f7H
 $LN142@PushInvoke:
 
-; 1183 :                 }
-; 1184 :                 /* v2.11: use target's "pushsize", not the current one */
-; 1185 :                 //if ( asize != psize || asize < pushsize ) {
-; 1186 :                 if ( asize != psize || asize < ( 2 << Ofssize ) ) {
+; 1182 :                 }
+; 1183 :                 /* v2.11: use target's "pushsize", not the current one */
+; 1184 :                 //if ( asize != psize || asize < pushsize ) {
+; 1185 :                 if ( asize != psize || asize < ( 2 << Ofssize ) ) {
 
 	cmp	edi, r14d
 	jne	SHORT $LN145@PushInvoke
@@ -3329,16 +3329,16 @@ $LN142@PushInvoke:
 	jge	$LN189@PushInvoke
 $LN145@PushInvoke:
 
-; 1187 :                     /* register size doesn't match the needed parameter size.
-; 1188 :                      */
-; 1189 :                     if ( psize > 4 ) {
+; 1186 :                     /* register size doesn't match the needed parameter size.
+; 1187 :                      */
+; 1188 :                     if ( psize > 4 ) {
 
 	cmp	r14d, 4
 	jle	SHORT $LN146@PushInvoke
 
-; 1190 :                         DebugMsg1(("PushInvokeParm(%u): error, REG, asize=%u, psize=%u, pushsize=%u\n",
-; 1191 :                                   reqParam, asize, psize, pushsize ));
-; 1192 :                         EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam+1 );
+; 1189 :                         DebugMsg1(("PushInvokeParm(%u): error, REG, asize=%u, psize=%u, pushsize=%u\n",
+; 1190 :                                   reqParam, asize, psize, pushsize ));
+; 1191 :                         EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam+1 );
 
 	mov	edx, DWORD PTR reqParam$[rbp-256]
 	mov	ecx, 145				; 00000091H
@@ -3346,9 +3346,9 @@ $LN145@PushInvoke:
 	call	EmitErr
 $LN146@PushInvoke:
 
-; 1193 :                     }
-; 1194 : 
-; 1195 :                     if ( asize <= 2 && ( psize == 4 || pushsize == 4 ) ) {
+; 1192 :                     }
+; 1193 : 
+; 1194 :                     if ( asize <= 2 && ( psize == 4 || pushsize == 4 ) ) {
 
 	cmp	edi, 2
 	jg	$LN164@PushInvoke
@@ -3358,7 +3358,7 @@ $LN146@PushInvoke:
 	jne	$LN164@PushInvoke
 $LN148@PushInvoke:
 
-; 1196 :                         if (( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_386 && asize == psize ) {
+; 1195 :                         if (( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_386 && asize == psize ) {
 
 	mov	ecx, DWORD PTR ModuleInfo+392
 	mov	eax, ecx
@@ -3368,55 +3368,55 @@ $LN148@PushInvoke:
 	cmp	edi, r14d
 	jne	SHORT $LN149@PushInvoke
 
-; 1197 :                             if ( asize == 2 )
+; 1196 :                             if ( asize == 2 )
 
 	cmp	edi, 2
 	jne	SHORT $LN151@PushInvoke
 $LN188@PushInvoke:
 
-; 1198 :                                 reg = reg - T_AX + T_EAX;
+; 1197 :                                 reg = reg - T_AX + T_EAX;
 
 	add	esi, 8
 	jmp	$LN189@PushInvoke
 $LN151@PushInvoke:
 
-; 1199 :                             else {
-; 1200 :                                 /* v2.11: hibyte registers AH, BH, CH, DH ( no 4-7 ) needs special handling */
-; 1201 :                                 if ( reg < T_AH )
+; 1198 :                             else {
+; 1199 :                                 /* v2.11: hibyte registers AH, BH, CH, DH ( no 4-7 ) needs special handling */
+; 1200 :                                 if ( reg < T_AH )
 
 	cmp	esi, 5
 	jge	SHORT $LN153@PushInvoke
 
-; 1202 :                                     reg = reg - T_AL + T_EAX;
+; 1201 :                                     reg = reg - T_AL + T_EAX;
 
 	add	esi, 16
 	jmp	$LN189@PushInvoke
 $LN153@PushInvoke:
 
-; 1203 :                                 else {
-; 1204 :                                     AddLineQueueX( " mov %r, %s", T_AL, fullparam );
+; 1202 :                                 else {
+; 1203 :                                     AddLineQueueX( " mov %r, %s", T_AL, fullparam );
 
 	lea	r8, QWORD PTR fullparam$[rbp-256]
 	mov	edx, 1
 	lea	rcx, OFFSET FLAT:$SG11701
 	call	AddLineQueueX
 
-; 1205 :                                     *r0flags |= R0_USED;
+; 1204 :                                     *r0flags |= R0_USED;
 
 	or	BYTE PTR [rbx], 1
 
-; 1206 :                                     reg = T_EAX;
+; 1205 :                                     reg = T_EAX;
 
 	mov	esi, 17
 
-; 1207 :                                 }
-; 1208 :                                 asize = 2; /* done */
-; 1209 :                             }
+; 1206 :                                 }
+; 1207 :                                 asize = 2; /* done */
+; 1208 :                             }
 
 	jmp	$LN189@PushInvoke
 $LN149@PushInvoke:
 
-; 1210 :                         } else if ( IS_SIGNED( opnd.mem_type ) && pushsize < 4 ) {
+; 1209 :                         } else if ( IS_SIGNED( opnd.mem_type ) && pushsize < 4 ) {
 
 	mov	edx, DWORD PTR opnd$[rbp-192]
 	and	edx, 192				; 000000c0H
@@ -3425,14 +3425,14 @@ $LN149@PushInvoke:
 	cmp	r15d, 4
 	jge	$LN155@PushInvoke
 
-; 1211 : 
-; 1212 :                             /* psize is 4 in this branch */
-; 1213 :                             if ( ( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_386 ) {
+; 1210 : 
+; 1211 :                             /* psize is 4 in this branch */
+; 1212 :                             if ( ( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_386 ) {
 
 	cmp	eax, 48					; 00000030H
 	jl	SHORT $LN157@PushInvoke
 
-; 1214 :                                 AddLineQueueX( " movsx %r, %s", T_EAX, fullparam );
+; 1213 :                                 AddLineQueueX( " movsx %r, %s", T_EAX, fullparam );
 
 	mov	esi, 17
 	lea	r8, QWORD PTR fullparam$[rbp-256]
@@ -3440,31 +3440,31 @@ $LN149@PushInvoke:
 	lea	rcx, OFFSET FLAT:$SG11706
 	call	AddLineQueueX
 
-; 1215 :                                 *r0flags = R0_USED;
+; 1214 :                                 *r0flags = R0_USED;
 
 	mov	BYTE PTR [rbx], 1
 
-; 1216 :                                 reg = T_EAX;
-; 1217 :                             } else {
+; 1215 :                                 reg = T_EAX;
+; 1216 :                             } else {
 
 	jmp	$LN189@PushInvoke
 $LN157@PushInvoke:
 
-; 1218 :                                 *r0flags = R0_USED | R2_USED;
+; 1217 :                                 *r0flags = R0_USED | R2_USED;
 
 	mov	BYTE PTR [rbx], 9
 
-; 1219 :                                 if ( asize == 1 ) {
+; 1218 :                                 if ( asize == 1 ) {
 
 	cmp	edi, 1
 	jne	SHORT $LN159@PushInvoke
 
-; 1220 :                                     if ( reg != T_AL )
+; 1219 :                                     if ( reg != T_AL )
 
 	cmp	esi, edi
 	je	SHORT $LN161@PushInvoke
 
-; 1221 :                                         AddLineQueueX( " mov %r, %s", T_AL, fullparam );
+; 1220 :                                         AddLineQueueX( " mov %r, %s", T_AL, fullparam );
 
 	lea	r8, QWORD PTR fullparam$[rbp-256]
 	mov	edx, edi
@@ -3472,19 +3472,19 @@ $LN157@PushInvoke:
 	call	AddLineQueueX
 $LN161@PushInvoke:
 
-; 1222 :                                     AddLineQueue( " cbw" );
+; 1221 :                                     AddLineQueue( " cbw" );
 
 	lea	rcx, OFFSET FLAT:$SG11711
 	call	AddLineQueue
 	jmp	SHORT $LN162@PushInvoke
 $LN159@PushInvoke:
 
-; 1223 :                                 } else if ( reg != T_AX )
+; 1222 :                                 } else if ( reg != T_AX )
 
 	cmp	esi, 9
 	je	SHORT $LN162@PushInvoke
 
-; 1224 :                                     AddLineQueueX( " mov %r, %s", T_AX, fullparam );
+; 1223 :                                     AddLineQueueX( " mov %r, %s", T_AX, fullparam );
 
 	lea	r8, QWORD PTR fullparam$[rbp-256]
 	mov	edx, 9
@@ -3492,52 +3492,52 @@ $LN159@PushInvoke:
 	call	AddLineQueueX
 $LN162@PushInvoke:
 
-; 1225 :                                 AddLineQueue( " cwd" );
+; 1224 :                                 AddLineQueue( " cwd" );
 
 	lea	rcx, OFFSET FLAT:$SG11714
 	call	AddLineQueue
 
-; 1226 :                                 AddLineQueueX( " push %r", T_DX );
+; 1225 :                                 AddLineQueueX( " push %r", T_DX );
 
 	mov	edx, 11
 	lea	rcx, OFFSET FLAT:$SG11715
 	call	AddLineQueueX
 
-; 1227 :                                 reg = T_AX;
+; 1226 :                                 reg = T_AX;
 
 	mov	esi, 9
 
-; 1228 :                             }
-; 1229 :                             asize = 2; /* done */
+; 1227 :                             }
+; 1228 :                             asize = 2; /* done */
 
 	jmp	$LN189@PushInvoke
 $LN155@PushInvoke:
 
-; 1230 : 
-; 1231 :                         } else if ( ( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_186 ) {
+; 1229 : 
+; 1230 :                         } else if ( ( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_186 ) {
 
 	cmp	eax, 16
 	jl	SHORT $LN163@PushInvoke
 
-; 1232 : 
-; 1233 :                             if ( pushsize == 4 ) {
+; 1231 : 
+; 1232 :                             if ( pushsize == 4 ) {
 
 	cmp	r15d, 4
 	jne	SHORT $LN165@PushInvoke
 
-; 1234 :                                 if ( asize == 1 ) {
+; 1233 :                                 if ( asize == 1 ) {
 
 	cmp	edi, 1
 	je	$LN266@PushInvoke
 
-; 1235 :                                     /* handled below */
-; 1236 :                                 } else if ( psize <= 2 ) {
+; 1234 :                                     /* handled below */
+; 1235 :                                 } else if ( psize <= 2 ) {
 
 	cmp	r14d, 2
 	jg	SHORT $LN169@PushInvoke
 
-; 1237 : #if AMD64_SUPPORT
-; 1238 :                                     AddLineQueueX( " sub %r, 2", stackreg[ModuleInfo.Ofssize] );
+; 1236 : #if AMD64_SUPPORT
+; 1237 :                                     AddLineQueueX( " sub %r, 2", stackreg[ModuleInfo.Ofssize] );
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	lea	rcx, OFFSET FLAT:$SG11724
@@ -3546,15 +3546,15 @@ $LN155@PushInvoke:
 	jmp	$LN164@PushInvoke
 $LN169@PushInvoke:
 
-; 1239 : #else
-; 1240 :                                     AddLineQueueX( " sub %r, 2", T_ESP );
-; 1241 : #endif
-; 1242 :                                 } else if ( IS_SIGNED( opnd.mem_type ) ) {
+; 1238 : #else
+; 1239 :                                     AddLineQueueX( " sub %r, 2", T_ESP );
+; 1240 : #endif
+; 1241 :                                 } else if ( IS_SIGNED( opnd.mem_type ) ) {
 
 	cmp	edx, 64					; 00000040H
 	jne	SHORT $LN171@PushInvoke
 
-; 1243 :                                     AddLineQueueX( " movsx %r, %s", T_EAX, fullparam );
+; 1242 :                                     AddLineQueueX( " movsx %r, %s", T_EAX, fullparam );
 
 	mov	esi, 17
 	lea	r8, QWORD PTR fullparam$[rbp-256]
@@ -3562,46 +3562,46 @@ $LN169@PushInvoke:
 	lea	rcx, OFFSET FLAT:$SG11727
 	call	AddLineQueueX
 
-; 1244 :                                     *r0flags = R0_USED;
+; 1243 :                                     *r0flags = R0_USED;
 
 	mov	BYTE PTR [rbx], 1
 
-; 1245 :                                     reg = T_EAX;
-; 1246 :                                 } else {
+; 1244 :                                     reg = T_EAX;
+; 1245 :                                 } else {
 
 	jmp	SHORT $LN164@PushInvoke
 $LN171@PushInvoke:
 
-; 1247 :                                     AddLineQueue( " pushw 0" );
+; 1246 :                                     AddLineQueue( " pushw 0" );
 
 	lea	rcx, OFFSET FLAT:$SG11728
 	call	AddLineQueue
 
-; 1248 :                                 }
-; 1249 :                             } else
+; 1247 :                                 }
+; 1248 :                             } else
 
 	jmp	SHORT $LN164@PushInvoke
 $LN165@PushInvoke:
 
-; 1250 :                                 AddLineQueue( " pushw 0" );
+; 1249 :                                 AddLineQueue( " pushw 0" );
 
 	lea	rcx, OFFSET FLAT:$SG11729
 	call	AddLineQueue
 
-; 1251 : 
-; 1252 :                         } else {
+; 1250 : 
+; 1251 :                         } else {
 
 	jmp	SHORT $LN164@PushInvoke
 $LN163@PushInvoke:
 
-; 1253 : 
-; 1254 :                             if ( !(*r0flags & R0_X_CLEARED) ) {
+; 1252 : 
+; 1253 :                             if ( !(*r0flags & R0_X_CLEARED) ) {
 
 	test	BYTE PTR [rbx], 4
 	jne	SHORT $LN173@PushInvoke
 
-; 1255 :                                 /* v2.11: extra check needed */
-; 1256 :                                 if ( reg == T_AH || ( optype & OP_A ) )
+; 1254 :                                 /* v2.11: extra check needed */
+; 1255 :                                 if ( reg == T_AH || ( optype & OP_A ) )
 
 	cmp	esi, 5
 	je	SHORT $LN175@PushInvoke
@@ -3609,13 +3609,13 @@ $LN163@PushInvoke:
 	jae	SHORT $LN174@PushInvoke
 $LN175@PushInvoke:
 
-; 1257 :                                     EmitErr( REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
+; 1256 :                                     EmitErr( REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
 
 	mov	ecx, 165				; 000000a5H
 	call	EmitErr
 $LN174@PushInvoke:
 
-; 1258 :                                 AddLineQueueX( " xor %r, %r", T_AX, T_AX );
+; 1257 :                                 AddLineQueueX( " xor %r, %r", T_AX, T_AX );
 
 	mov	edx, 9
 	lea	rcx, OFFSET FLAT:$SG11733
@@ -3623,22 +3623,22 @@ $LN174@PushInvoke:
 	call	AddLineQueueX
 $LN173@PushInvoke:
 
-; 1259 :                             }
-; 1260 :                             AddLineQueueX( " push %r", T_AX );
+; 1258 :                             }
+; 1259 :                             AddLineQueueX( " push %r", T_AX );
 
 	mov	edx, 9
 	lea	rcx, OFFSET FLAT:$SG11734
 	call	AddLineQueueX
 
-; 1261 :                             *r0flags = R0_USED | R0_H_CLEARED | R0_X_CLEARED;
+; 1260 :                             *r0flags = R0_USED | R0_H_CLEARED | R0_X_CLEARED;
 
 	mov	BYTE PTR [rbx], 7
 $LN164@PushInvoke:
 
-; 1262 :                         }
-; 1263 :                     }
-; 1264 : 
-; 1265 :                     if ( asize == 1 ) {
+; 1261 :                         }
+; 1262 :                     }
+; 1263 : 
+; 1264 :                     if ( asize == 1 ) {
 
 	cmp	edi, 1
 	jne	$LN189@PushInvoke
@@ -3648,14 +3648,14 @@ $LN266@PushInvoke:
 	cmp	eax, 3
 	jbe	SHORT $LN179@PushInvoke
 
-; 1266 :                         if ( ( reg >= T_AH && reg <= T_BH ) || psize != 1 ) {
+; 1265 :                         if ( ( reg >= T_AH && reg <= T_BH ) || psize != 1 ) {
 
 	cmp	r14d, 1
 	jne	SHORT $LN265@PushInvoke
 
-; 1288 :                         } else {
-; 1289 :                             /* convert 8-bit to 16/32-bit register name */
-; 1290 :                             if ( (( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_386) &&
+; 1287 :                         } else {
+; 1288 :                             /* convert 8-bit to 16/32-bit register name */
+; 1289 :                             if ( (( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_386) &&
 
 	and	ecx, 240				; 000000f0H
 	cmp	ecx, 48					; 00000030H
@@ -3663,17 +3663,17 @@ $LN266@PushInvoke:
 	cmp	r15d, 4
 	jne	$LN188@PushInvoke
 
-; 1291 :                                 ( psize == 4 || pushsize == 4 ) ) {
-; 1292 :                                 reg = reg - T_AL + T_EAX;
+; 1290 :                                 ( psize == 4 || pushsize == 4 ) ) {
+; 1291 :                                 reg = reg - T_AL + T_EAX;
 
 	add	esi, 16
 
-; 1293 :                             } else
+; 1292 :                             } else
 
 	jmp	$LN189@PushInvoke
 $LN179@PushInvoke:
 
-; 1267 :                             if ( psize != 1 && ( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_386 ) {
+; 1266 :                             if ( psize != 1 && ( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_386 ) {
 
 	cmp	r14d, 1
 	je	SHORT $LN181@PushInvoke
@@ -3682,8 +3682,8 @@ $LN265@PushInvoke:
 	cmp	ecx, 48					; 00000030H
 	jl	SHORT $LN181@PushInvoke
 
-; 1268 :                                 /* v2.10: consider signed type coercion! */
-; 1269 :                                 AddLineQueueX( " mov%sx %r, %s", IS_SIGNED( opnd.mem_type ) ? "s" : "z",
+; 1267 :                                 /* v2.10: consider signed type coercion! */
+; 1268 :                                 AddLineQueueX( " mov%sx %r, %s", IS_SIGNED( opnd.mem_type ) ? "s" : "z",
 
 	movzx	ecx, BYTE PTR ModuleInfo+404
 	lea	r8, OFFSET FLAT:$SG11742
@@ -3697,8 +3697,8 @@ $LN265@PushInvoke:
 	lea	rcx, OFFSET FLAT:$SG11744
 	call	AddLineQueueX
 
-; 1270 :                                               regax[ModuleInfo.Ofssize], fullparam );
-; 1271 :                                 *r0flags =  ( IS_SIGNED( opnd.mem_type ) ? R0_USED : R0_USED | R0_H_CLEARED );
+; 1269 :                                               regax[ModuleInfo.Ofssize], fullparam );
+; 1270 :                                 *r0flags =  ( IS_SIGNED( opnd.mem_type ) ? R0_USED : R0_USED | R0_H_CLEARED );
 
 	mov	eax, DWORD PTR opnd$[rbp-192]
 	mov	ecx, 3
@@ -3708,25 +3708,25 @@ $LN265@PushInvoke:
 	cmove	ecx, esi
 	mov	BYTE PTR [rbx], cl
 
-; 1272 :                             } else {
+; 1271 :                             } else {
 
 	jmp	SHORT $LN187@PushInvoke
 $LN181@PushInvoke:
 
-; 1273 :                                 if ( reg != T_AL ) {
+; 1272 :                                 if ( reg != T_AL ) {
 
 	cmp	esi, 1
 	je	SHORT $LN183@PushInvoke
 
-; 1274 :                                     AddLineQueueX( " mov %r, %s", T_AL, fullparam );
+; 1273 :                                     AddLineQueueX( " mov %r, %s", T_AL, fullparam );
 
 	lea	r8, QWORD PTR fullparam$[rbp-256]
 	mov	edx, 1
 	lea	rcx, OFFSET FLAT:$SG11746
 	call	AddLineQueueX
 
-; 1275 :                                     *r0flags |= R0_USED;
-; 1276 :                                     *r0flags &= ~R0_X_CLEARED;
+; 1274 :                                     *r0flags |= R0_USED;
+; 1275 :                                     *r0flags &= ~R0_X_CLEARED;
 
 	movzx	eax, BYTE PTR [rbx]
 	and	al, 251					; 000000fbH
@@ -3734,127 +3734,127 @@ $LN181@PushInvoke:
 	mov	BYTE PTR [rbx], al
 $LN183@PushInvoke:
 
-; 1277 :                                 }
-; 1278 :                                 if ( psize != 1 ) /* v2.11: don't modify AH if paramsize is 1 */
+; 1276 :                                 }
+; 1277 :                                 if ( psize != 1 ) /* v2.11: don't modify AH if paramsize is 1 */
 
 	cmp	r14d, 1
 	je	SHORT $LN187@PushInvoke
 
-; 1279 :                                     if ( IS_SIGNED( opnd.mem_type ) ) {
+; 1278 :                                     if ( IS_SIGNED( opnd.mem_type ) ) {
 
 	mov	eax, DWORD PTR opnd$[rbp-192]
 	and	al, -64					; ffffffffffffffc0H
 	cmp	al, 64					; 00000040H
 	jne	SHORT $LN185@PushInvoke
 
-; 1280 :                                         AddLineQueue( " cbw" );
+; 1279 :                                         AddLineQueue( " cbw" );
 
 	lea	rcx, OFFSET FLAT:$SG11750
 	call	AddLineQueue
 
-; 1281 :                                         *r0flags &= ~( R0_H_CLEARED | R0_X_CLEARED );
+; 1280 :                                         *r0flags &= ~( R0_H_CLEARED | R0_X_CLEARED );
 
 	and	BYTE PTR [rbx], 249			; 000000f9H
 	jmp	SHORT $LN187@PushInvoke
 $LN185@PushInvoke:
 
-; 1282 :                                     } else if (!( *r0flags & R0_H_CLEARED )) {
+; 1281 :                                     } else if (!( *r0flags & R0_H_CLEARED )) {
 
 	test	BYTE PTR [rbx], 2
 	jne	SHORT $LN187@PushInvoke
 
-; 1283 :                                         AddLineQueueX( " mov %r, 0", T_AH );
+; 1282 :                                         AddLineQueueX( " mov %r, 0", T_AH );
 
 	mov	edx, 5
 	lea	rcx, OFFSET FLAT:$SG11752
 	call	AddLineQueueX
 
-; 1284 :                                         *r0flags |= R0_H_CLEARED;
+; 1283 :                                         *r0flags |= R0_H_CLEARED;
 
 	or	BYTE PTR [rbx], 2
 $LN187@PushInvoke:
 
-; 1285 :                                     }
-; 1286 :                             }
-; 1287 :                             reg = regax[ModuleInfo.Ofssize];
+; 1284 :                                     }
+; 1285 :                             }
+; 1286 :                             reg = regax[ModuleInfo.Ofssize];
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	mov	esi, DWORD PTR regax[r12+rax*4]
 $LN189@PushInvoke:
 
-; 1294 :                                 reg = reg - T_AL + T_AX;
-; 1295 :                         }
-; 1296 :                     }
-; 1297 : #if 0
-; 1298 :                     if ( is_r0 && ( *r0flags & R0_USED ) ) {
-; 1299 :                         EmitErr( REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
-; 1300 :                         *r0flags = 0;
-; 1301 :                     }
-; 1302 : #endif
-; 1303 :                 }
-; 1304 :                 AddLineQueueX( " push %r", reg );
+; 1293 :                                 reg = reg - T_AL + T_AX;
+; 1294 :                         }
+; 1295 :                     }
+; 1296 : #if 0
+; 1297 :                     if ( is_r0 && ( *r0flags & R0_USED ) ) {
+; 1298 :                         EmitErr( REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
+; 1299 :                         *r0flags = 0;
+; 1300 :                     }
+; 1301 : #endif
+; 1302 :                 }
+; 1303 :                 AddLineQueueX( " push %r", reg );
 
 	mov	edx, esi
 	lea	rcx, OFFSET FLAT:$SG11756
 	call	AddLineQueueX
 
-; 1305 :                 /* v2.05: don't change psize if > pushsize */
-; 1306 :                 if ( psize < pushsize )
+; 1304 :                 /* v2.05: don't change psize if > pushsize */
+; 1305 :                 if ( psize < pushsize )
 
 	cmp	r14d, r15d
 	jge	$LN238@PushInvoke
 
-; 1307 :                     /* v2.04: adjust psize ( for siz_vararg update ) */
-; 1308 :                     psize = pushsize;
+; 1306 :                     /* v2.04: adjust psize ( for siz_vararg update ) */
+; 1307 :                     psize = pushsize;
 
 	mov	r14d, r15d
 
-; 1309 : 
-; 1310 :             } else { /* constant value */
+; 1308 : 
+; 1309 :             } else { /* constant value */
 
 	jmp	$LN238@PushInvoke
 $LN193@PushInvoke:
 
-; 1316 :                     else if ( opnd.value64 <= 255 && opnd.value64 >= -255 )
+; 1315 :                     else if ( opnd.value64 <= 255 && opnd.value64 >= -255 )
 
 	mov	rcx, QWORD PTR opnd$[rsp]
 	lea	rax, QWORD PTR [rcx+255]
 	cmp	rax, 510				; 000001feH
 	ja	SHORT $LN195@PushInvoke
 
-; 1317 :                         asize = 1;
+; 1316 :                         asize = 1;
 
 	mov	esi, 1
 	jmp	SHORT $LN200@PushInvoke
 $LN195@PushInvoke:
 
-; 1318 :                     else if ( opnd.value64 <= 65535 && opnd.value64 >= -65535 )
+; 1317 :                     else if ( opnd.value64 <= 65535 && opnd.value64 >= -65535 )
 
 	lea	rax, QWORD PTR [rcx+65535]
 	cmp	rax, 131070				; 0001fffeH
 	jbe	SHORT $LN200@PushInvoke
 
-; 1319 :                         asize = 2;
-; 1320 :                     else if ( opnd.value64 <= maxintvalues[0] && opnd.value64 >= minintvalues[0] )
+; 1318 :                         asize = 2;
+; 1319 :                     else if ( opnd.value64 <= maxintvalues[0] && opnd.value64 >= minintvalues[0] )
 
 	cmp	rcx, QWORD PTR maxintvalues
 	jg	SHORT $LN199@PushInvoke
 	cmp	rcx, QWORD PTR minintvalues
 
-; 1321 :                         asize = 4;
+; 1320 :                         asize = 4;
 
 	mov	esi, 4
 	jge	SHORT $LN200@PushInvoke
 $LN199@PushInvoke:
 
-; 1322 :                     else
-; 1323 :                         asize = 8;
+; 1321 :                     else
+; 1322 :                         asize = 8;
 
 	mov	esi, 8
 $LN200@PushInvoke:
 
-; 1324 :                     if ( psize < asize )
-; 1325 :                         EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam+1 );
+; 1323 :                     if ( psize < asize )
+; 1324 :                         EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam+1 );
 
 	mov	edi, DWORD PTR reqParam$[rbp-256]
 	cmp	r14d, esi
@@ -3868,20 +3868,20 @@ $LN286@PushInvoke:
 	mov	edi, DWORD PTR reqParam$[rbp-256]
 $LN201@PushInvoke:
 
-; 1326 :                 }
-; 1327 : 
-; 1328 :                 /* v2.11: don't use CurrWordSize */
-; 1329 :                 //asize = CurrWordSize;
-; 1330 :                 asize = 2 << Ofssize;
-; 1331 : 
-; 1332 :                 if ( psize < asize )  /* ensure that the default argsize (2,4,8) is met */
+; 1325 :                 }
+; 1326 : 
+; 1327 :                 /* v2.11: don't use CurrWordSize */
+; 1328 :                 //asize = CurrWordSize;
+; 1329 :                 asize = 2 << Ofssize;
+; 1330 : 
+; 1331 :                 if ( psize < asize )  /* ensure that the default argsize (2,4,8) is met */
 
 	mov	ecx, DWORD PTR asize$3$[rsp]
 	mov	r8d, DWORD PTR opnd$[rsp]
 	cmp	r14d, ecx
 	jge	SHORT $LN204@PushInvoke
 
-; 1333 :                     if ( psize == 0 && curr->sym.is_vararg ) {
+; 1332 :                     if ( psize == 0 && curr->sym.is_vararg ) {
 
 	test	r14d, r14d
 	jne	SHORT $LN203@PushInvoke
@@ -3889,14 +3889,14 @@ $LN201@PushInvoke:
 	test	BYTE PTR [rax+47], 32			; 00000020H
 	je	SHORT $LN203@PushInvoke
 
-; 1334 :                         /* v2.04: push a dword constant in 16-bit */
-; 1335 :                         if ( asize == 2 &&
+; 1333 :                         /* v2.04: push a dword constant in 16-bit */
+; 1334 :                         if ( asize == 2 &&
 
 	cmp	ecx, 2
 	jne	SHORT $LN203@PushInvoke
 
-; 1336 :                             ( opnd.value > 0xFFFFL || opnd.value < -65535L ) )
-; 1337 :                             psize = 4;
+; 1335 :                             ( opnd.value > 0xFFFFL || opnd.value < -65535L ) )
+; 1336 :                             psize = 4;
 
 	lea	eax, DWORD PTR [r8+65535]
 	lea	r14d, QWORD PTR [rcx+2]
@@ -3904,16 +3904,16 @@ $LN201@PushInvoke:
 	ja	SHORT $LN204@PushInvoke
 $LN203@PushInvoke:
 
-; 1338 :                         else
-; 1339 :                             psize = asize;
-; 1340 :                     } else
-; 1341 :                         psize = asize;
+; 1337 :                         else
+; 1338 :                             psize = asize;
+; 1339 :                     } else
+; 1340 :                         psize = asize;
 
 	mov	r14d, ecx
 $LN204@PushInvoke:
 
-; 1342 : 
-; 1343 :                 if ( ( ModuleInfo.curr_cpu & P_CPU_MASK ) < P_186 ) {
+; 1341 : 
+; 1342 :                 if ( ( ModuleInfo.curr_cpu & P_CPU_MASK ) < P_186 ) {
 
 	mov	eax, DWORD PTR ModuleInfo+392
 	mov	ecx, eax
@@ -3921,21 +3921,21 @@ $LN204@PushInvoke:
 	cmp	ecx, 16
 	jge	$LN208@PushInvoke
 
-; 1344 :                     *r0flags |= R0_USED;
+; 1343 :                     *r0flags |= R0_USED;
 
 	or	BYTE PTR [rbx], 1
 
-; 1345 :                     switch ( psize ) {
+; 1344 :                     switch ( psize ) {
 
 	cmp	r14d, 2
 	je	$LN210@PushInvoke
 	cmp	r14d, 4
 	je	SHORT $LN215@PushInvoke
 
-; 1368 :                     default:
-; 1369 :                         DebugMsg1(("PushInvokeParm(%u): error, CONST, asize=%u, psize=%u, pushsize=%u\n",
-; 1370 :                                   reqParam, asize, psize, pushsize ));
-; 1371 :                         EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam+1 );
+; 1367 :                     default:
+; 1368 :                         DebugMsg1(("PushInvokeParm(%u): error, CONST, asize=%u, psize=%u, pushsize=%u\n",
+; 1369 :                                   reqParam, asize, psize, pushsize ));
+; 1370 :                         EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam+1 );
 
 	lea	edx, DWORD PTR [rdi+1]
 	mov	ecx, 145				; 00000091H
@@ -3943,11 +3943,11 @@ $LN204@PushInvoke:
 	jmp	$LN212@PushInvoke
 $LN215@PushInvoke:
 
-; 1354 :                         }
-; 1355 :                         break;
-; 1356 :                     case 4:
-; 1357 :                         if ( opnd.uvalue <= 0xFFFF )
-; 1358 :                             AddLineQueueX( " xor %r, %r", T_AX, T_AX );
+; 1353 :                         }
+; 1354 :                         break;
+; 1355 :                     case 4:
+; 1356 :                         if ( opnd.uvalue <= 0xFFFF )
+; 1357 :                             AddLineQueueX( " xor %r, %r", T_AX, T_AX );
 
 	mov	edx, 9
 	cmp	r8d, 65535				; 0000ffffH
@@ -3958,8 +3958,8 @@ $LN215@PushInvoke:
 	jmp	SHORT $LN217@PushInvoke
 $LN216@PushInvoke:
 
-; 1359 :                         else
-; 1360 :                             AddLineQueueX( " mov %r, %r (%s)", T_AX, T_HIGHWORD, fullparam );
+; 1358 :                         else
+; 1359 :                             AddLineQueueX( " mov %r, %r (%s)", T_AX, T_HIGHWORD, fullparam );
 
 	lea	r9, QWORD PTR fullparam$[rbp-256]
 	mov	r8d, 232				; 000000e8H
@@ -3967,27 +3967,27 @@ $LN216@PushInvoke:
 	call	AddLineQueueX
 $LN217@PushInvoke:
 
-; 1361 :                         AddLineQueueX( " push %r", T_AX );
+; 1360 :                         AddLineQueueX( " push %r", T_AX );
 
 	mov	edx, 9
 	lea	rcx, OFFSET FLAT:$SG11788
 	call	AddLineQueueX
 
-; 1362 :                         if ( opnd.uvalue != 0 || opnd.kind == EXPR_ADDR ) {
+; 1361 :                         if ( opnd.uvalue != 0 || opnd.kind == EXPR_ADDR ) {
 
 	cmp	DWORD PTR opnd$[rsp], 0
 	jne	SHORT $LN220@PushInvoke
 	cmp	DWORD PTR opnd$[rbp-196], 1
 	je	SHORT $LN220@PushInvoke
 
-; 1364 :                         } else {
-; 1365 :                             *r0flags |= R0_H_CLEARED | R0_X_CLEARED;
+; 1363 :                         } else {
+; 1364 :                             *r0flags |= R0_H_CLEARED | R0_X_CLEARED;
 
 	or	BYTE PTR [rbx], 6
 	jmp	SHORT $LN212@PushInvoke
 $LN220@PushInvoke:
 
-; 1363 :                             AddLineQueueX( " mov %r, %r (%s)", T_AX, T_LOWWORD, fullparam );
+; 1362 :                             AddLineQueueX( " mov %r, %r (%s)", T_AX, T_LOWWORD, fullparam );
 
 	lea	r9, QWORD PTR fullparam$[rbp-256]
 	mov	edx, 9
@@ -3995,27 +3995,27 @@ $LN220@PushInvoke:
 	lea	rcx, OFFSET FLAT:$SG11792
 	call	AddLineQueueX
 
-; 1366 :                         }
-; 1367 :                         break;
+; 1365 :                         }
+; 1366 :                         break;
 
 	jmp	SHORT $LN212@PushInvoke
 $LN210@PushInvoke:
 
-; 1346 :                     case 2:
-; 1347 :                         if ( opnd.value != 0 || opnd.kind == EXPR_ADDR ) {
+; 1345 :                     case 2:
+; 1346 :                         if ( opnd.value != 0 || opnd.kind == EXPR_ADDR ) {
 
 	test	r8d, r8d
 	jne	SHORT $LN213@PushInvoke
 	cmp	edx, 1
 	je	SHORT $LN213@PushInvoke
 
-; 1349 :                         } else {
-; 1350 :                             if ( !(*r0flags & R0_X_CLEARED ) ) {
+; 1348 :                         } else {
+; 1349 :                             if ( !(*r0flags & R0_X_CLEARED ) ) {
 
 	test	BYTE PTR [rbx], 4
 	jne	SHORT $LN214@PushInvoke
 
-; 1351 :                                 AddLineQueueX( " xor %r, %r", T_AX, T_AX );
+; 1350 :                                 AddLineQueueX( " xor %r, %r", T_AX, T_AX );
 
 	mov	edx, 9
 	lea	rcx, OFFSET FLAT:$SG11782
@@ -4023,14 +4023,14 @@ $LN210@PushInvoke:
 	call	AddLineQueueX
 $LN214@PushInvoke:
 
-; 1352 :                             }
-; 1353 :                             *r0flags |= R0_H_CLEARED | R0_X_CLEARED;
+; 1351 :                             }
+; 1352 :                             *r0flags |= R0_H_CLEARED | R0_X_CLEARED;
 
 	or	BYTE PTR [rbx], 6
 	jmp	SHORT $LN212@PushInvoke
 $LN213@PushInvoke:
 
-; 1348 :                             AddLineQueueX( " mov %r, %s", T_AX, fullparam );
+; 1347 :                             AddLineQueueX( " mov %r, %s", T_AX, fullparam );
 
 	lea	r8, QWORD PTR fullparam$[rbp-256]
 	mov	edx, 9
@@ -4038,31 +4038,31 @@ $LN213@PushInvoke:
 	call	AddLineQueueX
 $LN212@PushInvoke:
 
-; 1372 :                     }
-; 1373 :                     AddLineQueueX( " push %r", T_AX );
+; 1371 :                     }
+; 1372 :                     AddLineQueueX( " push %r", T_AX );
 
 	mov	edx, 9
 	lea	rcx, OFFSET FLAT:$SG11794
 	call	AddLineQueueX
 
-; 1374 :                 } else { /* cpu >= 80186 */
+; 1373 :                 } else { /* cpu >= 80186 */
 
 	jmp	$LN238@PushInvoke
 $LN208@PushInvoke:
 
-; 1375 :                     char *instr = "";
+; 1374 :                     char *instr = "";
 
 	lea	rbx, OFFSET FLAT:$SG11795
 
-; 1376 :                     char *suffix;
-; 1377 :                     int qual = EMPTY;
-; 1378 :                     //if ( asize != psize ) {
-; 1379 :                     if ( psize != pushsize ) {
+; 1375 :                     char *suffix;
+; 1376 :                     int qual = EMPTY;
+; 1377 :                     //if ( asize != psize ) {
+; 1378 :                     if ( psize != pushsize ) {
 
 	cmp	r14d, r15d
 	je	$LN237@PushInvoke
 
-; 1380 :                         switch ( psize ) {
+; 1379 :                         switch ( psize ) {
 
 	cmp	r14d, 2
 	je	$LN223@PushInvoke
@@ -4073,19 +4073,19 @@ $LN208@PushInvoke:
 	cmp	r14d, 8
 	jne	SHORT $LN234@PushInvoke
 
-; 1401 :                             }
-; 1402 :                             break;
-; 1403 :                         case 8:
-; 1404 : #if AMD64_SUPPORT
-; 1405 :                             if (( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_64 )
+; 1400 :                             }
+; 1401 :                             break;
+; 1402 :                         case 8:
+; 1403 : #if AMD64_SUPPORT
+; 1404 :                             if (( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_64 )
 
 	cmp	ecx, 112				; 00000070H
 	jge	$LN237@PushInvoke
 
-; 1406 :                                 break;
-; 1407 : #endif
-; 1408 :                             /* v2.06: added support for double constants */
-; 1409 :                             if ( opnd.kind == EXPR_CONST || opnd.kind == EXPR_FLOAT ) {
+; 1405 :                                 break;
+; 1406 : #endif
+; 1407 :                             /* v2.06: added support for double constants */
+; 1408 :                             if ( opnd.kind == EXPR_CONST || opnd.kind == EXPR_FLOAT ) {
 
 	test	edx, edx
 	je	SHORT $LN235@PushInvoke
@@ -4093,31 +4093,31 @@ $LN208@PushInvoke:
 	jne	SHORT $LN234@PushInvoke
 $LN235@PushInvoke:
 
-; 1410 :                                 AddLineQueueX( " pushd %r (%s)", T_HIGH32, fullparam );
+; 1409 :                                 AddLineQueueX( " pushd %r (%s)", T_HIGH32, fullparam );
 
 	lea	r8, QWORD PTR fullparam$[rbp-256]
 	mov	edx, 231				; 000000e7H
 	lea	rcx, OFFSET FLAT:$SG11818
 	call	AddLineQueueX
 
-; 1411 :                                 qual = T_LOW32;
+; 1410 :                                 qual = T_LOW32;
 
 	mov	r8d, 237				; 000000edH
 
-; 1412 :                                 instr = "d";
+; 1411 :                                 instr = "d";
 
 	lea	rdx, OFFSET FLAT:$SG11819
 
-; 1413 :                                 break;
+; 1412 :                                 break;
 
 	jmp	$LN269@PushInvoke
 $LN234@PushInvoke:
 
-; 1414 :                             }
-; 1415 :                         default:
-; 1416 :                             DebugMsg1(("PushInvokeParm(%u): error, CONST, asize=%u, psize=%u, pushsize=%u\n",
-; 1417 :                                       reqParam, asize, psize, pushsize ));
-; 1418 :                             EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam+1 );
+; 1413 :                             }
+; 1414 :                         default:
+; 1415 :                             DebugMsg1(("PushInvokeParm(%u): error, CONST, asize=%u, psize=%u, pushsize=%u\n",
+; 1416 :                                       reqParam, asize, psize, pushsize ));
+; 1417 :                             EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam+1 );
 
 	lea	edx, DWORD PTR [rdi+1]
 	mov	ecx, 145				; 00000091H
@@ -4125,40 +4125,40 @@ $LN234@PushInvoke:
 	jmp	$LN237@PushInvoke
 $LN224@PushInvoke:
 
-; 1383 :                             break;
-; 1384 :                         case 6: /* v2.04: added */
-; 1385 :                             /* v2.11: use pushw only for 16-bit target */
-; 1386 :                             if ( Ofssize == USE16 )
+; 1382 :                             break;
+; 1383 :                         case 6: /* v2.04: added */
+; 1384 :                             /* v2.11: use pushw only for 16-bit target */
+; 1385 :                             if ( Ofssize == USE16 )
 
 	mov	esi, DWORD PTR tv172[rsp]
 	test	sil, sil
 	jne	SHORT $LN225@PushInvoke
 
-; 1387 :                                 suffix = "w";
+; 1386 :                                 suffix = "w";
 
 	lea	rdx, OFFSET FLAT:$SG11802
 	jmp	SHORT $LN228@PushInvoke
 $LN225@PushInvoke:
 
-; 1388 :                             else if ( Ofssize == USE32 && CurrWordSize == 2 )
+; 1387 :                             else if ( Ofssize == USE32 && CurrWordSize == 2 )
 
 	cmp	sil, 1
 	jne	SHORT $LN227@PushInvoke
 	cmp	BYTE PTR ModuleInfo+406, 2
 
-; 1389 :                                 suffix = "d";
+; 1388 :                                 suffix = "d";
 
 	lea	rdx, OFFSET FLAT:$SG11805
 	je	SHORT $LN228@PushInvoke
 $LN227@PushInvoke:
 
-; 1390 :                             else
-; 1391 :                                 suffix = "";
+; 1389 :                             else
+; 1390 :                                 suffix = "";
 
 	lea	rdx, OFFSET FLAT:$SG11806
 $LN228@PushInvoke:
 
-; 1392 :                             AddLineQueueX( " push%s (%s) shr 32t", suffix, fullparam );
+; 1391 :                             AddLineQueueX( " push%s (%s) shr 32t", suffix, fullparam );
 
 	lea	r8, QWORD PTR fullparam$[rbp-256]
 	lea	rcx, OFFSET FLAT:$SG11807
@@ -4166,41 +4166,41 @@ $LN228@PushInvoke:
 	mov	eax, DWORD PTR ModuleInfo+392
 $LN229@PushInvoke:
 
-; 1393 :                             /* no break */
-; 1394 :                         case 4:
-; 1395 :                             if (( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_386 )
+; 1392 :                             /* no break */
+; 1393 :                         case 4:
+; 1394 :                             if (( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_386 )
 
 	and	eax, 240				; 000000f0H
 	cmp	eax, 48					; 00000030H
 	jl	SHORT $LN230@PushInvoke
 
-; 1396 :                                 instr = "d";
+; 1395 :                                 instr = "d";
 
 	lea	rbx, OFFSET FLAT:$SG11811
 	jmp	SHORT $LN237@PushInvoke
 $LN230@PushInvoke:
 
-; 1397 :                             else {
-; 1398 :                                 AddLineQueueX( " pushw %r (%s)", T_HIGHWORD, fullparam );
+; 1396 :                             else {
+; 1397 :                                 AddLineQueueX( " pushw %r (%s)", T_HIGHWORD, fullparam );
 
 	lea	r8, QWORD PTR fullparam$[rbp-256]
 	mov	edx, 232				; 000000e8H
 	lea	rcx, OFFSET FLAT:$SG11812
 	call	AddLineQueueX
 
-; 1399 :                                 instr = "w";
+; 1398 :                                 instr = "w";
 
 	lea	rdx, OFFSET FLAT:$SG11813
 
-; 1400 :                                 qual = T_LOWWORD;
+; 1399 :                                 qual = T_LOWWORD;
 
 	mov	r8d, 238				; 000000eeH
 $LN269@PushInvoke:
 
-; 1419 :                         }
-; 1420 :                     }
-; 1421 :                     if ( qual != EMPTY )
-; 1422 :                         AddLineQueueX( " push%s %r (%s)", instr, qual, fullparam );
+; 1418 :                         }
+; 1419 :                     }
+; 1420 :                     if ( qual != EMPTY )
+; 1421 :                         AddLineQueueX( " push%s %r (%s)", instr, qual, fullparam );
 
 	lea	r9, QWORD PTR fullparam$[rbp-256]
 	lea	rcx, OFFSET FLAT:$SG11823
@@ -4208,14 +4208,14 @@ $LN269@PushInvoke:
 	jmp	SHORT $LN238@PushInvoke
 $LN223@PushInvoke:
 
-; 1381 :                         case 2:
-; 1382 :                             instr = "w";
+; 1380 :                         case 2:
+; 1381 :                             instr = "w";
 
 	lea	rbx, OFFSET FLAT:$SG11798
 $LN237@PushInvoke:
 
-; 1423 :                     else
-; 1424 :                         AddLineQueueX( " push%s %s", instr, fullparam );
+; 1422 :                     else
+; 1423 :                         AddLineQueueX( " push%s %s", instr, fullparam );
 
 	lea	r8, QWORD PTR fullparam$[rbp-256]
 	mov	rdx, rbx
@@ -4223,29 +4223,29 @@ $LN237@PushInvoke:
 	call	AddLineQueueX
 $LN238@PushInvoke:
 
-; 1425 :                 }
-; 1426 :             }
-; 1427 :             if ( curr->sym.is_vararg ) {
+; 1424 :                 }
+; 1425 :             }
+; 1426 :             if ( curr->sym.is_vararg ) {
 
 	mov	rax, QWORD PTR curr$[rbp-256]
 	test	BYTE PTR [rax+47], 32			; 00000020H
 	je	SHORT $LN294@PushInvoke
 
-; 1428 :                 size_vararg += psize;
+; 1427 :                 size_vararg += psize;
 
 	add	DWORD PTR size_vararg, r14d
 
-; 1429 :                 DebugMsg1(("PushInvokeParm(%u): psize=%u added to size_vararg, now=%u\n", reqParam, psize, size_vararg ));
-; 1430 :             }
-; 1431 :         }
-; 1432 :     }
-; 1433 :     return( NOT_ERROR );
+; 1428 :                 DebugMsg1(("PushInvokeParm(%u): psize=%u added to size_vararg, now=%u\n", reqParam, psize, size_vararg ));
+; 1429 :             }
+; 1430 :         }
+; 1431 :     }
+; 1432 :     return( NOT_ERROR );
 
 	jmp	SHORT $LN294@PushInvoke
 $LN81@PushInvoke:
 
-; 962  :             DebugMsg(("PushInvokeParm(%u): argsize error, arg size=%d, parm size=%d\n", reqParam, asize, psize));
-; 963  :             EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam+1 );
+; 961  :             DebugMsg(("PushInvokeParm(%u): argsize error, arg size=%d, parm size=%d\n", reqParam, asize, psize));
+; 962  :             EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam+1 );
 
 	mov	edx, DWORD PTR reqParam$[rbp-256]
 	inc	edx
@@ -4254,7 +4254,7 @@ $LN293@PushInvoke:
 	call	EmitErr
 $LN294@PushInvoke:
 
-; 964  :             return( NOT_ERROR );
+; 963  :             return( NOT_ERROR );
 
 	xor	eax, eax
 $LN291@PushInvoke:
@@ -4262,7 +4262,7 @@ $LN291@PushInvoke:
 	mov	rbx, QWORD PTR [rsp+1472]
 	mov	r14, QWORD PTR [rsp+1408]
 
-; 1434 : }
+; 1433 : }
 
 	add	rsp, 1424				; 00000590H
 	pop	r15
@@ -4282,11 +4282,11 @@ i$ = 24
 tokenarray$ = 32
 SkipTypecast PROC					; COMDAT
 
-; 694  : {
+; 693  : {
 
 	sub	rsp, 8
 
-; 698  :         if (( tokenarray[j].token == T_COMMA ) || ( tokenarray[j].token == T_FINAL ) )
+; 697  :         if (( tokenarray[j].token == T_COMMA ) || ( tokenarray[j].token == T_FINAL ) )
 
 	movsxd	r9, edx
 	mov	r11, rcx
@@ -4296,9 +4296,9 @@ SkipTypecast PROC					; COMDAT
 	cmp	BYTE PTR [r9], 44			; 0000002cH
 	je	$LN20@SkipTypeca
 
-; 695  :     int j;
-; 696  :     fullparam[0] = NULLC;
-; 697  :     for ( j = i; ; j++ ) {
+; 694  :     int j;
+; 695  :     fullparam[0] = NULLC;
+; 696  :     for ( j = i; ; j++ ) {
 
 	mov	QWORD PTR [rsp], rbx
 	lea	r8, QWORD PTR [r9+32]
@@ -4306,33 +4306,33 @@ SkipTypecast PROC					; COMDAT
 	npad	3
 $LL4@SkipTypeca:
 
-; 698  :         if (( tokenarray[j].token == T_COMMA ) || ( tokenarray[j].token == T_FINAL ) )
+; 697  :         if (( tokenarray[j].token == T_COMMA ) || ( tokenarray[j].token == T_FINAL ) )
 
 	cmp	BYTE PTR [r9], 0
 	je	$LN21@SkipTypeca
 
-; 699  :             break;
-; 700  :         if (( tokenarray[j+1].token == T_BINARY_OPERATOR ) && ( tokenarray[j+1].tokval == T_PTR ) )
+; 698  :             break;
+; 699  :         if (( tokenarray[j+1].token == T_BINARY_OPERATOR ) && ( tokenarray[j+1].tokval == T_PTR ) )
 
 	cmp	BYTE PTR [r8], 5
 	jne	SHORT $LN7@SkipTypeca
 	cmp	DWORD PTR [r8+16], 258			; 00000102H
 	jne	SHORT $LN7@SkipTypeca
 
-; 701  :             j = j + 1;
+; 700  :             j = j + 1;
 
 	add	r8, 32					; 00000020H
 	add	r9, 32					; 00000020H
 	jmp	SHORT $LN2@SkipTypeca
 $LN7@SkipTypeca:
 
-; 702  :         else {
-; 703  :             if ( fullparam[0] != NULLC )
+; 701  :         else {
+; 702  :             if ( fullparam[0] != NULLC )
 
 	cmp	BYTE PTR [r11], 0
 	je	SHORT $LN9@SkipTypeca
 
-; 704  :                 strcat( fullparam," " );
+; 703  :                 strcat( fullparam," " );
 
 	lea	rcx, QWORD PTR [r11-1]
 	npad	2
@@ -4350,7 +4350,7 @@ $LL19@SkipTypeca:
 	jne	SHORT $LL19@SkipTypeca
 $LN9@SkipTypeca:
 
-; 705  :             strcat( fullparam, tokenarray[j].string_ptr );
+; 704  :             strcat( fullparam, tokenarray[j].string_ptr );
 
 	lea	rax, QWORD PTR [r11-1]
 $LL16@SkipTypeca:
@@ -4368,14 +4368,14 @@ $LL17@SkipTypeca:
 	jne	SHORT $LL17@SkipTypeca
 $LN2@SkipTypeca:
 
-; 695  :     int j;
-; 696  :     fullparam[0] = NULLC;
-; 697  :     for ( j = i; ; j++ ) {
+; 694  :     int j;
+; 695  :     fullparam[0] = NULLC;
+; 696  :     for ( j = i; ; j++ ) {
 
 	add	r9, 32					; 00000020H
 	add	r8, 32					; 00000020H
 
-; 698  :         if (( tokenarray[j].token == T_COMMA ) || ( tokenarray[j].token == T_FINAL ) )
+; 697  :         if (( tokenarray[j].token == T_COMMA ) || ( tokenarray[j].token == T_FINAL ) )
 
 	cmp	BYTE PTR [r9], 44			; 0000002cH
 	jne	$LL4@SkipTypeca
@@ -4383,9 +4383,9 @@ $LN21@SkipTypeca:
 	mov	rbx, QWORD PTR [rsp]
 $LN20@SkipTypeca:
 
-; 706  :         }
-; 707  :     }
-; 708  : }
+; 705  :         }
+; 706  :     }
+; 707  : }
 
 	add	rsp, 8
 	ret	0
@@ -4400,7 +4400,7 @@ buffer$ = 56
 fullparam$ = 64
 GetSegmentPart PROC					; COMDAT
 
-; 522  : {
+; 521  : {
 
 	mov	QWORD PTR [rsp+16], rbx
 	mov	QWORD PTR [rsp+24], rbp
@@ -4408,33 +4408,33 @@ GetSegmentPart PROC					; COMDAT
 	sub	rsp, 32					; 00000020H
 	mov	rbx, rdx
 
-; 523  :     short reg = T_NULL;
+; 522  :     short reg = T_NULL;
 
 	xor	ebp, ebp
 
-; 524  :     DebugMsg1(("GetSegmentPart(%s) enter [override=%s sym=%s segment=%s]\n",
-; 525  :                fullparam, opnd->override ? opnd->override->string_ptr : "NULL",
-; 526  :                opnd->sym ? opnd->sym->name : "NULL",
-; 527  :                opnd->sym ? opnd->sym->segment ? opnd->sym->segment->name : "NULL" : "NULL" ));
-; 528  :     if ( opnd->override != NULL ) {
+; 523  :     DebugMsg1(("GetSegmentPart(%s) enter [override=%s sym=%s segment=%s]\n",
+; 524  :                fullparam, opnd->override ? opnd->override->string_ptr : "NULL",
+; 525  :                opnd->sym ? opnd->sym->name : "NULL",
+; 526  :                opnd->sym ? opnd->sym->segment ? opnd->sym->segment->name : "NULL" : "NULL" ));
+; 527  :     if ( opnd->override != NULL ) {
 
 	mov	rdx, QWORD PTR [rcx+48]
 	mov	rsi, rcx
 	test	rdx, rdx
 	je	SHORT $LN2@GetSegment
 
-; 529  :         if ( opnd->override->token == T_REG )
+; 528  :         if ( opnd->override->token == T_REG )
 
 	cmp	BYTE PTR [rdx], 2
 	jne	SHORT $LN4@GetSegment
 
-; 561  :     }
-; 562  :     DebugMsg1(("GetSegmentPart: reg%u, buffer=%s\n", reg, reg ? "" : buffer ));
-; 563  :     return( reg );
+; 560  :     }
+; 561  :     DebugMsg1(("GetSegmentPart: reg%u, buffer=%s\n", reg, reg ? "" : buffer ));
+; 562  :     return( reg );
 
 	movzx	eax, WORD PTR [rdx+16]
 
-; 564  : }
+; 563  : }
 
 	mov	rbx, QWORD PTR [rsp+56]
 	mov	rbp, QWORD PTR [rsp+64]
@@ -4443,9 +4443,9 @@ GetSegmentPart PROC					; COMDAT
 	ret	0
 $LN4@GetSegment:
 
-; 530  :             reg = opnd->override->tokval;
-; 531  :         else
-; 532  :             strcpy( buffer, opnd->override->string_ptr );
+; 529  :             reg = opnd->override->tokval;
+; 530  :         else
+; 531  :             strcpy( buffer, opnd->override->string_ptr );
 
 	mov	rdx, QWORD PTR [rdx+8]
 	npad	3
@@ -4457,13 +4457,13 @@ $LL19@GetSegment:
 	test	cl, cl
 	jne	SHORT $LL19@GetSegment
 
-; 561  :     }
-; 562  :     DebugMsg1(("GetSegmentPart: reg%u, buffer=%s\n", reg, reg ? "" : buffer ));
-; 563  :     return( reg );
+; 560  :     }
+; 561  :     DebugMsg1(("GetSegmentPart: reg%u, buffer=%s\n", reg, reg ? "" : buffer ));
+; 562  :     return( reg );
 
 	movzx	eax, bp
 
-; 564  : }
+; 563  : }
 
 	mov	rbx, QWORD PTR [rsp+56]
 	mov	rbp, QWORD PTR [rsp+64]
@@ -4472,7 +4472,7 @@ $LL19@GetSegment:
 	ret	0
 $LN2@GetSegment:
 
-; 533  :     } else if ( opnd->sym != NULL && opnd->sym->segment != NULL ) {
+; 532  :     } else if ( opnd->sym != NULL && opnd->sym->segment != NULL ) {
 
 	mov	rax, QWORD PTR [rcx+80]
 	mov	QWORD PTR [rsp+48], rdi
@@ -4482,8 +4482,8 @@ $LN2@GetSegment:
 	test	rdi, rdi
 	je	SHORT $LN6@GetSegment
 
-; 539  :         else
-; 540  :             as = search_assume( (struct asym *)dir, ASSUME_CS, TRUE );
+; 538  :         else
+; 539  :             as = search_assume( (struct asym *)dir, ASSUME_CS, TRUE );
 
 	mov	rax, QWORD PTR [rdi+96]
 	mov	r8b, 1
@@ -4494,45 +4494,45 @@ $LN2@GetSegment:
 	mov	rcx, rdi
 	ja	SHORT $LN41@GetSegment
 
-; 534  :         struct dsym *dir = GetSegm( opnd->sym );
-; 535  :         enum assume_segreg as;
-; 536  :         if ( dir->e.seginfo->segtype == SEGTYPE_DATA ||
-; 537  :             dir->e.seginfo->segtype == SEGTYPE_BSS )
-; 538  :             as = search_assume( (struct asym *)dir, ASSUME_DS, TRUE );
+; 533  :         struct dsym *dir = GetSegm( opnd->sym );
+; 534  :         enum assume_segreg as;
+; 535  :         if ( dir->e.seginfo->segtype == SEGTYPE_DATA ||
+; 536  :             dir->e.seginfo->segtype == SEGTYPE_BSS )
+; 537  :             as = search_assume( (struct asym *)dir, ASSUME_DS, TRUE );
 
 	mov	edx, 3
 $LN41@GetSegment:
 	call	search_assume
 
-; 541  :         if ( as != ASSUME_NOTHING ) {
+; 540  :         if ( as != ASSUME_NOTHING ) {
 
 	cmp	eax, -2
 	je	SHORT $LN11@GetSegment
 
-; 542  :             //GetResWName( segreg_tab[as], buffer );
-; 543  :             reg = T_ES + as; /* v2.08: T_ES is first seg reg in special.h */
+; 541  :             //GetResWName( segreg_tab[as], buffer );
+; 542  :             reg = T_ES + as; /* v2.08: T_ES is first seg reg in special.h */
 
 	add	ax, 25
 
-; 544  :         } else {
+; 543  :         } else {
 
 	jmp	SHORT $LN39@GetSegment
 $LN11@GetSegment:
 
-; 545  :             struct asym *seg;
-; 546  :             seg = GetGroup( opnd->sym );
+; 544  :             struct asym *seg;
+; 545  :             seg = GetGroup( opnd->sym );
 
 	mov	rcx, QWORD PTR [rsi+80]
 	call	GetGroup
 
-; 547  :             if ( seg == NULL )
+; 546  :             if ( seg == NULL )
 
 	test	rax, rax
 	cmove	rax, rdi
 
-; 548  :                 seg = &dir->sym;
-; 549  :             if ( seg )
-; 550  :                 strcpy( buffer, seg->name );
+; 547  :                 seg = &dir->sym;
+; 548  :             if ( seg )
+; 549  :                 strcpy( buffer, seg->name );
 
 	mov	rcx, QWORD PTR [rax+8]
 	npad	2
@@ -4544,32 +4544,32 @@ $LL20@GetSegment:
 	test	al, al
 	jne	SHORT $LL20@GetSegment
 
-; 551  :             else {
-; 552  :                 strcpy( buffer, "seg " );
-; 553  :                 strcat( buffer, fullparam );
-; 554  :             }
-; 555  :         }
+; 550  :             else {
+; 551  :                 strcpy( buffer, "seg " );
+; 552  :                 strcat( buffer, fullparam );
+; 553  :             }
+; 554  :         }
 
 	jmp	SHORT $LN42@GetSegment
 $LN6@GetSegment:
 
-; 556  :     } else if ( opnd->sym && opnd->sym->state == SYM_STACK ) {
+; 555  :     } else if ( opnd->sym && opnd->sym->state == SYM_STACK ) {
 
 	test	rax, rax
 	je	SHORT $LN16@GetSegment
 	cmp	DWORD PTR [rax+32], 5
 	jne	SHORT $LN16@GetSegment
 
-; 557  :         reg = T_SS;
+; 556  :         reg = T_SS;
 
 	mov	eax, 27
 
-; 558  :     } else {
+; 557  :     } else {
 
 	jmp	SHORT $LN39@GetSegment
 $LN16@GetSegment:
 
-; 559  :         strcpy( buffer,"seg " );
+; 558  :         strcpy( buffer,"seg " );
 
 	lea	rcx, OFFSET FLAT:$SG11344
 	mov	rdx, rbx
@@ -4581,7 +4581,7 @@ $LL22@GetSegment:
 	test	al, al
 	jne	SHORT $LL22@GetSegment
 
-; 560  :         strcat( buffer, fullparam );
+; 559  :         strcat( buffer, fullparam );
 
 	dec	rbx
 $LL37@GetSegment:
@@ -4598,15 +4598,15 @@ $LL38@GetSegment:
 	jne	SHORT $LL38@GetSegment
 $LN42@GetSegment:
 
-; 561  :     }
-; 562  :     DebugMsg1(("GetSegmentPart: reg%u, buffer=%s\n", reg, reg ? "" : buffer ));
-; 563  :     return( reg );
+; 560  :     }
+; 561  :     DebugMsg1(("GetSegmentPart: reg%u, buffer=%s\n", reg, reg ? "" : buffer ));
+; 562  :     return( reg );
 
 	movzx	eax, bp
 $LN39@GetSegment:
 	mov	rdi, QWORD PTR [rsp+48]
 
-; 564  : }
+; 563  : }
 
 	mov	rbx, QWORD PTR [rsp+56]
 	mov	rbp, QWORD PTR [rsp+64]
@@ -4628,7 +4628,7 @@ paramvalue$ = 152
 regs_used$ = 160
 ms64_param PROC
 
-; 247  : {
+; 246  : {
 
 	mov	BYTE PTR [rsp+32], r9b
 	mov	QWORD PTR [rsp+24], r8
@@ -4641,16 +4641,16 @@ ms64_param PROC
 	push	r15
 	sub	rsp, 48					; 00000030H
 
-; 248  :     uint_32 size;
-; 249  :     uint_32 psize;
-; 250  :     int reg;
-; 251  :     int reg2;
-; 252  :     int i;
-; 253  :     int base;
-; 254  :     bool destroyed = FALSE;
-; 255  :     DebugMsg1(("ms64_param(%s, index=%u, param.memtype=%Xh, addr=%u) enter\n", proc->sym.name, index, param->sym.mem_type, addr ));
-; 256  :     /* v2.11: default size is 32-bit, not 64-bit */
-; 257  :     if ( param->sym.is_vararg ) {
+; 247  :     uint_32 size;
+; 248  :     uint_32 psize;
+; 249  :     int reg;
+; 250  :     int reg2;
+; 251  :     int i;
+; 252  :     int base;
+; 253  :     bool destroyed = FALSE;
+; 254  :     DebugMsg1(("ms64_param(%s, index=%u, param.memtype=%Xh, addr=%u) enter\n", proc->sym.name, index, param->sym.mem_type, addr ));
+; 255  :     /* v2.11: default size is 32-bit, not 64-bit */
+; 256  :     if ( param->sym.is_vararg ) {
 
 	test	BYTE PTR [r8+47], 32			; 00000020H
 	mov	r13d, 8
@@ -4661,22 +4661,22 @@ ms64_param PROC
 	lea	r15d, QWORD PTR [r13-4]
 	je	SHORT $LN10@ms64_param
 
-; 258  :         psize = 0;
-; 259  :         if ( addr || opnd->instr == T_OFFSET )
+; 257  :         psize = 0;
+; 258  :         if ( addr || opnd->instr == T_OFFSET )
 
 	test	al, al
 	jne	SHORT $LN14@ms64_param
 	cmp	DWORD PTR [rsi+56], 241			; 000000f1H
 	je	SHORT $LN14@ms64_param
 
-; 261  :         else if ( opnd->kind == EXPR_REG && opnd->indirect == FALSE )
+; 260  :         else if ( opnd->kind == EXPR_REG && opnd->indirect == FALSE )
 
 	cmp	DWORD PTR [rsi+60], 2
 	jne	SHORT $LN15@ms64_param
 	test	BYTE PTR [rsi+76], 1
 	jne	SHORT $LN15@ms64_param
 
-; 262  :             psize = SizeFromRegister( opnd->base_reg->tokval );
+; 261  :             psize = SizeFromRegister( opnd->base_reg->tokval );
 
 	mov	rax, QWORD PTR [rsi+24]
 	mov	ecx, DWORD PTR [rax+16]
@@ -4684,13 +4684,13 @@ ms64_param PROC
 	jmp	SHORT $LN148@ms64_param
 $LN15@ms64_param:
 
-; 263  :         else if ( opnd->mem_type != MT_EMPTY )
+; 262  :         else if ( opnd->mem_type != MT_EMPTY )
 
 	mov	ecx, DWORD PTR [rsi+64]
 	cmp	ecx, 192				; 000000c0H
 	je	SHORT $LN136@ms64_param
 
-; 264  :             psize = SizeFromMemtype( opnd->mem_type, USE64, opnd->type );
+; 263  :             psize = SizeFromMemtype( opnd->mem_type, USE64, opnd->type );
 
 	mov	r8, QWORD PTR [rsi+96]
 	mov	edx, 2
@@ -4698,31 +4698,31 @@ $LN15@ms64_param:
 $LN148@ms64_param:
 	mov	edi, eax
 
-; 265  :         if ( psize < 4 )
+; 264  :         if ( psize < 4 )
 
 	cmp	eax, r15d
 	jae	SHORT $LN11@ms64_param
 $LN136@ms64_param:
 
-; 266  :             psize = 4;
+; 265  :             psize = 4;
 
 	mov	edi, r15d
 
-; 267  :     } else
+; 266  :     } else
 
 	jmp	SHORT $LN11@ms64_param
 $LN14@ms64_param:
 
-; 260  :             psize = 8;
+; 259  :             psize = 8;
 
 	mov	edi, r13d
 
-; 265  :         if ( psize < 4 )
+; 264  :         if ( psize < 4 )
 
 	jmp	SHORT $LN11@ms64_param
 $LN10@ms64_param:
 
-; 268  :         psize = SizeFromMemtype( param->sym.mem_type, USE64, param->sym.type );
+; 267  :         psize = SizeFromMemtype( param->sym.mem_type, USE64, param->sym.type );
 
 	mov	r8, QWORD PTR [r8+80]
 	mov	edx, 2
@@ -4731,9 +4731,9 @@ $LN10@ms64_param:
 	mov	edi, eax
 $LN11@ms64_param:
 
-; 269  : 
-; 270  :     /* check for register overwrites; v2.11: moved out the if( index >= 4 ) block */
-; 271  :     if ( opnd->base_reg != NULL ) {
+; 268  : 
+; 269  :     /* check for register overwrites; v2.11: moved out the if( index >= 4 ) block */
+; 270  :     if ( opnd->base_reg != NULL ) {
 
 	mov	rax, QWORD PTR [rsi+24]
 	lea	r10, OFFSET FLAT:__ImageBase
@@ -4742,29 +4742,29 @@ $LN11@ms64_param:
 	test	rax, rax
 	je	SHORT $LN141@ms64_param
 
-; 272  :         reg = opnd->base_reg->tokval;
+; 271  :         reg = opnd->base_reg->tokval;
 
 	movsxd	rbx, DWORD PTR [rax+16]
 
-; 273  :         if ( GetValueSp( reg ) & OP_R ) {
+; 272  :         if ( GetValueSp( reg ) & OP_R ) {
 
 	lea	rcx, QWORD PTR [rbx+rbx*2]
 	mov	edx, DWORD PTR SpecialTable[r10+rcx*4]
 	test	dl, 15
 	je	SHORT $LN145@ms64_param
 
-; 274  :             i = GetRegNo( reg );
+; 273  :             i = GetRegNo( reg );
 
 	movzx	ecx, BYTE PTR SpecialTable[r10+rcx*4+10]
 
-; 275  :             if ( REGPAR_WIN64 & ( 1 << i ) ) {
+; 274  :             if ( REGPAR_WIN64 & ( 1 << i ) ) {
 
 	mov	eax, 1
 	shl	eax, cl
 	test	eax, 774				; 00000306H
 	je	SHORT $LN21@ms64_param
 
-; 276  :                 base = GetParmIndex( i );
+; 275  :                 base = GetParmIndex( i );
 
 	cmp	ecx, r13d
 	jl	SHORT $LN130@ms64_param
@@ -4774,7 +4774,7 @@ $LN130@ms64_param:
 	dec	ecx
 $LN131@ms64_param:
 
-; 277  :                 if ( *regs_used & ( 1 << ( base + RPAR_START ) ) )
+; 276  :                 if ( *regs_used & ( 1 << ( base + RPAR_START ) ) )
 
 	add	ecx, 3
 	mov	edx, 1
@@ -4782,11 +4782,11 @@ $LN131@ms64_param:
 	test	dl, BYTE PTR [r14]
 	je	SHORT $LN145@ms64_param
 
-; 278  :                     destroyed = TRUE;
+; 277  :                     destroyed = TRUE;
 
 	mov	r9b, 1
 
-; 279  :             } else if ( (*regs_used & R0_USED ) && ( ( GetValueSp( reg ) & OP_A ) || reg == T_AH ) ) {
+; 278  :             } else if ( (*regs_used & R0_USED ) && ( ( GetValueSp( reg ) & OP_A ) || reg == T_AH ) ) {
 
 	jmp	SHORT $LN24@ms64_param
 $LN21@ms64_param:
@@ -4798,7 +4798,7 @@ $LN21@ms64_param:
 	jne	SHORT $LN145@ms64_param
 $LN25@ms64_param:
 
-; 280  :                 destroyed = TRUE;
+; 279  :                 destroyed = TRUE;
 
 	mov	r9b, 1
 	jmp	SHORT $LN24@ms64_param
@@ -4808,38 +4808,38 @@ $LN145@ms64_param:
 	xor	r9b, r9b
 $LN24@ms64_param:
 
-; 281  :             }
-; 282  :         }
-; 283  :     }
-; 284  :     if ( opnd->idx_reg != NULL ) {
+; 280  :             }
+; 281  :         }
+; 282  :     }
+; 283  :     if ( opnd->idx_reg != NULL ) {
 
 	mov	rax, QWORD PTR [rsi+32]
 	test	rax, rax
 	je	SHORT $LN31@ms64_param
 
-; 285  :         reg2 = opnd->idx_reg->tokval;
+; 284  :         reg2 = opnd->idx_reg->tokval;
 
 	movsxd	rdx, DWORD PTR [rax+16]
 
-; 286  :         if ( GetValueSp( reg2 ) & OP_R ) {
+; 285  :         if ( GetValueSp( reg2 ) & OP_R ) {
 
 	lea	rcx, QWORD PTR [rdx+rdx*2]
 	mov	r8d, DWORD PTR SpecialTable[r10+rcx*4]
 	test	r8b, 15
 	je	SHORT $LN31@ms64_param
 
-; 287  :             i = GetRegNo( reg2 );
+; 286  :             i = GetRegNo( reg2 );
 
 	movzx	ecx, BYTE PTR SpecialTable[r10+rcx*4+10]
 
-; 288  :             if ( REGPAR_WIN64 & ( 1 << i ) ) {
+; 287  :             if ( REGPAR_WIN64 & ( 1 << i ) ) {
 
 	mov	eax, 1
 	shl	eax, cl
 	test	eax, 774				; 00000306H
 	je	SHORT $LN28@ms64_param
 
-; 289  :                 base = GetParmIndex( i );
+; 288  :                 base = GetParmIndex( i );
 
 	cmp	ecx, r13d
 	jl	SHORT $LN132@ms64_param
@@ -4849,7 +4849,7 @@ $LN132@ms64_param:
 	dec	ecx
 $LN133@ms64_param:
 
-; 290  :                 if ( *regs_used & ( 1 << ( base + RPAR_START ) ) )
+; 289  :                 if ( *regs_used & ( 1 << ( base + RPAR_START ) ) )
 
 	add	ecx, 3
 	mov	edx, 1
@@ -4857,8 +4857,8 @@ $LN133@ms64_param:
 	test	dl, BYTE PTR [r14]
 	jne	SHORT $LN137@ms64_param
 
-; 291  :                     destroyed = TRUE;
-; 292  :             } else if ( (*regs_used & R0_USED ) && ( ( GetValueSp( reg2 ) & OP_A ) || reg2 == T_AH ) ) {
+; 290  :                     destroyed = TRUE;
+; 291  :             } else if ( (*regs_used & R0_USED ) && ( ( GetValueSp( reg2 ) & OP_A ) || reg2 == T_AH ) ) {
 
 	jmp	SHORT $LN31@ms64_param
 $LN28@ms64_param:
@@ -4870,45 +4870,45 @@ $LN28@ms64_param:
 	je	SHORT $LN137@ms64_param
 $LN31@ms64_param:
 
-; 293  :                 destroyed = TRUE;
-; 294  :             }
-; 295  :         }
-; 296  :     }
-; 297  :     if ( destroyed ) {
+; 292  :                 destroyed = TRUE;
+; 293  :             }
+; 294  :         }
+; 295  :     }
+; 296  :     if ( destroyed ) {
 
 	test	r9b, r9b
 	je	SHORT $LN33@ms64_param
 $LN137@ms64_param:
 
-; 298  :         EmitErr( REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
+; 297  :         EmitErr( REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
 
 	mov	ecx, 165				; 000000a5H
 	call	EmitErr
 	lea	r10, OFFSET FLAT:__ImageBase
 
-; 299  :         *regs_used = 0;
+; 298  :         *regs_used = 0;
 
 	mov	BYTE PTR [r14], 0
 $LN33@ms64_param:
 
-; 300  :     }
-; 301  : 
-; 302  :     if ( index >= 4 ) {
+; 299  :     }
+; 300  : 
+; 301  :     if ( index >= 4 ) {
 
 	cmp	ebp, r15d
 	jl	$LN34@ms64_param
 
-; 303  : 
-; 304  :         if ( addr || psize > 8 ) {
+; 302  : 
+; 303  :         if ( addr || psize > 8 ) {
 
 	cmp	BYTE PTR addr$[rsp], 0
 	jne	$LN37@ms64_param
 	cmp	edi, r13d
 	ja	$LN37@ms64_param
 
-; 317  :         }
-; 318  : 
-; 319  :         if ( opnd->kind == EXPR_CONST ||
+; 316  :         }
+; 317  : 
+; 318  :         if ( opnd->kind == EXPR_CONST ||
 
 	mov	ecx, DWORD PTR [rsi+60]
 	test	ecx, ecx
@@ -4923,20 +4923,20 @@ $LN33@ms64_param:
 	jne	$LN43@ms64_param
 $LN41@ms64_param:
 
-; 341  :             }
-; 342  :             DebugMsg(("ms64_param(%s, param=%u): MT_EMPTY size.p=%u flags=%X\n", proc->sym.name, index, psize, *regs_used ));
-; 343  : 
-; 344  :         } else if ( opnd->kind == EXPR_FLOAT  ) {
+; 340  :             }
+; 341  :             DebugMsg(("ms64_param(%s, param=%u): MT_EMPTY size.p=%u flags=%X\n", proc->sym.name, index, psize, *regs_used ));
+; 342  : 
+; 343  :         } else if ( opnd->kind == EXPR_FLOAT  ) {
 
 	cmp	ecx, 3
 	jne	$LN52@ms64_param
 
-; 345  : 
-; 346  :             if ( param->sym.mem_type == MT_REAL8 ) {
+; 344  : 
+; 345  :             if ( param->sym.mem_type == MT_REAL8 ) {
 
 	cmp	DWORD PTR [r12+36], 39			; 00000027H
 
-; 347  :                 AddLineQueueX( " mov %r ptr [%r+%u+0], %r (%s)", T_DWORD, T_RSP, NUMQUAL index*8, T_LOW32, paramvalue );
+; 346  :                 AddLineQueueX( " mov %r ptr [%r+%u+0], %r (%s)", T_DWORD, T_RSP, NUMQUAL index*8, T_LOW32, paramvalue );
 
 	lea	r8d, QWORD PTR [rcx+116]
 	jne	SHORT $LN54@ms64_param
@@ -4950,7 +4950,7 @@ $LN41@ms64_param:
 	lea	rcx, OFFSET FLAT:$SG11207
 	call	AddLineQueueX
 
-; 348  :                 AddLineQueueX( " mov %r ptr [%r+%u+4], %r (%s)", T_DWORD, T_RSP, NUMQUAL index*8, T_HIGH32, paramvalue );
+; 347  :                 AddLineQueueX( " mov %r ptr [%r+%u+4], %r (%s)", T_DWORD, T_RSP, NUMQUAL index*8, T_HIGH32, paramvalue );
 
 	mov	r9d, edi
 	mov	QWORD PTR [rsp+40], rbx
@@ -4960,12 +4960,12 @@ $LN41@ms64_param:
 	lea	rcx, OFFSET FLAT:$SG11208
 	call	AddLineQueueX
 
-; 349  :             } else
+; 348  :             } else
 
 	jmp	$LN94@ms64_param
 $LN54@ms64_param:
 
-; 350  :                 AddLineQueueX( " mov %r ptr [%r+%u], %s", T_DWORD, T_RSP, NUMQUAL index*8, paramvalue );
+; 349  :                 AddLineQueueX( " mov %r ptr [%r+%u], %s", T_DWORD, T_RSP, NUMQUAL index*8, paramvalue );
 
 	mov	rax, QWORD PTR paramvalue$[rsp]
 	lea	r9d, DWORD PTR [rbp*8]
@@ -4974,34 +4974,34 @@ $LN54@ms64_param:
 	lea	rcx, OFFSET FLAT:$SG11209
 	call	AddLineQueueX
 
-; 351  : 
-; 352  :         } else { /* it's a register or variable */
+; 350  : 
+; 351  :         } else { /* it's a register or variable */
 
 	jmp	$LN94@ms64_param
 $LN52@ms64_param:
 
-; 353  : 
-; 354  :             if ( opnd->kind == EXPR_REG && opnd->indirect == FALSE ) {
+; 352  : 
+; 353  :             if ( opnd->kind == EXPR_REG && opnd->indirect == FALSE ) {
 
 	cmp	ecx, 2
 	jne	SHORT $LN56@ms64_param
 	test	BYTE PTR [rsi+76], 1
 	jne	SHORT $LN56@ms64_param
 
-; 355  :                 size = SizeFromRegister( reg );
+; 354  :                 size = SizeFromRegister( reg );
 
 	mov	ecx, ebx
 	call	SizeFromRegister
 	mov	r15d, eax
 
-; 356  :                 if ( size == psize )
+; 355  :                 if ( size == psize )
 
 	cmp	eax, edi
 	je	$LN57@ms64_param
 
-; 357  :                     i = reg;
-; 358  :                 else {
-; 359  :                     if ( size > psize || ( size < psize && param->sym.mem_type == MT_PTR ) ) {
+; 356  :                     i = reg;
+; 357  :                 else {
+; 358  :                     if ( size > psize || ( size < psize && param->sym.mem_type == MT_PTR ) ) {
 
 	ja	SHORT $LN61@ms64_param
 	jae	SHORT $LN60@ms64_param
@@ -5009,20 +5009,20 @@ $LN52@ms64_param:
 	jne	SHORT $LN60@ms64_param
 $LN61@ms64_param:
 
-; 360  :                         DebugMsg(("ms64_param(%s, param=%u): type error size.p/a=%u/%u flags=%X\n", proc->sym.name, index, psize, size, *regs_used ));
-; 361  :                         EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, index+1 );
+; 359  :                         DebugMsg(("ms64_param(%s, param=%u): type error size.p/a=%u/%u flags=%X\n", proc->sym.name, index, psize, size, *regs_used ));
+; 360  :                         EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, index+1 );
 
 	lea	edx, DWORD PTR [rbp+1]
 	mov	ecx, 145				; 00000091H
 	call	EmitErr
 
-; 362  :                         psize = size;
+; 361  :                         psize = size;
 
 	mov	edi, r15d
 $LN60@ms64_param:
 
-; 363  :                     }
-; 364  :                     switch ( psize ) {
+; 362  :                     }
+; 363  :                     switch ( psize ) {
 
 	mov	eax, edi
 	sub	eax, 1
@@ -5032,35 +5032,35 @@ $LN60@ms64_param:
 	cmp	eax, 2
 	je	SHORT $LN70@ms64_param
 
-; 365  :                     case 1:  i = T_AL;  break;
-; 366  :                     case 2:  i = T_AX;  break;
-; 367  :                     case 4:  i = T_EAX; break;
-; 368  :                     default: i = T_RAX; break;
+; 364  :                     case 1:  i = T_AL;  break;
+; 365  :                     case 2:  i = T_AX;  break;
+; 366  :                     case 4:  i = T_EAX; break;
+; 367  :                     default: i = T_RAX; break;
 
 	mov	ebx, 115				; 00000073H
 	jmp	SHORT $LN6@ms64_param
 $LN56@ms64_param:
 
-; 369  :                     }
-; 370  :                     *regs_used |= R0_USED;
-; 371  :                 }
-; 372  :                 DebugMsg(("ms64_param(%s, param=%u): REG size.p/a=%u/%u flags=%X\n", proc->sym.name, index, psize, size, *regs_used ));
-; 373  :             } else {
-; 374  :                 if ( opnd->mem_type == MT_EMPTY )
+; 368  :                     }
+; 369  :                     *regs_used |= R0_USED;
+; 370  :                 }
+; 371  :                 DebugMsg(("ms64_param(%s, param=%u): REG size.p/a=%u/%u flags=%X\n", proc->sym.name, index, psize, size, *regs_used ));
+; 372  :             } else {
+; 373  :                 if ( opnd->mem_type == MT_EMPTY )
 
 	mov	ecx, DWORD PTR [rsi+64]
 	cmp	ecx, 192				; 000000c0H
 	jne	SHORT $LN66@ms64_param
 
-; 375  :                     size = ( opnd->instr == T_OFFSET ? 8 : 4 );
+; 374  :                     size = ( opnd->instr == T_OFFSET ? 8 : 4 );
 
 	cmp	DWORD PTR [rsi+56], 241			; 000000f1H
 	cmove	r15d, r13d
 	jmp	SHORT $LN67@ms64_param
 $LN66@ms64_param:
 
-; 376  :                 else
-; 377  :                     size = SizeFromMemtype( opnd->mem_type, USE64, opnd->type );
+; 375  :                 else
+; 376  :                     size = SizeFromMemtype( opnd->mem_type, USE64, opnd->type );
 
 	mov	r8, QWORD PTR [rsi+96]
 	mov	edx, 2
@@ -5068,8 +5068,8 @@ $LN66@ms64_param:
 	mov	r15d, eax
 $LN67@ms64_param:
 
-; 378  :                 DebugMsg(("ms64_param(%s, param=%u): MEM size.p/a=%u/%u flags=%X\n", proc->sym.name, index, psize, size, *regs_used ));
-; 379  :                 switch ( psize ) {
+; 377  :                 DebugMsg(("ms64_param(%s, param=%u): MEM size.p/a=%u/%u flags=%X\n", proc->sym.name, index, psize, size, *regs_used ));
+; 378  :                 switch ( psize ) {
 
 	mov	eax, edi
 	sub	eax, 1
@@ -5079,39 +5079,39 @@ $LN67@ms64_param:
 	cmp	eax, 2
 	je	SHORT $LN70@ms64_param
 
-; 383  :                 default: i = T_RAX; break;
+; 382  :                 default: i = T_RAX; break;
 
 	mov	ebx, 115				; 00000073H
 	jmp	SHORT $LN6@ms64_param
 $LN70@ms64_param:
 
-; 382  :                 case 4:  i = T_EAX; break;
+; 381  :                 case 4:  i = T_EAX; break;
 
 	mov	ebx, 17
 	jmp	SHORT $LN6@ms64_param
 $LN69@ms64_param:
 
-; 381  :                 case 2:  i = T_AX;  break;
+; 380  :                 case 2:  i = T_AX;  break;
 
 	mov	ebx, 9
 	jmp	SHORT $LN6@ms64_param
 $LN68@ms64_param:
 
-; 380  :                 case 1:  i = T_AL;  break;
+; 379  :                 case 1:  i = T_AL;  break;
 
 	mov	ebx, 1
 $LN6@ms64_param:
 
-; 384  :                 }
-; 385  :                 *regs_used |= R0_USED;
+; 383  :                 }
+; 384  :                 *regs_used |= R0_USED;
 
 	or	BYTE PTR [r14], 1
 $LN57@ms64_param:
 
-; 386  :             }
-; 387  : 
-; 388  :             /* v2.11: no expansion if target type is a pointer */
-; 389  :             if ( size > psize || ( size < psize && param->sym.mem_type == MT_PTR ) ) {
+; 385  :             }
+; 386  : 
+; 387  :             /* v2.11: no expansion if target type is a pointer */
+; 388  :             if ( size > psize || ( size < psize && param->sym.mem_type == MT_PTR ) ) {
 
 	cmp	r15d, edi
 	ja	SHORT $LN73@ms64_param
@@ -5120,29 +5120,29 @@ $LN57@ms64_param:
 	jne	SHORT $LN72@ms64_param
 $LN73@ms64_param:
 
-; 390  :                 EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, index+1 );
+; 389  :                 EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, index+1 );
 
 	lea	edx, DWORD PTR [rbp+1]
 	mov	ecx, 145				; 00000091H
 	call	EmitErr
 $LN72@ms64_param:
 
-; 391  :             }
-; 392  :             if ( size != psize ) {
+; 390  :             }
+; 391  :             if ( size != psize ) {
 
 	cmp	r15d, edi
 $LN149@ms64_param:
 	je	SHORT $LN74@ms64_param
 
-; 393  :                 if ( size == 4 ) {
-; 394  :                     if ( IS_SIGNED( opnd->mem_type ) )
+; 392  :                 if ( size == 4 ) {
+; 393  :                     if ( IS_SIGNED( opnd->mem_type ) )
 
 	mov	eax, DWORD PTR [rsi+64]
 	and	al, -64					; ffffffffffffffc0H
 	cmp	r15d, 4
 	jne	SHORT $LN76@ms64_param
 
-; 395  :                         AddLineQueueX( " movsxd %r, %s", i, paramvalue );
+; 394  :                         AddLineQueueX( " movsxd %r, %s", i, paramvalue );
 
 	mov	r8, QWORD PTR paramvalue$[rsp]
 	mov	edx, ebx
@@ -5152,17 +5152,17 @@ $LN149@ms64_param:
 	jmp	SHORT $LN150@ms64_param
 $LN78@ms64_param:
 
-; 396  :                     else
-; 397  :                         AddLineQueueX( " mov %r, %s", i, paramvalue );
+; 395  :                     else
+; 396  :                         AddLineQueueX( " mov %r, %s", i, paramvalue );
 
 	lea	rcx, OFFSET FLAT:$SG11235
 
-; 398  :                 } else
+; 397  :                 } else
 
 	jmp	SHORT $LN150@ms64_param
 $LN76@ms64_param:
 
-; 399  :                     AddLineQueueX( " mov%sx %r, %s", IS_SIGNED( opnd->mem_type ) ? "s" : "z", i, paramvalue );
+; 398  :                     AddLineQueueX( " mov%sx %r, %s", IS_SIGNED( opnd->mem_type ) ? "s" : "z", i, paramvalue );
 
 	mov	r9, QWORD PTR paramvalue$[rsp]
 	lea	rcx, OFFSET FLAT:$SG11236
@@ -5173,7 +5173,7 @@ $LN76@ms64_param:
 	lea	rcx, OFFSET FLAT:$SG11238
 	call	AddLineQueueX
 
-; 400  :             } else if ( opnd->kind != EXPR_REG || opnd->indirect == TRUE )
+; 399  :             } else if ( opnd->kind != EXPR_REG || opnd->indirect == TRUE )
 
 	jmp	SHORT $LN80@ms64_param
 $LN74@ms64_param:
@@ -5183,7 +5183,7 @@ $LN74@ms64_param:
 	je	SHORT $LN80@ms64_param
 $LN81@ms64_param:
 
-; 401  :                 AddLineQueueX( " mov %r, %s", i, paramvalue );
+; 400  :                 AddLineQueueX( " mov %r, %s", i, paramvalue );
 
 	mov	r8, QWORD PTR paramvalue$[rsp]
 	lea	rcx, OFFSET FLAT:$SG11241
@@ -5192,8 +5192,8 @@ $LN150@ms64_param:
 	call	AddLineQueueX
 $LN80@ms64_param:
 
-; 402  : 
-; 403  :             AddLineQueueX( " mov [%r+%u], %r", T_RSP, NUMQUAL index*8, i );
+; 401  : 
+; 402  :             AddLineQueueX( " mov [%r+%u], %r", T_RSP, NUMQUAL index*8, i );
 
 	lea	r8d, DWORD PTR [rbp*8]
 	mov	r9d, ebx
@@ -5203,10 +5203,10 @@ $LN80@ms64_param:
 	jmp	$LN94@ms64_param
 $LN43@ms64_param:
 
-; 320  :            ( opnd->kind == EXPR_ADDR && opnd->indirect == FALSE && opnd->mem_type == MT_EMPTY && opnd->instr != T_OFFSET ) ) {
-; 321  : 
-; 322  :             /* v2.06: support 64-bit constants for params > 4 */
-; 323  :             if ( psize == 8 &&
+; 319  :            ( opnd->kind == EXPR_ADDR && opnd->indirect == FALSE && opnd->mem_type == MT_EMPTY && opnd->instr != T_OFFSET ) ) {
+; 320  : 
+; 321  :             /* v2.06: support 64-bit constants for params > 4 */
+; 322  :             if ( psize == 8 &&
 
 	cmp	edi, r13d
 	jne	SHORT $LN44@ms64_param
@@ -5217,8 +5217,8 @@ $LN43@ms64_param:
 	cmp	rax, rdx
 	jbe	SHORT $LN44@ms64_param
 
-; 324  :                 ( opnd->value64 > LONG_MAX || opnd->value64 < LONG_MIN ) ) {
-; 325  :                 AddLineQueueX( " mov %r ptr [%r+%u], %r ( %s )", T_DWORD, T_RSP, NUMQUAL index*8, T_LOW32, paramvalue );
+; 323  :                 ( opnd->value64 > LONG_MAX || opnd->value64 < LONG_MIN ) ) {
+; 324  :                 AddLineQueueX( " mov %r ptr [%r+%u], %r ( %s )", T_DWORD, T_RSP, NUMQUAL index*8, T_LOW32, paramvalue );
 
 	mov	rdi, QWORD PTR paramvalue$[rsp]
 	lea	ebx, DWORD PTR [rbp*8]
@@ -5231,7 +5231,7 @@ $LN43@ms64_param:
 	lea	r8d, QWORD PTR [rsi-90]
 	call	AddLineQueueX
 
-; 326  :                 AddLineQueueX( " mov %r ptr [%r+%u], %r ( %s )", T_DWORD, T_RSP, NUMQUAL index*8+4, T_HIGH32, paramvalue );
+; 325  :                 AddLineQueueX( " mov %r ptr [%r+%u], %r ( %s )", T_DWORD, T_RSP, NUMQUAL index*8+4, T_HIGH32, paramvalue );
 
 	lea	r9d, DWORD PTR [rbx+4]
 	mov	QWORD PTR [rsp+40], rdi
@@ -5241,14 +5241,14 @@ $LN43@ms64_param:
 	lea	rcx, OFFSET FLAT:$SG11196
 	call	AddLineQueueX
 
-; 327  : 
-; 328  :             } else {
+; 326  : 
+; 327  :             } else {
 
 	jmp	$LN94@ms64_param
 $LN44@ms64_param:
 
-; 329  :                 /* v2.11: no expansion if target type is a pointer and argument is an address part */
-; 330  :                 if ( param->sym.mem_type == MT_PTR && opnd->kind == EXPR_ADDR && opnd->sym->state != SYM_UNDEFINED ) {
+; 328  :                 /* v2.11: no expansion if target type is a pointer and argument is an address part */
+; 329  :                 if ( param->sym.mem_type == MT_PTR && opnd->kind == EXPR_ADDR && opnd->sym->state != SYM_UNDEFINED ) {
 
 	cmp	DWORD PTR [r12+36], 195			; 000000c3H
 	jne	SHORT $LN47@ms64_param
@@ -5258,16 +5258,16 @@ $LN44@ms64_param:
 	cmp	DWORD PTR [rax+32], 0
 	je	SHORT $LN47@ms64_param
 
-; 331  :                     DebugMsg(("ms64_param(%s, param=%u): MT_PTR, type error, psize=%u\n", proc->sym.name, index, psize ));
-; 332  :                     EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, index+1 );
+; 330  :                     DebugMsg(("ms64_param(%s, param=%u): MT_PTR, type error, psize=%u\n", proc->sym.name, index, psize ));
+; 331  :                     EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, index+1 );
 
 	lea	edx, DWORD PTR [rbp+1]
 	mov	ecx, 145				; 00000091H
 	call	EmitErr
 $LN47@ms64_param:
 
-; 333  :                 }
-; 334  :                 switch ( psize ) {
+; 332  :                 }
+; 333  :                 switch ( psize ) {
 
 	sub	edi, 1
 	je	SHORT $LN48@ms64_param
@@ -5276,31 +5276,31 @@ $LN47@ms64_param:
 	cmp	edi, 2
 	je	SHORT $LN50@ms64_param
 
-; 338  :                 default:  i = T_QWORD; break;
+; 337  :                 default:  i = T_QWORD; break;
 
 	mov	esi, 213				; 000000d5H
 	jmp	SHORT $LN2@ms64_param
 $LN50@ms64_param:
 
-; 337  :                 case 4:   i = T_DWORD; break;
+; 336  :                 case 4:   i = T_DWORD; break;
 
 	mov	esi, 209				; 000000d1H
 	jmp	SHORT $LN2@ms64_param
 $LN49@ms64_param:
 
-; 336  :                 case 2:   i = T_WORD; break;
+; 335  :                 case 2:   i = T_WORD; break;
 
 	mov	esi, 207				; 000000cfH
 	jmp	SHORT $LN2@ms64_param
 $LN48@ms64_param:
 
-; 335  :                 case 1:   i = T_BYTE; break;
+; 334  :                 case 1:   i = T_BYTE; break;
 
 	mov	esi, 205				; 000000cdH
 $LN2@ms64_param:
 
-; 339  :                 }
-; 340  :                 AddLineQueueX( " mov %r ptr [%r+%u], %s", i, T_RSP, NUMQUAL index*8, paramvalue );
+; 338  :                 }
+; 339  :                 AddLineQueueX( " mov %r ptr [%r+%u], %s", i, T_RSP, NUMQUAL index*8, paramvalue );
 
 	mov	rax, QWORD PTR paramvalue$[rsp]
 	lea	r9d, DWORD PTR [rbp*8]
@@ -5310,42 +5310,42 @@ $LN2@ms64_param:
 	lea	rcx, OFFSET FLAT:$SG11202
 	call	AddLineQueueX
 
-; 404  :         }
+; 403  :         }
 
 	jmp	$LN94@ms64_param
 $LN37@ms64_param:
 
-; 305  :             if ( psize == 4 )
+; 304  :             if ( psize == 4 )
 
 	cmp	edi, r15d
 	jne	SHORT $LN38@ms64_param
 
-; 306  :                 i = T_EAX;
+; 305  :                 i = T_EAX;
 
 	mov	ebx, 17
 	jmp	SHORT $LN40@ms64_param
 $LN38@ms64_param:
 
-; 307  :             else {
-; 308  :                 i = T_RAX;
+; 306  :             else {
+; 307  :                 i = T_RAX;
 
 	mov	ebx, 115				; 00000073H
 
-; 309  :                 if ( psize < 8 )
+; 308  :                 if ( psize < 8 )
 
 	cmp	edi, r13d
 	jae	SHORT $LN40@ms64_param
 
-; 310  :                     EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, index+1 );
+; 309  :                     EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, index+1 );
 
 	lea	edx, DWORD PTR [rbp+1]
 	lea	ecx, QWORD PTR [rbx+30]
 	call	EmitErr
 $LN40@ms64_param:
 
-; 311  :             }
-; 312  :             *regs_used |= R0_USED;
-; 313  :             AddLineQueueX( " lea %r, %s", i, paramvalue );
+; 310  :             }
+; 311  :             *regs_used |= R0_USED;
+; 312  :             AddLineQueueX( " lea %r, %s", i, paramvalue );
 
 	mov	r8, QWORD PTR paramvalue$[rsp]
 	lea	rcx, OFFSET FLAT:$SG11187
@@ -5353,7 +5353,7 @@ $LN40@ms64_param:
 	mov	edx, ebx
 	call	AddLineQueueX
 
-; 314  :             AddLineQueueX( " mov [%r+%u], %r", T_RSP, NUMQUAL index*8, i );
+; 313  :             AddLineQueueX( " mov [%r+%u], %r", T_RSP, NUMQUAL index*8, i );
 
 	lea	r8d, DWORD PTR [rbp*8]
 	mov	r9d, ebx
@@ -5361,33 +5361,33 @@ $LN40@ms64_param:
 	lea	rcx, OFFSET FLAT:$SG11188
 	call	AddLineQueueX
 
-; 315  :             DebugMsg(("ms64_param(%s, param=%u): ADDR flags=%X\n", proc->sym.name, index, *regs_used ));
-; 316  :             return( 1 );
+; 314  :             DebugMsg(("ms64_param(%s, param=%u): ADDR flags=%X\n", proc->sym.name, index, *regs_used ));
+; 315  :             return( 1 );
 
 	jmp	$LN94@ms64_param
 $LN34@ms64_param:
 
-; 405  : 
-; 406  :     } else if ( param->sym.mem_type == MT_REAL4 ||
+; 404  : 
+; 405  :     } else if ( param->sym.mem_type == MT_REAL4 ||
 
 	mov	r8d, DWORD PTR [r12+36]
 	lea	eax, DWORD PTR [r8-35]
 	test	eax, -5					; fffffffbH
 	je	$LN84@ms64_param
 
-; 434  :         }
-; 435  :     } else {
-; 436  : 
-; 437  :         if ( addr || psize > 8 ) { /* psize > 8 shouldn't happen! */
+; 433  :         }
+; 434  :     } else {
+; 435  : 
+; 436  :         if ( addr || psize > 8 ) { /* psize > 8 shouldn't happen! */
 
 	cmp	BYTE PTR addr$[rsp], 0
 	jne	$LN96@ms64_param
 	cmp	edi, r13d
 	ja	$LN96@ms64_param
 
-; 444  :         }
-; 445  :         /* register argument? */
-; 446  :         if ( opnd->kind == EXPR_REG && opnd->indirect == FALSE ) {
+; 443  :         }
+; 444  :         /* register argument? */
+; 445  :         if ( opnd->kind == EXPR_REG && opnd->indirect == FALSE ) {
 
 	mov	eax, DWORD PTR [rsi+60]
 	cmp	eax, 2
@@ -5395,12 +5395,12 @@ $LN34@ms64_param:
 	test	BYTE PTR [rsi+76], 1
 	jne	SHORT $LN99@ms64_param
 
-; 447  :             reg = opnd->base_reg->tokval;
+; 446  :             reg = opnd->base_reg->tokval;
 
 	mov	rax, QWORD PTR [rsi+24]
 	mov	ebx, DWORD PTR [rax+16]
 
-; 448  :             size = SizeFromRegister( reg );
+; 447  :             size = SizeFromRegister( reg );
 
 	mov	ecx, ebx
 	call	SizeFromRegister
@@ -5408,20 +5408,20 @@ $LN34@ms64_param:
 	jmp	SHORT $LN107@ms64_param
 $LN99@ms64_param:
 
-; 449  :         } else if ( opnd->kind == EXPR_CONST || opnd->kind == EXPR_FLOAT ) {
+; 448  :         } else if ( opnd->kind == EXPR_CONST || opnd->kind == EXPR_FLOAT ) {
 
 	test	eax, eax
 	je	SHORT $LN103@ms64_param
 	cmp	eax, 3
 	je	SHORT $LN103@ms64_param
 
-; 451  :         } else if ( opnd->mem_type != MT_EMPTY ) {
+; 450  :         } else if ( opnd->mem_type != MT_EMPTY ) {
 
 	mov	ecx, DWORD PTR [rsi+64]
 	cmp	ecx, 192				; 000000c0H
 	je	SHORT $LN104@ms64_param
 
-; 452  :             size = SizeFromMemtype( opnd->mem_type, USE64, opnd->type );
+; 451  :             size = SizeFromMemtype( opnd->mem_type, USE64, opnd->type );
 
 	mov	r8, QWORD PTR [rsi+96]
 	mov	edx, 2
@@ -5430,7 +5430,7 @@ $LN99@ms64_param:
 	jmp	SHORT $LN107@ms64_param
 $LN104@ms64_param:
 
-; 453  :         } else if ( opnd->kind == EXPR_ADDR && opnd->sym->state == SYM_UNDEFINED ) {
+; 452  :         } else if ( opnd->kind == EXPR_ADDR && opnd->sym->state == SYM_UNDEFINED ) {
 
 	cmp	eax, 1
 	jne	SHORT $LN106@ms64_param
@@ -5439,20 +5439,20 @@ $LN104@ms64_param:
 	je	SHORT $LN103@ms64_param
 $LN106@ms64_param:
 
-; 454  :             DebugMsg1(("ms64_param(%s, param=%u): forward ref=%s, assumed size=%u\n", proc->sym.name, index, opnd->sym->name, psize ));
-; 455  :             size = psize;
-; 456  :         } else
-; 457  :             size = ( opnd->instr == T_OFFSET ? 8 : 4 );
+; 453  :             DebugMsg1(("ms64_param(%s, param=%u): forward ref=%s, assumed size=%u\n", proc->sym.name, index, opnd->sym->name, psize ));
+; 454  :             size = psize;
+; 455  :         } else
+; 456  :             size = ( opnd->instr == T_OFFSET ? 8 : 4 );
 
 	cmp	DWORD PTR [rsi+56], 241			; 000000f1H
 	mov	r12d, r15d
 	cmove	r12d, r13d
 $LN107@ms64_param:
 
-; 458  : 
-; 459  :         /* v2.11: allow argument extension, so long as the target isn't a pointer */
-; 460  :         //if ( size != psize && param->sym.is_vararg == FALSE ) {
-; 461  :         if ( size > psize || ( size < psize && param->sym.mem_type == MT_PTR ) ) {
+; 457  : 
+; 458  :         /* v2.11: allow argument extension, so long as the target isn't a pointer */
+; 459  :         //if ( size != psize && param->sym.is_vararg == FALSE ) {
+; 460  :         if ( size > psize || ( size < psize && param->sym.mem_type == MT_PTR ) ) {
 
 	cmp	r12d, edi
 	ja	SHORT $LN109@ms64_param
@@ -5462,8 +5462,8 @@ $LN107@ms64_param:
 	jne	SHORT $LN108@ms64_param
 $LN109@ms64_param:
 
-; 462  :             DebugMsg(("ms64_param(%s, param=%u): type error size.p/a=%u/%u flags=%X\n", proc->sym.name, index, psize, size, *regs_used ));
-; 463  :             EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, index+1 );
+; 461  :             DebugMsg(("ms64_param(%s, param=%u): type error size.p/a=%u/%u flags=%X\n", proc->sym.name, index, psize, size, *regs_used ));
+; 462  :             EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, index+1 );
 
 	lea	edx, DWORD PTR [rbp+1]
 	mov	ecx, 145				; 00000091H
@@ -5471,15 +5471,15 @@ $LN109@ms64_param:
 	jmp	SHORT $LN108@ms64_param
 $LN103@ms64_param:
 
-; 450  :             size = psize;
+; 449  :             size = psize;
 
 	mov	r12d, edi
 $LN108@ms64_param:
 
-; 464  :         }
-; 465  :         /* v2.11: use parameter size to allow argument extension */
-; 466  :         //switch ( size ) {
-; 467  :         switch ( psize ) {
+; 463  :         }
+; 464  :         /* v2.11: use parameter size to allow argument extension */
+; 465  :         //switch ( size ) {
+; 466  :         switch ( psize ) {
 
 	mov	eax, edi
 	sub	eax, 1
@@ -5489,43 +5489,43 @@ $LN108@ms64_param:
 	cmp	eax, 2
 	je	SHORT $LN8@ms64_param
 
-; 470  :         case 4: base =  2*4; break;
-; 471  :         default:base =  3*4; break;
+; 469  :         case 4: base =  2*4; break;
+; 470  :         default:base =  3*4; break;
 
 	mov	r13d, 12
 	jmp	SHORT $LN8@ms64_param
 $LN111@ms64_param:
 
-; 469  :         case 2: base =  1*4; break;
+; 468  :         case 2: base =  1*4; break;
 
 	mov	r13d, r15d
 	jmp	SHORT $LN8@ms64_param
 $LN110@ms64_param:
 
-; 468  :         case 1: base =  0*4; break;
+; 467  :         case 1: base =  0*4; break;
 
 	xor	r13d, r13d
 $LN8@ms64_param:
 
-; 472  :         }
-; 473  :         /* optimization if the register holds the value already */
-; 474  :         if ( opnd->kind == EXPR_REG && opnd->indirect == FALSE ) {
+; 471  :         }
+; 472  :         /* optimization if the register holds the value already */
+; 473  :         if ( opnd->kind == EXPR_REG && opnd->indirect == FALSE ) {
 
 	cmp	DWORD PTR [rsi+60], 2
 
-; 475  :             if ( GetValueSp( reg ) & OP_R ) {
+; 474  :             if ( GetValueSp( reg ) & OP_R ) {
 
 	lea	r15, OFFSET FLAT:__ImageBase
 	jne	SHORT $LN118@ms64_param
 
-; 472  :         }
-; 473  :         /* optimization if the register holds the value already */
-; 474  :         if ( opnd->kind == EXPR_REG && opnd->indirect == FALSE ) {
+; 471  :         }
+; 472  :         /* optimization if the register holds the value already */
+; 473  :         if ( opnd->kind == EXPR_REG && opnd->indirect == FALSE ) {
 
 	test	BYTE PTR [rsi+76], 1
 	jne	SHORT $LN118@ms64_param
 
-; 475  :             if ( GetValueSp( reg ) & OP_R ) {
+; 474  :             if ( GetValueSp( reg ) & OP_R ) {
 
 	movsxd	rax, ebx
 	lea	rcx, QWORD PTR [rax+rax*2]
@@ -5533,37 +5533,37 @@ $LN8@ms64_param:
 	test	BYTE PTR SpecialTable[rdx+r15], 15
 	je	SHORT $LN118@ms64_param
 
-; 476  :                 if ( ms64_regs[index+base] == reg ) {
+; 475  :                 if ( ms64_regs[index+base] == reg ) {
 
 	movsxd	rcx, r13d
 
-; 477  :                     DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index ));
-; 478  :                     return( 1 );
+; 476  :                     DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index ));
+; 477  :                     return( 1 );
 
 	mov	eax, 1
 	add	rcx, rbp
 	cmp	DWORD PTR ms64_regs[r15+rcx*4], ebx
 	je	$LN1@ms64_param
 
-; 479  :                 }
-; 480  :                 i = GetRegNo( reg );
+; 478  :                 }
+; 479  :                 i = GetRegNo( reg );
 
 	movzx	edx, BYTE PTR SpecialTable[rdx+r15+10]
 
-; 481  :                 if ( REGPAR_WIN64 & ( 1 << i ) ) {
+; 480  :                 if ( REGPAR_WIN64 & ( 1 << i ) ) {
 
 	mov	ecx, edx
 	shl	eax, cl
 	test	eax, 774				; 00000306H
 	je	SHORT $LN118@ms64_param
 
-; 482  :                     i = GetParmIndex( i );
+; 481  :                     i = GetParmIndex( i );
 
 	cmp	edx, 8
 	lea	eax, DWORD PTR [rdx-6]
 	lea	ecx, DWORD PTR [rdx-1]
 
-; 483  :                     if ( *regs_used & ( 1 << ( i + RPAR_START ) ) )
+; 482  :                     if ( *regs_used & ( 1 << ( i + RPAR_START ) ) )
 
 	mov	edx, 1
 	cmovge	ecx, eax
@@ -5572,30 +5572,30 @@ $LN8@ms64_param:
 	test	dl, BYTE PTR [r14]
 	je	SHORT $LN118@ms64_param
 
-; 484  :                         EmitErr( REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
+; 483  :                         EmitErr( REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
 
 	mov	ecx, 165				; 000000a5H
 	call	EmitErr
 $LN118@ms64_param:
 
-; 485  :                 }
-; 486  :             }
-; 487  :         }
-; 488  :         /* v2.11: allow argument extension */
-; 489  :         if ( size < psize )
+; 484  :                 }
+; 485  :             }
+; 486  :         }
+; 487  :         /* v2.11: allow argument extension */
+; 488  :         if ( size < psize )
 
 	cmp	r12d, edi
 	jae	$LN119@ms64_param
 
-; 490  :             if ( size == 4 ) {
-; 491  :                 if ( IS_SIGNED( opnd->mem_type ) )
+; 489  :             if ( size == 4 ) {
+; 490  :                 if ( IS_SIGNED( opnd->mem_type ) )
 
 	mov	eax, DWORD PTR [rsi+64]
 	and	al, -64					; ffffffffffffffc0H
 	cmp	r12d, 4
 	jne	SHORT $LN121@ms64_param
 
-; 492  :                     AddLineQueueX( " movsxd %r, %s", ms64_regs[index+base], paramvalue );
+; 491  :                     AddLineQueueX( " movsxd %r, %s", ms64_regs[index+base], paramvalue );
 
 	mov	r8, QWORD PTR paramvalue$[rsp]
 	cmp	al, 64					; 00000040H
@@ -5607,18 +5607,18 @@ $LN118@ms64_param:
 	jmp	$LN151@ms64_param
 $LN123@ms64_param:
 
-; 493  :                 else
-; 494  :                     AddLineQueueX( " mov %r, %s", ms64_regs[index+2*4], paramvalue );
+; 492  :                 else
+; 493  :                     AddLineQueueX( " mov %r, %s", ms64_regs[index+2*4], paramvalue );
 
 	mov	edx, DWORD PTR ms64_regs[r15+rbp*4+32]
 	lea	rcx, OFFSET FLAT:$SG11295
 
-; 495  :             } else
+; 494  :             } else
 
 	jmp	$LN151@ms64_param
 $LN121@ms64_param:
 
-; 496  :                 AddLineQueueX( " mov%sx %r, %s", IS_SIGNED( opnd->mem_type ) ? "s" : "z", ms64_regs[index+base], paramvalue );
+; 495  :                 AddLineQueueX( " mov%sx %r, %s", IS_SIGNED( opnd->mem_type ) ? "s" : "z", ms64_regs[index+base], paramvalue );
 
 	mov	r9, QWORD PTR paramvalue$[rsp]
 	lea	r8, OFFSET FLAT:$SG11296
@@ -5631,8 +5631,8 @@ $LN121@ms64_param:
 	lea	rcx, OFFSET FLAT:$SG11298
 	call	AddLineQueueX
 
-; 506  :         }
-; 507  :         *regs_used |= ( 1 << ( index + RPAR_START ) );
+; 505  :         }
+; 506  :         *regs_used |= ( 1 << ( index + RPAR_START ) );
 
 	movzx	ecx, BYTE PTR [r14]
 	lea	eax, DWORD PTR [rbp+3]
@@ -5641,30 +5641,30 @@ $LN121@ms64_param:
 	jmp	$LN94@ms64_param
 $LN119@ms64_param:
 
-; 497  :         else{
-; 498  :           /* v2.12 added by habran : if parametar  is zero use 'xor reg,reg' instead of 'mov reg,0' */
-; 499  :           if ((!strcmpi(paramvalue, "0") || (!strcmpi(paramvalue, "NULL")) || (!strcmpi(paramvalue, "FALSE"))))  {
+; 496  :         else{
+; 497  :           /* v2.12 added by habran : if parametar  is zero use 'xor reg,reg' instead of 'mov reg,0' */
+; 498  :           if ((!strcasecmp(paramvalue, "0") || (!strcasecmp(paramvalue, "NULL")) || (!strcasecmp(paramvalue, "FALSE"))))  {
 
 	mov	rbx, QWORD PTR paramvalue$[rsp]
 	lea	rdx, OFFSET FLAT:$SG11302
 	mov	rcx, rbx
-	call	strcmpi
+	call	_stricmp
 	test	eax, eax
 	je	SHORT $LN127@ms64_param
 	lea	rdx, OFFSET FLAT:$SG11303
 	mov	rcx, rbx
-	call	strcmpi
+	call	_stricmp
 	test	eax, eax
 	je	SHORT $LN127@ms64_param
 	lea	rdx, OFFSET FLAT:$SG11304
 	mov	rcx, rbx
-	call	strcmpi
+	call	_stricmp
 	test	eax, eax
 	je	SHORT $LN127@ms64_param
 
-; 503  :           }
-; 504  :           else 
-; 505  :             AddLineQueueX(" mov %r, %s", ms64_regs[index + base], paramvalue);
+; 502  :           }
+; 503  :           else 
+; 504  :             AddLineQueueX(" mov %r, %s", ms64_regs[index + base], paramvalue);
 
 	movsxd	rcx, r13d
 	mov	r8, rbx
@@ -5674,8 +5674,8 @@ $LN119@ms64_param:
 $LN151@ms64_param:
 	call	AddLineQueueX
 
-; 506  :         }
-; 507  :         *regs_used |= ( 1 << ( index + RPAR_START ) );
+; 505  :         }
+; 506  :         *regs_used |= ( 1 << ( index + RPAR_START ) );
 
 	movzx	ecx, BYTE PTR [r14]
 	lea	eax, DWORD PTR [rbp+3]
@@ -5684,7 +5684,7 @@ $LN151@ms64_param:
 	jmp	$LN94@ms64_param
 $LN127@ms64_param:
 
-; 500  :             if (ms64_regs[index + base] > T_R9D) index -= 4;
+; 499  :             if (ms64_regs[index + base] > T_R9D) index -= 4;
 
 	movsxd	rcx, r13d
 	lea	rax, QWORD PTR [rcx+rbp]
@@ -5693,7 +5693,7 @@ $LN127@ms64_param:
 	sub	ebp, 4
 $LN128@ms64_param:
 
-; 501  :             AddLineQueueX(" xor %r, %r", ms64_regs[index + base], ms64_regs[index + base]);
+; 500  :             AddLineQueueX(" xor %r, %r", ms64_regs[index + base], ms64_regs[index + base]);
 
 	movsxd	rax, ebp
 	add	rax, rcx
@@ -5702,17 +5702,17 @@ $LN128@ms64_param:
 	mov	r8d, edx
 	call	AddLineQueueX
 
-; 502  :             return(1);
+; 501  :             return(1);
 
 	jmp	$LN94@ms64_param
 $LN96@ms64_param:
 
-; 438  :             if ( psize >= 4 )
+; 437  :             if ( psize >= 4 )
 
 	cmp	edi, r15d
 	jb	SHORT $LN97@ms64_param
 
-; 439  :                 AddLineQueueX( " lea %r, %s", ms64_regs[index+2*4+(psize > 4 ? 4 : 0)], paramvalue );
+; 438  :                 AddLineQueueX( " lea %r, %s", ms64_regs[index+2*4+(psize > 4 ? 4 : 0)], paramvalue );
 
 	mov	r8, QWORD PTR paramvalue$[rsp]
 	lea	rcx, OFFSET FLAT:$SG11267
@@ -5724,29 +5724,29 @@ $LN96@ms64_param:
 	jmp	SHORT $LN151@ms64_param
 $LN97@ms64_param:
 
-; 440  :             else
-; 441  :                 EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, index+1 );
+; 439  :             else
+; 440  :                 EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, index+1 );
 
 	lea	edx, DWORD PTR [rbp+1]
 	mov	ecx, 145				; 00000091H
 	call	EmitErr
 
-; 442  :             *regs_used |= ( 1 << ( index + RPAR_START ) );
+; 441  :             *regs_used |= ( 1 << ( index + RPAR_START ) );
 
 	movzx	ecx, BYTE PTR [r14]
 	lea	eax, DWORD PTR [rbp+3]
 	bts	ecx, eax
 	mov	BYTE PTR [r14], cl
 
-; 443  :             return( 1 );
+; 442  :             return( 1 );
 
 	jmp	$LN94@ms64_param
 $LN84@ms64_param:
 
-; 407  :                param->sym.mem_type == MT_REAL8 ) {
-; 408  : 
-; 409  :         /* v2.04: check if argument is the correct XMM register already */
-; 410  :         if ( opnd->kind == EXPR_REG && opnd->indirect == FALSE ) {
+; 406  :                param->sym.mem_type == MT_REAL8 ) {
+; 407  : 
+; 408  :         /* v2.04: check if argument is the correct XMM register already */
+; 409  :         if ( opnd->kind == EXPR_REG && opnd->indirect == FALSE ) {
 
 	mov	edx, DWORD PTR [rsi+60]
 	cmp	edx, 2
@@ -5754,48 +5754,48 @@ $LN84@ms64_param:
 	test	BYTE PTR [rsi+76], 1
 	jne	SHORT $LN86@ms64_param
 
-; 411  : 
-; 412  :             if ( GetValueSp( reg ) & OP_XMM ) {
+; 410  : 
+; 411  :             if ( GetValueSp( reg ) & OP_XMM ) {
 
 	movsxd	rax, ebx
 	lea	rcx, QWORD PTR [rax+rax*2]
 	test	BYTE PTR SpecialTable[r10+rcx*4], 32	; 00000020H
 	je	SHORT $LN86@ms64_param
 
-; 413  :                 if ( reg == T_XMM0 + index )
+; 412  :                 if ( reg == T_XMM0 + index )
 
 	lea	edx, DWORD PTR [rbp+40]
 	cmp	ebx, edx
 	je	$LN94@ms64_param
 
-; 414  :                     DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index ));
-; 415  :                 else
-; 416  :                     AddLineQueueX( " movq %r, %s", T_XMM0 + index, paramvalue );
+; 413  :                     DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index ));
+; 414  :                 else
+; 415  :                     AddLineQueueX( " movq %r, %s", T_XMM0 + index, paramvalue );
 
 	lea	rcx, OFFSET FLAT:$SG11250
 
-; 417  :                 return( 1 );
+; 416  :                 return( 1 );
 
 	jmp	$LN152@ms64_param
 $LN86@ms64_param:
 
-; 418  :             }
-; 419  :         }
-; 420  :         if ( opnd->kind == EXPR_FLOAT ) {
+; 417  :             }
+; 418  :         }
+; 419  :         if ( opnd->kind == EXPR_FLOAT ) {
 
 	cmp	edx, 3
 	jne	SHORT $LN89@ms64_param
 
-; 421  :             *regs_used |= R0_USED;
+; 420  :             *regs_used |= R0_USED;
 
 	or	BYTE PTR [r14], 1
 
-; 422  :             if ( param->sym.mem_type == MT_REAL4 ) {
+; 421  :             if ( param->sym.mem_type == MT_REAL4 ) {
 
 	cmp	DWORD PTR [r12+36], 35			; 00000023H
 	jne	SHORT $LN91@ms64_param
 
-; 423  :                 AddLineQueueX( " mov %r, %s", T_EAX, paramvalue );
+; 422  :                 AddLineQueueX( " mov %r, %s", T_EAX, paramvalue );
 
 	mov	r8, QWORD PTR paramvalue$[rsp]
 	lea	rcx, OFFSET FLAT:$SG11255
@@ -5803,19 +5803,19 @@ $LN86@ms64_param:
 	mov	edx, ebx
 	call	AddLineQueueX
 
-; 424  :                 AddLineQueueX( " movd %r, %r", T_XMM0 + index, T_EAX );
+; 423  :                 AddLineQueueX( " movd %r, %r", T_XMM0 + index, T_EAX );
 
 	lea	edx, DWORD PTR [rbp+40]
 	mov	r8d, ebx
 	lea	rcx, OFFSET FLAT:$SG11256
 	call	AddLineQueueX
 
-; 425  :             } else {
+; 424  :             } else {
 
 	jmp	SHORT $LN94@ms64_param
 $LN91@ms64_param:
 
-; 426  :                 AddLineQueueX( " mov %r, %r ptr %s", T_RAX, T_REAL8, paramvalue );
+; 425  :                 AddLineQueueX( " mov %r, %r ptr %s", T_RAX, T_REAL8, paramvalue );
 
 	mov	r9, QWORD PTR paramvalue$[rsp]
 	lea	rcx, OFFSET FLAT:$SG11257
@@ -5824,29 +5824,29 @@ $LN91@ms64_param:
 	lea	r8d, QWORD PTR [rbx+100]
 	call	AddLineQueueX
 
-; 427  :                 AddLineQueueX( " movd %r, %r", T_XMM0 + index, T_RAX );
+; 426  :                 AddLineQueueX( " movd %r, %r", T_XMM0 + index, T_RAX );
 
 	lea	edx, DWORD PTR [rbp+40]
 	mov	r8d, ebx
 	lea	rcx, OFFSET FLAT:$SG11258
 	call	AddLineQueueX
 
-; 428  :             }
-; 429  :         } else {
+; 427  :             }
+; 428  :         } else {
 
 	jmp	SHORT $LN94@ms64_param
 $LN89@ms64_param:
 
-; 430  :             if ( param->sym.mem_type == MT_REAL4 )
-; 431  :                 AddLineQueueX( " movd %r, %s", T_XMM0 + index, paramvalue );
+; 429  :             if ( param->sym.mem_type == MT_REAL4 )
+; 430  :                 AddLineQueueX( " movd %r, %s", T_XMM0 + index, paramvalue );
 
 	lea	edx, DWORD PTR [rbp+40]
 	lea	rcx, OFFSET FLAT:$SG11261
 	cmp	r8d, 35					; 00000023H
 	je	SHORT $LN152@ms64_param
 
-; 432  :             else
-; 433  :                 AddLineQueueX( " movq %r, %s", T_XMM0 + index, paramvalue );
+; 431  :             else
+; 432  :                 AddLineQueueX( " movq %r, %s", T_XMM0 + index, paramvalue );
 
 	lea	rcx, OFFSET FLAT:$SG11262
 $LN152@ms64_param:
@@ -5854,15 +5854,15 @@ $LN152@ms64_param:
 	call	AddLineQueueX
 $LN94@ms64_param:
 
-; 508  :         DebugMsg1(("ms64_param(%s, param=%u): size=%u flags=%X\n", proc->sym.name, index, size, *regs_used ));
-; 509  :     }
-; 510  :     return( 1 );
+; 507  :         DebugMsg1(("ms64_param(%s, param=%u): size=%u flags=%X\n", proc->sym.name, index, size, *regs_used ));
+; 508  :     }
+; 509  :     return( 1 );
 
 	mov	eax, 1
 $LN1@ms64_param:
 	mov	rbx, QWORD PTR [rsp+112]
 
-; 511  : }
+; 510  : }
 
 	add	rsp, 48					; 00000030H
 	pop	r15
@@ -5883,13 +5883,13 @@ numparams$ = 16
 value$ = 24
 ms64_fcend PROC
 
-; 224  :     /* use <value>, which has been set by ms64_fcstart() */
-; 225  :     if ( !( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) )
+; 223  :     /* use <value>, which has been set by ms64_fcstart() */
+; 224  :     if ( !( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) )
 
 	test	BYTE PTR ModuleInfo+413, 2
 	jne	SHORT $LN2@ms64_fcend
 
-; 226  :         AddLineQueueX( " add %r, %d", T_RSP, value * 8 );
+; 225  :         AddLineQueueX( " add %r, %d", T_RSP, value * 8 );
 
 	lea	r8d, DWORD PTR [r8*8]
 	mov	edx, 119				; 00000077H
@@ -5897,8 +5897,8 @@ ms64_fcend PROC
 	jmp	AddLineQueueX
 $LN2@ms64_fcend:
 
-; 227  :     return;
-; 228  : }
+; 226  :     return;
+; 227  : }
 
 	ret	0
 ms64_fcend ENDP
@@ -5913,19 +5913,19 @@ tokenarray$ = 72
 value$ = 80
 ms64_fcstart PROC
 
-; 194  : {
+; 193  : {
 
 	sub	rsp, 40					; 00000028H
 
-; 195  :     /* v2.04: VARARG didn't work */
-; 196  :     if ( proc->e.procinfo->has_vararg ) {
+; 194  :     /* v2.04: VARARG didn't work */
+; 195  :     if ( proc->e.procinfo->has_vararg ) {
 
 	mov	rax, QWORD PTR [rcx+96]
 	test	BYTE PTR [rax+84], 1
 	je	SHORT $LN3@ms64_fcsta
 
-; 197  :         //numparams = ( tokenarray[start].token != T_FINAL ? 1 : 0 );
-; 198  :         for ( numparams = 0; tokenarray[start].token != T_FINAL; start++ )
+; 196  :         //numparams = ( tokenarray[start].token != T_FINAL ? 1 : 0 );
+; 197  :         for ( numparams = 0; tokenarray[start].token != T_FINAL; start++ )
 
 	movsxd	r8, r8d
 	xor	edx, edx
@@ -5936,21 +5936,21 @@ ms64_fcstart PROC
 	je	SHORT $LN18@ms64_fcsta
 $LL4@ms64_fcsta:
 
-; 199  :         if (tokenarray[start].token == T_COMMA) {
+; 198  :         if (tokenarray[start].token == T_COMMA) {
 
 	cmp	BYTE PTR [rcx], 44			; 0000002cH
 	jne	SHORT $LN2@ms64_fcsta
 
-; 200  :           numparams++;
-; 201  :           sym_ReservedStack->hasinvoke = 1;  //added by habran
+; 199  :           numparams++;
+; 200  :           sym_ReservedStack->hasinvoke = 1;  //added by habran
 
 	mov	rax, QWORD PTR sym_ReservedStack
 	inc	edx
 	mov	DWORD PTR [rax+16], 1
 $LN2@ms64_fcsta:
 
-; 197  :         //numparams = ( tokenarray[start].token != T_FINAL ? 1 : 0 );
-; 198  :         for ( numparams = 0; tokenarray[start].token != T_FINAL; start++ )
+; 196  :         //numparams = ( tokenarray[start].token != T_FINAL ? 1 : 0 );
+; 197  :         for ( numparams = 0; tokenarray[start].token != T_FINAL; start++ )
 
 	inc	r8
 	mov	rcx, r8
@@ -5960,42 +5960,42 @@ $LN2@ms64_fcsta:
 	jne	SHORT $LL4@ms64_fcsta
 $LN3@ms64_fcsta:
 
-; 202  :         }
-; 203  :     }
-; 204  :     DebugMsg1(("ms64_fcstart(%s, numparams=%u) vararg=%u\n", proc->sym.name, numparams, proc->e.procinfo->has_vararg ));
-; 205  :     if ( numparams < 4 )
+; 201  :         }
+; 202  :     }
+; 203  :     DebugMsg1(("ms64_fcstart(%s, numparams=%u) vararg=%u\n", proc->sym.name, numparams, proc->e.procinfo->has_vararg ));
+; 204  :     if ( numparams < 4 )
 
 	cmp	edx, 4
 	jge	SHORT $LN7@ms64_fcsta
 $LN18@ms64_fcsta:
 
-; 206  :         numparams = 4;
+; 205  :         numparams = 4;
 
 	mov	edx, 4
 	jmp	SHORT $LN9@ms64_fcsta
 $LN7@ms64_fcsta:
 
-; 207  :     else if ( numparams & 1 )
+; 206  :     else if ( numparams & 1 )
 
 	test	dl, 1
 	je	SHORT $LN9@ms64_fcsta
 
-; 208  :         numparams++;
+; 207  :         numparams++;
 
 	inc	edx
 $LN9@ms64_fcsta:
 
-; 209  :     *value = numparams;
+; 208  :     *value = numparams;
 
 	mov	rax, QWORD PTR value$[rsp]
 	mov	DWORD PTR [rax], edx
 
-; 210  :     if ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) {
+; 209  :     if ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) {
 
 	test	BYTE PTR ModuleInfo+413, 2
 	je	SHORT $LN10@ms64_fcsta
 
-; 211  :         if ( ( numparams * sizeof( uint_64 ) ) > sym_ReservedStack->value )
+; 210  :         if ( ( numparams * sizeof( uint_64 ) ) > sym_ReservedStack->value )
 
 	mov	r8, QWORD PTR sym_ReservedStack
 	movsxd	rcx, edx
@@ -6004,26 +6004,26 @@ $LN9@ms64_fcsta:
 	cmp	rcx, rax
 	jbe	SHORT $LN20@ms64_fcsta
 
-; 212  :             sym_ReservedStack->value = numparams * sizeof( uint_64 );
+; 211  :             sym_ReservedStack->value = numparams * sizeof( uint_64 );
 
 	lea	eax, DWORD PTR [rdx*8]
 	mov	DWORD PTR [r8+16], eax
 
-; 215  :     /* since Win64 fastcall doesn't push, it's a better/faster strategy to
-; 216  :      * handle the arguments from left to right.
-; 217  :      */
-; 218  :     return( 0 );
+; 214  :     /* since Win64 fastcall doesn't push, it's a better/faster strategy to
+; 215  :      * handle the arguments from left to right.
+; 216  :      */
+; 217  :     return( 0 );
 
 	xor	eax, eax
 
-; 219  : }
+; 218  : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
 $LN10@ms64_fcsta:
 
-; 213  :     } else
-; 214  :         AddLineQueueX( " sub %r, %d", T_RSP, numparams * sizeof( uint_64 ) );
+; 212  :     } else
+; 213  :         AddLineQueueX( " sub %r, %d", T_RSP, numparams * sizeof( uint_64 ) );
 
 	movsxd	r8, edx
 	lea	rcx, OFFSET FLAT:$SG11114
@@ -6032,14 +6032,14 @@ $LN10@ms64_fcsta:
 	call	AddLineQueueX
 $LN20@ms64_fcsta:
 
-; 215  :     /* since Win64 fastcall doesn't push, it's a better/faster strategy to
-; 216  :      * handle the arguments from left to right.
-; 217  :      */
-; 218  :     return( 0 );
+; 214  :     /* since Win64 fastcall doesn't push, it's a better/faster strategy to
+; 215  :      * handle the arguments from left to right.
+; 216  :      */
+; 217  :     return( 0 );
 
 	xor	eax, eax
 
-; 219  : }
+; 218  : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
@@ -6060,7 +6060,7 @@ paramvalue$ = 344
 r0used$ = 352
 watc_param PROC
 
-; 602  : {
+; 601  : {
 
 	push	rbx
 	push	rsi
@@ -6068,13 +6068,13 @@ watc_param PROC
 	sub	rsp, 272				; 00000110H
 	mov	rbx, r8
 
-; 603  :     int opc;
-; 604  :     int qual;
-; 605  :     int i;
-; 606  :     char regs[64];
-; 607  :     char *reg[4];
-; 608  :     char *p;
-; 609  :     int psize = SizeFromMemtype( param->sym.mem_type, USE_EMPTY, param->sym.type );
+; 602  :     int opc;
+; 603  :     int qual;
+; 604  :     int i;
+; 605  :     char regs[64];
+; 606  :     char *reg[4];
+; 607  :     char *p;
+; 608  :     int psize = SizeFromMemtype( param->sym.mem_type, USE_EMPTY, param->sym.type );
 
 	mov	edx, 254				; 000000feH
 	mov	r8, QWORD PTR [r8+80]
@@ -6082,19 +6082,19 @@ watc_param PROC
 	mov	ecx, DWORD PTR [rbx+36]
 	call	SizeFromMemtype
 
-; 610  : 
-; 611  :     DebugMsg1(("watc_param(%s, param=%u [name=%s, state=%u]),addr=%u: psize=%u\n", proc->sym.name, index, param->sym.name, param->sym.state, addr, psize ));
-; 612  :     if ( param->sym.state != SYM_TMACRO )
+; 609  : 
+; 610  :     DebugMsg1(("watc_param(%s, param=%u [name=%s, state=%u]),addr=%u: psize=%u\n", proc->sym.name, index, param->sym.name, param->sym.state, addr, psize ));
+; 611  :     if ( param->sym.state != SYM_TMACRO )
 
 	cmp	DWORD PTR [rbx+32], 10
 	mov	r15d, eax
 	je	SHORT $LN8@watc_param
 
-; 613  :         return( 0 );
+; 612  :         return( 0 );
 
 	xor	eax, eax
 
-; 688  : }
+; 687  : }
 
 	add	rsp, 272				; 00000110H
 	pop	r15
@@ -6103,22 +6103,22 @@ watc_param PROC
 	ret	0
 $LN8@watc_param:
 
-; 614  :     DebugMsg1(("watc_param(%s): register param=%s\n", proc->sym.name, param->sym.string_ptr ));
-; 615  : 
-; 616  :     fcscratch += CurrWordSize;
-; 617  : 
-; 618  :     /* the "name" might be a register pair */
-; 619  : 
-; 620  :     reg[0] = param->sym.string_ptr;
+; 613  :     DebugMsg1(("watc_param(%s): register param=%s\n", proc->sym.name, param->sym.string_ptr ));
+; 614  : 
+; 615  :     fcscratch += CurrWordSize;
+; 616  : 
+; 617  :     /* the "name" might be a register pair */
+; 618  : 
+; 619  :     reg[0] = param->sym.string_ptr;
 
 	mov	rbx, QWORD PTR [rbx+16]
 	xorps	xmm0, xmm0
 	movzx	eax, BYTE PTR ModuleInfo+406
 
-; 621  :     reg[1] = NULL;
-; 622  :     reg[2] = NULL;
-; 623  :     reg[3] = NULL;
-; 624  :     if ( strchr( reg[0], ':' ) ) {
+; 620  :     reg[1] = NULL;
+; 621  :     reg[2] = NULL;
+; 622  :     reg[3] = NULL;
+; 623  :     if ( strchr( reg[0], ':' ) ) {
 
 	mov	rcx, rbx
 	add	DWORD PTR fcscratch, eax
@@ -6132,7 +6132,7 @@ $LN8@watc_param:
 	test	rax, rax
 	je	SHORT $LN38@watc_param
 
-; 625  :         strcpy( regs, reg[0] );
+; 624  :         strcpy( regs, reg[0] );
 
 	lea	rcx, QWORD PTR regs$[rsp]
 	sub	rcx, rbx
@@ -6143,11 +6143,11 @@ $LL34@watc_param:
 	test	al, al
 	jne	SHORT $LL34@watc_param
 
-; 626  :         fcscratch += CurrWordSize;
+; 625  :         fcscratch += CurrWordSize;
 
 	movzx	eax, BYTE PTR ModuleInfo+406
 
-; 627  :         for ( p = regs, i = 0; i < 4; i++ ) {
+; 626  :         for ( p = regs, i = 0; i < 4; i++ ) {
 
 	mov	rbx, rdi
 	add	DWORD PTR fcscratch, eax
@@ -6155,48 +6155,48 @@ $LL34@watc_param:
 	npad	12
 $LL4@watc_param:
 
-; 628  :             reg[i] = p;
-; 629  :             p = strchr( p, ':' );
+; 627  :             reg[i] = p;
+; 628  :             p = strchr( p, ':' );
 
 	mov	edx, 58					; 0000003aH
 	mov	QWORD PTR reg$[rsp+rbx*8], rax
 	mov	rcx, rax
 	call	strchr
 
-; 630  :             if ( p == NULL )
+; 629  :             if ( p == NULL )
 
 	test	rax, rax
 	je	SHORT $LN48@watc_param
 
-; 631  :                 break;
-; 632  :             *p++ = NULLC;
+; 630  :                 break;
+; 631  :             *p++ = NULLC;
 
 	mov	BYTE PTR [rax], dil
 	inc	rbx
 
-; 633  :             p++;
+; 632  :             p++;
 
 	add	rax, 2
 	cmp	rbx, 4
 	jl	SHORT $LL4@watc_param
 $LN48@watc_param:
 
-; 627  :         for ( p = regs, i = 0; i < 4; i++ ) {
+; 626  :         for ( p = regs, i = 0; i < 4; i++ ) {
 
 	mov	rbx, QWORD PTR reg$[rsp]
 $LN38@watc_param:
 	mov	QWORD PTR [rsp+304], rbp
 	mov	QWORD PTR [rsp+328], r14
 
-; 634  :         }
-; 635  :     }
-; 636  : 
-; 637  :     if ( addr ) {
+; 633  :         }
+; 634  :     }
+; 635  : 
+; 636  :     if ( addr ) {
 
 	test	sil, sil
 	je	$LN11@watc_param
 
-; 638  :         if ( opnd->kind == T_REG || opnd->sym->state == SYM_STACK ) {
+; 637  :         if ( opnd->kind == T_REG || opnd->sym->state == SYM_STACK ) {
 
 	mov	rcx, QWORD PTR opnd$[rsp]
 	cmp	DWORD PTR [rcx+60], 2
@@ -6205,44 +6205,44 @@ $LN38@watc_param:
 	cmp	DWORD PTR [rax+32], 5
 	je	SHORT $LN14@watc_param
 
-; 641  :         } else {
-; 642  :             opc = T_MOV;
+; 640  :         } else {
+; 641  :             opc = T_MOV;
 
 	mov	esi, 601				; 00000259H
 
-; 643  :             qual = T_OFFSET;
+; 642  :             qual = T_OFFSET;
 
 	mov	ebp, 241				; 000000f1H
 	jmp	SHORT $LN13@watc_param
 $LN14@watc_param:
 
-; 639  :             opc = T_LEA;
+; 638  :             opc = T_LEA;
 
 	mov	esi, 629				; 00000275H
 
-; 640  :             qual = T_NULL;
+; 639  :             qual = T_NULL;
 
 	mov	ebp, edi
 $LN13@watc_param:
 
-; 644  :         }
-; 645  :         /* v2.05: filling of segment part added */
-; 646  :         i = 0;
-; 647  :         if ( reg[1] != NULL ) {
+; 643  :         }
+; 644  :         /* v2.05: filling of segment part added */
+; 645  :         i = 0;
+; 646  :         if ( reg[1] != NULL ) {
 
 	mov	r14, QWORD PTR paramvalue$[rsp]
 	cmp	QWORD PTR reg$[rsp+8], rdi
 	je	SHORT $LN15@watc_param
 
-; 648  :             char buffer[128];
-; 649  :             short sreg;
-; 650  :             if ( sreg = GetSegmentPart( opnd, buffer, paramvalue ) )
+; 647  :             char buffer[128];
+; 648  :             short sreg;
+; 649  :             if ( sreg = GetSegmentPart( opnd, buffer, paramvalue ) )
 
 	mov	r8, r14
 	lea	rdx, QWORD PTR buffer$1[rsp]
 	call	GetSegmentPart
 
-; 651  :                 AddLineQueueX( "%r %s, %r", T_MOV, reg[0],  sreg );
+; 650  :                 AddLineQueueX( "%r %s, %r", T_MOV, reg[0],  sreg );
 
 	mov	r8, rbx
 	mov	edx, 601				; 00000259H
@@ -6254,21 +6254,21 @@ $LN13@watc_param:
 	jmp	SHORT $LN17@watc_param
 $LN16@watc_param:
 
-; 652  :             else
-; 653  :                 AddLineQueueX( "%r %s, %s", T_MOV, reg[0],  buffer );
+; 651  :             else
+; 652  :                 AddLineQueueX( "%r %s, %s", T_MOV, reg[0],  buffer );
 
 	lea	r9, QWORD PTR buffer$1[rsp]
 	lea	rcx, OFFSET FLAT:$SG11416
 	call	AddLineQueueX
 $LN17@watc_param:
 
-; 654  :             i++;
+; 653  :             i++;
 
 	mov	edi, 1
 $LN15@watc_param:
 
-; 655  :         }
-; 656  :         AddLineQueueX( "%r %s, %r %s", opc, reg[i], qual, paramvalue );
+; 654  :         }
+; 655  :         AddLineQueueX( "%r %s, %r %s", opc, reg[i], qual, paramvalue );
 
 	movsxd	r8, edi
 	lea	rcx, OFFSET FLAT:$SG11417
@@ -6278,13 +6278,13 @@ $LN15@watc_param:
 	mov	r8, QWORD PTR reg$[rsp+r8*8]
 	call	AddLineQueueX
 
-; 657  :         return( 1 );
+; 656  :         return( 1 );
 
 	jmp	$LN52@watc_param
 $LN11@watc_param:
 
-; 658  :     }
-; 659  :     for ( i = 3; i >= 0; i-- ) {
+; 657  :     }
+; 658  :     for ( i = 3; i >= 0; i-- ) {
 
 	mov	rdi, QWORD PTR paramvalue$[rsp]
 	lea	rsi, QWORD PTR reg$[rsp+24]
@@ -6296,44 +6296,44 @@ $LN11@watc_param:
 	npad	9
 $LL7@watc_param:
 
-; 660  :         if ( reg[i] ) {
+; 659  :         if ( reg[i] ) {
 
 	mov	r10, QWORD PTR [rsi]
 	test	r10, r10
 	je	$LN5@watc_param
 
-; 661  :             if ( opnd->kind == EXPR_CONST ) {
+; 660  :             if ( opnd->kind == EXPR_CONST ) {
 
 	mov	eax, DWORD PTR [r14+60]
 	test	eax, eax
 	jne	SHORT $LN19@watc_param
 
-; 662  :                 if ( i > 0 )
+; 661  :                 if ( i > 0 )
 
 	test	ebx, ebx
 	jle	SHORT $LN53@watc_param
 
-; 663  :                     qual = T_LOWWORD;
+; 662  :                     qual = T_LOWWORD;
 
 	mov	r8d, 238				; 000000eeH
 	jmp	SHORT $LN47@watc_param
 $LN53@watc_param:
 
-; 664  :                 else if ( i == 0 && reg[1] != NULL )
+; 663  :                 else if ( i == 0 && reg[1] != NULL )
 
 	jne	SHORT $LN25@watc_param
 	test	rbp, rbp
 	je	SHORT $LN25@watc_param
 
-; 665  :                     qual = T_HIGHWORD;
+; 664  :                     qual = T_HIGHWORD;
 
 	mov	r8d, 232				; 000000e8H
 $LN47@watc_param:
 
-; 666  :                 else
-; 667  :                     qual = T_NULL;
-; 668  :                 if ( qual != T_NULL )
-; 669  :                     AddLineQueueX( "mov %s, %r (%s)", reg[i], qual, paramvalue );
+; 665  :                 else
+; 666  :                     qual = T_NULL;
+; 667  :                 if ( qual != T_NULL )
+; 668  :                     AddLineQueueX( "mov %s, %r (%s)", reg[i], qual, paramvalue );
 
 	mov	r9, rdi
 	lea	rcx, OFFSET FLAT:$SG11427
@@ -6342,41 +6342,41 @@ $LN47@watc_param:
 	jmp	$LN5@watc_param
 $LN25@watc_param:
 
-; 670  :                 else
-; 671  :                     AddLineQueueX( "mov %s, %s", reg[i], paramvalue );
+; 669  :                 else
+; 670  :                     AddLineQueueX( "mov %s, %s", reg[i], paramvalue );
 
 	mov	r8, rdi
 	lea	rcx, OFFSET FLAT:$SG11428
 	mov	rdx, r10
 	call	AddLineQueueX
 
-; 672  :             } else if ( opnd->kind == EXPR_REG ) {
+; 671  :             } else if ( opnd->kind == EXPR_REG ) {
 
 	jmp	SHORT $LN5@watc_param
 $LN19@watc_param:
 	cmp	eax, 2
 	jne	SHORT $LN27@watc_param
 
-; 673  :                 AddLineQueueX( "mov %s, %s", reg[i], paramvalue );
+; 672  :                 AddLineQueueX( "mov %s, %s", reg[i], paramvalue );
 
 	mov	r8, rdi
 	lea	rcx, OFFSET FLAT:$SG11431
 	mov	rdx, r10
 	call	AddLineQueueX
 
-; 674  :             } else {
+; 673  :             } else {
 
 	jmp	SHORT $LN5@watc_param
 $LN27@watc_param:
 
-; 675  :                 if ( i == 0 && reg[1] == NULL )
+; 674  :                 if ( i == 0 && reg[1] == NULL )
 
 	test	ebx, ebx
 	jne	SHORT $LN29@watc_param
 	test	rbp, rbp
 	jne	SHORT $LN29@watc_param
 
-; 676  :                     AddLineQueueX( "mov %s, %s", reg[i], paramvalue );
+; 675  :                     AddLineQueueX( "mov %s, %s", reg[i], paramvalue );
 
 	mov	r8, rdi
 	lea	rcx, OFFSET FLAT:$SG11434
@@ -6385,15 +6385,15 @@ $LN27@watc_param:
 	jmp	SHORT $LN5@watc_param
 $LN29@watc_param:
 
-; 677  :                 else {
-; 678  :                     if ( ModuleInfo.Ofssize )
+; 676  :                 else {
+; 677  :                     if ( ModuleInfo.Ofssize )
 
 	movzx	ecx, BYTE PTR ModuleInfo+404
 
-; 679  :                         qual = T_DWORD;
-; 680  :                     else
-; 681  :                         qual = T_WORD;
-; 682  :                     AddLineQueueX( "mov %s, %r %r %s[%u]", reg[i], qual, T_PTR, paramvalue, psize - ( (i+1) * ( 2 << ModuleInfo.Ofssize ) ) );
+; 678  :                         qual = T_DWORD;
+; 679  :                     else
+; 680  :                         qual = T_WORD;
+; 681  :                     AddLineQueueX( "mov %s, %r %r %s[%u]", reg[i], qual, T_PTR, paramvalue, psize - ( (i+1) * ( 2 << ModuleInfo.Ofssize ) ) );
 
 	lea	eax, DWORD PTR [rbx+1]
 	test	cl, cl
@@ -6412,8 +6412,8 @@ $LN29@watc_param:
 	call	AddLineQueueX
 $LN5@watc_param:
 
-; 658  :     }
-; 659  :     for ( i = 3; i >= 0; i-- ) {
+; 657  :     }
+; 658  :     for ( i = 3; i >= 0; i-- ) {
 
 	sub	rsi, 8
 	sub	ebx, 1
@@ -6422,17 +6422,17 @@ $LN5@watc_param:
 $LN52@watc_param:
 	mov	rbp, QWORD PTR [rsp+304]
 
-; 683  :                 }
-; 684  :             }
-; 685  :         }
-; 686  :     }
-; 687  :     return( 1 );
+; 682  :                 }
+; 683  :             }
+; 684  :         }
+; 685  :     }
+; 686  :     return( 1 );
 
 	mov	eax, 1
 	mov	r14, QWORD PTR [rsp+328]
 	mov	rdi, QWORD PTR [rsp+312]
 
-; 688  : }
+; 687  : }
 
 	add	rsp, 272				; 00000110H
 	pop	r15
@@ -6449,14 +6449,14 @@ numparams$ = 16
 value$ = 24
 watc_fcend PROC
 
-; 588  :     DebugMsg1(("watc_fcend(%s, %u, %u)\n", proc->sym.name, numparams, value ));
-; 589  :     if ( proc->e.procinfo->has_vararg ) {
+; 587  :     DebugMsg1(("watc_fcend(%s, %u, %u)\n", proc->sym.name, numparams, value ));
+; 588  :     if ( proc->e.procinfo->has_vararg ) {
 
 	mov	rax, QWORD PTR [rcx+96]
 	test	BYTE PTR [rax+84], 1
 	je	SHORT $LN2@watc_fcend
 
-; 590  :         AddLineQueueX( " add %r, %u", stackreg[ModuleInfo.Ofssize], NUMQUAL proc->e.procinfo->parasize + size_vararg );
+; 589  :         AddLineQueueX( " add %r, %u", stackreg[ModuleInfo.Ofssize], NUMQUAL proc->e.procinfo->parasize + size_vararg );
 
 	mov	r8d, DWORD PTR size_vararg
 	lea	rcx, OFFSET FLAT:stackreg
@@ -6465,19 +6465,19 @@ watc_fcend PROC
 	mov	edx, DWORD PTR [rcx+rax*4]
 	lea	rcx, OFFSET FLAT:$SG11365
 
-; 592  :         AddLineQueueX( " add %r, %u", stackreg[ModuleInfo.Ofssize], NUMQUAL ( proc->e.procinfo->parasize - fcscratch ) );
+; 591  :         AddLineQueueX( " add %r, %u", stackreg[ModuleInfo.Ofssize], NUMQUAL ( proc->e.procinfo->parasize - fcscratch ) );
 
 	jmp	AddLineQueueX
 $LN2@watc_fcend:
 
-; 591  :     } else if ( fcscratch < proc->e.procinfo->parasize ) {
+; 590  :     } else if ( fcscratch < proc->e.procinfo->parasize ) {
 
 	mov	r8d, DWORD PTR [rax+32]
 	mov	eax, DWORD PTR fcscratch
 	cmp	eax, r8d
 	jae	SHORT $LN4@watc_fcend
 
-; 592  :         AddLineQueueX( " add %r, %u", stackreg[ModuleInfo.Ofssize], NUMQUAL ( proc->e.procinfo->parasize - fcscratch ) );
+; 591  :         AddLineQueueX( " add %r, %u", stackreg[ModuleInfo.Ofssize], NUMQUAL ( proc->e.procinfo->parasize - fcscratch ) );
 
 	sub	r8d, eax
 	lea	rcx, OFFSET FLAT:stackreg
@@ -6487,9 +6487,9 @@ $LN2@watc_fcend:
 	jmp	AddLineQueueX
 $LN4@watc_fcend:
 
-; 593  :     }
-; 594  :     return;
-; 595  : }
+; 592  :     }
+; 593  :     return;
+; 594  : }
 
 	ret	0
 watc_fcend ENDP
@@ -6504,12 +6504,12 @@ tokenarray$ = 32
 value$ = 40
 watc_fcstart PROC
 
-; 581  :     DebugMsg1(("watc_fcstart(%s, %u, %u)\n", proc->sym.name, numparams, start ));
-; 582  :     return( 1 );
+; 580  :     DebugMsg1(("watc_fcstart(%s, %u, %u)\n", proc->sym.name, numparams, start ));
+; 581  :     return( 1 );
 
 	mov	eax, 1
 
-; 583  : }
+; 582  : }
 
 	ret	0
 watc_fcstart ENDP
@@ -6526,27 +6526,27 @@ paramvalue$ = 104
 r0used$ = 112
 ms32_param PROC
 
-; 149  : {
+; 148  : {
 
 	push	rbx
 	push	r15
 	sub	rsp, 40					; 00000028H
 
-; 150  :     enum special_token const *pst;
-; 151  : 
-; 152  :     DebugMsg1(("ms32_param(proc=%s, ofs=%u, index=%u, param=%s) fcscratch=%u\n", proc->sym.name, proc->sym.Ofssize, index, param->sym.name, fcscratch ));
-; 153  :     if ( param->sym.state != SYM_TMACRO )
+; 149  :     enum special_token const *pst;
+; 150  : 
+; 151  :     DebugMsg1(("ms32_param(proc=%s, ofs=%u, index=%u, param=%s) fcscratch=%u\n", proc->sym.name, proc->sym.Ofssize, index, param->sym.name, fcscratch ));
+; 152  :     if ( param->sym.state != SYM_TMACRO )
 
 	cmp	DWORD PTR [r8+32], 10
 	movzx	ebx, r9b
 	mov	r15, r8
 	je	SHORT $LN2@ms32_param
 
-; 154  :         return( 0 );
+; 153  :         return( 0 );
 
 	xor	eax, eax
 
-; 189  : }
+; 188  : }
 
 	add	rsp, 40					; 00000028H
 	pop	r15
@@ -6556,11 +6556,11 @@ $LN2@ms32_param:
 	mov	QWORD PTR [rsp+72], rsi
 	mov	QWORD PTR [rsp+32], r14
 
-; 155  :     if ( GetSymOfssize( &proc->sym ) == USE16 ) {
+; 154  :     if ( GetSymOfssize( &proc->sym ) == USE16 ) {
 
 	call	GetSymOfssize
 
-; 156  :         pst = ms16_regs + fcscratch;
+; 155  :         pst = ms16_regs + fcscratch;
 
 	lea	r14, OFFSET FLAT:__ImageBase
 	test	eax, eax
@@ -6569,21 +6569,21 @@ $LN2@ms32_param:
 	lea	rsi, QWORD PTR ms16_regs[r14]
 	lea	rsi, QWORD PTR [rsi+rcx*4]
 
-; 157  :         fcscratch++;
+; 156  :         fcscratch++;
 
 	inc	ecx
 	mov	DWORD PTR fcscratch, ecx
 
-; 158  :     } else {
+; 157  :     } else {
 
 	jmp	SHORT $LN4@ms32_param
 $LN3@ms32_param:
 
-; 159  :         fcscratch--;
+; 158  :         fcscratch--;
 
 	mov	eax, DWORD PTR fcscratch
 
-; 160  :         pst = ms32_regs + fcscratch;
+; 159  :         pst = ms32_regs + fcscratch;
 
 	lea	rsi, QWORD PTR ms32_regs[r14]
 	dec	eax
@@ -6592,26 +6592,26 @@ $LN3@ms32_param:
 	lea	rsi, QWORD PTR [rsi+rcx*4]
 $LN4@ms32_param:
 
-; 161  :     }
-; 162  :     if ( addr )
+; 160  :     }
+; 161  :     if ( addr )
 
 	mov	QWORD PTR [rsp+64], rbp
 	mov	QWORD PTR [rsp+80], rdi
 	test	bl, bl
 	je	SHORT $LN5@ms32_param
 
-; 163  :         AddLineQueueX( " lea %r, %s", *pst, paramvalue );
+; 162  :         AddLineQueueX( " lea %r, %s", *pst, paramvalue );
 
 	mov	edx, DWORD PTR [rsi]
 	lea	rcx, OFFSET FLAT:$SG11075
 	jmp	$LN19@ms32_param
 $LN5@ms32_param:
 
-; 164  :     else {
-; 165  :         enum special_token reg = *pst;
-; 166  :         int size;
-; 167  :         /* v2.08: adjust register if size of operand won't require the full register */
-; 168  :         if ( ( opnd->kind != EXPR_CONST ) &&
+; 163  :     else {
+; 164  :         enum special_token reg = *pst;
+; 165  :         int size;
+; 166  :         /* v2.08: adjust register if size of operand won't require the full register */
+; 167  :         if ( ( opnd->kind != EXPR_CONST ) &&
 
 	mov	rdi, QWORD PTR opnd$[rsp]
 	movsxd	rbp, DWORD PTR [rsi]
@@ -6627,15 +6627,15 @@ $LN5@ms32_param:
 	cmp	ebx, eax
 	jge	SHORT $LN7@ms32_param
 
-; 169  :             ( size = SizeFromMemtype( param->sym.mem_type, USE_EMPTY, param->sym.type ) ) < SizeFromRegister( *pst ) ) {
-; 170  :             if (( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_386 ) {
+; 168  :             ( size = SizeFromMemtype( param->sym.mem_type, USE_EMPTY, param->sym.type ) ) < SizeFromRegister( *pst ) ) {
+; 169  :             if (( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_386 ) {
 
 	mov	eax, DWORD PTR ModuleInfo+392
 	and	eax, 240				; 000000f0H
 	cmp	eax, 48					; 00000030H
 	jl	SHORT $LN9@ms32_param
 
-; 171  :                 AddLineQueueX( " %s %r, %s", ( param->sym.mem_type & MT_SIGNED ) ? "movsx" : "movzx", reg, paramvalue );
+; 170  :                 AddLineQueueX( " %s %r, %s", ( param->sym.mem_type & MT_SIGNED ) ? "movsx" : "movzx", reg, paramvalue );
 
 	mov	eax, DWORD PTR [r15+36]
 	lea	rcx, OFFSET FLAT:$SG11080
@@ -6647,13 +6647,13 @@ $LN5@ms32_param:
 	lea	rcx, OFFSET FLAT:$SG11082
 	call	AddLineQueueX
 
-; 172  :             } else {
+; 171  :             } else {
 
 	jmp	SHORT $LN8@ms32_param
 $LN9@ms32_param:
 
-; 173  :                 /* this is currently always UNSIGNED */
-; 174  :                 AddLineQueueX( " mov %r, %s", T_AL + GetRegNo( reg ), paramvalue );
+; 172  :                 /* this is currently always UNSIGNED */
+; 173  :                 AddLineQueueX( " mov %r, %s", T_AL + GetRegNo( reg ), paramvalue );
 
 	mov	r8, QWORD PTR paramvalue$[rsp]
 	lea	rcx, QWORD PTR [rbp*2]
@@ -6664,21 +6664,21 @@ $LN9@ms32_param:
 	inc	edx
 	call	AddLineQueueX
 
-; 175  :                 AddLineQueueX( " mov %r, 0", T_AH + GetRegNo( reg ) );
+; 174  :                 AddLineQueueX( " mov %r, 0", T_AH + GetRegNo( reg ) );
 
 	movzx	edx, BYTE PTR [rbx+r14]
 	lea	rcx, OFFSET FLAT:$SG11084
 	add	edx, 5
 	call	AddLineQueueX
 
-; 176  :             }
-; 177  :         } else {
+; 175  :             }
+; 176  :         } else {
 
 	jmp	SHORT $LN8@ms32_param
 $LN7@ms32_param:
 
-; 178  :             /* v2.08: optimization */
-; 179  :             if ( opnd->kind == EXPR_REG && opnd->indirect == 0 && opnd->base_reg ) {
+; 177  :             /* v2.08: optimization */
+; 178  :             if ( opnd->kind == EXPR_REG && opnd->indirect == 0 && opnd->base_reg ) {
 
 	cmp	DWORD PTR [rdi+60], 2
 	jne	SHORT $LN12@ms32_param
@@ -6688,15 +6688,15 @@ $LN7@ms32_param:
 	test	rax, rax
 	je	SHORT $LN12@ms32_param
 
-; 180  :                 if ( opnd->base_reg->tokval == reg )
+; 179  :                 if ( opnd->base_reg->tokval == reg )
 
 	cmp	DWORD PTR [rax+16], ebp
 	je	SHORT $LN13@ms32_param
 $LN12@ms32_param:
 
-; 181  :                     return( 1 );
-; 182  :             }
-; 183  :             AddLineQueueX( " mov %r, %s", reg, paramvalue );
+; 180  :                     return( 1 );
+; 181  :             }
+; 182  :             AddLineQueueX( " mov %r, %s", reg, paramvalue );
 
 	mov	edx, ebp
 	lea	rcx, OFFSET FLAT:$SG11087
@@ -6705,20 +6705,20 @@ $LN19@ms32_param:
 	call	AddLineQueueX
 $LN8@ms32_param:
 
-; 184  :         }
-; 185  :     }
-; 186  :     if ( *pst == T_AX )
+; 183  :         }
+; 184  :     }
+; 185  :     if ( *pst == T_AX )
 
 	cmp	DWORD PTR [rsi], 9
 	jne	SHORT $LN13@ms32_param
 
-; 187  :         *r0used |= R0_USED;
+; 186  :         *r0used |= R0_USED;
 
 	mov	rax, QWORD PTR r0used$[rsp]
 	or	BYTE PTR [rax], 1
 $LN13@ms32_param:
 
-; 188  :     return( 1 );
+; 187  :     return( 1 );
 
 	mov	rdi, QWORD PTR [rsp+80]
 	mov	eax, 1
@@ -6726,7 +6726,7 @@ $LN13@ms32_param:
 	mov	rsi, QWORD PTR [rsp+72]
 	mov	r14, QWORD PTR [rsp+32]
 
-; 189  : }
+; 188  : }
 
 	add	rsp, 40					; 00000028H
 	pop	r15
@@ -6742,9 +6742,9 @@ numparams$ = 16
 value$ = 24
 ms32_fcend PROC
 
-; 143  :     /* nothing to do */
-; 144  :     return;
-; 145  : }
+; 142  :     /* nothing to do */
+; 143  :     return;
+; 144  : }
 
 	ret	0
 ms32_fcend ENDP
@@ -6759,30 +6759,30 @@ tokenarray$ = 72
 value$ = 80
 ms32_fcstart PROC
 
-; 128  : {
+; 127  : {
 
 	push	rbx
 	sub	rsp, 32					; 00000020H
 	mov	rbx, rcx
 
-; 129  :     struct dsym *param;
-; 130  :     DebugMsg1(("ms32_fcstart(proc=%s, ofs=%u)\n", proc->sym.name, GetSymOfssize( &proc->sym ) ));
-; 131  :     if ( GetSymOfssize( &proc->sym ) == USE16 )
+; 128  :     struct dsym *param;
+; 129  :     DebugMsg1(("ms32_fcstart(proc=%s, ofs=%u)\n", proc->sym.name, GetSymOfssize( &proc->sym ) ));
+; 130  :     if ( GetSymOfssize( &proc->sym ) == USE16 )
 
 	call	GetSymOfssize
 	test	eax, eax
 	jne	SHORT $LN5@ms32_fcsta
 
-; 138  : }
+; 137  : }
 
 	add	rsp, 32					; 00000020H
 	pop	rbx
 	ret	0
 $LN5@ms32_fcsta:
 
-; 132  :         return( 0 );
-; 133  :     /* v2.07: count number of register params */
-; 134  :     for ( param = proc->e.procinfo->paralist ; param ; param = param->nextparam )
+; 131  :         return( 0 );
+; 132  :     /* v2.07: count number of register params */
+; 133  :     for ( param = proc->e.procinfo->paralist ; param ; param = param->nextparam )
 
 	mov	rax, QWORD PTR [rbx+96]
 	mov	rax, QWORD PTR [rax+8]
@@ -6792,34 +6792,34 @@ $LN5@ms32_fcsta:
 	npad	5
 $LL4@ms32_fcsta:
 
-; 135  :         if ( param->sym.state == SYM_TMACRO )
+; 134  :         if ( param->sym.state == SYM_TMACRO )
 
 	cmp	DWORD PTR [rax+32], 10
 	jne	SHORT $LN2@ms32_fcsta
 
-; 136  :             fcscratch++;
+; 135  :             fcscratch++;
 
 	inc	ecx
 $LN2@ms32_fcsta:
 
-; 132  :         return( 0 );
-; 133  :     /* v2.07: count number of register params */
-; 134  :     for ( param = proc->e.procinfo->paralist ; param ; param = param->nextparam )
+; 131  :         return( 0 );
+; 132  :     /* v2.07: count number of register params */
+; 133  :     for ( param = proc->e.procinfo->paralist ; param ; param = param->nextparam )
 
 	mov	rax, QWORD PTR [rax+112]
 	test	rax, rax
 	jne	SHORT $LL4@ms32_fcsta
 
-; 136  :             fcscratch++;
+; 135  :             fcscratch++;
 
 	mov	DWORD PTR fcscratch, ecx
 $LN3@ms32_fcsta:
 
-; 137  :     return( 1 );
+; 136  :     return( 1 );
 
 	mov	eax, 1
 
-; 138  : }
+; 137  : }
 
 	add	rsp, 32					; 00000020H
 	pop	rbx

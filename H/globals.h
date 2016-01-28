@@ -183,13 +183,20 @@
 
 /* HJWasm version info */
 #ifdef _WIN64
-#define _HJWASM_VERSION_STR_ "2.13.64bit."
+#define _HJWASM_VERSION_STR_ "2.13"
 #else
-#define _HJWASM_VERSION_STR_ "2.13.32bit."
+#define _HJWASM_VERSION_STR_ "2.13"
 #endif
 #define _HJWASM_VERSION_INT_ 213
 #define _HJWASM_VERSION_SUFFIX_ "pre"
 #define _HJWASM_VERSION_ _HJWASM_VERSION_STR_ //_HJWASM_VERSION_SUFFIX_
+
+#if defined(_WIN32) || defined(_WIN64) 
+#define snprintf _snprintf 
+#define vsnprintf _vsnprintf 
+#define strcasecmp _stricmp 
+#define strncasecmp _strnicmp 
+#endif
 
 #define NULLC  '\0'
 //#define NULLS  ""

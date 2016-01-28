@@ -11,7 +11,6 @@
 #include <ctype.h>
 #include <limits.h>
 
-
 #include "globals.h"
 #include "memalloc.h"
 #include "parser.h"
@@ -496,7 +495,7 @@ static int ms64_param( struct dsym const *proc, int index, struct dsym *param, b
                 AddLineQueueX( " mov%sx %r, %s", IS_SIGNED( opnd->mem_type ) ? "s" : "z", ms64_regs[index+base], paramvalue );
         else{
           /* v2.12 added by habran : if parametar  is zero use 'xor reg,reg' instead of 'mov reg,0' */
-          if ((!strcmpi(paramvalue, "0") || (!strcmpi(paramvalue, "NULL")) || (!strcmpi(paramvalue, "FALSE"))))  {
+          if ((!strcasecmp(paramvalue, "0") || (!strcasecmp(paramvalue, "NULL")) || (!strcasecmp(paramvalue, "FALSE"))))  {
             if (ms64_regs[index + base] > T_R9D) index -= 4;
             AddLineQueueX(" xor %r, %r", ms64_regs[index + base], ms64_regs[index + base]);
             return(1);

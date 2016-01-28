@@ -18,23 +18,23 @@ $SG7536	DB	01H DUP (?)
 $SG7695	DB	01H DUP (?)
 _BSS	ENDS
 CONST	SEGMENT
-szCVCompiler DB	'HJWasm v2.13.64bit.', 00H
+szCVCompiler DB	'HJWasm v2.13', 00H
 CONST	ENDS
 _DATA	SEGMENT
 $SG7509	DB	'usage: HJWasm [ options ] filelist [@env_var]', 0aH, 'Ru'
 	DB	'n "HJWasm -?" or "HJWasm -h" for more info', 0aH, 00H
 	ORG $+4
 $SG7510	DB	'%s: %lu lines, %u passes, %u ms, %u warnings, %u errors', 00H
-$SG7511	DB	'HJWasm v2.13.64bit., Jan 28 2016', 00H
-	ORG $+3
+$SG7511	DB	'HJWasm v2.13, Jan 28 2016', 00H
+	ORG $+2
 $SG7513	DB	'Error', 00H
 	ORG $+6
-$SG7514	DB	'Warning', 00H
 $SG7512	DB	'Masm-compatible assembler.', 0aH, 'Portions Copyright (c'
 	DB	') 1992-2002 Sybase, Inc. All Rights Reserved.', 0aH, 'Source '
 	DB	'code is available under the Sybase Open Watcom Public License'
 	DB	'.', 0aH, 00H
 	ORG $+3
+$SG7514	DB	'Warning', 00H
 $SG7515	DB	'Fatal error', 00H
 	ORG $+4
 $SG7516	DB	'readonly', 00H
@@ -571,7 +571,7 @@ $pdata$MsgGet DD imagerel MsgGet
 	DD	imagerel $unwind$MsgGet
 pdata	ENDS
 CONST	SEGMENT
-	ORG $+12
+	ORG $+3
 msgtexts DQ	FLAT:$SG7509
 	DQ	FLAT:$SG7510
 	DQ	FLAT:$SG7511
