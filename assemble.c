@@ -250,7 +250,8 @@ void OutputBinBytes(unsigned char* pBytes, uint_32 len)
 			idx = CurrSeg->e.seginfo->current_loc - CurrSeg->e.seginfo->start_loc;
 		}
 		//DebugMsg(("OutputByte: buff=%p, idx=%" I32_SPEC "X, byte=%X, codebuff[0]=%X\n", CurrSeg->e.seginfo->CodeBuffer, idx, byte, *CurrSeg->e.seginfo->CodeBuffer ));
-		for (int i = 0; i < len; i++)
+		int i;
+		for (i = 0; i < len; i++)
 			CurrSeg->e.seginfo->CodeBuffer[idx++] = *(pBytes++);
 
 	}
