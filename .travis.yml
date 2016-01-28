@@ -6,7 +6,7 @@ deploy:
   provider: releases
   user: "john-terraspace"
   password: "Hankinson123"
-  file: "hjwasm.exe"
+  file: "GccUnixR/hjwasm"
   skip_cleanup: true
   on:
     tags: true
