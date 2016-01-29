@@ -3319,7 +3319,7 @@ $LN21@output_opc:
 ; 184  :   /* v2.02: if it's a FPU or MMX/SSE instr, reset opsiz!
 ; 185  :    * [this code has been moved here from codegen()]
 ; 186  :    */
-; 187  :   if (ins->cpu & (P_FPU_MASK | P_MMX | P_SSEALL | P_AVX)) {
+; 187  :   if (ins->cpu & (P_FPU_MASK | P_MMX | P_SSEALL)) {
 
 	mov	rax, QWORD PTR ins$[rsp]
 	movzx	eax, WORD PTR [rax+6]

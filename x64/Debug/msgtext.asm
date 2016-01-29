@@ -22,16 +22,16 @@ $SG7494	DB	'usage: HJWasm [ options ] filelist [@env_var]', 0aH, 'Ru'
 	DB	'n "HJWasm -?" or "HJWasm -h" for more info', 0aH, 00H
 	ORG $+4
 $SG7495	DB	'%s: %lu lines, %u passes, %u ms, %u warnings, %u errors', 00H
-$SG7496	DB	'HJWasm v2.13.64bit., Jan 28 2016', 00H
-	ORG $+3
+$SG7496	DB	'HJWasm v2.13, Jan 29 2016', 00H
+	ORG $+2
 $SG7498	DB	'Error', 00H
 	ORG $+6
-$SG7499	DB	'Warning', 00H
 $SG7497	DB	'Masm-compatible assembler.', 0aH, 'Portions Copyright (c'
 	DB	') 1992-2002 Sybase, Inc. All Rights Reserved.', 0aH, 'Source '
 	DB	'code is available under the Sybase Open Watcom Public License'
 	DB	'.', 0aH, 00H
 	ORG $+3
+$SG7499	DB	'Warning', 00H
 $SG7500	DB	'Fatal error', 00H
 	ORG $+4
 $SG7501	DB	'readonly', 00H

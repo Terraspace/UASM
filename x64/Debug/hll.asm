@@ -376,8 +376,8 @@ EXTRN	__imp__memicmp:PROC
 EXTRN	strcat:PROC
 EXTRN	strcmp:PROC
 EXTRN	strcpy:PROC
+EXTRN	__imp__stricmp:PROC
 EXTRN	strlen:PROC
-EXTRN	__imp_strcmpi:PROC
 EXTRN	DoDebugMsg:PROC
 EXTRN	DoDebugMsg1:PROC
 EXTRN	EmitError:PROC
@@ -4342,16 +4342,16 @@ $LN38@ForInitAnd:
 	lea	rcx, QWORD PTR param$[rsp]
 	call	Tokenize
 
-; 985  :         if (strcmpi(param, reax) && strcmpi(init, reax)){ //param not rax init not rax?    
+; 985  :         if (strcasecmp(param, reax) && strcasecmp(init, reax)){ //param not rax init not rax?    
 
 	lea	rdx, OFFSET FLAT:reax
 	lea	rcx, QWORD PTR param$[rsp]
-	call	QWORD PTR __imp_strcmpi
+	call	QWORD PTR __imp__stricmp
 	test	eax, eax
 	je	$LN39@ForInitAnd
 	lea	rdx, OFFSET FLAT:reax
 	lea	rcx, QWORD PTR init$[rsp]
-	call	QWORD PTR __imp_strcmpi
+	call	QWORD PTR __imp__stricmp
 	test	eax, eax
 	je	$LN39@ForInitAnd
 
@@ -4364,11 +4364,11 @@ $LN38@ForInitAnd:
 	cmp	eax, 2
 	jne	$LN41@ForInitAnd
 
-; 987  :             if (strcmpi(param, recx)){				//make sure that param is not rcx
+; 987  :             if (strcasecmp(param, recx)){				//make sure that param is not rcx
 
 	lea	rdx, OFFSET FLAT:recx
 	lea	rcx, QWORD PTR param$[rsp]
-	call	QWORD PTR __imp_strcmpi
+	call	QWORD PTR __imp__stricmp
 	test	eax, eax
 	je	SHORT $LN43@ForInitAnd
 
@@ -4659,16 +4659,16 @@ $LN42@ForInitAnd:
 $LN39@ForInitAnd:
 
 ; 1035 :         // if param is not RAX and init is RCX
-; 1036 :         else if ((strcmpi(param, reax) && !(strcmpi(init, recx)))){
+; 1036 :         else if ((strcasecmp(param, reax) && !(strcasecmp(init, recx)))){
 
 	lea	rdx, OFFSET FLAT:reax
 	lea	rcx, QWORD PTR param$[rsp]
-	call	QWORD PTR __imp_strcmpi
+	call	QWORD PTR __imp__stricmp
 	test	eax, eax
 	je	$LN60@ForInitAnd
 	lea	rdx, OFFSET FLAT:recx
 	lea	rcx, QWORD PTR init$[rsp]
-	call	QWORD PTR __imp_strcmpi
+	call	QWORD PTR __imp__stricmp
 	test	eax, eax
 	jne	$LN60@ForInitAnd
 
@@ -4749,11 +4749,11 @@ $LN65@ForInitAnd:
 $LN60@ForInitAnd:
 
 ; 1048 :         // if param is RAX and init is RCX
-; 1049 :         else if ((!(strcmpi(param, reax)) && (!(strcmp(init, recx))))){
+; 1049 :         else if ((!(strcasecmp(param, reax)) && (!(strcmp(init, recx))))){
 
 	lea	rdx, OFFSET FLAT:reax
 	lea	rcx, QWORD PTR param$[rsp]
-	call	QWORD PTR __imp_strcmpi
+	call	QWORD PTR __imp__stricmp
 	test	eax, eax
 	jne	$LN66@ForInitAnd
 	lea	rdx, OFFSET FLAT:recx
@@ -4839,16 +4839,16 @@ $LN71@ForInitAnd:
 $LN66@ForInitAnd:
 
 ; 1061 :         // if param is RAX and init is not RCX
-; 1062 :         else if (!(strcmpi(param, reax) && (strcmpi(init, recx)))){
+; 1062 :         else if (!(strcasecmp(param, reax) && (strcasecmp(init, recx)))){
 
 	lea	rdx, OFFSET FLAT:reax
 	lea	rcx, QWORD PTR param$[rsp]
-	call	QWORD PTR __imp_strcmpi
+	call	QWORD PTR __imp__stricmp
 	test	eax, eax
 	je	SHORT $LN73@ForInitAnd
 	lea	rdx, OFFSET FLAT:recx
 	lea	rcx, QWORD PTR init$[rsp]
-	call	QWORD PTR __imp_strcmpi
+	call	QWORD PTR __imp__stricmp
 	test	eax, eax
 	jne	$LN72@ForInitAnd
 $LN73@ForInitAnd:
