@@ -5,7 +5,7 @@
 name = hjwasm
 
 ifndef DEBUG
-DEBUG=0
+DEBUG=1
 endif
 
 inc_dirs  = -IH
