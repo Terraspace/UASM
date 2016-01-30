@@ -5,7 +5,7 @@ compiler:
 script: make -f GccUnix.mak
 deploy:
   provider: s3
-  access_key_id: s3key
-  secret_access_key: s3secretkey
+  access_key_id: $SKEY
+  secret_access_key: $SSKEY
   bucket: "hjwasm"
   skip_cleanup: true
