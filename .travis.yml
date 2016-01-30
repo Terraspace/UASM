@@ -3,3 +3,9 @@ compiler:
   - clang
   - gcc
 script: make -f GccUnix.mak
+deploy:
+  provider: s3
+  access_key_id: "AKIAIXUN5VXBJROOV4ZQ"
+  secret_access_key: "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"
+  bucket: "hjwasm"
+  skip_cleanup: true
