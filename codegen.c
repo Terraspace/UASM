@@ -171,7 +171,7 @@ static void output_opc(struct code_info *CodeInfo)
   uint_8           fpfix = FALSE;
   int              rn;
   unsigned char    c;
-  int_8 comprdsp;
+  int_8            comprdsp = 0;
 
   DebugMsg1(("output_opc enter, ins.opc/rm=%X/%X, byte1_info=%X CodeInfo->rm=%X opsiz=%u\n", ins->opcode, ins->rm_byte, ins->byte1_info, CodeInfo->rm_byte, CodeInfo->prefix.opsiz));
   /*

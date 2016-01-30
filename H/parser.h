@@ -190,26 +190,46 @@ struct opnd_class {
  * allows to use the smallest size possible.
  */
 
+//struct instr_item {
+//    //enum operand_type opnd_type[2];  /* operands 1 + 2 */
+//    //unsigned char opnd_type_3rd;     /* operand 3 */
+//    unsigned char opclsidx;     /* v2.06: index for opnd_clstab */
+//    unsigned char byte1_info;   /* flags for 1st byte */
+//    unsigned char
+//        allowed_prefix  : 3,    /* allowed prefix */
+//        first           : 1,    /* 1=opcode's first entry */
+//        rm_info         : 3,    /* info on r/m byte */
+//        opnd_dir        : 1;    /* operand direction */
+//    unsigned short prefix;       /* used for EVEX */
+//#ifdef __WATCOMC__
+//    enum cpu_info   cpu;        /* CPU type */
+//#else
+//    unsigned short  cpu;
+//#endif
+//    unsigned char   opcode;     /* opcode byte */
+//    unsigned char   rm_byte;    /* mod_rm_byte */
+//};
+/* Nidud sugestion for struct instr_item  */
 struct instr_item {
-    //enum operand_type opnd_type[2];  /* operands 1 + 2 */
-    //unsigned char opnd_type_3rd;     /* operand 3 */
-    unsigned char opclsidx;     /* v2.06: index for opnd_clstab */
-    unsigned char byte1_info;   /* flags for 1st byte */
-    unsigned char
-        allowed_prefix  : 3,    /* allowed prefix */
-        first           : 1,    /* 1=opcode's first entry */
-        rm_info         : 3,    /* info on r/m byte */
-        opnd_dir        : 1;    /* operand direction */
-    unsigned short prefix;       /* used for EVEX */
-#ifdef __WATCOMC__
-    enum cpu_info   cpu;        /* CPU type */
+    unsigned char	opclsidx;	        /* v2.06: index for opnd_clstab */
+    unsigned char	byte1_info;	      /* flags for 1st byte */
+#if 1
+    unsigned short	allowed_prefix; /* allowed prefix */
+    unsigned char	first;		        /* 1=opcode's first entry */
+    unsigned char	rm_info;	        /* info on r/m byte */
+    unsigned char	opnd_dir;	        /* operand direction */
 #else
-    unsigned short  cpu;
+    unsigned char
+	allowed_prefix	: 3,	            /* allowed prefix */
+	first		: 1,	                    /* 1=opcode's first entry */
+	rm_info		: 3,	                  /* info on r/m byte */
+	opnd_dir	: 1;	                  /* operand direction */
 #endif
-    unsigned char   opcode;     /* opcode byte */
-    unsigned char   rm_byte;    /* mod_rm_byte */
+    unsigned short	prefix;		      /* used for EVEX */
+    unsigned short	cpu;
+    unsigned char	opcode;		        /* opcode byte */
+    unsigned char	rm_byte;	        /* mod_rm_byte */
 };
-
 /* special_item is the structure used to store directives and
  * other reserved words in SpecialTable (special.h).
  */

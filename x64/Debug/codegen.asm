@@ -95,7 +95,6 @@ EXTRN	GetResWName:PROC
 EXTRN	_RTC_CheckStackVars:PROC
 EXTRN	_RTC_InitBase:PROC
 EXTRN	_RTC_Shutdown:PROC
-EXTRN	_RTC_UninitUse:PROC
 EXTRN	__GSHandlerCheck:PROC
 EXTRN	__security_check_cookie:PROC
 EXTRN	Options:BYTE
@@ -120,7 +119,7 @@ $pdata$Check4CompDisp8 DD imagerel $LN5
 	DD	imagerel $LN5+177
 	DD	imagerel $unwind$Check4CompDisp8
 $pdata$output_opc DD imagerel output_opc
-	DD	imagerel output_opc+19884
+	DD	imagerel output_opc+19752
 	DD	imagerel $unwind$output_opc
 $pdata$output_data DD imagerel output_data
 	DD	imagerel output_data+1814
@@ -3222,24 +3221,23 @@ type1$9 = 116
 type2$10 = 120
 index$11 = 124
 d$12 = 132
-$T13 = 148
-tv80 = 152
-tv85 = 156
-tv267 = 160
-tv333 = 164
-tv417 = 168
-tv525 = 172
-tv544 = 176
-tv552 = 180
-tv560 = 184
-tv883 = 188
-tv887 = 192
-tv1022 = 196
-tv1642 = 200
-tv1718 = 204
-tv2617 = 208
-tv2627 = 212
-tv3149 = 216
+tv80 = 148
+tv85 = 152
+tv267 = 156
+tv333 = 160
+tv417 = 164
+tv525 = 168
+tv544 = 172
+tv552 = 176
+tv560 = 180
+tv883 = 184
+tv887 = 188
+tv1022 = 192
+tv1642 = 196
+tv1718 = 200
+tv2617 = 204
+tv2627 = 208
+tv3149 = 212
 CodeInfo$ = 240
 output_opc PROC
 
@@ -3253,7 +3251,6 @@ output_opc PROC
 	mov	eax, -858993460				; ccccccccH
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+240]
-	mov	BYTE PTR $T13[rsp], 0
 
 ; 169  :   const struct instr_item *ins = CodeInfo->pinstr;
 
@@ -3268,7 +3265,10 @@ output_opc PROC
 
 ; 172  :   int              rn;
 ; 173  :   unsigned char    c;
-; 174  :   int_8 comprdsp;
+; 174  :   int_8            comprdsp = 0;
+
+	mov	BYTE PTR comprdsp$[rsp], 0
+
 ; 175  : 
 ; 176  :   DebugMsg1(("output_opc enter, ins.opc/rm=%X/%X, byte1_info=%X CodeInfo->rm=%X opsiz=%u\n", ins->opcode, ins->rm_byte, ins->byte1_info, CodeInfo->rm_byte, CodeInfo->prefix.opsiz));
 
@@ -3715,8 +3715,8 @@ $LN38@output_opc:
 	ja	$LN2@output_opc
 	movsxd	rax, DWORD PTR tv267[rsp]
 	lea	rcx, OFFSET FLAT:__ImageBase
-	movzx	eax, BYTE PTR $LN556@output_opc[rcx+rax]
-	mov	eax, DWORD PTR $LN557@output_opc[rcx+rax*4]
+	movzx	eax, BYTE PTR $LN551@output_opc[rcx+rax]
+	mov	eax, DWORD PTR $LN552@output_opc[rcx+rax*4]
 	add	rax, rcx
 	jmp	rax
 $LN47@output_opc:
@@ -3904,8 +3904,8 @@ $LN58@output_opc:
 	ja	SHORT $LN4@output_opc
 	movsxd	rax, DWORD PTR tv333[rsp]
 	lea	rcx, OFFSET FLAT:__ImageBase
-	movzx	eax, BYTE PTR $LN554@output_opc[rcx+rax]
-	mov	eax, DWORD PTR $LN555@output_opc[rcx+rax*4]
+	movzx	eax, BYTE PTR $LN549@output_opc[rcx+rax]
+	mov	eax, DWORD PTR $LN550@output_opc[rcx+rax*4]
 	add	rax, rcx
 	jmp	rax
 $LN61@output_opc:
@@ -4148,7 +4148,7 @@ $LN73@output_opc:
 	ja	SHORT $LN6@output_opc
 	movsxd	rax, DWORD PTR tv417[rsp]
 	lea	rcx, OFFSET FLAT:__ImageBase
-	mov	eax, DWORD PTR $LN553@output_opc[rcx+rax*4]
+	mov	eax, DWORD PTR $LN548@output_opc[rcx+rax*4]
 	add	rax, rcx
 	jmp	rax
 $LN74@output_opc:
@@ -4404,7 +4404,7 @@ $LN88@output_opc:
 	ja	SHORT $LN94@output_opc
 	movsxd	rax, DWORD PTR tv525[rsp]
 	lea	rcx, OFFSET FLAT:__ImageBase
-	mov	eax, DWORD PTR $LN552@output_opc[rcx+rax*4]
+	mov	eax, DWORD PTR $LN547@output_opc[rcx+rax*4]
 	add	rax, rcx
 	jmp	rax
 $LN92@output_opc:
@@ -9060,7 +9060,7 @@ $LN461@output_opc:
 	ja	SHORT $LN12@output_opc
 	movsxd	rax, DWORD PTR tv2617[rsp]
 	lea	rcx, OFFSET FLAT:__ImageBase
-	mov	eax, DWORD PTR $LN551@output_opc[rcx+rax*4]
+	mov	eax, DWORD PTR $LN546@output_opc[rcx+rax*4]
 	add	rax, rcx
 	jmp	rax
 $LN464@output_opc:
@@ -9577,10 +9577,9 @@ $LN494@output_opc:
 ; 1181 :           if ((index != -1) && ((Check4CompDisp8(CodeInfo, &comprdsp, &d, CodeInfo->opnd[index].data32l)) && comprdsp)){
 
 	cmp	DWORD PTR index$11[rsp], -1
-	je	$LN496@output_opc
+	je	SHORT $LN496@output_opc
 	movsxd	rax, DWORD PTR index$11[rsp]
 	imul	rax, rax, 24
-	mov	BYTE PTR $T13[rsp], 1
 	mov	rcx, QWORD PTR CodeInfo$[rsp]
 	mov	r9d, DWORD PTR [rcx+rax+40]
 	lea	r8, QWORD PTR d$12[rsp]
@@ -9590,22 +9589,12 @@ $LN494@output_opc:
 	movzx	eax, al
 	test	eax, eax
 	je	SHORT $LN496@output_opc
-	cmp	BYTE PTR $T13[rsp], 0
-	jne	SHORT $LN546@output_opc
-	lea	rcx, OFFSET FLAT:output_opc$rtcName$0
-	call	_RTC_UninitUse
-$LN546@output_opc:
 	movsx	eax, BYTE PTR comprdsp$[rsp]
 	test	eax, eax
 	je	SHORT $LN496@output_opc
 
 ; 1182 :             CodeInfo->opnd[index].data32l = comprdsp;
 
-	cmp	BYTE PTR $T13[rsp], 0
-	jne	SHORT $LN547@output_opc
-	lea	rcx, OFFSET FLAT:output_opc$rtcName$0
-	call	_RTC_UninitUse
-$LN547@output_opc:
 	movsxd	rax, DWORD PTR index$11[rsp]
 	imul	rax, rax, 24
 	movsx	ecx, BYTE PTR comprdsp$[rsp]
@@ -9667,7 +9656,6 @@ $LN501@output_opc:
 	mov	rax, QWORD PTR CodeInfo$[rsp]
 	cmp	DWORD PTR [rax+124], 0
 	je	$LN503@output_opc
-	mov	BYTE PTR $T13[rsp], 1
 	mov	rax, QWORD PTR CodeInfo$[rsp]
 	mov	r9d, DWORD PTR [rax+124]
 	lea	r8, QWORD PTR d$12[rsp]
@@ -9677,22 +9665,12 @@ $LN501@output_opc:
 	movzx	eax, al
 	test	eax, eax
 	je	$LN503@output_opc
-	cmp	BYTE PTR $T13[rsp], 0
-	jne	SHORT $LN548@output_opc
-	lea	rcx, OFFSET FLAT:output_opc$rtcName$0
-	call	_RTC_UninitUse
-$LN548@output_opc:
 	movsx	eax, BYTE PTR comprdsp$[rsp]
 	test	eax, eax
 	je	$LN503@output_opc
 
 ; 1191 :                 CodeInfo->opnd[OPND1].data32l = comprdsp;                tmp &= ~MOD_10;     /* if        mod = 10, r/m = 100, s-i-b is present */
 
-	cmp	BYTE PTR $T13[rsp], 0
-	jne	SHORT $LN549@output_opc
-	lea	rcx, OFFSET FLAT:output_opc$rtcName$0
-	call	_RTC_UninitUse
-$LN549@output_opc:
 	mov	eax, 24
 	imul	rax, rax, 0
 	movsx	ecx, BYTE PTR comprdsp$[rsp]
@@ -10214,11 +10192,6 @@ $LN492@output_opc:
 
 ; 1274 :           if (!comprdsp) CodeInfo->tuple = 0;
 
-	cmp	BYTE PTR $T13[rsp], 0
-	jne	SHORT $LN550@output_opc
-	lea	rcx, OFFSET FLAT:output_opc$rtcName$0
-	call	_RTC_UninitUse
-$LN550@output_opc:
 	movsx	eax, BYTE PTR comprdsp$[rsp]
 	test	eax, eax
 	jne	SHORT $LN527@output_opc
@@ -10417,8 +10390,8 @@ $LN1@output_opc:
 	add	rsp, 224				; 000000e0H
 	pop	rdi
 	ret	0
-	npad	2
-$LN557@output_opc:
+	npad	3
+$LN552@output_opc:
 	DD	$LN47@output_opc
 	DD	$LN49@output_opc
 	DD	$LN51@output_opc
@@ -10426,7 +10399,7 @@ $LN557@output_opc:
 	DD	$LN56@output_opc
 	DD	$LN55@output_opc
 	DD	$LN2@output_opc
-$LN556@output_opc:
+$LN551@output_opc:
 	DB	0
 	DB	1
 	DB	2
@@ -10450,12 +10423,12 @@ $LN556@output_opc:
 	DB	5
 	DB	4
 	npad	2
-$LN555@output_opc:
+$LN550@output_opc:
 	DD	$LN63@output_opc
 	DD	$LN61@output_opc
 	DD	$LN62@output_opc
 	DD	$LN4@output_opc
-$LN554@output_opc:
+$LN549@output_opc:
 	DB	0
 	DB	3
 	DB	3
@@ -10480,7 +10453,7 @@ $LN554@output_opc:
 	DB	1
 	DB	2
 	npad	1
-$LN553@output_opc:
+$LN548@output_opc:
 	DD	$LN74@output_opc
 	DD	$LN76@output_opc
 	DD	$LN75@output_opc
@@ -10492,7 +10465,7 @@ $LN553@output_opc:
 	DD	$LN74@output_opc
 	DD	$LN76@output_opc
 	DD	$LN75@output_opc
-$LN552@output_opc:
+$LN547@output_opc:
 	DD	$LN92@output_opc
 	DD	$LN93@output_opc
 	DD	$LN92@output_opc
@@ -10500,7 +10473,7 @@ $LN552@output_opc:
 	DD	$LN92@output_opc
 	DD	$LN92@output_opc
 	DD	$LN93@output_opc
-$LN551@output_opc:
+$LN546@output_opc:
 	DD	$LN464@output_opc
 	DD	$LN12@output_opc
 	DD	$LN12@output_opc
