@@ -1,20 +1,33 @@
 
-  Regression Tests for JWasm
+Files:
+    regress/
+      exp/		- expected output
+	buildexp.cmd	- to build expected output
+      src/		- source files
+      lib/		- used to build binaries in the test
+      tmp/		- result (created by buildexp.cmd)
+      owbuild.cmd	- Open Watcom build and test
+      runtest.cmd	- main test
+      vcbuild.cmd	- Visual C build and test
+      fcmp.exe		- file compare used by runtest.cmd
+      readme.txt	- this file
 
-  1. Prepare Tests
-  
-  - tool JFC must be created. Source code is supplied in the Samples
-  directory.
-  - jwlink (modified OW WLink) must be downloaded from japheth.de.
-  - MS link from VC 8 is used for one Win64 SEH test. If it is not
-    available, this test must be commented out in runtest.cmd.
-    (to be improved)
-  - all tools must be copied to directory ..\Tools
+To build expected output you need a version that passed the test
 
-  2. Run Tests
-  
-  Windows: RUNTEST.CMD
-  Linux:   (todo)
+buildexp.cmd:
 
-  If everything is ok, there's no display at all.
+    SET MLBASE=\JWASM\jwasm.exe
 
+  Not defined:
+
+    REM SET OWLINK=\JWASM\jwlink.exe
+    REM SET MSLINK=\VC80\bin\link.exe
+
+runtest.cmd:
+
+    SET ASMX=\HJWASM\hjwasm.exe
+
+  Not defined:
+
+    REM SET OWLINK=\JWASM\jwlink.exe
+    REM SET MSLINK=\VC80\bin\link.exe

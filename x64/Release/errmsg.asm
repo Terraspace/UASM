@@ -14,18 +14,18 @@ _BSS	SEGMENT
 banner_printed DB 01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG10877 DB	'%s, %s', 0aH, 00H
-$SG10885 DB	'%-20s %s', 0aH, 00H
+$SG10882 DB	'%s, %s', 0aH, 00H
+$SG10890 DB	'%-20s %s', 0aH, 00H
 	ORG $+6
-$SG10912 DB	'%s A%4u: ', 00H
+$SG10917 DB	'%s A%4u: ', 00H
 	ORG $+2
-$SG10913 DB	0aH, 00H
+$SG10918 DB	0aH, 00H
 	ORG $+2
-$SG10915 DB	'                           %s', 00H
+$SG10920 DB	'                           %s', 00H
 	ORG $+2
-$SG10932 DB	'w', 00H
+$SG10937 DB	'w', 00H
 	ORG $+2
-$SG10982 DB	'ENOENT', 00H
+$SG10987 DB	'ENOENT', 00H
 _DATA	ENDS
 CONST	SEGMENT
 usage	DB	'   HJWasm [options] asm-file [options] [asm-file] ... [@'
@@ -406,7 +406,7 @@ PrtMsg	PROC						; COMDAT
 	mov	rbx, rax
 	call	MsgGetEx
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG10877
+	lea	rcx, OFFSET FLAT:$SG10882
 	mov	r8, rbx
 	call	printf
 $LN8@PrtMsg:
@@ -424,7 +424,7 @@ $LN8@PrtMsg:
 
 ; 209  :         CurrFile[ERR] = fopen( CurrFName[ERR], "w" );
 
-	lea	rdx, OFFSET FLAT:$SG10932
+	lea	rdx, OFFSET FLAT:$SG10937
 	call	fopen
 	mov	QWORD PTR ModuleInfo+120, rax
 
@@ -619,7 +619,7 @@ $LN19@PutMsg:
 ; 181  :             i = sprintf( buffer, "%s A%4u: ", type, severity * 1000 + msgnum );
 
 	imul	r9d, edi, 1000				; 000003e8H
-	lea	rdx, OFFSET FLAT:$SG10912
+	lea	rdx, OFFSET FLAT:$SG10917
 	mov	r8, rax
 	lea	rcx, QWORD PTR buffer$[rsp]
 	add	r9d, ebx
@@ -662,7 +662,7 @@ $LN10@PutMsg:
 ; 186  :         fwrite( "\n", 1, 1, fp );
 
 	mov	edx, 1
-	lea	rcx, OFFSET FLAT:$SG10913
+	lea	rcx, OFFSET FLAT:$SG10918
 	mov	r8d, edx
 	mov	r9, rsi
 	call	fwrite
@@ -697,7 +697,7 @@ $LN10@PutMsg:
 ; 195  :             LstPrintf( "                           %s", buffer );
 
 	lea	rdx, QWORD PTR buffer$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10915
+	lea	rcx, OFFSET FLAT:$SG10920
 	call	LstPrintf
 
 ; 196  :             LstNL();
@@ -763,7 +763,7 @@ $LN16:
 	mov	rbx, rax
 	call	MsgGetEx
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG10877
+	lea	rcx, OFFSET FLAT:$SG10882
 	mov	r8, rbx
 	call	printf
 $LN7@PrintUsage:
@@ -787,7 +787,7 @@ $LL14@PrintUsage:
 
 	mov	rdx, rcx
 	lea	r8, QWORD PTR [rbx+1]
-	lea	rcx, OFFSET FLAT:$SG10885
+	lea	rcx, OFFSET FLAT:$SG10890
 	call	printf
 
 ; 156  :         p = p2 + strlen( p2 ) + 1;
@@ -837,7 +837,7 @@ $LN5:
 	mov	rbx, rax
 	call	MsgGetEx
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG10877
+	lea	rcx, OFFSET FLAT:$SG10882
 	mov	r8, rbx
 	call	printf
 	mov	rbx, QWORD PTR [rsp+32]
@@ -879,7 +879,7 @@ $LN6:
 	call	_errno
 	cmp	DWORD PTR [rax], 2
 	jne	SHORT $LN3@ErrnoStr
-	lea	rax, OFFSET FLAT:$SG10982
+	lea	rax, OFFSET FLAT:$SG10987
 
 ; 302  : }
 

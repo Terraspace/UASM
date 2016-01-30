@@ -6,9 +6,9 @@ INCLUDELIB LIBCMT
 INCLUDELIB OLDNAMES
 
 _BSS	SEGMENT
-$SG11269 DB	01H DUP (?)
-$SG11277 DB	01H DUP (?)
-$SG11427 DB	01H DUP (?)
+$SG11274 DB	01H DUP (?)
+$SG11282 DB	01H DUP (?)
+$SG11432 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	CurrStruct:QWORD
@@ -16,9 +16,9 @@ COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG11110 DB	01H DUP (?)
-$SG11179 DB	01H DUP (?)
-$SG11188 DB	01H DUP (?)
+$SG11115 DB	01H DUP (?)
+$SG11184 DB	01H DUP (?)
+$SG11193 DB	01H DUP (?)
 _BSS	ENDS
 CONST	SEGMENT
 szStructure DB	'structure', 00H
@@ -1251,7 +1251,7 @@ $LN12@TypedefDir:
 
 	lea	r8d, QWORD PTR [rdi+7]
 	xor	ecx, ecx
-	lea	rdx, OFFSET FLAT:$SG11427
+	lea	rdx, OFFSET FLAT:$SG11432
 	call	CreateProc
 	mov	rdi, rax
 	jmp	SHORT $LN20@TypedefDir
@@ -2069,7 +2069,7 @@ $LN18@EndstructD:
 
 ; 465  :         dir->sym.name = ""; /* the type becomes anonymous */
 
-	lea	rax, OFFSET FLAT:$SG11188
+	lea	rax, OFFSET FLAT:$SG11193
 	mov	QWORD PTR [rbx+8], rax
 
 ; 466  :         dir->sym.name_size = 0;
@@ -2250,7 +2250,7 @@ $LN36@EndstructD:
 ; 406  :         //EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr );
 ; 407  :         return( EmitErr( UNMATCHED_BLOCK_NESTING, i == 1 ? tokenarray[0].string_ptr : "" ) );
 
-	lea	rdx, OFFSET FLAT:$SG11179
+	lea	rdx, OFFSET FLAT:$SG11184
 $LN37@EndstructD:
 	mov	ecx, 142				; 0000008eH
 $LN58@EndstructD:
@@ -2410,7 +2410,7 @@ $LN12@StructDire:
 
 ; 207  :             name = "";
 
-	lea	rsi, OFFSET FLAT:$SG11110
+	lea	rsi, OFFSET FLAT:$SG11115
 
 ; 208  :         }
 ; 209  :     } else {
@@ -3445,7 +3445,7 @@ $LN12@CreateStru:
 ; 582  :         }
 ; 583  :         name = "";
 
-	lea	r13, OFFSET FLAT:$SG11269
+	lea	r13, OFFSET FLAT:$SG11274
 
 ; 584  :         len = 0;
 
@@ -3686,7 +3686,7 @@ $LN19@CreateStru:
 
 ; 642  :         f->sym.name = "";
 
-	lea	rax, OFFSET FLAT:$SG11277
+	lea	rax, OFFSET FLAT:$SG11282
 	mov	QWORD PTR [rdi+8], rax
 $LN20@CreateStru:
 

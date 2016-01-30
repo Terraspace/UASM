@@ -1,0 +1,69 @@
+
+;--- SIZE, LENGTH operators with externals
+
+	.286
+	.model small, stdcall
+	option casemap:none
+	.386
+
+VOID struct
+VOID ends
+S1 struct
+F1 db 5 dup (?)
+S1 ends
+S2 struct
+F2 db 5 dup (?)
+S2 ends
+
+	.data
+
+	public e1,e2,e3,e4,e5,e6
+	public e14,e15,e16,e17
+
+e1	db 0
+e2	dw 0
+e3	dw 0
+e4	dd 0
+e5	S1 <>
+e6	VOID <>
+e14	dw 0
+e15	dw 0
+e16	dw 0
+e17	dw 0
+
+_TEXT32 segment use32 public 'CODE'
+;--- a WORD parameter may cause a problem when linking
+;--- with 16-bit code and STDCALL: the decorated name
+;--- in this module will be _e13@4 then, but the calling
+;--- module's decorated name may be _e13@2.
+;--- Probably a Masm bug.
+e13 proc far a:DWORD
+	ret
+e13 endp
+e23 proc far a:DWORD
+	ret
+e23 endp
+_TEXT32 ends
+
+	.code
+
+e10 proc a:WORD
+	ret
+e10 endp
+e11 proc far a:WORD
+	ret
+e11 endp
+e12 proc far a:WORD
+	ret
+e12 endp
+e20 proc a:WORD
+	ret
+e20 endp
+e21 proc far a:WORD
+	ret
+e21 endp
+e22 proc far a:WORD
+	ret
+e22 endp
+
+	end

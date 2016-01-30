@@ -1,0 +1,19 @@
+
+;--- externals for invoke20.asz
+
+	.386
+	.model flat, stdcall
+
+	.data
+
+	public v2
+v2	dd 0
+
+	.code
+
+p0	proc x:dword
+p0	endp
+p2	proc x:dword
+p2	endp
+	ret
+	end

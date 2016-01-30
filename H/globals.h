@@ -866,6 +866,8 @@ extern bool                  write_to_file; /* 1=write the object module */
 struct fixup;
 
 extern void             OutputByte( unsigned char );
+extern void             OutputBinBytes( unsigned char* pBytes, uint_32 len );
+
 //extern void             OutputCodeByte( unsigned char );
 extern void             FillDataBytes( unsigned char, int len );
 extern void             OutputBytes( const unsigned char *, int len, struct fixup * );

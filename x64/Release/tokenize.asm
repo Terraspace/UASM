@@ -6,34 +6,34 @@ INCLUDELIB LIBCMT
 INCLUDELIB OLDNAMES
 
 _BSS	SEGMENT
-$SG11275 DB	01H DUP (?)
+$SG11280 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10891 DB	'1to2', 00H
+$SG10896 DB	'1to2', 00H
 	ORG $+3
-$SG10894 DB	'1to4', 00H
+$SG10899 DB	'1to4', 00H
 	ORG $+3
-$SG10897 DB	'1to8', 00H
+$SG10902 DB	'1to8', 00H
 	ORG $+3
-$SG10900 DB	'1to16', 00H
+$SG10905 DB	'1to16', 00H
 	ORG $+2
-$SG11070 DB	'::', 00H
+$SG11075 DB	'::', 00H
 	ORG $+1
-$SG11071 DB	':', 00H
+$SG11076 DB	':', 00H
 	ORG $+2
-$SG11074 DB	'OUT', 00H
-$SG11076 DB	'%', 00H
+$SG11079 DB	'OUT', 00H
+$SG11081 DB	'%', 00H
 	ORG $+2
-$SG11088 DB	'=', 00H
+$SG11093 DB	'=', 00H
 	ORG $+2
-$SG11098 DB	'&', 00H
+$SG11103 DB	'&', 00H
 	ORG $+2
-$SG11091 DB	'=!<>&|', 0a6H, 00H
-$SG11183 DB	'?', 00H
+$SG11096 DB	'=!<>&|', 0a6H, 00H
+$SG11188 DB	'?', 00H
 _DATA	ENDS
 CONST	SEGMENT
 stokstr1 DW	028H
@@ -522,7 +522,7 @@ $LN9@get_id:
 ; 898  :         buf->token = T_QUESTION_MARK;
 ; 899  :         buf->string_ptr = "?";
 
-	lea	rax, OFFSET FLAT:$SG11183
+	lea	rax, OFFSET FLAT:$SG11188
 	mov	QWORD PTR [rdi+8], rax
 	mov	BYTE PTR [rdi], 63			; 0000003fH
 
@@ -668,8 +668,8 @@ $LN11@get_id:
 ; 951  : #else
 ; 952  :             if (( InstrTable[index].cpu & P_CPU_MASK ) > ( ModuleInfo.curr_cpu & P_CPU_MASK ) ||
 
-	lea	rax, QWORD PTR [rax+rax*4]
-	movzx	r8d, WORD PTR InstrTable[rdx+rax*2+6]
+	imul	rax, rax, 14
+	movzx	r8d, WORD PTR InstrTable[rax+rdx+10]
 	mov	edx, DWORD PTR ModuleInfo+392
 	mov	ecx, r8d
 	mov	eax, edx
@@ -1570,7 +1570,7 @@ $LN6@get_specia:
 ; 516  :             buf->token = T_DBL_COLON;
 ; 517  :             buf->string_ptr = "::";
 
-	lea	rax, OFFSET FLAT:$SG11070
+	lea	rax, OFFSET FLAT:$SG11075
 
 ; 633  :             buf->token = '&';
 ; 634  :             buf->string_ptr = "&";
@@ -1589,7 +1589,7 @@ $LN7@get_specia:
 ; 519  :             buf->token = T_COLON;
 ; 520  :             buf->string_ptr = ":";
 
-	lea	rax, OFFSET FLAT:$SG11071
+	lea	rax, OFFSET FLAT:$SG11076
 	mov	BYTE PTR [rdi], 58			; 0000003aH
 
 ; 633  :             buf->token = '&';
@@ -1612,7 +1612,7 @@ $LN9@get_specia:
 ; 526  :         if ( ( _memicmp( p->input+1, "OUT", 3 ) == 0 ) && !is_valid_id_char( *(p->input+4) ) ) {
 
 	inc	rcx
-	lea	rdx, OFFSET FLAT:$SG11074
+	lea	rdx, OFFSET FLAT:$SG11079
 	mov	r8d, 3
 	call	_memicmp
 	test	eax, eax
@@ -1695,7 +1695,7 @@ $LN11@get_specia:
 ; 542  :         buf->token = T_PERCENT;
 ; 543  :         buf->string_ptr = "%";
 
-	lea	rax, OFFSET FLAT:$SG11076
+	lea	rax, OFFSET FLAT:$SG11081
 	mov	BYTE PTR [rdi], 37			; 00000025H
 
 ; 633  :             buf->token = '&';
@@ -1884,7 +1884,7 @@ $LN21@get_specia:
 ; 595  :             buf->dirtype = DRT_EQUALSGN; /* to make it differ from EQU directive */
 ; 596  :             buf->string_ptr = "=";
 
-	lea	rax, OFFSET FLAT:$SG11088
+	lea	rax, OFFSET FLAT:$SG11093
 	mov	WORD PTR [rdi], 12291			; 00003003H
 	mov	QWORD PTR [rdi+8], rax
 	mov	DWORD PTR [rdi+16], 443			; 000001bbH
@@ -1917,7 +1917,7 @@ $LN22@get_specia:
 	test	BYTE PTR [rbx+29], 1
 	je	SHORT $LN24@get_specia
 	mov	edx, ebp
-	lea	rcx, OFFSET FLAT:$SG11091
+	lea	rcx, OFFSET FLAT:$SG11096
 	call	strchr
 	test	rax, rax
 	je	SHORT $LN24@get_specia
@@ -2017,7 +2017,7 @@ $LN24@get_specia:
 ; 633  :             buf->token = '&';
 ; 634  :             buf->string_ptr = "&";
 
-	lea	rax, OFFSET FLAT:$SG11098
+	lea	rax, OFFSET FLAT:$SG11103
 	mov	QWORD PTR [rdi+8], rax
 	mov	BYTE PTR [rdi], sil
 $LN2@get_specia:
@@ -3599,7 +3599,7 @@ $LN13:
 ; 126  : /************************************************/          
 ; 127  :     if (_memicmp(p->input, "1to2", 4) == 0){
 
-	lea	rdx, OFFSET FLAT:$SG10891
+	lea	rdx, OFFSET FLAT:$SG10896
 	mov	rcx, QWORD PTR [rcx]
 	mov	r8d, 4
 	call	_memicmp
@@ -3622,7 +3622,7 @@ $LN2@get_broads:
 ; 131  :     else if (_memicmp(p->input, "1to4", 4) == 0){
 
 	mov	rcx, QWORD PTR [rbx]
-	lea	rdx, OFFSET FLAT:$SG10894
+	lea	rdx, OFFSET FLAT:$SG10899
 	mov	r8d, 4
 	call	_memicmp
 	test	eax, eax
@@ -3644,7 +3644,7 @@ $LN4@get_broads:
 ; 135  :     else if (_memicmp(p->input, "1to8", 4) == 0){
 
 	mov	rcx, QWORD PTR [rbx]
-	lea	rdx, OFFSET FLAT:$SG10897
+	lea	rdx, OFFSET FLAT:$SG10902
 	mov	r8d, 4
 	call	_memicmp
 	test	eax, eax
@@ -3666,7 +3666,7 @@ $LN6@get_broads:
 ; 139  :     else if (_memicmp(p->input, "1to16", 5) == 0){
 
 	mov	rcx, QWORD PTR [rbx]
-	lea	rdx, OFFSET FLAT:$SG10900
+	lea	rdx, OFFSET FLAT:$SG10905
 	mov	r8d, 5
 	call	_memicmp
 	test	eax, eax
@@ -4337,7 +4337,7 @@ $skipline$132:
 
 	lea	r11, QWORD PTR [rsp+64]
 	mov	rbx, QWORD PTR [r11+48]
-	lea	rax, OFFSET FLAT:$SG11275
+	lea	rax, OFFSET FLAT:$SG11280
 	mov	rsi, QWORD PTR [r11+64]
 	mov	rdi, QWORD PTR [r11+72]
 	mov	edx, r14d

@@ -11,7 +11,7 @@ COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11199 DB	'if-else', 00H
+$SG11204 DB	'if-else', 00H
 _DATA	ENDS
 PUBLIC	conditional_assembly_prepare
 PUBLIC	GetIfNestLevel
@@ -2130,7 +2130,7 @@ CondCheckOpen PROC
 
 ; 645  :         EmitErr( BLOCK_NESTING_ERROR, "if-else" );
 
-	lea	rdx, OFFSET FLAT:$SG11199
+	lea	rdx, OFFSET FLAT:$SG11204
 	mov	ecx, 80					; 00000050H
 	jmp	EmitErr
 $LN2@CondCheckO:

@@ -1,0 +1,15 @@
+
+;--- externals, 16-bit
+;--- becomes p3.lib
+
+	.286
+	.model small
+	option casemap:none
+
+	.code
+
+p3	proc far stdcall public
+	retf
+p3	endp
+
+	End

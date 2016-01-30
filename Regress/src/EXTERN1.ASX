@@ -1,0 +1,9 @@
+
+;--- externals, 16-bit
+;--- becomes extern1.lib
+
+	public value1
+
+value1 equ 5
+
+	End

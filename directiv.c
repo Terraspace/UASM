@@ -197,6 +197,7 @@ ret_code IncBinDirective( int i, struct asm_tok tokenarray[] )
     struct expr opndx;
 	long sz;
 	unsigned char* pBinData;
+	size_t result = 0;
 
     DebugMsg(("IncBinDirective enter\n"));
 
@@ -266,7 +267,7 @@ ret_code IncBinDirective( int i, struct asm_tok tokenarray[] )
 		sz = ftell( file ) - fileoffset; // sz = total data size to load into segment/section.
 		fseek( file, 0L, SEEK_SET );
 		pBinData = (unsigned char*)malloc(sz);
-		fread(pBinData, sz, 1, file);
+		result = fread(pBinData, sz, 1, file);
 		OutputBinBytes(pBinData, sz);
 
         /* transfer file content to the current segment. */

@@ -22,43 +22,43 @@ COMM	Parse_Pass:DWORD
 COMM	write_to_file:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11716 DB	'_TEXT', 00H
+$SG11721 DB	'_TEXT', 00H
 	ORG $+2
-$SG11717 DB	'.text', 00H
+$SG11722 DB	'.text', 00H
 	ORG $+2
-$SG11718 DB	'_DATA', 00H
+$SG11723 DB	'_DATA', 00H
 	ORG $+2
-$SG11719 DB	'.data', 00H
+$SG11724 DB	'.data', 00H
 	ORG $+2
-$SG11720 DB	'CONST', 00H
+$SG11725 DB	'CONST', 00H
 	ORG $+2
-$SG11721 DB	'.rdata', 00H
+$SG11726 DB	'.rdata', 00H
 	ORG $+1
-$SG11722 DB	'_BSS', 00H
+$SG11727 DB	'_BSS', 00H
 	ORG $+3
-$SG11723 DB	'.bss', 00H
+$SG11728 DB	'.bss', 00H
 	ORG $+3
-$SG11837 DB	'w', 00H
+$SG11841 DB	'w', 00H
 	ORG $+2
-$SG11901 DB	'%s', 0aH, 00H
-$SG11841 DB	'import ''%s''  %s.%s', 0aH, 00H
-$SG11903 DB	0aH, 00H
+$SG11905 DB	'%s', 0aH, 00H
+$SG11845 DB	'import ''%s''  %s.%s', 0aH, 00H
+$SG11907 DB	0aH, 00H
 	ORG $+2
-$SG11889 DB	'INCLUDE', 00H
-$SG11926 DB	'%r %s', 00H
+$SG11893 DB	'INCLUDE', 00H
+$SG11930 DB	'%r %s', 00H
 	ORG $+2
-$SG12026 DB	'rb', 00H
+$SG12030 DB	'rb', 00H
 	ORG $+1
-$SG12029 DB	'wb', 00H
+$SG12033 DB	'wb', 00H
 	ORG $+1
-$SG12032 DB	'wb', 00H
+$SG12036 DB	'wb', 00H
 	ORG $+1
-$SG12065 DB	'EXE', 00H
-$SG12066 DB	'BIN', 00H
-$SG12067 DB	'obj', 00H
-$SG12069 DB	'lst', 00H
-$SG12071 DB	'err', 00H
-$SG12138 DB	'%s', 0aH, 00H
+$SG12069 DB	'EXE', 00H
+$SG12070 DB	'BIN', 00H
+$SG12071 DB	'obj', 00H
+$SG12073 DB	'lst', 00H
+$SG12075 DB	'err', 00H
+$SG12142 DB	'%s', 0aH, 00H
 _DATA	ENDS
 CONST	SEGMENT
 formatoptions DQ FLAT:bin_init
@@ -80,28 +80,29 @@ formatoptions DQ FLAT:bin_init
 cst	DB	05H
 	DB	01H
 	ORG $+6
-	DQ	FLAT:$SG11716
-	DQ	FLAT:$SG11717
-	DB	05H
-	DB	01H
-	ORG $+6
-	DQ	FLAT:$SG11718
-	DQ	FLAT:$SG11719
-	DB	05H
-	DB	01H
-	ORG $+6
-	DQ	FLAT:$SG11720
 	DQ	FLAT:$SG11721
+	DQ	FLAT:$SG11722
+	DB	05H
+	DB	01H
+	ORG $+6
+	DQ	FLAT:$SG11723
+	DQ	FLAT:$SG11724
+	DB	05H
+	DB	01H
+	ORG $+6
+	DQ	FLAT:$SG11725
+	DQ	FLAT:$SG11726
 	DB	04H
 	DB	00H
 	ORG $+6
-	DQ	FLAT:$SG11722
-	DQ	FLAT:$SG11723
+	DQ	FLAT:$SG11727
+	DQ	FLAT:$SG11728
 CONST	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	printf
 PUBLIC	sprintf
 PUBLIC	OutputByte
+PUBLIC	OutputBinBytes
 PUBLIC	FillDataBytes
 PUBLIC	OutputBytes
 PUBLIC	AssembleModule
@@ -110,7 +111,6 @@ PUBLIC	close_files
 PUBLIC	ConvertSectionName
 PUBLIC	WritePreprocessedLine
 PUBLIC	SetCurrOffset
-PUBLIC	OutputBinBytes
 EXTRN	isalpha:PROC
 EXTRN	isdigit:PROC
 EXTRN	isspace:PROC
@@ -248,6 +248,9 @@ pdata	SEGMENT
 $pdata$OutputByte DD imagerel $LN9
 	DD	imagerel $LN9+185
 	DD	imagerel $unwind$OutputByte
+$pdata$OutputBinBytes DD imagerel $LN20
+	DD	imagerel $LN20+225
+	DD	imagerel $unwind$OutputBinBytes
 $pdata$FillDataBytes DD imagerel $LN20
 	DD	imagerel $LN20+233
 	DD	imagerel $unwind$FillDataBytes
@@ -287,9 +290,6 @@ $pdata$1$WritePreprocessedLine DD imagerel $LN16+106
 $pdata$SetCurrOffset DD imagerel $LN18
 	DD	imagerel $LN18+176
 	DD	imagerel $unwind$SetCurrOffset
-$pdata$OutputBinBytes DD imagerel $LN20
-	DD	imagerel $LN20+225
-	DD	imagerel $unwind$OutputBinBytes
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
@@ -591,6 +591,9 @@ xdata	ENDS
 xdata	SEGMENT
 $unwind$OutputByte DD 020601H
 	DD	030023206H
+$unwind$OutputBinBytes DD 040a01H
+	DD	06340aH
+	DD	07006320aH
 $unwind$FillDataBytes DD 040a01H
 	DD	06340aH
 	DD	07006320aH
@@ -646,9 +649,6 @@ $unwind$SetCurrOffset DD 060f01H
 	DD	07640fH
 	DD	06340fH
 	DD	0700b320fH
-$unwind$OutputBinBytes DD 040a01H
-	DD	06340aH
-	DD	07006320aH
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
@@ -915,7 +915,7 @@ $LL11@SetFilenam:
 
 	lea	rbp, OFFSET FLAT:__ImageBase
 	xor	esi, esi
-	lea	r14, OFFSET FLAT:$SG12065
+	lea	r14, OFFSET FLAT:$SG12069
 	mov	ebx, 1
 $LL4@SetFilenam:
 
@@ -987,22 +987,22 @@ $LL69@SetFilenam:
 	xor	ecx, ecx
 	jmp	SHORT $LN18@SetFilenam
 $LN27@SetFilenam:
-	lea	rcx, OFFSET FLAT:$SG12071
+	lea	rcx, OFFSET FLAT:$SG12075
 	jmp	SHORT $LN18@SetFilenam
 $LN26@SetFilenam:
-	lea	rcx, OFFSET FLAT:$SG12069
+	lea	rcx, OFFSET FLAT:$SG12073
 	jmp	SHORT $LN18@SetFilenam
 $LN21@SetFilenam:
 	cmp	DWORD PTR Options+144, 0
 	jne	SHORT $LN24@SetFilenam
 	mov	eax, DWORD PTR Options+148
-	lea	rcx, OFFSET FLAT:$SG12066
+	lea	rcx, OFFSET FLAT:$SG12070
 	dec	eax
 	cmp	eax, 1
 	cmovbe	rcx, r14
 	jmp	SHORT $LN18@SetFilenam
 $LN24@SetFilenam:
-	lea	rcx, OFFSET FLAT:$SG12067
+	lea	rcx, OFFSET FLAT:$SG12071
 $LN18@SetFilenam:
 	sub	rdx, rcx
 $LL13@SetFilenam:
@@ -1084,22 +1084,22 @@ $LN8@SetFilenam:
 	xor	eax, eax
 	jmp	SHORT $LN29@SetFilenam
 $LN38@SetFilenam:
-	lea	rax, OFFSET FLAT:$SG12071
+	lea	rax, OFFSET FLAT:$SG12075
 	jmp	SHORT $LN29@SetFilenam
 $LN37@SetFilenam:
-	lea	rax, OFFSET FLAT:$SG12069
+	lea	rax, OFFSET FLAT:$SG12073
 	jmp	SHORT $LN29@SetFilenam
 $LN32@SetFilenam:
 	cmp	DWORD PTR Options+144, 0
 	jne	SHORT $LN35@SetFilenam
 	mov	ecx, DWORD PTR Options+148
-	lea	rax, OFFSET FLAT:$SG12066
+	lea	rax, OFFSET FLAT:$SG12070
 	dec	ecx
 	cmp	ecx, 1
 	cmovbe	rax, r14
 	jmp	SHORT $LN29@SetFilenam
 $LN35@SetFilenam:
-	lea	rax, OFFSET FLAT:$SG12067
+	lea	rax, OFFSET FLAT:$SG12071
 $LN29@SetFilenam:
 	sub	rdx, rax
 	npad	9
@@ -1188,7 +1188,7 @@ $LN10@GetExt:
 ; 1286 :     case ERR:
 ; 1287 :         return( ERR_EXT );
 
-	lea	rax, OFFSET FLAT:$SG12071
+	lea	rax, OFFSET FLAT:$SG12075
 
 ; 1290 : }
 
@@ -1198,7 +1198,7 @@ $LN9@GetExt:
 ; 1284 :     case LST:
 ; 1285 :         return( LST_EXT );
 
-	lea	rax, OFFSET FLAT:$SG12069
+	lea	rax, OFFSET FLAT:$SG12073
 
 ; 1290 : }
 
@@ -1220,7 +1220,7 @@ $LN4@GetExt:
 ; 1280 : #endif
 ; 1281 :                 return( BIN_EXT );
 
-	lea	rax, OFFSET FLAT:$SG12066
+	lea	rax, OFFSET FLAT:$SG12070
 
 ; 1290 : }
 
@@ -1235,7 +1235,7 @@ $LN8@GetExt:
 ; 1277 :                )
 ; 1278 :                 return( EXE_EXT );
 
-	lea	rax, OFFSET FLAT:$SG12065
+	lea	rax, OFFSET FLAT:$SG12069
 
 ; 1290 : }
 
@@ -1245,7 +1245,7 @@ $LN7@GetExt:
 ; 1282 : #endif
 ; 1283 :         return( OBJ_EXT );
 
-	lea	rax, OFFSET FLAT:$SG12067
+	lea	rax, OFFSET FLAT:$SG12071
 
 ; 1290 : }
 
@@ -1270,7 +1270,7 @@ open_files PROC						; COMDAT
 ; 1197 :     CurrFile[ASM] = fopen( CurrFName[ASM], "rb" );
 
 	mov	rcx, QWORD PTR ModuleInfo+128
-	lea	rdx, OFFSET FLAT:$SG12026
+	lea	rdx, OFFSET FLAT:$SG12030
 	call	fopen
 	mov	QWORD PTR ModuleInfo+96, rax
 
@@ -1300,7 +1300,7 @@ $LN2@open_files:
 ; 1205 :         CurrFile[OBJ] = fopen( CurrFName[OBJ], "wb" );
 
 	mov	rcx, QWORD PTR ModuleInfo+136
-	lea	rdx, OFFSET FLAT:$SG12029
+	lea	rdx, OFFSET FLAT:$SG12033
 	call	fopen
 	mov	QWORD PTR ModuleInfo+104, rax
 
@@ -1331,7 +1331,7 @@ $LN4@open_files:
 ; 1214 :         CurrFile[LST] = fopen( CurrFName[LST], "wb" );
 
 	mov	rcx, QWORD PTR ModuleInfo+144
-	lea	rdx, OFFSET FLAT:$SG12032
+	lea	rdx, OFFSET FLAT:$SG12036
 	call	fopen
 	mov	QWORD PTR ModuleInfo+112, rax
 
@@ -1749,7 +1749,7 @@ $LL22@OnePass:
 $LN21@OnePass:
 	cmp	BYTE PTR Options+140, 0
 	jne	SHORT $LN17@OnePass
-	lea	rcx, OFFSET FLAT:$SG11889
+	lea	rcx, OFFSET FLAT:$SG11893
 	call	getenv
 	test	rax, rax
 	je	SHORT $LN17@OnePass
@@ -2655,7 +2655,7 @@ $LN10@ModulePass:
 	lea	rax, OFFSET FLAT:ModelToken
 	movsxd	r8, ebx
 	mov	edx, 342				; 00000156H
-	lea	rcx, OFFSET FLAT:$SG11926
+	lea	rcx, OFFSET FLAT:$SG11930
 	mov	r8, QWORD PTR [rax+r8*8-8]
 	call	AddLineQueueX
 $LN23@ModulePass:
@@ -2871,7 +2871,7 @@ $LN8@CmdlParams:
 
 ; 575  :             if ( env = getenv( "INCLUDE" ) )
 
-	lea	rcx, OFFSET FLAT:$SG11889
+	lea	rcx, OFFSET FLAT:$SG11893
 	call	getenv
 	test	rax, rax
 	je	SHORT $LN4@CmdlParams
@@ -3387,7 +3387,7 @@ $LN3@WriteModul:
 ; 408  :         FILE *ld;
 ; 409  :         ld = fopen( Options.names[OPTN_LNKDEF_FN], "w" );
 
-	lea	rdx, OFFSET FLAT:$SG11837
+	lea	rdx, OFFSET FLAT:$SG11841
 	call	fopen
 	mov	rsi, rax
 
@@ -3450,7 +3450,7 @@ $LN14@WriteModul:
 ; 419  :                 size = sprintf( CurrSource, "import '%s'  %s.%s\n", StringBufferEnd, curr->sym.dll->name, curr->sym.name );
 
 	mov	r9, QWORD PTR [rbx+56]
-	lea	rdx, OFFSET FLAT:$SG11841
+	lea	rdx, OFFSET FLAT:$SG11845
 	mov	rax, QWORD PTR [rbx+8]
 	add	r9, 12
 	mov	r8, QWORD PTR ModuleInfo+488
@@ -3505,149 +3505,6 @@ $LN11@WriteModul:
 	pop	rdi
 	ret	0
 WriteModule ENDP
-_TEXT	ENDS
-; Function compile flags: /Ogtpy
-; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\assemble.c
-_TEXT	SEGMENT
-pBytes$ = 48
-len$ = 56
-OutputBinBytes PROC
-
-; 238  : {
-
-$LN20:
-	mov	QWORD PTR [rsp+8], rbx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-
-; 239  : 	int i;
-; 240  : 
-; 241  : 	if (write_to_file == TRUE) {
-
-	cmp	BYTE PTR write_to_file, 1
-	mov	rbx, rcx
-
-; 242  : 		uint_32 idx = CurrSeg->e.seginfo->current_loc - CurrSeg->e.seginfo->start_loc;
-
-	mov	rax, QWORD PTR ModuleInfo+432
-	mov	edi, edx
-	jne	SHORT $LN5@OutputBinB
-	mov	r8, QWORD PTR [rax+96]
-	mov	eax, DWORD PTR [r8+12]
-	sub	eax, DWORD PTR [r8+8]
-
-; 243  : #ifdef DEBUG_OUT
-; 244  : 		if (CurrSeg->e.seginfo->current_loc < CurrSeg->e.seginfo->start_loc) {
-; 245  : 			;//_asm int 3;
-; 246  : 		}
-; 247  : #endif
-; 248  : 		/**/myassert(CurrSeg->e.seginfo->current_loc >= CurrSeg->e.seginfo->start_loc);
-; 249  : 		if (Options.output_format == OFORMAT_OMF && idx >= MAX_LEDATA_THRESHOLD) {
-
-	cmp	DWORD PTR Options+144, 1
-	jne	SHORT $LN7@OutputBinB
-	cmp	eax, 1014				; 000003f6H
-	jb	SHORT $LN7@OutputBinB
-
-; 250  : 			omf_FlushCurrSeg();
-
-	call	omf_FlushCurrSeg
-
-; 251  : 			idx = CurrSeg->e.seginfo->current_loc - CurrSeg->e.seginfo->start_loc;
-
-	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rcx, QWORD PTR [rax+96]
-	mov	eax, DWORD PTR [rcx+12]
-	sub	eax, DWORD PTR [rcx+8]
-$LN7@OutputBinB:
-
-; 252  : 		}
-; 253  : 		//DebugMsg(("OutputByte: buff=%p, idx=%" I32_SPEC "X, byte=%X, codebuff[0]=%X\n", CurrSeg->e.seginfo->CodeBuffer, idx, byte, *CurrSeg->e.seginfo->CodeBuffer ));
-; 254  : 		for (i = 0; i < len; i++)
-
-	test	edi, edi
-	je	SHORT $LN8@OutputBinB
-	mov	r10, rdi
-	npad	8
-$LL4@OutputBinB:
-
-; 255  : 		{
-; 256  : 			CurrSeg->e.seginfo->CodeBuffer[idx++] = *(pBytes++);
-
-	mov	rcx, QWORD PTR ModuleInfo+432
-	lea	rbx, QWORD PTR [rbx+1]
-	mov	rdx, QWORD PTR [rcx+96]
-	movzx	ecx, BYTE PTR [rbx-1]
-	mov	r8, QWORD PTR [rdx+16]
-	mov	BYTE PTR [rax+r8], cl
-	lea	eax, DWORD PTR [rax+1]
-	sub	r10, 1
-	jne	SHORT $LL4@OutputBinB
-
-; 257  : 		}
-; 258  : 
-; 259  : 	}
-
-	jmp	SHORT $LN8@OutputBinB
-$LN5@OutputBinB:
-
-; 260  : #if 1
-; 261  : 	/* check this in pass 1 only */
-; 262  : 	else if (CurrSeg->e.seginfo->current_loc < CurrSeg->e.seginfo->start_loc) {
-
-	mov	rcx, QWORD PTR [rax+96]
-	mov	eax, DWORD PTR [rcx+12]
-	cmp	eax, DWORD PTR [rcx+8]
-	jae	SHORT $LN8@OutputBinB
-
-; 263  : 		DebugMsg(("OutputByte: segment start loc changed from %" I32_SPEC "Xh to %" I32_SPEC "Xh\n",
-; 264  : 			CurrSeg->e.seginfo->start_loc,
-; 265  : 			CurrSeg->e.seginfo->current_loc));
-; 266  : 		CurrSeg->e.seginfo->start_loc = CurrSeg->e.seginfo->current_loc;
-
-	mov	DWORD PTR [rcx+8], eax
-$LN8@OutputBinB:
-
-; 267  : 	}
-; 268  : #endif
-; 269  : 	CurrSeg->e.seginfo->current_loc+=len;
-
-	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rcx, QWORD PTR [rax+96]
-	add	DWORD PTR [rcx+12], edi
-
-; 270  : 	CurrSeg->e.seginfo->bytes_written+=len;
-
-	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rcx, QWORD PTR [rax+96]
-	add	DWORD PTR [rcx+24], edi
-
-; 271  : 	CurrSeg->e.seginfo->written = TRUE;
-
-	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rcx, QWORD PTR [rax+96]
-	or	BYTE PTR [rcx+107], 32			; 00000020H
-
-; 272  : 	if (CurrSeg->e.seginfo->current_loc > CurrSeg->sym.max_offset)
-
-	mov	rcx, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rcx+96]
-	mov	edx, DWORD PTR [rax+12]
-	cmp	edx, DWORD PTR [rcx+56]
-	jbe	SHORT $LN9@OutputBinB
-
-; 273  : 		CurrSeg->sym.max_offset = CurrSeg->e.seginfo->current_loc;
-
-	mov	DWORD PTR [rcx+56], edx
-$LN9@OutputBinB:
-
-; 274  : }
-
-	mov	rbx, QWORD PTR [rsp+48]
-	add	rsp, 32					; 00000020H
-	pop	rdi
-	ret	0
-OutputBinBytes ENDP
 _TEXT	ENDS
 ; Function compile flags: /Ogtpy
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\assemble.c
@@ -3866,7 +3723,7 @@ $LN3@WritePrepr:
 	lea	rdi, QWORD PTR [rbx+1]
 $LN9@WritePrepr:
 	mov	rdx, rdi
-	lea	rcx, OFFSET FLAT:$SG11901
+	lea	rcx, OFFSET FLAT:$SG11905
 	call	printf
 	mov	rbx, QWORD PTR [rsp+48]
 
@@ -3890,7 +3747,7 @@ $LN5@WritePrepr:
 ; 609  :         PrintEmptyLine = FALSE;
 ; 610  :         printf("\n");
 
-	lea	rcx, OFFSET FLAT:$SG11903
+	lea	rcx, OFFSET FLAT:$SG11907
 	mov	BYTE PTR ?PrintEmptyLine@?1??WritePreprocessedLine@@9@9, 0
 
 ; 611  :     }
@@ -4673,7 +4530,7 @@ $LN22@AssembleMo:
 ; 1556 :         printf( "%s\n", CurrSource );
 
 	mov	rdx, QWORD PTR ModuleInfo+464
-	lea	rcx, OFFSET FLAT:$SG12138
+	lea	rcx, OFFSET FLAT:$SG12142
 	call	printf
 $LN24@AssembleMo:
 
@@ -4975,6 +4832,149 @@ $LN3@FillDataBy:
 	pop	rdi
 	ret	0
 FillDataBytes ENDP
+_TEXT	ENDS
+; Function compile flags: /Ogtpy
+; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\assemble.c
+_TEXT	SEGMENT
+pBytes$ = 48
+len$ = 56
+OutputBinBytes PROC
+
+; 238  : {
+
+$LN20:
+	mov	QWORD PTR [rsp+8], rbx
+	push	rdi
+	sub	rsp, 32					; 00000020H
+
+; 239  : 	int i;
+; 240  : 
+; 241  : 	if (write_to_file == TRUE) {
+
+	cmp	BYTE PTR write_to_file, 1
+	mov	rbx, rcx
+
+; 242  : 		uint_32 idx = CurrSeg->e.seginfo->current_loc - CurrSeg->e.seginfo->start_loc;
+
+	mov	rax, QWORD PTR ModuleInfo+432
+	mov	edi, edx
+	jne	SHORT $LN5@OutputBinB
+	mov	r8, QWORD PTR [rax+96]
+	mov	eax, DWORD PTR [r8+12]
+	sub	eax, DWORD PTR [r8+8]
+
+; 243  : #ifdef DEBUG_OUT
+; 244  : 		if (CurrSeg->e.seginfo->current_loc < CurrSeg->e.seginfo->start_loc) {
+; 245  : 			;//_asm int 3;
+; 246  : 		}
+; 247  : #endif
+; 248  : 		/**/myassert(CurrSeg->e.seginfo->current_loc >= CurrSeg->e.seginfo->start_loc);
+; 249  : 		if (Options.output_format == OFORMAT_OMF && idx >= MAX_LEDATA_THRESHOLD) {
+
+	cmp	DWORD PTR Options+144, 1
+	jne	SHORT $LN7@OutputBinB
+	cmp	eax, 1014				; 000003f6H
+	jb	SHORT $LN7@OutputBinB
+
+; 250  : 			omf_FlushCurrSeg();
+
+	call	omf_FlushCurrSeg
+
+; 251  : 			idx = CurrSeg->e.seginfo->current_loc - CurrSeg->e.seginfo->start_loc;
+
+	mov	rax, QWORD PTR ModuleInfo+432
+	mov	rcx, QWORD PTR [rax+96]
+	mov	eax, DWORD PTR [rcx+12]
+	sub	eax, DWORD PTR [rcx+8]
+$LN7@OutputBinB:
+
+; 252  : 		}
+; 253  : 		//DebugMsg(("OutputByte: buff=%p, idx=%" I32_SPEC "X, byte=%X, codebuff[0]=%X\n", CurrSeg->e.seginfo->CodeBuffer, idx, byte, *CurrSeg->e.seginfo->CodeBuffer ));
+; 254  : 		for (i = 0; i < len; i++)
+
+	test	edi, edi
+	je	SHORT $LN8@OutputBinB
+	mov	r10, rdi
+	npad	8
+$LL4@OutputBinB:
+
+; 255  : 		{
+; 256  : 			CurrSeg->e.seginfo->CodeBuffer[idx++] = *(pBytes++);
+
+	mov	rcx, QWORD PTR ModuleInfo+432
+	lea	rbx, QWORD PTR [rbx+1]
+	mov	rdx, QWORD PTR [rcx+96]
+	movzx	ecx, BYTE PTR [rbx-1]
+	mov	r8, QWORD PTR [rdx+16]
+	mov	BYTE PTR [rax+r8], cl
+	lea	eax, DWORD PTR [rax+1]
+	sub	r10, 1
+	jne	SHORT $LL4@OutputBinB
+
+; 257  : 		}
+; 258  : 
+; 259  : 	}
+
+	jmp	SHORT $LN8@OutputBinB
+$LN5@OutputBinB:
+
+; 260  : #if 1
+; 261  : 	/* check this in pass 1 only */
+; 262  : 	else if (CurrSeg->e.seginfo->current_loc < CurrSeg->e.seginfo->start_loc) {
+
+	mov	rcx, QWORD PTR [rax+96]
+	mov	eax, DWORD PTR [rcx+12]
+	cmp	eax, DWORD PTR [rcx+8]
+	jae	SHORT $LN8@OutputBinB
+
+; 263  : 		DebugMsg(("OutputByte: segment start loc changed from %" I32_SPEC "Xh to %" I32_SPEC "Xh\n",
+; 264  : 			CurrSeg->e.seginfo->start_loc,
+; 265  : 			CurrSeg->e.seginfo->current_loc));
+; 266  : 		CurrSeg->e.seginfo->start_loc = CurrSeg->e.seginfo->current_loc;
+
+	mov	DWORD PTR [rcx+8], eax
+$LN8@OutputBinB:
+
+; 267  : 	}
+; 268  : #endif
+; 269  : 	CurrSeg->e.seginfo->current_loc+=len;
+
+	mov	rax, QWORD PTR ModuleInfo+432
+	mov	rcx, QWORD PTR [rax+96]
+	add	DWORD PTR [rcx+12], edi
+
+; 270  : 	CurrSeg->e.seginfo->bytes_written+=len;
+
+	mov	rax, QWORD PTR ModuleInfo+432
+	mov	rcx, QWORD PTR [rax+96]
+	add	DWORD PTR [rcx+24], edi
+
+; 271  : 	CurrSeg->e.seginfo->written = TRUE;
+
+	mov	rax, QWORD PTR ModuleInfo+432
+	mov	rcx, QWORD PTR [rax+96]
+	or	BYTE PTR [rcx+107], 32			; 00000020H
+
+; 272  : 	if (CurrSeg->e.seginfo->current_loc > CurrSeg->sym.max_offset)
+
+	mov	rcx, QWORD PTR ModuleInfo+432
+	mov	rax, QWORD PTR [rcx+96]
+	mov	edx, DWORD PTR [rax+12]
+	cmp	edx, DWORD PTR [rcx+56]
+	jbe	SHORT $LN9@OutputBinB
+
+; 273  : 		CurrSeg->sym.max_offset = CurrSeg->e.seginfo->current_loc;
+
+	mov	DWORD PTR [rcx+56], edx
+$LN9@OutputBinB:
+
+; 274  : }
+
+	mov	rbx, QWORD PTR [rsp+48]
+	add	rsp, 32					; 00000020H
+	pop	rdi
+	ret	0
+OutputBinBytes ENDP
 _TEXT	ENDS
 ; Function compile flags: /Ogtpy
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\assemble.c

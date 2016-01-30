@@ -1,0 +1,10 @@
+
+	.386
+
+_TEXT32 segment use32 'CODE'
+	public xxx
+xxx:
+	ret
+_TEXT32 ends
+
+end

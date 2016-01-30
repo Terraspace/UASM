@@ -1,0 +1,230 @@
+
+;--- check 64-bit settings
+;--- + option frame
+;--- + win64:2
+;--- PROC FRAME
+
+;--- p02nxu and p04nxu won't work yet, because
+;--- the registers pushed by USES are pushed AFTER
+;--- the stack for INVOKE is reserved.
+
+if 0;ifdef __JWASM__
+	.x64
+	.model flat,fastcall
+endif
+
+	option casemap:none
+
+	.CODE
+
+;--- p01: frame;noauto	win64:0
+;--- p02: frame:noauto	win64:2
+;--- p03: frame:auto	win64:0
+;--- p04: frame:auto	win64:2
+
+;--- create 4*8 variants
+;--- 1 = no FRAME, no locals, no uses  - nnn
+;--- 2 =    FRAME, no locals, no uses  - fnn
+;--- 3 = no FRAME,    locals, no uses  - nln
+;--- 4 =    FRAME,    locals, no uses  - fln
+;--- 5 = no FRAME, no locals,	 uses  - nnu
+;--- 6 =    FRAME, no locals,	 uses  - fnu
+;--- 7 = no FRAME,    locals,	 uses  - nlu
+;--- 8 =    FRAME,    locals,	 uses  - flu
+
+ifdef __JWASM__
+	option frame:noauto
+	option win64:0
+endif
+
+p01nnn proc
+	ret
+p01nnn endp
+
+p01fnn proc FRAME
+	.endprolog
+	ret
+p01fnn endp
+
+p01nln proc
+local lcl1:DWORD
+	mov eax, lcl1
+	ret
+p01nln endp
+
+p01fln proc FRAME
+local lcl1:DWORD
+	.endprolog
+	mov eax, lcl1
+	ret
+p01fln endp
+
+p01nnu proc uses rbx
+	ret
+p01nnu endp
+
+ifdef __JWASM__
+p01fnu proc FRAME uses rbx
+	.endprolog
+	ret
+p01fnu endp
+endif
+
+p01nlu proc uses rbx
+local lcl1:DWORD
+	mov eax, lcl1
+	ret
+p01nlu endp
+
+p01flu proc FRAME
+local lcl1:DWORD
+	.endprolog
+	mov eax, lcl1
+	ret
+p01flu endp
+
+ifdef __JWASM__
+;-------------------------------
+;--- repeat 8 procs with win64:2
+;-------------------------------
+	option win64:2
+
+p02nnn proc
+	ret
+p02nnn endp
+
+p02fnn proc FRAME
+	.endprolog
+	ret
+p02fnn endp
+
+p02nln proc
+local lcl1:DWORD
+	mov eax, lcl1
+	ret
+p02nln endp
+
+p02fln proc FRAME
+local lcl1:DWORD
+	.endprolog
+	mov eax, lcl1
+	ret
+p02fln endp
+
+p02nnu proc uses rbx
+	ret
+p02nnu endp
+
+p02fnu proc FRAME uses rbx
+	.endprolog
+	ret
+p02fnu endp
+
+p02nlu proc uses rbx
+local lcl1:DWORD
+	mov eax, lcl1
+	ret
+p02nlu endp
+
+p02flu proc FRAME
+local lcl1:DWORD
+	.endprolog
+	mov eax, lcl1
+	ret
+p02flu endp
+
+;-----------------------------------------------------
+;--- now repeat everything, this time with frame:auto
+;-----------------------------------------------------
+
+	option frame:auto
+	option win64:0
+
+p03nnn proc
+	ret
+p03nnn endp
+
+p03fnn proc FRAME
+	ret
+p03fnn endp
+
+p03nln proc
+local lcl1:DWORD
+	mov eax, lcl1
+	ret
+p03nln endp
+
+p03fln proc FRAME
+local lcl1:DWORD
+	mov eax, lcl1
+	ret
+p03fln endp
+
+p03nnu proc uses rbx
+	ret
+p03nnu endp
+
+p03fnu proc FRAME uses rbx
+	ret
+p03fnu endp
+
+p03nlu proc uses rbx
+local lcl1:DWORD
+	mov eax, lcl1
+	ret
+p03nlu endp
+
+p03flu proc FRAME
+local lcl1:DWORD
+	mov eax, lcl1
+	ret
+p03flu endp
+
+;-------------------------------
+;--- repeat 8 procs with win64:2
+;-------------------------------
+	option win64:2
+
+p04nnn proc
+	ret
+p04nnn endp
+
+p04fnn proc FRAME
+	ret
+p04fnn endp
+
+p04nln proc
+local lcl1:DWORD
+	mov eax, lcl1
+	ret
+p04nln endp
+
+p04fln proc FRAME
+local lcl1:DWORD
+	mov eax, lcl1
+	ret
+p04fln endp
+
+p04nnu proc uses rbx
+	ret
+p04nnu endp
+
+p04fnu proc FRAME uses rbx
+	ret
+p04fnu endp
+
+p04nlu proc uses rbx
+local lcl1:DWORD
+	mov eax, lcl1
+	ret
+p04nlu endp
+
+p04flu proc FRAME
+local lcl1:DWORD
+	mov eax, lcl1
+	ret
+p04flu endp
+
+endif
+
+	END

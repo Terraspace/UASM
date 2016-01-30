@@ -119,147 +119,147 @@ pe64def	DD	04550H
 	ORG $+128
 CONST	ENDS
 _DATA	SEGMENT
-$SG12375 DB	' ', 00H
+$SG12380 DB	' ', 00H
 	ORG $+2
-$SG11856 DB	'.hdr$1', 00H
+$SG11861 DB	'.hdr$1', 00H
 	ORG $+1
-$SG11903 DB	'HDR', 00H
-$SG11858 DB	'%r DOTNAME', 00H
+$SG11908 DB	'HDR', 00H
+$SG11863 DB	'%r DOTNAME', 00H
 	ORG $+1
-$SG11859 DB	'.hdr$', 00H
+$SG11864 DB	'.hdr$', 00H
 	ORG $+2
-$SG11862 DB	'%s1 %r', 00H
+$SG11867 DB	'%s1 %r', 00H
 	ORG $+1
-$SG11932 DB	'HDR', 00H
-$SG11860 DB	'%s1 %r USE16 %r %s', 00H
+$SG11937 DB	'HDR', 00H
+$SG11865 DB	'%s1 %r USE16 %r %s', 00H
 	ORG $+1
-$SG11861 DB	'.hdr$', 00H
+$SG11866 DB	'.hdr$', 00H
 	ORG $+2
-$SG11864 DB	'.hdr$1', 00H
+$SG11869 DB	'.hdr$1', 00H
 	ORG $+1
-$SG11875 DB	'.hdr$2', 00H
+$SG11880 DB	'.hdr$2', 00H
 	ORG $+1
-$SG11900 DB	'.hdr$2', 00H
+$SG11905 DB	'.hdr$2', 00H
 	ORG $+1
-$SG11904 DB	'.hdr$2', 00H
+$SG11909 DB	'.hdr$2', 00H
 	ORG $+5
-$SG11906 DB	'@pe_file_flags', 00H
+$SG11911 DB	'@pe_file_flags', 00H
 	ORG $+1
-$SG11930 DB	'.hdr$3', 00H
+$SG11935 DB	'.hdr$3', 00H
 	ORG $+1
-$SG11933 DB	'.hdr$3', 00H
+$SG11938 DB	'.hdr$3', 00H
 	ORG $+1
-$SG11941 DB	'CONST', 00H
+$SG11946 DB	'CONST', 00H
 	ORG $+2
-$SG11945 DB	'.rsrc', 00H
+$SG11950 DB	'.rsrc', 00H
 	ORG $+2
-$SG11948 DB	'.reloc', 00H
+$SG11953 DB	'.reloc', 00H
 	ORG $+1
-$SG12001 DB	'%r DOTNAME', 00H
+$SG12006 DB	'%r DOTNAME', 00H
 	ORG $+5
-$SG12002 DB	'%s %r %r %s', 00H
-$SG12011 DB	'DW %u', 00H
+$SG12007 DB	'%s %r %r %s', 00H
+$SG12016 DB	'DW %u', 00H
 	ORG $+6
-$SG12003 DB	'DD 0, 0%xh, 0, %r @%s_name, %u, %u, %u, %r @%s_func, %r '
+$SG12008 DB	'DD 0, 0%xh, 0, %r @%s_name, %u, %u, %u, %r @%s_func, %r '
 	DB	'@%s_names, %r @%s_nameord', 00H
 	ORG $+6
-$SG12005 DB	'@%s_func %r DWORD', 00H
+$SG12010 DB	'@%s_func %r DWORD', 00H
 	ORG $+6
-$SG12007 DB	'DD %r %s', 00H
+$SG12012 DB	'DD %r %s', 00H
 	ORG $+7
-$SG12008 DB	'@%s_names %r DWORD', 00H
+$SG12013 DB	'@%s_names %r DWORD', 00H
 	ORG $+5
-$SG12009 DB	'DD %r @%s', 00H
+$SG12014 DB	'DD %r @%s', 00H
 	ORG $+6
-$SG12010 DB	'@%s_nameord %r WORD', 00H
+$SG12015 DB	'@%s_nameord %r WORD', 00H
 	ORG $+4
-$SG12014 DB	'@%s_name DB ''%s'',0', 00H
+$SG12019 DB	'@%s_name DB ''%s'',0', 00H
 	ORG $+5
-$SG12016 DB	'@%s DB ''%s'',0', 00H
+$SG12021 DB	'@%s DB ''%s'',0', 00H
 	ORG $+2
-$SG12017 DB	'%s %r', 00H
+$SG12022 DB	'%s %r', 00H
 	ORG $+2
-$SG12042 DB	'ALIGN(8)', 00H
+$SG12047 DB	'ALIGN(8)', 00H
 	ORG $+7
-$SG12043 DB	'ALIGN(4)', 00H
+$SG12048 DB	'ALIGN(4)', 00H
 	ORG $+7
-$SG12046 DB	'@LPPROC %r %r %r', 00H
+$SG12051 DB	'@LPPROC %r %r %r', 00H
 	ORG $+7
-$SG12047 DB	'%r DOTNAME', 00H
+$SG12052 DB	'%r DOTNAME', 00H
 	ORG $+5
-$SG12049 DB	'%s2 %r %r %s', 00H
+$SG12054 DB	'%s2 %r %r %s', 00H
 	ORG $+3
-$SG12050 DB	'DD %r @%s_ilt, 0, 0, %r @%s_name, %r @%s_iat', 00H
+$SG12055 DB	'DD %r @%s_ilt, 0, 0, %r @%s_name, %r @%s_iat', 00H
 	ORG $+3
-$SG12051 DB	'%s2 %r', 00H
+$SG12056 DB	'%s2 %r', 00H
 	ORG $+1
-$SG12052 DB	'%s4 %r %s %s', 00H
+$SG12057 DB	'%s4 %r %s %s', 00H
 	ORG $+3
-$SG12053 DB	'@%s_ilt label %r', 00H
+$SG12058 DB	'@%s_ilt label %r', 00H
 	ORG $+7
-$SG12055 DB	'@LPPROC %r @%s_name', 00H
+$SG12060 DB	'@LPPROC %r @%s_name', 00H
 	ORG $+4
-$SG12056 DB	'@LPPROC 0', 00H
+$SG12061 DB	'@LPPROC 0', 00H
 	ORG $+2
-$SG12057 DB	'%s4 %r', 00H
+$SG12062 DB	'%s4 %r', 00H
 	ORG $+5
-$SG12058 DB	'%s5 %r %s %s', 00H
+$SG12063 DB	'%s5 %r %s %s', 00H
 	ORG $+3
-$SG12059 DB	'@%s_iat label %r', 00H
+$SG12064 DB	'@%s_iat label %r', 00H
 	ORG $+7
-$SG12061 DB	'%s%s @LPPROC %r @%s_name', 00H
+$SG12066 DB	'%s%s @LPPROC %r @%s_name', 00H
 	ORG $+7
-$SG12062 DB	'@LPPROC 0', 00H
+$SG12067 DB	'@LPPROC 0', 00H
 	ORG $+2
-$SG12063 DB	'%s5 %r', 00H
+$SG12068 DB	'%s5 %r', 00H
 	ORG $+5
-$SG12064 DB	'%s6 %r %r %s', 00H
+$SG12069 DB	'%s6 %r %r %s', 00H
 	ORG $+3
-$SG12066 DB	'@%s_name dw 0', 00H
+$SG12071 DB	'@%s_name dw 0', 00H
 	ORG $+2
-$SG12067 DB	'db ''%s'',0', 00H
+$SG12072 DB	'db ''%s'',0', 00H
 	ORG $+2
-$SG12068 DB	'even', 00H
-	ORG $+7
-$SG12071 DB	'@%s_%s_name db ''%s.%s'',0', 00H
-	ORG $+7
-$SG12072 DB	'@%s_name db ''%s'',0', 00H
-	ORG $+1
 $SG12073 DB	'even', 00H
-	ORG $+3
-$SG12074 DB	'%s6 %r', 00H
-	ORG $+5
-$SG12076 DB	'%s3 %r %r %s', 00H
-	ORG $+3
-$SG12077 DB	'DD 0, 0, 0, 0, 0', 00H
-	ORG $+3
-$SG12078 DB	'%s3 %r', 00H
-	ORG $+1
-$SG12102 DB	'CONST', 00H
-	ORG $+2
-$SG12225 DB	'.hdr$1', 00H
-	ORG $+1
-$SG12226 DB	'.hdr$2', 00H
-	ORG $+1
-$SG12227 DB	'.hdr$3', 00H
-	ORG $+1
-$SG12231 DB	'RELOC', 00H
-	ORG $+2
-$SG12232 DB	'.reloc', 00H
-	ORG $+5
-$SG12261 DB	'.idata$2', 00H
 	ORG $+7
-$SG12262 DB	'.idata$3', 00H
+$SG12076 DB	'@%s_%s_name db ''%s.%s'',0', 00H
 	ORG $+7
-$SG12263 DB	'.idata$5', 00H
-	ORG $+3
-$SG12265 DB	'.rsrc', 00H
-	ORG $+2
-$SG12267 DB	'.reloc', 00H
+$SG12077 DB	'@%s_name db ''%s'',0', 00H
 	ORG $+1
-$SG12269 DB	'.tls', 00H
+$SG12078 DB	'even', 00H
 	ORG $+3
-$SG12273 DB	'.pdata', 00H
+$SG12079 DB	'%s6 %r', 00H
+	ORG $+5
+$SG12081 DB	'%s3 %r %r %s', 00H
+	ORG $+3
+$SG12082 DB	'DD 0, 0, 0, 0, 0', 00H
+	ORG $+3
+$SG12083 DB	'%s3 %r', 00H
+	ORG $+1
+$SG12107 DB	'CONST', 00H
+	ORG $+2
+$SG12230 DB	'.hdr$1', 00H
+	ORG $+1
+$SG12231 DB	'.hdr$2', 00H
+	ORG $+1
+$SG12232 DB	'.hdr$3', 00H
+	ORG $+1
+$SG12236 DB	'RELOC', 00H
+	ORG $+2
+$SG12237 DB	'.reloc', 00H
+	ORG $+5
+$SG12266 DB	'.idata$2', 00H
+	ORG $+7
+$SG12267 DB	'.idata$3', 00H
+	ORG $+7
+$SG12268 DB	'.idata$5', 00H
+	ORG $+3
+$SG12270 DB	'.rsrc', 00H
+	ORG $+2
+$SG12272 DB	'.reloc', 00H
+	ORG $+1
+$SG12274 DB	'.tls', 00H
+	ORG $+3
+$SG12278 DB	'.pdata', 00H
 _DATA	ENDS
 PUBLIC	bin_init
 PUBLIC	pe_create_PE_header
@@ -2022,7 +2022,7 @@ $LN71@bin_write_:
 ; 1809 :     LstPrintf( szTotal, " ", sizetotal, sizeheap );
 
 	mov	r9d, edi
-	lea	rdx, OFFSET FLAT:$SG12375
+	lea	rdx, OFFSET FLAT:$SG12380
 	mov	r8d, r15d
 	lea	rcx, OFFSET FLAT:szTotal
 	call	LstPrintf
@@ -2157,7 +2157,7 @@ pe_set_values PROC					; COMDAT
 ; 1257 : 
 ; 1258 :     mzhdr  = ( struct dsym *)SymSearch( hdrname "1" );
 
-	lea	rcx, OFFSET FLAT:$SG12225
+	lea	rcx, OFFSET FLAT:$SG12230
 	mov	QWORD PTR [rax-56], r12
 	xor	r12d, r12d
 	mov	DWORD PTR database$1$[rsp], r12d
@@ -2170,14 +2170,14 @@ pe_set_values PROC					; COMDAT
 
 ; 1259 :     pehdr  = ( struct dsym *)SymSearch( hdrname "2" );
 
-	lea	rcx, OFFSET FLAT:$SG12226
+	lea	rcx, OFFSET FLAT:$SG12231
 	mov	QWORD PTR mzhdr$1$[rsp], rax
 	mov	rdi, rax
 	call	SymFind
 
 ; 1260 :     objtab = ( struct dsym *)SymSearch( hdrname "3" );
 
-	lea	rcx, OFFSET FLAT:$SG12227
+	lea	rcx, OFFSET FLAT:$SG12232
 	mov	QWORD PTR pehdr$1$[rsp], rax
 	mov	rbx, rax
 	call	SymFind
@@ -2238,8 +2238,8 @@ $LN89@pe_set_val:
 
 	mov	r8b, 2
 	mov	BYTE PTR [rsp+32], 1
-	lea	rdx, OFFSET FLAT:$SG12231
-	lea	rcx, OFFSET FLAT:$SG12232
+	lea	rdx, OFFSET FLAT:$SG12236
+	lea	rcx, OFFSET FLAT:$SG12237
 	call	CreateIntSegment
 	mov	r13, rax
 
@@ -2887,7 +2887,7 @@ $LN43@pe_set_val:
 ; 1440 :     /* set import directory and IAT data dir value */
 ; 1441 :     if ( curr = (struct dsym *)SymSearch( ".idata$" IMPDIRSUF ) ) {
 
-	lea	rcx, OFFSET FLAT:$SG12261
+	lea	rcx, OFFSET FLAT:$SG12266
 	call	SymFind
 	mov	rsi, rax
 	test	rax, rax
@@ -2898,12 +2898,12 @@ $LN43@pe_set_val:
 ; 1444 :         uint_32 size;
 ; 1445 :         idata_null = (struct dsym *)SymSearch( ".idata$" IMPNDIRSUF ); /* final NULL import directory entry */
 
-	lea	rcx, OFFSET FLAT:$SG12262
+	lea	rcx, OFFSET FLAT:$SG12267
 	call	SymFind
 
 ; 1446 :         idata_iat = (struct dsym *)SymSearch( ".idata$" IMPIATSUF ); /* IAT entries */
 
-	lea	rcx, OFFSET FLAT:$SG12263
+	lea	rcx, OFFSET FLAT:$SG12268
 	mov	rbx, rax
 	call	SymFind
 
@@ -2941,7 +2941,7 @@ $LN44@pe_set_val:
 ; 1454 :     /* set resource directory data dir value */
 ; 1455 :     if ( curr = (struct dsym *)SymSearch(".rsrc") ) {
 
-	lea	rcx, OFFSET FLAT:$SG12265
+	lea	rcx, OFFSET FLAT:$SG12270
 	call	SymFind
 	mov	rsi, QWORD PTR [rsp+376]
 	mov	rbx, QWORD PTR [rsp+384]
@@ -2965,7 +2965,7 @@ $LN45@pe_set_val:
 ; 1460 :     /* set relocation data dir value */
 ; 1461 :     if ( curr = (struct dsym *)SymSearch(".reloc") ) {
 
-	lea	rcx, OFFSET FLAT:$SG12267
+	lea	rcx, OFFSET FLAT:$SG12272
 	call	SymFind
 	test	rax, rax
 	je	SHORT $LN46@pe_set_val
@@ -2989,7 +2989,7 @@ $LN46@pe_set_val:
 ; 1468 :      */
 ; 1469 :     if ( curr = (struct dsym *)SymSearch(".tls") ) {
 
-	lea	rcx, OFFSET FLAT:$SG12269
+	lea	rcx, OFFSET FLAT:$SG12274
 	call	SymFind
 	test	rax, rax
 	je	SHORT $LN47@pe_set_val
@@ -3016,7 +3016,7 @@ $LN47@pe_set_val:
 
 ; 1476 :         if ( curr = (struct dsym *)SymSearch( ".pdata" ) ) {
 
-	lea	rcx, OFFSET FLAT:$SG12273
+	lea	rcx, OFFSET FLAT:$SG12278
 	call	SymFind
 	test	rax, rax
 	je	SHORT $LN50@pe_set_val
@@ -3477,7 +3477,7 @@ $LN8@pe_get_cha:
 	test	rax, rax
 	je	SHORT $LN10@pe_get_cha
 	mov	rax, QWORD PTR [rax+8]
-	lea	r9, OFFSET FLAT:$SG12102
+	lea	r9, OFFSET FLAT:$SG12107
 	sub	r9, rax
 	npad	2
 $LL14@pe_get_cha:
@@ -3595,11 +3595,11 @@ pe_emit_import_data PROC				; COMDAT
 	mov	ecx, 213				; 000000d5H
 	mov	rdi, QWORD PTR ModuleInfo+80
 	mov	QWORD PTR [rax-24], r12
-	lea	r12, OFFSET FLAT:$SG12043
+	lea	r12, OFFSET FLAT:$SG12048
 	mov	QWORD PTR [rax-40], r15
 	mov	r15d, 209				; 000000d1H
 	cmove	r15d, ecx
-	lea	rcx, OFFSET FLAT:$SG12042
+	lea	rcx, OFFSET FLAT:$SG12047
 	cmove	r12, rcx
 	test	rdi, rdi
 	je	$LN3@pe_emit_im
@@ -3624,7 +3624,7 @@ $LL4@pe_emit_im:
 ; 1009 :                 AddLineQueueX( "@LPPROC %r %r %r", T_TYPEDEF, T_PTR, T_PROC );
 
 	mov	edx, 420				; 000001a4H
-	lea	rcx, OFFSET FLAT:$SG12046
+	lea	rcx, OFFSET FLAT:$SG12051
 	mov	r8d, 258				; 00000102H
 	mov	ebp, 1
 	lea	r9d, QWORD PTR [rdx+8]
@@ -3633,7 +3633,7 @@ $LL4@pe_emit_im:
 ; 1010 :                 AddLineQueueX( "%r DOTNAME", T_OPTION );
 
 	mov	edx, 447				; 000001bfH
-	lea	rcx, OFFSET FLAT:$SG12047
+	lea	rcx, OFFSET FLAT:$SG12052
 	call	AddLineQueueX
 $LN15@pe_emit_im:
 
@@ -3663,7 +3663,7 @@ $LN16@pe_emit_im:
 	mov	QWORD PTR [rsp+32], r13
 	mov	r8d, 436				; 000001b4H
 	lea	rdx, OFFSET FLAT:idataname
-	lea	rcx, OFFSET FLAT:$SG12049
+	lea	rcx, OFFSET FLAT:$SG12054
 	call	AddLineQueueX
 
 ; 1019 :             AddLineQueueX( "DD %r @%s_ilt, 0, 0, %r @%s_name, %r @%s_iat", T_IMAGEREL, p->name, T_IMAGEREL, p->name, T_IMAGEREL, p->name );
@@ -3674,14 +3674,14 @@ $LN16@pe_emit_im:
 	mov	DWORD PTR [rsp+40], 233			; 000000e9H
 	mov	r8, rsi
 	mov	QWORD PTR [rsp+32], rsi
-	lea	rcx, OFFSET FLAT:$SG12050
+	lea	rcx, OFFSET FLAT:$SG12055
 	call	AddLineQueueX
 
 ; 1020 :             AddLineQueueX( "%s" IMPDIRSUF " %r", idataname, T_ENDS );
 
 	mov	r8d, 437				; 000001b5H
 	lea	rdx, OFFSET FLAT:idataname
-	lea	rcx, OFFSET FLAT:$SG12051
+	lea	rcx, OFFSET FLAT:$SG12056
 	call	AddLineQueueX
 
 ; 1021 : 
@@ -3692,13 +3692,13 @@ $LN16@pe_emit_im:
 	mov	QWORD PTR [rsp+32], r13
 	mov	r8d, 436				; 000001b4H
 	lea	rdx, OFFSET FLAT:idataname
-	lea	rcx, OFFSET FLAT:$SG12052
+	lea	rcx, OFFSET FLAT:$SG12057
 	call	AddLineQueueX
 
 ; 1024 :             AddLineQueueX( "@%s_ilt label %r", p->name, ptrtype );
 
 	mov	r8d, r15d
-	lea	rcx, OFFSET FLAT:$SG12053
+	lea	rcx, OFFSET FLAT:$SG12058
 	mov	rdx, rsi
 	call	AddLineQueueX
 
@@ -3719,7 +3719,7 @@ $LL7@pe_emit_im:
 ; 1027 :                     AddLineQueueX( "@LPPROC %r @%s_name", T_IMAGEREL, curr->sym.name );
 
 	mov	r8, QWORD PTR [rbx+8]
-	lea	rcx, OFFSET FLAT:$SG12055
+	lea	rcx, OFFSET FLAT:$SG12060
 	mov	edx, 233				; 000000e9H
 	call	AddLineQueueX
 $LN5@pe_emit_im:
@@ -3736,14 +3736,14 @@ $LN6@pe_emit_im:
 ; 1030 :             /* ILT termination entry */
 ; 1031 :             AddLineQueueX( "@LPPROC 0" );
 
-	lea	rcx, OFFSET FLAT:$SG12056
+	lea	rcx, OFFSET FLAT:$SG12061
 	call	AddLineQueueX
 
 ; 1032 :             AddLineQueueX( "%s" IMPILTSUF " %r", idataname, T_ENDS );
 
 	mov	r8d, 437				; 000001b5H
 	lea	rdx, OFFSET FLAT:idataname
-	lea	rcx, OFFSET FLAT:$SG12057
+	lea	rcx, OFFSET FLAT:$SG12062
 	call	AddLineQueueX
 
 ; 1033 : 
@@ -3754,13 +3754,13 @@ $LN6@pe_emit_im:
 	mov	QWORD PTR [rsp+32], r13
 	mov	r8d, 436				; 000001b4H
 	lea	rdx, OFFSET FLAT:idataname
-	lea	rcx, OFFSET FLAT:$SG12058
+	lea	rcx, OFFSET FLAT:$SG12063
 	call	AddLineQueueX
 
 ; 1036 :             AddLineQueueX( "@%s_iat label %r", p->name, ptrtype );
 
 	mov	r8d, r15d
-	lea	rcx, OFFSET FLAT:$SG12059
+	lea	rcx, OFFSET FLAT:$SG12064
 	mov	rdx, rsi
 	call	AddLineQueueX
 
@@ -3788,7 +3788,7 @@ $LL10@pe_emit_im:
 ; 1041 :                     AddLineQueueX( "%s%s @LPPROC %r @%s_name", ModuleInfo.g.imp_prefix, StringBufferEnd, T_IMAGEREL, curr->sym.name );
 
 	mov	rax, QWORD PTR [rbx+8]
-	lea	rcx, OFFSET FLAT:$SG12061
+	lea	rcx, OFFSET FLAT:$SG12066
 	mov	r8, QWORD PTR ModuleInfo+488
 	mov	r9d, 233				; 000000e9H
 	mov	rdx, QWORD PTR ModuleInfo+88
@@ -3809,14 +3809,14 @@ $LN9@pe_emit_im:
 ; 1044 :             /* IAT termination entry */
 ; 1045 :             AddLineQueueX( "@LPPROC 0" );
 
-	lea	rcx, OFFSET FLAT:$SG12062
+	lea	rcx, OFFSET FLAT:$SG12067
 	call	AddLineQueueX
 
 ; 1046 :             AddLineQueueX( "%s" IMPIATSUF " %r", idataname, T_ENDS );
 
 	mov	r8d, 437				; 000001b5H
 	lea	rdx, OFFSET FLAT:idataname
-	lea	rcx, OFFSET FLAT:$SG12063
+	lea	rcx, OFFSET FLAT:$SG12068
 	call	AddLineQueueX
 
 ; 1047 : 
@@ -3827,7 +3827,7 @@ $LN9@pe_emit_im:
 	mov	QWORD PTR [rsp+32], r13
 	mov	r8d, 436				; 000001b4H
 	lea	rdx, OFFSET FLAT:idataname
-	lea	rcx, OFFSET FLAT:$SG12064
+	lea	rcx, OFFSET FLAT:$SG12069
 	call	AddLineQueueX
 
 ; 1050 :             for ( curr = SymTables[TAB_EXT].head; curr != NULL ; curr = curr->next ) {
@@ -3847,18 +3847,18 @@ $LL13@pe_emit_im:
 ; 1052 :                     AddLineQueueX( "@%s_name dw 0", curr->sym.name );
 
 	mov	rdx, QWORD PTR [rbx+8]
-	lea	rcx, OFFSET FLAT:$SG12066
+	lea	rcx, OFFSET FLAT:$SG12071
 	call	AddLineQueueX
 
 ; 1053 :                     AddLineQueueX( "db '%s',0", curr->sym.name );
 
 	mov	rdx, QWORD PTR [rbx+8]
-	lea	rcx, OFFSET FLAT:$SG12067
+	lea	rcx, OFFSET FLAT:$SG12072
 	call	AddLineQueueX
 
 ; 1054 :                     AddLineQueue( "even" );
 
-	lea	rcx, OFFSET FLAT:$SG12068
+	lea	rcx, OFFSET FLAT:$SG12073
 	call	AddLineQueue
 $LN11@pe_emit_im:
 
@@ -3883,7 +3883,7 @@ $LN12@pe_emit_im:
 	mov	BYTE PTR [r14], 0
 	mov	r9, rsi
 	mov	QWORD PTR [rsp+32], r8
-	lea	rcx, OFFSET FLAT:$SG12071
+	lea	rcx, OFFSET FLAT:$SG12076
 	call	AddLineQueueX
 
 ; 1061 :                 *pdot = '.';  /* restore '.' in dll name */
@@ -3898,21 +3898,21 @@ $LN20@pe_emit_im:
 ; 1063 :                 AddLineQueueX( "@%s_name db '%s',0", p->name, p->name );
 
 	mov	r8, rsi
-	lea	rcx, OFFSET FLAT:$SG12072
+	lea	rcx, OFFSET FLAT:$SG12077
 	call	AddLineQueueX
 $LN21@pe_emit_im:
 
 ; 1064 : 
 ; 1065 :             AddLineQueue( "even" );
 
-	lea	rcx, OFFSET FLAT:$SG12073
+	lea	rcx, OFFSET FLAT:$SG12078
 	call	AddLineQueue
 
 ; 1066 :             AddLineQueueX( "%s" IMPSTRSUF " %r", idataname, T_ENDS );
 
 	mov	r8d, 437				; 000001b5H
 	lea	rdx, OFFSET FLAT:idataname
-	lea	rcx, OFFSET FLAT:$SG12074
+	lea	rcx, OFFSET FLAT:$SG12079
 	call	AddLineQueueX
 $LN2@pe_emit_im:
 
@@ -3956,19 +3956,19 @@ $LN3@pe_emit_im:
 	mov	QWORD PTR [rsp+32], r13
 	mov	r8d, 436				; 000001b4H
 	lea	rdx, OFFSET FLAT:idataname
-	lea	rcx, OFFSET FLAT:$SG12076
+	lea	rcx, OFFSET FLAT:$SG12081
 	call	AddLineQueueX
 
 ; 1073 :         AddLineQueueX( "DD 0, 0, 0, 0, 0" );
 
-	lea	rcx, OFFSET FLAT:$SG12077
+	lea	rcx, OFFSET FLAT:$SG12082
 	call	AddLineQueueX
 
 ; 1074 :         AddLineQueueX( "%s" IMPNDIRSUF " %r", idataname, T_ENDS );
 
 	mov	r8d, 437				; 000001b5H
 	lea	rdx, OFFSET FLAT:idataname
-	lea	rcx, OFFSET FLAT:$SG12078
+	lea	rcx, OFFSET FLAT:$SG12083
 	call	AddLineQueueX
 
 ; 1076 :     }
@@ -4065,7 +4065,7 @@ $LN2@pe_emit_ex:
 ; 916  :         AddLineQueueX( "%r DOTNAME", T_OPTION );
 
 	mov	edx, 447				; 000001bfH
-	lea	rcx, OFFSET FLAT:$SG12001
+	lea	rcx, OFFSET FLAT:$SG12006
 	call	AddLineQueueX
 
 ; 917  :         /* create .edata segment */
@@ -4076,7 +4076,7 @@ $LN2@pe_emit_ex:
 	mov	r8d, 436				; 000001b4H
 	mov	QWORD PTR [rsp+32], rax
 	lea	rdx, OFFSET FLAT:edataname
-	lea	rcx, OFFSET FLAT:$SG12002
+	lea	rcx, OFFSET FLAT:$SG12007
 	call	AddLineQueueX
 
 ; 919  : #if 0 //def __UNIX__
@@ -4094,7 +4094,7 @@ $LN2@pe_emit_ex:
 	mov	edx, DWORD PTR timedate$[rbp]
 	lea	r15, OFFSET FLAT:ModuleInfo+512
 	mov	QWORD PTR [rsp+96], r15
-	lea	rcx, OFFSET FLAT:$SG12003
+	lea	rcx, OFFSET FLAT:$SG12008
 	mov	DWORD PTR [rsp+88], 233			; 000000e9H
 	mov	r9, r15
 	mov	QWORD PTR [rsp+80], r15
@@ -4183,7 +4183,7 @@ $LN6@pe_emit_ex:
 ; 945  :         AddLineQueueX( "@%s_func %r DWORD", name, T_LABEL );
 
 	mov	r8d, 431				; 000001afH
-	lea	rcx, OFFSET FLAT:$SG12005
+	lea	rcx, OFFSET FLAT:$SG12010
 	mov	rdx, r15
 	call	AddLineQueueX
 
@@ -4204,7 +4204,7 @@ $LL10@pe_emit_ex:
 ; 948  :                 AddLineQueueX( "DD %r %s", T_IMAGEREL, curr->sym.name );
 
 	mov	r8, QWORD PTR [rbx+8]
-	lea	rcx, OFFSET FLAT:$SG12007
+	lea	rcx, OFFSET FLAT:$SG12012
 	mov	edx, 233				; 000000e9H
 	call	AddLineQueueX
 $LN8@pe_emit_ex:
@@ -4222,7 +4222,7 @@ $LN9@pe_emit_ex:
 ; 952  :         AddLineQueueX( "@%s_names %r DWORD", name, T_LABEL );
 
 	mov	r8d, 431				; 000001afH
-	lea	rcx, OFFSET FLAT:$SG12008
+	lea	rcx, OFFSET FLAT:$SG12013
 	mov	rdx, r15
 	call	AddLineQueueX
 
@@ -4244,7 +4244,7 @@ $LL13@pe_emit_ex:
 ; 954  :             AddLineQueueX( "DD %r @%s", T_IMAGEREL, (pitems+i)->name );
 
 	mov	r8, QWORD PTR [rbx]
-	lea	rcx, OFFSET FLAT:$SG12009
+	lea	rcx, OFFSET FLAT:$SG12014
 	mov	edx, 233				; 000000e9H
 	call	AddLineQueueX
 	lea	rbx, QWORD PTR [rbx+16]
@@ -4257,7 +4257,7 @@ $LN12@pe_emit_ex:
 ; 957  :         AddLineQueueX( "@%s_nameord %r WORD", name, T_LABEL );
 
 	mov	r8d, 431				; 000001afH
-	lea	rcx, OFFSET FLAT:$SG12010
+	lea	rcx, OFFSET FLAT:$SG12015
 	mov	rdx, r15
 	call	AddLineQueueX
 
@@ -4277,7 +4277,7 @@ $LL16@pe_emit_ex:
 ; 959  :             AddLineQueueX( "DW %u", (pitems+i)->idx );
 
 	mov	edx, DWORD PTR [rbx]
-	lea	rcx, OFFSET FLAT:$SG12011
+	lea	rcx, OFFSET FLAT:$SG12016
 	call	AddLineQueueX
 	lea	rbx, QWORD PTR [rbx+16]
 	sub	rdi, 1
@@ -4319,7 +4319,7 @@ $LN42@pe_emit_ex:
 ; 966  :         AddLineQueueX( "@%s_name DB '%s',0", name, fname );
 
 	mov	rdx, r15
-	lea	rcx, OFFSET FLAT:$SG12014
+	lea	rcx, OFFSET FLAT:$SG12019
 	call	AddLineQueueX
 
 ; 967  : 
@@ -4353,7 +4353,7 @@ $LN31@pe_emit_ex:
 	mov	r8, QWORD PTR ModuleInfo+488
 $LN32@pe_emit_ex:
 	mov	rdx, QWORD PTR [rbx+8]
-	lea	rcx, OFFSET FLAT:$SG12016
+	lea	rcx, OFFSET FLAT:$SG12021
 	call	AddLineQueueX
 $LN20@pe_emit_ex:
 
@@ -4372,7 +4372,7 @@ $LN21@pe_emit_ex:
 
 	mov	r8d, 437				; 000001b5H
 	lea	rdx, OFFSET FLAT:edataname
-	lea	rcx, OFFSET FLAT:$SG12017
+	lea	rcx, OFFSET FLAT:$SG12022
 	call	AddLineQueueX
 
 ; 976  :         RunLineQueue();
@@ -4461,7 +4461,7 @@ pe_create_section_table PROC				; COMDAT
 ; 813  :         objtab = ( struct dsym *)SymSearch( hdrname "3" );
 
 	mov	QWORD PTR [rsp+64], rbp
-	lea	rcx, OFFSET FLAT:$SG11930
+	lea	rcx, OFFSET FLAT:$SG11935
 	mov	QWORD PTR [rsp+72], rsi
 	call	SymFind
 
@@ -4476,9 +4476,9 @@ pe_create_section_table PROC				; COMDAT
 ; 816  :             objtab = (struct dsym *)CreateIntSegment( hdrname "3", "HDR", 2, ModuleInfo.defOfssize, TRUE );
 
 	movzx	r9d, BYTE PTR ModuleInfo+405
-	lea	rdx, OFFSET FLAT:$SG11932
+	lea	rdx, OFFSET FLAT:$SG11937
 	mov	ebx, esi
-	lea	rcx, OFFSET FLAT:$SG11933
+	lea	rcx, OFFSET FLAT:$SG11938
 	mov	r8b, 2
 	mov	BYTE PTR [rsp+32], bl
 	call	CreateIntSegment
@@ -4553,7 +4553,7 @@ $LL4@pe_create_:
 	test	rax, rax
 	je	$LN2@pe_create_
 	mov	rax, QWORD PTR [rax+8]
-	lea	r8, OFFSET FLAT:$SG11941
+	lea	r8, OFFSET FLAT:$SG11946
 	sub	r8, rax
 $LL45@pe_create_:
 	movzx	edx, BYTE PTR [rax]
@@ -4583,10 +4583,10 @@ $LN14@pe_create_:
 
 	mov	rcx, QWORD PTR [r10+8]
 	mov	eax, DWORD PTR [rcx]
-	cmp	eax, DWORD PTR $SG11945
+	cmp	eax, DWORD PTR $SG11950
 	jne	SHORT $LN21@pe_create_
 	movzx	eax, BYTE PTR [rcx+4]
-	cmp	al, BYTE PTR $SG11945+4
+	cmp	al, BYTE PTR $SG11950+4
 	jne	SHORT $LN21@pe_create_
 	movzx	eax, BYTE PTR [rcx+5]
 	test	al, al
@@ -4604,7 +4604,7 @@ $LN21@pe_create_:
 
 ; 842  :                 else if ( strcmp( curr->sym.name, ".reloc" ) == 0 )
 
-	lea	r8, OFFSET FLAT:$SG11948
+	lea	r8, OFFSET FLAT:$SG11953
 	sub	r8, rcx
 	npad	1
 $LL43@pe_create_:
@@ -4760,7 +4760,7 @@ set_file_flags PROC
 ; 731  : 
 ; 732  :     pehdr = ( struct dsym *)SymSearch( hdrname "2" );
 
-	lea	rcx, OFFSET FLAT:$SG11875
+	lea	rcx, OFFSET FLAT:$SG11880
 	call	SymFind
 
 ; 733  :     if ( !pehdr )
@@ -4823,7 +4823,7 @@ pe_create_MZ_header PROC				; COMDAT
 	cmp	DWORD PTR Parse_Pass, 0
 	mov	rbx, rcx
 	jne	SHORT $LN5@pe_create_
-	lea	rcx, OFFSET FLAT:$SG11856
+	lea	rcx, OFFSET FLAT:$SG11861
 	call	SymFind
 	test	rax, rax
 	jne	SHORT $LN5@pe_create_
@@ -4843,7 +4843,7 @@ $LN5@pe_create_:
 
 	mov	edx, 447				; 000001bfH
 	mov	QWORD PTR [rsp+64], rdi
-	lea	rcx, OFFSET FLAT:$SG11858
+	lea	rcx, OFFSET FLAT:$SG11863
 	call	AddLineQueueX
 
 ; 714  :         AddLineQueueX("%s1 %r USE16 %r %s", hdrname, T_SEGMENT, T_WORD, hdrattr );
@@ -4852,8 +4852,8 @@ $LN5@pe_create_:
 	mov	r9d, 207				; 000000cfH
 	mov	r8d, 436				; 000001b4H
 	mov	QWORD PTR [rsp+32], rax
-	lea	rdx, OFFSET FLAT:$SG11859
-	lea	rcx, OFFSET FLAT:$SG11860
+	lea	rdx, OFFSET FLAT:$SG11864
+	lea	rcx, OFFSET FLAT:$SG11865
 	call	AddLineQueueX
 
 ; 715  :         for( p = mzcode; p < mzcode + sizeof( mzcode ); p += strlen( p ) + 1 )
@@ -4882,8 +4882,8 @@ $LL13@pe_create_:
 ; 717  :         AddLineQueueX("%s1 %r", hdrname, T_ENDS );
 
 	mov	r8d, 437				; 000001b5H
-	lea	rdx, OFFSET FLAT:$SG11861
-	lea	rcx, OFFSET FLAT:$SG11862
+	lea	rdx, OFFSET FLAT:$SG11866
+	lea	rcx, OFFSET FLAT:$SG11867
 	call	AddLineQueueX
 
 ; 718  :         RunLineQueue();
@@ -4892,7 +4892,7 @@ $LL13@pe_create_:
 
 ; 719  :         if ( ( sym = SymSearch( hdrname "1" ) ) && sym->state == SYM_SEG )
 
-	lea	rcx, OFFSET FLAT:$SG11864
+	lea	rcx, OFFSET FLAT:$SG11869
 	call	SymFind
 	mov	rdi, QWORD PTR [rsp+64]
 	test	rax, rax
@@ -6524,7 +6524,7 @@ $LN5@pe_create_:
 ; 767  : #endif
 ; 768  :         pehdr = ( struct dsym *)SymSearch( hdrname "2" );
 
-	lea	rcx, OFFSET FLAT:$SG11900
+	lea	rcx, OFFSET FLAT:$SG11905
 	call	SymFind
 
 ; 769  :         if ( pehdr == NULL ) {
@@ -6535,10 +6535,10 @@ $LN5@pe_create_:
 ; 770  :             pehdr = (struct dsym *)CreateIntSegment( hdrname "2", "HDR", 2, ModuleInfo.defOfssize, TRUE );
 
 	movzx	r9d, BYTE PTR ModuleInfo+405
-	lea	rdx, OFFSET FLAT:$SG11903
+	lea	rdx, OFFSET FLAT:$SG11908
 	mov	r8b, 2
 	mov	BYTE PTR [rsp+32], 1
-	lea	rcx, OFFSET FLAT:$SG11904
+	lea	rcx, OFFSET FLAT:$SG11909
 	call	CreateIntSegment
 
 ; 771  :             pehdr->e.seginfo->group = &ModuleInfo.flat_grp->sym;
@@ -6639,7 +6639,7 @@ $LN7@pe_create_:
 ; 791  :         sym = CreateVariable( "@pe_file_flags", ((struct IMAGE_PE_HEADER32 *)p)->FileHeader.Characteristics );
 
 	movzx	edx, WORD PTR [rsi+22]
-	lea	rcx, OFFSET FLAT:$SG11906
+	lea	rcx, OFFSET FLAT:$SG11911
 	call	CreateVariable
 	mov	rdi, QWORD PTR [rsp+48]
 	mov	rsi, QWORD PTR [rsp+72]

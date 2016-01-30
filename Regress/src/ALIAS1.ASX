@@ -1,0 +1,21 @@
+
+;--- externals, 16-bit
+;--- becomes alias1.lib
+
+	.286
+	.model small
+
+	.data
+
+;--- syntax: ALIAS <alias> = <actual-name>
+
+	ALIAS <var1> = <var1x>
+	ALIAS <var2> = <var2x>
+
+	public var1x
+	public var2x
+
+var1x db 0
+var2x db 0
+
+	End

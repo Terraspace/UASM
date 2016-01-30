@@ -63,20 +63,8 @@ pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$output_opc DD imagerel output_opc
-	DD	imagerel output_opc+5210
+	DD	imagerel output_opc+6368
 	DD	imagerel $unwind$output_opc
-pdata	ENDS
-;	COMDAT pdata
-pdata	SEGMENT
-$pdata$0$output_opc DD imagerel output_opc+5210
-	DD	imagerel output_opc+6030
-	DD	imagerel $chain$0$output_opc
-pdata	ENDS
-;	COMDAT pdata
-pdata	SEGMENT
-$pdata$1$output_opc DD imagerel output_opc+6030
-	DD	imagerel output_opc+6400
-	DD	imagerel $chain$1$output_opc
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
@@ -156,27 +144,13 @@ $unwind$output_data DD 060f01H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$chain$1$output_opc DD 021H
-	DD	imagerel output_opc
-	DD	imagerel output_opc+5210
-	DD	imagerel $unwind$output_opc
-xdata	ENDS
-;	COMDAT xdata
-xdata	SEGMENT
-$chain$0$output_opc DD 020521H
-	DD	0be405H
-	DD	imagerel output_opc
-	DD	imagerel output_opc+5210
-	DD	imagerel $unwind$output_opc
-xdata	ENDS
-;	COMDAT xdata
-xdata	SEGMENT
-$unwind$output_opc DD 0a1601H
-	DD	0d5416H
-	DD	0c3416H
-	DD	0f0123216H
-	DD	0c00ed010H
-	DD	0600b700cH
+$unwind$output_opc DD 0c1c01H
+	DD	0d641cH
+	DD	0c541cH
+	DD	0b341cH
+	DD	0f018321cH
+	DD	0d014e016H
+	DD	07010c012H
 xdata	ENDS
 xdata	SEGMENT
 $unwind$codegen DD 040a01H
@@ -263,11 +237,11 @@ $LN6@check_oper:
 ; 1817 :             const struct instr_item *next = CodeInfo->pinstr+1;
 ; 1818 :             if ( ( opnd_clstab[next->opclsidx].opnd_type[OPND1] & OP_M ) &&
 
-	movzx	eax, BYTE PTR [rdx+10]
+	movzx	eax, BYTE PTR [rdx+14]
 	lea	rcx, QWORD PTR [rax+rax*2]
 	test	DWORD PTR [r9+rcx*4], ebx
 	je	SHORT $LN9@check_oper
-	test	BYTE PTR [rdx+12], 8
+	cmp	BYTE PTR [rdx+18], 0
 	jne	SHORT $LN9@check_oper
 
 ; 1819 :                 next->first == FALSE )
@@ -641,7 +615,7 @@ $LN66@match_phas:
 
 	movzx	ecx, BYTE PTR [rbx+142]
 	and	cl, 1
-	or	cl, BYTE PTR [rax+8]
+	or	cl, BYTE PTR [rax+12]
 	call	OutputByte
 
 ; 1787 :                 return( NOT_ERROR );
@@ -899,7 +873,7 @@ $LN53@match_phas:
 ; 1790 :         }
 ; 1791 :         CodeInfo->pinstr++;
 
-	add	QWORD PTR [rbx+16], 10
+	add	QWORD PTR [rbx+16], 14
 	mov	rdx, QWORD PTR [rbx+16]
 
 ; 1792 :     } while ( opnd_clstab[CodeInfo->pinstr->opclsidx].opnd_type[OPND1] == determinant && CodeInfo->pinstr->first == FALSE );
@@ -908,13 +882,13 @@ $LN53@match_phas:
 	lea	rcx, QWORD PTR [rax+rax*2]
 	cmp	DWORD PTR opnd_clstab[r14+rcx*4], r8d
 	jne	SHORT $LN68@match_phas
-	test	BYTE PTR [rdx+2], 8
+	cmp	BYTE PTR [rdx+4], 0
 	je	$LL4@match_phas
 $LN68@match_phas:
 
 ; 1793 :     CodeInfo->pinstr--; /* pointer will be increased in codegen() */
 
-	lea	rax, QWORD PTR [rdx-10]
+	lea	rax, QWORD PTR [rdx-14]
 	mov	QWORD PTR [rbx+16], rax
 
 ; 1794 :     DebugMsg(("match_phase_3: returns EMPTY\n"));
@@ -1730,7 +1704,7 @@ $LN41@output_dat:
 	cmp	dl, r8b
 	jne	SHORT $LN46@output_dat
 	mov	r8, QWORD PTR [rdi+16]
-	movzx	eax, BYTE PTR [r8+8]
+	movzx	eax, BYTE PTR [r8+12]
 	and	al, 252					; 000000fcH
 	cmp	al, 160					; 000000a0H
 	jne	SHORT $LN46@output_dat
@@ -1943,20 +1917,20 @@ _TEXT	ENDS
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\codegen.c
 ;	COMDAT output_opc
 _TEXT	SEGMENT
-tv4280 = 80
+tv4281 = 80
 tv3947 = 80
-comprdsp$ = 80
 CodeInfo$ = 80
 output_opc PROC						; COMDAT
 
 ; 168  : {
 
-	mov	QWORD PTR [rsp+24], rbx
-	mov	QWORD PTR [rsp+32], rbp
-	push	rsi
+	mov	QWORD PTR [rsp+16], rbx
+	mov	QWORD PTR [rsp+24], rbp
+	mov	QWORD PTR [rsp+32], rsi
 	push	rdi
 	push	r12
 	push	r13
+	push	r14
 	push	r15
 	sub	rsp, 32					; 00000020H
 
@@ -1971,7 +1945,11 @@ output_opc PROC						; COMDAT
 
 ; 172  :   int              rn;
 ; 173  :   unsigned char    c;
-; 174  :   int_8 comprdsp;
+; 174  :   int_8            comprdsp = 0;
+
+	xor	r13b, r13b
+	mov	rdi, rcx
+
 ; 175  : 
 ; 176  :   DebugMsg1(("output_opc enter, ins.opc/rm=%X/%X, byte1_info=%X CodeInfo->rm=%X opsiz=%u\n", ins->opcode, ins->rm_byte, ins->byte1_info, CodeInfo->rm_byte, CodeInfo->prefix.opsiz));
 ; 177  :   /*
@@ -1980,7 +1958,6 @@ output_opc PROC						; COMDAT
 ; 180  :   if (Options.line_numbers)
 
 	cmp	BYTE PTR Options+1, sil
-	mov	rdi, rcx
 	je	SHORT $LN21@output_opc
 
 ; 181  :     AddLinnumDataRef(get_curr_srcfile(), GetLineNumber());
@@ -2001,7 +1978,7 @@ $LN21@output_opc:
 ; 187  :   if (ins->cpu & (P_FPU_MASK | P_MMX | P_SSEALL)) {
 
 	mov	eax, 64775				; 0000fd07H
-	test	WORD PTR [r15+6], ax
+	test	WORD PTR [r15+10], ax
 	je	SHORT $LN23@output_opc
 
 ; 188  : #if SSE4SUPP
@@ -2047,7 +2024,7 @@ $LN26@output_opc:
 ; 203  :     || (ins->cpu & P_FPU_MASK) > (ModuleInfo.curr_cpu & P_FPU_MASK)
 ; 204  :     || (ins->cpu & P_EXT_MASK) > (ModuleInfo.curr_cpu & P_EXT_MASK)) {
 
-	movzx	r8d, WORD PTR [r15+6]
+	movzx	r8d, WORD PTR [r15+10]
 	lea	r12, OFFSET FLAT:__ImageBase
 	mov	edx, DWORD PTR ModuleInfo+392
 	mov	ebx, 240				; 000000f0H
@@ -2079,8 +2056,8 @@ $LN29@output_opc:
 	cmp	r8d, 48					; 00000030H
 	jne	SHORT $LN30@output_opc
 	movzx	eax, WORD PTR optable_idx[r12+r9*2-900]
-	lea	rcx, QWORD PTR [rax+rax*4]
-	movzx	eax, WORD PTR InstrTable[r12+rcx*2+6]
+	imul	rcx, rax, 14
+	movzx	eax, WORD PTR InstrTable[rcx+r12+10]
 
 ; 210  :       ((InstrTable[IndexFromToken(CodeInfo->token)].cpu & P_CPU_MASK) <= P_386))
 ; 211  :       EmitError(INSTRUCTION_FORM_REQUIRES_80386);
@@ -2088,14 +2065,14 @@ $LN29@output_opc:
 	mov	ecx, 238				; 000000eeH
 	and	ax, bx
 	cmp	ax, r8w
-	jbe	SHORT $LN645@output_opc
+	jbe	SHORT $LN643@output_opc
 $LN30@output_opc:
 
 ; 212  :     else
 ; 213  :       EmitError(INSTRUCTION_OR_REGISTER_NOT_ACCEPTED_IN_CURRENT_CPU_MODE);
 
 	mov	ecx, 30
-$LN645@output_opc:
+$LN643@output_opc:
 	call	EmitError
 $LN31@output_opc:
 
@@ -2113,16 +2090,14 @@ $LN31@output_opc:
 ; 225  :     (CodeInfo->Ofssize == USE16) &&
 ; 226  :     (ins->cpu & P_FPU_MASK) &&
 
-	mov	edx, DWORD PTR ModuleInfo+408
-	bt	edx, 9
+	mov	ecx, DWORD PTR ModuleInfo+408
+	bt	ecx, 9
 	jae	SHORT $LN32@output_opc
 	cmp	BYTE PTR [rdi+106], 0
 	jne	SHORT $LN32@output_opc
-	test	BYTE PTR [r15+6], 7
+	test	BYTE PTR [r15+10], 7
 	je	SHORT $LN32@output_opc
-	movzx	eax, BYTE PTR [r15+2]
-	and	al, 7
-	cmp	al, 5
+	cmp	WORD PTR [r15+2], 5
 	je	SHORT $LN32@output_opc
 
 ; 227  :     (ins->allowed_prefix != AP_NO_FWAIT)) {
@@ -2133,7 +2108,7 @@ $LN31@output_opc:
 	mov	rcx, rdi
 	mov	sil, 1
 	call	AddFloatingPointEmulationFixup
-	mov	edx, DWORD PTR ModuleInfo+408
+	mov	ecx, DWORD PTR ModuleInfo+408
 $LN32@output_opc:
 
 ; 231  :   }
@@ -2143,9 +2118,9 @@ $LN32@output_opc:
 ; 235  :    */
 ; 236  :   if (CodeInfo->prefix.ins != EMPTY && (CodeInfo->token < T_VPGATHERDD || CodeInfo->token > T_VGATHERQPS)) {
 
-	movsxd	rcx, DWORD PTR [rdi]
+	movsxd	rdx, DWORD PTR [rdi]
 	mov	ebp, 3
-	cmp	ecx, -2
+	cmp	edx, -2
 	je	SHORT $LN37@output_opc
 	mov	eax, DWORD PTR [rdi+24]
 	sub	eax, 1340				; 0000053cH
@@ -2154,11 +2129,9 @@ $LN32@output_opc:
 
 ; 237  :     tmp = InstrTable[IndexFromToken(CodeInfo->prefix.ins)].allowed_prefix;
 
-	movzx	eax, WORD PTR optable_idx[r12+rcx*2-900]
-	lea	rcx, QWORD PTR [rax+rax*4]
-	lea	r8, QWORD PTR [rcx+rcx]
-	movzx	ecx, BYTE PTR InstrTable[r8+r12+2]
-	and	cl, 7
+	movzx	eax, WORD PTR optable_idx[r12+rdx*2-900]
+	imul	rdx, rax, 14
+	movzx	eax, BYTE PTR InstrTable[rdx+r12+2]
 
 ; 238  :     /* instruction prefix must be ok. However, with -Zm, the plain REP
 ; 239  :      * is also ok for instructions which expect REPxx.
@@ -2166,15 +2139,13 @@ $LN32@output_opc:
 ; 241  :     if (ModuleInfo.m510 == TRUE &&
 ; 242  :       tmp == AP_REP &&
 
-	test	dl, 64					; 00000040H
+	test	cl, 64					; 00000040H
 	je	SHORT $LN35@output_opc
-	cmp	cl, 2
+	cmp	al, 2
 	jne	SHORT $LN35@output_opc
-	movzx	eax, BYTE PTR [r15+2]
-	and	al, 7
-	movzx	ecx, cl
-	cmp	al, bpl
-	cmove	ecx, ebp
+	cmp	WORD PTR [r15+2], bp
+	movzx	eax, al
+	cmove	eax, ebp
 $LN35@output_opc:
 
 ; 243  :       ins->allowed_prefix == AP_REPxx)
@@ -2182,9 +2153,8 @@ $LN35@output_opc:
 ; 245  : 
 ; 246  :     if (ins->allowed_prefix != tmp) {
 
-	movzx	eax, BYTE PTR [r15+2]
-	and	al, 7
-	cmp	al, cl
+	movzx	eax, al
+	cmp	WORD PTR [r15+2], ax
 	je	SHORT $LN36@output_opc
 
 ; 247  :       EmitError(INSTRUCTION_PREFIX_NOT_ALLOWED);
@@ -2200,7 +2170,7 @@ $LN36@output_opc:
 ; 249  :     else
 ; 250  :       OutputCodeByte(InstrTable[IndexFromToken(CodeInfo->prefix.ins)].opcode);
 
-	movzx	ecx, BYTE PTR InstrTable[r8+r12+8]
+	movzx	ecx, BYTE PTR InstrTable[rdx+r12+12]
 	call	OutputByte
 $LN37@output_opc:
 
@@ -2210,7 +2180,7 @@ $LN37@output_opc:
 ; 254  :    */
 ; 255  :   if (ins->cpu & P_FPU_MASK) {
 
-	test	BYTE PTR [r15+6], 7
+	test	BYTE PTR [r15+10], 7
 	je	SHORT $LN46@output_opc
 
 ; 256  :     if (CodeInfo->token == T_FWAIT) {
@@ -2236,22 +2206,21 @@ $LN37@output_opc:
 ; 265  :       }
 ; 266  :     }
 
-	jmp	SHORT $LN646@output_opc
+	jmp	SHORT $LN644@output_opc
 $LN39@output_opc:
 
 ; 267  :     else if (fpfix || ins->allowed_prefix == AP_FWAIT) {
 
 	test	sil, sil
 	jne	SHORT $LN44@output_opc
-	movzx	eax, BYTE PTR [r15+2]
-	and	al, 7
-	cmp	al, 4
+	movzx	eax, WORD PTR [r15+2]
+	cmp	ax, 4
 	je	SHORT $LN44@output_opc
 
 ; 269  :     }
 ; 270  :     else if (ins->allowed_prefix != AP_NO_FWAIT) {
 
-	cmp	al, 5
+	cmp	ax, 5
 	je	SHORT $LN46@output_opc
 
 ; 271  :       /* implicit FWAIT synchronization for 8087 (CPU 8086/80186) */
@@ -2266,7 +2235,7 @@ $LN44@output_opc:
 ; 268  :       OutputCodeByte(OP_WAIT);
 
 	mov	cl, 155					; 0000009bH
-$LN646@output_opc:
+$LN644@output_opc:
 	call	OutputByte
 $LN46@output_opc:
 
@@ -2435,14 +2404,14 @@ $LN62@output_opc:
 ; 327  :     case F_F20F38: OutputCodeByte(0xF2); break;
 
 	mov	cl, 242					; 000000f2H
-	jmp	SHORT $LN647@output_opc
+	jmp	SHORT $LN645@output_opc
 $LN63@output_opc:
 
 ; 328  :     case F_F3: /* PAUSE instruction */
 ; 329  :     case F_F30F:   OutputCodeByte(0xF3); break;
 
 	mov	cl, 243					; 000000f3H
-$LN647@output_opc:
+$LN645@output_opc:
 	call	OutputByte
 $LN4@output_opc:
 
@@ -2525,7 +2494,7 @@ $LN68@output_opc:
 ; 363  :   }
 ; 364  :   if (ins->opnd_dir) {
 
-	test	BYTE PTR [r15+2], 128			; 00000080H
+	cmp	BYTE PTR [r15+6], 0
 	je	SHORT $LN69@output_opc
 
 ; 365  :     /* The reg and r/m fields are backwards */
@@ -2571,7 +2540,7 @@ $LN69@output_opc:
 ; 374  :   if (ResWordTable[CodeInfo->token].flags & RWF_VEX) {
 
 	movsxd	rdx, DWORD PTR [rdi+24]
-	mov	r13d, 1
+	mov	r14d, 1
 	mov	rax, rdx
 	add	rax, rax
 	test	BYTE PTR ResWordTable[r12+rax*8+3], 8
@@ -2607,7 +2576,7 @@ $LN73@output_opc:
 ; 382  :     case F_660F3A:
 ; 383  :       lbyte |= 0x01;
 
-	or	bl, r13b
+	or	bl, r14b
 
 ; 384  :       break;
 
@@ -2683,7 +2652,7 @@ $LN79@output_opc:
 
 	mov	edx, DWORD PTR [rdi+24]
 	lea	eax, DWORD PTR [rdx-1941]
-	cmp	eax, r13d
+	cmp	eax, r14d
 	ja	SHORT $LN80@output_opc
 
 ; 405  :           CodeInfo->prefix.rex &= ~REX_W;
@@ -2744,16 +2713,16 @@ $LN287@output_opc:
 
 ; 782  :                 (CodeInfo->opnd[OPND3].type & OP_M_ANY)) CodeInfo->tuple = TRUE;
 
-	mov	BYTE PTR [rdi+140], r13b
+	mov	BYTE PTR [rdi+140], r14b
 $LN286@output_opc:
 
 ; 783  :               lbyte &= ~EVEX_P1WMASK;
 ; 784  :               lbyte |=  ((CodeInfo->pinstr->prefix)>>8 & EVEX_P1WMASK);
 
 	mov	rax, QWORD PTR [rdi+16]
-	xor	bl, BYTE PTR [rax+5]
+	xor	bl, BYTE PTR [rax+9]
 	and	bl, 127					; 0000007fH
-	xor	bl, BYTE PTR [rax+5]
+	xor	bl, BYTE PTR [rax+9]
 
 ; 785  :               if ((CodeInfo->opnd[OPND2].type == OP_M64)||(CodeInfo->opnd[OPND1].type == OP_M64)) 
 
@@ -2791,13 +2760,13 @@ $LN290@output_opc:
 	mov	ecx, edx
 	sub	ecx, 23
 	je	SHORT $LN292@output_opc
-	sub	ecx, r13d
+	sub	ecx, r14d
 	je	SHORT $LN293@output_opc
-	sub	ecx, r13d
+	sub	ecx, r14d
 	je	SHORT $LN292@output_opc
-	sub	ecx, r13d
+	sub	ecx, r14d
 	je	SHORT $LN293@output_opc
-	sub	ecx, r13d
+	sub	ecx, r14d
 	je	SHORT $LN292@output_opc
 
 ; 801  :               default:
@@ -2808,7 +2777,7 @@ $LN290@output_opc:
 
 ; 803  :                   CodeInfo->evex_p0 |= 0x01;
 
-	or	BYTE PTR [rdi+137], r13b
+	or	BYTE PTR [rdi+137], r14b
 	jmp	SHORT $LN295@output_opc
 $LN293@output_opc:
 
@@ -2867,13 +2836,13 @@ $LN559@output_opc:
 	cmp	al, 15
 	ja	SHORT $LN320@output_opc
 	or	cl, 16
-	jmp	SHORT $LN648@output_opc
+	jmp	SHORT $LN646@output_opc
 $LN320@output_opc:
 
 ; 837  :                 else CodeInfo->evex_p0 &= ~EVEX_P0R1MASK;
 
 	and	cl, 239					; 000000efH
-$LN648@output_opc:
+$LN646@output_opc:
 	mov	BYTE PTR [rdi+137], cl
 	test	al, 232					; 000000e8H
 	je	SHORT $LN324@output_opc
@@ -2907,7 +2876,7 @@ $LN298@output_opc:
 ; 827  :                   else CodeInfo->evex_p0 &= ~EVEX_P0RMASK;
 
 	and	cl, 127					; 0000007fH
-	jmp	SHORT $LN649@output_opc
+	jmp	SHORT $LN647@output_opc
 $LN315@output_opc:
 
 ; 824  :                 (CodeInfo->opnd[OPND2].type & OP_ZMM)){
@@ -2915,7 +2884,7 @@ $LN315@output_opc:
 ; 826  :                     CodeInfo->evex_p0 |= EVEX_P0RMASK;
 
 	or	cl, 128					; 00000080H
-$LN649@output_opc:
+$LN647@output_opc:
 	mov	BYTE PTR [rdi+137], cl
 
 ; 828  :                   if (CodeInfo->reg1 > 0x07)
@@ -2934,7 +2903,7 @@ $LN318@output_opc:
 ; 832  :                   if (CodeInfo->opnd[OPND2].type & OP_ZMM) CodeInfo->evex_p2 |= EVEX_P2L1MASK;
 
 	test	DWORD PTR [rdi+56], 256			; 00000100H
-	jmp	SHORT $LN650@output_opc
+	jmp	SHORT $LN648@output_opc
 $LN303@output_opc:
 
 ; 814  :                 (CodeInfo->opnd[OPND1].type & OP_ZMM)){
@@ -2947,13 +2916,13 @@ $LN303@output_opc:
 ; 817  :                   else CodeInfo->evex_p0 &= ~EVEX_P0RMASK;
 
 	and	cl, 127					; 0000007fH
-	jmp	SHORT $LN651@output_opc
+	jmp	SHORT $LN649@output_opc
 $LN306@output_opc:
 
 ; 816  :                     CodeInfo->evex_p0 |= EVEX_P0RMASK;
 
 	or	cl, 128					; 00000080H
-$LN651@output_opc:
+$LN649@output_opc:
 	mov	BYTE PTR [rdi+137], cl
 
 ; 818  :                   if (CodeInfo->reg1 <= 15) CodeInfo->evex_p0 |= EVEX_P0R1MASK;
@@ -2979,12 +2948,12 @@ $LN309@output_opc:
 ; 821  :                   if (CodeInfo->opnd[OPND1].type & OP_ZMM) CodeInfo->evex_p2 |= EVEX_P2L1MASK;
 
 	test	DWORD PTR [rdi+32], 256			; 00000100H
-$LN650@output_opc:
+$LN648@output_opc:
 	je	SHORT $LN310@output_opc
 	or	BYTE PTR [rdi+139], 64			; 00000040H
 $LN310@output_opc:
 	lea	eax, DWORD PTR [rdx-1945]
-	cmp	eax, r13d
+	cmp	eax, r14d
 	ja	SHORT $LN330@output_opc
 
 ; 841  :               }
@@ -3090,7 +3059,7 @@ $LN285@output_opc:
 
 	movsxd	rcx, DWORD PTR [rdi+24]
 	lea	eax, DWORD PTR [rcx-1271]
-	cmp	eax, r13d
+	cmp	eax, r14d
 	ja	SHORT $LN338@output_opc
 
 ; 866  :                lbyte |= 0x80;
@@ -3112,7 +3081,7 @@ $LN338@output_opc:
 	or	bl, 248					; 000000f8H
 	cmp	al, 18
 	jne	SHORT $LN341@output_opc
-	or	bl, r13b
+	or	bl, r14b
 	jmp	SHORT $LN343@output_opc
 $LN341@output_opc:
 
@@ -3186,7 +3155,7 @@ $LN348@output_opc:
 
 ; 891  :               if (vex_flags[ CodeInfo->token - VEX_START ] & VX_L ) lbyte |= c;
 
-	test	BYTE PTR vex_flags[rcx+r12-1291], r13b
+	test	BYTE PTR vex_flags[rcx+r12-1291], r14b
 	je	SHORT $LN359@output_opc
 	or	bl, dl
 
@@ -3311,7 +3280,7 @@ $LN368@output_opc:
 	or	bl, 128					; 00000080H
 $LN367@output_opc:
 	lea	eax, DWORD PTR [rcx-1694]
-	cmp	eax, r13d
+	cmp	eax, r14d
 	jbe	SHORT $LN370@output_opc
 	cmp	ecx, 1708				; 000006acH
 	jne	SHORT $LN369@output_opc
@@ -3364,13 +3333,13 @@ $LN369@output_opc:
 
 ; 933  :                 }
 
-	jmp	SHORT $LN652@output_opc
+	jmp	SHORT $LN650@output_opc
 $LN374@output_opc:
 
 ; 934  :                 else CodeInfo->evex_p2 |= EVEX_P2VMASK;
 
 	or	al, 8
-$LN652@output_opc:
+$LN650@output_opc:
 
 ; 935  :                 if (CodeInfo->r2type == OP_XMM && (broadflags & ~EVEX_P2AAAMASK) == 0x10){   //{1to2}
 
@@ -3401,7 +3370,7 @@ $LN380@output_opc:
 ; 938  :                    if ((CodeInfo->pinstr->prefix & 0xE0) == QSIZE)
 
 	mov	rax, QWORD PTR [rdi+16]
-	movzx	ecx, BYTE PTR [rax+4]
+	movzx	ecx, BYTE PTR [rax+8]
 	and	cl, 224					; 000000e0H
 	cmp	cl, 96					; 00000060H
 	jne	$LN405@output_opc
@@ -3441,7 +3410,7 @@ $LN385@output_opc:
 ; 946  :                    if ((CodeInfo->pinstr->prefix & 0xE0) == DSIZE)
 
 	mov	rax, QWORD PTR [rdi+16]
-	movzx	ecx, BYTE PTR [rax+4]
+	movzx	ecx, BYTE PTR [rax+8]
 	and	cl, 224					; 000000e0H
 	cmp	cl, 64					; 00000040H
 	jne	$LN405@output_opc
@@ -3481,7 +3450,7 @@ $LN390@output_opc:
 ; 954  :                    if ((CodeInfo->pinstr->prefix & 0xE0) == QSIZE){
 
 	mov	rax, QWORD PTR [rdi+16]
-	movzx	ecx, BYTE PTR [rax+4]
+	movzx	ecx, BYTE PTR [rax+8]
 	and	cl, 224					; 000000e0H
 	cmp	cl, 96					; 00000060H
 	jne	$LN405@output_opc
@@ -3519,7 +3488,7 @@ $LN388@output_opc:
 ; 965  :                    if ((CodeInfo->pinstr->prefix & 0xE0) == DSIZE){
 
 	mov	rax, QWORD PTR [rdi+16]
-	movzx	ecx, BYTE PTR [rax+4]
+	movzx	ecx, BYTE PTR [rax+8]
 	and	cl, 224					; 000000e0H
 	cmp	cl, 64					; 00000040H
 	jne	SHORT $LN405@output_opc
@@ -3550,7 +3519,7 @@ $LN393@output_opc:
 ; 973  :                    if ((CodeInfo->pinstr->prefix & 0xE0) == QSIZE){
 
 	mov	rax, QWORD PTR [rdi+16]
-	movzx	ecx, BYTE PTR [rax+4]
+	movzx	ecx, BYTE PTR [rax+8]
 	and	cl, 224					; 000000e0H
 	cmp	cl, 96					; 00000060H
 	jne	SHORT $LN405@output_opc
@@ -3580,7 +3549,7 @@ $LN400@output_opc:
 ; 981  :                    if ((CodeInfo->pinstr->prefix & 0xE0) == DSIZE){
 
 	mov	rax, QWORD PTR [rdi+16]
-	movzx	ecx, BYTE PTR [rax+4]
+	movzx	ecx, BYTE PTR [rax+8]
 	and	cl, 224					; 000000e0H
 	cmp	cl, 64					; 00000040H
 	jne	SHORT $LN405@output_opc
@@ -3641,7 +3610,7 @@ $LN411@output_opc:
 
 ; 997  :                 }
 
-	jmp	SHORT $LN656@output_opc
+	jmp	SHORT $LN654@output_opc
 $LN407@output_opc:
 
 ; 998  :                 else if (CodeInfo->r2type == OP_XMM){
@@ -3671,7 +3640,7 @@ $LN407@output_opc:
 ; 1006 :                       CodeInfo->tuple = TRUE;
 ; 1007 :                   }
 
-	jmp	SHORT $LN656@output_opc
+	jmp	SHORT $LN654@output_opc
 $LN421@output_opc:
 
 ; 1008 :                   else if ((CodeInfo->token >= T_VCMPEQSS || CodeInfo->token <= T_VCMPTRUE_USSS) &&
@@ -3685,14 +3654,14 @@ $LN421@output_opc:
 ; 1011 :                       CodeInfo->tuple = TRUE;
 ; 1012 :                   }
 
-	jmp	SHORT $LN656@output_opc
+	jmp	SHORT $LN654@output_opc
 $LN418@output_opc:
 	cmp	DWORD PTR [rdi+92], -16
 
 ; 1013 :                   else EmitError(INVALID_OPERAND_SIZE);
 ; 1014 :                 }
 
-	jmp	SHORT $LN656@output_opc
+	jmp	SHORT $LN654@output_opc
 $LN414@output_opc:
 
 ; 1015 :                 else if (CodeInfo->r2type == OP_ZMM){
@@ -3713,13 +3682,13 @@ $LN433@output_opc:
 
 	or	BYTE PTR [rdi+139], 64			; 00000040H
 	cmp	DWORD PTR [rdi+92], -64			; ffffffffffffffc0H
-$LN656@output_opc:
+$LN654@output_opc:
 	jl	SHORT $LN434@output_opc
 
 ; 1018 :                     if ((CodeInfo->opnd[OPND3].data32h > 0x40)||(CodeInfo->opnd[OPND3].data32h > ~0x40))
 ; 1019 :                       CodeInfo->tuple = TRUE;
 
-	mov	BYTE PTR [rdi+140], r13b
+	mov	BYTE PTR [rdi+140], r14b
 $LN434@output_opc:
 
 ; 1020 :                   }
@@ -3753,7 +3722,7 @@ $LN438@output_opc:
 
 ; 1027 :                       CodeInfo->tuple = TRUE;
 
-	mov	BYTE PTR [rdi+140], r13b
+	mov	BYTE PTR [rdi+140], r14b
 $LN439@output_opc:
 
 ; 1028 :                   }
@@ -3820,7 +3789,7 @@ $LN445@output_opc:
 	cmp	ecx, 1917				; 0000077dH
 	je	SHORT $LN449@output_opc
 	lea	eax, DWORD PTR [rcx-1598]
-	cmp	eax, r13d
+	cmp	eax, r14d
 	jbe	SHORT $LN449@output_opc
 	lea	eax, DWORD PTR [rcx-1935]
 	cmp	eax, 5
@@ -3867,7 +3836,7 @@ $LN452@output_opc:
 
 ; 1057 :                   CodeInfo->tuple = TRUE;
 
-	mov	BYTE PTR [rdi+140], r13b
+	mov	BYTE PTR [rdi+140], r14b
 
 ; 1058 :                   CodeInfo->evex_p2 |= decoflags;
 
@@ -3905,7 +3874,7 @@ $LN456@output_opc:
 ; 1066 :                   OutputCodeByte(CodeInfo->evex_p2);
 
 	movzx	ecx, al
-	jmp	$LN658@output_opc
+	jmp	$LN656@output_opc
 $LN457@output_opc:
 
 ; 1064 :                     else if (CodeInfo->r1type == OP_ZMM)CodeInfo->evex_p2 |= EVEX_P2L1MASK;
@@ -3920,7 +3889,7 @@ $LN459@output_opc:
 ; 1066 :                   OutputCodeByte(CodeInfo->evex_p2);
 
 	movzx	ecx, BYTE PTR [rdi+139]
-	jmp	$LN658@output_opc
+	jmp	$LN656@output_opc
 $LN84@output_opc:
 
 ; 408  :            (CodeInfo->token ==  T_KMOVD )){
@@ -3973,9 +3942,9 @@ $LN89@output_opc:
 
 	mov	rax, QWORD PTR [rdi+16]
 	mov	BYTE PTR [rdi+140], 0
-	xor	bl, BYTE PTR [rax+5]
+	xor	bl, BYTE PTR [rax+9]
 	and	bl, 127					; 0000007fH
-	xor	bl, BYTE PTR [rax+5]
+	xor	bl, BYTE PTR [rax+9]
 $LN87@output_opc:
 
 ; 423  :             }
@@ -4021,7 +3990,7 @@ $LN93@output_opc:
 
 	cmp	r8b, 16
 	movzx	edx, sil
-	cmovae	edx, r13d
+	cmovae	edx, r14d
 $LN94@output_opc:
 
 ; 438  :                     byte1 |= 0x01;
@@ -4068,16 +4037,16 @@ $LN98@output_opc:
 
 ; 448  :                    (CodeInfo->opnd[OPND3].type & OP_M_ANY)) CodeInfo->tuple = TRUE;
 
-	mov	BYTE PTR [rdi+140], r13b
+	mov	BYTE PTR [rdi+140], r14b
 $LN97@output_opc:
 
 ; 449  :                  lbyte &= ~EVEX_P1WMASK;
 ; 450  :                  lbyte |= ((CodeInfo->pinstr->prefix) >> 8 & 0x80);
 
 	mov	rax, QWORD PTR [rdi+16]
-	xor	bl, BYTE PTR [rax+5]
+	xor	bl, BYTE PTR [rax+9]
 	and	bl, 127					; 0000007fH
-	xor	bl, BYTE PTR [rax+5]
+	xor	bl, BYTE PTR [rax+9]
 
 ; 451  :                  if ((CodeInfo->opnd[OPND2].type == OP_M64)||(CodeInfo->opnd[OPND1].type == OP_M64)) 
 
@@ -4276,7 +4245,7 @@ $LN125@output_opc:
 	and	bl, 127					; 0000007fH
 $LN123@output_opc:
 	lea	eax, DWORD PTR [rcx-1945]
-	cmp	eax, r13d
+	cmp	eax, r14d
 	jbe	SHORT $LN127@output_opc
 	lea	eax, DWORD PTR [rcx-1571]
 	cmp	eax, 14
@@ -4428,7 +4397,7 @@ $LN149@output_opc:
 	and	dl, 191					; 000000bfH
 $LN150@output_opc:
 	lea	eax, DWORD PTR [rcx-1610]
-	cmp	eax, r13d
+	cmp	eax, r14d
 	ja	SHORT $LN158@output_opc
 
 ; 527  :                 }
@@ -4467,7 +4436,7 @@ $LN157@output_opc:
 	and	dl, 191					; 000000bfH
 $LN158@output_opc:
 	lea	eax, DWORD PTR [rcx-1314]
-	cmp	eax, r13d
+	cmp	eax, r14d
 	ja	SHORT $LN167@output_opc
 
 ; 537  :                   }
@@ -4547,7 +4516,7 @@ $LN171@output_opc:
 	cmp	ecx, 1427				; 00000593H
 	je	SHORT $LN173@output_opc
 	lea	eax, DWORD PTR [rcx-1334]
-	cmp	eax, r13d
+	cmp	eax, r14d
 	jbe	SHORT $LN173@output_opc
 	cmp	ecx, 1899				; 0000076bH
 	jne	SHORT $LN179@output_opc
@@ -4620,7 +4589,7 @@ $LN183@output_opc:
 ; 571  :                   (CodeInfo->token >= T_VPSLLVD) && (CodeInfo->token <= T_VPSRLVW))
 ; 572  :                   CodeInfo->tuple = TRUE;
 
-	mov	BYTE PTR [rdi+140], r13b
+	mov	BYTE PTR [rdi+140], r14b
 
 ; 573  :               }
 
@@ -4675,7 +4644,7 @@ $LN188@output_opc:
 ; 587  :               lbyte &= ~EVEX_P1VVVV;      // clear EVEX_P1VVVV
 
 	and	bl, 135					; 00000087H
-	mov	BYTE PTR [rdi+140], r13b
+	mov	BYTE PTR [rdi+140], r14b
 
 ; 588  :               if (CodeInfo->evex_flag){
 
@@ -4759,7 +4728,7 @@ $LN192@output_opc:
 
 	cmp	BYTE PTR [r15+1], 18
 	jne	SHORT $LN200@output_opc
-	or	bl, r13b
+	or	bl, r14b
 
 ; 611  :             }
 
@@ -4848,7 +4817,7 @@ $LN210@output_opc:
 	and	BYTE PTR [rdi+139], 252			; 000000fcH
 $LN209@output_opc:
 	lea	eax, DWORD PTR [rcx-1452]
-	cmp	eax, r13d
+	cmp	eax, r14d
 	ja	SHORT $LN212@output_opc
 
 ; 641  :             if ((CodeInfo->token == T_VPCMPB) || (CodeInfo->token == T_VPCMPUB ))lbyte &= ~EVEX_P1WMASK;
@@ -4956,7 +4925,7 @@ $LN224@output_opc:
 	or	bl, 128					; 00000080H
 	cmp	al, 18
 	jne	SHORT $LN226@output_opc
-	or	bl, r13b
+	or	bl, r14b
 	jmp	SHORT $LN232@output_opc
 $LN226@output_opc:
 
@@ -4972,7 +4941,7 @@ $LN228@output_opc:
 
 	cmp	al, 25
 	jne	SHORT $LN230@output_opc
-	or	bl, r13b
+	or	bl, r14b
 	jmp	SHORT $LN232@output_opc
 $LN230@output_opc:
 
@@ -5014,7 +4983,7 @@ $LN232@output_opc:
 	movzx	eax, BYTE PTR [r15+1]
 	cmp	al, 18
 	jne	SHORT $LN235@output_opc
-	or	bl, r13b
+	or	bl, r14b
 	jmp	SHORT $LN237@output_opc
 $LN235@output_opc:
 
@@ -5025,7 +4994,7 @@ $LN235@output_opc:
 	or	bl, bpl
 $LN237@output_opc:
 	lea	eax, DWORD PTR [rcx-1679]
-	cmp	eax, r13d
+	cmp	eax, r14d
 	ja	SHORT $LN242@output_opc
 
 ; 684  :              }
@@ -5131,13 +5100,13 @@ $LN251@output_opc:
 ; 708  :               CodeInfo->evex_p2 |= EVEX_P2LMASK;
 
 	or	al, 32					; 00000020H
-	jmp	SHORT $LN660@output_opc
+	jmp	SHORT $LN658@output_opc
 $LN249@output_opc:
 
 ; 706  :               CodeInfo->evex_p2 |= EVEX_P2L1MASK;
 
 	or	al, 64					; 00000040H
-$LN660@output_opc:
+$LN658@output_opc:
 	mov	BYTE PTR [rdi+139], al
 $LN250@output_opc:
 
@@ -5266,7 +5235,7 @@ $LN269@output_opc:
 
 ; 743  :                   CodeInfo->tuple = TRUE;
 
-	mov	BYTE PTR [rdi+140], r13b
+	mov	BYTE PTR [rdi+140], r14b
 $LN270@output_opc:
 	lea	eax, DWORD PTR [rcx-1348]
 	cmp	eax, 7
@@ -5284,12 +5253,12 @@ $LN270@output_opc:
 
 ; 748  :                 CodeInfo->tuple = TRUE;
 
-	mov	BYTE PTR [rdi+140], r13b
+	mov	BYTE PTR [rdi+140], r14b
 $LN271@output_opc:
 	cmp	ecx, 1917				; 0000077dH
 	je	SHORT $LN273@output_opc
 	lea	eax, DWORD PTR [rcx-1598]
-	cmp	eax, r13d
+	cmp	eax, r14d
 	jbe	SHORT $LN273@output_opc
 	cmp	ecx, 1618				; 00000652H
 	jne	SHORT $LN272@output_opc
@@ -5354,7 +5323,7 @@ $LN277@output_opc:
 	or	BYTE PTR [rdi+139], 8
 $LN278@output_opc:
 	lea	eax, DWORD PTR [rcx-1610]
-	cmp	eax, r13d
+	cmp	eax, r14d
 	jbe	SHORT $LN282@output_opc
 	cmp	ecx, 1428				; 00000594H
 	jne	SHORT $LN281@output_opc
@@ -5393,7 +5362,7 @@ $LN283@output_opc:
 ; 1069 :         }
 ; 1070 :     } else {
 
-	jmp	SHORT $LN658@output_opc
+	jmp	SHORT $LN656@output_opc
 $LN70@output_opc:
 
 ; 1071 : #endif
@@ -5457,7 +5426,7 @@ $LN463@output_opc:
 ; 1091 :         case F_0F0F:   OutputCodeByte( EXTENDED_OPCODE ); break;
 
 	mov	cl, 15
-	jmp	SHORT $LN658@output_opc
+	jmp	SHORT $LN656@output_opc
 $LN464@output_opc:
 
 ; 1092 :         case F_0F38:
@@ -5465,14 +5434,14 @@ $LN464@output_opc:
 ; 1094 :         case F_660F38: OutputCodeByte( 0x38 );            break;
 
 	mov	cl, 56					; 00000038H
-	jmp	SHORT $LN658@output_opc
+	jmp	SHORT $LN656@output_opc
 $LN465@output_opc:
 
 ; 1095 :         case F_0F3A:
 ; 1096 :         case F_660F3A: OutputCodeByte( 0x3A );            break;
 
 	mov	cl, 58					; 0000003aH
-$LN658@output_opc:
+$LN656@output_opc:
 	call	OutputByte
 $LN12@output_opc:
 
@@ -5485,14 +5454,12 @@ $LN12@output_opc:
 ; 1103 : 
 ; 1104 :     switch( ins->rm_info) {
 
-	movzx	ecx, BYTE PTR [r15+2]
-	shr	ecx, 4
-	and	ecx, 7
-	sub	ecx, r13d
+	movzx	ecx, BYTE PTR [r15+5]
+	sub	ecx, r14d
 	je	$LN467@output_opc
-	sub	ecx, r13d
+	sub	ecx, r14d
 	je	SHORT $LN468@output_opc
-	sub	ecx, r13d
+	sub	ecx, r14d
 	jne	SHORT $LN469@output_opc
 
 ; 1105 :     case R_in_OP:
@@ -5503,7 +5470,7 @@ $LN12@output_opc:
 
 ; 1107 :         break;
 
-	jmp	$LN661@output_opc
+	jmp	$LN659@output_opc
 $LN468@output_opc:
 
 ; 1110 :         break;
@@ -5512,7 +5479,6 @@ $LN468@output_opc:
 
 	and	BYTE PTR [rdi+142], 254			; 000000feH
 $LN469@output_opc:
-	mov	QWORD PTR [rsp+88], r14
 
 ; 1113 :         /* no break */
 ; 1114 :     default: /* opcode (with w d s bits), rm-byte */
@@ -5569,7 +5535,7 @@ $LN477@output_opc:
 ; 1129 :                  for (cnt = 0; cnt < 5; cnt++,p++){
 
 	mov	edx, r14d
-	npad	6
+	npad	7
 $LL18@output_opc:
 
 ; 1130 :                    if ((opnd_clstab[p->opclsidx].opnd_type[OPND1] == type1) && 
@@ -5586,7 +5552,7 @@ $LN16@output_opc:
 ; 1129 :                  for (cnt = 0; cnt < 5; cnt++,p++){
 
 	inc	edx
-	add	rbx, 10
+	add	rbx, 14
 	cmp	edx, 5
 	jl	SHORT $LL18@output_opc
 $LN635@output_opc:
@@ -5594,11 +5560,11 @@ $LN635@output_opc:
 ; 1137 :                  else
 ; 1138 :                    OutputCodeByte(ins->opcode);
 
-	movzx	ecx, BYTE PTR [r15+8]
+	movzx	ecx, BYTE PTR [r15+12]
 
 ; 1139 :               }else
 
-	jmp	SHORT $LN662@output_opc
+	jmp	SHORT $LN660@output_opc
 $LN544@output_opc:
 
 ; 1131 :                      (opnd_clstab[p->opclsidx].opnd_type[OPND2] == type2))
@@ -5611,11 +5577,11 @@ $LN544@output_opc:
 
 ; 1135 :                    OutputCodeByte(p->opcode);
 
-	movzx	ecx, BYTE PTR [rbx+8]
+	movzx	ecx, BYTE PTR [rbx+12]
 
 ; 1136 :                  }
 
-	jmp	SHORT $LN662@output_opc
+	jmp	SHORT $LN660@output_opc
 $LN471@output_opc:
 
 ; 1140 :                 OutputCodeByte(ins->opcode);
@@ -5624,10 +5590,10 @@ $LN471@output_opc:
 ; 1143 :                OutputCodeByte(ins->opcode | CodeInfo->iswide | CodeInfo->opc_or);
 
 	movzx	ecx, BYTE PTR [rdi+142]
-	and	cl, r13b
+	and	cl, 1
 	or	cl, BYTE PTR [rdi+107]
-	or	cl, BYTE PTR [r15+8]
-$LN662@output_opc:
+	or	cl, BYTE PTR [r15+12]
+$LN660@output_opc:
 	call	OutputByte
 $LN472@output_opc:
 
@@ -5639,9 +5605,9 @@ $LN472@output_opc:
 
 	mov	ebp, DWORD PTR [rdi+24]
 	lea	eax, DWORD PTR [rbp-1610]
-	cmp	eax, r13d
+	cmp	eax, 1
 	ja	SHORT $LN481@output_opc
-	mov	BYTE PTR [rdi+140], r13b
+	mov	BYTE PTR [rdi+140], 1
 $LN481@output_opc:
 	lea	eax, DWORD PTR [rbp-1682]
 	cmp	eax, 26
@@ -5686,7 +5652,7 @@ $LN485@output_opc:
 ; 1162 :         tmp = ins->rm_byte | CodeInfo->rm_byte;
 
 	movzx	ebx, BYTE PTR [rdi+104]
-	or	bl, BYTE PTR [r15+9]
+	or	bl, BYTE PTR [r15+13]
 $LN486@output_opc:
 
 ; 1163 :             if (CodeInfo->token == T_VCVTPS2PH){//(!CodeInfo->evex_flag) && 
@@ -5734,7 +5700,7 @@ $LN490@output_opc:
 ; 1173 :         if (CodeInfo->tuple){
 
 	cmp	BYTE PTR [rdi+140], r14b
-	je	$LN644@output_opc
+	je	$LN524@output_opc
 
 ; 1174 :           int index = -1;
 ; 1175 :           int d;
@@ -5750,14 +5716,14 @@ $LN492@output_opc:
 ; 1178 :           else if ((CodeInfo->opnd[OPND2].type & OP_M_ANY) &&
 
 	test	DWORD PTR [rdi+56], -8388608		; ffffffffff800000H
-	je	SHORT $LN643@output_opc
+	je	SHORT $LN495@output_opc
 	cmp	DWORD PTR [rdi+40], -1
-	je	SHORT $LN643@output_opc
+	je	SHORT $LN495@output_opc
 
 ; 1179 :             (CodeInfo->opnd[OPND1].data32l != -1))
 ; 1180 :             index = OPND2;
 
-	mov	r14d, r13d
+	mov	r14d, 1
 $LN548@output_opc:
 
 ; 1181 :           if ((index != -1) && ((Check4CompDisp8(CodeInfo, &comprdsp, &d, CodeInfo->opnd[index].data32l)) && comprdsp)){
@@ -5777,7 +5743,7 @@ $LN548@output_opc:
 	mov	eax, esi
 	cdq
 	idiv	r8d
-	mov	r8d, eax
+	mov	r13d, eax
 	lea	ecx, DWORD PTR [rax+128]
 	cmp	ecx, 255				; 000000ffH
 	ja	SHORT $LN537@output_opc
@@ -5804,10 +5770,7 @@ $LN548@output_opc:
 ; 1181 :           if ((index != -1) && ((Check4CompDisp8(CodeInfo, &comprdsp, &d, CodeInfo->opnd[index].data32l)) && comprdsp)){
 
 $LN537@output_opc:
-	xor	r8b, r8b
-	jmp	SHORT $LN495@output_opc
-$LN643@output_opc:
-	movzx	r8d, BYTE PTR comprdsp$[rsp]
+	xor	r13b, r13b
 $LN495@output_opc:
 
 ; 1186 :           else if (CodeInfo->opnd[OPND2].type == OP_I8 ){
@@ -5818,7 +5781,7 @@ $LN495@output_opc:
 	cmp	eax, 7
 	jbe	SHORT $LN500@output_opc
 	lea	eax, DWORD PTR [rbp-1610]
-	cmp	eax, r13d
+	cmp	eax, 1
 	jbe	SHORT $LN500@output_opc
 	lea	eax, DWORD PTR [rbp-1529]
 	cmp	eax, 17
@@ -5847,7 +5810,7 @@ $LN500@output_opc:
 	lea	ecx, DWORD PTR [rax+128]
 	cmp	ecx, 255				; 000000ffH
 	ja	SHORT $LN541@output_opc
-	movzx	r8d, al
+	movzx	r13d, al
 	test	al, al
 	je	SHORT $LN502@output_opc
 
@@ -5862,7 +5825,7 @@ $LN500@output_opc:
 	or	bl, 64					; 00000040H
 	mov	eax, DWORD PTR [rdi+24]
 	sub	eax, 1610				; 0000064aH
-	cmp	eax, r13d
+	cmp	eax, 1
 	ja	$LN524@output_opc
 
 ; 1193 :                 if ((CodeInfo->token == T_VRNDSCALEPD) || (CodeInfo->token == T_VRNDSCALEPS)){                   
@@ -5898,7 +5861,7 @@ $LN506@output_opc:
 ; 1190 :               if ((CodeInfo->vexconst) && ((Check4CompDisp8(CodeInfo, &comprdsp, &d, CodeInfo->vexconst)) && comprdsp)){
 
 $LN541@output_opc:
-	xor	r8b, r8b
+	xor	r13b, r13b
 $LN502@output_opc:
 
 ; 1200 :               else{
@@ -6019,7 +5982,7 @@ $LN516@output_opc:
 	cmp	DWORD PTR [rdi+120], 0
 	je	SHORT $LN520@output_opc
 	lea	eax, DWORD PTR [rbp-1610]
-	cmp	eax, r13d
+	cmp	eax, 1
 	ja	SHORT $LN520@output_opc
 
 ; 1253 :                        tmp &= ~0xc0;
@@ -6102,9 +6065,6 @@ $LN497@output_opc:
 ; 1269 :               CodeInfo->rm_byte = tmp;
 
 	mov	BYTE PTR [rdi+104], bl
-	jmp	SHORT $LN524@output_opc
-$LN644@output_opc:
-	movzx	r8d, BYTE PTR comprdsp$[rsp]
 $LN524@output_opc:
 
 ; 1270 :             }
@@ -6113,15 +6073,14 @@ $LN524@output_opc:
 ; 1273 :         if (CodeInfo->token == T_VCVTPS2PH){
 
 	mov	eax, DWORD PTR [rdi+24]
-	mov	r14, QWORD PTR [rsp+88]
 	cmp	eax, 1428				; 00000594H
 	jne	SHORT $LN525@output_opc
 
 ; 1274 :           if (!comprdsp) CodeInfo->tuple = 0;
 
-	test	r8b, r8b
+	test	r13b, r13b
 	jne	SHORT $LN526@output_opc
-	mov	BYTE PTR [rdi+140], r8b
+	mov	BYTE PTR [rdi+140], r13b
 $LN526@output_opc:
 
 ; 1275 :           if (CodeInfo->indexreg != 0xFF){
@@ -6191,12 +6150,12 @@ $LN529@output_opc:
 	movzx	eax, BYTE PTR [rdi+106]
 	test	al, al
 	jne	SHORT $LN532@output_opc
-	test	BYTE PTR [rdi+9], r13b
+	test	BYTE PTR [rdi+9], 1
 	je	SHORT $LN19@output_opc
 $LN532@output_opc:
-	cmp	al, r13b
+	cmp	al, 1
 	jne	SHORT $LN530@output_opc
-	test	BYTE PTR [rdi+9], r13b
+	test	BYTE PTR [rdi+9], al
 	jne	SHORT $LN19@output_opc
 $LN530@output_opc:
 
@@ -6222,17 +6181,17 @@ $LN533@output_opc:
 ; 1305 :           OutputCodeByte( CodeInfo->sib );
 
 	movzx	ecx, BYTE PTR [rdi+105]
-	jmp	SHORT $LN663@output_opc
+	jmp	SHORT $LN661@output_opc
 $LN467@output_opc:
 
 ; 1108 :     case no_RM:
 ; 1109 :         OutputCodeByte( ins->opcode | CodeInfo->iswide );
 
 	movzx	ecx, BYTE PTR [rdi+142]
-	and	cl, r13b
+	and	cl, r14b
+$LN659@output_opc:
+	or	cl, BYTE PTR [r15+12]
 $LN661@output_opc:
-	or	cl, BYTE PTR [r15+8]
-$LN663@output_opc:
 	call	OutputByte
 $LN19@output_opc:
 
@@ -6242,16 +6201,17 @@ $LN19@output_opc:
 ; 1309 :     return;
 ; 1310 : }
 
-	mov	rbx, QWORD PTR [rsp+96]
-	mov	rbp, QWORD PTR [rsp+104]
+	mov	rbx, QWORD PTR [rsp+88]
+	mov	rbp, QWORD PTR [rsp+96]
+	mov	rsi, QWORD PTR [rsp+104]
 	add	rsp, 32					; 00000020H
 	pop	r15
+	pop	r14
 	pop	r13
 	pop	r12
 	pop	rdi
-	pop	rsi
 	ret	0
-	npad	3
+	npad	1
 $LN642@output_opc:
 	DD	$LN47@output_opc
 	DD	$LN49@output_opc
@@ -6465,7 +6425,7 @@ $LN20:
 	movzx	r10d, BYTE PTR [rcx+138]
 	movzx	r11d, r9b
 	shr	r11b, 4
-	movzx	r8d, WORD PTR [rax+4]
+	movzx	r8d, WORD PTR [rax+8]
 	and	r11b, 1
 	and	r8d, 31
 
@@ -6821,7 +6781,7 @@ $LN64:
 	or	r10d, -1
 	mov	esi, edx
 	mov	rbx, rcx
-	movzx	r9d, WORD PTR [r8+6]
+	movzx	r9d, WORD PTR [r8+10]
 	mov	r8d, DWORD PTR ModuleInfo+392
 	and	r9d, 8
 	and	r8d, 8
@@ -7084,12 +7044,12 @@ $LN38@codegen:
 ; 1959 :         }
 ; 1960 :         CodeInfo->pinstr++;
 
-	add	QWORD PTR [rbx+16], 10
+	add	QWORD PTR [rbx+16], 14
 	mov	rax, QWORD PTR [rbx+16]
 
 ; 1961 :     } while ( CodeInfo->pinstr->first == FALSE );
 
-	test	BYTE PTR [rax+2], 8
+	cmp	BYTE PTR [rax+4], 0
 	je	SHORT $LL4@codegen
 
 ; 1962 : 

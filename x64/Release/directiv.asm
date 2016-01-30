@@ -64,7 +64,7 @@ COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11197 DB	'%s', 0aH, 00H
+$SG11202 DB	'%s', 0aH, 00H
 _DATA	ENDS
 CONST	SEGMENT
 directive_tab DQ FLAT:CondAsmDirective
@@ -138,6 +138,7 @@ EXTRN	EmitError:PROC
 EXTRN	EmitErr:PROC
 EXTRN	EmitWarn:PROC
 EXTRN	QEnqueue:PROC
+EXTRN	OutputBinBytes:PROC
 EXTRN	LclAlloc:PROC
 EXTRN	SymCreate:PROC
 EXTRN	SymFind:PROC
@@ -149,7 +150,6 @@ EXTRN	Tokenize:PROC
 EXTRN	EvalOperand:PROC
 EXTRN	LstWriteSrcLine:PROC
 EXTRN	omf_OutSelect:PROC
-EXTRN	OutputBinBytes:PROC
 EXTRN	memcpy:PROC
 EXTRN	Options:BYTE
 EXTRN	ModuleInfo:BYTE
@@ -517,57 +517,57 @@ i$ = 8
 tokenarray$ = 16
 NameDirective PROC
 
-; 394  :     if( Parse_Pass != PASS_1 )
+; 395  :     if( Parse_Pass != PASS_1 )
 
 	cmp	DWORD PTR Parse_Pass, 0
 	mov	r8, rdx
 	je	SHORT $LN2@NameDirect
 $LN7@NameDirect:
 
-; 395  :         return( NOT_ERROR );
+; 396  :         return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 420  :     }
-; 421  : 
-; 422  :     /* don't touch Option fields! if anything at all, ModuleInfo.name may be modified.
-; 423  :      * However, since the directive is ignored by Masm, nothing is done.
-; 424  :      */
-; 425  : //  strncpy( ModuleInfo.name, tokenarray[i].string_ptr, sizeof( ModuleInfo.name ) );
-; 426  : //  ModuleInfo.name[ sizeof( ModuleInfo.name ) - 1] = NULLC;
-; 427  : //  DebugMsg(("NameDirective: set name to >%s<\n", ModuleInfo.name ));
-; 428  :     DebugMsg(("NameDirective: ignored name >%s<\n", tokenarray[i].string_ptr ));
-; 429  :     return( NOT_ERROR );
-; 430  : }
+; 421  :     }
+; 422  : 
+; 423  :     /* don't touch Option fields! if anything at all, ModuleInfo.name may be modified.
+; 424  :      * However, since the directive is ignored by Masm, nothing is done.
+; 425  :      */
+; 426  : //  strncpy( ModuleInfo.name, tokenarray[i].string_ptr, sizeof( ModuleInfo.name ) );
+; 427  : //  ModuleInfo.name[ sizeof( ModuleInfo.name ) - 1] = NULLC;
+; 428  : //  DebugMsg(("NameDirective: set name to >%s<\n", ModuleInfo.name ));
+; 429  :     DebugMsg(("NameDirective: ignored name >%s<\n", tokenarray[i].string_ptr ));
+; 430  :     return( NOT_ERROR );
+; 431  : }
 
 	ret	0
 $LN2@NameDirect:
 
-; 396  :     /* if a module name is set with -nm, ignore NAME directive! */
-; 397  :     /* v2.08: removed, since Options.names isn't touched at all */
-; 398  :     //if( Options.names[OPTN_MODULE_NAME] != NULL )
-; 399  :     //    return( NOT_ERROR );
-; 400  : 
-; 401  :     i++; /* skip directive */
+; 397  :     /* if a module name is set with -nm, ignore NAME directive! */
+; 398  :     /* v2.08: removed, since Options.names isn't touched at all */
+; 399  :     //if( Options.names[OPTN_MODULE_NAME] != NULL )
+; 400  :     //    return( NOT_ERROR );
+; 401  : 
+; 402  :     i++; /* skip directive */
 
 	inc	ecx
 
-; 402  : 
-; 403  :     /* improper use of NAME is difficult to see since it is a nop
-; 404  :      therefore some syntax checks are implemented:
-; 405  :      - no 'name' structs, unions, records, typedefs!
-; 406  :      - no 'name' struct fields!
-; 407  :      - no 'name' segments!
-; 408  :      - no 'name:' label!
-; 409  :      */
-; 410  :     if ( CurrStruct != NULL ||
-; 411  :         ( tokenarray[i].token == T_DIRECTIVE &&
-; 412  :          ( tokenarray[i].tokval == T_SEGMENT ||
-; 413  :           tokenarray[i].tokval == T_STRUCT  ||
-; 414  :           tokenarray[i].tokval == T_STRUC   ||
-; 415  :           tokenarray[i].tokval == T_UNION   ||
-; 416  :           tokenarray[i].tokval == T_TYPEDEF ||
-; 417  :           tokenarray[i].tokval == T_RECORD)) ||
+; 403  : 
+; 404  :     /* improper use of NAME is difficult to see since it is a nop
+; 405  :      therefore some syntax checks are implemented:
+; 406  :      - no 'name' structs, unions, records, typedefs!
+; 407  :      - no 'name' struct fields!
+; 408  :      - no 'name' segments!
+; 409  :      - no 'name:' label!
+; 410  :      */
+; 411  :     if ( CurrStruct != NULL ||
+; 412  :         ( tokenarray[i].token == T_DIRECTIVE &&
+; 413  :          ( tokenarray[i].tokval == T_SEGMENT ||
+; 414  :           tokenarray[i].tokval == T_STRUCT  ||
+; 415  :           tokenarray[i].tokval == T_STRUC   ||
+; 416  :           tokenarray[i].tokval == T_UNION   ||
+; 417  :           tokenarray[i].tokval == T_TYPEDEF ||
+; 418  :           tokenarray[i].tokval == T_RECORD)) ||
 
 	cmp	QWORD PTR CurrStruct, 0
 	jne	SHORT $LN4@NameDirect
@@ -584,48 +584,48 @@ $LN2@NameDirect:
 	cmp	eax, 4
 	jbe	SHORT $LN4@NameDirect
 
-; 395  :         return( NOT_ERROR );
+; 396  :         return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 420  :     }
-; 421  : 
-; 422  :     /* don't touch Option fields! if anything at all, ModuleInfo.name may be modified.
-; 423  :      * However, since the directive is ignored by Masm, nothing is done.
-; 424  :      */
-; 425  : //  strncpy( ModuleInfo.name, tokenarray[i].string_ptr, sizeof( ModuleInfo.name ) );
-; 426  : //  ModuleInfo.name[ sizeof( ModuleInfo.name ) - 1] = NULLC;
-; 427  : //  DebugMsg(("NameDirective: set name to >%s<\n", ModuleInfo.name ));
-; 428  :     DebugMsg(("NameDirective: ignored name >%s<\n", tokenarray[i].string_ptr ));
-; 429  :     return( NOT_ERROR );
-; 430  : }
+; 421  :     }
+; 422  : 
+; 423  :     /* don't touch Option fields! if anything at all, ModuleInfo.name may be modified.
+; 424  :      * However, since the directive is ignored by Masm, nothing is done.
+; 425  :      */
+; 426  : //  strncpy( ModuleInfo.name, tokenarray[i].string_ptr, sizeof( ModuleInfo.name ) );
+; 427  : //  ModuleInfo.name[ sizeof( ModuleInfo.name ) - 1] = NULLC;
+; 428  : //  DebugMsg(("NameDirective: set name to >%s<\n", ModuleInfo.name ));
+; 429  :     DebugMsg(("NameDirective: ignored name >%s<\n", tokenarray[i].string_ptr ));
+; 430  :     return( NOT_ERROR );
+; 431  : }
 
 	ret	0
 $LN5@NameDirect:
 
-; 402  : 
-; 403  :     /* improper use of NAME is difficult to see since it is a nop
-; 404  :      therefore some syntax checks are implemented:
-; 405  :      - no 'name' structs, unions, records, typedefs!
-; 406  :      - no 'name' struct fields!
-; 407  :      - no 'name' segments!
-; 408  :      - no 'name:' label!
-; 409  :      */
-; 410  :     if ( CurrStruct != NULL ||
-; 411  :         ( tokenarray[i].token == T_DIRECTIVE &&
-; 412  :          ( tokenarray[i].tokval == T_SEGMENT ||
-; 413  :           tokenarray[i].tokval == T_STRUCT  ||
-; 414  :           tokenarray[i].tokval == T_STRUC   ||
-; 415  :           tokenarray[i].tokval == T_UNION   ||
-; 416  :           tokenarray[i].tokval == T_TYPEDEF ||
-; 417  :           tokenarray[i].tokval == T_RECORD)) ||
+; 403  : 
+; 404  :     /* improper use of NAME is difficult to see since it is a nop
+; 405  :      therefore some syntax checks are implemented:
+; 406  :      - no 'name' structs, unions, records, typedefs!
+; 407  :      - no 'name' struct fields!
+; 408  :      - no 'name' segments!
+; 409  :      - no 'name:' label!
+; 410  :      */
+; 411  :     if ( CurrStruct != NULL ||
+; 412  :         ( tokenarray[i].token == T_DIRECTIVE &&
+; 413  :          ( tokenarray[i].tokval == T_SEGMENT ||
+; 414  :           tokenarray[i].tokval == T_STRUCT  ||
+; 415  :           tokenarray[i].tokval == T_STRUC   ||
+; 416  :           tokenarray[i].tokval == T_UNION   ||
+; 417  :           tokenarray[i].tokval == T_TYPEDEF ||
+; 418  :           tokenarray[i].tokval == T_RECORD)) ||
 
 	cmp	al, 58					; 0000003aH
 	jne	SHORT $LN7@NameDirect
 $LN4@NameDirect:
 
-; 418  :          tokenarray[i].token == T_COLON ) {
-; 419  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i-1].tokpos ) );
+; 419  :          tokenarray[i].token == T_COLON ) {
+; 420  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i-1].tokpos ) );
 
 	movsxd	rdx, ecx
 	mov	ecx, 209				; 000000d1H
@@ -848,17 +848,18 @@ $LN31:
 ; 197  :     struct expr opndx;
 ; 198  : 	long sz;
 ; 199  : 	unsigned char* pBinData;
-; 200  : 
-; 201  :     DebugMsg(("IncBinDirective enter\n"));
-; 202  : 
-; 203  :     i++; /* skip the directive */
+; 200  : 	size_t result = 0;
+; 201  : 
+; 202  :     DebugMsg(("IncBinDirective enter\n"));
+; 203  : 
+; 204  :     i++; /* skip the directive */
 
 	inc	ecx
 	mov	rbx, rdx
 
-; 204  :     /* v2.03: file name may be just a "number" */
-; 205  :     //if ( tokenarray[i].token == T_FINAL || tokenarray[i].token == T_NUM ) {
-; 206  :     if ( tokenarray[i].token == T_FINAL ) {
+; 205  :     /* v2.03: file name may be just a "number" */
+; 206  :     //if ( tokenarray[i].token == T_FINAL || tokenarray[i].token == T_NUM ) {
+; 207  :     if ( tokenarray[i].token == T_FINAL ) {
 
 	movsxd	rax, ecx
 	xor	edi, edi
@@ -869,22 +870,22 @@ $LN31:
 	test	al, al
 	jne	SHORT $LN2@IncBinDire
 
-; 207  :         return( EmitError( EXPECTED_FILE_NAME ) );
+; 208  :         return( EmitError( EXPECTED_FILE_NAME ) );
 
 	lea	ecx, QWORD PTR [rdi+112]
 	jmp	$LN27@IncBinDire
 $LN2@IncBinDire:
 
-; 208  :     }
-; 209  : 
-; 210  :     if ( tokenarray[i].token == T_STRING ) {
+; 209  :     }
+; 210  : 
+; 211  :     if ( tokenarray[i].token == T_STRING ) {
 
 	cmp	al, 9
 	jne	$LN3@IncBinDire
 
-; 211  : 
-; 212  :         /* v2.08: use string buffer to avoid buffer overflow if string is > FILENAME_MAX */
-; 213  :         if ( tokenarray[i].string_delim == '"' || tokenarray[i].string_delim == '\'' ) {
+; 212  : 
+; 213  :         /* v2.08: use string buffer to avoid buffer overflow if string is > FILENAME_MAX */
+; 214  :         if ( tokenarray[i].string_delim == '"' || tokenarray[i].string_delim == '\'' ) {
 
 	movzx	eax, BYTE PTR [rdx+1]
 	cmp	al, 34					; 00000022H
@@ -892,14 +893,14 @@ $LN2@IncBinDire:
 	cmp	al, 39					; 00000027H
 	je	SHORT $LN7@IncBinDire
 
-; 216  :         } else if ( tokenarray[i].string_delim == '<' ) {
+; 217  :         } else if ( tokenarray[i].string_delim == '<' ) {
 
 	cmp	al, 60					; 0000003cH
 	jne	$LN3@IncBinDire
 
-; 217  :             /* v2.08: use GetLiteralValue() instead of strncpy() */
-; 218  :             //GetLiteralValue( StringBufferEnd, tokenarray[i].string_ptr );
-; 219  :             memcpy( StringBufferEnd, tokenarray[i].string_ptr, tokenarray[i].stringlen+1 );
+; 218  :             /* v2.08: use GetLiteralValue() instead of strncpy() */
+; 219  :             //GetLiteralValue( StringBufferEnd, tokenarray[i].string_ptr );
+; 220  :             memcpy( StringBufferEnd, tokenarray[i].string_ptr, tokenarray[i].stringlen+1 );
 
 	mov	r8d, DWORD PTR [rdx+16]
 	mov	rdx, QWORD PTR [rdx+8]
@@ -907,12 +908,12 @@ $LN2@IncBinDire:
 	mov	rcx, QWORD PTR ModuleInfo+488
 	call	memcpy
 
-; 220  :         } else {
+; 221  :         } else {
 
 	jmp	SHORT $LN9@IncBinDire
 $LN7@IncBinDire:
 
-; 214  :             memcpy( StringBufferEnd, tokenarray[i].string_ptr+1, tokenarray[i].stringlen );
+; 215  :             memcpy( StringBufferEnd, tokenarray[i].string_ptr+1, tokenarray[i].stringlen );
 
 	mov	r8d, DWORD PTR [rdx+16]
 	mov	rdx, QWORD PTR [rdx+8]
@@ -920,7 +921,7 @@ $LN7@IncBinDire:
 	inc	rdx
 	call	memcpy
 
-; 215  :             StringBufferEnd[tokenarray[i].stringlen] = NULLC;
+; 216  :             StringBufferEnd[tokenarray[i].stringlen] = NULLC;
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	shl	rax, 5
@@ -929,13 +930,13 @@ $LN7@IncBinDire:
 	mov	BYTE PTR [rcx+rax], dil
 $LN9@IncBinDire:
 
-; 225  :     }
-; 226  :     i++;
+; 226  :     }
+; 227  :     i++;
 
 	mov	ecx, DWORD PTR i$[rsp]
 	inc	ecx
 
-; 227  :     if ( tokenarray[i].token == T_COMMA ) {
+; 228  :     if ( tokenarray[i].token == T_COMMA ) {
 
 	movsxd	rax, ecx
 	shl	rax, 5
@@ -943,8 +944,8 @@ $LN9@IncBinDire:
 	cmp	BYTE PTR [rax+rbx], 44			; 0000002cH
 	jne	$LN19@IncBinDire
 
-; 228  :         i++;
-; 229  :         if ( EvalOperand( &i, tokenarray, Token_Count, &opndx, 0 ) == ERROR )
+; 229  :         i++;
+; 230  :         if ( EvalOperand( &i, tokenarray, Token_Count, &opndx, 0 ) == ERROR )
 
 	mov	r8d, DWORD PTR ModuleInfo+496
 	lea	r9, QWORD PTR opndx$[rsp]
@@ -958,11 +959,11 @@ $LN9@IncBinDire:
 	jne	SHORT $LN11@IncBinDire
 $LN29@IncBinDire:
 
-; 230  :             return( ERROR );
+; 231  :             return( ERROR );
 
 	or	eax, -1
 
-; 286  : }
+; 287  : }
 
 	mov	rbx, QWORD PTR [rsp+200]
 	add	rsp, 160				; 000000a0H
@@ -970,19 +971,19 @@ $LN29@IncBinDire:
 	ret	0
 $LN11@IncBinDire:
 
-; 231  :         if ( opndx.kind == EXPR_CONST ) {
+; 232  :         if ( opndx.kind == EXPR_CONST ) {
 
 	mov	eax, DWORD PTR opndx$[rsp+60]
 	test	eax, eax
 	jne	$LN12@IncBinDire
 
-; 232  :             fileoffset = opndx.value;
+; 233  :             fileoffset = opndx.value;
 
 	mov	edi, DWORD PTR opndx$[rsp]
 $LN14@IncBinDire:
 
-; 235  :         }
-; 236  :         if ( tokenarray[i].token == T_COMMA ) {
+; 236  :         }
+; 237  :         if ( tokenarray[i].token == T_COMMA ) {
 
 	movsxd	rcx, DWORD PTR i$[rsp]
 	mov	rax, rcx
@@ -990,8 +991,8 @@ $LN14@IncBinDire:
 	cmp	BYTE PTR [rax+rbx], 44			; 0000002cH
 	jne	SHORT $LN19@IncBinDire
 
-; 237  :             i++;
-; 238  :             if ( EvalOperand( &i, tokenarray, Token_Count, &opndx, 0 ) == ERROR )
+; 238  :             i++;
+; 239  :             if ( EvalOperand( &i, tokenarray, Token_Count, &opndx, 0 ) == ERROR )
 
 	mov	r8d, DWORD PTR ModuleInfo+496
 	lea	r9, QWORD PTR opndx$[rsp]
@@ -1004,11 +1005,11 @@ $LN14@IncBinDire:
 	cmp	eax, -1
 	je	SHORT $LN29@IncBinDire
 
-; 239  :                 return( ERROR );
-; 240  :             if ( opndx.kind == EXPR_CONST ) {
-; 241  :                 sizemax = opndx.value;
-; 242  :             } else if ( opndx.kind != EXPR_EMPTY ) {
-; 243  :                 return( EmitError( CONSTANT_EXPECTED ) );
+; 240  :                 return( ERROR );
+; 241  :             if ( opndx.kind == EXPR_CONST ) {
+; 242  :                 sizemax = opndx.value;
+; 243  :             } else if ( opndx.kind != EXPR_EMPTY ) {
+; 244  :                 return( EmitError( CONSTANT_EXPECTED ) );
 
 	mov	eax, DWORD PTR opndx$[rsp+60]
 	add	eax, 2
@@ -1017,23 +1018,23 @@ $LN14@IncBinDire:
 	mov	ecx, DWORD PTR i$[rsp]
 $LN19@IncBinDire:
 
-; 244  :             }
-; 245  :         }
-; 246  :     }
-; 247  :     if ( tokenarray[i].token != T_FINAL ) {
+; 245  :             }
+; 246  :         }
+; 247  :     }
+; 248  :     if ( tokenarray[i].token != T_FINAL ) {
 
 	movsxd	rax, ecx
 	shl	rax, 5
 	cmp	BYTE PTR [rax+rbx], 0
 	je	SHORT $LN20@IncBinDire
 
-; 248  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
+; 249  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	mov	rdx, QWORD PTR [rax+rbx+24]
 	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
-; 286  : }
+; 287  : }
 
 	mov	rbx, QWORD PTR [rsp+200]
 	add	rsp, 160				; 000000a0H
@@ -1041,51 +1042,51 @@ $LN19@IncBinDire:
 	ret	0
 $LN12@IncBinDire:
 
-; 233  :         } else if ( opndx.kind != EXPR_EMPTY ) {
+; 234  :         } else if ( opndx.kind != EXPR_EMPTY ) {
 
 	cmp	eax, -2
 	je	$LN14@IncBinDire
 $LN28@IncBinDire:
 
-; 234  :             return( EmitError( CONSTANT_EXPECTED ) );
+; 235  :             return( EmitError( CONSTANT_EXPECTED ) );
 
 	mov	ecx, 65					; 00000041H
 	jmp	$LN27@IncBinDire
 $LN20@IncBinDire:
 
-; 249  :     }
-; 250  : 
-; 251  :     if( CurrSeg == NULL ) {
+; 250  :     }
+; 251  : 
+; 252  :     if( CurrSeg == NULL ) {
 
 	cmp	QWORD PTR ModuleInfo+432, 0
 	jne	SHORT $LN21@IncBinDire
 
-; 252  :         return( EmitError( MUST_BE_IN_SEGMENT_BLOCK ) );
+; 253  :         return( EmitError( MUST_BE_IN_SEGMENT_BLOCK ) );
 
 	mov	ecx, 82					; 00000052H
 	jmp	$LN27@IncBinDire
 $LN21@IncBinDire:
 
-; 253  :     }
-; 254  : 
-; 255  :     /* v2.04: tell assembler that data is emitted */
-; 256  :     if ( ModuleInfo.CommentDataInCode )
+; 254  :     }
+; 255  : 
+; 256  :     /* v2.04: tell assembler that data is emitted */
+; 257  :     if ( ModuleInfo.CommentDataInCode )
 
 	cmp	BYTE PTR ModuleInfo+423, 0
 	mov	QWORD PTR [rsp+184], rbp
 	je	SHORT $LN22@IncBinDire
 
-; 257  :         omf_OutSelect( TRUE );
+; 258  :         omf_OutSelect( TRUE );
 
 	mov	cl, 1
 	call	omf_OutSelect
 $LN22@IncBinDire:
 
-; 258  : 
-; 259  :     DebugMsg1(("IncBinDirective: filename=%s, offset=%" I32_SPEC "u, size=%" I32_SPEC "u\n", StringBufferEnd, fileoffset, sizemax ));
-; 260  : 
-; 261  :     /* try to open the file */
-; 262  :     if ( file = SearchFile( StringBufferEnd, FALSE ) ) 
+; 259  : 
+; 260  :     DebugMsg1(("IncBinDirective: filename=%s, offset=%" I32_SPEC "u, size=%" I32_SPEC "u\n", StringBufferEnd, fileoffset, sizemax ));
+; 261  : 
+; 262  :     /* try to open the file */
+; 263  :     if ( file = SearchFile( StringBufferEnd, FALSE ) ) 
 
 	mov	rcx, QWORD PTR ModuleInfo+488
 	xor	edx, edx
@@ -1094,9 +1095,9 @@ $LN22@IncBinDire:
 	test	rax, rax
 	je	SHORT $LN23@IncBinDire
 
-; 263  : 	{
-; 264  : 		/* v2.14 : Get File Size */
-; 265  : 		fseek( file, 0L, SEEK_END );
+; 264  : 	{
+; 265  : 		/* v2.14 : Get File Size */
+; 266  : 		fseek( file, 0L, SEEK_END );
 
 	xor	edx, edx
 	mov	QWORD PTR [rsp+192], rsi
@@ -1104,13 +1105,13 @@ $LN22@IncBinDire:
 	lea	r8d, QWORD PTR [rdx+2]
 	call	fseek
 
-; 266  : 		sz = ftell( file ) - fileoffset; // sz = total data size to load into segment/section.
+; 267  : 		sz = ftell( file ) - fileoffset; // sz = total data size to load into segment/section.
 
 	mov	rcx, rbp
 	call	ftell
 	mov	esi, eax
 
-; 267  : 		fseek( file, 0L, SEEK_SET );
+; 268  : 		fseek( file, 0L, SEEK_SET );
 
 	xor	r8d, r8d
 	xor	edx, edx
@@ -1118,13 +1119,13 @@ $LN22@IncBinDire:
 	sub	esi, edi
 	call	fseek
 
-; 268  : 		pBinData = (unsigned char*)malloc(sz);
+; 269  : 		pBinData = (unsigned char*)malloc(sz);
 
 	movsxd	rbx, esi
 	mov	rcx, rbx
 	call	malloc
 
-; 269  : 		fread(pBinData, sz, 1, file);
+; 270  : 		result = fread(pBinData, sz, 1, file);
 
 	mov	r9, rbp
 	mov	r8d, 1
@@ -1133,42 +1134,42 @@ $LN22@IncBinDire:
 	mov	rdi, rax
 	call	fread
 
-; 270  : 		OutputBinBytes(pBinData, sz);
+; 271  : 		OutputBinBytes(pBinData, sz);
 
 	mov	edx, esi
 	mov	rcx, rdi
 	call	OutputBinBytes
 
-; 271  : 
-; 272  :         /* transfer file content to the current segment. */
-; 273  :         //if ( fileoffset )
-; 274  :             //fseek( file, fileoffset, SEEK_SET );  /* fixme: use fseek64() */
-; 275  :         //for( ; sizemax; sizemax-- ) {
-; 276  :             //int ch = fgetc( file );
-; 277  :             //if ( ( ch == EOF ) && feof( file ) )
-; 278  :                 //break;
-; 279  :             //OutputByte( ch );
-; 280  :         //}
-; 281  : 		free((void*)pBinData);
+; 272  : 
+; 273  :         /* transfer file content to the current segment. */
+; 274  :         //if ( fileoffset )
+; 275  :             //fseek( file, fileoffset, SEEK_SET );  /* fixme: use fseek64() */
+; 276  :         //for( ; sizemax; sizemax-- ) {
+; 277  :             //int ch = fgetc( file );
+; 278  :             //if ( ( ch == EOF ) && feof( file ) )
+; 279  :                 //break;
+; 280  :             //OutputByte( ch );
+; 281  :         //}
+; 282  : 		free((void*)pBinData);
 
 	mov	rcx, rdi
 	call	free
 
-; 282  :         fclose( file );
+; 283  :         fclose( file );
 
 	mov	rcx, rbp
 	call	fclose
 	mov	rsi, QWORD PTR [rsp+192]
 $LN23@IncBinDire:
 
-; 283  :     }
-; 284  : 
-; 285  :     return( NOT_ERROR );
+; 284  :     }
+; 285  : 
+; 286  :     return( NOT_ERROR );
 
 	xor	eax, eax
 	mov	rbp, QWORD PTR [rsp+184]
 
-; 286  : }
+; 287  : }
 
 	mov	rbx, QWORD PTR [rsp+200]
 	add	rsp, 160				; 000000a0H
@@ -1176,16 +1177,16 @@ $LN23@IncBinDire:
 	ret	0
 $LN3@IncBinDire:
 
-; 221  :             return( EmitError( FILENAME_MUST_BE_ENCLOSED_IN_QUOTES_OR_BRACKETS ) );
-; 222  :         }
-; 223  :     } else {
-; 224  :         return( EmitError( FILENAME_MUST_BE_ENCLOSED_IN_QUOTES_OR_BRACKETS ) );
+; 222  :             return( EmitError( FILENAME_MUST_BE_ENCLOSED_IN_QUOTES_OR_BRACKETS ) );
+; 223  :         }
+; 224  :     } else {
+; 225  :         return( EmitError( FILENAME_MUST_BE_ENCLOSED_IN_QUOTES_OR_BRACKETS ) );
 
 	mov	ecx, 241				; 000000f1H
 $LN27@IncBinDire:
 	call	EmitError
 
-; 286  : }
+; 287  : }
 
 	mov	rbx, QWORD PTR [rsp+200]
 	add	rsp, 160				; 000000a0H
@@ -1219,7 +1220,7 @@ $LN8:
 ; 58   :             printf( "%s\n", tokenarray[i+1].tokpos );
 
 	movsxd	rdx, ecx
-	lea	rcx, OFFSET FLAT:$SG11197
+	lea	rcx, OFFSET FLAT:$SG11202
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rax+56]
 	call	printf
@@ -1243,22 +1244,22 @@ i$ = 48
 tokenarray$ = 56
 AliasDirective PROC
 
-; 305  : {
+; 306  : {
 
 $LN34:
 	push	rbp
 	sub	rsp, 32					; 00000020H
 
-; 306  :     //char *tmp;
-; 307  :     struct asym *sym;
-; 308  :     char *subst;
-; 309  : 
-; 310  :     i++; /* go past ALIAS */
+; 307  :     //char *tmp;
+; 308  :     struct asym *sym;
+; 309  :     char *subst;
+; 310  : 
+; 311  :     i++; /* go past ALIAS */
 
 	inc	ecx
 
-; 311  : 
-; 312  :     if ( tokenarray[i].token != T_STRING ||
+; 312  : 
+; 313  :     if ( tokenarray[i].token != T_STRING ||
 
 	movsxd	r8, ecx
 	mov	rbp, r8
@@ -1269,13 +1270,13 @@ $LN34:
 	cmp	BYTE PTR [rbp+1], 60			; 0000003cH
 	jne	$LN7@AliasDirec
 
-; 313  :         tokenarray[i].string_delim != '<' ) {
-; 314  :         DebugMsg(("AliasDirective: first argument is not a literal: %s\n", tokenarray[i].string_ptr ));
-; 315  :         return( EmitError( TEXT_ITEM_REQUIRED ) );
-; 316  :     }
-; 317  : 
-; 318  :     /* check syntax. note that '=' is T_DIRECTIVE && DRT_EQUALSGN */
-; 319  :     if ( tokenarray[i+1].token != T_DIRECTIVE ||
+; 314  :         tokenarray[i].string_delim != '<' ) {
+; 315  :         DebugMsg(("AliasDirective: first argument is not a literal: %s\n", tokenarray[i].string_ptr ));
+; 316  :         return( EmitError( TEXT_ITEM_REQUIRED ) );
+; 317  :     }
+; 318  : 
+; 319  :     /* check syntax. note that '=' is T_DIRECTIVE && DRT_EQUALSGN */
+; 320  :     if ( tokenarray[i+1].token != T_DIRECTIVE ||
 
 	lea	rcx, QWORD PTR [r8+1]
 	shl	rcx, 5
@@ -1284,9 +1285,9 @@ $LN34:
 	cmp	BYTE PTR [rcx+rdx+1], 48		; 00000030H
 	jne	$LN5@AliasDirec
 
-; 324  :     }
-; 325  : 
-; 326  :     if ( tokenarray[i+2].token != T_STRING ||
+; 325  :     }
+; 326  : 
+; 327  :     if ( tokenarray[i+2].token != T_STRING ||
 
 	lea	rax, QWORD PTR [r8+2]
 	shl	rax, 5
@@ -1295,47 +1296,47 @@ $LN34:
 	cmp	BYTE PTR [rax+rdx+1], 60		; 0000003cH
 	jne	$LN7@AliasDirec
 
-; 330  :     }
-; 331  :     subst = tokenarray[i+2].string_ptr;
+; 331  :     }
+; 332  :     subst = tokenarray[i+2].string_ptr;
 
 	mov	QWORD PTR [rsp+56], rsi
 	mov	rsi, QWORD PTR [rax+rdx+8]
 
-; 332  : 
-; 333  :     if ( tokenarray[i+3].token != T_FINAL ) {
+; 333  : 
+; 334  :     if ( tokenarray[i+3].token != T_FINAL ) {
 
 	lea	rax, QWORD PTR [r8+3]
 	shl	rax, 5
 	cmp	BYTE PTR [rax+rdx], 0
 	je	SHORT $LN8@AliasDirec
 
-; 334  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i+3].string_ptr ) );
+; 335  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i+3].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rax+rdx+8]
 	mov	ecx, 209				; 000000d1H
 	mov	rsi, QWORD PTR [rsp+56]
 
-; 387  : }
+; 388  : }
 
 	add	rsp, 32					; 00000020H
 	pop	rbp
 
-; 334  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i+3].string_ptr ) );
+; 335  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i+3].string_ptr ) );
 
 	jmp	EmitErr
 $LN8@AliasDirec:
 
-; 335  :     }
-; 336  : 
-; 337  :     /* make sure <alias_name> isn't defined elsewhere */
-; 338  :     sym = SymSearch( tokenarray[i].string_ptr );
+; 336  :     }
+; 337  : 
+; 338  :     /* make sure <alias_name> isn't defined elsewhere */
+; 339  :     sym = SymSearch( tokenarray[i].string_ptr );
 
 	mov	rcx, QWORD PTR [rbp+8]
 	mov	QWORD PTR [rsp+48], rbx
 	call	SymFind
 	mov	rbx, rax
 
-; 339  :     if ( sym == NULL || sym->state == SYM_UNDEFINED ) {
+; 340  :     if ( sym == NULL || sym->state == SYM_UNDEFINED ) {
 
 	test	rax, rax
 	je	$LN10@AliasDirec
@@ -1343,8 +1344,8 @@ $LN8@AliasDirec:
 	test	eax, eax
 	je	$LN10@AliasDirec
 
-; 363  :     }
-; 364  :     if ( sym->state != SYM_ALIAS || ( strcmp( sym->substitute->name, subst ) != 0 )) {
+; 364  :     }
+; 365  :     if ( sym->state != SYM_ALIAS || ( strcmp( sym->substitute->name, subst ) != 0 )) {
 
 	cmp	eax, 8
 	jne	$LN17@AliasDirec
@@ -1364,11 +1365,11 @@ $LN29@AliasDirec:
 	test	edx, edx
 	jne	SHORT $LN17@AliasDirec
 
-; 367  :     }
-; 368  : #if COFF_SUPPORT || ELF_SUPPORT
-; 369  :     /* for COFF+ELF, make sure <actual_name> is "global" (EXTERNAL or
-; 370  :      * public INTERNAL). For OMF, there's no check at all. */
-; 371  :     if ( Parse_Pass != PASS_1 ) {
+; 368  :     }
+; 369  : #if COFF_SUPPORT || ELF_SUPPORT
+; 370  :     /* for COFF+ELF, make sure <actual_name> is "global" (EXTERNAL or
+; 371  :      * public INTERNAL). For OMF, there's no check at all. */
+; 372  :     if ( Parse_Pass != PASS_1 ) {
 
 	cmp	DWORD PTR Parse_Pass, edx
 	je	SHORT $LN23@AliasDirec
@@ -1377,35 +1378,35 @@ $LN29@AliasDirec:
 	cmp	eax, 1
 	ja	SHORT $LN23@AliasDirec
 
-; 372  :         if ( Options.output_format == OFORMAT_COFF
-; 373  : #if ELF_SUPPORT
-; 374  :              || Options.output_format == OFORMAT_ELF
-; 375  : #endif
-; 376  :            ) {
-; 377  :             if ( sym->substitute->state == SYM_UNDEFINED ) {
+; 373  :         if ( Options.output_format == OFORMAT_COFF
+; 374  : #if ELF_SUPPORT
+; 375  :              || Options.output_format == OFORMAT_ELF
+; 376  : #endif
+; 377  :            ) {
+; 378  :             if ( sym->substitute->state == SYM_UNDEFINED ) {
 
 	mov	eax, DWORD PTR [r9+32]
 	test	eax, eax
 	jne	SHORT $LN21@AliasDirec
 
-; 378  :                 return( EmitErr( SYMBOL_NOT_DEFINED, subst ) );
+; 379  :                 return( EmitErr( SYMBOL_NOT_DEFINED, subst ) );
 
 	mov	rdx, rsi
 	lea	ecx, QWORD PTR [rax+102]
 	mov	rbx, QWORD PTR [rsp+48]
 	mov	rsi, QWORD PTR [rsp+56]
 
-; 387  : }
+; 388  : }
 
 	add	rsp, 32					; 00000020H
 	pop	rbp
 
-; 378  :                 return( EmitErr( SYMBOL_NOT_DEFINED, subst ) );
+; 379  :                 return( EmitErr( SYMBOL_NOT_DEFINED, subst ) );
 
 	jmp	EmitErr
 $LN21@AliasDirec:
 
-; 379  :             } else if ( sym->substitute->state != SYM_EXTERNAL &&
+; 380  :             } else if ( sym->substitute->state != SYM_EXTERNAL &&
 
 	cmp	eax, 2
 	je	SHORT $LN23@AliasDirec
@@ -1415,82 +1416,82 @@ $LN21@AliasDirec:
 	jne	SHORT $LN23@AliasDirec
 $LN24@AliasDirec:
 
-; 380  :                        ( sym->substitute->state != SYM_INTERNAL || sym->substitute->ispublic == FALSE ) ) {
-; 381  :                 return( EmitErr( MUST_BE_PUBLIC_OR_EXTERNAL, subst ) );
+; 381  :                        ( sym->substitute->state != SYM_INTERNAL || sym->substitute->ispublic == FALSE ) ) {
+; 382  :                 return( EmitErr( MUST_BE_PUBLIC_OR_EXTERNAL, subst ) );
 
 	mov	rdx, rsi
 	mov	ecx, 268				; 0000010cH
 	mov	rbx, QWORD PTR [rsp+48]
 	mov	rsi, QWORD PTR [rsp+56]
 
-; 387  : }
+; 388  : }
 
 	add	rsp, 32					; 00000020H
 	pop	rbp
 
-; 380  :                        ( sym->substitute->state != SYM_INTERNAL || sym->substitute->ispublic == FALSE ) ) {
-; 381  :                 return( EmitErr( MUST_BE_PUBLIC_OR_EXTERNAL, subst ) );
+; 381  :                        ( sym->substitute->state != SYM_INTERNAL || sym->substitute->ispublic == FALSE ) ) {
+; 382  :                 return( EmitErr( MUST_BE_PUBLIC_OR_EXTERNAL, subst ) );
 
 	jmp	EmitErr
 $LN23@AliasDirec:
 	mov	rbx, QWORD PTR [rsp+48]
 
-; 382  :             }
-; 383  :         }
-; 384  :     }
-; 385  : #endif
-; 386  :     return( NOT_ERROR );
+; 383  :             }
+; 384  :         }
+; 385  :     }
+; 386  : #endif
+; 387  :     return( NOT_ERROR );
 
 	xor	eax, eax
 	mov	rsi, QWORD PTR [rsp+56]
 
-; 387  : }
+; 388  : }
 
 	add	rsp, 32					; 00000020H
 	pop	rbp
 	ret	0
 $LN17@AliasDirec:
 
-; 365  :         DebugMsg(("AliasDirective: symbol redefinition\n"));
-; 366  :         return( EmitErr( SYMBOL_REDEFINITION, sym->name ) );
+; 366  :         DebugMsg(("AliasDirective: symbol redefinition\n"));
+; 367  :         return( EmitErr( SYMBOL_REDEFINITION, sym->name ) );
 
 	mov	rdx, QWORD PTR [rbx+8]
 	mov	ecx, 143				; 0000008fH
 	mov	rbx, QWORD PTR [rsp+48]
 	mov	rsi, QWORD PTR [rsp+56]
 
-; 387  : }
+; 388  : }
 
 	add	rsp, 32					; 00000020H
 	pop	rbp
 
-; 365  :         DebugMsg(("AliasDirective: symbol redefinition\n"));
-; 366  :         return( EmitErr( SYMBOL_REDEFINITION, sym->name ) );
+; 366  :         DebugMsg(("AliasDirective: symbol redefinition\n"));
+; 367  :         return( EmitErr( SYMBOL_REDEFINITION, sym->name ) );
 
 	jmp	EmitErr
 $LN10@AliasDirec:
 
-; 340  :         struct asym *sym2;
-; 341  :         /* v2.04b: adjusted to new field <substitute> */
-; 342  :         sym2 = SymSearch( subst );
+; 341  :         struct asym *sym2;
+; 342  :         /* v2.04b: adjusted to new field <substitute> */
+; 343  :         sym2 = SymSearch( subst );
 
 	mov	rcx, rsi
 	mov	QWORD PTR [rsp+64], rdi
 	call	SymFind
 	mov	rdi, rax
 
-; 343  :         if ( sym2 == NULL ) {
+; 344  :         if ( sym2 == NULL ) {
 
 	test	rax, rax
 	jne	SHORT $LN11@AliasDirec
 
-; 344  :             sym2 = SymCreate( subst );
+; 345  :             sym2 = SymCreate( subst );
 
 	mov	rcx, rsi
 	call	SymCreate
 
-; 345  :             sym2->state = SYM_UNDEFINED;
-; 346  :             sym_add_table( &SymTables[TAB_UNDEF], (struct dsym *)sym2 );
+; 346  :             sym2->state = SYM_UNDEFINED;
+; 347  :             sym_add_table( &SymTables[TAB_UNDEF], (struct dsym *)sym2 );
 
 	mov	rdx, rax
 	lea	rcx, OFFSET FLAT:SymTables
@@ -1499,13 +1500,13 @@ $LN10@AliasDirec:
 	call	sym_add_table
 $LN13@AliasDirec:
 
-; 351  :         }
-; 352  :         if ( sym == NULL )
+; 352  :         }
+; 353  :         if ( sym == NULL )
 
 	test	rbx, rbx
 	jne	SHORT $LN14@AliasDirec
 
-; 353  :             sym = SymCreate( tokenarray[i].string_ptr );
+; 354  :             sym = SymCreate( tokenarray[i].string_ptr );
 
 	mov	rcx, QWORD PTR [rbp+8]
 	call	SymCreate
@@ -1515,10 +1516,10 @@ $LN11@AliasDirec:
 	cmp	DWORD PTR [rax+32], 2
 	jbe	SHORT $LN13@AliasDirec
 
-; 347  :         } else if ( sym2->state != SYM_UNDEFINED &&
-; 348  :                    sym2->state != SYM_INTERNAL &&
-; 349  :                    sym2->state != SYM_EXTERNAL ) {
-; 350  :             return( EmitErr( MUST_BE_PUBLIC_OR_EXTERNAL, subst ) );
+; 348  :         } else if ( sym2->state != SYM_UNDEFINED &&
+; 349  :                    sym2->state != SYM_INTERNAL &&
+; 350  :                    sym2->state != SYM_EXTERNAL ) {
+; 351  :             return( EmitErr( MUST_BE_PUBLIC_OR_EXTERNAL, subst ) );
 
 	mov	rdx, rsi
 	mov	ecx, 268				; 0000010cH
@@ -1528,30 +1529,30 @@ $LN32@AliasDirec:
 	mov	rbx, QWORD PTR [rsp+48]
 	mov	rsi, QWORD PTR [rsp+56]
 
-; 387  : }
+; 388  : }
 
 	add	rsp, 32					; 00000020H
 	pop	rbp
 	ret	0
 $LN14@AliasDirec:
 
-; 354  :         else
-; 355  :             sym_remove_table( &SymTables[TAB_UNDEF], (struct dsym *)sym );
+; 355  :         else
+; 356  :             sym_remove_table( &SymTables[TAB_UNDEF], (struct dsym *)sym );
 
 	mov	rdx, rbx
 	lea	rcx, OFFSET FLAT:SymTables
 	call	sym_remove_table
 $LN15@AliasDirec:
 
-; 356  : 
-; 357  :         sym->state = SYM_ALIAS;
+; 357  : 
+; 358  :         sym->state = SYM_ALIAS;
 
 	mov	DWORD PTR [rbx+32], 8
 
-; 358  :         sym->substitute = sym2;
-; 359  :         /* v2.10: copy language type of alias */
-; 360  :         sym->langtype = sym2->langtype;
-; 361  :         sym_add_table( &SymTables[TAB_ALIAS], (struct dsym *)sym ); /* add ALIAS */
+; 359  :         sym->substitute = sym2;
+; 360  :         /* v2.10: copy language type of alias */
+; 361  :         sym->langtype = sym2->langtype;
+; 362  :         sym_add_table( &SymTables[TAB_ALIAS], (struct dsym *)sym ); /* add ALIAS */
 
 	lea	rcx, OFFSET FLAT:SymTables+80
 	mov	QWORD PTR [rbx+16], rdi
@@ -1560,47 +1561,47 @@ $LN15@AliasDirec:
 	mov	DWORD PTR [rbx+76], eax
 	call	sym_add_table
 
-; 362  :         return( NOT_ERROR );
+; 363  :         return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	SHORT $LN32@AliasDirec
 $LN7@AliasDirec:
 
-; 327  :         tokenarray[i+2].string_delim != '<' )  {
-; 328  :         DebugMsg(("AliasDirective: second argument is not a literal: %s\n", tokenarray[i+2].string_ptr ));
-; 329  :         return( EmitError( TEXT_ITEM_REQUIRED ) );
+; 328  :         tokenarray[i+2].string_delim != '<' )  {
+; 329  :         DebugMsg(("AliasDirective: second argument is not a literal: %s\n", tokenarray[i+2].string_ptr ));
+; 330  :         return( EmitError( TEXT_ITEM_REQUIRED ) );
 
 	mov	ecx, 144				; 00000090H
 
-; 387  : }
+; 388  : }
 
 	add	rsp, 32					; 00000020H
 	pop	rbp
 
-; 327  :         tokenarray[i+2].string_delim != '<' )  {
-; 328  :         DebugMsg(("AliasDirective: second argument is not a literal: %s\n", tokenarray[i+2].string_ptr ));
-; 329  :         return( EmitError( TEXT_ITEM_REQUIRED ) );
+; 328  :         tokenarray[i+2].string_delim != '<' )  {
+; 329  :         DebugMsg(("AliasDirective: second argument is not a literal: %s\n", tokenarray[i+2].string_ptr ));
+; 330  :         return( EmitError( TEXT_ITEM_REQUIRED ) );
 
 	jmp	EmitError
 $LN5@AliasDirec:
 
-; 320  :         //tokenarray[i+1].tokval != T_EQU ||
-; 321  :         tokenarray[i+1].dirtype != DRT_EQUALSGN ) {
-; 322  :         DebugMsg(("AliasDirective: syntax error: %s\n", tokenarray[i+1].string_ptr ));
-; 323  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i+1].string_ptr ) );
+; 321  :         //tokenarray[i+1].tokval != T_EQU ||
+; 322  :         tokenarray[i+1].dirtype != DRT_EQUALSGN ) {
+; 323  :         DebugMsg(("AliasDirective: syntax error: %s\n", tokenarray[i+1].string_ptr ));
+; 324  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i+1].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rcx+rdx+8]
 	mov	ecx, 209				; 000000d1H
 
-; 387  : }
+; 388  : }
 
 	add	rsp, 32					; 00000020H
 	pop	rbp
 
-; 320  :         //tokenarray[i+1].tokval != T_EQU ||
-; 321  :         tokenarray[i+1].dirtype != DRT_EQUALSGN ) {
-; 322  :         DebugMsg(("AliasDirective: syntax error: %s\n", tokenarray[i+1].string_ptr ));
-; 323  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i+1].string_ptr ) );
+; 321  :         //tokenarray[i+1].tokval != T_EQU ||
+; 322  :         tokenarray[i+1].dirtype != DRT_EQUALSGN ) {
+; 323  :         DebugMsg(("AliasDirective: syntax error: %s\n", tokenarray[i+1].string_ptr ));
+; 324  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i+1].string_ptr ) );
 
 	jmp	EmitErr
 AliasDirective ENDP
@@ -1613,29 +1614,29 @@ i$ = 176
 tokenarray$ = 184
 RadixDirective PROC
 
-; 436  : {
+; 437  : {
 
 $LN10:
 	mov	QWORD PTR [rsp+16], rbx
 	push	rdi
 	sub	rsp, 160				; 000000a0H
 
-; 437  :     uint_8          oldradix;
-; 438  :     struct expr     opndx;
-; 439  : 
-; 440  :     /* to get the .radix parameter, enforce radix 10 and retokenize! */
-; 441  :     oldradix = ModuleInfo.radix;
+; 438  :     uint_8          oldradix;
+; 439  :     struct expr     opndx;
+; 440  : 
+; 441  :     /* to get the .radix parameter, enforce radix 10 and retokenize! */
+; 442  :     oldradix = ModuleInfo.radix;
 
 	movzx	ebx, BYTE PTR ModuleInfo+396
 	mov	rdi, rdx
 
-; 442  :     ModuleInfo.radix = 10;
-; 443  :     i++; /* skip directive token */
+; 443  :     ModuleInfo.radix = 10;
+; 444  :     i++; /* skip directive token */
 
 	lea	edx, DWORD PTR [rcx+1]
 	mov	BYTE PTR ModuleInfo+396, 10
 
-; 444  :     Tokenize( tokenarray[i].tokpos, i, tokenarray, TOK_RESCAN );
+; 445  :     Tokenize( tokenarray[i].tokpos, i, tokenarray, TOK_RESCAN );
 
 	movsxd	rcx, edx
 	mov	r9d, 1
@@ -1645,9 +1646,9 @@ $LN10:
 	mov	rcx, QWORD PTR [rcx+rdi+24]
 	call	Tokenize
 
-; 445  :     ModuleInfo.radix = oldradix;
-; 446  :     /* v2.11: flag NOUNDEF added - no forward ref possible */
-; 447  :     if ( EvalOperand( &i, tokenarray, Token_Count, &opndx, EXPF_NOUNDEF ) == ERROR ) {
+; 446  :     ModuleInfo.radix = oldradix;
+; 447  :     /* v2.11: flag NOUNDEF added - no forward ref possible */
+; 448  :     if ( EvalOperand( &i, tokenarray, Token_Count, &opndx, EXPF_NOUNDEF ) == ERROR ) {
 
 	mov	r8d, DWORD PTR ModuleInfo+496
 	lea	r9, QWORD PTR opndx$[rsp]
@@ -1659,11 +1660,11 @@ $LN10:
 	cmp	eax, -1
 	jne	SHORT $LN2@RadixDirec
 
-; 448  :         return( ERROR );
+; 449  :         return( ERROR );
 
 	or	eax, eax
 
-; 465  : }
+; 466  : }
 
 	mov	rbx, QWORD PTR [rsp+184]
 	add	rsp, 160				; 000000a0H
@@ -1671,34 +1672,34 @@ $LN10:
 	ret	0
 $LN2@RadixDirec:
 
-; 449  :     }
-; 450  : 
-; 451  :     if ( opndx.kind != EXPR_CONST ) {
+; 450  :     }
+; 451  : 
+; 452  :     if ( opndx.kind != EXPR_CONST ) {
 
 	cmp	DWORD PTR opndx$[rsp+60], 0
 	je	SHORT $LN3@RadixDirec
 
-; 452  :         return( EmitError( CONSTANT_EXPECTED ) );
+; 453  :         return( EmitError( CONSTANT_EXPECTED ) );
 
 	mov	ecx, 65					; 00000041H
 	jmp	SHORT $LN8@RadixDirec
 $LN3@RadixDirec:
 
-; 453  :     }
-; 454  :     if ( tokenarray[i].token != T_FINAL ) {
+; 454  :     }
+; 455  :     if ( tokenarray[i].token != T_FINAL ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	shl	rax, 5
 	cmp	BYTE PTR [rax+rdi], 0
 	je	SHORT $LN4@RadixDirec
 
-; 455  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
+; 456  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	mov	rdx, QWORD PTR [rax+rdi+24]
 	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
-; 465  : }
+; 466  : }
 
 	mov	rbx, QWORD PTR [rsp+184]
 	add	rsp, 160				; 000000a0H
@@ -1706,8 +1707,8 @@ $LN3@RadixDirec:
 	ret	0
 $LN4@RadixDirec:
 
-; 456  :     }
-; 457  :     if ( opndx.value > 16 || opndx.value < 2 || opndx.hvalue != 0 ) {
+; 457  :     }
+; 458  :     if ( opndx.value > 16 || opndx.value < 2 || opndx.hvalue != 0 ) {
 
 	mov	ecx, DWORD PTR opndx$[rsp]
 	lea	eax, DWORD PTR [rcx-2]
@@ -1716,19 +1717,19 @@ $LN4@RadixDirec:
 	cmp	DWORD PTR opndx$[rsp+4], 0
 	jne	SHORT $LN6@RadixDirec
 
-; 459  :     }
-; 460  : 
-; 461  :     ModuleInfo.radix = opndx.value;
+; 460  :     }
+; 461  : 
+; 462  :     ModuleInfo.radix = opndx.value;
 
 	mov	BYTE PTR ModuleInfo+396, cl
 
-; 462  :     DebugMsg(("RadixDirective: new radix=%u\n", ModuleInfo.radix ));
-; 463  : 
-; 464  :     return( NOT_ERROR );
+; 463  :     DebugMsg(("RadixDirective: new radix=%u\n", ModuleInfo.radix ));
+; 464  : 
+; 465  :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 465  : }
+; 466  : }
 
 	mov	rbx, QWORD PTR [rsp+184]
 	add	rsp, 160				; 000000a0H
@@ -1736,13 +1737,13 @@ $LN4@RadixDirec:
 	ret	0
 $LN6@RadixDirec:
 
-; 458  :         return( EmitError( INVALID_RADIX_TAG ) );
+; 459  :         return( EmitError( INVALID_RADIX_TAG ) );
 
 	mov	ecx, 181				; 000000b5H
 $LN8@RadixDirec:
 	call	EmitError
 
-; 465  : }
+; 466  : }
 
 	mov	rbx, QWORD PTR [rsp+184]
 	add	rsp, 160				; 000000a0H
@@ -1757,13 +1758,13 @@ i$ = 48
 tokenarray$ = 56
 SegOrderDirective PROC
 
-; 471  : {
+; 472  : {
 
 $LN10:
 	sub	rsp, 40					; 00000028H
 	mov	r8, rdx
 
-; 472  :     if ( tokenarray[i+1].token != T_FINAL ) {
+; 473  :     if ( tokenarray[i+1].token != T_FINAL ) {
 
 	movsxd	rcx, ecx
 	lea	rdx, QWORD PTR [rcx+1]
@@ -1771,16 +1772,16 @@ $LN10:
 	cmp	BYTE PTR [rdx+r8], 0
 	je	SHORT $LN2@SegOrderDi
 
-; 473  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i+1].tokpos ) );
+; 474  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i+1].tokpos ) );
 
 	mov	rdx, QWORD PTR [rdx+r8+24]
 	mov	ecx, 209				; 000000d1H
 
-; 491  : }
+; 492  : }
 
 	add	rsp, 40					; 00000028H
 
-; 473  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i+1].tokpos ) );
+; 474  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i+1].tokpos ) );
 
 	jmp	EmitErr
 $LN2@SegOrderDi:
@@ -1789,14 +1790,14 @@ $LN2@SegOrderDi:
 	cmp	eax, 1
 	jbe	SHORT $LN5@SegOrderDi
 
-; 474  :     }
-; 475  : #if COFF_SUPPORT || ELF_SUPPORT || PE_SUPPORT
-; 476  :     if ( Options.output_format == OFORMAT_COFF
-; 477  : #if ELF_SUPPORT
-; 478  :         || Options.output_format == OFORMAT_ELF
-; 479  : #endif
-; 480  : #if PE_SUPPORT
-; 481  :         || ( Options.output_format == OFORMAT_BIN && ModuleInfo.sub_format == SFORMAT_PE )
+; 475  :     }
+; 476  : #if COFF_SUPPORT || ELF_SUPPORT || PE_SUPPORT
+; 477  :     if ( Options.output_format == OFORMAT_COFF
+; 478  : #if ELF_SUPPORT
+; 479  :         || Options.output_format == OFORMAT_ELF
+; 480  : #endif
+; 481  : #if PE_SUPPORT
+; 482  :         || ( Options.output_format == OFORMAT_BIN && ModuleInfo.sub_format == SFORMAT_PE )
 
 	test	edx, edx
 	jne	SHORT $LN3@SegOrderDi
@@ -1804,9 +1805,9 @@ $LN2@SegOrderDi:
 	je	SHORT $LN5@SegOrderDi
 $LN3@SegOrderDi:
 
-; 486  :     } else
-; 487  : #endif
-; 488  :         ModuleInfo.segorder = GetSflagsSp( tokenarray[i].tokval );
+; 487  :     } else
+; 488  : #endif
+; 489  :         ModuleInfo.segorder = GetSflagsSp( tokenarray[i].tokval );
 
 	shl	rcx, 5
 	mov	eax, DWORD PTR [rcx+r8+16]
@@ -1815,25 +1816,25 @@ $LN3@SegOrderDi:
 	mov	eax, DWORD PTR [rax+rcx*4]
 	mov	DWORD PTR ModuleInfo+380, eax
 
-; 489  : 
-; 490  :     return( NOT_ERROR );
+; 490  : 
+; 491  :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 491  : }
+; 492  : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
 $LN5@SegOrderDi:
 
-; 482  : #endif
-; 483  :        ) {
-; 484  :         if ( Parse_Pass == PASS_1 )
+; 483  : #endif
+; 484  :        ) {
+; 485  :         if ( Parse_Pass == PASS_1 )
 
 	cmp	DWORD PTR Parse_Pass, 0
 	jne	SHORT $LN6@SegOrderDi
 
-; 485  :             EmitWarn( 2, NOT_SUPPORTED_WITH_CURR_FORMAT, _strupr( tokenarray[i].string_ptr ) );
+; 486  :             EmitWarn( 2, NOT_SUPPORTED_WITH_CURR_FORMAT, _strupr( tokenarray[i].string_ptr ) );
 
 	shl	rcx, 5
 	mov	rcx, QWORD PTR [rcx+r8+8]
@@ -1844,12 +1845,12 @@ $LN5@SegOrderDi:
 	call	EmitWarn
 $LN6@SegOrderDi:
 
-; 489  : 
-; 490  :     return( NOT_ERROR );
+; 490  : 
+; 491  :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 491  : }
+; 492  : }
 
 	add	rsp, 40					; 00000028H
 	ret	0

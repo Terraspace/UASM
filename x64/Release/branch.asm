@@ -10,7 +10,7 @@ COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG10729 DB	01H DUP (?)
+$SG10734 DB	01H DUP (?)
 _BSS	ENDS
 PUBLIC	process_branch
 EXTRN	EmitError:PROC
@@ -32,7 +32,7 @@ EXTRN	__ImageBase:BYTE
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$jumpExtend DD imagerel jumpExtend
-	DD	imagerel jumpExtend+172
+	DD	imagerel jumpExtend+171
 	DD	imagerel $unwind$jumpExtend
 pdata	ENDS
 ;	COMDAT pdata
@@ -46,10 +46,10 @@ $pdata$process_branch DD imagerel $LN167
 	DD	imagerel $LN167+242
 	DD	imagerel $unwind$process_branch
 $pdata$4$process_branch DD imagerel $LN167+242
-	DD	imagerel $LN167+2130
+	DD	imagerel $LN167+2116
 	DD	imagerel $chain$4$process_branch
-$pdata$5$process_branch DD imagerel $LN167+2130
-	DD	imagerel $LN167+2149
+$pdata$5$process_branch DD imagerel $LN167+2116
+	DD	imagerel $LN167+2135
 	DD	imagerel $chain$5$process_branch
 pdata	ENDS
 xdata	SEGMENT
@@ -461,16 +461,14 @@ $LN42@process_br:
 	add	ebp, DWORD PTR [rbx+40]
 	test	r8b, r8b
 	je	SHORT $LN46@process_br
-	lea	rcx, QWORD PTR [r13*4]
-	add	rcx, r13
-	cmp	BYTE PTR InstrTable[rdx+rcx*2+1], 3
+	imul	rcx, r13, 14
+	cmp	BYTE PTR InstrTable[rcx+rdx+1], 3
 	je	SHORT $LN45@process_br
 $LN46@process_br:
 	cmp	r8b, dil
 	je	SHORT $LN44@process_br
-	lea	rcx, QWORD PTR [r13*4]
-	add	rcx, r13
-	cmp	BYTE PTR InstrTable[rdx+rcx*2+1], 4
+	imul	rcx, r13, 14
+	cmp	BYTE PTR InstrTable[rcx+rdx+1], 4
 	jne	SHORT $LN44@process_br
 $LN45@process_br:
 
@@ -1759,7 +1757,7 @@ $LN4@jumpExtend:
 ; 101  :     OutputCodeByte( CodeInfo->pinstr->opcode ^ 1 );
 
 	mov	rax, QWORD PTR [rdi+16]
-	movzx	ecx, BYTE PTR [rax+8]
+	movzx	ecx, BYTE PTR [rax+12]
 	xor	cl, 1
 	call	OutputByte
 
@@ -1777,10 +1775,10 @@ $LN4@jumpExtend:
 	mov	rbx, QWORD PTR [rsp+48]
 	mov	DWORD PTR [rdi+24], 451			; 000001c3H
 	movzx	eax, WORD PTR optable_idx+2
-	lea	rcx, QWORD PTR [rax+rax*4]
+	imul	rcx, rax, 14
 	lea	rax, OFFSET FLAT:InstrTable
-	lea	rax, QWORD PTR [rax+rcx*2]
-	mov	QWORD PTR [rdi+16], rax
+	add	rcx, rax
+	mov	QWORD PTR [rdi+16], rcx
 	add	rsp, 32					; 00000020H
 	pop	rdi
 	ret	0

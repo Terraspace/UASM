@@ -1,0 +1,22 @@
+
+;--- externals for operatr2.asz
+
+	.286
+	.model small,stdcall
+
+	.code
+
+	public e1,e2,e3,e4,e5,e6
+
+PP	typedef ptr ptr byte
+
+e1  byte 1
+e2  word 2
+e3  PP 0
+e4  label near
+e5  label far
+
+e6  proc a1:dword
+e6  endp
+
+	END
