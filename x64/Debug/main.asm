@@ -10,17 +10,17 @@ COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG8041	DB	01H DUP (?)
+$SG8046	DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG8039	DB	'HJWASM', 00H
+$SG8044	DB	'HJWASM', 00H
 	ORG $+1
-$SG8043	DB	'main: _findfirst(%s) failed', 0aH, 00H
+$SG8048	DB	'main: _findfirst(%s) failed', 0aH, 00H
 	ORG $+3
-$SG8044	DB	'main: fname=%s', 0aH, 00H
-$SG8047	DB	'%s', 00H
+$SG8049	DB	'main: fname=%s', 0aH, 00H
+$SG8052	DB	'%s', 00H
 	ORG $+5
-$SG8049	DB	'main: exit, return code=%u', 0aH, 00H
+$SG8054	DB	'main: exit, return code=%u', 0aH, 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	_vfprintf_l
@@ -248,7 +248,7 @@ $LN13:
 ; 94   : 
 ; 95   : 	pEnv = getenv("HJWASM");
 
-	lea	rcx, OFFSET FLAT:$SG8039
+	lea	rcx, OFFSET FLAT:$SG8044
 	call	QWORD PTR __imp_getenv
 	mov	QWORD PTR pEnv$[rsp], rax
 
@@ -259,7 +259,7 @@ $LN13:
 
 ; 97   : 		pEnv = "";
 
-	lea	rax, OFFSET FLAT:$SG8041
+	lea	rax, OFFSET FLAT:$SG8046
 	mov	QWORD PTR pEnv$[rsp], rax
 $LN7@main:
 
@@ -325,7 +325,7 @@ $LN2@main:
 	imul	rax, rax, 0
 	lea	rcx, OFFSET FLAT:Options+32
 	mov	rdx, QWORD PTR [rcx+rax]
-	lea	rcx, OFFSET FLAT:$SG8043
+	lea	rcx, OFFSET FLAT:$SG8048
 	call	DoDebugMsg
 
 ; 116  : 			EmitErr(CANNOT_OPEN_FILE, Options.names[ASM], ErrnoStr());
@@ -395,7 +395,7 @@ $LN6@main:
 ; 130  : 				DebugMsg(("main: fname=%s\n", fname));
 
 	lea	rdx, QWORD PTR fname$[rsp]
-	lea	rcx, OFFSET FLAT:$SG8044
+	lea	rcx, OFFSET FLAT:$SG8049
 	call	DoDebugMsg
 
 ; 131  : 				rc = AssembleModule(fname);  /* assemble 1 module */
@@ -445,7 +445,7 @@ $LN3@main:
 	xor	ecx, ecx
 	call	MsgGetEx
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG8047
+	lea	rcx, OFFSET FLAT:$SG8052
 	call	printf
 
 ; 142  : 	}
@@ -475,7 +475,7 @@ $LN10@main:
 	mov	eax, 1
 	sub	eax, DWORD PTR rc$[rsp]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG8049
+	lea	rcx, OFFSET FLAT:$SG8054
 	call	DoDebugMsg
 
 ; 151  : 	return(1 - rc); /* zero if no errors */

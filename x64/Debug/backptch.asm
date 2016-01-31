@@ -10,46 +10,46 @@ COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10413 DB	'NULL', 00H
-	ORG $+3
-$SG10414 DB	'NULL', 00H
-	ORG $+3
-$SG10415 DB	'DoPatch(%u, %s): fixup sym=%s type=%u ofs=%Xh loc=%Xh op'
-	DB	't=%u def_seg=%s', 0aH, 00H
-	ORG $+3
 $SG10418 DB	'NULL', 00H
 	ORG $+3
 $SG10419 DB	'NULL', 00H
+	ORG $+3
+$SG10420 DB	'DoPatch(%u, %s): fixup sym=%s type=%u ofs=%Xh loc=%Xh op'
+	DB	't=%u def_seg=%s', 0aH, 00H
+	ORG $+3
+$SG10423 DB	'NULL', 00H
+	ORG $+3
+$SG10424 DB	'NULL', 00H
 	ORG $+7
-$SG10420 DB	'DoPatch: skipped due to seg incompat: %s - %s', 0aH, 00H
+$SG10425 DB	'DoPatch: skipped due to seg incompat: %s - %s', 0aH, 00H
 	ORG $+1
-$SG10424 DB	'DoPatch: Phase error! caused by far call optimization', 0aH
+$SG10429 DB	'DoPatch: Phase error! caused by far call optimization', 0aH
 	DB	00H
 	ORG $+1
-$SG10426 DB	'DoPatch: FIX_RELOFF32/FIX_RELOFF16, return', 0aH, 00H
+$SG10431 DB	'DoPatch: FIX_RELOFF32/FIX_RELOFF16, return', 0aH, 00H
 	ORG $+4
-$SG10429 DB	'DoPatch: FIX_OFF8', 0aH, 00H
+$SG10434 DB	'DoPatch: FIX_OFF8', 0aH, 00H
 	ORG $+5
-$SG10436 DB	'DoPatch(%u): Phase error, disp=%X, fixup=%s(%X), loc=%X!'
+$SG10441 DB	'DoPatch(%u): Phase error, disp=%X, fixup=%s(%X), loc=%X!'
 	DB	0aH, 00H
 	ORG $+6
-$SG10445 DB	'DoPatch: ORG/ALIGN detected, optimization canceled', 0aH
+$SG10450 DB	'DoPatch: ORG/ALIGN detected, optimization canceled', 0aH
 	DB	00H
 	ORG $+4
-$SG10448 DB	'DoPatch(loc=%X): sym %s, offset changed %X -> %X', 0aH, 00H
+$SG10453 DB	'DoPatch(loc=%X): sym %s, offset changed %X -> %X', 0aH, 00H
 	ORG $+6
-$SG10452 DB	'for sym=%s fixup loc %X changed to %X', 0aH, 00H
+$SG10457 DB	'for sym=%s fixup loc %X changed to %X', 0aH, 00H
 	ORG $+1
-$SG10454 DB	'DoPatch: jump out of range, disp=%d', 0aH, 00H
+$SG10459 DB	'DoPatch: jump out of range, disp=%d', 0aH, 00H
 	ORG $+3
-$SG10455 DB	'DoPatch, loc=%X: displacement still short: %Xh', 0aH, 00H
-$SG10457 DB	'DoPatch: default branch, unhandled fixup type=%u', 0aH, 00H
+$SG10460 DB	'DoPatch, loc=%X: displacement still short: %Xh', 0aH, 00H
+$SG10462 DB	'DoPatch: default branch, unhandled fixup type=%u', 0aH, 00H
 	ORG $+2
-$SG10468 DB	'!NULL!', 00H
+$SG10473 DB	'!NULL!', 00H
 	ORG $+5
-$SG10469 DB	'BackPatch(%s): location=%s:%X, bp_fixup=%p', 0aH, 00H
+$SG10474 DB	'BackPatch(%s): location=%s:%X, bp_fixup=%p', 0aH, 00H
 	ORG $+4
-$SG10471 DB	'BackPatch(%s) exit, new ofs=%X', 0aH, 00H
+$SG10476 DB	'BackPatch(%s) exit, new ofs=%X', 0aH, 00H
 _DATA	ENDS
 PUBLIC	BackPatch
 EXTRN	DoDebugMsg:PROC
@@ -164,7 +164,7 @@ DoPatch	PROC
 	mov	QWORD PTR tv68[rsp], rax
 	jmp	SHORT $LN53@DoPatch
 $LN52@DoPatch:
-	lea	rax, OFFSET FLAT:$SG10413
+	lea	rax, OFFSET FLAT:$SG10418
 	mov	QWORD PTR tv68[rsp], rax
 $LN53@DoPatch:
 	mov	rax, QWORD PTR fixup$[rsp]
@@ -176,7 +176,7 @@ $LN53@DoPatch:
 	mov	QWORD PTR tv82[rsp], rax
 	jmp	SHORT $LN55@DoPatch
 $LN54@DoPatch:
-	lea	rax, OFFSET FLAT:$SG10414
+	lea	rax, OFFSET FLAT:$SG10419
 	mov	QWORD PTR tv82[rsp], rax
 $LN55@DoPatch:
 	mov	eax, DWORD PTR Parse_Pass
@@ -199,7 +199,7 @@ $LN55@DoPatch:
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	r8, QWORD PTR [rcx+8]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG10415
+	lea	rcx, OFFSET FLAT:$SG10420
 	call	DoDebugMsg
 
 ; 69   :               Parse_Pass + 1, sym->name,
@@ -237,7 +237,7 @@ $LN23@DoPatch:
 	mov	QWORD PTR tv95[rsp], rax
 	jmp	SHORT $LN57@DoPatch
 $LN56@DoPatch:
-	lea	rax, OFFSET FLAT:$SG10418
+	lea	rax, OFFSET FLAT:$SG10423
 	mov	QWORD PTR tv95[rsp], rax
 $LN57@DoPatch:
 	mov	rax, QWORD PTR fixup$[rsp]
@@ -249,12 +249,12 @@ $LN57@DoPatch:
 	mov	QWORD PTR tv133[rsp], rax
 	jmp	SHORT $LN59@DoPatch
 $LN58@DoPatch:
-	lea	rax, OFFSET FLAT:$SG10419
+	lea	rax, OFFSET FLAT:$SG10424
 	mov	QWORD PTR tv133[rsp], rax
 $LN59@DoPatch:
 	mov	r8, QWORD PTR tv95[rsp]
 	mov	rdx, QWORD PTR tv133[rsp]
-	lea	rcx, OFFSET FLAT:$SG10420
+	lea	rcx, OFFSET FLAT:$SG10425
 	call	DoDebugMsg
 
 ; 82   :                   fixup->def_seg ? fixup->def_seg->sym.name : "NULL",
@@ -285,7 +285,7 @@ $LN22@DoPatch:
 ; 91   :              * (only at first pass) */
 ; 92   :             DebugMsg(("DoPatch: Phase error! caused by far call optimization\n"));
 
-	lea	rcx, OFFSET FLAT:$SG10424
+	lea	rcx, OFFSET FLAT:$SG10429
 	call	DoDebugMsg
 
 ; 93   :             ModuleInfo.PhaseError = TRUE;
@@ -345,7 +345,7 @@ $LN27@DoPatch:
 
 ; 106  :                 DebugMsg(("DoPatch: FIX_RELOFF32/FIX_RELOFF16, return\n"));
 
-	lea	rcx, OFFSET FLAT:$SG10426
+	lea	rcx, OFFSET FLAT:$SG10431
 	call	DoDebugMsg
 
 ; 107  :                 return;
@@ -366,7 +366,7 @@ $LN28@DoPatch:
 
 ; 111  :                     DebugMsg(("DoPatch: FIX_OFF8\n"));
 
-	lea	rcx, OFFSET FLAT:$SG10429
+	lea	rcx, OFFSET FLAT:$SG10434
 	call	DoDebugMsg
 
 ; 112  :                     goto patch;
@@ -506,7 +506,7 @@ $LN64@DoPatch:
 	mov	DWORD PTR [rsp+32], eax
 	mov	r9, QWORD PTR [rcx+8]
 	mov	r8d, DWORD PTR disp$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10436
+	lea	rcx, OFFSET FLAT:$SG10441
 	call	DoDebugMsg
 
 ; 134  :             ModuleInfo.PhaseError = TRUE;
@@ -635,7 +635,7 @@ $LN12@DoPatch:
 
 ; 166  :                                 DebugMsg(("DoPatch: ORG/ALIGN detected, optimization canceled\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG10445
+	lea	rcx, OFFSET FLAT:$SG10450
 	call	DoDebugMsg
 
 ; 167  :                                 return;
@@ -726,7 +726,7 @@ $LN45@DoPatch:
 	mov	r8, QWORD PTR [rax+8]
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	edx, DWORD PTR [rax+20]
-	lea	rcx, OFFSET FLAT:$SG10448
+	lea	rcx, OFFSET FLAT:$SG10453
 	call	DoDebugMsg
 
 ; 190  :                     }
@@ -803,7 +803,7 @@ $LN48@DoPatch:
 	mov	r9d, DWORD PTR [rdx+20]
 	mov	r8d, eax
 	mov	rdx, QWORD PTR [rcx+8]
-	lea	rcx, OFFSET FLAT:$SG10452
+	lea	rcx, OFFSET FLAT:$SG10457
 	call	DoDebugMsg
 
 ; 203  :                     }
@@ -852,7 +852,7 @@ $LN49@DoPatch:
 	call	_RTC_UninitUse
 $LN65@DoPatch:
 	mov	edx, DWORD PTR disp$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10454
+	lea	rcx, OFFSET FLAT:$SG10459
 	call	DoDebugMsg
 
 ; 217  :                 EmitWarn( 4, JUMP_OUT_OF_RANGE, disp - max_disp );
@@ -896,7 +896,7 @@ $LN68@DoPatch:
 	mov	r8d, DWORD PTR disp$[rsp]
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	edx, DWORD PTR [rax+20]
-	lea	rcx, OFFSET FLAT:$SG10455
+	lea	rcx, OFFSET FLAT:$SG10460
 	call	DoDebugMsg
 $LN34@DoPatch:
 
@@ -919,7 +919,7 @@ $LN50@DoPatch:
 
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	edx, DWORD PTR [rax+24]
-	lea	rcx, OFFSET FLAT:$SG10457
+	lea	rcx, OFFSET FLAT:$SG10462
 	call	DoDebugMsg
 $LN4@DoPatch:
 $LN1@DoPatch:
@@ -979,7 +979,7 @@ $LN9:
 	mov	QWORD PTR tv73[rsp], rax
 	jmp	SHORT $LN8@BackPatch
 $LN7@BackPatch:
-	lea	rax, OFFSET FLAT:$SG10468
+	lea	rax, OFFSET FLAT:$SG10473
 	mov	QWORD PTR tv73[rsp], rax
 $LN8@BackPatch:
 	mov	rax, QWORD PTR sym$[rsp]
@@ -990,7 +990,7 @@ $LN8@BackPatch:
 	mov	r8, QWORD PTR tv73[rsp]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10469
+	lea	rcx, OFFSET FLAT:$SG10474
 	call	DoDebugMsg1
 
 ; 257  : 
@@ -1048,7 +1048,7 @@ $LN3@BackPatch:
 	mov	r8d, DWORD PTR [rax+16]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10471
+	lea	rcx, OFFSET FLAT:$SG10476
 	call	DoDebugMsg1
 $LN5@BackPatch:
 

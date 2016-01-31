@@ -21,178 +21,178 @@ _BSS	SEGMENT
 szDate	DB	0cH DUP (?)
 szTime	DB	0cH DUP (?)
 symPC	DQ	01H DUP (?)
-$SG11020 DB	01H DUP (?)
+$SG11025 DB	01H DUP (?)
 	ALIGN	4
 
-$SG11085 DB	01H DUP (?)
+$SG11090 DB	01H DUP (?)
 _BSS	ENDS
 CONST	SEGMENT
-tmtab	DQ	FLAT:$SG11013
-	DQ	FLAT:$SG11014
+tmtab	DQ	FLAT:$SG11018
+	DQ	FLAT:$SG11019
 	DQ	0000000000000000H
-	DQ	FLAT:$SG11015
+	DQ	FLAT:$SG11020
 	DQ	FLAT:szDate
 	DQ	0000000000000000H
-	DQ	FLAT:$SG11016
+	DQ	FLAT:$SG11021
 	DQ	FLAT:szTime
 	DQ	0000000000000000H
-	DQ	FLAT:$SG11017
+	DQ	FLAT:$SG11022
 	DQ	FLAT:ModuleInfo+512
 	DQ	0000000000000000H
-	DQ	FLAT:$SG11018
+	DQ	FLAT:$SG11023
 	DQ	0000000000000000H
 	DQ	FLAT:FileCur
-	DQ	FLAT:$SG11019
-	DQ	FLAT:$SG11020
+	DQ	FLAT:$SG11024
+	DQ	FLAT:$SG11025
 	DQ	FLAT:symCurSeg
-eqtab	DQ	FLAT:$SG11034
+eqtab	DQ	FLAT:$SG11039
 	DD	0d5H
 	ORG $+4
 	DQ	0000000000000000H
 	DQ	0000000000000000H
-	DQ	FLAT:$SG11035
+	DQ	FLAT:$SG11040
 	DD	0d4H
 	ORG $+4
 	DQ	0000000000000000H
 	DQ	0000000000000000H
-	DQ	FLAT:$SG11036
+	DQ	FLAT:$SG11041
 	DD	00H
 	ORG $+4
 	DQ	FLAT:UpdateCurPC
 	DQ	FLAT:symPC
-	DQ	FLAT:$SG11037
+	DQ	FLAT:$SG11042
 	DD	00H
 	ORG $+4
 	DQ	FLAT:UpdateLineNumber
 	DQ	FLAT:LineCur
-	DQ	FLAT:$SG11038
+	DQ	FLAT:$SG11043
 	DD	00H
 	ORG $+4
 	DQ	FLAT:UpdateWordSize
 	DQ	0000000000000000H
 CONST	ENDS
 _DATA	SEGMENT
-$SG11296 DB	'Undefined', 00H
+$SG11301 DB	'Undefined', 00H
 	ORG $+6
-$SG11300 DB	'Procedure', 00H
+$SG11305 DB	'Procedure', 00H
 	ORG $+2
-$SG11303 DB	'Number', 00H
+$SG11308 DB	'Number', 00H
 	ORG $+1
-$SG11014 DB	'800', 00H
-$SG11307 DB	'Code Label', 00H
+$SG11019 DB	'800', 00H
+$SG11312 DB	'Code Label', 00H
 	ORG $+1
-$SG11036 DB	'$', 00H
+$SG11041 DB	'$', 00H
 	ORG $+2
-$SG11308 DB	'Data Label', 00H
+$SG11313 DB	'Data Label', 00H
 	ORG $+1
-$SG11312 DB	'Proto', 00H
+$SG11317 DB	'Proto', 00H
 	ORG $+2
-$SG11340 DB	'Record', 00H
+$SG11345 DB	'Record', 00H
 	ORG $+1
-$SG11219 DB	0aH, 00H
+$SG11224 DB	0aH, 00H
 	ORG $+2
-$SG11315 DB	'Communal', 00H
+$SG11320 DB	'Communal', 00H
 	ORG $+3
-$SG11327 DB	'Group', 00H
+$SG11332 DB	'Group', 00H
 	ORG $+2
-$SG11218 DB	'%-16s ', 00H
+$SG11223 DB	'%-16s ', 00H
 	ORG $+5
-$SG11318 DB	'Number (ext)', 00H
+$SG11323 DB	'Number (ext)', 00H
 	ORG $+3
-$SG11322 DB	'Code (ext)', 00H
+$SG11327 DB	'Code (ext)', 00H
 	ORG $+5
-$SG11323 DB	'Data (ext)', 00H
+$SG11328 DB	'Data (ext)', 00H
 	ORG $+5
-$SG11325 DB	'Segment', 00H
-$SG11329 DB	'Stack Var', 00H
+$SG11330 DB	'Segment', 00H
+$SG11334 DB	'Stack Var', 00H
 	ORG $+6
-$SG11331 DB	'Struct Field', 00H
+$SG11336 DB	'Struct Field', 00H
 	ORG $+3
-$SG11334 DB	'Structure', 00H
+$SG11339 DB	'Structure', 00H
 	ORG $+2
-$SG11336 DB	'Union', 00H
+$SG11341 DB	'Union', 00H
 	ORG $+6
-$SG11338 DB	'Typedef', 00H
-$SG11342 DB	'Undef Type', 00H
+$SG11343 DB	'Typedef', 00H
+$SG11347 DB	'Undef Type', 00H
 	ORG $+1
-$SG11344 DB	'Alias', 00H
+$SG11349 DB	'Alias', 00H
 	ORG $+2
-$SG11346 DB	'Macro', 00H
+$SG11351 DB	'Macro', 00H
 	ORG $+2
-$SG11348 DB	'Text', 00H
+$SG11353 DB	'Text', 00H
 	ORG $+7
-$SG11350 DB	'Unknown', 00H
-$SG11351 DB	'%-12s  %16I64X %02X %8p %c %8p %s', 0aH, 00H
+$SG11355 DB	'Unknown', 00H
+$SG11356 DB	'%-12s  %16I64X %02X %8p %c %8p %s', 0aH, 00H
 	ORG $+5
-$SG11369 DB	'DumpSymbols enter', 0aH, 00H
+$SG11374 DB	'DumpSymbols enter', 0aH, 00H
 	ORG $+5
-$SG11371 DB	'   # Addr     Type                     Value MT    Ext  '
+$SG11376 DB	'   # Addr     Type                     Value MT    Ext  '
 	DB	' P  pName   Name', 0aH, 00H
 	ORG $+6
-$SG11372 DB	'--------------------------------------------------------'
+$SG11377 DB	'--------------------------------------------------------'
 	DB	'------------------------', 0aH, 00H
 	ORG $+6
-$SG11374 DB	'%4u %8p ', 00H
+$SG11379 DB	'%4u %8p ', 00H
 	ORG $+7
-$SG11384 DB	'%u items in symbol table, expected %u', 0aH, 00H
+$SG11389 DB	'%u items in symbol table, expected %u', 0aH, 00H
 	ORG $+1
-$SG11385 DB	'max items in a line=%u, lines with 0/1/<=5/<=10 items=%u'
+$SG11390 DB	'max items in a line=%u, lines with 0/1/<=5/<=10 items=%u'
 	DB	'/%u/%u/%u, ', 0aH, 00H
 	ORG $+3
-$SG11013 DB	'@Version', 00H
+$SG11018 DB	'@Version', 00H
 	ORG $+3
-$SG11015 DB	'@Date', 00H
+$SG11020 DB	'@Date', 00H
 	ORG $+2
-$SG11016 DB	'@Time', 00H
+$SG11021 DB	'@Time', 00H
 	ORG $+6
-$SG11017 DB	'@FileName', 00H
+$SG11022 DB	'@FileName', 00H
 	ORG $+6
-$SG11018 DB	'@FileCur', 00H
+$SG11023 DB	'@FileCur', 00H
 	ORG $+7
-$SG11019 DB	'@CurSeg', 00H
-$SG11034 DB	'__HJWASM__', 00H
+$SG11024 DB	'@CurSeg', 00H
+$SG11039 DB	'__HJWASM__', 00H
 	ORG $+5
-$SG11035 DB	'__JWASM__', 00H
+$SG11040 DB	'__JWASM__', 00H
 	ORG $+2
-$SG11037 DB	'@Line', 00H
+$SG11042 DB	'@Line', 00H
 	ORG $+6
-$SG11038 DB	'@WordSize', 00H
+$SG11043 DB	'@WordSize', 00H
 	ORG $+6
-$SG11074 DB	'SymSetLocal(%s): label=%s', 0aH, 00H
+$SG11079 DB	'SymSetLocal(%s): label=%s', 0aH, 00H
 	ORG $+5
-$SG11100 DB	'SymFind(%s): found in local table, state=%u, local=%u', 0aH
+$SG11105 DB	'SymFind(%s): found in local table, state=%u, local=%u', 0aH
 	DB	00H
 	ORG $+1
-$SG11102 DB	'SymFind(%s): found, state=%u memtype=%X lang=%u', 0aH, 00H
+$SG11107 DB	'SymFind(%s): found, state=%u memtype=%X lang=%u', 0aH, 00H
 	ORG $+3
-$SG11109 DB	'NULL', 00H
+$SG11114 DB	'NULL', 00H
 	ORG $+7
-$SG11110 DB	'SymLookup(%s): created new symbol, CurrProc=%s', 0aH, 00H
-$SG11111 DB	'SymLookup(%s): found, state=%u, defined=%u', 0aH, 00H
+$SG11115 DB	'SymLookup(%s): created new symbol, CurrProc=%s', 0aH, 00H
+$SG11116 DB	'SymLookup(%s): found, state=%u, defined=%u', 0aH, 00H
 	ORG $+4
-$SG11120 DB	'SymLookupLocal(%s): local symbol created in %s', 0aH, 00H
-$SG11122 DB	'SymLookupLocal(%s): label moved into %s''s local namespa'
+$SG11125 DB	'SymLookupLocal(%s): local symbol created in %s', 0aH, 00H
+$SG11127 DB	'SymLookupLocal(%s): label moved into %s''s local namespa'
 	DB	'ce', 0aH, 00H
 	ORG $+5
-$SG11123 DB	'SymLookupLocal(%s): found, state=%u, defined=%u', 0aH, 00H
+$SG11128 DB	'SymLookupLocal(%s): found, state=%u, defined=%u', 0aH, 00H
 	ORG $+7
-$SG11136 DB	'free_ext: item=%p name=%s state=%u', 0aH, 00H
+$SG11141 DB	'free_ext: item=%p name=%s state=%u', 0aH, 00H
 	ORG $+4
-$SG11142 DB	'free_ext: external with private type: %s', 0aH, 00H
+$SG11147 DB	'free_ext: external with private type: %s', 0aH, 00H
 	ORG $+6
-$SG11152 DB	'free_ext: case SYM_STACK, sym=%s with private type', 0aH
+$SG11157 DB	'free_ext: case SYM_STACK, sym=%s with private type', 0aH
 	DB	00H
-$SG11217 DB	'%4u ', 00H
+$SG11222 DB	'%4u ', 00H
 	ORG $+7
-$SG11220 DB	'symbols.c', 00H
+$SG11225 DB	'symbols.c', 00H
 	ORG $+6
-$SG11235 DB	'SymInit() enter', 0aH, 00H
+$SG11240 DB	'SymInit() enter', 0aH, 00H
 	ORG $+7
-$SG11236 DB	'%02u/%02u/%02u', 00H
+$SG11241 DB	'%02u/%02u/%02u', 00H
 	ORG $+1
-$SG11237 DB	'%02u:%02u:%02u', 00H
+$SG11242 DB	'%02u:%02u:%02u', 00H
 	ORG $+1
-$SG11240 DB	'SymInit() exit', 0aH, 00H
+$SG11245 DB	'SymInit() exit', 0aH, 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	_vfprintf_l
@@ -598,7 +598,7 @@ $LN6@DumpSymbol:
 ; 743  :     case SYM_UNDEFINED:
 ; 744  :         type = "Undefined";
 
-	lea	rax, OFFSET FLAT:$SG11296
+	lea	rax, OFFSET FLAT:$SG11301
 	mov	QWORD PTR type$[rsp], rax
 
 ; 745  :         break;
@@ -619,7 +619,7 @@ $LN7@DumpSymbol:
 
 ; 748  :             type = "Procedure";
 
-	lea	rax, OFFSET FLAT:$SG11300
+	lea	rax, OFFSET FLAT:$SG11305
 	mov	QWORD PTR type$[rsp], rax
 	jmp	SHORT $LN9@DumpSymbol
 $LN8@DumpSymbol:
@@ -633,7 +633,7 @@ $LN8@DumpSymbol:
 
 ; 751  :             type = "Number";
 
-	lea	rax, OFFSET FLAT:$SG11303
+	lea	rax, OFFSET FLAT:$SG11308
 	mov	QWORD PTR type$[rsp], rax
 
 ; 752  :             value += ((uint_64)(uint_32)sym->value3264) << 32;
@@ -660,7 +660,7 @@ $LN14@DumpSymbol:
 
 ; 754  :             type = "Code Label";
 
-	lea	rax, OFFSET FLAT:$SG11307
+	lea	rax, OFFSET FLAT:$SG11312
 	mov	QWORD PTR type$[rsp], rax
 	jmp	SHORT $LN13@DumpSymbol
 $LN12@DumpSymbol:
@@ -668,7 +668,7 @@ $LN12@DumpSymbol:
 ; 755  :         else
 ; 756  :             type = "Data Label";
 
-	lea	rax, OFFSET FLAT:$SG11308
+	lea	rax, OFFSET FLAT:$SG11313
 	mov	QWORD PTR type$[rsp], rax
 $LN13@DumpSymbol:
 $LN11@DumpSymbol:
@@ -692,7 +692,7 @@ $LN15@DumpSymbol:
 
 ; 760  :             type = "Proto";
 
-	lea	rax, OFFSET FLAT:$SG11312
+	lea	rax, OFFSET FLAT:$SG11317
 	mov	QWORD PTR type$[rsp], rax
 	jmp	$LN17@DumpSymbol
 $LN16@DumpSymbol:
@@ -709,7 +709,7 @@ $LN16@DumpSymbol:
 
 ; 762  :             type = "Communal";
 
-	lea	rax, OFFSET FLAT:$SG11315
+	lea	rax, OFFSET FLAT:$SG11320
 	mov	QWORD PTR type$[rsp], rax
 	jmp	SHORT $LN19@DumpSymbol
 $LN18@DumpSymbol:
@@ -722,7 +722,7 @@ $LN18@DumpSymbol:
 
 ; 764  :             type = "Number (ext)";
 
-	lea	rax, OFFSET FLAT:$SG11318
+	lea	rax, OFFSET FLAT:$SG11323
 	mov	QWORD PTR type$[rsp], rax
 	jmp	SHORT $LN21@DumpSymbol
 $LN20@DumpSymbol:
@@ -739,7 +739,7 @@ $LN24@DumpSymbol:
 
 ; 766  :             type = "Code (ext)";
 
-	lea	rax, OFFSET FLAT:$SG11322
+	lea	rax, OFFSET FLAT:$SG11327
 	mov	QWORD PTR type$[rsp], rax
 	jmp	SHORT $LN23@DumpSymbol
 $LN22@DumpSymbol:
@@ -747,7 +747,7 @@ $LN22@DumpSymbol:
 ; 767  :         else
 ; 768  :             type = "Data (ext)";
 
-	lea	rax, OFFSET FLAT:$SG11323
+	lea	rax, OFFSET FLAT:$SG11328
 	mov	QWORD PTR type$[rsp], rax
 $LN23@DumpSymbol:
 $LN21@DumpSymbol:
@@ -762,7 +762,7 @@ $LN25@DumpSymbol:
 ; 770  :     case SYM_SEG:
 ; 771  :         type = "Segment";
 
-	lea	rax, OFFSET FLAT:$SG11325
+	lea	rax, OFFSET FLAT:$SG11330
 	mov	QWORD PTR type$[rsp], rax
 
 ; 772  :         break;
@@ -773,7 +773,7 @@ $LN26@DumpSymbol:
 ; 773  :     case SYM_GRP:
 ; 774  :         type = "Group";
 
-	lea	rax, OFFSET FLAT:$SG11327
+	lea	rax, OFFSET FLAT:$SG11332
 	mov	QWORD PTR type$[rsp], rax
 
 ; 775  :         break;
@@ -784,7 +784,7 @@ $LN27@DumpSymbol:
 ; 776  :     case SYM_STACK: /* should never be found in global table */
 ; 777  :         type = "Stack Var";
 
-	lea	rax, OFFSET FLAT:$SG11329
+	lea	rax, OFFSET FLAT:$SG11334
 	mov	QWORD PTR type$[rsp], rax
 
 ; 778  :         break;
@@ -795,7 +795,7 @@ $LN28@DumpSymbol:
 ; 779  :     case SYM_STRUCT_FIELD: /* record bitfields are in global namespace! */
 ; 780  :         type = "Struct Field";
 
-	lea	rax, OFFSET FLAT:$SG11331
+	lea	rax, OFFSET FLAT:$SG11336
 	mov	QWORD PTR type$[rsp], rax
 
 ; 781  :         break;
@@ -822,35 +822,35 @@ $LN30@DumpSymbol:
 
 ; 784  :         case TYPE_STRUCT:  type = "Structure"; break;
 
-	lea	rax, OFFSET FLAT:$SG11334
+	lea	rax, OFFSET FLAT:$SG11339
 	mov	QWORD PTR type$[rsp], rax
 	jmp	SHORT $LN4@DumpSymbol
 $LN31@DumpSymbol:
 
 ; 785  :         case TYPE_UNION:   type = "Union";     break;
 
-	lea	rax, OFFSET FLAT:$SG11336
+	lea	rax, OFFSET FLAT:$SG11341
 	mov	QWORD PTR type$[rsp], rax
 	jmp	SHORT $LN4@DumpSymbol
 $LN32@DumpSymbol:
 
 ; 786  :         case TYPE_TYPEDEF: type = "Typedef";   break;
 
-	lea	rax, OFFSET FLAT:$SG11338
+	lea	rax, OFFSET FLAT:$SG11343
 	mov	QWORD PTR type$[rsp], rax
 	jmp	SHORT $LN4@DumpSymbol
 $LN33@DumpSymbol:
 
 ; 787  :         case TYPE_RECORD:  type = "Record";    break;
 
-	lea	rax, OFFSET FLAT:$SG11340
+	lea	rax, OFFSET FLAT:$SG11345
 	mov	QWORD PTR type$[rsp], rax
 	jmp	SHORT $LN4@DumpSymbol
 $LN34@DumpSymbol:
 
 ; 788  :         default:           type = "Undef Type";break;
 
-	lea	rax, OFFSET FLAT:$SG11342
+	lea	rax, OFFSET FLAT:$SG11347
 	mov	QWORD PTR type$[rsp], rax
 $LN4@DumpSymbol:
 
@@ -863,7 +863,7 @@ $LN35@DumpSymbol:
 ; 791  :     case SYM_ALIAS:
 ; 792  :         type = "Alias";
 
-	lea	rax, OFFSET FLAT:$SG11344
+	lea	rax, OFFSET FLAT:$SG11349
 	mov	QWORD PTR type$[rsp], rax
 
 ; 793  :         break;
@@ -874,7 +874,7 @@ $LN36@DumpSymbol:
 ; 794  :     case SYM_MACRO:
 ; 795  :         type = "Macro";
 
-	lea	rax, OFFSET FLAT:$SG11346
+	lea	rax, OFFSET FLAT:$SG11351
 	mov	QWORD PTR type$[rsp], rax
 
 ; 796  :         break;
@@ -885,7 +885,7 @@ $LN37@DumpSymbol:
 ; 797  :     case SYM_TMACRO:
 ; 798  :         type = "Text";
 
-	lea	rax, OFFSET FLAT:$SG11348
+	lea	rax, OFFSET FLAT:$SG11353
 	mov	QWORD PTR type$[rsp], rax
 
 ; 799  :         break;
@@ -899,7 +899,7 @@ $LN38@DumpSymbol:
 ; 803  :     default:
 ; 804  :         type = "Unknown";
 
-	lea	rax, OFFSET FLAT:$SG11350
+	lea	rax, OFFSET FLAT:$SG11355
 	mov	QWORD PTR type$[rsp], rax
 $LN2@DumpSymbol:
 
@@ -934,7 +934,7 @@ $LN41@DumpSymbol:
 	mov	r9d, DWORD PTR [rax+36]
 	mov	r8, QWORD PTR value$[rsp]
 	mov	rdx, QWORD PTR type$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11351
+	lea	rcx, OFFSET FLAT:$SG11356
 	call	printf
 
 ; 808  : }
@@ -1013,7 +1013,7 @@ DumpSymbols PROC
 ; 822  : 
 ; 823  :     DebugMsg(("DumpSymbols enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11369
+	lea	rcx, OFFSET FLAT:$SG11374
 	call	DoDebugMsg
 
 ; 824  :     if ( Options.dump_symbols ) {
@@ -1024,12 +1024,12 @@ DumpSymbols PROC
 
 ; 825  :         printf( "   # Addr     Type                     Value MT    Ext   P  pName   Name\n" );
 
-	lea	rcx, OFFSET FLAT:$SG11371
+	lea	rcx, OFFSET FLAT:$SG11376
 	call	printf
 
 ; 826  :         printf( "--------------------------------------------------------------------------------\n" );
 
-	lea	rcx, OFFSET FLAT:$SG11372
+	lea	rcx, OFFSET FLAT:$SG11377
 	call	printf
 $LN8@DumpSymbol:
 
@@ -1078,7 +1078,7 @@ $LN7@DumpSymbol:
 
 	mov	r8, QWORD PTR sym$[rsp]
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11374
+	lea	rcx, OFFSET FLAT:$SG11379
 	call	printf
 
 ; 833  :                 DumpSymbol( sym );
@@ -1182,7 +1182,7 @@ $LN3@DumpSymbol:
 
 	mov	r8d, DWORD PTR SymCount
 	mov	edx, DWORD PTR count$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11384
+	lea	rcx, OFFSET FLAT:$SG11389
 	call	printf
 
 ; 850  :         printf( "max items in a line=%u, lines with 0/1/<=5/<=10 items=%u/%u/%u/%u, \n", max, num0, num1, num5, num10 );
@@ -1194,7 +1194,7 @@ $LN3@DumpSymbol:
 	mov	r9d, DWORD PTR num1$[rsp]
 	mov	r8d, DWORD PTR num0$[rsp]
 	mov	edx, DWORD PTR max$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11385
+	lea	rcx, OFFSET FLAT:$SG11390
 	call	printf
 $LN18@DumpSymbol:
 
@@ -1231,7 +1231,7 @@ free_ext PROC
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	rdx, QWORD PTR sym$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11136
+	lea	rcx, OFFSET FLAT:$SG11141
 	call	DoDebugMsg
 
 ; 362  :     switch( sym->state ) {
@@ -1315,7 +1315,7 @@ $LN7@free_ext:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11142
+	lea	rcx, OFFSET FLAT:$SG11147
 	call	DoDebugMsg
 
 ; 377  :             SymFree( sym->type );
@@ -1417,7 +1417,7 @@ $LN16@free_ext:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11152
+	lea	rcx, OFFSET FLAT:$SG11157
 	call	DoDebugMsg
 
 ; 405  :             /* symbol has a "private" type */
@@ -1677,7 +1677,7 @@ $LN4@SymSetLoca:
 	mov	r8, QWORD PTR [rax+8]
 	mov	rax, QWORD PTR proc$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11074
+	lea	rcx, OFFSET FLAT:$SG11079
 	call	DoDebugMsg1
 
 ; 221  :         i = hashpjw( l->sym.name ) % LHASH_TABLE_SIZE;
@@ -2278,7 +2278,7 @@ $LN4@SymFini:
 ; 561  :                 printf("%4u ", i );
 
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11217
+	lea	rcx, OFFSET FLAT:$SG11222
 	call	printf
 
 ; 562  :                 for( ; sym; sym = sym->nextitem ) {
@@ -2296,7 +2296,7 @@ $LN7@SymFini:
 
 	mov	rax, QWORD PTR sym$1[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11218
+	lea	rcx, OFFSET FLAT:$SG11223
 	call	printf
 
 ; 564  :                 }
@@ -2306,7 +2306,7 @@ $LN6@SymFini:
 
 ; 565  :                 printf("\n" );
 
-	lea	rcx, OFFSET FLAT:$SG11219
+	lea	rcx, OFFSET FLAT:$SG11224
 	call	printf
 $LN15@SymFini:
 
@@ -2390,7 +2390,7 @@ $LN9@SymFini:
 	jmp	SHORT $LN18@SymFini
 $LN17@SymFini:
 	mov	edx, 584				; 00000248H
-	lea	rcx, OFFSET FLAT:$SG11220
+	lea	rcx, OFFSET FLAT:$SG11225
 	call	InternalError
 	mov	DWORD PTR tv93[rsp], eax
 $LN18@SymFini:
@@ -2432,7 +2432,7 @@ $LN28:
 ; 598  : 
 ; 599  :     DebugMsg(("SymInit() enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11235
+	lea	rcx, OFFSET FLAT:$SG11240
 	call	DoDebugMsg
 
 ; 600  :     SymCount = 0;
@@ -2485,7 +2485,7 @@ $LN28:
 	mov	rax, QWORD PTR now$[rsp]
 	mov	r9d, DWORD PTR [rax+12]
 	mov	r8d, ecx
-	lea	rdx, OFFSET FLAT:$SG11236
+	lea	rdx, OFFSET FLAT:$SG11241
 	lea	rcx, OFFSET FLAT:szDate
 	call	sprintf
 
@@ -2498,7 +2498,7 @@ $LN28:
 	mov	r9d, DWORD PTR [rax+4]
 	mov	rax, QWORD PTR now$[rsp]
 	mov	r8d, DWORD PTR [rax+8]
-	lea	rdx, OFFSET FLAT:$SG11237
+	lea	rdx, OFFSET FLAT:$SG11242
 	lea	rcx, OFFSET FLAT:szTime
 	call	sprintf
 
@@ -2790,7 +2790,7 @@ $LN27@SymInit:
 ; 645  : 
 ; 646  :     DebugMsg(("SymInit() exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11240
+	lea	rcx, OFFSET FLAT:$SG11245
 	call	DoDebugMsg
 
 ; 647  :     return;
@@ -2897,7 +2897,7 @@ $LN4@SymFind:
 	mov	r9d, eax
 	mov	r8d, DWORD PTR [rcx+32]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11100
+	lea	rcx, OFFSET FLAT:$SG11105
 	call	DoDebugMsg1
 
 ; 274  :                 return( *lsym );
@@ -2967,7 +2967,7 @@ $LN7@SymFind:
 	mov	r9d, DWORD PTR [rcx+36]
 	mov	r8d, DWORD PTR [rdx+32]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11102
+	lea	rcx, OFFSET FLAT:$SG11107
 	call	DoDebugMsg1
 
 ; 282  :             return( *gsym );
@@ -3056,7 +3056,7 @@ $LN6:
 	mov	rax, QWORD PTR CurrProc
 	mov	r8, QWORD PTR [rax+8]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11120
+	lea	rcx, OFFSET FLAT:$SG11125
 	call	DoDebugMsg1
 	jmp	$LN3@SymLookupL
 $LN2@SymLookupL:
@@ -3118,7 +3118,7 @@ $LN2@SymLookupL:
 	mov	r8, QWORD PTR [rax+8]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11122
+	lea	rcx, OFFSET FLAT:$SG11127
 	call	DoDebugMsg1
 $LN4@SymLookupL:
 $LN3@SymLookupL:
@@ -3136,7 +3136,7 @@ $LN3@SymLookupL:
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8d, DWORD PTR [rax+32]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11123
+	lea	rcx, OFFSET FLAT:$SG11128
 	call	DoDebugMsg1
 
 ; 353  :     return( sym );
@@ -3198,12 +3198,12 @@ $LN6:
 	mov	QWORD PTR tv71[rsp], rax
 	jmp	SHORT $LN5@SymLookup
 $LN4@SymLookup:
-	lea	rax, OFFSET FLAT:$SG11109
+	lea	rax, OFFSET FLAT:$SG11114
 	mov	QWORD PTR tv71[rsp], rax
 $LN5@SymLookup:
 	mov	r8, QWORD PTR tv71[rsp]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11110
+	lea	rcx, OFFSET FLAT:$SG11115
 	call	DoDebugMsg1
 
 ; 310  :         //sym->next = *gsym;
@@ -3233,7 +3233,7 @@ $LN2@SymLookup:
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8d, DWORD PTR [rax+32]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11111
+	lea	rcx, OFFSET FLAT:$SG11116
 	call	DoDebugMsg1
 
 ; 316  : 
@@ -3734,7 +3734,7 @@ $LN3@SymAlloc:
 ; 251  :         sym->name = "";
 
 	mov	rax, QWORD PTR sym$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11085
+	lea	rcx, OFFSET FLAT:$SG11090
 	mov	QWORD PTR [rax+8], rcx
 $LN4@SymAlloc:
 

@@ -10,14 +10,14 @@ COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10389 DB	'AddLineQueue(%p): #=%u >%s<', 0aH, 00H
+$SG10394 DB	'AddLineQueue(%p): #=%u >%s<', 0aH, 00H
 	ORG $+3
-$SG10461 DB	'RunLineQueue() enter', 0aH, 00H
+$SG10466 DB	'RunLineQueue() enter', 0aH, 00H
 	ORG $+10
-$SG10464 DB	'!!!!! Warning: End directive found in generated-code par'
+$SG10469 DB	'!!!!! Warning: End directive found in generated-code par'
 	DB	'ser loop!', 0aH, 00H
 	ORG $+5
-$SG10465 DB	'RunLineQueue() exit', 0aH, 00H
+$SG10470 DB	'RunLineQueue() exit', 0aH, 00H
 _DATA	ENDS
 PUBLIC	GetLqLine
 PUBLIC	DeleteLineQueue
@@ -160,7 +160,7 @@ $LN8:
 ; 172  : 
 ; 173  :     DebugMsg1(( "RunLineQueue() enter\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG10461
+	lea	rcx, OFFSET FLAT:$SG10466
 	call	DoDebugMsg1
 
 ; 174  : 
@@ -261,7 +261,7 @@ $LN3@RunLineQue:
 
 ; 198  :         DebugMsg(("!!!!! Warning: End directive found in generated-code parser loop!\n"));
 
-	lea	rcx, OFFSET FLAT:$SG10464
+	lea	rcx, OFFSET FLAT:$SG10469
 	call	DoDebugMsg
 $LN6@RunLineQue:
 
@@ -281,7 +281,7 @@ $LN6@RunLineQue:
 ; 203  : 
 ; 204  :     DebugMsg1(( "RunLineQueue() exit\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG10465
+	lea	rcx, OFFSET FLAT:$SG10470
 	call	DoDebugMsg1
 
 ; 205  :     return;
@@ -660,7 +660,7 @@ $LN5:
 	mov	r9, QWORD PTR line$[rsp]
 	mov	r8d, DWORD PTR lqlines_written
 	mov	rdx, QWORD PTR line$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10389
+	lea	rcx, OFFSET FLAT:$SG10394
 	call	DoDebugMsg1
 
 ; 73   : 

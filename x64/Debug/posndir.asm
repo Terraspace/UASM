@@ -10,10 +10,10 @@ COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10656 DB	'OrgDirective(%u) enter', 0aH, 00H
-$SG10716 DB	'AlignDirective enter', 0aH, 00H
+$SG10661 DB	'OrgDirective(%u) enter', 0aH, 00H
+$SG10721 DB	'AlignDirective enter', 0aH, 00H
 	ORG $+2
-$SG10738 DB	'AlignDirective exit', 0aH, 00H
+$SG10743 DB	'AlignDirective exit', 0aH, 00H
 _DATA	ENDS
 CONST	SEGMENT
 NopList16 DB	03H
@@ -234,7 +234,7 @@ $LN38:
 ; 199  : 
 ; 200  :     DebugMsg1(("AlignDirective enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG10716
+	lea	rcx, OFFSET FLAT:$SG10721
 	call	DoDebugMsg1
 
 ; 201  : 
@@ -612,7 +612,7 @@ $LN27@AlignDirec:
 ; 263  :     }
 ; 264  :     DebugMsg1(("AlignDirective exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG10738
+	lea	rcx, OFFSET FLAT:$SG10743
 	call	DoDebugMsg1
 
 ; 265  :     return( NOT_ERROR );
@@ -884,7 +884,7 @@ $LN18:
 ; 99   :     DebugMsg1(("OrgDirective(%u) enter\n", i));
 
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10656
+	lea	rcx, OFFSET FLAT:$SG10661
 	call	DoDebugMsg1
 
 ; 100  :     i++;

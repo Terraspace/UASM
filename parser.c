@@ -2076,24 +2076,23 @@ static ret_code process_register( struct code_info *CodeInfo, unsigned CurrOpnd,
          * used now: CRx are numbers 0-F, DRx are numbers 0x10-0x1F and
          * TRx are 0x20-0x2F.
          */
-        if ( regno >= 0x20 ) { /* TRx? */
-            CodeInfo->opc_or |= 0x04;
-            /* TR3-TR5 are available on 486-586
-             * TR6+TR7 are available on 386-586
-             * v2.11: simplified.
-             */
-            if( ( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_686 ) {
-                return( EmitErr( CANNOT_USE_TRN_TO_TRM_WITH_CURRENT_CPU_SETTING, regno > 0x25 ? 6 : 3, regno > 0x25 ? 7 : 5 ) );
-            }
-        } else if ( regno >= 0x10 ) { /* DRx? */
-           //if( ( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_686 && regno == 0x10 )
-              EmitError( INVALID_INSTRUCTION_OPERANDS ); // added by habran
-           CodeInfo->opc_or |= 0x01;
-        }
-        regno &= 0x0F;
-    }
-
+		if (regno >= 0x20) { /* TRx? */
+			CodeInfo->opc_or |= 0x04;
+			/* TR3-TR5 are available on 486-586
+			* TR6+TR7 are available on 386-586
+			* v2.11: simplified.
+			*/
+			if ((ModuleInfo.curr_cpu & P_CPU_MASK) >= P_686) {
+				return(EmitErr(CANNOT_USE_TRN_TO_TRM_WITH_CURRENT_CPU_SETTING, regno > 0x25 ? 6 : 3, regno > 0x25 ? 7 : 5));
+			}
+		}
+		else if (regno >= 0x10) { /* DRx? */
+			CodeInfo->opc_or |= 0x01;
+		}
+		regno &= 0x0F;
+	}
 #if AMD64_SUPPORT
+
     /* if it's a x86-64 register (SIL, R8W, R8D, RSI, ... */
     if ( ( SpecialTable[regtok].cpu & P_CPU_MASK ) == P_64 ) {
         CodeInfo->prefix.rex |= 0x40;

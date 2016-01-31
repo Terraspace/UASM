@@ -10,44 +10,44 @@ COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10851 DB	'%X', 00H
+$SG10856 DB	'%X', 00H
 	ORG $+5
-$SG10908 DB	'store_placeholders: found ID: %s', 0aH, 00H
+$SG10913 DB	'store_placeholders: found ID: %s', 0aH, 00H
 	ORG $+2
-$SG10915 DB	'<>"''', 00H
+$SG10920 DB	'<>"''', 00H
 	ORG $+3
-$SG11023 DB	'REQ', 00H
-$SG11006 DB	'StoreMacro(%s, i=%u, store_data=%u) enter, params=>%s<', 0aH
+$SG11028 DB	'REQ', 00H
+$SG11011 DB	'StoreMacro(%s, i=%u, store_data=%u) enter, params=>%s<', 0aH
 	DB	00H
-$SG11032 DB	'VARARGML', 00H
+$SG11037 DB	'VARARGML', 00H
 	ORG $+7
-$SG11034 DB	'StoreMacro(%s): param=>%s< found', 0aH, 00H
+$SG11039 DB	'StoreMacro(%s): param=>%s< found', 0aH, 00H
 	ORG $+6
-$SG11036 DB	'StoreMacro(%s): macro parameters done', 0aH, 00H
+$SG11041 DB	'StoreMacro(%s): macro parameters done', 0aH, 00H
 	ORG $+1
-$SG11046 DB	'StoreMacro(%s): no token', 0aH, 00H
+$SG11051 DB	'StoreMacro(%s): no token', 0aH, 00H
 	ORG $+6
-$SG11056 DB	'StoreMacro(%s, %u): local=>%s< added, rest=%s', 0aH, 00H
+$SG11061 DB	'StoreMacro(%s, %u): local=>%s< added, rest=%s', 0aH, 00H
 	ORG $+1
-$SG11067 DB	'StoreMacro(%s): exitm found, lvl=%u, >%s<', 0aH, 00H
+$SG11072 DB	'StoreMacro(%s): exitm found, lvl=%u, >%s<', 0aH, 00H
 	ORG $+5
-$SG11072 DB	'StoreMacro(%s): endm found, lvl=%u', 0aH, 00H
+$SG11077 DB	'StoreMacro(%s): endm found, lvl=%u', 0aH, 00H
 	ORG $+4
-$SG11088 DB	'StoreMacro(%s, %u): cnt=%u, %u. line >%s<', 0aH, 00H
+$SG11093 DB	'StoreMacro(%s, %u): cnt=%u, %u. line >%s<', 0aH, 00H
 	ORG $+5
-$SG11089 DB	'StoreMacro(%s): exit, no error, isfunc=%u', 0aH, 00H
+$SG11094 DB	'StoreMacro(%s): exit, no error, isfunc=%u', 0aH, 00H
 	ORG $+5
-$SG11113 DB	'ReleaseMacroData(%s) enter', 0aH, 00H
+$SG11118 DB	'ReleaseMacroData(%s) enter', 0aH, 00H
 	ORG $+4
-$SG11129 DB	'MacroDir(%s) enter, i=%u', 0aH, 00H
+$SG11134 DB	'MacroDir(%s) enter, i=%u', 0aH, 00H
 	ORG $+6
-$SG11138 DB	'MacroDir(%s): macro already defined', 0aH, 00H
+$SG11143 DB	'MacroDir(%s): macro already defined', 0aH, 00H
 	ORG $+3
-$SG11155 DB	'macro name', 00H
+$SG11160 DB	'macro name', 00H
 	ORG $+5
-$SG11177 DB	'MacroInit(%u)', 0aH, 00H
+$SG11182 DB	'MacroInit(%u)', 0aH, 00H
 	ORG $+1
-$SG11179 DB	'@Environ', 00H
+$SG11184 DB	'@Environ', 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	_vsnprintf_l
@@ -494,7 +494,7 @@ $LN6@PurgeDirec:
 
 ; 749  :             return( EmitErr( EXPECTED, "macro name" ) );
 
-	lea	rdx, OFFSET FLAT:$SG11155
+	lea	rdx, OFFSET FLAT:$SG11160
 	mov	ecx, 230				; 000000e6H
 	call	EmitErr
 	jmp	$LN1@PurgeDirec
@@ -641,7 +641,7 @@ $LN12:
 
 	mov	r8d, DWORD PTR i$[rsp]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11129
+	lea	rcx, OFFSET FLAT:$SG11134
 	call	DoDebugMsg1
 
 ; 682  : 
@@ -757,7 +757,7 @@ $LN8@MacroDir:
 ; 706  :             DebugMsg(("MacroDir(%s): macro already defined\n", name));
 
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11138
+	lea	rcx, OFFSET FLAT:$SG11143
 	call	DoDebugMsg
 
 ; 707  : #if FASTMEM==0
@@ -1189,7 +1189,7 @@ $LN16@store_plac:
 ; 205  :             DebugMsg1(("store_placeholders: found ID: %s\n", p));
 
 	mov	rdx, QWORD PTR p$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10908
+	lea	rcx, OFFSET FLAT:$SG10913
 	call	DoDebugMsg1
 
 ; 206  :             start = p++;
@@ -1330,7 +1330,7 @@ $LN22@store_plac:
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax+1]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG10915
+	lea	rcx, OFFSET FLAT:$SG10920
 	call	QWORD PTR __imp_strchr
 	test	rax, rax
 	je	SHORT $LN23@store_plac
@@ -1799,7 +1799,7 @@ $LN4:
 ; 805  :     DebugMsg(( "MacroInit(%u)\n", pass ));
 
 	mov	edx, DWORD PTR pass$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11177
+	lea	rcx, OFFSET FLAT:$SG11182
 	call	DoDebugMsg
 
 ; 806  : 
@@ -1826,7 +1826,7 @@ $LN4:
 ; 814  : 
 ; 815  :         macro = CreateMacro( "@Environ" );
 
-	lea	rcx, OFFSET FLAT:$SG11179
+	lea	rcx, OFFSET FLAT:$SG11184
 	call	CreateMacro
 	mov	QWORD PTR macro$[rsp], rax
 
@@ -1996,7 +1996,7 @@ $LN106:
 	mov	r8d, DWORD PTR i$[rbp]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11006
+	lea	rcx, OFFSET FLAT:$SG11011
 	call	DoDebugMsg1
 
 ; 305  :     info = macro->e.macroinfo;
@@ -2351,7 +2351,7 @@ $LN41@StoreMacro:
 
 	movsxd	rax, DWORD PTR i$[rbp]
 	imul	rax, rax, 32				; 00000020H
-	lea	rdx, OFFSET FLAT:$SG11023
+	lea	rdx, OFFSET FLAT:$SG11028
 	mov	rcx, QWORD PTR tokenarray$[rbp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	QWORD PTR __imp__stricmp
@@ -2491,7 +2491,7 @@ $LN50@StoreMacro:
 
 	movsxd	rax, DWORD PTR i$[rbp]
 	imul	rax, rax, 32				; 00000020H
-	lea	rdx, OFFSET FLAT:$SG11032
+	lea	rdx, OFFSET FLAT:$SG11037
 	mov	rcx, QWORD PTR tokenarray$[rbp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	QWORD PTR __imp__stricmp
@@ -2577,7 +2577,7 @@ $LN40@StoreMacro:
 	mov	r8, QWORD PTR mnames$[rbp+rax]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11034
+	lea	rcx, OFFSET FLAT:$SG11039
 	call	DoDebugMsg1
 
 ; 397  :             if( i < Token_Count && tokenarray[i].token != T_COMMA ) {
@@ -2624,7 +2624,7 @@ $LN6@StoreMacro:
 
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11036
+	lea	rcx, OFFSET FLAT:$SG11041
 	call	DoDebugMsg1
 $LN31@StoreMacro:
 
@@ -2939,7 +2939,7 @@ $LN63@StoreMacro:
 
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11046
+	lea	rcx, OFFSET FLAT:$SG11051
 	call	DoDebugMsg1
 
 ; 481  :             goto continue_scan;
@@ -3184,7 +3184,7 @@ $LN105@StoreMacro:
 	mov	r8d, DWORD PTR nesting_depth$[rbp]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11056
+	lea	rcx, OFFSET FLAT:$SG11061
 	call	DoDebugMsg1
 $LN22@StoreMacro:
 
@@ -3325,7 +3325,7 @@ $LN79@StoreMacro:
 	mov	r8d, DWORD PTR nesting_depth$[rbp]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11067
+	lea	rcx, OFFSET FLAT:$SG11072
 	call	DoDebugMsg1
 
 ; 536  :                 if ( nesting_depth == 0 ) {
@@ -3392,7 +3392,7 @@ $LN83@StoreMacro:
 	mov	r8d, DWORD PTR nesting_depth$[rbp]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11072
+	lea	rcx, OFFSET FLAT:$SG11077
 	call	DoDebugMsg1
 
 ; 545  :                 if( nesting_depth ) {
@@ -3680,7 +3680,7 @@ $LN103@StoreMacro:
 	mov	r8d, DWORD PTR nesting_depth$[rbp]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11088
+	lea	rcx, OFFSET FLAT:$SG11093
 	call	DoDebugMsg1
 $LN102@StoreMacro:
 
@@ -3716,7 +3716,7 @@ $LN9@StoreMacro:
 	mov	r8d, eax
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11089
+	lea	rcx, OFFSET FLAT:$SG11094
 	call	DoDebugMsg1
 
 ; 599  :     return( NOT_ERROR );
@@ -3851,7 +3851,7 @@ $LN2@fill_place:
 ; 97   :                     i = sprintf( dst, "%X", i );
 
 	mov	r8d, DWORD PTR i$[rsp]
-	lea	rdx, OFFSET FLAT:$SG10851
+	lea	rdx, OFFSET FLAT:$SG10856
 	mov	rcx, QWORD PTR dst$[rsp]
 	call	sprintf
 	mov	DWORD PTR i$[rsp], eax
@@ -4024,7 +4024,7 @@ $LN10:
 
 	mov	rax, QWORD PTR macro$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11113
+	lea	rcx, OFFSET FLAT:$SG11118
 	call	DoDebugMsg1
 
 ; 635  :     /* free the parm list */

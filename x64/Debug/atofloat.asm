@@ -10,10 +10,10 @@ COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG8594	DB	'atofloat(%s, 4): magnitude too large; FLT_MAX=%e FLT_MIN'
+$SG8599	DB	'atofloat(%s, 4): magnitude too large; FLT_MAX=%e FLT_MIN'
 	DB	'=%e', 0aH, 00H
 	ORG $+3
-$SG8598	DB	'atofloat(%s, 8): magnitude too large', 0aH, 00H
+$SG8603	DB	'atofloat(%s, 8): magnitude too large', 0aH, 00H
 _DATA	ENDS
 PUBLIC	atofloat
 PUBLIC	__real@0000000000000000
@@ -230,7 +230,7 @@ $LN12@atofloat:
 	movsd	xmm2, QWORD PTR __real@47efffffe0000000
 	movd	r8, xmm2
 	mov	rdx, QWORD PTR inp$[rsp]
-	lea	rcx, OFFSET FLAT:$SG8594
+	lea	rcx, OFFSET FLAT:$SG8599
 	call	DoDebugMsg
 
 ; 66   :                 EmitErr( MAGNITUDE_TOO_LARGE_FOR_SPECIFIED_SIZE );
@@ -293,7 +293,7 @@ $LN14@atofloat:
 ; 79   :                 DebugMsg(("atofloat(%s, 8): magnitude too large\n", inp ));
 
 	mov	rdx, QWORD PTR inp$[rsp]
-	lea	rcx, OFFSET FLAT:$SG8598
+	lea	rcx, OFFSET FLAT:$SG8603
 	call	DoDebugMsg
 
 ; 80   :                 EmitErr( MAGNITUDE_TOO_LARGE_FOR_SPECIFIED_SIZE );

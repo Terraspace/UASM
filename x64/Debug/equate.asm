@@ -12,54 +12,54 @@ COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11021 DB	'SetValue(%s): Phase error, enforced by alias equate', 0aH
+$SG11026 DB	'SetValue(%s): Phase error, enforced by alias equate', 0aH
 	DB	00H
 	ORG $+3
-$SG11024 DB	'SetValue(%s): Phase error, enforced by alias equate %X !'
+$SG11029 DB	'SetValue(%s): Phase error, enforced by alias equate %X !'
 	DB	'= %X', 0aH, 00H
 	ORG $+2
-$SG11044 DB	'CreateAssemblyTimeVariable(%s) enter', 0aH, 00H
+$SG11049 DB	'CreateAssemblyTimeVariable(%s) enter', 0aH, 00H
 	ORG $+2
-$SG11054 DB	'CreateAssemblyTimeVariable(%s) kind=%u sym=%p state=%u', 0aH
+$SG11059 DB	'CreateAssemblyTimeVariable(%s) kind=%u sym=%p state=%u', 0aH
 	DB	00H
-$SG11081 DB	'CreateAssemblyTimeVariable(%s) memtype=%Xh value=%d', 0aH
+$SG11086 DB	'CreateAssemblyTimeVariable(%s) memtype=%Xh value=%d', 0aH
 	DB	00H
 	ORG $+3
-$SG11076 DB	'CreateAssemblyTimeVariable(%s): kind=%u, value changed ('
+$SG11081 DB	'CreateAssemblyTimeVariable(%s): kind=%u, value changed ('
 	DB	' %d -> %d )', 0aH, 00H
 	ORG $+3
-$SG11101 DB	'CreateVariable(%s, %d ) enter', 0aH, 00H
+$SG11106 DB	'CreateVariable(%s, %d ) enter', 0aH, 00H
 	ORG $+1
-$SG11145 DB	'CreateConstant(%s): simple numeric value=%I64d', 0aH, 00H
-$SG11147 DB	'CreateConstant(%s): before ExpandLineItems: >%s<', 0aH, 00H
+$SG11150 DB	'CreateConstant(%s): simple numeric value=%I64d', 0aH, 00H
+$SG11152 DB	'CreateConstant(%s): before ExpandLineItems: >%s<', 0aH, 00H
 	ORG $+6
-$SG11078 DB	'CreateAssemblyTimeVariable(%s): kind=%u, value changed ('
+$SG11083 DB	'CreateAssemblyTimeVariable(%s): kind=%u, value changed ('
 	DB	' %d -> %d )', 0aH, 00H
 	ORG $+3
-$SG11130 DB	'CreateConstant(%s) enter', 0aH, 00H
+$SG11135 DB	'CreateConstant(%s) enter', 0aH, 00H
 	ORG $+6
-$SG11150 DB	'CreateConstant(%s): after ExpandLineItems: >%s<', 0aH, 00H
+$SG11155 DB	'CreateConstant(%s): after ExpandLineItems: >%s<', 0aH, 00H
 	ORG $+7
-$SG11139 DB	'CreateConstant(%s) state=%u, mem_type=%Xh, value=%X, sym'
+$SG11144 DB	'CreateConstant(%s) state=%u, mem_type=%Xh, value=%X, sym'
 	DB	'bol redefinition', 0aH, 00H
 	ORG $+6
-$SG11166 DB	'CreateConstant(%s), CONST value changed: old=%X, new=%X', 0aH
+$SG11171 DB	'CreateConstant(%s), CONST value changed: old=%X, new=%X', 0aH
 	DB	00H
 	ORG $+7
-$SG11170 DB	'CreateConstant(%s), ADDR value changed: old=%X, new ofs+'
+$SG11175 DB	'CreateConstant(%s), ADDR value changed: old=%X, new ofs+'
 	DB	'val=%X+%X', 0aH, 00H
 	ORG $+1
-$SG11171 DB	'NULL', 00H
+$SG11176 DB	'NULL', 00H
 	ORG $+7
-$SG11172 DB	'CreateConstant(%s): memtype=%Xh value=%I64X isproc=%u va'
+$SG11177 DB	'CreateConstant(%s): memtype=%Xh value=%I64X isproc=%u va'
 	DB	'riable=%u type=%s', 0aH, 00H
 	ORG $+5
-$SG11173 DB	'CreateConstant(%s): calling SetTextMacro() [MI.Ofssize=%'
+$SG11178 DB	'CreateConstant(%s): calling SetTextMacro() [MI.Ofssize=%'
 	DB	'u]', 0aH, 00H
 	ORG $+4
-$SG11183 DB	'EquDirective(%s): calling CreateConstant', 0aH, 00H
+$SG11188 DB	'EquDirective(%s): calling CreateConstant', 0aH, 00H
 	ORG $+6
-$SG11185 DB	'equate.c', 00H
+$SG11190 DB	'equate.c', 00H
 _DATA	ENDS
 CONST	SEGMENT
 maxintvalues DQ	00000000ffffffffH
@@ -253,7 +253,7 @@ $LN2@EquDirecti:
 	imul	rax, rax, 0
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG11183
+	lea	rcx, OFFSET FLAT:$SG11188
 	call	DoDebugMsg1
 
 ; 515  :     if ( sym = CreateConstant( tokenarray ) ) {
@@ -273,7 +273,7 @@ $LN2@EquDirecti:
 	jmp	SHORT $LN7@EquDirecti
 $LN6@EquDirecti:
 	mov	edx, 516				; 00000204H
-	lea	rcx, OFFSET FLAT:$SG11185
+	lea	rcx, OFFSET FLAT:$SG11190
 	call	InternalError
 	mov	DWORD PTR tv88[rsp], eax
 $LN7@EquDirecti:
@@ -443,7 +443,7 @@ CreateAssemblyTimeVariable PROC
 ; 134  :     DebugMsg1(( "CreateAssemblyTimeVariable(%s) enter\n", name ));
 
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11044
+	lea	rcx, OFFSET FLAT:$SG11049
 	call	DoDebugMsg1
 
 ; 135  : 
@@ -622,7 +622,7 @@ $LN37@CreateAsse:
 	mov	r9, QWORD PTR opnd$[rsp+80]
 	mov	r8d, DWORD PTR opnd$[rsp+60]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11054
+	lea	rcx, OFFSET FLAT:$SG11059
 	call	DoDebugMsg
 
 ; 175  :             /* v2.09: no error if argument is a forward reference,
@@ -922,7 +922,7 @@ $LN19@CreateAsse:
 	mov	r9d, DWORD PTR [rax+16]
 	mov	r8d, DWORD PTR opnd$[rsp+60]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11076
+	lea	rcx, OFFSET FLAT:$SG11081
 	call	DoDebugMsg1
 	jmp	SHORT $LN31@CreateAsse
 $LN30@CreateAsse:
@@ -952,7 +952,7 @@ $LN30@CreateAsse:
 	mov	r9d, DWORD PTR [rax+16]
 	mov	r8d, DWORD PTR opnd$[rsp+60]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11078
+	lea	rcx, OFFSET FLAT:$SG11083
 	call	DoDebugMsg1
 $LN32@CreateAsse:
 $LN31@CreateAsse:
@@ -998,7 +998,7 @@ $LN34@CreateAsse:
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8d, DWORD PTR [rax+36]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11081
+	lea	rcx, OFFSET FLAT:$SG11086
 	call	DoDebugMsg1
 
 ; 251  :     return( sym );
@@ -1256,7 +1256,7 @@ $LN5@SetValue:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11021
+	lea	rcx, OFFSET FLAT:$SG11026
 	call	DoDebugMsg
 $LN9@SetValue:
 
@@ -1304,7 +1304,7 @@ $LN6@SetValue:
 	mov	r8d, DWORD PTR [rax+16]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11024
+	lea	rcx, OFFSET FLAT:$SG11029
 	call	DoDebugMsg1
 $LN11@SetValue:
 
@@ -1370,7 +1370,7 @@ $LN9:
 
 	mov	r8d, DWORD PTR value$[rsp]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11101
+	lea	rcx, OFFSET FLAT:$SG11106
 	call	DoDebugMsg1
 
 ; 284  : 
@@ -1613,7 +1613,7 @@ $LN39:
 ; 349  :     DebugMsg1(( "CreateConstant(%s) enter\n", name ));
 
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11130
+	lea	rcx, OFFSET FLAT:$SG11135
 	call	DoDebugMsg1
 
 ; 350  : 
@@ -1727,7 +1727,7 @@ $LN6@CreateCons:
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8d, DWORD PTR [rax+32]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11139
+	lea	rcx, OFFSET FLAT:$SG11144
 	call	DoDebugMsg1
 
 ; 370  :         EmitErr( SYMBOL_REDEFINITION, name );
@@ -1862,7 +1862,7 @@ $check_single_number$41:
 
 	mov	r8, QWORD PTR opnd$[rsp]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11145
+	lea	rcx, OFFSET FLAT:$SG11150
 	call	DoDebugMsg1
 
 ; 399  :             i++;
@@ -1920,7 +1920,7 @@ $LN11@CreateCons:
 
 	mov	r8, QWORD PTR p$[rsp]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11147
+	lea	rcx, OFFSET FLAT:$SG11152
 	call	DoDebugMsg1
 
 ; 413  :             /* expand EQU argument (macro functions won't be expanded!) */
@@ -1965,7 +1965,7 @@ $LN17@CreateCons:
 
 	mov	r8, QWORD PTR p$[rsp]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11150
+	lea	rcx, OFFSET FLAT:$SG11155
 	call	DoDebugMsg1
 $LN15@CreateCons:
 
@@ -2145,7 +2145,7 @@ $LN32@CreateCons:
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8d, DWORD PTR [rax+16]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11166
+	lea	rcx, OFFSET FLAT:$SG11171
 	call	DoDebugMsg
 
 ; 469  :                     EmitErr( SYMBOL_REDEFINITION, name );
@@ -2194,7 +2194,7 @@ $LN35@CreateCons:
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8d, DWORD PTR [rax+16]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11170
+	lea	rcx, OFFSET FLAT:$SG11175
 	call	DoDebugMsg
 
 ; 475  :                     EmitErr( SYMBOL_REDEFINITION, name );
@@ -2252,7 +2252,7 @@ $LN23@CreateCons:
 	mov	QWORD PTR tv310[rsp], rax
 	jmp	SHORT $LN38@CreateCons
 $LN37@CreateCons:
-	lea	rax, OFFSET FLAT:$SG11171
+	lea	rax, OFFSET FLAT:$SG11176
 	mov	QWORD PTR tv310[rsp], rax
 $LN38@CreateCons:
 	mov	rax, QWORD PTR sym$[rsp]
@@ -2279,7 +2279,7 @@ $LN38@CreateCons:
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8d, DWORD PTR [rax+36]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11172
+	lea	rcx, OFFSET FLAT:$SG11177
 	call	DoDebugMsg1
 
 ; 492  :             name, sym->mem_type, (uint_64)sym->value + ( (uint_64)sym->value3264 << 32), sym->isproc, sym->variable, sym->type ? sym->type->name : "NULL" ));
@@ -2295,7 +2295,7 @@ $LN19@CreateCons:
 	movzx	eax, BYTE PTR ModuleInfo+404
 	mov	r8d, eax
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11173
+	lea	rcx, OFFSET FLAT:$SG11178
 	call	DoDebugMsg1
 
 ; 496  :     return ( SetTextMacro( tokenarray, sym, name, argbuffer ) );

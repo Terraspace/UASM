@@ -62,42 +62,42 @@ func_index DB	06H
 	DB	01H
 CONST	ENDS
 _DATA	SEGMENT
-$SG7690	DB	'omfint.c', 00H
+$SG7695	DB	'omfint.c', 00H
 	ORG $+7
-$SG7732	DB	'PutMem: buffer overflow error [length=%u, free=%u]', 0aH
+$SG7737	DB	'PutMem: buffer overflow error [length=%u, free=%u]', 0aH
 	DB	00H
 	ORG $+4
-$SG7733	DB	'omfint.c', 00H
+$SG7738	DB	'omfint.c', 00H
 	ORG $+7
-$SG7742	DB	'omfint.c', 00H
+$SG7747	DB	'omfint.c', 00H
 	ORG $+7
-$SG7751	DB	'omfint.c', 00H
+$SG7756	DB	'omfint.c', 00H
 	ORG $+7
-$SG7760	DB	'omfint.c', 00H
+$SG7765	DB	'omfint.c', 00H
 	ORG $+7
-$SG7771	DB	'omfint.c', 00H
+$SG7776	DB	'omfint.c', 00H
 	ORG $+7
-$SG7783	DB	'omfint.c', 00H
+$SG7788	DB	'omfint.c', 00H
 	ORG $+7
-$SG7793	DB	'omfint.c', 00H
+$SG7798	DB	'omfint.c', 00H
 	ORG $+7
-$SG7803	DB	'omfint.c', 00H
+$SG7808	DB	'omfint.c', 00H
 	ORG $+7
-$SG7820	DB	'omfint.c', 00H
+$SG7825	DB	'omfint.c', 00H
 	ORG $+7
-$SG7828	DB	'omfint.c', 00H
+$SG7833	DB	'omfint.c', 00H
 	ORG $+7
-$SG7836	DB	'omfint.c', 00H
+$SG7841	DB	'omfint.c', 00H
 	ORG $+7
-$SG7847	DB	'omfint.c', 00H
+$SG7852	DB	'omfint.c', 00H
 	ORG $+7
-$SG7854	DB	'unexpected OMF record type 0x%02X', 0aH, 00H
+$SG7859	DB	'unexpected OMF record type 0x%02X', 0aH, 00H
 	ORG $+5
-$SG7855	DB	'omfint.c', 00H
+$SG7860	DB	'omfint.c', 00H
 	ORG $+7
-$SG7880	DB	'omfint.c', 00H
+$SG7885	DB	'omfint.c', 00H
 	ORG $+7
-$SG7881	DB	'omf_write_record( cmd=%X data=%p length=%u )', 0aH, 00H
+$SG7886	DB	'omf_write_record( cmd=%X data=%p length=%u )', 0aH, 00H
 _DATA	ENDS
 PUBLIC	omf_write_record
 EXTRN	__imp_fwrite:PROC
@@ -279,13 +279,13 @@ writeUnexp PROC
 	mov	rax, QWORD PTR objr$[rsp]
 	movzx	eax, BYTE PTR [rax+16]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG7854
+	lea	rcx, OFFSET FLAT:$SG7859
 	call	DoDebugMsg
 
 ; 458  :     Fatal( INTERNAL_ERROR, __FILE__, __LINE__ );
 
 	mov	r8d, 458				; 000001caH
-	lea	rdx, OFFSET FLAT:$SG7855
+	lea	rdx, OFFSET FLAT:$SG7860
 	mov	ecx, 110				; 0000006eH
 	call	Fatal
 
@@ -332,7 +332,7 @@ writeLinsym PROC
 	jmp	SHORT $LN4@writeLinsy
 $LN3@writeLinsy:
 	mov	edx, 442				; 000001baH
-	lea	rcx, OFFSET FLAT:$SG7847
+	lea	rcx, OFFSET FLAT:$SG7852
 	call	InternalError
 	mov	DWORD PTR tv70[rsp], eax
 $LN4@writeLinsy:
@@ -416,7 +416,7 @@ writeComdat PROC
 	jmp	SHORT $LN7@writeComda
 $LN6@writeComda:
 	mov	edx, 413				; 0000019dH
-	lea	rcx, OFFSET FLAT:$SG7836
+	lea	rcx, OFFSET FLAT:$SG7841
 	call	InternalError
 	mov	DWORD PTR tv70[rsp], eax
 $LN7@writeComda:
@@ -572,7 +572,7 @@ writeLinnum PROC
 	jmp	SHORT $LN4@writeLinnu
 $LN3@writeLinnu:
 	mov	edx, 395				; 0000018bH
-	lea	rcx, OFFSET FLAT:$SG7828
+	lea	rcx, OFFSET FLAT:$SG7833
 	call	InternalError
 	mov	DWORD PTR tv70[rsp], eax
 $LN4@writeLinnu:
@@ -651,7 +651,7 @@ writePubdef PROC
 	cmp	eax, 182				; 000000b6H
 	je	SHORT $LN3@writePubde
 	mov	edx, 382				; 0000017eH
-	lea	rcx, OFFSET FLAT:$SG7820
+	lea	rcx, OFFSET FLAT:$SG7825
 	call	InternalError
 	mov	DWORD PTR tv73[rsp], eax
 	jmp	SHORT $LN4@writePubde
@@ -802,7 +802,7 @@ writeModend PROC
 	jmp	SHORT $LN6@writeModen
 $LN5@writeModen:
 	mov	edx, 341				; 00000155H
-	lea	rcx, OFFSET FLAT:$SG7803
+	lea	rcx, OFFSET FLAT:$SG7808
 	call	InternalError
 	mov	DWORD PTR tv70[rsp], eax
 $LN6@writeModen:
@@ -945,7 +945,7 @@ writeTheadr PROC
 	jmp	SHORT $LN4@writeThead
 $LN3@writeThead:
 	mov	edx, 329				; 00000149H
-	lea	rcx, OFFSET FLAT:$SG7793
+	lea	rcx, OFFSET FLAT:$SG7798
 	call	InternalError
 	mov	DWORD PTR tv70[rsp], eax
 $LN4@writeThead:
@@ -995,7 +995,7 @@ writeLedata PROC
 	cmp	eax, 162				; 000000a2H
 	je	SHORT $LN5@writeLedat
 	mov	edx, 312				; 00000138H
-	lea	rcx, OFFSET FLAT:$SG7783
+	lea	rcx, OFFSET FLAT:$SG7788
 	call	InternalError
 	mov	DWORD PTR tv73[rsp], eax
 	jmp	SHORT $LN6@writeLedat
@@ -1112,7 +1112,7 @@ writeSegdef PROC
 	jmp	SHORT $LN8@writeSegde
 $LN7@writeSegde:
 	mov	edx, 220				; 000000dcH
-	lea	rcx, OFFSET FLAT:$SG7771
+	lea	rcx, OFFSET FLAT:$SG7776
 	call	InternalError
 	mov	DWORD PTR tv70[rsp], eax
 $LN8@writeSegde:
@@ -1338,7 +1338,7 @@ writeComent PROC
 	jmp	SHORT $LN4@writeComen
 $LN3@writeComen:
 	mov	edx, 203				; 000000cbH
-	lea	rcx, OFFSET FLAT:$SG7760
+	lea	rcx, OFFSET FLAT:$SG7765
 	call	InternalError
 	mov	DWORD PTR tv69[rsp], eax
 $LN4@writeComen:
@@ -1418,7 +1418,7 @@ writeMisc32 PROC
 	jmp	SHORT $LN4@writeMisc3
 $LN3@writeMisc3:
 	mov	edx, 192				; 000000c0H
-	lea	rcx, OFFSET FLAT:$SG7751
+	lea	rcx, OFFSET FLAT:$SG7756
 	call	InternalError
 	mov	DWORD PTR tv69[rsp], eax
 $LN4@writeMisc3:
@@ -1489,7 +1489,7 @@ writeMisc PROC
 	jmp	SHORT $LN4@writeMisc
 $LN3@writeMisc:
 	mov	edx, 179				; 000000b3H
-	lea	rcx, OFFSET FLAT:$SG7742
+	lea	rcx, OFFSET FLAT:$SG7747
 	call	InternalError
 	mov	DWORD PTR tv69[rsp], eax
 $LN4@writeMisc:
@@ -1593,13 +1593,13 @@ $LN2@PutMem:
 	mov	eax, ecx
 	mov	r8d, eax
 	mov	edx, DWORD PTR length$[rsp]
-	lea	rcx, OFFSET FLAT:$SG7732
+	lea	rcx, OFFSET FLAT:$SG7737
 	call	DoDebugMsg
 
 ; 168  :         Fatal( INTERNAL_ERROR, __FILE__, __LINE__ );
 
 	mov	r8d, 168				; 000000a8H
-	lea	rdx, OFFSET FLAT:$SG7733
+	lea	rdx, OFFSET FLAT:$SG7738
 	mov	ecx, 110				; 0000006eH
 	call	Fatal
 $LN3@PutMem:
@@ -1804,7 +1804,7 @@ WEndRec	PROC
 	jmp	SHORT $LN7@WEndRec
 $LN6@WEndRec:
 	mov	edx, 96					; 00000060H
-	lea	rcx, OFFSET FLAT:$SG7690
+	lea	rcx, OFFSET FLAT:$SG7695
 	call	InternalError
 	mov	DWORD PTR tv71[rsp], eax
 $LN7@WEndRec:
@@ -2032,7 +2032,7 @@ $LN5:
 	jmp	SHORT $LN4@omf_write_
 $LN3@omf_write_:
 	mov	edx, 525				; 0000020dH
-	lea	rcx, OFFSET FLAT:$SG7880
+	lea	rcx, OFFSET FLAT:$SG7885
 	call	InternalError
 	mov	DWORD PTR tv74[rsp], eax
 $LN4@omf_write_:
@@ -2046,7 +2046,7 @@ $LN4@omf_write_:
 	mov	rcx, QWORD PTR objr$[rsp]
 	mov	r8, QWORD PTR [rcx+8]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG7881
+	lea	rcx, OFFSET FLAT:$SG7886
 	call	DoDebugMsg1
 
 ; 527  :     myFuncs[ func_index[JUMP_INDEX(objr->command) ] ] ( &out, objr );

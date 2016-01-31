@@ -10,25 +10,25 @@ COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10820 DB	'ASSUMES', 00H
-$SG10821 DB	'RADIX', 00H
+$SG10825 DB	'ASSUMES', 00H
+$SG10826 DB	'RADIX', 00H
 	ORG $+2
-$SG10822 DB	'LISTING', 00H
-$SG10823 DB	'CPU', 00H
-$SG10825 DB	'ALL', 00H
-$SG10824 DB	'ALIGNMENT', 00H
+$SG10827 DB	'LISTING', 00H
+$SG10828 DB	'CPU', 00H
+$SG10830 DB	'ALL', 00H
+$SG10829 DB	'ALIGNMENT', 00H
 	ORG $+6
-$SG10884 DB	'%s directive enter', 0aH, 00H
+$SG10889 DB	'%s directive enter', 0aH, 00H
 	ORG $+4
-$SG10892 DB	'POPCONTEXT type=%X', 0aH, 00H
+$SG10897 DB	'POPCONTEXT type=%X', 0aH, 00H
 	ORG $+4
-$SG10893 DB	'POPCONTEXT: found item with type=%X', 0aH, 00H
+$SG10898 DB	'POPCONTEXT: found item with type=%X', 0aH, 00H
 	ORG $+3
-$SG10904 DB	'POPCONTEXT error, remaining type flags=%X', 0aH, 00H
+$SG10909 DB	'POPCONTEXT error, remaining type flags=%X', 0aH, 00H
 	ORG $+5
-$SG10905 DB	'PUSHCONTEXT type=%X', 0aH, 00H
+$SG10910 DB	'PUSHCONTEXT type=%X', 0aH, 00H
 	ORG $+3
-$SG10931 DB	'ContextSaveState: SavedContexts=%X', 0aH, 00H
+$SG10936 DB	'ContextSaveState: SavedContexts=%X', 0aH, 00H
 _DATA	ENDS
 CONST	SEGMENT
 typetab	DD	01H
@@ -37,12 +37,12 @@ typetab	DD	01H
 	DD	08H
 	DD	010H
 	DD	0fH
-contextnames DQ	FLAT:$SG10820
-	DQ	FLAT:$SG10821
-	DQ	FLAT:$SG10822
-	DQ	FLAT:$SG10823
-	DQ	FLAT:$SG10824
-	DQ	FLAT:$SG10825
+contextnames DQ	FLAT:$SG10825
+	DQ	FLAT:$SG10826
+	DQ	FLAT:$SG10827
+	DQ	FLAT:$SG10828
+	DQ	FLAT:$SG10829
+	DQ	FLAT:$SG10830
 CONST	ENDS
 PUBLIC	ContextSaveState
 PUBLIC	ContextDirective
@@ -296,7 +296,7 @@ $LN60:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG10884
+	lea	rcx, OFFSET FLAT:$SG10889
 	call	DoDebugMsg
 
 ; 115  : 
@@ -438,7 +438,7 @@ $LN19@ContextDir:
 	call	_RTC_UninitUse
 $LN49@ContextDir:
 	mov	edx, DWORD PTR type$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10892
+	lea	rcx, OFFSET FLAT:$SG10897
 	call	DoDebugMsg
 
 ; 141  :             /* for POPCONTEXT, check if appropriate items are on the stack */
@@ -467,7 +467,7 @@ $LN50@ContextDir:
 
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	edx, DWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10893
+	lea	rcx, OFFSET FLAT:$SG10898
 	call	DoDebugMsg
 
 ; 145  :                 next = curr->next;
@@ -745,7 +745,7 @@ $LN53@ContextDir:
 	call	_RTC_UninitUse
 $LN54@ContextDir:
 	mov	edx, DWORD PTR type$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10904
+	lea	rcx, OFFSET FLAT:$SG10909
 	call	DoDebugMsg
 
 ; 190  :                 return( EmitErr( UNMATCHED_BLOCK_NESTING, tokenarray[start].tokpos ) );
@@ -773,7 +773,7 @@ $LN22@ContextDir:
 	call	_RTC_UninitUse
 $LN55@ContextDir:
 	mov	edx, DWORD PTR type$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10905
+	lea	rcx, OFFSET FLAT:$SG10910
 	call	DoDebugMsg
 
 ; 194  :             for ( j = 0; j < ( sizeof(typetab) / sizeof(typetab[0] ) ) && type; j++ ) {
@@ -1189,7 +1189,7 @@ $LN3@ContextSav:
 ; 265  :         DebugMsg(( "ContextSaveState: SavedContexts=%X\n", SavedContexts ));
 
 	mov	rdx, QWORD PTR ModuleInfo+256
-	lea	rcx, OFFSET FLAT:$SG10931
+	lea	rcx, OFFSET FLAT:$SG10936
 	call	DoDebugMsg
 
 ; 266  :         for ( src = ContextStack, dst = SavedContexts ; src ; src = src->next, dst++ ) {

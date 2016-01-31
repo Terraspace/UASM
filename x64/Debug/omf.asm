@@ -10,124 +10,124 @@ COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG12406 DB	01H DUP (?)
-$SG12673 DB	01H DUP (?)
+$SG12411 DB	01H DUP (?)
+$SG12678 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	LastCodeBufSize:DWORD
 _DATA	ENDS
 CONST	SEGMENT
-SymDebParm DQ	FLAT:$SG12167
-	DQ	FLAT:$SG12168
-	DQ	FLAT:$SG12169
-	DQ	FLAT:$SG12170
+SymDebParm DQ	FLAT:$SG12172
+	DQ	FLAT:$SG12173
+	DQ	FLAT:$SG12174
+	DQ	FLAT:$SG12175
 CONST	ENDS
 _DATA	SEGMENT
-$SG12288 DB	'omf_OutSelect: data in code segment (%s), starting at %X'
+$SG12293 DB	'omf_OutSelect: data in code segment (%s), starting at %X'
 	DB	0aH, 00H
 	ORG $+6
-$SG12291 DB	'omf_OutSelect: writing coment record about data in code:'
+$SG12296 DB	'omf_OutSelect: writing coment record about data in code:'
 	DB	' start=%X curofs=%X', 0aH, 00H
 	ORG $+3
-$SG12354 DB	'omf_write_ledata enter, buffer=%p start ofs=%X, size=%X', 0aH
+$SG12359 DB	'omf_write_ledata enter, buffer=%p start ofs=%X, size=%X', 0aH
 	DB	00H
 	ORG $+3
-$SG12367 DB	'NULL', 00H
+$SG12372 DB	'NULL', 00H
 	ORG $+3
-$SG12397 DB	01H, 00H
+$SG12402 DB	01H, 00H
 	ORG $+2
-$SG12368 DB	'omf_FlushCurrSeg() enter, CurrSeg=%s, currsrc=%u', 0aH, 00H
+$SG12373 DB	'omf_FlushCurrSeg() enter, CurrSeg=%s, currsrc=%u', 0aH, 00H
 	ORG $+2
-$SG12764 DB	01H, 'CV', 00H
-$SG12376 DB	'omf_write_theadr(%s) enter', 0aH, 00H
+$SG12769 DB	01H, 'CV', 00H
+$SG12381 DB	'omf_write_theadr(%s) enter', 0aH, 00H
 	ORG $+4
-$SG12377 DB	'omf_write_theadr() exit', 0aH, 00H
+$SG12382 DB	'omf_write_theadr() exit', 0aH, 00H
 	ORG $+3
-$SG12469 DB	'omf.c', 00H
+$SG12474 DB	'omf.c', 00H
 	ORG $+6
-$SG12400 DB	'omf_set_filepos: reset file pos to %X', 0aH, 00H
+$SG12405 DB	'omf_set_filepos: reset file pos to %X', 0aH, 00H
 	ORG $+1
-$SG12418 DB	'omf_write_lib() enter', 0aH, 00H
+$SG12423 DB	'omf_write_lib() enter', 0aH, 00H
 	ORG $+1
-$SG12419 DB	'omf_write_lib() exit', 0aH, 00H
+$SG12424 DB	'omf_write_lib() exit', 0aH, 00H
 	ORG $+2
-$SG12455 DB	'omf_write_grpdef enter', 0aH, 00H
-$SG12457 DB	'omf_write_grpdef exit', 0aH, 00H
+$SG12460 DB	'omf_write_grpdef enter', 0aH, 00H
+$SG12462 DB	'omf_write_grpdef exit', 0aH, 00H
 	ORG $+1
-$SG12480 DB	'omf_write_segdef enter', 0aH, 00H
-$SG12486 DB	'omf_write_segdef exit', 0aH, 00H
+$SG12485 DB	'omf_write_segdef enter', 0aH, 00H
+$SG12491 DB	'omf_write_segdef exit', 0aH, 00H
 	ORG $+1
-$SG12484 DB	'omf_write_segdef(%s): len=%X use32=%u align=%u comb=%u s'
+$SG12489 DB	'omf_write_segdef(%s): len=%X use32=%u align=%u comb=%u s'
 	DB	'eg_lname=%u class_lname=%u ovl_lname=%u', 0aH, 00H
 	ORG $+3
-$SG12543 DB	'omf.c', 00H
+$SG12548 DB	'omf.c', 00H
 	ORG $+6
-$SG12509 DB	'omf_write_lnames() enter', 0aH, 00H
+$SG12514 DB	'omf_write_lnames() enter', 0aH, 00H
 	ORG $+6
-$SG12515 DB	'omf_write_lnames: %u=%s', 0aH, 00H
+$SG12520 DB	'omf_write_lnames: %u=%s', 0aH, 00H
 	ORG $+3
-$SG12546 DB	'omf.c', 00H
+$SG12551 DB	'omf.c', 00H
 	ORG $+6
-$SG12519 DB	'omf_write_lnames() exit, items=%u', 0aH, 00H
+$SG12524 DB	'omf_write_lnames() exit, items=%u', 0aH, 00H
 	ORG $+5
-$SG12573 DB	'omf_write_extdef enter', 0aH, 00H
-$SG12574 DB	'omf_write_extdef: %s', 0aH, 00H
+$SG12578 DB	'omf_write_extdef enter', 0aH, 00H
+$SG12579 DB	'omf_write_extdef: %s', 0aH, 00H
 	ORG $+2
-$SG12578 DB	'omf_write_extdef: write record, names=%u, size=%u, MAX=%'
+$SG12583 DB	'omf_write_extdef: write record, names=%u, size=%u, MAX=%'
 	DB	'u', 0aH, 00H
 	ORG $+5
-$SG12581 DB	'omf_write_extdef exit, index=%u', 0aH, 00H
+$SG12586 DB	'omf_write_extdef exit, index=%u', 0aH, 00H
 	ORG $+3
-$SG12637 DB	'omf.c', 00H
+$SG12642 DB	'omf.c', 00H
 	ORG $+6
-$SG12634 DB	'omf_write_comdef enter', 0aH, 00H
-$SG12642 DB	'omf_write_comdef: numsize=%u, length=%u, varsize=%u', 0aH
+$SG12639 DB	'omf_write_comdef enter', 0aH, 00H
+$SG12647 DB	'omf_write_comdef: numsize=%u, length=%u, varsize=%u', 0aH
 	DB	00H
 	ORG $+3
-$SG12638 DB	'omf_write_comdef: %s, size=%u, sym.total_size=%u, sym.to'
+$SG12643 DB	'omf_write_comdef: %s, size=%u, sym.total_size=%u, sym.to'
 	DB	'tal_length=%u, sym.isfar=%u', 0aH, 00H
 	ORG $+3
-$SG12643 DB	'omf_write_comdef: numsize=%u, value=%u', 0aH, 00H
-$SG12646 DB	'omf_write_comdef exit', 0aH, 00H
+$SG12648 DB	'omf_write_comdef: numsize=%u, value=%u', 0aH, 00H
+$SG12651 DB	'omf_write_comdef exit', 0aH, 00H
 	ORG $+1
-$SG12653 DB	'GetFileTimeStamp(%s): _stat() did return 0', 0aH, 00H
+$SG12658 DB	'GetFileTimeStamp(%s): _stat() did return 0', 0aH, 00H
 	ORG $+4
-$SG12670 DB	'omf_write_autodep() enter', 0aH, 00H
+$SG12675 DB	'omf_write_autodep() enter', 0aH, 00H
 	ORG $+5
-$SG12672 DB	'omf_write_autodep(): write record: file=%s, time=%X', 0aH
+$SG12677 DB	'omf_write_autodep(): write record: file=%s, time=%X', 0aH
 	DB	00H
 	ORG $+3
-$SG12674 DB	'omf_write_autodep() exit', 0aH, 00H
+$SG12679 DB	'omf_write_autodep() exit', 0aH, 00H
 	ORG $+6
-$SG12716 DB	'omf_write_pub enter', 0aH, 00H
+$SG12721 DB	'omf_write_pub enter', 0aH, 00H
 	ORG $+3
-$SG12730 DB	'omf_write_pub exit', 0aH, 00H
+$SG12735 DB	'omf_write_pub exit', 0aH, 00H
 	ORG $+4
-$SG12740 DB	'omf_write_modend( fixup=%p, displ=%X)', 0aH, 00H
+$SG12745 DB	'omf_write_modend( fixup=%p, displ=%X)', 0aH, 00H
 	ORG $+1
-$SG12795 DB	'omf_init enter', 0aH, 00H
-$SG12167 DB	'$$SYMBOLS', 00H
+$SG12800 DB	'omf_init enter', 0aH, 00H
+$SG12172 DB	'$$SYMBOLS', 00H
 	ORG $+2
-$SG12168 DB	'DEBSYM', 00H
+$SG12173 DB	'DEBSYM', 00H
 	ORG $+5
-$SG12169 DB	'$$TYPES', 00H
-$SG12170 DB	'DEBTYP', 00H
+$SG12174 DB	'$$TYPES', 00H
+$SG12175 DB	'DEBTYP', 00H
 	ORG $+1
-$SG12179 DB	'omf_InitRec(%p, %X)', 0aH, 00H
+$SG12184 DB	'omf_InitRec(%p, %X)', 0aH, 00H
 	ORG $+3
-$SG12195 DB	'omf.c', 00H
+$SG12200 DB	'omf.c', 00H
 	ORG $+2
-$SG12208 DB	'omf.c', 00H
+$SG12213 DB	'omf.c', 00H
 	ORG $+2
-$SG12221 DB	'omf.c', 00H
+$SG12226 DB	'omf.c', 00H
 	ORG $+2
-$SG12231 DB	'omf.c', 00H
+$SG12236 DB	'omf.c', 00H
 	ORG $+2
-$SG12244 DB	'omf.c', 00H
+$SG12249 DB	'omf.c', 00H
 	ORG $+2
-$SG12257 DB	'omf.c', 00H
+$SG12262 DB	'omf.c', 00H
 	ORG $+2
-$SG12268 DB	'omf.c', 00H
+$SG12273 DB	'omf.c', 00H
 _DATA	ENDS
 PUBLIC	omf_init
 PUBLIC	omf_set_filepos
@@ -1314,7 +1314,7 @@ omf_write_header_dbgcv PROC
 ; 1532 :     AttachData( &obj, "\001CV", 3 );
 
 	mov	r8d, 3
-	lea	rdx, OFFSET FLAT:$SG12764
+	lea	rdx, OFFSET FLAT:$SG12769
 	lea	rcx, QWORD PTR obj$[rsp]
 	call	AttachData
 
@@ -1526,7 +1526,7 @@ omf_write_modend PROC
 
 	mov	r8d, DWORD PTR displ$[rsp]
 	mov	rdx, QWORD PTR fixup$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12740
+	lea	rcx, OFFSET FLAT:$SG12745
 	call	DoDebugMsg
 
 ; 1486 : 
@@ -1660,7 +1660,7 @@ omf_write_pubdef PROC
 ; 1371 : 
 ; 1372 :     DebugMsg1(("omf_write_pub enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12716
+	lea	rcx, OFFSET FLAT:$SG12721
 	call	DoDebugMsg1
 
 ; 1373 : 
@@ -2136,7 +2136,7 @@ $LN3@omf_write_:
 ; 1474 : 
 ; 1475 :     DebugMsg1(("omf_write_pub exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12730
+	lea	rcx, OFFSET FLAT:$SG12735
 	call	DoDebugMsg1
 
 ; 1476 :     return( NOT_ERROR );
@@ -2362,7 +2362,7 @@ omf_write_autodep PROC
 ; 1285 : 
 ; 1286 :     DebugMsg(("omf_write_autodep() enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12670
+	lea	rcx, OFFSET FLAT:$SG12675
 	call	DoDebugMsg
 
 ; 1287 :     for( idx = 0, curr = ModuleInfo.g.FNames; idx < ModuleInfo.g.cnt_fnames; idx++, curr++ ) {
@@ -2461,7 +2461,7 @@ $LN5@omf_write_:
 	mov	r8, QWORD PTR [rax]
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rdx, QWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG12672
+	lea	rcx, OFFSET FLAT:$SG12677
 	call	DoDebugMsg
 
 ; 1304 :         omf_write_record( &obj );
@@ -2492,7 +2492,7 @@ $LN3@omf_write_:
 ; 1310 :     AttachData( &obj, (uint_8 *)"", 0 );
 
 	xor	r8d, r8d
-	lea	rdx, OFFSET FLAT:$SG12673
+	lea	rdx, OFFSET FLAT:$SG12678
 	lea	rcx, QWORD PTR obj$[rsp]
 	call	AttachData
 
@@ -2503,7 +2503,7 @@ $LN3@omf_write_:
 
 ; 1312 :     DebugMsg(("omf_write_autodep() exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12674
+	lea	rcx, OFFSET FLAT:$SG12679
 	call	DoDebugMsg
 
 ; 1313 :     return( NOT_ERROR );
@@ -2560,7 +2560,7 @@ GetFileTimeStamp PROC
 ; 1267 :         DebugMsg(("GetFileTimeStamp(%s): _stat() did return 0\n", filename ));
 
 	mov	rdx, QWORD PTR filename$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12653
+	lea	rcx, OFFSET FLAT:$SG12658
 	call	DoDebugMsg
 
 ; 1268 :         return( 0 );
@@ -2641,7 +2641,7 @@ omf_write_comdef PROC
 ; 1191 : 
 ; 1192 :     DebugMsg1(("omf_write_comdef enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12634
+	lea	rcx, OFFSET FLAT:$SG12639
 	call	DoDebugMsg1
 
 ; 1193 :     curr = SymTables[TAB_EXT].head;
@@ -2735,7 +2735,7 @@ $LN8@omf_write_:
 	jmp	SHORT $LN16@omf_write_
 $LN15@omf_write_:
 	mov	edx, 1209				; 000004b9H
-	lea	rcx, OFFSET FLAT:$SG12637
+	lea	rcx, OFFSET FLAT:$SG12642
 	call	InternalError
 	mov	DWORD PTR tv128[rsp], eax
 $LN16@omf_write_:
@@ -2766,7 +2766,7 @@ $LN16@omf_write_:
 	mov	r8d, DWORD PTR varsize$[rsp]
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12638
+	lea	rcx, OFFSET FLAT:$SG12643
 	call	DoDebugMsg1
 
 ; 1213 :                       curr->sym.name, varsize, curr->sym.total_size, curr->sym.total_length, curr->sym.isfar ));
@@ -2838,7 +2838,7 @@ $LN9@omf_write_:
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	r8d, DWORD PTR [rax+64]
 	mov	edx, DWORD PTR numsize$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12642
+	lea	rcx, OFFSET FLAT:$SG12647
 	call	DoDebugMsg
 
 ; 1223 :                           numsize, curr->sym.total_length, varsize ));
@@ -2875,7 +2875,7 @@ $LN10@omf_write_:
 	imul	eax, DWORD PTR varsize$[rsp]
 	mov	r8d, eax
 	mov	edx, DWORD PTR numsize$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12643
+	lea	rcx, OFFSET FLAT:$SG12648
 	call	DoDebugMsg1
 $LN11@omf_write_:
 
@@ -3026,7 +3026,7 @@ $LN3@omf_write_:
 
 ; 1257 :     DebugMsg1(("omf_write_comdef exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12646
+	lea	rcx, OFFSET FLAT:$SG12651
 	call	DoDebugMsg1
 
 ; 1258 :     return( index );
@@ -3289,7 +3289,7 @@ omf_write_extdef PROC
 ; 1044 : 
 ; 1045 :     DebugMsg1(("omf_write_extdef enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12573
+	lea	rcx, OFFSET FLAT:$SG12578
 	call	DoDebugMsg1
 
 ; 1046 : 
@@ -3349,7 +3349,7 @@ $LN6@omf_write_:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12574
+	lea	rcx, OFFSET FLAT:$SG12579
 	call	DoDebugMsg1
 
 ; 1059 :             len = Mangle( sym, buffer );
@@ -3457,7 +3457,7 @@ $LN5@omf_write_:
 	mov	r9d, 1020				; 000003fcH
 	mov	r8d, DWORD PTR rec_size$[rsp]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG12578
+	lea	rcx, OFFSET FLAT:$SG12583
 	call	DoDebugMsg1
 
 ; 1079 :             omf_InitRec( &obj, CMD_EXTDEF );
@@ -3647,7 +3647,7 @@ $LN11@omf_write_:
 
 	movzx	eax, WORD PTR r$[rsp+8]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG12581
+	lea	rcx, OFFSET FLAT:$SG12586
 	call	DoDebugMsg1
 
 ; 1122 :     return( r.index );
@@ -3758,7 +3758,7 @@ $LN9@GetExt:
 	jmp	SHORT $LN15@GetExt
 $LN14@GetExt:
 	mov	edx, 1006				; 000003eeH
-	lea	rcx, OFFSET FLAT:$SG12543
+	lea	rcx, OFFSET FLAT:$SG12548
 	call	InternalError
 	mov	DWORD PTR tv92[rsp], eax
 $LN15@GetExt:
@@ -3872,7 +3872,7 @@ $LN11@GetExt:
 	jmp	SHORT $LN17@GetExt
 $LN16@GetExt:
 	mov	edx, 1020				; 000003fcH
-	lea	rcx, OFFSET FLAT:$SG12546
+	lea	rcx, OFFSET FLAT:$SG12551
 	call	InternalError
 	mov	DWORD PTR tv167[rsp], eax
 $LN17@GetExt:
@@ -3950,7 +3950,7 @@ omf_write_lnames PROC
 ; 932  : 
 ; 933  :     DebugMsg1(("omf_write_lnames() enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12509
+	lea	rcx, OFFSET FLAT:$SG12514
 	call	DoDebugMsg1
 
 ; 934  :     p = buffer;
@@ -4126,7 +4126,7 @@ $LN11@omf_write_:
 
 	mov	r8, QWORD PTR p$[rsp]
 	mov	edx, DWORD PTR items$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12515
+	lea	rcx, OFFSET FLAT:$SG12520
 	call	DoDebugMsg1
 
 ; 969  :         p += sym->name_size; /* overwrite the null char */
@@ -4192,7 +4192,7 @@ $LN3@omf_write_:
 ; 979  :     DebugMsg1(("omf_write_lnames() exit, items=%u\n", items ));
 
 	mov	edx, DWORD PTR items$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12519
+	lea	rcx, OFFSET FLAT:$SG12524
 	call	DoDebugMsg1
 
 ; 980  : }
@@ -4237,7 +4237,7 @@ omf_write_segdef PROC
 ; 858  : 
 ; 859  :     DebugMsg1(("omf_write_segdef enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12480
+	lea	rcx, OFFSET FLAT:$SG12485
 	call	DoDebugMsg1
 
 ; 860  : 
@@ -4434,7 +4434,7 @@ $LN15@omf_write_:
 	mov	r8d, DWORD PTR obj$[rsp+36]
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12484
+	lea	rcx, OFFSET FLAT:$SG12489
 	call	DoDebugMsg1
 
 ; 887  :                   curr->sym.name,
@@ -4516,7 +4516,7 @@ $LN3@omf_write_:
 
 ; 913  :     DebugMsg1(("omf_write_segdef exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12486
+	lea	rcx, OFFSET FLAT:$SG12491
 	call	DoDebugMsg1
 
 ; 914  : }
@@ -4562,7 +4562,7 @@ omf_write_grpdef PROC
 ; 789  : 
 ; 790  :     DebugMsg1(("omf_write_grpdef enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12455
+	lea	rcx, OFFSET FLAT:$SG12460
 	call	DoDebugMsg1
 
 ; 791  :     //line_num = LineNumber;
@@ -4705,7 +4705,7 @@ $LN3@omf_write_:
 
 ; 823  :     DebugMsg1(("omf_write_grpdef exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12457
+	lea	rcx, OFFSET FLAT:$SG12462
 	call	DoDebugMsg1
 
 ; 824  : }
@@ -4998,7 +4998,7 @@ omf_write_lib PROC
 ; 648  : 
 ; 649  :     DebugMsg1(("omf_write_lib() enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12418
+	lea	rcx, OFFSET FLAT:$SG12423
 	call	DoDebugMsg1
 
 ; 650  :     for( curr = ModuleInfo.g.LibQueue.head; curr; curr = next ) {
@@ -5060,7 +5060,7 @@ $LN3@omf_write_:
 
 ; 659  :     DebugMsg1(("omf_write_lib() exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12419
+	lea	rcx, OFFSET FLAT:$SG12424
 	call	DoDebugMsg1
 
 ; 660  : }
@@ -5114,7 +5114,7 @@ omf_write_dosseg PROC
 ; 637  :     AttachData( &obj, (uint_8 *)"", 0 );
 
 	xor	r8d, r8d
-	lea	rdx, OFFSET FLAT:$SG12406
+	lea	rdx, OFFSET FLAT:$SG12411
 	lea	rcx, QWORD PTR obj$[rsp]
 	call	AttachData
 
@@ -5174,7 +5174,7 @@ omf_end_of_pass1 PROC
 ; 612  :     AttachData( &obj, (uint_8 *)"\x001", 1 );
 
 	mov	r8d, 1
-	lea	rdx, OFFSET FLAT:$SG12397
+	lea	rdx, OFFSET FLAT:$SG12402
 	lea	rcx, QWORD PTR obj$[rsp]
 	call	AttachData
 
@@ -5226,7 +5226,7 @@ omf_write_theadr PROC
 ; 530  :     DebugMsg1(("omf_write_theadr(%s) enter\n", name));
 
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12376
+	lea	rcx, OFFSET FLAT:$SG12381
 	call	DoDebugMsg1
 
 ; 531  : 
@@ -5273,7 +5273,7 @@ omf_write_theadr PROC
 ; 542  : 
 ; 543  :     DebugMsg1(("omf_write_theadr() exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12377
+	lea	rcx, OFFSET FLAT:$SG12382
 	call	DoDebugMsg1
 
 ; 544  : }
@@ -5337,7 +5337,7 @@ omf_write_ledata PROC
 	mov	r9d, DWORD PTR size$[rsp]
 	mov	r8d, DWORD PTR [rax+8]
 	mov	rdx, QWORD PTR [rcx+16]
-	lea	rcx, OFFSET FLAT:$SG12354
+	lea	rcx, OFFSET FLAT:$SG12359
 	call	DoDebugMsg1
 
 ; 427  :               seg->e.seginfo->CodeBuffer, seg->e.seginfo->start_loc, size ));
@@ -5741,7 +5741,7 @@ $LN2@get_omfali:
 	jmp	SHORT $LN11@get_omfali
 $LN10@get_omfali:
 	mov	edx, 843				; 0000034bH
-	lea	rcx, OFFSET FLAT:$SG12469
+	lea	rcx, OFFSET FLAT:$SG12474
 	call	InternalError
 	mov	DWORD PTR tv78[rsp], eax
 $LN11@get_omfali:
@@ -6213,7 +6213,7 @@ AttachData PROC
 	jmp	SHORT $LN4@AttachData
 $LN3@AttachData:
 	mov	edx, 257				; 00000101H
-	lea	rcx, OFFSET FLAT:$SG12268
+	lea	rcx, OFFSET FLAT:$SG12273
 	call	InternalError
 	mov	DWORD PTR tv69[rsp], eax
 $LN4@AttachData:
@@ -6270,7 +6270,7 @@ PutName	PROC
 	jmp	SHORT $LN4@PutName
 $LN3@PutName:
 	mov	edx, 243				; 000000f3H
-	lea	rcx, OFFSET FLAT:$SG12257
+	lea	rcx, OFFSET FLAT:$SG12262
 	call	InternalError
 	mov	DWORD PTR tv70[rsp], eax
 $LN4@PutName:
@@ -6342,7 +6342,7 @@ PutData	PROC
 	jmp	SHORT $LN4@PutData
 $LN3@PutData:
 	mov	edx, 235				; 000000ebH
-	lea	rcx, OFFSET FLAT:$SG12244
+	lea	rcx, OFFSET FLAT:$SG12249
 	call	InternalError
 	mov	DWORD PTR tv70[rsp], eax
 $LN4@PutData:
@@ -6406,7 +6406,7 @@ PutIndex PROC
 	jmp	SHORT $LN5@PutIndex
 $LN4@PutIndex:
 	mov	edx, 225				; 000000e1H
-	lea	rcx, OFFSET FLAT:$SG12231
+	lea	rcx, OFFSET FLAT:$SG12236
 	call	InternalError
 	mov	DWORD PTR tv71[rsp], eax
 $LN5@PutIndex:
@@ -6487,7 +6487,7 @@ Put32	PROC
 	jmp	SHORT $LN4@Put32
 $LN3@Put32:
 	mov	edx, 195				; 000000c3H
-	lea	rcx, OFFSET FLAT:$SG12221
+	lea	rcx, OFFSET FLAT:$SG12226
 	call	InternalError
 	mov	DWORD PTR tv70[rsp], eax
 $LN4@Put32:
@@ -6548,7 +6548,7 @@ Put16	PROC
 	jmp	SHORT $LN4@Put16
 $LN3@Put16:
 	mov	edx, 186				; 000000baH
-	lea	rcx, OFFSET FLAT:$SG12208
+	lea	rcx, OFFSET FLAT:$SG12213
 	call	InternalError
 	mov	DWORD PTR tv70[rsp], eax
 $LN4@Put16:
@@ -6609,7 +6609,7 @@ Put8	PROC
 	jmp	SHORT $LN4@Put8
 $LN3@Put8:
 	mov	edx, 179				; 000000b3H
-	lea	rcx, OFFSET FLAT:$SG12195
+	lea	rcx, OFFSET FLAT:$SG12200
 	call	InternalError
 	mov	DWORD PTR tv70[rsp], eax
 $LN4@Put8:
@@ -6769,7 +6769,7 @@ omf_InitRec PROC
 	movzx	eax, BYTE PTR command$[rsp]
 	mov	r8d, eax
 	mov	rdx, QWORD PTR obj$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12179
+	lea	rcx, OFFSET FLAT:$SG12184
 	call	DoDebugMsg1
 
 ; 157  :     return;
@@ -6973,13 +6973,13 @@ $LN6:
 	mov	QWORD PTR tv68[rsp], rax
 	jmp	SHORT $LN5@omf_FlushC
 $LN4@omf_FlushC:
-	lea	rax, OFFSET FLAT:$SG12367
+	lea	rax, OFFSET FLAT:$SG12372
 	mov	QWORD PTR tv68[rsp], rax
 $LN5@omf_FlushC:
 	call	get_curr_srcfile
 	mov	r8d, eax
 	mov	rdx, QWORD PTR tv68[rsp]
-	lea	rcx, OFFSET FLAT:$SG12368
+	lea	rcx, OFFSET FLAT:$SG12373
 	call	DoDebugMsg1
 
 ; 508  : 
@@ -7101,7 +7101,7 @@ $LN4@omf_OutSel:
 	mov	r8d, DWORD PTR ?sel_start@?1??omf_OutSelect@@9@9
 	mov	rax, QWORD PTR ModuleInfo+432
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12288
+	lea	rcx, OFFSET FLAT:$SG12293
 	call	DoDebugMsg
 	jmp	$LN3@omf_OutSel
 $LN2@omf_OutSel:
@@ -7175,7 +7175,7 @@ $LN2@omf_OutSel:
 
 	mov	r8d, DWORD PTR currofs$[rsp]
 	mov	edx, DWORD PTR ?sel_start@?1??omf_OutSelect@@9@9
-	lea	rcx, OFFSET FLAT:$SG12291
+	lea	rcx, OFFSET FLAT:$SG12296
 	call	DoDebugMsg
 
 ; 318  :             if( ( sel_start > 0xffffUL ) || ( currofs > 0xffffUL ) ) {
@@ -7288,7 +7288,7 @@ $LN3:
 ; 623  :     DebugMsg1(( "omf_set_filepos: reset file pos to %X\n", end_of_header ));
 
 	mov	edx, DWORD PTR end_of_header
-	lea	rcx, OFFSET FLAT:$SG12400
+	lea	rcx, OFFSET FLAT:$SG12405
 	call	DoDebugMsg1
 
 ; 624  : #if MULTIHDR
@@ -7330,7 +7330,7 @@ $LN3:
 
 ; 1673 :     DebugMsg(("omf_init enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12795
+	lea	rcx, OFFSET FLAT:$SG12800
 	call	DoDebugMsg
 
 ; 1674 :     modinfo->g.WriteModule = omf_write_module;

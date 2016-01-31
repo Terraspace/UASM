@@ -13,16 +13,16 @@ _BSS	SEGMENT
 memcalls DD	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG7468	DB	'memory used: %u kB', 0aH, 00H
+$SG7473	DB	'memory used: %u kB', 0aH, 00H
 	ORG $+4
-$SG7470	DB	'still allocated memory blocks : %u', 0aH, 00H
+$SG7475	DB	'still allocated memory blocks : %u', 0aH, 00H
 	ORG $+4
-$SG7486	DB	'LclAlloc: new block needed, req. size=%Xh > currfree=%Xh'
+$SG7491	DB	'LclAlloc: new block needed, req. size=%Xh > currfree=%Xh'
 	DB	0aH, 00H
 	ORG $+6
-$SG7493	DB	'MemAlloc(0x%X)=%p cnt=%u', 0aH, 00H
+$SG7498	DB	'MemAlloc(0x%X)=%p cnt=%u', 0aH, 00H
 	ORG $+6
-$SG7498	DB	'MemFree(0x%p) cnt=%u', 0aH, 00H
+$SG7503	DB	'MemFree(0x%p) cnt=%u', 0aH, 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	_vfprintf_l
@@ -187,7 +187,7 @@ $LN7:
 
 	mov	r8d, DWORD PTR currfree
 	mov	rdx, QWORD PTR size$[rsp]
-	lea	rcx, OFFSET FLAT:$SG7486
+	lea	rcx, OFFSET FLAT:$SG7491
 	call	DoDebugMsg
 
 ; 190  :         currfree = ( size <= ( BLKSIZE - sizeof( struct linked_list ) ) ? BLKSIZE - sizeof( struct linked_list ) : size );
@@ -321,7 +321,7 @@ $LN3:
 	mov	DWORD PTR memcalls, eax
 	mov	r8d, DWORD PTR memcalls
 	mov	rdx, QWORD PTR ptr$[rsp]
-	lea	rcx, OFFSET FLAT:$SG7498
+	lea	rcx, OFFSET FLAT:$SG7503
 	call	DoDebugMsg1
 
 ; 248  :     free( ptr );
@@ -371,7 +371,7 @@ $LN4:
 	mov	r9d, DWORD PTR memcalls
 	mov	r8, QWORD PTR ptr$[rsp]
 	mov	rdx, QWORD PTR size$[rsp]
-	lea	rcx, OFFSET FLAT:$SG7493
+	lea	rcx, OFFSET FLAT:$SG7498
 	call	DoDebugMsg1
 
 ; 237  :     if( ptr == NULL ) {
@@ -431,7 +431,7 @@ $LN7:
 	mov	ecx, 1024				; 00000400H
 	div	ecx
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG7468
+	lea	rcx, OFFSET FLAT:$SG7473
 	call	printf
 $LN4@MemFini:
 $LN2@MemFini:
@@ -480,7 +480,7 @@ $LN3@MemFini:
 	sub	ecx, eax
 	mov	eax, ecx
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG7470
+	lea	rcx, OFFSET FLAT:$SG7475
 	call	printf
 $LN5@MemFini:
 

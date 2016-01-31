@@ -1,6 +1,5 @@
 language: c
 compiler:
-  - clang
   - gcc
 script: make -f GccUnix.mak
 deploy:

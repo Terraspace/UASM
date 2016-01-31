@@ -6,165 +6,165 @@ INCLUDELIB MSVCRTD
 INCLUDELIB OLDNAMES
 
 _BSS	SEGMENT
-$SG11474 DB	01H DUP (?)
-$SG11477 DB	01H DUP (?)
-$SG11480 DB	01H DUP (?)
-$SG11533 DB	01H DUP (?)
+$SG11479 DB	01H DUP (?)
+$SG11482 DB	01H DUP (?)
+$SG11485 DB	01H DUP (?)
 $SG11538 DB	01H DUP (?)
-$SG11546 DB	01H DUP (?)
+$SG11543 DB	01H DUP (?)
+$SG11551 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG11240 DB	01H DUP (?)
+$SG11245 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG11281 DB	'InitStructuredVar: padding, field=%s ofs=%X total=%X nex'
+$SG11286 DB	'InitStructuredVar: padding, field=%s ofs=%X total=%X nex'
 	DB	'tofs=%X', 0aH, 00H
 	ORG $+7
-$SG11295 DB	'InitStructuredVar(%s): error, i=%u token=%s', 0aH, 00H
+$SG11300 DB	'InitStructuredVar(%s): error, i=%u token=%s', 0aH, 00H
 	ORG $+3
-$SG11296 DB	'InitStructuredVar(%s) exit, current ofs=%X', 0aH, 00H
-$SG11390 DB	'NULL', 00H
+$SG11301 DB	'InitStructuredVar(%s) exit, current ofs=%X', 0aH, 00H
+$SG11395 DB	'NULL', 00H
 	ORG $+3
-$SG11391 DB	'NULL', 00H
+$SG11396 DB	'NULL', 00H
 	ORG $+7
-$SG11406 DB	'data_item, error, unexpected kind=%u of DUP''s first ope'
+$SG11411 DB	'data_item, error, unexpected kind=%u of DUP''s first ope'
 	DB	'rand', 0aH, 00H
 	ORG $+3
-$SG11411 DB	'data_item error, missing ''(''', 0aH, 00H
+$SG11416 DB	'data_item error, missing ''(''', 0aH, 00H
 	ORG $+2
-$SG11420 DB	'NULL', 00H
+$SG11425 DB	'NULL', 00H
 	ORG $+3
-$SG11392 DB	'data_item( idx=%u [%s], label=%s, no_of_bytes=%u, type=%'
+$SG11397 DB	'data_item( idx=%u [%s], label=%s, no_of_bytes=%u, type=%'
 	DB	's, dup=%Xh, inside_struct=%u, is_float=%u ) enter', 0aH, 00H
 	ORG $+5
-$SG11396 DB	'data_item(%s): literal/brace found: >%s<, inside_struct='
+$SG11401 DB	'data_item(%s): literal/brace found: >%s<, inside_struct='
 	DB	'%u, no_of_bytes=%u, curr_ofs=%X', 0aH, 00H
 	ORG $+3
-$SG11412 DB	'(', 00H
+$SG11417 DB	'(', 00H
 	ORG $+2
-$SG11421 DB	'data_item(%s): op DUP, count=%Xh, calling data_item()', 0aH
+$SG11426 DB	'data_item(%s): op DUP, count=%Xh, calling data_item()', 0aH
 	DB	00H
 	ORG $+1
-$SG11423 DB	'NULL', 00H
+$SG11428 DB	'NULL', 00H
 	ORG $+3
-$SG11424 DB	'data_item(%s): op DUP, count=%Xh, returned with error', 0aH
+$SG11429 DB	'data_item(%s): op DUP, count=%Xh, returned with error', 0aH
 	DB	00H
 	ORG $+1
-$SG11426 DB	'data_item: error ''missing '')'', exit', 0aH, 00H
+$SG11431 DB	'data_item: error ''missing '')'', exit', 0aH, 00H
 	ORG $+3
-$SG11427 DB	')', 00H
+$SG11432 DB	')', 00H
 	ORG $+2
-$SG11439 DB	'BSS', 00H
-$SG11431 DB	'data_item: error, type=%s needs literal, >%s<', 0aH, 00H
+$SG11444 DB	'BSS', 00H
+$SG11436 DB	'data_item: error, type=%s needs literal, >%s<', 0aH, 00H
 	ORG $+1
-$SG11433 DB	'data_item: ? found, curr_ofs=%X', 0aH, 00H
+$SG11438 DB	'data_item: ? found, curr_ofs=%X', 0aH, 00H
 	ORG $+3
-$SG11440 DB	'AT', 00H
+$SG11445 DB	'AT', 00H
 	ORG $+1
-$SG11442 DB	'data_item.EMPTY: idx=%u, tokenarray.token=%X', 0aH, 00H
+$SG11447 DB	'data_item.EMPTY: idx=%u, tokenarray.token=%X', 0aH, 00H
 	ORG $+2
-$SG11446 DB	'data_item.FLOAT: >%s<, inside_struct=%u, no_of_bytes=%u,'
+$SG11451 DB	'data_item.FLOAT: >%s<, inside_struct=%u, no_of_bytes=%u,'
 	DB	' curr_ofs=%X', 0aH, 00H
 	ORG $+2
-$SG11488 DB	'data_item.ADDR: error, is_float=%u', 0aH, 00H
+$SG11493 DB	'data_item.ADDR: error, is_float=%u', 0aH, 00H
 	ORG $+4
-$SG11452 DB	'data_item.CONST: string found: >%s<, inside_struct=%u, n'
+$SG11457 DB	'data_item.CONST: string found: >%s<, inside_struct=%u, n'
 	DB	'o_of_bytes=%u, curr_ofs=%X', 0aH, 00H
-$SG11628 DB	'NULL', 00H
+$SG11633 DB	'NULL', 00H
 	ORG $+7
-$SG11464 DB	'data_item.CONST: const found, value=%Xh, no_of_bytes=%u,'
+$SG11469 DB	'data_item.CONST: const found, value=%Xh, no_of_bytes=%u,'
 	DB	' curr_ofs=%X', 0aH, 00H
 	ORG $+2
-$SG11473 DB	'data_item.CONST: error, unhandled data is %I64X_%016I64X'
+$SG11478 DB	'data_item.CONST: error, unhandled data is %I64X_%016I64X'
 	DB	0aH, 00H
 	ORG $+2
-$SG11687 DB	'Struct', 00H
+$SG11692 DB	'Struct', 00H
 	ORG $+1
-$SG11688 DB	'Seg', 00H
-$SG11482 DB	'data_item.ADDR: error, indirect=%u, sym=%X', 0aH, 00H
+$SG11693 DB	'Seg', 00H
+$SG11487 DB	'data_item.ADDR: error, indirect=%u, sym=%X', 0aH, 00H
 	ORG $+4
-$SG11486 DB	'data_item.ADDR: displacement doesn''t fit in 32 bits: %I'
+$SG11491 DB	'data_item.ADDR: displacement doesn''t fit in 32 bits: %I'
 	DB	'64X', 0aH, 00H
 	ORG $+4
-$SG11492 DB	'data_item.ADDR: error, a SEG wont fit in a BYTE', 0aH, 00H
+$SG11497 DB	'data_item.ADDR: error, a SEG wont fit in a BYTE', 0aH, 00H
 	ORG $+7
-$SG11498 DB	'data_item.ADDR: error, an offset wont fit in a BYTE', 0aH
+$SG11503 DB	'data_item.ADDR: error, an offset wont fit in a BYTE', 0aH
 	DB	00H
 	ORG $+3
-$SG11497 DB	'data_item.ADDR: forward reference + OFFSET operator + DB'
+$SG11502 DB	'data_item.ADDR: forward reference + OFFSET operator + DB'
 	DB	' -> may become error in Pass 2', 0aH, 00H
-$SG11507 DB	'data_item.ADDR: IMAGEREL, error, size=%u (should be 4)', 0aH
+$SG11512 DB	'data_item.ADDR: IMAGEREL, error, size=%u (should be 4)', 0aH
 	DB	00H
-$SG11510 DB	'data_item.ADDR: SECTIONREL, error, size=%u (should be 4)'
+$SG11515 DB	'data_item.ADDR: SECTIONREL, error, size=%u (should be 4)'
 	DB	0aH, 00H
 	ORG $+6
-$SG11513 DB	'data_item.ADDR: HIGH detected', 0aH, 00H
+$SG11518 DB	'data_item.ADDR: HIGH detected', 0aH, 00H
 	ORG $+1
-$SG11525 DB	'data_item.ADDR: error, no of bytes=%u', 0aH, 00H
+$SG11530 DB	'data_item.ADDR: error, no of bytes=%u', 0aH, 00H
 	ORG $+1
-$SG11532 DB	'data_item.ADDR: error, memtype %X wont fit in a WORD', 0aH
+$SG11537 DB	'data_item.ADDR: error, memtype %X wont fit in a WORD', 0aH
 	DB	00H
 	ORG $+2
-$SG11537 DB	'data_item.ADDR: error, a 32bit offset (%s) wont fit in a'
+$SG11542 DB	'data_item.ADDR: error, a 32bit offset (%s) wont fit in a'
 	DB	' WORD', 0aH, 00H
 	ORG $+1
-$SG11545 DB	'data_item.ADDR: error, FAR32 won''t fit in a DWORD', 0aH
+$SG11550 DB	'data_item.ADDR: error, FAR32 won''t fit in a DWORD', 0aH
 	DB	00H
 	ORG $+5
-$SG11575 DB	'data_item: error, opndx.kind=%u', 0aH, 00H
+$SG11580 DB	'data_item: error, opndx.kind=%u', 0aH, 00H
 	ORG $+7
-$SG11581 DB	'data_item: exit, no error, i=%d', 0aH, 00H
+$SG11586 DB	'data_item: exit, no error, i=%d', 0aH, 00H
 	ORG $+7
-$SG11598 DB	'checktypes: memtype conflict: %u - %u', 0aH, 00H
+$SG11603 DB	'checktypes: memtype conflict: %u - %u', 0aH, 00H
 	ORG $+1
-$SG11629 DB	'data_dir( i=%u, type=%s ) enter', 0aH, 00H
+$SG11634 DB	'data_dir( i=%u, type=%s ) enter', 0aH, 00H
 	ORG $+7
-$SG11632 DB	'data_dir: missing initializer', 0aH, 00H
+$SG11637 DB	'data_dir: missing initializer', 0aH, 00H
 	ORG $+1
-$SG11640 DB	'data_dir: size of arbitrary type is 0!', 0aH, 00H
-$SG11656 DB	'data_dir: %s, CreateStructField called, ofs=%d', 0aH, 00H
-$SG11663 DB	'data_dir: calling SymLookup(%s)', 0aH, 00H
+$SG11645 DB	'data_dir: size of arbitrary type is 0!', 0aH, 00H
+$SG11661 DB	'data_dir: %s, CreateStructField called, ofs=%d', 0aH, 00H
+$SG11668 DB	'data_dir: calling SymLookup(%s)', 0aH, 00H
 	ORG $+7
-$SG11676 DB	'data_dir(%s): error, symbol redefinition, state=%X', 0aH
+$SG11681 DB	'data_dir(%s): error, symbol redefinition, state=%X', 0aH
 	DB	00H
 	ORG $+4
-$SG11679 DB	'data_dir: Phase error, pass %u, sym >%s< first time, new'
+$SG11684 DB	'data_dir: Phase error, pass %u, sym >%s< first time, new'
 	DB	'=%X != old=%X', 0aH, 00H
 	ORG $+1
-$SG11683 DB	'data_dir: error in data_item()', 0aH, 00H
-$SG11689 DB	'NULL', 00H
+$SG11688 DB	'data_dir: error in data_item()', 0aH, 00H
+$SG11694 DB	'NULL', 00H
 	ORG $+3
-$SG11690 DB	'data_dir: exit, no error, label=%s, is_array=%u Curr%s.o'
+$SG11695 DB	'data_dir: exit, no error, label=%s, is_array=%u Curr%s.o'
 	DB	'fs=%X', 0aH, 00H
 	ORG $+1
-$SG11149 DB	'NULL', 00H
+$SG11154 DB	'NULL', 00H
 	ORG $+3
-$SG11171 DB	'InitializeArray(%s): new offset=%X', 0aH, 00H
+$SG11176 DB	'InitializeArray(%s): new offset=%X', 0aH, 00H
 	ORG $+4
-$SG11150 DB	'InitializeArray(%s) enter, items=%u size=%u mem_type=%xh'
+$SG11155 DB	'InitializeArray(%s) enter, items=%u size=%u mem_type=%xh'
 	DB	' type=%s currofs=%X [%s]', 0aH, 00H
 	ORG $+6
-$SG11174 DB	'InitializeArray(%s): error, cursize=%u total_size=%u', 0aH
+$SG11179 DB	'InitializeArray(%s): error, cursize=%u total_size=%u', 0aH
 	DB	00H
 	ORG $+2
-$SG11165 DB	'InitializeArray(%s): error, array init requires DUP, str'
+$SG11170 DB	'InitializeArray(%s): error, array init requires DUP, str'
 	DB	'ing or literal', 0aH, 00H
-$SG11176 DB	'InitializeArray: remaining bytes=%u', 0aH, 00H
+$SG11181 DB	'InitializeArray: remaining bytes=%u', 0aH, 00H
 	ORG $+3
-$SG11181 DB	'InitializeArray(%s) exit, curr ofs=%X', 0aH, 00H
+$SG11186 DB	'InitializeArray(%s) exit, curr ofs=%X', 0aH, 00H
 	ORG $+1
-$SG11231 DB	'NULL', 00H
+$SG11236 DB	'NULL', 00H
 	ORG $+3
-$SG11232 DB	'InitStructuredVar(%s) enter, total_size=%u, init=>%s<, e'
+$SG11237 DB	'InitStructuredVar(%s) enter, total_size=%u, init=>%s<, e'
 	DB	'mbedded=%s, alignm=%u', 0aH, 00H
 	ORG $+1
-$SG11233 DB	'data.c', 00H
+$SG11238 DB	'data.c', 00H
 	ORG $+9
-$SG11242 DB	'InitStructuredVar(%s) field=%s ofs=%u total_size=%u tota'
+$SG11247 DB	'InitStructuredVar(%s) field=%s ofs=%u total_size=%u tota'
 	DB	'l_len=%u value=>%s< >%s<', 0aH, 00H
 _DATA	ENDS
 PUBLIC	data_dir
@@ -491,12 +491,12 @@ $LN74:
 	mov	QWORD PTR tv66[rsp], rax
 	jmp	SHORT $LN56@data_dir
 $LN55@data_dir:
-	lea	rax, OFFSET FLAT:$SG11628
+	lea	rax, OFFSET FLAT:$SG11633
 	mov	QWORD PTR tv66[rsp], rax
 $LN56@data_dir:
 	mov	r8, QWORD PTR tv66[rsp]
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11629
+	lea	rcx, OFFSET FLAT:$SG11634
 	call	DoDebugMsg1
 
 ; 1146 : 
@@ -536,7 +536,7 @@ $LN4@data_dir:
 
 ; 1152 :         DebugMsg(("data_dir: missing initializer\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11632
+	lea	rcx, OFFSET FLAT:$SG11637
 	call	DoDebugMsg
 
 ; 1153 :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
@@ -631,7 +631,7 @@ $LN10@data_dir:
 
 ; 1177 :             DebugMsg(("data_dir: size of arbitrary type is 0!\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11640
+	lea	rcx, OFFSET FLAT:$SG11645
 	call	DoDebugMsg
 
 ; 1178 :             /* a void type is not valid */
@@ -878,7 +878,7 @@ $LN25@data_dir:
 	mov	r8d, DWORD PTR [rax+16]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11656
+	lea	rcx, OFFSET FLAT:$SG11661
 	call	DoDebugMsg1
 
 ; 1234 :         } else { /* v2.04: else branch added */
@@ -984,7 +984,7 @@ $LN32@data_dir:
 ; 1258 :             DebugMsg1(("data_dir: calling SymLookup(%s)\n", name ));
 
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11663
+	lea	rcx, OFFSET FLAT:$SG11668
 	call	DoDebugMsg1
 
 ; 1259 :             sym = SymLookup( name );
@@ -1179,7 +1179,7 @@ $LN41@data_dir:
 	mov	r8d, DWORD PTR [rax+32]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11676
+	lea	rcx, OFFSET FLAT:$SG11681
 	call	DoDebugMsg
 
 ; 1311 :                     return( EmitErr( SYMBOL_REDEFINITION, sym->name ) );
@@ -1270,7 +1270,7 @@ $LN72@data_dir:
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	r8, QWORD PTR [rcx+8]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11679
+	lea	rcx, OFFSET FLAT:$SG11684
 	call	DoDebugMsg
 $LN47@data_dir:
 
@@ -1395,7 +1395,7 @@ $LN60@data_dir:
 
 ; 1353 :         DebugMsg(("data_dir: error in data_item()\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11683
+	lea	rcx, OFFSET FLAT:$SG11688
 	call	DoDebugMsg
 
 ; 1354 :         return( ERROR );
@@ -1485,11 +1485,11 @@ $LN63@data_dir:
 $LN64@data_dir:
 	cmp	QWORD PTR CurrStruct, 0
 	je	SHORT $LN65@data_dir
-	lea	rax, OFFSET FLAT:$SG11687
+	lea	rax, OFFSET FLAT:$SG11692
 	mov	QWORD PTR tv409[rsp], rax
 	jmp	SHORT $LN66@data_dir
 $LN65@data_dir:
-	lea	rax, OFFSET FLAT:$SG11688
+	lea	rax, OFFSET FLAT:$SG11693
 	mov	QWORD PTR tv409[rsp], rax
 $LN66@data_dir:
 	cmp	QWORD PTR sym$[rsp], 0
@@ -1511,7 +1511,7 @@ $LN68@data_dir:
 	mov	QWORD PTR tv420[rsp], rax
 	jmp	SHORT $LN70@data_dir
 $LN69@data_dir:
-	lea	rax, OFFSET FLAT:$SG11689
+	lea	rax, OFFSET FLAT:$SG11694
 	mov	QWORD PTR tv420[rsp], rax
 $LN70@data_dir:
 	mov	eax, DWORD PTR tv406[rsp]
@@ -1519,7 +1519,7 @@ $LN70@data_dir:
 	mov	r9, QWORD PTR tv409[rsp]
 	mov	r8d, DWORD PTR tv416[rsp]
 	mov	rdx, QWORD PTR tv420[rsp]
-	lea	rcx, OFFSET FLAT:$SG11690
+	lea	rcx, OFFSET FLAT:$SG11695
 	call	DoDebugMsg1
 
 ; 1369 :                sym ? sym->name : "NULL",
@@ -1642,7 +1642,7 @@ $LN5@checktypes:
 
 	mov	r8d, DWORD PTR mem_type$[rsp]
 	mov	edx, DWORD PTR mem_type2$1[rsp]
-	lea	rcx, OFFSET FLAT:$SG11598
+	lea	rcx, OFFSET FLAT:$SG11603
 	call	DoDebugMsg
 
 ; 1117 :             return( EmitErr( SYMBOL_TYPE_CONFLICT, sym->name ) );
@@ -1980,7 +1980,7 @@ InitStructuredVar PROC
 	mov	QWORD PTR tv70[rsp], rax
 	jmp	SHORT $LN72@InitStruct
 $LN71@InitStruct:
-	lea	rax, OFFSET FLAT:$SG11231
+	lea	rax, OFFSET FLAT:$SG11236
 	mov	QWORD PTR tv70[rsp], rax
 $LN72@InitStruct:
 	mov	rax, QWORD PTR symtype$[rsp]
@@ -1997,7 +1997,7 @@ $LN72@InitStruct:
 	mov	r8d, DWORD PTR [rax+56]
 	mov	rax, QWORD PTR symtype$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11232
+	lea	rcx, OFFSET FLAT:$SG11237
 	call	DoDebugMsg1
 
 ; 208  :               symtype->sym.name, symtype->sym.total_size, tokenarray[index].string_ptr, embedded ? embedded->name : "NULL", symtype->e.structinfo->alignment ));
@@ -2015,7 +2015,7 @@ $LN72@InitStruct:
 	jmp	SHORT $LN74@InitStruct
 $LN73@InitStruct:
 	mov	edx, 210				; 000000d2H
-	lea	rcx, OFFSET FLAT:$SG11233
+	lea	rcx, OFFSET FLAT:$SG11238
 	call	InternalError
 	mov	DWORD PTR tv90[rsp], eax
 $LN74@InitStruct:
@@ -2125,7 +2125,7 @@ $LN15@InitStruct:
 	mov	QWORD PTR tv170[rsp], rax
 	jmp	SHORT $LN76@InitStruct
 $LN75@InitStruct:
-	lea	rax, OFFSET FLAT:$SG11240
+	lea	rax, OFFSET FLAT:$SG11245
 	mov	QWORD PTR tv170[rsp], rax
 $LN76@InitStruct:
 	mov	rdx, QWORD PTR tv170[rsp]
@@ -2194,7 +2194,7 @@ $LN4@InitStruct:
 	mov	r8, QWORD PTR [rax+8]
 	mov	rax, QWORD PTR symtype$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11242
+	lea	rcx, OFFSET FLAT:$SG11247
 	call	DoDebugMsg1
 
 ; 242  :                   symtype->sym.name,
@@ -2819,7 +2819,7 @@ $LN54@InitStruct:
 	mov	r8d, DWORD PTR [rax+16]
 	mov	rax, QWORD PTR f$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11281
+	lea	rcx, OFFSET FLAT:$SG11286
 	call	DoDebugMsg1
 
 ; 350  :                           f->sym.name, f->sym.offset, f->sym.total_size, nextofs ));
@@ -3033,7 +3033,7 @@ $LN62@InitStruct:
 	mov	r8d, DWORD PTR i$[rsp]
 	mov	rax, QWORD PTR symtype$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11295
+	lea	rcx, OFFSET FLAT:$SG11300
 	call	DoDebugMsg1
 
 ; 389  :         EmitErr( TOO_MANY_INITIAL_VALUES_FOR_STRUCTURE, tokenarray[i].tokpos );
@@ -3065,7 +3065,7 @@ $LN69@InitStruct:
 	mov	r8d, eax
 	mov	rax, QWORD PTR symtype$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11296
+	lea	rcx, OFFSET FLAT:$SG11301
 	call	DoDebugMsg1
 
 ; 396  :     return( NOT_ERROR );
@@ -3157,7 +3157,7 @@ InitializeArray PROC
 	mov	QWORD PTR tv81[rsp], rax
 	jmp	SHORT $LN33@Initialize
 $LN32@Initialize:
-	lea	rax, OFFSET FLAT:$SG11149
+	lea	rax, OFFSET FLAT:$SG11154
 	mov	QWORD PTR tv81[rsp], rax
 $LN33@Initialize:
 	movsxd	rax, DWORD PTR i$[rsp]
@@ -3177,7 +3177,7 @@ $LN33@Initialize:
 	mov	r8d, DWORD PTR [rax+64]
 	mov	rax, QWORD PTR f$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11150
+	lea	rcx, OFFSET FLAT:$SG11155
 	call	DoDebugMsg1
 
 ; 88   :                f->sym.name, f->sym.total_length, no_of_bytes, f->sym.mem_type,
@@ -3359,7 +3359,7 @@ $LN3@Initialize:
 
 	mov	rax, QWORD PTR f$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11165
+	lea	rcx, OFFSET FLAT:$SG11170
 	call	DoDebugMsg1
 
 ; 117  :             return( EmitErr( INITIALIZER_MUST_BE_A_STRING_OR_SINGLE_ITEM, tokenarray[i].tokpos ) );
@@ -3561,7 +3561,7 @@ $LN6@Initialize:
 	mov	r8d, eax
 	mov	rax, QWORD PTR f$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11171
+	lea	rcx, OFFSET FLAT:$SG11176
 	call	DoDebugMsg1
 
 ; 151  : 
@@ -3579,7 +3579,7 @@ $LN6@Initialize:
 	mov	r8d, DWORD PTR no_of_bytes$[rsp]
 	mov	rax, QWORD PTR f$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11174
+	lea	rcx, OFFSET FLAT:$SG11179
 	call	DoDebugMsg1
 
 ; 154  :         EmitErr( TOO_MANY_INITIAL_VALUES_FOR_ARRAY, tokenarray[i].tokpos );
@@ -3615,7 +3615,7 @@ $LN24@Initialize:
 	mov	eax, DWORD PTR [rax+56]
 	sub	eax, ecx
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11176
+	lea	rcx, OFFSET FLAT:$SG11181
 	call	DoDebugMsg1
 
 ; 159  :         if ( CurrSeg && CurrSeg->e.seginfo->segtype == SEGTYPE_BSS )
@@ -3694,7 +3694,7 @@ $LN25@Initialize:
 	mov	r8d, eax
 	mov	rax, QWORD PTR f$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11181
+	lea	rcx, OFFSET FLAT:$SG11186
 	call	DoDebugMsg1
 
 ; 173  :     return( rc );
@@ -3805,7 +3805,7 @@ data_item PROC
 	mov	QWORD PTR tv71[rsp], rax
 	jmp	SHORT $LN171@data_item
 $LN170@data_item:
-	lea	rax, OFFSET FLAT:$SG11390
+	lea	rax, OFFSET FLAT:$SG11395
 	mov	QWORD PTR tv71[rsp], rax
 $LN171@data_item:
 	cmp	QWORD PTR sym$[rsp], 0
@@ -3815,7 +3815,7 @@ $LN171@data_item:
 	mov	QWORD PTR tv76[rsp], rax
 	jmp	SHORT $LN173@data_item
 $LN172@data_item:
-	lea	rax, OFFSET FLAT:$SG11391
+	lea	rax, OFFSET FLAT:$SG11396
 	mov	QWORD PTR tv76[rsp], rax
 $LN173@data_item:
 	movzx	eax, BYTE PTR is_float$[rsp]
@@ -3836,7 +3836,7 @@ $LN173@data_item:
 	mov	r8, QWORD PTR [rax+rdx+24]
 	mov	rax, QWORD PTR start_pos$[rsp]
 	mov	edx, DWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG11392
+	lea	rcx, OFFSET FLAT:$SG11397
 	call	DoDebugMsg1
 
 ; 485  :                *start_pos, tokenarray[*start_pos].tokpos, sym ? sym->name : "NULL",
@@ -3928,7 +3928,7 @@ $LN201@data_item:
 	mov	r8, QWORD PTR [rax+rdx+8]
 	mov	rax, QWORD PTR type_sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11396
+	lea	rcx, OFFSET FLAT:$SG11401
 	call	DoDebugMsg1
 $LN5@data_item:
 
@@ -4138,7 +4138,7 @@ $LN207@data_item:
 ; 556  :             DebugMsg(("data_item, error, unexpected kind=%u of DUP's first operand\n", opndx.kind ));
 
 	mov	edx, DWORD PTR opndx$[rsp+60]
-	lea	rcx, OFFSET FLAT:$SG11406
+	lea	rcx, OFFSET FLAT:$SG11411
 	call	DoDebugMsg
 
 ; 557  :             /* v2.09: emit a better error msg if a forward ref was used */
@@ -4215,12 +4215,12 @@ $LN209@data_item:
 
 ; 570  :             DebugMsg(("data_item error, missing '('\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11411
+	lea	rcx, OFFSET FLAT:$SG11416
 	call	DoDebugMsg
 
 ; 571  :             return( EmitErr( EXPECTED, "(" ) );
 
-	lea	rdx, OFFSET FLAT:$SG11412
+	lea	rdx, OFFSET FLAT:$SG11417
 	mov	ecx, 230				; 000000e6H
 	call	EmitErr
 	jmp	$LN1@data_item
@@ -4363,12 +4363,12 @@ $LN37@data_item:
 	mov	QWORD PTR tv254[rsp], rax
 	jmp	SHORT $LN175@data_item
 $LN174@data_item:
-	lea	rax, OFFSET FLAT:$SG11420
+	lea	rax, OFFSET FLAT:$SG11425
 	mov	QWORD PTR tv254[rsp], rax
 $LN175@data_item:
 	mov	r8d, DWORD PTR opndx$[rsp]
 	mov	rdx, QWORD PTR tv254[rsp]
-	lea	rcx, OFFSET FLAT:$SG11421
+	lea	rcx, OFFSET FLAT:$SG11426
 	call	DoDebugMsg1
 
 ; 590  :             if ( data_item( &i, tokenarray, sym, no_of_bytes, type_sym, opndx.uvalue, inside_struct, is_float, first, end ) == ERROR ) {
@@ -4403,12 +4403,12 @@ $LN175@data_item:
 	mov	QWORD PTR tv272[rsp], rax
 	jmp	SHORT $LN177@data_item
 $LN176@data_item:
-	lea	rax, OFFSET FLAT:$SG11423
+	lea	rax, OFFSET FLAT:$SG11428
 	mov	QWORD PTR tv272[rsp], rax
 $LN177@data_item:
 	mov	r8d, DWORD PTR opndx$[rsp]
 	mov	rdx, QWORD PTR tv272[rsp]
-	lea	rcx, OFFSET FLAT:$SG11424
+	lea	rcx, OFFSET FLAT:$SG11429
 	call	DoDebugMsg
 
 ; 592  :                 return( ERROR );
@@ -4436,12 +4436,12 @@ $LN215@data_item:
 
 ; 596  :             DebugMsg(("data_item: error 'missing ')', exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11426
+	lea	rcx, OFFSET FLAT:$SG11431
 	call	DoDebugMsg
 
 ; 597  :             return( EmitErr( EXPECTED, ")" ) );
 
-	lea	rdx, OFFSET FLAT:$SG11427
+	lea	rdx, OFFSET FLAT:$SG11432
 	mov	ecx, 230				; 000000e6H
 	call	EmitErr
 	jmp	$LN1@data_item
@@ -4549,7 +4549,7 @@ $LN217@data_item:
 	mov	r8, QWORD PTR [rcx+rax+24]
 	mov	rax, QWORD PTR type_sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11431
+	lea	rcx, OFFSET FLAT:$SG11436
 	call	DoDebugMsg1
 
 ; 624  :             return( EmitErr( STRUCTURE_IMPROPERLY_INITIALIZED, type_sym->name ) );
@@ -4586,7 +4586,7 @@ $LN218@data_item:
 
 	call	GetCurrOffset
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11433
+	lea	rcx, OFFSET FLAT:$SG11438
 	call	DoDebugMsg1
 
 ; 631  :         opndx.uvalue = no_of_bytes;
@@ -4720,11 +4720,11 @@ $LN53@data_item:
 	mov	rax, QWORD PTR [rax+96]
 	cmp	DWORD PTR [rax+72], 3
 	jne	SHORT $LN178@data_item
-	lea	rax, OFFSET FLAT:$SG11439
+	lea	rax, OFFSET FLAT:$SG11444
 	mov	QWORD PTR tv354[rsp], rax
 	jmp	SHORT $LN179@data_item
 $LN178@data_item:
-	lea	rax, OFFSET FLAT:$SG11440
+	lea	rax, OFFSET FLAT:$SG11445
 	mov	QWORD PTR tv354[rsp], rax
 $LN179@data_item:
 	mov	r8, QWORD PTR tv354[rsp]
@@ -4777,7 +4777,7 @@ $LN223@data_item:
 	movzx	eax, BYTE PTR [rcx+rax]
 	mov	r8d, eax
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11442
+	lea	rcx, OFFSET FLAT:$SG11447
 	call	DoDebugMsg
 
 ; 663  :         if ( tokenarray[i].token != T_FINAL )
@@ -4833,7 +4833,7 @@ $LN57@data_item:
 	mov	r8d, ecx
 	mov	rax, QWORD PTR opndx$[rsp+16]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11446
+	lea	rcx, OFFSET FLAT:$SG11451
 	call	DoDebugMsg1
 
 ; 670  :                    opndx.float_tok->string_ptr, inside_struct, no_of_bytes, GetCurrOffset()));
@@ -4894,7 +4894,7 @@ $LN60@data_item:
 	mov	r8d, ecx
 	mov	rax, QWORD PTR opndx$[rsp+16]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11452
+	lea	rcx, OFFSET FLAT:$SG11457
 	call	DoDebugMsg1
 
 ; 684  :                        opndx.quoted_string->string_ptr, inside_struct, no_of_bytes, GetCurrOffset()));
@@ -5102,7 +5102,7 @@ $LN61@data_item:
 	mov	r9d, eax
 	mov	r8d, DWORD PTR no_of_bytes$[rsp]
 	mov	edx, DWORD PTR opndx$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11464
+	lea	rcx, OFFSET FLAT:$SG11469
 	call	DoDebugMsg1
 
 ; 735  :             if( !inside_struct ) {
@@ -5260,7 +5260,7 @@ $LN228@data_item:
 $LN229@data_item:
 	mov	r8, QWORD PTR opndx$[rsp]
 	mov	rdx, QWORD PTR opndx$[rsp+8]
-	lea	rcx, OFFSET FLAT:$SG11473
+	lea	rcx, OFFSET FLAT:$SG11478
 	call	DoDebugMsg
 
 ; 762  :                             return( EmitErr( INITIALIZER_MAGNITUDE_TOO_LARGE, opndx.sym ? opndx.sym->name : "" ) );
@@ -5272,7 +5272,7 @@ $LN229@data_item:
 	mov	QWORD PTR tv501[rsp], rax
 	jmp	SHORT $LN185@data_item
 $LN184@data_item:
-	lea	rax, OFFSET FLAT:$SG11474
+	lea	rax, OFFSET FLAT:$SG11479
 	mov	QWORD PTR tv501[rsp], rax
 $LN185@data_item:
 	mov	rdx, QWORD PTR tv501[rsp]
@@ -5308,7 +5308,7 @@ $LN79@data_item:
 	mov	QWORD PTR tv510[rsp], rax
 	jmp	SHORT $LN187@data_item
 $LN186@data_item:
-	lea	rax, OFFSET FLAT:$SG11477
+	lea	rax, OFFSET FLAT:$SG11482
 	mov	QWORD PTR tv510[rsp], rax
 $LN187@data_item:
 	mov	rdx, QWORD PTR tv510[rsp]
@@ -5358,7 +5358,7 @@ $LN84@data_item:
 	mov	QWORD PTR tv519[rsp], rax
 	jmp	SHORT $LN189@data_item
 $LN188@data_item:
-	lea	rax, OFFSET FLAT:$SG11480
+	lea	rax, OFFSET FLAT:$SG11485
 	mov	QWORD PTR tv519[rsp], rax
 $LN189@data_item:
 	mov	rdx, QWORD PTR tv519[rsp]
@@ -5385,7 +5385,7 @@ $LN85@data_item:
 	and	eax, 1
 	mov	r8, QWORD PTR opndx$[rsp+80]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11482
+	lea	rcx, OFFSET FLAT:$SG11487
 	call	DoDebugMsg
 
 ; 787  :             EmitError( INVALID_USE_OF_REGISTER );
@@ -5429,7 +5429,7 @@ $LN89@data_item:
 	call	_RTC_UninitUse
 $LN230@data_item:
 	mov	rdx, QWORD PTR opndx$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11486
+	lea	rcx, OFFSET FLAT:$SG11491
 	call	DoDebugMsg
 
 ; 799  :                 return( EmitConstError( &opndx ) );
@@ -5453,7 +5453,7 @@ $LN87@data_item:
 
 	movzx	eax, BYTE PTR is_float$[rsp]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11488
+	lea	rcx, OFFSET FLAT:$SG11493
 	call	DoDebugMsg
 
 ; 804  :             EmitError( MUST_USE_FLOAT_INITIALIZER );
@@ -5514,7 +5514,7 @@ $LN92@data_item:
 
 ; 819  :                 DebugMsg(("data_item.ADDR: error, a SEG wont fit in a BYTE\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11492
+	lea	rcx, OFFSET FLAT:$SG11497
 	call	DoDebugMsg
 
 ; 820  :                 EmitError( MAGNITUDE_TOO_LARGE_FOR_SPECIFIED_SIZE );
@@ -5562,7 +5562,7 @@ $LN95@data_item:
 
 ; 829  :                     DebugMsg(("data_item.ADDR: forward reference + OFFSET operator + DB -> may become error in Pass 2\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11497
+	lea	rcx, OFFSET FLAT:$SG11502
 	call	DoDebugMsg
 
 ; 830  :                     fixup_type = FIX_VOID; /* v2.10: was regression in v2.09 */
@@ -5577,7 +5577,7 @@ $LN96@data_item:
 
 ; 832  :                     DebugMsg(("data_item.ADDR: error, an offset wont fit in a BYTE\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11498
+	lea	rcx, OFFSET FLAT:$SG11503
 	call	DoDebugMsg
 
 ; 833  :                     EmitError( OFFSET_MAGNITUDE_TOO_LARGE );
@@ -5672,7 +5672,7 @@ $LN104@data_item:
 ; 858  :                 DebugMsg(("data_item.ADDR: IMAGEREL, error, size=%u (should be 4)\n", no_of_bytes ));
 
 	mov	edx, DWORD PTR no_of_bytes$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11507
+	lea	rcx, OFFSET FLAT:$SG11512
 	call	DoDebugMsg
 
 ; 859  :                 EmitError( OFFSET_MAGNITUDE_TOO_LARGE );
@@ -5704,7 +5704,7 @@ $LN106@data_item:
 ; 867  :                 DebugMsg(("data_item.ADDR: SECTIONREL, error, size=%u (should be 4)\n", no_of_bytes ));
 
 	mov	edx, DWORD PTR no_of_bytes$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11510
+	lea	rcx, OFFSET FLAT:$SG11515
 	call	DoDebugMsg
 
 ; 868  :                 EmitError( OFFSET_MAGNITUDE_TOO_LARGE );
@@ -5739,7 +5739,7 @@ $LN109@data_item:
 ; 876  :         case T_HIGH:
 ; 877  :             DebugMsg(("data_item.ADDR: HIGH detected\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11513
+	lea	rcx, OFFSET FLAT:$SG11518
 	call	DoDebugMsg
 
 ; 878  :             fixup_type = FIX_HIBYTE; /* OMF only */
@@ -5874,7 +5874,7 @@ $LN119@data_item:
 ; 914  :                         DebugMsg(("data_item.ADDR: error, no of bytes=%u\n", no_of_bytes ));
 
 	mov	edx, DWORD PTR no_of_bytes$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11525
+	lea	rcx, OFFSET FLAT:$SG11530
 	call	DoDebugMsg
 
 ; 915  :                         EmitError( MAGNITUDE_TOO_LARGE_FOR_SPECIFIED_SIZE );
@@ -5963,7 +5963,7 @@ $LN123@data_item:
 ; 937  :                         DebugMsg(("data_item.ADDR: error, memtype %X wont fit in a WORD\n", opndx.mem_type));
 
 	mov	edx, DWORD PTR opndx$[rsp+64]
-	lea	rcx, OFFSET FLAT:$SG11532
+	lea	rcx, OFFSET FLAT:$SG11537
 	call	DoDebugMsg
 
 ; 938  :                         EmitErr( INITIALIZER_MAGNITUDE_TOO_LARGE, opndx.sym ? opndx.sym->name : "" );
@@ -5975,7 +5975,7 @@ $LN123@data_item:
 	mov	QWORD PTR tv681[rsp], rax
 	jmp	SHORT $LN191@data_item
 $LN190@data_item:
-	lea	rax, OFFSET FLAT:$SG11533
+	lea	rax, OFFSET FLAT:$SG11538
 	mov	QWORD PTR tv681[rsp], rax
 $LN191@data_item:
 	mov	rdx, QWORD PTR tv681[rsp]
@@ -6024,7 +6024,7 @@ $LN127@data_item:
 
 	mov	rax, QWORD PTR opndx$[rsp+80]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11537
+	lea	rcx, OFFSET FLAT:$SG11542
 	call	DoDebugMsg
 
 ; 946  :                     EmitErr( INITIALIZER_MAGNITUDE_TOO_LARGE, opndx.sym ? opndx.sym->name : "" );
@@ -6036,7 +6036,7 @@ $LN127@data_item:
 	mov	QWORD PTR tv701[rsp], rax
 	jmp	SHORT $LN193@data_item
 $LN192@data_item:
-	lea	rax, OFFSET FLAT:$SG11538
+	lea	rax, OFFSET FLAT:$SG11543
 	mov	QWORD PTR tv701[rsp], rax
 $LN193@data_item:
 	mov	rdx, QWORD PTR tv701[rsp]
@@ -6090,7 +6090,7 @@ $LN130@data_item:
 
 ; 962  :                             DebugMsg(("data_item.ADDR: error, FAR32 won't fit in a DWORD\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11545
+	lea	rcx, OFFSET FLAT:$SG11550
 	call	DoDebugMsg
 
 ; 963  :                             EmitErr( INITIALIZER_MAGNITUDE_TOO_LARGE, opndx.sym ? opndx.sym->name : "" );
@@ -6102,7 +6102,7 @@ $LN130@data_item:
 	mov	QWORD PTR tv715[rsp], rax
 	jmp	SHORT $LN195@data_item
 $LN194@data_item:
-	lea	rax, OFFSET FLAT:$SG11546
+	lea	rax, OFFSET FLAT:$SG11551
 	mov	QWORD PTR tv715[rsp], rax
 $LN195@data_item:
 	mov	rdx, QWORD PTR tv715[rsp]
@@ -6487,7 +6487,7 @@ $LN163@data_item:
 ; 1066 :         DebugMsg(("data_item: error, opndx.kind=%u\n", opndx.kind ));
 
 	mov	edx, DWORD PTR opndx$[rsp+60]
-	lea	rcx, OFFSET FLAT:$SG11575
+	lea	rcx, OFFSET FLAT:$SG11580
 	call	DoDebugMsg
 
 ; 1067 :         return( EmitError( SYNTAX_ERROR ) );
@@ -6664,7 +6664,7 @@ $LN238@data_item:
 	call	_RTC_UninitUse
 $LN239@data_item:
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11581
+	lea	rcx, OFFSET FLAT:$SG11586
 	call	DoDebugMsg1
 
 ; 1094 :     return( NOT_ERROR );

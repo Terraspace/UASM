@@ -6,7 +6,7 @@ INCLUDELIB MSVCRTD
 INCLUDELIB OLDNAMES
 
 _BSS	SEGMENT
-$SG11311 DB	01H DUP (?)
+$SG11316 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	decoflags:BYTE
@@ -15,128 +15,128 @@ COMM	MacroLevel:BYTE
 COMM	MacroLocals:DWORD
 _DATA	ENDS
 _BSS	SEGMENT
-$SG11078 DB	01H DUP (?)
-$SG11164 DB	01H DUP (?)
+$SG11083 DB	01H DUP (?)
+$SG11169 DB	01H DUP (?)
 _BSS	ENDS
 CONST	SEGMENT
 __digits DB	'0123456789ABCDEF'
 CONST	ENDS
 _DATA	SEGMENT
-$SG11279 DB	'ExpandText(line=>%s<, subst=%u ) enter', 0aH, 00H
-$SG11286 DB	'SYM_TMACRO', 00H
+$SG11284 DB	'ExpandText(line=>%s<, subst=%u ) enter', 0aH, 00H
+$SG11291 DB	'SYM_TMACRO', 00H
 	ORG $+5
-$SG11287 DB	'SYM_MACRO', 00H
+$SG11292 DB	'SYM_MACRO', 00H
 	ORG $+6
-$SG11288 DB	'ExpandText: symbol found: %s, %s, defined=%u, *pDst-1=%c'
+$SG11293 DB	'ExpandText: symbol found: %s, %s, defined=%u, *pDst-1=%c'
 	DB	0aH, 00H
 	ORG $+6
-$SG11298 DB	'ExpandText: %s replaced by >%s<', 0aH, 00H
+$SG11303 DB	'ExpandText: %s replaced by >%s<', 0aH, 00H
 	ORG $+7
-$SG11312 DB	'ExpandText: back from RunMacro(%s), rc=%u, text returned'
+$SG11317 DB	'ExpandText: back from RunMacro(%s), rc=%u, text returned'
 	DB	'=>%s<, rest=>%s<', 0aH, 00H
 	ORG $+6
-$SG11317 DB	'ExpandText(line=>%s<) error exit', 0aH, 00H
+$SG11322 DB	'ExpandText(line=>%s<) error exit', 0aH, 00H
 	ORG $+6
-$SG11324 DB	'ExpandText: expanded line=>%s<', 0aH, 00H
-$SG11352 DB	'ExpandTMacro(text=>%s< equm=%u lvl=%u) enter', 0aH, 00H
+$SG11329 DB	'ExpandText: expanded line=>%s<', 0aH, 00H
+$SG11357 DB	'ExpandTMacro(text=>%s< equm=%u lvl=%u) enter', 0aH, 00H
 	ORG $+2
-$SG11358 DB	'ExpandTMacro(%u): repl >%s()< by >%s<', 0aH, 00H
+$SG11363 DB	'ExpandTMacro(%u): repl >%s()< by >%s<', 0aH, 00H
 	ORG $+1
-$SG11360 DB	'ExpandTMacro(>%s<, %u): calling ExpandTMacro, value >%s<'
+$SG11365 DB	'ExpandTMacro(>%s<, %u): calling ExpandTMacro, value >%s<'
 	DB	0aH, 00H
 	ORG $+6
-$SG11362 DB	'ExpandTMacro(%u): repl >%s< by >%s<', 0aH, 00H
+$SG11367 DB	'ExpandTMacro(%u): repl >%s< by >%s<', 0aH, 00H
 	ORG $+3
-$SG11437 DB	'ExpandToken: %% found, line=%s', 0aH, 00H
-$SG11439 DB	'ExpandToken: testing id >%s< equmode=%u', 0aH, 00H
+$SG11442 DB	'ExpandToken: %% found, line=%s', 0aH, 00H
+$SG11444 DB	'ExpandToken: testing id >%s< equmode=%u', 0aH, 00H
 	ORG $+7
-$SG11446 DB	'ExpandToken(%s): macro function without () - not expande'
+$SG11451 DB	'ExpandToken(%s): macro function without () - not expande'
 	DB	'd!', 0aH, 00H
 	ORG $+4
-$SG11453 DB	'ExpandToken(%s, addbr=%u): macro function expanded to >%'
+$SG11458 DB	'ExpandToken(%s, addbr=%u): macro function expanded to >%'
 	DB	's<', 0aH, 00H
 	ORG $+4
-$SG11461 DB	'ExpandToken(%s): macro proc at pos %u NOT expanded', 0aH
+$SG11466 DB	'ExpandToken(%s): macro proc at pos %u NOT expanded', 0aH
 	DB	00H
 	ORG $+4
-$SG11464 DB	'ExpandToken(%s): macro proc to be expanded', 0aH, 00H
+$SG11469 DB	'ExpandToken(%s): macro proc to be expanded', 0aH, 00H
 	ORG $+4
-$SG11465 DB	'ExpandToken(%s): macro proc called', 0aH, 00H
+$SG11470 DB	'ExpandToken(%s): macro proc called', 0aH, 00H
 	ORG $+4
-$SG11469 DB	'ExpandToken(%s, addbr=%u): value >%s< expanded to >%s<', 0aH
+$SG11474 DB	'ExpandToken(%s, addbr=%u): value >%s< expanded to >%s<', 0aH
 	DB	00H
-$SG11471 DB	'ExpandToken(%s): rest after expansion: %s', 0aH, 00H
+$SG11476 DB	'ExpandToken(%s): rest after expansion: %s', 0aH, 00H
 	ORG $+5
-$SG11478 DB	'ExpandToken: ''constant expected'' error', 0aH, 00H
-$SG11479 DB	'ExpandToken: curr pos=%u, start expr=%u, expr size=%d', 0aH
+$SG11483 DB	'ExpandToken: ''constant expected'' error', 0aH, 00H
+$SG11484 DB	'ExpandToken: curr pos=%u, start expr=%u, expr size=%d', 0aH
 	DB	00H
 	ORG $+1
-$SG11548 DB	'ExpandLine(>%s<) enter', 0aH, 00H
-$SG11585 DB	'ExpandLine(%s): expansion occured, retokenize', 0aH, 00H
+$SG11553 DB	'ExpandLine(>%s<) enter', 0aH, 00H
+$SG11590 DB	'ExpandLine(%s): expansion occured, retokenize', 0aH, 00H
 	ORG $+1
-$SG11587 DB	'ExpandLine(>%s<) exit, rc=%u, token_count=%u', 0aH, 00H
+$SG11592 DB	'ExpandLine(>%s<) exit, rc=%u, token_count=%u', 0aH, 00H
 	ORG $+2
-$SG10946 DB	'myltoa( value=%Xh, out=%s, radix=%u, sign=%u, %u)', 0aH, 00H
+$SG10951 DB	'myltoa( value=%Xh, out=%s, radix=%u, sign=%u, %u)', 0aH, 00H
 	ORG $+5
-$SG11062 DB	'RunMacro(%s, idx=%u src=>%s< ) enter, lvl=%u, locals=%04'
+$SG11067 DB	'RunMacro(%s, idx=%u src=>%s< ) enter, lvl=%u, locals=%04'
 	DB	'u', 0aH, 00H
 	ORG $+5
-$SG11072 DB	'RunMacro(%s) exit, macro is purged', 0aH, 00H
+$SG11077 DB	'RunMacro(%s) exit, macro is purged', 0aH, 00H
 	ORG $+4
-$SG11073 DB	'RunMacro(%s): params=>%s< parmcnt=%u vararg=%u', 0aH, 00H
-$SG11085 DB	'RunMacro(%s.%u), parameter %u required >%s<', 0aH, 00H
+$SG11078 DB	'RunMacro(%s): params=>%s< parmcnt=%u vararg=%u', 0aH, 00H
+$SG11090 DB	'RunMacro(%s.%u), parameter %u required >%s<', 0aH, 00H
 	ORG $+3
-$SG11089 DB	'NULL', 00H
+$SG11094 DB	'NULL', 00H
 	ORG $+3
-$SG11090 DB	'RunMacro(%s.%u): curr (=def) parameter value=>%s<', 0aH, 00H
+$SG11095 DB	'RunMacro(%s.%u): curr (=def) parameter value=>%s<', 0aH, 00H
 	ORG $+5
-$SG11091 DB	'RunMacro(%s.%u), >%s<', 0aH, 00H
+$SG11096 DB	'RunMacro(%s.%u), >%s<', 0aH, 00H
 	ORG $+1
-$SG11119 DB	'RunMacro(%s.%u), num expansion: >%s<', 0aH, 00H
+$SG11124 DB	'RunMacro(%s.%u), num expansion: >%s<', 0aH, 00H
 	ORG $+2
-$SG11123 DB	'RunMacro(%s.%u): num expansion, opndx.type=%d, value=%d', 0aH
+$SG11128 DB	'RunMacro(%s.%u): num expansion, opndx.type=%d, value=%d', 0aH
 	DB	00H
 	ORG $+7
-$SG11125 DB	'RunMacro(%s.%u): num expansion, additional token=%s', 0aH
+$SG11130 DB	'RunMacro(%s.%u): num expansion, additional token=%s', 0aH
 	DB	00H
 	ORG $+3
-$SG11126 DB	'expans.c', 00H
+$SG11131 DB	'expans.c', 00H
 	ORG $+7
-$SG11142 DB	'expans.c', 00H
+$SG11147 DB	'expans.c', 00H
 	ORG $+7
-$SG11145 DB	'expans.c', 00H
-	ORG $+7
-$SG11149 DB	'RunMacro(%s.%u): undelimited string >%s<, watching ''!'''
-	DB	0aH, 00H
 $SG11150 DB	'expans.c', 00H
 	ORG $+7
-$SG11152 DB	'expans.c', 00H
+$SG11154 DB	'RunMacro(%s.%u): undelimited string >%s<, watching ''!'''
+	DB	0aH, 00H
+$SG11155 DB	'expans.c', 00H
 	ORG $+7
-$SG11156 DB	'RunMacro(%s.%u[%u]): curr parameter value=>%s<', 0aH, 00H
-$SG11163 DB	'RunMacro(%s.%u): curr parameter value=>%s<', 0aH, 00H
+$SG11157 DB	'expans.c', 00H
+	ORG $+7
+$SG11161 DB	'RunMacro(%s.%u[%u]): curr parameter value=>%s<', 0aH, 00H
+$SG11168 DB	'RunMacro(%s.%u): curr parameter value=>%s<', 0aH, 00H
 	ORG $+4
-$SG11165 DB	'RunMacro(%s.%u): curr parameter value=><', 0aH, 00H
+$SG11170 DB	'RunMacro(%s.%u): curr parameter value=><', 0aH, 00H
 	ORG $+6
-$SG11171 DB	'RunMacro(%s): missing '')''', 0aH, 00H
+$SG11176 DB	'RunMacro(%s): missing '')''', 0aH, 00H
 	ORG $+5
-$SG11172 DB	'RunMacro(%s): expected '')'', found >%s<', 0aH, 00H
-$SG11174 DB	'RunMacro(%s): expected T_FINAL, found >%s<, parmidx=%u', 0aH
+$SG11177 DB	'RunMacro(%s): expected '')'', found >%s<', 0aH, 00H
+$SG11179 DB	'RunMacro(%s): expected T_FINAL, found >%s<, parmidx=%u', 0aH
 	DB	00H
-$SG11178 DB	'RunMacro(%s): enter assembly loop, macro level=%u', 0aH, 00H
+$SG11183 DB	'RunMacro(%s): enter assembly loop, macro level=%u', 0aH, 00H
 	ORG $+1
-$SG11200 DB	'NULL', 00H
+$SG11205 DB	'NULL', 00H
 	ORG $+7
-$SG11201 DB	'RunMacro(%s): EXITM, result=>%s<', 0aH, 00H
+$SG11206 DB	'RunMacro(%s): EXITM, result=>%s<', 0aH, 00H
 	ORG $+6
-$SG11206 DB	'RunMacro(%s): GOTO %s, MacroLevel=%u', 0aH, 00H
+$SG11211 DB	'RunMacro(%s): GOTO %s, MacroLevel=%u', 0aH, 00H
 	ORG $+2
-$SG11209 DB	'RunMacro(%s): GOTO, line=>%s<', 0aH, 00H
+$SG11214 DB	'RunMacro(%s): GOTO, line=>%s<', 0aH, 00H
 	ORG $+1
-$SG11213 DB	'RunMacro(%s): GOTO, label >%s< not found!', 0aH, 00H
+$SG11218 DB	'RunMacro(%s): GOTO, label >%s< not found!', 0aH, 00H
 	ORG $+5
-$SG11214 DB	'RunMacro(%s): GOTO, found label >%s<', 0aH, 00H
+$SG11219 DB	'RunMacro(%s): GOTO, found label >%s<', 0aH, 00H
 	ORG $+2
-$SG11217 DB	'RunMacro(%s) exit, MacroLevel=%u', 0aH, 00H
+$SG11222 DB	'RunMacro(%s) exit, MacroLevel=%u', 0aH, 00H
 _DATA	ENDS
 PUBLIC	myltoa
 PUBLIC	RunMacro
@@ -678,7 +678,7 @@ $LN4@ExpandToke:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	lea	rcx, OFFSET FLAT:$SG11437
+	lea	rcx, OFFSET FLAT:$SG11442
 	call	DoDebugMsg1
 
 ; 1126 :             continue;
@@ -712,7 +712,7 @@ $LN8@ExpandToke:
 	mov	r8d, DWORD PTR equmode$[rsp]
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG11439
+	lea	rcx, OFFSET FLAT:$SG11444
 	call	DoDebugMsg1
 
 ; 1131 :             /* don't check isdefined flag (which cannot occur in pass one, and this code usually runs
@@ -761,7 +761,7 @@ $LN8@ExpandToke:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11446
+	lea	rcx, OFFSET FLAT:$SG11451
 	call	DoDebugMsg1
 
 ; 1142 :                             continue;
@@ -907,7 +907,7 @@ $LN21@ExpandToke:
 	mov	r8d, DWORD PTR addbrackets$[rsp]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11453
+	lea	rcx, OFFSET FLAT:$SG11458
 	call	DoDebugMsg1
 
 ; 1171 :                         /* expand text, but don't if macro was at position 0 (might be a text macro definition directive */
@@ -1073,7 +1073,7 @@ $LN25@ExpandToke:
 	mov	r8d, DWORD PTR i$[rsp]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11461
+	lea	rcx, OFFSET FLAT:$SG11466
 	call	DoDebugMsg1
 
 ; 1200 : #if 1 /* v2.03: no error, just don't expand! */
@@ -1115,7 +1115,7 @@ $LN29@ExpandToke:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11464
+	lea	rcx, OFFSET FLAT:$SG11469
 	call	DoDebugMsg1
 
 ; 1215 :                         i = RunMacro( (struct dsym *)sym, i+1, tokenarray, NULL,
@@ -1151,7 +1151,7 @@ $LN46@ExpandToke:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11465
+	lea	rcx, OFFSET FLAT:$SG11470
 	call	DoDebugMsg1
 
 ; 1223 :                         if ( i == -1 )
@@ -1233,7 +1233,7 @@ $LN33@ExpandToke:
 	mov	r8d, DWORD PTR addbrackets$[rsp]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11469
+	lea	rcx, OFFSET FLAT:$SG11474
 	call	DoDebugMsg1
 
 ; 1248 :                     if ( ERROR == RebuildLine( buffer, i, tokenarray, strlen( tokenarray[i].string_ptr ),
@@ -1281,7 +1281,7 @@ $LN34@ExpandToke:
 	mov	r8, QWORD PTR [rcx+rax+24]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11471
+	lea	rcx, OFFSET FLAT:$SG11476
 	call	DoDebugMsg1
 $LN32@ExpandToke:
 $LN12@ExpandToke:
@@ -1425,7 +1425,7 @@ $LN38@ExpandToke:
 ; 1278 :                 //else {
 ; 1279 :                     DebugMsg(("ExpandToken: 'constant expected' error\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11478
+	lea	rcx, OFFSET FLAT:$SG11483
 	call	DoDebugMsg
 
 ; 1280 :                     EmitError( CONSTANT_EXPECTED );
@@ -1485,7 +1485,7 @@ $LN37@ExpandToke:
 	mov	r8d, DWORD PTR i$[rsp]
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	edx, DWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG11479
+	lea	rcx, OFFSET FLAT:$SG11484
 	call	DoDebugMsg1
 
 ; 1296 : 
@@ -2151,7 +2151,7 @@ ExpandTMacro PROC
 	mov	r9d, DWORD PTR level$[rsp]
 	mov	r8d, DWORD PTR equmode$[rsp]
 	mov	rdx, QWORD PTR outbuf$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11352
+	lea	rcx, OFFSET FLAT:$SG11357
 	call	DoDebugMsg1
 
 ; 983  : 
@@ -2319,7 +2319,7 @@ $LN11@ExpandTMac:
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	edx, DWORD PTR level$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11358
+	lea	rcx, OFFSET FLAT:$SG11363
 	call	DoDebugMsg1
 
 ; 1007 :                     strcat( buffer+len, tokenarray[i].tokpos );
@@ -2401,7 +2401,7 @@ $LN9@ExpandTMac:
 	mov	r8d, DWORD PTR level$[rsp]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11360
+	lea	rcx, OFFSET FLAT:$SG11365
 	call	DoDebugMsg1
 
 ; 1019 :                     if ( ERROR == ExpandTMacro( buffer + len, tokenarray, equmode, level+1 ) ) {
@@ -2437,7 +2437,7 @@ $LN13@ExpandTMac:
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	edx, DWORD PTR level$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11362
+	lea	rcx, OFFSET FLAT:$SG11367
 	call	DoDebugMsg1
 
 ; 1024 :                     //if ( level || ( tokenarray[i+1].token != T_FINAL && tokenarray[i+1].token != T_COMMA ))
@@ -2692,7 +2692,7 @@ $LN59:
 ; 1396 :     DebugMsg1(( "ExpandLine(>%s<) enter\n", string ));
 
 	mov	rdx, QWORD PTR string$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11548
+	lea	rcx, OFFSET FLAT:$SG11553
 	call	DoDebugMsg1
 
 ; 1397 :     for ( lvl = 0; lvl < MAX_TEXTMACRO_NESTING; lvl++ ) {
@@ -3357,7 +3357,7 @@ $LN13@ExpandLine:
 ; 1525 :             DebugMsg1(( "ExpandLine(%s): expansion occured, retokenize\n", string ));
 
 	mov	rdx, QWORD PTR string$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11585
+	lea	rcx, OFFSET FLAT:$SG11590
 	call	DoDebugMsg1
 
 ; 1526 :             Token_Count = Tokenize( string, 0, tokenarray, TOK_RESCAN | TOK_LINE );
@@ -3402,7 +3402,7 @@ $LN50@ExpandLine:
 	mov	r9d, DWORD PTR ModuleInfo+496
 	mov	r8d, DWORD PTR rc$[rsp]
 	mov	rdx, QWORD PTR string$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11587
+	lea	rcx, OFFSET FLAT:$SG11592
 	call	DoDebugMsg1
 
 ; 1534 :     return( rc );
@@ -3723,7 +3723,7 @@ $LN67:
 
 	mov	r8d, DWORD PTR substitute$[rsp]
 	mov	rdx, QWORD PTR line$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11279
+	lea	rcx, OFFSET FLAT:$SG11284
 	call	DoDebugMsg1
 
 ; 837  :     sp[0] = line;
@@ -3895,11 +3895,11 @@ $LN20@ExpandText:
 	mov	rax, QWORD PTR sym$[rsp]
 	cmp	DWORD PTR [rax+32], 10
 	jne	SHORT $LN57@ExpandText
-	lea	rax, OFFSET FLAT:$SG11286
+	lea	rax, OFFSET FLAT:$SG11291
 	mov	QWORD PTR tv160[rsp], rax
 	jmp	SHORT $LN58@ExpandText
 $LN57@ExpandText:
-	lea	rax, OFFSET FLAT:$SG11287
+	lea	rax, OFFSET FLAT:$SG11292
 	mov	QWORD PTR tv160[rsp], rax
 $LN58@ExpandText:
 	mov	rax, QWORD PTR pDst$[rsp]
@@ -3914,7 +3914,7 @@ $LN58@ExpandText:
 	mov	r8, QWORD PTR tv160[rsp]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11288
+	lea	rcx, OFFSET FLAT:$SG11293
 	call	DoDebugMsg1
 $LN19@ExpandText:
 
@@ -4050,7 +4050,7 @@ $LN26@ExpandText:
 	mov	r8, QWORD PTR pSrc$[rsp]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11298
+	lea	rcx, OFFSET FLAT:$SG11303
 	call	DoDebugMsg1
 
 ; 875  :                         pDst = pIdent;
@@ -4292,7 +4292,7 @@ $LN39@ExpandText:
 	mov	QWORD PTR tv282[rsp], rax
 	jmp	SHORT $LN60@ExpandText
 $LN59@ExpandText:
-	lea	rax, OFFSET FLAT:$SG11311
+	lea	rax, OFFSET FLAT:$SG11316
 	mov	QWORD PTR tv282[rsp], rax
 $LN60@ExpandText:
 	mov	rax, QWORD PTR tv282[rsp]
@@ -4301,7 +4301,7 @@ $LN60@ExpandText:
 	mov	r8d, DWORD PTR i$6[rsp]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11312
+	lea	rcx, OFFSET FLAT:$SG11317
 	call	DoDebugMsg1
 
 ; 913  :                             if ( i == -1 ) {
@@ -4430,7 +4430,7 @@ $LN23@ExpandText:
 ; 931  :                         DebugMsg(("ExpandText(line=>%s<) error exit\n", line));
 
 	mov	rdx, QWORD PTR line$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11317
+	lea	rcx, OFFSET FLAT:$SG11322
 	call	DoDebugMsg
 
 ; 932  :                         EmitError( MACRO_NESTING_LEVEL_TOO_DEEP );
@@ -4551,7 +4551,7 @@ $LN3@ExpandText:
 ; 952  :         DebugMsg1(("ExpandText: expanded line=>%s<\n", line));
 
 	mov	rdx, QWORD PTR line$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11324
+	lea	rcx, OFFSET FLAT:$SG11329
 	call	DoDebugMsg1
 $LN51@ExpandText:
 
@@ -4748,7 +4748,7 @@ $LN264:
 	mov	r8d, DWORD PTR idx$[rbp]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11062
+	lea	rcx, OFFSET FLAT:$SG11067
 	call	DoDebugMsg1
 
 ; 151  : 
@@ -4923,7 +4923,7 @@ $LN45@RunMacro:
 
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11072
+	lea	rcx, OFFSET FLAT:$SG11077
 	call	DoDebugMsg1
 
 ; 184  :         return( idx );
@@ -4950,7 +4950,7 @@ $LN43@RunMacro:
 	mov	r8, QWORD PTR [rax+rdx+24]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11073
+	lea	rcx, OFFSET FLAT:$SG11078
 	call	DoDebugMsg1
 
 ; 188  : 
@@ -5105,7 +5105,7 @@ $LN51@RunMacro:
 
 	movsxd	rax, DWORD PTR parmidx$[rbp]
 	mov	rcx, QWORD PTR mi$[rbp+24]
-	lea	rdx, OFFSET FLAT:$SG11078
+	lea	rdx, OFFSET FLAT:$SG11083
 	mov	QWORD PTR [rcx+rax*8], rdx
 $LN52@RunMacro:
 
@@ -5239,7 +5239,7 @@ $LN56@RunMacro:
 	mov	r8d, DWORD PTR parmidx$[rbp]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11085
+	lea	rcx, OFFSET FLAT:$SG11090
 	call	DoDebugMsg1
 
 ; 239  :                 if ( *macro->sym.name == NULLC )
@@ -5308,14 +5308,14 @@ $LN58@RunMacro:
 	mov	QWORD PTR tv310[rbp], rax
 	jmp	SHORT $LN166@RunMacro
 $LN165@RunMacro:
-	lea	rax, OFFSET FLAT:$SG11089
+	lea	rax, OFFSET FLAT:$SG11094
 	mov	QWORD PTR tv310[rbp], rax
 $LN166@RunMacro:
 	mov	r9, QWORD PTR tv310[rbp]
 	mov	r8d, DWORD PTR parmidx$[rbp]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11090
+	lea	rcx, OFFSET FLAT:$SG11095
 	call	DoDebugMsg1
 $LN61@RunMacro:
 
@@ -5360,7 +5360,7 @@ $LN192@RunMacro:
 	mov	r8d, DWORD PTR parmidx$[rbp]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11091
+	lea	rcx, OFFSET FLAT:$SG11096
 	call	DoDebugMsg1
 
 ; 258  : 
@@ -6005,7 +6005,7 @@ $LN200@RunMacro:
 	mov	r8d, DWORD PTR parmidx$[rbp]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11119
+	lea	rcx, OFFSET FLAT:$SG11124
 	call	DoDebugMsg1
 
 ; 349  :                         /* the % operator won't accept forward references.
@@ -6053,7 +6053,7 @@ $LN90@RunMacro:
 	mov	r8d, DWORD PTR parmidx$[rbp]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11123
+	lea	rcx, OFFSET FLAT:$SG11128
 	call	DoDebugMsg1
 
 ; 359  :                         /* v2.08: accept constant and copy any stuff that's following */
@@ -6092,7 +6092,7 @@ $LN168@RunMacro:
 	mov	r8d, DWORD PTR parmidx$[rbp]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11125
+	lea	rcx, OFFSET FLAT:$SG11130
 	call	DoDebugMsg1
 
 ; 366  :                             /* just copy won't work, since <>-literals aren't handled correctly then */
@@ -6161,7 +6161,7 @@ $LN205@RunMacro:
 	jmp	SHORT $LN170@RunMacro
 $LN169@RunMacro:
 	mov	edx, 373				; 00000175H
-	lea	rcx, OFFSET FLAT:$SG11126
+	lea	rcx, OFFSET FLAT:$SG11131
 	call	InternalError
 	mov	DWORD PTR tv678[rbp], eax
 $LN170@RunMacro:
@@ -6756,7 +6756,7 @@ $LN218@RunMacro:
 	jmp	SHORT $LN172@RunMacro
 $LN171@RunMacro:
 	mov	edx, 458				; 000001caH
-	lea	rcx, OFFSET FLAT:$SG11142
+	lea	rcx, OFFSET FLAT:$SG11147
 	call	InternalError
 	mov	DWORD PTR tv912[rbp], eax
 $LN172@RunMacro:
@@ -6937,7 +6937,7 @@ $LN226@RunMacro:
 	jmp	SHORT $LN174@RunMacro
 $LN173@RunMacro:
 	mov	edx, 472				; 000001d8H
-	lea	rcx, OFFSET FLAT:$SG11145
+	lea	rcx, OFFSET FLAT:$SG11150
 	call	InternalError
 	mov	DWORD PTR tv986[rbp], eax
 $LN174@RunMacro:
@@ -7042,7 +7042,7 @@ $LN110@RunMacro:
 	mov	r8d, DWORD PTR parmidx$[rbp]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11149
+	lea	rcx, OFFSET FLAT:$SG11154
 	call	DoDebugMsg1
 
 ; 489  :                     p = tokenarray[idx].tokpos;
@@ -7085,7 +7085,7 @@ $LN228@RunMacro:
 	jmp	SHORT $LN176@RunMacro
 $LN175@RunMacro:
 	mov	edx, 491				; 000001ebH
-	lea	rcx, OFFSET FLAT:$SG11150
+	lea	rcx, OFFSET FLAT:$SG11155
 	call	InternalError
 	mov	DWORD PTR tv1059[rbp], eax
 $LN176@RunMacro:
@@ -7172,7 +7172,7 @@ $LN232@RunMacro:
 	jmp	SHORT $LN178@RunMacro
 $LN177@RunMacro:
 	mov	edx, 499				; 000001f3H
-	lea	rcx, OFFSET FLAT:$SG11152
+	lea	rcx, OFFSET FLAT:$SG11157
 	call	InternalError
 	mov	DWORD PTR tv1073[rbp], eax
 $LN178@RunMacro:
@@ -7283,7 +7283,7 @@ $LN237@RunMacro:
 	mov	r8d, DWORD PTR parmidx$[rbp]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11156
+	lea	rcx, OFFSET FLAT:$SG11161
 	call	DoDebugMsg1
 
 ; 516  :                 currparm = ( macro->sym.predefined ? GetAlignedPointer( currparm, ptr - currparm ) : ptr );
@@ -7466,7 +7466,7 @@ $LN247@RunMacro:
 	mov	r8d, DWORD PTR parmidx$[rbp]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11163
+	lea	rcx, OFFSET FLAT:$SG11168
 	call	DoDebugMsg1
 
 ; 534  :                 currparm = GetAlignedPointer( currparm, ptr - currparm );
@@ -7507,7 +7507,7 @@ $LN121@RunMacro:
 
 	movsxd	rax, DWORD PTR parmidx$[rbp]
 	mov	rcx, QWORD PTR mi$[rbp+24]
-	lea	rdx, OFFSET FLAT:$SG11164
+	lea	rdx, OFFSET FLAT:$SG11169
 	mov	QWORD PTR [rcx+rax*8], rdx
 
 ; 537  :                 DebugMsg1(("RunMacro(%s.%u): curr parameter value=><\n", macro->sym.name, parmidx ));
@@ -7515,7 +7515,7 @@ $LN121@RunMacro:
 	mov	r8d, DWORD PTR parmidx$[rbp]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11165
+	lea	rcx, OFFSET FLAT:$SG11170
 	call	DoDebugMsg1
 $LN122@RunMacro:
 $LN115@RunMacro:
@@ -7576,7 +7576,7 @@ $LN29@RunMacro:
 
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11171
+	lea	rcx, OFFSET FLAT:$SG11176
 	call	DoDebugMsg1
 
 ; 548  :                 EmitError( MISSING_RIGHT_PARENTHESIS );
@@ -7602,7 +7602,7 @@ $LN126@RunMacro:
 	mov	r8, QWORD PTR [rcx+rax+24]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11172
+	lea	rcx, OFFSET FLAT:$SG11177
 	call	DoDebugMsg1
 
 ; 552  :                 /* v2.09: changed to a warning only (Masm-compatible) */
@@ -7649,7 +7649,7 @@ $LN123@RunMacro:
 	mov	r8, QWORD PTR [rcx+rax+24]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11174
+	lea	rcx, OFFSET FLAT:$SG11179
 	call	DoDebugMsg1
 
 ; 560  :         /* v2.05: changed to a warning. That's what Masm does */
@@ -7792,7 +7792,7 @@ $LN130@RunMacro:
 	mov	r8d, eax
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11178
+	lea	rcx, OFFSET FLAT:$SG11183
 	call	DoDebugMsg1
 
 ; 613  :         /* v2.04: this listing is too excessive */
@@ -8160,13 +8160,13 @@ $LN143@RunMacro:
 	mov	QWORD PTR tv1419[rbp], rax
 	jmp	SHORT $LN182@RunMacro
 $LN181@RunMacro:
-	lea	rax, OFFSET FLAT:$SG11200
+	lea	rax, OFFSET FLAT:$SG11205
 	mov	QWORD PTR tv1419[rbp], rax
 $LN182@RunMacro:
 	mov	r8, QWORD PTR tv1419[rbp]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11201
+	lea	rcx, OFFSET FLAT:$SG11206
 	call	DoDebugMsg1
 
 ; 688  : 
@@ -8252,7 +8252,7 @@ $LN140@RunMacro:
 	mov	r8, QWORD PTR [rax+rcx+8]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11206
+	lea	rcx, OFFSET FLAT:$SG11211
 	call	DoDebugMsg1
 
 ; 710  :                         /* search for the destination line */
@@ -8368,7 +8368,7 @@ $LN255@RunMacro:
 	mov	r8, QWORD PTR ptr$[rbp]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11209
+	lea	rcx, OFFSET FLAT:$SG11214
 	call	DoDebugMsg1
 
 ; 722  :                                 /* macro labels are always case-insensitive! */
@@ -8479,7 +8479,7 @@ $LN36@RunMacro:
 	mov	r8, QWORD PTR [rcx+rax+8]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11213
+	lea	rcx, OFFSET FLAT:$SG11218
 	call	DoDebugMsg1
 
 ; 734  :                             EmitErr( MACRO_LABEL_NOT_DEFINED, tokenarray[1].string_ptr );
@@ -8506,7 +8506,7 @@ $LN262@RunMacro:
 	mov	r8, QWORD PTR ptr$[rbp]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11214
+	lea	rcx, OFFSET FLAT:$SG11219
 	call	DoDebugMsg1
 
 ; 737  :                             /* v2.10: rewritten, "if"-nesting-level handling added */
@@ -8643,7 +8643,7 @@ $LN131@RunMacro:
 	mov	r8d, eax
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11217
+	lea	rcx, OFFSET FLAT:$SG11222
 	call	DoDebugMsg1
 
 ; 789  : 
@@ -8839,7 +8839,7 @@ $LN8@myltoa:
 	mov	r9d, DWORD PTR radix$[rsp]
 	mov	r8, QWORD PTR buffer$[rsp]
 	mov	edx, DWORD PTR saved_value$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10946
+	lea	rcx, OFFSET FLAT:$SG10951
 	call	DoDebugMsg1
 
 ; 76   :     return( buffer );

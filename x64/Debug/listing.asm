@@ -6,53 +6,53 @@ INCLUDELIB MSVCRTD
 INCLUDELIB OLDNAMES
 
 _BSS	SEGMENT
-$SG11454 DB	01H DUP (?)
+$SG11459 DB	01H DUP (?)
 	ALIGN	4
 
-$SG11471 DB	01H DUP (?)
+$SG11476 DB	01H DUP (?)
 	ALIGN	4
 
 ?prefix@?1??log_struct@@9@9 DD 01H DUP (?)		; `log_struct'::`2'::prefix
-$SG11542 DB	01H DUP (?)
+$SG11547 DB	01H DUP (?)
 	ALIGN	4
 
-$SG11555 DB	01H DUP (?)
+$SG11560 DB	01H DUP (?)
 	ALIGN	4
 
-$SG11581 DB	01H DUP (?)
+$SG11586 DB	01H DUP (?)
 	ALIGN	4
 
-$SG11583 DB	01H DUP (?)
+$SG11588 DB	01H DUP (?)
 	ALIGN	4
 
-$SG11597 DB	01H DUP (?)
+$SG11602 DB	01H DUP (?)
 	ALIGN	4
 
-$SG11616 DB	01H DUP (?)
+$SG11621 DB	01H DUP (?)
 	ALIGN	4
 
-$SG11626 DB	01H DUP (?)
+$SG11631 DB	01H DUP (?)
 	ALIGN	4
 
-$SG11646 DB	01H DUP (?)
+$SG11651 DB	01H DUP (?)
 	ALIGN	4
 
-$SG11715 DB	01H DUP (?)
-	ALIGN	4
-
-$SG11740 DB	01H DUP (?)
-	ALIGN	4
-
-$SG11744 DB	01H DUP (?)
+$SG11720 DB	01H DUP (?)
 	ALIGN	4
 
 $SG11745 DB	01H DUP (?)
 	ALIGN	4
 
-$SG11751 DB	01H DUP (?)
+$SG11749 DB	01H DUP (?)
 	ALIGN	4
 
-$SG11768 DB	01H DUP (?)
+$SG11750 DB	01H DUP (?)
+	ALIGN	4
+
+$SG11756 DB	01H DUP (?)
+	ALIGN	4
+
+$SG11773 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	decoflags:BYTE
@@ -62,298 +62,298 @@ _DATA	ENDS
 _BSS	SEGMENT
 	ALIGN	4
 
-$SG11213 DB	01H DUP (?)
+$SG11218 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG11336 DB	'LstWrite( %u, %u ): enter [ pos=%u, GeneratedCode=%u, Ma'
+$SG11341 DB	'LstWrite( %u, %u ): enter [ pos=%u, GeneratedCode=%u, Ma'
 	DB	'croLevel=%u ]', 0aH, 00H
 	ORG $+1
-$SG11341 DB	'LstWrite: Pass=%u, stored pos=%u', 0aH, 00H
+$SG11346 DB	'LstWrite: Pass=%u, stored pos=%u', 0aH, 00H
 	ORG $+2
-$SG11345 DB	'%08X', 00H
+$SG11350 DB	'%08X', 00H
 	ORG $+3
-$SG11358 DB	'%02X', 00H
+$SG11363 DB	'%02X', 00H
 	ORG $+3
-$SG11360 DB	'%02X', 00H
+$SG11365 DB	'%02X', 00H
 	ORG $+3
-$SG11363 DB	'%08X', 00H
+$SG11368 DB	'%08X', 00H
 	ORG $+3
-$SG11368 DB	'%-25X', 00H
+$SG11373 DB	'%-25X', 00H
 	ORG $+2
-$SG11382 DB	0dH, 0aH, 00H
+$SG11387 DB	0dH, 0aH, 00H
 	ORG $+1
-$SG11367 DB	'%-25I64X', 00H
+$SG11372 DB	'%-25I64X', 00H
 	ORG $+3
-$SG11374 DB	'%08X', 00H
+$SG11379 DB	'%08X', 00H
 	ORG $+3
-$SG11378 DB	'%08X', 00H
+$SG11383 DB	'%08X', 00H
 	ORG $+3
-$SG11388 DB	'%u', 00H
+$SG11393 DB	'%u', 00H
 	ORG $+1
-$SG11381 DB	'LstWrite: type=%u, writing CRLF', 0aH, 00H
+$SG11386 DB	'LstWrite: type=%u, writing CRLF', 0aH, 00H
 	ORG $+3
-$SG11398 DB	0dH, 0aH, 00H
+$SG11403 DB	0dH, 0aH, 00H
 	ORG $+1
-$SG11390 DB	'LstWrite: writing (%u b) >%s< [%u/%u], new pos=%u', 0aH, 00H
+$SG11395 DB	'LstWrite: writing (%u b) >%s< [%u/%u], new pos=%u', 0aH, 00H
 	ORG $+1
-$SG11399 DB	0dH, 0aH, 00H
+$SG11404 DB	0dH, 0aH, 00H
 	ORG $+1
-$SG11396 DB	'LstWrite: writing (%u b) >%s%s<', 0aH, 00H
+$SG11401 DB	'LstWrite: writing (%u b) >%s%s<', 0aH, 00H
 	ORG $+3
-$SG11415 DB	0dH, 0aH, 00H
+$SG11420 DB	0dH, 0aH, 00H
 	ORG $+1
-$SG11397 DB	'LstWrite: writing (%u b) >%s<', 0aH, 00H
+$SG11402 DB	'LstWrite: writing (%u b) >%s<', 0aH, 00H
 	ORG $+1
-$SG11400 DB	'LstWrite: additional line >%s<, new pos=%u', 0aH, 00H
-$SG11435 DB	'%u', 00H
+$SG11405 DB	'LstWrite: additional line >%s<, new pos=%u', 0aH, 00H
+$SG11440 DB	'%u', 00H
 	ORG $+1
-$SG11446 DB	'?', 00H
+$SG11451 DB	'?', 00H
 	ORG $+2
-$SG11495 DB	'%s %s ', 00H
+$SG11500 DB	'%s %s ', 00H
 	ORG $+1
-$SG11509 DB	'?', 00H
+$SG11514 DB	'?', 00H
 	ORG $+2
-$SG11455 DB	'%s %s        %s', 00H
-$SG11456 DB	' %5lu', 00H
+$SG11460 DB	'%s %s        %s', 00H
+$SG11461 DB	' %5lu', 00H
 	ORG $+2
-$SG11508 DB	'GetMemtypeString: found mem_type=MT_PROC for sym=%s', 0aH
+$SG11513 DB	'GetMemtypeString: found mem_type=MT_PROC for sym=%s', 0aH
 	DB	00H
 	ORG $+3
-$SG11515 DB	'?', 00H
+$SG11520 DB	'?', 00H
 	ORG $+2
-$SG11543 DB	' ', 00H
+$SG11548 DB	' ', 00H
 	ORG $+2
-$SG11548 DB	'%s %s        %8X (%u)', 00H
+$SG11553 DB	'%s %s        %8X (%u)', 00H
 	ORG $+2
-$SG11549 DB	'%s %s        %8X', 00H
+$SG11554 DB	'%s %s        %8X', 00H
 	ORG $+3
-$SG11556 DB	' ', 00H
+$SG11561 DB	' ', 00H
 	ORG $+2
-$SG11550 DB	'%s %s        %8X', 00H
+$SG11555 DB	'%s %s        %8X', 00H
 	ORG $+3
-$SG11558 DB	'%s', 00H
+$SG11563 DB	'%s', 00H
 	ORG $+1
-$SG11557 DB	'%s %s        %8X   ', 00H
-$SG11560 DB	'[%u]', 00H
+$SG11562 DB	'%s %s        %8X   ', 00H
+$SG11565 DB	'[%u]', 00H
 	ORG $+3
-$SG11586 DB	'?', 00H
+$SG11591 DB	'?', 00H
 	ORG $+2
-$SG11582 DB	'%s %s      %6X  %7X', 00H
-$SG11588 DB	'?', 00H
+$SG11587 DB	'%s %s      %6X  %7X', 00H
+$SG11593 DB	'?', 00H
 	ORG $+2
-$SG11587 DB	'  %s %s      %6X  %7X  %016I64X %s', 00H
+$SG11592 DB	'  %s %s      %6X  %7X  %016I64X %s', 00H
 	ORG $+1
-$SG11600 DB	' ', 00H
+$SG11605 DB	' ', 00H
 	ORG $+2
-$SG11589 DB	'  %s %s      %6X  %7X  %08X %s', 00H
+$SG11594 DB	'  %s %s      %6X  %7X  %08X %s', 00H
 	ORG $+1
-$SG11602 DB	' ', 00H
+$SG11607 DB	' ', 00H
 	ORG $+2
-$SG11603 DB	' ', 00H
+$SG11608 DB	' ', 00H
 	ORG $+2
-$SG11604 DB	'%s %s    %8u  %s', 00H
+$SG11609 DB	'%s %s    %8u  %s', 00H
 	ORG $+3
-$SG11662 DB	' ', 00H
+$SG11667 DB	' ', 00H
 	ORG $+2
-$SG11617 DB	'%s %s        ', 00H
+$SG11622 DB	'%s %s        ', 00H
 	ORG $+2
-$SG11620 DB	'32 Bit   %08X ', 00H
+$SG11625 DB	'32 Bit   %08X ', 00H
 	ORG $+1
-$SG11623 DB	'64 Bit   %08X ', 00H
+$SG11628 DB	'64 Bit   %08X ', 00H
 	ORG $+1
-$SG11624 DB	'16 Bit   %04X     ', 00H
+$SG11629 DB	'16 Bit   %04X     ', 00H
 	ORG $+1
-$SG11733 DB	'%s', 00H
+$SG11738 DB	'%s', 00H
 	ORG $+1
-$SG11625 DB	'%-7s %-8s', 00H
+$SG11630 DB	'%-7s %-8s', 00H
 	ORG $+2
-$SG11627 DB	'''%s''', 00H
+$SG11632 DB	'''%s''', 00H
 	ORG $+3
-$SG11720 DB	'%0*X ', 00H
+$SG11725 DB	'%0*X ', 00H
 	ORG $+2
-$SG11729 DB	'*%-8s ', 00H
+$SG11734 DB	'*%-8s ', 00H
 	ORG $+1
-$SG11735 DB	'  ', 00H
+$SG11740 DB	'  ', 00H
 	ORG $+1
-$SG11647 DB	'%s %s        %s', 00H
-$SG11718 DB	'%s %s        P %-6s %08X %-8s ', 00H
+$SG11652 DB	'%s %s        %s', 00H
+$SG11723 DB	'%s %s        P %-6s %08X %-8s ', 00H
 	ORG $+1
-$SG11719 DB	'%s %s        P %-6s %04X     %-8s ', 00H
+$SG11724 DB	'%s %s        P %-6s %04X     %-8s ', 00H
 	ORG $+1
-$SG11722 DB	'(F) ', 00H
+$SG11727 DB	'(F) ', 00H
 	ORG $+3
-$SG11725 DB	'%-9s', 00H
+$SG11730 DB	'%-9s', 00H
 	ORG $+3
-$SG11728 DB	'%-9s', 00H
+$SG11733 DB	'%-9s', 00H
 	ORG $+3
-$SG11730 DB	'%-9s ', 00H
+$SG11735 DB	'%-9s ', 00H
 	ORG $+2
-$SG11748 DB	'%s[%u]', 00H
+$SG11753 DB	'%s[%u]', 00H
 	ORG $+1
-$SG11793 DB	'%s ', 00H
-$SG11732 DB	'(%.8s) ', 00H
-$SG11743 DB	'  %s %s        %-17s %s', 00H
-$SG11754 DB	'  %s %s        L %-6s %08X %s', 00H
+$SG11798 DB	'%s ', 00H
+$SG11737 DB	'(%.8s) ', 00H
+$SG11748 DB	'  %s %s        %-17s %s', 00H
+$SG11759 DB	'  %s %s        L %-6s %08X %s', 00H
 	ORG $+2
-$SG11755 DB	'  %s %s        L %-6s %04X     %s', 00H
+$SG11760 DB	'  %s %s        L %-6s %04X     %s', 00H
 	ORG $+2
-$SG11757 DB	' (F)', 00H
+$SG11762 DB	' (F)', 00H
 	ORG $+3
-$SG11773 DB	'%s[%u]', 00H
+$SG11778 DB	'%s[%u]', 00H
 	ORG $+1
-$SG11799 DB	'%s ', 00H
-$SG11770 DB	'%s %s        ', 00H
+$SG11804 DB	'%s ', 00H
+$SG11775 DB	'%s %s        ', 00H
 	ORG $+2
-$SG11774 DB	'%-10s ', 00H
+$SG11779 DB	'%-10s ', 00H
 	ORG $+1
-$SG11777 DB	'%-10s ', 00H
+$SG11782 DB	'%-10s ', 00H
 	ORG $+1
-$SG11778 DB	'%-10s ', 00H
+$SG11783 DB	'%-10s ', 00H
 	ORG $+1
-$SG11781 DB	' %8Xh ', 00H
+$SG11786 DB	' %8Xh ', 00H
 	ORG $+1
-$SG11786 DB	' %I64Xh ', 00H
+$SG11791 DB	' %I64Xh ', 00H
 	ORG $+3
-$SG11790 DB	' %8Xh ', 00H
+$SG11795 DB	' %8Xh ', 00H
 	ORG $+1
-$SG11803 DB	'%s ', 00H
-$SG11789 DB	'-%08Xh ', 00H
-$SG11791 DB	' %8Xh ', 00H
+$SG11808 DB	'%s ', 00H
+$SG11794 DB	'-%08Xh ', 00H
+$SG11796 DB	' %8Xh ', 00H
 	ORG $+1
-$SG11795 DB	'(F) ', 00H
+$SG11800 DB	'(F) ', 00H
 	ORG $+3
-$SG11797 DB	'%s=%u ', 00H
+$SG11802 DB	'%s=%u ', 00H
 	ORG $+1
-$SG11802 DB	'*%s ', 00H
+$SG11807 DB	'*%s ', 00H
 	ORG $+3
-$SG11805 DB	'%s ', 00H
-$SG11806 DB	'%s', 00H
+$SG11810 DB	'%s ', 00H
+$SG11811 DB	'%s', 00H
 	ORG $+1
-$SG11808 DB	'%s %s        %s   %s', 00H
+$SG11813 DB	'%s %s        %s   %s', 00H
 	ORG $+3
-$SG11810 DB	'%s %s        %s  %s', 00H
-$SG11184 DB	'Far', 00H
-$SG11870 DB	'LstWriteCRef: calling qsort', 0aH, 00H
+$SG11815 DB	'%s %s        %s  %s', 00H
+$SG11189 DB	'Far', 00H
+$SG11875 DB	'LstWriteCRef: calling qsort', 0aH, 00H
 	ORG $+3
-$SG11889 DB	'LstWriteCRef: log_symbol( %s )', 0aH, 00H
-$SG11890 DB	'LstWriteCRef: %s suppressed', 0aH, 00H
+$SG11894 DB	'LstWriteCRef: log_symbol( %s )', 0aH, 00H
+$SG11895 DB	'LstWriteCRef: %s suppressed', 0aH, 00H
 	ORG $+3
-$SG11891 DB	'LstWriteCRef: free sorted symbols', 0aH, 00H
+$SG11896 DB	'LstWriteCRef: free sorted symbols', 0aH, 00H
 	ORG $+1
-$SG11171 DB	'Byte', 00H
+$SG11176 DB	'Byte', 00H
 	ORG $+3
-$SG11172 DB	'Word', 00H
+$SG11177 DB	'Word', 00H
 	ORG $+3
-$SG11173 DB	'DWord', 00H
+$SG11178 DB	'DWord', 00H
 	ORG $+2
-$SG11174 DB	'FWord', 00H
+$SG11179 DB	'FWord', 00H
 	ORG $+2
-$SG11175 DB	'QWord', 00H
+$SG11180 DB	'QWord', 00H
 	ORG $+2
-$SG11176 DB	'TByte', 00H
+$SG11181 DB	'TByte', 00H
 	ORG $+2
-$SG11177 DB	'Para', 00H
+$SG11182 DB	'Para', 00H
 	ORG $+3
-$SG11181 DB	'Near16', 00H
+$SG11186 DB	'Near16', 00H
 	ORG $+1
-$SG11196 DB	'Ptr', 00H
-$SG11178 DB	'XmmWord', 00H
-$SG11179 DB	'Page', 00H
+$SG11201 DB	'Ptr', 00H
+$SG11183 DB	'XmmWord', 00H
+$SG11184 DB	'Page', 00H
 	ORG $+3
-$SG11180 DB	'Near', 00H
+$SG11185 DB	'Near', 00H
 	ORG $+3
-$SG11182 DB	'Near32', 00H
+$SG11187 DB	'Near32', 00H
 	ORG $+1
-$SG11183 DB	'Near64', 00H
+$SG11188 DB	'Near64', 00H
 	ORG $+1
-$SG11185 DB	'Far16', 00H
+$SG11190 DB	'Far16', 00H
 	ORG $+2
-$SG11186 DB	'Far32', 00H
+$SG11191 DB	'Far32', 00H
 	ORG $+2
-$SG11187 DB	'Far64', 00H
+$SG11192 DB	'Far64', 00H
 	ORG $+2
-$SG11188 DB	'L Near', 00H
+$SG11193 DB	'L Near', 00H
 	ORG $+1
-$SG11189 DB	'L Near16', 00H
+$SG11194 DB	'L Near16', 00H
 	ORG $+3
-$SG11192 DB	'L Far', 00H
+$SG11197 DB	'L Far', 00H
 	ORG $+2
-$SG11199 DB	'Number', 00H
+$SG11204 DB	'Number', 00H
 	ORG $+1
-$SG11210 DB	'Abs', 00H
-$SG11190 DB	'L Near32', 00H
+$SG11215 DB	'Abs', 00H
+$SG11195 DB	'L Near32', 00H
 	ORG $+3
-$SG11201 DB	'Stack', 00H
+$SG11206 DB	'Stack', 00H
 	ORG $+2
-$SG11202 DB	'Public', 00H
+$SG11207 DB	'Public', 00H
 	ORG $+1
-$SG11214 DB	'C', 00H
+$SG11219 DB	'C', 00H
 	ORG $+2
-$SG11191 DB	'L Near64', 00H
+$SG11196 DB	'L Near64', 00H
 	ORG $+3
-$SG11203 DB	'Common', 00H
+$SG11208 DB	'Common', 00H
 	ORG $+5
-$SG11193 DB	'L Far16', 00H
-$SG11194 DB	'L Far32', 00H
-$SG11195 DB	'L Far64', 00H
-$SG11197 DB	'Proc', 00H
+$SG11198 DB	'L Far16', 00H
+$SG11199 DB	'L Far32', 00H
+$SG11200 DB	'L Far64', 00H
+$SG11202 DB	'Proc', 00H
 	ORG $+3
-$SG11198 DB	'Func', 00H
+$SG11203 DB	'Func', 00H
 	ORG $+3
-$SG11200 DB	'Private', 00H
-$SG11204 DB	'External', 00H
+$SG11205 DB	'Private', 00H
+$SG11209 DB	'External', 00H
 	ORG $+7
-$SG11205 DB	'Undefined', 00H
+$SG11210 DB	'Undefined', 00H
 	ORG $+2
-$SG11206 DB	'GROUP', 00H
+$SG11211 DB	'GROUP', 00H
 	ORG $+2
-$SG11207 DB	'No Seg', 00H
+$SG11212 DB	'No Seg', 00H
 	ORG $+1
-$SG11208 DB	'Text', 00H
+$SG11213 DB	'Text', 00H
 	ORG $+3
-$SG11209 DB	'Alias', 00H
+$SG11214 DB	'Alias', 00H
 	ORG $+2
-$SG11211 DB	'COMM', 00H
+$SG11216 DB	'COMM', 00H
 	ORG $+3
-$SG11212 DB	'VARARG', 00H
+$SG11217 DB	'VARARG', 00H
 	ORG $+5
-$SG11215 DB	'SYSCALL', 00H
-$SG11216 DB	'STDCALL', 00H
-$SG11217 DB	'PASCAL', 00H
+$SG11220 DB	'SYSCALL', 00H
+$SG11221 DB	'STDCALL', 00H
+$SG11222 DB	'PASCAL', 00H
 	ORG $+1
-$SG11218 DB	'FORTRAN', 00H
-$SG11219 DB	'BASIC', 00H
+$SG11223 DB	'FORTRAN', 00H
+$SG11224 DB	'BASIC', 00H
 	ORG $+2
-$SG11220 DB	'FASTCALL', 00H
+$SG11225 DB	'FASTCALL', 00H
 	ORG $+7
-$SG11221 DB	'Macros:', 00H
-$SG11222 DB	'                N a m e                 Type', 00H
+$SG11226 DB	'Macros:', 00H
+$SG11227 DB	'                N a m e                 Type', 00H
 	ORG $+3
-$SG11223 DB	'Structures and Unions:', 00H
+$SG11228 DB	'Structures and Unions:', 00H
 	ORG $+1
-$SG11224 DB	'                N a m e                 Size/Ofs   Type', 00H
-$SG11225 DB	'Records:', 00H
+$SG11229 DB	'                N a m e                 Size/Ofs   Type', 00H
+$SG11230 DB	'Records:', 00H
 	ORG $+3
-$SG11227 DB	'Types:', 00H
+$SG11232 DB	'Types:', 00H
 	ORG $+5
-$SG11226 DB	'                N a m e                 Width   # fields'
+$SG11231 DB	'                N a m e                 Width   # fields'
 	DB	0aH, '                                        Shift   Width   '
 	DB	' Mask   Initial', 00H
 	ORG $+7
-$SG11228 DB	'                N a m e                 Size    Attr', 00H
+$SG11233 DB	'                N a m e                 Size    Attr', 00H
 	ORG $+3
-$SG11229 DB	'Segments and Groups:', 00H
+$SG11234 DB	'Segments and Groups:', 00H
 	ORG $+3
-$SG11231 DB	'Procedures, parameters and locals:', 00H
+$SG11236 DB	'Procedures, parameters and locals:', 00H
 	ORG $+5
-$SG11230 DB	'                N a m e                 Size     Length '
+$SG11235 DB	'                N a m e                 Size     Length '
 	DB	'  Align   Combine Class', 00H
-$SG11232 DB	'                N a m e                 Type     Value  '
+$SG11237 DB	'                N a m e                 Type     Value  '
 	DB	'  Segment  Length', 00H
 	ORG $+6
-$SG11233 DB	'Symbols:', 00H
+$SG11238 DB	'Symbols:', 00H
 	ORG $+7
-$SG11234 DB	'                N a m e                 Type       Value'
+$SG11239 DB	'                N a m e                 Type       Value'
 	DB	'     Attr', 00H
 _DATA	ENDS
 CONST	SEGMENT
@@ -402,12 +402,7 @@ dots	DB	' . . . . . . . . . . . . . . . .', 00H
 szFmtProcStk DB	'  %s %s        %-17s %s %c %04X', 00H
 szCount	DB	'count', 00H
 	ORG $+2
-strings	DQ	FLAT:$SG11171
-	DQ	FLAT:$SG11172
-	DQ	FLAT:$SG11173
-	DQ	FLAT:$SG11174
-	DQ	FLAT:$SG11175
-	DQ	FLAT:$SG11176
+strings	DQ	FLAT:$SG11176
 	DQ	FLAT:$SG11177
 	DQ	FLAT:$SG11178
 	DQ	FLAT:$SG11179
@@ -466,6 +461,11 @@ strings	DQ	FLAT:$SG11171
 	DQ	FLAT:$SG11232
 	DQ	FLAT:$SG11233
 	DQ	FLAT:$SG11234
+	DQ	FLAT:$SG11235
+	DQ	FLAT:$SG11236
+	DQ	FLAT:$SG11237
+	DQ	FLAT:$SG11238
+	DQ	FLAT:$SG11239
 maccap	DW	032H
 	DW	033H
 	DW	00H
@@ -1537,7 +1537,7 @@ log_symbol PROC
 
 	cmp	DWORD PTR i$[rsp], 32			; 00000020H
 	jl	SHORT $LN27@log_symbol
-	lea	rax, OFFSET FLAT:$SG11768
+	lea	rax, OFFSET FLAT:$SG11773
 	mov	QWORD PTR tv70[rsp], rax
 	jmp	SHORT $LN28@log_symbol
 $LN27@log_symbol:
@@ -1574,7 +1574,7 @@ $LN4@log_symbol:
 	mov	r8, QWORD PTR pdots$[rsp]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11770
+	lea	rcx, OFFSET FLAT:$SG11775
 	call	LstPrintf
 
 ; 961  : 
@@ -1596,7 +1596,7 @@ $LN4@log_symbol:
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	r9d, DWORD PTR [rcx+64]
 	mov	r8, rax
-	lea	rdx, OFFSET FLAT:$SG11773
+	lea	rdx, OFFSET FLAT:$SG11778
 	mov	rcx, QWORD PTR ModuleInfo+488
 	call	sprintf
 	mov	DWORD PTR i$[rsp], eax
@@ -1604,7 +1604,7 @@ $LN4@log_symbol:
 ; 964  :             LstPrintf( "%-10s ", StringBufferEnd );
 
 	mov	rdx, QWORD PTR ModuleInfo+488
-	lea	rcx, OFFSET FLAT:$SG11774
+	lea	rcx, OFFSET FLAT:$SG11779
 	call	LstPrintf
 	jmp	SHORT $LN6@log_symbol
 $LN5@log_symbol:
@@ -1628,7 +1628,7 @@ $LN5@log_symbol:
 	imul	rax, rax, 40				; 00000028H
 	lea	rcx, OFFSET FLAT:strings
 	mov	rdx, QWORD PTR [rcx+rax]
-	lea	rcx, OFFSET FLAT:$SG11777
+	lea	rcx, OFFSET FLAT:$SG11782
 	call	LstPrintf
 
 ; 967  :         } else
@@ -1642,7 +1642,7 @@ $LN7@log_symbol:
 	mov	rcx, QWORD PTR sym$[rsp]
 	call	GetMemtypeString
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11778
+	lea	rcx, OFFSET FLAT:$SG11783
 	call	LstPrintf
 $LN8@log_symbol:
 $LN6@log_symbol:
@@ -1672,7 +1672,7 @@ $LN6@log_symbol:
 	mov	rcx, QWORD PTR sym$[rsp]
 	div	DWORD PTR [rcx+64]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11781
+	lea	rcx, OFFSET FLAT:$SG11786
 	call	LstPrintf
 	jmp	$LN10@log_symbol
 $LN9@log_symbol:
@@ -1698,7 +1698,7 @@ $LN9@log_symbol:
 	mov	r8d, DWORD PTR [rax+56]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	edx, DWORD PTR [rax+16]
-	lea	rcx, OFFSET FLAT:$SG11786
+	lea	rcx, OFFSET FLAT:$SG11791
 	call	LstPrintf
 	jmp	SHORT $LN14@log_symbol
 $LN13@log_symbol:
@@ -1716,7 +1716,7 @@ $LN13@log_symbol:
 	sub	ecx, DWORD PTR [rax+16]
 	mov	eax, ecx
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11789
+	lea	rcx, OFFSET FLAT:$SG11794
 	call	LstPrintf
 	jmp	SHORT $LN16@log_symbol
 $LN15@log_symbol:
@@ -1726,7 +1726,7 @@ $LN15@log_symbol:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	edx, DWORD PTR [rax+16]
-	lea	rcx, OFFSET FLAT:$SG11790
+	lea	rcx, OFFSET FLAT:$SG11795
 	call	LstPrintf
 $LN16@log_symbol:
 $LN14@log_symbol:
@@ -1740,7 +1740,7 @@ $LN11@log_symbol:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	edx, DWORD PTR [rax+16]
-	lea	rcx, OFFSET FLAT:$SG11791
+	lea	rcx, OFFSET FLAT:$SG11796
 	call	LstPrintf
 $LN12@log_symbol:
 $LN10@log_symbol:
@@ -1761,7 +1761,7 @@ $LN10@log_symbol:
 	mov	rcx, QWORD PTR sym$[rsp]
 	call	get_sym_seg_name
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11793
+	lea	rcx, OFFSET FLAT:$SG11798
 	call	LstPrintf
 $LN17@log_symbol:
 
@@ -1779,7 +1779,7 @@ $LN17@log_symbol:
 
 ; 994  :             LstPrintf( "(F) " );
 
-	lea	rcx, OFFSET FLAT:$SG11795
+	lea	rcx, OFFSET FLAT:$SG11800
 	call	LstPrintf
 $LN18@log_symbol:
 
@@ -1802,7 +1802,7 @@ $LN18@log_symbol:
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8d, DWORD PTR [rax+64]
 	lea	rdx, OFFSET FLAT:szCount
-	lea	rcx, OFFSET FLAT:$SG11797
+	lea	rcx, OFFSET FLAT:$SG11802
 	call	LstPrintf
 $LN19@log_symbol:
 
@@ -1823,7 +1823,7 @@ $LN19@log_symbol:
 	imul	rax, rax, 31
 	lea	rcx, OFFSET FLAT:strings
 	mov	rdx, QWORD PTR [rcx+rax]
-	lea	rcx, OFFSET FLAT:$SG11799
+	lea	rcx, OFFSET FLAT:$SG11804
 	call	LstPrintf
 $LN20@log_symbol:
 
@@ -1843,11 +1843,11 @@ $LN20@log_symbol:
 	movzx	eax, al
 	test	eax, eax
 	je	SHORT $LN29@log_symbol
-	lea	rax, OFFSET FLAT:$SG11802
+	lea	rax, OFFSET FLAT:$SG11807
 	mov	QWORD PTR tv218[rsp], rax
 	jmp	SHORT $LN30@log_symbol
 $LN29@log_symbol:
-	lea	rax, OFFSET FLAT:$SG11803
+	lea	rax, OFFSET FLAT:$SG11808
 	mov	QWORD PTR tv218[rsp], rax
 $LN30@log_symbol:
 	mov	eax, 8
@@ -1871,7 +1871,7 @@ $LN21@log_symbol:
 	imul	rax, rax, 34				; 00000022H
 	lea	rcx, OFFSET FLAT:strings
 	mov	rdx, QWORD PTR [rcx+rax]
-	lea	rcx, OFFSET FLAT:$SG11805
+	lea	rcx, OFFSET FLAT:$SG11810
 	call	LstPrintf
 $LN23@log_symbol:
 $LN22@log_symbol:
@@ -1883,7 +1883,7 @@ $LN22@log_symbol:
 	mov	rcx, QWORD PTR sym$[rsp]
 	call	GetLanguage
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11806
+	lea	rcx, OFFSET FLAT:$SG11811
 	call	LstPrintf
 
 ; 1009 :         LstNL();
@@ -1910,7 +1910,7 @@ $LN24@log_symbol:
 	mov	r8, QWORD PTR pdots$[rsp]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11808
+	lea	rcx, OFFSET FLAT:$SG11813
 	call	LstPrintf
 
 ; 1015 :         LstNL();
@@ -1936,7 +1936,7 @@ $LN25@log_symbol:
 	mov	r8, QWORD PTR pdots$[rsp]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11810
+	lea	rcx, OFFSET FLAT:$SG11815
 	call	LstPrintf
 
 ; 1019 :         LstNL();
@@ -2089,7 +2089,7 @@ $LN2@get_proc_t:
 ; 779  :     }
 ; 780  :     return( " " );
 
-	lea	rax, OFFSET FLAT:$SG11662
+	lea	rax, OFFSET FLAT:$SG11667
 $LN1@get_proc_t:
 
 ; 781  : }
@@ -2129,7 +2129,7 @@ $LN2@GetLanguag:
 
 ; 568  :     return( "?" );
 
-	lea	rax, OFFSET FLAT:$SG11515
+	lea	rax, OFFSET FLAT:$SG11520
 $LN1@GetLanguag:
 
 ; 569  : }
@@ -2312,7 +2312,7 @@ $LN6@GetMemtype:
 	lea	rcx, OFFSET FLAT:strings
 	mov	r9, QWORD PTR [rcx+rax]
 	mov	r8, QWORD PTR p$[rsp]
-	lea	rdx, OFFSET FLAT:$SG11495
+	lea	rdx, OFFSET FLAT:$SG11500
 	mov	rcx, QWORD PTR b2$2[rsp]
 	call	sprintf
 	cdqe
@@ -2489,7 +2489,7 @@ $LN26@GetMemtype:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11508
+	lea	rcx, OFFSET FLAT:$SG11513
 	call	printf
 $LN2@GetMemtype:
 
@@ -2498,7 +2498,7 @@ $LN2@GetMemtype:
 ; 559  :     }
 ; 560  :     return("?");
 
-	lea	rax, OFFSET FLAT:$SG11509
+	lea	rax, OFFSET FLAT:$SG11514
 $LN1@GetMemtype:
 
 ; 561  : }
@@ -2694,7 +2694,7 @@ $LN2@SimpleType:
 ; 484  :     }
 ; 485  :     return( "" );
 
-	lea	rax, OFFSET FLAT:$SG11471
+	lea	rax, OFFSET FLAT:$SG11476
 $LN1@SimpleType:
 
 ; 486  : }
@@ -2797,7 +2797,7 @@ $LN2@get_seg_co:
 ; 452  :     }
 ; 453  :     return( "?" );
 
-	lea	rax, OFFSET FLAT:$SG11446
+	lea	rax, OFFSET FLAT:$SG11451
 $LN1@get_seg_co:
 
 ; 454  : }
@@ -2929,7 +2929,7 @@ $LN11@get_seg_al:
 	mov	eax, DWORD PTR tv145[rsp]
 	shl	eax, cl
 	mov	r8d, eax
-	lea	rdx, OFFSET FLAT:$SG11435
+	lea	rdx, OFFSET FLAT:$SG11440
 	mov	rcx, QWORD PTR buffer$[rsp]
 	call	sprintf
 
@@ -3020,7 +3020,7 @@ log_proc PROC
 
 	cmp	DWORD PTR i$[rsp], 32			; 00000020H
 	jl	SHORT $LN46@log_proc
-	lea	rax, OFFSET FLAT:$SG11715
+	lea	rax, OFFSET FLAT:$SG11720
 	mov	QWORD PTR tv73[rsp], rax
 	jmp	SHORT $LN47@log_proc
 $LN46@log_proc:
@@ -3040,7 +3040,7 @@ $LN47@log_proc:
 
 ; 808  :         p = "%s %s        P %-6s %08" I32_SPEC "X %-8s ";
 
-	lea	rax, OFFSET FLAT:$SG11718
+	lea	rax, OFFSET FLAT:$SG11723
 	mov	QWORD PTR p$[rsp], rax
 	jmp	SHORT $LN24@log_proc
 $LN23@log_proc:
@@ -3048,7 +3048,7 @@ $LN23@log_proc:
 ; 809  :     else
 ; 810  :         p = "%s %s        P %-6s %04" I32_SPEC "X     %-8s ";
 
-	lea	rax, OFFSET FLAT:$SG11719
+	lea	rax, OFFSET FLAT:$SG11724
 	mov	QWORD PTR p$[rsp], rax
 $LN24@log_proc:
 
@@ -3100,7 +3100,7 @@ $LN50@log_proc:
 $LN51@log_proc:
 	mov	r8d, DWORD PTR tv91[rsp]
 	mov	edx, DWORD PTR tv95[rsp]
-	lea	rcx, OFFSET FLAT:$SG11720
+	lea	rcx, OFFSET FLAT:$SG11725
 	call	LstPrintf
 
 ; 820  : 
@@ -3117,7 +3117,7 @@ $LN51@log_proc:
 
 ; 823  :         LstPrintf( "(F) " );
 
-	lea	rcx, OFFSET FLAT:$SG11722
+	lea	rcx, OFFSET FLAT:$SG11727
 	call	LstPrintf
 $LN25@log_proc:
 
@@ -3138,7 +3138,7 @@ $LN25@log_proc:
 	imul	rax, rax, 31
 	lea	rcx, OFFSET FLAT:strings
 	mov	rdx, QWORD PTR [rcx+rax]
-	lea	rcx, OFFSET FLAT:$SG11725
+	lea	rcx, OFFSET FLAT:$SG11730
 	call	LstPrintf
 	jmp	$LN27@log_proc
 $LN26@log_proc:
@@ -3155,7 +3155,7 @@ $LN26@log_proc:
 	imul	rax, rax, 29
 	lea	rcx, OFFSET FLAT:strings
 	mov	rdx, QWORD PTR [rcx+rax]
-	lea	rcx, OFFSET FLAT:$SG11728
+	lea	rcx, OFFSET FLAT:$SG11733
 	call	LstPrintf
 
 ; 829  :     } else {
@@ -3172,11 +3172,11 @@ $LN28@log_proc:
 	movzx	eax, al
 	test	eax, eax
 	je	SHORT $LN52@log_proc
-	lea	rax, OFFSET FLAT:$SG11729
+	lea	rax, OFFSET FLAT:$SG11734
 	mov	QWORD PTR tv159[rsp], rax
 	jmp	SHORT $LN53@log_proc
 $LN52@log_proc:
-	lea	rax, OFFSET FLAT:$SG11730
+	lea	rax, OFFSET FLAT:$SG11735
 	mov	QWORD PTR tv159[rsp], rax
 $LN53@log_proc:
 	mov	eax, 8
@@ -3199,7 +3199,7 @@ $LN53@log_proc:
 	mov	rax, QWORD PTR [rax+56]
 	add	rax, 12
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11732
+	lea	rcx, OFFSET FLAT:$SG11737
 	call	LstPrintf
 $LN30@log_proc:
 $LN29@log_proc:
@@ -3213,7 +3213,7 @@ $LN27@log_proc:
 	mov	rcx, QWORD PTR sym$[rsp]
 	call	GetLanguage
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11733
+	lea	rcx, OFFSET FLAT:$SG11738
 	call	LstPrintf
 
 ; 838  :     LstNL();
@@ -3238,7 +3238,7 @@ $LN27@log_proc:
 
 ; 842  :         LstPrintf( "  ");
 
-	lea	rcx, OFFSET FLAT:$SG11735
+	lea	rcx, OFFSET FLAT:$SG11740
 	call	LstPrintf
 
 ; 843  :         LstPrintf( p,
@@ -3371,7 +3371,7 @@ $LN9@log_proc:
 
 	cmp	DWORD PTR i$[rsp], 30
 	jl	SHORT $LN54@log_proc
-	lea	rax, OFFSET FLAT:$SG11740
+	lea	rax, OFFSET FLAT:$SG11745
 	mov	QWORD PTR tv219[rsp], rax
 	jmp	SHORT $LN55@log_proc
 $LN54@log_proc:
@@ -3403,7 +3403,7 @@ $LN55@log_proc:
 	mov	r8, QWORD PTR pdots$[rsp]
 	mov	rax, QWORD PTR f$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11743
+	lea	rcx, OFFSET FLAT:$SG11748
 	call	LstPrintf
 	jmp	$LN37@log_proc
 $LN36@log_proc:
@@ -3496,7 +3496,7 @@ $LN13@log_proc:
 
 	cmp	DWORD PTR i$[rsp], 30
 	jl	SHORT $LN58@log_proc
-	lea	rax, OFFSET FLAT:$SG11744
+	lea	rax, OFFSET FLAT:$SG11749
 	mov	QWORD PTR tv271[rsp], rax
 	jmp	SHORT $LN59@log_proc
 $LN58@log_proc:
@@ -3578,7 +3578,7 @@ $LN16@log_proc:
 
 	cmp	DWORD PTR i$[rsp], 30
 	jl	SHORT $LN60@log_proc
-	lea	rax, OFFSET FLAT:$SG11745
+	lea	rax, OFFSET FLAT:$SG11750
 	mov	QWORD PTR tv302[rsp], rax
 	jmp	SHORT $LN61@log_proc
 $LN60@log_proc:
@@ -3609,7 +3609,7 @@ $LN61@log_proc:
 	mov	rcx, QWORD PTR l$[rsp]
 	mov	r9d, DWORD PTR [rcx+64]
 	mov	r8, rax
-	lea	rdx, OFFSET FLAT:$SG11748
+	lea	rdx, OFFSET FLAT:$SG11753
 	lea	rcx, QWORD PTR buffer$7[rsp]
 	call	sprintf
 	jmp	SHORT $LN39@log_proc
@@ -3740,7 +3740,7 @@ $LN40@log_proc:
 
 	cmp	DWORD PTR i$[rsp], 30
 	jl	SHORT $LN66@log_proc
-	lea	rax, OFFSET FLAT:$SG11751
+	lea	rax, OFFSET FLAT:$SG11756
 	mov	QWORD PTR tv363[rsp], rax
 	jmp	SHORT $LN67@log_proc
 $LN66@log_proc:
@@ -3760,7 +3760,7 @@ $LN67@log_proc:
 
 ; 926  :                     p = "  %s %s        L %-6s %08" I32_SPEC "X %s";
 
-	lea	rax, OFFSET FLAT:$SG11754
+	lea	rax, OFFSET FLAT:$SG11759
 	mov	QWORD PTR p$[rsp], rax
 	jmp	SHORT $LN43@log_proc
 $LN42@log_proc:
@@ -3768,7 +3768,7 @@ $LN42@log_proc:
 ; 927  :                 else
 ; 928  :                     p = "  %s %s        L %-6s %04" I32_SPEC "X     %s";
 
-	lea	rax, OFFSET FLAT:$SG11755
+	lea	rax, OFFSET FLAT:$SG11760
 	mov	QWORD PTR p$[rsp], rax
 $LN43@log_proc:
 
@@ -3810,7 +3810,7 @@ $LN43@log_proc:
 
 ; 937  :                     LstPrintf( " (F)" );
 
-	lea	rcx, OFFSET FLAT:$SG11757
+	lea	rcx, OFFSET FLAT:$SG11762
 	call	LstPrintf
 $LN44@log_proc:
 
@@ -3881,7 +3881,7 @@ log_group PROC
 
 	cmp	DWORD PTR i$[rsp], 32			; 00000020H
 	jb	SHORT $LN11@log_group
-	lea	rax, OFFSET FLAT:$SG11646
+	lea	rax, OFFSET FLAT:$SG11651
 	mov	QWORD PTR tv70[rsp], rax
 	jmp	SHORT $LN12@log_group
 $LN11@log_group:
@@ -3902,7 +3902,7 @@ $LN12@log_group:
 	mov	r8, QWORD PTR pdots$[rsp]
 	mov	rax, QWORD PTR grp$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11647
+	lea	rcx, OFFSET FLAT:$SG11652
 	call	LstPrintf
 
 ; 750  :     LstNL();
@@ -4035,7 +4035,7 @@ log_segment PROC
 
 	cmp	DWORD PTR i$4[rsp], 32			; 00000020H
 	jl	SHORT $LN8@log_segmen
-	lea	rax, OFFSET FLAT:$SG11616
+	lea	rax, OFFSET FLAT:$SG11621
 	mov	QWORD PTR tv73[rsp], rax
 	jmp	SHORT $LN9@log_segmen
 $LN8@log_segmen:
@@ -4052,7 +4052,7 @@ $LN9@log_segmen:
 	mov	r8, QWORD PTR pdots$5[rsp]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11617
+	lea	rcx, OFFSET FLAT:$SG11622
 	call	LstPrintf
 
 ; 719  :         if( seg->Ofssize == USE32 ) {
@@ -4067,7 +4067,7 @@ $LN9@log_segmen:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	edx, DWORD PTR [rax+56]
-	lea	rcx, OFFSET FLAT:$SG11620
+	lea	rcx, OFFSET FLAT:$SG11625
 	call	LstPrintf
 	jmp	SHORT $LN4@log_segmen
 $LN3@log_segmen:
@@ -4084,7 +4084,7 @@ $LN3@log_segmen:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	edx, DWORD PTR [rax+56]
-	lea	rcx, OFFSET FLAT:$SG11623
+	lea	rcx, OFFSET FLAT:$SG11628
 	call	LstPrintf
 
 ; 725  : #endif
@@ -4098,7 +4098,7 @@ $LN5@log_segmen:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	edx, DWORD PTR [rax+56]
-	lea	rcx, OFFSET FLAT:$SG11624
+	lea	rcx, OFFSET FLAT:$SG11629
 	call	LstPrintf
 $LN6@log_segmen:
 $LN4@log_segmen:
@@ -4115,7 +4115,7 @@ $LN4@log_segmen:
 	mov	rcx, QWORD PTR tv93[rsp]
 	mov	r8, rcx
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11625
+	lea	rcx, OFFSET FLAT:$SG11630
 	call	LstPrintf
 
 ; 731  :         LstPrintf( "'%s'", seg->clsym ? seg->clsym->name : "" );
@@ -4129,11 +4129,11 @@ $LN4@log_segmen:
 	mov	QWORD PTR tv137[rsp], rax
 	jmp	SHORT $LN11@log_segmen
 $LN10@log_segmen:
-	lea	rax, OFFSET FLAT:$SG11626
+	lea	rax, OFFSET FLAT:$SG11631
 	mov	QWORD PTR tv137[rsp], rax
 $LN11@log_segmen:
 	mov	rdx, QWORD PTR tv137[rsp]
-	lea	rcx, OFFSET FLAT:$SG11627
+	lea	rcx, OFFSET FLAT:$SG11632
 	call	LstPrintf
 
 ; 732  : #if 0
@@ -4197,7 +4197,7 @@ log_typedef PROC
 
 	cmp	DWORD PTR i$[rsp], 32			; 00000020H
 	jl	SHORT $LN6@log_typede
-	lea	rax, OFFSET FLAT:$SG11597
+	lea	rax, OFFSET FLAT:$SG11602
 	mov	QWORD PTR tv70[rsp], rax
 	jmp	SHORT $LN7@log_typede
 $LN6@log_typede:
@@ -4239,7 +4239,7 @@ $LN7@log_typede:
 
 ; 689  :         strcat( p, " " );
 
-	lea	rdx, OFFSET FLAT:$SG11600
+	lea	rdx, OFFSET FLAT:$SG11605
 	mov	rcx, QWORD PTR p$[rsp]
 	call	strcat
 
@@ -4262,7 +4262,7 @@ $LN7@log_typede:
 
 ; 692  :             strcat( p," ");
 
-	lea	rdx, OFFSET FLAT:$SG11602
+	lea	rdx, OFFSET FLAT:$SG11607
 	mov	rcx, QWORD PTR p$[rsp]
 	call	strcat
 $LN4@log_typede:
@@ -4297,7 +4297,7 @@ $LN9@log_typede:
 
 ; 700  :         strcat( p," " );
 
-	lea	rdx, OFFSET FLAT:$SG11603
+	lea	rdx, OFFSET FLAT:$SG11608
 	mov	rcx, QWORD PTR p$[rsp]
 	call	strcat
 
@@ -4332,7 +4332,7 @@ $LN3@log_typede:
 	mov	r8, QWORD PTR pdots$[rsp]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11604
+	lea	rcx, OFFSET FLAT:$SG11609
 	call	LstPrintf
 
 ; 705  :     LstNL();
@@ -4403,7 +4403,7 @@ log_record PROC
 
 	cmp	DWORD PTR i$[rsp], 32			; 00000020H
 	jl	SHORT $LN14@log_record
-	lea	rax, OFFSET FLAT:$SG11581
+	lea	rax, OFFSET FLAT:$SG11586
 	mov	QWORD PTR tv71[rsp], rax
 	jmp	SHORT $LN15@log_record
 $LN14@log_record:
@@ -4446,7 +4446,7 @@ $LN3@log_record:
 	mov	r8, QWORD PTR pdots$[rsp]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11582
+	lea	rcx, OFFSET FLAT:$SG11587
 	call	LstPrintf
 
 ; 649  :     LstNL();
@@ -4478,7 +4478,7 @@ $LN7@log_record:
 
 	cmp	DWORD PTR i$[rsp], 32			; 00000020H
 	jl	SHORT $LN16@log_record
-	lea	rax, OFFSET FLAT:$SG11583
+	lea	rax, OFFSET FLAT:$SG11588
 	mov	QWORD PTR tv94[rsp], rax
 	jmp	SHORT $LN17@log_record
 $LN16@log_record:
@@ -4548,7 +4548,7 @@ $LN9@log_record:
 	mov	QWORD PTR tv143[rsp], rax
 	jmp	SHORT $LN19@log_record
 $LN18@log_record:
-	lea	rax, OFFSET FLAT:$SG11586
+	lea	rax, OFFSET FLAT:$SG11591
 	mov	QWORD PTR tv143[rsp], rax
 $LN19@log_record:
 	mov	rax, QWORD PTR tv143[rsp]
@@ -4563,7 +4563,7 @@ $LN19@log_record:
 	mov	r8, QWORD PTR pdots$[rsp]
 	mov	rax, QWORD PTR f$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11587
+	lea	rcx, OFFSET FLAT:$SG11592
 	call	LstPrintf
 	jmp	SHORT $LN12@log_record
 $LN11@log_record:
@@ -4582,7 +4582,7 @@ $LN11@log_record:
 	mov	QWORD PTR tv160[rsp], rax
 	jmp	SHORT $LN21@log_record
 $LN20@log_record:
-	lea	rax, OFFSET FLAT:$SG11588
+	lea	rax, OFFSET FLAT:$SG11593
 	mov	QWORD PTR tv160[rsp], rax
 $LN21@log_record:
 	mov	rax, QWORD PTR tv160[rsp]
@@ -4597,7 +4597,7 @@ $LN21@log_record:
 	mov	r8, QWORD PTR pdots$[rsp]
 	mov	rax, QWORD PTR f$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11589
+	lea	rcx, OFFSET FLAT:$SG11594
 	call	LstPrintf
 $LN12@log_record:
 
@@ -4700,7 +4700,7 @@ $LN11@log_struct:
 	mov	eax, ecx
 	cmp	eax, 32					; 00000020H
 	jb	SHORT $LN22@log_struct
-	lea	rax, OFFSET FLAT:$SG11542
+	lea	rax, OFFSET FLAT:$SG11547
 	mov	QWORD PTR tv77[rsp], rax
 	jmp	SHORT $LN23@log_struct
 $LN22@log_struct:
@@ -4730,7 +4730,7 @@ $LN4@log_struct:
 
 ; 597  :         LstPrintf(" ");
 
-	lea	rcx, OFFSET FLAT:$SG11543
+	lea	rcx, OFFSET FLAT:$SG11548
 	call	LstPrintf
 	jmp	SHORT $LN2@log_struct
 $LN3@log_struct:
@@ -4757,7 +4757,7 @@ $LN3@log_struct:
 	mov	r9d, DWORD PTR [rax+56]
 	mov	r8, QWORD PTR pdots$[rsp]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11548
+	lea	rcx, OFFSET FLAT:$SG11553
 	call	LstPrintf
 	jmp	SHORT $LN15@log_struct
 $LN14@log_struct:
@@ -4769,7 +4769,7 @@ $LN14@log_struct:
 	mov	r9d, DWORD PTR [rax+56]
 	mov	r8, QWORD PTR pdots$[rsp]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11549
+	lea	rcx, OFFSET FLAT:$SG11554
 	call	LstPrintf
 $LN15@log_struct:
 	jmp	SHORT $LN13@log_struct
@@ -4784,7 +4784,7 @@ $LN12@log_struct:
 	mov	r9d, eax
 	mov	r8, QWORD PTR pdots$[rsp]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11550
+	lea	rcx, OFFSET FLAT:$SG11555
 	call	LstPrintf
 $LN13@log_struct:
 
@@ -4869,7 +4869,7 @@ $LN19@log_struct:
 
 	cmp	DWORD PTR i$[rsp], 32			; 00000020H
 	jb	SHORT $LN24@log_struct
-	lea	rax, OFFSET FLAT:$SG11555
+	lea	rax, OFFSET FLAT:$SG11560
 	mov	QWORD PTR tv168[rsp], rax
 	jmp	SHORT $LN25@log_struct
 $LN24@log_struct:
@@ -4896,7 +4896,7 @@ $LN10@log_struct:
 
 ; 620  :                     LstPrintf(" ");
 
-	lea	rcx, OFFSET FLAT:$SG11556
+	lea	rcx, OFFSET FLAT:$SG11561
 	call	LstPrintf
 	jmp	SHORT $LN8@log_struct
 $LN9@log_struct:
@@ -4912,7 +4912,7 @@ $LN9@log_struct:
 	mov	r8, QWORD PTR pdots$[rsp]
 	mov	rax, QWORD PTR f$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11557
+	lea	rcx, OFFSET FLAT:$SG11562
 	call	LstPrintf
 
 ; 622  :                 LstPrintf( "%s", GetMemtypeString( &f->sym, NULL ) );
@@ -4922,7 +4922,7 @@ $LN9@log_struct:
 	mov	rcx, rax
 	call	GetMemtypeString
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11558
+	lea	rcx, OFFSET FLAT:$SG11563
 	call	LstPrintf
 
 ; 623  :                 if ( f->sym.isarray )
@@ -4939,7 +4939,7 @@ $LN9@log_struct:
 
 	mov	rax, QWORD PTR f$[rsp]
 	mov	edx, DWORD PTR [rax+64]
-	lea	rcx, OFFSET FLAT:$SG11560
+	lea	rcx, OFFSET FLAT:$SG11565
 	call	LstPrintf
 $LN20@log_struct:
 
@@ -5028,7 +5028,7 @@ $LN4@log_macro:
 
 	cmp	DWORD PTR i$[rsp], 32			; 00000020H
 	jl	SHORT $LN5@log_macro
-	lea	rax, OFFSET FLAT:$SG11454
+	lea	rax, OFFSET FLAT:$SG11459
 	mov	QWORD PTR tv80[rsp], rax
 	jmp	SHORT $LN6@log_macro
 $LN5@log_macro:
@@ -5046,7 +5046,7 @@ $LN6@log_macro:
 	mov	r8, QWORD PTR pdots$[rsp]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11455
+	lea	rcx, OFFSET FLAT:$SG11460
 	call	LstPrintf
 
 ; 465  : #ifdef DEBUG_OUT
@@ -5055,7 +5055,7 @@ $LN6@log_macro:
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	edx, DWORD PTR [rax+24]
-	lea	rcx, OFFSET FLAT:$SG11456
+	lea	rcx, OFFSET FLAT:$SG11461
 	call	LstPrintf
 
 ; 467  : #endif
@@ -5163,7 +5163,7 @@ $LN4:
 	mov	r9, QWORD PTR [rcx+rax]
 	mov	r8d, 2
 	mov	edx, 1
-	lea	rcx, OFFSET FLAT:$SG11415
+	lea	rcx, OFFSET FLAT:$SG11420
 	call	QWORD PTR __imp_fwrite
 
 ; 404  :         list_pos += NLSIZ;
@@ -5343,7 +5343,7 @@ $LN21@LstWriteCR:
 ; 1064 : 
 ; 1065 :     DebugMsg(("LstWriteCRef: calling qsort\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11870
+	lea	rcx, OFFSET FLAT:$SG11875
 	call	DoDebugMsg
 
 ; 1066 :     /* sort 'em */
@@ -5793,7 +5793,7 @@ $LN20@LstWriteCR:
 	mov	rcx, QWORD PTR syms$[rsp]
 	mov	rax, QWORD PTR [rcx+rax*8]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11889
+	lea	rcx, OFFSET FLAT:$SG11894
 	call	DoDebugMsg
 
 ; 1140 :             log_symbol( syms[i] );
@@ -5816,7 +5816,7 @@ $LN39@LstWriteCR:
 	mov	rcx, QWORD PTR syms$[rsp]
 	mov	rax, QWORD PTR [rcx+rax*8]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11890
+	lea	rcx, OFFSET FLAT:$SG11895
 	call	DoDebugMsg
 $LN40@LstWriteCR:
 
@@ -5834,7 +5834,7 @@ $LN19@LstWriteCR:
 ; 1149 :     /* free the sorted symbols */
 ; 1150 :     DebugMsg(("LstWriteCRef: free sorted symbols\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11891
+	lea	rcx, OFFSET FLAT:$SG11896
 	call	DoDebugMsg
 
 ; 1151 :     MemFree( syms );
@@ -6043,7 +6043,7 @@ $LN21@LstWrite:
 	mov	r9d, DWORD PTR list_pos
 	mov	r8d, DWORD PTR oldofs$[rbp]
 	mov	edx, DWORD PTR type$[rbp]
-	lea	rcx, OFFSET FLAT:$SG11336
+	lea	rcx, OFFSET FLAT:$SG11341
 	call	DoDebugMsg1
 
 ; 172  :     pSrcline = CurrSource;
@@ -6113,7 +6113,7 @@ $LN27@LstWrite:
 	inc	eax
 	mov	r8d, DWORD PTR list_pos
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11341
+	lea	rcx, OFFSET FLAT:$SG11346
 	call	DoDebugMsg1
 $LN25@LstWrite:
 
@@ -6188,7 +6188,7 @@ $LN30@LstWrite:
 ; 203  :         sprintf( ll.buffer, "%08" I32_SPEC "X", oldofs );
 
 	mov	r8d, DWORD PTR oldofs$[rbp]
-	lea	rdx, OFFSET FLAT:$SG11345
+	lea	rdx, OFFSET FLAT:$SG11350
 	lea	rcx, QWORD PTR ll$[rbp+8]
 	call	sprintf
 
@@ -6387,7 +6387,7 @@ $LN8@LstWrite:
 	mov	rax, QWORD PTR [rax+16]
 	movzx	eax, BYTE PTR [rax+rcx]
 	mov	r8d, eax
-	lea	rdx, OFFSET FLAT:$SG11358
+	lea	rdx, OFFSET FLAT:$SG11363
 	mov	rcx, QWORD PTR p2$[rbp]
 	call	sprintf
 
@@ -6451,7 +6451,7 @@ $LN10@LstWrite:
 	mov	rax, QWORD PTR [rax+16]
 	movzx	eax, BYTE PTR [rax+rcx]
 	mov	r8d, eax
-	lea	rdx, OFFSET FLAT:$SG11360
+	lea	rdx, OFFSET FLAT:$SG11365
 	mov	rcx, QWORD PTR p2$[rbp]
 	call	sprintf
 
@@ -6514,7 +6514,7 @@ $LN44@LstWrite:
 
 	call	GetCurrOffset
 	mov	r8d, eax
-	lea	rdx, OFFSET FLAT:$SG11363
+	lea	rdx, OFFSET FLAT:$SG11368
 	lea	rcx, QWORD PTR ll$[rbp+8]
 	call	sprintf
 
@@ -6556,7 +6556,7 @@ $LN48@LstWrite:
 	movsxd	rcx, ecx
 	lea	rcx, QWORD PTR ll$[rbp+rcx+8]
 	mov	r8, rax
-	lea	rdx, OFFSET FLAT:$SG11367
+	lea	rdx, OFFSET FLAT:$SG11372
 	call	sprintf
 	jmp	SHORT $LN47@LstWrite
 $LN46@LstWrite:
@@ -6571,7 +6571,7 @@ $LN46@LstWrite:
 	lea	rax, QWORD PTR ll$[rbp+rax+8]
 	mov	rcx, QWORD PTR sym$[rbp]
 	mov	r8d, DWORD PTR [rcx+16]
-	lea	rdx, OFFSET FLAT:$SG11368
+	lea	rdx, OFFSET FLAT:$SG11373
 	mov	rcx, rax
 	call	sprintf
 $LN47@LstWrite:
@@ -6733,7 +6733,7 @@ $LN53@LstWrite:
 ; 300  :         sprintf( ll.buffer, "%08" I32_SPEC "X", oldofs );
 
 	mov	r8d, DWORD PTR oldofs$[rbp]
-	lea	rdx, OFFSET FLAT:$SG11374
+	lea	rdx, OFFSET FLAT:$SG11379
 	lea	rcx, QWORD PTR ll$[rbp+8]
 	call	sprintf
 
@@ -6760,7 +6760,7 @@ $LN56@LstWrite:
 ; 305  :             sprintf( ll.buffer, "%08" I32_SPEC "X", oldofs );
 
 	mov	r8d, DWORD PTR oldofs$[rbp]
-	lea	rdx, OFFSET FLAT:$SG11378
+	lea	rdx, OFFSET FLAT:$SG11383
 	lea	rcx, QWORD PTR ll$[rbp+8]
 	call	sprintf
 
@@ -6793,7 +6793,7 @@ $LN57@LstWrite:
 ; 311  :             DebugMsg1(("LstWrite: type=%u, writing CRLF\n", type ));
 
 	mov	edx, DWORD PTR type$[rbp]
-	lea	rcx, OFFSET FLAT:$SG11381
+	lea	rcx, OFFSET FLAT:$SG11386
 	call	DoDebugMsg1
 
 ; 312  :             fwrite( NLSTR, 1, NLSIZ, CurrFile[LST] );
@@ -6804,7 +6804,7 @@ $LN57@LstWrite:
 	mov	r9, QWORD PTR [rcx+rax]
 	mov	r8d, 2
 	mov	edx, 1
-	lea	rcx, OFFSET FLAT:$SG11382
+	lea	rcx, OFFSET FLAT:$SG11387
 	call	QWORD PTR __imp_fwrite
 
 ; 313  :             list_pos += NLSIZ;
@@ -6863,7 +6863,7 @@ $LN62@LstWrite:
 	imul	rcx, rcx, 29
 	lea	rcx, QWORD PTR ll$[rbp+rcx+8]
 	mov	r8d, eax
-	lea	rdx, OFFSET FLAT:$SG11388
+	lea	rdx, OFFSET FLAT:$SG11393
 	call	sprintf
 	mov	DWORD PTR len$[rbp], eax
 
@@ -6968,7 +6968,7 @@ $LN72@LstWrite:
 	mov	r9d, DWORD PTR len$[rbp]
 	lea	r8, QWORD PTR ll$[rbp+8]
 	mov	edx, DWORD PTR idx$[rbp]
-	lea	rcx, OFFSET FLAT:$SG11390
+	lea	rcx, OFFSET FLAT:$SG11395
 	call	DoDebugMsg1
 
 ; 350  : 
@@ -7027,7 +7027,7 @@ $LN67@LstWrite:
 	mov	r9, QWORD PTR ModuleInfo+472
 	mov	r8, QWORD PTR pSrcline$[rbp]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11396
+	lea	rcx, OFFSET FLAT:$SG11401
 	call	DoDebugMsg1
 
 ; 360  :         }
@@ -7042,7 +7042,7 @@ $LN68@LstWrite:
 	add	eax, 2
 	mov	r8, QWORD PTR pSrcline$[rbp]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11397
+	lea	rcx, OFFSET FLAT:$SG11402
 	call	DoDebugMsg1
 $LN69@LstWrite:
 
@@ -7055,7 +7055,7 @@ $LN69@LstWrite:
 	mov	r9, QWORD PTR [rcx+rax]
 	mov	r8d, 2
 	mov	edx, 1
-	lea	rcx, OFFSET FLAT:$SG11398
+	lea	rcx, OFFSET FLAT:$SG11403
 	call	QWORD PTR __imp_fwrite
 $LN65@LstWrite:
 
@@ -7102,7 +7102,7 @@ $LN17@LstWrite:
 	mov	r9, QWORD PTR [rcx+rax]
 	mov	r8d, 2
 	mov	edx, 1
-	lea	rcx, OFFSET FLAT:$SG11399
+	lea	rcx, OFFSET FLAT:$SG11404
 	call	QWORD PTR __imp_fwrite
 
 ; 375  :         list_pos += 32 + NLSIZ;
@@ -7117,7 +7117,7 @@ $LN17@LstWrite:
 	add	rax, 8
 	mov	r8d, DWORD PTR list_pos
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11400
+	lea	rcx, OFFSET FLAT:$SG11405
 	call	DoDebugMsg1
 
 ; 377  :     }

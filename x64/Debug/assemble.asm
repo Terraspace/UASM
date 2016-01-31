@@ -22,141 +22,141 @@ COMM	Parse_Pass:DWORD
 COMM	write_to_file:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11729 DB	'_TEXT', 00H
+$SG11734 DB	'_TEXT', 00H
 ?PrintEmptyLine@?1??WritePreprocessedLine@@9@9 DB 01H	; `WritePreprocessedLine'::`2'::PrintEmptyLine
 	ORG $+1
-$SG11730 DB	'.text', 00H
+$SG11735 DB	'.text', 00H
 	ORG $+2
-$SG11731 DB	'_DATA', 00H
+$SG11736 DB	'_DATA', 00H
 	ORG $+2
-$SG11732 DB	'.data', 00H
+$SG11737 DB	'.data', 00H
 	ORG $+2
-$SG11733 DB	'CONST', 00H
+$SG11738 DB	'CONST', 00H
 	ORG $+2
-$SG11734 DB	'.rdata', 00H
+$SG11739 DB	'.rdata', 00H
 	ORG $+1
-$SG11735 DB	'_BSS', 00H
+$SG11740 DB	'_BSS', 00H
 	ORG $+3
-$SG11736 DB	'.bss', 00H
+$SG11741 DB	'.bss', 00H
 	ORG $+3
-$SG11766 DB	'assemble.c', 00H
+$SG11771 DB	'assemble.c', 00H
 	ORG $+1
-$SG11859 DB	'w', 00H
+$SG11863 DB	'w', 00H
 	ORG $+2
-$SG11769 DB	'OutputByte: segment start loc changed from %Xh to %Xh', 0aH
+$SG11774 DB	'OutputByte: segment start loc changed from %Xh to %Xh', 0aH
 	DB	00H
 	ORG $+1
-$SG11786 DB	'assemble.c', 00H
+$SG11790 DB	'assemble.c', 00H
 	ORG $+1
-$SG11931 DB	'%s', 0aH, 00H
-$SG11789 DB	'OutputByte: segment start loc changed from %Xh to %Xh', 0aH
+$SG11935 DB	'%s', 0aH, 00H
+$SG11793 DB	'OutputByte: segment start loc changed from %Xh to %Xh', 0aH
 	DB	00H
 	ORG $+1
-$SG11812 DB	'assemble.c', 00H
+$SG11816 DB	'assemble.c', 00H
 	ORG $+1
-$SG11933 DB	0aH, 00H
+$SG11937 DB	0aH, 00H
 	ORG $+2
-$SG11816 DB	'OutputBytes: segment start loc changed from %Xh to %Xh', 0aH
+$SG11820 DB	'OutputBytes: segment start loc changed from %Xh to %Xh', 0aH
 	DB	00H
-$SG11854 DB	'WriteModule enter', 0aH, 00H
+$SG11858 DB	'WriteModule enter', 0aH, 00H
 	ORG $+1
-$SG12095 DB	'rb', 00H
+$SG12099 DB	'rb', 00H
 	ORG $+1
-$SG11861 DB	'WriteModule: ext=%s, isproc=%u, weak=%u', 0aH, 00H
+$SG11865 DB	'WriteModule: ext=%s, isproc=%u, weak=%u', 0aH, 00H
 	ORG $+3
-$SG11957 DB	'%r %s', 00H
+$SG11961 DB	'%r %s', 00H
 	ORG $+2
-$SG12099 DB	'wb', 00H
+$SG12103 DB	'wb', 00H
 	ORG $+1
-$SG11864 DB	'import ''%s''  %s.%s', 0aH, 00H
-$SG12104 DB	'wb', 00H
+$SG11868 DB	'import ''%s''  %s.%s', 0aH, 00H
+$SG12108 DB	'wb', 00H
 	ORG $+1
-$SG11866 DB	'WriteModule exit', 0aH, 00H
+$SG11870 DB	'WriteModule exit', 0aH, 00H
 	ORG $+2
-$SG12137 DB	'EXE', 00H
-$SG11891 DB	'add_cmdline_tmacros enter', 0aH, 00H
+$SG12141 DB	'EXE', 00H
+$SG11895 DB	'add_cmdline_tmacros enter', 0aH, 00H
 	ORG $+1
-$SG12138 DB	'BIN', 00H
-$SG11892 DB	'add_cmdline_tmacros: found >%s<', 0aH, 00H
+$SG12142 DB	'BIN', 00H
+$SG11896 DB	'add_cmdline_tmacros: found >%s<', 0aH, 00H
 	ORG $+3
-$SG12139 DB	'obj', 00H
-$SG11897 DB	'add_cmdline_tmacros: name >%s< invalid', 0aH, 00H
-$SG11908 DB	'add_incpaths: enter', 0aH, 00H
+$SG12143 DB	'obj', 00H
+$SG11901 DB	'add_cmdline_tmacros: name >%s< invalid', 0aH, 00H
+$SG11912 DB	'add_incpaths: enter', 0aH, 00H
 	ORG $+3
-$SG11914 DB	'CmdlParamsInit(%u) enter', 0aH, 00H
+$SG11918 DB	'CmdlParamsInit(%u) enter', 0aH, 00H
 	ORG $+2
-$SG12141 DB	'lst', 00H
-$SG11918 DB	'INCLUDE', 00H
-$SG11919 DB	'CmdlParamsInit exit', 0aH, 00H
+$SG12145 DB	'lst', 00H
+$SG11922 DB	'INCLUDE', 00H
+$SG11923 DB	'CmdlParamsInit exit', 0aH, 00H
 	ORG $+3
-$SG11949 DB	'ModulePassInit() enter', 0aH, 00H
-$SG12006 DB	'PassOneChecks: undefined symbol %s', 0aH, 00H
-$SG12143 DB	'err', 00H
-$SG12011 DB	'PassOneChecks: public for weak external skipped: %s', 0aH
+$SG11953 DB	'ModulePassInit() enter', 0aH, 00H
+$SG12010 DB	'PassOneChecks: undefined symbol %s', 0aH, 00H
+$SG12147 DB	'err', 00H
+$SG12015 DB	'PassOneChecks: public for weak external skipped: %s', 0aH
 	DB	00H
 	ORG $+3
-$SG12015 DB	'PassOneChecks: undefined segment %s', 0aH, 00H
+$SG12019 DB	'PassOneChecks: undefined segment %s', 0aH, 00H
 	ORG $+3
-$SG12012 DB	'PassOneChecks: invalid public attribute for %s [state=%u'
+$SG12016 DB	'PassOneChecks: invalid public attribute for %s [state=%u'
 	DB	' weak=%u]', 0aH, 00H
 	ORG $+1
-$SG12227 DB	'%s', 0aH, 00H
-$SG12033 DB	'PassOneChecks: removed unused externals: %u', 0aH, 00H
+$SG12231 DB	'%s', 0aH, 00H
+$SG12037 DB	'PassOneChecks: removed unused externals: %u', 0aH, 00H
 	ORG $+3
-$SG12034 DB	'PassOneChecks: forward references:', 0aH, 00H
+$SG12038 DB	'PassOneChecks: forward references:', 0aH, 00H
 	ORG $+4
-$SG12035 DB	'PassOneChecks: segm=%s, labels=%u forward refs=%u', 0aH, 00H
+$SG12039 DB	'PassOneChecks: segm=%s, labels=%u forward refs=%u', 0aH, 00H
 	ORG $+1
-$SG12055 DB	'NULL', 00H
+$SG12059 DB	'NULL', 00H
 	ORG $+7
-$SG12056 DB	'OnePass(%u) segments (current=%s):', 0aH, 00H
+$SG12060 DB	'OnePass(%u) segments (current=%s):', 0aH, 00H
 	ORG $+4
-$SG12057 DB	'OnePass(%u): segm=%-8s typ=%X start=%8X max_ofs=%8X', 0aH
+$SG12061 DB	'OnePass(%u): segm=%-8s typ=%X start=%8X max_ofs=%8X', 0aH
 	DB	00H
 	ORG $+3
-$SG12061 DB	'OnePass(%u) cur/nxt=%X/%X src=%X.%u mlvl=%u: >%s<', 0aH, 00H
+$SG12065 DB	'OnePass(%u) cur/nxt=%X/%X src=%X.%u mlvl=%u: >%s<', 0aH, 00H
 	ORG $+5
-$SG12063 DB	'OnePass: force include of file: %s', 0aH, 00H
+$SG12067 DB	'OnePass: force include of file: %s', 0aH, 00H
 	ORG $+4
-$SG12087 DB	'ReswTableInit: disable INCBIN + FASTCALL keywords', 0aH, 00H
+$SG12091 DB	'ReswTableInit: disable INCBIN + FASTCALL keywords', 0aH, 00H
 	ORG $+5
-$SG12094 DB	'open_files() enter', 0aH, 00H
+$SG12098 DB	'open_files() enter', 0aH, 00H
 	ORG $+4
-$SG12097 DB	'open_files(): cannot open source file, fopen("%s") faile'
+$SG12101 DB	'open_files(): cannot open source file, fopen("%s") faile'
 	DB	'd', 0aH, 00H
 	ORG $+5
-$SG12101 DB	'open_files(): cannot open object file, fopen("%s") faile'
+$SG12105 DB	'open_files(): cannot open object file, fopen("%s") faile'
 	DB	'd', 0aH, 00H
 	ORG $+5
-$SG12102 DB	'open_files(): output, fopen("%s") ok', 0aH, 00H
+$SG12106 DB	'open_files(): output, fopen("%s") ok', 0aH, 00H
 	ORG $+2
-$SG12159 DB	'SetFilenames("%s") enter', 0aH, 00H
+$SG12163 DB	'SetFilenames("%s") enter', 0aH, 00H
 	ORG $+6
-$SG12165 DB	'SetFilenames: i=%u >%s<', 0aH, 00H
+$SG12169 DB	'SetFilenames: i=%u >%s<', 0aH, 00H
 	ORG $+7
-$SG12171 DB	'AssembleInit("%s") enter', 0aH, 00H
+$SG12175 DB	'AssembleInit("%s") enter', 0aH, 00H
 	ORG $+6
-$SG12172 DB	'AssembleInit() exit', 0aH, 00H
+$SG12176 DB	'AssembleInit() exit', 0aH, 00H
 	ORG $+3
-$SG12203 DB	'AssembleModule("%s") enter', 0aH, 00H
+$SG12207 DB	'AssembleModule("%s") enter', 0aH, 00H
 	ORG $+4
-$SG12206 DB	'*************', 0aH, 'pass %u', 0aH, '*************', 0aH
+$SG12210 DB	'*************', 0aH, 'pass %u', 0aH, '*************', 0aH
 	DB	00H
 	ORG $+3
-$SG12208 DB	'AssembleModule(%u): errorcnt=%u', 0aH, 00H
+$SG12212 DB	'AssembleModule(%u): errorcnt=%u', 0aH, 00H
 	ORG $+7
-$SG12209 DB	'AssembleModule(%u): segm=%-8s start=%8X max_ofs=%8X writ'
+$SG12213 DB	'AssembleModule(%u): segm=%-8s start=%8X max_ofs=%8X writ'
 	DB	'ten=%X', 0aH, 00H
-$SG12210 DB	'AssembleModule(%u): PhaseError=%u, prev_written=%X, curr'
+$SG12214 DB	'AssembleModule(%u): PhaseError=%u, prev_written=%X, curr'
 	DB	'_written=%X', 0aH, 00H
 	ORG $+3
-$SG12213 DB	'size shrank from %X to %X in pass %u', 0aH, 00H
+$SG12217 DB	'size shrank from %X to %X in pass %u', 0aH, 00H
 	ORG $+2
-$SG12214 DB	'AssembleModule(%u): prepare for next pass', 0aH, 00H
+$SG12218 DB	'AssembleModule(%u): prepare for next pass', 0aH, 00H
 	ORG $+5
-$SG12225 DB	'AssembleModule: finished, cleanup', 0aH, 00H
+$SG12229 DB	'AssembleModule: finished, cleanup', 0aH, 00H
 	ORG $+5
-$SG12229 DB	'AssembleModule exit', 0aH, 00H
+$SG12233 DB	'AssembleModule exit', 0aH, 00H
 _DATA	ENDS
 CONST	SEGMENT
 formatoptions DQ FLAT:bin_init
@@ -178,23 +178,23 @@ formatoptions DQ FLAT:bin_init
 cst	DB	05H
 	DB	01H
 	ORG $+6
-	DQ	FLAT:$SG11729
-	DQ	FLAT:$SG11730
-	DB	05H
-	DB	01H
-	ORG $+6
-	DQ	FLAT:$SG11731
-	DQ	FLAT:$SG11732
-	DB	05H
-	DB	01H
-	ORG $+6
-	DQ	FLAT:$SG11733
 	DQ	FLAT:$SG11734
+	DQ	FLAT:$SG11735
+	DB	05H
+	DB	01H
+	ORG $+6
+	DQ	FLAT:$SG11736
+	DQ	FLAT:$SG11737
+	DB	05H
+	DB	01H
+	ORG $+6
+	DQ	FLAT:$SG11738
+	DQ	FLAT:$SG11739
 	DB	04H
 	DB	00H
 	ORG $+6
-	DQ	FLAT:$SG11735
-	DQ	FLAT:$SG11736
+	DQ	FLAT:$SG11740
+	DQ	FLAT:$SG11741
 stt	DD	01H
 	DD	02H
 	DD	02H
@@ -207,6 +207,7 @@ PUBLIC	_vsnprintf_l
 PUBLIC	_vsprintf_l
 PUBLIC	sprintf
 PUBLIC	OutputByte
+PUBLIC	OutputBinBytes
 PUBLIC	FillDataBytes
 PUBLIC	OutputBytes
 PUBLIC	AssembleModule
@@ -215,7 +216,6 @@ PUBLIC	close_files
 PUBLIC	ConvertSectionName
 PUBLIC	WritePreprocessedLine
 PUBLIC	SetCurrOffset
-PUBLIC	OutputBinBytes
 EXTRN	__report_rangecheckfailure:PROC
 EXTRN	__imp_isalpha:PROC
 EXTRN	__imp_isdigit:PROC
@@ -375,6 +375,9 @@ pdata	SEGMENT
 $pdata$OutputByte DD imagerel $LN11
 	DD	imagerel $LN11+498
 	DD	imagerel $unwind$OutputByte
+$pdata$OutputBinBytes DD imagerel $LN14
+	DD	imagerel $LN14+565
+	DD	imagerel $unwind$OutputBinBytes
 $pdata$FillDataBytes DD imagerel $LN7
 	DD	imagerel $LN7+88
 	DD	imagerel $unwind$FillDataBytes
@@ -399,9 +402,6 @@ $pdata$WritePreprocessedLine DD imagerel $LN11
 $pdata$SetCurrOffset DD imagerel $LN15
 	DD	imagerel $LN15+318
 	DD	imagerel $unwind$SetCurrOffset
-$pdata$OutputBinBytes DD imagerel $LN14
-	DD	imagerel $LN14+565
-	DD	imagerel $unwind$OutputBinBytes
 $pdata$WriteModule DD imagerel WriteModule
 	DD	imagerel WriteModule+701
 	DD	imagerel $unwind$WriteModule
@@ -499,6 +499,8 @@ CONST	ENDS
 xdata	SEGMENT
 $unwind$OutputByte DD 021d01H
 	DD	070055209H
+$unwind$OutputBinBytes DD 022201H
+	DD	0700a520eH
 $unwind$FillDataBytes DD 022101H
 	DD	07009320dH
 $unwind$OutputBytes DD 022701H
@@ -515,8 +517,6 @@ $unwind$WritePreprocessedLine DD 021e01H
 	DD	07006520aH
 $unwind$SetCurrOffset DD 022c01H
 	DD	070143218H
-$unwind$OutputBinBytes DD 022201H
-	DD	0700a520eH
 $unwind$WriteModule DD 021e01H
 	DD	07006920aH
 $unwind$is_valid_identifier DD 021e01H
@@ -746,7 +746,7 @@ AssembleInit PROC
 ; 1352 :     DebugMsg(("AssembleInit(\"%s\") enter\n", source ));
 
 	mov	rdx, QWORD PTR source$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12171
+	lea	rcx, OFFSET FLAT:$SG12175
 	call	DoDebugMsg
 
 ; 1353 : 
@@ -817,7 +817,7 @@ AssembleInit PROC
 ; 1378 : 
 ; 1379 :     DebugMsg(("AssembleInit() exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12172
+	lea	rcx, OFFSET FLAT:$SG12176
 	call	DoDebugMsg
 
 ; 1380 :     return;
@@ -863,7 +863,7 @@ SetFilenames PROC
 ; 1309 :     DebugMsg(("SetFilenames(\"%s\") enter\n", name ));
 
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12159
+	lea	rcx, OFFSET FLAT:$SG12163
 	call	DoDebugMsg
 
 ; 1310 : 
@@ -1047,7 +1047,7 @@ $LN6@SetFilenam:
 
 	lea	r8, QWORD PTR path$[rsp]
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12165
+	lea	rcx, OFFSET FLAT:$SG12169
 	call	DoDebugMsg
 
 ; 1341 :         CurrFName[i] = LclAlloc( strlen( path ) + 1 );
@@ -1142,7 +1142,7 @@ $LN8@GetExt:
 ; 1277 :                )
 ; 1278 :                 return( EXE_EXT );
 
-	lea	rax, OFFSET FLAT:$SG12137
+	lea	rax, OFFSET FLAT:$SG12141
 	jmp	SHORT $LN1@GetExt
 	jmp	SHORT $LN7@GetExt
 $LN6@GetExt:
@@ -1151,7 +1151,7 @@ $LN6@GetExt:
 ; 1280 : #endif
 ; 1281 :                 return( BIN_EXT );
 
-	lea	rax, OFFSET FLAT:$SG12138
+	lea	rax, OFFSET FLAT:$SG12142
 	jmp	SHORT $LN1@GetExt
 $LN7@GetExt:
 $LN5@GetExt:
@@ -1159,21 +1159,21 @@ $LN5@GetExt:
 ; 1282 : #endif
 ; 1283 :         return( OBJ_EXT );
 
-	lea	rax, OFFSET FLAT:$SG12139
+	lea	rax, OFFSET FLAT:$SG12143
 	jmp	SHORT $LN1@GetExt
 $LN9@GetExt:
 
 ; 1284 :     case LST:
 ; 1285 :         return( LST_EXT );
 
-	lea	rax, OFFSET FLAT:$SG12141
+	lea	rax, OFFSET FLAT:$SG12145
 	jmp	SHORT $LN1@GetExt
 $LN10@GetExt:
 
 ; 1286 :     case ERR:
 ; 1287 :         return( ERR_EXT );
 
-	lea	rax, OFFSET FLAT:$SG12143
+	lea	rax, OFFSET FLAT:$SG12147
 	jmp	SHORT $LN1@GetExt
 $LN2@GetExt:
 
@@ -1207,7 +1207,7 @@ open_files PROC
 ; 1192 :     /* open ASM file */
 ; 1193 :     DebugMsg(("open_files() enter\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG12094
+	lea	rcx, OFFSET FLAT:$SG12098
 	call	DoDebugMsg
 
 ; 1194 : 
@@ -1218,7 +1218,7 @@ open_files PROC
 	mov	eax, 8
 	imul	rax, rax, 0
 	lea	rcx, OFFSET FLAT:ModuleInfo+128
-	lea	rdx, OFFSET FLAT:$SG12095
+	lea	rdx, OFFSET FLAT:$SG12099
 	mov	rcx, QWORD PTR [rcx+rax]
 	call	QWORD PTR __imp_fopen
 	mov	ecx, 8
@@ -1240,7 +1240,7 @@ open_files PROC
 	imul	rax, rax, 0
 	lea	rcx, OFFSET FLAT:ModuleInfo+128
 	mov	rdx, QWORD PTR [rcx+rax]
-	lea	rcx, OFFSET FLAT:$SG12097
+	lea	rcx, OFFSET FLAT:$SG12101
 	call	DoDebugMsg
 
 ; 1200 :         Fatal( CANNOT_OPEN_FILE, CurrFName[ASM], ErrnoStr() );
@@ -1269,7 +1269,7 @@ $LN2@open_files:
 	mov	eax, 8
 	imul	rax, rax, 1
 	lea	rcx, OFFSET FLAT:ModuleInfo+128
-	lea	rdx, OFFSET FLAT:$SG12099
+	lea	rdx, OFFSET FLAT:$SG12103
 	mov	rcx, QWORD PTR [rcx+rax]
 	call	QWORD PTR __imp_fopen
 	mov	ecx, 8
@@ -1291,7 +1291,7 @@ $LN2@open_files:
 	imul	rax, rax, 1
 	lea	rcx, OFFSET FLAT:ModuleInfo+128
 	mov	rdx, QWORD PTR [rcx+rax]
-	lea	rcx, OFFSET FLAT:$SG12101
+	lea	rcx, OFFSET FLAT:$SG12105
 	call	DoDebugMsg
 
 ; 1208 :             Fatal( CANNOT_OPEN_FILE, CurrFName[OBJ], ErrnoStr() );
@@ -1313,7 +1313,7 @@ $LN4@open_files:
 	imul	rax, rax, 1
 	lea	rcx, OFFSET FLAT:ModuleInfo+128
 	mov	rdx, QWORD PTR [rcx+rax]
-	lea	rcx, OFFSET FLAT:$SG12102
+	lea	rcx, OFFSET FLAT:$SG12106
 	call	DoDebugMsg
 $LN3@open_files:
 
@@ -1330,7 +1330,7 @@ $LN3@open_files:
 	mov	eax, 8
 	imul	rax, rax, 2
 	lea	rcx, OFFSET FLAT:ModuleInfo+128
-	lea	rdx, OFFSET FLAT:$SG12104
+	lea	rdx, OFFSET FLAT:$SG12108
 	mov	rcx, QWORD PTR [rcx+rax]
 	call	QWORD PTR __imp_fopen
 	mov	ecx, 8
@@ -1418,7 +1418,7 @@ $LN2@ReswTableI:
 
 ; 1181 :         DebugMsg(("ReswTableInit: disable INCBIN + FASTCALL keywords\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12087
+	lea	rcx, OFFSET FLAT:$SG12091
 	call	DoDebugMsg
 
 ; 1182 :         DisableKeyword( T_INCBIN );
@@ -1844,14 +1844,14 @@ OnePass	PROC
 	mov	QWORD PTR tv75[rsp], rax
 	jmp	SHORT $LN19@OnePass
 $LN18@OnePass:
-	lea	rax, OFFSET FLAT:$SG12055
+	lea	rax, OFFSET FLAT:$SG12059
 	mov	QWORD PTR tv75[rsp], rax
 $LN19@OnePass:
 	mov	eax, DWORD PTR Parse_Pass
 	inc	eax
 	mov	r8, QWORD PTR tv75[rsp]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG12056
+	lea	rcx, OFFSET FLAT:$SG12060
 	call	DoDebugMsg
 
 ; 1016 :         {
@@ -1888,7 +1888,7 @@ $LN4@OnePass:
 	mov	r9d, DWORD PTR [rcx+72]
 	mov	rax, QWORD PTR dir$1[rsp]
 	mov	r8, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12057
+	lea	rcx, OFFSET FLAT:$SG12061
 	call	DoDebugMsg
 
 ; 1020 :                           dir->sym.name, dir->e.seginfo->segtype, dir->e.seginfo->start_loc, dir->sym.max_offset ));
@@ -2002,7 +2002,7 @@ $LN21@OnePass:
 	mov	r8, QWORD PTR LineStoreCurr
 	mov	eax, DWORD PTR tv166[rsp]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG12061
+	lea	rcx, OFFSET FLAT:$SG12065
 	call	DoDebugMsg1
 
 ; 1042 :             ModuleInfo.CurrComment = NULL; /* v2.08: added (var is never reset because GetTextLine() isn't called) */
@@ -2073,7 +2073,7 @@ $LN9@OnePass:
 	mov	rax, QWORD PTR pq$2[rsp]
 	add	rax, 8
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG12063
+	lea	rcx, OFFSET FLAT:$SG12067
 	call	DoDebugMsg
 
 ; 1058 :             if ( SearchFile( pq->value, TRUE ) )
@@ -2223,7 +2223,7 @@ $LN4@PassOneChe:
 
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12006
+	lea	rcx, OFFSET FLAT:$SG12010
 	call	DoDebugMsg
 
 ; 790  :     }
@@ -2290,7 +2290,7 @@ $LN30@PassOneChe:
 	mov	rax, QWORD PTR q$[rsp]
 	mov	rax, QWORD PTR [rax+8]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12011
+	lea	rcx, OFFSET FLAT:$SG12015
 	call	DoDebugMsg
 
 ; 806  :             qn->next = q->next;
@@ -2326,7 +2326,7 @@ $LN32@PassOneChe:
 	mov	r9d, eax
 	mov	r8d, DWORD PTR [rcx+32]
 	mov	rdx, QWORD PTR [rdx+8]
-	lea	rcx, OFFSET FLAT:$SG12012
+	lea	rcx, OFFSET FLAT:$SG12016
 	call	DoDebugMsg
 
 ; 811  : #if FASTPASS
@@ -2394,7 +2394,7 @@ $LN10@PassOneChe:
 
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12015
+	lea	rcx, OFFSET FLAT:$SG12019
 	call	DoDebugMsg
 
 ; 836  :             SkipSavedState();
@@ -2762,12 +2762,12 @@ $LN18@PassOneChe:
 ; 945  :     DebugMsg(("PassOneChecks: removed unused externals: %u\n", cntUnusedExt ));
 
 	mov	edx, DWORD PTR cntUnusedExt$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12033
+	lea	rcx, OFFSET FLAT:$SG12037
 	call	DoDebugMsg
 
 ; 946  :     DebugMsg(("PassOneChecks: forward references:\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12034
+	lea	rcx, OFFSET FLAT:$SG12038
 	call	DoDebugMsg
 
 ; 947  :     for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
@@ -2843,7 +2843,7 @@ $LN24@PassOneChe:
 	mov	r8d, DWORD PTR i$2[rsp]
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12035
+	lea	rcx, OFFSET FLAT:$SG12039
 	call	DoDebugMsg
 
 ; 957  :     }
@@ -2941,7 +2941,7 @@ ModulePassInit PROC
 ; 648  : 
 ; 649  :     DebugMsg(( "ModulePassInit() enter\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11949
+	lea	rcx, OFFSET FLAT:$SG11953
 	call	DoDebugMsg
 
 ; 650  :     /* set default values not affected by the masm 5.1 compat switch */
@@ -3070,7 +3070,7 @@ $LN7@ModulePass:
 	lea	rcx, OFFSET FLAT:ModelToken
 	mov	r8, QWORD PTR [rcx+rax*8]
 	mov	edx, 342				; 00000156H
-	lea	rcx, OFFSET FLAT:$SG11957
+	lea	rcx, OFFSET FLAT:$SG11961
 	call	AddLineQueueX
 $LN11@ModulePass:
 $LN5@ModulePass:
@@ -3249,7 +3249,7 @@ CmdlParamsInit PROC
 ; 523  :     DebugMsg(("CmdlParamsInit(%u) enter\n", pass));
 
 	mov	edx, DWORD PTR pass$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11914
+	lea	rcx, OFFSET FLAT:$SG11918
 	call	DoDebugMsg
 
 ; 524  : 
@@ -3320,7 +3320,7 @@ CmdlParamsInit PROC
 
 ; 575  :             if ( env = getenv( "INCLUDE" ) )
 
-	lea	rcx, OFFSET FLAT:$SG11918
+	lea	rcx, OFFSET FLAT:$SG11922
 	call	QWORD PTR __imp_getenv
 	mov	QWORD PTR env$1[rsp], rax
 	cmp	QWORD PTR env$1[rsp], 0
@@ -3337,7 +3337,7 @@ $LN2@CmdlParams:
 ; 577  :     }
 ; 578  :     DebugMsg(("CmdlParamsInit exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11919
+	lea	rcx, OFFSET FLAT:$SG11923
 	call	DoDebugMsg
 
 ; 579  :     return;
@@ -3366,7 +3366,7 @@ add_incpaths PROC
 ; 510  :     struct qitem *p;
 ; 511  :     DebugMsg(("add_incpaths: enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11908
+	lea	rcx, OFFSET FLAT:$SG11912
 	call	DoDebugMsg
 
 ; 512  :     for ( p = Options.queues[OPTQ_INCPATH]; p; p = p->next ) {
@@ -3441,7 +3441,7 @@ add_cmdline_tmacros PROC
 ; 465  : 
 ; 466  :     DebugMsg(("add_cmdline_tmacros enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11891
+	lea	rcx, OFFSET FLAT:$SG11895
 	call	DoDebugMsg
 
 ; 467  :     for ( p = Options.queues[OPTQ_MACRO]; p; p = p->next ) {
@@ -3465,7 +3465,7 @@ $LN4@add_cmdlin:
 	mov	rax, QWORD PTR p$[rbp]
 	add	rax, 8
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11892
+	lea	rcx, OFFSET FLAT:$SG11896
 	call	DoDebugMsg
 
 ; 469  :         name = p->value;
@@ -3573,7 +3573,7 @@ $LN6@add_cmdlin:
 ; 486  :             DebugMsg(("add_cmdline_tmacros: name >%s< invalid\n", name ));
 
 	mov	rdx, QWORD PTR name$[rbp]
-	lea	rcx, OFFSET FLAT:$SG11897
+	lea	rcx, OFFSET FLAT:$SG11901
 	call	DoDebugMsg
 
 ; 487  :             EmitErr( SYNTAX_ERROR_EX, name );
@@ -3851,7 +3851,7 @@ WriteModule PROC
 ; 389  : 
 ; 390  :     DebugMsg(("WriteModule enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11854
+	lea	rcx, OFFSET FLAT:$SG11858
 	call	DoDebugMsg
 
 ; 391  : 
@@ -3939,7 +3939,7 @@ $LN3@WriteModul:
 	mov	eax, 8
 	imul	rax, rax, 4
 	lea	rcx, OFFSET FLAT:Options+32
-	lea	rdx, OFFSET FLAT:$SG11859
+	lea	rdx, OFFSET FLAT:$SG11863
 	mov	rcx, QWORD PTR [rcx+rax]
 	call	QWORD PTR __imp_fopen
 	mov	QWORD PTR ld$1[rsp], rax
@@ -3995,7 +3995,7 @@ $LN7@WriteModul:
 	mov	r8d, ecx
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11861
+	lea	rcx, OFFSET FLAT:$SG11865
 	call	DoDebugMsg
 
 ; 415  :             if ( curr->sym.isproc && ( curr->sym.weak == FALSE || curr->sym.iat_used ) &&
@@ -4052,7 +4052,7 @@ $LN14@WriteModul:
 	mov	QWORD PTR [rsp+32], rcx
 	mov	r9, rax
 	mov	r8, QWORD PTR ModuleInfo+488
-	lea	rdx, OFFSET FLAT:$SG11864
+	lea	rdx, OFFSET FLAT:$SG11868
 	mov	rcx, QWORD PTR ModuleInfo+464
 	call	sprintf
 	mov	DWORD PTR size$2[rsp], eax
@@ -4091,7 +4091,7 @@ $LN11@WriteModul:
 ; 426  : #endif
 ; 427  :     DebugMsg(("WriteModule exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11866
+	lea	rcx, OFFSET FLAT:$SG11870
 	call	DoDebugMsg
 
 ; 428  :     return( NOT_ERROR );
@@ -4105,237 +4105,6 @@ $LN1@WriteModul:
 	pop	rdi
 	ret	0
 WriteModule ENDP
-_TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
-; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\assemble.c
-_TEXT	SEGMENT
-i$ = 32
-idx$1 = 36
-tv84 = 40
-pBytes$ = 64
-len$ = 72
-OutputBinBytes PROC
-
-; 238  : {
-
-$LN14:
-	mov	DWORD PTR [rsp+16], edx
-	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
-
-; 239  : 	int i;
-; 240  : 
-; 241  : 	if (write_to_file == TRUE) {
-
-	movzx	eax, BYTE PTR write_to_file
-	cmp	eax, 1
-	jne	$LN5@OutputBinB
-
-; 242  : 		uint_32 idx = CurrSeg->e.seginfo->current_loc - CurrSeg->e.seginfo->start_loc;
-
-	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
-	mov	rcx, QWORD PTR ModuleInfo+432
-	mov	rcx, QWORD PTR [rcx+96]
-	mov	ecx, DWORD PTR [rcx+8]
-	mov	eax, DWORD PTR [rax+12]
-	sub	eax, ecx
-	mov	DWORD PTR idx$1[rsp], eax
-
-; 243  : #ifdef DEBUG_OUT
-; 244  : 		if (CurrSeg->e.seginfo->current_loc < CurrSeg->e.seginfo->start_loc) {
-
-	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
-	mov	rcx, QWORD PTR ModuleInfo+432
-	mov	rcx, QWORD PTR [rcx+96]
-	mov	ecx, DWORD PTR [rcx+8]
-
-; 245  : 			;//_asm int 3;
-; 246  : 		}
-; 247  : #endif
-; 248  : 		/**/myassert(CurrSeg->e.seginfo->current_loc >= CurrSeg->e.seginfo->start_loc);
-
-	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
-	mov	rcx, QWORD PTR ModuleInfo+432
-	mov	rcx, QWORD PTR [rcx+96]
-	mov	ecx, DWORD PTR [rcx+8]
-	cmp	DWORD PTR [rax+12], ecx
-	jb	SHORT $LN12@OutputBinB
-	mov	DWORD PTR tv84[rsp], 0
-	jmp	SHORT $LN13@OutputBinB
-$LN12@OutputBinB:
-	mov	edx, 248				; 000000f8H
-	lea	rcx, OFFSET FLAT:$SG11786
-	call	InternalError
-	mov	DWORD PTR tv84[rsp], eax
-$LN13@OutputBinB:
-
-; 249  : 		if (Options.output_format == OFORMAT_OMF && idx >= MAX_LEDATA_THRESHOLD) {
-
-	cmp	DWORD PTR Options+160, 1
-	jne	SHORT $LN8@OutputBinB
-	cmp	DWORD PTR idx$1[rsp], 1014		; 000003f6H
-	jb	SHORT $LN8@OutputBinB
-
-; 250  : 			omf_FlushCurrSeg();
-
-	call	omf_FlushCurrSeg
-
-; 251  : 			idx = CurrSeg->e.seginfo->current_loc - CurrSeg->e.seginfo->start_loc;
-
-	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
-	mov	rcx, QWORD PTR ModuleInfo+432
-	mov	rcx, QWORD PTR [rcx+96]
-	mov	ecx, DWORD PTR [rcx+8]
-	mov	eax, DWORD PTR [rax+12]
-	sub	eax, ecx
-	mov	DWORD PTR idx$1[rsp], eax
-$LN8@OutputBinB:
-
-; 252  : 		}
-; 253  : 		//DebugMsg(("OutputByte: buff=%p, idx=%" I32_SPEC "X, byte=%X, codebuff[0]=%X\n", CurrSeg->e.seginfo->CodeBuffer, idx, byte, *CurrSeg->e.seginfo->CodeBuffer ));
-; 254  : 		for (i = 0; i < len; i++)
-
-	mov	DWORD PTR i$[rsp], 0
-	jmp	SHORT $LN4@OutputBinB
-$LN2@OutputBinB:
-	mov	eax, DWORD PTR i$[rsp]
-	inc	eax
-	mov	DWORD PTR i$[rsp], eax
-$LN4@OutputBinB:
-	mov	eax, DWORD PTR len$[rsp]
-	cmp	DWORD PTR i$[rsp], eax
-	jae	SHORT $LN3@OutputBinB
-
-; 255  : 		{
-; 256  : 			CurrSeg->e.seginfo->CodeBuffer[idx++] = *(pBytes++);
-
-	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
-	mov	ecx, DWORD PTR idx$1[rsp]
-	mov	rax, QWORD PTR [rax+16]
-	mov	rdx, QWORD PTR pBytes$[rsp]
-	movzx	edx, BYTE PTR [rdx]
-	mov	BYTE PTR [rax+rcx], dl
-	mov	eax, DWORD PTR idx$1[rsp]
-	inc	eax
-	mov	DWORD PTR idx$1[rsp], eax
-	mov	rax, QWORD PTR pBytes$[rsp]
-	inc	rax
-	mov	QWORD PTR pBytes$[rsp], rax
-
-; 257  : 		}
-
-	jmp	SHORT $LN2@OutputBinB
-$LN3@OutputBinB:
-
-; 258  : 
-; 259  : 	}
-
-	jmp	SHORT $LN6@OutputBinB
-$LN5@OutputBinB:
-
-; 260  : #if 1
-; 261  : 	/* check this in pass 1 only */
-; 262  : 	else if (CurrSeg->e.seginfo->current_loc < CurrSeg->e.seginfo->start_loc) {
-
-	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
-	mov	rcx, QWORD PTR ModuleInfo+432
-	mov	rcx, QWORD PTR [rcx+96]
-	mov	ecx, DWORD PTR [rcx+8]
-	cmp	DWORD PTR [rax+12], ecx
-	jae	SHORT $LN9@OutputBinB
-
-; 263  : 		DebugMsg(("OutputByte: segment start loc changed from %" I32_SPEC "Xh to %" I32_SPEC "Xh\n",
-
-	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
-	mov	rcx, QWORD PTR ModuleInfo+432
-	mov	rcx, QWORD PTR [rcx+96]
-	mov	r8d, DWORD PTR [rax+12]
-	mov	edx, DWORD PTR [rcx+8]
-	lea	rcx, OFFSET FLAT:$SG11789
-	call	DoDebugMsg
-
-; 264  : 			CurrSeg->e.seginfo->start_loc,
-; 265  : 			CurrSeg->e.seginfo->current_loc));
-; 266  : 		CurrSeg->e.seginfo->start_loc = CurrSeg->e.seginfo->current_loc;
-
-	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
-	mov	rcx, QWORD PTR ModuleInfo+432
-	mov	rcx, QWORD PTR [rcx+96]
-	mov	eax, DWORD PTR [rax+12]
-	mov	DWORD PTR [rcx+8], eax
-$LN9@OutputBinB:
-$LN6@OutputBinB:
-
-; 267  : 	}
-; 268  : #endif
-; 269  : 	CurrSeg->e.seginfo->current_loc+=len;
-
-	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
-	mov	eax, DWORD PTR [rax+12]
-	add	eax, DWORD PTR len$[rsp]
-	mov	rcx, QWORD PTR ModuleInfo+432
-	mov	rcx, QWORD PTR [rcx+96]
-	mov	DWORD PTR [rcx+12], eax
-
-; 270  : 	CurrSeg->e.seginfo->bytes_written+=len;
-
-	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
-	mov	eax, DWORD PTR [rax+24]
-	add	eax, DWORD PTR len$[rsp]
-	mov	rcx, QWORD PTR ModuleInfo+432
-	mov	rcx, QWORD PTR [rcx+96]
-	mov	DWORD PTR [rcx+24], eax
-
-; 271  : 	CurrSeg->e.seginfo->written = TRUE;
-
-	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
-	movzx	eax, BYTE PTR [rax+107]
-	or	al, 32					; 00000020H
-	mov	rcx, QWORD PTR ModuleInfo+432
-	mov	rcx, QWORD PTR [rcx+96]
-	mov	BYTE PTR [rcx+107], al
-
-; 272  : 	if (CurrSeg->e.seginfo->current_loc > CurrSeg->sym.max_offset)
-
-	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
-	mov	rcx, QWORD PTR ModuleInfo+432
-	mov	ecx, DWORD PTR [rcx+56]
-	cmp	DWORD PTR [rax+12], ecx
-	jbe	SHORT $LN10@OutputBinB
-
-; 273  : 		CurrSeg->sym.max_offset = CurrSeg->e.seginfo->current_loc;
-
-	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
-	mov	rcx, QWORD PTR ModuleInfo+432
-	mov	eax, DWORD PTR [rax+12]
-	mov	DWORD PTR [rcx+56], eax
-$LN10@OutputBinB:
-
-; 274  : }
-
-	add	rsp, 48					; 00000030H
-	pop	rdi
-	ret	0
-OutputBinBytes ENDP
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\assemble.c
@@ -4613,7 +4382,7 @@ $LN9@WritePrepr:
 	mov	QWORD PTR tv74[rsp], rax
 $LN10@WritePrepr:
 	mov	rdx, QWORD PTR tv74[rsp]
-	lea	rcx, OFFSET FLAT:$SG11931
+	lea	rcx, OFFSET FLAT:$SG11935
 	call	printf
 
 ; 607  :         PrintEmptyLine = TRUE;
@@ -4634,7 +4403,7 @@ $LN5@WritePrepr:
 
 ; 610  :         printf("\n");
 
-	lea	rcx, OFFSET FLAT:$SG11933
+	lea	rcx, OFFSET FLAT:$SG11937
 	call	printf
 $LN7@WritePrepr:
 $LN6@WritePrepr:
@@ -5185,7 +4954,7 @@ $LN31:
 ; 1435 :     DebugMsg(("AssembleModule(\"%s\") enter\n", source ));
 
 	mov	rdx, QWORD PTR source$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12203
+	lea	rcx, OFFSET FLAT:$SG12207
 	call	DoDebugMsg
 
 ; 1436 : 
@@ -5266,7 +5035,7 @@ $LN4@AssembleMo:
 	mov	eax, DWORD PTR Parse_Pass
 	inc	eax
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG12206
+	lea	rcx, OFFSET FLAT:$SG12210
 	call	DoDebugMsg
 
 ; 1463 :         OnePass();
@@ -5285,7 +5054,7 @@ $LN4@AssembleMo:
 	inc	eax
 	mov	r8d, DWORD PTR ModuleInfo
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG12208
+	lea	rcx, OFFSET FLAT:$SG12212
 	call	DoDebugMsg
 
 ; 1467 :             break;
@@ -5342,7 +5111,7 @@ $LN7@AssembleMo:
 	mov	r9d, DWORD PTR [rcx+8]
 	mov	rax, QWORD PTR seg$[rsp]
 	mov	r8, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12209
+	lea	rcx, OFFSET FLAT:$SG12213
 	call	DoDebugMsg
 
 ; 1478 :                       Parse_Pass + 1, seg->sym.name, seg->e.seginfo->start_loc, seg->sym.max_offset,
@@ -5364,7 +5133,7 @@ $LN6@AssembleMo:
 	mov	r9d, DWORD PTR prev_written$[rsp]
 	mov	r8d, eax
 	mov	edx, ecx
-	lea	rcx, OFFSET FLAT:$SG12210
+	lea	rcx, OFFSET FLAT:$SG12214
 	call	DoDebugMsg
 
 ; 1484 :         if( !ModuleInfo.PhaseError && prev_written == curr_written )
@@ -5398,7 +5167,7 @@ $LN14@AssembleMo:
 	mov	r9d, eax
 	mov	r8d, DWORD PTR curr_written$[rsp]
 	mov	edx, DWORD PTR prev_written$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12213
+	lea	rcx, OFFSET FLAT:$SG12217
 	call	printf
 $LN15@AssembleMo:
 
@@ -5410,7 +5179,7 @@ $LN15@AssembleMo:
 	mov	eax, DWORD PTR Parse_Pass
 	inc	eax
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG12214
+	lea	rcx, OFFSET FLAT:$SG12218
 	call	DoDebugMsg
 
 ; 1494 :         prev_written = curr_written;
@@ -5611,7 +5380,7 @@ $LN24@AssembleMo:
 ; 1540 :     }
 ; 1541 :     DebugMsg(("AssembleModule: finished, cleanup\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12225
+	lea	rcx, OFFSET FLAT:$SG12229
 	call	DoDebugMsg
 
 ; 1542 : 
@@ -5675,7 +5444,7 @@ $LN24@AssembleMo:
 ; 1556 :         printf( "%s\n", CurrSource );
 
 	mov	rdx, QWORD PTR ModuleInfo+464
-	lea	rcx, OFFSET FLAT:$SG12227
+	lea	rcx, OFFSET FLAT:$SG12231
 	call	printf
 $LN26@AssembleMo:
 
@@ -5709,7 +5478,7 @@ $done$32:
 
 ; 1566 :     DebugMsg(("AssembleModule exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12229
+	lea	rcx, OFFSET FLAT:$SG12233
 	call	DoDebugMsg
 
 ; 1567 :     return( ModuleInfo.g.error_count == 0 );
@@ -5788,7 +5557,7 @@ $LN11:
 	jmp	SHORT $LN10@OutputByte
 $LN9@OutputByte:
 	mov	edx, 309				; 00000135H
-	lea	rcx, OFFSET FLAT:$SG11812
+	lea	rcx, OFFSET FLAT:$SG11816
 	call	InternalError
 	mov	DWORD PTR tv79[rsp], eax
 $LN10@OutputByte:
@@ -5872,7 +5641,7 @@ $LN2@OutputByte:
 	mov	rcx, QWORD PTR [rcx+96]
 	mov	r8d, DWORD PTR [rax+12]
 	mov	edx, DWORD PTR [rcx+8]
-	lea	rcx, OFFSET FLAT:$SG11816
+	lea	rcx, OFFSET FLAT:$SG11820
 	call	DoDebugMsg
 
 ; 323  :                   CurrSeg->e.seginfo->start_loc,
@@ -6005,6 +5774,237 @@ _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\assemble.c
 _TEXT	SEGMENT
+i$ = 32
+idx$1 = 36
+tv84 = 40
+pBytes$ = 64
+len$ = 72
+OutputBinBytes PROC
+
+; 238  : {
+
+$LN14:
+	mov	DWORD PTR [rsp+16], edx
+	mov	QWORD PTR [rsp+8], rcx
+	push	rdi
+	sub	rsp, 48					; 00000030H
+	mov	rdi, rsp
+	mov	ecx, 12
+	mov	eax, -858993460				; ccccccccH
+	rep stosd
+	mov	rcx, QWORD PTR [rsp+64]
+
+; 239  : 	int i;
+; 240  : 
+; 241  : 	if (write_to_file == TRUE) {
+
+	movzx	eax, BYTE PTR write_to_file
+	cmp	eax, 1
+	jne	$LN5@OutputBinB
+
+; 242  : 		uint_32 idx = CurrSeg->e.seginfo->current_loc - CurrSeg->e.seginfo->start_loc;
+
+	mov	rax, QWORD PTR ModuleInfo+432
+	mov	rax, QWORD PTR [rax+96]
+	mov	rcx, QWORD PTR ModuleInfo+432
+	mov	rcx, QWORD PTR [rcx+96]
+	mov	ecx, DWORD PTR [rcx+8]
+	mov	eax, DWORD PTR [rax+12]
+	sub	eax, ecx
+	mov	DWORD PTR idx$1[rsp], eax
+
+; 243  : #ifdef DEBUG_OUT
+; 244  : 		if (CurrSeg->e.seginfo->current_loc < CurrSeg->e.seginfo->start_loc) {
+
+	mov	rax, QWORD PTR ModuleInfo+432
+	mov	rax, QWORD PTR [rax+96]
+	mov	rcx, QWORD PTR ModuleInfo+432
+	mov	rcx, QWORD PTR [rcx+96]
+	mov	ecx, DWORD PTR [rcx+8]
+
+; 245  : 			;//_asm int 3;
+; 246  : 		}
+; 247  : #endif
+; 248  : 		/**/myassert(CurrSeg->e.seginfo->current_loc >= CurrSeg->e.seginfo->start_loc);
+
+	mov	rax, QWORD PTR ModuleInfo+432
+	mov	rax, QWORD PTR [rax+96]
+	mov	rcx, QWORD PTR ModuleInfo+432
+	mov	rcx, QWORD PTR [rcx+96]
+	mov	ecx, DWORD PTR [rcx+8]
+	cmp	DWORD PTR [rax+12], ecx
+	jb	SHORT $LN12@OutputBinB
+	mov	DWORD PTR tv84[rsp], 0
+	jmp	SHORT $LN13@OutputBinB
+$LN12@OutputBinB:
+	mov	edx, 248				; 000000f8H
+	lea	rcx, OFFSET FLAT:$SG11790
+	call	InternalError
+	mov	DWORD PTR tv84[rsp], eax
+$LN13@OutputBinB:
+
+; 249  : 		if (Options.output_format == OFORMAT_OMF && idx >= MAX_LEDATA_THRESHOLD) {
+
+	cmp	DWORD PTR Options+160, 1
+	jne	SHORT $LN8@OutputBinB
+	cmp	DWORD PTR idx$1[rsp], 1014		; 000003f6H
+	jb	SHORT $LN8@OutputBinB
+
+; 250  : 			omf_FlushCurrSeg();
+
+	call	omf_FlushCurrSeg
+
+; 251  : 			idx = CurrSeg->e.seginfo->current_loc - CurrSeg->e.seginfo->start_loc;
+
+	mov	rax, QWORD PTR ModuleInfo+432
+	mov	rax, QWORD PTR [rax+96]
+	mov	rcx, QWORD PTR ModuleInfo+432
+	mov	rcx, QWORD PTR [rcx+96]
+	mov	ecx, DWORD PTR [rcx+8]
+	mov	eax, DWORD PTR [rax+12]
+	sub	eax, ecx
+	mov	DWORD PTR idx$1[rsp], eax
+$LN8@OutputBinB:
+
+; 252  : 		}
+; 253  : 		//DebugMsg(("OutputByte: buff=%p, idx=%" I32_SPEC "X, byte=%X, codebuff[0]=%X\n", CurrSeg->e.seginfo->CodeBuffer, idx, byte, *CurrSeg->e.seginfo->CodeBuffer ));
+; 254  : 		for (i = 0; i < len; i++)
+
+	mov	DWORD PTR i$[rsp], 0
+	jmp	SHORT $LN4@OutputBinB
+$LN2@OutputBinB:
+	mov	eax, DWORD PTR i$[rsp]
+	inc	eax
+	mov	DWORD PTR i$[rsp], eax
+$LN4@OutputBinB:
+	mov	eax, DWORD PTR len$[rsp]
+	cmp	DWORD PTR i$[rsp], eax
+	jae	SHORT $LN3@OutputBinB
+
+; 255  : 		{
+; 256  : 			CurrSeg->e.seginfo->CodeBuffer[idx++] = *(pBytes++);
+
+	mov	rax, QWORD PTR ModuleInfo+432
+	mov	rax, QWORD PTR [rax+96]
+	mov	ecx, DWORD PTR idx$1[rsp]
+	mov	rax, QWORD PTR [rax+16]
+	mov	rdx, QWORD PTR pBytes$[rsp]
+	movzx	edx, BYTE PTR [rdx]
+	mov	BYTE PTR [rax+rcx], dl
+	mov	eax, DWORD PTR idx$1[rsp]
+	inc	eax
+	mov	DWORD PTR idx$1[rsp], eax
+	mov	rax, QWORD PTR pBytes$[rsp]
+	inc	rax
+	mov	QWORD PTR pBytes$[rsp], rax
+
+; 257  : 		}
+
+	jmp	SHORT $LN2@OutputBinB
+$LN3@OutputBinB:
+
+; 258  : 
+; 259  : 	}
+
+	jmp	SHORT $LN6@OutputBinB
+$LN5@OutputBinB:
+
+; 260  : #if 1
+; 261  : 	/* check this in pass 1 only */
+; 262  : 	else if (CurrSeg->e.seginfo->current_loc < CurrSeg->e.seginfo->start_loc) {
+
+	mov	rax, QWORD PTR ModuleInfo+432
+	mov	rax, QWORD PTR [rax+96]
+	mov	rcx, QWORD PTR ModuleInfo+432
+	mov	rcx, QWORD PTR [rcx+96]
+	mov	ecx, DWORD PTR [rcx+8]
+	cmp	DWORD PTR [rax+12], ecx
+	jae	SHORT $LN9@OutputBinB
+
+; 263  : 		DebugMsg(("OutputByte: segment start loc changed from %" I32_SPEC "Xh to %" I32_SPEC "Xh\n",
+
+	mov	rax, QWORD PTR ModuleInfo+432
+	mov	rax, QWORD PTR [rax+96]
+	mov	rcx, QWORD PTR ModuleInfo+432
+	mov	rcx, QWORD PTR [rcx+96]
+	mov	r8d, DWORD PTR [rax+12]
+	mov	edx, DWORD PTR [rcx+8]
+	lea	rcx, OFFSET FLAT:$SG11793
+	call	DoDebugMsg
+
+; 264  : 			CurrSeg->e.seginfo->start_loc,
+; 265  : 			CurrSeg->e.seginfo->current_loc));
+; 266  : 		CurrSeg->e.seginfo->start_loc = CurrSeg->e.seginfo->current_loc;
+
+	mov	rax, QWORD PTR ModuleInfo+432
+	mov	rax, QWORD PTR [rax+96]
+	mov	rcx, QWORD PTR ModuleInfo+432
+	mov	rcx, QWORD PTR [rcx+96]
+	mov	eax, DWORD PTR [rax+12]
+	mov	DWORD PTR [rcx+8], eax
+$LN9@OutputBinB:
+$LN6@OutputBinB:
+
+; 267  : 	}
+; 268  : #endif
+; 269  : 	CurrSeg->e.seginfo->current_loc+=len;
+
+	mov	rax, QWORD PTR ModuleInfo+432
+	mov	rax, QWORD PTR [rax+96]
+	mov	eax, DWORD PTR [rax+12]
+	add	eax, DWORD PTR len$[rsp]
+	mov	rcx, QWORD PTR ModuleInfo+432
+	mov	rcx, QWORD PTR [rcx+96]
+	mov	DWORD PTR [rcx+12], eax
+
+; 270  : 	CurrSeg->e.seginfo->bytes_written+=len;
+
+	mov	rax, QWORD PTR ModuleInfo+432
+	mov	rax, QWORD PTR [rax+96]
+	mov	eax, DWORD PTR [rax+24]
+	add	eax, DWORD PTR len$[rsp]
+	mov	rcx, QWORD PTR ModuleInfo+432
+	mov	rcx, QWORD PTR [rcx+96]
+	mov	DWORD PTR [rcx+24], eax
+
+; 271  : 	CurrSeg->e.seginfo->written = TRUE;
+
+	mov	rax, QWORD PTR ModuleInfo+432
+	mov	rax, QWORD PTR [rax+96]
+	movzx	eax, BYTE PTR [rax+107]
+	or	al, 32					; 00000020H
+	mov	rcx, QWORD PTR ModuleInfo+432
+	mov	rcx, QWORD PTR [rcx+96]
+	mov	BYTE PTR [rcx+107], al
+
+; 272  : 	if (CurrSeg->e.seginfo->current_loc > CurrSeg->sym.max_offset)
+
+	mov	rax, QWORD PTR ModuleInfo+432
+	mov	rax, QWORD PTR [rax+96]
+	mov	rcx, QWORD PTR ModuleInfo+432
+	mov	ecx, DWORD PTR [rcx+56]
+	cmp	DWORD PTR [rax+12], ecx
+	jbe	SHORT $LN10@OutputBinB
+
+; 273  : 		CurrSeg->sym.max_offset = CurrSeg->e.seginfo->current_loc;
+
+	mov	rax, QWORD PTR ModuleInfo+432
+	mov	rax, QWORD PTR [rax+96]
+	mov	rcx, QWORD PTR ModuleInfo+432
+	mov	eax, DWORD PTR [rax+12]
+	mov	DWORD PTR [rcx+56], eax
+$LN10@OutputBinB:
+
+; 274  : }
+
+	add	rsp, 48					; 00000030H
+	pop	rdi
+	ret	0
+OutputBinBytes ENDP
+_TEXT	ENDS
+; Function compile flags: /Odtp /RTCsu
+; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\assemble.c
+_TEXT	SEGMENT
 idx$1 = 32
 tv84 = 36
 byte$ = 64
@@ -6064,7 +6064,7 @@ $LN11:
 	jmp	SHORT $LN10@OutputByte
 $LN9@OutputByte:
 	mov	edx, 212				; 000000d4H
-	lea	rcx, OFFSET FLAT:$SG11766
+	lea	rcx, OFFSET FLAT:$SG11771
 	call	InternalError
 	mov	DWORD PTR tv84[rsp], eax
 $LN10@OutputByte:
@@ -6128,7 +6128,7 @@ $LN2@OutputByte:
 	mov	rcx, QWORD PTR [rcx+96]
 	mov	r8d, DWORD PTR [rax+12]
 	mov	edx, DWORD PTR [rcx+8]
-	lea	rcx, OFFSET FLAT:$SG11769
+	lea	rcx, OFFSET FLAT:$SG11774
 	call	DoDebugMsg
 
 ; 224  :                   CurrSeg->e.seginfo->start_loc,
