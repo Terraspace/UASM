@@ -1,4 +1,7 @@
 HJWasm.opensdf
-/.vs
-/Win32
-/x64
+/.vs/*
+/Win32/*
+/x64/*
+asm.obj
+svo3.err
+
