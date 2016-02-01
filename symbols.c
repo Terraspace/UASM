@@ -804,7 +804,7 @@ static void DumpSymbol( struct asym *sym )
         type = "Unknown";
         break;
     }
-    printf( "%-12s  %16" I64_SPEC "X %02X %8p %c %8p %s\n", type, value, sym->mem_type, dir->e, sym->ispublic ? 'X' : ' ', (void*)sym->name, (void*)sym->name );
+    printf( "%-12s  %16" I64_SPEC "X %02X %8p %c %8p %s\n", type, value, sym->mem_type, (void*)&(dir->e), sym->ispublic ? 'X' : ' ', (void*)sym->name, (char*)sym->name );
 }
 
 static void DumpSymbols( void )
