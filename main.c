@@ -69,10 +69,15 @@ int main(int argc, char **argv)
 	/* v2.11: _findfirst/next/close() handle, should be of type intptr_t.
 	* since this type isn't necessarily defined, type long is used as substitute.
 	*/
+
+#ifdef __UNIX__
 #if defined( intptr_t )
 	intptr_t    fh; //fixed by ToutEnMasm intptr_t instead of long
 #else
 	long        fh; // more compatible type (linux builds etc) when intptr_t isn't valid.
+#endif
+#else
+	intptr_t    fh;
 #endif
 
 	const char *pfn;
