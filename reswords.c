@@ -1301,9 +1301,9 @@ void DumpResWords(void)
   }
   printf("--------------------------------------------------------------\n");
 
-  printf("\nitems in InstrTable[]: %u\n", sizeof(InstrTable) / sizeof(InstrTable[0]));
+  printf("\nitems in InstrTable[]: %u\n", (unsigned int)(sizeof(InstrTable) / sizeof(InstrTable[0])));
   printf("items in optable_idx[]: %u, used by ResWordTable items %u-%u\n",
-    sizeof(optable_idx) / sizeof(optable_idx[0]), INS_FIRST_1 + 1, sizeof(ResWordTable) / sizeof(ResWordTable[0]) - 1);
+    (unsigned int)(sizeof(optable_idx) / sizeof(optable_idx[0])), (unsigned int)(INS_FIRST_1 + 1), (unsigned int)(sizeof(ResWordTable) / sizeof(ResWordTable[0]) - 1));
 
   printf("\nInstructionTable\n");
   printf("   # keyword          cls cpu opc rmb b1 rmi pfx fst idx flg len\n");
