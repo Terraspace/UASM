@@ -533,10 +533,13 @@ extern  void            SymGetAll( struct asym ** );
 extern  struct asym     *SymEnum( struct asym *, int * );
 extern  uint_32         SymGetCount( void );
 
+
 #if defined(__WATCOMC__)
-typedef int (__watcall * StrCmpFunc)(const void *, const void *, size_t );
+typedef int (__watcall * StrCmpFunc)(const void *, const void *, size_t);
+#elif defined(_MSC_VER)
+typedef int(__cdecl * StrCmpFunc)(const void *, const void *, size_t);
 #else
-typedef int (* StrCmpFunc)(const void *, const void *, size_t );
+typedef int(*StrCmpFunc)(const void *, const void *, size_t);
 #endif
 extern StrCmpFunc SymCmpFunc;
 
