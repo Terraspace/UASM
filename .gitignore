@@ -4,4 +4,15 @@ HJWasm.opensdf
 /x64/*
 asm.obj
 svo3.err
-
+/Win32
+/x64
+/Debug
+/MinGW-w64D
+/Win32/Debug/*
+/Win32/Debug
+/Win32/Release/*
+/Win32/Release
+/x64/Debug/*
+/x64/Debug
+/x64/Release/*
+/x64/Release
