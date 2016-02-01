@@ -1424,7 +1424,11 @@ static ret_code opattr_op( int oper, struct expr *opnd1, struct expr *opnd2, str
 
 
     /* bit 2: immediate value? */
-    if ( opnd2->kind == EXPR_CONST ||
+	/* John Hankinson modified here to allow -Zg switch to treat literal string macro argument with opattr type = 0 */
+	if (Options.masm_compat_gencode && opnd2->kind == EXPR_CONST)
+	{
+	}
+    else if ( opnd2->kind == EXPR_CONST ||
         ( opnd2->kind == EXPR_ADDR &&
          opnd2->indirect == FALSE &&
          (( opnd2->mem_type == MT_EMPTY && IsOffset(opnd2) ) ||
@@ -1453,7 +1457,11 @@ static ret_code opattr_op( int oper, struct expr *opnd1, struct expr *opnd2, str
         opnd1->value |= OPATTR_REGISTER;
 
     //if ( opnd2->kind != EXPR_ERROR && ( opnd2->sym == 0 || opnd2->sym->isdefined == TRUE ) )
-    if ( opnd2->kind != EXPR_ERROR && opnd2->kind != EXPR_FLOAT && ( opnd2->sym == NULL || opnd2->sym->isdefined == TRUE ) )
+	/* John Hankinson modified here to allow -Zg switch to treat literal string macro argument with opattr type = 0 */
+	if (Options.masm_compat_gencode && opnd2->kind == EXPR_CONST)
+	{
+	}
+    else if ( opnd2->kind != EXPR_ERROR && opnd2->kind != EXPR_FLOAT && ( opnd2->sym == NULL || opnd2->sym->isdefined == TRUE ) )
         opnd1->value |= OPATTR_DEFINED; 
 
     if ( ( opnd2->sym && opnd2->sym->state == SYM_STACK ) ||

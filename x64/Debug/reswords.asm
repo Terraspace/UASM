@@ -10438,51 +10438,51 @@ $SG14817 DB	'ResWordsFini(): %s restored', 0aH, 00H
 	ORG $+3
 $SG14819 DB	'ResWordsInit(): %s reenabled', 0aH, 00H
 	ORG $+2
-$SG14832 DB	'SpecialTable', 0aH, 00H
+$SG14836 DB	'SpecialTable', 0aH, 00H
 	ORG $+2
-$SG14833 DB	'   # keyword             value   sflags  cpu val8 type f'
+$SG14837 DB	'   # keyword             value   sflags  cpu val8 type f'
 	DB	'lg len', 0aH, 00H
-$SG14834 DB	'--------------------------------------------------------'
+$SG14838 DB	'--------------------------------------------------------'
 	DB	'------', 0aH, 00H
-$SG14835 DB	'%4u %-16s %8X %8X %4X %4X  %2X  %2X %3u', 0aH, 00H
+$SG14839 DB	'%4u %-16s %8X %8X %4X %4X  %2X  %2X %3u', 0aH, 00H
 	ORG $+7
-$SG14836 DB	'--------------------------------------------------------'
+$SG14840 DB	'--------------------------------------------------------'
 	DB	'------', 0aH, 00H
-$SG14837 DB	0aH, 'items in InstrTable[]: %u', 0aH, 00H
-$SG14869 DB	0aH, 00H
+$SG14841 DB	0aH, 'items in InstrTable[]: %u', 0aH, 00H
+$SG14873 DB	0aH, 00H
 	ORG $+2
-$SG14838 DB	'items in optable_idx[]: %u, used by ResWordTable items %'
+$SG14842 DB	'items in optable_idx[]: %u, used by ResWordTable items %'
 	DB	'u-%u', 0aH, 00H
 	ORG $+2
-$SG14839 DB	0aH, 'InstructionTable', 0aH, 00H
+$SG14843 DB	0aH, 'InstructionTable', 0aH, 00H
 	ORG $+5
-$SG14842 DB	'%4u %-16s %02X %4X  %02X  %02X %2u %X   %X   %u  %4u %3X'
+$SG14846 DB	'%4u %-16s %02X %4X  %02X  %02X %2u %X   %X   %u  %4u %3X'
 	DB	' %3u', 0aH, 00H
 	ORG $+2
-$SG14865 DB	'%3u ', 00H
+$SG14869 DB	'%3u ', 00H
 	ORG $+3
-$SG14840 DB	'   # keyword          cls cpu opc rmb b1 rmi pfx fst idx'
+$SG14844 DB	'   # keyword          cls cpu opc rmb b1 rmi pfx fst idx'
 	DB	' flg len', 0aH, 00H
 	ORG $+6
-$SG14861 DB	0aH, 'Reserved Word Hash Table', 0aH, 00H
+$SG14865 DB	0aH, 'Reserved Word Hash Table', 0aH, 00H
 	ORG $+5
-$SG14862 DB	'Idx keywords', 0aH, 00H
+$SG14866 DB	'Idx keywords', 0aH, 00H
 	ORG $+2
-$SG14867 DB	' %-8s', 00H
+$SG14871 DB	' %-8s', 00H
 	ORG $+2
-$SG14841 DB	'--------------------------------------------------------'
+$SG14845 DB	'--------------------------------------------------------'
 	DB	'--------', 0aH, 00H
 	ORG $+6
-$SG14863 DB	'---------------------------', 0aH, 00H
+$SG14867 DB	'---------------------------', 0aH, 00H
 	ORG $+3
-$SG14876 DB	'[0=%u 1=%u %u %u %u %u %u %u]', 0aH, 00H
+$SG14880 DB	'[0=%u 1=%u %u %u %u %u %u %u]', 0aH, 00H
 	ORG $+9
-$SG14843 DB	'--------------------------------------------------------'
+$SG14847 DB	'--------------------------------------------------------'
 	DB	'--------', 0aH, 00H
 	ORG $+6
-$SG14873 DB	'---------------------------', 0aH, 00H
+$SG14877 DB	'---------------------------', 0aH, 00H
 	ORG $+3
-$SG14875 DB	'%u items in resw table, max items/line=%u ', 00H
+$SG14879 DB	'%u items in resw table, max items/line=%u ', 00H
 	ORG $+13
 optable_idx DW	00H
 	DW	09H
@@ -36298,17 +36298,17 @@ $LN17:
 
 ; 1333 :     printf("\nReserved Word Hash Table\n");
 
-	lea	rcx, OFFSET FLAT:$SG14861
+	lea	rcx, OFFSET FLAT:$SG14865
 	call	printf
 
 ; 1334 :     printf("Idx keywords\n");
 
-	lea	rcx, OFFSET FLAT:$SG14862
+	lea	rcx, OFFSET FLAT:$SG14866
 	call	printf
 
 ; 1335 :     printf("---------------------------\n");
 
-	lea	rcx, OFFSET FLAT:$SG14863
+	lea	rcx, OFFSET FLAT:$SG14867
 	call	printf
 $LN8@DumpInstrS:
 
@@ -36335,7 +36335,7 @@ $LN4@DumpInstrS:
 ; 1340 :       printf("%3u ", i);
 
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG14865
+	lea	rcx, OFFSET FLAT:$SG14869
 	call	printf
 $LN9@DumpInstrS:
 
@@ -36369,7 +36369,7 @@ $LN7@DumpInstrS:
 	mov	ecx, DWORD PTR inst$[rsp]
 	call	GetResWName
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG14867
+	lea	rcx, OFFSET FLAT:$SG14871
 	call	printf
 $LN10@DumpInstrS:
 
@@ -36392,7 +36392,7 @@ $LN6@DumpInstrS:
 
 ; 1347 :       printf("\n");
 
-	lea	rcx, OFFSET FLAT:$SG14869
+	lea	rcx, OFFSET FLAT:$SG14873
 	call	printf
 $LN11@DumpInstrS:
 
@@ -36443,7 +36443,7 @@ $LN3@DumpInstrS:
 
 ; 1355 :     printf("---------------------------\n");
 
-	lea	rcx, OFFSET FLAT:$SG14873
+	lea	rcx, OFFSET FLAT:$SG14877
 	call	printf
 $LN14@DumpInstrS:
 
@@ -36457,7 +36457,7 @@ $LN14@DumpInstrS:
 
 	mov	r8d, DWORD PTR max$[rsp]
 	mov	edx, DWORD PTR count$[rsp]
-	lea	rcx, OFFSET FLAT:$SG14875
+	lea	rcx, OFFSET FLAT:$SG14879
 	call	printf
 
 ; 1358 :     printf("[0=%u 1=%u %u %u %u %u %u %u]\n", num[0], num[1], num[2], num[3], num[4], num[5], num[6], num[7]);
@@ -36491,7 +36491,7 @@ $LN14@DumpInstrS:
 	mov	r9d, DWORD PTR num$[rsp+r10]
 	mov	r8d, DWORD PTR num$[rsp+r11]
 	mov	edx, DWORD PTR num$[rsp+rbx]
-	lea	rcx, OFFSET FLAT:$SG14876
+	lea	rcx, OFFSET FLAT:$SG14880
 	call	printf
 $LN15@DumpInstrS:
 
@@ -36902,17 +36902,17 @@ $LN9:
 ; 1291 : 
 ; 1292 :   printf("SpecialTable\n");
 
-	lea	rcx, OFFSET FLAT:$SG14832
+	lea	rcx, OFFSET FLAT:$SG14836
 	call	printf
 
 ; 1293 :   printf("   # keyword             value   sflags  cpu val8 type flg len\n");
 
-	lea	rcx, OFFSET FLAT:$SG14833
+	lea	rcx, OFFSET FLAT:$SG14837
 	call	printf
 
 ; 1294 :   printf("--------------------------------------------------------------\n");
 
-	lea	rcx, OFFSET FLAT:$SG14834
+	lea	rcx, OFFSET FLAT:$SG14838
 	call	printf
 
 ; 1295 :   /* start with index 1 ( index 0 is T_NULL ) */
@@ -36984,7 +36984,7 @@ $LN4@DumpResWor:
 	mov	r9d, DWORD PTR [rdi+rbx]
 	mov	r8, rax
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG14835
+	lea	rcx, OFFSET FLAT:$SG14839
 	call	printf
 
 ; 1298 :       SpecialTable[i].value, SpecialTable[i].sflags,
@@ -36997,14 +36997,14 @@ $LN3@DumpResWor:
 
 ; 1302 :   printf("--------------------------------------------------------------\n");
 
-	lea	rcx, OFFSET FLAT:$SG14836
+	lea	rcx, OFFSET FLAT:$SG14840
 	call	printf
 
 ; 1303 : 
-; 1304 :   printf("\nitems in InstrTable[]: %u\n", sizeof(InstrTable) / sizeof(InstrTable[0]));
+; 1304 :   printf("\nitems in InstrTable[]: %u\n", (unsigned int)(sizeof(InstrTable) / sizeof(InstrTable[0])));
 
 	mov	edx, 1792				; 00000700H
-	lea	rcx, OFFSET FLAT:$SG14837
+	lea	rcx, OFFSET FLAT:$SG14841
 	call	printf
 
 ; 1305 :   printf("items in optable_idx[]: %u, used by ResWordTable items %u-%u\n",
@@ -37012,24 +37012,24 @@ $LN3@DumpResWor:
 	mov	r9d, 2080				; 00000820H
 	mov	r8d, 450				; 000001c2H
 	mov	edx, 1631				; 0000065fH
-	lea	rcx, OFFSET FLAT:$SG14838
+	lea	rcx, OFFSET FLAT:$SG14842
 	call	printf
 
-; 1306 :     sizeof(optable_idx) / sizeof(optable_idx[0]), INS_FIRST_1 + 1, sizeof(ResWordTable) / sizeof(ResWordTable[0]) - 1);
+; 1306 :     (unsigned int)(sizeof(optable_idx) / sizeof(optable_idx[0])), (unsigned int)(INS_FIRST_1 + 1), (unsigned int)(sizeof(ResWordTable) / sizeof(ResWordTable[0]) - 1));
 ; 1307 : 
 ; 1308 :   printf("\nInstructionTable\n");
 
-	lea	rcx, OFFSET FLAT:$SG14839
+	lea	rcx, OFFSET FLAT:$SG14843
 	call	printf
 
 ; 1309 :   printf("   # keyword          cls cpu opc rmb b1 rmi pfx fst idx flg len\n");
 
-	lea	rcx, OFFSET FLAT:$SG14840
+	lea	rcx, OFFSET FLAT:$SG14844
 	call	printf
 
 ; 1310 :   printf("----------------------------------------------------------------\n");
 
-	lea	rcx, OFFSET FLAT:$SG14841
+	lea	rcx, OFFSET FLAT:$SG14845
 	call	printf
 
 ; 1311 :   for (i = INS_FIRST_1 + 1; i < sizeof(ResWordTable) / sizeof(ResWordTable[0]); i++) {
@@ -37119,7 +37119,7 @@ $LN7@DumpResWor:
 	mov	r9d, ebp
 	mov	r8, rax
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG14842
+	lea	rcx, OFFSET FLAT:$SG14846
 	call	printf
 
 ; 1314 :       ins->opclsidx,
@@ -37133,7 +37133,7 @@ $LN6@DumpResWor:
 
 ; 1319 :   printf("----------------------------------------------------------------\n");
 
-	lea	rcx, OFFSET FLAT:$SG14843
+	lea	rcx, OFFSET FLAT:$SG14847
 	call	printf
 
 ; 1320 : }

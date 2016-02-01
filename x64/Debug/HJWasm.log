@@ -1,4 +1,4 @@
-﻿Build started 2016/01/30 07:58:43 PM.
+﻿Build started 2016/02/01 10:45:17 AM.
      1>Project "D:\HJWasm\HJWasm2.13.1s\HJWasm2.13.1s\HJWasm.vcxproj" on node 2 (Build target(s)).
      1>Link:
          HJWasm.vcxproj -> D:\HJWasm\HJWasm2.13.1s\HJWasm2.13.1s\x64\Debug\HJWasm.exe
@@ -6,4 +6,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.09
+Time Elapsed 00:00:00.06

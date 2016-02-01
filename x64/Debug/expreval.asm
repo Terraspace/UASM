@@ -6,10 +6,10 @@ INCLUDELIB MSVCRTD
 INCLUDELIB OLDNAMES
 
 _BSS	SEGMENT
-$SG12341 DB	01H DUP (?)
+$SG12345 DB	01H DUP (?)
 	ALIGN	4
 
-$SG11677 DB	01H DUP (?)
+$SG11681 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	decoflags:BYTE
@@ -18,19 +18,19 @@ _DATA	ENDS
 _BSS	SEGMENT
 	ALIGN	4
 
-$SG11865 DB	01H DUP (?)
+$SG11869 DB	01H DUP (?)
 	ALIGN	4
 
-$SG11886 DB	01H DUP (?)
+$SG11890 DB	01H DUP (?)
 	ALIGN	4
 
-$SG11887 DB	01H DUP (?)
+$SG11891 DB	01H DUP (?)
 	ALIGN	4
 
-$SG11899 DB	01H DUP (?)
+$SG11903 DB	01H DUP (?)
 	ALIGN	4
 
-$SG11900 DB	01H DUP (?)
+$SG11904 DB	01H DUP (?)
 	ALIGN	4
 
 evallvl	DD	01H DUP (?)
@@ -61,52 +61,52 @@ unaryop	DQ	FLAT:low_op
 	DQ	FLAT:wimask_op
 CONST	ENDS
 _DATA	SEGMENT
-$SG12295 DB	'NULL', 00H
+$SG12299 DB	'NULL', 00H
 	ORG $+11
-$SG12296 DB	'%u evaluate(i=%d, end=%d, flags=%X) enter [opnd1: kind=%'
+$SG12300 DB	'%u evaluate(i=%d, end=%d, flags=%X) enter [opnd1: kind=%'
 	DB	'd type=%s]', 0aH, 00H
-$SG12298 DB	'NULL', 00H
+$SG12302 DB	'NULL', 00H
 	ORG $+3
 $SG11089 DB	'rn-sae', 00H
 	ORG $+1
 $SG11101 DB	'sae', 00H
-$SG12299 DB	'%u evaluate loop, operator=>%s< opnd1->sym=%X, type=%s', 0aH
+$SG12303 DB	'%u evaluate loop, operator=>%s< opnd1->sym=%X, type=%s', 0aH
 	DB	00H
-$SG12307 DB	'%u evaluate: unexpected token at idx=%u, token=%X >%s<', 0aH
+$SG12311 DB	'%u evaluate: unexpected token at idx=%u, token=%X >%s<', 0aH
 	DB	00H
-$SG12317 DB	'%u evaluate: error, missing ''%c'', i=%u', 0aH, 00H
-$SG12329 DB	'%u evaluate: unexpected token at %u, token=%X >%s<', 0aH
+$SG12321 DB	'%u evaluate: error, missing ''%c'', i=%u', 0aH, 00H
+$SG12333 DB	'%u evaluate: unexpected token at %u, token=%X >%s<', 0aH
 	DB	00H
-$SG12337 DB	'NULL', 00H
+$SG12341 DB	'NULL', 00H
 	ORG $+3
-$SG12338 DB	'NULL', 00H
+$SG12342 DB	'NULL', 00H
 	ORG $+3
-$SG12340 DB	'NULL', 00H
+$SG12344 DB	'NULL', 00H
 	ORG $+7
-$SG12339 DB	'%u evaluate exit, rc=%d, kind=%d value=%I64d(0x%I64X) me'
+$SG12343 DB	'%u evaluate exit, rc=%d, kind=%d value=%I64d(0x%I64X) me'
 	DB	'mtype=%Xh string=%s indirect=%u type=>%s<', 0aH, 00H
 	ORG $+1
-$SG12342 DB	'NULL', 00H
+$SG12346 DB	'NULL', 00H
 	ORG $+7
-$SG12343 DB	'%u evaluate exit, rc=%d, kind=%d value=%d(0x%X) memtype='
+$SG12347 DB	'%u evaluate exit, rc=%d, kind=%d value=%d(0x%X) memtype='
 	DB	'%Xh string=%s ind=%u exp=%u ofssiz=%d instr=%s type=>%s<', 0aH
 	DB	00H
 	ORG $+2
+$SG11358 DB	'NULL', 00H
+	ORG $+3
 $SG11092 DB	'rd-sae', 00H
 	ORG $+1
 $SG11176 DB	'@@', 00H
 	ORG $+1
-$SG12380 DB	'EvalOperand(start=%u, end=%u, flags=%X) enter: >%s<', 0aH
-	DB	00H
-	ORG $+3
-$SG11358 DB	'NULL', 00H
-	ORG $+3
 $SG11359 DB	'sizlen_op(%s): sym=%X, mbr=%X, type=>%s<', 0aH, 00H
 	ORG $+2
-$SG11394 DB	'NULL', 00H
-	ORG $+3
 $SG11095 DB	'ru-sae', 00H
 	ORG $+5
+$SG12384 DB	'EvalOperand(start=%u, end=%u, flags=%X) enter: >%s<', 0aH
+	DB	00H
+	ORG $+3
+$SG11394 DB	'NULL', 00H
+	ORG $+3
 $SG11395 DB	'sizlen_op(SIZE): result=%u [symbol %s, first_size=%u]', 0aH
 	DB	00H
 	ORG $+1
@@ -132,214 +132,214 @@ $SG11496 DB	'NULL', 00H
 	ORG $+3
 $SG11497 DB	'opattr_op: arg kind=%d memtype=%X sym=%s', 0aH, 00H
 	ORG $+6
-$SG11523 DB	'opattr_op returns %Xh', 0aH, 00H
+$SG11527 DB	'opattr_op returns %Xh', 0aH, 00H
 	ORG $+1
-$SG11678 DB	'NULL', 00H
+$SG11682 DB	'NULL', 00H
 	ORG $+3
-$SG11679 DB	'this_op: memtype=%Xh type=%s', 0aH, 00H
+$SG11683 DB	'this_op: memtype=%Xh type=%s', 0aH, 00H
 	ORG $+2
-$SG11732 DB	'NULL', 00H
-	ORG $+3
-$SG11733 DB	'NULL', 00H
-	ORG $+3
-$SG11734 DB	'NULL', 00H
-	ORG $+3
-$SG11735 DB	'NULL', 00H
-	ORG $+3
 $SG11736 DB	'NULL', 00H
 	ORG $+3
 $SG11737 DB	'NULL', 00H
 	ORG $+3
-$SG11738 DB	'plus_op: kind=%d/%d memtype=%Xh-%Xh value=%d-%d sym=%s-%'
+$SG11738 DB	'NULL', 00H
+	ORG $+3
+$SG11739 DB	'NULL', 00H
+	ORG $+3
+$SG11740 DB	'NULL', 00H
+	ORG $+3
+$SG11741 DB	'NULL', 00H
+	ORG $+3
+$SG11742 DB	'plus_op: kind=%d/%d memtype=%Xh-%Xh value=%d-%d sym=%s-%'
 	DB	's mbr=%s-%s type=%s-%s', 0aH, 00H
-$SG11740 DB	'plus_op: error direct register', 0aH, 00H
-$SG11746 DB	'plus_op: multiple overrides', 0aH, 00H
+$SG11744 DB	'plus_op: error direct register', 0aH, 00H
+$SG11750 DB	'plus_op: multiple overrides', 0aH, 00H
 	ORG $+3
-$SG11749 DB	'plus_op: CONST - CONST', 0aH, 00H
-$SG11752 DB	'plus_op: ADDR - ADDR', 0aH, 00H
+$SG11753 DB	'plus_op: CONST - CONST', 0aH, 00H
+$SG11756 DB	'plus_op: ADDR - ADDR', 0aH, 00H
 	ORG $+2
-$SG11756 DB	'plus_op: two relocatable labels: %s - %s ', 0aH, 00H
+$SG11760 DB	'plus_op: two relocatable labels: %s - %s ', 0aH, 00H
 	ORG $+5
-$SG11764 DB	'plus_op: CONST - ADDR', 0aH, 00H
+$SG11768 DB	'plus_op: CONST - ADDR', 0aH, 00H
 	ORG $+1
-$SG11770 DB	'plus_op: ADDR - CONST', 0aH, 00H
+$SG11774 DB	'plus_op: ADDR - CONST', 0aH, 00H
 	ORG $+1
-$SG11774 DB	'plus_op: error, unexpected format: %u - %u', 0aH, 00H
+$SG11778 DB	'plus_op: error, unexpected format: %u - %u', 0aH, 00H
 	ORG $+4
-$SG11788 DB	'minus_op: kind tok1=%u, tok2=%u', 0aH, 00H
+$SG11792 DB	'minus_op: kind tok1=%u, tok2=%u', 0aH, 00H
 	ORG $+7
-$SG11790 DB	'minus_op: error direct register', 0aH, 00H
+$SG11794 DB	'minus_op: error direct register', 0aH, 00H
 	ORG $+7
-$SG11795 DB	'minus_op: CONST-CONST', 0aH, 00H
+$SG11799 DB	'minus_op: CONST-CONST', 0aH, 00H
 	ORG $+1
-$SG11798 DB	'minus_op: ADDR-CONST', 0aH, 00H
+$SG11802 DB	'minus_op: ADDR-CONST', 0aH, 00H
 	ORG $+2
-$SG11801 DB	'minus_op: ADDR-ADDR', 0aH, 00H
+$SG11805 DB	'minus_op: ADDR-ADDR', 0aH, 00H
 	ORG $+3
-$SG11803 DB	'minus_op error, opnd2->indirect==TRUE', 0aH, 00H
+$SG11807 DB	'minus_op error, opnd2->indirect==TRUE', 0aH, 00H
 	ORG $+1
-$SG11808 DB	'minus_op error, label_tok=%X opnd1.sym=%X opnd2.sym=%X', 0aH
+$SG11812 DB	'minus_op error, label_tok=%X opnd1.sym=%X opnd2.sym=%X', 0aH
 	DB	00H
-$SG11812 DB	'minus_op error 6', 0aH, 00H
+$SG11816 DB	'minus_op error 6', 0aH, 00H
 	ORG $+6
-$SG11814 DB	'minus_op error, sym.segm=%X opnd1->sym.segm=%X', 0aH, 00H
-$SG11822 DB	'minus_op, exit, ADDR, base=%X, idx=%X', 0aH, 00H
+$SG11818 DB	'minus_op error, sym.segm=%X opnd1->sym.segm=%X', 0aH, 00H
+$SG11826 DB	'minus_op, exit, ADDR, base=%X, idx=%X', 0aH, 00H
 	ORG $+1
-$SG11825 DB	'minus_op, exit, error: kinds tok1=%u, tok2=%u', 0aH, 00H
+$SG11829 DB	'minus_op, exit, error: kinds tok1=%u, tok2=%u', 0aH, 00H
 	ORG $+1
-$SG11851 DB	'NULL', 00H
-	ORG $+3
-$SG11852 DB	'NULL', 00H
-	ORG $+3
-$SG11853 DB	'NULL', 00H
-	ORG $+3
-$SG11854 DB	'NULL', 00H
-	ORG $+3
 $SG11855 DB	'NULL', 00H
 	ORG $+3
 $SG11856 DB	'NULL', 00H
 	ORG $+3
-$SG11857 DB	'dot_op: op1-op2 kind=%d/%d sym=%s-%s type=%s-%s mbr=%s-%'
+$SG11857 DB	'NULL', 00H
+	ORG $+3
+$SG11858 DB	'NULL', 00H
+	ORG $+3
+$SG11859 DB	'NULL', 00H
+	ORG $+3
+$SG11860 DB	'NULL', 00H
+	ORG $+3
+$SG11861 DB	'dot_op: op1-op2 kind=%d/%d sym=%s-%s type=%s-%s mbr=%s-%'
 	DB	's', 0aH, 00H
 	ORG $+5
-$SG11859 DB	'dot_op: error direct register', 0aH, 00H
+$SG11863 DB	'dot_op: error direct register', 0aH, 00H
 	ORG $+1
-$SG11863 DB	'dot_op: forward reference %s, replaced by null struct ty'
+$SG11867 DB	'dot_op: forward reference %s, replaced by null struct ty'
 	DB	'pe', 0aH, 00H
-$SG11868 DB	'NULL', 00H
+$SG11872 DB	'NULL', 00H
 	ORG $+3
-$SG11869 DB	'NULL', 00H
+$SG11873 DB	'NULL', 00H
 	ORG $+7
-$SG11870 DB	'dot_op, ADDR - ADDR, t1-t2 memtype=%X-%X sym=%s-%s', 0aH
+$SG11874 DB	'dot_op, ADDR - ADDR, t1-t2 memtype=%X-%X sym=%s-%s', 0aH
 	DB	00H
 	ORG $+4
-$SG11872 DB	'dot_op: error, mbr 2 is NULL', 0aH, 00H
+$SG11876 DB	'dot_op: error, mbr 2 is NULL', 0aH, 00H
 	ORG $+2
-$SG11876 DB	'dot_op: error, two relocatable labels: %s - %s ', 0aH, 00H
+$SG11880 DB	'dot_op: error, two relocatable labels: %s - %s ', 0aH, 00H
 	ORG $+7
-$SG11882 DB	'dot_op, CONST - ADDR: t1-t2 memtype=%Xh-%Xh istype=%u-%u'
+$SG11886 DB	'dot_op, CONST - ADDR: t1-t2 memtype=%Xh-%Xh istype=%u-%u'
 	DB	0aH, 00H
 	ORG $+6
-$SG11888 DB	'dot_op, CONST - ADDR, t1.type=%X (%s), t2.type=%X (%s)', 0aH
+$SG11892 DB	'dot_op, CONST - ADDR, t1.type=%X (%s), t2.type=%X (%s)', 0aH
 	DB	00H
-$SG11892 DB	'dot_op, ADDR - CONST: t1-t2 memtype=%Xh-%Xh t1.explicit='
+$SG11896 DB	'dot_op, ADDR - CONST: t1-t2 memtype=%Xh-%Xh t1.explicit='
 	DB	'%u', 0aH, 00H
 	ORG $+4
-$SG11895 DB	'dot_op: error, constant or simple type after dot', 0aH, 00H
+$SG11899 DB	'dot_op: error, constant or simple type after dot', 0aH, 00H
 	ORG $+6
-$SG11901 DB	'dot_op, ADDR - CONST, t1.type=%X (%s), t2.type=%X (%s)', 0aH
+$SG11905 DB	'dot_op, ADDR - CONST, t1.type=%X (%s), t2.type=%X (%s)', 0aH
 	DB	00H
-$SG11904 DB	'dot_op, CONST - CONST, t1-t2 value=%u-%u, memtype=%Xh-%X'
+$SG11908 DB	'dot_op, CONST - CONST, t1-t2 value=%u-%u, memtype=%Xh-%X'
 	DB	'h istype=%u-%u', 0aH, 00H
-$SG11906 DB	'dot_op: error, opnd2.mbr=NULL', 0aH, 00H
+$SG11910 DB	'dot_op: error, opnd2.mbr=NULL', 0aH, 00H
 	ORG $+1
-$SG11929 DB	'NULL', 00H
+$SG11933 DB	'NULL', 00H
 	ORG $+3
-$SG11913 DB	'dot_op: error, unknown kind combination, opnd1->kind=%d,'
+$SG11917 DB	'dot_op: error, unknown kind combination, opnd1->kind=%d,'
 	DB	' opnd2->kind=%d', 0aH, 00H
 	ORG $+3
-$SG11930 DB	'NULL', 00H
+$SG11934 DB	'NULL', 00H
 	ORG $+7
-$SG11931 DB	'colon_op: t1-t2 kind=%d/%d type=%s-%s is_type=%u-%u', 0aH
+$SG11935 DB	'colon_op: t1-t2 kind=%d/%d type=%s-%s is_type=%u-%u', 0aH
 	DB	00H
 	ORG $+3
-$SG11936 DB	'colon_op: multiple override=%s', 0aH, 00H
-$SG11939 DB	'colon_op: register after : not enclosed in []', 0aH, 00H
+$SG11940 DB	'colon_op: multiple override=%s', 0aH, 00H
+$SG11943 DB	'colon_op: register after : not enclosed in []', 0aH, 00H
 	ORG $+1
-$SG11944 DB	'colon_op: register before '':'' has idx_reg set!?', 0aH, 00H
+$SG11948 DB	'colon_op: register before '':'' has idx_reg set!?', 0aH, 00H
 	ORG $+7
-$SG11957 DB	'colon_op error 4', 0aH, 00H
+$SG11961 DB	'colon_op error 4', 0aH, 00H
 	ORG $+6
-$SG11958 DB	'colon_op error 5', 0aH, 00H
+$SG11962 DB	'colon_op error 5', 0aH, 00H
 	ORG $+6
-$SG11965 DB	'positive_op: value=%I64X high=%I64X', 0aH, 00H
+$SG11969 DB	'positive_op: value=%I64X high=%I64X', 0aH, 00H
 	ORG $+3
-$SG11970 DB	'positive_op: error 1', 0aH, 00H
+$SG11974 DB	'positive_op: error 1', 0aH, 00H
 	ORG $+2
-$SG11977 DB	'negative_op: value=%I64X high=%I64X', 0aH, 00H
+$SG11981 DB	'negative_op: value=%I64X high=%I64X', 0aH, 00H
 	ORG $+3
-$SG11983 DB	'negative_op: unexpected opnd2.kind=%d', 0aH, 00H
+$SG11987 DB	'negative_op: unexpected opnd2.kind=%d', 0aH, 00H
 	ORG $+1
-$SG11993 DB	'CheckAssume(%s, MT_PTR type=>%s< )', 0aH, 00H
-$SG11998 DB	'NULL', 00H
+$SG11997 DB	'CheckAssume(%s, MT_PTR type=>%s< )', 0aH, 00H
+$SG12002 DB	'NULL', 00H
 	ORG $+3
-$SG11999 DB	'NULL', 00H
+$SG12003 DB	'NULL', 00H
 	ORG $+3
-$SG12000 DB	'NULL', 00H
+$SG12004 DB	'NULL', 00H
 	ORG $+3
-$SG12001 DB	'NULL', 00H
+$SG12005 DB	'NULL', 00H
 	ORG $+7
-$SG12002 DB	'CheckAssume(%s, type=>%s<, mbr=>%s<): assume=%s [memtype'
+$SG12006 DB	'CheckAssume(%s, type=>%s<, mbr=>%s<): assume=%s [memtype'
 	DB	'=%X isptr=%u type=%s target_type=%s ptr_memt=%X]', 0aH, 00H
 	ORG $+6
 $SG10984 DB	'get_precedence: unexpected operator=%s', 0aH, 00H
-$SG12031 DB	'expreval.c', 00H
+$SG12035 DB	'expreval.c', 00H
 	ORG $+5
-$SG12033 DB	'cmp_types: memtype=%X-%X type=%X-%X', 0aH, 00H
+$SG12037 DB	'cmp_types: memtype=%X-%X type=%X-%X', 0aH, 00H
 	ORG $+3
-$SG12032 DB	'cmp_types: MT_PTR-MT_PTR is_ptr=%u-%u ptr_memtype=%X-%X '
+$SG12036 DB	'cmp_types: MT_PTR-MT_PTR is_ptr=%u-%u ptr_memtype=%X-%X '
 	DB	'target_type=%X-%X', 0aH, 00H
 	ORG $+5
-$SG12070 DB	'%u calculate(%s): value too large', 0aH, 00H
+$SG12074 DB	'%u calculate(%s): value too large', 0aH, 00H
 	ORG $+5
-$SG12075 DB	'%u calculate(%s): single item', 0aH, 00H
+$SG12079 DB	'%u calculate(%s): single item', 0aH, 00H
 	ORG $+1
-$SG12079 DB	'calculate(%s): incompatible usage of (simple) type', 0aH
+$SG12083 DB	'calculate(%s): incompatible usage of (simple) type', 0aH
 	DB	00H
 	ORG $+4
-$SG12084 DB	'%u calculate(%s): single item', 0aH, 00H
+$SG12088 DB	'%u calculate(%s): single item', 0aH, 00H
 	ORG $+1
-$SG12086 DB	'calculate(%s): incompatible usage of (simple) type', 0aH
+$SG12090 DB	'calculate(%s): incompatible usage of (simple) type', 0aH
 	DB	00H
 	ORG $+4
-$SG12088 DB	'calculate(%s): calling plus_op()', 0aH, 00H
+$SG12092 DB	'calculate(%s): calling plus_op()', 0aH, 00H
 	ORG $+6
-$SG12101 DB	'calculate(*): kind=%d/%d value=%I64d-%I64d mbr=%X-%X', 0aH
+$SG12105 DB	'calculate(*): kind=%d/%d value=%I64d-%I64d mbr=%X-%X', 0aH
 	DB	00H
 	ORG $+2
 $SG11081 DB	'%u get_operand(idx=%u >%s<) enter [memtype=%Xh]', 0aH, 00H
 	ORG $+7
-$SG12107 DB	'calculate(*) error direct register', 0aH, 00H
-	ORG $+4
 $SG11083 DB	'%u get_operand: T_NUM, %s, base=%u, len=%u', 0aH, 00H
 	ORG $+4
 $SG11085 DB	'%u get_operand: T_STRING, %s, size=%u', 0aH, 00H
 	ORG $+1
-$SG12111 DB	'calculate(*) error 2', 0aH, 00H
+$SG12111 DB	'calculate(*) error direct register', 0aH, 00H
+	ORG $+4
+$SG12115 DB	'calculate(*) error 2', 0aH, 00H
 	ORG $+2
-$SG12113 DB	'calculate(/): t1-t2 kind %u-%u values %I64d-%I64d', 0aH, 00H
+$SG12117 DB	'calculate(/): t1-t2 kind %u-%u values %I64d-%I64d', 0aH, 00H
 	ORG $+5
-$SG12115 DB	'calculate(/) error 1', 0aH, 00H
+$SG12119 DB	'calculate(/) error 1', 0aH, 00H
 	ORG $+2
-$SG12117 DB	'calculate(/) error 2', 0aH, 00H
+$SG12121 DB	'calculate(/) error 2', 0aH, 00H
 	ORG $+2
-$SG12119 DB	'NULL', 00H
-	ORG $+3
-$SG12120 DB	'NULL', 00H
-	ORG $+3
-$SG12121 DB	'NULL', 00H
-	ORG $+3
-$SG12122 DB	'NULL', 00H
-	ORG $+3
 $SG11098 DB	'rz-sae', 00H
 	ORG $+1
+$SG12123 DB	'NULL', 00H
+	ORG $+3
+$SG12124 DB	'NULL', 00H
+	ORG $+3
+$SG12125 DB	'NULL', 00H
+	ORG $+3
+$SG12126 DB	'NULL', 00H
+	ORG $+3
 $SG11107 DB	'%u get_operand: T_REG, string=%s, tokval=%u, regno=%u', 0aH
 	DB	00H
 	ORG $+1
-$SG12123 DB	'calculate(%s [T_BINARY_OPERATOR] ): t1-t2 kind %d/%d mem'
+$SG12127 DB	'calculate(%s [T_BINARY_OPERATOR] ): t1-t2 kind %d/%d mem'
 	DB	'type %X-%X sym %s-%s type %s-%s', 0aH, 00H
 	ORG $+7
-$SG12128 DB	'calculate(PTR), error 1: t1 is_type == FALSE', 0aH, 00H
+$SG12132 DB	'calculate(PTR), error 1: t1 is_type == FALSE', 0aH, 00H
 	ORG $+2
-$SG12135 DB	'calculate(PTR): segment register size (=2/4) doesn''t ma'
+$SG12139 DB	'calculate(PTR): segment register size (=2/4) doesn''t ma'
 	DB	'tch type size (=%u)', 0aH, 00H
 	ORG $+4
-$SG12137 DB	'calculate(PTR): register size doesn''t match type size; '
+$SG12141 DB	'calculate(PTR): register size doesn''t match type size; '
 	DB	'%u != %u', 0aH, 00H
 	ORG $+3
 $SG11125 DB	'NULL', 00H
 	ORG $+7
-$SG12140 DB	'calculate(PTR): type memtype=%Xh ( MT_FLOAT not set, alt'
+$SG12144 DB	'calculate(PTR): type memtype=%Xh ( MT_FLOAT not set, alt'
 	DB	'hough right op is FLOAT )', 0aH, 00H
 	ORG $+5
 $SG11126 DB	'%u get_operand: T_ID, is_dot=1, id=%s, opnd.type=%s', 0aH
@@ -349,62 +349,62 @@ $SG11127 DB	'NULL', 00H
 	ORG $+3
 $SG11128 DB	'get_operand(%s): is_dot, sym=%s, offset=%Xh', 0aH, 00H
 	ORG $+3
-$SG12153 DB	'calculate(%s) error 1', 0aH, 00H
+$SG12157 DB	'calculate(%s) error 1', 0aH, 00H
 	ORG $+1
-$SG12154 DB	'NULL', 00H
+$SG12158 DB	'NULL', 00H
 	ORG $+3
-$SG12155 DB	'calculate(%s) error 2, token2.kind=%d indirect=%u sym=%s'
+$SG12159 DB	'calculate(%s) error 2, token2.kind=%d indirect=%u sym=%s'
 	DB	0aH, 00H
 	ORG $+6
-$SG12156 DB	'calculate(%s) error 3', 0aH, 00H
+$SG12160 DB	'calculate(%s) error 3', 0aH, 00H
 	ORG $+1
-$SG12157 DB	'calculate(%s) error 4', 0aH, 00H
+$SG12161 DB	'calculate(%s) error 4', 0aH, 00H
 	ORG $+1
 $SG11155 DB	'get_operand(%s): symbol is macro/textmacro/alias!', 0aH, 00H
 	ORG $+5
-$SG12158 DB	'calculate(%s): values=%I64d/%I64d is_type=%u/%u memtypes'
+$SG12162 DB	'calculate(%s): values=%I64d/%I64d is_type=%u/%u memtypes'
 	DB	'=%X/%X', 0aH, 00H
 $SG11140 DB	'%u get_operand: T_ID, id=%s', 0aH, 00H
 	ORG $+3
-$SG12173 DB	'calculate(SHL): value=%I64X << %u (max=%u)', 0aH, 00H
-	ORG $+4
 $SG11152 DB	'get_operand(%s): OPATTR, symbol invalid', 0aH, 00H
-	ORG $+3
+	ORG $+7
+$SG12177 DB	'calculate(SHL): value=%I64X << %u (max=%u)', 0aH, 00H
 $SG11161 DB	'NULL', 00H
 	ORG $+7
 $SG11162 DB	'get_operand(%s): symbol not (yet) defined, CurrProc=%s', 0aH
 	DB	00H
-$SG12188 DB	'NULL', 00H
-	ORG $+3
-$SG12189 DB	'NULL', 00H
-	ORG $+3
 $SG11165 DB	'NULL', 00H
-	ORG $+3
-$SG12190 DB	'NULL', 00H
 	ORG $+3
 $SG11166 DB	'get_operand(%s): symbol error (type=%s typekind=%u)', 0aH
 	DB	00H
 	ORG $+3
-$SG12194 DB	'calculate(%s) error 1', 0aH, 00H
-	ORG $+1
-$SG12191 DB	'calculate(%s [T_UNARY_OPERATOR]): opnd2 kind=%d sym=%s m'
+$SG12192 DB	'NULL', 00H
+	ORG $+3
+$SG12193 DB	'NULL', 00H
+	ORG $+3
+$SG12194 DB	'NULL', 00H
+	ORG $+3
+$SG11172 DB	'NULL', 00H
+	ORG $+3
+$SG12195 DB	'calculate(%s [T_UNARY_OPERATOR]): opnd2 kind=%d sym=%s m'
 	DB	'br=%s type=%s memtype=%X is_type=%u indirect=%u', 0aH, 00H
 	ORG $+7
 $SG11171 DB	'get_operand(%s): forward reference to a struct (using nu'
 	DB	'llmbr)', 0aH, 00H
-$SG11172 DB	'NULL', 00H
-	ORG $+3
-$SG11178 DB	'NULL', 00H
-	ORG $+3
 $SG11173 DB	'get_operand(%s): symbol %s not defined, pass > 1, curr p'
 	DB	'roc=>%s<, ', 0aH, 00H
-$SG11192 DB	'NULL', 00H
-	ORG $+7
+	ORG $+4
+$SG12198 DB	'calculate(%s) error 1', 0aH, 00H
+	ORG $+1
+$SG11178 DB	'NULL', 00H
+	ORG $+3
+$SG11182 DB	'get_operand(%s): struct/union definition isn''t closed!', 0aH
+	DB	00H
 $SG11179 DB	'get_operand(%s): sym->state=%u type=>%s< ofs=%X memtype='
 	DB	'%Xh total_size=%u defined=%u', 0aH, 00H
 	ORG $+2
-$SG11182 DB	'get_operand(%s): struct/union definition isn''t closed!', 0aH
-	DB	00H
+$SG11192 DB	'NULL', 00H
+	ORG $+3
 $SG11183 DB	'get_operand(%s): symbol.typekind=%u (STRUCT/UNION/TYPEDE'
 	DB	'F/RECORD)', 0aH, 00H
 	ORG $+5
@@ -412,59 +412,60 @@ $SG11191 DB	'get_operand(%s): structure field, ofs=%Xh', 0aH, 00H
 	ORG $+5
 $SG11193 DB	'get_operand: mem_type=%Xh type=%s', 0aH, 00H
 	ORG $+5
-$SG12222 DB	'calculate %s ''float'' error', 0aH, 00H
-	ORG $+4
 $SG11198 DB	'get_operand(%s): equate hval=%Xh, lval=%Xh', 0aH, 00H
 	ORG $+4
-$SG12225 DB	'calculate(%s): unknown operator', 0aH, 00H
-	ORG $+3
-$SG12228 DB	'NULL', 00H
+$SG12226 DB	'calculate %s ''float'' error', 0aH, 00H
+	ORG $+4
+$SG12229 DB	'calculate(%s): unknown operator', 0aH, 00H
 	ORG $+7
-$SG12229 DB	'%u calculate(%s) exit, ok kind=%d value=0x%I64X_%016I64X'
-	DB	' memtype=0x%X indirect=%u type=>%s<', 0aH, 00H
-	ORG $+3
 $SG11206 DB	'%u get_operand: T_STYPE (>%s<, value=%X)', 0aH, 00H
 	ORG $+2
 $SG12232 DB	'NULL', 00H
 	ORG $+7
 $SG11208 DB	'%u get_operand: T_RES_ID (>%s<, value=%X)', 0aH, 00H
-	ORG $+1
-$SG12234 DB	'NULL', 00H
-	ORG $+7
-$SG12233 DB	'%u calculate(%s) exit, ok kind=%d value=%I64d(0x%I64X) m'
+	ORG $+5
+$SG12233 DB	'%u calculate(%s) exit, ok kind=%d value=0x%I64X_%016I64X'
+	DB	' memtype=0x%X indirect=%u type=>%s<', 0aH, 00H
+	ORG $+3
+$SG12236 DB	'NULL', 00H
+	ORG $+3
+$SG12238 DB	'NULL', 00H
+	ORG $+3
+$SG12237 DB	'%u calculate(%s) exit, ok kind=%d value=%I64d(0x%I64X) m'
 	DB	'emtype=0x%X indirect=%u type=>%s<', 0aH, 00H
 	ORG $+1
-$SG12235 DB	'NULL', 00H
+$SG12239 DB	'NULL', 00H
 	ORG $+7
 $SG11215 DB	'%u get_operand: T_FLOAT (>%s<)', 0aH, 00H
-$SG12251 DB	'NULL', 00H
+$SG11227 DB	'NULL', 00H
 	ORG $+3
-$SG12236 DB	'%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype'
+$SG12240 DB	'%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype'
 	DB	'=0x%X ind=%u exp=%u type=%s mbr=%s', 0aH, 00H
 	ORG $+4
 $SG11217 DB	'%u get_operand: default (token=%u, string=%s)', 0aH, 00H
 	ORG $+1
-$SG11227 DB	'NULL', 00H
-	ORG $+3
 $SG11228 DB	'NULL', 00H
-	ORG $+3
-$SG12252 DB	'PrepareOp: DOT operator found, old.sym=%X, old.type=%s, '
-	DB	'expr=%s', 0aH, 00H
 	ORG $+3
 $SG11229 DB	'NULL', 00H
 	ORG $+3
 $SG11230 DB	'NULL', 00H
-	ORG $+7
-$SG12255 DB	'PrepareOp: implicit type: %s', 0aH, 00H
-	ORG $+2
-$SG12257 DB	'PrepareOp: forward ref to %s, type will be NULL', 0aH, 00H
-	ORG $+7
+	ORG $+3
+$SG12255 DB	'NULL', 00H
+	ORG $+3
 $SG11231 DB	'%u get_operand exit, ok, kind=%d value=%I64X hvalue=%I64'
 	DB	'X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s m'
 	DB	'br=%s', 0aH, 00H
-$SG12260 DB	'NULL', 00H
+	ORG $+4
+$SG12256 DB	'PrepareOp: DOT operator found, old.sym=%X, old.type=%s, '
+	DB	'expr=%s', 0aH, 00H
+	ORG $+7
+$SG12259 DB	'PrepareOp: implicit type: %s', 0aH, 00H
+	ORG $+2
+$SG12261 DB	'PrepareOp: forward ref to %s, type will be NULL', 0aH, 00H
+	ORG $+3
+$SG12264 DB	'NULL', 00H
 	ORG $+15
-$SG12261 DB	'PrepareOp: OPATTR operator found, old.sym=%X, old.type=%'
+$SG12265 DB	'PrepareOp: OPATTR operator found, old.sym=%X, old.type=%'
 	DB	's, expr=%s', 0aH, 00H
 _DATA	ENDS
 PUBLIC	EvalOperand
@@ -589,7 +590,7 @@ $pdata$type_op DD imagerel type_op
 	DD	imagerel type_op+2252
 	DD	imagerel $unwind$type_op
 $pdata$opattr_op DD imagerel opattr_op
-	DD	imagerel opattr_op+1165
+	DD	imagerel opattr_op+1216
 	DD	imagerel $unwind$opattr_op
 $pdata$short_op DD imagerel short_op
 	DD	imagerel short_op+144
@@ -832,7 +833,7 @@ tv88 = 12
 item$ = 32
 is_expr_item PROC
 
-; 3403 : {
+; 3411 : {
 
 	mov	QWORD PTR [rsp+8], rcx
 	push	rdi
@@ -843,7 +844,7 @@ is_expr_item PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+32]
 
-; 3404 :     switch( item->token ) {
+; 3412 :     switch( item->token ) {
 
 	mov	rax, QWORD PTR item$[rsp]
 	movzx	eax, BYTE PTR [rax]
@@ -859,8 +860,8 @@ is_expr_item PROC
 	jmp	$LN2@is_expr_it
 $LN6@is_expr_it:
 
-; 3405 :     case T_INSTRUCTION:
-; 3406 :         switch( item->tokval ) {
+; 3413 :     case T_INSTRUCTION:
+; 3414 :         switch( item->tokval ) {
 
 	mov	rax, QWORD PTR item$[rsp]
 	mov	eax, DWORD PTR [rax+16]
@@ -878,117 +879,117 @@ $LN6@is_expr_it:
 	jmp	rax
 $LN7@is_expr_it:
 
-; 3407 :         case T_SHL:
-; 3408 :         case T_SHR:
-; 3409 :             item->token = T_BINARY_OPERATOR;
-
-	mov	rax, QWORD PTR item$[rsp]
-	mov	BYTE PTR [rax], 5
-
-; 3410 :             item->precedence = 8;
-
-	mov	rax, QWORD PTR item$[rsp]
-	mov	BYTE PTR [rax+1], 8
-
-; 3411 :             return( TRUE );
-
-	mov	al, 1
-	jmp	$LN1@is_expr_it
-$LN8@is_expr_it:
-
-; 3412 :         case T_NOT:
-; 3413 :             item->token = T_UNARY_OPERATOR;
-
-	mov	rax, QWORD PTR item$[rsp]
-	mov	BYTE PTR [rax], 4
-
-; 3414 :             item->precedence = 11;
-
-	mov	rax, QWORD PTR item$[rsp]
-	mov	BYTE PTR [rax+1], 11
-
-; 3415 :             return( TRUE );
-
-	mov	al, 1
-	jmp	$LN1@is_expr_it
-$LN9@is_expr_it:
-
-; 3416 :         case T_AND:
+; 3415 :         case T_SHL:
+; 3416 :         case T_SHR:
 ; 3417 :             item->token = T_BINARY_OPERATOR;
 
 	mov	rax, QWORD PTR item$[rsp]
 	mov	BYTE PTR [rax], 5
 
-; 3418 :             item->precedence = 12;
+; 3418 :             item->precedence = 8;
 
 	mov	rax, QWORD PTR item$[rsp]
-	mov	BYTE PTR [rax+1], 12
+	mov	BYTE PTR [rax+1], 8
 
 ; 3419 :             return( TRUE );
 
 	mov	al, 1
 	jmp	$LN1@is_expr_it
-$LN10@is_expr_it:
+$LN8@is_expr_it:
 
-; 3420 :         case T_OR:
-; 3421 :         case T_XOR:
-; 3422 :             item->token = T_BINARY_OPERATOR;
+; 3420 :         case T_NOT:
+; 3421 :             item->token = T_UNARY_OPERATOR;
+
+	mov	rax, QWORD PTR item$[rsp]
+	mov	BYTE PTR [rax], 4
+
+; 3422 :             item->precedence = 11;
+
+	mov	rax, QWORD PTR item$[rsp]
+	mov	BYTE PTR [rax+1], 11
+
+; 3423 :             return( TRUE );
+
+	mov	al, 1
+	jmp	$LN1@is_expr_it
+$LN9@is_expr_it:
+
+; 3424 :         case T_AND:
+; 3425 :             item->token = T_BINARY_OPERATOR;
 
 	mov	rax, QWORD PTR item$[rsp]
 	mov	BYTE PTR [rax], 5
 
-; 3423 :             item->precedence = 13;
+; 3426 :             item->precedence = 12;
+
+	mov	rax, QWORD PTR item$[rsp]
+	mov	BYTE PTR [rax+1], 12
+
+; 3427 :             return( TRUE );
+
+	mov	al, 1
+	jmp	$LN1@is_expr_it
+$LN10@is_expr_it:
+
+; 3428 :         case T_OR:
+; 3429 :         case T_XOR:
+; 3430 :             item->token = T_BINARY_OPERATOR;
+
+	mov	rax, QWORD PTR item$[rsp]
+	mov	BYTE PTR [rax], 5
+
+; 3431 :             item->precedence = 13;
 
 	mov	rax, QWORD PTR item$[rsp]
 	mov	BYTE PTR [rax+1], 13
 
-; 3424 :             return( TRUE );
+; 3432 :             return( TRUE );
 
 	mov	al, 1
 	jmp	SHORT $LN1@is_expr_it
 $LN4@is_expr_it:
 
-; 3425 :         }
-; 3426 :         return( FALSE );
+; 3433 :         }
+; 3434 :         return( FALSE );
 
 	xor	al, al
 	jmp	SHORT $LN1@is_expr_it
 $LN11@is_expr_it:
 
-; 3427 :     case T_RES_ID:
-; 3428 :         if ( item->tokval == T_DUP ) /* DUP must terminate the expression */
+; 3435 :     case T_RES_ID:
+; 3436 :         if ( item->tokval == T_DUP ) /* DUP must terminate the expression */
 
 	mov	rax, QWORD PTR item$[rsp]
 	cmp	DWORD PTR [rax+16], 259			; 00000103H
 	jne	SHORT $LN12@is_expr_it
 
-; 3429 :             return( FALSE );
+; 3437 :             return( FALSE );
 
 	xor	al, al
 	jmp	SHORT $LN1@is_expr_it
 $LN12@is_expr_it:
 
-; 3430 :         break;
+; 3438 :         break;
 
 	jmp	SHORT $LN2@is_expr_it
 $LN13@is_expr_it:
 
-; 3431 :     case T_DIRECTIVE:
-; 3432 :         /* PROC is converted to a type */
-; 3433 :         if ( item->tokval == T_PROC ) {
+; 3439 :     case T_DIRECTIVE:
+; 3440 :         /* PROC is converted to a type */
+; 3441 :         if ( item->tokval == T_PROC ) {
 
 	mov	rax, QWORD PTR item$[rsp]
 	cmp	DWORD PTR [rax+16], 428			; 000001acH
 	jne	SHORT $LN14@is_expr_it
 
-; 3434 :             item->token = T_STYPE;
+; 3442 :             item->token = T_STYPE;
 
 	mov	rax, QWORD PTR item$[rsp]
 	mov	BYTE PTR [rax], 6
 
-; 3435 :             /* v2.06: avoid to use ST_PROC */
-; 3436 :             //item->bytval = ST_PROC;
-; 3437 :             item->tokval = ( ( SIZE_CODEPTR & ( 1 << ModuleInfo.model ) ) ? T_FAR : T_NEAR );
+; 3443 :             /* v2.06: avoid to use ST_PROC */
+; 3444 :             //item->bytval = ST_PROC;
+; 3445 :             item->tokval = ( ( SIZE_CODEPTR & ( 1 << ModuleInfo.model ) ) ? T_FAR : T_NEAR );
 
 	mov	eax, DWORD PTR ModuleInfo+360
 	mov	ecx, 1
@@ -1008,31 +1009,31 @@ $LN18@is_expr_it:
 	mov	ecx, DWORD PTR tv88[rsp]
 	mov	DWORD PTR [rax+16], ecx
 
-; 3438 :             return( TRUE );
+; 3446 :             return( TRUE );
 
 	mov	al, 1
 	jmp	SHORT $LN1@is_expr_it
 $LN14@is_expr_it:
 $LN15@is_expr_it:
 
-; 3439 :         }
-; 3440 :         /* fall through. Other directives will end the expression */
-; 3441 :     case T_COMMA:
-; 3442 :     //case T_FLOAT: /* v2.05: floats are now handled */
-; 3443 :     //case T_QUESTION_MARK: /* v2.08: no need to be handled here */
-; 3444 :         return( FALSE );
+; 3447 :         }
+; 3448 :         /* fall through. Other directives will end the expression */
+; 3449 :     case T_COMMA:
+; 3450 :     //case T_FLOAT: /* v2.05: floats are now handled */
+; 3451 :     //case T_QUESTION_MARK: /* v2.08: no need to be handled here */
+; 3452 :         return( FALSE );
 
 	xor	al, al
 	jmp	SHORT $LN1@is_expr_it
 $LN2@is_expr_it:
 
-; 3445 :     }
-; 3446 :     return( TRUE );
+; 3453 :     }
+; 3454 :     return( TRUE );
 
 	mov	al, 1
 $LN1@is_expr_it:
 
-; 3447 : }
+; 3455 : }
 
 	add	rsp, 16
 	pop	rdi
@@ -1148,7 +1149,7 @@ end$ = 408
 flags$ = 416
 evaluate PROC
 
-; 3237 : {
+; 3245 : {
 
 	mov	DWORD PTR [rsp+32], r9d
 	mov	QWORD PTR [rsp+24], r8
@@ -1162,13 +1163,13 @@ evaluate PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+384]
 
-; 3238 :     ret_code rc = NOT_ERROR;
+; 3246 :     ret_code rc = NOT_ERROR;
 
 	mov	DWORD PTR rc$[rsp], 0
 
-; 3239 :     unsigned char c;
-; 3240 :     char *p;
-; 3241 :     DebugMsg1(("%u evaluate(i=%d, end=%d, flags=%X) enter [opnd1: kind=%d type=%s]\n",
+; 3247 :     unsigned char c;
+; 3248 :     char *p;
+; 3249 :     DebugMsg1(("%u evaluate(i=%d, end=%d, flags=%X) enter [opnd1: kind=%d type=%s]\n",
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	QWORD PTR [rax+96], 0
@@ -1179,7 +1180,7 @@ evaluate PROC
 	mov	QWORD PTR tv68[rsp], rax
 	jmp	SHORT $LN45@evaluate
 $LN44@evaluate:
-	lea	rax, OFFSET FLAT:$SG12295
+	lea	rax, OFFSET FLAT:$SG12299
 	mov	QWORD PTR tv68[rsp], rax
 $LN45@evaluate:
 	mov	eax, DWORD PTR evallvl
@@ -1196,24 +1197,24 @@ $LN45@evaluate:
 	mov	rax, QWORD PTR i$[rsp]
 	mov	r8d, DWORD PTR [rax]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG12296
+	lea	rcx, OFFSET FLAT:$SG12300
 	call	DoDebugMsg1
 
-; 3242 :                ++evallvl, *i, end, flags, opnd1->kind, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3243 : 
-; 3244 :     /* v2.07: this function has been "simplified".
-; 3245 :      * it's ensured now that if any operator is involved
-; 3246 :      * - including () and [] - then calculate() will be called.
-; 3247 :      * v2.10: removed the 'return( ERROR )' branches, to make
-; 3248 :      * OPATTR work better.
-; 3249 :      * v2.10: loop changed from 'do {} while' to 'while () {}'.
-; 3250 :      * v2.10: 'flags' argument contains "inside []" information.
-; 3251 :      */
-; 3252 : 
-; 3253 :     /*
-; 3254 :      * First token may be either an unary operator or an operand
-; 3255 :      */
-; 3256 :     if ( opnd1->kind == EXPR_EMPTY &&  !is_unary_op( tokenarray[*i].token ) ) {
+; 3250 :                ++evallvl, *i, end, flags, opnd1->kind, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3251 : 
+; 3252 :     /* v2.07: this function has been "simplified".
+; 3253 :      * it's ensured now that if any operator is involved
+; 3254 :      * - including () and [] - then calculate() will be called.
+; 3255 :      * v2.10: removed the 'return( ERROR )' branches, to make
+; 3256 :      * OPATTR work better.
+; 3257 :      * v2.10: loop changed from 'do {} while' to 'while () {}'.
+; 3258 :      * v2.10: 'flags' argument contains "inside []" information.
+; 3259 :      */
+; 3260 : 
+; 3261 :     /*
+; 3262 :      * First token may be either an unary operator or an operand
+; 3263 :      */
+; 3264 :     if ( opnd1->kind == EXPR_EMPTY &&  !is_unary_op( tokenarray[*i].token ) ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+60], -2
@@ -1254,7 +1255,7 @@ $LN45@evaluate:
 	cmp	eax, 4
 	je	SHORT $LN8@evaluate
 
-; 3257 :         rc = get_operand( opnd1, i, tokenarray, flags );
+; 3265 :         rc = get_operand( opnd1, i, tokenarray, flags );
 
 	movzx	r9d, BYTE PTR flags$[rsp]
 	mov	r8, QWORD PTR tokenarray$[rsp]
@@ -1265,9 +1266,9 @@ $LN45@evaluate:
 $LN8@evaluate:
 $LN2@evaluate:
 
-; 3258 :     }
-; 3259 :     /* now handle operators. */
-; 3260 :     while ( rc == NOT_ERROR && *i < end && !IsCurrToken( T_CL_BRACKET ) && !IsCurrToken( T_CL_SQ_BRACKET ) ) {
+; 3266 :     }
+; 3267 :     /* now handle operators. */
+; 3268 :     while ( rc == NOT_ERROR && *i < end && !IsCurrToken( T_CL_BRACKET ) && !IsCurrToken( T_CL_SQ_BRACKET ) ) {
 
 	cmp	DWORD PTR rc$[rsp], 0
 	jne	$LN3@evaluate
@@ -1290,17 +1291,17 @@ $LN2@evaluate:
 	cmp	eax, 93					; 0000005dH
 	je	$LN3@evaluate
 
-; 3261 : 
-; 3262 :         int curr_operator;
-; 3263 :         struct expr opnd2;
-; 3264 : 
-; 3265 :         curr_operator = *i;
+; 3269 : 
+; 3270 :         int curr_operator;
+; 3271 :         struct expr opnd2;
+; 3272 : 
+; 3273 :         curr_operator = *i;
 
 	mov	rax, QWORD PTR i$[rsp]
 	mov	eax, DWORD PTR [rax]
 	mov	DWORD PTR curr_operator$4[rsp], eax
 
-; 3266 :         DebugMsg1(("%u evaluate loop, operator=>%s< opnd1->sym=%X, type=%s\n",
+; 3274 :         DebugMsg1(("%u evaluate loop, operator=>%s< opnd1->sym=%X, type=%s\n",
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	QWORD PTR [rax+96], 0
@@ -1311,7 +1312,7 @@ $LN2@evaluate:
 	mov	QWORD PTR tv166[rsp], rax
 	jmp	SHORT $LN47@evaluate
 $LN46@evaluate:
-	lea	rax, OFFSET FLAT:$SG12298
+	lea	rax, OFFSET FLAT:$SG12302
 	mov	QWORD PTR tv166[rsp], rax
 $LN47@evaluate:
 	movsxd	rax, DWORD PTR curr_operator$4[rsp]
@@ -1323,19 +1324,19 @@ $LN47@evaluate:
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	r8, QWORD PTR [rcx+rax+8]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG12299
+	lea	rcx, OFFSET FLAT:$SG12303
 	call	DoDebugMsg1
 
-; 3267 :                    evallvl, tokenarray[curr_operator].string_ptr, opnd1->sym, (opnd1->type ? opnd1->type->name : "NULL") ));
-; 3268 : 
-; 3269 :         if ( opnd1->kind != EXPR_EMPTY ) {
+; 3275 :                    evallvl, tokenarray[curr_operator].string_ptr, opnd1->sym, (opnd1->type ? opnd1->type->name : "NULL") ));
+; 3276 : 
+; 3277 :         if ( opnd1->kind != EXPR_EMPTY ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+60], -2
 	je	$LN9@evaluate
 
-; 3270 :             /* check operator behind operand. Must be binary or open bracket */
-; 3271 :             if ( tokenarray[curr_operator].token == '+' || tokenarray[curr_operator].token == '-' )
+; 3278 :             /* check operator behind operand. Must be binary or open bracket */
+; 3279 :             if ( tokenarray[curr_operator].token == '+' || tokenarray[curr_operator].token == '-' )
 
 	movsxd	rax, DWORD PTR curr_operator$4[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -1351,7 +1352,7 @@ $LN47@evaluate:
 	jne	SHORT $LN10@evaluate
 $LN12@evaluate:
 
-; 3272 :                 tokenarray[curr_operator].specval = BINARY_PLUSMINUS;
+; 3280 :                 tokenarray[curr_operator].specval = BINARY_PLUSMINUS;
 
 	movsxd	rax, DWORD PTR curr_operator$4[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -1360,7 +1361,7 @@ $LN12@evaluate:
 	jmp	$LN11@evaluate
 $LN10@evaluate:
 
-; 3273 :             else if( !is_operator( tokenarray[curr_operator].token ) || tokenarray[curr_operator].token == T_UNARY_OPERATOR ) {
+; 3281 :             else if( !is_operator( tokenarray[curr_operator].token ) || tokenarray[curr_operator].token == T_UNARY_OPERATOR ) {
 
 	movsxd	rax, DWORD PTR curr_operator$4[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -1389,7 +1390,7 @@ $LN15@evaluate:
 	jne	$LN13@evaluate
 $LN14@evaluate:
 
-; 3274 :                 DebugMsg(("%u evaluate: unexpected token at idx=%u, token=%X >%s<\n", evallvl, curr_operator, tokenarray[curr_operator].token, tokenarray[curr_operator].tokpos ));
+; 3282 :                 DebugMsg(("%u evaluate: unexpected token at idx=%u, token=%X >%s<\n", evallvl, curr_operator, tokenarray[curr_operator].token, tokenarray[curr_operator].tokpos ));
 
 	movsxd	rax, DWORD PTR curr_operator$4[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -1403,16 +1404,16 @@ $LN14@evaluate:
 	mov	r9d, ecx
 	mov	r8d, DWORD PTR curr_operator$4[rsp]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG12307
+	lea	rcx, OFFSET FLAT:$SG12311
 	call	DoDebugMsg
 
-; 3275 :                 rc = ERROR;
+; 3283 :                 rc = ERROR;
 
 	mov	DWORD PTR rc$[rsp], -1
 
-; 3276 :                 //if ( !opnd2.is_opattr )  /* v2.11: opnd2 was accessed before initialization */
-; 3277 :                 
-; 3278 :                 if ( !opnd1->is_opattr )
+; 3284 :                 //if ( !opnd2.is_opattr )  /* v2.11: opnd2 was accessed before initialization */
+; 3285 :                 
+; 3286 :                 if ( !opnd1->is_opattr )
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -1421,24 +1422,24 @@ $LN14@evaluate:
 	test	eax, eax
 	jne	SHORT $LN16@evaluate
 
-; 3279 :                     OperErr( curr_operator, tokenarray );
+; 3287 :                     OperErr( curr_operator, tokenarray );
 
 	mov	rdx, QWORD PTR tokenarray$[rsp]
 	mov	ecx, DWORD PTR curr_operator$4[rsp]
 	call	OperErr
 $LN16@evaluate:
 
-; 3280 :                 break;
+; 3288 :                 break;
 
 	jmp	$LN3@evaluate
 $LN13@evaluate:
 $LN11@evaluate:
 $LN9@evaluate:
 
-; 3281 :             }
-; 3282 :         }
-; 3283 : 
-; 3284 :         (*i)++;
+; 3289 :             }
+; 3290 :         }
+; 3291 : 
+; 3292 :         (*i)++;
 
 	mov	rax, QWORD PTR i$[rsp]
 	mov	eax, DWORD PTR [rax]
@@ -1446,13 +1447,13 @@ $LN9@evaluate:
 	mov	rcx, QWORD PTR i$[rsp]
 	mov	DWORD PTR [rcx], eax
 
-; 3285 : 
-; 3286 :         init_expr( &opnd2 );
+; 3293 : 
+; 3294 :         init_expr( &opnd2 );
 
 	lea	rcx, QWORD PTR opnd2$5[rsp]
 	call	init_expr
 
-; 3287 :         PrepareOp( &opnd2, opnd1, &tokenarray[curr_operator] );
+; 3295 :         PrepareOp( &opnd2, opnd1, &tokenarray[curr_operator] );
 
 	movsxd	rax, DWORD PTR curr_operator$4[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -1464,11 +1465,11 @@ $LN9@evaluate:
 	lea	rcx, QWORD PTR opnd2$5[rsp]
 	call	PrepareOp
 
-; 3288 : 
-; 3289 :         /* read the (next) operand.
-; 3290 :          */
-; 3291 : 
-; 3292 :         if( tokenarray[curr_operator].token == T_OP_BRACKET ||
+; 3296 : 
+; 3297 :         /* read the (next) operand.
+; 3298 :          */
+; 3299 : 
+; 3300 :         if( tokenarray[curr_operator].token == T_OP_BRACKET ||
 
 	movsxd	rax, DWORD PTR curr_operator$4[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -1484,12 +1485,12 @@ $LN9@evaluate:
 	jne	$LN17@evaluate
 $LN19@evaluate:
 
-; 3293 :            tokenarray[curr_operator].token == T_OP_SQ_BRACKET ) {
-; 3294 :             int exp_token = T_CL_BRACKET;
+; 3301 :            tokenarray[curr_operator].token == T_OP_SQ_BRACKET ) {
+; 3302 :             int exp_token = T_CL_BRACKET;
 
 	mov	DWORD PTR exp_token$6[rsp], 41		; 00000029H
 
-; 3295 :             if( tokenarray[curr_operator].token == T_OP_SQ_BRACKET ) {
+; 3303 :             if( tokenarray[curr_operator].token == T_OP_SQ_BRACKET ) {
 
 	movsxd	rax, DWORD PTR curr_operator$4[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -1498,14 +1499,14 @@ $LN19@evaluate:
 	cmp	eax, 91					; 0000005bH
 	jne	SHORT $LN20@evaluate
 
-; 3296 :                 exp_token = T_CL_SQ_BRACKET;
+; 3304 :                 exp_token = T_CL_SQ_BRACKET;
 
 	mov	DWORD PTR exp_token$6[rsp], 93		; 0000005dH
 	jmp	SHORT $LN21@evaluate
 $LN20@evaluate:
 
-; 3297 : #if 1 /* v2.10: slightly hackish; see regression test dotop5.asm */
-; 3298 :             } else if ( opnd1->is_dot ) {
+; 3305 : #if 1 /* v2.10: slightly hackish; see regression test dotop5.asm */
+; 3306 :             } else if ( opnd1->is_dot ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -1514,13 +1515,13 @@ $LN20@evaluate:
 	test	eax, eax
 	je	SHORT $LN22@evaluate
 
-; 3299 :                 opnd2.type = opnd1->type;
+; 3307 :                 opnd2.type = opnd1->type;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	QWORD PTR opnd2$5[rsp+96], rax
 
-; 3300 :                 opnd2.is_dot = TRUE;
+; 3308 :                 opnd2.is_dot = TRUE;
 
 	mov	eax, DWORD PTR opnd2$5[rsp+76]
 	bts	eax, 7
@@ -1528,10 +1529,10 @@ $LN20@evaluate:
 $LN22@evaluate:
 $LN21@evaluate:
 
-; 3301 : #endif
-; 3302 :             }
-; 3303 : 
-; 3304 :             rc = evaluate( &opnd2, i, tokenarray, end, ( flags | ( exp_token == T_CL_SQ_BRACKET ? EXPF_IN_SQBR : 0 ) ) & ~EXPF_ONEOPND );
+; 3309 : #endif
+; 3310 :             }
+; 3311 : 
+; 3312 :             rc = evaluate( &opnd2, i, tokenarray, end, ( flags | ( exp_token == T_CL_SQ_BRACKET ? EXPF_IN_SQBR : 0 ) ) & ~EXPF_ONEOPND );
 
 	cmp	DWORD PTR exp_token$6[rsp], 93		; 0000005dH
 	jne	SHORT $LN48@evaluate
@@ -1551,8 +1552,8 @@ $LN49@evaluate:
 	call	evaluate
 	mov	DWORD PTR rc$[rsp], eax
 
-; 3305 : 
-; 3306 :             if( !IsCurrToken( exp_token ) ) {
+; 3313 : 
+; 3314 :             if( !IsCurrToken( exp_token ) ) {
 
 	mov	rax, QWORD PTR i$[rsp]
 	movsxd	rax, DWORD PTR [rax]
@@ -1562,32 +1563,32 @@ $LN49@evaluate:
 	cmp	eax, DWORD PTR exp_token$6[rsp]
 	je	$LN23@evaluate
 
-; 3307 :                 DebugMsg(("%u evaluate: error, missing '%c', i=%u\n", evallvl, exp_token, *i ));
+; 3315 :                 DebugMsg(("%u evaluate: error, missing '%c', i=%u\n", evallvl, exp_token, *i ));
 
 	mov	rax, QWORD PTR i$[rsp]
 	mov	r9d, DWORD PTR [rax]
 	mov	r8d, DWORD PTR exp_token$6[rsp]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG12317
+	lea	rcx, OFFSET FLAT:$SG12321
 	call	DoDebugMsg
 
-; 3308 :                 if ( rc != ERROR ) {
+; 3316 :                 if ( rc != ERROR ) {
 
 	cmp	DWORD PTR rc$[rsp], -1
 	je	SHORT $LN25@evaluate
 
-; 3309 :                     fnEmitErr( MISSING_RIGHT_PARENTHESIS_IN_EXPRESSION );
+; 3317 :                     fnEmitErr( MISSING_RIGHT_PARENTHESIS_IN_EXPRESSION );
 
 	mov	ecx, 227				; 000000e3H
 	call	QWORD PTR fnEmitErr
 
-; 3310 :                     /* v2.12: if curr token is a comma, the intention might be to call a macro function
-; 3311 :                      * - using an undefined ( or not yet defined ) macro. The problem is that the name
-; 3312 :                      * of this undefined macro isn't displayed in pass one, making it hard to see the
-; 3313 :                      * reason for the error msg. However, if a comma is found, then it's surely no valid
-; 3314 :                      * expression - in this case an "undefined symbol" err msg may be helpful.
-; 3315 :                      */
-; 3316 :                     if ( IsCurrToken( T_COMMA ) && opnd1->sym && opnd1->sym->state == SYM_UNDEFINED )
+; 3318 :                     /* v2.12: if curr token is a comma, the intention might be to call a macro function
+; 3319 :                      * - using an undefined ( or not yet defined ) macro. The problem is that the name
+; 3320 :                      * of this undefined macro isn't displayed in pass one, making it hard to see the
+; 3321 :                      * reason for the error msg. However, if a comma is found, then it's surely no valid
+; 3322 :                      * expression - in this case an "undefined symbol" err msg may be helpful.
+; 3323 :                      */
+; 3324 :                     if ( IsCurrToken( T_COMMA ) && opnd1->sym && opnd1->sym->state == SYM_UNDEFINED )
 
 	mov	rax, QWORD PTR i$[rsp]
 	movsxd	rax, DWORD PTR [rax]
@@ -1604,7 +1605,7 @@ $LN49@evaluate:
 	cmp	DWORD PTR [rax+32], 0
 	jne	SHORT $LN26@evaluate
 
-; 3317 :                         fnEmitErr( SYMBOL_NOT_DEFINED, opnd1->sym->name );
+; 3325 :                         fnEmitErr( SYMBOL_NOT_DEFINED, opnd1->sym->name );
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax+80]
@@ -1614,17 +1615,17 @@ $LN49@evaluate:
 $LN26@evaluate:
 $LN25@evaluate:
 
-; 3318 :                 }
-; 3319 :                 rc = ERROR;
+; 3326 :                 }
+; 3327 :                 rc = ERROR;
 
 	mov	DWORD PTR rc$[rsp], -1
 
-; 3320 :             } else {
+; 3328 :             } else {
 
 	jmp	SHORT $LN24@evaluate
 $LN23@evaluate:
 
-; 3321 :                 (*i)++;
+; 3329 :                 (*i)++;
 
 	mov	rax, QWORD PTR i$[rsp]
 	mov	eax, DWORD PTR [rax]
@@ -1633,13 +1634,13 @@ $LN23@evaluate:
 	mov	DWORD PTR [rcx], eax
 $LN24@evaluate:
 
-; 3322 :             }
+; 3330 :             }
 
 	jmp	$LN18@evaluate
 $LN17@evaluate:
 
-; 3323 : 
-; 3324 :         } else if( is_unary_op( tokenarray[*i].token ) ) { /* brackets, +, -, T_UNARY_OPERATOR? */
+; 3331 : 
+; 3332 :         } else if( is_unary_op( tokenarray[*i].token ) ) { /* brackets, +, -, T_UNARY_OPERATOR? */
 
 	mov	rax, QWORD PTR i$[rsp]
 	movsxd	rax, DWORD PTR [rax]
@@ -1678,7 +1679,7 @@ $LN17@evaluate:
 	jne	SHORT $LN27@evaluate
 $LN29@evaluate:
 
-; 3325 :             rc = evaluate( &opnd2, i, tokenarray, end, flags | EXPF_ONEOPND );
+; 3333 :             rc = evaluate( &opnd2, i, tokenarray, end, flags | EXPF_ONEOPND );
 
 	movzx	eax, BYTE PTR flags$[rsp]
 	or	eax, 4
@@ -1690,16 +1691,16 @@ $LN29@evaluate:
 	call	evaluate
 	mov	DWORD PTR rc$[rsp], eax
 
-; 3326 :         } else {
+; 3334 :         } else {
 
 	jmp	SHORT $LN28@evaluate
 $LN27@evaluate:
 
-; 3327 :             /* get either:
-; 3328 :              * - operand of unary operator OR
-; 3329 :              * - 2. operand of binary operator
-; 3330 :              */
-; 3331 :             rc = get_operand( &opnd2, i, tokenarray, flags );
+; 3335 :             /* get either:
+; 3336 :              * - operand of unary operator OR
+; 3337 :              * - 2. operand of binary operator
+; 3338 :              */
+; 3339 :             rc = get_operand( &opnd2, i, tokenarray, flags );
 
 	movzx	r9d, BYTE PTR flags$[rsp]
 	mov	r8, QWORD PTR tokenarray$[rsp]
@@ -1711,13 +1712,13 @@ $LN28@evaluate:
 $LN18@evaluate:
 $LN4@evaluate:
 
-; 3332 :         }
-; 3333 : 
-; 3334 :         /*
-; 3335 :          * parse expression until either the end or an operator with a higher priority is found.
-; 3336 :          */
-; 3337 : 
-; 3338 :         while( rc != ERROR && *i < end && !IsCurrToken( T_CL_BRACKET ) && !IsCurrToken( T_CL_SQ_BRACKET ) ) {
+; 3340 :         }
+; 3341 : 
+; 3342 :         /*
+; 3343 :          * parse expression until either the end or an operator with a higher priority is found.
+; 3344 :          */
+; 3345 : 
+; 3346 :         while( rc != ERROR && *i < end && !IsCurrToken( T_CL_BRACKET ) && !IsCurrToken( T_CL_SQ_BRACKET ) ) {
 
 	cmp	DWORD PTR rc$[rsp], -1
 	je	$LN5@evaluate
@@ -1740,8 +1741,8 @@ $LN4@evaluate:
 	cmp	eax, 93					; 0000005dH
 	je	$LN5@evaluate
 
-; 3339 :             
-; 3340 :             if ( tokenarray[*i].token == '+' || tokenarray[*i].token == '-' )
+; 3347 :             
+; 3348 :             if ( tokenarray[*i].token == '+' || tokenarray[*i].token == '-' )
 
 	mov	rax, QWORD PTR i$[rsp]
 	movsxd	rax, DWORD PTR [rax]
@@ -1759,7 +1760,7 @@ $LN4@evaluate:
 	jne	SHORT $LN30@evaluate
 $LN32@evaluate:
 
-; 3341 :                 tokenarray[*i].specval = BINARY_PLUSMINUS;
+; 3349 :                 tokenarray[*i].specval = BINARY_PLUSMINUS;
 
 	mov	rax, QWORD PTR i$[rsp]
 	movsxd	rax, DWORD PTR [rax]
@@ -1769,7 +1770,7 @@ $LN32@evaluate:
 	jmp	$LN31@evaluate
 $LN30@evaluate:
 
-; 3342 :             else if( !is_operator( tokenarray[*i].token ) || tokenarray[*i].token == T_UNARY_OPERATOR ) {
+; 3350 :             else if( !is_operator( tokenarray[*i].token ) || tokenarray[*i].token == T_UNARY_OPERATOR ) {
 
 	mov	rax, QWORD PTR i$[rsp]
 	movsxd	rax, DWORD PTR [rax]
@@ -1802,7 +1803,7 @@ $LN35@evaluate:
 	jne	$LN33@evaluate
 $LN34@evaluate:
 
-; 3343 :                 DebugMsg(("%u evaluate: unexpected token at %u, token=%X >%s<\n", evallvl, *i, tokenarray[*i].token, tokenarray[*i].tokpos ));
+; 3351 :                 DebugMsg(("%u evaluate: unexpected token at %u, token=%X >%s<\n", evallvl, *i, tokenarray[*i].token, tokenarray[*i].tokpos ));
 
 	mov	rax, QWORD PTR i$[rsp]
 	movsxd	rax, DWORD PTR [rax]
@@ -1819,14 +1820,14 @@ $LN34@evaluate:
 	mov	rax, QWORD PTR i$[rsp]
 	mov	r8d, DWORD PTR [rax]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG12329
+	lea	rcx, OFFSET FLAT:$SG12333
 	call	DoDebugMsg
 
-; 3344 :                 rc = ERROR;
+; 3352 :                 rc = ERROR;
 
 	mov	DWORD PTR rc$[rsp], -1
 
-; 3345 :                 if ( !opnd2.is_opattr ) /* don't emit error if expression is OPATTR operand */
+; 3353 :                 if ( !opnd2.is_opattr ) /* don't emit error if expression is OPATTR operand */
 
 	mov	eax, DWORD PTR opnd2$5[rsp+76]
 	shr	eax, 4
@@ -1834,7 +1835,7 @@ $LN34@evaluate:
 	test	eax, eax
 	jne	SHORT $LN36@evaluate
 
-; 3346 :                     OperErr( *i, tokenarray );
+; 3354 :                     OperErr( *i, tokenarray );
 
 	mov	rdx, QWORD PTR tokenarray$[rsp]
 	mov	rax, QWORD PTR i$[rsp]
@@ -1842,15 +1843,15 @@ $LN34@evaluate:
 	call	OperErr
 $LN36@evaluate:
 
-; 3347 :                 break;
+; 3355 :                 break;
 
 	jmp	$LN5@evaluate
 $LN33@evaluate:
 $LN31@evaluate:
 
-; 3348 :             }
-; 3349 : 
-; 3350 :             if( get_precedence( &tokenarray[*i] ) >= get_precedence( &tokenarray[curr_operator] ) )
+; 3356 :             }
+; 3357 : 
+; 3358 :             if( get_precedence( &tokenarray[*i] ) >= get_precedence( &tokenarray[curr_operator] ) )
 
 	mov	rax, QWORD PTR i$[rsp]
 	movsxd	rax, DWORD PTR [rax]
@@ -1871,13 +1872,13 @@ $LN31@evaluate:
 	cmp	ecx, eax
 	jl	SHORT $LN37@evaluate
 
-; 3351 :                 break;
+; 3359 :                 break;
 
 	jmp	SHORT $LN5@evaluate
 $LN37@evaluate:
 
-; 3352 : 
-; 3353 :             rc = evaluate( &opnd2, i, tokenarray, end, flags | EXPF_ONEOPND );
+; 3360 : 
+; 3361 :             rc = evaluate( &opnd2, i, tokenarray, end, flags | EXPF_ONEOPND );
 
 	movzx	eax, BYTE PTR flags$[rsp]
 	or	eax, 4
@@ -1889,15 +1890,15 @@ $LN37@evaluate:
 	call	evaluate
 	mov	DWORD PTR rc$[rsp], eax
 
-; 3354 : 
-; 3355 :         }
+; 3362 : 
+; 3363 :         }
 
 	jmp	$LN4@evaluate
 $LN5@evaluate:
 
-; 3356 : 
-; 3357 :         /* v2.10: OPATTR special handling */
-; 3358 :         if ( rc == ERROR && opnd2.is_opattr ) {
+; 3364 : 
+; 3365 :         /* v2.10: OPATTR special handling */
+; 3366 :         if ( rc == ERROR && opnd2.is_opattr ) {
 
 	cmp	DWORD PTR rc$[rsp], -1
 	jne	$LN38@evaluate
@@ -1908,8 +1909,8 @@ $LN5@evaluate:
 	je	SHORT $LN38@evaluate
 $LN6@evaluate:
 
-; 3359 :             /* skip tokens until the end */
-; 3360 :             while( *i < end && !IsCurrToken( T_CL_BRACKET ) && !IsCurrToken( T_CL_SQ_BRACKET ) ) {
+; 3367 :             /* skip tokens until the end */
+; 3368 :             while( *i < end && !IsCurrToken( T_CL_BRACKET ) && !IsCurrToken( T_CL_SQ_BRACKET ) ) {
 
 	mov	rax, QWORD PTR i$[rsp]
 	mov	ecx, DWORD PTR end$[rsp]
@@ -1930,7 +1931,7 @@ $LN6@evaluate:
 	cmp	eax, 93					; 0000005dH
 	je	SHORT $LN7@evaluate
 
-; 3361 :                 (*i)++;
+; 3369 :                 (*i)++;
 
 	mov	rax, QWORD PTR i$[rsp]
 	mov	eax, DWORD PTR [rax]
@@ -1938,27 +1939,27 @@ $LN6@evaluate:
 	mov	rcx, QWORD PTR i$[rsp]
 	mov	DWORD PTR [rcx], eax
 
-; 3362 :             }
+; 3370 :             }
 
 	jmp	SHORT $LN6@evaluate
 $LN7@evaluate:
 
-; 3363 :             opnd2.kind = EXPR_EMPTY;
+; 3371 :             opnd2.kind = EXPR_EMPTY;
 
 	mov	DWORD PTR opnd2$5[rsp+60], -2
 
-; 3364 :             rc = NOT_ERROR;
+; 3372 :             rc = NOT_ERROR;
 
 	mov	DWORD PTR rc$[rsp], 0
 $LN38@evaluate:
 
-; 3365 :         }
-; 3366 :         if( rc != ERROR )
+; 3373 :         }
+; 3374 :         if( rc != ERROR )
 
 	cmp	DWORD PTR rc$[rsp], -1
 	je	SHORT $LN39@evaluate
 
-; 3367 :             rc = calculate( opnd1, &opnd2, &tokenarray[curr_operator] );
+; 3375 :             rc = calculate( opnd1, &opnd2, &tokenarray[curr_operator] );
 
 	movsxd	rax, DWORD PTR curr_operator$4[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -1972,27 +1973,27 @@ $LN38@evaluate:
 	mov	DWORD PTR rc$[rsp], eax
 $LN39@evaluate:
 
-; 3368 : 
-; 3369 :         if( flags & EXPF_ONEOPND ) /* stop after one operand? */
+; 3376 : 
+; 3377 :         if( flags & EXPF_ONEOPND ) /* stop after one operand? */
 
 	movzx	eax, BYTE PTR flags$[rsp]
 	and	eax, 4
 	test	eax, eax
 	je	SHORT $LN40@evaluate
 
-; 3370 :             break;
+; 3378 :             break;
 
 	jmp	SHORT $LN3@evaluate
 $LN40@evaluate:
 
-; 3371 :     }
+; 3379 :     }
 
 	jmp	$LN2@evaluate
 $LN3@evaluate:
 
-; 3372 : 
-; 3373 : #ifdef DEBUG_OUT
-; 3374 :     if ( opnd1->hvalue != -1 && opnd1->hvalue != 0 ) {
+; 3380 : 
+; 3381 : #ifdef DEBUG_OUT
+; 3382 :     if ( opnd1->hvalue != -1 && opnd1->hvalue != 0 ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+4], -1
@@ -2001,7 +2002,7 @@ $LN3@evaluate:
 	cmp	DWORD PTR [rax+4], 0
 	je	$LN41@evaluate
 
-; 3375 :         DebugMsg1(("%u evaluate exit, rc=%d, kind=%d value=%" I64_SPEC "d(0x%" I64_SPEC "X) memtype=%Xh string=%s indirect=%u type=>%s<\n",
+; 3383 :         DebugMsg1(("%u evaluate exit, rc=%d, kind=%d value=%" I64_SPEC "d(0x%" I64_SPEC "X) memtype=%Xh string=%s indirect=%u type=>%s<\n",
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	QWORD PTR [rax+96], 0
@@ -2012,7 +2013,7 @@ $LN3@evaluate:
 	mov	QWORD PTR tv485[rsp], rax
 	jmp	SHORT $LN51@evaluate
 $LN50@evaluate:
-	lea	rax, OFFSET FLAT:$SG12337
+	lea	rax, OFFSET FLAT:$SG12341
 	mov	QWORD PTR tv485[rsp], rax
 $LN51@evaluate:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -2024,7 +2025,7 @@ $LN51@evaluate:
 	mov	QWORD PTR tv494[rsp], rax
 	jmp	SHORT $LN53@evaluate
 $LN52@evaluate:
-	lea	rax, OFFSET FLAT:$SG12338
+	lea	rax, OFFSET FLAT:$SG12342
 	mov	QWORD PTR tv494[rsp], rax
 $LN53@evaluate:
 	mov	eax, DWORD PTR evallvl
@@ -2053,19 +2054,19 @@ $LN53@evaluate:
 	mov	r9d, DWORD PTR [rax+60]
 	mov	r8d, DWORD PTR rc$[rsp]
 	mov	edx, DWORD PTR tv506[rsp]
-	lea	rcx, OFFSET FLAT:$SG12339
+	lea	rcx, OFFSET FLAT:$SG12343
 	call	DoDebugMsg1
 
-; 3376 :                    evallvl--, rc, opnd1->kind, opnd1->llvalue, opnd1->llvalue, opnd1->mem_type,
-; 3377 :                    opnd1->quoted_string ? opnd1->quoted_string->string_ptr : "NULL",
-; 3378 :                    opnd1->indirect,
-; 3379 :                    opnd1->type ? opnd1->type->name : "NULL" ));
-; 3380 :     } else {
+; 3384 :                    evallvl--, rc, opnd1->kind, opnd1->llvalue, opnd1->llvalue, opnd1->mem_type,
+; 3385 :                    opnd1->quoted_string ? opnd1->quoted_string->string_ptr : "NULL",
+; 3386 :                    opnd1->indirect,
+; 3387 :                    opnd1->type ? opnd1->type->name : "NULL" ));
+; 3388 :     } else {
 
 	jmp	$LN42@evaluate
 $LN41@evaluate:
 
-; 3381 :         DebugMsg1(("%u evaluate exit, rc=%d, kind=%d value=%" I32_SPEC "d(0x%" I32_SPEC "X) memtype=%Xh string=%s ind=%u exp=%u ofssiz=%d instr=%s type=>%s<\n",
+; 3389 :         DebugMsg1(("%u evaluate exit, rc=%d, kind=%d value=%" I32_SPEC "d(0x%" I32_SPEC "X) memtype=%Xh string=%s ind=%u exp=%u ofssiz=%d instr=%s type=>%s<\n",
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	QWORD PTR [rax+96], 0
@@ -2076,13 +2077,13 @@ $LN41@evaluate:
 	mov	QWORD PTR tv513[rsp], rax
 	jmp	SHORT $LN55@evaluate
 $LN54@evaluate:
-	lea	rax, OFFSET FLAT:$SG12340
+	lea	rax, OFFSET FLAT:$SG12344
 	mov	QWORD PTR tv513[rsp], rax
 $LN55@evaluate:
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+56], -2
 	jne	SHORT $LN56@evaluate
-	lea	rax, OFFSET FLAT:$SG12341
+	lea	rax, OFFSET FLAT:$SG12345
 	mov	QWORD PTR tv521[rsp], rax
 	jmp	SHORT $LN57@evaluate
 $LN56@evaluate:
@@ -2101,7 +2102,7 @@ $LN57@evaluate:
 	mov	QWORD PTR tv537[rsp], rax
 	jmp	SHORT $LN59@evaluate
 $LN58@evaluate:
-	lea	rax, OFFSET FLAT:$SG12342
+	lea	rax, OFFSET FLAT:$SG12346
 	mov	QWORD PTR tv537[rsp], rax
 $LN59@evaluate:
 	mov	eax, DWORD PTR evallvl
@@ -2140,22 +2141,22 @@ $LN59@evaluate:
 	mov	r9d, DWORD PTR [rax+60]
 	mov	r8d, DWORD PTR rc$[rsp]
 	mov	edx, DWORD PTR tv549[rsp]
-	lea	rcx, OFFSET FLAT:$SG12343
+	lea	rcx, OFFSET FLAT:$SG12347
 	call	DoDebugMsg1
 $LN42@evaluate:
 
-; 3382 :                    evallvl--, rc, opnd1->kind, opnd1->value, opnd1->value, opnd1->mem_type,
-; 3383 :                    opnd1->quoted_string ? opnd1->quoted_string->string_ptr : "NULL",
-; 3384 :                    opnd1->indirect, opnd1->explicit, opnd1->Ofssize,
-; 3385 :                    opnd1->instr == EMPTY ? "" : GetResWName( opnd1->instr, NULL ),
-; 3386 :                    opnd1->type ? opnd1->type->name : "NULL" ));
-; 3387 :     }
-; 3388 : #endif
-; 3389 :     return( rc );
+; 3390 :                    evallvl--, rc, opnd1->kind, opnd1->value, opnd1->value, opnd1->mem_type,
+; 3391 :                    opnd1->quoted_string ? opnd1->quoted_string->string_ptr : "NULL",
+; 3392 :                    opnd1->indirect, opnd1->explicit, opnd1->Ofssize,
+; 3393 :                    opnd1->instr == EMPTY ? "" : GetResWName( opnd1->instr, NULL ),
+; 3394 :                    opnd1->type ? opnd1->type->name : "NULL" ));
+; 3395 :     }
+; 3396 : #endif
+; 3397 :     return( rc );
 
 	mov	eax, DWORD PTR rc$[rsp]
 
-; 3390 : }
+; 3398 : }
 
 	mov	edi, eax
 	mov	rcx, rsp
@@ -2174,7 +2175,7 @@ i$ = 48
 tokenarray$ = 56
 OperErr	PROC
 
-; 3224 : {
+; 3232 : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
@@ -2186,7 +2187,7 @@ OperErr	PROC
 	rep stosd
 	mov	ecx, DWORD PTR [rsp+48]
 
-; 3225 :     if ( tokenarray[i].token <= T_BAD_NUM ) {
+; 3233 :     if ( tokenarray[i].token <= T_BAD_NUM ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -2195,17 +2196,17 @@ OperErr	PROC
 	cmp	eax, 12
 	jg	SHORT $LN2@OperErr
 
-; 3226 :         fnEmitErr( MISSING_OPERATOR_IN_EXPRESSION ); ERRLOC(i);
+; 3234 :         fnEmitErr( MISSING_OPERATOR_IN_EXPRESSION ); ERRLOC(i);
 
 	mov	ecx, 150				; 00000096H
 	call	QWORD PTR fnEmitErr
 
-; 3227 :     } else
+; 3235 :     } else
 
 	jmp	SHORT $LN3@OperErr
 $LN2@OperErr:
 
-; 3228 :         fnEmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr );
+; 3236 :         fnEmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -2215,9 +2216,9 @@ $LN2@OperErr:
 	call	QWORD PTR fnEmitErr
 $LN3@OperErr:
 
-; 3229 : 
-; 3230 :     return;
-; 3231 : }
+; 3237 : 
+; 3238 :     return;
+; 3239 : }
 
 	add	rsp, 32					; 00000020H
 	pop	rdi
@@ -2236,7 +2237,7 @@ old$ = 88
 oper$ = 96
 PrepareOp PROC
 
-; 3177 : {
+; 3185 : {
 
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
@@ -2249,7 +2250,7 @@ PrepareOp PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+80]
 
-; 3178 :     opnd->is_opattr = old->is_opattr;
+; 3186 :     opnd->is_opattr = old->is_opattr;
 
 	mov	rax, QWORD PTR old$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -2265,8 +2266,8 @@ PrepareOp PROC
 	mov	rcx, QWORD PTR opnd$[rsp]
 	mov	DWORD PTR [rcx+76], eax
 
-; 3179 : 
-; 3180 :     switch ( oper->token ) {
+; 3187 : 
+; 3188 :     switch ( oper->token ) {
 
 	mov	rax, QWORD PTR oper$[rsp]
 	movzx	eax, BYTE PTR [rax]
@@ -2278,8 +2279,8 @@ PrepareOp PROC
 	jmp	$LN2@PrepareOp
 $LN6@PrepareOp:
 
-; 3181 :     case T_DOT:
-; 3182 :         DebugMsg(("PrepareOp: DOT operator found, old.sym=%X, old.type=%s, expr=%s\n", old->sym, (old->type ? old->type->name : "NULL" ), oper->tokpos + strlen( oper->string_ptr ) ));
+; 3189 :     case T_DOT:
+; 3190 :         DebugMsg(("PrepareOp: DOT operator found, old.sym=%X, old.type=%s, expr=%s\n", old->sym, (old->type ? old->type->name : "NULL" ), oper->tokpos + strlen( oper->string_ptr ) ));
 
 	mov	rax, QWORD PTR old$[rsp]
 	cmp	QWORD PTR [rax+96], 0
@@ -2290,7 +2291,7 @@ $LN6@PrepareOp:
 	mov	QWORD PTR tv86[rsp], rax
 	jmp	SHORT $LN14@PrepareOp
 $LN13@PrepareOp:
-	lea	rax, OFFSET FLAT:$SG12251
+	lea	rax, OFFSET FLAT:$SG12255
 	mov	QWORD PTR tv86[rsp], rax
 $LN14@PrepareOp:
 	mov	rax, QWORD PTR oper$[rsp]
@@ -2302,31 +2303,31 @@ $LN14@PrepareOp:
 	mov	r8, QWORD PTR tv86[rsp]
 	mov	rax, QWORD PTR old$[rsp]
 	mov	rdx, QWORD PTR [rax+80]
-	lea	rcx, OFFSET FLAT:$SG12252
+	lea	rcx, OFFSET FLAT:$SG12256
 	call	DoDebugMsg
 
-; 3183 :         if ( old->type ) {
+; 3191 :         if ( old->type ) {
 
 	mov	rax, QWORD PTR old$[rsp]
 	cmp	QWORD PTR [rax+96], 0
 	je	SHORT $LN7@PrepareOp
 
-; 3184 :             DebugMsg1(("PrepareOp: implicit type: %s\n", old->type->name));
+; 3192 :             DebugMsg1(("PrepareOp: implicit type: %s\n", old->type->name));
 
 	mov	rax, QWORD PTR old$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12255
+	lea	rcx, OFFSET FLAT:$SG12259
 	call	DoDebugMsg1
 
-; 3185 :             opnd->type = old->type;
+; 3193 :             opnd->type = old->type;
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rcx, QWORD PTR old$[rsp]
 	mov	rcx, QWORD PTR [rcx+96]
 	mov	QWORD PTR [rax+96], rcx
 
-; 3186 :             opnd->is_dot = TRUE;
+; 3194 :             opnd->is_dot = TRUE;
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -2336,23 +2337,23 @@ $LN14@PrepareOp:
 	jmp	SHORT $LN8@PrepareOp
 $LN7@PrepareOp:
 
-; 3187 : #if 0
-; 3188 :         /* v2.09 (type field is now set in get_operand();
-; 3189 :          * it's problematic to use old->sym here, because this field
-; 3190 :          * is not necessarily set by the operand just before the dot.
-; 3191 :          */
-; 3192 :         //} else if ( old->sym && old->sym->mem_type == MT_TYPE ) {
-; 3193 :         } else if ( old->sym && old->sym->mem_type == MT_TYPE && old->instr == EMPTY ) {
-; 3194 :             DebugMsg1(("PrepareOp: label %s, implicit type: %s\n", old->sym->name, old->sym->type->name));
-; 3195 :             for ( opnd->type = old->sym->type; opnd->type->type; opnd->type = opnd->type->type );
-; 3196 : #endif
-; 3197 :         /* v2.07: changed */
-; 3198 :         //} else if ( !ModuleInfo.oldstructs ) {
-; 3199 :         /* v2.08: reverted, replaced by changes in dot_op() and get_operand(), case T_STYPE */
-; 3200 :         //} else if ( old->sym && old->sym->mem_type == MT_EMPTY && !ModuleInfo.oldstructs ) {
-; 3201 :         /* v2.11: nullstruct not used here. Set type to NULL and is_dot==TRUE */
-; 3202 :         //} else if ( !ModuleInfo.oldstructs ) {
-; 3203 :         } else if ( !ModuleInfo.oldstructs && old->sym && old->sym->state == SYM_UNDEFINED ) {
+; 3195 : #if 0
+; 3196 :         /* v2.09 (type field is now set in get_operand();
+; 3197 :          * it's problematic to use old->sym here, because this field
+; 3198 :          * is not necessarily set by the operand just before the dot.
+; 3199 :          */
+; 3200 :         //} else if ( old->sym && old->sym->mem_type == MT_TYPE ) {
+; 3201 :         } else if ( old->sym && old->sym->mem_type == MT_TYPE && old->instr == EMPTY ) {
+; 3202 :             DebugMsg1(("PrepareOp: label %s, implicit type: %s\n", old->sym->name, old->sym->type->name));
+; 3203 :             for ( opnd->type = old->sym->type; opnd->type->type; opnd->type = opnd->type->type );
+; 3204 : #endif
+; 3205 :         /* v2.07: changed */
+; 3206 :         //} else if ( !ModuleInfo.oldstructs ) {
+; 3207 :         /* v2.08: reverted, replaced by changes in dot_op() and get_operand(), case T_STYPE */
+; 3208 :         //} else if ( old->sym && old->sym->mem_type == MT_EMPTY && !ModuleInfo.oldstructs ) {
+; 3209 :         /* v2.11: nullstruct not used here. Set type to NULL and is_dot==TRUE */
+; 3210 :         //} else if ( !ModuleInfo.oldstructs ) {
+; 3211 :         } else if ( !ModuleInfo.oldstructs && old->sym && old->sym->state == SYM_UNDEFINED ) {
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	shr	eax, 8
@@ -2367,20 +2368,20 @@ $LN7@PrepareOp:
 	cmp	DWORD PTR [rax+32], 0
 	jne	SHORT $LN9@PrepareOp
 
-; 3204 :             DebugMsg1(("PrepareOp: forward ref to %s, type will be NULL\n", old->sym->name ));
+; 3212 :             DebugMsg1(("PrepareOp: forward ref to %s, type will be NULL\n", old->sym->name ));
 
 	mov	rax, QWORD PTR old$[rsp]
 	mov	rax, QWORD PTR [rax+80]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12257
+	lea	rcx, OFFSET FLAT:$SG12261
 	call	DoDebugMsg1
 
-; 3205 :             opnd->type = NULL;
+; 3213 :             opnd->type = NULL;
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	QWORD PTR [rax+96], 0
 
-; 3206 :             opnd->is_dot = TRUE;
+; 3214 :             opnd->is_dot = TRUE;
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -2390,14 +2391,14 @@ $LN7@PrepareOp:
 $LN9@PrepareOp:
 $LN8@PrepareOp:
 
-; 3207 :         }
-; 3208 :         break;
+; 3215 :         }
+; 3216 :         break;
 
 	jmp	$LN2@PrepareOp
 $LN10@PrepareOp:
 
-; 3209 :     case T_UNARY_OPERATOR:
-; 3210 :         switch ( oper->tokval ) {
+; 3217 :     case T_UNARY_OPERATOR:
+; 3218 :         switch ( oper->tokval ) {
 
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	eax, DWORD PTR [rax+16]
@@ -2409,9 +2410,9 @@ $LN10@PrepareOp:
 	jmp	SHORT $LN4@PrepareOp
 $LN11@PrepareOp:
 
-; 3211 :         case T_OPATTR:
-; 3212 :         case T_DOT_TYPE:
-; 3213 :             DebugMsg(("PrepareOp: OPATTR operator found, old.sym=%X, old.type=%s, expr=%s\n",
+; 3219 :         case T_OPATTR:
+; 3220 :         case T_DOT_TYPE:
+; 3221 :             DebugMsg(("PrepareOp: OPATTR operator found, old.sym=%X, old.type=%s, expr=%s\n",
 
 	mov	rax, QWORD PTR old$[rsp]
 	cmp	QWORD PTR [rax+96], 0
@@ -2422,7 +2423,7 @@ $LN11@PrepareOp:
 	mov	QWORD PTR tv162[rsp], rax
 	jmp	SHORT $LN16@PrepareOp
 $LN15@PrepareOp:
-	lea	rax, OFFSET FLAT:$SG12260
+	lea	rax, OFFSET FLAT:$SG12264
 	mov	QWORD PTR tv162[rsp], rax
 $LN16@PrepareOp:
 	mov	rax, QWORD PTR oper$[rsp]
@@ -2434,11 +2435,11 @@ $LN16@PrepareOp:
 	mov	r8, QWORD PTR tv162[rsp]
 	mov	rax, QWORD PTR old$[rsp]
 	mov	rdx, QWORD PTR [rax+80]
-	lea	rcx, OFFSET FLAT:$SG12261
+	lea	rcx, OFFSET FLAT:$SG12265
 	call	DoDebugMsg
 
-; 3214 :                       old->sym, (old->type ? old->type->name : "NULL" ), oper->tokpos + strlen( oper->string_ptr ) ));
-; 3215 :             opnd->is_opattr = TRUE;
+; 3222 :                       old->sym, (old->type ? old->type->name : "NULL" ), oper->tokpos + strlen( oper->string_ptr ) ));
+; 3223 :             opnd->is_opattr = TRUE;
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -2448,11 +2449,11 @@ $LN16@PrepareOp:
 $LN4@PrepareOp:
 $LN2@PrepareOp:
 
-; 3216 :             break;
-; 3217 :         }
-; 3218 :         break;
-; 3219 :     }
-; 3220 : }
+; 3224 :             break;
+; 3225 :         }
+; 3226 :         break;
+; 3227 :     }
+; 3228 : }
 
 	add	rsp, 64					; 00000040H
 	pop	rdi
@@ -2495,7 +2496,7 @@ opnd2$ = 312
 oper$ = 320
 calculate PROC
 
-; 2579 : {
+; 2587 : {
 
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
@@ -2508,33 +2509,33 @@ calculate PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+304]
 
-; 2580 :     int_32              temp;
-; 2581 :     struct asym         *sym;
-; 2582 :     char                *name;
-; 2583 : 
-; 2584 :     /* avoid to use the <string> member once it's part of an expression!
-; 2585 :      * the <value> member is the one to be used then.
-; 2586 :      * test case: db "a"+80h
-; 2587 :      * v2.08: first: this is too early; second: the current operand is opnd2.
-; 2588 :      * third: the space is also used by float_tok member, which cannot be cleared.
-; 2589 :      * probably the best solution - at calculate()'s end:
-; 2590 :      * if ( opnd1->kind == EXPR_CONST ) opnd1->quoted_string = NULL;
-; 2591 :      */
-; 2592 :     opnd1->quoted_string = NULL;
+; 2588 :     int_32              temp;
+; 2589 :     struct asym         *sym;
+; 2590 :     char                *name;
+; 2591 : 
+; 2592 :     /* avoid to use the <string> member once it's part of an expression!
+; 2593 :      * the <value> member is the one to be used then.
+; 2594 :      * test case: db "a"+80h
+; 2595 :      * v2.08: first: this is too early; second: the current operand is opnd2.
+; 2596 :      * third: the space is also used by float_tok member, which cannot be cleared.
+; 2597 :      * probably the best solution - at calculate()'s end:
+; 2598 :      * if ( opnd1->kind == EXPR_CONST ) opnd1->quoted_string = NULL;
+; 2599 :      */
+; 2600 :     opnd1->quoted_string = NULL;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rax+16], 0
 
-; 2593 : 
-; 2594 :     /* v2.11: added check to ensure constant fits in 64-bits */
-; 2595 :     if ( opnd2->hlvalue ) {
+; 2601 : 
+; 2602 :     /* v2.11: added check to ensure constant fits in 64-bits */
+; 2603 :     if ( opnd2->hlvalue ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+8], 0
 	je	$LN8@calculate
 
-; 2596 :         /* opattr and unary +/- are ok, they can handle 128-bits */
-; 2597 :         if ( opnd2->is_opattr || ( ( oper->token == '+' || oper->token == '-' ) && oper->specval == UNARY_PLUSMINUS ) )
+; 2604 :         /* opattr and unary +/- are ok, they can handle 128-bits */
+; 2605 :         if ( opnd2->is_opattr || ( ( oper->token == '+' || oper->token == '-' ) && oper->specval == UNARY_PLUSMINUS ) )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -2557,21 +2558,21 @@ $LN12@calculate:
 	jne	SHORT $LN9@calculate
 $LN11@calculate:
 
-; 2598 :             ;
+; 2606 :             ;
 
 	jmp	SHORT $LN10@calculate
 $LN9@calculate:
 
-; 2599 :         else {
-; 2600 :             DebugMsg(("%u calculate(%s): value too large\n", evallvl, oper->string_ptr ));
+; 2607 :         else {
+; 2608 :             DebugMsg(("%u calculate(%s): value too large\n", evallvl, oper->string_ptr ));
 
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG12070
+	lea	rcx, OFFSET FLAT:$SG12074
 	call	DoDebugMsg
 
-; 2601 :             return( fnEmitErr( CONSTANT_VALUE_TOO_LARGE_EX, opnd2->hlvalue, opnd2->value64 ) );
+; 2609 :             return( fnEmitErr( CONSTANT_VALUE_TOO_LARGE_EX, opnd2->hlvalue, opnd2->value64 ) );
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	r8, QWORD PTR [rax]
@@ -2583,10 +2584,10 @@ $LN9@calculate:
 $LN10@calculate:
 $LN8@calculate:
 
-; 2602 :         }
-; 2603 :     }
-; 2604 : 
-; 2605 :     switch( oper->token ) {
+; 2610 :         }
+; 2611 :     }
+; 2612 : 
+; 2613 :     switch( oper->token ) {
 
 	mov	rax, QWORD PTR oper$[rsp]
 	movzx	eax, BYTE PTR [rax]
@@ -2604,15 +2605,15 @@ $LN8@calculate:
 	jmp	rax
 $LN13@calculate:
 
-; 2606 :     case T_OP_SQ_BRACKET:
-; 2607 :         /* v2.07: the ASSUMEs are now checked only when operator [] is done.
-; 2608 :          * this is compatible with Masm:
-; 2609 :          *   assume ebx:ptr <struct>
-; 2610 :          *   mov eax, [ebx.<member>]             ;is to fail
-; 2611 :          *   mov eax, [ebx.<struct>.<member>]    ;is to be ok
-; 2612 :          * previously both variants were accepted by jwasm.
-; 2613 :          */
-; 2614 :         if ( opnd2->assumecheck == TRUE ) {
+; 2614 :     case T_OP_SQ_BRACKET:
+; 2615 :         /* v2.07: the ASSUMEs are now checked only when operator [] is done.
+; 2616 :          * this is compatible with Masm:
+; 2617 :          *   assume ebx:ptr <struct>
+; 2618 :          *   mov eax, [ebx.<member>]             ;is to fail
+; 2619 :          *   mov eax, [ebx.<struct>.<member>]    ;is to be ok
+; 2620 :          * previously both variants were accepted by jwasm.
+; 2621 :          */
+; 2622 :         if ( opnd2->assumecheck == TRUE ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -2621,7 +2622,7 @@ $LN13@calculate:
 	cmp	eax, 1
 	jne	SHORT $LN14@calculate
 
-; 2615 :             opnd2->assumecheck = FALSE;   /* check ONE time only! */
+; 2623 :             opnd2->assumecheck = FALSE;   /* check ONE time only! */
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -2629,49 +2630,49 @@ $LN13@calculate:
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	DWORD PTR [rcx+76], eax
 
-; 2616 :             if ( opnd1->sym == NULL ) /* v2.10: added; see assume10.asm */
+; 2624 :             if ( opnd1->sym == NULL ) /* v2.10: added; see assume10.asm */
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	QWORD PTR [rax+80], 0
 	jne	SHORT $LN15@calculate
 
-; 2617 :                 CheckAssume( opnd2 );
+; 2625 :                 CheckAssume( opnd2 );
 
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	call	CheckAssume
 $LN15@calculate:
 $LN14@calculate:
 
-; 2618 :         }
-; 2619 : 
-; 2620 :         if ( opnd1->kind == EXPR_EMPTY ) {
+; 2626 :         }
+; 2627 : 
+; 2628 :         if ( opnd1->kind == EXPR_EMPTY ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+60], -2
 	jne	$LN16@calculate
 
-; 2621 :             DebugMsg1(("%u calculate(%s): single item\n", evallvl, oper->string_ptr ));
+; 2629 :             DebugMsg1(("%u calculate(%s): single item\n", evallvl, oper->string_ptr ));
 
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG12075
+	lea	rcx, OFFSET FLAT:$SG12079
 	call	DoDebugMsg1
 
-; 2622 :             TokenAssign( opnd1, opnd2 );
+; 2630 :             TokenAssign( opnd1, opnd2 );
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	TokenAssign
 
-; 2623 :             opnd1->type = opnd2->type;
+; 2631 :             opnd1->type = opnd2->type;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR [rcx+96]
 	mov	QWORD PTR [rax+96], rcx
 
-; 2624 :             if ( opnd1->is_type && opnd1->kind == EXPR_CONST )
+; 2632 :             if ( opnd1->is_type && opnd1->kind == EXPR_CONST )
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -2683,7 +2684,7 @@ $LN14@calculate:
 	cmp	DWORD PTR [rax+60], 0
 	jne	SHORT $LN17@calculate
 
-; 2625 :                 opnd1->is_type = 0;
+; 2633 :                 opnd1->is_type = 0;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -2692,24 +2693,24 @@ $LN14@calculate:
 	mov	DWORD PTR [rcx+76], eax
 $LN17@calculate:
 
-; 2626 :             break;
+; 2634 :             break;
 
 	jmp	$LN2@calculate
 $LN16@calculate:
 
-; 2627 :         }
-; 2628 : 
-; 2629 :         /* v2.03: make HJWasm reject syntax variants
-; 2630 :          * "mov eax, DWORD [EBX]"
-; 2631 :          * "mov eax, DWORD [var_name]"
-; 2632 :          * variants still valid:
-; 2633 :          * "mov eax, DWORD [WORD]"
-; 2634 :          * "mov eax, DWORD [4]"
-; 2635 :          * "mov eax, [DWORD][EBX]"
-; 2636 :          */
-; 2637 :         /* v2.08: structure/union names are ok: mov eax, S1[ebx] */
-; 2638 :         //if ( opnd1->is_type == TRUE &&
-; 2639 :         if ( opnd1->is_type == TRUE && opnd1->type == NULL &&
+; 2635 :         }
+; 2636 : 
+; 2637 :         /* v2.03: make HJWasm reject syntax variants
+; 2638 :          * "mov eax, DWORD [EBX]"
+; 2639 :          * "mov eax, DWORD [var_name]"
+; 2640 :          * variants still valid:
+; 2641 :          * "mov eax, DWORD [WORD]"
+; 2642 :          * "mov eax, DWORD [4]"
+; 2643 :          * "mov eax, [DWORD][EBX]"
+; 2644 :          */
+; 2645 :         /* v2.08: structure/union names are ok: mov eax, S1[ebx] */
+; 2646 :         //if ( opnd1->is_type == TRUE &&
+; 2647 :         if ( opnd1->is_type == TRUE && opnd1->type == NULL &&
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -2728,25 +2729,25 @@ $LN16@calculate:
 	jne	SHORT $LN18@calculate
 $LN19@calculate:
 
-; 2640 :             (opnd2->kind == EXPR_ADDR || opnd2->kind == EXPR_REG ) ) {
-; 2641 :             DebugMsg(("calculate(%s): incompatible usage of (simple) type\n", oper->string_ptr ));
+; 2648 :             (opnd2->kind == EXPR_ADDR || opnd2->kind == EXPR_REG ) ) {
+; 2649 :             DebugMsg(("calculate(%s): incompatible usage of (simple) type\n", oper->string_ptr ));
 
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12079
+	lea	rcx, OFFSET FLAT:$SG12083
 	call	DoDebugMsg
 
-; 2642 :             return( fnEmitErr( SYNTAX_ERROR_IN_EXPRESSION ) );
+; 2650 :             return( fnEmitErr( SYNTAX_ERROR_IN_EXPRESSION ) );
 
 	mov	ecx, 263				; 00000107H
 	call	QWORD PTR fnEmitErr
 	jmp	$LN1@calculate
 $LN18@calculate:
 
-; 2643 :         }
-; 2644 : 
-; 2645 :         /* v2.08: moved here from get_operand() */
-; 2646 :         if ( opnd1->base_reg && opnd1->base_reg->tokval == T_ST )
+; 2651 :         }
+; 2652 : 
+; 2653 :         /* v2.08: moved here from get_operand() */
+; 2654 :         if ( opnd1->base_reg && opnd1->base_reg->tokval == T_ST )
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	QWORD PTR [rax+24], 0
@@ -2756,7 +2757,7 @@ $LN18@calculate:
 	cmp	DWORD PTR [rax+16], 31
 	jne	SHORT $LN20@calculate
 
-; 2647 :             return( check_streg( opnd1, opnd2 ) );
+; 2655 :             return( check_streg( opnd1, opnd2 ) );
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -2764,9 +2765,9 @@ $LN18@calculate:
 	jmp	$LN1@calculate
 $LN20@calculate:
 
-; 2648 : 
-; 2649 : #ifdef DEBUG_OUT
-; 2650 :         if ( plus_op( opnd1, opnd2 ) == ERROR )
+; 2656 : 
+; 2657 : #ifdef DEBUG_OUT
+; 2658 :         if ( plus_op( opnd1, opnd2 ) == ERROR )
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -2774,59 +2775,59 @@ $LN20@calculate:
 	cmp	eax, -1
 	jne	SHORT $LN21@calculate
 
-; 2651 :             return( ERROR );
+; 2659 :             return( ERROR );
 
 	mov	eax, -1
 	jmp	$LN1@calculate
 $LN21@calculate:
 
-; 2652 :         break;
+; 2660 :         break;
 
 	jmp	$LN2@calculate
 $LN22@calculate:
 
-; 2653 : #else
-; 2654 :         return( plus_op( opnd1, opnd2 ) );
-; 2655 : #endif
-; 2656 :     case T_OP_BRACKET:
-; 2657 : 
-; 2658 :         if ( opnd1->kind == EXPR_EMPTY ) {
+; 2661 : #else
+; 2662 :         return( plus_op( opnd1, opnd2 ) );
+; 2663 : #endif
+; 2664 :     case T_OP_BRACKET:
+; 2665 : 
+; 2666 :         if ( opnd1->kind == EXPR_EMPTY ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+60], -2
 	jne	SHORT $LN23@calculate
 
-; 2659 :             DebugMsg1(("%u calculate(%s): single item\n", evallvl, oper->string_ptr ));
+; 2667 :             DebugMsg1(("%u calculate(%s): single item\n", evallvl, oper->string_ptr ));
 
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG12084
+	lea	rcx, OFFSET FLAT:$SG12088
 	call	DoDebugMsg1
 
-; 2660 :             TokenAssign( opnd1, opnd2 );
+; 2668 :             TokenAssign( opnd1, opnd2 );
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	TokenAssign
 
-; 2661 :             opnd1->type = opnd2->type;
+; 2669 :             opnd1->type = opnd2->type;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR [rcx+96]
 	mov	QWORD PTR [rax+96], rcx
 
-; 2662 :             break;
+; 2670 :             break;
 
 	jmp	$LN2@calculate
 $LN23@calculate:
 
-; 2663 :         }
-; 2664 :         /* v2.03: make HJWasm reject syntax variants
-; 2665 :          * "mov eax, DWORD (<label>)"
-; 2666 :          */
-; 2667 :         if ( opnd1->is_type == TRUE && opnd2->kind == EXPR_ADDR ) {
+; 2671 :         }
+; 2672 :         /* v2.03: make HJWasm reject syntax variants
+; 2673 :          * "mov eax, DWORD (<label>)"
+; 2674 :          */
+; 2675 :         if ( opnd1->is_type == TRUE && opnd2->kind == EXPR_ADDR ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -2838,24 +2839,24 @@ $LN23@calculate:
 	cmp	DWORD PTR [rax+60], 1
 	jne	SHORT $LN24@calculate
 
-; 2668 :             DebugMsg(("calculate(%s): incompatible usage of (simple) type\n", oper->string_ptr ));
+; 2676 :             DebugMsg(("calculate(%s): incompatible usage of (simple) type\n", oper->string_ptr ));
 
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12086
+	lea	rcx, OFFSET FLAT:$SG12090
 	call	DoDebugMsg
 
-; 2669 :             return( fnEmitErr( SYNTAX_ERROR_IN_EXPRESSION ) );
+; 2677 :             return( fnEmitErr( SYNTAX_ERROR_IN_EXPRESSION ) );
 
 	mov	ecx, 263				; 00000107H
 	call	QWORD PTR fnEmitErr
 	jmp	$LN1@calculate
 $LN24@calculate:
 
-; 2670 :         }
-; 2671 : 
-; 2672 :         /* v2.08: moved here from get_operand() */
-; 2673 :         if ( opnd1->base_reg && opnd1->base_reg->tokval == T_ST )
+; 2678 :         }
+; 2679 : 
+; 2680 :         /* v2.08: moved here from get_operand() */
+; 2681 :         if ( opnd1->base_reg && opnd1->base_reg->tokval == T_ST )
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	QWORD PTR [rax+24], 0
@@ -2865,7 +2866,7 @@ $LN24@calculate:
 	cmp	DWORD PTR [rax+16], 31
 	jne	SHORT $LN25@calculate
 
-; 2674 :             return( check_streg( opnd1, opnd2 ) );
+; 2682 :             return( check_streg( opnd1, opnd2 ) );
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -2873,16 +2874,16 @@ $LN24@calculate:
 	jmp	$LN1@calculate
 $LN25@calculate:
 
-; 2675 : 
-; 2676 :         DebugMsg1(("calculate(%s): calling plus_op()\n", oper->string_ptr ));
+; 2683 : 
+; 2684 :         DebugMsg1(("calculate(%s): calling plus_op()\n", oper->string_ptr ));
 
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12088
+	lea	rcx, OFFSET FLAT:$SG12092
 	call	DoDebugMsg1
 
-; 2677 : #ifdef DEBUG_OUT
-; 2678 :         if ( plus_op( opnd1, opnd2 ) == ERROR )
+; 2685 : #ifdef DEBUG_OUT
+; 2686 :         if ( plus_op( opnd1, opnd2 ) == ERROR )
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -2890,29 +2891,29 @@ $LN25@calculate:
 	cmp	eax, -1
 	jne	SHORT $LN26@calculate
 
-; 2679 :             return( ERROR );
+; 2687 :             return( ERROR );
 
 	mov	eax, -1
 	jmp	$LN1@calculate
 $LN26@calculate:
 
-; 2680 :         break;
+; 2688 :         break;
 
 	jmp	$LN2@calculate
 $LN27@calculate:
 
-; 2681 : #else
-; 2682 :         return( plus_op( opnd1, opnd2 ) );
-; 2683 : #endif
-; 2684 :     case '+':
-; 2685 :         if ( oper->specval == UNARY_PLUSMINUS ) /* unary op? */
+; 2689 : #else
+; 2690 :         return( plus_op( opnd1, opnd2 ) );
+; 2691 : #endif
+; 2692 :     case '+':
+; 2693 :         if ( oper->specval == UNARY_PLUSMINUS ) /* unary op? */
 
 	mov	rax, QWORD PTR oper$[rsp]
 	movsx	eax, BYTE PTR [rax+1]
 	test	eax, eax
 	jne	SHORT $LN28@calculate
 
-; 2686 :             return( positive_op( opnd1, opnd2 ) );
+; 2694 :             return( positive_op( opnd1, opnd2 ) );
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -2920,8 +2921,8 @@ $LN27@calculate:
 	jmp	$LN1@calculate
 $LN28@calculate:
 
-; 2687 : #ifdef DEBUG_OUT
-; 2688 :         if ( plus_op( opnd1, opnd2 ) == ERROR )
+; 2695 : #ifdef DEBUG_OUT
+; 2696 :         if ( plus_op( opnd1, opnd2 ) == ERROR )
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -2929,29 +2930,29 @@ $LN28@calculate:
 	cmp	eax, -1
 	jne	SHORT $LN29@calculate
 
-; 2689 :             return( ERROR );
+; 2697 :             return( ERROR );
 
 	mov	eax, -1
 	jmp	$LN1@calculate
 $LN29@calculate:
 
-; 2690 :         break;
+; 2698 :         break;
 
 	jmp	$LN2@calculate
 $LN30@calculate:
 
-; 2691 : #else
-; 2692 :         return( plus_op( opnd1, opnd2 ) );
-; 2693 : #endif
-; 2694 :     case '-':
-; 2695 :         if ( oper->specval == UNARY_PLUSMINUS ) /* unary op? */
+; 2699 : #else
+; 2700 :         return( plus_op( opnd1, opnd2 ) );
+; 2701 : #endif
+; 2702 :     case '-':
+; 2703 :         if ( oper->specval == UNARY_PLUSMINUS ) /* unary op? */
 
 	mov	rax, QWORD PTR oper$[rsp]
 	movsx	eax, BYTE PTR [rax+1]
 	test	eax, eax
 	jne	SHORT $LN31@calculate
 
-; 2696 :             return( negative_op( opnd1, opnd2 ) );
+; 2704 :             return( negative_op( opnd1, opnd2 ) );
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -2959,8 +2960,8 @@ $LN30@calculate:
 	jmp	$LN1@calculate
 $LN31@calculate:
 
-; 2697 : #ifdef DEBUG_OUT
-; 2698 :         if ( minus_op( opnd1, opnd2 ) == ERROR )
+; 2705 : #ifdef DEBUG_OUT
+; 2706 :         if ( minus_op( opnd1, opnd2 ) == ERROR )
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -2968,23 +2969,23 @@ $LN31@calculate:
 	cmp	eax, -1
 	jne	SHORT $LN32@calculate
 
-; 2699 :             return( ERROR );
+; 2707 :             return( ERROR );
 
 	mov	eax, -1
 	jmp	$LN1@calculate
 $LN32@calculate:
 
-; 2700 :         break;
+; 2708 :         break;
 
 	jmp	$LN2@calculate
 $LN33@calculate:
 
-; 2701 : #else
-; 2702 :         return( minus_op( opnd1, opnd2 ) );
-; 2703 : #endif
-; 2704 :     case T_DOT:
-; 2705 : #ifdef DEBUG_OUT
-; 2706 :         if ( dot_op( opnd1, opnd2 ) == ERROR )
+; 2709 : #else
+; 2710 :         return( minus_op( opnd1, opnd2 ) );
+; 2711 : #endif
+; 2712 :     case T_DOT:
+; 2713 : #ifdef DEBUG_OUT
+; 2714 :         if ( dot_op( opnd1, opnd2 ) == ERROR )
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -2992,23 +2993,23 @@ $LN33@calculate:
 	cmp	eax, -1
 	jne	SHORT $LN34@calculate
 
-; 2707 :             return( ERROR );
+; 2715 :             return( ERROR );
 
 	mov	eax, -1
 	jmp	$LN1@calculate
 $LN34@calculate:
 
-; 2708 :         break;
+; 2716 :         break;
 
 	jmp	$LN2@calculate
 $LN35@calculate:
 
-; 2709 : #else
-; 2710 :         return( dot_op( opnd1, opnd2 ) );
-; 2711 : #endif
-; 2712 :     case T_COLON:
-; 2713 : #ifdef DEBUG_OUT
-; 2714 :         if ( colon_op( opnd1, opnd2 ) == ERROR )
+; 2717 : #else
+; 2718 :         return( dot_op( opnd1, opnd2 ) );
+; 2719 : #endif
+; 2720 :     case T_COLON:
+; 2721 : #ifdef DEBUG_OUT
+; 2722 :         if ( colon_op( opnd1, opnd2 ) == ERROR )
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -3016,28 +3017,28 @@ $LN35@calculate:
 	cmp	eax, -1
 	jne	SHORT $LN36@calculate
 
-; 2715 :             return( ERROR );
+; 2723 :             return( ERROR );
 
 	mov	eax, -1
 	jmp	$LN1@calculate
 $LN36@calculate:
 
-; 2716 :         break;
+; 2724 :         break;
 
 	jmp	$LN2@calculate
 $LN37@calculate:
 
-; 2717 : #else
-; 2718 :         return( colon_op( opnd1, opnd2 ) );
-; 2719 : #endif
-; 2720 :     case '*':
-; 2721 :         /*
-; 2722 :          * The only formats allowed are:
-; 2723 :          *        constant * constant
-; 2724 :          *        register * scaling factor ( 1, 2, 4 or 8 )
-; 2725 :          *                   386 only
-; 2726 :          */
-; 2727 :         DebugMsg1(("calculate(*): kind=%d/%d value=%" I64_SPEC "d-%" I64_SPEC "d mbr=%X-%X\n",
+; 2725 : #else
+; 2726 :         return( colon_op( opnd1, opnd2 ) );
+; 2727 : #endif
+; 2728 :     case '*':
+; 2729 :         /*
+; 2730 :          * The only formats allowed are:
+; 2731 :          *        constant * constant
+; 2732 :          *        register * scaling factor ( 1, 2, 4 or 8 )
+; 2733 :          *                   386 only
+; 2734 :          */
+; 2735 :         DebugMsg1(("calculate(*): kind=%d/%d value=%" I64_SPEC "d-%" I64_SPEC "d mbr=%X-%X\n",
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+88]
@@ -3054,25 +3055,25 @@ $LN37@calculate:
 	mov	r8d, DWORD PTR [rax+60]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax+60]
-	lea	rcx, OFFSET FLAT:$SG12101
+	lea	rcx, OFFSET FLAT:$SG12105
 	call	DoDebugMsg1
 
-; 2728 :                    opnd1->kind,    opnd2->kind,
-; 2729 :                    opnd1->value64, opnd2->value64,
-; 2730 :                    opnd1->mbr,     opnd2->mbr ));
-; 2731 : 
-; 2732 :         MakeConst( opnd1 );
+; 2736 :                    opnd1->kind,    opnd2->kind,
+; 2737 :                    opnd1->value64, opnd2->value64,
+; 2738 :                    opnd1->mbr,     opnd2->mbr ));
+; 2739 : 
+; 2740 :         MakeConst( opnd1 );
 
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	MakeConst
 
-; 2733 :         MakeConst( opnd2 );
+; 2741 :         MakeConst( opnd2 );
 
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	call	MakeConst
 
-; 2734 : 
-; 2735 :         if( check_same( opnd1, opnd2, EXPR_CONST ) ) {
+; 2742 : 
+; 2743 :         if( check_same( opnd1, opnd2, EXPR_CONST ) ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+60], 0
@@ -3081,7 +3082,7 @@ $LN37@calculate:
 	cmp	DWORD PTR [rax+60], 0
 	jne	SHORT $LN38@calculate
 
-; 2736 :             opnd1->llvalue *= opnd2->llvalue;
+; 2744 :             opnd1->llvalue *= opnd2->llvalue;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -3092,7 +3093,7 @@ $LN37@calculate:
 	jmp	$LN39@calculate
 $LN38@calculate:
 
-; 2737 :         } else if( check_both( opnd1, opnd2, EXPR_REG, EXPR_CONST ) ) {
+; 2745 :         } else if( check_both( opnd1, opnd2, EXPR_REG, EXPR_CONST ) ) {
 
 	xor	r9d, r9d
 	mov	r8d, 2
@@ -3103,7 +3104,7 @@ $LN38@calculate:
 	test	eax, eax
 	je	$LN40@calculate
 
-; 2738 :             if( check_direct_reg( opnd1, opnd2 ) == ERROR ) {
+; 2746 :             if( check_direct_reg( opnd1, opnd2 ) == ERROR ) {
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -3111,61 +3112,61 @@ $LN38@calculate:
 	cmp	eax, -1
 	jne	SHORT $LN42@calculate
 
-; 2739 :                 DebugMsg(("calculate(*) error direct register\n"));
+; 2747 :                 DebugMsg(("calculate(*) error direct register\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12107
+	lea	rcx, OFFSET FLAT:$SG12111
 	call	DoDebugMsg
 
-; 2740 :                 return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
+; 2748 :                 return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
 	mov	ecx, 170				; 000000aaH
 	call	QWORD PTR fnEmitErr
 	jmp	$LN1@calculate
 $LN42@calculate:
 
-; 2741 :             }
-; 2742 :             /* scaling factor */
-; 2743 :             if( opnd2->kind == EXPR_REG ) {
+; 2749 :             }
+; 2750 :             /* scaling factor */
+; 2751 :             if( opnd2->kind == EXPR_REG ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 2
 	jne	SHORT $LN43@calculate
 
-; 2744 :                 /* scale * reg */
-; 2745 :                 opnd1->idx_reg = opnd2->base_reg;
+; 2752 :                 /* scale * reg */
+; 2753 :                 opnd1->idx_reg = opnd2->base_reg;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR [rcx+24]
 	mov	QWORD PTR [rax+32], rcx
 
-; 2746 :                 opnd1->scale = opnd1->value;
+; 2754 :                 opnd1->scale = opnd1->value;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	movzx	ecx, BYTE PTR [rcx]
 	mov	BYTE PTR [rax+68], cl
 
-; 2747 :                 opnd1->value = 0;
+; 2755 :                 opnd1->value = 0;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax], 0
 
-; 2748 :                 //opnd2->base_reg = NULL;
-; 2749 :             } else {
+; 2756 :                 //opnd2->base_reg = NULL;
+; 2757 :             } else {
 
 	jmp	SHORT $LN44@calculate
 $LN43@calculate:
 
-; 2750 :                 /* reg * scale */
-; 2751 :                 opnd1->idx_reg = opnd1->base_reg;
+; 2758 :                 /* reg * scale */
+; 2759 :                 opnd1->idx_reg = opnd1->base_reg;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR [rcx+24]
 	mov	QWORD PTR [rax+32], rcx
 
-; 2752 :                 opnd1->scale = opnd2->value;
+; 2760 :                 opnd1->scale = opnd2->value;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -3173,30 +3174,30 @@ $LN43@calculate:
 	mov	BYTE PTR [rax+68], cl
 $LN44@calculate:
 
-; 2753 :             }
-; 2754 :             /* v2.08: check 0 (the default value) here */
-; 2755 :             if ( opnd1->scale == 0 ) {
+; 2761 :             }
+; 2762 :             /* v2.08: check 0 (the default value) here */
+; 2763 :             if ( opnd1->scale == 0 ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	movzx	eax, BYTE PTR [rax+68]
 	test	eax, eax
 	jne	SHORT $LN45@calculate
 
-; 2756 :                 return( fnEmitErr( SCALE_FACTOR_MUST_BE_1_2_4_OR_8 ) );
+; 2764 :                 return( fnEmitErr( SCALE_FACTOR_MUST_BE_1_2_4_OR_8 ) );
 
 	mov	ecx, 36					; 00000024H
 	call	QWORD PTR fnEmitErr
 	jmp	$LN1@calculate
 $LN45@calculate:
 
-; 2757 :             }
-; 2758 : 
-; 2759 :             opnd1->base_reg = NULL;
+; 2765 :             }
+; 2766 : 
+; 2767 :             opnd1->base_reg = NULL;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rax+24], 0
 
-; 2760 :             opnd1->indirect = TRUE;
+; 2768 :             opnd1->indirect = TRUE;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -3204,22 +3205,22 @@ $LN45@calculate:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rcx+76], eax
 
-; 2761 :             opnd1->kind = EXPR_ADDR;
+; 2769 :             opnd1->kind = EXPR_ADDR;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+60], 1
 
-; 2762 :         } else {
+; 2770 :         } else {
 
 	jmp	SHORT $LN41@calculate
 $LN40@calculate:
 
-; 2763 :             DebugMsg(("calculate(*) error 2\n"));
+; 2771 :             DebugMsg(("calculate(*) error 2\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12111
+	lea	rcx, OFFSET FLAT:$SG12115
 	call	DoDebugMsg
 
-; 2764 :             return( ConstError( opnd1, opnd2 ) );
+; 2772 :             return( ConstError( opnd1, opnd2 ) );
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -3228,18 +3229,18 @@ $LN40@calculate:
 $LN41@calculate:
 $LN39@calculate:
 
-; 2765 :         }
-; 2766 :         break;
+; 2773 :         }
+; 2774 :         break;
 
 	jmp	$LN2@calculate
 $LN46@calculate:
 
-; 2767 :     case '/':
-; 2768 :         /*
-; 2769 :          * The only formats allowed are:
-; 2770 :          *        constant / constant
-; 2771 :          */
-; 2772 :         DebugMsg1(("calculate(/): t1-t2 kind %u-%u values %" I64_SPEC "d-%" I64_SPEC "d\n",
+; 2775 :     case '/':
+; 2776 :         /*
+; 2777 :          * The only formats allowed are:
+; 2778 :          *        constant / constant
+; 2779 :          */
+; 2780 :         DebugMsg1(("calculate(/): t1-t2 kind %u-%u values %" I64_SPEC "d-%" I64_SPEC "d\n",
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -3250,23 +3251,23 @@ $LN46@calculate:
 	mov	r8d, DWORD PTR [rax+60]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax+60]
-	lea	rcx, OFFSET FLAT:$SG12113
+	lea	rcx, OFFSET FLAT:$SG12117
 	call	DoDebugMsg1
 
-; 2773 :                    opnd1->kind,    opnd2->kind,
-; 2774 :                    opnd1->value64, opnd2->value64 ));
-; 2775 :         MakeConst( opnd1 );
+; 2781 :                    opnd1->kind,    opnd2->kind,
+; 2782 :                    opnd1->value64, opnd2->value64 ));
+; 2783 :         MakeConst( opnd1 );
 
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	MakeConst
 
-; 2776 :         MakeConst( opnd2 );
+; 2784 :         MakeConst( opnd2 );
 
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	call	MakeConst
 
-; 2777 : 
-; 2778 :         if( check_same( opnd1, opnd2, EXPR_CONST ) == FALSE ) {
+; 2785 : 
+; 2786 :         if( check_same( opnd1, opnd2, EXPR_CONST ) == FALSE ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+60], 0
@@ -3282,12 +3283,12 @@ $LN140@calculate:
 	cmp	DWORD PTR tv322[rsp], 0
 	jne	SHORT $LN47@calculate
 
-; 2779 :             DebugMsg(("calculate(/) error 1\n"));
+; 2787 :             DebugMsg(("calculate(/) error 1\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12115
+	lea	rcx, OFFSET FLAT:$SG12119
 	call	DoDebugMsg
 
-; 2780 :             return( ConstError( opnd1, opnd2 ) );
+; 2788 :             return( ConstError( opnd1, opnd2 ) );
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -3295,29 +3296,29 @@ $LN140@calculate:
 	jmp	$LN1@calculate
 $LN47@calculate:
 
-; 2781 :         }
-; 2782 : 
-; 2783 :         if ( opnd2->llvalue == 0 ) {
+; 2789 :         }
+; 2790 : 
+; 2791 :         if ( opnd2->llvalue == 0 ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax], 0
 	jne	SHORT $LN48@calculate
 
-; 2784 :             DebugMsg(("calculate(/) error 2\n"));
+; 2792 :             DebugMsg(("calculate(/) error 2\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12117
+	lea	rcx, OFFSET FLAT:$SG12121
 	call	DoDebugMsg
 
-; 2785 :             return( fnEmitErr( DIVIDE_BY_ZERO_IN_EXPR ) );
+; 2793 :             return( fnEmitErr( DIVIDE_BY_ZERO_IN_EXPR ) );
 
 	mov	ecx, 167				; 000000a7H
 	call	QWORD PTR fnEmitErr
 	jmp	$LN1@calculate
 $LN48@calculate:
 
-; 2786 :         }
-; 2787 : 
-; 2788 :         opnd1->value64 /= opnd2->value64;
+; 2794 :         }
+; 2795 : 
+; 2796 :         opnd1->value64 /= opnd2->value64;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -3327,13 +3328,13 @@ $LN48@calculate:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 2789 :         break;
+; 2797 :         break;
 
 	jmp	$LN2@calculate
 $LN49@calculate:
 
-; 2790 :     case T_BINARY_OPERATOR:
-; 2791 :         DebugMsg1(("calculate(%s [T_BINARY_OPERATOR] ): t1-t2 kind %d/%d memtype %X-%X sym %s-%s type %s-%s\n",
+; 2798 :     case T_BINARY_OPERATOR:
+; 2799 :         DebugMsg1(("calculate(%s [T_BINARY_OPERATOR] ): t1-t2 kind %d/%d memtype %X-%X sym %s-%s type %s-%s\n",
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+96], 0
@@ -3344,7 +3345,7 @@ $LN49@calculate:
 	mov	QWORD PTR tv341[rsp], rax
 	jmp	SHORT $LN142@calculate
 $LN141@calculate:
-	lea	rax, OFFSET FLAT:$SG12119
+	lea	rax, OFFSET FLAT:$SG12123
 	mov	QWORD PTR tv341[rsp], rax
 $LN142@calculate:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -3356,7 +3357,7 @@ $LN142@calculate:
 	mov	QWORD PTR tv347[rsp], rax
 	jmp	SHORT $LN144@calculate
 $LN143@calculate:
-	lea	rax, OFFSET FLAT:$SG12120
+	lea	rax, OFFSET FLAT:$SG12124
 	mov	QWORD PTR tv347[rsp], rax
 $LN144@calculate:
 	mov	rax, QWORD PTR opnd2$[rsp]
@@ -3368,7 +3369,7 @@ $LN144@calculate:
 	mov	QWORD PTR tv353[rsp], rax
 	jmp	SHORT $LN146@calculate
 $LN145@calculate:
-	lea	rax, OFFSET FLAT:$SG12121
+	lea	rax, OFFSET FLAT:$SG12125
 	mov	QWORD PTR tv353[rsp], rax
 $LN146@calculate:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -3380,7 +3381,7 @@ $LN146@calculate:
 	mov	QWORD PTR tv359[rsp], rax
 	jmp	SHORT $LN148@calculate
 $LN147@calculate:
-	lea	rax, OFFSET FLAT:$SG12122
+	lea	rax, OFFSET FLAT:$SG12126
 	mov	QWORD PTR tv359[rsp], rax
 $LN148@calculate:
 	mov	rax, QWORD PTR tv341[rsp]
@@ -3403,24 +3404,24 @@ $LN148@calculate:
 	mov	r8d, DWORD PTR [rax+60]
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12123
+	lea	rcx, OFFSET FLAT:$SG12127
 	call	DoDebugMsg1
 
-; 2792 :                    oper->string_ptr,
-; 2793 :                    opnd1->kind, opnd2->kind,
-; 2794 :                    opnd1->mem_type, opnd2->mem_type,
-; 2795 :                    opnd1->sym  ? opnd1->sym->name  : "NULL",
-; 2796 :                    opnd2->sym  ? opnd2->sym->name  : "NULL",
-; 2797 :                    opnd1->type ? opnd1->type->name : "NULL",
-; 2798 :                    opnd2->type ? opnd2->type->name : "NULL" ));
-; 2799 : 
-; 2800 :         if ( oper->tokval == T_PTR ) {
+; 2800 :                    oper->string_ptr,
+; 2801 :                    opnd1->kind, opnd2->kind,
+; 2802 :                    opnd1->mem_type, opnd2->mem_type,
+; 2803 :                    opnd1->sym  ? opnd1->sym->name  : "NULL",
+; 2804 :                    opnd2->sym  ? opnd2->sym->name  : "NULL",
+; 2805 :                    opnd1->type ? opnd1->type->name : "NULL",
+; 2806 :                    opnd2->type ? opnd2->type->name : "NULL" ));
+; 2807 : 
+; 2808 :         if ( oper->tokval == T_PTR ) {
 
 	mov	rax, QWORD PTR oper$[rsp]
 	cmp	DWORD PTR [rax+16], 258			; 00000102H
 	jne	$LN50@calculate
 
-; 2801 :             if ( opnd1->is_type == FALSE ) {
+; 2809 :             if ( opnd1->is_type == FALSE ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -3429,7 +3430,7 @@ $LN148@calculate:
 	test	eax, eax
 	jne	$LN51@calculate
 
-; 2802 :                 if ( opnd1->sym && opnd1->sym->state == SYM_UNDEFINED ) {
+; 2810 :                 if ( opnd1->sym && opnd1->sym->state == SYM_UNDEFINED ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	QWORD PTR [rax+80], 0
@@ -3439,7 +3440,7 @@ $LN148@calculate:
 	cmp	DWORD PTR [rax+32], 0
 	jne	SHORT $LN52@calculate
 
-; 2803 :                     CreateTypeSymbol( opnd1->sym, NULL, TRUE );
+; 2811 :                     CreateTypeSymbol( opnd1->sym, NULL, TRUE );
 
 	mov	r8b, 1
 	xor	edx, edx
@@ -3447,19 +3448,19 @@ $LN148@calculate:
 	mov	rcx, QWORD PTR [rax+80]
 	call	CreateTypeSymbol
 
-; 2804 :                     opnd1->type = opnd1->sym;
+; 2812 :                     opnd1->type = opnd1->sym;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR [rcx+80]
 	mov	QWORD PTR [rax+96], rcx
 
-; 2805 :                     opnd1->sym = NULL;
+; 2813 :                     opnd1->sym = NULL;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rax+80], 0
 
-; 2806 :                     opnd1->is_type = TRUE;
+; 2814 :                     opnd1->is_type = TRUE;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -3467,17 +3468,17 @@ $LN148@calculate:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rcx+76], eax
 
-; 2807 :                 } else {
+; 2815 :                 } else {
 
 	jmp	SHORT $LN53@calculate
 $LN52@calculate:
 
-; 2808 :                     DebugMsg(("calculate(PTR), error 1: t1 is_type == FALSE\n"));
+; 2816 :                     DebugMsg(("calculate(PTR), error 1: t1 is_type == FALSE\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12128
+	lea	rcx, OFFSET FLAT:$SG12132
 	call	DoDebugMsg
 
-; 2809 :                     return( fnEmitErr( INVALID_TYPE_EXPRESSION ) );
+; 2817 :                     return( fnEmitErr( INVALID_TYPE_EXPRESSION ) );
 
 	mov	ecx, 179				; 000000b3H
 	call	QWORD PTR fnEmitErr
@@ -3485,9 +3486,9 @@ $LN52@calculate:
 $LN53@calculate:
 $LN51@calculate:
 
-; 2810 :                 }
-; 2811 :             }
-; 2812 :             opnd2->explicit = TRUE;
+; 2818 :                 }
+; 2819 :             }
+; 2820 :             opnd2->explicit = TRUE;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -3495,18 +3496,18 @@ $LN51@calculate:
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	DWORD PTR [rcx+76], eax
 
-; 2813 :             /* v2.02: if operand is a register, make sure
-; 2814 :              * that invalid combinations ("DWORD PTR AX") are flagged.
-; 2815 :              *
-; 2816 :              * v2.10: must also be checked inside []. However, it's
-; 2817 :              * a problem to properly handle this case, since opnd->indirect
-; 2818 :              * is just a flag.
-; 2819 :              * Curr. hackish fix: to query state of assumecheck if indirect==TRUE.
-; 2820 :              * Proposed "good" fix: change EXPR_REG to EXPR_ADDR in
-; 2821 :              * CheckAssume(), that is, when the terminating  ']' was found.
-; 2822 :              */
-; 2823 :             //if ( opnd2->kind == EXPR_REG && opnd2->indirect == FALSE ) {
-; 2824 :             if ( opnd2->kind == EXPR_REG && ( opnd2->indirect == FALSE || opnd2->assumecheck == TRUE ) ) {
+; 2821 :             /* v2.02: if operand is a register, make sure
+; 2822 :              * that invalid combinations ("DWORD PTR AX") are flagged.
+; 2823 :              *
+; 2824 :              * v2.10: must also be checked inside []. However, it's
+; 2825 :              * a problem to properly handle this case, since opnd->indirect
+; 2826 :              * is just a flag.
+; 2827 :              * Curr. hackish fix: to query state of assumecheck if indirect==TRUE.
+; 2828 :              * Proposed "good" fix: change EXPR_REG to EXPR_ADDR in
+; 2829 :              * CheckAssume(), that is, when the terminating  ']' was found.
+; 2830 :              */
+; 2831 :             //if ( opnd2->kind == EXPR_REG && opnd2->indirect == FALSE ) {
+; 2832 :             if ( opnd2->kind == EXPR_REG && ( opnd2->indirect == FALSE || opnd2->assumecheck == TRUE ) ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 2
@@ -3524,15 +3525,15 @@ $LN51@calculate:
 	jne	$LN54@calculate
 $LN56@calculate:
 
-; 2825 :                 temp = opnd2->base_reg->tokval;
+; 2833 :                 temp = opnd2->base_reg->tokval;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+24]
 	mov	eax, DWORD PTR [rax+16]
 	mov	DWORD PTR temp$[rsp], eax
 
-; 2826 :                 /* for segment registers, both size 2 and 4 is ok.*/
-; 2827 :                 if ( GetValueSp( temp ) & OP_SR ) {
+; 2834 :                 /* for segment registers, both size 2 and 4 is ok.*/
+; 2835 :                 if ( GetValueSp( temp ) & OP_SR ) {
 
 	movsxd	rax, DWORD PTR temp$[rsp]
 	imul	rax, rax, 12
@@ -3542,7 +3543,7 @@ $LN56@calculate:
 	test	eax, eax
 	je	SHORT $LN57@calculate
 
-; 2828 :                     if ( opnd1->value != 2 && opnd1->value != 4 ) {
+; 2836 :                     if ( opnd1->value != 2 && opnd1->value != 4 ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax], 2
@@ -3551,26 +3552,26 @@ $LN56@calculate:
 	cmp	DWORD PTR [rax], 4
 	je	SHORT $LN59@calculate
 
-; 2829 :                         DebugMsg(("calculate(PTR): segment register size (=2/4) doesn't match type size (=%u)\n", opnd1->value ));
+; 2837 :                         DebugMsg(("calculate(PTR): segment register size (=2/4) doesn't match type size (=%u)\n", opnd1->value ));
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG12135
+	lea	rcx, OFFSET FLAT:$SG12139
 	call	DoDebugMsg
 
-; 2830 :                         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
+; 2838 :                         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
 	mov	ecx, 170				; 000000aaH
 	call	QWORD PTR fnEmitErr
 	jmp	$LN1@calculate
 $LN59@calculate:
 
-; 2831 :                     }
+; 2839 :                     }
 
 	jmp	SHORT $LN58@calculate
 $LN57@calculate:
 
-; 2832 :                 } else if ( opnd1->value != SizeFromRegister( temp ) ) {
+; 2840 :                 } else if ( opnd1->value != SizeFromRegister( temp ) ) {
 
 	mov	ecx, DWORD PTR temp$[rsp]
 	call	SizeFromRegister
@@ -3578,17 +3579,17 @@ $LN57@calculate:
 	cmp	DWORD PTR [rcx], eax
 	je	SHORT $LN60@calculate
 
-; 2833 :                     DebugMsg(("calculate(PTR): register size doesn't match type size; %u != %u\n", SizeFromRegister( temp ), opnd1->value ));
+; 2841 :                     DebugMsg(("calculate(PTR): register size doesn't match type size; %u != %u\n", SizeFromRegister( temp ), opnd1->value ));
 
 	mov	ecx, DWORD PTR temp$[rsp]
 	call	SizeFromRegister
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	r8d, DWORD PTR [rcx]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG12137
+	lea	rcx, OFFSET FLAT:$SG12141
 	call	DoDebugMsg
 
-; 2834 :                     return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
+; 2842 :                     return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
 	mov	ecx, 170				; 000000aaH
 	call	QWORD PTR fnEmitErr
@@ -3596,18 +3597,18 @@ $LN57@calculate:
 $LN60@calculate:
 $LN58@calculate:
 
-; 2835 :                 }
+; 2843 :                 }
 
 	jmp	SHORT $LN55@calculate
 $LN54@calculate:
 
-; 2836 :             } else if ( opnd2->kind == EXPR_FLOAT ) {
+; 2844 :             } else if ( opnd2->kind == EXPR_FLOAT ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 3
 	jne	SHORT $LN61@calculate
 
-; 2837 :                 if ( !( opnd1->mem_type & MT_FLOAT ) ) {
+; 2845 :                 if ( !( opnd1->mem_type & MT_FLOAT ) ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax+64]
@@ -3615,14 +3616,14 @@ $LN54@calculate:
 	test	eax, eax
 	jne	SHORT $LN62@calculate
 
-; 2838 :                     DebugMsg(("calculate(PTR): type memtype=%Xh ( MT_FLOAT not set, although right op is FLOAT )\n", opnd1->mem_type ));
+; 2846 :                     DebugMsg(("calculate(PTR): type memtype=%Xh ( MT_FLOAT not set, although right op is FLOAT )\n", opnd1->mem_type ));
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax+64]
-	lea	rcx, OFFSET FLAT:$SG12140
+	lea	rcx, OFFSET FLAT:$SG12144
 	call	DoDebugMsg
 
-; 2839 :                     return( fnEmitErr( REAL_OR_BCD_NUMBER_NOT_ALLOWED ) );
+; 2847 :                     return( fnEmitErr( REAL_OR_BCD_NUMBER_NOT_ALLOWED ) );
 
 	mov	ecx, 270				; 0000010eH
 	call	QWORD PTR fnEmitErr
@@ -3631,24 +3632,24 @@ $LN62@calculate:
 $LN61@calculate:
 $LN55@calculate:
 
-; 2840 :                 }
-; 2841 :             }
-; 2842 :             opnd2->mem_type = opnd1->mem_type;
+; 2848 :                 }
+; 2849 :             }
+; 2850 :             opnd2->mem_type = opnd1->mem_type;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	ecx, DWORD PTR [rcx+64]
 	mov	DWORD PTR [rax+64], ecx
 
-; 2843 :             opnd2->Ofssize  = opnd1->Ofssize;
+; 2851 :             opnd2->Ofssize  = opnd1->Ofssize;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	movzx	ecx, BYTE PTR [rcx+69]
 	mov	BYTE PTR [rax+69], cl
 
-; 2844 :             /* v2.04: added */
-; 2845 :             if ( opnd2->is_type )
+; 2852 :             /* v2.04: added */
+; 2853 :             if ( opnd2->is_type )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -3657,7 +3658,7 @@ $LN55@calculate:
 	test	eax, eax
 	je	SHORT $LN63@calculate
 
-; 2846 :                 opnd2->value  = opnd1->value;
+; 2854 :                 opnd2->value  = opnd1->value;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -3665,23 +3666,23 @@ $LN55@calculate:
 	mov	DWORD PTR [rax], ecx
 $LN63@calculate:
 
-; 2847 : 
-; 2848 :             /* todo: describe which case is handled here. How is the left
-; 2849 :              * operand of PTR supposed to get an override? And why is
-; 2850 :              * it necessary to change kind to EXPR_ADDR here? */
-; 2851 :             if ( opnd1->override != NULL ) {
+; 2855 : 
+; 2856 :             /* todo: describe which case is handled here. How is the left
+; 2857 :              * operand of PTR supposed to get an override? And why is
+; 2858 :              * it necessary to change kind to EXPR_ADDR here? */
+; 2859 :             if ( opnd1->override != NULL ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	QWORD PTR [rax+48], 0
 	je	SHORT $LN64@calculate
 
-; 2852 :                 if ( opnd2->override == NULL )
+; 2860 :                 if ( opnd2->override == NULL )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+48], 0
 	jne	SHORT $LN65@calculate
 
-; 2853 :                     opnd2->override = opnd1->override;
+; 2861 :                     opnd2->override = opnd1->override;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -3689,45 +3690,45 @@ $LN63@calculate:
 	mov	QWORD PTR [rax+48], rcx
 $LN65@calculate:
 
-; 2854 :                 opnd2->kind = EXPR_ADDR;
+; 2862 :                 opnd2->kind = EXPR_ADDR;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	DWORD PTR [rax+60], 1
 $LN64@calculate:
 
-; 2855 :             }
-; 2856 :             //if ( opnd1->mbr )
-; 2857 :             //    opnd2->mbr = opnd1->mbr;
-; 2858 :             //if ( opnd1->sym )
-; 2859 :             //    opnd2->sym = opnd1->sym;
-; 2860 :             //opnd2->instr = opnd1->instr;
-; 2861 : 
-; 2862 :             /* note: member type isn't copied, IOW: value of opnd1->type is kept. */
-; 2863 :             TokenAssign( opnd1, opnd2 );
+; 2863 :             }
+; 2864 :             //if ( opnd1->mbr )
+; 2865 :             //    opnd2->mbr = opnd1->mbr;
+; 2866 :             //if ( opnd1->sym )
+; 2867 :             //    opnd2->sym = opnd1->sym;
+; 2868 :             //opnd2->instr = opnd1->instr;
+; 2869 : 
+; 2870 :             /* note: member type isn't copied, IOW: value of opnd1->type is kept. */
+; 2871 :             TokenAssign( opnd1, opnd2 );
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	TokenAssign
 
-; 2864 :             break;
+; 2872 :             break;
 
 	jmp	$LN2@calculate
 $LN50@calculate:
 
-; 2865 :         }
-; 2866 : 
-; 2867 :         MakeConst( opnd1 );
+; 2873 :         }
+; 2874 : 
+; 2875 :         MakeConst( opnd1 );
 
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	MakeConst
 
-; 2868 :         MakeConst( opnd2 );
+; 2876 :         MakeConst( opnd2 );
 
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	call	MakeConst
 
-; 2869 : 
-; 2870 :         if ( check_same( opnd1, opnd2, EXPR_CONST ) )
+; 2877 : 
+; 2878 :         if ( check_same( opnd1, opnd2, EXPR_CONST ) )
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+60], 0
@@ -3736,14 +3737,14 @@ $LN50@calculate:
 	cmp	DWORD PTR [rax+60], 0
 	jne	SHORT $LN66@calculate
 
-; 2871 :             ;
+; 2879 :             ;
 
 	jmp	$LN67@calculate
 $LN66@calculate:
 
-; 2872 :         /* if it's EQ, NE, LE [, ...], operands may be either constants
-; 2873 :          or relocatable labels */
-; 2874 :         else if ( oper->precedence == CMP_PRECEDENCE &&
+; 2880 :         /* if it's EQ, NE, LE [, ...], operands may be either constants
+; 2881 :          or relocatable labels */
+; 2882 :         else if ( oper->precedence == CMP_PRECEDENCE &&
 
 	mov	rax, QWORD PTR oper$[rsp]
 	movzx	eax, BYTE PTR [rax+1]
@@ -3753,8 +3754,8 @@ $LN66@calculate:
 	cmp	DWORD PTR [rax+60], 0
 	je	$LN68@calculate
 
-; 2875 :                  opnd1->kind != EXPR_CONST ) {
-; 2876 :             if ( opnd1->kind == EXPR_ADDR && opnd1->indirect == FALSE && opnd1->sym )
+; 2883 :                  opnd1->kind != EXPR_CONST ) {
+; 2884 :             if ( opnd1->kind == EXPR_ADDR && opnd1->indirect == FALSE && opnd1->sym )
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+60], 1
@@ -3768,7 +3769,7 @@ $LN66@calculate:
 	cmp	QWORD PTR [rax+80], 0
 	je	$LN70@calculate
 
-; 2877 :                 if ( opnd2->kind == EXPR_ADDR && opnd2->indirect == FALSE && opnd2->sym ) {
+; 2885 :                 if ( opnd2->kind == EXPR_ADDR && opnd2->indirect == FALSE && opnd2->sym ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 1
@@ -3782,7 +3783,7 @@ $LN66@calculate:
 	cmp	QWORD PTR [rax+80], 0
 	je	SHORT $LN72@calculate
 
-; 2878 :                     if ( MakeConst2( opnd1, opnd2 ) == ERROR ) {
+; 2886 :                     if ( MakeConst2( opnd1, opnd2 ) == ERROR ) {
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -3790,26 +3791,26 @@ $LN66@calculate:
 	cmp	eax, -1
 	jne	SHORT $LN74@calculate
 
-; 2879 :                         DebugMsg(("calculate(%s) error 1\n", oper->string_ptr ));
+; 2887 :                         DebugMsg(("calculate(%s) error 1\n", oper->string_ptr ));
 
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12153
+	lea	rcx, OFFSET FLAT:$SG12157
 	call	DoDebugMsg
 
-; 2880 :                         return( ERROR );
+; 2888 :                         return( ERROR );
 
 	mov	eax, -1
 	jmp	$LN1@calculate
 $LN74@calculate:
 
-; 2881 :                     }
-; 2882 :                 } else {
+; 2889 :                     }
+; 2890 :                 } else {
 
 	jmp	$LN73@calculate
 $LN72@calculate:
 
-; 2883 :                     DebugMsg(("calculate(%s) error 2, token2.kind=%d indirect=%u sym=%s\n",
+; 2891 :                     DebugMsg(("calculate(%s) error 2, token2.kind=%d indirect=%u sym=%s\n",
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+80], 0
@@ -3820,7 +3821,7 @@ $LN72@calculate:
 	mov	QWORD PTR tv502[rsp], rax
 	jmp	SHORT $LN150@calculate
 $LN149@calculate:
-	lea	rax, OFFSET FLAT:$SG12154
+	lea	rax, OFFSET FLAT:$SG12158
 	mov	QWORD PTR tv502[rsp], rax
 $LN150@calculate:
 	mov	rax, QWORD PTR opnd2$[rsp]
@@ -3833,52 +3834,52 @@ $LN150@calculate:
 	mov	r8d, DWORD PTR [rax+60]
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12155
+	lea	rcx, OFFSET FLAT:$SG12159
 	call	DoDebugMsg
 
-; 2884 :                               oper->string_ptr, opnd2->kind, opnd2->indirect,
-; 2885 :                               opnd2->sym ? opnd2->sym->name : "NULL" ));
-; 2886 :                     return( fnEmitErr( OPERAND_MUST_BE_RELOCATABLE ) );
+; 2892 :                               oper->string_ptr, opnd2->kind, opnd2->indirect,
+; 2893 :                               opnd2->sym ? opnd2->sym->name : "NULL" ));
+; 2894 :                     return( fnEmitErr( OPERAND_MUST_BE_RELOCATABLE ) );
 
 	mov	ecx, 188				; 000000bcH
 	call	QWORD PTR fnEmitErr
 	jmp	$LN1@calculate
 $LN73@calculate:
 
-; 2887 :                 }
+; 2895 :                 }
 
 	jmp	SHORT $LN71@calculate
 $LN70@calculate:
 
-; 2888 :             else {
-; 2889 :                 DebugMsg(("calculate(%s) error 3\n", oper->string_ptr ));
+; 2896 :             else {
+; 2897 :                 DebugMsg(("calculate(%s) error 3\n", oper->string_ptr ));
 
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12156
+	lea	rcx, OFFSET FLAT:$SG12160
 	call	DoDebugMsg
 
-; 2890 :                 return( fnEmitErr( CONSTANT_OR_RELOCATABLE_LABEL_EXPECTED ) );
+; 2898 :                 return( fnEmitErr( CONSTANT_OR_RELOCATABLE_LABEL_EXPECTED ) );
 
 	mov	ecx, 189				; 000000bdH
 	call	QWORD PTR fnEmitErr
 	jmp	$LN1@calculate
 $LN71@calculate:
 
-; 2891 :             }
-; 2892 :         } else {
+; 2899 :             }
+; 2900 :         } else {
 
 	jmp	SHORT $LN69@calculate
 $LN68@calculate:
 
-; 2893 :             DebugMsg(("calculate(%s) error 4\n", oper->string_ptr ));
+; 2901 :             DebugMsg(("calculate(%s) error 4\n", oper->string_ptr ));
 
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12157
+	lea	rcx, OFFSET FLAT:$SG12161
 	call	DoDebugMsg
 
-; 2894 :             return( ConstError( opnd1, opnd2 ) );
+; 2902 :             return( ConstError( opnd1, opnd2 ) );
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -3887,9 +3888,9 @@ $LN68@calculate:
 $LN69@calculate:
 $LN67@calculate:
 
-; 2895 :         }
-; 2896 : 
-; 2897 :         DebugMsg1(("calculate(%s): values=%" I64_SPEC "d/%" I64_SPEC "d is_type=%u/%u memtypes=%X/%X\n", oper->string_ptr,
+; 2903 :         }
+; 2904 : 
+; 2905 :         DebugMsg1(("calculate(%s): values=%" I64_SPEC "d/%" I64_SPEC "d is_type=%u/%u memtypes=%X/%X\n", oper->string_ptr,
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -3913,11 +3914,11 @@ $LN67@calculate:
 	mov	r8, QWORD PTR [rax]
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12158
+	lea	rcx, OFFSET FLAT:$SG12162
 	call	DoDebugMsg1
 
-; 2898 :                    opnd1->value64, opnd2->value64, opnd1->is_type, opnd2->is_type, opnd1->mem_type, opnd2->mem_type  ));
-; 2899 :         switch( oper->tokval ) {
+; 2906 :                    opnd1->value64, opnd2->value64, opnd1->is_type, opnd2->is_type, opnd1->mem_type, opnd2->mem_type  ));
+; 2907 :         switch( oper->tokval ) {
 
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	eax, DWORD PTR [rax+16]
@@ -3948,10 +3949,10 @@ $LN163@calculate:
 	jmp	$LN4@calculate
 $LN75@calculate:
 
-; 2900 :         case T_EQ:
-; 2901 : #if 1 /* v2.03: added */
-; 2902 :             /* if both operands are types, do a more comprehensive comparison! */
-; 2903 :             if ( opnd1->is_type && opnd2->is_type ) {
+; 2908 :         case T_EQ:
+; 2909 : #if 1 /* v2.03: added */
+; 2910 :             /* if both operands are types, do a more comprehensive comparison! */
+; 2911 :             if ( opnd1->is_type && opnd2->is_type ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -3966,20 +3967,20 @@ $LN75@calculate:
 	test	eax, eax
 	je	SHORT $LN76@calculate
 
-; 2904 :                 cmp_types( opnd1, opnd2, -1 );
+; 2912 :                 cmp_types( opnd1, opnd2, -1 );
 
 	mov	r8d, -1
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	cmp_types
 
-; 2905 :             } else
+; 2913 :             } else
 
 	jmp	SHORT $LN77@calculate
 $LN76@calculate:
 
-; 2906 : #endif
-; 2907 :             opnd1->value64 = ( opnd1->value64 == opnd2->value64 ? -1:0 );
+; 2914 : #endif
+; 2915 :             opnd1->value64 = ( opnd1->value64 == opnd2->value64 ? -1:0 );
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -3996,15 +3997,15 @@ $LN152@calculate:
 	mov	QWORD PTR [rcx], rax
 $LN77@calculate:
 
-; 2908 :             break;
+; 2916 :             break;
 
 	jmp	$LN4@calculate
 $LN78@calculate:
 
-; 2909 :         case T_NE:
-; 2910 : #if 1 /* v2.03: added */
-; 2911 :             /* if both operands are types, do a more comprehensive comparison! */
-; 2912 :             if ( opnd1->is_type && opnd2->is_type ) {
+; 2917 :         case T_NE:
+; 2918 : #if 1 /* v2.03: added */
+; 2919 :             /* if both operands are types, do a more comprehensive comparison! */
+; 2920 :             if ( opnd1->is_type && opnd2->is_type ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -4019,20 +4020,20 @@ $LN78@calculate:
 	test	eax, eax
 	je	SHORT $LN79@calculate
 
-; 2913 :                 cmp_types( opnd1, opnd2, 0 );
+; 2921 :                 cmp_types( opnd1, opnd2, 0 );
 
 	xor	r8d, r8d
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	cmp_types
 
-; 2914 :             } else
+; 2922 :             } else
 
 	jmp	SHORT $LN80@calculate
 $LN79@calculate:
 
-; 2915 : #endif
-; 2916 :             opnd1->value64 = ( opnd1->value64 != opnd2->value64 ? -1:0 );
+; 2923 : #endif
+; 2924 :             opnd1->value64 = ( opnd1->value64 != opnd2->value64 ? -1:0 );
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -4049,13 +4050,13 @@ $LN154@calculate:
 	mov	QWORD PTR [rcx], rax
 $LN80@calculate:
 
-; 2917 :             break;
+; 2925 :             break;
 
 	jmp	$LN4@calculate
 $LN81@calculate:
 
-; 2918 :         case T_LT:
-; 2919 :             opnd1->value64 = ( opnd1->value64 <  opnd2->value64 ? -1:0 );
+; 2926 :         case T_LT:
+; 2927 :             opnd1->value64 = ( opnd1->value64 <  opnd2->value64 ? -1:0 );
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -4071,13 +4072,13 @@ $LN156@calculate:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 2920 :             break;
+; 2928 :             break;
 
 	jmp	$LN4@calculate
 $LN82@calculate:
 
-; 2921 :         case T_LE:
-; 2922 :             opnd1->value64 = ( opnd1->value64 <= opnd2->value64 ? -1:0 );
+; 2929 :         case T_LE:
+; 2930 :             opnd1->value64 = ( opnd1->value64 <= opnd2->value64 ? -1:0 );
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -4093,13 +4094,13 @@ $LN158@calculate:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 2923 :             break;
+; 2931 :             break;
 
 	jmp	$LN4@calculate
 $LN83@calculate:
 
-; 2924 :         case T_GT:
-; 2925 :             opnd1->value64 = ( opnd1->value64 >  opnd2->value64 ? -1:0 );
+; 2932 :         case T_GT:
+; 2933 :             opnd1->value64 = ( opnd1->value64 >  opnd2->value64 ? -1:0 );
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -4115,13 +4116,13 @@ $LN160@calculate:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 2926 :             break;
+; 2934 :             break;
 
 	jmp	$LN4@calculate
 $LN84@calculate:
 
-; 2927 :         case T_GE:
-; 2928 :             opnd1->value64 = ( opnd1->value64 >= opnd2->value64 ? -1:0 );
+; 2935 :         case T_GE:
+; 2936 :             opnd1->value64 = ( opnd1->value64 >= opnd2->value64 ? -1:0 );
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -4137,30 +4138,30 @@ $LN162@calculate:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 2929 :             break;
+; 2937 :             break;
 
 	jmp	$LN4@calculate
 $LN85@calculate:
 
-; 2930 :         case T_MOD:
-; 2931 :             if ( opnd2->llvalue == 0 ) {
+; 2938 :         case T_MOD:
+; 2939 :             if ( opnd2->llvalue == 0 ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax], 0
 	jne	SHORT $LN86@calculate
 
-; 2932 :                 return( fnEmitErr( DIVIDE_BY_ZERO_IN_EXPR ) );
+; 2940 :                 return( fnEmitErr( DIVIDE_BY_ZERO_IN_EXPR ) );
 
 	mov	ecx, 167				; 000000a7H
 	call	QWORD PTR fnEmitErr
 	jmp	$LN1@calculate
 
-; 2933 :             } else
+; 2941 :             } else
 
 	jmp	SHORT $LN87@calculate
 $LN86@calculate:
 
-; 2934 :                 opnd1->llvalue %= opnd2->llvalue;
+; 2942 :                 opnd1->llvalue %= opnd2->llvalue;
 
 	xor	edx, edx
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -4172,52 +4173,52 @@ $LN86@calculate:
 	mov	QWORD PTR [rcx], rax
 $LN87@calculate:
 
-; 2935 :             break;
+; 2943 :             break;
 
 	jmp	$LN4@calculate
 $LN88@calculate:
 
-; 2936 :         case T_SHL:
-; 2937 :             /* v2.04: check for shift count < 0 */
-; 2938 :             DebugMsg1(("calculate(SHL): value=%" I64_SPEC "X << %" I32_SPEC "u (max=%u)\n", opnd1->llvalue, opnd2->value, 8 * sizeof( opnd1->llvalue ) ));
+; 2944 :         case T_SHL:
+; 2945 :             /* v2.04: check for shift count < 0 */
+; 2946 :             DebugMsg1(("calculate(SHL): value=%" I64_SPEC "X << %" I32_SPEC "u (max=%u)\n", opnd1->llvalue, opnd2->value, 8 * sizeof( opnd1->llvalue ) ));
 
 	mov	r9d, 64					; 00000040H
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	r8d, DWORD PTR [rax]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rdx, QWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG12173
+	lea	rcx, OFFSET FLAT:$SG12177
 	call	DoDebugMsg1
 
-; 2939 :             if ( opnd2->value < 0 )
+; 2947 :             if ( opnd2->value < 0 )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax], 0
 	jge	SHORT $LN89@calculate
 
-; 2940 :                 fnEmitErr( COUNT_MUST_BE_POSITIVE_OR_ZERO );
+; 2948 :                 fnEmitErr( COUNT_MUST_BE_POSITIVE_OR_ZERO );
 
 	mov	ecx, 208				; 000000d0H
 	call	QWORD PTR fnEmitErr
 	jmp	SHORT $LN90@calculate
 $LN89@calculate:
 
-; 2941 :             else if ( opnd2->value >= ( 8 * sizeof( opnd1->llvalue ) ) )
+; 2949 :             else if ( opnd2->value >= ( 8 * sizeof( opnd1->llvalue ) ) )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	movsxd	rax, DWORD PTR [rax]
 	cmp	rax, 64					; 00000040H
 	jb	SHORT $LN91@calculate
 
-; 2942 :                 opnd1->llvalue = 0;
+; 2950 :                 opnd1->llvalue = 0;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rax], 0
 	jmp	SHORT $LN92@calculate
 $LN91@calculate:
 
-; 2943 :             else
-; 2944 :                 opnd1->llvalue = opnd1->llvalue << opnd2->value;
+; 2951 :             else
+; 2952 :                 opnd1->llvalue = opnd1->llvalue << opnd2->value;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax]
@@ -4232,14 +4233,14 @@ $LN91@calculate:
 $LN92@calculate:
 $LN90@calculate:
 
-; 2945 :             /* v2.01: result is 64-bit only if mode is USE64 */
-; 2946 :             /* v2.06: for -Zm only. This is not entirely correct,
-; 2947 :              * since Masm v6x also does 32-bit shifts, but since v2.06
-; 2948 :              * HJWasm intends to behave like Masm v8+.
-; 2949 :              * Might be better to implement OPTION EXPR16|32|64.
-; 2950 :              */
-; 2951 :             //if ( ModuleInfo.Ofssize <= USE32 ) {
-; 2952 :             if ( ModuleInfo.m510 ) {
+; 2953 :             /* v2.01: result is 64-bit only if mode is USE64 */
+; 2954 :             /* v2.06: for -Zm only. This is not entirely correct,
+; 2955 :              * since Masm v6x also does 32-bit shifts, but since v2.06
+; 2956 :              * HJWasm intends to behave like Masm v8+.
+; 2957 :              * Might be better to implement OPTION EXPR16|32|64.
+; 2958 :              */
+; 2959 :             //if ( ModuleInfo.Ofssize <= USE32 ) {
+; 2960 :             if ( ModuleInfo.m510 ) {
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	shr	eax, 6
@@ -4247,66 +4248,66 @@ $LN90@calculate:
 	test	eax, eax
 	je	SHORT $LN93@calculate
 
-; 2953 :                 opnd1->hvalue = 0;
+; 2961 :                 opnd1->hvalue = 0;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+4], 0
 
-; 2954 :                 opnd1->hlvalue = 0;
+; 2962 :                 opnd1->hlvalue = 0;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rax+8], 0
 $LN93@calculate:
 
-; 2955 :             }
-; 2956 :             break;
+; 2963 :             }
+; 2964 :             break;
 
 	jmp	$LN4@calculate
 $LN94@calculate:
 
-; 2957 :         case T_SHR:
-; 2958 :             /* Masm v8 works with unsigned 64-bit,
-; 2959 :              * Masm v6 masks shift count with 0x3F.
-; 2960 :              * v2.04: does behave like Masm v8+.
-; 2961 :              * there is a problem with some compilers if shift
-; 2962 :              * count is >= 64. So in this case the result is zeroed manually
-; 2963 :              */
-; 2964 : #if 0
-; 2965 :             if ( opnd1->hvalue == -1 ) {
-; 2966 :                 opnd1->hvalue = 0;
-; 2967 :                 opnd1->hlvalue = 0;
-; 2968 :             }
-; 2969 : #endif
-; 2970 :             /* v2.04: check for shift count < 0 */
-; 2971 :             if ( opnd2->value < 0 )
+; 2965 :         case T_SHR:
+; 2966 :             /* Masm v8 works with unsigned 64-bit,
+; 2967 :              * Masm v6 masks shift count with 0x3F.
+; 2968 :              * v2.04: does behave like Masm v8+.
+; 2969 :              * there is a problem with some compilers if shift
+; 2970 :              * count is >= 64. So in this case the result is zeroed manually
+; 2971 :              */
+; 2972 : #if 0
+; 2973 :             if ( opnd1->hvalue == -1 ) {
+; 2974 :                 opnd1->hvalue = 0;
+; 2975 :                 opnd1->hlvalue = 0;
+; 2976 :             }
+; 2977 : #endif
+; 2978 :             /* v2.04: check for shift count < 0 */
+; 2979 :             if ( opnd2->value < 0 )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax], 0
 	jge	SHORT $LN95@calculate
 
-; 2972 :                 fnEmitErr( COUNT_MUST_BE_POSITIVE_OR_ZERO );
+; 2980 :                 fnEmitErr( COUNT_MUST_BE_POSITIVE_OR_ZERO );
 
 	mov	ecx, 208				; 000000d0H
 	call	QWORD PTR fnEmitErr
 	jmp	SHORT $LN96@calculate
 $LN95@calculate:
 
-; 2973 :             else if ( opnd2->value >= ( 8 * sizeof( opnd1->llvalue ) ) )
+; 2981 :             else if ( opnd2->value >= ( 8 * sizeof( opnd1->llvalue ) ) )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	movsxd	rax, DWORD PTR [rax]
 	cmp	rax, 64					; 00000040H
 	jb	SHORT $LN97@calculate
 
-; 2974 :                 opnd1->llvalue = 0;
+; 2982 :                 opnd1->llvalue = 0;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rax], 0
 	jmp	SHORT $LN98@calculate
 $LN97@calculate:
 
-; 2975 :             else
-; 2976 :                 opnd1->llvalue = opnd1->llvalue >> opnd2->value;
+; 2983 :             else
+; 2984 :                 opnd1->llvalue = opnd1->llvalue >> opnd2->value;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax]
@@ -4321,13 +4322,13 @@ $LN97@calculate:
 $LN98@calculate:
 $LN96@calculate:
 
-; 2977 :             break;
+; 2985 :             break;
 
 	jmp	SHORT $LN4@calculate
 $LN99@calculate:
 
-; 2978 :         case T_AND:
-; 2979 :             opnd1->llvalue &= opnd2->llvalue;
+; 2986 :         case T_AND:
+; 2987 :             opnd1->llvalue &= opnd2->llvalue;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -4337,13 +4338,13 @@ $LN99@calculate:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 2980 :             break;
+; 2988 :             break;
 
 	jmp	SHORT $LN4@calculate
 $LN100@calculate:
 
-; 2981 :         case T_OR:
-; 2982 :             opnd1->llvalue |= opnd2->llvalue;
+; 2989 :         case T_OR:
+; 2990 :             opnd1->llvalue |= opnd2->llvalue;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -4353,13 +4354,13 @@ $LN100@calculate:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 2983 :             break;
+; 2991 :             break;
 
 	jmp	SHORT $LN4@calculate
 $LN101@calculate:
 
-; 2984 :         case T_XOR:
-; 2985 :             opnd1->llvalue ^= opnd2->llvalue;
+; 2992 :         case T_XOR:
+; 2993 :             opnd1->llvalue ^= opnd2->llvalue;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -4370,15 +4371,15 @@ $LN101@calculate:
 	mov	QWORD PTR [rcx], rax
 $LN4@calculate:
 
-; 2986 :             break;
-; 2987 :         }
-; 2988 :         break; /* end case T_BINARY_OPERATOR */
+; 2994 :             break;
+; 2995 :         }
+; 2996 :         break; /* end case T_BINARY_OPERATOR */
 
 	jmp	$LN2@calculate
 $LN102@calculate:
 
-; 2989 :     case T_UNARY_OPERATOR:
-; 2990 :         DebugMsg1(("calculate(%s [T_UNARY_OPERATOR]): opnd2 kind=%d sym=%s mbr=%s type=%s memtype=%X is_type=%u indirect=%u\n",
+; 2997 :     case T_UNARY_OPERATOR:
+; 2998 :         DebugMsg1(("calculate(%s [T_UNARY_OPERATOR]): opnd2 kind=%d sym=%s mbr=%s type=%s memtype=%X is_type=%u indirect=%u\n",
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+96], 0
@@ -4389,7 +4390,7 @@ $LN102@calculate:
 	mov	QWORD PTR tv710[rsp], rax
 	jmp	SHORT $LN165@calculate
 $LN164@calculate:
-	lea	rax, OFFSET FLAT:$SG12188
+	lea	rax, OFFSET FLAT:$SG12192
 	mov	QWORD PTR tv710[rsp], rax
 $LN165@calculate:
 	mov	rax, QWORD PTR opnd2$[rsp]
@@ -4401,7 +4402,7 @@ $LN165@calculate:
 	mov	QWORD PTR tv716[rsp], rax
 	jmp	SHORT $LN167@calculate
 $LN166@calculate:
-	lea	rax, OFFSET FLAT:$SG12189
+	lea	rax, OFFSET FLAT:$SG12193
 	mov	QWORD PTR tv716[rsp], rax
 $LN167@calculate:
 	mov	rax, QWORD PTR opnd2$[rsp]
@@ -4413,7 +4414,7 @@ $LN167@calculate:
 	mov	QWORD PTR tv722[rsp], rax
 	jmp	SHORT $LN169@calculate
 $LN168@calculate:
-	lea	rax, OFFSET FLAT:$SG12190
+	lea	rax, OFFSET FLAT:$SG12194
 	mov	QWORD PTR tv722[rsp], rax
 $LN169@calculate:
 	mov	rax, QWORD PTR opnd2$[rsp]
@@ -4437,57 +4438,57 @@ $LN169@calculate:
 	mov	r8d, DWORD PTR [rax+60]
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12191
+	lea	rcx, OFFSET FLAT:$SG12195
 	call	DoDebugMsg1
 
-; 2991 :                    oper->string_ptr,
-; 2992 :                    opnd2->kind,
-; 2993 :                    opnd2->sym ? opnd2->sym->name : "NULL",
-; 2994 :                    opnd2->mbr ? opnd2->mbr->name : "NULL",
-; 2995 :                    opnd2->type ? opnd2->type->name : "NULL",
-; 2996 :                    opnd2->mem_type, opnd2->is_type, opnd2->indirect ));
-; 2997 :         /* NOT is an instruction and hence has no valid
-; 2998 :          * value to be returned by GetValueSp() or GetSflagsSp()!
-; 2999 :          */
-; 3000 :         if( oper->tokval == T_NOT ) {
+; 2999 :                    oper->string_ptr,
+; 3000 :                    opnd2->kind,
+; 3001 :                    opnd2->sym ? opnd2->sym->name : "NULL",
+; 3002 :                    opnd2->mbr ? opnd2->mbr->name : "NULL",
+; 3003 :                    opnd2->type ? opnd2->type->name : "NULL",
+; 3004 :                    opnd2->mem_type, opnd2->is_type, opnd2->indirect ));
+; 3005 :         /* NOT is an instruction and hence has no valid
+; 3006 :          * value to be returned by GetValueSp() or GetSflagsSp()!
+; 3007 :          */
+; 3008 :         if( oper->tokval == T_NOT ) {
 
 	mov	rax, QWORD PTR oper$[rsp]
 	cmp	DWORD PTR [rax+16], 576			; 00000240H
 	jne	SHORT $LN103@calculate
 
-; 3001 :             MakeConst( opnd2 );
+; 3009 :             MakeConst( opnd2 );
 
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	call	MakeConst
 
-; 3002 :             if( opnd2->kind != EXPR_CONST ) {
+; 3010 :             if( opnd2->kind != EXPR_CONST ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 0
 	je	SHORT $LN104@calculate
 
-; 3003 :                 DebugMsg(("calculate(%s) error 1\n", oper->string_ptr ));
+; 3011 :                 DebugMsg(("calculate(%s) error 1\n", oper->string_ptr ));
 
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12194
+	lea	rcx, OFFSET FLAT:$SG12198
 	call	DoDebugMsg
 
-; 3004 :                 return( fnEmitErr( CONSTANT_OPERAND_EXPECTED ) );
+; 3012 :                 return( fnEmitErr( CONSTANT_OPERAND_EXPECTED ) );
 
 	mov	ecx, 66					; 00000042H
 	call	QWORD PTR fnEmitErr
 	jmp	$LN1@calculate
 $LN104@calculate:
 
-; 3005 :             }
-; 3006 :             TokenAssign( opnd1, opnd2 );
+; 3013 :             }
+; 3014 :             TokenAssign( opnd1, opnd2 );
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	TokenAssign
 
-; 3007 :             opnd1->llvalue = ~(opnd2->llvalue);
+; 3015 :             opnd1->llvalue = ~(opnd2->llvalue);
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -4495,35 +4496,35 @@ $LN104@calculate:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 3008 :             break;
+; 3016 :             break;
 
 	jmp	$LN2@calculate
 $LN103@calculate:
 
-; 3009 :         }
-; 3010 : 
-; 3011 :         /* operator         accepts
-; 3012 :          ----------------------------------------------
-; 3013 :          SIZEOF/SIZE        label, type, struct field
-; 3014 :          LENGTHOF/LENGTH    label, struct field
-; 3015 :          TYPE               label, type, struct field, register, number
-; 3016 :          LOW                constant, label (OMF+BIN only)
-; 3017 :          HIGH               constant, label (OMF+BIN only)
-; 3018 :          LOWWORD            constant, label
-; 3019 :          HIGHWORD           constant
-; 3020 :          LOW32              constant, label, float
-; 3021 :          HIGH32             constant, float
-; 3022 :          THIS               type
-; 3023 :          OPATTR/.TYPE       label, type, struct field, register, number
-; 3024 :          SHORT              label
-; 3025 :          SEG                label
-; 3026 :          OFFSET/LROFFSET    label, struct field, number
-; 3027 :          IMAGEREL           label
-; 3028 :          SECTIONREL         label
-; 3029 :          WIDTH/MASK         bitfields or RECORD type
-; 3030 :          */
-; 3031 : 
-; 3032 :         temp = GetValueSp( oper->tokval );
+; 3017 :         }
+; 3018 : 
+; 3019 :         /* operator         accepts
+; 3020 :          ----------------------------------------------
+; 3021 :          SIZEOF/SIZE        label, type, struct field
+; 3022 :          LENGTHOF/LENGTH    label, struct field
+; 3023 :          TYPE               label, type, struct field, register, number
+; 3024 :          LOW                constant, label (OMF+BIN only)
+; 3025 :          HIGH               constant, label (OMF+BIN only)
+; 3026 :          LOWWORD            constant, label
+; 3027 :          HIGHWORD           constant
+; 3028 :          LOW32              constant, label, float
+; 3029 :          HIGH32             constant, float
+; 3030 :          THIS               type
+; 3031 :          OPATTR/.TYPE       label, type, struct field, register, number
+; 3032 :          SHORT              label
+; 3033 :          SEG                label
+; 3034 :          OFFSET/LROFFSET    label, struct field, number
+; 3035 :          IMAGEREL           label
+; 3036 :          SECTIONREL         label
+; 3037 :          WIDTH/MASK         bitfields or RECORD type
+; 3038 :          */
+; 3039 : 
+; 3040 :         temp = GetValueSp( oper->tokval );
 
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	eax, DWORD PTR [rax+16]
@@ -4532,37 +4533,37 @@ $LN103@calculate:
 	mov	eax, DWORD PTR [rcx+rax]
 	mov	DWORD PTR temp$[rsp], eax
 
-; 3033 : 
-; 3034 :         sym = opnd2->sym;
+; 3041 : 
+; 3042 :         sym = opnd2->sym;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
 	mov	QWORD PTR sym$[rsp], rax
 
-; 3035 :         if( opnd2->mbr != NULL )
+; 3043 :         if( opnd2->mbr != NULL )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+88], 0
 	je	SHORT $LN105@calculate
 
-; 3036 :             sym = opnd2->mbr;
+; 3044 :             sym = opnd2->mbr;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+88]
 	mov	QWORD PTR sym$[rsp], rax
 $LN105@calculate:
 
-; 3037 : 
-; 3038 :         /* for error displays, get the position of the operand that
-; 3039 :          * caused the trouble.
-; 3040 :          */
-; 3041 :         if ( opnd2->instr != EMPTY )
+; 3045 : 
+; 3046 :         /* for error displays, get the position of the operand that
+; 3047 :          * caused the trouble.
+; 3048 :          */
+; 3049 :         if ( opnd2->instr != EMPTY )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+56], -2
 	je	SHORT $LN106@calculate
 
-; 3042 :             name = oper->tokpos + strlen( oper->string_ptr ) + 1;
+; 3050 :             name = oper->tokpos + strlen( oper->string_ptr ) + 1;
 
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	rcx, QWORD PTR [rax+8]
@@ -4574,12 +4575,12 @@ $LN105@calculate:
 	jmp	SHORT $LN107@calculate
 $LN106@calculate:
 
-; 3043 :         else if ( sym )
+; 3051 :         else if ( sym )
 
 	cmp	QWORD PTR sym$[rsp], 0
 	je	SHORT $LN108@calculate
 
-; 3044 :             name = sym->name;
+; 3052 :             name = sym->name;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+8]
@@ -4587,7 +4588,7 @@ $LN106@calculate:
 	jmp	SHORT $LN109@calculate
 $LN108@calculate:
 
-; 3045 :         else if ( opnd2->base_reg != NULL && opnd2->indirect == FALSE )
+; 3053 :         else if ( opnd2->base_reg != NULL && opnd2->indirect == FALSE )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+24], 0
@@ -4598,7 +4599,7 @@ $LN108@calculate:
 	test	eax, eax
 	jne	SHORT $LN110@calculate
 
-; 3046 :             name = opnd2->base_reg->string_ptr;
+; 3054 :             name = opnd2->base_reg->string_ptr;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+24]
@@ -4607,8 +4608,8 @@ $LN108@calculate:
 	jmp	SHORT $LN111@calculate
 $LN110@calculate:
 
-; 3047 :         else
-; 3048 :             name = oper->tokpos + strlen( oper->string_ptr ) + 1;
+; 3055 :         else
+; 3056 :             name = oper->tokpos + strlen( oper->string_ptr ) + 1;
 
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	rcx, QWORD PTR [rax+8]
@@ -4621,8 +4622,8 @@ $LN111@calculate:
 $LN109@calculate:
 $LN107@calculate:
 
-; 3049 : 
-; 3050 :         switch ( opnd2->kind ) {
+; 3057 : 
+; 3058 :         switch ( opnd2->kind ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+60]
@@ -4638,11 +4639,11 @@ $LN107@calculate:
 	jmp	$LN6@calculate
 $LN112@calculate:
 
-; 3051 :         case EXPR_CONST:
-; 3052 :             /* v2.05: conditions "struct-field" and "istype" exchanged */
-; 3053 :             /* is item a struct field? */
-; 3054 :             /* v2.10: fixme: EXPR_CONST & mbr!=NULL - what's that supposed to be? */
-; 3055 :             if ( opnd2->mbr != NULL && opnd2->mbr->state != SYM_TYPE ) {
+; 3059 :         case EXPR_CONST:
+; 3060 :             /* v2.05: conditions "struct-field" and "istype" exchanged */
+; 3061 :             /* is item a struct field? */
+; 3062 :             /* v2.10: fixme: EXPR_CONST & mbr!=NULL - what's that supposed to be? */
+; 3063 :             if ( opnd2->mbr != NULL && opnd2->mbr->state != SYM_TYPE ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+88], 0
@@ -4652,21 +4653,21 @@ $LN112@calculate:
 	cmp	DWORD PTR [rax+32], 7
 	je	SHORT $LN113@calculate
 
-; 3056 :                 if ( opnd2->mbr->mem_type == MT_BITS ) { /* bitfield? */
+; 3064 :                 if ( opnd2->mbr->mem_type == MT_BITS ) { /* bitfield? */
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+88]
 	cmp	DWORD PTR [rax+36], 193			; 000000c1H
 	jne	SHORT $LN115@calculate
 
-; 3057 :                     if ( ( temp & AT_BF ) == 0 ) {
+; 3065 :                     if ( ( temp & AT_BF ) == 0 ) {
 
 	mov	eax, DWORD PTR temp$[rsp]
 	and	eax, 64					; 00000040H
 	test	eax, eax
 	jne	SHORT $LN117@calculate
 
-; 3058 :                         return( invalid_operand( opnd2, oper->string_ptr, name ) );
+; 3066 :                         return( invalid_operand( opnd2, oper->string_ptr, name ) );
 
 	mov	r8, QWORD PTR name$[rsp]
 	mov	rax, QWORD PTR oper$[rsp]
@@ -4676,20 +4677,20 @@ $LN112@calculate:
 	jmp	$LN1@calculate
 $LN117@calculate:
 
-; 3059 :                     }
-; 3060 :                 } else {
+; 3067 :                     }
+; 3068 :                 } else {
 
 	jmp	SHORT $LN116@calculate
 $LN115@calculate:
 
-; 3061 :                     if ( ( temp & AT_FIELD ) == 0 ) {
+; 3069 :                     if ( ( temp & AT_FIELD ) == 0 ) {
 
 	mov	eax, DWORD PTR temp$[rsp]
 	and	eax, 16
 	test	eax, eax
 	jne	SHORT $LN118@calculate
 
-; 3062 :                         return( invalid_operand( opnd2, oper->string_ptr, name ) );
+; 3070 :                         return( invalid_operand( opnd2, oper->string_ptr, name ) );
 
 	mov	r8, QWORD PTR name$[rsp]
 	mov	rax, QWORD PTR oper$[rsp]
@@ -4700,13 +4701,13 @@ $LN115@calculate:
 $LN118@calculate:
 $LN116@calculate:
 
-; 3063 :                     }
-; 3064 :                 }
+; 3071 :                     }
+; 3072 :                 }
 
 	jmp	SHORT $LN114@calculate
 $LN113@calculate:
 
-; 3065 :             } else if ( opnd2->is_type ) { /* is item a type? */
+; 3073 :             } else if ( opnd2->is_type ) { /* is item a type? */
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -4715,14 +4716,14 @@ $LN113@calculate:
 	test	eax, eax
 	je	SHORT $LN119@calculate
 
-; 3066 :                 if ( ( temp & AT_TYPE ) == 0 ) {
+; 3074 :                 if ( ( temp & AT_TYPE ) == 0 ) {
 
 	mov	eax, DWORD PTR temp$[rsp]
 	and	eax, 1
 	test	eax, eax
 	jne	SHORT $LN121@calculate
 
-; 3067 :                     return( invalid_operand( opnd2, oper->string_ptr, name ) );
+; 3075 :                     return( invalid_operand( opnd2, oper->string_ptr, name ) );
 
 	mov	r8, QWORD PTR name$[rsp]
 	mov	rax, QWORD PTR oper$[rsp]
@@ -4732,20 +4733,20 @@ $LN113@calculate:
 	jmp	$LN1@calculate
 $LN121@calculate:
 
-; 3068 :                 }
-; 3069 :             } else { /*  or is it a number? */
+; 3076 :                 }
+; 3077 :             } else { /*  or is it a number? */
 
 	jmp	SHORT $LN120@calculate
 $LN119@calculate:
 
-; 3070 :                 if ( ( temp & AT_NUM ) == 0 ) {
+; 3078 :                 if ( ( temp & AT_NUM ) == 0 ) {
 
 	mov	eax, DWORD PTR temp$[rsp]
 	and	eax, 32					; 00000020H
 	test	eax, eax
 	jne	SHORT $LN122@calculate
 
-; 3071 :                     return( invalid_operand( opnd2, oper->string_ptr, name ) );
+; 3079 :                     return( invalid_operand( opnd2, oper->string_ptr, name ) );
 
 	mov	r8, QWORD PTR name$[rsp]
 	mov	rax, QWORD PTR oper$[rsp]
@@ -4757,16 +4758,16 @@ $LN122@calculate:
 $LN120@calculate:
 $LN114@calculate:
 
-; 3072 :                 }
-; 3073 :             }
-; 3074 :             break;
+; 3080 :                 }
+; 3081 :             }
+; 3082 :             break;
 
 	jmp	$LN6@calculate
 $LN123@calculate:
 
-; 3075 :         case EXPR_ADDR:
-; 3076 :             /* an indirect memory operand? (not an auto variable) */
-; 3077 :             if ( opnd2->indirect == TRUE && opnd2->sym == NULL ) {
+; 3083 :         case EXPR_ADDR:
+; 3084 :             /* an indirect memory operand? (not an auto variable) */
+; 3085 :             if ( opnd2->indirect == TRUE && opnd2->sym == NULL ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -4777,14 +4778,14 @@ $LN123@calculate:
 	cmp	QWORD PTR [rax+80], 0
 	jne	SHORT $LN124@calculate
 
-; 3078 :                 if ( ( temp & AT_IND ) == 0 ) {
+; 3086 :                 if ( ( temp & AT_IND ) == 0 ) {
 
 	mov	eax, DWORD PTR temp$[rsp]
 	and	eax, 4
 	test	eax, eax
 	jne	SHORT $LN126@calculate
 
-; 3079 :                     return( invalid_operand( opnd2, oper->string_ptr, name ) );
+; 3087 :                     return( invalid_operand( opnd2, oper->string_ptr, name ) );
 
 	mov	r8, QWORD PTR name$[rsp]
 	mov	rax, QWORD PTR oper$[rsp]
@@ -4794,20 +4795,20 @@ $LN123@calculate:
 	jmp	$LN1@calculate
 $LN126@calculate:
 
-; 3080 :                 }
-; 3081 :             } else {
+; 3088 :                 }
+; 3089 :             } else {
 
 	jmp	SHORT $LN125@calculate
 $LN124@calculate:
 
-; 3082 :                 if ( ( temp & AT_LABEL ) == 0 ) {
+; 3090 :                 if ( ( temp & AT_LABEL ) == 0 ) {
 
 	mov	eax, DWORD PTR temp$[rsp]
 	and	eax, 2
 	test	eax, eax
 	jne	SHORT $LN127@calculate
 
-; 3083 :                     return( invalid_operand( opnd2, oper->string_ptr, name ) );
+; 3091 :                     return( invalid_operand( opnd2, oper->string_ptr, name ) );
 
 	mov	r8, QWORD PTR name$[rsp]
 	mov	rax, QWORD PTR oper$[rsp]
@@ -4818,51 +4819,51 @@ $LN124@calculate:
 $LN127@calculate:
 $LN125@calculate:
 
-; 3084 :                 }
-; 3085 :             }
-; 3086 : #if 0 /* v2.08: this if() obsolete? */
-; 3087 :             if( opnd2->instr != EMPTY ) {
-; 3088 :                 /* if instr is set, it's not a full address */
-; 3089 :                 switch ( oper->tokval ) {
-; 3090 :                 case T_LOW:
-; 3091 :                 case T_HIGH:
-; 3092 :                 case T_LOWWORD:
-; 3093 :                 case T_HIGHWORD:
-; 3094 : #if LOHI32
-; 3095 :                 case T_LOW32:
-; 3096 :                 case T_HIGH32:
-; 3097 : #endif
-; 3098 :                 case T_TYPE:
-; 3099 :                 case T_OPATTR:
-; 3100 :                 case T_DOT_TYPE:
-; 3101 :                 case T_OFFSET: /* v2.08: added, to allow OFFSET OFFSET <addr> */
-; 3102 :                     break;
-; 3103 :                 default:
-; 3104 :                     /* remaining: OFFSET, LROFFSET, IMAGEREL, SECTIONREL, SEG,
-; 3105 :                      * SHORT
-; 3106 :                      * THIS (won't set opnd.instr)
-; 3107 :                      * (SIZE, SIZEOF, LENGTH, LENGHTOF, MASK, WIDTH) -> EXPR_CONST
-; 3108 :                      *
-; 3109 :                      */
-; 3110 :                     DebugMsg(("calculate %s error 2\n", oper->string_ptr ));
-; 3111 :                     return( fnEmitErr( LABEL_EXPECTED ) );
-; 3112 :                 }
-; 3113 :             }
-; 3114 : #endif
-; 3115 :             break;
+; 3092 :                 }
+; 3093 :             }
+; 3094 : #if 0 /* v2.08: this if() obsolete? */
+; 3095 :             if( opnd2->instr != EMPTY ) {
+; 3096 :                 /* if instr is set, it's not a full address */
+; 3097 :                 switch ( oper->tokval ) {
+; 3098 :                 case T_LOW:
+; 3099 :                 case T_HIGH:
+; 3100 :                 case T_LOWWORD:
+; 3101 :                 case T_HIGHWORD:
+; 3102 : #if LOHI32
+; 3103 :                 case T_LOW32:
+; 3104 :                 case T_HIGH32:
+; 3105 : #endif
+; 3106 :                 case T_TYPE:
+; 3107 :                 case T_OPATTR:
+; 3108 :                 case T_DOT_TYPE:
+; 3109 :                 case T_OFFSET: /* v2.08: added, to allow OFFSET OFFSET <addr> */
+; 3110 :                     break;
+; 3111 :                 default:
+; 3112 :                     /* remaining: OFFSET, LROFFSET, IMAGEREL, SECTIONREL, SEG,
+; 3113 :                      * SHORT
+; 3114 :                      * THIS (won't set opnd.instr)
+; 3115 :                      * (SIZE, SIZEOF, LENGTH, LENGHTOF, MASK, WIDTH) -> EXPR_CONST
+; 3116 :                      *
+; 3117 :                      */
+; 3118 :                     DebugMsg(("calculate %s error 2\n", oper->string_ptr ));
+; 3119 :                     return( fnEmitErr( LABEL_EXPECTED ) );
+; 3120 :                 }
+; 3121 :             }
+; 3122 : #endif
+; 3123 :             break;
 
 	jmp	SHORT $LN6@calculate
 $LN128@calculate:
 
-; 3116 :         case EXPR_REG:
-; 3117 :             if ( ( temp & AT_REG ) == 0 ) {
+; 3124 :         case EXPR_REG:
+; 3125 :             if ( ( temp & AT_REG ) == 0 ) {
 
 	mov	eax, DWORD PTR temp$[rsp]
 	and	eax, 8
 	test	eax, eax
 	jne	SHORT $LN129@calculate
 
-; 3118 :                 return( invalid_operand( opnd2, oper->string_ptr, name ) );
+; 3126 :                 return( invalid_operand( opnd2, oper->string_ptr, name ) );
 
 	mov	r8, QWORD PTR name$[rsp]
 	mov	rax, QWORD PTR oper$[rsp]
@@ -4872,28 +4873,28 @@ $LN128@calculate:
 	jmp	$LN1@calculate
 $LN129@calculate:
 
-; 3119 :             }
-; 3120 :             break;
+; 3127 :             }
+; 3128 :             break;
 
 	jmp	SHORT $LN6@calculate
 $LN130@calculate:
 
-; 3121 :         case EXPR_FLOAT: /* v2.05: added */
-; 3122 :             if ( ( temp & AT_FLOAT ) == 0 ) {
+; 3129 :         case EXPR_FLOAT: /* v2.05: added */
+; 3130 :             if ( ( temp & AT_FLOAT ) == 0 ) {
 
 	mov	eax, DWORD PTR temp$[rsp]
 	and	eax, 256				; 00000100H
 	test	eax, eax
 	jne	SHORT $LN131@calculate
 
-; 3123 :                 DebugMsg(("calculate %s 'float' error\n", oper->string_ptr ));
+; 3131 :                 DebugMsg(("calculate %s 'float' error\n", oper->string_ptr ));
 
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12222
+	lea	rcx, OFFSET FLAT:$SG12226
 	call	DoDebugMsg
 
-; 3124 :                 return( fnEmitErr( REAL_OR_BCD_NUMBER_NOT_ALLOWED ) );
+; 3132 :                 return( fnEmitErr( REAL_OR_BCD_NUMBER_NOT_ALLOWED ) );
 
 	mov	ecx, 270				; 0000010eH
 	call	QWORD PTR fnEmitErr
@@ -4901,11 +4902,11 @@ $LN130@calculate:
 $LN131@calculate:
 $LN6@calculate:
 
-; 3125 :             }
-; 3126 :             break;
-; 3127 :         }
-; 3128 : #ifdef DEBUG_OUT
-; 3129 :         if ( unaryop[ GetSflagsSp( oper->tokval ) ]( oper->tokval, opnd1, opnd2, sym, name ) == ERROR )
+; 3133 :             }
+; 3134 :             break;
+; 3135 :         }
+; 3136 : #ifdef DEBUG_OUT
+; 3137 :         if ( unaryop[ GetSflagsSp( oper->tokval ) ]( oper->tokval, opnd1, opnd2, sym, name ) == ERROR )
 
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	eax, DWORD PTR [rax+16]
@@ -4926,30 +4927,30 @@ $LN6@calculate:
 	cmp	eax, -1
 	jne	SHORT $LN132@calculate
 
-; 3130 :             return( ERROR );
+; 3138 :             return( ERROR );
 
 	mov	eax, -1
 	jmp	$LN1@calculate
 $LN132@calculate:
 
-; 3131 :         break;
+; 3139 :         break;
 
 	jmp	SHORT $LN2@calculate
 $LN133@calculate:
 
-; 3132 : #else
-; 3133 :         return( unaryop[ GetSflagsSp( oper->tokval ) ]( oper->tokval, opnd1, opnd2, sym, name ) );
-; 3134 : #endif
-; 3135 :     //case T_RES_ID:
-; 3136 :     default: /* shouldn't happen */
-; 3137 :         DebugMsg(("calculate(%s): unknown operator\n", oper->string_ptr ));
+; 3140 : #else
+; 3141 :         return( unaryop[ GetSflagsSp( oper->tokval ) ]( oper->tokval, opnd1, opnd2, sym, name ) );
+; 3142 : #endif
+; 3143 :     //case T_RES_ID:
+; 3144 :     default: /* shouldn't happen */
+; 3145 :         DebugMsg(("calculate(%s): unknown operator\n", oper->string_ptr ));
 
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12225
+	lea	rcx, OFFSET FLAT:$SG12229
 	call	DoDebugMsg
 
-; 3138 :         return( fnEmitErr( SYNTAX_ERROR_EX, oper->string_ptr ) );
+; 3146 :         return( fnEmitErr( SYNTAX_ERROR_EX, oper->string_ptr ) );
 
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
@@ -4958,16 +4959,16 @@ $LN133@calculate:
 	jmp	$LN1@calculate
 $LN2@calculate:
 
-; 3139 :     } /* end switch( oper->token ) */
-; 3140 : 
-; 3141 : #ifdef DEBUG_OUT
-; 3142 :     if ( opnd1->hlvalue ) {
+; 3147 :     } /* end switch( oper->token ) */
+; 3148 : 
+; 3149 : #ifdef DEBUG_OUT
+; 3150 :     if ( opnd1->hlvalue ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	QWORD PTR [rax+8], 0
 	je	$LN134@calculate
 
-; 3143 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
+; 3151 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	QWORD PTR [rax+96], 0
@@ -4978,7 +4979,7 @@ $LN2@calculate:
 	mov	QWORD PTR tv886[rsp], rax
 	jmp	SHORT $LN171@calculate
 $LN170@calculate:
-	lea	rax, OFFSET FLAT:$SG12228
+	lea	rax, OFFSET FLAT:$SG12232
 	mov	QWORD PTR tv886[rsp], rax
 $LN171@calculate:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -5001,24 +5002,24 @@ $LN171@calculate:
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG12229
+	lea	rcx, OFFSET FLAT:$SG12233
 	call	DoDebugMsg1
 	jmp	$LN135@calculate
 $LN134@calculate:
 
-; 3144 :                    evallvl,
-; 3145 :                    oper->string_ptr,
-; 3146 :                    opnd1->kind,
-; 3147 :                    opnd1->hlvalue, opnd1->llvalue,
-; 3148 :                    opnd1->mem_type,
-; 3149 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3150 :     } else if ( opnd1->hvalue ) {
+; 3152 :                    evallvl,
+; 3153 :                    oper->string_ptr,
+; 3154 :                    opnd1->kind,
+; 3155 :                    opnd1->hlvalue, opnd1->llvalue,
+; 3156 :                    opnd1->mem_type,
+; 3157 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3158 :     } else if ( opnd1->hvalue ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+4], 0
 	je	$LN136@calculate
 
-; 3151 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
+; 3159 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	QWORD PTR [rax+96], 0
@@ -5029,7 +5030,7 @@ $LN134@calculate:
 	mov	QWORD PTR tv909[rsp], rax
 	jmp	SHORT $LN173@calculate
 $LN172@calculate:
-	lea	rax, OFFSET FLAT:$SG12232
+	lea	rax, OFFSET FLAT:$SG12236
 	mov	QWORD PTR tv909[rsp], rax
 $LN173@calculate:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -5052,21 +5053,21 @@ $LN173@calculate:
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG12233
+	lea	rcx, OFFSET FLAT:$SG12237
 	call	DoDebugMsg1
 
-; 3152 :                    evallvl,
-; 3153 :                    oper->string_ptr,
-; 3154 :                    opnd1->kind,
-; 3155 :                    opnd1->llvalue, opnd1->llvalue,
-; 3156 :                    opnd1->mem_type,
-; 3157 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3158 :     } else {
+; 3160 :                    evallvl,
+; 3161 :                    oper->string_ptr,
+; 3162 :                    opnd1->kind,
+; 3163 :                    opnd1->llvalue, opnd1->llvalue,
+; 3164 :                    opnd1->mem_type,
+; 3165 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3166 :     } else {
 
 	jmp	$LN137@calculate
 $LN136@calculate:
 
-; 3159 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
+; 3167 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	QWORD PTR [rax+88], 0
@@ -5077,7 +5078,7 @@ $LN136@calculate:
 	mov	QWORD PTR tv930[rsp], rax
 	jmp	SHORT $LN175@calculate
 $LN174@calculate:
-	lea	rax, OFFSET FLAT:$SG12234
+	lea	rax, OFFSET FLAT:$SG12238
 	mov	QWORD PTR tv930[rsp], rax
 $LN175@calculate:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -5089,7 +5090,7 @@ $LN175@calculate:
 	mov	QWORD PTR tv936[rsp], rax
 	jmp	SHORT $LN177@calculate
 $LN176@calculate:
-	lea	rax, OFFSET FLAT:$SG12235
+	lea	rax, OFFSET FLAT:$SG12239
 	mov	QWORD PTR tv936[rsp], rax
 $LN177@calculate:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -5119,27 +5120,27 @@ $LN177@calculate:
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG12236
+	lea	rcx, OFFSET FLAT:$SG12240
 	call	DoDebugMsg1
 $LN137@calculate:
 $LN135@calculate:
 
-; 3160 :                    evallvl,
-; 3161 :                    oper->string_ptr,
-; 3162 :                    opnd1->kind,
-; 3163 :                    opnd1->value, opnd1->value,
-; 3164 :                    opnd1->mem_type,
-; 3165 :                    opnd1->indirect, opnd1->explicit,
-; 3166 :                    opnd1->type ? opnd1->type->name : "NULL",
-; 3167 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
-; 3168 :     }
-; 3169 : #endif
-; 3170 :     return( NOT_ERROR );
+; 3168 :                    evallvl,
+; 3169 :                    oper->string_ptr,
+; 3170 :                    opnd1->kind,
+; 3171 :                    opnd1->value, opnd1->value,
+; 3172 :                    opnd1->mem_type,
+; 3173 :                    opnd1->indirect, opnd1->explicit,
+; 3174 :                    opnd1->type ? opnd1->type->name : "NULL",
+; 3175 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
+; 3176 :     }
+; 3177 : #endif
+; 3178 :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@calculate:
 
-; 3171 : }
+; 3179 : }
 
 	add	rsp, 288				; 00000120H
 	pop	rdi
@@ -5272,7 +5273,7 @@ opnd2$ = 152
 trueval$ = 160
 cmp_types PROC
 
-; 2526 : {
+; 2534 : {
 
 	mov	DWORD PTR [rsp+24], r8d
 	mov	QWORD PTR [rsp+16], rdx
@@ -5285,12 +5286,12 @@ cmp_types PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+144]
 
-; 2527 :     struct asym *type1;
-; 2528 :     struct asym *type2;
-; 2529 : 
-; 2530 :     /* v2.10: special handling of pointer types. */
-; 2531 :     //if ( opnd1->mem_type == MT_PTR && opnd2->mem_type == MT_PTR && opnd1->type && opnd2->type ) {
-; 2532 :     if ( opnd1->mem_type == MT_PTR && opnd2->mem_type == MT_PTR ) {
+; 2535 :     struct asym *type1;
+; 2536 :     struct asym *type2;
+; 2537 : 
+; 2538 :     /* v2.10: special handling of pointer types. */
+; 2539 :     //if ( opnd1->mem_type == MT_PTR && opnd2->mem_type == MT_PTR && opnd1->type && opnd2->type ) {
+; 2540 :     if ( opnd1->mem_type == MT_PTR && opnd2->mem_type == MT_PTR ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+64], 195			; 000000c3H
@@ -5299,7 +5300,7 @@ cmp_types PROC
 	cmp	DWORD PTR [rax+64], 195			; 000000c3H
 	jne	$LN2@cmp_types
 
-; 2533 :         /**/myassert( ( opnd1->type || opnd1->type_tok ) && ( opnd2->type || opnd2->type_tok ) );
+; 2541 :         /**/myassert( ( opnd1->type || opnd1->type_tok ) && ( opnd2->type || opnd2->type_tok ) );
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	QWORD PTR [rax+96], 0
@@ -5318,13 +5319,13 @@ $LN8@cmp_types:
 	mov	DWORD PTR tv79[rsp], 0
 	jmp	SHORT $LN10@cmp_types
 $LN9@cmp_types:
-	mov	edx, 2533				; 000009e5H
-	lea	rcx, OFFSET FLAT:$SG12031
+	mov	edx, 2541				; 000009edH
+	lea	rcx, OFFSET FLAT:$SG12035
 	call	InternalError
 	mov	DWORD PTR tv79[rsp], eax
 $LN10@cmp_types:
 
-; 2534 :         type1 = ( opnd1->type ? opnd1->type : SymSearch( opnd1->type_tok->string_ptr ) );
+; 2542 :         type1 = ( opnd1->type ? opnd1->type : SymSearch( opnd1->type_tok->string_ptr ) );
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	QWORD PTR [rax+96], 0
@@ -5343,7 +5344,7 @@ $LN12@cmp_types:
 	mov	rax, QWORD PTR tv87[rsp]
 	mov	QWORD PTR type1$[rsp], rax
 
-; 2535 :         type2 = ( opnd2->type ? opnd2->type : SymSearch( opnd2->type_tok->string_ptr ) );
+; 2543 :         type2 = ( opnd2->type ? opnd2->type : SymSearch( opnd2->type_tok->string_ptr ) );
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+96], 0
@@ -5362,8 +5363,8 @@ $LN14@cmp_types:
 	mov	rax, QWORD PTR tv95[rsp]
 	mov	QWORD PTR type2$[rsp], rax
 
-; 2536 :         //opnd1->value64 = ( ( type1->is_ptr == type2->is_ptr &&
-; 2537 :         opnd1->value64 = ( ( type1->is_ptr == type2->is_ptr &&
+; 2544 :         //opnd1->value64 = ( ( type1->is_ptr == type2->is_ptr &&
+; 2545 :         opnd1->value64 = ( ( type1->is_ptr == type2->is_ptr &&
 
 	mov	rax, QWORD PTR type1$[rsp]
 	movzx	eax, BYTE PTR [rax+45]
@@ -5394,9 +5395,9 @@ $LN16@cmp_types:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 2538 :                             type1->ptr_memtype == type2->ptr_memtype &&
-; 2539 :                             type1->target_type == type2->target_type ) ? trueval : ~trueval );
-; 2540 :         DebugMsg1(("cmp_types: MT_PTR-MT_PTR is_ptr=%u-%u ptr_memtype=%X-%X target_type=%X-%X\n",
+; 2546 :                             type1->ptr_memtype == type2->ptr_memtype &&
+; 2547 :                             type1->target_type == type2->target_type ) ? trueval : ~trueval );
+; 2548 :         DebugMsg1(("cmp_types: MT_PTR-MT_PTR is_ptr=%u-%u ptr_memtype=%X-%X target_type=%X-%X\n",
 
 	mov	rax, QWORD PTR type2$[rsp]
 	movzx	eax, BYTE PTR [rax+46]
@@ -5418,18 +5419,18 @@ $LN16@cmp_types:
 	mov	r8d, edx
 	mov	eax, DWORD PTR tv159[rsp]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG12032
+	lea	rcx, OFFSET FLAT:$SG12036
 	call	DoDebugMsg1
 
-; 2541 :                    type1->is_ptr, type2->is_ptr,
-; 2542 :                    type1->ptr_memtype, type2->ptr_memtype,
-; 2543 :                    type1->target_type, type2->target_type ));
-; 2544 :     } else {
+; 2549 :                    type1->is_ptr, type2->is_ptr,
+; 2550 :                    type1->ptr_memtype, type2->ptr_memtype,
+; 2551 :                    type1->target_type, type2->target_type ));
+; 2552 :     } else {
 
 	jmp	$LN3@cmp_types
 $LN2@cmp_types:
 
-; 2545 :         DebugMsg1(("cmp_types: memtype=%X-%X type=%X-%X\n",
+; 2553 :         DebugMsg1(("cmp_types: memtype=%X-%X type=%X-%X\n",
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+96]
@@ -5440,12 +5441,12 @@ $LN2@cmp_types:
 	mov	r8d, DWORD PTR [rax+64]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax+64]
-	lea	rcx, OFFSET FLAT:$SG12033
+	lea	rcx, OFFSET FLAT:$SG12037
 	call	DoDebugMsg1
 
-; 2546 :                    opnd1->mem_type, opnd2->mem_type, opnd1->type, opnd2->type ));
-; 2547 :         /* v2.09: include type member in comparison, but ignore typedef types */
-; 2548 :         if ( opnd1->type && opnd1->type->typekind == TYPE_TYPEDEF && opnd1->type->is_ptr == 0 )
+; 2554 :                    opnd1->mem_type, opnd2->mem_type, opnd1->type, opnd2->type ));
+; 2555 :         /* v2.09: include type member in comparison, but ignore typedef types */
+; 2556 :         if ( opnd1->type && opnd1->type->typekind == TYPE_TYPEDEF && opnd1->type->is_ptr == 0 )
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	QWORD PTR [rax+96], 0
@@ -5461,13 +5462,13 @@ $LN2@cmp_types:
 	test	eax, eax
 	jne	SHORT $LN4@cmp_types
 
-; 2549 :             opnd1->type = NULL;
+; 2557 :             opnd1->type = NULL;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rax+96], 0
 $LN4@cmp_types:
 
-; 2550 :         if ( opnd2->type && opnd2->type->typekind == TYPE_TYPEDEF && opnd2->type->is_ptr == 0 )
+; 2558 :         if ( opnd2->type && opnd2->type->typekind == TYPE_TYPEDEF && opnd2->type->is_ptr == 0 )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+96], 0
@@ -5483,13 +5484,13 @@ $LN4@cmp_types:
 	test	eax, eax
 	jne	SHORT $LN5@cmp_types
 
-; 2551 :             opnd2->type = NULL;
+; 2559 :             opnd2->type = NULL;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	QWORD PTR [rax+96], 0
 $LN5@cmp_types:
 
-; 2552 :         opnd1->value64 = ( ( opnd1->mem_type == opnd2->mem_type &&
+; 2560 :         opnd1->value64 = ( ( opnd1->mem_type == opnd2->mem_type &&
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -5514,9 +5515,9 @@ $LN18@cmp_types:
 	mov	QWORD PTR [rcx], rax
 $LN3@cmp_types:
 
-; 2553 :                             opnd1->type == opnd2->type ) ? trueval : ~trueval );
-; 2554 :     }
-; 2555 : }
+; 2561 :                             opnd1->type == opnd2->type ) ? trueval : ~trueval );
+; 2562 :     }
+; 2563 : }
 
 	add	rsp, 128				; 00000080H
 	pop	rdi
@@ -5530,7 +5531,7 @@ opnd1$ = 48
 opnd2$ = 56
 check_streg PROC
 
-; 2510 : {
+; 2518 : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -5542,22 +5543,22 @@ check_streg PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+48]
 
-; 2511 :     if ( opnd1->scale > 0 ) {
+; 2519 :     if ( opnd1->scale > 0 ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	movzx	eax, BYTE PTR [rax+68]
 	test	eax, eax
 	jle	SHORT $LN2@check_stre
 
-; 2512 :         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
+; 2520 :         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
 	mov	ecx, 170				; 000000aaH
 	call	QWORD PTR fnEmitErr
 	jmp	SHORT $LN1@check_stre
 $LN2@check_stre:
 
-; 2513 :     }
-; 2514 :     opnd1->scale++; /* make sure there's only ONE bracket pair */
+; 2521 :     }
+; 2522 :     opnd1->scale++; /* make sure there's only ONE bracket pair */
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	movzx	eax, BYTE PTR [rax+68]
@@ -5565,33 +5566,33 @@ $LN2@check_stre:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	BYTE PTR [rcx+68], al
 
-; 2515 :     if ( opnd2->kind != EXPR_CONST ) {
+; 2523 :     if ( opnd2->kind != EXPR_CONST ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 0
 	je	SHORT $LN3@check_stre
 
-; 2516 :         return( fnEmitErr( INVALID_COPROCESSOR_REGISTER ) );
+; 2524 :         return( fnEmitErr( INVALID_COPROCESSOR_REGISTER ) );
 
 	mov	ecx, 252				; 000000fcH
 	call	QWORD PTR fnEmitErr
 	jmp	SHORT $LN1@check_stre
 $LN3@check_stre:
 
-; 2517 :     }
-; 2518 :     opnd1->st_idx = opnd2->value;
+; 2525 :     }
+; 2526 :     opnd1->st_idx = opnd2->value;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	ecx, DWORD PTR [rcx]
 	mov	DWORD PTR [rax], ecx
 
-; 2519 :     return( NOT_ERROR );
+; 2527 :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@check_stre:
 
-; 2520 : }
+; 2528 : }
 
 	add	rsp, 32					; 00000020H
 	pop	rdi
@@ -5612,7 +5613,7 @@ tv152 = 128
 opnd$ = 160
 CheckAssume PROC
 
-; 2448 : {
+; 2456 : {
 
 	mov	QWORD PTR [rsp+8], rcx
 	push	rdi
@@ -5623,13 +5624,13 @@ CheckAssume PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+160]
 
-; 2449 :     struct asym *sym = NULL;
+; 2457 :     struct asym *sym = NULL;
 
 	mov	QWORD PTR sym$[rsp], 0
 
-; 2450 : 
-; 2451 : #if 1 /* v2.10: see regression test ptr2.asm */
-; 2452 :     if ( opnd->explicit ) { /* perhaps check mem_type instead of explicit */
+; 2458 : 
+; 2459 : #if 1 /* v2.10: see regression test ptr2.asm */
+; 2460 :     if ( opnd->explicit ) { /* perhaps check mem_type instead of explicit */
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -5638,7 +5639,7 @@ CheckAssume PROC
 	test	eax, eax
 	je	$LN2@CheckAssum
 
-; 2453 :         if ( opnd->type && opnd->type->mem_type == MT_PTR ) {
+; 2461 :         if ( opnd->type && opnd->type->mem_type == MT_PTR ) {
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	cmp	QWORD PTR [rax+96], 0
@@ -5648,15 +5649,15 @@ CheckAssume PROC
 	cmp	DWORD PTR [rax+36], 195			; 000000c3H
 	jne	SHORT $LN3@CheckAssum
 
-; 2454 :             DebugMsg1(( "CheckAssume(%s, MT_PTR type=>%s< )\n", opnd->type->name ));
+; 2462 :             DebugMsg1(( "CheckAssume(%s, MT_PTR type=>%s< )\n", opnd->type->name ));
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11993
+	lea	rcx, OFFSET FLAT:$SG11997
 	call	DoDebugMsg1
 
-; 2455 :             if ( opnd->type->is_ptr == 1 ) { /* dereference only if indirection is 1 */
+; 2463 :             if ( opnd->type->is_ptr == 1 ) { /* dereference only if indirection is 1 */
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rax, QWORD PTR [rax+96]
@@ -5664,7 +5665,7 @@ CheckAssume PROC
 	cmp	eax, 1
 	jne	SHORT $LN4@CheckAssum
 
-; 2456 :                 opnd->mem_type = opnd->type->ptr_memtype;
+; 2464 :                 opnd->mem_type = opnd->type->ptr_memtype;
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rax, QWORD PTR [rax+96]
@@ -5672,7 +5673,7 @@ CheckAssume PROC
 	mov	rcx, QWORD PTR opnd$[rsp]
 	mov	DWORD PTR [rcx+64], eax
 
-; 2457 :                 opnd->type = opnd->type->target_type;
+; 2465 :                 opnd->type = opnd->type->target_type;
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rax, QWORD PTR [rax+96]
@@ -5680,33 +5681,33 @@ CheckAssume PROC
 	mov	rax, QWORD PTR [rax+48]
 	mov	QWORD PTR [rcx+96], rax
 
-; 2458 :                 return; /* ignore assumes in this case */
+; 2466 :                 return; /* ignore assumes in this case */
 
 	jmp	$LN1@CheckAssum
 $LN4@CheckAssum:
 $LN3@CheckAssum:
 $LN2@CheckAssum:
 
-; 2459 :             }
-; 2460 :         }
-; 2461 :     }
-; 2462 : #endif
-; 2463 :     /* in jwasm < v2.10, the idx_reg had higher priority than base_reg.
-; 2464 :      * However, the base reg is supposed to have a higher priority.
-; 2465 :      * This wasn't fully clear, because in Masm 6, if no register has
-; 2466 :      * a scaling factor, the second one becomes base - something that
-; 2467 :      * HJWasm didn't do, unless -Zg was set.
-; 2468 :      * Since v2.10, HJWasm behaves like Masm v6+: base and index registers
-; 2469 :      * are swapped, and assume for base has higher priority than assume for
-; 2470 :      * index.
-; 2471 :      */
-; 2472 :     if ( opnd->base_reg ) {
+; 2467 :             }
+; 2468 :         }
+; 2469 :     }
+; 2470 : #endif
+; 2471 :     /* in jwasm < v2.10, the idx_reg had higher priority than base_reg.
+; 2472 :      * However, the base reg is supposed to have a higher priority.
+; 2473 :      * This wasn't fully clear, because in Masm 6, if no register has
+; 2474 :      * a scaling factor, the second one becomes base - something that
+; 2475 :      * HJWasm didn't do, unless -Zg was set.
+; 2476 :      * Since v2.10, HJWasm behaves like Masm v6+: base and index registers
+; 2477 :      * are swapped, and assume for base has higher priority than assume for
+; 2478 :      * index.
+; 2479 :      */
+; 2480 :     if ( opnd->base_reg ) {
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	cmp	QWORD PTR [rax+24], 0
 	je	SHORT $LN5@CheckAssum
 
-; 2473 :         sym = GetStdAssumeEx( opnd->base_reg->bytval );
+; 2481 :         sym = GetStdAssumeEx( opnd->base_reg->bytval );
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rax, QWORD PTR [rax+24]
@@ -5716,8 +5717,8 @@ $LN2@CheckAssum:
 	mov	QWORD PTR sym$[rsp], rax
 $LN5@CheckAssum:
 
-; 2474 :     }
-; 2475 :     if (!sym && opnd->idx_reg ) {
+; 2482 :     }
+; 2483 :     if (!sym && opnd->idx_reg ) {
 
 	cmp	QWORD PTR sym$[rsp], 0
 	jne	SHORT $LN6@CheckAssum
@@ -5725,7 +5726,7 @@ $LN5@CheckAssum:
 	cmp	QWORD PTR [rax+32], 0
 	je	SHORT $LN6@CheckAssum
 
-; 2476 :         sym = GetStdAssumeEx( opnd->idx_reg->bytval );
+; 2484 :         sym = GetStdAssumeEx( opnd->idx_reg->bytval );
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rax, QWORD PTR [rax+32]
@@ -5735,13 +5736,13 @@ $LN5@CheckAssum:
 	mov	QWORD PTR sym$[rsp], rax
 $LN6@CheckAssum:
 
-; 2477 :     }
-; 2478 :     if ( sym ) {
+; 2485 :     }
+; 2486 :     if ( sym ) {
 
 	cmp	QWORD PTR sym$[rsp], 0
 	je	$LN7@CheckAssum
 
-; 2479 :         DebugMsg1(( "CheckAssume(%s, type=>%s<, mbr=>%s<): assume=%s [memtype=%X isptr=%u type=%s target_type=%s ptr_memt=%X]\n",
+; 2487 :         DebugMsg1(( "CheckAssume(%s, type=>%s<, mbr=>%s<): assume=%s [memtype=%X isptr=%u type=%s target_type=%s ptr_memt=%X]\n",
 
 	mov	rax, QWORD PTR sym$[rsp]
 	cmp	QWORD PTR [rax+48], 0
@@ -5752,7 +5753,7 @@ $LN6@CheckAssum:
 	mov	QWORD PTR tv143[rsp], rax
 	jmp	SHORT $LN15@CheckAssum
 $LN14@CheckAssum:
-	lea	rax, OFFSET FLAT:$SG11998
+	lea	rax, OFFSET FLAT:$SG12002
 	mov	QWORD PTR tv143[rsp], rax
 $LN15@CheckAssum:
 	mov	rax, QWORD PTR sym$[rsp]
@@ -5764,7 +5765,7 @@ $LN15@CheckAssum:
 	mov	QWORD PTR tv149[rsp], rax
 	jmp	SHORT $LN17@CheckAssum
 $LN16@CheckAssum:
-	lea	rax, OFFSET FLAT:$SG11999
+	lea	rax, OFFSET FLAT:$SG12003
 	mov	QWORD PTR tv149[rsp], rax
 $LN17@CheckAssum:
 	mov	rax, QWORD PTR opnd$[rsp]
@@ -5776,7 +5777,7 @@ $LN17@CheckAssum:
 	mov	QWORD PTR tv162[rsp], rax
 	jmp	SHORT $LN19@CheckAssum
 $LN18@CheckAssum:
-	lea	rax, OFFSET FLAT:$SG12000
+	lea	rax, OFFSET FLAT:$SG12004
 	mov	QWORD PTR tv162[rsp], rax
 $LN19@CheckAssum:
 	mov	rax, QWORD PTR opnd$[rsp]
@@ -5788,7 +5789,7 @@ $LN19@CheckAssum:
 	mov	QWORD PTR tv168[rsp], rax
 	jmp	SHORT $LN21@CheckAssum
 $LN20@CheckAssum:
-	lea	rax, OFFSET FLAT:$SG12001
+	lea	rax, OFFSET FLAT:$SG12005
 	mov	QWORD PTR tv168[rsp], rax
 $LN21@CheckAssum:
 	mov	rax, QWORD PTR opnd$[rsp]
@@ -5831,30 +5832,30 @@ $LN23@CheckAssum:
 	mov	r9, QWORD PTR tv162[rsp]
 	mov	r8, QWORD PTR tv168[rsp]
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG12002
+	lea	rcx, OFFSET FLAT:$SG12006
 	call	DoDebugMsg1
 
-; 2480 :                    GetResWName( ( opnd->idx_reg ? opnd->idx_reg->tokval : opnd->base_reg->tokval ), NULL ),
-; 2481 :                    opnd->type ? opnd->type->name : "NULL",
-; 2482 :                    opnd->mbr ? opnd->mbr->name : "NULL",
-; 2483 :                    sym->name, sym->mem_type, sym->is_ptr,
-; 2484 :                    sym->type ? sym->type->name : "NULL",
-; 2485 :                    sym->target_type ? sym->target_type->name : "NULL",
-; 2486 :                    sym->ptr_memtype ));
-; 2487 :         /* v2.08: skip ASSUMEd type if type or mbr is set */
-; 2488 :         //if ( opnd->type || opnd->mbr )
-; 2489 :         //    return;
-; 2490 :         /* skip "alias" types */
-; 2491 :         /* v2.05: obsolete */
-; 2492 :         //for ( ; sym->type; sym = sym->type );
-; 2493 :         /* v2.05: new */
-; 2494 :         if ( sym->mem_type == MT_TYPE )
+; 2488 :                    GetResWName( ( opnd->idx_reg ? opnd->idx_reg->tokval : opnd->base_reg->tokval ), NULL ),
+; 2489 :                    opnd->type ? opnd->type->name : "NULL",
+; 2490 :                    opnd->mbr ? opnd->mbr->name : "NULL",
+; 2491 :                    sym->name, sym->mem_type, sym->is_ptr,
+; 2492 :                    sym->type ? sym->type->name : "NULL",
+; 2493 :                    sym->target_type ? sym->target_type->name : "NULL",
+; 2494 :                    sym->ptr_memtype ));
+; 2495 :         /* v2.08: skip ASSUMEd type if type or mbr is set */
+; 2496 :         //if ( opnd->type || opnd->mbr )
+; 2497 :         //    return;
+; 2498 :         /* skip "alias" types */
+; 2499 :         /* v2.05: obsolete */
+; 2500 :         //for ( ; sym->type; sym = sym->type );
+; 2501 :         /* v2.05: new */
+; 2502 :         if ( sym->mem_type == MT_TYPE )
 
 	mov	rax, QWORD PTR sym$[rsp]
 	cmp	DWORD PTR [rax+36], 196			; 000000c4H
 	jne	SHORT $LN8@CheckAssum
 
-; 2495 :             opnd->type = sym->type;
+; 2503 :             opnd->type = sym->type;
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rcx, QWORD PTR sym$[rsp]
@@ -5863,27 +5864,27 @@ $LN23@CheckAssum:
 	jmp	SHORT $LN9@CheckAssum
 $LN8@CheckAssum:
 
-; 2496 :         else if ( sym->is_ptr == 1 ) { /* v2.10: only dereference if indirection is 1 */
+; 2504 :         else if ( sym->is_ptr == 1 ) { /* v2.10: only dereference if indirection is 1 */
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+45]
 	cmp	eax, 1
 	jne	SHORT $LN10@CheckAssum
 
-; 2497 :             opnd->type = sym->target_type;
+; 2505 :             opnd->type = sym->target_type;
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	rcx, QWORD PTR [rcx+48]
 	mov	QWORD PTR [rax+96], rcx
 
-; 2498 :             if ( sym->target_type )
+; 2506 :             if ( sym->target_type )
 
 	mov	rax, QWORD PTR sym$[rsp]
 	cmp	QWORD PTR [rax+48], 0
 	je	SHORT $LN11@CheckAssum
 
-; 2499 :                 opnd->mem_type = sym->target_type->mem_type;
+; 2507 :                 opnd->mem_type = sym->target_type->mem_type;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+48]
@@ -5893,8 +5894,8 @@ $LN8@CheckAssum:
 	jmp	SHORT $LN12@CheckAssum
 $LN11@CheckAssum:
 
-; 2500 :             else
-; 2501 :                 opnd->mem_type = sym->ptr_memtype;
+; 2508 :             else
+; 2509 :                 opnd->mem_type = sym->ptr_memtype;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+46]
@@ -5906,9 +5907,9 @@ $LN9@CheckAssum:
 $LN7@CheckAssum:
 $LN1@CheckAssum:
 
-; 2502 :         }
-; 2503 :     }
-; 2504 : }
+; 2510 :         }
+; 2511 :     }
+; 2512 : }
 
 	add	rsp, 144				; 00000090H
 	pop	rdi
@@ -5922,7 +5923,7 @@ opnd1$ = 48
 opnd2$ = 56
 negative_op PROC
 
-; 2413 : {
+; 2421 : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -5934,38 +5935,38 @@ negative_op PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+48]
 
-; 2414 :     DebugMsg1(("negative_op: value=%" I64_SPEC "X high=%" I64_SPEC "X\n", opnd2->llvalue, opnd2->hlvalue ));
+; 2422 :     DebugMsg1(("negative_op: value=%" I64_SPEC "X high=%" I64_SPEC "X\n", opnd2->llvalue, opnd2->hlvalue ));
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rdx, QWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG11977
+	lea	rcx, OFFSET FLAT:$SG11981
 	call	DoDebugMsg1
 
-; 2415 :     /*
-; 2416 :      * The formats allowed are:
-; 2417 :      *        - constant
-; 2418 :      *        - float
-; 2419 :      */
-; 2420 : 
-; 2421 :     MakeConst( opnd2 );
+; 2423 :     /*
+; 2424 :      * The formats allowed are:
+; 2425 :      *        - constant
+; 2426 :      *        - float
+; 2427 :      */
+; 2428 : 
+; 2429 :     MakeConst( opnd2 );
 
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	call	MakeConst
 
-; 2422 :     if( opnd2->kind == EXPR_CONST ) {
+; 2430 :     if( opnd2->kind == EXPR_CONST ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 0
 	jne	SHORT $LN2@negative_o
 
-; 2423 :         opnd1->kind = EXPR_CONST;
+; 2431 :         opnd1->kind = EXPR_CONST;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+60], 0
 
-; 2424 :         opnd1->llvalue = -opnd2->llvalue;
+; 2432 :         opnd1->llvalue = -opnd2->llvalue;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -5973,17 +5974,17 @@ negative_op PROC
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 2425 :         /* v2.06: the unary '-' operator is to work with
-; 2426 :          * magnitudes > 64-bit. Current implementation is
-; 2427 :          * a bit hackish.
-; 2428 :          */
-; 2429 :         if ( opnd2->hlvalue )
+; 2433 :         /* v2.06: the unary '-' operator is to work with
+; 2434 :          * magnitudes > 64-bit. Current implementation is
+; 2435 :          * a bit hackish.
+; 2436 :          */
+; 2437 :         if ( opnd2->hlvalue )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+8], 0
 	je	SHORT $LN4@negative_o
 
-; 2430 :             opnd1->hlvalue = -opnd2->hlvalue - 1;
+; 2438 :             opnd1->hlvalue = -opnd2->hlvalue - 1;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+8]
@@ -5993,7 +5994,7 @@ negative_op PROC
 	mov	QWORD PTR [rcx+8], rax
 $LN4@negative_o:
 
-; 2431 :         opnd1->negative = 1 - opnd2->negative; /* ??? supposed to be used for EXPR_FLOAT only! */
+; 2439 :         opnd1->negative = 1 - opnd2->negative; /* ??? supposed to be used for EXPR_FLOAT only! */
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -6014,25 +6015,25 @@ $LN4@negative_o:
 	jmp	$LN3@negative_o
 $LN2@negative_o:
 
-; 2432 :     } else if( opnd2->kind == EXPR_FLOAT ) {
+; 2440 :     } else if( opnd2->kind == EXPR_FLOAT ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 3
 	jne	SHORT $LN5@negative_o
 
-; 2433 :         opnd1->kind = EXPR_FLOAT;
+; 2441 :         opnd1->kind = EXPR_FLOAT;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+60], 3
 
-; 2434 :         opnd1->float_tok = opnd2->float_tok;
+; 2442 :         opnd1->float_tok = opnd2->float_tok;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR [rcx+16]
 	mov	QWORD PTR [rax+16], rcx
 
-; 2435 :         opnd1->negative = 1 - opnd2->negative;
+; 2443 :         opnd1->negative = 1 - opnd2->negative;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -6051,19 +6052,19 @@ $LN2@negative_o:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rcx+76], eax
 
-; 2436 :     } else {
+; 2444 :     } else {
 
 	jmp	SHORT $LN6@negative_o
 $LN5@negative_o:
 
-; 2437 :         DebugMsg(("negative_op: unexpected opnd2.kind=%d\n", opnd2->kind ));
+; 2445 :         DebugMsg(("negative_op: unexpected opnd2.kind=%d\n", opnd2->kind ));
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	edx, DWORD PTR [rax+60]
-	lea	rcx, OFFSET FLAT:$SG11983
+	lea	rcx, OFFSET FLAT:$SG11987
 	call	DoDebugMsg
 
-; 2438 :         return( fnEmitErr( CONSTANT_EXPECTED ) );
+; 2446 :         return( fnEmitErr( CONSTANT_EXPECTED ) );
 
 	mov	ecx, 65					; 00000041H
 	call	QWORD PTR fnEmitErr
@@ -6071,13 +6072,13 @@ $LN5@negative_o:
 $LN6@negative_o:
 $LN3@negative_o:
 
-; 2439 :     }
-; 2440 :     return( NOT_ERROR );
+; 2447 :     }
+; 2448 :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@negative_o:
 
-; 2441 : }
+; 2449 : }
 
 	add	rsp, 32					; 00000020H
 	pop	rdi
@@ -6091,7 +6092,7 @@ opnd1$ = 48
 opnd2$ = 56
 positive_op PROC
 
-; 2385 : {
+; 2393 : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -6103,47 +6104,47 @@ positive_op PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+48]
 
-; 2386 :     DebugMsg1(("positive_op: value=%" I64_SPEC "X high=%" I64_SPEC "X\n", opnd2->llvalue, opnd2->hlvalue ));
+; 2394 :     DebugMsg1(("positive_op: value=%" I64_SPEC "X high=%" I64_SPEC "X\n", opnd2->llvalue, opnd2->hlvalue ));
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rdx, QWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG11965
+	lea	rcx, OFFSET FLAT:$SG11969
 	call	DoDebugMsg1
 
-; 2387 :     /*
-; 2388 :      * The formats allowed are:
-; 2389 :      *        + constant
-; 2390 :      *        + float
-; 2391 :      * v2.06: unlike the other operators unary + will
-; 2392 :      * handle 128-bit values (needed for TBYTE integers)
-; 2393 :      */
-; 2394 : 
-; 2395 :     MakeConst( opnd2 );
+; 2395 :     /*
+; 2396 :      * The formats allowed are:
+; 2397 :      *        + constant
+; 2398 :      *        + float
+; 2399 :      * v2.06: unlike the other operators unary + will
+; 2400 :      * handle 128-bit values (needed for TBYTE integers)
+; 2401 :      */
+; 2402 : 
+; 2403 :     MakeConst( opnd2 );
 
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	call	MakeConst
 
-; 2396 :     if( opnd2->kind == EXPR_CONST ) {
+; 2404 :     if( opnd2->kind == EXPR_CONST ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 0
 	jne	SHORT $LN2@positive_o
 
-; 2397 :         opnd1->kind = EXPR_CONST;
+; 2405 :         opnd1->kind = EXPR_CONST;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+60], 0
 
-; 2398 :         opnd1->llvalue = opnd2->llvalue;
+; 2406 :         opnd1->llvalue = opnd2->llvalue;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR [rcx]
 	mov	QWORD PTR [rax], rcx
 
-; 2399 :         opnd1->hlvalue = opnd2->hlvalue; /* v2.06: added */
+; 2407 :         opnd1->hlvalue = opnd2->hlvalue; /* v2.06: added */
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -6152,25 +6153,25 @@ positive_op PROC
 	jmp	SHORT $LN3@positive_o
 $LN2@positive_o:
 
-; 2400 :     } else if( opnd2->kind == EXPR_FLOAT ) {
+; 2408 :     } else if( opnd2->kind == EXPR_FLOAT ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 3
 	jne	SHORT $LN4@positive_o
 
-; 2401 :         opnd1->kind = EXPR_FLOAT;
+; 2409 :         opnd1->kind = EXPR_FLOAT;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+60], 3
 
-; 2402 :         opnd1->float_tok = opnd2->float_tok;
+; 2410 :         opnd1->float_tok = opnd2->float_tok;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR [rcx+16]
 	mov	QWORD PTR [rax+16], rcx
 
-; 2403 :         opnd1->negative = opnd2->negative;
+; 2411 :         opnd1->negative = opnd2->negative;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -6186,17 +6187,17 @@ $LN2@positive_o:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rcx+76], eax
 
-; 2404 :     } else {
+; 2412 :     } else {
 
 	jmp	SHORT $LN5@positive_o
 $LN4@positive_o:
 
-; 2405 :         DebugMsg(("positive_op: error 1\n"));
+; 2413 :         DebugMsg(("positive_op: error 1\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11970
+	lea	rcx, OFFSET FLAT:$SG11974
 	call	DoDebugMsg
 
-; 2406 :         return( fnEmitErr( CONSTANT_EXPECTED ) );
+; 2414 :         return( fnEmitErr( CONSTANT_EXPECTED ) );
 
 	mov	ecx, 65					; 00000041H
 	call	QWORD PTR fnEmitErr
@@ -6204,13 +6205,13 @@ $LN4@positive_o:
 $LN5@positive_o:
 $LN3@positive_o:
 
-; 2407 :     }
-; 2408 :     return( NOT_ERROR );
+; 2415 :     }
+; 2416 :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@positive_o:
 
-; 2409 : }
+; 2417 : }
 
 	add	rsp, 32					; 00000020H
 	pop	rdi
@@ -6229,7 +6230,7 @@ opnd1$ = 128
 opnd2$ = 136
 colon_op PROC
 
-; 2254 : {
+; 2262 : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -6241,19 +6242,19 @@ colon_op PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+128]
 
-; 2255 :     int_32              temp;
-; 2256 :     struct asym         *sym;
-; 2257 :     /*
-; 2258 :      * The only formats allowed are:
-; 2259 :      *     seg_reg : const
-; 2260 :      *     seg_reg : address
-; 2261 :      *     seg_label : const
-; 2262 :      *     seg_label : address
-; 2263 :      *     ( seg_label = segment or group symbol )
-; 2264 :      *     inside square brackets, seg_reg : register is not accepted
-; 2265 :      *     if Masm-syntax is on.
-; 2266 :      */
-; 2267 :     DebugMsg1(("colon_op: t1-t2 kind=%d/%d type=%s-%s is_type=%u-%u\n",
+; 2263 :     int_32              temp;
+; 2264 :     struct asym         *sym;
+; 2265 :     /*
+; 2266 :      * The only formats allowed are:
+; 2267 :      *     seg_reg : const
+; 2268 :      *     seg_reg : address
+; 2269 :      *     seg_label : const
+; 2270 :      *     seg_label : address
+; 2271 :      *     ( seg_label = segment or group symbol )
+; 2272 :      *     inside square brackets, seg_reg : register is not accepted
+; 2273 :      *     if Masm-syntax is on.
+; 2274 :      */
+; 2275 :     DebugMsg1(("colon_op: t1-t2 kind=%d/%d type=%s-%s is_type=%u-%u\n",
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+96], 0
@@ -6264,7 +6265,7 @@ colon_op PROC
 	mov	QWORD PTR tv76[rsp], rax
 	jmp	SHORT $LN28@colon_op
 $LN27@colon_op:
-	lea	rax, OFFSET FLAT:$SG11929
+	lea	rax, OFFSET FLAT:$SG11933
 	mov	QWORD PTR tv76[rsp], rax
 $LN28@colon_op:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -6276,7 +6277,7 @@ $LN28@colon_op:
 	mov	QWORD PTR tv82[rsp], rax
 	jmp	SHORT $LN30@colon_op
 $LN29@colon_op:
-	lea	rax, OFFSET FLAT:$SG11930
+	lea	rax, OFFSET FLAT:$SG11934
 	mov	QWORD PTR tv82[rsp], rax
 $LN30@colon_op:
 	mov	rax, QWORD PTR opnd2$[rsp]
@@ -6296,21 +6297,21 @@ $LN30@colon_op:
 	mov	r8d, DWORD PTR [rax+60]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax+60]
-	lea	rcx, OFFSET FLAT:$SG11931
+	lea	rcx, OFFSET FLAT:$SG11935
 	call	DoDebugMsg1
 
-; 2268 :                opnd1->kind, opnd2->kind,
-; 2269 :                opnd1->type ? opnd1->type->name : "NULL",
-; 2270 :                opnd2->type ? opnd2->type->name : "NULL",
-; 2271 :                opnd1->is_type, opnd2->is_type ));
-; 2272 :     if( opnd2->override != NULL ) {
+; 2276 :                opnd1->kind, opnd2->kind,
+; 2277 :                opnd1->type ? opnd1->type->name : "NULL",
+; 2278 :                opnd2->type ? opnd2->type->name : "NULL",
+; 2279 :                opnd1->is_type, opnd2->is_type ));
+; 2280 :     if( opnd2->override != NULL ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+48], 0
 	je	SHORT $LN4@colon_op
 
-; 2273 :         /* v2.07a: was too rigid */
-; 2274 :         if ( ( opnd1->kind == EXPR_REG && opnd2->override->token == T_REG ) ||
+; 2281 :         /* v2.07a: was too rigid */
+; 2282 :         if ( ( opnd1->kind == EXPR_REG && opnd2->override->token == T_REG ) ||
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+60], 2
@@ -6331,16 +6332,16 @@ $LN7@colon_op:
 	jne	SHORT $LN5@colon_op
 $LN6@colon_op:
 
-; 2275 :             ( opnd1->kind == EXPR_ADDR && opnd2->override->token == T_ID ) ) {
-; 2276 :             DebugMsg(("colon_op: multiple override=%s\n", opnd2->override->string_ptr ));
+; 2283 :             ( opnd1->kind == EXPR_ADDR && opnd2->override->token == T_ID ) ) {
+; 2284 :             DebugMsg(("colon_op: multiple override=%s\n", opnd2->override->string_ptr ));
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+48]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11936
+	lea	rcx, OFFSET FLAT:$SG11940
 	call	DoDebugMsg
 
-; 2277 :             return( fnEmitErr( MULTIPLE_OVERRIDES ) );
+; 2285 :             return( fnEmitErr( MULTIPLE_OVERRIDES ) );
 
 	mov	ecx, 68					; 00000044H
 	call	QWORD PTR fnEmitErr
@@ -6348,9 +6349,9 @@ $LN6@colon_op:
 $LN5@colon_op:
 $LN4@colon_op:
 
-; 2278 :         }
-; 2279 :     }
-; 2280 :     switch ( opnd2->kind ) {
+; 2286 :         }
+; 2287 :     }
+; 2288 :     switch ( opnd2->kind ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+60]
@@ -6362,9 +6363,9 @@ $LN4@colon_op:
 	jmp	SHORT $LN2@colon_op
 $LN8@colon_op:
 
-; 2281 :     case EXPR_REG:
-; 2282 :         /* v2.05: register as second operand must be enclosed in [] */
-; 2283 :         if ( opnd2->indirect == FALSE ) {
+; 2289 :     case EXPR_REG:
+; 2290 :         /* v2.05: register as second operand must be enclosed in [] */
+; 2291 :         if ( opnd2->indirect == FALSE ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -6372,83 +6373,83 @@ $LN8@colon_op:
 	test	eax, eax
 	jne	SHORT $LN9@colon_op
 
-; 2284 :             DebugMsg(("colon_op: register after : not enclosed in []\n" ));
+; 2292 :             DebugMsg(("colon_op: register after : not enclosed in []\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11939
+	lea	rcx, OFFSET FLAT:$SG11943
 	call	DoDebugMsg
 
-; 2285 :             return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
+; 2293 :             return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
 	mov	ecx, 170				; 000000aaH
 	call	QWORD PTR fnEmitErr
 	jmp	$LN1@colon_op
 $LN9@colon_op:
 
-; 2286 :         }
-; 2287 :         break;
+; 2294 :         }
+; 2295 :         break;
 
 	jmp	SHORT $LN2@colon_op
 $LN10@colon_op:
 
-; 2288 :     case EXPR_FLOAT:
-; 2289 :         return( fnEmitErr( REAL_OR_BCD_NUMBER_NOT_ALLOWED ) );
+; 2296 :     case EXPR_FLOAT:
+; 2297 :         return( fnEmitErr( REAL_OR_BCD_NUMBER_NOT_ALLOWED ) );
 
 	mov	ecx, 270				; 0000010eH
 	call	QWORD PTR fnEmitErr
 	jmp	$LN1@colon_op
 $LN2@colon_op:
 
-; 2290 :     }
-; 2291 : 
-; 2292 :     if( opnd1->kind == EXPR_REG ) {
+; 2298 :     }
+; 2299 : 
+; 2300 :     if( opnd1->kind == EXPR_REG ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+60], 2
 	jne	$LN11@colon_op
 
-; 2293 : 
-; 2294 :         /* the item before the ':' must be a single register */
-; 2295 :         if( opnd1->idx_reg != NULL ) {
+; 2301 : 
+; 2302 :         /* the item before the ':' must be a single register */
+; 2303 :         if( opnd1->idx_reg != NULL ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	QWORD PTR [rax+32], 0
 	je	SHORT $LN13@colon_op
 
-; 2296 :             DebugMsg(("colon_op: register before ':' has idx_reg set!?\n"));
+; 2304 :             DebugMsg(("colon_op: register before ':' has idx_reg set!?\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11944
+	lea	rcx, OFFSET FLAT:$SG11948
 	call	DoDebugMsg
 
-; 2297 :             return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
+; 2305 :             return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
 	mov	ecx, 170				; 000000aaH
 	call	QWORD PTR fnEmitErr
 	jmp	$LN1@colon_op
 $LN13@colon_op:
 
-; 2298 :         }
-; 2299 :         /* segment override inside bracket not allowed with -Zne.
-; 2300 :          * [ds:0] is ok, but [ds:ebx] is rejected.
-; 2301 :          */
-; 2302 :         /* v2.08: test moved here from get_operand() */
-; 2303 :         /* v2.10: regression in v2.08-2.09: check was way too simple.
-; 2304 :          * problem: indirect-flag isn't set for segment regs (anymore?).
-; 2305 :          * error check moved back to get_operand().
-; 2306 :          */
-; 2307 : #if 0
-; 2308 :         if ( Options.strict_masm_compat ) {
-; 2309 :             return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
-; 2310 :         }
-; 2311 : #endif
-; 2312 :         /* make sure first operand is a segment register */
-; 2313 :         temp = opnd1->base_reg->tokval;
+; 2306 :         }
+; 2307 :         /* segment override inside bracket not allowed with -Zne.
+; 2308 :          * [ds:0] is ok, but [ds:ebx] is rejected.
+; 2309 :          */
+; 2310 :         /* v2.08: test moved here from get_operand() */
+; 2311 :         /* v2.10: regression in v2.08-2.09: check was way too simple.
+; 2312 :          * problem: indirect-flag isn't set for segment regs (anymore?).
+; 2313 :          * error check moved back to get_operand().
+; 2314 :          */
+; 2315 : #if 0
+; 2316 :         if ( Options.strict_masm_compat ) {
+; 2317 :             return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
+; 2318 :         }
+; 2319 : #endif
+; 2320 :         /* make sure first operand is a segment register */
+; 2321 :         temp = opnd1->base_reg->tokval;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax+24]
 	mov	eax, DWORD PTR [rax+16]
 	mov	DWORD PTR temp$[rsp], eax
 
-; 2314 :         if ( ( GetValueSp( temp ) & OP_SR ) == 0 ) {
+; 2322 :         if ( ( GetValueSp( temp ) & OP_SR ) == 0 ) {
 
 	movsxd	rax, DWORD PTR temp$[rsp]
 	imul	rax, rax, 12
@@ -6458,23 +6459,23 @@ $LN13@colon_op:
 	test	eax, eax
 	jne	SHORT $LN14@colon_op
 
-; 2315 :             return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
+; 2323 :             return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
 
 	mov	ecx, 69					; 00000045H
 	call	QWORD PTR fnEmitErr
 	jmp	$LN1@colon_op
 $LN14@colon_op:
 
-; 2316 :         }
-; 2317 : 
-; 2318 :         opnd2->override = opnd1->base_reg;
+; 2324 :         }
+; 2325 : 
+; 2326 :         opnd2->override = opnd1->base_reg;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR [rcx+24]
 	mov	QWORD PTR [rax+48], rcx
 
-; 2319 :         opnd2->indirect |= opnd1->indirect;
+; 2327 :         opnd2->indirect |= opnd1->indirect;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -6492,27 +6493,27 @@ $LN14@colon_op:
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	DWORD PTR [rcx+76], eax
 
-; 2320 : 
-; 2321 :         if ( opnd2->kind == EXPR_CONST ) {
+; 2328 : 
+; 2329 :         if ( opnd2->kind == EXPR_CONST ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 0
 	jne	SHORT $LN15@colon_op
 
-; 2322 :             opnd2->kind = EXPR_ADDR;
+; 2330 :             opnd2->kind = EXPR_ADDR;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	DWORD PTR [rax+60], 1
 $LN15@colon_op:
 
-; 2323 :             /* v2.05: type flag cleared HERE, not in dot_op()
-; 2324 :              * v2.05rc17 problem: mov es:byte ptr <var>,0
-; 2325 :              * so the flag isn't cleared at all now.
-; 2326 :              */
-; 2327 :             //opnd2->is_type = FALSE;
-; 2328 :         }
-; 2329 : 
-; 2330 :         if( opnd1->explicit ) {
+; 2331 :             /* v2.05: type flag cleared HERE, not in dot_op()
+; 2332 :              * v2.05rc17 problem: mov es:byte ptr <var>,0
+; 2333 :              * so the flag isn't cleared at all now.
+; 2334 :              */
+; 2335 :             //opnd2->is_type = FALSE;
+; 2336 :         }
+; 2337 : 
+; 2338 :         if( opnd1->explicit ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -6521,7 +6522,7 @@ $LN15@colon_op:
 	test	eax, eax
 	je	SHORT $LN16@colon_op
 
-; 2331 :             opnd2->explicit = opnd1->explicit;
+; 2339 :             opnd2->explicit = opnd1->explicit;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -6537,14 +6538,14 @@ $LN15@colon_op:
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	DWORD PTR [rcx+76], eax
 
-; 2332 :             opnd2->mem_type = opnd1->mem_type;
+; 2340 :             opnd2->mem_type = opnd1->mem_type;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	ecx, DWORD PTR [rcx+64]
 	mov	DWORD PTR [rax+64], ecx
 
-; 2333 :             opnd2->Ofssize  = opnd1->Ofssize;
+; 2341 :             opnd2->Ofssize  = opnd1->Ofssize;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -6552,30 +6553,30 @@ $LN15@colon_op:
 	mov	BYTE PTR [rax+69], cl
 $LN16@colon_op:
 
-; 2334 :         }
-; 2335 :         TokenAssign( opnd1, opnd2 );
+; 2342 :         }
+; 2343 :         TokenAssign( opnd1, opnd2 );
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	TokenAssign
 
-; 2336 : 
-; 2337 :         /*
-; 2338 :          * currently the <type> token isn't copied by
-; 2339 :          * TokenAssign (which is probably just for historical reasons).
-; 2340 :          * So copy it manually!
-; 2341 :          * v1.95: only copy if it is != NULL!
-; 2342 :          * Testcase: (<type> ptr DS:[0]).<struct_field> ...
-; 2343 :          * In this case the DS:[] will clear the <type>, as a result
-; 2344 :          * the dot operator won't have a valid assume and the code fails.
-; 2345 :          */
-; 2346 :         if ( opnd2->type )
+; 2344 : 
+; 2345 :         /*
+; 2346 :          * currently the <type> token isn't copied by
+; 2347 :          * TokenAssign (which is probably just for historical reasons).
+; 2348 :          * So copy it manually!
+; 2349 :          * v1.95: only copy if it is != NULL!
+; 2350 :          * Testcase: (<type> ptr DS:[0]).<struct_field> ...
+; 2351 :          * In this case the DS:[] will clear the <type>, as a result
+; 2352 :          * the dot operator won't have a valid assume and the code fails.
+; 2353 :          */
+; 2354 :         if ( opnd2->type )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+96], 0
 	je	SHORT $LN17@colon_op
 
-; 2347 :             opnd1->type = opnd2->type;
+; 2355 :             opnd1->type = opnd2->type;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -6583,18 +6584,18 @@ $LN16@colon_op:
 	mov	QWORD PTR [rax+96], rcx
 $LN17@colon_op:
 
-; 2348 : 
-; 2349 :     } else if( opnd1->kind == EXPR_ADDR &&
+; 2356 : 
+; 2357 :     } else if( opnd1->kind == EXPR_ADDR &&
 
 	jmp	$LN12@colon_op
 $LN11@colon_op:
 
-; 2350 :               /* opnd2->kind == EXPR_ADDR && */
-; 2351 :               opnd1->override == NULL &&
-; 2352 :               opnd1->instr == EMPTY &&
-; 2353 :               opnd1->value == 0 &&
-; 2354 :               opnd1->sym &&
-; 2355 :               opnd1->base_reg == NULL &&
+; 2358 :               /* opnd2->kind == EXPR_ADDR && */
+; 2359 :               opnd1->override == NULL &&
+; 2360 :               opnd1->instr == EMPTY &&
+; 2361 :               opnd1->value == 0 &&
+; 2362 :               opnd1->sym &&
+; 2363 :               opnd1->base_reg == NULL &&
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+60], 1
@@ -6618,16 +6619,16 @@ $LN11@colon_op:
 	cmp	QWORD PTR [rax+32], 0
 	jne	$LN18@colon_op
 
-; 2356 :               opnd1->idx_reg == NULL ) {
-; 2357 : 
-; 2358 :         sym = opnd1->sym;
+; 2364 :               opnd1->idx_reg == NULL ) {
+; 2365 : 
+; 2366 :         sym = opnd1->sym;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax+80]
 	mov	QWORD PTR sym$[rsp], rax
 
-; 2359 : 
-; 2360 :         if( sym->state == SYM_GRP || sym->state == SYM_SEG ) {
+; 2367 : 
+; 2368 :         if( sym->state == SYM_GRP || sym->state == SYM_SEG ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
 	cmp	DWORD PTR [rax+32], 4
@@ -6637,19 +6638,19 @@ $LN11@colon_op:
 	jne	$LN20@colon_op
 $LN22@colon_op:
 
-; 2361 :             opnd2->kind = EXPR_ADDR;
+; 2369 :             opnd2->kind = EXPR_ADDR;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	DWORD PTR [rax+60], 1
 
-; 2362 :             opnd2->override = opnd1->label_tok;
+; 2370 :             opnd2->override = opnd1->label_tok;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR [rcx+40]
 	mov	QWORD PTR [rax+48], rcx
 
-; 2363 :             opnd2->indirect |= opnd1->indirect;
+; 2371 :             opnd2->indirect |= opnd1->indirect;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -6667,7 +6668,7 @@ $LN22@colon_op:
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	DWORD PTR [rcx+76], eax
 
-; 2364 :             if( opnd1->explicit ) {
+; 2372 :             if( opnd1->explicit ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -6676,7 +6677,7 @@ $LN22@colon_op:
 	test	eax, eax
 	je	SHORT $LN23@colon_op
 
-; 2365 :                 opnd2->explicit = opnd1->explicit;
+; 2373 :                 opnd2->explicit = opnd1->explicit;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -6692,14 +6693,14 @@ $LN22@colon_op:
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	DWORD PTR [rcx+76], eax
 
-; 2366 :                 opnd2->mem_type = opnd1->mem_type;
+; 2374 :                 opnd2->mem_type = opnd1->mem_type;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	ecx, DWORD PTR [rcx+64]
 	mov	DWORD PTR [rax+64], ecx
 
-; 2367 :                 opnd2->Ofssize  = opnd1->Ofssize;
+; 2375 :                 opnd2->Ofssize  = opnd1->Ofssize;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -6707,14 +6708,14 @@ $LN22@colon_op:
 	mov	BYTE PTR [rax+69], cl
 $LN23@colon_op:
 
-; 2368 :             }
-; 2369 :             TokenAssign( opnd1, opnd2 );
+; 2376 :             }
+; 2377 :             TokenAssign( opnd1, opnd2 );
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	TokenAssign
 
-; 2370 :             opnd1->type = opnd2->type;
+; 2378 :             opnd1->type = opnd2->type;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -6723,8 +6724,8 @@ $LN23@colon_op:
 	jmp	SHORT $LN21@colon_op
 $LN20@colon_op:
 
-; 2371 : 
-; 2372 :         } else if( Parse_Pass > PASS_1 || sym->state != SYM_UNDEFINED ) {
+; 2379 : 
+; 2380 :         } else if( Parse_Pass > PASS_1 || sym->state != SYM_UNDEFINED ) {
 
 	cmp	DWORD PTR Parse_Pass, 0
 	ja	SHORT $LN25@colon_op
@@ -6733,12 +6734,12 @@ $LN20@colon_op:
 	je	SHORT $LN24@colon_op
 $LN25@colon_op:
 
-; 2373 :             DebugMsg(("colon_op error 4\n"));
+; 2381 :             DebugMsg(("colon_op error 4\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11957
+	lea	rcx, OFFSET FLAT:$SG11961
 	call	DoDebugMsg
 
-; 2374 :             return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
+; 2382 :             return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
 
 	mov	ecx, 69					; 00000045H
 	call	QWORD PTR fnEmitErr
@@ -6746,18 +6747,18 @@ $LN25@colon_op:
 $LN24@colon_op:
 $LN21@colon_op:
 
-; 2375 :         }
-; 2376 :     } else {
+; 2383 :         }
+; 2384 :     } else {
 
 	jmp	SHORT $LN19@colon_op
 $LN18@colon_op:
 
-; 2377 :         DebugMsg(("colon_op error 5\n"));
+; 2385 :         DebugMsg(("colon_op error 5\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11958
+	lea	rcx, OFFSET FLAT:$SG11962
 	call	DoDebugMsg
 
-; 2378 :         return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
+; 2386 :         return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
 
 	mov	ecx, 69					; 00000045H
 	call	QWORD PTR fnEmitErr
@@ -6765,13 +6766,13 @@ $LN18@colon_op:
 $LN19@colon_op:
 $LN12@colon_op:
 
-; 2379 :     }
-; 2380 :     return( NOT_ERROR );
+; 2387 :     }
+; 2388 :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@colon_op:
 
-; 2381 : }
+; 2389 : }
 
 	add	rsp, 112				; 00000070H
 	pop	rdi
@@ -6797,7 +6798,7 @@ opnd1$ = 192
 opnd2$ = 200
 dot_op	PROC
 
-; 2050 : {
+; 2058 : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -6809,9 +6810,9 @@ dot_op	PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+192]
 
-; 2051 :     /* this code needs cleanup! some stuff is obsolete. */
-; 2052 : 
-; 2053 :     DebugMsg1(("dot_op: op1-op2 kind=%d/%d sym=%s-%s type=%s-%s mbr=%s-%s\n",
+; 2059 :     /* this code needs cleanup! some stuff is obsolete. */
+; 2060 : 
+; 2061 :     DebugMsg1(("dot_op: op1-op2 kind=%d/%d sym=%s-%s type=%s-%s mbr=%s-%s\n",
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+88], 0
@@ -6822,7 +6823,7 @@ dot_op	PROC
 	mov	QWORD PTR tv68[rsp], rax
 	jmp	SHORT $LN40@dot_op
 $LN39@dot_op:
-	lea	rax, OFFSET FLAT:$SG11851
+	lea	rax, OFFSET FLAT:$SG11855
 	mov	QWORD PTR tv68[rsp], rax
 $LN40@dot_op:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -6834,7 +6835,7 @@ $LN40@dot_op:
 	mov	QWORD PTR tv74[rsp], rax
 	jmp	SHORT $LN42@dot_op
 $LN41@dot_op:
-	lea	rax, OFFSET FLAT:$SG11852
+	lea	rax, OFFSET FLAT:$SG11856
 	mov	QWORD PTR tv74[rsp], rax
 $LN42@dot_op:
 	mov	rax, QWORD PTR opnd2$[rsp]
@@ -6846,7 +6847,7 @@ $LN42@dot_op:
 	mov	QWORD PTR tv80[rsp], rax
 	jmp	SHORT $LN44@dot_op
 $LN43@dot_op:
-	lea	rax, OFFSET FLAT:$SG11853
+	lea	rax, OFFSET FLAT:$SG11857
 	mov	QWORD PTR tv80[rsp], rax
 $LN44@dot_op:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -6858,7 +6859,7 @@ $LN44@dot_op:
 	mov	QWORD PTR tv86[rsp], rax
 	jmp	SHORT $LN46@dot_op
 $LN45@dot_op:
-	lea	rax, OFFSET FLAT:$SG11854
+	lea	rax, OFFSET FLAT:$SG11858
 	mov	QWORD PTR tv86[rsp], rax
 $LN46@dot_op:
 	mov	rax, QWORD PTR opnd2$[rsp]
@@ -6870,7 +6871,7 @@ $LN46@dot_op:
 	mov	QWORD PTR tv92[rsp], rax
 	jmp	SHORT $LN48@dot_op
 $LN47@dot_op:
-	lea	rax, OFFSET FLAT:$SG11855
+	lea	rax, OFFSET FLAT:$SG11859
 	mov	QWORD PTR tv92[rsp], rax
 $LN48@dot_op:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -6882,7 +6883,7 @@ $LN48@dot_op:
 	mov	QWORD PTR tv130[rsp], rax
 	jmp	SHORT $LN50@dot_op
 $LN49@dot_op:
-	lea	rax, OFFSET FLAT:$SG11856
+	lea	rax, OFFSET FLAT:$SG11860
 	mov	QWORD PTR tv130[rsp], rax
 $LN50@dot_op:
 	mov	rax, QWORD PTR tv68[rsp]
@@ -6900,29 +6901,29 @@ $LN50@dot_op:
 	mov	r8d, DWORD PTR [rax+60]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax+60]
-	lea	rcx, OFFSET FLAT:$SG11857
+	lea	rcx, OFFSET FLAT:$SG11861
 	call	DoDebugMsg1
 
-; 2054 :                opnd1->kind, opnd2->kind,
-; 2055 :                opnd1->sym  ? opnd1->sym->name  : "NULL",
-; 2056 :                opnd2->sym  ? opnd2->sym->name  : "NULL",
-; 2057 :                opnd1->type ? opnd1->type->name : "NULL",
-; 2058 :                opnd2->type ? opnd2->type->name : "NULL",
-; 2059 :                opnd1->mbr  ? opnd1->mbr->name  : "NULL",
-; 2060 :                opnd2->mbr  ? opnd2->mbr->name  : "NULL" ));
-; 2061 : 
-; 2062 :     /*
-; 2063 :      * The formats allowed are:
-; 2064 :      *        [register]      . (type) constant
-; 2065 :      *        label           . (type) constant
-; 2066 :      *        (type) constant . (type) constant
-; 2067 :      *
-; 2068 :      * with OPTION OLDSTRUCTS:
-; 2069 :      *        [register]      . address
-; 2070 :      *        address         . address
-; 2071 :      */
-; 2072 : 
-; 2073 :     if( check_direct_reg( opnd1, opnd2 ) == ERROR ) {
+; 2062 :                opnd1->kind, opnd2->kind,
+; 2063 :                opnd1->sym  ? opnd1->sym->name  : "NULL",
+; 2064 :                opnd2->sym  ? opnd2->sym->name  : "NULL",
+; 2065 :                opnd1->type ? opnd1->type->name : "NULL",
+; 2066 :                opnd2->type ? opnd2->type->name : "NULL",
+; 2067 :                opnd1->mbr  ? opnd1->mbr->name  : "NULL",
+; 2068 :                opnd2->mbr  ? opnd2->mbr->name  : "NULL" ));
+; 2069 : 
+; 2070 :     /*
+; 2071 :      * The formats allowed are:
+; 2072 :      *        [register]      . (type) constant
+; 2073 :      *        label           . (type) constant
+; 2074 :      *        (type) constant . (type) constant
+; 2075 :      *
+; 2076 :      * with OPTION OLDSTRUCTS:
+; 2077 :      *        [register]      . address
+; 2078 :      *        address         . address
+; 2079 :      */
+; 2080 : 
+; 2081 :     if( check_direct_reg( opnd1, opnd2 ) == ERROR ) {
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -6930,48 +6931,48 @@ $LN50@dot_op:
 	cmp	eax, -1
 	jne	SHORT $LN2@dot_op
 
-; 2074 :         DebugMsg(("dot_op: error direct register\n"));
+; 2082 :         DebugMsg(("dot_op: error direct register\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11859
+	lea	rcx, OFFSET FLAT:$SG11863
 	call	DoDebugMsg
 
-; 2075 :         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
+; 2083 :         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
 	mov	ecx, 170				; 000000aaH
 	call	QWORD PTR fnEmitErr
 	jmp	$LN1@dot_op
 $LN2@dot_op:
 
-; 2076 :     }
-; 2077 : 
-; 2078 :     /* v2.08: remove EXPR_REG variants */
-; 2079 :     if ( opnd1->kind == EXPR_REG )
+; 2084 :     }
+; 2085 : 
+; 2086 :     /* v2.08: remove EXPR_REG variants */
+; 2087 :     if ( opnd1->kind == EXPR_REG )
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+60], 2
 	jne	SHORT $LN3@dot_op
 
-; 2080 :         opnd1->kind = EXPR_ADDR;
+; 2088 :         opnd1->kind = EXPR_ADDR;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+60], 1
 $LN3@dot_op:
 
-; 2081 :     if ( opnd2->kind == EXPR_REG )
+; 2089 :     if ( opnd2->kind == EXPR_REG )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 2
 	jne	SHORT $LN4@dot_op
 
-; 2082 :         opnd2->kind = EXPR_ADDR;
+; 2090 :         opnd2->kind = EXPR_ADDR;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	DWORD PTR [rax+60], 1
 $LN4@dot_op:
 
-; 2083 : 
-; 2084 :     /* forward ref to a struct: [reg].<struct> */
-; 2085 :     if ( opnd2->sym && opnd2->sym->state == SYM_UNDEFINED && Parse_Pass == PASS_1 ) {
+; 2091 : 
+; 2092 :     /* forward ref to a struct: [reg].<struct> */
+; 2093 :     if ( opnd2->sym && opnd2->sym->state == SYM_UNDEFINED && Parse_Pass == PASS_1 ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+80], 0
@@ -6983,35 +6984,35 @@ $LN4@dot_op:
 	cmp	DWORD PTR Parse_Pass, 0
 	jne	$LN5@dot_op
 
-; 2086 :         DebugMsg(("dot_op: forward reference %s, replaced by null struct type\n", opnd2->sym->name ));
+; 2094 :         DebugMsg(("dot_op: forward reference %s, replaced by null struct type\n", opnd2->sym->name ));
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11863
+	lea	rcx, OFFSET FLAT:$SG11867
 	call	DoDebugMsg
 
-; 2087 :         if ( !nullstruct )
+; 2095 :         if ( !nullstruct )
 
 	cmp	QWORD PTR nullstruct, 0
 	jne	SHORT $LN6@dot_op
 
-; 2088 :             nullstruct = CreateTypeSymbol( NULL, "", FALSE );
+; 2096 :             nullstruct = CreateTypeSymbol( NULL, "", FALSE );
 
 	xor	r8d, r8d
-	lea	rdx, OFFSET FLAT:$SG11865
+	lea	rdx, OFFSET FLAT:$SG11869
 	xor	ecx, ecx
 	call	CreateTypeSymbol
 	mov	QWORD PTR nullstruct, rax
 $LN6@dot_op:
 
-; 2089 :         opnd2->type = nullstruct;
+; 2097 :         opnd2->type = nullstruct;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR nullstruct
 	mov	QWORD PTR [rax+96], rcx
 
-; 2090 :         opnd2->is_type = TRUE; /* v2.10: added */
+; 2098 :         opnd2->is_type = TRUE; /* v2.10: added */
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -7019,20 +7020,20 @@ $LN6@dot_op:
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	DWORD PTR [rcx+76], eax
 
-; 2091 :         opnd2->sym = NULL;
+; 2099 :         opnd2->sym = NULL;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	QWORD PTR [rax+80], 0
 
-; 2092 :         opnd2->kind = EXPR_CONST;
+; 2100 :         opnd2->kind = EXPR_CONST;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	DWORD PTR [rax+60], 0
 $LN5@dot_op:
 
-; 2093 :     }
-; 2094 : 
-; 2095 :     if( check_same( opnd1, opnd2, EXPR_ADDR ) ) {
+; 2101 :     }
+; 2102 : 
+; 2103 :     if( check_same( opnd1, opnd2, EXPR_ADDR ) ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+60], 1
@@ -7041,8 +7042,8 @@ $LN5@dot_op:
 	cmp	DWORD PTR [rax+60], 1
 	jne	$LN7@dot_op
 
-; 2096 : 
-; 2097 :         DebugMsg1(("dot_op, ADDR - ADDR, t1-t2 memtype=%X-%X sym=%s-%s\n",
+; 2104 : 
+; 2105 :         DebugMsg1(("dot_op, ADDR - ADDR, t1-t2 memtype=%X-%X sym=%s-%s\n",
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+80], 0
@@ -7053,7 +7054,7 @@ $LN5@dot_op:
 	mov	QWORD PTR tv179[rsp], rax
 	jmp	SHORT $LN52@dot_op
 $LN51@dot_op:
-	lea	rax, OFFSET FLAT:$SG11868
+	lea	rax, OFFSET FLAT:$SG11872
 	mov	QWORD PTR tv179[rsp], rax
 $LN52@dot_op:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -7065,7 +7066,7 @@ $LN52@dot_op:
 	mov	QWORD PTR tv185[rsp], rax
 	jmp	SHORT $LN54@dot_op
 $LN53@dot_op:
-	lea	rax, OFFSET FLAT:$SG11869
+	lea	rax, OFFSET FLAT:$SG11873
 	mov	QWORD PTR tv185[rsp], rax
 $LN54@dot_op:
 	mov	rax, QWORD PTR tv179[rsp]
@@ -7075,15 +7076,15 @@ $LN54@dot_op:
 	mov	r8d, DWORD PTR [rax+64]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax+64]
-	lea	rcx, OFFSET FLAT:$SG11870
+	lea	rcx, OFFSET FLAT:$SG11874
 	call	DoDebugMsg1
 
-; 2098 :                    opnd1->mem_type, opnd2->mem_type,
-; 2099 :                    opnd1->sym  ? opnd1->sym->name  : "NULL",
-; 2100 :                    opnd2->sym  ? opnd2->sym->name  : "NULL" ));
-; 2101 : 
-; 2102 : #if 1 /* v2.05: error */
-; 2103 :         if ( opnd2->mbr == NULL && !ModuleInfo.oldstructs ) {
+; 2106 :                    opnd1->mem_type, opnd2->mem_type,
+; 2107 :                    opnd1->sym  ? opnd1->sym->name  : "NULL",
+; 2108 :                    opnd2->sym  ? opnd2->sym->name  : "NULL" ));
+; 2109 : 
+; 2110 : #if 1 /* v2.05: error */
+; 2111 :         if ( opnd2->mbr == NULL && !ModuleInfo.oldstructs ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+88], 0
@@ -7094,21 +7095,21 @@ $LN54@dot_op:
 	test	eax, eax
 	jne	SHORT $LN9@dot_op
 
-; 2104 :             DebugMsg(("dot_op: error, mbr 2 is NULL\n"));
+; 2112 :             DebugMsg(("dot_op: error, mbr 2 is NULL\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11872
+	lea	rcx, OFFSET FLAT:$SG11876
 	call	DoDebugMsg
 
-; 2105 :             return( struct_field_error( opnd1 ) );
+; 2113 :             return( struct_field_error( opnd1 ) );
 
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	struct_field_error
 	jmp	$LN1@dot_op
 $LN9@dot_op:
 
-; 2106 :         }
-; 2107 : #endif
-; 2108 :         if ( index_connect( opnd1, opnd2 ) == ERROR )
+; 2114 :         }
+; 2115 : #endif
+; 2116 :         if ( index_connect( opnd1, opnd2 ) == ERROR )
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -7116,21 +7117,21 @@ $LN9@dot_op:
 	cmp	eax, -1
 	jne	SHORT $LN10@dot_op
 
-; 2109 :             return( ERROR );
+; 2117 :             return( ERROR );
 
 	mov	eax, -1
 	jmp	$LN1@dot_op
 $LN10@dot_op:
 
-; 2110 : 
-; 2111 :         if( opnd2->sym != NULL ) {
+; 2118 : 
+; 2119 :         if( opnd2->sym != NULL ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+80], 0
 	je	$LN11@dot_op
 
-; 2112 :             if( opnd1->sym != NULL &&
-; 2113 :                 opnd1->sym->state != SYM_UNDEFINED &&
+; 2120 :             if( opnd1->sym != NULL &&
+; 2121 :                 opnd1->sym->state != SYM_UNDEFINED &&
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	QWORD PTR [rax+80], 0
@@ -7144,8 +7145,8 @@ $LN10@dot_op:
 	cmp	DWORD PTR [rax+32], 0
 	je	SHORT $LN12@dot_op
 
-; 2114 :                 opnd2->sym->state != SYM_UNDEFINED ) {
-; 2115 :                 DebugMsg(("dot_op: error, two relocatable labels: %s - %s \n", opnd1->sym->name, opnd2->sym->name ));
+; 2122 :                 opnd2->sym->state != SYM_UNDEFINED ) {
+; 2123 :                 DebugMsg(("dot_op: error, two relocatable labels: %s - %s \n", opnd1->sym->name, opnd2->sym->name ));
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
@@ -7153,25 +7154,25 @@ $LN10@dot_op:
 	mov	rcx, QWORD PTR [rcx+80]
 	mov	r8, QWORD PTR [rax+8]
 	mov	rdx, QWORD PTR [rcx+8]
-	lea	rcx, OFFSET FLAT:$SG11876
+	lea	rcx, OFFSET FLAT:$SG11880
 	call	DoDebugMsg
 
-; 2116 :                 return( fnEmitErr( CANNOT_ADD_TWO_RELOCATABLE_LABELS ) );
+; 2124 :                 return( fnEmitErr( CANNOT_ADD_TWO_RELOCATABLE_LABELS ) );
 
 	mov	ecx, 173				; 000000adH
 	call	QWORD PTR fnEmitErr
 	jmp	$LN1@dot_op
 $LN12@dot_op:
 
-; 2117 :             }
-; 2118 :             opnd1->label_tok = opnd2->label_tok;
+; 2125 :             }
+; 2126 :             opnd1->label_tok = opnd2->label_tok;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR [rcx+40]
 	mov	QWORD PTR [rax+40], rcx
 
-; 2119 :             opnd1->sym = opnd2->sym;
+; 2127 :             opnd1->sym = opnd2->sym;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -7179,14 +7180,14 @@ $LN12@dot_op:
 	mov	QWORD PTR [rax+80], rcx
 $LN11@dot_op:
 
-; 2120 :         }
-; 2121 :         if( opnd2->mbr != NULL ) {
+; 2128 :         }
+; 2129 :         if( opnd2->mbr != NULL ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+88], 0
 	je	SHORT $LN13@dot_op
 
-; 2122 :             opnd1->mbr = opnd2->mbr;
+; 2130 :             opnd1->mbr = opnd2->mbr;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -7194,8 +7195,8 @@ $LN11@dot_op:
 	mov	QWORD PTR [rax+88], rcx
 $LN13@dot_op:
 
-; 2123 :         }
-; 2124 :         opnd1->value += opnd2->value;
+; 2131 :         }
+; 2132 :         opnd1->value += opnd2->value;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax]
@@ -7204,7 +7205,7 @@ $LN13@dot_op:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rcx], eax
 
-; 2125 :         if( opnd1->explicit == FALSE ) {
+; 2133 :         if( opnd1->explicit == FALSE ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -7213,7 +7214,7 @@ $LN13@dot_op:
 	test	eax, eax
 	jne	SHORT $LN14@dot_op
 
-; 2126 :             opnd1->mem_type = opnd2->mem_type;
+; 2134 :             opnd1->mem_type = opnd2->mem_type;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -7221,14 +7222,14 @@ $LN13@dot_op:
 	mov	DWORD PTR [rax+64], ecx
 $LN14@dot_op:
 
-; 2127 :         }
-; 2128 :         if ( opnd2->type )
+; 2135 :         }
+; 2136 :         if ( opnd2->type )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+96], 0
 	je	SHORT $LN15@dot_op
 
-; 2129 :             opnd1->type = opnd2->type;
+; 2137 :             opnd1->type = opnd2->type;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -7236,8 +7237,8 @@ $LN14@dot_op:
 	mov	QWORD PTR [rax+96], rcx
 $LN15@dot_op:
 
-; 2130 : 
-; 2131 :     } else if( ( opnd1->kind == EXPR_CONST ) && ( opnd2->kind == EXPR_ADDR ) ) {
+; 2138 : 
+; 2139 :     } else if( ( opnd1->kind == EXPR_CONST ) && ( opnd2->kind == EXPR_ADDR ) ) {
 
 	jmp	$LN8@dot_op
 $LN7@dot_op:
@@ -7248,8 +7249,8 @@ $LN7@dot_op:
 	cmp	DWORD PTR [rax+60], 1
 	jne	$LN16@dot_op
 
-; 2132 : 
-; 2133 :         DebugMsg1(("dot_op, CONST - ADDR: t1-t2 memtype=%Xh-%Xh istype=%u-%u\n",
+; 2140 : 
+; 2141 :         DebugMsg1(("dot_op, CONST - ADDR: t1-t2 memtype=%Xh-%Xh istype=%u-%u\n",
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -7265,12 +7266,12 @@ $LN7@dot_op:
 	mov	r8d, DWORD PTR [rax+64]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax+64]
-	lea	rcx, OFFSET FLAT:$SG11882
+	lea	rcx, OFFSET FLAT:$SG11886
 	call	DoDebugMsg1
 
-; 2134 :                    opnd1->mem_type, opnd2->mem_type, opnd1->is_type, opnd2->is_type ));
-; 2135 :         /* v2.08 added (copied from branch EXPR_ADDR-EXPR_REG )*/
-; 2136 :         if ( opnd1->is_type && opnd1->type ) {
+; 2142 :                    opnd1->mem_type, opnd2->mem_type, opnd1->is_type, opnd2->is_type ));
+; 2143 :         /* v2.08 added (copied from branch EXPR_ADDR-EXPR_REG )*/
+; 2144 :         if ( opnd1->is_type && opnd1->type ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -7282,7 +7283,7 @@ $LN7@dot_op:
 	cmp	QWORD PTR [rax+96], 0
 	je	SHORT $LN18@dot_op
 
-; 2137 :             opnd2->assumecheck = FALSE;
+; 2145 :             opnd2->assumecheck = FALSE;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -7290,16 +7291,16 @@ $LN7@dot_op:
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	DWORD PTR [rcx+76], eax
 
-; 2138 :             opnd1->llvalue = 0;  /* v2.08: this was previously done in get_operand() */
+; 2146 :             opnd1->llvalue = 0;  /* v2.08: this was previously done in get_operand() */
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rax], 0
 $LN18@dot_op:
 
-; 2139 :         }
-; 2140 : #if 1 /* v2.05: error */
-; 2141 :         /* <structname>.<member>[<index_reg>] is ALWAYS ok! */
-; 2142 :         if ( ( !ModuleInfo.oldstructs ) && ( opnd1->is_type == FALSE && opnd1->mbr == NULL ) )
+; 2147 :         }
+; 2148 : #if 1 /* v2.05: error */
+; 2149 :         /* <structname>.<member>[<index_reg>] is ALWAYS ok! */
+; 2150 :         if ( ( !ModuleInfo.oldstructs ) && ( opnd1->is_type == FALSE && opnd1->mbr == NULL ) )
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	shr	eax, 8
@@ -7316,16 +7317,16 @@ $LN18@dot_op:
 	cmp	QWORD PTR [rax+88], 0
 	jne	SHORT $LN19@dot_op
 
-; 2143 :             return( struct_field_error( opnd1 ) );
+; 2151 :             return( struct_field_error( opnd1 ) );
 
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	struct_field_error
 	jmp	$LN1@dot_op
 $LN19@dot_op:
 
-; 2144 : #endif
-; 2145 :         /* for TYPE.xxx, return offset instead of size */
-; 2146 :         if ( opnd1->mbr && opnd1->mbr->state == SYM_TYPE )
+; 2152 : #endif
+; 2153 :         /* for TYPE.xxx, return offset instead of size */
+; 2154 :         if ( opnd1->mbr && opnd1->mbr->state == SYM_TYPE )
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	QWORD PTR [rax+88], 0
@@ -7335,7 +7336,7 @@ $LN19@dot_op:
 	cmp	DWORD PTR [rax+32], 7
 	jne	SHORT $LN20@dot_op
 
-; 2147 :             opnd1->llvalue = opnd1->mbr->offset;
+; 2155 :             opnd1->llvalue = opnd1->mbr->offset;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax+88]
@@ -7344,7 +7345,7 @@ $LN19@dot_op:
 	mov	QWORD PTR [rcx], rax
 $LN20@dot_op:
 
-; 2148 :         opnd2->indirect |= opnd1->indirect;
+; 2156 :         opnd2->indirect |= opnd1->indirect;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -7362,7 +7363,7 @@ $LN20@dot_op:
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	DWORD PTR [rcx+76], eax
 
-; 2149 :         opnd2->llvalue += opnd1->llvalue;
+; 2157 :         opnd2->llvalue += opnd1->llvalue;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -7371,7 +7372,7 @@ $LN20@dot_op:
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 2150 :         DebugMsg1(("dot_op, CONST - ADDR, t1.type=%X (%s), t2.type=%X (%s)\n",
+; 2158 :         DebugMsg1(("dot_op, CONST - ADDR, t1.type=%X (%s), t2.type=%X (%s)\n",
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+96], 0
@@ -7382,7 +7383,7 @@ $LN20@dot_op:
 	mov	QWORD PTR tv310[rsp], rax
 	jmp	SHORT $LN56@dot_op
 $LN55@dot_op:
-	lea	rax, OFFSET FLAT:$SG11886
+	lea	rax, OFFSET FLAT:$SG11890
 	mov	QWORD PTR tv310[rsp], rax
 $LN56@dot_op:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -7394,7 +7395,7 @@ $LN56@dot_op:
 	mov	QWORD PTR tv318[rsp], rax
 	jmp	SHORT $LN58@dot_op
 $LN57@dot_op:
-	lea	rax, OFFSET FLAT:$SG11887
+	lea	rax, OFFSET FLAT:$SG11891
 	mov	QWORD PTR tv318[rsp], rax
 $LN58@dot_op:
 	mov	rax, QWORD PTR tv310[rsp]
@@ -7404,21 +7405,21 @@ $LN58@dot_op:
 	mov	r8, QWORD PTR tv318[rsp]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rdx, QWORD PTR [rax+96]
-	lea	rcx, OFFSET FLAT:$SG11888
+	lea	rcx, OFFSET FLAT:$SG11892
 	call	DoDebugMsg1
 
-; 2151 :                    opnd1->type,
-; 2152 :                    opnd1->type ? opnd1->type->name : "",
-; 2153 :                    opnd2->type,
-; 2154 :                    opnd2->type ? opnd2->type->name : "" ));
-; 2155 :         /* v2.06: added. test case: INVOKE struct.mbr[edx] ( mbr has a type ) */
-; 2156 :         if ( opnd2->mbr )
+; 2159 :                    opnd1->type,
+; 2160 :                    opnd1->type ? opnd1->type->name : "",
+; 2161 :                    opnd2->type,
+; 2162 :                    opnd2->type ? opnd2->type->name : "" ));
+; 2163 :         /* v2.06: added. test case: INVOKE struct.mbr[edx] ( mbr has a type ) */
+; 2164 :         if ( opnd2->mbr )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+88], 0
 	je	SHORT $LN21@dot_op
 
-; 2157 :             opnd1->type = opnd2->type;
+; 2165 :             opnd1->type = opnd2->type;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -7426,7 +7427,7 @@ $LN58@dot_op:
 	mov	QWORD PTR [rax+96], rcx
 $LN21@dot_op:
 
-; 2158 :         TokenAssign( opnd1, opnd2 );
+; 2166 :         TokenAssign( opnd1, opnd2 );
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -7434,8 +7435,8 @@ $LN21@dot_op:
 	jmp	$LN17@dot_op
 $LN16@dot_op:
 
-; 2159 : 
-; 2160 :     } else if( ( opnd1->kind == EXPR_ADDR ) && ( opnd2->kind == EXPR_CONST ) ) {
+; 2167 : 
+; 2168 :     } else if( ( opnd1->kind == EXPR_ADDR ) && ( opnd2->kind == EXPR_CONST ) ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+60], 1
@@ -7444,8 +7445,8 @@ $LN16@dot_op:
 	cmp	DWORD PTR [rax+60], 0
 	jne	$LN22@dot_op
 
-; 2161 : 
-; 2162 :         DebugMsg1(("dot_op, ADDR - CONST: t1-t2 memtype=%Xh-%Xh t1.explicit=%u\n",
+; 2169 : 
+; 2170 :         DebugMsg1(("dot_op, ADDR - CONST: t1-t2 memtype=%Xh-%Xh t1.explicit=%u\n",
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -7456,14 +7457,14 @@ $LN16@dot_op:
 	mov	r8d, DWORD PTR [rax+64]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax+64]
-	lea	rcx, OFFSET FLAT:$SG11892
+	lea	rcx, OFFSET FLAT:$SG11896
 	call	DoDebugMsg1
 
-; 2163 :                    opnd1->mem_type, opnd2->mem_type, opnd1->explicit ));
-; 2164 : 
-; 2165 :         /* v2.08: changed to catch [ebx].<num> or [ebx].<simple type> */
-; 2166 :         //if ( (!ModuleInfo.oldstructs) && opnd2->type == NULL && opnd2->mbr == NULL ) {
-; 2167 :         if ( (!ModuleInfo.oldstructs) && ( opnd2->type == NULL || opnd2->is_type == FALSE ) && opnd2->mbr == NULL ) {
+; 2171 :                    opnd1->mem_type, opnd2->mem_type, opnd1->explicit ));
+; 2172 : 
+; 2173 :         /* v2.08: changed to catch [ebx].<num> or [ebx].<simple type> */
+; 2174 :         //if ( (!ModuleInfo.oldstructs) && opnd2->type == NULL && opnd2->mbr == NULL ) {
+; 2175 :         if ( (!ModuleInfo.oldstructs) && ( opnd2->type == NULL || opnd2->is_type == FALSE ) && opnd2->mbr == NULL ) {
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	shr	eax, 8
@@ -7484,22 +7485,22 @@ $LN25@dot_op:
 	cmp	QWORD PTR [rax+88], 0
 	jne	SHORT $LN24@dot_op
 
-; 2168 :             DebugMsg(("dot_op: error, constant or simple type after dot\n"));
+; 2176 :             DebugMsg(("dot_op: error, constant or simple type after dot\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11895
+	lea	rcx, OFFSET FLAT:$SG11899
 	call	DoDebugMsg
 
-; 2169 :             return( struct_field_error( opnd1 ) );
+; 2177 :             return( struct_field_error( opnd1 ) );
 
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	struct_field_error
 	jmp	$LN1@dot_op
 $LN24@dot_op:
 
-; 2170 :         }
-; 2171 : 
-; 2172 :         /* v2.08 added (copied from branch EXPR_ADDR-EXPR_REG )*/
-; 2173 :         if ( opnd2->is_type && opnd2->type ) {
+; 2178 :         }
+; 2179 : 
+; 2180 :         /* v2.08 added (copied from branch EXPR_ADDR-EXPR_REG )*/
+; 2181 :         if ( opnd2->is_type && opnd2->type ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -7511,7 +7512,7 @@ $LN24@dot_op:
 	cmp	QWORD PTR [rax+96], 0
 	je	SHORT $LN26@dot_op
 
-; 2174 :             opnd1->assumecheck = FALSE;
+; 2182 :             opnd1->assumecheck = FALSE;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -7519,15 +7520,15 @@ $LN24@dot_op:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rcx+76], eax
 
-; 2175 :             opnd2->llvalue = 0;  /* v2.08: this was previously done in get_operand() */
+; 2183 :             opnd2->llvalue = 0;  /* v2.08: this was previously done in get_operand() */
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	QWORD PTR [rax], 0
 $LN26@dot_op:
 
-; 2176 :         }
-; 2177 :         /* for [var].TYPE | STRUCT_FIELD, use offset instead of size */
-; 2178 :         if ( opnd2->mbr && opnd2->mbr->state == SYM_TYPE )
+; 2184 :         }
+; 2185 :         /* for [var].TYPE | STRUCT_FIELD, use offset instead of size */
+; 2186 :         if ( opnd2->mbr && opnd2->mbr->state == SYM_TYPE )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+88], 0
@@ -7537,7 +7538,7 @@ $LN26@dot_op:
 	cmp	DWORD PTR [rax+32], 7
 	jne	SHORT $LN27@dot_op
 
-; 2179 :             opnd2->llvalue = opnd2->mbr->offset;
+; 2187 :             opnd2->llvalue = opnd2->mbr->offset;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+88]
@@ -7546,7 +7547,7 @@ $LN26@dot_op:
 	mov	QWORD PTR [rcx], rax
 $LN27@dot_op:
 
-; 2180 :         opnd1->llvalue += opnd2->llvalue;
+; 2188 :         opnd1->llvalue += opnd2->llvalue;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -7555,20 +7556,20 @@ $LN27@dot_op:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 2181 :         opnd1->mem_type = opnd2->mem_type; /* v2.08: now always done */
+; 2189 :         opnd1->mem_type = opnd2->mem_type; /* v2.08: now always done */
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	ecx, DWORD PTR [rcx+64]
 	mov	DWORD PTR [rax+64], ecx
 
-; 2182 :         if( opnd2->mbr != NULL ) {
+; 2190 :         if( opnd2->mbr != NULL ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+88], 0
 	je	SHORT $LN28@dot_op
 
-; 2183 :             opnd1->mbr = opnd2->mbr;
+; 2191 :             opnd1->mbr = opnd2->mbr;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -7576,20 +7577,20 @@ $LN27@dot_op:
 	mov	QWORD PTR [rax+88], rcx
 $LN28@dot_op:
 
-; 2184 : #if 0 /* v2.07 */
-; 2185 :             /* temp. disabled in v1.95, test case:
-; 2186 :              * mov eax,(<struct> ptr [ebx]).F1
-; 2187 :              * however: mov ax, word ptr var[bx].F1 ???
-; 2188 :              * the condition can't be disabled. Instead the PTR
-; 2189 :              * operator must NOT set the explicit flag if the
-; 2190 :              * first operand is a structure.
-; 2191 :              */
-; 2192 :             if( opnd1->explicit == FALSE )
-; 2193 : #endif
-; 2194 :                 //opnd1->mem_type = opnd2->mem_type; /* v2.08: obsolete */
-; 2195 :         }
-; 2196 : 
-; 2197 :         DebugMsg1(("dot_op, ADDR - CONST, t1.type=%X (%s), t2.type=%X (%s)\n",
+; 2192 : #if 0 /* v2.07 */
+; 2193 :             /* temp. disabled in v1.95, test case:
+; 2194 :              * mov eax,(<struct> ptr [ebx]).F1
+; 2195 :              * however: mov ax, word ptr var[bx].F1 ???
+; 2196 :              * the condition can't be disabled. Instead the PTR
+; 2197 :              * operator must NOT set the explicit flag if the
+; 2198 :              * first operand is a structure.
+; 2199 :              */
+; 2200 :             if( opnd1->explicit == FALSE )
+; 2201 : #endif
+; 2202 :                 //opnd1->mem_type = opnd2->mem_type; /* v2.08: obsolete */
+; 2203 :         }
+; 2204 : 
+; 2205 :         DebugMsg1(("dot_op, ADDR - CONST, t1.type=%X (%s), t2.type=%X (%s)\n",
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+96], 0
@@ -7600,7 +7601,7 @@ $LN28@dot_op:
 	mov	QWORD PTR tv389[rsp], rax
 	jmp	SHORT $LN60@dot_op
 $LN59@dot_op:
-	lea	rax, OFFSET FLAT:$SG11899
+	lea	rax, OFFSET FLAT:$SG11903
 	mov	QWORD PTR tv389[rsp], rax
 $LN60@dot_op:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -7612,7 +7613,7 @@ $LN60@dot_op:
 	mov	QWORD PTR tv397[rsp], rax
 	jmp	SHORT $LN62@dot_op
 $LN61@dot_op:
-	lea	rax, OFFSET FLAT:$SG11900
+	lea	rax, OFFSET FLAT:$SG11904
 	mov	QWORD PTR tv397[rsp], rax
 $LN62@dot_op:
 	mov	rax, QWORD PTR tv389[rsp]
@@ -7622,17 +7623,17 @@ $LN62@dot_op:
 	mov	r8, QWORD PTR tv397[rsp]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rdx, QWORD PTR [rax+96]
-	lea	rcx, OFFSET FLAT:$SG11901
+	lea	rcx, OFFSET FLAT:$SG11905
 	call	DoDebugMsg1
 
-; 2198 :                    opnd1->type,
-; 2199 :                    opnd1->type ? opnd1->type->name : "",
-; 2200 :                    opnd2->type,
-; 2201 :                    opnd2->type ? opnd2->type->name : "" ));
-; 2202 : #if 0 /* v1.96 */
-; 2203 :         if ( opnd2->type )
-; 2204 : #endif
-; 2205 :             opnd1->type = opnd2->type;
+; 2206 :                    opnd1->type,
+; 2207 :                    opnd1->type ? opnd1->type->name : "",
+; 2208 :                    opnd2->type,
+; 2209 :                    opnd2->type ? opnd2->type->name : "" ));
+; 2210 : #if 0 /* v1.96 */
+; 2211 :         if ( opnd2->type )
+; 2212 : #endif
+; 2213 :             opnd1->type = opnd2->type;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -7641,8 +7642,8 @@ $LN62@dot_op:
 	jmp	$LN23@dot_op
 $LN22@dot_op:
 
-; 2206 : 
-; 2207 :     } else if ( opnd1->kind == EXPR_CONST && opnd2->kind == EXPR_CONST ) {
+; 2214 : 
+; 2215 :     } else if ( opnd1->kind == EXPR_CONST && opnd2->kind == EXPR_CONST ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+60], 0
@@ -7651,8 +7652,8 @@ $LN22@dot_op:
 	cmp	DWORD PTR [rax+60], 0
 	jne	$LN29@dot_op
 
-; 2208 : 
-; 2209 :         DebugMsg1(("dot_op, CONST - CONST, t1-t2 value=%u-%u, memtype=%Xh-%Xh istype=%u-%u\n",
+; 2216 : 
+; 2217 :         DebugMsg1(("dot_op, CONST - CONST, t1-t2 value=%u-%u, memtype=%Xh-%Xh istype=%u-%u\n",
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -7673,11 +7674,11 @@ $LN22@dot_op:
 	mov	r8d, DWORD PTR [rax]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG11904
+	lea	rcx, OFFSET FLAT:$SG11908
 	call	DoDebugMsg1
 
-; 2210 :                    opnd1->value, opnd2->value, opnd1->mem_type, opnd2->mem_type, opnd1->is_type, opnd2->is_type));
-; 2211 :         if ( opnd2->mbr == NULL && !ModuleInfo.oldstructs ) {
+; 2218 :                    opnd1->value, opnd2->value, opnd1->mem_type, opnd2->mem_type, opnd1->is_type, opnd2->is_type));
+; 2219 :         if ( opnd2->mbr == NULL && !ModuleInfo.oldstructs ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+88], 0
@@ -7688,36 +7689,36 @@ $LN22@dot_op:
 	test	eax, eax
 	jne	SHORT $LN31@dot_op
 
-; 2212 :             DebugMsg(("dot_op: error, opnd2.mbr=NULL\n" ));
+; 2220 :             DebugMsg(("dot_op: error, opnd2.mbr=NULL\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11906
+	lea	rcx, OFFSET FLAT:$SG11910
 	call	DoDebugMsg
 
-; 2213 :             return( struct_field_error( opnd1 ) );
+; 2221 :             return( struct_field_error( opnd1 ) );
 
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	struct_field_error
 	jmp	$LN1@dot_op
 $LN31@dot_op:
 
-; 2214 :         }
-; 2215 :         if ( opnd1->type != NULL ) {
+; 2222 :         }
+; 2223 :         if ( opnd1->type != NULL ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	QWORD PTR [rax+96], 0
 	je	$LN32@dot_op
 
-; 2216 :             /*
-; 2217 :              * v2.06: the token1 value must NOT be ignored if the token is a
-; 2218 :              * struct member: mov ax, [offset] <struct>.<mbr>.<mbr>
-; 2219 :              */
-; 2220 :             if ( opnd1->mbr != NULL )
+; 2224 :             /*
+; 2225 :              * v2.06: the token1 value must NOT be ignored if the token is a
+; 2226 :              * struct member: mov ax, [offset] <struct>.<mbr>.<mbr>
+; 2227 :              */
+; 2228 :             if ( opnd1->mbr != NULL )
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	QWORD PTR [rax+88], 0
 	je	SHORT $LN34@dot_op
 
-; 2221 :                 opnd1->llvalue += opnd2->llvalue;
+; 2229 :                 opnd1->llvalue += opnd2->llvalue;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -7728,9 +7729,9 @@ $LN31@dot_op:
 	jmp	SHORT $LN35@dot_op
 $LN34@dot_op:
 
-; 2222 :             else {
-; 2223 :                 /* old token is a type - the value (=size) is ignored then. */
-; 2224 :                 opnd1->llvalue = opnd2->llvalue;
+; 2230 :             else {
+; 2231 :                 /* old token is a type - the value (=size) is ignored then. */
+; 2232 :                 opnd1->llvalue = opnd2->llvalue;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -7738,25 +7739,25 @@ $LN34@dot_op:
 	mov	QWORD PTR [rax], rcx
 $LN35@dot_op:
 
-; 2225 :             }
-; 2226 :             opnd1->mbr = opnd2->mbr;
+; 2233 :             }
+; 2234 :             opnd1->mbr = opnd2->mbr;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR [rcx+88]
 	mov	QWORD PTR [rax+88], rcx
 
-; 2227 :             /* v2.0: copy mem_type (test case: mov ds:[<struct>.<mbr>], 123) */
-; 2228 :             opnd1->mem_type = opnd2->mem_type;
+; 2235 :             /* v2.0: copy mem_type (test case: mov ds:[<struct>.<mbr>], 123) */
+; 2236 :             opnd1->mem_type = opnd2->mem_type;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	ecx, DWORD PTR [rcx+64]
 	mov	DWORD PTR [rax+64], ecx
 
-; 2229 :             /* v2.05: removed, it's still a type constant */
-; 2230 :             //opnd1->is_type = FALSE;
-; 2231 :             opnd1->is_type = opnd2->is_type;
+; 2237 :             /* v2.05: removed, it's still a type constant */
+; 2238 :             //opnd1->is_type = FALSE;
+; 2239 :             opnd1->is_type = opnd2->is_type;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -7772,8 +7773,8 @@ $LN35@dot_op:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rcx+76], eax
 
-; 2232 :             /* either clear <type> or use the renewed one */
-; 2233 :             if ( opnd1->type != opnd2->type )
+; 2240 :             /* either clear <type> or use the renewed one */
+; 2241 :             if ( opnd1->type != opnd2->type )
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -7781,7 +7782,7 @@ $LN35@dot_op:
 	cmp	QWORD PTR [rax+96], rcx
 	je	SHORT $LN36@dot_op
 
-; 2234 :                 opnd1->type = opnd2->type;
+; 2242 :                 opnd1->type = opnd2->type;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -7790,22 +7791,22 @@ $LN35@dot_op:
 	jmp	SHORT $LN37@dot_op
 $LN36@dot_op:
 
-; 2235 :             else
-; 2236 :                 opnd1->type = NULL;
+; 2243 :             else
+; 2244 :                 opnd1->type = NULL;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rax+96], 0
 $LN37@dot_op:
 
-; 2237 :         } else {
+; 2245 :         } else {
 
 	jmp	SHORT $LN33@dot_op
 $LN32@dot_op:
 
-; 2238 :             /* old token is NOT a type */
-; 2239 :             /* most likely a number or an MT_ABS symbol! */
-; 2240 :             /* so the TOTAL of both constants is required */
-; 2241 :             opnd1->llvalue += opnd2->llvalue;
+; 2246 :             /* old token is NOT a type */
+; 2247 :             /* most likely a number or an MT_ABS symbol! */
+; 2248 :             /* so the TOTAL of both constants is required */
+; 2249 :             opnd1->llvalue += opnd2->llvalue;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -7814,14 +7815,14 @@ $LN32@dot_op:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 2242 :             opnd1->mbr = opnd2->mbr;
+; 2250 :             opnd1->mbr = opnd2->mbr;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR [rcx+88]
 	mov	QWORD PTR [rax+88], rcx
 
-; 2243 :             opnd1->mem_type = opnd2->mem_type;
+; 2251 :             opnd1->mem_type = opnd2->mem_type;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -7829,22 +7830,22 @@ $LN32@dot_op:
 	mov	DWORD PTR [rax+64], ecx
 $LN33@dot_op:
 
-; 2244 :         }
-; 2245 :     } else {
+; 2252 :         }
+; 2253 :     } else {
 
 	jmp	SHORT $LN30@dot_op
 $LN29@dot_op:
 
-; 2246 :         DebugMsg(("dot_op: error, unknown kind combination, opnd1->kind=%d, opnd2->kind=%d\n", opnd1->kind, opnd2->kind ));
+; 2254 :         DebugMsg(("dot_op: error, unknown kind combination, opnd1->kind=%d, opnd2->kind=%d\n", opnd1->kind, opnd2->kind ));
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	r8d, DWORD PTR [rax+60]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax+60]
-	lea	rcx, OFFSET FLAT:$SG11913
+	lea	rcx, OFFSET FLAT:$SG11917
 	call	DoDebugMsg
 
-; 2247 :         return( struct_field_error( opnd1 ) );
+; 2255 :         return( struct_field_error( opnd1 ) );
 
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	struct_field_error
@@ -7854,13 +7855,13 @@ $LN23@dot_op:
 $LN17@dot_op:
 $LN8@dot_op:
 
-; 2248 :     }
-; 2249 :     return( NOT_ERROR );
+; 2256 :     }
+; 2257 :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@dot_op:
 
-; 2250 : }
+; 2258 : }
 
 	add	rsp, 176				; 000000b0H
 	pop	rdi
@@ -7873,7 +7874,7 @@ _TEXT	SEGMENT
 opnd$ = 48
 struct_field_error PROC
 
-; 2040 : {
+; 2048 : {
 
 	mov	QWORD PTR [rsp+8], rcx
 	push	rdi
@@ -7884,7 +7885,7 @@ struct_field_error PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+48]
 
-; 2041 :     if ( opnd->is_opattr ) {
+; 2049 :     if ( opnd->is_opattr ) {
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -7893,25 +7894,25 @@ struct_field_error PROC
 	test	eax, eax
 	je	SHORT $LN2@struct_fie
 
-; 2042 :         opnd->kind = EXPR_ERROR;
+; 2050 :         opnd->kind = EXPR_ERROR;
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	DWORD PTR [rax+60], -1
 
-; 2043 :         return( NOT_ERROR );
+; 2051 :         return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	SHORT $LN1@struct_fie
 $LN2@struct_fie:
 
-; 2044 :     }
-; 2045 :     return( fnEmitErr( STRUCTURE_FIELD_EXPECTED ) );
+; 2052 :     }
+; 2053 :     return( fnEmitErr( STRUCTURE_FIELD_EXPECTED ) );
 
 	mov	ecx, 271				; 0000010fH
 	call	QWORD PTR fnEmitErr
 $LN1@struct_fie:
 
-; 2046 : }
+; 2054 : }
 
 	add	rsp, 32					; 00000020H
 	pop	rdi
@@ -7926,7 +7927,7 @@ opnd1$ = 64
 opnd2$ = 72
 minus_op PROC
 
-; 1894 : {
+; 1902 : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -7938,27 +7939,27 @@ minus_op PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+64]
 
-; 1895 :     struct asym      *sym;
-; 1896 :     /*
-; 1897 :      * The only formats allowed are:
-; 1898 :      *        constant - constant
-; 1899 :      *         address - constant       ( only in this order )
-; 1900 :      *         address - address
-; 1901 :      *        register - constant       ( only inside [] and in this
-; 1902 :      *                                    order )
-; 1903 :      */
-; 1904 : 
-; 1905 :     DebugMsg1(("minus_op: kind tok1=%u, tok2=%u\n", opnd1->kind, opnd2->kind ));
+; 1903 :     struct asym      *sym;
+; 1904 :     /*
+; 1905 :      * The only formats allowed are:
+; 1906 :      *        constant - constant
+; 1907 :      *         address - constant       ( only in this order )
+; 1908 :      *         address - address
+; 1909 :      *        register - constant       ( only inside [] and in this
+; 1910 :      *                                    order )
+; 1911 :      */
+; 1912 : 
+; 1913 :     DebugMsg1(("minus_op: kind tok1=%u, tok2=%u\n", opnd1->kind, opnd2->kind ));
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	r8d, DWORD PTR [rax+60]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax+60]
-	lea	rcx, OFFSET FLAT:$SG11788
+	lea	rcx, OFFSET FLAT:$SG11792
 	call	DoDebugMsg1
 
-; 1906 : 
-; 1907 :     if( check_direct_reg( opnd1, opnd2 ) == ERROR ) {
+; 1914 : 
+; 1915 :     if( check_direct_reg( opnd1, opnd2 ) == ERROR ) {
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -7966,26 +7967,26 @@ minus_op PROC
 	cmp	eax, -1
 	jne	SHORT $LN2@minus_op
 
-; 1908 :         DebugMsg(("minus_op: error direct register\n"));
+; 1916 :         DebugMsg(("minus_op: error direct register\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11790
+	lea	rcx, OFFSET FLAT:$SG11794
 	call	DoDebugMsg
 
-; 1909 :         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
+; 1917 :         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
 	mov	ecx, 170				; 000000aaH
 	call	QWORD PTR fnEmitErr
 	jmp	$LN1@minus_op
 $LN2@minus_op:
 
-; 1910 :     }
-; 1911 : 
-; 1912 :     /* added for v1.94. It's related to the change done in MakeConst()!
-; 1913 :      * todo: find out why flag no_error_msg was checked in v1.94-2.09.
-; 1914 :      */
-; 1915 :     if ( opnd1->kind == EXPR_ADDR &&
-; 1916 :         opnd2->kind == EXPR_ADDR &&
-; 1917 :         opnd2->sym &&
+; 1918 :     }
+; 1919 : 
+; 1920 :     /* added for v1.94. It's related to the change done in MakeConst()!
+; 1921 :      * todo: find out why flag no_error_msg was checked in v1.94-2.09.
+; 1922 :      */
+; 1923 :     if ( opnd1->kind == EXPR_ADDR &&
+; 1924 :         opnd2->kind == EXPR_ADDR &&
+; 1925 :         opnd2->sym &&
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+60], 1
@@ -8001,21 +8002,21 @@ $LN2@minus_op:
 	cmp	DWORD PTR [rax+32], 0
 	jne	SHORT $LN3@minus_op
 
-; 1918 :         opnd2->sym->state == SYM_UNDEFINED /* && !no_error_msg */ )
-; 1919 :         ; /* don't convert token2 to a constant! */
+; 1926 :         opnd2->sym->state == SYM_UNDEFINED /* && !no_error_msg */ )
+; 1927 :         ; /* don't convert token2 to a constant! */
 
 	jmp	SHORT $LN4@minus_op
 $LN3@minus_op:
 
-; 1920 :     else
-; 1921 :         MakeConst( opnd2 );
+; 1928 :     else
+; 1929 :         MakeConst( opnd2 );
 
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	call	MakeConst
 $LN4@minus_op:
 
-; 1922 : 
-; 1923 :     if( check_same( opnd1, opnd2, EXPR_CONST ) ) {
+; 1930 : 
+; 1931 :     if( check_same( opnd1, opnd2, EXPR_CONST ) ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+60], 0
@@ -8024,13 +8025,13 @@ $LN4@minus_op:
 	cmp	DWORD PTR [rax+60], 0
 	jne	SHORT $LN5@minus_op
 
-; 1924 : 
-; 1925 :         DebugMsg1(("minus_op: CONST-CONST\n" ));
+; 1932 : 
+; 1933 :         DebugMsg1(("minus_op: CONST-CONST\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11795
+	lea	rcx, OFFSET FLAT:$SG11799
 	call	DoDebugMsg1
 
-; 1926 :         opnd1->llvalue -= opnd2->llvalue;
+; 1934 :         opnd1->llvalue -= opnd2->llvalue;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -8042,8 +8043,8 @@ $LN4@minus_op:
 	jmp	$LN6@minus_op
 $LN5@minus_op:
 
-; 1927 : 
-; 1928 :     } else if( opnd1->kind == EXPR_ADDR &&
+; 1935 : 
+; 1936 :     } else if( opnd1->kind == EXPR_ADDR &&
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+60], 1
@@ -8052,14 +8053,14 @@ $LN5@minus_op:
 	cmp	DWORD PTR [rax+60], 0
 	jne	SHORT $LN7@minus_op
 
-; 1929 :               opnd2->kind == EXPR_CONST ) {
-; 1930 : 
-; 1931 :         DebugMsg1(("minus_op: ADDR-CONST\n" ));
+; 1937 :               opnd2->kind == EXPR_CONST ) {
+; 1938 : 
+; 1939 :         DebugMsg1(("minus_op: ADDR-CONST\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11798
+	lea	rcx, OFFSET FLAT:$SG11802
 	call	DoDebugMsg1
 
-; 1932 :         opnd1->llvalue -= opnd2->llvalue;
+; 1940 :         opnd1->llvalue -= opnd2->llvalue;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -8069,15 +8070,15 @@ $LN5@minus_op:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 1933 :         fix_struct_value( opnd1 );
+; 1941 :         fix_struct_value( opnd1 );
 
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	fix_struct_value
 	jmp	$LN8@minus_op
 $LN7@minus_op:
 
-; 1934 : 
-; 1935 :     } else if( check_same( opnd1, opnd2, EXPR_ADDR ) ){
+; 1942 : 
+; 1943 :     } else if( check_same( opnd1, opnd2, EXPR_ADDR ) ){
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+60], 1
@@ -8086,24 +8087,24 @@ $LN7@minus_op:
 	cmp	DWORD PTR [rax+60], 1
 	jne	$LN9@minus_op
 
-; 1936 : 
-; 1937 :         DebugMsg1(("minus_op: ADDR-ADDR\n" ));
+; 1944 : 
+; 1945 :         DebugMsg1(("minus_op: ADDR-ADDR\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11801
+	lea	rcx, OFFSET FLAT:$SG11805
 	call	DoDebugMsg1
 
-; 1938 :         fix_struct_value( opnd1 );
+; 1946 :         fix_struct_value( opnd1 );
 
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	fix_struct_value
 
-; 1939 :         fix_struct_value( opnd2 );
+; 1947 :         fix_struct_value( opnd2 );
 
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	call	fix_struct_value
 
-; 1940 :         //if( opnd2->base_reg != NULL || opnd2->idx_reg != NULL ) { /* v2.09: just check 'indirect' */
-; 1941 :         if( opnd2->indirect ) {
+; 1948 :         //if( opnd2->base_reg != NULL || opnd2->idx_reg != NULL ) { /* v2.09: just check 'indirect' */
+; 1949 :         if( opnd2->indirect ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -8111,28 +8112,28 @@ $LN7@minus_op:
 	test	eax, eax
 	je	SHORT $LN11@minus_op
 
-; 1942 :             DebugMsg(("minus_op error, opnd2->indirect==TRUE\n"));
+; 1950 :             DebugMsg(("minus_op error, opnd2->indirect==TRUE\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11803
+	lea	rcx, OFFSET FLAT:$SG11807
 	call	DoDebugMsg
 
-; 1943 :             return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
+; 1951 :             return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
 	mov	ecx, 170				; 000000aaH
 	call	QWORD PTR fnEmitErr
 	jmp	$LN1@minus_op
 $LN11@minus_op:
 
-; 1944 :         }
-; 1945 :         if( opnd2->label_tok == NULL ) {
+; 1952 :         }
+; 1953 :         if( opnd2->label_tok == NULL ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+40], 0
 	jne	SHORT $LN12@minus_op
 
-; 1946 :             /* v2.06c: do 64-bit arithmetic (more rigid test in data.c) */
-; 1947 :             //opnd1->value -= opnd2->value;
-; 1948 :             opnd1->value64 -= opnd2->value64;
+; 1954 :             /* v2.06c: do 64-bit arithmetic (more rigid test in data.c) */
+; 1955 :             //opnd1->value -= opnd2->value;
+; 1956 :             opnd1->value64 -= opnd2->value64;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -8142,7 +8143,7 @@ $LN11@minus_op:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 1949 :             opnd1->indirect |= opnd2->indirect;
+; 1957 :             opnd1->indirect |= opnd2->indirect;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -8160,12 +8161,12 @@ $LN11@minus_op:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rcx+76], eax
 
-; 1950 :         } else {
+; 1958 :         } else {
 
 	jmp	$LN13@minus_op
 $LN12@minus_op:
 
-; 1951 :             if( opnd1->label_tok == NULL || opnd1->sym == NULL || opnd2->sym == NULL ) {
+; 1959 :             if( opnd1->label_tok == NULL || opnd1->sym == NULL || opnd2->sym == NULL ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	QWORD PTR [rax+40], 0
@@ -8178,7 +8179,7 @@ $LN12@minus_op:
 	jne	SHORT $LN14@minus_op
 $LN15@minus_op:
 
-; 1952 :                 DebugMsg(("minus_op error, label_tok=%X opnd1.sym=%X opnd2.sym=%X\n", opnd1->label_tok, opnd1->sym, opnd2->sym ));
+; 1960 :                 DebugMsg(("minus_op error, label_tok=%X opnd1.sym=%X opnd2.sym=%X\n", opnd1->label_tok, opnd1->sym, opnd2->sym ));
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	r9, QWORD PTR [rax+80]
@@ -8186,27 +8187,27 @@ $LN15@minus_op:
 	mov	r8, QWORD PTR [rax+80]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rdx, QWORD PTR [rax+40]
-	lea	rcx, OFFSET FLAT:$SG11808
+	lea	rcx, OFFSET FLAT:$SG11812
 	call	DoDebugMsg
 
-; 1953 :                 /* v2.05: error msg changed */
-; 1954 :                 //fnEmitErr( SYNTAX_ERROR );
-; 1955 :                 return( fnEmitErr( OPERAND_MUST_BE_RELOCATABLE ) );
+; 1961 :                 /* v2.05: error msg changed */
+; 1962 :                 //fnEmitErr( SYNTAX_ERROR );
+; 1963 :                 return( fnEmitErr( OPERAND_MUST_BE_RELOCATABLE ) );
 
 	mov	ecx, 188				; 000000bcH
 	call	QWORD PTR fnEmitErr
 	jmp	$LN1@minus_op
 $LN14@minus_op:
 
-; 1956 :             }
-; 1957 :             /* handle first operand */
-; 1958 :             sym = opnd1->sym;
+; 1964 :             }
+; 1965 :             /* handle first operand */
+; 1966 :             sym = opnd1->sym;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax+80]
 	mov	QWORD PTR sym$[rsp], rax
 
-; 1959 :             opnd1->value += sym->offset;
+; 1967 :             opnd1->value += sym->offset;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax]
@@ -8215,22 +8216,22 @@ $LN14@minus_op:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rcx], eax
 
-; 1960 : 
-; 1961 :             /* handle second operand */
-; 1962 :             sym = opnd2->sym;
+; 1968 : 
+; 1969 :             /* handle second operand */
+; 1970 :             sym = opnd2->sym;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
 	mov	QWORD PTR sym$[rsp], rax
 
-; 1963 :             if( Parse_Pass > PASS_1 ) {
+; 1971 :             if( Parse_Pass > PASS_1 ) {
 
 	cmp	DWORD PTR Parse_Pass, 0
 	jbe	$LN16@minus_op
 
-; 1964 :                 /* if symbol is external, error - unless it's the same symbol */
-; 1965 :                 if ( ( sym->state == SYM_EXTERNAL ||
-; 1966 :                      opnd1->sym->state == SYM_EXTERNAL) &&
+; 1972 :                 /* if symbol is external, error - unless it's the same symbol */
+; 1973 :                 if ( ( sym->state == SYM_EXTERNAL ||
+; 1974 :                      opnd1->sym->state == SYM_EXTERNAL) &&
 
 	mov	rax, QWORD PTR sym$[rsp]
 	cmp	DWORD PTR [rax+32], 2
@@ -8245,13 +8246,13 @@ $LN18@minus_op:
 	cmp	QWORD PTR sym$[rsp], rax
 	je	SHORT $LN17@minus_op
 
-; 1967 :                     sym != opnd1->sym ) {
-; 1968 :                     DebugMsg(("minus_op error 6\n"));
+; 1975 :                     sym != opnd1->sym ) {
+; 1976 :                     DebugMsg(("minus_op error 6\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11812
+	lea	rcx, OFFSET FLAT:$SG11816
 	call	DoDebugMsg
 
-; 1969 :                     return( fnEmitErr(INVALID_USE_OF_EXTERNAL_SYMBOL, opnd1->sym->name ) );
+; 1977 :                     return( fnEmitErr(INVALID_USE_OF_EXTERNAL_SYMBOL, opnd1->sym->name ) );
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax+80]
@@ -8261,9 +8262,9 @@ $LN18@minus_op:
 	jmp	$LN1@minus_op
 $LN17@minus_op:
 
-; 1970 :                 }
-; 1971 :                 /* check if the 2 offsets belong to the same segment */
-; 1972 :                 if ( sym->segment != opnd1->sym->segment ) {
+; 1978 :                 }
+; 1979 :                 /* check if the 2 offsets belong to the same segment */
+; 1980 :                 if ( sym->segment != opnd1->sym->segment ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax+80]
@@ -8272,17 +8273,17 @@ $LN17@minus_op:
 	cmp	QWORD PTR [rcx+24], rax
 	je	SHORT $LN19@minus_op
 
-; 1973 :                     DebugMsg(("minus_op error, sym.segm=%X opnd1->sym.segm=%X\n", sym->segment, opnd1->sym->segment ));
+; 1981 :                     DebugMsg(("minus_op error, sym.segm=%X opnd1->sym.segm=%X\n", sym->segment, opnd1->sym->segment ));
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax+80]
 	mov	r8, QWORD PTR [rax+24]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+24]
-	lea	rcx, OFFSET FLAT:$SG11814
+	lea	rcx, OFFSET FLAT:$SG11818
 	call	DoDebugMsg
 
-; 1974 :                     return( fnEmitErr( OPERANDS_MUST_BE_IN_SAME_SEGMENT ) );
+; 1982 :                     return( fnEmitErr( OPERANDS_MUST_BE_IN_SAME_SEGMENT ) );
 
 	mov	ecx, 192				; 000000c0H
 	call	QWORD PTR fnEmitErr
@@ -8290,20 +8291,20 @@ $LN17@minus_op:
 $LN19@minus_op:
 $LN16@minus_op:
 
-; 1975 :                 }
-; 1976 :             }
-; 1977 : 
-; 1978 :             /* the type changes from address to constant.
-; 1979 :              * but only if both labels are defined and no indirect addressing.
-; 1980 :              */
-; 1981 :             opnd1->kind = EXPR_CONST;
+; 1983 :                 }
+; 1984 :             }
+; 1985 : 
+; 1986 :             /* the type changes from address to constant.
+; 1987 :              * but only if both labels are defined and no indirect addressing.
+; 1988 :              */
+; 1989 :             opnd1->kind = EXPR_CONST;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+60], 0
 
-; 1982 : 
-; 1983 :             /* v2.05: if at least one label is undefined, assume result=1 */
-; 1984 :             if ( opnd1->sym->state == SYM_UNDEFINED ||
+; 1990 : 
+; 1991 :             /* v2.05: if at least one label is undefined, assume result=1 */
+; 1992 :             if ( opnd1->sym->state == SYM_UNDEFINED ||
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax+80]
@@ -8315,34 +8316,34 @@ $LN16@minus_op:
 	jne	SHORT $LN20@minus_op
 $LN22@minus_op:
 
-; 1985 :                 opnd2->sym->state == SYM_UNDEFINED ) {
-; 1986 :                 opnd1->value = 1;
+; 1993 :                 opnd2->sym->state == SYM_UNDEFINED ) {
+; 1994 :                 opnd1->value = 1;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax], 1
 
-; 1987 :                 /* 2.09: make sure an undefined label is returned in opnd.sym.
-; 1988 :                  * expression type has to be ADDR then; see equate22.aso.
-; 1989 :                  * 2.11: returning EXPR_ADDR may cause problems -
-; 1990 :                  * it may make the code longer than necessary, thus
-; 1991 :                  * triggering an unnecessary jump extension.
-; 1992 :                  * so it is returned only if the expression is used to define an equate.
-; 1993 :                  */
-; 1994 :                 if ( opnd1->sym->state != SYM_UNDEFINED ) {
+; 1995 :                 /* 2.09: make sure an undefined label is returned in opnd.sym.
+; 1996 :                  * expression type has to be ADDR then; see equate22.aso.
+; 1997 :                  * 2.11: returning EXPR_ADDR may cause problems -
+; 1998 :                  * it may make the code longer than necessary, thus
+; 1999 :                  * triggering an unnecessary jump extension.
+; 2000 :                  * so it is returned only if the expression is used to define an equate.
+; 2001 :                  */
+; 2002 :                 if ( opnd1->sym->state != SYM_UNDEFINED ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax+80]
 	cmp	DWORD PTR [rax+32], 0
 	je	SHORT $LN23@minus_op
 
-; 1995 :                     opnd1->sym = opnd2->sym;
+; 2003 :                     opnd1->sym = opnd2->sym;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR [rcx+80]
 	mov	QWORD PTR [rax+80], rcx
 
-; 1996 :                     opnd1->label_tok = opnd2->label_tok;
+; 2004 :                     opnd1->label_tok = opnd2->label_tok;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -8350,21 +8351,21 @@ $LN22@minus_op:
 	mov	QWORD PTR [rax+40], rcx
 $LN23@minus_op:
 
-; 1997 :                 }
-; 1998 :                 opnd1->kind = EXPR_ADDR;
+; 2005 :                 }
+; 2006 :                 opnd1->kind = EXPR_ADDR;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+60], 1
 
-; 1999 :             } else {
+; 2007 :             } else {
 
 	jmp	SHORT $LN21@minus_op
 $LN20@minus_op:
 
-; 2000 :                 /* v2.06c: do 64-bit arithmetic (more rigid test in data.c) */
-; 2001 :                 //opnd1->value -= sym->offset;
-; 2002 :                 //opnd1->value -= opnd2->value;
-; 2003 :                 opnd1->value64 -= sym->offset;
+; 2008 :                 /* v2.06c: do 64-bit arithmetic (more rigid test in data.c) */
+; 2009 :                 //opnd1->value -= sym->offset;
+; 2010 :                 //opnd1->value -= opnd2->value;
+; 2011 :                 opnd1->value64 -= sym->offset;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movsxd	rax, DWORD PTR [rax+16]
@@ -8375,7 +8376,7 @@ $LN20@minus_op:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 2004 :                 opnd1->value64 -= opnd2->value64;
+; 2012 :                 opnd1->value64 -= opnd2->value64;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -8385,20 +8386,20 @@ $LN20@minus_op:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 2005 :                 opnd1->label_tok = NULL;
+; 2013 :                 opnd1->label_tok = NULL;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rax+40], 0
 
-; 2006 :                 opnd1->sym = NULL;
+; 2014 :                 opnd1->sym = NULL;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rax+80], 0
 $LN21@minus_op:
 
-; 2007 :             }
-; 2008 :             //if( opnd1->base_reg == NULL && opnd1->idx_reg == NULL ) { /* v2.09: just check 'indirect' */
-; 2009 :             if( opnd1->indirect == FALSE ) {
+; 2015 :             }
+; 2016 :             //if( opnd1->base_reg == NULL && opnd1->idx_reg == NULL ) { /* v2.09: just check 'indirect' */
+; 2017 :             if( opnd1->indirect == FALSE ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -8406,7 +8407,7 @@ $LN21@minus_op:
 	test	eax, eax
 	jne	SHORT $LN24@minus_op
 
-; 2010 :                 if( opnd1->instr == T_OFFSET && opnd2->instr == T_OFFSET )
+; 2018 :                 if( opnd1->instr == T_OFFSET && opnd2->instr == T_OFFSET )
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+56], 241			; 000000f1H
@@ -8415,36 +8416,36 @@ $LN21@minus_op:
 	cmp	DWORD PTR [rax+56], 241			; 000000f1H
 	jne	SHORT $LN26@minus_op
 
-; 2011 :                     opnd1->instr = EMPTY;
+; 2019 :                     opnd1->instr = EMPTY;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+56], -2
 $LN26@minus_op:
 
-; 2012 :                 //opnd1->indirect = FALSE; /* v2.09: not needed */
-; 2013 :             } else {
+; 2020 :                 //opnd1->indirect = FALSE; /* v2.09: not needed */
+; 2021 :             } else {
 
 	jmp	SHORT $LN25@minus_op
 $LN24@minus_op:
 
-; 2014 :                 DebugMsg1(("minus_op, exit, ADDR, base=%X, idx=%X\n", opnd1->base_reg, opnd1->idx_reg ));
+; 2022 :                 DebugMsg1(("minus_op, exit, ADDR, base=%X, idx=%X\n", opnd1->base_reg, opnd1->idx_reg ));
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	r8, QWORD PTR [rax+32]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rdx, QWORD PTR [rax+24]
-	lea	rcx, OFFSET FLAT:$SG11822
+	lea	rcx, OFFSET FLAT:$SG11826
 	call	DoDebugMsg1
 
-; 2015 :                 opnd1->kind = EXPR_ADDR;
+; 2023 :                 opnd1->kind = EXPR_ADDR;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+60], 1
 $LN25@minus_op:
 
-; 2016 :                 //opnd1->indirect |= opnd2->indirect;  /* v2.09: op1->indirect is always 1, op2->indirect is always 0 */
-; 2017 :             }
-; 2018 :             opnd1->explicit = FALSE;
+; 2024 :                 //opnd1->indirect |= opnd2->indirect;  /* v2.09: op1->indirect is always 1, op2->indirect is always 0 */
+; 2025 :             }
+; 2026 :             opnd1->explicit = FALSE;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -8452,19 +8453,19 @@ $LN25@minus_op:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rcx+76], eax
 
-; 2019 :             opnd1->mem_type = MT_EMPTY;
+; 2027 :             opnd1->mem_type = MT_EMPTY;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+64], 192			; 000000c0H
 $LN13@minus_op:
 
-; 2020 :         }
+; 2028 :         }
 
 	jmp	$LN10@minus_op
 $LN9@minus_op:
 
-; 2021 : 
-; 2022 :     } else if( opnd1->kind == EXPR_REG &&
+; 2029 : 
+; 2030 :     } else if( opnd1->kind == EXPR_REG &&
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+60], 2
@@ -8473,16 +8474,16 @@ $LN9@minus_op:
 	cmp	DWORD PTR [rax+60], 0
 	jne	SHORT $LN27@minus_op
 
-; 2023 :               opnd2->kind == EXPR_CONST ) {
-; 2024 : 
-; 2025 :         opnd1->llvalue = -1 * opnd2->llvalue;
+; 2031 :               opnd2->kind == EXPR_CONST ) {
+; 2032 : 
+; 2033 :         opnd1->llvalue = -1 * opnd2->llvalue;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	imul	rax, QWORD PTR [rax], -1
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 2026 :         opnd1->indirect |= opnd2->indirect;
+; 2034 :         opnd1->indirect |= opnd2->indirect;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -8500,27 +8501,27 @@ $LN9@minus_op:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rcx+76], eax
 
-; 2027 :         opnd1->kind = EXPR_ADDR;
+; 2035 :         opnd1->kind = EXPR_ADDR;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+60], 1
 
-; 2028 : 
-; 2029 :     } else {
+; 2036 : 
+; 2037 :     } else {
 
 	jmp	SHORT $LN28@minus_op
 $LN27@minus_op:
 
-; 2030 :         DebugMsg(("minus_op, exit, error: kinds tok1=%u, tok2=%u\n", opnd1->kind, opnd2->kind ));
+; 2038 :         DebugMsg(("minus_op, exit, error: kinds tok1=%u, tok2=%u\n", opnd1->kind, opnd2->kind ));
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	r8d, DWORD PTR [rax+60]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax+60]
-	lea	rcx, OFFSET FLAT:$SG11825
+	lea	rcx, OFFSET FLAT:$SG11829
 	call	DoDebugMsg
 
-; 2031 :         return( ConstError( opnd1, opnd2 ) );
+; 2039 :         return( ConstError( opnd1, opnd2 ) );
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -8531,13 +8532,13 @@ $LN10@minus_op:
 $LN8@minus_op:
 $LN6@minus_op:
 
-; 2032 :     }
-; 2033 :     return( NOT_ERROR );
+; 2040 :     }
+; 2041 :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@minus_op:
 
-; 2034 : }
+; 2042 : }
 
 	add	rsp, 48					; 00000030H
 	pop	rdi
@@ -8557,7 +8558,7 @@ opnd1$ = 176
 opnd2$ = 184
 plus_op	PROC
 
-; 1767 : {
+; 1775 : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -8569,7 +8570,7 @@ plus_op	PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+176]
 
-; 1768 :     DebugMsg1(("plus_op: kind=%d/%d memtype=%Xh-%Xh value=%d-%d sym=%s-%s mbr=%s-%s type=%s-%s\n",
+; 1776 :     DebugMsg1(("plus_op: kind=%d/%d memtype=%Xh-%Xh value=%d-%d sym=%s-%s mbr=%s-%s type=%s-%s\n",
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+96], 0
@@ -8580,7 +8581,7 @@ plus_op	PROC
 	mov	QWORD PTR tv68[rsp], rax
 	jmp	SHORT $LN32@plus_op
 $LN31@plus_op:
-	lea	rax, OFFSET FLAT:$SG11732
+	lea	rax, OFFSET FLAT:$SG11736
 	mov	QWORD PTR tv68[rsp], rax
 $LN32@plus_op:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -8592,7 +8593,7 @@ $LN32@plus_op:
 	mov	QWORD PTR tv74[rsp], rax
 	jmp	SHORT $LN34@plus_op
 $LN33@plus_op:
-	lea	rax, OFFSET FLAT:$SG11733
+	lea	rax, OFFSET FLAT:$SG11737
 	mov	QWORD PTR tv74[rsp], rax
 $LN34@plus_op:
 	mov	rax, QWORD PTR opnd2$[rsp]
@@ -8604,7 +8605,7 @@ $LN34@plus_op:
 	mov	QWORD PTR tv80[rsp], rax
 	jmp	SHORT $LN36@plus_op
 $LN35@plus_op:
-	lea	rax, OFFSET FLAT:$SG11734
+	lea	rax, OFFSET FLAT:$SG11738
 	mov	QWORD PTR tv80[rsp], rax
 $LN36@plus_op:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -8616,7 +8617,7 @@ $LN36@plus_op:
 	mov	QWORD PTR tv86[rsp], rax
 	jmp	SHORT $LN38@plus_op
 $LN37@plus_op:
-	lea	rax, OFFSET FLAT:$SG11735
+	lea	rax, OFFSET FLAT:$SG11739
 	mov	QWORD PTR tv86[rsp], rax
 $LN38@plus_op:
 	mov	rax, QWORD PTR opnd2$[rsp]
@@ -8628,7 +8629,7 @@ $LN38@plus_op:
 	mov	QWORD PTR tv92[rsp], rax
 	jmp	SHORT $LN40@plus_op
 $LN39@plus_op:
-	lea	rax, OFFSET FLAT:$SG11736
+	lea	rax, OFFSET FLAT:$SG11740
 	mov	QWORD PTR tv92[rsp], rax
 $LN40@plus_op:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -8640,7 +8641,7 @@ $LN40@plus_op:
 	mov	QWORD PTR tv130[rsp], rax
 	jmp	SHORT $LN42@plus_op
 $LN41@plus_op:
-	lea	rax, OFFSET FLAT:$SG11737
+	lea	rax, OFFSET FLAT:$SG11741
 	mov	QWORD PTR tv130[rsp], rax
 $LN42@plus_op:
 	mov	rax, QWORD PTR tv68[rsp]
@@ -8670,29 +8671,29 @@ $LN42@plus_op:
 	mov	r8d, DWORD PTR [rax+60]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax+60]
-	lea	rcx, OFFSET FLAT:$SG11738
+	lea	rcx, OFFSET FLAT:$SG11742
 	call	DoDebugMsg1
 
-; 1769 :                opnd1->kind, opnd2->kind,
-; 1770 :                opnd1->mem_type, opnd2->mem_type, 
-; 1771 :                opnd1->value, opnd2->value,
-; 1772 :                opnd1->sym ? opnd1->sym->name : "NULL",
-; 1773 :                opnd2->sym ? opnd2->sym->name : "NULL",
-; 1774 :                opnd1->mbr ? opnd1->mbr->name : "NULL",
-; 1775 :                opnd2->mbr ? opnd2->mbr->name : "NULL",
-; 1776 :                opnd1->type ? opnd1->type->name : "NULL",
-; 1777 :                opnd2->type ? opnd2->type->name : "NULL" ));
-; 1778 :     /*
-; 1779 :      * The formats allowed are (registers inside [] only!):
-; 1780 :      *        constant + constant  CONST-CONST
-; 1781 :      *        constant + address   CONST-ADDR
-; 1782 :      *        register + constant  ADDR-CONST
-; 1783 :      *        address + register   ADDR-ADDR
-; 1784 :      *        register + register  ADDR-ADDR
-; 1785 :      *        address  + address   ADDR-ADDR
-; 1786 :      */
-; 1787 : 
-; 1788 :     if( check_direct_reg( opnd1, opnd2 ) == ERROR ) {
+; 1777 :                opnd1->kind, opnd2->kind,
+; 1778 :                opnd1->mem_type, opnd2->mem_type, 
+; 1779 :                opnd1->value, opnd2->value,
+; 1780 :                opnd1->sym ? opnd1->sym->name : "NULL",
+; 1781 :                opnd2->sym ? opnd2->sym->name : "NULL",
+; 1782 :                opnd1->mbr ? opnd1->mbr->name : "NULL",
+; 1783 :                opnd2->mbr ? opnd2->mbr->name : "NULL",
+; 1784 :                opnd1->type ? opnd1->type->name : "NULL",
+; 1785 :                opnd2->type ? opnd2->type->name : "NULL" ));
+; 1786 :     /*
+; 1787 :      * The formats allowed are (registers inside [] only!):
+; 1788 :      *        constant + constant  CONST-CONST
+; 1789 :      *        constant + address   CONST-ADDR
+; 1790 :      *        register + constant  ADDR-CONST
+; 1791 :      *        address + register   ADDR-ADDR
+; 1792 :      *        register + register  ADDR-ADDR
+; 1793 :      *        address  + address   ADDR-ADDR
+; 1794 :      */
+; 1795 : 
+; 1796 :     if( check_direct_reg( opnd1, opnd2 ) == ERROR ) {
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -8700,60 +8701,60 @@ $LN42@plus_op:
 	cmp	eax, -1
 	jne	SHORT $LN2@plus_op
 
-; 1789 :         DebugMsg(("plus_op: error direct register\n" ));
+; 1797 :         DebugMsg(("plus_op: error direct register\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11740
+	lea	rcx, OFFSET FLAT:$SG11744
 	call	DoDebugMsg
 
-; 1790 :         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
+; 1798 :         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
 	mov	ecx, 170				; 000000aaH
 	call	QWORD PTR fnEmitErr
 	jmp	$LN1@plus_op
 $LN2@plus_op:
 
-; 1791 :     }
-; 1792 :     /* v2.08: remove EXPR_REG variants */
-; 1793 :     if ( opnd1->kind == EXPR_REG )
+; 1799 :     }
+; 1800 :     /* v2.08: remove EXPR_REG variants */
+; 1801 :     if ( opnd1->kind == EXPR_REG )
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+60], 2
 	jne	SHORT $LN3@plus_op
 
-; 1794 :         opnd1->kind = EXPR_ADDR;
+; 1802 :         opnd1->kind = EXPR_ADDR;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+60], 1
 $LN3@plus_op:
 
-; 1795 :     if ( opnd2->kind == EXPR_REG )
+; 1803 :     if ( opnd2->kind == EXPR_REG )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 2
 	jne	SHORT $LN4@plus_op
 
-; 1796 :         opnd2->kind = EXPR_ADDR;
+; 1804 :         opnd2->kind = EXPR_ADDR;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	DWORD PTR [rax+60], 1
 $LN4@plus_op:
 
-; 1797 : 
-; 1798 :     /* v2.07: don't allow multiple overrides */
-; 1799 :     if ( opnd2->override ) {
+; 1805 : 
+; 1806 :     /* v2.07: don't allow multiple overrides */
+; 1807 :     if ( opnd2->override ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+48], 0
 	je	SHORT $LN5@plus_op
 
-; 1800 :         if ( opnd1->override ) {
+; 1808 :         if ( opnd1->override ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	QWORD PTR [rax+48], 0
 	je	SHORT $LN6@plus_op
 
-; 1801 :             /* v2.07a: both T_REG or both T_ID is rejected */
-; 1802 :             if ( opnd1->override->token == opnd2->override->token ) {
+; 1809 :             /* v2.07a: both T_REG or both T_ID is rejected */
+; 1810 :             if ( opnd1->override->token == opnd2->override->token ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax+48]
@@ -8764,12 +8765,12 @@ $LN4@plus_op:
 	cmp	eax, ecx
 	jne	SHORT $LN7@plus_op
 
-; 1803 :                 DebugMsg(("plus_op: multiple overrides\n" ));
+; 1811 :                 DebugMsg(("plus_op: multiple overrides\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11746
+	lea	rcx, OFFSET FLAT:$SG11750
 	call	DoDebugMsg
 
-; 1804 :                 return( fnEmitErr( MULTIPLE_OVERRIDES ) );
+; 1812 :                 return( fnEmitErr( MULTIPLE_OVERRIDES ) );
 
 	mov	ecx, 68					; 00000044H
 	call	QWORD PTR fnEmitErr
@@ -8777,9 +8778,9 @@ $LN4@plus_op:
 $LN7@plus_op:
 $LN6@plus_op:
 
-; 1805 :             }
-; 1806 :         }
-; 1807 :         opnd1->override = opnd2->override;
+; 1813 :             }
+; 1814 :         }
+; 1815 :         opnd1->override = opnd2->override;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -8787,9 +8788,9 @@ $LN6@plus_op:
 	mov	QWORD PTR [rax+48], rcx
 $LN5@plus_op:
 
-; 1808 :     }
-; 1809 : 
-; 1810 :     if( check_same( opnd1, opnd2, EXPR_CONST ) ) {
+; 1816 :     }
+; 1817 : 
+; 1818 :     if( check_same( opnd1, opnd2, EXPR_CONST ) ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+60], 0
@@ -8798,13 +8799,13 @@ $LN5@plus_op:
 	cmp	DWORD PTR [rax+60], 0
 	jne	SHORT $LN8@plus_op
 
-; 1811 : 
-; 1812 :         DebugMsg1(("plus_op: CONST - CONST\n" ));
+; 1819 : 
+; 1820 :         DebugMsg1(("plus_op: CONST - CONST\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11749
+	lea	rcx, OFFSET FLAT:$SG11753
 	call	DoDebugMsg1
 
-; 1813 :         opnd1->llvalue += opnd2->llvalue;
+; 1821 :         opnd1->llvalue += opnd2->llvalue;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -8815,8 +8816,8 @@ $LN5@plus_op:
 	jmp	$LN9@plus_op
 $LN8@plus_op:
 
-; 1814 : 
-; 1815 :     } else if( check_same( opnd1, opnd2, EXPR_ADDR ) ) {
+; 1822 : 
+; 1823 :     } else if( check_same( opnd1, opnd2, EXPR_ADDR ) ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+60], 1
@@ -8825,23 +8826,23 @@ $LN8@plus_op:
 	cmp	DWORD PTR [rax+60], 1
 	jne	$LN10@plus_op
 
-; 1816 : 
-; 1817 :         DebugMsg1(("plus_op: ADDR - ADDR\n" ));
+; 1824 : 
+; 1825 :         DebugMsg1(("plus_op: ADDR - ADDR\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11752
+	lea	rcx, OFFSET FLAT:$SG11756
 	call	DoDebugMsg1
 
-; 1818 :         fix_struct_value( opnd1 );
+; 1826 :         fix_struct_value( opnd1 );
 
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	fix_struct_value
 
-; 1819 :         fix_struct_value( opnd2 );
+; 1827 :         fix_struct_value( opnd2 );
 
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	call	fix_struct_value
 
-; 1820 :         if ( index_connect( opnd1, opnd2 ) == ERROR )
+; 1828 :         if ( index_connect( opnd1, opnd2 ) == ERROR )
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -8849,23 +8850,23 @@ $LN8@plus_op:
 	cmp	eax, -1
 	jne	SHORT $LN12@plus_op
 
-; 1821 :             return( ERROR );
+; 1829 :             return( ERROR );
 
 	mov	eax, -1
 	jmp	$LN1@plus_op
 $LN12@plus_op:
 
-; 1822 :         if( opnd2->sym != NULL ) {
+; 1830 :         if( opnd2->sym != NULL ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+80], 0
 	je	$LN13@plus_op
 
-; 1823 :             /* two relocatable labels not allowed */
-; 1824 :             /* v2.05: changed */
-; 1825 :             //if ( ( opnd1->sym != NULL ) && ( Parse_Pass > PASS_1 || error_msg == FALSE ) ) {
-; 1826 :             if ( opnd1->sym != NULL &&
-; 1827 :                 opnd1->sym->state != SYM_UNDEFINED &&
+; 1831 :             /* two relocatable labels not allowed */
+; 1832 :             /* v2.05: changed */
+; 1833 :             //if ( ( opnd1->sym != NULL ) && ( Parse_Pass > PASS_1 || error_msg == FALSE ) ) {
+; 1834 :             if ( opnd1->sym != NULL &&
+; 1835 :                 opnd1->sym->state != SYM_UNDEFINED &&
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	QWORD PTR [rax+80], 0
@@ -8879,8 +8880,8 @@ $LN12@plus_op:
 	cmp	DWORD PTR [rax+32], 0
 	je	SHORT $LN14@plus_op
 
-; 1828 :                 opnd2->sym->state != SYM_UNDEFINED ) {
-; 1829 :                 DebugMsg(("plus_op: two relocatable labels: %s - %s \n", opnd1->sym->name, opnd2->sym->name ));
+; 1836 :                 opnd2->sym->state != SYM_UNDEFINED ) {
+; 1837 :                 DebugMsg(("plus_op: two relocatable labels: %s - %s \n", opnd1->sym->name, opnd2->sym->name ));
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
@@ -8888,39 +8889,39 @@ $LN12@plus_op:
 	mov	rcx, QWORD PTR [rcx+80]
 	mov	r8, QWORD PTR [rax+8]
 	mov	rdx, QWORD PTR [rcx+8]
-	lea	rcx, OFFSET FLAT:$SG11756
+	lea	rcx, OFFSET FLAT:$SG11760
 	call	DoDebugMsg
 
-; 1830 :                 return( fnEmitErr( CANNOT_ADD_TWO_RELOCATABLE_LABELS ) );
+; 1838 :                 return( fnEmitErr( CANNOT_ADD_TWO_RELOCATABLE_LABELS ) );
 
 	mov	ecx, 173				; 000000adH
 	call	QWORD PTR fnEmitErr
 	jmp	$LN1@plus_op
 $LN14@plus_op:
 
-; 1831 :             }
-; 1832 :             opnd1->label_tok = opnd2->label_tok;
+; 1839 :             }
+; 1840 :             opnd1->label_tok = opnd2->label_tok;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR [rcx+40]
 	mov	QWORD PTR [rax+40], rcx
 
-; 1833 :             opnd1->sym = opnd2->sym;
+; 1841 :             opnd1->sym = opnd2->sym;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR [rcx+80]
 	mov	QWORD PTR [rax+80], rcx
 
-; 1834 :             /* v2.05: added */
-; 1835 :             if ( opnd1->mem_type == MT_EMPTY )
+; 1842 :             /* v2.05: added */
+; 1843 :             if ( opnd1->mem_type == MT_EMPTY )
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+64], 192			; 000000c0H
 	jne	SHORT $LN15@plus_op
 
-; 1836 :                 opnd1->mem_type = opnd2->mem_type;
+; 1844 :                 opnd1->mem_type = opnd2->mem_type;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -8928,14 +8929,14 @@ $LN14@plus_op:
 	mov	DWORD PTR [rax+64], ecx
 $LN15@plus_op:
 
-; 1837 :             /* v2.10: copy qualifier ( [<reg>+imagerel xxx] */
-; 1838 :             if ( opnd2->instr != EMPTY )
+; 1845 :             /* v2.10: copy qualifier ( [<reg>+imagerel xxx] */
+; 1846 :             if ( opnd2->instr != EMPTY )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+56], -2
 	je	SHORT $LN16@plus_op
 
-; 1839 :                 opnd1->instr = opnd2->instr;
+; 1847 :                 opnd1->instr = opnd2->instr;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -8944,8 +8945,8 @@ $LN15@plus_op:
 $LN16@plus_op:
 $LN13@plus_op:
 
-; 1840 :         }
-; 1841 :         opnd1->llvalue += opnd2->llvalue;
+; 1848 :         }
+; 1849 :         opnd1->llvalue += opnd2->llvalue;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -8954,14 +8955,14 @@ $LN13@plus_op:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 1842 :         /* v2.08: added, test case [ecx+ebx.<struc>].<mbr> */
-; 1843 :         if ( opnd2->type )
+; 1850 :         /* v2.08: added, test case [ecx+ebx.<struc>].<mbr> */
+; 1851 :         if ( opnd2->type )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+96], 0
 	je	SHORT $LN17@plus_op
 
-; 1844 :             opnd1->type = opnd2->type;
+; 1852 :             opnd1->type = opnd2->type;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -8969,8 +8970,8 @@ $LN13@plus_op:
 	mov	QWORD PTR [rax+96], rcx
 $LN17@plus_op:
 
-; 1845 : 
-; 1846 :     } else if( check_both( opnd1, opnd2, EXPR_CONST, EXPR_ADDR ) ) {
+; 1853 : 
+; 1854 :     } else if( check_both( opnd1, opnd2, EXPR_CONST, EXPR_ADDR ) ) {
 
 	jmp	$LN11@plus_op
 $LN10@plus_op:
@@ -8983,19 +8984,19 @@ $LN10@plus_op:
 	test	eax, eax
 	je	$LN18@plus_op
 
-; 1847 : 
-; 1848 :         if( opnd1->kind == EXPR_CONST ) {
+; 1855 : 
+; 1856 :         if( opnd1->kind == EXPR_CONST ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+60], 0
 	jne	$LN20@plus_op
 
-; 1849 :             DebugMsg1(("plus_op: CONST - ADDR\n" ));
+; 1857 :             DebugMsg1(("plus_op: CONST - ADDR\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11764
+	lea	rcx, OFFSET FLAT:$SG11768
 	call	DoDebugMsg1
 
-; 1850 :             opnd2->llvalue += opnd1->llvalue;
+; 1858 :             opnd2->llvalue += opnd1->llvalue;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -9004,7 +9005,7 @@ $LN10@plus_op:
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 1851 :             opnd2->indirect |= opnd1->indirect;
+; 1859 :             opnd2->indirect |= opnd1->indirect;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -9022,8 +9023,8 @@ $LN10@plus_op:
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	DWORD PTR [rcx+76], eax
 
-; 1852 : 
-; 1853 :             if( opnd1->explicit == TRUE ) {
+; 1860 : 
+; 1861 :             if( opnd1->explicit == TRUE ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -9032,7 +9033,7 @@ $LN10@plus_op:
 	cmp	eax, 1
 	jne	SHORT $LN22@plus_op
 
-; 1854 :                 opnd2->explicit = TRUE;
+; 1862 :                 opnd2->explicit = TRUE;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -9040,7 +9041,7 @@ $LN10@plus_op:
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	DWORD PTR [rcx+76], eax
 
-; 1855 :                 opnd2->mem_type = opnd1->mem_type;
+; 1863 :                 opnd2->mem_type = opnd1->mem_type;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -9049,13 +9050,13 @@ $LN10@plus_op:
 	jmp	SHORT $LN23@plus_op
 $LN22@plus_op:
 
-; 1856 :             } else if ( opnd2->mem_type == MT_EMPTY )
+; 1864 :             } else if ( opnd2->mem_type == MT_EMPTY )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+64], 192			; 000000c0H
 	jne	SHORT $LN24@plus_op
 
-; 1857 :                 opnd2->mem_type = opnd1->mem_type;
+; 1865 :                 opnd2->mem_type = opnd1->mem_type;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -9064,15 +9065,15 @@ $LN22@plus_op:
 $LN24@plus_op:
 $LN23@plus_op:
 
-; 1858 : 
-; 1859 :             /* v2.05: added. See dotop2.asm, "mov eax, v2.f1[ebx*2]" */
-; 1860 :             if ( opnd2->mbr == NULL )
+; 1866 : 
+; 1867 :             /* v2.05: added. See dotop2.asm, "mov eax, v2.f1[ebx*2]" */
+; 1868 :             if ( opnd2->mbr == NULL )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+88], 0
 	jne	SHORT $LN25@plus_op
 
-; 1861 :                 opnd2->mbr = opnd1->mbr;
+; 1869 :                 opnd2->mbr = opnd1->mbr;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -9080,15 +9081,15 @@ $LN23@plus_op:
 	mov	QWORD PTR [rax+88], rcx
 $LN25@plus_op:
 
-; 1862 : 
-; 1863 :             /* v2.08: added, test case [4+ebx.<struc>].<mbr> */
-; 1864 :             if ( opnd2->type )
+; 1870 : 
+; 1871 :             /* v2.08: added, test case [4+ebx.<struc>].<mbr> */
+; 1872 :             if ( opnd2->type )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+96], 0
 	je	SHORT $LN26@plus_op
 
-; 1865 :                 opnd1->type = opnd2->type; /* set <type> in op1! */
+; 1873 :                 opnd1->type = opnd2->type; /* set <type> in op1! */
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -9096,25 +9097,25 @@ $LN25@plus_op:
 	mov	QWORD PTR [rax+96], rcx
 $LN26@plus_op:
 
-; 1866 : 
-; 1867 :             TokenAssign( opnd1, opnd2 );
+; 1874 : 
+; 1875 :             TokenAssign( opnd1, opnd2 );
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	TokenAssign
 
-; 1868 : 
-; 1869 :         } else {
+; 1876 : 
+; 1877 :         } else {
 
 	jmp	$LN21@plus_op
 $LN20@plus_op:
 
-; 1870 :             DebugMsg1(("plus_op: ADDR - CONST\n" ));
+; 1878 :             DebugMsg1(("plus_op: ADDR - CONST\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11770
+	lea	rcx, OFFSET FLAT:$SG11774
 	call	DoDebugMsg1
 
-; 1871 :             opnd1->llvalue += opnd2->llvalue;
+; 1879 :             opnd1->llvalue += opnd2->llvalue;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -9123,37 +9124,37 @@ $LN20@plus_op:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 1872 :             /* v2.04: added. to make this case behave like
-; 1873 :              * the CONST - REG case (see below).
-; 1874 :              */
-; 1875 :             /* v2.08: changed, test case [reg+struct] */
-; 1876 :             //if ( opnd1->mem_type == MT_EMPTY )
-; 1877 :             if ( opnd2->mbr ) { /* v2.10: added; regression test dotop5.asm */
+; 1880 :             /* v2.04: added. to make this case behave like
+; 1881 :              * the CONST - REG case (see below).
+; 1882 :              */
+; 1883 :             /* v2.08: changed, test case [reg+struct] */
+; 1884 :             //if ( opnd1->mem_type == MT_EMPTY )
+; 1885 :             if ( opnd2->mbr ) { /* v2.10: added; regression test dotop5.asm */
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+88], 0
 	je	SHORT $LN27@plus_op
 
-; 1878 :                 opnd1->mbr = opnd2->mbr;
+; 1886 :                 opnd1->mbr = opnd2->mbr;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR [rcx+88]
 	mov	QWORD PTR [rax+88], rcx
 
-; 1879 :                 opnd1->mem_type = opnd2->mem_type;
+; 1887 :                 opnd1->mem_type = opnd2->mem_type;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	ecx, DWORD PTR [rcx+64]
 	mov	DWORD PTR [rax+64], ecx
 
-; 1880 :             } else
+; 1888 :             } else
 
 	jmp	SHORT $LN28@plus_op
 $LN27@plus_op:
 
-; 1881 :             if ( opnd1->mem_type == MT_EMPTY && opnd2->is_type == FALSE )
+; 1889 :             if ( opnd1->mem_type == MT_EMPTY && opnd2->is_type == FALSE )
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+64], 192			; 000000c0H
@@ -9165,7 +9166,7 @@ $LN27@plus_op:
 	test	eax, eax
 	jne	SHORT $LN29@plus_op
 
-; 1882 :                 opnd1->mem_type = opnd2->mem_type;
+; 1890 :                 opnd1->mem_type = opnd2->mem_type;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -9175,27 +9176,27 @@ $LN29@plus_op:
 $LN28@plus_op:
 $LN21@plus_op:
 
-; 1883 :         }
-; 1884 :         fix_struct_value( opnd1 );
+; 1891 :         }
+; 1892 :         fix_struct_value( opnd1 );
 
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	fix_struct_value
 
-; 1885 :     } else {
+; 1893 :     } else {
 
 	jmp	SHORT $LN19@plus_op
 $LN18@plus_op:
 
-; 1886 :         DebugMsg(("plus_op: error, unexpected format: %u - %u\n", opnd1->kind, opnd2->kind ));
+; 1894 :         DebugMsg(("plus_op: error, unexpected format: %u - %u\n", opnd1->kind, opnd2->kind ));
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	r8d, DWORD PTR [rax+60]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax+60]
-	lea	rcx, OFFSET FLAT:$SG11774
+	lea	rcx, OFFSET FLAT:$SG11778
 	call	DoDebugMsg
 
-; 1887 :         return( ConstError( opnd1, opnd2 ) );
+; 1895 :         return( ConstError( opnd1, opnd2 ) );
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -9205,13 +9206,13 @@ $LN19@plus_op:
 $LN11@plus_op:
 $LN9@plus_op:
 
-; 1888 :     }
-; 1889 :     return( NOT_ERROR );
+; 1896 :     }
+; 1897 :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@plus_op:
 
-; 1890 : }
+; 1898 : }
 
 	add	rsp, 160				; 000000a0H
 	pop	rdi
@@ -9232,7 +9233,7 @@ sym$ = 104
 name$ = 112
 wimask_op PROC
 
-; 1711 : {
+; 1719 : {
 
 	mov	QWORD PTR [rsp+32], r9
 	mov	QWORD PTR [rsp+24], r8
@@ -9246,8 +9247,8 @@ wimask_op PROC
 	rep stosd
 	mov	ecx, DWORD PTR [rsp+80]
 
-; 1712 :     /* additional check needed if operand is a type */
-; 1713 :     if ( opnd2->is_type ) {
+; 1720 :     /* additional check needed if operand is a type */
+; 1721 :     if ( opnd2->is_type ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -9256,49 +9257,49 @@ wimask_op PROC
 	test	eax, eax
 	je	SHORT $LN8@wimask_op
 
-; 1714 :         sym = opnd2->type;
+; 1722 :         sym = opnd2->type;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	QWORD PTR sym$[rsp], rax
 
-; 1715 :         if (sym->typekind != TYPE_RECORD ) {
+; 1723 :         if (sym->typekind != TYPE_RECORD ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+66]
 	cmp	eax, 4
 	je	SHORT $LN10@wimask_op
 
-; 1716 :             return( fnEmitErr( OPERAND_MUST_BE_RECORD ) );
+; 1724 :             return( fnEmitErr( OPERAND_MUST_BE_RECORD ) );
 
 	mov	ecx, 161				; 000000a1H
 	call	QWORD PTR fnEmitErr
 	jmp	$LN1@wimask_op
 $LN10@wimask_op:
 
-; 1717 :         }
+; 1725 :         }
 
 	jmp	SHORT $LN9@wimask_op
 $LN8@wimask_op:
 
-; 1718 :     } else if ( opnd2->kind == EXPR_CONST ) {
+; 1726 :     } else if ( opnd2->kind == EXPR_CONST ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 0
 	jne	SHORT $LN11@wimask_op
 
-; 1719 :         sym = opnd2->mbr;
+; 1727 :         sym = opnd2->mbr;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+88]
 	mov	QWORD PTR sym$[rsp], rax
 
-; 1720 :     } else {
+; 1728 :     } else {
 
 	jmp	SHORT $LN12@wimask_op
 $LN11@wimask_op:
 
-; 1721 :         sym = opnd2->sym;
+; 1729 :         sym = opnd2->sym;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
@@ -9306,19 +9307,19 @@ $LN11@wimask_op:
 $LN12@wimask_op:
 $LN9@wimask_op:
 
-; 1722 :     }
-; 1723 :     if ( oper == T_MASK ) {
+; 1730 :     }
+; 1731 :     if ( oper == T_MASK ) {
 
 	cmp	DWORD PTR oper$[rsp], 240		; 000000f0H
 	jne	$LN13@wimask_op
 
-; 1724 :         int i;
-; 1725 :         opnd1->value = 0;
+; 1732 :         int i;
+; 1733 :         opnd1->value = 0;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax], 0
 
-; 1726 :         if ( opnd2->is_type ) { /* get mask of the RECORD? */
+; 1734 :         if ( opnd2->is_type ) { /* get mask of the RECORD? */
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -9327,23 +9328,23 @@ $LN9@wimask_op:
 	test	eax, eax
 	je	SHORT $LN15@wimask_op
 
-; 1727 : #if AMD64_SUPPORT
-; 1728 :             opnd1->llvalue = GetRecordMask( (struct dsym *)sym );
+; 1735 : #if AMD64_SUPPORT
+; 1736 :             opnd1->llvalue = GetRecordMask( (struct dsym *)sym );
 
 	mov	rcx, QWORD PTR sym$[rsp]
 	call	GetRecordMask
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 1729 : #else
-; 1730 :             opnd1->value = GetRecordMask( (struct dsym *)sym );
-; 1731 : #endif
-; 1732 :         } else { /* get mask of the bitfield */
+; 1737 : #else
+; 1738 :             opnd1->value = GetRecordMask( (struct dsym *)sym );
+; 1739 : #endif
+; 1740 :         } else { /* get mask of the bitfield */
 
 	jmp	SHORT $LN16@wimask_op
 $LN15@wimask_op:
 
-; 1733 :             for ( i = sym->offset ;i < sym->offset + sym->total_size; i++ )
+; 1741 :             for ( i = sym->offset ;i < sym->offset + sym->total_size; i++ )
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	eax, DWORD PTR [rax+16]
@@ -9361,9 +9362,9 @@ $LN4@wimask_op:
 	cmp	DWORD PTR i$1[rsp], eax
 	jae	SHORT $LN3@wimask_op
 
-; 1734 : #if AMD64_SUPPORT
-; 1735 : #if defined(LLONG_MAX) || defined(__GNUC__) || defined(__TINYC__)
-; 1736 :                 opnd1->llvalue |= 1ULL << i;
+; 1742 : #if AMD64_SUPPORT
+; 1743 : #if defined(LLONG_MAX) || defined(__GNUC__) || defined(__TINYC__)
+; 1744 :                 opnd1->llvalue |= 1ULL << i;
 
 	mov	eax, DWORD PTR i$1[rsp]
 	mov	ecx, 1
@@ -9381,19 +9382,19 @@ $LN4@wimask_op:
 $LN3@wimask_op:
 $LN16@wimask_op:
 
-; 1737 : #else
-; 1738 :                 opnd1->llvalue |= 1i64 << i;
-; 1739 : #endif
-; 1740 : #else
-; 1741 :                 opnd1->value |= 1 << i;
-; 1742 : #endif
-; 1743 :         }
-; 1744 :     } else {
+; 1745 : #else
+; 1746 :                 opnd1->llvalue |= 1i64 << i;
+; 1747 : #endif
+; 1748 : #else
+; 1749 :                 opnd1->value |= 1 << i;
+; 1750 : #endif
+; 1751 :         }
+; 1752 :     } else {
 
 	jmp	SHORT $LN14@wimask_op
 $LN13@wimask_op:
 
-; 1745 :         if ( opnd2->is_type ) { /* get width of the RECORD? */
+; 1753 :         if ( opnd2->is_type ) { /* get width of the RECORD? */
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -9402,13 +9403,13 @@ $LN13@wimask_op:
 	test	eax, eax
 	je	SHORT $LN17@wimask_op
 
-; 1746 :             struct dsym *dir = (struct dsym *)sym;
+; 1754 :             struct dsym *dir = (struct dsym *)sym;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	QWORD PTR dir$2[rsp], rax
 
-; 1747 :             struct sfield *fl;
-; 1748 :             for ( fl = dir->e.structinfo->head; fl; fl = fl->next )
+; 1755 :             struct sfield *fl;
+; 1756 :             for ( fl = dir->e.structinfo->head; fl; fl = fl->next )
 
 	mov	rax, QWORD PTR dir$2[rsp]
 	mov	rax, QWORD PTR [rax+96]
@@ -9423,7 +9424,7 @@ $LN7@wimask_op:
 	cmp	QWORD PTR fl$3[rsp], 0
 	je	SHORT $LN6@wimask_op
 
-; 1749 :                 opnd1->value += fl->sym.total_size;
+; 1757 :                 opnd1->value += fl->sym.total_size;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax]
@@ -9434,12 +9435,12 @@ $LN7@wimask_op:
 	jmp	SHORT $LN5@wimask_op
 $LN6@wimask_op:
 
-; 1750 :         } else
+; 1758 :         } else
 
 	jmp	SHORT $LN18@wimask_op
 $LN17@wimask_op:
 
-; 1751 :             opnd1->value = sym->total_size;
+; 1759 :             opnd1->value = sym->total_size;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR sym$[rsp]
@@ -9448,18 +9449,18 @@ $LN17@wimask_op:
 $LN18@wimask_op:
 $LN14@wimask_op:
 
-; 1752 :     }
-; 1753 :     opnd1->kind = EXPR_CONST;
+; 1760 :     }
+; 1761 :     opnd1->kind = EXPR_CONST;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+60], 0
 
-; 1754 :     return( NOT_ERROR );
+; 1762 :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@wimask_op:
 
-; 1755 : }
+; 1763 : }
 
 	add	rsp, 64					; 00000040H
 	pop	rdi
@@ -9477,7 +9478,7 @@ sym$ = 88
 name$ = 96
 this_op	PROC
 
-; 1668 : {
+; 1676 : {
 
 	mov	QWORD PTR [rsp+32], r9
 	mov	QWORD PTR [rsp+24], r8
@@ -9491,7 +9492,7 @@ this_op	PROC
 	rep stosd
 	mov	ecx, DWORD PTR [rsp+64]
 
-; 1669 :     if ( opnd2->is_type == FALSE ) {
+; 1677 :     if ( opnd2->is_type == FALSE ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -9500,61 +9501,61 @@ this_op	PROC
 	test	eax, eax
 	jne	SHORT $LN2@this_op
 
-; 1670 :         return( fnEmitErr( INVALID_TYPE_EXPRESSION ) );
+; 1678 :         return( fnEmitErr( INVALID_TYPE_EXPRESSION ) );
 
 	mov	ecx, 179				; 000000b3H
 	call	QWORD PTR fnEmitErr
 	jmp	$LN1@this_op
 $LN2@this_op:
 
-; 1671 :     }
-; 1672 :     /* v2.06: won't work inside structs */
-; 1673 :     if ( CurrStruct ) {
+; 1679 :     }
+; 1680 :     /* v2.06: won't work inside structs */
+; 1681 :     if ( CurrStruct ) {
 
 	cmp	QWORD PTR CurrStruct, 0
 	je	SHORT $LN3@this_op
 
-; 1674 :         return( fnEmitErr( MUST_BE_IN_SEGMENT_BLOCK ) );
+; 1682 :         return( fnEmitErr( MUST_BE_IN_SEGMENT_BLOCK ) );
 
 	mov	ecx, 82					; 00000052H
 	call	QWORD PTR fnEmitErr
 	jmp	$LN1@this_op
 $LN3@this_op:
 
-; 1675 :     }
-; 1676 :     /* v2.06: won't work outside segments */
-; 1677 :     if ( CurrSeg == NULL ) {
+; 1683 :     }
+; 1684 :     /* v2.06: won't work outside segments */
+; 1685 :     if ( CurrSeg == NULL ) {
 
 	cmp	QWORD PTR ModuleInfo+432, 0
 	jne	SHORT $LN4@this_op
 
-; 1678 :         return( EmitErr( MUST_BE_IN_SEGMENT_BLOCK ) ); /* error displayed even in EQU, hence EmitErr()! */
+; 1686 :         return( EmitErr( MUST_BE_IN_SEGMENT_BLOCK ) ); /* error displayed even in EQU, hence EmitErr()! */
 
 	mov	ecx, 82					; 00000052H
 	call	EmitErr
 	jmp	$LN1@this_op
 $LN4@this_op:
 
-; 1679 :     }
-; 1680 : 
-; 1681 :     if ( thissym == NULL ) {
+; 1687 :     }
+; 1688 : 
+; 1689 :     if ( thissym == NULL ) {
 
 	cmp	QWORD PTR thissym, 0
 	jne	SHORT $LN5@this_op
 
-; 1682 :         thissym = SymAlloc( "" );
+; 1690 :         thissym = SymAlloc( "" );
 
-	lea	rcx, OFFSET FLAT:$SG11677
+	lea	rcx, OFFSET FLAT:$SG11681
 	call	SymAlloc
 	mov	QWORD PTR thissym, rax
 
-; 1683 :         /* fixme: set thissym->variable? */
-; 1684 :         thissym->state = SYM_INTERNAL;
+; 1691 :         /* fixme: set thissym->variable? */
+; 1692 :         thissym->state = SYM_INTERNAL;
 
 	mov	rax, QWORD PTR thissym
 	mov	DWORD PTR [rax+32], 1
 
-; 1685 :         thissym->isdefined = TRUE;
+; 1693 :         thissym->isdefined = TRUE;
 
 	mov	rax, QWORD PTR thissym
 	movzx	eax, BYTE PTR [rax+40]
@@ -9563,9 +9564,9 @@ $LN4@this_op:
 	mov	BYTE PTR [rcx+40], al
 $LN5@this_op:
 
-; 1686 :     }
-; 1687 : 
-; 1688 :     DebugMsg1(("this_op: memtype=%Xh type=%s\n", opnd2->mem_type, opnd2->type ? opnd2->type->name : "NULL" ));
+; 1694 :     }
+; 1695 : 
+; 1696 :     DebugMsg1(("this_op: memtype=%Xh type=%s\n", opnd2->mem_type, opnd2->type ? opnd2->type->name : "NULL" ));
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+96], 0
@@ -9576,49 +9577,49 @@ $LN5@this_op:
 	mov	QWORD PTR tv87[rsp], rax
 	jmp	SHORT $LN10@this_op
 $LN9@this_op:
-	lea	rax, OFFSET FLAT:$SG11678
+	lea	rax, OFFSET FLAT:$SG11682
 	mov	QWORD PTR tv87[rsp], rax
 $LN10@this_op:
 	mov	r8, QWORD PTR tv87[rsp]
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	edx, DWORD PTR [rax+64]
-	lea	rcx, OFFSET FLAT:$SG11679
+	lea	rcx, OFFSET FLAT:$SG11683
 	call	DoDebugMsg1
 
-; 1689 :     opnd1->kind = EXPR_ADDR;
+; 1697 :     opnd1->kind = EXPR_ADDR;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+60], 1
 
-; 1690 : 
-; 1691 :     /* v2.09: a label is not a valid argument */
-; 1692 :     //if ( opnd2->sym && opnd2->sym->mem_type == MT_TYPE )
-; 1693 :     //    thissym->type = opnd2->sym->type;
-; 1694 :     /* v2.09: set structured type */
-; 1695 :     thissym->type = opnd2->type;
+; 1698 : 
+; 1699 :     /* v2.09: a label is not a valid argument */
+; 1700 :     //if ( opnd2->sym && opnd2->sym->mem_type == MT_TYPE )
+; 1701 :     //    thissym->type = opnd2->sym->type;
+; 1702 :     /* v2.09: set structured type */
+; 1703 :     thissym->type = opnd2->type;
 
 	mov	rax, QWORD PTR thissym
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR [rcx+96]
 	mov	QWORD PTR [rax+80], rcx
 
-; 1696 :     if ( opnd2->type ) {
+; 1704 :     if ( opnd2->type ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+96], 0
 	je	SHORT $LN6@this_op
 
-; 1697 :         thissym->mem_type = MT_TYPE;
+; 1705 :         thissym->mem_type = MT_TYPE;
 
 	mov	rax, QWORD PTR thissym
 	mov	DWORD PTR [rax+36], 196			; 000000c4H
 
-; 1698 :     } else
+; 1706 :     } else
 
 	jmp	SHORT $LN7@this_op
 $LN6@this_op:
 
-; 1699 :         thissym->mem_type = opnd2->mem_type;
+; 1707 :         thissym->mem_type = opnd2->mem_type;
 
 	mov	rax, QWORD PTR thissym
 	mov	rcx, QWORD PTR opnd2$[rsp]
@@ -9626,31 +9627,31 @@ $LN6@this_op:
 	mov	DWORD PTR [rax+36], ecx
 $LN7@this_op:
 
-; 1700 : 
-; 1701 :     opnd1->sym  = thissym;
+; 1708 : 
+; 1709 :     opnd1->sym  = thissym;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR thissym
 	mov	QWORD PTR [rax+80], rcx
 
-; 1702 :     SetSymSegOfs( thissym );
+; 1710 :     SetSymSegOfs( thissym );
 
 	mov	rcx, QWORD PTR thissym
 	call	SetSymSegOfs
 
-; 1703 :     opnd1->mem_type = thissym->mem_type;
+; 1711 :     opnd1->mem_type = thissym->mem_type;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR thissym
 	mov	ecx, DWORD PTR [rcx+36]
 	mov	DWORD PTR [rax+64], ecx
 
-; 1704 :     return( NOT_ERROR );
+; 1712 :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@this_op:
 
-; 1705 : }
+; 1713 : }
 
 	add	rsp, 48					; 00000030H
 	pop	rdi
@@ -9668,7 +9669,7 @@ sym$ = 104
 name$ = 112
 high32_op PROC
 
-; 1645 : {
+; 1653 : {
 
 	mov	QWORD PTR [rsp+32], r9
 	mov	QWORD PTR [rsp+24], r8
@@ -9682,20 +9683,20 @@ high32_op PROC
 	rep stosd
 	mov	ecx, DWORD PTR [rsp+80]
 
-; 1646 :     /* v2.06: added support for double constants */
-; 1647 :     if ( opnd2->kind == EXPR_FLOAT ) {
+; 1654 :     /* v2.06: added support for double constants */
+; 1655 :     if ( opnd2->kind == EXPR_FLOAT ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 3
 	jne	$LN2@high32_op
 
-; 1648 :         if ( Options.strict_masm_compat )
+; 1656 :         if ( Options.strict_masm_compat )
 
 	movzx	eax, BYTE PTR Options+143
 	test	eax, eax
 	je	SHORT $LN3@high32_op
 
-; 1649 :             return( ConstError( opnd1, opnd2 ) );
+; 1657 :             return( ConstError( opnd1, opnd2 ) );
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -9703,7 +9704,7 @@ high32_op PROC
 	jmp	$LN1@high32_op
 $LN3@high32_op:
 
-; 1650 :         atofloat( &opnd2->llvalue, opnd2->float_tok->string_ptr, sizeof( opnd2->llvalue), opnd2->negative, opnd2->float_tok->floattype );
+; 1658 :         atofloat( &opnd2->llvalue, opnd2->float_tok->string_ptr, sizeof( opnd2->llvalue), opnd2->negative, opnd2->float_tok->floattype );
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+16]
@@ -9724,25 +9725,25 @@ $LN3@high32_op:
 	mov	rcx, rax
 	call	atofloat
 
-; 1651 :         opnd2->kind = EXPR_CONST;
+; 1659 :         opnd2->kind = EXPR_CONST;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	DWORD PTR [rax+60], 0
 
-; 1652 :         opnd2->float_tok = NULL;
+; 1660 :         opnd2->float_tok = NULL;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	QWORD PTR [rax+16], 0
 $LN2@high32_op:
 
-; 1653 :     }
-; 1654 :     TokenAssign( opnd1, opnd2 );
+; 1661 :     }
+; 1662 :     TokenAssign( opnd1, opnd2 );
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	TokenAssign
 
-; 1655 :     if ( opnd2->kind == EXPR_ADDR && opnd2->instr != T_SEG ) {
+; 1663 :     if ( opnd2->kind == EXPR_ADDR && opnd2->instr != T_SEG ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 1
@@ -9751,20 +9752,20 @@ $LN2@high32_op:
 	cmp	DWORD PTR [rax+56], 244			; 000000f4H
 	je	SHORT $LN4@high32_op
 
-; 1656 :         opnd1->instr = T_HIGH32;
+; 1664 :         opnd1->instr = T_HIGH32;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+56], 231			; 000000e7H
 
-; 1657 :         //opnd1->mem_type = MT_DWORD; /* v2.10: changed - also see change in parser.c, idata_fixup() */
-; 1658 :         opnd1->mem_type = MT_EMPTY;
+; 1665 :         //opnd1->mem_type = MT_DWORD; /* v2.10: changed - also see change in parser.c, idata_fixup() */
+; 1666 :         opnd1->mem_type = MT_EMPTY;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+64], 192			; 000000c0H
 $LN4@high32_op:
 
-; 1659 :     }
-; 1660 :     opnd1->llvalue = opnd1->llvalue >> 32;
+; 1667 :     }
+; 1668 :     opnd1->llvalue = opnd1->llvalue >> 32;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -9772,12 +9773,12 @@ $LN4@high32_op:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 1661 :     return( NOT_ERROR );
+; 1669 :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@high32_op:
 
-; 1662 : }
+; 1670 : }
 
 	add	rsp, 64					; 00000040H
 	pop	rdi
@@ -9795,7 +9796,7 @@ sym$ = 104
 name$ = 112
 low32_op PROC
 
-; 1624 : {
+; 1632 : {
 
 	mov	QWORD PTR [rsp+32], r9
 	mov	QWORD PTR [rsp+24], r8
@@ -9809,20 +9810,20 @@ low32_op PROC
 	rep stosd
 	mov	ecx, DWORD PTR [rsp+80]
 
-; 1625 :     /* v2.06: added support for double constants */
-; 1626 :     if ( opnd2->kind == EXPR_FLOAT ) {
+; 1633 :     /* v2.06: added support for double constants */
+; 1634 :     if ( opnd2->kind == EXPR_FLOAT ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 3
 	jne	$LN2@low32_op
 
-; 1627 :         if ( Options.strict_masm_compat )
+; 1635 :         if ( Options.strict_masm_compat )
 
 	movzx	eax, BYTE PTR Options+143
 	test	eax, eax
 	je	SHORT $LN3@low32_op
 
-; 1628 :             return( ConstError( opnd1, opnd2 ) );
+; 1636 :             return( ConstError( opnd1, opnd2 ) );
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
@@ -9830,7 +9831,7 @@ low32_op PROC
 	jmp	$LN1@low32_op
 $LN3@low32_op:
 
-; 1629 :         atofloat( &opnd2->llvalue, opnd2->float_tok->string_ptr, sizeof( opnd2->llvalue), opnd2->negative, opnd2->float_tok->floattype );
+; 1637 :         atofloat( &opnd2->llvalue, opnd2->float_tok->string_ptr, sizeof( opnd2->llvalue), opnd2->negative, opnd2->float_tok->floattype );
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+16]
@@ -9851,25 +9852,25 @@ $LN3@low32_op:
 	mov	rcx, rax
 	call	atofloat
 
-; 1630 :         opnd2->kind = EXPR_CONST;
+; 1638 :         opnd2->kind = EXPR_CONST;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	DWORD PTR [rax+60], 0
 
-; 1631 :         opnd2->float_tok = NULL;
+; 1639 :         opnd2->float_tok = NULL;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	QWORD PTR [rax+16], 0
 $LN2@low32_op:
 
-; 1632 :     }
-; 1633 :     TokenAssign( opnd1, opnd2 );
+; 1640 :     }
+; 1641 :     TokenAssign( opnd1, opnd2 );
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	TokenAssign
 
-; 1634 :     if ( opnd2->kind == EXPR_ADDR && opnd2->instr != T_SEG ) {
+; 1642 :     if ( opnd2->kind == EXPR_ADDR && opnd2->instr != T_SEG ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 1
@@ -9878,20 +9879,20 @@ $LN2@low32_op:
 	cmp	DWORD PTR [rax+56], 244			; 000000f4H
 	je	SHORT $LN4@low32_op
 
-; 1635 :         opnd1->instr = T_LOW32;
+; 1643 :         opnd1->instr = T_LOW32;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+56], 237			; 000000edH
 
-; 1636 :         //opnd1->mem_type = MT_DWORD; /* v2.10: changed - also see change in parser.c, idata_fixup() */
-; 1637 :         opnd1->mem_type = MT_EMPTY;
+; 1644 :         //opnd1->mem_type = MT_DWORD; /* v2.10: changed - also see change in parser.c, idata_fixup() */
+; 1645 :         opnd1->mem_type = MT_EMPTY;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+64], 192			; 000000c0H
 $LN4@low32_op:
 
-; 1638 :     }
-; 1639 :     opnd1->llvalue &= 0xffffffff;
+; 1646 :     }
+; 1647 :     opnd1->llvalue &= 0xffffffff;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	ecx, -1					; ffffffffH
@@ -9900,12 +9901,12 @@ $LN4@low32_op:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 1640 :     return( NOT_ERROR );
+; 1648 :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@low32_op:
 
-; 1641 : }
+; 1649 : }
 
 	add	rsp, 64					; 00000040H
 	pop	rdi
@@ -9922,7 +9923,7 @@ sym$ = 72
 name$ = 80
 high_op	PROC
 
-; 1600 : {
+; 1608 : {
 
 	mov	QWORD PTR [rsp+32], r9
 	mov	QWORD PTR [rsp+24], r8
@@ -9936,13 +9937,13 @@ high_op	PROC
 	rep stosd
 	mov	ecx, DWORD PTR [rsp+48]
 
-; 1601 :     TokenAssign( opnd1, opnd2 );
+; 1609 :     TokenAssign( opnd1, opnd2 );
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	TokenAssign
 
-; 1602 :     if ( opnd2->kind == EXPR_ADDR && opnd2->instr != T_SEG ) {
+; 1610 :     if ( opnd2->kind == EXPR_ADDR && opnd2->instr != T_SEG ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 1
@@ -9951,28 +9952,28 @@ high_op	PROC
 	cmp	DWORD PTR [rax+56], 244			; 000000f4H
 	je	SHORT $LN2@high_op
 
-; 1603 :         /* v2.07: don't check any format-specific rules in the
-; 1604 :          * expression evaluator!
-; 1605 :          */
-; 1606 : #if 0
-; 1607 :         if ( Options.output_format != OFORMAT_OMF &&
-; 1608 :             Options.output_format != OFORMAT_BIN && opnd2->sym ) {
-; 1609 :             return( fnEmitErr( SYMBOL_TYPE_CONFLICT, opnd2->sym->name ) );
-; 1610 :         }
-; 1611 : #endif
-; 1612 :         opnd1->instr = T_HIGH;
+; 1611 :         /* v2.07: don't check any format-specific rules in the
+; 1612 :          * expression evaluator!
+; 1613 :          */
+; 1614 : #if 0
+; 1615 :         if ( Options.output_format != OFORMAT_OMF &&
+; 1616 :             Options.output_format != OFORMAT_BIN && opnd2->sym ) {
+; 1617 :             return( fnEmitErr( SYMBOL_TYPE_CONFLICT, opnd2->sym->name ) );
+; 1618 :         }
+; 1619 : #endif
+; 1620 :         opnd1->instr = T_HIGH;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+56], 230			; 000000e6H
 
-; 1613 :         opnd1->mem_type = MT_EMPTY;
+; 1621 :         opnd1->mem_type = MT_EMPTY;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+64], 192			; 000000c0H
 $LN2@high_op:
 
-; 1614 :     }
-; 1615 :     opnd1->value = opnd1->value >> 8;
+; 1622 :     }
+; 1623 :     opnd1->value = opnd1->value >> 8;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax]
@@ -9980,7 +9981,7 @@ $LN2@high_op:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rcx], eax
 
-; 1616 :     opnd1->llvalue &= 0xff;
+; 1624 :     opnd1->llvalue &= 0xff;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -9988,11 +9989,11 @@ $LN2@high_op:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 1617 :     return( NOT_ERROR );
+; 1625 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1618 : }
+; 1626 : }
 
 	add	rsp, 32					; 00000020H
 	pop	rdi
@@ -10009,7 +10010,7 @@ sym$ = 72
 name$ = 80
 low_op	PROC
 
-; 1578 : {
+; 1586 : {
 
 	mov	QWORD PTR [rsp+32], r9
 	mov	QWORD PTR [rsp+24], r8
@@ -10023,13 +10024,13 @@ low_op	PROC
 	rep stosd
 	mov	ecx, DWORD PTR [rsp+48]
 
-; 1579 :     TokenAssign( opnd1, opnd2 );
+; 1587 :     TokenAssign( opnd1, opnd2 );
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	TokenAssign
 
-; 1580 :     if ( opnd2->kind == EXPR_ADDR && opnd2->instr != T_SEG ) {
+; 1588 :     if ( opnd2->kind == EXPR_ADDR && opnd2->instr != T_SEG ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 1
@@ -10038,29 +10039,29 @@ low_op	PROC
 	cmp	DWORD PTR [rax+56], 244			; 000000f4H
 	je	SHORT $LN2@low_op
 
-; 1581 : #if 0
-; 1582 :         /* LOW works for OMF/BIN only */
-; 1583 :         /* v2.07: don't check any format-specific rules in the
-; 1584 :          * expression evaluator!
-; 1585 :          */
-; 1586 :         if ( Options.output_format != OFORMAT_OMF &&
-; 1587 :             Options.output_format != OFORMAT_BIN && opnd2->sym ) {
-; 1588 :             return( fnEmitErr( SYMBOL_TYPE_CONFLICT, opnd2->sym->name ) );
-; 1589 :         }
-; 1590 : #endif
-; 1591 :         opnd1->instr = T_LOW;
+; 1589 : #if 0
+; 1590 :         /* LOW works for OMF/BIN only */
+; 1591 :         /* v2.07: don't check any format-specific rules in the
+; 1592 :          * expression evaluator!
+; 1593 :          */
+; 1594 :         if ( Options.output_format != OFORMAT_OMF &&
+; 1595 :             Options.output_format != OFORMAT_BIN && opnd2->sym ) {
+; 1596 :             return( fnEmitErr( SYMBOL_TYPE_CONFLICT, opnd2->sym->name ) );
+; 1597 :         }
+; 1598 : #endif
+; 1599 :         opnd1->instr = T_LOW;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+56], 236			; 000000ecH
 
-; 1592 :         opnd1->mem_type = MT_EMPTY;
+; 1600 :         opnd1->mem_type = MT_EMPTY;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+64], 192			; 000000c0H
 $LN2@low_op:
 
-; 1593 :     }
-; 1594 :     opnd1->llvalue &= 0xff;
+; 1601 :     }
+; 1602 :     opnd1->llvalue &= 0xff;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -10068,11 +10069,11 @@ $LN2@low_op:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 1595 :     return( NOT_ERROR );
+; 1603 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1596 : }
+; 1604 : }
 
 	add	rsp, 32					; 00000020H
 	pop	rdi
@@ -10089,7 +10090,7 @@ sym$ = 72
 name$ = 80
 highword_op PROC
 
-; 1565 : {
+; 1573 : {
 
 	mov	QWORD PTR [rsp+32], r9
 	mov	QWORD PTR [rsp+24], r8
@@ -10103,13 +10104,13 @@ highword_op PROC
 	rep stosd
 	mov	ecx, DWORD PTR [rsp+48]
 
-; 1566 :     TokenAssign( opnd1, opnd2 );
+; 1574 :     TokenAssign( opnd1, opnd2 );
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	TokenAssign
 
-; 1567 :     if ( opnd2->kind == EXPR_ADDR && opnd2->instr != T_SEG ) {
+; 1575 :     if ( opnd2->kind == EXPR_ADDR && opnd2->instr != T_SEG ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 1
@@ -10118,20 +10119,20 @@ highword_op PROC
 	cmp	DWORD PTR [rax+56], 244			; 000000f4H
 	je	SHORT $LN2@highword_o
 
-; 1568 :         opnd1->instr = T_HIGHWORD;
+; 1576 :         opnd1->instr = T_HIGHWORD;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+56], 232			; 000000e8H
 
-; 1569 :         //opnd1->mem_type = MT_WORD; /* v2.05 */
-; 1570 :         opnd1->mem_type = MT_EMPTY;
+; 1577 :         //opnd1->mem_type = MT_WORD; /* v2.05 */
+; 1578 :         opnd1->mem_type = MT_EMPTY;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+64], 192			; 000000c0H
 $LN2@highword_o:
 
-; 1571 :     }
-; 1572 :     opnd1->value = opnd1->value >> 16;
+; 1579 :     }
+; 1580 :     opnd1->value = opnd1->value >> 16;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax]
@@ -10139,11 +10140,11 @@ $LN2@highword_o:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rcx], eax
 
-; 1573 :     return( NOT_ERROR );
+; 1581 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1574 : }
+; 1582 : }
 
 	add	rsp, 32					; 00000020H
 	pop	rdi
@@ -10160,7 +10161,7 @@ sym$ = 72
 name$ = 80
 lowword_op PROC
 
-; 1552 : {
+; 1560 : {
 
 	mov	QWORD PTR [rsp+32], r9
 	mov	QWORD PTR [rsp+24], r8
@@ -10174,13 +10175,13 @@ lowword_op PROC
 	rep stosd
 	mov	ecx, DWORD PTR [rsp+48]
 
-; 1553 :     TokenAssign( opnd1, opnd2 );
+; 1561 :     TokenAssign( opnd1, opnd2 );
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	TokenAssign
 
-; 1554 :     if ( opnd2->kind == EXPR_ADDR && opnd2->instr != T_SEG ) {
+; 1562 :     if ( opnd2->kind == EXPR_ADDR && opnd2->instr != T_SEG ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 1
@@ -10189,20 +10190,20 @@ lowword_op PROC
 	cmp	DWORD PTR [rax+56], 244			; 000000f4H
 	je	SHORT $LN2@lowword_op
 
-; 1555 :         opnd1->instr = T_LOWWORD;
+; 1563 :         opnd1->instr = T_LOWWORD;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+56], 238			; 000000eeH
 
-; 1556 :         //opnd1->mem_type = MT_WORD; /* v2.05 */
-; 1557 :         opnd1->mem_type = MT_EMPTY;
+; 1564 :         //opnd1->mem_type = MT_WORD; /* v2.05 */
+; 1565 :         opnd1->mem_type = MT_EMPTY;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+64], 192			; 000000c0H
 $LN2@lowword_op:
 
-; 1558 :     }
-; 1559 :     opnd1->llvalue &= 0xffff;
+; 1566 :     }
+; 1567 :     opnd1->llvalue &= 0xffff;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -10210,11 +10211,11 @@ $LN2@lowword_op:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 1560 :     return( NOT_ERROR );
+; 1568 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1561 : }
+; 1569 : }
 
 	add	rsp, 32					; 00000020H
 	pop	rdi
@@ -10231,7 +10232,7 @@ sym$ = 72
 name$ = 80
 offset_op PROC
 
-; 1514 : {
+; 1522 : {
 
 	mov	QWORD PTR [rsp+32], r9
 	mov	QWORD PTR [rsp+24], r8
@@ -10245,34 +10246,34 @@ offset_op PROC
 	rep stosd
 	mov	ecx, DWORD PTR [rsp+48]
 
-; 1515 :     if ( oper == T_OFFSET ) {
+; 1523 :     if ( oper == T_OFFSET ) {
 
 	cmp	DWORD PTR oper$[rsp], 241		; 000000f1H
 	jne	SHORT $LN2@offset_op
 
-; 1516 :         /* if operand is a constant value, skip OFFSET operator */
-; 1517 :         if ( opnd2->kind == EXPR_CONST ) {
+; 1524 :         /* if operand is a constant value, skip OFFSET operator */
+; 1525 :         if ( opnd2->kind == EXPR_CONST ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 0
 	jne	SHORT $LN3@offset_op
 
-; 1518 :             TokenAssign( opnd1, opnd2 );
+; 1526 :             TokenAssign( opnd1, opnd2 );
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	TokenAssign
 
-; 1519 :             return( NOT_ERROR );
+; 1527 :             return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@offset_op
 $LN3@offset_op:
 $LN2@offset_op:
 
-; 1520 :         }
-; 1521 :     }
-; 1522 :     if ( (sym && sym->state == SYM_GRP) || opnd2->instr == T_SEG ) {
+; 1528 :         }
+; 1529 :     }
+; 1530 :     if ( (sym && sym->state == SYM_GRP) || opnd2->instr == T_SEG ) {
 
 	cmp	QWORD PTR sym$[rsp], 0
 	je	SHORT $LN6@offset_op
@@ -10285,7 +10286,7 @@ $LN6@offset_op:
 	jne	SHORT $LN4@offset_op
 $LN5@offset_op:
 
-; 1523 :         return( invalid_operand( opnd2, GetResWName( oper, NULL ), name ) );
+; 1531 :         return( invalid_operand( opnd2, GetResWName( oper, NULL ), name ) );
 
 	xor	edx, edx
 	mov	ecx, DWORD PTR oper$[rsp]
@@ -10297,9 +10298,9 @@ $LN5@offset_op:
 	jmp	SHORT $LN1@offset_op
 $LN4@offset_op:
 
-; 1524 :     }
-; 1525 :     /* offset operator accepts types, but returns always 0 */
-; 1526 :     if ( opnd2->is_type )
+; 1532 :     }
+; 1533 :     /* offset operator accepts types, but returns always 0 */
+; 1534 :     if ( opnd2->is_type )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -10308,27 +10309,27 @@ $LN4@offset_op:
 	test	eax, eax
 	je	SHORT $LN7@offset_op
 
-; 1527 :         opnd2->value = 0;
+; 1535 :         opnd2->value = 0;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	DWORD PTR [rax], 0
 $LN7@offset_op:
 
-; 1528 : 
-; 1529 :     TokenAssign( opnd1, opnd2 );
+; 1536 : 
+; 1537 :     TokenAssign( opnd1, opnd2 );
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	TokenAssign
 
-; 1530 :     opnd1->instr = oper;
+; 1538 :     opnd1->instr = oper;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	ecx, DWORD PTR oper$[rsp]
 	mov	DWORD PTR [rax+56], ecx
 
-; 1531 : 
-; 1532 :     if ( opnd2->indirect ) {
+; 1539 : 
+; 1540 :     if ( opnd2->indirect ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
@@ -10336,10 +10337,10 @@ $LN7@offset_op:
 	test	eax, eax
 	je	SHORT $LN8@offset_op
 
-; 1533 :         /* Masm v5.1 allows indirect operands, but Masm v6 with -Zm
-; 1534 :          * won't accept it.
-; 1535 :          */
-; 1536 :         return( invalid_operand( opnd2, GetResWName( oper, NULL ), name ) );
+; 1541 :         /* Masm v5.1 allows indirect operands, but Masm v6 with -Zm
+; 1542 :          * won't accept it.
+; 1543 :          */
+; 1544 :         return( invalid_operand( opnd2, GetResWName( oper, NULL ), name ) );
 
 	xor	edx, edx
 	mov	ecx, DWORD PTR oper$[rsp]
@@ -10351,26 +10352,26 @@ $LN7@offset_op:
 	jmp	SHORT $LN1@offset_op
 $LN8@offset_op:
 
-; 1537 :     }
-; 1538 :     /* skip memory type of operand, just address is needed */
-; 1539 :     //opnd1->mem_type = MT_NEAR;
-; 1540 :     opnd1->mem_type = MT_EMPTY;
+; 1545 :     }
+; 1546 :     /* skip memory type of operand, just address is needed */
+; 1547 :     //opnd1->mem_type = MT_NEAR;
+; 1548 :     opnd1->mem_type = MT_EMPTY;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+64], 192			; 000000c0H
 
-; 1541 :     /* clear overrides ("offset SEG:xxx") */
-; 1542 :     /* v2.01: override information is important for fixup creation!
-; 1543 :      * the reason why it was cleared probably was to avoid creation
-; 1544 :      * of a segment prefix. This case is now handled in the parser.
-; 1545 :      */
-; 1546 :     // opnd1->override = NULL;
-; 1547 :     return( NOT_ERROR );
+; 1549 :     /* clear overrides ("offset SEG:xxx") */
+; 1550 :     /* v2.01: override information is important for fixup creation!
+; 1551 :      * the reason why it was cleared probably was to avoid creation
+; 1552 :      * of a segment prefix. This case is now handled in the parser.
+; 1553 :      */
+; 1554 :     // opnd1->override = NULL;
+; 1555 :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@offset_op:
 
-; 1548 : }
+; 1556 : }
 
 	add	rsp, 32					; 00000020H
 	pop	rdi
@@ -10387,7 +10388,7 @@ sym$ = 72
 name$ = 80
 seg_op	PROC
 
-; 1495 : {
+; 1503 : {
 
 	mov	QWORD PTR [rsp+32], r9
 	mov	QWORD PTR [rsp+24], r8
@@ -10401,8 +10402,8 @@ seg_op	PROC
 	rep stosd
 	mov	ecx, DWORD PTR [rsp+48]
 
-; 1496 :     /* v2.10: check for sym==NULL ( seg ds:[0] ) added */
-; 1497 :     if ( opnd2->sym == NULL || opnd2->sym->state == SYM_STACK || opnd2->is_abs ) {
+; 1504 :     /* v2.10: check for sym==NULL ( seg ds:[0] ) added */
+; 1505 :     if ( opnd2->sym == NULL || opnd2->sym->state == SYM_STACK || opnd2->is_abs ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+80], 0
@@ -10419,49 +10420,49 @@ seg_op	PROC
 	je	SHORT $LN2@seg_op
 $LN3@seg_op:
 
-; 1498 :         return( fnEmitErr( OPERAND_MUST_BE_RELOCATABLE ) );
+; 1506 :         return( fnEmitErr( OPERAND_MUST_BE_RELOCATABLE ) );
 
 	mov	ecx, 188				; 000000bcH
 	call	QWORD PTR fnEmitErr
 	jmp	SHORT $LN1@seg_op
 $LN2@seg_op:
 
-; 1499 :     }
-; 1500 :     TokenAssign( opnd1, opnd2 );
+; 1507 :     }
+; 1508 :     TokenAssign( opnd1, opnd2 );
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	TokenAssign
 
-; 1501 :     opnd1->instr = oper;
+; 1509 :     opnd1->instr = oper;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	ecx, DWORD PTR oper$[rsp]
 	mov	DWORD PTR [rax+56], ecx
 
-; 1502 :     if ( opnd1->mbr ) /* v2.08: set value more selectively */
+; 1510 :     if ( opnd1->mbr ) /* v2.08: set value more selectively */
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	QWORD PTR [rax+88], 0
 	je	SHORT $LN4@seg_op
 
-; 1503 :         opnd1->value = 0;    /* v2.07: added ( SEG <member> ) */
+; 1511 :         opnd1->value = 0;    /* v2.07: added ( SEG <member> ) */
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax], 0
 $LN4@seg_op:
 
-; 1504 :     opnd1->mem_type = MT_EMPTY; /* v2.04a */
+; 1512 :     opnd1->mem_type = MT_EMPTY; /* v2.04a */
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rax+64], 192			; 000000c0H
 
-; 1505 :     return( NOT_ERROR );
+; 1513 :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@seg_op:
 
-; 1506 : }
+; 1514 : }
 
 	add	rsp, 32					; 00000020H
 	pop	rdi
@@ -10478,7 +10479,7 @@ sym$ = 72
 name$ = 80
 short_op PROC
 
-; 1481 : {
+; 1489 : {
 
 	mov	QWORD PTR [rsp+32], r9
 	mov	QWORD PTR [rsp+24], r8
@@ -10492,7 +10493,7 @@ short_op PROC
 	rep stosd
 	mov	ecx, DWORD PTR [rsp+48]
 
-; 1482 :     if ( opnd2->kind != EXPR_ADDR ||
+; 1490 :     if ( opnd2->kind != EXPR_ADDR ||
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 1
@@ -10508,35 +10509,35 @@ short_op PROC
 	je	SHORT $LN2@short_op
 $LN3@short_op:
 
-; 1483 :         ( opnd2->mem_type != MT_EMPTY &&
-; 1484 :          opnd2->mem_type != MT_NEAR &&
-; 1485 :          opnd2->mem_type != MT_FAR ) ) {
-; 1486 :         return( fnEmitErr( EXPRESSION_MUST_BE_A_CODE_ADDRESS ) );
+; 1491 :         ( opnd2->mem_type != MT_EMPTY &&
+; 1492 :          opnd2->mem_type != MT_NEAR &&
+; 1493 :          opnd2->mem_type != MT_FAR ) ) {
+; 1494 :         return( fnEmitErr( EXPRESSION_MUST_BE_A_CODE_ADDRESS ) );
 
 	mov	ecx, 233				; 000000e9H
 	call	QWORD PTR fnEmitErr
 	jmp	SHORT $LN1@short_op
 $LN2@short_op:
 
-; 1487 :     }
-; 1488 :     TokenAssign( opnd1, opnd2 );
+; 1495 :     }
+; 1496 :     TokenAssign( opnd1, opnd2 );
 
 	mov	rdx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	call	TokenAssign
 
-; 1489 :     opnd1->instr = oper;
+; 1497 :     opnd1->instr = oper;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	ecx, DWORD PTR oper$[rsp]
 	mov	DWORD PTR [rax+56], ecx
 
-; 1490 :     return( NOT_ERROR );
+; 1498 :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@short_op:
 
-; 1491 : }
+; 1499 : }
 
 	add	rsp, 32					; 00000020H
 	pop	rdi
@@ -10573,16 +10574,16 @@ opattr_op PROC
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+80], 0
-	je	SHORT $LN28@opattr_op
+	je	SHORT $LN32@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
 	mov	rax, QWORD PTR [rax+8]
 	mov	QWORD PTR tv68[rsp], rax
-	jmp	SHORT $LN29@opattr_op
-$LN28@opattr_op:
+	jmp	SHORT $LN33@opattr_op
+$LN32@opattr_op:
 	lea	rax, OFFSET FLAT:$SG11496
 	mov	QWORD PTR tv68[rsp], rax
-$LN29@opattr_op:
+$LN33@opattr_op:
 	mov	r9, QWORD PTR tv68[rsp]
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	r8d, DWORD PTR [rax+64]
@@ -10763,161 +10764,194 @@ $LN8@opattr_op:
 ; 1424 : 
 ; 1425 : 
 ; 1426 :     /* bit 2: immediate value? */
-; 1427 :     if ( opnd2->kind == EXPR_CONST ||
+; 1427 : 	/* John Hankinson modified here to allow -Zg switch to treat literal string macro argument with opattr type = 0 */
+; 1428 : 	if (Options.masm_compat_gencode && opnd2->kind == EXPR_CONST)
+
+	movzx	eax, BYTE PTR Options+144
+	test	eax, eax
+	je	SHORT $LN9@opattr_op
+	mov	rax, QWORD PTR opnd2$[rsp]
+	cmp	DWORD PTR [rax+60], 0
+	jne	SHORT $LN9@opattr_op
+
+; 1429 : 	{
+; 1430 : 	}
+
+	jmp	$LN10@opattr_op
+$LN9@opattr_op:
+
+; 1431 :     else if ( opnd2->kind == EXPR_CONST ||
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 0
-	je	SHORT $LN10@opattr_op
+	je	SHORT $LN12@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 1
-	jne	SHORT $LN9@opattr_op
+	jne	SHORT $LN11@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
 	and	eax, 1
 	test	eax, eax
-	jne	SHORT $LN9@opattr_op
+	jne	SHORT $LN11@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+64], 192			; 000000c0H
-	jne	SHORT $LN12@opattr_op
+	jne	SHORT $LN14@opattr_op
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	call	IsOffset
 	test	eax, eax
-	jne	SHORT $LN11@opattr_op
-$LN12@opattr_op:
+	jne	SHORT $LN13@opattr_op
+$LN14@opattr_op:
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+64], 192			; 000000c0H
-	je	SHORT $LN11@opattr_op
+	je	SHORT $LN13@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+64]
 	and	eax, 192				; 000000c0H
 	cmp	eax, 128				; 00000080H
-	jne	SHORT $LN9@opattr_op
-$LN11@opattr_op:
+	jne	SHORT $LN11@opattr_op
+$LN13@opattr_op:
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
 	cmp	DWORD PTR [rax+32], 1
-	je	SHORT $LN13@opattr_op
+	je	SHORT $LN15@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
 	cmp	DWORD PTR [rax+32], 2
-	jne	SHORT $LN9@opattr_op
-$LN13@opattr_op:
-$LN10@opattr_op:
+	jne	SHORT $LN11@opattr_op
+$LN15@opattr_op:
+$LN12@opattr_op:
 
-; 1428 :         ( opnd2->kind == EXPR_ADDR &&
-; 1429 :          opnd2->indirect == FALSE &&
-; 1430 :          (( opnd2->mem_type == MT_EMPTY && IsOffset(opnd2) ) ||
-; 1431 :           //( opnd2->mem_type == MT_ABS ) ||  /* v2.06: added (abs. external) */
-; 1432 :           ( opnd2->mem_type == MT_EMPTY ) ||  /* v2.06: added (abs. external) */
-; 1433 :           (( opnd2->mem_type & MT_SPECIAL_MASK ) == MT_ADDRESS )) &&
-; 1434 :          ( opnd2->sym->state == SYM_INTERNAL ||
-; 1435 :           opnd2->sym->state == SYM_EXTERNAL ) ) )
-; 1436 :         opnd1->value |= OPATTR_IMMEDIATE;
+; 1432 :         ( opnd2->kind == EXPR_ADDR &&
+; 1433 :          opnd2->indirect == FALSE &&
+; 1434 :          (( opnd2->mem_type == MT_EMPTY && IsOffset(opnd2) ) ||
+; 1435 :           //( opnd2->mem_type == MT_ABS ) ||  /* v2.06: added (abs. external) */
+; 1436 :           ( opnd2->mem_type == MT_EMPTY ) ||  /* v2.06: added (abs. external) */
+; 1437 :           (( opnd2->mem_type & MT_SPECIAL_MASK ) == MT_ADDRESS )) &&
+; 1438 :          ( opnd2->sym->state == SYM_INTERNAL ||
+; 1439 :           opnd2->sym->state == SYM_EXTERNAL ) ) )
+; 1440 :         opnd1->value |= OPATTR_IMMEDIATE;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax]
 	or	eax, 4
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rcx], eax
-$LN9@opattr_op:
+$LN11@opattr_op:
+$LN10@opattr_op:
 
-; 1437 : 
-; 1438 :     /* bit 3: uses direct memory addressing?
-; 1439 :      */
-; 1440 :     if ( opnd2->kind == EXPR_ADDR &&
-; 1441 :         opnd2->indirect == FALSE &&
-; 1442 :         //opnd2->base_reg == NULL &&
-; 1443 :         (( opnd2->mem_type == MT_EMPTY && opnd2->instr == EMPTY ) ||
-; 1444 :          ( opnd2->mem_type == MT_TYPE ) || /* v2.05: added */
-; 1445 :          (( opnd2->mem_type & MT_SPECIAL ) == 0 ) ||
-; 1446 :          opnd2->mem_type == MT_PTR ) &&
+; 1441 : 
+; 1442 :     /* bit 3: uses direct memory addressing?
+; 1443 :      */
+; 1444 :     if ( opnd2->kind == EXPR_ADDR &&
+; 1445 :         opnd2->indirect == FALSE &&
+; 1446 :         //opnd2->base_reg == NULL &&
+; 1447 :         (( opnd2->mem_type == MT_EMPTY && opnd2->instr == EMPTY ) ||
+; 1448 :          ( opnd2->mem_type == MT_TYPE ) || /* v2.05: added */
+; 1449 :          (( opnd2->mem_type & MT_SPECIAL ) == 0 ) ||
+; 1450 :          opnd2->mem_type == MT_PTR ) &&
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 1
-	jne	$LN14@opattr_op
+	jne	$LN16@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
 	and	eax, 1
 	test	eax, eax
-	jne	$LN14@opattr_op
+	jne	$LN16@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+64], 192			; 000000c0H
-	jne	SHORT $LN16@opattr_op
+	jne	SHORT $LN18@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+56], -2
-	je	SHORT $LN15@opattr_op
-$LN16@opattr_op:
+	je	SHORT $LN17@opattr_op
+$LN18@opattr_op:
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+64], 196			; 000000c4H
-	je	SHORT $LN15@opattr_op
+	je	SHORT $LN17@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+64]
 	and	eax, 128				; 00000080H
 	test	eax, eax
-	je	SHORT $LN15@opattr_op
+	je	SHORT $LN17@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+64], 195			; 000000c3H
-	jne	SHORT $LN14@opattr_op
-$LN15@opattr_op:
+	jne	SHORT $LN16@opattr_op
+$LN17@opattr_op:
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+80], 0
-	je	SHORT $LN17@opattr_op
+	je	SHORT $LN19@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
 	cmp	DWORD PTR [rax+32], 1
-	je	SHORT $LN17@opattr_op
+	je	SHORT $LN19@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
 	cmp	DWORD PTR [rax+32], 2
-	jne	SHORT $LN14@opattr_op
-$LN17@opattr_op:
+	jne	SHORT $LN16@opattr_op
+$LN19@opattr_op:
 
-; 1447 :         (opnd2->sym == NULL ||
-; 1448 :          opnd2->sym->state == SYM_INTERNAL ||
-; 1449 :          opnd2->sym->state == SYM_EXTERNAL ) )
-; 1450 :         opnd1->value |= OPATTR_DIRECTMEM;
+; 1451 :         (opnd2->sym == NULL ||
+; 1452 :          opnd2->sym->state == SYM_INTERNAL ||
+; 1453 :          opnd2->sym->state == SYM_EXTERNAL ) )
+; 1454 :         opnd1->value |= OPATTR_DIRECTMEM;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax]
 	or	eax, 8
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rcx], eax
-$LN14@opattr_op:
+$LN16@opattr_op:
 
-; 1451 : 
-; 1452 :     if ( opnd2->kind == EXPR_REG && opnd2->indirect == FALSE )
+; 1455 : 
+; 1456 :     if ( opnd2->kind == EXPR_REG && opnd2->indirect == FALSE )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 2
-	jne	SHORT $LN18@opattr_op
+	jne	SHORT $LN20@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
 	and	eax, 1
 	test	eax, eax
-	jne	SHORT $LN18@opattr_op
+	jne	SHORT $LN20@opattr_op
 
-; 1453 :         opnd1->value |= OPATTR_REGISTER;
+; 1457 :         opnd1->value |= OPATTR_REGISTER;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax]
 	or	eax, 16
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rcx], eax
-$LN18@opattr_op:
+$LN20@opattr_op:
 
-; 1454 : 
-; 1455 :     //if ( opnd2->kind != EXPR_ERROR && ( opnd2->sym == 0 || opnd2->sym->isdefined == TRUE ) )
-; 1456 :     if ( opnd2->kind != EXPR_ERROR && opnd2->kind != EXPR_FLOAT && ( opnd2->sym == NULL || opnd2->sym->isdefined == TRUE ) )
+; 1458 : 
+; 1459 :     //if ( opnd2->kind != EXPR_ERROR && ( opnd2->sym == 0 || opnd2->sym->isdefined == TRUE ) )
+; 1460 : 	/* John Hankinson modified here to allow -Zg switch to treat literal string macro argument with opattr type = 0 */
+; 1461 : 	if (Options.masm_compat_gencode && opnd2->kind == EXPR_CONST)
+
+	movzx	eax, BYTE PTR Options+144
+	test	eax, eax
+	je	SHORT $LN21@opattr_op
+	mov	rax, QWORD PTR opnd2$[rsp]
+	cmp	DWORD PTR [rax+60], 0
+	jne	SHORT $LN21@opattr_op
+
+; 1462 : 	{
+; 1463 : 	}
+
+	jmp	SHORT $LN22@opattr_op
+$LN21@opattr_op:
+
+; 1464 :     else if ( opnd2->kind != EXPR_ERROR && opnd2->kind != EXPR_FLOAT && ( opnd2->sym == NULL || opnd2->sym->isdefined == TRUE ) )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], -1
-	je	SHORT $LN19@opattr_op
+	je	SHORT $LN23@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 3
-	je	SHORT $LN19@opattr_op
+	je	SHORT $LN23@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+80], 0
-	je	SHORT $LN20@opattr_op
+	je	SHORT $LN24@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
 	movzx	eax, BYTE PTR [rax+40]
@@ -10925,37 +10959,38 @@ $LN18@opattr_op:
 	and	al, 1
 	movzx	eax, al
 	cmp	eax, 1
-	jne	SHORT $LN19@opattr_op
-$LN20@opattr_op:
+	jne	SHORT $LN23@opattr_op
+$LN24@opattr_op:
 
-; 1457 :         opnd1->value |= OPATTR_DEFINED; 
+; 1465 :         opnd1->value |= OPATTR_DEFINED; 
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax]
 	or	eax, 32					; 00000020H
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rcx], eax
-$LN19@opattr_op:
+$LN23@opattr_op:
+$LN22@opattr_op:
 
-; 1458 : 
-; 1459 :     if ( ( opnd2->sym && opnd2->sym->state == SYM_STACK ) ||
+; 1466 : 
+; 1467 :     if ( ( opnd2->sym && opnd2->sym->state == SYM_STACK ) ||
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+80], 0
-	je	SHORT $LN23@opattr_op
+	je	SHORT $LN27@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
 	cmp	DWORD PTR [rax+32], 5
-	je	SHORT $LN22@opattr_op
-$LN23@opattr_op:
+	je	SHORT $LN26@opattr_op
+$LN27@opattr_op:
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+76]
 	and	eax, 1
 	test	eax, eax
-	je	SHORT $LN21@opattr_op
+	je	SHORT $LN25@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+24], 0
-	je	SHORT $LN21@opattr_op
+	je	SHORT $LN25@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+24]
 	mov	eax, DWORD PTR [rax+16]
@@ -10964,60 +10999,60 @@ $LN23@opattr_op:
 	mov	eax, DWORD PTR [rcx+rax+4]
 	and	eax, 64					; 00000040H
 	test	eax, eax
-	je	SHORT $LN21@opattr_op
-$LN22@opattr_op:
+	je	SHORT $LN25@opattr_op
+$LN26@opattr_op:
 
-; 1460 :         ( opnd2->indirect && opnd2->base_reg &&
-; 1461 :          /* v2.11: use new flag SFR_SSBASED */
-; 1462 :          //( opnd2->base_reg->tokval == T_ESP || opnd2->base_reg->tokval == T_EBP || opnd2->base_reg->tokval == T_BP ) ) )
-; 1463 :          ( GetSflagsSp( opnd2->base_reg->tokval ) & SFR_SSBASED ) ) )
-; 1464 :             opnd1->value |= OPATTR_SSREL;
+; 1468 :         ( opnd2->indirect && opnd2->base_reg &&
+; 1469 :          /* v2.11: use new flag SFR_SSBASED */
+; 1470 :          //( opnd2->base_reg->tokval == T_ESP || opnd2->base_reg->tokval == T_EBP || opnd2->base_reg->tokval == T_BP ) ) )
+; 1471 :          ( GetSflagsSp( opnd2->base_reg->tokval ) & SFR_SSBASED ) ) )
+; 1472 :             opnd1->value |= OPATTR_SSREL;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax]
 	or	eax, 64					; 00000040H
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rcx], eax
-$LN21@opattr_op:
+$LN25@opattr_op:
 
-; 1465 :     
-; 1466 :     if ( opnd2->sym && opnd2->sym->state == SYM_EXTERNAL )
+; 1473 :     
+; 1474 :     if ( opnd2->sym && opnd2->sym->state == SYM_EXTERNAL )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+80], 0
-	je	SHORT $LN24@opattr_op
+	je	SHORT $LN28@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
 	cmp	DWORD PTR [rax+32], 2
-	jne	SHORT $LN24@opattr_op
+	jne	SHORT $LN28@opattr_op
 
-; 1467 :         opnd1->value |= OPATTR_EXTRNREF;
+; 1475 :         opnd1->value |= OPATTR_EXTRNREF;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax]
 	bts	eax, 7
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rcx], eax
-$LN24@opattr_op:
+$LN28@opattr_op:
 
-; 1468 : 
-; 1469 :     if ( oper == T_OPATTR )
+; 1476 : 
+; 1477 :     if ( oper == T_OPATTR )
 
 	cmp	DWORD PTR oper$[rsp], 242		; 000000f2H
-	jne	SHORT $LN25@opattr_op
+	jne	SHORT $LN29@opattr_op
 
-; 1470 :         /* v2.12: no language if symbol isn't defined properly */
-; 1471 :         //if ( opnd2->sym )
-; 1472 :         if ( opnd2->sym && opnd2->kind != EXPR_ERROR )
+; 1478 :         /* v2.12: no language if symbol isn't defined properly */
+; 1479 :         //if ( opnd2->sym )
+; 1480 :         if ( opnd2->sym && opnd2->kind != EXPR_ERROR )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	QWORD PTR [rax+80], 0
-	je	SHORT $LN26@opattr_op
+	je	SHORT $LN30@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], -1
-	je	SHORT $LN26@opattr_op
+	je	SHORT $LN30@opattr_op
 
-; 1473 :             opnd1->value |= opnd2->sym->langtype << 8;
+; 1481 :             opnd1->value |= opnd2->sym->langtype << 8;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
@@ -11029,23 +11064,23 @@ $LN24@opattr_op:
 	mov	eax, ecx
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rcx], eax
-$LN26@opattr_op:
-$LN25@opattr_op:
+$LN30@opattr_op:
+$LN29@opattr_op:
 
-; 1474 : 
-; 1475 :     DebugMsg1(("opattr_op returns %Xh\n", opnd1->value));
+; 1482 : 
+; 1483 :     DebugMsg1(("opattr_op returns %Xh\n", opnd1->value));
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG11523
+	lea	rcx, OFFSET FLAT:$SG11527
 	call	DoDebugMsg1
 
-; 1476 :     return( NOT_ERROR );
+; 1484 :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@opattr_op:
 
-; 1477 : }
+; 1485 : }
 
 	add	rsp, 48					; 00000030H
 	pop	rdi
@@ -16853,7 +16888,7 @@ _TEXT	SEGMENT
 msg$ = 16
 noEmitErr PROC
 
-; 3451 : {
+; 3459 : {
 
 	mov	DWORD PTR [rsp+8], ecx
 	mov	QWORD PTR [rsp+16], rdx
@@ -16861,11 +16896,11 @@ noEmitErr PROC
 	mov	QWORD PTR [rsp+32], r9
 	push	rdi
 
-; 3452 :     return( ERROR );
+; 3460 :     return( ERROR );
 
 	mov	eax, -1
 
-; 3453 : }
+; 3461 : }
 
 	pop	rdi
 	ret	0
@@ -16877,7 +16912,7 @@ _TEXT	SEGMENT
 opnd$ = 48
 EmitConstError PROC
 
-; 3479 : {
+; 3487 : {
 
 $LN5:
 	mov	QWORD PTR [rsp+8], rcx
@@ -16889,13 +16924,13 @@ $LN5:
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+48]
 
-; 3480 :     if ( opnd->hlvalue != 0 )
+; 3488 :     if ( opnd->hlvalue != 0 )
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	cmp	QWORD PTR [rax+8], 0
 	je	SHORT $LN2@EmitConstE
 
-; 3481 :         EmitErr( CONSTANT_VALUE_TOO_LARGE_EX, opnd->hlvalue, opnd->value64 );
+; 3489 :         EmitErr( CONSTANT_VALUE_TOO_LARGE_EX, opnd->hlvalue, opnd->value64 );
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	r8, QWORD PTR [rax]
@@ -16906,8 +16941,8 @@ $LN5:
 	jmp	SHORT $LN3@EmitConstE
 $LN2@EmitConstE:
 
-; 3482 :     else
-; 3483 :         EmitErr( CONSTANT_VALUE_TOO_LARGE, opnd->value64 );
+; 3490 :     else
+; 3491 :         EmitErr( CONSTANT_VALUE_TOO_LARGE, opnd->value64 );
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rdx, QWORD PTR [rax]
@@ -16915,11 +16950,11 @@ $LN2@EmitConstE:
 	call	EmitErr
 $LN3@EmitConstE:
 
-; 3484 :     return( ERROR );
+; 3492 :     return( ERROR );
 
 	mov	eax, -1
 
-; 3485 : }
+; 3493 : }
 
 	add	rsp, 32					; 00000020H
 	pop	rdi
@@ -16931,24 +16966,24 @@ _TEXT	ENDS
 _TEXT	SEGMENT
 ExprEvalInit PROC
 
-; 3491 : {
+; 3499 : {
 
 $LN3:
 	push	rdi
 
-; 3492 :     thissym = NULL;
+; 3500 :     thissym = NULL;
 
 	mov	QWORD PTR thissym, 0
 
-; 3493 :     nullstruct = NULL;
+; 3501 :     nullstruct = NULL;
 
 	mov	QWORD PTR nullstruct, 0
 
-; 3494 :     nullmbr = NULL;
+; 3502 :     nullmbr = NULL;
 
 	mov	QWORD PTR nullmbr, 0
 
-; 3495 : }
+; 3503 : }
 
 	pop	rdi
 	ret	0
@@ -16966,7 +17001,7 @@ result$ = 104
 flags$ = 112
 EvalOperand PROC
 
-; 3461 : {
+; 3469 : {
 
 $LN9:
 	mov	QWORD PTR [rsp+32], r9
@@ -16981,9 +17016,9 @@ $LN9:
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+80]
 
-; 3462 :     int         i;
-; 3463 : 
-; 3464 :     DebugMsg1(("EvalOperand(start=%u, end=%u, flags=%X) enter: >%s<\n", *start_tok, end_tok, flags, tokenarray[*start_tok].tokpos ));
+; 3470 :     int         i;
+; 3471 : 
+; 3472 :     DebugMsg1(("EvalOperand(start=%u, end=%u, flags=%X) enter: >%s<\n", *start_tok, end_tok, flags, tokenarray[*start_tok].tokpos ));
 
 	mov	rax, QWORD PTR start_tok$[rsp]
 	movsxd	rax, DWORD PTR [rax]
@@ -16996,17 +17031,17 @@ $LN9:
 	mov	r8d, DWORD PTR end_tok$[rsp]
 	mov	rax, QWORD PTR start_tok$[rsp]
 	mov	edx, DWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG12380
+	lea	rcx, OFFSET FLAT:$SG12384
 	call	DoDebugMsg1
 
-; 3465 : 
-; 3466 :     init_expr( result );
+; 3473 : 
+; 3474 :     init_expr( result );
 
 	mov	rcx, QWORD PTR result$[rsp]
 	call	init_expr
 
-; 3467 : 
-; 3468 :     for( i = *start_tok; ( i < end_tok ) && is_expr_item( &tokenarray[i] ); i++ );
+; 3475 : 
+; 3476 :     for( i = *start_tok; ( i < end_tok ) && is_expr_item( &tokenarray[i] ); i++ );
 
 	mov	rax, QWORD PTR start_tok$[rsp]
 	mov	eax, DWORD PTR [rax]
@@ -17033,22 +17068,22 @@ $LN4@EvalOperan:
 	jmp	SHORT $LN2@EvalOperan
 $LN3@EvalOperan:
 
-; 3469 :     if ( i == *start_tok )
+; 3477 :     if ( i == *start_tok )
 
 	mov	rax, QWORD PTR start_tok$[rsp]
 	mov	eax, DWORD PTR [rax]
 	cmp	DWORD PTR i$[rsp], eax
 	jne	SHORT $LN5@EvalOperan
 
-; 3470 :         return( NOT_ERROR );
+; 3478 :         return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	SHORT $LN1@EvalOperan
 $LN5@EvalOperan:
 
-; 3471 : 
-; 3472 :     /* v2.10: global flag 'error_msg' replaced by 'fnEmitErr()' */
-; 3473 :     fnEmitErr = ( ( flags & EXPF_NOERRMSG ) ? noEmitErr : EmitErr );
+; 3479 : 
+; 3480 :     /* v2.10: global flag 'error_msg' replaced by 'fnEmitErr()' */
+; 3481 :     fnEmitErr = ( ( flags & EXPF_NOERRMSG ) ? noEmitErr : EmitErr );
 
 	movzx	eax, BYTE PTR flags$[rsp]
 	and	eax, 1
@@ -17064,7 +17099,7 @@ $LN8@EvalOperan:
 	mov	rax, QWORD PTR tv88[rsp]
 	mov	QWORD PTR fnEmitErr, rax
 
-; 3474 :     return ( evaluate( result, start_tok, tokenarray, i, flags ) );
+; 3482 :     return ( evaluate( result, start_tok, tokenarray, i, flags ) );
 
 	movzx	eax, BYTE PTR flags$[rsp]
 	mov	BYTE PTR [rsp+32], al
@@ -17075,7 +17110,7 @@ $LN8@EvalOperan:
 	call	evaluate
 $LN1@EvalOperan:
 
-; 3475 : }
+; 3483 : }
 
 	add	rsp, 64					; 00000040H
 	pop	rdi
