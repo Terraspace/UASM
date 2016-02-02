@@ -1424,8 +1424,8 @@ static ret_code opattr_op( int oper, struct expr *opnd1, struct expr *opnd2, str
 
 
     /* bit 2: immediate value? */
-	/* John Hankinson modified here to allow -Zg switch to treat literal string macro argument with opattr type = 0 */
-	if (Options.masm_compat_gencode && opnd2->kind == EXPR_CONST)
+	/* John Hankinson modified here to allow -Zne switch to treat literal string macro argument with opattr type = 0 */
+	if (Options.strict_masm_compat && opnd2->kind == EXPR_CONST && opnd2->mem_type != MT_SQWORD)
 	{
 	}
     else if ( opnd2->kind == EXPR_CONST ||
@@ -1457,8 +1457,8 @@ static ret_code opattr_op( int oper, struct expr *opnd1, struct expr *opnd2, str
         opnd1->value |= OPATTR_REGISTER;
 
     //if ( opnd2->kind != EXPR_ERROR && ( opnd2->sym == 0 || opnd2->sym->isdefined == TRUE ) )
-	/* John Hankinson modified here to allow -Zg switch to treat literal string macro argument with opattr type = 0 */
-	if (Options.masm_compat_gencode && opnd2->kind == EXPR_CONST)
+	/* John Hankinson modified here to allow -Zne switch to treat literal string macro argument with opattr type = 0 */
+	if (Options.strict_masm_compat && opnd2->kind == EXPR_CONST && opnd2->mem_type != MT_SQWORD)
 	{
 	}
     else if ( opnd2->kind != EXPR_ERROR && opnd2->kind != EXPR_FLOAT && ( opnd2->sym == NULL || opnd2->sym->isdefined == TRUE ) )

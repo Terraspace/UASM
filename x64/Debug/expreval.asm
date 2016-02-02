@@ -590,7 +590,7 @@ $pdata$type_op DD imagerel type_op
 	DD	imagerel type_op+2252
 	DD	imagerel $unwind$type_op
 $pdata$opattr_op DD imagerel opattr_op
-	DD	imagerel opattr_op+1216
+	DD	imagerel opattr_op+1240
 	DD	imagerel $unwind$opattr_op
 $pdata$short_op DD imagerel short_op
 	DD	imagerel short_op+144
@@ -10764,15 +10764,18 @@ $LN8@opattr_op:
 ; 1424 : 
 ; 1425 : 
 ; 1426 :     /* bit 2: immediate value? */
-; 1427 : 	/* John Hankinson modified here to allow -Zg switch to treat literal string macro argument with opattr type = 0 */
-; 1428 : 	if (Options.masm_compat_gencode && opnd2->kind == EXPR_CONST)
+; 1427 : 	/* John Hankinson modified here to allow -Zne switch to treat literal string macro argument with opattr type = 0 */
+; 1428 : 	if (Options.strict_masm_compat && opnd2->kind == EXPR_CONST && opnd2->type != MT_SQWORD)
 
-	movzx	eax, BYTE PTR Options+144
+	movzx	eax, BYTE PTR Options+143
 	test	eax, eax
 	je	SHORT $LN9@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 0
 	jne	SHORT $LN9@opattr_op
+	mov	rax, QWORD PTR opnd2$[rsp]
+	cmp	QWORD PTR [rax+96], 71			; 00000047H
+	je	SHORT $LN9@opattr_op
 
 ; 1429 : 	{
 ; 1430 : 	}
@@ -10925,15 +10928,18 @@ $LN20@opattr_op:
 
 ; 1458 : 
 ; 1459 :     //if ( opnd2->kind != EXPR_ERROR && ( opnd2->sym == 0 || opnd2->sym->isdefined == TRUE ) )
-; 1460 : 	/* John Hankinson modified here to allow -Zg switch to treat literal string macro argument with opattr type = 0 */
-; 1461 : 	if (Options.masm_compat_gencode && opnd2->kind == EXPR_CONST)
+; 1460 : 	/* John Hankinson modified here to allow -Zne switch to treat literal string macro argument with opattr type = 0 */
+; 1461 : 	if (Options.strict_masm_compat && opnd2->kind == EXPR_CONST && opnd2->type != MT_SQWORD)
 
-	movzx	eax, BYTE PTR Options+144
+	movzx	eax, BYTE PTR Options+143
 	test	eax, eax
 	je	SHORT $LN21@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	cmp	DWORD PTR [rax+60], 0
 	jne	SHORT $LN21@opattr_op
+	mov	rax, QWORD PTR opnd2$[rsp]
+	cmp	QWORD PTR [rax+96], 71			; 00000047H
+	je	SHORT $LN21@opattr_op
 
 ; 1462 : 	{
 ; 1463 : 	}

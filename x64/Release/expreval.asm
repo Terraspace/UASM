@@ -8269,13 +8269,15 @@ $LN8@opattr_op:
 ; 1424 : 
 ; 1425 : 
 ; 1426 :     /* bit 2: immediate value? */
-; 1427 : 	/* John Hankinson modified here to allow -Zg switch to treat literal string macro argument with opattr type = 0 */
-; 1428 : 	if (Options.masm_compat_gencode && opnd2->kind == EXPR_CONST)
+; 1427 : 	/* John Hankinson modified here to allow -Zne switch to treat literal string macro argument with opattr type = 0 */
+; 1428 : 	if (Options.strict_masm_compat && opnd2->kind == EXPR_CONST && opnd2->mem_type != MT_SQWORD)
 
-	cmp	BYTE PTR Options+128, 0
+	cmp	BYTE PTR Options+127, 0
 	je	SHORT $LN9@opattr_op
 	cmp	DWORD PTR [r8+60], 0
-	je	SHORT $LN11@opattr_op
+	jne	SHORT $LN9@opattr_op
+	cmp	DWORD PTR [r8+64], 71			; 00000047H
+	jne	SHORT $LN11@opattr_op
 $LN9@opattr_op:
 
 ; 1429 : 	{
@@ -8386,13 +8388,15 @@ $LN20@opattr_op:
 
 ; 1458 : 
 ; 1459 :     //if ( opnd2->kind != EXPR_ERROR && ( opnd2->sym == 0 || opnd2->sym->isdefined == TRUE ) )
-; 1460 : 	/* John Hankinson modified here to allow -Zg switch to treat literal string macro argument with opattr type = 0 */
-; 1461 : 	if (Options.masm_compat_gencode && opnd2->kind == EXPR_CONST)
+; 1460 : 	/* John Hankinson modified here to allow -Zne switch to treat literal string macro argument with opattr type = 0 */
+; 1461 : 	if (Options.strict_masm_compat && opnd2->kind == EXPR_CONST && opnd2->mem_type != MT_SQWORD)
 
-	cmp	BYTE PTR Options+128, 0
+	cmp	BYTE PTR Options+127, 0
 	je	SHORT $LN21@opattr_op
 	cmp	DWORD PTR [r8+60], 0
-	je	SHORT $LN23@opattr_op
+	jne	SHORT $LN21@opattr_op
+	cmp	DWORD PTR [r8+64], 71			; 00000047H
+	jne	SHORT $LN23@opattr_op
 $LN21@opattr_op:
 	mov	eax, DWORD PTR [r8+60]
 	inc	eax
