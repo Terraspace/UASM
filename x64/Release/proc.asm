@@ -1694,7 +1694,7 @@ $LN6@write_user:
 ; 3111 :         return( EmitErr( EPILOGUE_MUST_BE_MACRO_PROC, ModuleInfo.proc_epilogue ) );
 
 	mov	rdx, QWORD PTR ModuleInfo+328
-	mov	ecx, 158				; 0000009eH
+	mov	ecx, 157				; 0000009dH
 	call	EmitErr
 
 ; 3161 : }
@@ -4347,7 +4347,7 @@ $LN13@write_user:
 
 ; 2130 :         return( EmitError( PROLOGUE_MUST_BE_MACRO_FUNC ) );
 
-	mov	ecx, 157				; 0000009dH
+	mov	ecx, 156				; 0000009cH
 	call	EmitError
 $LN33@write_user:
 	mov	r13, QWORD PTR [rsp+816]
@@ -4411,7 +4411,7 @@ $LN80:
 	mov	ecx, DWORD PTR [rax+r15+16]
 	call	GetResWName
 	mov	rdx, rax
-	mov	ecx, 225				; 000000e1H
+	mov	ecx, 224				; 000000e0H
 	call	EmitErr
 
 ; 2071 : }
@@ -4441,7 +4441,7 @@ $LN6@ExcFrameDi:
 
 ; 1865 :         return( EmitError( MISSING_FRAME_IN_PROC ) );
 
-	mov	ecx, 256				; 00000100H
+	mov	ecx, 255				; 000000ffH
 	call	EmitError
 
 ; 2071 : }
@@ -4551,7 +4551,7 @@ $LN68@ExcFrameDi:
 
 ; 1892 :             return( EmitError( NONZERO_VALUE_EXPECTED ) );
 
-	mov	ecx, 258				; 00000102H
+	mov	ecx, 257				; 00000101H
 	call	EmitError
 	jmp	$LN67@ExcFrameDi
 $LN16@ExcFrameDi:
@@ -4662,7 +4662,7 @@ $LN22@ExcFrameDi:
 
 ; 1932 :             return( EmitError( SIZE_OF_PROLOG_TOO_BIG ) );
 
-	mov	ecx, 259				; 00000103H
+	mov	ecx, 258				; 00000102H
 	call	EmitError
 	jmp	$LN67@ExcFrameDi
 $LN23@ExcFrameDi:
@@ -4845,7 +4845,7 @@ $LN77@ExcFrameDi:
 
 ; 1998 :             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 $LN67@ExcFrameDi:
 	mov	r12, QWORD PTR [rsp+168]
@@ -4979,7 +4979,7 @@ $LN74@ExcFrameDi:
 
 ; 2006 :             return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 	jmp	$LN67@ExcFrameDi
 $LN44@ExcFrameDi:
@@ -4995,7 +4995,7 @@ $LN73@ExcFrameDi:
 
 ; 2009 :             return( EmitError( BAD_ALIGNMENT_FOR_OFFSET_IN_UNWIND_CODE ) );
 
-	mov	ecx, 257				; 00000101H
+	mov	ecx, 256				; 00000100H
 	call	EmitError
 	jmp	$LN67@ExcFrameDi
 $LN45@ExcFrameDi:
@@ -5202,7 +5202,7 @@ $LN54@ExcFrameDi:
 
 ; 2067 :         return( EmitErr( TOO_MANY_UNWIND_CODES_IN_FRAME_PROC ) );
 
-	mov	ecx, 211				; 000000d3H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	$LN67@ExcFrameDi
 $LN55@ExcFrameDi:
@@ -5217,7 +5217,7 @@ $LN8@ExcFrameDi:
 
 ; 1862 :         return( EmitError( ENDPROLOG_FOUND_BEFORE_EH_DIRECTIVES ) );
 
-	mov	ecx, 255				; 000000ffH
+	mov	ecx, 254				; 000000feH
 	call	EmitError
 
 ; 2071 : }
@@ -5299,7 +5299,7 @@ $LN4@EndpDir:
 ; 1824 :         return( EmitErr( UNMATCHED_BLOCK_NESTING, tokenarray[0].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rbx+8]
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 142				; 0000008eH
 
 ; 1827 : }
 
@@ -5315,7 +5315,7 @@ $LN3@EndpDir:
 ; 1817 :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	movsxd	rdx, ecx
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rbx+24]
 
@@ -5366,7 +5366,7 @@ $LN14@ProcFini:
 ; 1748 :         EmitErr( UNMATCHED_BLOCK_NESTING, proc->sym.name );
 
 	mov	rdx, QWORD PTR [rcx+8]
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 142				; 0000008eH
 	call	EmitErr
 
 ; 1749 :         proc->sym.total_size = CurrProc->sym.segment->offset - proc->sym.offset;
@@ -5406,7 +5406,7 @@ $LL4@ProcFini:
 ; 1756 :                 EmitWarn( 3, PROCEDURE_ARGUMENT_OR_LOCAL_NOT_REFERENCED, curr->sym.name );
 
 	mov	r8, QWORD PTR [rbx+8]
-	mov	edx, 266				; 0000010aH
+	mov	edx, 265				; 00000109H
 	mov	ecx, 3
 	call	EmitWarn
 $LN2@ProcFini:
@@ -5436,7 +5436,7 @@ $LL7@ProcFini:
 ; 1760 :                 EmitWarn( 3, PROCEDURE_ARGUMENT_OR_LOCAL_NOT_REFERENCED, curr->sym.name );
 
 	mov	r8, QWORD PTR [rbx+8]
-	mov	edx, 266				; 0000010aH
+	mov	edx, 265				; 00000109H
 	mov	ecx, 3
 	call	EmitWarn
 $LN5@ProcFini:
@@ -6228,7 +6228,7 @@ WriteSEHData PROC					; COMDAT
 ; 1653 :         EmitErr( MISSING_ENDPROLOG, proc->sym.name );
 
 	mov	rdx, QWORD PTR [rcx+8]
-	mov	ecx, 260				; 00000104H
+	mov	ecx, 259				; 00000103H
 	call	EmitErr
 $LN5@WriteSEHDa:
 
@@ -6590,7 +6590,7 @@ $LN47:
 ; 1417 :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	movsxd	rdx, ecx
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rbp+8]
 
@@ -6613,7 +6613,7 @@ $LN2@ProcDir:
 
 ; 1421 :         return( EmitError( MUST_BE_IN_SEGMENT_BLOCK ) );
 
-	mov	ecx, 83					; 00000053H
+	mov	ecx, 82					; 00000052H
 
 ; 1597 : }
 
@@ -6769,7 +6769,7 @@ $LN6@ProcDir:
 ; 1437 :             return( EmitErr( CANNOT_NEST_PROCEDURES, name ) );
 
 	mov	rdx, rsi
-	mov	ecx, 94					; 0000005eH
+	mov	ecx, 93					; 0000005dH
 	mov	rbx, QWORD PTR [rsp+64]
 	mov	rsi, QWORD PTR [rsp+72]
 
@@ -6810,7 +6810,7 @@ $LN13@ProcDir:
 ; 1482 :             return( EmitErr( SYMBOL_REDEFINITION, sym->name ) );
 
 	mov	rdx, QWORD PTR [rbx+8]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 	jmp	$LN44@ProcDir
 $LN32@ProcDir:
@@ -7065,7 +7065,7 @@ $LN25@ProcDir:
 ; 1559 :             EmitErr( SYMBOL_NOT_DEFINED, CurrProc->e.procinfo->exc_handler->name );
 
 	mov	rdx, QWORD PTR [rdx+8]
-	mov	ecx, 103				; 00000067H
+	mov	ecx, 102				; 00000066H
 	call	EmitErr
 $LN26@ProcDir:
 
@@ -7456,7 +7456,7 @@ $LN47@ParseParam:
 
 ; 725  :                     EmitError( VARARG_PARAMETER_MUST_BE_LAST );
 
-	mov	ecx, 148				; 00000094H
+	mov	ecx, 147				; 00000093H
 	call	EmitError
 	mov	r10d, DWORD PTR i$[rbp-104]
 	jmp	SHORT $LN56@ParseParam
@@ -7671,7 +7671,7 @@ $LN66@ParseParam:
 ; 804  :                 EmitErr( CONFLICTING_PARAMETER_DEFINITION, name );
 
 	mov	rdx, r12
-	mov	ecx, 138				; 0000008aH
+	mov	ecx, 137				; 00000089H
 	call	EmitErr
 	mov	r10d, DWORD PTR i$[rbp-104]
 $LN63@ParseParam:
@@ -8057,7 +8057,7 @@ $LN123@ParseParam:
 
 ; 700  :                 return( EmitError( COLON_EXPECTED ) );
 
-	mov	ecx, 85					; 00000055H
+	mov	ecx, 84					; 00000054H
 	call	EmitError
 	jmp	$LN1@ParseParam
 $LN54@ParseParam:
@@ -8069,7 +8069,7 @@ $LN54@ParseParam:
 ; 720  :                 case LANG_STDCALL:
 ; 721  :                     return( EmitError( VARARG_REQUIRES_C_CALLING_CONVENTION ) );
 
-	mov	ecx, 95					; 0000005fH
+	mov	ecx, 94					; 0000005eH
 	call	EmitError
 	jmp	$LN1@ParseParam
 $LN125@ParseParam:
@@ -8078,7 +8078,7 @@ $LN125@ParseParam:
 ; 740  :             return( EmitErr( SYMBOL_REDEFINITION, name ) );
 
 	mov	rdx, r12
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 	jmp	$LN1@ParseParam
 $LN128@ParseParam:
@@ -8087,7 +8087,7 @@ $LN128@ParseParam:
 ; 919  :                 return( EmitErr( EXPECTING_COMMA, tokenarray[i].tokpos ) );
 
 	movsxd	rdx, r10d
-	mov	ecx, 40					; 00000028H
+	mov	ecx, 39					; 00000027H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+r9+24]
 	call	EmitErr
@@ -8099,7 +8099,7 @@ $LN126@ParseParam:
 ; 834  :             return( EmitErr( CONFLICTING_PARAMETER_DEFINITION, "" ) );
 
 	lea	rdx, OFFSET FLAT:$SG11615
-	mov	ecx, 138				; 0000008aH
+	mov	ecx, 137				; 00000089H
 	call	EmitErr
 	jmp	$LN1@ParseParam
 $LN124@ParseParam:
@@ -8116,7 +8116,7 @@ $LN41@ParseParam:
 ; 676  :             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	movsxd	rdx, r10d
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+r9+8]
 	call	EmitErr
@@ -8142,7 +8142,7 @@ $LN161@ParseParam:
 ; 930  :             return( EmitErr( CONFLICTING_PARAMETER_DEFINITION, "" ) );
 
 	lea	rdx, OFFSET FLAT:$SG11637
-	mov	ecx, 138				; 0000008aH
+	mov	ecx, 137				; 00000089H
 	call	EmitErr
 	jmp	$LN1@ParseParam
 $LN93@ParseParam:
@@ -8681,7 +8681,7 @@ $LN60@LocalDir:
 
 ; 542  :                 EmitError( CONSTANT_EXPECTED );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 
 ; 543  :                 opndx.value = 1;
@@ -8721,7 +8721,7 @@ $LN29@LocalDir:
 
 ; 551  :                 EmitError( EXPECTED_CL_SQ_BRACKET );
 
-	mov	ecx, 112				; 00000070H
+	mov	ecx, 111				; 0000006fH
 	call	EmitError
 	mov	eax, DWORD PTR i$[rbp-121]
 $LN30@LocalDir:
@@ -8898,7 +8898,7 @@ $LN38@LocalDir:
 ; 593  :                 return( EmitErr( EXPECTING_COMMA, tokenarray[i].tokpos ) );
 
 	mov	rdx, r8
-	mov	ecx, 40					; 00000028H
+	mov	ecx, 39					; 00000027H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rdi+24]
 $LN64@LocalDir:
@@ -8922,7 +8922,7 @@ $LN46@LocalDir:
 ; 475  :             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	movsxd	rdx, r8d
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rdi+8]
 	jmp	SHORT $LN64@LocalDir
@@ -8930,7 +8930,7 @@ $LN15@LocalDir:
 
 ; 456  :         return( EmitError( PROC_MACRO_MUST_PRECEDE_LOCAL ) );
 
-	mov	ecx, 93					; 0000005dH
+	mov	ecx, 92					; 0000005cH
 	call	EmitError
 
 ; 599  : }
@@ -9771,7 +9771,7 @@ $LL2@ProcCheckO:
 ; 2082 :         EmitErr( UNMATCHED_BLOCK_NESTING, CurrProc->sym.name );
 
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 142				; 0000008eH
 	call	EmitErr
 
 ; 2083 :         ProcFini( CurrProc );
@@ -9784,7 +9784,7 @@ $LL2@ProcCheckO:
 	jmp	SHORT $LN58@ProcCheckO
 $LN18@ProcCheckO:
 	mov	rdx, QWORD PTR [rdi+8]
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 142				; 0000008eH
 	call	EmitErr
 	mov	rax, QWORD PTR CurrProc
 	mov	rcx, QWORD PTR [rax+24]
@@ -9805,7 +9805,7 @@ $LL8@ProcCheckO:
 	test	BYTE PTR [rbx+40], 1
 	jne	SHORT $LN6@ProcCheckO
 	mov	r8, QWORD PTR [rbx+8]
-	mov	edx, 266				; 0000010aH
+	mov	edx, 265				; 00000109H
 	mov	ecx, 3
 	call	EmitWarn
 $LN6@ProcCheckO:
@@ -9822,7 +9822,7 @@ $LL11@ProcCheckO:
 	test	BYTE PTR [rbx+40], 1
 	jne	SHORT $LN9@ProcCheckO
 	mov	r8, QWORD PTR [rbx+8]
-	mov	edx, 266				; 0000010aH
+	mov	edx, 265				; 00000109H
 	mov	ecx, 3
 	call	EmitWarn
 $LN9@ProcCheckO:
@@ -11116,7 +11116,7 @@ $LN21@ParseProc:
 ; 1064 :                 ( ModuleInfo.Ofssize == USE16 && Ofssize == USE32 ) ) {
 ; 1065 :                 EmitError( DISTANCE_INVALID );
 
-	mov	ecx, 172				; 000000acH
+	mov	ecx, 171				; 000000abH
 	call	EmitError
 	movzx	edx, BYTE PTR ModuleInfo+404
 $LN20@ParseProc:
@@ -11205,7 +11205,7 @@ $LN27@ParseProc:
 ; 1090 :             return( EmitErr( SYMBOL_REDEFINITION, proc->sym.name ) );
 
 	mov	rdx, QWORD PTR [rbx+8]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	jmp	$LN120@ParseProc
 $LN30@ParseProc:
 
@@ -11215,7 +11215,7 @@ $LN30@ParseProc:
 ; 1087 :         if ( proc->sym.mem_type == MT_NEAR || proc->sym.mem_type == MT_FAR )
 ; 1088 :             EmitError( PROC_AND_PROTO_CALLING_CONV_CONFLICT );
 
-	mov	ecx, 139				; 0000008bH
+	mov	ecx, 138				; 0000008aH
 	call	EmitError
 
 ; 1091 :         }
@@ -11269,7 +11269,7 @@ $LN31@ParseProc:
 ; 1108 :         DebugMsg(("ParseProc: error, language changed, %u - %u\n", proc->sym.langtype, langtype ));
 ; 1109 :         EmitError( PROC_AND_PROTO_CALLING_CONV_CONFLICT );
 
-	mov	ecx, 139				; 0000008bH
+	mov	ecx, 138				; 0000008aH
 	call	EmitError
 
 ; 1110 :     } else
@@ -11410,7 +11410,7 @@ $LN40@ParseProc:
 ; 1145 :                     EmitErr( EXPORT_MUST_BE_FAR, proc->sym.name );
 
 	mov	rdx, QWORD PTR [rbx+8]
-	mov	ecx, 277				; 00000115H
+	mov	ecx, 276				; 00000114H
 	call	EmitErr
 	mov	edx, DWORD PTR i$[rbp-32]
 	inc	edx
@@ -11559,7 +11559,7 @@ $LN52@ParseProc:
 
 ; 1177 :                             EmitWarn( 2, LOADDS_IGNORED_IN_FLAT_MODEL );
 
-	mov	edx, 227				; 000000e3H
+	mov	edx, 226				; 000000e2H
 	lea	ecx, QWORD PTR [rax+2]
 	call	EmitWarn
 
@@ -11655,7 +11655,7 @@ $LN117@ParseProc:
 	mov	ecx, 263				; 00000107H
 	call	GetResWName
 	mov	rdx, rax
-	mov	ecx, 225				; 000000e1H
+	mov	ecx, 224				; 000000e0H
 	jmp	$LN120@ParseProc
 $LN54@ParseProc:
 
@@ -11663,7 +11663,7 @@ $LN54@ParseProc:
 ; 1181 :                         return( EmitErr( UNKNOWN_DEFAULT_PROLOGUE_ARGUMENT, tokenarray[idx].string_ptr ) );
 
 	movsxd	rdx, r12d
-	mov	ecx, 226				; 000000e2H
+	mov	ecx, 225				; 000000e1H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rsi+8]
 	jmp	$LN120@ParseProc
@@ -11764,7 +11764,7 @@ $LN64@ParseProc:
 ; 1223 :                 return( EmitErr( SYMBOL_REDEFINITION, sym->name ) );
 
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	jmp	$LN120@ParseProc
 $LN61@ParseProc:
 
@@ -11807,7 +11807,7 @@ $LN59@ParseProc:
 ; 1238 :             EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr );
 
 	movsxd	rdx, DWORD PTR i$[rbp-32]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rsi+8]
 	call	EmitErr
@@ -11881,7 +11881,7 @@ $LL10@ParseProc:
 
 ; 1254 :                     EmitError( INVALID_USE_OF_REGISTER );
 
-	mov	ecx, 171				; 000000abH
+	mov	ecx, 170				; 000000aaH
 	call	EmitError
 $LN71@ParseProc:
 
@@ -11912,7 +11912,7 @@ $LN105@ParseProc:
 ; 1246 :             EmitErr( SYNTAX_ERROR_EX, tokenarray[i-1].tokpos );
 
 	mov	rdx, QWORD PTR [rdx+rsi-8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 $LN119@ParseProc:
 	mov	edx, DWORD PTR i$[rbp-32]
@@ -11966,7 +11966,7 @@ $LN74@ParseProc:
 ; 1275 :             EmitErr( CONFLICTING_PARAMETER_DEFINITION, "" );
 
 	lea	rdx, OFFSET FLAT:$SG11757
-	mov	ecx, 138				; 0000008aH
+	mov	ecx, 137				; 00000089H
 	call	EmitErr
 
 ; 1287 :             /* do proceed if the parameter scan returns an error */
@@ -11998,7 +11998,7 @@ $LN75@ParseProc:
 
 ; 1277 :         EmitError( LANG_MUST_BE_SPECIFIED );
 
-	mov	ecx, 92					; 0000005cH
+	mov	ecx, 91					; 0000005bH
 	call	EmitError
 
 ; 1287 :             /* do proceed if the parameter scan returns an error */
@@ -12079,7 +12079,7 @@ $LN73@ParseProc:
 
 	mov	rdx, QWORD PTR [r8+rsi+8]
 $LN122@ParseProc:
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 $LN120@ParseProc:
 	call	EmitErr
 $LN1@ParseProc:

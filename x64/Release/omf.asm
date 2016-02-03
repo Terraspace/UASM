@@ -3957,7 +3957,7 @@ $LN24@omf_write_:
 ; 816  :                 EmitWarn( 2, GROUP_DEFINITION_TOO_LARGE, curr->sym.name );
 
 	mov	r8, QWORD PTR [rbx+8]
-	mov	edx, 267				; 0000010bH
+	mov	edx, 266				; 0000010aH
 	mov	ecx, 2
 	call	EmitWarn
 	mov	ecx, DWORD PTR grp$[rbp-76]

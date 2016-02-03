@@ -680,7 +680,7 @@ $LN22@OptionDire:
 
 ; 932  :                 return( EmitError( COLON_EXPECTED ) );
 
-	mov	ecx, 85					; 00000055H
+	mov	ecx, 84					; 00000054H
 	call	EmitError
 	jmp	SHORT $LN1@OptionDire
 $LN25@OptionDire:
@@ -695,7 +695,7 @@ $LN16@OptionDire:
 ; 954  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	movsxd	rdx, r8d
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rdi+24]
 	call	EmitErr
@@ -726,7 +726,7 @@ Unsupported PROC
 
 	movsxd	rdx, DWORD PTR [rcx]
 	shl	rdx, 5
-	mov	ecx, 73					; 00000049H
+	mov	ecx, 72					; 00000048H
 	mov	rdx, QWORD PTR [rdx+rax-40]
 	jmp	EmitErr
 Unsupported ENDP
@@ -760,7 +760,7 @@ SetStackBase PROC
 ; 805  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	mov	rdx, QWORD PTR [r8+rdx+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 
 ; 822  : }
 
@@ -784,7 +784,7 @@ $LN2@SetStackBa:
 
 ; 808  :         return( EmitError( MUST_BE_INDEX_OR_BASE_REGISTER ) );
 
-	mov	ecx, 34					; 00000022H
+	mov	ecx, 33					; 00000021H
 
 ; 822  : }
 
@@ -934,7 +934,7 @@ $LN3@SetCodeVie:
 ; 786  :     } else {
 ; 787  :         return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 
 ; 791  : }
@@ -1294,7 +1294,7 @@ $LN4@SetWin64:
 ; 711  :     } else {
 ; 712  :         return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 
 ; 716  : }
@@ -1381,7 +1381,7 @@ SetRenameKey PROC
 ; 674  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	mov	rdx, QWORD PTR [rsi+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	mov	rsi, QWORD PTR [rsp+56]
 
 ; 687  : }
@@ -1417,7 +1417,7 @@ $LL10@SetRenameK:
 
 ; 681  :         return( EmitError( RESERVED_WORD_EXPECTED ) );
 
-	mov	ecx, 159				; 0000009fH
+	mov	ecx, 158				; 0000009eH
 	call	EmitError
 $LN12@SetRenameK:
 	mov	rbx, QWORD PTR [rsp+48]
@@ -1462,7 +1462,7 @@ $LN5@SetRenameK:
 ; 670  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	mov	rdx, QWORD PTR [rdx+r8+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 
 ; 687  : }
 
@@ -1479,7 +1479,7 @@ $LN3@SetRenameK:
 ; 662  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	mov	rdx, QWORD PTR [rdx+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 
 ; 687  : }
 
@@ -1589,7 +1589,7 @@ $LN3@SetElf:
 ; 634  :     } else {
 ; 635  :         return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 
 ; 639  : }
@@ -1856,7 +1856,7 @@ $LN49@SetMZ:
 
 ; 588  :             EmitError( INVALID_HEADER_ALIGNMENT );
 
-	mov	ecx, 206				; 000000ceH
+	mov	ecx, 205				; 000000cdH
 	call	EmitError
 	mov	eax, DWORD PTR i$[rsp]
 $LN25@SetMZ:
@@ -1892,7 +1892,7 @@ $LN16@SetMZ:
 ; 570  :         } else {
 ; 571  :             return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 	jmp	SHORT $LN1@SetMZ
 $LN32@SetMZ:
@@ -1966,7 +1966,7 @@ $LN5@SetProcAli:
 
 ; 530  :         return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 
 ; 542  : }
@@ -1985,7 +1985,7 @@ $LN6@SetProcAli:
 
 ; 533  :         EmitError( STRUCT_ALIGN_TOO_HIGH );
 
-	mov	ecx, 215				; 000000d7H
+	mov	ecx, 214				; 000000d6H
 	call	EmitError
 	mov	edx, DWORD PTR opndx$[rsp]
 $LN7@SetProcAli:
@@ -2011,7 +2011,7 @@ $LN14@SetProcAli:
 
 ; 537  :         return( EmitErr( POWER_OF_2, opndx.value ) );
 
-	mov	ecx, 130				; 00000082H
+	mov	ecx, 129				; 00000081H
 	call	EmitErr
 
 ; 542  : }
@@ -2092,7 +2092,7 @@ $LN5@SetFieldAl:
 
 ; 502  :         return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 
 ; 514  : }
@@ -2111,7 +2111,7 @@ $LN6@SetFieldAl:
 
 ; 505  :         return( EmitError( STRUCT_ALIGN_TOO_HIGH ) );
 
-	mov	ecx, 215				; 000000d7H
+	mov	ecx, 214				; 000000d6H
 	call	EmitError
 
 ; 514  : }
@@ -2142,7 +2142,7 @@ $LN14@SetFieldAl:
 
 ; 509  :         return( EmitErr( POWER_OF_2, opndx.value ) );
 
-	mov	ecx, 130				; 00000082H
+	mov	ecx, 129				; 00000081H
 	call	EmitErr
 
 ; 514  : }
@@ -2348,7 +2348,7 @@ $LN10@SetSegment:
 ; 482  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rbx+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 
 ; 487  : }
 
@@ -2605,7 +2605,7 @@ $LN6@SetOffset:
 ; 418  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rbx+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 
 ; 423  : }
 
@@ -2652,7 +2652,7 @@ SetEpilogue PROC
 ; 380  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	mov	rdx, QWORD PTR [rbx+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 
 ; 395  :     }
 ; 396  : 
@@ -2787,7 +2787,7 @@ SetPrologue PROC
 ; 348  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	mov	rdx, QWORD PTR [rbx+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 
 ; 362  :     }
 ; 363  : 
@@ -3043,7 +3043,7 @@ $LN3@SetLanguag:
 ; 302  :     return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	movsxd	rdx, r8d
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rbx+24]
 	call	EmitErr
@@ -3279,7 +3279,7 @@ $LN33@SetNoKeywo:
 
 ; 272  :                     return( EmitError( RESERVED_WORD_EXPECTED ) );
 
-	mov	ecx, 159				; 0000009fH
+	mov	ecx, 158				; 0000009eH
 	call	EmitError
 	jmp	SHORT $LN52@SetNoKeywo
 $LN14@SetNoKeywo:
@@ -3287,7 +3287,7 @@ $LN14@SetNoKeywo:
 ; 251  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	mov	rdx, QWORD PTR [rdx+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 
 ; 282  : }
 
@@ -3757,7 +3757,7 @@ $LN2@SetCaseMap:
 ; 97   :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	mov	rdx, QWORD PTR [rbx+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 
 ; 101  : }
 
@@ -3905,7 +3905,7 @@ $LN3@SetEvex:
 ; 49   : 	else {
 ; 50   : 		return(EmitError(CONSTANT_EXPECTED));
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 
 ; 54   : }

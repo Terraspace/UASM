@@ -945,7 +945,7 @@ $LL2@evaluate:
 
 	cmp	cl, 12
 	ja	$LN43@evaluate
-	mov	ecx, 151				; 00000097H
+	mov	ecx, 150				; 00000096H
 	call	QWORD PTR fnEmitErr
 	jmp	$LN103@evaluate
 $LN12@evaluate:
@@ -1159,7 +1159,7 @@ $LN22@evaluate:
 
 ; 3322 :                     fnEmitErr( MISSING_RIGHT_PARENTHESIS_IN_EXPRESSION );
 
-	mov	ecx, 228				; 000000e4H
+	mov	ecx, 227				; 000000e3H
 	call	QWORD PTR fnEmitErr
 
 ; 3323 :                     /* v2.12: if curr token is a comma, the intention might be to call a macro function
@@ -1184,7 +1184,7 @@ $LN22@evaluate:
 ; 3330 :                         fnEmitErr( SYMBOL_NOT_DEFINED, opnd1->sym->name );
 
 	mov	rdx, QWORD PTR [rdx+8]
-	mov	ecx, 103				; 00000067H
+	mov	ecx, 102				; 00000066H
 	call	QWORD PTR fnEmitErr
 $LN26@evaluate:
 
@@ -1251,7 +1251,7 @@ $LL4@evaluate:
 	shl	rdx, 5
 	cmp	BYTE PTR [rdx+rbx], 12
 	ja	SHORT $LN61@evaluate
-	mov	ecx, 151				; 00000097H
+	mov	ecx, 150				; 00000096H
 	call	QWORD PTR fnEmitErr
 	jmp	SHORT $LN110@evaluate
 $LN32@evaluate:
@@ -1309,7 +1309,7 @@ $LN33@evaluate:
 
 $LN61@evaluate:
 	mov	rdx, QWORD PTR [rdx+rbx+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	QWORD PTR fnEmitErr
 
 ; 3367 : 
@@ -1404,7 +1404,7 @@ $LN39@evaluate:
 
 $LN43@evaluate:
 	shl	rdx, 5
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	mov	rdx, QWORD PTR [rdx+rbx+8]
 	call	QWORD PTR fnEmitErr
 $LN103@evaluate:
@@ -1459,7 +1459,7 @@ OperErr	PROC						; COMDAT
 
 ; 3239 :         fnEmitErr( MISSING_OPERATOR_IN_EXPRESSION ); ERRLOC(i);
 
-	mov	ecx, 151				; 00000097H
+	mov	ecx, 150				; 00000096H
 	rex_jmp	QWORD PTR fnEmitErr
 $LN2@OperErr:
 
@@ -1467,7 +1467,7 @@ $LN2@OperErr:
 ; 3241 :         fnEmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr );
 
 	mov	rdx, QWORD PTR [rdx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	rex_jmp	QWORD PTR fnEmitErr
 OperErr	ENDP
 _TEXT	ENDS
@@ -1660,7 +1660,7 @@ $LN9@calculate:
 ; 2614 :             return( fnEmitErr( CONSTANT_VALUE_TOO_LARGE_EX, opnd2->hlvalue, opnd2->value64 ) );
 
 	mov	r8, QWORD PTR [rdi]
-	mov	ecx, 273				; 00000111H
+	mov	ecx, 272				; 00000110H
 
 ; 3184 : }
 
@@ -1850,7 +1850,7 @@ $LN23@calculate:
 	movzx	eax, BYTE PTR [rbx+68]
 	test	al, al
 	je	SHORT $LN140@calculate
-	mov	ecx, 171				; 000000abH
+	mov	ecx, 170				; 000000aaH
 	call	QWORD PTR fnEmitErr
 	mov	esi, eax
 	jmp	$LN180@calculate
@@ -1950,7 +1950,7 @@ $LN192@calculate:
 ; 2681 :             DebugMsg(("calculate(%s): incompatible usage of (simple) type\n", oper->string_ptr ));
 ; 2682 :             return( fnEmitErr( SYNTAX_ERROR_IN_EXPRESSION ) );
 
-	mov	ecx, 264				; 00000108H
+	mov	ecx, 263				; 00000107H
 
 ; 2846 :                     DebugMsg(("calculate(PTR): register size doesn't match type size; %u != %u\n", SizeFromRegister( temp ), opnd1->value ));
 ; 2847 :                     return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
@@ -1965,7 +1965,7 @@ $LN140@calculate:
 	mov	BYTE PTR [rbx+68], al
 	cmp	DWORD PTR [rdi+60], esi
 	je	SHORT $LN141@calculate
-	mov	ecx, 253				; 000000fdH
+	mov	ecx, 252				; 000000fcH
 	call	QWORD PTR fnEmitErr
 	mov	esi, eax
 	jmp	$LN180@calculate
@@ -2018,7 +2018,7 @@ $LN144@calculate:
 	mov	eax, esi
 	jmp	$LN180@calculate
 $LN146@calculate:
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	QWORD PTR fnEmitErr
 	mov	esi, eax
 	jmp	$LN180@calculate
@@ -2246,7 +2246,7 @@ $LN184@calculate:
 
 ; 2769 :                 return( fnEmitErr( SCALE_FACTOR_MUST_BE_1_2_4_OR_8 ) );
 
-	mov	ecx, 37					; 00000025H
+	mov	ecx, 36					; 00000024H
 
 ; 2846 :                     DebugMsg(("calculate(PTR): register size doesn't match type size; %u != %u\n", SizeFromRegister( temp ), opnd1->value ));
 ; 2847 :                     return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
@@ -2495,7 +2495,7 @@ $LN46@calculate:
 ; 2821 :                     DebugMsg(("calculate(PTR), error 1: t1 is_type == FALSE\n"));
 ; 2822 :                     return( fnEmitErr( INVALID_TYPE_EXPRESSION ) );
 
-	mov	ecx, 180				; 000000b4H
+	mov	ecx, 179				; 000000b3H
 
 ; 2846 :                     DebugMsg(("calculate(PTR): register size doesn't match type size; %u != %u\n", SizeFromRegister( temp ), opnd1->value ));
 ; 2847 :                     return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
@@ -2517,7 +2517,7 @@ $LN170@calculate:
 ; 2846 :                     DebugMsg(("calculate(PTR): register size doesn't match type size; %u != %u\n", SizeFromRegister( temp ), opnd1->value ));
 ; 2847 :                     return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
-	mov	ecx, 171				; 000000abH
+	mov	ecx, 170				; 000000aaH
 	call	QWORD PTR fnEmitErr
 	jmp	$LN180@calculate
 $LN48@calculate:
@@ -2536,7 +2536,7 @@ $LN48@calculate:
 ; 2851 :                     DebugMsg(("calculate(PTR): type memtype=%Xh ( MT_FLOAT not set, although right op is FLOAT )\n", opnd1->mem_type ));
 ; 2852 :                     return( fnEmitErr( REAL_OR_BCD_NUMBER_NOT_ALLOWED ) );
 
-	mov	ecx, 271				; 0000010fH
+	mov	ecx, 270				; 0000010eH
 	call	QWORD PTR fnEmitErr
 	jmp	$LN180@calculate
 $LN56@calculate:
@@ -2706,7 +2706,7 @@ $LN60@calculate:
 	cmp	r8d, 2
 	jne	SHORT $LN161@calculate
 	mov	rdx, QWORD PTR [rcx+8]
-	mov	ecx, 194				; 000000c2H
+	mov	ecx, 193				; 000000c1H
 	call	QWORD PTR fnEmitErr
 	jmp	SHORT $LN160@calculate
 $LN161@calculate:
@@ -2721,7 +2721,7 @@ $LN165@calculate:
 	cmp	DWORD PTR [rdx+32], 2
 	jne	SHORT $LN163@calculate
 $LN164@calculate:
-	mov	ecx, 193				; 000000c1H
+	mov	ecx, 192				; 000000c0H
 	call	QWORD PTR fnEmitErr
 $LN160@calculate:
 	cmp	eax, -1
@@ -3169,7 +3169,7 @@ $LN188@calculate:
 
 ; 2945 :                 return( fnEmitErr( DIVIDE_BY_ZERO_IN_EXPR ) );
 
-	mov	ecx, 168				; 000000a8H
+	mov	ecx, 167				; 000000a7H
 	call	QWORD PTR fnEmitErr
 	jmp	$LN180@calculate
 $LN80@calculate:
@@ -3303,7 +3303,7 @@ $LN130@calculate:
 
 ; 2985 :                 fnEmitErr( COUNT_MUST_BE_POSITIVE_OR_ZERO );
 
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 208				; 000000d0H
 	call	QWORD PTR fnEmitErr
 
 ; 3152 :     } /* end switch( oper->token ) */
@@ -3403,7 +3403,7 @@ $LN82@calculate:
 
 ; 2953 :                 fnEmitErr( COUNT_MUST_BE_POSITIVE_OR_ZERO );
 
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 208				; 000000d0H
 	call	QWORD PTR fnEmitErr
 	jmp	SHORT $LN86@calculate
 $LN83@calculate:
@@ -3574,7 +3574,7 @@ $LN66@calculate:
 ; 2898 :                               opnd2->sym ? opnd2->sym->name : "NULL" ));
 ; 2899 :                     return( fnEmitErr( OPERAND_MUST_BE_RELOCATABLE ) );
 
-	mov	ecx, 189				; 000000bdH
+	mov	ecx, 188				; 000000bcH
 	call	QWORD PTR fnEmitErr
 	jmp	$LN180@calculate
 $LN64@calculate:
@@ -3584,7 +3584,7 @@ $LN64@calculate:
 ; 2902 :                 DebugMsg(("calculate(%s) error 3\n", oper->string_ptr ));
 ; 2903 :                 return( fnEmitErr( CONSTANT_OR_RELOCATABLE_LABEL_EXPECTED ) );
 
-	mov	ecx, 190				; 000000beH
+	mov	ecx, 189				; 000000bdH
 	call	QWORD PTR fnEmitErr
 	jmp	$LN180@calculate
 $LN62@calculate:
@@ -3633,7 +3633,7 @@ $LN96@calculate:
 ; 3016 :                 DebugMsg(("calculate(%s) error 1\n", oper->string_ptr ));
 ; 3017 :                 return( fnEmitErr( CONSTANT_OPERAND_EXPECTED ) );
 
-	mov	ecx, 67					; 00000043H
+	mov	ecx, 66					; 00000042H
 	call	QWORD PTR fnEmitErr
 	jmp	$LN180@calculate
 $LN98@calculate:
@@ -3823,7 +3823,7 @@ $LN105@calculate:
 ; 3136 :                 DebugMsg(("calculate %s 'float' error\n", oper->string_ptr ));
 ; 3137 :                 return( fnEmitErr( REAL_OR_BCD_NUMBER_NOT_ALLOWED ) );
 
-	mov	ecx, 271				; 0000010fH
+	mov	ecx, 270				; 0000010eH
 	call	QWORD PTR fnEmitErr
 $LN181@calculate:
 	mov	r15, QWORD PTR [rsp+88]
@@ -4010,7 +4010,7 @@ $LN126@calculate:
 ; 3151 :         return( fnEmitErr( SYNTAX_ERROR_EX, oper->string_ptr ) );
 
 	mov	rdx, QWORD PTR [r8+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	QWORD PTR fnEmitErr
 	jmp	$LN180@calculate
 	npad	2
@@ -4285,7 +4285,7 @@ check_streg PROC					; COMDAT
 
 ; 2525 :         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
-	mov	ecx, 171				; 000000abH
+	mov	ecx, 170				; 000000aaH
 	rex_jmp	QWORD PTR fnEmitErr
 $LN2@check_stre:
 
@@ -4302,7 +4302,7 @@ $LN2@check_stre:
 
 ; 2529 :         return( fnEmitErr( INVALID_COPROCESSOR_REGISTER ) );
 
-	mov	ecx, 253				; 000000fdH
+	mov	ecx, 252				; 000000fcH
 	rex_jmp	QWORD PTR fnEmitErr
 $LN3@check_stre:
 
@@ -4613,7 +4613,7 @@ $LN5@negative_o:
 ; 2450 :         DebugMsg(("negative_op: unexpected opnd2.kind=%d\n", opnd2->kind ));
 ; 2451 :         return( fnEmitErr( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 
 ; 2454 : }
 
@@ -4721,7 +4721,7 @@ $LN4@positive_o:
 ; 2418 :         DebugMsg(("positive_op: error 1\n"));
 ; 2419 :         return( fnEmitErr( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 
 ; 2422 : }
 
@@ -4785,7 +4785,7 @@ $LN6@colon_op:
 ; 2289 :             DebugMsg(("colon_op: multiple override=%s\n", opnd2->override->string_ptr ));
 ; 2290 :             return( fnEmitErr( MULTIPLE_OVERRIDES ) );
 
-	mov	ecx, 69					; 00000045H
+	mov	ecx, 68					; 00000044H
 
 ; 2386 :             DebugMsg(("colon_op error 4\n"));
 ; 2387 :             return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
@@ -4813,7 +4813,7 @@ $LN5@colon_op:
 ; 2301 :     case EXPR_FLOAT:
 ; 2302 :         return( fnEmitErr( REAL_OR_BCD_NUMBER_NOT_ALLOWED ) );
 
-	mov	ecx, 271				; 0000010fH
+	mov	ecx, 270				; 0000010eH
 
 ; 2386 :             DebugMsg(("colon_op error 4\n"));
 ; 2387 :             return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
@@ -4836,7 +4836,7 @@ $LN34@colon_op:
 ; 2297 :             DebugMsg(("colon_op: register after : not enclosed in []\n" ));
 ; 2298 :             return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
-	mov	ecx, 171				; 000000abH
+	mov	ecx, 170				; 000000aaH
 
 ; 2386 :             DebugMsg(("colon_op error 4\n"));
 ; 2387 :             return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
@@ -5047,7 +5047,7 @@ $LN18@colon_op:
 ; 2390 :         DebugMsg(("colon_op error 5\n"));
 ; 2391 :         return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
 
-	mov	ecx, 70					; 00000046H
+	mov	ecx, 69					; 00000045H
 	rex_jmp	QWORD PTR fnEmitErr
 $LN22@colon_op:
 
@@ -5181,7 +5181,7 @@ $LN61@dot_op:
 ; 2087 :         DebugMsg(("dot_op: error direct register\n"));
 ; 2088 :         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
-	mov	ecx, 171				; 000000abH
+	mov	ecx, 170				; 000000aaH
 
 ; 2263 : }
 
@@ -5335,7 +5335,7 @@ $LN10@dot_op:
 ; 2128 :                 DebugMsg(("dot_op: error, two relocatable labels: %s - %s \n", opnd1->sym->name, opnd2->sym->name ));
 ; 2129 :                 return( fnEmitErr( CANNOT_ADD_TWO_RELOCATABLE_LABELS ) );
 
-	mov	ecx, 174				; 000000aeH
+	mov	ecx, 173				; 000000adH
 	mov	rsi, QWORD PTR [rsp+48]
 
 ; 2263 : }
@@ -5835,7 +5835,7 @@ $LN29@dot_op:
 ; 2260 :         return( struct_field_error( opnd1 ) );
 
 $LN59@dot_op:
-	mov	ecx, 272				; 00000110H
+	mov	ecx, 271				; 0000010fH
 
 ; 2263 : }
 
@@ -5881,7 +5881,7 @@ $LN2@struct_fie:
 ; 2057 :     }
 ; 2058 :     return( fnEmitErr( STRUCTURE_FIELD_EXPECTED ) );
 
-	mov	ecx, 272				; 00000110H
+	mov	ecx, 271				; 0000010fH
 	rex_jmp	QWORD PTR fnEmitErr
 struct_field_error ENDP
 _TEXT	ENDS
@@ -5929,7 +5929,7 @@ $LN50@minus_op:
 ; 1921 :         DebugMsg(("minus_op: error direct register\n"));
 ; 1922 :         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
-	mov	ecx, 171				; 000000abH
+	mov	ecx, 170				; 000000aaH
 
 ; 2047 : }
 
@@ -6157,7 +6157,7 @@ $LN18@minus_op:
 ; 1982 :                     return( fnEmitErr(INVALID_USE_OF_EXTERNAL_SYMBOL, opnd1->sym->name ) );
 
 	mov	rdx, QWORD PTR [rdx+8]
-	mov	ecx, 194				; 000000c2H
+	mov	ecx, 193				; 000000c1H
 
 ; 2047 : }
 
@@ -6181,7 +6181,7 @@ $LN17@minus_op:
 ; 1986 :                     DebugMsg(("minus_op error, sym.segm=%X opnd1->sym.segm=%X\n", sym->segment, opnd1->sym->segment ));
 ; 1987 :                     return( fnEmitErr( OPERANDS_MUST_BE_IN_SAME_SEGMENT ) );
 
-	mov	ecx, 193				; 000000c1H
+	mov	ecx, 192				; 000000c0H
 
 ; 2047 : }
 
@@ -6343,7 +6343,7 @@ $LN15@minus_op:
 ; 1967 :                 //fnEmitErr( SYNTAX_ERROR );
 ; 1968 :                 return( fnEmitErr( OPERAND_MUST_BE_RELOCATABLE ) );
 
-	mov	ecx, 189				; 000000bdH
+	mov	ecx, 188				; 000000bcH
 
 ; 2047 : }
 
@@ -6420,10 +6420,10 @@ $LN45@minus_op:
 	cmp	eax, 3
 	je	SHORT $LN48@minus_op
 	cmp	DWORD PTR [r10+60], 3
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	jne	SHORT $LN53@minus_op
 $LN48@minus_op:
-	mov	ecx, 271				; 0000010fH
+	mov	ecx, 270				; 0000010eH
 $LN53@minus_op:
 	call	QWORD PTR fnEmitErr
 	or	ecx, -1
@@ -6488,7 +6488,7 @@ $LN57@plus_op:
 ; 1802 :         DebugMsg(("plus_op: error direct register\n" ));
 ; 1803 :         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
-	mov	ecx, 171				; 000000abH
+	mov	ecx, 170				; 000000aaH
 
 ; 1903 : }
 
@@ -6548,7 +6548,7 @@ $LN4@plus_op:
 ; 1816 :                 DebugMsg(("plus_op: multiple overrides\n" ));
 ; 1817 :                 return( fnEmitErr( MULTIPLE_OVERRIDES ) );
 
-	mov	ecx, 69					; 00000045H
+	mov	ecx, 68					; 00000044H
 
 ; 1903 : }
 
@@ -6678,7 +6678,7 @@ $LN12@plus_op:
 ; 1842 :                 DebugMsg(("plus_op: two relocatable labels: %s - %s \n", opnd1->sym->name, opnd2->sym->name ));
 ; 1843 :                 return( fnEmitErr( CANNOT_ADD_TWO_RELOCATABLE_LABELS ) );
 
-	mov	ecx, 174				; 000000aeH
+	mov	ecx, 173				; 000000adH
 
 ; 1903 : }
 
@@ -6955,10 +6955,10 @@ $LN52@plus_op:
 	cmp	eax, 3
 	je	SHORT $LN55@plus_op
 	cmp	DWORD PTR [rdi+60], 3
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	jne	SHORT $LN61@plus_op
 $LN55@plus_op:
-	mov	ecx, 271				; 0000010fH
+	mov	ecx, 270				; 0000010eH
 $LN61@plus_op:
 	call	QWORD PTR fnEmitErr
 
@@ -7006,7 +7006,7 @@ wimask_op PROC
 
 ; 1729 :             return( fnEmitErr( OPERAND_MUST_BE_RECORD ) );
 
-	mov	ecx, 162				; 000000a2H
+	mov	ecx, 161				; 000000a1H
 
 ; 1768 : }
 
@@ -7208,7 +7208,7 @@ this_op	PROC
 
 ; 1683 :         return( fnEmitErr( INVALID_TYPE_EXPRESSION ) );
 
-	mov	ecx, 180				; 000000b4H
+	mov	ecx, 179				; 000000b3H
 
 ; 1717 :     return( NOT_ERROR );
 ; 1718 : }
@@ -7231,7 +7231,7 @@ $LN2@this_op:
 
 ; 1687 :         return( fnEmitErr( MUST_BE_IN_SEGMENT_BLOCK ) );
 
-	mov	ecx, 83					; 00000053H
+	mov	ecx, 82					; 00000052H
 
 ; 1717 :     return( NOT_ERROR );
 ; 1718 : }
@@ -7254,7 +7254,7 @@ $LN3@this_op:
 
 ; 1691 :         return( EmitErr( MUST_BE_IN_SEGMENT_BLOCK ) ); /* error displayed even in EQU, hence EmitErr()! */
 
-	mov	ecx, 83					; 00000053H
+	mov	ecx, 82					; 00000052H
 
 ; 1717 :     return( NOT_ERROR );
 ; 1718 : }
@@ -7398,7 +7398,7 @@ high32_op PROC
 ; 1662 :             return( ConstError( opnd1, opnd2 ) );
 
 $LN7@high32_op:
-	mov	ecx, 271				; 0000010fH
+	mov	ecx, 270				; 0000010eH
 	call	QWORD PTR fnEmitErr
 	or	eax, -1
 
@@ -7517,7 +7517,7 @@ low32_op PROC
 
 	test	BYTE PTR [rdx+76], 16
 	jne	SHORT $LN6@low32_op
-	mov	ecx, 271				; 0000010fH
+	mov	ecx, 270				; 0000010eH
 	call	QWORD PTR fnEmitErr
 	or	esi, -1
 $LN6@low32_op:
@@ -7932,7 +7932,7 @@ $LN5@offset_op:
 	call	_strupr
 	mov	r8, QWORD PTR name$[rsp]
 	mov	rdx, rax
-	mov	ecx, 229				; 000000e5H
+	mov	ecx, 228				; 000000e4H
 	call	QWORD PTR fnEmitErr
 $LN13@offset_op:
 	or	eax, -1
@@ -8074,7 +8074,7 @@ $LN3@seg_op:
 
 ; 1511 :         return( fnEmitErr( OPERAND_MUST_BE_RELOCATABLE ) );
 
-	mov	ecx, 189				; 000000bdH
+	mov	ecx, 188				; 000000bcH
 	rex_jmp	QWORD PTR fnEmitErr
 seg_op	ENDP
 _TEXT	ENDS
@@ -8132,7 +8132,7 @@ $LN3@short_op:
 ; 1498 :          opnd2->mem_type != MT_FAR ) ) {
 ; 1499 :         return( fnEmitErr( EXPRESSION_MUST_BE_A_CODE_ADDRESS ) );
 
-	mov	ecx, 234				; 000000eaH
+	mov	ecx, 233				; 000000e9H
 	rex_jmp	QWORD PTR fnEmitErr
 short_op ENDP
 _TEXT	ENDS
@@ -9244,7 +9244,7 @@ $LN15@sizlen_op:
 ; 1120 :         else {
 ; 1121 :             return( fnEmitErr( EXPECTED_DATA_LABEL ) );
 
-	mov	ecx, 233				; 000000e9H
+	mov	ecx, 232				; 000000e8H
 
 ; 1204 : }
 
@@ -9583,7 +9583,7 @@ invalid_operand PROC					; COMDAT
 	call	_strupr
 	mov	rdx, rax
 	mov	r8, rbx
-	mov	ecx, 229				; 000000e5H
+	mov	ecx, 228				; 000000e4H
 	call	QWORD PTR fnEmitErr
 $LN4@invalid_op:
 
@@ -9783,13 +9783,13 @@ $LN2@ConstError:
 ; 1023 :     else
 ; 1024 :         fnEmitErr( CONSTANT_EXPECTED );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	jne	SHORT $LN7@ConstError
 $LN5@ConstError:
 
 ; 1022 :         fnEmitErr( REAL_OR_BCD_NUMBER_NOT_ALLOWED );
 
-	mov	ecx, 271				; 0000010fH
+	mov	ecx, 270				; 0000010eH
 $LN7@ConstError:
 	call	QWORD PTR fnEmitErr
 
@@ -9827,7 +9827,7 @@ MakeConst2 PROC						; COMDAT
 ; 1001 :         return( fnEmitErr( INVALID_USE_OF_EXTERNAL_SYMBOL, opnd1->sym->name ) );
 
 	mov	rdx, QWORD PTR [rdx+8]
-	mov	ecx, 194				; 000000c2H
+	mov	ecx, 193				; 000000c1H
 	rex_jmp	QWORD PTR fnEmitErr
 $LN2@MakeConst2:
 
@@ -9852,7 +9852,7 @@ $LN5@MakeConst2:
 ; 1006 :                opnd2->sym->state == SYM_EXTERNAL ) {
 ; 1007 :         return( fnEmitErr( OPERANDS_MUST_BE_IN_SAME_SEGMENT ) );
 
-	mov	ecx, 193				; 000000c1H
+	mov	ecx, 192				; 000000c0H
 	rex_jmp	QWORD PTR fnEmitErr
 $LN4@MakeConst2:
 
@@ -10116,7 +10116,7 @@ $LN5@index_conn:
 ; 915  :         } else {
 ; 916  :             return( fnEmitErr( MULTIPLE_INDEX_REGISTERS_NOT_ALLOWED ) );
 
-	mov	ecx, 35					; 00000023H
+	mov	ecx, 34					; 00000022H
 	rex_jmp	QWORD PTR fnEmitErr
 index_connect ENDP
 _TEXT	ENDS
@@ -10288,7 +10288,7 @@ $LN19@get_operan:
 
 	cmp	BYTE PTR evex, 0
 	jne	SHORT $LN23@get_operan
-	mov	ecx, 23
+	mov	ecx, 277				; 00000115H
 	call	EmitError
 $LN23@get_operan:
 
@@ -10336,7 +10336,7 @@ $LN21@get_operan:
 
 	cmp	BYTE PTR evex, 0
 	jne	SHORT $LN26@get_operan
-	mov	ecx, 23
+	mov	ecx, 277				; 00000115H
 	call	EmitError
 $LN26@get_operan:
 
@@ -10384,7 +10384,7 @@ $LN24@get_operan:
 
 	cmp	BYTE PTR evex, 0
 	jne	SHORT $LN29@get_operan
-	mov	ecx, 23
+	mov	ecx, 277				; 00000115H
 	call	EmitError
 $LN29@get_operan:
 
@@ -10432,7 +10432,7 @@ $LN27@get_operan:
 
 	cmp	BYTE PTR evex, 0
 	jne	SHORT $LN32@get_operan
-	mov	ecx, 23
+	mov	ecx, 277				; 00000115H
 	call	EmitError
 $LN32@get_operan:
 
@@ -10480,7 +10480,7 @@ $LN30@get_operan:
 
 	cmp	BYTE PTR evex, 0
 	jne	SHORT $LN35@get_operan
-	mov	ecx, 23
+	mov	ecx, 277				; 00000115H
 	call	EmitError
 $LN35@get_operan:
 
@@ -10533,7 +10533,7 @@ $LN39@get_operan:
 ; 448  : 				(*tokenarray[i].string_ptr == '"' || *tokenarray[i].string_ptr == '\''))
 ; 449  : 				fnEmitErr(MISSING_QUOTATION_MARK_IN_STRING);
 
-	mov	ecx, 167				; 000000a7H
+	mov	ecx, 166				; 000000a6H
 	call	QWORD PTR fnEmitErr
 	jmp	$LN131@get_operan
 $LN37@get_operan:
@@ -10541,7 +10541,7 @@ $LN37@get_operan:
 ; 450  : 			else
 ; 451  : 				fnEmitErr(MISSING_QUOTATION_MARK_IN_STRING, tokenarray[i].tokpos);
 
-	mov	ecx, 167				; 000000a7H
+	mov	ecx, 166				; 000000a6H
 
 ; 452  : 			return(ERROR);
 
@@ -10647,7 +10647,7 @@ $LN42@get_operan:
 ; 479  :                 opnd->kind = EXPR_ERROR;
 ; 480  :                 fnEmitErr( INSTRUCTION_OR_REGISTER_NOT_ACCEPTED_IN_CURRENT_CPU_MODE );
 
-	mov	ecx, 31
+	mov	ecx, 30
 	test	r15b, 8
 	je	SHORT $LN44@get_operan
 	mov	DWORD PTR [rdi+60], -1
@@ -10719,7 +10719,7 @@ $LN52@get_operan:
 ; 500  :                    ( Options.strict_masm_compat && tokenarray[i+2].token == T_REG ) ) {
 ; 501  :                     return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
-	mov	ecx, 171				; 000000abH
+	mov	ecx, 170				; 000000aaH
 $LN44@get_operan:
 	call	QWORD PTR fnEmitErr
 	jmp	$LN1@get_operan
@@ -11119,7 +11119,7 @@ $LN79@get_operan:
 ; 615  :                 fnEmitErr( INVALID_SYMBOL_TYPE_IN_EXPRESSION, sym->name );
 
 	mov	rdx, QWORD PTR [rbx+8]
-	mov	ecx, 244				; 000000f4H
+	mov	ecx, 243				; 000000f3H
 
 ; 616  :                 return( ERROR );
 
@@ -11190,7 +11190,7 @@ $LN174@get_operan:
 ; 640  :                             fnEmitErr( MEMBER_NOT_DEFINED, opnd->type->name, tmp );
 
 	mov	r8, rbp
-	mov	ecx, 64					; 00000040H
+	mov	ecx, 63					; 0000003fH
 	call	QWORD PTR fnEmitErr
 	jmp	$LN131@get_operan
 $LN87@get_operan:
@@ -11703,7 +11703,7 @@ $LN92@get_operan:
 	cmove	rbp, rax
 $LN89@get_operan:
 	mov	rdx, rbp
-	mov	ecx, 103				; 00000067H
+	mov	ecx, 102				; 00000066H
 
 ; 664  :                 }
 ; 665  :                 return( ERROR );
@@ -11794,7 +11794,7 @@ $LN115@get_operan:
 
 ; 821  :                     fnEmitErr( INSTRUCTION_OR_REGISTER_NOT_ACCEPTED_IN_CURRENT_CPU_MODE );
 
-	mov	ecx, 31
+	mov	ecx, 30
 	call	QWORD PTR fnEmitErr
 
 ; 822  :                     return( ERROR );
@@ -11848,7 +11848,7 @@ $LN116@get_operan:
 ; 833  :             return( fnEmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rsi+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	QWORD PTR fnEmitErr
 	jmp	SHORT $LN1@get_operan
 $LN121@get_operan:
@@ -11935,7 +11935,7 @@ $LN123@get_operan:
 ; 855  :             fnEmitErr( NONDIGIT_IN_NUMBER, tokenarray[i].string_ptr );
 
 	mov	rdx, QWORD PTR [rsi+8]
-	mov	ecx, 218				; 000000daH
+	mov	ecx, 217				; 000000d9H
 	jmp	SHORT $LN172@get_operan
 $LN126@get_operan:
 
@@ -11946,7 +11946,7 @@ $LN126@get_operan:
 
 ; 857  :             fnEmitErr( SYNTAX_ERROR_UNEXPECTED_COLON );
 
-	mov	ecx, 48					; 00000030H
+	mov	ecx, 47					; 0000002fH
 	call	QWORD PTR fnEmitErr
 	jmp	SHORT $LN131@get_operan
 $LN128@get_operan:
@@ -11959,14 +11959,14 @@ $LN128@get_operan:
 
 ; 859  :             fnEmitErr( EXPRESSION_EXPECTED, tokenarray[i].tokpos ); /* better error msg */
 
-	mov	ecx, 65					; 00000041H
+	mov	ecx, 64					; 00000040H
 	test	eax, eax
 	jne	SHORT $LN169@get_operan
 
 ; 860  :         else
 ; 861  :             fnEmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos );
 
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 $LN169@get_operan:
 	mov	rdx, QWORD PTR [rsi+24]
 $LN172@get_operan:
@@ -12431,7 +12431,7 @@ $LN2@get_preced:
 ; 264  :     fnEmitErr( SYNTAX_ERROR_EX, item->string_ptr );
 
 	mov	rdx, QWORD PTR [rcx+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	QWORD PTR fnEmitErr
 
 ; 265  :     return( ERROR );
@@ -12689,7 +12689,7 @@ $LN7:
 ; 3494 :         EmitErr( CONSTANT_VALUE_TOO_LARGE_EX, opnd->hlvalue, opnd->value64 );
 
 	mov	r8, QWORD PTR [rcx]
-	mov	ecx, 273				; 00000111H
+	mov	ecx, 272				; 00000110H
 	call	EmitErr
 
 ; 3497 :     return( ERROR );
@@ -12706,7 +12706,7 @@ $LN2@EmitConstE:
 ; 3496 :         EmitErr( CONSTANT_VALUE_TOO_LARGE, opnd->value64 );
 
 	mov	rdx, QWORD PTR [rcx]
-	mov	ecx, 236				; 000000ecH
+	mov	ecx, 235				; 000000ebH
 	call	EmitErr
 
 ; 3497 :     return( ERROR );

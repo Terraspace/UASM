@@ -207,7 +207,7 @@ writeUnexp PROC
 
 	mov	r8d, 458				; 000001caH
 	lea	rdx, OFFSET FLAT:$SG7855
-	mov	ecx, 111				; 0000006fH
+	mov	ecx, 110				; 0000006eH
 	call	Fatal
 
 ; 459  :     /* this is never reached, since Fatal() won't return */
@@ -286,7 +286,7 @@ $LN10@writeLinsy:
 $LN15@writeLinsy:
 	mov	r8d, 168				; 000000a8H
 	lea	rdx, OFFSET FLAT:$SG7748
-	lea	ecx, QWORD PTR [r8-57]
+	lea	ecx, QWORD PTR [r8-58]
 	call	Fatal
 $LN16@writeLinsy:
 
@@ -441,7 +441,7 @@ $LN28@writeComda:
 $LN33@writeComda:
 	mov	r8d, 168				; 000000a8H
 	lea	rdx, OFFSET FLAT:$SG7748
-	lea	ecx, QWORD PTR [r8-57]
+	lea	ecx, QWORD PTR [r8-58]
 	call	Fatal
 $LN34@writeComda:
 
@@ -509,7 +509,7 @@ writeLinnum PROC
 $LN6@writeLinnu:
 	mov	r8d, 168				; 000000a8H
 	lea	rdx, OFFSET FLAT:$SG7748
-	lea	ecx, QWORD PTR [r8-57]
+	lea	ecx, QWORD PTR [r8-58]
 	call	Fatal
 $LN7@writeLinnu:
 
@@ -576,7 +576,7 @@ writePubdef PROC
 $LN6@writePubde:
 	mov	r8d, 168				; 000000a8H
 	lea	rdx, OFFSET FLAT:$SG7748
-	lea	ecx, QWORD PTR [r8-57]
+	lea	ecx, QWORD PTR [r8-58]
 	call	Fatal
 $LN7@writePubde:
 
@@ -746,7 +746,7 @@ $LN6@writeModen:
 $LN12@writeModen:
 	mov	r8d, 168				; 000000a8H
 	lea	rdx, OFFSET FLAT:$SG7748
-	lea	ecx, QWORD PTR [r8-57]
+	lea	ecx, QWORD PTR [r8-58]
 	call	Fatal
 
 ; 360  :     } else
@@ -811,7 +811,7 @@ writeTheadr PROC
 $LN8@writeThead:
 	mov	r8d, 168				; 000000a8H
 	lea	rdx, OFFSET FLAT:$SG7748
-	lea	ecx, QWORD PTR [r8-57]
+	lea	ecx, QWORD PTR [r8-58]
 	call	Fatal
 $LN9@writeThead:
 	mov	rcx, rbx
@@ -909,7 +909,7 @@ $LN16@writeLedat:
 $LN19@writeLedat:
 	mov	r8d, 168				; 000000a8H
 	lea	rdx, OFFSET FLAT:$SG7748
-	lea	ecx, QWORD PTR [r8-57]
+	lea	ecx, QWORD PTR [r8-58]
 	call	Fatal
 $LN20@writeLedat:
 
@@ -1194,7 +1194,7 @@ writeComent PROC
 $LN10@writeComen:
 	mov	r8d, 168				; 000000a8H
 	lea	rdx, OFFSET FLAT:$SG7748
-	lea	ecx, QWORD PTR [r8-57]
+	lea	ecx, QWORD PTR [r8-58]
 	call	Fatal
 $LN11@writeComen:
 
@@ -1250,7 +1250,7 @@ writeMisc32 PROC
 $LN6@writeMisc3:
 	mov	r8d, 168				; 000000a8H
 	lea	rdx, OFFSET FLAT:$SG7748
-	lea	ecx, QWORD PTR [r8-57]
+	lea	ecx, QWORD PTR [r8-58]
 	call	Fatal
 $LN7@writeMisc3:
 
@@ -1305,7 +1305,7 @@ writeMisc PROC
 $LN6@writeMisc:
 	mov	r8d, 168				; 000000a8H
 	lea	rdx, OFFSET FLAT:$SG7748
-	lea	ecx, QWORD PTR [r8-57]
+	lea	ecx, QWORD PTR [r8-58]
 	call	Fatal
 $LN7@writeMisc:
 
@@ -1380,7 +1380,7 @@ $LN2@PutMem:
 
 	mov	r8d, 168				; 000000a8H
 	lea	rdx, OFFSET FLAT:$SG7748
-	lea	ecx, QWORD PTR [r8-57]
+	lea	ecx, QWORD PTR [r8-58]
 
 ; 169  :     }
 ; 170  : }

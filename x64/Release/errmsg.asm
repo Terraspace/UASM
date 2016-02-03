@@ -452,7 +452,7 @@ $LN8@PrtMsg:
 	call	ErrnoStr
 	mov	r8, rax
 	mov	rdx, rbx
-	mov	ecx, 107				; 0000006bH
+	mov	ecx, 106				; 0000006aH
 	call	EmitErr
 	mov	rax, QWORD PTR ModuleInfo+120
 $LN3@PrtMsg:
@@ -734,7 +734,7 @@ $LN4:
 
 	call	_errno
 	mov	rdx, QWORD PTR ModuleInfo+136
-	mov	ecx, 109				; 0000006dH
+	mov	ecx, 108				; 0000006cH
 	mov	r8d, DWORD PTR [rax]
 	call	Fatal
 	int	3
@@ -1090,7 +1090,7 @@ $LN50@EmitErr:
 
 ; 263  :         Fatal( TOO_MANY_ERRORS );
 
-	mov	ecx, 114				; 00000072H
+	mov	ecx, 113				; 00000071H
 	call	Fatal
 	int	3
 $LN49@EmitErr:

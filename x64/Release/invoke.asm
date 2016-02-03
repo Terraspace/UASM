@@ -883,7 +883,7 @@ $LN98@InvokeDire:
 
 ; 1535 :             return( EmitErr( INVOKE_REQUIRES_PROTOTYPE ) );
 
-	mov	ecx, 160				; 000000a0H
+	mov	ecx, 159				; 0000009fH
 	call	EmitErr
 
 ; 1676 : }
@@ -933,7 +933,7 @@ $LN43@InvokeDire:
 ; 1578 :             DebugMsg(("InvokeDir: superfluous argument, i=%u\n", i));
 ; 1579 :             return( EmitErr( TOO_MANY_ARGUMENTS_TO_INVOKE ) );
 
-	mov	ecx, 178				; 000000b2H
+	mov	ecx, 177				; 000000b1H
 	call	EmitErr
 	jmp	$LN127@InvokeDire
 $LN44@InvokeDire:
@@ -1060,7 +1060,7 @@ $LL18@InvokeDire:
 ; 1615 :                 EmitErr( TOO_FEW_ARGUMENTS_TO_INVOKE, sym->name );
 
 	mov	rdx, QWORD PTR [rdi+8]
-	mov	ecx, 147				; 00000093H
+	mov	ecx, 146				; 00000092H
 	call	EmitErr
 $LN16@InvokeDire:
 
@@ -1111,7 +1111,7 @@ $LL15@InvokeDire:
 ; 1608 :                 EmitErr( TOO_FEW_ARGUMENTS_TO_INVOKE, sym->name );
 
 	mov	rdx, QWORD PTR [rdi+8]
-	mov	ecx, 147				; 00000093H
+	mov	ecx, 146				; 00000092H
 	call	EmitErr
 $LN13@InvokeDire:
 
@@ -1145,7 +1145,7 @@ $LN119@InvokeDire:
 ; 1624 :         opnd.base_reg->bytval == 0 )
 ; 1625 :         EmitWarn( 2, REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
 
-	mov	edx, 166				; 000000a6H
+	mov	edx, 165				; 000000a5H
 	mov	ecx, 2
 	call	EmitWarn
 $LN53@InvokeDire:
@@ -2323,7 +2323,7 @@ $LN66@PushInvoke:
 ; 917  :                         EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam+1 );
 
 	mov	edx, DWORD PTR reqParam$[rbp-256]
-	mov	ecx, 146				; 00000092H
+	mov	ecx, 145				; 00000091H
 	inc	edx
 	call	EmitErr
 	mov	edx, DWORD PTR opnd$[rbp-196]
@@ -2495,7 +2495,7 @@ $LN89@PushInvoke:
 ; 985  :                  )))) {
 ; 986  :                 EmitErr( REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
 
-	mov	ecx, 166				; 000000a6H
+	mov	ecx, 165				; 000000a5H
 	call	EmitErr
 
 ; 987  :                 *r0flags = 0;
@@ -2684,7 +2684,7 @@ $LN299@PushInvoke:
 ; 1042 :                     EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam+1 );
 
 	mov	edx, DWORD PTR reqParam$[rbp-256]
-	mov	ecx, 146				; 00000092H
+	mov	ecx, 145				; 00000091H
 	inc	edx
 	call	EmitErr
 	mov	rdx, QWORD PTR curr$[rbp-256]
@@ -3269,7 +3269,7 @@ $LN137@PushInvoke:
 ; 1173 :                     return( EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam+1 ) );
 
 	mov	edx, DWORD PTR reqParam$[rbp-256]
-	mov	ecx, 146				; 00000092H
+	mov	ecx, 145				; 00000091H
 	inc	edx
 	call	EmitErr
 	jmp	$LN291@PushInvoke
@@ -3290,7 +3290,7 @@ $LN141@PushInvoke:
 
 ; 1177 :                     EmitErr( REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
 
-	mov	ecx, 166				; 000000a6H
+	mov	ecx, 165				; 000000a5H
 	call	EmitErr
 
 ; 1178 :                     *r0flags &= ~R0_USED;
@@ -3311,7 +3311,7 @@ $LN143@PushInvoke:
 
 ; 1180 :                     EmitErr( REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
 
-	mov	ecx, 166				; 000000a6H
+	mov	ecx, 165				; 000000a5H
 	call	EmitErr
 
 ; 1181 :                     *r0flags &= ~R2_USED;
@@ -3342,7 +3342,7 @@ $LN145@PushInvoke:
 ; 1191 :                         EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam+1 );
 
 	mov	edx, DWORD PTR reqParam$[rbp-256]
-	mov	ecx, 146				; 00000092H
+	mov	ecx, 145				; 00000091H
 	inc	edx
 	call	EmitErr
 $LN146@PushInvoke:
@@ -3612,7 +3612,7 @@ $LN175@PushInvoke:
 
 ; 1256 :                                     EmitErr( REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
 
-	mov	ecx, 166				; 000000a6H
+	mov	ecx, 165				; 000000a5H
 	call	EmitErr
 $LN174@PushInvoke:
 
@@ -3861,7 +3861,7 @@ $LN200@PushInvoke:
 	cmp	r14d, esi
 	jge	SHORT $LN201@PushInvoke
 	lea	edx, DWORD PTR [rdi+1]
-	mov	ecx, 146				; 00000092H
+	mov	ecx, 145				; 00000091H
 	call	EmitErr
 	mov	edx, DWORD PTR opnd$[rbp-196]
 	jmp	SHORT $LN201@PushInvoke
@@ -3939,7 +3939,7 @@ $LN204@PushInvoke:
 ; 1370 :                         EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam+1 );
 
 	lea	edx, DWORD PTR [rdi+1]
-	mov	ecx, 146				; 00000092H
+	mov	ecx, 145				; 00000091H
 	call	EmitErr
 	jmp	$LN212@PushInvoke
 $LN215@PushInvoke:
@@ -4121,7 +4121,7 @@ $LN234@PushInvoke:
 ; 1417 :                             EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam+1 );
 
 	lea	edx, DWORD PTR [rdi+1]
-	mov	ecx, 146				; 00000092H
+	mov	ecx, 145				; 00000091H
 	call	EmitErr
 	jmp	$LN237@PushInvoke
 $LN224@PushInvoke:
@@ -4251,7 +4251,7 @@ $LN81@PushInvoke:
 	mov	edx, DWORD PTR reqParam$[rbp-256]
 	inc	edx
 $LN293@PushInvoke:
-	mov	ecx, 146				; 00000092H
+	mov	ecx, 145				; 00000091H
 	call	EmitErr
 $LN294@PushInvoke:
 
@@ -4883,7 +4883,7 @@ $LN137@ms64_param:
 
 ; 297  :         EmitErr( REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
 
-	mov	ecx, 166				; 000000a6H
+	mov	ecx, 165				; 000000a5H
 	call	EmitErr
 	lea	r10, OFFSET FLAT:__ImageBase
 
@@ -5014,7 +5014,7 @@ $LN61@ms64_param:
 ; 360  :                         EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, index+1 );
 
 	lea	edx, DWORD PTR [rbp+1]
-	mov	ecx, 146				; 00000092H
+	mov	ecx, 145				; 00000091H
 	call	EmitErr
 
 ; 361  :                         psize = size;
@@ -5124,7 +5124,7 @@ $LN73@ms64_param:
 ; 389  :                 EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, index+1 );
 
 	lea	edx, DWORD PTR [rbp+1]
-	mov	ecx, 146				; 00000092H
+	mov	ecx, 145				; 00000091H
 	call	EmitErr
 $LN72@ms64_param:
 
@@ -5263,7 +5263,7 @@ $LN44@ms64_param:
 ; 331  :                     EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, index+1 );
 
 	lea	edx, DWORD PTR [rbp+1]
-	mov	ecx, 146				; 00000092H
+	mov	ecx, 145				; 00000091H
 	call	EmitErr
 $LN47@ms64_param:
 
@@ -5340,7 +5340,7 @@ $LN38@ms64_param:
 ; 309  :                     EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, index+1 );
 
 	lea	edx, DWORD PTR [rbp+1]
-	lea	ecx, QWORD PTR [rbx+31]
+	lea	ecx, QWORD PTR [rbx+30]
 	call	EmitErr
 $LN40@ms64_param:
 
@@ -5467,7 +5467,7 @@ $LN109@ms64_param:
 ; 462  :             EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, index+1 );
 
 	lea	edx, DWORD PTR [rbp+1]
-	mov	ecx, 146				; 00000092H
+	mov	ecx, 145				; 00000091H
 	call	EmitErr
 	jmp	SHORT $LN108@ms64_param
 $LN103@ms64_param:
@@ -5575,7 +5575,7 @@ $LN8@ms64_param:
 
 ; 483  :                         EmitErr( REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
 
-	mov	ecx, 166				; 000000a6H
+	mov	ecx, 165				; 000000a5H
 	call	EmitErr
 $LN118@ms64_param:
 
@@ -5729,7 +5729,7 @@ $LN97@ms64_param:
 ; 440  :                 EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, index+1 );
 
 	lea	edx, DWORD PTR [rbp+1]
-	mov	ecx, 146				; 00000092H
+	mov	ecx, 145				; 00000091H
 	call	EmitErr
 
 ; 441  :             *regs_used |= ( 1 << ( index + RPAR_START ) );

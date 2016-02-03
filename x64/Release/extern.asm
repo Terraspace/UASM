@@ -301,7 +301,7 @@ $LN14@PublicDire:
 ; 930  :                 EmitErr( SYMBOL_NOT_DEFINED, token );
 
 	mov	rdx, rsi
-	mov	ecx, 103				; 00000067H
+	mov	ecx, 102				; 00000066H
 	call	EmitErr
 $LN13@PublicDire:
 
@@ -326,7 +326,7 @@ $LN13@PublicDire:
 ; 957  :             default:
 ; 958  :                 EmitErr( CANNOT_DEFINE_AS_PUBLIC_OR_EXTERNAL, sym->name );
 
-	mov	ecx, 175				; 000000afH
+	mov	ecx, 174				; 000000aeH
 
 ; 959  :                 skipitem = TRUE;
 
@@ -345,7 +345,7 @@ $LN19@PublicDire:
 
 ; 947  :                     EmitErr( CANNOT_DEFINE_AS_PUBLIC_OR_EXTERNAL, sym->name );
 
-	mov	ecx, 175				; 000000afH
+	mov	ecx, 174				; 000000aeH
 
 ; 948  :                     skipitem = TRUE;
 
@@ -361,7 +361,7 @@ $LN20@PublicDire:
 ; 951  :                     /* for EXTERNs, emit a different error msg */
 ; 952  :                     EmitErr( SYMBOL_REDEFINITION, sym->name );
 
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 
 ; 953  :                     skipitem = TRUE;
 ; 954  :                     //return( ERROR );
@@ -381,7 +381,7 @@ $LN17@PublicDire:
 
 ; 940  :                     EmitErr( CANNOT_DECLARE_SCOPED_CODE_LABEL_AS_PUBLIC, sym->name );
 
-	mov	ecx, 181				; 000000b5H
+	mov	ecx, 180				; 000000b4H
 $LN38@PublicDire:
 	mov	rdx, QWORD PTR [rbx+8]
 	call	EmitErr
@@ -506,7 +506,7 @@ $LN34@PublicDire:
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rbp+8]
 $LN39@PublicDire:
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	mov	rsi, QWORD PTR [rsp+32]
 	mov	rbx, QWORD PTR [rsp+80]
@@ -618,7 +618,7 @@ $LN11@CommDirect:
 
 ; 739  :                     EmitError( FAR_NOT_ALLOWED_IN_FLAT_MODEL_COMM_VARIABLES );
 
-	mov	ecx, 177				; 000000b1H
+	mov	ecx, 176				; 000000b0H
 	call	EmitError
 
 ; 740  :                 } else
@@ -729,7 +729,7 @@ $LN64@CommDirect:
 
 ; 775  :             EmitError( CONSTANT_EXPECTED );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	jmp	SHORT $LN65@CommDirect
 $LN19@CommDirect:
 
@@ -743,7 +743,7 @@ $LN19@CommDirect:
 ; 777  :             EmitErr( INVALID_TYPE_FOR_DATA_DECLARATION, token );
 
 	mov	rdx, r14
-	mov	ecx, 161				; 000000a1H
+	mov	ecx, 160				; 000000a0H
 	call	EmitErr
 	jmp	SHORT $LN25@CommDirect
 $LN21@CommDirect:
@@ -767,7 +767,7 @@ $LN23@CommDirect:
 
 ; 781  :             EmitError( POSITIVE_VALUE_EXPECTED );
 
-	mov	ecx, 176				; 000000b0H
+	mov	ecx, 175				; 000000afH
 $LN65@CommDirect:
 	call	EmitError
 $LN25@CommDirect:
@@ -815,7 +815,7 @@ $LN25@CommDirect:
 
 ; 798  :                 EmitError( CONSTANT_EXPECTED );
 
-	lea	ecx, QWORD PTR [rbx+65]
+	lea	ecx, QWORD PTR [rbx+64]
 	jmp	SHORT $LN66@CommDirect
 $LN28@CommDirect:
 	mov	eax, DWORD PTR opndx$[rbp-101]
@@ -838,7 +838,7 @@ $LN30@CommDirect:
 
 ; 802  :                 EmitError( POSITIVE_VALUE_EXPECTED );
 
-	mov	ecx, 176				; 000000b0H
+	mov	ecx, 175				; 000000afH
 $LN66@CommDirect:
 	call	EmitError
 $LN32@CommDirect:
@@ -896,7 +896,7 @@ $LN41@CommDirect:
 
 	mov	r8, QWORD PTR [rcx+8]
 	lea	rdx, OFFSET FLAT:szCOMM
-	mov	ecx, 140				; 0000008cH
+	mov	ecx, 139				; 0000008bH
 	call	EmitErr
 	jmp	SHORT $LN1@CommDirect
 $LN35@CommDirect:
@@ -974,7 +974,7 @@ $LN39@CommDirect:
 ; 813  :             return( EmitErr( SYMBOL_REDEFINITION, sym->name ) );
 
 	mov	rdx, QWORD PTR [rcx+8]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 	jmp	SHORT $LN1@CommDirect
 $LN53@CommDirect:
@@ -982,7 +982,7 @@ $LN53@CommDirect:
 ; 824  :             return( EmitErr( EXPECTING_COMMA, tokenarray[i].tokpos ) );
 
 	mov	rdx, rcx
-	mov	ecx, 40					; 00000028H
+	mov	ecx, 39					; 00000027H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rdi+24]
 	call	EmitErr
@@ -998,7 +998,7 @@ $LN47@CommDirect:
 ; 751  :             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	movsxd	rdx, eax
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rdi+8]
 	call	EmitErr
@@ -1117,7 +1117,7 @@ $LN3@MakeComm:
 ; 692  :             EmitWarn( 2, COMM_VAR_EXCEEDS_64K, sym->name );
 
 	mov	r8, QWORD PTR [rbx+8]
-	mov	edx, 268				; 0000010cH
+	mov	edx, 267				; 0000010bH
 	mov	ecx, 2
 	call	EmitWarn
 $LN6@MakeComm:
@@ -1492,7 +1492,7 @@ $LN29@ExternDire:
 ; 633  :                 return( EmitErr( SYMBOL_TYPE_CONFLICT, token ) );
 
 	mov	rdx, r13
-	mov	ecx, 137				; 00000089H
+	mov	ecx, 136				; 00000088H
 	jmp	$LN69@ExternDire
 $LN21@ExternDire:
 
@@ -1741,7 +1741,7 @@ $LN59@ExternDire:
 ; 537  :                 return( EmitErr( EXPECTED, ")" ) );
 
 	lea	rdx, OFFSET FLAT:$SG10975
-	mov	ecx, 231				; 000000e7H
+	mov	ecx, 230				; 000000e6H
 	jmp	SHORT $LN69@ExternDire
 $LN58@ExternDire:
 
@@ -1796,7 +1796,7 @@ $LN15@ExternDire:
 ; 572  :                 return( EmitErr( SYMBOL_REDEFINITION, sym->name ) );
 
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	jmp	SHORT $LN69@ExternDire
 $LN63@ExternDire:
 
@@ -1804,13 +1804,13 @@ $LN63@ExternDire:
 ; 612  :                 return( EmitErr( SYMBOL_REDEFINITION, token ) );
 
 	mov	rdx, r13
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	jmp	SHORT $LN69@ExternDire
 $LN60@ExternDire:
 
 ; 544  :             return( EmitError( COLON_EXPECTED ) );
 
-	mov	ecx, 85					; 00000055H
+	mov	ecx, 84					; 00000054H
 	call	EmitError
 	jmp	SHORT $LN1@ExternDire
 $LN56@ExternDire:
@@ -1820,7 +1820,7 @@ $LN56@ExternDire:
 	mov	rdx, rcx
 $LN70@ExternDire:
 	shl	rdx, 5
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	mov	rdx, QWORD PTR [rdx+r12+8]
 $LN69@ExternDire:
 	call	EmitErr
@@ -1885,7 +1885,7 @@ HandleAltname PROC					; COMDAT
 ; 434  :             return( EmitErr( SYMBOL_REDEFINITION, sym->name ) );
 
 	mov	rdx, QWORD PTR [rsi+8]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 
 ; 493  : }
 
@@ -1915,7 +1915,7 @@ $LN3@HandleAltn:
 ; 439  :                 EmitErr( SYMBOL_NOT_DEFINED, altname );
 
 	mov	rdx, rdi
-	mov	ecx, 103				; 00000067H
+	mov	ecx, 102				; 00000066H
 	call	EmitErr
 
 ; 479  : #if 0 /* v2.11: removed. Member nextext wasn't free to use */
@@ -1972,7 +1972,7 @@ $LN6@HandleAltn:
 ; 450  :                         EmitErr( MUST_BE_PUBLIC_OR_EXTERNAL, altname );
 
 	mov	rdx, rdi
-	mov	ecx, 269				; 0000010dH
+	mov	ecx, 268				; 0000010cH
 	call	EmitErr
 $LN11@HandleAltn:
 
@@ -1988,7 +1988,7 @@ $LN23@HandleAltn:
 ; 454  :                     EmitErr( SYMBOL_TYPE_CONFLICT, altname );
 
 	mov	rdx, rdi
-	mov	ecx, 137				; 00000089H
+	mov	ecx, 136				; 00000088H
 	call	EmitErr
 
 ; 479  : #if 0 /* v2.11: removed. Member nextext wasn't free to use */
@@ -2034,7 +2034,7 @@ $LN4@HandleAltn:
 ; 463  :                     return( EmitErr( SYMBOL_TYPE_CONFLICT, altname ) );
 
 	mov	rdx, rdi
-	mov	ecx, 137				; 00000089H
+	mov	ecx, 136				; 00000088H
 
 ; 493  : }
 
@@ -2157,7 +2157,7 @@ $LN2@ProtoDirec:
 ; 389  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	movsxd	rdx, ecx
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rax+8]
 
@@ -2472,7 +2472,7 @@ $LN71@ExterndefD:
 ; 332  :                     EmitWarn( 1, SYMBOL_TYPE_CONFLICT, sym->name );
 
 	mov	r8, QWORD PTR [rdi+8]
-	mov	edx, 137				; 00000089H
+	mov	edx, 136				; 00000088H
 	mov	ecx, 1
 	call	EmitWarn
 $LN37@ExterndefD:
@@ -2494,8 +2494,8 @@ $LN37@ExterndefD:
 ; 340  :                 EmitWarn( 3, LANGUAGE_ATTRIBUTE_CONFLICT, sym->name );
 
 	mov	r8, QWORD PTR [rdi+8]
-	mov	edx, 104				; 00000068H
-	lea	ecx, QWORD PTR [rdx-101]
+	mov	edx, 103				; 00000067H
+	lea	ecx, QWORD PTR [rdx-100]
 	call	EmitWarn
 	jmp	$LN38@ExterndefD
 $LN20@ExterndefD:
@@ -2817,7 +2817,7 @@ $LN41@ExterndefD:
 ; 365  :                 return( EmitErr( EXPECTING_COMMA, tokenarray[i].tokpos ) );
 
 	mov	rdx, rcx
-	mov	ecx, 40					; 00000028H
+	mov	ecx, 39					; 00000027H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+r14+24]
 	jmp	SHORT $LN72@ExterndefD
@@ -2825,7 +2825,7 @@ $LN57@ExterndefD:
 
 ; 215  :             return( EmitError( COLON_EXPECTED ) );
 
-	mov	ecx, 85					; 00000055H
+	mov	ecx, 84					; 00000054H
 	call	EmitError
 	jmp	SHORT $LN1@ExterndefD
 $LN55@ExterndefD:
@@ -2833,7 +2833,7 @@ $LN55@ExterndefD:
 ; 209  :             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	mov	rdx, rcx
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+r14+8]
 $LN72@ExterndefD:
@@ -2917,7 +2917,7 @@ $LN2@CreateProt:
 ; 145  :         EmitErr( SYMBOL_REDEFINITION, sym->name );
 
 	mov	rdx, QWORD PTR [rbx+8]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 $LN14@CreateProt:
 
@@ -2979,7 +2979,7 @@ $LN5@CreateProt:
 ; 157  :                 EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr );
 
 	mov	rdx, QWORD PTR [rcx+rsi+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 158  :                 return( NULL );

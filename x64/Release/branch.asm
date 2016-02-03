@@ -124,7 +124,7 @@ $LN167:
 ; 147  :         //EmitError( SYNTAX_ERROR ); /* v2.10: error msg changed */
 ; 148  :         return( EmitError( INVALID_INSTRUCTION_OPERANDS ) );
 
-	mov	ecx, 50					; 00000032H
+	mov	ecx, 49					; 00000031H
 
 ; 632  : }
 
@@ -193,7 +193,7 @@ $LN15@process_br:
 ; 162  :                 return( EmitErr( CANNOT_ACCESS_LABEL_THROUGH_SEGMENT_REGISTERS, opndx->sym ? opndx->sym->name : "" ) );
 
 	mov	rdx, QWORD PTR [rdx+8]
-	mov	ecx, 90					; 0000005aH
+	mov	ecx, 89					; 00000059H
 
 ; 632  : }
 
@@ -257,7 +257,7 @@ $LN19@process_br:
 ; 181  : #if NEEDLABEL
 ; 182  :         return( EmitError( JUMP_DESTINATION_MUST_SPECIFY_A_LABEL ) );
 
-	mov	ecx, 250				; 000000faH
+	mov	ecx, 249				; 000000f9H
 	call	EmitError
 	jmp	$LN153@process_br
 $LN20@process_br:
@@ -331,7 +331,7 @@ $LN21@process_br:
 ; 251  :         DebugMsg(("process_branch(%s): error, unexpected symbol state=%u\n", sym->name, sym->state ));
 ; 252  :         return( EmitErr( JUMP_DESTINATION_MUST_SPECIFY_A_LABEL ) );
 
-	mov	ecx, 250				; 000000faH
+	mov	ecx, 249				; 000000f9H
 	call	EmitErr
 	jmp	$LN156@process_br
 $LN136@process_br:
@@ -694,7 +694,7 @@ $LN64@process_br:
 ; 366  :                         /* v2.11: don't emit "out of range" if OP_I16 was forced by type coercion ( jmp near ptr xxx ) */
 ; 367  :                         return( EmitErr( CodeInfo->mem_type == MT_EMPTY ? JUMP_OUT_OF_RANGE : JUMP_DISTANCE_NOT_POSSIBLE, addr ) );
 
-	mov	ecx, 51					; 00000033H
+	mov	ecx, 50					; 00000032H
 	jmp	SHORT $LN165@process_br
 $LN50@process_br:
 
@@ -742,10 +742,10 @@ $LN53@process_br:
 
 ; 319  :                     return( EmitErr( CodeInfo->mem_type == MT_EMPTY ? JUMP_OUT_OF_RANGE : ONLY_SHORT_JUMP_DISTANCE_IS_ALLOWED, addr ) );
 
-	mov	ecx, 45					; 0000002dH
+	mov	ecx, 44					; 0000002cH
 $LN165@process_br:
 	cmp	edx, 192				; 000000c0H
-	mov	eax, 54					; 00000036H
+	mov	eax, 53					; 00000035H
 	mov	edx, ebp
 	cmove	ecx, eax
 	call	EmitErr
@@ -813,7 +813,7 @@ $LN33@process_br:
 ; 243  :                     DebugMsg(("process_branch: error, opndx.mem_type is MT_NEAR\n" ));
 ; 244  :                     return( EmitError( CANNOT_HAVE_IMPLICIT_FAR_JUMP_OR_CALL_TO_NEAR_LABEL ) );
 
-	mov	ecx, 170				; 000000aaH
+	mov	ecx, 169				; 000000a9H
 	call	EmitError
 	jmp	$LN156@process_br
 $LN35@process_br:
@@ -1106,7 +1106,7 @@ $LN83@process_br:
 
 ; 440  :                 return( EmitError( CANNOT_USE_SHORT_OR_NEAR ) );
 
-	mov	ecx, 53					; 00000035H
+	mov	ecx, 52					; 00000034H
 	call	EmitError
 	jmp	$LN156@process_br
 $LN78@process_br:
@@ -1298,7 +1298,7 @@ $LN115@process_br:
 ; 593  :             default: /* is another memtype possible at all? */
 ; 594  :                 return( EmitError( ONLY_SHORT_AND_NEAR_JUMP_DISTANCE_IS_ALLOWED ) );
 
-	mov	ecx, 76					; 0000004cH
+	mov	ecx, 75					; 0000004bH
 	call	EmitError
 	jmp	$LN156@process_br
 $LN109@process_br:
@@ -1424,7 +1424,7 @@ $LN125@process_br:
 ; 625  :             default:
 ; 626  :                 return( EmitError( ONLY_SHORT_JUMP_DISTANCE_IS_ALLOWED ) );
 
-	mov	ecx, 45					; 0000002dH
+	mov	ecx, 44					; 0000002cH
 	call	EmitError
 	jmp	$LN156@process_br
 $LN89@process_br:
@@ -1438,7 +1438,7 @@ $LN164@process_br:
 
 ; 476  :             return( EmitError( CANNOT_USE_SHORT_WITH_CALL ) );
 
-	mov	ecx, 44					; 0000002cH
+	mov	ecx, 43					; 0000002bH
 	call	EmitError
 	jmp	$LN156@process_br
 $LN90@process_br:
@@ -1645,7 +1645,7 @@ FarCallToNear PROC					; COMDAT
 
 ; 116  :         EmitWarn( 4, CALL_FAR_TO_NEAR );
 
-	mov	edx, 134				; 00000086H
+	mov	edx, 133				; 00000085H
 	mov	ecx, 4
 	call	EmitWarn
 $LN2@FarCallToN:
@@ -1695,8 +1695,8 @@ jumpExtend PROC						; COMDAT
 
 ; 81   :         EmitWarn( 4, EXTENDING_JUMP );
 
-	mov	edx, 128				; 00000080H
-	lea	ecx, QWORD PTR [rdx-124]
+	mov	edx, 127				; 0000007fH
+	lea	ecx, QWORD PTR [rdx-123]
 	call	EmitWarn
 $LN2@jumpExtend:
 

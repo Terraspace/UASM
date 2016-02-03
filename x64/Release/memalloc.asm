@@ -111,7 +111,7 @@ $LN7:
 ; 193  :             currfree = 0;
 ; 194  :             Fatal( OUT_OF_MEMORY );
 
-	lea	ecx, QWORD PTR [rax+106]
+	lea	ecx, QWORD PTR [rax+105]
 	mov	DWORD PTR currfree, eax
 	call	Fatal
 	mov	rcx, QWORD PTR pCurr
@@ -207,7 +207,7 @@ $LN6:
 
 ; 238  :         Fatal( OUT_OF_MEMORY );
 
-	lea	ecx, QWORD PTR [rax+106]
+	lea	ecx, QWORD PTR [rax+105]
 	call	Fatal
 
 ; 239  :     }

@@ -257,7 +257,7 @@ $LN55:
 
 ; 187  :         EmitError( MODEL_IS_NOT_DECLARED );
 
-	lea	ecx, QWORD PTR [rbx+97]
+	lea	ecx, QWORD PTR [rbx+96]
 	call	EmitError
 
 ; 188  :         return( ERROR );
@@ -331,7 +331,7 @@ $LN8@Simplified:
 
 ; 201  :             EmitError( CONSTANT_EXPECTED );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 
 ; 202  :             return( ERROR );
@@ -391,7 +391,7 @@ $LN11@Simplified:
 ; 218  :         EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr );
 
 	mov	rdx, QWORD PTR [rax+rsi+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 $LN53@Simplified:
 

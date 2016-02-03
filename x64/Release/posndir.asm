@@ -255,7 +255,7 @@ $LN36@AlignDirec:
 ; 212  :                 return( EmitErr( POWER_OF_2, align_value ) );
 
 	mov	edx, ecx
-	mov	ecx, 130				; 00000082H
+	mov	ecx, 129				; 00000081H
 	call	EmitErr
 
 ; 266  : }
@@ -308,7 +308,7 @@ $LN15@AlignDirec:
 ; 230  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rax+rbx+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 266  : }
@@ -363,7 +363,7 @@ $LN20@AlignDirec:
 
 ; 242  :         return( EmitError( MUST_BE_IN_SEGMENT_BLOCK ) );
 
-	mov	ecx, 83					; 00000053H
+	mov	ecx, 82					; 00000052H
 
 ; 220  :         } else {
 ; 221  :             return( EmitError( CONSTANT_EXPECTED ) );
@@ -401,7 +401,7 @@ $LN22@AlignDirec:
 	lea	r8d, QWORD PTR [r9+10]
 	call	myltoa
 	mov	r8, rax
-	mov	edx, 131				; 00000083H
+	mov	edx, 130				; 00000082H
 	mov	ecx, 1
 	call	EmitWarn
 $LN24@AlignDirec:
@@ -485,7 +485,7 @@ $LN12@AlignDirec:
 ; 220  :         } else {
 ; 221  :             return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 
 ; 266  : }
@@ -786,7 +786,7 @@ $LN2@OrgDirecti:
 ; 106  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rax+rbx+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 128  : }
@@ -828,7 +828,7 @@ $LN4@OrgDirecti:
 
 ; 113  :             return( EmitError( MUST_BE_IN_SEGMENT_BLOCK ) );
 
-	lea	ecx, QWORD PTR [r10+83]
+	lea	ecx, QWORD PTR [r10+82]
 
 ; 126  :     }
 ; 127  :     return( EmitError( ORG_NEEDS_A_CONSTANT_OR_LOCAL_OFFSET ) );
@@ -923,7 +923,7 @@ $LN14@OrgDirecti:
 ; 126  :     }
 ; 127  :     return( EmitError( ORG_NEEDS_A_CONSTANT_OR_LOCAL_OFFSET ) );
 
-	mov	ecx, 41					; 00000029H
+	mov	ecx, 40					; 00000028H
 	call	EmitError
 
 ; 128  : }

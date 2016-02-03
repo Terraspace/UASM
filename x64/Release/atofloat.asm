@@ -144,7 +144,7 @@ $LN22@atofloat:
 ; 44   :                 EmitErr( INVALID_DATA_INITIALIZER, inp );
 
 	mov	rdx, rbx
-	mov	ecx, 232				; 000000e8H
+	mov	ecx, 231				; 000000e7H
 	call	EmitErr
 
 ; 45   :                 break;
@@ -175,8 +175,8 @@ $LN7@atofloat:
 
 ; 94   :                 EmitWarn( 4, FP_INITIALIZER_IGNORED );
 
-	mov	edx, 75					; 0000004bH
-	lea	ecx, QWORD PTR [rdx-71]
+	mov	edx, 74					; 0000004aH
+	lea	ecx, QWORD PTR [rdx-70]
 	call	EmitWarn
 $LN19@atofloat:
 
@@ -226,7 +226,7 @@ $LN14@atofloat:
 ; 79   :                 DebugMsg(("atofloat(%s, 8): magnitude too large\n", inp ));
 ; 80   :                 EmitErr( MAGNITUDE_TOO_LARGE_FOR_SPECIFIED_SIZE );
 
-	mov	ecx, 77					; 0000004dH
+	mov	ecx, 76					; 0000004cH
 	call	EmitErr
 $LN15@atofloat:
 
@@ -287,7 +287,7 @@ $LN26@atofloat:
 ; 65   :                 DebugMsg(("atofloat(%s, 4): magnitude too large; FLT_MAX=%e FLT_MIN=%e\n", inp, FLT_MAX, FLT_MIN ));
 ; 66   :                 EmitErr( MAGNITUDE_TOO_LARGE_FOR_SPECIFIED_SIZE );
 
-	mov	ecx, 77					; 0000004dH
+	mov	ecx, 76					; 0000004cH
 	call	EmitErr
 $LN11@atofloat:
 

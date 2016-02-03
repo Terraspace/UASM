@@ -663,7 +663,7 @@ $LN16@AddLinnumD:
 ; 191  :             EmitWarn( 2, LINNUM_INFO_FOR_SEGMENT_WITHOUT_CLASS_CODE, CurrSeg->sym.name );
 
 	mov	r8, QWORD PTR ModuleInfo+432
-	mov	edx, 188				; 000000bcH
+	mov	edx, 187				; 000000bbH
 	mov	ecx, 2
 	mov	r8, QWORD PTR [r8+8]
 	call	EmitWarn

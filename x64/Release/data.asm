@@ -288,7 +288,7 @@ $LN68:
 ; 1149 :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	mov	rdx, r15
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rbp+8]
 
@@ -319,7 +319,7 @@ $LN4@data_dir:
 
 	shl	rcx, 5
 	mov	rdx, QWORD PTR [rcx+rdx+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 
 ; 1374 : }
 
@@ -365,7 +365,7 @@ $LN9@data_dir:
 ; 1163 :              ( type_sym->total_size == 0 || ((struct dsym *)type_sym)->e.structinfo->OrgInside == TRUE ) ) {
 ; 1164 :             return( EmitError( STRUCT_CANNOT_BE_INSTANCED ) );
 
-	mov	ecx, 216				; 000000d8H
+	mov	ecx, 215				; 000000d7H
 	call	EmitError
 	jmp	$LN62@data_dir
 $LN8@data_dir:
@@ -414,7 +414,7 @@ $LN10@data_dir:
 ; 1180 :                 return( EmitErr( INVALID_TYPE_FOR_DATA_DECLARATION, type_sym->name ) );
 
 	mov	rdx, QWORD PTR [rdi+8]
-	mov	ecx, 161				; 000000a1H
+	mov	ecx, 160				; 000000a0H
 	call	EmitErr
 	jmp	$LN62@data_dir
 $LN6@data_dir:
@@ -478,7 +478,7 @@ $LN17@data_dir:
 ; 1203 :             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rdx+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN62@data_dir
 $LN18@data_dir:
@@ -606,7 +606,7 @@ $LN20@data_dir:
 
 ; 1243 :             return( EmitError( MUST_BE_IN_SEGMENT_BLOCK ) );
 
-	mov	ecx, 83					; 00000053H
+	mov	ecx, 82					; 00000052H
 	call	EmitError
 	jmp	$LN64@data_dir
 $LN28@data_dir:
@@ -820,7 +820,7 @@ $LN44@data_dir:
 ; 1299 :                         return( EmitErr( SYMBOL_ALREADY_DEFINED, name ) );
 
 	mov	rdx, rsi
-	mov	ecx, 57					; 00000039H
+	mov	ecx, 56					; 00000038H
 $LN66@data_dir:
 
 ; 1308 : 
@@ -852,7 +852,7 @@ $LN41@data_dir:
 ; 1311 :                     return( EmitErr( SYMBOL_REDEFINITION, sym->name ) );
 
 	mov	rdx, QWORD PTR [rbx+8]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	jmp	SHORT $LN66@data_dir
 $LN34@data_dir:
 
@@ -983,7 +983,7 @@ $LN49@data_dir:
 ; 1358 :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	mov	rdx, QWORD PTR [rax+rbp+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	jmp	$LN66@data_dir
 $LN50@data_dir:
 
@@ -1035,7 +1035,7 @@ $LN16@data_dir:
 ; 1197 :             return( EmitErr( INVALID_TYPE_FOR_DATA_DECLARATION, tokenarray[i].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rdx+8]
-	mov	ecx, 161				; 000000a1H
+	mov	ecx, 160				; 000000a0H
 	call	EmitErr
 	jmp	$LN62@data_dir
 data_dir ENDP
@@ -1111,7 +1111,7 @@ $LN5@checktypes:
 ; 1117 :             return( EmitErr( SYMBOL_TYPE_CONFLICT, sym->name ) );
 
 	mov	rdx, QWORD PTR [rcx+8]
-	mov	ecx, 137				; 00000089H
+	mov	ecx, 136				; 00000088H
 	jmp	EmitErr
 $LN7@checktypes:
 
@@ -1178,7 +1178,7 @@ output_float PROC					; COMDAT
 
 ; 434  :             EmitErr( INITIALIZER_OUT_OF_RANGE );
 
-	mov	ecx, 56					; 00000038H
+	mov	ecx, 55					; 00000037H
 	call	EmitErr
 	jmp	SHORT $LN3@output_flo
 $LN2@output_flo:
@@ -1371,7 +1371,7 @@ InitStructuredVar PROC					; COMDAT
 ; 215  :             tokenarray[index].string_delim != '{' ) {
 ; 216  :             return( EmitError( MISSING_ANGLE_BRACKET_OR_BRACE_IN_LITERAL ) );
 
-	mov	ecx, 217				; 000000d9H
+	mov	ecx, 216				; 000000d8H
 	call	EmitError
 
 ; 397  : }
@@ -1551,7 +1551,7 @@ $LN27@InitStruct:
 
 ; 268  :                 EmitError( CONSTANT_EXPECTED );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 	mov	r10d, DWORD PTR i$[rbp-153]
 	jmp	SHORT $LN26@InitStruct
@@ -1593,7 +1593,7 @@ $LN26@InitStruct:
 ; 274  :                     EmitErr( INITIALIZER_MAGNITUDE_TOO_LARGE, f->sym.name );
 
 	mov	rdx, QWORD PTR [rdi+8]
-	mov	ecx, 173				; 000000adH
+	mov	ecx, 172				; 000000acH
 	call	EmitErr
 	mov	r10d, DWORD PTR i$[rbp-153]
 $LN29@InitStruct:
@@ -1731,7 +1731,7 @@ $LN38@InitStruct:
 ; 300  :             /* v2.07: it's a byte type, but no array, string initializer must have true length 1 */
 ; 301  :             EmitError( STRING_OR_TEXT_LITERAL_TOO_LONG );
 
-	mov	ecx, 156				; 0000009cH
+	mov	ecx, 155				; 0000009bH
 	call	EmitError
 
 ; 302  :             i++;
@@ -1853,7 +1853,7 @@ $LN259@InitStruct:
 ; 332  :                     EmitErr( INITIALIZER_MUST_BE_A_STRING_OR_SINGLE_ITEM, tokenarray[j].tokpos );
 
 	mov	rdx, r11
-	mov	ecx, 153				; 00000099H
+	mov	ecx, 152				; 00000098H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rsi+24]
 	call	EmitErr
@@ -1885,7 +1885,7 @@ $LN49@InitStruct:
 ; 335  :                         EmitErr( INVALID_DATA_INITIALIZER, f->sym.name );
 
 	mov	rdx, QWORD PTR [rdi+8]
-	mov	ecx, 232				; 000000e8H
+	mov	ecx, 231				; 000000e7H
 	call	EmitErr
 	jmp	SHORT $LN285@InitStruct
 $LN41@InitStruct:
@@ -2027,7 +2027,7 @@ $LN60@InitStruct:
 ; 364  :                     EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos );
 
 	mov	rdx, QWORD PTR [rdx+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 365  :                     while ( tokenarray[i].token != T_FINAL && tokenarray[i].token != T_COMMA )
@@ -2123,7 +2123,7 @@ $LN68@InitStruct:
 ; 389  :         EmitErr( TOO_MANY_INITIAL_VALUES_FOR_STRUCTURE, tokenarray[i].tokpos );
 
 	mov	rdx, QWORD PTR [rax+rsi+24]
-	mov	ecx, 154				; 0000009aH
+	mov	ecx, 153				; 00000099H
 	call	EmitErr
 $LN69@InitStruct:
 
@@ -2159,7 +2159,7 @@ $LN71@InitStruct:
 
 	lea	rdx, OFFSET FLAT:$SG11226
 $LN72@InitStruct:
-	mov	ecx, 153				; 00000099H
+	mov	ecx, 152				; 00000098H
 	call	EmitErr
 
 ; 397  : }
@@ -2413,7 +2413,7 @@ $LN37@Initialize:
 ; 117  :             return( EmitErr( INITIALIZER_MUST_BE_A_STRING_OR_SINGLE_ITEM, tokenarray[i].tokpos ) );
 
 	mov	rdx, QWORD PTR [rsi+24]
-	mov	ecx, 153				; 00000099H
+	mov	ecx, 152				; 00000098H
 	call	EmitErr
 	jmp	$LN1@Initialize
 $LN18@Initialize:
@@ -2491,7 +2491,7 @@ $LN20@Initialize:
 ; 154  :         EmitErr( TOO_MANY_INITIAL_VALUES_FOR_ARRAY, tokenarray[i].tokpos );
 
 	mov	rdx, QWORD PTR [rsi+24]
-	mov	ecx, 155				; 0000009bH
+	mov	ecx, 154				; 0000009aH
 	call	EmitErr
 
 ; 155  :         rc = ERROR;
@@ -2744,7 +2744,7 @@ $LN23@data_item:
 ; 522  :                     EmitWarn( 2, COUNT_MUST_BE_POSITIVE_OR_ZERO, tokenarray[i].tokpos );
 
 	mov	r8, QWORD PTR [r8+24]
-	mov	edx, 209				; 000000d1H
+	mov	edx, 208				; 000000d0H
 	mov	ecx, 2
 	call	EmitWarn
 $LN261@data_item:
@@ -3157,7 +3157,7 @@ $LN48@data_item:
 	cmp	edx, 3
 	lea	rax, OFFSET FLAT:$SG11408
 	lea	r8, OFFSET FLAT:$SG11409
-	mov	edx, 185				; 000000b9H
+	mov	edx, 184				; 000000b8H
 	cmove	r8, rax
 	mov	ecx, 2
 	call	EmitWarn
@@ -3212,7 +3212,7 @@ $LN52@data_item:
 	mov	r8d, eax
 	cmp	eax, esi
 	jbe	SHORT $LN187@data_item
-	mov	ecx, 56					; 00000038H
+	mov	ecx, 55					; 00000037H
 	call	EmitErr
 	jmp	SHORT $LN186@data_item
 $LN185@data_item:
@@ -3268,7 +3268,7 @@ $LN84@data_item:
 $LN174@data_item:
 	lea	rdx, OFFSET FLAT:$SG11444
 $LN175@data_item:
-	mov	ecx, 232				; 000000e8H
+	mov	ecx, 231				; 000000e7H
 	call	EmitErr
 
 ; 782  :             break;
@@ -3289,7 +3289,7 @@ $LN162@data_item:
 ; 786  :             DebugMsg(("data_item.ADDR: error, indirect=%u, sym=%X\n", opndx.indirect, opndx.sym ));
 ; 787  :             EmitError( INVALID_USE_OF_REGISTER );
 
-	mov	ecx, 171				; 000000abH
+	mov	ecx, 170				; 000000aaH
 	call	EmitError
 
 ; 788  :             break;
@@ -3328,7 +3328,7 @@ $LN88@data_item:
 ; 803  :             DebugMsg(("data_item.ADDR: error, is_float=%u\n", is_float ));
 ; 804  :             EmitError( MUST_USE_FLOAT_INITIALIZER );
 
-	mov	ecx, 213				; 000000d5H
+	mov	ecx, 212				; 000000d4H
 	call	EmitError
 
 ; 805  :             break;
@@ -3379,7 +3379,7 @@ $LN92@data_item:
 ; 819  :                 DebugMsg(("data_item.ADDR: error, a SEG wont fit in a BYTE\n" ));
 ; 820  :                 EmitError( MAGNITUDE_TOO_LARGE_FOR_SPECIFIED_SIZE );
 
-	mov	ecx, 77					; 0000004dH
+	mov	ecx, 76					; 0000004cH
 	call	EmitError
 $LN93@data_item:
 
@@ -3469,7 +3469,7 @@ $LN96@data_item:
 ; 832  :                     DebugMsg(("data_item.ADDR: error, an offset wont fit in a BYTE\n" ));
 ; 833  :                     EmitError( OFFSET_MAGNITUDE_TOO_LARGE );
 
-	mov	ecx, 58					; 0000003aH
+	mov	ecx, 57					; 00000039H
 	call	EmitError
 $LN108@data_item:
 
@@ -3496,7 +3496,7 @@ $LN104@data_item:
 ; 858  :                 DebugMsg(("data_item.ADDR: IMAGEREL, error, size=%u (should be 4)\n", no_of_bytes ));
 ; 859  :                 EmitError( OFFSET_MAGNITUDE_TOO_LARGE );
 
-	mov	ecx, 58					; 0000003aH
+	mov	ecx, 57					; 00000039H
 	call	EmitError
 $LN105@data_item:
 
@@ -3521,7 +3521,7 @@ $LN106@data_item:
 ; 867  :                 DebugMsg(("data_item.ADDR: SECTIONREL, error, size=%u (should be 4)\n", no_of_bytes ));
 ; 868  :                 EmitError( OFFSET_MAGNITUDE_TOO_LARGE );
 
-	mov	ecx, 58					; 0000003aH
+	mov	ecx, 57					; 00000039H
 	call	EmitError
 $LN107@data_item:
 
@@ -3563,7 +3563,7 @@ $LN263@data_item:
 
 ; 883  :                 EmitError( MAGNITUDE_TOO_LARGE_FOR_SPECIFIED_SIZE );
 
-	mov	ecx, 77					; 0000004dH
+	mov	ecx, 76					; 0000004cH
 	call	EmitError
 
 ; 884  :                 break;
@@ -3585,7 +3585,7 @@ $LN112@data_item:
 
 ; 893  :             EmitError( CONSTANT_EXPECTED );
 
-	lea	ecx, QWORD PTR [rax+66]
+	lea	ecx, QWORD PTR [rax+65]
 	call	EmitError
 
 ; 894  :             break;
@@ -3649,7 +3649,7 @@ $LN119@data_item:
 ; 914  :                         DebugMsg(("data_item.ADDR: error, no of bytes=%u\n", no_of_bytes ));
 ; 915  :                         EmitError( MAGNITUDE_TOO_LARGE_FOR_SPECIFIED_SIZE );
 
-	mov	ecx, 77					; 0000004dH
+	mov	ecx, 76					; 0000004cH
 	call	EmitError
 
 ; 916  :                     }
@@ -3811,7 +3811,7 @@ $LN130@data_item:
 	test	rax, rax
 	je	SHORT $LN180@data_item
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 173				; 000000adH
+	mov	ecx, 172				; 000000acH
 	call	EmitErr
 
 ; 964  :                         }
@@ -3826,7 +3826,7 @@ $LN180@data_item:
 ; 963  :                             EmitErr( INITIALIZER_MAGNITUDE_TOO_LARGE, opndx.sym ? opndx.sym->name : "" );
 
 	lea	rdx, OFFSET FLAT:$SG11497
-	mov	ecx, 173				; 000000adH
+	mov	ecx, 172				; 000000acH
 	call	EmitErr
 $LN135@data_item:
 
@@ -3888,7 +3888,7 @@ $LN131@data_item:
 ; 990  :                             EmitErr( SYMBOL_TYPE_CONFLICT, sym->name );
 
 	mov	rdx, QWORD PTR [rbx+8]
-	mov	ecx, 137				; 00000089H
+	mov	ecx, 136				; 00000088H
 	mov	edi, 5
 	call	EmitErr
 
@@ -3967,7 +3967,7 @@ $LN127@data_item:
 $LN178@data_item:
 	lea	rdx, OFFSET FLAT:$SG11490
 $LN179@data_item:
-	mov	ecx, 173				; 000000adH
+	mov	ecx, 172				; 000000acH
 	call	EmitErr
 $LN245@data_item:
 
@@ -4439,7 +4439,7 @@ $LN78@data_item:
 	test	rax, rax
 	je	$LN170@data_item
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 173				; 000000adH
+	mov	ecx, 172				; 000000acH
 	call	EmitErr
 	jmp	$LN1@data_item
 $LN79@data_item:
@@ -4491,7 +4491,7 @@ $LN209@data_item:
 ; 597  :             return( EmitErr( EXPECTED, ")" ) );
 
 	lea	rdx, OFFSET FLAT:$SG11398
-	mov	ecx, 231				; 000000e7H
+	mov	ecx, 230				; 000000e6H
 	call	EmitErr
 	jmp	$LN1@data_item
 $LN207@data_item:
@@ -4500,14 +4500,14 @@ $LN207@data_item:
 ; 571  :             return( EmitErr( EXPECTED, "(" ) );
 
 	lea	rdx, OFFSET FLAT:$SG11388
-	mov	ecx, 231				; 000000e7H
+	mov	ecx, 230				; 000000e6H
 	call	EmitErr
 	jmp	$LN1@data_item
 $LN206@data_item:
 
 ; 566  :             return( EmitError( COUNT_MUST_BE_POSITIVE_OR_ZERO ) );
 
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 208				; 000000d0H
 	call	EmitError
 	jmp	$LN1@data_item
 $LN205@data_item:
@@ -4525,7 +4525,7 @@ $LN205@data_item:
 ; 559  :                 EmitErr( SYMBOL_NOT_DEFINED, opndx.sym->name );
 
 	mov	rdx, QWORD PTR [rdx+8]
-	mov	ecx, 103				; 00000067H
+	mov	ecx, 102				; 00000066H
 	call	EmitErr
 
 ; 562  :             return( ERROR );
@@ -4537,7 +4537,7 @@ $LN32@data_item:
 ; 560  :             else
 ; 561  :                 EmitError( CONSTANT_EXPECTED );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 $LN203@data_item:
 
@@ -4551,7 +4551,7 @@ $LN210@data_item:
 ; 624  :             return( EmitErr( STRUCTURE_IMPROPERLY_INITIALIZED, type_sym->name ) );
 
 	mov	rax, QWORD PTR type_sym$[rbp-217]
-	mov	ecx, 230				; 000000e6H
+	mov	ecx, 229				; 000000e5H
 	mov	rdx, QWORD PTR [rax+8]
 	call	EmitErr
 	jmp	$LN1@data_item
@@ -4564,7 +4564,7 @@ $LN211@data_item:
 ; 1066 :         DebugMsg(("data_item: error, opndx.kind=%u\n", opndx.kind ));
 ; 1067 :         return( EmitError( SYNTAX_ERROR ) );
 
-	mov	ecx, 46					; 0000002eH
+	mov	ecx, 45					; 0000002dH
 	call	EmitError
 	jmp	$LN1@data_item
 $LN89@data_item:
@@ -4588,13 +4588,13 @@ $LN212@data_item:
 	je	SHORT $LN182@data_item
 	mov	r8, QWORD PTR [rax+8]
 	add	rdx, 10
-	mov	ecx, 198				; 000000c6H
+	mov	ecx, 197				; 000000c5H
 	call	EmitErr
 	jmp	$LN1@data_item
 $LN182@data_item:
 	lea	r8, OFFSET FLAT:szNull
 	add	rdx, 10
-	mov	ecx, 198				; 000000c6H
+	mov	ecx, 197				; 000000c5H
 	call	EmitErr
 	jmp	$LN1@data_item
 $LN64@data_item:
@@ -4602,14 +4602,14 @@ $LN64@data_item:
 ; 698  :                 } else {
 ; 699  :                     return( EmitError( EMPTY_STRING ) ); /* MASM doesn't like "" */
 
-	mov	ecx, 164				; 000000a4H
+	mov	ecx, 163				; 000000a3H
 	call	EmitError
 	jmp	$LN1@data_item
 $LN214@data_item:
 
 ; 706  :                     return( EmitError( INITIALIZER_OUT_OF_RANGE ) );
 
-	mov	ecx, 56					; 00000038H
+	mov	ecx, 55					; 00000037H
 	call	EmitError
 	jmp	$LN1@data_item
 $LN170@data_item:
@@ -4619,7 +4619,7 @@ $LN170@data_item:
 ; 762  :                             return( EmitErr( INITIALIZER_MAGNITUDE_TOO_LARGE, opndx.sym ? opndx.sym->name : "" ) );
 
 	lea	rdx, OFFSET FLAT:$SG11438
-	mov	ecx, 173				; 000000adH
+	mov	ecx, 172				; 000000acH
 	call	EmitErr
 	jmp	$LN1@data_item
 $LN216@data_item:
@@ -4632,19 +4632,19 @@ $LN216@data_item:
 	test	rax, rax
 	je	SHORT $LN172@data_item
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 173				; 000000adH
+	mov	ecx, 172				; 000000acH
 	call	EmitErr
 	jmp	SHORT $LN1@data_item
 $LN172@data_item:
 	lea	rdx, OFFSET FLAT:$SG11441
-	mov	ecx, 173				; 000000adH
+	mov	ecx, 172				; 000000acH
 	call	EmitErr
 	jmp	SHORT $LN1@data_item
 $LN213@data_item:
 
 ; 677  :             return( EmitError( MUST_USE_FLOAT_INITIALIZER ) );
 
-	mov	ecx, 213				; 000000d5H
+	mov	ecx, 212				; 000000d4H
 	call	EmitError
 	jmp	SHORT $LN1@data_item
 $LN54@data_item:
@@ -4662,7 +4662,7 @@ $LN54@data_item:
 ; 664  :             EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos );
 
 	mov	rdx, QWORD PTR [rax+rcx+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	or	rax, -1
 	jmp	SHORT $LN1@data_item
@@ -4671,7 +4671,7 @@ $LN55@data_item:
 ; 665  :         else
 ; 666  :             EmitError( SYNTAX_ERROR );
 
-	mov	ecx, 46					; 0000002eH
+	mov	ecx, 45					; 0000002dH
 	call	EmitError
 
 ; 667  :         return( ERROR );

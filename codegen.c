@@ -403,6 +403,9 @@ static void output_opc(struct code_info *CodeInfo)
       lbyte |= EVEX_P1VVVV;
       CodeInfo->evex_p2 |= EVEX_P2VMASK;
     }
+	if ((CodeInfo->token >= T_VBROADCASTF128) && (CodeInfo->token <= T_VPBROADCASTQ)) {
+		if (!decoflags)CodeInfo->evex_flag = 0;
+	}
         /* emit 4 byte (0x62), 3 (0xC4) or 2 (0xC5) byte VEX prefix */
         if ((CodeInfo->token ==  T_VMOVMSKPD )||(CodeInfo->token ==  T_VMOVMSKPS )) 
           CodeInfo->prefix.rex &= ~REX_W;

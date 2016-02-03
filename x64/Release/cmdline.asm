@@ -977,7 +977,7 @@ $LL61@ProcessOpt:
 
 $LN62@ProcessOpt:
 	mov	r8, r12
-	mov	edx, 135				; 00000087H
+	mov	edx, 134				; 00000086H
 	mov	ecx, 1
 
 ; 912  :     return;
@@ -1077,9 +1077,9 @@ $opt_error_exit$164:
 ; 910  :     EmitWarn( 1, INVALID_CMDLINE_OPTION, *cmdline - 1 );
 
 	mov	r8, QWORD PTR [r13]
-	mov	edx, 110				; 0000006eH
+	mov	edx, 109				; 0000006dH
 	dec	r8
-	lea	ecx, QWORD PTR [rdx-109]
+	lea	ecx, QWORD PTR [rdx-108]
 	call	EmitWarn
 
 ; 911  :     *cmdline = "";
@@ -1324,7 +1324,7 @@ $LN116@ProcessOpt:
 
 ; 895  :                             EmitWarn( 1, MISSING_ARGUMENT_FOR_CMDLINE_OPTION );
 
-	mov	edx, 252				; 000000fcH
+	mov	edx, 251				; 000000fbH
 	mov	ecx, 1
 	call	EmitWarn
 
@@ -1641,7 +1641,7 @@ ReadParamFile PROC					; COMDAT
 
 	call	ErrnoStr
 	mov	r8, rax
-	lea	ecx, QWORD PTR [rdi+107]
+	lea	ecx, QWORD PTR [rdi+106]
 	mov	rdx, rbx
 	call	Fatal
 $LN16@ReadParamF:
@@ -2067,7 +2067,7 @@ $LN2@Set_W:
 ; 450  :         EmitWarn( 1, INVALID_CMDLINE_VALUE, "W" );
 
 	lea	r8, OFFSET FLAT:$SG11242
-	mov	edx, 196				; 000000c4H
+	mov	edx, 195				; 000000c3H
 	mov	ecx, 1
 	jmp	EmitWarn
 Set_W	ENDP
@@ -2411,7 +2411,7 @@ $LL4@Set_Zp:
 ; 393  :     EmitWarn( 1, INVALID_CMDLINE_VALUE, "Zp" );
 
 	lea	r8, OFFSET FLAT:$SG11174
-	mov	edx, 196				; 000000c4H
+	mov	edx, 195				; 000000c3H
 	mov	ecx, 1
 	jmp	EmitWarn
 $LN8@Set_Zp:
@@ -2454,7 +2454,7 @@ $LN2@Set_Zi:
 ; 381  :         EmitWarn( 1, INVALID_CMDLINE_VALUE, "Zi" );
 
 	lea	r8, OFFSET FLAT:$SG11165
-	mov	edx, 196				; 000000c4H
+	mov	edx, 195				; 000000c3H
 	mov	ecx, 1
 	jmp	EmitWarn
 Set_Zi	ENDP
@@ -2549,7 +2549,7 @@ $LN9@set_option:
 
 ; 345  :         EmitError( N_OPTION_NEEDS_A_NAME_PARAMETER );
 
-	mov	ecx, 235				; 000000ebH
+	mov	ecx, 234				; 000000eaH
 
 ; 354  : }
 
@@ -2976,7 +2976,7 @@ $LN5@SetCpuCmdl:
 
 	mov	r8, rdx
 	mov	ecx, 1
-	mov	edx, 135				; 00000087H
+	mov	edx, 134				; 00000086H
 	jmp	EmitWarn
 $LN3@SetCpuCmdl:
 
@@ -3459,7 +3459,7 @@ $LN84@ParseCmdli:
 
 ; 1002 :                 EmitErr( NESTING_LEVEL_TOO_DEEP );
 
-	mov	ecx, 101				; 00000065H
+	mov	ecx, 100				; 00000064H
 	call	EmitErr
 
 ; 1003 :                 *cmdline = "";

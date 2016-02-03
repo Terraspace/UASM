@@ -140,7 +140,7 @@ $LN31@LoopDirect:
 ; 80   :             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i-1].tokpos ) );
 
 	mov	rdx, QWORD PTR [rax+rdi-8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@LoopDirect
 $LN108@LoopDirect:
@@ -186,7 +186,7 @@ $LN26@LoopDirect:
 ; 63   :             DebugMsg(( "LoopDirective(%s): invalid argument type %u\n", GetResWName( directive, NULL ), opnd.kind ));
 ; 64   :             EmitError( CONSTANT_EXPECTED );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 
 ; 65   :             opnd.value = 0;
@@ -206,7 +206,7 @@ $LN28@LoopDirect:
 ; 67   :             EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos );
 
 	mov	rdx, QWORD PTR [rax+rdi+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 68   :             /* v2.09: don't exit, the macro lines must be read first. */
@@ -257,7 +257,7 @@ $LN100@LoopDirect:
 ; 87   :             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	mov	rdx, QWORD PTR [rdx+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@LoopDirect
 $LN33@LoopDirect:
@@ -342,7 +342,7 @@ $LN9@LoopDirect:
 ; 143  :                 return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i+1].tokpos ) );
 
 	mov	rdx, QWORD PTR [rdx+56]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@LoopDirect
 $LN44@LoopDirect:
@@ -375,7 +375,7 @@ $LN115@LoopDirect:
 ; 94   :                 return( EmitErr( EXPECTING_COMMA, tokenarray[i].tokpos ) );
 
 	mov	rdx, QWORD PTR [rdx+rdi+24]
-	mov	ecx, 40					; 00000028H
+	mov	ecx, 39					; 00000027H
 	call	EmitErr
 	jmp	$LN1@LoopDirect
 $LN37@LoopDirect:
@@ -457,7 +457,7 @@ $LN5@LoopDirect:
 ; 109  :                     EmitErr( SYNTAX_ERROR_EX, tokenarray[i+1].tokpos );
 
 	mov	rdx, QWORD PTR [rax+rdi+56]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 110  :             } else {

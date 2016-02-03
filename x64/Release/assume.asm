@@ -451,7 +451,7 @@ $LN28@AssumeDire:
 ; 374  :                 ( ti.is_ptr > 0 && size < CurrWordSize ) ) {
 ; 375  :                 return( EmitError( TYPE_IS_WRONG_SIZE_FOR_REGISTER ) );
 
-	mov	ecx, 248				; 000000f8H
+	mov	ecx, 247				; 000000f7H
 	call	EmitError
 	jmp	$LN1@AssumeDire
 $LN109@AssumeDire:
@@ -814,7 +814,7 @@ $LN3@AssumeDire:
 ; 438  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	movsxd	rdx, r8d
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+r12+24]
 	call	EmitErr
@@ -829,28 +829,28 @@ $LN37@AssumeDire:
 
 ; 405  :                     return( EmitError( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
 
-	mov	ecx, 70					; 00000046H
+	mov	ecx, 69					; 00000045H
 	call	EmitError
 	jmp	$LN1@AssumeDire
 $LN85@AssumeDire:
 
 ; 337  :             return( EmitError( SYNTAX_ERROR ) );
 
-	mov	ecx, 46					; 0000002eH
+	mov	ecx, 45					; 0000002dH
 	call	EmitError
 	jmp	$LN1@AssumeDire
 $LN84@AssumeDire:
 
 ; 332  :             return( EmitError( COLON_EXPECTED ) );
 
-	mov	ecx, 85					; 00000055H
+	mov	ecx, 84					; 00000054H
 	call	EmitError
 	jmp	$LN1@AssumeDire
 $LN83@AssumeDire:
 
 ; 326  :             return( EmitError( INSTRUCTION_OR_REGISTER_NOT_ACCEPTED_IN_CURRENT_CPU_MODE ) );
 
-	mov	ecx, 31
+	mov	ecx, 30
 	call	EmitError
 	jmp	$LN1@AssumeDire
 $LN82@AssumeDire:
@@ -858,7 +858,7 @@ $LN82@AssumeDire:
 ; 322  :             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	movsxd	rdx, r8d
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+r12+8]
 	call	EmitErr

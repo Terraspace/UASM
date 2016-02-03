@@ -829,7 +829,7 @@ $LN53@ContextDir:
 	mov	rbp, QWORD PTR tv730[rsp]
 	shl	rbp, 5
 	mov	rdx, QWORD PTR [rcx+rbp+24]
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 142				; 0000008eH
 	jmp	SHORT $LN72@ContextDir
 $LN68@ContextDir:
 	mov	edi, DWORD PTR type$[rsp]
@@ -858,7 +858,7 @@ $LN44@ContextDir:
 ; 243  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	mov	rdx, QWORD PTR [rdx+rcx+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 $LN72@ContextDir:
 	call	EmitErr
 $LN1@ContextDir:

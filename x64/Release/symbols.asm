@@ -1237,7 +1237,7 @@ $LL4@SymInit:
 	test	rax, rax
 	je	SHORT $LN16@SymInit
 	mov	rdx, rdi
-	mov	ecx, 57					; 00000039H
+	mov	ecx, 56					; 00000038H
 	call	EmitErr
 	xor	eax, eax
 	jmp	SHORT $LN15@SymInit
@@ -1298,7 +1298,7 @@ $LL7@SymInit:
 	test	rax, rax
 	je	SHORT $LN19@SymInit
 	mov	rdx, rdi
-	mov	ecx, 57					; 00000039H
+	mov	ecx, 56					; 00000038H
 	call	EmitErr
 	xor	eax, eax
 	jmp	SHORT $LN18@SymInit
@@ -1751,7 +1751,7 @@ $LN6:
 ; 453  :         EmitErr( SYMBOL_ALREADY_DEFINED, name );
 
 	mov	rdx, rbx
-	mov	ecx, 57					; 00000039H
+	mov	ecx, 56					; 00000038H
 	call	EmitErr
 
 ; 454  :         return( NULL );
@@ -1837,7 +1837,7 @@ $LN5:
 ; 476  :         EmitErr( SYMBOL_ALREADY_DEFINED, sym->name );
 
 	mov	rdx, QWORD PTR [rbx+8]
-	mov	ecx, 57					; 00000039H
+	mov	ecx, 56					; 00000038H
 	call	EmitErr
 
 ; 477  :         return( NULL );
@@ -1902,7 +1902,7 @@ $LN5:
 ; 513  :         EmitErr( SYMBOL_ALREADY_DEFINED, name );
 
 	mov	rdx, rbx
-	mov	ecx, 57					; 00000039H
+	mov	ecx, 56					; 00000038H
 	call	EmitErr
 
 ; 514  :         return( NULL );
@@ -1960,7 +1960,7 @@ $LN5:
 ; 492  :         EmitErr( SYMBOL_ALREADY_DEFINED, name );
 
 	mov	rdx, rbx
-	mov	ecx, 57					; 00000039H
+	mov	ecx, 56					; 00000038H
 	call	EmitErr
 
 ; 493  :         return( NULL );
@@ -2058,7 +2058,7 @@ $LL6@SymAlloc:
 
 ; 239  :         EmitError( IDENTIFIER_TOO_LONG );
 
-	mov	ecx, 71					; 00000047H
+	mov	ecx, 70					; 00000046H
 	call	EmitError
 
 ; 240  :         len = MAX_ID_LEN;

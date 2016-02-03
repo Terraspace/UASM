@@ -387,7 +387,7 @@ SubStrFunc PROC
 	jmp	SHORT $LN2@SubStrFunc
 $LN14@SubStrFunc:
 	mov	rdx, rbx
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	cmp	eax, -1
 	je	$LN16@SubStrFunc
@@ -412,7 +412,7 @@ $LN18@SubStrFunc:
 ; 738  :             return( EmitErr( INDEX_VALUE_PAST_END_OF_STRING, pos ) );
 
 	mov	edx, edi
-	mov	ecx, 207				; 000000cfH
+	mov	ecx, 206				; 000000ceH
 	call	EmitErr
 	jmp	$LN1@SubStrFunc
 $LN4@SubStrFunc:
@@ -471,7 +471,7 @@ $LL17@SubStrFunc:
 
 ; 756  :             return( EmitError( COUNT_MUST_BE_POSITIVE_OR_ZERO ) );
 
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 208				; 000000d0H
 	call	EmitError
 	jmp	SHORT $LN1@SubStrFunc
 $LN8@SubStrFunc:
@@ -484,7 +484,7 @@ $LN8@SubStrFunc:
 
 ; 759  :             return( EmitError( COUNT_VALUE_TOO_LARGE ) );
 
-	mov	ecx, 208				; 000000d0H
+	mov	ecx, 207				; 000000cfH
 	call	EmitError
 	jmp	SHORT $LN1@SubStrFunc
 $LN9@SubStrFunc:
@@ -702,7 +702,7 @@ $LL9@InStrFunc:
 ; 680  :         return( EmitErr( INDEX_VALUE_PAST_END_OF_STRING, pos ) );
 
 	mov	edx, ebx
-	mov	ecx, 207				; 000000cfH
+	mov	ecx, 206				; 000000ceH
 
 ; 688  :         }
 ; 689  :     }
@@ -852,7 +852,7 @@ $LN4@GetNumber:
 ; 642  :         return( EmitErr( SYNTAX_ERROR_EX, string ) );
 
 	mov	rdx, rdi
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 $LN1@GetNumber:
 
@@ -1002,7 +1002,7 @@ $LN22:
 ; 513  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	movsxd	rdx, ecx
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rbx+8]
 	call	EmitErr
@@ -1066,7 +1066,7 @@ $LN5@InStrDir:
 
 ; 528  :             return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 
 ; 594  : }
@@ -1093,7 +1093,7 @@ $LN6@InStrDir:
 ; 535  :             //start = 1;
 ; 536  :             EmitWarn( 3, POSITIVE_VALUE_EXPECTED );
 
-	mov	edx, 176				; 000000b0H
+	mov	edx, 175				; 000000afH
 	mov	ecx, 3
 	call	EmitWarn
 $LN7@InStrDir:
@@ -1110,7 +1110,7 @@ $LN7@InStrDir:
 ; 539  :             return( EmitErr( EXPECTING_COMMA, tokenarray[i].tokpos ) );
 
 	mov	rdx, QWORD PTR [rdx+rbx+24]
-	mov	ecx, 40					; 00000028H
+	mov	ecx, 39					; 00000027H
 	call	EmitErr
 
 ; 594  : }
@@ -1165,7 +1165,7 @@ $LN3@InStrDir:
 ; 559  :         return( EmitErr( INDEX_VALUE_PAST_END_OF_STRING, start ) );
 
 	mov	edx, esi
-	mov	ecx, 207				; 000000cfH
+	mov	ecx, 206				; 000000ceH
 	call	EmitErr
 	jmp	SHORT $LN19@InStrDir
 $LN11@InStrDir:
@@ -1188,7 +1188,7 @@ $LN11@InStrDir:
 ; 565  :         return( EmitErr( EXPECTING_COMMA, tokenarray[i].tokpos ) );
 
 	mov	rdx, QWORD PTR [rdx+rbx+24]
-	mov	ecx, 40					; 00000028H
+	mov	ecx, 39					; 00000027H
 $LN20@InStrDir:
 	call	EmitErr
 $LN19@InStrDir:
@@ -1244,7 +1244,7 @@ $LN12@InStrDir:
 ; 579  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rdx+rbx+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	jmp	SHORT $LN20@InStrDir
 $LN15@InStrDir:
 	mov	QWORD PTR [rsp+192], rdi
@@ -1358,7 +1358,7 @@ $LN9:
 ; 462  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	movsxd	rdx, ecx
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rax+8]
 
@@ -1396,7 +1396,7 @@ $LN2@SizeStrDir:
 ; 474  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[3].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rdx+104]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 
 ; 486  : 
 ; 487  : }
@@ -1549,7 +1549,7 @@ $LN31:
 ; 319  :         return( EmitErr( EXPECTING_COMMA, tokenarray[i].tokpos ) );
 
 	mov	rdx, QWORD PTR [rdx+rsi+24]
-	mov	ecx, 40					; 00000028H
+	mov	ecx, 39					; 00000027H
 	call	EmitErr
 	jmp	$LN26@SubStrDir
 $LN4@SubStrDir:
@@ -1593,7 +1593,7 @@ $LN5@SubStrDir:
 ; 334  :         DebugMsg(("SubStrDir(%s): pos value is not a constant\n", name));
 ; 335  :         return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 	jmp	SHORT $LN27@SubStrDir
 $LN6@SubStrDir:
@@ -1613,7 +1613,7 @@ $LN6@SubStrDir:
 
 ; 341  :         return( EmitError( POSITIVE_VALUE_EXPECTED ) );
 
-	mov	ecx, 176				; 000000b0H
+	mov	ecx, 175				; 000000afH
 	call	EmitError
 	jmp	SHORT $LN28@SubStrDir
 $LN7@SubStrDir:
@@ -1637,7 +1637,7 @@ $LN7@SubStrDir:
 ; 345  :             return( EmitErr( EXPECTING_COMMA, tokenarray[i].tokpos ) );
 
 	mov	rdx, QWORD PTR [rdx+24]
-	mov	ecx, 40					; 00000028H
+	mov	ecx, 39					; 00000027H
 $LN29@SubStrDir:
 
 ; 362  :             DebugMsg(("SubStrDir(%s): additional items found\n", name));
@@ -1695,7 +1695,7 @@ $LN11@SubStrDir:
 ; 357  :             DebugMsg(("SubStrDir(%s): size value is not a constant\n", name));
 ; 358  :             return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 	jmp	SHORT $LN28@SubStrDir
 $LN12@SubStrDir:
@@ -1714,7 +1714,7 @@ $LN12@SubStrDir:
 ; 363  :             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rax+rsi+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	jmp	$LN29@SubStrDir
 $LN13@SubStrDir:
 
@@ -1726,7 +1726,7 @@ $LN13@SubStrDir:
 
 ; 366  :             return( EmitError( COUNT_MUST_BE_POSITIVE_OR_ZERO ) );
 
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 208				; 000000d0H
 	call	EmitError
 	jmp	$LN28@SubStrDir
 $LN14@SubStrDir:
@@ -1780,7 +1780,7 @@ $LN9@SubStrDir:
 ; 395  :         return( EmitErr( INDEX_VALUE_PAST_END_OF_STRING, pos ) );
 
 	mov	edx, edi
-	mov	ecx, 207				; 000000cfH
+	mov	ecx, 206				; 000000ceH
 	call	EmitErr
 	jmp	$LN28@SubStrDir
 $LN15@SubStrDir:
@@ -1797,7 +1797,7 @@ $LN15@SubStrDir:
 
 ; 398  :         return( EmitError( COUNT_VALUE_TOO_LARGE ) );
 
-	mov	ecx, 208				; 000000d0H
+	mov	ecx, 207				; 000000cfH
 	call	EmitError
 	jmp	$LN28@SubStrDir
 $LN16@SubStrDir:
@@ -1930,7 +1930,7 @@ $LN18@SubStrDir:
 ; 418  :         EmitWarn( 2, TEXT_MACRO_USED_PRIOR_TO_DEFINITION, sym->name );
 
 	mov	r8, QWORD PTR [rdi+8]
-	mov	edx, 237				; 000000edH
+	mov	edx, 236				; 000000ecH
 	mov	ecx, 2
 	call	EmitWarn
 	jmp	SHORT $LN22@SubStrDir
@@ -1947,7 +1947,7 @@ $LN20@SubStrDir:
 ; 423  :         return( EmitErr( SYMBOL_REDEFINITION, sym->name ) );
 
 	mov	rdx, QWORD PTR [rdi+8]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	jmp	$LN29@SubStrDir
 $LN3@SubStrDir:
 
@@ -2189,7 +2189,7 @@ $LN30@CatStrDir:
 ; 116  :             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	movsxd	rdx, ecx
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+r14+8]
 
@@ -2208,7 +2208,7 @@ $LN29@CatStrDir:
 ; 107  :             DebugMsg(("CatStrDir: error, literal too long: %u + %u >= %u\n", count, tokenarray[i].stringlen, MAX_LINE_LEN ));
 ; 108  :             return( EmitError( STRING_OR_TEXT_LITERAL_TOO_LONG ) );
 
-	mov	ecx, 156				; 0000009cH
+	mov	ecx, 155				; 0000009bH
 
 ; 169  : }
 
@@ -2234,7 +2234,7 @@ $LN9@CatStrDir:
 	mov	rax, QWORD PTR [rbx+8]
 	cmp	BYTE PTR [rax], 60			; 0000003cH
 	jne	SHORT $LN21@CatStrDir
-	mov	ecx, 217				; 000000d9H
+	mov	ecx, 216				; 000000d8H
 
 ; 169  : }
 
@@ -2257,7 +2257,7 @@ $LN21@CatStrDir:
 	jne	SHORT $LN23@CatStrDir
 $LN24@CatStrDir:
 	mov	rdx, QWORD PTR [rbx+8]
-	mov	ecx, 103				; 00000067H
+	mov	ecx, 102				; 00000066H
 
 ; 169  : }
 
@@ -2270,7 +2270,7 @@ $LN24@CatStrDir:
 
 	jmp	EmitErr
 $LN23@CatStrDir:
-	mov	ecx, 145				; 00000091H
+	mov	ecx, 144				; 00000090H
 
 ; 169  : }
 
@@ -2310,7 +2310,7 @@ $LN12@CatStrDir:
 ; 134  :         EmitWarn( 2, TEXT_MACRO_USED_PRIOR_TO_DEFINITION, sym->name );
 
 	mov	r8, QWORD PTR [rdi+8]
-	mov	edx, 237				; 000000edH
+	mov	edx, 236				; 000000ecH
 	mov	ecx, ebp
 	call	EmitWarn
 	jmp	$LN16@CatStrDir
@@ -2326,7 +2326,7 @@ $LN14@CatStrDir:
 ; 138  :         return( EmitErr( SYMBOL_REDEFINITION, sym->name ) );
 
 	mov	rdx, QWORD PTR [rdi+8]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 	jmp	$LN39@CatStrDir
 CatStrDir ENDP
@@ -2608,7 +2608,7 @@ $LN9:
 
 ; 55   :         return( EmitError( MISSING_ANGLE_BRACKET_OR_BRACE_IN_LITERAL ) );
 
-	mov	ecx, 217				; 000000d9H
+	mov	ecx, 216				; 000000d8H
 
 ; 65   : }
 
@@ -2645,7 +2645,7 @@ $LN5@TextItemEr:
 ; 61   :             return( EmitErr( SYMBOL_NOT_DEFINED, item->string_ptr ) );
 
 	mov	rdx, QWORD PTR [rbx+8]
-	mov	ecx, 103				; 00000067H
+	mov	ecx, 102				; 00000066H
 
 ; 65   : }
 
@@ -2661,7 +2661,7 @@ $LN4@TextItemEr:
 ; 63   :     }
 ; 64   :     return( EmitError( TEXT_ITEM_REQUIRED ) );
 
-	mov	ecx, 145				; 00000091H
+	mov	ecx, 144				; 00000090H
 
 ; 65   : }
 
@@ -2793,7 +2793,7 @@ $LN9@SetTextMac:
 ; 210  :             EmitErr( SYNTAX_ERROR_EX, tokenarray[3].tokpos );
 
 	mov	rdx, QWORD PTR [rbx+120]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 211  :             return( NULL );
@@ -2826,7 +2826,7 @@ $LN5@SetTextMac:
 ; 196  :         EmitWarn( 2, TEXT_MACRO_USED_PRIOR_TO_DEFINITION, sym->name );
 
 	mov	r8, QWORD PTR [rsi+8]
-	mov	edx, 237				; 000000edH
+	mov	edx, 236				; 000000ecH
 	mov	ecx, 2
 	call	EmitWarn
 	jmp	SHORT $LN9@SetTextMac
@@ -2840,7 +2840,7 @@ $LN7@SetTextMac:
 ; 198  :         EmitErr( SYMBOL_REDEFINITION, name );
 
 	mov	rdx, r8
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 
 ; 199  :         return( NULL );

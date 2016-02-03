@@ -413,7 +413,7 @@ $LN7:
 ; 46   :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[0].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rdx+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 
 ; 63   :     return( NOT_ERROR );
 ; 64   : }

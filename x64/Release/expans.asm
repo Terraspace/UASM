@@ -877,7 +877,7 @@ $LN38@ExpandToke:
 ; 1279 :                     DebugMsg(("ExpandToken: 'constant expected' error\n"));
 ; 1280 :                     EmitError( CONSTANT_EXPECTED );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 
 ; 1281 :                 //}
@@ -1134,7 +1134,7 @@ $LN3@RebuildLin:
 ; 1069 :             return( EmitErr( EXPANDED_LINE_TOO_LONG, tokenarray[0].tokpos ) );
 
 	mov	rdx, QWORD PTR [r13+24]
-	mov	ecx, 91					; 0000005bH
+	mov	ecx, 90					; 0000005aH
 	call	EmitErr
 	jmp	$LN1@RebuildLin
 $LN15@RebuildLin:
@@ -1454,7 +1454,7 @@ ExpandTMacro PROC					; COMDAT
 
 ; 985  :         return( EmitError( MACRO_NESTING_LEVEL_TOO_DEEP ) );
 
-	mov	ecx, 102				; 00000066H
+	mov	ecx, 101				; 00000065H
 	call	EmitError
 
 ; 1039 : }
@@ -2498,7 +2498,7 @@ $LN98@ExpandLine:
 
 ; 1531 :         return( EmitError( MACRO_NESTING_LEVEL_TOO_DEEP ) );
 
-	mov	ecx, 102				; 00000066H
+	mov	ecx, 101				; 00000065H
 	call	EmitError
 	jmp	SHORT $LN1@ExpandLine
 $LN50@ExpandLine:
@@ -2706,7 +2706,7 @@ $LN19@ExpandLine:
 
 ; 1339 :             EmitError( MACRO_NESTING_LEVEL_TOO_DEEP );
 
-	mov	ecx, 102				; 00000066H
+	mov	ecx, 101				; 00000065H
 	call	EmitError
 $LN3@ExpandLine:
 
@@ -3059,7 +3059,7 @@ $LN42@ExpandText:
 ; 931  :                         DebugMsg(("ExpandText(line=>%s<) error exit\n", line));
 ; 932  :                         EmitError( MACRO_NESTING_LEVEL_TOO_DEEP );
 
-	lea	ecx, QWORD PTR [r15+82]
+	lea	ecx, QWORD PTR [r15+81]
 	call	EmitError
 $LN2@ExpandText:
 
@@ -3543,7 +3543,7 @@ $LN436:
 
 ; 153  :         EmitError( NESTING_LEVEL_TOO_DEEP );
 
-	lea	ecx, QWORD PTR [rsi+102]
+	lea	ecx, QWORD PTR [rsi+101]
 	call	EmitError
 
 ; 154  :         return( -1 );
@@ -4422,7 +4422,7 @@ $LN89@RunMacro:
 
 ; 355  :                             EmitError( CONSTANT_EXPECTED );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 
 ; 356  :                             opndx.llvalue = 0;
@@ -5463,7 +5463,7 @@ $LN431@RunMacro:
 ; 547  :                 DebugMsg1(("RunMacro(%s): missing ')'\n", macro->sym.name));
 ; 548  :                 EmitError( MISSING_RIGHT_PARENTHESIS );
 
-	mov	ecx, 245				; 000000f5H
+	mov	ecx, 244				; 000000f4H
 	call	EmitError
 
 ; 549  :                 return( -1 );
@@ -5490,7 +5490,7 @@ $LN325@RunMacro:
 ; 240  :                     EmitErr( MISSING_MACRO_ARGUMENT_2, macro->sym.value + 1 );
 
 	mov	edx, DWORD PTR [r10+16]
-	mov	ecx, 88					; 00000058H
+	mov	ecx, 87					; 00000057H
 	inc	edx
 	call	EmitErr
 
@@ -5512,7 +5512,7 @@ $LN59@RunMacro:
 ; 242  :                     EmitErr( MISSING_MACRO_ARGUMENT, macro->sym.name, parmidx + 1 );
 
 	inc	r8d
-	mov	ecx, 221				; 000000ddH
+	mov	ecx, 220				; 000000dcH
 	call	EmitErr
 
 ; 243  :                 return( -1 );
@@ -5535,7 +5535,7 @@ $LN126@RunMacro:
 ; 553  :                 EmitWarn( 1, TOO_MANY_ARGUMENTS_IN_MACRO_CALL, macro->sym.name, tokenarray[i].tokpos );
 
 	mov	r9, rax
-	mov	edx, 150				; 00000096H
+	mov	edx, 149				; 00000095H
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	ecx, 1
 	shl	r9, 5
@@ -5641,7 +5641,7 @@ $LN123@RunMacro:
 ; 565  :             EmitWarn( 1, TOO_MANY_ARGUMENTS_IN_MACRO_CALL, macro->sym.name, tokenarray[idx].tokpos );
 
 	mov	r9, QWORD PTR [rax+rdi+24]
-	mov	edx, 150				; 00000096H
+	mov	edx, 149				; 00000095H
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	ecx, 1
 	mov	r8, QWORD PTR [rax+8]
@@ -5813,7 +5813,7 @@ $LN162@RunMacro:
 ; 644  :                     EmitErr( SYNTAX_ERROR_EX, tokenarray[0].tokpos );
 
 	mov	rdx, QWORD PTR [rdi+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	SHORT $LN162@RunMacro
 $LN136@RunMacro:
@@ -5826,7 +5826,7 @@ $LN136@RunMacro:
 ; 646  :                     EmitErr( SYNTAX_ERROR_EX, tokenarray[2].tokpos );
 
 	mov	rdx, QWORD PTR [rdi+88]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 647  :                 continue;
@@ -5976,7 +5976,7 @@ $LN328@RunMacro:
 ; 734  :                             EmitErr( MACRO_LABEL_NOT_DEFINED, tokenarray[1].string_ptr );
 
 	mov	rdi, QWORD PTR tokenarray$[rbp]
-	mov	ecx, 265				; 00000109H
+	mov	ecx, 264				; 00000108H
 	mov	rdx, QWORD PTR [rdi+40]
 
 ; 743  :                         }
@@ -6035,7 +6035,7 @@ $LN155@RunMacro:
 ; 745  :                         EmitErr( SYNTAX_ERROR_EX, tokenarray->tokpos );
 
 	mov	rdx, QWORD PTR [rdi+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 $LN433@RunMacro:
 	call	EmitErr
 
@@ -6097,7 +6097,7 @@ $LN142@RunMacro:
 ; 661  :                             EmitErr( SYNTAX_ERROR_EX, tokenarray[2].tokpos );
 
 	mov	rdx, QWORD PTR [rdi+88]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN151@RunMacro
 $LN147@RunMacro:

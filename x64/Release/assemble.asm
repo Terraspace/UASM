@@ -1286,7 +1286,7 @@ open_files PROC						; COMDAT
 	call	ErrnoStr
 	mov	rdx, QWORD PTR ModuleInfo+128
 	mov	r8, rax
-	mov	ecx, 107				; 0000006bH
+	mov	ecx, 106				; 0000006aH
 	call	Fatal
 $LN2@open_files:
 
@@ -1316,7 +1316,7 @@ $LN2@open_files:
 	call	ErrnoStr
 	mov	rdx, QWORD PTR ModuleInfo+136
 	mov	r8, rax
-	mov	ecx, 107				; 0000006bH
+	mov	ecx, 106				; 0000006aH
 	call	Fatal
 $LN4@open_files:
 
@@ -1346,7 +1346,7 @@ $LN4@open_files:
 	call	ErrnoStr
 	mov	rdx, QWORD PTR ModuleInfo+144
 	mov	r8, rax
-	mov	ecx, 107				; 0000006bH
+	mov	ecx, 106				; 0000006aH
 
 ; 1217 :     }
 ; 1218 :     return;
@@ -2001,7 +2001,7 @@ PassOneChecks PROC					; COMDAT
 
 ; 785  :         EmitError( END_DIRECTIVE_REQUIRED );
 
-	mov	ecx, 100				; 00000064H
+	mov	ecx, 99					; 00000063H
 	call	EmitError
 $LN17@PassOneChe:
 
@@ -3093,7 +3093,7 @@ $LN35@add_cmdlin:
 ; 486  :             DebugMsg(("add_cmdline_tmacros: name >%s< invalid\n", name ));
 ; 487  :             EmitErr( SYNTAX_ERROR_EX, name );
 
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 
 ; 488  :         } else {
 
@@ -3142,7 +3142,7 @@ $LN10@add_cmdlin:
 
 ; 499  :                 EmitErr( SYMBOL_ALREADY_DEFINED, name );
 
-	mov	ecx, 57					; 00000039H
+	mov	ecx, 56					; 00000038H
 $LN43@add_cmdlin:
 	mov	rdx, rsi
 	call	EmitErr
@@ -3340,7 +3340,7 @@ $LL4@WriteModul:
 ; 397  :                 EmitErr( SEGMENT_EXCEEDS_64K_LIMIT, curr->sym.name );
 
 	mov	rdx, QWORD PTR [rbx+8]
-	mov	ecx, 223				; 000000dfH
+	mov	ecx, 222				; 000000deH
 	call	EmitErr
 	jmp	SHORT $LN2@WriteModul
 $LN9@WriteModul:
@@ -3349,7 +3349,7 @@ $LN9@WriteModul:
 ; 399  :                 EmitWarn( 2, SEGMENT_EXCEEDS_64K_LIMIT, curr->sym.name );
 
 	mov	r8, QWORD PTR [rbx+8]
-	mov	edx, 223				; 000000dfH
+	mov	edx, 222				; 000000deH
 	mov	ecx, 2
 	call	EmitWarn
 $LN2@WriteModul:
@@ -3401,7 +3401,7 @@ $LN3@WriteModul:
 
 	call	ErrnoStr
 	mov	rdx, QWORD PTR Options+48
-	lea	ecx, QWORD PTR [rsi+107]
+	lea	ecx, QWORD PTR [rsi+106]
 	mov	r8, rax
 	mov	rsi, QWORD PTR [rsp+64]
 
@@ -3975,7 +3975,7 @@ $LN13:
 
 	call	_errno
 	mov	rdx, QWORD PTR ModuleInfo+128
-	lea	ecx, QWORD PTR [rbx+108]
+	lea	ecx, QWORD PTR [rbx+107]
 	mov	r8d, DWORD PTR [rax]
 	call	EmitErr
 $LN3@close_file:
@@ -4004,7 +4004,7 @@ $LN2@close_file:
 
 	call	_errno
 	mov	rdx, QWORD PTR ModuleInfo+136
-	mov	ecx, 108				; 0000006cH
+	mov	ecx, 107				; 0000006bH
 	mov	r8d, DWORD PTR [rax]
 	call	EmitErr
 $LN5@close_file:
@@ -4333,7 +4333,7 @@ $LN14@AssembleMo:
 
 ; 1497 :             EmitWarn( 2, ASSEMBLY_PASSES, Parse_Pass+1 );
 
-	lea	edx, QWORD PTR [rcx+42]
+	lea	edx, QWORD PTR [rcx+41]
 	inc	r8d
 	mov	ecx, 2
 	call	EmitWarn

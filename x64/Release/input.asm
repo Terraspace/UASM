@@ -623,7 +623,7 @@ $LL4@print_sour:
 	mov	eax, DWORD PTR [rbx+24]
 	mov	DWORD PTR [rsp+32], eax
 	mov	r9, QWORD PTR [r9+rcx*8]
-	mov	ecx, 124				; 0000007cH
+	mov	ecx, 123				; 0000007bH
 	call	PrintNote
 
 ; 519  :             tab++;
@@ -648,7 +648,7 @@ $LN7@print_sour:
 	inc	eax
 	lea	r8, OFFSET FLAT:$SG10895
 	mov	DWORD PTR [rsp+40], eax
-	mov	ecx, 126				; 0000007eH
+	mov	ecx, 125				; 0000007dH
 
 ; 524  :             } else {
 
@@ -679,7 +679,7 @@ $LN17@print_sour:
 	jne	SHORT $LL19@print_sour
 $LN18@print_sour:
 	mov	QWORD PTR [rsp+40], r8
-	mov	ecx, 125				; 0000007dH
+	mov	ecx, 124				; 0000007cH
 	lea	r8, OFFSET FLAT:$SG10896
 $LN34@print_sour:
 	mov	eax, DWORD PTR [rbx+24]
@@ -708,7 +708,7 @@ $LN10@print_sour:
 	mov	rsi, QWORD PTR [rsp+64]
 	mov	DWORD PTR [rsp+32], eax
 	mov	r9, QWORD PTR [r9+rcx*8]
-	mov	ecx, 127				; 0000007fH
+	mov	ecx, 126				; 0000007eH
 	call	PrintNote
 $LN6@print_sour:
 
@@ -856,7 +856,7 @@ $LN3@my_fgets:
 ; 388  :     }
 ; 389  :     EmitErr( LINE_TOO_LONG );
 
-	mov	ecx, 62					; 0000003eH
+	mov	ecx, 61					; 0000003dH
 	call	EmitErr
 
 ; 390  :     *(ptr-1) = NULLC;
@@ -2539,7 +2539,7 @@ $LN58@SearchFile:
 	call	ErrnoStr
 	mov	r8, rax
 	mov	rdx, rdi
-	mov	ecx, 107				; 0000006bH
+	mov	ecx, 106				; 0000006aH
 	call	EmitErr
 
 ; 667  :             return( NULL );

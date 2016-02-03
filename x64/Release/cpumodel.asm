@@ -271,7 +271,7 @@ CpuDirective PROC
 ; 489  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	mov	rdx, QWORD PTR [rax+rdx+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	jmp	EmitErr
 $LN2@CpuDirecti:
 
@@ -783,7 +783,7 @@ $LN8@ModelDirec:
 
 ; 277  :         return( EmitError( EXPECTED_MEMORY_MODEL ) );
 
-	mov	ecx, 247				; 000000f7H
+	mov	ecx, 246				; 000000f6H
 	call	EmitError
 	mov	rsi, QWORD PTR [rsp+72]
 
@@ -819,7 +819,7 @@ $LN10@ModelDirec:
 ; 289  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	movsxd	rdx, DWORD PTR i$[rsp]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rbp+8]
 	call	EmitErr
@@ -845,8 +845,8 @@ $LN31@ModelDirec:
 ; 283  :             //if ( Parse_Pass == PASS_1 ) /* not needed, this code runs in pass one only */
 ; 284  :             EmitWarn( 2, MODEL_DECLARED_ALREADY );
 
-	mov	edx, 96					; 00000060H
-	lea	ecx, QWORD PTR [rdx-94]
+	mov	edx, 95					; 0000005fH
+	lea	ecx, QWORD PTR [rdx-93]
 	call	EmitWarn
 $LN12@ModelDirec:
 
@@ -964,7 +964,7 @@ $LN3@ModelDirec:
 ; 327  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	mov	rdx, QWORD PTR [rax+rbp+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	SHORT $LN71@ModelDirec
 $LN47@ModelDirec:
@@ -1052,7 +1052,7 @@ $LN49@ModelDirec:
 
 ; 307  :                         return( EmitError( INVALID_MODEL_PARAM_FOR_FLAT ) );
 
-	mov	ecx, 201				; 000000c9H
+	mov	ecx, 200				; 000000c8H
 $LN73@ModelDirec:
 	call	EmitError
 $LN71@ModelDirec:
@@ -1088,7 +1088,7 @@ $LN21@ModelDirec:
 
 ; 332  :             return( EmitError( INSTRUCTION_OR_REGISTER_NOT_ACCEPTED_IN_CURRENT_CPU_MODE ) );
 
-	lea	ecx, QWORD PTR [r8+24]
+	lea	ecx, QWORD PTR [r8+23]
 	jmp	SHORT $LN73@ModelDirec
 $LN23@ModelDirec:
 

@@ -142,7 +142,7 @@ $LN24:
 ; 216  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	movsxd	rdx, ecx
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rdi+8]
 	call	EmitErr
@@ -226,7 +226,7 @@ $LN3@LabelDirec:
 
 ; 242  :             return( EmitError( OFFSET_SIZE_MISMATCH ) );
 
-	mov	ecx, 238				; 000000eeH
+	mov	ecx, 237				; 000000edH
 	call	EmitError
 	jmp	$LN21@LabelDirec
 $LN4@LabelDirec:
@@ -286,7 +286,7 @@ $LN10@LabelDirec:
 ; 254  :             else {
 ; 255  :                 return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 	jmp	$LN21@LabelDirec
 $LN19@LabelDirec:
@@ -313,7 +313,7 @@ $LN7@LabelDirec:
 ; 263  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) ); /* v2.10: display tokpos */
 
 	mov	rdx, QWORD PTR [rdx+rdi+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	SHORT $LN21@LabelDirec
 $LN12@LabelDirec:
@@ -463,7 +463,7 @@ $LN34:
 
 ; 85   :         EmitError( MUST_BE_IN_SEGMENT_BLOCK );
 
-	mov	ecx, 83					; 00000053H
+	mov	ecx, 82					; 00000052H
 	call	EmitError
 
 ; 86   :         return( NULL );
@@ -500,7 +500,7 @@ $LN2@CreateLabe:
 ; 94   :             DebugMsg(("CreateLabel: code label and CS assumed error\n" ));
 ; 95   :             EmitError( USE_OF_REGISTER_ASSUMED_TO_ERROR );
 
-	mov	ecx, 184				; 000000b8H
+	mov	ecx, 183				; 000000b7H
 	call	EmitError
 
 ; 96   :             return( NULL );
@@ -606,7 +606,7 @@ $LN10@CreateLabe:
 ; 125  :                 EmitErr( SYMBOL_TYPE_CONFLICT, name );
 
 	mov	rdx, rdi
-	mov	ecx, 137				; 00000089H
+	mov	ecx, 136				; 00000088H
 	call	EmitErr
 $LN12@CreateLabe:
 
@@ -622,7 +622,7 @@ $LN11@CreateLabe:
 ; 118  :                 EmitErr( SYMBOL_REDEFINITION, name );
 
 	mov	rdx, rdi
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 
 ; 119  :                 return( NULL );
@@ -785,7 +785,7 @@ $LN13@CreateLabe:
 ; 136  :                  */
 ; 137  :                 EmitErr( SYMBOL_ALREADY_DEFINED, name );
 
-	mov	ecx, 57					; 00000039H
+	mov	ecx, 56					; 00000038H
 	cmp	DWORD PTR [rbx+36], esi
 	je	SHORT $LN32@CreateLabe
 $LN15@CreateLabe:
@@ -793,7 +793,7 @@ $LN15@CreateLabe:
 ; 138  :             else
 ; 139  :                 EmitErr( SYMBOL_REDEFINITION, name );
 
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 $LN32@CreateLabe:
 	mov	rdx, rdi
 	call	EmitErr

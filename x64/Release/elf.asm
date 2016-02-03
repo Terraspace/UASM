@@ -917,7 +917,7 @@ $LN9@elf_write_:
 
 ; 1265 :         EmitWarn( 2, ELF_GNU_EXTENSIONS_USED );
 
-	mov	edx, 263				; 00000107H
+	mov	edx, 262				; 00000106H
 	mov	ecx, 2
 	call	EmitWarn
 $LN32@elf_write_:
@@ -1115,7 +1115,7 @@ $LN15@write_relo:
 	mov	eax, DWORD PTR [rbx+20]
 	add	rdx, 10
 	mov	r9, QWORD PTR [rsi+8]
-	mov	ecx, 199				; 000000c7H
+	mov	ecx, 198				; 000000c6H
 	mov	DWORD PTR [rsp+32], eax
 	call	EmitErr
 
@@ -1129,7 +1129,7 @@ $LN16@write_relo:
 	mov	r9d, DWORD PTR [rbx+20]
 	mov	edx, r10d
 	mov	r8, QWORD PTR [rsi+8]
-	mov	ecx, 197				; 000000c5H
+	mov	ecx, 196				; 000000c4H
 	call	EmitErr
 $LN17@write_relo:
 
@@ -1322,7 +1322,7 @@ $LN14@write_relo:
 	mov	eax, DWORD PTR [rbx+20]
 	add	rdx, 10
 	mov	r9, QWORD PTR [rsi+8]
-	mov	ecx, 199				; 000000c7H
+	mov	ecx, 198				; 000000c6H
 	mov	DWORD PTR [rsp+32], eax
 	call	EmitErr
 
@@ -1336,7 +1336,7 @@ $LN15@write_relo:
 	mov	r9d, DWORD PTR [rbx+20]
 	mov	edx, r10d
 	mov	r8, QWORD PTR [rsi+8]
-	mov	ecx, 197				; 000000c5H
+	mov	ecx, 196				; 000000c4H
 	call	EmitErr
 $LN16@write_relo:
 

@@ -636,7 +636,7 @@ check_size PROC						; COMDAT
 ; 2346 :         (CodeInfo->opnd[OPND3].type != OP_K))
 ; 2347 :         return(EmitError(INVALID_INSTRUCTION_OPERANDS));
 
-	lea	ecx, QWORD PTR [r14+50]
+	lea	ecx, QWORD PTR [r14+49]
 	call	EmitError
 	jmp	$LN1@check_size
 $LN13@check_size:
@@ -793,7 +793,7 @@ $LN29@check_size:
 ; 2420 :             ( opndx[OPND1].sym == NULL || opndx[OPND1].sym->state != SYM_UNDEFINED ) ) {
 ; 2421 :             EmitErr( INSTRUCTION_OPERAND_MUST_HAVE_SIZE );
 
-	mov	ecx, 183				; 000000b7H
+	mov	ecx, 182				; 000000b6H
 	call	EmitErr
 
 ; 2422 :             rc = ERROR;
@@ -907,7 +907,7 @@ $LN169@check_size:
 
 ; 2459 :             return( EmitError( INVALID_OPERAND_SIZE ) );
 
-	mov	ecx, 72					; 00000048H
+	mov	ecx, 71					; 00000047H
 	call	EmitError
 	jmp	$LN1@check_size
 $LN36@check_size:
@@ -974,7 +974,7 @@ $LN36@check_size:
 
 	lea	r8, OFFSET FLAT:$SG12277
 	mov	ecx, esi
-	lea	edx, QWORD PTR [rax+74]
+	lea	edx, QWORD PTR [rax+73]
 	call	EmitWarn
 
 ; 2494 :             } else
@@ -984,7 +984,7 @@ $LN38@check_size:
 
 ; 2495 :                 EmitErr( INSTRUCTION_OPERAND_MUST_HAVE_SIZE );
 
-	mov	ecx, 183				; 000000b7H
+	mov	ecx, 182				; 000000b6H
 	call	EmitErr
 $LN39@check_size:
 
@@ -1001,7 +1001,7 @@ $LN39@check_size:
 ; 2521 :             /* op1 must be r16/r32/r64 */
 ; 2522 :             EmitError( OP1_TOO_SMALL );
 
-	mov	ecx, 61					; 0000003dH
+	mov	ecx, 60					; 0000003cH
 	call	EmitError
 
 ; 2523 :             rc = ERROR;
@@ -1035,7 +1035,7 @@ $LN43@check_size:
 ; 2507 :             else {
 ; 2508 :                 EmitError( OP2_TOO_BIG );
 
-	mov	ecx, 60					; 0000003cH
+	mov	ecx, 59					; 0000003bH
 	call	EmitError
 
 ; 2509 :                 rc = ERROR;
@@ -1066,7 +1066,7 @@ $LN45@check_size:
 
 ; 2515 :                 EmitError( OP2_TOO_BIG );
 
-	mov	ecx, 60					; 0000003cH
+	mov	ecx, 59					; 0000003bH
 	call	EmitError
 
 ; 2516 :                 rc = ERROR;
@@ -1214,7 +1214,7 @@ $LN55@check_size:
 ; 2586 :                 EmitErr( OPERANDS_MUST_BE_THE_SAME_SIZE, op1_size, op3_size );
 
 	mov	r8d, eax
-	lea	ecx, QWORD PTR [r15+47]
+	lea	ecx, QWORD PTR [r15+46]
 	mov	edx, r15d
 	call	EmitErr
 
@@ -1553,7 +1553,7 @@ $LN61@check_size:
 
 ; 2626 :             return( EmitError( INSTRUCTION_OPERAND_MUST_HAVE_SIZE ) );
 
-	mov	ecx, 183				; 000000b7H
+	mov	ecx, 182				; 000000b6H
 	call	EmitError
 	jmp	$LN1@check_size
 $LN60@check_size:
@@ -1719,7 +1719,7 @@ $LN96@check_size:
 
 	mov	r8d, esi
 	mov	edx, r15d
-	mov	ecx, 49					; 00000031H
+	mov	ecx, 48					; 00000030H
 	call	EmitErr
 
 ; 2768 :                 rc = ERROR;
@@ -1984,9 +1984,9 @@ $LN132@check_size:
 
 ; 2832 :                             EmitWarn( 1, SIZE_NOT_SPECIFIED_ASSUMING, "WORD" );
 
-	mov	edx, 74					; 0000004aH
+	mov	edx, 73					; 00000049H
 	lea	r8, OFFSET FLAT:$SG12376
-	lea	ecx, QWORD PTR [rdx-73]
+	lea	ecx, QWORD PTR [rdx-72]
 	call	EmitWarn
 $LN133@check_size:
 
@@ -2021,8 +2021,8 @@ $LN130@check_size:
 
 	lea	r8, OFFSET FLAT:$SG12373
 $LN118@check_size:
-	mov	edx, 74					; 0000004aH
-	lea	ecx, QWORD PTR [rdx-73]
+	mov	edx, 73					; 00000049H
+	lea	ecx, QWORD PTR [rdx-72]
 	call	EmitWarn
 $LN131@check_size:
 
@@ -2380,7 +2380,7 @@ $LN12@HandleStri:
 ; 2270 :             else
 ; 2271 :                 EmitError( INVALID_INSTRUCTION_OPERANDS );
 
-	mov	ecx, 50					; 00000032H
+	mov	ecx, 49					; 00000031H
 	call	EmitError
 	jmp	SHORT $LN16@HandleStri
 $LN17@HandleStri:
@@ -2603,7 +2603,7 @@ $LN46@HandleStri:
 
 ; 2295 :                 EmitError( INSTRUCTION_OPERAND_MUST_HAVE_SIZE );
 
-	mov	ecx, 183				; 000000b7H
+	mov	ecx, 182				; 000000b6H
 	call	EmitError
 $LN45@HandleStri:
 
@@ -2910,7 +2910,7 @@ $LN47@process_re:
 ; 2045 :             DebugMsg(("process_register: assume error, reg=%u\n", regno ));
 ; 2046 :             return( EmitError( USE_OF_REGISTER_ASSUMED_TO_ERROR ) );
 
-	mov	ecx, 184				; 000000b8H
+	mov	ecx, 183				; 000000b7H
 	call	EmitError
 	jmp	$LN1@process_re
 $LN9@process_re:
@@ -2988,7 +2988,7 @@ $LN16@process_re:
 
 ; 2065 :                 return( EmitError( POP_CS_IS_NOT_ALLOWED ) );
 
-	lea	ecx, QWORD PTR [r11+41]
+	lea	ecx, QWORD PTR [r11+40]
 	call	EmitError
 	jmp	$LN1@process_re
 $LN23@process_re:
@@ -3012,7 +3012,7 @@ $LN23@process_re:
 
 ; 2072 :             return( EmitError( INVALID_COPROCESSOR_REGISTER ) );
 
-	mov	ecx, 253				; 000000fdH
+	mov	ecx, 252				; 000000fcH
 	call	EmitError
 	jmp	$LN1@process_re
 $LN29@process_re:
@@ -3050,7 +3050,7 @@ $LN27@process_re:
 
 ; 2082 :             return( EmitError( ONLY_MOV_CAN_USE_SPECIAL_REGISTER ) );
 
-	mov	ecx, 43					; 0000002bH
+	mov	ecx, 42					; 0000002aH
 	call	EmitError
 	jmp	$LN1@process_re
 $LN32@process_re:
@@ -3092,7 +3092,7 @@ $LN32@process_re:
 	cmovg	r8d, eax
 	mov	eax, 6
 	cmovg	edx, eax
-	lea	ecx, QWORD PTR [rax+27]
+	lea	ecx, QWORD PTR [rax+26]
 	call	EmitErr
 	jmp	$LN1@process_re
 $LN33@process_re:
@@ -3287,7 +3287,7 @@ process_const PROC					; COMDAT
 
 ; 1976 :         return( EmitError( EMPTY_STRING ) );
 
-	mov	ecx, 164				; 000000a4H
+	mov	ecx, 163				; 000000a3H
 	jmp	EmitError
 $LN2@process_co:
 
@@ -3404,8 +3404,8 @@ $LN11@process_ad:
 ; 1822 :             EmitWarn( 3, DISPLACEMENT_OUT_OF_RANGE, opndx->value64 );
 
 	mov	r8, QWORD PTR [r8]
-	mov	edx, 55					; 00000037H
-	lea	ecx, QWORD PTR [rdx-52]
+	mov	edx, 54					; 00000036H
+	lea	ecx, QWORD PTR [rdx-51]
 	call	EmitWarn
 $LN9@process_ad:
 
@@ -4054,7 +4054,7 @@ $LN138@memory_ope:
 ; 1510 :                 DebugMsg1(("memory_operand, JMP/CALL: CodeInfo->memtype=empty, instruction operand must have size\n" ));
 ; 1511 :                 return( EmitError( INSTRUCTION_OPERAND_MUST_HAVE_SIZE ) );
 
-	mov	ecx, 183				; 000000b7H
+	mov	ecx, 182				; 000000b6H
 	call	EmitError
 	jmp	$LN1@memory_ope
 $LN22@memory_ope:
@@ -4113,7 +4113,7 @@ $LN24@memory_ope:
 ; 1528 :             DebugMsg1(("memory_operand: invalid operand, size=%u\n", j ));
 ; 1529 :             return( EmitError( INVALID_OPERAND_SIZE ) );
 
-	mov	ecx, 72					; 00000048H
+	mov	ecx, 71					; 00000047H
 	call	EmitError
 	jmp	$LN1@memory_ope
 $LN23@memory_ope:
@@ -4275,7 +4275,7 @@ $LN30@memory_ope:
 
 ; 1582 :                 return( EmitError( INVALID_INSTRUCTION_OPERANDS ) );
 
-	mov	ecx, 50					; 00000032H
+	mov	ecx, 49					; 00000031H
 	call	EmitError
 	jmp	$LN1@memory_ope
 $LN42@memory_ope:
@@ -4441,7 +4441,7 @@ $LN66@memory_ope:
 
 ; 1622 :                 return( EmitError( INVALID_ADDRESSING_MODE_WITH_CURRENT_CPU_SETTING ) );
 
-	mov	ecx, 32					; 00000020H
+	mov	ecx, 31
 	call	EmitError
 	jmp	$LN1@memory_ope
 $LN54@memory_ope:
@@ -4481,7 +4481,7 @@ $LN55@memory_ope:
 	mov	ecx, ebp
 	call	GetResWName
 	mov	rdx, rax
-	mov	ecx, 38					; 00000026H
+	mov	ecx, 37					; 00000025H
 	call	EmitErr
 
 ; 1660 :                 //return( ERROR );
@@ -4497,7 +4497,7 @@ $LN60@memory_ope:
 ; 1658 :             //if ( GetRegNo( base ) == 4 ) {
 ; 1659 :                 EmitErr( MULTIPLE_BASE_REGISTERS_NOT_ALLOWED );
 
-	mov	ecx, 30
+	mov	ecx, 29
 	call	EmitErr
 $LN61@memory_ope:
 
@@ -4549,7 +4549,7 @@ $LN62@memory_ope:
 
 ; 1700 :                 return( EmitError( INVALID_USE_OF_REGISTER ) );
 
-	mov	ecx, 171				; 000000abH
+	mov	ecx, 170				; 000000aaH
 	call	EmitError
 	jmp	$LN1@memory_ope
 $LN64@memory_ope:
@@ -4585,7 +4585,7 @@ $LN72@memory_ope:
 ; 1690 :                 default: /* must be * 1, 2, 4 or 8 */
 ; 1691 :                     return( EmitError( SCALE_FACTOR_MUST_BE_1_2_4_OR_8 ) );
 
-	mov	ecx, 37					; 00000025H
+	mov	ecx, 36					; 00000024H
 	call	EmitError
 	jmp	$LN1@memory_ope
 $LN70@memory_ope:
@@ -4817,7 +4817,7 @@ $LN89@memory_ope:
 
 	mov	r8, QWORD PTR [r13+8]
 	lea	ecx, QWORD PTR [rdi-3]
-	mov	edx, 219				; 000000dbH
+	mov	edx, 218				; 000000daH
 	call	EmitWarn
 $LN95@memory_ope:
 	mov	eax, DWORD PTR [rbx+24]
@@ -5817,7 +5817,7 @@ $LN19@idata_fixu:
 ; 950  :         /* short works for branch instructions only */
 ; 951  :         return( EmitErr( INVALID_INSTRUCTION_OPERANDS ) );
 
-	mov	ecx, 50					; 00000032H
+	mov	ecx, 49					; 00000031H
 	call	EmitErr
 	jmp	$LN150@idata_fixu
 $LN20@idata_fixu:
@@ -5914,8 +5914,8 @@ $LN132@idata_fixu:
 ; 978  :                 if( size && (size < 2 ) ) {
 ; 979  :                     return( EmitErr( OPERANDS_MUST_BE_THE_SAME_SIZE, size, 2 ) );
 
-	mov	ecx, 49					; 00000031H
-	lea	r8d, QWORD PTR [rcx-47]
+	mov	ecx, 48					; 00000030H
+	lea	r8d, QWORD PTR [rcx-46]
 	call	EmitErr
 	jmp	$LN152@idata_fixu
 $LN27@idata_fixu:
@@ -5947,7 +5947,7 @@ $LN29@idata_fixu:
 	movzx	ecx, r14b
 	mov	r8d, 2
 	shl	r8d, cl
-	mov	ecx, 49					; 00000031H
+	mov	ecx, 48					; 00000030H
 	call	EmitErr
 	jmp	$LN152@idata_fixu
 $LN28@idata_fixu:
@@ -6634,7 +6634,7 @@ $LN89@idata_fixu:
 	add	rax, rax
 	cmp	BYTE PTR SegAssumeTable[r9+rax*8+8], 0
 	je	SHORT $LN120@idata_fixu
-	mov	ecx, 184				; 000000b8H
+	mov	ecx, 183				; 000000b7H
 	call	EmitError
 $LN138@idata_fixu:
 	mov	rdx, QWORD PTR SegOverride
@@ -7219,7 +7219,7 @@ $LN8@idata_nofi:
 ; 850  :             DebugMsg1(("idata_nofixup: invalid size %d for immediate operand\n", size ));
 ; 851  :             return( EmitError( INVALID_INSTRUCTION_OPERANDS ) );
 
-	mov	ecx, 50					; 00000032H
+	mov	ecx, 49					; 00000031H
 	call	EmitError
 $LN45@idata_nofi:
 	mov	r13, QWORD PTR [rsp+40]
@@ -7478,7 +7478,7 @@ $LN13:
 ; 749  :                 DebugMsg(("segm_override: assume error, reg=%u\n", temp ));
 ; 750  :                 return( EmitError( USE_OF_REGISTER_ASSUMED_TO_ERROR ) );
 
-	mov	ecx, 184				; 000000b8H
+	mov	ecx, 183				; 000000b7H
 
 ; 771  : }
 
@@ -7506,7 +7506,7 @@ $LN5@segm_overr:
 
 ; 755  :                 return( EmitError( ILLEGAL_USE_OF_SEGMENT_REGISTER ) );
 
-	mov	ecx, 275				; 00000113H
+	mov	ecx, 274				; 00000112H
 
 ; 771  : }
 
@@ -7741,7 +7741,7 @@ $LN18@set_rm_sib:
 ; 554  :                         CodeInfo->Ofssize, CodeInfo->prefix.adrsiz, CodeInfo->opnd[CurrOpnd].data32l ));
 ; 555  :                 return( EmitError( MAGNITUDE_OF_OFFSET_EXCEEDS_16BIT ) );
 
-	mov	ecx, 59					; 0000003bH
+	mov	ecx, 58					; 0000003aH
 	call	EmitError
 	jmp	$LN1@set_rm_sib
 $LN20@set_rm_sib:
@@ -8027,7 +8027,7 @@ $LN36@set_rm_sib:
 ; 661  : #endif
 ; 662  :           return( EmitError( CANNOT_MIX_16_AND_32_BIT_REGISTERS ) );
 
-	mov	ecx, 39					; 00000027H
+	mov	ecx, 38					; 00000026H
 	call	EmitError
 	jmp	$LN1@set_rm_sib
 $found$73:
@@ -8105,7 +8105,7 @@ $LN47@set_rm_sib:
 ; 685  :             //EmitErr( CANNOT_BE_USED_AS_INDEX_REGISTER, ??? );
 ; 686  :             return( EmitError( INVALID_USE_OF_REGISTER ) );
 
-	mov	ecx, 171				; 000000abH
+	mov	ecx, 170				; 000000aaH
 	call	EmitError
 	jmp	$LN1@set_rm_sib
 $LN69@set_rm_sib:
@@ -8696,7 +8696,7 @@ $LN2@check_assu:
 ; 384  :                 EmitErr( CANNOT_ACCESS_LABEL_THROUGH_SEGMENT_REGISTERS, sym->name );
 
 	mov	rdx, QWORD PTR [rbx+8]
-	lea	ecx, QWORD PTR [rbp+92]
+	lea	ecx, QWORD PTR [rbp+91]
 	call	EmitErr
 
 ; 385  :             } else
@@ -8717,7 +8717,7 @@ $LN5@check_assu:
 ; 389  :             EmitErr( CANNOT_ACCESS_LABEL_THROUGH_SEGMENT_REGISTERS, SegOverride->name );
 
 	mov	rdx, QWORD PTR SegOverride
-	mov	ecx, 90					; 0000005aH
+	mov	ecx, 89					; 00000059H
 	mov	rdx, QWORD PTR [rdx+8]
 	call	EmitErr
 
@@ -8768,7 +8768,7 @@ comp_mem16 PROC						; COMDAT
 ; 351  :     default:
 ; 352  :         return( EmitError( MULTIPLE_INDEX_REGISTERS_NOT_ALLOWED ) );
 
-	mov	ecx, 35					; 00000023H
+	mov	ecx, 34					; 00000022H
 	jmp	EmitError
 $LN11@comp_mem16:
 
@@ -8812,7 +8812,7 @@ $LN4@comp_mem16:
 ; 353  :     }
 ; 354  :     return( EmitError( MULTIPLE_BASE_REGISTERS_NOT_ALLOWED ) );
 
-	mov	ecx, 30
+	mov	ecx, 29
 	jmp	EmitError
 $LN10@comp_mem16:
 
@@ -9183,7 +9183,7 @@ $LN286@ParseLine:
 ; 3031 :         DebugMsg(("ParseLine: unexpected colon\n"));
 ; 3032 :         return(EmitError(SYNTAX_ERROR_UNEXPECTED_COLON));
 
-	mov	ecx, 48					; 00000030H
+	mov	ecx, 47					; 0000002fH
 	call	EmitError
 	jmp	$LN306@ParseLine
 $LN75@ParseLine:
@@ -9235,7 +9235,7 @@ $LN79@ParseLine:
 ; 3039 :     return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
 
 	movsxd	rdx, r9d
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rdi+8]
 	call	EmitErr
@@ -9292,7 +9292,7 @@ $LN53@ParseLine:
 ; 2965 :           return(EmitErr(SYNTAX_ERROR_EX, tokenarray[0].string_ptr));
 
 	mov	rdx, QWORD PTR [rdi+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN306@ParseLine
 $LN54@ParseLine:
@@ -9312,7 +9312,7 @@ $LN54@ParseLine:
 ; 2969 :         return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i - 1].string_ptr));
 
 	mov	rdx, QWORD PTR [rdx-24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN306@ParseLine
 $LN57@ParseLine:
@@ -9423,7 +9423,7 @@ $LN67@ParseLine:
 ; 3005 :           EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr);
 
 	mov	rdx, QWORD PTR [rdx+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	SHORT $LN4@ParseLine
 $LN69@ParseLine:
@@ -9431,7 +9431,7 @@ $LN69@ParseLine:
 ; 2993 :         case T_ENDM:
 ; 2994 :           EmitError(UNMATCHED_MACRO_NESTING);
 
-	mov	ecx, 163				; 000000a3H
+	mov	ecx, 162				; 000000a2H
 
 ; 2995 :           break;
 
@@ -9442,7 +9442,7 @@ $LN70@ParseLine:
 ; 2997 :         case T_GOTO:
 ; 2998 :           EmitError(DIRECTIVE_MUST_APPEAR_INSIDE_A_MACRO);
 
-	mov	ecx, 179				; 000000b3H
+	mov	ecx, 178				; 000000b2H
 $LN311@ParseLine:
 	call	EmitError
 $LN4@ParseLine:
@@ -9493,7 +9493,7 @@ $LN318@ParseLine:
 
 ; 3045 :     return(EmitError(STATEMENT_NOT_ALLOWED_INSIDE_STRUCTURE_DEFINITION));
 
-	mov	ecx, 142				; 0000008eH
+	mov	ecx, 141				; 0000008dH
 	call	EmitError
 	jmp	$LN306@ParseLine
 $LN80@ParseLine:
@@ -9660,7 +9660,7 @@ $LN85@ParseLine:
 ; 3107 :       DebugMsg(("ParseLine: unexpected token %u after prefix, exit, error\n", tokenarray[i].token));
 ; 3108 :       return(EmitError(PREFIX_MUST_BE_FOLLOWED_BY_AN_INSTRUCTION));
 
-	mov	ecx, 47					; 0000002fH
+	mov	ecx, 46					; 0000002eH
 	call	EmitError
 	jmp	$LN306@ParseLine
 $LN88@ParseLine:
@@ -9802,7 +9802,7 @@ $LN95@ParseLine:
 
 ; 3147 :     return(EmitError(MUST_BE_IN_SEGMENT_BLOCK));
 
-	lea	ecx, QWORD PTR [rax+83]
+	lea	ecx, QWORD PTR [rax+82]
 	call	EmitError
 	jmp	$LN306@ParseLine
 $LN97@ParseLine:
@@ -10057,7 +10057,7 @@ $LN12@ParseLine:
 ; 3211 :     return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 
 	mov	rdx, QWORD PTR [rdx+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN309@ParseLine
 $LN226@ParseLine:
@@ -10075,7 +10075,7 @@ $LN107@ParseLine:
 ; 3187 :         /* Masm message is: real or BCD number not allowed */
 ; 3188 :         return(EmitError(FP_INITIALIZER_IGNORED));
 
-	mov	ecx, 75					; 0000004bH
+	mov	ecx, 74					; 0000004aH
 	call	EmitError
 	jmp	$LN309@ParseLine
 $LN290@ParseLine:
@@ -10107,7 +10107,7 @@ $LN112@ParseLine:
 ; 3206 :       return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
 
 	movsxd	rdx, eax
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rdi+8]
 	call	EmitErr
@@ -10717,7 +10717,7 @@ $LN157@ParseLine:
 	je	SHORT $LN214@ParseLine
 	cmp	DWORD PTR [rax+16], 0
 	jne	SHORT $LN214@ParseLine
-	mov	ecx, 164				; 000000a4H
+	mov	ecx, 163				; 000000a3H
 	call	EmitError
 	jmp	SHORT $LN213@ParseLine
 $LN214@ParseLine:
@@ -10757,7 +10757,7 @@ $LN152@ParseLine:
 ; 3314 :                 DebugMsg(("ParseLine(%s,%u): avx invalid opnd 2, flags=%X ci.type[0]=%X\n", instr, CurrOpnd, flags, CodeInfo.opnd[OPND1].type));
 ; 3315 :                 return(EmitErr(INVALID_INSTRUCTION_OPERANDS));
 
-	mov	ecx, 50					; 00000032H
+	mov	ecx, 49					; 00000031H
 	call	EmitErr
 	jmp	$LN309@ParseLine
 $LN299@ParseLine:
@@ -10986,7 +10986,7 @@ $LN31@ParseLine:
 ; 3447 :             return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 
 	movsxd	rdx, r9d
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rdi+24]
 	call	EmitErr
@@ -11051,7 +11051,7 @@ $LN190@ParseLine:
 
 ; 3478 :         EmitError(INVALID_USAGE_OF_AHBHCHDH);
 
-	mov	ecx, 254				; 000000feH
+	mov	ecx, 253				; 000000fdH
 	call	EmitError
 	mov	r8d, DWORD PTR CodeInfo$[rsp+24]
 	movzx	ecx, BYTE PTR CodeInfo$[rsp+8]

@@ -930,7 +930,7 @@ ListMacroDirective PROC
 ; 1250 :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i+1].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rax+rdx+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	jmp	EmitErr
 $LN2@ListMacroD:
 
@@ -1112,7 +1112,7 @@ $LN34@ListingDir:
 ; 1196 :                     return( EmitErr( EXPECTING_COMMA, tokenarray[i].tokpos ) );
 
 	movsxd	rdx, ebx
-	mov	ecx, 40					; 00000028H
+	mov	ecx, 39					; 00000027H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rsi+24]
 
@@ -1134,7 +1134,7 @@ $LN32@ListingDir:
 ; 1185 :                 return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	movsxd	rdx, ebx
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rsi+24]
 
@@ -1248,7 +1248,7 @@ $LN24@ListingDir:
 
 ; 1230 :             return( EmitError( STATEMENT_NOT_ALLOWED_INSIDE_STRUCTURE_DEFINITION ) );
 
-	mov	ecx, 142				; 0000008eH
+	mov	ecx, 141				; 0000008dH
 
 ; 1239 :     }
 ; 1240 : 
@@ -1274,8 +1274,8 @@ $LN26@ListingDir:
 ; 1233 :             EmitWarn( 4, DIRECTIVE_IGNORED, tokenarray[i-1].string_ptr );
 
 	mov	r8, QWORD PTR [rdi+rsi-24]
-	mov	edx, 129				; 00000081H
-	lea	ecx, QWORD PTR [rdx-125]
+	mov	edx, 128				; 00000080H
+	lea	ecx, QWORD PTR [rdx-124]
 	call	EmitWarn
 $LN31@ListingDir:
 
@@ -1303,7 +1303,7 @@ $LN8@ListingDir:
 ; 1238 :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rax+rsi+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 
 ; 1239 :     }
 ; 1240 : 

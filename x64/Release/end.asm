@@ -280,7 +280,7 @@ $LN28:
 
 ; 206  :             EmitWarn( 2, START_ADDRESS_IGNORED );
 
-	mov	edx, 243				; 000000f3H
+	mov	edx, 242				; 000000f2H
 	mov	ecx, 2
 	call	EmitWarn
 	mov	eax, DWORD PTR ModuleInfo+496
@@ -362,7 +362,7 @@ $LN6@EndDirecti:
 ; 220  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	mov	rdx, QWORD PTR [rax+rbx+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 289  : }
@@ -401,7 +401,7 @@ $LN3@EndDirecti:
 ; 226  :         EmitErr( UNMATCHED_BLOCK_NESTING, CurrStruct->sym.name );
 
 	mov	rdx, QWORD PTR [rdx+8]
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 142				; 0000008eH
 	call	EmitErr
 $LN8@EndDirecti:
 
@@ -580,7 +580,7 @@ $LN23@EndDirecti:
 ; 276  : #endif
 ; 277  :         return( EmitError( OPERAND_MUST_BE_RELOCATABLE ) );
 
-	mov	ecx, 189				; 000000bdH
+	mov	ecx, 188				; 000000bcH
 	call	EmitError
 
 ; 289  : }
@@ -630,7 +630,7 @@ $LN48:
 
 ; 106  :         return( EmitError( MODEL_IS_NOT_DECLARED ) );
 
-	lea	ecx, QWORD PTR [r14+97]
+	lea	ecx, QWORD PTR [r14+96]
 	call	EmitError
 
 ; 184  : }
@@ -650,7 +650,7 @@ $LN10@StartupExi:
 ; 109  :         return( EmitErr( DOES_NOT_WORK_WITH_32BIT_SEGMENTS, tokenarray[i].string_ptr ) );
 
 	movsxd	rdx, DWORD PTR i$[rsp]
-	mov	ecx, 222				; 000000deH
+	mov	ecx, 221				; 000000ddH
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rsi+8]
 	call	EmitErr
@@ -960,7 +960,7 @@ $LN8@StartupExi:
 ; 177  :         EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos );
 
 	mov	rdx, QWORD PTR [rax+rsi+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 178  :         rc = ERROR;

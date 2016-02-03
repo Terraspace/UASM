@@ -2584,7 +2584,7 @@ $LN29@coff_write:
 ; 997  :                 EmitErr( UNKNOWN_FIXUP_TYPE, fix->type, section->sym.name, fix->locofs );
 
 	mov	r9d, DWORD PTR [rbx+20]
-	mov	ecx, 197				; 000000c5H
+	mov	ecx, 196				; 000000c4H
 	mov	r8, QWORD PTR [rsi+8]
 	call	EmitErr
 $LN44@coff_write:
@@ -3218,7 +3218,7 @@ $LN3@GetStartLa:
 
 ; 761  :                         EmitWarn( 2, LEADING_UNDERSCORE_REQUIRED_FOR_START_LABEL, ModuleInfo.g.start_label->name );
 
-	mov	edx, 195				; 000000c3H
+	mov	edx, 194				; 000000c2H
 	mov	ecx, 2
 	call	EmitWarn
 $LN9@GetStartLa:

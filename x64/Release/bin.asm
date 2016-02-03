@@ -784,7 +784,7 @@ $LN9@bin_check_:
 ; 1825 :             return( EmitErr( FORMAT_DOESNT_SUPPORT_EXTERNALS, curr->sym.name ) );
 
 	mov	rdx, QWORD PTR [rdx+8]
-	mov	ecx, 202				; 000000caH
+	mov	ecx, 201				; 000000c9H
 	jmp	EmitErr
 bin_check_external ENDP
 _TEXT	ENDS
@@ -1062,7 +1062,7 @@ $LN30@bin_write_:
 
 ; 1567 :             return( EmitErr( MODEL_IS_NOT_DECLARED ) );
 
-	mov	ecx, 97					; 00000061H
+	mov	ecx, 96					; 00000060H
 	call	EmitErr
 	jmp	$LN1@bin_write_
 $LN33@bin_write_:
@@ -1281,7 +1281,7 @@ $LN43@bin_write_:
 
 ; 1622 :                 return( EmitError( START_LABEL_INVALID ) );
 
-	mov	ecx, 203				; 000000cbH
+	mov	ecx, 202				; 000000caH
 	call	EmitError
 	jmp	$LN1@bin_write_
 $LN42@bin_write_:
@@ -1483,7 +1483,7 @@ $LN47@bin_write_:
 
 ; 1661 :             EmitWarn( 2, NO_STACK );
 
-	mov	edx, 205				; 000000cdH
+	mov	edx, 204				; 000000ccH
 	mov	ecx, 2
 	call	EmitWarn
 $LN48@bin_write_:
@@ -1564,7 +1564,7 @@ $LN50@bin_write_:
 ; 1682 :             DebugMsg(("bin_write_module, ModuleInfo->start_label=%p\n", modinfo->g.start_label ));
 ; 1683 :             EmitWarn( 2, NO_START_LABEL );
 
-	mov	edx, 204				; 000000ccH
+	mov	edx, 203				; 000000cbH
 	mov	ecx, 2
 	call	EmitWarn
 $LN51@bin_write_:
@@ -2782,7 +2782,7 @@ $LN37@pe_set_val:
 ; 1402 :         DebugMsg(("pe_set_values: warning: not start label found\n" ));
 ; 1403 :         EmitWarn( 2, NO_START_LABEL );
 
-	mov	edx, 204				; 000000ccH
+	mov	edx, 203				; 000000cbH
 	mov	ecx, 2
 	call	EmitWarn
 $LN38@pe_set_val:
@@ -5725,7 +5725,7 @@ $LN57@DoFixup:
 ; 693  :             EmitErr( INVALID_FIXUP_TYPE, ModuleInfo.fmtopt->formatname, fixup->type, curr->sym.name, fixup->locofs );
 
 	mov	rdx, QWORD PTR ModuleInfo+344
-	mov	ecx, 199				; 000000c7H
+	mov	ecx, 198				; 000000c6H
 	mov	eax, DWORD PTR [rbp+20]
 	add	rdx, 10
 	mov	r9, QWORD PTR [r13+8]
@@ -6424,7 +6424,7 @@ $LN21@CalcOffset:
 ; 300  :             EmitWarn( 2, GROUP_EXCEEDS_64K, grp->sym.name );
 
 	mov	r8, QWORD PTR [rbp+8]
-	mov	edx, 276				; 00000114H
+	mov	edx, 275				; 00000113H
 	mov	ecx, 2
 	call	EmitWarn
 $LN23@CalcOffset:
@@ -6486,7 +6486,7 @@ $LN14:
 
 ; 755  :             EmitError( MODEL_MUST_BE_FLAT );
 
-	mov	ecx, 212				; 000000d4H
+	mov	ecx, 211				; 000000d3H
 	call	EmitError
 $LN3@pe_create_:
 

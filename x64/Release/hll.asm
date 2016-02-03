@@ -754,7 +754,7 @@ $LN97:
 ; 1605 :     DebugMsg(("HllExitDir stack error\n"));
 ; 1606 :     return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
 
-	mov	ecx, 246				; 000000f6H
+	mov	ecx, 245				; 000000f5H
 	call	EmitError
 
 ; 1708 : }
@@ -792,7 +792,7 @@ $LN7@HllExitDir:
 ; 1614 :       return(EmitErr(BLOCK_NESTING_ERROR, tokenarray[i].string_ptr));
 
 	mov	rdx, QWORD PTR [rdx+r15+8]
-	lea	ecx, QWORD PTR [r13+77]
+	lea	ecx, QWORD PTR [r13+76]
 	call	EmitErr
 	jmp	$LN95@HllExitDir
 $LN9@HllExitDir:
@@ -806,7 +806,7 @@ $LN9@HllExitDir:
 
 ; 1618 :       return(EmitError(DOT_ELSE_CLAUSE_ALREADY_OCCURED_IN_THIS_DOT_IF_BLOCK));
 
-	mov	ecx, 68					; 00000044H
+	mov	ecx, 67					; 00000043H
 	call	EmitError
 	jmp	$LN95@HllExitDir
 $LN10@HllExitDir:
@@ -902,7 +902,7 @@ $LN42@HllExitDir:
 	shl	rax, 5
 	cmp	BYTE PTR [rax+r15], sil
 	je	SHORT $LN43@HllExitDir
-	mov	ecx, 200				; 000000c8H
+	mov	ecx, 199				; 000000c7H
 	call	EmitError
 	mov	esi, eax
 
@@ -968,7 +968,7 @@ $LL91@HllExitDir:
 ; 1647 :     if (hll == NULL) {
 ; 1648 :       return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
 
-	mov	ecx, 246				; 000000f6H
+	mov	ecx, 245				; 000000f5H
 	call	EmitError
 	jmp	$LN95@HllExitDir
 $LN17@HllExitDir:
@@ -1132,7 +1132,7 @@ $LN58@HllExitDir:
 	shl	rax, 5
 	cmp	BYTE PTR [rax+r15], sil
 	je	SHORT $LN59@HllExitDir
-	mov	ecx, 200				; 000000c8H
+	mov	ecx, 199				; 000000c7H
 	call	EmitError
 	mov	esi, eax
 
@@ -1217,7 +1217,7 @@ $LN26@HllExitDir:
 ; 1696 :     EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos);
 
 	mov	rdx, QWORD PTR [rax+r15+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 1697 :     rc = ERROR;
@@ -1319,7 +1319,7 @@ $LN95:
 ; 1442 :     DebugMsg(("HllEndDir: hll stack is empty\n"));
 ; 1443 :     return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
 
-	mov	ecx, 246				; 000000f6H
+	mov	ecx, 245				; 000000f5H
 	call	EmitError
 	jmp	$LN1@HllEndDir
 $LN4@HllEndDir:
@@ -1371,7 +1371,7 @@ $LN4@HllEndDir:
 ; 1468 :       EmitErr(BLOCK_NESTING_ERROR, tokenarray[i].string_ptr);
 
 	movsxd	rdx, DWORD PTR i$[rbp-256]
-	mov	ecx, 81					; 00000051H
+	mov	ecx, 80					; 00000050H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+r15+8]
 	call	EmitErr
@@ -1578,7 +1578,7 @@ $LN56@HllEndDir:
 	shl	rax, 5
 	cmp	BYTE PTR [rax+r15], r14b
 	je	SHORT $LN87@HllEndDir
-	mov	ecx, 200				; 000000c8H
+	mov	ecx, 199				; 000000c7H
 	call	EmitError
 	mov	r14d, eax
 
@@ -1627,7 +1627,7 @@ $LN27@HllEndDir:
 ; 1530 :         else
 ; 1531 :           EmitError(EXPR_TOO_COMPLEX_FOR_UNTILCXZ);
 
-	mov	ecx, 192				; 000000c0H
+	mov	ecx, 191				; 000000bfH
 	call	EmitError
 
 ; 1532 :       }
@@ -1714,7 +1714,7 @@ $LN70@HllEndDir:
 	shl	rax, 5
 	cmp	BYTE PTR [rax+r15], r14b
 	je	SHORT $LN71@HllEndDir
-	mov	ecx, 200				; 000000c8H
+	mov	ecx, 199				; 000000c7H
 	call	EmitError
 	mov	r14d, eax
 
@@ -1806,7 +1806,7 @@ $LN93@HllEndDir:
 ; 1456 :       return(EmitErr(BLOCK_NESTING_ERROR, tokenarray[i].string_ptr));
 
 	movsxd	rdx, DWORD PTR i$[rbp-256]
-	mov	ecx, 81					; 00000051H
+	mov	ecx, 80					; 00000050H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+r15+8]
 	call	EmitErr
@@ -1873,7 +1873,7 @@ $LN34@HllEndDir:
 ; 1565 :     EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos);
 
 	mov	rdx, QWORD PTR [rax+r15+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 1566 :     rc = ERROR;
@@ -2631,7 +2631,7 @@ $LN77@HllStartDi:
 	shl	rax, 5
 	cmp	BYTE PTR [rax+r13], r12b
 	je	SHORT $LN232@HllStartDi
-	mov	ecx, 200				; 000000c8H
+	mov	ecx, 199				; 000000c7H
 	call	EmitError
 	mov	r15d, eax
 
@@ -2800,7 +2800,7 @@ $LN130@HllStartDi:
 	shl	rax, 5
 	cmp	BYTE PTR [rax+r13], r12b
 	je	SHORT $LN234@HllStartDi
-	mov	ecx, 200				; 000000c8H
+	mov	ecx, 199				; 000000c7H
 	call	EmitError
 	mov	r15d, eax
 
@@ -2942,7 +2942,7 @@ $LN61@HllStartDi:
 	shl	rax, 5
 	cmp	BYTE PTR [rax+r13], r12b
 	je	SHORT $LN235@HllStartDi
-	mov	ecx, 200				; 000000c8H
+	mov	ecx, 199				; 000000c7H
 	call	EmitError
 	mov	r15d, eax
 
@@ -3009,7 +3009,7 @@ $LN20@HllStartDi:
 ; 1403 :     EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos);
 
 	mov	rdx, QWORD PTR [rax+r13+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 1404 :     rc = ERROR;
@@ -6288,7 +6288,7 @@ $LN2@EvaluateHl:
 ; 823  :     DebugMsg(("EvaluateHllExpression: unexpected tokens >%s<\n", tokenarray[*i].tokpos));
 ; 824  :     return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
 
-	mov	ecx, 200				; 000000c8H
+	mov	ecx, 199				; 000000c7H
 	call	EmitError
 
 ; 827  : }
@@ -7671,7 +7671,7 @@ $LN29@GetSimpleE:
 ; 443  :     DebugMsg(("GetSimpleExpression: float expression rejected: %s\n", tokenarray[op1_pos].tokpos));
 ; 444  :     return(EmitError(REAL_OR_BCD_NUMBER_NOT_ALLOWED)); /* v2.10: added */
 
-	mov	ecx, 271				; 0000010fH
+	mov	ecx, 270				; 0000010eH
 	jmp	SHORT $LN118@GetSimpleE
 $LN28@GetSimpleE:
 
@@ -7679,7 +7679,7 @@ $LN28@GetSimpleE:
 ; 440  :     DebugMsg(("GetSimpleExpression: empty expression rejected\n"));
 ; 441  :     return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE)); /* v2.09: changed from NOT_ERROR to ERROR */
 
-	mov	ecx, 200				; 000000c8H
+	mov	ecx, 199				; 000000c7H
 $LN118@GetSimpleE:
 	call	EmitError
 $LN1@GetSimpleE:
@@ -7954,7 +7954,7 @@ $LN7@GetToken:
 
 ; 327  :     return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
 
-	mov	ecx, 200				; 000000c8H
+	mov	ecx, 199				; 000000c7H
 
 ; 331  : }
 
@@ -9121,7 +9121,7 @@ HllCheckOpen PROC
 ; 1717 :     EmitErr(UNMATCHED_BLOCK_NESTING, ".if-.repeat-.while");
 
 	lea	rdx, OFFSET FLAT:$SG11723
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 142				; 0000008eH
 	jmp	EmitErr
 $LN2@HllCheckOp:
 

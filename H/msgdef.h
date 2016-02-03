@@ -24,18 +24,17 @@ pick( TXT_CHARACTERISTICS,    "characteristics" )
 pick( TXT_ALIASNAME,          "alias" ) /* v2.10: added */
 
 /* error/warning message text constants */
-
-pick( INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS,          "invalid combination of opcode and operands" )/*HJWasm v2.13: added */
-pick( DECORATOR_OR_BRACE_EXPECTED,                         "decorator or brace expected" )               /*HJWasm v2.13: added */
-pick( WRONG_MASK_REGISTER_NUBER,                           "wrong mask register number" )
-pick( TO_MANY_DECORATORS,                                  "to many decorators" )
-pick( MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS,     "mismatch in the number of broadcasting elements" )
-pick( Z_DECORATOR_EXPECTED,                                "z decorator expected" )
-pick( K_REGISTER_EXPECTED,                                 "K register expected" )
-pick( EMBEDDED_ROUNDING_IS_AVAILABLE_ONLY_WITH_REG_REG_OP, "Embedded rounding is available only with reg-reg op" )
-pick( UNAUTHORISED_USE_OF_EVEX_REGISTERS,                  "Unauthorised use of AVX512 register" )
-pick(UNAUTHORISED_USE_OF_EVEX_ENCODING,                    "EVEX encoding not enabled. Use option evex directive?" )
+pick(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS, "invalid combination of opcode and operands")/*HJWasm v2.13: added */
+pick(DECORATOR_OR_BRACE_EXPECTED, "decorator or brace expected")               /*HJWasm v2.13: added */
+pick(WRONG_MASK_REGISTER_NUBER, "wrong mask register number")
+pick(TO_MANY_DECORATORS, "to many decorators")
+pick(MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS, "mismatch in the number of broadcasting elements")
+pick(Z_DECORATOR_EXPECTED, "z decorator expected")
+pick(K_REGISTER_EXPECTED, "K register expected")
+pick(EMBEDDED_ROUNDING_IS_AVAILABLE_ONLY_WITH_REG_REG_OP, "Embedded rounding is available only with reg-reg op")
+pick(UNAUTHORISED_USE_OF_EVEX_REGISTERS, "Unauthorised use of AVX512 register")
 pick (msg_unused11,                                        "" )
+
 #if COMDATSUPP
 pick( VALUE_NOT_WITHIN_ALLOWED_RANGE,    "Value not within allowed range %s" )
 pick( INVALID_ASSOCIATED_SEGMENT,        "Invalid associated segment: %s" )
@@ -357,3 +356,6 @@ pick( ELSE_CLAUSE_ALREADY_OCCURED_IN_THIS_IF_BLOCK, "ELSE clause already occured
 pick( ILLEGAL_USE_OF_SEGMENT_REGISTER,   "Illegal use of segment register" )
 pick( GROUP_EXCEEDS_64K,                 "Group exceeds 64K: %s" )
 pick( EXPORT_MUST_BE_FAR,                "EXPORT must be FAR: %s" )
+
+/* john hankinson: moved this one here to maintain err numbers with regression tests */
+pick(UNAUTHORISED_USE_OF_EVEX_ENCODING, "EVEX encoding not enabled. Use option evex directive?")

@@ -629,7 +629,7 @@ $LN4@NameDirect:
 ; 420  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i-1].tokpos ) );
 
 	movsxd	rdx, ecx
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+r8-8]
 	jmp	EmitErr
@@ -690,8 +690,8 @@ $LN5@IncludeLib:
 ; 162  :         //return( ERROR );
 ; 163  :         EmitWarn( 2, LIBRARY_NAME_MISSING );
 
-	mov	edx, 89					; 00000059H
-	lea	ecx, QWORD PTR [rdx-87]
+	mov	edx, 88					; 00000058H
+	lea	ecx, QWORD PTR [rdx-86]
 	call	EmitWarn
 $LN6@IncludeLib:
 
@@ -714,7 +714,7 @@ $LN6@IncludeLib:
 ; 168  :             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i+1].tokpos ) );
 
 	mov	rdx, QWORD PTR [rax+rdi+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	mov	rbx, QWORD PTR [rsp+48]
 	mov	rsi, QWORD PTR [rsp+56]
 
@@ -873,7 +873,7 @@ $LN31:
 
 ; 208  :         return( EmitError( EXPECTED_FILE_NAME ) );
 
-	lea	ecx, QWORD PTR [rdi+113]
+	lea	ecx, QWORD PTR [rdi+112]
 	jmp	$LN27@IncBinDire
 $LN2@IncBinDire:
 
@@ -1032,7 +1032,7 @@ $LN19@IncBinDire:
 ; 249  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	mov	rdx, QWORD PTR [rax+rbx+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 287  : }
@@ -1051,7 +1051,7 @@ $LN28@IncBinDire:
 
 ; 235  :             return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	jmp	$LN27@IncBinDire
 $LN20@IncBinDire:
 
@@ -1064,7 +1064,7 @@ $LN20@IncBinDire:
 
 ; 253  :         return( EmitError( MUST_BE_IN_SEGMENT_BLOCK ) );
 
-	mov	ecx, 83					; 00000053H
+	mov	ecx, 82					; 00000052H
 	jmp	$LN27@IncBinDire
 $LN21@IncBinDire:
 
@@ -1183,7 +1183,7 @@ $LN3@IncBinDire:
 ; 224  :     } else {
 ; 225  :         return( EmitError( FILENAME_MUST_BE_ENCLOSED_IN_QUOTES_OR_BRACKETS ) );
 
-	mov	ecx, 242				; 000000f2H
+	mov	ecx, 241				; 000000f1H
 $LN27@IncBinDire:
 	call	EmitError
 
@@ -1314,7 +1314,7 @@ $LN34:
 ; 335  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i+3].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rax+rdx+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	mov	rsi, QWORD PTR [rsp+56]
 
 ; 388  : }
@@ -1393,7 +1393,7 @@ $LN29@AliasDirec:
 ; 379  :                 return( EmitErr( SYMBOL_NOT_DEFINED, subst ) );
 
 	mov	rdx, rsi
-	lea	ecx, QWORD PTR [rax+103]
+	lea	ecx, QWORD PTR [rax+102]
 	mov	rbx, QWORD PTR [rsp+48]
 	mov	rsi, QWORD PTR [rsp+56]
 
@@ -1421,7 +1421,7 @@ $LN24@AliasDirec:
 ; 382  :                 return( EmitErr( MUST_BE_PUBLIC_OR_EXTERNAL, subst ) );
 
 	mov	rdx, rsi
-	mov	ecx, 269				; 0000010dH
+	mov	ecx, 268				; 0000010cH
 	mov	rbx, QWORD PTR [rsp+48]
 	mov	rsi, QWORD PTR [rsp+56]
 
@@ -1457,7 +1457,7 @@ $LN17@AliasDirec:
 ; 367  :         return( EmitErr( SYMBOL_REDEFINITION, sym->name ) );
 
 	mov	rdx, QWORD PTR [rbx+8]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	mov	rbx, QWORD PTR [rsp+48]
 	mov	rsi, QWORD PTR [rsp+56]
 
@@ -1523,7 +1523,7 @@ $LN11@AliasDirec:
 ; 351  :             return( EmitErr( MUST_BE_PUBLIC_OR_EXTERNAL, subst ) );
 
 	mov	rdx, rsi
-	mov	ecx, 269				; 0000010dH
+	mov	ecx, 268				; 0000010cH
 	call	EmitErr
 $LN32@AliasDirec:
 	mov	rdi, QWORD PTR [rsp+64]
@@ -1572,7 +1572,7 @@ $LN7@AliasDirec:
 ; 329  :         DebugMsg(("AliasDirective: second argument is not a literal: %s\n", tokenarray[i+2].string_ptr ));
 ; 330  :         return( EmitError( TEXT_ITEM_REQUIRED ) );
 
-	mov	ecx, 145				; 00000091H
+	mov	ecx, 144				; 00000090H
 
 ; 388  : }
 
@@ -1592,7 +1592,7 @@ $LN5@AliasDirec:
 ; 324  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i+1].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rcx+rdx+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 
 ; 388  : }
 
@@ -1682,7 +1682,7 @@ $LN2@RadixDirec:
 
 ; 453  :         return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	jmp	SHORT $LN8@RadixDirec
 $LN3@RadixDirec:
 
@@ -1697,7 +1697,7 @@ $LN3@RadixDirec:
 ; 456  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	mov	rdx, QWORD PTR [rax+rdi+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 466  : }
@@ -1740,7 +1740,7 @@ $LN6@RadixDirec:
 
 ; 459  :         return( EmitError( INVALID_RADIX_TAG ) );
 
-	mov	ecx, 182				; 000000b6H
+	mov	ecx, 181				; 000000b5H
 $LN8@RadixDirec:
 	call	EmitError
 
@@ -1776,7 +1776,7 @@ $LN10:
 ; 474  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i+1].tokpos ) );
 
 	mov	rdx, QWORD PTR [rdx+r8+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 
 ; 492  : }
 
@@ -1841,7 +1841,7 @@ $LN5@SegOrderDi:
 	mov	rcx, QWORD PTR [rcx+r8+8]
 	call	_strupr
 	mov	r8, rax
-	mov	edx, 225				; 000000e1H
+	mov	edx, 224				; 000000e0H
 	mov	ecx, 2
 	call	EmitWarn
 $LN6@SegOrderDi:
@@ -1921,7 +1921,7 @@ $LN5@IncludeDir:
 
 ; 83   :         return( EmitError( EXPECTED_FILE_NAME ) );
 
-	mov	ecx, 113				; 00000071H
+	mov	ecx, 112				; 00000070H
 
 ; 103  :     return( NOT_ERROR );
 ; 104  : }
@@ -1957,7 +1957,7 @@ $LN6@IncludeDir:
 ; 90   :             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i+1].tokpos ) );
 
 	mov	rdx, QWORD PTR [rdx+rsi+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 
 ; 103  :     return( NOT_ERROR );
 ; 104  : }

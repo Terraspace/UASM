@@ -107,7 +107,7 @@ $LN32:
 
 	lea	r8, OFFSET FLAT:$SG10613
 $LN30@SafeSEHDir:
-	mov	edx, 262				; 00000106H
+	mov	edx, 261				; 00000105H
 	mov	ecx, 2
 	call	EmitWarn
 $LN6@SafeSEHDir:
@@ -161,7 +161,7 @@ $LN7@SafeSEHDir:
 ; 44   :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rdi+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	mov	rdi, QWORD PTR [rsp+48]
 
 ; 89   : }
@@ -200,7 +200,7 @@ $LN9@SafeSEHDir:
 ; 54   :         return( EmitErr( SAFESEH_ARGUMENT_MUST_BE_A_PROC, tokenarray[i].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rdi+8]
-	mov	ecx, 261				; 00000105H
+	mov	ecx, 260				; 00000104H
 	mov	rdi, QWORD PTR [rsp+48]
 
 ; 89   : }
@@ -259,7 +259,7 @@ $LN12@SafeSEHDir:
 ; 51   :             return( EmitErr( SYMBOL_NOT_DEFINED, tokenarray[i].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rdi+8]
-	mov	ecx, 103				; 00000067H
+	mov	ecx, 102				; 00000066H
 	mov	rdi, QWORD PTR [rsp+48]
 
 ; 89   : }
@@ -321,7 +321,7 @@ $LN19@SafeSEHDir:
 ; 85   :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rax+rsi+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	mov	rdi, QWORD PTR [rsp+48]
 
 ; 89   : }
