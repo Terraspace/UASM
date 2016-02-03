@@ -6,21 +6,22 @@ INCLUDELIB MSVCRTD
 INCLUDELIB OLDNAMES
 
 _BSS	SEGMENT
-$SG11304 DB	01H DUP (?)
-$SG11314 DB	01H DUP (?)
-$SG11476 DB	01H DUP (?)
-$SG11494 DB	01H DUP (?)
-$SG11495 DB	01H DUP (?)
+$SG11306 DB	01H DUP (?)
+$SG11316 DB	01H DUP (?)
+$SG11478 DB	01H DUP (?)
+$SG11496 DB	01H DUP (?)
+$SG11497 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	CurrStruct:QWORD
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG11131 DB	01H DUP (?)
-$SG11207 DB	01H DUP (?)
-$SG11218 DB	01H DUP (?)
+$SG11133 DB	01H DUP (?)
+$SG11209 DB	01H DUP (?)
+$SG11220 DB	01H DUP (?)
 _BSS	ENDS
 CONST	SEGMENT
 szStructure DB	'structure', 00H
@@ -30,109 +31,109 @@ szRecord DB	'record', 00H
 szNonUnique DB	'NONUNIQUE', 00H
 CONST	ENDS
 _DATA	SEGMENT
-$SG11295 DB	'NULL', 00H
+$SG11297 DB	'NULL', 00H
 	ORG $+3
-$SG11296 DB	'<anonymous>', 00H
-$SG11346 DB	'union', 00H
+$SG11298 DB	'<anonymous>', 00H
+$SG11348 DB	'union', 00H
 	ORG $+6
-$SG11297 DB	'CreateStructField(%s): name=%s, curr ofs=%u, vartype=%s,'
+$SG11299 DB	'CreateStructField(%s): name=%s, curr ofs=%u, vartype=%s,'
 	DB	' size=%u', 0aH, 00H
 	ORG $+6
-$SG11310 DB	'CreateStructField(%s): initializer=>%s<', 0aH, 00H
+$SG11312 DB	'CreateStructField(%s): initializer=>%s<', 0aH, 00H
 	ORG $+7
-$SG11311 DB	'CreateStructField(%s): no initializer<', 0aH, 00H
-$SG11320 DB	'CreateStructField(%s): align=%u, size=%u, ofs=%u', 0aH, 00H
+$SG11313 DB	'CreateStructField(%s): no initializer<', 0aH, 00H
+$SG11322 DB	'CreateStructField(%s): align=%u, size=%u, ofs=%u', 0aH, 00H
 	ORG $+6
-$SG11327 DB	'CreateStructField(%s): max_mbr_size set to %u', 0aH, 00H
+$SG11329 DB	'CreateStructField(%s): max_mbr_size set to %u', 0aH, 00H
 	ORG $+1
-$SG11347 DB	'struct', 00H
+$SG11349 DB	'struct', 00H
 	ORG $+1
-$SG11329 DB	'CreateStructField(%s): Masm51 compat on, lookup %s in gl'
+$SG11331 DB	'CreateStructField(%s): Masm51 compat on, lookup %s in gl'
 	DB	'obal symbol table', 0aH, 00H
 	ORG $+5
-$SG11348 DB	'UpdateStructSize(%s.%s): %s, curr mbr size=%u curr struc'
+$SG11350 DB	'UpdateStructSize(%s.%s): %s, curr mbr size=%u curr struc'
 	DB	'/union size=%u', 0aH, 00H
-$SG11412 DB	'GetQualifiedType: memtype=%X, symtype set by target_type'
+$SG11414 DB	'GetQualifiedType: memtype=%X, symtype set by target_type'
 	DB	0aH, 00H
 	ORG $+6
-$SG11421 DB	'GetQualifiedType: invalid type : %s', 0aH, 00H
+$SG11423 DB	'GetQualifiedType: invalid type : %s', 0aH, 00H
 	ORG $+3
-$SG11429 DB	'GetQualifiedType: memtype=%X, symtype set by target_type'
+$SG11431 DB	'GetQualifiedType: memtype=%X, symtype set by target_type'
 	DB	0aH, 00H
 	ORG $+2
-$SG11434 DB	'NULL', 00H
+$SG11436 DB	'NULL', 00H
 	ORG $+7
-$SG11464 DB	'TypedefDirective(%d) enter', 0aH, 00H
-$SG11121 DB	'NULL', 00H
+$SG11466 DB	'TypedefDirective(%d) enter', 0aH, 00H
+$SG11123 DB	'NULL', 00H
 	ORG $+7
-$SG11435 DB	'GetQualifiedType: i=%u, memtype=%Xh, ptr=%u, far=%u, ofs'
+$SG11437 DB	'GetQualifiedType: i=%u, memtype=%Xh, ptr=%u, far=%u, ofs'
 	DB	'size=%d, arbtype=%s:%X', 0aH, 00H
-$SG11477 DB	'TypedefDirective PROTO, created new unnamed prototype %p'
+$SG11479 DB	'TypedefDirective PROTO, created new unnamed prototype %p'
 	DB	0aH, 00H
 	ORG $+6
-$SG11480 DB	'TypedefDirective PROTO, call ParseProc(sym=%p i=%d, 0)', 0aH
+$SG11482 DB	'TypedefDirective PROTO, call ParseProc(sym=%p i=%d, 0)', 0aH
 	DB	00H
-$SG11482 DB	'TypedefDirective PROTO, ParseProc() returned status ok', 0aH
+$SG11484 DB	'TypedefDirective PROTO, ParseProc() returned status ok', 0aH
 	DB	00H
-$SG11484 DB	'TypedefDirective(%s) ok, mem_type=%Xh, ofssize=%u', 0aH, 00H
+$SG11486 DB	'TypedefDirective(%s) ok, mem_type=%Xh, ofssize=%u', 0aH, 00H
 	ORG $+5
-$SG11502 DB	'TypedefDirective: unexpected token %u, idx=%u', 0aH, 00H
+$SG11504 DB	'TypedefDirective: unexpected token %u, idx=%u', 0aH, 00H
 	ORG $+1
-$SG11590 DB	'RecordDirective(%s) exit, no error', 0aH, 00H
+$SG11592 DB	'RecordDirective(%s) exit, no error', 0aH, 00H
 	ORG $+4
-$SG11496 DB	'TypedefDirective: old-new memtype=%X-%X type=%X(%s)-%X(%'
+$SG11498 DB	'TypedefDirective: old-new memtype=%X-%X type=%X(%s)-%X(%'
 	DB	's) far=%u-%u ind=%u-%u ofss=%d-%d pmt=%X-%X', 0aH, 00H
 	ORG $+3
-$SG11600 DB	'DeleteType(%s) enter, typekind=%u, memtype=%Xh', 0aH, 00H
-$SG11069 DB	'AreStructsEqual: fields don''t match', 0aH, 00H
+$SG11602 DB	'DeleteType(%s) enter, typekind=%u, memtype=%Xh', 0aH, 00H
+$SG11071 DB	'AreStructsEqual: fields don''t match', 0aH, 00H
 	ORG $+3
-$SG11499 DB	'TypedefDirective(%s) ok, mem_type=MT_TYPE, size=%u, type'
+$SG11501 DB	'TypedefDirective(%s) ok, mem_type=MT_TYPE, size=%u, type'
 	DB	'=%p type.memtype=%X', 0aH, 00H
 	ORG $+3
-$SG11500 DB	'TypedefDirective(%s) ok, mem_type=%Xh, size=%u, indirect'
+$SG11502 DB	'TypedefDirective(%s) ok, mem_type=%Xh, size=%u, indirect'
 	DB	'ion=%u target=%p', 0aH, 00H
 	ORG $+6
-$SG11547 DB	'RecordDirective(%d) enter', 0aH, 00H
+$SG11549 DB	'RecordDirective(%d) enter', 0aH, 00H
 	ORG $+5
-$SG11054 DB	'SearchNameInStruct: ''%s'' found in struct %s', 0aH, 00H
+$SG11056 DB	'SearchNameInStruct: ''%s'' found in struct %s', 0aH, 00H
 	ORG $+3
-$SG11066 DB	'AreStructsEqual(%s) enter', 0aH, 00H
+$SG11068 DB	'AreStructsEqual(%s) enter', 0aH, 00H
 	ORG $+5
-$SG11073 DB	'AreStructsEqual: type name of field changed', 0aH, 00H
+$SG11075 DB	'AreStructsEqual: type name of field changed', 0aH, 00H
 	ORG $+3
-$SG11075 DB	'AreStructsEqual: offset of field %s changed: %u - %u', 0aH
+$SG11077 DB	'AreStructsEqual: offset of field %s changed: %u - %u', 0aH
 	DB	00H
 	ORG $+2
-$SG11077 DB	'AreStructsEqual: total_size of field changed', 0aH, 00H
+$SG11079 DB	'AreStructsEqual: total_size of field changed', 0aH, 00H
 	ORG $+2
-$SG11122 DB	'StructDirective(%s) enter, i=%u, CurrStruct=%s', 0aH, 00H
-$SG11126 DB	'StructDirective(%s): error: either currstruct or i must '
+$SG11124 DB	'StructDirective(%s) enter, i=%u, CurrStruct=%s', 0aH, 00H
+$SG11128 DB	'StructDirective(%s): error: either currstruct or i must '
 	DB	'be 0', 0aH, 00H
 	ORG $+2
-$SG11144 DB	'StructDirective(%s) alignment=%u', 0aH, 00H
+$SG11146 DB	'StructDirective(%s) alignment=%u', 0aH, 00H
 	ORG $+6
-$SG11148 DB	'StructDirective(%s): error: unexpected token %u >%s<', 0aH
+$SG11150 DB	'StructDirective(%s): error: unexpected token %u >%s<', 0aH
 	DB	00H
 	ORG $+2
-$SG11153 DB	'StructDirective: SymSearch (%s)=%X (curr struct=%X)', 0aH
+$SG11155 DB	'StructDirective: SymSearch (%s)=%X (curr struct=%X)', 0aH
 	DB	00H
 	ORG $+3
-$SG11154 DB	'StructDirective(%s): SearchNameInStruc()=%X', 0aH, 00H
+$SG11156 DB	'StructDirective(%s): SearchNameInStruc()=%X', 0aH, 00H
 	ORG $+3
-$SG11160 DB	'types.c', 00H
-$SG11161 DB	'types.c', 00H
-$SG11199 DB	'EndstructDirective(%s), ofs=%u, struct size=%u, max_mbr='
+$SG11162 DB	'types.c', 00H
+$SG11163 DB	'types.c', 00H
+$SG11201 DB	'EndstructDirective(%s), ofs=%u, struct size=%u, max_mbr='
 	DB	'%u, alignment=%u', 0aH, 00H
 	ORG $+6
-$SG11210 DB	'EndstructDirective: names don''t match, i=%u, name=%s - '
+$SG11212 DB	'EndstructDirective: names don''t match, i=%u, name=%s - '
 	DB	'%s', 0aH, 00H
 	ORG $+5
-$SG11216 DB	'EndstructDirective:, struct size after final alignment=%'
+$SG11218 DB	'EndstructDirective:, struct size after final alignment=%'
 	DB	'u', 0aH, 00H
 	ORG $+5
-$SG11230 DB	'EndstructDirective: delete the redefinition of %s', 0aH, 00H
+$SG11232 DB	'EndstructDirective: delete the redefinition of %s', 0aH, 00H
 	ORG $+5
-$SG11232 DB	'EndstructDirective: new size of restored structure=%u', 0aH
+$SG11234 DB	'EndstructDirective: new size of restored structure=%u', 0aH
 	DB	00H
 _DATA	ENDS
 PUBLIC	CreateTypeSymbol
@@ -438,7 +439,7 @@ $LN61:
 ; 1127 :     DebugMsg1(("RecordDirective(%d) enter\n", i));
 
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11547
+	lea	rcx, OFFSET FLAT:$SG11549
 	call	DoDebugMsg1
 
 ; 1128 :     if ( i != 1 ) {
@@ -452,7 +453,7 @@ $LN61:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	$LN1@RecordDire
 $LN11@RecordDire:
@@ -550,7 +551,7 @@ $LN15@RecordDire:
 ; 1149 :         return( EmitErr( SYMBOL_REDEFINITION, name ) );
 
 	mov	rdx, QWORD PTR name$[rsp]
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 144				; 00000090H
 	call	EmitErr
 	jmp	$LN1@RecordDire
 $LN16@RecordDire:
@@ -618,7 +619,7 @@ $LN4@RecordDire:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 
 ; 1166 :             break;
@@ -643,7 +644,7 @@ $LN20@RecordDire:
 
 ; 1170 :             EmitError( IDENTIFIER_TOO_LONG );
 
-	mov	ecx, 70					; 00000046H
+	mov	ecx, 71					; 00000047H
 	call	EmitError
 
 ; 1171 :             break;
@@ -674,7 +675,7 @@ $LN21@RecordDire:
 
 ; 1176 :             EmitError( COLON_EXPECTED );
 
-	mov	ecx, 84					; 00000054H
+	mov	ecx, 85					; 00000055H
 	call	EmitError
 
 ; 1177 :             break;
@@ -713,7 +714,7 @@ $LN23@RecordDire:
 
 ; 1184 :             EmitError( CONSTANT_EXPECTED );
 
-	mov	ecx, 65					; 00000041H
+	mov	ecx, 66					; 00000042H
 	call	EmitError
 
 ; 1185 :             opndx.value = 1;
@@ -733,7 +734,7 @@ $LN24@RecordDire:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 35					; 00000023H
+	mov	ecx, 36					; 00000024H
 	call	EmitErr
 
 ; 1189 :             break;
@@ -765,7 +766,7 @@ $LN55@RecordDire:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 140				; 0000008cH
+	mov	ecx, 141				; 0000008dH
 	call	EmitErr
 
 ; 1192 :             break;
@@ -846,7 +847,7 @@ $LN56@RecordDire:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 
 ; 1203 :                 break;
@@ -927,7 +928,7 @@ $LN34@RecordDire:
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	r8, QWORD PTR [rcx+rax+8]
 	lea	rdx, OFFSET FLAT:szRecord
-	mov	ecx, 139				; 0000008bH
+	mov	ecx, 140				; 0000008cH
 	call	EmitErr
 
 ; 1218 :                 redef_err++;
@@ -962,7 +963,7 @@ $LN31@RecordDire:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 144				; 00000090H
 	call	EmitErr
 
 ; 1224 :                 break;
@@ -1196,7 +1197,7 @@ $LN43@RecordDire:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 
 ; 1262 :                 break;
@@ -1369,7 +1370,7 @@ $LN52@RecordDire:
 	mov	rax, QWORD PTR newr$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	lea	rdx, OFFSET FLAT:szRecord
-	mov	ecx, 139				; 0000008bH
+	mov	ecx, 140				; 0000008cH
 	call	EmitErr
 $LN51@RecordDire:
 
@@ -1386,7 +1387,7 @@ $LN50@RecordDire:
 ; 1307 :     DebugMsg(("RecordDirective(%s) exit, no error\n", name ));
 
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11590
+	lea	rcx, OFFSET FLAT:$SG11592
 	call	DoDebugMsg
 
 ; 1308 :     return( NOT_ERROR );
@@ -1451,7 +1452,7 @@ $LN52:
 ; 969  :     DebugMsg1(("TypedefDirective(%d) enter\n", i));
 
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11464
+	lea	rcx, OFFSET FLAT:$SG11466
 	call	DoDebugMsg1
 
 ; 970  : 
@@ -1466,7 +1467,7 @@ $LN52:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	$LN1@TypedefDir
 $LN8@TypedefDir:
@@ -1555,7 +1556,7 @@ $LN14@TypedefDir:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 144				; 00000090H
 	call	EmitErr
 	jmp	$LN1@TypedefDir
 $LN13@TypedefDir:
@@ -1618,7 +1619,7 @@ $LN15@TypedefDir:
 ; 1008 :             proto = (struct dsym *)CreateProc( NULL, "", SYM_TYPE );
 
 	mov	r8d, 7
-	lea	rdx, OFFSET FLAT:$SG11476
+	lea	rdx, OFFSET FLAT:$SG11478
 	xor	ecx, ecx
 	call	CreateProc
 	mov	QWORD PTR proto$4[rsp], rax
@@ -1626,7 +1627,7 @@ $LN15@TypedefDir:
 ; 1009 :             DebugMsg1(("TypedefDirective PROTO, created new unnamed prototype %p\n", proto ));
 
 	mov	rdx, QWORD PTR proto$4[rsp]
-	lea	rcx, OFFSET FLAT:$SG11477
+	lea	rcx, OFFSET FLAT:$SG11479
 	call	DoDebugMsg1
 	jmp	SHORT $LN18@TypedefDir
 $LN17@TypedefDir:
@@ -1652,7 +1653,7 @@ $LN19@TypedefDir:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 136				; 00000088H
+	mov	ecx, 137				; 00000089H
 	call	EmitErr
 	jmp	$LN1@TypedefDir
 $LN20@TypedefDir:
@@ -1669,7 +1670,7 @@ $LN18@TypedefDir:
 
 	mov	r8d, DWORD PTR i$[rsp]
 	mov	rdx, QWORD PTR proto$4[rsp]
-	lea	rcx, OFFSET FLAT:$SG11480
+	lea	rcx, OFFSET FLAT:$SG11482
 	call	DoDebugMsg1
 
 ; 1017 :         if( ParseProc( proto, i, tokenarray, FALSE, ModuleInfo.langtype ) == ERROR )
@@ -1692,7 +1693,7 @@ $LN21@TypedefDir:
 
 ; 1019 :         DebugMsg1(("TypedefDirective PROTO, ParseProc() returned status ok\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11482
+	lea	rcx, OFFSET FLAT:$SG11484
 	call	DoDebugMsg1
 
 ; 1020 :         sym->mem_type = MT_PROC;
@@ -1762,7 +1763,7 @@ $LN22@TypedefDir:
 	mov	r8d, DWORD PTR [rax+36]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11484
+	lea	rcx, OFFSET FLAT:$SG11486
 	call	DoDebugMsg1
 
 ; 1032 :         return( NOT_ERROR );
@@ -1987,7 +1988,7 @@ $LN29@TypedefDir:
 	mov	QWORD PTR tv289[rsp], rax
 	jmp	SHORT $LN43@TypedefDir
 $LN42@TypedefDir:
-	lea	rax, OFFSET FLAT:$SG11494
+	lea	rax, OFFSET FLAT:$SG11496
 	mov	QWORD PTR tv289[rsp], rax
 $LN43@TypedefDir:
 	mov	rax, QWORD PTR sym$[rsp]
@@ -2008,7 +2009,7 @@ $LN46@TypedefDir:
 	mov	QWORD PTR tv300[rsp], rax
 	jmp	SHORT $LN45@TypedefDir
 $LN44@TypedefDir:
-	lea	rax, OFFSET FLAT:$SG11495
+	lea	rax, OFFSET FLAT:$SG11497
 	mov	QWORD PTR tv300[rsp], rax
 $LN45@TypedefDir:
 	mov	rax, QWORD PTR tv300[rsp]
@@ -2059,7 +2060,7 @@ $LN49@TypedefDir:
 	mov	r8d, DWORD PTR ti$[rsp+16]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	edx, DWORD PTR [rax+36]
-	lea	rcx, OFFSET FLAT:$SG11496
+	lea	rcx, OFFSET FLAT:$SG11498
 	call	DoDebugMsg
 
 ; 1068 :                       sym->mem_type, ti.mem_type,
@@ -2073,7 +2074,7 @@ $LN49@TypedefDir:
 ; 1076 :             return( EmitErr( SYMBOL_TYPE_CONFLICT, name ) );
 
 	mov	rdx, QWORD PTR name$[rsp]
-	mov	ecx, 136				; 00000088H
+	mov	ecx, 137				; 00000089H
 	call	EmitErr
 	jmp	$LN1@TypedefDir
 $LN28@TypedefDir:
@@ -2165,7 +2166,7 @@ $LN51@TypedefDir:
 	mov	r8d, DWORD PTR [rax+56]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11499
+	lea	rcx, OFFSET FLAT:$SG11501
 	call	DoDebugMsg1
 
 ; 1091 :                sym->name, sym->total_size, sym->type, ti.symtype ? ti.symtype->mem_type : 0 ));
@@ -2181,7 +2182,7 @@ $LN51@TypedefDir:
 	mov	r8d, DWORD PTR [rax+36]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11500
+	lea	rcx, OFFSET FLAT:$SG11502
 	call	DoDebugMsg1
 
 ; 1094 : 
@@ -2202,7 +2203,7 @@ $LN51@TypedefDir:
 	movzx	eax, BYTE PTR [rcx+rax]
 	mov	r8d, DWORD PTR i$[rsp]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11502
+	lea	rcx, OFFSET FLAT:$SG11504
 	call	DoDebugMsg
 
 ; 1097 :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
@@ -2211,7 +2212,7 @@ $LN51@TypedefDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	SHORT $LN1@TypedefDir
 $LN34@TypedefDir:
@@ -2303,7 +2304,7 @@ $LN4@CheckAnony:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 144				; 00000090H
 	call	EmitErr
 	jmp	SHORT $LN1@CheckAnony
 $LN7@CheckAnony:
@@ -2434,7 +2435,7 @@ $LN40:
 	mov	r8d, DWORD PTR [rax+16]
 	mov	rax, QWORD PTR dir$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11199
+	lea	rcx, OFFSET FLAT:$SG11201
 	call	DoDebugMsg1
 
 ; 380  :               dir->sym.name,
@@ -2539,11 +2540,11 @@ $LN10@EndstructD:
 	mov	QWORD PTR tv132[rsp], rax
 	jmp	SHORT $LN37@EndstructD
 $LN36@EndstructD:
-	lea	rax, OFFSET FLAT:$SG11207
+	lea	rax, OFFSET FLAT:$SG11209
 	mov	QWORD PTR tv132[rsp], rax
 $LN37@EndstructD:
 	mov	rdx, QWORD PTR tv132[rsp]
-	mov	ecx, 142				; 0000008eH
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 	jmp	$LN1@EndstructD
 $LN11@EndstructD:
@@ -2580,7 +2581,7 @@ $LN11@EndstructD:
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	r8, QWORD PTR [rcx+rax+8]
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11210
+	lea	rcx, OFFSET FLAT:$SG11212
 	call	DoDebugMsg
 
 ; 414  :             return( EmitErr( UNMATCHED_BLOCK_NESTING, tokenarray[0].string_ptr ) );
@@ -2589,7 +2590,7 @@ $LN11@EndstructD:
 	imul	rax, rax, 0
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 142				; 0000008eH
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 	jmp	$LN1@EndstructD
 $LN15@EndstructD:
@@ -2729,7 +2730,7 @@ $LN20@EndstructD:
 
 	mov	rax, QWORD PTR dir$[rsp]
 	mov	edx, DWORD PTR [rax+56]
-	lea	rcx, OFFSET FLAT:$SG11216
+	lea	rcx, OFFSET FLAT:$SG11218
 	call	DoDebugMsg1
 $LN18@EndstructD:
 
@@ -2822,7 +2823,7 @@ $LN39@EndstructD:
 ; 465  :         dir->sym.name = ""; /* the type becomes anonymous */
 
 	mov	rax, QWORD PTR dir$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11218
+	lea	rcx, OFFSET FLAT:$SG11220
 	mov	QWORD PTR [rax+8], rcx
 
 ; 466  :         dir->sym.name_size = 0;
@@ -2939,7 +2940,7 @@ $LN5@EndstructD:
 	mov	rax, QWORD PTR dir$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	lea	rdx, OFFSET FLAT:szStructure
-	mov	ecx, 139				; 0000008bH
+	mov	ecx, 140				; 0000008cH
 	call	EmitErr
 $LN32@EndstructD:
 
@@ -2948,7 +2949,7 @@ $LN32@EndstructD:
 
 	mov	rax, QWORD PTR dir$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11230
+	lea	rcx, OFFSET FLAT:$SG11232
 	call	DoDebugMsg
 
 ; 491  :             SymFree( (struct asym *)dir );
@@ -2994,7 +2995,7 @@ $LN33@EndstructD:
 
 	mov	rax, QWORD PTR CurrStruct
 	mov	edx, DWORD PTR [rax+56]
-	lea	rcx, OFFSET FLAT:$SG11232
+	lea	rcx, OFFSET FLAT:$SG11234
 	call	DoDebugMsg1
 $LN30@EndstructD:
 
@@ -3015,7 +3016,7 @@ $LN30@EndstructD:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	SHORT $LN1@EndstructD
 $LN34@EndstructD:
@@ -3099,7 +3100,7 @@ $LN52@StructDire:
 	mov	QWORD PTR tv73[rsp], rax
 	jmp	SHORT $LN54@StructDire
 $LN53@StructDire:
-	lea	rax, OFFSET FLAT:$SG11121
+	lea	rax, OFFSET FLAT:$SG11123
 	mov	QWORD PTR tv73[rsp], rax
 $LN54@StructDire:
 	movsxd	rax, DWORD PTR i$[rsp]
@@ -3108,7 +3109,7 @@ $LN54@StructDire:
 	mov	r8d, DWORD PTR i$[rsp]
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG11122
+	lea	rcx, OFFSET FLAT:$SG11124
 	call	DoDebugMsg1
 
 ; 179  : 
@@ -3136,7 +3137,7 @@ $LN8@StructDire:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG11126
+	lea	rcx, OFFSET FLAT:$SG11128
 	call	DoDebugMsg
 
 ; 187  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
@@ -3145,7 +3146,7 @@ $LN8@StructDire:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	$LN1@StructDire
 $LN7@StructDire:
@@ -3213,7 +3214,7 @@ $LN12@StructDire:
 
 ; 207  :             name = "";
 
-	lea	rax, OFFSET FLAT:$SG11131
+	lea	rax, OFFSET FLAT:$SG11133
 	mov	QWORD PTR name$[rsp], rax
 $LN13@StructDire:
 
@@ -3289,7 +3290,7 @@ $LN16@StructDire:
 
 	mov	rax, QWORD PTR opndx$6[rsp+80]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 102				; 00000066H
+	mov	ecx, 103				; 00000067H
 	call	EmitErr
 	jmp	SHORT $LN21@StructDire
 $LN20@StructDire:
@@ -3297,7 +3298,7 @@ $LN20@StructDire:
 ; 228  :                 else
 ; 229  :                     EmitError( CONSTANT_EXPECTED );
 
-	mov	ecx, 65					; 00000041H
+	mov	ecx, 66					; 00000042H
 	call	EmitError
 $LN21@StructDire:
 
@@ -3310,7 +3311,7 @@ $LN18@StructDire:
 
 ; 231  :                 EmitError( STRUCT_ALIGN_TOO_HIGH );
 
-	mov	ecx, 214				; 000000d6H
+	mov	ecx, 215				; 000000d7H
 	call	EmitError
 
 ; 232  :             } else {
@@ -3342,7 +3343,7 @@ $LN3@StructDire:
 ; 235  :                     EmitErr( POWER_OF_2, opndx.value );
 
 	mov	edx, DWORD PTR opndx$6[rsp]
-	mov	ecx, 129				; 00000081H
+	mov	ecx, 130				; 00000082H
 	call	EmitErr
 
 ; 236  :                 } else
@@ -3364,7 +3365,7 @@ $LN17@StructDire:
 
 	mov	r8d, DWORD PTR alignment$[rsp]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11144
+	lea	rcx, OFFSET FLAT:$SG11146
 	call	DoDebugMsg1
 $LN15@StructDire:
 
@@ -3407,7 +3408,7 @@ $LN15@StructDire:
 ; 247  :                 EmitWarn( 2, TOKEN_IGNORED, szNonUnique );
 
 	lea	r8, OFFSET FLAT:szNonUnique
-	mov	edx, 250				; 000000faH
+	mov	edx, 251				; 000000fbH
 	mov	ecx, 2
 	call	EmitWarn
 
@@ -3443,7 +3444,7 @@ $LN14@StructDire:
 	mov	rdx, QWORD PTR tokenarray$[rsp]
 	mov	r8, QWORD PTR [rdx+rax+24]
 	mov	edx, ecx
-	lea	rcx, OFFSET FLAT:$SG11148
+	lea	rcx, OFFSET FLAT:$SG11150
 	call	DoDebugMsg
 
 ; 254  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
@@ -3452,7 +3453,7 @@ $LN14@StructDire:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	$LN1@StructDire
 $LN28@StructDire:
@@ -3484,7 +3485,7 @@ $LN28@StructDire:
 	mov	r9, QWORD PTR CurrStruct
 	mov	r8, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11153
+	lea	rcx, OFFSET FLAT:$SG11155
 	call	DoDebugMsg1
 
 ; 263  :         } else {
@@ -3505,7 +3506,7 @@ $LN31@StructDire:
 
 	mov	r8, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11154
+	lea	rcx, OFFSET FLAT:$SG11156
 	call	DoDebugMsg1
 $LN32@StructDire:
 
@@ -3587,7 +3588,7 @@ $LN33@StructDire:
 	jmp	SHORT $LN56@StructDire
 $LN55@StructDire:
 	mov	edx, 285				; 0000011dH
-	lea	rcx, OFFSET FLAT:$SG11160
+	lea	rcx, OFFSET FLAT:$SG11162
 	call	InternalError
 	mov	DWORD PTR tv269[rsp], eax
 $LN56@StructDire:
@@ -3612,7 +3613,7 @@ $LN37@StructDire:
 	jmp	SHORT $LN58@StructDire
 $LN57@StructDire:
 	mov	edx, 288				; 00000120H
-	lea	rcx, OFFSET FLAT:$SG11161
+	lea	rcx, OFFSET FLAT:$SG11163
 	call	InternalError
 	mov	DWORD PTR tv279[rsp], eax
 $LN58@StructDire:
@@ -3798,7 +3799,7 @@ $LN48@StructDire:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 144				; 00000090H
 	call	EmitErr
 	jmp	$LN1@StructDire
 $LN5@StructDire:
@@ -3814,7 +3815,7 @@ $LN44@StructDire:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 144				; 00000090H
 	call	EmitErr
 	jmp	$LN1@StructDire
 $LN45@StructDire:
@@ -3951,7 +3952,7 @@ AreStructsEqual PROC
 
 	mov	rax, QWORD PTR oldstr$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11066
+	lea	rcx, OFFSET FLAT:$SG11068
 	call	DoDebugMsg
 
 ; 133  : 
@@ -3993,7 +3994,7 @@ $LN4@AreStructs:
 
 ; 140  :             DebugMsg(("AreStructsEqual: fields don't match\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11069
+	lea	rcx, OFFSET FLAT:$SG11071
 	call	DoDebugMsg
 
 ; 141  :             return( FALSE );
@@ -4034,7 +4035,7 @@ $LN7@AreStructs:
 
 ; 147  :             DebugMsg(("AreStructsEqual: type name of field changed\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11073
+	lea	rcx, OFFSET FLAT:$SG11075
 	call	DoDebugMsg
 
 ; 148  :             return( FALSE );
@@ -4061,7 +4062,7 @@ $LN8@AreStructs:
 	mov	r8d, DWORD PTR [rax+16]
 	mov	rax, QWORD PTR fold$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11075
+	lea	rcx, OFFSET FLAT:$SG11077
 	call	DoDebugMsg
 
 ; 152  :             return( FALSE );
@@ -4081,7 +4082,7 @@ $LN10@AreStructs:
 
 ; 155  :             DebugMsg(("AreStructsEqual: total_size of field changed\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11077
+	lea	rcx, OFFSET FLAT:$SG11079
 	call	DoDebugMsg
 
 ; 156  :             return( FALSE );
@@ -4151,7 +4152,7 @@ $LN7:
 	mov	r8d, eax
 	mov	rax, QWORD PTR dir$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11600
+	lea	rcx, OFFSET FLAT:$SG11602
 	call	DoDebugMsg
 
 ; 1318 : #if FASTMEM==0
@@ -4342,7 +4343,7 @@ $LN5:
 
 ; 785  :         return( EmitError( ORG_NOT_ALLOWED_IN_UNIONS ) );
 
-	mov	ecx, 213				; 000000d5H
+	mov	ecx, 214				; 000000d6H
 	call	EmitError
 	jmp	SHORT $LN1@SetStructC
 $LN2@SetStructC:
@@ -4474,11 +4475,11 @@ $LN3@UpdateStru:
 	movzx	eax, BYTE PTR [rax+66]
 	cmp	eax, 2
 	jne	SHORT $LN7@UpdateStru
-	lea	rax, OFFSET FLAT:$SG11346
+	lea	rax, OFFSET FLAT:$SG11348
 	mov	QWORD PTR tv88[rsp], rax
 	jmp	SHORT $LN8@UpdateStru
 $LN7@UpdateStru:
-	lea	rax, OFFSET FLAT:$SG11347
+	lea	rax, OFFSET FLAT:$SG11349
 	mov	QWORD PTR tv88[rsp], rax
 $LN8@UpdateStru:
 	mov	rax, QWORD PTR CurrStruct
@@ -4492,7 +4493,7 @@ $LN8@UpdateStru:
 	mov	r8, QWORD PTR [rax+8]
 	mov	rax, QWORD PTR CurrStruct
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11348
+	lea	rcx, OFFSET FLAT:$SG11350
 	call	DoDebugMsg1
 
 ; 771  :                CurrStruct->sym.name,
@@ -4580,7 +4581,7 @@ $LN42:
 	mov	QWORD PTR tv69[rsp], rax
 	jmp	SHORT $LN37@CreateStru
 $LN36@CreateStru:
-	lea	rax, OFFSET FLAT:$SG11295
+	lea	rax, OFFSET FLAT:$SG11297
 	mov	QWORD PTR tv69[rsp], rax
 $LN37@CreateStru:
 	cmp	QWORD PTR name$[rsp], 0
@@ -4589,7 +4590,7 @@ $LN37@CreateStru:
 	mov	QWORD PTR tv73[rsp], rax
 	jmp	SHORT $LN39@CreateStru
 $LN38@CreateStru:
-	lea	rax, OFFSET FLAT:$SG11296
+	lea	rax, OFFSET FLAT:$SG11298
 	mov	QWORD PTR tv73[rsp], rax
 $LN39@CreateStru:
 	mov	eax, DWORD PTR size$[rsp]
@@ -4600,7 +4601,7 @@ $LN39@CreateStru:
 	mov	r8, QWORD PTR tv73[rsp]
 	mov	rax, QWORD PTR CurrStruct
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11297
+	lea	rcx, OFFSET FLAT:$SG11299
 	call	DoDebugMsg1
 
 ; 561  :                CurrStruct->sym.name, name ? name : "<anonymous>", offset,
@@ -4625,7 +4626,7 @@ $LN39@CreateStru:
 
 ; 568  :             EmitError( IDENTIFIER_TOO_LONG );
 
-	mov	ecx, 70					; 00000046H
+	mov	ecx, 71					; 00000047H
 	call	EmitError
 
 ; 569  :             return( NULL );
@@ -4653,7 +4654,7 @@ $LN10@CreateStru:
 
 	mov	rax, QWORD PTR sym$4[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 56					; 00000038H
+	mov	ecx, 57					; 00000039H
 	call	EmitErr
 
 ; 574  :             return( NULL );
@@ -4694,7 +4695,7 @@ $LN12@CreateStru:
 ; 582  :         }
 ; 583  :         name = "";
 
-	lea	rax, OFFSET FLAT:$SG11304
+	lea	rax, OFFSET FLAT:$SG11306
 	mov	QWORD PTR name$[rsp], rax
 
 ; 584  :         len = 0;
@@ -4924,7 +4925,7 @@ $LN3@CreateStru:
 	mov	r8, rax
 	mov	rax, QWORD PTR CurrStruct
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11310
+	lea	rcx, OFFSET FLAT:$SG11312
 	call	DoDebugMsg1
 
 ; 624  : 
@@ -4950,7 +4951,7 @@ $LN14@CreateStru:
 
 	mov	rax, QWORD PTR CurrStruct
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11311
+	lea	rcx, OFFSET FLAT:$SG11313
 	call	DoDebugMsg1
 
 ; 629  :         //f->init_dir = NULL;
@@ -5012,7 +5013,7 @@ $LN19@CreateStru:
 ; 642  :         f->sym.name = "";
 
 	mov	rax, QWORD PTR f$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11314
+	lea	rcx, OFFSET FLAT:$SG11316
 	mov	QWORD PTR [rax+8], rcx
 $LN20@CreateStru:
 
@@ -5150,7 +5151,7 @@ $LN23@CreateStru:
 	mov	r8d, eax
 	mov	rax, QWORD PTR CurrStruct
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11320
+	lea	rcx, OFFSET FLAT:$SG11322
 	call	DoDebugMsg1
 
 ; 676  :         /* if it's the first field to add, use offset of the parent's current field */
@@ -5254,7 +5255,7 @@ $LN25@CreateStru:
 	mov	r8d, DWORD PTR size$[rsp]
 	mov	rax, QWORD PTR CurrStruct
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11327
+	lea	rcx, OFFSET FLAT:$SG11329
 	call	DoDebugMsg1
 
 ; 708  :         CurrStruct->sym.max_mbr_size = size;
@@ -5290,7 +5291,7 @@ $LN31@CreateStru:
 	mov	r8, QWORD PTR name$[rsp]
 	mov	rax, QWORD PTR CurrStruct
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11329
+	lea	rcx, OFFSET FLAT:$SG11331
 	call	DoDebugMsg
 
 ; 715  :         gsym  = SymLookup( name );
@@ -5802,7 +5803,7 @@ $LN25@GetQualifi:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 85					; 00000055H
+	mov	ecx, 86					; 00000056H
 	call	EmitErr
 	jmp	$LN1@GetQualifi
 
@@ -5977,7 +5978,7 @@ $LN38@GetQualifi:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	edx, DWORD PTR [rax+36]
-	lea	rcx, OFFSET FLAT:$SG11412
+	lea	rcx, OFFSET FLAT:$SG11414
 	call	DoDebugMsg1
 
 ; 895  :                         pti->symtype  = sym->target_type;
@@ -6037,7 +6038,7 @@ $LN45@GetQualifi:
 
 ; 906  :                 EmitError( QUALIFIED_TYPE_EXPECTED );
 
-	mov	ecx, 86					; 00000056H
+	mov	ecx, 87					; 00000057H
 	call	EmitError
 	jmp	SHORT $LN44@GetQualifi
 $LN43@GetQualifi:
@@ -6049,7 +6050,7 @@ $LN43@GetQualifi:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 
 ; 909  :                 i++;
@@ -6094,7 +6095,7 @@ $LN47@GetQualifi:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG11421
+	lea	rcx, OFFSET FLAT:$SG11423
 	call	DoDebugMsg
 
 ; 916  :             if ( pti->symtype == NULL || pti->symtype ->state == SYM_UNDEFINED )
@@ -6114,7 +6115,7 @@ $LN50@GetQualifi:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 102				; 00000066H
+	mov	ecx, 103				; 00000067H
 	call	EmitErr
 	jmp	SHORT $LN49@GetQualifi
 $LN48@GetQualifi:
@@ -6126,7 +6127,7 @@ $LN48@GetQualifi:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 85					; 00000055H
+	mov	ecx, 86					; 00000056H
 	call	EmitErr
 $LN49@GetQualifi:
 
@@ -6214,7 +6215,7 @@ $LN53@GetQualifi:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	edx, DWORD PTR [rax+36]
-	lea	rcx, OFFSET FLAT:$SG11429
+	lea	rcx, OFFSET FLAT:$SG11431
 	call	DoDebugMsg1
 
 ; 934  :                 pti->symtype  = sym->target_type;
@@ -6353,7 +6354,7 @@ $LN69@GetQualifi:
 	mov	QWORD PTR tv439[rsp], rax
 	jmp	SHORT $LN71@GetQualifi
 $LN70@GetQualifi:
-	lea	rax, OFFSET FLAT:$SG11434
+	lea	rax, OFFSET FLAT:$SG11436
 	mov	QWORD PTR tv439[rsp], rax
 $LN71@GetQualifi:
 	mov	rax, QWORD PTR pti$[rsp]
@@ -6372,7 +6373,7 @@ $LN71@GetQualifi:
 	mov	rax, QWORD PTR pti$[rsp]
 	mov	r8d, DWORD PTR [rax+16]
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11435
+	lea	rcx, OFFSET FLAT:$SG11437
 	call	DoDebugMsg1
 
 ; 953  :                i, pti->mem_type, pti->is_ptr, pti->is_far, pti->Ofssize,
@@ -6445,7 +6446,7 @@ $LN15:
 
 ; 94   :         EmitError( NESTING_LEVEL_TOO_DEEP );
 
-	mov	ecx, 100				; 00000064H
+	mov	ecx, 101				; 00000065H
 	call	EmitError
 
 ; 95   :         return( NULL );
@@ -6581,7 +6582,7 @@ $LN6@SearchName:
 	mov	rax, QWORD PTR tstruct$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11054
+	lea	rcx, OFFSET FLAT:$SG11056
 	call	DoDebugMsg
 
 ; 117  :             sym = &fl->sym;

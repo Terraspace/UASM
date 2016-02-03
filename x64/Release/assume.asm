@@ -11,16 +11,17 @@ COMM	SegAssumeTable:BYTE:060H
 COMM	StdAssumeTable:BYTE:0100H
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG11098 DB	01H DUP (?)
+$SG11100 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG11026 DB	'%r %r:%r,%r:%r,%r:%r,%r:%r,%r:%s,%r:%s', 00H
+$SG11028 DB	'%r %r:%r,%r:%r,%r:%r,%r:%r,%r:%s,%r:%s', 00H
 	ORG $+1
-$SG11034 DB	'%r %r:%s,%r:%s,%r:%s', 00H
+$SG11036 DB	'%r %r:%s,%r:%s,%r:%s', 00H
 	ORG $+3
-$SG11035 DB	'%r %r:%s,%r:%s', 00H
+$SG11037 DB	'%r %r:%s,%r:%s', 00H
 _DATA	ENDS
 CONST	SEGMENT
 szError	DB	'ERROR', 00H
@@ -450,7 +451,7 @@ $LN28@AssumeDire:
 ; 374  :                 ( ti.is_ptr > 0 && size < CurrWordSize ) ) {
 ; 375  :                 return( EmitError( TYPE_IS_WRONG_SIZE_FOR_REGISTER ) );
 
-	mov	ecx, 247				; 000000f7H
+	mov	ecx, 248				; 000000f8H
 	call	EmitError
 	jmp	$LN1@AssumeDire
 $LN109@AssumeDire:
@@ -485,7 +486,7 @@ $LN58@AssumeDire:
 ; 379  :                 stdsym[j] = CreateTypeSymbol( NULL, "", FALSE );
 
 	xor	r8d, r8d
-	lea	rdx, OFFSET FLAT:$SG11098
+	lea	rdx, OFFSET FLAT:$SG11100
 	xor	ecx, ecx
 	call	CreateTypeSymbol
 	mov	QWORD PTR stdsym[rdi+r15*8], rax
@@ -813,7 +814,7 @@ $LN3@AssumeDire:
 ; 438  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	movsxd	rdx, r8d
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+r12+24]
 	call	EmitErr
@@ -828,28 +829,28 @@ $LN37@AssumeDire:
 
 ; 405  :                     return( EmitError( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
 
-	mov	ecx, 69					; 00000045H
+	mov	ecx, 70					; 00000046H
 	call	EmitError
 	jmp	$LN1@AssumeDire
 $LN85@AssumeDire:
 
 ; 337  :             return( EmitError( SYNTAX_ERROR ) );
 
-	mov	ecx, 45					; 0000002dH
+	mov	ecx, 46					; 0000002eH
 	call	EmitError
 	jmp	$LN1@AssumeDire
 $LN84@AssumeDire:
 
 ; 332  :             return( EmitError( COLON_EXPECTED ) );
 
-	mov	ecx, 84					; 00000054H
+	mov	ecx, 85					; 00000055H
 	call	EmitError
 	jmp	$LN1@AssumeDire
 $LN83@AssumeDire:
 
 ; 326  :             return( EmitError( INSTRUCTION_OR_REGISTER_NOT_ACCEPTED_IN_CURRENT_CPU_MODE ) );
 
-	mov	ecx, 30
+	mov	ecx, 31
 	call	EmitError
 	jmp	$LN1@AssumeDire
 $LN82@AssumeDire:
@@ -857,7 +858,7 @@ $LN82@AssumeDire:
 ; 322  :             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	movsxd	rdx, r8d
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+r12+8]
 	call	EmitErr
@@ -1220,7 +1221,7 @@ $LN16:
 	lea	rax, OFFSET FLAT:szNothing
 	mov	r9d, 261				; 00000105H
 	cmovne	rax, rdx
-	lea	rcx, OFFSET FLAT:$SG11026
+	lea	rcx, OFFSET FLAT:$SG11028
 	mov	QWORD PTR [rsp+104], rax
 	mov	DWORD PTR [rsp+96], 30
 	mov	QWORD PTR [rsp+88], rdx
@@ -1287,7 +1288,7 @@ $LN10@ModelAssum:
 ; 244  :         if ( ModuleInfo.distance != STACK_FAR )
 
 	cmp	DWORD PTR ModuleInfo+356, 1
-	lea	rdx, OFFSET FLAT:$SG11035
+	lea	rdx, OFFSET FLAT:$SG11037
 
 ; 245  :             pFmt = "%r %r:%s,%r:%s,%r:%s";
 ; 246  :         else
@@ -1295,7 +1296,7 @@ $LN10@ModelAssum:
 ; 248  :         AddLineQueueX( pFmt, T_ASSUME, T_CS, pCS, T_DS, szDgroup, T_SS, szDgroup );
 
 	mov	QWORD PTR [rsp+56], rbx
-	lea	rcx, OFFSET FLAT:$SG11034
+	lea	rcx, OFFSET FLAT:$SG11036
 	cmove	rcx, rdx
 	mov	DWORD PTR [rsp+48], 27
 	mov	edx, 439				; 000001b7H

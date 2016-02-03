@@ -8,6 +8,7 @@ INCLUDELIB OLDNAMES
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 PUBLIC	BackPatch
 EXTRN	EmitWarn:PROC
@@ -309,9 +310,9 @@ $LN48@DoPatch:
 ; 216  :                 DebugMsg(("DoPatch: jump out of range, disp=%d\n", disp ));
 ; 217  :                 EmitWarn( 4, JUMP_OUT_OF_RANGE, disp - max_disp );
 
-	mov	edx, 53					; 00000035H
+	mov	edx, 54					; 00000036H
 	sub	r8d, r10d
-	lea	ecx, QWORD PTR [rdx-49]
+	lea	ecx, QWORD PTR [rdx-50]
 	call	EmitWarn
 	jmp	$LN20@DoPatch
 $LN35@DoPatch:
@@ -664,10 +665,10 @@ $patch$87:
 	cmp	edx, 2
 	jne	$LN25@BackPatch
 $LN53@BackPatch:
-	mov	edx, 53					; 00000035H
+	mov	edx, 54					; 00000036H
 	mov	r8d, ebp
 	sub	r8d, r14d
-	lea	ecx, QWORD PTR [rdx-49]
+	lea	ecx, QWORD PTR [rdx-50]
 	call	EmitWarn
 	jmp	$LN25@BackPatch
 $LN40@BackPatch:

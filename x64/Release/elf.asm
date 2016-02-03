@@ -8,55 +8,51 @@ INCLUDELIB OLDNAMES
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11306 DB	'.shstrtab', 00H
+$SG11308 DB	'.shstrtab', 00H
 	ORG $+6
-$SG11307 DB	'.symtab', 00H
-$SG11308 DB	'.strtab', 00H
-$SG11331 DB	'_TEXT', 00H
+$SG11309 DB	'.symtab', 00H
+$SG11310 DB	'.strtab', 00H
+$SG11333 DB	'_TEXT', 00H
 	ORG $+2
-$SG11332 DB	'.text', 00H
+$SG11334 DB	'.text', 00H
 	ORG $+2
-$SG11333 DB	'_DATA', 00H
+$SG11335 DB	'_DATA', 00H
 	ORG $+2
-$SG11334 DB	'.data', 00H
+$SG11336 DB	'.data', 00H
 	ORG $+2
-$SG11335 DB	'CONST', 00H
+$SG11337 DB	'CONST', 00H
 	ORG $+2
-$SG11336 DB	'.rodata', 00H
-$SG11337 DB	'_BSS', 00H
+$SG11338 DB	'.rodata', 00H
+$SG11339 DB	'_BSS', 00H
 	ORG $+3
-$SG11338 DB	'.bss', 00H
+$SG11340 DB	'.bss', 00H
 	ORG $+3
-$SG11540 DB	'.rela', 00H
+$SG11542 DB	'.rela', 00H
 	ORG $+2
-$SG11541 DB	'.rel', 00H
+$SG11543 DB	'.rel', 00H
 	ORG $+3
-$SG11597 DB	'CONST', 00H
+$SG11599 DB	'CONST', 00H
 	ORG $+2
-$SG11646 DB	'CONST', 00H
+$SG11648 DB	'CONST', 00H
 	ORG $+2
-$SG11747 DB	07fH, 'ELF', 00H
+$SG11749 DB	07fH, 'ELF', 00H
 	ORG $+3
-$SG11750 DB	07fH, 'ELF', 00H
+$SG11752 DB	07fH, 'ELF', 00H
 _DATA	ENDS
 CONST	SEGMENT
-internal_segparms DQ FLAT:$SG11306
+internal_segparms DQ FLAT:$SG11308
 	DD	03H
 	ORG $+4
-	DQ	FLAT:$SG11307
+	DQ	FLAT:$SG11309
 	DD	02H
 	ORG $+4
-	DQ	FLAT:$SG11308
+	DQ	FLAT:$SG11310
 	DD	03H
 	ORG $+4
 cst	DB	05H
-	DB	01H
-	ORG $+6
-	DQ	FLAT:$SG11331
-	DQ	FLAT:$SG11332
-	DB	05H
 	DB	01H
 	ORG $+6
 	DQ	FLAT:$SG11333
@@ -66,11 +62,16 @@ cst	DB	05H
 	ORG $+6
 	DQ	FLAT:$SG11335
 	DQ	FLAT:$SG11336
-	DB	04H
-	DB	00H
+	DB	05H
+	DB	01H
 	ORG $+6
 	DQ	FLAT:$SG11337
 	DQ	FLAT:$SG11338
+	DB	04H
+	DB	00H
+	ORG $+6
+	DQ	FLAT:$SG11339
+	DQ	FLAT:$SG11340
 CONST	ENDS
 PUBLIC	elf_init
 EXTRN	fseek:PROC
@@ -510,7 +511,7 @@ $LN36@elf_write_:
 ; 1346 :         em.ehdr32.e_phoff = 0; /* no progheaders for relocatable objects */
 ; 1347 :         em.ehdr32.e_shoff = sizeof( em.ehdr32 );
 
-	mov	eax, DWORD PTR $SG11750
+	mov	eax, DWORD PTR $SG11752
 	mov	r8d, 52					; 00000034H
 	mov	DWORD PTR em$[rbp-17], eax
 	movzx	eax, BYTE PTR [rbx+412]
@@ -594,7 +595,7 @@ $LN6@elf_write_:
 ; 1298 :     case USE64:
 ; 1299 :         memcpy( &em.ehdr64.e_ident, ELF_SIGNATURE, ELF_SIGNATURE_LEN );
 
-	mov	eax, DWORD PTR $SG11747
+	mov	eax, DWORD PTR $SG11749
 
 ; 1300 :         em.ehdr64.e_ident[EI_CLASS] = ELFCLASS64;
 ; 1301 :         em.ehdr64.e_ident[EI_DATA] = ELFDATA2LSB;
@@ -916,7 +917,7 @@ $LN9@elf_write_:
 
 ; 1265 :         EmitWarn( 2, ELF_GNU_EXTENSIONS_USED );
 
-	mov	edx, 262				; 00000106H
+	mov	edx, 263				; 00000107H
 	mov	ecx, 2
 	call	EmitWarn
 $LN32@elf_write_:
@@ -1114,7 +1115,7 @@ $LN15@write_relo:
 	mov	eax, DWORD PTR [rbx+20]
 	add	rdx, 10
 	mov	r9, QWORD PTR [rsi+8]
-	mov	ecx, 198				; 000000c6H
+	mov	ecx, 199				; 000000c7H
 	mov	DWORD PTR [rsp+32], eax
 	call	EmitErr
 
@@ -1128,7 +1129,7 @@ $LN16@write_relo:
 	mov	r9d, DWORD PTR [rbx+20]
 	mov	edx, r10d
 	mov	r8, QWORD PTR [rsi+8]
-	mov	ecx, 196				; 000000c4H
+	mov	ecx, 197				; 000000c5H
 	call	EmitErr
 $LN17@write_relo:
 
@@ -1321,7 +1322,7 @@ $LN14@write_relo:
 	mov	eax, DWORD PTR [rbx+20]
 	add	rdx, 10
 	mov	r9, QWORD PTR [rsi+8]
-	mov	ecx, 198				; 000000c6H
+	mov	ecx, 199				; 000000c7H
 	mov	DWORD PTR [rsp+32], eax
 	call	EmitErr
 
@@ -1335,7 +1336,7 @@ $LN15@write_relo:
 	mov	r9d, DWORD PTR [rbx+20]
 	mov	edx, r10d
 	mov	r8, QWORD PTR [rsi+8]
-	mov	ecx, 196				; 000000c4H
+	mov	ecx, 197				; 000000c5H
 	call	EmitErr
 $LN16@write_relo:
 
@@ -1585,7 +1586,7 @@ $LN16@elf_write_:
 	test	rax, rax
 	je	SHORT $LN18@elf_write_
 	mov	rax, QWORD PTR [rax+8]
-	lea	r8, OFFSET FLAT:$SG11646
+	lea	r8, OFFSET FLAT:$SG11648
 	sub	r8, rax
 $LL54@elf_write_:
 	movzx	edx, BYTE PTR [rax]
@@ -2174,7 +2175,7 @@ $LN16@elf_write_:
 	test	rax, rax
 	je	SHORT $LN18@elf_write_
 	mov	rax, QWORD PTR [rax+8]
-	lea	r8, OFFSET FLAT:$SG11597
+	lea	r8, OFFSET FLAT:$SG11599
 	sub	r8, rax
 	npad	1
 $LL54@elf_write_:
@@ -2868,7 +2869,7 @@ $LL64@set_shstrt:
 	mov	rdi, QWORD PTR SymTables+32
 	test	rdi, rdi
 	je	$LN15@set_shstrt
-	lea	rsi, OFFSET FLAT:$SG11540
+	lea	rsi, OFFSET FLAT:$SG11542
 	npad	12
 $LL16@set_shstrt:
 
@@ -2882,7 +2883,7 @@ $LL16@set_shstrt:
 ; 733  :             strcpy( p, (( ModuleInfo.defOfssize == USE64 ) ? ".rela": ".rel") );
 
 	cmp	BYTE PTR ModuleInfo+405, 2
-	lea	rcx, OFFSET FLAT:$SG11541
+	lea	rcx, OFFSET FLAT:$SG11543
 	mov	rdx, rbx
 	cmove	rcx, rsi
 	npad	12

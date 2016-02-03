@@ -8,35 +8,36 @@ INCLUDELIB OLDNAMES
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG10990 DB	01H DUP (?)
+$SG10992 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG10964 DB	'LoopDirective(%s) enter', 0aH, 00H
+$SG10966 DB	'LoopDirective(%s) enter', 0aH, 00H
 	ORG $+7
-$SG10972 DB	'LoopDirective(%s): invalid argument type %u', 0aH, 00H
+$SG10974 DB	'LoopDirective(%s): invalid argument type %u', 0aH, 00H
 	ORG $+3
-$SG10977 DB	'LoopDirective(FOR/FORC): token %s is not a valid paramet'
+$SG10979 DB	'LoopDirective(FOR/FORC): token %s is not a valid paramet'
 	DB	'er name', 0aH, 00H
 	ORG $+7
-$SG10989 DB	'LoopDirective(FOR): param string >%s<', 0aH, 00H
+$SG10991 DB	'LoopDirective(FOR): param string >%s<', 0aH, 00H
 	ORG $+1
-$SG10991 DB	'LoopDirective(%s): calling StoreMacro', 0aH, 00H
+$SG10993 DB	'LoopDirective(%s): calling StoreMacro', 0aH, 00H
 	ORG $+1
-$SG10996 DB	'LoopDirective REPT: iteration=%u', 0aH, 00H
+$SG10998 DB	'LoopDirective REPT: iteration=%u', 0aH, 00H
 	ORG $+6
-$SG10998 DB	'LoopDirective WHILE: cnt=%u', 0aH, 00H
+$SG11000 DB	'LoopDirective WHILE: cnt=%u', 0aH, 00H
 	ORG $+3
-$SG11008 DB	'LoopDirective FORC: call RunMacro(), cnt=%u, param=>%s<', 0aH
+$SG11010 DB	'LoopDirective FORC: call RunMacro(), cnt=%u, param=>%s<', 0aH
 	DB	00H
 	ORG $+7
-$SG11010 DB	'LoopDirective FOR: full param=>%s<', 0aH, 00H
+$SG11012 DB	'LoopDirective FOR: full param=>%s<', 0aH, 00H
 	ORG $+4
-$SG11012 DB	'LoopDirective FOR: cnt=%u, calling RunMacro( param=>%s< '
+$SG11014 DB	'LoopDirective FOR: cnt=%u, calling RunMacro( param=>%s< '
 	DB	')', 0aH, 00H
 	ORG $+5
-$SG11015 DB	'LoopDirective(%s) exit', 0aH, 00H
+$SG11017 DB	'LoopDirective(%s) exit', 0aH, 00H
 _DATA	ENDS
 PUBLIC	LoopDirective
 EXTRN	__report_rangecheckfailure:PROC
@@ -282,7 +283,7 @@ $LN85:
 	mov	ecx, DWORD PTR directive$[rbp]
 	call	GetResWName
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG10964
+	lea	rcx, OFFSET FLAT:$SG10966
 	call	DoDebugMsg1
 
 ; 46   : 
@@ -366,12 +367,12 @@ $LN26@LoopDirect:
 	call	GetResWName
 	mov	r8d, DWORD PTR opnd$[rbp+60]
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG10972
+	lea	rcx, OFFSET FLAT:$SG10974
 	call	DoDebugMsg
 
 ; 64   :             EmitError( CONSTANT_EXPECTED );
 
-	mov	ecx, 65					; 00000041H
+	mov	ecx, 66					; 00000042H
 	call	EmitError
 
 ; 65   :             opnd.value = 0;
@@ -396,7 +397,7 @@ $LN28@LoopDirect:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rbp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 
 ; 68   :             /* v2.09: don't exit, the macro lines must be read first. */
@@ -438,7 +439,7 @@ $LN31@LoopDirect:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rbp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	$LN1@LoopDirect
 $LN32@LoopDirect:
@@ -513,7 +514,7 @@ $LN66@LoopDirect:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rbp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG10977
+	lea	rcx, OFFSET FLAT:$SG10979
 	call	DoDebugMsg
 
 ; 87   :             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
@@ -522,7 +523,7 @@ $LN66@LoopDirect:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rbp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	$LN1@LoopDirect
 $LN33@LoopDirect:
@@ -564,7 +565,7 @@ $LN36@LoopDirect:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rbp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 39					; 00000027H
+	mov	ecx, 40					; 00000028H
 	call	EmitErr
 	jmp	$LN1@LoopDirect
 $LN37@LoopDirect:
@@ -704,7 +705,7 @@ $LN73@LoopDirect:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rbp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 $LN40@LoopDirect:
 
@@ -863,7 +864,7 @@ $LN9@LoopDirect:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rbp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 39					; 00000027H
+	mov	ecx, 40					; 00000028H
 	call	EmitErr
 	jmp	$LN1@LoopDirect
 $LN41@LoopDirect:
@@ -898,7 +899,7 @@ $LN43@LoopDirect:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rbp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	$LN1@LoopDirect
 $LN42@LoopDirect:
@@ -924,7 +925,7 @@ $LN42@LoopDirect:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rbp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	$LN1@LoopDirect
 $LN44@LoopDirect:
@@ -955,7 +956,7 @@ $LN44@LoopDirect:
 	call	_RTC_UninitUse
 $LN76@LoopDirect:
 	mov	rdx, QWORD PTR parmstring$[rbp]
-	lea	rcx, OFFSET FLAT:$SG10989
+	lea	rcx, OFFSET FLAT:$SG10991
 	call	DoDebugMsg1
 $LN35@LoopDirect:
 
@@ -1008,7 +1009,7 @@ $LN2@LoopDirect:
 
 ; 167  :     tmpmacro.sym.name = "";
 
-	lea	rax, OFFSET FLAT:$SG10990
+	lea	rax, OFFSET FLAT:$SG10992
 	mov	QWORD PTR tmpmacro$[rbp+8], rax
 
 ; 168  :     tmpmacro.e.macroinfo = &macinfo;
@@ -1046,7 +1047,7 @@ $LN2@LoopDirect:
 	mov	ecx, DWORD PTR directive$[rbp]
 	call	GetResWName
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG10991
+	lea	rcx, OFFSET FLAT:$SG10993
 	call	DoDebugMsg1
 
 ; 184  :     if( StoreMacro( macro, i, tokenarray, TRUE ) == ERROR ) {
@@ -1175,7 +1176,7 @@ $LN48@LoopDirect:
 	inc	eax
 	mov	DWORD PTR count$[rbp], eax
 	mov	edx, DWORD PTR count$[rbp]
-	lea	rcx, OFFSET FLAT:$SG10996
+	lea	rcx, OFFSET FLAT:$SG10998
 	call	DoDebugMsg1
 
 ; 213  :         }
@@ -1210,7 +1211,7 @@ $LN79@LoopDirect:
 	inc	eax
 	mov	DWORD PTR count$[rbp], eax
 	mov	edx, DWORD PTR tv434[rbp]
-	lea	rcx, OFFSET FLAT:$SG10998
+	lea	rcx, OFFSET FLAT:$SG11000
 	call	DoDebugMsg1
 
 ; 218  :             RunMacro( macro, Token_Count, tokenarray, NULL, 0, &is_exitm );
@@ -1531,7 +1532,7 @@ $LN58@LoopDirect:
 	mov	DWORD PTR count$[rbp], eax
 	lea	r8, QWORD PTR buffer$[rbp]
 	mov	edx, DWORD PTR tv534[rbp]
-	lea	rcx, OFFSET FLAT:$SG11008
+	lea	rcx, OFFSET FLAT:$SG11010
 	call	DoDebugMsg1
 
 ; 259  :         }
@@ -1571,7 +1572,7 @@ $LN82@LoopDirect:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rbp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	lea	rcx, OFFSET FLAT:$SG11010
+	lea	rcx, OFFSET FLAT:$SG11012
 	call	DoDebugMsg1
 
 ; 265  : 
@@ -1707,7 +1708,7 @@ $LN22@LoopDirect:
 	mov	rcx, QWORD PTR tokenarray$[rbp]
 	mov	r8, QWORD PTR [rcx+rax+24]
 	mov	edx, DWORD PTR tv619[rbp]
-	lea	rcx, OFFSET FLAT:$SG11012
+	lea	rcx, OFFSET FLAT:$SG11014
 	call	DoDebugMsg1
 
 ; 290  :             i = RunMacro( macro, i, tokenarray, NULL, MF_IGNARGS, &is_exitm );
@@ -1755,7 +1756,7 @@ $LN46@LoopDirect:
 	mov	ecx, DWORD PTR directive$[rbp]
 	call	GetResWName
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11015
+	lea	rcx, OFFSET FLAT:$SG11017
 	call	DoDebugMsg1
 
 ; 297  :     return( NOT_ERROR );

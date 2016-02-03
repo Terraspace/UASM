@@ -8,6 +8,7 @@ INCLUDELIB OLDNAMES
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 PUBLIC	DeleteLineQueue
 PUBLIC	AddLineQueue

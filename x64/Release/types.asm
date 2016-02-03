@@ -6,19 +6,20 @@ INCLUDELIB LIBCMT
 INCLUDELIB OLDNAMES
 
 _BSS	SEGMENT
-$SG11274 DB	01H DUP (?)
-$SG11282 DB	01H DUP (?)
-$SG11432 DB	01H DUP (?)
+$SG11276 DB	01H DUP (?)
+$SG11284 DB	01H DUP (?)
+$SG11434 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	CurrStruct:QWORD
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG11115 DB	01H DUP (?)
-$SG11184 DB	01H DUP (?)
-$SG11193 DB	01H DUP (?)
+$SG11117 DB	01H DUP (?)
+$SG11186 DB	01H DUP (?)
+$SG11195 DB	01H DUP (?)
 _BSS	ENDS
 CONST	SEGMENT
 szStructure DB	'structure', 00H
@@ -299,7 +300,7 @@ $LN101:
 ; 1129 :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	movsxd	rdx, ecx
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rdi+8]
 	call	EmitErr
@@ -388,7 +389,7 @@ $LN15@RecordDire:
 ; 1149 :         return( EmitErr( SYMBOL_REDEFINITION, name ) );
 
 	mov	rdx, rbx
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 144				; 00000090H
 	call	EmitErr
 	jmp	$LN95@RecordDire
 $LN14@RecordDire:
@@ -525,7 +526,7 @@ $LL91@RecordDire:
 
 ; 1184 :             EmitError( CONSTANT_EXPECTED );
 
-	mov	ecx, 65					; 00000041H
+	mov	ecx, 66					; 00000042H
 	call	EmitError
 
 ; 1185 :             opndx.value = 1;
@@ -652,7 +653,7 @@ $LN34@RecordDire:
 
 	mov	r8, QWORD PTR [r14+rdi+8]
 	lea	rdx, OFFSET FLAT:szRecord
-	mov	ecx, 139				; 0000008bH
+	mov	ecx, 140				; 0000008cH
 	call	EmitErr
 
 ; 1218 :                 redef_err++;
@@ -860,7 +861,7 @@ $LN78@RecordDire:
 ; 1223 :                 EmitErr( SYMBOL_REDEFINITION, sym->name );
 
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 144				; 00000090H
 
 ; 1224 :                 break;
 
@@ -870,7 +871,7 @@ $LN76@RecordDire:
 ; 1191 :             EmitErr( TOO_MANY_BITS_IN_RECORD, tokenarray[name_loc].string_ptr );
 
 	mov	rdx, rbp
-	mov	ecx, 140				; 0000008cH
+	mov	ecx, 141				; 0000008dH
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rdi+8]
 
@@ -882,7 +883,7 @@ $LN75@RecordDire:
 ; 1188 :             EmitErr( TOO_FEW_BITS_IN_RECORD, tokenarray[name_loc].string_ptr );
 
 	mov	rdx, rbp
-	mov	ecx, 35					; 00000023H
+	mov	ecx, 36					; 00000024H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rdi+8]
 
@@ -893,7 +894,7 @@ $LN73@RecordDire:
 
 ; 1176 :             EmitError( COLON_EXPECTED );
 
-	mov	ecx, 84					; 00000054H
+	mov	ecx, 85					; 00000055H
 	call	EmitError
 
 ; 1177 :             break;
@@ -903,7 +904,7 @@ $LN72@RecordDire:
 
 ; 1170 :             EmitError( IDENTIFIER_TOO_LONG );
 
-	mov	ecx, 70					; 00000046H
+	mov	ecx, 71					; 00000047H
 	call	EmitError
 
 ; 1171 :             break;
@@ -917,7 +918,7 @@ $LN71@RecordDire:
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rdi+8]
 $LN98@RecordDire:
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 $LN99@RecordDire:
 	call	EmitErr
 $LN3@RecordDire:
@@ -1044,7 +1045,7 @@ $LN52@RecordDire:
 
 	mov	r8, QWORD PTR [rsi+8]
 	lea	rdx, OFFSET FLAT:szRecord
-	mov	ecx, 139				; 0000008bH
+	mov	ecx, 140				; 0000008cH
 	call	EmitErr
 $LN51@RecordDire:
 
@@ -1103,7 +1104,7 @@ $LN69:
 ; 972  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	movsxd	rdx, ecx
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rsi+8]
 
@@ -1172,7 +1173,7 @@ $LN14@TypedefDir:
 ; 994  :             return( EmitErr( SYMBOL_REDEFINITION, sym->name ) );
 
 	mov	rdx, QWORD PTR [rbx+8]
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 144				; 00000090H
 	call	EmitErr
 	jmp	$LN64@TypedefDir
 $LN11@TypedefDir:
@@ -1251,7 +1252,7 @@ $LN12@TypedefDir:
 
 	lea	r8d, QWORD PTR [rdi+7]
 	xor	ecx, ecx
-	lea	rdx, OFFSET FLAT:$SG11432
+	lea	rdx, OFFSET FLAT:$SG11434
 	call	CreateProc
 	mov	rdi, rax
 	jmp	SHORT $LN20@TypedefDir
@@ -1337,7 +1338,7 @@ $LN19@TypedefDir:
 ; 1013 :             return( EmitErr( SYMBOL_TYPE_CONFLICT, sym->name ) );
 
 	mov	rdx, QWORD PTR [rbx+8]
-	mov	ecx, 136				; 00000088H
+	mov	ecx, 137				; 00000089H
 	call	EmitErr
 	jmp	$LN64@TypedefDir
 $LN16@TypedefDir:
@@ -1535,7 +1536,7 @@ $LN31@TypedefDir:
 ; 1076 :             return( EmitErr( SYMBOL_TYPE_CONFLICT, name ) );
 
 	mov	rdx, r13
-	mov	ecx, 136				; 00000088H
+	mov	ecx, 137				; 00000089H
 	call	EmitErr
 	jmp	SHORT $LN65@TypedefDir
 $LN32@TypedefDir:
@@ -1567,7 +1568,7 @@ $LN33@TypedefDir:
 ; 1097 :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rax+rsi+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	SHORT $LN65@TypedefDir
 $LN34@TypedefDir:
@@ -1691,7 +1692,7 @@ $LN42@CheckAnony:
 ; 522  :                 return( EmitErr( SYMBOL_REDEFINITION, sym->name ) );
 
 	mov	rdx, QWORD PTR [rbp+8]
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 144				; 00000090H
 	call	EmitErr
 
 ; 534  : }
@@ -2069,7 +2070,7 @@ $LN18@EndstructD:
 
 ; 465  :         dir->sym.name = ""; /* the type becomes anonymous */
 
-	lea	rax, OFFSET FLAT:$SG11193
+	lea	rax, OFFSET FLAT:$SG11195
 	mov	QWORD PTR [rbx+8], rax
 
 ; 466  :         dir->sym.name_size = 0;
@@ -2173,7 +2174,7 @@ $LN5@EndstructD:
 
 	mov	r8, QWORD PTR [rbx+8]
 	lea	rdx, OFFSET FLAT:szStructure
-	mov	ecx, 139				; 0000008bH
+	mov	ecx, 140				; 0000008cH
 	call	EmitErr
 $LN32@EndstructD:
 
@@ -2239,7 +2240,7 @@ $LN50@EndstructD:
 ; 504  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rax+rbp+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	jmp	SHORT $LN58@EndstructD
 $LN36@EndstructD:
 
@@ -2250,9 +2251,9 @@ $LN36@EndstructD:
 ; 406  :         //EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr );
 ; 407  :         return( EmitErr( UNMATCHED_BLOCK_NESTING, i == 1 ? tokenarray[0].string_ptr : "" ) );
 
-	lea	rdx, OFFSET FLAT:$SG11184
+	lea	rdx, OFFSET FLAT:$SG11186
 $LN37@EndstructD:
-	mov	ecx, 142				; 0000008eH
+	mov	ecx, 143				; 0000008fH
 $LN58@EndstructD:
 
 ; 505  :     }
@@ -2397,7 +2398,7 @@ $LN8@StructDire:
 ; 187  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rdx+rdi+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 
 ; 363  : }
@@ -2410,7 +2411,7 @@ $LN12@StructDire:
 
 ; 207  :             name = "";
 
-	lea	rsi, OFFSET FLAT:$SG11115
+	lea	rsi, OFFSET FLAT:$SG11117
 
 ; 208  :         }
 ; 209  :     } else {
@@ -2476,7 +2477,7 @@ $LN11@StructDire:
 ; 227  :                     EmitErr( SYMBOL_NOT_DEFINED, opndx.sym->name );
 
 	mov	rdx, QWORD PTR [rdx+8]
-	mov	ecx, 102				; 00000066H
+	mov	ecx, 103				; 00000067H
 	call	EmitErr
 	jmp	SHORT $LN25@StructDire
 $LN20@StructDire:
@@ -2484,7 +2485,7 @@ $LN20@StructDire:
 ; 228  :                 else
 ; 229  :                     EmitError( CONSTANT_EXPECTED );
 
-	mov	ecx, 65					; 00000041H
+	mov	ecx, 66					; 00000042H
 	call	EmitError
 
 ; 230  :             } else if( opndx.value > MAX_STRUCT_ALIGN ) {
@@ -2497,7 +2498,7 @@ $LN18@StructDire:
 
 ; 231  :                 EmitError( STRUCT_ALIGN_TOO_HIGH );
 
-	mov	ecx, 214				; 000000d6H
+	mov	ecx, 215				; 000000d7H
 	call	EmitError
 
 ; 232  :             } else {
@@ -2523,7 +2524,7 @@ $LN83@StructDire:
 ; 235  :                     EmitErr( POWER_OF_2, opndx.value );
 
 	mov	edx, eax
-	mov	ecx, 129				; 00000081H
+	mov	ecx, 130				; 00000082H
 	call	EmitErr
 
 ; 236  :                 } else
@@ -2570,7 +2571,7 @@ $LN25@StructDire:
 ; 247  :                 EmitWarn( 2, TOKEN_IGNORED, szNonUnique );
 
 	lea	r8, OFFSET FLAT:szNonUnique
-	mov	edx, 250				; 000000faH
+	mov	edx, 251				; 000000fbH
 	lea	ecx, QWORD PTR [rax+2]
 	call	EmitWarn
 
@@ -2600,7 +2601,7 @@ $LN27@StructDire:
 ; 254  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	mov	rdx, QWORD PTR [rax+rdi+24]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	jmp	$LN84@StructDire
 $LN28@StructDire:
 
@@ -2919,7 +2920,7 @@ $LN44@StructDire:
 ; 339  :         return( EmitErr( SYMBOL_REDEFINITION, sym->name ) );
 
 	mov	rdx, QWORD PTR [rbx+8]
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 144				; 00000090H
 $LN84@StructDire:
 	call	EmitErr
 $LN82@StructDire:
@@ -3185,7 +3186,7 @@ SetStructCurrentOffset PROC
 
 ; 785  :         return( EmitError( ORG_NOT_ALLOWED_IN_UNIONS ) );
 
-	mov	ecx, 213				; 000000d5H
+	mov	ecx, 214				; 000000d6H
 	jmp	EmitError
 $LN2@SetStructC:
 
@@ -3366,7 +3367,7 @@ $LL51@CreateStru:
 
 ; 568  :             EmitError( IDENTIFIER_TOO_LONG );
 
-	mov	ecx, 70					; 00000046H
+	mov	ecx, 71					; 00000047H
 	call	EmitError
 
 ; 569  :             return( NULL );
@@ -3402,7 +3403,7 @@ $LN10@CreateStru:
 ; 573  :             EmitErr( SYMBOL_ALREADY_DEFINED, sym->name );
 
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 56					; 00000038H
+	mov	ecx, 57					; 00000039H
 	call	EmitErr
 
 ; 574  :             return( NULL );
@@ -3445,7 +3446,7 @@ $LN12@CreateStru:
 ; 582  :         }
 ; 583  :         name = "";
 
-	lea	r13, OFFSET FLAT:$SG11274
+	lea	r13, OFFSET FLAT:$SG11276
 
 ; 584  :         len = 0;
 
@@ -3686,7 +3687,7 @@ $LN19@CreateStru:
 
 ; 642  :         f->sym.name = "";
 
-	lea	rax, OFFSET FLAT:$SG11282
+	lea	rax, OFFSET FLAT:$SG11284
 	mov	QWORD PTR [rdi+8], rax
 $LN20@CreateStru:
 
@@ -4231,7 +4232,7 @@ $LN71@GetQualifi:
 ; 866  :                 return( EmitErr( INVALID_QUALIFIED_TYPE, tokenarray[i].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rbp+8]
-	lea	ecx, QWORD PTR [r14+87]
+	lea	ecx, QWORD PTR [r14+88]
 	call	EmitErr
 	jmp	$LN1@GetQualifi
 $LN28@GetQualifi:
@@ -4422,7 +4423,7 @@ $LN24@GetQualifi:
 ; 908  :                 EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr );
 
 	mov	rdx, QWORD PTR [rdi+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 
 ; 909  :                 i++;
@@ -4435,7 +4436,7 @@ $LN45@GetQualifi:
 
 ; 906  :                 EmitError( QUALIFIED_TYPE_EXPECTED );
 
-	mov	ecx, 86					; 00000056H
+	mov	ecx, 87					; 00000057H
 	call	EmitError
 
 ; 909  :                 i++;
@@ -4562,7 +4563,7 @@ $LN47@GetQualifi:
 ; 918  :             else
 ; 919  :                 EmitErr( INVALID_QUALIFIED_TYPE, tokenarray[i].string_ptr );
 
-	mov	ecx, 85					; 00000055H
+	mov	ecx, 86					; 00000056H
 	test	eax, eax
 	jne	SHORT $LN83@GetQualifi
 $LN50@GetQualifi:
@@ -4571,7 +4572,7 @@ $LN50@GetQualifi:
 ; 916  :             if ( pti->symtype == NULL || pti->symtype ->state == SYM_UNDEFINED )
 ; 917  :                 EmitErr( SYMBOL_NOT_DEFINED, tokenarray[i].string_ptr );
 
-	mov	ecx, 102				; 00000066H
+	mov	ecx, 103				; 00000067H
 $LN83@GetQualifi:
 	mov	rdx, QWORD PTR [rdi+8]
 	call	EmitErr
@@ -4691,7 +4692,7 @@ $LL23@SearchName:
 
 ; 94   :         EmitError( NESTING_LEVEL_TOO_DEEP );
 
-	lea	ecx, QWORD PTR [rsi+100]
+	lea	ecx, QWORD PTR [rsi+101]
 	call	EmitError
 
 ; 95   :         return( NULL );

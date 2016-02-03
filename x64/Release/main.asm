@@ -8,14 +8,15 @@ INCLUDELIB OLDNAMES
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG8057	DB	01H DUP (?)
+$SG8059	DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG8055	DB	'HJWASM', 00H
+$SG8057	DB	'HJWASM', 00H
 	ORG $+1
-$SG8061	DB	'%s', 00H
+$SG8063	DB	'%s', 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	printf
@@ -167,7 +168,7 @@ $LN28:
 ; 90   : 
 ; 91   : 	pEnv = getenv("HJWASM");
 
-	lea	rcx, OFFSET FLAT:$SG8055
+	lea	rcx, OFFSET FLAT:$SG8057
 	mov	DWORD PTR [rax+16], ebp
 	mov	esi, ebp
 	mov	r14, rdx
@@ -176,7 +177,7 @@ $LN28:
 ; 92   : 	if (pEnv == NULL)
 
 	test	rax, rax
-	lea	rcx, OFFSET FLAT:$SG8057
+	lea	rcx, OFFSET FLAT:$SG8059
 
 ; 93   : 		pEnv = "";
 ; 94   : 	argv[0] = pEnv;
@@ -312,7 +313,7 @@ $LN17@main:
 	call	ErrnoStr
 	mov	rdx, QWORD PTR Options+16
 	mov	r8, rax
-	mov	ecx, 106				; 0000006aH
+	mov	ecx, 107				; 0000006bH
 	call	EmitErr
 $LN26@main:
 	mov	rbx, QWORD PTR [rsp+640]
@@ -342,7 +343,7 @@ $LN3@main:
 	xor	ecx, ecx
 	call	MsgGetEx
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG8061
+	lea	rcx, OFFSET FLAT:$SG8063
 	call	printf
 
 ; 141  : 
@@ -372,7 +373,7 @@ $LN9@main:
 
 ; 140  : 		EmitError(NO_FILENAME_SPECIFIED);
 
-	lea	ecx, QWORD PTR [rbp+104]
+	lea	ecx, QWORD PTR [rbp+105]
 	call	EmitError
 $LN11@main:
 
@@ -416,7 +417,7 @@ genfailure PROC
 ; 55   : #endif
 ; 56   :         EmitError( GENERAL_FAILURE );
 
-	mov	ecx, 168				; 000000a8H
+	mov	ecx, 169				; 000000a9H
 	call	EmitError
 $LN2@genfailure:
 

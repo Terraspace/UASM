@@ -832,8 +832,13 @@ struct module_info {
 #endif
     char                name[FILENAME_MAX];/* name of module */
 };
-    unsigned char       decoflags;          /* EVEX  sets up decorator flags in P2: z, aaa   */     
-    unsigned char       broadflags;         /* EVEX  sets up decorator flags in P2: b        */ 
+
+#if AVXSUPP
+	unsigned char       decoflags;          /* EVEX  sets up decorator flags in P2: z, aaa   */
+	unsigned char       broadflags;         /* EVEX  sets up decorator flags in P2: b        */
+	unsigned char       evex;               /* EVEX  encoding  */
+#endif
+
 #define CurrSource      ModuleInfo.currsource
 #define Token_Count     ModuleInfo.token_count
 #define StringBufferEnd ModuleInfo.stringbufferend

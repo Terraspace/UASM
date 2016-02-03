@@ -8,6 +8,7 @@ INCLUDELIB OLDNAMES
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 COMM	Frame_Type:BYTE
 COMM	Frame_Datum:WORD
 _DATA	ENDS
@@ -15,17 +16,17 @@ _BSS	SEGMENT
 ?cnt@?1??CreateFixup@@9@9 DD 01H DUP (?)		; `CreateFixup'::`2'::cnt
 _BSS	ENDS
 _DATA	SEGMENT
-$SG10548 DB	'NULL', 00H
+$SG10550 DB	'NULL', 00H
 	ORG $+3
-$SG10549 DB	'CreateFixup(sym=%s type=%u, opt=%u) cnt=%X, loc=%Xh', 0aH
+$SG10551 DB	'CreateFixup(sym=%s type=%u, opt=%u) cnt=%X, loc=%Xh', 0aH
 	DB	00H
 	ORG $+3
-$SG10584 DB	'SetFixupFrame(%s): unexpected state=%u', 0aH, 00H
-$SG10585 DB	'fixup.c', 00H
-$SG10597 DB	'store_fixup: type=%u, loc=%s.%X, target=%s(%X+% X)', 0aH
+$SG10586 DB	'SetFixupFrame(%s): unexpected state=%u', 0aH, 00H
+$SG10587 DB	'fixup.c', 00H
+$SG10599 DB	'store_fixup: type=%u, loc=%s.%X, target=%s(%X+% X)', 0aH
 	DB	00H
 	ORG $+4
-$SG10598 DB	'store_fixup: type=%u, loc=%s.%X, target=%X', 0aH, 00H
+$SG10600 DB	'store_fixup: type=%u, loc=%s.%X, target=%X', 0aH, 00H
 _DATA	ENDS
 PUBLIC	CreateFixup
 PUBLIC	SetFixupFrame
@@ -138,7 +139,7 @@ $LN19:
 	mov	r8, QWORD PTR [rax+8]
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	edx, DWORD PTR [rax+24]
-	lea	rcx, OFFSET FLAT:$SG10597
+	lea	rcx, OFFSET FLAT:$SG10599
 	call	DoDebugMsg1
 	jmp	SHORT $LN3@store_fixu
 $LN2@store_fixu:
@@ -156,7 +157,7 @@ $LN2@store_fixu:
 	mov	r8, QWORD PTR [rax+8]
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	edx, DWORD PTR [rax+24]
-	lea	rcx, OFFSET FLAT:$SG10598
+	lea	rcx, OFFSET FLAT:$SG10600
 	call	DoDebugMsg1
 $LN3@store_fixu:
 
@@ -673,13 +674,13 @@ $LN12@SetFixupFr:
 	mov	r8d, DWORD PTR [rax+32]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10584
+	lea	rcx, OFFSET FLAT:$SG10586
 	call	DoDebugMsg
 
 ; 181  :             /**/myassert( 0 );
 
 	mov	edx, 181				; 000000b5H
-	lea	rcx, OFFSET FLAT:$SG10585
+	lea	rcx, OFFSET FLAT:$SG10587
 	call	InternalError
 $LN2@SetFixupFr:
 $LN4@SetFixupFr:
@@ -884,7 +885,7 @@ $LN2@CreateFixu:
 	mov	QWORD PTR tv131[rsp], rax
 	jmp	SHORT $LN9@CreateFixu
 $LN8@CreateFixu:
-	lea	rax, OFFSET FLAT:$SG10548
+	lea	rax, OFFSET FLAT:$SG10550
 	mov	QWORD PTR tv131[rsp], rax
 $LN9@CreateFixu:
 	mov	eax, DWORD PTR ?cnt@?1??CreateFixup@@9@9
@@ -898,7 +899,7 @@ $LN9@CreateFixu:
 	mov	r9d, DWORD PTR option$[rsp]
 	mov	r8d, DWORD PTR type$[rsp]
 	mov	rdx, QWORD PTR tv131[rsp]
-	lea	rcx, OFFSET FLAT:$SG10549
+	lea	rcx, OFFSET FLAT:$SG10551
 	call	DoDebugMsg1
 
 ; 111  :         sym ? sym->name : "NULL", type, option, ++cnt, fixup->locofs ));

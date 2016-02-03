@@ -8,12 +8,13 @@ INCLUDELIB OLDNAMES
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10661 DB	'OrgDirective(%u) enter', 0aH, 00H
-$SG10721 DB	'AlignDirective enter', 0aH, 00H
+$SG10663 DB	'OrgDirective(%u) enter', 0aH, 00H
+$SG10723 DB	'AlignDirective enter', 0aH, 00H
 	ORG $+2
-$SG10743 DB	'AlignDirective exit', 0aH, 00H
+$SG10745 DB	'AlignDirective exit', 0aH, 00H
 _DATA	ENDS
 CONST	SEGMENT
 NopList16 DB	03H
@@ -234,7 +235,7 @@ $LN38:
 ; 199  : 
 ; 200  :     DebugMsg1(("AlignDirective enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG10721
+	lea	rcx, OFFSET FLAT:$SG10723
 	call	DoDebugMsg1
 
 ; 201  : 
@@ -323,7 +324,7 @@ $LN30@AlignDirec:
 	call	_RTC_UninitUse
 $LN31@AlignDirec:
 	mov	edx, DWORD PTR opndx$[rsp]
-	mov	ecx, 129				; 00000081H
+	mov	ecx, 130				; 00000082H
 	call	EmitErr
 	jmp	$LN1@AlignDirec
 $LN11@AlignDirec:
@@ -369,7 +370,7 @@ $LN12@AlignDirec:
 
 ; 221  :             return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 65					; 00000041H
+	mov	ecx, 66					; 00000042H
 	call	EmitError
 	jmp	$LN1@AlignDirec
 $LN13@AlignDirec:
@@ -411,7 +412,7 @@ $LN2@AlignDirec:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	$LN1@AlignDirec
 $LN17@AlignDirec:
@@ -465,7 +466,7 @@ $LN19@AlignDirec:
 
 ; 242  :         return( EmitError( MUST_BE_IN_SEGMENT_BLOCK ) );
 
-	mov	ecx, 82					; 00000052H
+	mov	ecx, 83					; 00000053H
 	call	EmitError
 	jmp	$LN1@AlignDirec
 $LN22@AlignDirec:
@@ -509,7 +510,7 @@ $LN34@AlignDirec:
 	mov	ecx, DWORD PTR opndx$[rsp]
 	call	myltoa
 	mov	r8, rax
-	mov	edx, 130				; 00000082H
+	mov	edx, 131				; 00000083H
 	mov	ecx, 1
 	call	EmitWarn
 $LN24@AlignDirec:
@@ -612,7 +613,7 @@ $LN27@AlignDirec:
 ; 263  :     }
 ; 264  :     DebugMsg1(("AlignDirective exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG10743
+	lea	rcx, OFFSET FLAT:$SG10745
 	call	DoDebugMsg1
 
 ; 265  :     return( NOT_ERROR );
@@ -884,7 +885,7 @@ $LN18:
 ; 99   :     DebugMsg1(("OrgDirective(%u) enter\n", i));
 
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10661
+	lea	rcx, OFFSET FLAT:$SG10663
 	call	DoDebugMsg1
 
 ; 100  :     i++;
@@ -936,7 +937,7 @@ $LN2@OrgDirecti:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	$LN1@OrgDirecti
 $LN3@OrgDirecti:
@@ -971,7 +972,7 @@ $LN4@OrgDirecti:
 
 ; 113  :             return( EmitError( MUST_BE_IN_SEGMENT_BLOCK ) );
 
-	mov	ecx, 82					; 00000052H
+	mov	ecx, 83					; 00000053H
 	call	EmitError
 	jmp	$LN1@OrgDirecti
 $LN7@OrgDirecti:
@@ -1060,7 +1061,7 @@ $LN5@OrgDirecti:
 ; 126  :     }
 ; 127  :     return( EmitError( ORG_NEEDS_A_CONSTANT_OR_LOCAL_OFFSET ) );
 
-	mov	ecx, 40					; 00000028H
+	mov	ecx, 41					; 00000029H
 	call	EmitError
 $LN1@OrgDirecti:
 

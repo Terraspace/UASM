@@ -1,1 +1,1 @@
-d:\pointy\asm.asm(25) : Error A2102: Symbol not defined : @C0002
+d:\pointy\asm.asm(8) : Error A2022: Unauthorised use of AVX512 register

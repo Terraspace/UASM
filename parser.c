@@ -2011,13 +2011,25 @@ static ret_code process_register( struct code_info *CodeInfo, unsigned CurrOpnd,
     flags = GetValueSp( regtok );
     CodeInfo->opnd[CurrOpnd].type = flags;
 #if AVXSUPP
-    if (CodeInfo->opnd[CurrOpnd].type == OP_ZMM || regno > 15) CodeInfo->evex_flag = TRUE;
-    if (CodeInfo->opnd[CurrOpnd].type == OP_K && regno > 7){
-      DebugMsg(("process_register: assume error, reg=%u\n", regno));
-      return(EmitError(USE_OF_REGISTER_ASSUMED_TO_ERROR));
-    }
-#endif
-    if ( flags & OP_R8 ) {
+	if (CodeInfo->opnd[CurrOpnd].type == OP_XMM || CodeInfo->opnd[CurrOpnd].type == OP_YMM)
+	{
+		if (!evex && regno > 15)
+		{ 
+			return(EmitError(UNAUTHORISED_USE_OF_EVEX_REGISTERS));
+		}
+	}
+	if (CodeInfo->opnd[CurrOpnd].type == OP_ZMM) {
+		if (evex)
+			CodeInfo->evex_flag = TRUE;
+		else
+			return(EmitError(UNAUTHORISED_USE_OF_EVEX_REGISTERS));
+	}
+	if (CodeInfo->opnd[CurrOpnd].type == OP_K && regno > 7) {
+		DebugMsg(("process_register: assume error, reg=%u\n", regno));
+		return(EmitError(USE_OF_REGISTER_ASSUMED_TO_ERROR));
+	}
+#endif    
+	if ( flags & OP_R8 ) {
         /* it's probably better to not reset the wide bit at all */
         if ( flags != OP_CL )      /* problem: SHL AX|AL, CL */
             CodeInfo->iswide = 0;

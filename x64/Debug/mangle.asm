@@ -8,11 +8,12 @@ INCLUDELIB OLDNAMES
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10647 DB	'_%s@%d', 00H
+$SG10649 DB	'_%s@%d', 00H
 	ORG $+1
-$SG10654 DB	'@%s@%u', 00H
+$SG10656 DB	'@%s@%u', 00H
 _DATA	ENDS
 CONST	SEGMENT
 fcmanglers DQ	FLAT:ms32_decorate
@@ -204,7 +205,7 @@ StdcallMangler PROC
 	mov	r9d, DWORD PTR [rax+32]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8, QWORD PTR [rax+8]
-	lea	rdx, OFFSET FLAT:$SG10647
+	lea	rdx, OFFSET FLAT:$SG10649
 	mov	rcx, QWORD PTR buffer$[rsp]
 	call	sprintf
 	jmp	SHORT $LN1@StdcallMan
@@ -610,7 +611,7 @@ ms32_decorate PROC
 	mov	r9d, DWORD PTR [rax+32]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8, QWORD PTR [rax+8]
-	lea	rdx, OFFSET FLAT:$SG10654
+	lea	rdx, OFFSET FLAT:$SG10656
 	mov	rcx, QWORD PTR buffer$[rsp]
 	call	sprintf
 

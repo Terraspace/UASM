@@ -8,6 +8,7 @@ INCLUDELIB OLDNAMES
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 PUBLIC	MemInit
 PUBLIC	MemFini
@@ -110,7 +111,7 @@ $LN7:
 ; 193  :             currfree = 0;
 ; 194  :             Fatal( OUT_OF_MEMORY );
 
-	lea	ecx, QWORD PTR [rax+105]
+	lea	ecx, QWORD PTR [rax+106]
 	mov	DWORD PTR currfree, eax
 	call	Fatal
 	mov	rcx, QWORD PTR pCurr
@@ -206,7 +207,7 @@ $LN6:
 
 ; 238  :         Fatal( OUT_OF_MEMORY );
 
-	lea	ecx, QWORD PTR [rax+105]
+	lea	ecx, QWORD PTR [rax+106]
 	call	Fatal
 
 ; 239  :     }

@@ -9,529 +9,533 @@ PUBLIC	szCVCompiler
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG7536	DB	01H DUP (?)
-$SG7537	DB	01H DUP (?)
 $SG7540	DB	01H DUP (?)
-$SG7541	DB	01H DUP (?)
-$SG7700	DB	01H DUP (?)
+$SG7543	DB	01H DUP (?)
+$SG7544	DB	01H DUP (?)
+$SG7703	DB	01H DUP (?)
 _BSS	ENDS
 CONST	SEGMENT
 szCVCompiler DB	'HJWasm v2.13', 00H
 CONST	ENDS
 _DATA	SEGMENT
-$SG7514	DB	'usage: HJWasm [ options ] filelist [@env_var]', 0aH, 'Ru'
+$SG7516	DB	'usage: HJWasm [ options ] filelist [@env_var]', 0aH, 'Ru'
 	DB	'n "HJWasm -?" or "HJWasm -h" for more info', 0aH, 00H
 	ORG $+4
-$SG7515	DB	'%s: %lu lines, %u passes, %u ms, %u warnings, %u errors', 00H
-$SG7516	DB	'HJWasm v2.13, Feb  3 2016', 00H
+$SG7517	DB	'%s: %lu lines, %u passes, %u ms, %u warnings, %u errors', 00H
+$SG7518	DB	'HJWasm v2.13, Feb  3 2016', 00H
 	ORG $+2
-$SG7518	DB	'Error', 00H
+$SG7520	DB	'Error', 00H
 	ORG $+6
-$SG7517	DB	'Masm-compatible assembler.', 0aH, 'Portions Copyright (c'
+$SG7519	DB	'Masm-compatible assembler.', 0aH, 'Portions Copyright (c'
 	DB	') 1992-2002 Sybase, Inc. All Rights Reserved.', 0aH, 'Source '
 	DB	'code is available under the Sybase Open Watcom Public License'
 	DB	'.', 0aH, 00H
 	ORG $+3
-$SG7519	DB	'Warning', 00H
-$SG7520	DB	'Fatal error', 00H
+$SG7521	DB	'Warning', 00H
+$SG7522	DB	'Fatal error', 00H
 	ORG $+4
-$SG7521	DB	'readonly', 00H
+$SG7523	DB	'readonly', 00H
 	ORG $+3
-$SG7525	DB	'class', 00H
+$SG7527	DB	'class', 00H
 	ORG $+6
-$SG7522	DB	'alignment', 00H
+$SG7524	DB	'alignment', 00H
 	ORG $+6
-$SG7523	DB	'combine', 00H
-$SG7524	DB	'segment word size', 00H
+$SG7525	DB	'combine', 00H
+$SG7526	DB	'segment word size', 00H
 	ORG $+6
-$SG7526	DB	'characteristics', 00H
-$SG7527	DB	'alias', 00H
+$SG7528	DB	'characteristics', 00H
+$SG7529	DB	'alias', 00H
 	ORG $+2
-$SG7528	DB	'invalid combination of opcode and operands', 00H
+$SG7530	DB	'invalid combination of opcode and operands', 00H
 	ORG $+5
-$SG7529	DB	'decorator or brace expected', 00H
+$SG7531	DB	'decorator or brace expected', 00H
 	ORG $+4
-$SG7530	DB	'wrong mask register number', 00H
+$SG7532	DB	'wrong mask register number', 00H
 	ORG $+5
-$SG7531	DB	'to many decorators', 00H
+$SG7533	DB	'to many decorators', 00H
 	ORG $+5
-$SG7532	DB	'mismatch in the number of broadcasting elements', 00H
-$SG7533	DB	'z decorator expected', 00H
+$SG7534	DB	'mismatch in the number of broadcasting elements', 00H
+$SG7535	DB	'z decorator expected', 00H
 	ORG $+3
-$SG7534	DB	'K register expected', 00H
+$SG7536	DB	'K register expected', 00H
 	ORG $+4
-$SG7535	DB	'Embedded rounding is available only with reg-reg op', 00H
+$SG7537	DB	'Embedded rounding is available only with reg-reg op', 00H
 	ORG $+4
-$SG7538	DB	'Value not within allowed range %s', 00H
+$SG7538	DB	'Unauthorised use of AVX512 register', 00H
+	ORG $+4
+$SG7539	DB	'EVEX encoding not enabled. Use option evex directive?', 00H
+	ORG $+2
+$SG7541	DB	'Value not within allowed range %s', 00H
 	ORG $+6
-$SG7539	DB	'Invalid associated segment: %s', 00H
+$SG7542	DB	'Invalid associated segment: %s', 00H
 	ORG $+1
-$SG7542	DB	'Instruction prefix not allowed', 00H
+$SG7545	DB	'Instruction prefix not allowed', 00H
 	ORG $+1
-$SG7543	DB	'Multiple base registers not allowed', 00H
+$SG7546	DB	'Multiple base registers not allowed', 00H
 	ORG $+4
-$SG7544	DB	'Instruction or register not accepted in current CPU mode'
+$SG7547	DB	'Instruction or register not accepted in current CPU mode'
 	DB	00H
 	ORG $+3
-$SG7804	DB	'Msg %u', 00H
+$SG7807	DB	'Msg %u', 00H
 	ORG $+5
-$SG7545	DB	'invalid addressing mode with current CPU setting', 00H
+$SG7548	DB	'invalid addressing mode with current CPU setting', 00H
 	ORG $+7
-$SG7546	DB	'Cannot use TR%u-TR%u with current CPU setting', 00H
+$SG7549	DB	'Cannot use TR%u-TR%u with current CPU setting', 00H
 	ORG $+2
-$SG7547	DB	'Must be index or base register', 00H
+$SG7550	DB	'Must be index or base register', 00H
 	ORG $+1
-$SG7548	DB	'Multiple index registers not allowed', 00H
+$SG7551	DB	'Multiple index registers not allowed', 00H
 	ORG $+3
-$SG7549	DB	'Too few bits in RECORD: %s', 00H
+$SG7552	DB	'Too few bits in RECORD: %s', 00H
 	ORG $+5
-$SG7550	DB	'Scale factor must be 1, 2, 4 or 8', 00H
+$SG7553	DB	'Scale factor must be 1, 2, 4 or 8', 00H
 	ORG $+6
-$SG7551	DB	'Cannot be used as index register: %s', 00H
+$SG7554	DB	'Cannot be used as index register: %s', 00H
 	ORG $+3
-$SG7552	DB	'Base and index register differ in size', 00H
+$SG7555	DB	'Base and index register differ in size', 00H
 	ORG $+1
-$SG7553	DB	'Expecting comma: %s', 00H
+$SG7556	DB	'Expecting comma: %s', 00H
 	ORG $+4
-$SG7554	DB	'ORG needs a constant or local offset', 00H
+$SG7557	DB	'ORG needs a constant or local offset', 00H
 	ORG $+3
-$SG7555	DB	'POP CS is not allowed', 00H
+$SG7558	DB	'POP CS is not allowed', 00H
 	ORG $+2
-$SG7556	DB	'Only MOV can use special register', 00H
+$SG7559	DB	'Only MOV can use special register', 00H
 	ORG $+6
-$SG7557	DB	'Cannot use SHORT with CALL', 00H
+$SG7560	DB	'Cannot use SHORT with CALL', 00H
 	ORG $+5
-$SG7558	DB	'Only SHORT jump distance is allowed', 00H
+$SG7561	DB	'Only SHORT jump distance is allowed', 00H
 	ORG $+4
-$SG7559	DB	'Syntax error', 00H
+$SG7562	DB	'Syntax error', 00H
 	ORG $+3
-$SG7560	DB	'Prefix must be followed by an instruction', 00H
+$SG7563	DB	'Prefix must be followed by an instruction', 00H
 	ORG $+6
-$SG7561	DB	'Syntax error: Unexpected colon', 00H
+$SG7564	DB	'Syntax error: Unexpected colon', 00H
 	ORG $+1
-$SG7562	DB	'Operands must be the same size: %u - %u', 00H
-$SG7563	DB	'Invalid instruction operands', 00H
+$SG7565	DB	'Operands must be the same size: %u - %u', 00H
+$SG7566	DB	'Invalid instruction operands', 00H
 	ORG $+3
-$SG7564	DB	'Jump distance not possible in current CPU mode', 00H
+$SG7567	DB	'Jump distance not possible in current CPU mode', 00H
 	ORG $+1
-$SG7565	DB	'Immediate data out of range', 00H
+$SG7568	DB	'Immediate data out of range', 00H
 	ORG $+4
-$SG7566	DB	'Can not use short or near modifiers with this instructio'
+$SG7569	DB	'Can not use short or near modifiers with this instructio'
 	DB	'n', 00H
 	ORG $+6
-$SG7567	DB	'Jump out of range by %d byte(s)', 00H
-$SG7568	DB	'Displacement out of range: 0x%I64X', 00H
+$SG7570	DB	'Jump out of range by %d byte(s)', 00H
+$SG7571	DB	'Displacement out of range: 0x%I64X', 00H
 	ORG $+5
-$SG7569	DB	'Initializer value too large', 00H
+$SG7572	DB	'Initializer value too large', 00H
 	ORG $+4
-$SG7570	DB	'Symbol already defined: %s', 00H
+$SG7573	DB	'Symbol already defined: %s', 00H
 	ORG $+5
-$SG7571	DB	'Offset magnitude too large for specified size', 00H
+$SG7574	DB	'Offset magnitude too large for specified size', 00H
 	ORG $+2
-$SG7572	DB	'Magnitude of offset exceeds 16 bit', 00H
+$SG7575	DB	'Magnitude of offset exceeds 16 bit', 00H
 	ORG $+5
-$SG7573	DB	'Operand 2 too big', 00H
+$SG7576	DB	'Operand 2 too big', 00H
 	ORG $+6
-$SG7574	DB	'Operand 1 too small', 00H
+$SG7577	DB	'Operand 1 too small', 00H
 	ORG $+4
-$SG7575	DB	'Line too long', 00H
+$SG7578	DB	'Line too long', 00H
 	ORG $+2
-$SG7576	DB	'Too many tokens in a line', 00H
+$SG7579	DB	'Too many tokens in a line', 00H
 	ORG $+6
-$SG7577	DB	'Symbol not defined : %s.%s', 00H
+$SG7580	DB	'Symbol not defined : %s.%s', 00H
 	ORG $+5
-$SG7578	DB	'Expression expected: %s', 00H
-$SG7579	DB	'Constant expected', 00H
+$SG7581	DB	'Expression expected: %s', 00H
+$SG7582	DB	'Constant expected', 00H
 	ORG $+6
-$SG7580	DB	'Constant operand is expected', 00H
+$SG7583	DB	'Constant operand is expected', 00H
 	ORG $+3
-$SG7581	DB	'.ELSE clause already occured in this .IF block', 00H
+$SG7584	DB	'.ELSE clause already occured in this .IF block', 00H
 	ORG $+1
-$SG7582	DB	'Multiple overrides', 00H
+$SG7585	DB	'Multiple overrides', 00H
 	ORG $+5
-$SG7583	DB	'Segment, group or segment register expected', 00H
+$SG7586	DB	'Segment, group or segment register expected', 00H
 	ORG $+4
-$SG7584	DB	'Identifier too long', 00H
+$SG7587	DB	'Identifier too long', 00H
 	ORG $+4
-$SG7585	DB	'Invalid operand size for instruction', 00H
+$SG7588	DB	'Invalid operand size for instruction', 00H
 	ORG $+3
-$SG7586	DB	'Not supported: %s', 00H
+$SG7589	DB	'Not supported: %s', 00H
 	ORG $+6
-$SG7587	DB	'Size not specified, assuming: %s', 00H
+$SG7590	DB	'Size not specified, assuming: %s', 00H
 	ORG $+7
-$SG7588	DB	'Floating-point initializer ignored', 00H
+$SG7591	DB	'Floating-point initializer ignored', 00H
 	ORG $+5
-$SG7589	DB	'Only SHORT and NEAR jump distance is allowed', 00H
+$SG7592	DB	'Only SHORT and NEAR jump distance is allowed', 00H
 	ORG $+3
-$SG7590	DB	'Initializer magnitude too large for specified size', 00H
+$SG7593	DB	'Initializer magnitude too large for specified size', 00H
 	ORG $+5
-$SG7591	DB	'Segment attribute is defined already: %s', 00H
+$SG7594	DB	'Segment attribute is defined already: %s', 00H
 	ORG $+7
-$SG7592	DB	'Segment definition changed: %s, %s', 00H
+$SG7595	DB	'Segment definition changed: %s, %s', 00H
 	ORG $+5
-$SG7593	DB	'Class name too long', 00H
+$SG7596	DB	'Class name too long', 00H
 	ORG $+4
-$SG7594	DB	'Block nesting error: %s', 00H
-$SG7595	DB	'Segment attribute is unknown: %s', 00H
+$SG7597	DB	'Block nesting error: %s', 00H
+$SG7598	DB	'Segment attribute is unknown: %s', 00H
 	ORG $+7
-$SG7596	DB	'Must be in segment block', 00H
+$SG7599	DB	'Must be in segment block', 00H
 	ORG $+7
-$SG7597	DB	'Segment not defined: %s', 00H
-$SG7598	DB	'Colon is expected', 00H
+$SG7600	DB	'Segment not defined: %s', 00H
+$SG7601	DB	'Colon is expected', 00H
 	ORG $+6
-$SG7599	DB	'Invalid qualified type: %s', 00H
+$SG7602	DB	'Invalid qualified type: %s', 00H
 	ORG $+5
-$SG7600	DB	'Qualified type is expected', 00H
+$SG7603	DB	'Qualified type is expected', 00H
 	ORG $+5
-$SG7601	DB	'Missing macro argument: iteration %u', 00H
+$SG7604	DB	'Missing macro argument: iteration %u', 00H
 	ORG $+3
-$SG7602	DB	'Library name is missing', 00H
-$SG7603	DB	'Cannot access label through segment registers: %s', 00H
+$SG7605	DB	'Library name is missing', 00H
+$SG7606	DB	'Cannot access label through segment registers: %s', 00H
 	ORG $+6
-$SG7604	DB	'Line too long after expansion: %40s', 00H
+$SG7607	DB	'Line too long after expansion: %40s', 00H
 	ORG $+4
-$SG7605	DB	'Language type must be specified', 00H
-$SG7606	DB	'PROC, MACRO or macro loop directive must precede LOCAL', 00H
+$SG7608	DB	'Language type must be specified', 00H
+$SG7609	DB	'PROC, MACRO or macro loop directive must precede LOCAL', 00H
 	ORG $+1
-$SG7607	DB	'Cannot nest procedures', 00H
+$SG7610	DB	'Cannot nest procedures', 00H
 	ORG $+1
-$SG7608	DB	'VARARG requires C calling convention', 00H
+$SG7611	DB	'VARARG requires C calling convention', 00H
 	ORG $+3
-$SG7609	DB	'Multiple .MODEL directives, .MODEL ignored', 00H
+$SG7612	DB	'Multiple .MODEL directives, .MODEL ignored', 00H
 	ORG $+5
-$SG7610	DB	'Model is not declared', 00H
+$SG7613	DB	'Model is not declared', 00H
 	ORG $+2
-$SG7611	DB	'Backquote missing: `%s', 00H
+$SG7614	DB	'Backquote missing: `%s', 00H
 	ORG $+1
-$SG7612	DB	'COMMENT delimiter expected', 00H
+$SG7615	DB	'COMMENT delimiter expected', 00H
 	ORG $+5
-$SG7613	DB	'END directive required at end of file', 00H
+$SG7616	DB	'END directive required at end of file', 00H
 	ORG $+2
-$SG7614	DB	'Nesting level too deep', 00H
+$SG7617	DB	'Nesting level too deep', 00H
 	ORG $+1
-$SG7615	DB	'Macro nesting level too deep', 00H
+$SG7618	DB	'Macro nesting level too deep', 00H
 	ORG $+3
-$SG7616	DB	'Symbol not defined : %s', 00H
-$SG7617	DB	'Language attribute conflict: %s', 00H
-$SG7618	DB	'No filename specified.', 00H
+$SG7619	DB	'Symbol not defined : %s', 00H
+$SG7620	DB	'Language attribute conflict: %s', 00H
+$SG7621	DB	'No filename specified.', 00H
 	ORG $+1
-$SG7619	DB	'Out of Memory', 00H
+$SG7622	DB	'Out of Memory', 00H
 	ORG $+2
-$SG7620	DB	'Cannot open file: "%s" [%s]', 00H
+$SG7623	DB	'Cannot open file: "%s" [%s]', 00H
 	ORG $+4
-$SG7621	DB	'Cannot close file: %s [%u]', 00H
+$SG7624	DB	'Cannot close file: %s [%u]', 00H
 	ORG $+5
-$SG7622	DB	'File write error: %s [%u]', 00H
+$SG7625	DB	'File write error: %s [%u]', 00H
 	ORG $+6
-$SG7623	DB	'Invalid command-line option: %s', 00H
-$SG7624	DB	'Internal error in %s(%u)', 0aH, 00H
+$SG7626	DB	'Invalid command-line option: %s', 00H
+$SG7627	DB	'Internal error in %s(%u)', 0aH, 00H
 	ORG $+6
-$SG7625	DB	'Expecting closing square bracket', 00H
+$SG7628	DB	'Expecting closing square bracket', 00H
 	ORG $+7
-$SG7626	DB	'Expecting file name', 00H
+$SG7629	DB	'Expecting file name', 00H
 	ORG $+4
-$SG7627	DB	'Too many errors', 00H
-$SG7628	DB	'forced error%s', 00H
+$SG7630	DB	'Too many errors', 00H
+$SG7631	DB	'forced error%s', 00H
 	ORG $+1
-$SG7629	DB	'forced error: Value not equal to 0: %d%s', 00H
+$SG7632	DB	'forced error: Value not equal to 0: %d%s', 00H
 	ORG $+7
-$SG7630	DB	'forced error: Value equal to 0: %d%s', 00H
+$SG7633	DB	'forced error: Value equal to 0: %d%s', 00H
 	ORG $+3
-$SG7631	DB	'forced error: symbol defined: %s', 00H
+$SG7634	DB	'forced error: symbol defined: %s', 00H
 	ORG $+7
-$SG7632	DB	'forced error: symbol not defined: %s', 00H
+$SG7635	DB	'forced error: symbol not defined: %s', 00H
 	ORG $+3
-$SG7633	DB	'forced error: string blank : <%s>%s', 00H
+$SG7636	DB	'forced error: string blank : <%s>%s', 00H
 	ORG $+4
-$SG7634	DB	'forced error: string not blank : <%s>%s', 00H
-$SG7635	DB	'forced error: strings not equal : <%s> : <%s>%s', 00H
-$SG7636	DB	'forced error: strings equal : <%s> : <%s>%s', 00H
+$SG7637	DB	'forced error: string not blank : <%s>%s', 00H
+$SG7638	DB	'forced error: strings not equal : <%s> : <%s>%s', 00H
+$SG7639	DB	'forced error: strings equal : <%s> : <%s>%s', 00H
 	ORG $+4
-$SG7637	DB	'%*s%s(%u): Included by', 00H
+$SG7640	DB	'%*s%s(%u): Included by', 00H
 	ORG $+1
-$SG7638	DB	'%*s%s(%u)[%s]: Macro called from', 00H
+$SG7641	DB	'%*s%s(%u)[%s]: Macro called from', 00H
 	ORG $+7
-$SG7639	DB	'%*s%s(%u): iteration %u: Macro called from', 00H
+$SG7642	DB	'%*s%s(%u): iteration %u: Macro called from', 00H
 	ORG $+5
-$SG7640	DB	'%*s%s(%u): Main line code', 00H
+$SG7643	DB	'%*s%s(%u): Main line code', 00H
 	ORG $+6
-$SG7641	DB	'Extending jump', 00H
+$SG7644	DB	'Extending jump', 00H
 	ORG $+1
-$SG7642	DB	'Directive ignored: %s', 00H
+$SG7645	DB	'Directive ignored: %s', 00H
 	ORG $+2
-$SG7643	DB	'number must be a power of 2: %u', 00H
-$SG7644	DB	'Incompatible with segment alignment: %s', 00H
-$SG7645	DB	'Segment expected: %s', 00H
+$SG7646	DB	'number must be a power of 2: %u', 00H
+$SG7647	DB	'Incompatible with segment alignment: %s', 00H
+$SG7648	DB	'Segment expected: %s', 00H
 	ORG $+3
-$SG7646	DB	'Incompatible CPU mode for %u-bit segment', 00H
+$SG7649	DB	'Incompatible CPU mode for %u-bit segment', 00H
 	ORG $+7
-$SG7647	DB	'Far call is converted to near call.', 00H
+$SG7650	DB	'Far call is converted to near call.', 00H
 	ORG $+4
-$SG7648	DB	'CPU option %s is not valid for selected CPU.', 00H
+$SG7651	DB	'CPU option %s is not valid for selected CPU.', 00H
 	ORG $+3
-$SG7649	DB	'Segment ''%s'' is in another group already', 00H
+$SG7652	DB	'Segment ''%s'' is in another group already', 00H
 	ORG $+7
-$SG7650	DB	'Symbol type conflict: %s', 00H
+$SG7653	DB	'Symbol type conflict: %s', 00H
 	ORG $+7
-$SG7651	DB	'Conflicting parameter definition: %s', 00H
+$SG7654	DB	'Conflicting parameter definition: %s', 00H
 	ORG $+3
-$SG7652	DB	'PROC and PROTO calling convention conflict', 00H
+$SG7655	DB	'PROC and PROTO calling convention conflict', 00H
 	ORG $+5
-$SG7653	DB	'Non-benign %s redefinition: %s', 00H
+$SG7656	DB	'Non-benign %s redefinition: %s', 00H
 	ORG $+1
-$SG7654	DB	'Too many bits in RECORD: %s', 00H
+$SG7657	DB	'Too many bits in RECORD: %s', 00H
 	ORG $+4
-$SG7655	DB	'Statement not allowed inside structure definition', 00H
+$SG7658	DB	'Statement not allowed inside structure definition', 00H
 	ORG $+6
-$SG7656	DB	'Unmatched block nesting: %s', 00H
+$SG7659	DB	'Unmatched block nesting: %s', 00H
 	ORG $+4
-$SG7657	DB	'Symbol redefinition: %s', 00H
-$SG7658	DB	'Text item required', 00H
+$SG7660	DB	'Symbol redefinition: %s', 00H
+$SG7661	DB	'Text item required', 00H
 	ORG $+5
-$SG7659	DB	'INVOKE argument type mismatch: argument %u', 00H
+$SG7662	DB	'INVOKE argument type mismatch: argument %u', 00H
 	ORG $+5
-$SG7660	DB	'Too few arguments to INVOKE: %s', 00H
-$SG7661	DB	'VARARG parameter must be last', 00H
+$SG7663	DB	'Too few arguments to INVOKE: %s', 00H
+$SG7664	DB	'VARARG parameter must be last', 00H
 	ORG $+2
-$SG7662	DB	'LABEL parameter must be first', 00H
+$SG7665	DB	'LABEL parameter must be first', 00H
 	ORG $+2
-$SG7663	DB	'Too many arguments in macro call: %s: %s', 00H
+$SG7666	DB	'Too many arguments in macro call: %s: %s', 00H
 	ORG $+7
-$SG7664	DB	'Missing operator in expression', 00H
+$SG7667	DB	'Missing operator in expression', 00H
 	ORG $+1
-$SG7665	DB	'Unexpected literal found in expression: %s', 00H
+$SG7668	DB	'Unexpected literal found in expression: %s', 00H
 	ORG $+5
-$SG7666	DB	'Initializer must be a string or single item: %s', 00H
-$SG7667	DB	'Too many initial values for structure: %s', 00H
+$SG7669	DB	'Initializer must be a string or single item: %s', 00H
+$SG7670	DB	'Too many initial values for structure: %s', 00H
 	ORG $+6
-$SG7668	DB	'Too many initial values for array: %s', 00H
+$SG7671	DB	'Too many initial values for array: %s', 00H
 	ORG $+2
-$SG7669	DB	'String or text literal too long', 00H
-$SG7670	DB	'PROLOGUE must be macro function', 00H
-$SG7671	DB	'EPILOGUE must be macro procedure: %s', 00H
+$SG7672	DB	'String or text literal too long', 00H
+$SG7673	DB	'PROLOGUE must be macro function', 00H
+$SG7674	DB	'EPILOGUE must be macro procedure: %s', 00H
 	ORG $+3
-$SG7672	DB	'Reserved word expected', 00H
+$SG7675	DB	'Reserved word expected', 00H
 	ORG $+1
-$SG7673	DB	'INVOKE requires prototype for procedure', 00H
-$SG7674	DB	'Invalid type for data declaration: %s', 00H
+$SG7676	DB	'INVOKE requires prototype for procedure', 00H
+$SG7677	DB	'Invalid type for data declaration: %s', 00H
 	ORG $+2
-$SG7675	DB	'Operand must be RECORD type or field', 00H
+$SG7678	DB	'Operand must be RECORD type or field', 00H
 	ORG $+3
-$SG7676	DB	'Unmatched macro nesting', 00H
-$SG7677	DB	'Empty (null) string', 00H
+$SG7679	DB	'Unmatched macro nesting', 00H
+$SG7680	DB	'Empty (null) string', 00H
 	ORG $+4
-$SG7678	DB	'No segment information to create fixup: %s', 00H
+$SG7681	DB	'No segment information to create fixup: %s', 00H
 	ORG $+5
-$SG7679	DB	'Register value overwritten by INVOKE', 00H
+$SG7682	DB	'Register value overwritten by INVOKE', 00H
 	ORG $+3
-$SG7680	DB	'Missing quotation mark in string', 00H
+$SG7683	DB	'Missing quotation mark in string', 00H
 	ORG $+7
-$SG7681	DB	'Divide by zero in expression', 00H
+$SG7684	DB	'Divide by zero in expression', 00H
 	ORG $+3
-$SG7682	DB	'General Failure', 00H
-$SG7683	DB	'Cannot have implicit far jump or call to near label', 00H
+$SG7685	DB	'General Failure', 00H
+$SG7686	DB	'Cannot have implicit far jump or call to near label', 00H
 	ORG $+4
-$SG7684	DB	'Invalid use of register', 00H
-$SG7685	DB	'Distance invalid for current segment', 00H
+$SG7687	DB	'Invalid use of register', 00H
+$SG7688	DB	'Distance invalid for current segment', 00H
 	ORG $+3
-$SG7686	DB	'Initializer magnitude too large: %s', 00H
+$SG7689	DB	'Initializer magnitude too large: %s', 00H
 	ORG $+4
-$SG7687	DB	'Cannot add two relocatable labels', 00H
+$SG7690	DB	'Cannot add two relocatable labels', 00H
 	ORG $+6
-$SG7688	DB	'Cannot define as public or external: %s', 00H
-$SG7689	DB	'Positive value expected', 00H
-$SG7690	DB	'FAR not allowed in FLAT model COMM variables', 00H
+$SG7691	DB	'Cannot define as public or external: %s', 00H
+$SG7692	DB	'Positive value expected', 00H
+$SG7693	DB	'FAR not allowed in FLAT model COMM variables', 00H
 	ORG $+3
-$SG7691	DB	'Too many arguments to INVOKE', 00H
+$SG7694	DB	'Too many arguments to INVOKE', 00H
 	ORG $+3
-$SG7692	DB	'Directive must appear inside a macro', 00H
+$SG7695	DB	'Directive must appear inside a macro', 00H
 	ORG $+3
-$SG7693	DB	'Invalid type expression', 00H
-$SG7694	DB	'Cannot declare scoped code label as PUBLIC: %s', 00H
+$SG7696	DB	'Invalid type expression', 00H
+$SG7697	DB	'Cannot declare scoped code label as PUBLIC: %s', 00H
 	ORG $+1
-$SG7695	DB	'Invalid radix tag', 00H
+$SG7698	DB	'Invalid radix tag', 00H
 	ORG $+6
-$SG7696	DB	'Instruction operand must have size', 00H
+$SG7699	DB	'Instruction operand must have size', 00H
 	ORG $+5
-$SG7697	DB	'Use of register assumed to ERROR', 00H
+$SG7700	DB	'Use of register assumed to ERROR', 00H
 	ORG $+7
-$SG7698	DB	'Instructions and initialized data not supported in %s se'
+$SG7701	DB	'Instructions and initialized data not supported in %s se'
 	DB	'gments', 00H
 	ORG $+1
-$SG7699	DB	'Literal expected after ''=''', 00H
+$SG7702	DB	'Literal expected after ''=''', 00H
 	ORG $+5
-$SG7701	DB	'Line number information for segment without class ''CODE'
+$SG7704	DB	'Line number information for segment without class ''CODE'
 	DB	''': %s', 00H
 	ORG $+3
-$SG7702	DB	'Operand must be relocatable', 00H
+$SG7705	DB	'Operand must be relocatable', 00H
 	ORG $+4
-$SG7703	DB	'Constant or relocatable label expected', 00H
+$SG7706	DB	'Constant or relocatable label expected', 00H
 	ORG $+1
-$SG7704	DB	'[ELSE]IF2/.ERR2 not allowed, single-pass assembler', 00H
+$SG7707	DB	'[ELSE]IF2/.ERR2 not allowed, single-pass assembler', 00H
 	ORG $+5
-$SG7705	DB	'Expression too complex for UNTILCXZ', 00H
+$SG7708	DB	'Expression too complex for UNTILCXZ', 00H
 	ORG $+4
-$SG7706	DB	'Operands must be in same segment', 00H
+$SG7709	DB	'Operands must be in same segment', 00H
 	ORG $+7
-$SG7707	DB	'Invalid use of external symbol: %s', 00H
+$SG7710	DB	'Invalid use of external symbol: %s', 00H
 	ORG $+5
-$SG7708	DB	'For -coff leading underscore required for start label: %'
+$SG7711	DB	'For -coff leading underscore required for start label: %'
 	DB	's', 00H
 	ORG $+6
-$SG7709	DB	'Invalid command-line value, default is used: -%s', 00H
+$SG7712	DB	'Invalid command-line value, default is used: -%s', 00H
 	ORG $+7
-$SG7710	DB	'Unknown fixup type: %u at %s.%lX', 00H
+$SG7713	DB	'Unknown fixup type: %u at %s.%lX', 00H
 	ORG $+7
-$SG7711	DB	'Unsupported fixup type for %s: %s', 00H
+$SG7714	DB	'Unsupported fixup type for %s: %s', 00H
 	ORG $+6
-$SG7712	DB	'Invalid fixup type for %s: %u at location %s.%lX', 00H
+$SG7715	DB	'Invalid fixup type for %s: %u at location %s.%lX', 00H
 	ORG $+7
-$SG7713	DB	'Syntax error in control-flow directive', 00H
+$SG7716	DB	'Syntax error in control-flow directive', 00H
 	ORG $+1
-$SG7714	DB	'Invalid .model parameter for flat model', 00H
-$SG7715	DB	'Output format doesn''t support externals: %s', 00H
+$SG7717	DB	'Invalid .model parameter for flat model', 00H
+$SG7718	DB	'Output format doesn''t support externals: %s', 00H
 	ORG $+4
-$SG7716	DB	'Invalid start label for -bin', 00H
+$SG7719	DB	'Invalid start label for -bin', 00H
 	ORG $+3
-$SG7717	DB	'No start label defined', 00H
+$SG7720	DB	'No start label defined', 00H
 	ORG $+1
-$SG7718	DB	'No stack defined', 00H
+$SG7721	DB	'No stack defined', 00H
 	ORG $+7
-$SG7719	DB	'Invalid alignment - value must be 2^n (n=4..15)', 00H
-$SG7720	DB	'Index value past end of string: %d', 00H
+$SG7722	DB	'Invalid alignment - value must be 2^n (n=4..15)', 00H
+$SG7723	DB	'Index value past end of string: %d', 00H
 	ORG $+5
-$SG7721	DB	'Count value too large', 00H
+$SG7724	DB	'Count value too large', 00H
 	ORG $+2
-$SG7722	DB	'Count must be positive or zero', 00H
+$SG7725	DB	'Count must be positive or zero', 00H
 	ORG $+1
-$SG7723	DB	'Syntax error: %s', 00H
+$SG7726	DB	'Syntax error: %s', 00H
 	ORG $+7
-$SG7724	DB	'Too many unwind codes in FRAME procedure', 00H
+$SG7727	DB	'Too many unwind codes in FRAME procedure', 00H
 	ORG $+7
-$SG7725	DB	'Model must be FLAT', 00H
+$SG7728	DB	'Model must be FLAT', 00H
 	ORG $+5
-$SG7726	DB	'Must use floating-point initializer', 00H
+$SG7729	DB	'Must use floating-point initializer', 00H
 	ORG $+4
-$SG7727	DB	'ORG directive not allowed in unions', 00H
+$SG7730	DB	'ORG directive not allowed in unions', 00H
 	ORG $+4
-$SG7728	DB	'Struct alignment must be 1, 2, 4, 8, 16 or 32', 00H
+$SG7731	DB	'Struct alignment must be 1, 2, 4, 8, 16 or 32', 00H
 	ORG $+2
-$SG7729	DB	'Structure cannot be instanced', 00H
+$SG7732	DB	'Structure cannot be instanced', 00H
 	ORG $+2
-$SG7730	DB	'Missing angle bracket or brace in literal', 00H
+$SG7733	DB	'Missing angle bracket or brace in literal', 00H
 	ORG $+6
-$SG7731	DB	'Nondigit in number: %s', 00H
+$SG7734	DB	'Nondigit in number: %s', 00H
 	ORG $+1
-$SG7732	DB	'16bit fixup for 32bit label: %s', 00H
-$SG7733	DB	'Too many macro placeholders', 00H
+$SG7735	DB	'16bit fixup for 32bit label: %s', 00H
+$SG7736	DB	'Too many macro placeholders', 00H
 	ORG $+4
-$SG7734	DB	'Missing macro argument: %s, parameter %u', 00H
+$SG7737	DB	'Missing macro argument: %s, parameter %u', 00H
 	ORG $+7
-$SG7735	DB	'Doesn''t work with 32-bit segments: %s', 00H
+$SG7738	DB	'Doesn''t work with 32-bit segments: %s', 00H
 	ORG $+2
-$SG7736	DB	'Segment exceeds 64k limit: %s', 00H
+$SG7739	DB	'Segment exceeds 64k limit: %s', 00H
 	ORG $+2
-$SG7737	DB	'Not supported with OMF format: %s', 00H
+$SG7740	DB	'Not supported with OMF format: %s', 00H
 	ORG $+6
-$SG7738	DB	'Not supported with current output format: %s', 00H
+$SG7741	DB	'Not supported with current output format: %s', 00H
 	ORG $+3
-$SG7739	DB	'Unknown default prologue argument: %s', 00H
+$SG7742	DB	'Unknown default prologue argument: %s', 00H
 	ORG $+2
-$SG7740	DB	'LOADDS ignored in flat model', 00H
+$SG7743	DB	'LOADDS ignored in flat model', 00H
 	ORG $+3
-$SG7741	DB	'Missing right parenthesis in expression', 00H
-$SG7742	DB	'Invalid operand for %s: %s', 00H
+$SG7744	DB	'Missing right parenthesis in expression', 00H
+$SG7745	DB	'Invalid operand for %s: %s', 00H
 	ORG $+5
-$SG7743	DB	'Structure improperly initialized: %s', 00H
+$SG7746	DB	'Structure improperly initialized: %s', 00H
 	ORG $+3
-$SG7744	DB	'Expected: %s', 00H
+$SG7747	DB	'Expected: %s', 00H
 	ORG $+3
-$SG7745	DB	'Invalid data initializer: %s', 00H
+$SG7748	DB	'Invalid data initializer: %s', 00H
 	ORG $+3
-$SG7746	DB	'Expected data label', 00H
+$SG7749	DB	'Expected data label', 00H
 	ORG $+4
-$SG7747	DB	'Expression must be a code address', 00H
+$SG7750	DB	'Expression must be a code address', 00H
 	ORG $+6
-$SG7748	DB	'-n Option needs a valid name parameter', 00H
+$SG7751	DB	'-n Option needs a valid name parameter', 00H
 	ORG $+1
-$SG7749	DB	'Constant value too large: %I64Xh', 00H
+$SG7752	DB	'Constant value too large: %I64Xh', 00H
 	ORG $+7
-$SG7750	DB	'Text macro used prior to definition: %s', 00H
-$SG7751	DB	'Offset size incompatible with current segment', 00H
+$SG7753	DB	'Text macro used prior to definition: %s', 00H
+$SG7754	DB	'Offset size incompatible with current segment', 00H
 	ORG $+2
-$SG7752	DB	'Instruction form requires 80386', 00H
-$SG7753	DB	'Group/Segment offset size conflict: %s - %s', 00H
+$SG7755	DB	'Instruction form requires 80386', 00H
+$SG7756	DB	'Group/Segment offset size conflict: %s - %s', 00H
 	ORG $+4
-$SG7754	DB	'Assembly passes reached: %u', 00H
+$SG7757	DB	'Assembly passes reached: %u', 00H
 	ORG $+4
-$SG7755	DB	'Filename parameter must be enclosed in <> or quotes', 00H
+$SG7758	DB	'Filename parameter must be enclosed in <> or quotes', 00H
 	ORG $+4
-$SG7756	DB	'Start address on END directive ignored with .STARTUP', 00H
+$SG7759	DB	'Start address on END directive ignored with .STARTUP', 00H
 	ORG $+3
-$SG7757	DB	'Invalid symbol type in expression: %s', 00H
+$SG7760	DB	'Invalid symbol type in expression: %s', 00H
 	ORG $+2
-$SG7758	DB	'Missing right parenthesis', 00H
+$SG7761	DB	'Missing right parenthesis', 00H
 	ORG $+6
-$SG7759	DB	'Directive must be in control block', 00H
+$SG7762	DB	'Directive must be in control block', 00H
 	ORG $+5
-$SG7760	DB	'Expected: memory model', 00H
+$SG7763	DB	'Expected: memory model', 00H
 	ORG $+1
-$SG7761	DB	'Type is wrong size for register', 00H
-$SG7762	DB	'IF[n]DEF expects a plain symbol as argument: %s', 00H
-$SG7763	DB	'Jump destination must specify a label', 00H
+$SG7764	DB	'Type is wrong size for register', 00H
+$SG7765	DB	'IF[n]DEF expects a plain symbol as argument: %s', 00H
+$SG7766	DB	'Jump destination must specify a label', 00H
 	ORG $+2
-$SG7764	DB	'Ignored: %s', 00H
+$SG7767	DB	'Ignored: %s', 00H
 	ORG $+4
-$SG7765	DB	'Missing argument for cmdline option', 00H
+$SG7768	DB	'Missing argument for cmdline option', 00H
 	ORG $+4
-$SG7766	DB	'Invalid coprocessor register', 00H
+$SG7769	DB	'Invalid coprocessor register', 00H
 	ORG $+3
-$SG7767	DB	'Registers AH-DH may not be used with SPL-DIL or R8-R15', 00H
+$SG7770	DB	'Registers AH-DH may not be used with SPL-DIL or R8-R15', 00H
 	ORG $+1
-$SG7768	DB	'.ENDPROLOG found before EH directives', 00H
+$SG7771	DB	'.ENDPROLOG found before EH directives', 00H
 	ORG $+2
-$SG7769	DB	'Missing FRAME in PROC, no unwind code will be generated', 00H
-$SG7770	DB	'Bad alignment for offset in unwind code', 00H
-$SG7771	DB	'Nonzero value expected', 00H
+$SG7772	DB	'Missing FRAME in PROC, no unwind code will be generated', 00H
+$SG7773	DB	'Bad alignment for offset in unwind code', 00H
+$SG7774	DB	'Nonzero value expected', 00H
 	ORG $+1
-$SG7772	DB	'Size of prolog too big, must be < 256 bytes', 00H
+$SG7775	DB	'Size of prolog too big, must be < 256 bytes', 00H
 	ORG $+4
-$SG7773	DB	'Missing .ENDPROLOG: %s', 00H
+$SG7776	DB	'Missing .ENDPROLOG: %s', 00H
 	ORG $+1
-$SG7774	DB	'.SAFESEH argument must be a PROC', 00H
+$SG7777	DB	'.SAFESEH argument must be a PROC', 00H
 	ORG $+7
-$SG7775	DB	'Directive ignored without -%s switch', 00H
+$SG7778	DB	'Directive ignored without -%s switch', 00H
 	ORG $+3
-$SG7776	DB	'ELF GNU extensions (8/16-bit relocations) used', 00H
+$SG7779	DB	'ELF GNU extensions (8/16-bit relocations) used', 00H
 	ORG $+1
-$SG7777	DB	'Syntax error in expression', 00H
+$SG7780	DB	'Syntax error in expression', 00H
 	ORG $+5
-$SG7778	DB	'Macro label not defined: %s', 00H
+$SG7781	DB	'Macro label not defined: %s', 00H
 	ORG $+4
-$SG7779	DB	'Procedure argument or local not referenced: %s', 00H
+$SG7782	DB	'Procedure argument or local not referenced: %s', 00H
 	ORG $+1
-$SG7780	DB	'Group definition too large, truncated: %s', 00H
+$SG7783	DB	'Group definition too large, truncated: %s', 00H
 	ORG $+6
-$SG7781	DB	'COMM variable exceeds 64K: %s', 00H
+$SG7784	DB	'COMM variable exceeds 64K: %s', 00H
 	ORG $+2
-$SG7782	DB	'Must be public or external: %s', 00H
+$SG7785	DB	'Must be public or external: %s', 00H
 	ORG $+1
-$SG7783	DB	'parameter/local name is reserved word: %s', 00H
+$SG7786	DB	'parameter/local name is reserved word: %s', 00H
 	ORG $+6
-$SG7784	DB	'real or BCD number not allowed', 00H
+$SG7787	DB	'real or BCD number not allowed', 00H
 	ORG $+1
-$SG7785	DB	'structure field expected', 00H
+$SG7788	DB	'structure field expected', 00H
 	ORG $+7
-$SG7786	DB	'Constant value too large: %I64X%016I64Xh', 00H
+$SG7789	DB	'Constant value too large: %I64X%016I64Xh', 00H
 	ORG $+7
-$SG7787	DB	'ELSE clause already occured in this IF block', 00H
+$SG7790	DB	'ELSE clause already occured in this IF block', 00H
 	ORG $+3
-$SG7788	DB	'Illegal use of segment register', 00H
-$SG7789	DB	'Group exceeds 64K: %s', 00H
+$SG7791	DB	'Illegal use of segment register', 00H
+$SG7792	DB	'Group exceeds 64K: %s', 00H
 	ORG $+2
-$SG7790	DB	'EXPORT must be FAR: %s', 00H
+$SG7793	DB	'EXPORT must be FAR: %s', 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	sprintf
@@ -572,9 +576,7 @@ $pdata$MsgGet DD imagerel MsgGet
 pdata	ENDS
 CONST	SEGMENT
 	ORG $+3
-msgtexts DQ	FLAT:$SG7514
-	DQ	FLAT:$SG7515
-	DQ	FLAT:$SG7516
+msgtexts DQ	FLAT:$SG7516
 	DQ	FLAT:$SG7517
 	DQ	FLAT:$SG7518
 	DQ	FLAT:$SG7519
@@ -849,6 +851,9 @@ msgtexts DQ	FLAT:$SG7514
 	DQ	FLAT:$SG7788
 	DQ	FLAT:$SG7789
 	DQ	FLAT:$SG7790
+	DQ	FLAT:$SG7791
+	DQ	FLAT:$SG7792
+	DQ	FLAT:$SG7793
 CONST	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
@@ -920,7 +925,7 @@ MsgGet	PROC						; COMDAT
 ; 93   : #else
 ; 94   :     if ( msgid < MSG_LAST ) {
 
-	cmp	ecx, 277				; 00000115H
+	cmp	ecx, 278				; 00000116H
 	jge	SHORT $LN4@MsgGet
 
 ; 95   :         if ( buffer ) {
@@ -965,7 +970,7 @@ $LN4@MsgGet:
 ; 105  :     sprintf( buffer, "Msg %u", msgid );
 
 	mov	r8d, ecx
-	lea	rdx, OFFSET FLAT:$SG7804
+	lea	rdx, OFFSET FLAT:$SG7807
 	cmove	rbx, QWORD PTR ModuleInfo+488
 	mov	rcx, rbx
 	call	sprintf
@@ -995,7 +1000,7 @@ $LN15:
 
 ; 112  :     return( MsgGet( msgid, NULL ) );
 
-	cmp	ecx, 277				; 00000115H
+	cmp	ecx, 278				; 00000116H
 	jge	SHORT $LN13@MsgGetEx
 	movsxd	rax, ecx
 	lea	rcx, OFFSET FLAT:msgtexts
@@ -1012,7 +1017,7 @@ $LN13@MsgGetEx:
 	mov	r8d, ecx
 	mov	QWORD PTR [rsp+32], rbx
 	mov	rbx, QWORD PTR ModuleInfo+488
-	lea	rdx, OFFSET FLAT:$SG7804
+	lea	rdx, OFFSET FLAT:$SG7807
 	mov	rcx, rbx
 	call	sprintf
 	mov	rax, rbx

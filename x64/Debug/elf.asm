@@ -8,137 +8,133 @@ INCLUDELIB OLDNAMES
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11309 DB	'.shstrtab', 00H
+$SG11311 DB	'.shstrtab', 00H
 	ORG $+6
-$SG11310 DB	'.symtab', 00H
-$SG11311 DB	'.strtab', 00H
-$SG11334 DB	'_TEXT', 00H
+$SG11312 DB	'.symtab', 00H
+$SG11313 DB	'.strtab', 00H
+$SG11336 DB	'_TEXT', 00H
 	ORG $+2
-$SG11335 DB	'.text', 00H
+$SG11337 DB	'.text', 00H
 	ORG $+2
-$SG11336 DB	'_DATA', 00H
+$SG11338 DB	'_DATA', 00H
 	ORG $+2
-$SG11337 DB	'.data', 00H
+$SG11339 DB	'.data', 00H
 	ORG $+2
-$SG11338 DB	'CONST', 00H
+$SG11340 DB	'CONST', 00H
 	ORG $+2
-$SG11339 DB	'.rodata', 00H
-$SG11340 DB	'_BSS', 00H
+$SG11341 DB	'.rodata', 00H
+$SG11342 DB	'_BSS', 00H
 	ORG $+3
-$SG11341 DB	'.bss', 00H
+$SG11343 DB	'.bss', 00H
 	ORG $+3
-$SG11404 DB	'set_symtab32, LOCAL: symbol %s, value=%X', 0aH, 00H
+$SG11406 DB	'set_symtab32, LOCAL: symbol %s, value=%X', 0aH, 00H
 	ORG $+6
-$SG11408 DB	'set_symtab32, EXTERNAL: symbol %s, info=%X, shndx=%X, va'
+$SG11410 DB	'set_symtab32, EXTERNAL: symbol %s, info=%X, shndx=%X, va'
 	DB	'lue=%X', 0aH, 00H
-$SG11415 DB	'set_symtab32, PUBLIC+LOCAL: symbol %s, value=%X', 0aH, 00H
+$SG11417 DB	'set_symtab32, PUBLIC+LOCAL: symbol %s, value=%X', 0aH, 00H
 	ORG $+7
-$SG11454 DB	'set_symtab64, LOCAL: symbol %s, value=%I64X', 0aH, 00H
+$SG11456 DB	'set_symtab64, LOCAL: symbol %s, value=%I64X', 0aH, 00H
 	ORG $+3
-$SG11519 DB	'set_symtab_values: index after EXTERNALs: %u', 0aH, 00H
+$SG11521 DB	'set_symtab_values: index after EXTERNALs: %u', 0aH, 00H
 	ORG $+2
-$SG11523 DB	'set_symtab_values: creating string table, size=%X', 0aH, 00H
+$SG11525 DB	'set_symtab_values: creating string table, size=%X', 0aH, 00H
 	ORG $+5
-$SG11458 DB	'set_symtab64, EXTERNAL: symbol %s, info=%X, shndx=%X, va'
+$SG11460 DB	'set_symtab64, EXTERNAL: symbol %s, info=%X, shndx=%X, va'
 	DB	'lue=%I64X', 0aH, 00H
 	ORG $+5
-$SG11517 DB	'set_symtab_values: index after sections: %u', 0aH, 00H
+$SG11519 DB	'set_symtab_values: index after sections: %u', 0aH, 00H
 	ORG $+3
-$SG11525 DB	'set_symtab_values: exit, symindex=%u', 0aH, 00H
+$SG11527 DB	'set_symtab_values: exit, symindex=%u', 0aH, 00H
 	ORG $+2
-$SG11465 DB	'set_symtab64, PUBLIC+LOCAL: symbol %s, info=%X, shndx=%X'
+$SG11467 DB	'set_symtab64, PUBLIC+LOCAL: symbol %s, info=%X, shndx=%X'
 	DB	', value=%I64X', 0aH, 00H
 	ORG $+1
-$SG11520 DB	'set_symtab_values: index after PUBLICs: %u', 0aH, 00H
-$SG11555 DB	'.rela', 00H
+$SG11522 DB	'set_symtab_values: index after PUBLICs: %u', 0aH, 00H
+$SG11557 DB	'.rela', 00H
 	ORG $+2
-$SG11556 DB	'.rel', 00H
+$SG11558 DB	'.rel', 00H
 	ORG $+3
-$SG11557 DB	'elf.c', 00H
+$SG11559 DB	'elf.c', 00H
 	ORG $+6
-$SG11558 DB	'set_shstrtab_values: size=%X', 0aH, 00H
+$SG11560 DB	'set_shstrtab_values: size=%X', 0aH, 00H
 	ORG $+2
-$SG11605 DB	'elf_write_section_table32( fileofs=%X ): enter', 0aH, 00H
-$SG11615 DB	'CONST', 00H
+$SG11607 DB	'elf_write_section_table32( fileofs=%X ): enter', 0aH, 00H
+$SG11617 DB	'CONST', 00H
 	ORG $+2
-$SG11618 DB	'elf_write_section_table32(%s): ofs=%X size=%X numrelocs='
+$SG11620 DB	'elf_write_section_table32(%s): ofs=%X size=%X numrelocs='
 	DB	'%u', 0aH, 00H
 	ORG $+4
-$SG11622 DB	'elf_write_section_table32(%s): ofs=%X size=%X', 0aH, 00H
+$SG11624 DB	'elf_write_section_table32(%s): ofs=%X size=%X', 0aH, 00H
 	ORG $+1
-$SG11625 DB	'elf_write_section_table32(%s): relocs, ofs=%X size=%X', 0aH
+$SG11627 DB	'elf_write_section_table32(%s): relocs, ofs=%X size=%X', 0aH
 	DB	00H
 	ORG $+1
-$SG11626 DB	'elf_write_section_table32: exit, final fileofs=%X', 0aH, 00H
+$SG11628 DB	'elf_write_section_table32: exit, final fileofs=%X', 0aH, 00H
 	ORG $+5
-$SG11659 DB	'elf_write_section_table64( fileofs=%X ): enter', 0aH, 00H
-$SG11669 DB	'CONST', 00H
+$SG11661 DB	'elf_write_section_table64( fileofs=%X ): enter', 0aH, 00H
+$SG11671 DB	'CONST', 00H
 	ORG $+2
-$SG11672 DB	'elf_write_section_table64(%s): ofs=%I64X size=%I64X numr'
+$SG11674 DB	'elf_write_section_table64(%s): ofs=%I64X size=%I64X numr'
 	DB	'elocs=%u', 0aH, 00H
 	ORG $+6
-$SG11676 DB	'elf_write_section_table64(%s): ofs=%I64X size=%I64X', 0aH
+$SG11678 DB	'elf_write_section_table64(%s): ofs=%I64X size=%I64X', 0aH
 	DB	00H
 	ORG $+3
-$SG11679 DB	'elf_write_section_table64(%s): relocs, ofs=%I64X size=%I'
+$SG11681 DB	'elf_write_section_table64(%s): relocs, ofs=%I64X size=%I'
 	DB	'64X', 0aH, 00H
 	ORG $+3
-$SG11680 DB	'elf_write_section_table64: exit, final fileofs=%X', 0aH, 00H
+$SG11682 DB	'elf_write_section_table64: exit, final fileofs=%X', 0aH, 00H
 	ORG $+5
-$SG11696 DB	'write_relocs32: enter', 0aH, 00H
+$SG11698 DB	'write_relocs32: enter', 0aH, 00H
 	ORG $+1
-$SG11705 DB	'write_relocs32(): unhandled reloc loc=%X type=%u idx=%u '
+$SG11707 DB	'write_relocs32(): unhandled reloc loc=%X type=%u idx=%u '
 	DB	'sym=%s', 0aH, 00H
-$SG11709 DB	'write_relocs32: exit', 0aH, 00H
+$SG11711 DB	'write_relocs32: exit', 0aH, 00H
 	ORG $+2
-$SG11724 DB	'write_relocs64: enter', 0aH, 00H
+$SG11726 DB	'write_relocs64: enter', 0aH, 00H
 	ORG $+1
-$SG11725 DB	'write_relocs64(): reloc loc=%X type=%u idx=%u sym=%s ofs'
+$SG11727 DB	'write_relocs64(): reloc loc=%X type=%u idx=%u sym=%s ofs'
 	DB	'=%X addbyt=%u', 0aH, 00H
 	ORG $+1
-$SG11739 DB	'write_relocs64: exit', 0aH, 00H
+$SG11741 DB	'write_relocs64: exit', 0aH, 00H
 	ORG $+2
-$SG11735 DB	'write_relocs64(): unhandled reloc loc=%X type=%u idx=%u '
+$SG11737 DB	'write_relocs64(): unhandled reloc loc=%X type=%u idx=%u '
 	DB	'sym=%s', 0aH, 00H
-$SG11760 DB	'elf_write_data: enter', 0aH, 00H
+$SG11762 DB	'elf_write_data: enter', 0aH, 00H
 	ORG $+1
-$SG11761 DB	'elf_write_data(%s): program data at ofs=%X, size=%X', 0aH
+$SG11763 DB	'elf_write_data(%s): program data at ofs=%X, size=%X', 0aH
 	DB	00H
 	ORG $+3
-$SG11763 DB	'elf.c', 00H
+$SG11765 DB	'elf.c', 00H
 	ORG $+2
-$SG11766 DB	'elf_write_data(%s): internal at ofs=%X, size=%X', 0aH, 00H
+$SG11768 DB	'elf_write_data(%s): internal at ofs=%X, size=%X', 0aH, 00H
 	ORG $+7
-$SG11769 DB	'elf_write_data(%s): relocs at ofs=%X, size=%X', 0aH, 00H
+$SG11771 DB	'elf_write_data(%s): relocs at ofs=%X, size=%X', 0aH, 00H
 	ORG $+1
-$SG11773 DB	'elf_write_data: exit', 0aH, 00H
+$SG11775 DB	'elf_write_data: exit', 0aH, 00H
 	ORG $+2
-$SG11787 DB	'elf_write_module: enter', 0aH, 00H
+$SG11789 DB	'elf_write_module: enter', 0aH, 00H
 	ORG $+3
-$SG11789 DB	07fH, 'ELF', 00H
+$SG11791 DB	07fH, 'ELF', 00H
 	ORG $+3
-$SG11792 DB	07fH, 'ELF', 00H
+$SG11794 DB	07fH, 'ELF', 00H
 	ORG $+7
-$SG11794 DB	'elf_write_module: exit', 0aH, 00H
+$SG11796 DB	'elf_write_module: exit', 0aH, 00H
 _DATA	ENDS
 CONST	SEGMENT
-internal_segparms DQ FLAT:$SG11309
+internal_segparms DQ FLAT:$SG11311
 	DD	03H
 	ORG $+4
-	DQ	FLAT:$SG11310
+	DQ	FLAT:$SG11312
 	DD	02H
 	ORG $+4
-	DQ	FLAT:$SG11311
+	DQ	FLAT:$SG11313
 	DD	03H
 	ORG $+4
 cst	DB	05H
-	DB	01H
-	ORG $+6
-	DQ	FLAT:$SG11334
-	DQ	FLAT:$SG11335
-	DB	05H
 	DB	01H
 	ORG $+6
 	DQ	FLAT:$SG11336
@@ -148,11 +144,16 @@ cst	DB	05H
 	ORG $+6
 	DQ	FLAT:$SG11338
 	DQ	FLAT:$SG11339
-	DB	04H
-	DB	00H
+	DB	05H
+	DB	01H
 	ORG $+6
 	DQ	FLAT:$SG11340
 	DQ	FLAT:$SG11341
+	DB	04H
+	DB	00H
+	ORG $+6
+	DQ	FLAT:$SG11342
+	DQ	FLAT:$SG11343
 CONST	ENDS
 PUBLIC	elf_init
 EXTRN	__imp_fseek:PROC
@@ -452,7 +453,7 @@ elf_write_module PROC
 ; 1281 : 
 ; 1282 :     DebugMsg(("elf_write_module: enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11787
+	lea	rcx, OFFSET FLAT:$SG11789
 	call	DoDebugMsg
 
 ; 1283 : 
@@ -537,7 +538,7 @@ $LN6@elf_write_:
 ; 1299 :         memcpy( &em.ehdr64.e_ident, ELF_SIGNATURE, ELF_SIGNATURE_LEN );
 
 	mov	r8d, 4
-	lea	rdx, OFFSET FLAT:$SG11789
+	lea	rdx, OFFSET FLAT:$SG11791
 	lea	rcx, QWORD PTR em$[rsp+72]
 	call	memcpy
 
@@ -690,7 +691,7 @@ $LN8@elf_write_:
 ; 1334 :         memcpy( &em.ehdr32.e_ident, ELF_SIGNATURE, ELF_SIGNATURE_LEN );
 
 	mov	r8d, 4
-	lea	rdx, OFFSET FLAT:$SG11792
+	lea	rdx, OFFSET FLAT:$SG11794
 	lea	rcx, QWORD PTR em$[rsp+72]
 	call	memcpy
 
@@ -843,7 +844,7 @@ $LN4@elf_write_:
 
 ; 1368 :     DebugMsg(("elf_write_module: exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11794
+	lea	rcx, OFFSET FLAT:$SG11796
 	call	DoDebugMsg
 
 ; 1369 :     return( NOT_ERROR );
@@ -902,7 +903,7 @@ elf_write_data PROC
 ; 1226 : 
 ; 1227 :     DebugMsg(("elf_write_data: enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11760
+	lea	rcx, OFFSET FLAT:$SG11762
 	call	DoDebugMsg
 
 ; 1228 : 
@@ -941,7 +942,7 @@ $LN4@elf_write_:
 	mov	r8d, DWORD PTR [rax+56]
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11761
+	lea	rcx, OFFSET FLAT:$SG11763
 	call	DoDebugMsg
 
 ; 1232 :         if ( curr->e.seginfo->segtype != SEGTYPE_BSS && size != 0 ) {
@@ -981,7 +982,7 @@ $LN4@elf_write_:
 	jmp	SHORT $LN21@elf_write_
 $LN20@elf_write_:
 	mov	edx, 1234				; 000004d2H
-	lea	rcx, OFFSET FLAT:$SG11763
+	lea	rcx, OFFSET FLAT:$SG11765
 	call	InternalError
 	mov	DWORD PTR tv133[rsp], eax
 $LN21@elf_write_:
@@ -1055,7 +1056,7 @@ $LN7@elf_write_:
 	mov	r8d, DWORD PTR [rax+rcx+28]
 	mov	rax, QWORD PTR tv248[rsp]
 	mov	rdx, QWORD PTR [rax+rdx]
-	lea	rcx, OFFSET FLAT:$SG11766
+	lea	rcx, OFFSET FLAT:$SG11768
 	call	DoDebugMsg
 
 ; 1244 :             fseek( CurrFile[OBJ], em->internal_segs[i].fileoffset, SEEK_SET );
@@ -1148,7 +1149,7 @@ $LN10@elf_write_:
 	mov	r8d, DWORD PTR [rcx+12]
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11769
+	lea	rcx, OFFSET FLAT:$SG11771
 	call	DoDebugMsg
 
 ; 1254 :             fseek( CurrFile[OBJ], curr->e.seginfo->reloc_offset, SEEK_SET );
@@ -1206,7 +1207,7 @@ $LN9@elf_write_:
 
 ; 1265 :         EmitWarn( 2, ELF_GNU_EXTENSIONS_USED );
 
-	mov	edx, 262				; 00000106H
+	mov	edx, 263				; 00000107H
 	mov	ecx, 2
 	call	EmitWarn
 $LN18@elf_write_:
@@ -1216,7 +1217,7 @@ $LN18@elf_write_:
 ; 1268 : 
 ; 1269 :     DebugMsg(("elf_write_data: exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11773
+	lea	rcx, OFFSET FLAT:$SG11775
 	call	DoDebugMsg
 
 ; 1270 : 
@@ -1263,7 +1264,7 @@ write_relocs64 PROC
 ; 1136 : 
 ; 1137 :     DebugMsg(("write_relocs64: enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11724
+	lea	rcx, OFFSET FLAT:$SG11726
 	call	DoDebugMsg
 
 ; 1138 :     for ( fixup = curr->e.seginfo->FixupList.head; fixup; fixup = fixup->nextrlc ) {
@@ -1335,7 +1336,7 @@ $LN4@write_relo:
 	mov	r8d, DWORD PTR [rax+24]
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	edx, DWORD PTR [rax+20]
-	lea	rcx, OFFSET FLAT:$SG11725
+	lea	rcx, OFFSET FLAT:$SG11727
 	call	DoDebugMsg
 
 ; 1157 :                   fixup->locofs, fixup->type, fixup->sym->ext_idx, fixup->sym->name, fixup->offset, fixup->addbytes ));
@@ -1449,7 +1450,7 @@ $LN15@write_relo:
 	mov	r8d, DWORD PTR [rax+24]
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	edx, DWORD PTR [rax+20]
-	lea	rcx, OFFSET FLAT:$SG11735
+	lea	rcx, OFFSET FLAT:$SG11737
 	call	DoDebugMsg
 
 ; 1198 :                       fixup->locofs, fixup->type, fixup->sym->ext_idx, fixup->sym->name));
@@ -1475,7 +1476,7 @@ $LN15@write_relo:
 	mov	rcx, QWORD PTR fixup$[rsp]
 	mov	r8d, DWORD PTR [rcx+24]
 	mov	rdx, rax
-	mov	ecx, 198				; 000000c6H
+	mov	ecx, 199				; 000000c7H
 	call	EmitErr
 
 ; 1202 :             } else
@@ -1491,7 +1492,7 @@ $LN16@write_relo:
 	mov	r8, QWORD PTR [rax+8]
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	edx, DWORD PTR [rax+24]
-	mov	ecx, 196				; 000000c4H
+	mov	ecx, 197				; 000000c5H
 	call	EmitErr
 $LN17@write_relo:
 $LN5@write_relo:
@@ -1532,7 +1533,7 @@ $LN3@write_relo:
 
 ; 1211 :     DebugMsg(("write_relocs64: exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11739
+	lea	rcx, OFFSET FLAT:$SG11741
 	call	DoDebugMsg
 
 ; 1212 :     return;
@@ -1591,7 +1592,7 @@ write_relocs32 PROC
 ; 1086 : 
 ; 1087 :     DebugMsg(("write_relocs32: enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11696
+	lea	rcx, OFFSET FLAT:$SG11698
 	call	DoDebugMsg
 
 ; 1088 :     for ( fixup = curr->e.seginfo->FixupList.head; fixup; fixup = fixup->nextrlc ) {
@@ -1705,7 +1706,7 @@ $LN14@write_relo:
 	mov	r8d, DWORD PTR [rax+24]
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	edx, DWORD PTR [rax+20]
-	lea	rcx, OFFSET FLAT:$SG11705
+	lea	rcx, OFFSET FLAT:$SG11707
 	call	DoDebugMsg
 
 ; 1109 :                       fixup->locofs, fixup->type, fixup->sym->ext_idx, fixup->sym->name));
@@ -1731,7 +1732,7 @@ $LN14@write_relo:
 	mov	rcx, QWORD PTR fixup$[rsp]
 	mov	r8d, DWORD PTR [rcx+24]
 	mov	rdx, rax
-	mov	ecx, 198				; 000000c6H
+	mov	ecx, 199				; 000000c7H
 	call	EmitErr
 
 ; 1113 :             } else
@@ -1747,7 +1748,7 @@ $LN15@write_relo:
 	mov	r8, QWORD PTR [rax+8]
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	edx, DWORD PTR [rax+24]
-	mov	ecx, 196				; 000000c4H
+	mov	ecx, 197				; 000000c5H
 	call	EmitErr
 $LN16@write_relo:
 $LN5@write_relo:
@@ -1790,7 +1791,7 @@ $LN3@write_relo:
 
 ; 1122 :     DebugMsg(("write_relocs32: exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11709
+	lea	rcx, OFFSET FLAT:$SG11711
 	call	DoDebugMsg
 
 ; 1123 :     return;
@@ -1857,7 +1858,7 @@ elf_write_section_table64 PROC
 ; 938  :     DebugMsg(("elf_write_section_table64( fileofs=%X ): enter\n", fileoffset ));
 
 	mov	edx, DWORD PTR fileoffset$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11659
+	lea	rcx, OFFSET FLAT:$SG11661
 	call	DoDebugMsg
 
 ; 939  : 
@@ -2041,7 +2042,7 @@ $LN16@elf_write_:
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	rax, QWORD PTR [rax+80]
-	lea	rdx, OFFSET FLAT:$SG11669
+	lea	rdx, OFFSET FLAT:$SG11671
 	mov	rcx, QWORD PTR [rax+8]
 	call	strcmp
 	test	eax, eax
@@ -2178,7 +2179,7 @@ $LN21@elf_write_:
 	mov	r8, QWORD PTR shdr64$[rsp+24]
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11672
+	lea	rcx, OFFSET FLAT:$SG11674
 	call	DoDebugMsg
 
 ; 1008 :     }
@@ -2350,7 +2351,7 @@ $LN24@elf_write_:
 	mov	r9, QWORD PTR shdr64$[rsp+32]
 	mov	r8, QWORD PTR shdr64$[rsp+24]
 	mov	rdx, QWORD PTR [rcx+rax]
-	lea	rcx, OFFSET FLAT:$SG11676
+	lea	rcx, OFFSET FLAT:$SG11678
 	call	DoDebugMsg
 
 ; 1041 :     }
@@ -2512,7 +2513,7 @@ $LN26@elf_write_:
 	mov	r8, QWORD PTR shdr64$[rsp+24]
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11679
+	lea	rcx, OFFSET FLAT:$SG11681
 	call	DoDebugMsg
 
 ; 1072 :     }
@@ -2523,7 +2524,7 @@ $LN9@elf_write_:
 ; 1073 :     DebugMsg(("elf_write_section_table64: exit, final fileofs=%X\n", fileoffset ));
 
 	mov	edx, DWORD PTR fileoffset$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11680
+	lea	rcx, OFFSET FLAT:$SG11682
 	call	DoDebugMsg
 
 ; 1074 :     return( NOT_ERROR );
@@ -2584,7 +2585,7 @@ elf_write_section_table32 PROC
 ; 783  :     DebugMsg(("elf_write_section_table32( fileofs=%X ): enter\n", fileoffset ));
 
 	mov	edx, DWORD PTR fileoffset$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11605
+	lea	rcx, OFFSET FLAT:$SG11607
 	call	DoDebugMsg
 
 ; 784  : 
@@ -2768,7 +2769,7 @@ $LN16@elf_write_:
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	rax, QWORD PTR [rax+80]
-	lea	rdx, OFFSET FLAT:$SG11615
+	lea	rdx, OFFSET FLAT:$SG11617
 	mov	rcx, QWORD PTR [rax+8]
 	call	strcmp
 	test	eax, eax
@@ -2909,7 +2910,7 @@ $LN21@elf_write_:
 	mov	r8d, DWORD PTR shdr32$[rsp+16]
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11618
+	lea	rcx, OFFSET FLAT:$SG11620
 	call	DoDebugMsg
 
 ; 856  :     }
@@ -3082,7 +3083,7 @@ $LN24@elf_write_:
 	mov	r9d, DWORD PTR shdr32$[rsp+20]
 	mov	r8d, DWORD PTR shdr32$[rsp+16]
 	mov	rdx, QWORD PTR [rcx+rax]
-	lea	rcx, OFFSET FLAT:$SG11622
+	lea	rcx, OFFSET FLAT:$SG11624
 	call	DoDebugMsg
 
 ; 888  :     }
@@ -3246,7 +3247,7 @@ $LN26@elf_write_:
 	mov	r8d, DWORD PTR shdr32$[rsp+16]
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11625
+	lea	rcx, OFFSET FLAT:$SG11627
 	call	DoDebugMsg
 
 ; 919  : 
@@ -3258,7 +3259,7 @@ $LN9@elf_write_:
 ; 921  :     DebugMsg(("elf_write_section_table32: exit, final fileofs=%X\n", fileoffset ));
 
 	mov	edx, DWORD PTR fileoffset$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11626
+	lea	rcx, OFFSET FLAT:$SG11628
 	call	DoDebugMsg
 
 ; 922  :     return( NOT_ERROR );
@@ -3695,11 +3696,11 @@ $LN16@set_shstrt:
 	movzx	eax, BYTE PTR ModuleInfo+405
 	cmp	eax, 2
 	jne	SHORT $LN26@set_shstrt
-	lea	rax, OFFSET FLAT:$SG11555
+	lea	rax, OFFSET FLAT:$SG11557
 	mov	QWORD PTR tv201[rsp], rax
 	jmp	SHORT $LN27@set_shstrt
 $LN26@set_shstrt:
-	lea	rax, OFFSET FLAT:$SG11556
+	lea	rax, OFFSET FLAT:$SG11558
 	mov	QWORD PTR tv201[rsp], rax
 $LN27@set_shstrt:
 	mov	rdx, QWORD PTR tv201[rsp]
@@ -3771,7 +3772,7 @@ $LN15@set_shstrt:
 	jmp	SHORT $LN31@set_shstrt
 $LN30@set_shstrt:
 	mov	edx, 742				; 000002e6H
-	lea	rcx, OFFSET FLAT:$SG11557
+	lea	rcx, OFFSET FLAT:$SG11559
 	call	InternalError
 	mov	DWORD PTR tv232[rsp], eax
 $LN31@set_shstrt:
@@ -3779,7 +3780,7 @@ $LN31@set_shstrt:
 ; 743  :     DebugMsg(("set_shstrtab_values: size=%X\n", size));
 
 	mov	edx, DWORD PTR size$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11558
+	lea	rcx, OFFSET FLAT:$SG11560
 	call	DoDebugMsg
 
 ; 744  :     return;
@@ -4066,7 +4067,7 @@ $LN6@set_symtab:
 
 	mov	rax, QWORD PTR em$[rsp]
 	mov	edx, DWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG11517
+	lea	rcx, OFFSET FLAT:$SG11519
 	call	DoDebugMsg
 
 ; 597  :     em->start_globals = em->symindex;
@@ -4137,7 +4138,7 @@ $LN12@set_symtab:
 
 	mov	rax, QWORD PTR em$[rsp]
 	mov	edx, DWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG11519
+	lea	rcx, OFFSET FLAT:$SG11521
 	call	DoDebugMsg
 
 ; 606  : 
@@ -4185,7 +4186,7 @@ $LN15@set_symtab:
 
 	mov	rax, QWORD PTR em$[rsp]
 	mov	edx, DWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG11520
+	lea	rcx, OFFSET FLAT:$SG11522
 	call	DoDebugMsg
 
 ; 620  : 
@@ -4235,7 +4236,7 @@ $LN34@set_symtab:
 ; 637  :     DebugMsg(("set_symtab_values: creating string table, size=%X\n", strsize));
 
 	mov	edx, DWORD PTR strsize$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11523
+	lea	rcx, OFFSET FLAT:$SG11525
 	call	DoDebugMsg
 
 ; 638  : 
@@ -4436,7 +4437,7 @@ $LN24@set_symtab:
 
 	mov	rax, QWORD PTR em$[rsp]
 	mov	edx, DWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG11525
+	lea	rcx, OFFSET FLAT:$SG11527
 	call	DoDebugMsg
 
 ; 673  :     return;
@@ -4752,7 +4753,7 @@ $LN17@set_symtab:
 	mov	rax, QWORD PTR p64$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	lea	rdx, QWORD PTR buffer$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11454
+	lea	rcx, OFFSET FLAT:$SG11456
 	call	DoDebugMsg
 
 ; 427  :         p64++;
@@ -4919,7 +4920,7 @@ $LN20@set_symtab:
 	mov	r9d, eax
 	mov	r8d, ecx
 	lea	rdx, QWORD PTR buffer$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11458
+	lea	rcx, OFFSET FLAT:$SG11460
 	call	DoDebugMsg
 
 ; 458  :         p64++;
@@ -5101,7 +5102,7 @@ $LN24@set_symtab:
 	mov	r9d, eax
 	mov	r8d, ecx
 	lea	rdx, QWORD PTR buffer$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11465
+	lea	rcx, OFFSET FLAT:$SG11467
 	call	DoDebugMsg
 
 ; 516  : 
@@ -5449,7 +5450,7 @@ $LN17@set_symtab:
 	mov	rax, QWORD PTR p32$[rsp]
 	mov	r8d, DWORD PTR [rax+4]
 	lea	rdx, QWORD PTR buffer$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11404
+	lea	rcx, OFFSET FLAT:$SG11406
 	call	DoDebugMsg
 
 ; 245  :         p32++;
@@ -5616,7 +5617,7 @@ $LN20@set_symtab:
 	mov	r9d, eax
 	mov	r8d, ecx
 	lea	rdx, QWORD PTR buffer$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11408
+	lea	rcx, OFFSET FLAT:$SG11410
 	call	DoDebugMsg
 
 ; 276  :         p32++;
@@ -5790,7 +5791,7 @@ $LN24@set_symtab:
 	mov	rax, QWORD PTR p32$[rsp]
 	mov	r8d, DWORD PTR [rax+4]
 	lea	rdx, QWORD PTR buffer$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11415
+	lea	rcx, OFFSET FLAT:$SG11417
 	call	DoDebugMsg
 
 ; 333  : 

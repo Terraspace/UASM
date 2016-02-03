@@ -8,12 +8,13 @@ INCLUDELIB OLDNAMES
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG8599	DB	'atofloat(%s, 4): magnitude too large; FLT_MAX=%e FLT_MIN'
+$SG8601	DB	'atofloat(%s, 4): magnitude too large; FLT_MAX=%e FLT_MIN'
 	DB	'=%e', 0aH, 00H
 	ORG $+3
-$SG8603	DB	'atofloat(%s, 8): magnitude too large', 0aH, 00H
+$SG8605	DB	'atofloat(%s, 8): magnitude too large', 0aH, 00H
 _DATA	ENDS
 PUBLIC	atofloat
 PUBLIC	__real@0000000000000000
@@ -156,7 +157,7 @@ $LN4@atofloat:
 ; 44   :                 EmitErr( INVALID_DATA_INITIALIZER, inp );
 
 	mov	rdx, QWORD PTR inp$[rsp]
-	mov	ecx, 231				; 000000e7H
+	mov	ecx, 232				; 000000e8H
 	call	EmitErr
 
 ; 45   :                 break;
@@ -230,12 +231,12 @@ $LN12@atofloat:
 	movsd	xmm2, QWORD PTR __real@47efffffe0000000
 	movd	r8, xmm2
 	mov	rdx, QWORD PTR inp$[rsp]
-	lea	rcx, OFFSET FLAT:$SG8599
+	lea	rcx, OFFSET FLAT:$SG8601
 	call	DoDebugMsg
 
 ; 66   :                 EmitErr( MAGNITUDE_TOO_LARGE_FOR_SPECIFIED_SIZE );
 
-	mov	ecx, 76					; 0000004cH
+	mov	ecx, 77					; 0000004dH
 	call	EmitErr
 $LN11@atofloat:
 
@@ -293,12 +294,12 @@ $LN14@atofloat:
 ; 79   :                 DebugMsg(("atofloat(%s, 8): magnitude too large\n", inp ));
 
 	mov	rdx, QWORD PTR inp$[rsp]
-	lea	rcx, OFFSET FLAT:$SG8603
+	lea	rcx, OFFSET FLAT:$SG8605
 	call	DoDebugMsg
 
 ; 80   :                 EmitErr( MAGNITUDE_TOO_LARGE_FOR_SPECIFIED_SIZE );
 
-	mov	ecx, 76					; 0000004cH
+	mov	ecx, 77					; 0000004dH
 	call	EmitErr
 $LN15@atofloat:
 
@@ -351,7 +352,7 @@ $LN18@atofloat:
 
 ; 94   :                 EmitWarn( 4, FP_INITIALIZER_IGNORED );
 
-	mov	edx, 74					; 0000004aH
+	mov	edx, 75					; 0000004bH
 	mov	ecx, 4
 	call	EmitWarn
 $LN19@atofloat:

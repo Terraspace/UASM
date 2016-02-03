@@ -8,11 +8,12 @@ INCLUDELIB OLDNAMES
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10576 DB	'F__RQQ', 00H
+$SG10578 DB	'F__RQQ', 00H
 	ORG $+9
-$SG10577 DB	'AddFloatingPointEmulationFixup enter, token=%u, regoverr'
+$SG10579 DB	'AddFloatingPointEmulationFixup enter, token=%u, regoverr'
 	DB	'ide=%d', 0aH, 00H
 _DATA	ENDS
 CONST	SEGMENT
@@ -131,7 +132,7 @@ $LN19:
 ; 74   :     char name[8] = "F__RQQ";
 
 	lea	rax, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10576
+	lea	rcx, OFFSET FLAT:$SG10578
 	mov	rdi, rax
 	mov	rsi, rcx
 	mov	ecx, 7
@@ -149,7 +150,7 @@ $LN19:
 	mov	r8d, DWORD PTR [rax+4]
 	mov	rax, QWORD PTR CodeInfo$[rsp]
 	mov	edx, DWORD PTR [rax+24]
-	lea	rcx, OFFSET FLAT:$SG10577
+	lea	rcx, OFFSET FLAT:$SG10579
 	call	DoDebugMsg
 
 ; 77   : 

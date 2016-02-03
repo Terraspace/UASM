@@ -32,6 +32,27 @@ extern struct asym          *sym_Interface;
 
 /* OPTION directive helper functions */
 
+/* Set EVEX encoding */
+OPTFUNC(SetEvex)
+{
+	int i = *pi;
+	struct expr opndx;
+
+	if (EvalOperand(&i, tokenarray, Token_Count, &opndx, 0) == ERROR)
+		return(ERROR);
+	if (opndx.kind == EXPR_CONST) {
+		if (opndx.llvalue > 1) {
+			return(EmitConstError(&opndx));
+		}
+		evex = opndx.llvalue;
+	}
+	else {
+		return(EmitError(CONSTANT_EXPECTED));
+	}
+	*pi = i;
+	return(NOT_ERROR);
+}
+
 /* OPTION DOTNAME */
 
 OPTFUNC( SetDotName )
@@ -875,7 +896,10 @@ static const struct asm_option optiontab[] = {
     { "CODEVIEW",     SetCodeView    }, /* CODEVIEW: <value> */
 #endif
 #if STACKBASESUPP
-    { "STACKBASE",    SetStackBase   }, /* STACKBASE: <reg> */
+	{ "STACKBASE",    SetStackBase   }, /* STACKBASE: <reg> */
+#endif
+#if AVXSUPP
+	{ "EVEX",         SetEvex        }, /* EVEX: <value> 1 or 0 */
 #endif
 };
 

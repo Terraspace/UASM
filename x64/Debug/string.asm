@@ -8,93 +8,94 @@ INCLUDELIB OLDNAMES
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG11183 DB	01H DUP (?)
-$SG11184 DB	01H DUP (?)
 $SG11185 DB	01H DUP (?)
-$SG11203 DB	01H DUP (?)
-$SG11219 DB	01H DUP (?)
-$SG11220 DB	01H DUP (?)
+$SG11186 DB	01H DUP (?)
+$SG11187 DB	01H DUP (?)
+$SG11205 DB	01H DUP (?)
 $SG11221 DB	01H DUP (?)
+$SG11222 DB	01H DUP (?)
+$SG11223 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG10982 DB	'CatStrDir(%u) enter', 0aH, 00H
+$SG10984 DB	'CatStrDir(%u) enter', 0aH, 00H
 	ORG $+3
-$SG10983 DB	'CatStrDir(%s): item[%u]=%s delim=0x%x', 0aH, 00H
+$SG10985 DB	'CatStrDir(%s): item[%u]=%s delim=0x%x', 0aH, 00H
 	ORG $+1
-$SG10986 DB	'CatStrDir: error, not a <>-literal: %s', 0aH, 00H
-$SG10988 DB	'CatStrDir: error, literal too long: %u + %u >= %u', 0aH, 00H
+$SG10988 DB	'CatStrDir: error, not a <>-literal: %s', 0aH, 00H
+$SG10990 DB	'CatStrDir: error, literal too long: %u + %u >= %u', 0aH, 00H
 	ORG $+5
-$SG10992 DB	'CatStrDir: new symbol %s created', 0aH, 00H
+$SG10994 DB	'CatStrDir: new symbol %s created', 0aH, 00H
 	ORG $+6
-$SG10996 DB	'CatStrDir(%s) exit, symbol redefinition', 0aH, 00H
+$SG10998 DB	'CatStrDir(%s) exit, symbol redefinition', 0aH, 00H
 	ORG $+7
-$SG10998 DB	'CatStrDir(%s) (new) value: >%s<', 0aH, 00H
+$SG11000 DB	'CatStrDir(%s) (new) value: >%s<', 0aH, 00H
 	ORG $+7
-$SG11028 DB	'SetTextMacro(%s): value is >%s<, exit', 0aH, 00H
+$SG11030 DB	'SetTextMacro(%s): value is >%s<, exit', 0aH, 00H
 	ORG $+1
-$SG11037 DB	'AddPredefinedText(%s): >%s<', 0aH, 00H
+$SG11039 DB	'AddPredefinedText(%s): >%s<', 0aH, 00H
 	ORG $+3
-$SG11055 DB	'SubStrDir enter', 0aH, 00H
+$SG11057 DB	'SubStrDir enter', 0aH, 00H
 	ORG $+7
-$SG11058 DB	'SubStrDir: error, no text item', 0aH, 00H
-$SG11059 DB	'SubStrDir(%s): src=>%s<', 0aH, 00H
+$SG11060 DB	'SubStrDir: error, no text item', 0aH, 00H
+$SG11061 DB	'SubStrDir(%s): src=>%s<', 0aH, 00H
 	ORG $+7
-$SG11062 DB	'SubStrDir(%s): invalid pos value', 0aH, 00H
+$SG11064 DB	'SubStrDir(%s): invalid pos value', 0aH, 00H
 	ORG $+6
-$SG11064 DB	'SubStrDir(%s): pos value is not a constant', 0aH, 00H
+$SG11066 DB	'SubStrDir(%s): pos value is not a constant', 0aH, 00H
 	ORG $+4
-$SG11070 DB	'SubStrDir(%s): invalid size value', 0aH, 00H
+$SG11072 DB	'SubStrDir(%s): invalid size value', 0aH, 00H
 	ORG $+5
-$SG11072 DB	'SubStrDir(%s): size value is not a constant', 0aH, 00H
+$SG11074 DB	'SubStrDir(%s): size value is not a constant', 0aH, 00H
 	ORG $+3
-$SG11074 DB	'SubStrDir(%s): additional items found', 0aH, 00H
+$SG11076 DB	'SubStrDir(%s): additional items found', 0aH, 00H
 	ORG $+1
-$SG11084 DB	'SubStrDir(%s) error, incompatible type', 0aH, 00H
-$SG11086 DB	'SubStrDir(%s): result=>%s<', 0aH, 00H
+$SG11086 DB	'SubStrDir(%s) error, incompatible type', 0aH, 00H
+$SG11088 DB	'SubStrDir(%s): result=>%s<', 0aH, 00H
 	ORG $+4
-$SG11095 DB	'SizeStrDir entry', 0aH, 00H
+$SG11097 DB	'SizeStrDir entry', 0aH, 00H
 	ORG $+6
-$SG11100 DB	'SizeStrDir: syntax error, name=%s, Token_Count=%u', 0aH, 00H
+$SG11102 DB	'SizeStrDir: syntax error, name=%s, Token_Count=%u', 0aH, 00H
 	ORG $+5
-$SG11102 DB	'SizeStrDir(%s) exit, value=%u', 0aH, 00H
+$SG11104 DB	'SizeStrDir(%s) exit, value=%u', 0aH, 00H
 	ORG $+1
-$SG11119 DB	'InStrDir entry', 0aH, 00H
-$SG11129 DB	'InStrDir: first string >%s< ', 0aH, 00H
+$SG11121 DB	'InStrDir entry', 0aH, 00H
+$SG11131 DB	'InStrDir: first string >%s< ', 0aH, 00H
 	ORG $+2
-$SG11134 DB	'InStrDir: second string >%s< ', 0aH, 00H
+$SG11136 DB	'InStrDir: second string >%s< ', 0aH, 00H
 	ORG $+1
-$SG11138 DB	'InStrDir(%s) exit, value=%u', 0aH, 00H
+$SG11140 DB	'InStrDir(%s) exit, value=%u', 0aH, 00H
 	ORG $+3
-$SG11155 DB	'NULL', 00H
+$SG11157 DB	'NULL', 00H
 	ORG $+3
-$SG11156 DB	'@CatStr( %s )', 0aH, 00H
+$SG11158 DB	'@CatStr( %s )', 0aH, 00H
 	ORG $+1
-$SG11157 DB	'@CatStr.%u: >%s<', 0aH, 00H
+$SG11159 DB	'@CatStr.%u: >%s<', 0aH, 00H
 	ORG $+6
-$SG11186 DB	'@InStr( %s, %s, %s)', 0aH, 00H
+$SG11188 DB	'@InStr( %s, %s, %s)', 0aH, 00H
 	ORG $+3
-$SG11190 DB	'@InStr(): index value is 0, changed to 1', 0aH, 00H
+$SG11192 DB	'@InStr(): index value is 0, changed to 1', 0aH, 00H
 	ORG $+6
-$SG11194 DB	'@InStr()=>%s<', 0aH, 00H
+$SG11196 DB	'@InStr()=>%s<', 0aH, 00H
 	ORG $+1
-$SG11204 DB	'@SizeStr(%s)', 0aH, 00H
+$SG11206 DB	'@SizeStr(%s)', 0aH, 00H
 	ORG $+2
-$SG11222 DB	'@SubStr( %s, %s, %s)', 0aH, 00H
+$SG11224 DB	'@SubStr( %s, %s, %s)', 0aH, 00H
 	ORG $+2
-$SG11226 DB	'@SubStr(): index value 0 changed to 1', 0aH, 00H
+$SG11228 DB	'@SubStr(): index value 0 changed to 1', 0aH, 00H
 	ORG $+1
-$SG11250 DB	'StringInit() enter', 0aH, 00H
+$SG11252 DB	'StringInit() enter', 0aH, 00H
 	ORG $+4
-$SG11251 DB	'@CatStr', 00H
-$SG11252 DB	'@InStr', 00H
+$SG11253 DB	'@CatStr', 00H
+$SG11254 DB	'@InStr', 00H
 	ORG $+1
-$SG11253 DB	'@SizeStr', 00H
+$SG11255 DB	'@SizeStr', 00H
 	ORG $+7
-$SG11254 DB	'@SubStr', 00H
+$SG11256 DB	'@SubStr', 00H
 	ORG $+8
-$SG11258 DB	'invokation CATSTR=%u SUBSTR=%u SIZESTR=%u INSTR=%u EQU(t'
+$SG11260 DB	'invokation CATSTR=%u SUBSTR=%u SIZESTR=%u INSTR=%u EQU(t'
 	DB	'ext)=%u', 0aH, 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
@@ -428,7 +429,7 @@ SubStrFunc PROC
 	mov	QWORD PTR tv74[rsp], rax
 	jmp	SHORT $LN12@SubStrFunc
 $LN11@SubStrFunc:
-	lea	rax, OFFSET FLAT:$SG11219
+	lea	rax, OFFSET FLAT:$SG11221
 	mov	QWORD PTR tv74[rsp], rax
 $LN12@SubStrFunc:
 	mov	eax, 8
@@ -445,7 +446,7 @@ $LN12@SubStrFunc:
 	mov	QWORD PTR tv83[rsp], rax
 	jmp	SHORT $LN14@SubStrFunc
 $LN13@SubStrFunc:
-	lea	rax, OFFSET FLAT:$SG11220
+	lea	rax, OFFSET FLAT:$SG11222
 	mov	QWORD PTR tv83[rsp], rax
 $LN14@SubStrFunc:
 	cmp	QWORD PTR src$[rsp], 0
@@ -454,13 +455,13 @@ $LN14@SubStrFunc:
 	mov	QWORD PTR tv86[rsp], rax
 	jmp	SHORT $LN16@SubStrFunc
 $LN15@SubStrFunc:
-	lea	rax, OFFSET FLAT:$SG11221
+	lea	rax, OFFSET FLAT:$SG11223
 	mov	QWORD PTR tv86[rsp], rax
 $LN16@SubStrFunc:
 	mov	r9, QWORD PTR tv74[rsp]
 	mov	r8, QWORD PTR tv83[rsp]
 	mov	rdx, QWORD PTR tv86[rsp]
-	lea	rcx, OFFSET FLAT:$SG11222
+	lea	rcx, OFFSET FLAT:$SG11224
 	call	DoDebugMsg1
 
 ; 725  :               src ? src : "",
@@ -504,7 +505,7 @@ $LN2@SubStrFunc:
 ; 738  :             return( EmitErr( INDEX_VALUE_PAST_END_OF_STRING, pos ) );
 
 	mov	edx, DWORD PTR pos$[rsp]
-	mov	ecx, 206				; 000000ceH
+	mov	ecx, 207				; 000000cfH
 	call	EmitErr
 	jmp	$LN1@SubStrFunc
 $LN4@SubStrFunc:
@@ -513,7 +514,7 @@ $LN4@SubStrFunc:
 ; 740  :         DebugMsg(( "@SubStr(): index value 0 changed to 1\n", pos ));
 
 	mov	edx, DWORD PTR pos$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11226
+	lea	rcx, OFFSET FLAT:$SG11228
 	call	DoDebugMsg
 
 ; 741  :         pos = 1;
@@ -538,7 +539,7 @@ $LN3@SubStrFunc:
 ; 746  :         return( EmitErr( INDEX_VALUE_PAST_END_OF_STRING, pos ) );
 
 	mov	edx, DWORD PTR pos$[rsp]
-	mov	ecx, 206				; 000000ceH
+	mov	ecx, 207				; 000000cfH
 	call	EmitErr
 	jmp	$LN1@SubStrFunc
 $LN5@SubStrFunc:
@@ -591,7 +592,7 @@ $LN7@SubStrFunc:
 
 ; 756  :             return( EmitError( COUNT_MUST_BE_POSITIVE_OR_ZERO ) );
 
-	mov	ecx, 208				; 000000d0H
+	mov	ecx, 209				; 000000d1H
 	call	EmitError
 	jmp	SHORT $LN1@SubStrFunc
 $LN8@SubStrFunc:
@@ -605,7 +606,7 @@ $LN8@SubStrFunc:
 
 ; 759  :             return( EmitError( COUNT_VALUE_TOO_LARGE ) );
 
-	mov	ecx, 207				; 000000cfH
+	mov	ecx, 208				; 000000d0H
 	call	EmitError
 	jmp	SHORT $LN1@SubStrFunc
 $LN9@SubStrFunc:
@@ -697,11 +698,11 @@ SizeStrFunc PROC
 	mov	QWORD PTR tv71[rsp], rax
 	jmp	SHORT $LN6@SizeStrFun
 $LN5@SizeStrFun:
-	lea	rax, OFFSET FLAT:$SG11203
+	lea	rax, OFFSET FLAT:$SG11205
 	mov	QWORD PTR tv71[rsp], rax
 $LN6@SizeStrFun:
 	mov	rdx, QWORD PTR tv71[rsp]
-	lea	rcx, OFFSET FLAT:$SG11204
+	lea	rcx, OFFSET FLAT:$SG11206
 	call	DoDebugMsg1
 
 ; 704  :     if ( mi->parm_array[0] )
@@ -813,7 +814,7 @@ InStrFunc PROC
 	mov	QWORD PTR tv71[rsp], rax
 	jmp	SHORT $LN10@InStrFunc
 $LN9@InStrFunc:
-	lea	rax, OFFSET FLAT:$SG11183
+	lea	rax, OFFSET FLAT:$SG11185
 	mov	QWORD PTR tv71[rsp], rax
 $LN10@InStrFunc:
 	mov	eax, 8
@@ -830,7 +831,7 @@ $LN10@InStrFunc:
 	mov	QWORD PTR tv80[rsp], rax
 	jmp	SHORT $LN12@InStrFunc
 $LN11@InStrFunc:
-	lea	rax, OFFSET FLAT:$SG11184
+	lea	rax, OFFSET FLAT:$SG11186
 	mov	QWORD PTR tv80[rsp], rax
 $LN12@InStrFunc:
 	mov	eax, 8
@@ -847,13 +848,13 @@ $LN12@InStrFunc:
 	mov	QWORD PTR tv89[rsp], rax
 	jmp	SHORT $LN14@InStrFunc
 $LN13@InStrFunc:
-	lea	rax, OFFSET FLAT:$SG11185
+	lea	rax, OFFSET FLAT:$SG11187
 	mov	QWORD PTR tv89[rsp], rax
 $LN14@InStrFunc:
 	mov	r9, QWORD PTR tv71[rsp]
 	mov	r8, QWORD PTR tv80[rsp]
 	mov	rdx, QWORD PTR tv89[rsp]
-	lea	rcx, OFFSET FLAT:$SG11186
+	lea	rcx, OFFSET FLAT:$SG11188
 	call	DoDebugMsg1
 
 ; 660  :               mi->parm_array[0] ? mi->parm_array[0] : "",
@@ -909,7 +910,7 @@ $LN3@InStrFunc:
 ; 673  :              * but the result will always be 0 then */
 ; 674  :             DebugMsg(( "@InStr(): index value is 0, changed to 1\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11190
+	lea	rcx, OFFSET FLAT:$SG11192
 	call	DoDebugMsg
 
 ; 675  :             pos++;
@@ -940,7 +941,7 @@ $LN2@InStrFunc:
 ; 680  :         return( EmitErr( INDEX_VALUE_PAST_END_OF_STRING, pos ) );
 
 	mov	edx, DWORD PTR pos$[rsp]
-	mov	ecx, 206				; 000000ceH
+	mov	ecx, 207				; 000000cfH
 	call	EmitErr
 	jmp	$LN1@InStrFunc
 $LN5@InStrFunc:
@@ -1014,7 +1015,7 @@ $LN6@InStrFunc:
 ; 691  :     DebugMsg1(( "@InStr()=>%s<\n", buffer ));
 
 	mov	rdx, QWORD PTR buffer$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11194
+	lea	rcx, OFFSET FLAT:$SG11196
 	call	DoDebugMsg1
 
 ; 692  : 
@@ -1115,7 +1116,7 @@ $LN4@GetNumber:
 ; 642  :         return( EmitErr( SYNTAX_ERROR_EX, string ) );
 
 	mov	rdx, QWORD PTR string$[rsp]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	SHORT $LN1@GetNumber
 $LN3@GetNumber:
@@ -1195,11 +1196,11 @@ CatStrFunc PROC
 	mov	QWORD PTR tv71[rsp], rax
 	jmp	SHORT $LN7@CatStrFunc
 $LN6@CatStrFunc:
-	lea	rax, OFFSET FLAT:$SG11155
+	lea	rax, OFFSET FLAT:$SG11157
 	mov	QWORD PTR tv71[rsp], rax
 $LN7@CatStrFunc:
 	mov	rdx, QWORD PTR tv71[rsp]
-	lea	rcx, OFFSET FLAT:$SG11156
+	lea	rcx, OFFSET FLAT:$SG11158
 	call	DoDebugMsg1
 
 ; 610  : 
@@ -1232,7 +1233,7 @@ $LN4@CatStrFunc:
 	mov	DWORD PTR cnt$[rsp], eax
 	mov	r8, QWORD PTR p$[rsp]
 	mov	edx, DWORD PTR tv85[rsp]
-	lea	rcx, OFFSET FLAT:$SG11157
+	lea	rcx, OFFSET FLAT:$SG11159
 	call	DoDebugMsg1
 
 ; 613  :         i = strlen( p );
@@ -1337,7 +1338,7 @@ $LN19:
 ; 508  : 
 ; 509  :     DebugMsg1(("InStrDir entry\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11119
+	lea	rcx, OFFSET FLAT:$SG11121
 	call	DoDebugMsg1
 
 ; 510  :     DebugCmd( instrcnt++ );
@@ -1358,7 +1359,7 @@ $LN19:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	$LN1@InStrDir
 $LN2@InStrDir:
@@ -1418,7 +1419,7 @@ $LN5@InStrDir:
 
 ; 528  :             return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 65					; 00000041H
+	mov	ecx, 66					; 00000042H
 	call	EmitError
 	jmp	$LN1@InStrDir
 $LN6@InStrDir:
@@ -1440,7 +1441,7 @@ $LN6@InStrDir:
 ; 535  :             //start = 1;
 ; 536  :             EmitWarn( 3, POSITIVE_VALUE_EXPECTED );
 
-	mov	edx, 175				; 000000afH
+	mov	edx, 176				; 000000b0H
 	mov	ecx, 3
 	call	EmitWarn
 $LN7@InStrDir:
@@ -1461,7 +1462,7 @@ $LN7@InStrDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 39					; 00000027H
+	mov	ecx, 40					; 00000028H
 	call	EmitErr
 	jmp	$LN1@InStrDir
 $LN8@InStrDir:
@@ -1531,7 +1532,7 @@ $LN9@InStrDir:
 ; 556  :     DebugMsg1(("InStrDir: first string >%s< \n", src ));
 
 	mov	rdx, QWORD PTR src$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11129
+	lea	rcx, OFFSET FLAT:$SG11131
 	call	DoDebugMsg1
 
 ; 557  : 
@@ -1544,7 +1545,7 @@ $LN9@InStrDir:
 ; 559  :         return( EmitErr( INDEX_VALUE_PAST_END_OF_STRING, start ) );
 
 	mov	edx, DWORD PTR start$[rsp]
-	mov	ecx, 206				; 000000ceH
+	mov	ecx, 207				; 000000cfH
 	call	EmitErr
 	jmp	$LN1@InStrDir
 $LN11@InStrDir:
@@ -1579,7 +1580,7 @@ $LN11@InStrDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 39					; 00000027H
+	mov	ecx, 40					; 00000028H
 	call	EmitErr
 	jmp	$LN1@InStrDir
 $LN12@InStrDir:
@@ -1642,7 +1643,7 @@ $LN13@InStrDir:
 ; 576  :     DebugMsg1(("InStrDir: second string >%s< \n", q ));
 
 	mov	rdx, QWORD PTR q$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11134
+	lea	rcx, OFFSET FLAT:$SG11136
 	call	DoDebugMsg1
 
 ; 577  :     i++;
@@ -1666,7 +1667,7 @@ $LN13@InStrDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	$LN1@InStrDir
 $LN15@InStrDir:
@@ -1725,7 +1726,7 @@ $LN16@InStrDir:
 	mov	r8d, DWORD PTR strpos$[rsp]
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG11138
+	lea	rcx, OFFSET FLAT:$SG11140
 	call	DoDebugMsg1
 
 ; 590  :         LstWrite( LSTTYPE_EQUATE, 0, sym );
@@ -1786,7 +1787,7 @@ $LN8:
 ; 457  : 
 ; 458  :     DebugMsg1(("SizeStrDir entry\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11095
+	lea	rcx, OFFSET FLAT:$SG11097
 	call	DoDebugMsg1
 
 ; 459  :     DebugCmd( sizstrcnt++ );
@@ -1807,7 +1808,7 @@ $LN8:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	$LN1@SizeStrDir
 $LN2@SizeStrDir:
@@ -1859,7 +1860,7 @@ $LN3@SizeStrDir:
 	mov	r8d, DWORD PTR ModuleInfo+496
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG11100
+	lea	rcx, OFFSET FLAT:$SG11102
 	call	DoDebugMsg
 
 ; 474  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[3].string_ptr ) );
@@ -1868,7 +1869,7 @@ $LN3@SizeStrDir:
 	imul	rax, rax, 3
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	SHORT $LN1@SizeStrDir
 $LN5@SizeStrDir:
@@ -1904,7 +1905,7 @@ $LN5@SizeStrDir:
 	mov	r8d, DWORD PTR sizestr$[rsp]
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG11102
+	lea	rcx, OFFSET FLAT:$SG11104
 	call	DoDebugMsg1
 
 ; 482  :         LstWrite( LSTTYPE_EQUATE, 0, sym );
@@ -1974,7 +1975,7 @@ $LN25:
 ; 286  : 
 ; 287  :     DebugMsg1(("SubStrDir enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11055
+	lea	rcx, OFFSET FLAT:$SG11057
 	call	DoDebugMsg1
 
 ; 288  :     DebugCmd( substrcnt++ );
@@ -2032,7 +2033,7 @@ $LN3@SubStrDir:
 
 ; 309  :         DebugMsg(("SubStrDir: error, no text item\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11058
+	lea	rcx, OFFSET FLAT:$SG11060
 	call	DoDebugMsg
 
 ; 310  :         return( TextItemError( &tokenarray[i] ) );
@@ -2075,7 +2076,7 @@ $LN2@SubStrDir:
 
 	mov	r8, QWORD PTR p$[rsp]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11059
+	lea	rcx, OFFSET FLAT:$SG11061
 	call	DoDebugMsg1
 
 ; 317  : 
@@ -2094,7 +2095,7 @@ $LN2@SubStrDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 39					; 00000027H
+	mov	ecx, 40					; 00000028H
 	call	EmitErr
 	jmp	$LN1@SubStrDir
 $LN4@SubStrDir:
@@ -2124,7 +2125,7 @@ $LN4@SubStrDir:
 ; 327  :         DebugMsg(("SubStrDir(%s): invalid pos value\n", name));
 
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11062
+	lea	rcx, OFFSET FLAT:$SG11064
 	call	DoDebugMsg
 
 ; 328  :         return( ERROR );
@@ -2145,12 +2146,12 @@ $LN5@SubStrDir:
 ; 334  :         DebugMsg(("SubStrDir(%s): pos value is not a constant\n", name));
 
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11064
+	lea	rcx, OFFSET FLAT:$SG11066
 	call	DoDebugMsg
 
 ; 335  :         return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 65					; 00000041H
+	mov	ecx, 66					; 00000042H
 	call	EmitError
 	jmp	$LN1@SubStrDir
 $LN6@SubStrDir:
@@ -2170,7 +2171,7 @@ $LN6@SubStrDir:
 
 ; 341  :         return( EmitError( POSITIVE_VALUE_EXPECTED ) );
 
-	mov	ecx, 175				; 000000afH
+	mov	ecx, 176				; 000000b0H
 	call	EmitError
 	jmp	$LN1@SubStrDir
 $LN7@SubStrDir:
@@ -2200,7 +2201,7 @@ $LN7@SubStrDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 39					; 00000027H
+	mov	ecx, 40					; 00000028H
 	call	EmitErr
 	jmp	$LN1@SubStrDir
 $LN10@SubStrDir:
@@ -2228,7 +2229,7 @@ $LN10@SubStrDir:
 ; 351  :             DebugMsg(("SubStrDir(%s): invalid size value\n", name));
 
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11070
+	lea	rcx, OFFSET FLAT:$SG11072
 	call	DoDebugMsg
 
 ; 352  :             return( ERROR );
@@ -2248,12 +2249,12 @@ $LN11@SubStrDir:
 ; 357  :             DebugMsg(("SubStrDir(%s): size value is not a constant\n", name));
 
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11072
+	lea	rcx, OFFSET FLAT:$SG11074
 	call	DoDebugMsg
 
 ; 358  :             return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 65					; 00000041H
+	mov	ecx, 66					; 00000042H
 	call	EmitError
 	jmp	$LN1@SubStrDir
 $LN12@SubStrDir:
@@ -2276,7 +2277,7 @@ $LN12@SubStrDir:
 ; 362  :             DebugMsg(("SubStrDir(%s): additional items found\n", name));
 
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11074
+	lea	rcx, OFFSET FLAT:$SG11076
 	call	DoDebugMsg
 
 ; 363  :             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
@@ -2285,7 +2286,7 @@ $LN12@SubStrDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	$LN1@SubStrDir
 $LN13@SubStrDir:
@@ -2298,7 +2299,7 @@ $LN13@SubStrDir:
 
 ; 366  :             return( EmitError( COUNT_MUST_BE_POSITIVE_OR_ZERO ) );
 
-	mov	ecx, 208				; 000000d0H
+	mov	ecx, 209				; 000000d1H
 	call	EmitError
 	jmp	$LN1@SubStrDir
 $LN14@SubStrDir:
@@ -2353,7 +2354,7 @@ $LN9@SubStrDir:
 ; 395  :         return( EmitErr( INDEX_VALUE_PAST_END_OF_STRING, pos ) );
 
 	mov	edx, DWORD PTR pos$[rsp]
-	mov	ecx, 206				; 000000ceH
+	mov	ecx, 207				; 000000cfH
 	call	EmitErr
 	jmp	$LN1@SubStrDir
 $LN15@SubStrDir:
@@ -2372,7 +2373,7 @@ $LN15@SubStrDir:
 
 ; 398  :         return( EmitError( COUNT_VALUE_TOO_LARGE ) );
 
-	mov	ecx, 207				; 000000cfH
+	mov	ecx, 208				; 000000d0H
 	call	EmitError
 	jmp	$LN1@SubStrDir
 $LN16@SubStrDir:
@@ -2456,7 +2457,7 @@ $LN18@SubStrDir:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8, QWORD PTR [rax+8]
-	mov	edx, 236				; 000000ecH
+	mov	edx, 237				; 000000edH
 	mov	ecx, 2
 	call	EmitWarn
 	jmp	SHORT $LN21@SubStrDir
@@ -2474,14 +2475,14 @@ $LN20@SubStrDir:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11084
+	lea	rcx, OFFSET FLAT:$SG11086
 	call	DoDebugMsg
 
 ; 423  :         return( EmitErr( SYMBOL_REDEFINITION, sym->name ) );
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 144				; 00000090H
 	call	EmitErr
 	jmp	$LN1@SubStrDir
 $LN22@SubStrDir:
@@ -2560,7 +2561,7 @@ $LN23@SubStrDir:
 	mov	r8, QWORD PTR [rax+16]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11086
+	lea	rcx, OFFSET FLAT:$SG11088
 	call	DoDebugMsg1
 
 ; 443  : 
@@ -2620,7 +2621,7 @@ $LN20:
 ; 81   :     DebugMsg1(("CatStrDir(%u) enter\n", i ));
 
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10982
+	lea	rcx, OFFSET FLAT:$SG10984
 	call	DoDebugMsg1
 
 ; 82   :     DebugCmd( catstrcnt++ );
@@ -2673,7 +2674,7 @@ $LN2@CatStrDir:
 	mov	r8d, DWORD PTR i$[rsp]
 	mov	rax, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rax+rdx+8]
-	lea	rcx, OFFSET FLAT:$SG10983
+	lea	rcx, OFFSET FLAT:$SG10985
 	call	DoDebugMsg1
 
 ; 100  :         if ( tokenarray[i].token != T_STRING || tokenarray[i].string_delim != '<' ) {
@@ -2698,7 +2699,7 @@ $LN9@CatStrDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	lea	rcx, OFFSET FLAT:$SG10986
+	lea	rcx, OFFSET FLAT:$SG10988
 	call	DoDebugMsg
 
 ; 102  :             return( TextItemError( &tokenarray[i] ) );
@@ -2736,12 +2737,12 @@ $LN8@CatStrDir:
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	r8d, DWORD PTR [rcx+rax+16]
 	mov	edx, DWORD PTR count$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10988
+	lea	rcx, OFFSET FLAT:$SG10990
 	call	DoDebugMsg
 
 ; 108  :             return( EmitError( STRING_OR_TEXT_LITERAL_TOO_LONG ) );
 
-	mov	ecx, 155				; 0000009bH
+	mov	ecx, 156				; 0000009cH
 	call	EmitError
 	jmp	$LN1@CatStrDir
 $LN10@CatStrDir:
@@ -2788,7 +2789,7 @@ $LN10@CatStrDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	$LN1@CatStrDir
 $LN11@CatStrDir:
@@ -2833,7 +2834,7 @@ $LN3@CatStrDir:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10992
+	lea	rcx, OFFSET FLAT:$SG10994
 	call	DoDebugMsg1
 	jmp	$LN13@CatStrDir
 $LN12@CatStrDir:
@@ -2869,7 +2870,7 @@ $LN12@CatStrDir:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8, QWORD PTR [rax+8]
-	mov	edx, 236				; 000000ecH
+	mov	edx, 237				; 000000edH
 	mov	ecx, 2
 	call	EmitWarn
 	jmp	SHORT $LN15@CatStrDir
@@ -2886,14 +2887,14 @@ $LN14@CatStrDir:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10996
+	lea	rcx, OFFSET FLAT:$SG10998
 	call	DoDebugMsg
 
 ; 138  :         return( EmitErr( SYMBOL_REDEFINITION, sym->name ) );
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 144				; 00000090H
 	call	EmitErr
 	jmp	$LN1@CatStrDir
 $LN16@CatStrDir:
@@ -3010,7 +3011,7 @@ $LN6@CatStrDir:
 	mov	r8, QWORD PTR [rax+16]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10998
+	lea	rcx, OFFSET FLAT:$SG11000
 	call	DoDebugMsg1
 
 ; 164  : 
@@ -3073,7 +3074,7 @@ $LN4:
 	mov	r9d, DWORD PTR sizstrcnt
 	mov	r8d, DWORD PTR substrcnt
 	mov	edx, DWORD PTR catstrcnt
-	lea	rcx, OFFSET FLAT:$SG11258
+	lea	rcx, OFFSET FLAT:$SG11260
 	call	printf
 $LN2@StringFini:
 
@@ -3108,7 +3109,7 @@ $LN13:
 ; 782  : 
 ; 783  :     DebugMsg(( "StringInit() enter\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11250
+	lea	rcx, OFFSET FLAT:$SG11252
 	call	DoDebugMsg
 
 ; 784  : 
@@ -3139,7 +3140,7 @@ $LN13:
 ; 794  : 
 ; 795  :     macro = CreateMacro( "@CatStr" );
 
-	lea	rcx, OFFSET FLAT:$SG11251
+	lea	rcx, OFFSET FLAT:$SG11253
 	call	CreateMacro
 	mov	QWORD PTR macro$[rsp], rax
 
@@ -3227,7 +3228,7 @@ $LN13:
 ; 808  : 
 ; 809  :     macro = CreateMacro( "@InStr" );
 
-	lea	rcx, OFFSET FLAT:$SG11252
+	lea	rcx, OFFSET FLAT:$SG11254
 	call	CreateMacro
 	mov	QWORD PTR macro$[rsp], rax
 
@@ -3341,7 +3342,7 @@ $LN3@StringInit:
 ; 824  : 
 ; 825  :     macro = CreateMacro( "@SizeStr" );
 
-	lea	rcx, OFFSET FLAT:$SG11253
+	lea	rcx, OFFSET FLAT:$SG11255
 	call	CreateMacro
 	mov	QWORD PTR macro$[rsp], rax
 
@@ -3423,7 +3424,7 @@ $LN3@StringInit:
 ; 839  : 
 ; 840  :     macro = CreateMacro( "@SubStr" );
 
-	lea	rcx, OFFSET FLAT:$SG11254
+	lea	rcx, OFFSET FLAT:$SG11256
 	call	CreateMacro
 	mov	QWORD PTR macro$[rsp], rax
 
@@ -3574,7 +3575,7 @@ $LN7:
 
 ; 55   :         return( EmitError( MISSING_ANGLE_BRACKET_OR_BRACE_IN_LITERAL ) );
 
-	mov	ecx, 216				; 000000d8H
+	mov	ecx, 217				; 000000d9H
 	call	EmitError
 	jmp	SHORT $LN1@TextItemEr
 $LN2@TextItemEr:
@@ -3608,7 +3609,7 @@ $LN5@TextItemEr:
 
 	mov	rax, QWORD PTR item$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 102				; 00000066H
+	mov	ecx, 103				; 00000067H
 	call	EmitErr
 	jmp	SHORT $LN1@TextItemEr
 $LN4@TextItemEr:
@@ -3618,7 +3619,7 @@ $LN3@TextItemEr:
 ; 63   :     }
 ; 64   :     return( EmitError( TEXT_ITEM_REQUIRED ) );
 
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 145				; 00000091H
 	call	EmitError
 $LN1@TextItemEr:
 
@@ -3656,7 +3657,7 @@ $LN4:
 
 	mov	r8, QWORD PTR value$[rsp]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11037
+	lea	rcx, OFFSET FLAT:$SG11039
 	call	DoDebugMsg1
 
 ; 258  :     /* v2.08: ignore previous setting */
@@ -3798,7 +3799,7 @@ $LN5@SetTextMac:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8, QWORD PTR [rax+8]
-	mov	edx, 236				; 000000ecH
+	mov	edx, 237				; 000000edH
 	mov	ecx, 2
 	call	EmitWarn
 	jmp	SHORT $LN8@SetTextMac
@@ -3813,7 +3814,7 @@ $LN7@SetTextMac:
 ; 198  :         EmitErr( SYMBOL_REDEFINITION, name );
 
 	mov	rdx, QWORD PTR name$[rsp]
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 144				; 00000090H
 	call	EmitErr
 
 ; 199  :         return( NULL );
@@ -3873,7 +3874,7 @@ $LN6@SetTextMac:
 	imul	rax, rax, 3
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 
 ; 211  :             return( NULL );
@@ -4003,7 +4004,7 @@ $LN14@SetTextMac:
 	mov	r8, QWORD PTR [rax+16]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11028
+	lea	rcx, OFFSET FLAT:$SG11030
 	call	DoDebugMsg1
 
 ; 242  :     return( sym );

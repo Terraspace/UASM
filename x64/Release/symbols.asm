@@ -16,83 +16,84 @@ _DATA	SEGMENT
 COMM	SymCmpFunc:QWORD
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
 szDate	DB	0cH DUP (?)
 szTime	DB	0cH DUP (?)
 symPC	DQ	01H DUP (?)
-$SG11024 DB	01H DUP (?)
+$SG11026 DB	01H DUP (?)
 	ALIGN	4
 
-$SG11088 DB	01H DUP (?)
+$SG11090 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG11017 DB	'@Version', 00H
+$SG11019 DB	'@Version', 00H
 	ORG $+3
-$SG11018 DB	'800', 00H
-$SG11019 DB	'@Date', 00H
+$SG11020 DB	'800', 00H
+$SG11021 DB	'@Date', 00H
 	ORG $+2
-$SG11020 DB	'@Time', 00H
+$SG11022 DB	'@Time', 00H
 	ORG $+2
-$SG11021 DB	'@FileName', 00H
+$SG11023 DB	'@FileName', 00H
 	ORG $+2
-$SG11040 DB	'$', 00H
+$SG11042 DB	'$', 00H
 	ORG $+2
-$SG11022 DB	'@FileCur', 00H
+$SG11024 DB	'@FileCur', 00H
 	ORG $+3
-$SG11041 DB	'@Line', 00H
+$SG11043 DB	'@Line', 00H
 	ORG $+6
-$SG11023 DB	'@CurSeg', 00H
-$SG11038 DB	'__HJWASM__', 00H
+$SG11025 DB	'@CurSeg', 00H
+$SG11040 DB	'__HJWASM__', 00H
 	ORG $+5
-$SG11039 DB	'__JWASM__', 00H
+$SG11041 DB	'__JWASM__', 00H
 	ORG $+6
-$SG11042 DB	'@WordSize', 00H
+$SG11044 DB	'@WordSize', 00H
 	ORG $+6
-$SG11199 DB	'%02u/%02u/%02u', 00H
+$SG11201 DB	'%02u/%02u/%02u', 00H
 	ORG $+1
-$SG11200 DB	'%02u:%02u:%02u', 00H
+$SG11202 DB	'%02u:%02u:%02u', 00H
 _DATA	ENDS
 CONST	SEGMENT
-tmtab	DQ	FLAT:$SG11017
-	DQ	FLAT:$SG11018
-	DQ	0000000000000000H
-	DQ	FLAT:$SG11019
-	DQ	FLAT:szDate
-	DQ	0000000000000000H
+tmtab	DQ	FLAT:$SG11019
 	DQ	FLAT:$SG11020
-	DQ	FLAT:szTime
 	DQ	0000000000000000H
 	DQ	FLAT:$SG11021
-	DQ	FLAT:ModuleInfo+512
+	DQ	FLAT:szDate
 	DQ	0000000000000000H
 	DQ	FLAT:$SG11022
+	DQ	FLAT:szTime
+	DQ	0000000000000000H
+	DQ	FLAT:$SG11023
+	DQ	FLAT:ModuleInfo+512
+	DQ	0000000000000000H
+	DQ	FLAT:$SG11024
 	DQ	0000000000000000H
 	DQ	FLAT:FileCur
-	DQ	FLAT:$SG11023
-	DQ	FLAT:$SG11024
+	DQ	FLAT:$SG11025
+	DQ	FLAT:$SG11026
 	DQ	FLAT:symCurSeg
-eqtab	DQ	FLAT:$SG11038
+eqtab	DQ	FLAT:$SG11040
 	DD	0d5H
 	ORG $+4
 	DQ	0000000000000000H
 	DQ	0000000000000000H
-	DQ	FLAT:$SG11039
+	DQ	FLAT:$SG11041
 	DD	0d4H
 	ORG $+4
 	DQ	0000000000000000H
 	DQ	0000000000000000H
-	DQ	FLAT:$SG11040
+	DQ	FLAT:$SG11042
 	DD	00H
 	ORG $+4
 	DQ	FLAT:UpdateCurPC
 	DQ	FLAT:symPC
-	DQ	FLAT:$SG11041
+	DQ	FLAT:$SG11043
 	DD	00H
 	ORG $+4
 	DQ	FLAT:UpdateLineNumber
 	DQ	FLAT:LineCur
-	DQ	FLAT:$SG11042
+	DQ	FLAT:$SG11044
 	DD	00H
 	ORG $+4
 	DQ	FLAT:UpdateWordSize
@@ -1202,7 +1203,7 @@ $LN30:
 	shr	ecx, 31
 	add	edx, ecx
 	imul	ecx, edx, 100				; 00000064H
-	lea	rdx, OFFSET FLAT:$SG11199
+	lea	rdx, OFFSET FLAT:$SG11201
 	sub	r9d, ecx
 	lea	rcx, OFFSET FLAT:szDate
 	mov	DWORD PTR [rsp+32], r9d
@@ -1212,7 +1213,7 @@ $LN30:
 ; 614  :     sprintf( szTime, "%02u:%02u:%02u", now->tm_hour, now->tm_min, now->tm_sec );
 
 	mov	eax, DWORD PTR [rbx]
-	lea	rdx, OFFSET FLAT:$SG11200
+	lea	rdx, OFFSET FLAT:$SG11202
 	mov	r9d, DWORD PTR [rbx+4]
 	lea	rcx, OFFSET FLAT:szTime
 	mov	r8d, DWORD PTR [rbx+8]
@@ -1236,7 +1237,7 @@ $LL4@SymInit:
 	test	rax, rax
 	je	SHORT $LN16@SymInit
 	mov	rdx, rdi
-	mov	ecx, 56					; 00000038H
+	mov	ecx, 57					; 00000039H
 	call	EmitErr
 	xor	eax, eax
 	jmp	SHORT $LN15@SymInit
@@ -1297,7 +1298,7 @@ $LL7@SymInit:
 	test	rax, rax
 	je	SHORT $LN19@SymInit
 	mov	rdx, rdi
-	mov	ecx, 56					; 00000038H
+	mov	ecx, 57					; 00000039H
 	call	EmitErr
 	xor	eax, eax
 	jmp	SHORT $LN18@SymInit
@@ -1750,7 +1751,7 @@ $LN6:
 ; 453  :         EmitErr( SYMBOL_ALREADY_DEFINED, name );
 
 	mov	rdx, rbx
-	mov	ecx, 56					; 00000038H
+	mov	ecx, 57					; 00000039H
 	call	EmitErr
 
 ; 454  :         return( NULL );
@@ -1836,7 +1837,7 @@ $LN5:
 ; 476  :         EmitErr( SYMBOL_ALREADY_DEFINED, sym->name );
 
 	mov	rdx, QWORD PTR [rbx+8]
-	mov	ecx, 56					; 00000038H
+	mov	ecx, 57					; 00000039H
 	call	EmitErr
 
 ; 477  :         return( NULL );
@@ -1901,7 +1902,7 @@ $LN5:
 ; 513  :         EmitErr( SYMBOL_ALREADY_DEFINED, name );
 
 	mov	rdx, rbx
-	mov	ecx, 56					; 00000038H
+	mov	ecx, 57					; 00000039H
 	call	EmitErr
 
 ; 514  :         return( NULL );
@@ -1959,7 +1960,7 @@ $LN5:
 ; 492  :         EmitErr( SYMBOL_ALREADY_DEFINED, name );
 
 	mov	rdx, rbx
-	mov	ecx, 56					; 00000038H
+	mov	ecx, 57					; 00000039H
 	call	EmitErr
 
 ; 493  :         return( NULL );
@@ -2057,7 +2058,7 @@ $LL6@SymAlloc:
 
 ; 239  :         EmitError( IDENTIFIER_TOO_LONG );
 
-	mov	ecx, 70					; 00000046H
+	mov	ecx, 71					; 00000047H
 	call	EmitError
 
 ; 240  :         len = MAX_ID_LEN;
@@ -2123,7 +2124,7 @@ $LN2@SymAlloc:
 	ret	0
 $LN3@SymAlloc:
 	mov	rbx, QWORD PTR [rsp+48]
-	lea	rax, OFFSET FLAT:$SG11088
+	lea	rax, OFFSET FLAT:$SG11090
 	mov	rsi, QWORD PTR [rsp+56]
 	mov	QWORD PTR [rdi+8], rax
 	mov	rax, rdi

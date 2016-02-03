@@ -33,8 +33,9 @@ pick( MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS,     "mismatch in the numb
 pick( Z_DECORATOR_EXPECTED,                                "z decorator expected" )
 pick( K_REGISTER_EXPECTED,                                 "K register expected" )
 pick( EMBEDDED_ROUNDING_IS_AVAILABLE_ONLY_WITH_REG_REG_OP, "Embedded rounding is available only with reg-reg op" )
-pick( msg_unused10,         "" )
-pick( msg_unused11,         "" )
+pick( UNAUTHORISED_USE_OF_EVEX_REGISTERS,                  "Unauthorised use of AVX512 register" )
+pick(UNAUTHORISED_USE_OF_EVEX_ENCODING,                    "EVEX encoding not enabled. Use option evex directive?" )
+pick (msg_unused11,                                        "" )
 #if COMDATSUPP
 pick( VALUE_NOT_WITHIN_ALLOWED_RANGE,    "Value not within allowed range %s" )
 pick( INVALID_ASSOCIATED_SEGMENT,        "Invalid associated segment: %s" )

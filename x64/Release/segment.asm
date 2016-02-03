@@ -9,93 +9,92 @@ _DATA	SEGMENT
 COMM	symCurSeg:QWORD
 _DATA	ENDS
 _BSS	SEGMENT
-$SG11367 DB	01H DUP (?)
+$SG11369 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11283 DB	'READONLY', 00H
+$SG11285 DB	'READONLY', 00H
 	ORG $+3
-$SG11284 DB	'BYTE', 00H
+$SG11286 DB	'BYTE', 00H
 	ORG $+3
-$SG11285 DB	'WORD', 00H
+$SG11287 DB	'WORD', 00H
 	ORG $+3
-$SG11286 DB	'DWORD', 00H
+$SG11288 DB	'DWORD', 00H
 	ORG $+2
-$SG11287 DB	'PARA', 00H
+$SG11289 DB	'PARA', 00H
 	ORG $+3
-$SG11288 DB	'PAGE', 00H
+$SG11290 DB	'PAGE', 00H
 	ORG $+3
-$SG11289 DB	'ALIGN', 00H
+$SG11291 DB	'ALIGN', 00H
 	ORG $+2
-$SG11291 DB	'PUBLIC', 00H
+$SG11293 DB	'PUBLIC', 00H
 	ORG $+1
-$SG11295 DB	'AT', 00H
+$SG11297 DB	'AT', 00H
 	ORG $+1
-$SG11290 DB	'PRIVATE', 00H
-$SG11292 DB	'STACK', 00H
+$SG11292 DB	'PRIVATE', 00H
+$SG11294 DB	'STACK', 00H
 	ORG $+2
-$SG11293 DB	'COMMON', 00H
+$SG11295 DB	'COMMON', 00H
 	ORG $+1
-$SG11294 DB	'MEMORY', 00H
+$SG11296 DB	'MEMORY', 00H
 	ORG $+1
-$SG11296 DB	'COMDAT', 00H
+$SG11298 DB	'COMDAT', 00H
 	ORG $+1
-$SG11297 DB	'USE16', 00H
+$SG11299 DB	'USE16', 00H
 	ORG $+2
-$SG11298 DB	'USE32', 00H
+$SG11300 DB	'USE32', 00H
 	ORG $+2
-$SG11299 DB	'USE64', 00H
+$SG11301 DB	'USE64', 00H
 	ORG $+2
-$SG11300 DB	'FLAT', 00H
+$SG11302 DB	'FLAT', 00H
 	ORG $+3
-$SG11301 DB	'INFO', 00H
+$SG11303 DB	'INFO', 00H
 	ORG $+3
-$SG11302 DB	'DISCARD', 00H
-$SG11303 DB	'NOCACHE', 00H
-$SG11304 DB	'NOPAGE', 00H
+$SG11304 DB	'DISCARD', 00H
+$SG11305 DB	'NOCACHE', 00H
+$SG11306 DB	'NOPAGE', 00H
 	ORG $+1
-$SG11305 DB	'SHARED', 00H
+$SG11307 DB	'SHARED', 00H
 	ORG $+1
-$SG11306 DB	'EXECUTE', 00H
-$SG11307 DB	'READ', 00H
+$SG11308 DB	'EXECUTE', 00H
+$SG11309 DB	'READ', 00H
 	ORG $+3
-$SG11308 DB	'WRITE', 00H
+$SG11310 DB	'WRITE', 00H
 	ORG $+2
-$SG11309 DB	'ALIAS', 00H
+$SG11311 DB	'ALIAS', 00H
 	ORG $+2
-$SG11508 DB	'FLAT', 00H
+$SG11510 DB	'FLAT', 00H
 	ORG $+3
-$SG11555 DB	'CONST', 00H
+$SG11557 DB	'CONST', 00H
 	ORG $+2
-$SG11557 DB	'DBTYP', 00H
+$SG11559 DB	'DBTYP', 00H
 	ORG $+2
-$SG11559 DB	'DBSYM', 00H
+$SG11561 DB	'DBSYM', 00H
 	ORG $+2
-$SG11562 DB	'CODE', 00H
+$SG11564 DB	'CODE', 00H
 	ORG $+3
-$SG11564 DB	'DATA', 00H
+$SG11566 DB	'DATA', 00H
 	ORG $+3
-$SG11567 DB	'BSS', 00H
-$SG11736 DB	'(', 00H
+$SG11569 DB	'BSS', 00H
+$SG11738 DB	'(', 00H
 	ORG $+2
-$SG11739 DB	')', 00H
+$SG11741 DB	')', 00H
 	ORG $+2
-$SG11750 DB	'(', 00H
+$SG11752 DB	'(', 00H
 	ORG $+2
-$SG11756 DB	'1-6', 00H
-$SG11764 DB	')', 00H
+$SG11758 DB	'1-6', 00H
+$SG11766 DB	')', 00H
 	ORG $+2
-$SG11777 DB	'(', 00H
+$SG11779 DB	'(', 00H
 	ORG $+2
-$SG11781 DB	')', 00H
+$SG11783 DB	')', 00H
 _DATA	ENDS
 CONST	SEGMENT
-SegAttrToken DQ	FLAT:$SG11283
-	DQ	FLAT:$SG11284
-	DQ	FLAT:$SG11285
+SegAttrToken DQ	FLAT:$SG11285
 	DQ	FLAT:$SG11286
 	DQ	FLAT:$SG11287
 	DQ	FLAT:$SG11288
@@ -120,6 +119,8 @@ SegAttrToken DQ	FLAT:$SG11283
 	DQ	FLAT:$SG11307
 	DQ	FLAT:$SG11308
 	DQ	FLAT:$SG11309
+	DQ	FLAT:$SG11310
+	DQ	FLAT:$SG11311
 SegAttrValue DB	00H
 	DB	01H
 	DB	00H
@@ -880,7 +881,7 @@ $LN10@SegmentDir:
 ; 943  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	movsxd	rdx, ecx
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+r15+8]
 	call	EmitErr
@@ -1082,7 +1083,7 @@ $LN15@SegmentDir:
 ; 1020 :         return( EmitErr( SYMBOL_REDEFINITION, name ) );
 
 	mov	rdx, rbx
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 144				; 00000090H
 	call	EmitErr
 	jmp	$LN150@SegmentDir
 $LN14@SegmentDir:
@@ -1148,7 +1149,7 @@ $LL4@SegmentDir:
 ; 1034 :                 EmitErr( SYNTAX_ERROR_EX, token );
 
 	mov	rdx, r14
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 
 ; 1035 :                 continue;
@@ -1204,7 +1205,7 @@ $LL108@SegmentDir:
 ; 1051 :             EmitErr( UNKNOWN_SEGMENT_ATTRIBUTE, token );
 
 	mov	rdx, r14
-	mov	ecx, 81					; 00000051H
+	mov	ecx, 82					; 00000052H
 	call	EmitErr
 
 ; 1052 :             continue;
@@ -1227,7 +1228,7 @@ $LN105@SegmentDir:
 ; 1051 :             EmitErr( UNKNOWN_SEGMENT_ATTRIBUTE, token );
 
 	mov	rdx, r14
-	mov	ecx, 81					; 00000051H
+	mov	ecx, 82					; 00000052H
 	call	EmitErr
 
 ; 1052 :             continue;
@@ -1257,7 +1258,7 @@ $LN23@SegmentDir:
 ; 1060 :             EmitErr( SEGMENT_ATTRIBUTE_DEFINED_ALREADY, token );
 
 	mov	rdx, r14
-	mov	ecx, 77					; 0000004dH
+	mov	ecx, 78					; 0000004eH
 	call	EmitErr
 
 ; 1061 :             continue;
@@ -1317,7 +1318,7 @@ $LN28@SegmentDir:
 
 ; 1077 :                 EmitErr( NOT_SUPPORTED_WITH_OMF_FORMAT, tokenarray[i].string_ptr );
 
-	mov	ecx, 223				; 000000dfH
+	mov	ecx, 224				; 000000e0H
 
 ; 1078 :                 i = Token_Count; /* stop further parsing of this line */
 ; 1079 :                 break;
@@ -1341,8 +1342,8 @@ $LN29@SegmentDir:
 
 ; 1083 :                 EmitErr( EXPECTED, "(" );
 
-	lea	rdx, OFFSET FLAT:$SG11736
-	mov	ecx, 230				; 000000e6H
+	lea	rdx, OFFSET FLAT:$SG11738
+	mov	ecx, 231				; 000000e7H
 	call	EmitErr
 
 ; 1084 :                 break;
@@ -1375,8 +1376,8 @@ $LN30@SegmentDir:
 
 ; 1090 :                 EmitErr( EXPECTED, ")" );
 
-	lea	rdx, OFFSET FLAT:$SG11739
-	mov	ecx, 230				; 000000e6H
+	lea	rdx, OFFSET FLAT:$SG11741
+	mov	ecx, 231				; 000000e7H
 	call	EmitErr
 
 ; 1091 :                 break;
@@ -1393,7 +1394,7 @@ $LN38@SegmentDir:
 
 ; 1094 :                 EmitError( CONSTANT_EXPECTED );
 
-	mov	ecx, 65					; 00000041H
+	mov	ecx, 66					; 00000042H
 	call	EmitError
 
 ; 1095 :                 break;
@@ -1431,7 +1432,7 @@ $LN151@SegmentDir:
 
 ; 1103 :                 EmitErr( POWER_OF_2, opndx.value );
 
-	mov	ecx, 129				; 00000081H
+	mov	ecx, 130				; 00000082H
 	call	EmitErr
 $LN34@SegmentDir:
 
@@ -1534,8 +1535,8 @@ $LN40@SegmentDir:
 
 ; 1139 :                 EmitErr( EXPECTED, "(" );
 
-	lea	rdx, OFFSET FLAT:$SG11750
-	mov	ecx, 230				; 000000e6H
+	lea	rdx, OFFSET FLAT:$SG11752
+	mov	ecx, 231				; 000000e7H
 	call	EmitErr
 
 ; 1140 :                 break;
@@ -1566,7 +1567,7 @@ $LN42@SegmentDir:
 
 ; 1146 :                 EmitError( CONSTANT_EXPECTED );
 
-	mov	ecx, 65					; 00000041H
+	mov	ecx, 66					; 00000042H
 	call	EmitError
 
 ; 1147 :                 i = Token_Count; /* stop further parsing of this line */
@@ -1604,7 +1605,7 @@ $LN44@SegmentDir:
 ; 1159 :                         EmitErr( EXPECTING_COMMA, tokenarray[i].tokpos );
 
 	mov	rdx, QWORD PTR [rax+r15+24]
-	mov	ecx, 39					; 00000027H
+	mov	ecx, 40					; 00000028H
 
 ; 1160 :                         i = Token_Count; /* stop further parsing of this line */
 ; 1161 :                         break;
@@ -1628,7 +1629,7 @@ $LN49@SegmentDir:
 ; 1165 :                         EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr );
 
 	mov	rdx, QWORD PTR [rcx+r15+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 
 ; 1166 :                         i = Token_Count; /* stop further parsing of this line */
 ; 1167 :                         break;
@@ -1676,7 +1677,7 @@ $LN53@SegmentDir:
 ; 1175 :                         EmitErr( INVALID_ASSOCIATED_SEGMENT, tokenarray[i].string_ptr );
 
 	movsxd	rdx, DWORD PTR i$[rbp-137]
-	mov	ecx, 25
+	mov	ecx, 26
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+r15+8]
 	call	EmitErr
@@ -1689,8 +1690,8 @@ $LN47@SegmentDir:
 
 ; 1151 :                 EmitErr( VALUE_NOT_WITHIN_ALLOWED_RANGE, "1-6" );
 
-	lea	rdx, OFFSET FLAT:$SG11756
-	mov	ecx, 24
+	lea	rdx, OFFSET FLAT:$SG11758
+	mov	ecx, 25
 	call	EmitErr
 $LN152@SegmentDir:
 	mov	ecx, DWORD PTR opndx$[rbp-137]
@@ -1707,8 +1708,8 @@ $LN48@SegmentDir:
 
 ; 1182 :                 EmitErr( EXPECTED, ")" );
 
-	lea	rdx, OFFSET FLAT:$SG11764
-	mov	ecx, 230				; 000000e6H
+	lea	rdx, OFFSET FLAT:$SG11766
+	mov	ecx, 231				; 000000e7H
 	call	EmitErr
 
 ; 1183 :                 break;
@@ -1833,7 +1834,7 @@ $LN62@SegmentDir:
 ; 1219 :                 EmitErr( NOT_SUPPORTED_WITH_CURR_FORMAT, tokenarray[i].string_ptr );
 
 	movsxd	rdx, DWORD PTR i$[rbp-137]
-	mov	ecx, 224				; 000000e0H
+	mov	ecx, 225				; 000000e1H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+r15+8]
 	call	EmitErr
@@ -1875,8 +1876,8 @@ $LN64@SegmentDir:
 
 ; 1235 :                 EmitErr( EXPECTED, "(" );
 
-	lea	rdx, OFFSET FLAT:$SG11777
-	mov	ecx, 230				; 000000e6H
+	lea	rdx, OFFSET FLAT:$SG11779
+	mov	ecx, 231				; 000000e7H
 	call	EmitErr
 
 ; 1236 :                 break;
@@ -1924,8 +1925,8 @@ $LN67@SegmentDir:
 
 ; 1249 :                 EmitErr( EXPECTED, ")" );
 
-	lea	rdx, OFFSET FLAT:$SG11781
-	mov	ecx, 230				; 000000e6H
+	lea	rdx, OFFSET FLAT:$SG11783
+	mov	ecx, 231				; 000000e7H
 	call	EmitErr
 
 ; 1250 :                 break;
@@ -1972,7 +1973,7 @@ $LN73@SegmentDir:
 	call	MsgGetEx
 	mov	rdx, QWORD PTR [rdi+8]
 	mov	r8, rax
-	mov	ecx, 78					; 0000004eH
+	mov	ecx, 79					; 0000004fH
 	call	EmitErr
 
 ; 1258 :                     break;
@@ -2017,14 +2018,14 @@ $LN68@SegmentDir:
 ; 1242 :                 EmitErr( SYNTAX_ERROR_EX, token );
 
 	mov	rdx, r14
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	jmp	SHORT $LN156@SegmentDir
 $LN65@SegmentDir:
 
 ; 1228 :                ) {
 ; 1229 :                 EmitErr( NOT_SUPPORTED_WITH_CURR_FORMAT, tokenarray[i].string_ptr );
 
-	mov	ecx, 224				; 000000e0H
+	mov	ecx, 225				; 000000e1H
 $LN154@SegmentDir:
 	movsxd	rdx, DWORD PTR i$[rbp-137]
 	shl	rdx, 5
@@ -2177,7 +2178,7 @@ $LN135@SegmentDir:
 	call	MsgGetEx
 	mov	rdx, QWORD PTR [rdi+8]
 	mov	r8, rax
-	mov	ecx, 78					; 0000004eH
+	mov	ecx, 79					; 0000004fH
 	call	EmitErr
 
 ; 1319 :             //return( ERROR ); /* v2: display error, but continue */
@@ -2254,7 +2255,7 @@ $LN88@SegmentDir:
 	movsxd	rdx, DWORD PTR stkindex
 	cmp	edx, 20
 	jl	SHORT $LN114@SegmentDir
-	mov	ecx, 100				; 00000064H
+	mov	ecx, 101				; 00000065H
 	call	EmitError
 	jmp	SHORT $LN113@SegmentDir
 $LN114@SegmentDir:
@@ -2651,7 +2652,7 @@ $LN11@SetCurrSeg:
 	movsxd	rdx, DWORD PTR stkindex
 	cmp	edx, 20
 	jl	SHORT $LN9@SetCurrSeg
-	mov	ecx, 100				; 00000064H
+	mov	ecx, 101				; 00000065H
 	call	EmitError
 	jmp	SHORT $LN8@SetCurrSeg
 $LN9@SetCurrSeg:
@@ -2693,7 +2694,7 @@ $LN3@SetCurrSeg:
 ; 877  :         return( EmitErr( SEGMENT_NOT_DEFINED, tokenarray[0].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rdi+8]
-	mov	ecx, 83					; 00000053H
+	mov	ecx, 84					; 00000054H
 
 ; 892  : }
 
@@ -2745,7 +2746,7 @@ $LN2@EndsDir:
 ; 852  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	movsxd	rdx, ecx
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rbx+8]
 
@@ -2806,7 +2807,7 @@ $LN6@EndsDir:
 ; 862  :         EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr );
 
 	mov	rdx, QWORD PTR [rbx+72]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 $LN7@EndsDir:
 
@@ -2916,7 +2917,7 @@ $LL20@CreateClas:
 
 ; 767  :         EmitError( CLASS_NAME_TOO_LONG );
 
-	mov	ecx, 79					; 0000004fH
+	mov	ecx, 80					; 00000050H
 	call	EmitError
 
 ; 768  :         return( NULL );
@@ -3156,7 +3157,7 @@ $LN3@CloseSeg:
 ; 553  :         return( EmitErr( BLOCK_NESTING_ERROR, name ) );
 
 	mov	rdx, rbx
-	mov	ecx, 80					; 00000050H
+	mov	ecx, 81					; 00000051H
 
 ; 570  : }
 
@@ -3214,7 +3215,7 @@ $LN58:
 ; 406  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	movsxd	rdx, ecx
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+r13+8]
 
@@ -3351,7 +3352,7 @@ $LL4@GrpDir:
 ; 451  :                 return( EmitErr( SEGMENT_IN_ANOTHER_GROUP, name ) );
 
 	mov	rdx, r14
-	mov	ecx, 135				; 00000087H
+	mov	ecx, 136				; 00000088H
 	jmp	$LN55@GrpDir
 $LN16@GrpDir:
 
@@ -3401,7 +3402,7 @@ $LN21@GrpDir:
 ; 457  :                 return( EmitErr( GROUP_SEGMENT_SIZE_CONFLICT, grp->sym.name, seg->sym.name ) );
 
 	mov	r8, QWORD PTR [rbx+8]
-	mov	ecx, 239				; 000000efH
+	mov	ecx, 240				; 000000f0H
 	mov	rdx, QWORD PTR [rdi+8]
 	call	EmitErr
 	jmp	$LN54@GrpDir
@@ -3537,7 +3538,7 @@ $LN37@GrpDir:
 ; 444  :                 return( EmitErr( SEGMENT_EXPECTED, name ) );
 
 	mov	rdx, r14
-	mov	ecx, 131				; 00000083H
+	mov	ecx, 132				; 00000084H
 	jmp	SHORT $LN55@GrpDir
 $LN41@GrpDir:
 
@@ -3547,7 +3548,7 @@ $LN41@GrpDir:
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+r13+24]
 $LN56@GrpDir:
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 $LN55@GrpDir:
 
 ; 465  :                 return( EmitErr( SEGMENT_NOT_DEFINED, name ) );
@@ -3572,7 +3573,7 @@ $LN25@GrpDir:
 ; 465  :                 return( EmitErr( SEGMENT_NOT_DEFINED, name ) );
 
 	mov	rdx, r14
-	mov	ecx, 83					; 00000053H
+	mov	ecx, 84					; 00000054H
 	jmp	SHORT $LN55@GrpDir
 $LN35@GrpDir:
 
@@ -3591,7 +3592,7 @@ $LN9@GrpDir:
 	mov	rcx, QWORD PTR [rdx+40]
 	call	_strupr
 	mov	rdx, rax
-	mov	ecx, 224				; 000000e0H
+	mov	ecx, 225				; 000000e1H
 
 ; 504  : }
 
@@ -3782,7 +3783,7 @@ CreateGroup PROC					; COMDAT
 ; 338  :         EmitErr( SYMBOL_REDEFINITION, name );
 
 	mov	rdx, rdi
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 144				; 00000090H
 	call	EmitErr
 
 ; 339  :         return( NULL );
@@ -3930,7 +3931,7 @@ push_seg PROC						; COMDAT
 
 ; 253  :         EmitError( NESTING_LEVEL_TOO_DEEP );
 
-	mov	ecx, 100				; 00000064H
+	mov	ecx, 101				; 00000065H
 	jmp	EmitError
 $LN2@push_seg:
 
@@ -3977,7 +3978,7 @@ UpdateCurrSegVars PROC					; COMDAT
 
 	mov	rax, QWORD PTR symCurSeg
 	mov	QWORD PTR SegAssumeTable+16, rcx
-	lea	rcx, OFFSET FLAT:$SG11367
+	lea	rcx, OFFSET FLAT:$SG11369
 	mov	WORD PTR SegAssumeTable+24, 1
 	mov	QWORD PTR [rax+16], rcx
 
@@ -4215,7 +4216,7 @@ $LN4@UpdateCurP:
 ; 142  :     } else
 ; 143  :         EmitErr( MUST_BE_IN_SEGMENT_BLOCK ); /* v2.10: added */
 
-	mov	ecx, 82					; 00000052H
+	mov	ecx, 83					; 00000053H
 	jmp	EmitErr
 UpdateCurPC ENDP
 _TEXT	ENDS
@@ -4407,7 +4408,7 @@ $LN4@SegmentMod:
 ; 1420 :         EmitErr( BLOCK_NESTING_ERROR, CurrSeg->sym.name );
 
 	mov	rdx, QWORD PTR [rdx+8]
-	mov	ecx, 80					; 00000050H
+	mov	ecx, 81					; 00000051H
 	mov	QWORD PTR [rsp+32], rdi
 	call	EmitErr
 	lea	rdi, OFFSET FLAT:SegStack
@@ -4449,7 +4450,7 @@ $LN11@SegmentMod:
 	jmp	SHORT $LL2@SegmentMod
 $LN9@SegmentMod:
 	mov	rdx, rbx
-	mov	ecx, 80					; 00000050H
+	mov	ecx, 81					; 00000051H
 	call	EmitErr
 	test	eax, eax
 	je	$LL2@SegmentMod
@@ -4500,7 +4501,7 @@ $LN6:
 ; 576  :         /* can't fail because <FLAT> is a reserved word */
 ; 577  :         ModuleInfo.flat_grp = CreateGroup( "FLAT" );
 
-	lea	rcx, OFFSET FLAT:$SG11508
+	lea	rcx, OFFSET FLAT:$SG11510
 	call	CreateGroup
 
 ; 578  :         ModuleInfo.flat_grp->sym.Ofssize = ModuleInfo.defOfssize;
@@ -4654,10 +4655,10 @@ $LN8@TypeFromCl:
 ; 668  :         if( memcmp( uname, "CONST", 6 ) == 0 )
 
 	mov	ecx, DWORD PTR uname$[rsp]
-	cmp	ecx, DWORD PTR $SG11555
+	cmp	ecx, DWORD PTR $SG11557
 	movzx	eax, WORD PTR uname$[rsp+4]
 	jne	SHORT $LN9@TypeFromCl
-	cmp	ax, WORD PTR $SG11555+4
+	cmp	ax, WORD PTR $SG11557+4
 	je	SHORT $LN20@TypeFromCl
 $LN9@TypeFromCl:
 
@@ -4666,18 +4667,18 @@ $LN9@TypeFromCl:
 ; 671  :         //    return( SEGTYPE_DATA );
 ; 672  :         if( memcmp( uname, "DBTYP", 6 ) == 0 )
 
-	cmp	ecx, DWORD PTR $SG11557
+	cmp	ecx, DWORD PTR $SG11559
 	jne	SHORT $LN10@TypeFromCl
-	cmp	ax, WORD PTR $SG11557+4
+	cmp	ax, WORD PTR $SG11559+4
 	je	SHORT $LN20@TypeFromCl
 $LN10@TypeFromCl:
 
 ; 673  :             return( SEGTYPE_DATA );
 ; 674  :         if( memcmp( uname, "DBSYM", 6 ) == 0 )
 
-	cmp	ecx, DWORD PTR $SG11559
+	cmp	ecx, DWORD PTR $SG11561
 	jne	SHORT $LN11@TypeFromCl
-	cmp	ax, WORD PTR $SG11559+4
+	cmp	ax, WORD PTR $SG11561+4
 	je	SHORT $LN20@TypeFromCl
 $LN11@TypeFromCl:
 
@@ -4691,7 +4692,7 @@ $LN11@TypeFromCl:
 	movsxd	rax, ebx
 	lea	rcx, QWORD PTR uname$[rsp+rax-4]
 	mov	eax, DWORD PTR uname$[rsp+rax-4]
-	cmp	eax, DWORD PTR $SG11562
+	cmp	eax, DWORD PTR $SG11564
 	jne	SHORT $LN13@TypeFromCl
 
 ; 681  :             return( SEGTYPE_CODE );
@@ -4709,7 +4710,7 @@ $LN13@TypeFromCl:
 
 ; 682  :         if( memcmp( uname + slen - 4, "DATA", 4 ) == 0 )
 
-	cmp	eax, DWORD PTR $SG11564
+	cmp	eax, DWORD PTR $SG11566
 	jne	SHORT $LN14@TypeFromCl
 $LN20@TypeFromCl:
 
@@ -4731,10 +4732,10 @@ $LN14@TypeFromCl:
 
 	movzx	eax, WORD PTR uname$[rsp+rbx-3]
 	lea	rcx, QWORD PTR uname$[rsp+rbx-3]
-	cmp	ax, WORD PTR $SG11567
+	cmp	ax, WORD PTR $SG11569
 	jne	SHORT $LN16@TypeFromCl
 	movzx	eax, BYTE PTR [rcx+2]
-	cmp	al, BYTE PTR $SG11567+2
+	cmp	al, BYTE PTR $SG11569+2
 	jne	SHORT $LN16@TypeFromCl
 
 ; 686  :             return( SEGTYPE_BSS );
@@ -4838,7 +4839,7 @@ $LN2@SetOfssize:
 
 	mov	edx, 16
 	shl	edx, cl
-	mov	ecx, 132				; 00000084H
+	mov	ecx, 133				; 00000085H
 
 ; 540  : }
 
@@ -5419,7 +5420,7 @@ $LN28:
 ; 819  :             EmitErr( SYMBOL_REDEFINITION, name );
 
 	mov	rdx, rdi
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 144				; 00000090H
 	call	EmitErr
 $LN8@CreateIntS:
 

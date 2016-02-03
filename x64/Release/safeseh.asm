@@ -8,11 +8,12 @@ INCLUDELIB OLDNAMES
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10611 DB	'coff', 00H
+$SG10613 DB	'coff', 00H
 	ORG $+3
-$SG10614 DB	'safeseh', 00H
+$SG10616 DB	'safeseh', 00H
 _DATA	ENDS
 PUBLIC	SafeSEHDirective
 EXTRN	EmitErr:PROC
@@ -104,9 +105,9 @@ $LN32:
 
 ; 34   :             EmitWarn( 2, DIRECTIVE_IGNORED_WITHOUT_X, "coff" );
 
-	lea	r8, OFFSET FLAT:$SG10611
+	lea	r8, OFFSET FLAT:$SG10613
 $LN30@SafeSEHDir:
-	mov	edx, 261				; 00000105H
+	mov	edx, 262				; 00000106H
 	mov	ecx, 2
 	call	EmitWarn
 $LN6@SafeSEHDir:
@@ -136,7 +137,7 @@ $LN5@SafeSEHDir:
 
 ; 39   :             EmitWarn( 2, DIRECTIVE_IGNORED_WITHOUT_X, "safeseh" );
 
-	lea	r8, OFFSET FLAT:$SG10614
+	lea	r8, OFFSET FLAT:$SG10616
 
 ; 40   :         return( NOT_ERROR );
 
@@ -160,7 +161,7 @@ $LN7@SafeSEHDir:
 ; 44   :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rdi+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	mov	rdi, QWORD PTR [rsp+48]
 
 ; 89   : }
@@ -199,7 +200,7 @@ $LN9@SafeSEHDir:
 ; 54   :         return( EmitErr( SAFESEH_ARGUMENT_MUST_BE_A_PROC, tokenarray[i].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rdi+8]
-	mov	ecx, 260				; 00000104H
+	mov	ecx, 261				; 00000105H
 	mov	rdi, QWORD PTR [rsp+48]
 
 ; 89   : }
@@ -258,7 +259,7 @@ $LN12@SafeSEHDir:
 ; 51   :             return( EmitErr( SYMBOL_NOT_DEFINED, tokenarray[i].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rdi+8]
-	mov	ecx, 102				; 00000066H
+	mov	ecx, 103				; 00000067H
 	mov	rdi, QWORD PTR [rsp+48]
 
 ; 89   : }
@@ -320,7 +321,7 @@ $LN19@SafeSEHDir:
 ; 85   :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rax+rsi+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	mov	rdi, QWORD PTR [rsp+48]
 
 ; 89   : }

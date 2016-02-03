@@ -8,6 +8,7 @@ INCLUDELIB OLDNAMES
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 PUBLIC	WriteCodeLabel
 PUBLIC	PreprocessLine
@@ -412,7 +413,7 @@ $LN7:
 ; 46   :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[0].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rdx+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 
 ; 63   :     return( NOT_ERROR );
 ; 64   : }

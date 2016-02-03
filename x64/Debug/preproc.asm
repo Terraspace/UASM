@@ -8,17 +8,18 @@ INCLUDELIB OLDNAMES
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 COMM	cntppl0:DWORD
 COMM	cntppl1:DWORD
 COMM	cntppl2:DWORD
 _DATA	ENDS
 _BSS	SEGMENT
-$SG10888 DB	01H DUP (?)
+$SG10890 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG10887 DB	'PreprocessLine: >%s<', 0aH, 00H
+$SG10889 DB	'PreprocessLine: >%s<', 0aH, 00H
 	ORG $+2
-$SG10889 DB	'PreprocessLine(%s): >%s< cmt=%s', 0aH, 00H
+$SG10891 DB	'PreprocessLine(%s): >%s< cmt=%s', 0aH, 00H
 _DATA	ENDS
 PUBLIC	WriteCodeLabel
 PUBLIC	PreprocessLine
@@ -132,7 +133,7 @@ $LN34:
 ; 88   :         DebugMsg1(("PreprocessLine: >%s<\n", line ));
 
 	mov	rdx, QWORD PTR line$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10887
+	lea	rcx, OFFSET FLAT:$SG10889
 	call	DoDebugMsg1
 	jmp	SHORT $LN5@Preprocess
 $LN4@Preprocess:
@@ -146,14 +147,14 @@ $LN4@Preprocess:
 	mov	QWORD PTR tv74[rsp], rax
 	jmp	SHORT $LN29@Preprocess
 $LN28@Preprocess:
-	lea	rax, OFFSET FLAT:$SG10888
+	lea	rax, OFFSET FLAT:$SG10890
 	mov	QWORD PTR tv74[rsp], rax
 $LN29@Preprocess:
 	call	GetTopSrcName
 	mov	r9, QWORD PTR tv74[rsp]
 	mov	r8, QWORD PTR line$[rsp]
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG10889
+	lea	rcx, OFFSET FLAT:$SG10891
 	call	DoDebugMsg1
 $LN5@Preprocess:
 
@@ -561,7 +562,7 @@ $LN6:
 	imul	rax, rax, 0
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	$LN1@WriteCodeL
 $LN2@WriteCodeL:

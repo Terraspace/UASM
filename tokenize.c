@@ -121,14 +121,18 @@ static bool IsMultiLine( struct asm_tok tokenarray[] )
     }
     return( TRUE );
 }
+
 /* EVEX Broadcast decorators are handled here */
-void get_broads(struct line_status *p ){
-/************************************************/          
-    if (_memicmp(p->input, "1to2", 4) == 0){
-      broadflags = 0x10;
-      p->input += 4;
-    }
-    else if (_memicmp(p->input, "1to4", 4) == 0){
+void get_broads(struct line_status *p) {
+	/************************************************/
+	if (!evex)
+		EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
+
+	if (_memicmp(p->input, "1to2", 4) == 0) {
+		broadflags = 0x10;
+		p->input += 4;
+	}
+	else if (_memicmp(p->input, "1to4", 4) == 0){
       broadflags = 0x20;
       p->input += 4;
     }
@@ -146,14 +150,17 @@ void get_broads(struct line_status *p ){
       EmitError(DECORATOR_OR_BRACE_EXPECTED);
 
   }
-/* EVEX Mask decorators are handled here: {k1){z}*/          
-void get_decos(struct line_status *p ){
-/************************************************/
-    unsigned char c;
-          c = (*p->input | 0x20);
-          p->input++;
-          /* if first decorator is the z  */
-          if (c == 'z'){
+
+/* EVEX Mask decorators are handled here: {k1){z}*/
+void get_decos(struct line_status *p) {
+			/************************************************/
+			unsigned char c;
+			if (!evex)
+				EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
+			c = (*p->input | 0x20);
+			p->input++;
+			/* if first decorator is the z  */
+			if (c == 'z'){
             decoflags |= 0x80; 
             p->input++;
             c = *p->input;

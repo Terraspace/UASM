@@ -8,11 +8,12 @@ INCLUDELIB OLDNAMES
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10614 DB	'coff', 00H
+$SG10616 DB	'coff', 00H
 	ORG $+3
-$SG10617 DB	'safeseh', 00H
+$SG10619 DB	'safeseh', 00H
 _DATA	ENDS
 PUBLIC	SafeSEHDirective
 EXTRN	EmitErr:PROC
@@ -79,8 +80,8 @@ $LN22:
 
 ; 34   :             EmitWarn( 2, DIRECTIVE_IGNORED_WITHOUT_X, "coff" );
 
-	lea	r8, OFFSET FLAT:$SG10614
-	mov	edx, 261				; 00000105H
+	lea	r8, OFFSET FLAT:$SG10616
+	mov	edx, 262				; 00000106H
 	mov	ecx, 2
 	call	EmitWarn
 $LN6@SafeSEHDir:
@@ -105,8 +106,8 @@ $LN5@SafeSEHDir:
 
 ; 39   :             EmitWarn( 2, DIRECTIVE_IGNORED_WITHOUT_X, "safeseh" );
 
-	lea	r8, OFFSET FLAT:$SG10617
-	mov	edx, 261				; 00000105H
+	lea	r8, OFFSET FLAT:$SG10619
+	mov	edx, 262				; 00000106H
 	mov	ecx, 2
 	call	EmitWarn
 $LN8@SafeSEHDir:
@@ -139,7 +140,7 @@ $LN7@SafeSEHDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	$LN1@SafeSEHDir
 $LN9@SafeSEHDir:
@@ -176,7 +177,7 @@ $LN12@SafeSEHDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 102				; 00000066H
+	mov	ecx, 103				; 00000067H
 	call	EmitErr
 	jmp	$LN1@SafeSEHDir
 $LN13@SafeSEHDir:
@@ -202,7 +203,7 @@ $LN10@SafeSEHDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 260				; 00000104H
+	mov	ecx, 261				; 00000105H
 	call	EmitErr
 	jmp	$LN1@SafeSEHDir
 $LN14@SafeSEHDir:
@@ -323,7 +324,7 @@ $LN15@SafeSEHDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	SHORT $LN1@SafeSEHDir
 $LN20@SafeSEHDir:

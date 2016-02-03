@@ -8,19 +8,20 @@ INCLUDELIB OLDNAMES
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG8046	DB	01H DUP (?)
+$SG8048	DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG8044	DB	'HJWASM', 00H
+$SG8046	DB	'HJWASM', 00H
 	ORG $+1
-$SG8048	DB	'main: _findfirst(%s) failed', 0aH, 00H
+$SG8050	DB	'main: _findfirst(%s) failed', 0aH, 00H
 	ORG $+3
-$SG8049	DB	'main: fname=%s', 0aH, 00H
-$SG8052	DB	'%s', 00H
+$SG8051	DB	'main: fname=%s', 0aH, 00H
+$SG8054	DB	'%s', 00H
 	ORG $+5
-$SG8054	DB	'main: exit, return code=%u', 0aH, 00H
+$SG8056	DB	'main: exit, return code=%u', 0aH, 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	_vfprintf_l
@@ -244,7 +245,7 @@ $LN13:
 ; 90   : 
 ; 91   : 	pEnv = getenv("HJWASM");
 
-	lea	rcx, OFFSET FLAT:$SG8044
+	lea	rcx, OFFSET FLAT:$SG8046
 	call	QWORD PTR __imp_getenv
 	mov	QWORD PTR pEnv$[rsp], rax
 
@@ -255,7 +256,7 @@ $LN13:
 
 ; 93   : 		pEnv = "";
 
-	lea	rax, OFFSET FLAT:$SG8046
+	lea	rax, OFFSET FLAT:$SG8048
 	mov	QWORD PTR pEnv$[rsp], rax
 $LN7@main:
 
@@ -321,7 +322,7 @@ $LN2@main:
 	imul	rax, rax, 0
 	lea	rcx, OFFSET FLAT:Options+32
 	mov	rdx, QWORD PTR [rcx+rax]
-	lea	rcx, OFFSET FLAT:$SG8048
+	lea	rcx, OFFSET FLAT:$SG8050
 	call	DoDebugMsg
 
 ; 112  : 			EmitErr(CANNOT_OPEN_FILE, Options.names[ASM], ErrnoStr());
@@ -332,7 +333,7 @@ $LN2@main:
 	lea	rdx, OFFSET FLAT:Options+32
 	mov	r8, rax
 	mov	rdx, QWORD PTR [rdx+rcx]
-	mov	ecx, 106				; 0000006aH
+	mov	ecx, 107				; 0000006bH
 	call	EmitErr
 
 ; 113  : 			break;
@@ -391,7 +392,7 @@ $LN6@main:
 ; 126  : 				DebugMsg(("main: fname=%s\n", fname));
 
 	lea	rdx, QWORD PTR fname$[rsp]
-	lea	rcx, OFFSET FLAT:$SG8049
+	lea	rcx, OFFSET FLAT:$SG8051
 	call	DoDebugMsg
 
 ; 127  : 				rc = AssembleModule(fname);  /* assemble 1 module */
@@ -439,7 +440,7 @@ $LN3@main:
 	xor	ecx, ecx
 	call	MsgGetEx
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG8052
+	lea	rcx, OFFSET FLAT:$SG8054
 	call	printf
 
 ; 138  : 	}
@@ -454,7 +455,7 @@ $LN9@main:
 
 ; 140  : 		EmitError(NO_FILENAME_SPECIFIED);
 
-	mov	ecx, 104				; 00000068H
+	mov	ecx, 105				; 00000069H
 	call	EmitError
 $LN11@main:
 $LN10@main:
@@ -469,7 +470,7 @@ $LN10@main:
 	mov	eax, 1
 	sub	eax, DWORD PTR rc$[rsp]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG8054
+	lea	rcx, OFFSET FLAT:$SG8056
 	call	DoDebugMsg
 
 ; 147  : 	return(1 - rc); /* zero if no errors */
@@ -520,7 +521,7 @@ genfailure PROC
 ; 55   : #endif
 ; 56   :         EmitError( GENERAL_FAILURE );
 
-	mov	ecx, 168				; 000000a8H
+	mov	ecx, 169				; 000000a9H
 	call	EmitError
 $LN2@genfailure:
 

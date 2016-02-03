@@ -17,48 +17,49 @@ _DATA	SEGMENT
 COMM	LinnumQueue:BYTE:010H
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 COMM	ModuleInfo:BYTE:0308H
 COMM	Parse_Pass:DWORD
 COMM	write_to_file:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11721 DB	'_TEXT', 00H
+$SG11723 DB	'_TEXT', 00H
 	ORG $+2
-$SG11722 DB	'.text', 00H
+$SG11724 DB	'.text', 00H
 	ORG $+2
-$SG11723 DB	'_DATA', 00H
+$SG11725 DB	'_DATA', 00H
 	ORG $+2
-$SG11724 DB	'.data', 00H
+$SG11726 DB	'.data', 00H
 	ORG $+2
-$SG11725 DB	'CONST', 00H
+$SG11727 DB	'CONST', 00H
 	ORG $+2
-$SG11726 DB	'.rdata', 00H
+$SG11728 DB	'.rdata', 00H
 	ORG $+1
-$SG11727 DB	'_BSS', 00H
+$SG11729 DB	'_BSS', 00H
 	ORG $+3
-$SG11728 DB	'.bss', 00H
+$SG11730 DB	'.bss', 00H
 	ORG $+3
-$SG11841 DB	'w', 00H
+$SG11843 DB	'w', 00H
 	ORG $+2
-$SG11905 DB	'%s', 0aH, 00H
-$SG11845 DB	'import ''%s''  %s.%s', 0aH, 00H
-$SG11907 DB	0aH, 00H
+$SG11907 DB	'%s', 0aH, 00H
+$SG11847 DB	'import ''%s''  %s.%s', 0aH, 00H
+$SG11909 DB	0aH, 00H
 	ORG $+2
-$SG11893 DB	'INCLUDE', 00H
-$SG11930 DB	'%r %s', 00H
+$SG11895 DB	'INCLUDE', 00H
+$SG11932 DB	'%r %s', 00H
 	ORG $+2
-$SG12030 DB	'rb', 00H
+$SG12032 DB	'rb', 00H
 	ORG $+1
-$SG12033 DB	'wb', 00H
+$SG12035 DB	'wb', 00H
 	ORG $+1
-$SG12036 DB	'wb', 00H
+$SG12038 DB	'wb', 00H
 	ORG $+1
-$SG12069 DB	'EXE', 00H
-$SG12070 DB	'BIN', 00H
-$SG12071 DB	'obj', 00H
-$SG12073 DB	'lst', 00H
-$SG12075 DB	'err', 00H
-$SG12142 DB	'%s', 0aH, 00H
+$SG12071 DB	'EXE', 00H
+$SG12072 DB	'BIN', 00H
+$SG12073 DB	'obj', 00H
+$SG12075 DB	'lst', 00H
+$SG12077 DB	'err', 00H
+$SG12144 DB	'%s', 0aH, 00H
 _DATA	ENDS
 CONST	SEGMENT
 formatoptions DQ FLAT:bin_init
@@ -80,11 +81,6 @@ formatoptions DQ FLAT:bin_init
 cst	DB	05H
 	DB	01H
 	ORG $+6
-	DQ	FLAT:$SG11721
-	DQ	FLAT:$SG11722
-	DB	05H
-	DB	01H
-	ORG $+6
 	DQ	FLAT:$SG11723
 	DQ	FLAT:$SG11724
 	DB	05H
@@ -92,11 +88,16 @@ cst	DB	05H
 	ORG $+6
 	DQ	FLAT:$SG11725
 	DQ	FLAT:$SG11726
-	DB	04H
-	DB	00H
+	DB	05H
+	DB	01H
 	ORG $+6
 	DQ	FLAT:$SG11727
 	DQ	FLAT:$SG11728
+	DB	04H
+	DB	00H
+	ORG $+6
+	DQ	FLAT:$SG11729
+	DQ	FLAT:$SG11730
 CONST	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	printf
@@ -915,7 +916,7 @@ $LL11@SetFilenam:
 
 	lea	rbp, OFFSET FLAT:__ImageBase
 	xor	esi, esi
-	lea	r14, OFFSET FLAT:$SG12069
+	lea	r14, OFFSET FLAT:$SG12071
 	mov	ebx, 1
 $LL4@SetFilenam:
 
@@ -987,22 +988,22 @@ $LL69@SetFilenam:
 	xor	ecx, ecx
 	jmp	SHORT $LN18@SetFilenam
 $LN27@SetFilenam:
-	lea	rcx, OFFSET FLAT:$SG12075
+	lea	rcx, OFFSET FLAT:$SG12077
 	jmp	SHORT $LN18@SetFilenam
 $LN26@SetFilenam:
-	lea	rcx, OFFSET FLAT:$SG12073
+	lea	rcx, OFFSET FLAT:$SG12075
 	jmp	SHORT $LN18@SetFilenam
 $LN21@SetFilenam:
 	cmp	DWORD PTR Options+144, 0
 	jne	SHORT $LN24@SetFilenam
 	mov	eax, DWORD PTR Options+148
-	lea	rcx, OFFSET FLAT:$SG12070
+	lea	rcx, OFFSET FLAT:$SG12072
 	dec	eax
 	cmp	eax, 1
 	cmovbe	rcx, r14
 	jmp	SHORT $LN18@SetFilenam
 $LN24@SetFilenam:
-	lea	rcx, OFFSET FLAT:$SG12071
+	lea	rcx, OFFSET FLAT:$SG12073
 $LN18@SetFilenam:
 	sub	rdx, rcx
 $LL13@SetFilenam:
@@ -1084,22 +1085,22 @@ $LN8@SetFilenam:
 	xor	eax, eax
 	jmp	SHORT $LN29@SetFilenam
 $LN38@SetFilenam:
-	lea	rax, OFFSET FLAT:$SG12075
+	lea	rax, OFFSET FLAT:$SG12077
 	jmp	SHORT $LN29@SetFilenam
 $LN37@SetFilenam:
-	lea	rax, OFFSET FLAT:$SG12073
+	lea	rax, OFFSET FLAT:$SG12075
 	jmp	SHORT $LN29@SetFilenam
 $LN32@SetFilenam:
 	cmp	DWORD PTR Options+144, 0
 	jne	SHORT $LN35@SetFilenam
 	mov	ecx, DWORD PTR Options+148
-	lea	rax, OFFSET FLAT:$SG12070
+	lea	rax, OFFSET FLAT:$SG12072
 	dec	ecx
 	cmp	ecx, 1
 	cmovbe	rax, r14
 	jmp	SHORT $LN29@SetFilenam
 $LN35@SetFilenam:
-	lea	rax, OFFSET FLAT:$SG12071
+	lea	rax, OFFSET FLAT:$SG12073
 $LN29@SetFilenam:
 	sub	rdx, rax
 	npad	9
@@ -1188,7 +1189,7 @@ $LN10@GetExt:
 ; 1286 :     case ERR:
 ; 1287 :         return( ERR_EXT );
 
-	lea	rax, OFFSET FLAT:$SG12075
+	lea	rax, OFFSET FLAT:$SG12077
 
 ; 1290 : }
 
@@ -1198,7 +1199,7 @@ $LN9@GetExt:
 ; 1284 :     case LST:
 ; 1285 :         return( LST_EXT );
 
-	lea	rax, OFFSET FLAT:$SG12073
+	lea	rax, OFFSET FLAT:$SG12075
 
 ; 1290 : }
 
@@ -1220,7 +1221,7 @@ $LN4@GetExt:
 ; 1280 : #endif
 ; 1281 :                 return( BIN_EXT );
 
-	lea	rax, OFFSET FLAT:$SG12070
+	lea	rax, OFFSET FLAT:$SG12072
 
 ; 1290 : }
 
@@ -1235,7 +1236,7 @@ $LN8@GetExt:
 ; 1277 :                )
 ; 1278 :                 return( EXE_EXT );
 
-	lea	rax, OFFSET FLAT:$SG12069
+	lea	rax, OFFSET FLAT:$SG12071
 
 ; 1290 : }
 
@@ -1245,7 +1246,7 @@ $LN7@GetExt:
 ; 1282 : #endif
 ; 1283 :         return( OBJ_EXT );
 
-	lea	rax, OFFSET FLAT:$SG12071
+	lea	rax, OFFSET FLAT:$SG12073
 
 ; 1290 : }
 
@@ -1270,7 +1271,7 @@ open_files PROC						; COMDAT
 ; 1197 :     CurrFile[ASM] = fopen( CurrFName[ASM], "rb" );
 
 	mov	rcx, QWORD PTR ModuleInfo+128
-	lea	rdx, OFFSET FLAT:$SG12030
+	lea	rdx, OFFSET FLAT:$SG12032
 	call	fopen
 	mov	QWORD PTR ModuleInfo+96, rax
 
@@ -1285,7 +1286,7 @@ open_files PROC						; COMDAT
 	call	ErrnoStr
 	mov	rdx, QWORD PTR ModuleInfo+128
 	mov	r8, rax
-	mov	ecx, 106				; 0000006aH
+	mov	ecx, 107				; 0000006bH
 	call	Fatal
 $LN2@open_files:
 
@@ -1300,7 +1301,7 @@ $LN2@open_files:
 ; 1205 :         CurrFile[OBJ] = fopen( CurrFName[OBJ], "wb" );
 
 	mov	rcx, QWORD PTR ModuleInfo+136
-	lea	rdx, OFFSET FLAT:$SG12033
+	lea	rdx, OFFSET FLAT:$SG12035
 	call	fopen
 	mov	QWORD PTR ModuleInfo+104, rax
 
@@ -1315,7 +1316,7 @@ $LN2@open_files:
 	call	ErrnoStr
 	mov	rdx, QWORD PTR ModuleInfo+136
 	mov	r8, rax
-	mov	ecx, 106				; 0000006aH
+	mov	ecx, 107				; 0000006bH
 	call	Fatal
 $LN4@open_files:
 
@@ -1331,7 +1332,7 @@ $LN4@open_files:
 ; 1214 :         CurrFile[LST] = fopen( CurrFName[LST], "wb" );
 
 	mov	rcx, QWORD PTR ModuleInfo+144
-	lea	rdx, OFFSET FLAT:$SG12036
+	lea	rdx, OFFSET FLAT:$SG12038
 	call	fopen
 	mov	QWORD PTR ModuleInfo+112, rax
 
@@ -1345,7 +1346,7 @@ $LN4@open_files:
 	call	ErrnoStr
 	mov	rdx, QWORD PTR ModuleInfo+144
 	mov	r8, rax
-	mov	ecx, 106				; 0000006aH
+	mov	ecx, 107				; 0000006bH
 
 ; 1217 :     }
 ; 1218 :     return;
@@ -1749,7 +1750,7 @@ $LL22@OnePass:
 $LN21@OnePass:
 	cmp	BYTE PTR Options+140, 0
 	jne	SHORT $LN17@OnePass
-	lea	rcx, OFFSET FLAT:$SG11893
+	lea	rcx, OFFSET FLAT:$SG11895
 	call	getenv
 	test	rax, rax
 	je	SHORT $LN17@OnePass
@@ -2000,7 +2001,7 @@ PassOneChecks PROC					; COMDAT
 
 ; 785  :         EmitError( END_DIRECTIVE_REQUIRED );
 
-	mov	ecx, 99					; 00000063H
+	mov	ecx, 100				; 00000064H
 	call	EmitError
 $LN17@PassOneChe:
 
@@ -2655,7 +2656,7 @@ $LN10@ModulePass:
 	lea	rax, OFFSET FLAT:ModelToken
 	movsxd	r8, ebx
 	mov	edx, 342				; 00000156H
-	lea	rcx, OFFSET FLAT:$SG11930
+	lea	rcx, OFFSET FLAT:$SG11932
 	mov	r8, QWORD PTR [rax+r8*8-8]
 	call	AddLineQueueX
 $LN23@ModulePass:
@@ -2871,7 +2872,7 @@ $LN8@CmdlParams:
 
 ; 575  :             if ( env = getenv( "INCLUDE" ) )
 
-	lea	rcx, OFFSET FLAT:$SG11893
+	lea	rcx, OFFSET FLAT:$SG11895
 	call	getenv
 	test	rax, rax
 	je	SHORT $LN4@CmdlParams
@@ -3092,7 +3093,7 @@ $LN35@add_cmdlin:
 ; 486  :             DebugMsg(("add_cmdline_tmacros: name >%s< invalid\n", name ));
 ; 487  :             EmitErr( SYNTAX_ERROR_EX, name );
 
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 
 ; 488  :         } else {
 
@@ -3141,7 +3142,7 @@ $LN10@add_cmdlin:
 
 ; 499  :                 EmitErr( SYMBOL_ALREADY_DEFINED, name );
 
-	mov	ecx, 56					; 00000038H
+	mov	ecx, 57					; 00000039H
 $LN43@add_cmdlin:
 	mov	rdx, rsi
 	call	EmitErr
@@ -3339,7 +3340,7 @@ $LL4@WriteModul:
 ; 397  :                 EmitErr( SEGMENT_EXCEEDS_64K_LIMIT, curr->sym.name );
 
 	mov	rdx, QWORD PTR [rbx+8]
-	mov	ecx, 222				; 000000deH
+	mov	ecx, 223				; 000000dfH
 	call	EmitErr
 	jmp	SHORT $LN2@WriteModul
 $LN9@WriteModul:
@@ -3348,7 +3349,7 @@ $LN9@WriteModul:
 ; 399  :                 EmitWarn( 2, SEGMENT_EXCEEDS_64K_LIMIT, curr->sym.name );
 
 	mov	r8, QWORD PTR [rbx+8]
-	mov	edx, 222				; 000000deH
+	mov	edx, 223				; 000000dfH
 	mov	ecx, 2
 	call	EmitWarn
 $LN2@WriteModul:
@@ -3387,7 +3388,7 @@ $LN3@WriteModul:
 ; 408  :         FILE *ld;
 ; 409  :         ld = fopen( Options.names[OPTN_LNKDEF_FN], "w" );
 
-	lea	rdx, OFFSET FLAT:$SG11841
+	lea	rdx, OFFSET FLAT:$SG11843
 	call	fopen
 	mov	rsi, rax
 
@@ -3400,7 +3401,7 @@ $LN3@WriteModul:
 
 	call	ErrnoStr
 	mov	rdx, QWORD PTR Options+48
-	lea	ecx, QWORD PTR [rsi+106]
+	lea	ecx, QWORD PTR [rsi+107]
 	mov	r8, rax
 	mov	rsi, QWORD PTR [rsp+64]
 
@@ -3450,7 +3451,7 @@ $LN14@WriteModul:
 ; 419  :                 size = sprintf( CurrSource, "import '%s'  %s.%s\n", StringBufferEnd, curr->sym.dll->name, curr->sym.name );
 
 	mov	r9, QWORD PTR [rbx+56]
-	lea	rdx, OFFSET FLAT:$SG11845
+	lea	rdx, OFFSET FLAT:$SG11847
 	mov	rax, QWORD PTR [rbx+8]
 	add	r9, 12
 	mov	r8, QWORD PTR ModuleInfo+488
@@ -3723,7 +3724,7 @@ $LN3@WritePrepr:
 	lea	rdi, QWORD PTR [rbx+1]
 $LN9@WritePrepr:
 	mov	rdx, rdi
-	lea	rcx, OFFSET FLAT:$SG11905
+	lea	rcx, OFFSET FLAT:$SG11907
 	call	printf
 	mov	rbx, QWORD PTR [rsp+48]
 
@@ -3747,7 +3748,7 @@ $LN5@WritePrepr:
 ; 609  :         PrintEmptyLine = FALSE;
 ; 610  :         printf("\n");
 
-	lea	rcx, OFFSET FLAT:$SG11907
+	lea	rcx, OFFSET FLAT:$SG11909
 	mov	BYTE PTR ?PrintEmptyLine@?1??WritePreprocessedLine@@9@9, 0
 
 ; 611  :     }
@@ -3974,7 +3975,7 @@ $LN13:
 
 	call	_errno
 	mov	rdx, QWORD PTR ModuleInfo+128
-	lea	ecx, QWORD PTR [rbx+107]
+	lea	ecx, QWORD PTR [rbx+108]
 	mov	r8d, DWORD PTR [rax]
 	call	EmitErr
 $LN3@close_file:
@@ -4003,7 +4004,7 @@ $LN2@close_file:
 
 	call	_errno
 	mov	rdx, QWORD PTR ModuleInfo+136
-	mov	ecx, 107				; 0000006bH
+	mov	ecx, 108				; 0000006cH
 	mov	r8d, DWORD PTR [rax]
 	call	EmitErr
 $LN5@close_file:
@@ -4332,7 +4333,7 @@ $LN14@AssembleMo:
 
 ; 1497 :             EmitWarn( 2, ASSEMBLY_PASSES, Parse_Pass+1 );
 
-	lea	edx, QWORD PTR [rcx+41]
+	lea	edx, QWORD PTR [rcx+42]
 	inc	r8d
 	mov	ecx, 2
 	call	EmitWarn
@@ -4530,7 +4531,7 @@ $LN22@AssembleMo:
 ; 1556 :         printf( "%s\n", CurrSource );
 
 	mov	rdx, QWORD PTR ModuleInfo+464
-	lea	rcx, OFFSET FLAT:$SG12142
+	lea	rcx, OFFSET FLAT:$SG12144
 	call	printf
 $LN24@AssembleMo:
 

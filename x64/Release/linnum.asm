@@ -8,9 +8,10 @@ INCLUDELIB OLDNAMES
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11394 DB	'$$$%05u', 00H
+$SG11396 DB	'$$$%05u', 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	sprintf
@@ -350,7 +351,7 @@ $LN4@AddLinnumD:
 ; 94   :         sprintf( procname, "$$$%05u", procidx );
 
 	mov	r8d, DWORD PTR procidx
-	lea	rdx, OFFSET FLAT:$SG11394
+	lea	rdx, OFFSET FLAT:$SG11396
 	lea	rcx, QWORD PTR procname$1[rsp]
 	call	sprintf
 
@@ -662,7 +663,7 @@ $LN16@AddLinnumD:
 ; 191  :             EmitWarn( 2, LINNUM_INFO_FOR_SEGMENT_WITHOUT_CLASS_CODE, CurrSeg->sym.name );
 
 	mov	r8, QWORD PTR ModuleInfo+432
-	mov	edx, 187				; 000000bbH
+	mov	edx, 188				; 000000bcH
 	mov	ecx, 2
 	mov	r8, QWORD PTR [r8+8]
 	call	EmitWarn

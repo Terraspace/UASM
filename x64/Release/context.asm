@@ -8,15 +8,16 @@ INCLUDELIB OLDNAMES
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10827 DB	'ASSUMES', 00H
-$SG10828 DB	'RADIX', 00H
+$SG10829 DB	'ASSUMES', 00H
+$SG10830 DB	'RADIX', 00H
 	ORG $+2
-$SG10829 DB	'LISTING', 00H
-$SG10830 DB	'CPU', 00H
-$SG10832 DB	'ALL', 00H
-$SG10831 DB	'ALIGNMENT', 00H
+$SG10831 DB	'LISTING', 00H
+$SG10832 DB	'CPU', 00H
+$SG10834 DB	'ALL', 00H
+$SG10833 DB	'ALIGNMENT', 00H
 _DATA	ENDS
 PUBLIC	ContextSaveState
 PUBLIC	ContextDirective
@@ -64,12 +65,12 @@ typetab	DD	01H
 	DD	08H
 	DD	010H
 	DD	0fH
-contextnames DQ	FLAT:$SG10827
-	DQ	FLAT:$SG10828
-	DQ	FLAT:$SG10829
+contextnames DQ	FLAT:$SG10829
 	DQ	FLAT:$SG10830
 	DQ	FLAT:$SG10831
 	DQ	FLAT:$SG10832
+	DQ	FLAT:$SG10833
+	DQ	FLAT:$SG10834
 CONST	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
@@ -828,7 +829,7 @@ $LN53@ContextDir:
 	mov	rbp, QWORD PTR tv730[rsp]
 	shl	rbp, 5
 	mov	rdx, QWORD PTR [rcx+rbp+24]
-	mov	ecx, 142				; 0000008eH
+	mov	ecx, 143				; 0000008fH
 	jmp	SHORT $LN72@ContextDir
 $LN68@ContextDir:
 	mov	edi, DWORD PTR type$[rsp]
@@ -857,7 +858,7 @@ $LN44@ContextDir:
 ; 243  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	mov	rdx, QWORD PTR [rdx+rcx+24]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 $LN72@ContextDir:
 	call	EmitErr
 $LN1@ContextDir:

@@ -8,12 +8,13 @@ INCLUDELIB OLDNAMES
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11264 DB	'TLS', 00H
-$SG11063 DB	'@@%u', 00H
+$SG11266 DB	'TLS', 00H
+$SG11065 DB	'@@%u', 00H
 	ORG $+7
-$SG11128 DB	'__unnamed', 00H
+$SG11130 DB	'__unnamed', 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	sprintf
@@ -1439,7 +1440,7 @@ $LN34@cv_write_s:
 	test	rax, rax
 	je	SHORT $LN36@cv_write_s
 	mov	rax, QWORD PTR [rax+8]
-	lea	r8, OFFSET FLAT:$SG11264
+	lea	r8, OFFSET FLAT:$SG11266
 	sub	r8, rax
 	npad	9
 $LL91@cv_write_s:
@@ -2488,7 +2489,7 @@ $LN7@cv_enum_fi:
 ; 424  :             char tmpname[8];
 ; 425  :             curr->sym.name_size = sprintf( tmpname, "@@%u", ++i );
 
-	lea	rdx, OFFSET FLAT:$SG11063
+	lea	rdx, OFFSET FLAT:$SG11065
 	inc	eax
 	lea	rcx, QWORD PTR tmpname$1[rsp]
 	mov	r8d, eax
@@ -3254,7 +3255,7 @@ $LN14@cv_write_t:
 	mov	rdx, QWORD PTR [rsi+8]
 	jmp	SHORT $LN19@cv_write_t
 $LN18@cv_write_t:
-	lea	rdx, OFFSET FLAT:$SG11128
+	lea	rdx, OFFSET FLAT:$SG11130
 $LN19@cv_write_t:
 	mov	r8, rax
 	mov	rcx, rbp

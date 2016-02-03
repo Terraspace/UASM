@@ -8,97 +8,90 @@ INCLUDELIB OLDNAMES
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG11102 DB	01H DUP (?)
+$SG11104 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG11008 DB	'mov %r,DGROUP', 00H
+$SG11010 DB	'mov %r,DGROUP', 00H
 	ORG $+2
-$SG11009 DB	'mov %r,%r', 00H
+$SG11011 DB	'mov %r,%r', 00H
 	ORG $+2
-$SG11016 DB	'cli', 00H
-$SG11010 DB	'mov %r,%r', 00H
+$SG11018 DB	'cli', 00H
+$SG11012 DB	'mov %r,%r', 00H
 	ORG $+2
-$SG11019 DB	'sti', 00H
-$SG11011 DB	'sub %r,%r', 00H
+$SG11021 DB	'sti', 00H
+$SG11013 DB	'sub %r,%r', 00H
 	ORG $+2
-$SG11033 DB	'push 1', 00H
+$SG11035 DB	'push 1', 00H
 	ORG $+5
-$SG11012 DB	'shl %r,1', 00H
-	ORG $+7
-$SG11013 DB	'shl %r,1', 00H
-	ORG $+7
 $SG11014 DB	'shl %r,1', 00H
 	ORG $+7
 $SG11015 DB	'shl %r,1', 00H
 	ORG $+7
-$SG11017 DB	'mov %r,%r', 00H
-	ORG $+6
-$SG11018 DB	'add %r,%r', 00H
-	ORG $+6
-$SG11021 DB	'mov %r,DGROUP', 00H
-	ORG $+2
-$SG11022 DB	'mov %r,%r', 00H
-	ORG $+6
-$SG11023 DB	'mov %r,%r', 00H
-	ORG $+6
-$SG11024 DB	'sub %r,%r', 00H
-	ORG $+6
-$SG11025 DB	'shl %r,4', 00H
+$SG11016 DB	'shl %r,1', 00H
 	ORG $+7
-$SG11026 DB	'mov %r,%r', 00H
-	ORG $+6
-$SG11027 DB	'add %r,%r', 00H
-	ORG $+6
-$SG11029 DB	'mov %r,DGROUP', 00H
-	ORG $+2
-$SG11030 DB	'mov %r,%r', 00H
-	ORG $+6
-$SG11032 DB	'mov %r,0', 00H
+$SG11017 DB	'shl %r,1', 00H
 	ORG $+7
-$SG11034 DB	'push %r', 00H
-$SG11035 DB	'call DOSEXIT', 00H
+$SG11019 DB	'mov %r,%r', 00H
+	ORG $+6
+$SG11020 DB	'add %r,%r', 00H
+	ORG $+6
+$SG11023 DB	'mov %r,DGROUP', 00H
+	ORG $+2
+$SG11024 DB	'mov %r,%r', 00H
+	ORG $+6
+$SG11025 DB	'mov %r,%r', 00H
+	ORG $+6
+$SG11026 DB	'sub %r,%r', 00H
+	ORG $+6
+$SG11027 DB	'shl %r,4', 00H
+	ORG $+7
+$SG11028 DB	'mov %r,%r', 00H
+	ORG $+6
+$SG11029 DB	'add %r,%r', 00H
+	ORG $+6
+$SG11031 DB	'mov %r,DGROUP', 00H
+	ORG $+2
+$SG11032 DB	'mov %r,%r', 00H
+	ORG $+6
+$SG11034 DB	'mov %r,0', 00H
+	ORG $+7
+$SG11036 DB	'push %r', 00H
+$SG11037 DB	'call DOSEXIT', 00H
 	ORG $+3
-$SG11037 DB	'mov %r,4ch', 00H
+$SG11039 DB	'mov %r,4ch', 00H
 	ORG $+5
-$SG11038 DB	'int 21h', 00H
-$SG11065 DB	'org 100h', 00H
+$SG11040 DB	'int 21h', 00H
+$SG11067 DB	'org 100h', 00H
 	ORG $+3
-$SG11066 DB	'%s::', 00H
+$SG11068 DB	'%s::', 00H
 	ORG $+7
-$SG11080 DB	'mov %r,%s', 00H
+$SG11082 DB	'mov %r,%s', 00H
 	ORG $+6
-$SG11084 DB	'mov %r,4C00h + %u', 00H
+$SG11086 DB	'mov %r,4C00h + %u', 00H
 	ORG $+6
-$SG11085 DB	'mov %r,%s', 00H
+$SG11087 DB	'mov %r,%s', 00H
 	ORG $+6
-$SG11086 DB	'mov %r,4Ch', 00H
+$SG11088 DB	'mov %r,4Ch', 00H
 _DATA	ENDS
 CONST	SEGMENT
-StartupDosNear0 DQ FLAT:$SG11008
+StartupDosNear0 DQ FLAT:$SG11010
 	DW	0bH
 	DW	00H
 	ORG $+4
-	DQ	FLAT:$SG11009
-	DW	01cH
-	DW	0bH
-	ORG $+4
-	DQ	FLAT:$SG11010
-	DW	0cH
-	DW	01bH
-	ORG $+4
 	DQ	FLAT:$SG11011
-	DW	0cH
+	DW	01cH
 	DW	0bH
 	ORG $+4
 	DQ	FLAT:$SG11012
 	DW	0cH
-	DW	00H
+	DW	01bH
 	ORG $+4
 	DQ	FLAT:$SG11013
 	DW	0cH
-	DW	00H
+	DW	0bH
 	ORG $+4
 	DQ	FLAT:$SG11014
 	DW	0cH
@@ -109,78 +102,86 @@ StartupDosNear0 DQ FLAT:$SG11008
 	DW	00H
 	ORG $+4
 	DQ	FLAT:$SG11016
-	DW	00H
+	DW	0cH
 	DW	00H
 	ORG $+4
 	DQ	FLAT:$SG11017
+	DW	0cH
+	DW	00H
+	ORG $+4
+	DQ	FLAT:$SG11018
+	DW	00H
+	DW	00H
+	ORG $+4
+	DQ	FLAT:$SG11019
 	DW	01bH
 	DW	0bH
 	ORG $+4
-	DQ	FLAT:$SG11018
+	DQ	FLAT:$SG11020
 	DW	0dH
 	DW	0cH
 	ORG $+4
-	DQ	FLAT:$SG11019
+	DQ	FLAT:$SG11021
 	DW	00H
 	DW	00H
 	ORG $+4
-StartupDosNear1 DQ FLAT:$SG11021
+StartupDosNear1 DQ FLAT:$SG11023
 	DW	09H
 	DW	00H
-	ORG $+4
-	DQ	FLAT:$SG11022
-	DW	01cH
-	DW	09H
-	ORG $+4
-	DQ	FLAT:$SG11023
-	DW	0cH
-	DW	01bH
 	ORG $+4
 	DQ	FLAT:$SG11024
-	DW	0cH
+	DW	01cH
 	DW	09H
 	ORG $+4
 	DQ	FLAT:$SG11025
 	DW	0cH
-	DW	00H
+	DW	01bH
 	ORG $+4
 	DQ	FLAT:$SG11026
-	DW	01bH
+	DW	0cH
 	DW	09H
 	ORG $+4
 	DQ	FLAT:$SG11027
+	DW	0cH
+	DW	00H
+	ORG $+4
+	DQ	FLAT:$SG11028
+	DW	01bH
+	DW	09H
+	ORG $+4
+	DQ	FLAT:$SG11029
 	DW	0dH
 	DW	0cH
 	ORG $+4
-StartupDosFar DQ FLAT:$SG11029
+StartupDosFar DQ FLAT:$SG11031
 	DW	0bH
 	DW	00H
 	ORG $+4
-	DQ	FLAT:$SG11030
+	DQ	FLAT:$SG11032
 	DW	01cH
 	DW	0bH
 	ORG $+4
-ExitOS2	DQ	FLAT:$SG11032
+ExitOS2	DQ	FLAT:$SG11034
 	DW	05H
-	DW	00H
-	ORG $+4
-	DQ	FLAT:$SG11033
-	DW	00H
-	DW	00H
-	ORG $+4
-	DQ	FLAT:$SG11034
-	DW	09H
 	DW	00H
 	ORG $+4
 	DQ	FLAT:$SG11035
 	DW	00H
 	DW	00H
 	ORG $+4
-ExitDos	DQ	FLAT:$SG11037
+	DQ	FLAT:$SG11036
+	DW	09H
+	DW	00H
+	ORG $+4
+	DQ	FLAT:$SG11037
+	DW	00H
+	DW	00H
+	ORG $+4
+ExitDos	DQ	FLAT:$SG11039
 	DW	05H
 	DW	00H
 	ORG $+4
-	DQ	FLAT:$SG11038
+	DQ	FLAT:$SG11040
 	DW	00H
 	DW	00H
 	ORG $+4
@@ -279,7 +280,7 @@ $LN28:
 
 ; 206  :             EmitWarn( 2, START_ADDRESS_IGNORED );
 
-	mov	edx, 242				; 000000f2H
+	mov	edx, 243				; 000000f3H
 	mov	ecx, 2
 	call	EmitWarn
 	mov	eax, DWORD PTR ModuleInfo+496
@@ -307,7 +308,7 @@ $LN5@EndDirecti:
 ; 211  :         tokenarray[i+1].token = T_FINAL;
 ; 212  :         tokenarray[i+1].string_ptr = "";
 
-	lea	rcx, OFFSET FLAT:$SG11102
+	lea	rcx, OFFSET FLAT:$SG11104
 	movsxd	rax, DWORD PTR i$[rbp-256]
 	inc	rax
 	shl	rax, 5
@@ -361,7 +362,7 @@ $LN6@EndDirecti:
 ; 220  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	mov	rdx, QWORD PTR [rax+rbx+24]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 
 ; 289  : }
@@ -400,7 +401,7 @@ $LN3@EndDirecti:
 ; 226  :         EmitErr( UNMATCHED_BLOCK_NESTING, CurrStruct->sym.name );
 
 	mov	rdx, QWORD PTR [rdx+8]
-	mov	ecx, 142				; 0000008eH
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 $LN8@EndDirecti:
 
@@ -579,7 +580,7 @@ $LN23@EndDirecti:
 ; 276  : #endif
 ; 277  :         return( EmitError( OPERAND_MUST_BE_RELOCATABLE ) );
 
-	mov	ecx, 188				; 000000bcH
+	mov	ecx, 189				; 000000bdH
 	call	EmitError
 
 ; 289  : }
@@ -629,7 +630,7 @@ $LN48:
 
 ; 106  :         return( EmitError( MODEL_IS_NOT_DECLARED ) );
 
-	lea	ecx, QWORD PTR [r14+96]
+	lea	ecx, QWORD PTR [r14+97]
 	call	EmitError
 
 ; 184  : }
@@ -649,7 +650,7 @@ $LN10@StartupExi:
 ; 109  :         return( EmitErr( DOES_NOT_WORK_WITH_32BIT_SEGMENTS, tokenarray[i].string_ptr ) );
 
 	movsxd	rdx, DWORD PTR i$[rsp]
-	mov	ecx, 221				; 000000ddH
+	mov	ecx, 222				; 000000deH
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rsi+8]
 	call	EmitErr
@@ -688,14 +689,14 @@ $LN11@StartupExi:
 
 ; 117  :             AddLineQueue( "org 100h" );
 
-	lea	rcx, OFFSET FLAT:$SG11065
+	lea	rcx, OFFSET FLAT:$SG11067
 	call	AddLineQueue
 $LN13@StartupExi:
 
 ; 118  :         AddLineQueueX( "%s::", szStartAddr );
 
 	lea	rdx, OFFSET FLAT:szStartAddr
-	lea	rcx, OFFSET FLAT:$SG11066
+	lea	rcx, OFFSET FLAT:$SG11068
 	call	AddLineQueueX
 
 ; 119  :         if( ModuleInfo.ostype == OPSYS_DOS ) {
@@ -839,7 +840,7 @@ $LN23@StartupExi:
 
 	mov	r8, QWORD PTR [rax+rsi+24]
 	lea	edx, QWORD PTR [rcx+8]
-	lea	rcx, OFFSET FLAT:$SG11080
+	lea	rcx, OFFSET FLAT:$SG11082
 	call	AddLineQueueX
 
 ; 154  :                 i = Token_Count;
@@ -881,7 +882,7 @@ $LN27@StartupExi:
 ; 160  :                     AddLineQueueX( "mov %r,4C00h + %u", T_AX, opndx.value );
 
 	mov	edx, 9
-	lea	rcx, OFFSET FLAT:$SG11084
+	lea	rcx, OFFSET FLAT:$SG11086
 	call	AddLineQueueX
 
 ; 161  :                 } else {
@@ -892,7 +893,7 @@ $LN28@StartupExi:
 ; 162  :                     AddLineQueueX( "mov %r,%s", T_AL, tokenarray[j].tokpos );
 
 	movsxd	r8, edi
-	lea	rcx, OFFSET FLAT:$SG11085
+	lea	rcx, OFFSET FLAT:$SG11087
 	shl	r8, 5
 	mov	edx, 1
 	mov	r8, QWORD PTR [r8+rsi+24]
@@ -901,7 +902,7 @@ $LN28@StartupExi:
 ; 163  :                     AddLineQueueX( "mov %r,4Ch", T_AH );
 
 	mov	edx, 5
-	lea	rcx, OFFSET FLAT:$SG11086
+	lea	rcx, OFFSET FLAT:$SG11088
 	call	AddLineQueueX
 $LN46@StartupExi:
 	mov	edi, DWORD PTR i$[rsp]
@@ -959,7 +960,7 @@ $LN8@StartupExi:
 ; 177  :         EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos );
 
 	mov	rdx, QWORD PTR [rax+rsi+24]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 
 ; 178  :         rc = ERROR;

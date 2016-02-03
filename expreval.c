@@ -397,55 +397,60 @@ static ret_code get_operand( struct expr *opnd, int *idx, struct asm_tok tokenar
     case T_STRING:
         DebugMsg1(("%u get_operand: T_STRING, %s, size=%u\n", evallvl, tokenarray[i].string_ptr, tokenarray[i].stringlen ));
         /* string enclosed in <> or {} are rejected since v1.94! */
-        if ( tokenarray[i].string_delim != '"' && tokenarray[i].string_delim != '\'') {
-            /* here is handled EVEX Static Rounding Mode
-             * {sae},   {rn-sae},{rd-sae},{ru-sae} {rz-sae} 
-             * ZLLBVAAA ZLLBVAAA ZLLBVAAA ZLLBVAAA ZLLBVAAA
-             * 00010000 00010000 00110000 01010000 01110000
-             * to destinguish between SAE and RN  I added 0x10 
-             * to all 4 other decorators
-             * which will be subtracted in codegen.c 
-            */
-            if ((tokenarray[i].string_delim == '{')&&
-              (0 == memcmp(tokenarray[i].string_ptr, "rn-sae", 6))){
-                opnd->kind = EXPR_DECORATOR;
-                opnd->saeflags = 0x20;
-                break;
-              }
-            else if ((tokenarray[i].string_delim == '{')&&
-                (0 == memcmp(tokenarray[i].string_ptr, "rd-sae", 6))){
-                opnd->kind = EXPR_DECORATOR;
-                opnd->saeflags = 0x40;
-                break;
-              }
-            else if ((tokenarray[i].string_delim == '{')&&
-                (0 == memcmp(tokenarray[i].string_ptr, "ru-sae", 6))){
-                opnd->kind = EXPR_DECORATOR;
-                opnd->saeflags = 0x60;
-                break;
-              }
-            else if ((tokenarray[i].string_delim == '{')&&
-                (0 == memcmp(tokenarray[i].string_ptr, "rz-sae", 6))){
-                opnd->kind = EXPR_DECORATOR;
-                opnd->saeflags = 0x80;
-                break;
-              }
-            else if ((tokenarray[i].string_delim == '{')&&
-                (0 == memcmp(tokenarray[i].string_ptr, "sae", 3))){
-                opnd->kind = EXPR_DECORATOR;
-                opnd->saeflags = 0x10;
-                break;
-            }
-            else if ( opnd->is_opattr ) /* OPATTR operator accepts anything! */
-                break;
-                /* v2.0: display a comprehensible error msg if a quote is missing */
-            if ( tokenarray[i].string_delim == NULLC &&
-                ( *tokenarray[i].string_ptr == '"' || *tokenarray[i].string_ptr == '\'' ))
-                fnEmitErr( MISSING_QUOTATION_MARK_IN_STRING );
-            else
-                fnEmitErr( MISSING_QUOTATION_MARK_IN_STRING, tokenarray[i].tokpos );
-            return( ERROR );
-        }
+		if (tokenarray[i].string_delim != '"' && tokenarray[i].string_delim != '\'') {
+			/* here is handled EVEX Static Rounding Mode
+			* {sae},   {rn-sae},{rd-sae},{ru-sae} {rz-sae}
+			* ZLLBVAAA ZLLBVAAA ZLLBVAAA ZLLBVAAA ZLLBVAAA
+			* 00010000 00010000 00110000 01010000 01110000
+			* to destinguish between SAE and RN  I added 0x10
+			* to all 4 other decorators
+			* which will be subtracted in codegen.c
+			*/
+			if ((tokenarray[i].string_delim == '{') &&
+				(0 == memcmp(tokenarray[i].string_ptr, "rn-sae", 6))) {
+				if (!evex) EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
+				opnd->kind = EXPR_DECORATOR;
+				opnd->saeflags = 0x20;
+				break;
+			}
+			else if ((tokenarray[i].string_delim == '{') &&
+				(0 == memcmp(tokenarray[i].string_ptr, "rd-sae", 6))) {
+				if (!evex) EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
+				opnd->kind = EXPR_DECORATOR;
+				opnd->saeflags = 0x40;
+				break;
+			}
+			else if ((tokenarray[i].string_delim == '{') &&
+				(0 == memcmp(tokenarray[i].string_ptr, "ru-sae", 6))) {
+				if (!evex) EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
+				opnd->kind = EXPR_DECORATOR;
+				opnd->saeflags = 0x60;
+				break;
+			}
+			else if ((tokenarray[i].string_delim == '{') &&
+				(0 == memcmp(tokenarray[i].string_ptr, "rz-sae", 6))) {
+				if (!evex) EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
+				opnd->kind = EXPR_DECORATOR;
+				opnd->saeflags = 0x80;
+				break;
+			}
+			else if ((tokenarray[i].string_delim == '{') &&
+				(0 == memcmp(tokenarray[i].string_ptr, "sae", 3))) {
+				if (!evex) EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
+				opnd->kind = EXPR_DECORATOR;
+				opnd->saeflags = 0x10;
+				break;
+			}
+			else if (opnd->is_opattr) /* OPATTR operator accepts anything! */
+				break;
+			/* v2.0: display a comprehensible error msg if a quote is missing */
+			if (tokenarray[i].string_delim == NULLC &&
+				(*tokenarray[i].string_ptr == '"' || *tokenarray[i].string_ptr == '\''))
+				fnEmitErr(MISSING_QUOTATION_MARK_IN_STRING);
+			else
+				fnEmitErr(MISSING_QUOTATION_MARK_IN_STRING, tokenarray[i].tokpos);
+			return(ERROR);
+		}
         opnd->kind = EXPR_CONST;
         opnd->quoted_string = &tokenarray[i];
         //opnd->value = 0;

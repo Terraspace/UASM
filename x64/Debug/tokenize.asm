@@ -6,11 +6,12 @@ INCLUDELIB MSVCRTD
 INCLUDELIB OLDNAMES
 
 _BSS	SEGMENT
-$SG11305 DB	01H DUP (?)
+$SG11309 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 COMM	cnttok0:DWORD
 COMM	cnttok1:DWORD
 _DATA	ENDS
@@ -28,52 +29,52 @@ stokstr2 DW	05bH
 	DW	05dH
 CONST	ENDS
 _DATA	SEGMENT
-$SG11277 DB	'COMMENT active, delim is >%c<, line is >%s<', 0aH, 00H
+$SG11281 DB	'COMMENT active, delim is >%c<, line is >%s<', 0aH, 00H
 	ORG $+3
-$SG11279 DB	'COMMENT mode exited', 0aH, 00H
+$SG11283 DB	'COMMENT mode exited', 0aH, 00H
 	ORG $+3
-$SG11284 DB	'Tokenize: calling IsMultiLine()', 0aH, 00H
+$SG11288 DB	'Tokenize: calling IsMultiLine()', 0aH, 00H
 	ORG $+3
-$SG10918 DB	'1to16', 00H
+$SG10921 DB	'1to16', 00H
 	ORG $+2
-$SG11090 DB	'::', 00H
+$SG11094 DB	'::', 00H
 	ORG $+1
-$SG11286 DB	'Tokenize: IsMultiLine(%s)=TRUE', 0aH, 00H
-$SG11290 DB	'Tokenize: line concatenation, line=%s', 0aH, 00H
+$SG11290 DB	'Tokenize: IsMultiLine(%s)=TRUE', 0aH, 00H
+$SG11294 DB	'Tokenize: line concatenation, line=%s', 0aH, 00H
 	ORG $+1
-$SG11300 DB	'tokenize: COMMENT starting, delim is >%c<', 0aH, 00H
+$SG11304 DB	'tokenize: COMMENT starting, delim is >%c<', 0aH, 00H
 	ORG $+1
-$SG11091 DB	':', 00H
+$SG11095 DB	':', 00H
 	ORG $+2
-$SG11304 DB	'tokenize: token index %u >= MAX_TOKEN (=%u), line=>%s<', 0aH
+$SG11308 DB	'tokenize: token index %u >= MAX_TOKEN (=%u), line=>%s<', 0aH
 	DB	00H
-$SG10909 DB	'1to2', 00H
+$SG10912 DB	'1to2', 00H
 	ORG $+3
-$SG10912 DB	'1to4', 00H
+$SG10915 DB	'1to4', 00H
 	ORG $+3
-$SG10915 DB	'1to8', 00H
+$SG10918 DB	'1to8', 00H
 	ORG $+3
-$SG11058 DB	'Tokenize.get_string: comma concatenation: %s', 0aH, 00H
+$SG11062 DB	'Tokenize.get_string: comma concatenation: %s', 0aH, 00H
 	ORG $+2
-$SG11066 DB	'Tokenize.get_string: backslash concatenation: >%s<', 0aH
+$SG11070 DB	'Tokenize.get_string: backslash concatenation: >%s<', 0aH
 	DB	00H
-$SG11094 DB	'OUT', 00H
-$SG11096 DB	'%', 00H
+$SG11098 DB	'OUT', 00H
+$SG11100 DB	'%', 00H
 	ORG $+2
-$SG11108 DB	'=', 00H
+$SG11112 DB	'=', 00H
 	ORG $+2
-$SG11111 DB	'=!<>&|', 0a6H, 00H
-$SG11118 DB	'&', 00H
+$SG11115 DB	'=!<>&|', 0a6H, 00H
+$SG11122 DB	'&', 00H
 	ORG $+6
-$SG11169 DB	'get_number: BAD_NUMBER (%s), radix=%u, base=%u, ptr=>%s<'
+$SG11173 DB	'get_number: BAD_NUMBER (%s), radix=%u, base=%u, ptr=>%s<'
 	DB	', digits_seen=%Xh', 0aH, 00H
 	ORG $+1
-$SG11204 DB	'?', 00H
+$SG11208 DB	'?', 00H
 	ORG $+2
-$SG11220 DB	'get_id: error, unknown type in SpecialTable[%u]=%u', 0aH
+$SG11224 DB	'get_id: error, unknown type in SpecialTable[%u]=%u', 0aH
 	DB	00H
 	ORG $+4
-$SG11221 DB	'tokenize.c', 00H
+$SG11225 DB	'tokenize.c', 00H
 _DATA	ENDS
 PUBLIC	GetToken
 PUBLIC	Tokenize
@@ -122,11 +123,11 @@ $pdata$Tokenize DD imagerel $LN36
 $pdata$IsMultiLine DD imagerel IsMultiLine
 	DD	imagerel IsMultiLine+391
 	DD	imagerel $unwind$IsMultiLine
-$pdata$get_broads DD imagerel $LN14
-	DD	imagerel $LN14+368
+$pdata$get_broads DD imagerel $LN15
+	DD	imagerel $LN15+389
 	DD	imagerel $unwind$get_broads
-$pdata$get_decos DD imagerel $LN25
-	DD	imagerel $LN25+915
+$pdata$get_decos DD imagerel $LN26
+	DD	imagerel $LN26+936
 	DD	imagerel $unwind$get_decos
 $pdata$get_float DD imagerel get_float
 	DD	imagerel get_float+415
@@ -217,7 +218,7 @@ _TEXT	SEGMENT
 p$ = 48
 StartComment PROC
 
-; 1061 : {
+; 1068 : {
 
 	mov	QWORD PTR [rsp+8], rcx
 	push	rdi
@@ -229,7 +230,7 @@ StartComment PROC
 	mov	rcx, QWORD PTR [rsp+48]
 $LN2@StartComme:
 
-; 1062 :     while ( isspace( *p ) ) p++;
+; 1069 :     while ( isspace( *p ) ) p++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax]
@@ -243,25 +244,25 @@ $LN2@StartComme:
 	jmp	SHORT $LN2@StartComme
 $LN3@StartComme:
 
-; 1063 :     if ( *p == NULLC ) {
+; 1070 :     if ( *p == NULLC ) {
 
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax]
 	test	eax, eax
 	jne	SHORT $LN4@StartComme
 
-; 1064 :         EmitError( COMMENT_DELIMITER_EXPECTED );
+; 1071 :         EmitError( COMMENT_DELIMITER_EXPECTED );
 
-	mov	ecx, 98					; 00000062H
+	mov	ecx, 99					; 00000063H
 	call	EmitError
 
-; 1065 :         return;
+; 1072 :         return;
 
 	jmp	SHORT $LN1@StartComme
 $LN4@StartComme:
 
-; 1066 :     }
-; 1067 :     ModuleInfo.inside_comment = *p++;
+; 1073 :     }
+; 1074 :     ModuleInfo.inside_comment = *p++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	movzx	eax, BYTE PTR [rax]
@@ -270,7 +271,7 @@ $LN4@StartComme:
 	inc	rax
 	mov	QWORD PTR p$[rsp], rax
 
-; 1068 :     if( strchr( p, ModuleInfo.inside_comment ) )
+; 1075 :     if( strchr( p, ModuleInfo.inside_comment ) )
 
 	movzx	eax, BYTE PTR ModuleInfo+407
 	mov	edx, eax
@@ -279,14 +280,14 @@ $LN4@StartComme:
 	test	rax, rax
 	je	SHORT $LN5@StartComme
 
-; 1069 :         ModuleInfo.inside_comment = NULLC;
+; 1076 :         ModuleInfo.inside_comment = NULLC;
 
 	mov	BYTE PTR ModuleInfo+407, 0
 $LN5@StartComme:
 $LN1@StartComme:
 
-; 1070 :     return;
-; 1071 : }
+; 1077 :     return;
+; 1078 : }
 
 	add	rsp, 32					; 00000020H
 	pop	rdi
@@ -305,7 +306,7 @@ buf$ = 80
 p$ = 88
 get_id	PROC
 
-; 848  : {
+; 855  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -317,14 +318,14 @@ get_id	PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+80]
 
-; 849  :     //struct ReservedWord *resw;
-; 850  :     char *src = p->input;
+; 856  :     //struct ReservedWord *resw;
+; 857  :     char *src = p->input;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
 	mov	QWORD PTR src$[rsp], rax
 
-; 851  :     char *dst = p->output;
+; 858  :     char *dst = p->output;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax+8]
@@ -335,14 +336,14 @@ $LN28@get_id:
 $LN27@get_id:
 $LN4@get_id:
 
-; 852  :     int  index;
-; 853  :     unsigned size;
-; 854  : 
-; 855  : #if CONCATID || DOTNAMEX
-; 856  : continue_scan:
-; 857  : #endif
-; 858  :     do {
-; 859  :         *dst++ = *src++;
+; 859  :     int  index;
+; 860  :     unsigned size;
+; 861  : 
+; 862  : #if CONCATID || DOTNAMEX
+; 863  : continue_scan:
+; 864  : #endif
+; 865  :     do {
+; 866  :         *dst++ = *src++;
 
 	mov	rax, QWORD PTR dst$[rsp]
 	mov	rcx, QWORD PTR src$[rsp]
@@ -355,7 +356,7 @@ $LN4@get_id:
 	inc	rax
 	mov	QWORD PTR src$[rsp], rax
 
-; 860  :     } while ( is_valid_id_char( *src ) );
+; 867  :     } while ( is_valid_id_char( *src ) );
 
 	mov	rax, QWORD PTR src$[rsp]
 	movsx	eax, BYTE PTR [rax]
@@ -380,33 +381,33 @@ $LN4@get_id:
 	cmp	eax, 63					; 0000003fH
 	je	SHORT $LN30@get_id
 
-; 861  : #if CONCATID
-; 862  :     /* v2.05: in case there's a backslash right behind
-; 863  :      * the ID, check if a line concatenation is to occur.
-; 864  :      * If yes, and the first char of the concatenated line
-; 865  :      * is also a valid ID char, continue to scan the name.
-; 866  :      * Problem: it's ok for EQU, but less good for other directives.
-; 867  :      */
-; 868  :     if ( *src == '\\' ) {
-; 869  :         if ( ConcatLine( src, src - p->input, dst, p ) != EMPTY ) {
-; 870  :             p->concat = TRUE;
-; 871  :             if ( is_valid_id_char( *src ) )
-; 872  :                 goto continue_scan;
-; 873  :         }
-; 874  :     }
-; 875  : #endif
-; 876  : #if DOTNAMEX
-; 877  :     /* if the name starts with a dot or underscore, then accept dots
-; 878  :      * within the name (though not as last char). OPTION DOTNAME
-; 879  :      * must be on.
-; 880  :      */
-; 881  :     if ( *src == '.' && ModuleInfo.dotname &&
-; 882  :         ( *(p->output) == '.' || *(p->output) == '_' ) &&
-; 883  :         ( is_valid_id_char(*(src+1)) || *(src+1) == '.' ) )
-; 884  :         goto continue_scan;
-; 885  : #endif
-; 886  :     /* v2.04: check added */
-; 887  :     size = dst - p->output;
+; 868  : #if CONCATID
+; 869  :     /* v2.05: in case there's a backslash right behind
+; 870  :      * the ID, check if a line concatenation is to occur.
+; 871  :      * If yes, and the first char of the concatenated line
+; 872  :      * is also a valid ID char, continue to scan the name.
+; 873  :      * Problem: it's ok for EQU, but less good for other directives.
+; 874  :      */
+; 875  :     if ( *src == '\\' ) {
+; 876  :         if ( ConcatLine( src, src - p->input, dst, p ) != EMPTY ) {
+; 877  :             p->concat = TRUE;
+; 878  :             if ( is_valid_id_char( *src ) )
+; 879  :                 goto continue_scan;
+; 880  :         }
+; 881  :     }
+; 882  : #endif
+; 883  : #if DOTNAMEX
+; 884  :     /* if the name starts with a dot or underscore, then accept dots
+; 885  :      * within the name (though not as last char). OPTION DOTNAME
+; 886  :      * must be on.
+; 887  :      */
+; 888  :     if ( *src == '.' && ModuleInfo.dotname &&
+; 889  :         ( *(p->output) == '.' || *(p->output) == '_' ) &&
+; 890  :         ( is_valid_id_char(*(src+1)) || *(src+1) == '.' ) )
+; 891  :         goto continue_scan;
+; 892  : #endif
+; 893  :     /* v2.04: check added */
+; 894  :     size = dst - p->output;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax+8]
@@ -415,17 +416,17 @@ $LN4@get_id:
 	mov	rax, rcx
 	mov	DWORD PTR size$[rsp], eax
 
-; 888  :     if ( size > MAX_ID_LEN ) {
+; 895  :     if ( size > MAX_ID_LEN ) {
 
 	cmp	DWORD PTR size$[rsp], 247		; 000000f7H
 	jbe	SHORT $LN9@get_id
 
-; 889  :         EmitErr( IDENTIFIER_TOO_LONG );
+; 896  :         EmitErr( IDENTIFIER_TOO_LONG );
 
-	mov	ecx, 70					; 00000046H
+	mov	ecx, 71					; 00000047H
 	call	EmitErr
 
-; 890  :         dst = p->output + MAX_ID_LEN;
+; 897  :         dst = p->output + MAX_ID_LEN;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax+8]
@@ -433,8 +434,8 @@ $LN4@get_id:
 	mov	QWORD PTR dst$[rsp], rax
 $LN9@get_id:
 
-; 891  :     }
-; 892  :     *dst++ = NULLC;
+; 898  :     }
+; 899  :     *dst++ = NULLC;
 
 	mov	rax, QWORD PTR dst$[rsp]
 	mov	BYTE PTR [rax], 0
@@ -442,10 +443,10 @@ $LN9@get_id:
 	inc	rax
 	mov	QWORD PTR dst$[rsp], rax
 
-; 893  : 
-; 894  :     /* now decide what to do with it */
-; 895  : 
-; 896  :     if( size == 1 && *p->output == '?' ) {
+; 900  : 
+; 901  :     /* now decide what to do with it */
+; 902  : 
+; 903  :     if( size == 1 && *p->output == '?' ) {
 
 	cmp	DWORD PTR size$[rsp], 1
 	jne	SHORT $LN10@get_id
@@ -455,31 +456,31 @@ $LN9@get_id:
 	cmp	eax, 63					; 0000003fH
 	jne	SHORT $LN10@get_id
 
-; 897  :         p->input = src;
+; 904  :         p->input = src;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR src$[rsp]
 	mov	QWORD PTR [rax], rcx
 
-; 898  :         buf->token = T_QUESTION_MARK;
+; 905  :         buf->token = T_QUESTION_MARK;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax], 63			; 0000003fH
 
-; 899  :         buf->string_ptr = "?";
+; 906  :         buf->string_ptr = "?";
 
 	mov	rax, QWORD PTR buf$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11204
+	lea	rcx, OFFSET FLAT:$SG11208
 	mov	QWORD PTR [rax+8], rcx
 
-; 900  :         return( NOT_ERROR );
+; 907  :         return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@get_id
 $LN10@get_id:
 
-; 901  :     }
-; 902  :     index = FindResWord( p->output, size );
+; 908  :     }
+; 909  :     index = FindResWord( p->output, size );
 
 	movzx	edx, BYTE PTR size$[rsp]
 	mov	rax, QWORD PTR p$[rsp]
@@ -487,15 +488,15 @@ $LN10@get_id:
 	call	FindResWord
 	mov	DWORD PTR index$[rsp], eax
 
-; 903  :     if( index == 0 ) {
+; 910  :     if( index == 0 ) {
 
 	cmp	DWORD PTR index$[rsp], 0
 	jne	$LN11@get_id
 
-; 904  :         /* if ID begins with a DOT, check for OPTION DOTNAME.
-; 905  :          * if not set, skip the token and return a T_DOT instead!
-; 906  :          */
-; 907  :         if ( *p->output == '.' && ModuleInfo.dotname == FALSE ) {
+; 911  :         /* if ID begins with a DOT, check for OPTION DOTNAME.
+; 912  :          * if not set, skip the token and return a T_DOT instead!
+; 913  :          */
+; 914  :         if ( *p->output == '.' && ModuleInfo.dotname == FALSE ) {
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax+8]
@@ -508,12 +509,12 @@ $LN10@get_id:
 	test	eax, eax
 	jne	SHORT $LN12@get_id
 
-; 908  :            buf->token = T_DOT;
+; 915  :            buf->token = T_DOT;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax], 46			; 0000002eH
 
-; 909  :            buf->string_ptr = (char *)&stokstr1['.' - '('];
+; 916  :            buf->string_ptr = (char *)&stokstr1['.' - '('];
 
 	mov	eax, 2
 	imul	rax, rax, 6
@@ -523,7 +524,7 @@ $LN10@get_id:
 	mov	rcx, QWORD PTR buf$[rsp]
 	mov	QWORD PTR [rcx+8], rax
 
-; 910  :            p->input++;
+; 917  :            p->input++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -531,87 +532,87 @@ $LN10@get_id:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 911  :            return( NOT_ERROR );
+; 918  :            return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@get_id
 $LN12@get_id:
 
-; 912  :         }
-; 913  :         p->input = src;
+; 919  :         }
+; 920  :         p->input = src;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR src$[rsp]
 	mov	QWORD PTR [rax], rcx
 
-; 914  :         p->output = dst;
+; 921  :         p->output = dst;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR dst$[rsp]
 	mov	QWORD PTR [rax+8], rcx
 
-; 915  :         buf->token = T_ID;
+; 922  :         buf->token = T_ID;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax], 8
 
-; 916  :         buf->idarg = 0;
+; 923  :         buf->idarg = 0;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	DWORD PTR [rax+16], 0
 
-; 917  :         return( NOT_ERROR );
+; 924  :         return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@get_id
 $LN11@get_id:
 
-; 918  :     }
-; 919  :     p->input = src;
+; 925  :     }
+; 926  :     p->input = src;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR src$[rsp]
 	mov	QWORD PTR [rax], rcx
 
-; 920  :     p->output = dst;
+; 927  :     p->output = dst;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR dst$[rsp]
 	mov	QWORD PTR [rax+8], rcx
 
-; 921  :     buf->tokval = index; /* is a enum instr_token value */
+; 928  :     buf->tokval = index; /* is a enum instr_token value */
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	ecx, DWORD PTR index$[rsp]
 	mov	DWORD PTR [rax+16], ecx
 
-; 922  :     /* v2.11: RWF_SPECIAL now obsolete */
-; 923  :     //if ( ! ( ResWordTable[index].flags & RWF_SPECIAL ) ) {
-; 924  :     if ( index >= SPECIAL_LAST ) {
+; 929  :     /* v2.11: RWF_SPECIAL now obsolete */
+; 930  :     //if ( ! ( ResWordTable[index].flags & RWF_SPECIAL ) ) {
+; 931  :     if ( index >= SPECIAL_LAST ) {
 
 	cmp	DWORD PTR index$[rsp], 450		; 000001c2H
 	jl	$LN13@get_id
 
-; 925  : 
-; 926  :         //  DebugMsg(("found item >%s< in instruction table, rm=%X\n", buf->string_ptr, InstrTable[index].rm_byte));
-; 927  : 
-; 928  :         /* if -Zm is set, the following from the Masm docs is relevant:
-; 929  :          *
-; 930  :          * Reserved Keywords Dependent on CPU Mode with OPTION M510
-; 931  :          *
-; 932  :          * With OPTION M510, keywords and instructions not available in the
-; 933  :          * current CPU mode (such as ENTER under .8086) are not treated as
-; 934  :          * keywords. This also means the USE32, FLAT, FAR32, and NEAR32 segment
-; 935  :          * types and the 80386/486 registers are not keywords with a processor
-; 936  :          * selection less than .386.
-; 937  :          * If you remove OPTION M510, any reserved word used as an identifier
-; 938  :          * generates a syntax error. You can either rename the identifiers or
-; 939  :          * use OPTION NOKEYWORD. For more information on OPTION NOKEYWORD, see
-; 940  :          * OPTION NOKEYWORD, later in this appendix.
-; 941  :          *
-; 942  :          * The current implementation of this rule below is likely to be improved.
-; 943  :          */
-; 944  :         if ( ModuleInfo.m510 ) {
+; 932  : 
+; 933  :         //  DebugMsg(("found item >%s< in instruction table, rm=%X\n", buf->string_ptr, InstrTable[index].rm_byte));
+; 934  : 
+; 935  :         /* if -Zm is set, the following from the Masm docs is relevant:
+; 936  :          *
+; 937  :          * Reserved Keywords Dependent on CPU Mode with OPTION M510
+; 938  :          *
+; 939  :          * With OPTION M510, keywords and instructions not available in the
+; 940  :          * current CPU mode (such as ENTER under .8086) are not treated as
+; 941  :          * keywords. This also means the USE32, FLAT, FAR32, and NEAR32 segment
+; 942  :          * types and the 80386/486 registers are not keywords with a processor
+; 943  :          * selection less than .386.
+; 944  :          * If you remove OPTION M510, any reserved word used as an identifier
+; 945  :          * generates a syntax error. You can either rename the identifiers or
+; 946  :          * use OPTION NOKEYWORD. For more information on OPTION NOKEYWORD, see
+; 947  :          * OPTION NOKEYWORD, later in this appendix.
+; 948  :          *
+; 949  :          * The current implementation of this rule below is likely to be improved.
+; 950  :          */
+; 951  :         if ( ModuleInfo.m510 ) {
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	shr	eax, 6
@@ -619,10 +620,10 @@ $LN11@get_id:
 	test	eax, eax
 	je	$LN14@get_id
 
-; 945  :             /* checking the cpu won't give the expected results currently since
-; 946  :              * some instructions in the table (i.e. MOV) start with a 386 variant!
-; 947  :              */
-; 948  :             index = IndexFromToken( buf->tokval );
+; 952  :             /* checking the cpu won't give the expected results currently since
+; 953  :              * some instructions in the table (i.e. MOV) start with a 386 variant!
+; 954  :              */
+; 955  :             index = IndexFromToken( buf->tokval );
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	eax, DWORD PTR [rax+16]
@@ -632,10 +633,10 @@ $LN11@get_id:
 	movzx	eax, WORD PTR [rcx+rax*2]
 	mov	DWORD PTR index$[rsp], eax
 
-; 949  : #if 0 /* changed for v1.96 */
-; 950  :             if (( InstrTable[index].cpu & P_EXT_MASK ) > ( ModuleInfo.curr_cpu & P_EXT_MASK )) {
-; 951  : #else
-; 952  :             if (( InstrTable[index].cpu & P_CPU_MASK ) > ( ModuleInfo.curr_cpu & P_CPU_MASK ) ||
+; 956  : #if 0 /* changed for v1.96 */
+; 957  :             if (( InstrTable[index].cpu & P_EXT_MASK ) > ( ModuleInfo.curr_cpu & P_EXT_MASK )) {
+; 958  : #else
+; 959  :             if (( InstrTable[index].cpu & P_CPU_MASK ) > ( ModuleInfo.curr_cpu & P_CPU_MASK ) ||
 
 	movsxd	rax, DWORD PTR index$[rsp]
 	imul	rax, rax, 14
@@ -657,56 +658,56 @@ $LN11@get_id:
 	jle	SHORT $LN15@get_id
 $LN16@get_id:
 
-; 953  :                 ( InstrTable[index].cpu & P_EXT_MASK ) > ( ModuleInfo.curr_cpu & P_EXT_MASK )) {
-; 954  : #endif
-; 955  :                 buf->token = T_ID;
+; 960  :                 ( InstrTable[index].cpu & P_EXT_MASK ) > ( ModuleInfo.curr_cpu & P_EXT_MASK )) {
+; 961  : #endif
+; 962  :                 buf->token = T_ID;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax], 8
 
-; 956  :                 buf->idarg = 0;
+; 963  :                 buf->idarg = 0;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	DWORD PTR [rax+16], 0
 
-; 957  :                 return( NOT_ERROR );
+; 964  :                 return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@get_id
 $LN15@get_id:
 $LN14@get_id:
 
-; 958  :             }
-; 959  :         }
-; 960  :         buf->token = T_INSTRUCTION;
+; 965  :             }
+; 966  :         }
+; 967  :         buf->token = T_INSTRUCTION;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax], 1
 
-; 961  :         return( NOT_ERROR );
+; 968  :         return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@get_id
 $LN13@get_id:
 
-; 962  :     }
-; 963  :     index = buf->tokval;
+; 969  :     }
+; 970  :     index = buf->tokval;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	eax, DWORD PTR [rax+16]
 	mov	DWORD PTR index$[rsp], eax
 
-; 964  : 
-; 965  :     /* for RWT_SPECIAL, field <bytval> contains further infos:
-; 966  :      - RWT_REG:             register number (regnum)
-; 967  :      - RWT_DIRECTIVE:       type of directive (dirtype)
-; 968  :      - RWT_UNARY_OPERATOR:  operator precedence
-; 969  :      - RWT_BINARY_OPERATOR: operator precedence
-; 970  :      - RWT_STYPE:           memtype
-; 971  :      - RWT_RES_ID:          for languages, LANG_xxx value
-; 972  :                             for the rest, unused.
-; 973  :      */
-; 974  :     buf->bytval = SpecialTable[index].bytval;
+; 971  : 
+; 972  :     /* for RWT_SPECIAL, field <bytval> contains further infos:
+; 973  :      - RWT_REG:             register number (regnum)
+; 974  :      - RWT_DIRECTIVE:       type of directive (dirtype)
+; 975  :      - RWT_UNARY_OPERATOR:  operator precedence
+; 976  :      - RWT_BINARY_OPERATOR: operator precedence
+; 977  :      - RWT_STYPE:           memtype
+; 978  :      - RWT_RES_ID:          for languages, LANG_xxx value
+; 979  :                             for the rest, unused.
+; 980  :      */
+; 981  :     buf->bytval = SpecialTable[index].bytval;
 
 	movsxd	rax, DWORD PTR index$[rsp]
 	imul	rax, rax, 12
@@ -715,8 +716,8 @@ $LN13@get_id:
 	movzx	eax, BYTE PTR [rcx+rax+10]
 	mov	BYTE PTR [rdx+1], al
 
-; 975  : 
-; 976  :     switch ( SpecialTable[index].type ) {
+; 982  : 
+; 983  :     switch ( SpecialTable[index].type ) {
 
 	movsxd	rax, DWORD PTR index$[rsp]
 	imul	rax, rax, 12
@@ -735,16 +736,16 @@ $LN13@get_id:
 	jmp	rax
 $LN17@get_id:
 
-; 977  :     case RWT_REG:
-; 978  :         buf->token = T_REG;
+; 984  :     case RWT_REG:
+; 985  :         buf->token = T_REG;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax], 2
 $LN7@get_id:
 
-; 979  : #if AVXSUPP 
-; 980  :         /* Intercept here '{' for EVEX mask  {k1}{z} */
-; 981  :         while ( isspace( *p->input )) p->input++;
+; 986  : #if AVXSUPP 
+; 987  :         /* Intercept here '{' for EVEX mask  {k1}{z} */
+; 988  :         while ( isspace( *p->input )) p->input++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -761,7 +762,7 @@ $LN7@get_id:
 	jmp	SHORT $LN7@get_id
 $LN8@get_id:
 
-; 982  :         if (*p->input == '{'){
+; 989  :         if (*p->input == '{'){
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -769,7 +770,7 @@ $LN8@get_id:
 	cmp	eax, 123				; 0000007bH
 	jne	SHORT $LN18@get_id
 
-; 983  :           p->input++;
+; 990  :           p->input++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -777,33 +778,33 @@ $LN8@get_id:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 984  :           get_decos( p ) ; // mask decorators
+; 991  :           get_decos( p ) ; // mask decorators
 
 	mov	rcx, QWORD PTR p$[rsp]
 	call	get_decos
 $LN18@get_id:
 
-; 985  :       }
-; 986  : #endif        
-; 987  :         break;
+; 992  :       }
+; 993  : #endif        
+; 994  :         break;
 
 	jmp	$LN5@get_id
 $LN19@get_id:
 
-; 988  :     case RWT_DIRECTIVE:
-; 989  :         buf->token = T_DIRECTIVE;
+; 995  :     case RWT_DIRECTIVE:
+; 996  :         buf->token = T_DIRECTIVE;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax], 3
 
-; 990  :         if ( p->flags2 == 0 )
+; 997  :         if ( p->flags2 == 0 )
 
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax+29]
 	test	eax, eax
 	jne	SHORT $LN20@get_id
 
-; 991  :             p->flags2 = SpecialTable[index].value;
+; 998  :             p->flags2 = SpecialTable[index].value;
 
 	movsxd	rax, DWORD PTR index$[rsp]
 	imul	rax, rax, 12
@@ -813,57 +814,57 @@ $LN19@get_id:
 	mov	BYTE PTR [rdx+29], al
 $LN20@get_id:
 
-; 992  :         break;
+; 999  :         break;
 
 	jmp	SHORT $LN5@get_id
 $LN21@get_id:
 
-; 993  :     case RWT_UNARY_OP: /* OFFSET, LOW, HIGH, LOWWORD, HIGHWORD, SHORT, ... */
-; 994  :         buf->token  = T_UNARY_OPERATOR;
+; 1000 :     case RWT_UNARY_OP: /* OFFSET, LOW, HIGH, LOWWORD, HIGHWORD, SHORT, ... */
+; 1001 :         buf->token  = T_UNARY_OPERATOR;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax], 4
 
-; 995  :         break;
+; 1002 :         break;
 
 	jmp	SHORT $LN5@get_id
 $LN22@get_id:
 
-; 996  :     case RWT_BINARY_OP: /* GE, GT, LE, LT, EQ, NE, MOD, PTR */
-; 997  :         buf->token = T_BINARY_OPERATOR;
+; 1003 :     case RWT_BINARY_OP: /* GE, GT, LE, LT, EQ, NE, MOD, PTR */
+; 1004 :         buf->token = T_BINARY_OPERATOR;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax], 5
 
-; 998  :         break;
+; 1005 :         break;
 
 	jmp	SHORT $LN5@get_id
 $LN23@get_id:
 
-; 999  :     case RWT_STYPE:  /* BYTE, WORD, FAR, NEAR, FAR16, NEAR32 ... */
-; 1000 :         buf->token = T_STYPE;
+; 1006 :     case RWT_STYPE:  /* BYTE, WORD, FAR, NEAR, FAR16, NEAR32 ... */
+; 1007 :         buf->token = T_STYPE;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax], 6
 
-; 1001 :         break;
+; 1008 :         break;
 
 	jmp	SHORT $LN5@get_id
 $LN24@get_id:
 
-; 1002 :     case RWT_RES_ID: /* DUP, ADDR, FLAT, VARARG, language types [, FRAME (64-bit)] */
-; 1003 :         buf->token = T_RES_ID;
+; 1009 :     case RWT_RES_ID: /* DUP, ADDR, FLAT, VARARG, language types [, FRAME (64-bit)] */
+; 1010 :         buf->token = T_RES_ID;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax], 7
 
-; 1004 :         break;
+; 1011 :         break;
 
 	jmp	SHORT $LN5@get_id
 $LN25@get_id:
 
-; 1005 :     default: /* shouldn't happen */
-; 1006 :         DebugMsg(("get_id: error, unknown type in SpecialTable[%u]=%u\n", index, SpecialTable[index].type ));
+; 1012 :     default: /* shouldn't happen */
+; 1013 :         DebugMsg(("get_id: error, unknown type in SpecialTable[%u]=%u\n", index, SpecialTable[index].type ));
 
 	movsxd	rax, DWORD PTR index$[rsp]
 	imul	rax, rax, 12
@@ -871,34 +872,34 @@ $LN25@get_id:
 	movzx	eax, BYTE PTR [rcx+rax+11]
 	mov	r8d, eax
 	mov	edx, DWORD PTR index$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11220
+	lea	rcx, OFFSET FLAT:$SG11224
 	call	DoDebugMsg
 
-; 1007 :         /**/myassert( 0 );
+; 1014 :         /**/myassert( 0 );
 
-	mov	edx, 1007				; 000003efH
-	lea	rcx, OFFSET FLAT:$SG11221
+	mov	edx, 1014				; 000003f6H
+	lea	rcx, OFFSET FLAT:$SG11225
 	call	InternalError
 
-; 1008 :         buf->token = T_ID;
+; 1015 :         buf->token = T_ID;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax], 8
 
-; 1009 :         buf->idarg = 0;
+; 1016 :         buf->idarg = 0;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	DWORD PTR [rax+16], 0
 $LN5@get_id:
 
-; 1010 :         break;
-; 1011 :     }
-; 1012 :     return( NOT_ERROR );
+; 1017 :         break;
+; 1018 :     }
+; 1019 :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@get_id:
 
-; 1013 : }
+; 1020 : }
 
 	add	rsp, 64					; 00000040H
 	pop	rdi
@@ -921,7 +922,7 @@ buf$ = 64
 p$ = 72
 get_id_in_backquotes PROC
 
-; 823  : {
+; 830  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -933,24 +934,24 @@ get_id_in_backquotes PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+64]
 
-; 824  :     char *optr = p->output;
+; 831  :     char *optr = p->output;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax+8]
 	mov	QWORD PTR optr$[rsp], rax
 
-; 825  :     buf->token = T_ID;
+; 832  :     buf->token = T_ID;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax], 8
 
-; 826  :     buf->idarg = 0;
+; 833  :     buf->idarg = 0;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	DWORD PTR [rax+16], 0
 
-; 827  : 
-; 828  :     p->input++;         /* strip off the backquotes */
+; 834  : 
+; 835  :     p->input++;         /* strip off the backquotes */
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -959,7 +960,7 @@ get_id_in_backquotes PROC
 	mov	QWORD PTR [rcx], rax
 $LN2@get_id_in_:
 
-; 829  :     for( ; *p->input != '`'; ) {
+; 836  :     for( ; *p->input != '`'; ) {
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -967,7 +968,7 @@ $LN2@get_id_in_:
 	cmp	eax, 96					; 00000060H
 	je	SHORT $LN3@get_id_in_
 
-; 830  :         if( *p->input == NULLC || *p->input == ';' ) {
+; 837  :         if( *p->input == NULLC || *p->input == ';' ) {
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -981,27 +982,27 @@ $LN2@get_id_in_:
 	jne	SHORT $LN5@get_id_in_
 $LN6@get_id_in_:
 
-; 831  :             *p->output = NULLC;
+; 838  :             *p->output = NULLC;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax+8]
 	mov	BYTE PTR [rax], 0
 
-; 832  :             EmitErr( BACKQUOTE_MISSING, p->output );
+; 839  :             EmitErr( BACKQUOTE_MISSING, p->output );
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 97					; 00000061H
+	mov	ecx, 98					; 00000062H
 	call	EmitErr
 
-; 833  :             return( ERROR );
+; 840  :             return( ERROR );
 
 	mov	eax, -1
 	jmp	SHORT $LN1@get_id_in_
 $LN5@get_id_in_:
 
-; 834  :         }
-; 835  :         *optr++ = *p->input++;
+; 841  :         }
+; 842  :         *optr++ = *p->input++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -1017,12 +1018,12 @@ $LN5@get_id_in_:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 836  :     }
+; 843  :     }
 
 	jmp	$LN2@get_id_in_
 $LN3@get_id_in_:
 
-; 837  :     p->input++;         /* skip the terminating '`' */
+; 844  :     p->input++;         /* skip the terminating '`' */
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -1030,7 +1031,7 @@ $LN3@get_id_in_:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 838  :     *optr++ = NULLC;
+; 845  :     *optr++ = NULLC;
 
 	mov	rax, QWORD PTR optr$[rsp]
 	mov	BYTE PTR [rax], 0
@@ -1038,18 +1039,18 @@ $LN3@get_id_in_:
 	inc	rax
 	mov	QWORD PTR optr$[rsp], rax
 
-; 839  :     p->output = optr;
+; 846  :     p->output = optr;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR optr$[rsp]
 	mov	QWORD PTR [rax+8], rcx
 
-; 840  :     return( NOT_ERROR );
+; 847  :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@get_id_in_:
 
-; 841  : }
+; 848  : }
 
 	add	rsp, 48					; 00000030H
 	pop	rdi
@@ -1083,7 +1084,7 @@ buf$ = 160
 p$ = 168
 get_number PROC
 
-; 666  : {
+; 673  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -1096,33 +1097,33 @@ get_number PROC
 	mov	rcx, QWORD PTR [rsp+160]
 	mov	BYTE PTR $T4[rsp], 0
 
-; 667  :     char                *ptr = p->input;
+; 674  :     char                *ptr = p->input;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
 	mov	QWORD PTR ptr$[rsp], rax
 
-; 668  :     char                *dig_start;
-; 669  :     char                *dig_end;
-; 670  :     unsigned            base = 0;
+; 675  :     char                *dig_start;
+; 676  :     char                *dig_end;
+; 677  :     unsigned            base = 0;
 
 	mov	DWORD PTR base$[rsp], 0
 
-; 671  :     unsigned            len;
-; 672  :     uint_32             digits_seen;
-; 673  :     char                last_char;
-; 674  : 
-; 675  : #define VALID_BINARY    0x0003
-; 676  : #define VALID_OCTAL     0x00ff
-; 677  : #define VALID_DECIMAL   0x03ff
-; 678  : #define OK_NUM( t )     ((digits_seen & ~VALID_##t) == 0)
-; 679  : 
-; 680  :     digits_seen = 0;
+; 678  :     unsigned            len;
+; 679  :     uint_32             digits_seen;
+; 680  :     char                last_char;
+; 681  : 
+; 682  : #define VALID_BINARY    0x0003
+; 683  : #define VALID_OCTAL     0x00ff
+; 684  : #define VALID_DECIMAL   0x03ff
+; 685  : #define OK_NUM( t )     ((digits_seen & ~VALID_##t) == 0)
+; 686  : 
+; 687  :     digits_seen = 0;
 
 	mov	DWORD PTR digits_seen$[rsp], 0
 
-; 681  : #if CHEXPREFIX
-; 682  :     if( *ptr == '0' && (tolower( *(ptr+1) ) == 'x' ) ) {
+; 688  : #if CHEXPREFIX
+; 689  :     if( *ptr == '0' && (tolower( *(ptr+1) ) == 'x' ) ) {
 
 	mov	rax, QWORD PTR ptr$[rsp]
 	movsx	eax, BYTE PTR [rax]
@@ -1149,34 +1150,34 @@ $LN39@get_number:
 	cmp	DWORD PTR tv78[rsp], 120		; 00000078H
 	jne	SHORT $LN12@get_number
 
-; 683  :         ptr += 2;
+; 690  :         ptr += 2;
 
 	mov	rax, QWORD PTR ptr$[rsp]
 	add	rax, 2
 	mov	QWORD PTR ptr$[rsp], rax
 
-; 684  :         base = 16;
+; 691  :         base = 16;
 
 	mov	DWORD PTR base$[rsp], 16
 $LN12@get_number:
 
-; 685  :     }
-; 686  : #endif
-; 687  :     dig_start = ptr;
+; 692  :     }
+; 693  : #endif
+; 694  :     dig_start = ptr;
 
 	mov	rax, QWORD PTR ptr$[rsp]
 	mov	QWORD PTR dig_start$[rsp], rax
 	jmp	SHORT $LN4@get_number
 $LN2@get_number:
 
-; 688  :     for( ;; ptr++ ) {
+; 695  :     for( ;; ptr++ ) {
 
 	mov	rax, QWORD PTR ptr$[rsp]
 	inc	rax
 	mov	QWORD PTR ptr$[rsp], rax
 $LN4@get_number:
 
-; 689  :         if (*ptr >= '0' && *ptr <= '9')
+; 696  :         if (*ptr >= '0' && *ptr <= '9')
 
 	mov	rax, QWORD PTR ptr$[rsp]
 	movsx	eax, BYTE PTR [rax]
@@ -1187,7 +1188,7 @@ $LN4@get_number:
 	cmp	eax, 57					; 00000039H
 	jg	SHORT $LN13@get_number
 
-; 690  :             digits_seen |= 1 << (*ptr - '0');
+; 697  :             digits_seen |= 1 << (*ptr - '0');
 
 	mov	rax, QWORD PTR ptr$[rsp]
 	movsx	eax, BYTE PTR [rax]
@@ -1204,8 +1205,8 @@ $LN4@get_number:
 	jmp	SHORT $LN14@get_number
 $LN13@get_number:
 
-; 691  :         else {
-; 692  :             last_char = tolower( *ptr );
+; 698  :         else {
+; 699  :             last_char = tolower( *ptr );
 
 	mov	rax, QWORD PTR ptr$[rsp]
 	movsx	eax, BYTE PTR [rax]
@@ -1228,7 +1229,7 @@ $LN41@get_number:
 	movzx	eax, BYTE PTR tv129[rsp]
 	mov	BYTE PTR last_char$[rsp], al
 
-; 693  :             if ( last_char >= 'a' && last_char <= 'f' )
+; 700  :             if ( last_char >= 'a' && last_char <= 'f' )
 
 	movsx	eax, BYTE PTR last_char$[rsp]
 	cmp	eax, 97					; 00000061H
@@ -1237,7 +1238,7 @@ $LN41@get_number:
 	cmp	eax, 102				; 00000066H
 	jg	SHORT $LN15@get_number
 
-; 694  :                 digits_seen |= 1 << ( last_char + 10 - 'a' );
+; 701  :                 digits_seen |= 1 << ( last_char + 10 - 'a' );
 
 	movsx	eax, BYTE PTR last_char$[rsp]
 	sub	eax, 87					; 00000057H
@@ -1253,30 +1254,30 @@ $LN41@get_number:
 	jmp	SHORT $LN16@get_number
 $LN15@get_number:
 
-; 695  :             else
-; 696  :                 break;
+; 702  :             else
+; 703  :                 break;
 
 	jmp	SHORT $LN3@get_number
 $LN16@get_number:
 $LN14@get_number:
 
-; 697  :         }
-; 698  :     }
+; 704  :         }
+; 705  :     }
 
 	jmp	$LN2@get_number
 $LN3@get_number:
 
-; 699  : 
-; 700  :     /* note that a float MUST contain a dot.
-; 701  :      * 1234e78 is NOT a valid float
-; 702  :      */
-; 703  :     if ( last_char == '.' )
+; 706  : 
+; 707  :     /* note that a float MUST contain a dot.
+; 708  :      * 1234e78 is NOT a valid float
+; 709  :      */
+; 710  :     if ( last_char == '.' )
 
 	movsx	eax, BYTE PTR last_char$[rsp]
 	cmp	eax, 46					; 0000002eH
 	jne	SHORT $LN17@get_number
 
-; 704  :         return( get_float( buf, p ) );
+; 711  :         return( get_float( buf, p ) );
 
 	mov	rdx, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR buf$[rsp]
@@ -1284,47 +1285,47 @@ $LN3@get_number:
 	jmp	$LN1@get_number
 $LN17@get_number:
 
-; 705  : 
-; 706  : #if 0
-; 707  :     /* v2.08: if suffix isn't followed by a non-id char, don't use it! */
-; 708  :     if ( last_char && is_valid_id_char( *(ptr+1) ) ) {
-; 709  :         last_char = NULLC;
-; 710  :         while ( *(ptr-1) > '9' )
-; 711  :             ptr--;
-; 712  :         digits_seen &= 0x3FF;
-; 713  : 
-; 714  :     }
-; 715  : #endif
-; 716  : 
-; 717  : #if CHEXPREFIX
-; 718  :     if ( base != 0 ) {
+; 712  : 
+; 713  : #if 0
+; 714  :     /* v2.08: if suffix isn't followed by a non-id char, don't use it! */
+; 715  :     if ( last_char && is_valid_id_char( *(ptr+1) ) ) {
+; 716  :         last_char = NULLC;
+; 717  :         while ( *(ptr-1) > '9' )
+; 718  :             ptr--;
+; 719  :         digits_seen &= 0x3FF;
+; 720  : 
+; 721  :     }
+; 722  : #endif
+; 723  : 
+; 724  : #if CHEXPREFIX
+; 725  :     if ( base != 0 ) {
 
 	cmp	DWORD PTR base$[rsp], 0
 	je	SHORT $LN18@get_number
 
-; 719  :         dig_end = ptr;
+; 726  :         dig_end = ptr;
 
 	mov	BYTE PTR $T4[rsp], 1
 	mov	rax, QWORD PTR ptr$[rsp]
 	mov	QWORD PTR dig_end$[rsp], rax
 
-; 720  :         if ( digits_seen == 0 )
+; 727  :         if ( digits_seen == 0 )
 
 	cmp	DWORD PTR digits_seen$[rsp], 0
 	jne	SHORT $LN20@get_number
 
-; 721  :             base = 0;
+; 728  :             base = 0;
 
 	mov	DWORD PTR base$[rsp], 0
 $LN20@get_number:
 
-; 722  :     } else
+; 729  :     } else
 
 	jmp	$LN19@get_number
 $LN18@get_number:
 
-; 723  : #endif
-; 724  :     switch( last_char ) {
+; 730  : #endif
+; 731  :     switch( last_char ) {
 
 	movsx	eax, BYTE PTR last_char$[rsp]
 	mov	DWORD PTR tv148[rsp], eax
@@ -1340,148 +1341,148 @@ $LN18@get_number:
 	jmp	rax
 $LN21@get_number:
 
-; 725  :     case 'r': /* a float with the "real number designator" */
-; 726  :         buf->token = T_FLOAT;
+; 732  :     case 'r': /* a float with the "real number designator" */
+; 733  :         buf->token = T_FLOAT;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax], 11
 
-; 727  :         buf->floattype = 'r';
+; 734  :         buf->floattype = 'r';
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax+1], 114			; 00000072H
 
-; 728  :         ptr++;
+; 735  :         ptr++;
 
 	mov	rax, QWORD PTR ptr$[rsp]
 	inc	rax
 	mov	QWORD PTR ptr$[rsp], rax
 
-; 729  :         goto number_done;
+; 736  :         goto number_done;
 
 	jmp	$number_done$52
 $LN22@get_number:
 
-; 730  :     case 'h':
-; 731  :         base = 16;
+; 737  :     case 'h':
+; 738  :         base = 16;
 
 	mov	DWORD PTR base$[rsp], 16
 
-; 732  :         dig_end = ptr;
+; 739  :         dig_end = ptr;
 
 	mov	BYTE PTR $T4[rsp], 1
 	mov	rax, QWORD PTR ptr$[rsp]
 	mov	QWORD PTR dig_end$[rsp], rax
 
-; 733  :         ptr++;
+; 740  :         ptr++;
 
 	mov	rax, QWORD PTR ptr$[rsp]
 	inc	rax
 	mov	QWORD PTR ptr$[rsp], rax
 
-; 734  :         break;
+; 741  :         break;
 
 	jmp	$LN5@get_number
 $LN23@get_number:
 
-; 735  :     //case 'b':
-; 736  :     case 'y':
-; 737  :         if( OK_NUM( BINARY ) ) {
+; 742  :     //case 'b':
+; 743  :     case 'y':
+; 744  :         if( OK_NUM( BINARY ) ) {
 
 	mov	eax, DWORD PTR digits_seen$[rsp]
 	and	eax, -4					; fffffffcH
 	test	eax, eax
 	jne	SHORT $LN24@get_number
 
-; 738  :             base = 2;
+; 745  :             base = 2;
 
 	mov	DWORD PTR base$[rsp], 2
 
-; 739  :             dig_end = ptr;
+; 746  :             dig_end = ptr;
 
 	mov	BYTE PTR $T4[rsp], 1
 	mov	rax, QWORD PTR ptr$[rsp]
 	mov	QWORD PTR dig_end$[rsp], rax
 
-; 740  :             ptr++;
+; 747  :             ptr++;
 
 	mov	rax, QWORD PTR ptr$[rsp]
 	inc	rax
 	mov	QWORD PTR ptr$[rsp], rax
 $LN24@get_number:
 
-; 741  :         }
-; 742  :         break;
+; 748  :         }
+; 749  :         break;
 
 	jmp	$LN5@get_number
 $LN25@get_number:
 
-; 743  :     //case 'd':
-; 744  :     case 't':
-; 745  :         if( OK_NUM( DECIMAL ) ) {
+; 750  :     //case 'd':
+; 751  :     case 't':
+; 752  :         if( OK_NUM( DECIMAL ) ) {
 
 	mov	eax, DWORD PTR digits_seen$[rsp]
 	and	eax, -1024				; fffffc00H
 	test	eax, eax
 	jne	SHORT $LN26@get_number
 
-; 746  :             base = 10;
+; 753  :             base = 10;
 
 	mov	DWORD PTR base$[rsp], 10
 
-; 747  :             dig_end = ptr;
+; 754  :             dig_end = ptr;
 
 	mov	BYTE PTR $T4[rsp], 1
 	mov	rax, QWORD PTR ptr$[rsp]
 	mov	QWORD PTR dig_end$[rsp], rax
 
-; 748  :             ptr++;
+; 755  :             ptr++;
 
 	mov	rax, QWORD PTR ptr$[rsp]
 	inc	rax
 	mov	QWORD PTR ptr$[rsp], rax
 $LN26@get_number:
 
-; 749  :         }
-; 750  :         break;
+; 756  :         }
+; 757  :         break;
 
 	jmp	$LN5@get_number
 $LN27@get_number:
 
-; 751  :     case 'q':
-; 752  :     case 'o':
-; 753  :         if( OK_NUM( OCTAL ) ) {
+; 758  :     case 'q':
+; 759  :     case 'o':
+; 760  :         if( OK_NUM( OCTAL ) ) {
 
 	mov	eax, DWORD PTR digits_seen$[rsp]
 	and	eax, -256				; ffffff00H
 	test	eax, eax
 	jne	SHORT $LN28@get_number
 
-; 754  :             base = 8;
+; 761  :             base = 8;
 
 	mov	DWORD PTR base$[rsp], 8
 
-; 755  :             dig_end = ptr;
+; 762  :             dig_end = ptr;
 
 	mov	BYTE PTR $T4[rsp], 1
 	mov	rax, QWORD PTR ptr$[rsp]
 	mov	QWORD PTR dig_end$[rsp], rax
 
-; 756  :             ptr++;
+; 763  :             ptr++;
 
 	mov	rax, QWORD PTR ptr$[rsp]
 	inc	rax
 	mov	QWORD PTR ptr$[rsp], rax
 $LN28@get_number:
 
-; 757  :         }
-; 758  :         break;
+; 764  :         }
+; 765  :         break;
 
 	jmp	$LN5@get_number
 $LN29@get_number:
 
-; 759  :     default:
-; 760  :         last_char = tolower( *(ptr-1) );
+; 766  :     default:
+; 767  :         last_char = tolower( *(ptr-1) );
 
 	mov	rax, QWORD PTR ptr$[rsp]
 	movsx	eax, BYTE PTR [rax-1]
@@ -1504,7 +1505,7 @@ $LN43@get_number:
 	movzx	eax, BYTE PTR tv173[rsp]
 	mov	BYTE PTR last_char$[rsp], al
 
-; 761  :         if ( ( last_char == 'b' || last_char == 'd' ) && digits_seen >= ( 1UL << ModuleInfo.radix ) ) {
+; 768  :         if ( ( last_char == 'b' || last_char == 'd' ) && digits_seen >= ( 1UL << ModuleInfo.radix ) ) {
 
 	movsx	eax, BYTE PTR last_char$[rsp]
 	cmp	eax, 98					; 00000062H
@@ -1522,12 +1523,12 @@ $LN31@get_number:
 	cmp	DWORD PTR digits_seen$[rsp], eax
 	jb	$LN30@get_number
 
-; 762  :             char *tmp = dig_start;
+; 769  :             char *tmp = dig_start;
 
 	mov	rax, QWORD PTR dig_start$[rsp]
 	mov	QWORD PTR tmp$2[rsp], rax
 
-; 763  :             char max = ( last_char == 'b' ? '1' : '9' );
+; 770  :             char max = ( last_char == 'b' ? '1' : '9' );
 
 	movsx	eax, BYTE PTR last_char$[rsp]
 	cmp	eax, 98					; 00000062H
@@ -1540,7 +1541,7 @@ $LN45@get_number:
 	movzx	eax, BYTE PTR tv184[rsp]
 	mov	BYTE PTR max$3[rsp], al
 
-; 764  :             for ( dig_end = ptr-1; tmp < dig_end && *tmp <= max; tmp++ );
+; 771  :             for ( dig_end = ptr-1; tmp < dig_end && *tmp <= max; tmp++ );
 
 	mov	rax, QWORD PTR ptr$[rsp]
 	dec	rax
@@ -1568,7 +1569,7 @@ $LN48@get_number:
 	jmp	SHORT $LN7@get_number
 $LN8@get_number:
 
-; 765  :             if ( tmp == dig_end ) {
+; 772  :             if ( tmp == dig_end ) {
 
 	cmp	BYTE PTR $T4[rsp], 0
 	jne	SHORT $LN49@get_number
@@ -1579,7 +1580,7 @@ $LN49@get_number:
 	cmp	QWORD PTR tmp$2[rsp], rax
 	jne	SHORT $LN32@get_number
 
-; 766  :                 base = ( last_char == 'b' ? 2 : 10 );
+; 773  :                 base = ( last_char == 'b' ? 2 : 10 );
 
 	movsx	eax, BYTE PTR last_char$[rsp]
 	cmp	eax, 98					; 00000062H
@@ -1592,36 +1593,36 @@ $LN47@get_number:
 	mov	eax, DWORD PTR tv195[rsp]
 	mov	DWORD PTR base$[rsp], eax
 
-; 767  :                 break;
+; 774  :                 break;
 
 	jmp	SHORT $LN5@get_number
 $LN32@get_number:
 $LN30@get_number:
 
-; 768  :             }
-; 769  :         }
-; 770  :         dig_end = ptr;
+; 775  :             }
+; 776  :         }
+; 777  :         dig_end = ptr;
 
 	mov	BYTE PTR $T4[rsp], 1
 	mov	rax, QWORD PTR ptr$[rsp]
 	mov	QWORD PTR dig_end$[rsp], rax
 
-; 771  : #if COCTALS
-; 772  :         if( Options.allow_c_octals && *dig_start == '0' ) {
-; 773  :             if( OK_NUM( OCTAL ) ) {
-; 774  :                 base = 8;
-; 775  :                 break;
-; 776  :             }
-; 777  :         }
-; 778  : #endif
-; 779  :         /* radix      max. digits_seen
-; 780  :          -----------------------------------------------------------
-; 781  :          2            3      2^2-1  (0,1)
-; 782  :          8            255    2^8-1  (0,1,2,3,4,5,6,7)
-; 783  :          10           1023   2^10-1 (0,1,2,3,4,5,6,7,8,9)
-; 784  :          16           65535  2^16-1 (0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f)
-; 785  :          */
-; 786  :         if ( digits_seen < (1UL << ModuleInfo.radix) )
+; 778  : #if COCTALS
+; 779  :         if( Options.allow_c_octals && *dig_start == '0' ) {
+; 780  :             if( OK_NUM( OCTAL ) ) {
+; 781  :                 base = 8;
+; 782  :                 break;
+; 783  :             }
+; 784  :         }
+; 785  : #endif
+; 786  :         /* radix      max. digits_seen
+; 787  :          -----------------------------------------------------------
+; 788  :          2            3      2^2-1  (0,1)
+; 789  :          8            255    2^8-1  (0,1,2,3,4,5,6,7)
+; 790  :          10           1023   2^10-1 (0,1,2,3,4,5,6,7,8,9)
+; 791  :          16           65535  2^16-1 (0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f)
+; 792  :          */
+; 793  :         if ( digits_seen < (1UL << ModuleInfo.radix) )
 
 	movzx	eax, BYTE PTR ModuleInfo+396
 	mov	ecx, 1
@@ -1632,7 +1633,7 @@ $LN30@get_number:
 	cmp	DWORD PTR digits_seen$[rsp], eax
 	jae	SHORT $LN33@get_number
 
-; 787  :             base = ModuleInfo.radix;
+; 794  :             base = ModuleInfo.radix;
 
 	movzx	eax, BYTE PTR ModuleInfo+396
 	mov	DWORD PTR base$[rsp], eax
@@ -1640,33 +1641,33 @@ $LN33@get_number:
 $LN5@get_number:
 $LN19@get_number:
 
-; 788  :         break;
-; 789  :     }
-; 790  : 
-; 791  : #if MASMNUMBER
-; 792  :     /* Masm doesn't swallow alphanum chars which may follow the
-; 793  :      * number!
-; 794  :      */
-; 795  :     if ( base != 0 ) {
+; 795  :         break;
+; 796  :     }
+; 797  : 
+; 798  : #if MASMNUMBER
+; 799  :     /* Masm doesn't swallow alphanum chars which may follow the
+; 800  :      * number!
+; 801  :      */
+; 802  :     if ( base != 0 ) {
 
 	cmp	DWORD PTR base$[rsp], 0
 	je	SHORT $LN34@get_number
 
-; 796  : #else
-; 797  :     if ( base != 0 && is_valid_id_char( *ptr ) == FALSE ) {
-; 798  : #endif
-; 799  :         buf->token = T_NUM;
+; 803  : #else
+; 804  :     if ( base != 0 && is_valid_id_char( *ptr ) == FALSE ) {
+; 805  : #endif
+; 806  :         buf->token = T_NUM;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax], 10
 
-; 800  :         buf->numbase = base;
+; 807  :         buf->numbase = base;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	movzx	ecx, BYTE PTR base$[rsp]
 	mov	BYTE PTR [rax+1], cl
 
-; 801  :         buf->itemlen = dig_end - dig_start;
+; 808  :         buf->itemlen = dig_end - dig_start;
 
 	cmp	BYTE PTR $T4[rsp], 0
 	jne	SHORT $LN50@get_number
@@ -1680,18 +1681,18 @@ $LN50@get_number:
 	mov	rcx, QWORD PTR buf$[rsp]
 	mov	DWORD PTR [rcx+16], eax
 
-; 802  :         //DebugMsg(("get_number: inp=%s, value=%" I32_SPEC "X\n", p->input, buf->value64 ));
-; 803  :     } else {
+; 809  :         //DebugMsg(("get_number: inp=%s, value=%" I32_SPEC "X\n", p->input, buf->value64 ));
+; 810  :     } else {
 
 	jmp	$LN35@get_number
 $LN34@get_number:
 
-; 804  :         buf->token = T_BAD_NUM;
+; 811  :         buf->token = T_BAD_NUM;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax], 12
 
-; 805  :         DebugMsg(("get_number: BAD_NUMBER (%s), radix=%u, base=%u, ptr=>%s<, digits_seen=%Xh\n", dig_start, ModuleInfo.radix, base, ptr, digits_seen ));
+; 812  :         DebugMsg(("get_number: BAD_NUMBER (%s), radix=%u, base=%u, ptr=>%s<, digits_seen=%Xh\n", dig_start, ModuleInfo.radix, base, ptr, digits_seen ));
 
 	movzx	eax, BYTE PTR ModuleInfo+396
 	mov	ecx, DWORD PTR digits_seen$[rsp]
@@ -1701,12 +1702,12 @@ $LN34@get_number:
 	mov	r9d, DWORD PTR base$[rsp]
 	mov	r8d, eax
 	mov	rdx, QWORD PTR dig_start$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11169
+	lea	rcx, OFFSET FLAT:$SG11173
 	call	DoDebugMsg
 $LN10@get_number:
 
-; 806  :         /* swallow remainder of token */
-; 807  :         while( is_valid_id_char( *ptr ) ) ++ptr;
+; 813  :         /* swallow remainder of token */
+; 814  :         while( is_valid_id_char( *ptr ) ) ++ptr;
 
 	mov	rax, QWORD PTR ptr$[rsp]
 	movsx	eax, BYTE PTR [rax]
@@ -1739,9 +1740,9 @@ $LN11@get_number:
 $LN35@get_number:
 $number_done$52:
 
-; 808  :     }
-; 809  : number_done:
-; 810  :     len = ptr - p->input;
+; 815  :     }
+; 816  : number_done:
+; 817  :     len = ptr - p->input;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -1750,7 +1751,7 @@ $number_done$52:
 	mov	rax, rcx
 	mov	DWORD PTR len$[rsp], eax
 
-; 811  :     memcpy( p->output, p->input, len );
+; 818  :     memcpy( p->output, p->input, len );
 
 	mov	eax, DWORD PTR len$[rsp]
 	mov	r8d, eax
@@ -1760,8 +1761,8 @@ $number_done$52:
 	mov	rcx, QWORD PTR [rax+8]
 	call	memcpy
 
-; 812  : 
-; 813  :     p->output += len;
+; 819  : 
+; 820  :     p->output += len;
 
 	mov	eax, DWORD PTR len$[rsp]
 	mov	rcx, QWORD PTR p$[rsp]
@@ -1769,7 +1770,7 @@ $number_done$52:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx+8], rax
 
-; 814  :     *p->output++ = NULLC;
+; 821  :     *p->output++ = NULLC;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax+8]
@@ -1780,19 +1781,19 @@ $number_done$52:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx+8], rax
 
-; 815  :     p->input = ptr;
+; 822  :     p->input = ptr;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR ptr$[rsp]
 	mov	QWORD PTR [rax], rcx
 
-; 816  : 
-; 817  :     return( NOT_ERROR );
+; 823  : 
+; 824  :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@get_number:
 
-; 818  : }
+; 825  : }
 
 	add	rsp, 144				; 00000090H
 	pop	rdi
@@ -1830,7 +1831,7 @@ buf$ = 80
 p$ = 88
 get_special_symbol PROC
 
-; 504  : {
+; 511  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -1842,19 +1843,19 @@ get_special_symbol PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+80]
 
-; 505  :     char    symbol;
-; 506  :     char    c;
-; 507  :     int     i;
-; 508  :     int  index;
-; 509  : 
-; 510  :     symbol = *p->input;
+; 512  :     char    symbol;
+; 513  :     char    c;
+; 514  :     int     i;
+; 515  :     int  index;
+; 516  : 
+; 517  :     symbol = *p->input;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
 	movzx	eax, BYTE PTR [rax]
 	mov	BYTE PTR symbol$[rsp], al
 
-; 511  :     switch( symbol ) {
+; 518  :     switch( symbol ) {
 
 	movsx	eax, BYTE PTR symbol$[rsp]
 	mov	DWORD PTR tv67[rsp], eax
@@ -1871,8 +1872,8 @@ get_special_symbol PROC
 	jmp	rax
 $LN6@get_specia:
 
-; 512  :     case ':' : /* T_COLON binary operator (0x3A) */
-; 513  :         p->input++;
+; 519  :     case ':' : /* T_COLON binary operator (0x3A) */
+; 520  :         p->input++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -1880,7 +1881,7 @@ $LN6@get_specia:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 514  :         if ( *p->input == ':' ) {
+; 521  :         if ( *p->input == ':' ) {
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -1888,7 +1889,7 @@ $LN6@get_specia:
 	cmp	eax, 58					; 0000003aH
 	jne	SHORT $LN7@get_specia
 
-; 515  :             p->input++;
+; 522  :             p->input++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -1896,50 +1897,50 @@ $LN6@get_specia:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 516  :             buf->token = T_DBL_COLON;
+; 523  :             buf->token = T_DBL_COLON;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax], 13
 
-; 517  :             buf->string_ptr = "::";
+; 524  :             buf->string_ptr = "::";
 
 	mov	rax, QWORD PTR buf$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11090
+	lea	rcx, OFFSET FLAT:$SG11094
 	mov	QWORD PTR [rax+8], rcx
 
-; 518  :         } else {
+; 525  :         } else {
 
 	jmp	SHORT $LN8@get_specia
 $LN7@get_specia:
 
-; 519  :             buf->token = T_COLON;
+; 526  :             buf->token = T_COLON;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax], 58			; 0000003aH
 
-; 520  :             buf->string_ptr = ":";
+; 527  :             buf->string_ptr = ":";
 
 	mov	rax, QWORD PTR buf$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11091
+	lea	rcx, OFFSET FLAT:$SG11095
 	mov	QWORD PTR [rax+8], rcx
 $LN8@get_specia:
 
-; 521  :         }
-; 522  :         break;
+; 528  :         }
+; 529  :         break;
 
 	jmp	$LN2@get_specia
 $LN9@get_specia:
 
-; 523  :     case '%' : /* T_PERCENT (0x25) */
-; 524  : #if PERCENT_OUT
-; 525  :         /* %OUT directive? */
-; 526  :         if ( ( _memicmp( p->input+1, "OUT", 3 ) == 0 ) && !is_valid_id_char( *(p->input+4) ) ) {
+; 530  :     case '%' : /* T_PERCENT (0x25) */
+; 531  : #if PERCENT_OUT
+; 532  :         /* %OUT directive? */
+; 533  :         if ( ( _memicmp( p->input+1, "OUT", 3 ) == 0 ) && !is_valid_id_char( *(p->input+4) ) ) {
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
 	inc	rax
 	mov	r8d, 3
-	lea	rdx, OFFSET FLAT:$SG11094
+	lea	rdx, OFFSET FLAT:$SG11098
 	mov	rcx, rax
 	call	QWORD PTR __imp__memicmp
 	test	eax, eax
@@ -1972,22 +1973,22 @@ $LN9@get_specia:
 	cmp	eax, 63					; 0000003fH
 	je	$LN10@get_specia
 
-; 527  :             buf->token = T_DIRECTIVE;
+; 534  :             buf->token = T_DIRECTIVE;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax], 3
 
-; 528  :             buf->tokval = T_ECHO;
+; 535  :             buf->tokval = T_ECHO;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	DWORD PTR [rax+16], 441			; 000001b9H
 
-; 529  :             buf->dirtype = DRT_ECHO;
+; 536  :             buf->dirtype = DRT_ECHO;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax+1], 46			; 0000002eH
 
-; 530  :             memcpy( p->output, p->input, 4 );
+; 537  :             memcpy( p->output, p->input, 4 );
 
 	mov	r8d, 4
 	mov	rax, QWORD PTR p$[rsp]
@@ -1996,7 +1997,7 @@ $LN9@get_specia:
 	mov	rcx, QWORD PTR [rax+8]
 	call	memcpy
 
-; 531  :             p->input += 4;
+; 538  :             p->input += 4;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -2004,7 +2005,7 @@ $LN9@get_specia:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 532  :             p->output += 4;
+; 539  :             p->output += 4;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax+8]
@@ -2012,7 +2013,7 @@ $LN9@get_specia:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx+8], rax
 
-; 533  :             *(p->output)++ = NULLC;
+; 540  :             *(p->output)++ = NULLC;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax+8]
@@ -2023,14 +2024,14 @@ $LN9@get_specia:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx+8], rax
 
-; 534  :             break;
+; 541  :             break;
 
 	jmp	$LN2@get_specia
 $LN10@get_specia:
 
-; 535  :         }
-; 536  : #endif
-; 537  :         p->input++;
+; 542  :         }
+; 543  : #endif
+; 544  :         p->input++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -2038,7 +2039,7 @@ $LN10@get_specia:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 538  :         if ( p->flags == TOK_DEFAULT && p->index == 0 ) {
+; 545  :         if ( p->flags == TOK_DEFAULT && p->index == 0 ) {
 
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax+28]
@@ -2048,7 +2049,7 @@ $LN10@get_specia:
 	cmp	DWORD PTR [rax+24], 0
 	jne	SHORT $LN11@get_specia
 
-; 539  :             p->flags3 |= TF3_EXPANSION;
+; 546  :             p->flags3 |= TF3_EXPANSION;
 
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax+30]
@@ -2056,32 +2057,32 @@ $LN10@get_specia:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	BYTE PTR [rcx+30], al
 
-; 540  :             return( EMPTY );
+; 547  :             return( EMPTY );
 
 	mov	eax, -2
 	jmp	$LN1@get_specia
 $LN11@get_specia:
 
-; 541  :         }
-; 542  :         buf->token = T_PERCENT;
+; 548  :         }
+; 549  :         buf->token = T_PERCENT;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax], 37			; 00000025H
 
-; 543  :         buf->string_ptr = "%";
+; 550  :         buf->string_ptr = "%";
 
 	mov	rax, QWORD PTR buf$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11096
+	lea	rcx, OFFSET FLAT:$SG11100
 	mov	QWORD PTR [rax+8], rcx
 
-; 544  :         break;
+; 551  :         break;
 
 	jmp	$LN2@get_specia
 $LN12@get_specia:
 
-; 545  :     case '(' : /* 0x28: T_OP_BRACKET operator - needs a matching ')' */
-; 546  :         /* v2.11: reset c-expression flag if a macro function call is detected */
-; 547  :         if ( ( p->flags2 & DF_CEXPR ) && p->index && (buf-1)->token == T_ID ) {
+; 552  :     case '(' : /* 0x28: T_OP_BRACKET operator - needs a matching ')' */
+; 553  :         /* v2.11: reset c-expression flag if a macro function call is detected */
+; 554  :         if ( ( p->flags2 & DF_CEXPR ) && p->index && (buf-1)->token == T_ID ) {
 
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax+29]
@@ -2096,14 +2097,14 @@ $LN12@get_specia:
 	cmp	eax, 8
 	jne	SHORT $LN13@get_specia
 
-; 548  :             struct asym *sym = SymSearch( (buf-1)->string_ptr );
+; 555  :             struct asym *sym = SymSearch( (buf-1)->string_ptr );
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	rcx, QWORD PTR [rax-24]
 	call	SymFind
 	mov	QWORD PTR sym$1[rsp], rax
 
-; 549  :             if ( sym && ( sym->state == SYM_MACRO ) && sym->isfunc )
+; 556  :             if ( sym && ( sym->state == SYM_MACRO ) && sym->isfunc )
 
 	cmp	QWORD PTR sym$1[rsp], 0
 	je	SHORT $LN14@get_specia
@@ -2118,7 +2119,7 @@ $LN12@get_specia:
 	test	eax, eax
 	je	SHORT $LN14@get_specia
 
-; 550  :                 p->flags2 &= ~DF_CEXPR;
+; 557  :                 p->flags2 &= ~DF_CEXPR;
 
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax+29]
@@ -2129,17 +2130,17 @@ $LN14@get_specia:
 $LN13@get_specia:
 $LN15@get_specia:
 
-; 551  :         }
-; 552  :         /* no break */
-; 553  :     case ')' : /* 0x29: T_CL_BRACKET */
-; 554  :     case '*' : /* 0x2A: binary operator */
-; 555  :     case '+' : /* 0x2B: unary|binary operator */
-; 556  :     case ',' : /* 0x2C: T_COMMA */
-; 557  :     case '-' : /* 0x2D: unary|binary operator */
-; 558  :     case '.' : /* 0x2E: T_DOT binary operator */
-; 559  :     case '/' : /* 0x2F: binary operator */
-; 560  :         /* all of these are themselves a token */
-; 561  :         p->input++;
+; 558  :         }
+; 559  :         /* no break */
+; 560  :     case ')' : /* 0x29: T_CL_BRACKET */
+; 561  :     case '*' : /* 0x2A: binary operator */
+; 562  :     case '+' : /* 0x2B: unary|binary operator */
+; 563  :     case ',' : /* 0x2C: T_COMMA */
+; 564  :     case '-' : /* 0x2D: unary|binary operator */
+; 565  :     case '.' : /* 0x2E: T_DOT binary operator */
+; 566  :     case '/' : /* 0x2F: binary operator */
+; 567  :         /* all of these are themselves a token */
+; 568  :         p->input++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -2147,19 +2148,19 @@ $LN15@get_specia:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 562  :         buf->token = symbol;
+; 569  :         buf->token = symbol;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	movzx	ecx, BYTE PTR symbol$[rsp]
 	mov	BYTE PTR [rax], cl
 
-; 563  :         buf->specval = 0; /* initialize, in case the token needs extra data */
+; 570  :         buf->specval = 0; /* initialize, in case the token needs extra data */
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax+1], 0
 
-; 564  :         /* v2.06: use constants for the token string */
-; 565  :         buf->string_ptr = (char *)&stokstr1[symbol - '('];
+; 571  :         /* v2.06: use constants for the token string */
+; 572  :         buf->string_ptr = (char *)&stokstr1[symbol - '('];
 
 	movsx	eax, BYTE PTR symbol$[rsp]
 	sub	eax, 40					; 00000028H
@@ -2169,14 +2170,14 @@ $LN15@get_specia:
 	mov	rcx, QWORD PTR buf$[rsp]
 	mov	QWORD PTR [rcx+8], rax
 
-; 566  :         break;
+; 573  :         break;
 
 	jmp	$LN2@get_specia
 $LN16@get_specia:
 
-; 567  :     case '[' : /* T_OP_SQ_BRACKET operator - needs a matching ']' (0x5B) */
-; 568  :     case ']' : /* T_CL_SQ_BRACKET (0x5D) */
-; 569  :         p->input++;
+; 574  :     case '[' : /* T_OP_SQ_BRACKET operator - needs a matching ']' (0x5B) */
+; 575  :     case ']' : /* T_CL_SQ_BRACKET (0x5D) */
+; 576  :         p->input++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -2185,8 +2186,8 @@ $LN16@get_specia:
 	mov	QWORD PTR [rcx], rax
 $LN4@get_specia:
 
-; 570  : #if AVXSUPP
-; 571  :         while ( isspace( *p->input )) p->input++; 
+; 577  : #if AVXSUPP
+; 578  :         while ( isspace( *p->input )) p->input++; 
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -2203,22 +2204,22 @@ $LN4@get_specia:
 	jmp	SHORT $LN4@get_specia
 $LN5@get_specia:
 
-; 572  :         c = *p->input;
+; 579  :         c = *p->input;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
 	movzx	eax, BYTE PTR [rax]
 	mov	BYTE PTR c$[rsp], al
 
-; 573  : #endif
-; 574  :         buf->token = symbol;
+; 580  : #endif
+; 581  :         buf->token = symbol;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	movzx	ecx, BYTE PTR symbol$[rsp]
 	mov	BYTE PTR [rax], cl
 
-; 575  :         /* v2.06: use constants for the token string */
-; 576  :         buf->string_ptr = (char *)&stokstr2[symbol - '['];
+; 582  :         /* v2.06: use constants for the token string */
+; 583  :         buf->string_ptr = (char *)&stokstr2[symbol - '['];
 
 	movsx	eax, BYTE PTR symbol$[rsp]
 	sub	eax, 91					; 0000005bH
@@ -2228,18 +2229,18 @@ $LN5@get_specia:
 	mov	rcx, QWORD PTR buf$[rsp]
 	mov	QWORD PTR [rcx+8], rax
 
-; 577  : #if AVXSUPP
-; 578  :         /* Intercept here '{' for EVEX mask or broadcast events 
-; 579  :          * it could be {k1}, ]{k1}{z}, {1to2},{1to4},{1to8},{1to16}
-; 580  :         */
-; 581  :         if (c == '{')
+; 584  : #if AVXSUPP
+; 585  :         /* Intercept here '{' for EVEX mask or broadcast events 
+; 586  :          * it could be {k1}, ]{k1}{z}, {1to2},{1to4},{1to8},{1to16}
+; 587  :         */
+; 588  :         if (c == '{')
 
 	movsx	eax, BYTE PTR c$[rsp]
 	cmp	eax, 123				; 0000007bH
 	jne	SHORT $LN17@get_specia
 
-; 582  :         {
-; 583  :           p->input++;
+; 589  :         {
+; 590  :           p->input++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -2247,7 +2248,7 @@ $LN5@get_specia:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 584  :           if ((*p->input | 0x20) == 'k' || (*p->input | 0x20) == 'z')
+; 591  :           if ((*p->input | 0x20) == 'k' || (*p->input | 0x20) == 'z')
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -2263,30 +2264,30 @@ $LN5@get_specia:
 	jne	SHORT $LN18@get_specia
 $LN20@get_specia:
 
-; 585  :             get_decos( p ) ;    // mask decorators
+; 592  :             get_decos( p ) ;    // mask decorators
 
 	mov	rcx, QWORD PTR p$[rsp]
 	call	get_decos
 	jmp	SHORT $LN19@get_specia
 $LN18@get_specia:
 
-; 586  :           else
-; 587  :             get_broads( p ) ;   // broadcast decorators
+; 593  :           else
+; 594  :             get_broads( p ) ;   // broadcast decorators
 
 	mov	rcx, QWORD PTR p$[rsp]
 	call	get_broads
 $LN19@get_specia:
 $LN17@get_specia:
 
-; 588  :         }
-; 589  : #endif
-; 590  :         break;
+; 595  :         }
+; 596  : #endif
+; 597  :         break;
 
 	jmp	$LN2@get_specia
 $LN21@get_specia:
 
-; 591  :     case '=' : /* (0x3D) */
-; 592  :         if ( *(p->input+1) != '=' ) {
+; 598  :     case '=' : /* (0x3D) */
+; 599  :         if ( *(p->input+1) != '=' ) {
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -2294,28 +2295,28 @@ $LN21@get_specia:
 	cmp	eax, 61					; 0000003dH
 	je	SHORT $LN22@get_specia
 
-; 593  :             buf->token = T_DIRECTIVE;
+; 600  :             buf->token = T_DIRECTIVE;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax], 3
 
-; 594  :             buf->tokval = T_EQU;
+; 601  :             buf->tokval = T_EQU;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	DWORD PTR [rax+16], 443			; 000001bbH
 
-; 595  :             buf->dirtype = DRT_EQUALSGN; /* to make it differ from EQU directive */
+; 602  :             buf->dirtype = DRT_EQUALSGN; /* to make it differ from EQU directive */
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax+1], 48			; 00000030H
 
-; 596  :             buf->string_ptr = "=";
+; 603  :             buf->string_ptr = "=";
 
 	mov	rax, QWORD PTR buf$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11108
+	lea	rcx, OFFSET FLAT:$SG11112
 	mov	QWORD PTR [rax+8], rcx
 
-; 597  :             p->input++;
+; 604  :             p->input++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -2323,24 +2324,24 @@ $LN21@get_specia:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 598  :             break;
+; 605  :             break;
 
 	jmp	$LN2@get_specia
 $LN22@get_specia:
 $LN23@get_specia:
 
-; 599  :         }
-; 600  :         /* fall through */
-; 601  :     default:
-; 602  :         /* detect C style operators.
-; 603  :          * DF_CEXPR is set if .IF, .WHILE, .ELSEIF or .UNTIL
-; 604  :          * has been detected in the current line.
-; 605  :          * will catch: '!', '<', '>', '&', '==', '!=', '<=', '>=', '&&', '||'
-; 606  :          * A single '|' will also be caught, although it isn't a valid
-; 607  :          * operator - it will cause a 'operator expected' error msg later.
-; 608  :          * the tokens are stored as one- or two-byte sized "strings".
-; 609  :          */
-; 610  :       if ( ( p->flags2 & DF_CEXPR ) && strchr( "=!<>&|¦", symbol ) ) {     //habran added '¦'
+; 606  :         }
+; 607  :         /* fall through */
+; 608  :     default:
+; 609  :         /* detect C style operators.
+; 610  :          * DF_CEXPR is set if .IF, .WHILE, .ELSEIF or .UNTIL
+; 611  :          * has been detected in the current line.
+; 612  :          * will catch: '!', '<', '>', '&', '==', '!=', '<=', '>=', '&&', '||'
+; 613  :          * A single '|' will also be caught, although it isn't a valid
+; 614  :          * operator - it will cause a 'operator expected' error msg later.
+; 615  :          * the tokens are stored as one- or two-byte sized "strings".
+; 616  :          */
+; 617  :       if ( ( p->flags2 & DF_CEXPR ) && strchr( "=!<>&|¦", symbol ) ) {     //habran added '¦'
 
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax+29]
@@ -2349,12 +2350,12 @@ $LN23@get_specia:
 	je	$LN24@get_specia
 	movsx	eax, BYTE PTR symbol$[rsp]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11111
+	lea	rcx, OFFSET FLAT:$SG11115
 	call	QWORD PTR __imp_strchr
 	test	rax, rax
 	je	$LN24@get_specia
 
-; 611  :             *(p->output)++ = symbol;
+; 618  :             *(p->output)++ = symbol;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax+8]
@@ -2366,7 +2367,7 @@ $LN23@get_specia:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx+8], rax
 
-; 612  :             p->input++;
+; 619  :             p->input++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -2374,12 +2375,12 @@ $LN23@get_specia:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 613  :             buf->stringlen = 1;
+; 620  :             buf->stringlen = 1;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	DWORD PTR [rax+16], 1
 
-; 614  :             if ( symbol == '&' || symbol == '|' ) {
+; 621  :             if ( symbol == '&' || symbol == '|' ) {
 
 	movsx	eax, BYTE PTR symbol$[rsp]
 	cmp	eax, 38					; 00000026H
@@ -2389,7 +2390,7 @@ $LN23@get_specia:
 	jne	SHORT $LN25@get_specia
 $LN27@get_specia:
 
-; 615  :                 if ( *p->input == symbol ) {
+; 622  :                 if ( *p->input == symbol ) {
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -2398,7 +2399,7 @@ $LN27@get_specia:
 	cmp	eax, ecx
 	jne	SHORT $LN28@get_specia
 
-; 616  :                     *(p->output)++ = symbol;
+; 623  :                     *(p->output)++ = symbol;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax+8]
@@ -2410,7 +2411,7 @@ $LN27@get_specia:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx+8], rax
 
-; 617  :                     p->input++;
+; 624  :                     p->input++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -2418,18 +2419,18 @@ $LN27@get_specia:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 618  :                     buf->stringlen = 2;
+; 625  :                     buf->stringlen = 2;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	DWORD PTR [rax+16], 2
 $LN28@get_specia:
 
-; 619  :                 }
+; 626  :                 }
 
 	jmp	SHORT $LN26@get_specia
 $LN25@get_specia:
 
-; 620  :             } else if ( *p->input == '=' ) {
+; 627  :             } else if ( *p->input == '=' ) {
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -2437,7 +2438,7 @@ $LN25@get_specia:
 	cmp	eax, 61					; 0000003dH
 	jne	SHORT $LN29@get_specia
 
-; 621  :                 *(p->output)++ = '=';
+; 628  :                 *(p->output)++ = '=';
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax+8]
@@ -2448,7 +2449,7 @@ $LN25@get_specia:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx+8], rax
 
-; 622  :                 p->input++;
+; 629  :                 p->input++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -2456,25 +2457,25 @@ $LN25@get_specia:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 623  :                 buf->stringlen = 2;
+; 630  :                 buf->stringlen = 2;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	DWORD PTR [rax+16], 2
 $LN29@get_specia:
 $LN26@get_specia:
 
-; 624  :             }
-; 625  :             buf->token = T_STRING;
+; 631  :             }
+; 632  :             buf->token = T_STRING;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax], 9
 
-; 626  :             buf->string_delim = NULLC;
+; 633  :             buf->string_delim = NULLC;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax+1], 0
 
-; 627  :             *(p->output)++ = NULLC;
+; 634  :             *(p->output)++ = NULLC;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax+8]
@@ -2485,20 +2486,20 @@ $LN26@get_specia:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx+8], rax
 
-; 628  :             break;
+; 635  :             break;
 
 	jmp	SHORT $LN2@get_specia
 $LN24@get_specia:
 
-; 629  :         }
-; 630  :         /* v2.08: ampersand is a special token */
-; 631  :         if ( symbol == '&' ) {
+; 636  :         }
+; 637  :         /* v2.08: ampersand is a special token */
+; 638  :         if ( symbol == '&' ) {
 
 	movsx	eax, BYTE PTR symbol$[rsp]
 	cmp	eax, 38					; 00000026H
 	jne	SHORT $LN30@get_specia
 
-; 632  :             p->input++;
+; 639  :             p->input++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -2506,27 +2507,27 @@ $LN24@get_specia:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 633  :             buf->token = '&';
+; 640  :             buf->token = '&';
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax], 38			; 00000026H
 
-; 634  :             buf->string_ptr = "&";
+; 641  :             buf->string_ptr = "&";
 
 	mov	rax, QWORD PTR buf$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11118
+	lea	rcx, OFFSET FLAT:$SG11122
 	mov	QWORD PTR [rax+8], rcx
 
-; 635  :             break;
+; 642  :             break;
 
 	jmp	SHORT $LN2@get_specia
 $LN30@get_specia:
 
-; 636  :         }
-; 637  :         /* anything we don't recognise we will consider a string,
-; 638  :          * delimited by space characters, commas, newlines or nulls
-; 639  :          */
-; 640  :         return( get_string( buf, p ) );
+; 643  :         }
+; 644  :         /* anything we don't recognise we will consider a string,
+; 645  :          * delimited by space characters, commas, newlines or nulls
+; 646  :          */
+; 647  :         return( get_string( buf, p ) );
 
 	mov	rdx, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR buf$[rsp]
@@ -2534,13 +2535,13 @@ $LN30@get_specia:
 	jmp	SHORT $LN1@get_specia
 $LN2@get_specia:
 
-; 641  :     }
-; 642  :     return( NOT_ERROR );
+; 648  :     }
+; 649  :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@get_specia:
 
-; 643  : }
+; 650  : }
 
 	add	rsp, 64					; 00000040H
 	pop	rdi
@@ -2635,7 +2636,7 @@ buf$ = 128
 p$ = 136
 get_string PROC
 
-; 309  : {
+; 316  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -2647,35 +2648,35 @@ get_string PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+128]
 
-; 310  :     char    symbol_o;
-; 311  :     char    symbol_c;
-; 312  :     char    c;
-; 313  :     char    *src = p->input;
+; 317  :     char    symbol_o;
+; 318  :     char    symbol_c;
+; 319  :     char    c;
+; 320  :     char    *src = p->input;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
 	mov	QWORD PTR src$[rsp], rax
 
-; 314  :     char    *dst = p->output;
+; 321  :     char    *dst = p->output;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax+8]
 	mov	QWORD PTR dst$[rsp], rax
 
-; 315  :     int     count = 0;
+; 322  :     int     count = 0;
 
 	mov	DWORD PTR count$[rsp], 0
 
-; 316  :     int     level;
-; 317  : 
-; 318  :     symbol_o = *src;
+; 323  :     int     level;
+; 324  : 
+; 325  :     symbol_o = *src;
 
 	mov	rax, QWORD PTR src$[rsp]
 	movzx	eax, BYTE PTR [rax]
 	mov	BYTE PTR symbol_o$[rsp], al
 
-; 319  : 
-; 320  :     switch( symbol_o ) {
+; 326  : 
+; 327  :     switch( symbol_o ) {
 
 	movzx	eax, BYTE PTR symbol_o$[rsp]
 	mov	BYTE PTR tv67[rsp], al
@@ -2690,15 +2691,15 @@ get_string PROC
 	jmp	$LN51@get_string
 $LN19@get_string:
 
-; 321  :     case '"':
-; 322  :     case '\'':
-; 323  :         buf->string_delim = symbol_o;
+; 328  :     case '"':
+; 329  :     case '\'':
+; 330  :         buf->string_delim = symbol_o;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	movzx	ecx, BYTE PTR symbol_o$[rsp]
 	mov	BYTE PTR [rax+1], cl
 
-; 324  :         *dst++ = symbol_o;
+; 331  :         *dst++ = symbol_o;
 
 	mov	rax, QWORD PTR dst$[rsp]
 	movzx	ecx, BYTE PTR symbol_o$[rsp]
@@ -2707,13 +2708,13 @@ $LN19@get_string:
 	inc	rax
 	mov	QWORD PTR dst$[rsp], rax
 
-; 325  :         src++;
+; 332  :         src++;
 
 	mov	rax, QWORD PTR src$[rsp]
 	inc	rax
 	mov	QWORD PTR src$[rsp], rax
 
-; 326  :         for ( ; count < MAX_STRING_LEN; src++, count++ ) {
+; 333  :         for ( ; count < MAX_STRING_LEN; src++, count++ ) {
 
 	jmp	SHORT $LN6@get_string
 $LN4@get_string:
@@ -2727,20 +2728,20 @@ $LN6@get_string:
 	cmp	DWORD PTR count$[rsp], 568		; 00000238H
 	jge	$LN5@get_string
 
-; 327  :             c = *src;
+; 334  :             c = *src;
 
 	mov	rax, QWORD PTR src$[rsp]
 	movzx	eax, BYTE PTR [rax]
 	mov	BYTE PTR c$[rsp], al
 
-; 328  :             if( c == symbol_o ) { /* another quote? */
+; 335  :             if( c == symbol_o ) { /* another quote? */
 
 	movsx	eax, BYTE PTR c$[rsp]
 	movsx	ecx, BYTE PTR symbol_o$[rsp]
 	cmp	eax, ecx
 	jne	SHORT $LN20@get_string
 
-; 329  :                 *dst++ = c; /* store it */
+; 336  :                 *dst++ = c; /* store it */
 
 	mov	rax, QWORD PTR dst$[rsp]
 	movzx	ecx, BYTE PTR c$[rsp]
@@ -2749,13 +2750,13 @@ $LN6@get_string:
 	inc	rax
 	mov	QWORD PTR dst$[rsp], rax
 
-; 330  :                 src++;
+; 337  :                 src++;
 
 	mov	rax, QWORD PTR src$[rsp]
 	inc	rax
 	mov	QWORD PTR src$[rsp], rax
 
-; 331  :                 if( *src != c )
+; 338  :                 if( *src != c )
 
 	mov	rax, QWORD PTR src$[rsp]
 	movsx	eax, BYTE PTR [rax]
@@ -2763,14 +2764,14 @@ $LN6@get_string:
 	cmp	eax, ecx
 	je	SHORT $LN22@get_string
 
-; 332  :                     break; /* exit loop */
+; 339  :                     break; /* exit loop */
 
 	jmp	SHORT $LN5@get_string
 $LN22@get_string:
 
-; 333  :                 /* a pair of quotes inside the string is
-; 334  :                  * handled as a single quote */
-; 335  :             } else if( c == NULLC ) {
+; 340  :                 /* a pair of quotes inside the string is
+; 341  :                  * handled as a single quote */
+; 342  :             } else if( c == NULLC ) {
 
 	jmp	SHORT $LN21@get_string
 $LN20@get_string:
@@ -2778,28 +2779,28 @@ $LN20@get_string:
 	test	eax, eax
 	jne	SHORT $LN23@get_string
 
-; 336  :                 /* missing terminating quote, change to undelimited string */
-; 337  :                 buf->string_delim = NULLC;
+; 343  :                 /* missing terminating quote, change to undelimited string */
+; 344  :                 buf->string_delim = NULLC;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax+1], 0
 
-; 338  :                 count++; /* count the first quote */
+; 345  :                 count++; /* count the first quote */
 
 	mov	eax, DWORD PTR count$[rsp]
 	inc	eax
 	mov	DWORD PTR count$[rsp], eax
 
-; 339  :                 break;
+; 346  :                 break;
 
 	jmp	SHORT $LN5@get_string
 
-; 340  :             } else {
+; 347  :             } else {
 
 	jmp	SHORT $LN24@get_string
 $LN23@get_string:
 
-; 341  :                 *dst++ = c;
+; 348  :                 *dst++ = c;
 
 	mov	rax, QWORD PTR dst$[rsp]
 	movzx	ecx, BYTE PTR c$[rsp]
@@ -2810,19 +2811,19 @@ $LN23@get_string:
 $LN24@get_string:
 $LN21@get_string:
 
-; 342  :             }
-; 343  :         }
+; 349  :             }
+; 350  :         }
 
 	jmp	$LN4@get_string
 $LN5@get_string:
 
-; 344  :         break;  /* end of string marker is the same */
+; 351  :         break;  /* end of string marker is the same */
 
 	jmp	$LN2@get_string
 $LN25@get_string:
 
-; 345  :     case '{':
-; 346  :         if ( p->flags & TOK_NOCURLBRACES )
+; 352  :     case '{':
+; 353  :         if ( p->flags & TOK_NOCURLBRACES )
 
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax+28]
@@ -2830,20 +2831,20 @@ $LN25@get_string:
 	test	eax, eax
 	je	SHORT $LN26@get_string
 
-; 347  :             goto undelimited_string;
+; 354  :             goto undelimited_string;
 
 	jmp	$undelimited_string$62
 $LN26@get_string:
 $LN27@get_string:
 
-; 348  :     case '<':
-; 349  :         buf->string_delim = symbol_o;
+; 355  :     case '<':
+; 356  :         buf->string_delim = symbol_o;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	movzx	ecx, BYTE PTR symbol_o$[rsp]
 	mov	BYTE PTR [rax+1], cl
 
-; 350  :         symbol_c = ( symbol_o == '<' ? '>' : '}' );
+; 357  :         symbol_c = ( symbol_o == '<' ? '>' : '}' );
 
 	movsx	eax, BYTE PTR symbol_o$[rsp]
 	cmp	eax, 60					; 0000003cH
@@ -2856,39 +2857,39 @@ $LN61@get_string:
 	movzx	eax, BYTE PTR tv94[rsp]
 	mov	BYTE PTR symbol_c$[rsp], al
 
-; 351  :         src++;
+; 358  :         src++;
 
 	mov	rax, QWORD PTR src$[rsp]
 	inc	rax
 	mov	QWORD PTR src$[rsp], rax
 
-; 352  :         for( level = 0; count < MAX_STRING_LEN; ) {
+; 359  :         for( level = 0; count < MAX_STRING_LEN; ) {
 
 	mov	DWORD PTR level$[rsp], 0
 $LN7@get_string:
 	cmp	DWORD PTR count$[rsp], 568		; 00000238H
 	jge	$LN8@get_string
 
-; 353  :             c = *src;
+; 360  :             c = *src;
 
 	mov	rax, QWORD PTR src$[rsp]
 	movzx	eax, BYTE PTR [rax]
 	mov	BYTE PTR c$[rsp], al
 
-; 354  :             if( c == symbol_o ) { /* < or { ? */
+; 361  :             if( c == symbol_o ) { /* < or { ? */
 
 	movsx	eax, BYTE PTR c$[rsp]
 	movsx	ecx, BYTE PTR symbol_o$[rsp]
 	cmp	eax, ecx
 	jne	SHORT $LN28@get_string
 
-; 355  :                 level++;
+; 362  :                 level++;
 
 	mov	eax, DWORD PTR level$[rsp]
 	inc	eax
 	mov	DWORD PTR level$[rsp], eax
 
-; 356  :                 *dst++ = c; src++;
+; 363  :                 *dst++ = c; src++;
 
 	mov	rax, QWORD PTR dst$[rsp]
 	movzx	ecx, BYTE PTR c$[rsp]
@@ -2900,7 +2901,7 @@ $LN7@get_string:
 	inc	rax
 	mov	QWORD PTR src$[rsp], rax
 
-; 357  :                 count++;
+; 364  :                 count++;
 
 	mov	eax, DWORD PTR count$[rsp]
 	inc	eax
@@ -2908,25 +2909,25 @@ $LN7@get_string:
 	jmp	$LN29@get_string
 $LN28@get_string:
 
-; 358  :             } else if( c == symbol_c ) { /* > or }? */
+; 365  :             } else if( c == symbol_c ) { /* > or }? */
 
 	movsx	eax, BYTE PTR c$[rsp]
 	movsx	ecx, BYTE PTR symbol_c$[rsp]
 	cmp	eax, ecx
 	jne	SHORT $LN30@get_string
 
-; 359  :                 if( level ) {
+; 366  :                 if( level ) {
 
 	cmp	DWORD PTR level$[rsp], 0
 	je	SHORT $LN32@get_string
 
-; 360  :                     level--;
+; 367  :                     level--;
 
 	mov	eax, DWORD PTR level$[rsp]
 	dec	eax
 	mov	DWORD PTR level$[rsp], eax
 
-; 361  :                     *dst++ = c; src++;
+; 368  :                     *dst++ = c; src++;
 
 	mov	rax, QWORD PTR dst$[rsp]
 	movzx	ecx, BYTE PTR c$[rsp]
@@ -2938,45 +2939,45 @@ $LN28@get_string:
 	inc	rax
 	mov	QWORD PTR src$[rsp], rax
 
-; 362  :                     count++;
+; 369  :                     count++;
 
 	mov	eax, DWORD PTR count$[rsp]
 	inc	eax
 	mov	DWORD PTR count$[rsp], eax
 
-; 363  :                 } else {
+; 370  :                 } else {
 
 	jmp	SHORT $LN33@get_string
 $LN32@get_string:
 
-; 364  :                     /* store the string delimiter unless it is <> */
-; 365  :                     /* v2.08: don't store delimiters for {}-literals */
-; 366  :                     //if (symbol_o != '<')
-; 367  :                     //    *dst++ = c;
-; 368  :                     src++;
+; 371  :                     /* store the string delimiter unless it is <> */
+; 372  :                     /* v2.08: don't store delimiters for {}-literals */
+; 373  :                     //if (symbol_o != '<')
+; 374  :                     //    *dst++ = c;
+; 375  :                     src++;
 
 	mov	rax, QWORD PTR src$[rsp]
 	inc	rax
 	mov	QWORD PTR src$[rsp], rax
 
-; 369  :                     break; /* exit loop */
+; 376  :                     break; /* exit loop */
 
 	jmp	$LN8@get_string
 $LN33@get_string:
 
-; 370  :                 }
+; 377  :                 }
 
 	jmp	$LN31@get_string
 $LN30@get_string:
 
-; 371  : #if 1
-; 372  :             /*
-; 373  :              a " or ' inside a <>/{} string? Since it's not a must that
-; 374  :              [double-]quotes are paired in a literal it must be done
-; 375  :              directive-dependant!
-; 376  :              see: IFIDN <">,<">
-; 377  :              */
-; 378  :             } else if( ( c == '"' || c == '\'' ) && ( p->flags2 & DF_STRPARM ) == 0 ) {
+; 378  : #if 1
+; 379  :             /*
+; 380  :              a " or ' inside a <>/{} string? Since it's not a must that
+; 381  :              [double-]quotes are paired in a literal it must be done
+; 382  :              directive-dependant!
+; 383  :              see: IFIDN <">,<">
+; 384  :              */
+; 385  :             } else if( ( c == '"' || c == '\'' ) && ( p->flags2 & DF_STRPARM ) == 0 ) {
 
 	movsx	eax, BYTE PTR c$[rsp]
 	cmp	eax, 34					; 00000022H
@@ -2991,15 +2992,15 @@ $LN36@get_string:
 	test	eax, eax
 	jne	$LN34@get_string
 
-; 379  :                 char delim = c;
+; 386  :                 char delim = c;
 
 	movzx	eax, BYTE PTR c$[rsp]
 	mov	BYTE PTR delim$1[rsp], al
 
-; 380  :                 char *tdst;
-; 381  :                 char *tsrc;
-; 382  :                 int tcount;
-; 383  :                 *dst++ = c; src++;
+; 387  :                 char *tdst;
+; 388  :                 char *tsrc;
+; 389  :                 int tcount;
+; 390  :                 *dst++ = c; src++;
 
 	mov	rax, QWORD PTR dst$[rsp]
 	movzx	ecx, BYTE PTR c$[rsp]
@@ -3011,29 +3012,29 @@ $LN36@get_string:
 	inc	rax
 	mov	QWORD PTR src$[rsp], rax
 
-; 384  :                 count++;
+; 391  :                 count++;
 
 	mov	eax, DWORD PTR count$[rsp]
 	inc	eax
 	mov	DWORD PTR count$[rsp], eax
 
-; 385  :                 tdst = dst;
+; 392  :                 tdst = dst;
 
 	mov	rax, QWORD PTR dst$[rsp]
 	mov	QWORD PTR tdst$2[rsp], rax
 
-; 386  :                 tsrc = src;
+; 393  :                 tsrc = src;
 
 	mov	rax, QWORD PTR src$[rsp]
 	mov	QWORD PTR tsrc$3[rsp], rax
 
-; 387  :                 tcount = count;
+; 394  :                 tcount = count;
 
 	mov	eax, DWORD PTR count$[rsp]
 	mov	DWORD PTR tcount$4[rsp], eax
 $LN10@get_string:
 
-; 388  :                 while (*src != delim && *src != NULLC && count < MAX_STRING_LEN-1 ) {
+; 395  :                 while (*src != delim && *src != NULLC && count < MAX_STRING_LEN-1 ) {
 
 	mov	rax, QWORD PTR src$[rsp]
 	movsx	eax, BYTE PTR [rax]
@@ -3047,7 +3048,7 @@ $LN10@get_string:
 	cmp	DWORD PTR count$[rsp], 567		; 00000237H
 	jge	SHORT $LN11@get_string
 
-; 389  :                     if ( symbol_o == '<' && *src == '!' && *(src+1) != NULLC )
+; 396  :                     if ( symbol_o == '<' && *src == '!' && *(src+1) != NULLC )
 
 	movsx	eax, BYTE PTR symbol_o$[rsp]
 	cmp	eax, 60					; 0000003cH
@@ -3061,14 +3062,14 @@ $LN10@get_string:
 	test	eax, eax
 	je	SHORT $LN37@get_string
 
-; 390  :                         src++;
+; 397  :                         src++;
 
 	mov	rax, QWORD PTR src$[rsp]
 	inc	rax
 	mov	QWORD PTR src$[rsp], rax
 $LN37@get_string:
 
-; 391  :                     *dst++ = *src++;
+; 398  :                     *dst++ = *src++;
 
 	mov	rax, QWORD PTR dst$[rsp]
 	mov	rcx, QWORD PTR src$[rsp]
@@ -3081,18 +3082,18 @@ $LN37@get_string:
 	inc	rax
 	mov	QWORD PTR src$[rsp], rax
 
-; 392  :                     count++;
+; 399  :                     count++;
 
 	mov	eax, DWORD PTR count$[rsp]
 	inc	eax
 	mov	DWORD PTR count$[rsp], eax
 
-; 393  :                 }
+; 400  :                 }
 
 	jmp	$LN10@get_string
 $LN11@get_string:
 
-; 394  :                 if ( *src == delim ) {
+; 401  :                 if ( *src == delim ) {
 
 	mov	rax, QWORD PTR src$[rsp]
 	movsx	eax, BYTE PTR [rax]
@@ -3100,7 +3101,7 @@ $LN11@get_string:
 	cmp	eax, ecx
 	jne	SHORT $LN38@get_string
 
-; 395  :                     *dst++ = *src++;
+; 402  :                     *dst++ = *src++;
 
 	mov	rax, QWORD PTR dst$[rsp]
 	mov	rcx, QWORD PTR src$[rsp]
@@ -3113,45 +3114,45 @@ $LN11@get_string:
 	inc	rax
 	mov	QWORD PTR src$[rsp], rax
 
-; 396  :                     count++;
+; 403  :                     count++;
 
 	mov	eax, DWORD PTR count$[rsp]
 	inc	eax
 	mov	DWORD PTR count$[rsp], eax
 
-; 397  :                     continue;
+; 404  :                     continue;
 
 	jmp	$LN7@get_string
 
-; 398  :                 } else {
+; 405  :                 } else {
 
 	jmp	SHORT $LN39@get_string
 $LN38@get_string:
 
-; 399  :                     /* restore values */
-; 400  :                     src = tsrc;
+; 406  :                     /* restore values */
+; 407  :                     src = tsrc;
 
 	mov	rax, QWORD PTR tsrc$3[rsp]
 	mov	QWORD PTR src$[rsp], rax
 
-; 401  :                     dst = tdst;
+; 408  :                     dst = tdst;
 
 	mov	rax, QWORD PTR tdst$2[rsp]
 	mov	QWORD PTR dst$[rsp], rax
 
-; 402  :                     count = tcount;
+; 409  :                     count = tcount;
 
 	mov	eax, DWORD PTR tcount$4[rsp]
 	mov	DWORD PTR count$[rsp], eax
 $LN39@get_string:
 
-; 403  :                 }
+; 410  :                 }
 
 	jmp	$LN35@get_string
 $LN34@get_string:
 
-; 404  : #endif
-; 405  :             } else if( c == '!' && symbol_o == '<' && *(src+1) ) {
+; 411  : #endif
+; 412  :             } else if( c == '!' && symbol_o == '<' && *(src+1) ) {
 
 	movsx	eax, BYTE PTR c$[rsp]
 	cmp	eax, 33					; 00000021H
@@ -3164,21 +3165,21 @@ $LN34@get_string:
 	test	eax, eax
 	je	SHORT $LN40@get_string
 
-; 406  :                 /* handle literal-character operator '!'.
-; 407  :                  * it makes the next char to enter the literal uninterpreted.
-; 408  :                  */
-; 409  :                 /* v2.09: don't store the '!' */
-; 410  :                 //*dst++ = c; src++;
-; 411  :                 //count++;
-; 412  :                 //if ( count == MAX_STRING_LEN )
-; 413  :                 //    break;
-; 414  :                 src++;
+; 413  :                 /* handle literal-character operator '!'.
+; 414  :                  * it makes the next char to enter the literal uninterpreted.
+; 415  :                  */
+; 416  :                 /* v2.09: don't store the '!' */
+; 417  :                 //*dst++ = c; src++;
+; 418  :                 //count++;
+; 419  :                 //if ( count == MAX_STRING_LEN )
+; 420  :                 //    break;
+; 421  :                 src++;
 
 	mov	rax, QWORD PTR src$[rsp]
 	inc	rax
 	mov	QWORD PTR src$[rsp], rax
 
-; 415  :                 *dst++ = *src++;
+; 422  :                 *dst++ = *src++;
 
 	mov	rax, QWORD PTR dst$[rsp]
 	mov	rcx, QWORD PTR src$[rsp]
@@ -3191,7 +3192,7 @@ $LN34@get_string:
 	inc	rax
 	mov	QWORD PTR src$[rsp], rax
 
-; 416  :                 count++;
+; 423  :                 count++;
 
 	mov	eax, DWORD PTR count$[rsp]
 	inc	eax
@@ -3199,7 +3200,7 @@ $LN34@get_string:
 	jmp	$LN41@get_string
 $LN40@get_string:
 
-; 417  :             } else if( c == '\\' &&  ConcatLine( src, count, dst, p ) != EMPTY ) {
+; 424  :             } else if( c == '\\' &&  ConcatLine( src, count, dst, p ) != EMPTY ) {
 
 	movsx	eax, BYTE PTR c$[rsp]
 	cmp	eax, 92					; 0000005cH
@@ -3212,7 +3213,7 @@ $LN40@get_string:
 	cmp	eax, -2
 	je	SHORT $LN42@get_string
 
-; 418  :                 p->flags3 |= TF3_ISCONCAT;
+; 425  :                 p->flags3 |= TF3_ISCONCAT;
 
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax+30]
@@ -3222,7 +3223,7 @@ $LN40@get_string:
 	jmp	$LN43@get_string
 $LN42@get_string:
 
-; 419  :             } else if( c == NULLC || ( c == ';' && symbol_o == '{' )) {
+; 426  :             } else if( c == NULLC || ( c == ';' && symbol_o == '{' )) {
 
 	movsx	eax, BYTE PTR c$[rsp]
 	test	eax, eax
@@ -3235,7 +3236,7 @@ $LN42@get_string:
 	jne	$LN44@get_string
 $LN46@get_string:
 
-; 420  :                 if ( p->flags == TOK_DEFAULT && (( p->flags2 & DF_NOCONCAT ) == 0 ) ) { /* <{ */
+; 427  :                 if ( p->flags == TOK_DEFAULT && (( p->flags2 & DF_NOCONCAT ) == 0 ) ) { /* <{ */
 
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax+28]
@@ -3247,17 +3248,17 @@ $LN46@get_string:
 	test	eax, eax
 	jne	$LN47@get_string
 
-; 421  :                     /* if last nonspace character was a comma
-; 422  :                      * get next line and continue string scan
-; 423  :                      */
-; 424  :                     char *tmp = dst-1;
+; 428  :                     /* if last nonspace character was a comma
+; 429  :                      * get next line and continue string scan
+; 430  :                      */
+; 431  :                     char *tmp = dst-1;
 
 	mov	rax, QWORD PTR dst$[rsp]
 	dec	rax
 	mov	QWORD PTR tmp$5[rsp], rax
 $LN12@get_string:
 
-; 425  :                     while ( isspace(*tmp) ) tmp--;
+; 432  :                     while ( isspace(*tmp) ) tmp--;
 
 	mov	rax, QWORD PTR tmp$5[rsp]
 	movsx	eax, BYTE PTR [rax]
@@ -3271,20 +3272,20 @@ $LN12@get_string:
 	jmp	SHORT $LN12@get_string
 $LN13@get_string:
 
-; 426  :                     if ( *tmp == ',' ) {
+; 433  :                     if ( *tmp == ',' ) {
 
 	mov	rax, QWORD PTR tmp$5[rsp]
 	movsx	eax, BYTE PTR [rax]
 	cmp	eax, 44					; 0000002cH
 	jne	$LN48@get_string
 
-; 427  :                         DebugMsg1(("Tokenize.get_string: comma concatenation: %s\n", src ));
+; 434  :                         DebugMsg1(("Tokenize.get_string: comma concatenation: %s\n", src ));
 
 	mov	rdx, QWORD PTR src$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11058
+	lea	rcx, OFFSET FLAT:$SG11062
 	call	DoDebugMsg1
 
-; 428  :                         tmp = GetAlignedPointer( p->output, strlen( p->output ) );
+; 435  :                         tmp = GetAlignedPointer( p->output, strlen( p->output ) );
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR [rax+8]
@@ -3295,7 +3296,7 @@ $LN13@get_string:
 	add	rax, QWORD PTR [rcx+8]
 	mov	QWORD PTR tmp$5[rsp], rax
 
-; 429  :                         if( GetTextLine( tmp ) ) {
+; 436  :                         if( GetTextLine( tmp ) ) {
 
 	mov	rcx, QWORD PTR tmp$5[rsp]
 	call	GetTextLine
@@ -3303,8 +3304,8 @@ $LN13@get_string:
 	je	SHORT $LN49@get_string
 $LN14@get_string:
 
-; 430  :                             /* skip leading spaces */
-; 431  :                             while ( isspace( *tmp ) ) tmp++;
+; 437  :                             /* skip leading spaces */
+; 438  :                             while ( isspace( *tmp ) ) tmp++;
 
 	mov	rax, QWORD PTR tmp$5[rsp]
 	movsx	eax, BYTE PTR [rax]
@@ -3318,8 +3319,8 @@ $LN14@get_string:
 	jmp	SHORT $LN14@get_string
 $LN15@get_string:
 
-; 432  :                             /* this size check isn't fool-proved yet */
-; 433  :                             if ( strlen( tmp ) + count >= MAX_LINE_LEN ) {
+; 439  :                             /* this size check isn't fool-proved yet */
+; 440  :                             if ( strlen( tmp ) + count >= MAX_LINE_LEN ) {
 
 	mov	rcx, QWORD PTR tmp$5[rsp]
 	call	strlen
@@ -3328,47 +3329,47 @@ $LN15@get_string:
 	cmp	rax, 600				; 00000258H
 	jb	SHORT $LN50@get_string
 
-; 434  :                                 EmitError( LINE_TOO_LONG );
+; 441  :                                 EmitError( LINE_TOO_LONG );
 
-	mov	ecx, 61					; 0000003dH
+	mov	ecx, 62					; 0000003eH
 	call	EmitError
 
-; 435  :                                 return( ERROR );
+; 442  :                                 return( ERROR );
 
 	mov	eax, -1
 	jmp	$LN1@get_string
 $LN50@get_string:
 
-; 436  :                             }
-; 437  :                             strcpy( src, tmp );
+; 443  :                             }
+; 444  :                             strcpy( src, tmp );
 
 	mov	rdx, QWORD PTR tmp$5[rsp]
 	mov	rcx, QWORD PTR src$[rsp]
 	call	strcpy
 
-; 438  :                             continue;
+; 445  :                             continue;
 
 	jmp	$LN7@get_string
 $LN49@get_string:
 $LN48@get_string:
 $LN47@get_string:
 
-; 439  :                         }
-; 440  :                     }
-; 441  :                 }
-; 442  :                 src = p->input;
+; 446  :                         }
+; 447  :                     }
+; 448  :                 }
+; 449  :                 src = p->input;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
 	mov	QWORD PTR src$[rsp], rax
 
-; 443  :                 dst = p->output;
+; 450  :                 dst = p->output;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax+8]
 	mov	QWORD PTR dst$[rsp], rax
 
-; 444  :                 *dst++ = *src++;
+; 451  :                 *dst++ = *src++;
 
 	mov	rax, QWORD PTR dst$[rsp]
 	mov	rcx, QWORD PTR src$[rsp]
@@ -3381,20 +3382,20 @@ $LN47@get_string:
 	inc	rax
 	mov	QWORD PTR src$[rsp], rax
 
-; 445  :                 count = 1;
+; 452  :                 count = 1;
 
 	mov	DWORD PTR count$[rsp], 1
 
-; 446  :                 goto undelimited_string;
+; 453  :                 goto undelimited_string;
 
 	jmp	SHORT $undelimited_string$62
 
-; 447  :             } else {
+; 454  :             } else {
 
 	jmp	SHORT $LN45@get_string
 $LN44@get_string:
 
-; 448  :                 *dst++ = c; src++;
+; 455  :                 *dst++ = c; src++;
 
 	mov	rax, QWORD PTR dst$[rsp]
 	movzx	ecx, BYTE PTR c$[rsp]
@@ -3406,7 +3407,7 @@ $LN44@get_string:
 	inc	rax
 	mov	QWORD PTR src$[rsp], rax
 
-; 449  :                 count++;
+; 456  :                 count++;
 
 	mov	eax, DWORD PTR count$[rsp]
 	inc	eax
@@ -3418,38 +3419,38 @@ $LN35@get_string:
 $LN31@get_string:
 $LN29@get_string:
 
-; 450  :             }
-; 451  :         }
+; 457  :             }
+; 458  :         }
 
 	jmp	$LN7@get_string
 $LN8@get_string:
 
-; 452  :         break;
+; 459  :         break;
 
 	jmp	$LN2@get_string
 $LN51@get_string:
 $undelimited_string$62:
 
-; 453  :     default:
-; 454  :         undelimited_string:
-; 455  :         buf->string_delim = NULLC;
+; 460  :     default:
+; 461  :         undelimited_string:
+; 462  :         buf->string_delim = NULLC;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax+1], 0
 $LN16@get_string:
 
-; 456  :         /* this is an undelimited string,
-; 457  :          * so just copy it until we hit something that looks like the end.
-; 458  :          * this format is used by the INCLUDE directive, but may also
-; 459  :          * occur inside the string macros!
-; 460  :          */
-; 461  :         /* v2.05: also stop if a ')' is found - see literal2.asm regression test */
-; 462  :         //for( count = 0 ; count < MAX_STRING_LEN && *src != NULLC && !isspace( *src ) && *src != ',' && *src != ';'; ) {
-; 463  :         for( ; count < MAX_STRING_LEN &&
-; 464  :             /* v2.08: stop also at < and % */
-; 465  :             //*src != NULLC && !isspace( *src ) && *src != ',' && *src != ';' && *src != ')'; ) {
-; 466  :             //*src && !isspace( *src ) && *src != ',' && *src != ')' && *src != '<' && *src != '%'; ) {
-; 467  :             *src && !isspace( *src ) && *src != ',' && *src != ')' && *src != '%'; ) {
+; 463  :         /* this is an undelimited string,
+; 464  :          * so just copy it until we hit something that looks like the end.
+; 465  :          * this format is used by the INCLUDE directive, but may also
+; 466  :          * occur inside the string macros!
+; 467  :          */
+; 468  :         /* v2.05: also stop if a ')' is found - see literal2.asm regression test */
+; 469  :         //for( count = 0 ; count < MAX_STRING_LEN && *src != NULLC && !isspace( *src ) && *src != ',' && *src != ';'; ) {
+; 470  :         for( ; count < MAX_STRING_LEN &&
+; 471  :             /* v2.08: stop also at < and % */
+; 472  :             //*src != NULLC && !isspace( *src ) && *src != ',' && *src != ';' && *src != ')'; ) {
+; 473  :             //*src && !isspace( *src ) && *src != ',' && *src != ')' && *src != '<' && *src != '%'; ) {
+; 474  :             *src && !isspace( *src ) && *src != ',' && *src != ')' && *src != '%'; ) {
 
 	cmp	DWORD PTR count$[rsp], 568		; 00000238H
 	jge	$LN17@get_string
@@ -3476,7 +3477,7 @@ $LN16@get_string:
 	cmp	eax, 37					; 00000025H
 	je	$LN17@get_string
 
-; 468  :             if ( *src == ';' && p->flags == TOK_DEFAULT )
+; 475  :             if ( *src == ';' && p->flags == TOK_DEFAULT )
 
 	mov	rax, QWORD PTR src$[rsp]
 	movsx	eax, BYTE PTR [rax]
@@ -3487,14 +3488,14 @@ $LN16@get_string:
 	test	eax, eax
 	jne	SHORT $LN52@get_string
 
-; 469  :                 break;
+; 476  :                 break;
 
 	jmp	$LN17@get_string
 $LN52@get_string:
 
-; 470  :             /* v2.11: handle '\' also for expanded lines */
-; 471  :             //if (  *src == '\\' && !( p->flags & TOK_NOCURLBRACES ) ) {
-; 472  :             if (  *src == '\\' && ( p->flags == TOK_DEFAULT || ( p->flags & TOK_LINE ) ) ) {
+; 477  :             /* v2.11: handle '\' also for expanded lines */
+; 478  :             //if (  *src == '\\' && !( p->flags & TOK_NOCURLBRACES ) ) {
+; 479  :             if (  *src == '\\' && ( p->flags == TOK_DEFAULT || ( p->flags & TOK_LINE ) ) ) {
 
 	mov	rax, QWORD PTR src$[rsp]
 	movsx	eax, BYTE PTR [rax]
@@ -3511,7 +3512,7 @@ $LN52@get_string:
 	je	SHORT $LN53@get_string
 $LN54@get_string:
 
-; 473  :                 if ( ConcatLine( src, count, dst, p ) != EMPTY ) {
+; 480  :                 if ( ConcatLine( src, count, dst, p ) != EMPTY ) {
 
 	mov	r9, QWORD PTR p$[rsp]
 	mov	r8, QWORD PTR dst$[rsp]
@@ -3521,13 +3522,13 @@ $LN54@get_string:
 	cmp	eax, -2
 	je	SHORT $LN55@get_string
 
-; 474  :                     DebugMsg1(("Tokenize.get_string: backslash concatenation: >%s<\n", src ));
+; 481  :                     DebugMsg1(("Tokenize.get_string: backslash concatenation: >%s<\n", src ));
 
 	mov	rdx, QWORD PTR src$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11066
+	lea	rcx, OFFSET FLAT:$SG11070
 	call	DoDebugMsg1
 
-; 475  :                     p->flags3 |= TF3_ISCONCAT;
+; 482  :                     p->flags3 |= TF3_ISCONCAT;
 
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax+30]
@@ -3535,27 +3536,27 @@ $LN54@get_string:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	BYTE PTR [rcx+30], al
 
-; 476  :                     if ( count )
+; 483  :                     if ( count )
 
 	cmp	DWORD PTR count$[rsp], 0
 	je	SHORT $LN56@get_string
 
-; 477  :                         continue;
+; 484  :                         continue;
 
 	jmp	$LN16@get_string
 $LN56@get_string:
 
-; 478  :                     return( EMPTY );
+; 485  :                     return( EMPTY );
 
 	mov	eax, -2
 	jmp	$LN1@get_string
 $LN55@get_string:
 $LN53@get_string:
 
-; 479  :                 }
-; 480  :             }
-; 481  :             /* v2.08: handle '!' operator */
-; 482  :             if ( *src == '!' && *(src+1) && count < MAX_STRING_LEN - 1 )
+; 486  :                 }
+; 487  :             }
+; 488  :             /* v2.08: handle '!' operator */
+; 489  :             if ( *src == '!' && *(src+1) && count < MAX_STRING_LEN - 1 )
 
 	mov	rax, QWORD PTR src$[rsp]
 	movsx	eax, BYTE PTR [rax]
@@ -3568,7 +3569,7 @@ $LN53@get_string:
 	cmp	DWORD PTR count$[rsp], 567		; 00000237H
 	jge	SHORT $LN57@get_string
 
-; 483  :                 *dst++ = *src++;
+; 490  :                 *dst++ = *src++;
 
 	mov	rax, QWORD PTR dst$[rsp]
 	mov	rcx, QWORD PTR src$[rsp]
@@ -3582,7 +3583,7 @@ $LN53@get_string:
 	mov	QWORD PTR src$[rsp], rax
 $LN57@get_string:
 
-; 484  :             *dst++ = *src++;
+; 491  :             *dst++ = *src++;
 
 	mov	rax, QWORD PTR dst$[rsp]
 	mov	rcx, QWORD PTR src$[rsp]
@@ -3595,39 +3596,39 @@ $LN57@get_string:
 	inc	rax
 	mov	QWORD PTR src$[rsp], rax
 
-; 485  :             count++;
+; 492  :             count++;
 
 	mov	eax, DWORD PTR count$[rsp]
 	inc	eax
 	mov	DWORD PTR count$[rsp], eax
 
-; 486  :         }
+; 493  :         }
 
 	jmp	$LN16@get_string
 $LN17@get_string:
 $LN2@get_string:
 
-; 487  :         break;
-; 488  :     }
-; 489  : 
-; 490  :     if ( count == MAX_STRING_LEN ) {
+; 494  :         break;
+; 495  :     }
+; 496  : 
+; 497  :     if ( count == MAX_STRING_LEN ) {
 
 	cmp	DWORD PTR count$[rsp], 568		; 00000238H
 	jne	SHORT $LN58@get_string
 
-; 491  :         EmitError( STRING_OR_TEXT_LITERAL_TOO_LONG );
+; 498  :         EmitError( STRING_OR_TEXT_LITERAL_TOO_LONG );
 
-	mov	ecx, 155				; 0000009bH
+	mov	ecx, 156				; 0000009cH
 	call	EmitError
 
-; 492  :         return( ERROR );
+; 499  :         return( ERROR );
 
 	mov	eax, -1
 	jmp	SHORT $LN1@get_string
 $LN58@get_string:
 
-; 493  :     }
-; 494  :     *dst++ = NULLC;
+; 500  :     }
+; 501  :     *dst++ = NULLC;
 
 	mov	rax, QWORD PTR dst$[rsp]
 	mov	BYTE PTR [rax], 0
@@ -3635,35 +3636,35 @@ $LN58@get_string:
 	inc	rax
 	mov	QWORD PTR dst$[rsp], rax
 
-; 495  :     buf->token = T_STRING;
+; 502  :     buf->token = T_STRING;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax], 9
 
-; 496  :     buf->stringlen = count;
+; 503  :     buf->stringlen = count;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	ecx, DWORD PTR count$[rsp]
 	mov	DWORD PTR [rax+16], ecx
 
-; 497  :     p->input = src;
+; 504  :     p->input = src;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR src$[rsp]
 	mov	QWORD PTR [rax], rcx
 
-; 498  :     p->output = dst;
+; 505  :     p->output = dst;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR dst$[rsp]
 	mov	QWORD PTR [rax+8], rcx
 
-; 499  :     return( NOT_ERROR );
+; 506  :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@get_string:
 
-; 500  : }
+; 507  : }
 
 	add	rsp, 112				; 00000070H
 	pop	rdi
@@ -3682,7 +3683,7 @@ out$ = 96
 ls$ = 104
 ConcatLine PROC
 
-; 280  : {
+; 287  : {
 
 	mov	QWORD PTR [rsp+32], r9
 	mov	QWORD PTR [rsp+24], r8
@@ -3696,16 +3697,16 @@ ConcatLine PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+80]
 
-; 281  :     char *p = src+1;
+; 288  :     char *p = src+1;
 
 	mov	rax, QWORD PTR src$[rsp]
 	inc	rax
 	mov	QWORD PTR p$[rsp], rax
 $LN2@ConcatLine:
 
-; 282  :     int max;
-; 283  : 
-; 284  :     while ( isspace(*p) ) p++;
+; 289  :     int max;
+; 290  : 
+; 291  :     while ( isspace(*p) ) p++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax]
@@ -3719,7 +3720,7 @@ $LN2@ConcatLine:
 	jmp	SHORT $LN2@ConcatLine
 $LN3@ConcatLine:
 
-; 285  :     if ( *p == NULLC || *p == ';' ) {
+; 292  :     if ( *p == NULLC || *p == ';' ) {
 
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax]
@@ -3731,27 +3732,27 @@ $LN3@ConcatLine:
 	jne	$LN6@ConcatLine
 $LN7@ConcatLine:
 
-; 286  :         //char *buffer = GetAlignedPointer( out, strlen( out ) );
-; 287  :         char *buffer = out;
+; 293  :         //char *buffer = GetAlignedPointer( out, strlen( out ) );
+; 294  :         char *buffer = out;
 
 	mov	rax, QWORD PTR out$[rsp]
 	mov	QWORD PTR buffer$1[rsp], rax
 
-; 288  :         if( GetTextLine( buffer ) ) {
+; 295  :         if( GetTextLine( buffer ) ) {
 
 	mov	rcx, QWORD PTR buffer$1[rsp]
 	call	GetTextLine
 	test	rax, rax
 	je	$LN8@ConcatLine
 
-; 289  :             p = buffer;
+; 296  :             p = buffer;
 
 	mov	rax, QWORD PTR buffer$1[rsp]
 	mov	QWORD PTR p$[rsp], rax
 $LN4@ConcatLine:
 
-; 290  :             /* skip leading spaces */
-; 291  :             while ( isspace( *p ) ) p++;
+; 297  :             /* skip leading spaces */
+; 298  :             while ( isspace( *p ) ) p++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax]
@@ -3765,18 +3766,18 @@ $LN4@ConcatLine:
 	jmp	SHORT $LN4@ConcatLine
 $LN5@ConcatLine:
 
-; 292  :             max = strlen( p );
+; 299  :             max = strlen( p );
 
 	mov	rcx, QWORD PTR p$[rsp]
 	call	strlen
 	mov	DWORD PTR max$[rsp], eax
 
-; 293  :             if ( cnt == 0 )
+; 300  :             if ( cnt == 0 )
 
 	cmp	DWORD PTR cnt$[rsp], 0
 	jne	SHORT $LN9@ConcatLine
 
-; 294  :                 *src++ = ' ';
+; 301  :                 *src++ = ' ';
 
 	mov	rax, QWORD PTR src$[rsp]
 	mov	BYTE PTR [rax], 32			; 00000020H
@@ -3785,7 +3786,7 @@ $LN5@ConcatLine:
 	mov	QWORD PTR src$[rsp], rax
 $LN9@ConcatLine:
 
-; 295  :             if ( ( src - ls->start ) + max >= MAX_LINE_LEN ) {
+; 302  :             if ( ( src - ls->start ) + max >= MAX_LINE_LEN ) {
 
 	mov	rax, QWORD PTR ls$[rsp]
 	mov	rax, QWORD PTR [rax+16]
@@ -3797,12 +3798,12 @@ $LN9@ConcatLine:
 	cmp	rax, 600				; 00000258H
 	jl	SHORT $LN10@ConcatLine
 
-; 296  :                 EmitError( LINE_TOO_LONG );
+; 303  :                 EmitError( LINE_TOO_LONG );
 
-	mov	ecx, 61					; 0000003dH
+	mov	ecx, 62					; 0000003eH
 	call	EmitError
 
-; 297  :                 max = MAX_LINE_LEN - ( src - ls->start + 1 );
+; 304  :                 max = MAX_LINE_LEN - ( src - ls->start + 1 );
 
 	mov	rax, QWORD PTR ls$[rsp]
 	mov	rax, QWORD PTR [rax+16]
@@ -3815,15 +3816,15 @@ $LN9@ConcatLine:
 	mov	rax, rcx
 	mov	DWORD PTR max$[rsp], eax
 
-; 298  :                 *(p+max) = NULLC;
+; 305  :                 *(p+max) = NULLC;
 
 	movsxd	rax, DWORD PTR max$[rsp]
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	BYTE PTR [rcx+rax], 0
 $LN10@ConcatLine:
 
-; 299  :             }
-; 300  :             memcpy( src, p, max+1 );
+; 306  :             }
+; 307  :             memcpy( src, p, max+1 );
 
 	mov	eax, DWORD PTR max$[rsp]
 	inc	eax
@@ -3833,21 +3834,21 @@ $LN10@ConcatLine:
 	mov	rcx, QWORD PTR src$[rsp]
 	call	memcpy
 
-; 301  :             return( NOT_ERROR );
+; 308  :             return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	SHORT $LN1@ConcatLine
 $LN8@ConcatLine:
 $LN6@ConcatLine:
 
-; 302  :         }
-; 303  :     }
-; 304  :     return( EMPTY );
+; 309  :         }
+; 310  :     }
+; 311  :     return( EMPTY );
 
 	mov	eax, -2
 $LN1@ConcatLine:
 
-; 305  : }
+; 312  : }
 
 	add	rsp, 64					; 00000040H
 	pop	rdi
@@ -3866,7 +3867,7 @@ buf$ = 80
 p$ = 88
 get_float PROC
 
-; 238  : {
+; 245  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -3878,26 +3879,26 @@ get_float PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+80]
 
-; 239  :     /* valid floats look like:  (int)[.(int)][e(int)]
-; 240  :      * Masm also allows hex format, terminated by 'r' (3F800000r)
-; 241  :      */
-; 242  : 
-; 243  :     char    got_decimal = FALSE;
+; 246  :     /* valid floats look like:  (int)[.(int)][e(int)]
+; 247  :      * Masm also allows hex format, terminated by 'r' (3F800000r)
+; 248  :      */
+; 249  : 
+; 250  :     char    got_decimal = FALSE;
 
 	mov	BYTE PTR got_decimal$[rsp], 0
 
-; 244  :     char    got_e = FALSE;
+; 251  :     char    got_e = FALSE;
 
 	mov	BYTE PTR got_e$[rsp], 0
 
-; 245  :     char    *ptr = p->input;
+; 252  :     char    *ptr = p->input;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
 	mov	QWORD PTR ptr$[rsp], rax
 
-; 246  : 
-; 247  :     for( ; *ptr != NULLC; ptr++ ) {
+; 253  : 
+; 254  :     for( ; *ptr != NULLC; ptr++ ) {
 
 	jmp	SHORT $LN4@get_float
 $LN2@get_float:
@@ -3910,13 +3911,13 @@ $LN4@get_float:
 	test	eax, eax
 	je	$LN3@get_float
 
-; 248  :         char c = *ptr;
+; 255  :         char c = *ptr;
 
 	mov	rax, QWORD PTR ptr$[rsp]
 	movzx	eax, BYTE PTR [rax]
 	mov	BYTE PTR c$1[rsp], al
 
-; 249  :         if( isdigit( c ) ) {
+; 256  :         if( isdigit( c ) ) {
 
 	movsx	eax, BYTE PTR c$1[rsp]
 	mov	ecx, eax
@@ -3926,8 +3927,8 @@ $LN4@get_float:
 	jmp	$LN6@get_float
 $LN5@get_float:
 
-; 250  :             ;
-; 251  :         } else if ( c == '.' && got_decimal == FALSE ) {
+; 257  :             ;
+; 258  :         } else if ( c == '.' && got_decimal == FALSE ) {
 
 	movsx	eax, BYTE PTR c$1[rsp]
 	cmp	eax, 46					; 0000002eH
@@ -3936,13 +3937,13 @@ $LN5@get_float:
 	test	eax, eax
 	jne	SHORT $LN7@get_float
 
-; 252  :             got_decimal = TRUE;
+; 259  :             got_decimal = TRUE;
 
 	mov	BYTE PTR got_decimal$[rsp], 1
 	jmp	SHORT $LN8@get_float
 $LN7@get_float:
 
-; 253  :         } else if ( tolower( c ) == 'e' && got_e == FALSE ) {
+; 260  :         } else if ( tolower( c ) == 'e' && got_e == FALSE ) {
 
 	movsx	eax, BYTE PTR c$1[rsp]
 	cmp	eax, 65					; 00000041H
@@ -3964,12 +3965,12 @@ $LN15@get_float:
 	test	eax, eax
 	jne	SHORT $LN9@get_float
 
-; 254  :             got_e = TRUE;
+; 261  :             got_e = TRUE;
 
 	mov	BYTE PTR got_e$[rsp], 1
 
-; 255  :             /* accept e+2 / e-4 /etc. */
-; 256  :             if ( *(ptr+1) == '+' || *(ptr+1) == '-' )
+; 262  :             /* accept e+2 / e-4 /etc. */
+; 263  :             if ( *(ptr+1) == '+' || *(ptr+1) == '-' )
 
 	mov	rax, QWORD PTR ptr$[rsp]
 	movsx	eax, BYTE PTR [rax+1]
@@ -3981,45 +3982,45 @@ $LN15@get_float:
 	jne	SHORT $LN11@get_float
 $LN12@get_float:
 
-; 257  :                 ptr++;
+; 264  :                 ptr++;
 
 	mov	rax, QWORD PTR ptr$[rsp]
 	inc	rax
 	mov	QWORD PTR ptr$[rsp], rax
 $LN11@get_float:
 
-; 258  :             /* it's accepted if there's no digit behind 'e' */
-; 259  :             //if ( !isdigit( *(ptr+1) ) )
-; 260  :             //    break;
-; 261  :         } else
+; 265  :             /* it's accepted if there's no digit behind 'e' */
+; 266  :             //if ( !isdigit( *(ptr+1) ) )
+; 267  :             //    break;
+; 268  :         } else
 
 	jmp	SHORT $LN10@get_float
 $LN9@get_float:
 
-; 262  :             break;
+; 269  :             break;
 
 	jmp	SHORT $LN3@get_float
 $LN10@get_float:
 $LN8@get_float:
 $LN6@get_float:
 
-; 263  :     }
+; 270  :     }
 
 	jmp	$LN2@get_float
 $LN3@get_float:
 
-; 264  : 
-; 265  :     buf->token = T_FLOAT;
+; 271  : 
+; 272  :     buf->token = T_FLOAT;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax], 11
 
-; 266  :     buf->floattype = NULLC;
+; 273  :     buf->floattype = NULLC;
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	BYTE PTR [rax+1], 0
 
-; 267  :     memcpy( p->output, p->input, ptr - p->input );
+; 274  :     memcpy( p->output, p->input, ptr - p->input );
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -4033,7 +4034,7 @@ $LN3@get_float:
 	mov	rcx, QWORD PTR [rax+8]
 	call	memcpy
 
-; 268  :     p->output += ( ptr - p->input );
+; 275  :     p->output += ( ptr - p->input );
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -4045,7 +4046,7 @@ $LN3@get_float:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx+8], rax
 
-; 269  :     *p->output++ = NULLC;
+; 276  :     *p->output++ = NULLC;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax+8]
@@ -4056,21 +4057,21 @@ $LN3@get_float:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx+8], rax
 
-; 270  :     p->input = ptr;
+; 277  :     p->input = ptr;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR ptr$[rsp]
 	mov	QWORD PTR [rax], rcx
 
-; 271  : 
-; 272  :     /* the binary value isn't used currently */
-; 273  :     //*((float *)(&buf->value)) = atof( buf->string_ptr );
-; 274  : 
-; 275  :     return( NOT_ERROR );
+; 278  : 
+; 279  :     /* the binary value isn't used currently */
+; 280  :     //*((float *)(&buf->value)) = atof( buf->string_ptr );
+; 281  : 
+; 282  :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 276  : }
+; 283  : }
 
 	add	rsp, 64					; 00000040H
 	pop	rdi
@@ -4084,9 +4085,9 @@ c$ = 32
 p$ = 64
 get_decos PROC
 
-; 150  : void get_decos(struct line_status *p ){
+; 155  : void get_decos(struct line_status *p) {
 
-$LN25:
+$LN26:
 	mov	QWORD PTR [rsp+8], rcx
 	push	rdi
 	sub	rsp, 48					; 00000030H
@@ -4096,9 +4097,21 @@ $LN25:
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+64]
 
-; 151  : /************************************************/
-; 152  :     unsigned char c;
-; 153  :           c = (*p->input | 0x20);
+; 156  : 			/************************************************/
+; 157  : 			unsigned char c;
+; 158  : 			if (!evex)
+
+	movzx	eax, BYTE PTR evex
+	test	eax, eax
+	jne	SHORT $LN6@get_decos
+
+; 159  : 				EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
+
+	mov	ecx, 23
+	call	EmitError
+$LN6@get_decos:
+
+; 160  : 			c = (*p->input | 0x20);
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -4106,7 +4119,7 @@ $LN25:
 	or	eax, 32					; 00000020H
 	mov	BYTE PTR c$[rsp], al
 
-; 154  :           p->input++;
+; 161  : 			p->input++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -4114,20 +4127,20 @@ $LN25:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 155  :           /* if first decorator is the z  */
-; 156  :           if (c == 'z'){
+; 162  : 			/* if first decorator is the z  */
+; 163  : 			if (c == 'z'){
 
 	movzx	eax, BYTE PTR c$[rsp]
 	cmp	eax, 122				; 0000007aH
-	jne	$LN6@get_decos
+	jne	$LN7@get_decos
 
-; 157  :             decoflags |= 0x80; 
+; 164  :             decoflags |= 0x80; 
 
 	movzx	eax, BYTE PTR decoflags
 	bts	eax, 7
 	mov	BYTE PTR decoflags, al
 
-; 158  :             p->input++;
+; 165  :             p->input++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -4135,31 +4148,31 @@ $LN25:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 159  :             c = *p->input;
+; 166  :             c = *p->input;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
 	movzx	eax, BYTE PTR [rax]
 	mov	BYTE PTR c$[rsp], al
 
-; 160  :             if (c != '}'){
+; 167  :             if (c != '}'){
 
 	movzx	eax, BYTE PTR c$[rsp]
 	cmp	eax, 125				; 0000007dH
-	je	SHORT $LN8@get_decos
+	je	SHORT $LN9@get_decos
 
-; 161  :               EmitError(DECORATOR_OR_BRACE_EXPECTED);
+; 168  :               EmitError(DECORATOR_OR_BRACE_EXPECTED);
 
 	mov	ecx, 15
 	call	EmitError
 
-; 162  :               return;
+; 169  :               return;
 
 	jmp	$LN1@get_decos
-$LN8@get_decos:
+$LN9@get_decos:
 
-; 163  :             }
-; 164  :             p->input++;
+; 170  :             }
+; 171  :             p->input++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -4168,7 +4181,7 @@ $LN8@get_decos:
 	mov	QWORD PTR [rcx], rax
 $LN2@get_decos:
 
-; 165  :             while ( isspace( *p->input )) p->input++;
+; 172  :             while ( isspace( *p->input )) p->input++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -4185,31 +4198,31 @@ $LN2@get_decos:
 	jmp	SHORT $LN2@get_decos
 $LN3@get_decos:
 
-; 166  :             c = *p->input;
+; 173  :             c = *p->input;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
 	movzx	eax, BYTE PTR [rax]
 	mov	BYTE PTR c$[rsp], al
 
-; 167  :             if (c != '{'){
+; 174  :             if (c != '{'){
 
 	movzx	eax, BYTE PTR c$[rsp]
 	cmp	eax, 123				; 0000007bH
-	je	SHORT $LN9@get_decos
+	je	SHORT $LN10@get_decos
 
-; 168  :               EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
+; 175  :               EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
 
 	mov	ecx, 14
 	call	EmitError
 
-; 169  :               return;
+; 176  :               return;
 
 	jmp	$LN1@get_decos
-$LN9@get_decos:
+$LN10@get_decos:
 
-; 170  :             }
-; 171  :             p->input++;
+; 177  :             }
+; 178  :             p->input++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -4217,7 +4230,7 @@ $LN9@get_decos:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 172  :             c = (*p->input | 0x20);
+; 179  :             c = (*p->input | 0x20);
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -4225,70 +4238,25 @@ $LN9@get_decos:
 	or	eax, 32					; 00000020H
 	mov	BYTE PTR c$[rsp], al
 
-; 173  :             if (c != 'k'){
+; 180  :             if (c != 'k'){
 
 	movzx	eax, BYTE PTR c$[rsp]
 	cmp	eax, 107				; 0000006bH
-	je	SHORT $LN10@get_decos
+	je	SHORT $LN11@get_decos
 
-; 174  :                 EmitError(DECORATOR_OR_BRACE_EXPECTED);
+; 181  :                 EmitError(DECORATOR_OR_BRACE_EXPECTED);
 
 	mov	ecx, 15
 	call	EmitError
 
-; 175  :                 return;
+; 182  :                 return;
 
 	jmp	$LN1@get_decos
 
-; 176  :             }else{
+; 183  :             }else{
 
-	jmp	$LN11@get_decos
-$LN10@get_decos:
-
-; 177  :               p->input++;
-
-	mov	rax, QWORD PTR p$[rsp]
-	mov	rax, QWORD PTR [rax]
-	inc	rax
-	mov	rcx, QWORD PTR p$[rsp]
-	mov	QWORD PTR [rcx], rax
-
-; 178  :               c = *p->input;
-
-	mov	rax, QWORD PTR p$[rsp]
-	mov	rax, QWORD PTR [rax]
-	movzx	eax, BYTE PTR [rax]
-	mov	BYTE PTR c$[rsp], al
-
-; 179  :               if (c > '7' || c < '1'){
-
-	movzx	eax, BYTE PTR c$[rsp]
-	cmp	eax, 55					; 00000037H
-	jg	SHORT $LN13@get_decos
-	movzx	eax, BYTE PTR c$[rsp]
-	cmp	eax, 49					; 00000031H
-	jge	SHORT $LN12@get_decos
-$LN13@get_decos:
-
-; 180  :                 EmitError(WRONG_MASK_REGISTER_NUBER);
-
-	mov	ecx, 16
-	call	EmitError
-
-; 181  :                 return;
-
-	jmp	$LN1@get_decos
-$LN12@get_decos:
-
-; 182  :               }
-; 183  :               decoflags |= (c & 0x7);
-
-	movzx	eax, BYTE PTR c$[rsp]
-	and	eax, 7
-	movzx	ecx, BYTE PTR decoflags
-	or	ecx, eax
-	mov	eax, ecx
-	mov	BYTE PTR decoflags, al
+	jmp	$LN12@get_decos
+$LN11@get_decos:
 
 ; 184  :               p->input++;
 
@@ -4305,74 +4273,28 @@ $LN12@get_decos:
 	movzx	eax, BYTE PTR [rax]
 	mov	BYTE PTR c$[rsp], al
 
-; 186  :               if (c != '}'){
+; 186  :               if (c > '7' || c < '1'){
 
 	movzx	eax, BYTE PTR c$[rsp]
-	cmp	eax, 125				; 0000007dH
-	je	SHORT $LN14@get_decos
+	cmp	eax, 55					; 00000037H
+	jg	SHORT $LN14@get_decos
+	movzx	eax, BYTE PTR c$[rsp]
+	cmp	eax, 49					; 00000031H
+	jge	SHORT $LN13@get_decos
+$LN14@get_decos:
 
-; 187  :                 EmitError(DECORATOR_OR_BRACE_EXPECTED);
+; 187  :                 EmitError(WRONG_MASK_REGISTER_NUBER);
 
-	mov	ecx, 15
+	mov	ecx, 16
 	call	EmitError
 
 ; 188  :                 return;
 
 	jmp	$LN1@get_decos
-$LN14@get_decos:
+$LN13@get_decos:
 
 ; 189  :               }
-; 190  :               p->input++;
-
-	mov	rax, QWORD PTR p$[rsp]
-	mov	rax, QWORD PTR [rax]
-	inc	rax
-	mov	rcx, QWORD PTR p$[rsp]
-	mov	QWORD PTR [rcx], rax
-$LN11@get_decos:
-
-; 191  :             }
-; 192  :           }
-
-	jmp	$LN7@get_decos
-$LN6@get_decos:
-
-; 193  :           /* if first decorator is the mask register */
-; 194  :           else if (c == 'k'){
-
-	movzx	eax, BYTE PTR c$[rsp]
-	cmp	eax, 107				; 0000006bH
-	jne	$LN15@get_decos
-
-; 195  :           c = *p->input;
-
-	mov	rax, QWORD PTR p$[rsp]
-	mov	rax, QWORD PTR [rax]
-	movzx	eax, BYTE PTR [rax]
-	mov	BYTE PTR c$[rsp], al
-
-; 196  :           if (c > '7' || c < '1'){
-
-	movzx	eax, BYTE PTR c$[rsp]
-	cmp	eax, 55					; 00000037H
-	jg	SHORT $LN18@get_decos
-	movzx	eax, BYTE PTR c$[rsp]
-	cmp	eax, 49					; 00000031H
-	jge	SHORT $LN17@get_decos
-$LN18@get_decos:
-
-; 197  :             EmitError(WRONG_MASK_REGISTER_NUBER);
-
-	mov	ecx, 16
-	call	EmitError
-
-; 198  :             return;
-
-	jmp	$LN1@get_decos
-$LN17@get_decos:
-
-; 199  :           }
-; 200  :           decoflags |= (c & 0x7);
+; 190  :               decoflags |= (c & 0x7);
 
 	movzx	eax, BYTE PTR c$[rsp]
 	and	eax, 7
@@ -4381,13 +4303,59 @@ $LN17@get_decos:
 	mov	eax, ecx
 	mov	BYTE PTR decoflags, al
 
-; 201  :           p->input++;
+; 191  :               p->input++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
 	inc	rax
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx], rax
+
+; 192  :               c = *p->input;
+
+	mov	rax, QWORD PTR p$[rsp]
+	mov	rax, QWORD PTR [rax]
+	movzx	eax, BYTE PTR [rax]
+	mov	BYTE PTR c$[rsp], al
+
+; 193  :               if (c != '}'){
+
+	movzx	eax, BYTE PTR c$[rsp]
+	cmp	eax, 125				; 0000007dH
+	je	SHORT $LN15@get_decos
+
+; 194  :                 EmitError(DECORATOR_OR_BRACE_EXPECTED);
+
+	mov	ecx, 15
+	call	EmitError
+
+; 195  :                 return;
+
+	jmp	$LN1@get_decos
+$LN15@get_decos:
+
+; 196  :               }
+; 197  :               p->input++;
+
+	mov	rax, QWORD PTR p$[rsp]
+	mov	rax, QWORD PTR [rax]
+	inc	rax
+	mov	rcx, QWORD PTR p$[rsp]
+	mov	QWORD PTR [rcx], rax
+$LN12@get_decos:
+
+; 198  :             }
+; 199  :           }
+
+	jmp	$LN8@get_decos
+$LN7@get_decos:
+
+; 200  :           /* if first decorator is the mask register */
+; 201  :           else if (c == 'k'){
+
+	movzx	eax, BYTE PTR c$[rsp]
+	cmp	eax, 107				; 0000006bH
+	jne	$LN16@get_decos
 
 ; 202  :           c = *p->input;
 
@@ -4396,24 +4364,69 @@ $LN17@get_decos:
 	movzx	eax, BYTE PTR [rax]
 	mov	BYTE PTR c$[rsp], al
 
-; 203  :           if (c != '}'){
+; 203  :           if (c > '7' || c < '1'){
 
 	movzx	eax, BYTE PTR c$[rsp]
-	cmp	eax, 125				; 0000007dH
-	je	SHORT $LN19@get_decos
+	cmp	eax, 55					; 00000037H
+	jg	SHORT $LN19@get_decos
+	movzx	eax, BYTE PTR c$[rsp]
+	cmp	eax, 49					; 00000031H
+	jge	SHORT $LN18@get_decos
+$LN19@get_decos:
 
-; 204  :             EmitError(DECORATOR_OR_BRACE_EXPECTED);
+; 204  :             EmitError(WRONG_MASK_REGISTER_NUBER);
 
-	mov	ecx, 15
+	mov	ecx, 16
 	call	EmitError
 
 ; 205  :             return;
 
 	jmp	$LN1@get_decos
-$LN19@get_decos:
+$LN18@get_decos:
 
 ; 206  :           }
-; 207  :           p->input++;
+; 207  :           decoflags |= (c & 0x7);
+
+	movzx	eax, BYTE PTR c$[rsp]
+	and	eax, 7
+	movzx	ecx, BYTE PTR decoflags
+	or	ecx, eax
+	mov	eax, ecx
+	mov	BYTE PTR decoflags, al
+
+; 208  :           p->input++;
+
+	mov	rax, QWORD PTR p$[rsp]
+	mov	rax, QWORD PTR [rax]
+	inc	rax
+	mov	rcx, QWORD PTR p$[rsp]
+	mov	QWORD PTR [rcx], rax
+
+; 209  :           c = *p->input;
+
+	mov	rax, QWORD PTR p$[rsp]
+	mov	rax, QWORD PTR [rax]
+	movzx	eax, BYTE PTR [rax]
+	mov	BYTE PTR c$[rsp], al
+
+; 210  :           if (c != '}'){
+
+	movzx	eax, BYTE PTR c$[rsp]
+	cmp	eax, 125				; 0000007dH
+	je	SHORT $LN20@get_decos
+
+; 211  :             EmitError(DECORATOR_OR_BRACE_EXPECTED);
+
+	mov	ecx, 15
+	call	EmitError
+
+; 212  :             return;
+
+	jmp	$LN1@get_decos
+$LN20@get_decos:
+
+; 213  :           }
+; 214  :           p->input++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -4422,8 +4435,8 @@ $LN19@get_decos:
 	mov	QWORD PTR [rcx], rax
 $LN4@get_decos:
 
-; 208  :           /* check if there is more decorators */
-; 209  :           while ( isspace( *p->input )) p->input++;
+; 215  :           /* check if there is more decorators */
+; 216  :           while ( isspace( *p->input )) p->input++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -4440,20 +4453,20 @@ $LN4@get_decos:
 	jmp	SHORT $LN4@get_decos
 $LN5@get_decos:
 
-; 210  :           c = *p->input;
+; 217  :           c = *p->input;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
 	movzx	eax, BYTE PTR [rax]
 	mov	BYTE PTR c$[rsp], al
 
-; 211  :           if (c == '{'){
+; 218  :           if (c == '{'){
 
 	movzx	eax, BYTE PTR c$[rsp]
 	cmp	eax, 123				; 0000007bH
-	jne	$LN20@get_decos
+	jne	$LN21@get_decos
 
-; 212  :             p->input++;
+; 219  :             p->input++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -4461,7 +4474,7 @@ $LN5@get_decos:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 213  :             c = (*p->input | 0x20);
+; 220  :             c = (*p->input | 0x20);
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -4469,19 +4482,19 @@ $LN5@get_decos:
 	or	eax, 32					; 00000020H
 	mov	BYTE PTR c$[rsp], al
 
-; 214  :             if (c == 'z'){
+; 221  :             if (c == 'z'){
 
 	movzx	eax, BYTE PTR c$[rsp]
 	cmp	eax, 122				; 0000007aH
-	jne	SHORT $LN21@get_decos
+	jne	SHORT $LN22@get_decos
 
-; 215  :               decoflags |= 0x80;
+; 222  :               decoflags |= 0x80;
 
 	movzx	eax, BYTE PTR decoflags
 	bts	eax, 7
 	mov	BYTE PTR decoflags, al
 
-; 216  :               p->input++;
+; 223  :               p->input++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -4489,31 +4502,31 @@ $LN5@get_decos:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 217  :               c = *p->input;
+; 224  :               c = *p->input;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
 	movzx	eax, BYTE PTR [rax]
 	mov	BYTE PTR c$[rsp], al
 
-; 218  :               if (c != '}'){
+; 225  :               if (c != '}'){
 
 	movzx	eax, BYTE PTR c$[rsp]
 	cmp	eax, 125				; 0000007dH
-	je	SHORT $LN23@get_decos
+	je	SHORT $LN24@get_decos
 
-; 219  :                 EmitError(DECORATOR_OR_BRACE_EXPECTED);
+; 226  :                 EmitError(DECORATOR_OR_BRACE_EXPECTED);
 
 	mov	ecx, 15
 	call	EmitError
 
-; 220  :                 return;
+; 227  :                 return;
 
 	jmp	SHORT $LN1@get_decos
-$LN23@get_decos:
+$LN24@get_decos:
 
-; 221  :               }
-; 222  :               p->input++;
+; 228  :               }
+; 229  :               p->input++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -4521,42 +4534,42 @@ $LN23@get_decos:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 223  :             }
+; 230  :             }
 
-	jmp	SHORT $LN22@get_decos
-$LN21@get_decos:
+	jmp	SHORT $LN23@get_decos
+$LN22@get_decos:
 
-; 224  :             else {
-; 225  :               EmitError(TO_MANY_DECORATORS);
+; 231  :             else {
+; 232  :               EmitError(TO_MANY_DECORATORS);
 
 	mov	ecx, 17
 	call	EmitError
 
-; 226  :               return;
+; 233  :               return;
 
 	jmp	SHORT $LN1@get_decos
-$LN22@get_decos:
-$LN20@get_decos:
+$LN23@get_decos:
+$LN21@get_decos:
 
-; 227  :             }
-; 228  :           }
-; 229  :         }
+; 234  :             }
+; 235  :           }
+; 236  :         }
 
-	jmp	SHORT $LN16@get_decos
-$LN15@get_decos:
+	jmp	SHORT $LN17@get_decos
+$LN16@get_decos:
 
-; 230  :         else {
-; 231  :           EmitError(TO_MANY_DECORATORS);
+; 237  :         else {
+; 238  :           EmitError(TO_MANY_DECORATORS);
 
 	mov	ecx, 17
 	call	EmitError
-$LN16@get_decos:
-$LN7@get_decos:
+$LN17@get_decos:
+$LN8@get_decos:
 $LN1@get_decos:
 
-; 232  :           return;
-; 233  :         }
-; 234  :       }
+; 239  :           return;
+; 240  :         }
+; 241  :       }
 
 	add	rsp, 48					; 00000030H
 	pop	rdi
@@ -4566,14 +4579,14 @@ _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\tokenize.c
 _TEXT	SEGMENT
-tv140 = 32
-tv141 = 36
+tv143 = 32
+tv144 = 36
 p$ = 64
 get_broads PROC
 
-; 125  : void get_broads(struct line_status *p ){
+; 126  : void get_broads(struct line_status *p) {
 
-$LN14:
+$LN15:
 	mov	QWORD PTR [rsp+8], rcx
 	push	rdi
 	sub	rsp, 48					; 00000030H
@@ -4583,35 +4596,21 @@ $LN14:
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+64]
 
-; 126  : /************************************************/          
-; 127  :     if (_memicmp(p->input, "1to2", 4) == 0){
+; 127  : 	/************************************************/
+; 128  : 	if (!evex)
 
-	mov	r8d, 4
-	lea	rdx, OFFSET FLAT:$SG10909
-	mov	rax, QWORD PTR p$[rsp]
-	mov	rcx, QWORD PTR [rax]
-	call	QWORD PTR __imp__memicmp
+	movzx	eax, BYTE PTR evex
 	test	eax, eax
 	jne	SHORT $LN2@get_broads
 
-; 128  :       broadflags = 0x10;
+; 129  : 		EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
 
-	mov	BYTE PTR broadflags, 16
-
-; 129  :       p->input += 4;
-
-	mov	rax, QWORD PTR p$[rsp]
-	mov	rax, QWORD PTR [rax]
-	add	rax, 4
-	mov	rcx, QWORD PTR p$[rsp]
-	mov	QWORD PTR [rcx], rax
-
-; 130  :     }
-
-	jmp	$LN3@get_broads
+	mov	ecx, 23
+	call	EmitError
 $LN2@get_broads:
 
-; 131  :     else if (_memicmp(p->input, "1to4", 4) == 0){
+; 130  : 
+; 131  : 	if (_memicmp(p->input, "1to2", 4) == 0) {
 
 	mov	r8d, 4
 	lea	rdx, OFFSET FLAT:$SG10912
@@ -4619,13 +4618,13 @@ $LN2@get_broads:
 	mov	rcx, QWORD PTR [rax]
 	call	QWORD PTR __imp__memicmp
 	test	eax, eax
-	jne	SHORT $LN4@get_broads
+	jne	SHORT $LN3@get_broads
 
-; 132  :       broadflags = 0x20;
+; 132  : 		broadflags = 0x10;
 
-	mov	BYTE PTR broadflags, 32			; 00000020H
+	mov	BYTE PTR broadflags, 16
 
-; 133  :       p->input += 4;
+; 133  : 		p->input += 4;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -4633,12 +4632,12 @@ $LN2@get_broads:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 134  :     }
+; 134  : 	}
 
-	jmp	$LN5@get_broads
-$LN4@get_broads:
+	jmp	$LN4@get_broads
+$LN3@get_broads:
 
-; 135  :     else if (_memicmp(p->input, "1to8", 4) == 0){
+; 135  : 	else if (_memicmp(p->input, "1to4", 4) == 0){
 
 	mov	r8d, 4
 	lea	rdx, OFFSET FLAT:$SG10915
@@ -4646,11 +4645,11 @@ $LN4@get_broads:
 	mov	rcx, QWORD PTR [rax]
 	call	QWORD PTR __imp__memicmp
 	test	eax, eax
-	jne	SHORT $LN6@get_broads
+	jne	SHORT $LN5@get_broads
 
-; 136  :       broadflags = 0x30;
+; 136  :       broadflags = 0x20;
 
-	mov	BYTE PTR broadflags, 48			; 00000030H
+	mov	BYTE PTR broadflags, 32			; 00000020H
 
 ; 137  :       p->input += 4;
 
@@ -4662,24 +4661,51 @@ $LN4@get_broads:
 
 ; 138  :     }
 
-	jmp	SHORT $LN7@get_broads
-$LN6@get_broads:
+	jmp	$LN6@get_broads
+$LN5@get_broads:
 
-; 139  :     else if (_memicmp(p->input, "1to16", 5) == 0){
+; 139  :     else if (_memicmp(p->input, "1to8", 4) == 0){
 
-	mov	r8d, 5
+	mov	r8d, 4
 	lea	rdx, OFFSET FLAT:$SG10918
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR [rax]
 	call	QWORD PTR __imp__memicmp
 	test	eax, eax
-	jne	SHORT $LN8@get_broads
+	jne	SHORT $LN7@get_broads
 
-; 140  :       broadflags = 0x40;
+; 140  :       broadflags = 0x30;
+
+	mov	BYTE PTR broadflags, 48			; 00000030H
+
+; 141  :       p->input += 4;
+
+	mov	rax, QWORD PTR p$[rsp]
+	mov	rax, QWORD PTR [rax]
+	add	rax, 4
+	mov	rcx, QWORD PTR p$[rsp]
+	mov	QWORD PTR [rcx], rax
+
+; 142  :     }
+
+	jmp	SHORT $LN8@get_broads
+$LN7@get_broads:
+
+; 143  :     else if (_memicmp(p->input, "1to16", 5) == 0){
+
+	mov	r8d, 5
+	lea	rdx, OFFSET FLAT:$SG10921
+	mov	rax, QWORD PTR p$[rsp]
+	mov	rcx, QWORD PTR [rax]
+	call	QWORD PTR __imp__memicmp
+	test	eax, eax
+	jne	SHORT $LN9@get_broads
+
+; 144  :       broadflags = 0x40;
 
 	mov	BYTE PTR broadflags, 64			; 00000040H
 
-; 141  :       p->input += 5;
+; 145  :       p->input += 5;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -4687,50 +4713,50 @@ $LN6@get_broads:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx], rax
 
-; 142  :     }
+; 146  :     }
 
-	jmp	SHORT $LN9@get_broads
-$LN8@get_broads:
+	jmp	SHORT $LN10@get_broads
+$LN9@get_broads:
 
-; 143  :     else
-; 144  :       EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
+; 147  :     else
+; 148  :       EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
 
 	mov	ecx, 14
 	call	EmitError
-$LN9@get_broads:
-$LN7@get_broads:
-$LN5@get_broads:
-$LN3@get_broads:
+$LN10@get_broads:
+$LN8@get_broads:
+$LN6@get_broads:
+$LN4@get_broads:
 
-; 145  :     if (*p->input++ != '}')
+; 149  :     if (*p->input++ != '}')
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
 	movsx	eax, BYTE PTR [rax]
-	mov	DWORD PTR tv140[rsp], eax
+	mov	DWORD PTR tv143[rsp], eax
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
 	inc	rax
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx], rax
-	cmp	DWORD PTR tv140[rsp], 125		; 0000007dH
-	je	SHORT $LN12@get_broads
-	mov	DWORD PTR tv141[rsp], 1
-	jmp	SHORT $LN13@get_broads
-$LN12@get_broads:
-	mov	DWORD PTR tv141[rsp], 0
+	cmp	DWORD PTR tv143[rsp], 125		; 0000007dH
+	je	SHORT $LN13@get_broads
+	mov	DWORD PTR tv144[rsp], 1
+	jmp	SHORT $LN14@get_broads
 $LN13@get_broads:
-	cmp	DWORD PTR tv141[rsp], 0
-	je	SHORT $LN10@get_broads
+	mov	DWORD PTR tv144[rsp], 0
+$LN14@get_broads:
+	cmp	DWORD PTR tv144[rsp], 0
+	je	SHORT $LN11@get_broads
 
-; 146  :       EmitError(DECORATOR_OR_BRACE_EXPECTED);
+; 150  :       EmitError(DECORATOR_OR_BRACE_EXPECTED);
 
 	mov	ecx, 15
 	call	EmitError
-$LN10@get_broads:
+$LN11@get_broads:
 
-; 147  : 
-; 148  :   }
+; 151  : 
+; 152  :   }
 
 	add	rsp, 48					; 00000030H
 	pop	rdi
@@ -4916,7 +4942,7 @@ tokenarray$ = 144
 flags$ = 152
 Tokenize PROC
 
-; 1082 : {
+; 1089 : {
 
 $LN36:
 	mov	DWORD PTR [rsp+32], r9d
@@ -4931,73 +4957,73 @@ $LN36:
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+128]
 
-; 1083 :     int                         rc;
-; 1084 :     struct line_status          p;
-; 1085 : 
-; 1086 :     p.input = line;
+; 1090 :     int                         rc;
+; 1091 :     struct line_status          p;
+; 1092 : 
+; 1093 :     p.input = line;
 
 	mov	rax, QWORD PTR line$[rsp]
 	mov	QWORD PTR p$[rsp], rax
 
-; 1087 :     p.start = line;
+; 1094 :     p.start = line;
 
 	mov	rax, QWORD PTR line$[rsp]
 	mov	QWORD PTR p$[rsp+16], rax
 
-; 1088 :     p.index = start;
+; 1095 :     p.index = start;
 
 	mov	eax, DWORD PTR start$[rsp]
 	mov	DWORD PTR p$[rsp+24], eax
 
-; 1089 :     //p.last_token = T_FINAL; /* v2.11: last_token is obsolete */
-; 1090 :     p.flags = flags;
+; 1096 :     //p.last_token = T_FINAL; /* v2.11: last_token is obsolete */
+; 1097 :     p.flags = flags;
 
 	movzx	eax, BYTE PTR flags$[rsp]
 	mov	BYTE PTR p$[rsp+28], al
 
-; 1091 :     p.flags2 = 0;
+; 1098 :     p.flags2 = 0;
 
 	mov	BYTE PTR p$[rsp+29], 0
 
-; 1092 :     p.flags3 = 0;
+; 1099 :     p.flags3 = 0;
 
 	mov	BYTE PTR p$[rsp+30], 0
 
-; 1093 :     if ( p.index == 0 ) {
+; 1100 :     if ( p.index == 0 ) {
 
 	cmp	DWORD PTR p$[rsp+24], 0
 	jne	SHORT $LN11@Tokenize
 
-; 1094 : #ifdef DEBUG_OUT
-; 1095 :         cnttok0++;
+; 1101 : #ifdef DEBUG_OUT
+; 1102 :         cnttok0++;
 
 	mov	eax, DWORD PTR cnttok0
 	inc	eax
 	mov	DWORD PTR cnttok0, eax
 
-; 1096 : #endif
-; 1097 :         /* v2.06: these flags are now initialized on a higher level */
-; 1098 :         //ModuleInfo.line_flags = 0;
-; 1099 :         p.output = token_stringbuf;
+; 1103 : #endif
+; 1104 :         /* v2.06: these flags are now initialized on a higher level */
+; 1105 :         //ModuleInfo.line_flags = 0;
+; 1106 :         p.output = token_stringbuf;
 
 	mov	rax, QWORD PTR token_stringbuf
 	mov	QWORD PTR p$[rsp+8], rax
 
-; 1100 :         if( ModuleInfo.inside_comment ) {
+; 1107 :         if( ModuleInfo.inside_comment ) {
 
 	movzx	eax, BYTE PTR ModuleInfo+407
 	test	eax, eax
 	je	SHORT $LN13@Tokenize
 
-; 1101 :             DebugMsg1(("COMMENT active, delim is >%c<, line is >%s<\n", ModuleInfo.inside_comment, line));
+; 1108 :             DebugMsg1(("COMMENT active, delim is >%c<, line is >%s<\n", ModuleInfo.inside_comment, line));
 
 	movzx	eax, BYTE PTR ModuleInfo+407
 	mov	r8, QWORD PTR line$[rsp]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11277
+	lea	rcx, OFFSET FLAT:$SG11281
 	call	DoDebugMsg1
 
-; 1102 :             if( strchr( line, ModuleInfo.inside_comment ) != NULL ) {
+; 1109 :             if( strchr( line, ModuleInfo.inside_comment ) != NULL ) {
 
 	movzx	eax, BYTE PTR ModuleInfo+407
 	mov	edx, eax
@@ -5006,44 +5032,44 @@ $LN36:
 	test	rax, rax
 	je	SHORT $LN14@Tokenize
 
-; 1103 :                 DebugMsg1(("COMMENT mode exited\n"));
+; 1110 :                 DebugMsg1(("COMMENT mode exited\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11279
+	lea	rcx, OFFSET FLAT:$SG11283
 	call	DoDebugMsg1
 
-; 1104 :                 ModuleInfo.inside_comment = NULLC;
+; 1111 :                 ModuleInfo.inside_comment = NULLC;
 
 	mov	BYTE PTR ModuleInfo+407, 0
 $LN14@Tokenize:
 
-; 1105 :             }
-; 1106 :             goto skipline;
+; 1112 :             }
+; 1113 :             goto skipline;
 
 	jmp	$skipline$37
 $LN13@Tokenize:
 
-; 1107 :         }
-; 1108 :         /* v2.08: expansion operator % at pos 0 is handled differently.
-; 1109 :          */
-; 1110 :         //while( isspace( *p.input )) p.input++;
-; 1111 :         //if ( *p.input == '%' ) {
-; 1112 :         //    *p.input++ = ' ';
-; 1113 :         //    expansion = TRUE;
-; 1114 :         //}
-; 1115 :     } else {
+; 1114 :         }
+; 1115 :         /* v2.08: expansion operator % at pos 0 is handled differently.
+; 1116 :          */
+; 1117 :         //while( isspace( *p.input )) p.input++;
+; 1118 :         //if ( *p.input == '%' ) {
+; 1119 :         //    *p.input++ = ' ';
+; 1120 :         //    expansion = TRUE;
+; 1121 :         //}
+; 1122 :     } else {
 
 	jmp	SHORT $LN12@Tokenize
 $LN11@Tokenize:
 
-; 1116 : #ifdef DEBUG_OUT
-; 1117 :         cnttok1++;
+; 1123 : #ifdef DEBUG_OUT
+; 1124 :         cnttok1++;
 
 	mov	eax, DWORD PTR cnttok1
 	inc	eax
 	mov	DWORD PTR cnttok1, eax
 
-; 1118 : #endif
-; 1119 :         p.output = StringBufferEnd;
+; 1125 : #endif
+; 1126 :         p.output = StringBufferEnd;
 
 	mov	rax, QWORD PTR ModuleInfo+488
 	mov	QWORD PTR p$[rsp+8], rax
@@ -5051,11 +5077,11 @@ $LN12@Tokenize:
 $LN2@Tokenize:
 $LN5@Tokenize:
 
-; 1120 :     }
-; 1121 : 
-; 1122 :     for( ;; ) {
-; 1123 : 
-; 1124 :         while( isspace( *p.input ) ) p.input++;
+; 1127 :     }
+; 1128 : 
+; 1129 :     for( ;; ) {
+; 1130 : 
+; 1131 :         while( isspace( *p.input ) ) p.input++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax]
@@ -5069,8 +5095,8 @@ $LN5@Tokenize:
 	jmp	SHORT $LN5@Tokenize
 $LN6@Tokenize:
 
-; 1125 : 
-; 1126 :         if ( *p.input == ';' && flags == TOK_DEFAULT ) {
+; 1132 : 
+; 1133 :         if ( *p.input == ';' && flags == TOK_DEFAULT ) {
 
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax]
@@ -5080,7 +5106,7 @@ $LN6@Tokenize:
 	jne	SHORT $LN15@Tokenize
 $LN7@Tokenize:
 
-; 1127 :             while ( p.input > line && isspace( *(p.input-1) ) ) p.input--; /* skip */
+; 1134 :             while ( p.input > line && isspace( *(p.input-1) ) ) p.input--; /* skip */
 
 	mov	rax, QWORD PTR line$[rsp]
 	cmp	QWORD PTR p$[rsp], rax
@@ -5097,26 +5123,26 @@ $LN7@Tokenize:
 	jmp	SHORT $LN7@Tokenize
 $LN8@Tokenize:
 
-; 1128 :             strcpy( commentbuffer, p.input );
+; 1135 :             strcpy( commentbuffer, p.input );
 
 	mov	rdx, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR commentbuffer
 	call	strcpy
 
-; 1129 :             ModuleInfo.CurrComment = commentbuffer;
+; 1136 :             ModuleInfo.CurrComment = commentbuffer;
 
 	mov	rax, QWORD PTR commentbuffer
 	mov	QWORD PTR ModuleInfo+472, rax
 
-; 1130 :             *p.input = NULLC;
+; 1137 :             *p.input = NULLC;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	BYTE PTR [rax], 0
 $LN15@Tokenize:
 
-; 1131 :         }
-; 1132 : 
-; 1133 :         tokenarray[p.index].tokpos = p.input;
+; 1138 :         }
+; 1139 : 
+; 1140 :         tokenarray[p.index].tokpos = p.input;
 
 	mov	eax, DWORD PTR p$[rsp+24]
 	imul	rax, rax, 32				; 00000020H
@@ -5124,23 +5150,23 @@ $LN15@Tokenize:
 	mov	rdx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx+rax+24], rdx
 
-; 1134 :         if( *p.input == NULLC ) {
+; 1141 :         if( *p.input == NULLC ) {
 
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax]
 	test	eax, eax
 	jne	$LN16@Tokenize
 
-; 1135 :             /* if a comma is last token, concat lines ... with some exceptions
-; 1136 :              * v2.05: moved from PreprocessLine(). Moved because the
-; 1137 :              * concatenation may be triggered by a comma AFTER expansion.
-; 1138 :              */
-; 1139 :             if ( p.index > 1 &&
-; 1140 :                 tokenarray[p.index-1].token == T_COMMA
-; 1141 : #if FASTPASS
-; 1142 :                 && ( Parse_Pass == PASS_1 || UseSavedState == FALSE ) /* is it an already preprocessed line? */
-; 1143 : #endif
-; 1144 :                 && start == 0 ) {
+; 1142 :             /* if a comma is last token, concat lines ... with some exceptions
+; 1143 :              * v2.05: moved from PreprocessLine(). Moved because the
+; 1144 :              * concatenation may be triggered by a comma AFTER expansion.
+; 1145 :              */
+; 1146 :             if ( p.index > 1 &&
+; 1147 :                 tokenarray[p.index-1].token == T_COMMA
+; 1148 : #if FASTPASS
+; 1149 :                 && ( Parse_Pass == PASS_1 || UseSavedState == FALSE ) /* is it an already preprocessed line? */
+; 1150 : #endif
+; 1151 :                 && start == 0 ) {
 
 	cmp	DWORD PTR p$[rsp+24], 1
 	jbe	$LN17@Tokenize
@@ -5161,12 +5187,12 @@ $LN18@Tokenize:
 	cmp	DWORD PTR start$[rsp], 0
 	jne	$LN17@Tokenize
 
-; 1145 :                 DebugMsg1(("Tokenize: calling IsMultiLine()\n" ));
+; 1152 :                 DebugMsg1(("Tokenize: calling IsMultiLine()\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11284
+	lea	rcx, OFFSET FLAT:$SG11288
 	call	DoDebugMsg1
 
-; 1146 :                 if ( IsMultiLine( tokenarray ) ) {
+; 1153 :                 if ( IsMultiLine( tokenarray ) ) {
 
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	call	IsMultiLine
@@ -5174,7 +5200,7 @@ $LN18@Tokenize:
 	test	eax, eax
 	je	$LN19@Tokenize
 
-; 1147 :                     char *ptr = GetAlignedPointer( p.output, strlen( p.output ) );
+; 1154 :                     char *ptr = GetAlignedPointer( p.output, strlen( p.output ) );
 
 	mov	rcx, QWORD PTR p$[rsp+8]
 	call	strlen
@@ -5185,13 +5211,13 @@ $LN18@Tokenize:
 	mov	rax, rcx
 	mov	QWORD PTR ptr$4[rsp], rax
 
-; 1148 :                     DebugMsg1(("Tokenize: IsMultiLine(%s)=TRUE\n", line ));
+; 1155 :                     DebugMsg1(("Tokenize: IsMultiLine(%s)=TRUE\n", line ));
 
 	mov	rdx, QWORD PTR line$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11286
+	lea	rcx, OFFSET FLAT:$SG11290
 	call	DoDebugMsg1
 
-; 1149 :                     if ( GetTextLine( ptr ) ) {
+; 1156 :                     if ( GetTextLine( ptr ) ) {
 
 	mov	rcx, QWORD PTR ptr$4[rsp]
 	call	GetTextLine
@@ -5199,7 +5225,7 @@ $LN18@Tokenize:
 	je	$LN20@Tokenize
 $LN9@Tokenize:
 
-; 1150 :                         while ( isspace( *ptr ) ) ptr++;
+; 1157 :                         while ( isspace( *ptr ) ) ptr++;
 
 	mov	rax, QWORD PTR ptr$4[rsp]
 	movsx	eax, BYTE PTR [rax]
@@ -5213,49 +5239,49 @@ $LN9@Tokenize:
 	jmp	SHORT $LN9@Tokenize
 $LN10@Tokenize:
 
-; 1151 :                         if ( *ptr ) {
+; 1158 :                         if ( *ptr ) {
 
 	mov	rax, QWORD PTR ptr$4[rsp]
 	movsx	eax, BYTE PTR [rax]
 	test	eax, eax
 	je	SHORT $LN21@Tokenize
 
-; 1152 :                             strcpy( p.input, ptr );
+; 1159 :                             strcpy( p.input, ptr );
 
 	mov	rdx, QWORD PTR ptr$4[rsp]
 	mov	rcx, QWORD PTR p$[rsp]
 	call	strcpy
 
-; 1153 :                             if ( strlen( p.start ) >= MAX_LINE_LEN ) {
+; 1160 :                             if ( strlen( p.start ) >= MAX_LINE_LEN ) {
 
 	mov	rcx, QWORD PTR p$[rsp+16]
 	call	strlen
 	cmp	rax, 600				; 00000258H
 	jb	SHORT $LN22@Tokenize
 
-; 1154 :                                 EmitError( LINE_TOO_LONG );
+; 1161 :                                 EmitError( LINE_TOO_LONG );
 
-	mov	ecx, 61					; 0000003dH
+	mov	ecx, 62					; 0000003eH
 	call	EmitError
 
-; 1155 :                                 p.index = start;
+; 1162 :                                 p.index = start;
 
 	mov	eax, DWORD PTR start$[rsp]
 	mov	DWORD PTR p$[rsp+24], eax
 
-; 1156 :                                 break;
+; 1163 :                                 break;
 
 	jmp	$LN3@Tokenize
 $LN22@Tokenize:
 
-; 1157 :                             }
-; 1158 :                             DebugMsg1(("Tokenize: line concatenation, line=%s\n", line ));
+; 1164 :                             }
+; 1165 :                             DebugMsg1(("Tokenize: line concatenation, line=%s\n", line ));
 
 	mov	rdx, QWORD PTR line$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11290
+	lea	rcx, OFFSET FLAT:$SG11294
 	call	DoDebugMsg1
 
-; 1159 :                             continue;
+; 1166 :                             continue;
 
 	jmp	$LN2@Tokenize
 $LN21@Tokenize:
@@ -5263,17 +5289,17 @@ $LN20@Tokenize:
 $LN19@Tokenize:
 $LN17@Tokenize:
 
-; 1160 :                         }
-; 1161 :                     }
-; 1162 :                 }
-; 1163 :             }
-; 1164 :             break;
+; 1167 :                         }
+; 1168 :                     }
+; 1169 :                 }
+; 1170 :             }
+; 1171 :             break;
 
 	jmp	$LN3@Tokenize
 $LN16@Tokenize:
 
-; 1165 :         }
-; 1166 :         tokenarray[p.index].string_ptr = p.output;
+; 1172 :         }
+; 1173 :         tokenarray[p.index].string_ptr = p.output;
 
 	mov	eax, DWORD PTR p$[rsp+24]
 	imul	rax, rax, 32				; 00000020H
@@ -5281,7 +5307,7 @@ $LN16@Tokenize:
 	mov	rdx, QWORD PTR p$[rsp+8]
 	mov	QWORD PTR [rcx+rax+8], rdx
 
-; 1167 :         rc = GetToken( &tokenarray[p.index], &p );
+; 1174 :         rc = GetToken( &tokenarray[p.index], &p );
 
 	mov	eax, DWORD PTR p$[rsp+24]
 	imul	rax, rax, 32				; 00000020H
@@ -5293,48 +5319,48 @@ $LN16@Tokenize:
 	call	GetToken
 	mov	DWORD PTR rc$[rsp], eax
 
-; 1168 :         if ( rc == EMPTY )
+; 1175 :         if ( rc == EMPTY )
 
 	cmp	DWORD PTR rc$[rsp], -2
 	jne	SHORT $LN23@Tokenize
 
-; 1169 :             continue;
+; 1176 :             continue;
 
 	jmp	$LN2@Tokenize
 $LN23@Tokenize:
 
-; 1170 :         if ( rc == ERROR ) {
+; 1177 :         if ( rc == ERROR ) {
 
 	cmp	DWORD PTR rc$[rsp], -1
 	jne	SHORT $LN24@Tokenize
 
-; 1171 :             p.index = start; /* skip this line */
+; 1178 :             p.index = start; /* skip this line */
 
 	mov	eax, DWORD PTR start$[rsp]
 	mov	DWORD PTR p$[rsp+24], eax
 
-; 1172 :             break;
+; 1179 :             break;
 
 	jmp	$LN3@Tokenize
 $LN24@Tokenize:
 
-; 1173 :         }
-; 1174 :         /* v2.04: this has been moved here from condasm.c to
-; 1175 :          * avoid problems with (conditional) listings. It also
-; 1176 :          * avoids having to search for the first token twice.
-; 1177 :          * Note: a conditional assembly directive within an
-; 1178 :          *    inactive block and preceded by a label isn't detected!
-; 1179 :          *    This is an exact copy of the Masm behavior, although
-; 1180 :          *    it probably is just a bug!
-; 1181 :          */
-; 1182 :         if ( !(flags & TOK_RESCAN) ) {
+; 1180 :         }
+; 1181 :         /* v2.04: this has been moved here from condasm.c to
+; 1182 :          * avoid problems with (conditional) listings. It also
+; 1183 :          * avoids having to search for the first token twice.
+; 1184 :          * Note: a conditional assembly directive within an
+; 1185 :          *    inactive block and preceded by a label isn't detected!
+; 1186 :          *    This is an exact copy of the Masm behavior, although
+; 1187 :          *    it probably is just a bug!
+; 1188 :          */
+; 1189 :         if ( !(flags & TOK_RESCAN) ) {
 
 	mov	eax, DWORD PTR flags$[rsp]
 	and	eax, 1
 	test	eax, eax
 	jne	$LN25@Tokenize
 
-; 1183 :             if ( p.index == 0 || ( p.index == 2 && ( tokenarray[1].token == T_COLON || tokenarray[1].token == T_DBL_COLON) ) ) {
+; 1190 :             if ( p.index == 0 || ( p.index == 2 && ( tokenarray[1].token == T_COLON || tokenarray[1].token == T_DBL_COLON) ) ) {
 
 	cmp	DWORD PTR p$[rsp+24], 0
 	je	SHORT $LN27@Tokenize
@@ -5355,7 +5381,7 @@ $LN24@Tokenize:
 $LN28@Tokenize:
 $LN27@Tokenize:
 
-; 1184 :                 if ( tokenarray[p.index].token == T_DIRECTIVE &&
+; 1191 :                 if ( tokenarray[p.index].token == T_DIRECTIVE &&
 
 	mov	eax, DWORD PTR p$[rsp+24]
 	imul	rax, rax, 32				; 00000020H
@@ -5370,8 +5396,8 @@ $LN27@Tokenize:
 	test	eax, eax
 	jne	SHORT $LN29@Tokenize
 
-; 1185 :                     tokenarray[p.index].bytval == DRT_CONDDIR ) {
-; 1186 :                     if ( tokenarray[p.index].tokval == T_COMMENT ) {
+; 1192 :                     tokenarray[p.index].bytval == DRT_CONDDIR ) {
+; 1193 :                     if ( tokenarray[p.index].tokval == T_COMMENT ) {
 
 	mov	eax, DWORD PTR p$[rsp+24]
 	imul	rax, rax, 32				; 00000020H
@@ -5379,25 +5405,25 @@ $LN27@Tokenize:
 	cmp	DWORD PTR [rcx+rax+16], 358		; 00000166H
 	jne	SHORT $LN31@Tokenize
 
-; 1187 :                         DebugMsg1(("tokenize: COMMENT starting, delim is >%c<\n", ModuleInfo.inside_comment));
+; 1194 :                         DebugMsg1(("tokenize: COMMENT starting, delim is >%c<\n", ModuleInfo.inside_comment));
 
 	movzx	eax, BYTE PTR ModuleInfo+407
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11300
+	lea	rcx, OFFSET FLAT:$SG11304
 	call	DoDebugMsg1
 
-; 1188 :                         StartComment( p.input );
+; 1195 :                         StartComment( p.input );
 
 	mov	rcx, QWORD PTR p$[rsp]
 	call	StartComment
 
-; 1189 :                         break; /* p.index is 0 or 2 */
+; 1196 :                         break; /* p.index is 0 or 2 */
 
 	jmp	$LN3@Tokenize
 $LN31@Tokenize:
 
-; 1190 :                     }
-; 1191 :                     conditional_assembly_prepare( tokenarray[p.index].tokval );
+; 1197 :                     }
+; 1198 :                     conditional_assembly_prepare( tokenarray[p.index].tokval );
 
 	mov	eax, DWORD PTR p$[rsp+24]
 	imul	rax, rax, 32				; 00000020H
@@ -5405,34 +5431,34 @@ $LN31@Tokenize:
 	mov	ecx, DWORD PTR [rcx+rax+16]
 	call	conditional_assembly_prepare
 
-; 1192 :                     if ( CurrIfState != BLOCK_ACTIVE ) {
+; 1199 :                     if ( CurrIfState != BLOCK_ACTIVE ) {
 
 	cmp	DWORD PTR CurrIfState, 0
 	je	SHORT $LN32@Tokenize
 
-; 1193 :                         p.index++;
+; 1200 :                         p.index++;
 
 	mov	eax, DWORD PTR p$[rsp+24]
 	inc	eax
 	mov	DWORD PTR p$[rsp+24], eax
 
-; 1194 :                         break; /* p.index is 1 or 3 */
+; 1201 :                         break; /* p.index is 1 or 3 */
 
 	jmp	$LN3@Tokenize
 $LN32@Tokenize:
 
-; 1195 :                     }
+; 1202 :                     }
 
 	jmp	SHORT $LN30@Tokenize
 $LN29@Tokenize:
 
-; 1196 :                 } else if( CurrIfState != BLOCK_ACTIVE ) {
+; 1203 :                 } else if( CurrIfState != BLOCK_ACTIVE ) {
 
 	cmp	DWORD PTR CurrIfState, 0
 	je	SHORT $LN33@Tokenize
 
-; 1197 :                     /* further processing skipped. p.index is 0 */
-; 1198 :                     break;
+; 1204 :                     /* further processing skipped. p.index is 0 */
+; 1205 :                     break;
 
 	jmp	SHORT $LN3@Tokenize
 $LN33@Tokenize:
@@ -5440,47 +5466,47 @@ $LN30@Tokenize:
 $LN26@Tokenize:
 $LN25@Tokenize:
 
-; 1199 :                 }
-; 1200 :             }
-; 1201 :         }
-; 1202 :         p.index++;
+; 1206 :                 }
+; 1207 :             }
+; 1208 :         }
+; 1209 :         p.index++;
 
 	mov	eax, DWORD PTR p$[rsp+24]
 	inc	eax
 	mov	DWORD PTR p$[rsp+24], eax
 
-; 1203 :         if( p.index >= MAX_TOKEN ) {
+; 1210 :         if( p.index >= MAX_TOKEN ) {
 
 	cmp	DWORD PTR p$[rsp+24], 150		; 00000096H
 	jb	SHORT $LN34@Tokenize
 
-; 1204 :             DebugMsg1(("tokenize: token index %u >= MAX_TOKEN (=%u), line=>%s<\n", p.index, MAX_TOKEN, line ));
+; 1211 :             DebugMsg1(("tokenize: token index %u >= MAX_TOKEN (=%u), line=>%s<\n", p.index, MAX_TOKEN, line ));
 
 	mov	r9, QWORD PTR line$[rsp]
 	mov	r8d, 150				; 00000096H
 	mov	edx, DWORD PTR p$[rsp+24]
-	lea	rcx, OFFSET FLAT:$SG11304
+	lea	rcx, OFFSET FLAT:$SG11308
 	call	DoDebugMsg1
 
-; 1205 :             EmitError( TOO_MANY_TOKENS );
+; 1212 :             EmitError( TOO_MANY_TOKENS );
 
-	mov	ecx, 62					; 0000003eH
+	mov	ecx, 63					; 0000003fH
 	call	EmitError
 
-; 1206 :             p.index = start;
+; 1213 :             p.index = start;
 
 	mov	eax, DWORD PTR start$[rsp]
 	mov	DWORD PTR p$[rsp+24], eax
 
-; 1207 :             goto skipline;
+; 1214 :             goto skipline;
 
 	jmp	SHORT $skipline$37
 $LN34@Tokenize:
 
-; 1208 :         }
-; 1209 : 
-; 1210 : #if TOKSTRALIGN
-; 1211 :         p.output = GetAlignedPointer( token_stringbuf, p.output - token_stringbuf );
+; 1215 :         }
+; 1216 : 
+; 1217 : #if TOKSTRALIGN
+; 1218 :         p.output = GetAlignedPointer( token_stringbuf, p.output - token_stringbuf );
 
 	mov	rax, QWORD PTR token_stringbuf
 	mov	rcx, QWORD PTR p$[rsp+8]
@@ -5493,15 +5519,15 @@ $LN34@Tokenize:
 	mov	rax, rcx
 	mov	QWORD PTR p$[rsp+8], rax
 
-; 1212 : #endif
-; 1213 : 
-; 1214 :     }
+; 1219 : #endif
+; 1220 : 
+; 1221 :     }
 
 	jmp	$LN2@Tokenize
 $LN3@Tokenize:
 
-; 1215 : #if TOKSTRALIGN
-; 1216 :     p.output = GetAlignedPointer( token_stringbuf, p.output - token_stringbuf );
+; 1222 : #if TOKSTRALIGN
+; 1223 :     p.output = GetAlignedPointer( token_stringbuf, p.output - token_stringbuf );
 
 	mov	rax, QWORD PTR token_stringbuf
 	mov	rcx, QWORD PTR p$[rsp+8]
@@ -5514,22 +5540,22 @@ $LN3@Tokenize:
 	mov	rax, rcx
 	mov	QWORD PTR p$[rsp+8], rax
 
-; 1217 : #endif
-; 1218 :     StringBufferEnd = p.output;
+; 1224 : #endif
+; 1225 :     StringBufferEnd = p.output;
 
 	mov	rax, QWORD PTR p$[rsp+8]
 	mov	QWORD PTR ModuleInfo+488, rax
 $skipline$37:
 
-; 1219 : skipline:
-; 1220 :     tokenarray[p.index].token  = T_FINAL;
+; 1226 : skipline:
+; 1227 :     tokenarray[p.index].token  = T_FINAL;
 
 	mov	eax, DWORD PTR p$[rsp+24]
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	BYTE PTR [rcx+rax], 0
 
-; 1221 :     tokenarray[p.index].bytval = p.flags3;
+; 1228 :     tokenarray[p.index].bytval = p.flags3;
 
 	mov	eax, DWORD PTR p$[rsp+24]
 	imul	rax, rax, 32				; 00000020H
@@ -5537,19 +5563,19 @@ $skipline$37:
 	movzx	edx, BYTE PTR p$[rsp+30]
 	mov	BYTE PTR [rcx+rax+1], dl
 
-; 1222 :     tokenarray[p.index].string_ptr = "";
+; 1229 :     tokenarray[p.index].string_ptr = "";
 
 	mov	eax, DWORD PTR p$[rsp+24]
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
-	lea	rdx, OFFSET FLAT:$SG11305
+	lea	rdx, OFFSET FLAT:$SG11309
 	mov	QWORD PTR [rcx+rax+8], rdx
 
-; 1223 :     return( p.index );
+; 1230 :     return( p.index );
 
 	mov	eax, DWORD PTR p$[rsp+24]
 
-; 1224 : }
+; 1231 : }
 
 	mov	edi, eax
 	mov	rcx, rsp
@@ -5568,7 +5594,7 @@ token$ = 48
 p$ = 56
 GetToken PROC
 
-; 1034 : {
+; 1041 : {
 
 $LN13:
 	mov	QWORD PTR [rsp+16], rdx
@@ -5581,7 +5607,7 @@ $LN13:
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+48]
 
-; 1035 :     if( isdigit( *p->input ) ) {
+; 1042 :     if( isdigit( *p->input ) ) {
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -5591,7 +5617,7 @@ $LN13:
 	test	eax, eax
 	je	SHORT $LN2@GetToken
 
-; 1036 :         return( get_number( token, p ) );
+; 1043 :         return( get_number( token, p ) );
 
 	mov	rdx, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR token$[rsp]
@@ -5600,7 +5626,7 @@ $LN13:
 	jmp	$LN3@GetToken
 $LN2@GetToken:
 
-; 1037 :     } else if( is_valid_id_start( *p->input ) ) {
+; 1044 :     } else if( is_valid_id_start( *p->input ) ) {
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -5631,22 +5657,22 @@ $LN2@GetToken:
 	jne	SHORT $LN4@GetToken
 $LN6@GetToken:
 
-; 1038 :         return( get_id( token, p ) );
+; 1045 :         return( get_id( token, p ) );
 
 	mov	rdx, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR token$[rsp]
 	call	get_id
 	jmp	$LN1@GetToken
 
-; 1039 :     } else if( *p->input == '.' &&
+; 1046 :     } else if( *p->input == '.' &&
 
 	jmp	$LN5@GetToken
 $LN4@GetToken:
 
-; 1040 : #if DOTNAMEX /* allow dots within identifiers */
-; 1041 :               ( is_valid_id_char(*(p->input+1)) || *(p->input+1) == '.' ) &&
-; 1042 : #else
-; 1043 :               is_valid_id_char(*(p->input+1)) &&
+; 1047 : #if DOTNAMEX /* allow dots within identifiers */
+; 1048 :               ( is_valid_id_char(*(p->input+1)) || *(p->input+1) == '.' ) &&
+; 1049 : #else
+; 1050 :               is_valid_id_char(*(p->input+1)) &&
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -5710,11 +5736,11 @@ $LN9@GetToken:
 	je	SHORT $LN7@GetToken
 $LN10@GetToken:
 
-; 1044 : #endif
-; 1045 :               /* v2.11: member last_token has been removed */
-; 1046 :               //( p->last_token != T_REG &&  p->last_token != T_CL_BRACKET && p->last_token != T_CL_SQ_BRACKET && p->last_token != T_ID ) ) {
-; 1047 :               ( p->index == 0 || ( token[-1].token != T_REG && token[-1].token != T_CL_BRACKET && token[-1].token != T_CL_SQ_BRACKET && token[-1].token != T_ID ) ) ) {
-; 1048 :         return( get_id( token, p ) );
+; 1051 : #endif
+; 1052 :               /* v2.11: member last_token has been removed */
+; 1053 :               //( p->last_token != T_REG &&  p->last_token != T_CL_BRACKET && p->last_token != T_CL_SQ_BRACKET && p->last_token != T_ID ) ) {
+; 1054 :               ( p->index == 0 || ( token[-1].token != T_REG && token[-1].token != T_CL_BRACKET && token[-1].token != T_CL_SQ_BRACKET && token[-1].token != T_ID ) ) ) {
+; 1055 :         return( get_id( token, p ) );
 
 	mov	rdx, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR token$[rsp]
@@ -5723,8 +5749,8 @@ $LN10@GetToken:
 	jmp	SHORT $LN8@GetToken
 $LN7@GetToken:
 
-; 1049 : #if BACKQUOTES
-; 1050 :     } else if( *p->input == '`' && Options.strict_masm_compat == FALSE ) {
+; 1056 : #if BACKQUOTES
+; 1057 :     } else if( *p->input == '`' && Options.strict_masm_compat == FALSE ) {
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -5735,7 +5761,7 @@ $LN7@GetToken:
 	test	eax, eax
 	jne	SHORT $LN11@GetToken
 
-; 1051 :         return( get_id_in_backquotes( token, p ) );
+; 1058 :         return( get_id_in_backquotes( token, p ) );
 
 	mov	rdx, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR token$[rsp]
@@ -5746,16 +5772,16 @@ $LN8@GetToken:
 $LN5@GetToken:
 $LN3@GetToken:
 
-; 1052 : #endif
-; 1053 :     }
-; 1054 :     return( get_special_symbol( token, p ) );
+; 1059 : #endif
+; 1060 :     }
+; 1061 :     return( get_special_symbol( token, p ) );
 
 	mov	rdx, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR token$[rsp]
 	call	get_special_symbol
 $LN1@GetToken:
 
-; 1055 : }
+; 1062 : }
 
 	add	rsp, 32					; 00000020H
 	pop	rdi

@@ -8,11 +8,12 @@ INCLUDELIB OLDNAMES
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10649 DB	'_%s@%d', 00H
+$SG10651 DB	'_%s@%d', 00H
 	ORG $+1
-$SG10656 DB	'@%s@%u', 00H
+$SG10658 DB	'@%s@%u', 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	sprintf
@@ -136,7 +137,7 @@ StdcallMangler PROC
 ; 107  :         return( sprintf( buffer, "_%s@%d", sym->name, dir->e.procinfo->parasize ) );
 
 	mov	rax, QWORD PTR [rcx+96]
-	lea	rdx, OFFSET FLAT:$SG10649
+	lea	rdx, OFFSET FLAT:$SG10651
 	mov	r8, QWORD PTR [rcx+8]
 	mov	rcx, r10
 	mov	r9d, DWORD PTR [rax+32]
@@ -445,7 +446,7 @@ ms32_decorate PROC
 	mov	rax, QWORD PTR [rcx+96]
 	mov	r10, rdx
 	mov	r8, QWORD PTR [rcx+8]
-	lea	rdx, OFFSET FLAT:$SG10656
+	lea	rdx, OFFSET FLAT:$SG10658
 	mov	rcx, r10
 	mov	r9d, DWORD PTR [rax+32]
 	jmp	sprintf

@@ -8,14 +8,15 @@ INCLUDELIB OLDNAMES
 PUBLIC	Options
 PUBLIC	DefaultDir
 _BSS	SEGMENT
-$SG11498 DB	01H DUP (?)
+$SG11500 DB	01H DUP (?)
 	ALIGN	4
 
-$SG11530 DB	01H DUP (?)
+$SG11532 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
 	ALIGN	8
@@ -23,461 +24,461 @@ _BSS	SEGMENT
 DefaultDir DQ	04H DUP (?)
 _BSS	ENDS
 CONST	SEGMENT
-cmdl_options DQ	FLAT:$SG11304
+cmdl_options DQ	FLAT:$SG11306
 	DD	00H
 	ORG $+4
 	DQ	FLAT:Set_h
-	DQ	FLAT:$SG11305
-	DD	00H
-	ORG $+4
-	DQ	FLAT:Set_ofmt
-	DQ	FLAT:$SG11306
-	DD	00H
-	ORG $+4
-	DQ	FLAT:Set_Cp
 	DQ	FLAT:$SG11307
 	DD	00H
 	ORG $+4
-	DQ	FLAT:Set_Cu
+	DQ	FLAT:Set_ofmt
 	DQ	FLAT:$SG11308
 	DD	00H
 	ORG $+4
-	DQ	FLAT:Set_Cx
+	DQ	FLAT:Set_Cp
 	DQ	FLAT:$SG11309
-	DD	02H
+	DD	00H
 	ORG $+4
-	DQ	FLAT:Set_ofmt
+	DQ	FLAT:Set_Cu
 	DQ	FLAT:$SG11310
 	DD	00H
 	ORG $+4
-	DQ	FLAT:Set_c
+	DQ	FLAT:Set_Cx
 	DQ	FLAT:$SG11311
+	DD	02H
+	ORG $+4
+	DQ	FLAT:Set_ofmt
+	DQ	FLAT:$SG11312
+	DD	00H
+	ORG $+4
+	DQ	FLAT:Set_c
+	DQ	FLAT:$SG11313
 	DD	00H
 	ORG $+4
 	DQ	FLAT:Set_D
-	DQ	FLAT:$SG11312
+	DQ	FLAT:$SG11314
 	DD	0303H
 	ORG $+4
 	DQ	FLAT:Set_ofmt
-	DQ	FLAT:$SG11313
+	DQ	FLAT:$SG11315
 	DD	03H
 	ORG $+4
 	DQ	FLAT:Set_ofmt
-	DQ	FLAT:$SG11314
-	DD	00H
-	ORG $+4
-	DQ	FLAT:Set_EP
-	DQ	FLAT:$SG11315
-	DD	0cH
-	ORG $+4
-	DQ	FLAT:Set_True
 	DQ	FLAT:$SG11316
 	DD	00H
 	ORG $+4
-	DQ	FLAT:Set_e
+	DQ	FLAT:Set_EP
 	DQ	FLAT:$SG11317
-	DD	00H
+	DD	0cH
 	ORG $+4
-	DQ	FLAT:Set_Fd
+	DQ	FLAT:Set_True
 	DQ	FLAT:$SG11318
 	DD	00H
 	ORG $+4
-	DQ	FLAT:Set_Fi
+	DQ	FLAT:Set_e
 	DQ	FLAT:$SG11319
 	DD	00H
 	ORG $+4
-	DQ	FLAT:Set_Fl
+	DQ	FLAT:Set_Fd
 	DQ	FLAT:$SG11320
 	DD	00H
 	ORG $+4
-	DQ	FLAT:Set_Fo
+	DQ	FLAT:Set_Fi
 	DQ	FLAT:$SG11321
 	DD	00H
 	ORG $+4
-	DQ	FLAT:Set_FPx
+	DQ	FLAT:Set_Fl
 	DQ	FLAT:$SG11322
+	DD	00H
+	ORG $+4
+	DQ	FLAT:Set_Fo
+	DQ	FLAT:$SG11323
+	DD	00H
+	ORG $+4
+	DQ	FLAT:Set_FPx
+	DQ	FLAT:$SG11324
 	DD	01H
 	ORG $+4
 	DQ	FLAT:Set_FPx
-	DQ	FLAT:$SG11323
-	DD	02H
-	ORG $+4
-	DQ	FLAT:Set_fp
-	DQ	FLAT:$SG11324
-	DD	03H
-	ORG $+4
-	DQ	FLAT:Set_fp
 	DQ	FLAT:$SG11325
-	DD	04H
+	DD	02H
 	ORG $+4
 	DQ	FLAT:Set_fp
 	DQ	FLAT:$SG11326
-	DD	01H
+	DD	03H
 	ORG $+4
 	DQ	FLAT:Set_fp
 	DQ	FLAT:$SG11327
+	DD	04H
+	ORG $+4
+	DQ	FLAT:Set_fp
+	DQ	FLAT:$SG11328
+	DD	01H
+	ORG $+4
+	DQ	FLAT:Set_fp
+	DQ	FLAT:$SG11329
 	DD	00H
 	ORG $+4
 	DQ	FLAT:Set_Fw
-	DQ	FLAT:$SG11328
-	DD	04H
-	ORG $+4
-	DQ	FLAT:Set_G
-	DQ	FLAT:$SG11329
-	DD	01H
-	ORG $+4
-	DQ	FLAT:Set_G
 	DQ	FLAT:$SG11330
-	DD	07H
+	DD	04H
 	ORG $+4
 	DQ	FLAT:Set_G
 	DQ	FLAT:$SG11331
-	DD	03H
+	DD	01H
 	ORG $+4
 	DQ	FLAT:Set_G
 	DQ	FLAT:$SG11332
+	DD	07H
+	ORG $+4
+	DQ	FLAT:Set_G
+	DQ	FLAT:$SG11333
+	DD	03H
+	ORG $+4
+	DQ	FLAT:Set_G
+	DQ	FLAT:$SG11334
 	DD	00H
 	ORG $+4
 	DQ	FLAT:Set_h
-	DQ	FLAT:$SG11333
+	DQ	FLAT:$SG11335
 	DD	00H
 	ORG $+4
 	DQ	FLAT:Set_I
-	DQ	FLAT:$SG11334
+	DQ	FLAT:$SG11336
 	DD	03H
 	ORG $+4
 	DQ	FLAT:Set_m
-	DQ	FLAT:$SG11335
-	DD	07H
-	ORG $+4
-	DQ	FLAT:Set_m
-	DQ	FLAT:$SG11336
-	DD	06H
-	ORG $+4
-	DQ	FLAT:Set_m
 	DQ	FLAT:$SG11337
-	DD	05H
+	DD	07H
 	ORG $+4
 	DQ	FLAT:Set_m
 	DQ	FLAT:$SG11338
-	DD	04H
+	DD	06H
 	ORG $+4
 	DQ	FLAT:Set_m
 	DQ	FLAT:$SG11339
-	DD	02H
+	DD	05H
 	ORG $+4
 	DQ	FLAT:Set_m
 	DQ	FLAT:$SG11340
-	DD	01H
+	DD	04H
 	ORG $+4
 	DQ	FLAT:Set_m
 	DQ	FLAT:$SG11341
+	DD	02H
+	ORG $+4
+	DQ	FLAT:Set_m
+	DQ	FLAT:$SG11342
+	DD	01H
+	ORG $+4
+	DQ	FLAT:Set_m
+	DQ	FLAT:$SG11343
 	DD	0100H
 	ORG $+4
 	DQ	FLAT:Set_ofmt
-	DQ	FLAT:$SG11342
+	DQ	FLAT:$SG11344
 	DD	08H
 	ORG $+4
 	DQ	FLAT:Set_n
-	DQ	FLAT:$SG11343
+	DQ	FLAT:$SG11345
 	DD	07H
 	ORG $+4
 	DQ	FLAT:Set_n
-	DQ	FLAT:$SG11344
+	DQ	FLAT:$SG11346
 	DD	05H
 	ORG $+4
 	DQ	FLAT:Set_n
-	DQ	FLAT:$SG11345
+	DQ	FLAT:$SG11347
 	DD	00H
 	ORG $+4
 	DQ	FLAT:Set_nologo
-	DQ	FLAT:$SG11346
+	DQ	FLAT:$SG11348
 	DD	06H
 	ORG $+4
 	DQ	FLAT:Set_n
-	DQ	FLAT:$SG11347
+	DQ	FLAT:$SG11349
 	DD	01H
 	ORG $+4
 	DQ	FLAT:Set_ofmt
-	DQ	FLAT:$SG11348
+	DQ	FLAT:$SG11350
 	DD	0200H
 	ORG $+4
 	DQ	FLAT:Set_ofmt
-	DQ	FLAT:$SG11349
+	DQ	FLAT:$SG11351
 	DD	00H
 	ORG $+4
 	DQ	FLAT:Set_q
-	DQ	FLAT:$SG11350
+	DQ	FLAT:$SG11352
 	DD	00H
 	ORG $+4
 	DQ	FLAT:Set_Sa
-	DQ	FLAT:$SG11351
+	DQ	FLAT:$SG11353
 	DD	089H
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11352
+	DQ	FLAT:$SG11354
 	DD	083H
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11353
+	DQ	FLAT:$SG11355
 	DD	088H
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11354
+	DQ	FLAT:$SG11356
 	DD	082H
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11355
+	DQ	FLAT:$SG11357
 	DD	08bH
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11356
+	DQ	FLAT:$SG11358
 	DD	00H
 	ORG $+4
 	DQ	FLAT:Set_WX
-	DQ	FLAT:$SG11357
-	DD	00H
-	ORG $+4
-	DQ	FLAT:Set_W
-	DQ	FLAT:$SG11358
-	DD	0302H
-	ORG $+4
-	DQ	FLAT:Set_ofmt
 	DQ	FLAT:$SG11359
 	DD	00H
 	ORG $+4
-	DQ	FLAT:Set_w
+	DQ	FLAT:Set_W
 	DQ	FLAT:$SG11360
-	DD	08cH
+	DD	0302H
 	ORG $+4
-	DQ	FLAT:Set_True
+	DQ	FLAT:Set_ofmt
 	DQ	FLAT:$SG11361
 	DD	00H
 	ORG $+4
-	DQ	FLAT:Set_Zd
+	DQ	FLAT:Set_w
 	DQ	FLAT:$SG11362
-	DD	08aH
+	DD	08cH
 	ORG $+4
 	DQ	FLAT:Set_True
 	DQ	FLAT:$SG11363
+	DD	00H
+	ORG $+4
+	DQ	FLAT:Set_Zd
+	DQ	FLAT:$SG11364
+	DD	08aH
+	ORG $+4
+	DQ	FLAT:Set_True
+	DQ	FLAT:$SG11365
 	DD	080H
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11364
+	DQ	FLAT:$SG11366
 	DD	02H
 	ORG $+4
 	DQ	FLAT:Set_Zi
-	DQ	FLAT:$SG11365
+	DQ	FLAT:$SG11367
 	DD	07eH
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11366
+	DQ	FLAT:$SG11368
 	DD	07fH
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11367
+	DQ	FLAT:$SG11369
 	DD	00H
 	ORG $+4
 	DQ	FLAT:Set_Zp
-	DQ	FLAT:$SG11368
-	DD	00H
-	ORG $+4
-	DQ	FLAT:Set_zcm
-	DQ	FLAT:$SG11369
-	DD	075H
-	ORG $+4
-	DQ	FLAT:Set_True
 	DQ	FLAT:$SG11370
 	DD	00H
 	ORG $+4
-	DQ	FLAT:Set_zf
+	DQ	FLAT:Set_zcm
 	DQ	FLAT:$SG11371
+	DD	075H
+	ORG $+4
+	DQ	FLAT:Set_True
+	DQ	FLAT:$SG11372
+	DD	00H
+	ORG $+4
+	DQ	FLAT:Set_zf
+	DQ	FLAT:$SG11373
 	DD	01H
 	ORG $+4
 	DQ	FLAT:Set_zf
-	DQ	FLAT:$SG11372
+	DQ	FLAT:$SG11374
 	DD	070H
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11373
+	DQ	FLAT:$SG11375
 	DD	071H
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11374
+	DQ	FLAT:$SG11376
 	DD	072H
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11375
+	DQ	FLAT:$SG11377
 	DD	073H
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11376
+	DQ	FLAT:$SG11378
 	DD	074H
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11377
+	DQ	FLAT:$SG11379
 	DD	0acH
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11378
+	DQ	FLAT:$SG11380
 	DD	01H
 	ORG $+4
 	DQ	FLAT:Set_zt
-	DQ	FLAT:$SG11379
+	DQ	FLAT:$SG11381
 	DD	02H
 	ORG $+4
 	DQ	FLAT:Set_zt
-	DQ	FLAT:$SG11380
+	DQ	FLAT:$SG11382
 	DD	00H
 	ORG $+4
 	DQ	FLAT:Set_zt
-	DQ	FLAT:$SG11381
+	DQ	FLAT:$SG11383
 	DD	081H
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11382
+	DQ	FLAT:$SG11384
 	DD	077H
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11383
+	DQ	FLAT:$SG11385
 	DD	078H
 	ORG $+4
 	DQ	FLAT:Set_True
 CONST	ENDS
 _DATA	SEGMENT
-$SG11304 DB	'?', 00H
+$SG11306 DB	'?', 00H
 	ORG $+2
-$SG11305 DB	'bin', 00H
-$SG11306 DB	'Cp', 00H
+$SG11307 DB	'bin', 00H
+$SG11308 DB	'Cp', 00H
 	ORG $+1
-$SG11307 DB	'Cu', 00H
+$SG11309 DB	'Cu', 00H
 	ORG $+1
-$SG11308 DB	'Cx', 00H
+$SG11310 DB	'Cx', 00H
 	ORG $+1
-$SG11309 DB	'coff', 00H
+$SG11311 DB	'coff', 00H
 	ORG $+3
-$SG11310 DB	'c', 00H
+$SG11312 DB	'c', 00H
 	ORG $+2
-$SG11311 DB	'D^$', 00H
-$SG11312 DB	'elf64', 00H
+$SG11313 DB	'D^$', 00H
+$SG11314 DB	'elf64', 00H
 	ORG $+2
-$SG11313 DB	'elf', 00H
-$SG11314 DB	'EP', 00H
+$SG11315 DB	'elf', 00H
+$SG11316 DB	'EP', 00H
 	ORG $+1
-$SG11315 DB	'eq', 00H
+$SG11317 DB	'eq', 00H
 	ORG $+1
-$SG11316 DB	'e=#', 00H
-$SG11317 DB	'Fd=@', 00H
+$SG11318 DB	'e=#', 00H
+$SG11319 DB	'Fd=@', 00H
 	ORG $+3
-$SG11318 DB	'Fi=^@', 00H
+$SG11320 DB	'Fi=^@', 00H
 	ORG $+2
-$SG11319 DB	'Fl=@', 00H
+$SG11321 DB	'Fl=@', 00H
 	ORG $+3
-$SG11320 DB	'Fo=^@', 00H
+$SG11322 DB	'Fo=^@', 00H
 	ORG $+2
-$SG11321 DB	'FPi87', 00H
+$SG11323 DB	'FPi87', 00H
 	ORG $+2
-$SG11322 DB	'FPi', 00H
-$SG11323 DB	'fp0', 00H
-$SG11324 DB	'fp2', 00H
-$SG11325 DB	'fp3', 00H
-$SG11326 DB	'fpc', 00H
-$SG11327 DB	'Fw=^@', 00H
+$SG11324 DB	'FPi', 00H
+$SG11325 DB	'fp0', 00H
+$SG11326 DB	'fp2', 00H
+$SG11327 DB	'fp3', 00H
+$SG11328 DB	'fpc', 00H
+$SG11329 DB	'Fw=^@', 00H
 	ORG $+2
-$SG11328 DB	'Gc', 00H
+$SG11330 DB	'Gc', 00H
 	ORG $+1
-$SG11329 DB	'Gd', 00H
+$SG11331 DB	'Gd', 00H
 	ORG $+1
-$SG11330 DB	'Gr', 00H
+$SG11332 DB	'Gr', 00H
 	ORG $+1
-$SG11331 DB	'Gz', 00H
+$SG11333 DB	'Gz', 00H
 	ORG $+1
-$SG11332 DB	'h', 00H
+$SG11334 DB	'h', 00H
 	ORG $+2
-$SG11333 DB	'I=^@', 00H
+$SG11335 DB	'I=^@', 00H
 	ORG $+3
-$SG11334 DB	'mc', 00H
+$SG11336 DB	'mc', 00H
 	ORG $+1
-$SG11335 DB	'mf', 00H
+$SG11337 DB	'mf', 00H
 	ORG $+1
-$SG11336 DB	'mh', 00H
+$SG11338 DB	'mh', 00H
 	ORG $+1
-$SG11337 DB	'ml', 00H
+$SG11339 DB	'ml', 00H
 	ORG $+1
-$SG11338 DB	'mm', 00H
+$SG11340 DB	'mm', 00H
 	ORG $+1
-$SG11339 DB	'ms', 00H
+$SG11341 DB	'ms', 00H
 	ORG $+1
-$SG11340 DB	'mt', 00H
+$SG11342 DB	'mt', 00H
 	ORG $+1
-$SG11341 DB	'mz', 00H
+$SG11343 DB	'mz', 00H
 	ORG $+1
-$SG11342 DB	'nc=$', 00H
+$SG11344 DB	'nc=$', 00H
 	ORG $+3
-$SG11343 DB	'nd=$', 00H
+$SG11345 DB	'nd=$', 00H
 	ORG $+3
-$SG11344 DB	'nm=$', 00H
+$SG11346 DB	'nm=$', 00H
 	ORG $+3
-$SG11345 DB	'nologo', 00H
+$SG11347 DB	'nologo', 00H
 	ORG $+1
-$SG11346 DB	'nt=$', 00H
+$SG11348 DB	'nt=$', 00H
 	ORG $+3
-$SG11347 DB	'omf', 00H
-$SG11348 DB	'pe', 00H
+$SG11349 DB	'omf', 00H
+$SG11350 DB	'pe', 00H
 	ORG $+1
-$SG11349 DB	'q', 00H
+$SG11351 DB	'q', 00H
 	ORG $+2
-$SG11350 DB	'Sa', 00H
+$SG11352 DB	'Sa', 00H
 	ORG $+1
-$SG11351 DB	'Sf', 00H
+$SG11353 DB	'Sf', 00H
 	ORG $+1
-$SG11352 DB	'Sg', 00H
+$SG11354 DB	'Sg', 00H
 	ORG $+1
-$SG11353 DB	'Sn', 00H
+$SG11355 DB	'Sn', 00H
 	ORG $+1
-$SG11354 DB	'Sx', 00H
+$SG11356 DB	'Sx', 00H
 	ORG $+1
-$SG11356 DB	'WX', 00H
+$SG11358 DB	'WX', 00H
 	ORG $+1
-$SG11355 DB	'safeseh', 00H
-$SG11357 DB	'W=#', 00H
-$SG11358 DB	'win64', 00H
+$SG11357 DB	'safeseh', 00H
+$SG11359 DB	'W=#', 00H
+$SG11360 DB	'win64', 00H
 	ORG $+2
-$SG11359 DB	'w', 00H
+$SG11361 DB	'w', 00H
 	ORG $+2
-$SG11360 DB	'X', 00H
+$SG11362 DB	'X', 00H
 	ORG $+2
-$SG11361 DB	'Zd', 00H
+$SG11363 DB	'Zd', 00H
 	ORG $+1
-$SG11362 DB	'Zf', 00H
+$SG11364 DB	'Zf', 00H
 	ORG $+1
-$SG11363 DB	'Zg', 00H
+$SG11365 DB	'Zg', 00H
 	ORG $+1
-$SG11364 DB	'Zi=#', 00H
+$SG11366 DB	'Zi=#', 00H
 	ORG $+3
-$SG11365 DB	'Zm', 00H
+$SG11367 DB	'Zm', 00H
 	ORG $+1
-$SG11366 DB	'Zne', 00H
-$SG11367 DB	'Zp=#', 00H
+$SG11368 DB	'Zne', 00H
+$SG11369 DB	'Zp=#', 00H
 	ORG $+3
-$SG11368 DB	'zcm', 00H
-$SG11369 DB	'zcw', 00H
-$SG11370 DB	'zf0', 00H
-$SG11371 DB	'zf1', 00H
-$SG11372 DB	'zlc', 00H
-$SG11373 DB	'zld', 00H
-$SG11374 DB	'zlf', 00H
-$SG11375 DB	'zlp', 00H
-$SG11376 DB	'zls', 00H
-$SG11377 DB	'Zs', 00H
+$SG11370 DB	'zcm', 00H
+$SG11371 DB	'zcw', 00H
+$SG11372 DB	'zf0', 00H
+$SG11373 DB	'zf1', 00H
+$SG11374 DB	'zlc', 00H
+$SG11375 DB	'zld', 00H
+$SG11376 DB	'zlf', 00H
+$SG11377 DB	'zlp', 00H
+$SG11378 DB	'zls', 00H
+$SG11379 DB	'Zs', 00H
 	ORG $+1
-$SG11378 DB	'zt0', 00H
-$SG11379 DB	'zt1', 00H
-$SG11380 DB	'zt2', 00H
-$SG11381 DB	'Zv8', 00H
-$SG11382 DB	'zze', 00H
-$SG11383 DB	'zzs', 00H
-$SG11430 DB	'rb', 00H
+$SG11380 DB	'zt0', 00H
+$SG11381 DB	'zt1', 00H
+$SG11382 DB	'zt2', 00H
+$SG11383 DB	'Zv8', 00H
+$SG11384 DB	'zze', 00H
+$SG11385 DB	'zzs', 00H
+$SG11432 DB	'rb', 00H
 	ORG $+5
 Options	DB	00H
 	DB	00H
@@ -538,11 +539,11 @@ Options	DB	00H
 	DD	00H
 	DB	00H
 	ORG $+3
-$SG11163 DB	'Zi', 00H
+$SG11165 DB	'Zi', 00H
 	ORG $+1
-$SG11172 DB	'Zp', 00H
+$SG11174 DB	'Zp', 00H
 	ORG $+1
-$SG11240 DB	'W', 00H
+$SG11242 DB	'W', 00H
 _DATA	ENDS
 PUBLIC	ParseCmdline
 PUBLIC	CmdlineFini
@@ -976,7 +977,7 @@ $LL61@ProcessOpt:
 
 $LN62@ProcessOpt:
 	mov	r8, r12
-	mov	edx, 134				; 00000086H
+	mov	edx, 135				; 00000087H
 	mov	ecx, 1
 
 ; 912  :     return;
@@ -1076,14 +1077,14 @@ $opt_error_exit$164:
 ; 910  :     EmitWarn( 1, INVALID_CMDLINE_OPTION, *cmdline - 1 );
 
 	mov	r8, QWORD PTR [r13]
-	mov	edx, 109				; 0000006dH
+	mov	edx, 110				; 0000006eH
 	dec	r8
-	lea	ecx, QWORD PTR [rdx-108]
+	lea	ecx, QWORD PTR [rdx-109]
 	call	EmitWarn
 
 ; 911  :     *cmdline = "";
 
-	lea	rax, OFFSET FLAT:$SG11498
+	lea	rax, OFFSET FLAT:$SG11500
 	mov	QWORD PTR [r13], rax
 $LN161@ProcessOpt:
 	mov	r14, QWORD PTR [rsp+96]
@@ -1323,7 +1324,7 @@ $LN116@ProcessOpt:
 
 ; 895  :                             EmitWarn( 1, MISSING_ARGUMENT_FOR_CMDLINE_OPTION );
 
-	mov	edx, 251				; 000000fbH
+	mov	edx, 252				; 000000fcH
 	mov	ecx, 1
 	call	EmitWarn
 
@@ -1623,7 +1624,7 @@ ReadParamFile PROC					; COMDAT
 ; 743  :     env = NULL;
 ; 744  :     file = fopen( name, "rb" );
 
-	lea	rdx, OFFSET FLAT:$SG11430
+	lea	rdx, OFFSET FLAT:$SG11432
 	mov	rbx, rcx
 	xor	edi, edi
 	call	fopen
@@ -1640,7 +1641,7 @@ ReadParamFile PROC					; COMDAT
 
 	call	ErrnoStr
 	mov	r8, rax
-	lea	ecx, QWORD PTR [rdi+106]
+	lea	ecx, QWORD PTR [rdi+107]
 	mov	rdx, rbx
 	call	Fatal
 $LN16@ReadParamF:
@@ -2065,8 +2066,8 @@ $LN2@Set_W:
 ; 449  :     else
 ; 450  :         EmitWarn( 1, INVALID_CMDLINE_VALUE, "W" );
 
-	lea	r8, OFFSET FLAT:$SG11240
-	mov	edx, 195				; 000000c3H
+	lea	r8, OFFSET FLAT:$SG11242
+	mov	edx, 196				; 000000c4H
 	mov	ecx, 1
 	jmp	EmitWarn
 Set_W	ENDP
@@ -2409,8 +2410,8 @@ $LL4@Set_Zp:
 ; 392  :         }
 ; 393  :     EmitWarn( 1, INVALID_CMDLINE_VALUE, "Zp" );
 
-	lea	r8, OFFSET FLAT:$SG11172
-	mov	edx, 195				; 000000c3H
+	lea	r8, OFFSET FLAT:$SG11174
+	mov	edx, 196				; 000000c4H
 	mov	ecx, 1
 	jmp	EmitWarn
 $LN8@Set_Zp:
@@ -2452,8 +2453,8 @@ $LN2@Set_Zi:
 ; 380  :     else
 ; 381  :         EmitWarn( 1, INVALID_CMDLINE_VALUE, "Zi" );
 
-	lea	r8, OFFSET FLAT:$SG11163
-	mov	edx, 195				; 000000c3H
+	lea	r8, OFFSET FLAT:$SG11165
+	mov	edx, 196				; 000000c4H
 	mov	ecx, 1
 	jmp	EmitWarn
 Set_Zi	ENDP
@@ -2548,7 +2549,7 @@ $LN9@set_option:
 
 ; 345  :         EmitError( N_OPTION_NEEDS_A_NAME_PARAMETER );
 
-	mov	ecx, 234				; 000000eaH
+	mov	ecx, 235				; 000000ebH
 
 ; 354  : }
 
@@ -2975,7 +2976,7 @@ $LN5@SetCpuCmdl:
 
 	mov	r8, rdx
 	mov	ecx, 1
-	mov	edx, 134				; 00000086H
+	mov	edx, 135				; 00000087H
 	jmp	EmitWarn
 $LN3@SetCpuCmdl:
 
@@ -3458,12 +3459,12 @@ $LN84@ParseCmdli:
 
 ; 1002 :                 EmitErr( NESTING_LEVEL_TOO_DEEP );
 
-	mov	ecx, 100				; 00000064H
+	mov	ecx, 101				; 00000065H
 	call	EmitErr
 
 ; 1003 :                 *cmdline = "";
 
-	lea	rax, OFFSET FLAT:$SG11530
+	lea	rax, OFFSET FLAT:$SG11532
 	mov	QWORD PTR [r14], rax
 
 ; 1004 :                 return( NULL );

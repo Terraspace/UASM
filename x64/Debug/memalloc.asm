@@ -8,21 +8,22 @@ INCLUDELIB OLDNAMES
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
 memcalls DD	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG7473	DB	'memory used: %u kB', 0aH, 00H
+$SG7475	DB	'memory used: %u kB', 0aH, 00H
 	ORG $+4
-$SG7475	DB	'still allocated memory blocks : %u', 0aH, 00H
+$SG7477	DB	'still allocated memory blocks : %u', 0aH, 00H
 	ORG $+4
-$SG7491	DB	'LclAlloc: new block needed, req. size=%Xh > currfree=%Xh'
+$SG7493	DB	'LclAlloc: new block needed, req. size=%Xh > currfree=%Xh'
 	DB	0aH, 00H
 	ORG $+6
-$SG7498	DB	'MemAlloc(0x%X)=%p cnt=%u', 0aH, 00H
+$SG7500	DB	'MemAlloc(0x%X)=%p cnt=%u', 0aH, 00H
 	ORG $+6
-$SG7503	DB	'MemFree(0x%p) cnt=%u', 0aH, 00H
+$SG7505	DB	'MemFree(0x%p) cnt=%u', 0aH, 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	_vfprintf_l
@@ -187,7 +188,7 @@ $LN7:
 
 	mov	r8d, DWORD PTR currfree
 	mov	rdx, QWORD PTR size$[rsp]
-	lea	rcx, OFFSET FLAT:$SG7491
+	lea	rcx, OFFSET FLAT:$SG7493
 	call	DoDebugMsg
 
 ; 190  :         currfree = ( size <= ( BLKSIZE - sizeof( struct linked_list ) ) ? BLKSIZE - sizeof( struct linked_list ) : size );
@@ -225,7 +226,7 @@ $LN6@LclAlloc:
 
 ; 194  :             Fatal( OUT_OF_MEMORY );
 
-	mov	ecx, 105				; 00000069H
+	mov	ecx, 106				; 0000006aH
 	call	Fatal
 $LN3@LclAlloc:
 
@@ -321,7 +322,7 @@ $LN3:
 	mov	DWORD PTR memcalls, eax
 	mov	r8d, DWORD PTR memcalls
 	mov	rdx, QWORD PTR ptr$[rsp]
-	lea	rcx, OFFSET FLAT:$SG7503
+	lea	rcx, OFFSET FLAT:$SG7505
 	call	DoDebugMsg1
 
 ; 248  :     free( ptr );
@@ -371,7 +372,7 @@ $LN4:
 	mov	r9d, DWORD PTR memcalls
 	mov	r8, QWORD PTR ptr$[rsp]
 	mov	rdx, QWORD PTR size$[rsp]
-	lea	rcx, OFFSET FLAT:$SG7498
+	lea	rcx, OFFSET FLAT:$SG7500
 	call	DoDebugMsg1
 
 ; 237  :     if( ptr == NULL ) {
@@ -381,7 +382,7 @@ $LN4:
 
 ; 238  :         Fatal( OUT_OF_MEMORY );
 
-	mov	ecx, 105				; 00000069H
+	mov	ecx, 106				; 0000006aH
 	call	Fatal
 $LN2@MemAlloc:
 
@@ -431,7 +432,7 @@ $LN7:
 	mov	ecx, 1024				; 00000400H
 	div	ecx
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG7473
+	lea	rcx, OFFSET FLAT:$SG7475
 	call	printf
 $LN4@MemFini:
 $LN2@MemFini:
@@ -480,7 +481,7 @@ $LN3@MemFini:
 	sub	ecx, eax
 	mov	eax, ecx
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG7475
+	lea	rcx, OFFSET FLAT:$SG7477
 	call	printf
 $LN5@MemFini:
 

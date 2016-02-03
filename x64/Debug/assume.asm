@@ -11,26 +11,27 @@ COMM	SegAssumeTable:BYTE:060H
 COMM	StdAssumeTable:BYTE:0100H
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG11101 DB	01H DUP (?)
+$SG11103 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG10974 DB	'SetSegAssumeTable', 0aH, 00H
+$SG10976 DB	'SetSegAssumeTable', 0aH, 00H
 	ORG $+5
-$SG10978 DB	'GetSegAssumeTable', 0aH, 00H
+$SG10980 DB	'GetSegAssumeTable', 0aH, 00H
 	ORG $+5
-$SG10988 DB	'SetStdAssumeTable enter', 0aH, 00H
+$SG10990 DB	'SetStdAssumeTable enter', 0aH, 00H
 	ORG $+7
-$SG10999 DB	'GetStdAssumeTable', 0aH, 00H
+$SG11001 DB	'GetStdAssumeTable', 0aH, 00H
 	ORG $+5
-$SG11028 DB	'%r %r:%r,%r:%r,%r:%r,%r:%r,%r:%s,%r:%s', 00H
+$SG11030 DB	'%r %r:%r,%r:%r,%r:%r,%r:%r,%r:%s,%r:%s', 00H
 	ORG $+1
-$SG11036 DB	'%r %r:%s,%r:%s,%r:%s', 00H
+$SG11038 DB	'%r %r:%s,%r:%s,%r:%s', 00H
 	ORG $+3
-$SG11037 DB	'%r %r:%s,%r:%s', 00H
+$SG11039 DB	'%r %r:%s,%r:%s', 00H
 	ORG $+1
-$SG11076 DB	'AssumeDirective enter, pass=%u', 0aH, 00H
+$SG11078 DB	'AssumeDirective enter, pass=%u', 0aH, 00H
 _DATA	ENDS
 CONST	SEGMENT
 searchtab DD	03H
@@ -269,7 +270,7 @@ $LN94:
 	mov	eax, DWORD PTR Parse_Pass
 	inc	eax
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11076
+	lea	rcx, OFFSET FLAT:$SG11078
 	call	DoDebugMsg1
 
 ; 296  : 
@@ -457,7 +458,7 @@ $LN8@AssumeDire:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	$LN1@AssumeDire
 $LN12@AssumeDire:
@@ -482,7 +483,7 @@ $LN67@AssumeDire:
 
 ; 326  :             return( EmitError( INSTRUCTION_OR_REGISTER_NOT_ACCEPTED_IN_CURRENT_CPU_MODE ) );
 
-	mov	ecx, 30
+	mov	ecx, 31
 	call	EmitError
 	jmp	$LN1@AssumeDire
 $LN13@AssumeDire:
@@ -507,7 +508,7 @@ $LN13@AssumeDire:
 
 ; 332  :             return( EmitError( COLON_EXPECTED ) );
 
-	mov	ecx, 84					; 00000054H
+	mov	ecx, 85					; 00000055H
 	call	EmitError
 	jmp	$LN1@AssumeDire
 $LN14@AssumeDire:
@@ -531,7 +532,7 @@ $LN14@AssumeDire:
 
 ; 337  :             return( EmitError( SYNTAX_ERROR ) );
 
-	mov	ecx, 45					; 0000002dH
+	mov	ecx, 46					; 0000002eH
 	call	EmitError
 	jmp	$LN1@AssumeDire
 $LN15@AssumeDire:
@@ -804,7 +805,7 @@ $LN28@AssumeDire:
 ; 374  :                 ( ti.is_ptr > 0 && size < CurrWordSize ) ) {
 ; 375  :                 return( EmitError( TYPE_IS_WRONG_SIZE_FOR_REGISTER ) );
 
-	mov	ecx, 247				; 000000f7H
+	mov	ecx, 248				; 000000f8H
 	call	EmitError
 	jmp	$LN1@AssumeDire
 $LN27@AssumeDire:
@@ -867,7 +868,7 @@ $LN81@AssumeDire:
 	call	_RTC_UninitUse
 $LN82@AssumeDire:
 	xor	r8d, r8d
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11103
 	xor	ecx, ecx
 	call	CreateTypeSymbol
 	movsxd	rcx, DWORD PTR j$[rsp]
@@ -1081,7 +1082,7 @@ $LN37@AssumeDire:
 
 ; 405  :                     return( EmitError( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
 
-	mov	ecx, 69					; 00000045H
+	mov	ecx, 70					; 00000046H
 	call	EmitError
 	jmp	$LN1@AssumeDire
 	jmp	$LN36@AssumeDire
@@ -1153,7 +1154,7 @@ $LN45@AssumeDire:
 
 ; 417  :                     return( EmitError( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
 
-	mov	ecx, 69					; 00000045H
+	mov	ecx, 70					; 00000046H
 	call	EmitError
 	jmp	$LN1@AssumeDire
 $LN46@AssumeDire:
@@ -1230,7 +1231,7 @@ $LN49@AssumeDire:
 ; 427  :             default:
 ; 428  :                 return( EmitError( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
 
-	mov	ecx, 69					; 00000045H
+	mov	ecx, 70					; 00000046H
 	call	EmitError
 	jmp	SHORT $LN1@AssumeDire
 $LN5@AssumeDire:
@@ -1281,7 +1282,7 @@ $LN3@AssumeDire:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	SHORT $LN1@AssumeDire
 $LN51@AssumeDire:
@@ -1361,7 +1362,7 @@ $LN7:
 ; 128  :     int i;
 ; 129  :     DebugMsg(("GetStdAssumeTable\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG10999
+	lea	rcx, OFFSET FLAT:$SG11001
 	call	DoDebugMsg
 
 ; 130  :     memcpy( savedstate, &StdAssumeTable, sizeof(StdAssumeTable) );
@@ -1483,7 +1484,7 @@ $LN7:
 ; 111  : 
 ; 112  :     DebugMsg(("SetStdAssumeTable enter\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG10988
+	lea	rcx, OFFSET FLAT:$SG10990
 	call	DoDebugMsg
 
 ; 113  :     memcpy( &StdAssumeTable, savedstate, sizeof(StdAssumeTable) );
@@ -1600,7 +1601,7 @@ $LN3:
 
 ; 96   :     DebugMsg(("GetSegAssumeTable\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG10978
+	lea	rcx, OFFSET FLAT:$SG10980
 	call	DoDebugMsg
 
 ; 97   :     memcpy( savedstate, &SegAssumeTable, sizeof(SegAssumeTable) );
@@ -1637,7 +1638,7 @@ $LN3:
 
 ; 90   :     DebugMsg(("SetSegAssumeTable\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG10974
+	lea	rcx, OFFSET FLAT:$SG10976
 	call	DoDebugMsg
 
 ; 91   :     memcpy( &SegAssumeTable, savedstate, sizeof(SegAssumeTable) );
@@ -1732,7 +1733,7 @@ $LN5@ModelAssum:
 	mov	r9d, 261				; 00000105H
 	mov	r8d, 26
 	mov	edx, 439				; 000001b7H
-	lea	rcx, OFFSET FLAT:$SG11028
+	lea	rcx, OFFSET FLAT:$SG11030
 	call	AddLineQueueX
 
 ; 222  :                   T_ASSUME, T_CS, T_FLAT, T_DS, T_FLAT, T_SS, T_FLAT, T_ES, T_FLAT, T_FS, pFSassume, T_GS, pGSassume );
@@ -1795,7 +1796,7 @@ $LN10@ModelAssum:
 
 ; 245  :             pFmt = "%r %r:%s,%r:%s,%r:%s";
 
-	lea	rax, OFFSET FLAT:$SG11036
+	lea	rax, OFFSET FLAT:$SG11038
 	mov	QWORD PTR pFmt$[rsp], rax
 	jmp	SHORT $LN12@ModelAssum
 $LN11@ModelAssum:
@@ -1803,7 +1804,7 @@ $LN11@ModelAssum:
 ; 246  :         else
 ; 247  :             pFmt = "%r %r:%s,%r:%s";
 
-	lea	rax, OFFSET FLAT:$SG11037
+	lea	rax, OFFSET FLAT:$SG11039
 	mov	QWORD PTR pFmt$[rsp], rax
 $LN12@ModelAssum:
 

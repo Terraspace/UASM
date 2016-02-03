@@ -307,9 +307,11 @@ static void output_opc(struct code_info *CodeInfo)
   }
 
 
-#if AVXSUPP                                                      
+#if AVXSUPP   
   if (ResWordTable[CodeInfo->token].flags & RWF_EVEX)
 	  CodeInfo->evex_flag = TRUE;
+  if (!evex)
+	  CodeInfo->evex_flag = FALSE;
   if (CodeInfo->evex_flag == TRUE) {
 	  if (!(vex_flags[CodeInfo->token - VEX_START] & VX_LL))
 		  EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
@@ -317,7 +319,8 @@ static void output_opc(struct code_info *CodeInfo)
 
   if (!(ResWordTable[CodeInfo->token].flags & RWF_VEX)) {
 #endif
-    switch (ins->byte1_info) {
+
+	switch (ins->byte1_info) {
     case F_660F:
     case F_660F38:
     case F_660F3A:

@@ -11,65 +11,66 @@ PUBLIC	elf64_fmtopt
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 COMM	sym_Interface:QWORD
 COMM	sym_Cpu:QWORD
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11092 DB	'TINY', 00H
+$SG11094 DB	'TINY', 00H
 	ORG $+3
-$SG11093 DB	'SMALL', 00H
+$SG11095 DB	'SMALL', 00H
 	ORG $+2
-$SG11094 DB	'COMPACT', 00H
-$SG11095 DB	'MEDIUM', 00H
+$SG11096 DB	'COMPACT', 00H
+$SG11097 DB	'MEDIUM', 00H
 	ORG $+1
-$SG11096 DB	'LARGE', 00H
+$SG11098 DB	'LARGE', 00H
 	ORG $+2
-$SG11097 DB	'HUGE', 00H
+$SG11099 DB	'HUGE', 00H
 	ORG $+3
-$SG11098 DB	'FLAT', 00H
+$SG11100 DB	'FLAT', 00H
 	ORG $+3
-$SG11103 DB	'NEARSTACK', 00H
+$SG11105 DB	'NEARSTACK', 00H
 	ORG $+6
-$SG11104 DB	'FARSTACK', 00H
+$SG11106 DB	'FARSTACK', 00H
 	ORG $+3
-$SG11105 DB	'OS_OS2', 00H
+$SG11107 DB	'OS_OS2', 00H
 	ORG $+1
-$SG11106 DB	'OS_DOS', 00H
+$SG11108 DB	'OS_DOS', 00H
 	ORG $+5
-$SG11160 DB	'@CodeSize', 00H
+$SG11162 DB	'@CodeSize', 00H
 	ORG $+2
-$SG11161 DB	'@code', 00H
+$SG11163 DB	'@code', 00H
 	ORG $+6
-$SG11165 DB	'@DataSize', 00H
+$SG11167 DB	'@DataSize', 00H
 	ORG $+2
-$SG11166 DB	'FLAT', 00H
+$SG11168 DB	'FLAT', 00H
 	ORG $+3
-$SG11167 DB	'@data', 00H
+$SG11169 DB	'@data', 00H
 	ORG $+2
-$SG11169 DB	'STACK', 00H
+$SG11171 DB	'STACK', 00H
 	ORG $+2
-$SG11170 DB	'@stack', 00H
+$SG11172 DB	'@stack', 00H
 	ORG $+1
-$SG11171 DB	'@Model', 00H
+$SG11173 DB	'@Model', 00H
 	ORG $+5
-$SG11172 DB	'@Interface', 00H
+$SG11174 DB	'@Interface', 00H
 	ORG $+5
-$SG11174 DB	'@ReservedStack', 00H
+$SG11176 DB	'@ReservedStack', 00H
 	ORG $+1
-$SG11250 DB	'@Cpu', 00H
+$SG11252 DB	'@Cpu', 00H
 _DATA	ENDS
 CONST	SEGMENT
-ModelToken DQ	FLAT:$SG11092
-	DQ	FLAT:$SG11093
-	DQ	FLAT:$SG11094
+ModelToken DQ	FLAT:$SG11094
 	DQ	FLAT:$SG11095
 	DQ	FLAT:$SG11096
 	DQ	FLAT:$SG11097
 	DQ	FLAT:$SG11098
-ModelAttr DQ	FLAT:$SG11103
-	DQ	FLAT:$SG11104
-	DQ	FLAT:$SG11105
+	DQ	FLAT:$SG11099
+	DQ	FLAT:$SG11100
+ModelAttr DQ	FLAT:$SG11105
 	DQ	FLAT:$SG11106
+	DQ	FLAT:$SG11107
+	DQ	FLAT:$SG11108
 ModelAttrValue DB 00H
 	DB	02H
 	DB	01H
@@ -270,7 +271,7 @@ CpuDirective PROC
 ; 489  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	mov	rdx, QWORD PTR [rax+rdx+24]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	jmp	EmitErr
 $LN2@CpuDirecti:
 
@@ -582,7 +583,7 @@ $LN29@SetCPU:
 ; 448  :     sym_Cpu = CreateVariable( "@Cpu", ModuleInfo.cpu );
 
 	movsx	edx, cx
-	lea	rcx, OFFSET FLAT:$SG11250
+	lea	rcx, OFFSET FLAT:$SG11252
 	call	CreateVariable
 	mov	QWORD PTR sym_Cpu, rax
 
@@ -782,7 +783,7 @@ $LN8@ModelDirec:
 
 ; 277  :         return( EmitError( EXPECTED_MEMORY_MODEL ) );
 
-	mov	ecx, 246				; 000000f6H
+	mov	ecx, 247				; 000000f7H
 	call	EmitError
 	mov	rsi, QWORD PTR [rsp+72]
 
@@ -818,7 +819,7 @@ $LN10@ModelDirec:
 ; 289  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	movsxd	rdx, DWORD PTR i$[rsp]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rbp+8]
 	call	EmitErr
@@ -844,8 +845,8 @@ $LN31@ModelDirec:
 ; 283  :             //if ( Parse_Pass == PASS_1 ) /* not needed, this code runs in pass one only */
 ; 284  :             EmitWarn( 2, MODEL_DECLARED_ALREADY );
 
-	mov	edx, 95					; 0000005fH
-	lea	ecx, QWORD PTR [rdx-93]
+	mov	edx, 96					; 00000060H
+	lea	ecx, QWORD PTR [rdx-94]
 	call	EmitWarn
 $LN12@ModelDirec:
 
@@ -963,7 +964,7 @@ $LN3@ModelDirec:
 ; 327  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	mov	rdx, QWORD PTR [rax+rbp+24]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	SHORT $LN71@ModelDirec
 $LN47@ModelDirec:
@@ -1051,7 +1052,7 @@ $LN49@ModelDirec:
 
 ; 307  :                         return( EmitError( INVALID_MODEL_PARAM_FOR_FLAT ) );
 
-	mov	ecx, 200				; 000000c8H
+	mov	ecx, 201				; 000000c9H
 $LN73@ModelDirec:
 	call	EmitError
 $LN71@ModelDirec:
@@ -1087,7 +1088,7 @@ $LN21@ModelDirec:
 
 ; 332  :             return( EmitError( INSTRUCTION_OR_REGISTER_NOT_ACCEPTED_IN_CURRENT_CPU_MODE ) );
 
-	lea	ecx, QWORD PTR [r8+23]
+	lea	ecx, QWORD PTR [r8+24]
 	jmp	SHORT $LN73@ModelDirec
 $LN23@ModelDirec:
 
@@ -1310,7 +1311,7 @@ $LN9@SetModel:
 ; 184  :     }
 ; 185  :     sym_CodeSize = AddPredefinedConstant( "@CodeSize", value );
 
-	lea	rcx, OFFSET FLAT:$SG11160
+	lea	rcx, OFFSET FLAT:$SG11162
 	setne	dl
 	call	CreateVariable
 	test	rax, rax
@@ -1324,7 +1325,7 @@ $LN24@SetModel:
 	mov	QWORD PTR sym_CodeSize, rax
 	call	SimGetSegName
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11161
+	lea	rcx, OFFSET FLAT:$SG11163
 	call	AddPredefinedText
 
 ; 187  : 
@@ -1364,7 +1365,7 @@ $LN2@SetModel:
 ; 201  :     sym_DataSize = AddPredefinedConstant( "@DataSize", value );
 
 	mov	edx, ebx
-	lea	rcx, OFFSET FLAT:$SG11165
+	lea	rcx, OFFSET FLAT:$SG11167
 	call	CreateVariable
 	test	rax, rax
 	je	SHORT $LN27@SetModel
@@ -1380,8 +1381,8 @@ $LN27@SetModel:
 
 ; 204  :     AddPredefinedText( "@data", textvalue );
 
-	lea	rcx, OFFSET FLAT:$SG11167
-	lea	rax, OFFSET FLAT:$SG11166
+	lea	rcx, OFFSET FLAT:$SG11169
+	lea	rax, OFFSET FLAT:$SG11168
 	cmove	rbx, rax
 	mov	rdx, rbx
 	call	AddPredefinedText
@@ -1390,12 +1391,12 @@ $LN27@SetModel:
 ; 206  :     if ( ModuleInfo.distance == STACK_FAR )
 
 	cmp	DWORD PTR ModuleInfo+356, 1
-	lea	rdx, OFFSET FLAT:$SG11169
+	lea	rdx, OFFSET FLAT:$SG11171
 
 ; 207  :         textvalue = "STACK";
 ; 208  :     AddPredefinedText( "@stack", textvalue );
 
-	lea	rcx, OFFSET FLAT:$SG11170
+	lea	rcx, OFFSET FLAT:$SG11172
 	cmovne	rdx, rbx
 	call	AddPredefinedText
 
@@ -1410,7 +1411,7 @@ $LN27@SetModel:
 ; 217  :     sym_Model     = AddPredefinedConstant( "@Model", ModuleInfo.model );
 
 	mov	edx, DWORD PTR ModuleInfo+360
-	lea	rcx, OFFSET FLAT:$SG11171
+	lea	rcx, OFFSET FLAT:$SG11173
 	call	CreateVariable
 	test	rax, rax
 	je	SHORT $LN30@SetModel
@@ -1420,7 +1421,7 @@ $LN30@SetModel:
 ; 218  :     sym_Interface = AddPredefinedConstant( "@Interface", ModuleInfo.langtype );
 
 	mov	edx, DWORD PTR ModuleInfo+364
-	lea	rcx, OFFSET FLAT:$SG11172
+	lea	rcx, OFFSET FLAT:$SG11174
 	mov	QWORD PTR sym_Model, rax
 	call	CreateVariable
 	test	rax, rax
@@ -1441,7 +1442,7 @@ $LN33@SetModel:
 ; 222  :         sym_ReservedStack = AddPredefinedConstant( "@ReservedStack", 0 );
 
 	xor	edx, edx
-	lea	rcx, OFFSET FLAT:$SG11174
+	lea	rcx, OFFSET FLAT:$SG11176
 	call	CreateVariable
 	test	rax, rax
 	je	SHORT $LN36@SetModel

@@ -6,20 +6,21 @@ INCLUDELIB MSVCRTD
 INCLUDELIB OLDNAMES
 
 _BSS	SEGMENT
-$SG11642 DB	01H DUP (?)
+$SG11644 DB	01H DUP (?)
 	ALIGN	4
 
-$SG11650 DB	01H DUP (?)
+$SG11652 DB	01H DUP (?)
 	ALIGN	4
 
-$SG11653 DB	02H DUP (?)
+$SG11655 DB	02H DUP (?)
 	ALIGN	4
 
-$SG11658 DB	01H DUP (?)
+$SG11660 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 CONST	SEGMENT
 reax	DB	'rax', 00H, 00H
@@ -61,300 +62,300 @@ neg_cjmptype DB	00H
 	DB	01H
 CONST	ENDS
 _DATA	SEGMENT
-$SG11264 DB	'^', 00H
+$SG11266 DB	'^', 00H
 	ORG $+6
-$SG11266 DB	'%u GetExpression: jmp inverted, dest changed >%s<', 0aH, 00H
+$SG11268 DB	'%u GetExpression: jmp inverted, dest changed >%s<', 0aH, 00H
 	ORG $+1
-$SG11269 DB	'%s:^', 00H
+$SG11271 DB	'%s:^', 00H
 	ORG $+3
-$SG11270 DB	'%s:^', 00H
+$SG11272 DB	'%s:^', 00H
 	ORG $+3
-$SG11277 DB	':^', 00H
+$SG11279 DB	':^', 00H
 	ORG $+1
-$SG11271 DB	'%u GetExpression: dest changed, label added >%s<', 0aH, 00H
+$SG11273 DB	'%u GetExpression: dest changed, label added >%s<', 0aH, 00H
 	ORG $+2
-$SG11352 DB	', ', 00H
+$SG11354 DB	', ', 00H
 	ORG $+1
-$SG11273 DB	'%u GetExpression exit, error', 0aH, 00H
+$SG11275 DB	'%u GetExpression exit, error', 0aH, 00H
 	ORG $+2
-$SG11278 DB	'%u GetExpression: label added >%s<', 0aH, 00H
+$SG11280 DB	'%u GetExpression: label added >%s<', 0aH, 00H
 	ORG $+4
-$SG11276 DB	'%u GetExpression: suppressed ReplaceLabel %u -> %u, last'
+$SG11278 DB	'%u GetExpression: suppressed ReplaceLabel %u -> %u, last'
 	DB	'jmp=%s', 0aH, 00H
-$SG11279 DB	'%u GetExpression exit', 0aH, 00H
+$SG11281 DB	'%u GetExpression exit', 0aH, 00H
 	ORG $+1
-$SG11287 DB	'NULL', 00H
+$SG11289 DB	'NULL', 00H
 	ORG $+3
-$SG11288 DB	'QueueTestLines("%s") enter', 0aH, 00H
-$SG11659 DB	'%s:', 00H
-$SG11291 DB	'QueueTestLines exit', 0aH, 00H
+$SG11290 DB	'QueueTestLines("%s") enter', 0aH, 00H
+$SG11661 DB	'%s:', 00H
+$SG11293 DB	'QueueTestLines exit', 0aH, 00H
 	ORG $+3
-$SG11308 DB	'EvaluateHllExpression enter', 0aH, 00H
+$SG11310 DB	'EvaluateHllExpression enter', 0aH, 00H
 	ORG $+3
-$SG11311 DB	'EvaluateHllExpression: unexpected tokens >%s<', 0aH, 00H
+$SG11313 DB	'EvaluateHllExpression: unexpected tokens >%s<', 0aH, 00H
 	ORG $+1
-$SG11327 DB	'CheckCXZLines enter, p=>%s<', 0aH, 00H
+$SG11329 DB	'CheckCXZLines enter, p=>%s<', 0aH, 00H
 	ORG $+3
-$SG11334 DB	'loope', 00H
+$SG11336 DB	'loope', 00H
 	ORG $+2
-$SG11338 DB	'loop', 00H
+$SG11340 DB	'loop', 00H
 	ORG $+3
-$SG11397 DB	'=!<>&|-+*^%/', 00H
+$SG11399 DB	'=!<>&|-+*^%/', 00H
 	ORG $+3
-$SG11405 DB	' inc ', 00H
+$SG11407 DB	' inc ', 00H
 	ORG $+2
-$SG11407 DB	' dec ', 00H
+$SG11409 DB	' dec ', 00H
 	ORG $+2
-$SG11425 DB	' mov  ', 00H
+$SG11427 DB	' mov  ', 00H
 	ORG $+1
-$SG11428 DB	' cdq ', 00H
+$SG11430 DB	' cdq ', 00H
 	ORG $+2
-$SG11431 DB	' mov  ', 00H
+$SG11433 DB	' mov  ', 00H
 	ORG $+1
-$SG11435 DB	' idiv ', 00H
+$SG11437 DB	' idiv ', 00H
 	ORG $+1
-$SG11436 DB	' imul ', 00H
+$SG11438 DB	' imul ', 00H
 	ORG $+1
-$SG11440 DB	' idiv ', 00H
+$SG11442 DB	' idiv ', 00H
 	ORG $+1
-$SG11441 DB	' imul ', 00H
+$SG11443 DB	' imul ', 00H
 	ORG $+1
-$SG11443 DB	' mov  ', 00H
+$SG11445 DB	' mov  ', 00H
 	ORG $+1
-$SG11444 DB	' mov  ', 00H
+$SG11446 DB	' mov  ', 00H
 	ORG $+1
-$SG11448 DB	' cdq ', 00H
+$SG11450 DB	' cdq ', 00H
 	ORG $+2
-$SG11449 DB	' idiv ', 00H
+$SG11451 DB	' idiv ', 00H
 	ORG $+1
-$SG11450 DB	' imul ', 00H
+$SG11452 DB	' imul ', 00H
 	ORG $+1
-$SG11453 DB	' mov  ', 00H
+$SG11455 DB	' mov  ', 00H
 	ORG $+1
-$SG11454 DB	' mov  ', 00H
+$SG11456 DB	' mov  ', 00H
 	ORG $+1
-$SG11460 DB	' cdq ', 00H
+$SG11462 DB	' cdq ', 00H
 	ORG $+2
-$SG11461 DB	' idiv ', 00H
+$SG11463 DB	' idiv ', 00H
 	ORG $+1
-$SG11462 DB	' imul ', 00H
+$SG11464 DB	' imul ', 00H
 	ORG $+1
-$SG11464 DB	' mov  ', 00H
+$SG11466 DB	' mov  ', 00H
 	ORG $+1
-$SG11470 DB	' cdq ', 00H
+$SG11472 DB	' cdq ', 00H
 	ORG $+2
-$SG11471 DB	' idiv ', 00H
+$SG11473 DB	' idiv ', 00H
 	ORG $+1
-$SG11472 DB	' imul ', 00H
+$SG11474 DB	' imul ', 00H
 	ORG $+1
-$SG11474 DB	' mov  ', 00H
+$SG11476 DB	' mov  ', 00H
 	ORG $+1
-$SG11477 DB	' mov  ', 00H
+$SG11479 DB	' mov  ', 00H
 	ORG $+1
-$SG11481 DB	' cdq ', 00H
+$SG11483 DB	' cdq ', 00H
 	ORG $+2
-$SG11482 DB	' idiv ', 00H
+$SG11484 DB	' idiv ', 00H
 	ORG $+1
-$SG11483 DB	' imul ', 00H
+$SG11485 DB	' imul ', 00H
 	ORG $+1
-$SG11485 DB	' mov  ', 00H
+$SG11487 DB	' mov  ', 00H
 	ORG $+1
-$SG11488 DB	' sub ', 00H
+$SG11490 DB	' sub ', 00H
 	ORG $+2
-$SG11491 DB	' add ', 00H
+$SG11493 DB	' add ', 00H
 	ORG $+2
-$SG11494 DB	' and ', 00H
+$SG11496 DB	' and ', 00H
 	ORG $+2
-$SG11497 DB	' or ', 00H
+$SG11499 DB	' or ', 00H
 	ORG $+3
-$SG11500 DB	' xor ', 00H
+$SG11502 DB	' xor ', 00H
 	ORG $+2
-$SG11503 DB	' shl ', 00H
+$SG11505 DB	' shl ', 00H
 	ORG $+2
-$SG11505 DB	' shr ', 00H
+$SG11507 DB	' shr ', 00H
 	ORG $+2
-$SG11512 DB	' xor  ', 00H
+$SG11514 DB	' xor  ', 00H
 	ORG $+1
-$SG11519 DB	'BYTE PTR', 00H
+$SG11521 DB	'BYTE PTR', 00H
 	ORG $+3
-$SG11520 DB	'BPTR', 00H
+$SG11522 DB	'BPTR', 00H
 	ORG $+3
-$SG11521 DB	'WPTR', 00H
+$SG11523 DB	'WPTR', 00H
 	ORG $+3
-$SG11527 DB	' lea  ', 00H
+$SG11529 DB	' lea  ', 00H
 	ORG $+1
-$SG11667 DB	'jmp', 00H
-$SG11522 DB	'WORD PTR', 00H
+$SG11669 DB	'jmp', 00H
+$SG11524 DB	'WORD PTR', 00H
 	ORG $+3
-$SG11528 DB	' mov  ', 00H
+$SG11530 DB	' mov  ', 00H
 	ORG $+1
-$SG11669 DB	'%s:', 00H
-$SG11523 DB	' movzx  ', 00H
+$SG11671 DB	'%s:', 00H
+$SG11525 DB	' movzx  ', 00H
 	ORG $+3
-$SG11526 DB	'ADDR', 00H
+$SG11528 DB	'ADDR', 00H
 	ORG $+3
-$SG11534 DB	'OFFSET', 00H
+$SG11536 DB	'OFFSET', 00H
 	ORG $+1
-$SG11535 DB	' lea  ', 00H
+$SG11537 DB	' lea  ', 00H
 	ORG $+1
-$SG11536 DB	' mov  ', 00H
+$SG11538 DB	' mov  ', 00H
 	ORG $+1
-$SG11701 DB	'%s:', 00H
-$SG11543 DB	'DWORD PTR', 00H
+$SG11703 DB	'%s:', 00H
+$SG11545 DB	'DWORD PTR', 00H
 	ORG $+2
-$SG11544 DB	'DPTR', 00H
+$SG11546 DB	'DPTR', 00H
 	ORG $+3
-$SG11547 DB	' mov  ', 00H
+$SG11549 DB	' mov  ', 00H
 	ORG $+1
-$SG11706 DB	'%s:', 00H
-$SG11546 DB	' movsxd  ', 00H
+$SG11708 DB	'%s:', 00H
+$SG11548 DB	' movsxd  ', 00H
 	ORG $+2
-$SG11554 DB	' mov  ', 00H
-	ORG $+1
-$SG11712 DB	'%s:', 00H
-$SG11553 DB	' invoke  ', 00H
-	ORG $+2
-$SG11557 DB	' mov  ', 00H
+$SG11556 DB	' mov  ', 00H
 	ORG $+1
 $SG11714 DB	'%s:', 00H
-$SG11560 DB	' mov  byte ptr ', 00H
-$SG11561 DB	' mov  ', 00H
-	ORG $+1
-$SG11621 DB	'HllStartDir(%s) enter', 0aH, 00H
-	ORG $+1
-$SG11634 DB	'(::)', 00H
-	ORG $+3
-$SG11649 DB	' jmp %s', 00H
-$SG11652 DB	'.for ', 00H
+$SG11555 DB	' invoke  ', 00H
 	ORG $+2
-$SG11654 DB	'.for', 00H, 00H
-	ORG $+2
-$SG11668 DB	'jmp %s', 00H
+$SG11559 DB	' mov  ', 00H
 	ORG $+1
-$SG11671 DB	'hll.c', 00H
-	ORG $+2
-$SG11673 DB	'HllStartDir: unexpected token [%s]', 0aH, 00H
-$SG11722 DB	'%s:', 00H
-$SG11694 DB	'HllEndDir(%s) enter', 0aH, 00H
-	ORG $+3
-$SG11696 DB	'HllEndDir: hll stack is empty', 0aH, 00H
+$SG11716 DB	'%s:', 00H
+$SG11562 DB	' mov  byte ptr ', 00H
+$SG11563 DB	' mov  ', 00H
 	ORG $+1
-$SG11699 DB	'HllEndDir: no .IF on the hll stack', 0aH, 00H
-$SG11727 DB	'%s:', 00H
-$SG11704 DB	'HllEndDir: no .FOR on the hll stack', 0aH, 00H
+$SG11623 DB	'HllStartDir(%s) enter', 0aH, 00H
+	ORG $+1
+$SG11636 DB	'(::)', 00H
 	ORG $+3
-$SG11715 DB	' jmp %s', 00H
+$SG11651 DB	' jmp %s', 00H
+$SG11654 DB	'.for ', 00H
+	ORG $+2
+$SG11656 DB	'.for', 00H, 00H
+	ORG $+2
+$SG11670 DB	'jmp %s', 00H
+	ORG $+1
+$SG11673 DB	'hll.c', 00H
+	ORG $+2
+$SG11675 DB	'HllStartDir: unexpected token [%s]', 0aH, 00H
+$SG11724 DB	'%s:', 00H
+$SG11696 DB	'HllEndDir(%s) enter', 0aH, 00H
+	ORG $+3
+$SG11698 DB	'HllEndDir: hll stack is empty', 0aH, 00H
+	ORG $+1
+$SG11701 DB	'HllEndDir: no .IF on the hll stack', 0aH, 00H
+$SG11729 DB	'%s:', 00H
+$SG11706 DB	'HllEndDir: no .FOR on the hll stack', 0aH, 00H
+	ORG $+3
 $SG11717 DB	' jmp %s', 00H
-$SG11720 DB	'HllEndDir: no .WHILE on the hll stack', 0aH, 00H
+$SG11719 DB	' jmp %s', 00H
+$SG11722 DB	'HllEndDir: no .WHILE on the hll stack', 0aH, 00H
 	ORG $+1
-$SG11725 DB	'HllEndDir: no .REPEAT on the hll stack', 0aH, 00H
-$SG11733 DB	'loop %s', 00H
-$SG11736 DB	'HllEndDir: no .REPEAT on the hll stack', 0aH, 00H
-$SG11738 DB	'%s:', 00H
-$SG11742 DB	'hll.c', 00H
+$SG11727 DB	'HllEndDir: no .REPEAT on the hll stack', 0aH, 00H
+$SG11735 DB	'loop %s', 00H
+$SG11738 DB	'HllEndDir: no .REPEAT on the hll stack', 0aH, 00H
+$SG11740 DB	'%s:', 00H
+$SG11744 DB	'hll.c', 00H
 	ORG $+2
-$SG11744 DB	'%s:', 00H
-$SG11770 DB	'HllExitDir(%s) enter', 0aH, 00H
+$SG11746 DB	'%s:', 00H
+$SG11772 DB	'HllExitDir(%s) enter', 0aH, 00H
 	ORG $+2
-$SG11772 DB	'HllExitDir stack error', 0aH, 00H
-$SG11775 DB	'HllExitDir(%s): labels[LTEST]=%X', 0aH, 00H
+$SG11774 DB	'HllExitDir stack error', 0aH, 00H
+$SG11777 DB	'HllExitDir(%s): labels[LTEST]=%X', 0aH, 00H
 	ORG $+2
-$SG11778 DB	'jmp %s', 00H
+$SG11780 DB	'jmp %s', 00H
 	ORG $+1
-$SG11780 DB	'%s:', 00H
-$SG11797 DB	'jmp %s', 00H
+$SG11782 DB	'%s:', 00H
+$SG11799 DB	'jmp %s', 00H
 	ORG $+1
-$SG11799 DB	'hll.c', 00H
+$SG11801 DB	'hll.c', 00H
 	ORG $+2
-$SG11806 DB	'.if-.repeat-.while', 00H
+$SG11808 DB	'.if-.repeat-.while', 00H
 	ORG $+1
-$SG10966 DB	'ZERO', 00H
+$SG10968 DB	'ZERO', 00H
 	ORG $+7
-$SG11807 DB	'HllCheckOpen: allocated items:%u, reused items:%u, .whil'
+$SG11809 DB	'HllCheckOpen: allocated items:%u, reused items:%u, .whil'
 	DB	'e cond-blocks/bytes:%u/%u', 0aH, 00H
 	ORG $+1
-$SG10969 DB	'CARRY', 00H
+$SG10971 DB	'CARRY', 00H
 	ORG $+2
-$SG10972 DB	'SIGN', 00H
+$SG10974 DB	'SIGN', 00H
 	ORG $+3
-$SG10975 DB	'PARITY', 00H
+$SG10977 DB	'PARITY', 00H
 	ORG $+1
-$SG11133 DB	'cmp', 00H
-$SG10978 DB	'OVERFLOW', 00H
+$SG11135 DB	'cmp', 00H
+$SG10980 DB	'OVERFLOW', 00H
 	ORG $+3
-$SG10981 DB	'LESS', 00H
+$SG10983 DB	'LESS', 00H
 	ORG $+3
-$SG10987 DB	'ABOVE', 00H
+$SG10989 DB	'ABOVE', 00H
 	ORG $+2
-$SG11023 DB	'@C%04X', 00H
+$SG11025 DB	'@C%04X', 00H
 	ORG $+1
-$SG11155 DB	'or', 00H
+$SG11157 DB	'or', 00H
 	ORG $+1
-$SG10984 DB	'GREATER', 00H
-$SG10990 DB	'EQUAL', 00H
+$SG10986 DB	'GREATER', 00H
+$SG10992 DB	'EQUAL', 00H
 	ORG $+2
-$SG10993 DB	'BELOW', 00H
+$SG10995 DB	'BELOW', 00H
 	ORG $+2
-$SG11015 DB	', %d', 00H
+$SG11017 DB	', %d', 00H
 	ORG $+3
-$SG11016 DB	'%u RenderInstr(%s)=>%s<', 0aH, 00H
+$SG11018 DB	'%u RenderInstr(%s)=>%s<', 0aH, 00H
 	ORG $+3
-$SG11063 DB	'hll.c', 00H
+$SG11065 DB	'hll.c', 00H
 	ORG $+2
-$SG11156 DB	'cmp', 00H
-$SG11037 DB	'%u RenderJcc()=>%s<', 0aH, 00H
+$SG11158 DB	'cmp', 00H
+$SG11039 DB	'%u RenderJcc()=>%s<', 0aH, 00H
 	ORG $+3
-$SG11102 DB	'%u GetSimpleExpression(>%.32s< buf=>%s<) enter', 0aH, 00H
-$SG11111 DB	'%u GetSimpleExpression: calling GetExpression, i=%u', 0aH
+$SG11104 DB	'%u GetSimpleExpression(>%.32s< buf=>%s<) enter', 0aH, 00H
+$SG11113 DB	'%u GetSimpleExpression: calling GetExpression, i=%u', 0aH
 	DB	00H
 	ORG $+3
-$SG11114 DB	'GetSimpleExpression: expected '')'', found: %s', 0aH, 00H
+$SG11116 DB	'GetSimpleExpression: expected '')'', found: %s', 0aH, 00H
 	ORG $+2
-$SG11120 DB	'%u GetSimpleExpression: EvalOperand ok, kind=%X, i=%u [%'
+$SG11122 DB	'%u GetSimpleExpression: EvalOperand ok, kind=%X, i=%u [%'
 	DB	's]', 0aH, 00H
-$SG11225 DB	'^', 00H
+$SG11227 DB	'^', 00H
 	ORG $+2
-$SG11123 DB	'GetSimpleExpression: non-empty expression rejected: %s', 0aH
+$SG11125 DB	'GetSimpleExpression: non-empty expression rejected: %s', 0aH
 	DB	00H
-$SG11125 DB	'GetSimpleExpression: empty expression rejected', 0aH, 00H
-$SG11127 DB	'GetSimpleExpression: float expression rejected: %s', 0aH
+$SG11127 DB	'GetSimpleExpression: empty expression rejected', 0aH, 00H
+$SG11129 DB	'GetSimpleExpression: float expression rejected: %s', 0aH
 	DB	00H
-$SG11131 DB	'test', 00H
+$SG11133 DB	'test', 00H
 	ORG $+3
-$SG11142 DB	'hll.c', 00H
+$SG11144 DB	'hll.c', 00H
 	ORG $+2
-$SG11229 DB	':^', 00H
+$SG11231 DB	':^', 00H
 	ORG $+1
-$SG11140 DB	'jmp @C%04X^', 00H
+$SG11142 DB	'jmp @C%04X^', 00H
 	ORG $+4
-$SG11144 DB	'%u GetSimpleExpression: EvalOperand 2 ok, type=%X, i=%u '
+$SG11146 DB	'%u GetSimpleExpression: EvalOperand 2 ok, type=%X, i=%u '
 	DB	'[%s]', 0aH, 00H
 	ORG $+2
-$SG11146 DB	'GetSimpleExpression: syntax error, op2.kind=%u', 0aH, 00H
-$SG11149 DB	'test', 00H
+$SG11148 DB	'GetSimpleExpression: syntax error, op2.kind=%u', 0aH, 00H
+$SG11151 DB	'test', 00H
 	ORG $+3
-$SG11157 DB	'GetSimpleExpression: unexpected operator %s', 0aH, 00H
+$SG11159 DB	'GetSimpleExpression: unexpected operator %s', 0aH, 00H
 	ORG $+3
-$SG11163 DB	'jmp ', 00H
+$SG11165 DB	'jmp ', 00H
 	ORG $+3
-$SG11193 DB	'%u ReplaceLabel(%s->%s, >%s<)', 0aH, 00H
+$SG11195 DB	'%u ReplaceLabel(%s->%s, >%s<)', 0aH, 00H
 	ORG $+1
-$SG11217 DB	'%u GetAndExpression(>%.32s< buf=>%s<) enter', 0aH, 00H
+$SG11219 DB	'%u GetAndExpression(>%.32s< buf=>%s<) enter', 0aH, 00H
 	ORG $+3
-$SG11219 DB	'NULL', 00H
+$SG11221 DB	'NULL', 00H
 	ORG $+3
-$SG11226 DB	'%u GetAndExpression: jmp inverted >%s<', 0aH, 00H
-$SG11220 DB	'%u GetAndExpression: &&-operator found, is_true=%u, last'
+$SG11228 DB	'%u GetAndExpression: jmp inverted >%s<', 0aH, 00H
+$SG11222 DB	'%u GetAndExpression: &&-operator found, is_true=%u, last'
 	DB	'jmp=%s', 0aH, 00H
-$SG11230 DB	'%u GetAndExpression: label added >%s<', 0aH, 00H
+$SG11232 DB	'%u GetAndExpression: label added >%s<', 0aH, 00H
 	ORG $+1
-$SG11255 DB	'%u GetExpression(>%.32s< buf=>%s<) enter', 0aH, 00H
+$SG11257 DB	'%u GetExpression(>%.32s< buf=>%s<) enter', 0aH, 00H
 	ORG $+6
-$SG11257 DB	'%u GetExpression exit, error', 0aH, 00H
+$SG11259 DB	'%u GetExpression exit, error', 0aH, 00H
 	ORG $+2
-$SG11258 DB	'NULL', 00H
+$SG11260 DB	'NULL', 00H
 	ORG $+3
-$SG11259 DB	'%u GetExpression: ||-operator found, is_true=%u, lastjmp'
+$SG11261 DB	'%u GetExpression: ||-operator found, is_true=%u, lastjmp'
 	DB	'=%s', 0aH, 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
@@ -1010,7 +1011,7 @@ $LN38:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG11770
+	lea	rcx, OFFSET FLAT:$SG11772
 	call	DoDebugMsg1
 
 ; 1601 : 
@@ -1027,12 +1028,12 @@ $LN38:
 
 ; 1605 :     DebugMsg(("HllExitDir stack error\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11772
+	lea	rcx, OFFSET FLAT:$SG11774
 	call	DoDebugMsg
 
 ; 1606 :     return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
 
-	mov	ecx, 245				; 000000f5H
+	mov	ecx, 246				; 000000f6H
 	call	EmitError
 	jmp	$LN1@HllExitDir
 $LN7@HllExitDir:
@@ -1072,7 +1073,7 @@ $LN8@HllExitDir:
 	mov	r8d, DWORD PTR [rdx+rax+8]
 	mov	rax, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rax+rcx+8]
-	lea	rcx, OFFSET FLAT:$SG11775
+	lea	rcx, OFFSET FLAT:$SG11777
 	call	DoDebugMsg
 
 ; 1614 :       return(EmitErr(BLOCK_NESTING_ERROR, tokenarray[i].string_ptr));
@@ -1081,7 +1082,7 @@ $LN8@HllExitDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 80					; 00000050H
+	mov	ecx, 81					; 00000051H
 	call	EmitErr
 	jmp	$LN1@HllExitDir
 $LN9@HllExitDir:
@@ -1098,7 +1099,7 @@ $LN9@HllExitDir:
 
 ; 1618 :       return(EmitError(DOT_ELSE_CLAUSE_ALREADY_OCCURED_IN_THIS_DOT_IF_BLOCK));
 
-	mov	ecx, 67					; 00000043H
+	mov	ecx, 68					; 00000044H
 	call	EmitError
 	jmp	$LN1@HllExitDir
 $LN10@HllExitDir:
@@ -1134,7 +1135,7 @@ $LN11@HllExitDir:
 	mov	ecx, DWORD PTR [rcx+rax+8]
 	call	GetLabelStr
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11778
+	lea	rcx, OFFSET FLAT:$SG11780
 	call	AddLineQueueX
 
 ; 1627 : 
@@ -1155,7 +1156,7 @@ $LN11@HllExitDir:
 	mov	ecx, DWORD PTR [rcx+rax+8]
 	call	GetLabelStr
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11780
+	lea	rcx, OFFSET FLAT:$SG11782
 	call	AddLineQueueX
 
 ; 1630 :       hll->labels[LTEST] = 0;
@@ -1256,7 +1257,7 @@ $LN5@HllExitDir:
 
 ; 1648 :       return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
 
-	mov	ecx, 245				; 000000f5H
+	mov	ecx, 246				; 000000f6H
 	call	EmitError
 	jmp	$LN1@HllExitDir
 $LN17@HllExitDir:
@@ -1474,7 +1475,7 @@ $LN25@HllExitDir:
 	mov	ecx, DWORD PTR [rcx+rax*4+8]
 	call	GetLabelStr
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11797
+	lea	rcx, OFFSET FLAT:$SG11799
 	call	AddLineQueueX
 $LN26@HllExitDir:
 
@@ -1488,7 +1489,7 @@ $LN29@HllExitDir:
 ; 1692 :   default: /**/myassert(0); break;
 
 	mov	edx, 1692				; 0000069cH
-	lea	rcx, OFFSET FLAT:$SG11799
+	lea	rcx, OFFSET FLAT:$SG11801
 	call	InternalError
 $LN2@HllExitDir:
 
@@ -1511,7 +1512,7 @@ $LN2@HllExitDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 
 ; 1697 :     rc = ERROR;
@@ -1627,7 +1628,7 @@ $LN40:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG11694
+	lea	rcx, OFFSET FLAT:$SG11696
 	call	DoDebugMsg1
 
 ; 1440 : 
@@ -1638,12 +1639,12 @@ $LN40:
 
 ; 1442 :     DebugMsg(("HllEndDir: hll stack is empty\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11696
+	lea	rcx, OFFSET FLAT:$SG11698
 	call	DoDebugMsg
 
 ; 1443 :     return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
 
-	mov	ecx, 245				; 000000f5H
+	mov	ecx, 246				; 000000f6H
 	call	EmitError
 	jmp	$LN1@HllEndDir
 $LN4@HllEndDir:
@@ -1700,7 +1701,7 @@ $LN5@HllEndDir:
 
 ; 1455 :       DebugMsg(("HllEndDir: no .IF on the hll stack\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11699
+	lea	rcx, OFFSET FLAT:$SG11701
 	call	DoDebugMsg
 
 ; 1456 :       return(EmitErr(BLOCK_NESTING_ERROR, tokenarray[i].string_ptr));
@@ -1709,7 +1710,7 @@ $LN5@HllEndDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 80					; 00000050H
+	mov	ecx, 81					; 00000051H
 	call	EmitErr
 	jmp	$LN1@HllEndDir
 $LN6@HllEndDir:
@@ -1739,7 +1740,7 @@ $LN6@HllEndDir:
 	mov	ecx, DWORD PTR [rcx+rax+8]
 	call	GetLabelStr
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11701
+	lea	rcx, OFFSET FLAT:$SG11703
 	call	AddLineQueueX
 $LN7@HllEndDir:
 
@@ -1759,7 +1760,7 @@ $LN8@HllEndDir:
 
 ; 1467 :       DebugMsg(("HllEndDir: no .FOR on the hll stack\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11704
+	lea	rcx, OFFSET FLAT:$SG11706
 	call	DoDebugMsg
 
 ; 1468 :       EmitErr(BLOCK_NESTING_ERROR, tokenarray[i].string_ptr);
@@ -1768,7 +1769,7 @@ $LN8@HllEndDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 80					; 00000050H
+	mov	ecx, 81					; 00000051H
 	call	EmitErr
 
 ; 1469 :       return(ERROR);
@@ -1802,7 +1803,7 @@ $LN9@HllEndDir:
 	mov	ecx, DWORD PTR [rcx+rax+8]
 	call	GetLabelStr
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11706
+	lea	rcx, OFFSET FLAT:$SG11708
 	call	AddLineQueueX
 $LN10@HllEndDir:
 
@@ -1856,7 +1857,7 @@ $LN15@HllEndDir:
 	mov	ecx, DWORD PTR [rcx+rax+8]
 	call	GetLabelStr
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11712
+	lea	rcx, OFFSET FLAT:$SG11714
 	call	AddLineQueueX
 
 ; 1486 :       /* create test label */
@@ -1877,7 +1878,7 @@ $LN15@HllEndDir:
 	mov	ecx, DWORD PTR [rcx+rax+8]
 	call	GetLabelStr
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11714
+	lea	rcx, OFFSET FLAT:$SG11716
 	call	AddLineQueueX
 $LN16@HllEndDir:
 
@@ -1904,7 +1905,7 @@ $LN13@HllEndDir:
 	mov	ecx, DWORD PTR [rcx+rax+8]
 	call	GetLabelStr
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11715
+	lea	rcx, OFFSET FLAT:$SG11717
 	call	AddLineQueueX
 $LN14@HllEndDir:
 $LN12@HllEndDir:
@@ -1927,7 +1928,7 @@ $adlabel$41:
 	mov	ecx, DWORD PTR [rcx+rax+8]
 	call	GetLabelStr
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11717
+	lea	rcx, OFFSET FLAT:$SG11719
 	call	AddLineQueueX
 $LN17@HllEndDir:
 
@@ -1953,7 +1954,7 @@ $LN18@HllEndDir:
 
 ; 1503 :       DebugMsg(("HllEndDir: no .WHILE on the hll stack\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11720
+	lea	rcx, OFFSET FLAT:$SG11722
 	call	DoDebugMsg
 
 ; 1504 :       return(EmitErr(BLOCK_NESTING_ERROR, tokenarray[i].string_ptr));
@@ -1962,7 +1963,7 @@ $LN18@HllEndDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 80					; 00000050H
+	mov	ecx, 81					; 00000051H
 	call	EmitErr
 	jmp	$LN1@HllEndDir
 $LN19@HllEndDir:
@@ -1992,7 +1993,7 @@ $LN19@HllEndDir:
 	mov	ecx, DWORD PTR [rcx+rax+8]
 	call	GetLabelStr
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11722
+	lea	rcx, OFFSET FLAT:$SG11724
 	call	AddLineQueueX
 $LN20@HllEndDir:
 
@@ -2018,7 +2019,7 @@ $LN21@HllEndDir:
 
 ; 1516 :       DebugMsg(("HllEndDir: no .REPEAT on the hll stack\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11725
+	lea	rcx, OFFSET FLAT:$SG11727
 	call	DoDebugMsg
 
 ; 1517 :       return(EmitErr(BLOCK_NESTING_ERROR, tokenarray[i].string_ptr));
@@ -2027,7 +2028,7 @@ $LN21@HllEndDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 80					; 00000050H
+	mov	ecx, 81					; 00000051H
 	call	EmitErr
 	jmp	$LN1@HllEndDir
 $LN22@HllEndDir:
@@ -2056,7 +2057,7 @@ $LN22@HllEndDir:
 	mov	ecx, DWORD PTR [rcx+rax+8]
 	call	GetLabelStr
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11727
+	lea	rcx, OFFSET FLAT:$SG11729
 	call	AddLineQueueX
 $LN23@HllEndDir:
 
@@ -2109,7 +2110,7 @@ $LN27@HllEndDir:
 ; 1530 :         else
 ; 1531 :           EmitError(EXPR_TOO_COMPLEX_FOR_UNTILCXZ);
 
-	mov	ecx, 191				; 000000bfH
+	mov	ecx, 192				; 000000c0H
 	call	EmitError
 $LN28@HllEndDir:
 $LN26@HllEndDir:
@@ -2130,7 +2131,7 @@ $LN24@HllEndDir:
 	mov	ecx, DWORD PTR [rcx+rax+8]
 	call	GetLabelStr
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11733
+	lea	rcx, OFFSET FLAT:$SG11735
 	call	AddLineQueueX
 $LN25@HllEndDir:
 
@@ -2149,7 +2150,7 @@ $LN29@HllEndDir:
 
 ; 1540 :       DebugMsg(("HllEndDir: no .REPEAT on the hll stack\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11736
+	lea	rcx, OFFSET FLAT:$SG11738
 	call	DoDebugMsg
 
 ; 1541 :       return(EmitErr(BLOCK_NESTING_ERROR, tokenarray[i].string_ptr));
@@ -2158,7 +2159,7 @@ $LN29@HllEndDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 80					; 00000050H
+	mov	ecx, 81					; 00000051H
 	call	EmitErr
 	jmp	$LN1@HllEndDir
 $LN30@HllEndDir:
@@ -2187,7 +2188,7 @@ $LN30@HllEndDir:
 	mov	ecx, DWORD PTR [rcx+rax+8]
 	call	GetLabelStr
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11738
+	lea	rcx, OFFSET FLAT:$SG11740
 	call	AddLineQueueX
 $LN31@HllEndDir:
 
@@ -2237,7 +2238,7 @@ $LN34@HllEndDir:
 ; 1556 :   default: /**/myassert(0); break;
 
 	mov	edx, 1556				; 00000614H
-	lea	rcx, OFFSET FLAT:$SG11742
+	lea	rcx, OFFSET FLAT:$SG11744
 	call	InternalError
 $LN2@HllEndDir:
 
@@ -2262,7 +2263,7 @@ $LN2@HllEndDir:
 	mov	ecx, DWORD PTR [rcx+rax+8]
 	call	GetLabelStr
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11744
+	lea	rcx, OFFSET FLAT:$SG11746
 	call	AddLineQueueX
 $LN35@HllEndDir:
 
@@ -2284,7 +2285,7 @@ $LN35@HllEndDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 
 ; 1566 :     rc = ERROR;
@@ -2438,7 +2439,7 @@ $LN76:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG11621
+	lea	rcx, OFFSET FLAT:$SG11623
 	call	DoDebugMsg1
 
 ; 1185 : 
@@ -2775,7 +2776,7 @@ $LN59@HllStartDi:
 ; 1274 :     if (0 == _memicmp(forbuff, "(::)", 4)){
 
 	mov	r8d, 4
-	lea	rdx, OFFSET FLAT:$SG11634
+	lea	rdx, OFFSET FLAT:$SG11636
 	lea	rcx, QWORD PTR forbuff$[rsp]
 	call	QWORD PTR __imp__memicmp
 	test	eax, eax
@@ -3074,7 +3075,7 @@ $LN71@HllStartDi:
 ; 1309 :       hll->condlines = "";
 
 	mov	rax, QWORD PTR hll$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11642
+	lea	rcx, OFFSET FLAT:$SG11644
 	mov	QWORD PTR [rax+32], rcx
 
 ; 1310 :       for (b = 0; forbuff[j] != ')';b++,j++){
@@ -3224,7 +3225,7 @@ $LN38@HllStartDi:
 	mov	ecx, DWORD PTR [rcx+rax+8]
 	call	GetLabelStr
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11649
+	lea	rcx, OFFSET FLAT:$SG11651
 	call	AddLineQueueX
 
 ; 1332 :         size = strlen(forbuffcnt) + 1;
@@ -3266,7 +3267,7 @@ $LN39@HllStartDi:
 ; 1337 :       else hll->counterlines = "";    //there is nothing after the second ':'
 
 	mov	rax, QWORD PTR hll$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11650
+	lea	rcx, OFFSET FLAT:$SG11652
 	mov	QWORD PTR [rax+40], rcx
 $LN40@HllStartDi:
 
@@ -3280,7 +3281,7 @@ $LN40@HllStartDi:
 
 ; 1339 :         strcpy(transformed, ".for ");
 
-	lea	rdx, OFFSET FLAT:$SG11652
+	lea	rdx, OFFSET FLAT:$SG11654
 	lea	rcx, QWORD PTR transformed$[rsp]
 	call	strcpy
 
@@ -3292,7 +3293,7 @@ $LN40@HllStartDi:
 
 ; 1341 :         strcat(transformed, "\0");
 
-	lea	rdx, OFFSET FLAT:$SG11653
+	lea	rdx, OFFSET FLAT:$SG11655
 	lea	rcx, QWORD PTR transformed$[rsp]
 	call	strcat
 
@@ -3301,7 +3302,7 @@ $LN40@HllStartDi:
 	mov	eax, 32					; 00000020H
 	imul	rax, rax, 0
 	mov	rcx, QWORD PTR tokenarray$[rsp]
-	lea	rdx, OFFSET FLAT:$SG11654
+	lea	rdx, OFFSET FLAT:$SG11656
 	mov	QWORD PTR [rcx+rax+8], rdx
 
 ; 1343 :         tokenarray[0].tokpos = transformed;
@@ -3396,7 +3397,7 @@ $LN42@HllStartDi:
 ; 1355 :           hll->condlines = "";
 
 	mov	rax, QWORD PTR hll$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11658
+	lea	rcx, OFFSET FLAT:$SG11660
 	mov	QWORD PTR [rax+32], rcx
 $LN43@HllStartDi:
 $LN41@HllStartDi:
@@ -3413,7 +3414,7 @@ $LN27@HllStartDi:
 	mov	ecx, DWORD PTR [rcx+rax+8]
 	call	GetLabelStr
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11659
+	lea	rcx, OFFSET FLAT:$SG11661
 	call	AddLineQueueX
 
 ; 1359 :     tokenarray[i].token = T_FINAL;
@@ -3554,7 +3555,7 @@ $LN49@HllStartDi:
 ; 1386 :       if (_memicmp(buffer, "jmp", 3)) {
 
 	mov	r8d, 3
-	lea	rdx, OFFSET FLAT:$SG11667
+	lea	rdx, OFFSET FLAT:$SG11669
 	lea	rcx, QWORD PTR buffer$[rsp]
 	call	QWORD PTR __imp__memicmp
 	test	eax, eax
@@ -3577,7 +3578,7 @@ $LN49@HllStartDi:
 	mov	ecx, DWORD PTR [rcx+rax+8]
 	call	GetLabelStr
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11668
+	lea	rcx, OFFSET FLAT:$SG11670
 	call	AddLineQueueX
 $LN51@HllStartDi:
 
@@ -3604,7 +3605,7 @@ $LN47@HllStartDi:
 	mov	ecx, DWORD PTR [rcx+rax+8]
 	call	GetLabelStr
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11669
+	lea	rcx, OFFSET FLAT:$SG11671
 	call	AddLineQueueX
 
 ; 1395 :     break;
@@ -3616,7 +3617,7 @@ $LN52@HllStartDi:
 ; 1397 :   default: /**/myassert(0); break;
 
 	mov	edx, 1397				; 00000575H
-	lea	rcx, OFFSET FLAT:$SG11671
+	lea	rcx, OFFSET FLAT:$SG11673
 	call	InternalError
 $LN2@HllStartDi:
 
@@ -3640,7 +3641,7 @@ $LN2@HllStartDi:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	lea	rcx, OFFSET FLAT:$SG11673
+	lea	rcx, OFFSET FLAT:$SG11675
 	call	DoDebugMsg
 
 ; 1403 :     EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos);
@@ -3649,7 +3650,7 @@ $LN2@HllStartDi:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 
 ; 1404 :     rc = ERROR;
@@ -3810,7 +3811,7 @@ $LN5@ForInitAnd:
 	mov	rcx, QWORD PTR buff$[rsp]
 	movsx	eax, BYTE PTR [rcx+rax]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11397
+	lea	rcx, OFFSET FLAT:$SG11399
 	call	QWORD PTR __imp_strchr
 	test	rax, rax
 	jne	SHORT $LN6@ForInitAnd
@@ -3917,7 +3918,7 @@ $LN131@ForInitAnd:
 	movsx	eax, BYTE PTR [rcx+rax]
 	cmp	eax, 43					; 0000002bH
 	jne	SHORT $LN24@ForInitAnd
-	lea	rdx, OFFSET FLAT:$SG11405
+	lea	rdx, OFFSET FLAT:$SG11407
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	call	strcpy
 	jmp	SHORT $LN25@ForInitAnd
@@ -3937,7 +3938,7 @@ $LN24@ForInitAnd:
 	movsx	eax, BYTE PTR [rcx+rax]
 	cmp	eax, 45					; 0000002dH
 	jne	SHORT $LN26@ForInitAnd
-	lea	rdx, OFFSET FLAT:$SG11407
+	lea	rdx, OFFSET FLAT:$SG11409
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	call	strcpy
 $LN26@ForInitAnd:
@@ -4376,7 +4377,7 @@ $LN38@ForInitAnd:
 
 	lea	r8, QWORD PTR param$[rsp]
 	lea	rdx, OFFSET FLAT:reax
-	lea	rcx, OFFSET FLAT:$SG11425
+	lea	rcx, OFFSET FLAT:$SG11427
 	call	WriteAsmLine
 $LN43@ForInitAnd:
 
@@ -4396,7 +4397,7 @@ $LN45@ForInitAnd:
 
 ; 990  :               strcpy(codebuff, " cdq ");			//extend to RDX if division	
 
-	lea	rdx, OFFSET FLAT:$SG11428
+	lea	rdx, OFFSET FLAT:$SG11430
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	call	strcpy
 
@@ -4428,7 +4429,7 @@ $LN44@ForInitAnd:
 
 	lea	r8, QWORD PTR init$[rsp]
 	lea	rdx, OFFSET FLAT:recx
-	lea	rcx, OFFSET FLAT:$SG11431
+	lea	rcx, OFFSET FLAT:$SG11433
 	call	WriteAsmLine
 
 ; 996  :               if (op[0] == '/' || op[0] == '%')
@@ -4447,7 +4448,7 @@ $LN50@ForInitAnd:
 
 ; 997  :                 strcpy(codebuff, " idiv ");		//IDIV RCX        
 
-	lea	rdx, OFFSET FLAT:$SG11435
+	lea	rdx, OFFSET FLAT:$SG11437
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	call	strcpy
 	jmp	SHORT $LN49@ForInitAnd
@@ -4455,7 +4456,7 @@ $LN48@ForInitAnd:
 
 ; 998  :               else strcpy(codebuff, " imul ");		//IMUL RCX        
 
-	lea	rdx, OFFSET FLAT:$SG11436
+	lea	rdx, OFFSET FLAT:$SG11438
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	call	strcpy
 $LN49@ForInitAnd:
@@ -4497,7 +4498,7 @@ $LN53@ForInitAnd:
 
 ; 1005 :                 strcpy(codebuff, " idiv ");
 
-	lea	rdx, OFFSET FLAT:$SG11440
+	lea	rdx, OFFSET FLAT:$SG11442
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	call	strcpy
 	jmp	SHORT $LN52@ForInitAnd
@@ -4505,7 +4506,7 @@ $LN51@ForInitAnd:
 
 ; 1006 :               else strcpy(codebuff, " imul ");
 
-	lea	rdx, OFFSET FLAT:$SG11441
+	lea	rdx, OFFSET FLAT:$SG11443
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	call	strcpy
 $LN52@ForInitAnd:
@@ -4546,14 +4547,14 @@ $LN41@ForInitAnd:
 
 	lea	r8, QWORD PTR init$[rsp]
 	lea	rdx, OFFSET FLAT:recx
-	lea	rcx, OFFSET FLAT:$SG11443
+	lea	rcx, OFFSET FLAT:$SG11445
 	call	WriteAsmLine
 
 ; 1015 :             WriteAsmLine(" mov  ", reax, param);		// MOV RAX,param
 
 	lea	r8, QWORD PTR param$[rsp]
 	lea	rdx, OFFSET FLAT:reax
-	lea	rcx, OFFSET FLAT:$SG11444
+	lea	rcx, OFFSET FLAT:$SG11446
 	call	WriteAsmLine
 
 ; 1016 :             if (op[0] == '/' || op[0] == '%'){
@@ -4572,7 +4573,7 @@ $LN57@ForInitAnd:
 
 ; 1017 :               strcpy(codebuff, " cdq ");
 
-	lea	rdx, OFFSET FLAT:$SG11448
+	lea	rdx, OFFSET FLAT:$SG11450
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	call	strcpy
 
@@ -4583,7 +4584,7 @@ $LN57@ForInitAnd:
 
 ; 1019 :               strcpy(codebuff, " idiv ");
 
-	lea	rdx, OFFSET FLAT:$SG11449
+	lea	rdx, OFFSET FLAT:$SG11451
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	call	strcpy
 
@@ -4594,7 +4595,7 @@ $LN55@ForInitAnd:
 
 ; 1021 :             else strcpy(codebuff, " imul ");
 
-	lea	rdx, OFFSET FLAT:$SG11450
+	lea	rdx, OFFSET FLAT:$SG11452
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	call	strcpy
 $LN56@ForInitAnd:
@@ -4624,7 +4625,7 @@ $cont$142:
 
 	lea	r8, OFFSET FLAT:redx
 	lea	rdx, QWORD PTR param$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11453
+	lea	rcx, OFFSET FLAT:$SG11455
 	call	WriteAsmLine
 
 ; 1027 :               goto skip;
@@ -4641,7 +4642,7 @@ $LN58@ForInitAnd:
 
 	lea	r8, OFFSET FLAT:reax
 	lea	rdx, QWORD PTR param$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11454
+	lea	rcx, OFFSET FLAT:$SG11456
 	call	WriteAsmLine
 
 ; 1031 :               goto skip;
@@ -4688,7 +4689,7 @@ $LN64@ForInitAnd:
 
 ; 1038 :             strcpy(codebuff, " cdq ");
 
-	lea	rdx, OFFSET FLAT:$SG11460
+	lea	rdx, OFFSET FLAT:$SG11462
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	call	strcpy
 
@@ -4699,7 +4700,7 @@ $LN64@ForInitAnd:
 
 ; 1040 :             strcpy(codebuff, " idiv ");
 
-	lea	rdx, OFFSET FLAT:$SG11461
+	lea	rdx, OFFSET FLAT:$SG11463
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	call	strcpy
 
@@ -4710,7 +4711,7 @@ $LN62@ForInitAnd:
 
 ; 1042 :           else strcpy(codebuff, " imul ");
 
-	lea	rdx, OFFSET FLAT:$SG11462
+	lea	rdx, OFFSET FLAT:$SG11464
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	call	strcpy
 $LN63@ForInitAnd:
@@ -4735,7 +4736,7 @@ $LN63@ForInitAnd:
 	jne	SHORT $LN65@ForInitAnd
 	lea	r8, OFFSET FLAT:redx
 	lea	rdx, QWORD PTR param$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11464
+	lea	rcx, OFFSET FLAT:$SG11466
 	call	WriteAsmLine
 $LN65@ForInitAnd:
 
@@ -4778,7 +4779,7 @@ $LN70@ForInitAnd:
 
 ; 1051 :             strcpy(codebuff, " cdq ");
 
-	lea	rdx, OFFSET FLAT:$SG11470
+	lea	rdx, OFFSET FLAT:$SG11472
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	call	strcpy
 
@@ -4789,7 +4790,7 @@ $LN70@ForInitAnd:
 
 ; 1053 :             strcpy(codebuff, " idiv ");
 
-	lea	rdx, OFFSET FLAT:$SG11471
+	lea	rdx, OFFSET FLAT:$SG11473
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	call	strcpy
 
@@ -4800,7 +4801,7 @@ $LN68@ForInitAnd:
 
 ; 1055 :           else strcpy(codebuff, " imul ");
 
-	lea	rdx, OFFSET FLAT:$SG11472
+	lea	rdx, OFFSET FLAT:$SG11474
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	call	strcpy
 $LN69@ForInitAnd:
@@ -4825,7 +4826,7 @@ $LN69@ForInitAnd:
 	jne	SHORT $LN71@ForInitAnd
 	lea	r8, OFFSET FLAT:redx
 	lea	rdx, QWORD PTR param$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11474
+	lea	rcx, OFFSET FLAT:$SG11476
 	call	WriteAsmLine
 $LN71@ForInitAnd:
 
@@ -4857,7 +4858,7 @@ $LN73@ForInitAnd:
 
 	lea	r8, QWORD PTR init$[rsp]
 	lea	rdx, OFFSET FLAT:recx
-	lea	rcx, OFFSET FLAT:$SG11477
+	lea	rcx, OFFSET FLAT:$SG11479
 	call	WriteAsmLine
 
 ; 1064 :           if (op[0] == '/' || op[0] == '%'){
@@ -4876,7 +4877,7 @@ $LN76@ForInitAnd:
 
 ; 1065 :             strcpy(codebuff, " cdq ");
 
-	lea	rdx, OFFSET FLAT:$SG11481
+	lea	rdx, OFFSET FLAT:$SG11483
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	call	strcpy
 
@@ -4887,7 +4888,7 @@ $LN76@ForInitAnd:
 
 ; 1067 :             strcpy(codebuff, " idiv ");
 
-	lea	rdx, OFFSET FLAT:$SG11482
+	lea	rdx, OFFSET FLAT:$SG11484
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	call	strcpy
 
@@ -4898,7 +4899,7 @@ $LN74@ForInitAnd:
 
 ; 1069 :           else strcpy(codebuff, " imul ");
 
-	lea	rdx, OFFSET FLAT:$SG11483
+	lea	rdx, OFFSET FLAT:$SG11485
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	call	strcpy
 $LN75@ForInitAnd:
@@ -4923,7 +4924,7 @@ $LN75@ForInitAnd:
 	jne	SHORT $LN77@ForInitAnd
 	lea	r8, OFFSET FLAT:redx
 	lea	rdx, QWORD PTR param$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11485
+	lea	rcx, OFFSET FLAT:$SG11487
 	call	WriteAsmLine
 $LN77@ForInitAnd:
 
@@ -4949,7 +4950,7 @@ $LN36@ForInitAnd:
 	movsx	eax, BYTE PTR op$[rsp+rax]
 	cmp	eax, 45					; 0000002dH
 	jne	SHORT $LN78@ForInitAnd
-	lea	rdx, OFFSET FLAT:$SG11488
+	lea	rdx, OFFSET FLAT:$SG11490
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	call	strcpy
 	jmp	$LN79@ForInitAnd
@@ -4962,7 +4963,7 @@ $LN78@ForInitAnd:
 	movsx	eax, BYTE PTR op$[rsp+rax]
 	cmp	eax, 43					; 0000002bH
 	jne	SHORT $LN80@ForInitAnd
-	lea	rdx, OFFSET FLAT:$SG11491
+	lea	rdx, OFFSET FLAT:$SG11493
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	call	strcpy
 	jmp	$LN81@ForInitAnd
@@ -4975,7 +4976,7 @@ $LN80@ForInitAnd:
 	movsx	eax, BYTE PTR op$[rsp+rax]
 	cmp	eax, 38					; 00000026H
 	jne	SHORT $LN82@ForInitAnd
-	lea	rdx, OFFSET FLAT:$SG11494
+	lea	rdx, OFFSET FLAT:$SG11496
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	call	strcpy
 	jmp	$LN83@ForInitAnd
@@ -4988,7 +4989,7 @@ $LN82@ForInitAnd:
 	movsx	eax, BYTE PTR op$[rsp+rax]
 	cmp	eax, 124				; 0000007cH
 	jne	SHORT $LN84@ForInitAnd
-	lea	rdx, OFFSET FLAT:$SG11497
+	lea	rdx, OFFSET FLAT:$SG11499
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	call	strcpy
 	jmp	$LN85@ForInitAnd
@@ -5001,7 +5002,7 @@ $LN84@ForInitAnd:
 	movsx	eax, BYTE PTR op$[rsp+rax]
 	cmp	eax, 94					; 0000005eH
 	jne	SHORT $LN86@ForInitAnd
-	lea	rdx, OFFSET FLAT:$SG11500
+	lea	rdx, OFFSET FLAT:$SG11502
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	call	strcpy
 	jmp	SHORT $LN87@ForInitAnd
@@ -5019,7 +5020,7 @@ $LN86@ForInitAnd:
 	movsx	eax, BYTE PTR op$[rsp+rax]
 	cmp	eax, 60					; 0000003cH
 	jne	SHORT $LN88@ForInitAnd
-	lea	rdx, OFFSET FLAT:$SG11503
+	lea	rdx, OFFSET FLAT:$SG11505
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	call	strcpy
 	jmp	SHORT $LN89@ForInitAnd
@@ -5037,7 +5038,7 @@ $LN88@ForInitAnd:
 	movsx	eax, BYTE PTR op$[rsp+rax]
 	cmp	eax, 62					; 0000003eH
 	jne	SHORT $LN90@ForInitAnd
-	lea	rdx, OFFSET FLAT:$SG11505
+	lea	rdx, OFFSET FLAT:$SG11507
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	call	strcpy
 $LN90@ForInitAnd:
@@ -5133,7 +5134,7 @@ $simple$144:
 
 	lea	r8, QWORD PTR param$[rsp]
 	lea	rdx, QWORD PTR param$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11512
+	lea	rcx, OFFSET FLAT:$SG11514
 	call	WriteAsmLine
 	jmp	$LN96@ForInitAnd
 $LN95@ForInitAnd:
@@ -5161,25 +5162,25 @@ $LN99@ForInitAnd:
 ; 1096 :             (0 == _memicmp(init, "WPTR", 4)) ||
 
 	mov	r8d, 8
-	lea	rdx, OFFSET FLAT:$SG11519
-	lea	rcx, QWORD PTR init$[rsp]
-	call	QWORD PTR __imp__memicmp
-	test	eax, eax
-	je	SHORT $LN102@ForInitAnd
-	mov	r8d, 4
-	lea	rdx, OFFSET FLAT:$SG11520
-	lea	rcx, QWORD PTR init$[rsp]
-	call	QWORD PTR __imp__memicmp
-	test	eax, eax
-	je	SHORT $LN102@ForInitAnd
-	mov	r8d, 4
 	lea	rdx, OFFSET FLAT:$SG11521
 	lea	rcx, QWORD PTR init$[rsp]
 	call	QWORD PTR __imp__memicmp
 	test	eax, eax
 	je	SHORT $LN102@ForInitAnd
-	mov	r8d, 8
+	mov	r8d, 4
 	lea	rdx, OFFSET FLAT:$SG11522
+	lea	rcx, QWORD PTR init$[rsp]
+	call	QWORD PTR __imp__memicmp
+	test	eax, eax
+	je	SHORT $LN102@ForInitAnd
+	mov	r8d, 4
+	lea	rdx, OFFSET FLAT:$SG11523
+	lea	rcx, QWORD PTR init$[rsp]
+	call	QWORD PTR __imp__memicmp
+	test	eax, eax
+	je	SHORT $LN102@ForInitAnd
+	mov	r8d, 8
+	lea	rdx, OFFSET FLAT:$SG11524
 	lea	rcx, QWORD PTR init$[rsp]
 	call	QWORD PTR __imp__memicmp
 	test	eax, eax
@@ -5192,7 +5193,7 @@ $LN102@ForInitAnd:
 
 	lea	r8, QWORD PTR init$[rsp]
 	lea	rdx, QWORD PTR param$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11523
+	lea	rcx, OFFSET FLAT:$SG11525
 	call	WriteAsmLine
 	jmp	SHORT $LN101@ForInitAnd
 $LN100@ForInitAnd:
@@ -5200,7 +5201,7 @@ $LN100@ForInitAnd:
 ; 1100 :           else if (0 == _memicmp(init, "ADDR", 4))
 
 	mov	r8d, 4
-	lea	rdx, OFFSET FLAT:$SG11526
+	lea	rdx, OFFSET FLAT:$SG11528
 	lea	rcx, QWORD PTR init$[rsp]
 	call	QWORD PTR __imp__memicmp
 	test	eax, eax
@@ -5211,7 +5212,7 @@ $LN100@ForInitAnd:
 	lea	rax, QWORD PTR init$[rsp+5]
 	mov	r8, rax
 	lea	rdx, QWORD PTR param$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11527
+	lea	rcx, OFFSET FLAT:$SG11529
 	call	WriteAsmLine
 	jmp	SHORT $LN104@ForInitAnd
 $LN103@ForInitAnd:
@@ -5220,7 +5221,7 @@ $LN103@ForInitAnd:
 
 	lea	r8, QWORD PTR init$[rsp]
 	lea	rdx, QWORD PTR param$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11528
+	lea	rcx, OFFSET FLAT:$SG11530
 	call	WriteAsmLine
 $LN104@ForInitAnd:
 $LN101@ForInitAnd:
@@ -5251,7 +5252,7 @@ $LN107@ForInitAnd:
 ; 1105 :           if (0 == _memicmp(init, "OFFSET", 6))
 
 	mov	r8d, 6
-	lea	rdx, OFFSET FLAT:$SG11534
+	lea	rdx, OFFSET FLAT:$SG11536
 	lea	rcx, QWORD PTR init$[rsp]
 	call	QWORD PTR __imp__memicmp
 	test	eax, eax
@@ -5262,7 +5263,7 @@ $LN107@ForInitAnd:
 	lea	rax, QWORD PTR init$[rsp+7]
 	mov	r8, rax
 	lea	rdx, QWORD PTR param$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11535
+	lea	rcx, OFFSET FLAT:$SG11537
 	call	WriteAsmLine
 	jmp	SHORT $LN109@ForInitAnd
 $LN108@ForInitAnd:
@@ -5271,7 +5272,7 @@ $LN108@ForInitAnd:
 
 	lea	r8, QWORD PTR init$[rsp]
 	lea	rdx, QWORD PTR param$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11536
+	lea	rcx, OFFSET FLAT:$SG11538
 	call	WriteAsmLine
 $LN109@ForInitAnd:
 
@@ -5301,13 +5302,13 @@ $LN112@ForInitAnd:
 ; 1110 :           if ((0 == _memicmp(init, "DWORD PTR", 9) || 0 == _memicmp(init, "DPTR", 4)
 
 	mov	r8d, 9
-	lea	rdx, OFFSET FLAT:$SG11543
+	lea	rdx, OFFSET FLAT:$SG11545
 	lea	rcx, QWORD PTR init$[rsp]
 	call	QWORD PTR __imp__memicmp
 	test	eax, eax
 	je	SHORT $LN115@ForInitAnd
 	mov	r8d, 4
-	lea	rdx, OFFSET FLAT:$SG11544
+	lea	rdx, OFFSET FLAT:$SG11546
 	lea	rcx, QWORD PTR init$[rsp]
 	call	QWORD PTR __imp__memicmp
 	test	eax, eax
@@ -5330,7 +5331,7 @@ $LN115@ForInitAnd:
 
 	lea	r8, QWORD PTR init$[rsp]
 	lea	rdx, QWORD PTR param$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11546
+	lea	rcx, OFFSET FLAT:$SG11548
 	call	WriteAsmLine
 	jmp	SHORT $LN114@ForInitAnd
 $LN113@ForInitAnd:
@@ -5339,7 +5340,7 @@ $LN113@ForInitAnd:
 
 	lea	r8, QWORD PTR init$[rsp]
 	lea	rdx, QWORD PTR param$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11547
+	lea	rcx, OFFSET FLAT:$SG11549
 	call	WriteAsmLine
 $LN114@ForInitAnd:
 
@@ -5449,7 +5450,7 @@ $LN14@ForInitAnd:
 
 ; 1125 :           strcpy(codebuff, " invoke  ");
 
-	lea	rdx, OFFSET FLAT:$SG11553
+	lea	rdx, OFFSET FLAT:$SG11555
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	call	strcpy
 
@@ -5468,7 +5469,7 @@ $LN14@ForInitAnd:
 
 	lea	r8, OFFSET FLAT:reax
 	lea	rdx, QWORD PTR param$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11554
+	lea	rcx, OFFSET FLAT:$SG11556
 	call	WriteAsmLine
 
 ; 1129 :           brct = FALSE;
@@ -5492,7 +5493,7 @@ $LN117@ForInitAnd:
 
 	lea	r8, QWORD PTR init$[rsp]
 	lea	rdx, QWORD PTR param$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11557
+	lea	rcx, OFFSET FLAT:$SG11559
 	call	WriteAsmLine
 	jmp	SHORT $LN123@ForInitAnd
 $LN122@ForInitAnd:
@@ -5536,7 +5537,7 @@ $LN93@ForInitAnd:
 
 	lea	r8, QWORD PTR init$[rsp]
 	lea	rdx, QWORD PTR param$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11560
+	lea	rcx, OFFSET FLAT:$SG11562
 	call	WriteAsmLine
 	jmp	SHORT $LN125@ForInitAnd
 $LN124@ForInitAnd:
@@ -5546,7 +5547,7 @@ $LN124@ForInitAnd:
 
 	lea	r8, QWORD PTR init$[rsp]
 	lea	rdx, OFFSET FLAT:reax
-	lea	rcx, OFFSET FLAT:$SG11561
+	lea	rcx, OFFSET FLAT:$SG11563
 	call	WriteAsmLine
 
 ; 1144 :           WriteAsmLine(codebuff, param, reax);
@@ -5639,7 +5640,7 @@ WriteAsmLine PROC
 
 ; 902  :   strcat(codebuff, ", ");
 
-	lea	rdx, OFFSET FLAT:$SG11352
+	lea	rdx, OFFSET FLAT:$SG11354
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	call	strcat
 
@@ -5705,7 +5706,7 @@ CheckCXZLines PROC
 ; 843  :   DebugMsg1(("CheckCXZLines enter, p=>%s<\n", p));
 
 	mov	rdx, QWORD PTR p$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11327
+	lea	rcx, OFFSET FLAT:$SG11329
 	call	DoDebugMsg1
 
 ; 844  :   /* syntax ".untilcxz 1" has a problem: there's no "jmp" generated at all.
@@ -5785,7 +5786,7 @@ $LN8@CheckCXZLi:
 
 ; 859  :           px = "loope";
 
-	lea	rax, OFFSET FLAT:$SG11334
+	lea	rax, OFFSET FLAT:$SG11336
 	mov	QWORD PTR px$[rsp], rax
 
 ; 860  :         }
@@ -5817,7 +5818,7 @@ $LN16@CheckCXZLi:
 
 ; 863  :           px = "loop";
 
-	lea	rax, OFFSET FLAT:$SG11338
+	lea	rax, OFFSET FLAT:$SG11340
 	mov	QWORD PTR px$[rsp], rax
 
 ; 864  :         }
@@ -5954,7 +5955,7 @@ EvaluateHllExpression PROC
 ; 813  : 
 ; 814  :   DebugMsg1(("EvaluateHllExpression enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11308
+	lea	rcx, OFFSET FLAT:$SG11310
 	call	DoDebugMsg1
 
 ; 815  : 
@@ -6005,12 +6006,12 @@ $LN2@EvaluateHl:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	lea	rcx, OFFSET FLAT:$SG11311
+	lea	rcx, OFFSET FLAT:$SG11313
 	call	DoDebugMsg
 
 ; 824  :     return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
 
-	mov	ecx, 199				; 000000c7H
+	mov	ecx, 200				; 000000c8H
 	call	EmitError
 	jmp	SHORT $LN1@EvaluateHl
 $LN3@EvaluateHl:
@@ -6062,11 +6063,11 @@ QueueTestLines PROC
 	mov	QWORD PTR tv65[rsp], rax
 	jmp	SHORT $LN8@QueueTestL
 $LN7@QueueTestL:
-	lea	rax, OFFSET FLAT:$SG11287
+	lea	rax, OFFSET FLAT:$SG11289
 	mov	QWORD PTR tv65[rsp], rax
 $LN8@QueueTestL:
 	mov	rdx, QWORD PTR tv65[rsp]
-	lea	rcx, OFFSET FLAT:$SG11288
+	lea	rcx, OFFSET FLAT:$SG11290
 	call	DoDebugMsg1
 $LN2@QueueTestL:
 
@@ -6120,7 +6121,7 @@ $LN3@QueueTestL:
 ; 786  : 
 ; 787  :   DebugMsg1(("QueueTestLines exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11291
+	lea	rcx, OFFSET FLAT:$SG11293
 	call	DoDebugMsg1
 
 ; 788  :   return(NOT_ERROR);
@@ -6186,7 +6187,7 @@ GetAndExpression PROC
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	r8, QWORD PTR [rcx+rax+24]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG11217
+	lea	rcx, OFFSET FLAT:$SG11219
 	call	DoDebugMsg1
 
 ; 630  : 
@@ -6245,14 +6246,14 @@ $LN2@GetAndExpr:
 	mov	QWORD PTR tv91[rsp], rax
 	jmp	SHORT $LN13@GetAndExpr
 $LN12@GetAndExpr:
-	lea	rax, OFFSET FLAT:$SG11219
+	lea	rax, OFFSET FLAT:$SG11221
 	mov	QWORD PTR tv91[rsp], rax
 $LN13@GetAndExpr:
 	movzx	eax, BYTE PTR is_true$[rsp]
 	mov	r9, QWORD PTR tv91[rsp]
 	mov	r8d, eax
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG11220
+	lea	rcx, OFFSET FLAT:$SG11222
 	call	DoDebugMsg1
 
 ; 637  : 
@@ -6313,7 +6314,7 @@ $LN7@GetAndExpr:
 
 ; 649  :           strcat(p, EOLSTR);
 
-	lea	rdx, OFFSET FLAT:$SG11225
+	lea	rdx, OFFSET FLAT:$SG11227
 	mov	rcx, QWORD PTR p$1[rsp]
 	call	strcat
 $LN8@GetAndExpr:
@@ -6325,7 +6326,7 @@ $LN8@GetAndExpr:
 	mov	rax, QWORD PTR hllop$[rsp]
 	mov	r8, QWORD PTR [rax]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG11226
+	lea	rcx, OFFSET FLAT:$SG11228
 	call	DoDebugMsg1
 
 ; 653  :         ReplaceLabel(buffer, GetLabel(hll, ilabel), truelabel);
@@ -6411,7 +6412,7 @@ $LN3@GetAndExpr:
 
 ; 666  :     strcat(ptr, LABELQUAL EOLSTR);
 
-	lea	rdx, OFFSET FLAT:$SG11229
+	lea	rdx, OFFSET FLAT:$SG11231
 	mov	rcx, QWORD PTR ptr$[rsp]
 	call	strcat
 
@@ -6419,7 +6420,7 @@ $LN3@GetAndExpr:
 
 	mov	r8, QWORD PTR ptr$[rsp]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG11230
+	lea	rcx, OFFSET FLAT:$SG11232
 	call	DoDebugMsg1
 
 ; 668  :     hllop->lastjmp = NULL;
@@ -6500,7 +6501,7 @@ ReplaceLabel PROC
 	lea	r9, QWORD PTR newlbl$[rsp]
 	lea	r8, QWORD PTR oldlbl$[rsp]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG11193
+	lea	rcx, OFFSET FLAT:$SG11195
 	call	DoDebugMsg1
 $LN2@ReplaceLab:
 
@@ -6573,7 +6574,7 @@ InvertJump PROC
 
 ; 551  :     strcpy(p, "jmp ");
 
-	lea	rdx, OFFSET FLAT:$SG11163
+	lea	rdx, OFFSET FLAT:$SG11165
 	mov	rcx, QWORD PTR p$[rsp]
 	call	strcpy
 
@@ -6874,7 +6875,7 @@ GetSimpleExpression PROC
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	r8, QWORD PTR [rcx+rax+24]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG11102
+	lea	rcx, OFFSET FLAT:$SG11104
 	call	DoDebugMsg1
 $LN2@GetSimpleE:
 
@@ -7050,7 +7051,7 @@ $LN5@GetSimpleE:
 	mov	rax, QWORD PTR i$[rsp]
 	mov	r8d, DWORD PTR [rax]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG11111
+	lea	rcx, OFFSET FLAT:$SG11113
 	call	DoDebugMsg1
 
 ; 389  :       if (ERROR == GetExpression(hll, i, tokenarray, ilabel, is_true, buffer, hllop))
@@ -7094,12 +7095,12 @@ $LN19@GetSimpleE:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG11114
+	lea	rcx, OFFSET FLAT:$SG11116
 	call	DoDebugMsg
 
 ; 395  :         return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
 
-	mov	ecx, 199				; 000000c7H
+	mov	ecx, 200				; 000000c8H
 	call	EmitError
 	jmp	$LN1@GetSimpleE
 $LN20@GetSimpleE:
@@ -7223,7 +7224,7 @@ $LN23@GetSimpleE:
 	mov	r9d, DWORD PTR [rax]
 	mov	r8d, DWORD PTR op1$[rsp+60]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG11120
+	lea	rcx, OFFSET FLAT:$SG11122
 	call	DoDebugMsg1
 
 ; 423  : 
@@ -7246,12 +7247,12 @@ $LN23@GetSimpleE:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	lea	rcx, OFFSET FLAT:$SG11123
+	lea	rcx, OFFSET FLAT:$SG11125
 	call	DoDebugMsg
 
 ; 430  :       return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
 
-	mov	ecx, 199				; 000000c7H
+	mov	ecx, 200				; 000000c8H
 	call	EmitError
 	jmp	$LN1@GetSimpleE
 $LN27@GetSimpleE:
@@ -7310,12 +7311,12 @@ $LN28@GetSimpleE:
 ; 439  :   case EXPR_EMPTY:
 ; 440  :     DebugMsg(("GetSimpleExpression: empty expression rejected\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11125
+	lea	rcx, OFFSET FLAT:$SG11127
 	call	DoDebugMsg
 
 ; 441  :     return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE)); /* v2.09: changed from NOT_ERROR to ERROR */
 
-	mov	ecx, 199				; 000000c7H
+	mov	ecx, 200				; 000000c8H
 	call	EmitError
 	jmp	$LN1@GetSimpleE
 $LN29@GetSimpleE:
@@ -7327,12 +7328,12 @@ $LN29@GetSimpleE:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	lea	rcx, OFFSET FLAT:$SG11127
+	lea	rcx, OFFSET FLAT:$SG11129
 	call	DoDebugMsg
 
 ; 444  :     return(EmitError(REAL_OR_BCD_NUMBER_NOT_ALLOWED)); /* v2.10: added */
 
-	mov	ecx, 270				; 0000010eH
+	mov	ecx, 271				; 0000010fH
 	call	EmitError
 	jmp	$LN1@GetSimpleE
 $LN7@GetSimpleE:
@@ -7375,7 +7376,7 @@ $LN31@GetSimpleE:
 	mov	DWORD PTR [rsp+32], eax
 	mov	r9d, DWORD PTR op1_end$[rsp]
 	mov	r8d, DWORD PTR op1_pos$[rsp]
-	lea	rdx, OFFSET FLAT:$SG11131
+	lea	rdx, OFFSET FLAT:$SG11133
 	mov	rcx, QWORD PTR buffer$[rsp]
 	call	RenderInstr
 	mov	QWORD PTR p$[rsp], rax
@@ -7412,7 +7413,7 @@ $LN33@GetSimpleE:
 	mov	DWORD PTR [rsp+32], -2
 	mov	r9d, DWORD PTR op1_end$[rsp]
 	mov	r8d, DWORD PTR op1_pos$[rsp]
-	lea	rdx, OFFSET FLAT:$SG11133
+	lea	rdx, OFFSET FLAT:$SG11135
 	mov	rcx, QWORD PTR buffer$[rsp]
 	call	RenderInstr
 	mov	QWORD PTR p$[rsp], rax
@@ -7486,7 +7487,7 @@ $LN38@GetSimpleE:
 ; 477  :         sprintf(buffer, "jmp " LABELFMT EOLSTR, label);
 
 	mov	r8d, DWORD PTR label$[rsp]
-	lea	rdx, OFFSET FLAT:$SG11140
+	lea	rdx, OFFSET FLAT:$SG11142
 	mov	rcx, QWORD PTR buffer$[rsp]
 	call	sprintf
 
@@ -7513,7 +7514,7 @@ $LN40@GetSimpleE:
 ; 485  :     default: /**/myassert(0); break;
 
 	mov	edx, 485				; 000001e5H
-	lea	rcx, OFFSET FLAT:$SG11142
+	lea	rcx, OFFSET FLAT:$SG11144
 	call	InternalError
 $LN9@GetSimpleE:
 
@@ -7563,7 +7564,7 @@ $LN41@GetSimpleE:
 	mov	r9d, DWORD PTR [rax]
 	mov	r8, QWORD PTR op2$[rsp+96]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG11144
+	lea	rcx, OFFSET FLAT:$SG11146
 	call	DoDebugMsg1
 
 ; 497  :   if (op2.kind != EXPR_CONST && op2.kind != EXPR_ADDR && op2.kind != EXPR_REG) {
@@ -7578,12 +7579,12 @@ $LN41@GetSimpleE:
 ; 498  :     DebugMsg(("GetSimpleExpression: syntax error, op2.kind=%u\n", op2.kind));
 
 	mov	edx, DWORD PTR op2$[rsp+60]
-	lea	rcx, OFFSET FLAT:$SG11146
+	lea	rcx, OFFSET FLAT:$SG11148
 	call	DoDebugMsg
 
 ; 499  :     return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
 
-	mov	ecx, 199				; 000000c7H
+	mov	ecx, 200				; 000000c8H
 	call	EmitError
 	jmp	$LN1@GetSimpleE
 $LN42@GetSimpleE:
@@ -7613,7 +7614,7 @@ $LN42@GetSimpleE:
 	mov	DWORD PTR [rsp+32], eax
 	mov	r9d, DWORD PTR op1_end$[rsp]
 	mov	r8d, DWORD PTR op1_pos$[rsp]
-	lea	rdx, OFFSET FLAT:$SG11149
+	lea	rdx, OFFSET FLAT:$SG11151
 	mov	rcx, QWORD PTR buffer$[rsp]
 	call	RenderInstr
 	mov	QWORD PTR p$[rsp], rax
@@ -7681,7 +7682,7 @@ $LN49@GetSimpleE:
 	mov	DWORD PTR [rsp+32], eax
 	mov	r9d, DWORD PTR op1_end$[rsp]
 	mov	r8d, DWORD PTR op1_pos$[rsp]
-	lea	rdx, OFFSET FLAT:$SG11155
+	lea	rdx, OFFSET FLAT:$SG11157
 	mov	rcx, QWORD PTR buffer$[rsp]
 	call	RenderInstr
 	mov	QWORD PTR p$[rsp], rax
@@ -7702,7 +7703,7 @@ $LN47@GetSimpleE:
 	mov	DWORD PTR [rsp+32], eax
 	mov	r9d, DWORD PTR op1_end$[rsp]
 	mov	r8d, DWORD PTR op1_pos$[rsp]
-	lea	rdx, OFFSET FLAT:$SG11156
+	lea	rdx, OFFSET FLAT:$SG11158
 	mov	rcx, QWORD PTR buffer$[rsp]
 	call	RenderInstr
 	mov	QWORD PTR p$[rsp], rax
@@ -7786,12 +7787,12 @@ $LN45@GetSimpleE:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	lea	rcx, OFFSET FLAT:$SG11157
+	lea	rcx, OFFSET FLAT:$SG11159
 	call	DoDebugMsg
 
 ; 531  :     return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
 
-	mov	ecx, 199				; 000000c7H
+	mov	ecx, 200				; 000000c8H
 	call	EmitError
 	jmp	SHORT $LN1@GetSimpleE
 $LN46@GetSimpleE:
@@ -7845,7 +7846,7 @@ GetLabel PROC
 	jmp	SHORT $LN4@GetLabel
 $LN3@GetLabel:
 	mov	edx, 336				; 00000150H
-	lea	rcx, OFFSET FLAT:$SG11063
+	lea	rcx, OFFSET FLAT:$SG11065
 	call	InternalError
 	mov	DWORD PTR tv72[rsp], eax
 $LN4@GetLabel:
@@ -7979,7 +7980,7 @@ $LN7@GetToken:
 
 ; 327  :     return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
 
-	mov	ecx, 199				; 000000c7H
+	mov	ecx, 200				; 000000c8H
 	call	EmitError
 	jmp	SHORT $LN1@GetToken
 $LN8@GetToken:
@@ -8116,7 +8117,7 @@ $LN3@RenderJcc:
 
 	mov	r8, QWORD PTR old$[rsp]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG11037
+	lea	rcx, OFFSET FLAT:$SG11039
 	call	DoDebugMsg1
 
 ; 298  :   return(dst);
@@ -8152,7 +8153,7 @@ GetLabelStr PROC
 ; 272  :   sprintf(buff, LABELFMT, label);
 
 	mov	r8d, DWORD PTR label$[rsp]
-	lea	rdx, OFFSET FLAT:$SG11023
+	lea	rdx, OFFSET FLAT:$SG11025
 	mov	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 
@@ -8334,7 +8335,7 @@ $LN2@RenderInst:
 ; 261  :     dst += sprintf(dst, ", %d", end2);
 
 	mov	r8d, DWORD PTR end2$[rsp]
-	lea	rdx, OFFSET FLAT:$SG11015
+	lea	rdx, OFFSET FLAT:$SG11017
 	mov	rcx, QWORD PTR dst$[rsp]
 	call	sprintf
 	cdqe
@@ -8364,7 +8365,7 @@ $LN3@RenderInst:
 	mov	r9, QWORD PTR old$[rsp]
 	mov	r8, QWORD PTR instr$[rsp]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG11016
+	lea	rcx, OFFSET FLAT:$SG11018
 	call	DoDebugMsg1
 
 ; 266  :   return(dst);
@@ -8601,7 +8602,7 @@ $LN23@GetCOp:
 	cmp	DWORD PTR size$[rsp], 5
 	jne	SHORT $LN24@GetCOp
 	mov	r8d, 4
-	lea	rdx, OFFSET FLAT:$SG10966
+	lea	rdx, OFFSET FLAT:$SG10968
 	mov	rcx, QWORD PTR p$[rsp]
 	call	QWORD PTR __imp__memicmp
 	test	eax, eax
@@ -8618,7 +8619,7 @@ $LN24@GetCOp:
 	cmp	DWORD PTR size$[rsp], 6
 	jne	SHORT $LN26@GetCOp
 	mov	r8d, 5
-	lea	rdx, OFFSET FLAT:$SG10969
+	lea	rdx, OFFSET FLAT:$SG10971
 	mov	rcx, QWORD PTR p$[rsp]
 	call	QWORD PTR __imp__memicmp
 	test	eax, eax
@@ -8635,7 +8636,7 @@ $LN26@GetCOp:
 	cmp	DWORD PTR size$[rsp], 5
 	jne	SHORT $LN28@GetCOp
 	mov	r8d, 4
-	lea	rdx, OFFSET FLAT:$SG10972
+	lea	rdx, OFFSET FLAT:$SG10974
 	mov	rcx, QWORD PTR p$[rsp]
 	call	QWORD PTR __imp__memicmp
 	test	eax, eax
@@ -8652,7 +8653,7 @@ $LN28@GetCOp:
 	cmp	DWORD PTR size$[rsp], 7
 	jne	SHORT $LN30@GetCOp
 	mov	r8d, 6
-	lea	rdx, OFFSET FLAT:$SG10975
+	lea	rdx, OFFSET FLAT:$SG10977
 	mov	rcx, QWORD PTR p$[rsp]
 	call	QWORD PTR __imp__memicmp
 	test	eax, eax
@@ -8669,7 +8670,7 @@ $LN30@GetCOp:
 	cmp	DWORD PTR size$[rsp], 9
 	jne	SHORT $LN32@GetCOp
 	mov	r8d, 8
-	lea	rdx, OFFSET FLAT:$SG10978
+	lea	rdx, OFFSET FLAT:$SG10980
 	mov	rcx, QWORD PTR p$[rsp]
 	call	QWORD PTR __imp__memicmp
 	test	eax, eax
@@ -8687,7 +8688,7 @@ $LN32@GetCOp:
 	cmp	DWORD PTR size$[rsp], 5
 	jne	SHORT $LN34@GetCOp
 	mov	r8d, 4
-	lea	rdx, OFFSET FLAT:$SG10981
+	lea	rdx, OFFSET FLAT:$SG10983
 	mov	rcx, QWORD PTR p$[rsp]
 	call	QWORD PTR __imp__memicmp
 	test	eax, eax
@@ -8704,7 +8705,7 @@ $LN34@GetCOp:
 	cmp	DWORD PTR size$[rsp], 8
 	jne	SHORT $LN36@GetCOp
 	mov	r8d, 7
-	lea	rdx, OFFSET FLAT:$SG10984
+	lea	rdx, OFFSET FLAT:$SG10986
 	mov	rcx, QWORD PTR p$[rsp]
 	call	QWORD PTR __imp__memicmp
 	test	eax, eax
@@ -8721,7 +8722,7 @@ $LN36@GetCOp:
 	cmp	DWORD PTR size$[rsp], 6
 	jne	SHORT $LN38@GetCOp
 	mov	r8d, 5
-	lea	rdx, OFFSET FLAT:$SG10987
+	lea	rdx, OFFSET FLAT:$SG10989
 	mov	rcx, QWORD PTR p$[rsp]
 	call	QWORD PTR __imp__memicmp
 	test	eax, eax
@@ -8738,7 +8739,7 @@ $LN38@GetCOp:
 	cmp	DWORD PTR size$[rsp], 6
 	jne	SHORT $LN40@GetCOp
 	mov	r8d, 5
-	lea	rdx, OFFSET FLAT:$SG10990
+	lea	rdx, OFFSET FLAT:$SG10992
 	mov	rcx, QWORD PTR p$[rsp]
 	call	QWORD PTR __imp__memicmp
 	test	eax, eax
@@ -8755,7 +8756,7 @@ $LN40@GetCOp:
 	cmp	DWORD PTR size$[rsp], 6
 	jne	SHORT $LN42@GetCOp
 	mov	r8d, 5
-	lea	rdx, OFFSET FLAT:$SG10993
+	lea	rdx, OFFSET FLAT:$SG10995
 	mov	rcx, QWORD PTR p$[rsp]
 	call	QWORD PTR __imp__memicmp
 	test	eax, eax
@@ -8884,7 +8885,7 @@ GetExpression PROC
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	r8, QWORD PTR [rcx+rax+24]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG11255
+	lea	rcx, OFFSET FLAT:$SG11257
 	call	DoDebugMsg1
 
 ; 682  : 
@@ -8917,7 +8918,7 @@ GetExpression PROC
 	dec	eax
 	mov	DWORD PTR evallvl, eax
 	mov	edx, DWORD PTR tv83[rsp]
-	lea	rcx, OFFSET FLAT:$SG11257
+	lea	rcx, OFFSET FLAT:$SG11259
 	call	DoDebugMsg1
 
 ; 690  :     return(ERROR);
@@ -8976,14 +8977,14 @@ $LN2@GetExpress:
 	mov	QWORD PTR tv128[rsp], rax
 	jmp	SHORT $LN17@GetExpress
 $LN16@GetExpress:
-	lea	rax, OFFSET FLAT:$SG11258
+	lea	rax, OFFSET FLAT:$SG11260
 	mov	QWORD PTR tv128[rsp], rax
 $LN17@GetExpress:
 	movzx	eax, BYTE PTR is_true$[rsp]
 	mov	r9, QWORD PTR tv128[rsp]
 	mov	r8d, eax
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG11259
+	lea	rcx, OFFSET FLAT:$SG11261
 	call	DoDebugMsg1
 
 ; 712  : 
@@ -9042,7 +9043,7 @@ $LN7@GetExpress:
 
 ; 722  :           strcat(p, EOLSTR);
 
-	lea	rdx, OFFSET FLAT:$SG11264
+	lea	rdx, OFFSET FLAT:$SG11266
 	mov	rcx, QWORD PTR p$7[rsp]
 	call	strcat
 $LN8@GetExpress:
@@ -9068,7 +9069,7 @@ $LN9@GetExpress:
 
 	mov	r8, QWORD PTR ptr$[rsp]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG11266
+	lea	rcx, OFFSET FLAT:$SG11268
 	call	DoDebugMsg1
 
 ; 728  :         hllop->lastjmp = NULL;
@@ -9115,7 +9116,7 @@ $LN9@GetExpress:
 	mov	rax, rcx
 	mov	rcx, QWORD PTR tv169[rsp]
 	mov	r8, rcx
-	lea	rdx, OFFSET FLAT:$SG11269
+	lea	rdx, OFFSET FLAT:$SG11271
 	mov	rcx, rax
 	call	sprintf
 
@@ -9138,7 +9139,7 @@ $LN10@GetExpress:
 	mov	rax, rcx
 	mov	rcx, QWORD PTR tv178[rsp]
 	mov	r8, rcx
-	lea	rdx, OFFSET FLAT:$SG11270
+	lea	rdx, OFFSET FLAT:$SG11272
 	mov	rcx, rax
 	call	sprintf
 
@@ -9155,7 +9156,7 @@ $LN11@GetExpress:
 
 	mov	r8, QWORD PTR ptr$[rsp]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG11271
+	lea	rcx, OFFSET FLAT:$SG11273
 	call	DoDebugMsg1
 $LN6@GetExpress:
 $LN5@GetExpress:
@@ -9200,7 +9201,7 @@ $LN5@GetExpress:
 	dec	eax
 	mov	DWORD PTR evallvl, eax
 	mov	edx, DWORD PTR tv206[rsp]
-	lea	rcx, OFFSET FLAT:$SG11273
+	lea	rcx, OFFSET FLAT:$SG11275
 	call	DoDebugMsg1
 
 ; 747  :       return(ERROR);
@@ -9239,7 +9240,7 @@ $LN3@GetExpress:
 	mov	rax, QWORD PTR hllop$[rsp]
 	mov	r8d, DWORD PTR [rax+8]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG11276
+	lea	rcx, OFFSET FLAT:$SG11278
 	call	DoDebugMsg1
 
 ; 754  :       ReplaceLabel(ptr, hllop->lasttruelabel, truelabel);
@@ -9277,7 +9278,7 @@ $LN14@GetExpress:
 
 ; 759  :     strcat(ptr, LABELQUAL EOLSTR);
 
-	lea	rdx, OFFSET FLAT:$SG11277
+	lea	rdx, OFFSET FLAT:$SG11279
 	mov	rcx, QWORD PTR ptr$[rsp]
 	call	strcat
 
@@ -9285,7 +9286,7 @@ $LN14@GetExpress:
 
 	mov	r8, QWORD PTR ptr$[rsp]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG11278
+	lea	rcx, OFFSET FLAT:$SG11280
 	call	DoDebugMsg1
 
 ; 761  :     hllop->lasttruelabel = truelabel; /* v2.08 */
@@ -9304,7 +9305,7 @@ $LN13@GetExpress:
 	dec	eax
 	mov	DWORD PTR evallvl, eax
 	mov	edx, DWORD PTR tv242[rsp]
-	lea	rcx, OFFSET FLAT:$SG11279
+	lea	rcx, OFFSET FLAT:$SG11281
 	call	DoDebugMsg1
 
 ; 764  :   return(NOT_ERROR);
@@ -9350,8 +9351,8 @@ $LN4:
 ; 1716 :     //EmitErr( BLOCK_NESTING_ERROR, ".if-.repeat-.while" );
 ; 1717 :     EmitErr(UNMATCHED_BLOCK_NESTING, ".if-.repeat-.while");
 
-	lea	rdx, OFFSET FLAT:$SG11806
-	mov	ecx, 142				; 0000008eH
+	lea	rdx, OFFSET FLAT:$SG11808
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 $LN2@HllCheckOp:
 
@@ -9363,7 +9364,7 @@ $LN2@HllCheckOp:
 	mov	r9d, DWORD PTR cntCond
 	mov	r8d, DWORD PTR cntReused
 	mov	edx, DWORD PTR cntAlloc
-	lea	rcx, OFFSET FLAT:$SG11807
+	lea	rcx, OFFSET FLAT:$SG11809
 	call	DoDebugMsg
 
 ; 1720 : }

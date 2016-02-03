@@ -8,32 +8,33 @@ INCLUDELIB OLDNAMES
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10632 DB	'L&_%04u', 00H
-$SG10657 DB	'CreateLabel(%s, memtype=%Xh, %Xh, %u) enter', 0aH, 00H
+$SG10634 DB	'L&_%04u', 00H
+$SG10659 DB	'CreateLabel(%s, memtype=%Xh, %Xh, %u) enter', 0aH, 00H
 	ORG $+3
-$SG10661 DB	'CreateLabel: code label and CS assumed error', 0aH, 00H
+$SG10663 DB	'CreateLabel: code label and CS assumed error', 0aH, 00H
 	ORG $+2
-$SG10663 DB	'L&_%04u', 00H
-$SG10670 DB	'CreateLabel(%s): error, EXTERNDEF for local label', 0aH, 00H
+$SG10665 DB	'L&_%04u', 00H
+$SG10672 DB	'CreateLabel(%s): error, EXTERNDEF for local label', 0aH, 00H
 	ORG $+5
-$SG10672 DB	'CreateLabel(%s): error, memtype conflict %X-%X', 0aH, 00H
-$SG10679 DB	'CreateLabel(%s): memtype MT_PROC detected, sym.isproc=%u'
+$SG10674 DB	'CreateLabel(%s): error, memtype conflict %X-%X', 0aH, 00H
+$SG10681 DB	'CreateLabel(%s): memtype MT_PROC detected, sym.isproc=%u'
 	DB	0aH, 00H
 	ORG $+2
-$SG10704 DB	'NULL', 00H
+$SG10706 DB	'NULL', 00H
 	ORG $+7
-$SG10688 DB	'CreateLabel: Phase error, pass %u, sym >%s< first time, '
+$SG10690 DB	'CreateLabel: Phase error, pass %u, sym >%s< first time, '
 	DB	'new=%X - old=%X', 0aH, 00H
 	ORG $+7
-$SG10689 DB	'CreateLabel: pass %u, sym >%s< changed, new=%X - old=%X', 0aH
+$SG10691 DB	'CreateLabel: pass %u, sym >%s< changed, new=%X - old=%X', 0aH
 	DB	00H
 	ORG $+7
-$SG10705 DB	'LabelDirective(%s): memtype=%Xh, far=%u, ptr=%u, ofssize'
+$SG10707 DB	'LabelDirective(%s): memtype=%Xh, far=%u, ptr=%u, ofssize'
 	DB	'=%u, type=%s)', 0aH, 00H
 	ORG $+1
-$SG10717 DB	'LabelDirective(%s): label created, memtype=%Xh size=%u', 0aH
+$SG10719 DB	'LabelDirective(%s): label created, memtype=%Xh size=%u', 0aH
 	DB	00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
@@ -254,7 +255,7 @@ $LN21:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	$LN1@LabelDirec
 $LN2@LabelDirec:
@@ -322,7 +323,7 @@ $LN3@LabelDirec:
 	mov	QWORD PTR tv80[rsp], rax
 	jmp	SHORT $LN20@LabelDirec
 $LN19@LabelDirec:
-	lea	rax, OFFSET FLAT:$SG10704
+	lea	rax, OFFSET FLAT:$SG10706
 	mov	QWORD PTR tv80[rsp], rax
 $LN20@LabelDirec:
 	movzx	eax, BYTE PTR ti$[rsp+22]
@@ -340,7 +341,7 @@ $LN20@LabelDirec:
 	mov	rax, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR tv89[rsp]
 	mov	rdx, QWORD PTR [rax+rcx+8]
-	lea	rcx, OFFSET FLAT:$SG10705
+	lea	rcx, OFFSET FLAT:$SG10707
 	call	DoDebugMsg1
 
 ; 232  :                tokenarray[0].string_ptr, ti.mem_type, ti.is_far, ti.is_ptr, ti.Ofssize, ti.symtype ? ti.symtype->name : "NULL" ));
@@ -373,7 +374,7 @@ $LN20@LabelDirec:
 
 ; 242  :             return( EmitError( OFFSET_SIZE_MISMATCH ) );
 
-	mov	ecx, 237				; 000000edH
+	mov	ecx, 238				; 000000eeH
 	call	EmitError
 	jmp	$LN1@LabelDirec
 $LN6@LabelDirec:
@@ -451,7 +452,7 @@ $LN10@LabelDirec:
 ; 254  :             else {
 ; 255  :                 return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 65					; 00000041H
+	mov	ecx, 66					; 00000042H
 	call	EmitError
 	jmp	$LN1@LabelDirec
 $LN11@LabelDirec:
@@ -484,7 +485,7 @@ $LN5@LabelDirec:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	$LN1@LabelDirec
 $LN12@LabelDirec:
@@ -530,7 +531,7 @@ $LN13@LabelDirec:
 	mov	r8d, DWORD PTR [rax+36]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10717
+	lea	rcx, OFFSET FLAT:$SG10719
 	call	DoDebugMsg1
 
 ; 272  :         /* sym->isdata must be 0, else the LABEL directive was generated within data_item()
@@ -667,7 +668,7 @@ $LN30:
 	mov	r9, QWORD PTR ti$[rsp]
 	mov	r8d, DWORD PTR mem_type$[rsp]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10657
+	lea	rcx, OFFSET FLAT:$SG10659
 	call	DoDebugMsg1
 
 ; 83   : 
@@ -678,7 +679,7 @@ $LN30:
 
 ; 85   :         EmitError( MUST_BE_IN_SEGMENT_BLOCK );
 
-	mov	ecx, 82					; 00000052H
+	mov	ecx, 83					; 00000053H
 	call	EmitError
 
 ; 86   :         return( NULL );
@@ -710,12 +711,12 @@ $LN2@CreateLabe:
 
 ; 94   :             DebugMsg(("CreateLabel: code label and CS assumed error\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG10661
+	lea	rcx, OFFSET FLAT:$SG10663
 	call	DoDebugMsg
 
 ; 95   :             EmitError( USE_OF_REGISTER_ASSUMED_TO_ERROR );
 
-	mov	ecx, 183				; 000000b7H
+	mov	ecx, 184				; 000000b8H
 	call	EmitError
 
 ; 96   :             return( NULL );
@@ -756,7 +757,7 @@ $LN3@CreateLabe:
 	inc	eax
 	mov	DWORD PTR ModuleInfo+268, eax
 	mov	r8d, DWORD PTR ModuleInfo+268
-	lea	rdx, OFFSET FLAT:$SG10663
+	lea	rdx, OFFSET FLAT:$SG10665
 	lea	rcx, QWORD PTR buffer$[rsp]
 	call	sprintf
 
@@ -830,13 +831,13 @@ $LN11@CreateLabe:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10670
+	lea	rcx, OFFSET FLAT:$SG10672
 	call	DoDebugMsg
 
 ; 118  :                 EmitErr( SYMBOL_REDEFINITION, name );
 
 	mov	rdx, QWORD PTR name$[rsp]
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 144				; 00000090H
 	call	EmitErr
 
 ; 119  :                 return( NULL );
@@ -865,13 +866,13 @@ $LN10@CreateLabe:
 	mov	r8d, DWORD PTR [rax+36]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10672
+	lea	rcx, OFFSET FLAT:$SG10674
 	call	DoDebugMsg
 
 ; 125  :                 EmitErr( SYMBOL_TYPE_CONFLICT, name );
 
 	mov	rdx, QWORD PTR name$[rsp]
-	mov	ecx, 136				; 00000088H
+	mov	ecx, 137				; 00000089H
 	call	EmitErr
 $LN12@CreateLabe:
 
@@ -927,7 +928,7 @@ $LN13@CreateLabe:
 ; 137  :                 EmitErr( SYMBOL_ALREADY_DEFINED, name );
 
 	mov	rdx, QWORD PTR name$[rsp]
-	mov	ecx, 56					; 00000038H
+	mov	ecx, 57					; 00000039H
 	call	EmitErr
 	jmp	SHORT $LN16@CreateLabe
 $LN15@CreateLabe:
@@ -936,7 +937,7 @@ $LN15@CreateLabe:
 ; 139  :                 EmitErr( SYMBOL_REDEFINITION, name );
 
 	mov	rdx, QWORD PTR name$[rsp]
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 144				; 00000090H
 	call	EmitErr
 $LN16@CreateLabe:
 
@@ -997,7 +998,7 @@ $LN17@CreateLabe:
 	mov	r8d, eax
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10679
+	lea	rcx, OFFSET FLAT:$SG10681
 	call	DoDebugMsg1
 
 ; 154  :             if ( sym->isproc == FALSE ) {
@@ -1191,7 +1192,7 @@ $LN23@CreateLabe:
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	r8, QWORD PTR [rcx+8]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG10688
+	lea	rcx, OFFSET FLAT:$SG10690
 	call	DoDebugMsg
 	jmp	SHORT $LN26@CreateLabe
 $LN25@CreateLabe:
@@ -1208,7 +1209,7 @@ $LN25@CreateLabe:
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	r8, QWORD PTR [rcx+8]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG10689
+	lea	rcx, OFFSET FLAT:$SG10691
 	call	DoDebugMsg
 $LN26@CreateLabe:
 
@@ -1271,7 +1272,7 @@ $LN3:
 	add	ecx, eax
 	mov	eax, ecx
 	mov	r8d, eax
-	lea	rdx, OFFSET FLAT:$SG10632
+	lea	rdx, OFFSET FLAT:$SG10634
 	mov	rcx, QWORD PTR buffer$[rsp]
 	call	sprintf
 

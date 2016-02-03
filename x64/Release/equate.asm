@@ -10,6 +10,7 @@ PUBLIC	minintvalues
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 CONST	SEGMENT
 maxintvalues DQ	00000000ffffffffH
@@ -133,7 +134,7 @@ $LN7:
 ; 512  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[0].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rdx+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 
 ; 523  : }
 
@@ -211,7 +212,7 @@ $LN7:
 ; 262  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[0].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rdx+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 
 ; 271  : }
 
@@ -342,7 +343,7 @@ $LN2@CreateAsse:
 ; 162  :             EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr );
 
 	mov	rdx, QWORD PTR [rax+rbx+8]
-	mov	ecx, 209				; 000000d1H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 
 ; 163  :             return( NULL );
@@ -423,7 +424,7 @@ $LN11@CreateAsse:
 ; 183  :             } else
 ; 184  :                 EmitError( CONSTANT_EXPECTED );
 
-	mov	ecx, 65					; 00000041H
+	mov	ecx, 66					; 00000042H
 	call	EmitError
 
 ; 185  :             return( NULL );
@@ -583,7 +584,7 @@ $LN27@CreateAsse:
 ; 221  :             EmitErr( SYMBOL_REDEFINITION, sym->name );
 
 	mov	rdx, QWORD PTR [rbx+8]
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 144				; 00000090H
 	call	EmitErr
 
 ; 222  :             return( NULL );
@@ -973,7 +974,7 @@ $LN4@CreateVari:
 ; 300  :             EmitErr( SYMBOL_REDEFINITION, name );
 
 	mov	rdx, rdi
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 144				; 00000090H
 	call	EmitErr
 
 ; 301  :             return( NULL );
@@ -1148,7 +1149,7 @@ $LN6@CreateCons:
 ; 370  :         EmitErr( SYMBOL_REDEFINITION, name );
 
 	mov	rdx, rsi
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 144				; 00000090H
 	call	EmitErr
 
 ; 371  :         return( NULL );
@@ -1570,7 +1571,7 @@ $LN35@CreateCons:
 ; 475  :                     EmitErr( SYMBOL_REDEFINITION, name );
 
 	mov	rdx, rsi
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 144				; 00000090H
 	call	EmitErr
 
 ; 476  :                     return( NULL );

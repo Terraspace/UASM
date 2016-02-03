@@ -8,6 +8,7 @@ INCLUDELIB OLDNAMES
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
+COMM	evex:BYTE
 _DATA	ENDS
 PUBLIC	OmfFixGenFix
 PUBLIC	OmfFixGenFixModend
@@ -126,7 +127,7 @@ $LN2@omf_fill_l:
 ; 262  :         EmitErr( SYMBOL_NOT_DEFINED, sym->name );
 
 	mov	rdx, QWORD PTR [rcx+8]
-	lea	ecx, QWORD PTR [rax+102]
+	lea	ecx, QWORD PTR [rax+103]
 	call	EmitErr
 $LN29@omf_fill_l:
 
@@ -327,7 +328,7 @@ $LN18@omf_fill_l:
 ; 316  :                 EmitErr( SEGMENT_MISSING_FOR_FIXUP, sym->name );
 
 	mov	rdx, QWORD PTR [rcx+8]
-	mov	ecx, 164				; 000000a4H
+	mov	ecx, 165				; 000000a5H
 	call	EmitErr
 
 ; 317  :                 return ( 0 );
@@ -1105,7 +1106,7 @@ $LN17@OmfFixGenF:
 	lea	r8, OFFSET FLAT:szNull
 $LN18@OmfFixGenF:
 	mov	rdx, QWORD PTR ModuleInfo+344
-	mov	ecx, 197				; 000000c5H
+	mov	ecx, 198				; 000000c6H
 	add	rdx, 10
 	call	EmitErr
 $LN20@OmfFixGenF:
