@@ -352,7 +352,7 @@ MacroLocals         0x4               MinGW-w64D/expans.o
 Discarded input sections
 
  .drectve       0x0000000000000000       0x54 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o
- .debug_info    0x0000000000000000     0x2d19 MinGW-w64D/main.o
+ .debug_info    0x0000000000000000     0x2d17 MinGW-w64D/main.o
  .debug_abbrev  0x0000000000000000      0x15a MinGW-w64D/main.o
  .debug_aranges
                 0x0000000000000000       0x30 MinGW-w64D/main.o
@@ -444,7 +444,7 @@ Discarded input sections
  .debug_aranges
                 0x0000000000000000       0x30 MinGW-w64D/codegen.o
  .debug_ranges  0x0000000000000000       0x60 MinGW-w64D/codegen.o
- .debug_line    0x0000000000000000     0x136d MinGW-w64D/codegen.o
+ .debug_line    0x0000000000000000     0x1372 MinGW-w64D/codegen.o
  .debug_str     0x0000000000000000       0xf0 MinGW-w64D/codegen.o
  .rdata$.refptr.Parse_Pass
                 0x0000000000000000       0x10 MinGW-w64D/codegen.o
@@ -653,7 +653,7 @@ Discarded input sections
  .debug_aranges
                 0x0000000000000000       0x30 MinGW-w64D/expreval.o
  .debug_ranges  0x0000000000000000       0x60 MinGW-w64D/expreval.o
- .debug_line    0x0000000000000000     0x18b5 MinGW-w64D/expreval.o
+ .debug_line    0x0000000000000000     0x18ca MinGW-w64D/expreval.o
  .debug_str     0x0000000000000000       0xe7 MinGW-w64D/expreval.o
  .rdata$.refptr.CurrStruct
                 0x0000000000000000       0x10 MinGW-w64D/expreval.o
@@ -957,7 +957,7 @@ Discarded input sections
  .debug_aranges
                 0x0000000000000000       0x30 MinGW-w64D/parser.o
  .debug_ranges  0x0000000000000000       0x30 MinGW-w64D/parser.o
- .debug_line    0x0000000000000000     0x1656 MinGW-w64D/parser.o
+ .debug_line    0x0000000000000000     0x1636 MinGW-w64D/parser.o
  .debug_str     0x0000000000000000      0x11f MinGW-w64D/parser.o
  .rdata$.refptr.vex_flags
                 0x0000000000000000       0x10 MinGW-w64D/parser.o
@@ -1382,729 +1382,729 @@ LOAD C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/..
  .text          0x000000000040be70     0x1780 MinGW-w64D/cmdline.o
                 0x000000000040d053                ParseCmdline
                 0x000000000040d46a                CmdlineFini
- .text          0x000000000040d5f0     0x5730 MinGW-w64D/codegen.o
+ .text          0x000000000040d5f0     0x5740 MinGW-w64D/codegen.o
                 0x000000000040d5f0                GetByteDisp
                 0x000000000040d813                Check4CompDisp8
-                0x0000000000412881                codegen
- .text          0x0000000000412d20     0x3b10 MinGW-w64D/coff.o
-                0x000000000041680f                coff_init
- .text          0x0000000000416830     0x19d0 MinGW-w64D/condasm.o
-                0x0000000000416863                conditional_assembly_prepare
-                0x0000000000416be4                CondAsmDirective
-                0x0000000000417746                ErrorDirective
-                0x0000000000418186                CondCheckOpen
-                0x00000000004181b1                GetIfNestLevel
-                0x00000000004181bd                SetIfNestLevel
-                0x00000000004181d0                CondInit
- .text          0x0000000000418200      0x950 MinGW-w64D/context.o
-                0x0000000000418200                ContextDirective
-                0x000000000041895c                ContextSaveState
-                0x0000000000418b28                ContextInit
- .text          0x0000000000418b50      0xc70 MinGW-w64D/cpumodel.o
-                0x0000000000418f28                ModelDirective
-                0x00000000004192d6                SetCPU
-                0x0000000000419723                CpuDirective
- .text          0x00000000004197c0     0x34e0 MinGW-w64D/data.o
-                0x000000000041c2fb                data_dir
- .text          0x000000000041cca0     0x32c0 MinGW-w64D/dbgcv.o
-                0x000000000041f9cd                cv_write_debug_tables
- .text          0x000000000041ff60     0x10f0 MinGW-w64D/directiv.o
-                0x000000000041ff60                StubDir
-                0x000000000041ff72                EchoDirective
-                0x000000000041ffce                IncludeDirective
-                0x0000000000420211                IncludeLibDirective
-                0x0000000000420391                IncBinDirective
-                0x00000000004207f3                AliasDirective
-                0x0000000000420c18                NameDirective
-                0x0000000000420d9b                RadixDirective
-                0x0000000000420f0f                SegOrderDirective
- .text          0x0000000000421050     0x2cf0 MinGW-w64D/elf.o
-                0x0000000000423d0e                elf_init
- .text          0x0000000000423d40      0x8a0 MinGW-w64D/end.o
-                0x0000000000423d40                StartupExitDirective
-                0x00000000004240fb                EndDirective
- .text          0x00000000004245e0     0x1300 MinGW-w64D/equate.o
-                0x0000000000424ddd                EqualSgnDirective
-                0x0000000000424e62                CreateVariable
-                0x0000000000424fbf                CreateConstant
-                0x000000000042581d                EquDirective
- .text          0x00000000004258e0      0x980 MinGW-w64D/errmsg.o
-                0x00000000004258e0                DoDebugMsg
-                0x0000000000425953                DoDebugMsg1
-                0x0000000000425a10                write_logo
-                0x0000000000425a6c                PrintUsage
-                0x0000000000425e59                PrintNote
-                0x0000000000425ea2                EmitErr
-                0x0000000000425f7c                EmitError
-                0x0000000000425f95                EmitWarn
-                0x000000000042608b                ErrnoStr
-                0x00000000004260df                Fatal
-                0x0000000000426165                WriteError
-                0x00000000004261a9                InternalError
- .text          0x0000000000426260     0x5120 MinGW-w64D/expans.o
-                0x0000000000426260                myltoa
-                0x00000000004263ee                RunMacro
-                0x0000000000428de0                ExpandText
-                0x000000000042aadd                ExpandLineItems
-                0x000000000042abee                ExpandLiterals
-                0x000000000042acfe                ExpandLine
- .text          0x000000000042b380     0x8620 MinGW-w64D/expreval.o
-                0x000000000042b666                myatoi128
-                0x000000000043381c                EvalOperand
-                0x000000000043391d                EmitConstError
-                0x0000000000433976                ExprEvalInit
- .text          0x00000000004339a0     0x1ff0 MinGW-w64D/extern.o
-                0x0000000000433d4b                ExterndefDirective
-                0x0000000000434458                ProtoDirective
-                0x0000000000434522                MakeExtern
-                0x00000000004347e8                ExternDirective
-                0x0000000000435136                CommDirective
-                0x000000000043560d                AddPublicData
-                0x000000000043564b                FreePubQueue
-                0x0000000000435661                PublicDirective
- .text          0x0000000000435990      0x660 MinGW-w64D/fastpass.o
-                0x0000000000435a1f                StoreLine
-                0x0000000000435d81                SkipSavedState
-                0x0000000000435da6                SaveVariableState
-                0x0000000000435e8d                RestoreState
-                0x0000000000435fae                FastpassInit
- .text          0x0000000000435ff0      0x5e0 MinGW-w64D/fixup.o
-                0x0000000000435ff0                CreateFixup
-                0x0000000000436186                FreeFixup
-                0x000000000043622b                SetFixupFrame
-                0x0000000000436380                store_fixup
- .text          0x00000000004365d0      0x250 MinGW-w64D/fpfixup.o
-                0x00000000004365d0                AddFloatingPointEmulationFixup
- .text          0x0000000000436820     0x4cc0 MinGW-w64D/hll.o
-                0x00000000004399b2                HllStartDir
-                0x000000000043a681                HllEndDir
-                0x000000000043ae5e                HllExitDir
-                0x000000000043b428                HllCheckOpen
-                0x000000000043b48c                HllInit
- .text          0x000000000043b4e0     0x1c20 MinGW-w64D/input.o
-                0x000000000043b4e0                GetFNamePart
-                0x000000000043b53d                GetExtPart
-                0x000000000043b790                GetFName
-                0x000000000043b80e                ClearSrcStack
-                0x000000000043b8c5                UpdateLineNumber
-                0x000000000043b920                GetLineNumber
-                0x000000000043b952                GetTopLine
-                0x000000000043b9f1                GetTopSrcName
-                0x000000000043bbe0                PushMacro
-                0x000000000043bc1c                get_curr_srcfile
-                0x000000000043bc76                set_curr_srcfile
-                0x000000000043bcb5                SetLineNumber
-                0x000000000043bcd3                GetCurrSrcPos
-                0x000000000043bd7f                print_source_nesting_structure
-                0x000000000043c101                SearchFile
-                0x000000000043c49c                GetTextLine
-                0x000000000043c74b                AddStringToIncludePath
-                0x000000000043c8bd                PushInputStatus
-                0x000000000043ca96                PopInputStatus
-                0x000000000043cc10                InputInit
-                0x000000000043cde8                InputPassInit
-                0x000000000043ce56                InputFini
- .text          0x000000000043d100     0x5240 MinGW-w64D/invoke.o
-                0x00000000004415e6                InvokeDirective
- .text          0x0000000000442340      0x8c0 MinGW-w64D/label.o
-                0x0000000000442340                LabelInit
-                0x0000000000442358                GetAnonymousLabel
-                0x0000000000442396                CreateLabel
-                0x0000000000442893                LabelDirective
- .text          0x0000000000442c00      0x860 MinGW-w64D/linnum.o
-                0x0000000000442cd5                AddLinnumDataRef
-                0x00000000004433a0                QueueDeleteLinnum
-                0x00000000004433e4                LinnumFini
-                0x0000000000443435                LinnumInit
- .text          0x0000000000443460     0x3260 MinGW-w64D/listing.o
-                0x0000000000443460                LstWrite
-                0x0000000000443f64                LstWriteSrcLine
-                0x0000000000443f88                LstPrintf
-                0x0000000000443ff3                LstNL
-                0x000000000044404c                LstSetPosition
-                0x0000000000445c0e                LstWriteCRef
-                0x000000000044618f                ListingDirective
-                0x0000000000446518                ListMacroDirective
-                0x00000000004465bc                LstInit
- .text          0x00000000004466c0     0x10d0 MinGW-w64D/loop.o
-                0x00000000004466c0                LoopDirective
- .text          0x0000000000447790      0x580 MinGW-w64D/lqueue.o
-                0x0000000000447790                GetLqLine
-                0x000000000044779c                DeleteLineQueue
-                0x00000000004477f7                AddLineQueue
-                0x00000000004478dc                AddLineQueueX
-                0x0000000000447bac                RunLineQueue
- .text          0x0000000000447d10     0x2140 MinGW-w64D/macro.o
-                0x0000000000447d35                fill_placeholders
-                0x0000000000448409                RenderMacroLine
-                0x0000000000448501                StoreMacro
-                0x00000000004497f4                CreateMacro
-                0x00000000004498b7                ReleaseMacroData
-                0x0000000000449996                MacroDir
-                0x0000000000449b36                PurgeDirective
-                0x0000000000449d4e                MacroInit
-                0x0000000000449e35                MacroFini
- .text          0x0000000000449e50      0x400 MinGW-w64D/mangle.o
-                0x000000000044a12f                Mangle
-                0x000000000044a224                SetMangler
- .text          0x000000000044a250      0x2c0 MinGW-w64D/memalloc.o
-                0x000000000044a250                MemInit
-                0x000000000044a282                MemFini
-                0x000000000044a338                LclAlloc
-                0x000000000044a463                MemAlloc
-                0x000000000044a4c6                MemFree
- .text          0x000000000044a510       0xd0 MinGW-w64D/msgtext.o
-                0x000000000044a5bc                MsgGetEx
- .text          0x000000000044a5e0     0x2e60 MinGW-w64D/omf.o
-                0x000000000044a9cd                omf_GetGrpIdx
-                0x000000000044a9f0                omf_OutSelect
-                0x000000000044b18b                omf_FlushCurrSeg
-                0x000000000044b2b4                omf_check_flush
-                0x000000000044b3f7                omf_set_filepos
-                0x000000000044d3c4                omf_init
- .text          0x000000000044d440      0xa40 MinGW-w64D/omffixup.o
-                0x000000000044d689                OmfFixGenFixModend
-                0x000000000044dc6a                OmfFixGenFix
- .text          0x000000000044de80      0xc70 MinGW-w64D/omfint.o
-                0x000000000044ea0b                omf_write_record
- .text          0x000000000044eaf0     0x1ea0 MinGW-w64D/option.o
-                0x000000000045073b                OptionDirective
- .text          0x0000000000450990     0x8190 MinGW-w64D/parser.o
-                0x0000000000450990                sym_add_table
-                0x0000000000450a37                sym_remove_table
-                0x0000000000450ada                sym_ext2int
-                0x0000000000450b5b                GetLangType
-                0x0000000000450c08                SizeFromRegister
-                0x0000000000450d3f                SizeFromMemtype
-                0x0000000000450f74                MemtypeFromSize
-                0x0000000000451058                OperandSize
-                0x00000000004515f8                set_frame
-                0x0000000000451637                set_frame2
-                0x0000000000451eb1                segm_override
-                0x0000000000452429                idata_fixup
-                0x0000000000456493                ParseLine
-                0x0000000000458a75                ProcessFile
- .text          0x0000000000458b20      0x7a0 MinGW-w64D/posndir.o
-                0x0000000000458b20                OrgDirective
-                0x0000000000458f4a                AlignCurrOffset
-                0x0000000000458f9d                AlignDirective
- .text          0x00000000004592c0      0x530 MinGW-w64D/preproc.o
-                0x00000000004592c0                WriteCodeLabel
-                0x00000000004593d9                PreprocessLine
- .text          0x00000000004597f0     0x7c10 MinGW-w64D/proc.o
-                0x000000000045a070                LocalDir
-                0x000000000045a5f4                UpdateStackBase
-                0x000000000045a64b                UpdateProcStatus
-                0x000000000045b434                ParseProc
-                0x000000000045c2c6                CreateProc
-                0x000000000045c4cc                DeleteProc
-                0x000000000045c5e6                ProcDir
-                0x000000000045ccc8                CopyPrototype
-                0x000000000045d6a2                EndpDir
-                0x000000000045d7bd                ExcFrameDirective
-                0x000000000045e2d5                ProcCheckOpen
-                0x00000000004600a5                write_prologue
-                0x0000000000460f36                RetInstr
-                0x0000000000461336                ProcInit
- .text          0x0000000000461400       0xd0 MinGW-w64D/queue.o
-                0x0000000000461400                QEnqueue
-                0x0000000000461484                QAddItem
- .text          0x00000000004614d0     0x14a0 MinGW-w64D/reswords.o
-                0x0000000000461559                FindResWord
-                0x000000000046187b                RenameKeyword
-                0x0000000000461b4b                Set64Bit
-                0x0000000000461f32                DisableKeyword
-                0x0000000000462009                IsKeywordDisabled
-                0x00000000004620b0                GetResWName
-                0x0000000000462139                ResWordsInit
-                0x0000000000462230                ResWordsFini
-                0x00000000004623ee                DumpResWords
-                0x0000000000462767                DumpInstrStats
- .text          0x0000000000462970      0x270 MinGW-w64D/safeseh.o
-                0x0000000000462970                SafeSEHDirective
- .text          0x0000000000462be0     0x3040 MinGW-w64D/segment.o
-                0x0000000000462c39                UpdateCurPC
-                0x0000000000462fcb                GetCurrOffset
-                0x0000000000463000                GetCurrSegAlign
-                0x00000000004632d1                DeleteGroup
-                0x000000000046334f                GrpDir
-                0x0000000000463786                UpdateWordSize
-                0x00000000004637ad                SetOfssize
-                0x0000000000463a74                DefineFlatGroup
-                0x0000000000463b0d                GetSegIdx
-                0x0000000000463b30                GetGroup
-                0x0000000000463b67                GetSymOfssize
-                0x0000000000463c21                SetSymSegOfs
-                0x0000000000463c5b                TypeFromClassName
-                0x0000000000463fc6                CreateIntSegment
-                0x0000000000464123                EndsDir
-                0x00000000004643c5                SegmentDir
-                0x0000000000465557                SortSegments
-                0x000000000046570c                SegmentModuleExit
-                0x0000000000465799                SegmentFini
-                0x00000000004657c5                SegmentInit
-                0x0000000000465b82                SegmentSaveState
- .text          0x0000000000465c20      0xb30 MinGW-w64D/simsegm.o
-                0x0000000000465c20                SimGetSegName
-                0x0000000000465c3f                GetCodeClass
-                0x0000000000466042                SimplifiedSegDir
-                0x000000000046642c                SetModelDefaultSegNames
-                0x00000000004665d7                ModelSimSegmInit
-                0x000000000046671f                ModelSimSegmExit
- .text          0x0000000000466750     0x1be0 MinGW-w64D/string.o
-                0x0000000000466750                TextItemError
-                0x00000000004667da                CatStrDir
-                0x0000000000466bdb                SetTextMacro
-                0x0000000000466de5                AddPredefinedText
-                0x0000000000466e75                SubStrDir
-                0x0000000000467391                SizeStrDir
-                0x00000000004674e3                InStrDir
-                0x0000000000467f88                StringInit
-                0x00000000004682d0                StringFini
- .text          0x0000000000468330     0x15c0 MinGW-w64D/symbols.o
-                0x0000000000468392                SymSetCmpFunc
-                0x00000000004683c8                SymClearLocal
-                0x00000000004683ee                SymGetLocal
-                0x000000000046847a                SymSetLocal
-                0x0000000000468534                SymAlloc
-                0x0000000000468637                SymFind
-                0x0000000000468868                SymLookup
-                0x0000000000468922                SymLookupLocal
-                0x0000000000468bc7                SymFree
-                0x0000000000468be3                SymAddLocal
-                0x0000000000468cb0                SymAddGlobal
-                0x0000000000468d1f                SymCreate
-                0x0000000000468d82                SymLCreate
-                0x0000000000468de7                SymMakeAllSymbolsPublic
-                0x0000000000468ebf                SymFini
-                0x0000000000468fe1                SymInit
-                0x00000000004692e0                SymPassInit
-                0x000000000046936c                SymGetCount
-                0x0000000000469378                SymGetAll
-                0x00000000004693f6                SymEnum
- .text          0x00000000004698f0      0xb70 MinGW-w64D/tbyte.o
-                0x000000000046a17c                strtotb
- .text          0x000000000046a460     0x26a0 MinGW-w64D/tokenize.o
-                0x000000000046a5e8                get_broads
-                0x000000000046a736                get_decos
-                0x000000000046c300                GetToken
-                0x000000000046c556                Tokenize
- .text          0x000000000046cb00     0x3450 MinGW-w64D/types.o
-                0x000000000046cb00                TypesInit
-                0x000000000046cb20                CreateTypeSymbol
-                0x000000000046cbd8                SearchNameInStruct
-                0x000000000046ceef                StructDirective
-                0x000000000046d66c                EndstructDirective
-                0x000000000046dc6e                CreateStructField
-                0x000000000046e3e0                AlignInStruct
-                0x000000000046e461                UpdateStructSize
-                0x000000000046e579                SetStructCurrentOffset
-                0x000000000046e5f7                GetQualifiedType
-                0x000000000046eed1                TypedefDirective
-                0x000000000046f6b1                RecordDirective
-                0x000000000046fed2                DeleteType
- .text          0x000000000046ff50       0xd0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-atonexit.o)
-                0x000000000046ff50                mingw_onexit
-                0x0000000000470000                atexit
- .text          0x0000000000470020       0xc0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-gccmain.o)
-                0x0000000000470020                __do_global_dtors
-                0x0000000000470060                __do_global_ctors
-                0x00000000004700c0                __main
- .text          0x00000000004700e0        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-natstart.o)
- .text          0x00000000004700e0        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-wildcard.o)
- .text          0x00000000004700e0       0x10 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-charmax.o)
- .text          0x00000000004700f0       0x10 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-dllargv.o)
-                0x00000000004700f0                _setargv
- .text          0x0000000000470100      0x1e0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-gs_support.o)
-                0x0000000000470100                __security_init_cookie
-                0x00000000004701e0                __report_gsfailure
- .text          0x00000000004702e0        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-_newmode.o)
- .text          0x00000000004702e0       0xb0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-tlssup.o)
-                0x0000000000470310                __dyn_tls_init
-                0x0000000000470380                __tlregdtor
- .text          0x0000000000470390        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-cinitexe.o)
- .text          0x0000000000470390      0x160 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-merr.o)
-                0x0000000000470390                __mingw_raise_matherr
-                0x00000000004703e0                __mingw_setusermatherr
-                0x00000000004703f0                _matherr
- .text          0x00000000004704f0       0x10 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-CRT_fp10.o)
-                0x00000000004704f0                fpreset
-                0x00000000004704f0                _fpreset
- .text          0x0000000000470500       0x20 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-mingw_helpers.o)
-                0x0000000000470500                _decode_pointer
-                0x0000000000470510                _encode_pointer
- .text          0x0000000000470520      0x4e0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-pseudo-reloc.o)
-                0x0000000000470700                _pei386_runtime_relocator
- .text          0x0000000000470a00        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-xtxtmode.o)
- .text          0x0000000000470a00      0x460 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-crt_handler.o)
-                0x0000000000470a00                __mingw_SEH_error_handler
-                0x0000000000470bb0                __mingw_init_ehandler
-                0x0000000000470ca0                _gnu_exception_handler
- .text          0x0000000000470e60      0x270 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-tlsthrd.o)
-                0x0000000000470ed0                ___w64_mingwthr_add_key_dtor
-                0x0000000000470f50                ___w64_mingwthr_remove_key_dtor
-                0x0000000000470ff0                __mingw_TLScallback
- .text          0x00000000004710d0        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-tlsmcrt.o)
- .text          0x00000000004710d0        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-pseudo-reloc-list.o)
- .text          0x00000000004710d0      0x3a0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-pesect.o)
-                0x00000000004710f0                _ValidateImageBase
-                0x0000000000471110                _FindPESection
-                0x0000000000471160                _FindPESectionByName
-                0x0000000000471200                __mingw_GetSectionForAddress
-                0x0000000000471250                __mingw_GetSectionCount
-                0x0000000000471290                _FindPESectionExec
-                0x0000000000471320                _GetPEImageBase
-                0x0000000000471360                _IsNonwritableInCurrentImage
-                0x00000000004713c0                __mingw_enum_import_library_names
- .text          0x0000000000471470       0x40 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/libgcc.a(_chkstk_ms.o)
-                0x0000000000471470                ___chkstk_ms
- .text          0x00000000004714b0        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/libgcc.a(_ctors.o)
- .text          0x00000000004714b0       0xe0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-strtodnrp.o)
-                0x00000000004714b0                __mingw_strtod
-                0x00000000004714b0                __strtod
- .text          0x0000000000471590       0x10 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-mingw_getsp.o)
-                0x0000000000471590                mingw_getsp
-                0x0000000000471596                longjmp
- .text          0x00000000004715a0        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-mingw_matherr.o)
- .text          0x00000000004715a0       0x80 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-_findfirst64i32.o)
-                0x00000000004715a0                _findfirst64i32
- .text          0x0000000000471620       0x80 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-_findnext64i32.o)
-                0x0000000000471620                _findnext64i32
- .text          0x00000000004716a0       0x90 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-_stat64i32.o)
-                0x00000000004716a0                _stat64i32
- .text          0x0000000000471730     0x20a0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-strtodg.o)
-                0x0000000000471730                __increment_D2A
-                0x0000000000471ba0                __decrement_D2A
-                0x0000000000471be0                __set_ones_D2A
-                0x0000000000471c90                __strtodg
- .text          0x00000000004737d0      0x160 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-sum.o)
-                0x00000000004737d0                __sum_D2A
- .text          0x0000000000473930      0x8d0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-gethex.o)
-                0x0000000000473930                __gethex_D2A
- .text          0x0000000000474200      0x140 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-gmisc.o)
-                0x0000000000474200                __rshift_D2A
-                0x0000000000474300                __trailz_D2A
- .text          0x0000000000474340       0x90 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-hd_init.o)
-                0x0000000000474340                __mingw_hexdig_init_D2A
- .text          0x00000000004743d0      0x3c0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-hexnan.o)
-                0x00000000004743d0                __hexnan_D2A
- .text          0x0000000000474790      0xb30 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-misc.o)
-                0x00000000004748b0                __Balloc_D2A
-                0x00000000004749c0                __Bfree_D2A
-                0x0000000000474a30                __multadd_D2A
-                0x0000000000474af0                __i2b_D2A
-                0x0000000000474b20                __mult_D2A
-                0x0000000000474c50                __pow5mult_D2A
-                0x0000000000474dc0                __lshift_D2A
-                0x0000000000474ee0                __cmp_D2A
-                0x0000000000474f30                __diff_D2A
-                0x0000000000475070                __b2d_D2A
-                0x0000000000475190                __d2b_D2A
-                0x0000000000475290                __strcp_D2A
- .text          0x00000000004752c0      0x310 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-smisc.o)
-                0x00000000004752c0                __s2b_D2A
-                0x00000000004753c0                __ratio_D2A
-                0x0000000000475480                __match_D2A
-                0x00000000004754d0                __copybits_D2A
-                0x0000000000475540                __any_on_D2A
- .text          0x00000000004755d0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01245.o)
-                0x00000000004755d0                vsprintf
- .text          0x00000000004755d8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01243.o)
-                0x00000000004755d8                vprintf
- .text          0x00000000004755e0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01239.o)
-                0x00000000004755e0                vfprintf
- .text          0x00000000004755e8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01233.o)
-                0x00000000004755e8                tolower
- .text          0x00000000004755f0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01215.o)
-                0x00000000004755f0                strstr
- .text          0x00000000004755f8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01208.o)
-                0x00000000004755f8                strncpy
- .text          0x0000000000475600        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01207.o)
-                0x0000000000475600                strncmp
- .text          0x0000000000475608        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01204.o)
-                0x0000000000475608                strlen
- .text          0x0000000000475610        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01199.o)
-                0x0000000000475610                strcpy
- .text          0x0000000000475618        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01197.o)
-                0x0000000000475618                strcmp
- .text          0x0000000000475620        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01196.o)
-                0x0000000000475620                strchr
- .text          0x0000000000475628        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01194.o)
-                0x0000000000475628                strcat
- .text          0x0000000000475630        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01188.o)
-                0x0000000000475630                sprintf
- .text          0x0000000000475638        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01183.o)
-                0x0000000000475638                signal
- .text          0x0000000000475640        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01176.o)
-                0x0000000000475640                rewind
- .text          0x0000000000475648        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01174.o)
-                0x0000000000475648                remove
- .text          0x0000000000475650        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01169.o)
-                0x0000000000475650                qsort
- .text          0x0000000000475658        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01166.o)
-                0x0000000000475658                puts
- .text          0x0000000000475660        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01165.o)
-                0x0000000000475660                putchar
- .text          0x0000000000475668        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01162.o)
-                0x0000000000475668                printf
- .text          0x0000000000475670        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01155.o)
-                0x0000000000475670                memset
- .text          0x0000000000475678        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01154.o)
-                0x0000000000475678                memmove
- .text          0x0000000000475680        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01153.o)
-                0x0000000000475680                memcpy
- .text          0x0000000000475688        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01152.o)
-                0x0000000000475688                memcmp
- .text          0x0000000000475690        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01145.o)
-                0x0000000000475690                malloc
- .text          0x0000000000475698        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01144.o)
- .text          0x0000000000475698        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01139.o)
-                0x0000000000475698                localtime
- .text          0x00000000004756a0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01138.o)
-                0x00000000004756a0                localeconv
- .text          0x00000000004756a8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01118.o)
-                0x00000000004756a8                isspace
- .text          0x00000000004756b0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01110.o)
-                0x00000000004756b0                isalpha
- .text          0x00000000004756b8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01109.o)
-                0x00000000004756b8                isalnum
- .text          0x00000000004756c0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01102.o)
-                0x00000000004756c0                getenv
- .text          0x00000000004756c8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01100.o)
-                0x00000000004756c8                getc
- .text          0x00000000004756d0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01097.o)
-                0x00000000004756d0                fwrite
- .text          0x00000000004756d8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01094.o)
-                0x00000000004756d8                ftell
- .text          0x00000000004756e0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01092.o)
-                0x00000000004756e0                fseek
- .text          0x00000000004756e8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01086.o)
-                0x00000000004756e8                free
- .text          0x00000000004756f0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01085.o)
-                0x00000000004756f0                fread
- .text          0x00000000004756f8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01082.o)
-                0x00000000004756f8                fputs
- .text          0x0000000000475700        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01079.o)
-                0x0000000000475700                fprintf
- .text          0x0000000000475708        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01077.o)
-                0x0000000000475708                fopen
- .text          0x0000000000475710        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01067.o)
-                0x0000000000475710                fflush
- .text          0x0000000000475718        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01064.o)
-                0x0000000000475718                fclose
- .text          0x0000000000475720        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01060.o)
-                0x0000000000475720                exit
- .text          0x0000000000475728        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01052.o)
-                0x0000000000475728                clock
- .text          0x0000000000475730        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01047.o)
-                0x0000000000475730                calloc
- .text          0x0000000000475738        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01043.o)
-                0x0000000000475738                atoi
- .text          0x0000000000475740        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01030.o)
-                0x0000000000475740                abort
- .text          0x0000000000475748        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00819.o)
-                0x0000000000475748                _unlock
- .text          0x0000000000475750        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00807.o)
-                0x0000000000475750                time
- .text          0x0000000000475758        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00768.o)
-                0x0000000000475758                _strupr
- .text          0x0000000000475760        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00731.o)
-                0x0000000000475760                _stricmp
- .text          0x0000000000475768        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00719.o)
-                0x0000000000475768                _stat64
- .text          0x0000000000475770        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00667.o)
-                0x0000000000475770                _setjmp
- .text          0x0000000000475778        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00611.o)
-                0x0000000000475778                _onexit
- .text          0x0000000000475780        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00599.o)
-                0x0000000000475780                _memicmp
- .text          0x0000000000475788        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00439.o)
-                0x0000000000475788                _lock
- .text          0x0000000000475790        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00330.o)
-                0x0000000000475790                _initterm
- .text          0x0000000000475798        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00251.o)
- .text          0x0000000000475798        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00242.o)
-                0x0000000000475798                _findnext64
- .text          0x00000000004757a0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00238.o)
-                0x00000000004757a0                _findfirst64
- .text          0x00000000004757a8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00235.o)
-                0x00000000004757a8                _findclose
- .text          0x00000000004757b0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00234.o)
-                0x00000000004757b0                _fileno
- .text          0x00000000004757b8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00201.o)
-                0x00000000004757b8                _errno
- .text          0x00000000004757c0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00149.o)
-                0x00000000004757c0                _chsize
- .text          0x00000000004757c8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00140.o)
-                0x00000000004757c8                _cexit
- .text          0x00000000004757d0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00122.o)
-                0x00000000004757d0                _amsg_exit
- .text          0x00000000004757d8        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00115.o)
- .text          0x00000000004757d8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00098.o)
-                0x00000000004757d8                __setusermatherr
- .text          0x00000000004757e0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00096.o)
-                0x00000000004757e0                __set_app_type
- .text          0x00000000004757e8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00090.o)
-                0x00000000004757e8                __lconv_init
- .text          0x00000000004757f0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00083.o)
-                0x00000000004757f0                __iob_func
- .text          0x00000000004757f8        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00082.o)
- .text          0x00000000004757f8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00081.o)
-                0x00000000004757f8                __getmainargs
- .text          0x0000000000475800        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00078.o)
-                0x0000000000475800                __dllonexit
- .text          0x0000000000475808        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00055.o)
-                0x0000000000475808                __C_specific_handler
- .text          0x0000000000475810       0x20 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(lib64_libmsvcrt_a-invalid_parameter_handler.o)
-                0x0000000000475810                _get_invalid_parameter_handler
-                0x0000000000475820                _set_invalid_parameter_handler
- .text          0x0000000000475830        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfh.o)
- .text          0x0000000000475830        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpft.o)
- .text          0x0000000000475830        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs01266.o)
-                0x0000000000475830                VirtualQuery
- .text          0x0000000000475838        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs01264.o)
-                0x0000000000475838                VirtualProtect
- .text          0x0000000000475840        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs01261.o)
-                0x0000000000475840                VirtualFree
- .text          0x0000000000475848        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs01258.o)
-                0x0000000000475848                VirtualAlloc
- .text          0x0000000000475850        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs01234.o)
-                0x0000000000475850                UnhandledExceptionFilter
- .text          0x0000000000475858        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs01221.o)
-                0x0000000000475858                TlsGetValue
- .text          0x0000000000475860        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs01214.o)
-                0x0000000000475860                TerminateProcess
- .text          0x0000000000475868        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs01200.o)
-                0x0000000000475868                Sleep
- .text          0x0000000000475870        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs01187.o)
-                0x0000000000475870                SetUnhandledExceptionFilter
- .text          0x0000000000475878        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs01044.o)
-                0x0000000000475878                RtlVirtualUnwind
- .text          0x0000000000475880        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs01037.o)
-                0x0000000000475880                RtlLookupFunctionEntry
- .text          0x0000000000475888        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs01030.o)
-                0x0000000000475888                RtlCaptureContext
- .text          0x0000000000475890        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs01029.o)
-                0x0000000000475890                RtlAddFunctionTable
- .text          0x0000000000475898        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs00958.o)
-                0x0000000000475898                QueryPerformanceCounter
- .text          0x00000000004758a0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs00844.o)
-                0x00000000004758a0                LeaveCriticalSection
- .text          0x00000000004758a8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs00762.o)
-                0x00000000004758a8                InitializeCriticalSection
- .text          0x00000000004758b0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs00678.o)
-                0x00000000004758b0                GetTickCount
- .text          0x00000000004758b8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs00651.o)
-                0x00000000004758b8                GetSystemTimeAsFileTime
- .text          0x00000000004758c0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs00628.o)
-                0x00000000004758c0                GetStartupInfoA
- .text          0x00000000004758c8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs00599.o)
-                0x00000000004758c8                GetProcAddress
- .text          0x00000000004758d0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs00549.o)
-                0x00000000004758d0                GetModuleHandleA
- .text          0x00000000004758d8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs00529.o)
-                0x00000000004758d8                GetLastError
- .text          0x00000000004758e0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs00467.o)
-                0x00000000004758e0                GetCurrentThreadId
- .text          0x00000000004758e8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs00463.o)
-                0x00000000004758e8                GetCurrentProcessId
- .text          0x00000000004758f0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs00462.o)
-                0x00000000004758f0                GetCurrentProcess
- .text          0x00000000004758f8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs00249.o)
-                0x00000000004758f8                EnterCriticalSection
- .text          0x0000000000475900        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs00216.o)
-                0x0000000000475900                DeleteCriticalSection
- *fill*         0x0000000000475908        0x8 
- .text          0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfh.o)
- .text          0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmft.o)
- .text          0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/crtend.o
+                0x000000000041288f                codegen
+ .text          0x0000000000412d30     0x3b10 MinGW-w64D/coff.o
+                0x000000000041681f                coff_init
+ .text          0x0000000000416840     0x19d0 MinGW-w64D/condasm.o
+                0x0000000000416873                conditional_assembly_prepare
+                0x0000000000416bf4                CondAsmDirective
+                0x0000000000417756                ErrorDirective
+                0x0000000000418196                CondCheckOpen
+                0x00000000004181c1                GetIfNestLevel
+                0x00000000004181cd                SetIfNestLevel
+                0x00000000004181e0                CondInit
+ .text          0x0000000000418210      0x950 MinGW-w64D/context.o
+                0x0000000000418210                ContextDirective
+                0x000000000041896c                ContextSaveState
+                0x0000000000418b38                ContextInit
+ .text          0x0000000000418b60      0xc70 MinGW-w64D/cpumodel.o
+                0x0000000000418f38                ModelDirective
+                0x00000000004192e6                SetCPU
+                0x0000000000419733                CpuDirective
+ .text          0x00000000004197d0     0x34e0 MinGW-w64D/data.o
+                0x000000000041c30b                data_dir
+ .text          0x000000000041ccb0     0x32c0 MinGW-w64D/dbgcv.o
+                0x000000000041f9dd                cv_write_debug_tables
+ .text          0x000000000041ff70     0x10f0 MinGW-w64D/directiv.o
+                0x000000000041ff70                StubDir
+                0x000000000041ff82                EchoDirective
+                0x000000000041ffde                IncludeDirective
+                0x0000000000420221                IncludeLibDirective
+                0x00000000004203a1                IncBinDirective
+                0x0000000000420803                AliasDirective
+                0x0000000000420c28                NameDirective
+                0x0000000000420dab                RadixDirective
+                0x0000000000420f1f                SegOrderDirective
+ .text          0x0000000000421060     0x2cf0 MinGW-w64D/elf.o
+                0x0000000000423d1e                elf_init
+ .text          0x0000000000423d50      0x8a0 MinGW-w64D/end.o
+                0x0000000000423d50                StartupExitDirective
+                0x000000000042410b                EndDirective
+ .text          0x00000000004245f0     0x1300 MinGW-w64D/equate.o
+                0x0000000000424ded                EqualSgnDirective
+                0x0000000000424e72                CreateVariable
+                0x0000000000424fcf                CreateConstant
+                0x000000000042582d                EquDirective
+ .text          0x00000000004258f0      0x980 MinGW-w64D/errmsg.o
+                0x00000000004258f0                DoDebugMsg
+                0x0000000000425963                DoDebugMsg1
+                0x0000000000425a20                write_logo
+                0x0000000000425a7c                PrintUsage
+                0x0000000000425e69                PrintNote
+                0x0000000000425eb2                EmitErr
+                0x0000000000425f8c                EmitError
+                0x0000000000425fa5                EmitWarn
+                0x000000000042609b                ErrnoStr
+                0x00000000004260ef                Fatal
+                0x0000000000426175                WriteError
+                0x00000000004261b9                InternalError
+ .text          0x0000000000426270     0x5120 MinGW-w64D/expans.o
+                0x0000000000426270                myltoa
+                0x00000000004263fe                RunMacro
+                0x0000000000428df0                ExpandText
+                0x000000000042aaed                ExpandLineItems
+                0x000000000042abfe                ExpandLiterals
+                0x000000000042ad0e                ExpandLine
+ .text          0x000000000042b390     0x8650 MinGW-w64D/expreval.o
+                0x000000000042b676                myatoi128
+                0x000000000043385e                EvalOperand
+                0x000000000043395f                EmitConstError
+                0x00000000004339b8                ExprEvalInit
+ .text          0x00000000004339e0     0x1ff0 MinGW-w64D/extern.o
+                0x0000000000433d8b                ExterndefDirective
+                0x0000000000434498                ProtoDirective
+                0x0000000000434562                MakeExtern
+                0x0000000000434828                ExternDirective
+                0x0000000000435176                CommDirective
+                0x000000000043564d                AddPublicData
+                0x000000000043568b                FreePubQueue
+                0x00000000004356a1                PublicDirective
+ .text          0x00000000004359d0      0x660 MinGW-w64D/fastpass.o
+                0x0000000000435a5f                StoreLine
+                0x0000000000435dc1                SkipSavedState
+                0x0000000000435de6                SaveVariableState
+                0x0000000000435ecd                RestoreState
+                0x0000000000435fee                FastpassInit
+ .text          0x0000000000436030      0x5e0 MinGW-w64D/fixup.o
+                0x0000000000436030                CreateFixup
+                0x00000000004361c6                FreeFixup
+                0x000000000043626b                SetFixupFrame
+                0x00000000004363c0                store_fixup
+ .text          0x0000000000436610      0x250 MinGW-w64D/fpfixup.o
+                0x0000000000436610                AddFloatingPointEmulationFixup
+ .text          0x0000000000436860     0x4cc0 MinGW-w64D/hll.o
+                0x00000000004399f2                HllStartDir
+                0x000000000043a6c1                HllEndDir
+                0x000000000043ae9e                HllExitDir
+                0x000000000043b468                HllCheckOpen
+                0x000000000043b4cc                HllInit
+ .text          0x000000000043b520     0x1c20 MinGW-w64D/input.o
+                0x000000000043b520                GetFNamePart
+                0x000000000043b57d                GetExtPart
+                0x000000000043b7d0                GetFName
+                0x000000000043b84e                ClearSrcStack
+                0x000000000043b905                UpdateLineNumber
+                0x000000000043b960                GetLineNumber
+                0x000000000043b992                GetTopLine
+                0x000000000043ba31                GetTopSrcName
+                0x000000000043bc20                PushMacro
+                0x000000000043bc5c                get_curr_srcfile
+                0x000000000043bcb6                set_curr_srcfile
+                0x000000000043bcf5                SetLineNumber
+                0x000000000043bd13                GetCurrSrcPos
+                0x000000000043bdbf                print_source_nesting_structure
+                0x000000000043c141                SearchFile
+                0x000000000043c4dc                GetTextLine
+                0x000000000043c78b                AddStringToIncludePath
+                0x000000000043c8fd                PushInputStatus
+                0x000000000043cad6                PopInputStatus
+                0x000000000043cc50                InputInit
+                0x000000000043ce28                InputPassInit
+                0x000000000043ce96                InputFini
+ .text          0x000000000043d140     0x5240 MinGW-w64D/invoke.o
+                0x0000000000441626                InvokeDirective
+ .text          0x0000000000442380      0x8c0 MinGW-w64D/label.o
+                0x0000000000442380                LabelInit
+                0x0000000000442398                GetAnonymousLabel
+                0x00000000004423d6                CreateLabel
+                0x00000000004428d3                LabelDirective
+ .text          0x0000000000442c40      0x860 MinGW-w64D/linnum.o
+                0x0000000000442d15                AddLinnumDataRef
+                0x00000000004433e0                QueueDeleteLinnum
+                0x0000000000443424                LinnumFini
+                0x0000000000443475                LinnumInit
+ .text          0x00000000004434a0     0x3260 MinGW-w64D/listing.o
+                0x00000000004434a0                LstWrite
+                0x0000000000443fa4                LstWriteSrcLine
+                0x0000000000443fc8                LstPrintf
+                0x0000000000444033                LstNL
+                0x000000000044408c                LstSetPosition
+                0x0000000000445c4e                LstWriteCRef
+                0x00000000004461cf                ListingDirective
+                0x0000000000446558                ListMacroDirective
+                0x00000000004465fc                LstInit
+ .text          0x0000000000446700     0x10d0 MinGW-w64D/loop.o
+                0x0000000000446700                LoopDirective
+ .text          0x00000000004477d0      0x580 MinGW-w64D/lqueue.o
+                0x00000000004477d0                GetLqLine
+                0x00000000004477dc                DeleteLineQueue
+                0x0000000000447837                AddLineQueue
+                0x000000000044791c                AddLineQueueX
+                0x0000000000447bec                RunLineQueue
+ .text          0x0000000000447d50     0x2140 MinGW-w64D/macro.o
+                0x0000000000447d75                fill_placeholders
+                0x0000000000448449                RenderMacroLine
+                0x0000000000448541                StoreMacro
+                0x0000000000449834                CreateMacro
+                0x00000000004498f7                ReleaseMacroData
+                0x00000000004499d6                MacroDir
+                0x0000000000449b76                PurgeDirective
+                0x0000000000449d8e                MacroInit
+                0x0000000000449e75                MacroFini
+ .text          0x0000000000449e90      0x400 MinGW-w64D/mangle.o
+                0x000000000044a16f                Mangle
+                0x000000000044a264                SetMangler
+ .text          0x000000000044a290      0x2c0 MinGW-w64D/memalloc.o
+                0x000000000044a290                MemInit
+                0x000000000044a2c2                MemFini
+                0x000000000044a378                LclAlloc
+                0x000000000044a4a3                MemAlloc
+                0x000000000044a506                MemFree
+ .text          0x000000000044a550       0xd0 MinGW-w64D/msgtext.o
+                0x000000000044a5fc                MsgGetEx
+ .text          0x000000000044a620     0x2e60 MinGW-w64D/omf.o
+                0x000000000044aa0d                omf_GetGrpIdx
+                0x000000000044aa30                omf_OutSelect
+                0x000000000044b1cb                omf_FlushCurrSeg
+                0x000000000044b2f4                omf_check_flush
+                0x000000000044b437                omf_set_filepos
+                0x000000000044d404                omf_init
+ .text          0x000000000044d480      0xa40 MinGW-w64D/omffixup.o
+                0x000000000044d6c9                OmfFixGenFixModend
+                0x000000000044dcaa                OmfFixGenFix
+ .text          0x000000000044dec0      0xc70 MinGW-w64D/omfint.o
+                0x000000000044ea4b                omf_write_record
+ .text          0x000000000044eb30     0x1ea0 MinGW-w64D/option.o
+                0x000000000045077b                OptionDirective
+ .text          0x00000000004509d0     0x8140 MinGW-w64D/parser.o
+                0x00000000004509d0                sym_add_table
+                0x0000000000450a77                sym_remove_table
+                0x0000000000450b1a                sym_ext2int
+                0x0000000000450b9b                GetLangType
+                0x0000000000450c48                SizeFromRegister
+                0x0000000000450d7f                SizeFromMemtype
+                0x0000000000450fb4                MemtypeFromSize
+                0x0000000000451098                OperandSize
+                0x0000000000451638                set_frame
+                0x0000000000451677                set_frame2
+                0x0000000000451ef1                segm_override
+                0x0000000000452469                idata_fixup
+                0x00000000004564d3                ParseLine
+                0x0000000000458a67                ProcessFile
+ .text          0x0000000000458b10      0x7a0 MinGW-w64D/posndir.o
+                0x0000000000458b10                OrgDirective
+                0x0000000000458f3a                AlignCurrOffset
+                0x0000000000458f8d                AlignDirective
+ .text          0x00000000004592b0      0x530 MinGW-w64D/preproc.o
+                0x00000000004592b0                WriteCodeLabel
+                0x00000000004593c9                PreprocessLine
+ .text          0x00000000004597e0     0x7c10 MinGW-w64D/proc.o
+                0x000000000045a060                LocalDir
+                0x000000000045a5e4                UpdateStackBase
+                0x000000000045a63b                UpdateProcStatus
+                0x000000000045b424                ParseProc
+                0x000000000045c2b6                CreateProc
+                0x000000000045c4bc                DeleteProc
+                0x000000000045c5d6                ProcDir
+                0x000000000045ccb8                CopyPrototype
+                0x000000000045d692                EndpDir
+                0x000000000045d7ad                ExcFrameDirective
+                0x000000000045e2c5                ProcCheckOpen
+                0x0000000000460095                write_prologue
+                0x0000000000460f26                RetInstr
+                0x0000000000461326                ProcInit
+ .text          0x00000000004613f0       0xd0 MinGW-w64D/queue.o
+                0x00000000004613f0                QEnqueue
+                0x0000000000461474                QAddItem
+ .text          0x00000000004614c0     0x14a0 MinGW-w64D/reswords.o
+                0x0000000000461549                FindResWord
+                0x000000000046186b                RenameKeyword
+                0x0000000000461b3b                Set64Bit
+                0x0000000000461f22                DisableKeyword
+                0x0000000000461ff9                IsKeywordDisabled
+                0x00000000004620a0                GetResWName
+                0x0000000000462129                ResWordsInit
+                0x0000000000462220                ResWordsFini
+                0x00000000004623de                DumpResWords
+                0x0000000000462757                DumpInstrStats
+ .text          0x0000000000462960      0x270 MinGW-w64D/safeseh.o
+                0x0000000000462960                SafeSEHDirective
+ .text          0x0000000000462bd0     0x3040 MinGW-w64D/segment.o
+                0x0000000000462c29                UpdateCurPC
+                0x0000000000462fbb                GetCurrOffset
+                0x0000000000462ff0                GetCurrSegAlign
+                0x00000000004632c1                DeleteGroup
+                0x000000000046333f                GrpDir
+                0x0000000000463776                UpdateWordSize
+                0x000000000046379d                SetOfssize
+                0x0000000000463a64                DefineFlatGroup
+                0x0000000000463afd                GetSegIdx
+                0x0000000000463b20                GetGroup
+                0x0000000000463b57                GetSymOfssize
+                0x0000000000463c11                SetSymSegOfs
+                0x0000000000463c4b                TypeFromClassName
+                0x0000000000463fb6                CreateIntSegment
+                0x0000000000464113                EndsDir
+                0x00000000004643b5                SegmentDir
+                0x0000000000465547                SortSegments
+                0x00000000004656fc                SegmentModuleExit
+                0x0000000000465789                SegmentFini
+                0x00000000004657b5                SegmentInit
+                0x0000000000465b72                SegmentSaveState
+ .text          0x0000000000465c10      0xb30 MinGW-w64D/simsegm.o
+                0x0000000000465c10                SimGetSegName
+                0x0000000000465c2f                GetCodeClass
+                0x0000000000466032                SimplifiedSegDir
+                0x000000000046641c                SetModelDefaultSegNames
+                0x00000000004665c7                ModelSimSegmInit
+                0x000000000046670f                ModelSimSegmExit
+ .text          0x0000000000466740     0x1be0 MinGW-w64D/string.o
+                0x0000000000466740                TextItemError
+                0x00000000004667ca                CatStrDir
+                0x0000000000466bcb                SetTextMacro
+                0x0000000000466dd5                AddPredefinedText
+                0x0000000000466e65                SubStrDir
+                0x0000000000467381                SizeStrDir
+                0x00000000004674d3                InStrDir
+                0x0000000000467f78                StringInit
+                0x00000000004682c0                StringFini
+ .text          0x0000000000468320     0x15c0 MinGW-w64D/symbols.o
+                0x0000000000468382                SymSetCmpFunc
+                0x00000000004683b8                SymClearLocal
+                0x00000000004683de                SymGetLocal
+                0x000000000046846a                SymSetLocal
+                0x0000000000468524                SymAlloc
+                0x0000000000468627                SymFind
+                0x0000000000468858                SymLookup
+                0x0000000000468912                SymLookupLocal
+                0x0000000000468bb7                SymFree
+                0x0000000000468bd3                SymAddLocal
+                0x0000000000468ca0                SymAddGlobal
+                0x0000000000468d0f                SymCreate
+                0x0000000000468d72                SymLCreate
+                0x0000000000468dd7                SymMakeAllSymbolsPublic
+                0x0000000000468eaf                SymFini
+                0x0000000000468fd1                SymInit
+                0x00000000004692d0                SymPassInit
+                0x000000000046935c                SymGetCount
+                0x0000000000469368                SymGetAll
+                0x00000000004693e6                SymEnum
+ .text          0x00000000004698e0      0xb70 MinGW-w64D/tbyte.o
+                0x000000000046a16c                strtotb
+ .text          0x000000000046a450     0x26a0 MinGW-w64D/tokenize.o
+                0x000000000046a5d8                get_broads
+                0x000000000046a726                get_decos
+                0x000000000046c2f0                GetToken
+                0x000000000046c546                Tokenize
+ .text          0x000000000046caf0     0x3450 MinGW-w64D/types.o
+                0x000000000046caf0                TypesInit
+                0x000000000046cb10                CreateTypeSymbol
+                0x000000000046cbc8                SearchNameInStruct
+                0x000000000046cedf                StructDirective
+                0x000000000046d65c                EndstructDirective
+                0x000000000046dc5e                CreateStructField
+                0x000000000046e3d0                AlignInStruct
+                0x000000000046e451                UpdateStructSize
+                0x000000000046e569                SetStructCurrentOffset
+                0x000000000046e5e7                GetQualifiedType
+                0x000000000046eec1                TypedefDirective
+                0x000000000046f6a1                RecordDirective
+                0x000000000046fec2                DeleteType
+ .text          0x000000000046ff40       0xd0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-atonexit.o)
+                0x000000000046ff40                mingw_onexit
+                0x000000000046fff0                atexit
+ .text          0x0000000000470010       0xc0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-gccmain.o)
+                0x0000000000470010                __do_global_dtors
+                0x0000000000470050                __do_global_ctors
+                0x00000000004700b0                __main
+ .text          0x00000000004700d0        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-natstart.o)
+ .text          0x00000000004700d0        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-wildcard.o)
+ .text          0x00000000004700d0       0x10 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-charmax.o)
+ .text          0x00000000004700e0       0x10 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-dllargv.o)
+                0x00000000004700e0                _setargv
+ .text          0x00000000004700f0      0x1e0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-gs_support.o)
+                0x00000000004700f0                __security_init_cookie
+                0x00000000004701d0                __report_gsfailure
+ .text          0x00000000004702d0        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-_newmode.o)
+ .text          0x00000000004702d0       0xb0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-tlssup.o)
+                0x0000000000470300                __dyn_tls_init
+                0x0000000000470370                __tlregdtor
+ .text          0x0000000000470380        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-cinitexe.o)
+ .text          0x0000000000470380      0x160 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-merr.o)
+                0x0000000000470380                __mingw_raise_matherr
+                0x00000000004703d0                __mingw_setusermatherr
+                0x00000000004703e0                _matherr
+ .text          0x00000000004704e0       0x10 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-CRT_fp10.o)
+                0x00000000004704e0                fpreset
+                0x00000000004704e0                _fpreset
+ .text          0x00000000004704f0       0x20 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-mingw_helpers.o)
+                0x00000000004704f0                _decode_pointer
+                0x0000000000470500                _encode_pointer
+ .text          0x0000000000470510      0x4e0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-pseudo-reloc.o)
+                0x00000000004706f0                _pei386_runtime_relocator
+ .text          0x00000000004709f0        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-xtxtmode.o)
+ .text          0x00000000004709f0      0x460 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-crt_handler.o)
+                0x00000000004709f0                __mingw_SEH_error_handler
+                0x0000000000470ba0                __mingw_init_ehandler
+                0x0000000000470c90                _gnu_exception_handler
+ .text          0x0000000000470e50      0x270 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-tlsthrd.o)
+                0x0000000000470ec0                ___w64_mingwthr_add_key_dtor
+                0x0000000000470f40                ___w64_mingwthr_remove_key_dtor
+                0x0000000000470fe0                __mingw_TLScallback
+ .text          0x00000000004710c0        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-tlsmcrt.o)
+ .text          0x00000000004710c0        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-pseudo-reloc-list.o)
+ .text          0x00000000004710c0      0x3a0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-pesect.o)
+                0x00000000004710e0                _ValidateImageBase
+                0x0000000000471100                _FindPESection
+                0x0000000000471150                _FindPESectionByName
+                0x00000000004711f0                __mingw_GetSectionForAddress
+                0x0000000000471240                __mingw_GetSectionCount
+                0x0000000000471280                _FindPESectionExec
+                0x0000000000471310                _GetPEImageBase
+                0x0000000000471350                _IsNonwritableInCurrentImage
+                0x00000000004713b0                __mingw_enum_import_library_names
+ .text          0x0000000000471460       0x40 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/libgcc.a(_chkstk_ms.o)
+                0x0000000000471460                ___chkstk_ms
+ .text          0x00000000004714a0        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/libgcc.a(_ctors.o)
+ .text          0x00000000004714a0       0xe0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-strtodnrp.o)
+                0x00000000004714a0                __mingw_strtod
+                0x00000000004714a0                __strtod
+ .text          0x0000000000471580       0x10 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-mingw_getsp.o)
+                0x0000000000471580                mingw_getsp
+                0x0000000000471586                longjmp
+ .text          0x0000000000471590        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-mingw_matherr.o)
+ .text          0x0000000000471590       0x80 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-_findfirst64i32.o)
+                0x0000000000471590                _findfirst64i32
+ .text          0x0000000000471610       0x80 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-_findnext64i32.o)
+                0x0000000000471610                _findnext64i32
+ .text          0x0000000000471690       0x90 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-_stat64i32.o)
+                0x0000000000471690                _stat64i32
+ .text          0x0000000000471720     0x20a0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-strtodg.o)
+                0x0000000000471720                __increment_D2A
+                0x0000000000471b90                __decrement_D2A
+                0x0000000000471bd0                __set_ones_D2A
+                0x0000000000471c80                __strtodg
+ .text          0x00000000004737c0      0x160 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-sum.o)
+                0x00000000004737c0                __sum_D2A
+ .text          0x0000000000473920      0x8d0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-gethex.o)
+                0x0000000000473920                __gethex_D2A
+ .text          0x00000000004741f0      0x140 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-gmisc.o)
+                0x00000000004741f0                __rshift_D2A
+                0x00000000004742f0                __trailz_D2A
+ .text          0x0000000000474330       0x90 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-hd_init.o)
+                0x0000000000474330                __mingw_hexdig_init_D2A
+ .text          0x00000000004743c0      0x3c0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-hexnan.o)
+                0x00000000004743c0                __hexnan_D2A
+ .text          0x0000000000474780      0xb30 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-misc.o)
+                0x00000000004748a0                __Balloc_D2A
+                0x00000000004749b0                __Bfree_D2A
+                0x0000000000474a20                __multadd_D2A
+                0x0000000000474ae0                __i2b_D2A
+                0x0000000000474b10                __mult_D2A
+                0x0000000000474c40                __pow5mult_D2A
+                0x0000000000474db0                __lshift_D2A
+                0x0000000000474ed0                __cmp_D2A
+                0x0000000000474f20                __diff_D2A
+                0x0000000000475060                __b2d_D2A
+                0x0000000000475180                __d2b_D2A
+                0x0000000000475280                __strcp_D2A
+ .text          0x00000000004752b0      0x310 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-smisc.o)
+                0x00000000004752b0                __s2b_D2A
+                0x00000000004753b0                __ratio_D2A
+                0x0000000000475470                __match_D2A
+                0x00000000004754c0                __copybits_D2A
+                0x0000000000475530                __any_on_D2A
+ .text          0x00000000004755c0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01245.o)
+                0x00000000004755c0                vsprintf
+ .text          0x00000000004755c8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01243.o)
+                0x00000000004755c8                vprintf
+ .text          0x00000000004755d0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01239.o)
+                0x00000000004755d0                vfprintf
+ .text          0x00000000004755d8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01233.o)
+                0x00000000004755d8                tolower
+ .text          0x00000000004755e0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01215.o)
+                0x00000000004755e0                strstr
+ .text          0x00000000004755e8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01208.o)
+                0x00000000004755e8                strncpy
+ .text          0x00000000004755f0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01207.o)
+                0x00000000004755f0                strncmp
+ .text          0x00000000004755f8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01204.o)
+                0x00000000004755f8                strlen
+ .text          0x0000000000475600        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01199.o)
+                0x0000000000475600                strcpy
+ .text          0x0000000000475608        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01197.o)
+                0x0000000000475608                strcmp
+ .text          0x0000000000475610        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01196.o)
+                0x0000000000475610                strchr
+ .text          0x0000000000475618        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01194.o)
+                0x0000000000475618                strcat
+ .text          0x0000000000475620        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01188.o)
+                0x0000000000475620                sprintf
+ .text          0x0000000000475628        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01183.o)
+                0x0000000000475628                signal
+ .text          0x0000000000475630        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01176.o)
+                0x0000000000475630                rewind
+ .text          0x0000000000475638        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01174.o)
+                0x0000000000475638                remove
+ .text          0x0000000000475640        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01169.o)
+                0x0000000000475640                qsort
+ .text          0x0000000000475648        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01166.o)
+                0x0000000000475648                puts
+ .text          0x0000000000475650        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01165.o)
+                0x0000000000475650                putchar
+ .text          0x0000000000475658        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01162.o)
+                0x0000000000475658                printf
+ .text          0x0000000000475660        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01155.o)
+                0x0000000000475660                memset
+ .text          0x0000000000475668        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01154.o)
+                0x0000000000475668                memmove
+ .text          0x0000000000475670        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01153.o)
+                0x0000000000475670                memcpy
+ .text          0x0000000000475678        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01152.o)
+                0x0000000000475678                memcmp
+ .text          0x0000000000475680        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01145.o)
+                0x0000000000475680                malloc
+ .text          0x0000000000475688        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01144.o)
+ .text          0x0000000000475688        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01139.o)
+                0x0000000000475688                localtime
+ .text          0x0000000000475690        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01138.o)
+                0x0000000000475690                localeconv
+ .text          0x0000000000475698        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01118.o)
+                0x0000000000475698                isspace
+ .text          0x00000000004756a0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01110.o)
+                0x00000000004756a0                isalpha
+ .text          0x00000000004756a8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01109.o)
+                0x00000000004756a8                isalnum
+ .text          0x00000000004756b0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01102.o)
+                0x00000000004756b0                getenv
+ .text          0x00000000004756b8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01100.o)
+                0x00000000004756b8                getc
+ .text          0x00000000004756c0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01097.o)
+                0x00000000004756c0                fwrite
+ .text          0x00000000004756c8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01094.o)
+                0x00000000004756c8                ftell
+ .text          0x00000000004756d0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01092.o)
+                0x00000000004756d0                fseek
+ .text          0x00000000004756d8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01086.o)
+                0x00000000004756d8                free
+ .text          0x00000000004756e0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01085.o)
+                0x00000000004756e0                fread
+ .text          0x00000000004756e8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01082.o)
+                0x00000000004756e8                fputs
+ .text          0x00000000004756f0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01079.o)
+                0x00000000004756f0                fprintf
+ .text          0x00000000004756f8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01077.o)
+                0x00000000004756f8                fopen
+ .text          0x0000000000475700        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01067.o)
+                0x0000000000475700                fflush
+ .text          0x0000000000475708        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01064.o)
+                0x0000000000475708                fclose
+ .text          0x0000000000475710        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01060.o)
+                0x0000000000475710                exit
+ .text          0x0000000000475718        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01052.o)
+                0x0000000000475718                clock
+ .text          0x0000000000475720        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01047.o)
+                0x0000000000475720                calloc
+ .text          0x0000000000475728        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01043.o)
+                0x0000000000475728                atoi
+ .text          0x0000000000475730        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs01030.o)
+                0x0000000000475730                abort
+ .text          0x0000000000475738        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00819.o)
+                0x0000000000475738                _unlock
+ .text          0x0000000000475740        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00807.o)
+                0x0000000000475740                time
+ .text          0x0000000000475748        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00768.o)
+                0x0000000000475748                _strupr
+ .text          0x0000000000475750        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00731.o)
+                0x0000000000475750                _stricmp
+ .text          0x0000000000475758        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00719.o)
+                0x0000000000475758                _stat64
+ .text          0x0000000000475760        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00667.o)
+                0x0000000000475760                _setjmp
+ .text          0x0000000000475768        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00611.o)
+                0x0000000000475768                _onexit
+ .text          0x0000000000475770        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00599.o)
+                0x0000000000475770                _memicmp
+ .text          0x0000000000475778        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00439.o)
+                0x0000000000475778                _lock
+ .text          0x0000000000475780        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00330.o)
+                0x0000000000475780                _initterm
+ .text          0x0000000000475788        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00251.o)
+ .text          0x0000000000475788        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00242.o)
+                0x0000000000475788                _findnext64
+ .text          0x0000000000475790        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00238.o)
+                0x0000000000475790                _findfirst64
+ .text          0x0000000000475798        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00235.o)
+                0x0000000000475798                _findclose
+ .text          0x00000000004757a0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00234.o)
+                0x00000000004757a0                _fileno
+ .text          0x00000000004757a8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00201.o)
+                0x00000000004757a8                _errno
+ .text          0x00000000004757b0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00149.o)
+                0x00000000004757b0                _chsize
+ .text          0x00000000004757b8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00140.o)
+                0x00000000004757b8                _cexit
+ .text          0x00000000004757c0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00122.o)
+                0x00000000004757c0                _amsg_exit
+ .text          0x00000000004757c8        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00115.o)
+ .text          0x00000000004757c8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00098.o)
+                0x00000000004757c8                __setusermatherr
+ .text          0x00000000004757d0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00096.o)
+                0x00000000004757d0                __set_app_type
+ .text          0x00000000004757d8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00090.o)
+                0x00000000004757d8                __lconv_init
+ .text          0x00000000004757e0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00083.o)
+                0x00000000004757e0                __iob_func
+ .text          0x00000000004757e8        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00082.o)
+ .text          0x00000000004757e8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00081.o)
+                0x00000000004757e8                __getmainargs
+ .text          0x00000000004757f0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00078.o)
+                0x00000000004757f0                __dllonexit
+ .text          0x00000000004757f8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfs00055.o)
+                0x00000000004757f8                __C_specific_handler
+ .text          0x0000000000475800       0x20 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(lib64_libmsvcrt_a-invalid_parameter_handler.o)
+                0x0000000000475800                _get_invalid_parameter_handler
+                0x0000000000475810                _set_invalid_parameter_handler
+ .text          0x0000000000475820        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpfh.o)
+ .text          0x0000000000475820        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(dkpft.o)
+ .text          0x0000000000475820        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs01266.o)
+                0x0000000000475820                VirtualQuery
+ .text          0x0000000000475828        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs01264.o)
+                0x0000000000475828                VirtualProtect
+ .text          0x0000000000475830        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs01261.o)
+                0x0000000000475830                VirtualFree
+ .text          0x0000000000475838        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs01258.o)
+                0x0000000000475838                VirtualAlloc
+ .text          0x0000000000475840        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs01234.o)
+                0x0000000000475840                UnhandledExceptionFilter
+ .text          0x0000000000475848        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs01221.o)
+                0x0000000000475848                TlsGetValue
+ .text          0x0000000000475850        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs01214.o)
+                0x0000000000475850                TerminateProcess
+ .text          0x0000000000475858        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs01200.o)
+                0x0000000000475858                Sleep
+ .text          0x0000000000475860        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs01187.o)
+                0x0000000000475860                SetUnhandledExceptionFilter
+ .text          0x0000000000475868        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs01044.o)
+                0x0000000000475868                RtlVirtualUnwind
+ .text          0x0000000000475870        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs01037.o)
+                0x0000000000475870                RtlLookupFunctionEntry
+ .text          0x0000000000475878        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs01030.o)
+                0x0000000000475878                RtlCaptureContext
+ .text          0x0000000000475880        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs01029.o)
+                0x0000000000475880                RtlAddFunctionTable
+ .text          0x0000000000475888        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs00958.o)
+                0x0000000000475888                QueryPerformanceCounter
+ .text          0x0000000000475890        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs00844.o)
+                0x0000000000475890                LeaveCriticalSection
+ .text          0x0000000000475898        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs00762.o)
+                0x0000000000475898                InitializeCriticalSection
+ .text          0x00000000004758a0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs00678.o)
+                0x00000000004758a0                GetTickCount
+ .text          0x00000000004758a8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs00651.o)
+                0x00000000004758a8                GetSystemTimeAsFileTime
+ .text          0x00000000004758b0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs00628.o)
+                0x00000000004758b0                GetStartupInfoA
+ .text          0x00000000004758b8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs00599.o)
+                0x00000000004758b8                GetProcAddress
+ .text          0x00000000004758c0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs00549.o)
+                0x00000000004758c0                GetModuleHandleA
+ .text          0x00000000004758c8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs00529.o)
+                0x00000000004758c8                GetLastError
+ .text          0x00000000004758d0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs00467.o)
+                0x00000000004758d0                GetCurrentThreadId
+ .text          0x00000000004758d8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs00463.o)
+                0x00000000004758d8                GetCurrentProcessId
+ .text          0x00000000004758e0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs00462.o)
+                0x00000000004758e0                GetCurrentProcess
+ .text          0x00000000004758e8        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs00249.o)
+                0x00000000004758e8                EnterCriticalSection
+ .text          0x00000000004758f0        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfs00216.o)
+                0x00000000004758f0                DeleteCriticalSection
+ *fill*         0x00000000004758f8        0x8 
+ .text          0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmfh.o)
+ .text          0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a(dqmft.o)
+ .text          0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/crtend.o
  *(SORT(.text$*))
  *(.text.*)
  .text.unlikely
-                0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o
+                0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o
  .text.unlikely
-                0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/crtbegin.o
+                0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/crtbegin.o
  .text.unlikely
-                0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-atonexit.o)
+                0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-atonexit.o)
  .text.unlikely
-                0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-gccmain.o)
+                0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-gccmain.o)
  .text.unlikely
-                0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-charmax.o)
+                0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-charmax.o)
  .text.unlikely
-                0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-dllargv.o)
+                0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-dllargv.o)
  .text.unlikely
-                0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-gs_support.o)
+                0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-gs_support.o)
  .text.unlikely
-                0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-tlssup.o)
+                0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-tlssup.o)
  .text.unlikely
-                0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-merr.o)
+                0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-merr.o)
  .text.unlikely
-                0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-CRT_fp10.o)
+                0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-CRT_fp10.o)
  .text.unlikely
-                0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-mingw_helpers.o)
+                0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-mingw_helpers.o)
  .text.unlikely
-                0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-pseudo-reloc.o)
+                0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-pseudo-reloc.o)
  .text.unlikely
-                0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-crt_handler.o)
+                0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-crt_handler.o)
  .text.unlikely
-                0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-tlsthrd.o)
+                0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-tlsthrd.o)
  .text.unlikely
-                0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-pesect.o)
+                0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-pesect.o)
  .text.unlikely
-                0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-strtodnrp.o)
+                0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-strtodnrp.o)
  .text.unlikely
-                0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-_findfirst64i32.o)
+                0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-_findfirst64i32.o)
  .text.unlikely
-                0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-_findnext64i32.o)
+                0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-_findnext64i32.o)
  .text.unlikely
-                0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-_stat64i32.o)
+                0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-_stat64i32.o)
  .text.unlikely
-                0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-strtodg.o)
+                0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-strtodg.o)
  .text.unlikely
-                0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-sum.o)
+                0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-sum.o)
  .text.unlikely
-                0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-gethex.o)
+                0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-gethex.o)
  .text.unlikely
-                0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-gmisc.o)
+                0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-gmisc.o)
  .text.unlikely
-                0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-hd_init.o)
+                0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-hd_init.o)
  .text.unlikely
-                0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-hexnan.o)
+                0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-hexnan.o)
  .text.unlikely
-                0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-misc.o)
+                0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-misc.o)
  .text.unlikely
-                0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-smisc.o)
+                0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a(lib64_libmingwex_a-smisc.o)
  .text.unlikely
-                0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(lib64_libmsvcrt_a-invalid_parameter_handler.o)
+                0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a(lib64_libmsvcrt_a-invalid_parameter_handler.o)
  .text.unlikely
-                0x0000000000475910        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/crtend.o
- .text.startup  0x0000000000475910       0x10 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/crtend.o
+                0x0000000000475900        0x0 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/crtend.o
+ .text.startup  0x0000000000475900       0x10 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/crtend.o
  *(.gnu.linkonce.t.*)
  *(.glue_7t)
  *(.glue_7)
-                0x0000000000475920                . = ALIGN (0x8)
-                0x0000000000475920                ___CTOR_LIST__ = .
-                0x0000000000475920                __CTOR_LIST__ = .
-                0x0000000000475920        0x4 LONG 0xffffffffffffffff
-                0x0000000000475924        0x4 LONG 0xffffffffffffffff
+                0x0000000000475910                . = ALIGN (0x8)
+                0x0000000000475910                ___CTOR_LIST__ = .
+                0x0000000000475910                __CTOR_LIST__ = .
+                0x0000000000475910        0x4 LONG 0xffffffffffffffff
+                0x0000000000475914        0x4 LONG 0xffffffffffffffff
  *(.ctors)
  *(.ctor)
  *(SORT(.ctors.*))
- .ctors.65535   0x0000000000475928        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/crtend.o
-                0x0000000000475930        0x4 LONG 0x0
-                0x0000000000475934        0x4 LONG 0x0
-                0x0000000000475938                ___DTOR_LIST__ = .
-                0x0000000000475938                __DTOR_LIST__ = .
-                0x0000000000475938        0x4 LONG 0xffffffffffffffff
-                0x000000000047593c        0x4 LONG 0xffffffffffffffff
+ .ctors.65535   0x0000000000475918        0x8 C:/Program Files/mingw-w64/x86_64-5.3.0-posix-seh-rt_v4-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/5.3.0/crtend.o
+                0x0000000000475920        0x4 LONG 0x0
+                0x0000000000475924        0x4 LONG 0x0
+                0x0000000000475928                ___DTOR_LIST__ = .
+                0x0000000000475928                __DTOR_LIST__ = .
+                0x0000000000475928        0x4 LONG 0xffffffffffffffff
+                0x000000000047592c        0x4 LONG 0xffffffffffffffff
  *(.dtors)
  *(.dtor)
  *(SORT(.dtors.*))
-                0x0000000000475940        0x4 LONG 0x0
-                0x0000000000475944        0x4 LONG 0x0
+                0x0000000000475930        0x4 LONG 0x0
+                0x0000000000475934        0x4 LONG 0x0
  *(.fini)
  *(.gcc_exc)
-                0x0000000000475948                PROVIDE (etext, .)
+                0x0000000000475938                PROVIDE (etext, .)
  *(.gcc_except_table)
 
 .data           0x0000000000476000     0x9200

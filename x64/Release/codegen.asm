@@ -63,7 +63,7 @@ pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$output_opc DD imagerel output_opc
-	DD	imagerel output_opc+6368
+	DD	imagerel output_opc+6380
 	DD	imagerel $unwind$output_opc
 pdata	ENDS
 ;	COMDAT pdata
@@ -1917,7 +1917,7 @@ _TEXT	ENDS
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\codegen.c
 ;	COMDAT output_opc
 _TEXT	SEGMENT
-tv4281 = 80
+tv4282 = 80
 tv3947 = 80
 CodeInfo$ = 80
 output_opc PROC						; COMDAT
@@ -3029,11 +3029,13 @@ $LN284@output_opc:
 	mov	cl, 197					; 000000c5H
 	call	OutputByte
 
-; 858  :               if (CodeInfo->opnd[OPND1].type == OP_YMM || CodeInfo->opnd[OPND2].type == OP_YMM)
+; 858  :               if (CodeInfo->opnd[OPND1].type == OP_YMM || CodeInfo->opnd[OPND2].type == OP_YMM || CodeInfo->token == T_VZEROALL) /* VZEROALL is 256 bits VZEROUPPER is 128 bits */
 
 	cmp	DWORD PTR [rdi+32], 128			; 00000080H
 	je	SHORT $LN337@output_opc
 	cmp	DWORD PTR [rdi+56], 128			; 00000080H
+	je	SHORT $LN337@output_opc
+	cmp	DWORD PTR [rdi+24], 1332		; 00000534H
 	je	SHORT $LN337@output_opc
 
 ; 860  :               else
@@ -3043,7 +3045,7 @@ $LN284@output_opc:
 	jmp	SHORT $LN336@output_opc
 $LN337@output_opc:
 
-; 859  :                  lbyte |= 0x04;
+; 859  :                  lbyte |= 0x04;  /* set L: Vector Length */
 
 	or	bl, 4
 $LN336@output_opc:
@@ -5535,7 +5537,7 @@ $LN477@output_opc:
 ; 1129 :                  for (cnt = 0; cnt < 5; cnt++,p++){
 
 	mov	edx, r14d
-	npad	7
+	npad	14
 $LL18@output_opc:
 
 ; 1130 :                    if ((opnd_clstab[p->opclsidx].opnd_type[OPND1] == type1) && 
@@ -5925,7 +5927,7 @@ $LN508@output_opc:
 	cmp	ecx, 128				; 00000080H
 	je	SHORT $LN515@output_opc
 	cmp	ecx, 256				; 00000100H
-	jne	$LN524@output_opc
+	jne	SHORT $LN524@output_opc
 $LN515@output_opc:
 
 ; 1228 :                     (CodeInfo->opnd[OPND1].type == OP_ZMM)){

@@ -397,4 +397,4 @@ avxins (UNPCKLPD ,vunpcklpd ,    P_AVX, VX_LL|VX_L )     /* L, s */
 avxins (UNPCKLPS ,vunpcklps ,    P_AVX, VX_LL|VX_L )     /* L, s */
 #endif
 
-//avxins (PCLMULQDQ,vpclmulqdq,    P_AVX, 0 )
+/*avxins (PCLMULQDQ,vpclmulqdq,    P_AVX, 0 )*/

@@ -3262,29 +3262,27 @@ ret_code ParseLine(struct asm_tok tokenarray[])
         }
         else
 
-          /* flag VX_DST is set if an immediate is expected as operand 3 */
-          if (((vex_flags[CodeInfo.token - VEX_START] & VX_DST) && (opndx[OPND3].kind == EXPR_CONST))||
-            ((CodeInfo.token >= T_VPSLLW ) && (CodeInfo.token <= T_VPSRLQ))||
-            ((CodeInfo.token >= T_VPSLLVD) && (CodeInfo.token <= T_VPSRLVW))&&
-            (opndx[OPND3].kind == EXPR_CONST)&&
-            (opndx[OPND1].kind == EXPR_REG)) {
-            DebugMsg1(("ParseLine(%s,%u): avx VX_DST, op3.kind=CONST (value=%u), numops=%u\n", instr, CurrOpnd, opndx[OPND3].kind, opndx[OPND3].value, j));
-            if (opndx[OPND2].idx_reg)
-            CodeInfo.indexreg = opndx[OPND2].idx_reg->bytval;
-            if (opndx[OPND2].base_reg)
-            CodeInfo.basereg = opndx[OPND2].base_reg->bytval;
-            /* third operand data goes in CodeInfo.vexconst used in codegen.c */
-            CodeInfo.vexconst = opndx[CurrOpnd].value;
-            if (opndx[OPND1].base_reg) {
-              /* first operand register is moved to vexregop */
-              /* handle VEX.NDD */
-              CodeInfo.vexregop = opndx[OPND1].base_reg->bytval + 1;
-              memcpy(&opndx[OPND1], &opndx[CurrOpnd], sizeof(opndx[0]) * 3);
-              CodeInfo.rm_byte = 0;
-              if (process_register(&CodeInfo, OPND1, opndx) == ERROR)
-                return(ERROR);
-            }
-          }
+		  /* flag VX_DST is set if an immediate is expected as operand 3 */
+			if ((vex_flags[CodeInfo.token - VEX_START] & VX_DST) &&
+				(opndx[OPND3].kind == EXPR_CONST)) {
+				DebugMsg1(("ParseLine(%s,%u): avx VX_DST, op3.kind=CONST (value=%u), numops=%u\n", instr, CurrOpnd, opndx[OPND3].kind, opndx[OPND3].value, j));
+				if (opndx[OPND2].idx_reg)
+					CodeInfo.indexreg = opndx[OPND2].idx_reg->bytval;
+				if (opndx[OPND2].base_reg)
+					CodeInfo.basereg = opndx[OPND2].base_reg->bytval;
+				/* third operand data goes in CodeInfo.vexconst used in codegen.c */
+				CodeInfo.vexconst = opndx[CurrOpnd].value;
+				if (opndx[OPND1].base_reg) {
+					/* first operand register is moved to vexregop */
+					/* handle VEX.NDD */
+					CodeInfo.vexregop = opndx[OPND1].base_reg->bytval + 1;
+					memcpy(&opndx[OPND1], &opndx[CurrOpnd], sizeof(opndx[0]) * 3);
+					CodeInfo.rm_byte = 0;
+					if (process_register(&CodeInfo, OPND1, opndx) == ERROR)
+						return(ERROR);
+				}
+			}
+
           else if (CodeInfo.token < T_VGETMANTPD || CodeInfo.token > T_VGETMANTPS ) {
             unsigned flags = GetValueSp(opndx[CurrOpnd].base_reg->tokval);
             //CodeInfo.rtype = GetValueSp(opndx[CurrOpnd].base_reg->tokval);

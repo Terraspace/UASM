@@ -1425,7 +1425,7 @@ static ret_code opattr_op( int oper, struct expr *opnd1, struct expr *opnd2, str
 
     /* bit 2: immediate value? */
 	/* John Hankinson modified here to allow -Zne switch to treat literal string macro argument with opattr type = 0 */
-	if (Options.strict_masm_compat && opnd2->kind == EXPR_CONST && opnd2->mem_type != MT_SQWORD)
+	if (Options.strict_masm_compat && opnd2->kind == EXPR_CONST && opnd2->mem_type != MT_SQWORD && opnd2->quoted_string != NULL)
 	{
 	}
     else if ( opnd2->kind == EXPR_CONST ||
@@ -1458,7 +1458,7 @@ static ret_code opattr_op( int oper, struct expr *opnd1, struct expr *opnd2, str
 
     //if ( opnd2->kind != EXPR_ERROR && ( opnd2->sym == 0 || opnd2->sym->isdefined == TRUE ) )
 	/* John Hankinson modified here to allow -Zne switch to treat literal string macro argument with opattr type = 0 */
-	if (Options.strict_masm_compat && opnd2->kind == EXPR_CONST && opnd2->mem_type != MT_SQWORD)
+	if (Options.strict_masm_compat && opnd2->kind == EXPR_CONST && opnd2->mem_type != MT_SQWORD && opnd2->quoted_string != NULL)
 	{
 	}
     else if ( opnd2->kind != EXPR_ERROR && opnd2->kind != EXPR_FLOAT && ( opnd2->sym == NULL || opnd2->sym->isdefined == TRUE ) )
@@ -1577,7 +1577,7 @@ static ret_code highword_op( int oper, struct expr *opnd1, struct expr *opnd2, s
         //opnd1->mem_type = MT_WORD; /* v2.05 */
         opnd1->mem_type = MT_EMPTY;
     }
-    opnd1->value = opnd1->value >> 16;
+	opnd1->value = (opnd1->value >> 16) & 0xFFFF; /* ASMC v2.14 (fix borrowed from nidud) */
     return( NOT_ERROR );
 }
 
@@ -1764,7 +1764,7 @@ static ret_code wimask_op( int oper, struct expr *opnd1, struct expr *opnd2, str
 
 #define  res(token, function) function ,
 static ret_code (* const unaryop[])( int, struct expr *, struct expr *, struct asym *, char * ) = {
-#include "unaryop.h"
+#include "unaryop.h" 
 };
 #undef res
 

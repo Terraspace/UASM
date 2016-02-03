@@ -6,8 +6,8 @@ INCLUDELIB LIBCMT
 INCLUDELIB OLDNAMES
 
 _BSS	SEGMENT
-$SG11618 DB	01H DUP (?)
-$SG11769 DB	01H DUP (?)
+$SG11620 DB	01H DUP (?)
+$SG11771 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	decoflags:BYTE
@@ -5240,7 +5240,7 @@ $LN4@dot_op:
 ; 2096 :             nullstruct = CreateTypeSymbol( NULL, "", FALSE );
 
 	xor	r8d, r8d
-	lea	rdx, OFFSET FLAT:$SG11769
+	lea	rdx, OFFSET FLAT:$SG11771
 	xor	ecx, ecx
 	call	CreateTypeSymbol
 	mov	QWORD PTR nullstruct, rax
@@ -7276,7 +7276,7 @@ $LN4@this_op:
 
 ; 1690 :         thissym = SymAlloc( "" );
 
-	lea	rcx, OFFSET FLAT:$SG11618
+	lea	rcx, OFFSET FLAT:$SG11620
 	call	SymAlloc
 	mov	rdx, rax
 	mov	QWORD PTR thissym, rax
@@ -7777,9 +7777,9 @@ highword_op PROC
 $LN2@highword_o:
 
 ; 1579 :     }
-; 1580 :     opnd1->value = opnd1->value >> 16;
+; 1580 : 	opnd1->value = (opnd1->value >> 16) & 0xFFFF; /* ASMC v2.14 (fix borrowed from nidud) */
 
-	movsx	eax, WORD PTR [rdx+2]
+	movzx	eax, WORD PTR [rdx+2]
 	mov	DWORD PTR [rdx], eax
 
 ; 1581 :     return( NOT_ERROR );
@@ -8270,13 +8270,15 @@ $LN8@opattr_op:
 ; 1425 : 
 ; 1426 :     /* bit 2: immediate value? */
 ; 1427 : 	/* John Hankinson modified here to allow -Zne switch to treat literal string macro argument with opattr type = 0 */
-; 1428 : 	if (Options.strict_masm_compat && opnd2->kind == EXPR_CONST && opnd2->mem_type != MT_SQWORD)
+; 1428 : 	if (Options.strict_masm_compat && opnd2->kind == EXPR_CONST && opnd2->mem_type != MT_SQWORD && opnd2->quoted_string != NULL)
 
 	cmp	BYTE PTR Options+127, 0
 	je	SHORT $LN9@opattr_op
 	cmp	DWORD PTR [r8+60], 0
 	jne	SHORT $LN9@opattr_op
 	cmp	DWORD PTR [r8+64], 71			; 00000047H
+	je	SHORT $LN9@opattr_op
+	cmp	QWORD PTR [r8+16], 0
 	jne	SHORT $LN11@opattr_op
 $LN9@opattr_op:
 
@@ -8389,13 +8391,15 @@ $LN20@opattr_op:
 ; 1458 : 
 ; 1459 :     //if ( opnd2->kind != EXPR_ERROR && ( opnd2->sym == 0 || opnd2->sym->isdefined == TRUE ) )
 ; 1460 : 	/* John Hankinson modified here to allow -Zne switch to treat literal string macro argument with opattr type = 0 */
-; 1461 : 	if (Options.strict_masm_compat && opnd2->kind == EXPR_CONST && opnd2->mem_type != MT_SQWORD)
+; 1461 : 	if (Options.strict_masm_compat && opnd2->kind == EXPR_CONST && opnd2->mem_type != MT_SQWORD && opnd2->quoted_string != NULL)
 
 	cmp	BYTE PTR Options+127, 0
 	je	SHORT $LN21@opattr_op
 	cmp	DWORD PTR [r8+60], 0
 	jne	SHORT $LN21@opattr_op
 	cmp	DWORD PTR [r8+64], 71			; 00000047H
+	je	SHORT $LN21@opattr_op
+	cmp	QWORD PTR [r8+16], 0
 	jne	SHORT $LN23@opattr_op
 $LN21@opattr_op:
 	mov	eax, DWORD PTR [r8+60]

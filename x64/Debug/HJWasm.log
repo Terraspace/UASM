@@ -1,74 +1,9 @@
-﻿Build started 2016/02/02 12:29:14 PM.
+﻿Build started 2016/02/02 10:23:06 PM.
      1>Project "D:\HJWasm\HJWasm2.13.1s\HJWasm2.13.1s\HJWasm.vcxproj" on node 2 (Build target(s)).
-     1>ClCompile:
-         D:\vs2015\VC\bin\x86_amd64\CL.exe /c /I.\\H /Zi /nologo /W2 /WX- /Od /D DEBUG_OUT /D WIN64 /D _DEBUG /D AVXSUPP /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /FAs /Fa"x64\Debug\\" /Fo"x64\Debug\\" /Fd"x64\Debug\vc140.pdb" /Gd /TC /errorReport:prompt expreval.c
-         expreval.c
-     1>expreval.c(1428): warning C4047: '!=': 'asym *' differs in levels of indirection from 'int'
-     1>expreval.c(1461): warning C4047: '!=': 'asym *' differs in levels of indirection from 'int'
-     1>expreval.c(2432): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-     1>expreval.c(2438): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-       Link:
-         D:\vs2015\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"D:\HJWasm\HJWasm2.13.1s\HJWasm2.13.1s\x64\Debug\HJWasm.exe" /INCREMENTAL:NO /NOLOGO /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"D:\HJWasm\HJWasm2.13.1s\HJWasm2.13.1s\x64\Debug\HJWasm.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\HJWasm\HJWasm2.13.1s\HJWasm2.13.1s\x64\Debug\HJWasm.lib" /MACHINE:X64 x64\Debug\apiemu.obj
-         x64\Debug\assemble.obj
-         x64\Debug\assume.obj
-         x64\Debug\atofloat.obj
-         x64\Debug\backptch.obj
-         x64\Debug\bin.obj
-         x64\Debug\branch.obj
-         x64\Debug\cmdline.obj
-         x64\Debug\codegen.obj
-         x64\Debug\coff.obj
-         x64\Debug\condasm.obj
-         x64\Debug\context.obj
-         x64\Debug\cpumodel.obj
-         x64\Debug\data.obj
-         x64\Debug\dbgcv.obj
-         x64\Debug\directiv.obj
-         x64\Debug\elf.obj
-         x64\Debug\end.obj
-         x64\Debug\equate.obj
-         x64\Debug\errmsg.obj
-         x64\Debug\expans.obj
-         x64\Debug\expreval.obj
-         x64\Debug\extern.obj
-         x64\Debug\fastpass.obj
-         x64\Debug\fixup.obj
-         x64\Debug\fpfixup.obj
-         x64\Debug\hll.obj
-         x64\Debug\input.obj
-         x64\Debug\invoke.obj
-         x64\Debug\label.obj
-         x64\Debug\linnum.obj
-         x64\Debug\listing.obj
-         x64\Debug\loop.obj
-         x64\Debug\lqueue.obj
-         x64\Debug\macro.obj
-         x64\Debug\main.obj
-         x64\Debug\mangle.obj
-         x64\Debug\memalloc.obj
-         x64\Debug\msgtext.obj
-         x64\Debug\omf.obj
-         x64\Debug\omffixup.obj
-         x64\Debug\omfint.obj
-         x64\Debug\option.obj
-         x64\Debug\parser.obj
-         x64\Debug\posndir.obj
-         x64\Debug\preproc.obj
-         x64\Debug\proc.obj
-         x64\Debug\queue.obj
-         x64\Debug\reswords.obj
-         x64\Debug\safeseh.obj
-         x64\Debug\segment.obj
-         x64\Debug\simsegm.obj
-         x64\Debug\string.obj
-         x64\Debug\symbols.obj
-         x64\Debug\tbyte.obj
-         x64\Debug\tokenize.obj
-         x64\Debug\trmem.obj
-         x64\Debug\types.obj
+     1>Link:
          HJWasm.vcxproj -> D:\HJWasm\HJWasm2.13.1s\HJWasm2.13.1s\x64\Debug\HJWasm.exe
      1>Done Building Project "D:\HJWasm\HJWasm2.13.1s\HJWasm2.13.1s\HJWasm.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.78
+Time Elapsed 00:00:00.07

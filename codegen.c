@@ -855,8 +855,8 @@ static void output_opc(struct code_info *CodeInfo)
             }
             else{
               OutputCodeByte(0xC5);
-              if (CodeInfo->opnd[OPND1].type == OP_YMM || CodeInfo->opnd[OPND2].type == OP_YMM)
-                 lbyte |= 0x04;
+              if (CodeInfo->opnd[OPND1].type == OP_YMM || CodeInfo->opnd[OPND2].type == OP_YMM || CodeInfo->token == T_VZEROALL) /* VZEROALL is 256 bits VZEROUPPER is 128 bits */
+                 lbyte |= 0x04;  /* set L: Vector Length */
               else
                 lbyte &= ~0x04;
               CodeInfo->tuple = 0;

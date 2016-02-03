@@ -70,16 +70,7 @@ int main(int argc, char **argv)
 	* since this type isn't necessarily defined, type long is used as substitute.
 	*/
 
-#ifdef __UNIX__
-#if defined( intptr_t )
-	intptr_t    fh; //fixed by ToutEnMasm intptr_t instead of long
-#else
-	long        fh; // more compatible type (linux builds etc) when intptr_t isn't valid.
-#endif
-#else
-	intptr_t    fh;
-#endif
-
+	size_t    fh;
 	const char *pfn;
 	int     dirsize;
 	struct  _finddata_t finfo;
