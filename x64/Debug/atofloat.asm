@@ -157,7 +157,7 @@ $LN4@atofloat:
 ; 44   :                 EmitErr( INVALID_DATA_INITIALIZER, inp );
 
 	mov	rdx, QWORD PTR inp$[rsp]
-	mov	ecx, 232				; 000000e8H
+	mov	ecx, 231				; 000000e7H
 	call	EmitErr
 
 ; 45   :                 break;
@@ -236,7 +236,7 @@ $LN12@atofloat:
 
 ; 66   :                 EmitErr( MAGNITUDE_TOO_LARGE_FOR_SPECIFIED_SIZE );
 
-	mov	ecx, 77					; 0000004dH
+	mov	ecx, 76					; 0000004cH
 	call	EmitErr
 $LN11@atofloat:
 
@@ -299,7 +299,7 @@ $LN14@atofloat:
 
 ; 80   :                 EmitErr( MAGNITUDE_TOO_LARGE_FOR_SPECIFIED_SIZE );
 
-	mov	ecx, 77					; 0000004dH
+	mov	ecx, 76					; 0000004cH
 	call	EmitErr
 $LN15@atofloat:
 
@@ -352,7 +352,7 @@ $LN18@atofloat:
 
 ; 94   :                 EmitWarn( 4, FP_INITIALIZER_IGNORED );
 
-	mov	edx, 75					; 0000004bH
+	mov	edx, 74					; 0000004aH
 	mov	ecx, 4
 	call	EmitWarn
 $LN19@atofloat:

@@ -287,7 +287,7 @@ writeUnexp PROC
 
 	mov	r8d, 458				; 000001caH
 	lea	rdx, OFFSET FLAT:$SG7862
-	mov	ecx, 111				; 0000006fH
+	mov	ecx, 110				; 0000006eH
 	call	Fatal
 
 ; 459  :     /* this is never reached, since Fatal() won't return */
@@ -1601,7 +1601,7 @@ $LN2@PutMem:
 
 	mov	r8d, 168				; 000000a8H
 	lea	rdx, OFFSET FLAT:$SG7740
-	mov	ecx, 111				; 0000006fH
+	mov	ecx, 110				; 0000006eH
 	call	Fatal
 $LN3@PutMem:
 

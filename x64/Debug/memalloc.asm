@@ -226,7 +226,7 @@ $LN6@LclAlloc:
 
 ; 194  :             Fatal( OUT_OF_MEMORY );
 
-	mov	ecx, 106				; 0000006aH
+	mov	ecx, 105				; 00000069H
 	call	Fatal
 $LN3@LclAlloc:
 
@@ -382,7 +382,7 @@ $LN4:
 
 ; 238  :         Fatal( OUT_OF_MEMORY );
 
-	mov	ecx, 106				; 0000006aH
+	mov	ecx, 105				; 00000069H
 	call	Fatal
 $LN2@MemAlloc:
 

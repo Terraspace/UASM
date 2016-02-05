@@ -5,7 +5,7 @@
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LocalDebuggerCommandArguments>-c  -win64 -Zp8 d:\pointy\asm.asm</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-c  -win64 -Zp8 d:\hjwasm\sample.asm d:\sample.obj</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>

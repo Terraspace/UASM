@@ -956,7 +956,7 @@ $LN10@SegmentDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@SegmentDir
 $LN11@SegmentDir:
@@ -1190,7 +1190,7 @@ $LN15@SegmentDir:
 ; 1020 :         return( EmitErr( SYMBOL_REDEFINITION, name ) );
 
 	mov	rdx, QWORD PTR name$[rsp]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 	jmp	$LN1@SegmentDir
 $LN16@SegmentDir:
@@ -1269,7 +1269,7 @@ $LN4@SegmentDir:
 ; 1034 :                 EmitErr( SYNTAX_ERROR_EX, token );
 
 	mov	rdx, QWORD PTR token$[rsp]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 1035 :                 continue;
@@ -1334,7 +1334,7 @@ $LN21@SegmentDir:
 ; 1051 :             EmitErr( UNKNOWN_SEGMENT_ATTRIBUTE, token );
 
 	mov	rdx, QWORD PTR token$[rsp]
-	mov	ecx, 82					; 00000052H
+	mov	ecx, 81					; 00000051H
 	call	EmitErr
 
 ; 1052 :             continue;
@@ -1367,7 +1367,7 @@ $LN23@SegmentDir:
 ; 1060 :             EmitErr( SEGMENT_ATTRIBUTE_DEFINED_ALREADY, token );
 
 	mov	rdx, QWORD PTR token$[rsp]
-	mov	ecx, 78					; 0000004eH
+	mov	ecx, 77					; 0000004dH
 	call	EmitErr
 
 ; 1061 :             continue;
@@ -1463,7 +1463,7 @@ $LN28@SegmentDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 224				; 000000e0H
+	mov	ecx, 223				; 000000dfH
 	call	EmitErr
 
 ; 1078 :                 i = Token_Count; /* stop further parsing of this line */
@@ -1495,7 +1495,7 @@ $LN29@SegmentDir:
 ; 1083 :                 EmitErr( EXPECTED, "(" );
 
 	lea	rdx, OFFSET FLAT:$SG11771
-	mov	ecx, 231				; 000000e7H
+	mov	ecx, 230				; 000000e6H
 	call	EmitErr
 
 ; 1084 :                 break;
@@ -1538,7 +1538,7 @@ $LN31@SegmentDir:
 ; 1090 :                 EmitErr( EXPECTED, ")" );
 
 	lea	rdx, OFFSET FLAT:$SG11774
-	mov	ecx, 231				; 000000e7H
+	mov	ecx, 230				; 000000e6H
 	call	EmitErr
 
 ; 1091 :                 break;
@@ -1554,7 +1554,7 @@ $LN32@SegmentDir:
 
 ; 1094 :                 EmitError( CONSTANT_EXPECTED );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 
 ; 1095 :                 break;
@@ -1597,7 +1597,7 @@ $LN8@SegmentDir:
 ; 1103 :                 EmitErr( POWER_OF_2, opndx.value );
 
 	mov	edx, DWORD PTR opndx$[rsp]
-	mov	ecx, 130				; 00000082H
+	mov	ecx, 129				; 00000081H
 	call	EmitErr
 $LN34@SegmentDir:
 
@@ -1711,7 +1711,7 @@ $LN38@SegmentDir:
 
 ; 1123 :                     EmitError( CONSTANT_EXPECTED );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 $LN39@SegmentDir:
 $LN37@SegmentDir:
@@ -1746,7 +1746,7 @@ $LN40@SegmentDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 225				; 000000e1H
+	mov	ecx, 224				; 000000e0H
 	call	EmitErr
 
 ; 1134 :                 i = Token_Count; /* stop further parsing of this line */
@@ -1778,7 +1778,7 @@ $LN41@SegmentDir:
 ; 1139 :                 EmitErr( EXPECTED, "(" );
 
 	lea	rdx, OFFSET FLAT:$SG11788
-	mov	ecx, 231				; 000000e7H
+	mov	ecx, 230				; 000000e6H
 	call	EmitErr
 
 ; 1140 :                 break;
@@ -1816,7 +1816,7 @@ $LN43@SegmentDir:
 
 ; 1146 :                 EmitError( CONSTANT_EXPECTED );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 
 ; 1147 :                 i = Token_Count; /* stop further parsing of this line */
@@ -1841,7 +1841,7 @@ $LN47@SegmentDir:
 ; 1151 :                 EmitErr( VALUE_NOT_WITHIN_ALLOWED_RANGE, "1-6" );
 
 	lea	rdx, OFFSET FLAT:$SG11794
-	mov	ecx, 25
+	mov	ecx, 24
 	call	EmitErr
 
 ; 1152 :             } else {
@@ -1873,7 +1873,7 @@ $LN45@SegmentDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 40					; 00000028H
+	mov	ecx, 39					; 00000027H
 	call	EmitErr
 
 ; 1160 :                         i = Token_Count; /* stop further parsing of this line */
@@ -1908,7 +1908,7 @@ $LN49@SegmentDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 1166 :                         i = Token_Count; /* stop further parsing of this line */
@@ -1966,7 +1966,7 @@ $LN53@SegmentDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 26
+	mov	ecx, 25
 	call	EmitErr
 	jmp	SHORT $LN52@SegmentDir
 $LN51@SegmentDir:
@@ -2004,7 +2004,7 @@ $LN46@SegmentDir:
 ; 1182 :                 EmitErr( EXPECTED, ")" );
 
 	lea	rdx, OFFSET FLAT:$SG11802
-	mov	ecx, 231				; 000000e7H
+	mov	ecx, 230				; 000000e6H
 	call	EmitErr
 
 ; 1183 :                 break;
@@ -2156,7 +2156,7 @@ $LN62@SegmentDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 225				; 000000e1H
+	mov	ecx, 224				; 000000e0H
 	call	EmitErr
 
 ; 1220 :             } else
@@ -2219,7 +2219,7 @@ $LN65@SegmentDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 225				; 000000e1H
+	mov	ecx, 224				; 000000e0H
 	call	EmitErr
 
 ; 1230 :                 i = Token_Count; /* stop further parsing of this line */
@@ -2251,7 +2251,7 @@ $LN64@SegmentDir:
 ; 1235 :                 EmitErr( EXPECTED, "(" );
 
 	lea	rdx, OFFSET FLAT:$SG11818
-	mov	ecx, 231				; 000000e7H
+	mov	ecx, 230				; 000000e6H
 	call	EmitErr
 
 ; 1236 :                 break;
@@ -2293,7 +2293,7 @@ $LN68@SegmentDir:
 ; 1242 :                 EmitErr( SYNTAX_ERROR_EX, token );
 
 	mov	rdx, QWORD PTR token$[rsp]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 1243 :                 i = Token_Count; /* stop further parsing of this line */
@@ -2330,7 +2330,7 @@ $LN67@SegmentDir:
 ; 1249 :                 EmitErr( EXPECTED, ")" );
 
 	lea	rdx, OFFSET FLAT:$SG11822
-	mov	ecx, 231				; 000000e7H
+	mov	ecx, 230				; 000000e6H
 	call	EmitErr
 
 ; 1250 :                 break;
@@ -2394,7 +2394,7 @@ $LN73@SegmentDir:
 	mov	r8, rax
 	mov	rax, QWORD PTR dir$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 79					; 0000004fH
+	mov	ecx, 78					; 0000004eH
 	call	EmitErr
 
 ; 1258 :                     break;
@@ -2649,7 +2649,7 @@ $LN80@SegmentDir:
 	mov	r8, rax
 	mov	rax, QWORD PTR dir$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 79					; 0000004fH
+	mov	ecx, 78					; 0000004eH
 	call	EmitErr
 $LN86@SegmentDir:
 
@@ -3154,7 +3154,7 @@ $LN3@SetCurrSeg:
 	imul	rax, rax, 0
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 84					; 00000054H
+	mov	ecx, 83					; 00000053H
 	call	EmitErr
 	jmp	SHORT $LN1@SetCurrSeg
 $LN2@SetCurrSeg:
@@ -3275,7 +3275,7 @@ $LN2@EndsDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@EndsDir
 $LN3@EndsDir:
@@ -3341,7 +3341,7 @@ $LN6@EndsDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 $LN7@EndsDir:
 
@@ -3460,7 +3460,7 @@ CreateClassLname PROC
 
 ; 767  :         EmitError( CLASS_NAME_TOO_LONG );
 
-	mov	ecx, 80					; 00000050H
+	mov	ecx, 79					; 0000004fH
 	call	EmitError
 
 ; 768  :         return( NULL );
@@ -3656,7 +3656,7 @@ $LN8@CloseSeg:
 ; 553  :         return( EmitErr( BLOCK_NESTING_ERROR, name ) );
 
 	mov	rdx, QWORD PTR name$[rsp]
-	mov	ecx, 81					; 00000051H
+	mov	ecx, 80					; 00000050H
 	call	EmitErr
 	jmp	SHORT $LN1@CloseSeg
 $LN2@CloseSeg:
@@ -3788,7 +3788,7 @@ $LN33:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@GrpDir
 $LN7@GrpDir:
@@ -3823,7 +3823,7 @@ $LN9@GrpDir:
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	QWORD PTR __imp__strupr
 	mov	rdx, rax
-	mov	ecx, 225				; 000000e1H
+	mov	ecx, 224				; 000000e0H
 	call	EmitErr
 	jmp	$LN1@GrpDir
 $LN8@GrpDir:
@@ -3877,7 +3877,7 @@ $LN4@GrpDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@GrpDir
 $LN11@GrpDir:
@@ -3954,7 +3954,7 @@ $LN14@GrpDir:
 ; 444  :                 return( EmitErr( SEGMENT_EXPECTED, name ) );
 
 	mov	rdx, QWORD PTR name$[rsp]
-	mov	ecx, 132				; 00000084H
+	mov	ecx, 131				; 00000083H
 	call	EmitErr
 	jmp	$LN1@GrpDir
 
@@ -3996,7 +3996,7 @@ $LN18@GrpDir:
 ; 451  :                 return( EmitErr( SEGMENT_IN_ANOTHER_GROUP, name ) );
 
 	mov	rdx, QWORD PTR name$[rsp]
-	mov	ecx, 136				; 00000088H
+	mov	ecx, 135				; 00000087H
 	call	EmitErr
 	jmp	$LN1@GrpDir
 $LN20@GrpDir:
@@ -4038,7 +4038,7 @@ $LN21@GrpDir:
 	mov	r8, QWORD PTR [rax+8]
 	mov	rax, QWORD PTR grp$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 240				; 000000f0H
+	mov	ecx, 239				; 000000efH
 	call	EmitErr
 	jmp	$LN1@GrpDir
 $LN23@GrpDir:
@@ -4069,7 +4069,7 @@ $LN25@GrpDir:
 ; 465  :                 return( EmitErr( SEGMENT_NOT_DEFINED, name ) );
 
 	mov	rdx, QWORD PTR name$[rsp]
-	mov	ecx, 84					; 00000054H
+	mov	ecx, 83					; 00000053H
 	call	EmitErr
 	jmp	$LN1@GrpDir
 $LN24@GrpDir:
@@ -4212,7 +4212,7 @@ $LN31@GrpDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	SHORT $LN1@GrpDir
 $LN30@GrpDir:
@@ -4562,7 +4562,7 @@ $LN2@CreateGrou:
 ; 338  :         EmitErr( SYMBOL_REDEFINITION, name );
 
 	mov	rdx, QWORD PTR name$[rsp]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 
 ; 339  :         return( NULL );
@@ -4668,7 +4668,7 @@ push_seg PROC
 
 ; 253  :         EmitError( NESTING_LEVEL_TOO_DEEP );
 
-	mov	ecx, 101				; 00000065H
+	mov	ecx, 100				; 00000064H
 	call	EmitError
 
 ; 254  :         return;
@@ -5052,7 +5052,7 @@ $LN4@UpdateCurP:
 
 ; 143  :         EmitErr( MUST_BE_IN_SEGMENT_BLOCK ); /* v2.10: added */
 
-	mov	ecx, 83					; 00000053H
+	mov	ecx, 82					; 00000052H
 	call	EmitErr
 $LN5@UpdateCurP:
 $LN3@UpdateCurP:
@@ -5324,7 +5324,7 @@ $LN4@SegmentMod:
 
 	mov	rax, QWORD PTR ModuleInfo+432
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 81					; 00000051H
+	mov	ecx, 80					; 00000050H
 	call	EmitErr
 $LN2@SegmentMod:
 
@@ -5745,7 +5745,7 @@ $LN2@SetOfssize:
 	mov	eax, DWORD PTR tv141[rsp]
 	shl	eax, cl
 	mov	edx, eax
-	mov	ecx, 133				; 00000085H
+	mov	ecx, 132				; 00000084H
 	call	EmitErr
 	jmp	SHORT $LN1@SetOfssize
 $LN4@SetOfssize:
@@ -6536,7 +6536,7 @@ $LN4@CreateIntS:
 ; 819  :             EmitErr( SYMBOL_REDEFINITION, name );
 
 	mov	rdx, QWORD PTR name$[rsp]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 
 ; 820  :             return( NULL );

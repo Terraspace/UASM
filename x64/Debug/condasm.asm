@@ -354,7 +354,7 @@ $LN16@ErrorDirec:
 ; 477  :         else {
 ; 478  :             return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 	jmp	$LN1@ErrorDirec
 $LN17@ErrorDirec:
@@ -413,7 +413,7 @@ $LN19@ErrorDirec:
 
 ; 487  :             errmsg = FORCED_NOT_ZERO;
 
-	mov	DWORD PTR errmsg$[rsp], 116		; 00000074H
+	mov	DWORD PTR errmsg$[rsp], 115		; 00000073H
 	jmp	SHORT $LN21@ErrorDirec
 $LN20@ErrorDirec:
 
@@ -426,7 +426,7 @@ $LN20@ErrorDirec:
 
 ; 489  :             errmsg = FORCED_EQUAL;
 
-	mov	DWORD PTR errmsg$[rsp], 117		; 00000075H
+	mov	DWORD PTR errmsg$[rsp], 116		; 00000074H
 $LN22@ErrorDirec:
 $LN21@ErrorDirec:
 
@@ -470,7 +470,7 @@ $LN24@ErrorDirec:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@ErrorDirec
 $LN25@ErrorDirec:
@@ -691,7 +691,7 @@ $LN33@ErrorDirec:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@ErrorDirec
 $LN35@ErrorDirec:
@@ -778,7 +778,7 @@ $LN36@ErrorDirec:
 ; 556  :             EmitErr( FORCED_DEF, StringBufferEnd );
 
 	mov	rdx, QWORD PTR ModuleInfo+488
-	mov	ecx, 118				; 00000076H
+	mov	ecx, 117				; 00000075H
 	call	EmitErr
 	jmp	SHORT $LN38@ErrorDirec
 $LN37@ErrorDirec:
@@ -793,7 +793,7 @@ $LN37@ErrorDirec:
 ; 558  :             EmitErr( FORCED_NOT_DEF, StringBufferEnd );
 
 	mov	rdx, QWORD PTR ModuleInfo+488
-	mov	ecx, 119				; 00000077H
+	mov	ecx, 118				; 00000076H
 	call	EmitErr
 $LN39@ErrorDirec:
 $LN38@ErrorDirec:
@@ -902,7 +902,7 @@ $LN44@ErrorDirec:
 
 ; 573  :             errmsg = FORCED_BLANK;
 
-	mov	DWORD PTR errmsg$[rsp], 120		; 00000078H
+	mov	DWORD PTR errmsg$[rsp], 119		; 00000077H
 	jmp	SHORT $LN46@ErrorDirec
 $LN45@ErrorDirec:
 
@@ -918,7 +918,7 @@ $LN45@ErrorDirec:
 
 ; 575  :             errmsg = FORCED_NOT_BLANK;
 
-	mov	DWORD PTR errmsg$[rsp], 121		; 00000079H
+	mov	DWORD PTR errmsg$[rsp], 120		; 00000078H
 $LN47@ErrorDirec:
 $LN46@ErrorDirec:
 
@@ -1002,7 +1002,7 @@ $LN50@ErrorDirec:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 40					; 00000028H
+	mov	ecx, 39					; 00000027H
 	call	EmitErr
 	jmp	$LN1@ErrorDirec
 $LN52@ErrorDirec:
@@ -1127,7 +1127,7 @@ $LN57@ErrorDirec:
 
 ; 604  :                 errmsg = FORCED_DIF;
 
-	mov	DWORD PTR errmsg$[rsp], 122		; 0000007aH
+	mov	DWORD PTR errmsg$[rsp], 121		; 00000079H
 $LN58@ErrorDirec:
 
 ; 605  :             break;
@@ -1148,7 +1148,7 @@ $LN59@ErrorDirec:
 
 ; 608  :                 errmsg = FORCED_DIF;
 
-	mov	DWORD PTR errmsg$[rsp], 122		; 0000007aH
+	mov	DWORD PTR errmsg$[rsp], 121		; 00000079H
 $LN60@ErrorDirec:
 
 ; 609  :             break;
@@ -1169,7 +1169,7 @@ $LN61@ErrorDirec:
 
 ; 612  :                 errmsg = FORCED_IDN;
 
-	mov	DWORD PTR errmsg$[rsp], 123		; 0000007bH
+	mov	DWORD PTR errmsg$[rsp], 122		; 0000007aH
 $LN62@ErrorDirec:
 
 ; 613  :             break;
@@ -1190,7 +1190,7 @@ $LN63@ErrorDirec:
 
 ; 616  :                 errmsg = FORCED_IDN;
 
-	mov	DWORD PTR errmsg$[rsp], 123		; 0000007bH
+	mov	DWORD PTR errmsg$[rsp], 122		; 0000007aH
 $LN64@ErrorDirec:
 $LN10@ErrorDirec:
 
@@ -1228,7 +1228,7 @@ $LN66@ErrorDirec:
 
 ; 623  :             return( EmitError( IF2_NOT_ALLOWED ) );
 
-	mov	ecx, 191				; 000000bfH
+	mov	ecx, 190				; 000000beH
 	call	EmitError
 	jmp	$LN1@ErrorDirec
 $LN67@ErrorDirec:
@@ -1272,7 +1272,7 @@ $LN70@ErrorDirec:
 	mov	ecx, DWORD PTR erridx$[rsp]
 	call	GetErrText
 	mov	rdx, rax
-	mov	ecx, 115				; 00000073H
+	mov	ecx, 114				; 00000072H
 	call	EmitErr
 $LN2@ErrorDirec:
 
@@ -1293,7 +1293,7 @@ $LN2@ErrorDirec:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	SHORT $LN1@ErrorDirec
 $LN71@ErrorDirec:
@@ -1681,7 +1681,7 @@ $LN19@CondAsmDir:
 ; 272  :              */
 ; 273  :             EmitWarn( 2, CONSTANT_EXPECTED );
 
-	mov	edx, 66					; 00000042H
+	mov	edx, 65					; 00000041H
 	mov	ecx, 2
 	call	EmitWarn
 
@@ -1692,7 +1692,7 @@ $LN21@CondAsmDir:
 
 ; 275  :             return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 	jmp	$LN1@CondAsmDir
 $LN22@CondAsmDir:
@@ -1790,7 +1790,7 @@ $LN28@CondAsmDir:
 ; 286  :                 EmitErr( SYMBOL_NOT_DEFINED, string1 );
 
 	mov	rdx, QWORD PTR string1$[rsp]
-	mov	ecx, 103				; 00000067H
+	mov	ecx, 102				; 00000066H
 	call	EmitErr
 	jmp	SHORT $LN30@CondAsmDir
 $LN29@CondAsmDir:
@@ -1798,7 +1798,7 @@ $LN29@CondAsmDir:
 ; 287  :             else
 ; 288  :                 EmitError( TEXT_ITEM_REQUIRED );
 
-	mov	ecx, 145				; 00000091H
+	mov	ecx, 144				; 00000090H
 	call	EmitError
 $LN30@CondAsmDir:
 
@@ -1830,7 +1830,7 @@ $LN27@CondAsmDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 40					; 00000028H
+	mov	ecx, 39					; 00000027H
 	call	EmitErr
 	jmp	$LN1@CondAsmDir
 $LN31@CondAsmDir:
@@ -1882,7 +1882,7 @@ $LN33@CondAsmDir:
 ; 299  :                 EmitErr( SYMBOL_NOT_DEFINED, string2 );
 
 	mov	rdx, QWORD PTR string2$[rsp]
-	mov	ecx, 103				; 00000067H
+	mov	ecx, 102				; 00000066H
 	call	EmitErr
 	jmp	SHORT $LN35@CondAsmDir
 $LN34@CondAsmDir:
@@ -1890,7 +1890,7 @@ $LN34@CondAsmDir:
 ; 300  :             else
 ; 301  :                 EmitError( TEXT_ITEM_REQUIRED );
 
-	mov	ecx, 145				; 00000091H
+	mov	ecx, 144				; 00000090H
 	call	EmitError
 $LN35@CondAsmDir:
 
@@ -2091,7 +2091,7 @@ $LN42@CondAsmDir:
 ; 328  :                 EmitErr( SYMBOL_NOT_DEFINED, string1 );
 
 	mov	rdx, QWORD PTR string1$[rsp]
-	mov	ecx, 103				; 00000067H
+	mov	ecx, 102				; 00000066H
 	call	EmitErr
 	jmp	SHORT $LN44@CondAsmDir
 $LN43@CondAsmDir:
@@ -2099,7 +2099,7 @@ $LN43@CondAsmDir:
 ; 329  :             else
 ; 330  :                 EmitError( TEXT_ITEM_REQUIRED );
 
-	mov	ecx, 145				; 00000091H
+	mov	ecx, 144				; 00000090H
 	call	EmitError
 $LN44@CondAsmDir:
 
@@ -2199,7 +2199,7 @@ $LN49@CondAsmDir:
 
 ; 347  :             EmitError( IF2_NOT_ALLOWED );
 
-	mov	ecx, 191				; 000000bfH
+	mov	ecx, 190				; 000000beH
 	call	EmitError
 
 ; 348  :             break;
@@ -2517,7 +2517,7 @@ $LN53@CondAsmDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	r8, QWORD PTR [rcx+rax+24]
-	mov	edx, 249				; 000000f9H
+	mov	edx, 248				; 000000f8H
 	mov	ecx, 2
 	call	EmitWarn
 $LN9@CondAsmDir:
@@ -2595,7 +2595,7 @@ $LN2@CondAsmDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	SHORT $LN1@CondAsmDir
 $LN69@CondAsmDir:
@@ -2989,7 +2989,7 @@ $LN4:
 ; 645  :         EmitErr( BLOCK_NESTING_ERROR, "if-else" );
 
 	lea	rdx, OFFSET FLAT:$SG11241
-	mov	ecx, 81					; 00000051H
+	mov	ecx, 80					; 00000050H
 	call	EmitErr
 $LN2@CondCheckO:
 
@@ -3141,7 +3141,7 @@ $LN5@conditiona:
 
 ; 113  :             EmitError( NESTING_LEVEL_TOO_DEEP );
 
-	mov	ecx, 101				; 00000065H
+	mov	ecx, 100				; 00000064H
 	call	EmitError
 
 ; 114  :             break;
@@ -3222,7 +3222,7 @@ $LN10@conditiona:
 
 ; 138  :                 EmitError( ELSE_CLAUSE_ALREADY_OCCURED_IN_THIS_IF_BLOCK );
 
-	mov	ecx, 274				; 00000112H
+	mov	ecx, 273				; 00000111H
 	call	EmitError
 
 ; 139  :                 break;
@@ -3279,7 +3279,7 @@ $LN8@conditiona:
 	mov	ecx, DWORD PTR directive$[rsp]
 	call	GetResWName
 	mov	rdx, rax
-	mov	ecx, 81					; 00000051H
+	mov	ecx, 80					; 00000050H
 	call	EmitErr
 $LN9@conditiona:
 
@@ -3333,7 +3333,7 @@ $LN14@conditiona:
 	mov	ecx, DWORD PTR directive$[rsp]
 	call	GetResWName
 	mov	rdx, rax
-	mov	ecx, 81					; 00000051H
+	mov	ecx, 80					; 00000050H
 	call	EmitErr
 $LN15@conditiona:
 $LN2@conditiona:

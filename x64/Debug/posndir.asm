@@ -324,7 +324,7 @@ $LN30@AlignDirec:
 	call	_RTC_UninitUse
 $LN31@AlignDirec:
 	mov	edx, DWORD PTR opndx$[rsp]
-	mov	ecx, 130				; 00000082H
+	mov	ecx, 129				; 00000081H
 	call	EmitErr
 	jmp	$LN1@AlignDirec
 $LN11@AlignDirec:
@@ -370,7 +370,7 @@ $LN12@AlignDirec:
 
 ; 221  :             return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 	jmp	$LN1@AlignDirec
 $LN13@AlignDirec:
@@ -412,7 +412,7 @@ $LN2@AlignDirec:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@AlignDirec
 $LN17@AlignDirec:
@@ -466,7 +466,7 @@ $LN19@AlignDirec:
 
 ; 242  :         return( EmitError( MUST_BE_IN_SEGMENT_BLOCK ) );
 
-	mov	ecx, 83					; 00000053H
+	mov	ecx, 82					; 00000052H
 	call	EmitError
 	jmp	$LN1@AlignDirec
 $LN22@AlignDirec:
@@ -510,7 +510,7 @@ $LN34@AlignDirec:
 	mov	ecx, DWORD PTR opndx$[rsp]
 	call	myltoa
 	mov	r8, rax
-	mov	edx, 131				; 00000083H
+	mov	edx, 130				; 00000082H
 	mov	ecx, 1
 	call	EmitWarn
 $LN24@AlignDirec:
@@ -937,7 +937,7 @@ $LN2@OrgDirecti:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@OrgDirecti
 $LN3@OrgDirecti:
@@ -972,7 +972,7 @@ $LN4@OrgDirecti:
 
 ; 113  :             return( EmitError( MUST_BE_IN_SEGMENT_BLOCK ) );
 
-	mov	ecx, 83					; 00000053H
+	mov	ecx, 82					; 00000052H
 	call	EmitError
 	jmp	$LN1@OrgDirecti
 $LN7@OrgDirecti:
@@ -1061,7 +1061,7 @@ $LN5@OrgDirecti:
 ; 126  :     }
 ; 127  :     return( EmitError( ORG_NEEDS_A_CONSTANT_OR_LOCAL_OFFSET ) );
 
-	mov	ecx, 41					; 00000029H
+	mov	ecx, 40					; 00000028H
 	call	EmitError
 $LN1@OrgDirecti:
 

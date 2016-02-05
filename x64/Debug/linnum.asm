@@ -1103,7 +1103,7 @@ $LN17@AddLinnumD:
 
 	mov	rax, QWORD PTR ModuleInfo+432
 	mov	r8, QWORD PTR [rax+8]
-	mov	edx, 188				; 000000bcH
+	mov	edx, 187				; 000000bbH
 	mov	ecx, 2
 	call	EmitWarn
 $LN19@AddLinnumD:

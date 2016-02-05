@@ -458,7 +458,7 @@ $LN8@AssumeDire:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@AssumeDire
 $LN12@AssumeDire:
@@ -483,7 +483,7 @@ $LN67@AssumeDire:
 
 ; 326  :             return( EmitError( INSTRUCTION_OR_REGISTER_NOT_ACCEPTED_IN_CURRENT_CPU_MODE ) );
 
-	mov	ecx, 31
+	mov	ecx, 30
 	call	EmitError
 	jmp	$LN1@AssumeDire
 $LN13@AssumeDire:
@@ -508,7 +508,7 @@ $LN13@AssumeDire:
 
 ; 332  :             return( EmitError( COLON_EXPECTED ) );
 
-	mov	ecx, 85					; 00000055H
+	mov	ecx, 84					; 00000054H
 	call	EmitError
 	jmp	$LN1@AssumeDire
 $LN14@AssumeDire:
@@ -532,7 +532,7 @@ $LN14@AssumeDire:
 
 ; 337  :             return( EmitError( SYNTAX_ERROR ) );
 
-	mov	ecx, 46					; 0000002eH
+	mov	ecx, 45					; 0000002dH
 	call	EmitError
 	jmp	$LN1@AssumeDire
 $LN15@AssumeDire:
@@ -805,7 +805,7 @@ $LN28@AssumeDire:
 ; 374  :                 ( ti.is_ptr > 0 && size < CurrWordSize ) ) {
 ; 375  :                 return( EmitError( TYPE_IS_WRONG_SIZE_FOR_REGISTER ) );
 
-	mov	ecx, 248				; 000000f8H
+	mov	ecx, 247				; 000000f7H
 	call	EmitError
 	jmp	$LN1@AssumeDire
 $LN27@AssumeDire:
@@ -1082,7 +1082,7 @@ $LN37@AssumeDire:
 
 ; 405  :                     return( EmitError( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
 
-	mov	ecx, 70					; 00000046H
+	mov	ecx, 69					; 00000045H
 	call	EmitError
 	jmp	$LN1@AssumeDire
 	jmp	$LN36@AssumeDire
@@ -1154,7 +1154,7 @@ $LN45@AssumeDire:
 
 ; 417  :                     return( EmitError( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
 
-	mov	ecx, 70					; 00000046H
+	mov	ecx, 69					; 00000045H
 	call	EmitError
 	jmp	$LN1@AssumeDire
 $LN46@AssumeDire:
@@ -1231,7 +1231,7 @@ $LN49@AssumeDire:
 ; 427  :             default:
 ; 428  :                 return( EmitError( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
 
-	mov	ecx, 70					; 00000046H
+	mov	ecx, 69					; 00000045H
 	call	EmitError
 	jmp	SHORT $LN1@AssumeDire
 $LN5@AssumeDire:
@@ -1282,7 +1282,7 @@ $LN3@AssumeDire:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	SHORT $LN1@AssumeDire
 $LN51@AssumeDire:

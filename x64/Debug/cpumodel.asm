@@ -294,7 +294,7 @@ $LN4:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	SHORT $LN1@CpuDirecti
 $LN2@CpuDirecti:
@@ -918,7 +918,7 @@ $LN8@ModelDirec:
 
 ; 277  :         return( EmitError( EXPECTED_MEMORY_MODEL ) );
 
-	mov	ecx, 247				; 000000f7H
+	mov	ecx, 246				; 000000f6H
 	call	EmitError
 	jmp	$LN1@ModelDirec
 $LN9@ModelDirec:
@@ -949,7 +949,7 @@ $LN9@ModelDirec:
 ; 283  :             //if ( Parse_Pass == PASS_1 ) /* not needed, this code runs in pass one only */
 ; 284  :             EmitWarn( 2, MODEL_DECLARED_ALREADY );
 
-	mov	edx, 96					; 00000060H
+	mov	edx, 95					; 0000005fH
 	mov	ecx, 2
 	call	EmitWarn
 $LN12@ModelDirec:
@@ -978,7 +978,7 @@ $LN10@ModelDirec:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@ModelDirec
 $LN11@ModelDirec:
@@ -1085,7 +1085,7 @@ $LN17@ModelDirec:
 
 ; 307  :                         return( EmitError( INVALID_MODEL_PARAM_FOR_FLAT ) );
 
-	mov	ecx, 201				; 000000c9H
+	mov	ecx, 200				; 000000c8H
 	call	EmitError
 	jmp	$LN1@ModelDirec
 $LN18@ModelDirec:
@@ -1176,7 +1176,7 @@ $LN3@ModelDirec:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@ModelDirec
 $LN21@ModelDirec:
@@ -1197,7 +1197,7 @@ $LN21@ModelDirec:
 
 ; 332  :             return( EmitError( INSTRUCTION_OR_REGISTER_NOT_ACCEPTED_IN_CURRENT_CPU_MODE ) );
 
-	mov	ecx, 31
+	mov	ecx, 30
 	call	EmitError
 	jmp	$LN1@ModelDirec
 $LN23@ModelDirec:

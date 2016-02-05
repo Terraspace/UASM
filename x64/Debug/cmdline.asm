@@ -1474,7 +1474,7 @@ $LN14@ProcessOpt:
 
 ; 895  :                             EmitWarn( 1, MISSING_ARGUMENT_FOR_CMDLINE_OPTION );
 
-	mov	edx, 252				; 000000fcH
+	mov	edx, 251				; 000000fbH
 	mov	ecx, 1
 	call	EmitWarn
 
@@ -1527,7 +1527,7 @@ $opt_error_exit$34:
 	mov	rax, QWORD PTR [rax]
 	dec	rax
 	mov	r8, rax
-	mov	edx, 110				; 0000006eH
+	mov	edx, 109				; 0000006dH
 	mov	ecx, 1
 	call	EmitWarn
 
@@ -1863,7 +1863,7 @@ ReadParamFile PROC
 	call	ErrnoStr
 	mov	r8, rax
 	mov	rdx, QWORD PTR name$[rsp]
-	mov	ecx, 107				; 0000006bH
+	mov	ecx, 106				; 0000006aH
 	call	Fatal
 
 ; 749  :         return( NULL );
@@ -2577,7 +2577,7 @@ $LN2@Set_W:
 ; 450  :         EmitWarn( 1, INVALID_CMDLINE_VALUE, "W" );
 
 	lea	r8, OFFSET FLAT:$SG11260
-	mov	edx, 196				; 000000c4H
+	mov	edx, 195				; 000000c3H
 	mov	ecx, 1
 	call	EmitWarn
 $LN3@Set_W:
@@ -3059,7 +3059,7 @@ $LN3@Set_Zp:
 ; 393  :     EmitWarn( 1, INVALID_CMDLINE_VALUE, "Zp" );
 
 	lea	r8, OFFSET FLAT:$SG11189
-	mov	edx, 196				; 000000c4H
+	mov	edx, 195				; 000000c3H
 	mov	ecx, 1
 	call	EmitWarn
 $LN1@Set_Zp:
@@ -3111,7 +3111,7 @@ $LN2@Set_Zi:
 ; 381  :         EmitWarn( 1, INVALID_CMDLINE_VALUE, "Zi" );
 
 	lea	r8, OFFSET FLAT:$SG11180
-	mov	edx, 196				; 000000c4H
+	mov	edx, 195				; 000000c3H
 	mov	ecx, 1
 	call	EmitWarn
 $LN3@Set_Zi:
@@ -3256,7 +3256,7 @@ set_option_n_name PROC
 
 ; 345  :         EmitError( N_OPTION_NEEDS_A_NAME_PARAMETER );
 
-	mov	ecx, 235				; 000000ebH
+	mov	ecx, 234				; 000000eaH
 	call	EmitError
 
 ; 346  :         return;
@@ -3720,7 +3720,7 @@ $LN5@SetCpuCmdl:
 ; 251  :             EmitWarn( 1, CPU_OPTION_INVALID, parm );
 
 	mov	r8, QWORD PTR parm$[rsp]
-	mov	edx, 135				; 00000087H
+	mov	edx, 134				; 00000086H
 	mov	ecx, 1
 	call	EmitWarn
 
@@ -4088,7 +4088,7 @@ $LN14@ParseCmdli:
 
 ; 1002 :                 EmitErr( NESTING_LEVEL_TOO_DEEP );
 
-	mov	ecx, 101				; 00000065H
+	mov	ecx, 100				; 00000064H
 	call	EmitErr
 
 ; 1003 :                 *cmdline = "";

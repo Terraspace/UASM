@@ -873,7 +873,7 @@ $LN67@DoPatch:
 	sub	ecx, eax
 	mov	eax, ecx
 	mov	r8d, eax
-	mov	edx, 54					; 00000036H
+	mov	edx, 53					; 00000035H
 	mov	ecx, 4
 	call	EmitWarn
 $LN6@DoPatch:

@@ -253,7 +253,7 @@ $LN3@StartComme:
 
 ; 1071 :         EmitError( COMMENT_DELIMITER_EXPECTED );
 
-	mov	ecx, 99					; 00000063H
+	mov	ecx, 98					; 00000062H
 	call	EmitError
 
 ; 1072 :         return;
@@ -423,7 +423,7 @@ $LN4@get_id:
 
 ; 896  :         EmitErr( IDENTIFIER_TOO_LONG );
 
-	mov	ecx, 71					; 00000047H
+	mov	ecx, 70					; 00000046H
 	call	EmitErr
 
 ; 897  :         dst = p->output + MAX_ID_LEN;
@@ -992,7 +992,7 @@ $LN6@get_id_in_:
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 98					; 00000062H
+	mov	ecx, 97					; 00000061H
 	call	EmitErr
 
 ; 840  :             return( ERROR );
@@ -3331,7 +3331,7 @@ $LN15@get_string:
 
 ; 441  :                                 EmitError( LINE_TOO_LONG );
 
-	mov	ecx, 62					; 0000003eH
+	mov	ecx, 61					; 0000003dH
 	call	EmitError
 
 ; 442  :                                 return( ERROR );
@@ -3618,7 +3618,7 @@ $LN2@get_string:
 
 ; 498  :         EmitError( STRING_OR_TEXT_LITERAL_TOO_LONG );
 
-	mov	ecx, 156				; 0000009cH
+	mov	ecx, 155				; 0000009bH
 	call	EmitError
 
 ; 499  :         return( ERROR );
@@ -3800,7 +3800,7 @@ $LN9@ConcatLine:
 
 ; 303  :                 EmitError( LINE_TOO_LONG );
 
-	mov	ecx, 62					; 0000003eH
+	mov	ecx, 61					; 0000003dH
 	call	EmitError
 
 ; 304  :                 max = MAX_LINE_LEN - ( src - ls->start + 1 );
@@ -4107,7 +4107,7 @@ $LN26:
 
 ; 159  : 				EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
 
-	mov	ecx, 23
+	mov	ecx, 277				; 00000115H
 	call	EmitError
 $LN6@get_decos:
 
@@ -4605,7 +4605,7 @@ $LN15:
 
 ; 129  : 		EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
 
-	mov	ecx, 23
+	mov	ecx, 277				; 00000115H
 	call	EmitError
 $LN2@get_broads:
 
@@ -5261,7 +5261,7 @@ $LN10@Tokenize:
 
 ; 1161 :                                 EmitError( LINE_TOO_LONG );
 
-	mov	ecx, 62					; 0000003eH
+	mov	ecx, 61					; 0000003dH
 	call	EmitError
 
 ; 1162 :                                 p.index = start;
@@ -5490,7 +5490,7 @@ $LN25@Tokenize:
 
 ; 1212 :             EmitError( TOO_MANY_TOKENS );
 
-	mov	ecx, 63					; 0000003fH
+	mov	ecx, 62					; 0000003eH
 	call	EmitError
 
 ; 1213 :             p.index = start;

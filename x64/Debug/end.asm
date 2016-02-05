@@ -368,7 +368,7 @@ $LN26:
 
 ; 206  :             EmitWarn( 2, START_ADDRESS_IGNORED );
 
-	mov	edx, 243				; 000000f3H
+	mov	edx, 242				; 000000f2H
 	mov	ecx, 2
 	call	EmitWarn
 $LN5@EndDirecti:
@@ -456,7 +456,7 @@ $LN6@EndDirecti:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@EndDirecti
 $LN7@EndDirecti:
@@ -487,7 +487,7 @@ $LN3@EndDirecti:
 
 	mov	rax, QWORD PTR CurrStruct
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 142				; 0000008eH
 	call	EmitErr
 $LN8@EndDirecti:
 
@@ -720,7 +720,7 @@ $LN18@EndDirecti:
 ; 276  : #endif
 ; 277  :         return( EmitError( OPERAND_MUST_BE_RELOCATABLE ) );
 
-	mov	ecx, 189				; 000000bdH
+	mov	ecx, 188				; 000000bcH
 	call	EmitError
 	jmp	SHORT $LN1@EndDirecti
 $LN16@EndDirecti:
@@ -820,7 +820,7 @@ $LN32:
 
 ; 106  :         return( EmitError( MODEL_IS_NOT_DECLARED ) );
 
-	mov	ecx, 97					; 00000061H
+	mov	ecx, 96					; 00000060H
 	call	EmitError
 	jmp	$LN1@StartupExi
 $LN10@StartupExi:
@@ -838,7 +838,7 @@ $LN10@StartupExi:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 222				; 000000deH
+	mov	ecx, 221				; 000000ddH
 	call	EmitErr
 	jmp	$LN1@StartupExi
 $LN11@StartupExi:
@@ -1197,7 +1197,7 @@ $LN2@StartupExi:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 178  :         rc = ERROR;

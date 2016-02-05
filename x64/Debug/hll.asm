@@ -1033,7 +1033,7 @@ $LN38:
 
 ; 1606 :     return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
 
-	mov	ecx, 246				; 000000f6H
+	mov	ecx, 245				; 000000f5H
 	call	EmitError
 	jmp	$LN1@HllExitDir
 $LN7@HllExitDir:
@@ -1082,7 +1082,7 @@ $LN8@HllExitDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 81					; 00000051H
+	mov	ecx, 80					; 00000050H
 	call	EmitErr
 	jmp	$LN1@HllExitDir
 $LN9@HllExitDir:
@@ -1099,7 +1099,7 @@ $LN9@HllExitDir:
 
 ; 1618 :       return(EmitError(DOT_ELSE_CLAUSE_ALREADY_OCCURED_IN_THIS_DOT_IF_BLOCK));
 
-	mov	ecx, 68					; 00000044H
+	mov	ecx, 67					; 00000043H
 	call	EmitError
 	jmp	$LN1@HllExitDir
 $LN10@HllExitDir:
@@ -1257,7 +1257,7 @@ $LN5@HllExitDir:
 
 ; 1648 :       return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
 
-	mov	ecx, 246				; 000000f6H
+	mov	ecx, 245				; 000000f5H
 	call	EmitError
 	jmp	$LN1@HllExitDir
 $LN17@HllExitDir:
@@ -1512,7 +1512,7 @@ $LN2@HllExitDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 1697 :     rc = ERROR;
@@ -1644,7 +1644,7 @@ $LN40:
 
 ; 1443 :     return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
 
-	mov	ecx, 246				; 000000f6H
+	mov	ecx, 245				; 000000f5H
 	call	EmitError
 	jmp	$LN1@HllEndDir
 $LN4@HllEndDir:
@@ -1710,7 +1710,7 @@ $LN5@HllEndDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 81					; 00000051H
+	mov	ecx, 80					; 00000050H
 	call	EmitErr
 	jmp	$LN1@HllEndDir
 $LN6@HllEndDir:
@@ -1769,7 +1769,7 @@ $LN8@HllEndDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 81					; 00000051H
+	mov	ecx, 80					; 00000050H
 	call	EmitErr
 
 ; 1469 :       return(ERROR);
@@ -1963,7 +1963,7 @@ $LN18@HllEndDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 81					; 00000051H
+	mov	ecx, 80					; 00000050H
 	call	EmitErr
 	jmp	$LN1@HllEndDir
 $LN19@HllEndDir:
@@ -2028,7 +2028,7 @@ $LN21@HllEndDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 81					; 00000051H
+	mov	ecx, 80					; 00000050H
 	call	EmitErr
 	jmp	$LN1@HllEndDir
 $LN22@HllEndDir:
@@ -2110,7 +2110,7 @@ $LN27@HllEndDir:
 ; 1530 :         else
 ; 1531 :           EmitError(EXPR_TOO_COMPLEX_FOR_UNTILCXZ);
 
-	mov	ecx, 192				; 000000c0H
+	mov	ecx, 191				; 000000bfH
 	call	EmitError
 $LN28@HllEndDir:
 $LN26@HllEndDir:
@@ -2159,7 +2159,7 @@ $LN29@HllEndDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 81					; 00000051H
+	mov	ecx, 80					; 00000050H
 	call	EmitErr
 	jmp	$LN1@HllEndDir
 $LN30@HllEndDir:
@@ -2285,7 +2285,7 @@ $LN35@HllEndDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 1566 :     rc = ERROR;
@@ -3650,7 +3650,7 @@ $LN2@HllStartDi:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 1404 :     rc = ERROR;
@@ -6011,7 +6011,7 @@ $LN2@EvaluateHl:
 
 ; 824  :     return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
 
-	mov	ecx, 200				; 000000c8H
+	mov	ecx, 199				; 000000c7H
 	call	EmitError
 	jmp	SHORT $LN1@EvaluateHl
 $LN3@EvaluateHl:
@@ -7100,7 +7100,7 @@ $LN19@GetSimpleE:
 
 ; 395  :         return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
 
-	mov	ecx, 200				; 000000c8H
+	mov	ecx, 199				; 000000c7H
 	call	EmitError
 	jmp	$LN1@GetSimpleE
 $LN20@GetSimpleE:
@@ -7252,7 +7252,7 @@ $LN23@GetSimpleE:
 
 ; 430  :       return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
 
-	mov	ecx, 200				; 000000c8H
+	mov	ecx, 199				; 000000c7H
 	call	EmitError
 	jmp	$LN1@GetSimpleE
 $LN27@GetSimpleE:
@@ -7316,7 +7316,7 @@ $LN28@GetSimpleE:
 
 ; 441  :     return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE)); /* v2.09: changed from NOT_ERROR to ERROR */
 
-	mov	ecx, 200				; 000000c8H
+	mov	ecx, 199				; 000000c7H
 	call	EmitError
 	jmp	$LN1@GetSimpleE
 $LN29@GetSimpleE:
@@ -7333,7 +7333,7 @@ $LN29@GetSimpleE:
 
 ; 444  :     return(EmitError(REAL_OR_BCD_NUMBER_NOT_ALLOWED)); /* v2.10: added */
 
-	mov	ecx, 271				; 0000010fH
+	mov	ecx, 270				; 0000010eH
 	call	EmitError
 	jmp	$LN1@GetSimpleE
 $LN7@GetSimpleE:
@@ -7584,7 +7584,7 @@ $LN41@GetSimpleE:
 
 ; 499  :     return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
 
-	mov	ecx, 200				; 000000c8H
+	mov	ecx, 199				; 000000c7H
 	call	EmitError
 	jmp	$LN1@GetSimpleE
 $LN42@GetSimpleE:
@@ -7792,7 +7792,7 @@ $LN45@GetSimpleE:
 
 ; 531  :     return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
 
-	mov	ecx, 200				; 000000c8H
+	mov	ecx, 199				; 000000c7H
 	call	EmitError
 	jmp	SHORT $LN1@GetSimpleE
 $LN46@GetSimpleE:
@@ -7980,7 +7980,7 @@ $LN7@GetToken:
 
 ; 327  :     return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
 
-	mov	ecx, 200				; 000000c8H
+	mov	ecx, 199				; 000000c7H
 	call	EmitError
 	jmp	SHORT $LN1@GetToken
 $LN8@GetToken:
@@ -9352,7 +9352,7 @@ $LN4:
 ; 1717 :     EmitErr(UNMATCHED_BLOCK_NESTING, ".if-.repeat-.while");
 
 	lea	rdx, OFFSET FLAT:$SG11808
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 142				; 0000008eH
 	call	EmitErr
 $LN2@HllCheckOp:
 

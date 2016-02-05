@@ -1207,7 +1207,7 @@ $LN9@elf_write_:
 
 ; 1265 :         EmitWarn( 2, ELF_GNU_EXTENSIONS_USED );
 
-	mov	edx, 263				; 00000107H
+	mov	edx, 262				; 00000106H
 	mov	ecx, 2
 	call	EmitWarn
 $LN18@elf_write_:
@@ -1476,7 +1476,7 @@ $LN15@write_relo:
 	mov	rcx, QWORD PTR fixup$[rsp]
 	mov	r8d, DWORD PTR [rcx+24]
 	mov	rdx, rax
-	mov	ecx, 199				; 000000c7H
+	mov	ecx, 198				; 000000c6H
 	call	EmitErr
 
 ; 1202 :             } else
@@ -1492,7 +1492,7 @@ $LN16@write_relo:
 	mov	r8, QWORD PTR [rax+8]
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	edx, DWORD PTR [rax+24]
-	mov	ecx, 197				; 000000c5H
+	mov	ecx, 196				; 000000c4H
 	call	EmitErr
 $LN17@write_relo:
 $LN5@write_relo:
@@ -1732,7 +1732,7 @@ $LN14@write_relo:
 	mov	rcx, QWORD PTR fixup$[rsp]
 	mov	r8d, DWORD PTR [rcx+24]
 	mov	rdx, rax
-	mov	ecx, 199				; 000000c7H
+	mov	ecx, 198				; 000000c6H
 	call	EmitErr
 
 ; 1113 :             } else
@@ -1748,7 +1748,7 @@ $LN15@write_relo:
 	mov	r8, QWORD PTR [rax+8]
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	edx, DWORD PTR [rax+24]
-	mov	ecx, 197				; 000000c5H
+	mov	ecx, 196				; 000000c4H
 	call	EmitErr
 $LN16@write_relo:
 $LN5@write_relo:

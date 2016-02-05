@@ -1888,22 +1888,21 @@ ret_code codegen( struct code_info *CodeInfo, uint_32 oldofs )
     }
 
 #if AVXSUPP 
-    if (CodeInfo->token >= VEX_START){
-      if (vex_flags[CodeInfo->token - VEX_START] & VX_L)  {
-      if (opnd1 & (OP_K | OP_ZMM | OP_YMM | OP_M256 | OP_M512)) {
-        if (CodeInfo->opnd[OPND2].type & OP_XMM && !(vex_flags[CodeInfo->token - VEX_START] & VX_HALF)) {
-          EmitErr(INVALID_INSTRUCTION_OPERANDS);
-          return(ERROR);
-        }
-        if ((CodeInfo->token >= T_VPBROADCASTB) && (CodeInfo->token <= T_VPBROADCASTQ))
-          ;
-        else if (opnd1 & OP_YMM || opnd1 & OP_K || opnd1 & OP_ZMM)
-          opnd1 |= OP_XMM;
-        else
-          opnd1 |= OP_M128;
-      }
-      }
-      /* Here is probably possible to find better solution     */
+	if (CodeInfo->token >= VEX_START) {
+		if (vex_flags[CodeInfo->token - VEX_START] & VX_L) {
+			if (opnd1 & (OP_K | OP_ZMM | OP_YMM | OP_M256 | OP_M512)) {
+				if (CodeInfo->opnd[OPND2].type & OP_XMM && !(vex_flags[CodeInfo->token - VEX_START] & VX_HALF)) {
+					EmitErr(INVALID_INSTRUCTION_OPERANDS);
+					return(ERROR);
+				}
+				if (opnd1 & OP_YMM || opnd1 & OP_K || opnd1 & OP_ZMM)
+					opnd1 |= OP_XMM;
+				else
+					opnd1 |= OP_M128;
+			}
+		}
+		/* Here is probably possible to find better solution     */
+
       if ((CodeInfo->token >= T_VCMPPD && CodeInfo->token <= T_VCMPTRUE_USSS) ||     //1754        1885                  
         (CodeInfo->token >= T_VPCMPD) && (CodeInfo->token <= T_VINSERTI64x4) ||          //1446        1635         
         (CodeInfo->token >= T_VPMOVSXBD) && (CodeInfo->token <= T_VUNPCKLPS) ||        //2007        2077            

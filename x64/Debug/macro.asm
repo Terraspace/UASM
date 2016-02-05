@@ -455,7 +455,7 @@ $LN4@PurgeDirec:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@PurgeDirec
 $LN5@PurgeDirec:
@@ -481,7 +481,7 @@ $LN5@PurgeDirec:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 103				; 00000067H
+	mov	ecx, 102				; 00000066H
 	call	EmitErr
 	jmp	$LN1@PurgeDirec
 $LN6@PurgeDirec:
@@ -496,7 +496,7 @@ $LN6@PurgeDirec:
 ; 749  :             return( EmitErr( EXPECTED, "macro name" ) );
 
 	lea	rdx, OFFSET FLAT:$SG11162
-	mov	ecx, 231				; 000000e7H
+	mov	ecx, 230				; 000000e6H
 	call	EmitErr
 	jmp	$LN1@PurgeDirec
 $LN7@PurgeDirec:
@@ -570,7 +570,7 @@ $LN10@PurgeDirec:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	SHORT $LN1@PurgeDirec
 $LN9@PurgeDirec:
@@ -680,7 +680,7 @@ $LN2@MacroDir:
 ; 688  :             return( EmitErr( SYMBOL_REDEFINITION, name ) );
 
 	mov	rdx, QWORD PTR name$[rsp]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 	jmp	$LN1@MacroDir
 $LN5@MacroDir:
@@ -1541,7 +1541,7 @@ $LN4@replace_pa:
 
 ; 144  :                 EmitError( TOO_MANY_MACRO_PLACEHOLDERS );
 
-	mov	ecx, 220				; 000000dcH
+	mov	ecx, 219				; 000000dbH
 	call	EmitError
 
 ; 145  :                 break;
@@ -2160,7 +2160,7 @@ $LN37@StoreMacro:
 ; 327  :                 EmitErr( SYNTAX_ERROR_EX, token );
 
 	mov	rdx, QWORD PTR token$[rbp]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 328  :                 break;
@@ -2184,7 +2184,7 @@ $LN35@StoreMacro:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rbp]
 	mov	r8, QWORD PTR [rcx+rax+8]
-	mov	edx, 270				; 0000010eH
+	mov	edx, 269				; 0000010dH
 	mov	ecx, 4
 	call	EmitWarn
 $LN39@StoreMacro:
@@ -2301,7 +2301,7 @@ $LN44@StoreMacro:
 
 ; 350  :                         EmitError( LITERAL_EXPECTED_AFTER_EQ );
 
-	mov	ecx, 186				; 000000baH
+	mov	ecx, 185				; 000000b9H
 	call	EmitError
 
 ; 351  :                         break; // return( ERROR );
@@ -2412,7 +2412,7 @@ $LN45@StoreMacro:
 
 ; 364  :                         EmitError( VARARG_PARAMETER_MUST_BE_LAST );
 
-	mov	ecx, 148				; 00000094H
+	mov	ecx, 147				; 00000093H
 	call	EmitError
 
 ; 365  :                         break;
@@ -2461,7 +2461,7 @@ $LN47@StoreMacro:
 
 ; 374  :                         EmitError( LABEL_PARAMETER_MUST_BE_FIRST );
 
-	mov	ecx, 149				; 00000095H
+	mov	ecx, 148				; 00000094H
 	call	EmitError
 
 ; 375  :                         break;
@@ -2529,7 +2529,7 @@ $LN50@StoreMacro:
 
 ; 386  :                         EmitError( VARARG_PARAMETER_MUST_BE_LAST );
 
-	mov	ecx, 148				; 00000094H
+	mov	ecx, 147				; 00000093H
 	call	EmitError
 
 ; 387  :                         break;
@@ -2556,7 +2556,7 @@ $LN53@StoreMacro:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rbp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 393  :                     break;
@@ -2599,7 +2599,7 @@ $LN40@StoreMacro:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rbp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 399  :                 break; // return( ERROR );
@@ -2664,7 +2664,7 @@ $LN8@StoreMacro:
 ; 420  :             //return( ERROR );
 ; 421  :             Fatal( UNMATCHED_MACRO_NESTING );
 
-	mov	ecx, 163				; 000000a3H
+	mov	ecx, 162				; 000000a2H
 	call	Fatal
 $LN57@StoreMacro:
 
@@ -3063,7 +3063,7 @@ $LN72@StoreMacro:
 ; 495  :                     EmitErr( SYNTAX_ERROR_EX, StringBufferEnd );
 
 	mov	rdx, QWORD PTR ModuleInfo+488
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 496  :                     break;
@@ -3083,7 +3083,7 @@ $LN70@StoreMacro:
 ; 498  :                     EmitWarn( 4, PARAM_IS_RESERVED_WORD, StringBufferEnd );
 
 	mov	r8, QWORD PTR ModuleInfo+488
-	mov	edx, 270				; 0000010eH
+	mov	edx, 269				; 0000010dH
 	mov	ecx, 4
 	call	EmitWarn
 $LN73@StoreMacro:
@@ -3097,7 +3097,7 @@ $LN71@StoreMacro:
 
 ; 501  :                     EmitError( TOO_MANY_MACRO_PLACEHOLDERS );
 
-	mov	ecx, 220				; 000000dcH
+	mov	ecx, 219				; 000000dbH
 	call	EmitError
 
 ; 502  :                     break;
@@ -3256,7 +3256,7 @@ $LN78@StoreMacro:
 ; 516  :                     EmitErr( SYNTAX_ERROR_EX, ls.input );
 
 	mov	rdx, QWORD PTR ls$[rbp]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 517  :                     break;

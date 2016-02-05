@@ -958,7 +958,7 @@ $LN4:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	SHORT $LN1@ListMacroD
 $LN2@ListMacroD:
@@ -1128,7 +1128,7 @@ $LN6@ListingDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@ListingDir
 $LN15@ListingDir:
@@ -1182,7 +1182,7 @@ $LN15@ListingDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 40					; 00000028H
+	mov	ecx, 39					; 00000027H
 	call	EmitErr
 	jmp	$LN1@ListingDir
 $LN17@ListingDir:
@@ -1321,7 +1321,7 @@ $LN25@ListingDir:
 
 ; 1230 :             return( EmitError( STATEMENT_NOT_ALLOWED_INSIDE_STRUCTURE_DEFINITION ) );
 
-	mov	ecx, 142				; 0000008eH
+	mov	ecx, 141				; 0000008dH
 	call	EmitError
 	jmp	$LN1@ListingDir
 $LN26@ListingDir:
@@ -1340,7 +1340,7 @@ $LN26@ListingDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	r8, QWORD PTR [rcx+rax+8]
-	mov	edx, 129				; 00000081H
+	mov	edx, 128				; 00000080H
 	mov	ecx, 4
 	call	EmitWarn
 $LN27@ListingDir:
@@ -1378,7 +1378,7 @@ $LN2@ListingDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	SHORT $LN1@ListingDir
 $LN28@ListingDir:

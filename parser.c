@@ -661,7 +661,7 @@ static ret_code set_rm_sib( struct code_info *CodeInfo, unsigned CurrOpnd, char 
 #endif
           return( EmitError( CANNOT_MIX_16_AND_32_BIT_REGISTERS ) );
         }
-  found:
+  
         switch( index ) {
         case T_BX:
         case T_BP:
@@ -3378,14 +3378,26 @@ ret_code ParseLine(struct asm_tok tokenarray[])
       }
       break;
     }
-  } /* end for */
+   } /* end for */
+
 #if AVXSUPP
-  /* 4 arguments are valid vor AVX only */
-  if (CurrOpnd != j) {
-    for (; tokenarray[i].token != T_COMMA; i--);
-    DebugMsg(("ParseLine(%s): CurrOpnd != j ( %u - %u ) >%s<\n", instr, CurrOpnd, j, tokenarray[i].tokpos));
-    //return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
-  }
+	 /* 4 arguments are valid vor AVX only */
+   if (CurrOpnd != j) {
+	   for (; tokenarray[i].token != T_COMMA; i--);
+	   DebugMsg(("ParseLine(%s): CurrOpnd != j ( %u - %u ) >%s<\n", instr, CurrOpnd, j, tokenarray[i].tokpos));
+	   if (CodeInfo.token < VEX_START)
+		   return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
+	   else
+		   if ((CodeInfo.token == T_VMASKMOVPS || CodeInfo.token == T_VMASKMOVPD) && (j < 3))
+			   return(EmitErr(MISSING_OPERATOR_IN_EXPRESSION));
+   }
+   if (CodeInfo.token == T_VBLENDVPS || CodeInfo.token == T_VBLENDVPD) {
+	   DebugMsg(("ParseLine(%s): ( %u - %u ) >%s<\n", instr, CurrOpnd, j, tokenarray[i].tokpos));
+	   if (CodeInfo.opnd[OPND3].type == OP_NONE) {
+		   return (EmitErr(MISSING_OPERATOR_IN_EXPRESSION));
+	   }
+   }
+
 #endif
 
   /* for FAR calls/jmps some special handling is required:

@@ -292,7 +292,7 @@ $LN2@omf_fill_l:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 103				; 00000067H
+	mov	ecx, 102				; 00000066H
 	call	EmitErr
 
 ; 263  :         return( 0 );
@@ -595,7 +595,7 @@ $LN18@omf_fill_l:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 165				; 000000a5H
+	mov	ecx, 164				; 000000a4H
 	call	EmitErr
 
 ; 317  :                 return ( 0 );
@@ -1628,7 +1628,7 @@ $LN28@OmfFixGenF:
 	add	rax, 10
 	mov	r8, QWORD PTR tv131[rsp]
 	mov	rdx, rax
-	mov	ecx, 198				; 000000c6H
+	mov	ecx, 197				; 000000c5H
 	call	EmitErr
 
 ; 416  :                ModuleInfo.fmtopt->formatname,

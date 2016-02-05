@@ -836,7 +836,7 @@ $LN6@bin_check_:
 
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 202				; 000000caH
+	mov	ecx, 201				; 000000c9H
 	call	EmitErr
 	jmp	SHORT $LN1@bin_check_
 $LN5@bin_check_:
@@ -1125,7 +1125,7 @@ $LN33@bin_write_:
 
 ; 1567 :             return( EmitErr( MODEL_IS_NOT_DECLARED ) );
 
-	mov	ecx, 97					; 00000061H
+	mov	ecx, 96					; 00000060H
 	call	EmitErr
 	jmp	$LN1@bin_write_
 $LN36@bin_write_:
@@ -1443,7 +1443,7 @@ $LN46@bin_write_:
 
 ; 1622 :                 return( EmitError( START_LABEL_INVALID ) );
 
-	mov	ecx, 203				; 000000cbH
+	mov	ecx, 202				; 000000caH
 	call	EmitError
 	jmp	$LN1@bin_write_
 $LN45@bin_write_:
@@ -1709,7 +1709,7 @@ $LN50@bin_write_:
 
 ; 1661 :             EmitWarn( 2, NO_STACK );
 
-	mov	edx, 205				; 000000cdH
+	mov	edx, 204				; 000000ccH
 	mov	ecx, 2
 	call	EmitWarn
 $LN51@bin_write_:
@@ -1844,7 +1844,7 @@ $LN53@bin_write_:
 
 ; 1683 :             EmitWarn( 2, NO_START_LABEL );
 
-	mov	edx, 204				; 000000ccH
+	mov	edx, 203				; 000000cbH
 	mov	ecx, 2
 	call	EmitWarn
 $LN54@bin_write_:
@@ -3600,7 +3600,7 @@ $LN37@pe_set_val:
 
 ; 1403 :         EmitWarn( 2, NO_START_LABEL );
 
-	mov	edx, 204				; 000000ccH
+	mov	edx, 203				; 000000cbH
 	mov	ecx, 2
 	call	EmitWarn
 $LN38@pe_set_val:
@@ -7892,7 +7892,7 @@ $LN60@DoFixup:
 	mov	rcx, QWORD PTR fixup$[rsp]
 	mov	r8d, DWORD PTR [rcx+24]
 	mov	rdx, rax
-	mov	ecx, 199				; 000000c7H
+	mov	ecx, 198				; 000000c6H
 	call	EmitErr
 $LN10@DoFixup:
 
@@ -8962,7 +8962,7 @@ $LN17@CalcOffset:
 
 	mov	rax, QWORD PTR grp$[rsp]
 	mov	r8, QWORD PTR [rax+8]
-	mov	edx, 276				; 00000114H
+	mov	edx, 275				; 00000113H
 	mov	ecx, 2
 	call	EmitWarn
 $LN23@CalcOffset:
@@ -9054,7 +9054,7 @@ $LN13:
 
 ; 755  :             EmitError( MODEL_MUST_BE_FLAT );
 
-	mov	ecx, 212				; 000000d4H
+	mov	ecx, 211				; 000000d3H
 	call	EmitError
 $LN3@pe_create_:
 

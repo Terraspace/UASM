@@ -551,7 +551,7 @@ $LN4@NameDirect:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	SHORT $LN1@NameDirect
 $LN3@NameDirect:
@@ -643,7 +643,7 @@ $LN5@IncludeLib:
 ; 162  :         //return( ERROR );
 ; 163  :         EmitWarn( 2, LIBRARY_NAME_MISSING );
 
-	mov	edx, 89					; 00000059H
+	mov	edx, 88					; 00000058H
 	mov	ecx, 2
 	call	EmitWarn
 $LN6@IncludeLib:
@@ -684,7 +684,7 @@ $LN6@IncludeLib:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@IncludeLib
 $LN9@IncludeLib:
@@ -835,7 +835,7 @@ $LN25:
 
 ; 208  :         return( EmitError( EXPECTED_FILE_NAME ) );
 
-	mov	ecx, 113				; 00000071H
+	mov	ecx, 112				; 00000070H
 	call	EmitError
 	jmp	$LN1@IncBinDire
 $LN2@IncBinDire:
@@ -930,7 +930,7 @@ $LN8@IncBinDire:
 
 ; 222  :             return( EmitError( FILENAME_MUST_BE_ENCLOSED_IN_QUOTES_OR_BRACKETS ) );
 
-	mov	ecx, 242				; 000000f2H
+	mov	ecx, 241				; 000000f1H
 	call	EmitError
 	jmp	$LN1@IncBinDire
 $LN9@IncBinDire:
@@ -944,7 +944,7 @@ $LN3@IncBinDire:
 
 ; 225  :         return( EmitError( FILENAME_MUST_BE_ENCLOSED_IN_QUOTES_OR_BRACKETS ) );
 
-	mov	ecx, 242				; 000000f2H
+	mov	ecx, 241				; 000000f1H
 	call	EmitError
 	jmp	$LN1@IncBinDire
 $LN4@IncBinDire:
@@ -1007,7 +1007,7 @@ $LN12@IncBinDire:
 
 ; 235  :             return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 	jmp	$LN1@IncBinDire
 $LN14@IncBinDire:
@@ -1065,7 +1065,7 @@ $LN17@IncBinDire:
 
 ; 244  :                 return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 	jmp	$LN1@IncBinDire
 $LN19@IncBinDire:
@@ -1091,7 +1091,7 @@ $LN10@IncBinDire:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@IncBinDire
 $LN20@IncBinDire:
@@ -1105,7 +1105,7 @@ $LN20@IncBinDire:
 
 ; 253  :         return( EmitError( MUST_BE_IN_SEGMENT_BLOCK ) );
 
-	mov	ecx, 83					; 00000053H
+	mov	ecx, 82					; 00000052H
 	call	EmitError
 	jmp	$LN1@IncBinDire
 $LN21@IncBinDire:
@@ -1349,7 +1349,7 @@ $LN3@AliasDirec:
 
 ; 316  :         return( EmitError( TEXT_ITEM_REQUIRED ) );
 
-	mov	ecx, 145				; 00000091H
+	mov	ecx, 144				; 00000090H
 	call	EmitError
 	jmp	$LN1@AliasDirec
 $LN2@AliasDirec:
@@ -1398,7 +1398,7 @@ $LN5@AliasDirec:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@AliasDirec
 $LN4@AliasDirec:
@@ -1439,7 +1439,7 @@ $LN7@AliasDirec:
 
 ; 330  :         return( EmitError( TEXT_ITEM_REQUIRED ) );
 
-	mov	ecx, 145				; 00000091H
+	mov	ecx, 144				; 00000090H
 	call	EmitError
 	jmp	$LN1@AliasDirec
 $LN6@AliasDirec:
@@ -1475,7 +1475,7 @@ $LN6@AliasDirec:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@AliasDirec
 $LN8@AliasDirec:
@@ -1557,7 +1557,7 @@ $LN11@AliasDirec:
 ; 351  :             return( EmitErr( MUST_BE_PUBLIC_OR_EXTERNAL, subst ) );
 
 	mov	rdx, QWORD PTR subst$[rsp]
-	mov	ecx, 269				; 0000010dH
+	mov	ecx, 268				; 0000010cH
 	call	EmitErr
 	jmp	$LN1@AliasDirec
 $LN13@AliasDirec:
@@ -1654,7 +1654,7 @@ $LN17@AliasDirec:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 	jmp	$LN1@AliasDirec
 $LN16@AliasDirec:
@@ -1690,7 +1690,7 @@ $LN20@AliasDirec:
 ; 379  :                 return( EmitErr( SYMBOL_NOT_DEFINED, subst ) );
 
 	mov	rdx, QWORD PTR subst$[rsp]
-	mov	ecx, 103				; 00000067H
+	mov	ecx, 102				; 00000066H
 	call	EmitErr
 	jmp	SHORT $LN1@AliasDirec
 	jmp	SHORT $LN22@AliasDirec
@@ -1720,7 +1720,7 @@ $LN24@AliasDirec:
 ; 382  :                 return( EmitErr( MUST_BE_PUBLIC_OR_EXTERNAL, subst ) );
 
 	mov	rdx, QWORD PTR subst$[rsp]
-	mov	ecx, 269				; 0000010dH
+	mov	ecx, 268				; 0000010cH
 	call	EmitErr
 	jmp	SHORT $LN1@AliasDirec
 $LN23@AliasDirec:
@@ -1828,7 +1828,7 @@ $LN2@RadixDirec:
 
 ; 453  :         return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 	jmp	$LN1@RadixDirec
 $LN3@RadixDirec:
@@ -1849,7 +1849,7 @@ $LN3@RadixDirec:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	SHORT $LN1@RadixDirec
 $LN4@RadixDirec:
@@ -1867,7 +1867,7 @@ $LN6@RadixDirec:
 
 ; 459  :         return( EmitError( INVALID_RADIX_TAG ) );
 
-	mov	ecx, 182				; 000000b6H
+	mov	ecx, 181				; 000000b5H
 	call	EmitError
 	jmp	SHORT $LN1@RadixDirec
 $LN5@RadixDirec:
@@ -1943,7 +1943,7 @@ $LN8:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@SegOrderDi
 $LN2@SegOrderDi:
@@ -1982,7 +1982,7 @@ $LN5@SegOrderDi:
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	QWORD PTR __imp__strupr
 	mov	r8, rax
-	mov	edx, 225				; 000000e1H
+	mov	edx, 224				; 000000e0H
 	mov	ecx, 2
 	call	EmitWarn
 $LN6@SegOrderDi:
@@ -2100,7 +2100,7 @@ $LN5@IncludeDir:
 
 ; 83   :         return( EmitError( EXPECTED_FILE_NAME ) );
 
-	mov	ecx, 113				; 00000071H
+	mov	ecx, 112				; 00000070H
 	call	EmitError
 	jmp	$LN1@IncludeDir
 $LN6@IncludeDir:
@@ -2143,7 +2143,7 @@ $LN6@IncludeDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@IncludeDir
 $LN9@IncludeDir:

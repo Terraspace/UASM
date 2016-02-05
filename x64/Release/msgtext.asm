@@ -25,7 +25,7 @@ $SG7516	DB	'usage: HJWasm [ options ] filelist [@env_var]', 0aH, 'Ru'
 	DB	'n "HJWasm -?" or "HJWasm -h" for more info', 0aH, 00H
 	ORG $+4
 $SG7517	DB	'%s: %lu lines, %u passes, %u ms, %u warnings, %u errors', 00H
-$SG7518	DB	'HJWasm v2.13, Feb  3 2016', 00H
+$SG7518	DB	'HJWasm v2.13, Feb  4 2016', 00H
 	ORG $+2
 $SG7520	DB	'Error', 00H
 	ORG $+6

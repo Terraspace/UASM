@@ -326,7 +326,7 @@ $LN37:
 
 ; 187  :         EmitError( MODEL_IS_NOT_DECLARED );
 
-	mov	ecx, 97					; 00000061H
+	mov	ecx, 96					; 00000060H
 	call	EmitError
 
 ; 188  :         return( ERROR );
@@ -398,7 +398,7 @@ $LN8@Simplified:
 
 ; 201  :             EmitError( CONSTANT_EXPECTED );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 
 ; 202  :             return( ERROR );
@@ -480,7 +480,7 @@ $LN6@Simplified:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 219  :         return( ERROR );

@@ -752,7 +752,7 @@ $LN8@OptionDire:
 
 ; 932  :                 return( EmitError( COLON_EXPECTED ) );
 
-	mov	ecx, 85					; 00000055H
+	mov	ecx, 84					; 00000054H
 	call	EmitError
 	jmp	$LN1@OptionDire
 $LN10@OptionDire:
@@ -881,7 +881,7 @@ $LN16@OptionDire:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	SHORT $LN1@OptionDire
 $LN15@OptionDire:
@@ -927,7 +927,7 @@ Unsupported PROC
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 73					; 00000049H
+	mov	ecx, 72					; 00000048H
 	call	EmitErr
 
 ; 829  : }
@@ -979,7 +979,7 @@ SetStackBase PROC
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@SetStackBa
 $LN2@SetStackBa:
@@ -1000,7 +1000,7 @@ $LN2@SetStackBa:
 
 ; 808  :         return( EmitError( MUST_BE_INDEX_OR_BASE_REGISTER ) );
 
-	mov	ecx, 34					; 00000022H
+	mov	ecx, 33					; 00000021H
 	call	EmitError
 	jmp	$LN1@SetStackBa
 $LN3@SetStackBa:
@@ -1152,7 +1152,7 @@ $LN3@SetCodeVie:
 
 ; 787  :         return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 	jmp	SHORT $LN1@SetCodeVie
 $LN4@SetCodeVie:
@@ -1541,7 +1541,7 @@ $LN4@SetWin64:
 
 ; 712  :         return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 	jmp	SHORT $LN1@SetWin64
 $LN5@SetWin64:
@@ -1631,7 +1631,7 @@ $LN3@SetRenameK:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@SetRenameK
 $LN2@SetRenameK:
@@ -1676,7 +1676,7 @@ $LN5@SetRenameK:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@SetRenameK
 $LN4@SetRenameK:
@@ -1703,7 +1703,7 @@ $LN4@SetRenameK:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	SHORT $LN1@SetRenameK
 $LN6@SetRenameK:
@@ -1728,7 +1728,7 @@ $LN6@SetRenameK:
 
 ; 681  :         return( EmitError( RESERVED_WORD_EXPECTED ) );
 
-	mov	ecx, 159				; 0000009fH
+	mov	ecx, 158				; 0000009eH
 	call	EmitError
 	jmp	SHORT $LN1@SetRenameK
 $LN7@SetRenameK:
@@ -1855,7 +1855,7 @@ $LN3@SetElf:
 
 ; 635  :         return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 	jmp	SHORT $LN1@SetElf
 $LN4@SetElf:
@@ -2138,7 +2138,7 @@ $LN16@SetMZ:
 
 ; 571  :             return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 	jmp	$LN1@SetMZ
 $LN17@SetMZ:
@@ -2234,7 +2234,7 @@ $LN9@SetMZ:
 
 ; 588  :             EmitError( INVALID_HEADER_ALIGNMENT );
 
-	mov	ecx, 206				; 000000ceH
+	mov	ecx, 205				; 000000cdH
 	call	EmitError
 $LN25@SetMZ:
 
@@ -2333,7 +2333,7 @@ $LN5@SetProcAli:
 
 ; 530  :         return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 	jmp	SHORT $LN1@SetProcAli
 $LN6@SetProcAli:
@@ -2346,7 +2346,7 @@ $LN6@SetProcAli:
 
 ; 533  :         EmitError( STRUCT_ALIGN_TOO_HIGH );
 
-	mov	ecx, 215				; 000000d7H
+	mov	ecx, 214				; 000000d6H
 	call	EmitError
 $LN7@SetProcAli:
 
@@ -2379,7 +2379,7 @@ $LN3@SetProcAli:
 ; 537  :         return( EmitErr( POWER_OF_2, opndx.value ) );
 
 	mov	edx, DWORD PTR opndx$[rsp]
-	mov	ecx, 130				; 00000082H
+	mov	ecx, 129				; 00000081H
 	call	EmitErr
 	jmp	SHORT $LN1@SetProcAli
 $LN8@SetProcAli:
@@ -2469,7 +2469,7 @@ $LN5@SetFieldAl:
 
 ; 502  :         return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 	jmp	SHORT $LN1@SetFieldAl
 $LN6@SetFieldAl:
@@ -2482,7 +2482,7 @@ $LN6@SetFieldAl:
 
 ; 505  :         return( EmitError( STRUCT_ALIGN_TOO_HIGH ) );
 
-	mov	ecx, 215				; 000000d7H
+	mov	ecx, 214				; 000000d6H
 	call	EmitError
 	jmp	SHORT $LN1@SetFieldAl
 $LN7@SetFieldAl:
@@ -2516,7 +2516,7 @@ $LN3@SetFieldAl:
 ; 509  :         return( EmitErr( POWER_OF_2, opndx.value ) );
 
 	mov	edx, DWORD PTR opndx$[rsp]
-	mov	ecx, 130				; 00000082H
+	mov	ecx, 129				; 00000081H
 	call	EmitErr
 	jmp	SHORT $LN1@SetFieldAl
 $LN8@SetFieldAl:
@@ -2694,7 +2694,7 @@ $LN10@SetSegment:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	SHORT $LN1@SetSegment
 $LN11@SetSegment:
@@ -2974,7 +2974,7 @@ $LN6@SetOffset:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	SHORT $LN1@SetOffset
 $LN7@SetOffset:
@@ -3048,7 +3048,7 @@ SetEpilogue PROC
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@SetEpilogu
 $LN2@SetEpilogu:
@@ -3199,7 +3199,7 @@ SetPrologue PROC
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@SetPrologu
 $LN2@SetPrologu:
@@ -3485,7 +3485,7 @@ $LN2@SetLanguag:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 $LN1@SetLanguag:
 
@@ -3575,7 +3575,7 @@ $LN14@SetNoKeywo:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@SetNoKeywo
 $LN13@SetNoKeywo:
@@ -3703,7 +3703,7 @@ $LN18@SetNoKeywo:
 
 ; 272  :                     return( EmitError( RESERVED_WORD_EXPECTED ) );
 
-	mov	ecx, 159				; 0000009fH
+	mov	ecx, 158				; 0000009eH
 	call	EmitError
 	jmp	SHORT $LN1@SetNoKeywo
 $LN20@SetNoKeywo:
@@ -4338,7 +4338,7 @@ $LN8@SetCaseMap:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	SHORT $LN1@SetCaseMap
 $LN9@SetCaseMap:
@@ -4376,7 +4376,7 @@ $LN2@SetCaseMap:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	SHORT $LN1@SetCaseMap
 $LN3@SetCaseMap:
@@ -4535,7 +4535,7 @@ $LN3@SetEvex:
 ; 49   : 	else {
 ; 50   : 		return(EmitError(CONSTANT_EXPECTED));
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 	jmp	SHORT $LN1@SetEvex
 $LN4@SetEvex:

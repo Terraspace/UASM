@@ -333,7 +333,7 @@ $LN2@main:
 	lea	rdx, OFFSET FLAT:Options+32
 	mov	r8, rax
 	mov	rdx, QWORD PTR [rdx+rcx]
-	mov	ecx, 107				; 0000006bH
+	mov	ecx, 106				; 0000006aH
 	call	EmitErr
 
 ; 113  : 			break;
@@ -455,7 +455,7 @@ $LN9@main:
 
 ; 140  : 		EmitError(NO_FILENAME_SPECIFIED);
 
-	mov	ecx, 105				; 00000069H
+	mov	ecx, 104				; 00000068H
 	call	EmitError
 $LN11@main:
 $LN10@main:
@@ -521,7 +521,7 @@ genfailure PROC
 ; 55   : #endif
 ; 56   :         EmitError( GENERAL_FAILURE );
 
-	mov	ecx, 169				; 000000a9H
+	mov	ecx, 168				; 000000a8H
 	call	EmitError
 $LN2@genfailure:
 

@@ -453,7 +453,7 @@ $LN61:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@RecordDire
 $LN11@RecordDire:
@@ -551,7 +551,7 @@ $LN15@RecordDire:
 ; 1149 :         return( EmitErr( SYMBOL_REDEFINITION, name ) );
 
 	mov	rdx, QWORD PTR name$[rsp]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 	jmp	$LN1@RecordDire
 $LN16@RecordDire:
@@ -619,7 +619,7 @@ $LN4@RecordDire:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 1166 :             break;
@@ -644,7 +644,7 @@ $LN20@RecordDire:
 
 ; 1170 :             EmitError( IDENTIFIER_TOO_LONG );
 
-	mov	ecx, 71					; 00000047H
+	mov	ecx, 70					; 00000046H
 	call	EmitError
 
 ; 1171 :             break;
@@ -675,7 +675,7 @@ $LN21@RecordDire:
 
 ; 1176 :             EmitError( COLON_EXPECTED );
 
-	mov	ecx, 85					; 00000055H
+	mov	ecx, 84					; 00000054H
 	call	EmitError
 
 ; 1177 :             break;
@@ -714,7 +714,7 @@ $LN23@RecordDire:
 
 ; 1184 :             EmitError( CONSTANT_EXPECTED );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 
 ; 1185 :             opndx.value = 1;
@@ -734,7 +734,7 @@ $LN24@RecordDire:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 36					; 00000024H
+	mov	ecx, 35					; 00000023H
 	call	EmitErr
 
 ; 1189 :             break;
@@ -766,7 +766,7 @@ $LN55@RecordDire:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 141				; 0000008dH
+	mov	ecx, 140				; 0000008cH
 	call	EmitErr
 
 ; 1192 :             break;
@@ -847,7 +847,7 @@ $LN56@RecordDire:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 1203 :                 break;
@@ -928,7 +928,7 @@ $LN34@RecordDire:
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	r8, QWORD PTR [rcx+rax+8]
 	lea	rdx, OFFSET FLAT:szRecord
-	mov	ecx, 140				; 0000008cH
+	mov	ecx, 139				; 0000008bH
 	call	EmitErr
 
 ; 1218 :                 redef_err++;
@@ -963,7 +963,7 @@ $LN31@RecordDire:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 
 ; 1224 :                 break;
@@ -1197,7 +1197,7 @@ $LN43@RecordDire:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 1262 :                 break;
@@ -1370,7 +1370,7 @@ $LN52@RecordDire:
 	mov	rax, QWORD PTR newr$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	lea	rdx, OFFSET FLAT:szRecord
-	mov	ecx, 140				; 0000008cH
+	mov	ecx, 139				; 0000008bH
 	call	EmitErr
 $LN51@RecordDire:
 
@@ -1467,7 +1467,7 @@ $LN52:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@TypedefDir
 $LN8@TypedefDir:
@@ -1556,7 +1556,7 @@ $LN14@TypedefDir:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 	jmp	$LN1@TypedefDir
 $LN13@TypedefDir:
@@ -1653,7 +1653,7 @@ $LN19@TypedefDir:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 137				; 00000089H
+	mov	ecx, 136				; 00000088H
 	call	EmitErr
 	jmp	$LN1@TypedefDir
 $LN20@TypedefDir:
@@ -2074,7 +2074,7 @@ $LN49@TypedefDir:
 ; 1076 :             return( EmitErr( SYMBOL_TYPE_CONFLICT, name ) );
 
 	mov	rdx, QWORD PTR name$[rsp]
-	mov	ecx, 137				; 00000089H
+	mov	ecx, 136				; 00000088H
 	call	EmitErr
 	jmp	$LN1@TypedefDir
 $LN28@TypedefDir:
@@ -2212,7 +2212,7 @@ $LN51@TypedefDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	SHORT $LN1@TypedefDir
 $LN34@TypedefDir:
@@ -2304,7 +2304,7 @@ $LN4@CheckAnony:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 	jmp	SHORT $LN1@CheckAnony
 $LN7@CheckAnony:
@@ -2544,7 +2544,7 @@ $LN36@EndstructD:
 	mov	QWORD PTR tv132[rsp], rax
 $LN37@EndstructD:
 	mov	rdx, QWORD PTR tv132[rsp]
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 142				; 0000008eH
 	call	EmitErr
 	jmp	$LN1@EndstructD
 $LN11@EndstructD:
@@ -2590,7 +2590,7 @@ $LN11@EndstructD:
 	imul	rax, rax, 0
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 142				; 0000008eH
 	call	EmitErr
 	jmp	$LN1@EndstructD
 $LN15@EndstructD:
@@ -2940,7 +2940,7 @@ $LN5@EndstructD:
 	mov	rax, QWORD PTR dir$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	lea	rdx, OFFSET FLAT:szStructure
-	mov	ecx, 140				; 0000008cH
+	mov	ecx, 139				; 0000008bH
 	call	EmitErr
 $LN32@EndstructD:
 
@@ -3016,7 +3016,7 @@ $LN30@EndstructD:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	SHORT $LN1@EndstructD
 $LN34@EndstructD:
@@ -3146,7 +3146,7 @@ $LN8@StructDire:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@StructDire
 $LN7@StructDire:
@@ -3290,7 +3290,7 @@ $LN16@StructDire:
 
 	mov	rax, QWORD PTR opndx$6[rsp+80]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 103				; 00000067H
+	mov	ecx, 102				; 00000066H
 	call	EmitErr
 	jmp	SHORT $LN21@StructDire
 $LN20@StructDire:
@@ -3298,7 +3298,7 @@ $LN20@StructDire:
 ; 228  :                 else
 ; 229  :                     EmitError( CONSTANT_EXPECTED );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 $LN21@StructDire:
 
@@ -3311,7 +3311,7 @@ $LN18@StructDire:
 
 ; 231  :                 EmitError( STRUCT_ALIGN_TOO_HIGH );
 
-	mov	ecx, 215				; 000000d7H
+	mov	ecx, 214				; 000000d6H
 	call	EmitError
 
 ; 232  :             } else {
@@ -3343,7 +3343,7 @@ $LN3@StructDire:
 ; 235  :                     EmitErr( POWER_OF_2, opndx.value );
 
 	mov	edx, DWORD PTR opndx$6[rsp]
-	mov	ecx, 130				; 00000082H
+	mov	ecx, 129				; 00000081H
 	call	EmitErr
 
 ; 236  :                 } else
@@ -3408,7 +3408,7 @@ $LN15@StructDire:
 ; 247  :                 EmitWarn( 2, TOKEN_IGNORED, szNonUnique );
 
 	lea	r8, OFFSET FLAT:szNonUnique
-	mov	edx, 251				; 000000fbH
+	mov	edx, 250				; 000000faH
 	mov	ecx, 2
 	call	EmitWarn
 
@@ -3453,7 +3453,7 @@ $LN14@StructDire:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@StructDire
 $LN28@StructDire:
@@ -3799,7 +3799,7 @@ $LN48@StructDire:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 	jmp	$LN1@StructDire
 $LN5@StructDire:
@@ -3815,7 +3815,7 @@ $LN44@StructDire:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 	jmp	$LN1@StructDire
 $LN45@StructDire:
@@ -4343,7 +4343,7 @@ $LN5:
 
 ; 785  :         return( EmitError( ORG_NOT_ALLOWED_IN_UNIONS ) );
 
-	mov	ecx, 214				; 000000d6H
+	mov	ecx, 213				; 000000d5H
 	call	EmitError
 	jmp	SHORT $LN1@SetStructC
 $LN2@SetStructC:
@@ -4626,7 +4626,7 @@ $LN39@CreateStru:
 
 ; 568  :             EmitError( IDENTIFIER_TOO_LONG );
 
-	mov	ecx, 71					; 00000047H
+	mov	ecx, 70					; 00000046H
 	call	EmitError
 
 ; 569  :             return( NULL );
@@ -4654,7 +4654,7 @@ $LN10@CreateStru:
 
 	mov	rax, QWORD PTR sym$4[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 57					; 00000039H
+	mov	ecx, 56					; 00000038H
 	call	EmitErr
 
 ; 574  :             return( NULL );
@@ -5803,7 +5803,7 @@ $LN25@GetQualifi:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 86					; 00000056H
+	mov	ecx, 85					; 00000055H
 	call	EmitErr
 	jmp	$LN1@GetQualifi
 
@@ -6038,7 +6038,7 @@ $LN45@GetQualifi:
 
 ; 906  :                 EmitError( QUALIFIED_TYPE_EXPECTED );
 
-	mov	ecx, 87					; 00000057H
+	mov	ecx, 86					; 00000056H
 	call	EmitError
 	jmp	SHORT $LN44@GetQualifi
 $LN43@GetQualifi:
@@ -6050,7 +6050,7 @@ $LN43@GetQualifi:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 909  :                 i++;
@@ -6115,7 +6115,7 @@ $LN50@GetQualifi:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 103				; 00000067H
+	mov	ecx, 102				; 00000066H
 	call	EmitErr
 	jmp	SHORT $LN49@GetQualifi
 $LN48@GetQualifi:
@@ -6127,7 +6127,7 @@ $LN48@GetQualifi:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 86					; 00000056H
+	mov	ecx, 85					; 00000055H
 	call	EmitErr
 $LN49@GetQualifi:
 
@@ -6446,7 +6446,7 @@ $LN15:
 
 ; 94   :         EmitError( NESTING_LEVEL_TOO_DEEP );
 
-	mov	ecx, 101				; 00000065H
+	mov	ecx, 100				; 00000064H
 	call	EmitError
 
 ; 95   :         return( NULL );

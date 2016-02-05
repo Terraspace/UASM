@@ -213,7 +213,7 @@ $LN174:
 ; 147  :         //EmitError( SYNTAX_ERROR ); /* v2.10: error msg changed */
 ; 148  :         return( EmitError( INVALID_INSTRUCTION_OPERANDS ) );
 
-	mov	ecx, 50					; 00000032H
+	mov	ecx, 49					; 00000031H
 	call	EmitError
 	jmp	$LN1@process_br
 $LN14@process_br:
@@ -316,7 +316,7 @@ $LN134@process_br:
 	mov	QWORD PTR tv143[rsp], rax
 $LN135@process_br:
 	mov	rdx, QWORD PTR tv143[rsp]
-	mov	ecx, 90					; 0000005aH
+	mov	ecx, 89					; 00000059H
 	call	EmitErr
 	jmp	$LN1@process_br
 $LN18@process_br:
@@ -398,7 +398,7 @@ $LN16@process_br:
 ; 181  : #if NEEDLABEL
 ; 182  :         return( EmitError( JUMP_DESTINATION_MUST_SPECIFY_A_LABEL ) );
 
-	mov	ecx, 250				; 000000faH
+	mov	ecx, 249				; 000000f9H
 	call	EmitError
 	jmp	$LN1@process_br
 $LN20@process_br:
@@ -638,7 +638,7 @@ $LN33@process_br:
 
 ; 244  :                     return( EmitError( CANNOT_HAVE_IMPLICIT_FAR_JUMP_OR_CALL_TO_NEAR_LABEL ) );
 
-	mov	ecx, 170				; 000000aaH
+	mov	ecx, 169				; 000000a9H
 	call	EmitError
 	jmp	$LN1@process_br
 $LN35@process_br:
@@ -675,7 +675,7 @@ $LN22@process_br:
 
 ; 252  :         return( EmitErr( JUMP_DESTINATION_MUST_SPECIFY_A_LABEL ) );
 
-	mov	ecx, 250				; 000000faH
+	mov	ecx, 249				; 000000f9H
 	call	EmitErr
 	jmp	$LN1@process_br
 $LN36@process_br:
@@ -893,7 +893,7 @@ $LN50@process_br:
 
 ; 302  :                         return( EmitError( CANNOT_USE_SHORT_WITH_CALL ) );
 
-	mov	ecx, 44					; 0000002cH
+	mov	ecx, 43					; 0000002bH
 	call	EmitError
 	jmp	$LN1@process_br
 $LN51@process_br:
@@ -950,10 +950,10 @@ $LN53@process_br:
 	mov	rax, QWORD PTR CodeInfo$[rsp]
 	cmp	DWORD PTR [rax+28], 192			; 000000c0H
 	jne	SHORT $LN138@process_br
-	mov	DWORD PTR tv349[rsp], 54		; 00000036H
+	mov	DWORD PTR tv349[rsp], 53		; 00000035H
 	jmp	SHORT $LN139@process_br
 $LN138@process_br:
-	mov	DWORD PTR tv349[rsp], 45		; 0000002dH
+	mov	DWORD PTR tv349[rsp], 44		; 0000002cH
 $LN139@process_br:
 	mov	edx, DWORD PTR addr$[rsp]
 	mov	ecx, DWORD PTR tv349[rsp]
@@ -1220,10 +1220,10 @@ $LN64@process_br:
 	mov	rax, QWORD PTR CodeInfo$[rsp]
 	cmp	DWORD PTR [rax+28], 192			; 000000c0H
 	jne	SHORT $LN142@process_br
-	mov	DWORD PTR tv450[rsp], 54		; 00000036H
+	mov	DWORD PTR tv450[rsp], 53		; 00000035H
 	jmp	SHORT $LN143@process_br
 $LN142@process_br:
-	mov	DWORD PTR tv450[rsp], 51		; 00000033H
+	mov	DWORD PTR tv450[rsp], 50		; 00000032H
 $LN143@process_br:
 	mov	edx, DWORD PTR addr$[rsp]
 	mov	ecx, DWORD PTR tv450[rsp]
@@ -1515,7 +1515,7 @@ $LN83@process_br:
 
 ; 440  :                 return( EmitError( CANNOT_USE_SHORT_OR_NEAR ) );
 
-	mov	ecx, 53					; 00000035H
+	mov	ecx, 52					; 00000034H
 	call	EmitError
 	jmp	$LN1@process_br
 $LN82@process_br:
@@ -1728,7 +1728,7 @@ $LN90@process_br:
 
 ; 476  :             return( EmitError( CANNOT_USE_SHORT_WITH_CALL ) );
 
-	mov	ecx, 44					; 0000002cH
+	mov	ecx, 43					; 0000002bH
 	call	EmitError
 	jmp	$LN1@process_br
 $LN91@process_br:
@@ -2015,7 +2015,7 @@ $LN105@process_br:
 
 ; 538  :                 return( EmitError( ONLY_SHORT_JUMP_DISTANCE_IS_ALLOWED ) );
 
-	mov	ecx, 45					; 0000002dH
+	mov	ecx, 44					; 0000002cH
 	call	EmitError
 	jmp	$LN1@process_br
 $LN107@process_br:
@@ -2368,7 +2368,7 @@ $LN122@process_br:
 ; 593  :             default: /* is another memtype possible at all? */
 ; 594  :                 return( EmitError( ONLY_SHORT_AND_NEAR_JUMP_DISTANCE_IS_ALLOWED ) );
 
-	mov	ecx, 76					; 0000004cH
+	mov	ecx, 75					; 0000004bH
 	call	EmitError
 	jmp	$LN1@process_br
 $LN10@process_br:
@@ -2507,7 +2507,7 @@ $LN130@process_br:
 ; 625  :             default:
 ; 626  :                 return( EmitError( ONLY_SHORT_JUMP_DISTANCE_IS_ALLOWED ) );
 
-	mov	ecx, 45					; 0000002dH
+	mov	ecx, 44					; 0000002cH
 	call	EmitError
 	jmp	SHORT $LN1@process_br
 $LN12@process_br:
@@ -2564,7 +2564,7 @@ FarCallToNear PROC
 
 ; 116  :         EmitWarn( 4, CALL_FAR_TO_NEAR );
 
-	mov	edx, 134				; 00000086H
+	mov	edx, 133				; 00000085H
 	mov	ecx, 4
 	call	EmitWarn
 $LN2@FarCallToN:
@@ -2623,7 +2623,7 @@ jumpExtend PROC
 
 ; 81   :         EmitWarn( 4, EXTENDING_JUMP );
 
-	mov	edx, 128				; 00000080H
+	mov	edx, 127				; 0000007fH
 	mov	ecx, 4
 	call	EmitWarn
 $LN2@jumpExtend:

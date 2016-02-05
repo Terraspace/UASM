@@ -3288,7 +3288,7 @@ $LN4:
 ; 453  :         EmitErr( SYMBOL_ALREADY_DEFINED, name );
 
 	mov	rdx, QWORD PTR name$[rsp]
-	mov	ecx, 57					; 00000039H
+	mov	ecx, 56					; 00000038H
 	call	EmitErr
 
 ; 454  :         return( NULL );
@@ -3384,7 +3384,7 @@ $LN4:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 57					; 00000039H
+	mov	ecx, 56					; 00000038H
 	call	EmitErr
 
 ; 477  :         return( NULL );
@@ -3460,7 +3460,7 @@ $LN4:
 ; 513  :         EmitErr( SYMBOL_ALREADY_DEFINED, name );
 
 	mov	rdx, QWORD PTR name$[rsp]
-	mov	ecx, 57					; 00000039H
+	mov	ecx, 56					; 00000038H
 	call	EmitErr
 
 ; 514  :         return( NULL );
@@ -3525,7 +3525,7 @@ $LN4:
 ; 492  :         EmitErr( SYMBOL_ALREADY_DEFINED, name );
 
 	mov	rdx, QWORD PTR name$[rsp]
-	mov	ecx, 57					; 00000039H
+	mov	ecx, 56					; 00000038H
 	call	EmitErr
 
 ; 493  :         return( NULL );
@@ -3661,7 +3661,7 @@ $LN6:
 
 ; 239  :         EmitError( IDENTIFIER_TOO_LONG );
 
-	mov	ecx, 71					; 00000047H
+	mov	ecx, 70					; 00000046H
 	call	EmitError
 
 ; 240  :         len = MAX_ID_LEN;

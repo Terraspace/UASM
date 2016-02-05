@@ -1431,7 +1431,7 @@ $LN38@ExpandToke:
 
 ; 1280 :                     EmitError( CONSTANT_EXPECTED );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 
 ; 1281 :                 //}
@@ -1732,7 +1732,7 @@ $LN11@RebuildLin:
 	imul	rax, rax, 0
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 91					; 0000005bH
+	mov	ecx, 90					; 0000005aH
 	call	EmitErr
 	jmp	$LN1@RebuildLin
 $LN15@RebuildLin:
@@ -2163,7 +2163,7 @@ ExpandTMacro PROC
 
 ; 985  :         return( EmitError( MACRO_NESTING_LEVEL_TOO_DEEP ) );
 
-	mov	ecx, 102				; 00000066H
+	mov	ecx, 101				; 00000065H
 	call	EmitError
 	jmp	$LN1@ExpandTMac
 $LN7@ExpandTMac:
@@ -3392,7 +3392,7 @@ $LN3@ExpandLine:
 
 ; 1531 :         return( EmitError( MACRO_NESTING_LEVEL_TOO_DEEP ) );
 
-	mov	ecx, 102				; 00000066H
+	mov	ecx, 101				; 00000065H
 	call	EmitError
 	jmp	SHORT $LN1@ExpandLine
 $LN50@ExpandLine:
@@ -3616,7 +3616,7 @@ $LN11@ExpandLine:
 
 ; 1339 :             EmitError( MACRO_NESTING_LEVEL_TOO_DEEP );
 
-	mov	ecx, 102				; 00000066H
+	mov	ecx, 101				; 00000065H
 	call	EmitError
 
 ; 1340 :             break;
@@ -4436,7 +4436,7 @@ $LN23@ExpandText:
 
 ; 932  :                         EmitError( MACRO_NESTING_LEVEL_TOO_DEEP );
 
-	mov	ecx, 102				; 00000066H
+	mov	ecx, 101				; 00000065H
 	call	EmitError
 
 ; 933  :                         break;
@@ -4761,7 +4761,7 @@ $LN264:
 
 ; 153  :         EmitError( NESTING_LEVEL_TOO_DEEP );
 
-	mov	ecx, 101				; 00000065H
+	mov	ecx, 100				; 00000064H
 	call	EmitError
 
 ; 154  :         return( -1 );
@@ -5257,7 +5257,7 @@ $LN56@RunMacro:
 	mov	eax, DWORD PTR [rax+16]
 	inc	eax
 	mov	edx, eax
-	mov	ecx, 88					; 00000058H
+	mov	ecx, 87					; 00000057H
 	call	EmitErr
 	jmp	SHORT $LN60@RunMacro
 $LN59@RunMacro:
@@ -5270,7 +5270,7 @@ $LN59@RunMacro:
 	mov	r8d, eax
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 221				; 000000ddH
+	mov	ecx, 220				; 000000dcH
 	call	EmitErr
 $LN60@RunMacro:
 
@@ -6036,7 +6036,7 @@ $LN89@RunMacro:
 
 ; 355  :                             EmitError( CONSTANT_EXPECTED );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 
 ; 356  :                             opndx.llvalue = 0;
@@ -7582,7 +7582,7 @@ $LN29@RunMacro:
 
 ; 548  :                 EmitError( MISSING_RIGHT_PARENTHESIS );
 
-	mov	ecx, 245				; 000000f5H
+	mov	ecx, 244				; 000000f4H
 	call	EmitError
 
 ; 549  :                 return( -1 );
@@ -7615,7 +7615,7 @@ $LN126@RunMacro:
 	mov	r9, QWORD PTR [rcx+rax+24]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	r8, QWORD PTR [rax+8]
-	mov	edx, 150				; 00000096H
+	mov	edx, 149				; 00000095H
 	mov	ecx, 1
 	call	EmitWarn
 $LN127@RunMacro:
@@ -7672,7 +7672,7 @@ $LN123@RunMacro:
 	mov	r9, QWORD PTR [rcx+rax+24]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	r8, QWORD PTR [rax+8]
-	mov	edx, 150				; 00000096H
+	mov	edx, 149				; 00000095H
 	mov	ecx, 1
 	call	EmitWarn
 $LN129@RunMacro:
@@ -7920,7 +7920,7 @@ $LN134@RunMacro:
 	imul	rax, rax, 0
 	mov	rcx, QWORD PTR tokenarray$[rbp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	SHORT $LN137@RunMacro
 $LN136@RunMacro:
@@ -7940,7 +7940,7 @@ $LN136@RunMacro:
 	imul	rax, rax, 2
 	mov	rcx, QWORD PTR tokenarray$[rbp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 $LN138@RunMacro:
 $LN137@RunMacro:
@@ -8035,7 +8035,7 @@ $LN144@RunMacro:
 	imul	rax, rax, 2
 	mov	rcx, QWORD PTR tokenarray$[rbp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN148@RunMacro
 $LN147@RunMacro:
@@ -8489,7 +8489,7 @@ $LN36@RunMacro:
 	imul	rax, rax, 1
 	mov	rcx, QWORD PTR tokenarray$[rbp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 265				; 00000109H
+	mov	ecx, 264				; 00000108H
 	call	EmitErr
 
 ; 735  :                         } else {
@@ -8547,7 +8547,7 @@ $LN155@RunMacro:
 
 	mov	rax, QWORD PTR tokenarray$[rbp]
 	mov	rdx, QWORD PTR [rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 $LN156@RunMacro:
 

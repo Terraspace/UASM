@@ -1252,7 +1252,7 @@ open_files PROC
 	lea	rdx, OFFSET FLAT:ModuleInfo+128
 	mov	r8, rax
 	mov	rdx, QWORD PTR [rdx+rcx]
-	mov	ecx, 107				; 0000006bH
+	mov	ecx, 106				; 0000006aH
 	call	Fatal
 $LN2@open_files:
 
@@ -1303,7 +1303,7 @@ $LN2@open_files:
 	lea	rdx, OFFSET FLAT:ModuleInfo+128
 	mov	r8, rax
 	mov	rdx, QWORD PTR [rdx+rcx]
-	mov	ecx, 107				; 0000006bH
+	mov	ecx, 106				; 0000006aH
 	call	Fatal
 $LN4@open_files:
 
@@ -1355,7 +1355,7 @@ $LN3@open_files:
 	lea	rdx, OFFSET FLAT:ModuleInfo+128
 	mov	r8, rax
 	mov	rdx, QWORD PTR [rdx+rcx]
-	mov	ecx, 107				; 0000006bH
+	mov	ecx, 106				; 0000006aH
 	call	Fatal
 $LN6@open_files:
 $LN5@open_files:
@@ -2198,7 +2198,7 @@ PassOneChecks PROC
 
 ; 785  :         EmitError( END_DIRECTIVE_REQUIRED );
 
-	mov	ecx, 100				; 00000064H
+	mov	ecx, 99					; 00000063H
 	call	EmitError
 $LN29@PassOneChe:
 
@@ -3580,7 +3580,7 @@ $LN6@add_cmdlin:
 ; 487  :             EmitErr( SYNTAX_ERROR_EX, name );
 
 	mov	rdx, QWORD PTR name$[rbp]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 488  :         } else {
@@ -3648,7 +3648,7 @@ $LN10@add_cmdlin:
 ; 499  :                 EmitErr( SYMBOL_ALREADY_DEFINED, name );
 
 	mov	rdx, QWORD PTR name$[rbp]
-	mov	ecx, 57					; 00000039H
+	mov	ecx, 56					; 00000038H
 	call	EmitErr
 $LN11@add_cmdlin:
 $LN8@add_cmdlin:
@@ -3894,7 +3894,7 @@ $LN4@WriteModul:
 
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 223				; 000000dfH
+	mov	ecx, 222				; 000000deH
 	call	EmitErr
 	jmp	SHORT $LN10@WriteModul
 $LN9@WriteModul:
@@ -3904,7 +3904,7 @@ $LN9@WriteModul:
 
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	r8, QWORD PTR [rax+8]
-	mov	edx, 223				; 000000dfH
+	mov	edx, 222				; 000000deH
 	mov	ecx, 2
 	call	EmitWarn
 $LN10@WriteModul:
@@ -3958,7 +3958,7 @@ $LN3@WriteModul:
 	lea	rdx, OFFSET FLAT:Options+32
 	mov	r8, rax
 	mov	rdx, QWORD PTR [rdx+rcx]
-	mov	ecx, 107				; 0000006bH
+	mov	ecx, 106				; 0000006aH
 	call	EmitErr
 	jmp	$LN1@WriteModul
 $LN12@WriteModul:
@@ -4657,7 +4657,7 @@ $LN12:
 	lea	rdx, OFFSET FLAT:ModuleInfo+128
 	mov	r8d, DWORD PTR [rax]
 	mov	rdx, QWORD PTR [rdx+rcx]
-	mov	ecx, 108				; 0000006cH
+	mov	ecx, 107				; 0000006bH
 	call	EmitErr
 $LN3@close_file:
 
@@ -4698,7 +4698,7 @@ $LN2@close_file:
 	lea	rdx, OFFSET FLAT:ModuleInfo+128
 	mov	r8d, DWORD PTR [rax]
 	mov	rdx, QWORD PTR [rdx+rcx]
-	mov	ecx, 108				; 0000006cH
+	mov	ecx, 107				; 0000006bH
 	call	EmitErr
 $LN5@close_file:
 
@@ -5204,7 +5204,7 @@ $LN15@AssembleMo:
 	mov	eax, DWORD PTR Parse_Pass
 	inc	eax
 	mov	r8d, eax
-	mov	edx, 241				; 000000f1H
+	mov	edx, 240				; 000000f0H
 	mov	ecx, 2
 	call	EmitWarn
 $LN16@AssembleMo:

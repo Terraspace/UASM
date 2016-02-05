@@ -755,7 +755,7 @@ $LN54@ContextDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 142				; 0000008eH
 	call	EmitErr
 	jmp	$LN1@ContextDir
 $LN33@ContextDir:
@@ -1108,7 +1108,7 @@ $LN44@ContextDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	SHORT $LN1@ContextDir
 $LN43@ContextDir:

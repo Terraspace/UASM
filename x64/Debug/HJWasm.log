@@ -1,9 +1,144 @@
-﻿Build started 2016/02/03 10:44:55 AM.
-     1>Project "D:\HJWasm\HJWasm2.13.1s\HJWasm2.13.1s\HJWasm.vcxproj" on node 2 (Build target(s)).
-     1>Link:
+﻿Build started 2016/02/05 09:15:44 AM.
+     1>Project "D:\HJWasm\HJWasm2.13.1s\HJWasm2.13.1s\HJWasm.vcxproj" on node 2 (Rebuild target(s)).
+     1>ClCompile:
+         D:\vs2015\VC\bin\x86_amd64\CL.exe /c /I.\\H /Zi /nologo /W2 /WX- /Od /D DEBUG_OUT /D WIN64 /D _DEBUG /D AVXSUPP /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /FAs /Fa"x64\Debug\\" /Fo"x64\Debug\\" /Fd"x64\Debug\vc140.pdb" /Gd /TC /errorReport:prompt apiemu.c assemble.c assume.c atofloat.c backptch.c bin.c branch.c cmdline.c codegen.c coff.c condasm.c context.c cpumodel.c data.c dbgcv.c directiv.c elf.c end.c equate.c errmsg.c expans.c expreval.c extern.c fastpass.c fixup.c fpfixup.c hll.c input.c invoke.c label.c linnum.c listing.c loop.c lqueue.c macro.c main.c mangle.c memalloc.c msgtext.c omf.c omffixup.c omfint.c option.c parser.c posndir.c preproc.c proc.c queue.c reswords.c safeseh.c segment.c simsegm.c string.c symbols.c tbyte.c tokenize.c trmem.c types.c
+         types.c
+     1>types.c(442): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>types.c(694): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+         trmem.c
+     1>trmem.c(187): warning C4311: 'type cast': pointer truncation from '_trmem_who' to 'uint_32'
+     1>trmem.c(219): warning C4311: 'type cast': pointer truncation from '_trmem_who' to 'uint_32'
+     1>trmem.c(233): warning C4311: 'type cast': pointer truncation from 'void *' to 'uint_32'
+     1>trmem.c(776): warning C4028: formal parameter 3 different from declaration
+         tokenize.c
+         tbyte.c
+         symbols.c
+         string.c
+         simsegm.c
+         segment.c
+         safeseh.c
+         reswords.c
+         queue.c
+         proc.c
+     1>proc.c(2570): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>proc.c(2716): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+         preproc.c
+         posndir.c
+         parser.c
+     1>parser.c(3069): warning C4312: 'type cast': conversion from 'unsigned int' to 'void *' of greater size
+         option.c
+         omfint.c
+         omffixup.c
+         omf.c
+         msgtext.c
+         Generating Code...
+         Compiling...
+         memalloc.c
+         mangle.c
+         main.c
+         macro.c
+         lqueue.c
+         loop.c
+         listing.c
+         linnum.c
+         label.c
+         invoke.c
+         input.c
+         hll.c
+         fpfixup.c
+         fixup.c
+         fastpass.c
+         extern.c
+         expreval.c
+     1>expreval.c(2403): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>expreval.c(2409): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+         expans.c
+         errmsg.c
+         equate.c
+         Generating Code...
+         Compiling...
+         end.c
+         elf.c
+         directiv.c
+         dbgcv.c
+         data.c
+         cpumodel.c
+         context.c
+         condasm.c
+         coff.c
+         codegen.c
+         cmdline.c
+         branch.c
+         bin.c
+     1>bin.c(229): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+         backptch.c
+         atofloat.c
+         assume.c
+         assemble.c
+         apiemu.c
+         Generating Code...
+       Link:
+         D:\vs2015\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"D:\HJWasm\HJWasm2.13.1s\HJWasm2.13.1s\x64\Debug\HJWasm.exe" /INCREMENTAL:NO /NOLOGO /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"D:\HJWasm\HJWasm2.13.1s\HJWasm2.13.1s\x64\Debug\HJWasm.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\HJWasm\HJWasm2.13.1s\HJWasm2.13.1s\x64\Debug\HJWasm.lib" /MACHINE:X64 x64\Debug\apiemu.obj
+         x64\Debug\assemble.obj
+         x64\Debug\assume.obj
+         x64\Debug\atofloat.obj
+         x64\Debug\backptch.obj
+         x64\Debug\bin.obj
+         x64\Debug\branch.obj
+         x64\Debug\cmdline.obj
+         x64\Debug\codegen.obj
+         x64\Debug\coff.obj
+         x64\Debug\condasm.obj
+         x64\Debug\context.obj
+         x64\Debug\cpumodel.obj
+         x64\Debug\data.obj
+         x64\Debug\dbgcv.obj
+         x64\Debug\directiv.obj
+         x64\Debug\elf.obj
+         x64\Debug\end.obj
+         x64\Debug\equate.obj
+         x64\Debug\errmsg.obj
+         x64\Debug\expans.obj
+         x64\Debug\expreval.obj
+         x64\Debug\extern.obj
+         x64\Debug\fastpass.obj
+         x64\Debug\fixup.obj
+         x64\Debug\fpfixup.obj
+         x64\Debug\hll.obj
+         x64\Debug\input.obj
+         x64\Debug\invoke.obj
+         x64\Debug\label.obj
+         x64\Debug\linnum.obj
+         x64\Debug\listing.obj
+         x64\Debug\loop.obj
+         x64\Debug\lqueue.obj
+         x64\Debug\macro.obj
+         x64\Debug\main.obj
+         x64\Debug\mangle.obj
+         x64\Debug\memalloc.obj
+         x64\Debug\msgtext.obj
+         x64\Debug\omf.obj
+         x64\Debug\omffixup.obj
+         x64\Debug\omfint.obj
+         x64\Debug\option.obj
+         x64\Debug\parser.obj
+         x64\Debug\posndir.obj
+         x64\Debug\preproc.obj
+         x64\Debug\proc.obj
+         x64\Debug\queue.obj
+         x64\Debug\reswords.obj
+         x64\Debug\safeseh.obj
+         x64\Debug\segment.obj
+         x64\Debug\simsegm.obj
+         x64\Debug\string.obj
+         x64\Debug\symbols.obj
+         x64\Debug\tbyte.obj
+         x64\Debug\tokenize.obj
+         x64\Debug\trmem.obj
+         x64\Debug\types.obj
          HJWasm.vcxproj -> D:\HJWasm\HJWasm2.13.1s\HJWasm2.13.1s\x64\Debug\HJWasm.exe
-     1>Done Building Project "D:\HJWasm\HJWasm2.13.1s\HJWasm2.13.1s\HJWasm.vcxproj" (Build target(s)).
+     1>Done Building Project "D:\HJWasm\HJWasm2.13.1s\HJWasm2.13.1s\HJWasm.vcxproj" (Rebuild target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.06
+Time Elapsed 00:00:04.66

@@ -1078,7 +1078,7 @@ $LN20@InvokeDire:
 ; 1507 :         /* v2.04: msg changed */
 ; 1508 :         return( EmitErr( INVOKE_REQUIRES_PROTOTYPE ) );
 
-	mov	ecx, 160				; 000000a0H
+	mov	ecx, 159				; 0000009fH
 	call	EmitErr
 	jmp	$LN1@InvokeDire
 $LN30@InvokeDire:
@@ -1219,7 +1219,7 @@ $LN77@InvokeDire:
 
 ; 1528 :             return( EmitErr( INVOKE_REQUIRES_PROTOTYPE ) );
 
-	mov	ecx, 160				; 000000a0H
+	mov	ecx, 159				; 0000009fH
 	call	EmitErr
 	jmp	$LN1@InvokeDire
 $LN41@InvokeDire:
@@ -1259,7 +1259,7 @@ $LN79@InvokeDire:
 
 ; 1535 :             return( EmitErr( INVOKE_REQUIRES_PROTOTYPE ) );
 
-	mov	ecx, 160				; 000000a0H
+	mov	ecx, 159				; 0000009fH
 	call	EmitErr
 	jmp	$LN1@InvokeDire
 $LN42@InvokeDire:
@@ -1354,7 +1354,7 @@ $LN43@InvokeDire:
 ; 1549 : #endif
 ; 1550 :         return( EmitErr( INVOKE_REQUIRES_PROTOTYPE ) );
 
-	mov	ecx, 160				; 000000a0H
+	mov	ecx, 159				; 0000009fH
 	call	EmitErr
 	jmp	$LN1@InvokeDire
 $LN38@InvokeDire:
@@ -1486,7 +1486,7 @@ $LN45@InvokeDire:
 
 ; 1579 :             return( EmitErr( TOO_MANY_ARGUMENTS_TO_INVOKE ) );
 
-	mov	ecx, 178				; 000000b2H
+	mov	ecx, 177				; 000000b1H
 	call	EmitErr
 	jmp	$LN1@InvokeDire
 $LN48@InvokeDire:
@@ -1675,7 +1675,7 @@ $LN15@InvokeDire:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 147				; 00000093H
+	mov	ecx, 146				; 00000092H
 	call	EmitErr
 $LN53@InvokeDire:
 
@@ -1738,7 +1738,7 @@ $LN18@InvokeDire:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 147				; 00000093H
+	mov	ecx, 146				; 00000092H
 	call	EmitErr
 $LN54@InvokeDire:
 
@@ -1772,7 +1772,7 @@ $LN50@InvokeDire:
 ; 1624 :         opnd.base_reg->bytval == 0 )
 ; 1625 :         EmitWarn( 2, REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
 
-	mov	edx, 166				; 000000a6H
+	mov	edx, 165				; 000000a5H
 	mov	ecx, 2
 	call	EmitWarn
 $LN55@InvokeDire:
@@ -2472,7 +2472,7 @@ $LN22@PushInvoke:
 	mov	eax, DWORD PTR reqParam$[rsp]
 	inc	eax
 	mov	edx, eax
-	mov	ecx, 146				; 00000092H
+	mov	ecx, 145				; 00000091H
 	call	EmitErr
 
 ; 796  :             return( NOT_ERROR );
@@ -3203,7 +3203,7 @@ $LN66@PushInvoke:
 	mov	eax, DWORD PTR reqParam$[rsp]
 	inc	eax
 	mov	edx, eax
-	mov	ecx, 146				; 00000092H
+	mov	ecx, 145				; 00000091H
 	call	EmitErr
 $LN68@PushInvoke:
 
@@ -3456,7 +3456,7 @@ $LN83@PushInvoke:
 	mov	eax, DWORD PTR reqParam$[rsp]
 	inc	eax
 	mov	edx, eax
-	mov	ecx, 146				; 00000092H
+	mov	ecx, 145				; 00000091H
 	call	EmitErr
 
 ; 963  :             return( NOT_ERROR );
@@ -3528,7 +3528,7 @@ $LN89@PushInvoke:
 ; 985  :                  )))) {
 ; 986  :                 EmitErr( REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
 
-	mov	ecx, 166				; 000000a6H
+	mov	ecx, 165				; 000000a5H
 	call	EmitErr
 
 ; 987  :                 *r0flags = 0;
@@ -3774,7 +3774,7 @@ $LN93@PushInvoke:
 	mov	eax, DWORD PTR reqParam$[rsp]
 	inc	eax
 	mov	edx, eax
-	mov	ecx, 146				; 00000092H
+	mov	ecx, 145				; 00000091H
 	call	EmitErr
 $LN103@PushInvoke:
 
@@ -4413,7 +4413,7 @@ $LN139@PushInvoke:
 	mov	eax, DWORD PTR reqParam$[rsp]
 	inc	eax
 	mov	edx, eax
-	mov	ecx, 146				; 00000092H
+	mov	ecx, 145				; 00000091H
 	call	EmitErr
 	jmp	$LN1@PushInvoke
 $LN140@PushInvoke:
@@ -4437,7 +4437,7 @@ $LN143@PushInvoke:
 
 ; 1177 :                     EmitErr( REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
 
-	mov	ecx, 166				; 000000a6H
+	mov	ecx, 165				; 000000a5H
 	call	EmitErr
 
 ; 1178 :                     *r0flags &= ~R0_USED;
@@ -4469,7 +4469,7 @@ $LN145@PushInvoke:
 
 ; 1180 :                     EmitErr( REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
 
-	mov	ecx, 166				; 000000a6H
+	mov	ecx, 165				; 000000a5H
 	call	EmitErr
 
 ; 1181 :                     *r0flags &= ~R2_USED;
@@ -4523,7 +4523,7 @@ $LN147@PushInvoke:
 	mov	eax, DWORD PTR reqParam$[rsp]
 	inc	eax
 	mov	edx, eax
-	mov	ecx, 146				; 00000092H
+	mov	ecx, 145				; 00000091H
 	call	EmitErr
 $LN148@PushInvoke:
 
@@ -4832,7 +4832,7 @@ $LN177@PushInvoke:
 
 ; 1256 :                                     EmitErr( REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
 
-	mov	ecx, 166				; 000000a6H
+	mov	ecx, 165				; 000000a5H
 	call	EmitErr
 $LN176@PushInvoke:
 
@@ -5183,7 +5183,7 @@ $LN196@PushInvoke:
 	mov	eax, DWORD PTR reqParam$[rsp]
 	inc	eax
 	mov	edx, eax
-	mov	ecx, 146				; 00000092H
+	mov	ecx, 145				; 00000091H
 	call	EmitErr
 $LN203@PushInvoke:
 $LN194@PushInvoke:
@@ -5422,7 +5422,7 @@ $LN223@PushInvoke:
 	mov	eax, DWORD PTR reqParam$[rsp]
 	inc	eax
 	mov	edx, eax
-	mov	ecx, 146				; 00000092H
+	mov	ecx, 145				; 00000091H
 	call	EmitErr
 $LN12@PushInvoke:
 
@@ -5632,7 +5632,7 @@ $LN238@PushInvoke:
 	mov	eax, DWORD PTR reqParam$[rsp]
 	inc	eax
 	mov	edx, eax
-	mov	ecx, 146				; 00000092H
+	mov	ecx, 145				; 00000091H
 	call	EmitErr
 $LN14@PushInvoke:
 $LN224@PushInvoke:
@@ -6585,7 +6585,7 @@ $LN26@ms64_param:
 
 ; 297  :         EmitErr( REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
 
-	mov	ecx, 166				; 000000a6H
+	mov	ecx, 165				; 000000a5H
 	call	EmitErr
 
 ; 298  :         *regs_used = 0;
@@ -6637,7 +6637,7 @@ $LN38@ms64_param:
 	mov	eax, DWORD PTR index$[rsp]
 	inc	eax
 	mov	edx, eax
-	mov	ecx, 146				; 00000092H
+	mov	ecx, 145				; 00000091H
 	call	EmitErr
 $LN40@ms64_param:
 $LN39@ms64_param:
@@ -6784,7 +6784,7 @@ $LN44@ms64_param:
 	mov	eax, DWORD PTR index$[rsp]
 	inc	eax
 	mov	edx, eax
-	mov	ecx, 146				; 00000092H
+	mov	ecx, 145				; 00000091H
 	call	EmitErr
 $LN47@ms64_param:
 
@@ -6992,7 +6992,7 @@ $LN61@ms64_param:
 	mov	eax, DWORD PTR index$[rsp]
 	inc	eax
 	mov	edx, eax
-	mov	ecx, 146				; 00000092H
+	mov	ecx, 145				; 00000091H
 	call	EmitErr
 
 ; 361  :                         psize = size;
@@ -7182,7 +7182,7 @@ $LN73@ms64_param:
 	mov	eax, DWORD PTR index$[rsp]
 	inc	eax
 	mov	edx, eax
-	mov	ecx, 146				; 00000092H
+	mov	ecx, 145				; 00000091H
 	call	EmitErr
 $LN72@ms64_param:
 
@@ -7516,7 +7516,7 @@ $LN97@ms64_param:
 	mov	eax, DWORD PTR index$[rsp]
 	inc	eax
 	mov	edx, eax
-	mov	ecx, 146				; 00000092H
+	mov	ecx, 145				; 00000091H
 	call	EmitErr
 $LN98@ms64_param:
 
@@ -7696,7 +7696,7 @@ $LN109@ms64_param:
 	mov	eax, DWORD PTR index$[rsp]
 	inc	eax
 	mov	edx, eax
-	mov	ecx, 146				; 00000092H
+	mov	ecx, 145				; 00000091H
 	call	EmitErr
 $LN108@ms64_param:
 
@@ -7855,7 +7855,7 @@ $LN143@ms64_param:
 
 ; 483  :                         EmitErr( REGISTER_VALUE_OVERWRITTEN_BY_INVOKE );
 
-	mov	ecx, 166				; 000000a6H
+	mov	ecx, 165				; 000000a5H
 	call	EmitErr
 $LN118@ms64_param:
 $LN117@ms64_param:

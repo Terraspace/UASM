@@ -4674,7 +4674,7 @@ $LN7@omf_write_:
 
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	r8, QWORD PTR [rax+8]
-	mov	edx, 267				; 0000010bH
+	mov	edx, 266				; 0000010aH
 	mov	ecx, 2
 	call	EmitWarn
 

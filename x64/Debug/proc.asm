@@ -1088,7 +1088,7 @@ $LN6@write_user:
 ; 3111 :         return( EmitErr( EPILOGUE_MUST_BE_MACRO_PROC, ModuleInfo.proc_epilogue ) );
 
 	mov	rdx, QWORD PTR ModuleInfo+328
-	mov	ecx, 158				; 0000009eH
+	mov	ecx, 157				; 0000009dH
 	call	EmitErr
 	jmp	$LN1@write_user
 $LN5@write_user:
@@ -4724,7 +4724,7 @@ $LN13@write_user:
 
 ; 2130 :         return( EmitError( PROLOGUE_MUST_BE_MACRO_FUNC ) );
 
-	mov	ecx, 157				; 0000009dH
+	mov	ecx, 156				; 0000009cH
 	call	EmitError
 	jmp	$LN1@write_user
 $LN12@write_user:
@@ -5039,7 +5039,7 @@ $LN58:
 	mov	ecx, DWORD PTR [rcx+rax+16]
 	call	GetResWName
 	mov	rdx, rax
-	mov	ecx, 225				; 000000e1H
+	mov	ecx, 224				; 000000e0H
 	call	EmitErr
 	jmp	$LN1@ExcFrameDi
 $LN6@ExcFrameDi:
@@ -5056,7 +5056,7 @@ $LN8@ExcFrameDi:
 
 ; 1862 :         return( EmitError( ENDPROLOG_FOUND_BEFORE_EH_DIRECTIVES ) );
 
-	mov	ecx, 255				; 000000ffH
+	mov	ecx, 254				; 000000feH
 	call	EmitError
 	jmp	$LN1@ExcFrameDi
 $LN7@ExcFrameDi:
@@ -5075,7 +5075,7 @@ $LN7@ExcFrameDi:
 
 ; 1865 :         return( EmitError( MISSING_FRAME_IN_PROC ) );
 
-	mov	ecx, 256				; 00000100H
+	mov	ecx, 255				; 000000ffH
 	call	EmitError
 	jmp	$LN1@ExcFrameDi
 $LN9@ExcFrameDi:
@@ -5170,7 +5170,7 @@ $LN12@ExcFrameDi:
 
 ; 1885 :             return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 	jmp	$LN1@ExcFrameDi
 $LN14@ExcFrameDi:
@@ -5198,7 +5198,7 @@ $LN15@ExcFrameDi:
 
 ; 1892 :             return( EmitError( NONZERO_VALUE_EXPECTED ) );
 
-	mov	ecx, 258				; 00000102H
+	mov	ecx, 257				; 00000101H
 	call	EmitError
 	jmp	$LN1@ExcFrameDi
 $LN16@ExcFrameDi:
@@ -5213,7 +5213,7 @@ $LN16@ExcFrameDi:
 
 ; 1895 :             return( EmitError( BAD_ALIGNMENT_FOR_OFFSET_IN_UNWIND_CODE ) );
 
-	mov	ecx, 257				; 00000101H
+	mov	ecx, 256				; 00000100H
 	call	EmitError
 	jmp	$LN1@ExcFrameDi
 $LN17@ExcFrameDi:
@@ -5401,7 +5401,7 @@ $LN22@ExcFrameDi:
 
 ; 1932 :             return( EmitError( SIZE_OF_PROLOG_TOO_BIG ) );
 
-	mov	ecx, 259				; 00000103H
+	mov	ecx, 258				; 00000102H
 	call	EmitError
 	jmp	$LN1@ExcFrameDi
 $LN23@ExcFrameDi:
@@ -5517,7 +5517,7 @@ $LN28@ExcFrameDi:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@ExcFrameDi
 $LN27@ExcFrameDi:
@@ -5595,7 +5595,7 @@ $LN29@ExcFrameDi:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@ExcFrameDi
 $LN30@ExcFrameDi:
@@ -5625,7 +5625,7 @@ $LN30@ExcFrameDi:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@ExcFrameDi
 $LN33@ExcFrameDi:
@@ -5660,7 +5660,7 @@ $LN31@ExcFrameDi:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@ExcFrameDi
 $LN36@ExcFrameDi:
@@ -5698,7 +5698,7 @@ $LN34@ExcFrameDi:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@ExcFrameDi
 $LN37@ExcFrameDi:
@@ -5758,7 +5758,7 @@ $LN39@ExcFrameDi:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@ExcFrameDi
 $LN40@ExcFrameDi:
@@ -5807,7 +5807,7 @@ $LN42@ExcFrameDi:
 
 ; 2006 :             return( EmitError( CONSTANT_EXPECTED ) );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 	jmp	$LN1@ExcFrameDi
 $LN44@ExcFrameDi:
@@ -5826,7 +5826,7 @@ $LN43@ExcFrameDi:
 
 ; 2009 :             return( EmitError( BAD_ALIGNMENT_FOR_OFFSET_IN_UNWIND_CODE ) );
 
-	mov	ecx, 257				; 00000101H
+	mov	ecx, 256				; 00000100H
 	call	EmitError
 	jmp	$LN1@ExcFrameDi
 $LN45@ExcFrameDi:
@@ -6164,7 +6164,7 @@ $LN2@ExcFrameDi:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	SHORT $LN1@ExcFrameDi
 $LN54@ExcFrameDi:
@@ -6180,7 +6180,7 @@ $LN54@ExcFrameDi:
 
 ; 2067 :         return( EmitErr( TOO_MANY_UNWIND_CODES_IN_FRAME_PROC ) );
 
-	mov	ecx, 211				; 000000d3H
+	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	SHORT $LN1@ExcFrameDi
 $LN55@ExcFrameDi:
@@ -6279,7 +6279,7 @@ $LN3@EndpDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	SHORT $LN1@EndpDir
 $LN2@EndpDir:
@@ -6322,7 +6322,7 @@ $LN4@EndpDir:
 	imul	rax, rax, 0
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 142				; 0000008eH
 	call	EmitErr
 	jmp	SHORT $LN1@EndpDir
 $LN5@EndpDir:
@@ -6409,7 +6409,7 @@ $LN28@ProcFini:
 
 	mov	rax, QWORD PTR proc$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 142				; 0000008eH
 	call	EmitErr
 
 ; 1749 :         proc->sym.total_size = CurrProc->sym.segment->offset - proc->sym.offset;
@@ -6463,7 +6463,7 @@ $LN4@ProcFini:
 
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	r8, QWORD PTR [rax+8]
-	mov	edx, 266				; 0000010aH
+	mov	edx, 265				; 00000109H
 	mov	ecx, 3
 	call	EmitWarn
 $LN17@ProcFini:
@@ -6501,7 +6501,7 @@ $LN7@ProcFini:
 
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	r8, QWORD PTR [rax+8]
-	mov	edx, 266				; 0000010aH
+	mov	edx, 265				; 00000109H
 	mov	ecx, 3
 	call	EmitWarn
 $LN18@ProcFini:
@@ -7642,7 +7642,7 @@ WriteSEHData PROC
 
 	mov	rax, QWORD PTR proc$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 260				; 00000104H
+	mov	ecx, 259				; 00000103H
 	call	EmitErr
 $LN5@WriteSEHDa:
 
@@ -8097,7 +8097,7 @@ $LN42:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@ProcDir
 $LN2@ProcDir:
@@ -8111,7 +8111,7 @@ $LN2@ProcDir:
 
 ; 1421 :         return( EmitError( MUST_BE_IN_SEGMENT_BLOCK ) );
 
-	mov	ecx, 83					; 00000053H
+	mov	ecx, 82					; 00000052H
 	call	EmitError
 	jmp	$LN1@ProcDir
 $LN3@ProcDir:
@@ -8168,7 +8168,7 @@ $LN6@ProcDir:
 ; 1437 :             return( EmitErr( CANNOT_NEST_PROCEDURES, name ) );
 
 	mov	rdx, QWORD PTR name$[rsp]
-	mov	ecx, 94					; 0000005eH
+	mov	ecx, 93					; 0000005dH
 	call	EmitErr
 	jmp	$LN1@ProcDir
 $LN5@ProcDir:
@@ -8350,7 +8350,7 @@ $LN13@ProcDir:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 	jmp	$LN1@ProcDir
 $LN14@ProcDir:
@@ -8694,7 +8694,7 @@ $LN25@ProcDir:
 	mov	rax, QWORD PTR [rax+96]
 	mov	rax, QWORD PTR [rax+48]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 103				; 00000067H
+	mov	ecx, 102				; 00000066H
 	call	EmitErr
 $LN26@ProcDir:
 $LN9@ProcDir:
@@ -9084,7 +9084,7 @@ $LN41@ParseParam:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@ParseParam
 $LN42@ParseParam:
@@ -9168,7 +9168,7 @@ $LN46@ParseParam:
 
 ; 700  :                 return( EmitError( COLON_EXPECTED ) );
 
-	mov	ecx, 85					; 00000055H
+	mov	ecx, 84					; 00000054H
 	call	EmitError
 	jmp	$LN1@ParseParam
 $LN49@ParseParam:
@@ -9247,7 +9247,7 @@ $LN54@ParseParam:
 ; 720  :                 case LANG_STDCALL:
 ; 721  :                     return( EmitError( VARARG_REQUIRES_C_CALLING_CONVENTION ) );
 
-	mov	ecx, 95					; 0000005fH
+	mov	ecx, 94					; 0000005eH
 	call	EmitError
 	jmp	$LN1@ParseParam
 $LN10@ParseParam:
@@ -9267,7 +9267,7 @@ $LN10@ParseParam:
 
 ; 725  :                     EmitError( VARARG_PARAMETER_MUST_BE_LAST );
 
-	mov	ecx, 148				; 00000094H
+	mov	ecx, 147				; 00000093H
 	call	EmitError
 	jmp	SHORT $LN56@ParseParam
 $LN55@ParseParam:
@@ -9350,7 +9350,7 @@ $LN48@ParseParam:
 ; 740  :             return( EmitErr( SYMBOL_REDEFINITION, name ) );
 
 	mov	rdx, QWORD PTR name$[rsp]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 	jmp	$LN1@ParseParam
 $LN58@ParseParam:
@@ -9632,7 +9632,7 @@ $LN116@ParseParam:
 ; 804  :                 EmitErr( CONFLICTING_PARAMETER_DEFINITION, name );
 
 	mov	rdx, QWORD PTR name$[rsp]
-	mov	ecx, 138				; 0000008aH
+	mov	ecx, 137				; 00000089H
 	call	EmitErr
 $LN63@ParseParam:
 
@@ -9758,7 +9758,7 @@ $LN59@ParseParam:
 ; 834  :             return( EmitErr( CONFLICTING_PARAMETER_DEFINITION, "" ) );
 
 	lea	rdx, OFFSET FLAT:$SG11642
-	mov	ecx, 138				; 0000008aH
+	mov	ecx, 137				; 00000089H
 	call	EmitErr
 	jmp	$LN1@ParseParam
 
@@ -10190,7 +10190,7 @@ $LN60@ParseParam:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 40					; 00000028H
+	mov	ecx, 39					; 00000027H
 	call	EmitErr
 	jmp	$LN1@ParseParam
 $LN91@ParseParam:
@@ -10232,7 +10232,7 @@ $LN6@ParseParam:
 ; 930  :             return( EmitErr( CONFLICTING_PARAMETER_DEFINITION, "" ) );
 
 	lea	rdx, OFFSET FLAT:$SG11667
-	mov	ecx, 138				; 0000008aH
+	mov	ecx, 137				; 00000089H
 	call	EmitErr
 	jmp	$LN1@ParseParam
 $LN93@ParseParam:
@@ -10649,7 +10649,7 @@ $LN15@LocalDir:
 
 ; 456  :         return( EmitError( PROC_MACRO_MUST_PRECEDE_LOCAL ) );
 
-	mov	ecx, 93					; 0000005dH
+	mov	ecx, 92					; 0000005cH
 	call	EmitError
 	jmp	$LN1@LocalDir
 $LN14@LocalDir:
@@ -10719,7 +10719,7 @@ $LN4@LocalDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@LocalDir
 $LN17@LocalDir:
@@ -10984,7 +10984,7 @@ $LN27@LocalDir:
 
 ; 542  :                 EmitError( CONSTANT_EXPECTED );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 
 ; 543  :                 opndx.value = 1;
@@ -11030,7 +11030,7 @@ $LN29@LocalDir:
 
 ; 551  :                 EmitError( EXPECTED_CL_SQ_BRACKET );
 
-	mov	ecx, 112				; 00000070H
+	mov	ecx, 111				; 0000006fH
 	call	EmitError
 $LN30@LocalDir:
 $LN24@LocalDir:
@@ -11257,7 +11257,7 @@ $LN38@LocalDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 40					; 00000028H
+	mov	ecx, 39					; 00000027H
 	call	EmitErr
 	jmp	SHORT $LN1@LocalDir
 $LN39@LocalDir:
@@ -12410,7 +12410,7 @@ $LN2@ProcCheckO:
 
 	mov	rax, QWORD PTR CurrProc
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 143				; 0000008fH
+	mov	ecx, 142				; 0000008eH
 	call	EmitErr
 
 ; 2083 :         ProcFini( CurrProc );
@@ -14095,7 +14095,7 @@ $LN21@ParseProc:
 ; 1064 :                 ( ModuleInfo.Ofssize == USE16 && Ofssize == USE32 ) ) {
 ; 1065 :                 EmitError( DISTANCE_INVALID );
 
-	mov	ecx, 172				; 000000acH
+	mov	ecx, 171				; 000000abH
 	call	EmitError
 $LN20@ParseProc:
 $LN19@ParseProc:
@@ -14235,7 +14235,7 @@ $LN30@ParseProc:
 
 ; 1088 :             EmitError( PROC_AND_PROTO_CALLING_CONV_CONFLICT );
 
-	mov	ecx, 139				; 0000008bH
+	mov	ecx, 138				; 0000008aH
 	call	EmitError
 	jmp	SHORT $LN29@ParseProc
 $LN28@ParseProc:
@@ -14245,7 +14245,7 @@ $LN28@ParseProc:
 
 	mov	rax, QWORD PTR proc$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 	jmp	$LN1@ParseProc
 $LN29@ParseProc:
@@ -14319,7 +14319,7 @@ $LN26@ParseProc:
 
 ; 1109 :         EmitError( PROC_AND_PROTO_CALLING_CONV_CONFLICT );
 
-	mov	ecx, 139				; 0000008bH
+	mov	ecx, 138				; 0000008aH
 	call	EmitError
 
 ; 1110 :     } else
@@ -14520,7 +14520,7 @@ $LN40@ParseProc:
 
 	mov	rax, QWORD PTR proc$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 277				; 00000115H
+	mov	ecx, 276				; 00000114H
 	call	EmitErr
 $LN44@ParseProc:
 $LN43@ParseProc:
@@ -14698,7 +14698,7 @@ $LN52@ParseProc:
 
 ; 1177 :                             EmitWarn( 2, LOADDS_IGNORED_IN_FLAT_MODEL );
 
-	mov	edx, 227				; 000000e3H
+	mov	edx, 226				; 000000e2H
 	mov	ecx, 2
 	call	EmitWarn
 
@@ -14729,7 +14729,7 @@ $LN54@ParseProc:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 226				; 000000e2H
+	mov	ecx, 225				; 000000e1H
 	call	EmitErr
 	jmp	$LN1@ParseProc
 $LN55@ParseProc:
@@ -14773,7 +14773,7 @@ $LN50@ParseProc:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@ParseProc
 $LN51@ParseProc:
@@ -14839,7 +14839,7 @@ $LN45@ParseProc:
 	mov	ecx, 263				; 00000107H
 	call	GetResWName
 	mov	rdx, rax
-	mov	ecx, 225				; 000000e1H
+	mov	ecx, 224				; 000000e0H
 	call	EmitErr
 	jmp	$LN1@ParseProc
 $LN60@ParseProc:
@@ -14882,7 +14882,7 @@ $LN60@ParseProc:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@ParseProc
 $LN63@ParseProc:
@@ -14957,7 +14957,7 @@ $LN64@ParseProc:
 
 	mov	rax, QWORD PTR sym$4[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 	jmp	$LN1@ParseProc
 $LN66@ParseProc:
@@ -15039,7 +15039,7 @@ $LN59@ParseProc:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 $LN68@ParseProc:
 
@@ -15093,7 +15093,7 @@ $LN6@ParseProc:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 1247 :         } else {
@@ -15155,7 +15155,7 @@ $LN10@ParseProc:
 
 ; 1254 :                     EmitError( INVALID_USE_OF_REGISTER );
 
-	mov	ecx, 171				; 000000abH
+	mov	ecx, 170				; 000000aaH
 	call	EmitError
 $LN71@ParseProc:
 
@@ -15211,7 +15211,7 @@ $LN73@ParseProc:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@ParseProc
 $LN72@ParseProc:
@@ -15265,7 +15265,7 @@ $LN74@ParseProc:
 ; 1275 :             EmitErr( CONFLICTING_PARAMETER_DEFINITION, "" );
 
 	lea	rdx, OFFSET FLAT:$SG11794
-	mov	ecx, 138				; 0000008aH
+	mov	ecx, 137				; 00000089H
 	call	EmitErr
 $LN77@ParseProc:
 
@@ -15279,7 +15279,7 @@ $LN75@ParseProc:
 
 ; 1277 :         EmitError( LANG_MUST_BE_SPECIFIED );
 
-	mov	ecx, 92					; 0000005cH
+	mov	ecx, 91					; 0000005bH
 	call	EmitError
 
 ; 1278 :     } else {

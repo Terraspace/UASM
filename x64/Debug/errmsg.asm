@@ -648,7 +648,7 @@ $LN3:
 
 ; 363  :     fprintf( errout, MsgGetEx( INTERNAL_ERROR ), file, line );
 
-	mov	ecx, 111				; 0000006fH
+	mov	ecx, 110				; 0000006eH
 	call	MsgGetEx
 	mov	QWORD PTR tv75[rsp], rax
 	mov	ecx, 1
@@ -782,7 +782,7 @@ PrtMsg	PROC
 	call	ErrnoStr
 	mov	r8, rax
 	mov	rdx, QWORD PTR p$1[rsp]
-	mov	ecx, 107				; 0000006bH
+	mov	ecx, 106				; 0000006aH
 	call	EmitErr
 $LN3@PrtMsg:
 $LN2@PrtMsg:
@@ -1097,7 +1097,7 @@ $LN3:
 	lea	rdx, OFFSET FLAT:ModuleInfo+128
 	mov	r8d, DWORD PTR [rax]
 	mov	rdx, QWORD PTR [rdx+rcx]
-	mov	ecx, 109				; 0000006dH
+	mov	ecx, 108				; 0000006cH
 	call	Fatal
 
 ; 349  : };
@@ -1563,7 +1563,7 @@ $LN5@EmitErr:
 
 ; 263  :         Fatal( TOO_MANY_ERRORS );
 
-	mov	ecx, 114				; 00000072H
+	mov	ecx, 113				; 00000071H
 	call	Fatal
 $LN2@EmitErr:
 

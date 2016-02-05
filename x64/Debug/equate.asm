@@ -242,7 +242,7 @@ $LN8:
 	imul	rax, rax, 0
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	$LN1@EquDirecti
 $LN2@EquDirecti:
@@ -353,7 +353,7 @@ $LN6:
 	imul	rax, rax, 0
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 	jmp	SHORT $LN1@EqualSgnDi
 $LN2@EqualSgnDi:
@@ -571,7 +571,7 @@ $LN6@CreateAsse:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 210				; 000000d2H
+	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
 ; 163  :             return( NULL );
@@ -665,7 +665,7 @@ $LN11@CreateAsse:
 
 ; 184  :                 EmitError( CONSTANT_EXPECTED );
 
-	mov	ecx, 66					; 00000042H
+	mov	ecx, 65					; 00000041H
 	call	EmitError
 $LN12@CreateAsse:
 
@@ -851,7 +851,7 @@ $LN26@CreateAsse:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 
 ; 222  :             return( NULL );
@@ -1468,7 +1468,7 @@ $LN4@CreateVari:
 ; 300  :             EmitErr( SYMBOL_REDEFINITION, name );
 
 	mov	rdx, QWORD PTR name$[rsp]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 
 ; 301  :             return( NULL );
@@ -1734,7 +1734,7 @@ $LN6@CreateCons:
 ; 370  :         EmitErr( SYMBOL_REDEFINITION, name );
 
 	mov	rdx, QWORD PTR name$[rsp]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 
 ; 371  :         return( NULL );
@@ -2152,7 +2152,7 @@ $LN32@CreateCons:
 ; 469  :                     EmitErr( SYMBOL_REDEFINITION, name );
 
 	mov	rdx, QWORD PTR name$[rsp]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 
 ; 470  :                     return( NULL );
@@ -2201,7 +2201,7 @@ $LN35@CreateCons:
 ; 475  :                     EmitErr( SYMBOL_REDEFINITION, name );
 
 	mov	rdx, QWORD PTR name$[rsp]
-	mov	ecx, 144				; 00000090H
+	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 
 ; 476  :                     return( NULL );

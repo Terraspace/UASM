@@ -3100,7 +3100,7 @@ $LN20@coff_write:
 	mov	r8, QWORD PTR [rax+8]
 	mov	rax, QWORD PTR fix$[rsp]
 	mov	edx, DWORD PTR [rax+24]
-	mov	ecx, 197				; 000000c5H
+	mov	ecx, 196				; 000000c4H
 	call	EmitErr
 
 ; 954  :                 continue; /* v2.03: skip this fixup */
@@ -3255,7 +3255,7 @@ $LN29@coff_write:
 	mov	r8, QWORD PTR [rax+8]
 	mov	rax, QWORD PTR fix$[rsp]
 	mov	edx, DWORD PTR [rax+24]
-	mov	ecx, 197				; 000000c5H
+	mov	ecx, 196				; 000000c4H
 	call	EmitErr
 
 ; 998  :                 continue; /* v2.03: skip this fixup */
@@ -4256,7 +4256,7 @@ $LN3@GetStartLa:
 
 	mov	rax, QWORD PTR ModuleInfo+208
 	mov	r8, QWORD PTR [rax+8]
-	mov	edx, 195				; 000000c3H
+	mov	edx, 194				; 000000c2H
 	mov	ecx, 2
 	call	EmitWarn
 $LN9@GetStartLa:

@@ -84,40 +84,6 @@ enum labelsize {
     LS_FAR16  = 0xFF05,
     LS_FAR32  = 0xFF06,
 };
-/* This is new for EVEX decorators */
-//void get_decos(char *p ){
-///************************************************/
-//unsigned char c;
-////__debugbreak();
-//        c = (*p | 0x20);
-//        /* if first decorator is the z  */
-//        if (c == 'z')
-//          decoflags |= 0xC0; 
-//        else if (c == 'k'){
-//          c = *(p + 1);
-//          if (c > '7' || c < '1'){
-//            EmitError(WRONG_MASK_REGISTER_NUBER);
-//            return;
-//          }
-//          decoflags |= (c & 0x7);
-//        }
-//        else
-//          EmitError(DECORATOR_OR_BRACE_EXPECTED);
-//   }
-///* This is new for EVEX decorators */
-//void get_broads(char *p ){
-///************************************************/          
-//    if (_memicmp(p, "1to2", 4) == 0)
-//      broadflags = 0x10;
-//    else if (_memicmp(p, "1to4", 4) == 0)
-//      broadflags = 0x20;
-//    else if (_memicmp(p, "1to8", 4) == 0)
-//      broadflags = 0x30;
-//    else if (_memicmp(p, "1to16", 5) == 0)
-//      broadflags = 0x40;
-//    else
-//      EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
-//  }
 
 static void init_expr( struct expr *opnd )
 /****************************************/
