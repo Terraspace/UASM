@@ -6,8 +6,8 @@ INCLUDELIB LIBCMT
 INCLUDELIB OLDNAMES
 
 _BSS	SEGMENT
-$SG11627 DB	01H DUP (?)
-$SG11778 DB	01H DUP (?)
+$SG11625 DB	01H DUP (?)
+$SG11776 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	decoflags:BYTE
@@ -15,19 +15,19 @@ COMM	broadflags:BYTE
 COMM	evex:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG11155 DB	01H DUP (?)
+$SG11153 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG11081 DB	'rn-sae', 00H
+$SG11079 DB	'rn-sae', 00H
 	ORG $+1
-$SG11085 DB	'rd-sae', 00H
+$SG11083 DB	'rd-sae', 00H
 	ORG $+1
-$SG11089 DB	'ru-sae', 00H
+$SG11087 DB	'ru-sae', 00H
 	ORG $+1
-$SG11093 DB	'rz-sae', 00H
+$SG11091 DB	'rz-sae', 00H
 	ORG $+1
-$SG11097 DB	'sae', 00H
-$SG11158 DB	'@@', 00H
+$SG11095 DB	'sae', 00H
+$SG11156 DB	'@@', 00H
 _DATA	ENDS
 PUBLIC	EvalOperand
 PUBLIC	ExprEvalInit
@@ -561,11 +561,11 @@ _TEXT	SEGMENT
 item$ = 8
 is_expr_item PROC					; COMDAT
 
-; 3416 : {
+; 3382 : {
 
 	mov	rdx, rcx
 
-; 3417 :     switch( item->token ) {
+; 3383 :     switch( item->token ) {
 
 	movzx	ecx, BYTE PTR [rcx]
 	sub	ecx, 1
@@ -578,55 +578,55 @@ is_expr_item PROC					; COMDAT
 	jne	$LN19@is_expr_it
 $LN4@is_expr_it:
 
-; 3438 :         }
-; 3439 :         return( FALSE );
+; 3404 :         }
+; 3405 :         return( FALSE );
 
 	xor	al, al
 
-; 3460 : }
+; 3426 : }
 
 	ret	0
 $LN11@is_expr_it:
 
-; 3440 :     case T_RES_ID:
-; 3441 :         if ( item->tokval == T_DUP ) /* DUP must terminate the expression */
+; 3406 :     case T_RES_ID:
+; 3407 :         if ( item->tokval == T_DUP ) /* DUP must terminate the expression */
 
 	cmp	DWORD PTR [rdx+16], 259			; 00000103H
 	je	SHORT $LN4@is_expr_it
 
-; 3451 :             return( TRUE );
-; 3452 :         }
-; 3453 :         /* fall through. Other directives will end the expression */
-; 3454 :     case T_COMMA:
-; 3455 :     //case T_FLOAT: /* v2.05: floats are now handled */
-; 3456 :     //case T_QUESTION_MARK: /* v2.08: no need to be handled here */
-; 3457 :         return( FALSE );
-; 3458 :     }
-; 3459 :     return( TRUE );
+; 3417 :             return( TRUE );
+; 3418 :         }
+; 3419 :         /* fall through. Other directives will end the expression */
+; 3420 :     case T_COMMA:
+; 3421 :     //case T_FLOAT: /* v2.05: floats are now handled */
+; 3422 :     //case T_QUESTION_MARK: /* v2.08: no need to be handled here */
+; 3423 :         return( FALSE );
+; 3424 :     }
+; 3425 :     return( TRUE );
 
 	mov	al, 1
 
-; 3460 : }
+; 3426 : }
 
 	ret	0
 $LN13@is_expr_it:
 
-; 3442 :             return( FALSE );
-; 3443 :         break;
-; 3444 :     case T_DIRECTIVE:
-; 3445 :         /* PROC is converted to a type */
-; 3446 :         if ( item->tokval == T_PROC ) {
+; 3408 :             return( FALSE );
+; 3409 :         break;
+; 3410 :     case T_DIRECTIVE:
+; 3411 :         /* PROC is converted to a type */
+; 3412 :         if ( item->tokval == T_PROC ) {
 
 	cmp	DWORD PTR [rdx+16], 428			; 000001acH
 	jne	SHORT $LN4@is_expr_it
 
-; 3447 :             item->token = T_STYPE;
+; 3413 :             item->token = T_STYPE;
 
 	mov	BYTE PTR [rdx], 6
 
-; 3448 :             /* v2.06: avoid to use ST_PROC */
-; 3449 :             //item->bytval = ST_PROC;
-; 3450 :             item->tokval = ( ( SIZE_CODEPTR & ( 1 << ModuleInfo.model ) ) ? T_FAR : T_NEAR );
+; 3414 :             /* v2.06: avoid to use ST_PROC */
+; 3415 :             //item->bytval = ST_PROC;
+; 3416 :             item->tokval = ( ( SIZE_CODEPTR & ( 1 << ModuleInfo.model ) ) ? T_FAR : T_NEAR );
 
 	mov	eax, 1
 	mov	ecx, DWORD PTR ModuleInfo+360
@@ -638,13 +638,13 @@ $LN13@is_expr_it:
 	mov	DWORD PTR [rdx+16], eax
 	mov	al, 1
 
-; 3460 : }
+; 3426 : }
 
 	ret	0
 $LN6@is_expr_it:
 
-; 3418 :     case T_INSTRUCTION:
-; 3419 :         switch( item->tokval ) {
+; 3384 :     case T_INSTRUCTION:
+; 3385 :         switch( item->tokval ) {
 
 	mov	eax, DWORD PTR [rdx+16]
 	add	eax, -501				; fffffe0bH
@@ -657,65 +657,65 @@ $LN6@is_expr_it:
 	jmp	rcx
 $LN7@is_expr_it:
 
-; 3420 :         case T_SHL:
-; 3421 :         case T_SHR:
-; 3422 :             item->token = T_BINARY_OPERATOR;
+; 3386 :         case T_SHL:
+; 3387 :         case T_SHR:
+; 3388 :             item->token = T_BINARY_OPERATOR;
 
 	mov	WORD PTR [rdx], 2053			; 00000805H
 
-; 3423 :             item->precedence = 8;
-; 3424 :             return( TRUE );
+; 3389 :             item->precedence = 8;
+; 3390 :             return( TRUE );
 
 	mov	al, 1
 
-; 3460 : }
+; 3426 : }
 
 	ret	0
 $LN8@is_expr_it:
 
-; 3425 :         case T_NOT:
-; 3426 :             item->token = T_UNARY_OPERATOR;
+; 3391 :         case T_NOT:
+; 3392 :             item->token = T_UNARY_OPERATOR;
 
 	mov	WORD PTR [rdx], 2820			; 00000b04H
 
-; 3427 :             item->precedence = 11;
-; 3428 :             return( TRUE );
+; 3393 :             item->precedence = 11;
+; 3394 :             return( TRUE );
 
 	mov	al, 1
 
-; 3460 : }
+; 3426 : }
 
 	ret	0
 $LN9@is_expr_it:
 
-; 3429 :         case T_AND:
-; 3430 :             item->token = T_BINARY_OPERATOR;
+; 3395 :         case T_AND:
+; 3396 :             item->token = T_BINARY_OPERATOR;
 
 	mov	WORD PTR [rdx], 3077			; 00000c05H
 
-; 3431 :             item->precedence = 12;
-; 3432 :             return( TRUE );
+; 3397 :             item->precedence = 12;
+; 3398 :             return( TRUE );
 
 	mov	al, 1
 
-; 3460 : }
+; 3426 : }
 
 	ret	0
 $LN10@is_expr_it:
 
-; 3433 :         case T_OR:
-; 3434 :         case T_XOR:
-; 3435 :             item->token = T_BINARY_OPERATOR;
+; 3399 :         case T_OR:
+; 3400 :         case T_XOR:
+; 3401 :             item->token = T_BINARY_OPERATOR;
 
 	mov	WORD PTR [rdx], 3333			; 00000d05H
 $LN19@is_expr_it:
 
-; 3436 :             item->precedence = 13;
-; 3437 :             return( TRUE );
+; 3402 :             item->precedence = 13;
+; 3403 :             return( TRUE );
 
 	mov	al, 1
 
-; 3460 : }
+; 3426 : }
 
 	ret	0
 	npad	3
@@ -818,7 +818,7 @@ end$ = 232
 flags$ = 240
 evaluate PROC						; COMDAT
 
-; 3250 : {
+; 3216 : {
 
 	mov	QWORD PTR [rsp+16], rbx
 	mov	DWORD PTR [rsp+32], r9d
@@ -831,28 +831,28 @@ evaluate PROC						; COMDAT
 	sub	rsp, 176				; 000000b0H
 	mov	r11, rcx
 
-; 3251 :     ret_code rc = NOT_ERROR;
+; 3217 :     ret_code rc = NOT_ERROR;
 
 	xor	esi, esi
 
-; 3252 :     unsigned char c;
-; 3253 :     char *p;
-; 3254 :     DebugMsg1(("%u evaluate(i=%d, end=%d, flags=%X) enter [opnd1: kind=%d type=%s]\n",
-; 3255 :                ++evallvl, *i, end, flags, opnd1->kind, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3256 : 
-; 3257 :     /* v2.07: this function has been "simplified".
-; 3258 :      * it's ensured now that if any operator is involved
-; 3259 :      * - including () and [] - then calculate() will be called.
-; 3260 :      * v2.10: removed the 'return( ERROR )' branches, to make
-; 3261 :      * OPATTR work better.
-; 3262 :      * v2.10: loop changed from 'do {} while' to 'while () {}'.
-; 3263 :      * v2.10: 'flags' argument contains "inside []" information.
-; 3264 :      */
-; 3265 : 
-; 3266 :     /*
-; 3267 :      * First token may be either an unary operator or an operand
-; 3268 :      */
-; 3269 :     if ( opnd1->kind == EXPR_EMPTY &&  !is_unary_op( tokenarray[*i].token ) ) {
+; 3218 :     unsigned char c;
+; 3219 :     char *p;
+; 3220 :     DebugMsg1(("%u evaluate(i=%d, end=%d, flags=%X) enter [opnd1: kind=%d type=%s]\n",
+; 3221 :                ++evallvl, *i, end, flags, opnd1->kind, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3222 : 
+; 3223 :     /* v2.07: this function has been "simplified".
+; 3224 :      * it's ensured now that if any operator is involved
+; 3225 :      * - including () and [] - then calculate() will be called.
+; 3226 :      * v2.10: removed the 'return( ERROR )' branches, to make
+; 3227 :      * OPATTR work better.
+; 3228 :      * v2.10: loop changed from 'do {} while' to 'while () {}'.
+; 3229 :      * v2.10: 'flags' argument contains "inside []" information.
+; 3230 :      */
+; 3231 : 
+; 3232 :     /*
+; 3233 :      * First token may be either an unary operator or an operand
+; 3234 :      */
+; 3235 :     if ( opnd1->kind == EXPR_EMPTY &&  !is_unary_op( tokenarray[*i].token ) ) {
 
 	movzx	ecx, BYTE PTR flags$[rbp-113]
 	mov	rbx, r8
@@ -871,7 +871,7 @@ $LN86@evaluate:
 	cmp	dl, 91					; 0000005bH
 	je	SHORT $LL2@evaluate
 
-; 3270 :         rc = get_operand( opnd1, i, tokenarray, flags );
+; 3236 :         rc = get_operand( opnd1, i, tokenarray, flags );
 
 	movzx	r9d, cl
 	mov	r8, rbx
@@ -880,9 +880,9 @@ $LN86@evaluate:
 	call	get_operand
 	mov	esi, eax
 
-; 3271 :     }
-; 3272 :     /* now handle operators. */
-; 3273 :     while ( rc == NOT_ERROR && *i < end && !IsCurrToken( T_CL_BRACKET ) && !IsCurrToken( T_CL_SQ_BRACKET ) ) {
+; 3237 :     }
+; 3238 :     /* now handle operators. */
+; 3239 :     while ( rc == NOT_ERROR && *i < end && !IsCurrToken( T_CL_BRACKET ) && !IsCurrToken( T_CL_SQ_BRACKET ) ) {
 
 	test	eax, eax
 $LN119@evaluate:
@@ -901,21 +901,21 @@ $LL2@evaluate:
 	cmp	cl, 93					; 0000005dH
 	je	$LN103@evaluate
 
-; 3274 : 
-; 3275 :         int curr_operator;
-; 3276 :         struct expr opnd2;
-; 3277 : 
-; 3278 :         curr_operator = *i;
-; 3279 :         DebugMsg1(("%u evaluate loop, operator=>%s< opnd1->sym=%X, type=%s\n",
-; 3280 :                    evallvl, tokenarray[curr_operator].string_ptr, opnd1->sym, (opnd1->type ? opnd1->type->name : "NULL") ));
-; 3281 : 
-; 3282 :         if ( opnd1->kind != EXPR_EMPTY ) {
+; 3240 : 
+; 3241 :         int curr_operator;
+; 3242 :         struct expr opnd2;
+; 3243 : 
+; 3244 :         curr_operator = *i;
+; 3245 :         DebugMsg1(("%u evaluate loop, operator=>%s< opnd1->sym=%X, type=%s\n",
+; 3246 :                    evallvl, tokenarray[curr_operator].string_ptr, opnd1->sym, (opnd1->type ? opnd1->type->name : "NULL") ));
+; 3247 : 
+; 3248 :         if ( opnd1->kind != EXPR_EMPTY ) {
 
 	cmp	DWORD PTR [r11+60], -2
 	je	SHORT $LN13@evaluate
 
-; 3283 :             /* check operator behind operand. Must be binary or open bracket */
-; 3284 :             if ( tokenarray[curr_operator].token == '+' || tokenarray[curr_operator].token == '-' )
+; 3249 :             /* check operator behind operand. Must be binary or open bracket */
+; 3250 :             if ( tokenarray[curr_operator].token == '+' || tokenarray[curr_operator].token == '-' )
 
 	mov	r8, rdx
 	shl	r8, 5
@@ -928,20 +928,20 @@ $LL2@evaluate:
 	cmp	cl, 40					; 00000028H
 	jae	SHORT $LN13@evaluate
 
-; 3286 :             else if( !is_operator( tokenarray[curr_operator].token ) || tokenarray[curr_operator].token == T_UNARY_OPERATOR ) {
-; 3287 :                 DebugMsg(("%u evaluate: unexpected token at idx=%u, token=%X >%s<\n", evallvl, curr_operator, tokenarray[curr_operator].token, tokenarray[curr_operator].tokpos ));
-; 3288 :                 rc = ERROR;
+; 3252 :             else if( !is_operator( tokenarray[curr_operator].token ) || tokenarray[curr_operator].token == T_UNARY_OPERATOR ) {
+; 3253 :                 DebugMsg(("%u evaluate: unexpected token at idx=%u, token=%X >%s<\n", evallvl, curr_operator, tokenarray[curr_operator].token, tokenarray[curr_operator].tokpos ));
+; 3254 :                 rc = ERROR;
 
 	or	esi, -1
 
-; 3289 :                 //if ( !opnd2.is_opattr )  /* v2.11: opnd2 was accessed before initialization */
-; 3290 :                 
-; 3291 :                 if ( !opnd1->is_opattr )
+; 3255 :                 //if ( !opnd2.is_opattr )  /* v2.11: opnd2 was accessed before initialization */
+; 3256 :                 
+; 3257 :                 if ( !opnd1->is_opattr )
 
-	test	BYTE PTR [r11+76], 16
+	test	BYTE PTR [r11+72], 16
 	jne	$LN103@evaluate
 
-; 3292 :                     OperErr( curr_operator, tokenarray );
+; 3258 :                     OperErr( curr_operator, tokenarray );
 
 	cmp	cl, 12
 	ja	$LN43@evaluate
@@ -950,31 +950,31 @@ $LL2@evaluate:
 	jmp	$LN103@evaluate
 $LN12@evaluate:
 
-; 3285 :                 tokenarray[curr_operator].specval = BINARY_PLUSMINUS;
+; 3251 :                 tokenarray[curr_operator].specval = BINARY_PLUSMINUS;
 
 	mov	BYTE PTR [r8+rbx+1], 1
 $LN13@evaluate:
 
-; 3293 :                 break;
-; 3294 :             }
-; 3295 :         }
-; 3296 : 
-; 3297 :         (*i)++;
+; 3259 :                 break;
+; 3260 :             }
+; 3261 :         }
+; 3262 : 
+; 3263 :         (*i)++;
 
 	inc	DWORD PTR [rdi]
 
-; 3298 : 
-; 3299 :         init_expr( &opnd2 );
+; 3264 : 
+; 3265 :         init_expr( &opnd2 );
 
 	xor	esi, esi
 
-; 3300 :         PrepareOp( &opnd2, opnd1, &tokenarray[curr_operator] );
+; 3266 :         PrepareOp( &opnd2, opnd1, &tokenarray[curr_operator] );
 
-	mov	r8d, DWORD PTR [r11+76]
+	mov	r8d, DWORD PTR [r11+72]
 	xorps	xmm0, xmm0
-	mov	BYTE PTR opnd2$1[rbp-37], sil
+	mov	BYTE PTR opnd2$1[rbp-41], sil
 	mov	eax, r8d
-	mov	ecx, DWORD PTR opnd2$1[rbp-37]
+	mov	ecx, DWORD PTR opnd2$1[rbp-41]
 	mov	r10, rdx
 	xor	eax, ecx
 	shl	r10, 5
@@ -985,7 +985,7 @@ $LN13@evaluate:
 	xor	ecx, eax
 	movdqa	XMMWORD PTR opnd2$1[rbp-97], xmm0
 	xorps	xmm1, xmm1
-	mov	DWORD PTR opnd2$1[rbp-37], ecx
+	mov	DWORD PTR opnd2$1[rbp-41], ecx
 	movdqa	XMMWORD PTR opnd2$1[rbp-81], xmm1
 	mov	QWORD PTR opnd2$1[rbp-65], rsi
 	mov	DWORD PTR opnd2$1[rbp-57], -2
@@ -1026,14 +1026,14 @@ $LN57@evaluate:
 $LN58@evaluate:
 	or	ecx, 16
 $LN116@evaluate:
-	mov	DWORD PTR opnd2$1[rbp-37], ecx
+	mov	DWORD PTR opnd2$1[rbp-41], ecx
 $LN51@evaluate:
 
-; 3301 : 
-; 3302 :         /* read the (next) operand.
-; 3303 :          */
-; 3304 : 
-; 3305 :         if( tokenarray[curr_operator].token == T_OP_BRACKET ||
+; 3267 : 
+; 3268 :         /* read the (next) operand.
+; 3269 :          */
+; 3270 : 
+; 3271 :         if( tokenarray[curr_operator].token == T_OP_BRACKET ||
 
 	movzx	eax, BYTE PTR [r10]
 	cmp	al, 40					; 00000028H
@@ -1041,9 +1041,9 @@ $LN51@evaluate:
 	cmp	al, 91					; 0000005bH
 	je	SHORT $LN19@evaluate
 
-; 3335 :             }
-; 3336 : 
-; 3337 :         } else if( is_unary_op( tokenarray[*i].token ) ) { /* brackets, +, -, T_UNARY_OPERATOR? */
+; 3301 :             }
+; 3302 : 
+; 3303 :         } else if( is_unary_op( tokenarray[*i].token ) ) { /* brackets, +, -, T_UNARY_OPERATOR? */
 
 	movsxd	rax, DWORD PTR [rdi]
 	shl	rax, 5
@@ -1057,11 +1057,11 @@ $LN91@evaluate:
 	cmp	cl, 91					; 0000005bH
 	je	SHORT $LN29@evaluate
 
-; 3340 :             /* get either:
-; 3341 :              * - operand of unary operator OR
-; 3342 :              * - 2. operand of binary operator
-; 3343 :              */
-; 3344 :             rc = get_operand( &opnd2, i, tokenarray, flags );
+; 3306 :             /* get either:
+; 3307 :              * - operand of unary operator OR
+; 3308 :              * - 2. operand of binary operator
+; 3309 :              */
+; 3310 :             rc = get_operand( &opnd2, i, tokenarray, flags );
 
 	movzx	r9d, BYTE PTR flags$[rbp-113]
 	lea	rcx, QWORD PTR opnd2$1[rbp-113]
@@ -1072,7 +1072,7 @@ $LN91@evaluate:
 	jmp	$LN24@evaluate
 $LN29@evaluate:
 
-; 3338 :             rc = evaluate( &opnd2, i, tokenarray, end, flags | EXPF_ONEOPND );
+; 3304 :             rc = evaluate( &opnd2, i, tokenarray, end, flags | EXPF_ONEOPND );
 
 	movzx	eax, BYTE PTR flags$[rbp-113]
 	lea	rcx, QWORD PTR opnd2$1[rbp-113]
@@ -1083,50 +1083,50 @@ $LN29@evaluate:
 	call	evaluate
 	mov	esi, eax
 
-; 3339 :         } else {
+; 3305 :         } else {
 
 	jmp	$LN24@evaluate
 $LN19@evaluate:
 
-; 3306 :            tokenarray[curr_operator].token == T_OP_SQ_BRACKET ) {
-; 3307 :             int exp_token = T_CL_BRACKET;
+; 3272 :            tokenarray[curr_operator].token == T_OP_SQ_BRACKET ) {
+; 3273 :             int exp_token = T_CL_BRACKET;
 
 	mov	edx, 41					; 00000029H
 	mov	DWORD PTR exp_token$1$[rbp-113], edx
 
-; 3308 :             if( tokenarray[curr_operator].token == T_OP_SQ_BRACKET ) {
+; 3274 :             if( tokenarray[curr_operator].token == T_OP_SQ_BRACKET ) {
 
 	cmp	al, 91					; 0000005bH
 	jne	SHORT $LN20@evaluate
 
-; 3309 :                 exp_token = T_CL_SQ_BRACKET;
+; 3275 :                 exp_token = T_CL_SQ_BRACKET;
 
 	mov	edx, 93					; 0000005dH
 	mov	DWORD PTR exp_token$1$[rbp-113], edx
 	jmp	SHORT $LN22@evaluate
 $LN20@evaluate:
 
-; 3310 : #if 1 /* v2.10: slightly hackish; see regression test dotop5.asm */
-; 3311 :             } else if ( opnd1->is_dot ) {
+; 3276 : #if 1 /* v2.10: slightly hackish; see regression test dotop5.asm */
+; 3277 :             } else if ( opnd1->is_dot ) {
 
 	test	r8b, r8b
 	jns	SHORT $LN22@evaluate
 
-; 3312 :                 opnd2.type = opnd1->type;
+; 3278 :                 opnd2.type = opnd1->type;
 
 	mov	rax, QWORD PTR [r11+96]
 
-; 3313 :                 opnd2.is_dot = TRUE;
+; 3279 :                 opnd2.is_dot = TRUE;
 
 	bts	ecx, 7
 	mov	QWORD PTR opnd2$1[rbp-17], rax
-	mov	DWORD PTR opnd2$1[rbp-37], ecx
+	mov	DWORD PTR opnd2$1[rbp-41], ecx
 $LN22@evaluate:
 
-; 3314 : #endif
-; 3315 :             }
-; 3316 : 
-; 3317 :             rc = evaluate( &opnd2, i, tokenarray, end, ( flags | ( exp_token == T_CL_SQ_BRACKET ? EXPF_IN_SQBR : 0 ) ) & ~EXPF_ONEOPND );
+; 3280 : #endif
+; 3281 :             }
+; 3282 : 
+; 3283 :             rc = evaluate( &opnd2, i, tokenarray, end, ( flags | ( exp_token == T_CL_SQ_BRACKET ? EXPF_IN_SQBR : 0 ) ) & ~EXPF_ONEOPND );
 
 	cmp	edx, 93					; 0000005dH
 	mov	eax, esi
@@ -1140,8 +1140,8 @@ $LN22@evaluate:
 	mov	BYTE PTR [rsp+32], al
 	call	evaluate
 
-; 3318 : 
-; 3319 :             if( !IsCurrToken( exp_token ) ) {
+; 3284 : 
+; 3285 :             if( !IsCurrToken( exp_token ) ) {
 
 	movsxd	rcx, DWORD PTR [rdi]
 	mov	esi, eax
@@ -1151,24 +1151,24 @@ $LN22@evaluate:
 	cmp	eax, DWORD PTR exp_token$1$[rbp-113]
 	je	SHORT $LN23@evaluate
 
-; 3320 :                 DebugMsg(("%u evaluate: error, missing '%c', i=%u\n", evallvl, exp_token, *i ));
-; 3321 :                 if ( rc != ERROR ) {
+; 3286 :                 DebugMsg(("%u evaluate: error, missing '%c', i=%u\n", evallvl, exp_token, *i ));
+; 3287 :                 if ( rc != ERROR ) {
 
 	cmp	esi, -1
 	je	SHORT $LN26@evaluate
 
-; 3322 :                     fnEmitErr( MISSING_RIGHT_PARENTHESIS_IN_EXPRESSION );
+; 3288 :                     fnEmitErr( MISSING_RIGHT_PARENTHESIS_IN_EXPRESSION );
 
 	mov	ecx, 227				; 000000e3H
 	call	QWORD PTR fnEmitErr
 
-; 3323 :                     /* v2.12: if curr token is a comma, the intention might be to call a macro function
-; 3324 :                      * - using an undefined ( or not yet defined ) macro. The problem is that the name
-; 3325 :                      * of this undefined macro isn't displayed in pass one, making it hard to see the
-; 3326 :                      * reason for the error msg. However, if a comma is found, then it's surely no valid
-; 3327 :                      * expression - in this case an "undefined symbol" err msg may be helpful.
-; 3328 :                      */
-; 3329 :                     if ( IsCurrToken( T_COMMA ) && opnd1->sym && opnd1->sym->state == SYM_UNDEFINED )
+; 3289 :                     /* v2.12: if curr token is a comma, the intention might be to call a macro function
+; 3290 :                      * - using an undefined ( or not yet defined ) macro. The problem is that the name
+; 3291 :                      * of this undefined macro isn't displayed in pass one, making it hard to see the
+; 3292 :                      * reason for the error msg. However, if a comma is found, then it's surely no valid
+; 3293 :                      * expression - in this case an "undefined symbol" err msg may be helpful.
+; 3294 :                      */
+; 3295 :                     if ( IsCurrToken( T_COMMA ) && opnd1->sym && opnd1->sym->state == SYM_UNDEFINED )
 
 	movsxd	rax, DWORD PTR [rdi]
 	shl	rax, 5
@@ -1181,36 +1181,36 @@ $LN22@evaluate:
 	cmp	DWORD PTR [rdx+32], 0
 	jne	SHORT $LN26@evaluate
 
-; 3330 :                         fnEmitErr( SYMBOL_NOT_DEFINED, opnd1->sym->name );
+; 3296 :                         fnEmitErr( SYMBOL_NOT_DEFINED, opnd1->sym->name );
 
 	mov	rdx, QWORD PTR [rdx+8]
 	mov	ecx, 102				; 00000066H
 	call	QWORD PTR fnEmitErr
 $LN26@evaluate:
 
-; 3331 :                 }
-; 3332 :                 rc = ERROR;
+; 3297 :                 }
+; 3298 :                 rc = ERROR;
 
 	or	esi, -1
 
-; 3333 :             } else {
+; 3299 :             } else {
 
 	jmp	$LN110@evaluate
 $LN23@evaluate:
 
-; 3334 :                 (*i)++;
+; 3300 :                 (*i)++;
 
 	lea	eax, DWORD PTR [rcx+1]
 	mov	DWORD PTR [rdi], eax
 $LN24@evaluate:
 
-; 3345 :         }
-; 3346 : 
-; 3347 :         /*
-; 3348 :          * parse expression until either the end or an operator with a higher priority is found.
-; 3349 :          */
-; 3350 : 
-; 3351 :         while( rc != ERROR && *i < end && !IsCurrToken( T_CL_BRACKET ) && !IsCurrToken( T_CL_SQ_BRACKET ) ) {
+; 3311 :         }
+; 3312 : 
+; 3313 :         /*
+; 3314 :          * parse expression until either the end or an operator with a higher priority is found.
+; 3315 :          */
+; 3316 : 
+; 3317 :         while( rc != ERROR && *i < end && !IsCurrToken( T_CL_BRACKET ) && !IsCurrToken( T_CL_SQ_BRACKET ) ) {
 
 	cmp	esi, -1
 	je	$LN110@evaluate
@@ -1234,18 +1234,18 @@ $LL4@evaluate:
 	cmp	al, 40					; 00000028H
 	jae	SHORT $LN33@evaluate
 
-; 3355 :             else if( !is_operator( tokenarray[*i].token ) || tokenarray[*i].token == T_UNARY_OPERATOR ) {
-; 3356 :                 DebugMsg(("%u evaluate: unexpected token at %u, token=%X >%s<\n", evallvl, *i, tokenarray[*i].token, tokenarray[*i].tokpos ));
-; 3357 :                 rc = ERROR;
+; 3321 :             else if( !is_operator( tokenarray[*i].token ) || tokenarray[*i].token == T_UNARY_OPERATOR ) {
+; 3322 :                 DebugMsg(("%u evaluate: unexpected token at %u, token=%X >%s<\n", evallvl, *i, tokenarray[*i].token, tokenarray[*i].tokpos ));
+; 3323 :                 rc = ERROR;
 
 	or	esi, -1
 
-; 3358 :                 if ( !opnd2.is_opattr ) /* don't emit error if expression is OPATTR operand */
+; 3324 :                 if ( !opnd2.is_opattr ) /* don't emit error if expression is OPATTR operand */
 
-	test	BYTE PTR opnd2$1[rbp-37], 16
+	test	BYTE PTR opnd2$1[rbp-41], 16
 	jne	$LN118@evaluate
 
-; 3359 :                     OperErr( *i, tokenarray );
+; 3325 :                     OperErr( *i, tokenarray );
 
 	movsxd	rdx, DWORD PTR [rdi]
 	shl	rdx, 5
@@ -1256,17 +1256,17 @@ $LL4@evaluate:
 	jmp	SHORT $LN110@evaluate
 $LN32@evaluate:
 
-; 3352 :             
-; 3353 :             if ( tokenarray[*i].token == '+' || tokenarray[*i].token == '-' )
-; 3354 :                 tokenarray[*i].specval = BINARY_PLUSMINUS;
+; 3318 :             
+; 3319 :             if ( tokenarray[*i].token == '+' || tokenarray[*i].token == '-' )
+; 3320 :                 tokenarray[*i].specval = BINARY_PLUSMINUS;
 
 	mov	BYTE PTR [rdx+1], 1
 $LN33@evaluate:
 
-; 3360 :                 break;
-; 3361 :             }
-; 3362 : 
-; 3363 :             if( get_precedence( &tokenarray[*i] ) >= get_precedence( &tokenarray[curr_operator] ) )
+; 3326 :                 break;
+; 3327 :             }
+; 3328 : 
+; 3329 :             if( get_precedence( &tokenarray[*i] ) >= get_precedence( &tokenarray[curr_operator] ) )
 
 	movsxd	rcx, DWORD PTR [rdi]
 	shl	rcx, 5
@@ -1277,9 +1277,9 @@ $LN33@evaluate:
 	call	get_precedence
 	cmp	ebx, eax
 
-; 3364 :                 break;
-; 3365 : 
-; 3366 :             rc = evaluate( &opnd2, i, tokenarray, end, flags | EXPF_ONEOPND );
+; 3330 :                 break;
+; 3331 : 
+; 3332 :             rc = evaluate( &opnd2, i, tokenarray, end, flags | EXPF_ONEOPND );
 
 	mov	rbx, QWORD PTR tokenarray$[rbp-113]
 	jge	SHORT $LN62@evaluate
@@ -1295,50 +1295,50 @@ $LN33@evaluate:
 	cmp	eax, -1
 	jne	$LL4@evaluate
 
-; 3345 :         }
-; 3346 : 
-; 3347 :         /*
-; 3348 :          * parse expression until either the end or an operator with a higher priority is found.
-; 3349 :          */
-; 3350 : 
-; 3351 :         while( rc != ERROR && *i < end && !IsCurrToken( T_CL_BRACKET ) && !IsCurrToken( T_CL_SQ_BRACKET ) ) {
+; 3311 :         }
+; 3312 : 
+; 3313 :         /*
+; 3314 :          * parse expression until either the end or an operator with a higher priority is found.
+; 3315 :          */
+; 3316 : 
+; 3317 :         while( rc != ERROR && *i < end && !IsCurrToken( T_CL_BRACKET ) && !IsCurrToken( T_CL_SQ_BRACKET ) ) {
 
 	jmp	SHORT $LN110@evaluate
 
-; 3359 :                     OperErr( *i, tokenarray );
+; 3325 :                     OperErr( *i, tokenarray );
 
 $LN61@evaluate:
 	mov	rdx, QWORD PTR [rdx+rbx+8]
 	mov	ecx, 209				; 000000d1H
 	call	QWORD PTR fnEmitErr
 
-; 3367 : 
-; 3368 :         }
-; 3369 : 
-; 3370 :         /* v2.10: OPATTR special handling */
-; 3371 :         if ( rc == ERROR && opnd2.is_opattr ) {
+; 3333 : 
+; 3334 :         }
+; 3335 : 
+; 3336 :         /* v2.10: OPATTR special handling */
+; 3337 :         if ( rc == ERROR && opnd2.is_opattr ) {
 
 	jmp	SHORT $LN110@evaluate
 
-; 3359 :                     OperErr( *i, tokenarray );
+; 3325 :                     OperErr( *i, tokenarray );
 
 $LN62@evaluate:
 
-; 3367 : 
-; 3368 :         }
-; 3369 : 
-; 3370 :         /* v2.10: OPATTR special handling */
-; 3371 :         if ( rc == ERROR && opnd2.is_opattr ) {
+; 3333 : 
+; 3334 :         }
+; 3335 : 
+; 3336 :         /* v2.10: OPATTR special handling */
+; 3337 :         if ( rc == ERROR && opnd2.is_opattr ) {
 
 	cmp	esi, -1
 	jne	SHORT $LN77@evaluate
 $LN110@evaluate:
-	test	BYTE PTR opnd2$1[rbp-37], 16
+	test	BYTE PTR opnd2$1[rbp-41], 16
 	je	SHORT $LN38@evaluate
 $LN118@evaluate:
 
-; 3372 :             /* skip tokens until the end */
-; 3373 :             while( *i < end && !IsCurrToken( T_CL_BRACKET ) && !IsCurrToken( T_CL_SQ_BRACKET ) ) {
+; 3338 :             /* skip tokens until the end */
+; 3339 :             while( *i < end && !IsCurrToken( T_CL_BRACKET ) && !IsCurrToken( T_CL_SQ_BRACKET ) ) {
 
 	mov	r8d, DWORD PTR end$[rbp-113]
 	cmp	DWORD PTR [rdi], r8d
@@ -1354,7 +1354,7 @@ $LL6@evaluate:
 	cmp	cl, 93					; 0000005dH
 	je	SHORT $LN111@evaluate
 
-; 3374 :                 (*i)++;
+; 3340 :                 (*i)++;
 
 	lea	eax, DWORD PTR [rdx+1]
 	mov	DWORD PTR [rdi], eax
@@ -1362,14 +1362,14 @@ $LL6@evaluate:
 	jl	SHORT $LL6@evaluate
 $LN111@evaluate:
 
-; 3375 :             }
-; 3376 :             opnd2.kind = EXPR_EMPTY;
+; 3341 :             }
+; 3342 :             opnd2.kind = EXPR_EMPTY;
 
 	mov	DWORD PTR opnd2$1[rbp-53], -2
 
-; 3377 :             rc = NOT_ERROR;
-; 3378 :         }
-; 3379 :         if( rc != ERROR )
+; 3343 :             rc = NOT_ERROR;
+; 3344 :         }
+; 3345 :         if( rc != ERROR )
 
 	jmp	SHORT $LN77@evaluate
 $LN38@evaluate:
@@ -1377,7 +1377,7 @@ $LN38@evaluate:
 	je	SHORT $LN39@evaluate
 $LN77@evaluate:
 
-; 3380 :             rc = calculate( opnd1, &opnd2, &tokenarray[curr_operator] );
+; 3346 :             rc = calculate( opnd1, &opnd2, &tokenarray[curr_operator] );
 
 	mov	r8, QWORD PTR oper$1$[rbp-113]
 	lea	rdx, QWORD PTR opnd2$1[rbp-113]
@@ -1386,21 +1386,21 @@ $LN77@evaluate:
 	mov	esi, eax
 $LN39@evaluate:
 
-; 3381 : 
-; 3382 :         if( flags & EXPF_ONEOPND ) /* stop after one operand? */
+; 3347 : 
+; 3348 :         if( flags & EXPF_ONEOPND ) /* stop after one operand? */
 
 	movzx	ecx, BYTE PTR flags$[rbp-113]
 	test	cl, 4
 	jne	SHORT $LN103@evaluate
 
-; 3271 :     }
-; 3272 :     /* now handle operators. */
-; 3273 :     while ( rc == NOT_ERROR && *i < end && !IsCurrToken( T_CL_BRACKET ) && !IsCurrToken( T_CL_SQ_BRACKET ) ) {
+; 3237 :     }
+; 3238 :     /* now handle operators. */
+; 3239 :     while ( rc == NOT_ERROR && *i < end && !IsCurrToken( T_CL_BRACKET ) && !IsCurrToken( T_CL_SQ_BRACKET ) ) {
 
 	test	esi, esi
 	jmp	$LN119@evaluate
 
-; 3292 :                     OperErr( curr_operator, tokenarray );
+; 3258 :                     OperErr( curr_operator, tokenarray );
 
 $LN43@evaluate:
 	shl	rdx, 5
@@ -1409,30 +1409,30 @@ $LN43@evaluate:
 	call	QWORD PTR fnEmitErr
 $LN103@evaluate:
 
-; 3383 :             break;
-; 3384 :     }
-; 3385 : 
-; 3386 : #ifdef DEBUG_OUT
-; 3387 :     if ( opnd1->hvalue != -1 && opnd1->hvalue != 0 ) {
-; 3388 :         DebugMsg1(("%u evaluate exit, rc=%d, kind=%d value=%" I64_SPEC "d(0x%" I64_SPEC "X) memtype=%Xh string=%s indirect=%u type=>%s<\n",
-; 3389 :                    evallvl--, rc, opnd1->kind, opnd1->llvalue, opnd1->llvalue, opnd1->mem_type,
-; 3390 :                    opnd1->quoted_string ? opnd1->quoted_string->string_ptr : "NULL",
-; 3391 :                    opnd1->indirect,
-; 3392 :                    opnd1->type ? opnd1->type->name : "NULL" ));
-; 3393 :     } else {
-; 3394 :         DebugMsg1(("%u evaluate exit, rc=%d, kind=%d value=%" I32_SPEC "d(0x%" I32_SPEC "X) memtype=%Xh string=%s ind=%u exp=%u ofssiz=%d instr=%s type=>%s<\n",
-; 3395 :                    evallvl--, rc, opnd1->kind, opnd1->value, opnd1->value, opnd1->mem_type,
-; 3396 :                    opnd1->quoted_string ? opnd1->quoted_string->string_ptr : "NULL",
-; 3397 :                    opnd1->indirect, opnd1->explicit, opnd1->Ofssize,
-; 3398 :                    opnd1->instr == EMPTY ? "" : GetResWName( opnd1->instr, NULL ),
-; 3399 :                    opnd1->type ? opnd1->type->name : "NULL" ));
-; 3400 :     }
-; 3401 : #endif
-; 3402 :     return( rc );
+; 3349 :             break;
+; 3350 :     }
+; 3351 : 
+; 3352 : #ifdef DEBUG_OUT
+; 3353 :     if ( opnd1->hvalue != -1 && opnd1->hvalue != 0 ) {
+; 3354 :         DebugMsg1(("%u evaluate exit, rc=%d, kind=%d value=%" I64_SPEC "d(0x%" I64_SPEC "X) memtype=%Xh string=%s indirect=%u type=>%s<\n",
+; 3355 :                    evallvl--, rc, opnd1->kind, opnd1->llvalue, opnd1->llvalue, opnd1->mem_type,
+; 3356 :                    opnd1->quoted_string ? opnd1->quoted_string->string_ptr : "NULL",
+; 3357 :                    opnd1->indirect,
+; 3358 :                    opnd1->type ? opnd1->type->name : "NULL" ));
+; 3359 :     } else {
+; 3360 :         DebugMsg1(("%u evaluate exit, rc=%d, kind=%d value=%" I32_SPEC "d(0x%" I32_SPEC "X) memtype=%Xh string=%s ind=%u exp=%u ofssiz=%d instr=%s type=>%s<\n",
+; 3361 :                    evallvl--, rc, opnd1->kind, opnd1->value, opnd1->value, opnd1->mem_type,
+; 3362 :                    opnd1->quoted_string ? opnd1->quoted_string->string_ptr : "NULL",
+; 3363 :                    opnd1->indirect, opnd1->explicit, opnd1->Ofssize,
+; 3364 :                    opnd1->instr == EMPTY ? "" : GetResWName( opnd1->instr, NULL ),
+; 3365 :                    opnd1->type ? opnd1->type->name : "NULL" ));
+; 3366 :     }
+; 3367 : #endif
+; 3368 :     return( rc );
 
 	mov	eax, esi
 
-; 3403 : }
+; 3369 : }
 
 	mov	rbx, QWORD PTR [rsp+216]
 	add	rsp, 176				; 000000b0H
@@ -1450,21 +1450,21 @@ i$ = 8
 tokenarray$ = 16
 OperErr	PROC						; COMDAT
 
-; 3238 :     if ( tokenarray[i].token <= T_BAD_NUM ) {
+; 3204 :     if ( tokenarray[i].token <= T_BAD_NUM ) {
 
 	movsxd	rax, ecx
 	shl	rax, 5
 	cmp	BYTE PTR [rdx+rax], 12
 	ja	SHORT $LN2@OperErr
 
-; 3239 :         fnEmitErr( MISSING_OPERATOR_IN_EXPRESSION ); ERRLOC(i);
+; 3205 :         fnEmitErr( MISSING_OPERATOR_IN_EXPRESSION ); ERRLOC(i);
 
 	mov	ecx, 150				; 00000096H
 	rex_jmp	QWORD PTR fnEmitErr
 $LN2@OperErr:
 
-; 3240 :     } else
-; 3241 :         fnEmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr );
+; 3206 :     } else
+; 3207 :         fnEmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr );
 
 	mov	rdx, QWORD PTR [rdx+rax+8]
 	mov	ecx, 209				; 000000d1H
@@ -1480,15 +1480,15 @@ old$ = 16
 oper$ = 24
 PrepareOp PROC						; COMDAT
 
-; 3191 :     opnd->is_opattr = old->is_opattr;
+; 3157 :     opnd->is_opattr = old->is_opattr;
 
-	mov	eax, DWORD PTR [rdx+76]
-	xor	eax, DWORD PTR [rcx+76]
+	mov	eax, DWORD PTR [rdx+72]
+	xor	eax, DWORD PTR [rcx+72]
 	and	eax, 16
-	xor	DWORD PTR [rcx+76], eax
+	xor	DWORD PTR [rcx+72], eax
 
-; 3192 : 
-; 3193 :     switch ( oper->token ) {
+; 3158 : 
+; 3159 :     switch ( oper->token ) {
 
 	movzx	eax, BYTE PTR [r8]
 	cmp	al, 4
@@ -1496,49 +1496,49 @@ PrepareOp PROC						; COMDAT
 	cmp	al, 46					; 0000002eH
 	jne	SHORT $LN4@PrepareOp
 
-; 3194 :     case T_DOT:
-; 3195 :         DebugMsg(("PrepareOp: DOT operator found, old.sym=%X, old.type=%s, expr=%s\n", old->sym, (old->type ? old->type->name : "NULL" ), oper->tokpos + strlen( oper->string_ptr ) ));
-; 3196 :         if ( old->type ) {
+; 3160 :     case T_DOT:
+; 3161 :         DebugMsg(("PrepareOp: DOT operator found, old.sym=%X, old.type=%s, expr=%s\n", old->sym, (old->type ? old->type->name : "NULL" ), oper->tokpos + strlen( oper->string_ptr ) ));
+; 3162 :         if ( old->type ) {
 
 	mov	rax, QWORD PTR [rdx+96]
 	test	rax, rax
 	je	SHORT $LN7@PrepareOp
 
-; 3197 :             DebugMsg1(("PrepareOp: implicit type: %s\n", old->type->name));
-; 3198 :             opnd->type = old->type;
+; 3163 :             DebugMsg1(("PrepareOp: implicit type: %s\n", old->type->name));
+; 3164 :             opnd->type = old->type;
 
 	mov	QWORD PTR [rcx+96], rax
 
-; 3199 :             opnd->is_dot = TRUE;
+; 3165 :             opnd->is_dot = TRUE;
 
-	or	DWORD PTR [rcx+76], 128			; 00000080H
+	or	DWORD PTR [rcx+72], 128			; 00000080H
 
-; 3229 :             break;
-; 3230 :         }
-; 3231 :         break;
-; 3232 :     }
-; 3233 : }
+; 3195 :             break;
+; 3196 :         }
+; 3197 :         break;
+; 3198 :     }
+; 3199 : }
 
 	ret	0
 $LN7@PrepareOp:
 
-; 3200 : #if 0
-; 3201 :         /* v2.09 (type field is now set in get_operand();
-; 3202 :          * it's problematic to use old->sym here, because this field
-; 3203 :          * is not necessarily set by the operand just before the dot.
-; 3204 :          */
-; 3205 :         //} else if ( old->sym && old->sym->mem_type == MT_TYPE ) {
-; 3206 :         } else if ( old->sym && old->sym->mem_type == MT_TYPE && old->instr == EMPTY ) {
-; 3207 :             DebugMsg1(("PrepareOp: label %s, implicit type: %s\n", old->sym->name, old->sym->type->name));
-; 3208 :             for ( opnd->type = old->sym->type; opnd->type->type; opnd->type = opnd->type->type );
-; 3209 : #endif
-; 3210 :         /* v2.07: changed */
-; 3211 :         //} else if ( !ModuleInfo.oldstructs ) {
-; 3212 :         /* v2.08: reverted, replaced by changes in dot_op() and get_operand(), case T_STYPE */
-; 3213 :         //} else if ( old->sym && old->sym->mem_type == MT_EMPTY && !ModuleInfo.oldstructs ) {
-; 3214 :         /* v2.11: nullstruct not used here. Set type to NULL and is_dot==TRUE */
-; 3215 :         //} else if ( !ModuleInfo.oldstructs ) {
-; 3216 :         } else if ( !ModuleInfo.oldstructs && old->sym && old->sym->state == SYM_UNDEFINED ) {
+; 3166 : #if 0
+; 3167 :         /* v2.09 (type field is now set in get_operand();
+; 3168 :          * it's problematic to use old->sym here, because this field
+; 3169 :          * is not necessarily set by the operand just before the dot.
+; 3170 :          */
+; 3171 :         //} else if ( old->sym && old->sym->mem_type == MT_TYPE ) {
+; 3172 :         } else if ( old->sym && old->sym->mem_type == MT_TYPE && old->instr == EMPTY ) {
+; 3173 :             DebugMsg1(("PrepareOp: label %s, implicit type: %s\n", old->sym->name, old->sym->type->name));
+; 3174 :             for ( opnd->type = old->sym->type; opnd->type->type; opnd->type = opnd->type->type );
+; 3175 : #endif
+; 3176 :         /* v2.07: changed */
+; 3177 :         //} else if ( !ModuleInfo.oldstructs ) {
+; 3178 :         /* v2.08: reverted, replaced by changes in dot_op() and get_operand(), case T_STYPE */
+; 3179 :         //} else if ( old->sym && old->sym->mem_type == MT_EMPTY && !ModuleInfo.oldstructs ) {
+; 3180 :         /* v2.11: nullstruct not used here. Set type to NULL and is_dot==TRUE */
+; 3181 :         //} else if ( !ModuleInfo.oldstructs ) {
+; 3182 :         } else if ( !ModuleInfo.oldstructs && old->sym && old->sym->state == SYM_UNDEFINED ) {
 
 	test	DWORD PTR ModuleInfo+408, 256		; 00000100H
 	jne	SHORT $LN4@PrepareOp
@@ -1548,28 +1548,28 @@ $LN7@PrepareOp:
 	cmp	DWORD PTR [rax+32], 0
 	jne	SHORT $LN4@PrepareOp
 
-; 3217 :             DebugMsg1(("PrepareOp: forward ref to %s, type will be NULL\n", old->sym->name ));
-; 3218 :             opnd->type = NULL;
+; 3183 :             DebugMsg1(("PrepareOp: forward ref to %s, type will be NULL\n", old->sym->name ));
+; 3184 :             opnd->type = NULL;
 
 	mov	QWORD PTR [rcx+96], 0
 
-; 3219 :             opnd->is_dot = TRUE;
+; 3185 :             opnd->is_dot = TRUE;
 
-	or	DWORD PTR [rcx+76], 128			; 00000080H
+	or	DWORD PTR [rcx+72], 128			; 00000080H
 
-; 3229 :             break;
-; 3230 :         }
-; 3231 :         break;
-; 3232 :     }
-; 3233 : }
+; 3195 :             break;
+; 3196 :         }
+; 3197 :         break;
+; 3198 :     }
+; 3199 : }
 
 	ret	0
 $LN10@PrepareOp:
 
-; 3220 :         }
-; 3221 :         break;
-; 3222 :     case T_UNARY_OPERATOR:
-; 3223 :         switch ( oper->tokval ) {
+; 3186 :         }
+; 3187 :         break;
+; 3188 :     case T_UNARY_OPERATOR:
+; 3189 :         switch ( oper->tokval ) {
 
 	mov	edx, DWORD PTR [r8+16]
 	sub	edx, 229				; 000000e5H
@@ -1578,20 +1578,20 @@ $LN10@PrepareOp:
 	jne	SHORT $LN4@PrepareOp
 $LN11@PrepareOp:
 
-; 3224 :         case T_OPATTR:
-; 3225 :         case T_DOT_TYPE:
-; 3226 :             DebugMsg(("PrepareOp: OPATTR operator found, old.sym=%X, old.type=%s, expr=%s\n",
-; 3227 :                       old->sym, (old->type ? old->type->name : "NULL" ), oper->tokpos + strlen( oper->string_ptr ) ));
-; 3228 :             opnd->is_opattr = TRUE;
+; 3190 :         case T_OPATTR:
+; 3191 :         case T_DOT_TYPE:
+; 3192 :             DebugMsg(("PrepareOp: OPATTR operator found, old.sym=%X, old.type=%s, expr=%s\n",
+; 3193 :                       old->sym, (old->type ? old->type->name : "NULL" ), oper->tokpos + strlen( oper->string_ptr ) ));
+; 3194 :             opnd->is_opattr = TRUE;
 
-	or	DWORD PTR [rcx+76], 16
+	or	DWORD PTR [rcx+72], 16
 $LN4@PrepareOp:
 
-; 3229 :             break;
-; 3230 :         }
-; 3231 :         break;
-; 3232 :     }
-; 3233 : }
+; 3195 :             break;
+; 3196 :         }
+; 3197 :         break;
+; 3198 :     }
+; 3199 : }
 
 	ret	0
 PrepareOp ENDP
@@ -1605,7 +1605,7 @@ opnd2$ = 88
 oper$ = 96
 calculate PROC						; COMDAT
 
-; 2592 : {
+; 2558 : {
 
 	mov	QWORD PTR [rsp+24], rbx
 	push	rsi
@@ -1613,38 +1613,38 @@ calculate PROC						; COMDAT
 	push	r14
 	sub	rsp, 48					; 00000030H
 
-; 2593 :     int_32              temp;
-; 2594 :     struct asym         *sym;
-; 2595 :     char                *name;
-; 2596 : 
-; 2597 :     /* avoid to use the <string> member once it's part of an expression!
-; 2598 :      * the <value> member is the one to be used then.
-; 2599 :      * test case: db "a"+80h
-; 2600 :      * v2.08: first: this is too early; second: the current operand is opnd2.
-; 2601 :      * third: the space is also used by float_tok member, which cannot be cleared.
-; 2602 :      * probably the best solution - at calculate()'s end:
-; 2603 :      * if ( opnd1->kind == EXPR_CONST ) opnd1->quoted_string = NULL;
-; 2604 :      */
-; 2605 :     opnd1->quoted_string = NULL;
+; 2559 :     int_32              temp;
+; 2560 :     struct asym         *sym;
+; 2561 :     char                *name;
+; 2562 : 
+; 2563 :     /* avoid to use the <string> member once it's part of an expression!
+; 2564 :      * the <value> member is the one to be used then.
+; 2565 :      * test case: db "a"+80h
+; 2566 :      * v2.08: first: this is too early; second: the current operand is opnd2.
+; 2567 :      * third: the space is also used by float_tok member, which cannot be cleared.
+; 2568 :      * probably the best solution - at calculate()'s end:
+; 2569 :      * if ( opnd1->kind == EXPR_CONST ) opnd1->quoted_string = NULL;
+; 2570 :      */
+; 2571 :     opnd1->quoted_string = NULL;
 
 	xor	esi, esi
 	mov	rdi, rdx
 	mov	QWORD PTR [rcx+16], rsi
 	mov	r14, r8
 
-; 2606 : 
-; 2607 :     /* v2.11: added check to ensure constant fits in 64-bits */
-; 2608 :     if ( opnd2->hlvalue ) {
+; 2572 : 
+; 2573 :     /* v2.11: added check to ensure constant fits in 64-bits */
+; 2574 :     if ( opnd2->hlvalue ) {
 
 	mov	rdx, QWORD PTR [rdx+8]
 	mov	rbx, rcx
 	test	rdx, rdx
 	je	SHORT $LN11@calculate
 
-; 2609 :         /* opattr and unary +/- are ok, they can handle 128-bits */
-; 2610 :         if ( opnd2->is_opattr || ( ( oper->token == '+' || oper->token == '-' ) && oper->specval == UNARY_PLUSMINUS ) )
+; 2575 :         /* opattr and unary +/- are ok, they can handle 128-bits */
+; 2576 :         if ( opnd2->is_opattr || ( ( oper->token == '+' || oper->token == '-' ) && oper->specval == UNARY_PLUSMINUS ) )
 
-	test	BYTE PTR [rdi+76], 16
+	test	BYTE PTR [rdi+72], 16
 	jne	SHORT $LN11@calculate
 	movzx	eax, BYTE PTR [r8]
 	sub	al, 43					; 0000002bH
@@ -1654,15 +1654,15 @@ calculate PROC						; COMDAT
 	je	SHORT $LN11@calculate
 $LN9@calculate:
 
-; 2611 :             ;
-; 2612 :         else {
-; 2613 :             DebugMsg(("%u calculate(%s): value too large\n", evallvl, oper->string_ptr ));
-; 2614 :             return( fnEmitErr( CONSTANT_VALUE_TOO_LARGE_EX, opnd2->hlvalue, opnd2->value64 ) );
+; 2577 :             ;
+; 2578 :         else {
+; 2579 :             DebugMsg(("%u calculate(%s): value too large\n", evallvl, oper->string_ptr ));
+; 2580 :             return( fnEmitErr( CONSTANT_VALUE_TOO_LARGE_EX, opnd2->hlvalue, opnd2->value64 ) );
 
 	mov	r8, QWORD PTR [rdi]
 	mov	ecx, 272				; 00000110H
 
-; 3184 : }
+; 3150 : }
 
 	mov	rbx, QWORD PTR [rsp+96]
 	add	rsp, 48					; 00000030H
@@ -1670,18 +1670,18 @@ $LN9@calculate:
 	pop	rdi
 	pop	rsi
 
-; 2611 :             ;
-; 2612 :         else {
-; 2613 :             DebugMsg(("%u calculate(%s): value too large\n", evallvl, oper->string_ptr ));
-; 2614 :             return( fnEmitErr( CONSTANT_VALUE_TOO_LARGE_EX, opnd2->hlvalue, opnd2->value64 ) );
+; 2577 :             ;
+; 2578 :         else {
+; 2579 :             DebugMsg(("%u calculate(%s): value too large\n", evallvl, oper->string_ptr ));
+; 2580 :             return( fnEmitErr( CONSTANT_VALUE_TOO_LARGE_EX, opnd2->hlvalue, opnd2->value64 ) );
 
 	rex_jmp	QWORD PTR fnEmitErr
 $LN11@calculate:
 
-; 2615 :         }
-; 2616 :     }
-; 2617 : 
-; 2618 :     switch( oper->token ) {
+; 2581 :         }
+; 2582 :     }
+; 2583 : 
+; 2584 :     switch( oper->token ) {
 
 	movzx	eax, BYTE PTR [r8]
 	add	eax, -4
@@ -1696,45 +1696,45 @@ $LN11@calculate:
 	jmp	rcx
 $LN13@calculate:
 
-; 2619 :     case T_OP_SQ_BRACKET:
-; 2620 :         /* v2.07: the ASSUMEs are now checked only when operator [] is done.
-; 2621 :          * this is compatible with Masm:
-; 2622 :          *   assume ebx:ptr <struct>
-; 2623 :          *   mov eax, [ebx.<member>]             ;is to fail
-; 2624 :          *   mov eax, [ebx.<struct>.<member>]    ;is to be ok
-; 2625 :          * previously both variants were accepted by jwasm.
-; 2626 :          */
-; 2627 :         if ( opnd2->assumecheck == TRUE ) {
+; 2585 :     case T_OP_SQ_BRACKET:
+; 2586 :         /* v2.07: the ASSUMEs are now checked only when operator [] is done.
+; 2587 :          * this is compatible with Masm:
+; 2588 :          *   assume ebx:ptr <struct>
+; 2589 :          *   mov eax, [ebx.<member>]             ;is to fail
+; 2590 :          *   mov eax, [ebx.<struct>.<member>]    ;is to be ok
+; 2591 :          * previously both variants were accepted by jwasm.
+; 2592 :          */
+; 2593 :         if ( opnd2->assumecheck == TRUE ) {
 
-	mov	eax, DWORD PTR [rdi+76]
+	mov	eax, DWORD PTR [rdi+72]
 	test	al, 64					; 00000040H
 	je	SHORT $LN15@calculate
 
-; 2628 :             opnd2->assumecheck = FALSE;   /* check ONE time only! */
+; 2594 :             opnd2->assumecheck = FALSE;   /* check ONE time only! */
 
 	and	eax, -65				; ffffffbfH
-	mov	DWORD PTR [rdi+76], eax
+	mov	DWORD PTR [rdi+72], eax
 
-; 2629 :             if ( opnd1->sym == NULL ) /* v2.10: added; see assume10.asm */
+; 2595 :             if ( opnd1->sym == NULL ) /* v2.10: added; see assume10.asm */
 
 	cmp	QWORD PTR [rbx+80], rsi
 	jne	SHORT $LN15@calculate
 
-; 2630 :                 CheckAssume( opnd2 );
+; 2596 :                 CheckAssume( opnd2 );
 
 	mov	rcx, rdi
 	call	CheckAssume
 $LN15@calculate:
 
-; 2631 :         }
-; 2632 : 
-; 2633 :         if ( opnd1->kind == EXPR_EMPTY ) {
+; 2597 :         }
+; 2598 : 
+; 2599 :         if ( opnd1->kind == EXPR_EMPTY ) {
 
 	cmp	DWORD PTR [rbx+60], -2
 	jne	SHORT $LN16@calculate
 
-; 2634 :             DebugMsg1(("%u calculate(%s): single item\n", evallvl, oper->string_ptr ));
-; 2635 :             TokenAssign( opnd1, opnd2 );
+; 2600 :             DebugMsg1(("%u calculate(%s): single item\n", evallvl, oper->string_ptr ));
+; 2601 :             TokenAssign( opnd1, opnd2 );
 
 	movups	xmm0, XMMWORD PTR [rdi]
 	movups	XMMWORD PTR [rbx], xmm0
@@ -1749,84 +1749,84 @@ $LN15@calculate:
 	movups	xmm1, XMMWORD PTR [rdi+80]
 	movups	XMMWORD PTR [rbx+80], xmm1
 
-; 2636 :             opnd1->type = opnd2->type;
+; 2602 :             opnd1->type = opnd2->type;
 
 	mov	rax, QWORD PTR [rdi+96]
 	mov	QWORD PTR [rbx+96], rax
 
-; 2637 :             if ( opnd1->is_type && opnd1->kind == EXPR_CONST )
+; 2603 :             if ( opnd1->is_type && opnd1->kind == EXPR_CONST )
 
-	mov	eax, DWORD PTR [rbx+76]
+	mov	eax, DWORD PTR [rbx+72]
 	test	al, 8
 	je	$LN2@calculate
 	cmp	DWORD PTR [rbx+60], esi
 	jne	$LN2@calculate
 
-; 2638 :                 opnd1->is_type = 0;
+; 2604 :                 opnd1->is_type = 0;
 
 	and	eax, -9					; fffffff7H
-	mov	DWORD PTR [rbx+76], eax
+	mov	DWORD PTR [rbx+72], eax
 
-; 3152 :     } /* end switch( oper->token ) */
-; 3153 : 
-; 3154 : #ifdef DEBUG_OUT
-; 3155 :     if ( opnd1->hlvalue ) {
-; 3156 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
-; 3157 :                    evallvl,
-; 3158 :                    oper->string_ptr,
-; 3159 :                    opnd1->kind,
-; 3160 :                    opnd1->hlvalue, opnd1->llvalue,
-; 3161 :                    opnd1->mem_type,
-; 3162 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3163 :     } else if ( opnd1->hvalue ) {
-; 3164 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
-; 3165 :                    evallvl,
-; 3166 :                    oper->string_ptr,
-; 3167 :                    opnd1->kind,
-; 3168 :                    opnd1->llvalue, opnd1->llvalue,
-; 3169 :                    opnd1->mem_type,
-; 3170 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3171 :     } else {
-; 3172 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
-; 3173 :                    evallvl,
-; 3174 :                    oper->string_ptr,
-; 3175 :                    opnd1->kind,
-; 3176 :                    opnd1->value, opnd1->value,
-; 3177 :                    opnd1->mem_type,
-; 3178 :                    opnd1->indirect, opnd1->explicit,
-; 3179 :                    opnd1->type ? opnd1->type->name : "NULL",
-; 3180 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
-; 3181 :     }
-; 3182 : #endif
-; 3183 :     return( NOT_ERROR );
+; 3118 :     } /* end switch( oper->token ) */
+; 3119 : 
+; 3120 : #ifdef DEBUG_OUT
+; 3121 :     if ( opnd1->hlvalue ) {
+; 3122 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
+; 3123 :                    evallvl,
+; 3124 :                    oper->string_ptr,
+; 3125 :                    opnd1->kind,
+; 3126 :                    opnd1->hlvalue, opnd1->llvalue,
+; 3127 :                    opnd1->mem_type,
+; 3128 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3129 :     } else if ( opnd1->hvalue ) {
+; 3130 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
+; 3131 :                    evallvl,
+; 3132 :                    oper->string_ptr,
+; 3133 :                    opnd1->kind,
+; 3134 :                    opnd1->llvalue, opnd1->llvalue,
+; 3135 :                    opnd1->mem_type,
+; 3136 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3137 :     } else {
+; 3138 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
+; 3139 :                    evallvl,
+; 3140 :                    oper->string_ptr,
+; 3141 :                    opnd1->kind,
+; 3142 :                    opnd1->value, opnd1->value,
+; 3143 :                    opnd1->mem_type,
+; 3144 :                    opnd1->indirect, opnd1->explicit,
+; 3145 :                    opnd1->type ? opnd1->type->name : "NULL",
+; 3146 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
+; 3147 :     }
+; 3148 : #endif
+; 3149 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN180@calculate
 $LN16@calculate:
 
-; 2639 :             break;
-; 2640 :         }
-; 2641 : 
-; 2642 :         /* v2.03: make HJWasm reject syntax variants
-; 2643 :          * "mov eax, DWORD [EBX]"
-; 2644 :          * "mov eax, DWORD [var_name]"
-; 2645 :          * variants still valid:
-; 2646 :          * "mov eax, DWORD [WORD]"
-; 2647 :          * "mov eax, DWORD [4]"
-; 2648 :          * "mov eax, [DWORD][EBX]"
-; 2649 :          */
-; 2650 :         /* v2.08: structure/union names are ok: mov eax, S1[ebx] */
-; 2651 :         //if ( opnd1->is_type == TRUE &&
-; 2652 :         if ( opnd1->is_type == TRUE && opnd1->type == NULL &&
+; 2605 :             break;
+; 2606 :         }
+; 2607 : 
+; 2608 :         /* v2.03: make HJWasm reject syntax variants
+; 2609 :          * "mov eax, DWORD [EBX]"
+; 2610 :          * "mov eax, DWORD [var_name]"
+; 2611 :          * variants still valid:
+; 2612 :          * "mov eax, DWORD [WORD]"
+; 2613 :          * "mov eax, DWORD [4]"
+; 2614 :          * "mov eax, [DWORD][EBX]"
+; 2615 :          */
+; 2616 :         /* v2.08: structure/union names are ok: mov eax, S1[ebx] */
+; 2617 :         //if ( opnd1->is_type == TRUE &&
+; 2618 :         if ( opnd1->is_type == TRUE && opnd1->type == NULL &&
 
-	test	BYTE PTR [rbx+76], 8
+	test	BYTE PTR [rbx+72], 8
 	je	SHORT $LN23@calculate
 	cmp	QWORD PTR [rbx+96], rsi
 	jne	SHORT $LN23@calculate
 
-; 2653 :             (opnd2->kind == EXPR_ADDR || opnd2->kind == EXPR_REG ) ) {
-; 2654 :             DebugMsg(("calculate(%s): incompatible usage of (simple) type\n", oper->string_ptr ));
-; 2655 :             return( fnEmitErr( SYNTAX_ERROR_IN_EXPRESSION ) );
+; 2619 :             (opnd2->kind == EXPR_ADDR || opnd2->kind == EXPR_REG ) ) {
+; 2620 :             DebugMsg(("calculate(%s): incompatible usage of (simple) type\n", oper->string_ptr ));
+; 2621 :             return( fnEmitErr( SYNTAX_ERROR_IN_EXPRESSION ) );
 
 	mov	eax, DWORD PTR [rdi+60]
 	dec	eax
@@ -1834,10 +1834,10 @@ $LN16@calculate:
 	jbe	$LN192@calculate
 $LN23@calculate:
 
-; 2683 :         }
-; 2684 : 
-; 2685 :         /* v2.08: moved here from get_operand() */
-; 2686 :         if ( opnd1->base_reg && opnd1->base_reg->tokval == T_ST )
+; 2649 :         }
+; 2650 : 
+; 2651 :         /* v2.08: moved here from get_operand() */
+; 2652 :         if ( opnd1->base_reg && opnd1->base_reg->tokval == T_ST )
 
 	mov	rax, QWORD PTR [rbx+24]
 	test	rax, rax
@@ -1845,7 +1845,7 @@ $LN23@calculate:
 	cmp	DWORD PTR [rax+16], 31
 	jne	$LN26@calculate
 
-; 2687 :             return( check_streg( opnd1, opnd2 ) );
+; 2653 :             return( check_streg( opnd1, opnd2 ) );
 
 	movzx	eax, BYTE PTR [rbx+68]
 	test	al, al
@@ -1856,28 +1856,28 @@ $LN23@calculate:
 	jmp	$LN180@calculate
 $LN21@calculate:
 
-; 2656 :         }
-; 2657 : 
-; 2658 :         /* v2.08: moved here from get_operand() */
-; 2659 :         if ( opnd1->base_reg && opnd1->base_reg->tokval == T_ST )
-; 2660 :             return( check_streg( opnd1, opnd2 ) );
-; 2661 : 
-; 2662 : #ifdef DEBUG_OUT
-; 2663 :         if ( plus_op( opnd1, opnd2 ) == ERROR )
-; 2664 :             return( ERROR );
-; 2665 :         break;
-; 2666 : #else
-; 2667 :         return( plus_op( opnd1, opnd2 ) );
-; 2668 : #endif
-; 2669 :     case T_OP_BRACKET:
-; 2670 : 
-; 2671 :         if ( opnd1->kind == EXPR_EMPTY ) {
+; 2622 :         }
+; 2623 : 
+; 2624 :         /* v2.08: moved here from get_operand() */
+; 2625 :         if ( opnd1->base_reg && opnd1->base_reg->tokval == T_ST )
+; 2626 :             return( check_streg( opnd1, opnd2 ) );
+; 2627 : 
+; 2628 : #ifdef DEBUG_OUT
+; 2629 :         if ( plus_op( opnd1, opnd2 ) == ERROR )
+; 2630 :             return( ERROR );
+; 2631 :         break;
+; 2632 : #else
+; 2633 :         return( plus_op( opnd1, opnd2 ) );
+; 2634 : #endif
+; 2635 :     case T_OP_BRACKET:
+; 2636 : 
+; 2637 :         if ( opnd1->kind == EXPR_EMPTY ) {
 
 	cmp	DWORD PTR [rbx+60], -2
 	jne	SHORT $LN22@calculate
 
-; 2672 :             DebugMsg1(("%u calculate(%s): single item\n", evallvl, oper->string_ptr ));
-; 2673 :             TokenAssign( opnd1, opnd2 );
+; 2638 :             DebugMsg1(("%u calculate(%s): single item\n", evallvl, oper->string_ptr ));
+; 2639 :             TokenAssign( opnd1, opnd2 );
 
 	movups	xmm0, XMMWORD PTR [rdi]
 	movups	XMMWORD PTR [rbx], xmm0
@@ -1892,73 +1892,73 @@ $LN21@calculate:
 	movups	xmm1, XMMWORD PTR [rdi+80]
 	movups	XMMWORD PTR [rbx+80], xmm1
 
-; 2674 :             opnd1->type = opnd2->type;
+; 2640 :             opnd1->type = opnd2->type;
 
 	mov	rax, QWORD PTR [rdi+96]
 	mov	QWORD PTR [rbx+96], rax
 
-; 3152 :     } /* end switch( oper->token ) */
-; 3153 : 
-; 3154 : #ifdef DEBUG_OUT
-; 3155 :     if ( opnd1->hlvalue ) {
-; 3156 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
-; 3157 :                    evallvl,
-; 3158 :                    oper->string_ptr,
-; 3159 :                    opnd1->kind,
-; 3160 :                    opnd1->hlvalue, opnd1->llvalue,
-; 3161 :                    opnd1->mem_type,
-; 3162 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3163 :     } else if ( opnd1->hvalue ) {
-; 3164 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
-; 3165 :                    evallvl,
-; 3166 :                    oper->string_ptr,
-; 3167 :                    opnd1->kind,
-; 3168 :                    opnd1->llvalue, opnd1->llvalue,
-; 3169 :                    opnd1->mem_type,
-; 3170 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3171 :     } else {
-; 3172 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
-; 3173 :                    evallvl,
-; 3174 :                    oper->string_ptr,
-; 3175 :                    opnd1->kind,
-; 3176 :                    opnd1->value, opnd1->value,
-; 3177 :                    opnd1->mem_type,
-; 3178 :                    opnd1->indirect, opnd1->explicit,
-; 3179 :                    opnd1->type ? opnd1->type->name : "NULL",
-; 3180 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
-; 3181 :     }
-; 3182 : #endif
-; 3183 :     return( NOT_ERROR );
+; 3118 :     } /* end switch( oper->token ) */
+; 3119 : 
+; 3120 : #ifdef DEBUG_OUT
+; 3121 :     if ( opnd1->hlvalue ) {
+; 3122 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
+; 3123 :                    evallvl,
+; 3124 :                    oper->string_ptr,
+; 3125 :                    opnd1->kind,
+; 3126 :                    opnd1->hlvalue, opnd1->llvalue,
+; 3127 :                    opnd1->mem_type,
+; 3128 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3129 :     } else if ( opnd1->hvalue ) {
+; 3130 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
+; 3131 :                    evallvl,
+; 3132 :                    oper->string_ptr,
+; 3133 :                    opnd1->kind,
+; 3134 :                    opnd1->llvalue, opnd1->llvalue,
+; 3135 :                    opnd1->mem_type,
+; 3136 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3137 :     } else {
+; 3138 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
+; 3139 :                    evallvl,
+; 3140 :                    oper->string_ptr,
+; 3141 :                    opnd1->kind,
+; 3142 :                    opnd1->value, opnd1->value,
+; 3143 :                    opnd1->mem_type,
+; 3144 :                    opnd1->indirect, opnd1->explicit,
+; 3145 :                    opnd1->type ? opnd1->type->name : "NULL",
+; 3146 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
+; 3147 :     }
+; 3148 : #endif
+; 3149 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN180@calculate
 $LN22@calculate:
 
-; 2675 :             break;
-; 2676 :         }
-; 2677 :         /* v2.03: make HJWasm reject syntax variants
-; 2678 :          * "mov eax, DWORD (<label>)"
-; 2679 :          */
-; 2680 :         if ( opnd1->is_type == TRUE && opnd2->kind == EXPR_ADDR ) {
+; 2641 :             break;
+; 2642 :         }
+; 2643 :         /* v2.03: make HJWasm reject syntax variants
+; 2644 :          * "mov eax, DWORD (<label>)"
+; 2645 :          */
+; 2646 :         if ( opnd1->is_type == TRUE && opnd2->kind == EXPR_ADDR ) {
 
-	test	BYTE PTR [rbx+76], 8
+	test	BYTE PTR [rbx+72], 8
 	je	SHORT $LN23@calculate
 	cmp	DWORD PTR [rdi+60], 1
 	jne	SHORT $LN23@calculate
 $LN192@calculate:
 
-; 2681 :             DebugMsg(("calculate(%s): incompatible usage of (simple) type\n", oper->string_ptr ));
-; 2682 :             return( fnEmitErr( SYNTAX_ERROR_IN_EXPRESSION ) );
+; 2647 :             DebugMsg(("calculate(%s): incompatible usage of (simple) type\n", oper->string_ptr ));
+; 2648 :             return( fnEmitErr( SYNTAX_ERROR_IN_EXPRESSION ) );
 
 	mov	ecx, 263				; 00000107H
 
-; 2846 :                     DebugMsg(("calculate(PTR): register size doesn't match type size; %u != %u\n", SizeFromRegister( temp ), opnd1->value ));
-; 2847 :                     return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
+; 2812 :                     DebugMsg(("calculate(PTR): register size doesn't match type size; %u != %u\n", SizeFromRegister( temp ), opnd1->value ));
+; 2813 :                     return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
 	call	QWORD PTR fnEmitErr
 	jmp	$LN180@calculate
 
-; 2687 :             return( check_streg( opnd1, opnd2 ) );
+; 2653 :             return( check_streg( opnd1, opnd2 ) );
 
 $LN140@calculate:
 	inc	al
@@ -1976,22 +1976,22 @@ $LN141@calculate:
 	jmp	$LN180@calculate
 $LN25@calculate:
 
-; 2688 : 
-; 2689 :         DebugMsg1(("calculate(%s): calling plus_op()\n", oper->string_ptr ));
-; 2690 : #ifdef DEBUG_OUT
-; 2691 :         if ( plus_op( opnd1, opnd2 ) == ERROR )
-; 2692 :             return( ERROR );
-; 2693 :         break;
-; 2694 : #else
-; 2695 :         return( plus_op( opnd1, opnd2 ) );
-; 2696 : #endif
-; 2697 :     case '+':
-; 2698 :         if ( oper->specval == UNARY_PLUSMINUS ) /* unary op? */
+; 2654 : 
+; 2655 :         DebugMsg1(("calculate(%s): calling plus_op()\n", oper->string_ptr ));
+; 2656 : #ifdef DEBUG_OUT
+; 2657 :         if ( plus_op( opnd1, opnd2 ) == ERROR )
+; 2658 :             return( ERROR );
+; 2659 :         break;
+; 2660 : #else
+; 2661 :         return( plus_op( opnd1, opnd2 ) );
+; 2662 : #endif
+; 2663 :     case '+':
+; 2664 :         if ( oper->specval == UNARY_PLUSMINUS ) /* unary op? */
 
 	cmp	BYTE PTR [r8+1], sil
 	jne	SHORT $LN26@calculate
 
-; 2699 :             return( positive_op( opnd1, opnd2 ) );
+; 2665 :             return( positive_op( opnd1, opnd2 ) );
 
 	mov	rcx, rdi
 	call	MakeConst
@@ -2011,10 +2011,10 @@ $LN144@calculate:
 	mov	DWORD PTR [rbx+60], ecx
 	mov	rax, QWORD PTR [rdi+16]
 	mov	QWORD PTR [rbx+16], rax
-	mov	eax, DWORD PTR [rdi+76]
-	xor	eax, DWORD PTR [rbx+76]
+	mov	eax, DWORD PTR [rdi+72]
+	xor	eax, DWORD PTR [rbx+72]
 	and	eax, 32					; 00000020H
-	xor	DWORD PTR [rbx+76], eax
+	xor	DWORD PTR [rbx+72], eax
 	mov	eax, esi
 	jmp	$LN180@calculate
 $LN146@calculate:
@@ -2024,12 +2024,12 @@ $LN146@calculate:
 	jmp	$LN180@calculate
 $LN26@calculate:
 
-; 2700 : #ifdef DEBUG_OUT
-; 2701 :         if ( plus_op( opnd1, opnd2 ) == ERROR )
-; 2702 :             return( ERROR );
-; 2703 :         break;
-; 2704 : #else
-; 2705 :         return( plus_op( opnd1, opnd2 ) );
+; 2666 : #ifdef DEBUG_OUT
+; 2667 :         if ( plus_op( opnd1, opnd2 ) == ERROR )
+; 2668 :             return( ERROR );
+; 2669 :         break;
+; 2670 : #else
+; 2671 :         return( plus_op( opnd1, opnd2 ) );
 
 	mov	rdx, rdi
 	mov	rcx, rbx
@@ -2037,10 +2037,10 @@ $LN26@calculate:
 	jmp	$LN180@calculate
 $LN27@calculate:
 
-; 2706 : #endif
-; 2707 :     case '-':
-; 2708 :         if ( oper->specval == UNARY_PLUSMINUS ) /* unary op? */
-; 2709 :             return( negative_op( opnd1, opnd2 ) );
+; 2672 : #endif
+; 2673 :     case '-':
+; 2674 :         if ( oper->specval == UNARY_PLUSMINUS ) /* unary op? */
+; 2675 :             return( negative_op( opnd1, opnd2 ) );
 
 	mov	rdx, rdi
 	mov	rcx, rbx
@@ -2050,25 +2050,25 @@ $LN27@calculate:
 	jmp	$LN180@calculate
 $LN28@calculate:
 
-; 2710 : #ifdef DEBUG_OUT
-; 2711 :         if ( minus_op( opnd1, opnd2 ) == ERROR )
-; 2712 :             return( ERROR );
-; 2713 :         break;
-; 2714 : #else
-; 2715 :         return( minus_op( opnd1, opnd2 ) );
+; 2676 : #ifdef DEBUG_OUT
+; 2677 :         if ( minus_op( opnd1, opnd2 ) == ERROR )
+; 2678 :             return( ERROR );
+; 2679 :         break;
+; 2680 : #else
+; 2681 :         return( minus_op( opnd1, opnd2 ) );
 
 	call	minus_op
 	jmp	$LN180@calculate
 $LN29@calculate:
 
-; 2716 : #endif
-; 2717 :     case T_DOT:
-; 2718 : #ifdef DEBUG_OUT
-; 2719 :         if ( dot_op( opnd1, opnd2 ) == ERROR )
-; 2720 :             return( ERROR );
-; 2721 :         break;
-; 2722 : #else
-; 2723 :         return( dot_op( opnd1, opnd2 ) );
+; 2682 : #endif
+; 2683 :     case T_DOT:
+; 2684 : #ifdef DEBUG_OUT
+; 2685 :         if ( dot_op( opnd1, opnd2 ) == ERROR )
+; 2686 :             return( ERROR );
+; 2687 :         break;
+; 2688 : #else
+; 2689 :         return( dot_op( opnd1, opnd2 ) );
 
 	mov	rdx, rdi
 	mov	rcx, rbx
@@ -2076,14 +2076,14 @@ $LN29@calculate:
 	jmp	$LN180@calculate
 $LN30@calculate:
 
-; 2724 : #endif
-; 2725 :     case T_COLON:
-; 2726 : #ifdef DEBUG_OUT
-; 2727 :         if ( colon_op( opnd1, opnd2 ) == ERROR )
-; 2728 :             return( ERROR );
-; 2729 :         break;
-; 2730 : #else
-; 2731 :         return( colon_op( opnd1, opnd2 ) );
+; 2690 : #endif
+; 2691 :     case T_COLON:
+; 2692 : #ifdef DEBUG_OUT
+; 2693 :         if ( colon_op( opnd1, opnd2 ) == ERROR )
+; 2694 :             return( ERROR );
+; 2695 :         break;
+; 2696 : #else
+; 2697 :         return( colon_op( opnd1, opnd2 ) );
 
 	mov	rdx, rdi
 	mov	rcx, rbx
@@ -2091,31 +2091,31 @@ $LN30@calculate:
 	jmp	$LN180@calculate
 $LN31@calculate:
 
-; 2732 : #endif
-; 2733 :     case '*':
-; 2734 :         /*
-; 2735 :          * The only formats allowed are:
-; 2736 :          *        constant * constant
-; 2737 :          *        register * scaling factor ( 1, 2, 4 or 8 )
-; 2738 :          *                   386 only
-; 2739 :          */
-; 2740 :         DebugMsg1(("calculate(*): kind=%d/%d value=%" I64_SPEC "d-%" I64_SPEC "d mbr=%X-%X\n",
-; 2741 :                    opnd1->kind,    opnd2->kind,
-; 2742 :                    opnd1->value64, opnd2->value64,
-; 2743 :                    opnd1->mbr,     opnd2->mbr ));
-; 2744 : 
-; 2745 :         MakeConst( opnd1 );
+; 2698 : #endif
+; 2699 :     case '*':
+; 2700 :         /*
+; 2701 :          * The only formats allowed are:
+; 2702 :          *        constant * constant
+; 2703 :          *        register * scaling factor ( 1, 2, 4 or 8 )
+; 2704 :          *                   386 only
+; 2705 :          */
+; 2706 :         DebugMsg1(("calculate(*): kind=%d/%d value=%" I64_SPEC "d-%" I64_SPEC "d mbr=%X-%X\n",
+; 2707 :                    opnd1->kind,    opnd2->kind,
+; 2708 :                    opnd1->value64, opnd2->value64,
+; 2709 :                    opnd1->mbr,     opnd2->mbr ));
+; 2710 : 
+; 2711 :         MakeConst( opnd1 );
 
 	mov	rcx, rbx
 	call	MakeConst
 
-; 2746 :         MakeConst( opnd2 );
+; 2712 :         MakeConst( opnd2 );
 
 	mov	rcx, rdi
 	call	MakeConst
 
-; 2747 : 
-; 2748 :         if( check_same( opnd1, opnd2, EXPR_CONST ) ) {
+; 2713 : 
+; 2714 :         if( check_same( opnd1, opnd2, EXPR_CONST ) ) {
 
 	mov	ecx, DWORD PTR [rbx+60]
 	test	ecx, ecx
@@ -2123,53 +2123,53 @@ $LN31@calculate:
 	cmp	DWORD PTR [rdi+60], esi
 	jne	SHORT $LN32@calculate
 
-; 2749 :             opnd1->llvalue *= opnd2->llvalue;
+; 2715 :             opnd1->llvalue *= opnd2->llvalue;
 
 	mov	rax, QWORD PTR [rbx]
 	imul	rax, QWORD PTR [rdi]
 
-; 3020 :             opnd1->llvalue = ~(opnd2->llvalue);
+; 2986 :             opnd1->llvalue = ~(opnd2->llvalue);
 
 	mov	QWORD PTR [rbx], rax
 
-; 3152 :     } /* end switch( oper->token ) */
-; 3153 : 
-; 3154 : #ifdef DEBUG_OUT
-; 3155 :     if ( opnd1->hlvalue ) {
-; 3156 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
-; 3157 :                    evallvl,
-; 3158 :                    oper->string_ptr,
-; 3159 :                    opnd1->kind,
-; 3160 :                    opnd1->hlvalue, opnd1->llvalue,
-; 3161 :                    opnd1->mem_type,
-; 3162 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3163 :     } else if ( opnd1->hvalue ) {
-; 3164 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
-; 3165 :                    evallvl,
-; 3166 :                    oper->string_ptr,
-; 3167 :                    opnd1->kind,
-; 3168 :                    opnd1->llvalue, opnd1->llvalue,
-; 3169 :                    opnd1->mem_type,
-; 3170 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3171 :     } else {
-; 3172 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
-; 3173 :                    evallvl,
-; 3174 :                    oper->string_ptr,
-; 3175 :                    opnd1->kind,
-; 3176 :                    opnd1->value, opnd1->value,
-; 3177 :                    opnd1->mem_type,
-; 3178 :                    opnd1->indirect, opnd1->explicit,
-; 3179 :                    opnd1->type ? opnd1->type->name : "NULL",
-; 3180 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
-; 3181 :     }
-; 3182 : #endif
-; 3183 :     return( NOT_ERROR );
+; 3118 :     } /* end switch( oper->token ) */
+; 3119 : 
+; 3120 : #ifdef DEBUG_OUT
+; 3121 :     if ( opnd1->hlvalue ) {
+; 3122 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
+; 3123 :                    evallvl,
+; 3124 :                    oper->string_ptr,
+; 3125 :                    opnd1->kind,
+; 3126 :                    opnd1->hlvalue, opnd1->llvalue,
+; 3127 :                    opnd1->mem_type,
+; 3128 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3129 :     } else if ( opnd1->hvalue ) {
+; 3130 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
+; 3131 :                    evallvl,
+; 3132 :                    oper->string_ptr,
+; 3133 :                    opnd1->kind,
+; 3134 :                    opnd1->llvalue, opnd1->llvalue,
+; 3135 :                    opnd1->mem_type,
+; 3136 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3137 :     } else {
+; 3138 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
+; 3139 :                    evallvl,
+; 3140 :                    oper->string_ptr,
+; 3141 :                    opnd1->kind,
+; 3142 :                    opnd1->value, opnd1->value,
+; 3143 :                    opnd1->mem_type,
+; 3144 :                    opnd1->indirect, opnd1->explicit,
+; 3145 :                    opnd1->type ? opnd1->type->name : "NULL",
+; 3146 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
+; 3147 :     }
+; 3148 : #endif
+; 3149 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN180@calculate
 $LN32@calculate:
 
-; 2750 :         } else if( check_both( opnd1, opnd2, EXPR_REG, EXPR_CONST ) ) {
+; 2716 :         } else if( check_both( opnd1, opnd2, EXPR_REG, EXPR_CONST ) ) {
 
 	cmp	ecx, 2
 	jne	SHORT $LN150@calculate
@@ -2184,116 +2184,116 @@ $LN150@calculate:
 	jne	$LN62@calculate
 $LN169@calculate:
 
-; 2751 :             if( check_direct_reg( opnd1, opnd2 ) == ERROR ) {
+; 2717 :             if( check_direct_reg( opnd1, opnd2 ) == ERROR ) {
 
 	cmp	ecx, 2
 	jne	SHORT $LN156@calculate
-	test	BYTE PTR [rbx+76], 1
+	test	BYTE PTR [rbx+72], 1
 	je	$LN170@calculate
 $LN156@calculate:
 	cmp	eax, 2
 	jne	SHORT $LN37@calculate
-	test	BYTE PTR [rdi+76], 1
+	test	BYTE PTR [rdi+72], 1
 	je	$LN170@calculate
 
-; 2752 :                 DebugMsg(("calculate(*) error direct register\n"));
-; 2753 :                 return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
-; 2754 :             }
-; 2755 :             /* scaling factor */
-; 2756 :             if( opnd2->kind == EXPR_REG ) {
+; 2718 :                 DebugMsg(("calculate(*) error direct register\n"));
+; 2719 :                 return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
+; 2720 :             }
+; 2721 :             /* scaling factor */
+; 2722 :             if( opnd2->kind == EXPR_REG ) {
 
 	cmp	eax, eax
 	jne	SHORT $LN37@calculate
 
-; 2757 :                 /* scale * reg */
-; 2758 :                 opnd1->idx_reg = opnd2->base_reg;
+; 2723 :                 /* scale * reg */
+; 2724 :                 opnd1->idx_reg = opnd2->base_reg;
 
 	mov	rax, QWORD PTR [rdi+24]
 	mov	QWORD PTR [rbx+32], rax
 
-; 2759 :                 opnd1->scale = opnd1->value;
+; 2725 :                 opnd1->scale = opnd1->value;
 
 	movzx	eax, BYTE PTR [rbx]
 
-; 2760 :                 opnd1->value = 0;
+; 2726 :                 opnd1->value = 0;
 
 	mov	DWORD PTR [rbx], esi
 
-; 2761 :                 //opnd2->base_reg = NULL;
-; 2762 :             } else {
+; 2727 :                 //opnd2->base_reg = NULL;
+; 2728 :             } else {
 
 	jmp	SHORT $LN184@calculate
 $LN37@calculate:
 
-; 2763 :                 /* reg * scale */
-; 2764 :                 opnd1->idx_reg = opnd1->base_reg;
+; 2729 :                 /* reg * scale */
+; 2730 :                 opnd1->idx_reg = opnd1->base_reg;
 
 	mov	rax, QWORD PTR [rbx+24]
 	mov	QWORD PTR [rbx+32], rax
 
-; 2765 :                 opnd1->scale = opnd2->value;
+; 2731 :                 opnd1->scale = opnd2->value;
 
 	movzx	eax, BYTE PTR [rdi]
 $LN184@calculate:
 	mov	BYTE PTR [rbx+68], al
 
-; 2766 :             }
-; 2767 :             /* v2.08: check 0 (the default value) here */
-; 2768 :             if ( opnd1->scale == 0 ) {
+; 2732 :             }
+; 2733 :             /* v2.08: check 0 (the default value) here */
+; 2734 :             if ( opnd1->scale == 0 ) {
 
 	cmp	al, sil
 	jne	SHORT $LN39@calculate
 
-; 2769 :                 return( fnEmitErr( SCALE_FACTOR_MUST_BE_1_2_4_OR_8 ) );
+; 2735 :                 return( fnEmitErr( SCALE_FACTOR_MUST_BE_1_2_4_OR_8 ) );
 
 	mov	ecx, 36					; 00000024H
 
-; 2846 :                     DebugMsg(("calculate(PTR): register size doesn't match type size; %u != %u\n", SizeFromRegister( temp ), opnd1->value ));
-; 2847 :                     return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
+; 2812 :                     DebugMsg(("calculate(PTR): register size doesn't match type size; %u != %u\n", SizeFromRegister( temp ), opnd1->value ));
+; 2813 :                     return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
 	call	QWORD PTR fnEmitErr
 	jmp	$LN180@calculate
 $LN39@calculate:
 
-; 2770 :             }
-; 2771 : 
-; 2772 :             opnd1->base_reg = NULL;
-; 2773 :             opnd1->indirect = TRUE;
+; 2736 :             }
+; 2737 : 
+; 2738 :             opnd1->base_reg = NULL;
+; 2739 :             opnd1->indirect = TRUE;
 
-	or	DWORD PTR [rbx+76], 1
+	or	DWORD PTR [rbx+72], 1
 
-; 3152 :     } /* end switch( oper->token ) */
-; 3153 : 
-; 3154 : #ifdef DEBUG_OUT
-; 3155 :     if ( opnd1->hlvalue ) {
-; 3156 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
-; 3157 :                    evallvl,
-; 3158 :                    oper->string_ptr,
-; 3159 :                    opnd1->kind,
-; 3160 :                    opnd1->hlvalue, opnd1->llvalue,
-; 3161 :                    opnd1->mem_type,
-; 3162 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3163 :     } else if ( opnd1->hvalue ) {
-; 3164 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
-; 3165 :                    evallvl,
-; 3166 :                    oper->string_ptr,
-; 3167 :                    opnd1->kind,
-; 3168 :                    opnd1->llvalue, opnd1->llvalue,
-; 3169 :                    opnd1->mem_type,
-; 3170 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3171 :     } else {
-; 3172 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
-; 3173 :                    evallvl,
-; 3174 :                    oper->string_ptr,
-; 3175 :                    opnd1->kind,
-; 3176 :                    opnd1->value, opnd1->value,
-; 3177 :                    opnd1->mem_type,
-; 3178 :                    opnd1->indirect, opnd1->explicit,
-; 3179 :                    opnd1->type ? opnd1->type->name : "NULL",
-; 3180 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
-; 3181 :     }
-; 3182 : #endif
-; 3183 :     return( NOT_ERROR );
+; 3118 :     } /* end switch( oper->token ) */
+; 3119 : 
+; 3120 : #ifdef DEBUG_OUT
+; 3121 :     if ( opnd1->hlvalue ) {
+; 3122 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
+; 3123 :                    evallvl,
+; 3124 :                    oper->string_ptr,
+; 3125 :                    opnd1->kind,
+; 3126 :                    opnd1->hlvalue, opnd1->llvalue,
+; 3127 :                    opnd1->mem_type,
+; 3128 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3129 :     } else if ( opnd1->hvalue ) {
+; 3130 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
+; 3131 :                    evallvl,
+; 3132 :                    oper->string_ptr,
+; 3133 :                    opnd1->kind,
+; 3134 :                    opnd1->llvalue, opnd1->llvalue,
+; 3135 :                    opnd1->mem_type,
+; 3136 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3137 :     } else {
+; 3138 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
+; 3139 :                    evallvl,
+; 3140 :                    oper->string_ptr,
+; 3141 :                    opnd1->kind,
+; 3142 :                    opnd1->value, opnd1->value,
+; 3143 :                    opnd1->mem_type,
+; 3144 :                    opnd1->indirect, opnd1->explicit,
+; 3145 :                    opnd1->type ? opnd1->type->name : "NULL",
+; 3146 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
+; 3147 :     }
+; 3148 : #endif
+; 3149 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	mov	QWORD PTR [rbx+24], rsi
@@ -2301,121 +2301,121 @@ $LN39@calculate:
 	jmp	$LN180@calculate
 $LN40@calculate:
 
-; 2774 :             opnd1->kind = EXPR_ADDR;
-; 2775 :         } else {
-; 2776 :             DebugMsg(("calculate(*) error 2\n"));
-; 2777 :             return( ConstError( opnd1, opnd2 ) );
-; 2778 :         }
-; 2779 :         break;
-; 2780 :     case '/':
-; 2781 :         /*
-; 2782 :          * The only formats allowed are:
-; 2783 :          *        constant / constant
-; 2784 :          */
-; 2785 :         DebugMsg1(("calculate(/): t1-t2 kind %u-%u values %" I64_SPEC "d-%" I64_SPEC "d\n",
-; 2786 :                    opnd1->kind,    opnd2->kind,
-; 2787 :                    opnd1->value64, opnd2->value64 ));
-; 2788 :         MakeConst( opnd1 );
+; 2740 :             opnd1->kind = EXPR_ADDR;
+; 2741 :         } else {
+; 2742 :             DebugMsg(("calculate(*) error 2\n"));
+; 2743 :             return( ConstError( opnd1, opnd2 ) );
+; 2744 :         }
+; 2745 :         break;
+; 2746 :     case '/':
+; 2747 :         /*
+; 2748 :          * The only formats allowed are:
+; 2749 :          *        constant / constant
+; 2750 :          */
+; 2751 :         DebugMsg1(("calculate(/): t1-t2 kind %u-%u values %" I64_SPEC "d-%" I64_SPEC "d\n",
+; 2752 :                    opnd1->kind,    opnd2->kind,
+; 2753 :                    opnd1->value64, opnd2->value64 ));
+; 2754 :         MakeConst( opnd1 );
 
 	mov	rcx, rbx
 	call	MakeConst
 
-; 2789 :         MakeConst( opnd2 );
+; 2755 :         MakeConst( opnd2 );
 
 	mov	rcx, rdi
 	call	MakeConst
 
-; 2790 : 
-; 2791 :         if( check_same( opnd1, opnd2, EXPR_CONST ) == FALSE ) {
+; 2756 : 
+; 2757 :         if( check_same( opnd1, opnd2, EXPR_CONST ) == FALSE ) {
 
 	cmp	DWORD PTR [rbx+60], esi
 	jne	$LN62@calculate
 	cmp	DWORD PTR [rdi+60], esi
 	jne	$LN62@calculate
 
-; 2792 :             DebugMsg(("calculate(/) error 1\n"));
-; 2793 :             return( ConstError( opnd1, opnd2 ) );
-; 2794 :         }
-; 2795 : 
-; 2796 :         if ( opnd2->llvalue == 0 ) {
+; 2758 :             DebugMsg(("calculate(/) error 1\n"));
+; 2759 :             return( ConstError( opnd1, opnd2 ) );
+; 2760 :         }
+; 2761 : 
+; 2762 :         if ( opnd2->llvalue == 0 ) {
 
 	mov	rcx, QWORD PTR [rdi]
 	test	rcx, rcx
 	je	$LN188@calculate
 
-; 2797 :             DebugMsg(("calculate(/) error 2\n"));
-; 2798 :             return( fnEmitErr( DIVIDE_BY_ZERO_IN_EXPR ) );
-; 2799 :         }
-; 2800 : 
-; 2801 :         opnd1->value64 /= opnd2->value64;
+; 2763 :             DebugMsg(("calculate(/) error 2\n"));
+; 2764 :             return( fnEmitErr( DIVIDE_BY_ZERO_IN_EXPR ) );
+; 2765 :         }
+; 2766 : 
+; 2767 :         opnd1->value64 /= opnd2->value64;
 
 	mov	rax, QWORD PTR [rbx]
 	cdq
 	idiv	rcx
 
-; 3020 :             opnd1->llvalue = ~(opnd2->llvalue);
+; 2986 :             opnd1->llvalue = ~(opnd2->llvalue);
 
 	mov	QWORD PTR [rbx], rax
 
-; 3152 :     } /* end switch( oper->token ) */
-; 3153 : 
-; 3154 : #ifdef DEBUG_OUT
-; 3155 :     if ( opnd1->hlvalue ) {
-; 3156 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
-; 3157 :                    evallvl,
-; 3158 :                    oper->string_ptr,
-; 3159 :                    opnd1->kind,
-; 3160 :                    opnd1->hlvalue, opnd1->llvalue,
-; 3161 :                    opnd1->mem_type,
-; 3162 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3163 :     } else if ( opnd1->hvalue ) {
-; 3164 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
-; 3165 :                    evallvl,
-; 3166 :                    oper->string_ptr,
-; 3167 :                    opnd1->kind,
-; 3168 :                    opnd1->llvalue, opnd1->llvalue,
-; 3169 :                    opnd1->mem_type,
-; 3170 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3171 :     } else {
-; 3172 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
-; 3173 :                    evallvl,
-; 3174 :                    oper->string_ptr,
-; 3175 :                    opnd1->kind,
-; 3176 :                    opnd1->value, opnd1->value,
-; 3177 :                    opnd1->mem_type,
-; 3178 :                    opnd1->indirect, opnd1->explicit,
-; 3179 :                    opnd1->type ? opnd1->type->name : "NULL",
-; 3180 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
-; 3181 :     }
-; 3182 : #endif
-; 3183 :     return( NOT_ERROR );
+; 3118 :     } /* end switch( oper->token ) */
+; 3119 : 
+; 3120 : #ifdef DEBUG_OUT
+; 3121 :     if ( opnd1->hlvalue ) {
+; 3122 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
+; 3123 :                    evallvl,
+; 3124 :                    oper->string_ptr,
+; 3125 :                    opnd1->kind,
+; 3126 :                    opnd1->hlvalue, opnd1->llvalue,
+; 3127 :                    opnd1->mem_type,
+; 3128 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3129 :     } else if ( opnd1->hvalue ) {
+; 3130 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
+; 3131 :                    evallvl,
+; 3132 :                    oper->string_ptr,
+; 3133 :                    opnd1->kind,
+; 3134 :                    opnd1->llvalue, opnd1->llvalue,
+; 3135 :                    opnd1->mem_type,
+; 3136 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3137 :     } else {
+; 3138 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
+; 3139 :                    evallvl,
+; 3140 :                    oper->string_ptr,
+; 3141 :                    opnd1->kind,
+; 3142 :                    opnd1->value, opnd1->value,
+; 3143 :                    opnd1->mem_type,
+; 3144 :                    opnd1->indirect, opnd1->explicit,
+; 3145 :                    opnd1->type ? opnd1->type->name : "NULL",
+; 3146 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
+; 3147 :     }
+; 3148 : #endif
+; 3149 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN180@calculate
 $LN43@calculate:
 
-; 2802 :         break;
-; 2803 :     case T_BINARY_OPERATOR:
-; 2804 :         DebugMsg1(("calculate(%s [T_BINARY_OPERATOR] ): t1-t2 kind %d/%d memtype %X-%X sym %s-%s type %s-%s\n",
-; 2805 :                    oper->string_ptr,
-; 2806 :                    opnd1->kind, opnd2->kind,
-; 2807 :                    opnd1->mem_type, opnd2->mem_type,
-; 2808 :                    opnd1->sym  ? opnd1->sym->name  : "NULL",
-; 2809 :                    opnd2->sym  ? opnd2->sym->name  : "NULL",
-; 2810 :                    opnd1->type ? opnd1->type->name : "NULL",
-; 2811 :                    opnd2->type ? opnd2->type->name : "NULL" ));
-; 2812 : 
-; 2813 :         if ( oper->tokval == T_PTR ) {
+; 2768 :         break;
+; 2769 :     case T_BINARY_OPERATOR:
+; 2770 :         DebugMsg1(("calculate(%s [T_BINARY_OPERATOR] ): t1-t2 kind %d/%d memtype %X-%X sym %s-%s type %s-%s\n",
+; 2771 :                    oper->string_ptr,
+; 2772 :                    opnd1->kind, opnd2->kind,
+; 2773 :                    opnd1->mem_type, opnd2->mem_type,
+; 2774 :                    opnd1->sym  ? opnd1->sym->name  : "NULL",
+; 2775 :                    opnd2->sym  ? opnd2->sym->name  : "NULL",
+; 2776 :                    opnd1->type ? opnd1->type->name : "NULL",
+; 2777 :                    opnd2->type ? opnd2->type->name : "NULL" ));
+; 2778 : 
+; 2779 :         if ( oper->tokval == T_PTR ) {
 
 	cmp	DWORD PTR [r8+16], 258			; 00000102H
 	jne	$LN44@calculate
 
-; 2814 :             if ( opnd1->is_type == FALSE ) {
+; 2780 :             if ( opnd1->is_type == FALSE ) {
 
-	test	BYTE PTR [rbx+76], 8
+	test	BYTE PTR [rbx+72], 8
 	jne	SHORT $LN47@calculate
 
-; 2815 :                 if ( opnd1->sym && opnd1->sym->state == SYM_UNDEFINED ) {
+; 2781 :                 if ( opnd1->sym && opnd1->sym->state == SYM_UNDEFINED ) {
 
 	mov	rcx, QWORD PTR [rbx+80]
 	test	rcx, rcx
@@ -2423,67 +2423,67 @@ $LN43@calculate:
 	cmp	DWORD PTR [rcx+32], esi
 	jne	SHORT $LN46@calculate
 
-; 2816 :                     CreateTypeSymbol( opnd1->sym, NULL, TRUE );
+; 2782 :                     CreateTypeSymbol( opnd1->sym, NULL, TRUE );
 
 	mov	r8b, 1
 	xor	edx, edx
 	call	CreateTypeSymbol
 
-; 2817 :                     opnd1->type = opnd1->sym;
+; 2783 :                     opnd1->type = opnd1->sym;
 
 	mov	rax, QWORD PTR [rbx+80]
 
-; 2818 :                     opnd1->sym = NULL;
-; 2819 :                     opnd1->is_type = TRUE;
+; 2784 :                     opnd1->sym = NULL;
+; 2785 :                     opnd1->is_type = TRUE;
 
-	or	DWORD PTR [rbx+76], 8
+	or	DWORD PTR [rbx+72], 8
 	mov	QWORD PTR [rbx+96], rax
 	mov	QWORD PTR [rbx+80], rsi
 $LN47@calculate:
 
-; 2823 :                 }
-; 2824 :             }
-; 2825 :             opnd2->explicit = TRUE;
+; 2789 :                 }
+; 2790 :             }
+; 2791 :             opnd2->explicit = TRUE;
 
-	mov	eax, DWORD PTR [rdi+76]
+	mov	eax, DWORD PTR [rdi+72]
 
-; 2826 :             /* v2.02: if operand is a register, make sure
-; 2827 :              * that invalid combinations ("DWORD PTR AX") are flagged.
-; 2828 :              *
-; 2829 :              * v2.10: must also be checked inside []. However, it's
-; 2830 :              * a problem to properly handle this case, since opnd->indirect
-; 2831 :              * is just a flag.
-; 2832 :              * Curr. hackish fix: to query state of assumecheck if indirect==TRUE.
-; 2833 :              * Proposed "good" fix: change EXPR_REG to EXPR_ADDR in
-; 2834 :              * CheckAssume(), that is, when the terminating  ']' was found.
-; 2835 :              */
-; 2836 :             //if ( opnd2->kind == EXPR_REG && opnd2->indirect == FALSE ) {
-; 2837 :             if ( opnd2->kind == EXPR_REG && ( opnd2->indirect == FALSE || opnd2->assumecheck == TRUE ) ) {
+; 2792 :             /* v2.02: if operand is a register, make sure
+; 2793 :              * that invalid combinations ("DWORD PTR AX") are flagged.
+; 2794 :              *
+; 2795 :              * v2.10: must also be checked inside []. However, it's
+; 2796 :              * a problem to properly handle this case, since opnd->indirect
+; 2797 :              * is just a flag.
+; 2798 :              * Curr. hackish fix: to query state of assumecheck if indirect==TRUE.
+; 2799 :              * Proposed "good" fix: change EXPR_REG to EXPR_ADDR in
+; 2800 :              * CheckAssume(), that is, when the terminating  ']' was found.
+; 2801 :              */
+; 2802 :             //if ( opnd2->kind == EXPR_REG && opnd2->indirect == FALSE ) {
+; 2803 :             if ( opnd2->kind == EXPR_REG && ( opnd2->indirect == FALSE || opnd2->assumecheck == TRUE ) ) {
 
 	mov	ecx, DWORD PTR [rdi+60]
 	or	eax, 2
-	mov	DWORD PTR [rdi+76], eax
+	mov	DWORD PTR [rdi+72], eax
 	cmp	ecx, 2
 	jne	SHORT $LN48@calculate
 	and	al, 65					; 00000041H
 	cmp	al, 1
 	je	SHORT $LN48@calculate
 
-; 2838 :                 temp = opnd2->base_reg->tokval;
+; 2804 :                 temp = opnd2->base_reg->tokval;
 
 	mov	rax, QWORD PTR [rdi+24]
 	movsxd	rdx, DWORD PTR [rax+16]
 
-; 2839 :                 /* for segment registers, both size 2 and 4 is ok.*/
-; 2840 :                 if ( GetValueSp( temp ) & OP_SR ) {
+; 2805 :                 /* for segment registers, both size 2 and 4 is ok.*/
+; 2806 :                 if ( GetValueSp( temp ) & OP_SR ) {
 
 	lea	rcx, QWORD PTR [rdx+rdx*2]
 	test	DWORD PTR SpecialTable[rbp+rcx*4], 24576 ; 00006000H
 	je	SHORT $LN51@calculate
 
-; 2841 :                     if ( opnd1->value != 2 && opnd1->value != 4 ) {
-; 2842 :                         DebugMsg(("calculate(PTR): segment register size (=2/4) doesn't match type size (=%u)\n", opnd1->value ));
-; 2843 :                         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
+; 2807 :                     if ( opnd1->value != 2 && opnd1->value != 4 ) {
+; 2808 :                         DebugMsg(("calculate(PTR): segment register size (=2/4) doesn't match type size (=%u)\n", opnd1->value ));
+; 2809 :                         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
 	mov	eax, DWORD PTR [rbx]
 	sub	eax, 2
@@ -2491,21 +2491,21 @@ $LN47@calculate:
 	jmp	SHORT $LN189@calculate
 $LN46@calculate:
 
-; 2820 :                 } else {
-; 2821 :                     DebugMsg(("calculate(PTR), error 1: t1 is_type == FALSE\n"));
-; 2822 :                     return( fnEmitErr( INVALID_TYPE_EXPRESSION ) );
+; 2786 :                 } else {
+; 2787 :                     DebugMsg(("calculate(PTR), error 1: t1 is_type == FALSE\n"));
+; 2788 :                     return( fnEmitErr( INVALID_TYPE_EXPRESSION ) );
 
 	mov	ecx, 179				; 000000b3H
 
-; 2846 :                     DebugMsg(("calculate(PTR): register size doesn't match type size; %u != %u\n", SizeFromRegister( temp ), opnd1->value ));
-; 2847 :                     return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
+; 2812 :                     DebugMsg(("calculate(PTR): register size doesn't match type size; %u != %u\n", SizeFromRegister( temp ), opnd1->value ));
+; 2813 :                     return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
 	call	QWORD PTR fnEmitErr
 	jmp	$LN180@calculate
 $LN51@calculate:
 
-; 2844 :                     }
-; 2845 :                 } else if ( opnd1->value != SizeFromRegister( temp ) ) {
+; 2810 :                     }
+; 2811 :                 } else if ( opnd1->value != SizeFromRegister( temp ) ) {
 
 	mov	ecx, edx
 	call	SizeFromRegister
@@ -2514,122 +2514,122 @@ $LN189@calculate:
 	je	SHORT $LN56@calculate
 $LN170@calculate:
 
-; 2846 :                     DebugMsg(("calculate(PTR): register size doesn't match type size; %u != %u\n", SizeFromRegister( temp ), opnd1->value ));
-; 2847 :                     return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
+; 2812 :                     DebugMsg(("calculate(PTR): register size doesn't match type size; %u != %u\n", SizeFromRegister( temp ), opnd1->value ));
+; 2813 :                     return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
 	mov	ecx, 170				; 000000aaH
 	call	QWORD PTR fnEmitErr
 	jmp	$LN180@calculate
 $LN48@calculate:
 
-; 2848 :                 }
-; 2849 :             } else if ( opnd2->kind == EXPR_FLOAT ) {
+; 2814 :                 }
+; 2815 :             } else if ( opnd2->kind == EXPR_FLOAT ) {
 
 	cmp	ecx, 3
 	jne	SHORT $LN56@calculate
 
-; 2850 :                 if ( !( opnd1->mem_type & MT_FLOAT ) ) {
+; 2816 :                 if ( !( opnd1->mem_type & MT_FLOAT ) ) {
 
 	test	BYTE PTR [rbx+64], 32			; 00000020H
 	jne	SHORT $LN56@calculate
 
-; 2851 :                     DebugMsg(("calculate(PTR): type memtype=%Xh ( MT_FLOAT not set, although right op is FLOAT )\n", opnd1->mem_type ));
-; 2852 :                     return( fnEmitErr( REAL_OR_BCD_NUMBER_NOT_ALLOWED ) );
+; 2817 :                     DebugMsg(("calculate(PTR): type memtype=%Xh ( MT_FLOAT not set, although right op is FLOAT )\n", opnd1->mem_type ));
+; 2818 :                     return( fnEmitErr( REAL_OR_BCD_NUMBER_NOT_ALLOWED ) );
 
 	mov	ecx, 270				; 0000010eH
 	call	QWORD PTR fnEmitErr
 	jmp	$LN180@calculate
 $LN56@calculate:
 
-; 2853 :                 }
-; 2854 :             }
-; 2855 :             opnd2->mem_type = opnd1->mem_type;
-; 2856 :             opnd2->Ofssize  = opnd1->Ofssize;
-; 2857 :             /* v2.04: added */
-; 2858 :             if ( opnd2->is_type )
+; 2819 :                 }
+; 2820 :             }
+; 2821 :             opnd2->mem_type = opnd1->mem_type;
+; 2822 :             opnd2->Ofssize  = opnd1->Ofssize;
+; 2823 :             /* v2.04: added */
+; 2824 :             if ( opnd2->is_type )
 
-	test	BYTE PTR [rdi+76], 8
+	test	BYTE PTR [rdi+72], 8
 	mov	eax, DWORD PTR [rbx+64]
 	mov	DWORD PTR [rdi+64], eax
 	movzx	eax, BYTE PTR [rbx+69]
 	mov	BYTE PTR [rdi+69], al
 	je	SHORT $LN57@calculate
 
-; 2859 :                 opnd2->value  = opnd1->value;
+; 2825 :                 opnd2->value  = opnd1->value;
 
 	mov	eax, DWORD PTR [rbx]
 	mov	DWORD PTR [rdi], eax
 $LN57@calculate:
 
-; 2860 : 
-; 2861 :             /* todo: describe which case is handled here. How is the left
-; 2862 :              * operand of PTR supposed to get an override? And why is
-; 2863 :              * it necessary to change kind to EXPR_ADDR here? */
-; 2864 :             if ( opnd1->override != NULL ) {
+; 2826 : 
+; 2827 :             /* todo: describe which case is handled here. How is the left
+; 2828 :              * operand of PTR supposed to get an override? And why is
+; 2829 :              * it necessary to change kind to EXPR_ADDR here? */
+; 2830 :             if ( opnd1->override != NULL ) {
 
 	mov	rax, QWORD PTR [rbx+48]
 	test	rax, rax
 	je	SHORT $LN58@calculate
 
-; 2865 :                 if ( opnd2->override == NULL )
+; 2831 :                 if ( opnd2->override == NULL )
 
 	cmp	QWORD PTR [rdi+48], rsi
 	jne	SHORT $LN59@calculate
 
-; 2866 :                     opnd2->override = opnd1->override;
+; 2832 :                     opnd2->override = opnd1->override;
 
 	mov	QWORD PTR [rdi+48], rax
 $LN59@calculate:
 
-; 2867 :                 opnd2->kind = EXPR_ADDR;
+; 2833 :                 opnd2->kind = EXPR_ADDR;
 
 	mov	DWORD PTR [rdi+60], 1
 $LN58@calculate:
 
-; 2868 :             }
-; 2869 :             //if ( opnd1->mbr )
-; 2870 :             //    opnd2->mbr = opnd1->mbr;
-; 2871 :             //if ( opnd1->sym )
-; 2872 :             //    opnd2->sym = opnd1->sym;
-; 2873 :             //opnd2->instr = opnd1->instr;
-; 2874 : 
-; 2875 :             /* note: member type isn't copied, IOW: value of opnd1->type is kept. */
-; 2876 :             TokenAssign( opnd1, opnd2 );
+; 2834 :             }
+; 2835 :             //if ( opnd1->mbr )
+; 2836 :             //    opnd2->mbr = opnd1->mbr;
+; 2837 :             //if ( opnd1->sym )
+; 2838 :             //    opnd2->sym = opnd1->sym;
+; 2839 :             //opnd2->instr = opnd1->instr;
+; 2840 : 
+; 2841 :             /* note: member type isn't copied, IOW: value of opnd1->type is kept. */
+; 2842 :             TokenAssign( opnd1, opnd2 );
 
 	movups	xmm0, XMMWORD PTR [rdi]
 
-; 3152 :     } /* end switch( oper->token ) */
-; 3153 : 
-; 3154 : #ifdef DEBUG_OUT
-; 3155 :     if ( opnd1->hlvalue ) {
-; 3156 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
-; 3157 :                    evallvl,
-; 3158 :                    oper->string_ptr,
-; 3159 :                    opnd1->kind,
-; 3160 :                    opnd1->hlvalue, opnd1->llvalue,
-; 3161 :                    opnd1->mem_type,
-; 3162 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3163 :     } else if ( opnd1->hvalue ) {
-; 3164 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
-; 3165 :                    evallvl,
-; 3166 :                    oper->string_ptr,
-; 3167 :                    opnd1->kind,
-; 3168 :                    opnd1->llvalue, opnd1->llvalue,
-; 3169 :                    opnd1->mem_type,
-; 3170 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3171 :     } else {
-; 3172 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
-; 3173 :                    evallvl,
-; 3174 :                    oper->string_ptr,
-; 3175 :                    opnd1->kind,
-; 3176 :                    opnd1->value, opnd1->value,
-; 3177 :                    opnd1->mem_type,
-; 3178 :                    opnd1->indirect, opnd1->explicit,
-; 3179 :                    opnd1->type ? opnd1->type->name : "NULL",
-; 3180 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
-; 3181 :     }
-; 3182 : #endif
-; 3183 :     return( NOT_ERROR );
+; 3118 :     } /* end switch( oper->token ) */
+; 3119 : 
+; 3120 : #ifdef DEBUG_OUT
+; 3121 :     if ( opnd1->hlvalue ) {
+; 3122 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
+; 3123 :                    evallvl,
+; 3124 :                    oper->string_ptr,
+; 3125 :                    opnd1->kind,
+; 3126 :                    opnd1->hlvalue, opnd1->llvalue,
+; 3127 :                    opnd1->mem_type,
+; 3128 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3129 :     } else if ( opnd1->hvalue ) {
+; 3130 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
+; 3131 :                    evallvl,
+; 3132 :                    oper->string_ptr,
+; 3133 :                    opnd1->kind,
+; 3134 :                    opnd1->llvalue, opnd1->llvalue,
+; 3135 :                    opnd1->mem_type,
+; 3136 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3137 :     } else {
+; 3138 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
+; 3139 :                    evallvl,
+; 3140 :                    oper->string_ptr,
+; 3141 :                    opnd1->kind,
+; 3142 :                    opnd1->value, opnd1->value,
+; 3143 :                    opnd1->mem_type,
+; 3144 :                    opnd1->indirect, opnd1->explicit,
+; 3145 :                    opnd1->type ? opnd1->type->name : "NULL",
+; 3146 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
+; 3147 :     }
+; 3148 : #endif
+; 3149 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	movups	XMMWORD PTR [rbx], xmm0
@@ -2646,21 +2646,21 @@ $LN58@calculate:
 	jmp	$LN180@calculate
 $LN44@calculate:
 
-; 2877 :             break;
-; 2878 :         }
-; 2879 : 
-; 2880 :         MakeConst( opnd1 );
+; 2843 :             break;
+; 2844 :         }
+; 2845 : 
+; 2846 :         MakeConst( opnd1 );
 
 	mov	rcx, rbx
 	call	MakeConst
 
-; 2881 :         MakeConst( opnd2 );
+; 2847 :         MakeConst( opnd2 );
 
 	mov	rcx, rdi
 	call	MakeConst
 
-; 2882 : 
-; 2883 :         if ( check_same( opnd1, opnd2, EXPR_CONST ) )
+; 2848 : 
+; 2849 :         if ( check_same( opnd1, opnd2, EXPR_CONST ) )
 
 	mov	eax, DWORD PTR [rbx+60]
 	test	eax, eax
@@ -2669,38 +2669,38 @@ $LN44@calculate:
 	je	$LN68@calculate
 $LN60@calculate:
 
-; 2884 :             ;
-; 2885 :         /* if it's EQ, NE, LE [, ...], operands may be either constants
-; 2886 :          or relocatable labels */
-; 2887 :         else if ( oper->precedence == CMP_PRECEDENCE &&
+; 2850 :             ;
+; 2851 :         /* if it's EQ, NE, LE [, ...], operands may be either constants
+; 2852 :          or relocatable labels */
+; 2853 :         else if ( oper->precedence == CMP_PRECEDENCE &&
 
 	cmp	BYTE PTR [r14+1], 10
 	jne	$LN62@calculate
 	test	eax, eax
 	je	$LN62@calculate
 
-; 2888 :                  opnd1->kind != EXPR_CONST ) {
-; 2889 :             if ( opnd1->kind == EXPR_ADDR && opnd1->indirect == FALSE && opnd1->sym )
+; 2854 :                  opnd1->kind != EXPR_CONST ) {
+; 2855 :             if ( opnd1->kind == EXPR_ADDR && opnd1->indirect == FALSE && opnd1->sym )
 
 	cmp	eax, 1
 	jne	$LN64@calculate
-	test	BYTE PTR [rbx+76], al
+	test	BYTE PTR [rbx+72], al
 	jne	$LN64@calculate
 	mov	rcx, QWORD PTR [rbx+80]
 	test	rcx, rcx
 	je	$LN64@calculate
 
-; 2890 :                 if ( opnd2->kind == EXPR_ADDR && opnd2->indirect == FALSE && opnd2->sym ) {
+; 2856 :                 if ( opnd2->kind == EXPR_ADDR && opnd2->indirect == FALSE && opnd2->sym ) {
 
 	cmp	DWORD PTR [rdi+60], eax
 	jne	$LN66@calculate
-	test	BYTE PTR [rdi+76], al
+	test	BYTE PTR [rdi+72], al
 	jne	$LN66@calculate
 	mov	rdx, QWORD PTR [rdi+80]
 	test	rdx, rdx
 	je	$LN66@calculate
 
-; 2891 :                     if ( MakeConst2( opnd1, opnd2 ) == ERROR ) {
+; 2857 :                     if ( MakeConst2( opnd1, opnd2 ) == ERROR ) {
 
 	mov	r8d, DWORD PTR [rcx+32]
 	cmp	r8d, 2
@@ -2727,13 +2727,13 @@ $LN160@calculate:
 	cmp	eax, -1
 	jne	SHORT $LN68@calculate
 
-; 2892 :                         DebugMsg(("calculate(%s) error 1\n", oper->string_ptr ));
-; 2893 :                         return( ERROR );
+; 2858 :                         DebugMsg(("calculate(%s) error 1\n", oper->string_ptr ));
+; 2859 :                         return( ERROR );
 
 	or	rax, -1
 	jmp	$LN180@calculate
 
-; 2891 :                     if ( MakeConst2( opnd1, opnd2 ) == ERROR ) {
+; 2857 :                     if ( MakeConst2( opnd1, opnd2 ) == ERROR ) {
 
 $LN163@calculate:
 	mov	DWORD PTR [rbx+60], esi
@@ -2745,11 +2745,11 @@ $LN163@calculate:
 	add	DWORD PTR [rdi], ecx
 $LN68@calculate:
 
-; 2908 :         }
-; 2909 : 
-; 2910 :         DebugMsg1(("calculate(%s): values=%" I64_SPEC "d/%" I64_SPEC "d is_type=%u/%u memtypes=%X/%X\n", oper->string_ptr,
-; 2911 :                    opnd1->value64, opnd2->value64, opnd1->is_type, opnd2->is_type, opnd1->mem_type, opnd2->mem_type  ));
-; 2912 :         switch( oper->tokval ) {
+; 2874 :         }
+; 2875 : 
+; 2876 :         DebugMsg1(("calculate(%s): values=%" I64_SPEC "d/%" I64_SPEC "d is_type=%u/%u memtypes=%X/%X\n", oper->string_ptr,
+; 2877 :                    opnd1->value64, opnd2->value64, opnd1->is_type, opnd2->is_type, opnd1->mem_type, opnd2->mem_type  ));
+; 2878 :         switch( oper->tokval ) {
 
 	mov	eax, DWORD PTR [r14+16]
 	cmp	eax, 501				; 000001f5H
@@ -2763,63 +2763,63 @@ $LN68@calculate:
 	jmp	rcx
 $LN69@calculate:
 
-; 2913 :         case T_EQ:
-; 2914 : #if 1 /* v2.03: added */
-; 2915 :             /* if both operands are types, do a more comprehensive comparison! */
-; 2916 :             if ( opnd1->is_type && opnd2->is_type ) {
+; 2879 :         case T_EQ:
+; 2880 : #if 1 /* v2.03: added */
+; 2881 :             /* if both operands are types, do a more comprehensive comparison! */
+; 2882 :             if ( opnd1->is_type && opnd2->is_type ) {
 
-	test	BYTE PTR [rbx+76], 8
+	test	BYTE PTR [rbx+72], 8
 	je	SHORT $LN70@calculate
-	test	BYTE PTR [rdi+76], 8
+	test	BYTE PTR [rdi+72], 8
 	je	SHORT $LN70@calculate
 
-; 2917 :                 cmp_types( opnd1, opnd2, -1 );
+; 2883 :                 cmp_types( opnd1, opnd2, -1 );
 
 	or	r8, -1
 	mov	rdx, rdi
 	mov	rcx, rbx
 	call	cmp_types
 
-; 3152 :     } /* end switch( oper->token ) */
-; 3153 : 
-; 3154 : #ifdef DEBUG_OUT
-; 3155 :     if ( opnd1->hlvalue ) {
-; 3156 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
-; 3157 :                    evallvl,
-; 3158 :                    oper->string_ptr,
-; 3159 :                    opnd1->kind,
-; 3160 :                    opnd1->hlvalue, opnd1->llvalue,
-; 3161 :                    opnd1->mem_type,
-; 3162 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3163 :     } else if ( opnd1->hvalue ) {
-; 3164 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
-; 3165 :                    evallvl,
-; 3166 :                    oper->string_ptr,
-; 3167 :                    opnd1->kind,
-; 3168 :                    opnd1->llvalue, opnd1->llvalue,
-; 3169 :                    opnd1->mem_type,
-; 3170 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3171 :     } else {
-; 3172 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
-; 3173 :                    evallvl,
-; 3174 :                    oper->string_ptr,
-; 3175 :                    opnd1->kind,
-; 3176 :                    opnd1->value, opnd1->value,
-; 3177 :                    opnd1->mem_type,
-; 3178 :                    opnd1->indirect, opnd1->explicit,
-; 3179 :                    opnd1->type ? opnd1->type->name : "NULL",
-; 3180 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
-; 3181 :     }
-; 3182 : #endif
-; 3183 :     return( NOT_ERROR );
+; 3118 :     } /* end switch( oper->token ) */
+; 3119 : 
+; 3120 : #ifdef DEBUG_OUT
+; 3121 :     if ( opnd1->hlvalue ) {
+; 3122 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
+; 3123 :                    evallvl,
+; 3124 :                    oper->string_ptr,
+; 3125 :                    opnd1->kind,
+; 3126 :                    opnd1->hlvalue, opnd1->llvalue,
+; 3127 :                    opnd1->mem_type,
+; 3128 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3129 :     } else if ( opnd1->hvalue ) {
+; 3130 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
+; 3131 :                    evallvl,
+; 3132 :                    oper->string_ptr,
+; 3133 :                    opnd1->kind,
+; 3134 :                    opnd1->llvalue, opnd1->llvalue,
+; 3135 :                    opnd1->mem_type,
+; 3136 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3137 :     } else {
+; 3138 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
+; 3139 :                    evallvl,
+; 3140 :                    oper->string_ptr,
+; 3141 :                    opnd1->kind,
+; 3142 :                    opnd1->value, opnd1->value,
+; 3143 :                    opnd1->mem_type,
+; 3144 :                    opnd1->indirect, opnd1->explicit,
+; 3145 :                    opnd1->type ? opnd1->type->name : "NULL",
+; 3146 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
+; 3147 :     }
+; 3148 : #endif
+; 3149 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN180@calculate
 $LN70@calculate:
 
-; 2918 :             } else
-; 2919 : #endif
-; 2920 :             opnd1->value64 = ( opnd1->value64 == opnd2->value64 ? -1:0 );
+; 2884 :             } else
+; 2885 : #endif
+; 2886 :             opnd1->value64 = ( opnd1->value64 == opnd2->value64 ? -1:0 );
 
 	mov	rax, QWORD PTR [rdi]
 	cmp	QWORD PTR [rbx], rax
@@ -2828,151 +2828,151 @@ $LN70@calculate:
 $LN185@calculate:
 	mov	QWORD PTR [rbx], rsi
 
-; 3152 :     } /* end switch( oper->token ) */
-; 3153 : 
-; 3154 : #ifdef DEBUG_OUT
-; 3155 :     if ( opnd1->hlvalue ) {
-; 3156 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
-; 3157 :                    evallvl,
-; 3158 :                    oper->string_ptr,
-; 3159 :                    opnd1->kind,
-; 3160 :                    opnd1->hlvalue, opnd1->llvalue,
-; 3161 :                    opnd1->mem_type,
-; 3162 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3163 :     } else if ( opnd1->hvalue ) {
-; 3164 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
-; 3165 :                    evallvl,
-; 3166 :                    oper->string_ptr,
-; 3167 :                    opnd1->kind,
-; 3168 :                    opnd1->llvalue, opnd1->llvalue,
-; 3169 :                    opnd1->mem_type,
-; 3170 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3171 :     } else {
-; 3172 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
-; 3173 :                    evallvl,
-; 3174 :                    oper->string_ptr,
-; 3175 :                    opnd1->kind,
-; 3176 :                    opnd1->value, opnd1->value,
-; 3177 :                    opnd1->mem_type,
-; 3178 :                    opnd1->indirect, opnd1->explicit,
-; 3179 :                    opnd1->type ? opnd1->type->name : "NULL",
-; 3180 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
-; 3181 :     }
-; 3182 : #endif
-; 3183 :     return( NOT_ERROR );
+; 3118 :     } /* end switch( oper->token ) */
+; 3119 : 
+; 3120 : #ifdef DEBUG_OUT
+; 3121 :     if ( opnd1->hlvalue ) {
+; 3122 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
+; 3123 :                    evallvl,
+; 3124 :                    oper->string_ptr,
+; 3125 :                    opnd1->kind,
+; 3126 :                    opnd1->hlvalue, opnd1->llvalue,
+; 3127 :                    opnd1->mem_type,
+; 3128 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3129 :     } else if ( opnd1->hvalue ) {
+; 3130 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
+; 3131 :                    evallvl,
+; 3132 :                    oper->string_ptr,
+; 3133 :                    opnd1->kind,
+; 3134 :                    opnd1->llvalue, opnd1->llvalue,
+; 3135 :                    opnd1->mem_type,
+; 3136 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3137 :     } else {
+; 3138 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
+; 3139 :                    evallvl,
+; 3140 :                    oper->string_ptr,
+; 3141 :                    opnd1->kind,
+; 3142 :                    opnd1->value, opnd1->value,
+; 3143 :                    opnd1->mem_type,
+; 3144 :                    opnd1->indirect, opnd1->explicit,
+; 3145 :                    opnd1->type ? opnd1->type->name : "NULL",
+; 3146 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
+; 3147 :     }
+; 3148 : #endif
+; 3149 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN180@calculate
 $LN72@calculate:
 
-; 2921 :             break;
-; 2922 :         case T_NE:
-; 2923 : #if 1 /* v2.03: added */
-; 2924 :             /* if both operands are types, do a more comprehensive comparison! */
-; 2925 :             if ( opnd1->is_type && opnd2->is_type ) {
+; 2887 :             break;
+; 2888 :         case T_NE:
+; 2889 : #if 1 /* v2.03: added */
+; 2890 :             /* if both operands are types, do a more comprehensive comparison! */
+; 2891 :             if ( opnd1->is_type && opnd2->is_type ) {
 
-	test	BYTE PTR [rbx+76], 8
+	test	BYTE PTR [rbx+72], 8
 	je	SHORT $LN73@calculate
-	test	BYTE PTR [rdi+76], 8
+	test	BYTE PTR [rdi+72], 8
 	je	SHORT $LN73@calculate
 
-; 2926 :                 cmp_types( opnd1, opnd2, 0 );
+; 2892 :                 cmp_types( opnd1, opnd2, 0 );
 
 	xor	r8d, r8d
 	mov	rdx, rdi
 	mov	rcx, rbx
 	call	cmp_types
 
-; 3152 :     } /* end switch( oper->token ) */
-; 3153 : 
-; 3154 : #ifdef DEBUG_OUT
-; 3155 :     if ( opnd1->hlvalue ) {
-; 3156 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
-; 3157 :                    evallvl,
-; 3158 :                    oper->string_ptr,
-; 3159 :                    opnd1->kind,
-; 3160 :                    opnd1->hlvalue, opnd1->llvalue,
-; 3161 :                    opnd1->mem_type,
-; 3162 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3163 :     } else if ( opnd1->hvalue ) {
-; 3164 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
-; 3165 :                    evallvl,
-; 3166 :                    oper->string_ptr,
-; 3167 :                    opnd1->kind,
-; 3168 :                    opnd1->llvalue, opnd1->llvalue,
-; 3169 :                    opnd1->mem_type,
-; 3170 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3171 :     } else {
-; 3172 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
-; 3173 :                    evallvl,
-; 3174 :                    oper->string_ptr,
-; 3175 :                    opnd1->kind,
-; 3176 :                    opnd1->value, opnd1->value,
-; 3177 :                    opnd1->mem_type,
-; 3178 :                    opnd1->indirect, opnd1->explicit,
-; 3179 :                    opnd1->type ? opnd1->type->name : "NULL",
-; 3180 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
-; 3181 :     }
-; 3182 : #endif
-; 3183 :     return( NOT_ERROR );
+; 3118 :     } /* end switch( oper->token ) */
+; 3119 : 
+; 3120 : #ifdef DEBUG_OUT
+; 3121 :     if ( opnd1->hlvalue ) {
+; 3122 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
+; 3123 :                    evallvl,
+; 3124 :                    oper->string_ptr,
+; 3125 :                    opnd1->kind,
+; 3126 :                    opnd1->hlvalue, opnd1->llvalue,
+; 3127 :                    opnd1->mem_type,
+; 3128 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3129 :     } else if ( opnd1->hvalue ) {
+; 3130 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
+; 3131 :                    evallvl,
+; 3132 :                    oper->string_ptr,
+; 3133 :                    opnd1->kind,
+; 3134 :                    opnd1->llvalue, opnd1->llvalue,
+; 3135 :                    opnd1->mem_type,
+; 3136 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3137 :     } else {
+; 3138 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
+; 3139 :                    evallvl,
+; 3140 :                    oper->string_ptr,
+; 3141 :                    opnd1->kind,
+; 3142 :                    opnd1->value, opnd1->value,
+; 3143 :                    opnd1->mem_type,
+; 3144 :                    opnd1->indirect, opnd1->explicit,
+; 3145 :                    opnd1->type ? opnd1->type->name : "NULL",
+; 3146 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
+; 3147 :     }
+; 3148 : #endif
+; 3149 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN180@calculate
 $LN73@calculate:
 
-; 2927 :             } else
-; 2928 : #endif
-; 2929 :             opnd1->value64 = ( opnd1->value64 != opnd2->value64 ? -1:0 );
+; 2893 :             } else
+; 2894 : #endif
+; 2895 :             opnd1->value64 = ( opnd1->value64 != opnd2->value64 ? -1:0 );
 
 	mov	rax, QWORD PTR [rbx]
 	sub	rax, QWORD PTR [rdi]
 	neg	rax
 	sbb	rax, rax
 
-; 3020 :             opnd1->llvalue = ~(opnd2->llvalue);
+; 2986 :             opnd1->llvalue = ~(opnd2->llvalue);
 
 	mov	QWORD PTR [rbx], rax
 
-; 3152 :     } /* end switch( oper->token ) */
-; 3153 : 
-; 3154 : #ifdef DEBUG_OUT
-; 3155 :     if ( opnd1->hlvalue ) {
-; 3156 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
-; 3157 :                    evallvl,
-; 3158 :                    oper->string_ptr,
-; 3159 :                    opnd1->kind,
-; 3160 :                    opnd1->hlvalue, opnd1->llvalue,
-; 3161 :                    opnd1->mem_type,
-; 3162 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3163 :     } else if ( opnd1->hvalue ) {
-; 3164 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
-; 3165 :                    evallvl,
-; 3166 :                    oper->string_ptr,
-; 3167 :                    opnd1->kind,
-; 3168 :                    opnd1->llvalue, opnd1->llvalue,
-; 3169 :                    opnd1->mem_type,
-; 3170 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3171 :     } else {
-; 3172 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
-; 3173 :                    evallvl,
-; 3174 :                    oper->string_ptr,
-; 3175 :                    opnd1->kind,
-; 3176 :                    opnd1->value, opnd1->value,
-; 3177 :                    opnd1->mem_type,
-; 3178 :                    opnd1->indirect, opnd1->explicit,
-; 3179 :                    opnd1->type ? opnd1->type->name : "NULL",
-; 3180 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
-; 3181 :     }
-; 3182 : #endif
-; 3183 :     return( NOT_ERROR );
+; 3118 :     } /* end switch( oper->token ) */
+; 3119 : 
+; 3120 : #ifdef DEBUG_OUT
+; 3121 :     if ( opnd1->hlvalue ) {
+; 3122 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
+; 3123 :                    evallvl,
+; 3124 :                    oper->string_ptr,
+; 3125 :                    opnd1->kind,
+; 3126 :                    opnd1->hlvalue, opnd1->llvalue,
+; 3127 :                    opnd1->mem_type,
+; 3128 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3129 :     } else if ( opnd1->hvalue ) {
+; 3130 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
+; 3131 :                    evallvl,
+; 3132 :                    oper->string_ptr,
+; 3133 :                    opnd1->kind,
+; 3134 :                    opnd1->llvalue, opnd1->llvalue,
+; 3135 :                    opnd1->mem_type,
+; 3136 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3137 :     } else {
+; 3138 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
+; 3139 :                    evallvl,
+; 3140 :                    oper->string_ptr,
+; 3141 :                    opnd1->kind,
+; 3142 :                    opnd1->value, opnd1->value,
+; 3143 :                    opnd1->mem_type,
+; 3144 :                    opnd1->indirect, opnd1->explicit,
+; 3145 :                    opnd1->type ? opnd1->type->name : "NULL",
+; 3146 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
+; 3147 :     }
+; 3148 : #endif
+; 3149 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN180@calculate
 $LN75@calculate:
 
-; 2930 :             break;
-; 2931 :         case T_LT:
-; 2932 :             opnd1->value64 = ( opnd1->value64 <  opnd2->value64 ? -1:0 );
+; 2896 :             break;
+; 2897 :         case T_LT:
+; 2898 :             opnd1->value64 = ( opnd1->value64 <  opnd2->value64 ? -1:0 );
 
 	mov	rax, QWORD PTR [rdi]
 	cmp	QWORD PTR [rbx], rax
@@ -2980,46 +2980,46 @@ $LN75@calculate:
 	dec	rsi
 	mov	QWORD PTR [rbx], rsi
 
-; 3152 :     } /* end switch( oper->token ) */
-; 3153 : 
-; 3154 : #ifdef DEBUG_OUT
-; 3155 :     if ( opnd1->hlvalue ) {
-; 3156 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
-; 3157 :                    evallvl,
-; 3158 :                    oper->string_ptr,
-; 3159 :                    opnd1->kind,
-; 3160 :                    opnd1->hlvalue, opnd1->llvalue,
-; 3161 :                    opnd1->mem_type,
-; 3162 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3163 :     } else if ( opnd1->hvalue ) {
-; 3164 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
-; 3165 :                    evallvl,
-; 3166 :                    oper->string_ptr,
-; 3167 :                    opnd1->kind,
-; 3168 :                    opnd1->llvalue, opnd1->llvalue,
-; 3169 :                    opnd1->mem_type,
-; 3170 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3171 :     } else {
-; 3172 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
-; 3173 :                    evallvl,
-; 3174 :                    oper->string_ptr,
-; 3175 :                    opnd1->kind,
-; 3176 :                    opnd1->value, opnd1->value,
-; 3177 :                    opnd1->mem_type,
-; 3178 :                    opnd1->indirect, opnd1->explicit,
-; 3179 :                    opnd1->type ? opnd1->type->name : "NULL",
-; 3180 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
-; 3181 :     }
-; 3182 : #endif
-; 3183 :     return( NOT_ERROR );
+; 3118 :     } /* end switch( oper->token ) */
+; 3119 : 
+; 3120 : #ifdef DEBUG_OUT
+; 3121 :     if ( opnd1->hlvalue ) {
+; 3122 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
+; 3123 :                    evallvl,
+; 3124 :                    oper->string_ptr,
+; 3125 :                    opnd1->kind,
+; 3126 :                    opnd1->hlvalue, opnd1->llvalue,
+; 3127 :                    opnd1->mem_type,
+; 3128 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3129 :     } else if ( opnd1->hvalue ) {
+; 3130 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
+; 3131 :                    evallvl,
+; 3132 :                    oper->string_ptr,
+; 3133 :                    opnd1->kind,
+; 3134 :                    opnd1->llvalue, opnd1->llvalue,
+; 3135 :                    opnd1->mem_type,
+; 3136 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3137 :     } else {
+; 3138 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
+; 3139 :                    evallvl,
+; 3140 :                    oper->string_ptr,
+; 3141 :                    opnd1->kind,
+; 3142 :                    opnd1->value, opnd1->value,
+; 3143 :                    opnd1->mem_type,
+; 3144 :                    opnd1->indirect, opnd1->explicit,
+; 3145 :                    opnd1->type ? opnd1->type->name : "NULL",
+; 3146 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
+; 3147 :     }
+; 3148 : #endif
+; 3149 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN180@calculate
 $LN76@calculate:
 
-; 2933 :             break;
-; 2934 :         case T_LE:
-; 2935 :             opnd1->value64 = ( opnd1->value64 <= opnd2->value64 ? -1:0 );
+; 2899 :             break;
+; 2900 :         case T_LE:
+; 2901 :             opnd1->value64 = ( opnd1->value64 <= opnd2->value64 ? -1:0 );
 
 	mov	rax, QWORD PTR [rdi]
 	cmp	QWORD PTR [rbx], rax
@@ -3027,46 +3027,46 @@ $LN76@calculate:
 	dec	rsi
 	mov	QWORD PTR [rbx], rsi
 
-; 3152 :     } /* end switch( oper->token ) */
-; 3153 : 
-; 3154 : #ifdef DEBUG_OUT
-; 3155 :     if ( opnd1->hlvalue ) {
-; 3156 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
-; 3157 :                    evallvl,
-; 3158 :                    oper->string_ptr,
-; 3159 :                    opnd1->kind,
-; 3160 :                    opnd1->hlvalue, opnd1->llvalue,
-; 3161 :                    opnd1->mem_type,
-; 3162 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3163 :     } else if ( opnd1->hvalue ) {
-; 3164 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
-; 3165 :                    evallvl,
-; 3166 :                    oper->string_ptr,
-; 3167 :                    opnd1->kind,
-; 3168 :                    opnd1->llvalue, opnd1->llvalue,
-; 3169 :                    opnd1->mem_type,
-; 3170 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3171 :     } else {
-; 3172 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
-; 3173 :                    evallvl,
-; 3174 :                    oper->string_ptr,
-; 3175 :                    opnd1->kind,
-; 3176 :                    opnd1->value, opnd1->value,
-; 3177 :                    opnd1->mem_type,
-; 3178 :                    opnd1->indirect, opnd1->explicit,
-; 3179 :                    opnd1->type ? opnd1->type->name : "NULL",
-; 3180 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
-; 3181 :     }
-; 3182 : #endif
-; 3183 :     return( NOT_ERROR );
+; 3118 :     } /* end switch( oper->token ) */
+; 3119 : 
+; 3120 : #ifdef DEBUG_OUT
+; 3121 :     if ( opnd1->hlvalue ) {
+; 3122 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
+; 3123 :                    evallvl,
+; 3124 :                    oper->string_ptr,
+; 3125 :                    opnd1->kind,
+; 3126 :                    opnd1->hlvalue, opnd1->llvalue,
+; 3127 :                    opnd1->mem_type,
+; 3128 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3129 :     } else if ( opnd1->hvalue ) {
+; 3130 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
+; 3131 :                    evallvl,
+; 3132 :                    oper->string_ptr,
+; 3133 :                    opnd1->kind,
+; 3134 :                    opnd1->llvalue, opnd1->llvalue,
+; 3135 :                    opnd1->mem_type,
+; 3136 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3137 :     } else {
+; 3138 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
+; 3139 :                    evallvl,
+; 3140 :                    oper->string_ptr,
+; 3141 :                    opnd1->kind,
+; 3142 :                    opnd1->value, opnd1->value,
+; 3143 :                    opnd1->mem_type,
+; 3144 :                    opnd1->indirect, opnd1->explicit,
+; 3145 :                    opnd1->type ? opnd1->type->name : "NULL",
+; 3146 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
+; 3147 :     }
+; 3148 : #endif
+; 3149 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN180@calculate
 $LN77@calculate:
 
-; 2936 :             break;
-; 2937 :         case T_GT:
-; 2938 :             opnd1->value64 = ( opnd1->value64 >  opnd2->value64 ? -1:0 );
+; 2902 :             break;
+; 2903 :         case T_GT:
+; 2904 :             opnd1->value64 = ( opnd1->value64 >  opnd2->value64 ? -1:0 );
 
 	mov	rax, QWORD PTR [rdi]
 	cmp	QWORD PTR [rbx], rax
@@ -3074,46 +3074,46 @@ $LN77@calculate:
 	dec	rsi
 	mov	QWORD PTR [rbx], rsi
 
-; 3152 :     } /* end switch( oper->token ) */
-; 3153 : 
-; 3154 : #ifdef DEBUG_OUT
-; 3155 :     if ( opnd1->hlvalue ) {
-; 3156 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
-; 3157 :                    evallvl,
-; 3158 :                    oper->string_ptr,
-; 3159 :                    opnd1->kind,
-; 3160 :                    opnd1->hlvalue, opnd1->llvalue,
-; 3161 :                    opnd1->mem_type,
-; 3162 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3163 :     } else if ( opnd1->hvalue ) {
-; 3164 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
-; 3165 :                    evallvl,
-; 3166 :                    oper->string_ptr,
-; 3167 :                    opnd1->kind,
-; 3168 :                    opnd1->llvalue, opnd1->llvalue,
-; 3169 :                    opnd1->mem_type,
-; 3170 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3171 :     } else {
-; 3172 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
-; 3173 :                    evallvl,
-; 3174 :                    oper->string_ptr,
-; 3175 :                    opnd1->kind,
-; 3176 :                    opnd1->value, opnd1->value,
-; 3177 :                    opnd1->mem_type,
-; 3178 :                    opnd1->indirect, opnd1->explicit,
-; 3179 :                    opnd1->type ? opnd1->type->name : "NULL",
-; 3180 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
-; 3181 :     }
-; 3182 : #endif
-; 3183 :     return( NOT_ERROR );
+; 3118 :     } /* end switch( oper->token ) */
+; 3119 : 
+; 3120 : #ifdef DEBUG_OUT
+; 3121 :     if ( opnd1->hlvalue ) {
+; 3122 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
+; 3123 :                    evallvl,
+; 3124 :                    oper->string_ptr,
+; 3125 :                    opnd1->kind,
+; 3126 :                    opnd1->hlvalue, opnd1->llvalue,
+; 3127 :                    opnd1->mem_type,
+; 3128 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3129 :     } else if ( opnd1->hvalue ) {
+; 3130 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
+; 3131 :                    evallvl,
+; 3132 :                    oper->string_ptr,
+; 3133 :                    opnd1->kind,
+; 3134 :                    opnd1->llvalue, opnd1->llvalue,
+; 3135 :                    opnd1->mem_type,
+; 3136 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3137 :     } else {
+; 3138 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
+; 3139 :                    evallvl,
+; 3140 :                    oper->string_ptr,
+; 3141 :                    opnd1->kind,
+; 3142 :                    opnd1->value, opnd1->value,
+; 3143 :                    opnd1->mem_type,
+; 3144 :                    opnd1->indirect, opnd1->explicit,
+; 3145 :                    opnd1->type ? opnd1->type->name : "NULL",
+; 3146 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
+; 3147 :     }
+; 3148 : #endif
+; 3149 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN180@calculate
 $LN78@calculate:
 
-; 2939 :             break;
-; 2940 :         case T_GE:
-; 2941 :             opnd1->value64 = ( opnd1->value64 >= opnd2->value64 ? -1:0 );
+; 2905 :             break;
+; 2906 :         case T_GE:
+; 2907 :             opnd1->value64 = ( opnd1->value64 >= opnd2->value64 ? -1:0 );
 
 	mov	rax, QWORD PTR [rdi]
 	cmp	QWORD PTR [rbx], rax
@@ -3121,153 +3121,153 @@ $LN78@calculate:
 	dec	rsi
 	mov	QWORD PTR [rbx], rsi
 
-; 3152 :     } /* end switch( oper->token ) */
-; 3153 : 
-; 3154 : #ifdef DEBUG_OUT
-; 3155 :     if ( opnd1->hlvalue ) {
-; 3156 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
-; 3157 :                    evallvl,
-; 3158 :                    oper->string_ptr,
-; 3159 :                    opnd1->kind,
-; 3160 :                    opnd1->hlvalue, opnd1->llvalue,
-; 3161 :                    opnd1->mem_type,
-; 3162 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3163 :     } else if ( opnd1->hvalue ) {
-; 3164 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
-; 3165 :                    evallvl,
-; 3166 :                    oper->string_ptr,
-; 3167 :                    opnd1->kind,
-; 3168 :                    opnd1->llvalue, opnd1->llvalue,
-; 3169 :                    opnd1->mem_type,
-; 3170 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3171 :     } else {
-; 3172 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
-; 3173 :                    evallvl,
-; 3174 :                    oper->string_ptr,
-; 3175 :                    opnd1->kind,
-; 3176 :                    opnd1->value, opnd1->value,
-; 3177 :                    opnd1->mem_type,
-; 3178 :                    opnd1->indirect, opnd1->explicit,
-; 3179 :                    opnd1->type ? opnd1->type->name : "NULL",
-; 3180 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
-; 3181 :     }
-; 3182 : #endif
-; 3183 :     return( NOT_ERROR );
+; 3118 :     } /* end switch( oper->token ) */
+; 3119 : 
+; 3120 : #ifdef DEBUG_OUT
+; 3121 :     if ( opnd1->hlvalue ) {
+; 3122 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
+; 3123 :                    evallvl,
+; 3124 :                    oper->string_ptr,
+; 3125 :                    opnd1->kind,
+; 3126 :                    opnd1->hlvalue, opnd1->llvalue,
+; 3127 :                    opnd1->mem_type,
+; 3128 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3129 :     } else if ( opnd1->hvalue ) {
+; 3130 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
+; 3131 :                    evallvl,
+; 3132 :                    oper->string_ptr,
+; 3133 :                    opnd1->kind,
+; 3134 :                    opnd1->llvalue, opnd1->llvalue,
+; 3135 :                    opnd1->mem_type,
+; 3136 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3137 :     } else {
+; 3138 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
+; 3139 :                    evallvl,
+; 3140 :                    oper->string_ptr,
+; 3141 :                    opnd1->kind,
+; 3142 :                    opnd1->value, opnd1->value,
+; 3143 :                    opnd1->mem_type,
+; 3144 :                    opnd1->indirect, opnd1->explicit,
+; 3145 :                    opnd1->type ? opnd1->type->name : "NULL",
+; 3146 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
+; 3147 :     }
+; 3148 : #endif
+; 3149 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN180@calculate
 $LN79@calculate:
 
-; 2942 :             break;
-; 2943 :         case T_MOD:
-; 2944 :             if ( opnd2->llvalue == 0 ) {
+; 2908 :             break;
+; 2909 :         case T_MOD:
+; 2910 :             if ( opnd2->llvalue == 0 ) {
 
 	mov	rcx, QWORD PTR [rdi]
 	test	rcx, rcx
 	jne	SHORT $LN80@calculate
 $LN188@calculate:
 
-; 2945 :                 return( fnEmitErr( DIVIDE_BY_ZERO_IN_EXPR ) );
+; 2911 :                 return( fnEmitErr( DIVIDE_BY_ZERO_IN_EXPR ) );
 
 	mov	ecx, 167				; 000000a7H
 	call	QWORD PTR fnEmitErr
 	jmp	$LN180@calculate
 $LN80@calculate:
 
-; 2946 :             } else
-; 2947 :                 opnd1->llvalue %= opnd2->llvalue;
+; 2912 :             } else
+; 2913 :                 opnd1->llvalue %= opnd2->llvalue;
 
 	mov	rax, QWORD PTR [rbx]
 	xor	edx, edx
 	div	rcx
 
-; 3152 :     } /* end switch( oper->token ) */
-; 3153 : 
-; 3154 : #ifdef DEBUG_OUT
-; 3155 :     if ( opnd1->hlvalue ) {
-; 3156 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
-; 3157 :                    evallvl,
-; 3158 :                    oper->string_ptr,
-; 3159 :                    opnd1->kind,
-; 3160 :                    opnd1->hlvalue, opnd1->llvalue,
-; 3161 :                    opnd1->mem_type,
-; 3162 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3163 :     } else if ( opnd1->hvalue ) {
-; 3164 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
-; 3165 :                    evallvl,
-; 3166 :                    oper->string_ptr,
-; 3167 :                    opnd1->kind,
-; 3168 :                    opnd1->llvalue, opnd1->llvalue,
-; 3169 :                    opnd1->mem_type,
-; 3170 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3171 :     } else {
-; 3172 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
-; 3173 :                    evallvl,
-; 3174 :                    oper->string_ptr,
-; 3175 :                    opnd1->kind,
-; 3176 :                    opnd1->value, opnd1->value,
-; 3177 :                    opnd1->mem_type,
-; 3178 :                    opnd1->indirect, opnd1->explicit,
-; 3179 :                    opnd1->type ? opnd1->type->name : "NULL",
-; 3180 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
-; 3181 :     }
-; 3182 : #endif
-; 3183 :     return( NOT_ERROR );
+; 3118 :     } /* end switch( oper->token ) */
+; 3119 : 
+; 3120 : #ifdef DEBUG_OUT
+; 3121 :     if ( opnd1->hlvalue ) {
+; 3122 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
+; 3123 :                    evallvl,
+; 3124 :                    oper->string_ptr,
+; 3125 :                    opnd1->kind,
+; 3126 :                    opnd1->hlvalue, opnd1->llvalue,
+; 3127 :                    opnd1->mem_type,
+; 3128 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3129 :     } else if ( opnd1->hvalue ) {
+; 3130 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
+; 3131 :                    evallvl,
+; 3132 :                    oper->string_ptr,
+; 3133 :                    opnd1->kind,
+; 3134 :                    opnd1->llvalue, opnd1->llvalue,
+; 3135 :                    opnd1->mem_type,
+; 3136 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3137 :     } else {
+; 3138 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
+; 3139 :                    evallvl,
+; 3140 :                    oper->string_ptr,
+; 3141 :                    opnd1->kind,
+; 3142 :                    opnd1->value, opnd1->value,
+; 3143 :                    opnd1->mem_type,
+; 3144 :                    opnd1->indirect, opnd1->explicit,
+; 3145 :                    opnd1->type ? opnd1->type->name : "NULL",
+; 3146 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
+; 3147 :     }
+; 3148 : #endif
+; 3149 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	mov	QWORD PTR [rbx], rdx
 	jmp	$LN180@calculate
 $LN94@calculate:
 
-; 2993 :             break;
-; 2994 :         case T_OR:
-; 2995 :             opnd1->llvalue |= opnd2->llvalue;
+; 2959 :             break;
+; 2960 :         case T_OR:
+; 2961 :             opnd1->llvalue |= opnd2->llvalue;
 
 	mov	rax, QWORD PTR [rdi]
 	or	QWORD PTR [rbx], rax
 
-; 3152 :     } /* end switch( oper->token ) */
-; 3153 : 
-; 3154 : #ifdef DEBUG_OUT
-; 3155 :     if ( opnd1->hlvalue ) {
-; 3156 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
-; 3157 :                    evallvl,
-; 3158 :                    oper->string_ptr,
-; 3159 :                    opnd1->kind,
-; 3160 :                    opnd1->hlvalue, opnd1->llvalue,
-; 3161 :                    opnd1->mem_type,
-; 3162 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3163 :     } else if ( opnd1->hvalue ) {
-; 3164 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
-; 3165 :                    evallvl,
-; 3166 :                    oper->string_ptr,
-; 3167 :                    opnd1->kind,
-; 3168 :                    opnd1->llvalue, opnd1->llvalue,
-; 3169 :                    opnd1->mem_type,
-; 3170 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3171 :     } else {
-; 3172 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
-; 3173 :                    evallvl,
-; 3174 :                    oper->string_ptr,
-; 3175 :                    opnd1->kind,
-; 3176 :                    opnd1->value, opnd1->value,
-; 3177 :                    opnd1->mem_type,
-; 3178 :                    opnd1->indirect, opnd1->explicit,
-; 3179 :                    opnd1->type ? opnd1->type->name : "NULL",
-; 3180 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
-; 3181 :     }
-; 3182 : #endif
-; 3183 :     return( NOT_ERROR );
+; 3118 :     } /* end switch( oper->token ) */
+; 3119 : 
+; 3120 : #ifdef DEBUG_OUT
+; 3121 :     if ( opnd1->hlvalue ) {
+; 3122 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
+; 3123 :                    evallvl,
+; 3124 :                    oper->string_ptr,
+; 3125 :                    opnd1->kind,
+; 3126 :                    opnd1->hlvalue, opnd1->llvalue,
+; 3127 :                    opnd1->mem_type,
+; 3128 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3129 :     } else if ( opnd1->hvalue ) {
+; 3130 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
+; 3131 :                    evallvl,
+; 3132 :                    oper->string_ptr,
+; 3133 :                    opnd1->kind,
+; 3134 :                    opnd1->llvalue, opnd1->llvalue,
+; 3135 :                    opnd1->mem_type,
+; 3136 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3137 :     } else {
+; 3138 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
+; 3139 :                    evallvl,
+; 3140 :                    oper->string_ptr,
+; 3141 :                    opnd1->kind,
+; 3142 :                    opnd1->value, opnd1->value,
+; 3143 :                    opnd1->mem_type,
+; 3144 :                    opnd1->indirect, opnd1->explicit,
+; 3145 :                    opnd1->type ? opnd1->type->name : "NULL",
+; 3146 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
+; 3147 :     }
+; 3148 : #endif
+; 3149 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN180@calculate
 $LN130@calculate:
 
-; 2908 :         }
-; 2909 : 
-; 2910 :         DebugMsg1(("calculate(%s): values=%" I64_SPEC "d/%" I64_SPEC "d is_type=%u/%u memtypes=%X/%X\n", oper->string_ptr,
-; 2911 :                    opnd1->value64, opnd2->value64, opnd1->is_type, opnd2->is_type, opnd1->mem_type, opnd2->mem_type  ));
-; 2912 :         switch( oper->tokval ) {
+; 2874 :         }
+; 2875 : 
+; 2876 :         DebugMsg1(("calculate(%s): values=%" I64_SPEC "d/%" I64_SPEC "d is_type=%u/%u memtypes=%X/%X\n", oper->string_ptr,
+; 2877 :                    opnd1->value64, opnd2->value64, opnd1->is_type, opnd2->is_type, opnd1->mem_type, opnd2->mem_type  ));
+; 2878 :         switch( oper->tokval ) {
 
 	sub	eax, 504				; 000001f8H
 	je	$LN93@calculate
@@ -3278,321 +3278,321 @@ $LN130@calculate:
 	cmp	eax, 1
 	jne	$LN2@calculate
 
-; 2967 :                 opnd1->hlvalue = 0;
-; 2968 :             }
-; 2969 :             break;
-; 2970 :         case T_SHR:
-; 2971 :             /* Masm v8 works with unsigned 64-bit,
-; 2972 :              * Masm v6 masks shift count with 0x3F.
-; 2973 :              * v2.04: does behave like Masm v8+.
-; 2974 :              * there is a problem with some compilers if shift
-; 2975 :              * count is >= 64. So in this case the result is zeroed manually
-; 2976 :              */
-; 2977 : #if 0
-; 2978 :             if ( opnd1->hvalue == -1 ) {
-; 2979 :                 opnd1->hvalue = 0;
-; 2980 :                 opnd1->hlvalue = 0;
-; 2981 :             }
-; 2982 : #endif
-; 2983 :             /* v2.04: check for shift count < 0 */
-; 2984 :             if ( opnd2->value < 0 )
+; 2933 :                 opnd1->hlvalue = 0;
+; 2934 :             }
+; 2935 :             break;
+; 2936 :         case T_SHR:
+; 2937 :             /* Masm v8 works with unsigned 64-bit,
+; 2938 :              * Masm v6 masks shift count with 0x3F.
+; 2939 :              * v2.04: does behave like Masm v8+.
+; 2940 :              * there is a problem with some compilers if shift
+; 2941 :              * count is >= 64. So in this case the result is zeroed manually
+; 2942 :              */
+; 2943 : #if 0
+; 2944 :             if ( opnd1->hvalue == -1 ) {
+; 2945 :                 opnd1->hvalue = 0;
+; 2946 :                 opnd1->hlvalue = 0;
+; 2947 :             }
+; 2948 : #endif
+; 2949 :             /* v2.04: check for shift count < 0 */
+; 2950 :             if ( opnd2->value < 0 )
 
 	movsxd	rcx, DWORD PTR [rdi]
 	test	ecx, ecx
 	jns	SHORT $LN89@calculate
 
-; 2985 :                 fnEmitErr( COUNT_MUST_BE_POSITIVE_OR_ZERO );
+; 2951 :                 fnEmitErr( COUNT_MUST_BE_POSITIVE_OR_ZERO );
 
 	mov	ecx, 208				; 000000d0H
 	call	QWORD PTR fnEmitErr
 
-; 3152 :     } /* end switch( oper->token ) */
-; 3153 : 
-; 3154 : #ifdef DEBUG_OUT
-; 3155 :     if ( opnd1->hlvalue ) {
-; 3156 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
-; 3157 :                    evallvl,
-; 3158 :                    oper->string_ptr,
-; 3159 :                    opnd1->kind,
-; 3160 :                    opnd1->hlvalue, opnd1->llvalue,
-; 3161 :                    opnd1->mem_type,
-; 3162 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3163 :     } else if ( opnd1->hvalue ) {
-; 3164 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
-; 3165 :                    evallvl,
-; 3166 :                    oper->string_ptr,
-; 3167 :                    opnd1->kind,
-; 3168 :                    opnd1->llvalue, opnd1->llvalue,
-; 3169 :                    opnd1->mem_type,
-; 3170 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3171 :     } else {
-; 3172 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
-; 3173 :                    evallvl,
-; 3174 :                    oper->string_ptr,
-; 3175 :                    opnd1->kind,
-; 3176 :                    opnd1->value, opnd1->value,
-; 3177 :                    opnd1->mem_type,
-; 3178 :                    opnd1->indirect, opnd1->explicit,
-; 3179 :                    opnd1->type ? opnd1->type->name : "NULL",
-; 3180 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
-; 3181 :     }
-; 3182 : #endif
-; 3183 :     return( NOT_ERROR );
+; 3118 :     } /* end switch( oper->token ) */
+; 3119 : 
+; 3120 : #ifdef DEBUG_OUT
+; 3121 :     if ( opnd1->hlvalue ) {
+; 3122 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
+; 3123 :                    evallvl,
+; 3124 :                    oper->string_ptr,
+; 3125 :                    opnd1->kind,
+; 3126 :                    opnd1->hlvalue, opnd1->llvalue,
+; 3127 :                    opnd1->mem_type,
+; 3128 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3129 :     } else if ( opnd1->hvalue ) {
+; 3130 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
+; 3131 :                    evallvl,
+; 3132 :                    oper->string_ptr,
+; 3133 :                    opnd1->kind,
+; 3134 :                    opnd1->llvalue, opnd1->llvalue,
+; 3135 :                    opnd1->mem_type,
+; 3136 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3137 :     } else {
+; 3138 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
+; 3139 :                    evallvl,
+; 3140 :                    oper->string_ptr,
+; 3141 :                    opnd1->kind,
+; 3142 :                    opnd1->value, opnd1->value,
+; 3143 :                    opnd1->mem_type,
+; 3144 :                    opnd1->indirect, opnd1->explicit,
+; 3145 :                    opnd1->type ? opnd1->type->name : "NULL",
+; 3146 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
+; 3147 :     }
+; 3148 : #endif
+; 3149 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN180@calculate
 $LN89@calculate:
 
-; 2986 :             else if ( opnd2->value >= ( 8 * sizeof( opnd1->llvalue ) ) )
+; 2952 :             else if ( opnd2->value >= ( 8 * sizeof( opnd1->llvalue ) ) )
 
 	cmp	rcx, 64					; 00000040H
 	jae	$LN185@calculate
 
-; 2987 :                 opnd1->llvalue = 0;
-; 2988 :             else
-; 2989 :                 opnd1->llvalue = opnd1->llvalue >> opnd2->value;
+; 2953 :                 opnd1->llvalue = 0;
+; 2954 :             else
+; 2955 :                 opnd1->llvalue = opnd1->llvalue >> opnd2->value;
 
 	shr	QWORD PTR [rbx], cl
 
-; 3152 :     } /* end switch( oper->token ) */
-; 3153 : 
-; 3154 : #ifdef DEBUG_OUT
-; 3155 :     if ( opnd1->hlvalue ) {
-; 3156 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
-; 3157 :                    evallvl,
-; 3158 :                    oper->string_ptr,
-; 3159 :                    opnd1->kind,
-; 3160 :                    opnd1->hlvalue, opnd1->llvalue,
-; 3161 :                    opnd1->mem_type,
-; 3162 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3163 :     } else if ( opnd1->hvalue ) {
-; 3164 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
-; 3165 :                    evallvl,
-; 3166 :                    oper->string_ptr,
-; 3167 :                    opnd1->kind,
-; 3168 :                    opnd1->llvalue, opnd1->llvalue,
-; 3169 :                    opnd1->mem_type,
-; 3170 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3171 :     } else {
-; 3172 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
-; 3173 :                    evallvl,
-; 3174 :                    oper->string_ptr,
-; 3175 :                    opnd1->kind,
-; 3176 :                    opnd1->value, opnd1->value,
-; 3177 :                    opnd1->mem_type,
-; 3178 :                    opnd1->indirect, opnd1->explicit,
-; 3179 :                    opnd1->type ? opnd1->type->name : "NULL",
-; 3180 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
-; 3181 :     }
-; 3182 : #endif
-; 3183 :     return( NOT_ERROR );
+; 3118 :     } /* end switch( oper->token ) */
+; 3119 : 
+; 3120 : #ifdef DEBUG_OUT
+; 3121 :     if ( opnd1->hlvalue ) {
+; 3122 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
+; 3123 :                    evallvl,
+; 3124 :                    oper->string_ptr,
+; 3125 :                    opnd1->kind,
+; 3126 :                    opnd1->hlvalue, opnd1->llvalue,
+; 3127 :                    opnd1->mem_type,
+; 3128 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3129 :     } else if ( opnd1->hvalue ) {
+; 3130 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
+; 3131 :                    evallvl,
+; 3132 :                    oper->string_ptr,
+; 3133 :                    opnd1->kind,
+; 3134 :                    opnd1->llvalue, opnd1->llvalue,
+; 3135 :                    opnd1->mem_type,
+; 3136 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3137 :     } else {
+; 3138 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
+; 3139 :                    evallvl,
+; 3140 :                    oper->string_ptr,
+; 3141 :                    opnd1->kind,
+; 3142 :                    opnd1->value, opnd1->value,
+; 3143 :                    opnd1->mem_type,
+; 3144 :                    opnd1->indirect, opnd1->explicit,
+; 3145 :                    opnd1->type ? opnd1->type->name : "NULL",
+; 3146 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
+; 3147 :     }
+; 3148 : #endif
+; 3149 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN180@calculate
 $LN82@calculate:
 
-; 2948 :             break;
-; 2949 :         case T_SHL:
-; 2950 :             /* v2.04: check for shift count < 0 */
-; 2951 :             DebugMsg1(("calculate(SHL): value=%" I64_SPEC "X << %" I32_SPEC "u (max=%u)\n", opnd1->llvalue, opnd2->value, 8 * sizeof( opnd1->llvalue ) ));
-; 2952 :             if ( opnd2->value < 0 )
+; 2914 :             break;
+; 2915 :         case T_SHL:
+; 2916 :             /* v2.04: check for shift count < 0 */
+; 2917 :             DebugMsg1(("calculate(SHL): value=%" I64_SPEC "X << %" I32_SPEC "u (max=%u)\n", opnd1->llvalue, opnd2->value, 8 * sizeof( opnd1->llvalue ) ));
+; 2918 :             if ( opnd2->value < 0 )
 
 	movsxd	rcx, DWORD PTR [rdi]
 	test	ecx, ecx
 	jns	SHORT $LN83@calculate
 
-; 2953 :                 fnEmitErr( COUNT_MUST_BE_POSITIVE_OR_ZERO );
+; 2919 :                 fnEmitErr( COUNT_MUST_BE_POSITIVE_OR_ZERO );
 
 	mov	ecx, 208				; 000000d0H
 	call	QWORD PTR fnEmitErr
 	jmp	SHORT $LN86@calculate
 $LN83@calculate:
 
-; 2954 :             else if ( opnd2->value >= ( 8 * sizeof( opnd1->llvalue ) ) )
+; 2920 :             else if ( opnd2->value >= ( 8 * sizeof( opnd1->llvalue ) ) )
 
 	cmp	rcx, 64					; 00000040H
 	jb	SHORT $LN85@calculate
 
-; 2955 :                 opnd1->llvalue = 0;
+; 2921 :                 opnd1->llvalue = 0;
 
 	mov	QWORD PTR [rbx], rsi
 	jmp	SHORT $LN86@calculate
 $LN85@calculate:
 
-; 2956 :             else
-; 2957 :                 opnd1->llvalue = opnd1->llvalue << opnd2->value;
+; 2922 :             else
+; 2923 :                 opnd1->llvalue = opnd1->llvalue << opnd2->value;
 
 	shl	QWORD PTR [rbx], cl
 $LN86@calculate:
 
-; 2958 :             /* v2.01: result is 64-bit only if mode is USE64 */
-; 2959 :             /* v2.06: for -Zm only. This is not entirely correct,
-; 2960 :              * since Masm v6x also does 32-bit shifts, but since v2.06
-; 2961 :              * HJWasm intends to behave like Masm v8+.
-; 2962 :              * Might be better to implement OPTION EXPR16|32|64.
-; 2963 :              */
-; 2964 :             //if ( ModuleInfo.Ofssize <= USE32 ) {
-; 2965 :             if ( ModuleInfo.m510 ) {
+; 2924 :             /* v2.01: result is 64-bit only if mode is USE64 */
+; 2925 :             /* v2.06: for -Zm only. This is not entirely correct,
+; 2926 :              * since Masm v6x also does 32-bit shifts, but since v2.06
+; 2927 :              * HJWasm intends to behave like Masm v8+.
+; 2928 :              * Might be better to implement OPTION EXPR16|32|64.
+; 2929 :              */
+; 2930 :             //if ( ModuleInfo.Ofssize <= USE32 ) {
+; 2931 :             if ( ModuleInfo.m510 ) {
 
 	test	BYTE PTR ModuleInfo+408, 64		; 00000040H
 	je	$LN2@calculate
 
-; 2966 :                 opnd1->hvalue = 0;
+; 2932 :                 opnd1->hvalue = 0;
 
 	mov	DWORD PTR [rbx+4], esi
 
-; 3152 :     } /* end switch( oper->token ) */
-; 3153 : 
-; 3154 : #ifdef DEBUG_OUT
-; 3155 :     if ( opnd1->hlvalue ) {
-; 3156 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
-; 3157 :                    evallvl,
-; 3158 :                    oper->string_ptr,
-; 3159 :                    opnd1->kind,
-; 3160 :                    opnd1->hlvalue, opnd1->llvalue,
-; 3161 :                    opnd1->mem_type,
-; 3162 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3163 :     } else if ( opnd1->hvalue ) {
-; 3164 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
-; 3165 :                    evallvl,
-; 3166 :                    oper->string_ptr,
-; 3167 :                    opnd1->kind,
-; 3168 :                    opnd1->llvalue, opnd1->llvalue,
-; 3169 :                    opnd1->mem_type,
-; 3170 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3171 :     } else {
-; 3172 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
-; 3173 :                    evallvl,
-; 3174 :                    oper->string_ptr,
-; 3175 :                    opnd1->kind,
-; 3176 :                    opnd1->value, opnd1->value,
-; 3177 :                    opnd1->mem_type,
-; 3178 :                    opnd1->indirect, opnd1->explicit,
-; 3179 :                    opnd1->type ? opnd1->type->name : "NULL",
-; 3180 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
-; 3181 :     }
-; 3182 : #endif
-; 3183 :     return( NOT_ERROR );
+; 3118 :     } /* end switch( oper->token ) */
+; 3119 : 
+; 3120 : #ifdef DEBUG_OUT
+; 3121 :     if ( opnd1->hlvalue ) {
+; 3122 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
+; 3123 :                    evallvl,
+; 3124 :                    oper->string_ptr,
+; 3125 :                    opnd1->kind,
+; 3126 :                    opnd1->hlvalue, opnd1->llvalue,
+; 3127 :                    opnd1->mem_type,
+; 3128 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3129 :     } else if ( opnd1->hvalue ) {
+; 3130 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
+; 3131 :                    evallvl,
+; 3132 :                    oper->string_ptr,
+; 3133 :                    opnd1->kind,
+; 3134 :                    opnd1->llvalue, opnd1->llvalue,
+; 3135 :                    opnd1->mem_type,
+; 3136 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3137 :     } else {
+; 3138 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
+; 3139 :                    evallvl,
+; 3140 :                    oper->string_ptr,
+; 3141 :                    opnd1->kind,
+; 3142 :                    opnd1->value, opnd1->value,
+; 3143 :                    opnd1->mem_type,
+; 3144 :                    opnd1->indirect, opnd1->explicit,
+; 3145 :                    opnd1->type ? opnd1->type->name : "NULL",
+; 3146 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
+; 3147 :     }
+; 3148 : #endif
+; 3149 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	mov	QWORD PTR [rbx+8], rsi
 	jmp	$LN180@calculate
 $LN95@calculate:
 
-; 2996 :             break;
-; 2997 :         case T_XOR:
-; 2998 :             opnd1->llvalue ^= opnd2->llvalue;
+; 2962 :             break;
+; 2963 :         case T_XOR:
+; 2964 :             opnd1->llvalue ^= opnd2->llvalue;
 
 	mov	rax, QWORD PTR [rdi]
 	xor	QWORD PTR [rbx], rax
 
-; 3152 :     } /* end switch( oper->token ) */
-; 3153 : 
-; 3154 : #ifdef DEBUG_OUT
-; 3155 :     if ( opnd1->hlvalue ) {
-; 3156 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
-; 3157 :                    evallvl,
-; 3158 :                    oper->string_ptr,
-; 3159 :                    opnd1->kind,
-; 3160 :                    opnd1->hlvalue, opnd1->llvalue,
-; 3161 :                    opnd1->mem_type,
-; 3162 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3163 :     } else if ( opnd1->hvalue ) {
-; 3164 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
-; 3165 :                    evallvl,
-; 3166 :                    oper->string_ptr,
-; 3167 :                    opnd1->kind,
-; 3168 :                    opnd1->llvalue, opnd1->llvalue,
-; 3169 :                    opnd1->mem_type,
-; 3170 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3171 :     } else {
-; 3172 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
-; 3173 :                    evallvl,
-; 3174 :                    oper->string_ptr,
-; 3175 :                    opnd1->kind,
-; 3176 :                    opnd1->value, opnd1->value,
-; 3177 :                    opnd1->mem_type,
-; 3178 :                    opnd1->indirect, opnd1->explicit,
-; 3179 :                    opnd1->type ? opnd1->type->name : "NULL",
-; 3180 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
-; 3181 :     }
-; 3182 : #endif
-; 3183 :     return( NOT_ERROR );
+; 3118 :     } /* end switch( oper->token ) */
+; 3119 : 
+; 3120 : #ifdef DEBUG_OUT
+; 3121 :     if ( opnd1->hlvalue ) {
+; 3122 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
+; 3123 :                    evallvl,
+; 3124 :                    oper->string_ptr,
+; 3125 :                    opnd1->kind,
+; 3126 :                    opnd1->hlvalue, opnd1->llvalue,
+; 3127 :                    opnd1->mem_type,
+; 3128 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3129 :     } else if ( opnd1->hvalue ) {
+; 3130 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
+; 3131 :                    evallvl,
+; 3132 :                    oper->string_ptr,
+; 3133 :                    opnd1->kind,
+; 3134 :                    opnd1->llvalue, opnd1->llvalue,
+; 3135 :                    opnd1->mem_type,
+; 3136 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3137 :     } else {
+; 3138 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
+; 3139 :                    evallvl,
+; 3140 :                    oper->string_ptr,
+; 3141 :                    opnd1->kind,
+; 3142 :                    opnd1->value, opnd1->value,
+; 3143 :                    opnd1->mem_type,
+; 3144 :                    opnd1->indirect, opnd1->explicit,
+; 3145 :                    opnd1->type ? opnd1->type->name : "NULL",
+; 3146 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
+; 3147 :     }
+; 3148 : #endif
+; 3149 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN180@calculate
 $LN93@calculate:
 
-; 2990 :             break;
-; 2991 :         case T_AND:
-; 2992 :             opnd1->llvalue &= opnd2->llvalue;
+; 2956 :             break;
+; 2957 :         case T_AND:
+; 2958 :             opnd1->llvalue &= opnd2->llvalue;
 
 	mov	rax, QWORD PTR [rdi]
 	and	QWORD PTR [rbx], rax
 
-; 3152 :     } /* end switch( oper->token ) */
-; 3153 : 
-; 3154 : #ifdef DEBUG_OUT
-; 3155 :     if ( opnd1->hlvalue ) {
-; 3156 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
-; 3157 :                    evallvl,
-; 3158 :                    oper->string_ptr,
-; 3159 :                    opnd1->kind,
-; 3160 :                    opnd1->hlvalue, opnd1->llvalue,
-; 3161 :                    opnd1->mem_type,
-; 3162 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3163 :     } else if ( opnd1->hvalue ) {
-; 3164 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
-; 3165 :                    evallvl,
-; 3166 :                    oper->string_ptr,
-; 3167 :                    opnd1->kind,
-; 3168 :                    opnd1->llvalue, opnd1->llvalue,
-; 3169 :                    opnd1->mem_type,
-; 3170 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3171 :     } else {
-; 3172 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
-; 3173 :                    evallvl,
-; 3174 :                    oper->string_ptr,
-; 3175 :                    opnd1->kind,
-; 3176 :                    opnd1->value, opnd1->value,
-; 3177 :                    opnd1->mem_type,
-; 3178 :                    opnd1->indirect, opnd1->explicit,
-; 3179 :                    opnd1->type ? opnd1->type->name : "NULL",
-; 3180 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
-; 3181 :     }
-; 3182 : #endif
-; 3183 :     return( NOT_ERROR );
+; 3118 :     } /* end switch( oper->token ) */
+; 3119 : 
+; 3120 : #ifdef DEBUG_OUT
+; 3121 :     if ( opnd1->hlvalue ) {
+; 3122 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
+; 3123 :                    evallvl,
+; 3124 :                    oper->string_ptr,
+; 3125 :                    opnd1->kind,
+; 3126 :                    opnd1->hlvalue, opnd1->llvalue,
+; 3127 :                    opnd1->mem_type,
+; 3128 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3129 :     } else if ( opnd1->hvalue ) {
+; 3130 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
+; 3131 :                    evallvl,
+; 3132 :                    oper->string_ptr,
+; 3133 :                    opnd1->kind,
+; 3134 :                    opnd1->llvalue, opnd1->llvalue,
+; 3135 :                    opnd1->mem_type,
+; 3136 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3137 :     } else {
+; 3138 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
+; 3139 :                    evallvl,
+; 3140 :                    oper->string_ptr,
+; 3141 :                    opnd1->kind,
+; 3142 :                    opnd1->value, opnd1->value,
+; 3143 :                    opnd1->mem_type,
+; 3144 :                    opnd1->indirect, opnd1->explicit,
+; 3145 :                    opnd1->type ? opnd1->type->name : "NULL",
+; 3146 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
+; 3147 :     }
+; 3148 : #endif
+; 3149 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN180@calculate
 $LN66@calculate:
 
-; 2894 :                     }
-; 2895 :                 } else {
-; 2896 :                     DebugMsg(("calculate(%s) error 2, token2.kind=%d indirect=%u sym=%s\n",
-; 2897 :                               oper->string_ptr, opnd2->kind, opnd2->indirect,
-; 2898 :                               opnd2->sym ? opnd2->sym->name : "NULL" ));
-; 2899 :                     return( fnEmitErr( OPERAND_MUST_BE_RELOCATABLE ) );
+; 2860 :                     }
+; 2861 :                 } else {
+; 2862 :                     DebugMsg(("calculate(%s) error 2, token2.kind=%d indirect=%u sym=%s\n",
+; 2863 :                               oper->string_ptr, opnd2->kind, opnd2->indirect,
+; 2864 :                               opnd2->sym ? opnd2->sym->name : "NULL" ));
+; 2865 :                     return( fnEmitErr( OPERAND_MUST_BE_RELOCATABLE ) );
 
 	mov	ecx, 188				; 000000bcH
 	call	QWORD PTR fnEmitErr
 	jmp	$LN180@calculate
 $LN64@calculate:
 
-; 2900 :                 }
-; 2901 :             else {
-; 2902 :                 DebugMsg(("calculate(%s) error 3\n", oper->string_ptr ));
-; 2903 :                 return( fnEmitErr( CONSTANT_OR_RELOCATABLE_LABEL_EXPECTED ) );
+; 2866 :                 }
+; 2867 :             else {
+; 2868 :                 DebugMsg(("calculate(%s) error 3\n", oper->string_ptr ));
+; 2869 :                 return( fnEmitErr( CONSTANT_OR_RELOCATABLE_LABEL_EXPECTED ) );
 
 	mov	ecx, 189				; 000000bdH
 	call	QWORD PTR fnEmitErr
 	jmp	$LN180@calculate
 $LN62@calculate:
 
-; 2904 :             }
-; 2905 :         } else {
-; 2906 :             DebugMsg(("calculate(%s) error 4\n", oper->string_ptr ));
-; 2907 :             return( ConstError( opnd1, opnd2 ) );
+; 2870 :             }
+; 2871 :         } else {
+; 2872 :             DebugMsg(("calculate(%s) error 4\n", oper->string_ptr ));
+; 2873 :             return( ConstError( opnd1, opnd2 ) );
 
 	mov	rdx, rdi
 	mov	rcx, rbx
@@ -3600,46 +3600,46 @@ $LN62@calculate:
 	jmp	$LN180@calculate
 $LN96@calculate:
 
-; 2999 :             break;
-; 3000 :         }
-; 3001 :         break; /* end case T_BINARY_OPERATOR */
-; 3002 :     case T_UNARY_OPERATOR:
-; 3003 :         DebugMsg1(("calculate(%s [T_UNARY_OPERATOR]): opnd2 kind=%d sym=%s mbr=%s type=%s memtype=%X is_type=%u indirect=%u\n",
-; 3004 :                    oper->string_ptr,
-; 3005 :                    opnd2->kind,
-; 3006 :                    opnd2->sym ? opnd2->sym->name : "NULL",
-; 3007 :                    opnd2->mbr ? opnd2->mbr->name : "NULL",
-; 3008 :                    opnd2->type ? opnd2->type->name : "NULL",
-; 3009 :                    opnd2->mem_type, opnd2->is_type, opnd2->indirect ));
-; 3010 :         /* NOT is an instruction and hence has no valid
-; 3011 :          * value to be returned by GetValueSp() or GetSflagsSp()!
-; 3012 :          */
-; 3013 :         if( oper->tokval == T_NOT ) {
+; 2965 :             break;
+; 2966 :         }
+; 2967 :         break; /* end case T_BINARY_OPERATOR */
+; 2968 :     case T_UNARY_OPERATOR:
+; 2969 :         DebugMsg1(("calculate(%s [T_UNARY_OPERATOR]): opnd2 kind=%d sym=%s mbr=%s type=%s memtype=%X is_type=%u indirect=%u\n",
+; 2970 :                    oper->string_ptr,
+; 2971 :                    opnd2->kind,
+; 2972 :                    opnd2->sym ? opnd2->sym->name : "NULL",
+; 2973 :                    opnd2->mbr ? opnd2->mbr->name : "NULL",
+; 2974 :                    opnd2->type ? opnd2->type->name : "NULL",
+; 2975 :                    opnd2->mem_type, opnd2->is_type, opnd2->indirect ));
+; 2976 :         /* NOT is an instruction and hence has no valid
+; 2977 :          * value to be returned by GetValueSp() or GetSflagsSp()!
+; 2978 :          */
+; 2979 :         if( oper->tokval == T_NOT ) {
 
 	mov	r11d, DWORD PTR [r8+16]
 	cmp	r11d, 576				; 00000240H
 	jne	SHORT $LN97@calculate
 
-; 3014 :             MakeConst( opnd2 );
+; 2980 :             MakeConst( opnd2 );
 
 	mov	rcx, rdi
 	call	MakeConst
 
-; 3015 :             if( opnd2->kind != EXPR_CONST ) {
+; 2981 :             if( opnd2->kind != EXPR_CONST ) {
 
 	cmp	DWORD PTR [rdi+60], esi
 	je	SHORT $LN98@calculate
 
-; 3016 :                 DebugMsg(("calculate(%s) error 1\n", oper->string_ptr ));
-; 3017 :                 return( fnEmitErr( CONSTANT_OPERAND_EXPECTED ) );
+; 2982 :                 DebugMsg(("calculate(%s) error 1\n", oper->string_ptr ));
+; 2983 :                 return( fnEmitErr( CONSTANT_OPERAND_EXPECTED ) );
 
 	mov	ecx, 66					; 00000042H
 	call	QWORD PTR fnEmitErr
 	jmp	$LN180@calculate
 $LN98@calculate:
 
-; 3018 :             }
-; 3019 :             TokenAssign( opnd1, opnd2 );
+; 2984 :             }
+; 2985 :             TokenAssign( opnd1, opnd2 );
 
 	movups	xmm0, XMMWORD PTR [rdi]
 	movups	XMMWORD PTR [rbx], xmm0
@@ -3654,78 +3654,78 @@ $LN98@calculate:
 	movups	xmm1, XMMWORD PTR [rdi+80]
 	movups	XMMWORD PTR [rbx+80], xmm1
 
-; 3020 :             opnd1->llvalue = ~(opnd2->llvalue);
+; 2986 :             opnd1->llvalue = ~(opnd2->llvalue);
 
 	mov	rax, QWORD PTR [rdi]
 	not	rax
 	mov	QWORD PTR [rbx], rax
 $LN2@calculate:
 
-; 3152 :     } /* end switch( oper->token ) */
-; 3153 : 
-; 3154 : #ifdef DEBUG_OUT
-; 3155 :     if ( opnd1->hlvalue ) {
-; 3156 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
-; 3157 :                    evallvl,
-; 3158 :                    oper->string_ptr,
-; 3159 :                    opnd1->kind,
-; 3160 :                    opnd1->hlvalue, opnd1->llvalue,
-; 3161 :                    opnd1->mem_type,
-; 3162 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3163 :     } else if ( opnd1->hvalue ) {
-; 3164 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
-; 3165 :                    evallvl,
-; 3166 :                    oper->string_ptr,
-; 3167 :                    opnd1->kind,
-; 3168 :                    opnd1->llvalue, opnd1->llvalue,
-; 3169 :                    opnd1->mem_type,
-; 3170 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
-; 3171 :     } else {
-; 3172 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
-; 3173 :                    evallvl,
-; 3174 :                    oper->string_ptr,
-; 3175 :                    opnd1->kind,
-; 3176 :                    opnd1->value, opnd1->value,
-; 3177 :                    opnd1->mem_type,
-; 3178 :                    opnd1->indirect, opnd1->explicit,
-; 3179 :                    opnd1->type ? opnd1->type->name : "NULL",
-; 3180 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
-; 3181 :     }
-; 3182 : #endif
-; 3183 :     return( NOT_ERROR );
+; 3118 :     } /* end switch( oper->token ) */
+; 3119 : 
+; 3120 : #ifdef DEBUG_OUT
+; 3121 :     if ( opnd1->hlvalue ) {
+; 3122 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=0x%" I64_SPEC "X_%016" I64_SPEC "X memtype=0x%X indirect=%u type=>%s<\n",
+; 3123 :                    evallvl,
+; 3124 :                    oper->string_ptr,
+; 3125 :                    opnd1->kind,
+; 3126 :                    opnd1->hlvalue, opnd1->llvalue,
+; 3127 :                    opnd1->mem_type,
+; 3128 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3129 :     } else if ( opnd1->hvalue ) {
+; 3130 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%" I64_SPEC"d(0x%" I64_SPEC "X) memtype=0x%X indirect=%u type=>%s<\n",
+; 3131 :                    evallvl,
+; 3132 :                    oper->string_ptr,
+; 3133 :                    opnd1->kind,
+; 3134 :                    opnd1->llvalue, opnd1->llvalue,
+; 3135 :                    opnd1->mem_type,
+; 3136 :                    opnd1->indirect, opnd1->type ? opnd1->type->name : "NULL" ));
+; 3137 :     } else {
+; 3138 :         DebugMsg1(("%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype=0x%X ind=%u exp=%u type=%s mbr=%s\n",
+; 3139 :                    evallvl,
+; 3140 :                    oper->string_ptr,
+; 3141 :                    opnd1->kind,
+; 3142 :                    opnd1->value, opnd1->value,
+; 3143 :                    opnd1->mem_type,
+; 3144 :                    opnd1->indirect, opnd1->explicit,
+; 3145 :                    opnd1->type ? opnd1->type->name : "NULL",
+; 3146 :                    opnd1->mbr ? opnd1->mbr->name : "NULL" ));
+; 3147 :     }
+; 3148 : #endif
+; 3149 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN180@calculate
 $LN97@calculate:
 
-; 3021 :             break;
-; 3022 :         }
-; 3023 : 
-; 3024 :         /* operator         accepts
-; 3025 :          ----------------------------------------------
-; 3026 :          SIZEOF/SIZE        label, type, struct field
-; 3027 :          LENGTHOF/LENGTH    label, struct field
-; 3028 :          TYPE               label, type, struct field, register, number
-; 3029 :          LOW                constant, label (OMF+BIN only)
-; 3030 :          HIGH               constant, label (OMF+BIN only)
-; 3031 :          LOWWORD            constant, label
-; 3032 :          HIGHWORD           constant
-; 3033 :          LOW32              constant, label, float
-; 3034 :          HIGH32             constant, float
-; 3035 :          THIS               type
-; 3036 :          OPATTR/.TYPE       label, type, struct field, register, number
-; 3037 :          SHORT              label
-; 3038 :          SEG                label
-; 3039 :          OFFSET/LROFFSET    label, struct field, number
-; 3040 :          IMAGEREL           label
-; 3041 :          SECTIONREL         label
-; 3042 :          WIDTH/MASK         bitfields or RECORD type
-; 3043 :          */
-; 3044 : 
-; 3045 :         temp = GetValueSp( oper->tokval );
-; 3046 : 
-; 3047 :         sym = opnd2->sym;
-; 3048 :         if( opnd2->mbr != NULL )
+; 2987 :             break;
+; 2988 :         }
+; 2989 : 
+; 2990 :         /* operator         accepts
+; 2991 :          ----------------------------------------------
+; 2992 :          SIZEOF/SIZE        label, type, struct field
+; 2993 :          LENGTHOF/LENGTH    label, struct field
+; 2994 :          TYPE               label, type, struct field, register, number
+; 2995 :          LOW                constant, label (OMF+BIN only)
+; 2996 :          HIGH               constant, label (OMF+BIN only)
+; 2997 :          LOWWORD            constant, label
+; 2998 :          HIGHWORD           constant
+; 2999 :          LOW32              constant, label, float
+; 3000 :          HIGH32             constant, float
+; 3001 :          THIS               type
+; 3002 :          OPATTR/.TYPE       label, type, struct field, register, number
+; 3003 :          SHORT              label
+; 3004 :          SEG                label
+; 3005 :          OFFSET/LROFFSET    label, struct field, number
+; 3006 :          IMAGEREL           label
+; 3007 :          SECTIONREL         label
+; 3008 :          WIDTH/MASK         bitfields or RECORD type
+; 3009 :          */
+; 3010 : 
+; 3011 :         temp = GetValueSp( oper->tokval );
+; 3012 : 
+; 3013 :         sym = opnd2->sym;
+; 3014 :         if( opnd2->mbr != NULL )
 
 	mov	r9, QWORD PTR [rdi+88]
 	lea	rcx, QWORD PTR [r11+r11*2]
@@ -3736,18 +3736,18 @@ $LN97@calculate:
 	cmovne	r10, r9
 	lea	r15, QWORD PTR [rcx*4]
 
-; 3049 :             sym = opnd2->mbr;
-; 3050 : 
-; 3051 :         /* for error displays, get the position of the operand that
-; 3052 :          * caused the trouble.
-; 3053 :          */
-; 3054 :         if ( opnd2->instr != EMPTY )
+; 3015 :             sym = opnd2->mbr;
+; 3016 : 
+; 3017 :         /* for error displays, get the position of the operand that
+; 3018 :          * caused the trouble.
+; 3019 :          */
+; 3020 :         if ( opnd2->instr != EMPTY )
 
 	cmp	DWORD PTR [rdi+56], -2
 	mov	r8d, DWORD PTR SpecialTable[r15+rbp]
 	je	SHORT $LN100@calculate
 
-; 3055 :             name = oper->tokpos + strlen( oper->string_ptr ) + 1;
+; 3021 :             name = oper->tokpos + strlen( oper->string_ptr ) + 1;
 
 	mov	rax, QWORD PTR [r14+8]
 	or	rcx, -1
@@ -3758,33 +3758,33 @@ $LL176@calculate:
 	jmp	SHORT $LN186@calculate
 $LN100@calculate:
 
-; 3056 :         else if ( sym )
+; 3022 :         else if ( sym )
 
 	test	r10, r10
 	je	SHORT $LN102@calculate
 
-; 3057 :             name = sym->name;
+; 3023 :             name = sym->name;
 
 	mov	rdx, QWORD PTR [r10+8]
 	jmp	SHORT $LN105@calculate
 $LN102@calculate:
 
-; 3058 :         else if ( opnd2->base_reg != NULL && opnd2->indirect == FALSE )
+; 3024 :         else if ( opnd2->base_reg != NULL && opnd2->indirect == FALSE )
 
 	mov	rdx, QWORD PTR [rdi+24]
 	test	rdx, rdx
 	je	SHORT $LN104@calculate
-	test	BYTE PTR [rdi+76], 1
+	test	BYTE PTR [rdi+72], 1
 	jne	SHORT $LN104@calculate
 
-; 3059 :             name = opnd2->base_reg->string_ptr;
+; 3025 :             name = opnd2->base_reg->string_ptr;
 
 	mov	rdx, QWORD PTR [rdx+8]
 	jmp	SHORT $LN105@calculate
 $LN104@calculate:
 
-; 3060 :         else
-; 3061 :             name = oper->tokpos + strlen( oper->string_ptr ) + 1;
+; 3026 :         else
+; 3027 :             name = oper->tokpos + strlen( oper->string_ptr ) + 1;
 
 	mov	rax, QWORD PTR [r14+8]
 	or	rcx, -1
@@ -3799,8 +3799,8 @@ $LN186@calculate:
 	add	rdx, rcx
 $LN105@calculate:
 
-; 3062 : 
-; 3063 :         switch ( opnd2->kind ) {
+; 3028 : 
+; 3029 :         switch ( opnd2->kind ) {
 
 	mov	ecx, DWORD PTR [rdi+60]
 	test	ecx, ecx
@@ -3812,16 +3812,16 @@ $LN105@calculate:
 	cmp	ecx, 1
 	jne	$LN116@calculate
 
-; 3132 :             }
-; 3133 :             break;
-; 3134 :         case EXPR_FLOAT: /* v2.05: added */
-; 3135 :             if ( ( temp & AT_FLOAT ) == 0 ) {
+; 3098 :             }
+; 3099 :             break;
+; 3100 :         case EXPR_FLOAT: /* v2.05: added */
+; 3101 :             if ( ( temp & AT_FLOAT ) == 0 ) {
 
 	bt	r8d, 8
 	jb	$LN116@calculate
 
-; 3136 :                 DebugMsg(("calculate %s 'float' error\n", oper->string_ptr ));
-; 3137 :                 return( fnEmitErr( REAL_OR_BCD_NUMBER_NOT_ALLOWED ) );
+; 3102 :                 DebugMsg(("calculate %s 'float' error\n", oper->string_ptr ));
+; 3103 :                 return( fnEmitErr( REAL_OR_BCD_NUMBER_NOT_ALLOWED ) );
 
 	mov	ecx, 270				; 0000010eH
 	call	QWORD PTR fnEmitErr
@@ -3830,7 +3830,7 @@ $LN181@calculate:
 $LN180@calculate:
 	mov	rbp, QWORD PTR [rsp+80]
 
-; 3184 : }
+; 3150 : }
 
 	mov	rbx, QWORD PTR [rsp+96]
 	add	rsp, 48					; 00000030H
@@ -3840,141 +3840,141 @@ $LN180@calculate:
 	ret	0
 $LN122@calculate:
 
-; 3097 :                 }
-; 3098 :             }
-; 3099 : #if 0 /* v2.08: this if() obsolete? */
-; 3100 :             if( opnd2->instr != EMPTY ) {
-; 3101 :                 /* if instr is set, it's not a full address */
-; 3102 :                 switch ( oper->tokval ) {
-; 3103 :                 case T_LOW:
-; 3104 :                 case T_HIGH:
-; 3105 :                 case T_LOWWORD:
-; 3106 :                 case T_HIGHWORD:
-; 3107 : #if LOHI32
-; 3108 :                 case T_LOW32:
-; 3109 :                 case T_HIGH32:
-; 3110 : #endif
-; 3111 :                 case T_TYPE:
-; 3112 :                 case T_OPATTR:
-; 3113 :                 case T_DOT_TYPE:
-; 3114 :                 case T_OFFSET: /* v2.08: added, to allow OFFSET OFFSET <addr> */
-; 3115 :                     break;
-; 3116 :                 default:
-; 3117 :                     /* remaining: OFFSET, LROFFSET, IMAGEREL, SECTIONREL, SEG,
-; 3118 :                      * SHORT
-; 3119 :                      * THIS (won't set opnd.instr)
-; 3120 :                      * (SIZE, SIZEOF, LENGTH, LENGHTOF, MASK, WIDTH) -> EXPR_CONST
-; 3121 :                      *
-; 3122 :                      */
-; 3123 :                     DebugMsg(("calculate %s error 2\n", oper->string_ptr ));
-; 3124 :                     return( fnEmitErr( LABEL_EXPECTED ) );
-; 3125 :                 }
-; 3126 :             }
-; 3127 : #endif
-; 3128 :             break;
-; 3129 :         case EXPR_REG:
-; 3130 :             if ( ( temp & AT_REG ) == 0 ) {
+; 3063 :                 }
+; 3064 :             }
+; 3065 : #if 0 /* v2.08: this if() obsolete? */
+; 3066 :             if( opnd2->instr != EMPTY ) {
+; 3067 :                 /* if instr is set, it's not a full address */
+; 3068 :                 switch ( oper->tokval ) {
+; 3069 :                 case T_LOW:
+; 3070 :                 case T_HIGH:
+; 3071 :                 case T_LOWWORD:
+; 3072 :                 case T_HIGHWORD:
+; 3073 : #if LOHI32
+; 3074 :                 case T_LOW32:
+; 3075 :                 case T_HIGH32:
+; 3076 : #endif
+; 3077 :                 case T_TYPE:
+; 3078 :                 case T_OPATTR:
+; 3079 :                 case T_DOT_TYPE:
+; 3080 :                 case T_OFFSET: /* v2.08: added, to allow OFFSET OFFSET <addr> */
+; 3081 :                     break;
+; 3082 :                 default:
+; 3083 :                     /* remaining: OFFSET, LROFFSET, IMAGEREL, SECTIONREL, SEG,
+; 3084 :                      * SHORT
+; 3085 :                      * THIS (won't set opnd.instr)
+; 3086 :                      * (SIZE, SIZEOF, LENGTH, LENGHTOF, MASK, WIDTH) -> EXPR_CONST
+; 3087 :                      *
+; 3088 :                      */
+; 3089 :                     DebugMsg(("calculate %s error 2\n", oper->string_ptr ));
+; 3090 :                     return( fnEmitErr( LABEL_EXPECTED ) );
+; 3091 :                 }
+; 3092 :             }
+; 3093 : #endif
+; 3094 :             break;
+; 3095 :         case EXPR_REG:
+; 3096 :             if ( ( temp & AT_REG ) == 0 ) {
 
 	test	r8b, 8
 
-; 3131 :                 return( invalid_operand( opnd2, oper->string_ptr, name ) );
+; 3097 :                 return( invalid_operand( opnd2, oper->string_ptr, name ) );
 
 	jmp	SHORT $LN187@calculate
 $LN117@calculate:
 
-; 3085 :                 }
-; 3086 :             }
-; 3087 :             break;
-; 3088 :         case EXPR_ADDR:
-; 3089 :             /* an indirect memory operand? (not an auto variable) */
-; 3090 :             if ( opnd2->indirect == TRUE && opnd2->sym == NULL ) {
+; 3051 :                 }
+; 3052 :             }
+; 3053 :             break;
+; 3054 :         case EXPR_ADDR:
+; 3055 :             /* an indirect memory operand? (not an auto variable) */
+; 3056 :             if ( opnd2->indirect == TRUE && opnd2->sym == NULL ) {
 
-	test	BYTE PTR [rdi+76], 1
+	test	BYTE PTR [rdi+72], 1
 	je	SHORT $LN118@calculate
 	test	rsi, rsi
 	jne	SHORT $LN118@calculate
 
-; 3091 :                 if ( ( temp & AT_IND ) == 0 ) {
+; 3057 :                 if ( ( temp & AT_IND ) == 0 ) {
 
 	test	r8b, 4
 
-; 3092 :                     return( invalid_operand( opnd2, oper->string_ptr, name ) );
+; 3058 :                     return( invalid_operand( opnd2, oper->string_ptr, name ) );
 
 	jmp	SHORT $LN187@calculate
 $LN118@calculate:
 
-; 3093 :                 }
-; 3094 :             } else {
-; 3095 :                 if ( ( temp & AT_LABEL ) == 0 ) {
+; 3059 :                 }
+; 3060 :             } else {
+; 3061 :                 if ( ( temp & AT_LABEL ) == 0 ) {
 
 	test	r8b, 2
 
-; 3096 :                     return( invalid_operand( opnd2, oper->string_ptr, name ) );
+; 3062 :                     return( invalid_operand( opnd2, oper->string_ptr, name ) );
 
 	jmp	SHORT $LN187@calculate
 $LN106@calculate:
 
-; 3064 :         case EXPR_CONST:
-; 3065 :             /* v2.05: conditions "struct-field" and "istype" exchanged */
-; 3066 :             /* is item a struct field? */
-; 3067 :             /* v2.10: fixme: EXPR_CONST & mbr!=NULL - what's that supposed to be? */
-; 3068 :             if ( opnd2->mbr != NULL && opnd2->mbr->state != SYM_TYPE ) {
+; 3030 :         case EXPR_CONST:
+; 3031 :             /* v2.05: conditions "struct-field" and "istype" exchanged */
+; 3032 :             /* is item a struct field? */
+; 3033 :             /* v2.10: fixme: EXPR_CONST & mbr!=NULL - what's that supposed to be? */
+; 3034 :             if ( opnd2->mbr != NULL && opnd2->mbr->state != SYM_TYPE ) {
 
 	test	r9, r9
 	je	SHORT $LN107@calculate
 	cmp	DWORD PTR [r9+32], 7
 	je	SHORT $LN107@calculate
 
-; 3069 :                 if ( opnd2->mbr->mem_type == MT_BITS ) { /* bitfield? */
+; 3035 :                 if ( opnd2->mbr->mem_type == MT_BITS ) { /* bitfield? */
 
 	cmp	DWORD PTR [r9+36], 193			; 000000c1H
 	jne	SHORT $LN109@calculate
 
-; 3070 :                     if ( ( temp & AT_BF ) == 0 ) {
+; 3036 :                     if ( ( temp & AT_BF ) == 0 ) {
 
 	test	r8b, 64					; 00000040H
 
-; 3071 :                         return( invalid_operand( opnd2, oper->string_ptr, name ) );
+; 3037 :                         return( invalid_operand( opnd2, oper->string_ptr, name ) );
 
 	jmp	SHORT $LN187@calculate
 $LN109@calculate:
 
-; 3072 :                     }
-; 3073 :                 } else {
-; 3074 :                     if ( ( temp & AT_FIELD ) == 0 ) {
+; 3038 :                     }
+; 3039 :                 } else {
+; 3040 :                     if ( ( temp & AT_FIELD ) == 0 ) {
 
 	test	r8b, 16
 
-; 3075 :                         return( invalid_operand( opnd2, oper->string_ptr, name ) );
+; 3041 :                         return( invalid_operand( opnd2, oper->string_ptr, name ) );
 
 	jmp	SHORT $LN187@calculate
 $LN107@calculate:
 
-; 3076 :                     }
-; 3077 :                 }
-; 3078 :             } else if ( opnd2->is_type ) { /* is item a type? */
+; 3042 :                     }
+; 3043 :                 }
+; 3044 :             } else if ( opnd2->is_type ) { /* is item a type? */
 
-	test	BYTE PTR [rdi+76], 8
+	test	BYTE PTR [rdi+72], 8
 	je	SHORT $LN113@calculate
 
-; 3079 :                 if ( ( temp & AT_TYPE ) == 0 ) {
+; 3045 :                 if ( ( temp & AT_TYPE ) == 0 ) {
 
 	test	r8b, 1
 
-; 3080 :                     return( invalid_operand( opnd2, oper->string_ptr, name ) );
+; 3046 :                     return( invalid_operand( opnd2, oper->string_ptr, name ) );
 
 	jmp	SHORT $LN187@calculate
 $LN113@calculate:
 
-; 3081 :                 }
-; 3082 :             } else { /*  or is it a number? */
-; 3083 :                 if ( ( temp & AT_NUM ) == 0 ) {
+; 3047 :                 }
+; 3048 :             } else { /*  or is it a number? */
+; 3049 :                 if ( ( temp & AT_NUM ) == 0 ) {
 
 	test	r8b, 32					; 00000020H
 $LN187@calculate:
 	jne	SHORT $LN116@calculate
 
-; 3084 :                     return( invalid_operand( opnd2, oper->string_ptr, name ) );
+; 3050 :                     return( invalid_operand( opnd2, oper->string_ptr, name ) );
 
 	mov	r8, rdx
 	mov	rcx, rdi
@@ -3983,15 +3983,15 @@ $LN187@calculate:
 	jmp	SHORT $LN181@calculate
 $LN116@calculate:
 
-; 3138 :             }
-; 3139 :             break;
-; 3140 :         }
-; 3141 : #ifdef DEBUG_OUT
-; 3142 :         if ( unaryop[ GetSflagsSp( oper->tokval ) ]( oper->tokval, opnd1, opnd2, sym, name ) == ERROR )
-; 3143 :             return( ERROR );
-; 3144 :         break;
-; 3145 : #else
-; 3146 :         return( unaryop[ GetSflagsSp( oper->tokval ) ]( oper->tokval, opnd1, opnd2, sym, name ) );
+; 3104 :             }
+; 3105 :             break;
+; 3106 :         }
+; 3107 : #ifdef DEBUG_OUT
+; 3108 :         if ( unaryop[ GetSflagsSp( oper->tokval ) ]( oper->tokval, opnd1, opnd2, sym, name ) == ERROR )
+; 3109 :             return( ERROR );
+; 3110 :         break;
+; 3111 : #else
+; 3112 :         return( unaryop[ GetSflagsSp( oper->tokval ) ]( oper->tokval, opnd1, opnd2, sym, name ) );
 
 	mov	eax, DWORD PTR SpecialTable[r15+rbp+4]
 	mov	r9, r10
@@ -4003,11 +4003,11 @@ $LN116@calculate:
 	jmp	$LN181@calculate
 $LN126@calculate:
 
-; 3147 : #endif
-; 3148 :     //case T_RES_ID:
-; 3149 :     default: /* shouldn't happen */
-; 3150 :         DebugMsg(("calculate(%s): unknown operator\n", oper->string_ptr ));
-; 3151 :         return( fnEmitErr( SYNTAX_ERROR_EX, oper->string_ptr ) );
+; 3113 : #endif
+; 3114 :     //case T_RES_ID:
+; 3115 :     default: /* shouldn't happen */
+; 3116 :         DebugMsg(("calculate(%s): unknown operator\n", oper->string_ptr ));
+; 3117 :         return( fnEmitErr( SYNTAX_ERROR_EX, oper->string_ptr ) );
 
 	mov	rdx, QWORD PTR [r8+8]
 	mov	ecx, 209				; 000000d1H
@@ -4016,7 +4016,7 @@ $LN126@calculate:
 	npad	2
 $LN179@calculate:
 
-; 3184 : }
+; 3150 : }
 
 	DD	$LN96@calculate
 	DD	$LN43@calculate
@@ -4137,19 +4137,19 @@ opnd2$ = 56
 trueval$ = 64
 cmp_types PROC						; COMDAT
 
-; 2539 : {
+; 2505 : {
 
 	mov	QWORD PTR [rsp+16], rbx
 	mov	QWORD PTR [rsp+24], rbp
 	push	rdi
 	sub	rsp, 32					; 00000020H
 
-; 2540 :     struct asym *type1;
-; 2541 :     struct asym *type2;
-; 2542 : 
-; 2543 :     /* v2.10: special handling of pointer types. */
-; 2544 :     //if ( opnd1->mem_type == MT_PTR && opnd2->mem_type == MT_PTR && opnd1->type && opnd2->type ) {
-; 2545 :     if ( opnd1->mem_type == MT_PTR && opnd2->mem_type == MT_PTR ) {
+; 2506 :     struct asym *type1;
+; 2507 :     struct asym *type2;
+; 2508 : 
+; 2509 :     /* v2.10: special handling of pointer types. */
+; 2510 :     //if ( opnd1->mem_type == MT_PTR && opnd2->mem_type == MT_PTR && opnd1->type && opnd2->type ) {
+; 2511 :     if ( opnd1->mem_type == MT_PTR && opnd2->mem_type == MT_PTR ) {
 
 	cmp	DWORD PTR [rcx+64], 195			; 000000c3H
 	mov	ebx, r8d
@@ -4159,8 +4159,8 @@ cmp_types PROC						; COMDAT
 	cmp	DWORD PTR [rdx+64], 195			; 000000c3H
 	jne	SHORT $LN2@cmp_types
 
-; 2546 :         /**/myassert( ( opnd1->type || opnd1->type_tok ) && ( opnd2->type || opnd2->type_tok ) );
-; 2547 :         type1 = ( opnd1->type ? opnd1->type : SymSearch( opnd1->type_tok->string_ptr ) );
+; 2512 :         /**/myassert( ( opnd1->type || opnd1->type_tok ) && ( opnd2->type || opnd2->type_tok ) );
+; 2513 :         type1 = ( opnd1->type ? opnd1->type : SymSearch( opnd1->type_tok->string_ptr ) );
 
 	mov	QWORD PTR [rsp+48], rsi
 	mov	rsi, QWORD PTR [rcx+96]
@@ -4172,7 +4172,7 @@ cmp_types PROC						; COMDAT
 	mov	rsi, rax
 $LN8@cmp_types:
 
-; 2548 :         type2 = ( opnd2->type ? opnd2->type : SymSearch( opnd2->type_tok->string_ptr ) );
+; 2514 :         type2 = ( opnd2->type ? opnd2->type : SymSearch( opnd2->type_tok->string_ptr ) );
 
 	mov	rax, QWORD PTR [rbp+96]
 	test	rax, rax
@@ -4182,8 +4182,8 @@ $LN8@cmp_types:
 	call	SymFind
 $LN10@cmp_types:
 
-; 2549 :         //opnd1->value64 = ( ( type1->is_ptr == type2->is_ptr &&
-; 2550 :         opnd1->value64 = ( ( type1->is_ptr == type2->is_ptr &&
+; 2515 :         //opnd1->value64 = ( ( type1->is_ptr == type2->is_ptr &&
+; 2516 :         opnd1->value64 = ( ( type1->is_ptr == type2->is_ptr &&
 
 	movzx	ecx, BYTE PTR [rax+45]
 	cmp	BYTE PTR [rsi+45], cl
@@ -4199,21 +4199,21 @@ $LN11@cmp_types:
 $LN12@cmp_types:
 	mov	rsi, QWORD PTR [rsp+48]
 
-; 2551 :                             type1->ptr_memtype == type2->ptr_memtype &&
-; 2552 :                             type1->target_type == type2->target_type ) ? trueval : ~trueval );
-; 2553 :         DebugMsg1(("cmp_types: MT_PTR-MT_PTR is_ptr=%u-%u ptr_memtype=%X-%X target_type=%X-%X\n",
-; 2554 :                    type1->is_ptr, type2->is_ptr,
-; 2555 :                    type1->ptr_memtype, type2->ptr_memtype,
-; 2556 :                    type1->target_type, type2->target_type ));
-; 2557 :     } else {
+; 2517 :                             type1->ptr_memtype == type2->ptr_memtype &&
+; 2518 :                             type1->target_type == type2->target_type ) ? trueval : ~trueval );
+; 2519 :         DebugMsg1(("cmp_types: MT_PTR-MT_PTR is_ptr=%u-%u ptr_memtype=%X-%X target_type=%X-%X\n",
+; 2520 :                    type1->is_ptr, type2->is_ptr,
+; 2521 :                    type1->ptr_memtype, type2->ptr_memtype,
+; 2522 :                    type1->target_type, type2->target_type ));
+; 2523 :     } else {
 
 	jmp	SHORT $LN14@cmp_types
 $LN2@cmp_types:
 
-; 2558 :         DebugMsg1(("cmp_types: memtype=%X-%X type=%X-%X\n",
-; 2559 :                    opnd1->mem_type, opnd2->mem_type, opnd1->type, opnd2->type ));
-; 2560 :         /* v2.09: include type member in comparison, but ignore typedef types */
-; 2561 :         if ( opnd1->type && opnd1->type->typekind == TYPE_TYPEDEF && opnd1->type->is_ptr == 0 )
+; 2524 :         DebugMsg1(("cmp_types: memtype=%X-%X type=%X-%X\n",
+; 2525 :                    opnd1->mem_type, opnd2->mem_type, opnd1->type, opnd2->type ));
+; 2526 :         /* v2.09: include type member in comparison, but ignore typedef types */
+; 2527 :         if ( opnd1->type && opnd1->type->typekind == TYPE_TYPEDEF && opnd1->type->is_ptr == 0 )
 
 	mov	rax, QWORD PTR [rcx+96]
 	xor	ecx, ecx
@@ -4224,12 +4224,12 @@ $LN2@cmp_types:
 	cmp	BYTE PTR [rax+45], cl
 	jne	SHORT $LN4@cmp_types
 
-; 2562 :             opnd1->type = NULL;
+; 2528 :             opnd1->type = NULL;
 
 	mov	QWORD PTR [rdi+96], rcx
 $LN4@cmp_types:
 
-; 2563 :         if ( opnd2->type && opnd2->type->typekind == TYPE_TYPEDEF && opnd2->type->is_ptr == 0 )
+; 2529 :         if ( opnd2->type && opnd2->type->typekind == TYPE_TYPEDEF && opnd2->type->is_ptr == 0 )
 
 	mov	rax, QWORD PTR [rdx+96]
 	test	rax, rax
@@ -4239,12 +4239,12 @@ $LN4@cmp_types:
 	cmp	BYTE PTR [rax+45], cl
 	jne	SHORT $LN5@cmp_types
 
-; 2564 :             opnd2->type = NULL;
+; 2530 :             opnd2->type = NULL;
 
 	mov	QWORD PTR [rdx+96], rcx
 $LN5@cmp_types:
 
-; 2565 :         opnd1->value64 = ( ( opnd1->mem_type == opnd2->mem_type &&
+; 2531 :         opnd1->value64 = ( ( opnd1->mem_type == opnd2->mem_type &&
 
 	mov	eax, DWORD PTR [rdx+64]
 	cmp	DWORD PTR [rdi+64], eax
@@ -4256,9 +4256,9 @@ $LN13@cmp_types:
 	not	ebx
 $LN14@cmp_types:
 
-; 2566 :                             opnd1->type == opnd2->type ) ? trueval : ~trueval );
-; 2567 :     }
-; 2568 : }
+; 2532 :                             opnd1->type == opnd2->type ) ? trueval : ~trueval );
+; 2533 :     }
+; 2534 : }
 
 	mov	rbp, QWORD PTR [rsp+64]
 	movsxd	rax, ebx
@@ -4277,46 +4277,46 @@ opnd1$ = 8
 opnd2$ = 16
 check_streg PROC					; COMDAT
 
-; 2524 :     if ( opnd1->scale > 0 ) {
+; 2490 :     if ( opnd1->scale > 0 ) {
 
 	movzx	eax, BYTE PTR [rcx+68]
 	test	al, al
 	je	SHORT $LN2@check_stre
 
-; 2525 :         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
+; 2491 :         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
 	mov	ecx, 170				; 000000aaH
 	rex_jmp	QWORD PTR fnEmitErr
 $LN2@check_stre:
 
-; 2526 :     }
-; 2527 :     opnd1->scale++; /* make sure there's only ONE bracket pair */
+; 2492 :     }
+; 2493 :     opnd1->scale++; /* make sure there's only ONE bracket pair */
 
 	inc	al
 	mov	BYTE PTR [rcx+68], al
 
-; 2528 :     if ( opnd2->kind != EXPR_CONST ) {
+; 2494 :     if ( opnd2->kind != EXPR_CONST ) {
 
 	cmp	DWORD PTR [rdx+60], 0
 	je	SHORT $LN3@check_stre
 
-; 2529 :         return( fnEmitErr( INVALID_COPROCESSOR_REGISTER ) );
+; 2495 :         return( fnEmitErr( INVALID_COPROCESSOR_REGISTER ) );
 
 	mov	ecx, 252				; 000000fcH
 	rex_jmp	QWORD PTR fnEmitErr
 $LN3@check_stre:
 
-; 2530 :     }
-; 2531 :     opnd1->st_idx = opnd2->value;
+; 2496 :     }
+; 2497 :     opnd1->st_idx = opnd2->value;
 
 	mov	eax, DWORD PTR [rdx]
 	mov	DWORD PTR [rcx], eax
 
-; 2532 :     return( NOT_ERROR );
+; 2498 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 2533 : }
+; 2499 : }
 
 	ret	0
 check_streg ENDP
@@ -4328,21 +4328,21 @@ _TEXT	SEGMENT
 opnd$ = 48
 CheckAssume PROC					; COMDAT
 
-; 2461 : {
+; 2427 : {
 
 	push	rbx
 	sub	rsp, 32					; 00000020H
 
-; 2462 :     struct asym *sym = NULL;
-; 2463 : 
-; 2464 : #if 1 /* v2.10: see regression test ptr2.asm */
-; 2465 :     if ( opnd->explicit ) { /* perhaps check mem_type instead of explicit */
+; 2428 :     struct asym *sym = NULL;
+; 2429 : 
+; 2430 : #if 1 /* v2.10: see regression test ptr2.asm */
+; 2431 :     if ( opnd->explicit ) { /* perhaps check mem_type instead of explicit */
 
-	test	BYTE PTR [rcx+76], 2
+	test	BYTE PTR [rcx+72], 2
 	mov	rbx, rcx
 	je	SHORT $LN4@CheckAssum
 
-; 2466 :         if ( opnd->type && opnd->type->mem_type == MT_PTR ) {
+; 2432 :         if ( opnd->type && opnd->type->mem_type == MT_PTR ) {
 
 	mov	rcx, QWORD PTR [rcx+96]
 	test	rcx, rcx
@@ -4350,59 +4350,59 @@ CheckAssume PROC					; COMDAT
 	cmp	DWORD PTR [rcx+36], 195			; 000000c3H
 	jne	SHORT $LN4@CheckAssum
 
-; 2467 :             DebugMsg1(( "CheckAssume(%s, MT_PTR type=>%s< )\n", opnd->type->name ));
-; 2468 :             if ( opnd->type->is_ptr == 1 ) { /* dereference only if indirection is 1 */
+; 2433 :             DebugMsg1(( "CheckAssume(%s, MT_PTR type=>%s< )\n", opnd->type->name ));
+; 2434 :             if ( opnd->type->is_ptr == 1 ) { /* dereference only if indirection is 1 */
 
 	cmp	BYTE PTR [rcx+45], 1
 	jne	SHORT $LN4@CheckAssum
 
-; 2469 :                 opnd->mem_type = opnd->type->ptr_memtype;
+; 2435 :                 opnd->mem_type = opnd->type->ptr_memtype;
 
 	movzx	eax, BYTE PTR [rcx+46]
 	mov	DWORD PTR [rbx+64], eax
 
-; 2470 :                 opnd->type = opnd->type->target_type;
+; 2436 :                 opnd->type = opnd->type->target_type;
 
 	mov	rax, QWORD PTR [rcx+48]
 	mov	QWORD PTR [rbx+96], rax
 
-; 2515 :         }
-; 2516 :     }
-; 2517 : }
+; 2481 :         }
+; 2482 :     }
+; 2483 : }
 
 	add	rsp, 32					; 00000020H
 	pop	rbx
 	ret	0
 $LN4@CheckAssum:
 
-; 2471 :                 return; /* ignore assumes in this case */
-; 2472 :             }
-; 2473 :         }
-; 2474 :     }
-; 2475 : #endif
-; 2476 :     /* in jwasm < v2.10, the idx_reg had higher priority than base_reg.
-; 2477 :      * However, the base reg is supposed to have a higher priority.
-; 2478 :      * This wasn't fully clear, because in Masm 6, if no register has
-; 2479 :      * a scaling factor, the second one becomes base - something that
-; 2480 :      * HJWasm didn't do, unless -Zg was set.
-; 2481 :      * Since v2.10, HJWasm behaves like Masm v6+: base and index registers
-; 2482 :      * are swapped, and assume for base has higher priority than assume for
-; 2483 :      * index.
-; 2484 :      */
-; 2485 :     if ( opnd->base_reg ) {
+; 2437 :                 return; /* ignore assumes in this case */
+; 2438 :             }
+; 2439 :         }
+; 2440 :     }
+; 2441 : #endif
+; 2442 :     /* in jwasm < v2.10, the idx_reg had higher priority than base_reg.
+; 2443 :      * However, the base reg is supposed to have a higher priority.
+; 2444 :      * This wasn't fully clear, because in Masm 6, if no register has
+; 2445 :      * a scaling factor, the second one becomes base - something that
+; 2446 :      * HJWasm didn't do, unless -Zg was set.
+; 2447 :      * Since v2.10, HJWasm behaves like Masm v6+: base and index registers
+; 2448 :      * are swapped, and assume for base has higher priority than assume for
+; 2449 :      * index.
+; 2450 :      */
+; 2451 :     if ( opnd->base_reg ) {
 
 	mov	rax, QWORD PTR [rbx+24]
 	test	rax, rax
 	je	SHORT $LN15@CheckAssum
 
-; 2486 :         sym = GetStdAssumeEx( opnd->base_reg->bytval );
+; 2452 :         sym = GetStdAssumeEx( opnd->base_reg->bytval );
 
 	movzx	ecx, BYTE PTR [rax+1]
 	call	GetStdAssumeEx
 	mov	rcx, rax
 
-; 2487 :     }
-; 2488 :     if (!sym && opnd->idx_reg ) {
+; 2453 :     }
+; 2454 :     if (!sym && opnd->idx_reg ) {
 
 	test	rax, rax
 	jne	SHORT $LN14@CheckAssum
@@ -4411,97 +4411,97 @@ $LN15@CheckAssum:
 	test	rax, rax
 	je	SHORT $LN12@CheckAssum
 
-; 2489 :         sym = GetStdAssumeEx( opnd->idx_reg->bytval );
+; 2455 :         sym = GetStdAssumeEx( opnd->idx_reg->bytval );
 
 	movzx	ecx, BYTE PTR [rax+1]
 	call	GetStdAssumeEx
 	mov	rcx, rax
 
-; 2490 :     }
-; 2491 :     if ( sym ) {
+; 2456 :     }
+; 2457 :     if ( sym ) {
 
 	test	rax, rax
 	je	SHORT $LN12@CheckAssum
 $LN14@CheckAssum:
 
-; 2492 :         DebugMsg1(( "CheckAssume(%s, type=>%s<, mbr=>%s<): assume=%s [memtype=%X isptr=%u type=%s target_type=%s ptr_memt=%X]\n",
-; 2493 :                    GetResWName( ( opnd->idx_reg ? opnd->idx_reg->tokval : opnd->base_reg->tokval ), NULL ),
-; 2494 :                    opnd->type ? opnd->type->name : "NULL",
-; 2495 :                    opnd->mbr ? opnd->mbr->name : "NULL",
-; 2496 :                    sym->name, sym->mem_type, sym->is_ptr,
-; 2497 :                    sym->type ? sym->type->name : "NULL",
-; 2498 :                    sym->target_type ? sym->target_type->name : "NULL",
-; 2499 :                    sym->ptr_memtype ));
-; 2500 :         /* v2.08: skip ASSUMEd type if type or mbr is set */
-; 2501 :         //if ( opnd->type || opnd->mbr )
-; 2502 :         //    return;
-; 2503 :         /* skip "alias" types */
-; 2504 :         /* v2.05: obsolete */
-; 2505 :         //for ( ; sym->type; sym = sym->type );
-; 2506 :         /* v2.05: new */
-; 2507 :         if ( sym->mem_type == MT_TYPE )
+; 2458 :         DebugMsg1(( "CheckAssume(%s, type=>%s<, mbr=>%s<): assume=%s [memtype=%X isptr=%u type=%s target_type=%s ptr_memt=%X]\n",
+; 2459 :                    GetResWName( ( opnd->idx_reg ? opnd->idx_reg->tokval : opnd->base_reg->tokval ), NULL ),
+; 2460 :                    opnd->type ? opnd->type->name : "NULL",
+; 2461 :                    opnd->mbr ? opnd->mbr->name : "NULL",
+; 2462 :                    sym->name, sym->mem_type, sym->is_ptr,
+; 2463 :                    sym->type ? sym->type->name : "NULL",
+; 2464 :                    sym->target_type ? sym->target_type->name : "NULL",
+; 2465 :                    sym->ptr_memtype ));
+; 2466 :         /* v2.08: skip ASSUMEd type if type or mbr is set */
+; 2467 :         //if ( opnd->type || opnd->mbr )
+; 2468 :         //    return;
+; 2469 :         /* skip "alias" types */
+; 2470 :         /* v2.05: obsolete */
+; 2471 :         //for ( ; sym->type; sym = sym->type );
+; 2472 :         /* v2.05: new */
+; 2473 :         if ( sym->mem_type == MT_TYPE )
 
 	cmp	DWORD PTR [rcx+36], 196			; 000000c4H
 	jne	SHORT $LN8@CheckAssum
 
-; 2508 :             opnd->type = sym->type;
+; 2474 :             opnd->type = sym->type;
 
 	mov	rax, QWORD PTR [rcx+80]
 	mov	QWORD PTR [rbx+96], rax
 
-; 2515 :         }
-; 2516 :     }
-; 2517 : }
+; 2481 :         }
+; 2482 :     }
+; 2483 : }
 
 	add	rsp, 32					; 00000020H
 	pop	rbx
 	ret	0
 $LN8@CheckAssum:
 
-; 2509 :         else if ( sym->is_ptr == 1 ) { /* v2.10: only dereference if indirection is 1 */
+; 2475 :         else if ( sym->is_ptr == 1 ) { /* v2.10: only dereference if indirection is 1 */
 
 	cmp	BYTE PTR [rcx+45], 1
 	jne	SHORT $LN12@CheckAssum
 
-; 2510 :             opnd->type = sym->target_type;
+; 2476 :             opnd->type = sym->target_type;
 
 	mov	rax, QWORD PTR [rcx+48]
 	mov	QWORD PTR [rbx+96], rax
 
-; 2511 :             if ( sym->target_type )
+; 2477 :             if ( sym->target_type )
 
 	mov	rax, QWORD PTR [rcx+48]
 	test	rax, rax
 	je	SHORT $LN11@CheckAssum
 
-; 2512 :                 opnd->mem_type = sym->target_type->mem_type;
+; 2478 :                 opnd->mem_type = sym->target_type->mem_type;
 
 	mov	eax, DWORD PTR [rax+36]
 
-; 2513 :             else
-; 2514 :                 opnd->mem_type = sym->ptr_memtype;
+; 2479 :             else
+; 2480 :                 opnd->mem_type = sym->ptr_memtype;
 
 	mov	DWORD PTR [rbx+64], eax
 
-; 2515 :         }
-; 2516 :     }
-; 2517 : }
+; 2481 :         }
+; 2482 :     }
+; 2483 : }
 
 	add	rsp, 32					; 00000020H
 	pop	rbx
 	ret	0
 $LN11@CheckAssum:
 
-; 2513 :             else
-; 2514 :                 opnd->mem_type = sym->ptr_memtype;
+; 2479 :             else
+; 2480 :                 opnd->mem_type = sym->ptr_memtype;
 
 	movzx	eax, BYTE PTR [rcx+46]
 	mov	DWORD PTR [rbx+64], eax
 $LN12@CheckAssum:
 
-; 2515 :         }
-; 2516 :     }
-; 2517 : }
+; 2481 :         }
+; 2482 :     }
+; 2483 : }
 
 	add	rsp, 32					; 00000020H
 	pop	rbx
@@ -4516,112 +4516,112 @@ opnd1$ = 48
 opnd2$ = 56
 negative_op PROC					; COMDAT
 
-; 2426 : {
+; 2392 : {
 
 	sub	rsp, 40					; 00000028H
 	mov	r9, rcx
 	mov	r10, rdx
 
-; 2427 :     DebugMsg1(("negative_op: value=%" I64_SPEC "X high=%" I64_SPEC "X\n", opnd2->llvalue, opnd2->hlvalue ));
-; 2428 :     /*
-; 2429 :      * The formats allowed are:
-; 2430 :      *        - constant
-; 2431 :      *        - float
-; 2432 :      */
-; 2433 : 
-; 2434 :     MakeConst( opnd2 );
+; 2393 :     DebugMsg1(("negative_op: value=%" I64_SPEC "X high=%" I64_SPEC "X\n", opnd2->llvalue, opnd2->hlvalue ));
+; 2394 :     /*
+; 2395 :      * The formats allowed are:
+; 2396 :      *        - constant
+; 2397 :      *        - float
+; 2398 :      */
+; 2399 : 
+; 2400 :     MakeConst( opnd2 );
 
 	mov	rcx, rdx
 	call	MakeConst
 
-; 2435 :     if( opnd2->kind == EXPR_CONST ) {
+; 2401 :     if( opnd2->kind == EXPR_CONST ) {
 
 	mov	ecx, DWORD PTR [rcx+60]
 	test	ecx, ecx
 	jne	SHORT $LN2@negative_o
 
-; 2436 :         opnd1->kind = EXPR_CONST;
+; 2402 :         opnd1->kind = EXPR_CONST;
 
 	mov	DWORD PTR [r9+60], ecx
 
-; 2437 :         opnd1->llvalue = -opnd2->llvalue;
+; 2403 :         opnd1->llvalue = -opnd2->llvalue;
 
 	mov	rax, QWORD PTR [r10]
 	neg	rax
 	mov	QWORD PTR [r9], rax
 
-; 2438 :         /* v2.06: the unary '-' operator is to work with
-; 2439 :          * magnitudes > 64-bit. Current implementation is
-; 2440 :          * a bit hackish.
-; 2441 :          */
-; 2442 :         if ( opnd2->hlvalue )
+; 2404 :         /* v2.06: the unary '-' operator is to work with
+; 2405 :          * magnitudes > 64-bit. Current implementation is
+; 2406 :          * a bit hackish.
+; 2407 :          */
+; 2408 :         if ( opnd2->hlvalue )
 
 	mov	rcx, QWORD PTR [r10+8]
 	test	rcx, rcx
 	je	SHORT $LN4@negative_o
 
-; 2443 :             opnd1->hlvalue = -opnd2->hlvalue - 1;
+; 2409 :             opnd1->hlvalue = -opnd2->hlvalue - 1;
 
 	or	rax, -1
 	sub	rax, rcx
 	mov	QWORD PTR [r9+8], rax
 
-; 2444 :         opnd1->negative = 1 - opnd2->negative; /* ??? supposed to be used for EXPR_FLOAT only! */
+; 2410 :         opnd1->negative = 1 - opnd2->negative; /* ??? supposed to be used for EXPR_FLOAT only! */
 
 	jmp	SHORT $LN4@negative_o
 $LN2@negative_o:
 
-; 2445 :     } else if( opnd2->kind == EXPR_FLOAT ) {
+; 2411 :     } else if( opnd2->kind == EXPR_FLOAT ) {
 
 	cmp	ecx, 3
 	jne	SHORT $LN5@negative_o
 
-; 2446 :         opnd1->kind = EXPR_FLOAT;
+; 2412 :         opnd1->kind = EXPR_FLOAT;
 
 	mov	DWORD PTR [r9+60], ecx
 
-; 2447 :         opnd1->float_tok = opnd2->float_tok;
+; 2413 :         opnd1->float_tok = opnd2->float_tok;
 
 	mov	rax, QWORD PTR [r10+16]
 	mov	QWORD PTR [r9+16], rax
 $LN4@negative_o:
 
-; 2448 :         opnd1->negative = 1 - opnd2->negative;
+; 2414 :         opnd1->negative = 1 - opnd2->negative;
 
-	mov	eax, DWORD PTR [r10+76]
+	mov	eax, DWORD PTR [r10+72]
 	or	ecx, -1					; ffffffffH
 	shr	eax, 5
 	and	eax, 1
 	sub	ecx, eax
 	shl	ecx, 5
-	xor	ecx, DWORD PTR [r9+76]
+	xor	ecx, DWORD PTR [r9+72]
 	and	ecx, 32					; 00000020H
-	xor	DWORD PTR [r9+76], ecx
+	xor	DWORD PTR [r9+72], ecx
 
-; 2452 :     }
-; 2453 :     return( NOT_ERROR );
+; 2418 :     }
+; 2419 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 2454 : }
+; 2420 : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
 $LN5@negative_o:
 
-; 2449 :     } else {
-; 2450 :         DebugMsg(("negative_op: unexpected opnd2.kind=%d\n", opnd2->kind ));
-; 2451 :         return( fnEmitErr( CONSTANT_EXPECTED ) );
+; 2415 :     } else {
+; 2416 :         DebugMsg(("negative_op: unexpected opnd2.kind=%d\n", opnd2->kind ));
+; 2417 :         return( fnEmitErr( CONSTANT_EXPECTED ) );
 
 	mov	ecx, 65					; 00000041H
 
-; 2454 : }
+; 2420 : }
 
 	add	rsp, 40					; 00000028H
 
-; 2449 :     } else {
-; 2450 :         DebugMsg(("negative_op: unexpected opnd2.kind=%d\n", opnd2->kind ));
-; 2451 :         return( fnEmitErr( CONSTANT_EXPECTED ) );
+; 2415 :     } else {
+; 2416 :         DebugMsg(("negative_op: unexpected opnd2.kind=%d\n", opnd2->kind ));
+; 2417 :         return( fnEmitErr( CONSTANT_EXPECTED ) );
 
 	rex_jmp	QWORD PTR fnEmitErr
 negative_op ENDP
@@ -4634,102 +4634,102 @@ opnd1$ = 48
 opnd2$ = 56
 positive_op PROC					; COMDAT
 
-; 2398 : {
+; 2364 : {
 
 	sub	rsp, 40					; 00000028H
 	mov	r9, rcx
 	mov	r10, rdx
 
-; 2399 :     DebugMsg1(("positive_op: value=%" I64_SPEC "X high=%" I64_SPEC "X\n", opnd2->llvalue, opnd2->hlvalue ));
-; 2400 :     /*
-; 2401 :      * The formats allowed are:
-; 2402 :      *        + constant
-; 2403 :      *        + float
-; 2404 :      * v2.06: unlike the other operators unary + will
-; 2405 :      * handle 128-bit values (needed for TBYTE integers)
-; 2406 :      */
-; 2407 : 
-; 2408 :     MakeConst( opnd2 );
+; 2365 :     DebugMsg1(("positive_op: value=%" I64_SPEC "X high=%" I64_SPEC "X\n", opnd2->llvalue, opnd2->hlvalue ));
+; 2366 :     /*
+; 2367 :      * The formats allowed are:
+; 2368 :      *        + constant
+; 2369 :      *        + float
+; 2370 :      * v2.06: unlike the other operators unary + will
+; 2371 :      * handle 128-bit values (needed for TBYTE integers)
+; 2372 :      */
+; 2373 : 
+; 2374 :     MakeConst( opnd2 );
 
 	mov	rcx, rdx
 	call	MakeConst
 
-; 2409 :     if( opnd2->kind == EXPR_CONST ) {
+; 2375 :     if( opnd2->kind == EXPR_CONST ) {
 
 	mov	ecx, DWORD PTR [rcx+60]
 	test	ecx, ecx
 	jne	SHORT $LN2@positive_o
 
-; 2410 :         opnd1->kind = EXPR_CONST;
+; 2376 :         opnd1->kind = EXPR_CONST;
 
 	mov	DWORD PTR [r9+60], ecx
 
-; 2411 :         opnd1->llvalue = opnd2->llvalue;
+; 2377 :         opnd1->llvalue = opnd2->llvalue;
 
 	mov	rax, QWORD PTR [r10]
 	mov	QWORD PTR [r9], rax
 
-; 2412 :         opnd1->hlvalue = opnd2->hlvalue; /* v2.06: added */
+; 2378 :         opnd1->hlvalue = opnd2->hlvalue; /* v2.06: added */
 
 	mov	rax, QWORD PTR [r10+8]
 	mov	QWORD PTR [r9+8], rax
 
-; 2420 :     }
-; 2421 :     return( NOT_ERROR );
+; 2386 :     }
+; 2387 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 2422 : }
+; 2388 : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
 $LN2@positive_o:
 
-; 2413 :     } else if( opnd2->kind == EXPR_FLOAT ) {
+; 2379 :     } else if( opnd2->kind == EXPR_FLOAT ) {
 
 	cmp	ecx, 3
 	jne	SHORT $LN4@positive_o
 
-; 2414 :         opnd1->kind = EXPR_FLOAT;
+; 2380 :         opnd1->kind = EXPR_FLOAT;
 
 	mov	DWORD PTR [r9+60], ecx
 
-; 2415 :         opnd1->float_tok = opnd2->float_tok;
+; 2381 :         opnd1->float_tok = opnd2->float_tok;
 
 	mov	rax, QWORD PTR [r10+16]
 	mov	QWORD PTR [r9+16], rax
 
-; 2416 :         opnd1->negative = opnd2->negative;
+; 2382 :         opnd1->negative = opnd2->negative;
 
-	mov	eax, DWORD PTR [r10+76]
-	xor	eax, DWORD PTR [r9+76]
+	mov	eax, DWORD PTR [r10+72]
+	xor	eax, DWORD PTR [r9+72]
 	and	eax, 32					; 00000020H
-	xor	DWORD PTR [r9+76], eax
+	xor	DWORD PTR [r9+72], eax
 
-; 2420 :     }
-; 2421 :     return( NOT_ERROR );
+; 2386 :     }
+; 2387 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 2422 : }
+; 2388 : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
 $LN4@positive_o:
 
-; 2417 :     } else {
-; 2418 :         DebugMsg(("positive_op: error 1\n"));
-; 2419 :         return( fnEmitErr( CONSTANT_EXPECTED ) );
+; 2383 :     } else {
+; 2384 :         DebugMsg(("positive_op: error 1\n"));
+; 2385 :         return( fnEmitErr( CONSTANT_EXPECTED ) );
 
 	mov	ecx, 65					; 00000041H
 
-; 2422 : }
+; 2388 : }
 
 	add	rsp, 40					; 00000028H
 
-; 2417 :     } else {
-; 2418 :         DebugMsg(("positive_op: error 1\n"));
-; 2419 :         return( fnEmitErr( CONSTANT_EXPECTED ) );
+; 2383 :     } else {
+; 2384 :         DebugMsg(("positive_op: error 1\n"));
+; 2385 :         return( fnEmitErr( CONSTANT_EXPECTED ) );
 
 	rex_jmp	QWORD PTR fnEmitErr
 positive_op ENDP
@@ -4742,32 +4742,32 @@ opnd1$ = 8
 opnd2$ = 16
 colon_op PROC						; COMDAT
 
-; 2268 :     int_32              temp;
-; 2269 :     struct asym         *sym;
-; 2270 :     /*
-; 2271 :      * The only formats allowed are:
-; 2272 :      *     seg_reg : const
-; 2273 :      *     seg_reg : address
-; 2274 :      *     seg_label : const
-; 2275 :      *     seg_label : address
-; 2276 :      *     ( seg_label = segment or group symbol )
-; 2277 :      *     inside square brackets, seg_reg : register is not accepted
-; 2278 :      *     if Masm-syntax is on.
-; 2279 :      */
-; 2280 :     DebugMsg1(("colon_op: t1-t2 kind=%d/%d type=%s-%s is_type=%u-%u\n",
-; 2281 :                opnd1->kind, opnd2->kind,
-; 2282 :                opnd1->type ? opnd1->type->name : "NULL",
-; 2283 :                opnd2->type ? opnd2->type->name : "NULL",
-; 2284 :                opnd1->is_type, opnd2->is_type ));
-; 2285 :     if( opnd2->override != NULL ) {
+; 2234 :     int_32              temp;
+; 2235 :     struct asym         *sym;
+; 2236 :     /*
+; 2237 :      * The only formats allowed are:
+; 2238 :      *     seg_reg : const
+; 2239 :      *     seg_reg : address
+; 2240 :      *     seg_label : const
+; 2241 :      *     seg_label : address
+; 2242 :      *     ( seg_label = segment or group symbol )
+; 2243 :      *     inside square brackets, seg_reg : register is not accepted
+; 2244 :      *     if Masm-syntax is on.
+; 2245 :      */
+; 2246 :     DebugMsg1(("colon_op: t1-t2 kind=%d/%d type=%s-%s is_type=%u-%u\n",
+; 2247 :                opnd1->kind, opnd2->kind,
+; 2248 :                opnd1->type ? opnd1->type->name : "NULL",
+; 2249 :                opnd2->type ? opnd2->type->name : "NULL",
+; 2250 :                opnd1->is_type, opnd2->is_type ));
+; 2251 :     if( opnd2->override != NULL ) {
 
 	mov	rax, QWORD PTR [rdx+48]
 	mov	r8, rcx
 	test	rax, rax
 	je	SHORT $LN5@colon_op
 
-; 2286 :         /* v2.07a: was too rigid */
-; 2287 :         if ( ( opnd1->kind == EXPR_REG && opnd2->override->token == T_REG ) ||
+; 2252 :         /* v2.07a: was too rigid */
+; 2253 :         if ( ( opnd1->kind == EXPR_REG && opnd2->override->token == T_REG ) ||
 
 	mov	ecx, DWORD PTR [rcx+60]
 	cmp	ecx, 2
@@ -4781,25 +4781,25 @@ $LN7@colon_op:
 	jne	SHORT $LN5@colon_op
 $LN6@colon_op:
 
-; 2288 :             ( opnd1->kind == EXPR_ADDR && opnd2->override->token == T_ID ) ) {
-; 2289 :             DebugMsg(("colon_op: multiple override=%s\n", opnd2->override->string_ptr ));
-; 2290 :             return( fnEmitErr( MULTIPLE_OVERRIDES ) );
+; 2254 :             ( opnd1->kind == EXPR_ADDR && opnd2->override->token == T_ID ) ) {
+; 2255 :             DebugMsg(("colon_op: multiple override=%s\n", opnd2->override->string_ptr ));
+; 2256 :             return( fnEmitErr( MULTIPLE_OVERRIDES ) );
 
 	mov	ecx, 68					; 00000044H
 
-; 2386 :             DebugMsg(("colon_op error 4\n"));
-; 2387 :             return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
-; 2388 :         }
-; 2389 :     } else {
-; 2390 :         DebugMsg(("colon_op error 5\n"));
-; 2391 :         return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
+; 2352 :             DebugMsg(("colon_op error 4\n"));
+; 2353 :             return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
+; 2354 :         }
+; 2355 :     } else {
+; 2356 :         DebugMsg(("colon_op error 5\n"));
+; 2357 :         return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
 
 	rex_jmp	QWORD PTR fnEmitErr
 $LN5@colon_op:
 
-; 2291 :         }
-; 2292 :     }
-; 2293 :     switch ( opnd2->kind ) {
+; 2257 :         }
+; 2258 :     }
+; 2259 :     switch ( opnd2->kind ) {
 
 	mov	r9d, DWORD PTR [rdx+60]
 	mov	ecx, r9d
@@ -4808,83 +4808,83 @@ $LN5@colon_op:
 	cmp	ecx, 1
 	jne	SHORT $LN9@colon_op
 
-; 2299 :         }
-; 2300 :         break;
-; 2301 :     case EXPR_FLOAT:
-; 2302 :         return( fnEmitErr( REAL_OR_BCD_NUMBER_NOT_ALLOWED ) );
+; 2265 :         }
+; 2266 :         break;
+; 2267 :     case EXPR_FLOAT:
+; 2268 :         return( fnEmitErr( REAL_OR_BCD_NUMBER_NOT_ALLOWED ) );
 
 	mov	ecx, 270				; 0000010eH
 
-; 2386 :             DebugMsg(("colon_op error 4\n"));
-; 2387 :             return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
-; 2388 :         }
-; 2389 :     } else {
-; 2390 :         DebugMsg(("colon_op error 5\n"));
-; 2391 :         return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
+; 2352 :             DebugMsg(("colon_op error 4\n"));
+; 2353 :             return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
+; 2354 :         }
+; 2355 :     } else {
+; 2356 :         DebugMsg(("colon_op error 5\n"));
+; 2357 :         return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
 
 	rex_jmp	QWORD PTR fnEmitErr
 $LN8@colon_op:
 
-; 2294 :     case EXPR_REG:
-; 2295 :         /* v2.05: register as second operand must be enclosed in [] */
-; 2296 :         if ( opnd2->indirect == FALSE ) {
+; 2260 :     case EXPR_REG:
+; 2261 :         /* v2.05: register as second operand must be enclosed in [] */
+; 2262 :         if ( opnd2->indirect == FALSE ) {
 
-	test	BYTE PTR [rdx+76], 1
+	test	BYTE PTR [rdx+72], 1
 	jne	SHORT $LN9@colon_op
 $LN34@colon_op:
 
-; 2297 :             DebugMsg(("colon_op: register after : not enclosed in []\n" ));
-; 2298 :             return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
+; 2263 :             DebugMsg(("colon_op: register after : not enclosed in []\n" ));
+; 2264 :             return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
 	mov	ecx, 170				; 000000aaH
 
-; 2386 :             DebugMsg(("colon_op error 4\n"));
-; 2387 :             return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
-; 2388 :         }
-; 2389 :     } else {
-; 2390 :         DebugMsg(("colon_op error 5\n"));
-; 2391 :         return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
+; 2352 :             DebugMsg(("colon_op error 4\n"));
+; 2353 :             return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
+; 2354 :         }
+; 2355 :     } else {
+; 2356 :         DebugMsg(("colon_op error 5\n"));
+; 2357 :         return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
 
 	rex_jmp	QWORD PTR fnEmitErr
 $LN9@colon_op:
 
-; 2303 :     }
-; 2304 : 
-; 2305 :     if( opnd1->kind == EXPR_REG ) {
+; 2269 :     }
+; 2270 : 
+; 2271 :     if( opnd1->kind == EXPR_REG ) {
 
 	mov	eax, DWORD PTR [r8+60]
 	cmp	eax, 2
 	jne	$LN11@colon_op
 
-; 2306 : 
-; 2307 :         /* the item before the ':' must be a single register */
-; 2308 :         if( opnd1->idx_reg != NULL ) {
+; 2272 : 
+; 2273 :         /* the item before the ':' must be a single register */
+; 2274 :         if( opnd1->idx_reg != NULL ) {
 
 	cmp	QWORD PTR [r8+32], 0
 	jne	SHORT $LN34@colon_op
 
-; 2309 :             DebugMsg(("colon_op: register before ':' has idx_reg set!?\n"));
-; 2310 :             return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
-; 2311 :         }
-; 2312 :         /* segment override inside bracket not allowed with -Zne.
-; 2313 :          * [ds:0] is ok, but [ds:ebx] is rejected.
-; 2314 :          */
-; 2315 :         /* v2.08: test moved here from get_operand() */
-; 2316 :         /* v2.10: regression in v2.08-2.09: check was way too simple.
-; 2317 :          * problem: indirect-flag isn't set for segment regs (anymore?).
-; 2318 :          * error check moved back to get_operand().
-; 2319 :          */
-; 2320 : #if 0
-; 2321 :         if ( Options.strict_masm_compat ) {
-; 2322 :             return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
-; 2323 :         }
-; 2324 : #endif
-; 2325 :         /* make sure first operand is a segment register */
-; 2326 :         temp = opnd1->base_reg->tokval;
+; 2275 :             DebugMsg(("colon_op: register before ':' has idx_reg set!?\n"));
+; 2276 :             return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
+; 2277 :         }
+; 2278 :         /* segment override inside bracket not allowed with -Zne.
+; 2279 :          * [ds:0] is ok, but [ds:ebx] is rejected.
+; 2280 :          */
+; 2281 :         /* v2.08: test moved here from get_operand() */
+; 2282 :         /* v2.10: regression in v2.08-2.09: check was way too simple.
+; 2283 :          * problem: indirect-flag isn't set for segment regs (anymore?).
+; 2284 :          * error check moved back to get_operand().
+; 2285 :          */
+; 2286 : #if 0
+; 2287 :         if ( Options.strict_masm_compat ) {
+; 2288 :             return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
+; 2289 :         }
+; 2290 : #endif
+; 2291 :         /* make sure first operand is a segment register */
+; 2292 :         temp = opnd1->base_reg->tokval;
 
 	mov	r10, QWORD PTR [r8+24]
 
-; 2327 :         if ( ( GetValueSp( temp ) & OP_SR ) == 0 ) {
+; 2293 :         if ( ( GetValueSp( temp ) & OP_SR ) == 0 ) {
 
 	movsxd	rax, DWORD PTR [r10+16]
 	lea	rcx, QWORD PTR [rax+rax*2]
@@ -4892,64 +4892,64 @@ $LN9@colon_op:
 	test	DWORD PTR [rax+rcx*4], 24576		; 00006000H
 	je	$LN18@colon_op
 
-; 2328 :             return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
-; 2329 :         }
-; 2330 : 
-; 2331 :         opnd2->override = opnd1->base_reg;
-; 2332 :         opnd2->indirect |= opnd1->indirect;
+; 2294 :             return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
+; 2295 :         }
+; 2296 : 
+; 2297 :         opnd2->override = opnd1->base_reg;
+; 2298 :         opnd2->indirect |= opnd1->indirect;
 
-	mov	eax, DWORD PTR [rdx+76]
+	mov	eax, DWORD PTR [rdx+72]
 	mov	QWORD PTR [rdx+48], r10
-	mov	ecx, DWORD PTR [r8+76]
+	mov	ecx, DWORD PTR [r8+72]
 	or	ecx, eax
 	xor	ecx, eax
 	and	ecx, 1
 	xor	ecx, eax
-	mov	DWORD PTR [rdx+76], ecx
+	mov	DWORD PTR [rdx+72], ecx
 
-; 2333 : 
-; 2334 :         if ( opnd2->kind == EXPR_CONST ) {
+; 2299 : 
+; 2300 :         if ( opnd2->kind == EXPR_CONST ) {
 
 	test	r9d, r9d
 	jne	SHORT $LN15@colon_op
 
-; 2335 :             opnd2->kind = EXPR_ADDR;
+; 2301 :             opnd2->kind = EXPR_ADDR;
 
 	mov	DWORD PTR [rdx+60], 1
 $LN15@colon_op:
 
-; 2336 :             /* v2.05: type flag cleared HERE, not in dot_op()
-; 2337 :              * v2.05rc17 problem: mov es:byte ptr <var>,0
-; 2338 :              * so the flag isn't cleared at all now.
-; 2339 :              */
-; 2340 :             //opnd2->is_type = FALSE;
-; 2341 :         }
-; 2342 : 
-; 2343 :         if( opnd1->explicit ) {
+; 2302 :             /* v2.05: type flag cleared HERE, not in dot_op()
+; 2303 :              * v2.05rc17 problem: mov es:byte ptr <var>,0
+; 2304 :              * so the flag isn't cleared at all now.
+; 2305 :              */
+; 2306 :             //opnd2->is_type = FALSE;
+; 2307 :         }
+; 2308 : 
+; 2309 :         if( opnd1->explicit ) {
 
-	mov	eax, DWORD PTR [r8+76]
+	mov	eax, DWORD PTR [r8+72]
 	test	al, 2
 	je	SHORT $LN16@colon_op
 
-; 2344 :             opnd2->explicit = opnd1->explicit;
+; 2310 :             opnd2->explicit = opnd1->explicit;
 
-	and	DWORD PTR [rdx+76], -3			; fffffffdH
+	and	DWORD PTR [rdx+72], -3			; fffffffdH
 	and	eax, 2
-	or	DWORD PTR [rdx+76], eax
+	or	DWORD PTR [rdx+72], eax
 
-; 2345 :             opnd2->mem_type = opnd1->mem_type;
+; 2311 :             opnd2->mem_type = opnd1->mem_type;
 
 	mov	eax, DWORD PTR [r8+64]
 	mov	DWORD PTR [rdx+64], eax
 
-; 2346 :             opnd2->Ofssize  = opnd1->Ofssize;
+; 2312 :             opnd2->Ofssize  = opnd1->Ofssize;
 
 	movzx	eax, BYTE PTR [r8+69]
 	mov	BYTE PTR [rdx+69], al
 $LN16@colon_op:
 
-; 2347 :         }
-; 2348 :         TokenAssign( opnd1, opnd2 );
+; 2313 :         }
+; 2314 :         TokenAssign( opnd1, opnd2 );
 
 	movups	xmm0, XMMWORD PTR [rdx]
 	movups	XMMWORD PTR [r8], xmm0
@@ -4964,45 +4964,45 @@ $LN16@colon_op:
 	movups	xmm1, XMMWORD PTR [rdx+80]
 	movups	XMMWORD PTR [r8+80], xmm1
 
-; 2349 : 
-; 2350 :         /*
-; 2351 :          * currently the <type> token isn't copied by
-; 2352 :          * TokenAssign (which is probably just for historical reasons).
-; 2353 :          * So copy it manually!
-; 2354 :          * v1.95: only copy if it is != NULL!
-; 2355 :          * Testcase: (<type> ptr DS:[0]).<struct_field> ...
-; 2356 :          * In this case the DS:[] will clear the <type>, as a result
-; 2357 :          * the dot operator won't have a valid assume and the code fails.
-; 2358 :          */
-; 2359 :         if ( opnd2->type )
+; 2315 : 
+; 2316 :         /*
+; 2317 :          * currently the <type> token isn't copied by
+; 2318 :          * TokenAssign (which is probably just for historical reasons).
+; 2319 :          * So copy it manually!
+; 2320 :          * v1.95: only copy if it is != NULL!
+; 2321 :          * Testcase: (<type> ptr DS:[0]).<struct_field> ...
+; 2322 :          * In this case the DS:[] will clear the <type>, as a result
+; 2323 :          * the dot operator won't have a valid assume and the code fails.
+; 2324 :          */
+; 2325 :         if ( opnd2->type )
 
 	mov	rax, QWORD PTR [rdx+96]
 	test	rax, rax
 	je	$LN24@colon_op
 
-; 2383 :             opnd1->type = opnd2->type;
+; 2349 :             opnd1->type = opnd2->type;
 
 	mov	QWORD PTR [r8+96], rax
 
-; 2392 :     }
-; 2393 :     return( NOT_ERROR );
+; 2358 :     }
+; 2359 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 2394 : }
+; 2360 : }
 
 	ret	0
 $LN11@colon_op:
 
-; 2360 :             opnd1->type = opnd2->type;
-; 2361 : 
-; 2362 :     } else if( opnd1->kind == EXPR_ADDR &&
-; 2363 :               /* opnd2->kind == EXPR_ADDR && */
-; 2364 :               opnd1->override == NULL &&
-; 2365 :               opnd1->instr == EMPTY &&
-; 2366 :               opnd1->value == 0 &&
-; 2367 :               opnd1->sym &&
-; 2368 :               opnd1->base_reg == NULL &&
+; 2326 :             opnd1->type = opnd2->type;
+; 2327 : 
+; 2328 :     } else if( opnd1->kind == EXPR_ADDR &&
+; 2329 :               /* opnd2->kind == EXPR_ADDR && */
+; 2330 :               opnd1->override == NULL &&
+; 2331 :               opnd1->instr == EMPTY &&
+; 2332 :               opnd1->value == 0 &&
+; 2333 :               opnd1->sym &&
+; 2334 :               opnd1->base_reg == NULL &&
 
 	cmp	eax, 1
 	jne	SHORT $LN18@colon_op
@@ -5020,19 +5020,19 @@ $LN11@colon_op:
 	cmp	QWORD PTR [r8+32], 0
 	jne	SHORT $LN18@colon_op
 
-; 2369 :               opnd1->idx_reg == NULL ) {
-; 2370 : 
-; 2371 :         sym = opnd1->sym;
-; 2372 : 
-; 2373 :         if( sym->state == SYM_GRP || sym->state == SYM_SEG ) {
+; 2335 :               opnd1->idx_reg == NULL ) {
+; 2336 : 
+; 2337 :         sym = opnd1->sym;
+; 2338 : 
+; 2339 :         if( sym->state == SYM_GRP || sym->state == SYM_SEG ) {
 
 	mov	ecx, DWORD PTR [rax+32]
 	lea	eax, DWORD PTR [rcx-3]
 	cmp	eax, 1
 	jbe	SHORT $LN22@colon_op
 
-; 2384 : 
-; 2385 :         } else if( Parse_Pass > PASS_1 || sym->state != SYM_UNDEFINED ) {
+; 2350 : 
+; 2351 :         } else if( Parse_Pass > PASS_1 || sym->state != SYM_UNDEFINED ) {
 
 	cmp	DWORD PTR Parse_Pass, 0
 	ja	SHORT $LN18@colon_op
@@ -5040,62 +5040,62 @@ $LN11@colon_op:
 	je	$LN24@colon_op
 $LN18@colon_op:
 
-; 2386 :             DebugMsg(("colon_op error 4\n"));
-; 2387 :             return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
-; 2388 :         }
-; 2389 :     } else {
-; 2390 :         DebugMsg(("colon_op error 5\n"));
-; 2391 :         return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
+; 2352 :             DebugMsg(("colon_op error 4\n"));
+; 2353 :             return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
+; 2354 :         }
+; 2355 :     } else {
+; 2356 :         DebugMsg(("colon_op error 5\n"));
+; 2357 :         return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
 
 	mov	ecx, 69					; 00000045H
 	rex_jmp	QWORD PTR fnEmitErr
 $LN22@colon_op:
 
-; 2374 :             opnd2->kind = EXPR_ADDR;
+; 2340 :             opnd2->kind = EXPR_ADDR;
 
 	mov	DWORD PTR [rdx+60], 1
 
-; 2375 :             opnd2->override = opnd1->label_tok;
+; 2341 :             opnd2->override = opnd1->label_tok;
 
 	mov	rax, QWORD PTR [r8+40]
 	mov	QWORD PTR [rdx+48], rax
 
-; 2376 :             opnd2->indirect |= opnd1->indirect;
+; 2342 :             opnd2->indirect |= opnd1->indirect;
 
-	mov	eax, DWORD PTR [rdx+76]
-	mov	ecx, DWORD PTR [r8+76]
+	mov	eax, DWORD PTR [rdx+72]
+	mov	ecx, DWORD PTR [r8+72]
 	or	ecx, eax
 	xor	ecx, eax
 	and	ecx, 1
 	xor	ecx, eax
-	mov	DWORD PTR [rdx+76], ecx
+	mov	DWORD PTR [rdx+72], ecx
 
-; 2377 :             if( opnd1->explicit ) {
+; 2343 :             if( opnd1->explicit ) {
 
-	mov	eax, DWORD PTR [r8+76]
+	mov	eax, DWORD PTR [r8+72]
 	test	al, 2
 	je	SHORT $LN23@colon_op
 
-; 2378 :                 opnd2->explicit = opnd1->explicit;
+; 2344 :                 opnd2->explicit = opnd1->explicit;
 
 	xor	eax, ecx
 	and	eax, 2
 	xor	eax, ecx
-	mov	DWORD PTR [rdx+76], eax
+	mov	DWORD PTR [rdx+72], eax
 
-; 2379 :                 opnd2->mem_type = opnd1->mem_type;
+; 2345 :                 opnd2->mem_type = opnd1->mem_type;
 
 	mov	eax, DWORD PTR [r8+64]
 	mov	DWORD PTR [rdx+64], eax
 
-; 2380 :                 opnd2->Ofssize  = opnd1->Ofssize;
+; 2346 :                 opnd2->Ofssize  = opnd1->Ofssize;
 
 	movzx	eax, BYTE PTR [r8+69]
 	mov	BYTE PTR [rdx+69], al
 $LN23@colon_op:
 
-; 2381 :             }
-; 2382 :             TokenAssign( opnd1, opnd2 );
+; 2347 :             }
+; 2348 :             TokenAssign( opnd1, opnd2 );
 
 	movups	xmm0, XMMWORD PTR [rdx]
 	movups	XMMWORD PTR [r8], xmm0
@@ -5110,18 +5110,18 @@ $LN23@colon_op:
 	movups	xmm1, XMMWORD PTR [rdx+80]
 	movups	XMMWORD PTR [r8+80], xmm1
 
-; 2383 :             opnd1->type = opnd2->type;
+; 2349 :             opnd1->type = opnd2->type;
 
 	mov	rax, QWORD PTR [rdx+96]
 	mov	QWORD PTR [r8+96], rax
 $LN24@colon_op:
 
-; 2392 :     }
-; 2393 :     return( NOT_ERROR );
+; 2358 :     }
+; 2359 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 2394 : }
+; 2360 : }
 
 	ret	0
 colon_op ENDP
@@ -5134,94 +5134,94 @@ opnd1$ = 48
 opnd2$ = 56
 dot_op	PROC						; COMDAT
 
-; 2063 : {
+; 2029 : {
 
 	mov	QWORD PTR [rsp+16], rbx
 	push	rdi
 	sub	rsp, 32					; 00000020H
 
-; 2064 :     /* this code needs cleanup! some stuff is obsolete. */
-; 2065 : 
-; 2066 :     DebugMsg1(("dot_op: op1-op2 kind=%d/%d sym=%s-%s type=%s-%s mbr=%s-%s\n",
-; 2067 :                opnd1->kind, opnd2->kind,
-; 2068 :                opnd1->sym  ? opnd1->sym->name  : "NULL",
-; 2069 :                opnd2->sym  ? opnd2->sym->name  : "NULL",
-; 2070 :                opnd1->type ? opnd1->type->name : "NULL",
-; 2071 :                opnd2->type ? opnd2->type->name : "NULL",
-; 2072 :                opnd1->mbr  ? opnd1->mbr->name  : "NULL",
-; 2073 :                opnd2->mbr  ? opnd2->mbr->name  : "NULL" ));
-; 2074 : 
-; 2075 :     /*
-; 2076 :      * The formats allowed are:
-; 2077 :      *        [register]      . (type) constant
-; 2078 :      *        label           . (type) constant
-; 2079 :      *        (type) constant . (type) constant
-; 2080 :      *
-; 2081 :      * with OPTION OLDSTRUCTS:
-; 2082 :      *        [register]      . address
-; 2083 :      *        address         . address
-; 2084 :      */
-; 2085 : 
-; 2086 :     if( check_direct_reg( opnd1, opnd2 ) == ERROR ) {
+; 2030 :     /* this code needs cleanup! some stuff is obsolete. */
+; 2031 : 
+; 2032 :     DebugMsg1(("dot_op: op1-op2 kind=%d/%d sym=%s-%s type=%s-%s mbr=%s-%s\n",
+; 2033 :                opnd1->kind, opnd2->kind,
+; 2034 :                opnd1->sym  ? opnd1->sym->name  : "NULL",
+; 2035 :                opnd2->sym  ? opnd2->sym->name  : "NULL",
+; 2036 :                opnd1->type ? opnd1->type->name : "NULL",
+; 2037 :                opnd2->type ? opnd2->type->name : "NULL",
+; 2038 :                opnd1->mbr  ? opnd1->mbr->name  : "NULL",
+; 2039 :                opnd2->mbr  ? opnd2->mbr->name  : "NULL" ));
+; 2040 : 
+; 2041 :     /*
+; 2042 :      * The formats allowed are:
+; 2043 :      *        [register]      . (type) constant
+; 2044 :      *        label           . (type) constant
+; 2045 :      *        (type) constant . (type) constant
+; 2046 :      *
+; 2047 :      * with OPTION OLDSTRUCTS:
+; 2048 :      *        [register]      . address
+; 2049 :      *        address         . address
+; 2050 :      */
+; 2051 : 
+; 2052 :     if( check_direct_reg( opnd1, opnd2 ) == ERROR ) {
 
 	mov	eax, DWORD PTR [rcx+60]
 	mov	rdi, rdx
 	mov	rbx, rcx
 	cmp	eax, 2
 	jne	SHORT $LN42@dot_op
-	test	BYTE PTR [rcx+76], 1
+	test	BYTE PTR [rcx+72], 1
 	je	SHORT $LN61@dot_op
 $LN42@dot_op:
 	cmp	DWORD PTR [rdx+60], 2
 	jne	SHORT $LN2@dot_op
-	test	BYTE PTR [rdx+76], 1
+	test	BYTE PTR [rdx+72], 1
 	jne	SHORT $LN2@dot_op
 $LN61@dot_op:
 
-; 2087 :         DebugMsg(("dot_op: error direct register\n"));
-; 2088 :         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
+; 2053 :         DebugMsg(("dot_op: error direct register\n"));
+; 2054 :         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
 	mov	ecx, 170				; 000000aaH
 
-; 2263 : }
+; 2229 : }
 
 	mov	rbx, QWORD PTR [rsp+56]
 	add	rsp, 32					; 00000020H
 	pop	rdi
 
-; 2087 :         DebugMsg(("dot_op: error direct register\n"));
-; 2088 :         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
+; 2053 :         DebugMsg(("dot_op: error direct register\n"));
+; 2054 :         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
 	rex_jmp	QWORD PTR fnEmitErr
 $LN2@dot_op:
 	mov	QWORD PTR [rsp+48], rsi
 
-; 2089 :     }
-; 2090 : 
-; 2091 :     /* v2.08: remove EXPR_REG variants */
-; 2092 :     if ( opnd1->kind == EXPR_REG )
+; 2055 :     }
+; 2056 : 
+; 2057 :     /* v2.08: remove EXPR_REG variants */
+; 2058 :     if ( opnd1->kind == EXPR_REG )
 
 	cmp	eax, 2
 	jne	SHORT $LN3@dot_op
 
-; 2093 :         opnd1->kind = EXPR_ADDR;
+; 2059 :         opnd1->kind = EXPR_ADDR;
 
 	mov	DWORD PTR [rcx+60], 1
 $LN3@dot_op:
 
-; 2094 :     if ( opnd2->kind == EXPR_REG )
+; 2060 :     if ( opnd2->kind == EXPR_REG )
 
 	cmp	DWORD PTR [rdx+60], 2
 	jne	SHORT $LN4@dot_op
 
-; 2095 :         opnd2->kind = EXPR_ADDR;
+; 2061 :         opnd2->kind = EXPR_ADDR;
 
 	mov	DWORD PTR [rdx+60], 1
 $LN4@dot_op:
 
-; 2096 : 
-; 2097 :     /* forward ref to a struct: [reg].<struct> */
-; 2098 :     if ( opnd2->sym && opnd2->sym->state == SYM_UNDEFINED && Parse_Pass == PASS_1 ) {
+; 2062 : 
+; 2063 :     /* forward ref to a struct: [reg].<struct> */
+; 2064 :     if ( opnd2->sym && opnd2->sym->state == SYM_UNDEFINED && Parse_Pass == PASS_1 ) {
 
 	mov	rax, QWORD PTR [rdx+80]
 	xor	esi, esi
@@ -5232,40 +5232,40 @@ $LN4@dot_op:
 	cmp	DWORD PTR Parse_Pass, esi
 	jne	SHORT $LN5@dot_op
 
-; 2099 :         DebugMsg(("dot_op: forward reference %s, replaced by null struct type\n", opnd2->sym->name ));
-; 2100 :         if ( !nullstruct )
+; 2065 :         DebugMsg(("dot_op: forward reference %s, replaced by null struct type\n", opnd2->sym->name ));
+; 2066 :         if ( !nullstruct )
 
 	mov	rax, QWORD PTR nullstruct
 	test	rax, rax
 	jne	SHORT $LN6@dot_op
 
-; 2101 :             nullstruct = CreateTypeSymbol( NULL, "", FALSE );
+; 2067 :             nullstruct = CreateTypeSymbol( NULL, "", FALSE );
 
 	xor	r8d, r8d
-	lea	rdx, OFFSET FLAT:$SG11778
+	lea	rdx, OFFSET FLAT:$SG11776
 	xor	ecx, ecx
 	call	CreateTypeSymbol
 	mov	QWORD PTR nullstruct, rax
 $LN6@dot_op:
 
-; 2102 :         opnd2->type = nullstruct;
-; 2103 :         opnd2->is_type = TRUE; /* v2.10: added */
+; 2068 :         opnd2->type = nullstruct;
+; 2069 :         opnd2->is_type = TRUE; /* v2.10: added */
 
-	or	DWORD PTR [rdi+76], 8
+	or	DWORD PTR [rdi+72], 8
 	mov	QWORD PTR [rdi+96], rax
 
-; 2104 :         opnd2->sym = NULL;
+; 2070 :         opnd2->sym = NULL;
 
 	mov	QWORD PTR [rdi+80], rsi
 
-; 2105 :         opnd2->kind = EXPR_CONST;
+; 2071 :         opnd2->kind = EXPR_CONST;
 
 	mov	DWORD PTR [rdi+60], esi
 $LN5@dot_op:
 
-; 2106 :     }
-; 2107 : 
-; 2108 :     if( check_same( opnd1, opnd2, EXPR_ADDR ) ) {
+; 2072 :     }
+; 2073 : 
+; 2074 :     if( check_same( opnd1, opnd2, EXPR_ADDR ) ) {
 
 	mov	eax, DWORD PTR [rbx+60]
 	cmp	eax, 1
@@ -5273,14 +5273,14 @@ $LN5@dot_op:
 	cmp	DWORD PTR [rdi+60], eax
 	jne	$LN7@dot_op
 
-; 2109 : 
-; 2110 :         DebugMsg1(("dot_op, ADDR - ADDR, t1-t2 memtype=%X-%X sym=%s-%s\n",
-; 2111 :                    opnd1->mem_type, opnd2->mem_type,
-; 2112 :                    opnd1->sym  ? opnd1->sym->name  : "NULL",
-; 2113 :                    opnd2->sym  ? opnd2->sym->name  : "NULL" ));
-; 2114 : 
-; 2115 : #if 1 /* v2.05: error */
-; 2116 :         if ( opnd2->mbr == NULL && !ModuleInfo.oldstructs ) {
+; 2075 : 
+; 2076 :         DebugMsg1(("dot_op, ADDR - ADDR, t1-t2 memtype=%X-%X sym=%s-%s\n",
+; 2077 :                    opnd1->mem_type, opnd2->mem_type,
+; 2078 :                    opnd1->sym  ? opnd1->sym->name  : "NULL",
+; 2079 :                    opnd2->sym  ? opnd2->sym->name  : "NULL" ));
+; 2080 : 
+; 2081 : #if 1 /* v2.05: error */
+; 2082 :         if ( opnd2->mbr == NULL && !ModuleInfo.oldstructs ) {
 
 	cmp	QWORD PTR [rdi+88], rsi
 	jne	SHORT $LN9@dot_op
@@ -5288,11 +5288,11 @@ $LN5@dot_op:
 	je	$LN29@dot_op
 $LN9@dot_op:
 
-; 2117 :             DebugMsg(("dot_op: error, mbr 2 is NULL\n"));
-; 2118 :             return( struct_field_error( opnd1 ) );
-; 2119 :         }
-; 2120 : #endif
-; 2121 :         if ( index_connect( opnd1, opnd2 ) == ERROR )
+; 2083 :             DebugMsg(("dot_op: error, mbr 2 is NULL\n"));
+; 2084 :             return( struct_field_error( opnd1 ) );
+; 2085 :         }
+; 2086 : #endif
+; 2087 :         if ( index_connect( opnd1, opnd2 ) == ERROR )
 
 	mov	rdx, rdi
 	mov	rcx, rbx
@@ -5300,12 +5300,12 @@ $LN9@dot_op:
 	cmp	eax, -1
 	jne	SHORT $LN10@dot_op
 
-; 2122 :             return( ERROR );
+; 2088 :             return( ERROR );
 
 	or	eax, eax
 	mov	rsi, QWORD PTR [rsp+48]
 
-; 2263 : }
+; 2229 : }
 
 	mov	rbx, QWORD PTR [rsp+56]
 	add	rsp, 32					; 00000020H
@@ -5313,15 +5313,15 @@ $LN9@dot_op:
 	ret	0
 $LN10@dot_op:
 
-; 2123 : 
-; 2124 :         if( opnd2->sym != NULL ) {
+; 2089 : 
+; 2090 :         if( opnd2->sym != NULL ) {
 
 	mov	rax, QWORD PTR [rdi+80]
 	test	rax, rax
 	je	SHORT $LN11@dot_op
 
-; 2125 :             if( opnd1->sym != NULL &&
-; 2126 :                 opnd1->sym->state != SYM_UNDEFINED &&
+; 2091 :             if( opnd1->sym != NULL &&
+; 2092 :                 opnd1->sym->state != SYM_UNDEFINED &&
 
 	mov	rcx, QWORD PTR [rbx+80]
 	test	rcx, rcx
@@ -5331,85 +5331,85 @@ $LN10@dot_op:
 	cmp	DWORD PTR [rax+32], esi
 	je	SHORT $LN12@dot_op
 
-; 2127 :                 opnd2->sym->state != SYM_UNDEFINED ) {
-; 2128 :                 DebugMsg(("dot_op: error, two relocatable labels: %s - %s \n", opnd1->sym->name, opnd2->sym->name ));
-; 2129 :                 return( fnEmitErr( CANNOT_ADD_TWO_RELOCATABLE_LABELS ) );
+; 2093 :                 opnd2->sym->state != SYM_UNDEFINED ) {
+; 2094 :                 DebugMsg(("dot_op: error, two relocatable labels: %s - %s \n", opnd1->sym->name, opnd2->sym->name ));
+; 2095 :                 return( fnEmitErr( CANNOT_ADD_TWO_RELOCATABLE_LABELS ) );
 
 	mov	ecx, 173				; 000000adH
 	mov	rsi, QWORD PTR [rsp+48]
 
-; 2263 : }
+; 2229 : }
 
 	mov	rbx, QWORD PTR [rsp+56]
 	add	rsp, 32					; 00000020H
 	pop	rdi
 
-; 2127 :                 opnd2->sym->state != SYM_UNDEFINED ) {
-; 2128 :                 DebugMsg(("dot_op: error, two relocatable labels: %s - %s \n", opnd1->sym->name, opnd2->sym->name ));
-; 2129 :                 return( fnEmitErr( CANNOT_ADD_TWO_RELOCATABLE_LABELS ) );
+; 2093 :                 opnd2->sym->state != SYM_UNDEFINED ) {
+; 2094 :                 DebugMsg(("dot_op: error, two relocatable labels: %s - %s \n", opnd1->sym->name, opnd2->sym->name ));
+; 2095 :                 return( fnEmitErr( CANNOT_ADD_TWO_RELOCATABLE_LABELS ) );
 
 	rex_jmp	QWORD PTR fnEmitErr
 $LN12@dot_op:
 
-; 2130 :             }
-; 2131 :             opnd1->label_tok = opnd2->label_tok;
+; 2096 :             }
+; 2097 :             opnd1->label_tok = opnd2->label_tok;
 
 	mov	rax, QWORD PTR [rdi+40]
 	mov	QWORD PTR [rbx+40], rax
 
-; 2132 :             opnd1->sym = opnd2->sym;
+; 2098 :             opnd1->sym = opnd2->sym;
 
 	mov	rax, QWORD PTR [rdi+80]
 	mov	QWORD PTR [rbx+80], rax
 $LN11@dot_op:
 
-; 2133 :         }
-; 2134 :         if( opnd2->mbr != NULL ) {
+; 2099 :         }
+; 2100 :         if( opnd2->mbr != NULL ) {
 
 	mov	rax, QWORD PTR [rdi+88]
 	test	rax, rax
 	je	SHORT $LN13@dot_op
 
-; 2135 :             opnd1->mbr = opnd2->mbr;
+; 2101 :             opnd1->mbr = opnd2->mbr;
 
 	mov	QWORD PTR [rbx+88], rax
 $LN13@dot_op:
 
-; 2136 :         }
-; 2137 :         opnd1->value += opnd2->value;
+; 2102 :         }
+; 2103 :         opnd1->value += opnd2->value;
 
 	mov	eax, DWORD PTR [rdi]
 	add	DWORD PTR [rbx], eax
 
-; 2138 :         if( opnd1->explicit == FALSE ) {
+; 2104 :         if( opnd1->explicit == FALSE ) {
 
-	test	BYTE PTR [rbx+76], 2
+	test	BYTE PTR [rbx+72], 2
 	jne	SHORT $LN14@dot_op
 
-; 2139 :             opnd1->mem_type = opnd2->mem_type;
+; 2105 :             opnd1->mem_type = opnd2->mem_type;
 
 	mov	eax, DWORD PTR [rdi+64]
 	mov	DWORD PTR [rbx+64], eax
 $LN14@dot_op:
 
-; 2140 :         }
-; 2141 :         if ( opnd2->type )
+; 2106 :         }
+; 2107 :         if ( opnd2->type )
 
 	mov	rax, QWORD PTR [rdi+96]
 	test	rax, rax
 	je	$LN33@dot_op
 
-; 2142 :             opnd1->type = opnd2->type;
+; 2108 :             opnd1->type = opnd2->type;
 
 	mov	rsi, QWORD PTR [rsp+48]
 	mov	QWORD PTR [rbx+96], rax
 
-; 2261 :     }
-; 2262 :     return( NOT_ERROR );
+; 2227 :     }
+; 2228 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 2263 : }
+; 2229 : }
 
 	mov	rbx, QWORD PTR [rsp+56]
 	add	rsp, 32					; 00000020H
@@ -5417,62 +5417,62 @@ $LN14@dot_op:
 	ret	0
 $LN7@dot_op:
 
-; 2143 : 
-; 2144 :     } else if( ( opnd1->kind == EXPR_CONST ) && ( opnd2->kind == EXPR_ADDR ) ) {
+; 2109 : 
+; 2110 :     } else if( ( opnd1->kind == EXPR_CONST ) && ( opnd2->kind == EXPR_ADDR ) ) {
 
 	test	eax, eax
 	jne	$LN16@dot_op
 	cmp	DWORD PTR [rdi+60], 1
 	jne	$LN16@dot_op
 
-; 2145 : 
-; 2146 :         DebugMsg1(("dot_op, CONST - ADDR: t1-t2 memtype=%Xh-%Xh istype=%u-%u\n",
-; 2147 :                    opnd1->mem_type, opnd2->mem_type, opnd1->is_type, opnd2->is_type ));
-; 2148 :         /* v2.08 added (copied from branch EXPR_ADDR-EXPR_REG )*/
-; 2149 :         if ( opnd1->is_type && opnd1->type ) {
+; 2111 : 
+; 2112 :         DebugMsg1(("dot_op, CONST - ADDR: t1-t2 memtype=%Xh-%Xh istype=%u-%u\n",
+; 2113 :                    opnd1->mem_type, opnd2->mem_type, opnd1->is_type, opnd2->is_type ));
+; 2114 :         /* v2.08 added (copied from branch EXPR_ADDR-EXPR_REG )*/
+; 2115 :         if ( opnd1->is_type && opnd1->type ) {
 
-	test	BYTE PTR [rbx+76], 8
+	test	BYTE PTR [rbx+72], 8
 	je	SHORT $LN18@dot_op
 	cmp	QWORD PTR [rbx+96], rsi
 	je	SHORT $LN18@dot_op
 
-; 2150 :             opnd2->assumecheck = FALSE;
+; 2116 :             opnd2->assumecheck = FALSE;
 
-	and	DWORD PTR [rdi+76], -65			; ffffffbfH
+	and	DWORD PTR [rdi+72], -65			; ffffffbfH
 
-; 2151 :             opnd1->llvalue = 0;  /* v2.08: this was previously done in get_operand() */
+; 2117 :             opnd1->llvalue = 0;  /* v2.08: this was previously done in get_operand() */
 
 	mov	QWORD PTR [rbx], rsi
 $LN18@dot_op:
 
-; 2152 :         }
-; 2153 : #if 1 /* v2.05: error */
-; 2154 :         /* <structname>.<member>[<index_reg>] is ALWAYS ok! */
-; 2155 :         if ( ( !ModuleInfo.oldstructs ) && ( opnd1->is_type == FALSE && opnd1->mbr == NULL ) )
+; 2118 :         }
+; 2119 : #if 1 /* v2.05: error */
+; 2120 :         /* <structname>.<member>[<index_reg>] is ALWAYS ok! */
+; 2121 :         if ( ( !ModuleInfo.oldstructs ) && ( opnd1->is_type == FALSE && opnd1->mbr == NULL ) )
 
 	test	DWORD PTR ModuleInfo+408, 256		; 00000100H
 	jne	SHORT $LN19@dot_op
-	mov	eax, DWORD PTR [rbx+76]
+	mov	eax, DWORD PTR [rbx+72]
 	test	al, 8
 	jne	SHORT $LN19@dot_op
 	cmp	QWORD PTR [rbx+88], rsi
 	jne	SHORT $LN19@dot_op
 
-; 2156 :             return( struct_field_error( opnd1 ) );
+; 2122 :             return( struct_field_error( opnd1 ) );
 
 	test	al, 16
 	je	$LN59@dot_op
 
-; 2257 :         }
-; 2258 :     } else {
-; 2259 :         DebugMsg(("dot_op: error, unknown kind combination, opnd1->kind=%d, opnd2->kind=%d\n", opnd1->kind, opnd2->kind ));
-; 2260 :         return( struct_field_error( opnd1 ) );
+; 2223 :         }
+; 2224 :     } else {
+; 2225 :         DebugMsg(("dot_op: error, unknown kind combination, opnd1->kind=%d, opnd2->kind=%d\n", opnd1->kind, opnd2->kind ));
+; 2226 :         return( struct_field_error( opnd1 ) );
 
 	mov	eax, esi
 	mov	DWORD PTR [rbx+60], -1
 	mov	rsi, QWORD PTR [rsp+48]
 
-; 2263 : }
+; 2229 : }
 
 	mov	rbx, QWORD PTR [rsp+56]
 	add	rsp, 32					; 00000020H
@@ -5480,9 +5480,9 @@ $LN18@dot_op:
 	ret	0
 $LN19@dot_op:
 
-; 2157 : #endif
-; 2158 :         /* for TYPE.xxx, return offset instead of size */
-; 2159 :         if ( opnd1->mbr && opnd1->mbr->state == SYM_TYPE )
+; 2123 : #endif
+; 2124 :         /* for TYPE.xxx, return offset instead of size */
+; 2125 :         if ( opnd1->mbr && opnd1->mbr->state == SYM_TYPE )
 
 	mov	rax, QWORD PTR [rbx+88]
 	test	rax, rax
@@ -5490,47 +5490,47 @@ $LN19@dot_op:
 	cmp	DWORD PTR [rax+32], 7
 	jne	SHORT $LN20@dot_op
 
-; 2160 :             opnd1->llvalue = opnd1->mbr->offset;
+; 2126 :             opnd1->llvalue = opnd1->mbr->offset;
 
 	movsxd	rax, DWORD PTR [rax+16]
 	mov	QWORD PTR [rbx], rax
 $LN20@dot_op:
 
-; 2161 :         opnd2->indirect |= opnd1->indirect;
+; 2127 :         opnd2->indirect |= opnd1->indirect;
 
-	mov	eax, DWORD PTR [rbx+76]
+	mov	eax, DWORD PTR [rbx+72]
 	and	eax, 1
-	or	DWORD PTR [rdi+76], eax
+	or	DWORD PTR [rdi+72], eax
 
-; 2162 :         opnd2->llvalue += opnd1->llvalue;
+; 2128 :         opnd2->llvalue += opnd1->llvalue;
 
 	mov	rax, QWORD PTR [rbx]
 	add	QWORD PTR [rdi], rax
 
-; 2163 :         DebugMsg1(("dot_op, CONST - ADDR, t1.type=%X (%s), t2.type=%X (%s)\n",
-; 2164 :                    opnd1->type,
-; 2165 :                    opnd1->type ? opnd1->type->name : "",
-; 2166 :                    opnd2->type,
-; 2167 :                    opnd2->type ? opnd2->type->name : "" ));
-; 2168 :         /* v2.06: added. test case: INVOKE struct.mbr[edx] ( mbr has a type ) */
-; 2169 :         if ( opnd2->mbr )
+; 2129 :         DebugMsg1(("dot_op, CONST - ADDR, t1.type=%X (%s), t2.type=%X (%s)\n",
+; 2130 :                    opnd1->type,
+; 2131 :                    opnd1->type ? opnd1->type->name : "",
+; 2132 :                    opnd2->type,
+; 2133 :                    opnd2->type ? opnd2->type->name : "" ));
+; 2134 :         /* v2.06: added. test case: INVOKE struct.mbr[edx] ( mbr has a type ) */
+; 2135 :         if ( opnd2->mbr )
 
 	cmp	QWORD PTR [rdi+88], rsi
 	je	SHORT $LN21@dot_op
 
-; 2170 :             opnd1->type = opnd2->type;
+; 2136 :             opnd1->type = opnd2->type;
 
 	mov	rax, QWORD PTR [rdi+96]
 	mov	QWORD PTR [rbx+96], rax
 $LN21@dot_op:
 
-; 2171 :         TokenAssign( opnd1, opnd2 );
+; 2137 :         TokenAssign( opnd1, opnd2 );
 
 	movups	xmm0, XMMWORD PTR [rdi]
 	mov	rsi, QWORD PTR [rsp+48]
 
-; 2261 :     }
-; 2262 :     return( NOT_ERROR );
+; 2227 :     }
+; 2228 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	movups	XMMWORD PTR [rbx], xmm0
@@ -5545,7 +5545,7 @@ $LN21@dot_op:
 	movups	xmm1, XMMWORD PTR [rdi+80]
 	movups	XMMWORD PTR [rbx+80], xmm1
 
-; 2263 : }
+; 2229 : }
 
 	mov	rbx, QWORD PTR [rsp+56]
 	add	rsp, 32					; 00000020H
@@ -5553,58 +5553,58 @@ $LN21@dot_op:
 	ret	0
 $LN16@dot_op:
 
-; 2172 : 
-; 2173 :     } else if( ( opnd1->kind == EXPR_ADDR ) && ( opnd2->kind == EXPR_CONST ) ) {
+; 2138 : 
+; 2139 :     } else if( ( opnd1->kind == EXPR_ADDR ) && ( opnd2->kind == EXPR_CONST ) ) {
 
 	cmp	eax, 1
 	jne	$LN22@dot_op
 	cmp	DWORD PTR [rdi+60], esi
 	jne	SHORT $LN22@dot_op
 
-; 2174 : 
-; 2175 :         DebugMsg1(("dot_op, ADDR - CONST: t1-t2 memtype=%Xh-%Xh t1.explicit=%u\n",
-; 2176 :                    opnd1->mem_type, opnd2->mem_type, opnd1->explicit ));
-; 2177 : 
-; 2178 :         /* v2.08: changed to catch [ebx].<num> or [ebx].<simple type> */
-; 2179 :         //if ( (!ModuleInfo.oldstructs) && opnd2->type == NULL && opnd2->mbr == NULL ) {
-; 2180 :         if ( (!ModuleInfo.oldstructs) && ( opnd2->type == NULL || opnd2->is_type == FALSE ) && opnd2->mbr == NULL ) {
+; 2140 : 
+; 2141 :         DebugMsg1(("dot_op, ADDR - CONST: t1-t2 memtype=%Xh-%Xh t1.explicit=%u\n",
+; 2142 :                    opnd1->mem_type, opnd2->mem_type, opnd1->explicit ));
+; 2143 : 
+; 2144 :         /* v2.08: changed to catch [ebx].<num> or [ebx].<simple type> */
+; 2145 :         //if ( (!ModuleInfo.oldstructs) && opnd2->type == NULL && opnd2->mbr == NULL ) {
+; 2146 :         if ( (!ModuleInfo.oldstructs) && ( opnd2->type == NULL || opnd2->is_type == FALSE ) && opnd2->mbr == NULL ) {
 
 	test	DWORD PTR ModuleInfo+408, 256		; 00000100H
 	jne	SHORT $LN24@dot_op
 	cmp	QWORD PTR [rdi+96], rsi
 	je	SHORT $LN25@dot_op
-	test	BYTE PTR [rdi+76], 8
+	test	BYTE PTR [rdi+72], 8
 	jne	SHORT $LN64@dot_op
 $LN25@dot_op:
 	cmp	QWORD PTR [rdi+88], rsi
 	je	$LN29@dot_op
 $LN24@dot_op:
 
-; 2181 :             DebugMsg(("dot_op: error, constant or simple type after dot\n"));
-; 2182 :             return( struct_field_error( opnd1 ) );
-; 2183 :         }
-; 2184 : 
-; 2185 :         /* v2.08 added (copied from branch EXPR_ADDR-EXPR_REG )*/
-; 2186 :         if ( opnd2->is_type && opnd2->type ) {
+; 2147 :             DebugMsg(("dot_op: error, constant or simple type after dot\n"));
+; 2148 :             return( struct_field_error( opnd1 ) );
+; 2149 :         }
+; 2150 : 
+; 2151 :         /* v2.08 added (copied from branch EXPR_ADDR-EXPR_REG )*/
+; 2152 :         if ( opnd2->is_type && opnd2->type ) {
 
-	test	BYTE PTR [rdi+76], 8
+	test	BYTE PTR [rdi+72], 8
 	je	SHORT $LN26@dot_op
 $LN64@dot_op:
 	cmp	QWORD PTR [rdi+96], rsi
 	je	SHORT $LN26@dot_op
 
-; 2187 :             opnd1->assumecheck = FALSE;
+; 2153 :             opnd1->assumecheck = FALSE;
 
-	and	DWORD PTR [rbx+76], -65			; ffffffbfH
+	and	DWORD PTR [rbx+72], -65			; ffffffbfH
 
-; 2188 :             opnd2->llvalue = 0;  /* v2.08: this was previously done in get_operand() */
+; 2154 :             opnd2->llvalue = 0;  /* v2.08: this was previously done in get_operand() */
 
 	mov	QWORD PTR [rdi], rsi
 $LN26@dot_op:
 
-; 2189 :         }
-; 2190 :         /* for [var].TYPE | STRUCT_FIELD, use offset instead of size */
-; 2191 :         if ( opnd2->mbr && opnd2->mbr->state == SYM_TYPE )
+; 2155 :         }
+; 2156 :         /* for [var].TYPE | STRUCT_FIELD, use offset instead of size */
+; 2157 :         if ( opnd2->mbr && opnd2->mbr->state == SYM_TYPE )
 
 	mov	rax, QWORD PTR [rdi+88]
 	test	rax, rax
@@ -5612,66 +5612,66 @@ $LN26@dot_op:
 	cmp	DWORD PTR [rax+32], 7
 	jne	SHORT $LN27@dot_op
 
-; 2192 :             opnd2->llvalue = opnd2->mbr->offset;
+; 2158 :             opnd2->llvalue = opnd2->mbr->offset;
 
 	movsxd	rax, DWORD PTR [rax+16]
 	mov	QWORD PTR [rdi], rax
 $LN27@dot_op:
 
-; 2193 :         opnd1->llvalue += opnd2->llvalue;
+; 2159 :         opnd1->llvalue += opnd2->llvalue;
 
 	mov	rax, QWORD PTR [rdi]
 	add	QWORD PTR [rbx], rax
 
-; 2194 :         opnd1->mem_type = opnd2->mem_type; /* v2.08: now always done */
+; 2160 :         opnd1->mem_type = opnd2->mem_type; /* v2.08: now always done */
 
 	mov	eax, DWORD PTR [rdi+64]
 	mov	DWORD PTR [rbx+64], eax
 
-; 2195 :         if( opnd2->mbr != NULL ) {
+; 2161 :         if( opnd2->mbr != NULL ) {
 
 	mov	rax, QWORD PTR [rdi+88]
 	test	rax, rax
 	je	SHORT $LN28@dot_op
 
-; 2196 :             opnd1->mbr = opnd2->mbr;
+; 2162 :             opnd1->mbr = opnd2->mbr;
 
 	mov	QWORD PTR [rbx+88], rax
 $LN28@dot_op:
 
-; 2197 : #if 0 /* v2.07 */
-; 2198 :             /* temp. disabled in v1.95, test case:
-; 2199 :              * mov eax,(<struct> ptr [ebx]).F1
-; 2200 :              * however: mov ax, word ptr var[bx].F1 ???
-; 2201 :              * the condition can't be disabled. Instead the PTR
-; 2202 :              * operator must NOT set the explicit flag if the
-; 2203 :              * first operand is a structure.
-; 2204 :              */
-; 2205 :             if( opnd1->explicit == FALSE )
-; 2206 : #endif
-; 2207 :                 //opnd1->mem_type = opnd2->mem_type; /* v2.08: obsolete */
-; 2208 :         }
-; 2209 : 
-; 2210 :         DebugMsg1(("dot_op, ADDR - CONST, t1.type=%X (%s), t2.type=%X (%s)\n",
-; 2211 :                    opnd1->type,
-; 2212 :                    opnd1->type ? opnd1->type->name : "",
-; 2213 :                    opnd2->type,
-; 2214 :                    opnd2->type ? opnd2->type->name : "" ));
-; 2215 : #if 0 /* v1.96 */
-; 2216 :         if ( opnd2->type )
-; 2217 : #endif
-; 2218 :             opnd1->type = opnd2->type;
+; 2163 : #if 0 /* v2.07 */
+; 2164 :             /* temp. disabled in v1.95, test case:
+; 2165 :              * mov eax,(<struct> ptr [ebx]).F1
+; 2166 :              * however: mov ax, word ptr var[bx].F1 ???
+; 2167 :              * the condition can't be disabled. Instead the PTR
+; 2168 :              * operator must NOT set the explicit flag if the
+; 2169 :              * first operand is a structure.
+; 2170 :              */
+; 2171 :             if( opnd1->explicit == FALSE )
+; 2172 : #endif
+; 2173 :                 //opnd1->mem_type = opnd2->mem_type; /* v2.08: obsolete */
+; 2174 :         }
+; 2175 : 
+; 2176 :         DebugMsg1(("dot_op, ADDR - CONST, t1.type=%X (%s), t2.type=%X (%s)\n",
+; 2177 :                    opnd1->type,
+; 2178 :                    opnd1->type ? opnd1->type->name : "",
+; 2179 :                    opnd2->type,
+; 2180 :                    opnd2->type ? opnd2->type->name : "" ));
+; 2181 : #if 0 /* v1.96 */
+; 2182 :         if ( opnd2->type )
+; 2183 : #endif
+; 2184 :             opnd1->type = opnd2->type;
 
 	mov	rax, QWORD PTR [rdi+96]
 	mov	rsi, QWORD PTR [rsp+48]
 	mov	QWORD PTR [rbx+96], rax
 
-; 2261 :     }
-; 2262 :     return( NOT_ERROR );
+; 2227 :     }
+; 2228 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 2263 : }
+; 2229 : }
 
 	mov	rbx, QWORD PTR [rsp+56]
 	add	rsp, 32					; 00000020H
@@ -5679,18 +5679,18 @@ $LN28@dot_op:
 	ret	0
 $LN22@dot_op:
 
-; 2219 : 
-; 2220 :     } else if ( opnd1->kind == EXPR_CONST && opnd2->kind == EXPR_CONST ) {
+; 2185 : 
+; 2186 :     } else if ( opnd1->kind == EXPR_CONST && opnd2->kind == EXPR_CONST ) {
 
 	test	eax, eax
 	jne	$LN29@dot_op
 	cmp	DWORD PTR [rdi+60], esi
 	jne	$LN29@dot_op
 
-; 2221 : 
-; 2222 :         DebugMsg1(("dot_op, CONST - CONST, t1-t2 value=%u-%u, memtype=%Xh-%Xh istype=%u-%u\n",
-; 2223 :                    opnd1->value, opnd2->value, opnd1->mem_type, opnd2->mem_type, opnd1->is_type, opnd2->is_type));
-; 2224 :         if ( opnd2->mbr == NULL && !ModuleInfo.oldstructs ) {
+; 2187 : 
+; 2188 :         DebugMsg1(("dot_op, CONST - CONST, t1-t2 value=%u-%u, memtype=%Xh-%Xh istype=%u-%u\n",
+; 2189 :                    opnd1->value, opnd2->value, opnd1->mem_type, opnd2->mem_type, opnd1->is_type, opnd2->is_type));
+; 2190 :         if ( opnd2->mbr == NULL && !ModuleInfo.oldstructs ) {
 
 	cmp	QWORD PTR [rdi+88], rsi
 	jne	SHORT $LN31@dot_op
@@ -5698,76 +5698,76 @@ $LN22@dot_op:
 	je	SHORT $LN29@dot_op
 $LN31@dot_op:
 
-; 2225 :             DebugMsg(("dot_op: error, opnd2.mbr=NULL\n" ));
-; 2226 :             return( struct_field_error( opnd1 ) );
-; 2227 :         }
-; 2228 :         if ( opnd1->type != NULL ) {
+; 2191 :             DebugMsg(("dot_op: error, opnd2.mbr=NULL\n" ));
+; 2192 :             return( struct_field_error( opnd1 ) );
+; 2193 :         }
+; 2194 :         if ( opnd1->type != NULL ) {
 
 	mov	rcx, QWORD PTR [rbx+96]
 
-; 2234 :                 opnd1->llvalue += opnd2->llvalue;
+; 2200 :                 opnd1->llvalue += opnd2->llvalue;
 
 	mov	rax, QWORD PTR [rdi]
 	test	rcx, rcx
 	je	SHORT $LN32@dot_op
 
-; 2229 :             /*
-; 2230 :              * v2.06: the token1 value must NOT be ignored if the token is a
-; 2231 :              * struct member: mov ax, [offset] <struct>.<mbr>.<mbr>
-; 2232 :              */
-; 2233 :             if ( opnd1->mbr != NULL )
+; 2195 :             /*
+; 2196 :              * v2.06: the token1 value must NOT be ignored if the token is a
+; 2197 :              * struct member: mov ax, [offset] <struct>.<mbr>.<mbr>
+; 2198 :              */
+; 2199 :             if ( opnd1->mbr != NULL )
 
 	cmp	QWORD PTR [rbx+88], rsi
 	je	SHORT $LN34@dot_op
 
-; 2234 :                 opnd1->llvalue += opnd2->llvalue;
+; 2200 :                 opnd1->llvalue += opnd2->llvalue;
 
 	add	QWORD PTR [rbx], rax
 	jmp	SHORT $LN35@dot_op
 $LN34@dot_op:
 
-; 2235 :             else {
-; 2236 :                 /* old token is a type - the value (=size) is ignored then. */
-; 2237 :                 opnd1->llvalue = opnd2->llvalue;
+; 2201 :             else {
+; 2202 :                 /* old token is a type - the value (=size) is ignored then. */
+; 2203 :                 opnd1->llvalue = opnd2->llvalue;
 
 	mov	QWORD PTR [rbx], rax
 $LN35@dot_op:
 
-; 2238 :             }
-; 2239 :             opnd1->mbr = opnd2->mbr;
+; 2204 :             }
+; 2205 :             opnd1->mbr = opnd2->mbr;
 
 	mov	rax, QWORD PTR [rdi+88]
 	mov	QWORD PTR [rbx+88], rax
 
-; 2240 :             /* v2.0: copy mem_type (test case: mov ds:[<struct>.<mbr>], 123) */
-; 2241 :             opnd1->mem_type = opnd2->mem_type;
+; 2206 :             /* v2.0: copy mem_type (test case: mov ds:[<struct>.<mbr>], 123) */
+; 2207 :             opnd1->mem_type = opnd2->mem_type;
 
 	mov	eax, DWORD PTR [rdi+64]
 	mov	DWORD PTR [rbx+64], eax
 
-; 2242 :             /* v2.05: removed, it's still a type constant */
-; 2243 :             //opnd1->is_type = FALSE;
-; 2244 :             opnd1->is_type = opnd2->is_type;
+; 2208 :             /* v2.05: removed, it's still a type constant */
+; 2209 :             //opnd1->is_type = FALSE;
+; 2210 :             opnd1->is_type = opnd2->is_type;
 
-	mov	eax, DWORD PTR [rdi+76]
-	xor	eax, DWORD PTR [rbx+76]
+	mov	eax, DWORD PTR [rdi+72]
+	xor	eax, DWORD PTR [rbx+72]
 	and	eax, 8
-	xor	DWORD PTR [rbx+76], eax
+	xor	DWORD PTR [rbx+72], eax
 
-; 2245 :             /* either clear <type> or use the renewed one */
-; 2246 :             if ( opnd1->type != opnd2->type )
+; 2211 :             /* either clear <type> or use the renewed one */
+; 2212 :             if ( opnd1->type != opnd2->type )
 
 	cmp	rcx, QWORD PTR [rdi+96]
 	cmovne	rsi, QWORD PTR [rdi+96]
 
-; 2261 :     }
-; 2262 :     return( NOT_ERROR );
+; 2227 :     }
+; 2228 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	mov	QWORD PTR [rbx+96], rsi
 	mov	rsi, QWORD PTR [rsp+48]
 
-; 2263 : }
+; 2229 : }
 
 	mov	rbx, QWORD PTR [rsp+56]
 	add	rsp, 32					; 00000020H
@@ -5775,35 +5775,35 @@ $LN35@dot_op:
 	ret	0
 $LN32@dot_op:
 
-; 2247 :                 opnd1->type = opnd2->type;
-; 2248 :             else
-; 2249 :                 opnd1->type = NULL;
-; 2250 :         } else {
-; 2251 :             /* old token is NOT a type */
-; 2252 :             /* most likely a number or an MT_ABS symbol! */
-; 2253 :             /* so the TOTAL of both constants is required */
-; 2254 :             opnd1->llvalue += opnd2->llvalue;
+; 2213 :                 opnd1->type = opnd2->type;
+; 2214 :             else
+; 2215 :                 opnd1->type = NULL;
+; 2216 :         } else {
+; 2217 :             /* old token is NOT a type */
+; 2218 :             /* most likely a number or an MT_ABS symbol! */
+; 2219 :             /* so the TOTAL of both constants is required */
+; 2220 :             opnd1->llvalue += opnd2->llvalue;
 
 	add	QWORD PTR [rbx], rax
 
-; 2255 :             opnd1->mbr = opnd2->mbr;
+; 2221 :             opnd1->mbr = opnd2->mbr;
 
 	mov	rax, QWORD PTR [rdi+88]
 	mov	QWORD PTR [rbx+88], rax
 
-; 2256 :             opnd1->mem_type = opnd2->mem_type;
+; 2222 :             opnd1->mem_type = opnd2->mem_type;
 
 	mov	eax, DWORD PTR [rdi+64]
 	mov	DWORD PTR [rbx+64], eax
 $LN33@dot_op:
 
-; 2261 :     }
-; 2262 :     return( NOT_ERROR );
+; 2227 :     }
+; 2228 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	mov	rsi, QWORD PTR [rsp+48]
 
-; 2263 : }
+; 2229 : }
 
 	mov	rbx, QWORD PTR [rsp+56]
 	add	rsp, 32					; 00000020H
@@ -5811,33 +5811,33 @@ $LN33@dot_op:
 	ret	0
 $LN29@dot_op:
 
-; 2257 :         }
-; 2258 :     } else {
-; 2259 :         DebugMsg(("dot_op: error, unknown kind combination, opnd1->kind=%d, opnd2->kind=%d\n", opnd1->kind, opnd2->kind ));
-; 2260 :         return( struct_field_error( opnd1 ) );
+; 2223 :         }
+; 2224 :     } else {
+; 2225 :         DebugMsg(("dot_op: error, unknown kind combination, opnd1->kind=%d, opnd2->kind=%d\n", opnd1->kind, opnd2->kind ));
+; 2226 :         return( struct_field_error( opnd1 ) );
 
-	test	BYTE PTR [rbx+76], 16
+	test	BYTE PTR [rbx+72], 16
 	je	SHORT $LN59@dot_op
 	mov	eax, esi
 	mov	DWORD PTR [rbx+60], -1
 	mov	rsi, QWORD PTR [rsp+48]
 
-; 2263 : }
+; 2229 : }
 
 	mov	rbx, QWORD PTR [rsp+56]
 	add	rsp, 32					; 00000020H
 	pop	rdi
 	ret	0
 
-; 2257 :         }
-; 2258 :     } else {
-; 2259 :         DebugMsg(("dot_op: error, unknown kind combination, opnd1->kind=%d, opnd2->kind=%d\n", opnd1->kind, opnd2->kind ));
-; 2260 :         return( struct_field_error( opnd1 ) );
+; 2223 :         }
+; 2224 :     } else {
+; 2225 :         DebugMsg(("dot_op: error, unknown kind combination, opnd1->kind=%d, opnd2->kind=%d\n", opnd1->kind, opnd2->kind ));
+; 2226 :         return( struct_field_error( opnd1 ) );
 
 $LN59@dot_op:
 	mov	ecx, 271				; 0000010fH
 
-; 2263 : }
+; 2229 : }
 
 	mov	rbx, QWORD PTR [rsp+56]
 	mov	esi, eax
@@ -5845,10 +5845,10 @@ $LN59@dot_op:
 	add	rsp, 32					; 00000020H
 	pop	rdi
 
-; 2257 :         }
-; 2258 :     } else {
-; 2259 :         DebugMsg(("dot_op: error, unknown kind combination, opnd1->kind=%d, opnd2->kind=%d\n", opnd1->kind, opnd2->kind ));
-; 2260 :         return( struct_field_error( opnd1 ) );
+; 2223 :         }
+; 2224 :     } else {
+; 2225 :         DebugMsg(("dot_op: error, unknown kind combination, opnd1->kind=%d, opnd2->kind=%d\n", opnd1->kind, opnd2->kind ));
+; 2226 :         return( struct_field_error( opnd1 ) );
 
 	rex_jmp	QWORD PTR fnEmitErr
 dot_op	ENDP
@@ -5860,26 +5860,26 @@ _TEXT	SEGMENT
 opnd$ = 8
 struct_field_error PROC					; COMDAT
 
-; 2054 :     if ( opnd->is_opattr ) {
+; 2020 :     if ( opnd->is_opattr ) {
 
-	test	BYTE PTR [rcx+76], 16
+	test	BYTE PTR [rcx+72], 16
 	je	SHORT $LN2@struct_fie
 
-; 2055 :         opnd->kind = EXPR_ERROR;
+; 2021 :         opnd->kind = EXPR_ERROR;
 
 	mov	DWORD PTR [rcx+60], -1
 
-; 2056 :         return( NOT_ERROR );
+; 2022 :         return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 2059 : }
+; 2025 : }
 
 	ret	0
 $LN2@struct_fie:
 
-; 2057 :     }
-; 2058 :     return( fnEmitErr( STRUCTURE_FIELD_EXPECTED ) );
+; 2023 :     }
+; 2024 :     return( fnEmitErr( STRUCTURE_FIELD_EXPECTED ) );
 
 	mov	ecx, 271				; 0000010fH
 	rex_jmp	QWORD PTR fnEmitErr
@@ -5893,62 +5893,62 @@ opnd1$ = 48
 opnd2$ = 56
 minus_op PROC						; COMDAT
 
-; 1907 : {
+; 1873 : {
 
 	sub	rsp, 40					; 00000028H
 	mov	r9, rcx
 	mov	r10, rdx
 
-; 1908 :     struct asym      *sym;
-; 1909 :     /*
-; 1910 :      * The only formats allowed are:
-; 1911 :      *        constant - constant
-; 1912 :      *         address - constant       ( only in this order )
-; 1913 :      *         address - address
-; 1914 :      *        register - constant       ( only inside [] and in this
-; 1915 :      *                                    order )
-; 1916 :      */
-; 1917 : 
-; 1918 :     DebugMsg1(("minus_op: kind tok1=%u, tok2=%u\n", opnd1->kind, opnd2->kind ));
-; 1919 : 
-; 1920 :     if( check_direct_reg( opnd1, opnd2 ) == ERROR ) {
+; 1874 :     struct asym      *sym;
+; 1875 :     /*
+; 1876 :      * The only formats allowed are:
+; 1877 :      *        constant - constant
+; 1878 :      *         address - constant       ( only in this order )
+; 1879 :      *         address - address
+; 1880 :      *        register - constant       ( only inside [] and in this
+; 1881 :      *                                    order )
+; 1882 :      */
+; 1883 : 
+; 1884 :     DebugMsg1(("minus_op: kind tok1=%u, tok2=%u\n", opnd1->kind, opnd2->kind ));
+; 1885 : 
+; 1886 :     if( check_direct_reg( opnd1, opnd2 ) == ERROR ) {
 
 	mov	ecx, DWORD PTR [rcx+60]
 	cmp	ecx, 2
 	jne	SHORT $LN33@minus_op
-	test	BYTE PTR [r9+76], 1
+	test	BYTE PTR [r9+72], 1
 	je	SHORT $LN50@minus_op
 $LN33@minus_op:
 	mov	eax, DWORD PTR [rdx+60]
 	cmp	eax, 2
 	jne	SHORT $LN2@minus_op
-	test	BYTE PTR [rdx+76], 1
+	test	BYTE PTR [rdx+72], 1
 	jne	SHORT $LN2@minus_op
 $LN50@minus_op:
 
-; 1921 :         DebugMsg(("minus_op: error direct register\n"));
-; 1922 :         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
+; 1887 :         DebugMsg(("minus_op: error direct register\n"));
+; 1888 :         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
 	mov	ecx, 170				; 000000aaH
 
-; 2047 : }
+; 2013 : }
 
 	add	rsp, 40					; 00000028H
 
-; 1921 :         DebugMsg(("minus_op: error direct register\n"));
-; 1922 :         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
+; 1887 :         DebugMsg(("minus_op: error direct register\n"));
+; 1888 :         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
 	rex_jmp	QWORD PTR fnEmitErr
 $LN2@minus_op:
 
-; 1923 :     }
-; 1924 : 
-; 1925 :     /* added for v1.94. It's related to the change done in MakeConst()!
-; 1926 :      * todo: find out why flag no_error_msg was checked in v1.94-2.09.
-; 1927 :      */
-; 1928 :     if ( opnd1->kind == EXPR_ADDR &&
-; 1929 :         opnd2->kind == EXPR_ADDR &&
-; 1930 :         opnd2->sym &&
+; 1889 :     }
+; 1890 : 
+; 1891 :     /* added for v1.94. It's related to the change done in MakeConst()!
+; 1892 :      * todo: find out why flag no_error_msg was checked in v1.94-2.09.
+; 1893 :      */
+; 1894 :     if ( opnd1->kind == EXPR_ADDR &&
+; 1895 :         opnd2->kind == EXPR_ADDR &&
+; 1896 :         opnd2->sym &&
 
 	cmp	ecx, 1
 	jne	SHORT $LN3@minus_op
@@ -5961,17 +5961,17 @@ $LN2@minus_op:
 	je	SHORT $LN4@minus_op
 $LN3@minus_op:
 
-; 1931 :         opnd2->sym->state == SYM_UNDEFINED /* && !no_error_msg */ )
-; 1932 :         ; /* don't convert token2 to a constant! */
-; 1933 :     else
-; 1934 :         MakeConst( opnd2 );
+; 1897 :         opnd2->sym->state == SYM_UNDEFINED /* && !no_error_msg */ )
+; 1898 :         ; /* don't convert token2 to a constant! */
+; 1899 :     else
+; 1900 :         MakeConst( opnd2 );
 
 	mov	rcx, rdx
 	call	MakeConst
 $LN4@minus_op:
 
-; 1935 : 
-; 1936 :     if( check_same( opnd1, opnd2, EXPR_CONST ) ) {
+; 1901 : 
+; 1902 :     if( check_same( opnd1, opnd2, EXPR_CONST ) ) {
 
 	mov	eax, DWORD PTR [r9+60]
 	test	eax, eax
@@ -5979,41 +5979,41 @@ $LN4@minus_op:
 	cmp	DWORD PTR [r10+60], eax
 	jne	SHORT $LN5@minus_op
 
-; 1937 : 
-; 1938 :         DebugMsg1(("minus_op: CONST-CONST\n" ));
-; 1939 :         opnd1->llvalue -= opnd2->llvalue;
+; 1903 : 
+; 1904 :         DebugMsg1(("minus_op: CONST-CONST\n" ));
+; 1905 :         opnd1->llvalue -= opnd2->llvalue;
 
 	mov	rax, QWORD PTR [r10]
 	sub	QWORD PTR [r9], rax
 
-; 2045 :     }
-; 2046 :     return( NOT_ERROR );
+; 2011 :     }
+; 2012 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 2047 : }
+; 2013 : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
 $LN5@minus_op:
 
-; 1940 : 
-; 1941 :     } else if( opnd1->kind == EXPR_ADDR &&
+; 1906 : 
+; 1907 :     } else if( opnd1->kind == EXPR_ADDR &&
 
 	cmp	eax, 1
 	jne	$LN9@minus_op
 	cmp	DWORD PTR [r10+60], 0
 	jne	SHORT $LN7@minus_op
 
-; 1942 :               opnd2->kind == EXPR_CONST ) {
-; 1943 : 
-; 1944 :         DebugMsg1(("minus_op: ADDR-CONST\n" ));
-; 1945 :         opnd1->llvalue -= opnd2->llvalue;
+; 1908 :               opnd2->kind == EXPR_CONST ) {
+; 1909 : 
+; 1910 :         DebugMsg1(("minus_op: ADDR-CONST\n" ));
+; 1911 :         opnd1->llvalue -= opnd2->llvalue;
 
 	mov	rax, QWORD PTR [r10]
 	sub	QWORD PTR [r9], rax
 
-; 1946 :         fix_struct_value( opnd1 );
+; 1912 :         fix_struct_value( opnd1 );
 
 	mov	rax, QWORD PTR [r9+88]
 	test	rax, rax
@@ -6024,29 +6024,29 @@ $LN5@minus_op:
 	xor	ecx, ecx
 	add	DWORD PTR [r9], eax
 
-; 2045 :     }
-; 2046 :     return( NOT_ERROR );
+; 2011 :     }
+; 2012 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	mov	QWORD PTR [r9+88], rcx
 
-; 2047 : }
+; 2013 : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
 $LN7@minus_op:
 
-; 1947 : 
-; 1948 :     } else if( check_same( opnd1, opnd2, EXPR_ADDR ) ){
+; 1913 : 
+; 1914 :     } else if( check_same( opnd1, opnd2, EXPR_ADDR ) ){
 
 	cmp	eax, 1
 	jne	$LN9@minus_op
 	cmp	DWORD PTR [r10+60], eax
 	jne	$LN9@minus_op
 
-; 1949 : 
-; 1950 :         DebugMsg1(("minus_op: ADDR-ADDR\n" ));
-; 1951 :         fix_struct_value( opnd1 );
+; 1915 : 
+; 1916 :         DebugMsg1(("minus_op: ADDR-ADDR\n" ));
+; 1917 :         fix_struct_value( opnd1 );
 
 	mov	rax, QWORD PTR [r9+88]
 	xor	ecx, ecx
@@ -6059,7 +6059,7 @@ $LN7@minus_op:
 	mov	QWORD PTR [r9+88], rcx
 $LN39@minus_op:
 
-; 1952 :         fix_struct_value( opnd2 );
+; 1918 :         fix_struct_value( opnd2 );
 
 	mov	rax, QWORD PTR [r10+88]
 	test	rax, rax
@@ -6071,49 +6071,49 @@ $LN39@minus_op:
 	mov	QWORD PTR [r10+88], rcx
 $LN42@minus_op:
 
-; 1953 :         //if( opnd2->base_reg != NULL || opnd2->idx_reg != NULL ) { /* v2.09: just check 'indirect' */
-; 1954 :         if( opnd2->indirect ) {
+; 1919 :         //if( opnd2->base_reg != NULL || opnd2->idx_reg != NULL ) { /* v2.09: just check 'indirect' */
+; 1920 :         if( opnd2->indirect ) {
 
-	test	BYTE PTR [r10+76], 1
+	test	BYTE PTR [r10+72], 1
 	jne	$LN50@minus_op
 
-; 1955 :             DebugMsg(("minus_op error, opnd2->indirect==TRUE\n"));
-; 1956 :             return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
-; 1957 :         }
-; 1958 :         if( opnd2->label_tok == NULL ) {
+; 1921 :             DebugMsg(("minus_op error, opnd2->indirect==TRUE\n"));
+; 1922 :             return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
+; 1923 :         }
+; 1924 :         if( opnd2->label_tok == NULL ) {
 
 	cmp	QWORD PTR [r10+40], rcx
 	jne	SHORT $LN12@minus_op
 
-; 1959 :             /* v2.06c: do 64-bit arithmetic (more rigid test in data.c) */
-; 1960 :             //opnd1->value -= opnd2->value;
-; 1961 :             opnd1->value64 -= opnd2->value64;
+; 1925 :             /* v2.06c: do 64-bit arithmetic (more rigid test in data.c) */
+; 1926 :             //opnd1->value -= opnd2->value;
+; 1927 :             opnd1->value64 -= opnd2->value64;
 
 	mov	rax, QWORD PTR [r10]
 	sub	QWORD PTR [r9], rax
 
-; 1962 :             opnd1->indirect |= opnd2->indirect;
+; 1928 :             opnd1->indirect |= opnd2->indirect;
 
-	mov	eax, DWORD PTR [r10+76]
+	mov	eax, DWORD PTR [r10+72]
 
-; 2039 :         opnd1->indirect |= opnd2->indirect;
+; 2005 :         opnd1->indirect |= opnd2->indirect;
 
 	and	eax, 1
-	or	DWORD PTR [r9+76], eax
+	or	DWORD PTR [r9+72], eax
 
-; 2045 :     }
-; 2046 :     return( NOT_ERROR );
+; 2011 :     }
+; 2012 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 2047 : }
+; 2013 : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
 $LN12@minus_op:
 
-; 1963 :         } else {
-; 1964 :             if( opnd1->label_tok == NULL || opnd1->sym == NULL || opnd2->sym == NULL ) {
+; 1929 :         } else {
+; 1930 :             if( opnd1->label_tok == NULL || opnd1->sym == NULL || opnd2->sym == NULL ) {
 
 	cmp	QWORD PTR [r9+40], rcx
 	je	$LN15@minus_op
@@ -6123,26 +6123,26 @@ $LN12@minus_op:
 	cmp	QWORD PTR [r10+80], rcx
 	je	$LN15@minus_op
 
-; 1969 :             }
-; 1970 :             /* handle first operand */
-; 1971 :             sym = opnd1->sym;
-; 1972 :             opnd1->value += sym->offset;
+; 1935 :             }
+; 1936 :             /* handle first operand */
+; 1937 :             sym = opnd1->sym;
+; 1938 :             opnd1->value += sym->offset;
 
 	mov	eax, DWORD PTR [rdx+16]
 	add	DWORD PTR [r9], eax
 
-; 1973 : 
-; 1974 :             /* handle second operand */
-; 1975 :             sym = opnd2->sym;
-; 1976 :             if( Parse_Pass > PASS_1 ) {
+; 1939 : 
+; 1940 :             /* handle second operand */
+; 1941 :             sym = opnd2->sym;
+; 1942 :             if( Parse_Pass > PASS_1 ) {
 
 	cmp	DWORD PTR Parse_Pass, ecx
 	mov	r8, QWORD PTR [r10+80]
 	jbe	SHORT $LN19@minus_op
 
-; 1977 :                 /* if symbol is external, error - unless it's the same symbol */
-; 1978 :                 if ( ( sym->state == SYM_EXTERNAL ||
-; 1979 :                      opnd1->sym->state == SYM_EXTERNAL) &&
+; 1943 :                 /* if symbol is external, error - unless it's the same symbol */
+; 1944 :                 if ( ( sym->state == SYM_EXTERNAL ||
+; 1945 :                      opnd1->sym->state == SYM_EXTERNAL) &&
 
 	cmp	DWORD PTR [r8+32], 2
 	je	SHORT $LN18@minus_op
@@ -6152,60 +6152,60 @@ $LN18@minus_op:
 	cmp	r8, rdx
 	je	SHORT $LN17@minus_op
 
-; 1980 :                     sym != opnd1->sym ) {
-; 1981 :                     DebugMsg(("minus_op error 6\n"));
-; 1982 :                     return( fnEmitErr(INVALID_USE_OF_EXTERNAL_SYMBOL, opnd1->sym->name ) );
+; 1946 :                     sym != opnd1->sym ) {
+; 1947 :                     DebugMsg(("minus_op error 6\n"));
+; 1948 :                     return( fnEmitErr(INVALID_USE_OF_EXTERNAL_SYMBOL, opnd1->sym->name ) );
 
 	mov	rdx, QWORD PTR [rdx+8]
 	mov	ecx, 193				; 000000c1H
 
-; 2047 : }
+; 2013 : }
 
 	add	rsp, 40					; 00000028H
 
-; 1980 :                     sym != opnd1->sym ) {
-; 1981 :                     DebugMsg(("minus_op error 6\n"));
-; 1982 :                     return( fnEmitErr(INVALID_USE_OF_EXTERNAL_SYMBOL, opnd1->sym->name ) );
+; 1946 :                     sym != opnd1->sym ) {
+; 1947 :                     DebugMsg(("minus_op error 6\n"));
+; 1948 :                     return( fnEmitErr(INVALID_USE_OF_EXTERNAL_SYMBOL, opnd1->sym->name ) );
 
 	rex_jmp	QWORD PTR fnEmitErr
 $LN17@minus_op:
 
-; 1983 :                 }
-; 1984 :                 /* check if the 2 offsets belong to the same segment */
-; 1985 :                 if ( sym->segment != opnd1->sym->segment ) {
+; 1949 :                 }
+; 1950 :                 /* check if the 2 offsets belong to the same segment */
+; 1951 :                 if ( sym->segment != opnd1->sym->segment ) {
 
 	mov	rax, QWORD PTR [rdx+24]
 	cmp	QWORD PTR [r8+24], rax
 	je	SHORT $LN19@minus_op
 
-; 1986 :                     DebugMsg(("minus_op error, sym.segm=%X opnd1->sym.segm=%X\n", sym->segment, opnd1->sym->segment ));
-; 1987 :                     return( fnEmitErr( OPERANDS_MUST_BE_IN_SAME_SEGMENT ) );
+; 1952 :                     DebugMsg(("minus_op error, sym.segm=%X opnd1->sym.segm=%X\n", sym->segment, opnd1->sym->segment ));
+; 1953 :                     return( fnEmitErr( OPERANDS_MUST_BE_IN_SAME_SEGMENT ) );
 
 	mov	ecx, 192				; 000000c0H
 
-; 2047 : }
+; 2013 : }
 
 	add	rsp, 40					; 00000028H
 
-; 1986 :                     DebugMsg(("minus_op error, sym.segm=%X opnd1->sym.segm=%X\n", sym->segment, opnd1->sym->segment ));
-; 1987 :                     return( fnEmitErr( OPERANDS_MUST_BE_IN_SAME_SEGMENT ) );
+; 1952 :                     DebugMsg(("minus_op error, sym.segm=%X opnd1->sym.segm=%X\n", sym->segment, opnd1->sym->segment ));
+; 1953 :                     return( fnEmitErr( OPERANDS_MUST_BE_IN_SAME_SEGMENT ) );
 
 	rex_jmp	QWORD PTR fnEmitErr
 $LN19@minus_op:
 
-; 1988 :                 }
-; 1989 :             }
-; 1990 : 
-; 1991 :             /* the type changes from address to constant.
-; 1992 :              * but only if both labels are defined and no indirect addressing.
-; 1993 :              */
-; 1994 :             opnd1->kind = EXPR_CONST;
+; 1954 :                 }
+; 1955 :             }
+; 1956 : 
+; 1957 :             /* the type changes from address to constant.
+; 1958 :              * but only if both labels are defined and no indirect addressing.
+; 1959 :              */
+; 1960 :             opnd1->kind = EXPR_CONST;
 
 	mov	DWORD PTR [r9+60], ecx
 
-; 1995 : 
-; 1996 :             /* v2.05: if at least one label is undefined, assume result=1 */
-; 1997 :             if ( opnd1->sym->state == SYM_UNDEFINED ||
+; 1961 : 
+; 1962 :             /* v2.05: if at least one label is undefined, assume result=1 */
+; 1963 :             if ( opnd1->sym->state == SYM_UNDEFINED ||
 
 	cmp	DWORD PTR [rdx+32], ecx
 	je	SHORT $LN22@minus_op
@@ -6213,208 +6213,208 @@ $LN19@minus_op:
 	cmp	DWORD PTR [rax+32], ecx
 	je	SHORT $LN22@minus_op
 
-; 2012 :             } else {
-; 2013 :                 /* v2.06c: do 64-bit arithmetic (more rigid test in data.c) */
-; 2014 :                 //opnd1->value -= sym->offset;
-; 2015 :                 //opnd1->value -= opnd2->value;
-; 2016 :                 opnd1->value64 -= sym->offset;
+; 1978 :             } else {
+; 1979 :                 /* v2.06c: do 64-bit arithmetic (more rigid test in data.c) */
+; 1980 :                 //opnd1->value -= sym->offset;
+; 1981 :                 //opnd1->value -= opnd2->value;
+; 1982 :                 opnd1->value64 -= sym->offset;
 
 	movsxd	rax, DWORD PTR [r8+16]
 	sub	QWORD PTR [r9], rax
 	mov	rax, QWORD PTR [r9]
 
-; 2017 :                 opnd1->value64 -= opnd2->value64;
+; 1983 :                 opnd1->value64 -= opnd2->value64;
 
 	sub	rax, QWORD PTR [r10]
 	mov	QWORD PTR [r9], rax
 
-; 2018 :                 opnd1->label_tok = NULL;
+; 1984 :                 opnd1->label_tok = NULL;
 
 	mov	QWORD PTR [r9+40], rcx
 
-; 2019 :                 opnd1->sym = NULL;
+; 1985 :                 opnd1->sym = NULL;
 
 	mov	QWORD PTR [r9+80], rcx
 	jmp	SHORT $LN21@minus_op
 $LN22@minus_op:
 
-; 1998 :                 opnd2->sym->state == SYM_UNDEFINED ) {
-; 1999 :                 opnd1->value = 1;
+; 1964 :                 opnd2->sym->state == SYM_UNDEFINED ) {
+; 1965 :                 opnd1->value = 1;
 
 	mov	DWORD PTR [r9], 1
 
-; 2000 :                 /* 2.09: make sure an undefined label is returned in opnd.sym.
-; 2001 :                  * expression type has to be ADDR then; see equate22.aso.
-; 2002 :                  * 2.11: returning EXPR_ADDR may cause problems -
-; 2003 :                  * it may make the code longer than necessary, thus
-; 2004 :                  * triggering an unnecessary jump extension.
-; 2005 :                  * so it is returned only if the expression is used to define an equate.
-; 2006 :                  */
-; 2007 :                 if ( opnd1->sym->state != SYM_UNDEFINED ) {
+; 1966 :                 /* 2.09: make sure an undefined label is returned in opnd.sym.
+; 1967 :                  * expression type has to be ADDR then; see equate22.aso.
+; 1968 :                  * 2.11: returning EXPR_ADDR may cause problems -
+; 1969 :                  * it may make the code longer than necessary, thus
+; 1970 :                  * triggering an unnecessary jump extension.
+; 1971 :                  * so it is returned only if the expression is used to define an equate.
+; 1972 :                  */
+; 1973 :                 if ( opnd1->sym->state != SYM_UNDEFINED ) {
 
 	cmp	DWORD PTR [rdx+32], ecx
 	je	SHORT $LN23@minus_op
 
-; 2008 :                     opnd1->sym = opnd2->sym;
+; 1974 :                     opnd1->sym = opnd2->sym;
 
 	mov	rax, QWORD PTR [r10+80]
 	mov	QWORD PTR [r9+80], rax
 
-; 2009 :                     opnd1->label_tok = opnd2->label_tok;
+; 1975 :                     opnd1->label_tok = opnd2->label_tok;
 
 	mov	rax, QWORD PTR [r10+40]
 	mov	QWORD PTR [r9+40], rax
 $LN23@minus_op:
 
-; 2010 :                 }
-; 2011 :                 opnd1->kind = EXPR_ADDR;
+; 1976 :                 }
+; 1977 :                 opnd1->kind = EXPR_ADDR;
 
 	mov	DWORD PTR [r9+60], 1
 $LN21@minus_op:
 
-; 2020 :             }
-; 2021 :             //if( opnd1->base_reg == NULL && opnd1->idx_reg == NULL ) { /* v2.09: just check 'indirect' */
-; 2022 :             if( opnd1->indirect == FALSE ) {
+; 1986 :             }
+; 1987 :             //if( opnd1->base_reg == NULL && opnd1->idx_reg == NULL ) { /* v2.09: just check 'indirect' */
+; 1988 :             if( opnd1->indirect == FALSE ) {
 
-	mov	eax, DWORD PTR [r9+76]
+	mov	eax, DWORD PTR [r9+72]
 	test	al, 1
 	jne	SHORT $LN24@minus_op
 
-; 2023 :                 if( opnd1->instr == T_OFFSET && opnd2->instr == T_OFFSET )
+; 1989 :                 if( opnd1->instr == T_OFFSET && opnd2->instr == T_OFFSET )
 
 	cmp	DWORD PTR [r9+56], 241			; 000000f1H
 	jne	SHORT $LN25@minus_op
 	cmp	DWORD PTR [r10+56], 241			; 000000f1H
 	jne	SHORT $LN25@minus_op
 
-; 2029 :                 //opnd1->indirect |= opnd2->indirect;  /* v2.09: op1->indirect is always 1, op2->indirect is always 0 */
-; 2030 :             }
-; 2031 :             opnd1->explicit = FALSE;
+; 1995 :                 //opnd1->indirect |= opnd2->indirect;  /* v2.09: op1->indirect is always 1, op2->indirect is always 0 */
+; 1996 :             }
+; 1997 :             opnd1->explicit = FALSE;
 
 	and	eax, -3					; fffffffdH
 	mov	DWORD PTR [r9+56], -2
-	mov	DWORD PTR [r9+76], eax
+	mov	DWORD PTR [r9+72], eax
 
-; 2045 :     }
-; 2046 :     return( NOT_ERROR );
+; 2011 :     }
+; 2012 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	mov	DWORD PTR [r9+64], 192			; 000000c0H
 
-; 2047 : }
+; 2013 : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
 $LN24@minus_op:
 
-; 2024 :                     opnd1->instr = EMPTY;
-; 2025 :                 //opnd1->indirect = FALSE; /* v2.09: not needed */
-; 2026 :             } else {
-; 2027 :                 DebugMsg1(("minus_op, exit, ADDR, base=%X, idx=%X\n", opnd1->base_reg, opnd1->idx_reg ));
-; 2028 :                 opnd1->kind = EXPR_ADDR;
+; 1990 :                     opnd1->instr = EMPTY;
+; 1991 :                 //opnd1->indirect = FALSE; /* v2.09: not needed */
+; 1992 :             } else {
+; 1993 :                 DebugMsg1(("minus_op, exit, ADDR, base=%X, idx=%X\n", opnd1->base_reg, opnd1->idx_reg ));
+; 1994 :                 opnd1->kind = EXPR_ADDR;
 
 	mov	DWORD PTR [r9+60], 1
 $LN25@minus_op:
 
-; 2029 :                 //opnd1->indirect |= opnd2->indirect;  /* v2.09: op1->indirect is always 1, op2->indirect is always 0 */
-; 2030 :             }
-; 2031 :             opnd1->explicit = FALSE;
+; 1995 :                 //opnd1->indirect |= opnd2->indirect;  /* v2.09: op1->indirect is always 1, op2->indirect is always 0 */
+; 1996 :             }
+; 1997 :             opnd1->explicit = FALSE;
 
 	and	eax, -3					; fffffffdH
 
-; 2032 :             opnd1->mem_type = MT_EMPTY;
+; 1998 :             opnd1->mem_type = MT_EMPTY;
 
 	mov	DWORD PTR [r9+64], 192			; 000000c0H
-	mov	DWORD PTR [r9+76], eax
+	mov	DWORD PTR [r9+72], eax
 
-; 2045 :     }
-; 2046 :     return( NOT_ERROR );
+; 2011 :     }
+; 2012 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 2047 : }
+; 2013 : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
 $LN15@minus_op:
 
-; 1965 :                 DebugMsg(("minus_op error, label_tok=%X opnd1.sym=%X opnd2.sym=%X\n", opnd1->label_tok, opnd1->sym, opnd2->sym ));
-; 1966 :                 /* v2.05: error msg changed */
-; 1967 :                 //fnEmitErr( SYNTAX_ERROR );
-; 1968 :                 return( fnEmitErr( OPERAND_MUST_BE_RELOCATABLE ) );
+; 1931 :                 DebugMsg(("minus_op error, label_tok=%X opnd1.sym=%X opnd2.sym=%X\n", opnd1->label_tok, opnd1->sym, opnd2->sym ));
+; 1932 :                 /* v2.05: error msg changed */
+; 1933 :                 //fnEmitErr( SYNTAX_ERROR );
+; 1934 :                 return( fnEmitErr( OPERAND_MUST_BE_RELOCATABLE ) );
 
 	mov	ecx, 188				; 000000bcH
 
-; 2047 : }
+; 2013 : }
 
 	add	rsp, 40					; 00000028H
 
-; 1965 :                 DebugMsg(("minus_op error, label_tok=%X opnd1.sym=%X opnd2.sym=%X\n", opnd1->label_tok, opnd1->sym, opnd2->sym ));
-; 1966 :                 /* v2.05: error msg changed */
-; 1967 :                 //fnEmitErr( SYNTAX_ERROR );
-; 1968 :                 return( fnEmitErr( OPERAND_MUST_BE_RELOCATABLE ) );
+; 1931 :                 DebugMsg(("minus_op error, label_tok=%X opnd1.sym=%X opnd2.sym=%X\n", opnd1->label_tok, opnd1->sym, opnd2->sym ));
+; 1932 :                 /* v2.05: error msg changed */
+; 1933 :                 //fnEmitErr( SYNTAX_ERROR );
+; 1934 :                 return( fnEmitErr( OPERAND_MUST_BE_RELOCATABLE ) );
 
 	rex_jmp	QWORD PTR fnEmitErr
 $LN9@minus_op:
 
-; 2033 :         }
-; 2034 : 
-; 2035 :     } else if( opnd1->kind == EXPR_REG &&
+; 1999 :         }
+; 2000 : 
+; 2001 :     } else if( opnd1->kind == EXPR_REG &&
 
 	cmp	eax, 2
 	jne	SHORT $LN27@minus_op
 	cmp	DWORD PTR [r10+60], 0
 	jne	SHORT $LN27@minus_op
 
-; 2036 :               opnd2->kind == EXPR_CONST ) {
-; 2037 : 
-; 2038 :         opnd1->llvalue = -1 * opnd2->llvalue;
+; 2002 :               opnd2->kind == EXPR_CONST ) {
+; 2003 : 
+; 2004 :         opnd1->llvalue = -1 * opnd2->llvalue;
 
 	mov	rax, QWORD PTR [r10]
 	neg	rax
 	mov	QWORD PTR [r9], rax
 
-; 2039 :         opnd1->indirect |= opnd2->indirect;
+; 2005 :         opnd1->indirect |= opnd2->indirect;
 
-	mov	eax, DWORD PTR [r10+76]
+	mov	eax, DWORD PTR [r10+72]
 	and	eax, 1
 
-; 2040 :         opnd1->kind = EXPR_ADDR;
+; 2006 :         opnd1->kind = EXPR_ADDR;
 
 	mov	DWORD PTR [r9+60], 1
-	or	DWORD PTR [r9+76], eax
+	or	DWORD PTR [r9+72], eax
 $LN28@minus_op:
 
-; 2045 :     }
-; 2046 :     return( NOT_ERROR );
+; 2011 :     }
+; 2012 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 2047 : }
+; 2013 : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
 $LN27@minus_op:
 
-; 2041 : 
-; 2042 :     } else {
-; 2043 :         DebugMsg(("minus_op, exit, error: kinds tok1=%u, tok2=%u\n", opnd1->kind, opnd2->kind ));
-; 2044 :         return( ConstError( opnd1, opnd2 ) );
+; 2007 : 
+; 2008 :     } else {
+; 2009 :         DebugMsg(("minus_op, exit, error: kinds tok1=%u, tok2=%u\n", opnd1->kind, opnd2->kind ));
+; 2010 :         return( ConstError( opnd1, opnd2 ) );
 
-	test	BYTE PTR [r9+76], 16
+	test	BYTE PTR [r9+72], 16
 	je	SHORT $LN45@minus_op
 	xor	ecx, ecx
 	mov	eax, ecx
 
-; 2047 : }
+; 2013 : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
 
-; 2041 : 
-; 2042 :     } else {
-; 2043 :         DebugMsg(("minus_op, exit, error: kinds tok1=%u, tok2=%u\n", opnd1->kind, opnd2->kind ));
-; 2044 :         return( ConstError( opnd1, opnd2 ) );
+; 2007 : 
+; 2008 :     } else {
+; 2009 :         DebugMsg(("minus_op, exit, error: kinds tok1=%u, tok2=%u\n", opnd1->kind, opnd2->kind ));
+; 2010 :         return( ConstError( opnd1, opnd2 ) );
 
 $LN45@minus_op:
 	cmp	eax, 3
@@ -6429,7 +6429,7 @@ $LN53@minus_op:
 	or	ecx, -1
 	mov	eax, ecx
 
-; 2047 : }
+; 2013 : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
@@ -6443,135 +6443,135 @@ opnd1$ = 48
 opnd2$ = 56
 plus_op	PROC						; COMDAT
 
-; 1780 : {
+; 1746 : {
 
 	mov	QWORD PTR [rsp+8], rbx
 	push	rdi
 	sub	rsp, 32					; 00000020H
 
-; 1781 :     DebugMsg1(("plus_op: kind=%d/%d memtype=%Xh-%Xh value=%d-%d sym=%s-%s mbr=%s-%s type=%s-%s\n",
-; 1782 :                opnd1->kind, opnd2->kind,
-; 1783 :                opnd1->mem_type, opnd2->mem_type, 
-; 1784 :                opnd1->value, opnd2->value,
-; 1785 :                opnd1->sym ? opnd1->sym->name : "NULL",
-; 1786 :                opnd2->sym ? opnd2->sym->name : "NULL",
-; 1787 :                opnd1->mbr ? opnd1->mbr->name : "NULL",
-; 1788 :                opnd2->mbr ? opnd2->mbr->name : "NULL",
-; 1789 :                opnd1->type ? opnd1->type->name : "NULL",
-; 1790 :                opnd2->type ? opnd2->type->name : "NULL" ));
-; 1791 :     /*
-; 1792 :      * The formats allowed are (registers inside [] only!):
-; 1793 :      *        constant + constant  CONST-CONST
-; 1794 :      *        constant + address   CONST-ADDR
-; 1795 :      *        register + constant  ADDR-CONST
-; 1796 :      *        address + register   ADDR-ADDR
-; 1797 :      *        register + register  ADDR-ADDR
-; 1798 :      *        address  + address   ADDR-ADDR
-; 1799 :      */
-; 1800 : 
-; 1801 :     if( check_direct_reg( opnd1, opnd2 ) == ERROR ) {
+; 1747 :     DebugMsg1(("plus_op: kind=%d/%d memtype=%Xh-%Xh value=%d-%d sym=%s-%s mbr=%s-%s type=%s-%s\n",
+; 1748 :                opnd1->kind, opnd2->kind,
+; 1749 :                opnd1->mem_type, opnd2->mem_type, 
+; 1750 :                opnd1->value, opnd2->value,
+; 1751 :                opnd1->sym ? opnd1->sym->name : "NULL",
+; 1752 :                opnd2->sym ? opnd2->sym->name : "NULL",
+; 1753 :                opnd1->mbr ? opnd1->mbr->name : "NULL",
+; 1754 :                opnd2->mbr ? opnd2->mbr->name : "NULL",
+; 1755 :                opnd1->type ? opnd1->type->name : "NULL",
+; 1756 :                opnd2->type ? opnd2->type->name : "NULL" ));
+; 1757 :     /*
+; 1758 :      * The formats allowed are (registers inside [] only!):
+; 1759 :      *        constant + constant  CONST-CONST
+; 1760 :      *        constant + address   CONST-ADDR
+; 1761 :      *        register + constant  ADDR-CONST
+; 1762 :      *        address + register   ADDR-ADDR
+; 1763 :      *        register + register  ADDR-ADDR
+; 1764 :      *        address  + address   ADDR-ADDR
+; 1765 :      */
+; 1766 : 
+; 1767 :     if( check_direct_reg( opnd1, opnd2 ) == ERROR ) {
 
 	mov	eax, DWORD PTR [rcx+60]
 	mov	rdi, rdx
 	mov	rbx, rcx
 	cmp	eax, 2
 	jne	SHORT $LN34@plus_op
-	test	BYTE PTR [rcx+76], 1
+	test	BYTE PTR [rcx+72], 1
 	je	SHORT $LN57@plus_op
 $LN34@plus_op:
 	cmp	DWORD PTR [rdx+60], 2
 	jne	SHORT $LN2@plus_op
-	test	BYTE PTR [rdx+76], 1
+	test	BYTE PTR [rdx+72], 1
 	jne	SHORT $LN2@plus_op
 $LN57@plus_op:
 
-; 1802 :         DebugMsg(("plus_op: error direct register\n" ));
-; 1803 :         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
+; 1768 :         DebugMsg(("plus_op: error direct register\n" ));
+; 1769 :         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
 	mov	ecx, 170				; 000000aaH
 
-; 1903 : }
+; 1869 : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	add	rsp, 32					; 00000020H
 	pop	rdi
 
-; 1802 :         DebugMsg(("plus_op: error direct register\n" ));
-; 1803 :         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
+; 1768 :         DebugMsg(("plus_op: error direct register\n" ));
+; 1769 :         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
 	rex_jmp	QWORD PTR fnEmitErr
 $LN2@plus_op:
 
-; 1804 :     }
-; 1805 :     /* v2.08: remove EXPR_REG variants */
-; 1806 :     if ( opnd1->kind == EXPR_REG )
+; 1770 :     }
+; 1771 :     /* v2.08: remove EXPR_REG variants */
+; 1772 :     if ( opnd1->kind == EXPR_REG )
 
 	cmp	eax, 2
 	jne	SHORT $LN3@plus_op
 
-; 1807 :         opnd1->kind = EXPR_ADDR;
+; 1773 :         opnd1->kind = EXPR_ADDR;
 
 	mov	DWORD PTR [rcx+60], 1
 $LN3@plus_op:
 
-; 1808 :     if ( opnd2->kind == EXPR_REG )
+; 1774 :     if ( opnd2->kind == EXPR_REG )
 
 	cmp	DWORD PTR [rdx+60], 2
 	jne	SHORT $LN4@plus_op
 
-; 1809 :         opnd2->kind = EXPR_ADDR;
+; 1775 :         opnd2->kind = EXPR_ADDR;
 
 	mov	DWORD PTR [rdx+60], 1
 $LN4@plus_op:
 
-; 1810 : 
-; 1811 :     /* v2.07: don't allow multiple overrides */
-; 1812 :     if ( opnd2->override ) {
+; 1776 : 
+; 1777 :     /* v2.07: don't allow multiple overrides */
+; 1778 :     if ( opnd2->override ) {
 
 	mov	rcx, QWORD PTR [rdx+48]
 	test	rcx, rcx
 	je	SHORT $LN5@plus_op
 
-; 1813 :         if ( opnd1->override ) {
+; 1779 :         if ( opnd1->override ) {
 
 	mov	rdx, QWORD PTR [rbx+48]
 	test	rdx, rdx
 	je	SHORT $LN7@plus_op
 
-; 1814 :             /* v2.07a: both T_REG or both T_ID is rejected */
-; 1815 :             if ( opnd1->override->token == opnd2->override->token ) {
+; 1780 :             /* v2.07a: both T_REG or both T_ID is rejected */
+; 1781 :             if ( opnd1->override->token == opnd2->override->token ) {
 
 	movzx	eax, BYTE PTR [rcx]
 	cmp	BYTE PTR [rdx], al
 	jne	SHORT $LN7@plus_op
 
-; 1816 :                 DebugMsg(("plus_op: multiple overrides\n" ));
-; 1817 :                 return( fnEmitErr( MULTIPLE_OVERRIDES ) );
+; 1782 :                 DebugMsg(("plus_op: multiple overrides\n" ));
+; 1783 :                 return( fnEmitErr( MULTIPLE_OVERRIDES ) );
 
 	mov	ecx, 68					; 00000044H
 
-; 1903 : }
+; 1869 : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	add	rsp, 32					; 00000020H
 	pop	rdi
 
-; 1816 :                 DebugMsg(("plus_op: multiple overrides\n" ));
-; 1817 :                 return( fnEmitErr( MULTIPLE_OVERRIDES ) );
+; 1782 :                 DebugMsg(("plus_op: multiple overrides\n" ));
+; 1783 :                 return( fnEmitErr( MULTIPLE_OVERRIDES ) );
 
 	rex_jmp	QWORD PTR fnEmitErr
 $LN7@plus_op:
 
-; 1818 :             }
-; 1819 :         }
-; 1820 :         opnd1->override = opnd2->override;
+; 1784 :             }
+; 1785 :         }
+; 1786 :         opnd1->override = opnd2->override;
 
 	mov	QWORD PTR [rbx+48], rcx
 $LN5@plus_op:
 
-; 1821 :     }
-; 1822 : 
-; 1823 :     if( check_same( opnd1, opnd2, EXPR_CONST ) ) {
+; 1787 :     }
+; 1788 : 
+; 1789 :     if( check_same( opnd1, opnd2, EXPR_CONST ) ) {
 
 	mov	eax, DWORD PTR [rbx+60]
 	test	eax, eax
@@ -6579,19 +6579,19 @@ $LN5@plus_op:
 	cmp	DWORD PTR [rdi+60], eax
 	jne	SHORT $LN8@plus_op
 
-; 1824 : 
-; 1825 :         DebugMsg1(("plus_op: CONST - CONST\n" ));
-; 1826 :         opnd1->llvalue += opnd2->llvalue;
+; 1790 : 
+; 1791 :         DebugMsg1(("plus_op: CONST - CONST\n" ));
+; 1792 :         opnd1->llvalue += opnd2->llvalue;
 
 	mov	rax, QWORD PTR [rdi]
 	add	QWORD PTR [rbx], rax
 
-; 1901 :     }
-; 1902 :     return( NOT_ERROR );
+; 1867 :     }
+; 1868 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1903 : }
+; 1869 : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	add	rsp, 32					; 00000020H
@@ -6599,17 +6599,17 @@ $LN5@plus_op:
 	ret	0
 $LN8@plus_op:
 
-; 1827 : 
-; 1828 :     } else if( check_same( opnd1, opnd2, EXPR_ADDR ) ) {
+; 1793 : 
+; 1794 :     } else if( check_same( opnd1, opnd2, EXPR_ADDR ) ) {
 
 	cmp	eax, 1
 	jne	$LN10@plus_op
 	cmp	DWORD PTR [rdi+60], eax
 	jne	$LN10@plus_op
 
-; 1829 : 
-; 1830 :         DebugMsg1(("plus_op: ADDR - ADDR\n" ));
-; 1831 :         fix_struct_value( opnd1 );
+; 1795 : 
+; 1796 :         DebugMsg1(("plus_op: ADDR - ADDR\n" ));
+; 1797 :         fix_struct_value( opnd1 );
 
 	mov	rax, QWORD PTR [rbx+88]
 	xor	ecx, ecx
@@ -6622,7 +6622,7 @@ $LN8@plus_op:
 	mov	QWORD PTR [rbx+88], rcx
 $LN37@plus_op:
 
-; 1832 :         fix_struct_value( opnd2 );
+; 1798 :         fix_struct_value( opnd2 );
 
 	mov	rax, QWORD PTR [rdi+88]
 	test	rax, rax
@@ -6634,7 +6634,7 @@ $LN37@plus_op:
 	mov	QWORD PTR [rdi+88], rcx
 $LN40@plus_op:
 
-; 1833 :         if ( index_connect( opnd1, opnd2 ) == ERROR )
+; 1799 :         if ( index_connect( opnd1, opnd2 ) == ERROR )
 
 	mov	rdx, rdi
 	mov	rcx, rbx
@@ -6642,11 +6642,11 @@ $LN40@plus_op:
 	cmp	eax, -1
 	jne	SHORT $LN12@plus_op
 
-; 1834 :             return( ERROR );
+; 1800 :             return( ERROR );
 
 	or	eax, eax
 
-; 1903 : }
+; 1869 : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	add	rsp, 32					; 00000020H
@@ -6654,17 +6654,17 @@ $LN40@plus_op:
 	ret	0
 $LN12@plus_op:
 
-; 1835 :         if( opnd2->sym != NULL ) {
+; 1801 :         if( opnd2->sym != NULL ) {
 
 	mov	rax, QWORD PTR [rdi+80]
 	test	rax, rax
 	je	SHORT $LN16@plus_op
 
-; 1836 :             /* two relocatable labels not allowed */
-; 1837 :             /* v2.05: changed */
-; 1838 :             //if ( ( opnd1->sym != NULL ) && ( Parse_Pass > PASS_1 || error_msg == FALSE ) ) {
-; 1839 :             if ( opnd1->sym != NULL &&
-; 1840 :                 opnd1->sym->state != SYM_UNDEFINED &&
+; 1802 :             /* two relocatable labels not allowed */
+; 1803 :             /* v2.05: changed */
+; 1804 :             //if ( ( opnd1->sym != NULL ) && ( Parse_Pass > PASS_1 || error_msg == FALSE ) ) {
+; 1805 :             if ( opnd1->sym != NULL &&
+; 1806 :                 opnd1->sym->state != SYM_UNDEFINED &&
 
 	mov	rcx, QWORD PTR [rbx+80]
 	test	rcx, rcx
@@ -6674,30 +6674,30 @@ $LN12@plus_op:
 	cmp	DWORD PTR [rax+32], 0
 	je	SHORT $LN14@plus_op
 
-; 1841 :                 opnd2->sym->state != SYM_UNDEFINED ) {
-; 1842 :                 DebugMsg(("plus_op: two relocatable labels: %s - %s \n", opnd1->sym->name, opnd2->sym->name ));
-; 1843 :                 return( fnEmitErr( CANNOT_ADD_TWO_RELOCATABLE_LABELS ) );
+; 1807 :                 opnd2->sym->state != SYM_UNDEFINED ) {
+; 1808 :                 DebugMsg(("plus_op: two relocatable labels: %s - %s \n", opnd1->sym->name, opnd2->sym->name ));
+; 1809 :                 return( fnEmitErr( CANNOT_ADD_TWO_RELOCATABLE_LABELS ) );
 
 	mov	ecx, 173				; 000000adH
 
-; 1903 : }
+; 1869 : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	add	rsp, 32					; 00000020H
 	pop	rdi
 
-; 1841 :                 opnd2->sym->state != SYM_UNDEFINED ) {
-; 1842 :                 DebugMsg(("plus_op: two relocatable labels: %s - %s \n", opnd1->sym->name, opnd2->sym->name ));
-; 1843 :                 return( fnEmitErr( CANNOT_ADD_TWO_RELOCATABLE_LABELS ) );
+; 1807 :                 opnd2->sym->state != SYM_UNDEFINED ) {
+; 1808 :                 DebugMsg(("plus_op: two relocatable labels: %s - %s \n", opnd1->sym->name, opnd2->sym->name ));
+; 1809 :                 return( fnEmitErr( CANNOT_ADD_TWO_RELOCATABLE_LABELS ) );
 
 	rex_jmp	QWORD PTR fnEmitErr
 $LN14@plus_op:
 
-; 1844 :             }
-; 1845 :             opnd1->label_tok = opnd2->label_tok;
-; 1846 :             opnd1->sym = opnd2->sym;
-; 1847 :             /* v2.05: added */
-; 1848 :             if ( opnd1->mem_type == MT_EMPTY )
+; 1810 :             }
+; 1811 :             opnd1->label_tok = opnd2->label_tok;
+; 1812 :             opnd1->sym = opnd2->sym;
+; 1813 :             /* v2.05: added */
+; 1814 :             if ( opnd1->mem_type == MT_EMPTY )
 
 	cmp	DWORD PTR [rbx+64], 192			; 000000c0H
 	mov	rax, QWORD PTR [rdi+40]
@@ -6706,47 +6706,47 @@ $LN14@plus_op:
 	mov	QWORD PTR [rbx+80], rax
 	jne	SHORT $LN15@plus_op
 
-; 1849 :                 opnd1->mem_type = opnd2->mem_type;
+; 1815 :                 opnd1->mem_type = opnd2->mem_type;
 
 	mov	eax, DWORD PTR [rdi+64]
 	mov	DWORD PTR [rbx+64], eax
 $LN15@plus_op:
 
-; 1850 :             /* v2.10: copy qualifier ( [<reg>+imagerel xxx] */
-; 1851 :             if ( opnd2->instr != EMPTY )
+; 1816 :             /* v2.10: copy qualifier ( [<reg>+imagerel xxx] */
+; 1817 :             if ( opnd2->instr != EMPTY )
 
 	mov	eax, DWORD PTR [rdi+56]
 	cmp	eax, -2
 	je	SHORT $LN16@plus_op
 
-; 1852 :                 opnd1->instr = opnd2->instr;
+; 1818 :                 opnd1->instr = opnd2->instr;
 
 	mov	DWORD PTR [rbx+56], eax
 $LN16@plus_op:
 
-; 1853 :         }
-; 1854 :         opnd1->llvalue += opnd2->llvalue;
+; 1819 :         }
+; 1820 :         opnd1->llvalue += opnd2->llvalue;
 
 	mov	rax, QWORD PTR [rdi]
 	add	QWORD PTR [rbx], rax
 
-; 1855 :         /* v2.08: added, test case [ecx+ebx.<struc>].<mbr> */
-; 1856 :         if ( opnd2->type )
+; 1821 :         /* v2.08: added, test case [ecx+ebx.<struc>].<mbr> */
+; 1822 :         if ( opnd2->type )
 
 	mov	rax, QWORD PTR [rdi+96]
 	test	rax, rax
 	je	$LN49@plus_op
 
-; 1857 :             opnd1->type = opnd2->type;
+; 1823 :             opnd1->type = opnd2->type;
 
 	mov	QWORD PTR [rbx+96], rax
 
-; 1901 :     }
-; 1902 :     return( NOT_ERROR );
+; 1867 :     }
+; 1868 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1903 : }
+; 1869 : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	add	rsp, 32					; 00000020H
@@ -6754,8 +6754,8 @@ $LN16@plus_op:
 	ret	0
 $LN10@plus_op:
 
-; 1858 : 
-; 1859 :     } else if( check_both( opnd1, opnd2, EXPR_CONST, EXPR_ADDR ) ) {
+; 1824 : 
+; 1825 :     } else if( check_both( opnd1, opnd2, EXPR_CONST, EXPR_ADDR ) ) {
 
 	test	eax, eax
 	jne	SHORT $LN43@plus_op
@@ -6768,81 +6768,81 @@ $LN43@plus_op:
 	jne	$LN18@plus_op
 $LN58@plus_op:
 
-; 1860 : 
-; 1861 :         if( opnd1->kind == EXPR_CONST ) {
+; 1826 : 
+; 1827 :         if( opnd1->kind == EXPR_CONST ) {
 
 	test	eax, eax
 	jne	SHORT $LN20@plus_op
 
-; 1862 :             DebugMsg1(("plus_op: CONST - ADDR\n" ));
-; 1863 :             opnd2->llvalue += opnd1->llvalue;
+; 1828 :             DebugMsg1(("plus_op: CONST - ADDR\n" ));
+; 1829 :             opnd2->llvalue += opnd1->llvalue;
 
 	mov	rax, QWORD PTR [rbx]
 	add	QWORD PTR [rdi], rax
 
-; 1864 :             opnd2->indirect |= opnd1->indirect;
+; 1830 :             opnd2->indirect |= opnd1->indirect;
 
-	mov	eax, DWORD PTR [rbx+76]
+	mov	eax, DWORD PTR [rbx+72]
 	and	eax, 1
-	or	eax, DWORD PTR [rdi+76]
-	mov	DWORD PTR [rdi+76], eax
+	or	eax, DWORD PTR [rdi+72]
+	mov	DWORD PTR [rdi+72], eax
 
-; 1865 : 
-; 1866 :             if( opnd1->explicit == TRUE ) {
+; 1831 : 
+; 1832 :             if( opnd1->explicit == TRUE ) {
 
-	test	BYTE PTR [rbx+76], 2
+	test	BYTE PTR [rbx+72], 2
 	je	SHORT $LN22@plus_op
 
-; 1867 :                 opnd2->explicit = TRUE;
+; 1833 :                 opnd2->explicit = TRUE;
 
 	or	eax, 2
-	mov	DWORD PTR [rdi+76], eax
+	mov	DWORD PTR [rdi+72], eax
 
-; 1868 :                 opnd2->mem_type = opnd1->mem_type;
+; 1834 :                 opnd2->mem_type = opnd1->mem_type;
 
 	jmp	SHORT $LN59@plus_op
 $LN22@plus_op:
 
-; 1869 :             } else if ( opnd2->mem_type == MT_EMPTY )
+; 1835 :             } else if ( opnd2->mem_type == MT_EMPTY )
 
 	cmp	DWORD PTR [rdi+64], 192			; 000000c0H
 	jne	SHORT $LN24@plus_op
 $LN59@plus_op:
 
-; 1870 :                 opnd2->mem_type = opnd1->mem_type;
+; 1836 :                 opnd2->mem_type = opnd1->mem_type;
 
 	mov	eax, DWORD PTR [rbx+64]
 	mov	DWORD PTR [rdi+64], eax
 $LN24@plus_op:
 
-; 1871 : 
-; 1872 :             /* v2.05: added. See dotop2.asm, "mov eax, v2.f1[ebx*2]" */
-; 1873 :             if ( opnd2->mbr == NULL )
+; 1837 : 
+; 1838 :             /* v2.05: added. See dotop2.asm, "mov eax, v2.f1[ebx*2]" */
+; 1839 :             if ( opnd2->mbr == NULL )
 
 	cmp	QWORD PTR [rdi+88], 0
 	jne	SHORT $LN25@plus_op
 
-; 1874 :                 opnd2->mbr = opnd1->mbr;
+; 1840 :                 opnd2->mbr = opnd1->mbr;
 
 	mov	rax, QWORD PTR [rbx+88]
 	mov	QWORD PTR [rdi+88], rax
 $LN25@plus_op:
 
-; 1875 : 
-; 1876 :             /* v2.08: added, test case [4+ebx.<struc>].<mbr> */
-; 1877 :             if ( opnd2->type )
+; 1841 : 
+; 1842 :             /* v2.08: added, test case [4+ebx.<struc>].<mbr> */
+; 1843 :             if ( opnd2->type )
 
 	mov	rax, QWORD PTR [rdi+96]
 	test	rax, rax
 	je	SHORT $LN26@plus_op
 
-; 1878 :                 opnd1->type = opnd2->type; /* set <type> in op1! */
+; 1844 :                 opnd1->type = opnd2->type; /* set <type> in op1! */
 
 	mov	QWORD PTR [rbx+96], rax
 $LN26@plus_op:
 
-; 1879 : 
-; 1880 :             TokenAssign( opnd1, opnd2 );
+; 1845 : 
+; 1846 :             TokenAssign( opnd1, opnd2 );
 
 	movups	xmm0, XMMWORD PTR [rdi]
 	movups	XMMWORD PTR [rbx], xmm0
@@ -6857,55 +6857,55 @@ $LN26@plus_op:
 	movups	xmm1, XMMWORD PTR [rdi+80]
 	movups	XMMWORD PTR [rbx+80], xmm1
 
-; 1881 : 
-; 1882 :         } else {
+; 1847 : 
+; 1848 :         } else {
 
 	jmp	SHORT $LN29@plus_op
 $LN20@plus_op:
 
-; 1883 :             DebugMsg1(("plus_op: ADDR - CONST\n" ));
-; 1884 :             opnd1->llvalue += opnd2->llvalue;
+; 1849 :             DebugMsg1(("plus_op: ADDR - CONST\n" ));
+; 1850 :             opnd1->llvalue += opnd2->llvalue;
 
 	mov	rax, QWORD PTR [rdi]
 	add	QWORD PTR [rbx], rax
 
-; 1885 :             /* v2.04: added. to make this case behave like
-; 1886 :              * the CONST - REG case (see below).
-; 1887 :              */
-; 1888 :             /* v2.08: changed, test case [reg+struct] */
-; 1889 :             //if ( opnd1->mem_type == MT_EMPTY )
-; 1890 :             if ( opnd2->mbr ) { /* v2.10: added; regression test dotop5.asm */
+; 1851 :             /* v2.04: added. to make this case behave like
+; 1852 :              * the CONST - REG case (see below).
+; 1853 :              */
+; 1854 :             /* v2.08: changed, test case [reg+struct] */
+; 1855 :             //if ( opnd1->mem_type == MT_EMPTY )
+; 1856 :             if ( opnd2->mbr ) { /* v2.10: added; regression test dotop5.asm */
 
 	mov	rax, QWORD PTR [rdi+88]
 	test	rax, rax
 	je	SHORT $LN27@plus_op
 
-; 1891 :                 opnd1->mbr = opnd2->mbr;
+; 1857 :                 opnd1->mbr = opnd2->mbr;
 
 	mov	QWORD PTR [rbx+88], rax
 
-; 1892 :                 opnd1->mem_type = opnd2->mem_type;
-; 1893 :             } else
+; 1858 :                 opnd1->mem_type = opnd2->mem_type;
+; 1859 :             } else
 
 	jmp	SHORT $LN60@plus_op
 $LN27@plus_op:
 
-; 1894 :             if ( opnd1->mem_type == MT_EMPTY && opnd2->is_type == FALSE )
+; 1860 :             if ( opnd1->mem_type == MT_EMPTY && opnd2->is_type == FALSE )
 
 	cmp	DWORD PTR [rbx+64], 192			; 000000c0H
 	jne	SHORT $LN29@plus_op
-	test	BYTE PTR [rdi+76], 8
+	test	BYTE PTR [rdi+72], 8
 	jne	SHORT $LN29@plus_op
 $LN60@plus_op:
 
-; 1895 :                 opnd1->mem_type = opnd2->mem_type;
+; 1861 :                 opnd1->mem_type = opnd2->mem_type;
 
 	mov	eax, DWORD PTR [rdi+64]
 	mov	DWORD PTR [rbx+64], eax
 $LN29@plus_op:
 
-; 1896 :         }
-; 1897 :         fix_struct_value( opnd1 );
+; 1862 :         }
+; 1863 :         fix_struct_value( opnd1 );
 
 	mov	rax, QWORD PTR [rbx+88]
 	test	rax, rax
@@ -6918,12 +6918,12 @@ $LN29@plus_op:
 	mov	QWORD PTR [rbx+88], rcx
 $LN49@plus_op:
 
-; 1901 :     }
-; 1902 :     return( NOT_ERROR );
+; 1867 :     }
+; 1868 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1903 : }
+; 1869 : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	add	rsp, 32					; 00000020H
@@ -6931,25 +6931,25 @@ $LN49@plus_op:
 	ret	0
 $LN18@plus_op:
 
-; 1898 :     } else {
-; 1899 :         DebugMsg(("plus_op: error, unexpected format: %u - %u\n", opnd1->kind, opnd2->kind ));
-; 1900 :         return( ConstError( opnd1, opnd2 ) );
+; 1864 :     } else {
+; 1865 :         DebugMsg(("plus_op: error, unexpected format: %u - %u\n", opnd1->kind, opnd2->kind ));
+; 1866 :         return( ConstError( opnd1, opnd2 ) );
 
-	test	BYTE PTR [rbx+76], 16
+	test	BYTE PTR [rbx+72], 16
 	je	SHORT $LN52@plus_op
 	xor	ecx, ecx
 	mov	eax, ecx
 
-; 1903 : }
+; 1869 : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	add	rsp, 32					; 00000020H
 	pop	rdi
 	ret	0
 
-; 1898 :     } else {
-; 1899 :         DebugMsg(("plus_op: error, unexpected format: %u - %u\n", opnd1->kind, opnd2->kind ));
-; 1900 :         return( ConstError( opnd1, opnd2 ) );
+; 1864 :     } else {
+; 1865 :         DebugMsg(("plus_op: error, unexpected format: %u - %u\n", opnd1->kind, opnd2->kind ));
+; 1866 :         return( ConstError( opnd1, opnd2 ) );
 
 $LN52@plus_op:
 	cmp	eax, 3
@@ -6962,7 +6962,7 @@ $LN55@plus_op:
 $LN61@plus_op:
 	call	QWORD PTR fnEmitErr
 
-; 1903 : }
+; 1869 : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	or	ecx, -1
@@ -6982,100 +6982,100 @@ sym$ = 72
 name$ = 80
 wimask_op PROC
 
-; 1724 : {
+; 1690 : {
 
 	sub	rsp, 40					; 00000028H
 
-; 1725 :     /* additional check needed if operand is a type */
-; 1726 :     if ( opnd2->is_type ) {
+; 1691 :     /* additional check needed if operand is a type */
+; 1692 :     if ( opnd2->is_type ) {
 
-	mov	eax, DWORD PTR [r8+76]
+	mov	eax, DWORD PTR [r8+72]
 	mov	r11, rdx
 	shr	eax, 3
 	and	eax, 1
 	je	SHORT $LN8@wimask_op
 
-; 1727 :         sym = opnd2->type;
+; 1693 :         sym = opnd2->type;
 
 	mov	rdx, QWORD PTR [r8+96]
 
-; 1728 :         if (sym->typekind != TYPE_RECORD ) {
+; 1694 :         if (sym->typekind != TYPE_RECORD ) {
 
 	cmp	BYTE PTR [rdx+66], 4
 	je	SHORT $LN12@wimask_op
 
-; 1729 :             return( fnEmitErr( OPERAND_MUST_BE_RECORD ) );
+; 1695 :             return( fnEmitErr( OPERAND_MUST_BE_RECORD ) );
 
 	mov	ecx, 161				; 000000a1H
 
-; 1768 : }
+; 1734 : }
 
 	add	rsp, 40					; 00000028H
 
-; 1729 :             return( fnEmitErr( OPERAND_MUST_BE_RECORD ) );
+; 1695 :             return( fnEmitErr( OPERAND_MUST_BE_RECORD ) );
 
 	rex_jmp	QWORD PTR fnEmitErr
 $LN8@wimask_op:
 
-; 1730 :         }
-; 1731 :     } else if ( opnd2->kind == EXPR_CONST ) {
+; 1696 :         }
+; 1697 :     } else if ( opnd2->kind == EXPR_CONST ) {
 
 	cmp	DWORD PTR [r8+60], 0
 	jne	SHORT $LN11@wimask_op
 
-; 1732 :         sym = opnd2->mbr;
+; 1698 :         sym = opnd2->mbr;
 
 	mov	rdx, QWORD PTR [r8+88]
 
-; 1733 :     } else {
+; 1699 :     } else {
 
 	jmp	SHORT $LN12@wimask_op
 $LN11@wimask_op:
 
-; 1734 :         sym = opnd2->sym;
+; 1700 :         sym = opnd2->sym;
 
 	mov	rdx, QWORD PTR [r8+80]
 $LN12@wimask_op:
 
-; 1735 :     }
-; 1736 :     if ( oper == T_MASK ) {
+; 1701 :     }
+; 1702 :     if ( oper == T_MASK ) {
 
 	cmp	ecx, 240				; 000000f0H
 	jne	SHORT $LN13@wimask_op
 
-; 1737 :         int i;
-; 1738 :         opnd1->value = 0;
+; 1703 :         int i;
+; 1704 :         opnd1->value = 0;
 
 	mov	DWORD PTR [r11], 0
 
-; 1739 :         if ( opnd2->is_type ) { /* get mask of the RECORD? */
+; 1705 :         if ( opnd2->is_type ) { /* get mask of the RECORD? */
 
-	test	BYTE PTR [r8+76], 8
+	test	BYTE PTR [r8+72], 8
 	je	SHORT $LN15@wimask_op
 
-; 1740 : #if AMD64_SUPPORT
-; 1741 :             opnd1->llvalue = GetRecordMask( (struct dsym *)sym );
+; 1706 : #if AMD64_SUPPORT
+; 1707 :             opnd1->llvalue = GetRecordMask( (struct dsym *)sym );
 
 	mov	rcx, rdx
 	call	GetRecordMask
 	mov	QWORD PTR [r11], rax
 
-; 1767 :     return( NOT_ERROR );
+; 1733 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	mov	DWORD PTR [r11+60], 0
 
-; 1768 : }
+; 1734 : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
 $LN15@wimask_op:
 
-; 1742 : #else
-; 1743 :             opnd1->value = GetRecordMask( (struct dsym *)sym );
-; 1744 : #endif
-; 1745 :         } else { /* get mask of the bitfield */
-; 1746 :             for ( i = sym->offset ;i < sym->offset + sym->total_size; i++ )
+; 1708 : #else
+; 1709 :             opnd1->value = GetRecordMask( (struct dsym *)sym );
+; 1710 : #endif
+; 1711 :         } else { /* get mask of the bitfield */
+; 1712 :             for ( i = sym->offset ;i < sym->offset + sym->total_size; i++ )
 
 	mov	r8d, DWORD PTR [rdx+16]
 	mov	ecx, DWORD PTR [rdx+56]
@@ -7085,9 +7085,9 @@ $LN15@wimask_op:
 	npad	3
 $LL4@wimask_op:
 
-; 1747 : #if AMD64_SUPPORT
-; 1748 : #if defined(LLONG_MAX) || defined(__GNUC__) || defined(__TINYC__)
-; 1749 :                 opnd1->llvalue |= 1ULL << i;
+; 1713 : #if AMD64_SUPPORT
+; 1714 : #if defined(LLONG_MAX) || defined(__GNUC__) || defined(__TINYC__)
+; 1715 :                 opnd1->llvalue |= 1ULL << i;
 
 	mov	rcx, QWORD PTR [r11]
 	movsxd	rax, r8d
@@ -7099,37 +7099,37 @@ $LL4@wimask_op:
 	cmp	r8d, eax
 	jb	SHORT $LL4@wimask_op
 
-; 1765 :     }
-; 1766 :     opnd1->kind = EXPR_CONST;
+; 1731 :     }
+; 1732 :     opnd1->kind = EXPR_CONST;
 
 	mov	DWORD PTR [r11+60], 0
 
-; 1767 :     return( NOT_ERROR );
+; 1733 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1768 : }
+; 1734 : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
 $LN13@wimask_op:
 
-; 1750 : #else
-; 1751 :                 opnd1->llvalue |= 1i64 << i;
-; 1752 : #endif
-; 1753 : #else
-; 1754 :                 opnd1->value |= 1 << i;
-; 1755 : #endif
-; 1756 :         }
-; 1757 :     } else {
-; 1758 :         if ( opnd2->is_type ) { /* get width of the RECORD? */
+; 1716 : #else
+; 1717 :                 opnd1->llvalue |= 1i64 << i;
+; 1718 : #endif
+; 1719 : #else
+; 1720 :                 opnd1->value |= 1 << i;
+; 1721 : #endif
+; 1722 :         }
+; 1723 :     } else {
+; 1724 :         if ( opnd2->is_type ) { /* get width of the RECORD? */
 
 	test	eax, eax
 	je	SHORT $LN17@wimask_op
 
-; 1759 :             struct dsym *dir = (struct dsym *)sym;
-; 1760 :             struct sfield *fl;
-; 1761 :             for ( fl = dir->e.structinfo->head; fl; fl = fl->next )
+; 1725 :             struct dsym *dir = (struct dsym *)sym;
+; 1726 :             struct sfield *fl;
+; 1727 :             for ( fl = dir->e.structinfo->head; fl; fl = fl->next )
 
 	mov	rax, QWORD PTR [rdx+96]
 	mov	rcx, QWORD PTR [rax]
@@ -7138,7 +7138,7 @@ $LN13@wimask_op:
 	npad	6
 $LL7@wimask_op:
 
-; 1762 :                 opnd1->value += fl->sym.total_size;
+; 1728 :                 opnd1->value += fl->sym.total_size;
 
 	mov	eax, DWORD PTR [rcx+56]
 	add	DWORD PTR [r11], eax
@@ -7146,38 +7146,38 @@ $LL7@wimask_op:
 	test	rcx, rcx
 	jne	SHORT $LL7@wimask_op
 
-; 1765 :     }
-; 1766 :     opnd1->kind = EXPR_CONST;
+; 1731 :     }
+; 1732 :     opnd1->kind = EXPR_CONST;
 
 	mov	DWORD PTR [r11+60], ecx
 
-; 1767 :     return( NOT_ERROR );
+; 1733 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1768 : }
+; 1734 : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
 $LN17@wimask_op:
 
-; 1763 :         } else
-; 1764 :             opnd1->value = sym->total_size;
+; 1729 :         } else
+; 1730 :             opnd1->value = sym->total_size;
 
 	mov	eax, DWORD PTR [rdx+56]
 	mov	DWORD PTR [r11], eax
 $LN18@wimask_op:
 
-; 1765 :     }
-; 1766 :     opnd1->kind = EXPR_CONST;
+; 1731 :     }
+; 1732 :     opnd1->kind = EXPR_CONST;
 
 	mov	DWORD PTR [r11+60], 0
 
-; 1767 :     return( NOT_ERROR );
+; 1733 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1768 : }
+; 1734 : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
@@ -7193,155 +7193,155 @@ sym$ = 72
 name$ = 80
 this_op	PROC
 
-; 1681 : {
+; 1647 : {
 
 	mov	QWORD PTR [rsp+8], rbx
 	push	rdi
 	sub	rsp, 32					; 00000020H
 
-; 1682 :     if ( opnd2->is_type == FALSE ) {
+; 1648 :     if ( opnd2->is_type == FALSE ) {
 
-	test	BYTE PTR [r8+76], 8
+	test	BYTE PTR [r8+72], 8
 	mov	rbx, r8
 	mov	rdi, rdx
 	jne	SHORT $LN2@this_op
 
-; 1683 :         return( fnEmitErr( INVALID_TYPE_EXPRESSION ) );
+; 1649 :         return( fnEmitErr( INVALID_TYPE_EXPRESSION ) );
 
 	mov	ecx, 179				; 000000b3H
 
-; 1717 :     return( NOT_ERROR );
-; 1718 : }
+; 1683 :     return( NOT_ERROR );
+; 1684 : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	add	rsp, 32					; 00000020H
 	pop	rdi
 
-; 1683 :         return( fnEmitErr( INVALID_TYPE_EXPRESSION ) );
+; 1649 :         return( fnEmitErr( INVALID_TYPE_EXPRESSION ) );
 
 	rex_jmp	QWORD PTR fnEmitErr
 $LN2@this_op:
 
-; 1684 :     }
-; 1685 :     /* v2.06: won't work inside structs */
-; 1686 :     if ( CurrStruct ) {
+; 1650 :     }
+; 1651 :     /* v2.06: won't work inside structs */
+; 1652 :     if ( CurrStruct ) {
 
 	cmp	QWORD PTR CurrStruct, 0
 	je	SHORT $LN3@this_op
 
-; 1687 :         return( fnEmitErr( MUST_BE_IN_SEGMENT_BLOCK ) );
+; 1653 :         return( fnEmitErr( MUST_BE_IN_SEGMENT_BLOCK ) );
 
 	mov	ecx, 82					; 00000052H
 
-; 1717 :     return( NOT_ERROR );
-; 1718 : }
+; 1683 :     return( NOT_ERROR );
+; 1684 : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	add	rsp, 32					; 00000020H
 	pop	rdi
 
-; 1687 :         return( fnEmitErr( MUST_BE_IN_SEGMENT_BLOCK ) );
+; 1653 :         return( fnEmitErr( MUST_BE_IN_SEGMENT_BLOCK ) );
 
 	rex_jmp	QWORD PTR fnEmitErr
 $LN3@this_op:
 
-; 1688 :     }
-; 1689 :     /* v2.06: won't work outside segments */
-; 1690 :     if ( CurrSeg == NULL ) {
+; 1654 :     }
+; 1655 :     /* v2.06: won't work outside segments */
+; 1656 :     if ( CurrSeg == NULL ) {
 
 	cmp	QWORD PTR ModuleInfo+432, 0
 	jne	SHORT $LN4@this_op
 
-; 1691 :         return( EmitErr( MUST_BE_IN_SEGMENT_BLOCK ) ); /* error displayed even in EQU, hence EmitErr()! */
+; 1657 :         return( EmitErr( MUST_BE_IN_SEGMENT_BLOCK ) ); /* error displayed even in EQU, hence EmitErr()! */
 
 	mov	ecx, 82					; 00000052H
 
-; 1717 :     return( NOT_ERROR );
-; 1718 : }
+; 1683 :     return( NOT_ERROR );
+; 1684 : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	add	rsp, 32					; 00000020H
 	pop	rdi
 
-; 1691 :         return( EmitErr( MUST_BE_IN_SEGMENT_BLOCK ) ); /* error displayed even in EQU, hence EmitErr()! */
+; 1657 :         return( EmitErr( MUST_BE_IN_SEGMENT_BLOCK ) ); /* error displayed even in EQU, hence EmitErr()! */
 
 	jmp	EmitErr
 $LN4@this_op:
 
-; 1692 :     }
-; 1693 : 
-; 1694 :     if ( thissym == NULL ) {
+; 1658 :     }
+; 1659 : 
+; 1660 :     if ( thissym == NULL ) {
 
 	mov	rdx, QWORD PTR thissym
 	test	rdx, rdx
 	jne	SHORT $LN5@this_op
 
-; 1695 :         thissym = SymAlloc( "" );
+; 1661 :         thissym = SymAlloc( "" );
 
-	lea	rcx, OFFSET FLAT:$SG11627
+	lea	rcx, OFFSET FLAT:$SG11625
 	call	SymAlloc
 	mov	rdx, rax
 	mov	QWORD PTR thissym, rax
 
-; 1696 :         /* fixme: set thissym->variable? */
-; 1697 :         thissym->state = SYM_INTERNAL;
-; 1698 :         thissym->isdefined = TRUE;
+; 1662 :         /* fixme: set thissym->variable? */
+; 1663 :         thissym->state = SYM_INTERNAL;
+; 1664 :         thissym->isdefined = TRUE;
 
 	or	BYTE PTR [rax+40], 2
 	mov	DWORD PTR [rax+32], 1
 $LN5@this_op:
 
-; 1699 :     }
-; 1700 : 
-; 1701 :     DebugMsg1(("this_op: memtype=%Xh type=%s\n", opnd2->mem_type, opnd2->type ? opnd2->type->name : "NULL" ));
-; 1702 :     opnd1->kind = EXPR_ADDR;
+; 1665 :     }
+; 1666 : 
+; 1667 :     DebugMsg1(("this_op: memtype=%Xh type=%s\n", opnd2->mem_type, opnd2->type ? opnd2->type->name : "NULL" ));
+; 1668 :     opnd1->kind = EXPR_ADDR;
 
 	mov	DWORD PTR [rdi+60], 1
 
-; 1703 : 
-; 1704 :     /* v2.09: a label is not a valid argument */
-; 1705 :     //if ( opnd2->sym && opnd2->sym->mem_type == MT_TYPE )
-; 1706 :     //    thissym->type = opnd2->sym->type;
-; 1707 :     /* v2.09: set structured type */
-; 1708 :     thissym->type = opnd2->type;
+; 1669 : 
+; 1670 :     /* v2.09: a label is not a valid argument */
+; 1671 :     //if ( opnd2->sym && opnd2->sym->mem_type == MT_TYPE )
+; 1672 :     //    thissym->type = opnd2->sym->type;
+; 1673 :     /* v2.09: set structured type */
+; 1674 :     thissym->type = opnd2->type;
 
 	mov	rcx, QWORD PTR [rbx+96]
 	mov	QWORD PTR [rdx+80], rcx
 
-; 1709 :     if ( opnd2->type ) {
+; 1675 :     if ( opnd2->type ) {
 
 	cmp	QWORD PTR [rbx+96], 0
 	je	SHORT $LN6@this_op
 
-; 1710 :         thissym->mem_type = MT_TYPE;
+; 1676 :         thissym->mem_type = MT_TYPE;
 
 	mov	DWORD PTR [rdx+36], 196			; 000000c4H
 
-; 1711 :     } else
+; 1677 :     } else
 
 	jmp	SHORT $LN7@this_op
 $LN6@this_op:
 
-; 1712 :         thissym->mem_type = opnd2->mem_type;
+; 1678 :         thissym->mem_type = opnd2->mem_type;
 
 	mov	eax, DWORD PTR [rbx+64]
 	mov	DWORD PTR [rdx+36], eax
 $LN7@this_op:
 
-; 1713 : 
-; 1714 :     opnd1->sym  = thissym;
-; 1715 :     SetSymSegOfs( thissym );
+; 1679 : 
+; 1680 :     opnd1->sym  = thissym;
+; 1681 :     SetSymSegOfs( thissym );
 
 	mov	rcx, rdx
 	mov	QWORD PTR [rdi+80], rdx
 	call	SetSymSegOfs
 
-; 1716 :     opnd1->mem_type = thissym->mem_type;
+; 1682 :     opnd1->mem_type = thissym->mem_type;
 
 	mov	rax, QWORD PTR thissym
 
-; 1717 :     return( NOT_ERROR );
-; 1718 : }
+; 1683 :     return( NOT_ERROR );
+; 1684 : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	mov	ecx, DWORD PTR [rax+36]
@@ -7362,48 +7362,48 @@ sym$ = 88
 name$ = 96
 high32_op PROC
 
-; 1658 : {
+; 1624 : {
 
 	mov	QWORD PTR [rsp+8], rbx
 	push	rdi
 	sub	rsp, 48					; 00000030H
 
-; 1659 :     /* v2.06: added support for double constants */
-; 1660 :     if ( opnd2->kind == EXPR_FLOAT ) {
+; 1625 :     /* v2.06: added support for double constants */
+; 1626 :     if ( opnd2->kind == EXPR_FLOAT ) {
 
 	cmp	DWORD PTR [r8+60], 3
 	mov	rdi, r8
 	mov	rbx, rdx
 	jne	SHORT $LN2@high32_op
 
-; 1661 :         if ( Options.strict_masm_compat )
+; 1627 :         if ( Options.strict_masm_compat )
 
 	cmp	BYTE PTR Options+127, 0
 	je	SHORT $LN3@high32_op
 
-; 1662 :             return( ConstError( opnd1, opnd2 ) );
+; 1628 :             return( ConstError( opnd1, opnd2 ) );
 
-	test	BYTE PTR [rdx+76], 16
+	test	BYTE PTR [rdx+72], 16
 	je	SHORT $LN7@high32_op
 	xor	eax, eax
 
-; 1674 :     return( NOT_ERROR );
-; 1675 : }
+; 1640 :     return( NOT_ERROR );
+; 1641 : }
 
 	mov	rbx, QWORD PTR [rsp+64]
 	add	rsp, 48					; 00000030H
 	pop	rdi
 	ret	0
 
-; 1662 :             return( ConstError( opnd1, opnd2 ) );
+; 1628 :             return( ConstError( opnd1, opnd2 ) );
 
 $LN7@high32_op:
 	mov	ecx, 270				; 0000010eH
 	call	QWORD PTR fnEmitErr
 	or	eax, -1
 
-; 1674 :     return( NOT_ERROR );
-; 1675 : }
+; 1640 :     return( NOT_ERROR );
+; 1641 : }
 
 	mov	rbx, QWORD PTR [rsp+64]
 	add	rsp, 48					; 00000030H
@@ -7411,11 +7411,11 @@ $LN7@high32_op:
 	ret	0
 $LN3@high32_op:
 
-; 1663 :         atofloat( &opnd2->llvalue, opnd2->float_tok->string_ptr, sizeof( opnd2->llvalue), opnd2->negative, opnd2->float_tok->floattype );
+; 1629 :         atofloat( &opnd2->llvalue, opnd2->float_tok->string_ptr, sizeof( opnd2->llvalue), opnd2->negative, opnd2->float_tok->floattype );
 
 	mov	rdx, QWORD PTR [r8+16]
 	mov	rcx, rdi
-	mov	r9d, DWORD PTR [r8+76]
+	mov	r9d, DWORD PTR [r8+72]
 	mov	r8d, 8
 	shr	r9d, 5
 	and	r9b, 1
@@ -7424,18 +7424,18 @@ $LN3@high32_op:
 	mov	BYTE PTR [rsp+32], al
 	call	atofloat
 
-; 1664 :         opnd2->kind = EXPR_CONST;
+; 1630 :         opnd2->kind = EXPR_CONST;
 
 	xor	eax, eax
 	mov	DWORD PTR [rdi+60], eax
 
-; 1665 :         opnd2->float_tok = NULL;
+; 1631 :         opnd2->float_tok = NULL;
 
 	mov	QWORD PTR [rdi+16], rax
 $LN2@high32_op:
 
-; 1666 :     }
-; 1667 :     TokenAssign( opnd1, opnd2 );
+; 1632 :     }
+; 1633 :     TokenAssign( opnd1, opnd2 );
 
 	movups	xmm0, XMMWORD PTR [rdi]
 	movups	XMMWORD PTR [rbx], xmm0
@@ -7450,30 +7450,30 @@ $LN2@high32_op:
 	movups	xmm1, XMMWORD PTR [rdi+80]
 	movups	XMMWORD PTR [rbx+80], xmm1
 
-; 1668 :     if ( opnd2->kind == EXPR_ADDR && opnd2->instr != T_SEG ) {
+; 1634 :     if ( opnd2->kind == EXPR_ADDR && opnd2->instr != T_SEG ) {
 
 	cmp	DWORD PTR [rdi+60], 1
 	jne	SHORT $LN4@high32_op
 	cmp	DWORD PTR [rdi+56], 244			; 000000f4H
 	je	SHORT $LN4@high32_op
 
-; 1669 :         opnd1->instr = T_HIGH32;
+; 1635 :         opnd1->instr = T_HIGH32;
 
 	mov	DWORD PTR [rbx+56], 231			; 000000e7H
 
-; 1670 :         //opnd1->mem_type = MT_DWORD; /* v2.10: changed - also see change in parser.c, idata_fixup() */
-; 1671 :         opnd1->mem_type = MT_EMPTY;
+; 1636 :         //opnd1->mem_type = MT_DWORD; /* v2.10: changed - also see change in parser.c, idata_fixup() */
+; 1637 :         opnd1->mem_type = MT_EMPTY;
 
 	mov	DWORD PTR [rbx+64], 192			; 000000c0H
 $LN4@high32_op:
 
-; 1672 :     }
-; 1673 :     opnd1->llvalue = opnd1->llvalue >> 32;
+; 1638 :     }
+; 1639 :     opnd1->llvalue = opnd1->llvalue >> 32;
 
 	shr	QWORD PTR [rbx], 32			; 00000020H
 
-; 1674 :     return( NOT_ERROR );
-; 1675 : }
+; 1640 :     return( NOT_ERROR );
+; 1641 : }
 
 	mov	rbx, QWORD PTR [rsp+64]
 	xor	eax, eax
@@ -7492,15 +7492,15 @@ sym$ = 88
 name$ = 96
 low32_op PROC
 
-; 1637 : {
+; 1603 : {
 
 	mov	QWORD PTR [rsp+8], rbx
 	mov	QWORD PTR [rsp+16], rsi
 	push	rdi
 	sub	rsp, 48					; 00000030H
 
-; 1638 :     /* v2.06: added support for double constants */
-; 1639 :     if ( opnd2->kind == EXPR_FLOAT ) {
+; 1604 :     /* v2.06: added support for double constants */
+; 1605 :     if ( opnd2->kind == EXPR_FLOAT ) {
 
 	xor	esi, esi
 	mov	rdi, r8
@@ -7508,14 +7508,14 @@ low32_op PROC
 	mov	rbx, rdx
 	jne	SHORT $LN2@low32_op
 
-; 1640 :         if ( Options.strict_masm_compat )
+; 1606 :         if ( Options.strict_masm_compat )
 
 	cmp	BYTE PTR Options+127, sil
 	je	SHORT $LN3@low32_op
 
-; 1641 :             return( ConstError( opnd1, opnd2 ) );
+; 1607 :             return( ConstError( opnd1, opnd2 ) );
 
-	test	BYTE PTR [rdx+76], 16
+	test	BYTE PTR [rdx+72], 16
 	jne	SHORT $LN6@low32_op
 	mov	ecx, 270				; 0000010eH
 	call	QWORD PTR fnEmitErr
@@ -7523,7 +7523,7 @@ low32_op PROC
 $LN6@low32_op:
 	mov	eax, esi
 
-; 1654 : }
+; 1620 : }
 
 	mov	rbx, QWORD PTR [rsp+64]
 	mov	rsi, QWORD PTR [rsp+72]
@@ -7532,11 +7532,11 @@ $LN6@low32_op:
 	ret	0
 $LN3@low32_op:
 
-; 1642 :         atofloat( &opnd2->llvalue, opnd2->float_tok->string_ptr, sizeof( opnd2->llvalue), opnd2->negative, opnd2->float_tok->floattype );
+; 1608 :         atofloat( &opnd2->llvalue, opnd2->float_tok->string_ptr, sizeof( opnd2->llvalue), opnd2->negative, opnd2->float_tok->floattype );
 
 	mov	rdx, QWORD PTR [r8+16]
 	mov	rcx, rdi
-	mov	r9d, DWORD PTR [r8+76]
+	mov	r9d, DWORD PTR [r8+72]
 	mov	r8d, 8
 	shr	r9d, 5
 	and	r9b, 1
@@ -7545,17 +7545,17 @@ $LN3@low32_op:
 	mov	BYTE PTR [rsp+32], al
 	call	atofloat
 
-; 1643 :         opnd2->kind = EXPR_CONST;
+; 1609 :         opnd2->kind = EXPR_CONST;
 
 	mov	DWORD PTR [rdi+60], esi
 
-; 1644 :         opnd2->float_tok = NULL;
+; 1610 :         opnd2->float_tok = NULL;
 
 	mov	QWORD PTR [rdi+16], rsi
 $LN2@low32_op:
 
-; 1645 :     }
-; 1646 :     TokenAssign( opnd1, opnd2 );
+; 1611 :     }
+; 1612 :     TokenAssign( opnd1, opnd2 );
 
 	movups	xmm0, XMMWORD PTR [rdi]
 	movups	XMMWORD PTR [rbx], xmm0
@@ -7570,33 +7570,33 @@ $LN2@low32_op:
 	movups	xmm1, XMMWORD PTR [rdi+80]
 	movups	XMMWORD PTR [rbx+80], xmm1
 
-; 1647 :     if ( opnd2->kind == EXPR_ADDR && opnd2->instr != T_SEG ) {
+; 1613 :     if ( opnd2->kind == EXPR_ADDR && opnd2->instr != T_SEG ) {
 
 	cmp	DWORD PTR [rdi+60], 1
 	jne	SHORT $LN4@low32_op
 	cmp	DWORD PTR [rdi+56], 244			; 000000f4H
 	je	SHORT $LN4@low32_op
 
-; 1648 :         opnd1->instr = T_LOW32;
+; 1614 :         opnd1->instr = T_LOW32;
 
 	mov	DWORD PTR [rbx+56], 237			; 000000edH
 
-; 1649 :         //opnd1->mem_type = MT_DWORD; /* v2.10: changed - also see change in parser.c, idata_fixup() */
-; 1650 :         opnd1->mem_type = MT_EMPTY;
+; 1615 :         //opnd1->mem_type = MT_DWORD; /* v2.10: changed - also see change in parser.c, idata_fixup() */
+; 1616 :         opnd1->mem_type = MT_EMPTY;
 
 	mov	DWORD PTR [rbx+64], 192			; 000000c0H
 $LN4@low32_op:
 
-; 1651 :     }
-; 1652 :     opnd1->llvalue &= 0xffffffff;
+; 1617 :     }
+; 1618 :     opnd1->llvalue &= 0xffffffff;
 
 	mov	DWORD PTR [rbx+4], esi
 
-; 1653 :     return( NOT_ERROR );
+; 1619 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1654 : }
+; 1620 : }
 
 	mov	rbx, QWORD PTR [rsp+64]
 	mov	rsi, QWORD PTR [rsp+72]
@@ -7615,7 +7615,7 @@ sym$ = 32
 name$ = 40
 high_op	PROC
 
-; 1614 :     TokenAssign( opnd1, opnd2 );
+; 1580 :     TokenAssign( opnd1, opnd2 );
 
 	movups	xmm0, XMMWORD PTR [r8]
 	movups	XMMWORD PTR [rdx], xmm0
@@ -7630,43 +7630,43 @@ high_op	PROC
 	movups	xmm1, XMMWORD PTR [r8+80]
 	movups	XMMWORD PTR [rdx+80], xmm1
 
-; 1615 :     if ( opnd2->kind == EXPR_ADDR && opnd2->instr != T_SEG ) {
+; 1581 :     if ( opnd2->kind == EXPR_ADDR && opnd2->instr != T_SEG ) {
 
 	cmp	DWORD PTR [r8+60], 1
 	jne	SHORT $LN2@high_op
 	cmp	DWORD PTR [r8+56], 244			; 000000f4H
 	je	SHORT $LN2@high_op
 
-; 1616 :         /* v2.07: don't check any format-specific rules in the
-; 1617 :          * expression evaluator!
-; 1618 :          */
-; 1619 : #if 0
-; 1620 :         if ( Options.output_format != OFORMAT_OMF &&
-; 1621 :             Options.output_format != OFORMAT_BIN && opnd2->sym ) {
-; 1622 :             return( fnEmitErr( SYMBOL_TYPE_CONFLICT, opnd2->sym->name ) );
-; 1623 :         }
-; 1624 : #endif
-; 1625 :         opnd1->instr = T_HIGH;
+; 1582 :         /* v2.07: don't check any format-specific rules in the
+; 1583 :          * expression evaluator!
+; 1584 :          */
+; 1585 : #if 0
+; 1586 :         if ( Options.output_format != OFORMAT_OMF &&
+; 1587 :             Options.output_format != OFORMAT_BIN && opnd2->sym ) {
+; 1588 :             return( fnEmitErr( SYMBOL_TYPE_CONFLICT, opnd2->sym->name ) );
+; 1589 :         }
+; 1590 : #endif
+; 1591 :         opnd1->instr = T_HIGH;
 
 	mov	DWORD PTR [rdx+56], 230			; 000000e6H
 
-; 1626 :         opnd1->mem_type = MT_EMPTY;
+; 1592 :         opnd1->mem_type = MT_EMPTY;
 
 	mov	DWORD PTR [rdx+64], 192			; 000000c0H
 $LN2@high_op:
 
-; 1627 :     }
-; 1628 :     opnd1->value = opnd1->value >> 8;
+; 1593 :     }
+; 1594 :     opnd1->value = opnd1->value >> 8;
 
 	sar	DWORD PTR [rdx], 8
 
-; 1629 :     opnd1->llvalue &= 0xff;
-; 1630 :     return( NOT_ERROR );
+; 1595 :     opnd1->llvalue &= 0xff;
+; 1596 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	and	QWORD PTR [rdx], 255			; 000000ffH
 
-; 1631 : }
+; 1597 : }
 
 	ret	0
 high_op	ENDP
@@ -7681,7 +7681,7 @@ sym$ = 32
 name$ = 40
 low_op	PROC
 
-; 1592 :     TokenAssign( opnd1, opnd2 );
+; 1558 :     TokenAssign( opnd1, opnd2 );
 
 	movups	xmm0, XMMWORD PTR [r8]
 	movups	XMMWORD PTR [rdx], xmm0
@@ -7696,42 +7696,42 @@ low_op	PROC
 	movups	xmm1, XMMWORD PTR [r8+80]
 	movups	XMMWORD PTR [rdx+80], xmm1
 
-; 1593 :     if ( opnd2->kind == EXPR_ADDR && opnd2->instr != T_SEG ) {
+; 1559 :     if ( opnd2->kind == EXPR_ADDR && opnd2->instr != T_SEG ) {
 
 	cmp	DWORD PTR [r8+60], 1
 	jne	SHORT $LN6@low_op
 	cmp	DWORD PTR [r8+56], 244			; 000000f4H
 	je	SHORT $LN6@low_op
 
-; 1594 : #if 0
-; 1595 :         /* LOW works for OMF/BIN only */
-; 1596 :         /* v2.07: don't check any format-specific rules in the
-; 1597 :          * expression evaluator!
-; 1598 :          */
-; 1599 :         if ( Options.output_format != OFORMAT_OMF &&
-; 1600 :             Options.output_format != OFORMAT_BIN && opnd2->sym ) {
-; 1601 :             return( fnEmitErr( SYMBOL_TYPE_CONFLICT, opnd2->sym->name ) );
-; 1602 :         }
-; 1603 : #endif
-; 1604 :         opnd1->instr = T_LOW;
+; 1560 : #if 0
+; 1561 :         /* LOW works for OMF/BIN only */
+; 1562 :         /* v2.07: don't check any format-specific rules in the
+; 1563 :          * expression evaluator!
+; 1564 :          */
+; 1565 :         if ( Options.output_format != OFORMAT_OMF &&
+; 1566 :             Options.output_format != OFORMAT_BIN && opnd2->sym ) {
+; 1567 :             return( fnEmitErr( SYMBOL_TYPE_CONFLICT, opnd2->sym->name ) );
+; 1568 :         }
+; 1569 : #endif
+; 1570 :         opnd1->instr = T_LOW;
 
 	mov	DWORD PTR [rdx+56], 236			; 000000ecH
 
-; 1605 :         opnd1->mem_type = MT_EMPTY;
+; 1571 :         opnd1->mem_type = MT_EMPTY;
 
 	mov	DWORD PTR [rdx+64], 192			; 000000c0H
 $LN6@low_op:
 
-; 1606 :     }
-; 1607 :     opnd1->llvalue &= 0xff;
+; 1572 :     }
+; 1573 :     opnd1->llvalue &= 0xff;
 
 	and	QWORD PTR [rdx], 255			; 000000ffH
 
-; 1608 :     return( NOT_ERROR );
+; 1574 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1609 : }
+; 1575 : }
 
 	ret	0
 low_op	ENDP
@@ -7746,7 +7746,7 @@ sym$ = 32
 name$ = 40
 highword_op PROC
 
-; 1579 :     TokenAssign( opnd1, opnd2 );
+; 1545 :     TokenAssign( opnd1, opnd2 );
 
 	movups	xmm0, XMMWORD PTR [r8]
 	movups	XMMWORD PTR [rdx], xmm0
@@ -7761,34 +7761,34 @@ highword_op PROC
 	movups	xmm1, XMMWORD PTR [r8+80]
 	movups	XMMWORD PTR [rdx+80], xmm1
 
-; 1580 :     if ( opnd2->kind == EXPR_ADDR && opnd2->instr != T_SEG ) {
+; 1546 :     if ( opnd2->kind == EXPR_ADDR && opnd2->instr != T_SEG ) {
 
 	cmp	DWORD PTR [r8+60], 1
 	jne	SHORT $LN2@highword_o
 	cmp	DWORD PTR [r8+56], 244			; 000000f4H
 	je	SHORT $LN2@highword_o
 
-; 1581 :         opnd1->instr = T_HIGHWORD;
+; 1547 :         opnd1->instr = T_HIGHWORD;
 
 	mov	DWORD PTR [rdx+56], 232			; 000000e8H
 
-; 1582 :         //opnd1->mem_type = MT_WORD; /* v2.05 */
-; 1583 :         opnd1->mem_type = MT_EMPTY;
+; 1548 :         //opnd1->mem_type = MT_WORD; /* v2.05 */
+; 1549 :         opnd1->mem_type = MT_EMPTY;
 
 	mov	DWORD PTR [rdx+64], 192			; 000000c0H
 $LN2@highword_o:
 
-; 1584 :     }
-; 1585 : 	opnd1->value = (opnd1->value >> 16) & 0xFFFF; /* ASMC v2.14 (fix borrowed from nidud) */
+; 1550 :     }
+; 1551 : 	opnd1->value = (opnd1->value >> 16) & 0xFFFF; /* ASMC v2.14 (fix borrowed from nidud) */
 
 	movzx	eax, WORD PTR [rdx+2]
 	mov	DWORD PTR [rdx], eax
 
-; 1586 :     return( NOT_ERROR );
+; 1552 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1587 : }
+; 1553 : }
 
 	ret	0
 highword_op ENDP
@@ -7803,7 +7803,7 @@ sym$ = 32
 name$ = 40
 lowword_op PROC
 
-; 1566 :     TokenAssign( opnd1, opnd2 );
+; 1532 :     TokenAssign( opnd1, opnd2 );
 
 	movups	xmm0, XMMWORD PTR [r8]
 	movups	XMMWORD PTR [rdx], xmm0
@@ -7818,33 +7818,33 @@ lowword_op PROC
 	movups	xmm1, XMMWORD PTR [r8+80]
 	movups	XMMWORD PTR [rdx+80], xmm1
 
-; 1567 :     if ( opnd2->kind == EXPR_ADDR && opnd2->instr != T_SEG ) {
+; 1533 :     if ( opnd2->kind == EXPR_ADDR && opnd2->instr != T_SEG ) {
 
 	cmp	DWORD PTR [r8+60], 1
 	jne	SHORT $LN6@lowword_op
 	cmp	DWORD PTR [r8+56], 244			; 000000f4H
 	je	SHORT $LN6@lowword_op
 
-; 1568 :         opnd1->instr = T_LOWWORD;
+; 1534 :         opnd1->instr = T_LOWWORD;
 
 	mov	DWORD PTR [rdx+56], 238			; 000000eeH
 
-; 1569 :         //opnd1->mem_type = MT_WORD; /* v2.05 */
-; 1570 :         opnd1->mem_type = MT_EMPTY;
+; 1535 :         //opnd1->mem_type = MT_WORD; /* v2.05 */
+; 1536 :         opnd1->mem_type = MT_EMPTY;
 
 	mov	DWORD PTR [rdx+64], 192			; 000000c0H
 $LN6@lowword_op:
 
-; 1571 :     }
-; 1572 :     opnd1->llvalue &= 0xffff;
+; 1537 :     }
+; 1538 :     opnd1->llvalue &= 0xffff;
 
 	and	QWORD PTR [rdx], 65535			; 0000ffffH
 
-; 1573 :     return( NOT_ERROR );
+; 1539 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1574 : }
+; 1540 : }
 
 	ret	0
 lowword_op ENDP
@@ -7859,34 +7859,34 @@ sym$ = 72
 name$ = 80
 offset_op PROC
 
-; 1527 : {
+; 1493 : {
 
 	push	rbx
 	sub	rsp, 32					; 00000020H
 	mov	rbx, r8
 
-; 1528 :     if ( oper == T_OFFSET ) {
+; 1494 :     if ( oper == T_OFFSET ) {
 
 	cmp	ecx, 241				; 000000f1H
 	jne	SHORT $LN3@offset_op
 
-; 1529 :         /* if operand is a constant value, skip OFFSET operator */
-; 1530 :         if ( opnd2->kind == EXPR_CONST ) {
+; 1495 :         /* if operand is a constant value, skip OFFSET operator */
+; 1496 :         if ( opnd2->kind == EXPR_CONST ) {
 
 	cmp	DWORD PTR [r8+60], 0
 	jne	SHORT $LN3@offset_op
 
-; 1531 :             TokenAssign( opnd1, opnd2 );
+; 1497 :             TokenAssign( opnd1, opnd2 );
 
 	movups	xmm0, XMMWORD PTR [r8]
 
-; 1554 :     /* clear overrides ("offset SEG:xxx") */
-; 1555 :     /* v2.01: override information is important for fixup creation!
-; 1556 :      * the reason why it was cleared probably was to avoid creation
-; 1557 :      * of a segment prefix. This case is now handled in the parser.
-; 1558 :      */
-; 1559 :     // opnd1->override = NULL;
-; 1560 :     return( NOT_ERROR );
+; 1520 :     /* clear overrides ("offset SEG:xxx") */
+; 1521 :     /* v2.01: override information is important for fixup creation!
+; 1522 :      * the reason why it was cleared probably was to avoid creation
+; 1523 :      * of a segment prefix. This case is now handled in the parser.
+; 1524 :      */
+; 1525 :     // opnd1->override = NULL;
+; 1526 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	movups	XMMWORD PTR [rdx], xmm0
@@ -7901,17 +7901,17 @@ offset_op PROC
 	movups	xmm1, XMMWORD PTR [r8+80]
 	movups	XMMWORD PTR [rdx+80], xmm1
 
-; 1561 : }
+; 1527 : }
 
 	add	rsp, 32					; 00000020H
 	pop	rbx
 	ret	0
 $LN3@offset_op:
 
-; 1532 :             return( NOT_ERROR );
-; 1533 :         }
-; 1534 :     }
-; 1535 :     if ( (sym && sym->state == SYM_GRP) || opnd2->instr == T_SEG ) {
+; 1498 :             return( NOT_ERROR );
+; 1499 :         }
+; 1500 :     }
+; 1501 :     if ( (sym && sym->state == SYM_GRP) || opnd2->instr == T_SEG ) {
 
 	test	r9, r9
 	je	SHORT $LN6@offset_op
@@ -7922,11 +7922,11 @@ $LN6@offset_op:
 	jne	SHORT $LN4@offset_op
 $LN5@offset_op:
 
-; 1536 :         return( invalid_operand( opnd2, GetResWName( oper, NULL ), name ) );
+; 1502 :         return( invalid_operand( opnd2, GetResWName( oper, NULL ), name ) );
 
 	xor	edx, edx
 	call	GetResWName
-	test	BYTE PTR [rbx+76], 16
+	test	BYTE PTR [rbx+72], 16
 	jne	SHORT $LN13@offset_op
 	mov	rcx, rax
 	call	_strupr
@@ -7937,27 +7937,27 @@ $LN5@offset_op:
 $LN13@offset_op:
 	or	eax, -1
 
-; 1561 : }
+; 1527 : }
 
 	add	rsp, 32					; 00000020H
 	pop	rbx
 	ret	0
 $LN4@offset_op:
 
-; 1537 :     }
-; 1538 :     /* offset operator accepts types, but returns always 0 */
-; 1539 :     if ( opnd2->is_type )
+; 1503 :     }
+; 1504 :     /* offset operator accepts types, but returns always 0 */
+; 1505 :     if ( opnd2->is_type )
 
-	test	BYTE PTR [r8+76], 8
+	test	BYTE PTR [r8+72], 8
 	je	SHORT $LN7@offset_op
 
-; 1540 :         opnd2->value = 0;
+; 1506 :         opnd2->value = 0;
 
 	mov	DWORD PTR [r8], 0
 $LN7@offset_op:
 
-; 1541 : 
-; 1542 :     TokenAssign( opnd1, opnd2 );
+; 1507 : 
+; 1508 :     TokenAssign( opnd1, opnd2 );
 
 	movups	xmm0, XMMWORD PTR [r8]
 	movups	XMMWORD PTR [rdx], xmm0
@@ -7972,38 +7972,38 @@ $LN7@offset_op:
 	movups	xmm1, XMMWORD PTR [r8+80]
 	movups	XMMWORD PTR [rdx+80], xmm1
 
-; 1543 :     opnd1->instr = oper;
+; 1509 :     opnd1->instr = oper;
 
 	mov	DWORD PTR [rdx+56], ecx
 
-; 1544 : 
-; 1545 :     if ( opnd2->indirect ) {
+; 1510 : 
+; 1511 :     if ( opnd2->indirect ) {
 
-	test	BYTE PTR [r8+76], 1
+	test	BYTE PTR [r8+72], 1
 	jne	SHORT $LN5@offset_op
 
-; 1546 :         /* Masm v5.1 allows indirect operands, but Masm v6 with -Zm
-; 1547 :          * won't accept it.
-; 1548 :          */
-; 1549 :         return( invalid_operand( opnd2, GetResWName( oper, NULL ), name ) );
-; 1550 :     }
-; 1551 :     /* skip memory type of operand, just address is needed */
-; 1552 :     //opnd1->mem_type = MT_NEAR;
-; 1553 :     opnd1->mem_type = MT_EMPTY;
+; 1512 :         /* Masm v5.1 allows indirect operands, but Masm v6 with -Zm
+; 1513 :          * won't accept it.
+; 1514 :          */
+; 1515 :         return( invalid_operand( opnd2, GetResWName( oper, NULL ), name ) );
+; 1516 :     }
+; 1517 :     /* skip memory type of operand, just address is needed */
+; 1518 :     //opnd1->mem_type = MT_NEAR;
+; 1519 :     opnd1->mem_type = MT_EMPTY;
 
 	mov	DWORD PTR [rdx+64], 192			; 000000c0H
 
-; 1554 :     /* clear overrides ("offset SEG:xxx") */
-; 1555 :     /* v2.01: override information is important for fixup creation!
-; 1556 :      * the reason why it was cleared probably was to avoid creation
-; 1557 :      * of a segment prefix. This case is now handled in the parser.
-; 1558 :      */
-; 1559 :     // opnd1->override = NULL;
-; 1560 :     return( NOT_ERROR );
+; 1520 :     /* clear overrides ("offset SEG:xxx") */
+; 1521 :     /* v2.01: override information is important for fixup creation!
+; 1522 :      * the reason why it was cleared probably was to avoid creation
+; 1523 :      * of a segment prefix. This case is now handled in the parser.
+; 1524 :      */
+; 1525 :     // opnd1->override = NULL;
+; 1526 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1561 : }
+; 1527 : }
 
 	add	rsp, 32					; 00000020H
 	pop	rbx
@@ -8020,19 +8020,19 @@ sym$ = 32
 name$ = 40
 seg_op	PROC
 
-; 1509 :     /* v2.10: check for sym==NULL ( seg ds:[0] ) added */
-; 1510 :     if ( opnd2->sym == NULL || opnd2->sym->state == SYM_STACK || opnd2->is_abs ) {
+; 1475 :     /* v2.10: check for sym==NULL ( seg ds:[0] ) added */
+; 1476 :     if ( opnd2->sym == NULL || opnd2->sym->state == SYM_STACK || opnd2->is_abs ) {
 
 	mov	rax, QWORD PTR [r8+80]
 	test	rax, rax
 	je	SHORT $LN3@seg_op
 	cmp	DWORD PTR [rax+32], 5
 	je	SHORT $LN3@seg_op
-	test	BYTE PTR [r8+76], 4
+	test	BYTE PTR [r8+72], 4
 	jne	SHORT $LN3@seg_op
 
-; 1512 :     }
-; 1513 :     TokenAssign( opnd1, opnd2 );
+; 1478 :     }
+; 1479 :     TokenAssign( opnd1, opnd2 );
 
 	movups	xmm0, XMMWORD PTR [r8]
 	movups	XMMWORD PTR [rdx], xmm0
@@ -8047,32 +8047,32 @@ seg_op	PROC
 	movups	xmm1, XMMWORD PTR [r8+80]
 	movups	XMMWORD PTR [rdx+80], xmm1
 
-; 1514 :     opnd1->instr = oper;
-; 1515 :     if ( opnd1->mbr ) /* v2.08: set value more selectively */
+; 1480 :     opnd1->instr = oper;
+; 1481 :     if ( opnd1->mbr ) /* v2.08: set value more selectively */
 
 	cmp	QWORD PTR [rdx+88], 0
 	mov	DWORD PTR [rdx+56], ecx
 	je	SHORT $LN4@seg_op
 
-; 1516 :         opnd1->value = 0;    /* v2.07: added ( SEG <member> ) */
+; 1482 :         opnd1->value = 0;    /* v2.07: added ( SEG <member> ) */
 
 	mov	DWORD PTR [rdx], 0
 $LN4@seg_op:
 
-; 1517 :     opnd1->mem_type = MT_EMPTY; /* v2.04a */
+; 1483 :     opnd1->mem_type = MT_EMPTY; /* v2.04a */
 
 	mov	DWORD PTR [rdx+64], 192			; 000000c0H
 
-; 1518 :     return( NOT_ERROR );
+; 1484 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1519 : }
+; 1485 : }
 
 	ret	0
 $LN3@seg_op:
 
-; 1511 :         return( fnEmitErr( OPERAND_MUST_BE_RELOCATABLE ) );
+; 1477 :         return( fnEmitErr( OPERAND_MUST_BE_RELOCATABLE ) );
 
 	mov	ecx, 188				; 000000bcH
 	rex_jmp	QWORD PTR fnEmitErr
@@ -8088,7 +8088,7 @@ sym$ = 32
 name$ = 40
 short_op PROC
 
-; 1495 :     if ( opnd2->kind != EXPR_ADDR ||
+; 1461 :     if ( opnd2->kind != EXPR_ADDR ||
 
 	cmp	DWORD PTR [r8+60], 1
 	jne	SHORT $LN3@short_op
@@ -8100,13 +8100,13 @@ short_op PROC
 	ja	SHORT $LN3@short_op
 $LN2@short_op:
 
-; 1500 :     }
-; 1501 :     TokenAssign( opnd1, opnd2 );
+; 1466 :     }
+; 1467 :     TokenAssign( opnd1, opnd2 );
 
 	movups	xmm0, XMMWORD PTR [r8]
 
-; 1502 :     opnd1->instr = oper;
-; 1503 :     return( NOT_ERROR );
+; 1468 :     opnd1->instr = oper;
+; 1469 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	movups	XMMWORD PTR [rdx], xmm0
@@ -8122,15 +8122,15 @@ $LN2@short_op:
 	movups	XMMWORD PTR [rdx+80], xmm1
 	mov	DWORD PTR [rdx+56], ecx
 
-; 1504 : }
+; 1470 : }
 
 	ret	0
 $LN3@short_op:
 
-; 1496 :         ( opnd2->mem_type != MT_EMPTY &&
-; 1497 :          opnd2->mem_type != MT_NEAR &&
-; 1498 :          opnd2->mem_type != MT_FAR ) ) {
-; 1499 :         return( fnEmitErr( EXPRESSION_MUST_BE_A_CODE_ADDRESS ) );
+; 1462 :         ( opnd2->mem_type != MT_EMPTY &&
+; 1463 :          opnd2->mem_type != MT_NEAR &&
+; 1464 :          opnd2->mem_type != MT_FAR ) ) {
+; 1465 :         return( fnEmitErr( EXPRESSION_MUST_BE_A_CODE_ADDRESS ) );
 
 	mov	ecx, 233				; 000000e9H
 	rex_jmp	QWORD PTR fnEmitErr
@@ -8146,17 +8146,17 @@ sym$ = 32
 name$ = 40
 opattr_op PROC
 
-; 1392 : 
-; 1393 :     DebugMsg1(("opattr_op: arg kind=%d memtype=%X sym=%s\n",
-; 1394 :                opnd2->kind, opnd2->mem_type,
-; 1395 :                opnd2->sym ? opnd2->sym->name : "NULL" ));
-; 1396 :     opnd1->kind = EXPR_CONST;
-; 1397 :     opnd1->sym = NULL;  /* clear symbol in case it is undef */
-; 1398 :     opnd1->value = 0;
-; 1399 :     opnd1->mem_type = MT_EMPTY;
-; 1400 :     opnd1->is_opattr = FALSE; /* v2: added */
+; 1358 : 
+; 1359 :     DebugMsg1(("opattr_op: arg kind=%d memtype=%X sym=%s\n",
+; 1360 :                opnd2->kind, opnd2->mem_type,
+; 1361 :                opnd2->sym ? opnd2->sym->name : "NULL" ));
+; 1362 :     opnd1->kind = EXPR_CONST;
+; 1363 :     opnd1->sym = NULL;  /* clear symbol in case it is undef */
+; 1364 :     opnd1->value = 0;
+; 1365 :     opnd1->mem_type = MT_EMPTY;
+; 1366 :     opnd1->is_opattr = FALSE; /* v2: added */
 
-	and	DWORD PTR [rdx+76], -17			; ffffffefH
+	and	DWORD PTR [rdx+72], -17			; ffffffefH
 	xor	eax, eax
 	mov	DWORD PTR [rdx+60], eax
 	mov	r9d, ecx
@@ -8164,23 +8164,23 @@ opattr_op PROC
 	mov	DWORD PTR [rdx], eax
 	mov	DWORD PTR [rdx+64], 192			; 000000c0H
 
-; 1401 : 
-; 1402 :     if ( opnd2->kind == EXPR_EMPTY )
+; 1367 : 
+; 1368 :     if ( opnd2->kind == EXPR_EMPTY )
 
 	mov	eax, DWORD PTR [r8+60]
 	cmp	eax, -2
 	je	$LN30@opattr_op
 
-; 1403 :         return( NOT_ERROR );
-; 1404 : 
-; 1405 :     /* bit 0: code label (near|far)? */
-; 1406 :     if ( opnd2->kind == EXPR_ADDR ) {
+; 1369 :         return( NOT_ERROR );
+; 1370 : 
+; 1371 :     /* bit 0: code label (near|far)? */
+; 1372 :     if ( opnd2->kind == EXPR_ADDR ) {
 
 	mov	r11d, 1345				; 00000541H
 	cmp	eax, 1
 	jne	$LN6@opattr_op
 
-; 1407 :         if ( opnd2->sym && opnd2->sym->state != SYM_STACK &&
+; 1373 :         if ( opnd2->sym && opnd2->sym->state != SYM_STACK &&
 
 	mov	rax, QWORD PTR [r8+80]
 	test	rax, rax
@@ -8196,11 +8196,11 @@ opattr_op PROC
 	mov	DWORD PTR [rdx], ecx
 $LN4@opattr_op:
 
-; 1408 :             ( opnd2->mem_type & MT_SPECIAL_MASK ) == MT_ADDRESS )
-; 1409 :             opnd1->value |= OPATTR_CODELABEL;
-; 1410 : 
-; 1411 :         if ( IsOffset( opnd2 ) &&
-; 1412 :             opnd2->sym &&
+; 1374 :             ( opnd2->mem_type & MT_SPECIAL_MASK ) == MT_ADDRESS )
+; 1375 :             opnd1->value |= OPATTR_CODELABEL;
+; 1376 : 
+; 1377 :         if ( IsOffset( opnd2 ) &&
+; 1378 :             opnd2->sym &&
 
 	cmp	DWORD PTR [r8+64], 192			; 000000c0H
 	jne	SHORT $LN5@opattr_op
@@ -8218,15 +8218,15 @@ $LN4@opattr_op:
 	cmp	al, -128				; ffffffffffffff80H
 	jne	SHORT $LN5@opattr_op
 
-; 1413 :             ( opnd2->sym->mem_type & MT_SPECIAL_MASK ) == MT_ADDRESS )
-; 1414 :             opnd1->value |= OPATTR_CODELABEL;
+; 1379 :             ( opnd2->sym->mem_type & MT_SPECIAL_MASK ) == MT_ADDRESS )
+; 1380 :             opnd1->value |= OPATTR_CODELABEL;
 
 	or	DWORD PTR [rdx], 1
 $LN5@opattr_op:
 
-; 1415 : 
-; 1416 :         /* bit 1: memory variable, relocatable data label? */
-; 1417 :         if ( opnd2->sym &&
+; 1381 : 
+; 1382 :         /* bit 1: memory variable, relocatable data label? */
+; 1383 :         if ( opnd2->sym &&
 
 	mov	rax, QWORD PTR [r8+80]
 	test	rax, rax
@@ -8243,36 +8243,36 @@ $LN5@opattr_op:
 	js	SHORT $LN6@opattr_op
 $LN7@opattr_op:
 
-; 1418 :             (( opnd2->sym->mem_type == MT_TYPE ||
-; 1419 :               ( opnd2->mem_type & MT_SPECIAL ) == 0 ) ||
-; 1420 :              ( opnd2->mem_type == MT_EMPTY &&
-; 1421 :               ( opnd2->sym->mem_type & MT_SPECIAL ) == 0 )))
-; 1422 :             opnd1->value |= OPATTR_DATALABEL;
+; 1384 :             (( opnd2->sym->mem_type == MT_TYPE ||
+; 1385 :               ( opnd2->mem_type & MT_SPECIAL ) == 0 ) ||
+; 1386 :              ( opnd2->mem_type == MT_EMPTY &&
+; 1387 :               ( opnd2->sym->mem_type & MT_SPECIAL ) == 0 )))
+; 1388 :             opnd1->value |= OPATTR_DATALABEL;
 
 	or	DWORD PTR [rdx], 2
 $LN6@opattr_op:
 
-; 1423 :     }
-; 1424 :     /* kind==EXPR_ADDR is not reliably set for indirect register addressing! */
-; 1425 :     /* v2.12: check if operand is valid */
-; 1426 :     //if ( opnd2->indirect )
-; 1427 :     if ( opnd2->kind != EXPR_ERROR && opnd2->indirect )
+; 1389 :     }
+; 1390 :     /* kind==EXPR_ADDR is not reliably set for indirect register addressing! */
+; 1391 :     /* v2.12: check if operand is valid */
+; 1392 :     //if ( opnd2->indirect )
+; 1393 :     if ( opnd2->kind != EXPR_ERROR && opnd2->indirect )
 
 	cmp	DWORD PTR [r8+60], -1
 	je	SHORT $LN8@opattr_op
-	test	BYTE PTR [r8+76], 1
+	test	BYTE PTR [r8+72], 1
 	je	SHORT $LN8@opattr_op
 
-; 1428 :         opnd1->value |= OPATTR_DATALABEL;
+; 1394 :         opnd1->value |= OPATTR_DATALABEL;
 
 	or	DWORD PTR [rdx], 2
 $LN8@opattr_op:
 
-; 1429 : 
-; 1430 : 
-; 1431 :     /* bit 2: immediate value? */
-; 1432 : 	/* John Hankinson modified here to allow -Zne switch to treat literal string macro argument with opattr type = 0 */
-; 1433 : 	if (Options.strict_masm_compat && opnd2->kind == EXPR_CONST && opnd2->mem_type != MT_SQWORD && opnd2->quoted_string != NULL)
+; 1395 : 
+; 1396 : 
+; 1397 :     /* bit 2: immediate value? */
+; 1398 : 	/* John Hankinson modified here to allow -Zne switch to treat literal string macro argument with opattr type = 0 */
+; 1399 : 	if (Options.strict_masm_compat && opnd2->kind == EXPR_CONST && opnd2->mem_type != MT_SQWORD && opnd2->quoted_string != NULL)
 
 	cmp	BYTE PTR Options+127, 0
 	je	SHORT $LN9@opattr_op
@@ -8284,16 +8284,16 @@ $LN8@opattr_op:
 	jne	SHORT $LN11@opattr_op
 $LN9@opattr_op:
 
-; 1434 : 	{
-; 1435 : 	}
-; 1436 :     else if ( opnd2->kind == EXPR_CONST ||
+; 1400 : 	{
+; 1401 : 	}
+; 1402 :     else if ( opnd2->kind == EXPR_CONST ||
 
 	mov	eax, DWORD PTR [r8+60]
 	test	eax, eax
 	je	SHORT $LN15@opattr_op
 	cmp	eax, 1
 	jne	SHORT $LN11@opattr_op
-	test	BYTE PTR [r8+76], al
+	test	BYTE PTR [r8+72], al
 	jne	SHORT $LN11@opattr_op
 	mov	ecx, DWORD PTR [r8+64]
 	cmp	ecx, 192				; 000000c0H
@@ -8319,33 +8319,33 @@ $LN13@opattr_op:
 	ja	SHORT $LN11@opattr_op
 $LN15@opattr_op:
 
-; 1437 :         ( opnd2->kind == EXPR_ADDR &&
-; 1438 :          opnd2->indirect == FALSE &&
-; 1439 :          (( opnd2->mem_type == MT_EMPTY && IsOffset(opnd2) ) ||
-; 1440 :           //( opnd2->mem_type == MT_ABS ) ||  /* v2.06: added (abs. external) */
-; 1441 :           ( opnd2->mem_type == MT_EMPTY ) ||  /* v2.06: added (abs. external) */
-; 1442 :           (( opnd2->mem_type & MT_SPECIAL_MASK ) == MT_ADDRESS )) &&
-; 1443 :          ( opnd2->sym->state == SYM_INTERNAL ||
-; 1444 :           opnd2->sym->state == SYM_EXTERNAL ) ) )
-; 1445 :         opnd1->value |= OPATTR_IMMEDIATE;
+; 1403 :         ( opnd2->kind == EXPR_ADDR &&
+; 1404 :          opnd2->indirect == FALSE &&
+; 1405 :          (( opnd2->mem_type == MT_EMPTY && IsOffset(opnd2) ) ||
+; 1406 :           //( opnd2->mem_type == MT_ABS ) ||  /* v2.06: added (abs. external) */
+; 1407 :           ( opnd2->mem_type == MT_EMPTY ) ||  /* v2.06: added (abs. external) */
+; 1408 :           (( opnd2->mem_type & MT_SPECIAL_MASK ) == MT_ADDRESS )) &&
+; 1409 :          ( opnd2->sym->state == SYM_INTERNAL ||
+; 1410 :           opnd2->sym->state == SYM_EXTERNAL ) ) )
+; 1411 :         opnd1->value |= OPATTR_IMMEDIATE;
 
 	or	DWORD PTR [rdx], 4
 $LN11@opattr_op:
 
-; 1446 : 
-; 1447 :     /* bit 3: uses direct memory addressing?
-; 1448 :      */
-; 1449 :     if ( opnd2->kind == EXPR_ADDR &&
-; 1450 :         opnd2->indirect == FALSE &&
-; 1451 :         //opnd2->base_reg == NULL &&
-; 1452 :         (( opnd2->mem_type == MT_EMPTY && opnd2->instr == EMPTY ) ||
-; 1453 :          ( opnd2->mem_type == MT_TYPE ) || /* v2.05: added */
-; 1454 :          (( opnd2->mem_type & MT_SPECIAL ) == 0 ) ||
-; 1455 :          opnd2->mem_type == MT_PTR ) &&
+; 1412 : 
+; 1413 :     /* bit 3: uses direct memory addressing?
+; 1414 :      */
+; 1415 :     if ( opnd2->kind == EXPR_ADDR &&
+; 1416 :         opnd2->indirect == FALSE &&
+; 1417 :         //opnd2->base_reg == NULL &&
+; 1418 :         (( opnd2->mem_type == MT_EMPTY && opnd2->instr == EMPTY ) ||
+; 1419 :          ( opnd2->mem_type == MT_TYPE ) || /* v2.05: added */
+; 1420 :          (( opnd2->mem_type & MT_SPECIAL ) == 0 ) ||
+; 1421 :          opnd2->mem_type == MT_PTR ) &&
 
 	cmp	DWORD PTR [r8+60], 1
 	jne	SHORT $LN16@opattr_op
-	test	BYTE PTR [r8+76], 1
+	test	BYTE PTR [r8+72], 1
 	jne	SHORT $LN16@opattr_op
 	mov	eax, DWORD PTR [r8+64]
 	cmp	eax, 192				; 000000c0H
@@ -8369,31 +8369,31 @@ $LN17@opattr_op:
 	ja	SHORT $LN16@opattr_op
 $LN19@opattr_op:
 
-; 1456 :         (opnd2->sym == NULL ||
-; 1457 :          opnd2->sym->state == SYM_INTERNAL ||
-; 1458 :          opnd2->sym->state == SYM_EXTERNAL ) )
-; 1459 :         opnd1->value |= OPATTR_DIRECTMEM;
+; 1422 :         (opnd2->sym == NULL ||
+; 1423 :          opnd2->sym->state == SYM_INTERNAL ||
+; 1424 :          opnd2->sym->state == SYM_EXTERNAL ) )
+; 1425 :         opnd1->value |= OPATTR_DIRECTMEM;
 
 	or	DWORD PTR [rdx], 8
 $LN16@opattr_op:
 
-; 1460 : 
-; 1461 :     if ( opnd2->kind == EXPR_REG && opnd2->indirect == FALSE )
+; 1426 : 
+; 1427 :     if ( opnd2->kind == EXPR_REG && opnd2->indirect == FALSE )
 
 	cmp	DWORD PTR [r8+60], 2
 	jne	SHORT $LN20@opattr_op
-	test	BYTE PTR [r8+76], 1
+	test	BYTE PTR [r8+72], 1
 	jne	SHORT $LN20@opattr_op
 
-; 1462 :         opnd1->value |= OPATTR_REGISTER;
+; 1428 :         opnd1->value |= OPATTR_REGISTER;
 
 	or	DWORD PTR [rdx], 16
 $LN20@opattr_op:
 
-; 1463 : 
-; 1464 :     //if ( opnd2->kind != EXPR_ERROR && ( opnd2->sym == 0 || opnd2->sym->isdefined == TRUE ) )
-; 1465 : 	/* John Hankinson modified here to allow -Zne switch to treat literal string macro argument with opattr type = 0 */
-; 1466 : 	if (Options.strict_masm_compat && opnd2->kind == EXPR_CONST && opnd2->mem_type != MT_SQWORD && opnd2->quoted_string != NULL)
+; 1429 : 
+; 1430 :     //if ( opnd2->kind != EXPR_ERROR && ( opnd2->sym == 0 || opnd2->sym->isdefined == TRUE ) )
+; 1431 : 	/* John Hankinson modified here to allow -Zne switch to treat literal string macro argument with opattr type = 0 */
+; 1432 : 	if (Options.strict_masm_compat && opnd2->kind == EXPR_CONST && opnd2->mem_type != MT_SQWORD && opnd2->quoted_string != NULL)
 
 	cmp	BYTE PTR Options+127, 0
 	je	SHORT $LN21@opattr_op
@@ -8409,9 +8409,9 @@ $LN21@opattr_op:
 	test	eax, -5					; fffffffbH
 	je	SHORT $LN23@opattr_op
 
-; 1467 : 	{
-; 1468 : 	}
-; 1469 :     else if ( opnd2->kind != EXPR_ERROR && opnd2->kind != EXPR_FLOAT && ( opnd2->sym == NULL || opnd2->sym->isdefined == TRUE ) )
+; 1433 : 	{
+; 1434 : 	}
+; 1435 :     else if ( opnd2->kind != EXPR_ERROR && opnd2->kind != EXPR_FLOAT && ( opnd2->sym == NULL || opnd2->sym->isdefined == TRUE ) )
 
 	mov	rax, QWORD PTR [r8+80]
 	test	rax, rax
@@ -8420,13 +8420,13 @@ $LN21@opattr_op:
 	je	SHORT $LN23@opattr_op
 $LN24@opattr_op:
 
-; 1470 :         opnd1->value |= OPATTR_DEFINED; 
+; 1436 :         opnd1->value |= OPATTR_DEFINED; 
 
 	or	DWORD PTR [rdx], 32			; 00000020H
 $LN23@opattr_op:
 
-; 1471 : 
-; 1472 :     if ( ( opnd2->sym && opnd2->sym->state == SYM_STACK ) ||
+; 1437 : 
+; 1438 :     if ( ( opnd2->sym && opnd2->sym->state == SYM_STACK ) ||
 
 	mov	rax, QWORD PTR [r8+80]
 	test	rax, rax
@@ -8434,7 +8434,7 @@ $LN23@opattr_op:
 	cmp	DWORD PTR [rax+32], 5
 	je	SHORT $LN26@opattr_op
 $LN27@opattr_op:
-	test	BYTE PTR [r8+76], 1
+	test	BYTE PTR [r8+72], 1
 	je	SHORT $LN25@opattr_op
 	mov	rax, QWORD PTR [r8+24]
 	test	rax, rax
@@ -8446,17 +8446,17 @@ $LN27@opattr_op:
 	je	SHORT $LN25@opattr_op
 $LN26@opattr_op:
 
-; 1473 :         ( opnd2->indirect && opnd2->base_reg &&
-; 1474 :          /* v2.11: use new flag SFR_SSBASED */
-; 1475 :          //( opnd2->base_reg->tokval == T_ESP || opnd2->base_reg->tokval == T_EBP || opnd2->base_reg->tokval == T_BP ) ) )
-; 1476 :          ( GetSflagsSp( opnd2->base_reg->tokval ) & SFR_SSBASED ) ) )
-; 1477 :             opnd1->value |= OPATTR_SSREL;
+; 1439 :         ( opnd2->indirect && opnd2->base_reg &&
+; 1440 :          /* v2.11: use new flag SFR_SSBASED */
+; 1441 :          //( opnd2->base_reg->tokval == T_ESP || opnd2->base_reg->tokval == T_EBP || opnd2->base_reg->tokval == T_BP ) ) )
+; 1442 :          ( GetSflagsSp( opnd2->base_reg->tokval ) & SFR_SSBASED ) ) )
+; 1443 :             opnd1->value |= OPATTR_SSREL;
 
 	or	DWORD PTR [rdx], 64			; 00000040H
 $LN25@opattr_op:
 
-; 1478 :     
-; 1479 :     if ( opnd2->sym && opnd2->sym->state == SYM_EXTERNAL )
+; 1444 :     
+; 1445 :     if ( opnd2->sym && opnd2->sym->state == SYM_EXTERNAL )
 
 	mov	rax, QWORD PTR [r8+80]
 	test	rax, rax
@@ -8464,20 +8464,20 @@ $LN25@opattr_op:
 	cmp	DWORD PTR [rax+32], 2
 	jne	SHORT $LN28@opattr_op
 
-; 1480 :         opnd1->value |= OPATTR_EXTRNREF;
+; 1446 :         opnd1->value |= OPATTR_EXTRNREF;
 
 	or	DWORD PTR [rdx], 128			; 00000080H
 $LN28@opattr_op:
 
-; 1481 : 
-; 1482 :     if ( oper == T_OPATTR )
+; 1447 : 
+; 1448 :     if ( oper == T_OPATTR )
 
 	cmp	r9d, 242				; 000000f2H
 	jne	SHORT $LN30@opattr_op
 
-; 1483 :         /* v2.12: no language if symbol isn't defined properly */
-; 1484 :         //if ( opnd2->sym )
-; 1485 :         if ( opnd2->sym && opnd2->kind != EXPR_ERROR )
+; 1449 :         /* v2.12: no language if symbol isn't defined properly */
+; 1450 :         //if ( opnd2->sym )
+; 1451 :         if ( opnd2->sym && opnd2->kind != EXPR_ERROR )
 
 	mov	rax, QWORD PTR [r8+80]
 	test	rax, rax
@@ -8485,20 +8485,20 @@ $LN28@opattr_op:
 	cmp	DWORD PTR [r8+60], -1
 	je	SHORT $LN30@opattr_op
 
-; 1486 :             opnd1->value |= opnd2->sym->langtype << 8;
+; 1452 :             opnd1->value |= opnd2->sym->langtype << 8;
 
 	mov	eax, DWORD PTR [rax+76]
 	shl	eax, 8
 	or	DWORD PTR [rdx], eax
 $LN30@opattr_op:
 
-; 1487 : 
-; 1488 :     DebugMsg1(("opattr_op returns %Xh\n", opnd1->value));
-; 1489 :     return( NOT_ERROR );
+; 1453 : 
+; 1454 :     DebugMsg1(("opattr_op returns %Xh\n", opnd1->value));
+; 1455 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1490 : }
+; 1456 : }
 
 	ret	0
 opattr_op ENDP
@@ -8513,7 +8513,7 @@ sym$ = 72
 name$ = 80
 type_op	PROC
 
-; 1210 : {
+; 1176 : {
 
 	mov	QWORD PTR [rsp+8], rbx
 	mov	QWORD PTR [rsp+16], rbp
@@ -8521,31 +8521,31 @@ type_op	PROC
 	push	rdi
 	sub	rsp, 32					; 00000020H
 
-; 1211 :     DebugMsg1(("type_op: opnd2 kind=%d memtype=%X sym=%s type=%s instr=%d istype=%u explicit=%u\n",
-; 1212 :                opnd2->kind,
-; 1213 :                opnd2->mem_type,
-; 1214 :                sym ? sym->name : "NULL",
-; 1215 :                opnd2->type ? opnd2->type->name : "NULL",
-; 1216 :                opnd2->instr,
-; 1217 :                opnd2->is_type,
-; 1218 :                opnd2->explicit ));
-; 1219 :     opnd1->kind = EXPR_CONST;
+; 1177 :     DebugMsg1(("type_op: opnd2 kind=%d memtype=%X sym=%s type=%s instr=%d istype=%u explicit=%u\n",
+; 1178 :                opnd2->kind,
+; 1179 :                opnd2->mem_type,
+; 1180 :                sym ? sym->name : "NULL",
+; 1181 :                opnd2->type ? opnd2->type->name : "NULL",
+; 1182 :                opnd2->instr,
+; 1183 :                opnd2->is_type,
+; 1184 :                opnd2->explicit ));
+; 1185 :     opnd1->kind = EXPR_CONST;
 
 	xor	ebp, ebp
 	mov	rsi, r9
 	mov	DWORD PTR [rdx+60], ebp
 	mov	rdi, r8
 
-; 1220 :     /* TYPE accepts arrays/structs/unions */
-; 1221 :     /* v2.11: if memtype isn't empty, ignore any unary operator
-; 1222 :      * test cases:
-; 1223 :      * - type qword ptr sym.
-; 1224 :      * - type qword ptr offset sym
-; 1225 :      * operators LOW, HIGH, LOWWORD, HIGHWORD, LOW32, HIGH32,
-; 1226 :      * OFFSET, IMAGEREL, SECTIONREL and LROFFSET
-; 1227 :      * will set opnd.memtype to MT_EMPTY.
-; 1228 :      */
-; 1229 :     if( opnd2->instr != EMPTY && opnd2->mem_type != MT_EMPTY ) {
+; 1186 :     /* TYPE accepts arrays/structs/unions */
+; 1187 :     /* v2.11: if memtype isn't empty, ignore any unary operator
+; 1188 :      * test cases:
+; 1189 :      * - type qword ptr sym.
+; 1190 :      * - type qword ptr offset sym
+; 1191 :      * operators LOW, HIGH, LOWWORD, HIGHWORD, LOW32, HIGH32,
+; 1192 :      * OFFSET, IMAGEREL, SECTIONREL and LROFFSET
+; 1193 :      * will set opnd.memtype to MT_EMPTY.
+; 1194 :      */
+; 1195 :     if( opnd2->instr != EMPTY && opnd2->mem_type != MT_EMPTY ) {
 
 	cmp	DWORD PTR [r8+56], -2
 	mov	rbx, rdx
@@ -8553,29 +8553,29 @@ type_op	PROC
 	cmp	DWORD PTR [r8+64], 192			; 000000c0H
 	je	SHORT $LN4@type_op
 
-; 1230 :         opnd2->instr = EMPTY;
+; 1196 :         opnd2->instr = EMPTY;
 
 	mov	DWORD PTR [r8+56], -2
 
-; 1231 :         sym = NULL;
+; 1197 :         sym = NULL;
 
 	mov	esi, ebp
 $LN4@type_op:
 
-; 1232 :     }
-; 1233 :     if( opnd2->instr != EMPTY ) {
+; 1198 :     }
+; 1199 :     if( opnd2->instr != EMPTY ) {
 
 	mov	eax, DWORD PTR [r8+56]
 	cmp	eax, -2
 	je	SHORT $LN5@type_op
 
-; 1234 :         if ( opnd2->sym ) {
+; 1200 :         if ( opnd2->sym ) {
 
 	mov	rcx, QWORD PTR [r8+80]
 	test	rcx, rcx
 	je	$LN40@type_op
 
-; 1235 :             switch ( opnd2->instr ) {
+; 1201 :             switch ( opnd2->instr ) {
 
 	add	eax, -230				; ffffffffffffff1aH
 	cmp	eax, 13
@@ -8587,83 +8587,83 @@ $LN4@type_op:
 	jmp	rax
 $LN8@type_op:
 
-; 1236 :             case T_LOW:
-; 1237 :             case T_HIGH:
-; 1238 :                 opnd1->value = 1;
+; 1202 :             case T_LOW:
+; 1203 :             case T_HIGH:
+; 1204 :                 opnd1->value = 1;
 
 	mov	DWORD PTR [rbx], 1
 
-; 1239 :                 break;
+; 1205 :                 break;
 
 	jmp	$LN40@type_op
 $LN9@type_op:
 
-; 1240 :             case T_LOWWORD:
-; 1241 :             case T_HIGHWORD:
-; 1242 :                 //case T_SEG: /* masm returns 0 for TYPE SEG <label>! */
-; 1243 :                 opnd1->value = 2;
+; 1206 :             case T_LOWWORD:
+; 1207 :             case T_HIGHWORD:
+; 1208 :                 //case T_SEG: /* masm returns 0 for TYPE SEG <label>! */
+; 1209 :                 opnd1->value = 2;
 
 	mov	eax, 2
 
-; 1244 :                 break;
+; 1210 :                 break;
 
 	jmp	$LN45@type_op
 $LN10@type_op:
 
-; 1245 : #if LOHI32
-; 1246 :             case T_LOW32:
-; 1247 :             case T_HIGH32:
-; 1248 :                 opnd1->value = 4;
+; 1211 : #if LOHI32
+; 1212 :             case T_LOW32:
+; 1213 :             case T_HIGH32:
+; 1214 :                 opnd1->value = 4;
 
 	mov	DWORD PTR [rbx], 4
 
-; 1249 :                 break;
+; 1215 :                 break;
 
 	jmp	$LN40@type_op
 $LN11@type_op:
 
-; 1250 : #endif
-; 1251 :             case T_OFFSET:
-; 1252 :             case T_LROFFSET:
-; 1253 : #if SECTIONRELSUPP
-; 1254 :             case T_SECTIONREL: /* masm returns 0 for TYPE SECTIONREL <label>! */
-; 1255 : #endif
-; 1256 : #if IMAGERELSUPP
-; 1257 :             case T_IMAGEREL: /* masm returns 0 for TYPE IMAGEREL <label>! */
-; 1258 : #endif
-; 1259 :                 opnd1->value = 2 << GetSymOfssize( opnd2->sym );
+; 1216 : #endif
+; 1217 :             case T_OFFSET:
+; 1218 :             case T_LROFFSET:
+; 1219 : #if SECTIONRELSUPP
+; 1220 :             case T_SECTIONREL: /* masm returns 0 for TYPE SECTIONREL <label>! */
+; 1221 : #endif
+; 1222 : #if IMAGERELSUPP
+; 1223 :             case T_IMAGEREL: /* masm returns 0 for TYPE IMAGEREL <label>! */
+; 1224 : #endif
+; 1225 :                 opnd1->value = 2 << GetSymOfssize( opnd2->sym );
 
 	call	GetSymOfssize
 	mov	ecx, eax
 	mov	eax, 2
 	shl	eax, cl
 
-; 1260 :                 opnd1->is_type = TRUE; /* v2.03: added */
+; 1226 :                 opnd1->is_type = TRUE; /* v2.03: added */
 
-	or	DWORD PTR [rbx+76], 8
+	or	DWORD PTR [rbx+72], 8
 
-; 1261 :                 break;
-; 1262 :             }
-; 1263 :         }
+; 1227 :                 break;
+; 1228 :             }
+; 1229 :         }
 
 	jmp	$LN45@type_op
 $LN5@type_op:
 
-; 1264 :     } else if ( sym == NULL ) {
+; 1230 :     } else if ( sym == NULL ) {
 
 	test	rsi, rsi
 	jne	$LN12@type_op
 
-; 1265 :         //printf( "sym=NULL kind=%d mem_type=%X indirect=%u is_type=%u type=%s\n", opnd2->kind, opnd2->mem_type, opnd2->indirect, opnd2->is_type, opnd2->type ? opnd2->type->name : "NULL" );
-; 1266 :         /* for types, return total_size */
-; 1267 :         if ( opnd2->is_type == TRUE ) {
+; 1231 :         //printf( "sym=NULL kind=%d mem_type=%X indirect=%u is_type=%u type=%s\n", opnd2->kind, opnd2->mem_type, opnd2->indirect, opnd2->is_type, opnd2->type ? opnd2->type->name : "NULL" );
+; 1232 :         /* for types, return total_size */
+; 1233 :         if ( opnd2->is_type == TRUE ) {
 
-	mov	eax, DWORD PTR [r8+76]
+	mov	eax, DWORD PTR [r8+72]
 	test	al, 8
 	je	SHORT $LN14@type_op
 
-; 1268 :             /* v2.06: default value of RECORD types is the mask! */
-; 1269 :             if ( opnd2->type && opnd2->type->typekind == TYPE_RECORD )
+; 1234 :             /* v2.06: default value of RECORD types is the mask! */
+; 1235 :             if ( opnd2->type && opnd2->type->typekind == TYPE_RECORD )
 
 	mov	rax, QWORD PTR [r8+96]
 	test	rax, rax
@@ -8671,14 +8671,14 @@ $LN5@type_op:
 	cmp	BYTE PTR [rax+66], 4
 	jne	SHORT $LN16@type_op
 
-; 1270 :                 opnd2->value = opnd2->type->total_size;
+; 1236 :                 opnd2->value = opnd2->type->total_size;
 
 	mov	eax, DWORD PTR [rax+56]
 	mov	DWORD PTR [r8], eax
 $LN16@type_op:
 
-; 1271 :             //opnd1->value = opnd2->value;
-; 1272 :             TokenAssign( opnd1, opnd2 );
+; 1237 :             //opnd1->value = opnd2->value;
+; 1238 :             TokenAssign( opnd1, opnd2 );
 
 	movups	xmm0, XMMWORD PTR [r8]
 	movups	XMMWORD PTR [rdx], xmm0
@@ -8693,45 +8693,45 @@ $LN16@type_op:
 	movups	xmm1, XMMWORD PTR [r8+80]
 	movups	XMMWORD PTR [rdx+80], xmm1
 
-; 1273 :             /* v2.05: added, (type procptr) ptr <reg>
-; 1274 :              * the type probably should be set generally,
-; 1275 :              * but this variant is the one used by INVOKE, other
-; 1276 :              * usages are virtually irrelevant.
-; 1277 :              * v2.10: opnd1->type now always set. Example:
-; 1278 :              *   ( type x ) eq ( type y )
-; 1279 :              * also see new function cmp_types()
-; 1280 :              */
-; 1281 :             //if ( opnd2->mem_type == MT_PROC )
-; 1282 :             opnd1->type = opnd2->type;
+; 1239 :             /* v2.05: added, (type procptr) ptr <reg>
+; 1240 :              * the type probably should be set generally,
+; 1241 :              * but this variant is the one used by INVOKE, other
+; 1242 :              * usages are virtually irrelevant.
+; 1243 :              * v2.10: opnd1->type now always set. Example:
+; 1244 :              *   ( type x ) eq ( type y )
+; 1245 :              * also see new function cmp_types()
+; 1246 :              */
+; 1247 :             //if ( opnd2->mem_type == MT_PROC )
+; 1248 :             opnd1->type = opnd2->type;
 
 	mov	rax, QWORD PTR [r8+96]
 	mov	QWORD PTR [rdx+96], rax
 	jmp	$LN40@type_op
 $LN14@type_op:
 
-; 1283 : 
-; 1284 :         } else if ( opnd2->kind == EXPR_REG && opnd2->indirect == FALSE ) {
+; 1249 : 
+; 1250 :         } else if ( opnd2->kind == EXPR_REG && opnd2->indirect == FALSE ) {
 
 	cmp	DWORD PTR [r8+60], 2
 	jne	$LN17@type_op
 	test	al, 1
 	jne	$LN17@type_op
 
-; 1285 :             opnd1->value = SizeFromRegister( opnd2->base_reg->tokval );
+; 1251 :             opnd1->value = SizeFromRegister( opnd2->base_reg->tokval );
 
 	mov	rax, QWORD PTR [r8+24]
 	mov	ecx, DWORD PTR [rax+16]
 	call	SizeFromRegister
 
-; 1286 :             opnd1->is_type = TRUE; /* v2.03: added */
+; 1252 :             opnd1->is_type = TRUE; /* v2.03: added */
 
-	or	DWORD PTR [rbx+76], 8
+	or	DWORD PTR [rbx+72], 8
 	mov	DWORD PTR [rbx], eax
 
-; 1287 :             /* v2.10: check for assumes if it's a full size GPR */
-; 1288 :             if ( opnd1->value == CurrWordSize &&
-; 1289 :                 opnd1->mem_type == MT_EMPTY &&
-; 1290 :                 ( GetValueSp( opnd2->base_reg->tokval ) & OP_RGT8 ) &&
+; 1253 :             /* v2.10: check for assumes if it's a full size GPR */
+; 1254 :             if ( opnd1->value == CurrWordSize &&
+; 1255 :                 opnd1->mem_type == MT_EMPTY &&
+; 1256 :                 ( GetValueSp( opnd2->base_reg->tokval ) & OP_RGT8 ) &&
 
 	movzx	ecx, BYTE PTR ModuleInfo+406
 	cmp	eax, ecx
@@ -8749,61 +8749,61 @@ $LN14@type_op:
 	test	rax, rax
 	je	SHORT $LN19@type_op
 
-; 1291 :                 ( sym = GetStdAssumeEx( opnd2->base_reg->bytval ) ) ) {
-; 1292 :                 DebugMsg1(("type_op: assume type=%X [name=>%s< memtype=%X]\n", sym, sym->name, sym->mem_type ));
-; 1293 :                 opnd1->type = sym;
+; 1257 :                 ( sym = GetStdAssumeEx( opnd2->base_reg->bytval ) ) ) {
+; 1258 :                 DebugMsg1(("type_op: assume type=%X [name=>%s< memtype=%X]\n", sym, sym->name, sym->mem_type ));
+; 1259 :                 opnd1->type = sym;
 
 	mov	QWORD PTR [rbx+96], rax
 
-; 1294 :                 opnd1->mem_type = sym->mem_type;
+; 1260 :                 opnd1->mem_type = sym->mem_type;
 
 	mov	ecx, DWORD PTR [rax+36]
 	mov	DWORD PTR [rbx+64], ecx
 
-; 1295 :                 opnd1->value = sym->total_size;
+; 1261 :                 opnd1->value = sym->total_size;
 
 	mov	eax, DWORD PTR [rax+56]
 
-; 1296 :             } else {
+; 1262 :             } else {
 
 	jmp	$LN45@type_op
 $LN19@type_op:
 
-; 1297 :                 opnd1->mem_type = opnd2->mem_type; /* v2.10: added */
+; 1263 :                 opnd1->mem_type = opnd2->mem_type; /* v2.10: added */
 
 	mov	ecx, DWORD PTR [rdi+64]
 	lea	rdx, QWORD PTR [rbx+64]
 	mov	DWORD PTR [rdx], ecx
 
-; 1298 :                 opnd1->type = opnd2->type; /* v2.10: added */
+; 1264 :                 opnd1->type = opnd2->type; /* v2.10: added */
 
 	mov	rax, QWORD PTR [rdi+96]
 	mov	QWORD PTR [rbx+96], rax
 
-; 1299 :                 if ( opnd1->mem_type == MT_EMPTY )
+; 1265 :                 if ( opnd1->mem_type == MT_EMPTY )
 
 	cmp	ecx, 192				; 000000c0H
 	jne	$LN40@type_op
 
-; 1300 :                     MemtypeFromSize( opnd1->value, &opnd1->mem_type ); /* v2.03: added */
+; 1266 :                     MemtypeFromSize( opnd1->value, &opnd1->mem_type ); /* v2.03: added */
 
 	mov	ecx, DWORD PTR [rbx]
 	call	MemtypeFromSize
 
-; 1301 :             }
+; 1267 :             }
 
 	jmp	$LN40@type_op
 $LN17@type_op:
 
-; 1302 : 
-; 1303 : #if 0 /* Masm returns 0 for TYPE <segment_register> */
-; 1304 :             /* if it is a segment register, use default word size */
-; 1305 :             if ( opnd1->value == 0 )
-; 1306 :                 opnd1->value = Use32 ? 4 : 2;
-; 1307 : #endif
-; 1308 :         //} else if ( opnd2->explicit ) { /* v2.05: changed */
-; 1309 :         //} else if ( opnd2->mem_type != MT_EMPTY ) { /* v2.10: changed */
-; 1310 :         } else if ( opnd2->mem_type != MT_EMPTY || opnd2->explicit ) {
+; 1268 : 
+; 1269 : #if 0 /* Masm returns 0 for TYPE <segment_register> */
+; 1270 :             /* if it is a segment register, use default word size */
+; 1271 :             if ( opnd1->value == 0 )
+; 1272 :                 opnd1->value = Use32 ? 4 : 2;
+; 1273 : #endif
+; 1274 :         //} else if ( opnd2->explicit ) { /* v2.05: changed */
+; 1275 :         //} else if ( opnd2->mem_type != MT_EMPTY ) { /* v2.10: changed */
+; 1276 :         } else if ( opnd2->mem_type != MT_EMPTY || opnd2->explicit ) {
 
 	mov	ecx, DWORD PTR [r8+64]
 	cmp	ecx, 192				; 000000c0H
@@ -8811,198 +8811,198 @@ $LN17@type_op:
 	test	al, 2
 	jne	SHORT $LN24@type_op
 
-; 1322 :         } else /* it is a number or EXPR_REG + indirect */
-; 1323 :             opnd1->value = 0;
+; 1288 :         } else /* it is a number or EXPR_REG + indirect */
+; 1289 :             opnd1->value = 0;
 
 	mov	DWORD PTR [rdx], ebp
 	jmp	$LN40@type_op
 $LN24@type_op:
 
-; 1311 :             if ( opnd2->mem_type != MT_EMPTY ) {
+; 1277 :             if ( opnd2->mem_type != MT_EMPTY ) {
 
 	cmp	ecx, 192				; 000000c0H
 	je	SHORT $LN25@type_op
 $LN47@type_op:
 
-; 1312 :                 opnd1->value = SizeFromMemtype( opnd2->mem_type, opnd2->Ofssize, opnd2->type );
+; 1278 :                 opnd1->value = SizeFromMemtype( opnd2->mem_type, opnd2->Ofssize, opnd2->type );
 
 	movzx	edx, BYTE PTR [r8+69]
 	mov	r8, QWORD PTR [r8+96]
 	call	SizeFromMemtype
 	mov	DWORD PTR [rbx], eax
 
-; 1313 :                 opnd1->mem_type = opnd2->mem_type; /* v2.04: added */
+; 1279 :                 opnd1->mem_type = opnd2->mem_type; /* v2.04: added */
 
 	mov	eax, DWORD PTR [rdi+64]
 
-; 1318 :                 }
-; 1319 :             }
-; 1320 :             opnd1->is_type = TRUE; /* v2.04: added */
+; 1284 :                 }
+; 1285 :             }
+; 1286 :             opnd1->is_type = TRUE; /* v2.04: added */
 
-	or	DWORD PTR [rbx+76], 8
+	or	DWORD PTR [rbx+72], 8
 	mov	DWORD PTR [rbx+64], eax
 
-; 1321 :             opnd1->type = opnd2->type; /* v2.09: added */
+; 1287 :             opnd1->type = opnd2->type; /* v2.09: added */
 
 	mov	rax, QWORD PTR [rdi+96]
 	mov	QWORD PTR [rbx+96], rax
 
-; 1324 : #if 0
-; 1325 :     } else if ( sym->state == SYM_TYPE ) {
-; 1326 :         TokenAssign( opnd1, opnd2 );
-; 1327 :         opnd1->type = sym;
-; 1328 : #endif
-; 1329 :     } else if ( sym->state == SYM_UNDEFINED ) { /* v2.10: added */
+; 1290 : #if 0
+; 1291 :     } else if ( sym->state == SYM_TYPE ) {
+; 1292 :         TokenAssign( opnd1, opnd2 );
+; 1293 :         opnd1->type = sym;
+; 1294 : #endif
+; 1295 :     } else if ( sym->state == SYM_UNDEFINED ) { /* v2.10: added */
 
 	jmp	$LN40@type_op
 $LN25@type_op:
 
-; 1314 :             } else {
-; 1315 :                 if ( opnd2->type ) {
+; 1280 :             } else {
+; 1281 :                 if ( opnd2->type ) {
 
 	mov	rax, QWORD PTR [r8+96]
 	test	rax, rax
 	je	SHORT $LN27@type_op
 
-; 1316 :                     opnd1->value = opnd2->type->total_size;
+; 1282 :                     opnd1->value = opnd2->type->total_size;
 
 	mov	eax, DWORD PTR [rax+56]
 	mov	DWORD PTR [rdx], eax
 
-; 1317 :                     opnd1->mem_type = opnd2->type->mem_type;
+; 1283 :                     opnd1->mem_type = opnd2->type->mem_type;
 
 	mov	rax, QWORD PTR [r8+96]
 	mov	ecx, DWORD PTR [rax+36]
 	mov	DWORD PTR [rdx+64], ecx
 $LN27@type_op:
 
-; 1318 :                 }
-; 1319 :             }
-; 1320 :             opnd1->is_type = TRUE; /* v2.04: added */
+; 1284 :                 }
+; 1285 :             }
+; 1286 :             opnd1->is_type = TRUE; /* v2.04: added */
 
-	or	DWORD PTR [rbx+76], 8
+	or	DWORD PTR [rbx+72], 8
 
-; 1321 :             opnd1->type = opnd2->type; /* v2.09: added */
+; 1287 :             opnd1->type = opnd2->type; /* v2.09: added */
 
 	mov	rax, QWORD PTR [rdi+96]
 	mov	QWORD PTR [rbx+96], rax
 
-; 1324 : #if 0
-; 1325 :     } else if ( sym->state == SYM_TYPE ) {
-; 1326 :         TokenAssign( opnd1, opnd2 );
-; 1327 :         opnd1->type = sym;
-; 1328 : #endif
-; 1329 :     } else if ( sym->state == SYM_UNDEFINED ) { /* v2.10: added */
+; 1290 : #if 0
+; 1291 :     } else if ( sym->state == SYM_TYPE ) {
+; 1292 :         TokenAssign( opnd1, opnd2 );
+; 1293 :         opnd1->type = sym;
+; 1294 : #endif
+; 1295 :     } else if ( sym->state == SYM_UNDEFINED ) { /* v2.10: added */
 
 	jmp	$LN40@type_op
 $LN12@type_op:
 	cmp	DWORD PTR [rsi+32], ebp
 	jne	SHORT $LN28@type_op
 
-; 1330 :         opnd1->kind = EXPR_ADDR;
-; 1331 :         opnd1->sym = sym;
-; 1332 :         /* is_type must be set, to avoid the forward referenced symbol be changed
-; 1333 :          * to a type if the type expression is the left operand of PTR
-; 1334 :          */
-; 1335 :         opnd1->is_type = TRUE;
+; 1296 :         opnd1->kind = EXPR_ADDR;
+; 1297 :         opnd1->sym = sym;
+; 1298 :         /* is_type must be set, to avoid the forward referenced symbol be changed
+; 1299 :          * to a type if the type expression is the left operand of PTR
+; 1300 :          */
+; 1301 :         opnd1->is_type = TRUE;
 
-	or	DWORD PTR [rdx+76], 8
+	or	DWORD PTR [rdx+72], 8
 	mov	DWORD PTR [rdx+60], 1
 	mov	QWORD PTR [rdx+80], rsi
 	jmp	$LN40@type_op
 $LN28@type_op:
 
-; 1336 :         //} else if( sym->mem_type == MT_TYPE ) { /* v2.04: check for explicit */
-; 1337 :     } else if( sym->mem_type == MT_TYPE && opnd2->explicit == FALSE ) {
+; 1302 :         //} else if( sym->mem_type == MT_TYPE ) { /* v2.04: check for explicit */
+; 1303 :     } else if( sym->mem_type == MT_TYPE && opnd2->explicit == FALSE ) {
 
 	cmp	DWORD PTR [rsi+36], 196			; 000000c4H
 	jne	SHORT $LN30@type_op
-	test	BYTE PTR [r8+76], 2
+	test	BYTE PTR [r8+72], 2
 	jne	SHORT $LN30@type_op
 
-; 1338 :         opnd1->value = sym->type->total_size;
+; 1304 :         opnd1->value = sym->type->total_size;
 
 	mov	rax, QWORD PTR [rsi+80]
 	mov	ecx, DWORD PTR [rax+56]
 
-; 1339 :         opnd1->is_type = TRUE; /* v2.03: added */
+; 1305 :         opnd1->is_type = TRUE; /* v2.03: added */
 
-	or	DWORD PTR [rdx+76], 8
+	or	DWORD PTR [rdx+72], 8
 	mov	DWORD PTR [rdx], ecx
 
-; 1340 :         //if ( opnd1->mem_type == MT_EMPTY ) /* v2.09 */
-; 1341 :         opnd1->mem_type = sym->type->mem_type; /* v2.09 */
+; 1306 :         //if ( opnd1->mem_type == MT_EMPTY ) /* v2.09 */
+; 1307 :         opnd1->mem_type = sym->type->mem_type; /* v2.09 */
 
 	mov	rax, QWORD PTR [rsi+80]
 	mov	ecx, DWORD PTR [rax+36]
 	mov	DWORD PTR [rdx+64], ecx
 
-; 1342 :         opnd1->type = sym->type; /* v2.09 */
+; 1308 :         opnd1->type = sym->type; /* v2.09 */
 
 	mov	rax, QWORD PTR [rsi+80]
 	mov	QWORD PTR [rdx+96], rax
 
-; 1343 :         //printf( "sym=%s MT_TYPE type=%s type->memt=%X\n", sym->name, sym->type->name, sym->type->mem_type );
-; 1344 :     } else {
+; 1309 :         //printf( "sym=%s MT_TYPE type=%s type->memt=%X\n", sym->name, sym->type->name, sym->type->mem_type );
+; 1310 :     } else {
 
 	jmp	$LN40@type_op
 $LN30@type_op:
 
-; 1345 : #if 1 /* v2.03: added */
-; 1346 :         opnd1->is_type = TRUE;
+; 1311 : #if 1 /* v2.03: added */
+; 1312 :         opnd1->is_type = TRUE;
 
-	or	DWORD PTR [rdx+76], 8
+	or	DWORD PTR [rdx+72], 8
 
-; 1347 :         if ( opnd1->mem_type == MT_EMPTY )
+; 1313 :         if ( opnd1->mem_type == MT_EMPTY )
 
 	cmp	DWORD PTR [rdx+64], 192			; 000000c0H
 	jne	SHORT $LN32@type_op
 
-; 1348 :             opnd1->mem_type = opnd2->mem_type;
+; 1314 :             opnd1->mem_type = opnd2->mem_type;
 
 	mov	eax, DWORD PTR [r8+64]
 	mov	DWORD PTR [rdx+64], eax
 $LN32@type_op:
 
-; 1349 : #endif
-; 1350 :         //if ( opnd2->type ) { /* v2.10a: see types14.asm */
-; 1351 :         if ( opnd2->type && opnd2->mbr == NULL ) {
+; 1315 : #endif
+; 1316 :         //if ( opnd2->type ) { /* v2.10a: see types14.asm */
+; 1317 :         if ( opnd2->type && opnd2->mbr == NULL ) {
 
 	cmp	QWORD PTR [r8+96], rbp
 	je	SHORT $LN33@type_op
 	cmp	QWORD PTR [r8+88], rbp
 	jne	SHORT $LN33@type_op
 
-; 1352 :             opnd1->type_tok = opnd2->type_tok;
+; 1318 :             opnd1->type_tok = opnd2->type_tok;
 
 	mov	rax, QWORD PTR [r8+40]
 	mov	QWORD PTR [rdx+40], rax
 
-; 1353 :             opnd1->type = opnd2->type;
+; 1319 :             opnd1->type = opnd2->type;
 
 	mov	rax, QWORD PTR [r8+96]
 	mov	QWORD PTR [rdx+96], rax
 
-; 1354 :             opnd1->value = opnd1->type->total_size;
+; 1320 :             opnd1->value = opnd1->type->total_size;
 
 	mov	eax, DWORD PTR [rax+56]
 	mov	DWORD PTR [rdx], eax
 	jmp	SHORT $LN40@type_op
 $LN33@type_op:
 
-; 1355 :         } else if ( sym->mem_type == MT_PTR ) {
+; 1321 :         } else if ( sym->mem_type == MT_PTR ) {
 
 	mov	eax, DWORD PTR [rsi+36]
 	cmp	eax, 195				; 000000c3H
 	jne	SHORT $LN35@type_op
 
-; 1356 :             //printf( "sym=%s MT_PTR target_memt=%X target=%s\n", sym->name, sym->ptr_memtype, sym->target_type ? sym->target_type->name : "NULL" );
-; 1357 :             opnd1->type_tok = opnd2->type_tok; /* v2.10: added */
+; 1322 :             //printf( "sym=%s MT_PTR target_memt=%X target=%s\n", sym->name, sym->ptr_memtype, sym->target_type ? sym->target_type->name : "NULL" );
+; 1323 :             opnd1->type_tok = opnd2->type_tok; /* v2.10: added */
 
 	mov	rax, QWORD PTR [r8+40]
 	mov	QWORD PTR [rdx+40], rax
 
-; 1358 :             opnd1->value = SizeFromMemtype( sym->isfar ? MT_FAR : MT_NEAR, sym->Ofssize, NULL );
+; 1324 :             opnd1->value = SizeFromMemtype( sym->isfar ? MT_FAR : MT_NEAR, sym->Ofssize, NULL );
 
 	test	BYTE PTR [rsi+47], 16
 	movzx	edx, BYTE PTR [rsi+44]
@@ -9012,10 +9012,10 @@ $LN33@type_op:
 	jmp	SHORT $LN48@type_op
 $LN35@type_op:
 
-; 1359 :         } else if( sym->mem_type == MT_NEAR ) {
-; 1360 :             /* v2.09: also handle 64-bit */
-; 1361 :             //opnd1->value = GetSymOfssize( sym ) ? LS_NEAR32 : LS_NEAR16;
-; 1362 :             opnd1->value = 0xFF00 | ( 2 << GetSymOfssize( sym ) );
+; 1325 :         } else if( sym->mem_type == MT_NEAR ) {
+; 1326 :             /* v2.09: also handle 64-bit */
+; 1327 :             //opnd1->value = GetSymOfssize( sym ) ? LS_NEAR32 : LS_NEAR16;
+; 1328 :             opnd1->value = 0xFF00 | ( 2 << GetSymOfssize( sym ) );
 
 	mov	rcx, rsi
 	cmp	eax, 129				; 00000081H
@@ -9028,12 +9028,12 @@ $LN35@type_op:
 	jmp	SHORT $LN45@type_op
 $LN37@type_op:
 
-; 1363 :         } else if( sym->mem_type == MT_FAR ) {
+; 1329 :         } else if( sym->mem_type == MT_FAR ) {
 
 	cmp	eax, 130				; 00000082H
 	jne	SHORT $LN39@type_op
 
-; 1364 :             opnd1->value = GetSymOfssize( sym ) ? LS_FAR32 : LS_FAR16;
+; 1330 :             opnd1->value = GetSymOfssize( sym ) ? LS_FAR32 : LS_FAR16;
 
 	call	GetSymOfssize
 	test	eax, eax
@@ -9041,12 +9041,12 @@ $LN37@type_op:
 	add	ebp, 65285				; 0000ff05H
 	mov	DWORD PTR [rbx], ebp
 
-; 1365 :         } else
+; 1331 :         } else
 
 	jmp	SHORT $LN40@type_op
 $LN39@type_op:
 
-; 1366 :             opnd1->value = SizeFromMemtype( opnd2->mem_type, GetSymOfssize( sym ), sym->type );
+; 1332 :             opnd1->value = SizeFromMemtype( opnd2->mem_type, GetSymOfssize( sym ), sym->type );
 
 	call	GetSymOfssize
 	mov	r8, QWORD PTR [rsi+80]
@@ -9058,10 +9058,10 @@ $LN45@type_op:
 	mov	DWORD PTR [rbx], eax
 $LN40@type_op:
 
-; 1367 :     }
-; 1368 :     DebugMsg1(("type_op: result value=%u is_type=%u type=%s\n", opnd1->value, opnd1->is_type, opnd1->type ? opnd1->type->name : "NULL" ));
-; 1369 :     return( NOT_ERROR );
-; 1370 : }
+; 1333 :     }
+; 1334 :     DebugMsg1(("type_op: result value=%u is_type=%u type=%s\n", opnd1->value, opnd1->is_type, opnd1->type ? opnd1->type->name : "NULL" ));
+; 1335 :     return( NOT_ERROR );
+; 1336 : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	xor	eax, eax
@@ -9098,55 +9098,55 @@ sym$ = 72
 name$ = 80
 sizlen_op PROC
 
-; 1095 : {
+; 1061 : {
 
 	mov	QWORD PTR [rsp+8], rbx
 	push	rdi
 	sub	rsp, 32					; 00000020H
 
-; 1096 :     opnd1->kind = EXPR_CONST;
+; 1062 :     opnd1->kind = EXPR_CONST;
 
 	xor	edi, edi
 	mov	rbx, rdx
 	mov	DWORD PTR [rdx+60], edi
 
-; 1097 : 
-; 1098 :     DebugMsg1(("sizlen_op(%s): sym=%X, mbr=%X, type=>%s<\n", GetResWName( oper, NULL ),
-; 1099 :                opnd2->sym, opnd2->mbr, opnd2->type ? opnd2->type->name : "NULL" ));
-; 1100 : 
-; 1101 :     if ( sym ) {
+; 1063 : 
+; 1064 :     DebugMsg1(("sizlen_op(%s): sym=%X, mbr=%X, type=>%s<\n", GetResWName( oper, NULL ),
+; 1065 :                opnd2->sym, opnd2->mbr, opnd2->type ? opnd2->type->name : "NULL" ));
+; 1066 : 
+; 1067 :     if ( sym ) {
 
 	lea	edx, QWORD PTR [rdi+1]
 	test	r9, r9
 	je	SHORT $LN7@sizlen_op
 
-; 1102 :         if ( sym->state == SYM_STRUCT_FIELD || sym->state == SYM_STACK )
+; 1068 :         if ( sym->state == SYM_STRUCT_FIELD || sym->state == SYM_STACK )
 
 	mov	r10d, DWORD PTR [r9+32]
 	lea	eax, DWORD PTR [r10-5]
 	cmp	eax, edx
 	jbe	SHORT $LN7@sizlen_op
 
-; 1103 :             ;
-; 1104 :         else if ( sym->state == SYM_UNDEFINED ) {
+; 1069 :             ;
+; 1070 :         else if ( sym->state == SYM_UNDEFINED ) {
 
 	test	r10d, r10d
 	jne	SHORT $LN8@sizlen_op
 
-; 1105 :             /* v2.10: forward references should have attributes EXPR_ADDR + sym.state=SYM_UNDEFINED */
-; 1106 :             opnd1->kind = EXPR_ADDR;
+; 1071 :             /* v2.10: forward references should have attributes EXPR_ADDR + sym.state=SYM_UNDEFINED */
+; 1072 :             opnd1->kind = EXPR_ADDR;
 
 	mov	DWORD PTR [rbx+60], edx
 
-; 1107 :             opnd1->sym = sym;
+; 1073 :             opnd1->sym = sym;
 
 	mov	QWORD PTR [rbx+80], r9
 $LN7@sizlen_op:
 
-; 1122 :         }
-; 1123 :     }
-; 1124 : 
-; 1125 :     switch( oper ) {
+; 1088 :         }
+; 1089 :     }
+; 1090 : 
+; 1091 :     switch( oper ) {
 
 	sub	ecx, 234				; 000000eaH
 	je	$LN19@sizlen_op
@@ -9157,30 +9157,30 @@ $LN7@sizlen_op:
 	cmp	ecx, edx
 	jne	$LN44@sizlen_op
 
-; 1172 :         } else {
-; 1173 :             opnd1->value = GetSizeValue( sym );
-; 1174 :         }
-; 1175 :         DebugMsg1(("sizlen_op(SIZE): result=%u [symbol %s, first_size=%u]\n", opnd1->value, sym ? sym->name : "NULL", sym ? sym->first_size : 0 ));
-; 1176 :         break;
-; 1177 :     case T_SIZEOF:
-; 1178 : #ifdef DEBUG_OUT
-; 1179 :         if (sym)
-; 1180 :             DebugMsg1(("sizlen_op(sizeof): symbol %s, state=%u, size=%u\n", sym->name, sym->state, sym->total_size ));
-; 1181 :         else if ( opnd2->is_type && opnd2->type )
-; 1182 :             DebugMsg1(("sizlen_op(sizeof): symbol %s (TYPE), opnd2.value=%u\n", opnd2->type->name, opnd2->value ));
-; 1183 :         else
-; 1184 :             DebugMsg1(("sizlen_op(sizeof): symbol NULL, opnd2.value=%u\n", opnd2->value ));
-; 1185 : #endif
-; 1186 :         /* if sym is NULL, then operand is a type constant */
-; 1187 :         if ( sym == NULL ) {
+; 1138 :         } else {
+; 1139 :             opnd1->value = GetSizeValue( sym );
+; 1140 :         }
+; 1141 :         DebugMsg1(("sizlen_op(SIZE): result=%u [symbol %s, first_size=%u]\n", opnd1->value, sym ? sym->name : "NULL", sym ? sym->first_size : 0 ));
+; 1142 :         break;
+; 1143 :     case T_SIZEOF:
+; 1144 : #ifdef DEBUG_OUT
+; 1145 :         if (sym)
+; 1146 :             DebugMsg1(("sizlen_op(sizeof): symbol %s, state=%u, size=%u\n", sym->name, sym->state, sym->total_size ));
+; 1147 :         else if ( opnd2->is_type && opnd2->type )
+; 1148 :             DebugMsg1(("sizlen_op(sizeof): symbol %s (TYPE), opnd2.value=%u\n", opnd2->type->name, opnd2->value ));
+; 1149 :         else
+; 1150 :             DebugMsg1(("sizlen_op(sizeof): symbol NULL, opnd2.value=%u\n", opnd2->value ));
+; 1151 : #endif
+; 1152 :         /* if sym is NULL, then operand is a type constant */
+; 1153 :         if ( sym == NULL ) {
 
 	test	r9, r9
 	jne	$LN39@sizlen_op
 
-; 1188 :             /* v2.06: default value of RECORD types is the mask! */
-; 1189 :             if ( opnd2->is_type && opnd2->type && opnd2->type->typekind == TYPE_RECORD )
+; 1154 :             /* v2.06: default value of RECORD types is the mask! */
+; 1155 :             if ( opnd2->is_type && opnd2->type && opnd2->type->typekind == TYPE_RECORD )
 
-	test	BYTE PTR [r8+76], 8
+	test	BYTE PTR [r8+72], 8
 	je	SHORT $LN41@sizlen_op
 	mov	rax, QWORD PTR [r8+96]
 	test	rax, rax
@@ -9188,18 +9188,18 @@ $LN7@sizlen_op:
 	cmp	BYTE PTR [rax+66], 4
 	jne	SHORT $LN41@sizlen_op
 
-; 1190 :                 opnd1->value = opnd2->type->total_size;
+; 1156 :                 opnd1->value = opnd2->type->total_size;
 
 	mov	eax, DWORD PTR [rax+56]
 	mov	DWORD PTR [rbx], eax
 
-; 1201 :         break;
-; 1202 :     }
-; 1203 :     return( NOT_ERROR );
+; 1167 :         break;
+; 1168 :     }
+; 1169 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1204 : }
+; 1170 : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	add	rsp, 32					; 00000020H
@@ -9210,12 +9210,12 @@ $LN8@sizlen_op:
 	cmp	eax, edx
 	ja	SHORT $LN10@sizlen_op
 
-; 1108 :         } else if ( ( sym->state == SYM_EXTERNAL ||
-; 1109 :                  sym->state == SYM_INTERNAL) &&
-; 1110 :                  //sym->mem_type != MT_ABS &&
-; 1111 :                  sym->mem_type != MT_EMPTY &&
-; 1112 :                  //sym->mem_type != MT_PROC && /* MT_PROC probably obsolete */
-; 1113 :                  sym->mem_type != MT_FAR &&
+; 1074 :         } else if ( ( sym->state == SYM_EXTERNAL ||
+; 1075 :                  sym->state == SYM_INTERNAL) &&
+; 1076 :                  //sym->mem_type != MT_ABS &&
+; 1077 :                  sym->mem_type != MT_EMPTY &&
+; 1078 :                  //sym->mem_type != MT_PROC && /* MT_PROC probably obsolete */
+; 1079 :                  sym->mem_type != MT_FAR &&
 
 	mov	eax, DWORD PTR [r9+36]
 	cmp	eax, 192				; 000000c0H
@@ -9228,11 +9228,11 @@ $LN10@sizlen_op:
 	cmp	eax, edx
 	jbe	SHORT $LN15@sizlen_op
 
-; 1114 :                  sym->mem_type != MT_NEAR )
-; 1115 :             ;
-; 1116 :         else if ( sym->state == SYM_GRP || sym->state == SYM_SEG ) {
-; 1117 :             return( fnEmitErr( EXPECTED_DATA_LABEL ) );
-; 1118 :         } else if ( oper == T_SIZE || oper == T_LENGTH )
+; 1080 :                  sym->mem_type != MT_NEAR )
+; 1081 :             ;
+; 1082 :         else if ( sym->state == SYM_GRP || sym->state == SYM_SEG ) {
+; 1083 :             return( fnEmitErr( EXPECTED_DATA_LABEL ) );
+; 1084 :         } else if ( oper == T_SIZE || oper == T_LENGTH )
 
 	cmp	ecx, 246				; 000000f6H
 	je	$LN7@sizlen_op
@@ -9240,38 +9240,38 @@ $LN10@sizlen_op:
 	je	$LN7@sizlen_op
 $LN15@sizlen_op:
 
-; 1119 :             ;
-; 1120 :         else {
-; 1121 :             return( fnEmitErr( EXPECTED_DATA_LABEL ) );
+; 1085 :             ;
+; 1086 :         else {
+; 1087 :             return( fnEmitErr( EXPECTED_DATA_LABEL ) );
 
 	mov	ecx, 232				; 000000e8H
 
-; 1204 : }
+; 1170 : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	add	rsp, 32					; 00000020H
 	pop	rdi
 
-; 1119 :             ;
-; 1120 :         else {
-; 1121 :             return( fnEmitErr( EXPECTED_DATA_LABEL ) );
+; 1085 :             ;
+; 1086 :         else {
+; 1087 :             return( fnEmitErr( EXPECTED_DATA_LABEL ) );
 
 	rex_jmp	QWORD PTR fnEmitErr
 $LN41@sizlen_op:
 
-; 1191 :             else
-; 1192 :                 opnd1->value = opnd2->value;
+; 1157 :             else
+; 1158 :                 opnd1->value = opnd2->value;
 
 	mov	eax, DWORD PTR [r8]
 	mov	DWORD PTR [rbx], eax
 
-; 1201 :         break;
-; 1202 :     }
-; 1203 :     return( NOT_ERROR );
+; 1167 :         break;
+; 1168 :     }
+; 1169 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1204 : }
+; 1170 : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	add	rsp, 32					; 00000020H
@@ -9279,8 +9279,8 @@ $LN41@sizlen_op:
 	ret	0
 $LN39@sizlen_op:
 
-; 1193 : #if 1 /* v2.05: don't use total_size for externals anymore! */
-; 1194 :         } else if ( sym->state == SYM_EXTERNAL && sym->iscomm == FALSE ) {
+; 1159 : #if 1 /* v2.05: don't use total_size for externals anymore! */
+; 1160 :         } else if ( sym->state == SYM_EXTERNAL && sym->iscomm == FALSE ) {
 
 	cmp	DWORD PTR [r9+32], 2
 	jne	SHORT $LN43@sizlen_op
@@ -9288,7 +9288,7 @@ $LN39@sizlen_op:
 	jne	SHORT $LN43@sizlen_op
 $LN52@sizlen_op:
 
-; 1195 :             opnd1->value = GetSizeValue( sym );
+; 1161 :             opnd1->value = GetSizeValue( sym );
 
 	mov	rcx, r9
 $LN36@sizlen_op:
@@ -9296,13 +9296,13 @@ $LN36@sizlen_op:
 $LN28@sizlen_op:
 	mov	DWORD PTR [rbx], eax
 
-; 1201 :         break;
-; 1202 :     }
-; 1203 :     return( NOT_ERROR );
+; 1167 :         break;
+; 1168 :     }
+; 1169 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1204 : }
+; 1170 : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	add	rsp, 32					; 00000020H
@@ -9310,22 +9310,22 @@ $LN28@sizlen_op:
 	ret	0
 $LN43@sizlen_op:
 
-; 1196 :             //if ( sym->iscomm == TRUE )
-; 1197 :             //    opnd1->value *= sym->total_length;
-; 1198 : #endif
-; 1199 :         } else
-; 1200 :             opnd1->value = sym->total_size;
+; 1162 :             //if ( sym->iscomm == TRUE )
+; 1163 :             //    opnd1->value *= sym->total_length;
+; 1164 : #endif
+; 1165 :         } else
+; 1166 :             opnd1->value = sym->total_size;
 
 	mov	eax, DWORD PTR [r9+56]
 	mov	DWORD PTR [rbx], eax
 
-; 1201 :         break;
-; 1202 :     }
-; 1203 :     return( NOT_ERROR );
+; 1167 :         break;
+; 1168 :     }
+; 1169 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1204 : }
+; 1170 : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	add	rsp, 32					; 00000020H
@@ -9333,36 +9333,36 @@ $LN43@sizlen_op:
 	ret	0
 $LN25@sizlen_op:
 
-; 1148 :         }
-; 1149 :         break;
-; 1150 :     case T_SIZE:
-; 1151 :         /* v2.04: first_size is no longer set for SYM_STACK. */
-; 1152 :         if( sym == NULL ) {
+; 1114 :         }
+; 1115 :         break;
+; 1116 :     case T_SIZE:
+; 1117 :         /* v2.04: first_size is no longer set for SYM_STACK. */
+; 1118 :         if( sym == NULL ) {
 
 	test	r9, r9
 	jne	SHORT $LN26@sizlen_op
 
-; 1153 :             /* v2.09: check memtype */
-; 1154 :             if ( ( opnd2->mem_type & MT_SPECIAL_MASK ) == MT_ADDRESS )
+; 1119 :             /* v2.09: check memtype */
+; 1120 :             if ( ( opnd2->mem_type & MT_SPECIAL_MASK ) == MT_ADDRESS )
 
 	mov	eax, DWORD PTR [r8+64]
 	and	eax, 192				; 000000c0H
 	cmp	al, -128				; ffffffffffffff80H
 
-; 1155 :                 opnd1->value = 0xFF00 | opnd2->value;
+; 1121 :                 opnd1->value = 0xFF00 | opnd2->value;
 
 	mov	eax, DWORD PTR [r8]
 	jne	SHORT $LN28@sizlen_op
 	or	eax, 65280				; 0000ff00H
 	mov	DWORD PTR [rbx], eax
 
-; 1201 :         break;
-; 1202 :     }
-; 1203 :     return( NOT_ERROR );
+; 1167 :         break;
+; 1168 :     }
+; 1169 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1204 : }
+; 1170 : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	add	rsp, 32					; 00000020H
@@ -9370,25 +9370,25 @@ $LN25@sizlen_op:
 	ret	0
 $LN26@sizlen_op:
 
-; 1156 :             else
-; 1157 :                 opnd1->value = opnd2->value;
-; 1158 :         } else if ( sym->isdata ) {
+; 1122 :             else
+; 1123 :                 opnd1->value = opnd2->value;
+; 1124 :         } else if ( sym->isdata ) {
 
 	test	BYTE PTR [r9+41], 4
 	je	SHORT $LN30@sizlen_op
 
-; 1159 :             opnd1->value = sym->first_size;
+; 1125 :             opnd1->value = sym->first_size;
 
 	mov	eax, DWORD PTR [r9+44]
 	mov	DWORD PTR [rbx], eax
 
-; 1201 :         break;
-; 1202 :     }
-; 1203 :     return( NOT_ERROR );
+; 1167 :         break;
+; 1168 :     }
+; 1169 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1204 : }
+; 1170 : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	add	rsp, 32					; 00000020H
@@ -9396,23 +9396,23 @@ $LN26@sizlen_op:
 	ret	0
 $LN30@sizlen_op:
 
-; 1160 : #if 0 /* v2.09: can't happen, since for a type, sym is NULL */
-; 1161 :         } else if( sym->state == SYM_TYPE ) {
-; 1162 :             opnd1->value = sym->total_size;
-; 1163 : #endif
-; 1164 :         } else if( sym->state == SYM_STACK ) {
+; 1126 : #if 0 /* v2.09: can't happen, since for a type, sym is NULL */
+; 1127 :         } else if( sym->state == SYM_TYPE ) {
+; 1128 :             opnd1->value = sym->total_size;
+; 1129 : #endif
+; 1130 :         } else if( sym->state == SYM_STACK ) {
 
 	cmp	DWORD PTR [r9+32], 5
 	je	SHORT $LN52@sizlen_op
 
-; 1165 :             opnd1->value = GetSizeValue( sym );
-; 1166 :         } else if( sym->mem_type == MT_NEAR ) {
+; 1131 :             opnd1->value = GetSizeValue( sym );
+; 1132 :         } else if( sym->mem_type == MT_NEAR ) {
 
 	mov	eax, DWORD PTR [r9+36]
 
-; 1167 :             /* v2.09: also handle 64-bit */
-; 1168 :             //opnd1->value = GetSymOfssize( sym ) ? LS_NEAR32 : LS_NEAR16;
-; 1169 :             opnd1->value = 0xFF00 | ( 2 << GetSymOfssize( sym ) );
+; 1133 :             /* v2.09: also handle 64-bit */
+; 1134 :             //opnd1->value = GetSymOfssize( sym ) ? LS_NEAR32 : LS_NEAR16;
+; 1135 :             opnd1->value = 0xFF00 | ( 2 << GetSymOfssize( sym ) );
 
 	mov	rcx, r9
 	cmp	eax, 129				; 00000081H
@@ -9424,13 +9424,13 @@ $LN30@sizlen_op:
 	or	eax, 65280				; 0000ff00H
 	mov	DWORD PTR [rbx], eax
 
-; 1201 :         break;
-; 1202 :     }
-; 1203 :     return( NOT_ERROR );
+; 1167 :         break;
+; 1168 :     }
+; 1169 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1204 : }
+; 1170 : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	add	rsp, 32					; 00000020H
@@ -9438,12 +9438,12 @@ $LN30@sizlen_op:
 	ret	0
 $LN34@sizlen_op:
 
-; 1170 :         } else if( sym->mem_type == MT_FAR ) {
+; 1136 :         } else if( sym->mem_type == MT_FAR ) {
 
 	cmp	eax, 130				; 00000082H
 	jne	$LN36@sizlen_op
 
-; 1171 :             opnd1->value = GetSymOfssize( sym ) ? LS_FAR32 : LS_FAR16;
+; 1137 :             opnd1->value = GetSymOfssize( sym ) ? LS_FAR32 : LS_FAR16;
 
 	call	GetSymOfssize
 	test	eax, eax
@@ -9451,13 +9451,13 @@ $LN34@sizlen_op:
 	add	edi, 65285				; 0000ff05H
 	mov	DWORD PTR [rbx], edi
 
-; 1201 :         break;
-; 1202 :     }
-; 1203 :     return( NOT_ERROR );
+; 1167 :         break;
+; 1168 :     }
+; 1169 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1204 : }
+; 1170 : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	add	rsp, 32					; 00000020H
@@ -9465,28 +9465,28 @@ $LN34@sizlen_op:
 	ret	0
 $LN20@sizlen_op:
 
-; 1133 :         break;
-; 1134 :     case T_LENGTHOF:
-; 1135 :         /* LENGTHOF needs either a data label or a structure field */
-; 1136 :         /* a TYPE (structure, typedef) is invalid */
-; 1137 :         if( opnd2->kind == EXPR_CONST ) {
+; 1099 :         break;
+; 1100 :     case T_LENGTHOF:
+; 1101 :         /* LENGTHOF needs either a data label or a structure field */
+; 1102 :         /* a TYPE (structure, typedef) is invalid */
+; 1103 :         if( opnd2->kind == EXPR_CONST ) {
 
 	cmp	DWORD PTR [r8+60], edi
 	jne	SHORT $LN21@sizlen_op
 
-; 1138 :             opnd1->value = opnd2->mbr->total_length;
+; 1104 :             opnd1->value = opnd2->mbr->total_length;
 
 	mov	rax, QWORD PTR [r8+88]
 	mov	ecx, DWORD PTR [rax+64]
 
-; 1201 :         break;
-; 1202 :     }
-; 1203 :     return( NOT_ERROR );
+; 1167 :         break;
+; 1168 :     }
+; 1169 :     return( NOT_ERROR );
 
 	xor	eax, eax
 	mov	DWORD PTR [rbx], ecx
 
-; 1204 : }
+; 1170 : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	add	rsp, 32					; 00000020H
@@ -9494,11 +9494,11 @@ $LN20@sizlen_op:
 	ret	0
 $LN21@sizlen_op:
 
-; 1139 : #if 0 /* v2.09: unnecessary */
-; 1140 :         } else if( sym->state == SYM_UNDEFINED && Parse_Pass == PASS_1 ) {
-; 1141 :             opnd1->value = sym->total_length;
-; 1142 : #endif
-; 1143 :         } else if ( sym->state == SYM_EXTERNAL && sym->iscomm == FALSE ) {
+; 1105 : #if 0 /* v2.09: unnecessary */
+; 1106 :         } else if( sym->state == SYM_UNDEFINED && Parse_Pass == PASS_1 ) {
+; 1107 :             opnd1->value = sym->total_length;
+; 1108 : #endif
+; 1109 :         } else if ( sym->state == SYM_EXTERNAL && sym->iscomm == FALSE ) {
 
 	cmp	DWORD PTR [r9+32], 2
 	jne	SHORT $LN23@sizlen_op
@@ -9506,21 +9506,21 @@ $LN21@sizlen_op:
 	je	SHORT $LN46@sizlen_op
 $LN23@sizlen_op:
 
-; 1144 :             /* for externals other than COMM, total_length field is used otherwise */
-; 1145 :             opnd1->value = 1;
-; 1146 :         } else {
-; 1147 :             opnd1->value = sym->total_length;
+; 1110 :             /* for externals other than COMM, total_length field is used otherwise */
+; 1111 :             opnd1->value = 1;
+; 1112 :         } else {
+; 1113 :             opnd1->value = sym->total_length;
 
 	mov	eax, DWORD PTR [r9+64]
 	mov	DWORD PTR [rbx], eax
 
-; 1201 :         break;
-; 1202 :     }
-; 1203 :     return( NOT_ERROR );
+; 1167 :         break;
+; 1168 :     }
+; 1169 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1204 : }
+; 1170 : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	add	rsp, 32					; 00000020H
@@ -9528,13 +9528,13 @@ $LN23@sizlen_op:
 	ret	0
 $LN19@sizlen_op:
 
-; 1126 :     case T_LENGTH:
-; 1127 :         /* data items and struct fields have a "first" count.
-; 1128 :          * for procedure locals (+arguments) and code labels, always 1 is returned.
-; 1129 :          */
-; 1130 :         /* v2.09: first_length is valid if isdata is set */
-; 1131 :         //opnd1->value = ( sym->state != SYM_STACK && sym->isarray ) ? sym->first_length : 1;
-; 1132 :         opnd1->value = sym->isdata ? sym->first_length : 1;
+; 1092 :     case T_LENGTH:
+; 1093 :         /* data items and struct fields have a "first" count.
+; 1094 :          * for procedure locals (+arguments) and code labels, always 1 is returned.
+; 1095 :          */
+; 1096 :         /* v2.09: first_length is valid if isdata is set */
+; 1097 :         //opnd1->value = ( sym->state != SYM_STACK && sym->isarray ) ? sym->first_length : 1;
+; 1098 :         opnd1->value = sym->isdata ? sym->first_length : 1;
 
 	test	BYTE PTR [r9+41], 4
 	je	SHORT $LN46@sizlen_op
@@ -9543,13 +9543,13 @@ $LN46@sizlen_op:
 	mov	DWORD PTR [rbx], edx
 $LN44@sizlen_op:
 
-; 1201 :         break;
-; 1202 :     }
-; 1203 :     return( NOT_ERROR );
+; 1167 :         break;
+; 1168 :     }
+; 1169 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1204 : }
+; 1170 : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	add	rsp, 32					; 00000020H
@@ -9566,18 +9566,18 @@ oprtr$ = 56
 operand$ = 64
 invalid_operand PROC					; COMDAT
 
-; 1075 : {
+; 1041 : {
 
 	push	rbx
 	sub	rsp, 32					; 00000020H
 
-; 1076 :     if ( !opnd->is_opattr )
+; 1042 :     if ( !opnd->is_opattr )
 
-	test	BYTE PTR [rcx+76], 16
+	test	BYTE PTR [rcx+72], 16
 	mov	rbx, r8
 	jne	SHORT $LN4@invalid_op
 
-; 1077 :         fnEmitErr( INVALID_OPERAND_FOR_OPERATOR, _strupr( oprtr), operand );
+; 1043 :         fnEmitErr( INVALID_OPERAND_FOR_OPERATOR, _strupr( oprtr), operand );
 
 	mov	rcx, rdx
 	call	_strupr
@@ -9587,11 +9587,11 @@ invalid_operand PROC					; COMDAT
 	call	QWORD PTR fnEmitErr
 $LN4@invalid_op:
 
-; 1078 :     return( ERROR );
+; 1044 :     return( ERROR );
 
 	or	eax, -1
 
-; 1079 : }
+; 1045 : }
 
 	add	rsp, 32					; 00000020H
 	pop	rbx
@@ -9605,7 +9605,7 @@ _TEXT	SEGMENT
 opnd$ = 8
 IsOffset PROC						; COMDAT
 
-; 1060 :     if ( opnd->mem_type == MT_EMPTY )
+; 1026 :     if ( opnd->mem_type == MT_EMPTY )
 
 	cmp	DWORD PTR [rcx+64], 192			; 000000c0H
 	jne	SHORT $LN3@IsOffset
@@ -9617,28 +9617,28 @@ IsOffset PROC						; COMDAT
 	bt	ecx, eax
 	jae	SHORT $LN3@IsOffset
 
-; 1061 :         if ( opnd->instr == T_OFFSET ||
-; 1062 : #if IMAGERELSUPP
-; 1063 :             opnd->instr == T_IMAGEREL ||
-; 1064 : #endif
-; 1065 : #if SECTIONRELSUPP
-; 1066 :             opnd->instr == T_SECTIONREL ||
-; 1067 : #endif
-; 1068 :             opnd->instr == T_LROFFSET )
-; 1069 :             return( 1 );
+; 1027 :         if ( opnd->instr == T_OFFSET ||
+; 1028 : #if IMAGERELSUPP
+; 1029 :             opnd->instr == T_IMAGEREL ||
+; 1030 : #endif
+; 1031 : #if SECTIONRELSUPP
+; 1032 :             opnd->instr == T_SECTIONREL ||
+; 1033 : #endif
+; 1034 :             opnd->instr == T_LROFFSET )
+; 1035 :             return( 1 );
 
 	mov	eax, 1
 
-; 1071 : }
+; 1037 : }
 
 	ret	0
 $LN3@IsOffset:
 
-; 1070 :     return( 0 );
+; 1036 :     return( 0 );
 
 	xor	eax, eax
 
-; 1071 : }
+; 1037 : }
 
 	ret	0
 IsOffset ENDP
@@ -9650,15 +9650,15 @@ _TEXT	SEGMENT
 sym$ = 8
 GetSizeValue PROC					; COMDAT
 
-; 1051 : {
+; 1017 : {
 
 	mov	r8, rcx
 
-; 1052 :     if ( sym->mem_type == MT_PTR )
+; 1018 :     if ( sym->mem_type == MT_PTR )
 
 	mov	ecx, DWORD PTR [rcx+36]
 
-; 1053 :         return( SizeFromMemtype( sym->isfar ? MT_FAR : MT_NEAR, sym->Ofssize, sym->type ) );
+; 1019 :         return( SizeFromMemtype( sym->isfar ? MT_FAR : MT_NEAR, sym->Ofssize, sym->type ) );
 
 	movzx	edx, BYTE PTR [r8+44]
 	cmp	ecx, 195				; 000000c3H
@@ -9669,7 +9669,7 @@ GetSizeValue PROC					; COMDAT
 	add	ecx, 129				; 00000081H
 $LN2@GetSizeVal:
 
-; 1054 :     return( SizeFromMemtype( sym->mem_type, sym->Ofssize, sym->type ) );
+; 1020 :     return( SizeFromMemtype( sym->mem_type, sym->Ofssize, sym->type ) );
 
 	mov	r8, QWORD PTR [r8+80]
 	jmp	SizeFromMemtype
@@ -9683,35 +9683,35 @@ opnd1$ = 8
 opnd2$ = 16
 check_direct_reg PROC					; COMDAT
 
-; 1042 :     if( ( opnd1->kind == EXPR_REG ) && ( opnd1->indirect == FALSE )
-; 1043 :         || ( opnd2->kind == EXPR_REG ) && ( opnd2->indirect == FALSE ) ) {
+; 1008 :     if( ( opnd1->kind == EXPR_REG ) && ( opnd1->indirect == FALSE )
+; 1009 :         || ( opnd2->kind == EXPR_REG ) && ( opnd2->indirect == FALSE ) ) {
 
 	cmp	DWORD PTR [rcx+60], 2
 	jne	SHORT $LN4@check_dire
-	test	BYTE PTR [rcx+76], 1
+	test	BYTE PTR [rcx+72], 1
 	je	SHORT $LN3@check_dire
 $LN4@check_dire:
 	cmp	DWORD PTR [rdx+60], 2
 	jne	SHORT $LN2@check_dire
-	test	BYTE PTR [rdx+76], 1
+	test	BYTE PTR [rdx+72], 1
 	jne	SHORT $LN2@check_dire
 $LN3@check_dire:
 
-; 1044 :         return( ERROR );
+; 1010 :         return( ERROR );
 
 	or	eax, -1
 
-; 1047 : }
+; 1013 : }
 
 	ret	0
 $LN2@check_dire:
 
-; 1045 :     }
-; 1046 :     return( NOT_ERROR );
+; 1011 :     }
+; 1012 :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1047 : }
+; 1013 : }
 
 	ret	0
 check_direct_reg ENDP
@@ -9723,7 +9723,7 @@ _TEXT	SEGMENT
 opnd$ = 8
 fix_struct_value PROC					; COMDAT
 
-; 1033 :     if( opnd->mbr && ( opnd->mbr->state == SYM_TYPE ) ) {
+; 999  :     if( opnd->mbr && ( opnd->mbr->state == SYM_TYPE ) ) {
 
 	mov	rax, QWORD PTR [rcx+88]
 	test	rax, rax
@@ -9731,18 +9731,18 @@ fix_struct_value PROC					; COMDAT
 	cmp	DWORD PTR [rax+32], 7
 	jne	SHORT $LN2@fix_struct
 
-; 1034 :         opnd->value += opnd->mbr->total_size;
+; 1000 :         opnd->value += opnd->mbr->total_size;
 
 	mov	eax, DWORD PTR [rax+56]
 	add	DWORD PTR [rcx], eax
 
-; 1035 :         opnd->mbr = NULL;
+; 1001 :         opnd->mbr = NULL;
 
 	mov	QWORD PTR [rcx+88], 0
 $LN2@fix_struct:
 
-; 1036 :     }
-; 1037 : }
+; 1002 :     }
+; 1003 : }
 
 	ret	0
 fix_struct_value ENDP
@@ -9755,49 +9755,49 @@ opnd1$ = 48
 opnd2$ = 56
 ConstError PROC						; COMDAT
 
-; 1018 : {
+; 984  : {
 
 	sub	rsp, 40					; 00000028H
 
-; 1019 :     if ( opnd1->is_opattr )
+; 985  :     if ( opnd1->is_opattr )
 
-	test	BYTE PTR [rcx+76], 16
+	test	BYTE PTR [rcx+72], 16
 	je	SHORT $LN2@ConstError
 
-; 1020 :         return( NOT_ERROR );
+; 986  :         return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1026 : }
+; 992  : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
 $LN2@ConstError:
 
-; 1021 :     if ( opnd1->kind == EXPR_FLOAT || opnd2->kind == EXPR_FLOAT )
+; 987  :     if ( opnd1->kind == EXPR_FLOAT || opnd2->kind == EXPR_FLOAT )
 
 	cmp	DWORD PTR [rcx+60], 3
 	je	SHORT $LN5@ConstError
 	cmp	DWORD PTR [rdx+60], 3
 
-; 1023 :     else
-; 1024 :         fnEmitErr( CONSTANT_EXPECTED );
+; 989  :     else
+; 990  :         fnEmitErr( CONSTANT_EXPECTED );
 
 	mov	ecx, 65					; 00000041H
 	jne	SHORT $LN7@ConstError
 $LN5@ConstError:
 
-; 1022 :         fnEmitErr( REAL_OR_BCD_NUMBER_NOT_ALLOWED );
+; 988  :         fnEmitErr( REAL_OR_BCD_NUMBER_NOT_ALLOWED );
 
 	mov	ecx, 270				; 0000010eH
 $LN7@ConstError:
 	call	QWORD PTR fnEmitErr
 
-; 1025 :     return( ERROR );
+; 991  :     return( ERROR );
 
 	or	eax, -1
 
-; 1026 : }
+; 992  : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
@@ -9811,30 +9811,30 @@ opnd1$ = 8
 opnd2$ = 16
 MakeConst2 PROC						; COMDAT
 
-; 998  : {
+; 964  : {
 
 	mov	r8, rdx
 	mov	r9, rcx
 
-; 999  : 
-; 1000 :     if ( opnd1->sym->state == SYM_EXTERNAL ) {
+; 965  : 
+; 966  :     if ( opnd1->sym->state == SYM_EXTERNAL ) {
 
 	mov	rdx, QWORD PTR [rcx+80]
 	mov	r10d, DWORD PTR [rdx+32]
 	cmp	r10d, 2
 	jne	SHORT $LN2@MakeConst2
 
-; 1001 :         return( fnEmitErr( INVALID_USE_OF_EXTERNAL_SYMBOL, opnd1->sym->name ) );
+; 967  :         return( fnEmitErr( INVALID_USE_OF_EXTERNAL_SYMBOL, opnd1->sym->name ) );
 
 	mov	rdx, QWORD PTR [rdx+8]
 	mov	ecx, 193				; 000000c1H
 	rex_jmp	QWORD PTR fnEmitErr
 $LN2@MakeConst2:
 
-; 1002 :     } else if ( ( opnd1->sym->segment != opnd2->sym->segment &&
-; 1003 :                  /* v2.07: ignore segments if at least one label is a fwd ref */
-; 1004 :                  opnd1->sym->state != SYM_UNDEFINED &&
-; 1005 :                  opnd2->sym->state != SYM_UNDEFINED ) ||
+; 968  :     } else if ( ( opnd1->sym->segment != opnd2->sym->segment &&
+; 969  :                  /* v2.07: ignore segments if at least one label is a fwd ref */
+; 970  :                  opnd1->sym->state != SYM_UNDEFINED &&
+; 971  :                  opnd2->sym->state != SYM_UNDEFINED ) ||
 
 	mov	rcx, QWORD PTR [r8+80]
 	mov	rax, QWORD PTR [rcx+24]
@@ -9849,37 +9849,37 @@ $LN6@MakeConst2:
 	jne	SHORT $LN4@MakeConst2
 $LN5@MakeConst2:
 
-; 1006 :                opnd2->sym->state == SYM_EXTERNAL ) {
-; 1007 :         return( fnEmitErr( OPERANDS_MUST_BE_IN_SAME_SEGMENT ) );
+; 972  :                opnd2->sym->state == SYM_EXTERNAL ) {
+; 973  :         return( fnEmitErr( OPERANDS_MUST_BE_IN_SAME_SEGMENT ) );
 
 	mov	ecx, 192				; 000000c0H
 	rex_jmp	QWORD PTR fnEmitErr
 $LN4@MakeConst2:
 
-; 1008 :     }
-; 1009 :     opnd1->kind = EXPR_CONST;
+; 974  :     }
+; 975  :     opnd1->kind = EXPR_CONST;
 
 	xor	ecx, ecx
 	mov	DWORD PTR [r9+60], ecx
 
-; 1010 :     opnd1->value += opnd1->sym->offset;
+; 976  :     opnd1->value += opnd1->sym->offset;
 
 	mov	eax, DWORD PTR [rdx+16]
 	add	DWORD PTR [r9], eax
 
-; 1011 :     opnd2->kind = EXPR_CONST;
-; 1012 :     opnd2->value += opnd2->sym->offset;
+; 977  :     opnd2->kind = EXPR_CONST;
+; 978  :     opnd2->value += opnd2->sym->offset;
 
 	mov	rax, QWORD PTR [r8+80]
 	mov	DWORD PTR [r8+60], ecx
 	mov	ecx, DWORD PTR [rax+16]
 	add	DWORD PTR [r8], ecx
 
-; 1013 :     return( NOT_ERROR );
+; 979  :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1014 : }
+; 980  : }
 
 	ret	0
 MakeConst2 ENDP
@@ -9891,35 +9891,35 @@ _TEXT	SEGMENT
 opnd$ = 8
 MakeConst PROC						; COMDAT
 
-; 945  :     if( ( opnd->kind != EXPR_ADDR ) || opnd->indirect ) /* v2.09: check for indirect added */
+; 911  :     if( ( opnd->kind != EXPR_ADDR ) || opnd->indirect ) /* v2.09: check for indirect added */
 
 	cmp	DWORD PTR [rcx+60], 1
 	jne	SHORT $LN3@MakeConst
-	mov	eax, DWORD PTR [rcx+76]
+	mov	eax, DWORD PTR [rcx+72]
 	test	al, 1
 	jne	SHORT $LN3@MakeConst
 
-; 946  :         return;
-; 947  : 
-; 948  :     if( opnd->sym ) {
+; 912  :         return;
+; 913  : 
+; 914  :     if( opnd->sym ) {
 
 	mov	rdx, QWORD PTR [rcx+80]
 	test	rdx, rdx
 	je	SHORT $LN4@MakeConst
 
-; 949  :         if ( Parse_Pass > PASS_1 )
+; 915  :         if ( Parse_Pass > PASS_1 )
 
 	cmp	DWORD PTR Parse_Pass, 0
 	ja	SHORT $LN3@MakeConst
 
-; 950  :             return;
-; 951  :         /* added for v1.94: if the evaluator assumed an address because
-; 952  :          * the label wasn't defined yet, then negate this. Also, an
-; 953  :          * EXTERNDEF:ABS is to be accepted.
-; 954  :          * v2.07: if the "not yet defined" label was an argument of
-; 955  :          * an (OFFSET) operator, do NOT change the type!
-; 956  :          */
-; 957  :         if ( ( opnd->sym->state == SYM_UNDEFINED && opnd->instr == EMPTY ) ||
+; 916  :             return;
+; 917  :         /* added for v1.94: if the evaluator assumed an address because
+; 918  :          * the label wasn't defined yet, then negate this. Also, an
+; 919  :          * EXTERNDEF:ABS is to be accepted.
+; 920  :          * v2.07: if the "not yet defined" label was an argument of
+; 921  :          * an (OFFSET) operator, do NOT change the type!
+; 922  :          */
+; 923  :         if ( ( opnd->sym->state == SYM_UNDEFINED && opnd->instr == EMPTY ) ||
 
 	mov	r8d, DWORD PTR [rdx+32]
 	test	r8d, r8d
@@ -9935,20 +9935,20 @@ $LN9@MakeConst:
 	je	SHORT $LN3@MakeConst
 $LN8@MakeConst:
 
-; 958  :             ( opnd->sym->state == SYM_EXTERNAL && opnd->sym->weak == TRUE && opnd->is_abs == TRUE ) )
-; 959  :             ;
-; 960  :         else
-; 961  :             return;
-; 962  :         /* assume a value != 0 to avoid problems with div */
-; 963  :         opnd->value = 1;
+; 924  :             ( opnd->sym->state == SYM_EXTERNAL && opnd->sym->weak == TRUE && opnd->is_abs == TRUE ) )
+; 925  :             ;
+; 926  :         else
+; 927  :             return;
+; 928  :         /* assume a value != 0 to avoid problems with div */
+; 929  :         opnd->value = 1;
 
 	mov	DWORD PTR [rcx], 1
 $LN4@MakeConst:
 
-; 964  :     }
-; 965  : 
-; 966  :     opnd->label_tok = NULL;
-; 967  :     if( opnd->mbr != NULL ) {
+; 930  :     }
+; 931  : 
+; 932  :     opnd->label_tok = NULL;
+; 933  :     if( opnd->mbr != NULL ) {
 
 	mov	rdx, QWORD PTR [rcx+88]
 	xor	r8d, r8d
@@ -9956,49 +9956,49 @@ $LN4@MakeConst:
 	test	rdx, rdx
 	je	SHORT $LN12@MakeConst
 
-; 968  :         if( opnd->mbr->state == SYM_STRUCT_FIELD ) {
+; 934  :         if( opnd->mbr->state == SYM_STRUCT_FIELD ) {
 
 	cmp	DWORD PTR [rdx+32], 6
 	jne	SHORT $LN3@MakeConst
 $LN12@MakeConst:
 
-; 969  : #if 0 /* v2.09: mbr can only be SYM_STRUCT_FIELD or SYM_UNDEFINED (if nullmbr) */
-; 970  :         } else if( opnd->mbr->state == SYM_TYPE ) {
-; 971  :             opnd->value += opnd->mbr->total_size;
-; 972  :             opnd->mbr = NULL;
-; 973  : #endif
-; 974  :         } else {
-; 975  :             return;
-; 976  :         }
-; 977  :     }
-; 978  : #if 0 /* v2.09: obsolete */
-; 979  :     if( opnd->base_reg != NULL )
-; 980  :         return;
-; 981  :     if( opnd->idx_reg  != NULL )
-; 982  :         return;
-; 983  : #endif
-; 984  :     if( opnd->override != NULL )
+; 935  : #if 0 /* v2.09: mbr can only be SYM_STRUCT_FIELD or SYM_UNDEFINED (if nullmbr) */
+; 936  :         } else if( opnd->mbr->state == SYM_TYPE ) {
+; 937  :             opnd->value += opnd->mbr->total_size;
+; 938  :             opnd->mbr = NULL;
+; 939  : #endif
+; 940  :         } else {
+; 941  :             return;
+; 942  :         }
+; 943  :     }
+; 944  : #if 0 /* v2.09: obsolete */
+; 945  :     if( opnd->base_reg != NULL )
+; 946  :         return;
+; 947  :     if( opnd->idx_reg  != NULL )
+; 948  :         return;
+; 949  : #endif
+; 950  :     if( opnd->override != NULL )
 
 	cmp	QWORD PTR [rcx+48], r8
 	jne	SHORT $LN3@MakeConst
 
-; 985  :         return;
-; 986  :     opnd->instr = EMPTY;
-; 987  :     opnd->kind = EXPR_CONST;
-; 988  :     //opnd->indirect = FALSE; /* not needed */
-; 989  :     opnd->explicit = FALSE;
+; 951  :         return;
+; 952  :     opnd->instr = EMPTY;
+; 953  :     opnd->kind = EXPR_CONST;
+; 954  :     //opnd->indirect = FALSE; /* not needed */
+; 955  :     opnd->explicit = FALSE;
 
 	and	eax, -3					; fffffffdH
 	mov	DWORD PTR [rcx+56], -2
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 	mov	DWORD PTR [rcx+60], r8d
 
-; 990  :     opnd->mem_type = MT_EMPTY;
+; 956  :     opnd->mem_type = MT_EMPTY;
 
 	mov	DWORD PTR [rcx+64], 192			; 000000c0H
 $LN3@MakeConst:
 
-; 991  : }
+; 957  : }
 
 	ret	0
 MakeConst ENDP
@@ -10011,110 +10011,110 @@ opnd1$ = 8
 opnd2$ = 16
 index_connect PROC					; COMDAT
 
-; 900  :     /* move opnd2.base to either opnd1.base or opnd1.idx */
-; 901  :     if ( opnd2->base_reg != NULL ) {
+; 866  :     /* move opnd2.base to either opnd1.base or opnd1.idx */
+; 867  :     if ( opnd2->base_reg != NULL ) {
 
 	mov	rax, QWORD PTR [rdx+24]
 	test	rax, rax
 	je	SHORT $LN2@index_conn
 
-; 902  :         if ( opnd1->base_reg == NULL )
+; 868  :         if ( opnd1->base_reg == NULL )
 
 	mov	r8, QWORD PTR [rcx+24]
 	test	r8, r8
 	jne	SHORT $LN3@index_conn
 
-; 903  :             opnd1->base_reg = opnd2->base_reg;
+; 869  :             opnd1->base_reg = opnd2->base_reg;
 
 	mov	QWORD PTR [rcx+24], rax
 	jmp	SHORT $LN8@index_conn
 $LN3@index_conn:
 
-; 904  :         else if ( opnd1->idx_reg == NULL ) {
+; 870  :         else if ( opnd1->idx_reg == NULL ) {
 
 	cmp	QWORD PTR [rcx+32], 0
 	jne	SHORT $LN5@index_conn
 
-; 905  :             /* v2.10: exchange base and index register.
-; 906  :              * was previously in parser.c, and only done
-; 907  :              * if -Zg was active.
-; 908  :              */
-; 909  :             if ( opnd1->base_reg->bytval != 4 ) {   /* if base isn't [E|R]SP, exchange regs */
+; 871  :             /* v2.10: exchange base and index register.
+; 872  :              * was previously in parser.c, and only done
+; 873  :              * if -Zg was active.
+; 874  :              */
+; 875  :             if ( opnd1->base_reg->bytval != 4 ) {   /* if base isn't [E|R]SP, exchange regs */
 
 	cmp	BYTE PTR [r8+1], 4
 	je	SHORT $LN7@index_conn
 
-; 910  :                 opnd1->idx_reg = opnd1->base_reg;
+; 876  :                 opnd1->idx_reg = opnd1->base_reg;
 
 	mov	QWORD PTR [rcx+32], r8
 
-; 911  :                 opnd1->base_reg = opnd2->base_reg;
+; 877  :                 opnd1->base_reg = opnd2->base_reg;
 
 	mov	rax, QWORD PTR [rdx+24]
 	mov	QWORD PTR [rcx+24], rax
 
-; 912  :             } else {
+; 878  :             } else {
 
 	jmp	SHORT $LN8@index_conn
 $LN7@index_conn:
 
-; 913  :                 opnd1->idx_reg = opnd2->base_reg;
+; 879  :                 opnd1->idx_reg = opnd2->base_reg;
 
 	mov	QWORD PTR [rcx+32], rax
 $LN8@index_conn:
 
-; 917  :         }
-; 918  :         opnd1->indirect = TRUE;
+; 883  :         }
+; 884  :         opnd1->indirect = TRUE;
 
-	or	DWORD PTR [rcx+76], 1
+	or	DWORD PTR [rcx+72], 1
 $LN2@index_conn:
 
-; 919  :     }
-; 920  :     /* move opnd2.idx to opnd1.index - if it is free */
-; 921  :     if( opnd2->idx_reg != NULL ) {
+; 885  :     }
+; 886  :     /* move opnd2.idx to opnd1.index - if it is free */
+; 887  :     if( opnd2->idx_reg != NULL ) {
 
 	mov	rax, QWORD PTR [rdx+32]
 	test	rax, rax
 	je	SHORT $LN9@index_conn
 
-; 922  :         //if ( opnd2->scale == 0 && opnd1->base_reg == NULL ) {
-; 923  :         //    opnd1->base_reg = opnd2->idx_reg;
-; 924  :         //} else if ( opnd1->idx_reg == NULL ) {
-; 925  :         if ( opnd1->idx_reg == NULL ) {
+; 888  :         //if ( opnd2->scale == 0 && opnd1->base_reg == NULL ) {
+; 889  :         //    opnd1->base_reg = opnd2->idx_reg;
+; 890  :         //} else if ( opnd1->idx_reg == NULL ) {
+; 891  :         if ( opnd1->idx_reg == NULL ) {
 
 	cmp	QWORD PTR [rcx+32], 0
 	jne	SHORT $LN5@index_conn
 
-; 926  :             opnd1->idx_reg = opnd2->idx_reg;
+; 892  :             opnd1->idx_reg = opnd2->idx_reg;
 
 	mov	QWORD PTR [rcx+32], rax
 
-; 927  :             opnd1->scale = opnd2->scale;
+; 893  :             opnd1->scale = opnd2->scale;
 
 	movzx	eax, BYTE PTR [rdx+68]
 
-; 928  :         } else {
-; 929  :             return( fnEmitErr( MULTIPLE_INDEX_REGISTERS_NOT_ALLOWED ) );
-; 930  :         }
-; 931  :         opnd1->indirect = TRUE;
+; 894  :         } else {
+; 895  :             return( fnEmitErr( MULTIPLE_INDEX_REGISTERS_NOT_ALLOWED ) );
+; 896  :         }
+; 897  :         opnd1->indirect = TRUE;
 
-	or	DWORD PTR [rcx+76], 1
+	or	DWORD PTR [rcx+72], 1
 	mov	BYTE PTR [rcx+68], al
 $LN9@index_conn:
 
-; 932  :     }
-; 933  :     return( NOT_ERROR );
+; 898  :     }
+; 899  :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 934  : }
+; 900  : }
 
 	ret	0
 $LN5@index_conn:
 
-; 914  :             }
-; 915  :         } else {
-; 916  :             return( fnEmitErr( MULTIPLE_INDEX_REGISTERS_NOT_ALLOWED ) );
+; 880  :             }
+; 881  :         } else {
+; 882  :             return( fnEmitErr( MULTIPLE_INDEX_REGISTERS_NOT_ALLOWED ) );
 
 	mov	ecx, 34					; 00000022H
 	rex_jmp	QWORD PTR fnEmitErr
@@ -10130,7 +10130,7 @@ type1$ = 24
 type2$ = 32
 check_both PROC						; COMDAT
 
-; 889  :     if( opnd1->kind == type1 && opnd2->kind == type2 )
+; 855  :     if( opnd1->kind == type1 && opnd2->kind == type2 )
 
 	mov	eax, DWORD PTR [rcx+60]
 	cmp	eax, r8d
@@ -10139,16 +10139,16 @@ check_both PROC						; COMDAT
 	jne	SHORT $LN2@check_both
 $LN5@check_both:
 
-; 890  :         return( TRUE );
+; 856  :         return( TRUE );
 
 	mov	al, 1
 
-; 894  : }
+; 860  : }
 
 	ret	0
 $LN2@check_both:
 
-; 891  :     if( opnd1->kind == type2 && opnd2->kind == type1 )
+; 857  :     if( opnd1->kind == type2 && opnd2->kind == type1 )
 
 	cmp	eax, r9d
 	jne	SHORT $LN3@check_both
@@ -10156,12 +10156,12 @@ $LN2@check_both:
 	je	SHORT $LN5@check_both
 $LN3@check_both:
 
-; 892  :         return( TRUE );
-; 893  :     return( FALSE );
+; 858  :         return( TRUE );
+; 859  :     return( FALSE );
 
 	xor	al, al
 
-; 894  : }
+; 860  : }
 
 	ret	0
 check_both ENDP
@@ -10177,7 +10177,7 @@ tokenarray$ = 112
 flags$ = 120
 get_operand PROC					; COMDAT
 
-; 381  : {
+; 347  : {
 
 	mov	QWORD PTR [rsp+8], rbx
 	mov	QWORD PTR [rsp+16], rbp
@@ -10189,14 +10189,14 @@ get_operand PROC					; COMDAT
 	push	r15
 	sub	rsp, 48					; 00000030H
 
-; 382  :     char        *tmp;
-; 383  :     struct asym *sym;
-; 384  :     int         i = *idx;
-; 385  :     int         j;
-; 386  :     char        labelbuff[16];/* for anonymous labels */
-; 387  : 
-; 388  :     DebugMsg1(("%u get_operand(idx=%u >%s<) enter [memtype=%Xh]\n", evallvl, i, tokenarray[i].tokpos, opnd->mem_type ));
-; 389  :     switch( tokenarray[i].token ) {
+; 348  :     char        *tmp;
+; 349  :     struct asym *sym;
+; 350  :     int         i = *idx;
+; 351  :     int         j;
+; 352  :     char        labelbuff[16];/* for anonymous labels */
+; 353  : 
+; 354  :     DebugMsg1(("%u get_operand(idx=%u >%s<) enter [memtype=%Xh]\n", evallvl, i, tokenarray[i].tokpos, opnd->mem_type ));
+; 355  :     switch( tokenarray[i].token ) {
 
 	movsxd	r14, DWORD PTR [rdx]
 	mov	rdi, rcx
@@ -10217,13 +10217,13 @@ get_operand PROC					; COMDAT
 	jmp	rax
 $LN18@get_operan:
 
-; 390  :     case T_NUM:
-; 391  :         DebugMsg1(("%u get_operand: T_NUM, %s, base=%u, len=%u\n", evallvl, tokenarray[i].string_ptr, tokenarray[i].numbase, tokenarray[i].itemlen ));
-; 392  :         opnd->kind = EXPR_CONST;
+; 356  :     case T_NUM:
+; 357  :         DebugMsg1(("%u get_operand: T_NUM, %s, base=%u, len=%u\n", evallvl, tokenarray[i].string_ptr, tokenarray[i].numbase, tokenarray[i].itemlen ));
+; 358  :         opnd->kind = EXPR_CONST;
 
 	xor	r14d, r14d
 
-; 393  :         myatoi128( tokenarray[i].string_ptr, &opnd->llvalue, tokenarray[i].numbase, tokenarray[i].itemlen );
+; 359  :         myatoi128( tokenarray[i].string_ptr, &opnd->llvalue, tokenarray[i].numbase, tokenarray[i].itemlen );
 
 	mov	rdx, rdi
 	mov	DWORD PTR [rdi+60], r14d
@@ -10232,30 +10232,30 @@ $LN18@get_operan:
 	mov	rcx, QWORD PTR [rsi+8]
 	call	myatoi128
 
-; 863  :     }
-; 864  :     (*idx)++;
+; 829  :     }
+; 830  :     (*idx)++;
 
 	inc	DWORD PTR [r12]
 
-; 865  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
-; 866  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
-; 867  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
-; 868  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
-; 869  :                opnd->sym ? opnd->sym->name : "NULL",
-; 870  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
-; 871  :     return( NOT_ERROR );
+; 831  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
+; 832  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
+; 833  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
+; 834  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
+; 835  :                opnd->sym ? opnd->sym->name : "NULL",
+; 836  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
+; 837  :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@get_operan
 $LN19@get_operan:
 
-; 394  :         //opnd->llvalue = tokenarray[i].value64;
-; 395  :         //opnd->hlvalue = ( tokenarray[i].numflg == NF_NULL ? 0 : *(uint_64 *)( tokenarray[i].string_ptr - sizeof(uint_64) ) );
-; 396  :         break;
-; 397  :     case T_STRING:
-; 398  :         DebugMsg1(("%u get_operand: T_STRING, %s, size=%u\n", evallvl, tokenarray[i].string_ptr, tokenarray[i].stringlen ));
-; 399  :         /* string enclosed in <> or {} are rejected since v1.94! */
-; 400  : 		if (tokenarray[i].string_delim != '"' && tokenarray[i].string_delim != '\'') {
+; 360  :         //opnd->llvalue = tokenarray[i].value64;
+; 361  :         //opnd->hlvalue = ( tokenarray[i].numflg == NF_NULL ? 0 : *(uint_64 *)( tokenarray[i].string_ptr - sizeof(uint_64) ) );
+; 362  :         break;
+; 363  :     case T_STRING:
+; 364  :         DebugMsg1(("%u get_operand: T_STRING, %s, size=%u\n", evallvl, tokenarray[i].string_ptr, tokenarray[i].stringlen ));
+; 365  :         /* string enclosed in <> or {} are rejected since v1.94! */
+; 366  : 		if (tokenarray[i].string_delim != '"' && tokenarray[i].string_delim != '\'') {
 
 	movzx	ecx, BYTE PTR [rsi+1]
 	cmp	cl, 34					; 00000022H
@@ -10263,28 +10263,28 @@ $LN19@get_operan:
 	cmp	cl, 39					; 00000027H
 	je	$LN20@get_operan
 
-; 401  : 			/* here is handled EVEX Static Rounding Mode
-; 402  : 			* {sae},   {rn-sae},{rd-sae},{ru-sae} {rz-sae}
-; 403  : 			* ZLLBVAAA ZLLBVAAA ZLLBVAAA ZLLBVAAA ZLLBVAAA
-; 404  : 			* 00010000 00010000 00110000 01010000 01110000
-; 405  : 			* to destinguish between SAE and RN  I added 0x10
-; 406  : 			* to all 4 other decorators
-; 407  : 			* which will be subtracted in codegen.c
-; 408  : 			*/
-; 409  : 			if ((tokenarray[i].string_delim == '{') &&
+; 367  : 			/* here is handled EVEX Static Rounding Mode
+; 368  : 			* {sae},   {rn-sae},{rd-sae},{ru-sae} {rz-sae}
+; 369  : 			* ZLLBVAAA ZLLBVAAA ZLLBVAAA ZLLBVAAA ZLLBVAAA
+; 370  : 			* 00010000 00010000 00110000 01010000 01110000
+; 371  : 			* to destinguish between SAE and RN  I added 0x10
+; 372  : 			* to all 4 other decorators
+; 373  : 			* which will be subtracted in codegen.c
+; 374  : 			*/
+; 375  : 			if ((tokenarray[i].string_delim == '{') &&
 
 	cmp	cl, 123					; 0000007bH
 	jne	$LN33@get_operan
 	mov	rdx, QWORD PTR [rsi+8]
 	mov	eax, DWORD PTR [rdx]
-	cmp	eax, DWORD PTR $SG11081
+	cmp	eax, DWORD PTR $SG11079
 	jne	SHORT $LN21@get_operan
 	movzx	eax, WORD PTR [rdx+4]
-	cmp	ax, WORD PTR $SG11081+4
+	cmp	ax, WORD PTR $SG11079+4
 	jne	SHORT $LN21@get_operan
 
-; 410  : 				(0 == memcmp(tokenarray[i].string_ptr, "rn-sae", 6))) {
-; 411  : 				if (!evex) EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
+; 376  : 				(0 == memcmp(tokenarray[i].string_ptr, "rn-sae", 6))) {
+; 377  : 				if (!evex) EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
 
 	cmp	BYTE PTR evex, 0
 	jne	SHORT $LN23@get_operan
@@ -10292,47 +10292,47 @@ $LN19@get_operan:
 	call	EmitError
 $LN23@get_operan:
 
-; 412  : 				opnd->kind = EXPR_DECORATOR;
+; 378  : 				opnd->kind = EXPR_DECORATOR;
 
 	mov	DWORD PTR [rdi+60], 4
 
-; 413  : 				opnd->saeflags = 0x20;
+; 379  : 				opnd->saeflags = 0x20;
 
 	mov	BYTE PTR [rdi+70], 32			; 00000020H
 
-; 863  :     }
-; 864  :     (*idx)++;
+; 829  :     }
+; 830  :     (*idx)++;
 
 	inc	DWORD PTR [r12]
 
-; 865  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
-; 866  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
-; 867  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
-; 868  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
-; 869  :                opnd->sym ? opnd->sym->name : "NULL",
-; 870  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
-; 871  :     return( NOT_ERROR );
+; 831  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
+; 832  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
+; 833  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
+; 834  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
+; 835  :                opnd->sym ? opnd->sym->name : "NULL",
+; 836  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
+; 837  :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@get_operan
 $LN21@get_operan:
 
-; 414  : 				break;
-; 415  : 			}
-; 416  : 			else if ((tokenarray[i].string_delim == '{') &&
+; 380  : 				break;
+; 381  : 			}
+; 382  : 			else if ((tokenarray[i].string_delim == '{') &&
 
 	cmp	cl, 123					; 0000007bH
 	jne	$LN33@get_operan
 	mov	rdx, QWORD PTR [rsi+8]
 	mov	eax, DWORD PTR [rdx]
-	cmp	eax, DWORD PTR $SG11085
+	cmp	eax, DWORD PTR $SG11083
 	jne	SHORT $LN24@get_operan
 	movzx	eax, WORD PTR [rdx+4]
-	cmp	ax, WORD PTR $SG11085+4
+	cmp	ax, WORD PTR $SG11083+4
 	jne	SHORT $LN24@get_operan
 
-; 417  : 				(0 == memcmp(tokenarray[i].string_ptr, "rd-sae", 6))) {
-; 418  : 				if (!evex) EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
+; 383  : 				(0 == memcmp(tokenarray[i].string_ptr, "rd-sae", 6))) {
+; 384  : 				if (!evex) EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
 
 	cmp	BYTE PTR evex, 0
 	jne	SHORT $LN26@get_operan
@@ -10340,47 +10340,47 @@ $LN21@get_operan:
 	call	EmitError
 $LN26@get_operan:
 
-; 419  : 				opnd->kind = EXPR_DECORATOR;
+; 385  : 				opnd->kind = EXPR_DECORATOR;
 
 	mov	DWORD PTR [rdi+60], 4
 
-; 420  : 				opnd->saeflags = 0x40;
+; 386  : 				opnd->saeflags = 0x40;
 
 	mov	BYTE PTR [rdi+70], 64			; 00000040H
 
-; 863  :     }
-; 864  :     (*idx)++;
+; 829  :     }
+; 830  :     (*idx)++;
 
 	inc	DWORD PTR [r12]
 
-; 865  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
-; 866  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
-; 867  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
-; 868  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
-; 869  :                opnd->sym ? opnd->sym->name : "NULL",
-; 870  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
-; 871  :     return( NOT_ERROR );
+; 831  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
+; 832  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
+; 833  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
+; 834  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
+; 835  :                opnd->sym ? opnd->sym->name : "NULL",
+; 836  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
+; 837  :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@get_operan
 $LN24@get_operan:
 
-; 421  : 				break;
-; 422  : 			}
-; 423  : 			else if ((tokenarray[i].string_delim == '{') &&
+; 387  : 				break;
+; 388  : 			}
+; 389  : 			else if ((tokenarray[i].string_delim == '{') &&
 
 	cmp	cl, 123					; 0000007bH
 	jne	$LN33@get_operan
 	mov	rdx, QWORD PTR [rsi+8]
 	mov	eax, DWORD PTR [rdx]
-	cmp	eax, DWORD PTR $SG11089
+	cmp	eax, DWORD PTR $SG11087
 	jne	SHORT $LN27@get_operan
 	movzx	eax, WORD PTR [rdx+4]
-	cmp	ax, WORD PTR $SG11089+4
+	cmp	ax, WORD PTR $SG11087+4
 	jne	SHORT $LN27@get_operan
 
-; 424  : 				(0 == memcmp(tokenarray[i].string_ptr, "ru-sae", 6))) {
-; 425  : 				if (!evex) EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
+; 390  : 				(0 == memcmp(tokenarray[i].string_ptr, "ru-sae", 6))) {
+; 391  : 				if (!evex) EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
 
 	cmp	BYTE PTR evex, 0
 	jne	SHORT $LN29@get_operan
@@ -10388,47 +10388,47 @@ $LN24@get_operan:
 	call	EmitError
 $LN29@get_operan:
 
-; 426  : 				opnd->kind = EXPR_DECORATOR;
+; 392  : 				opnd->kind = EXPR_DECORATOR;
 
 	mov	DWORD PTR [rdi+60], 4
 
-; 427  : 				opnd->saeflags = 0x60;
+; 393  : 				opnd->saeflags = 0x60;
 
 	mov	BYTE PTR [rdi+70], 96			; 00000060H
 
-; 863  :     }
-; 864  :     (*idx)++;
+; 829  :     }
+; 830  :     (*idx)++;
 
 	inc	DWORD PTR [r12]
 
-; 865  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
-; 866  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
-; 867  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
-; 868  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
-; 869  :                opnd->sym ? opnd->sym->name : "NULL",
-; 870  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
-; 871  :     return( NOT_ERROR );
+; 831  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
+; 832  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
+; 833  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
+; 834  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
+; 835  :                opnd->sym ? opnd->sym->name : "NULL",
+; 836  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
+; 837  :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@get_operan
 $LN27@get_operan:
 
-; 428  : 				break;
-; 429  : 			}
-; 430  : 			else if ((tokenarray[i].string_delim == '{') &&
+; 394  : 				break;
+; 395  : 			}
+; 396  : 			else if ((tokenarray[i].string_delim == '{') &&
 
 	cmp	cl, 123					; 0000007bH
 	jne	$LN33@get_operan
 	mov	rdx, QWORD PTR [rsi+8]
 	mov	eax, DWORD PTR [rdx]
-	cmp	eax, DWORD PTR $SG11093
+	cmp	eax, DWORD PTR $SG11091
 	jne	SHORT $LN30@get_operan
 	movzx	eax, WORD PTR [rdx+4]
-	cmp	ax, WORD PTR $SG11093+4
+	cmp	ax, WORD PTR $SG11091+4
 	jne	SHORT $LN30@get_operan
 
-; 431  : 				(0 == memcmp(tokenarray[i].string_ptr, "rz-sae", 6))) {
-; 432  : 				if (!evex) EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
+; 397  : 				(0 == memcmp(tokenarray[i].string_ptr, "rz-sae", 6))) {
+; 398  : 				if (!evex) EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
 
 	cmp	BYTE PTR evex, 0
 	jne	SHORT $LN32@get_operan
@@ -10436,47 +10436,47 @@ $LN27@get_operan:
 	call	EmitError
 $LN32@get_operan:
 
-; 433  : 				opnd->kind = EXPR_DECORATOR;
+; 399  : 				opnd->kind = EXPR_DECORATOR;
 
 	mov	DWORD PTR [rdi+60], 4
 
-; 434  : 				opnd->saeflags = 0x80;
+; 400  : 				opnd->saeflags = 0x80;
 
 	mov	BYTE PTR [rdi+70], 128			; 00000080H
 
-; 863  :     }
-; 864  :     (*idx)++;
+; 829  :     }
+; 830  :     (*idx)++;
 
 	inc	DWORD PTR [r12]
 
-; 865  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
-; 866  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
-; 867  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
-; 868  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
-; 869  :                opnd->sym ? opnd->sym->name : "NULL",
-; 870  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
-; 871  :     return( NOT_ERROR );
+; 831  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
+; 832  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
+; 833  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
+; 834  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
+; 835  :                opnd->sym ? opnd->sym->name : "NULL",
+; 836  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
+; 837  :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@get_operan
 $LN30@get_operan:
 
-; 435  : 				break;
-; 436  : 			}
-; 437  : 			else if ((tokenarray[i].string_delim == '{') &&
+; 401  : 				break;
+; 402  : 			}
+; 403  : 			else if ((tokenarray[i].string_delim == '{') &&
 
 	cmp	cl, 123					; 0000007bH
 	jne	SHORT $LN33@get_operan
 	mov	rdx, QWORD PTR [rsi+8]
 	movzx	eax, WORD PTR [rdx]
-	cmp	ax, WORD PTR $SG11097
+	cmp	ax, WORD PTR $SG11095
 	jne	SHORT $LN33@get_operan
 	movzx	eax, BYTE PTR [rdx+2]
-	cmp	al, BYTE PTR $SG11097+2
+	cmp	al, BYTE PTR $SG11095+2
 	jne	SHORT $LN33@get_operan
 
-; 438  : 				(0 == memcmp(tokenarray[i].string_ptr, "sae", 3))) {
-; 439  : 				if (!evex) EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
+; 404  : 				(0 == memcmp(tokenarray[i].string_ptr, "sae", 3))) {
+; 405  : 				if (!evex) EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
 
 	cmp	BYTE PTR evex, 0
 	jne	SHORT $LN35@get_operan
@@ -10484,41 +10484,41 @@ $LN30@get_operan:
 	call	EmitError
 $LN35@get_operan:
 
-; 440  : 				opnd->kind = EXPR_DECORATOR;
+; 406  : 				opnd->kind = EXPR_DECORATOR;
 
 	mov	DWORD PTR [rdi+60], 4
 
-; 441  : 				opnd->saeflags = 0x10;
+; 407  : 				opnd->saeflags = 0x10;
 
 	mov	BYTE PTR [rdi+70], 16
 
-; 863  :     }
-; 864  :     (*idx)++;
+; 829  :     }
+; 830  :     (*idx)++;
 
 	inc	DWORD PTR [r12]
 
-; 865  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
-; 866  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
-; 867  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
-; 868  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
-; 869  :                opnd->sym ? opnd->sym->name : "NULL",
-; 870  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
-; 871  :     return( NOT_ERROR );
+; 831  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
+; 832  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
+; 833  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
+; 834  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
+; 835  :                opnd->sym ? opnd->sym->name : "NULL",
+; 836  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
+; 837  :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@get_operan
 $LN33@get_operan:
 
-; 442  : 				break;
-; 443  : 			}
-; 444  : 			else if (opnd->is_opattr) /* OPATTR operator accepts anything! */
+; 408  : 				break;
+; 409  : 			}
+; 410  : 			else if (opnd->is_opattr) /* OPATTR operator accepts anything! */
 
-	test	BYTE PTR [rdi+76], 16
+	test	BYTE PTR [rdi+72], 16
 	jne	$LN124@get_operan
 
-; 445  : 				break;
-; 446  : 			/* v2.0: display a comprehensible error msg if a quote is missing */
-; 447  : 			if (tokenarray[i].string_delim == NULLC &&
+; 411  : 				break;
+; 412  : 			/* v2.0: display a comprehensible error msg if a quote is missing */
+; 413  : 			if (tokenarray[i].string_delim == NULLC &&
 
 	test	cl, cl
 	jne	SHORT $LN37@get_operan
@@ -10530,41 +10530,41 @@ $LN33@get_operan:
 	jne	SHORT $LN37@get_operan
 $LN39@get_operan:
 
-; 448  : 				(*tokenarray[i].string_ptr == '"' || *tokenarray[i].string_ptr == '\''))
-; 449  : 				fnEmitErr(MISSING_QUOTATION_MARK_IN_STRING);
+; 414  : 				(*tokenarray[i].string_ptr == '"' || *tokenarray[i].string_ptr == '\''))
+; 415  : 				fnEmitErr(MISSING_QUOTATION_MARK_IN_STRING);
 
 	mov	ecx, 166				; 000000a6H
 	call	QWORD PTR fnEmitErr
 	jmp	$LN131@get_operan
 $LN37@get_operan:
 
-; 450  : 			else
-; 451  : 				fnEmitErr(MISSING_QUOTATION_MARK_IN_STRING, tokenarray[i].tokpos);
+; 416  : 			else
+; 417  : 				fnEmitErr(MISSING_QUOTATION_MARK_IN_STRING, tokenarray[i].tokpos);
 
 	mov	ecx, 166				; 000000a6H
 
-; 452  : 			return(ERROR);
+; 418  : 			return(ERROR);
 
 	jmp	$LN169@get_operan
 $LN20@get_operan:
 
-; 453  : 		}
-; 454  :         opnd->kind = EXPR_CONST;
+; 419  : 		}
+; 420  :         opnd->kind = EXPR_CONST;
 
 	xor	r14d, r14d
 
-; 455  :         opnd->quoted_string = &tokenarray[i];
+; 421  :         opnd->quoted_string = &tokenarray[i];
 
 	mov	QWORD PTR [rdi+16], rsi
 
-; 456  :         //opnd->value = 0;
-; 457  :         tmp = tokenarray[i].string_ptr + 1; /* skip the quote */
-; 458  : 
-; 459  :         /* v2.06: use max. 16 bytes to create the "value".
-; 460  :          * Prior to 2.06, max 8 bytes were used for 64-bit and
-; 461  :          * max 4 bytes were used for 16-/32-bit.
-; 462  :          */
-; 463  :         j = ( tokenarray[i].stringlen > sizeof( opnd->chararray ) ? sizeof( opnd->chararray ) : tokenarray[i].stringlen );
+; 422  :         //opnd->value = 0;
+; 423  :         tmp = tokenarray[i].string_ptr + 1; /* skip the quote */
+; 424  : 
+; 425  :         /* v2.06: use max. 16 bytes to create the "value".
+; 426  :          * Prior to 2.06, max 8 bytes were used for 64-bit and
+; 427  :          * max 4 bytes were used for 16-/32-bit.
+; 428  :          */
+; 429  :         j = ( tokenarray[i].stringlen > sizeof( opnd->chararray ) ? sizeof( opnd->chararray ) : tokenarray[i].stringlen );
 
 	mov	edx, 16
 	mov	DWORD PTR [rdi+60], r14d
@@ -10575,14 +10575,14 @@ $LN20@get_operan:
 	cmova	eax, edx
 	movsxd	rdx, eax
 
-; 464  :         for( ; j; j-- )
+; 430  :         for( ; j; j-- )
 
 	test	eax, eax
 	je	$LN124@get_operan
 	npad	7
 $LL6@get_operan:
 
-; 465  :             opnd->chararray[j-1] = *tmp++;
+; 431  :             opnd->chararray[j-1] = *tmp++;
 
 	movzx	eax, BYTE PTR [rcx]
 	lea	rcx, QWORD PTR [rcx+1]
@@ -10590,36 +10590,36 @@ $LL6@get_operan:
 	sub	rdx, 1
 	jne	SHORT $LL6@get_operan
 
-; 863  :     }
-; 864  :     (*idx)++;
+; 829  :     }
+; 830  :     (*idx)++;
 
 	inc	DWORD PTR [r12]
 
-; 865  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
-; 866  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
-; 867  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
-; 868  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
-; 869  :                opnd->sym ? opnd->sym->name : "NULL",
-; 870  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
-; 871  :     return( NOT_ERROR );
+; 831  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
+; 832  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
+; 833  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
+; 834  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
+; 835  :                opnd->sym ? opnd->sym->name : "NULL",
+; 836  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
+; 837  :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@get_operan
 $LN40@get_operan:
 
-; 466  :         break;
-; 467  :     case T_REG:
-; 468  :         DebugMsg1(( "%u get_operand: T_REG, string=%s, tokval=%u, regno=%u\n", evallvl, tokenarray[i].string_ptr, tokenarray[i].tokval, tokenarray[i].bytval ));        
-; 469  :         opnd->kind = EXPR_REG;
+; 432  :         break;
+; 433  :     case T_REG:
+; 434  :         DebugMsg1(( "%u get_operand: T_REG, string=%s, tokval=%u, regno=%u\n", evallvl, tokenarray[i].string_ptr, tokenarray[i].tokval, tokenarray[i].bytval ));        
+; 435  :         opnd->kind = EXPR_REG;
 
 	mov	DWORD PTR [rdi+60], 2
 
-; 470  :         opnd->base_reg = &tokenarray[i];
-; 471  :         j = tokenarray[i].tokval;
-; 472  :         
-; 473  :         /* check if cpu is sufficient for register */
-; 474  :         if( ( ( GetCpuSp( j ) & P_EXT_MASK ) &&
-; 475  :              (( GetCpuSp( j ) & ModuleInfo.curr_cpu & P_EXT_MASK) == 0) ||
+; 436  :         opnd->base_reg = &tokenarray[i];
+; 437  :         j = tokenarray[i].tokval;
+; 438  :         
+; 439  :         /* check if cpu is sufficient for register */
+; 440  :         if( ( ( GetCpuSp( j ) & P_EXT_MASK ) &&
+; 441  :              (( GetCpuSp( j ) & ModuleInfo.curr_cpu & P_EXT_MASK) == 0) ||
 
 	mov	r8d, 65280				; 0000ff00H
 	mov	QWORD PTR [rdi+24], rsi
@@ -10641,11 +10641,11 @@ $LN43@get_operan:
 	jge	SHORT $LN45@get_operan
 $LN42@get_operan:
 
-; 476  :              ( ModuleInfo.curr_cpu & P_CPU_MASK ) < ( GetCpuSp( j ) & P_CPU_MASK ) ) ) {
-; 477  :             /* v2.11: do not exit in indirect mode; avoids additional syntax error caused by ']' */
-; 478  :             if ( flags & EXPF_IN_SQBR ) {
-; 479  :                 opnd->kind = EXPR_ERROR;
-; 480  :                 fnEmitErr( INSTRUCTION_OR_REGISTER_NOT_ACCEPTED_IN_CURRENT_CPU_MODE );
+; 442  :              ( ModuleInfo.curr_cpu & P_CPU_MASK ) < ( GetCpuSp( j ) & P_CPU_MASK ) ) ) {
+; 443  :             /* v2.11: do not exit in indirect mode; avoids additional syntax error caused by ']' */
+; 444  :             if ( flags & EXPF_IN_SQBR ) {
+; 445  :                 opnd->kind = EXPR_ERROR;
+; 446  :                 fnEmitErr( INSTRUCTION_OR_REGISTER_NOT_ACCEPTED_IN_CURRENT_CPU_MODE );
 
 	mov	ecx, 30
 	test	r15b, 8
@@ -10654,57 +10654,57 @@ $LN42@get_operan:
 	call	QWORD PTR fnEmitErr
 $LN45@get_operan:
 
-; 481  :             } else
-; 482  :                 return( fnEmitErr( INSTRUCTION_OR_REGISTER_NOT_ACCEPTED_IN_CURRENT_CPU_MODE ) );
-; 483  :         }
-; 484  : 
-; 485  :         if( flags & EXPF_IN_SQBR ) {
+; 447  :             } else
+; 448  :                 return( fnEmitErr( INSTRUCTION_OR_REGISTER_NOT_ACCEPTED_IN_CURRENT_CPU_MODE ) );
+; 449  :         }
+; 450  : 
+; 451  :         if( flags & EXPF_IN_SQBR ) {
 
 	test	r15b, 8
 	je	$LN124@get_operan
 
-; 486  :             /* a valid index register? */
-; 487  :             if ( GetSflagsSp( j ) & SFR_IREG ) {
+; 452  :             /* a valid index register? */
+; 453  :             if ( GetSflagsSp( j ) & SFR_IREG ) {
 
 	test	BYTE PTR SpecialTable[rbx+r13+4], 32	; 00000020H
 	je	SHORT $LN47@get_operan
 
-; 488  :                 opnd->indirect = TRUE;
-; 489  :                 opnd->assumecheck = TRUE;
+; 454  :                 opnd->indirect = TRUE;
+; 455  :                 opnd->assumecheck = TRUE;
 
-	or	DWORD PTR [rdi+76], 65			; 00000041H
+	or	DWORD PTR [rdi+72], 65			; 00000041H
 
-; 863  :     }
-; 864  :     (*idx)++;
+; 829  :     }
+; 830  :     (*idx)++;
 
 	inc	DWORD PTR [r12]
 
-; 865  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
-; 866  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
-; 867  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
-; 868  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
-; 869  :                opnd->sym ? opnd->sym->name : "NULL",
-; 870  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
-; 871  :     return( NOT_ERROR );
+; 831  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
+; 832  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
+; 833  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
+; 834  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
+; 835  :                opnd->sym ? opnd->sym->name : "NULL",
+; 836  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
+; 837  :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@get_operan
 $LN47@get_operan:
 
-; 490  :             } else if ( GetValueSp( j ) & OP_SR ) {
+; 456  :             } else if ( GetValueSp( j ) & OP_SR ) {
 
 	test	DWORD PTR SpecialTable[rbx+r13], 24576	; 00006000H
 	je	SHORT $LN49@get_operan
 
-; 491  :                 /* a segment register inside square brackets is only
-; 492  :                  * accepted by Masm if it is the segment part of an
-; 493  :                  * address (mov ax,[bx+cs:label])!
-; 494  :                  */
-; 495  :                 /* v2.10: check moved here avain. regression v2.08-2.09, where
-; 496  :                  * it was in colon_op(). see regression test OVERRID3.ASC.
-; 497  :                  */
-; 498  :                 //if( tokenarray[i+1].token != T_COLON ) {
-; 499  :                 if( tokenarray[i+1].token != T_COLON ||
+; 457  :                 /* a segment register inside square brackets is only
+; 458  :                  * accepted by Masm if it is the segment part of an
+; 459  :                  * address (mov ax,[bx+cs:label])!
+; 460  :                  */
+; 461  :                 /* v2.10: check moved here avain. regression v2.08-2.09, where
+; 462  :                  * it was in colon_op(). see regression test OVERRID3.ASC.
+; 463  :                  */
+; 464  :                 //if( tokenarray[i+1].token != T_COLON ) {
+; 465  :                 if( tokenarray[i+1].token != T_COLON ||
 
 	cmp	BYTE PTR [rsi+32], 58			; 0000003aH
 	jne	SHORT $LN52@get_operan
@@ -10716,8 +10716,8 @@ $LN47@get_operan:
 	jne	$LN124@get_operan
 $LN52@get_operan:
 
-; 500  :                    ( Options.strict_masm_compat && tokenarray[i+2].token == T_REG ) ) {
-; 501  :                     return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
+; 466  :                    ( Options.strict_masm_compat && tokenarray[i+2].token == T_REG ) ) {
+; 467  :                     return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
 
 	mov	ecx, 170				; 000000aaH
 $LN44@get_operan:
@@ -10725,58 +10725,58 @@ $LN44@get_operan:
 	jmp	$LN1@get_operan
 $LN49@get_operan:
 
-; 502  :                 }
-; 503  :             } else {
-; 504  :                 if ( opnd->is_opattr ) /* v2.11: just set error for opattr */
+; 468  :                 }
+; 469  :             } else {
+; 470  :                 if ( opnd->is_opattr ) /* v2.11: just set error for opattr */
 
-	mov	eax, DWORD PTR [rdi+76]
+	mov	eax, DWORD PTR [rdi+72]
 	test	al, 16
 	jne	$LN173@get_operan
 
-; 505  :                     opnd->kind = EXPR_ERROR;
-; 506  :                 else
-; 507  :                   opnd->indirect = TRUE;
+; 471  :                     opnd->kind = EXPR_ERROR;
+; 472  :                 else
+; 473  :                   opnd->indirect = TRUE;
 
 	or	eax, 1
-	mov	DWORD PTR [rdi+76], eax
+	mov	DWORD PTR [rdi+72], eax
 
-; 863  :     }
-; 864  :     (*idx)++;
+; 829  :     }
+; 830  :     (*idx)++;
 
 	inc	DWORD PTR [r12]
 
-; 865  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
-; 866  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
-; 867  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
-; 868  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
-; 869  :                opnd->sym ? opnd->sym->name : "NULL",
-; 870  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
-; 871  :     return( NOT_ERROR );
+; 831  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
+; 832  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
+; 833  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
+; 834  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
+; 835  :                opnd->sym ? opnd->sym->name : "NULL",
+; 836  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
+; 837  :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@get_operan
 $LN55@get_operan:
 
-; 508  :                     //return( fnEmitErr( MUST_BE_INDEX_OR_BASE_REGISTER ) );
-; 509  :             }
-; 510  :         }
-; 511  :         break;
-; 512  :     case T_ID:
-; 513  :         tmp = tokenarray[i].string_ptr;
+; 474  :                     //return( fnEmitErr( MUST_BE_INDEX_OR_BASE_REGISTER ) );
+; 475  :             }
+; 476  :         }
+; 477  :         break;
+; 478  :     case T_ID:
+; 479  :         tmp = tokenarray[i].string_ptr;
 
 	mov	rbp, QWORD PTR [rsi+8]
 
-; 514  :         //if ( opnd->type ) { /* v2.11 */
-; 515  :         if ( opnd->is_dot ) {
+; 480  :         //if ( opnd->type ) { /* v2.11 */
+; 481  :         if ( opnd->is_dot ) {
 
 	xor	r14d, r14d
-	test	BYTE PTR [rdi+76], 128			; 00000080H
+	test	BYTE PTR [rdi+72], 128			; 00000080H
 	je	$LN56@get_operan
 
-; 516  :             DebugMsg1(("%u get_operand: T_ID, is_dot=1, id=%s, opnd.type=%s\n", evallvl, tokenarray[i].string_ptr, opnd->type ? opnd->type->name : "NULL" ));
-; 517  :             //__debugbreak();
-; 518  :             opnd->value = 0;
-; 519  :             sym = ( opnd->type ? SearchNameInStruct( opnd->type, tmp, &opnd->uvalue, 0 ) : NULL );
+; 482  :             DebugMsg1(("%u get_operand: T_ID, is_dot=1, id=%s, opnd.type=%s\n", evallvl, tokenarray[i].string_ptr, opnd->type ? opnd->type->name : "NULL" ));
+; 483  :             //__debugbreak();
+; 484  :             opnd->value = 0;
+; 485  :             sym = ( opnd->type ? SearchNameInStruct( opnd->type, tmp, &opnd->uvalue, 0 ) : NULL );
 
 	mov	rcx, QWORD PTR [rdi+96]
 	mov	DWORD PTR [rdi], r14d
@@ -10788,51 +10788,51 @@ $LN55@get_operan:
 	call	SearchNameInStruct
 	mov	rbx, rax
 
-; 520  :             DebugMsg1(("get_operand(%s): is_dot, sym=%s, offset=%" I32_SPEC "Xh\n",
-; 521  :                        tmp, sym ? sym->name : "NULL", opnd->uvalue ));
-; 522  :             if ( sym == NULL ) {
+; 486  :             DebugMsg1(("get_operand(%s): is_dot, sym=%s, offset=%" I32_SPEC "Xh\n",
+; 487  :                        tmp, sym ? sym->name : "NULL", opnd->uvalue ));
+; 488  :             if ( sym == NULL ) {
 
 	test	rax, rax
 	jne	$LN157@get_operan
 $LN158@get_operan:
 
-; 523  :                 sym = SymSearch( tmp );
+; 489  :                 sym = SymSearch( tmp );
 
 	mov	rcx, rbp
 	call	SymFind
 	mov	rbx, rax
 
-; 524  :                 if ( sym ) {
+; 490  :                 if ( sym ) {
 
 	test	rax, rax
 	je	SHORT $LN77@get_operan
 
-; 525  :                     /*
-; 526  :                      * skip a type specifier matching the data item's type
-; 527  :                      * that's something like "<item>.<type>.<member>"
-; 528  :                      */
-; 529  :                     if ( sym->state == SYM_TYPE ) {
+; 491  :                     /*
+; 492  :                      * skip a type specifier matching the data item's type
+; 493  :                      * that's something like "<item>.<type>.<member>"
+; 494  :                      */
+; 495  :                     if ( sym->state == SYM_TYPE ) {
 
 	mov	ecx, DWORD PTR [rax+32]
 	cmp	ecx, 7
 	jne	SHORT $LN60@get_operan
 
-; 530  :                         /*
-; 531  :                          * v2.07: "if" added.
-; 532  :                          * Masm accepts a different type spec if the "assumed"
-; 533  :                          * type is undefined
-; 534  :                          * v2.09: the change in v2.07 is a regression. if it's a type,
-; 535  :                          * then "usually" assume a type coercion and "switch" to the
-; 536  :                          * new type - but not for register assume. This isn't fixed
-; 537  :                          * yet, because there's no way to find out if a register assume
-; 538  :                          * did set field 'type'.
-; 539  :                          * v2.09: oldstructs condition added, see regression test dotop4.asm.
-; 540  :                          * v2.11: fixme? opnd->type may be NULL here?
-; 541  :                          * v2.12: for opnd->type==NULL test case, see expr5.aso.
-; 542  :                          */
-; 543  :                         //if ( sym == opnd->type || opnd->type->isdefined == FALSE )
-; 544  :                         //if ( sym == opnd->type || opnd->type->isdefined == FALSE || ModuleInfo.oldstructs )
-; 545  :                         if ( sym == opnd->type || ( opnd->type && opnd->type->isdefined == FALSE ) || ModuleInfo.oldstructs )
+; 496  :                         /*
+; 497  :                          * v2.07: "if" added.
+; 498  :                          * Masm accepts a different type spec if the "assumed"
+; 499  :                          * type is undefined
+; 500  :                          * v2.09: the change in v2.07 is a regression. if it's a type,
+; 501  :                          * then "usually" assume a type coercion and "switch" to the
+; 502  :                          * new type - but not for register assume. This isn't fixed
+; 503  :                          * yet, because there's no way to find out if a register assume
+; 504  :                          * did set field 'type'.
+; 505  :                          * v2.09: oldstructs condition added, see regression test dotop4.asm.
+; 506  :                          * v2.11: fixme? opnd->type may be NULL here?
+; 507  :                          * v2.12: for opnd->type==NULL test case, see expr5.aso.
+; 508  :                          */
+; 509  :                         //if ( sym == opnd->type || opnd->type->isdefined == FALSE )
+; 510  :                         //if ( sym == opnd->type || opnd->type->isdefined == FALSE || ModuleInfo.oldstructs )
+; 511  :                         if ( sym == opnd->type || ( opnd->type && opnd->type->isdefined == FALSE ) || ModuleInfo.oldstructs )
 
 	mov	rax, QWORD PTR [rdi+96]
 	cmp	rbx, rax
@@ -10847,62 +10847,62 @@ $LN171@get_operan:
 	jne	SHORT $LN57@get_operan
 $LN66@get_operan:
 
-; 551  :                                ( sym->state == SYM_STRUCT_FIELD ||
-; 552  :                                 sym->state == SYM_EXTERNAL || /* v2.01: added */
-; 553  :                                 /* v2.05: changed */
-; 554  :                                 //( sym->state == SYM_INTERNAL && sym->mem_type == MT_ABS ) ) )
-; 555  :                                 sym->state == SYM_INTERNAL ) )
-; 556  :                         //opnd->sym = sym;
-; 557  :                         ;
-; 558  :                     else {
-; 559  :                         /* fixme: clear sym?
-; 560  :                          * if the symbol is not a type, it's an error which can
-; 561  :                          * be detected in pass 1 already. dot_op() will emit
-; 562  :                          * 'struct field expected' if sym isn't cleared.
-; 563  :                          * v2.11: always clear sym.
-; 564  :                          */
-; 565  :                         //if ( opnd->type != nullstruct )
-; 566  :                         sym = NULL;
+; 517  :                                ( sym->state == SYM_STRUCT_FIELD ||
+; 518  :                                 sym->state == SYM_EXTERNAL || /* v2.01: added */
+; 519  :                                 /* v2.05: changed */
+; 520  :                                 //( sym->state == SYM_INTERNAL && sym->mem_type == MT_ABS ) ) )
+; 521  :                                 sym->state == SYM_INTERNAL ) )
+; 522  :                         //opnd->sym = sym;
+; 523  :                         ;
+; 524  :                     else {
+; 525  :                         /* fixme: clear sym?
+; 526  :                          * if the symbol is not a type, it's an error which can
+; 527  :                          * be detected in pass 1 already. dot_op() will emit
+; 528  :                          * 'struct field expected' if sym isn't cleared.
+; 529  :                          * v2.11: always clear sym.
+; 530  :                          */
+; 531  :                         //if ( opnd->type != nullstruct )
+; 532  :                         sym = NULL;
 
 	mov	rbx, r14
 $LN77@get_operan:
 
-; 594  :             sym->state == SYM_TMACRO ) {
-; 595  : 
-; 596  :             /* for OPATTR, anything is ok */
-; 597  :             if ( opnd->is_opattr ) {
+; 560  :             sym->state == SYM_TMACRO ) {
+; 561  : 
+; 562  :             /* for OPATTR, anything is ok */
+; 563  :             if ( opnd->is_opattr ) {
 
-	test	BYTE PTR [rdi+76], 16
+	test	BYTE PTR [rdi+72], 16
 	je	$LN79@get_operan
 $LN173@get_operan:
 
-; 598  :                 DebugMsg1(( "get_operand(%s): OPATTR, symbol invalid\n", tokenarray[i].string_ptr ));
-; 599  :                 opnd->kind = EXPR_ERROR;
+; 564  :                 DebugMsg1(( "get_operand(%s): OPATTR, symbol invalid\n", tokenarray[i].string_ptr ));
+; 565  :                 opnd->kind = EXPR_ERROR;
 
 	mov	DWORD PTR [rdi+60], -1
 
-; 863  :     }
-; 864  :     (*idx)++;
+; 829  :     }
+; 830  :     (*idx)++;
 
 	inc	DWORD PTR [r12]
 
-; 865  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
-; 866  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
-; 867  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
-; 868  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
-; 869  :                opnd->sym ? opnd->sym->name : "NULL",
-; 870  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
-; 871  :     return( NOT_ERROR );
+; 831  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
+; 832  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
+; 833  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
+; 834  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
+; 835  :                opnd->sym ? opnd->sym->name : "NULL",
+; 836  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
+; 837  :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@get_operan
 $LN60@get_operan:
 
-; 546  :                             ; //opnd->sym = sym;
-; 547  :                         else {
-; 548  :                             sym = NULL;
-; 549  :                         }
-; 550  :                     } else if ( ModuleInfo.oldstructs &&
+; 512  :                             ; //opnd->sym = sym;
+; 513  :                         else {
+; 514  :                             sym = NULL;
+; 515  :                         }
+; 516  :                     } else if ( ModuleInfo.oldstructs &&
 
 	test	DWORD PTR ModuleInfo+408, 256		; 00000100H
 	je	SHORT $LN66@get_operan
@@ -10911,30 +10911,30 @@ $LN60@get_operan:
 	jne	SHORT $LN66@get_operan
 	cmp	ecx, 5
 
-; 567  :                     }
-; 568  :                 }
-; 569  :             }
-; 570  :         } else {
+; 533  :                     }
+; 534  :                 }
+; 535  :             }
+; 536  :         } else {
 
 	jmp	SHORT $LN171@get_operan
 $LN56@get_operan:
 
-; 571  :             DebugMsg1(("%u get_operand: T_ID, id=%s\n", evallvl, tokenarray[i].string_ptr ));
-; 572  :             /* ensure anonym labels are uppercase */
-; 573  :             /* v2.06: changed. Previously member 'string_ptr' was used to
-; 574  :              * store the anonymous label, but one cannot safely assume that
-; 575  :              * there's enough free space for a larger symbol name! It (partly)
-; 576  :              * worked by accident, because @F/@B usually are the last tokens
-; 577  :              * in a line [ but see: .if ( eax == @F && ecx == 2 ) ].
-; 578  :              */
-; 579  :             if ( *tmp == '@' && *(tmp+2 ) == NULLC ) {
+; 537  :             DebugMsg1(("%u get_operand: T_ID, id=%s\n", evallvl, tokenarray[i].string_ptr ));
+; 538  :             /* ensure anonym labels are uppercase */
+; 539  :             /* v2.06: changed. Previously member 'string_ptr' was used to
+; 540  :              * store the anonymous label, but one cannot safely assume that
+; 541  :              * there's enough free space for a larger symbol name! It (partly)
+; 542  :              * worked by accident, because @F/@B usually are the last tokens
+; 543  :              * in a line [ but see: .if ( eax == @F && ecx == 2 ) ].
+; 544  :              */
+; 545  :             if ( *tmp == '@' && *(tmp+2 ) == NULLC ) {
 
 	cmp	BYTE PTR [rbp], 64			; 00000040H
 	jne	SHORT $LN73@get_operan
 	cmp	BYTE PTR [rbp+2], r14b
 	jne	SHORT $LN73@get_operan
 
-; 580  :                 if ( *(tmp+1) == 'b' || *(tmp+1 ) == 'B' )
+; 546  :                 if ( *(tmp+1) == 'b' || *(tmp+1 ) == 'B' )
 
 	movzx	ecx, BYTE PTR [rbp+1]
 	lea	eax, DWORD PTR [rcx-66]
@@ -10944,14 +10944,14 @@ $LN56@get_operan:
 	test	cl, 223					; 000000dfH
 	jne	SHORT $LN73@get_operan
 
-; 582  :                 else if (*(tmp+1) == 'f' || *(tmp+1 ) == 'F' )
-; 583  :                     tmp = GetAnonymousLabel( labelbuff, 1 );
+; 548  :                 else if (*(tmp+1) == 'f' || *(tmp+1 ) == 'F' )
+; 549  :                     tmp = GetAnonymousLabel( labelbuff, 1 );
 
 	mov	edx, 1
 	jmp	SHORT $LN170@get_operan
 $LN72@get_operan:
 
-; 581  :                     tmp = GetAnonymousLabel( labelbuff, 0 );
+; 547  :                     tmp = GetAnonymousLabel( labelbuff, 0 );
 
 	xor	edx, edx
 $LN170@get_operan:
@@ -10960,22 +10960,22 @@ $LN170@get_operan:
 	mov	rbp, rax
 $LN73@get_operan:
 
-; 584  :             }
-; 585  :             sym = SymSearch( tmp );
+; 550  :             }
+; 551  :             sym = SymSearch( tmp );
 
 	mov	rcx, rbp
 	call	SymFind
 	mov	rbx, rax
 $LN57@get_operan:
 
-; 586  :         }
-; 587  :         if ( sym == NULL ||
-; 588  :             sym->state == SYM_UNDEFINED ||
-; 589  :             ( sym->state == SYM_TYPE && sym->typekind == TYPE_NONE ) ||  /* v2.10: added */
-; 590  : #if ALIAS_IN_EXPR == 0
-; 591  :             sym->state == SYM_ALIAS || /* v2.04: added */
-; 592  : #endif
-; 593  :             sym->state == SYM_MACRO ||
+; 552  :         }
+; 553  :         if ( sym == NULL ||
+; 554  :             sym->state == SYM_UNDEFINED ||
+; 555  :             ( sym->state == SYM_TYPE && sym->typekind == TYPE_NONE ) ||  /* v2.10: added */
+; 556  : #if ALIAS_IN_EXPR == 0
+; 557  :             sym->state == SYM_ALIAS || /* v2.04: added */
+; 558  : #endif
+; 559  :             sym->state == SYM_MACRO ||
 
 	test	rbx, rbx
 	je	SHORT $LN77@get_operan
@@ -10992,31 +10992,31 @@ $LN78@get_operan:
 	cmp	eax, 1
 	jbe	$LN77@get_operan
 
-; 666  :             }
-; 667  : #if ALIAS_IN_EXPR /* v2.04b: added */
-; 668  :         } else if ( sym->state == SYM_ALIAS ) {
+; 632  :             }
+; 633  : #if ALIAS_IN_EXPR /* v2.04b: added */
+; 634  :         } else if ( sym->state == SYM_ALIAS ) {
 
 	cmp	ecx, 8
 	jne	SHORT $LN88@get_operan
 
-; 669  :             /* ALIAS symbols are not really useable in expressions.
-; 670  :              * The alias' substitute symbol is, however.
-; 671  :              */
-; 672  :             sym = sym->substitute; /* can't be NULL */
+; 635  :             /* ALIAS symbols are not really useable in expressions.
+; 636  :              * The alias' substitute symbol is, however.
+; 637  :              */
+; 638  :             sym = sym->substitute; /* can't be NULL */
 
 	mov	rbx, QWORD PTR [rbx+16]
 $LN88@get_operan:
 
-; 673  : #endif
-; 674  :         }
-; 675  :         /* set default values */
-; 676  :         sym->used = TRUE;
+; 639  : #endif
+; 640  :         }
+; 641  :         /* set default values */
+; 642  :         sym->used = TRUE;
 
 	or	BYTE PTR [rbx+40], 1
 
-; 677  :         DebugMsg1(("get_operand(%s): sym->state=%u type=>%s< ofs=%X memtype=%Xh total_size=%u defined=%u\n",
-; 678  :                 tokenarray[i].string_ptr, sym->state, sym->type ? sym->type->name : "NULL", sym->offset, sym->mem_type, sym->total_size, sym->isdefined ));
-; 679  :         switch ( sym->state ) {
+; 643  :         DebugMsg1(("get_operand(%s): sym->state=%u type=>%s< ofs=%X memtype=%Xh total_size=%u defined=%u\n",
+; 644  :                 tokenarray[i].string_ptr, sym->state, sym->type ? sym->type->name : "NULL", sym->offset, sym->mem_type, sym->total_size, sym->isdefined ));
+; 645  :         switch ( sym->state ) {
 
 	mov	ecx, DWORD PTR [rbx+32]
 	sub	ecx, 6
@@ -11024,15 +11024,15 @@ $LN88@get_operan:
 	cmp	ecx, 1
 	je	$LN95@get_operan
 
-; 730  :             DebugMsg1(("get_operand: mem_type=%Xh type=%s\n", opnd->mem_type, opnd->type ? opnd->type->name : "NULL" ));
-; 731  :             break;
-; 732  :         default: /* SYM_INTERNAL, SYM_EXTERNAL, SYM_SEG, SYM_GRP, SYM_STACK */
-; 733  :             opnd->kind = EXPR_ADDR;
+; 696  :             DebugMsg1(("get_operand: mem_type=%Xh type=%s\n", opnd->mem_type, opnd->type ? opnd->type->name : "NULL" ));
+; 697  :             break;
+; 698  :         default: /* SYM_INTERNAL, SYM_EXTERNAL, SYM_SEG, SYM_GRP, SYM_STACK */
+; 699  :             opnd->kind = EXPR_ADDR;
 
 	mov	DWORD PTR [rdi+60], 1
 
-; 734  :             /* call internal function (@Line, ... ) */
-; 735  :             if ( sym->predefined && sym->sfunc_ptr )
+; 700  :             /* call internal function (@Line, ... ) */
+; 701  :             if ( sym->predefined && sym->sfunc_ptr )
 
 	test	BYTE PTR [rbx+40], 32			; 00000020H
 	je	SHORT $LN105@get_operan
@@ -11040,15 +11040,15 @@ $LN88@get_operan:
 	test	rax, rax
 	je	SHORT $LN105@get_operan
 
-; 736  :                 sym->sfunc_ptr( sym, NULL );
+; 702  :                 sym->sfunc_ptr( sym, NULL );
 
 	xor	edx, edx
 	mov	rcx, rbx
 	call	rax
 $LN105@get_operan:
 
-; 737  :             //if( opnd->sym->mem_type == MT_ABS ) {
-; 738  :             if( sym->state == SYM_INTERNAL && sym->segment == NULL ) {
+; 703  :             //if( opnd->sym->mem_type == MT_ABS ) {
+; 704  :             if( sym->state == SYM_INTERNAL && sym->segment == NULL ) {
 
 	mov	eax, DWORD PTR [rbx+32]
 	cmp	eax, 1
@@ -11056,53 +11056,53 @@ $LN105@get_operan:
 	cmp	QWORD PTR [rbx+24], r14
 	jne	$LN106@get_operan
 
-; 739  :                 opnd->kind = EXPR_CONST;
+; 705  :                 opnd->kind = EXPR_CONST;
 
 	mov	DWORD PTR [rdi+60], r14d
 
-; 740  :                 opnd->uvalue = sym->uvalue;
+; 706  :                 opnd->uvalue = sym->uvalue;
 
 	mov	eax, DWORD PTR [rbx+16]
 	mov	DWORD PTR [rdi], eax
 
-; 741  :                 opnd->hvalue = sym->value3264;
+; 707  :                 opnd->hvalue = sym->value3264;
 
 	mov	eax, DWORD PTR [rbx+56]
 	mov	DWORD PTR [rdi+4], eax
 
-; 742  :                 DebugMsg1(("get_operand(%s): equate hval=%Xh, lval=%Xh\n", sym->name, opnd->hvalue, opnd->uvalue ));
-; 743  :                 opnd->mem_type = sym->mem_type;
+; 708  :                 DebugMsg1(("get_operand(%s): equate hval=%Xh, lval=%Xh\n", sym->name, opnd->hvalue, opnd->uvalue ));
+; 709  :                 opnd->mem_type = sym->mem_type;
 
 	mov	eax, DWORD PTR [rbx+36]
 	mov	DWORD PTR [rdi+64], eax
 
-; 863  :     }
-; 864  :     (*idx)++;
+; 829  :     }
+; 830  :     (*idx)++;
 
 	inc	DWORD PTR [r12]
 
-; 865  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
-; 866  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
-; 867  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
-; 868  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
-; 869  :                opnd->sym ? opnd->sym->name : "NULL",
-; 870  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
-; 871  :     return( NOT_ERROR );
+; 831  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
+; 832  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
+; 833  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
+; 834  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
+; 835  :                opnd->sym ? opnd->sym->name : "NULL",
+; 836  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
+; 837  :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@get_operan
 $LN79@get_operan:
 
-; 600  :                 break;
-; 601  :             }
-; 602  : #if 0 /* v2.10: obsolete, since fnEmitErr() won't display anything in "EQU" mode */
-; 603  :             /* if it is EQU, don't display an error, but return ERROR */
-; 604  :             if ( flags & EXPF_NOERRMSG ) {
-; 605  :                 DebugMsg1(("get_operand(%s): EQU, symbol invalid\n", tokenarray[i].string_ptr));
-; 606  :                 return( ERROR );
-; 607  :             }
-; 608  : #endif
-; 609  :             if ( sym && ( sym->state == SYM_MACRO ||
+; 566  :                 break;
+; 567  :             }
+; 568  : #if 0 /* v2.10: obsolete, since fnEmitErr() won't display anything in "EQU" mode */
+; 569  :             /* if it is EQU, don't display an error, but return ERROR */
+; 570  :             if ( flags & EXPF_NOERRMSG ) {
+; 571  :                 DebugMsg1(("get_operand(%s): EQU, symbol invalid\n", tokenarray[i].string_ptr));
+; 572  :                 return( ERROR );
+; 573  :             }
+; 574  : #endif
+; 575  :             if ( sym && ( sym->state == SYM_MACRO ||
 
 	test	rbx, rbx
 	je	SHORT $LN80@get_operan
@@ -11111,55 +11111,55 @@ $LN79@get_operan:
 	cmp	eax, 1
 	ja	SHORT $LN80@get_operan
 
-; 610  : #if ALIAS_IN_EXPR == 0
-; 611  :                          sym->state == SYM_ALIAS || /* v2.04: added */
-; 612  : #endif
-; 613  :                          sym->state == SYM_TMACRO ) ) {
-; 614  :                 DebugMsg1(("get_operand(%s): symbol is macro/textmacro/alias!\n", tokenarray[i].string_ptr));
-; 615  :                 fnEmitErr( INVALID_SYMBOL_TYPE_IN_EXPRESSION, sym->name );
+; 576  : #if ALIAS_IN_EXPR == 0
+; 577  :                          sym->state == SYM_ALIAS || /* v2.04: added */
+; 578  : #endif
+; 579  :                          sym->state == SYM_TMACRO ) ) {
+; 580  :                 DebugMsg1(("get_operand(%s): symbol is macro/textmacro/alias!\n", tokenarray[i].string_ptr));
+; 581  :                 fnEmitErr( INVALID_SYMBOL_TYPE_IN_EXPRESSION, sym->name );
 
 	mov	rdx, QWORD PTR [rbx+8]
 	mov	ecx, 243				; 000000f3H
 
-; 616  :                 return( ERROR );
+; 582  :                 return( ERROR );
 
 	jmp	$LN172@get_operan
 $LN80@get_operan:
 
-; 617  :             }
-; 618  :             /* v2.11: flag EXPF_NOUNDEF won't accept undefined symbols anymore.
-; 619  :              * previously, it did just avoid to create a label with state SYM_UNDEFINED -
-; 620  :              * hence the old name, EXPF_NOLCREATE
-; 621  :              */
-; 622  :             //if( Parse_Pass == PASS_1 ) {
-; 623  :             if( Parse_Pass == PASS_1 && !( flags & EXPF_NOUNDEF ) ) {
+; 583  :             }
+; 584  :             /* v2.11: flag EXPF_NOUNDEF won't accept undefined symbols anymore.
+; 585  :              * previously, it did just avoid to create a label with state SYM_UNDEFINED -
+; 586  :              * hence the old name, EXPF_NOLCREATE
+; 587  :              */
+; 588  :             //if( Parse_Pass == PASS_1 ) {
+; 589  :             if( Parse_Pass == PASS_1 && !( flags & EXPF_NOUNDEF ) ) {
 
 	cmp	DWORD PTR Parse_Pass, r14d
 	jne	$LN82@get_operan
 	test	r15b, 2
 	jne	$LN82@get_operan
 
-; 624  :                 /* if symbol wasn't found, assume it is a forward ref! */
-; 625  :                 if ( sym == NULL ) {
+; 590  :                 /* if symbol wasn't found, assume it is a forward ref! */
+; 591  :                 if ( sym == NULL ) {
 
 	test	rbx, rbx
 	jne	$LN88@get_operan
 
-; 626  :                     /* v2.11: flag EXPF_NOLCREATE has got another meaning */
-; 627  :                     //if ( opnd->type == NULL && !( flags & EXPF_NOLCREATE ) ) { /* added v1.95 */
-; 628  :                     if ( opnd->type == NULL ) {
+; 592  :                     /* v2.11: flag EXPF_NOLCREATE has got another meaning */
+; 593  :                     //if ( opnd->type == NULL && !( flags & EXPF_NOLCREATE ) ) { /* added v1.95 */
+; 594  :                     if ( opnd->type == NULL ) {
 
 	mov	rax, QWORD PTR [rdi+96]
 	test	rax, rax
 	jne	SHORT $LN85@get_operan
 
-; 629  :                         sym = SymLookup( tmp );
+; 595  :                         sym = SymLookup( tmp );
 
 	mov	rcx, rbp
 	call	SymLookup
 
-; 630  :                         sym->state = SYM_UNDEFINED;
-; 631  :                         sym_add_table( &SymTables[TAB_UNDEF], (struct dsym *)sym ); /* add UNDEFINED */
+; 596  :                         sym->state = SYM_UNDEFINED;
+; 597  :                         sym_add_table( &SymTables[TAB_UNDEF], (struct dsym *)sym ); /* add UNDEFINED */
 
 	mov	rdx, rax
 	lea	rcx, OFFSET FLAT:SymTables
@@ -11169,25 +11169,25 @@ $LN80@get_operan:
 	jmp	$LN88@get_operan
 $LN85@get_operan:
 
-; 632  :                         DebugMsg1(("get_operand(%s): symbol not (yet) defined, CurrProc=%s\n", tmp, CurrProc ? CurrProc->sym.name : "NULL" ));
-; 633  :                     
-; 634  :                     // } else if ( opnd->type == NULL || opnd->type != nullstruct ) { /* v2.08: if changed */
-; 635  :                     // } else if ( opnd->type == NULL || opnd->type->typekind != TYPE_NONE ) { /* v2.11: if changed */
-; 636  :                     } else if ( opnd->type->typekind != TYPE_NONE ) {
+; 598  :                         DebugMsg1(("get_operand(%s): symbol not (yet) defined, CurrProc=%s\n", tmp, CurrProc ? CurrProc->sym.name : "NULL" ));
+; 599  :                     
+; 600  :                     // } else if ( opnd->type == NULL || opnd->type != nullstruct ) { /* v2.08: if changed */
+; 601  :                     // } else if ( opnd->type == NULL || opnd->type->typekind != TYPE_NONE ) { /* v2.11: if changed */
+; 602  :                     } else if ( opnd->type->typekind != TYPE_NONE ) {
 
 	cmp	BYTE PTR [rax+66], r14b
 	je	SHORT $LN87@get_operan
 
-; 637  :                         /* no struct or struct is known and defined */
-; 638  :                         DebugMsg(("get_operand(%s): symbol error (type=%s typekind=%u)\n", tmp, opnd->type ? opnd->type->name : "NULL", opnd->type ? opnd->type->typekind : 0 ));
-; 639  :                         if ( *opnd->type->name )
+; 603  :                         /* no struct or struct is known and defined */
+; 604  :                         DebugMsg(("get_operand(%s): symbol error (type=%s typekind=%u)\n", tmp, opnd->type ? opnd->type->name : "NULL", opnd->type ? opnd->type->typekind : 0 ));
+; 605  :                         if ( *opnd->type->name )
 
 	mov	rdx, QWORD PTR [rax+8]
 	cmp	BYTE PTR [rdx], r14b
 	je	$LN89@get_operan
 $LN174@get_operan:
 
-; 640  :                             fnEmitErr( MEMBER_NOT_DEFINED, opnd->type->name, tmp );
+; 606  :                             fnEmitErr( MEMBER_NOT_DEFINED, opnd->type->name, tmp );
 
 	mov	r8, rbp
 	mov	ecx, 63					; 0000003fH
@@ -11195,57 +11195,57 @@ $LN174@get_operan:
 	jmp	$LN131@get_operan
 $LN87@get_operan:
 
-; 641  :                         else
-; 642  :                             fnEmitErr( SYMBOL_NOT_DEFINED, tmp );
-; 643  :                         return( ERROR );
-; 644  :                     } else {
-; 645  :                         /* forward reference to a struct.
-; 646  :                          * In these cases, assume everything is ok.
-; 647  :                          */
-; 648  :                         if ( !nullmbr ) {
+; 607  :                         else
+; 608  :                             fnEmitErr( SYMBOL_NOT_DEFINED, tmp );
+; 609  :                         return( ERROR );
+; 610  :                     } else {
+; 611  :                         /* forward reference to a struct.
+; 612  :                          * In these cases, assume everything is ok.
+; 613  :                          */
+; 614  :                         if ( !nullmbr ) {
 
 	mov	rax, QWORD PTR nullmbr
 	test	rax, rax
 	jne	SHORT $LN91@get_operan
 
-; 649  :                             nullmbr = SymAlloc( "" );
+; 615  :                             nullmbr = SymAlloc( "" );
 
-	lea	rcx, OFFSET FLAT:$SG11155
+	lea	rcx, OFFSET FLAT:$SG11153
 	call	SymAlloc
 	mov	QWORD PTR nullmbr, rax
 $LN91@get_operan:
 
-; 650  :                         }
-; 651  :                         DebugMsg(("get_operand(%s): forward reference to a struct (using nullmbr)\n", tmp ));
-; 652  :                         /* "break" because nullmbr has state SYM_UNDEFINED */
-; 653  :                         opnd->mbr = nullmbr;
+; 616  :                         }
+; 617  :                         DebugMsg(("get_operand(%s): forward reference to a struct (using nullmbr)\n", tmp ));
+; 618  :                         /* "break" because nullmbr has state SYM_UNDEFINED */
+; 619  :                         opnd->mbr = nullmbr;
 
 	mov	QWORD PTR [rdi+88], rax
 
-; 654  :                         opnd->kind = EXPR_CONST;
+; 620  :                         opnd->kind = EXPR_CONST;
 
 	mov	DWORD PTR [rdi+60], r14d
 
-; 863  :     }
-; 864  :     (*idx)++;
+; 829  :     }
+; 830  :     (*idx)++;
 
 	inc	DWORD PTR [r12]
 
-; 865  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
-; 866  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
-; 867  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
-; 868  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
-; 869  :                opnd->sym ? opnd->sym->name : "NULL",
-; 870  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
-; 871  :     return( NOT_ERROR );
+; 831  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
+; 832  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
+; 833  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
+; 834  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
+; 835  :                opnd->sym ? opnd->sym->name : "NULL",
+; 836  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
+; 837  :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@get_operan
 $LN106@get_operan:
 
-; 744  :                 /* don't set the symbol reference, it isn't a label */
-; 745  :             } else if( sym->state == SYM_EXTERNAL &&
-; 746  :                       sym->mem_type == MT_EMPTY &&
+; 710  :                 /* don't set the symbol reference, it isn't a label */
+; 711  :             } else if( sym->state == SYM_EXTERNAL &&
+; 712  :                       sym->mem_type == MT_EMPTY &&
 
 	cmp	eax, 2
 	jne	SHORT $LN108@get_operan
@@ -11254,44 +11254,44 @@ $LN106@get_operan:
 	test	BYTE PTR [rbx+47], 4
 	jne	SHORT $LN108@get_operan
 
-; 747  :                       sym->iscomm == FALSE ) {
-; 748  :                 /* type remains EXPR_ADDR, to force fixup creation */
-; 749  :                 //opnd->mem_type = sym->mem_type; /* v2.10: unnecessary, init value IS MT_EMPTY */
-; 750  :                 opnd->is_abs = TRUE;
+; 713  :                       sym->iscomm == FALSE ) {
+; 714  :                 /* type remains EXPR_ADDR, to force fixup creation */
+; 715  :                 //opnd->mem_type = sym->mem_type; /* v2.10: unnecessary, init value IS MT_EMPTY */
+; 716  :                 opnd->is_abs = TRUE;
 
-	or	DWORD PTR [rdi+76], 4
+	or	DWORD PTR [rdi+72], 4
 
-; 751  :                 opnd->sym = sym;
+; 717  :                 opnd->sym = sym;
 
 	mov	QWORD PTR [rdi+80], rbx
 
-; 863  :     }
-; 864  :     (*idx)++;
+; 829  :     }
+; 830  :     (*idx)++;
 
 	inc	DWORD PTR [r12]
 
-; 865  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
-; 866  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
-; 867  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
-; 868  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
-; 869  :                opnd->sym ? opnd->sym->name : "NULL",
-; 870  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
-; 871  :     return( NOT_ERROR );
+; 831  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
+; 832  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
+; 833  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
+; 834  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
+; 835  :                opnd->sym ? opnd->sym->name : "NULL",
+; 836  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
+; 837  :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@get_operan
 $LN108@get_operan:
 
-; 752  :             } else {
-; 753  :                 opnd->label_tok = &tokenarray[i];
+; 718  :             } else {
+; 719  :                 opnd->label_tok = &tokenarray[i];
 
 	mov	QWORD PTR [rdi+40], rsi
 
-; 754  : 
-; 755  :                 /* a variable with arbitrary type? */
-; 756  :                 /* v2.05: added check for MT_EMPTY */
-; 757  :                 //if( opnd->sym->type ) { 
-; 758  :                 if( sym->type && sym->type->mem_type != MT_EMPTY ) {
+; 720  : 
+; 721  :                 /* a variable with arbitrary type? */
+; 722  :                 /* v2.05: added check for MT_EMPTY */
+; 723  :                 //if( opnd->sym->type ) { 
+; 724  :                 if( sym->type && sym->type->mem_type != MT_EMPTY ) {
 
 	mov	rax, QWORD PTR [rbx+80]
 	test	rax, rax
@@ -11300,55 +11300,55 @@ $LN108@get_operan:
 	cmp	ecx, 192				; 000000c0H
 	je	SHORT $LN110@get_operan
 
-; 759  :                     /* skip "alias" types */
-; 760  :                     /* v2.05: obsolete */
-; 761  :                     //for ( sym2 = opnd->sym; sym2->type; sym2 = sym2->type );
-; 762  :                     //opnd->mem_type = sym2->mem_type;
-; 763  :                     opnd->mem_type = sym->type->mem_type;
+; 725  :                     /* skip "alias" types */
+; 726  :                     /* v2.05: obsolete */
+; 727  :                     //for ( sym2 = opnd->sym; sym2->type; sym2 = sym2->type );
+; 728  :                     //opnd->mem_type = sym2->mem_type;
+; 729  :                     opnd->mem_type = sym->type->mem_type;
 
 	mov	DWORD PTR [rdi+64], ecx
 
-; 764  :                 } else {
+; 730  :                 } else {
 
 	jmp	SHORT $LN111@get_operan
 $LN110@get_operan:
 
-; 765  :                     opnd->mem_type = sym->mem_type;
+; 731  :                     opnd->mem_type = sym->mem_type;
 
 	mov	eax, DWORD PTR [rbx+36]
 	mov	DWORD PTR [rdi+64], eax
 $LN111@get_operan:
 
-; 766  :                 }
-; 767  :                 /* since there is no fixup for auto variables, the "offset"
-; 768  :                  must be stored in the <value> field */
-; 769  :                 if ( sym->state == SYM_STACK ) {
+; 732  :                 }
+; 733  :                 /* since there is no fixup for auto variables, the "offset"
+; 734  :                  must be stored in the <value> field */
+; 735  :                 if ( sym->state == SYM_STACK ) {
 
 	cmp	DWORD PTR [rbx+32], 5
 	jne	SHORT $LN112@get_operan
 
-; 770  : #if STACKBASESUPP
-; 771  :                   opnd->llvalue = sym->offset;// +StackAdj;
+; 736  : #if STACKBASESUPP
+; 737  :                   opnd->llvalue = sym->offset;// +StackAdj;
 
 	movsxd	rax, DWORD PTR [rbx+16]
 	mov	QWORD PTR [rdi], rax
 
-; 772  :                     if ((ModuleInfo.win64_flags & W64F_HABRAN) && sym->isparam){
+; 738  :                     if ((ModuleInfo.win64_flags & W64F_HABRAN) && sym->isparam){
 
 	test	BYTE PTR ModuleInfo+413, 11
 	je	SHORT $LN113@get_operan
 	test	BYTE PTR [rbx+41], 128			; 00000080H
 	je	SHORT $LN113@get_operan
 
-; 773  :                       int cnt = CurrProc->e.procinfo->pushed_reg;
+; 739  :                       int cnt = CurrProc->e.procinfo->pushed_reg;
 
 	mov	rax, QWORD PTR CurrProc
 	mov	r8, QWORD PTR [rax+96]
 
-; 774  :                       cnt = cnt * 8;
-; 775  :                       cnt += sym->offset + CurrProc->e.procinfo->localsize + CurrProc->e.procinfo->xmmsize; //pointing to RSP
-; 776  :                       cnt -= 8;     //pointing abowe RSP to the shadow space off RCX RDX R8 R9
-; 777  :                       opnd->llvalue = cnt;
+; 740  :                       cnt = cnt * 8;
+; 741  :                       cnt += sym->offset + CurrProc->e.procinfo->localsize + CurrProc->e.procinfo->xmmsize; //pointing to RSP
+; 742  :                       cnt -= 8;     //pointing abowe RSP to the shadow space off RCX RDX R8 R9
+; 743  :                       opnd->llvalue = cnt;
 
 	mov	eax, DWORD PTR [r8+72]
 	mov	edx, DWORD PTR [r8+64]
@@ -11361,46 +11361,46 @@ $LN111@get_operan:
 	mov	QWORD PTR [rdi], rax
 $LN113@get_operan:
 
-; 778  :                     }
-; 779  : #else
-; 780  :                     opnd->llvalue = sym->offset;
-; 781  : #endif
-; 782  :                     opnd->indirect = TRUE;
+; 744  :                     }
+; 745  : #else
+; 746  :                     opnd->llvalue = sym->offset;
+; 747  : #endif
+; 748  :                     opnd->indirect = TRUE;
 
-	or	DWORD PTR [rdi+76], 1
+	or	DWORD PTR [rdi+72], 1
 
-; 783  :                     /* v2.10: base register values now set here */
-; 784  :                     opnd->base_reg = &tokenarray[i];
+; 749  :                     /* v2.10: base register values now set here */
+; 750  :                     opnd->base_reg = &tokenarray[i];
 
 	mov	QWORD PTR [rdi+24], rsi
 
-; 785  : #if STACKBASESUPP
-; 786  :                     tokenarray[i].tokval = CurrProc->e.procinfo->basereg;
+; 751  : #if STACKBASESUPP
+; 752  :                     tokenarray[i].tokval = CurrProc->e.procinfo->basereg;
 
 	mov	rax, QWORD PTR CurrProc
 	mov	rcx, QWORD PTR [rax+96]
 	movzx	eax, WORD PTR [rcx+86]
 	mov	DWORD PTR [rsi+16], eax
 
-; 787  : #else
-; 788  :                     tokenarray[i].tokval = basereg[ModuleInfo.Ofssize];
-; 789  : #endif
-; 790  :                     tokenarray[i].bytval = GetRegNo( tokenarray[i].tokval );
+; 753  : #else
+; 754  :                     tokenarray[i].tokval = basereg[ModuleInfo.Ofssize];
+; 755  : #endif
+; 756  :                     tokenarray[i].bytval = GetRegNo( tokenarray[i].tokval );
 
 	lea	rcx, QWORD PTR [rax+rax*2]
 	movzx	eax, BYTE PTR SpecialTable[r13+rcx*4+10]
 	mov	BYTE PTR [rsi+1], al
 $LN112@get_operan:
 
-; 791  :                 }
-; 792  :                 opnd->sym = sym;
+; 757  :                 }
+; 758  :                 opnd->sym = sym;
 
 	mov	QWORD PTR [rdi+80], rbx
 
-; 793  :                 /* v2.09: added (also see change in PrepareOp() )
-; 794  :                  * and see case SYM_STRUCT_FIELD.
-; 795  :                  */
-; 796  :                 for ( ; sym->type; sym = sym->type );
+; 759  :                 /* v2.09: added (also see change in PrepareOp() )
+; 760  :                  * and see case SYM_STRUCT_FIELD.
+; 761  :                  */
+; 762  :                 for ( ; sym->type; sym = sym->type );
 
 	mov	rax, QWORD PTR [rbx+80]
 	test	rax, rax
@@ -11413,7 +11413,7 @@ $LL17@get_operan:
 	jne	SHORT $LL17@get_operan
 $LN16@get_operan:
 
-; 797  :                 opnd->type = ( sym->state == SYM_TYPE && sym->typekind != TYPE_TYPEDEF ) ? sym : NULL;
+; 763  :                 opnd->type = ( sym->state == SYM_TYPE && sym->typekind != TYPE_TYPEDEF ) ? sym : NULL;
 
 	cmp	DWORD PTR [rbx+32], 7
 	jne	$LN137@get_operan
@@ -11422,26 +11422,26 @@ $LN16@get_operan:
 	mov	rbx, r14
 	mov	QWORD PTR [rdi+96], rbx
 
-; 863  :     }
-; 864  :     (*idx)++;
+; 829  :     }
+; 830  :     (*idx)++;
 
 	inc	DWORD PTR [r12]
 
-; 865  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
-; 866  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
-; 867  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
-; 868  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
-; 869  :                opnd->sym ? opnd->sym->name : "NULL",
-; 870  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
-; 871  :     return( NOT_ERROR );
+; 831  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
+; 832  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
+; 833  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
+; 834  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
+; 835  :                opnd->sym ? opnd->sym->name : "NULL",
+; 836  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
+; 837  :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@get_operan
 $LN95@get_operan:
 
-; 680  :         case SYM_TYPE: /* STRUCT, UNION, RECORD, TYPEDEF */
-; 681  :             /* v2.09: no structinfo data for typedefs */
-; 682  :             if ( sym->typekind != TYPE_TYPEDEF && ((struct dsym *)sym)->e.structinfo->isOpen ) {
+; 646  :         case SYM_TYPE: /* STRUCT, UNION, RECORD, TYPEDEF */
+; 647  :             /* v2.09: no structinfo data for typedefs */
+; 648  :             if ( sym->typekind != TYPE_TYPEDEF && ((struct dsym *)sym)->e.structinfo->isOpen ) {
 
 	cmp	BYTE PTR [rbx+66], 3
 	je	SHORT $LN96@get_operan
@@ -11450,12 +11450,12 @@ $LN95@get_operan:
 	jne	$LN173@get_operan
 $LN96@get_operan:
 
-; 683  :                 DebugMsg1(("get_operand(%s): struct/union definition isn't closed!\n", sym->name ));
-; 684  :                 opnd->kind = EXPR_ERROR;
-; 685  :                 break;
-; 686  :             }
-; 687  :             /* skip "alias" types */
-; 688  :             for ( ; sym->type; sym = sym->type );
+; 649  :                 DebugMsg1(("get_operand(%s): struct/union definition isn't closed!\n", sym->name ));
+; 650  :                 opnd->kind = EXPR_ERROR;
+; 651  :                 break;
+; 652  :             }
+; 653  :             /* skip "alias" types */
+; 654  :             for ( ; sym->type; sym = sym->type );
 
 	mov	rax, QWORD PTR [rbx+80]
 	test	rax, rax
@@ -11468,61 +11468,61 @@ $LL11@get_operan:
 	jne	SHORT $LL11@get_operan
 $LN10@get_operan:
 
-; 689  :             opnd->kind = EXPR_CONST;
+; 655  :             opnd->kind = EXPR_CONST;
 
 	mov	DWORD PTR [rdi+60], r14d
 
-; 690  :             opnd->mem_type = sym->mem_type;
+; 656  :             opnd->mem_type = sym->mem_type;
 
 	mov	eax, DWORD PTR [rbx+36]
 
-; 691  :             opnd->is_type = TRUE;
+; 657  :             opnd->is_type = TRUE;
 
-	or	DWORD PTR [rdi+76], 8
+	or	DWORD PTR [rdi+72], 8
 	mov	DWORD PTR [rdi+64], eax
 
-; 692  :             opnd->type = sym;
+; 658  :             opnd->type = sym;
 
 	mov	QWORD PTR [rdi+96], rbx
 
-; 693  :             DebugMsg1(("get_operand(%s): symbol.typekind=%u (STRUCT/UNION/TYPEDEF/RECORD)\n", sym->name, sym->typekind ));
-; 694  : 
-; 695  :             /* v2.08: if() removed. This was an old hack. */
-; 696  :             //if ( tokenarray[i-1].token != T_DOT && tokenarray[i+1].token != T_DOT )
-; 697  :             /* v2.06: the default value for RECORD types is the mask value */
-; 698  :             if ( sym->typekind == TYPE_RECORD ) {
+; 659  :             DebugMsg1(("get_operand(%s): symbol.typekind=%u (STRUCT/UNION/TYPEDEF/RECORD)\n", sym->name, sym->typekind ));
+; 660  : 
+; 661  :             /* v2.08: if() removed. This was an old hack. */
+; 662  :             //if ( tokenarray[i-1].token != T_DOT && tokenarray[i+1].token != T_DOT )
+; 663  :             /* v2.06: the default value for RECORD types is the mask value */
+; 664  :             if ( sym->typekind == TYPE_RECORD ) {
 
 	cmp	BYTE PTR [rbx+66], 4
 	jne	SHORT $LN97@get_operan
 
-; 699  : #if AMD64_SUPPORT
-; 700  :                 opnd->llvalue = GetRecordMask( (struct dsym *)sym );
+; 665  : #if AMD64_SUPPORT
+; 666  :                 opnd->llvalue = GetRecordMask( (struct dsym *)sym );
 
 	mov	rcx, rbx
 	call	GetRecordMask
 	mov	QWORD PTR [rdi], rax
 
-; 863  :     }
-; 864  :     (*idx)++;
+; 829  :     }
+; 830  :     (*idx)++;
 
 	inc	DWORD PTR [r12]
 
-; 865  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
-; 866  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
-; 867  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
-; 868  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
-; 869  :                opnd->sym ? opnd->sym->name : "NULL",
-; 870  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
-; 871  :     return( NOT_ERROR );
+; 831  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
+; 832  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
+; 833  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
+; 834  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
+; 835  :                opnd->sym ? opnd->sym->name : "NULL",
+; 836  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
+; 837  :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@get_operan
 $LN97@get_operan:
 
-; 701  : #else
-; 702  :                 opnd->value = GetRecordMask( (struct dsym *)sym );
-; 703  : #endif
-; 704  :             } else if ( ( sym->mem_type & MT_SPECIAL_MASK ) == MT_ADDRESS ) { /* v2.09: added */
+; 667  : #else
+; 668  :                 opnd->value = GetRecordMask( (struct dsym *)sym );
+; 669  : #endif
+; 670  :             } else if ( ( sym->mem_type & MT_SPECIAL_MASK ) == MT_ADDRESS ) { /* v2.09: added */
 
 	mov	ecx, DWORD PTR [rbx+36]
 	mov	eax, ecx
@@ -11530,106 +11530,106 @@ $LN97@get_operan:
 	cmp	al, -128				; ffffffffffffff80H
 	jne	SHORT $LN99@get_operan
 
-; 705  :                 if ( sym->mem_type == MT_PROC ) {
+; 671  :                 if ( sym->mem_type == MT_PROC ) {
 
 	cmp	ecx, 128				; 00000080H
 	jne	SHORT $LN101@get_operan
 
-; 706  :                     opnd->value = sym->total_size;
+; 672  :                     opnd->value = sym->total_size;
 
 	mov	eax, DWORD PTR [rbx+56]
 	mov	DWORD PTR [rdi], eax
 
-; 707  :                     opnd->Ofssize = sym->Ofssize;
+; 673  :                     opnd->Ofssize = sym->Ofssize;
 
 	movzx	eax, BYTE PTR [rbx+44]
 	mov	BYTE PTR [rdi+69], al
 
-; 863  :     }
-; 864  :     (*idx)++;
+; 829  :     }
+; 830  :     (*idx)++;
 
 	inc	DWORD PTR [r12]
 
-; 865  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
-; 866  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
-; 867  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
-; 868  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
-; 869  :                opnd->sym ? opnd->sym->name : "NULL",
-; 870  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
-; 871  :     return( NOT_ERROR );
+; 831  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
+; 832  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
+; 833  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
+; 834  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
+; 835  :                opnd->sym ? opnd->sym->name : "NULL",
+; 836  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
+; 837  :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@get_operan
 $LN101@get_operan:
 
-; 708  :                 } else
-; 709  :                     opnd->value = GetTypeSize( sym->mem_type, sym->Ofssize );
+; 674  :                 } else
+; 675  :                     opnd->value = GetTypeSize( sym->mem_type, sym->Ofssize );
 
 	movzx	edx, BYTE PTR [rbx+44]
 	call	GetTypeSize
 	mov	DWORD PTR [rdi], eax
 
-; 863  :     }
-; 864  :     (*idx)++;
+; 829  :     }
+; 830  :     (*idx)++;
 
 	inc	DWORD PTR [r12]
 
-; 865  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
-; 866  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
-; 867  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
-; 868  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
-; 869  :                opnd->sym ? opnd->sym->name : "NULL",
-; 870  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
-; 871  :     return( NOT_ERROR );
+; 831  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
+; 832  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
+; 833  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
+; 834  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
+; 835  :                opnd->sym ? opnd->sym->name : "NULL",
+; 836  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
+; 837  :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@get_operan
 $LN99@get_operan:
 
-; 710  :             } else
-; 711  :                 opnd->value = sym->total_size;
+; 676  :             } else
+; 677  :                 opnd->value = sym->total_size;
 
 	mov	eax, DWORD PTR [rbx+56]
 	mov	DWORD PTR [rdi], eax
 
-; 863  :     }
-; 864  :     (*idx)++;
+; 829  :     }
+; 830  :     (*idx)++;
 
 	inc	DWORD PTR [r12]
 
-; 865  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
-; 866  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
-; 867  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
-; 868  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
-; 869  :                opnd->sym ? opnd->sym->name : "NULL",
-; 870  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
-; 871  :     return( NOT_ERROR );
+; 831  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
+; 832  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
+; 833  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
+; 834  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
+; 835  :                opnd->sym ? opnd->sym->name : "NULL",
+; 836  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
+; 837  :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@get_operan
 $LN103@get_operan:
 
-; 712  : 
-; 713  :             break;
-; 714  :         case SYM_STRUCT_FIELD:
-; 715  :             DebugMsg1(("get_operand(%s): structure field, ofs=%Xh\n", sym->name, sym->offset ));
-; 716  : 
-; 717  :             /* opnd->value might have been set by SearchNameInStruct() already! */
-; 718  :             opnd->value += sym->offset;
+; 678  : 
+; 679  :             break;
+; 680  :         case SYM_STRUCT_FIELD:
+; 681  :             DebugMsg1(("get_operand(%s): structure field, ofs=%Xh\n", sym->name, sym->offset ));
+; 682  : 
+; 683  :             /* opnd->value might have been set by SearchNameInStruct() already! */
+; 684  :             opnd->value += sym->offset;
 
 	mov	eax, DWORD PTR [rbx+16]
 	add	DWORD PTR [rdi], eax
 
-; 719  :             opnd->kind = EXPR_CONST;
+; 685  :             opnd->kind = EXPR_CONST;
 
 	mov	DWORD PTR [rdi+60], r14d
 
-; 720  :             opnd->mbr = sym;
+; 686  :             opnd->mbr = sym;
 
 	mov	QWORD PTR [rdi+88], rbx
 
-; 721  :             /* skip "alias" types (probably obsolete by now!) */
-; 722  :             for ( ; sym->type; sym = sym->type );
+; 687  :             /* skip "alias" types (probably obsolete by now!) */
+; 688  :             for ( ; sym->type; sym = sym->type );
 
 	mov	rax, QWORD PTR [rbx+80]
 	test	rax, rax
@@ -11641,17 +11641,17 @@ $LL14@get_operan:
 	jne	SHORT $LL14@get_operan
 $LN13@get_operan:
 
-; 723  :             opnd->mem_type = sym->mem_type;
+; 689  :             opnd->mem_type = sym->mem_type;
 
 	mov	eax, DWORD PTR [rbx+36]
 	mov	DWORD PTR [rdi+64], eax
 
-; 724  :             /*
-; 725  :              * check if the member field is a type (struct or union).
-; 726  :              * If yes, set the <type> member!
-; 727  :              * this cannot be done in PrepareOp()
-; 728  :              */
-; 729  :             opnd->type = ( sym->state == SYM_TYPE && sym->typekind != TYPE_TYPEDEF ) ? sym : NULL;
+; 690  :             /*
+; 691  :              * check if the member field is a type (struct or union).
+; 692  :              * If yes, set the <type> member!
+; 693  :              * this cannot be done in PrepareOp()
+; 694  :              */
+; 695  :             opnd->type = ( sym->state == SYM_TYPE && sym->typekind != TYPE_TYPEDEF ) ? sym : NULL;
 
 	cmp	DWORD PTR [rbx+32], 7
 	jne	SHORT $LN137@get_operan
@@ -11662,29 +11662,29 @@ $LN137@get_operan:
 $LN138@get_operan:
 	mov	QWORD PTR [rdi+96], rbx
 
-; 863  :     }
-; 864  :     (*idx)++;
+; 829  :     }
+; 830  :     (*idx)++;
 
 	inc	DWORD PTR [r12]
 
-; 865  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
-; 866  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
-; 867  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
-; 868  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
-; 869  :                opnd->sym ? opnd->sym->name : "NULL",
-; 870  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
-; 871  :     return( NOT_ERROR );
+; 831  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
+; 832  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
+; 833  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
+; 834  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
+; 835  :                opnd->sym ? opnd->sym->name : "NULL",
+; 836  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
+; 837  :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@get_operan
 $LN82@get_operan:
 
-; 655  :                         break;
-; 656  :                     }
-; 657  :                 }
-; 658  :             } else {
-; 659  :                 DebugMsg1(("get_operand(%s): symbol %s not defined, pass > 1, curr proc=>%s<, \n", tokenarray[i].string_ptr, tmp, CurrProc ? CurrProc->sym.name : "NULL" ));
-; 660  :                 if ( opnd->type && *opnd->type->name ) {
+; 621  :                         break;
+; 622  :                     }
+; 623  :                 }
+; 624  :             } else {
+; 625  :                 DebugMsg1(("get_operand(%s): symbol %s not defined, pass > 1, curr proc=>%s<, \n", tokenarray[i].string_ptr, tmp, CurrProc ? CurrProc->sym.name : "NULL" ));
+; 626  :                 if ( opnd->type && *opnd->type->name ) {
 
 	mov	rax, QWORD PTR [rdi+96]
 	test	rax, rax
@@ -11694,158 +11694,158 @@ $LN82@get_operan:
 	jne	$LN174@get_operan
 $LN92@get_operan:
 
-; 661  :                     fnEmitErr( MEMBER_NOT_DEFINED, opnd->type->name, tmp );
-; 662  :                 } else {
-; 663  :                     fnEmitErr( SYMBOL_NOT_DEFINED, *(tmp+1) == '&' ? "@@" : tmp );
+; 627  :                     fnEmitErr( MEMBER_NOT_DEFINED, opnd->type->name, tmp );
+; 628  :                 } else {
+; 629  :                     fnEmitErr( SYMBOL_NOT_DEFINED, *(tmp+1) == '&' ? "@@" : tmp );
 
 	cmp	BYTE PTR [rbp+1], 38			; 00000026H
-	lea	rax, OFFSET FLAT:$SG11158
+	lea	rax, OFFSET FLAT:$SG11156
 	cmove	rbp, rax
 $LN89@get_operan:
 	mov	rdx, rbp
 	mov	ecx, 102				; 00000066H
 
-; 664  :                 }
-; 665  :                 return( ERROR );
+; 630  :                 }
+; 631  :                 return( ERROR );
 
 	jmp	$LN172@get_operan
 $LN114@get_operan:
 
-; 798  :             }
-; 799  :             break;
-; 800  :         }
-; 801  :         break;
-; 802  :     case T_STYPE:
-; 803  :         DebugMsg1(("%u get_operand: T_STYPE (>%s<, value=%X)\n", evallvl, tokenarray[i].string_ptr, tokenarray[i].tokval));
-; 804  :         opnd->kind = EXPR_CONST;
+; 764  :             }
+; 765  :             break;
+; 766  :         }
+; 767  :         break;
+; 768  :     case T_STYPE:
+; 769  :         DebugMsg1(("%u get_operand: T_STYPE (>%s<, value=%X)\n", evallvl, tokenarray[i].string_ptr, tokenarray[i].tokval));
+; 770  :         opnd->kind = EXPR_CONST;
 
 	xor	r14d, r14d
 	mov	DWORD PTR [rdi+60], r14d
 
-; 805  :         /* for types, return the size as numeric constant */
-; 806  :         /* fixme: mem_type should be set only when used as first arg of PTR op! */
-; 807  :         opnd->mem_type = GetMemtypeSp( tokenarray[i].tokval );
+; 771  :         /* for types, return the size as numeric constant */
+; 772  :         /* fixme: mem_type should be set only when used as first arg of PTR op! */
+; 773  :         opnd->mem_type = GetMemtypeSp( tokenarray[i].tokval );
 
 	mov	eax, DWORD PTR [rsi+16]
 	lea	rcx, QWORD PTR [rax+rax*2]
 	movzx	ecx, BYTE PTR SpecialTable[r13+rcx*4+10]
 	mov	DWORD PTR [rdi+64], ecx
 
-; 808  :         opnd->Ofssize = GetSflagsSp( tokenarray[i].tokval );
+; 774  :         opnd->Ofssize = GetSflagsSp( tokenarray[i].tokval );
 
 	mov	eax, DWORD PTR [rsi+16]
 	lea	rdx, QWORD PTR [rax+rax*2]
 	movzx	eax, BYTE PTR SpecialTable[r13+rdx*4+4]
 
-; 809  :         opnd->value = GetTypeSize( opnd->mem_type, opnd->Ofssize );
+; 775  :         opnd->value = GetTypeSize( opnd->mem_type, opnd->Ofssize );
 
 	mov	edx, eax
 	mov	BYTE PTR [rdi+69], al
 	call	GetTypeSize
 
-; 810  :         opnd->is_type = TRUE;
+; 776  :         opnd->is_type = TRUE;
 
-	or	DWORD PTR [rdi+76], 8
+	or	DWORD PTR [rdi+72], 8
 	mov	DWORD PTR [rdi], eax
 
-; 811  :         opnd->type = NULL; /* v2.08: added */
+; 777  :         opnd->type = NULL; /* v2.08: added */
 
 	mov	QWORD PTR [rdi+96], r14
 
-; 863  :     }
-; 864  :     (*idx)++;
+; 829  :     }
+; 830  :     (*idx)++;
 
 	inc	DWORD PTR [r12]
 
-; 865  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
-; 866  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
-; 867  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
-; 868  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
-; 869  :                opnd->sym ? opnd->sym->name : "NULL",
-; 870  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
-; 871  :     return( NOT_ERROR );
+; 831  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
+; 832  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
+; 833  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
+; 834  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
+; 835  :                opnd->sym ? opnd->sym->name : "NULL",
+; 836  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
+; 837  :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@get_operan
 $LN115@get_operan:
 
-; 812  :         break;
-; 813  :     case T_RES_ID:
-; 814  :         DebugMsg1(("%u get_operand: T_RES_ID (>%s<, value=%X)\n", evallvl, tokenarray[i].string_ptr, tokenarray[i].tokval));
-; 815  :         if ( tokenarray[i].tokval == T_FLAT ) {
+; 778  :         break;
+; 779  :     case T_RES_ID:
+; 780  :         DebugMsg1(("%u get_operand: T_RES_ID (>%s<, value=%X)\n", evallvl, tokenarray[i].string_ptr, tokenarray[i].tokval));
+; 781  :         if ( tokenarray[i].tokval == T_FLAT ) {
 
 	cmp	DWORD PTR [rsi+16], 261			; 00000105H
 	jne	SHORT $LN116@get_operan
 
-; 816  :             /* v2.09: query NOUNDEF flag */
-; 817  :             //if ( error_msg ) { /* don't define FLAT group in EQU expression! */
-; 818  :             if ( ( flags & EXPF_NOUNDEF ) == 0 ) {
+; 782  :             /* v2.09: query NOUNDEF flag */
+; 783  :             //if ( error_msg ) { /* don't define FLAT group in EQU expression! */
+; 784  :             if ( ( flags & EXPF_NOUNDEF ) == 0 ) {
 
 	test	r15b, 2
 	jne	SHORT $LN118@get_operan
 
-; 819  :                 /* v2.08 cpu check added */
-; 820  :                 if( ( ModuleInfo.curr_cpu & P_CPU_MASK ) < P_386 ) {
+; 785  :                 /* v2.08 cpu check added */
+; 786  :                 if( ( ModuleInfo.curr_cpu & P_CPU_MASK ) < P_386 ) {
 
 	mov	eax, DWORD PTR ModuleInfo+392
 	and	eax, 240				; 000000f0H
 	cmp	eax, 48					; 00000030H
 	jge	SHORT $LN119@get_operan
 
-; 821  :                     fnEmitErr( INSTRUCTION_OR_REGISTER_NOT_ACCEPTED_IN_CURRENT_CPU_MODE );
+; 787  :                     fnEmitErr( INSTRUCTION_OR_REGISTER_NOT_ACCEPTED_IN_CURRENT_CPU_MODE );
 
 	mov	ecx, 30
 	call	QWORD PTR fnEmitErr
 
-; 822  :                     return( ERROR );
+; 788  :                     return( ERROR );
 
 	jmp	$LN131@get_operan
 $LN119@get_operan:
 
-; 823  :                 }
-; 824  :                 DefineFlatGroup();
+; 789  :                 }
+; 790  :                 DefineFlatGroup();
 
 	call	DefineFlatGroup
 $LN118@get_operan:
 
-; 825  :             }
-; 826  :             if ( !( opnd->sym = &ModuleInfo.flat_grp->sym ) )
+; 791  :             }
+; 792  :             if ( !( opnd->sym = &ModuleInfo.flat_grp->sym ) )
 
 	mov	rax, QWORD PTR ModuleInfo+440
 	mov	QWORD PTR [rdi+80], rax
 	test	rax, rax
 	je	$LN131@get_operan
 
-; 827  :                 return( ERROR );
-; 828  : 
-; 829  :             opnd->label_tok = &tokenarray[i];
+; 793  :                 return( ERROR );
+; 794  : 
+; 795  :             opnd->label_tok = &tokenarray[i];
 
 	mov	QWORD PTR [rdi+40], rsi
 
-; 830  :             opnd->kind = EXPR_ADDR;
+; 796  :             opnd->kind = EXPR_ADDR;
 
 	mov	DWORD PTR [rdi+60], 1
 
-; 863  :     }
-; 864  :     (*idx)++;
+; 829  :     }
+; 830  :     (*idx)++;
 
 	inc	DWORD PTR [r12]
 
-; 865  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
-; 866  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
-; 867  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
-; 868  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
-; 869  :                opnd->sym ? opnd->sym->name : "NULL",
-; 870  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
-; 871  :     return( NOT_ERROR );
+; 831  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
+; 832  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
+; 833  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
+; 834  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
+; 835  :                opnd->sym ? opnd->sym->name : "NULL",
+; 836  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
+; 837  :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@get_operan
 $LN116@get_operan:
 
-; 831  : 
-; 832  :         } else {
-; 833  :             return( fnEmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
+; 797  : 
+; 798  :         } else {
+; 799  :             return( fnEmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	mov	rdx, QWORD PTR [rsi+8]
 	mov	ecx, 209				; 000000d1H
@@ -11853,48 +11853,48 @@ $LN116@get_operan:
 	jmp	SHORT $LN1@get_operan
 $LN121@get_operan:
 
-; 834  :         }
-; 835  :         break;
-; 836  :     case T_FLOAT: /* v2.05 */
-; 837  :         DebugMsg1(("%u get_operand: T_FLOAT (>%s<)\n", evallvl, tokenarray[i].string_ptr ));
-; 838  :         opnd->kind = EXPR_FLOAT;
+; 800  :         }
+; 801  :         break;
+; 802  :     case T_FLOAT: /* v2.05 */
+; 803  :         DebugMsg1(("%u get_operand: T_FLOAT (>%s<)\n", evallvl, tokenarray[i].string_ptr ));
+; 804  :         opnd->kind = EXPR_FLOAT;
 
 	mov	DWORD PTR [rdi+60], 3
 
-; 839  :         opnd->float_tok = &tokenarray[i];
+; 805  :         opnd->float_tok = &tokenarray[i];
 
 	mov	QWORD PTR [rdi+16], rsi
 
-; 863  :     }
-; 864  :     (*idx)++;
+; 829  :     }
+; 830  :     (*idx)++;
 
 	inc	DWORD PTR [r12]
 
-; 865  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
-; 866  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
-; 867  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
-; 868  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
-; 869  :                opnd->sym ? opnd->sym->name : "NULL",
-; 870  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
-; 871  :     return( NOT_ERROR );
+; 831  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
+; 832  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
+; 833  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
+; 834  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
+; 835  :                opnd->sym ? opnd->sym->name : "NULL",
+; 836  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
+; 837  :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	SHORT $LN1@get_operan
 $LN122@get_operan:
 
-; 840  :         //opnd->ftype = ( tokenarray[i].floattype != 0 );
-; 841  :         break;
-; 842  :     //case T_CL_BRACKET:
-; 843  :     //case T_CL_SQ_BRACKET:
-; 844  :     default:
-; 845  :         DebugMsg1(("%u get_operand: default (token=%u, string=%s)\n", evallvl, tokenarray[i].token, tokenarray[i].string_ptr));
-; 846  :         if ( opnd->is_opattr ) {    /* for OPATTR, allow any operand */
+; 806  :         //opnd->ftype = ( tokenarray[i].floattype != 0 );
+; 807  :         break;
+; 808  :     //case T_CL_BRACKET:
+; 809  :     //case T_CL_SQ_BRACKET:
+; 810  :     default:
+; 811  :         DebugMsg1(("%u get_operand: default (token=%u, string=%s)\n", evallvl, tokenarray[i].token, tokenarray[i].string_ptr));
+; 812  :         if ( opnd->is_opattr ) {    /* for OPATTR, allow any operand */
 
-	test	BYTE PTR [rdi+76], 16
+	test	BYTE PTR [rdi+72], 16
 	je	SHORT $LN123@get_operan
 
-; 847  :             if ( tokenarray[i].token == T_FINAL ||
-; 848  :                 tokenarray[i].token == T_CL_BRACKET ||
+; 813  :             if ( tokenarray[i].token == T_FINAL ||
+; 814  :                 tokenarray[i].token == T_CL_BRACKET ||
 
 	test	cl, cl
 	je	SHORT $LN125@get_operan
@@ -11904,67 +11904,67 @@ $LN122@get_operan:
 	je	SHORT $LN125@get_operan
 $LN124@get_operan:
 
-; 863  :     }
-; 864  :     (*idx)++;
+; 829  :     }
+; 830  :     (*idx)++;
 
 	inc	DWORD PTR [r12]
 $LN125@get_operan:
 
-; 865  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
-; 866  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
-; 867  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
-; 868  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
-; 869  :                opnd->sym ? opnd->sym->name : "NULL",
-; 870  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
-; 871  :     return( NOT_ERROR );
+; 831  :     DebugMsg1(("%u get_operand exit, ok, kind=%d value=%" I64_SPEC "X hvalue=%" I64_SPEC "X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s mbr=%s\n",
+; 832  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
+; 833  :                opnd->quoted_string ? opnd->quoted_string->string_ptr : "NULL",
+; 834  :                opnd->is_type, opnd->type ? opnd->type->name : "NULL",
+; 835  :                opnd->sym ? opnd->sym->name : "NULL",
+; 836  :                opnd->mbr ? opnd->mbr->name : "NULL" ));
+; 837  :     return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	SHORT $LN1@get_operan
 $LN123@get_operan:
 
-; 849  :                 tokenarray[i].token == T_CL_SQ_BRACKET ) /* don't go beyond T_FINAL, ) or ] ! */
-; 850  :                 return( NOT_ERROR );
-; 851  :             break;
-; 852  :         }
-; 853  :         if ( tokenarray[i].token == T_BAD_NUM )
+; 815  :                 tokenarray[i].token == T_CL_SQ_BRACKET ) /* don't go beyond T_FINAL, ) or ] ! */
+; 816  :                 return( NOT_ERROR );
+; 817  :             break;
+; 818  :         }
+; 819  :         if ( tokenarray[i].token == T_BAD_NUM )
 
 	cmp	cl, 12
 	jne	SHORT $LN126@get_operan
 
-; 854  :             /* Masm complains even if in EQU-mode */
-; 855  :             fnEmitErr( NONDIGIT_IN_NUMBER, tokenarray[i].string_ptr );
+; 820  :             /* Masm complains even if in EQU-mode */
+; 821  :             fnEmitErr( NONDIGIT_IN_NUMBER, tokenarray[i].string_ptr );
 
 	mov	rdx, QWORD PTR [rsi+8]
 	mov	ecx, 217				; 000000d9H
 	jmp	SHORT $LN172@get_operan
 $LN126@get_operan:
 
-; 856  :         else if ( tokenarray[i].token == T_COLON )
+; 822  :         else if ( tokenarray[i].token == T_COLON )
 
 	cmp	cl, 58					; 0000003aH
 	jne	SHORT $LN128@get_operan
 
-; 857  :             fnEmitErr( SYNTAX_ERROR_UNEXPECTED_COLON );
+; 823  :             fnEmitErr( SYNTAX_ERROR_UNEXPECTED_COLON );
 
 	mov	ecx, 47					; 0000002fH
 	call	QWORD PTR fnEmitErr
 	jmp	SHORT $LN131@get_operan
 $LN128@get_operan:
 
-; 858  :         else if ( isalpha( *tokenarray[i].string_ptr ) )
+; 824  :         else if ( isalpha( *tokenarray[i].string_ptr ) )
 
 	mov	rax, QWORD PTR [rsi+8]
 	movsx	ecx, BYTE PTR [rax]
 	call	isalpha
 
-; 859  :             fnEmitErr( EXPRESSION_EXPECTED, tokenarray[i].tokpos ); /* better error msg */
+; 825  :             fnEmitErr( EXPRESSION_EXPECTED, tokenarray[i].tokpos ); /* better error msg */
 
 	mov	ecx, 64					; 00000040H
 	test	eax, eax
 	jne	SHORT $LN169@get_operan
 
-; 860  :         else
-; 861  :             fnEmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos );
+; 826  :         else
+; 827  :             fnEmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos );
 
 	mov	ecx, 209				; 000000d1H
 $LN169@get_operan:
@@ -11973,12 +11973,12 @@ $LN172@get_operan:
 	call	QWORD PTR fnEmitErr
 $LN131@get_operan:
 
-; 862  :         return( ERROR );
+; 828  :         return( ERROR );
 
 	or	eax, -1
 $LN1@get_operan:
 
-; 872  : }
+; 838  : }
 
 	mov	rbx, QWORD PTR [rsp+96]
 	mov	rbp, QWORD PTR [rsp+104]
@@ -12013,23 +12013,23 @@ base$ = 24
 size$ = 32
 myatoi128 PROC
 
-; 343  : {
+; 309  : {
 
 $LN37:
 	mov	QWORD PTR [rsp+8], rbx
 
-; 344  :     uint_32             val;
-; 345  :     unsigned            len;
-; 346  :     const char          *end = src + size;
+; 310  :     uint_32             val;
+; 311  :     unsigned            len;
+; 312  :     const char          *end = src + size;
 
 	movsxd	r9, r9d
 	mov	r11d, r8d
 	add	r9, rcx
 	mov	rbx, rdx
 
-; 347  :     uint_16             *px;
-; 348  : 
-; 349  :     dst[0] = 0;
+; 313  :     uint_16             *px;
+; 314  : 
+; 315  :     dst[0] = 0;
 
 	xor	eax, eax
 	mov	r10, rcx
@@ -12038,9 +12038,9 @@ $LN37:
 	npad	3
 $LL4@myatoi128:
 
-; 350  :     dst[1] = 0;
-; 351  :     do {
-; 352  :         val = ( *src <= '9' ? *src - '0' : ( *src | 0x20 ) - 'a' + 10 );
+; 316  :     dst[1] = 0;
+; 317  :     do {
+; 318  :         val = ( *src <= '9' ? *src - '0' : ( *src | 0x20 ) - 'a' + 10 );
 
 	movzx	eax, BYTE PTR [r10]
 	cmp	al, 57					; 00000039H
@@ -12053,46 +12053,46 @@ $LN9@myatoi128:
 	sub	eax, 87					; 00000057H
 $LN10@myatoi128:
 
-; 353  :         px = (uint_16 *)dst;
+; 319  :         px = (uint_16 *)dst;
 
 	mov	rdx, rbx
 
-; 354  :         for ( len = ( 2 * sizeof( uint_64 ) ) >> 1; len; len-- ) {
+; 320  :         for ( len = ( 2 * sizeof( uint_64 ) ) >> 1; len; len-- ) {
 
 	mov	r8d, 8
 	npad	1
 $LL7@myatoi128:
 
-; 355  :             val += (uint_32)*px * base;
+; 321  :             val += (uint_32)*px * base;
 
 	movzx	ecx, WORD PTR [rdx]
 
-; 356  :             *(px++) = val;
+; 322  :             *(px++) = val;
 
 	lea	rdx, QWORD PTR [rdx+2]
 	imul	ecx, r11d
 	add	eax, ecx
 	mov	WORD PTR [rdx-2], ax
 
-; 357  :             val >>= 16;
+; 323  :             val >>= 16;
 
 	shr	eax, 16
 	add	r8d, -1					; ffffffffH
 	jne	SHORT $LL7@myatoi128
 
-; 358  :         };
-; 359  :         //myassert( val == 0 ); /* if number doesn't fit in 128 bits */
-; 360  :         src++;
+; 324  :         };
+; 325  :         //myassert( val == 0 ); /* if number doesn't fit in 128 bits */
+; 326  :         src++;
 
 	inc	r10
 
-; 361  :     } while( src < end );
+; 327  :     } while( src < end );
 
 	cmp	r10, r9
 	jb	SHORT $LL4@myatoi128
 
-; 362  :     return;
-; 363  : }
+; 328  :     return;
+; 329  : }
 
 	mov	rbx, QWORD PTR [rsp+8]
 	ret	0
@@ -12105,15 +12105,15 @@ _TEXT	SEGMENT
 record$ = 8
 GetRecordMask PROC					; COMDAT
 
-; 318  : #if AMD64_SUPPORT
-; 319  :     uint_64 mask = 0;
-; 320  : #else
-; 321  :     uint_32 mask = 0;
-; 322  : #endif
-; 323  :     int i;
-; 324  :     struct sfield *fl;
-; 325  : 
-; 326  :     for ( fl = record->e.structinfo->head; fl; fl = fl->next ) {
+; 284  : #if AMD64_SUPPORT
+; 285  :     uint_64 mask = 0;
+; 286  : #else
+; 287  :     uint_32 mask = 0;
+; 288  : #endif
+; 289  :     int i;
+; 290  :     struct sfield *fl;
+; 291  : 
+; 292  :     for ( fl = record->e.structinfo->head; fl; fl = fl->next ) {
 
 	mov	rax, QWORD PTR [rcx+96]
 	xor	r8d, r8d
@@ -12123,8 +12123,8 @@ GetRecordMask PROC					; COMDAT
 	npad	1
 $LL4@GetRecordM:
 
-; 327  :         struct asym *sym = &fl->sym;
-; 328  :         for ( i = sym->offset ;i < sym->offset + sym->total_size; i++ )
+; 293  :         struct asym *sym = &fl->sym;
+; 294  :         for ( i = sym->offset ;i < sym->offset + sym->total_size; i++ )
 
 	mov	ecx, DWORD PTR [r9+16]
 	mov	r10d, DWORD PTR [r9+56]
@@ -12138,7 +12138,7 @@ $LL4@GetRecordM:
 	npad	3
 $LL7@GetRecordM:
 
-; 329  :             mask |= 1 << i;
+; 295  :             mask |= 1 << i;
 
 	movsxd	rcx, edx
 	or	r8, rcx
@@ -12147,27 +12147,27 @@ $LL7@GetRecordM:
 	jne	SHORT $LL7@GetRecordM
 $LN2@GetRecordM:
 
-; 318  : #if AMD64_SUPPORT
-; 319  :     uint_64 mask = 0;
-; 320  : #else
-; 321  :     uint_32 mask = 0;
-; 322  : #endif
-; 323  :     int i;
-; 324  :     struct sfield *fl;
-; 325  : 
-; 326  :     for ( fl = record->e.structinfo->head; fl; fl = fl->next ) {
+; 284  : #if AMD64_SUPPORT
+; 285  :     uint_64 mask = 0;
+; 286  : #else
+; 287  :     uint_32 mask = 0;
+; 288  : #endif
+; 289  :     int i;
+; 290  :     struct sfield *fl;
+; 291  : 
+; 292  :     for ( fl = record->e.structinfo->head; fl; fl = fl->next ) {
 
 	mov	r9, QWORD PTR [r9+96]
 	test	r9, r9
 	jne	SHORT $LL4@GetRecordM
 $LN17@GetRecordM:
 
-; 330  :     }
-; 331  :     return( mask );
+; 296  :     }
+; 297  :     return( mask );
 
 	mov	rax, r8
 
-; 332  : }
+; 298  : }
 
 	ret	0
 GetRecordMask ENDP
@@ -12180,61 +12180,61 @@ mem_type$ = 8
 Ofssize$ = 16
 GetTypeSize PROC					; COMDAT
 
-; 299  :     if ( (mem_type & MT_SPECIAL) == 0 )
+; 265  :     if ( (mem_type & MT_SPECIAL) == 0 )
 
 	test	cl, cl
 	js	SHORT $LN4@GetTypeSiz
 
-; 300  :         return( ( mem_type & MT_SIZE_MASK ) + 1 );
+; 266  :         return( ( mem_type & MT_SIZE_MASK ) + 1 );
 
 	and	ecx, 31
 	lea	eax, DWORD PTR [rcx+1]
 
-; 309  : }
+; 275  : }
 
 	ret	0
 $LN4@GetTypeSiz:
 
-; 301  :     if ( Ofssize == USE_EMPTY )
+; 267  :     if ( Ofssize == USE_EMPTY )
 
 	cmp	edx, 254				; 000000feH
 	jne	SHORT $LN5@GetTypeSiz
 
-; 302  :         Ofssize = ModuleInfo.Ofssize;
+; 268  :         Ofssize = ModuleInfo.Ofssize;
 
 	movzx	edx, BYTE PTR ModuleInfo+404
 $LN5@GetTypeSiz:
 
-; 303  :     switch ( mem_type ) {
+; 269  :     switch ( mem_type ) {
 
 	sub	ecx, 129				; 00000081H
 	je	SHORT $LN6@GetTypeSiz
 	cmp	ecx, 1
 	je	SHORT $LN7@GetTypeSiz
 
-; 306  :     }
-; 307  :     /* shouldn't happen */
-; 308  :     return( 0 );
+; 272  :     }
+; 273  :     /* shouldn't happen */
+; 274  :     return( 0 );
 
 	xor	eax, eax
 
-; 309  : }
+; 275  : }
 
 	ret	0
 $LN7@GetTypeSiz:
 
-; 305  :     case MT_FAR:  return ( ( Ofssize == USE16 ) ? LS_FAR16 : 0xFF00 | ( ( 2 << Ofssize ) + 2 ) );
+; 271  :     case MT_FAR:  return ( ( Ofssize == USE16 ) ? LS_FAR16 : 0xFF00 | ( ( 2 << Ofssize ) + 2 ) );
 
 	test	edx, edx
 	jne	SHORT $LN9@GetTypeSiz
 	mov	eax, 65285				; 0000ff05H
 
-; 309  : }
+; 275  : }
 
 	ret	0
 $LN9@GetTypeSiz:
 
-; 305  :     case MT_FAR:  return ( ( Ofssize == USE16 ) ? LS_FAR16 : 0xFF00 | ( ( 2 << Ofssize ) + 2 ) );
+; 271  :     case MT_FAR:  return ( ( Ofssize == USE16 ) ? LS_FAR16 : 0xFF00 | ( ( 2 << Ofssize ) + 2 ) );
 
 	mov	ecx, edx
 	mov	eax, 2
@@ -12242,19 +12242,19 @@ $LN9@GetTypeSiz:
 	add	eax, 2
 	or	eax, 65280				; 0000ff00H
 
-; 309  : }
+; 275  : }
 
 	ret	0
 $LN6@GetTypeSiz:
 
-; 304  :     case MT_NEAR: return ( 0xFF00 | ( 2 << Ofssize ) ) ;
+; 270  :     case MT_NEAR: return ( 0xFF00 | ( 2 << Ofssize ) ) ;
 
 	mov	ecx, edx
 	mov	eax, 2
 	shl	eax, cl
 	or	eax, 65280				; 0000ff00H
 
-; 309  : }
+; 275  : }
 
 	ret	0
 GetTypeSize ENDP
@@ -12266,69 +12266,69 @@ _TEXT	SEGMENT
 item$ = 48
 get_precedence PROC					; COMDAT
 
-; 178  : {
+; 144  : {
 
 	sub	rsp, 40					; 00000028H
 
-; 179  :     /* The following table is taken verbatim from MASM 6.1 Programmer's Guide,
-; 180  :      * page 14, Table 1.3.
-; 181  : 
-; 182  :      * 1            (), []
-; 183  :      * 2            LENGTH, SIZE, WIDTH, MASK, LENGTHOF, SIZEOF
-; 184  :      * 3            . (structure-field-name operator)
-; 185  :      * 4            : (segment override operator), PTR
-; 186  :      * 5            LROFFSET, OFFSET, SEG, THIS, TYPE
-; 187  :      * 6            HIGH, HIGHWORD, LOW, LOWWORD
-; 188  :      * 7            +, - (unary)
-; 189  :      * 8            *, /, MOD, SHL, SHR
-; 190  :      * 9            +, - (binary)
-; 191  :      * 10           EQ, NE, LT, LE, GT, GE
-; 192  :      * 11           NOT
-; 193  :      * 12           AND
-; 194  :      * 13           OR, XOR
-; 195  :      * 14           OPATTR, SHORT, .TYPE
-; 196  : 
-; 197  :      * The following table appears in QuickHelp online documentation for
-; 198  :      * both MASM 6.0 and 6.1. It's slightly different!
-; 199  : 
-; 200  :      * 1            LENGTH, SIZE, WIDTH, MASK
-; 201  :      * 2            (), []
-; 202  :      * 3            . (structure-field-name operator)
-; 203  :      * 4            : (segment override operator), PTR
-; 204  :      * 5            THIS, OFFSET, SEG, TYPE
-; 205  :      * 6            HIGH, LOW
-; 206  :      * 7            +, - (unary)
-; 207  :      * 8            *, /, MOD, SHL, SHR
-; 208  :      * 9            +, - (binary)
-; 209  :      * 10           EQ, NE, LT, LE, GT, GE
-; 210  :      * 11           NOT
-; 211  :      * 12           AND
-; 212  :      * 13           OR, XOR
-; 213  :      * 14           SHORT, OPATTR, .TYPE, ADDR
-; 214  : 
-; 215  :      * japheth: the first table is the prefered one. Reasons:
-; 216  :      * - () and [] must be first.
-; 217  :      * - it contains operators SIZEOF, LENGTHOF, HIGHWORD, LOWWORD, LROFFSET
-; 218  :      * - ADDR is no operator for expressions. It's exclusively used inside
-; 219  :      *   INVOKE directive.
-; 220  : 
-; 221  :      * However, what's wrong in both tables is the precedence of
-; 222  :      * the dot operator: Actually for both HJWasm and Wasm the dot precedence
-; 223  :      * is 2 and LENGTH, SIZE, ... have precedence 3 instead.
-; 224  : 
-; 225  :      * Precedence of operator TYPE was 5 in original Wasm source. It has
-; 226  :      * been changed to 4, as described in the Masm docs. This allows syntax
-; 227  :      * "TYPE DWORD ptr xxx"
-; 228  : 
-; 229  :      * v2.02: another case which is problematic:
-; 230  :      *     mov al,BYTE PTR CS:[]
-; 231  :      * Since PTR and ':' have the very same priority, the evaluator will
-; 232  :      * first calculate 'BYTE PTR CS'. This is invalid, but didn't matter
-; 233  :      * prior to v2.02 because register coercion was never checked for
-; 234  :      * plausibility. Solution: priority of ':' is changed from 4 to 3.
-; 235  :      */
-; 236  : 
-; 237  :     switch( item->token ) {
+; 145  :     /* The following table is taken verbatim from MASM 6.1 Programmer's Guide,
+; 146  :      * page 14, Table 1.3.
+; 147  : 
+; 148  :      * 1            (), []
+; 149  :      * 2            LENGTH, SIZE, WIDTH, MASK, LENGTHOF, SIZEOF
+; 150  :      * 3            . (structure-field-name operator)
+; 151  :      * 4            : (segment override operator), PTR
+; 152  :      * 5            LROFFSET, OFFSET, SEG, THIS, TYPE
+; 153  :      * 6            HIGH, HIGHWORD, LOW, LOWWORD
+; 154  :      * 7            +, - (unary)
+; 155  :      * 8            *, /, MOD, SHL, SHR
+; 156  :      * 9            +, - (binary)
+; 157  :      * 10           EQ, NE, LT, LE, GT, GE
+; 158  :      * 11           NOT
+; 159  :      * 12           AND
+; 160  :      * 13           OR, XOR
+; 161  :      * 14           OPATTR, SHORT, .TYPE
+; 162  : 
+; 163  :      * The following table appears in QuickHelp online documentation for
+; 164  :      * both MASM 6.0 and 6.1. It's slightly different!
+; 165  : 
+; 166  :      * 1            LENGTH, SIZE, WIDTH, MASK
+; 167  :      * 2            (), []
+; 168  :      * 3            . (structure-field-name operator)
+; 169  :      * 4            : (segment override operator), PTR
+; 170  :      * 5            THIS, OFFSET, SEG, TYPE
+; 171  :      * 6            HIGH, LOW
+; 172  :      * 7            +, - (unary)
+; 173  :      * 8            *, /, MOD, SHL, SHR
+; 174  :      * 9            +, - (binary)
+; 175  :      * 10           EQ, NE, LT, LE, GT, GE
+; 176  :      * 11           NOT
+; 177  :      * 12           AND
+; 178  :      * 13           OR, XOR
+; 179  :      * 14           SHORT, OPATTR, .TYPE, ADDR
+; 180  : 
+; 181  :      * japheth: the first table is the prefered one. Reasons:
+; 182  :      * - () and [] must be first.
+; 183  :      * - it contains operators SIZEOF, LENGTHOF, HIGHWORD, LOWWORD, LROFFSET
+; 184  :      * - ADDR is no operator for expressions. It's exclusively used inside
+; 185  :      *   INVOKE directive.
+; 186  : 
+; 187  :      * However, what's wrong in both tables is the precedence of
+; 188  :      * the dot operator: Actually for both HJWasm and Wasm the dot precedence
+; 189  :      * is 2 and LENGTH, SIZE, ... have precedence 3 instead.
+; 190  : 
+; 191  :      * Precedence of operator TYPE was 5 in original Wasm source. It has
+; 192  :      * been changed to 4, as described in the Masm docs. This allows syntax
+; 193  :      * "TYPE DWORD ptr xxx"
+; 194  : 
+; 195  :      * v2.02: another case which is problematic:
+; 196  :      *     mov al,BYTE PTR CS:[]
+; 197  :      * Since PTR and ':' have the very same priority, the evaluator will
+; 198  :      * first calculate 'BYTE PTR CS'. This is invalid, but didn't matter
+; 199  :      * prior to v2.02 because register coercion was never checked for
+; 200  :      * plausibility. Solution: priority of ':' is changed from 4 to 3.
+; 201  :      */
+; 202  : 
+; 203  :     switch( item->token ) {
 
 	movzx	eax, BYTE PTR [rcx]
 	add	eax, -4
@@ -12342,103 +12342,103 @@ get_precedence PROC					; COMDAT
 	jmp	rdx
 $LN4@get_preced:
 
-; 238  :     case T_UNARY_OPERATOR:
-; 239  :     case T_BINARY_OPERATOR:
-; 240  :         return( item->precedence );
+; 204  :     case T_UNARY_OPERATOR:
+; 205  :     case T_BINARY_OPERATOR:
+; 206  :         return( item->precedence );
 
 	movzx	eax, BYTE PTR [rcx+1]
 
-; 266  : }
+; 232  : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
 $LN5@get_preced:
 
-; 241  :     case T_OP_BRACKET:
-; 242  :     case T_OP_SQ_BRACKET:
-; 243  :         /* v2.08: with -Zm, the priority of [] and (), if
-; 244  :          * used as binary operator, is 9 (like binary +/-).
-; 245  :          * test cases: mov ax,+5[bx]
-; 246  :          *             mov ax,-5[bx]
-; 247  :          */
-; 248  :         //return( 1 );
-; 249  :         return( ModuleInfo.m510 ? 9 : 1 );
+; 207  :     case T_OP_BRACKET:
+; 208  :     case T_OP_SQ_BRACKET:
+; 209  :         /* v2.08: with -Zm, the priority of [] and (), if
+; 210  :          * used as binary operator, is 9 (like binary +/-).
+; 211  :          * test cases: mov ax,+5[bx]
+; 212  :          *             mov ax,-5[bx]
+; 213  :          */
+; 214  :         //return( 1 );
+; 215  :         return( ModuleInfo.m510 ? 9 : 1 );
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	and	eax, 64					; 00000040H
 	or	eax, 8
 	shr	eax, 3
 
-; 266  : }
+; 232  : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
 $LN6@get_preced:
 
-; 250  :     case T_DOT:
-; 251  :         return( 2 );
+; 216  :     case T_DOT:
+; 217  :         return( 2 );
 
 	mov	eax, 2
 
-; 266  : }
+; 232  : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
 $LN7@get_preced:
 
-; 252  :     case T_COLON:
-; 253  :         //return( 4 );
-; 254  :         return( 3 ); /* changed for v2.02 */
+; 218  :     case T_COLON:
+; 219  :         //return( 4 );
+; 220  :         return( 3 ); /* changed for v2.02 */
 
 	mov	eax, 3
 
-; 266  : }
+; 232  : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
 $LN8@get_preced:
 
-; 255  :     case '*':
-; 256  :     case '/':
-; 257  :         return( 8 );
+; 221  :     case '*':
+; 222  :     case '/':
+; 223  :         return( 8 );
 
 	mov	eax, 8
 
-; 266  : }
+; 232  : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
 $LN9@get_preced:
 
-; 258  :     case '+':
-; 259  :     case '-':
-; 260  :         return( item->specval ? 9 : 7 );
+; 224  :     case '+':
+; 225  :     case '-':
+; 226  :         return( item->specval ? 9 : 7 );
 
 	cmp	BYTE PTR [rcx+1], 0
 	mov	eax, 7
 	mov	edx, 9
 	cmovne	eax, edx
 
-; 266  : }
+; 232  : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
 $LN2@get_preced:
 
-; 261  :     }
-; 262  :     /* shouldn't happen! */
-; 263  :     DebugMsg(("get_precedence: unexpected operator=%s\n", item->string_ptr));
-; 264  :     fnEmitErr( SYNTAX_ERROR_EX, item->string_ptr );
+; 227  :     }
+; 228  :     /* shouldn't happen! */
+; 229  :     DebugMsg(("get_precedence: unexpected operator=%s\n", item->string_ptr));
+; 230  :     fnEmitErr( SYNTAX_ERROR_EX, item->string_ptr );
 
 	mov	rdx, QWORD PTR [rcx+8]
 	mov	ecx, 209				; 000000d1H
 	call	QWORD PTR fnEmitErr
 
-; 265  :     return( ERROR );
+; 231  :     return( ERROR );
 
 	or	eax, -1
 
-; 266  : }
+; 232  : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
@@ -12550,10 +12550,10 @@ opnd1$ = 8
 opnd2$ = 16
 TokenAssign PROC					; COMDAT
 
-; 147  : #if 1
-; 148  :     /* note that offsetof() is used. This means, don't change position
-; 149  :      of field <type> in expr! */
-; 150  :     memcpy( opnd1, opnd2, offsetof( struct expr, type ) );
+; 113  : #if 1
+; 114  :     /* note that offsetof() is used. This means, don't change position
+; 115  :      of field <type> in expr! */
+; 116  :     memcpy( opnd1, opnd2, offsetof( struct expr, type ) );
 
 	movups	xmm0, XMMWORD PTR [rdx]
 	movups	XMMWORD PTR [rcx], xmm0
@@ -12568,25 +12568,25 @@ TokenAssign PROC					; COMDAT
 	movups	xmm1, XMMWORD PTR [rdx+80]
 	movups	XMMWORD PTR [rcx+80], xmm1
 
-; 151  : #else
-; 152  :     opnd1->llvalue  = opnd2->llvalue;
-; 153  :     opnd1->hlvalue  = opnd2->hlvalue;
-; 154  :     opnd1->quoted_string   = opnd2->quoted_string; /* probably useless */
-; 155  :     opnd1->base_reg = opnd2->base_reg;
-; 156  :     opnd1->idx_reg  = opnd2->idx_reg;
-; 157  :     opnd1->label_tok = opnd2->label_tok;
-; 158  :     opnd1->override = opnd2->override;
-; 159  :     opnd1->instr    = opnd2->instr;
-; 160  :     opnd1->kind     = opnd2->kind;
-; 161  :     opnd1->mem_type = opnd2->mem_type;
-; 162  :     opnd1->scale    = opnd2->scale;
-; 163  :     opnd1->Ofssize  = opnd2->Ofssize;
-; 164  :     opnd1->flags1   = opnd2->flags1;
-; 165  :     opnd1->sym      = opnd2->sym;
-; 166  :     opnd1->mbr      = opnd2->mbr;
-; 167  : //  opnd1->type     = opnd2->type;
-; 168  : #endif
-; 169  : }
+; 117  : #else
+; 118  :     opnd1->llvalue  = opnd2->llvalue;
+; 119  :     opnd1->hlvalue  = opnd2->hlvalue;
+; 120  :     opnd1->quoted_string   = opnd2->quoted_string; /* probably useless */
+; 121  :     opnd1->base_reg = opnd2->base_reg;
+; 122  :     opnd1->idx_reg  = opnd2->idx_reg;
+; 123  :     opnd1->label_tok = opnd2->label_tok;
+; 124  :     opnd1->override = opnd2->override;
+; 125  :     opnd1->instr    = opnd2->instr;
+; 126  :     opnd1->kind     = opnd2->kind;
+; 127  :     opnd1->mem_type = opnd2->mem_type;
+; 128  :     opnd1->scale    = opnd2->scale;
+; 129  :     opnd1->Ofssize  = opnd2->Ofssize;
+; 130  :     opnd1->flags1   = opnd2->flags1;
+; 131  :     opnd1->sym      = opnd2->sym;
+; 132  :     opnd1->mbr      = opnd2->mbr;
+; 133  : //  opnd1->type     = opnd2->type;
+; 134  : #endif
+; 135  : }
 
 	ret	0
 TokenAssign ENDP
@@ -12598,18 +12598,18 @@ _TEXT	SEGMENT
 opnd$ = 8
 init_expr PROC						; COMDAT
 
-; 125  :     opnd->value    = 0;
+; 91   :     opnd->value    = 0;
 
 	xor	eax, eax
 
-; 126  :     opnd->hvalue   = 0;
-; 127  :     opnd->hlvalue  = 0;
-; 128  :     opnd->quoted_string   = NULL;
-; 129  :     opnd->base_reg = NULL;
-; 130  :     opnd->idx_reg  = NULL;
-; 131  :     opnd->label_tok = NULL;
-; 132  :     opnd->override = NULL;
-; 133  :     opnd->instr    = EMPTY;
+; 92   :     opnd->hvalue   = 0;
+; 93   :     opnd->hlvalue  = 0;
+; 94   :     opnd->quoted_string   = NULL;
+; 95   :     opnd->base_reg = NULL;
+; 96   :     opnd->idx_reg  = NULL;
+; 97   :     opnd->label_tok = NULL;
+; 98   :     opnd->override = NULL;
+; 99   :     opnd->instr    = EMPTY;
 
 	mov	DWORD PTR [rcx+56], -2
 	mov	QWORD PTR [rcx], rax
@@ -12620,30 +12620,30 @@ init_expr PROC						; COMDAT
 	mov	QWORD PTR [rcx+40], rax
 	mov	QWORD PTR [rcx+48], rax
 
-; 134  :     opnd->kind     = EXPR_EMPTY;
-; 135  :     opnd->mem_type = MT_EMPTY;
-; 136  :     opnd->scale    = 0;
-; 137  :     opnd->Ofssize  = USE_EMPTY;
-; 138  :     opnd->flags1   = 0;
+; 100  :     opnd->kind     = EXPR_EMPTY;
+; 101  :     opnd->mem_type = MT_EMPTY;
+; 102  :     opnd->scale    = 0;
+; 103  :     opnd->Ofssize  = USE_EMPTY;
+; 104  :     opnd->flags1   = 0;
 
-	mov	BYTE PTR [rcx+76], al
+	mov	BYTE PTR [rcx+72], al
 
-; 139  :     opnd->sym      = NULL;
+; 105  :     opnd->sym      = NULL;
 
 	mov	QWORD PTR [rcx+80], rax
 
-; 140  :     opnd->mbr      = NULL;
+; 106  :     opnd->mbr      = NULL;
 
 	mov	QWORD PTR [rcx+88], rax
 
-; 141  :     opnd->type     = NULL;
+; 107  :     opnd->type     = NULL;
 
 	mov	QWORD PTR [rcx+96], rax
 	mov	DWORD PTR [rcx+60], -2
 	mov	DWORD PTR [rcx+64], 192			; 000000c0H
 	mov	WORD PTR [rcx+68], 65024		; 0000fe00H
 
-; 142  : }
+; 108  : }
 
 	ret	0
 init_expr ENDP
@@ -12654,17 +12654,17 @@ _TEXT	SEGMENT
 msg$ = 8
 noEmitErr PROC
 
-; 3464 : {
+; 3430 : {
 
 	mov	QWORD PTR [rsp+16], rdx
 
-; 3465 :     return( ERROR );
+; 3431 :     return( ERROR );
 
 	or	eax, -1
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+32], r9
 
-; 3466 : }
+; 3432 : }
 
 	ret	0
 noEmitErr ENDP
@@ -12675,45 +12675,45 @@ _TEXT	SEGMENT
 opnd$ = 48
 EmitConstError PROC
 
-; 3492 : {
+; 3458 : {
 
 $LN7:
 	sub	rsp, 40					; 00000028H
 
-; 3493 :     if ( opnd->hlvalue != 0 )
+; 3459 :     if ( opnd->hlvalue != 0 )
 
 	mov	rdx, QWORD PTR [rcx+8]
 	test	rdx, rdx
 	je	SHORT $LN2@EmitConstE
 
-; 3494 :         EmitErr( CONSTANT_VALUE_TOO_LARGE_EX, opnd->hlvalue, opnd->value64 );
+; 3460 :         EmitErr( CONSTANT_VALUE_TOO_LARGE_EX, opnd->hlvalue, opnd->value64 );
 
 	mov	r8, QWORD PTR [rcx]
 	mov	ecx, 272				; 00000110H
 	call	EmitErr
 
-; 3497 :     return( ERROR );
+; 3463 :     return( ERROR );
 
 	or	eax, -1
 
-; 3498 : }
+; 3464 : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
 $LN2@EmitConstE:
 
-; 3495 :     else
-; 3496 :         EmitErr( CONSTANT_VALUE_TOO_LARGE, opnd->value64 );
+; 3461 :     else
+; 3462 :         EmitErr( CONSTANT_VALUE_TOO_LARGE, opnd->value64 );
 
 	mov	rdx, QWORD PTR [rcx]
 	mov	ecx, 235				; 000000ebH
 	call	EmitErr
 
-; 3497 :     return( ERROR );
+; 3463 :     return( ERROR );
 
 	or	eax, -1
 
-; 3498 : }
+; 3464 : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
@@ -12724,20 +12724,20 @@ _TEXT	ENDS
 _TEXT	SEGMENT
 ExprEvalInit PROC
 
-; 3505 :     thissym = NULL;
+; 3471 :     thissym = NULL;
 
 	xor	eax, eax
 	mov	QWORD PTR thissym, rax
 
-; 3506 :     nullstruct = NULL;
+; 3472 :     nullstruct = NULL;
 
 	mov	QWORD PTR nullstruct, rax
 
-; 3507 :     nullmbr = NULL;
+; 3473 :     nullmbr = NULL;
 
 	mov	QWORD PTR nullmbr, rax
 
-; 3508 : }
+; 3474 : }
 
 	ret	0
 ExprEvalInit ENDP
@@ -12752,18 +12752,18 @@ result$ = 88
 flags$ = 96
 EvalOperand PROC
 
-; 3474 : {
+; 3440 : {
 
 $LN15:
 	mov	QWORD PTR [rsp+8], rbx
 	push	rdi
 	sub	rsp, 48					; 00000030H
 
-; 3475 :     int         i;
-; 3476 : 
-; 3477 :     DebugMsg1(("EvalOperand(start=%u, end=%u, flags=%X) enter: >%s<\n", *start_tok, end_tok, flags, tokenarray[*start_tok].tokpos ));
-; 3478 : 
-; 3479 :     init_expr( result );
+; 3441 :     int         i;
+; 3442 : 
+; 3443 :     DebugMsg1(("EvalOperand(start=%u, end=%u, flags=%X) enter: >%s<\n", *start_tok, end_tok, flags, tokenarray[*start_tok].tokpos ));
+; 3444 : 
+; 3445 :     init_expr( result );
 
 	xor	eax, eax
 	mov	DWORD PTR [r9+56], -2
@@ -12778,7 +12778,7 @@ $LN15:
 	mov	QWORD PTR [r9+32], rax
 	mov	QWORD PTR [r9+40], rax
 	mov	QWORD PTR [r9+48], rax
-	mov	BYTE PTR [r9+76], al
+	mov	BYTE PTR [r9+72], al
 	mov	QWORD PTR [r9+80], rax
 	mov	QWORD PTR [r9+88], rax
 	mov	QWORD PTR [r9+96], rax
@@ -12786,8 +12786,8 @@ $LN15:
 	mov	DWORD PTR [r9+64], 192			; 000000c0H
 	mov	WORD PTR [r9+68], 65024			; 0000fe00H
 
-; 3480 : 
-; 3481 :     for( i = *start_tok; ( i < end_tok ) && is_expr_item( &tokenarray[i] ); i++ );
+; 3446 : 
+; 3447 :     for( i = *start_tok; ( i < end_tok ) && is_expr_item( &tokenarray[i] ); i++ );
 
 	mov	r9d, DWORD PTR [rcx]
 	cmp	r9d, r8d
@@ -12805,16 +12805,16 @@ $LL4@EvalOperan:
 	jl	SHORT $LL4@EvalOperan
 $LN13@EvalOperan:
 
-; 3482 :     if ( i == *start_tok )
+; 3448 :     if ( i == *start_tok )
 
 	cmp	r9d, DWORD PTR [rdi]
 	jne	SHORT $LN5@EvalOperan
 
-; 3483 :         return( NOT_ERROR );
+; 3449 :         return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 3488 : }
+; 3454 : }
 
 	mov	rbx, QWORD PTR [rsp+64]
 	add	rsp, 48					; 00000030H
@@ -12822,15 +12822,15 @@ $LN13@EvalOperan:
 	ret	0
 $LN5@EvalOperan:
 
-; 3484 : 
-; 3485 :     /* v2.10: global flag 'error_msg' replaced by 'fnEmitErr()' */
-; 3486 :     fnEmitErr = ( ( flags & EXPF_NOERRMSG ) ? noEmitErr : EmitErr );
+; 3450 : 
+; 3451 :     /* v2.10: global flag 'error_msg' replaced by 'fnEmitErr()' */
+; 3452 :     fnEmitErr = ( ( flags & EXPF_NOERRMSG ) ? noEmitErr : EmitErr );
 
 	movzx	edx, BYTE PTR flags$[rsp]
 	lea	r8, OFFSET FLAT:noEmitErr
 	movzx	eax, dl
 
-; 3487 :     return ( evaluate( result, start_tok, tokenarray, i, flags ) );
+; 3453 :     return ( evaluate( result, start_tok, tokenarray, i, flags ) );
 
 	mov	BYTE PTR flags$[rsp], dl
 	and	al, 1
@@ -12841,13 +12841,13 @@ $LN5@EvalOperan:
 	mov	QWORD PTR fnEmitErr, rcx
 	mov	rcx, r10
 
-; 3488 : }
+; 3454 : }
 
 	mov	rbx, QWORD PTR [rsp+64]
 	add	rsp, 48					; 00000030H
 	pop	rdi
 
-; 3487 :     return ( evaluate( result, start_tok, tokenarray, i, flags ) );
+; 3453 :     return ( evaluate( result, start_tok, tokenarray, i, flags ) );
 
 	jmp	evaluate
 EvalOperand ENDP

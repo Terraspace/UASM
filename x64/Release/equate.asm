@@ -370,7 +370,7 @@ $LN7@CreateAsse:
 
 	mov	edx, DWORD PTR opnd$[rsp+60]
 	mov	rax, QWORD PTR opnd$[rsp+80]
-	mov	ecx, DWORD PTR opnd$[rsp+76]
+	mov	ecx, DWORD PTR opnd$[rsp+72]
 	test	edx, edx
 	je	SHORT $LN10@CreateAsse
 	cmp	edx, 1
@@ -780,7 +780,7 @@ $LN4@SetValue:
 	mov	rax, QWORD PTR [rdx+80]
 	cmp	DWORD PTR [rax+36], 196			; 000000c4H
 	jne	SHORT $LN5@SetValue
-	test	BYTE PTR [rdx+76], 2
+	test	BYTE PTR [rdx+72], 2
 	jne	SHORT $LN5@SetValue
 
 ; 86   :             sym->mem_type = opndx->sym->mem_type;
@@ -1309,7 +1309,7 @@ $check_single_number$49:
 
 ; 393  :         opnd.flags1 = 0;
 
-	mov	BYTE PTR opnd$[rsp+76], dl
+	mov	BYTE PTR opnd$[rsp+72], dl
 
 ; 394  :         /* v2.08: does it fit in 32-bits */
 ; 395  :         if ( opnd.hlvalue == 0 && opnd.value64 >= minintvalues[ModuleInfo.Ofssize] &&
@@ -1432,7 +1432,7 @@ $LN21@CreateCons:
 
 	cmp	edx, 1
 	jne	SHORT $LN19@CreateCons
-	test	BYTE PTR opnd$[rsp+76], dl
+	test	BYTE PTR opnd$[rsp+72], dl
 	jne	SHORT $LN19@CreateCons
 	test	r8, r8
 	je	SHORT $LN19@CreateCons

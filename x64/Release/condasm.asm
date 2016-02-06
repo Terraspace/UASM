@@ -12,7 +12,7 @@ COMM	broadflags:BYTE
 COMM	evex:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11206 DB	'if-else', 00H
+$SG11204 DB	'if-else', 00H
 _DATA	ENDS
 PUBLIC	conditional_assembly_prepare
 PUBLIC	GetIfNestLevel
@@ -844,7 +844,7 @@ $LN13@ErrorDirec:
 
 	cmp	eax, 1
 	jne	SHORT $LN16@ErrorDirec
-	test	BYTE PTR opndx$[rbp-45], al
+	test	BYTE PTR opndx$[rbp-49], al
 	jne	SHORT $LN16@ErrorDirec
 	mov	rax, QWORD PTR opndx$[rbp-41]
 	test	rax, rax
@@ -1224,7 +1224,7 @@ $LN18@CondAsmDir:
 
 	cmp	eax, 1
 	jne	SHORT $LN21@CondAsmDir
-	test	BYTE PTR opndx$[rbp-13], al
+	test	BYTE PTR opndx$[rbp-17], al
 	jne	SHORT $LN21@CondAsmDir
 
 ; 269  :             opndx.value += opndx.sym->offset;
@@ -2131,7 +2131,7 @@ CondCheckOpen PROC
 
 ; 645  :         EmitErr( BLOCK_NESTING_ERROR, "if-else" );
 
-	lea	rdx, OFFSET FLAT:$SG11206
+	lea	rdx, OFFSET FLAT:$SG11204
 	mov	ecx, 80					; 00000050H
 	jmp	EmitErr
 $LN2@CondCheckO:

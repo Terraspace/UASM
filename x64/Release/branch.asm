@@ -11,7 +11,7 @@ COMM	broadflags:BYTE
 COMM	evex:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG10736 DB	01H DUP (?)
+$SG10734 DB	01H DUP (?)
 _BSS	ENDS
 PUBLIC	process_branch
 EXTRN	EmitError:PROC
@@ -142,7 +142,7 @@ $LN14@process_br:
 ; 149  :     }
 ; 150  :     if ( opndx->explicit && opndx->instr != T_SHORT )
 
-	test	BYTE PTR [r8+76], 2
+	test	BYTE PTR [r8+72], 2
 	je	SHORT $LN15@process_br
 	cmp	DWORD PTR [r8+56], 245			; 000000f5H
 	je	SHORT $LN15@process_br
@@ -993,7 +993,7 @@ $LN81@process_br:
 ; 438  :         case MT_NEAR:
 ; 439  :             if( opndx->explicit || opndx->instr == T_SHORT ) {
 
-	test	BYTE PTR [rsi+76], 2
+	test	BYTE PTR [rsi+72], 2
 	jne	SHORT $LN83@process_br
 	cmp	DWORD PTR [rsi+56], 245			; 000000f5H
 	je	SHORT $LN83@process_br

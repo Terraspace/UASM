@@ -900,7 +900,7 @@ $LN12@OrgDirecti:
 
 	cmp	eax, 1
 	jne	SHORT $LN14@OrgDirecti
-	test	BYTE PTR opndx$[rsp+76], al
+	test	BYTE PTR opndx$[rsp+72], al
 	jne	SHORT $LN14@OrgDirecti
 
 ; 125  :             return( SetCurrOffset( CurrSeg, opndx.sym->offset + opndx.value, FALSE, FALSE ) );

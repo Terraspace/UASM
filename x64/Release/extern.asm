@@ -11,10 +11,10 @@ COMM	broadflags:BYTE
 COMM	evex:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10859 DB	'ABS', 00H
-$SG10975 DB	')', 00H
+$SG10857 DB	'ABS', 00H
+$SG10973 DB	')', 00H
 	ORG $+2
-$SG10979 DB	'ABS', 00H
+$SG10977 DB	'ABS', 00H
 _DATA	ENDS
 CONST	SEGMENT
 szCOMM	DB	'COMM', 00H
@@ -1328,7 +1328,7 @@ $LN6@ExternDire:
 	cmp	BYTE PTR [rcx+r12], 8
 	jne	SHORT $LN10@ExternDire
 	mov	rcx, QWORD PTR [rcx+r12+8]
-	lea	rdx, OFFSET FLAT:$SG10979
+	lea	rdx, OFFSET FLAT:$SG10977
 	call	_stricmp
 
 ; 558  :             //ti.mem_type = MT_ABS;
@@ -1740,7 +1740,7 @@ $LN59@ExternDire:
 
 ; 537  :                 return( EmitErr( EXPECTED, ")" ) );
 
-	lea	rdx, OFFSET FLAT:$SG10975
+	lea	rdx, OFFSET FLAT:$SG10973
 	mov	ecx, 230				; 000000e6H
 	jmp	SHORT $LN69@ExternDire
 $LN58@ExternDire:
@@ -2318,7 +2318,7 @@ $LL4@ExterndefD:
 	cmp	BYTE PTR [rcx+r14], 8
 	jne	SHORT $LN13@ExterndefD
 	mov	rcx, QWORD PTR [rcx+r14+8]
-	lea	rdx, OFFSET FLAT:$SG10859
+	lea	rdx, OFFSET FLAT:$SG10857
 	call	_stricmp
 
 ; 230  :             /* v2.07: MT_ABS is obsolete */

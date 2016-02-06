@@ -109,8 +109,8 @@ struct expr {
     uint_8          Ofssize;        /* 16,32,64 bit if MT_NEAR, MT_FAR */
 #if AVXSUPP
     uint_8          saeflags;        /* evex: {sae},{rn-sae},{rd-sae},{ru-sae} or {rz-sae}  */
-    uint_8          kzflags;        /* evex: {k1}{z}, or {k1} */
-    uint_8          broadflags;      /* evex: {1to2}, {1to4},{1to8},{1to16}  */
+//    uint_8          kzflags;        /* evex: {k1}{z}, or {k1} */
+  //  uint_8          broadflags;      /* evex: {1to2}, {1to4},{1to8},{1to16}  */
 #endif
     union {
         uint_8      flags1;

@@ -65,7 +65,7 @@ COMM	broadflags:BYTE
 COMM	evex:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11204 DB	'%s', 0aH, 00H
+$SG11202 DB	'%s', 0aH, 00H
 _DATA	ENDS
 CONST	SEGMENT
 directive_tab DQ FLAT:CondAsmDirective
@@ -1221,7 +1221,7 @@ $LN8:
 ; 58   :             printf( "%s\n", tokenarray[i+1].tokpos );
 
 	movsxd	rdx, ecx
-	lea	rcx, OFFSET FLAT:$SG11204
+	lea	rcx, OFFSET FLAT:$SG11202
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rax+56]
 	call	printf

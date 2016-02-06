@@ -643,7 +643,7 @@ static ret_code GetAndExpression(struct hll_item *hll, int *i, struct asm_tok to
         if (truelabel == 0)     /* step 2 */
           truelabel = GetHllLabel();
 
-        if (*p) {               /* v2.11: there might be a 0 at lastjmp */
+		if (*p && strlen(p) < 11) {/* v2.11: there might be a 0 at lastjmp */
           p += 4;               /* skip 'jcc ' or 'jmp ' */
           GetLabelStr(truelabel, p);
           strcat(p, EOLSTR);

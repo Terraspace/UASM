@@ -14,14 +14,14 @@ COMM	broadflags:BYTE
 COMM	evex:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG11100 DB	01H DUP (?)
+$SG11098 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG11028 DB	'%r %r:%r,%r:%r,%r:%r,%r:%r,%r:%s,%r:%s', 00H
+$SG11026 DB	'%r %r:%r,%r:%r,%r:%r,%r:%r,%r:%s,%r:%s', 00H
 	ORG $+1
-$SG11036 DB	'%r %r:%s,%r:%s,%r:%s', 00H
+$SG11034 DB	'%r %r:%s,%r:%s,%r:%s', 00H
 	ORG $+3
-$SG11037 DB	'%r %r:%s,%r:%s', 00H
+$SG11035 DB	'%r %r:%s,%r:%s', 00H
 _DATA	ENDS
 CONST	SEGMENT
 szError	DB	'ERROR', 00H
@@ -486,7 +486,7 @@ $LN58@AssumeDire:
 ; 379  :                 stdsym[j] = CreateTypeSymbol( NULL, "", FALSE );
 
 	xor	r8d, r8d
-	lea	rdx, OFFSET FLAT:$SG11100
+	lea	rdx, OFFSET FLAT:$SG11098
 	xor	ecx, ecx
 	call	CreateTypeSymbol
 	mov	QWORD PTR stdsym[rdi+r15*8], rax
@@ -636,7 +636,7 @@ $LN34@AssumeDire:
 	mov	rcx, QWORD PTR opnd$1[rbp-57]
 	test	rcx, rcx
 	je	$LN37@AssumeDire
-	test	BYTE PTR opnd$1[rbp-61], 1
+	test	BYTE PTR opnd$1[rbp-65], 1
 	jne	$LN37@AssumeDire
 	cmp	DWORD PTR opnd$1[rbp-137], r13d
 	jne	$LN37@AssumeDire
@@ -1221,7 +1221,7 @@ $LN16:
 	lea	rax, OFFSET FLAT:szNothing
 	mov	r9d, 261				; 00000105H
 	cmovne	rax, rdx
-	lea	rcx, OFFSET FLAT:$SG11028
+	lea	rcx, OFFSET FLAT:$SG11026
 	mov	QWORD PTR [rsp+104], rax
 	mov	DWORD PTR [rsp+96], 30
 	mov	QWORD PTR [rsp+88], rdx
@@ -1288,7 +1288,7 @@ $LN10@ModelAssum:
 ; 244  :         if ( ModuleInfo.distance != STACK_FAR )
 
 	cmp	DWORD PTR ModuleInfo+356, 1
-	lea	rdx, OFFSET FLAT:$SG11037
+	lea	rdx, OFFSET FLAT:$SG11035
 
 ; 245  :             pFmt = "%r %r:%s,%r:%s,%r:%s";
 ; 246  :         else
@@ -1296,7 +1296,7 @@ $LN10@ModelAssum:
 ; 248  :         AddLineQueueX( pFmt, T_ASSUME, T_CS, pCS, T_DS, szDgroup, T_SS, szDgroup );
 
 	mov	QWORD PTR [rsp+56], rbx
-	lea	rcx, OFFSET FLAT:$SG11036
+	lea	rcx, OFFSET FLAT:$SG11034
 	cmove	rcx, rdx
 	mov	DWORD PTR [rsp+48], 27
 	mov	edx, 439				; 000001b7H
