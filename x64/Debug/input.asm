@@ -15,77 +15,78 @@ COMM	token_stringbuf:QWORD
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 COMM	evex:BYTE
+COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG10928 DB	01H DUP (?)
-$SG10932 DB	01H DUP (?)
+$SG10929 DB	01H DUP (?)
 $SG10933 DB	01H DUP (?)
 $SG10934 DB	01H DUP (?)
+$SG10935 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG10804 DB	'AddFile(%s) enter, curr index=%u', 0aH, 00H
+$SG10805 DB	'AddFile(%s) enter, curr index=%u', 0aH, 00H
 	ORG $+2
-$SG10846 DB	'(%u)', 00H
+$SG10847 DB	'(%u)', 00H
 	ORG $+3
-$SG10912 DB	'%s : ', 00H
+$SG10913 DB	'%s : ', 00H
 	ORG $+2
-$SG10959 DB	'rb', 00H
+$SG10960 DB	'rb', 00H
 	ORG $+1
-$SG10848 DB	'[%s.%u]', 00H
-$SG10886 DB	'PushMacro(%s)', 0aH, 00H
+$SG10849 DB	'[%s.%u]', 00H
+$SG10887 DB	'PushMacro(%s)', 0aH, 00H
 	ORG $+1
-$SG10911 DB	'%s(%u) : ', 00H
+$SG10912 DB	'%s(%u) : ', 00H
 	ORG $+2
-$SG10991 DB	'rb', 00H
+$SG10992 DB	'rb', 00H
 	ORG $+1
-$SG10931 DB	'MacroLoop', 00H
+$SG10932 DB	'MacroLoop', 00H
 	ORG $+2
-$SG10995 DB	'rb', 00H
+$SG10996 DB	'rb', 00H
 	ORG $+1
-$SG10952 DB	'open_file_in_include_path(%s) enter', 0aH, 00H
+$SG10953 DB	'open_file_in_include_path(%s) enter', 0aH, 00H
 	ORG $+3
-$SG10958 DB	'open_file_in_include_path: >%s<', 0aH, 00H
+$SG10959 DB	'open_file_in_include_path: >%s<', 0aH, 00H
 	ORG $+3
-$SG11034 DB	';', 00H
+$SG11035 DB	';', 00H
 	ORG $+2
-$SG10961 DB	'open_file_in_include_path()=%p', 0aH, 00H
-$SG10985 DB	'SearchFile(%s) enter', 0aH, 00H
+$SG10962 DB	'open_file_in_include_path()=%p', 0aH, 00H
+$SG10986 DB	'SearchFile(%s) enter', 0aH, 00H
 	ORG $+2
-$SG10992 DB	'SearchFile(): file found, fopen(%s)=%X', 0aH, 00H
-$SG10993 DB	'SearchFile(): fopen(%s) failed', 0aH, 00H
-$SG10996 DB	'SearchFile(): fopen(%s)=%X', 0aH, 00H
+$SG10993 DB	'SearchFile(): file found, fopen(%s)=%X', 0aH, 00H
+$SG10994 DB	'SearchFile(): fopen(%s) failed', 0aH, 00H
+$SG10997 DB	'SearchFile(): fopen(%s)=%X', 0aH, 00H
 	ORG $+4
-$SG11000 DB	'SearchFile(): open_file_in_include_path(%s)=%X [%s]', 0aH
+$SG11001 DB	'SearchFile(): open_file_in_include_path(%s)=%X [%s]', 0aH
 	DB	00H
 	ORG $+3
-$SG11001 DB	'SearchFile(): open_file_in_include_path(%s)=NULL', 0aH, 00H
+$SG11002 DB	'SearchFile(): open_file_in_include_path(%s)=NULL', 0aH, 00H
 	ORG $+6
-$SG11016 DB	'GetTextLine: ***** EOF file %s (idx=%u) *****', 0aH, 00H
+$SG11017 DB	'GetTextLine: ***** EOF file %s (idx=%u) *****', 0aH, 00H
 	ORG $+1
-$SG11030 DB	'AddStringToIncludePath(%s) enter', 0aH, 00H
+$SG11031 DB	'AddStringToIncludePath(%s) enter', 0aH, 00H
 	ORG $+14
-$SG11044 DB	'PushInputStatus() stringbuf-tokencnt-currsrc old=%X-%u-%'
+$SG11045 DB	'PushInputStatus() stringbuf-tokencnt-currsrc old=%X-%u-%'
 	DB	'X new=%X-%X-%X', 0aH, 00H
-$SG11049 DB	'PopInputStatus() old=%X-%u-%X new=%X-%u-%X', 0aH, 00H
+$SG11050 DB	'PopInputStatus() old=%X-%u-%X new=%X-%u-%X', 0aH, 00H
 	ORG $+4
-$SG11060 DB	'InputInit() enter', 0aH, 00H
+$SG11061 DB	'InputInit() enter', 0aH, 00H
 	ORG $+5
-$SG11061 DB	'InputInit: srclinebuffer=%p, tokenarray=%p, token_string'
+$SG11062 DB	'InputInit: srclinebuffer=%p, tokenarray=%p, token_string'
 	DB	'buf=%p end_stringbuf=%p', 0aH, 00H
 	ORG $+7
-$SG11062 DB	'InputInit() exit', 0aH, 00H
+$SG11063 DB	'InputInit() exit', 0aH, 00H
 	ORG $+6
-$SG11065 DB	'InputPassInit() enter', 0aH, 00H
+$SG11066 DB	'InputPassInit() enter', 0aH, 00H
 	ORG $+1
-$SG11081 DB	'%2u: %5u *%2u %s', 0aH, 00H
+$SG11082 DB	'%2u: %5u *%2u %s', 0aH, 00H
 	ORG $+6
-$SG11082 DB	'%2u: %5u     %s', 0aH, 00H
+$SG11083 DB	'%2u: %5u     %s', 0aH, 00H
 	ORG $+7
-$SG11083 DB	'InputFini: idx=%u name=%s', 0aH, 00H
+$SG11084 DB	'InputFini: idx=%u name=%s', 0aH, 00H
 	ORG $+5
-$SG11086 DB	'lines read(files)/processed in pass one: %u / %u', 0aH, 00H
+$SG11087 DB	'lines read(files)/processed in pass one: %u / %u', 0aH, 00H
 	ORG $+6
-$SG11087 DB	'invokations: PreprocessLine=%u/%u/%u, Tokenize=%u/%u', 0aH
+$SG11088 DB	'invokations: PreprocessLine=%u/%u/%u, Tokenize=%u/%u', 0aH
 	DB	00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
@@ -508,7 +509,7 @@ $LN3@open_file_:
 ; 551  :     DebugMsg(("open_file_in_include_path(%s) enter\n", name ));
 
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10952
+	lea	rcx, OFFSET FLAT:$SG10953
 	call	DoDebugMsg
 
 ; 552  :     for ( ; curr; curr = next ) {
@@ -647,12 +648,12 @@ $LN11@open_file_:
 ; 579  :         DebugMsg(("open_file_in_include_path: >%s<\n", fullpath ));
 
 	mov	rdx, QWORD PTR fullpath$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10958
+	lea	rcx, OFFSET FLAT:$SG10959
 	call	DoDebugMsg
 
 ; 580  :         file = fopen( fullpath, "rb" );
 
-	lea	rdx, OFFSET FLAT:$SG10959
+	lea	rdx, OFFSET FLAT:$SG10960
 	mov	rcx, QWORD PTR fullpath$[rsp]
 	call	QWORD PTR __imp_fopen
 	mov	QWORD PTR file$[rsp], rax
@@ -676,7 +677,7 @@ $LN5@open_file_:
 ; 585  :     DebugMsg(("open_file_in_include_path()=%p\n", file ));
 
 	mov	rdx, QWORD PTR file$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10961
+	lea	rcx, OFFSET FLAT:$SG10962
 	call	DoDebugMsg
 
 ; 586  :     return( file );
@@ -760,7 +761,7 @@ $LN4@print_sour:
 	mov	ecx, DWORD PTR [rcx+24]
 	mov	DWORD PTR [rsp+32], ecx
 	mov	r9, QWORD PTR [rax]
-	lea	r8, OFFSET FLAT:$SG10928
+	lea	r8, OFFSET FLAT:$SG10929
 	mov	edx, DWORD PTR tab$[rsp]
 	mov	ecx, 123				; 0000007bH
 	call	PrintNote
@@ -798,8 +799,8 @@ $LN7@print_sour:
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	eax, DWORD PTR [rax+24]
 	mov	DWORD PTR [rsp+32], eax
-	lea	r9, OFFSET FLAT:$SG10931
-	lea	r8, OFFSET FLAT:$SG10932
+	lea	r9, OFFSET FLAT:$SG10932
+	lea	r8, OFFSET FLAT:$SG10933
 	mov	edx, DWORD PTR tab$[rsp]
 	mov	ecx, 125				; 0000007dH
 	call	PrintNote
@@ -827,7 +828,7 @@ $LN9@print_sour:
 	mov	eax, DWORD PTR [rax+24]
 	mov	DWORD PTR [rsp+32], eax
 	mov	r9, QWORD PTR [rcx+8]
-	lea	r8, OFFSET FLAT:$SG10933
+	lea	r8, OFFSET FLAT:$SG10934
 	mov	edx, DWORD PTR tab$[rsp]
 	mov	ecx, 124				; 0000007cH
 	call	PrintNote
@@ -857,7 +858,7 @@ $LN3@print_sour:
 	mov	ecx, DWORD PTR [rcx+24]
 	mov	DWORD PTR [rsp+32], ecx
 	mov	r9, QWORD PTR [rax]
-	lea	r8, OFFSET FLAT:$SG10934
+	lea	r8, OFFSET FLAT:$SG10935
 	mov	edx, DWORD PTR tab$[rsp]
 	mov	ecx, 126				; 0000007eH
 	call	PrintNote
@@ -1293,7 +1294,7 @@ AddFile	PROC
 
 	mov	r8d, DWORD PTR ModuleInfo+168
 	mov	rdx, QWORD PTR fname$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10804
+	lea	rcx, OFFSET FLAT:$SG10805
 	call	DoDebugMsg1
 
 ; 196  :     for( index = 0; index < ModuleInfo.g.cnt_fnames; index++ ) {
@@ -1534,7 +1535,7 @@ $LN6:
 
 	call	GetLqLine
 	mov	r8d, eax
-	lea	rdx, OFFSET FLAT:$SG10846
+	lea	rdx, OFFSET FLAT:$SG10847
 	mov	rcx, QWORD PTR buffer$[rsp]
 	call	sprintf
 	jmp	SHORT $LN3@GetTopLine
@@ -1555,7 +1556,7 @@ $LN2@GetTopLine:
 	mov	rcx, QWORD PTR ModuleInfo+200
 	mov	r9d, DWORD PTR [rcx+24]
 	mov	r8, QWORD PTR [rax+8]
-	lea	rdx, OFFSET FLAT:$SG10848
+	lea	rdx, OFFSET FLAT:$SG10849
 	mov	rcx, QWORD PTR buffer$[rsp]
 	call	sprintf
 $LN4@GetTopLine:
@@ -1825,11 +1826,11 @@ $LN4@GetCurrSrc:
 	and	eax, 1
 	test	eax, eax
 	jne	SHORT $LN7@GetCurrSrc
-	lea	rax, OFFSET FLAT:$SG10911
+	lea	rax, OFFSET FLAT:$SG10912
 	mov	QWORD PTR tv81[rsp], rax
 	jmp	SHORT $LN8@GetCurrSrc
 $LN7@GetCurrSrc:
-	lea	rax, OFFSET FLAT:$SG10912
+	lea	rax, OFFSET FLAT:$SG10913
 	mov	QWORD PTR tv81[rsp], rax
 $LN8@GetCurrSrc:
 	mov	rax, QWORD PTR curr$[rsp]
@@ -1900,7 +1901,7 @@ $LN5:
 	mov	r9, QWORD PTR ModuleInfo+464
 	mov	r8d, DWORD PTR ModuleInfo+496
 	mov	rdx, QWORD PTR token_stringbuf
-	lea	rcx, OFFSET FLAT:$SG11049
+	lea	rcx, OFFSET FLAT:$SG11050
 	call	DoDebugMsg1
 
 ; 861  :                token_stringbuf, Token_Count, CurrSource,
@@ -2130,7 +2131,7 @@ $LN3@PushInputS:
 	mov	r8d, DWORD PTR [rax+24]
 	mov	rax, QWORD PTR oldstat$[rsp]
 	mov	rdx, QWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG11044
+	lea	rcx, OFFSET FLAT:$SG11045
 	call	DoDebugMsg1
 
 ; 852  :                oldstat->token_stringbuf, oldstat->token_count, oldstat->currsource,
@@ -2229,7 +2230,7 @@ $LN4@InputFini:
 	mov	r8d, DWORD PTR [rax+rdx+12]
 	mov	eax, DWORD PTR tv95[rsp]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11081
+	lea	rcx, OFFSET FLAT:$SG11082
 	call	printf
 	jmp	SHORT $LN8@InputFini
 $LN7@InputFini:
@@ -2247,7 +2248,7 @@ $LN7@InputFini:
 	mov	r9, QWORD PTR [r8+rax]
 	mov	rax, QWORD PTR ModuleInfo+160
 	mov	r8d, DWORD PTR [rax+rcx+12]
-	lea	rcx, OFFSET FLAT:$SG11082
+	lea	rcx, OFFSET FLAT:$SG11083
 	call	printf
 $LN8@InputFini:
 $LN6@InputFini:
@@ -2260,7 +2261,7 @@ $LN6@InputFini:
 	mov	rcx, QWORD PTR ModuleInfo+160
 	mov	r8, QWORD PTR [rcx+rax]
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11083
+	lea	rcx, OFFSET FLAT:$SG11084
 	call	DoDebugMsg
 
 ; 982  :     }
@@ -2297,7 +2298,7 @@ $LN9@InputFini:
 
 	mov	r8d, DWORD PTR cntlines
 	mov	edx, DWORD PTR cntflines
-	lea	rcx, OFFSET FLAT:$SG11086
+	lea	rcx, OFFSET FLAT:$SG11087
 	call	printf
 
 ; 992  :         printf("invokations: PreprocessLine=%" I32_SPEC "u/%" I32_SPEC "u/%" I32_SPEC "u, Tokenize=%" I32_SPEC "u/%" I32_SPEC "u\n", cntppl0, cntppl1, cntppl2, cnttok0, cnttok1 );
@@ -2309,7 +2310,7 @@ $LN9@InputFini:
 	mov	r9d, DWORD PTR cntppl2
 	mov	r8d, DWORD PTR cntppl1
 	mov	edx, DWORD PTR cntppl0
-	lea	rcx, OFFSET FLAT:$SG11087
+	lea	rcx, OFFSET FLAT:$SG11088
 	call	printf
 $LN10@InputFini:
 
@@ -2362,7 +2363,7 @@ $LN3:
 
 ; 954  :     DebugMsg(( "InputPassInit() enter\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11065
+	lea	rcx, OFFSET FLAT:$SG11066
 	call	DoDebugMsg
 
 ; 955  :     src_stack->line_num = 0;
@@ -2419,7 +2420,7 @@ $LN3:
 ; 898  : 
 ; 899  :     DebugMsg(( "InputInit() enter\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11060
+	lea	rcx, OFFSET FLAT:$SG11061
 	call	DoDebugMsg
 
 ; 900  :     //ModuleInfo.g.cnt_fnames = 0;
@@ -2519,7 +2520,7 @@ $LN3:
 	mov	r9, QWORD PTR token_stringbuf
 	mov	r8, QWORD PTR ModuleInfo+480
 	mov	rdx, QWORD PTR srclinebuffer
-	lea	rcx, OFFSET FLAT:$SG11061
+	lea	rcx, OFFSET FLAT:$SG11062
 	call	DoDebugMsg
 
 ; 938  : #endif
@@ -2561,7 +2562,7 @@ $LN3:
 ; 945  : 
 ; 946  :     DebugMsg(( "InputInit() exit\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11062
+	lea	rcx, OFFSET FLAT:$SG11063
 	call	DoDebugMsg
 
 ; 947  : }
@@ -2597,7 +2598,7 @@ $LN8:
 ; 761  :     DebugMsg(("AddStringToIncludePath(%s) enter\n", string ));
 
 	mov	rdx, QWORD PTR string$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11030
+	lea	rcx, OFFSET FLAT:$SG11031
 	call	DoDebugMsg
 $LN2@AddStringT:
 
@@ -2683,7 +2684,7 @@ $LN5@AddStringT:
 
 ; 775  :         strcat( ModuleInfo.g.IncludePath, INC_PATH_DELIM_STR );
 
-	lea	rdx, OFFSET FLAT:$SG11034
+	lea	rdx, OFFSET FLAT:$SG11035
 	mov	rcx, QWORD PTR ModuleInfo+176
 	call	strcat
 
@@ -2756,7 +2757,7 @@ $LN3:
 	mov	rax, QWORD PTR mi$[rsp]
 	mov	rax, QWORD PTR [rax+32]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10886
+	lea	rcx, OFFSET FLAT:$SG10887
 	call	DoDebugMsg1
 
 ; 438  :     PushSrcItem( SIT_MACRO, mi );
@@ -2866,7 +2867,7 @@ $LN7@GetTextLin:
 	mov	ecx, DWORD PTR tv86[rsp]
 	mov	r8d, ecx
 	mov	rdx, QWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG11016
+	lea	rcx, OFFSET FLAT:$SG11017
 	call	DoDebugMsg1
 
 ; 708  :         /* don't close and remove main source file */
@@ -3126,7 +3127,7 @@ $LN23:
 ; 604  :     DebugMsg1(("SearchFile(%s) enter\n", path ));
 
 	mov	rdx, QWORD PTR path$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10985
+	lea	rcx, OFFSET FLAT:$SG10986
 	call	DoDebugMsg1
 
 ; 605  : 
@@ -3262,7 +3263,7 @@ $LN4@SearchFile:
 
 ; 634  :                     if ( file = fopen( fullpath, "rb" ) ) {
 
-	lea	rdx, OFFSET FLAT:$SG10991
+	lea	rdx, OFFSET FLAT:$SG10992
 	lea	rcx, QWORD PTR fullpath$[rsp]
 	call	QWORD PTR __imp_fopen
 	mov	QWORD PTR file$[rsp], rax
@@ -3273,7 +3274,7 @@ $LN4@SearchFile:
 
 	mov	r8, QWORD PTR file$[rsp]
 	lea	rdx, QWORD PTR fullpath$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10992
+	lea	rcx, OFFSET FLAT:$SG10993
 	call	DoDebugMsg1
 
 ; 636  :                         path = fullpath;
@@ -3291,7 +3292,7 @@ $LN8@SearchFile:
 ; 640  :                         DebugMsg1(("SearchFile(): fopen(%s) failed\n", fullpath ));
 
 	lea	rdx, QWORD PTR fullpath$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10993
+	lea	rcx, OFFSET FLAT:$SG10994
 	call	DoDebugMsg1
 $LN9@SearchFile:
 $LN7@SearchFile:
@@ -3332,7 +3333,7 @@ $LN22@SearchFile:
 
 ; 649  :         file = fopen( path, "rb" );
 
-	lea	rdx, OFFSET FLAT:$SG10995
+	lea	rdx, OFFSET FLAT:$SG10996
 	mov	rcx, QWORD PTR path$[rsp]
 	call	QWORD PTR __imp_fopen
 	mov	QWORD PTR file$[rsp], rax
@@ -3341,7 +3342,7 @@ $LN22@SearchFile:
 
 	mov	r8, QWORD PTR file$[rsp]
 	mov	rdx, QWORD PTR path$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10996
+	lea	rcx, OFFSET FLAT:$SG10997
 	call	DoDebugMsg1
 
 ; 651  : 
@@ -3372,7 +3373,7 @@ $LN22@SearchFile:
 	lea	r9, QWORD PTR fullpath$[rsp]
 	mov	r8, QWORD PTR file$[rsp]
 	mov	rdx, QWORD PTR path$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11000
+	lea	rcx, OFFSET FLAT:$SG11001
 	call	DoDebugMsg1
 
 ; 658  :                 path = fullpath;
@@ -3390,7 +3391,7 @@ $LN12@SearchFile:
 ; 662  :                 DebugMsg1(("SearchFile(): open_file_in_include_path(%s)=NULL\n", path ));
 
 	mov	rdx, QWORD PTR path$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11001
+	lea	rcx, OFFSET FLAT:$SG11002
 	call	DoDebugMsg1
 $LN13@SearchFile:
 $LN11@SearchFile:

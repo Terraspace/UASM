@@ -1,4 +1,4 @@
-﻿Build started 2016/02/05 09:15:44 AM.
+﻿Build started 2016/02/11 08:51:50 PM.
      1>Project "D:\HJWasm\HJWasm2.13.1s\HJWasm2.13.1s\HJWasm.vcxproj" on node 2 (Rebuild target(s)).
      1>ClCompile:
          D:\vs2015\VC\bin\x86_amd64\CL.exe /c /I.\\H /Zi /nologo /W2 /WX- /Od /D DEBUG_OUT /D WIN64 /D _DEBUG /D AVXSUPP /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /FAs /Fa"x64\Debug\\" /Fo"x64\Debug\\" /Fd"x64\Debug\vc140.pdb" /Gd /TC /errorReport:prompt apiemu.c assemble.c assume.c atofloat.c backptch.c bin.c branch.c cmdline.c codegen.c coff.c condasm.c context.c cpumodel.c data.c dbgcv.c directiv.c elf.c end.c equate.c errmsg.c expans.c expreval.c extern.c fastpass.c fixup.c fpfixup.c hll.c input.c invoke.c label.c linnum.c listing.c loop.c lqueue.c macro.c main.c mangle.c memalloc.c msgtext.c omf.c omffixup.c omfint.c option.c parser.c posndir.c preproc.c proc.c queue.c reswords.c safeseh.c segment.c simsegm.c string.c symbols.c tbyte.c tokenize.c trmem.c types.c
@@ -20,8 +20,8 @@
          reswords.c
          queue.c
          proc.c
-     1>proc.c(2570): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-     1>proc.c(2716): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>proc.c(2617): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>proc.c(2763): warning C4146: unary minus operator applied to unsigned type, result still unsigned
          preproc.c
          posndir.c
          parser.c
@@ -141,4 +141,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:04.66
+Time Elapsed 00:00:05.88

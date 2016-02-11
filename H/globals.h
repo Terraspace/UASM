@@ -837,6 +837,7 @@ struct module_info {
 	unsigned char       decoflags;          /* EVEX  sets up decorator flags in P2: z, aaa   */
 	unsigned char       broadflags;         /* EVEX  sets up decorator flags in P2: b        */
 	unsigned char       evex;               /* EVEX  encoding  */
+	unsigned char       ZEROLOCALS;         /* zero local variables  */
 #endif
 
 #define CurrSource      ModuleInfo.currsource

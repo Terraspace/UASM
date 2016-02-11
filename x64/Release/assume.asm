@@ -12,16 +12,17 @@ COMM	StdAssumeTable:BYTE:0100H
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 COMM	evex:BYTE
+COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG11098 DB	01H DUP (?)
+$SG11099 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG11026 DB	'%r %r:%r,%r:%r,%r:%r,%r:%r,%r:%s,%r:%s', 00H
+$SG11027 DB	'%r %r:%r,%r:%r,%r:%r,%r:%r,%r:%s,%r:%s', 00H
 	ORG $+1
-$SG11034 DB	'%r %r:%s,%r:%s,%r:%s', 00H
+$SG11035 DB	'%r %r:%s,%r:%s,%r:%s', 00H
 	ORG $+3
-$SG11035 DB	'%r %r:%s,%r:%s', 00H
+$SG11036 DB	'%r %r:%s,%r:%s', 00H
 _DATA	ENDS
 CONST	SEGMENT
 szError	DB	'ERROR', 00H
@@ -486,7 +487,7 @@ $LN58@AssumeDire:
 ; 379  :                 stdsym[j] = CreateTypeSymbol( NULL, "", FALSE );
 
 	xor	r8d, r8d
-	lea	rdx, OFFSET FLAT:$SG11098
+	lea	rdx, OFFSET FLAT:$SG11099
 	xor	ecx, ecx
 	call	CreateTypeSymbol
 	mov	QWORD PTR stdsym[rdi+r15*8], rax
@@ -1221,7 +1222,7 @@ $LN16:
 	lea	rax, OFFSET FLAT:szNothing
 	mov	r9d, 261				; 00000105H
 	cmovne	rax, rdx
-	lea	rcx, OFFSET FLAT:$SG11026
+	lea	rcx, OFFSET FLAT:$SG11027
 	mov	QWORD PTR [rsp+104], rax
 	mov	DWORD PTR [rsp+96], 30
 	mov	QWORD PTR [rsp+88], rdx
@@ -1288,7 +1289,7 @@ $LN10@ModelAssum:
 ; 244  :         if ( ModuleInfo.distance != STACK_FAR )
 
 	cmp	DWORD PTR ModuleInfo+356, 1
-	lea	rdx, OFFSET FLAT:$SG11035
+	lea	rdx, OFFSET FLAT:$SG11036
 
 ; 245  :             pFmt = "%r %r:%s,%r:%s,%r:%s";
 ; 246  :         else
@@ -1296,7 +1297,7 @@ $LN10@ModelAssum:
 ; 248  :         AddLineQueueX( pFmt, T_ASSUME, T_CS, pCS, T_DS, szDgroup, T_SS, szDgroup );
 
 	mov	QWORD PTR [rsp+56], rbx
-	lea	rcx, OFFSET FLAT:$SG11034
+	lea	rcx, OFFSET FLAT:$SG11035
 	cmove	rcx, rdx
 	mov	DWORD PTR [rsp+48], 27
 	mov	edx, 439				; 000001b7H

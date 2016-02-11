@@ -9,51 +9,52 @@ _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 COMM	evex:BYTE
+COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10673 DB	'omffixup.c', 00H
-	ORG $+5
 $SG10674 DB	'omffixup.c', 00H
 	ORG $+5
 $SG10675 DB	'omffixup.c', 00H
 	ORG $+5
-$SG10695 DB	'omf_write_modend(%p): fixup->frame_type/datum=%u/%u, EXT'
+$SG10676 DB	'omffixup.c', 00H
+	ORG $+5
+$SG10696 DB	'omf_write_modend(%p): fixup->frame_type/datum=%u/%u, EXT'
 	DB	'ERNAL sym=%s', 0aH, 00H
 	ORG $+2
-$SG10697 DB	'NULL', 00H
+$SG10698 DB	'NULL', 00H
 	ORG $+3
-$SG10698 DB	'OmfFixGenFixModend(%p): fixup->frame_type/datum=%u/%u sy'
+$SG10699 DB	'OmfFixGenFixModend(%p): fixup->frame_type/datum=%u/%u sy'
 	DB	'm->name=%s state=%X segm=%s', 0aH, 00H
 	ORG $+3
-$SG10699 DB	'omffixup.c', 00H
+$SG10700 DB	'omffixup.c', 00H
 	ORG $+1
-$SG10716 DB	'NULL', 00H
+$SG10717 DB	'NULL', 00H
 	ORG $+7
-$SG10717 DB	'omf_fill_logref: sym=%s, state=%d, fixup->type=%u', 0aH, 00H
+$SG10718 DB	'omf_fill_logref: sym=%s, state=%d, fixup->type=%u', 0aH, 00H
 	ORG $+5
-$SG10720 DB	'omf_fill_logref: sym is NULL, frame_type=%u', 0aH, 00H
+$SG10721 DB	'omf_fill_logref: sym is NULL, frame_type=%u', 0aH, 00H
 	ORG $+3
-$SG10724 DB	'omf_fill_logref: sym->state is SYM_UNDEFINED', 0aH, 00H
+$SG10725 DB	'omf_fill_logref: sym->state is SYM_UNDEFINED', 0aH, 00H
 	ORG $+2
-$SG10727 DB	'omf_fill_logref: sym->state is SYM_GRP', 0aH, 00H
-$SG10732 DB	'omf_fill_logref: sym->state is SYM_SEG %s', 0aH, 00H
+$SG10728 DB	'omf_fill_logref: sym->state is SYM_GRP', 0aH, 00H
+$SG10733 DB	'omf_fill_logref: sym->state is SYM_SEG %s', 0aH, 00H
 	ORG $+5
-$SG10737 DB	'omf_fill_logref: sym->state is SYM_EXTERNAL, fixup->fram'
+$SG10738 DB	'omf_fill_logref: sym->state is SYM_EXTERNAL, fixup->fram'
 	DB	'e_type/datum=%u/%u', 0aH, 00H
 	ORG $+4
-$SG10739 DB	'omffixup.c', 00H
+$SG10740 DB	'omffixup.c', 00H
 	ORG $+1
-$SG10740 DB	'NULL', 00H
+$SG10741 DB	'NULL', 00H
 	ORG $+7
-$SG10773 DB	'omffixup.c', 00H
-	ORG $+13
-$SG10741 DB	'omf_fill_logref: sym->state is SYM_INTERNAL, sym->segmen'
-	DB	't=%s, fixup->frame/datum=%u/%u', 0aH, 00H
 $SG10774 DB	'omffixup.c', 00H
-	ORG $+5
+	ORG $+13
+$SG10742 DB	'omf_fill_logref: sym->state is SYM_INTERNAL, sym->segmen'
+	DB	't=%s, fixup->frame/datum=%u/%u', 0aH, 00H
 $SG10775 DB	'omffixup.c', 00H
 	ORG $+5
-$SG10788 DB	'omffixup.c', 00H
+$SG10776 DB	'omffixup.c', 00H
+	ORG $+5
+$SG10789 DB	'omffixup.c', 00H
 _DATA	ENDS
 PUBLIC	OmfFixGenFix
 PUBLIC	OmfFixGenFixModend
@@ -211,14 +212,14 @@ $LN29@omf_fill_l:
 	mov	QWORD PTR tv73[rsp], rax
 	jmp	SHORT $LN31@omf_fill_l
 $LN30@omf_fill_l:
-	lea	rax, OFFSET FLAT:$SG10716
+	lea	rax, OFFSET FLAT:$SG10717
 	mov	QWORD PTR tv73[rsp], rax
 $LN31@omf_fill_l:
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	r9d, DWORD PTR [rax+24]
 	mov	r8d, DWORD PTR tv69[rsp]
 	mov	rdx, QWORD PTR tv73[rsp]
-	lea	rcx, OFFSET FLAT:$SG10717
+	lea	rcx, OFFSET FLAT:$SG10718
 	call	DoDebugMsg1
 
 ; 244  :                sym ? sym->name : "NULL", sym ? sym->state : -1, fixup->type ));
@@ -238,7 +239,7 @@ $LN31@omf_fill_l:
 	mov	rax, QWORD PTR fixup$[rsp]
 	movsx	eax, BYTE PTR [rax+40]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG10720
+	lea	rcx, OFFSET FLAT:$SG10721
 	call	DoDebugMsg
 
 ; 253  :         if ( fixup->frame_type == FRAME_NONE ) /* v1.96: nothing to do without a frame */
@@ -285,7 +286,7 @@ $LN2@omf_fill_l:
 ; 260  : 
 ; 261  :         DebugMsg(("omf_fill_logref: sym->state is SYM_UNDEFINED\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG10724
+	lea	rcx, OFFSET FLAT:$SG10725
 	call	DoDebugMsg
 
 ; 262  :         EmitErr( SYMBOL_NOT_DEFINED, sym->name );
@@ -312,7 +313,7 @@ $LN5@omf_fill_l:
 ; 266  : 
 ; 267  :         DebugMsg1(("omf_fill_logref: sym->state is SYM_GRP\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG10727
+	lea	rcx, OFFSET FLAT:$SG10728
 	call	DoDebugMsg1
 
 ; 268  :         lr->target = TARGET_GRP;
@@ -382,7 +383,7 @@ $LN7@omf_fill_l:
 ; 279  : 
 ; 280  :         DebugMsg1(("omf_fill_logref: sym->state is SYM_SEG %s\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG10732
+	lea	rcx, OFFSET FLAT:$SG10733
 	call	DoDebugMsg1
 
 ; 281  :         lr->target = TARGET_SEG;
@@ -467,7 +468,7 @@ $LN11@omf_fill_l:
 	movsx	ecx, BYTE PTR [rcx+40]
 	mov	r8d, eax
 	mov	edx, ecx
-	lea	rcx, OFFSET FLAT:$SG10737
+	lea	rcx, OFFSET FLAT:$SG10738
 	call	DoDebugMsg1
 
 ; 298  :                       fixup->frame_type, fixup->frame_datum ));
@@ -520,7 +521,7 @@ $LN15@omf_fill_l:
 	jmp	SHORT $LN33@omf_fill_l
 $LN32@omf_fill_l:
 	mov	edx, 308				; 00000134H
-	lea	rcx, OFFSET FLAT:$SG10739
+	lea	rcx, OFFSET FLAT:$SG10740
 	call	InternalError
 	mov	DWORD PTR tv191[rsp], eax
 $LN33@omf_fill_l:
@@ -536,7 +537,7 @@ $LN33@omf_fill_l:
 	mov	QWORD PTR tv202[rsp], rax
 	jmp	SHORT $LN35@omf_fill_l
 $LN34@omf_fill_l:
-	lea	rax, OFFSET FLAT:$SG10740
+	lea	rax, OFFSET FLAT:$SG10741
 	mov	QWORD PTR tv202[rsp], rax
 $LN35@omf_fill_l:
 	mov	rax, QWORD PTR fixup$[rsp]
@@ -546,7 +547,7 @@ $LN35@omf_fill_l:
 	mov	r9d, eax
 	mov	r8d, ecx
 	mov	rdx, QWORD PTR tv202[rsp]
-	lea	rcx, OFFSET FLAT:$SG10741
+	lea	rcx, OFFSET FLAT:$SG10742
 	call	DoDebugMsg1
 
 ; 310  :                        sym->segment ? sym->segment->name : "NULL", fixup->frame_type, fixup->frame_datum ));
@@ -771,7 +772,7 @@ TranslateLogref PROC
 	jmp	SHORT $LN8@TranslateL
 $LN7@TranslateL:
 	mov	edx, 124				; 0000007cH
-	lea	rcx, OFFSET FLAT:$SG10673
+	lea	rcx, OFFSET FLAT:$SG10674
 	call	InternalError
 	mov	DWORD PTR tv68[rsp], eax
 $LN8@TranslateL:
@@ -784,7 +785,7 @@ $LN8@TranslateL:
 	jmp	SHORT $LN10@TranslateL
 $LN9@TranslateL:
 	mov	edx, 125				; 0000007dH
-	lea	rcx, OFFSET FLAT:$SG10674
+	lea	rcx, OFFSET FLAT:$SG10675
 	call	InternalError
 	mov	DWORD PTR tv73[rsp], eax
 $LN10@TranslateL:
@@ -796,7 +797,7 @@ $LN10@TranslateL:
 	cmp	DWORD PTR type$[rsp], 1
 	je	SHORT $LN11@TranslateL
 	mov	edx, 126				; 0000007eH
-	lea	rcx, OFFSET FLAT:$SG10675
+	lea	rcx, OFFSET FLAT:$SG10676
 	call	InternalError
 	mov	DWORD PTR tv79[rsp], eax
 	jmp	SHORT $LN12@TranslateL
@@ -1224,7 +1225,7 @@ $LN12:
 	mov	r9d, eax
 	mov	r8d, ecx
 	mov	rdx, QWORD PTR fixup$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10695
+	lea	rcx, OFFSET FLAT:$SG10696
 	call	DoDebugMsg
 
 ; 208  :                   fixup, fixup->frame_type, fixup->frame_datum, sym->name));
@@ -1276,7 +1277,7 @@ $LN2@OmfFixGenF:
 	mov	QWORD PTR tv94[rsp], rax
 	jmp	SHORT $LN9@OmfFixGenF
 $LN8@OmfFixGenF:
-	lea	rax, OFFSET FLAT:$SG10697
+	lea	rax, OFFSET FLAT:$SG10698
 	mov	QWORD PTR tv94[rsp], rax
 $LN9@OmfFixGenF:
 	mov	rax, QWORD PTR fixup$[rsp]
@@ -1294,7 +1295,7 @@ $LN9@OmfFixGenF:
 	mov	r9d, eax
 	mov	r8d, ecx
 	mov	rdx, QWORD PTR fixup$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10698
+	lea	rcx, OFFSET FLAT:$SG10699
 	call	DoDebugMsg
 
 ; 219  :                   fixup, fixup->frame_type, fixup->frame_datum, sym->name, sym->state, sym->segment ? sym->segment->name : "NULL" ));
@@ -1307,7 +1308,7 @@ $LN9@OmfFixGenF:
 	jmp	SHORT $LN11@OmfFixGenF
 $LN10@OmfFixGenF:
 	mov	edx, 220				; 000000dcH
-	lea	rcx, OFFSET FLAT:$SG10699
+	lea	rcx, OFFSET FLAT:$SG10700
 	call	InternalError
 	mov	DWORD PTR tv145[rsp], eax
 $LN11@OmfFixGenF:
@@ -1434,7 +1435,7 @@ $LN34:
 	jmp	SHORT $LN18@OmfFixGenF
 $LN17@OmfFixGenF:
 	mov	edx, 376				; 00000178H
-	lea	rcx, OFFSET FLAT:$SG10773
+	lea	rcx, OFFSET FLAT:$SG10774
 	call	InternalError
 	mov	DWORD PTR tv68[rsp], eax
 $LN18@OmfFixGenF:
@@ -1447,7 +1448,7 @@ $LN18@OmfFixGenF:
 	jmp	SHORT $LN20@OmfFixGenF
 $LN19@OmfFixGenF:
 	mov	edx, 377				; 00000179H
-	lea	rcx, OFFSET FLAT:$SG10774
+	lea	rcx, OFFSET FLAT:$SG10775
 	call	InternalError
 	mov	DWORD PTR tv73[rsp], eax
 $LN20@OmfFixGenF:
@@ -1459,7 +1460,7 @@ $LN20@OmfFixGenF:
 	cmp	DWORD PTR type$[rsp], 1
 	je	SHORT $LN21@OmfFixGenF
 	mov	edx, 378				; 0000017aH
-	lea	rcx, OFFSET FLAT:$SG10775
+	lea	rcx, OFFSET FLAT:$SG10776
 	call	InternalError
 	mov	DWORD PTR tv79[rsp], eax
 	jmp	SHORT $LN22@OmfFixGenF
@@ -1683,7 +1684,7 @@ $LN15@OmfFixGenF:
 	jmp	SHORT $LN32@OmfFixGenF
 $LN31@OmfFixGenF:
 	mov	edx, 426				; 000001aaH
-	lea	rcx, OFFSET FLAT:$SG10788
+	lea	rcx, OFFSET FLAT:$SG10789
 	call	InternalError
 	mov	DWORD PTR tv153[rsp], eax
 $LN32@OmfFixGenF:

@@ -10,34 +10,35 @@ _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 COMM	evex:BYTE
+COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
 banner_printed DB 01H DUP (?)
-$SG10993 DB	01H DUP (?)
-$SG11013 DB	01H DUP (?)
+$SG10994 DB	01H DUP (?)
+$SG11014 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG10908 DB	'%u%s. ', 00H
+$SG10909 DB	'%u%s. ', 00H
 	ORG $+1
-$SG10912 DB	'%s, %s', 0aH, 00H
-$SG10920 DB	'%-20s %s', 0aH, 00H
+$SG10913 DB	'%s, %s', 0aH, 00H
+$SG10921 DB	'%-20s %s', 0aH, 00H
 	ORG $+2
-$SG10948 DB	0aH, 00H
+$SG10949 DB	0aH, 00H
 	ORG $+2
-$SG10947 DB	'%s A%4u: ', 00H
+$SG10948 DB	'%s A%4u: ', 00H
 	ORG $+2
-$SG10967 DB	'w', 00H
+$SG10968 DB	'w', 00H
 	ORG $+2
-$SG10950 DB	'                           %s', 00H
+$SG10951 DB	'                           %s', 00H
 	ORG $+2
-$SG10994 DB	'%s', 0aH, 00H
-$SG11014 DB	'%s', 0aH, 00H
-$SG11021 DB	'ENOENT', 00H
+$SG10995 DB	'%s', 0aH, 00H
+$SG11015 DB	'%s', 0aH, 00H
+$SG11022 DB	'ENOENT', 00H
 	ORG $+1
-$SG11036 DB	'WriteError occured', 0aH, 00H
-$SG11045 DB	'%s', 00H
+$SG11037 DB	'WriteError occured', 0aH, 00H
+$SG11046 DB	'%s', 00H
 	ORG $+1
-$SG11044 DB	'InternalError enter', 0aH, 00H
+$SG11045 DB	'InternalError enter', 0aH, 00H
 _DATA	ENDS
 CONST	SEGMENT
 usage	DB	'   HJWasm [options] asm-file [options] [asm-file] ... [@'
@@ -623,7 +624,7 @@ $LN3:
 ; 358  :     char buffer[MAX_LINE_LEN];
 ; 359  :     DebugMsg(("InternalError enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11044
+	lea	rcx, OFFSET FLAT:$SG11045
 	call	DoDebugMsg
 
 ; 360  :     ModuleInfo.g.error_count++;
@@ -642,7 +643,7 @@ $LN3:
 	mov	ecx, 1
 	call	QWORD PTR __imp___acrt_iob_func
 	lea	r8, QWORD PTR buffer$[rsp]
-	lea	rdx, OFFSET FLAT:$SG11045
+	lea	rdx, OFFSET FLAT:$SG11046
 	mov	rcx, rax
 	call	fprintf
 
@@ -741,7 +742,7 @@ PrtMsg	PROC
 	mov	eax, 8
 	imul	rax, rax, 3
 	lea	rcx, OFFSET FLAT:ModuleInfo+128
-	lea	rdx, OFFSET FLAT:$SG10967
+	lea	rdx, OFFSET FLAT:$SG10968
 	mov	rcx, QWORD PTR [rcx+rax]
 	call	QWORD PTR __imp_fopen
 	mov	ecx, 8
@@ -972,7 +973,7 @@ $LN2@PutMsg:
 	add	eax, DWORD PTR msgnum$[rsp]
 	mov	r9d, eax
 	mov	r8, QWORD PTR type$[rsp]
-	lea	rdx, OFFSET FLAT:$SG10947
+	lea	rdx, OFFSET FLAT:$SG10948
 	lea	rcx, QWORD PTR buffer$[rsp]
 	call	sprintf
 	mov	DWORD PTR i$[rsp], eax
@@ -1007,7 +1008,7 @@ $LN10@PutMsg:
 	mov	r9, QWORD PTR fp$[rsp]
 	mov	r8d, 1
 	mov	edx, 1
-	lea	rcx, OFFSET FLAT:$SG10948
+	lea	rcx, OFFSET FLAT:$SG10949
 	call	QWORD PTR __imp_fwrite
 
 ; 187  : 
@@ -1045,7 +1046,7 @@ $LN10@PutMsg:
 ; 195  :             LstPrintf( "                           %s", buffer );
 
 	lea	rdx, QWORD PTR buffer$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10950
+	lea	rcx, OFFSET FLAT:$SG10951
 	call	LstPrintf
 
 ; 196  :             LstNL();
@@ -1086,7 +1087,7 @@ $LN3:
 
 ; 347  :     DebugMsg(("WriteError occured\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11036
+	lea	rcx, OFFSET FLAT:$SG11037
 	call	DoDebugMsg
 
 ; 348  :     Fatal( FILE_WRITE_ERROR, CurrFName[OBJ], errno );
@@ -1151,7 +1152,7 @@ $LN2@PrintUsage:
 
 	mov	r8, QWORD PTR p2$1[rsp]
 	mov	rdx, QWORD PTR p$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10920
+	lea	rcx, OFFSET FLAT:$SG10921
 	call	printf
 
 ; 156  :         p = p2 + strlen( p2 ) + 1;
@@ -1210,7 +1211,7 @@ $LN4:
 	mov	rcx, QWORD PTR tv67[rsp]
 	mov	r8, rcx
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG10912
+	lea	rcx, OFFSET FLAT:$SG10913
 	call	printf
 
 ; 143  :         return( 4 ); /* return number of lines printed */
@@ -1254,7 +1255,7 @@ $LN5:
 	call	QWORD PTR __imp__errno
 	cmp	DWORD PTR [rax], 2
 	jne	SHORT $LN3@ErrnoStr
-	lea	rax, OFFSET FLAT:$SG11021
+	lea	rax, OFFSET FLAT:$SG11022
 	mov	QWORD PTR tv73[rsp], rax
 	jmp	SHORT $LN4@ErrnoStr
 $LN3@ErrnoStr:
@@ -1383,11 +1384,11 @@ $LN8:
 	mov	QWORD PTR tv71[rsp], rax
 	jmp	SHORT $LN7@EmitWarn
 $LN6@EmitWarn:
-	lea	rax, OFFSET FLAT:$SG11013
+	lea	rax, OFFSET FLAT:$SG11014
 	mov	QWORD PTR tv71[rsp], rax
 $LN7@EmitWarn:
 	mov	rdx, QWORD PTR tv71[rsp]
-	lea	rcx, OFFSET FLAT:$SG11014
+	lea	rcx, OFFSET FLAT:$SG11015
 	call	printf
 
 ; 281  : #endif
@@ -1504,11 +1505,11 @@ $LN6:
 	mov	QWORD PTR tv69[rsp], rax
 	jmp	SHORT $LN5@EmitErr
 $LN4@EmitErr:
-	lea	rax, OFFSET FLAT:$SG10993
+	lea	rax, OFFSET FLAT:$SG10994
 	mov	QWORD PTR tv69[rsp], rax
 $LN5@EmitErr:
 	mov	rdx, QWORD PTR tv69[rsp]
-	lea	rcx, OFFSET FLAT:$SG10994
+	lea	rcx, OFFSET FLAT:$SG10995
 	call	printf
 
 ; 253  : #endif
@@ -1785,7 +1786,7 @@ $LN3@DoDebugMsg:
 	mov	rcx, QWORD PTR tv71[rsp]
 	mov	r8, rcx
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG10908
+	lea	rcx, OFFSET FLAT:$SG10909
 	call	printf
 $LN4@DoDebugMsg:
 

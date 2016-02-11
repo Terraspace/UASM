@@ -9,37 +9,38 @@ _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 COMM	evex:BYTE
+COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11403 DB	'linnum.c', 00H
+$SG11402 DB	'linnum.c', 00H
 	ORG $+7
-$SG11404 DB	'$$$%05u', 00H
-$SG11405 DB	'NULL', 00H
+$SG11403 DB	'$$$%05u', 00H
+$SG11404 DB	'NULL', 00H
 	ORG $+3
-$SG11406 DB	'AddLinnumDataRef(src=%u.%u): CurrProc==NULL, dmyproc=%s '
+$SG11405 DB	'AddLinnumDataRef(src=%u.%u): CurrProc==NULL, dmyproc=%s '
 	DB	'searching proc=%s', 0aH, 00H
 	ORG $+5
-$SG11409 DB	'AddLinnumDataRef: new proc %s created', 0aH, 00H
+$SG11408 DB	'AddLinnumDataRef: new proc %s created', 0aH, 00H
 	ORG $+1
-$SG11416 DB	'AddLinnumDataRef(src=%u.%u) line skipped, lastline=%u', 0aH
+$SG11415 DB	'AddLinnumDataRef(src=%u.%u) line skipped, lastline=%u', 0aH
 	DB	00H
 	ORG $+1
-$SG11412 DB	'AddLinnumDataRef: CURRPROC=NULL, sym=%s, calling AddLinn'
+$SG11411 DB	'AddLinnumDataRef: CURRPROC=NULL, sym=%s, calling AddLinn'
 	DB	'umData(src=%u.%u)', 0aH, 00H
 	ORG $+1
-$SG11417 DB	'NULL', 00H
+$SG11416 DB	'NULL', 00H
 	ORG $+7
-$SG11425 DB	'AddLinnumDataRef: calling AddLinnumData(src=%u.%u) sym=%'
+$SG11424 DB	'AddLinnumDataRef: calling AddLinnumData(src=%u.%u) sym=%'
 	DB	's', 0aH, 00H
 	ORG $+5
-$SG11444 DB	'LinnumFini: last dummy proc size=%Xh', 0aH, 00H
+$SG11443 DB	'LinnumFini: last dummy proc size=%Xh', 0aH, 00H
 	ORG $+2
-$SG11418 DB	'AddLinnumDataRef(src=%u.%u): currofs=%Xh, CurrProc=%s, G'
+$SG11417 DB	'AddLinnumDataRef(src=%u.%u): currofs=%Xh, CurrProc=%s, G'
 	DB	'eneratedCode=%u', 0aH, 00H
 	ORG $+7
-$SG11423 DB	'linnum.c', 00H
+$SG11422 DB	'linnum.c', 00H
 	ORG $+7
-$SG11429 DB	'AddLinnumDataRef: calling AddLinnumData(src=%u.%u ofs=%X'
+$SG11428 DB	'AddLinnumDataRef: calling AddLinnumData(src=%u.%u ofs=%X'
 	DB	')', 0aH, 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
@@ -429,7 +430,7 @@ $LN4:
 ; 226  :             dmyproc->offset;
 ; 227  :         DebugMsg(("LinnumFini: last dummy proc size=%Xh\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11444
+	lea	rcx, OFFSET FLAT:$SG11443
 	call	DoDebugMsg
 $LN2@LinnumFini:
 
@@ -550,7 +551,7 @@ $LN3@AddLinnumD:
 	jmp	SHORT $LN22@AddLinnumD
 $LN21@AddLinnumD:
 	mov	edx, 89					; 00000059H
-	lea	rcx, OFFSET FLAT:$SG11403
+	lea	rcx, OFFSET FLAT:$SG11402
 	call	InternalError
 	mov	DWORD PTR tv79[rsp], eax
 $LN22@AddLinnumD:
@@ -574,7 +575,7 @@ $LN4@AddLinnumD:
 ; 94   :         sprintf( procname, "$$$%05u", procidx );
 
 	mov	r8d, DWORD PTR procidx
-	lea	rdx, OFFSET FLAT:$SG11404
+	lea	rdx, OFFSET FLAT:$SG11403
 	lea	rcx, QWORD PTR procname$4[rsp]
 	call	sprintf
 
@@ -587,7 +588,7 @@ $LN4@AddLinnumD:
 	mov	QWORD PTR tv92[rsp], rax
 	jmp	SHORT $LN24@AddLinnumD
 $LN23@AddLinnumD:
-	lea	rax, OFFSET FLAT:$SG11405
+	lea	rax, OFFSET FLAT:$SG11404
 	mov	QWORD PTR tv92[rsp], rax
 $LN24@AddLinnumD:
 	lea	rax, QWORD PTR procname$4[rsp]
@@ -595,7 +596,7 @@ $LN24@AddLinnumD:
 	mov	r9, QWORD PTR tv92[rsp]
 	mov	r8d, DWORD PTR line_num$[rsp]
 	mov	edx, DWORD PTR srcfile$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11406
+	lea	rcx, OFFSET FLAT:$SG11405
 	call	DoDebugMsg1
 
 ; 96   :         dmyproc = SymSearch( procname );
@@ -622,7 +623,7 @@ $LN24@AddLinnumD:
 ; 101  :             DebugMsg1(("AddLinnumDataRef: new proc %s created\n", procname ));
 
 	lea	rdx, QWORD PTR procname$4[rsp]
-	lea	rcx, OFFSET FLAT:$SG11409
+	lea	rcx, OFFSET FLAT:$SG11408
 	call	DoDebugMsg1
 
 ; 102  :             dmyproc->isproc = TRUE; /* flag is usually set inside ParseProc() */
@@ -752,7 +753,7 @@ $LN6@AddLinnumD:
 	mov	r9d, eax
 	mov	r8d, ecx
 	mov	rdx, QWORD PTR [rdx+8]
-	lea	rcx, OFFSET FLAT:$SG11412
+	lea	rcx, OFFSET FLAT:$SG11411
 	call	DoDebugMsg1
 
 ; 121  :                 AddLinnumData( curr );
@@ -792,7 +793,7 @@ $LN10@AddLinnumD:
 	mov	r9d, DWORD PTR lastLineNumber
 	mov	r8d, DWORD PTR line_num$[rsp]
 	mov	edx, DWORD PTR srcfile$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11416
+	lea	rcx, OFFSET FLAT:$SG11415
 	call	DoDebugMsg1
 $LN11@AddLinnumD:
 
@@ -812,7 +813,7 @@ $LN9@AddLinnumD:
 	mov	QWORD PTR tv198[rsp], rax
 	jmp	SHORT $LN26@AddLinnumD
 $LN25@AddLinnumD:
-	lea	rax, OFFSET FLAT:$SG11417
+	lea	rax, OFFSET FLAT:$SG11416
 	mov	QWORD PTR tv198[rsp], rax
 $LN26@AddLinnumD:
 	call	GetCurrOffset
@@ -823,7 +824,7 @@ $LN26@AddLinnumD:
 	mov	r9d, eax
 	mov	r8d, DWORD PTR line_num$[rsp]
 	mov	edx, DWORD PTR srcfile$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11418
+	lea	rcx, OFFSET FLAT:$SG11417
 	call	DoDebugMsg1
 
 ; 135  : 
@@ -940,7 +941,7 @@ $LN28@AddLinnumD:
 	jmp	SHORT $LN30@AddLinnumD
 $LN29@AddLinnumD:
 	mov	edx, 156				; 0000009cH
-	lea	rcx, OFFSET FLAT:$SG11423
+	lea	rcx, OFFSET FLAT:$SG11422
 	call	InternalError
 	mov	DWORD PTR tv243[rsp], eax
 $LN30@AddLinnumD:
@@ -989,7 +990,7 @@ $LN15@AddLinnumD:
 	and	edx, 4095				; 00000fffH
 	mov	r9, QWORD PTR [rax+8]
 	mov	r8d, ecx
-	lea	rcx, OFFSET FLAT:$SG11425
+	lea	rcx, OFFSET FLAT:$SG11424
 	call	DoDebugMsg1
 
 ; 165  :             AddLinnumData( curr );
@@ -1132,7 +1133,7 @@ $LN32@AddLinnumD:
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	r8d, DWORD PTR [rax+8]
 	mov	edx, DWORD PTR tv310[rsp]
-	lea	rcx, OFFSET FLAT:$SG11429
+	lea	rcx, OFFSET FLAT:$SG11428
 	call	DoDebugMsg1
 
 ; 195  :     AddLinnumData( curr );

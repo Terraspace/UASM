@@ -12,23 +12,24 @@ COMM	UseSavedState:BYTE
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 COMM	evex:BYTE
+COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10775 DB	'SaveState enter', 0aH, 00H
+$SG10776 DB	'SaveState enter', 0aH, 00H
 	ORG $+7
-$SG10776 DB	'SaveState exit', 0aH, 00H
-$SG10799 DB	'StoreLine(>%s<, lst_position=%u): cur=%X', 0aH, 00H
+$SG10777 DB	'SaveState exit', 0aH, 00H
+$SG10800 DB	'StoreLine(>%s<, lst_position=%u): cur=%X', 0aH, 00H
 	ORG $+2
-$SG10802 DB	'OUT', 00H
-$SG10805 DB	'%s', 0aH, 00H
+$SG10803 DB	'OUT', 00H
+$SG10806 DB	'%s', 0aH, 00H
 	ORG $+4
-$SG10810 DB	'SkipSavedState enter', 0aH, 00H
+$SG10811 DB	'SkipSavedState enter', 0aH, 00H
 	ORG $+2
-$SG10817 DB	'SaveVariableState(%s)=%d', 0aH, 00H
+$SG10818 DB	'SaveVariableState(%s)=%d', 0aH, 00H
 	ORG $+6
-$SG10828 DB	'RestoreState enter', 0aH, 00H
+$SG10829 DB	'RestoreState enter', 0aH, 00H
 	ORG $+4
-$SG10830 DB	'RestoreState: sym >%s<, value=%Xh (hvalue=%Xh), defined='
+$SG10831 DB	'RestoreState: sym >%s<, value=%Xh (hvalue=%Xh), defined='
 	DB	'%u', 0aH, 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
@@ -181,7 +182,7 @@ SaveState PROC
 
 ; 52   :     DebugMsg1(("SaveState enter\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG10775
+	lea	rcx, OFFSET FLAT:$SG10776
 	call	DoDebugMsg1
 
 ; 53   :     StoreState = TRUE;
@@ -228,7 +229,7 @@ SaveState PROC
 ; 63   : 
 ; 64   :     DebugMsg(( "SaveState exit\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG10776
+	lea	rcx, OFFSET FLAT:$SG10777
 	call	DoDebugMsg
 
 ; 65   : }
@@ -265,7 +266,7 @@ $LN5:
 	mov	r8d, DWORD PTR [rax+16]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10817
+	lea	rcx, OFFSET FLAT:$SG10818
 	call	DoDebugMsg1
 
 ; 145  :     sym->issaved = TRUE; /* don't try to save this symbol (anymore) */
@@ -379,7 +380,7 @@ $LN7:
 
 ; 165  :     DebugMsg1(("RestoreState enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG10828
+	lea	rcx, OFFSET FLAT:$SG10829
 	call	DoDebugMsg1
 
 ; 166  :     if ( modstate.init ) {
@@ -415,7 +416,7 @@ $LN4@RestoreSta:
 	mov	rax, QWORD PTR curr$1[rsp]
 	mov	r8d, DWORD PTR [rax+16]
 	mov	rdx, QWORD PTR [rcx+8]
-	lea	rcx, OFFSET FLAT:$SG10830
+	lea	rcx, OFFSET FLAT:$SG10831
 	call	DoDebugMsg1
 
 ; 171  :             /* v2.07: MT_ABS is obsolete */
@@ -530,7 +531,7 @@ $LN3:
 
 ; 124  :     DebugMsg(("SkipSavedState enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG10810
+	lea	rcx, OFFSET FLAT:$SG10811
 	call	DoDebugMsg
 
 ; 125  :     UseSavedState = FALSE;
@@ -768,7 +769,7 @@ $LN11@StoreLine:
 	mov	r9, QWORD PTR LineStoreCurr
 	mov	r8d, DWORD PTR lst_position$[rsp]
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG10799
+	lea	rcx, OFFSET FLAT:$SG10800
 	call	DoDebugMsg1
 
 ; 100  : 
@@ -806,7 +807,7 @@ $LN3@StoreLine:
 	mov	rax, QWORD PTR p$[rsp]
 	inc	rax
 	mov	r8d, 3
-	lea	rdx, OFFSET FLAT:$SG10802
+	lea	rdx, OFFSET FLAT:$SG10803
 	mov	rcx, rax
 	call	QWORD PTR __imp__memicmp
 	test	eax, eax
@@ -855,7 +856,7 @@ $LN12@StoreLine:
 	mov	rax, QWORD PTR LineStoreCurr
 	add	rax, 16
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG10805
+	lea	rcx, OFFSET FLAT:$SG10806
 	call	printf
 $LN15@StoreLine:
 

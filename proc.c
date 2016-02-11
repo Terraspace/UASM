@@ -1103,12 +1103,27 @@ ret_code ParseProc( struct dsym *proc, int i, struct asm_tok tokenarray[], bool 
      */
     //langtype = ModuleInfo.langtype; /* set the default value */
     GetLangType( &i, tokenarray, &langtype ); /* optionally overwrite the value */
-    /* has language changed? */
+    
+	/* John Hankinson: 2016-02-10 Allows Linux64 to utlise Win64 ABI */
+	#if AMD64_SUPPORT
+	if (Options.output_format == OFORMAT_ELF)
+		langtype = LANG_FASTCALL;
+	#endif
+
+	/* has language changed? */
     if ( proc->sym.langtype != LANG_NONE && proc->sym.langtype != langtype ) {
         DebugMsg(("ParseProc: error, language changed, %u - %u\n", proc->sym.langtype, langtype ));
         EmitError( PROC_AND_PROTO_CALLING_CONV_CONFLICT );
     } else
         proc->sym.langtype = langtype;
+
+	/* John Hankinson: 2016-02-10 Allows Linux64 to utlise Win64 ABI */
+	#if AMD64_SUPPORT
+	if (proc->sym.langtype == LANG_NONE && Options.output_format == OFORMAT_ELF)
+	{
+		proc->sym.langtype = LANG_FASTCALL;
+	}
+	#endif
 
     /* 3. attribute is <visibility> */
     /* note that reserved word PUBLIC is a directive! */
@@ -1196,8 +1211,8 @@ ret_code ParseProc( struct dsym *proc, int i, struct asm_tok tokenarray[], bool 
         IsPROC &&
         tokenarray[i].token == T_RES_ID &&
         tokenarray[i].tokval == T_FRAME ) {
-        /* v2.05: don't accept FRAME for ELF */
-        if ( Options.output_format != OFORMAT_COFF
+		/* v2.05: don't accept FRAME for ELF  - 2016-02-10 John Hankinson allowed ELF64 to use FRAME/Win64 ABI */
+		if (Options.output_format != OFORMAT_COFF && Options.output_format != OFORMAT_ELF
 #if PE_SUPPORT
             && ModuleInfo.sub_format != SFORMAT_PE
 #endif
@@ -1649,6 +1664,10 @@ static void WriteSEHData( struct dsym *proc )
     char segnamebuff[12];
     char buffer[128];
 
+	/* 2016-02-10 John Hankinson - Don't bother writing SEH data for ELF64 Win64 ABI hack */
+	if (Options.output_format == OFORMAT_ELF)
+	return;
+
     if ( endprolog_found == FALSE ) {
         EmitErr( MISSING_ENDPROLOG, proc->sym.name );
     }
@@ -1851,7 +1870,7 @@ ret_code ExcFrameDirective( int i, struct asm_tok tokenarray[] )
 
     DebugMsg1(("ExcFrameDirective(%s) enter\n", tokenarray[i].string_ptr ));
     /* v2.05: accept directives for windows only */
-    if ( Options.output_format != OFORMAT_COFF
+	if (Options.output_format != OFORMAT_COFF && Options.output_format != OFORMAT_ELF /* John Hankinson 2016-02-10 Added elf win64 hack */
 #if PE_SUPPORT
         && ModuleInfo.sub_format != SFORMAT_PE
 #endif
@@ -2418,8 +2437,36 @@ static void write_win64_default_prologue( struct proc_info *info )
             AddLineQueueX( "mov %r, %r", T_RSP, T_RAX );
         } else
 #endif
-        AddLineQueueX( *(ppfmt+0), T_RSP, NUMQUAL info->localsize, sym_ReservedStack->name );
-        AddLineQueueX( *(ppfmt+1), T_DOT_ALLOCSTACK, NUMQUAL info->localsize, sym_ReservedStack->name );
+			if (ZEROLOCALS && info->localsize) {
+				if (info->localsize <= 128) {
+					AddLineQueueX(*(ppfmt + 0), T_RSP, NUMQUAL info->localsize, sym_ReservedStack->name);
+					AddLineQueueX(*(ppfmt + 1), T_DOT_ALLOCSTACK, NUMQUAL info->localsize, sym_ReservedStack->name);
+
+					AddLineQueueX("mov %r, %u", T_EAX, info->localsize);
+					AddLineQueueX("dec %r", T_EAX);
+					AddLineQueueX("mov byte ptr [%r + %r], 0", T_RSP, T_RAX);
+					AddLineQueueX("dw 0F875h");
+				}
+				else
+				{
+					AddLineQueueX(*(ppfmt + 0), T_RSP, NUMQUAL info->localsize + 16, sym_ReservedStack->name);
+					AddLineQueueX(*(ppfmt + 1), T_DOT_ALLOCSTACK, NUMQUAL info->localsize + 16, sym_ReservedStack->name);
+					AddLineQueueX("mov [%r], %r", T_RSP, T_RDI);
+					AddLineQueueX("mov [%r+8], %r", T_RSP, T_RCX);
+					AddLineQueueX("xor %r, %r", T_EAX, T_EAX);
+					AddLineQueueX("mov %r, %u", T_ECX, info->localsize);
+					AddLineQueueX("mov %r, %r", T_RDI, T_RSP);
+					AddLineQueueX("add %r, %u", T_RDI, 16);
+					AddLineQueueX("rep stosb");
+					AddLineQueueX("mov %r,[%r]", T_RDI, T_RSP);
+					AddLineQueueX("mov %r,[%r+8]", T_RCX, T_RSP);
+				}
+			}
+			else {
+				AddLineQueueX(*(ppfmt + 0), T_RSP, NUMQUAL info->localsize, sym_ReservedStack->name);
+				AddLineQueueX(*(ppfmt + 1), T_DOT_ALLOCSTACK, NUMQUAL info->localsize, sym_ReservedStack->name);
+			}
+
 
         /* save xmm registers */
         if ( cntxmm ) {

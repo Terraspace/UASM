@@ -6,12 +6,13 @@ INCLUDELIB MSVCRTD
 INCLUDELIB OLDNAMES
 
 _BSS	SEGMENT
-$SG11309 DB	01H DUP (?)
+$SG11310 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 COMM	evex:BYTE
+COMM	ZEROLOCALS:BYTE
 COMM	cnttok0:DWORD
 COMM	cnttok1:DWORD
 _DATA	ENDS
@@ -29,52 +30,52 @@ stokstr2 DW	05bH
 	DW	05dH
 CONST	ENDS
 _DATA	SEGMENT
-$SG11281 DB	'COMMENT active, delim is >%c<, line is >%s<', 0aH, 00H
+$SG11282 DB	'COMMENT active, delim is >%c<, line is >%s<', 0aH, 00H
 	ORG $+3
-$SG11283 DB	'COMMENT mode exited', 0aH, 00H
+$SG11284 DB	'COMMENT mode exited', 0aH, 00H
 	ORG $+3
-$SG11288 DB	'Tokenize: calling IsMultiLine()', 0aH, 00H
+$SG11289 DB	'Tokenize: calling IsMultiLine()', 0aH, 00H
 	ORG $+3
-$SG10921 DB	'1to16', 00H
+$SG10922 DB	'1to16', 00H
 	ORG $+2
-$SG11094 DB	'::', 00H
+$SG11095 DB	'::', 00H
 	ORG $+1
-$SG11290 DB	'Tokenize: IsMultiLine(%s)=TRUE', 0aH, 00H
-$SG11294 DB	'Tokenize: line concatenation, line=%s', 0aH, 00H
+$SG11291 DB	'Tokenize: IsMultiLine(%s)=TRUE', 0aH, 00H
+$SG11295 DB	'Tokenize: line concatenation, line=%s', 0aH, 00H
 	ORG $+1
-$SG11304 DB	'tokenize: COMMENT starting, delim is >%c<', 0aH, 00H
+$SG11305 DB	'tokenize: COMMENT starting, delim is >%c<', 0aH, 00H
 	ORG $+1
-$SG11095 DB	':', 00H
+$SG11096 DB	':', 00H
 	ORG $+2
-$SG11308 DB	'tokenize: token index %u >= MAX_TOKEN (=%u), line=>%s<', 0aH
+$SG11309 DB	'tokenize: token index %u >= MAX_TOKEN (=%u), line=>%s<', 0aH
 	DB	00H
-$SG10912 DB	'1to2', 00H
+$SG10913 DB	'1to2', 00H
 	ORG $+3
-$SG10915 DB	'1to4', 00H
+$SG10916 DB	'1to4', 00H
 	ORG $+3
-$SG10918 DB	'1to8', 00H
+$SG10919 DB	'1to8', 00H
 	ORG $+3
-$SG11062 DB	'Tokenize.get_string: comma concatenation: %s', 0aH, 00H
+$SG11063 DB	'Tokenize.get_string: comma concatenation: %s', 0aH, 00H
 	ORG $+2
-$SG11070 DB	'Tokenize.get_string: backslash concatenation: >%s<', 0aH
+$SG11071 DB	'Tokenize.get_string: backslash concatenation: >%s<', 0aH
 	DB	00H
-$SG11098 DB	'OUT', 00H
-$SG11100 DB	'%', 00H
+$SG11099 DB	'OUT', 00H
+$SG11101 DB	'%', 00H
 	ORG $+2
-$SG11112 DB	'=', 00H
+$SG11113 DB	'=', 00H
 	ORG $+2
-$SG11115 DB	'=!<>&|', 0a6H, 00H
-$SG11122 DB	'&', 00H
+$SG11116 DB	'=!<>&|', 0a6H, 00H
+$SG11123 DB	'&', 00H
 	ORG $+6
-$SG11173 DB	'get_number: BAD_NUMBER (%s), radix=%u, base=%u, ptr=>%s<'
+$SG11174 DB	'get_number: BAD_NUMBER (%s), radix=%u, base=%u, ptr=>%s<'
 	DB	', digits_seen=%Xh', 0aH, 00H
 	ORG $+1
-$SG11208 DB	'?', 00H
+$SG11209 DB	'?', 00H
 	ORG $+2
-$SG11224 DB	'get_id: error, unknown type in SpecialTable[%u]=%u', 0aH
+$SG11225 DB	'get_id: error, unknown type in SpecialTable[%u]=%u', 0aH
 	DB	00H
 	ORG $+4
-$SG11225 DB	'tokenize.c', 00H
+$SG11226 DB	'tokenize.c', 00H
 _DATA	ENDS
 PUBLIC	GetToken
 PUBLIC	Tokenize
@@ -470,7 +471,7 @@ $LN9@get_id:
 ; 906  :         buf->string_ptr = "?";
 
 	mov	rax, QWORD PTR buf$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11208
+	lea	rcx, OFFSET FLAT:$SG11209
 	mov	QWORD PTR [rax+8], rcx
 
 ; 907  :         return( NOT_ERROR );
@@ -872,13 +873,13 @@ $LN25@get_id:
 	movzx	eax, BYTE PTR [rcx+rax+11]
 	mov	r8d, eax
 	mov	edx, DWORD PTR index$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11224
+	lea	rcx, OFFSET FLAT:$SG11225
 	call	DoDebugMsg
 
 ; 1014 :         /**/myassert( 0 );
 
 	mov	edx, 1014				; 000003f6H
-	lea	rcx, OFFSET FLAT:$SG11225
+	lea	rcx, OFFSET FLAT:$SG11226
 	call	InternalError
 
 ; 1015 :         buf->token = T_ID;
@@ -1702,7 +1703,7 @@ $LN34@get_number:
 	mov	r9d, DWORD PTR base$[rsp]
 	mov	r8d, eax
 	mov	rdx, QWORD PTR dig_start$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11173
+	lea	rcx, OFFSET FLAT:$SG11174
 	call	DoDebugMsg
 $LN10@get_number:
 
@@ -1905,7 +1906,7 @@ $LN6@get_specia:
 ; 524  :             buf->string_ptr = "::";
 
 	mov	rax, QWORD PTR buf$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11094
+	lea	rcx, OFFSET FLAT:$SG11095
 	mov	QWORD PTR [rax+8], rcx
 
 ; 525  :         } else {
@@ -1921,7 +1922,7 @@ $LN7@get_specia:
 ; 527  :             buf->string_ptr = ":";
 
 	mov	rax, QWORD PTR buf$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11095
+	lea	rcx, OFFSET FLAT:$SG11096
 	mov	QWORD PTR [rax+8], rcx
 $LN8@get_specia:
 
@@ -1940,7 +1941,7 @@ $LN9@get_specia:
 	mov	rax, QWORD PTR [rax]
 	inc	rax
 	mov	r8d, 3
-	lea	rdx, OFFSET FLAT:$SG11098
+	lea	rdx, OFFSET FLAT:$SG11099
 	mov	rcx, rax
 	call	QWORD PTR __imp__memicmp
 	test	eax, eax
@@ -2072,7 +2073,7 @@ $LN11@get_specia:
 ; 550  :         buf->string_ptr = "%";
 
 	mov	rax, QWORD PTR buf$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11100
+	lea	rcx, OFFSET FLAT:$SG11101
 	mov	QWORD PTR [rax+8], rcx
 
 ; 551  :         break;
@@ -2313,7 +2314,7 @@ $LN21@get_specia:
 ; 603  :             buf->string_ptr = "=";
 
 	mov	rax, QWORD PTR buf$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11112
+	lea	rcx, OFFSET FLAT:$SG11113
 	mov	QWORD PTR [rax+8], rcx
 
 ; 604  :             p->input++;
@@ -2350,7 +2351,7 @@ $LN23@get_specia:
 	je	$LN24@get_specia
 	movsx	eax, BYTE PTR symbol$[rsp]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11115
+	lea	rcx, OFFSET FLAT:$SG11116
 	call	QWORD PTR __imp_strchr
 	test	rax, rax
 	je	$LN24@get_specia
@@ -2515,7 +2516,7 @@ $LN24@get_specia:
 ; 641  :             buf->string_ptr = "&";
 
 	mov	rax, QWORD PTR buf$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11122
+	lea	rcx, OFFSET FLAT:$SG11123
 	mov	QWORD PTR [rax+8], rcx
 
 ; 642  :             break;
@@ -3282,7 +3283,7 @@ $LN13@get_string:
 ; 434  :                         DebugMsg1(("Tokenize.get_string: comma concatenation: %s\n", src ));
 
 	mov	rdx, QWORD PTR src$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11062
+	lea	rcx, OFFSET FLAT:$SG11063
 	call	DoDebugMsg1
 
 ; 435  :                         tmp = GetAlignedPointer( p->output, strlen( p->output ) );
@@ -3525,7 +3526,7 @@ $LN54@get_string:
 ; 481  :                     DebugMsg1(("Tokenize.get_string: backslash concatenation: >%s<\n", src ));
 
 	mov	rdx, QWORD PTR src$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11070
+	lea	rcx, OFFSET FLAT:$SG11071
 	call	DoDebugMsg1
 
 ; 482  :                     p->flags3 |= TF3_ISCONCAT;
@@ -4613,7 +4614,7 @@ $LN2@get_broads:
 ; 131  : 	if (_memicmp(p->input, "1to2", 4) == 0) {
 
 	mov	r8d, 4
-	lea	rdx, OFFSET FLAT:$SG10912
+	lea	rdx, OFFSET FLAT:$SG10913
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR [rax]
 	call	QWORD PTR __imp__memicmp
@@ -4640,7 +4641,7 @@ $LN3@get_broads:
 ; 135  : 	else if (_memicmp(p->input, "1to4", 4) == 0){
 
 	mov	r8d, 4
-	lea	rdx, OFFSET FLAT:$SG10915
+	lea	rdx, OFFSET FLAT:$SG10916
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR [rax]
 	call	QWORD PTR __imp__memicmp
@@ -4667,7 +4668,7 @@ $LN5@get_broads:
 ; 139  :     else if (_memicmp(p->input, "1to8", 4) == 0){
 
 	mov	r8d, 4
-	lea	rdx, OFFSET FLAT:$SG10918
+	lea	rdx, OFFSET FLAT:$SG10919
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR [rax]
 	call	QWORD PTR __imp__memicmp
@@ -4694,7 +4695,7 @@ $LN7@get_broads:
 ; 143  :     else if (_memicmp(p->input, "1to16", 5) == 0){
 
 	mov	r8d, 5
-	lea	rdx, OFFSET FLAT:$SG10921
+	lea	rdx, OFFSET FLAT:$SG10922
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR [rax]
 	call	QWORD PTR __imp__memicmp
@@ -5020,7 +5021,7 @@ $LN36:
 	movzx	eax, BYTE PTR ModuleInfo+407
 	mov	r8, QWORD PTR line$[rsp]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11281
+	lea	rcx, OFFSET FLAT:$SG11282
 	call	DoDebugMsg1
 
 ; 1109 :             if( strchr( line, ModuleInfo.inside_comment ) != NULL ) {
@@ -5034,7 +5035,7 @@ $LN36:
 
 ; 1110 :                 DebugMsg1(("COMMENT mode exited\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11283
+	lea	rcx, OFFSET FLAT:$SG11284
 	call	DoDebugMsg1
 
 ; 1111 :                 ModuleInfo.inside_comment = NULLC;
@@ -5189,7 +5190,7 @@ $LN18@Tokenize:
 
 ; 1152 :                 DebugMsg1(("Tokenize: calling IsMultiLine()\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11288
+	lea	rcx, OFFSET FLAT:$SG11289
 	call	DoDebugMsg1
 
 ; 1153 :                 if ( IsMultiLine( tokenarray ) ) {
@@ -5214,7 +5215,7 @@ $LN18@Tokenize:
 ; 1155 :                     DebugMsg1(("Tokenize: IsMultiLine(%s)=TRUE\n", line ));
 
 	mov	rdx, QWORD PTR line$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11290
+	lea	rcx, OFFSET FLAT:$SG11291
 	call	DoDebugMsg1
 
 ; 1156 :                     if ( GetTextLine( ptr ) ) {
@@ -5278,7 +5279,7 @@ $LN22@Tokenize:
 ; 1165 :                             DebugMsg1(("Tokenize: line concatenation, line=%s\n", line ));
 
 	mov	rdx, QWORD PTR line$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11294
+	lea	rcx, OFFSET FLAT:$SG11295
 	call	DoDebugMsg1
 
 ; 1166 :                             continue;
@@ -5409,7 +5410,7 @@ $LN27@Tokenize:
 
 	movzx	eax, BYTE PTR ModuleInfo+407
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11304
+	lea	rcx, OFFSET FLAT:$SG11305
 	call	DoDebugMsg1
 
 ; 1195 :                         StartComment( p.input );
@@ -5485,7 +5486,7 @@ $LN25@Tokenize:
 	mov	r9, QWORD PTR line$[rsp]
 	mov	r8d, 150				; 00000096H
 	mov	edx, DWORD PTR p$[rsp+24]
-	lea	rcx, OFFSET FLAT:$SG11308
+	lea	rcx, OFFSET FLAT:$SG11309
 	call	DoDebugMsg1
 
 ; 1212 :             EmitError( TOO_MANY_TOKENS );
@@ -5568,7 +5569,7 @@ $skipline$37:
 	mov	eax, DWORD PTR p$[rsp+24]
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
-	lea	rdx, OFFSET FLAT:$SG11309
+	lea	rdx, OFFSET FLAT:$SG11310
 	mov	QWORD PTR [rcx+rax+8], rdx
 
 ; 1230 :     return( p.index );

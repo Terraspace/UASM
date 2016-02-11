@@ -10,39 +10,40 @@ COMM	CurrIfState:DWORD
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 COMM	evex:BYTE
+COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10988 DB	'BLOCK_ACTIVE', 00H
+$SG10987 DB	'BLOCK_ACTIVE', 00H
 	ORG $+3
-$SG10990 DB	'BLOCK_INACTIVE', 00H
+$SG10989 DB	'BLOCK_INACTIVE', 00H
 	ORG $+1
-$SG10992 DB	'BLOCK_DONE', 00H
+$SG10991 DB	'BLOCK_DONE', 00H
 	ORG $+5
-$SG11002 DB	'condasm_prepare(%s), old status: %s, lvl=%u, falselvl=%u'
+$SG11001 DB	'condasm_prepare(%s), old status: %s, lvl=%u, falselvl=%u'
 	DB	0aH, 00H
 	ORG $+6
-$SG11016 DB	'condasm_prepare(%s), new status: %s, lvl=%u, falselvl=%u'
+$SG11015 DB	'condasm_prepare(%s), new status: %s, lvl=%u, falselvl=%u'
 	DB	0aH, 00H
 	ORG $+6
-$SG11024 DB	'check_defd(%s): state=%u defined=%u', 0aH, 00H
+$SG11023 DB	'check_defd(%s): state=%u defined=%u', 0aH, 00H
 	ORG $+3
-$SG11025 DB	'check_defd(%s): sym=NULL', 0aH, 00H
+$SG11024 DB	'check_defd(%s): sym=NULL', 0aH, 00H
 	ORG $+6
-$SG11075 DB	'CondAsmDirective(%s), CurrIfState=%u(%s), lvl=%u, falsel'
+$SG11074 DB	'CondAsmDirective(%s), CurrIfState=%u(%s), lvl=%u, falsel'
 	DB	'vl=%u', 0aH, 00H
 	ORG $+1
-$SG11081 DB	'CondAsmDirective(%s), BLOCK_ACTIVE, lvl=%u, falselvl=%u '
+$SG11080 DB	'CondAsmDirective(%s), BLOCK_ACTIVE, lvl=%u, falselvl=%u '
 	DB	'[%s]', 0aH, 00H
 	ORG $+2
-$SG11084 DB	'CondAsmDirective(%s), EvalOperand returned with ERROR', 0aH
+$SG11083 DB	'CondAsmDirective(%s), EvalOperand returned with ERROR', 0aH
 	DB	00H
 	ORG $+1
-$SG11102 DB	'CondAsmDirective(%s), cmp >%s< and >%s<', 0aH, 00H
+$SG11101 DB	'CondAsmDirective(%s), cmp >%s< and >%s<', 0aH, 00H
 	ORG $+7
-$SG11137 DB	'CondAsmDirective(%s) exit, state=%s, lvl=%u, falselvl=%u'
+$SG11136 DB	'CondAsmDirective(%s) exit, state=%s, lvl=%u, falselvl=%u'
 	DB	0aH, 00H
 	ORG $+6
-$SG11241 DB	'if-else', 00H
+$SG11240 DB	'if-else', 00H
 _DATA	ENDS
 PUBLIC	conditional_assembly_prepare
 PUBLIC	GetIfNestLevel
@@ -336,7 +337,7 @@ $LN14@ErrorDirec:
 
 	cmp	DWORD PTR opndx$[rsp+60], 1
 	jne	SHORT $LN16@ErrorDirec
-	mov	eax, DWORD PTR opndx$[rsp+76]
+	mov	eax, DWORD PTR opndx$[rsp+72]
 	and	eax, 1
 	test	eax, eax
 	jne	SHORT $LN16@ErrorDirec
@@ -1496,7 +1497,7 @@ $LN107:
 	mov	r9, rcx
 	mov	r8d, DWORD PTR CurrIfState
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11075
+	lea	rcx, OFFSET FLAT:$SG11074
 	call	DoDebugMsg1
 
 ; 230  :                    GetResWName(directive, NULL), CurrIfState, GetCurrIfStatString(), blocknestlevel, falseblocknestlevel));
@@ -1572,7 +1573,7 @@ $LN14@CondAsmDir:
 	mov	r9d, DWORD PTR falseblocknestlevel
 	mov	r8d, DWORD PTR blocknestlevel
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11081
+	lea	rcx, OFFSET FLAT:$SG11080
 	call	DoDebugMsg1
 
 ; 245  : 
@@ -1623,7 +1624,7 @@ $LN17@CondAsmDir:
 	mov	ecx, DWORD PTR directive$[rsp]
 	call	GetResWName
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11084
+	lea	rcx, OFFSET FLAT:$SG11083
 	call	DoDebugMsg
 
 ; 255  :             /* v2.11: don't exit, assume 0 */
@@ -1662,7 +1663,7 @@ $LN19@CondAsmDir:
 
 	cmp	DWORD PTR opndx$[rsp+60], 1
 	jne	SHORT $LN21@CondAsmDir
-	mov	eax, DWORD PTR opndx$[rsp+76]
+	mov	eax, DWORD PTR opndx$[rsp+72]
 	and	eax, 1
 	test	eax, eax
 	jne	SHORT $LN21@CondAsmDir
@@ -1915,7 +1916,7 @@ $LN32@CondAsmDir:
 	mov	r9, QWORD PTR string2$[rsp]
 	mov	r8, QWORD PTR string1$[rsp]
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11102
+	lea	rcx, OFFSET FLAT:$SG11101
 	call	DoDebugMsg1
 
 ; 306  :         switch ( directive ) {
@@ -2626,7 +2627,7 @@ $LN104@CondAsmDir:
 	mov	rcx, QWORD PTR tv499[rsp]
 	mov	r8, rcx
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11137
+	lea	rcx, OFFSET FLAT:$SG11136
 	call	DoDebugMsg1
 
 ; 419  :                GetResWName(directive, NULL), GetCurrIfStatString(), blocknestlevel, falseblocknestlevel));
@@ -2852,7 +2853,7 @@ check_defd PROC
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8d, DWORD PTR [rax+32]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11024
+	lea	rcx, OFFSET FLAT:$SG11023
 	call	DoDebugMsg1
 
 ; 185  :             /* v2.04: changed. the "defined" flag is active for ALL symbols */
@@ -2870,7 +2871,7 @@ $LN3@check_defd:
 ; 189  :         DebugMsg1(("check_defd(%s): sym=NULL\n", name ));
 
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11025
+	lea	rcx, OFFSET FLAT:$SG11024
 	call	DoDebugMsg1
 $LN2@check_defd:
 
@@ -2915,19 +2916,19 @@ $LN4@GetCurrIfS:
 
 ; 77   :     case BLOCK_ACTIVE:   return( "BLOCK_ACTIVE" );
 
-	lea	rax, OFFSET FLAT:$SG10988
+	lea	rax, OFFSET FLAT:$SG10987
 	jmp	SHORT $LN1@GetCurrIfS
 $LN5@GetCurrIfS:
 
 ; 78   :     case BLOCK_INACTIVE: return( "BLOCK_INACTIVE" );
 
-	lea	rax, OFFSET FLAT:$SG10990
+	lea	rax, OFFSET FLAT:$SG10989
 	jmp	SHORT $LN1@GetCurrIfS
 $LN6@GetCurrIfS:
 
 ; 79   :     default:             return( "BLOCK_DONE" );
 
-	lea	rax, OFFSET FLAT:$SG10992
+	lea	rax, OFFSET FLAT:$SG10991
 $LN1@GetCurrIfS:
 
 ; 80   :     }
@@ -2988,7 +2989,7 @@ $LN4:
 
 ; 645  :         EmitErr( BLOCK_NESTING_ERROR, "if-else" );
 
-	lea	rdx, OFFSET FLAT:$SG11241
+	lea	rdx, OFFSET FLAT:$SG11240
 	mov	ecx, 80					; 00000050H
 	call	EmitErr
 $LN2@CondCheckO:
@@ -3084,7 +3085,7 @@ $LN20:
 	mov	rcx, QWORD PTR tv66[rsp]
 	mov	r8, rcx
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11002
+	lea	rcx, OFFSET FLAT:$SG11001
 	call	DoDebugMsg1
 
 ; 94   :                GetResWName( directive, NULL), GetCurrIfStatString(), blocknestlevel, falseblocknestlevel));
@@ -3354,7 +3355,7 @@ $LN2@conditiona:
 	mov	rcx, QWORD PTR tv148[rsp]
 	mov	r8, rcx
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11016
+	lea	rcx, OFFSET FLAT:$SG11015
 	call	DoDebugMsg1
 
 ; 167  :                GetResWName( directive, NULL ), GetCurrIfStatString(), blocknestlevel, falseblocknestlevel));

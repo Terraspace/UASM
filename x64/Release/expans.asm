@@ -9,12 +9,13 @@ _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 COMM	evex:BYTE
+COMM	ZEROLOCALS:BYTE
 COMM	MacroLevel:BYTE
 COMM	MacroLocals:DWORD
 _DATA	ENDS
 _BSS	SEGMENT
-$SG11067 DB	01H DUP (?)
-$SG11138 DB	01H DUP (?)
+$SG11068 DB	01H DUP (?)
+$SG11139 DB	01H DUP (?)
 _BSS	ENDS
 PUBLIC	myltoa
 PUBLIC	RunMacro
@@ -3844,7 +3845,7 @@ $LN51@RunMacro:
 
 ; 211  :             mi.parm_array[parmidx] = "";
 
-	lea	rax, OFFSET FLAT:$SG11067
+	lea	rax, OFFSET FLAT:$SG11068
 	mov	QWORD PTR [rcx], rax
 $LN52@RunMacro:
 
@@ -5301,7 +5302,7 @@ $LN121@RunMacro:
 
 ; 536  :                 mi.parm_array[parmidx] = "";
 
-	lea	rcx, OFFSET FLAT:$SG11138
+	lea	rcx, OFFSET FLAT:$SG11139
 	jmp	SHORT $LN430@RunMacro
 $LN422@RunMacro:
 	mov	r10, QWORD PTR macro$[rbp]

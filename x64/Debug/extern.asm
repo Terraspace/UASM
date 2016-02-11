@@ -9,53 +9,54 @@ _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 COMM	evex:BYTE
+COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10805 DB	'NULL', 00H
+$SG10804 DB	'NULL', 00H
 	ORG $+3
-$SG10806 DB	'CreateProto( i=%u, name=%s, lang=%u )', 0aH, 00H
+$SG10805 DB	'CreateProto( i=%u, name=%s, lang=%u )', 0aH, 00H
 	ORG $+1
-$SG10849 DB	'ExterndefDirective(%u) enter', 0aH, 00H
+$SG10848 DB	'ExterndefDirective(%u) enter', 0aH, 00H
 	ORG $+2
-$SG10854 DB	'ABS', 00H
-$SG10976 DB	')', 00H
+$SG10853 DB	'ABS', 00H
+$SG10975 DB	')', 00H
 	ORG $+2
-$SG10863 DB	'ExterndefDirective(%s): memtype=%X set, ofssize=%X', 0aH
+$SG10862 DB	'ExterndefDirective(%s): memtype=%X set, ofssize=%X', 0aH
 	DB	00H
 	ORG $+4
-$SG10877 DB	'ExterndefDirective: type conflict for %s. mem_types old-'
+$SG10876 DB	'ExterndefDirective: type conflict for %s. mem_types old-'
 	DB	'new: %X-%X', 0aH, 00H
-$SG10980 DB	'ABS', 00H
-$SG10879 DB	'ExterndefDirective(%s): types differ: %X (%s) - %X (%s)', 0aH
+$SG10979 DB	'ABS', 00H
+$SG10878 DB	'ExterndefDirective(%s): types differ: %X (%s) - %X (%s)', 0aH
 	DB	00H
 	ORG $+7
-$SG10939 DB	'HandleAltname: symbol ''%s'' found, state=%u', 0aH, 00H
+$SG10938 DB	'HandleAltname: symbol ''%s'' found, state=%u', 0aH, 00H
 	ORG $+12
-$SG10881 DB	'ExterndefDirective(%s): type conflict old-new: %X (%s) -'
+$SG10880 DB	'ExterndefDirective(%s): type conflict old-new: %X (%s) -'
 	DB	' %X (%s)', 0aH, 00H
 	ORG $+6
-$SG10971 DB	'ExternDirective(%u) enter', 0aH, 00H
+$SG10970 DB	'ExternDirective(%u) enter', 0aH, 00H
 	ORG $+5
-$SG10983 DB	'ExternDirective(%s): CreateProto()=%X', 0aH, 00H
+$SG10982 DB	'ExternDirective(%s): CreateProto()=%X', 0aH, 00H
 	ORG $+1
-$SG10989 DB	'ExternDirective(%s): mem_type=%Xh', 0aH, 00H
+$SG10988 DB	'ExternDirective(%s): mem_type=%Xh', 0aH, 00H
 	ORG $+5
-$SG10995 DB	'ExternDirective(%s): prototype copied, memtype=%X', 0aH, 00H
+$SG10994 DB	'ExternDirective(%s): prototype copied, memtype=%X', 0aH, 00H
 	ORG $+5
-$SG10999 DB	'ExternDirective: symbol %s redefinition, state=%u', 0aH, 00H
+$SG10998 DB	'ExternDirective: symbol %s redefinition, state=%u', 0aH, 00H
 	ORG $+13
-$SG11004 DB	'ExternDirective: memtype:%X-%X ptr=%X-%X far=%X-%X ptr_m'
+$SG11003 DB	'ExternDirective: memtype:%X-%X ptr=%X-%X far=%X-%X ptr_m'
 	DB	'emtype=%X-%X lang=%u-%u', 0aH, 00H
 	ORG $+7
-$SG11056 DB	'CommDirective(%u) enter', 0aH, 00H
+$SG11055 DB	'CommDirective(%u) enter', 0aH, 00H
 	ORG $+7
-$SG11093 DB	'AddPublicData(%s)', 0aH, 00H
+$SG11092 DB	'AddPublicData(%s)', 0aH, 00H
 	ORG $+5
-$SG11116 DB	'PublicDirective(%u) enter', 0aH, 00H
+$SG11115 DB	'PublicDirective(%u) enter', 0aH, 00H
 	ORG $+5
-$SG11118 DB	'PublicDirective: sym=%s', 0aH, 00H
+$SG11117 DB	'PublicDirective: sym=%s', 0aH, 00H
 	ORG $+7
-$SG11124 DB	'PublicDirective(%s): new symbol', 0aH, 00H
+$SG11123 DB	'PublicDirective(%s): new symbol', 0aH, 00H
 _DATA	ENDS
 CONST	SEGMENT
 szCOMM	DB	'COMM', 00H
@@ -322,7 +323,7 @@ $LN32:
 ; 898  :     DebugMsg1(("PublicDirective(%u) enter\n", i));
 
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11116
+	lea	rcx, OFFSET FLAT:$SG11115
 	call	DoDebugMsg1
 
 ; 899  :     i++; /* skip PUBLIC directive */
@@ -388,7 +389,7 @@ $LN7@PublicDire:
 ; 915  :         DebugMsg1(("PublicDirective: sym=%s\n", token ));
 
 	mov	rdx, QWORD PTR token$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11118
+	lea	rcx, OFFSET FLAT:$SG11117
 	call	DoDebugMsg1
 
 ; 916  : 
@@ -432,7 +433,7 @@ $LN7@PublicDire:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11124
+	lea	rcx, OFFSET FLAT:$SG11123
 	call	DoDebugMsg1
 
 ; 924  :                 } else
@@ -778,7 +779,7 @@ $LN45:
 ; 721  :     DebugMsg1(("CommDirective(%u) enter\n", i));
 
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11056
+	lea	rcx, OFFSET FLAT:$SG11055
 	call	DoDebugMsg1
 
 ; 722  :     i++; /* skip COMM token */
@@ -1508,7 +1509,7 @@ $LN45:
 ; 509  :     DebugMsg1(("ExternDirective(%u) enter\n", i));
 
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10971
+	lea	rcx, OFFSET FLAT:$SG10970
 	call	DoDebugMsg1
 
 ; 510  :     i++; /* skip EXT[E]RN token */
@@ -1638,7 +1639,7 @@ $LN7@ExternDire:
 
 ; 537  :                 return( EmitErr( EXPECTED, ")" ) );
 
-	lea	rdx, OFFSET FLAT:$SG10976
+	lea	rdx, OFFSET FLAT:$SG10975
 	mov	ecx, 230				; 000000e6H
 	call	EmitErr
 	jmp	$LN1@ExternDire
@@ -1725,7 +1726,7 @@ $LN9@ExternDire:
 	jne	SHORT $LN10@ExternDire
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
-	lea	rdx, OFFSET FLAT:$SG10980
+	lea	rdx, OFFSET FLAT:$SG10979
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	QWORD PTR __imp__stricmp
@@ -1772,7 +1773,7 @@ $LN10@ExternDire:
 
 	mov	r8, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR token$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10983
+	lea	rcx, OFFSET FLAT:$SG10982
 	call	DoDebugMsg1
 
 ; 565  :             if ( sym == NULL )
@@ -1866,7 +1867,7 @@ $LN11@ExternDire:
 
 	mov	r8d, DWORD PTR ti$[rsp+16]
 	mov	rdx, QWORD PTR token$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10989
+	lea	rcx, OFFSET FLAT:$SG10988
 	call	DoDebugMsg1
 
 ; 580  : 
@@ -1975,7 +1976,7 @@ $LN22@ExternDire:
 
 	mov	r8d, DWORD PTR ti$[rsp+16]
 	mov	rdx, QWORD PTR token$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10995
+	lea	rcx, OFFSET FLAT:$SG10994
 	call	DoDebugMsg1
 $LN23@ExternDire:
 
@@ -2016,7 +2017,7 @@ $LN24@ExternDire:
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8d, DWORD PTR [rax+32]
 	mov	rdx, QWORD PTR token$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10999
+	lea	rcx, OFFSET FLAT:$SG10998
 	call	DoDebugMsg
 
 ; 612  :                 return( EmitErr( SYMBOL_REDEFINITION, token ) );
@@ -2144,7 +2145,7 @@ $LN29@ExternDire:
 	mov	r8d, DWORD PTR ti$[rsp+16]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	edx, DWORD PTR [rax+36]
-	lea	rcx, OFFSET FLAT:$SG11004
+	lea	rcx, OFFSET FLAT:$SG11003
 	call	DoDebugMsg
 
 ; 627  :                           sym->mem_type, ti.mem_type,
@@ -2534,7 +2535,7 @@ $LN4@HandleAltn:
 	mov	rax, QWORD PTR symalt$[rsp]
 	mov	r8d, DWORD PTR [rax+32]
 	mov	rdx, QWORD PTR altname$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10939
+	lea	rcx, OFFSET FLAT:$SG10938
 	call	DoDebugMsg
 
 ; 460  :                 if ( symalt->state != SYM_INTERNAL &&
@@ -2792,7 +2793,7 @@ $LN47:
 ; 193  :     DebugMsg1(("ExterndefDirective(%u) enter\n", i));
 
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10849
+	lea	rcx, OFFSET FLAT:$SG10848
 	call	DoDebugMsg1
 
 ; 194  : 
@@ -2934,7 +2935,7 @@ $LN12@ExterndefD:
 	jne	SHORT $LN13@ExterndefD
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
-	lea	rdx, OFFSET FLAT:$SG10854
+	lea	rdx, OFFSET FLAT:$SG10853
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	QWORD PTR __imp__stricmp
@@ -3077,7 +3078,7 @@ $LN19@ExterndefD:
 	mov	r9d, eax
 	mov	r8d, DWORD PTR ti$[rsp+16]
 	mov	rdx, QWORD PTR token$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10863
+	lea	rcx, OFFSET FLAT:$SG10862
 	call	DoDebugMsg1
 
 ; 261  : 
@@ -3341,7 +3342,7 @@ $LN33@ExterndefD:
 	mov	r8d, DWORD PTR [rax+36]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10877
+	lea	rcx, OFFSET FLAT:$SG10876
 	call	DoDebugMsg
 
 ; 321  :                 EmitWarn( 1, SYMBOL_TYPE_CONFLICT, sym->name );
@@ -3384,7 +3385,7 @@ $LN34@ExterndefD:
 	mov	r8, QWORD PTR [rax+80]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10879
+	lea	rcx, OFFSET FLAT:$SG10878
 	call	DoDebugMsg
 $LN7@ExterndefD:
 
@@ -3435,7 +3436,7 @@ $LN10@ExterndefD:
 	mov	r8, QWORD PTR sym2$5[rsp]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10881
+	lea	rcx, OFFSET FLAT:$SG10880
 	call	DoDebugMsg
 
 ; 332  :                     EmitWarn( 1, SYMBOL_TYPE_CONFLICT, sym->name );
@@ -3638,13 +3639,13 @@ CreateProto PROC
 	mov	QWORD PTR tv66[rsp], rax
 	jmp	SHORT $LN15@CreateProt
 $LN14@CreateProt:
-	lea	rax, OFFSET FLAT:$SG10805
+	lea	rax, OFFSET FLAT:$SG10804
 	mov	QWORD PTR tv66[rsp], rax
 $LN15@CreateProt:
 	mov	r9d, DWORD PTR langtype$[rsp]
 	mov	r8, QWORD PTR tv66[rsp]
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10806
+	lea	rcx, OFFSET FLAT:$SG10805
 	call	DoDebugMsg1
 
 ; 131  :     sym = SymSearch( name );
@@ -4157,7 +4158,7 @@ $LN3:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11093
+	lea	rcx, OFFSET FLAT:$SG11092
 	call	DoDebugMsg1
 
 ; 834  :     QAddItem( &ModuleInfo.g.PubQueue, sym );

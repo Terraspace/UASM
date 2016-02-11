@@ -9,209 +9,214 @@ _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 COMM	evex:BYTE
+COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 CONST	SEGMENT
-optiontab DQ	FLAT:$SG11199
+optiontab DQ	FLAT:$SG11210
 	DQ	FLAT:SetDotName
-	DQ	FLAT:$SG11200
-	DQ	FLAT:SetNoDotName
-	DQ	FLAT:$SG11201
-	DQ	FLAT:SetM510
-	DQ	FLAT:$SG11202
-	DQ	FLAT:SetNoM510
-	DQ	FLAT:$SG11203
-	DQ	FLAT:SetScoped
-	DQ	FLAT:$SG11204
-	DQ	FLAT:SetNoScoped
-	DQ	FLAT:$SG11205
-	DQ	FLAT:SetOldStructs
-	DQ	FLAT:$SG11206
-	DQ	FLAT:SetNoOldStructs
-	DQ	FLAT:$SG11207
-	DQ	FLAT:SetEmulator
-	DQ	FLAT:$SG11208
-	DQ	FLAT:SetNoEmulator
-	DQ	FLAT:$SG11209
-	DQ	FLAT:SetLJmp
-	DQ	FLAT:$SG11210
-	DQ	FLAT:SetNoLJmp
 	DQ	FLAT:$SG11211
-	DQ	FLAT:Unsupported
+	DQ	FLAT:SetNoDotName
 	DQ	FLAT:$SG11212
-	DQ	FLAT:SetNoReadonly
+	DQ	FLAT:SetM510
 	DQ	FLAT:$SG11213
-	DQ	FLAT:Unsupported
+	DQ	FLAT:SetNoM510
 	DQ	FLAT:$SG11214
-	DQ	FLAT:SetNoOldmacros
+	DQ	FLAT:SetScoped
 	DQ	FLAT:$SG11215
-	DQ	FLAT:Unsupported
+	DQ	FLAT:SetNoScoped
 	DQ	FLAT:$SG11216
-	DQ	FLAT:SetExpr32
+	DQ	FLAT:SetOldStructs
 	DQ	FLAT:$SG11217
-	DQ	FLAT:SetNoSignExt
+	DQ	FLAT:SetNoOldStructs
 	DQ	FLAT:$SG11218
-	DQ	FLAT:SetCaseMap
+	DQ	FLAT:SetEmulator
 	DQ	FLAT:$SG11219
-	DQ	FLAT:SetProc
+	DQ	FLAT:SetNoEmulator
 	DQ	FLAT:$SG11220
-	DQ	FLAT:SetPrologue
+	DQ	FLAT:SetLJmp
 	DQ	FLAT:$SG11221
-	DQ	FLAT:SetEpilogue
+	DQ	FLAT:SetNoLJmp
 	DQ	FLAT:$SG11222
-	DQ	FLAT:SetLanguage
+	DQ	FLAT:Unsupported
 	DQ	FLAT:$SG11223
-	DQ	FLAT:SetNoKeyword
+	DQ	FLAT:SetNoReadonly
 	DQ	FLAT:$SG11224
-	DQ	FLAT:SetSetIF2
+	DQ	FLAT:Unsupported
 	DQ	FLAT:$SG11225
-	DQ	FLAT:SetOffset
+	DQ	FLAT:SetNoOldmacros
 	DQ	FLAT:$SG11226
-	DQ	FLAT:SetSegment
+	DQ	FLAT:Unsupported
 	DQ	FLAT:$SG11227
-	DQ	FLAT:SetFieldAlign
+	DQ	FLAT:SetExpr32
 	DQ	FLAT:$SG11228
-	DQ	FLAT:SetProcAlign
+	DQ	FLAT:SetNoSignExt
 	DQ	FLAT:$SG11229
-	DQ	FLAT:SetMZ
+	DQ	FLAT:SetCaseMap
 	DQ	FLAT:$SG11230
-	DQ	FLAT:SetFrame
+	DQ	FLAT:SetProc
 	DQ	FLAT:$SG11231
-	DQ	FLAT:SetElf
+	DQ	FLAT:SetPrologue
 	DQ	FLAT:$SG11232
-	DQ	FLAT:SetRenameKey
+	DQ	FLAT:SetEpilogue
 	DQ	FLAT:$SG11233
-	DQ	FLAT:SetWin64
+	DQ	FLAT:SetLanguage
 	DQ	FLAT:$SG11234
-	DQ	FLAT:SetDllImport
+	DQ	FLAT:SetNoKeyword
 	DQ	FLAT:$SG11235
-	DQ	FLAT:SetCodeView
+	DQ	FLAT:SetSetIF2
 	DQ	FLAT:$SG11236
-	DQ	FLAT:SetStackBase
+	DQ	FLAT:SetOffset
 	DQ	FLAT:$SG11237
+	DQ	FLAT:SetSegment
+	DQ	FLAT:$SG11238
+	DQ	FLAT:SetFieldAlign
+	DQ	FLAT:$SG11239
+	DQ	FLAT:SetProcAlign
+	DQ	FLAT:$SG11240
+	DQ	FLAT:SetMZ
+	DQ	FLAT:$SG11241
+	DQ	FLAT:SetFrame
+	DQ	FLAT:$SG11242
+	DQ	FLAT:SetElf
+	DQ	FLAT:$SG11243
+	DQ	FLAT:SetRenameKey
+	DQ	FLAT:$SG11244
+	DQ	FLAT:SetWin64
+	DQ	FLAT:$SG11245
+	DQ	FLAT:SetDllImport
+	DQ	FLAT:$SG11246
+	DQ	FLAT:SetCodeView
+	DQ	FLAT:$SG11247
+	DQ	FLAT:SetStackBase
+	DQ	FLAT:$SG11248
 	DQ	FLAT:SetEvex
+	DQ	FLAT:$SG11249
+	DQ	FLAT:SetZeroLocals
 CONST	ENDS
 _DATA	SEGMENT
-$SG10767 DB	'NONE', 00H
-	ORG $+3
-$SG10770 DB	'NOTPUBLIC', 00H
-	ORG $+2
-$SG10773 DB	'ALL', 00H
-$SG10774 DB	'SetCaseMap(%s) ok', 0aH, 00H
+$SG11273 DB	'option syntax error: >%s<', 0aH, 00H
 	ORG $+1
-$SG10917 DB	'TRUE', 00H
+$SG10778 DB	'NONE', 00H
 	ORG $+3
-$SG10919 DB	'FALSE', 00H
+$SG10784 DB	'ALL', 00H
+$SG10781 DB	'NOTPUBLIC', 00H
 	ORG $+2
-$SG10932 DB	'NONE', 00H
-	ORG $+3
-$SG10961 DB	'GROUP', 00H
-	ORG $+2
-$SG10982 DB	'EXPORT', 00H
+$SG10993 DB	'EXPORT', 00H
 	ORG $+1
-$SG11229 DB	'MZ', 00H
+$SG11240 DB	'MZ', 00H
 	ORG $+1
-$SG10935 DB	'PROLOGUEDEF', 00H
-$SG10948 DB	'NONE', 00H
-	ORG $+3
-$SG10998 DB	'USE16', 00H
-	ORG $+2
-$SG11087 DB	'NOAUTO', 00H
+$SG10785 DB	'SetCaseMap(%s) ok', 0aH, 00H
 	ORG $+1
-$SG11231 DB	'ELF', 00H
-$SG10951 DB	'EPILOGUEDEF', 00H
-$SG10964 DB	'FLAT', 00H
+$SG10928 DB	'TRUE', 00H
 	ORG $+3
-$SG11001 DB	'USE32', 00H
+$SG10930 DB	'FALSE', 00H
 	ORG $+2
-$SG11143 DB	'__imp_', 00H
+$SG10943 DB	'NONE', 00H
+	ORG $+3
+$SG10972 DB	'GROUP', 00H
+	ORG $+2
+$SG11098 DB	'NOAUTO', 00H
+	ORG $+1
+$SG11242 DB	'ELF', 00H
+$SG10946 DB	'PROLOGUEDEF', 00H
+$SG10959 DB	'NONE', 00H
+	ORG $+3
+$SG11009 DB	'USE16', 00H
+	ORG $+2
+$SG11154 DB	'__imp_', 00H
 	ORG $+5
-$SG10967 DB	'SEGMENT', 00H
-$SG10980 DB	'PRIVATE', 00H
-$SG11004 DB	'USE64', 00H
+$SG10962 DB	'EPILOGUEDEF', 00H
+$SG10975 DB	'FLAT', 00H
+	ORG $+7
+$SG10978 DB	'SEGMENT', 00H
+$SG10991 DB	'PRIVATE', 00H
+$SG11012 DB	'USE32', 00H
 	ORG $+2
-$SG11085 DB	'AUTO', 00H
-	ORG $+3
-$SG11144 DB	'_imp_', 00H
+$SG11015 DB	'USE64', 00H
 	ORG $+2
-$SG11155 DB	'NONE', 00H
+$SG11096 DB	'AUTO', 00H
 	ORG $+3
-$SG11185 DB	'@StackBase', 00H
+$SG11155 DB	'_imp_', 00H
+	ORG $+2
+$SG11166 DB	'NONE', 00H
+	ORG $+3
+$SG11196 DB	'@StackBase', 00H
 	ORG $+5
-$SG11186 DB	'@ProcStatus', 00H
+$SG11197 DB	'@ProcStatus', 00H
 	ORG $+4
-$SG11199 DB	'DOTNAME', 00H
-$SG11200 DB	'NODOTNAME', 00H
+$SG11210 DB	'DOTNAME', 00H
+$SG11211 DB	'NODOTNAME', 00H
 	ORG $+2
-$SG11201 DB	'M510', 00H
+$SG11212 DB	'M510', 00H
 	ORG $+3
-$SG11202 DB	'NOM510', 00H
+$SG11213 DB	'NOM510', 00H
 	ORG $+1
-$SG11203 DB	'SCOPED', 00H
+$SG11214 DB	'SCOPED', 00H
 	ORG $+5
-$SG11204 DB	'NOSCOPED', 00H
+$SG11215 DB	'NOSCOPED', 00H
 	ORG $+7
-$SG11205 DB	'OLDSTRUCTS', 00H
+$SG11216 DB	'OLDSTRUCTS', 00H
 	ORG $+5
-$SG11206 DB	'NOOLDSTRUCTS', 00H
+$SG11217 DB	'NOOLDSTRUCTS', 00H
 	ORG $+3
-$SG11207 DB	'EMULATOR', 00H
+$SG11218 DB	'EMULATOR', 00H
 	ORG $+7
-$SG11208 DB	'NOEMULATOR', 00H
+$SG11219 DB	'NOEMULATOR', 00H
 	ORG $+1
-$SG11209 DB	'LJMP', 00H
+$SG11220 DB	'LJMP', 00H
 	ORG $+3
-$SG11210 DB	'NOLJMP', 00H
+$SG11221 DB	'NOLJMP', 00H
 	ORG $+5
-$SG11211 DB	'READONLY', 00H
+$SG11222 DB	'READONLY', 00H
 	ORG $+7
-$SG11212 DB	'NOREADONLY', 00H
+$SG11223 DB	'NOREADONLY', 00H
 	ORG $+5
-$SG11213 DB	'OLDMACROS', 00H
+$SG11224 DB	'OLDMACROS', 00H
 	ORG $+6
-$SG11214 DB	'NOOLDMACROS', 00H
-$SG11215 DB	'EXPR16', 00H
+$SG11225 DB	'NOOLDMACROS', 00H
+$SG11226 DB	'EXPR16', 00H
 	ORG $+1
-$SG11216 DB	'EXPR32', 00H
+$SG11227 DB	'EXPR32', 00H
 	ORG $+5
-$SG11217 DB	'NOSIGNEXTEND', 00H
+$SG11228 DB	'NOSIGNEXTEND', 00H
 	ORG $+3
-$SG11218 DB	'CASEMAP', 00H
-$SG11219 DB	'PROC', 00H
+$SG11229 DB	'CASEMAP', 00H
+$SG11230 DB	'PROC', 00H
 	ORG $+3
-$SG11220 DB	'PROLOGUE', 00H
+$SG11231 DB	'PROLOGUE', 00H
 	ORG $+7
-$SG11221 DB	'EPILOGUE', 00H
+$SG11232 DB	'EPILOGUE', 00H
 	ORG $+7
-$SG11222 DB	'LANGUAGE', 00H
+$SG11233 DB	'LANGUAGE', 00H
 	ORG $+7
-$SG11223 DB	'NOKEYWORD', 00H
+$SG11234 DB	'NOKEYWORD', 00H
 	ORG $+2
-$SG11224 DB	'SETIF2', 00H
+$SG11235 DB	'SETIF2', 00H
 	ORG $+1
-$SG11225 DB	'OFFSET', 00H
+$SG11236 DB	'OFFSET', 00H
 	ORG $+5
-$SG11226 DB	'SEGMENT', 00H
-$SG11227 DB	'FIELDALIGN', 00H
+$SG11237 DB	'SEGMENT', 00H
+$SG11238 DB	'FIELDALIGN', 00H
 	ORG $+5
-$SG11228 DB	'PROCALIGN', 00H
+$SG11239 DB	'PROCALIGN', 00H
 	ORG $+2
-$SG11230 DB	'FRAME', 00H
+$SG11241 DB	'FRAME', 00H
 	ORG $+6
-$SG11232 DB	'RENAMEKEYWORD', 00H
+$SG11243 DB	'RENAMEKEYWORD', 00H
 	ORG $+2
-$SG11233 DB	'WIN64', 00H
+$SG11244 DB	'WIN64', 00H
 	ORG $+2
-$SG11234 DB	'DLLIMPORT', 00H
+$SG11245 DB	'DLLIMPORT', 00H
 	ORG $+6
-$SG11235 DB	'CODEVIEW', 00H
+$SG11246 DB	'CODEVIEW', 00H
 	ORG $+7
-$SG11236 DB	'STACKBASE', 00H
+$SG11247 DB	'STACKBASE', 00H
 	ORG $+2
-$SG11237 DB	'EVEX', 00H
+$SG11248 DB	'EVEX', 00H
 	ORG $+7
-$SG11250 DB	'OPTION directive enter, option=%s', 0aH, 00H
+$SG11249 DB	'ZEROLOCALS', 00H
 	ORG $+5
-$SG11261 DB	'option syntax error: >%s<', 0aH, 00H
+$SG11262 DB	'OPTION directive enter, option=%s', 0aH, 00H
 _DATA	ENDS
 PUBLIC	OptionDirective
 EXTRN	__imp_isspace:PROC
@@ -249,6 +254,9 @@ pdata	SEGMENT
 $pdata$SetEvex DD imagerel SetEvex
 	DD	imagerel SetEvex+203
 	DD	imagerel $unwind$SetEvex
+$pdata$SetZeroLocals DD imagerel SetZeroLocals
+	DD	imagerel SetZeroLocals+203
+	DD	imagerel $unwind$SetZeroLocals
 $pdata$SetDotName DD imagerel SetDotName
 	DD	imagerel SetDotName+30
 	DD	imagerel $unwind$SetDotName
@@ -379,6 +387,9 @@ xdata	SEGMENT
 $unwind$SetEvex DD 032901H
 	DD	01c0112H
 	DD	0700bH
+$unwind$SetZeroLocals DD 032901H
+	DD	01c0112H
+	DD	0700bH
 $unwind$SetDotName DD 010b01H
 	DD	0700bH
 $unwind$SetNoDotName DD 010b01H
@@ -485,6 +496,26 @@ SetEvex$rtcVarDesc DD 060H
 SetEvex$rtcFrameData DD 02H
 	DD	00H
 	DQ	FLAT:SetEvex$rtcVarDesc
+SetZeroLocals$rtcName$0 DB 069H
+	DB	00H
+	ORG $+2
+SetZeroLocals$rtcName$1 DB 06fH
+	DB	070H
+	DB	06eH
+	DB	064H
+	DB	078H
+	DB	00H
+	ORG $+6
+SetZeroLocals$rtcVarDesc DD 060H
+	DD	068H
+	DQ	FLAT:SetZeroLocals$rtcName$1
+	DD	034H
+	DD	04H
+	DQ	FLAT:SetZeroLocals$rtcName$0
+	ORG $+96
+SetZeroLocals$rtcFrameData DD 02H
+	DD	00H
+	DQ	FLAT:SetZeroLocals$rtcVarDesc
 SetLanguage$rtcName$0 DB 069H
 	DB	00H
 	ORG $+6
@@ -625,7 +656,7 @@ i$ = 80
 tokenarray$ = 88
 OptionDirective PROC
 
-; 914  : {
+; 935  : {
 
 $LN18:
 	mov	QWORD PTR [rsp+16], rdx
@@ -638,12 +669,12 @@ $LN18:
 	rep stosd
 	mov	ecx, DWORD PTR [rsp+80]
 
-; 915  :     int idx = -1;
+; 936  :     int idx = -1;
 
 	mov	DWORD PTR idx$[rsp], -1
 
-; 916  : 
-; 917  :     DebugMsg1(( "OPTION directive enter, option=%s\n", tokenarray[i+1].string_ptr ));
+; 937  : 
+; 938  :     DebugMsg1(( "OPTION directive enter, option=%s\n", tokenarray[i+1].string_ptr ));
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
@@ -651,18 +682,18 @@ $LN18:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG11250
+	lea	rcx, OFFSET FLAT:$SG11262
 	call	DoDebugMsg1
 
-; 918  : 
-; 919  :     i++; /* skip OPTION directive */
+; 939  : 
+; 940  :     i++; /* skip OPTION directive */
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
 	mov	DWORD PTR i$[rsp], eax
 $LN2@OptionDire:
 
-; 920  :     while ( tokenarray[i].token != T_FINAL ) {
+; 941  :     while ( tokenarray[i].token != T_FINAL ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -671,7 +702,7 @@ $LN2@OptionDire:
 	test	eax, eax
 	je	$LN3@OptionDire
 
-; 921  :         _strupr( tokenarray[i].string_ptr );
+; 942  :         _strupr( tokenarray[i].string_ptr );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -679,7 +710,7 @@ $LN2@OptionDire:
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	QWORD PTR __imp__strupr
 
-; 922  :         for ( idx = 0; idx < TABITEMS; idx++ ) {
+; 943  :         for ( idx = 0; idx < TABITEMS; idx++ ) {
 
 	mov	DWORD PTR idx$[rsp], 0
 	jmp	SHORT $LN6@OptionDire
@@ -689,10 +720,10 @@ $LN4@OptionDire:
 	mov	DWORD PTR idx$[rsp], eax
 $LN6@OptionDire:
 	movsxd	rax, DWORD PTR idx$[rsp]
-	cmp	rax, 39					; 00000027H
+	cmp	rax, 40					; 00000028H
 	jae	SHORT $LN5@OptionDire
 
-; 923  :             if ( 0 == strcmp( tokenarray[i].string_ptr, optiontab[idx].name ) )
+; 944  :             if ( 0 == strcmp( tokenarray[i].string_ptr, optiontab[idx].name ) )
 
 	movsxd	rax, DWORD PTR idx$[rsp]
 	imul	rax, rax, 16
@@ -708,40 +739,40 @@ $LN6@OptionDire:
 	test	eax, eax
 	jne	SHORT $LN7@OptionDire
 
-; 924  :                 break;
+; 945  :                 break;
 
 	jmp	SHORT $LN5@OptionDire
 $LN7@OptionDire:
 
-; 925  :         }
+; 946  :         }
 
 	jmp	SHORT $LN4@OptionDire
 $LN5@OptionDire:
 
-; 926  :         if ( idx >= TABITEMS )
+; 947  :         if ( idx >= TABITEMS )
 
 	movsxd	rax, DWORD PTR idx$[rsp]
-	cmp	rax, 39					; 00000027H
+	cmp	rax, 40					; 00000028H
 	jb	SHORT $LN8@OptionDire
 
-; 927  :             break;
+; 948  :             break;
 
 	jmp	$LN3@OptionDire
 $LN8@OptionDire:
 
-; 928  :         i++;
+; 949  :         i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
 	mov	DWORD PTR i$[rsp], eax
 
-; 929  :         /* v2.06: check for colon separator here */
-; 930  :         if ( idx >= NOARGOPTS ) {
+; 950  :         /* v2.06: check for colon separator here */
+; 951  :         if ( idx >= NOARGOPTS ) {
 
 	cmp	DWORD PTR idx$[rsp], 19
 	jl	SHORT $LN9@OptionDire
 
-; 931  :             if ( tokenarray[i].token != T_COLON ) {
+; 952  :             if ( tokenarray[i].token != T_COLON ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -750,22 +781,22 @@ $LN8@OptionDire:
 	cmp	eax, 58					; 0000003aH
 	je	SHORT $LN10@OptionDire
 
-; 932  :                 return( EmitError( COLON_EXPECTED ) );
+; 953  :                 return( EmitError( COLON_EXPECTED ) );
 
 	mov	ecx, 84					; 00000054H
 	call	EmitError
 	jmp	$LN1@OptionDire
 $LN10@OptionDire:
 
-; 933  :             }
-; 934  :             i++;
+; 954  :             }
+; 955  :             i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
 	mov	DWORD PTR i$[rsp], eax
 
-; 935  :             /* there must be something after the colon */
-; 936  :             if ( tokenarray[i].token == T_FINAL ) {
+; 956  :             /* there must be something after the colon */
+; 957  :             if ( tokenarray[i].token == T_FINAL ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -774,20 +805,20 @@ $LN10@OptionDire:
 	test	eax, eax
 	jne	SHORT $LN11@OptionDire
 
-; 937  :                 i -= 2; /* position back to option identifier */
+; 958  :                 i -= 2; /* position back to option identifier */
 
 	mov	eax, DWORD PTR i$[rsp]
 	sub	eax, 2
 	mov	DWORD PTR i$[rsp], eax
 
-; 938  :                 break;
+; 959  :                 break;
 
 	jmp	SHORT $LN3@OptionDire
 $LN11@OptionDire:
 
-; 939  :             }
-; 940  :             /* reject option if -Zne is set */
-; 941  :             if ( idx >= MASMOPTS && Options.strict_masm_compat ) {
+; 960  :             }
+; 961  :             /* reject option if -Zne is set */
+; 962  :             if ( idx >= MASMOPTS && Options.strict_masm_compat ) {
 
 	cmp	DWORD PTR idx$[rsp], 28
 	jl	SHORT $LN12@OptionDire
@@ -795,21 +826,21 @@ $LN11@OptionDire:
 	test	eax, eax
 	je	SHORT $LN12@OptionDire
 
-; 942  :                 i -= 2;
+; 963  :                 i -= 2;
 
 	mov	eax, DWORD PTR i$[rsp]
 	sub	eax, 2
 	mov	DWORD PTR i$[rsp], eax
 
-; 943  :                 break;
+; 964  :                 break;
 
 	jmp	SHORT $LN3@OptionDire
 $LN12@OptionDire:
 $LN9@OptionDire:
 
-; 944  :             }
-; 945  :         }
-; 946  :         if ( optiontab[idx].func( &i, tokenarray ) == ERROR )
+; 965  :             }
+; 966  :         }
+; 967  :         if ( optiontab[idx].func( &i, tokenarray ) == ERROR )
 
 	movsxd	rax, DWORD PTR idx$[rsp]
 	imul	rax, rax, 16
@@ -822,13 +853,13 @@ $LN9@OptionDire:
 	cmp	eax, -1
 	jne	SHORT $LN13@OptionDire
 
-; 947  :             return( ERROR );
+; 968  :             return( ERROR );
 
 	mov	eax, -1
 	jmp	$LN1@OptionDire
 $LN13@OptionDire:
 
-; 948  :         if ( tokenarray[i].token != T_COMMA )
+; 969  :         if ( tokenarray[i].token != T_COMMA )
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -837,26 +868,26 @@ $LN13@OptionDire:
 	cmp	eax, 44					; 0000002cH
 	je	SHORT $LN14@OptionDire
 
-; 949  :             break;
+; 970  :             break;
 
 	jmp	SHORT $LN3@OptionDire
 $LN14@OptionDire:
 
-; 950  :         i++;
+; 971  :         i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
 	mov	DWORD PTR i$[rsp], eax
 
-; 951  :     }
+; 972  :     }
 
 	jmp	$LN2@OptionDire
 $LN3@OptionDire:
 
-; 952  :     if ( idx >= TABITEMS  || tokenarray[i].token != T_FINAL ) {
+; 973  :     if ( idx >= TABITEMS  || tokenarray[i].token != T_FINAL ) {
 
 	movsxd	rax, DWORD PTR idx$[rsp]
-	cmp	rax, 39					; 00000027H
+	cmp	rax, 40					; 00000028H
 	jae	SHORT $LN16@OptionDire
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -866,16 +897,16 @@ $LN3@OptionDire:
 	je	SHORT $LN15@OptionDire
 $LN16@OptionDire:
 
-; 953  :         DebugMsg(( "option syntax error: >%s<\n", tokenarray[i].tokpos ));
+; 974  :         DebugMsg(( "option syntax error: >%s<\n", tokenarray[i].tokpos ));
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	lea	rcx, OFFSET FLAT:$SG11261
+	lea	rcx, OFFSET FLAT:$SG11273
 	call	DoDebugMsg
 
-; 954  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
+; 975  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -886,13 +917,13 @@ $LN16@OptionDire:
 	jmp	SHORT $LN1@OptionDire
 $LN15@OptionDire:
 
-; 955  :     }
-; 956  :     return( NOT_ERROR );
+; 976  :     }
+; 977  :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@OptionDire:
 
-; 957  : }
+; 978  : }
 
 	add	rsp, 64					; 00000040H
 	pop	rdi
@@ -906,7 +937,7 @@ pi$ = 48
 tokenarray$ = 56
 Unsupported PROC
 
-; 827  : {
+; 847  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -918,7 +949,7 @@ Unsupported PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+48]
 
-; 828  :     return( EmitErr( NOT_SUPPORTED, tokenarray[(*pi)-2].tokpos ) );
+; 848  :     return( EmitErr( NOT_SUPPORTED, tokenarray[(*pi)-2].tokpos ) );
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	eax, DWORD PTR [rax]
@@ -930,7 +961,7 @@ Unsupported PROC
 	mov	ecx, 72					; 00000048H
 	call	EmitErr
 
-; 829  : }
+; 849  : }
 
 	add	rsp, 32					; 00000020H
 	pop	rdi
@@ -945,7 +976,7 @@ pi$ = 64
 tokenarray$ = 72
 SetStackBase PROC
 
-; 801  : {
+; 821  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -957,14 +988,14 @@ SetStackBase PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+64]
 
-; 802  :     int i = *pi;
+; 822  :     int i = *pi;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	eax, DWORD PTR [rax]
 	mov	DWORD PTR i$[rsp], eax
 
-; 803  : 
-; 804  :     if ( tokenarray[i].token != T_REG ) {
+; 823  : 
+; 824  :     if ( tokenarray[i].token != T_REG ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -973,7 +1004,7 @@ SetStackBase PROC
 	cmp	eax, 2
 	je	SHORT $LN2@SetStackBa
 
-; 805  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
+; 825  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -984,8 +1015,8 @@ SetStackBase PROC
 	jmp	$LN1@SetStackBa
 $LN2@SetStackBa:
 
-; 806  :     }
-; 807  :     if ( !( GetSflagsSp( tokenarray[i].tokval ) & SFR_IREG ) ) {
+; 826  :     }
+; 827  :     if ( !( GetSflagsSp( tokenarray[i].tokval ) & SFR_IREG ) ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -998,15 +1029,15 @@ $LN2@SetStackBa:
 	test	eax, eax
 	jne	SHORT $LN3@SetStackBa
 
-; 808  :         return( EmitError( MUST_BE_INDEX_OR_BASE_REGISTER ) );
+; 828  :         return( EmitError( MUST_BE_INDEX_OR_BASE_REGISTER ) );
 
 	mov	ecx, 33					; 00000021H
 	call	EmitError
 	jmp	$LN1@SetStackBa
 $LN3@SetStackBa:
 
-; 809  :     }
-; 810  :     ModuleInfo.basereg[ModuleInfo.Ofssize] = tokenarray[i].tokval;
+; 829  :     }
+; 830  :     ModuleInfo.basereg[ModuleInfo.Ofssize] = tokenarray[i].tokval;
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -1016,19 +1047,19 @@ $LN3@SetStackBa:
 	mov	eax, DWORD PTR [r8+rax+16]
 	mov	DWORD PTR [rdx+rcx*4], eax
 
-; 811  :     if ( !ModuleInfo.g.StackBase ) {
+; 831  :     if ( !ModuleInfo.g.StackBase ) {
 
 	cmp	QWORD PTR ModuleInfo+272, 0
 	jne	SHORT $LN4@SetStackBa
 
-; 812  :         ModuleInfo.g.StackBase = CreateVariable( "@StackBase", 0 );
+; 832  :         ModuleInfo.g.StackBase = CreateVariable( "@StackBase", 0 );
 
 	xor	edx, edx
-	lea	rcx, OFFSET FLAT:$SG11185
+	lea	rcx, OFFSET FLAT:$SG11196
 	call	CreateVariable
 	mov	QWORD PTR ModuleInfo+272, rax
 
-; 813  :         ModuleInfo.g.StackBase->predefined = TRUE;
+; 833  :         ModuleInfo.g.StackBase->predefined = TRUE;
 
 	mov	rax, QWORD PTR ModuleInfo+272
 	movzx	eax, BYTE PTR [rax+40]
@@ -1036,20 +1067,20 @@ $LN3@SetStackBa:
 	mov	rcx, QWORD PTR ModuleInfo+272
 	mov	BYTE PTR [rcx+40], al
 
-; 814  :         ModuleInfo.g.StackBase->sfunc_ptr = UpdateStackBase;
+; 834  :         ModuleInfo.g.StackBase->sfunc_ptr = UpdateStackBase;
 
 	mov	rax, QWORD PTR ModuleInfo+272
 	lea	rcx, OFFSET FLAT:UpdateStackBase
 	mov	QWORD PTR [rax+64], rcx
 
-; 815  :         ModuleInfo.g.ProcStatus = CreateVariable( "@ProcStatus", 0 );
+; 835  :         ModuleInfo.g.ProcStatus = CreateVariable( "@ProcStatus", 0 );
 
 	xor	edx, edx
-	lea	rcx, OFFSET FLAT:$SG11186
+	lea	rcx, OFFSET FLAT:$SG11197
 	call	CreateVariable
 	mov	QWORD PTR ModuleInfo+280, rax
 
-; 816  :         ModuleInfo.g.ProcStatus->predefined = TRUE;
+; 836  :         ModuleInfo.g.ProcStatus->predefined = TRUE;
 
 	mov	rax, QWORD PTR ModuleInfo+280
 	movzx	eax, BYTE PTR [rax+40]
@@ -1057,32 +1088,32 @@ $LN3@SetStackBa:
 	mov	rcx, QWORD PTR ModuleInfo+280
 	mov	BYTE PTR [rcx+40], al
 
-; 817  :         ModuleInfo.g.ProcStatus->sfunc_ptr = UpdateProcStatus;
+; 837  :         ModuleInfo.g.ProcStatus->sfunc_ptr = UpdateProcStatus;
 
 	mov	rax, QWORD PTR ModuleInfo+280
 	lea	rcx, OFFSET FLAT:UpdateProcStatus
 	mov	QWORD PTR [rax+64], rcx
 $LN4@SetStackBa:
 
-; 818  :     }
-; 819  :     i++;
+; 838  :     }
+; 839  :     i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
 	mov	DWORD PTR i$[rsp], eax
 
-; 820  :     *pi = i;
+; 840  :     *pi = i;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	ecx, DWORD PTR i$[rsp]
 	mov	DWORD PTR [rax], ecx
 
-; 821  :     return( NOT_ERROR );
+; 841  :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@SetStackBa:
 
-; 822  : }
+; 842  : }
 
 	add	rsp, 48					; 00000030H
 	pop	rdi
@@ -1098,7 +1129,7 @@ pi$ = 240
 tokenarray$ = 248
 SetCodeView PROC
 
-; 778  : {
+; 798  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -1110,15 +1141,15 @@ SetCodeView PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+240]
 
-; 779  :     int i = *pi;
+; 799  :     int i = *pi;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	eax, DWORD PTR [rax]
 	mov	DWORD PTR i$[rsp], eax
 
-; 780  :     struct expr opnd;
-; 781  : 
-; 782  :     if ( EvalOperand( &i, tokenarray, Token_Count, &opnd, 0 ) == ERROR )
+; 800  :     struct expr opnd;
+; 801  : 
+; 802  :     if ( EvalOperand( &i, tokenarray, Token_Count, &opnd, 0 ) == ERROR )
 
 	mov	BYTE PTR [rsp+32], 0
 	lea	r9, QWORD PTR opnd$[rsp]
@@ -1129,47 +1160,47 @@ SetCodeView PROC
 	cmp	eax, -1
 	jne	SHORT $LN2@SetCodeVie
 
-; 783  :         return( ERROR );
+; 803  :         return( ERROR );
 
 	mov	eax, -1
 	jmp	SHORT $LN1@SetCodeVie
 $LN2@SetCodeVie:
 
-; 784  :     if ( opnd.kind == EXPR_CONST ) {
+; 804  :     if ( opnd.kind == EXPR_CONST ) {
 
 	cmp	DWORD PTR opnd$[rsp+60], 0
 	jne	SHORT $LN3@SetCodeVie
 
-; 785  :         ModuleInfo.cv_opt = opnd.value;
+; 805  :         ModuleInfo.cv_opt = opnd.value;
 
 	movzx	eax, BYTE PTR opnd$[rsp]
 	mov	BYTE PTR ModuleInfo+427, al
 
-; 786  :     } else {
+; 806  :     } else {
 
 	jmp	SHORT $LN4@SetCodeVie
 $LN3@SetCodeVie:
 
-; 787  :         return( EmitError( CONSTANT_EXPECTED ) );
+; 807  :         return( EmitError( CONSTANT_EXPECTED ) );
 
 	mov	ecx, 65					; 00000041H
 	call	EmitError
 	jmp	SHORT $LN1@SetCodeVie
 $LN4@SetCodeVie:
 
-; 788  :     }
-; 789  :     *pi = i;
+; 808  :     }
+; 809  :     *pi = i;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	ecx, DWORD PTR i$[rsp]
 	mov	DWORD PTR [rax], ecx
 
-; 790  :     return( NOT_ERROR );
+; 810  :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@SetCodeVie:
 
-; 791  : }
+; 811  : }
 
 	mov	rdi, rax
 	mov	rcx, rsp
@@ -1189,7 +1220,7 @@ pi$ = 64
 tokenarray$ = 72
 SetDllImport PROC
 
-; 752  : {
+; 772  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -1201,20 +1232,20 @@ SetDllImport PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+64]
 
-; 753  :     int i = *pi;
+; 773  :     int i = *pi;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	eax, DWORD PTR [rax]
 	mov	DWORD PTR i$[rsp], eax
 
-; 754  : 
-; 755  :     /* used for COFF only */
-; 756  :     //if ( Options.output_format != OFORMAT_COFF ) {
-; 757  :     //    SkipOption( pi, tokenarray );
-; 758  :     //    return( NOT_ERROR);
-; 759  :     //}
-; 760  : 
-; 761  :     if ( tokenarray[i].token == T_ID &&
+; 774  : 
+; 775  :     /* used for COFF only */
+; 776  :     //if ( Options.output_format != OFORMAT_COFF ) {
+; 777  :     //    SkipOption( pi, tokenarray );
+; 778  :     //    return( NOT_ERROR);
+; 779  :     //}
+; 780  : 
+; 781  :     if ( tokenarray[i].token == T_ID &&
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -1224,19 +1255,19 @@ SetDllImport PROC
 	jne	SHORT $LN2@SetDllImpo
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
-	lea	rdx, OFFSET FLAT:$SG11155
+	lea	rdx, OFFSET FLAT:$SG11166
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	QWORD PTR __imp__stricmp
 	test	eax, eax
 	jne	SHORT $LN2@SetDllImpo
 
-; 762  :         ( _stricmp( tokenarray[i].string_ptr, "NONE" ) == 0 ) ) {
-; 763  :         ModuleInfo.CurrDll = NULL;
+; 782  :         ( _stricmp( tokenarray[i].string_ptr, "NONE" ) == 0 ) ) {
+; 783  :         ModuleInfo.CurrDll = NULL;
 
 	mov	QWORD PTR ModuleInfo+336, 0
 
-; 764  :         i++;
+; 784  :         i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
@@ -1244,7 +1275,7 @@ SetDllImport PROC
 	jmp	SHORT $LN3@SetDllImpo
 $LN2@SetDllImpo:
 
-; 765  :     } else if ( tokenarray[i].token == T_STRING && tokenarray[i].string_delim == '<' ) {
+; 785  :     } else if ( tokenarray[i].token == T_STRING && tokenarray[i].string_delim == '<' ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -1259,12 +1290,12 @@ $LN2@SetDllImpo:
 	cmp	eax, 60					; 0000003cH
 	jne	SHORT $LN4@SetDllImpo
 
-; 766  :         if ( Parse_Pass == PASS_1 )
+; 786  :         if ( Parse_Pass == PASS_1 )
 
 	cmp	DWORD PTR Parse_Pass, 0
 	jne	SHORT $LN5@SetDllImpo
 
-; 767  :             ModuleInfo.CurrDll = IncludeDll( tokenarray[i].string_ptr );
+; 787  :             ModuleInfo.CurrDll = IncludeDll( tokenarray[i].string_ptr );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -1274,7 +1305,7 @@ $LN2@SetDllImpo:
 	mov	QWORD PTR ModuleInfo+336, rax
 $LN5@SetDllImpo:
 
-; 768  :         i++;
+; 788  :         i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
@@ -1282,18 +1313,18 @@ $LN5@SetDllImpo:
 $LN4@SetDllImpo:
 $LN3@SetDllImpo:
 
-; 769  :     }
-; 770  :     *pi = i;
+; 789  :     }
+; 790  :     *pi = i;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	ecx, DWORD PTR i$[rsp]
 	mov	DWORD PTR [rax], ecx
 
-; 771  :     return( NOT_ERROR );
+; 791  :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 772  : }
+; 792  : }
 
 	add	rsp, 48					; 00000030H
 	pop	rdi
@@ -1309,7 +1340,7 @@ tv85 = 48
 name$ = 80
 IncludeDll PROC
 
-; 723  : {
+; 743  : {
 
 	mov	QWORD PTR [rsp+8], rcx
 	push	rdi
@@ -1320,25 +1351,25 @@ IncludeDll PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+80]
 
-; 724  :     struct dll_desc **q;
-; 725  :     struct dll_desc *node;
-; 726  : 
-; 727  :     /* allow a zero-sized name! */
-; 728  :     if ( *name == NULLC )
+; 744  :     struct dll_desc **q;
+; 745  :     struct dll_desc *node;
+; 746  : 
+; 747  :     /* allow a zero-sized name! */
+; 748  :     if ( *name == NULLC )
 
 	mov	rax, QWORD PTR name$[rsp]
 	movsx	eax, BYTE PTR [rax]
 	test	eax, eax
 	jne	SHORT $LN5@IncludeDll
 
-; 729  :         return( NULL );
+; 749  :         return( NULL );
 
 	xor	eax, eax
 	jmp	$LN1@IncludeDll
 $LN5@IncludeDll:
 
-; 730  : 
-; 731  :     for ( q = &ModuleInfo.g.DllQueue; *q ; q = &(*q)->next ) {
+; 750  : 
+; 751  :     for ( q = &ModuleInfo.g.DllQueue; *q ; q = &(*q)->next ) {
 
 	lea	rax, OFFSET FLAT:ModuleInfo+80
 	mov	QWORD PTR q$[rsp], rax
@@ -1352,7 +1383,7 @@ $LN4@IncludeDll:
 	cmp	QWORD PTR [rax], 0
 	je	SHORT $LN3@IncludeDll
 
-; 732  :         if ( _stricmp( (*q)->name, name ) == 0 )
+; 752  :         if ( _stricmp( (*q)->name, name ) == 0 )
 
 	mov	rax, QWORD PTR q$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -1363,19 +1394,19 @@ $LN4@IncludeDll:
 	test	eax, eax
 	jne	SHORT $LN6@IncludeDll
 
-; 733  :             return( *q );
+; 753  :             return( *q );
 
 	mov	rax, QWORD PTR q$[rsp]
 	mov	rax, QWORD PTR [rax]
 	jmp	$LN1@IncludeDll
 $LN6@IncludeDll:
 
-; 734  :     }
+; 754  :     }
 
 	jmp	SHORT $LN2@IncludeDll
 $LN3@IncludeDll:
 
-; 735  :     node = LclAlloc( sizeof( struct dll_desc ) + strlen( name ) );
+; 755  :     node = LclAlloc( sizeof( struct dll_desc ) + strlen( name ) );
 
 	mov	rcx, QWORD PTR name$[rsp]
 	call	strlen
@@ -1384,17 +1415,17 @@ $LN3@IncludeDll:
 	call	LclAlloc
 	mov	QWORD PTR node$[rsp], rax
 
-; 736  :     node->next = NULL;
+; 756  :     node->next = NULL;
 
 	mov	rax, QWORD PTR node$[rsp]
 	mov	QWORD PTR [rax], 0
 
-; 737  :     node->cnt = 0;
+; 757  :     node->cnt = 0;
 
 	mov	rax, QWORD PTR node$[rsp]
 	mov	DWORD PTR [rax+8], 0
 
-; 738  :     strcpy( node->name, name );
+; 758  :     strcpy( node->name, name );
 
 	mov	rax, QWORD PTR node$[rsp]
 	add	rax, 12
@@ -1402,39 +1433,39 @@ $LN3@IncludeDll:
 	mov	rcx, rax
 	call	strcpy
 
-; 739  :     *q = node;
+; 759  :     *q = node;
 
 	mov	rax, QWORD PTR q$[rsp]
 	mov	rcx, QWORD PTR node$[rsp]
 	mov	QWORD PTR [rax], rcx
 
-; 740  : 
-; 741  : #if AMD64_SUPPORT
-; 742  :     ModuleInfo.g.imp_prefix = ( ( ModuleInfo.defOfssize == USE64 ) ? "__imp_" : "_imp_" );
+; 760  : 
+; 761  : #if AMD64_SUPPORT
+; 762  :     ModuleInfo.g.imp_prefix = ( ( ModuleInfo.defOfssize == USE64 ) ? "__imp_" : "_imp_" );
 
 	movzx	eax, BYTE PTR ModuleInfo+405
 	cmp	eax, 2
 	jne	SHORT $LN8@IncludeDll
-	lea	rax, OFFSET FLAT:$SG11143
+	lea	rax, OFFSET FLAT:$SG11154
 	mov	QWORD PTR tv85[rsp], rax
 	jmp	SHORT $LN9@IncludeDll
 $LN8@IncludeDll:
-	lea	rax, OFFSET FLAT:$SG11144
+	lea	rax, OFFSET FLAT:$SG11155
 	mov	QWORD PTR tv85[rsp], rax
 $LN9@IncludeDll:
 	mov	rax, QWORD PTR tv85[rsp]
 	mov	QWORD PTR ModuleInfo+88, rax
 
-; 743  : #else
-; 744  :     ModuleInfo.g.imp_prefix = "_imp_";
-; 745  : #endif
-; 746  : 
-; 747  :     return( node );
+; 763  : #else
+; 764  :     ModuleInfo.g.imp_prefix = "_imp_";
+; 765  : #endif
+; 766  : 
+; 767  :     return( node );
 
 	mov	rax, QWORD PTR node$[rsp]
 $LN1@IncludeDll:
 
-; 748  : }
+; 768  : }
 
 	add	rsp, 64					; 00000040H
 	pop	rdi
@@ -1450,7 +1481,7 @@ pi$ = 240
 tokenarray$ = 248
 SetWin64 PROC
 
-; 693  : {
+; 713  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -1462,37 +1493,37 @@ SetWin64 PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+240]
 
-; 694  :     int i = *pi;
+; 714  :     int i = *pi;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	eax, DWORD PTR [rax]
 	mov	DWORD PTR i$[rsp], eax
 
-; 695  :     struct expr opndx;
-; 696  : 
-; 697  :     /* if -win64 isn't set, skip the option */
-; 698  :     /* v2.09: skip option if Ofssize != USE64 */
-; 699  :     if ( ModuleInfo.defOfssize != USE64 ) {
+; 715  :     struct expr opndx;
+; 716  : 
+; 717  :     /* if -win64 isn't set, skip the option */
+; 718  :     /* v2.09: skip option if Ofssize != USE64 */
+; 719  :     if ( ModuleInfo.defOfssize != USE64 ) {
 
 	movzx	eax, BYTE PTR ModuleInfo+405
 	cmp	eax, 2
 	je	SHORT $LN2@SetWin64
 
-; 700  :         SkipOption( pi, tokenarray );
+; 720  :         SkipOption( pi, tokenarray );
 
 	mov	rdx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR pi$[rsp]
 	call	SkipOption
 
-; 701  :         return( NOT_ERROR);
+; 721  :         return( NOT_ERROR);
 
 	xor	eax, eax
 	jmp	SHORT $LN1@SetWin64
 $LN2@SetWin64:
 
-; 702  :     }
-; 703  : 
-; 704  :     if ( EvalOperand( &i, tokenarray, Token_Count, &opndx, 0 ) == ERROR )
+; 722  :     }
+; 723  : 
+; 724  :     if ( EvalOperand( &i, tokenarray, Token_Count, &opndx, 0 ) == ERROR )
 
 	mov	BYTE PTR [rsp+32], 0
 	lea	r9, QWORD PTR opndx$[rsp]
@@ -1503,62 +1534,62 @@ $LN2@SetWin64:
 	cmp	eax, -1
 	jne	SHORT $LN3@SetWin64
 
-; 705  :         return( ERROR );
+; 725  :         return( ERROR );
 
 	mov	eax, -1
 	jmp	SHORT $LN1@SetWin64
 $LN3@SetWin64:
 
-; 706  :     if ( opndx.kind == EXPR_CONST ) {
+; 726  :     if ( opndx.kind == EXPR_CONST ) {
 
 	cmp	DWORD PTR opndx$[rsp+60], 0
 	jne	SHORT $LN4@SetWin64
 
-; 707  :         if ( opndx.llvalue & ( ~W64F_ALL ) ) {
+; 727  :         if ( opndx.llvalue & ( ~W64F_ALL ) ) {
 
 	mov	rax, QWORD PTR opndx$[rsp]
 	and	rax, -16
 	test	rax, rax
 	je	SHORT $LN6@SetWin64
 
-; 708  :             return( EmitConstError( &opndx ) );
+; 728  :             return( EmitConstError( &opndx ) );
 
 	lea	rcx, QWORD PTR opndx$[rsp]
 	call	EmitConstError
 	jmp	SHORT $LN1@SetWin64
 $LN6@SetWin64:
 
-; 709  :         }
-; 710  :         ModuleInfo.win64_flags = opndx.value;
+; 729  :         }
+; 730  :         ModuleInfo.win64_flags = opndx.value;
 
 	movzx	eax, BYTE PTR opndx$[rsp]
 	mov	BYTE PTR ModuleInfo+413, al
 
-; 711  :     } else {
+; 731  :     } else {
 
 	jmp	SHORT $LN5@SetWin64
 $LN4@SetWin64:
 
-; 712  :         return( EmitError( CONSTANT_EXPECTED ) );
+; 732  :         return( EmitError( CONSTANT_EXPECTED ) );
 
 	mov	ecx, 65					; 00000041H
 	call	EmitError
 	jmp	SHORT $LN1@SetWin64
 $LN5@SetWin64:
 
-; 713  :     }
-; 714  :     *pi = i;
+; 733  :     }
+; 734  :     *pi = i;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	ecx, DWORD PTR i$[rsp]
 	mov	DWORD PTR [rax], ecx
 
-; 715  :     return( NOT_ERROR );
+; 735  :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@SetWin64:
 
-; 716  : }
+; 736  : }
 
 	mov	rdi, rax
 	mov	rcx, rsp
@@ -1580,7 +1611,7 @@ pi$ = 64
 tokenarray$ = 72
 SetRenameKey PROC
 
-; 648  : {
+; 668  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -1592,24 +1623,24 @@ SetRenameKey PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+64]
 
-; 649  :     int i = *pi;
+; 669  :     int i = *pi;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	eax, DWORD PTR [rax]
 	mov	DWORD PTR i$[rsp], eax
 
-; 650  :     //struct ReservedWord *resw;
-; 651  :     unsigned index;
-; 652  :     char *oldname;
-; 653  : 
-; 654  : #if 0 /* v2.11: allow temporary renaming of keywords */
-; 655  :     /* do nothing if pass > 1 */
-; 656  :     if( Parse_Pass != PASS_1 ) {
-; 657  :         SkipOption( pi, tokenarray );
-; 658  :         return( NOT_ERROR );
-; 659  :     }
-; 660  : #endif
-; 661  :     if ( tokenarray[i].token != T_STRING || tokenarray[i].string_delim != '<' )  {
+; 670  :     //struct ReservedWord *resw;
+; 671  :     unsigned index;
+; 672  :     char *oldname;
+; 673  : 
+; 674  : #if 0 /* v2.11: allow temporary renaming of keywords */
+; 675  :     /* do nothing if pass > 1 */
+; 676  :     if( Parse_Pass != PASS_1 ) {
+; 677  :         SkipOption( pi, tokenarray );
+; 678  :         return( NOT_ERROR );
+; 679  :     }
+; 680  : #endif
+; 681  :     if ( tokenarray[i].token != T_STRING || tokenarray[i].string_delim != '<' )  {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -1625,7 +1656,7 @@ SetRenameKey PROC
 	je	SHORT $LN2@SetRenameK
 $LN3@SetRenameK:
 
-; 662  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
+; 682  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -1636,8 +1667,8 @@ $LN3@SetRenameK:
 	jmp	$LN1@SetRenameK
 $LN2@SetRenameK:
 
-; 663  :     }
-; 664  :     oldname = tokenarray[i].string_ptr;
+; 683  :     }
+; 684  :     oldname = tokenarray[i].string_ptr;
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -1645,15 +1676,15 @@ $LN2@SetRenameK:
 	mov	rax, QWORD PTR [rcx+rax+8]
 	mov	QWORD PTR oldname$[rsp], rax
 
-; 665  :     i++;
+; 685  :     i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
 	mov	DWORD PTR i$[rsp], eax
 
-; 666  :     /* v2.06: syntax changed */
-; 667  :     //if ( tokenarray[i].token != T_COMMA ) {
-; 668  :     if ( tokenarray[i].token != T_DIRECTIVE || tokenarray[i].dirtype != DRT_EQUALSGN ) {
+; 686  :     /* v2.06: syntax changed */
+; 687  :     //if ( tokenarray[i].token != T_COMMA ) {
+; 688  :     if ( tokenarray[i].token != T_DIRECTIVE || tokenarray[i].dirtype != DRT_EQUALSGN ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -1669,8 +1700,8 @@ $LN2@SetRenameK:
 	je	SHORT $LN4@SetRenameK
 $LN5@SetRenameK:
 
-; 669  :         //EmitError( EXPECTING_COMMA );
-; 670  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
+; 689  :         //EmitError( EXPECTING_COMMA );
+; 690  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -1681,14 +1712,14 @@ $LN5@SetRenameK:
 	jmp	$LN1@SetRenameK
 $LN4@SetRenameK:
 
-; 671  :     }
-; 672  :     i++;
+; 691  :     }
+; 692  :     i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
 	mov	DWORD PTR i$[rsp], eax
 
-; 673  :     if ( tokenarray[i].token != T_ID )  {
+; 693  :     if ( tokenarray[i].token != T_ID )  {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -1697,7 +1728,7 @@ $LN4@SetRenameK:
 	cmp	eax, 8
 	je	SHORT $LN6@SetRenameK
 
-; 674  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
+; 694  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -1708,11 +1739,11 @@ $LN4@SetRenameK:
 	jmp	SHORT $LN1@SetRenameK
 $LN6@SetRenameK:
 
-; 675  :     }
-; 676  : 
-; 677  :     /* todo: if MAX_ID_LEN can be > 255, then check size,
-; 678  :      * since a reserved word's size must be <= 255 */
-; 679  :     index = FindResWord( oldname, strlen( oldname ) );
+; 695  :     }
+; 696  : 
+; 697  :     /* todo: if MAX_ID_LEN can be > 255, then check size,
+; 698  :      * since a reserved word's size must be <= 255 */
+; 699  :     index = FindResWord( oldname, strlen( oldname ) );
 
 	mov	rcx, QWORD PTR oldname$[rsp]
 	call	strlen
@@ -1721,20 +1752,20 @@ $LN6@SetRenameK:
 	call	FindResWord
 	mov	DWORD PTR index$[rsp], eax
 
-; 680  :     if ( index == 0 ) {
+; 700  :     if ( index == 0 ) {
 
 	cmp	DWORD PTR index$[rsp], 0
 	jne	SHORT $LN7@SetRenameK
 
-; 681  :         return( EmitError( RESERVED_WORD_EXPECTED ) );
+; 701  :         return( EmitError( RESERVED_WORD_EXPECTED ) );
 
 	mov	ecx, 158				; 0000009eH
 	call	EmitError
 	jmp	SHORT $LN1@SetRenameK
 $LN7@SetRenameK:
 
-; 682  :     }
-; 683  :     RenameKeyword( index, tokenarray[i].string_ptr, strlen( tokenarray[i].string_ptr ) );
+; 702  :     }
+; 703  :     RenameKeyword( index, tokenarray[i].string_ptr, strlen( tokenarray[i].string_ptr ) );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -1749,24 +1780,24 @@ $LN7@SetRenameK:
 	mov	ecx, DWORD PTR index$[rsp]
 	call	RenameKeyword
 
-; 684  :     i++;
+; 704  :     i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
 	mov	DWORD PTR i$[rsp], eax
 
-; 685  :     *pi = i;
+; 705  :     *pi = i;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	ecx, DWORD PTR i$[rsp]
 	mov	DWORD PTR [rax], ecx
 
-; 686  :     return( NOT_ERROR );
+; 706  :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@SetRenameK:
 
-; 687  : }
+; 707  : }
 
 	add	rsp, 48					; 00000030H
 	pop	rdi
@@ -1782,7 +1813,7 @@ pi$ = 240
 tokenarray$ = 248
 SetElf	PROC
 
-; 622  : {
+; 642  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -1794,15 +1825,15 @@ SetElf	PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+240]
 
-; 623  :     int i = *pi;
+; 643  :     int i = *pi;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	eax, DWORD PTR [rax]
 	mov	DWORD PTR i$[rsp], eax
 
-; 624  :     struct expr opndx;
-; 625  : 
-; 626  :     if ( EvalOperand( &i, tokenarray, Token_Count, &opndx, 0 ) == ERROR )
+; 644  :     struct expr opndx;
+; 645  : 
+; 646  :     if ( EvalOperand( &i, tokenarray, Token_Count, &opndx, 0 ) == ERROR )
 
 	mov	BYTE PTR [rsp+32], 0
 	lea	r9, QWORD PTR opndx$[rsp]
@@ -1813,66 +1844,66 @@ SetElf	PROC
 	cmp	eax, -1
 	jne	SHORT $LN2@SetElf
 
-; 627  :         return( ERROR );
+; 647  :         return( ERROR );
 
 	mov	eax, -1
 	jmp	SHORT $LN1@SetElf
 $LN2@SetElf:
 
-; 628  :     if ( opndx.kind == EXPR_CONST ) {
+; 648  :     if ( opndx.kind == EXPR_CONST ) {
 
 	cmp	DWORD PTR opndx$[rsp+60], 0
 	jne	SHORT $LN3@SetElf
 
-; 629  :         if ( opndx.llvalue > 0xFF ) {
+; 649  :         if ( opndx.llvalue > 0xFF ) {
 
 	cmp	QWORD PTR opndx$[rsp], 255		; 000000ffH
 	jbe	SHORT $LN5@SetElf
 
-; 630  :             return( EmitConstError( &opndx ) );
+; 650  :             return( EmitConstError( &opndx ) );
 
 	lea	rcx, QWORD PTR opndx$[rsp]
 	call	EmitConstError
 	jmp	SHORT $LN1@SetElf
 $LN5@SetElf:
 
-; 631  :         }
-; 632  :         if ( Options.output_format == OFORMAT_ELF )
+; 651  :         }
+; 652  :         if ( Options.output_format == OFORMAT_ELF )
 
 	cmp	DWORD PTR Options+160, 3
 	jne	SHORT $LN6@SetElf
 
-; 633  :             ModuleInfo.elf_osabi = opndx.value;
+; 653  :             ModuleInfo.elf_osabi = opndx.value;
 
 	movzx	eax, BYTE PTR opndx$[rsp]
 	mov	BYTE PTR ModuleInfo+412, al
 $LN6@SetElf:
 
-; 634  :     } else {
+; 654  :     } else {
 
 	jmp	SHORT $LN4@SetElf
 $LN3@SetElf:
 
-; 635  :         return( EmitError( CONSTANT_EXPECTED ) );
+; 655  :         return( EmitError( CONSTANT_EXPECTED ) );
 
 	mov	ecx, 65					; 00000041H
 	call	EmitError
 	jmp	SHORT $LN1@SetElf
 $LN4@SetElf:
 
-; 636  :     }
-; 637  :     *pi = i;
+; 656  :     }
+; 657  :     *pi = i;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	ecx, DWORD PTR i$[rsp]
 	mov	DWORD PTR [rax], ecx
 
-; 638  :     return( NOT_ERROR );
+; 658  :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@SetElf:
 
-; 639  : }
+; 659  : }
 
 	mov	rdi, rax
 	mov	rcx, rsp
@@ -1892,7 +1923,7 @@ pi$ = 64
 tokenarray$ = 72
 SetFrame PROC
 
-; 604  : {
+; 624  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -1904,31 +1935,31 @@ SetFrame PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+64]
 
-; 605  :     int i = *pi;
+; 625  :     int i = *pi;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	eax, DWORD PTR [rax]
 	mov	DWORD PTR i$[rsp], eax
 
-; 606  : 
-; 607  :     if ( 0 == _stricmp( tokenarray[i].string_ptr, "AUTO" ) ) {
+; 626  : 
+; 627  :     if ( 0 == _stricmp( tokenarray[i].string_ptr, "AUTO" ) ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
-	lea	rdx, OFFSET FLAT:$SG11085
+	lea	rdx, OFFSET FLAT:$SG11096
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	QWORD PTR __imp__stricmp
 	test	eax, eax
 	jne	SHORT $LN2@SetFrame
 
-; 608  :         ModuleInfo.frame_auto = 1;
+; 628  :         ModuleInfo.frame_auto = 1;
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	bts	eax, 17
 	mov	DWORD PTR ModuleInfo+408, eax
 
-; 609  :         i++;
+; 629  :         i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
@@ -1936,24 +1967,24 @@ SetFrame PROC
 	jmp	SHORT $LN3@SetFrame
 $LN2@SetFrame:
 
-; 610  :     } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "NOAUTO" ) ) {
+; 630  :     } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "NOAUTO" ) ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
-	lea	rdx, OFFSET FLAT:$SG11087
+	lea	rdx, OFFSET FLAT:$SG11098
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	QWORD PTR __imp__stricmp
 	test	eax, eax
 	jne	SHORT $LN4@SetFrame
 
-; 611  :         ModuleInfo.frame_auto = 0;
+; 631  :         ModuleInfo.frame_auto = 0;
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	btr	eax, 17
 	mov	DWORD PTR ModuleInfo+408, eax
 
-; 612  :         i++;
+; 632  :         i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
@@ -1961,18 +1992,18 @@ $LN2@SetFrame:
 $LN4@SetFrame:
 $LN3@SetFrame:
 
-; 613  :     }
-; 614  :     *pi = i;
+; 633  :     }
+; 634  :     *pi = i;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	ecx, DWORD PTR i$[rsp]
 	mov	DWORD PTR [rax], ecx
 
-; 615  :     return( NOT_ERROR );
+; 635  :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 616  : }
+; 636  : }
 
 	add	rsp, 48					; 00000030H
 	pop	rdi
@@ -1991,7 +2022,7 @@ pi$ = 240
 tokenarray$ = 248
 SetMZ	PROC
 
-; 548  : {
+; 568  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -2003,17 +2034,17 @@ SetMZ	PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+240]
 
-; 549  :     int i = *pi;
+; 569  :     int i = *pi;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	eax, DWORD PTR [rax]
 	mov	DWORD PTR i$[rsp], eax
 
-; 550  :     int j;
-; 551  :     uint_16 *parms;
-; 552  :     struct expr opndx;
-; 553  : 
-; 554  :     for ( j = 0, parms = (uint_16 *)&ModuleInfo.mz_data ; j < 4; j++ ) {
+; 570  :     int j;
+; 571  :     uint_16 *parms;
+; 572  :     struct expr opndx;
+; 573  : 
+; 574  :     for ( j = 0, parms = (uint_16 *)&ModuleInfo.mz_data ; j < 4; j++ ) {
 
 	mov	DWORD PTR j$[rsp], 0
 	lea	rax, OFFSET FLAT:ModuleInfo+412
@@ -2027,8 +2058,8 @@ $LN4@SetMZ:
 	cmp	DWORD PTR j$[rsp], 4
 	jge	$LN3@SetMZ
 
-; 555  :         int k;
-; 556  :         for ( k = i; tokenarray[k].token != T_FINAL; k++ )
+; 575  :         int k;
+; 576  :         for ( k = i; tokenarray[k].token != T_FINAL; k++ )
 
 	mov	eax, DWORD PTR i$[rsp]
 	mov	DWORD PTR k$5[rsp], eax
@@ -2045,8 +2076,8 @@ $LN7@SetMZ:
 	test	eax, eax
 	je	SHORT $LN6@SetMZ
 
-; 557  :             if ( tokenarray[k].token == T_COMMA ||
-; 558  :                 tokenarray[k].token == T_COLON ||
+; 577  :             if ( tokenarray[k].token == T_COMMA ||
+; 578  :                 tokenarray[k].token == T_COLON ||
 
 	movsxd	rax, DWORD PTR k$5[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -2068,15 +2099,15 @@ $LN7@SetMZ:
 	jne	SHORT $LN11@SetMZ
 $LN12@SetMZ:
 
-; 559  :                 tokenarray[k].token == T_DBL_COLON )
-; 560  :                 break;
+; 579  :                 tokenarray[k].token == T_DBL_COLON )
+; 580  :                 break;
 
 	jmp	SHORT $LN6@SetMZ
 $LN11@SetMZ:
 	jmp	$LN5@SetMZ
 $LN6@SetMZ:
 
-; 561  :         if ( EvalOperand( &i, tokenarray, k, &opndx, 0 ) == ERROR )
+; 581  :         if ( EvalOperand( &i, tokenarray, k, &opndx, 0 ) == ERROR )
 
 	mov	BYTE PTR [rsp+32], 0
 	lea	r9, QWORD PTR opndx$[rsp]
@@ -2087,43 +2118,43 @@ $LN6@SetMZ:
 	cmp	eax, -1
 	jne	SHORT $LN13@SetMZ
 
-; 562  :             return( ERROR );
+; 582  :             return( ERROR );
 
 	mov	eax, -1
 	jmp	$LN1@SetMZ
 $LN13@SetMZ:
 
-; 563  :         if ( opndx.kind == EXPR_EMPTY ) {
+; 583  :         if ( opndx.kind == EXPR_EMPTY ) {
 
 	cmp	DWORD PTR opndx$[rsp+60], -2
 	jne	SHORT $LN14@SetMZ
 	jmp	SHORT $LN15@SetMZ
 $LN14@SetMZ:
 
-; 564  :         } else if ( opndx.kind == EXPR_CONST ) {
+; 584  :         } else if ( opndx.kind == EXPR_CONST ) {
 
 	cmp	DWORD PTR opndx$[rsp+60], 0
 	jne	SHORT $LN16@SetMZ
 
-; 565  :             if ( opndx.value64 > 0xFFFF ) {
+; 585  :             if ( opndx.value64 > 0xFFFF ) {
 
 	cmp	QWORD PTR opndx$[rsp], 65535		; 0000ffffH
 	jle	SHORT $LN18@SetMZ
 
-; 566  :                 return( EmitConstError( &opndx ) );
+; 586  :                 return( EmitConstError( &opndx ) );
 
 	lea	rcx, QWORD PTR opndx$[rsp]
 	call	EmitConstError
 	jmp	$LN1@SetMZ
 $LN18@SetMZ:
 
-; 567  :             }
-; 568  :             if ( ModuleInfo.sub_format == SFORMAT_MZ )
+; 587  :             }
+; 588  :             if ( ModuleInfo.sub_format == SFORMAT_MZ )
 
 	cmp	DWORD PTR ModuleInfo+372, 1
 	jne	SHORT $LN19@SetMZ
 
-; 569  :                 *(parms + j) = opndx.value;
+; 589  :                 *(parms + j) = opndx.value;
 
 	movsxd	rax, DWORD PTR j$[rsp]
 	mov	rcx, QWORD PTR parms$[rsp]
@@ -2131,12 +2162,12 @@ $LN18@SetMZ:
 	mov	WORD PTR [rcx+rax*2], dx
 $LN19@SetMZ:
 
-; 570  :         } else {
+; 590  :         } else {
 
 	jmp	SHORT $LN17@SetMZ
 $LN16@SetMZ:
 
-; 571  :             return( EmitError( CONSTANT_EXPECTED ) );
+; 591  :             return( EmitError( CONSTANT_EXPECTED ) );
 
 	mov	ecx, 65					; 00000041H
 	call	EmitError
@@ -2144,8 +2175,8 @@ $LN16@SetMZ:
 $LN17@SetMZ:
 $LN15@SetMZ:
 
-; 572  :         }
-; 573  :         if ( tokenarray[i].token == T_COLON )
+; 592  :         }
+; 593  :         if ( tokenarray[i].token == T_COLON )
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -2154,7 +2185,7 @@ $LN15@SetMZ:
 	cmp	eax, 58					; 0000003aH
 	jne	SHORT $LN20@SetMZ
 
-; 574  :             i++;
+; 594  :             i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
@@ -2162,7 +2193,7 @@ $LN15@SetMZ:
 	jmp	SHORT $LN21@SetMZ
 $LN20@SetMZ:
 
-; 575  :         else if ( tokenarray[i].token == T_DBL_COLON ) {
+; 595  :         else if ( tokenarray[i].token == T_DBL_COLON ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -2171,13 +2202,13 @@ $LN20@SetMZ:
 	cmp	eax, 13
 	jne	SHORT $LN22@SetMZ
 
-; 576  :             i++;
+; 596  :             i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
 	mov	DWORD PTR i$[rsp], eax
 
-; 577  :             j++;
+; 597  :             j++;
 
 	mov	eax, DWORD PTR j$[rsp]
 	inc	eax
@@ -2185,33 +2216,33 @@ $LN20@SetMZ:
 $LN22@SetMZ:
 $LN21@SetMZ:
 
-; 578  :         }
-; 579  :     }
+; 598  :         }
+; 599  :     }
 
 	jmp	$LN2@SetMZ
 $LN3@SetMZ:
 
-; 580  : 
-; 581  :     /* ensure data integrity of the params */
-; 582  :     if ( ModuleInfo.sub_format == SFORMAT_MZ ) {
+; 600  : 
+; 601  :     /* ensure data integrity of the params */
+; 602  :     if ( ModuleInfo.sub_format == SFORMAT_MZ ) {
 
 	cmp	DWORD PTR ModuleInfo+372, 1
 	jne	SHORT $LN23@SetMZ
 
-; 583  :         if ( ModuleInfo.mz_data.ofs_fixups < 0x1E )
+; 603  :         if ( ModuleInfo.mz_data.ofs_fixups < 0x1E )
 
 	movzx	eax, WORD PTR ModuleInfo+412
 	cmp	eax, 30
 	jge	SHORT $LN24@SetMZ
 
-; 584  :             ModuleInfo.mz_data.ofs_fixups = 0x1E;
+; 604  :             ModuleInfo.mz_data.ofs_fixups = 0x1E;
 
 	mov	eax, 30
 	mov	WORD PTR ModuleInfo+412, ax
 $LN24@SetMZ:
 
-; 585  : 
-; 586  :         for( j = 16; j < ModuleInfo.mz_data.alignment; j <<= 1 );
+; 605  : 
+; 606  :         for( j = 16; j < ModuleInfo.mz_data.alignment; j <<= 1 );
 
 	mov	DWORD PTR j$[rsp], 16
 	jmp	SHORT $LN10@SetMZ
@@ -2226,46 +2257,46 @@ $LN10@SetMZ:
 	jmp	SHORT $LN8@SetMZ
 $LN9@SetMZ:
 
-; 587  :         if( j != ModuleInfo.mz_data.alignment )
+; 607  :         if( j != ModuleInfo.mz_data.alignment )
 
 	movzx	eax, WORD PTR ModuleInfo+414
 	cmp	DWORD PTR j$[rsp], eax
 	je	SHORT $LN25@SetMZ
 
-; 588  :             EmitError( INVALID_HEADER_ALIGNMENT );
+; 608  :             EmitError( INVALID_HEADER_ALIGNMENT );
 
 	mov	ecx, 205				; 000000cdH
 	call	EmitError
 $LN25@SetMZ:
 
-; 589  : 
-; 590  :         if ( ModuleInfo.mz_data.heapmax < ModuleInfo.mz_data.heapmin )
+; 609  : 
+; 610  :         if ( ModuleInfo.mz_data.heapmax < ModuleInfo.mz_data.heapmin )
 
 	movzx	eax, WORD PTR ModuleInfo+418
 	movzx	ecx, WORD PTR ModuleInfo+416
 	cmp	eax, ecx
 	jge	SHORT $LN26@SetMZ
 
-; 591  :             ModuleInfo.mz_data.heapmax = ModuleInfo.mz_data.heapmin;
+; 611  :             ModuleInfo.mz_data.heapmax = ModuleInfo.mz_data.heapmin;
 
 	movzx	eax, WORD PTR ModuleInfo+416
 	mov	WORD PTR ModuleInfo+418, ax
 $LN26@SetMZ:
 $LN23@SetMZ:
 
-; 592  :     }
-; 593  :     *pi = i;
+; 612  :     }
+; 613  :     *pi = i;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	ecx, DWORD PTR i$[rsp]
 	mov	DWORD PTR [rax], ecx
 
-; 594  :     return( NOT_ERROR );
+; 614  :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@SetMZ:
 
-; 595  : }
+; 615  : }
 
 	mov	rdi, rax
 	mov	rcx, rsp
@@ -2288,7 +2319,7 @@ pi$ = 240
 tokenarray$ = 248
 SetProcAlign PROC
 
-; 522  : {
+; 542  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -2300,16 +2331,16 @@ SetProcAlign PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+240]
 
-; 523  :     int i = *pi;
+; 543  :     int i = *pi;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	eax, DWORD PTR [rax]
 	mov	DWORD PTR i$[rsp], eax
 
-; 524  :     int temp, temp2;
-; 525  :     struct expr opndx;
-; 526  : 
-; 527  :     if ( EvalOperand( &i, tokenarray, Token_Count, &opndx, EXPF_NOUNDEF ) == ERROR )
+; 544  :     int temp, temp2;
+; 545  :     struct expr opndx;
+; 546  : 
+; 547  :     if ( EvalOperand( &i, tokenarray, Token_Count, &opndx, EXPF_NOUNDEF ) == ERROR )
 
 	mov	BYTE PTR [rsp+32], 2
 	lea	r9, QWORD PTR opndx$[rsp]
@@ -2320,38 +2351,38 @@ SetProcAlign PROC
 	cmp	eax, -1
 	jne	SHORT $LN5@SetProcAli
 
-; 528  :         return( ERROR );
+; 548  :         return( ERROR );
 
 	mov	eax, -1
 	jmp	$LN1@SetProcAli
 $LN5@SetProcAli:
 
-; 529  :     if ( opndx.kind != EXPR_CONST ) {
+; 549  :     if ( opndx.kind != EXPR_CONST ) {
 
 	cmp	DWORD PTR opndx$[rsp+60], 0
 	je	SHORT $LN6@SetProcAli
 
-; 530  :         return( EmitError( CONSTANT_EXPECTED ) );
+; 550  :         return( EmitError( CONSTANT_EXPECTED ) );
 
 	mov	ecx, 65					; 00000041H
 	call	EmitError
 	jmp	SHORT $LN1@SetProcAli
 $LN6@SetProcAli:
 
-; 531  :     }
-; 532  :     if( opndx.value > MAX_STRUCT_ALIGN ) {
+; 551  :     }
+; 552  :     if( opndx.value > MAX_STRUCT_ALIGN ) {
 
 	cmp	DWORD PTR opndx$[rsp], 32		; 00000020H
 	jle	SHORT $LN7@SetProcAli
 
-; 533  :         EmitError( STRUCT_ALIGN_TOO_HIGH );
+; 553  :         EmitError( STRUCT_ALIGN_TOO_HIGH );
 
 	mov	ecx, 214				; 000000d6H
 	call	EmitError
 $LN7@SetProcAli:
 
-; 534  :     }
-; 535  :     for( temp = 1, temp2 = 0; temp < opndx.value ; temp <<= 1, temp2++ );
+; 554  :     }
+; 555  :     for( temp = 1, temp2 = 0; temp < opndx.value ; temp <<= 1, temp2++ );
 
 	mov	DWORD PTR temp$[rsp], 1
 	mov	DWORD PTR temp2$[rsp], 0
@@ -2370,13 +2401,13 @@ $LN4@SetProcAli:
 	jmp	SHORT $LN2@SetProcAli
 $LN3@SetProcAli:
 
-; 536  :     if( temp != opndx.value ) {
+; 556  :     if( temp != opndx.value ) {
 
 	mov	eax, DWORD PTR opndx$[rsp]
 	cmp	DWORD PTR temp$[rsp], eax
 	je	SHORT $LN8@SetProcAli
 
-; 537  :         return( EmitErr( POWER_OF_2, opndx.value ) );
+; 557  :         return( EmitErr( POWER_OF_2, opndx.value ) );
 
 	mov	edx, DWORD PTR opndx$[rsp]
 	mov	ecx, 129				; 00000081H
@@ -2384,24 +2415,24 @@ $LN3@SetProcAli:
 	jmp	SHORT $LN1@SetProcAli
 $LN8@SetProcAli:
 
-; 538  :     }
-; 539  :     ModuleInfo.procalign = temp2;
+; 558  :     }
+; 559  :     ModuleInfo.procalign = temp2;
 
 	movzx	eax, BYTE PTR temp2$[rsp]
 	mov	BYTE PTR ModuleInfo+399, al
 
-; 540  :     *pi = i;
+; 560  :     *pi = i;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	ecx, DWORD PTR i$[rsp]
 	mov	DWORD PTR [rax], ecx
 
-; 541  :     return( NOT_ERROR );
+; 561  :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@SetProcAli:
 
-; 542  : }
+; 562  : }
 
 	mov	rdi, rax
 	mov	rcx, rsp
@@ -2424,7 +2455,7 @@ pi$ = 240
 tokenarray$ = 248
 SetFieldAlign PROC
 
-; 494  : {
+; 514  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -2436,16 +2467,16 @@ SetFieldAlign PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+240]
 
-; 495  :     int i = *pi;
+; 515  :     int i = *pi;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	eax, DWORD PTR [rax]
 	mov	DWORD PTR i$[rsp], eax
 
-; 496  :     unsigned temp, temp2;
-; 497  :     struct expr opndx;
-; 498  : 
-; 499  :     if ( EvalOperand( &i, tokenarray, Token_Count, &opndx, EXPF_NOUNDEF ) == ERROR )
+; 516  :     unsigned temp, temp2;
+; 517  :     struct expr opndx;
+; 518  : 
+; 519  :     if ( EvalOperand( &i, tokenarray, Token_Count, &opndx, EXPF_NOUNDEF ) == ERROR )
 
 	mov	BYTE PTR [rsp+32], 2
 	lea	r9, QWORD PTR opndx$[rsp]
@@ -2456,39 +2487,39 @@ SetFieldAlign PROC
 	cmp	eax, -1
 	jne	SHORT $LN5@SetFieldAl
 
-; 500  :         return( ERROR );
+; 520  :         return( ERROR );
 
 	mov	eax, -1
 	jmp	$LN1@SetFieldAl
 $LN5@SetFieldAl:
 
-; 501  :     if ( opndx.kind != EXPR_CONST ) {
+; 521  :     if ( opndx.kind != EXPR_CONST ) {
 
 	cmp	DWORD PTR opndx$[rsp+60], 0
 	je	SHORT $LN6@SetFieldAl
 
-; 502  :         return( EmitError( CONSTANT_EXPECTED ) );
+; 522  :         return( EmitError( CONSTANT_EXPECTED ) );
 
 	mov	ecx, 65					; 00000041H
 	call	EmitError
 	jmp	SHORT $LN1@SetFieldAl
 $LN6@SetFieldAl:
 
-; 503  :     }
-; 504  :     if( opndx.uvalue > MAX_STRUCT_ALIGN ) {
+; 523  :     }
+; 524  :     if( opndx.uvalue > MAX_STRUCT_ALIGN ) {
 
 	cmp	DWORD PTR opndx$[rsp], 32		; 00000020H
 	jbe	SHORT $LN7@SetFieldAl
 
-; 505  :         return( EmitError( STRUCT_ALIGN_TOO_HIGH ) );
+; 525  :         return( EmitError( STRUCT_ALIGN_TOO_HIGH ) );
 
 	mov	ecx, 214				; 000000d6H
 	call	EmitError
 	jmp	SHORT $LN1@SetFieldAl
 $LN7@SetFieldAl:
 
-; 506  :     }
-; 507  :     for( temp = 1, temp2 = 0; temp < opndx.uvalue ; temp <<= 1, temp2++ );
+; 526  :     }
+; 527  :     for( temp = 1, temp2 = 0; temp < opndx.uvalue ; temp <<= 1, temp2++ );
 
 	mov	DWORD PTR temp$[rsp], 1
 	mov	DWORD PTR temp2$[rsp], 0
@@ -2507,13 +2538,13 @@ $LN4@SetFieldAl:
 	jmp	SHORT $LN2@SetFieldAl
 $LN3@SetFieldAl:
 
-; 508  :     if( temp != opndx.uvalue ) {
+; 528  :     if( temp != opndx.uvalue ) {
 
 	mov	eax, DWORD PTR opndx$[rsp]
 	cmp	DWORD PTR temp$[rsp], eax
 	je	SHORT $LN8@SetFieldAl
 
-; 509  :         return( EmitErr( POWER_OF_2, opndx.value ) );
+; 529  :         return( EmitErr( POWER_OF_2, opndx.value ) );
 
 	mov	edx, DWORD PTR opndx$[rsp]
 	mov	ecx, 129				; 00000081H
@@ -2521,24 +2552,24 @@ $LN3@SetFieldAl:
 	jmp	SHORT $LN1@SetFieldAl
 $LN8@SetFieldAl:
 
-; 510  :     }
-; 511  :     ModuleInfo.fieldalign = temp2;
+; 530  :     }
+; 531  :     ModuleInfo.fieldalign = temp2;
 
 	movzx	eax, BYTE PTR temp2$[rsp]
 	mov	BYTE PTR ModuleInfo+397, al
 
-; 512  :     *pi = i;
+; 532  :     *pi = i;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	ecx, DWORD PTR i$[rsp]
 	mov	DWORD PTR [rax], ecx
 
-; 513  :     return( NOT_ERROR );
+; 533  :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@SetFieldAl:
 
-; 514  : }
+; 534  : }
 
 	mov	rdi, rax
 	mov	rcx, rsp
@@ -2558,7 +2589,7 @@ pi$ = 64
 tokenarray$ = 72
 SetSegment PROC
 
-; 463  : {
+; 483  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -2570,14 +2601,14 @@ SetSegment PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+64]
 
-; 464  :     int i = *pi;
+; 484  :     int i = *pi;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	eax, DWORD PTR [rax]
 	mov	DWORD PTR i$[rsp], eax
 
-; 465  : 
-; 466  :     if ( tokenarray[i].token == T_RES_ID && tokenarray[i].tokval == T_FLAT ) {
+; 485  : 
+; 486  :     if ( tokenarray[i].token == T_RES_ID && tokenarray[i].tokval == T_FLAT ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -2591,28 +2622,28 @@ SetSegment PROC
 	cmp	DWORD PTR [rcx+rax+16], 261		; 00000105H
 	jne	SHORT $LN2@SetSegment
 
-; 467  : #if AMD64_SUPPORT
-; 468  :         if ( ( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_64 )
+; 487  : #if AMD64_SUPPORT
+; 488  :         if ( ( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_64 )
 
 	mov	eax, DWORD PTR ModuleInfo+392
 	and	eax, 240				; 000000f0H
 	cmp	eax, 112				; 00000070H
 	jl	SHORT $LN4@SetSegment
 
-; 469  :             ModuleInfo.defOfssize = USE64;
+; 489  :             ModuleInfo.defOfssize = USE64;
 
 	mov	BYTE PTR ModuleInfo+405, 2
 	jmp	SHORT $LN5@SetSegment
 $LN4@SetSegment:
 
-; 470  :         else
-; 471  : #endif
-; 472  :             ModuleInfo.defOfssize = USE32;
+; 490  :         else
+; 491  : #endif
+; 492  :             ModuleInfo.defOfssize = USE32;
 
 	mov	BYTE PTR ModuleInfo+405, 1
 $LN5@SetSegment:
 
-; 473  :     } else if ( tokenarray[i].token == T_ID && _stricmp( tokenarray[i].string_ptr, "USE16" ) == 0) {
+; 493  :     } else if ( tokenarray[i].token == T_ID && _stricmp( tokenarray[i].string_ptr, "USE16" ) == 0) {
 
 	jmp	$LN3@SetSegment
 $LN2@SetSegment:
@@ -2624,20 +2655,20 @@ $LN2@SetSegment:
 	jne	SHORT $LN6@SetSegment
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
-	lea	rdx, OFFSET FLAT:$SG10998
+	lea	rdx, OFFSET FLAT:$SG11009
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	QWORD PTR __imp__stricmp
 	test	eax, eax
 	jne	SHORT $LN6@SetSegment
 
-; 474  :         ModuleInfo.defOfssize = USE16;
+; 494  :         ModuleInfo.defOfssize = USE16;
 
 	mov	BYTE PTR ModuleInfo+405, 0
 	jmp	$LN7@SetSegment
 $LN6@SetSegment:
 
-; 475  :     } else if ( tokenarray[i].token == T_ID && _stricmp( tokenarray[i].string_ptr, "USE32" ) == 0) {
+; 495  :     } else if ( tokenarray[i].token == T_ID && _stricmp( tokenarray[i].string_ptr, "USE32" ) == 0) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -2647,21 +2678,21 @@ $LN6@SetSegment:
 	jne	SHORT $LN8@SetSegment
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
-	lea	rdx, OFFSET FLAT:$SG11001
+	lea	rdx, OFFSET FLAT:$SG11012
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	QWORD PTR __imp__stricmp
 	test	eax, eax
 	jne	SHORT $LN8@SetSegment
 
-; 476  :         ModuleInfo.defOfssize = USE32;
+; 496  :         ModuleInfo.defOfssize = USE32;
 
 	mov	BYTE PTR ModuleInfo+405, 1
 	jmp	SHORT $LN9@SetSegment
 $LN8@SetSegment:
 
-; 477  : #if AMD64_SUPPORT
-; 478  :     } else if ( tokenarray[i].token == T_ID && _stricmp( tokenarray[i].string_ptr, "USE64" ) == 0) {
+; 497  : #if AMD64_SUPPORT
+; 498  :     } else if ( tokenarray[i].token == T_ID && _stricmp( tokenarray[i].string_ptr, "USE64" ) == 0) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -2671,24 +2702,24 @@ $LN8@SetSegment:
 	jne	SHORT $LN10@SetSegment
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
-	lea	rdx, OFFSET FLAT:$SG11004
+	lea	rdx, OFFSET FLAT:$SG11015
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	QWORD PTR __imp__stricmp
 	test	eax, eax
 	jne	SHORT $LN10@SetSegment
 
-; 479  :         ModuleInfo.defOfssize = USE64;
+; 499  :         ModuleInfo.defOfssize = USE64;
 
 	mov	BYTE PTR ModuleInfo+405, 2
 
-; 480  : #endif
-; 481  :     } else {
+; 500  : #endif
+; 501  :     } else {
 
 	jmp	SHORT $LN11@SetSegment
 $LN10@SetSegment:
 
-; 482  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
+; 502  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -2702,25 +2733,25 @@ $LN9@SetSegment:
 $LN7@SetSegment:
 $LN3@SetSegment:
 
-; 483  :     }
-; 484  :     i++;
+; 503  :     }
+; 504  :     i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
 	mov	DWORD PTR i$[rsp], eax
 
-; 485  :     *pi = i;
+; 505  :     *pi = i;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	ecx, DWORD PTR i$[rsp]
 	mov	DWORD PTR [rax], ecx
 
-; 486  :     return( NOT_ERROR );
+; 506  :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@SetSegment:
 
-; 487  : }
+; 507  : }
 
 	add	rsp, 48					; 00000030H
 	pop	rdi
@@ -2736,7 +2767,7 @@ pi$ = 64
 tokenarray$ = 72
 SetProc	PROC
 
-; 429  : {
+; 449  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -2748,14 +2779,14 @@ SetProc	PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+64]
 
-; 430  :     int i = *pi;
+; 450  :     int i = *pi;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	eax, DWORD PTR [rax]
 	mov	DWORD PTR i$[rsp], eax
 
-; 431  : 
-; 432  :     switch ( tokenarray[i].token ) {
+; 451  : 
+; 452  :     switch ( tokenarray[i].token ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -2769,31 +2800,31 @@ SetProc	PROC
 	jmp	$LN2@SetProc
 $LN4@SetProc:
 
-; 433  :     case T_ID:
-; 434  :         if ( 0 == _stricmp( tokenarray[i].string_ptr, "PRIVATE" ) ) {
+; 453  :     case T_ID:
+; 454  :         if ( 0 == _stricmp( tokenarray[i].string_ptr, "PRIVATE" ) ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
-	lea	rdx, OFFSET FLAT:$SG10980
+	lea	rdx, OFFSET FLAT:$SG10991
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	QWORD PTR __imp__stricmp
 	test	eax, eax
 	jne	SHORT $LN5@SetProc
 
-; 435  :             ModuleInfo.procs_private = TRUE;
+; 455  :             ModuleInfo.procs_private = TRUE;
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	or	eax, 4
 	mov	DWORD PTR ModuleInfo+408, eax
 
-; 436  :             ModuleInfo.procs_export = FALSE;
+; 456  :             ModuleInfo.procs_export = FALSE;
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	and	eax, -9					; fffffff7H
 	mov	DWORD PTR ModuleInfo+408, eax
 
-; 437  :             i++;
+; 457  :             i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
@@ -2801,30 +2832,30 @@ $LN4@SetProc:
 	jmp	SHORT $LN6@SetProc
 $LN5@SetProc:
 
-; 438  :         } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "EXPORT" ) ) {
+; 458  :         } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "EXPORT" ) ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
-	lea	rdx, OFFSET FLAT:$SG10982
+	lea	rdx, OFFSET FLAT:$SG10993
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	QWORD PTR __imp__stricmp
 	test	eax, eax
 	jne	SHORT $LN7@SetProc
 
-; 439  :             ModuleInfo.procs_private = FALSE;
+; 459  :             ModuleInfo.procs_private = FALSE;
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	and	eax, -5					; fffffffbH
 	mov	DWORD PTR ModuleInfo+408, eax
 
-; 440  :             ModuleInfo.procs_export = TRUE;
+; 460  :             ModuleInfo.procs_export = TRUE;
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	or	eax, 8
 	mov	DWORD PTR ModuleInfo+408, eax
 
-; 441  :             i++;
+; 461  :             i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
@@ -2832,14 +2863,14 @@ $LN5@SetProc:
 $LN7@SetProc:
 $LN6@SetProc:
 
-; 442  :         }
-; 443  :         break;
+; 462  :         }
+; 463  :         break;
 
 	jmp	SHORT $LN2@SetProc
 $LN8@SetProc:
 
-; 444  :     case T_DIRECTIVE: /* word PUBLIC is a directive */
-; 445  :         if ( tokenarray[i].tokval == T_PUBLIC ) {
+; 464  :     case T_DIRECTIVE: /* word PUBLIC is a directive */
+; 465  :         if ( tokenarray[i].tokval == T_PUBLIC ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -2847,19 +2878,19 @@ $LN8@SetProc:
 	cmp	DWORD PTR [rcx+rax+16], 426		; 000001aaH
 	jne	SHORT $LN9@SetProc
 
-; 446  :             ModuleInfo.procs_private = FALSE;
+; 466  :             ModuleInfo.procs_private = FALSE;
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	and	eax, -5					; fffffffbH
 	mov	DWORD PTR ModuleInfo+408, eax
 
-; 447  :             ModuleInfo.procs_export = FALSE;
+; 467  :             ModuleInfo.procs_export = FALSE;
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	and	eax, -9					; fffffff7H
 	mov	DWORD PTR ModuleInfo+408, eax
 
-; 448  :             i++;
+; 468  :             i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
@@ -2867,20 +2898,20 @@ $LN8@SetProc:
 $LN9@SetProc:
 $LN2@SetProc:
 
-; 449  :         }
-; 450  :         break;
-; 451  :     }
-; 452  :     *pi = i;
+; 469  :         }
+; 470  :         break;
+; 471  :     }
+; 472  :     *pi = i;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	ecx, DWORD PTR i$[rsp]
 	mov	DWORD PTR [rax], ecx
 
-; 453  :     return( NOT_ERROR );
+; 473  :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 454  : }
+; 474  : }
 
 	add	rsp, 48					; 00000030H
 	pop	rdi
@@ -2895,7 +2926,7 @@ pi$ = 64
 tokenarray$ = 72
 SetOffset PROC
 
-; 408  : {
+; 428  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -2907,68 +2938,68 @@ SetOffset PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+64]
 
-; 409  :     int i = *pi;
+; 429  :     int i = *pi;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	eax, DWORD PTR [rax]
 	mov	DWORD PTR i$[rsp], eax
 
-; 410  : 
-; 411  :     if ( 0 == _stricmp( tokenarray[i].string_ptr, "GROUP" ) ) {
+; 430  : 
+; 431  :     if ( 0 == _stricmp( tokenarray[i].string_ptr, "GROUP" ) ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
-	lea	rdx, OFFSET FLAT:$SG10961
+	lea	rdx, OFFSET FLAT:$SG10972
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	QWORD PTR __imp__stricmp
 	test	eax, eax
 	jne	SHORT $LN2@SetOffset
 
-; 412  :         ModuleInfo.offsettype = OT_GROUP;
+; 432  :         ModuleInfo.offsettype = OT_GROUP;
 
 	mov	DWORD PTR ModuleInfo+384, 0
 	jmp	SHORT $LN3@SetOffset
 $LN2@SetOffset:
 
-; 413  :     } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "FLAT" ) ) {
+; 433  :     } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "FLAT" ) ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
-	lea	rdx, OFFSET FLAT:$SG10964
+	lea	rdx, OFFSET FLAT:$SG10975
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	QWORD PTR __imp__stricmp
 	test	eax, eax
 	jne	SHORT $LN4@SetOffset
 
-; 414  :         ModuleInfo.offsettype = OT_FLAT;
+; 434  :         ModuleInfo.offsettype = OT_FLAT;
 
 	mov	DWORD PTR ModuleInfo+384, 1
 	jmp	SHORT $LN5@SetOffset
 $LN4@SetOffset:
 
-; 415  :     } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "SEGMENT" ) ) {
+; 435  :     } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "SEGMENT" ) ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
-	lea	rdx, OFFSET FLAT:$SG10967
+	lea	rdx, OFFSET FLAT:$SG10978
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	QWORD PTR __imp__stricmp
 	test	eax, eax
 	jne	SHORT $LN6@SetOffset
 
-; 416  :         ModuleInfo.offsettype = OT_SEGMENT;
+; 436  :         ModuleInfo.offsettype = OT_SEGMENT;
 
 	mov	DWORD PTR ModuleInfo+384, 2
 
-; 417  :     } else {
+; 437  :     } else {
 
 	jmp	SHORT $LN7@SetOffset
 $LN6@SetOffset:
 
-; 418  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
+; 438  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -2981,25 +3012,25 @@ $LN7@SetOffset:
 $LN5@SetOffset:
 $LN3@SetOffset:
 
-; 419  :     }
-; 420  :     i++;
+; 439  :     }
+; 440  :     i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
 	mov	DWORD PTR i$[rsp], eax
 
-; 421  :     *pi = i;
+; 441  :     *pi = i;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	ecx, DWORD PTR i$[rsp]
 	mov	DWORD PTR [rax], ecx
 
-; 422  :     return( NOT_ERROR );
+; 442  :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@SetOffset:
 
-; 423  : }
+; 443  : }
 
 	add	rsp, 48					; 00000030H
 	pop	rdi
@@ -3014,7 +3045,7 @@ pi$ = 64
 tokenarray$ = 72
 SetEpilogue PROC
 
-; 376  : {
+; 396  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -3026,14 +3057,14 @@ SetEpilogue PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+64]
 
-; 377  :     int i = *pi;
+; 397  :     int i = *pi;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	eax, DWORD PTR [rax]
 	mov	DWORD PTR i$[rsp], eax
 
-; 378  : 
-; 379  :     if ( tokenarray[i].token != T_ID ) {
+; 398  : 
+; 399  :     if ( tokenarray[i].token != T_ID ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -3042,7 +3073,7 @@ SetEpilogue PROC
 	cmp	eax, 8
 	je	SHORT $LN2@SetEpilogu
 
-; 380  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
+; 400  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -3053,62 +3084,62 @@ SetEpilogue PROC
 	jmp	$LN1@SetEpilogu
 $LN2@SetEpilogu:
 
-; 381  :     }
-; 382  :     if ( ModuleInfo.proc_epilogue ) {
+; 401  :     }
+; 402  :     if ( ModuleInfo.proc_epilogue ) {
 
 	cmp	QWORD PTR ModuleInfo+328, 0
 	je	SHORT $LN3@SetEpilogu
 
-; 383  :         LclFree( ModuleInfo.proc_epilogue );
-; 384  :         ModuleInfo.proc_epilogue = NULL;
+; 403  :         LclFree( ModuleInfo.proc_epilogue );
+; 404  :         ModuleInfo.proc_epilogue = NULL;
 
 	mov	QWORD PTR ModuleInfo+328, 0
 $LN3@SetEpilogu:
 
-; 385  :     }
-; 386  : 
-; 387  :     if ( 0 == _stricmp( tokenarray[i].string_ptr, "NONE" ) ) {
+; 405  :     }
+; 406  : 
+; 407  :     if ( 0 == _stricmp( tokenarray[i].string_ptr, "NONE" ) ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
-	lea	rdx, OFFSET FLAT:$SG10948
+	lea	rdx, OFFSET FLAT:$SG10959
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	QWORD PTR __imp__stricmp
 	test	eax, eax
 	jne	SHORT $LN4@SetEpilogu
 
-; 388  :         ModuleInfo.epiloguemode = PEM_NONE;
+; 408  :         ModuleInfo.epiloguemode = PEM_NONE;
 
 	mov	BYTE PTR ModuleInfo+425, 2
 	jmp	SHORT $LN5@SetEpilogu
 $LN4@SetEpilogu:
 
-; 389  :     } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "EPILOGUEDEF" ) ) {
+; 409  :     } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "EPILOGUEDEF" ) ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
-	lea	rdx, OFFSET FLAT:$SG10951
+	lea	rdx, OFFSET FLAT:$SG10962
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	QWORD PTR __imp__stricmp
 	test	eax, eax
 	jne	SHORT $LN6@SetEpilogu
 
-; 390  :         ModuleInfo.epiloguemode = PEM_DEFAULT;
+; 410  :         ModuleInfo.epiloguemode = PEM_DEFAULT;
 
 	mov	BYTE PTR ModuleInfo+425, 0
 
-; 391  :     } else {
+; 411  :     } else {
 
 	jmp	SHORT $LN7@SetEpilogu
 $LN6@SetEpilogu:
 
-; 392  :         ModuleInfo.epiloguemode = PEM_MACRO;
+; 412  :         ModuleInfo.epiloguemode = PEM_MACRO;
 
 	mov	BYTE PTR ModuleInfo+425, 1
 
-; 393  :         ModuleInfo.proc_epilogue = LclAlloc( strlen( tokenarray[i].string_ptr ) + 1);
+; 413  :         ModuleInfo.proc_epilogue = LclAlloc( strlen( tokenarray[i].string_ptr ) + 1);
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -3120,7 +3151,7 @@ $LN6@SetEpilogu:
 	call	LclAlloc
 	mov	QWORD PTR ModuleInfo+328, rax
 
-; 394  :         strcpy( ModuleInfo.proc_epilogue, tokenarray[i].string_ptr );
+; 414  :         strcpy( ModuleInfo.proc_epilogue, tokenarray[i].string_ptr );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -3131,26 +3162,26 @@ $LN6@SetEpilogu:
 $LN7@SetEpilogu:
 $LN5@SetEpilogu:
 
-; 395  :     }
-; 396  : 
-; 397  :     i++;
+; 415  :     }
+; 416  : 
+; 417  :     i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
 	mov	DWORD PTR i$[rsp], eax
 
-; 398  :     *pi = i;
+; 418  :     *pi = i;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	ecx, DWORD PTR i$[rsp]
 	mov	DWORD PTR [rax], ecx
 
-; 399  :     return( NOT_ERROR );
+; 419  :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@SetEpilogu:
 
-; 400  : }
+; 420  : }
 
 	add	rsp, 48					; 00000030H
 	pop	rdi
@@ -3165,7 +3196,7 @@ pi$ = 64
 tokenarray$ = 72
 SetPrologue PROC
 
-; 344  : {
+; 364  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -3177,14 +3208,14 @@ SetPrologue PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+64]
 
-; 345  :     int i = *pi;
+; 365  :     int i = *pi;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	eax, DWORD PTR [rax]
 	mov	DWORD PTR i$[rsp], eax
 
-; 346  : 
-; 347  :     if ( tokenarray[i].token != T_ID ) {
+; 366  : 
+; 367  :     if ( tokenarray[i].token != T_ID ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -3193,7 +3224,7 @@ SetPrologue PROC
 	cmp	eax, 8
 	je	SHORT $LN2@SetPrologu
 
-; 348  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
+; 368  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -3204,61 +3235,61 @@ SetPrologue PROC
 	jmp	$LN1@SetPrologu
 $LN2@SetPrologu:
 
-; 349  :     }
-; 350  :     if ( ModuleInfo.proc_prologue ) {
+; 369  :     }
+; 370  :     if ( ModuleInfo.proc_prologue ) {
 
 	cmp	QWORD PTR ModuleInfo+320, 0
 	je	SHORT $LN3@SetPrologu
 
-; 351  :         LclFree( ModuleInfo.proc_prologue );
-; 352  :         ModuleInfo.proc_prologue = NULL;
+; 371  :         LclFree( ModuleInfo.proc_prologue );
+; 372  :         ModuleInfo.proc_prologue = NULL;
 
 	mov	QWORD PTR ModuleInfo+320, 0
 $LN3@SetPrologu:
 
-; 353  :     }
-; 354  :     if ( 0 == _stricmp( tokenarray[i].string_ptr, "NONE" ) ) {
+; 373  :     }
+; 374  :     if ( 0 == _stricmp( tokenarray[i].string_ptr, "NONE" ) ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
-	lea	rdx, OFFSET FLAT:$SG10932
+	lea	rdx, OFFSET FLAT:$SG10943
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	QWORD PTR __imp__stricmp
 	test	eax, eax
 	jne	SHORT $LN4@SetPrologu
 
-; 355  :         ModuleInfo.prologuemode = PEM_NONE;
+; 375  :         ModuleInfo.prologuemode = PEM_NONE;
 
 	mov	BYTE PTR ModuleInfo+424, 2
 	jmp	SHORT $LN5@SetPrologu
 $LN4@SetPrologu:
 
-; 356  :     } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "PROLOGUEDEF" ) ) {
+; 376  :     } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "PROLOGUEDEF" ) ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
-	lea	rdx, OFFSET FLAT:$SG10935
+	lea	rdx, OFFSET FLAT:$SG10946
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	QWORD PTR __imp__stricmp
 	test	eax, eax
 	jne	SHORT $LN6@SetPrologu
 
-; 357  :         ModuleInfo.prologuemode = PEM_DEFAULT;
+; 377  :         ModuleInfo.prologuemode = PEM_DEFAULT;
 
 	mov	BYTE PTR ModuleInfo+424, 0
 
-; 358  :     } else {
+; 378  :     } else {
 
 	jmp	SHORT $LN7@SetPrologu
 $LN6@SetPrologu:
 
-; 359  :         ModuleInfo.prologuemode = PEM_MACRO;
+; 379  :         ModuleInfo.prologuemode = PEM_MACRO;
 
 	mov	BYTE PTR ModuleInfo+424, 1
 
-; 360  :         ModuleInfo.proc_prologue = LclAlloc( strlen( tokenarray[i].string_ptr ) + 1);
+; 380  :         ModuleInfo.proc_prologue = LclAlloc( strlen( tokenarray[i].string_ptr ) + 1);
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -3270,7 +3301,7 @@ $LN6@SetPrologu:
 	call	LclAlloc
 	mov	QWORD PTR ModuleInfo+320, rax
 
-; 361  :         strcpy( ModuleInfo.proc_prologue, tokenarray[i].string_ptr );
+; 381  :         strcpy( ModuleInfo.proc_prologue, tokenarray[i].string_ptr );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -3281,26 +3312,26 @@ $LN6@SetPrologu:
 $LN7@SetPrologu:
 $LN5@SetPrologu:
 
-; 362  :     }
-; 363  : 
-; 364  :     i++;
+; 382  :     }
+; 383  : 
+; 384  :     i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
 	mov	DWORD PTR i$[rsp], eax
 
-; 365  :     *pi = i;
+; 385  :     *pi = i;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	ecx, DWORD PTR i$[rsp]
 	mov	DWORD PTR [rax], ecx
 
-; 366  :     return( NOT_ERROR );
+; 386  :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@SetPrologu:
 
-; 367  : }
+; 387  : }
 
 	add	rsp, 48					; 00000030H
 	pop	rdi
@@ -3315,7 +3346,7 @@ pi$ = 64
 tokenarray$ = 72
 SetSetIF2 PROC
 
-; 311  : {
+; 331  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -3327,31 +3358,31 @@ SetSetIF2 PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+64]
 
-; 312  :     int i = *pi;
+; 332  :     int i = *pi;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	eax, DWORD PTR [rax]
 	mov	DWORD PTR i$[rsp], eax
 
-; 313  : 
-; 314  :     if ( 0 == _stricmp( tokenarray[i].string_ptr, "TRUE" ) ) {
+; 333  : 
+; 334  :     if ( 0 == _stricmp( tokenarray[i].string_ptr, "TRUE" ) ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
-	lea	rdx, OFFSET FLAT:$SG10917
+	lea	rdx, OFFSET FLAT:$SG10928
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	QWORD PTR __imp__stricmp
 	test	eax, eax
 	jne	SHORT $LN2@SetSetIF2
 
-; 315  :         ModuleInfo.setif2 = TRUE;
+; 335  :         ModuleInfo.setif2 = TRUE;
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	bts	eax, 10
 	mov	DWORD PTR ModuleInfo+408, eax
 
-; 316  :         i++;
+; 336  :         i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
@@ -3359,24 +3390,24 @@ SetSetIF2 PROC
 	jmp	SHORT $LN3@SetSetIF2
 $LN2@SetSetIF2:
 
-; 317  :     } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "FALSE" ) ) {
+; 337  :     } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "FALSE" ) ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
-	lea	rdx, OFFSET FLAT:$SG10919
+	lea	rdx, OFFSET FLAT:$SG10930
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	QWORD PTR __imp__stricmp
 	test	eax, eax
 	jne	SHORT $LN4@SetSetIF2
 
-; 318  :         ModuleInfo.setif2 = FALSE;
+; 338  :         ModuleInfo.setif2 = FALSE;
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	btr	eax, 10
 	mov	DWORD PTR ModuleInfo+408, eax
 
-; 319  :         i++;
+; 339  :         i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
@@ -3384,18 +3415,18 @@ $LN2@SetSetIF2:
 $LN4@SetSetIF2:
 $LN3@SetSetIF2:
 
-; 320  :     }
-; 321  :     *pi = i;
+; 340  :     }
+; 341  :     *pi = i;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	ecx, DWORD PTR i$[rsp]
 	mov	DWORD PTR [rax], ecx
 
-; 322  :     return( NOT_ERROR );
+; 342  :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 323  : }
+; 343  : }
 
 	add	rsp, 48					; 00000030H
 	pop	rdi
@@ -3410,7 +3441,7 @@ pi$ = 80
 tokenarray$ = 88
 SetLanguage PROC
 
-; 288  : {
+; 308  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -3422,16 +3453,16 @@ SetLanguage PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+80]
 
-; 289  :     int i = *pi;
+; 309  :     int i = *pi;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	eax, DWORD PTR [rax]
 	mov	DWORD PTR i$[rsp], eax
 
-; 290  :     //lang_type langtype;
-; 291  :     //int language = ERROR;
-; 292  : 
-; 293  :     if ( tokenarray[i].token == T_RES_ID ) {
+; 310  :     //lang_type langtype;
+; 311  :     //int language = ERROR;
+; 312  : 
+; 313  :     if ( tokenarray[i].token == T_RES_ID ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -3440,7 +3471,7 @@ SetLanguage PROC
 	cmp	eax, 7
 	jne	SHORT $LN2@SetLanguag
 
-; 294  :         if ( GetLangType( &i, tokenarray, &ModuleInfo.langtype ) == NOT_ERROR ) {
+; 314  :         if ( GetLangType( &i, tokenarray, &ModuleInfo.langtype ) == NOT_ERROR ) {
 
 	lea	r8, OFFSET FLAT:ModuleInfo+364
 	mov	rdx, QWORD PTR tokenarray$[rsp]
@@ -3449,37 +3480,37 @@ SetLanguage PROC
 	test	eax, eax
 	jne	SHORT $LN3@SetLanguag
 
-; 295  :             /* update @Interface assembly time variable */
-; 296  :             if ( ModuleInfo.model != MODEL_NONE && sym_Interface )
+; 315  :             /* update @Interface assembly time variable */
+; 316  :             if ( ModuleInfo.model != MODEL_NONE && sym_Interface )
 
 	cmp	DWORD PTR ModuleInfo+360, 0
 	je	SHORT $LN4@SetLanguag
 	cmp	QWORD PTR sym_Interface, 0
 	je	SHORT $LN4@SetLanguag
 
-; 297  :                 sym_Interface->value = ModuleInfo.langtype;
+; 317  :                 sym_Interface->value = ModuleInfo.langtype;
 
 	mov	rax, QWORD PTR sym_Interface
 	mov	ecx, DWORD PTR ModuleInfo+364
 	mov	DWORD PTR [rax+16], ecx
 $LN4@SetLanguag:
 
-; 298  :             *pi = i;
+; 318  :             *pi = i;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	ecx, DWORD PTR i$[rsp]
 	mov	DWORD PTR [rax], ecx
 
-; 299  :             return( NOT_ERROR );
+; 319  :             return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	SHORT $LN1@SetLanguag
 $LN3@SetLanguag:
 $LN2@SetLanguag:
 
-; 300  :         }
-; 301  :     }
-; 302  :     return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
+; 320  :         }
+; 321  :     }
+; 322  :     return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -3489,7 +3520,7 @@ $LN2@SetLanguag:
 	call	EmitErr
 $LN1@SetLanguag:
 
-; 303  : }
+; 323  : }
 
 	mov	rdi, rax
 	mov	rcx, rsp
@@ -3513,7 +3544,7 @@ pi$ = 80
 tokenarray$ = 88
 SetNoKeyword PROC
 
-; 240  : {
+; 260  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -3525,35 +3556,35 @@ SetNoKeyword PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+80]
 
-; 241  :     int i = *pi;
+; 261  :     int i = *pi;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	eax, DWORD PTR [rax]
 	mov	DWORD PTR i$[rsp], eax
 
-; 242  :     //struct ReservedWord *resw;
-; 243  :     unsigned index;
-; 244  :     char *p;
-; 245  : 
-; 246  :     if( Parse_Pass != PASS_1 ) {
+; 262  :     //struct ReservedWord *resw;
+; 263  :     unsigned index;
+; 264  :     char *p;
+; 265  : 
+; 266  :     if( Parse_Pass != PASS_1 ) {
 
 	cmp	DWORD PTR Parse_Pass, 0
 	je	SHORT $LN12@SetNoKeywo
 
-; 247  :         SkipOption( pi, tokenarray );
+; 267  :         SkipOption( pi, tokenarray );
 
 	mov	rdx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR pi$[rsp]
 	call	SkipOption
 
-; 248  :         return( NOT_ERROR);
+; 268  :         return( NOT_ERROR);
 
 	xor	eax, eax
 	jmp	$LN1@SetNoKeywo
 $LN12@SetNoKeywo:
 
-; 249  :     }
-; 250  :     if ( tokenarray[i].token != T_STRING || tokenarray[i].string_delim != '<' ) {
+; 269  :     }
+; 270  :     if ( tokenarray[i].token != T_STRING || tokenarray[i].string_delim != '<' ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -3569,7 +3600,7 @@ $LN12@SetNoKeywo:
 	je	SHORT $LN13@SetNoKeywo
 $LN14@SetNoKeywo:
 
-; 251  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
+; 271  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -3580,8 +3611,8 @@ $LN14@SetNoKeywo:
 	jmp	$LN1@SetNoKeywo
 $LN13@SetNoKeywo:
 
-; 252  :     }
-; 253  :     for ( p = tokenarray[i].string_ptr; *p; ) {
+; 272  :     }
+; 273  :     for ( p = tokenarray[i].string_ptr; *p; ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -3595,7 +3626,7 @@ $LN2@SetNoKeywo:
 	je	$LN3@SetNoKeywo
 $LN5@SetNoKeywo:
 
-; 254  :         while ( isspace( *p ) ) p++;
+; 274  :         while ( isspace( *p ) ) p++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax]
@@ -3609,21 +3640,21 @@ $LN5@SetNoKeywo:
 	jmp	SHORT $LN5@SetNoKeywo
 $LN6@SetNoKeywo:
 
-; 255  :         if ( *p ) {
+; 275  :         if ( *p ) {
 
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax]
 	test	eax, eax
 	je	$LN15@SetNoKeywo
 
-; 256  :             char *p2 = p;
+; 276  :             char *p2 = p;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	QWORD PTR p2$1[rsp], rax
 
-; 257  :             unsigned char cnt;
-; 258  :             //struct instr_item *instruct;
-; 259  :             for ( ;*p; p++ ) {
+; 277  :             unsigned char cnt;
+; 278  :             //struct instr_item *instruct;
+; 279  :             for ( ;*p; p++ ) {
 
 	jmp	SHORT $LN9@SetNoKeywo
 $LN7@SetNoKeywo:
@@ -3636,7 +3667,7 @@ $LN9@SetNoKeywo:
 	test	eax, eax
 	je	SHORT $LN8@SetNoKeywo
 
-; 260  :                 if ( isspace( *p ) || *p == ',' )
+; 280  :                 if ( isspace( *p ) || *p == ',' )
 
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax]
@@ -3650,17 +3681,17 @@ $LN9@SetNoKeywo:
 	jne	SHORT $LN16@SetNoKeywo
 $LN17@SetNoKeywo:
 
-; 261  :                     break;
+; 281  :                     break;
 
 	jmp	SHORT $LN8@SetNoKeywo
 $LN16@SetNoKeywo:
 
-; 262  :             }
+; 282  :             }
 
 	jmp	SHORT $LN7@SetNoKeywo
 $LN8@SetNoKeywo:
 
-; 263  :             cnt = p - p2;
+; 283  :             cnt = p - p2;
 
 	mov	rax, QWORD PTR p2$1[rsp]
 	mov	rcx, QWORD PTR p$[rsp]
@@ -3668,30 +3699,30 @@ $LN8@SetNoKeywo:
 	mov	rax, rcx
 	mov	BYTE PTR cnt$2[rsp], al
 
-; 264  :             /* todo: if MAX_ID_LEN can be > 255, then check size,
-; 265  :              * since a reserved word's size must be <= 255
-; 266  :              */
-; 267  :             index = FindResWord( p2, cnt );
+; 284  :             /* todo: if MAX_ID_LEN can be > 255, then check size,
+; 285  :              * since a reserved word's size must be <= 255
+; 286  :              */
+; 287  :             index = FindResWord( p2, cnt );
 
 	movzx	edx, BYTE PTR cnt$2[rsp]
 	mov	rcx, QWORD PTR p2$1[rsp]
 	call	FindResWord
 	mov	DWORD PTR index$[rsp], eax
 
-; 268  :             if ( index != 0 )
+; 288  :             if ( index != 0 )
 
 	cmp	DWORD PTR index$[rsp], 0
 	je	SHORT $LN18@SetNoKeywo
 
-; 269  :                 DisableKeyword( index );
+; 289  :                 DisableKeyword( index );
 
 	mov	ecx, DWORD PTR index$[rsp]
 	call	DisableKeyword
 	jmp	SHORT $LN19@SetNoKeywo
 $LN18@SetNoKeywo:
 
-; 270  :             else {
-; 271  :                 if ( IsKeywordDisabled( p2, cnt ) ) {
+; 290  :             else {
+; 291  :                 if ( IsKeywordDisabled( p2, cnt ) ) {
 
 	movzx	eax, BYTE PTR cnt$2[rsp]
 	mov	edx, eax
@@ -3701,7 +3732,7 @@ $LN18@SetNoKeywo:
 	test	eax, eax
 	je	SHORT $LN20@SetNoKeywo
 
-; 272  :                     return( EmitError( RESERVED_WORD_EXPECTED ) );
+; 292  :                     return( EmitError( RESERVED_WORD_EXPECTED ) );
 
 	mov	ecx, 158				; 0000009eH
 	call	EmitError
@@ -3711,10 +3742,10 @@ $LN19@SetNoKeywo:
 $LN15@SetNoKeywo:
 $LN10@SetNoKeywo:
 
-; 273  :                 }
-; 274  :             }
-; 275  :         }
-; 276  :         while ( isspace(*p) ) p++;
+; 293  :                 }
+; 294  :             }
+; 295  :         }
+; 296  :         while ( isspace(*p) ) p++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax]
@@ -3728,7 +3759,7 @@ $LN10@SetNoKeywo:
 	jmp	SHORT $LN10@SetNoKeywo
 $LN11@SetNoKeywo:
 
-; 277  :         if (*p == ',') p++;
+; 297  :         if (*p == ',') p++;
 
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax]
@@ -3739,29 +3770,29 @@ $LN11@SetNoKeywo:
 	mov	QWORD PTR p$[rsp], rax
 $LN21@SetNoKeywo:
 
-; 278  :     }
+; 298  :     }
 
 	jmp	$LN2@SetNoKeywo
 $LN3@SetNoKeywo:
 
-; 279  :     i++;
+; 299  :     i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
 	mov	DWORD PTR i$[rsp], eax
 
-; 280  :     *pi = i;
+; 300  :     *pi = i;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	ecx, DWORD PTR i$[rsp]
 	mov	DWORD PTR [rax], ecx
 
-; 281  :     return( NOT_ERROR );
+; 301  :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@SetNoKeywo:
 
-; 282  : }
+; 302  : }
 
 	add	rsp, 64					; 00000040H
 	pop	rdi
@@ -3775,14 +3806,14 @@ pi$ = 16
 tokenarray$ = 24
 SkipOption PROC
 
-; 229  : {
+; 249  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
 	push	rdi
 $LN2@SkipOption:
 
-; 230  :     while ( tokenarray[*pi].token != T_FINAL &&
+; 250  :     while ( tokenarray[*pi].token != T_FINAL &&
 
 	mov	rax, QWORD PTR pi$[rsp]
 	movsxd	rax, DWORD PTR [rax]
@@ -3799,8 +3830,8 @@ $LN2@SkipOption:
 	cmp	eax, 44					; 0000002cH
 	je	SHORT $LN3@SkipOption
 
-; 231  :            tokenarray[*pi].token != T_COMMA )
-; 232  :         (*pi)++;
+; 251  :            tokenarray[*pi].token != T_COMMA )
+; 252  :         (*pi)++;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	eax, DWORD PTR [rax]
@@ -3810,7 +3841,7 @@ $LN2@SkipOption:
 	jmp	SHORT $LN2@SkipOption
 $LN3@SkipOption:
 
-; 233  : }
+; 253  : }
 
 	pop	rdi
 	ret	0
@@ -3823,23 +3854,23 @@ pi$ = 16
 tokenarray$ = 24
 SetNoSignExt PROC
 
-; 222  : {
+; 242  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
 	push	rdi
 
-; 223  :     ModuleInfo.NoSignExtend = TRUE;
+; 243  :     ModuleInfo.NoSignExtend = TRUE;
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	bts	eax, 18
 	mov	DWORD PTR ModuleInfo+408, eax
 
-; 224  :     return( NOT_ERROR );
+; 244  :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 225  : }
+; 245  : }
 
 	pop	rdi
 	ret	0
@@ -3852,18 +3883,18 @@ pi$ = 16
 tokenarray$ = 24
 SetExpr32 PROC
 
-; 215  : {
+; 235  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
 	push	rdi
 
-; 216  :     /* default, nothing to do */
-; 217  :     return( NOT_ERROR );
+; 236  :     /* default, nothing to do */
+; 237  :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 218  : }
+; 238  : }
 
 	pop	rdi
 	ret	0
@@ -3876,18 +3907,18 @@ pi$ = 16
 tokenarray$ = 24
 SetNoOldmacros PROC
 
-; 206  : {
+; 226  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
 	push	rdi
 
-; 207  :     /* default, nothing to do */
-; 208  :     return( NOT_ERROR );
+; 227  :     /* default, nothing to do */
+; 228  :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 209  : }
+; 229  : }
 
 	pop	rdi
 	ret	0
@@ -3900,18 +3931,18 @@ pi$ = 16
 tokenarray$ = 24
 SetNoReadonly PROC
 
-; 197  : {
+; 217  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
 	push	rdi
 
-; 198  :     /* default, nothing to do */
-; 199  :     return( NOT_ERROR );
+; 218  :     /* default, nothing to do */
+; 219  :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 200  : }
+; 220  : }
 
 	pop	rdi
 	ret	0
@@ -3924,23 +3955,23 @@ pi$ = 16
 tokenarray$ = 24
 SetNoLJmp PROC
 
-; 188  : {
+; 208  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
 	push	rdi
 
-; 189  :     ModuleInfo.ljmp = FALSE;
+; 209  :     ModuleInfo.ljmp = FALSE;
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	and	eax, -33				; ffffffdfH
 	mov	DWORD PTR ModuleInfo+408, eax
 
-; 190  :     return( NOT_ERROR );
+; 210  :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 191  : }
+; 211  : }
 
 	pop	rdi
 	ret	0
@@ -3953,23 +3984,23 @@ pi$ = 16
 tokenarray$ = 24
 SetLJmp	PROC
 
-; 179  : {
+; 199  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
 	push	rdi
 
-; 180  :     ModuleInfo.ljmp = TRUE;
+; 200  :     ModuleInfo.ljmp = TRUE;
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	or	eax, 32					; 00000020H
 	mov	DWORD PTR ModuleInfo+408, eax
 
-; 181  :     return( NOT_ERROR );
+; 201  :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 182  : }
+; 202  : }
 
 	pop	rdi
 	ret	0
@@ -3982,23 +4013,23 @@ pi$ = 16
 tokenarray$ = 24
 SetNoEmulator PROC
 
-; 170  : {
+; 190  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
 	push	rdi
 
-; 171  :     ModuleInfo.emulator = FALSE;
+; 191  :     ModuleInfo.emulator = FALSE;
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	btr	eax, 9
 	mov	DWORD PTR ModuleInfo+408, eax
 
-; 172  :     return( NOT_ERROR );
+; 192  :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 173  : }
+; 193  : }
 
 	pop	rdi
 	ret	0
@@ -4011,23 +4042,23 @@ pi$ = 16
 tokenarray$ = 24
 SetEmulator PROC
 
-; 161  : {
+; 181  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
 	push	rdi
 
-; 162  :     ModuleInfo.emulator = TRUE;
+; 182  :     ModuleInfo.emulator = TRUE;
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	bts	eax, 9
 	mov	DWORD PTR ModuleInfo+408, eax
 
-; 163  :     return( NOT_ERROR );
+; 183  :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 164  : }
+; 184  : }
 
 	pop	rdi
 	ret	0
@@ -4040,23 +4071,23 @@ pi$ = 16
 tokenarray$ = 24
 SetNoOldStructs PROC
 
-; 152  : {
+; 172  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
 	push	rdi
 
-; 153  :     ModuleInfo.oldstructs = FALSE;
+; 173  :     ModuleInfo.oldstructs = FALSE;
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	btr	eax, 8
 	mov	DWORD PTR ModuleInfo+408, eax
 
-; 154  :     return( NOT_ERROR );
+; 174  :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 155  : }
+; 175  : }
 
 	pop	rdi
 	ret	0
@@ -4069,23 +4100,23 @@ pi$ = 16
 tokenarray$ = 24
 SetOldStructs PROC
 
-; 143  : {
+; 163  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
 	push	rdi
 
-; 144  :     ModuleInfo.oldstructs = TRUE;
+; 164  :     ModuleInfo.oldstructs = TRUE;
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	bts	eax, 8
 	mov	DWORD PTR ModuleInfo+408, eax
 
-; 145  :     return( NOT_ERROR );
+; 165  :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 146  : }
+; 166  : }
 
 	pop	rdi
 	ret	0
@@ -4098,23 +4129,23 @@ pi$ = 16
 tokenarray$ = 24
 SetNoScoped PROC
 
-; 134  : {
+; 154  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
 	push	rdi
 
-; 135  :     ModuleInfo.scoped = FALSE;
+; 155  :     ModuleInfo.scoped = FALSE;
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	btr	eax, 7
 	mov	DWORD PTR ModuleInfo+408, eax
 
-; 136  :     return( NOT_ERROR );
+; 156  :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 137  : }
+; 157  : }
 
 	pop	rdi
 	ret	0
@@ -4127,23 +4158,23 @@ pi$ = 16
 tokenarray$ = 24
 SetScoped PROC
 
-; 125  : {
+; 145  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
 	push	rdi
 
-; 126  :     ModuleInfo.scoped = TRUE;
+; 146  :     ModuleInfo.scoped = TRUE;
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	bts	eax, 7
 	mov	DWORD PTR ModuleInfo+408, eax
 
-; 127  :     return( NOT_ERROR );
+; 147  :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 128  : }
+; 148  : }
 
 	pop	rdi
 	ret	0
@@ -4156,7 +4187,7 @@ pi$ = 48
 tokenarray$ = 56
 SetNoM510 PROC
 
-; 116  : {
+; 136  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -4168,16 +4199,16 @@ SetNoM510 PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+48]
 
-; 117  :     SetMasm510(FALSE);
+; 137  :     SetMasm510(FALSE);
 
 	xor	ecx, ecx
 	call	SetMasm510
 
-; 118  :     return( NOT_ERROR );
+; 138  :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 119  : }
+; 139  : }
 
 	add	rsp, 32					; 00000020H
 	pop	rdi
@@ -4191,7 +4222,7 @@ pi$ = 48
 tokenarray$ = 56
 SetM510	PROC
 
-; 107  : {
+; 127  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -4203,16 +4234,16 @@ SetM510	PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+48]
 
-; 108  :     SetMasm510( TRUE );
+; 128  :     SetMasm510( TRUE );
 
 	mov	cl, 1
 	call	SetMasm510
 
-; 109  :     return( NOT_ERROR );
+; 129  :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 110  : }
+; 130  : }
 
 	add	rsp, 32					; 00000020H
 	pop	rdi
@@ -4227,7 +4258,7 @@ pi$ = 64
 tokenarray$ = 72
 SetCaseMap PROC
 
-; 78   : {
+; 98   : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
@@ -4239,13 +4270,13 @@ SetCaseMap PROC
 	rep stosd
 	mov	rcx, QWORD PTR [rsp+64]
 
-; 79   :     int i = *pi;
+; 99   :     int i = *pi;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	eax, DWORD PTR [rax]
 	mov	DWORD PTR i$[rsp], eax
 
-; 80   :     if ( tokenarray[i].token == T_ID ) {
+; 100  :     if ( tokenarray[i].token == T_ID ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -4254,24 +4285,24 @@ SetCaseMap PROC
 	cmp	eax, 8
 	jne	$LN2@SetCaseMap
 
-; 81   :         if ( 0 == _stricmp( tokenarray[i].string_ptr, "NONE" ) ) {
+; 101  :         if ( 0 == _stricmp( tokenarray[i].string_ptr, "NONE" ) ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
-	lea	rdx, OFFSET FLAT:$SG10767
+	lea	rdx, OFFSET FLAT:$SG10778
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	QWORD PTR __imp__stricmp
 	test	eax, eax
 	jne	SHORT $LN4@SetCaseMap
 
-; 82   :             ModuleInfo.case_sensitive = TRUE;        /* -Cx */
+; 102  :             ModuleInfo.case_sensitive = TRUE;        /* -Cx */
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	or	eax, 1
 	mov	DWORD PTR ModuleInfo+408, eax
 
-; 83   :             ModuleInfo.convert_uppercase = FALSE;
+; 103  :             ModuleInfo.convert_uppercase = FALSE;
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	and	eax, -3					; fffffffdH
@@ -4279,24 +4310,24 @@ SetCaseMap PROC
 	jmp	$LN5@SetCaseMap
 $LN4@SetCaseMap:
 
-; 84   :         } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "NOTPUBLIC" ) ) {
+; 104  :         } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "NOTPUBLIC" ) ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
-	lea	rdx, OFFSET FLAT:$SG10770
+	lea	rdx, OFFSET FLAT:$SG10781
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	QWORD PTR __imp__stricmp
 	test	eax, eax
 	jne	SHORT $LN6@SetCaseMap
 
-; 85   :             ModuleInfo.case_sensitive = FALSE;       /* -Cp */
+; 105  :             ModuleInfo.case_sensitive = FALSE;       /* -Cp */
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	and	eax, -2					; fffffffeH
 	mov	DWORD PTR ModuleInfo+408, eax
 
-; 86   :             ModuleInfo.convert_uppercase = FALSE;
+; 106  :             ModuleInfo.convert_uppercase = FALSE;
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	and	eax, -3					; fffffffdH
@@ -4304,35 +4335,35 @@ $LN4@SetCaseMap:
 	jmp	SHORT $LN7@SetCaseMap
 $LN6@SetCaseMap:
 
-; 87   :         } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "ALL" ) ) {
+; 107  :         } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "ALL" ) ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
-	lea	rdx, OFFSET FLAT:$SG10773
+	lea	rdx, OFFSET FLAT:$SG10784
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	QWORD PTR __imp__stricmp
 	test	eax, eax
 	jne	SHORT $LN8@SetCaseMap
 
-; 88   :             ModuleInfo.case_sensitive = FALSE;       /* -Cu */
+; 108  :             ModuleInfo.case_sensitive = FALSE;       /* -Cu */
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	and	eax, -2					; fffffffeH
 	mov	DWORD PTR ModuleInfo+408, eax
 
-; 89   :             ModuleInfo.convert_uppercase = TRUE;
+; 109  :             ModuleInfo.convert_uppercase = TRUE;
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	or	eax, 2
 	mov	DWORD PTR ModuleInfo+408, eax
 
-; 90   :         } else {
+; 110  :         } else {
 
 	jmp	SHORT $LN9@SetCaseMap
 $LN8@SetCaseMap:
 
-; 91   :             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
+; 111  :             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -4345,32 +4376,32 @@ $LN9@SetCaseMap:
 $LN7@SetCaseMap:
 $LN5@SetCaseMap:
 
-; 92   :         }
-; 93   :         DebugMsg1(("SetCaseMap(%s) ok\n", tokenarray[i].string_ptr ));
+; 112  :         }
+; 113  :         DebugMsg1(("SetCaseMap(%s) ok\n", tokenarray[i].string_ptr ));
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG10774
+	lea	rcx, OFFSET FLAT:$SG10785
 	call	DoDebugMsg1
 
-; 94   :         i++;
+; 114  :         i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
 	mov	DWORD PTR i$[rsp], eax
 
-; 95   :         SymSetCmpFunc();
+; 115  :         SymSetCmpFunc();
 
 	call	SymSetCmpFunc
 
-; 96   :     } else {
+; 116  :     } else {
 
 	jmp	SHORT $LN3@SetCaseMap
 $LN2@SetCaseMap:
 
-; 97   :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
+; 117  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -4381,19 +4412,19 @@ $LN2@SetCaseMap:
 	jmp	SHORT $LN1@SetCaseMap
 $LN3@SetCaseMap:
 
-; 98   :     }
-; 99   :     *pi = i;
+; 118  :     }
+; 119  :     *pi = i;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	ecx, DWORD PTR i$[rsp]
 	mov	DWORD PTR [rax], ecx
 
-; 100  :     return( NOT_ERROR );
+; 120  :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@SetCaseMap:
 
-; 101  : }
+; 121  : }
 
 	add	rsp, 48					; 00000030H
 	pop	rdi
@@ -4407,23 +4438,23 @@ pi$ = 16
 tokenarray$ = 24
 SetNoDotName PROC
 
-; 69   : {
+; 89   : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
 	push	rdi
 
-; 70   :     ModuleInfo.dotname = FALSE;
+; 90   :     ModuleInfo.dotname = FALSE;
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	and	eax, -17				; ffffffefH
 	mov	DWORD PTR ModuleInfo+408, eax
 
-; 71   :     return( NOT_ERROR );
+; 91   :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 72   : }
+; 92   : }
 
 	pop	rdi
 	ret	0
@@ -4436,27 +4467,133 @@ pi$ = 16
 tokenarray$ = 24
 SetDotName PROC
 
-; 60   : {
+; 80   : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
 	push	rdi
 
-; 61   :     ModuleInfo.dotname = TRUE;
+; 81   :     ModuleInfo.dotname = TRUE;
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	or	eax, 16
 	mov	DWORD PTR ModuleInfo+408, eax
 
-; 62   :     return( NOT_ERROR );
+; 82   :     return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 63   : }
+; 83   : }
 
 	pop	rdi
 	ret	0
 SetDotName ENDP
+_TEXT	ENDS
+; Function compile flags: /Odtp /RTCsu
+; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\option.c
+_TEXT	SEGMENT
+i$ = 52
+opndx$ = 96
+pi$ = 240
+tokenarray$ = 248
+SetZeroLocals PROC
+
+; 58   : {
+
+	mov	QWORD PTR [rsp+16], rdx
+	mov	QWORD PTR [rsp+8], rcx
+	push	rdi
+	sub	rsp, 224				; 000000e0H
+	mov	rdi, rsp
+	mov	ecx, 56					; 00000038H
+	mov	eax, -858993460				; ccccccccH
+	rep stosd
+	mov	rcx, QWORD PTR [rsp+240]
+
+; 59   : 	int i = *pi;
+
+	mov	rax, QWORD PTR pi$[rsp]
+	mov	eax, DWORD PTR [rax]
+	mov	DWORD PTR i$[rsp], eax
+
+; 60   : 	struct expr opndx;
+; 61   : 
+; 62   : 	if (EvalOperand(&i, tokenarray, Token_Count, &opndx, 0) == ERROR)
+
+	mov	BYTE PTR [rsp+32], 0
+	lea	r9, QWORD PTR opndx$[rsp]
+	mov	r8d, DWORD PTR ModuleInfo+496
+	mov	rdx, QWORD PTR tokenarray$[rsp]
+	lea	rcx, QWORD PTR i$[rsp]
+	call	EvalOperand
+	cmp	eax, -1
+	jne	SHORT $LN2@SetZeroLoc
+
+; 63   : 		return(ERROR);
+
+	mov	eax, -1
+	jmp	SHORT $LN1@SetZeroLoc
+$LN2@SetZeroLoc:
+
+; 64   : 	if (opndx.kind == EXPR_CONST) {
+
+	cmp	DWORD PTR opndx$[rsp+60], 0
+	jne	SHORT $LN3@SetZeroLoc
+
+; 65   : 		if (opndx.llvalue > 1) {
+
+	cmp	QWORD PTR opndx$[rsp], 1
+	jbe	SHORT $LN5@SetZeroLoc
+
+; 66   : 			return(EmitConstError(&opndx));
+
+	lea	rcx, QWORD PTR opndx$[rsp]
+	call	EmitConstError
+	jmp	SHORT $LN1@SetZeroLoc
+$LN5@SetZeroLoc:
+
+; 67   : 		}
+; 68   : 		ZEROLOCALS = opndx.llvalue;
+
+	movzx	eax, BYTE PTR opndx$[rsp]
+	mov	BYTE PTR ZEROLOCALS, al
+
+; 69   : 	}
+
+	jmp	SHORT $LN4@SetZeroLoc
+$LN3@SetZeroLoc:
+
+; 70   : 	else {
+; 71   : 		return(EmitError(CONSTANT_EXPECTED));
+
+	mov	ecx, 65					; 00000041H
+	call	EmitError
+	jmp	SHORT $LN1@SetZeroLoc
+$LN4@SetZeroLoc:
+
+; 72   : 	}
+; 73   : 	*pi = i;
+
+	mov	rax, QWORD PTR pi$[rsp]
+	mov	ecx, DWORD PTR i$[rsp]
+	mov	DWORD PTR [rax], ecx
+
+; 74   : 	return(NOT_ERROR);
+
+	xor	eax, eax
+$LN1@SetZeroLoc:
+
+; 75   : }
+
+	mov	rdi, rax
+	mov	rcx, rsp
+	lea	rdx, OFFSET FLAT:SetZeroLocals$rtcFrameData
+	call	_RTC_CheckStackVars
+	mov	rax, rdi
+	add	rsp, 224				; 000000e0H
+	pop	rdi
+	ret	0
+SetZeroLocals ENDP
 _TEXT	ENDS
 ; Function compile flags: /Odtp /RTCsu
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\option.c

@@ -9,12 +9,13 @@ _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 COMM	evex:BYTE
+COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10663 DB	'OrgDirective(%u) enter', 0aH, 00H
-$SG10723 DB	'AlignDirective enter', 0aH, 00H
+$SG10662 DB	'OrgDirective(%u) enter', 0aH, 00H
+$SG10722 DB	'AlignDirective enter', 0aH, 00H
 	ORG $+2
-$SG10745 DB	'AlignDirective exit', 0aH, 00H
+$SG10744 DB	'AlignDirective exit', 0aH, 00H
 _DATA	ENDS
 CONST	SEGMENT
 NopList16 DB	03H
@@ -235,7 +236,7 @@ $LN38:
 ; 199  : 
 ; 200  :     DebugMsg1(("AlignDirective enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG10723
+	lea	rcx, OFFSET FLAT:$SG10722
 	call	DoDebugMsg1
 
 ; 201  : 
@@ -613,7 +614,7 @@ $LN27@AlignDirec:
 ; 263  :     }
 ; 264  :     DebugMsg1(("AlignDirective exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG10745
+	lea	rcx, OFFSET FLAT:$SG10744
 	call	DoDebugMsg1
 
 ; 265  :     return( NOT_ERROR );
@@ -885,7 +886,7 @@ $LN18:
 ; 99   :     DebugMsg1(("OrgDirective(%u) enter\n", i));
 
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10663
+	lea	rcx, OFFSET FLAT:$SG10662
 	call	DoDebugMsg1
 
 ; 100  :     i++;
@@ -1038,7 +1039,7 @@ $LN12@OrgDirecti:
 
 	cmp	DWORD PTR opndx$[rsp+60], 1
 	jne	SHORT $LN14@OrgDirecti
-	mov	eax, DWORD PTR opndx$[rsp+76]
+	mov	eax, DWORD PTR opndx$[rsp+72]
 	and	eax, 1
 	test	eax, eax
 	jne	SHORT $LN14@OrgDirecti

@@ -6,36 +6,37 @@ INCLUDELIB MSVCRTD
 INCLUDELIB OLDNAMES
 
 _BSS	SEGMENT
-$SG12354 DB	01H DUP (?)
+$SG12353 DB	01H DUP (?)
 	ALIGN	4
 
-$SG11690 DB	01H DUP (?)
+$SG11689 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 COMM	evex:BYTE
+COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
 	ALIGN	4
 
-$SG11878 DB	01H DUP (?)
+$SG11877 DB	01H DUP (?)
+	ALIGN	4
+
+$SG11898 DB	01H DUP (?)
 	ALIGN	4
 
 $SG11899 DB	01H DUP (?)
 	ALIGN	4
 
-$SG11900 DB	01H DUP (?)
+$SG11911 DB	01H DUP (?)
 	ALIGN	4
 
 $SG11912 DB	01H DUP (?)
 	ALIGN	4
 
-$SG11913 DB	01H DUP (?)
-	ALIGN	4
-
 evallvl	DD	01H DUP (?)
-$SG11177 DB	01H DUP (?)
+$SG11176 DB	01H DUP (?)
 _BSS	ENDS
 CONST	SEGMENT
 unaryop	DQ	FLAT:low_op
@@ -62,83 +63,85 @@ unaryop	DQ	FLAT:low_op
 	DQ	FLAT:wimask_op
 CONST	ENDS
 _DATA	SEGMENT
-$SG12308 DB	'NULL', 00H
+$SG12307 DB	'NULL', 00H
 	ORG $+11
-$SG12309 DB	'%u evaluate(i=%d, end=%d, flags=%X) enter [opnd1: kind=%'
+$SG12308 DB	'%u evaluate(i=%d, end=%d, flags=%X) enter [opnd1: kind=%'
 	DB	'd type=%s]', 0aH, 00H
-$SG12311 DB	'NULL', 00H
+$SG12310 DB	'NULL', 00H
 	ORG $+3
-$SG11091 DB	'rn-sae', 00H
+$SG11090 DB	'rn-sae', 00H
 	ORG $+1
-$SG11107 DB	'sae', 00H
-$SG12312 DB	'%u evaluate loop, operator=>%s< opnd1->sym=%X, type=%s', 0aH
+$SG11106 DB	'sae', 00H
+$SG12311 DB	'%u evaluate loop, operator=>%s< opnd1->sym=%X, type=%s', 0aH
 	DB	00H
-$SG12320 DB	'%u evaluate: unexpected token at idx=%u, token=%X >%s<', 0aH
+$SG12319 DB	'%u evaluate: unexpected token at idx=%u, token=%X >%s<', 0aH
 	DB	00H
-$SG12330 DB	'%u evaluate: error, missing ''%c'', i=%u', 0aH, 00H
-$SG12342 DB	'%u evaluate: unexpected token at %u, token=%X >%s<', 0aH
+$SG12329 DB	'%u evaluate: error, missing ''%c'', i=%u', 0aH, 00H
+$SG12341 DB	'%u evaluate: unexpected token at %u, token=%X >%s<', 0aH
 	DB	00H
+$SG12349 DB	'NULL', 00H
+	ORG $+3
 $SG12350 DB	'NULL', 00H
 	ORG $+3
-$SG12351 DB	'NULL', 00H
-	ORG $+3
-$SG12353 DB	'NULL', 00H
+$SG12352 DB	'NULL', 00H
 	ORG $+7
-$SG12352 DB	'%u evaluate exit, rc=%d, kind=%d value=%I64d(0x%I64X) me'
+$SG12351 DB	'%u evaluate exit, rc=%d, kind=%d value=%I64d(0x%I64X) me'
 	DB	'mtype=%Xh string=%s indirect=%u type=>%s<', 0aH, 00H
 	ORG $+1
-$SG12355 DB	'NULL', 00H
+$SG12354 DB	'NULL', 00H
 	ORG $+7
-$SG12356 DB	'%u evaluate exit, rc=%d, kind=%d value=%d(0x%X) memtype='
+$SG12355 DB	'%u evaluate exit, rc=%d, kind=%d value=%d(0x%X) memtype='
 	DB	'%Xh string=%s ind=%u exp=%u ofssiz=%d instr=%s type=>%s<', 0aH
 	DB	00H
 	ORG $+2
-$SG11365 DB	'NULL', 00H
+$SG11364 DB	'NULL', 00H
 	ORG $+3
-$SG11095 DB	'rd-sae', 00H
+$SG11094 DB	'rd-sae', 00H
 	ORG $+1
-$SG11183 DB	'@@', 00H
+$SG11182 DB	'@@', 00H
 	ORG $+1
-$SG11366 DB	'sizlen_op(%s): sym=%X, mbr=%X, type=>%s<', 0aH, 00H
+$SG11365 DB	'sizlen_op(%s): sym=%X, mbr=%X, type=>%s<', 0aH, 00H
 	ORG $+2
-$SG11099 DB	'ru-sae', 00H
+$SG11098 DB	'ru-sae', 00H
 	ORG $+5
-$SG12393 DB	'EvalOperand(start=%u, end=%u, flags=%X) enter: >%s<', 0aH
+$SG12392 DB	'EvalOperand(start=%u, end=%u, flags=%X) enter: >%s<', 0aH
 	DB	00H
 	ORG $+3
-$SG11401 DB	'NULL', 00H
+$SG11400 DB	'NULL', 00H
 	ORG $+3
-$SG11402 DB	'sizlen_op(SIZE): result=%u [symbol %s, first_size=%u]', 0aH
+$SG11401 DB	'sizlen_op(SIZE): result=%u [symbol %s, first_size=%u]', 0aH
 	DB	00H
 	ORG $+1
-$SG11406 DB	'sizlen_op(sizeof): symbol %s, state=%u, size=%u', 0aH, 00H
+$SG11405 DB	'sizlen_op(sizeof): symbol %s, state=%u, size=%u', 0aH, 00H
 	ORG $+7
-$SG11409 DB	'sizlen_op(sizeof): symbol %s (TYPE), opnd2.value=%u', 0aH
+$SG11408 DB	'sizlen_op(sizeof): symbol %s (TYPE), opnd2.value=%u', 0aH
 	DB	00H
 	ORG $+3
-$SG11410 DB	'sizlen_op(sizeof): symbol NULL, opnd2.value=%u', 0aH, 00H
+$SG11409 DB	'sizlen_op(sizeof): symbol NULL, opnd2.value=%u', 0aH, 00H
+$SG11434 DB	'NULL', 00H
+	ORG $+3
 $SG11435 DB	'NULL', 00H
 	ORG $+3
-$SG11436 DB	'NULL', 00H
+$SG11454 DB	'type_op: assume type=%X [name=>%s< memtype=%X]', 0aH, 00H
+$SG11475 DB	'NULL', 00H
 	ORG $+3
-$SG11455 DB	'type_op: assume type=%X [name=>%s< memtype=%X]', 0aH, 00H
-$SG11476 DB	'NULL', 00H
-	ORG $+3
-$SG11437 DB	'type_op: opnd2 kind=%d memtype=%X sym=%s type=%s instr=%'
+$SG11436 DB	'type_op: opnd2 kind=%d memtype=%X sym=%s type=%s instr=%'
 	DB	'd istype=%u explicit=%u', 0aH, 00H
 	ORG $+7
-$SG11477 DB	'type_op: result value=%u is_type=%u type=%s', 0aH, 00H
+$SG11476 DB	'type_op: result value=%u is_type=%u type=%s', 0aH, 00H
 	ORG $+3
-$SG11505 DB	'NULL', 00H
+$SG11504 DB	'NULL', 00H
 	ORG $+3
-$SG11506 DB	'opattr_op: arg kind=%d memtype=%X sym=%s', 0aH, 00H
+$SG11505 DB	'opattr_op: arg kind=%d memtype=%X sym=%s', 0aH, 00H
 	ORG $+6
-$SG11536 DB	'opattr_op returns %Xh', 0aH, 00H
+$SG11535 DB	'opattr_op returns %Xh', 0aH, 00H
 	ORG $+1
-$SG11691 DB	'NULL', 00H
+$SG11690 DB	'NULL', 00H
 	ORG $+3
-$SG11692 DB	'this_op: memtype=%Xh type=%s', 0aH, 00H
+$SG11691 DB	'this_op: memtype=%Xh type=%s', 0aH, 00H
 	ORG $+2
+$SG11744 DB	'NULL', 00H
+	ORG $+3
 $SG11745 DB	'NULL', 00H
 	ORG $+3
 $SG11746 DB	'NULL', 00H
@@ -149,45 +152,45 @@ $SG11748 DB	'NULL', 00H
 	ORG $+3
 $SG11749 DB	'NULL', 00H
 	ORG $+3
-$SG11750 DB	'NULL', 00H
-	ORG $+3
-$SG11751 DB	'plus_op: kind=%d/%d memtype=%Xh-%Xh value=%d-%d sym=%s-%'
+$SG11750 DB	'plus_op: kind=%d/%d memtype=%Xh-%Xh value=%d-%d sym=%s-%'
 	DB	's mbr=%s-%s type=%s-%s', 0aH, 00H
-$SG11753 DB	'plus_op: error direct register', 0aH, 00H
-$SG11759 DB	'plus_op: multiple overrides', 0aH, 00H
+$SG11752 DB	'plus_op: error direct register', 0aH, 00H
+$SG11758 DB	'plus_op: multiple overrides', 0aH, 00H
 	ORG $+3
-$SG11762 DB	'plus_op: CONST - CONST', 0aH, 00H
-$SG11765 DB	'plus_op: ADDR - ADDR', 0aH, 00H
+$SG11761 DB	'plus_op: CONST - CONST', 0aH, 00H
+$SG11764 DB	'plus_op: ADDR - ADDR', 0aH, 00H
 	ORG $+2
-$SG11769 DB	'plus_op: two relocatable labels: %s - %s ', 0aH, 00H
+$SG11768 DB	'plus_op: two relocatable labels: %s - %s ', 0aH, 00H
 	ORG $+5
-$SG11777 DB	'plus_op: CONST - ADDR', 0aH, 00H
+$SG11776 DB	'plus_op: CONST - ADDR', 0aH, 00H
 	ORG $+1
-$SG11783 DB	'plus_op: ADDR - CONST', 0aH, 00H
+$SG11782 DB	'plus_op: ADDR - CONST', 0aH, 00H
 	ORG $+1
-$SG11787 DB	'plus_op: error, unexpected format: %u - %u', 0aH, 00H
+$SG11786 DB	'plus_op: error, unexpected format: %u - %u', 0aH, 00H
 	ORG $+4
-$SG11801 DB	'minus_op: kind tok1=%u, tok2=%u', 0aH, 00H
+$SG11800 DB	'minus_op: kind tok1=%u, tok2=%u', 0aH, 00H
 	ORG $+7
-$SG11803 DB	'minus_op: error direct register', 0aH, 00H
+$SG11802 DB	'minus_op: error direct register', 0aH, 00H
 	ORG $+7
-$SG11808 DB	'minus_op: CONST-CONST', 0aH, 00H
+$SG11807 DB	'minus_op: CONST-CONST', 0aH, 00H
 	ORG $+1
-$SG11811 DB	'minus_op: ADDR-CONST', 0aH, 00H
+$SG11810 DB	'minus_op: ADDR-CONST', 0aH, 00H
 	ORG $+2
-$SG11814 DB	'minus_op: ADDR-ADDR', 0aH, 00H
+$SG11813 DB	'minus_op: ADDR-ADDR', 0aH, 00H
 	ORG $+3
-$SG11816 DB	'minus_op error, opnd2->indirect==TRUE', 0aH, 00H
+$SG11815 DB	'minus_op error, opnd2->indirect==TRUE', 0aH, 00H
 	ORG $+1
-$SG11821 DB	'minus_op error, label_tok=%X opnd1.sym=%X opnd2.sym=%X', 0aH
+$SG11820 DB	'minus_op error, label_tok=%X opnd1.sym=%X opnd2.sym=%X', 0aH
 	DB	00H
-$SG11825 DB	'minus_op error 6', 0aH, 00H
+$SG11824 DB	'minus_op error 6', 0aH, 00H
 	ORG $+6
-$SG11827 DB	'minus_op error, sym.segm=%X opnd1->sym.segm=%X', 0aH, 00H
-$SG11835 DB	'minus_op, exit, ADDR, base=%X, idx=%X', 0aH, 00H
+$SG11826 DB	'minus_op error, sym.segm=%X opnd1->sym.segm=%X', 0aH, 00H
+$SG11834 DB	'minus_op, exit, ADDR, base=%X, idx=%X', 0aH, 00H
 	ORG $+1
-$SG11838 DB	'minus_op, exit, error: kinds tok1=%u, tok2=%u', 0aH, 00H
+$SG11837 DB	'minus_op, exit, error: kinds tok1=%u, tok2=%u', 0aH, 00H
 	ORG $+1
+$SG11863 DB	'NULL', 00H
+	ORG $+3
 $SG11864 DB	'NULL', 00H
 	ORG $+3
 $SG11865 DB	'NULL', 00H
@@ -198,275 +201,273 @@ $SG11867 DB	'NULL', 00H
 	ORG $+3
 $SG11868 DB	'NULL', 00H
 	ORG $+3
-$SG11869 DB	'NULL', 00H
-	ORG $+3
-$SG11870 DB	'dot_op: op1-op2 kind=%d/%d sym=%s-%s type=%s-%s mbr=%s-%'
+$SG11869 DB	'dot_op: op1-op2 kind=%d/%d sym=%s-%s type=%s-%s mbr=%s-%'
 	DB	's', 0aH, 00H
 	ORG $+5
-$SG11872 DB	'dot_op: error direct register', 0aH, 00H
+$SG11871 DB	'dot_op: error direct register', 0aH, 00H
 	ORG $+1
-$SG11876 DB	'dot_op: forward reference %s, replaced by null struct ty'
+$SG11875 DB	'dot_op: forward reference %s, replaced by null struct ty'
 	DB	'pe', 0aH, 00H
-$SG11881 DB	'NULL', 00H
+$SG11880 DB	'NULL', 00H
 	ORG $+3
-$SG11882 DB	'NULL', 00H
+$SG11881 DB	'NULL', 00H
 	ORG $+7
-$SG11883 DB	'dot_op, ADDR - ADDR, t1-t2 memtype=%X-%X sym=%s-%s', 0aH
+$SG11882 DB	'dot_op, ADDR - ADDR, t1-t2 memtype=%X-%X sym=%s-%s', 0aH
 	DB	00H
 	ORG $+4
-$SG11885 DB	'dot_op: error, mbr 2 is NULL', 0aH, 00H
+$SG11884 DB	'dot_op: error, mbr 2 is NULL', 0aH, 00H
 	ORG $+2
-$SG11889 DB	'dot_op: error, two relocatable labels: %s - %s ', 0aH, 00H
+$SG11888 DB	'dot_op: error, two relocatable labels: %s - %s ', 0aH, 00H
 	ORG $+7
-$SG11895 DB	'dot_op, CONST - ADDR: t1-t2 memtype=%Xh-%Xh istype=%u-%u'
+$SG11894 DB	'dot_op, CONST - ADDR: t1-t2 memtype=%Xh-%Xh istype=%u-%u'
 	DB	0aH, 00H
 	ORG $+6
-$SG11901 DB	'dot_op, CONST - ADDR, t1.type=%X (%s), t2.type=%X (%s)', 0aH
+$SG11900 DB	'dot_op, CONST - ADDR, t1.type=%X (%s), t2.type=%X (%s)', 0aH
 	DB	00H
-$SG11905 DB	'dot_op, ADDR - CONST: t1-t2 memtype=%Xh-%Xh t1.explicit='
+$SG11904 DB	'dot_op, ADDR - CONST: t1-t2 memtype=%Xh-%Xh t1.explicit='
 	DB	'%u', 0aH, 00H
 	ORG $+4
-$SG11908 DB	'dot_op: error, constant or simple type after dot', 0aH, 00H
+$SG11907 DB	'dot_op: error, constant or simple type after dot', 0aH, 00H
 	ORG $+6
-$SG11914 DB	'dot_op, ADDR - CONST, t1.type=%X (%s), t2.type=%X (%s)', 0aH
+$SG11913 DB	'dot_op, ADDR - CONST, t1.type=%X (%s), t2.type=%X (%s)', 0aH
 	DB	00H
-$SG11917 DB	'dot_op, CONST - CONST, t1-t2 value=%u-%u, memtype=%Xh-%X'
+$SG11916 DB	'dot_op, CONST - CONST, t1-t2 value=%u-%u, memtype=%Xh-%X'
 	DB	'h istype=%u-%u', 0aH, 00H
-$SG11919 DB	'dot_op: error, opnd2.mbr=NULL', 0aH, 00H
+$SG11918 DB	'dot_op: error, opnd2.mbr=NULL', 0aH, 00H
 	ORG $+1
-$SG11942 DB	'NULL', 00H
+$SG11941 DB	'NULL', 00H
 	ORG $+3
-$SG11926 DB	'dot_op: error, unknown kind combination, opnd1->kind=%d,'
+$SG11925 DB	'dot_op: error, unknown kind combination, opnd1->kind=%d,'
 	DB	' opnd2->kind=%d', 0aH, 00H
 	ORG $+3
-$SG11943 DB	'NULL', 00H
+$SG11942 DB	'NULL', 00H
 	ORG $+7
-$SG11944 DB	'colon_op: t1-t2 kind=%d/%d type=%s-%s is_type=%u-%u', 0aH
+$SG11943 DB	'colon_op: t1-t2 kind=%d/%d type=%s-%s is_type=%u-%u', 0aH
 	DB	00H
 	ORG $+3
-$SG11949 DB	'colon_op: multiple override=%s', 0aH, 00H
-$SG11952 DB	'colon_op: register after : not enclosed in []', 0aH, 00H
+$SG11948 DB	'colon_op: multiple override=%s', 0aH, 00H
+$SG11951 DB	'colon_op: register after : not enclosed in []', 0aH, 00H
 	ORG $+1
-$SG11957 DB	'colon_op: register before '':'' has idx_reg set!?', 0aH, 00H
+$SG11956 DB	'colon_op: register before '':'' has idx_reg set!?', 0aH, 00H
 	ORG $+7
-$SG11970 DB	'colon_op error 4', 0aH, 00H
+$SG11969 DB	'colon_op error 4', 0aH, 00H
 	ORG $+6
-$SG11971 DB	'colon_op error 5', 0aH, 00H
+$SG11970 DB	'colon_op error 5', 0aH, 00H
 	ORG $+6
-$SG11978 DB	'positive_op: value=%I64X high=%I64X', 0aH, 00H
+$SG11977 DB	'positive_op: value=%I64X high=%I64X', 0aH, 00H
 	ORG $+3
-$SG11983 DB	'positive_op: error 1', 0aH, 00H
+$SG11982 DB	'positive_op: error 1', 0aH, 00H
 	ORG $+2
-$SG11990 DB	'negative_op: value=%I64X high=%I64X', 0aH, 00H
+$SG11989 DB	'negative_op: value=%I64X high=%I64X', 0aH, 00H
 	ORG $+3
-$SG11996 DB	'negative_op: unexpected opnd2.kind=%d', 0aH, 00H
+$SG11995 DB	'negative_op: unexpected opnd2.kind=%d', 0aH, 00H
 	ORG $+1
-$SG12006 DB	'CheckAssume(%s, MT_PTR type=>%s< )', 0aH, 00H
+$SG12005 DB	'CheckAssume(%s, MT_PTR type=>%s< )', 0aH, 00H
 	ORG $+4
-$SG10986 DB	'get_precedence: unexpected operator=%s', 0aH, 00H
+$SG10985 DB	'get_precedence: unexpected operator=%s', 0aH, 00H
+$SG12010 DB	'NULL', 00H
+	ORG $+3
 $SG12011 DB	'NULL', 00H
 	ORG $+3
 $SG12012 DB	'NULL', 00H
 	ORG $+3
 $SG12013 DB	'NULL', 00H
 	ORG $+3
-$SG12014 DB	'NULL', 00H
+$SG12045 DB	'cmp_types: memtype=%X-%X type=%X-%X', 0aH, 00H
 	ORG $+3
-$SG12046 DB	'cmp_types: memtype=%X-%X type=%X-%X', 0aH, 00H
-	ORG $+3
-$SG12015 DB	'CheckAssume(%s, type=>%s<, mbr=>%s<): assume=%s [memtype'
+$SG12014 DB	'CheckAssume(%s, type=>%s<, mbr=>%s<): assume=%s [memtype'
 	DB	'=%X isptr=%u type=%s target_type=%s ptr_memt=%X]', 0aH, 00H
 	ORG $+6
-$SG12044 DB	'expreval.c', 00H
+$SG12043 DB	'expreval.c', 00H
 	ORG $+5
-$SG12045 DB	'cmp_types: MT_PTR-MT_PTR is_ptr=%u-%u ptr_memtype=%X-%X '
+$SG12044 DB	'cmp_types: MT_PTR-MT_PTR is_ptr=%u-%u ptr_memtype=%X-%X '
 	DB	'target_type=%X-%X', 0aH, 00H
 	ORG $+5
-$SG12083 DB	'%u calculate(%s): value too large', 0aH, 00H
+$SG12082 DB	'%u calculate(%s): value too large', 0aH, 00H
 	ORG $+5
-$SG12088 DB	'%u calculate(%s): single item', 0aH, 00H
+$SG12087 DB	'%u calculate(%s): single item', 0aH, 00H
 	ORG $+1
-$SG12092 DB	'calculate(%s): incompatible usage of (simple) type', 0aH
+$SG12091 DB	'calculate(%s): incompatible usage of (simple) type', 0aH
 	DB	00H
 	ORG $+4
-$SG12097 DB	'%u calculate(%s): single item', 0aH, 00H
+$SG12096 DB	'%u calculate(%s): single item', 0aH, 00H
 	ORG $+1
-$SG12099 DB	'calculate(%s): incompatible usage of (simple) type', 0aH
+$SG12098 DB	'calculate(%s): incompatible usage of (simple) type', 0aH
 	DB	00H
 	ORG $+4
-$SG12101 DB	'calculate(%s): calling plus_op()', 0aH, 00H
+$SG12100 DB	'calculate(%s): calling plus_op()', 0aH, 00H
 	ORG $+6
-$SG11083 DB	'%u get_operand(idx=%u >%s<) enter [memtype=%Xh]', 0aH, 00H
+$SG11082 DB	'%u get_operand(idx=%u >%s<) enter [memtype=%Xh]', 0aH, 00H
 	ORG $+7
-$SG11085 DB	'%u get_operand: T_NUM, %s, base=%u, len=%u', 0aH, 00H
+$SG11084 DB	'%u get_operand: T_NUM, %s, base=%u, len=%u', 0aH, 00H
 	ORG $+4
-$SG11087 DB	'%u get_operand: T_STRING, %s, size=%u', 0aH, 00H
+$SG11086 DB	'%u get_operand: T_STRING, %s, size=%u', 0aH, 00H
 	ORG $+1
-$SG12114 DB	'calculate(*): kind=%d/%d value=%I64d-%I64d mbr=%X-%X', 0aH
+$SG12113 DB	'calculate(*): kind=%d/%d value=%I64d-%I64d mbr=%X-%X', 0aH
 	DB	00H
 	ORG $+2
-$SG12120 DB	'calculate(*) error direct register', 0aH, 00H
+$SG12119 DB	'calculate(*) error direct register', 0aH, 00H
 	ORG $+4
-$SG12124 DB	'calculate(*) error 2', 0aH, 00H
+$SG12123 DB	'calculate(*) error 2', 0aH, 00H
 	ORG $+2
-$SG12126 DB	'calculate(/): t1-t2 kind %u-%u values %I64d-%I64d', 0aH, 00H
+$SG12125 DB	'calculate(/): t1-t2 kind %u-%u values %I64d-%I64d', 0aH, 00H
 	ORG $+1
-$SG11103 DB	'rz-sae', 00H
+$SG11102 DB	'rz-sae', 00H
 	ORG $+5
-$SG12128 DB	'calculate(/) error 1', 0aH, 00H
+$SG12127 DB	'calculate(/) error 1', 0aH, 00H
 	ORG $+2
-$SG12130 DB	'calculate(/) error 2', 0aH, 00H
+$SG12129 DB	'calculate(/) error 2', 0aH, 00H
 	ORG $+2
+$SG12131 DB	'NULL', 00H
+	ORG $+3
 $SG12132 DB	'NULL', 00H
 	ORG $+3
 $SG12133 DB	'NULL', 00H
 	ORG $+3
 $SG12134 DB	'NULL', 00H
 	ORG $+3
-$SG12135 DB	'NULL', 00H
-	ORG $+3
-$SG11114 DB	'%u get_operand: T_REG, string=%s, tokval=%u, regno=%u', 0aH
+$SG11113 DB	'%u get_operand: T_REG, string=%s, tokval=%u, regno=%u', 0aH
 	DB	00H
 	ORG $+1
-$SG12136 DB	'calculate(%s [T_BINARY_OPERATOR] ): t1-t2 kind %d/%d mem'
+$SG12135 DB	'calculate(%s [T_BINARY_OPERATOR] ): t1-t2 kind %d/%d mem'
 	DB	'type %X-%X sym %s-%s type %s-%s', 0aH, 00H
 	ORG $+7
-$SG12141 DB	'calculate(PTR), error 1: t1 is_type == FALSE', 0aH, 00H
+$SG12140 DB	'calculate(PTR), error 1: t1 is_type == FALSE', 0aH, 00H
 	ORG $+2
-$SG12148 DB	'calculate(PTR): segment register size (=2/4) doesn''t ma'
+$SG12147 DB	'calculate(PTR): segment register size (=2/4) doesn''t ma'
 	DB	'tch type size (=%u)', 0aH, 00H
 	ORG $+4
-$SG12150 DB	'calculate(PTR): register size doesn''t match type size; '
+$SG12149 DB	'calculate(PTR): register size doesn''t match type size; '
 	DB	'%u != %u', 0aH, 00H
 	ORG $+3
-$SG11132 DB	'NULL', 00H
+$SG11131 DB	'NULL', 00H
 	ORG $+7
-$SG12153 DB	'calculate(PTR): type memtype=%Xh ( MT_FLOAT not set, alt'
+$SG12152 DB	'calculate(PTR): type memtype=%Xh ( MT_FLOAT not set, alt'
 	DB	'hough right op is FLOAT )', 0aH, 00H
 	ORG $+5
-$SG11133 DB	'%u get_operand: T_ID, is_dot=1, id=%s, opnd.type=%s', 0aH
+$SG11132 DB	'%u get_operand: T_ID, is_dot=1, id=%s, opnd.type=%s', 0aH
 	DB	00H
 	ORG $+3
-$SG11134 DB	'NULL', 00H
+$SG11133 DB	'NULL', 00H
 	ORG $+3
-$SG11135 DB	'get_operand(%s): is_dot, sym=%s, offset=%Xh', 0aH, 00H
+$SG11134 DB	'get_operand(%s): is_dot, sym=%s, offset=%Xh', 0aH, 00H
 	ORG $+3
-$SG12166 DB	'calculate(%s) error 1', 0aH, 00H
+$SG12165 DB	'calculate(%s) error 1', 0aH, 00H
 	ORG $+1
-$SG12167 DB	'NULL', 00H
+$SG12166 DB	'NULL', 00H
 	ORG $+3
-$SG12168 DB	'calculate(%s) error 2, token2.kind=%d indirect=%u sym=%s'
+$SG12167 DB	'calculate(%s) error 2, token2.kind=%d indirect=%u sym=%s'
 	DB	0aH, 00H
 	ORG $+6
-$SG12169 DB	'calculate(%s) error 3', 0aH, 00H
+$SG12168 DB	'calculate(%s) error 3', 0aH, 00H
 	ORG $+1
-$SG12170 DB	'calculate(%s) error 4', 0aH, 00H
+$SG12169 DB	'calculate(%s) error 4', 0aH, 00H
 	ORG $+1
-$SG11162 DB	'get_operand(%s): symbol is macro/textmacro/alias!', 0aH, 00H
+$SG11161 DB	'get_operand(%s): symbol is macro/textmacro/alias!', 0aH, 00H
 	ORG $+5
-$SG12171 DB	'calculate(%s): values=%I64d/%I64d is_type=%u/%u memtypes'
+$SG12170 DB	'calculate(%s): values=%I64d/%I64d is_type=%u/%u memtypes'
 	DB	'=%X/%X', 0aH, 00H
-$SG11147 DB	'%u get_operand: T_ID, id=%s', 0aH, 00H
+$SG11146 DB	'%u get_operand: T_ID, id=%s', 0aH, 00H
 	ORG $+3
-$SG11159 DB	'get_operand(%s): OPATTR, symbol invalid', 0aH, 00H
+$SG11158 DB	'get_operand(%s): OPATTR, symbol invalid', 0aH, 00H
 	ORG $+7
-$SG12186 DB	'calculate(SHL): value=%I64X << %u (max=%u)', 0aH, 00H
-$SG11168 DB	'NULL', 00H
+$SG12185 DB	'calculate(SHL): value=%I64X << %u (max=%u)', 0aH, 00H
+$SG11167 DB	'NULL', 00H
 	ORG $+7
-$SG11169 DB	'get_operand(%s): symbol not (yet) defined, CurrProc=%s', 0aH
+$SG11168 DB	'get_operand(%s): symbol not (yet) defined, CurrProc=%s', 0aH
 	DB	00H
-$SG11172 DB	'NULL', 00H
+$SG11171 DB	'NULL', 00H
 	ORG $+3
-$SG11173 DB	'get_operand(%s): symbol error (type=%s typekind=%u)', 0aH
+$SG11172 DB	'get_operand(%s): symbol error (type=%s typekind=%u)', 0aH
 	DB	00H
+	ORG $+3
+$SG12200 DB	'NULL', 00H
 	ORG $+3
 $SG12201 DB	'NULL', 00H
 	ORG $+3
+$SG11177 DB	'get_operand(%s): forward reference to a struct (using nu'
+	DB	'llmbr)', 0aH, 00H
 $SG12202 DB	'NULL', 00H
 	ORG $+3
-$SG11178 DB	'get_operand(%s): forward reference to a struct (using nu'
-	DB	'llmbr)', 0aH, 00H
-$SG12203 DB	'NULL', 00H
+$SG11178 DB	'NULL', 00H
 	ORG $+3
-$SG11179 DB	'NULL', 00H
-	ORG $+3
-$SG12204 DB	'calculate(%s [T_UNARY_OPERATOR]): opnd2 kind=%d sym=%s m'
+$SG12203 DB	'calculate(%s [T_UNARY_OPERATOR]): opnd2 kind=%d sym=%s m'
 	DB	'br=%s type=%s memtype=%X is_type=%u indirect=%u', 0aH, 00H
 	ORG $+7
-$SG11180 DB	'get_operand(%s): symbol %s not defined, pass > 1, curr p'
+$SG11179 DB	'get_operand(%s): symbol %s not defined, pass > 1, curr p'
 	DB	'roc=>%s<, ', 0aH, 00H
 	ORG $+4
-$SG12207 DB	'calculate(%s) error 1', 0aH, 00H
+$SG12206 DB	'calculate(%s) error 1', 0aH, 00H
 	ORG $+1
-$SG11185 DB	'NULL', 00H
+$SG11184 DB	'NULL', 00H
 	ORG $+3
-$SG11189 DB	'get_operand(%s): struct/union definition isn''t closed!', 0aH
+$SG11188 DB	'get_operand(%s): struct/union definition isn''t closed!', 0aH
 	DB	00H
-$SG11186 DB	'get_operand(%s): sym->state=%u type=>%s< ofs=%X memtype='
+$SG11185 DB	'get_operand(%s): sym->state=%u type=>%s< ofs=%X memtype='
 	DB	'%Xh total_size=%u defined=%u', 0aH, 00H
 	ORG $+2
-$SG11199 DB	'NULL', 00H
+$SG11198 DB	'NULL', 00H
 	ORG $+3
-$SG11190 DB	'get_operand(%s): symbol.typekind=%u (STRUCT/UNION/TYPEDE'
+$SG11189 DB	'get_operand(%s): symbol.typekind=%u (STRUCT/UNION/TYPEDE'
 	DB	'F/RECORD)', 0aH, 00H
 	ORG $+5
-$SG11198 DB	'get_operand(%s): structure field, ofs=%Xh', 0aH, 00H
+$SG11197 DB	'get_operand(%s): structure field, ofs=%Xh', 0aH, 00H
 	ORG $+5
-$SG11200 DB	'get_operand: mem_type=%Xh type=%s', 0aH, 00H
+$SG11199 DB	'get_operand: mem_type=%Xh type=%s', 0aH, 00H
 	ORG $+5
-$SG11205 DB	'get_operand(%s): equate hval=%Xh, lval=%Xh', 0aH, 00H
+$SG11204 DB	'get_operand(%s): equate hval=%Xh, lval=%Xh', 0aH, 00H
 	ORG $+4
-$SG12235 DB	'calculate %s ''float'' error', 0aH, 00H
+$SG12234 DB	'calculate %s ''float'' error', 0aH, 00H
 	ORG $+4
-$SG11213 DB	'%u get_operand: T_STYPE (>%s<, value=%X)', 0aH, 00H
+$SG11212 DB	'%u get_operand: T_STYPE (>%s<, value=%X)', 0aH, 00H
 	ORG $+6
-$SG12238 DB	'calculate(%s): unknown operator', 0aH, 00H
+$SG12237 DB	'calculate(%s): unknown operator', 0aH, 00H
 	ORG $+7
-$SG11215 DB	'%u get_operand: T_RES_ID (>%s<, value=%X)', 0aH, 00H
+$SG11214 DB	'%u get_operand: T_RES_ID (>%s<, value=%X)', 0aH, 00H
 	ORG $+1
-$SG12241 DB	'NULL', 00H
+$SG12240 DB	'NULL', 00H
 	ORG $+7
-$SG12242 DB	'%u calculate(%s) exit, ok kind=%d value=0x%I64X_%016I64X'
+$SG12241 DB	'%u calculate(%s) exit, ok kind=%d value=0x%I64X_%016I64X'
 	DB	' memtype=0x%X indirect=%u type=>%s<', 0aH, 00H
 	ORG $+3
-$SG12245 DB	'NULL', 00H
+$SG12244 DB	'NULL', 00H
 	ORG $+3
-$SG11222 DB	'%u get_operand: T_FLOAT (>%s<)', 0aH, 00H
-$SG12247 DB	'NULL', 00H
+$SG11221 DB	'%u get_operand: T_FLOAT (>%s<)', 0aH, 00H
+$SG12246 DB	'NULL', 00H
 	ORG $+3
-$SG12246 DB	'%u calculate(%s) exit, ok kind=%d value=%I64d(0x%I64X) m'
+$SG12245 DB	'%u calculate(%s) exit, ok kind=%d value=%I64d(0x%I64X) m'
 	DB	'emtype=0x%X indirect=%u type=>%s<', 0aH, 00H
 	ORG $+1
-$SG12248 DB	'NULL', 00H
+$SG12247 DB	'NULL', 00H
 	ORG $+7
-$SG11224 DB	'%u get_operand: default (token=%u, string=%s)', 0aH, 00H
+$SG11223 DB	'%u get_operand: default (token=%u, string=%s)', 0aH, 00H
 	ORG $+1
+$SG11233 DB	'NULL', 00H
+	ORG $+3
+$SG12248 DB	'%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype'
+	DB	'=0x%X ind=%u exp=%u type=%s mbr=%s', 0aH, 00H
 $SG11234 DB	'NULL', 00H
 	ORG $+3
-$SG12249 DB	'%u calculate(%s) exit, ok kind=%d value=%d(0x%X) memtype'
-	DB	'=0x%X ind=%u exp=%u type=%s mbr=%s', 0aH, 00H
 $SG11235 DB	'NULL', 00H
 	ORG $+3
 $SG11236 DB	'NULL', 00H
 	ORG $+3
-$SG11237 DB	'NULL', 00H
-	ORG $+3
-$SG12264 DB	'NULL', 00H
+$SG12263 DB	'NULL', 00H
 	ORG $+7
-$SG11238 DB	'%u get_operand exit, ok, kind=%d value=%I64X hvalue=%I64'
+$SG11237 DB	'%u get_operand exit, ok, kind=%d value=%I64X hvalue=%I64'
 	DB	'X mem_type=%Xh abs=%u string=%s is_type=%u type=>%s< sym=%s m'
 	DB	'br=%s', 0aH, 00H
 	ORG $+4
-$SG12265 DB	'PrepareOp: DOT operator found, old.sym=%X, old.type=%s, '
+$SG12264 DB	'PrepareOp: DOT operator found, old.sym=%X, old.type=%s, '
 	DB	'expr=%s', 0aH, 00H
 	ORG $+7
-$SG12268 DB	'PrepareOp: implicit type: %s', 0aH, 00H
+$SG12267 DB	'PrepareOp: implicit type: %s', 0aH, 00H
 	ORG $+2
-$SG12270 DB	'PrepareOp: forward ref to %s, type will be NULL', 0aH, 00H
+$SG12269 DB	'PrepareOp: forward ref to %s, type will be NULL', 0aH, 00H
 	ORG $+3
-$SG12273 DB	'NULL', 00H
+$SG12272 DB	'NULL', 00H
 	ORG $+15
-$SG12274 DB	'PrepareOp: OPATTR operator found, old.sym=%X, old.type=%'
+$SG12273 DB	'PrepareOp: OPATTR operator found, old.sym=%X, old.type=%'
 	DB	's, expr=%s', 0aH, 00H
 _DATA	ENDS
 PUBLIC	EvalOperand
@@ -1182,7 +1183,7 @@ evaluate PROC
 	mov	QWORD PTR tv68[rsp], rax
 	jmp	SHORT $LN45@evaluate
 $LN44@evaluate:
-	lea	rax, OFFSET FLAT:$SG12308
+	lea	rax, OFFSET FLAT:$SG12307
 	mov	QWORD PTR tv68[rsp], rax
 $LN45@evaluate:
 	mov	eax, DWORD PTR evallvl
@@ -1199,7 +1200,7 @@ $LN45@evaluate:
 	mov	rax, QWORD PTR i$[rsp]
 	mov	r8d, DWORD PTR [rax]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG12309
+	lea	rcx, OFFSET FLAT:$SG12308
 	call	DoDebugMsg1
 
 ; 3221 :                ++evallvl, *i, end, flags, opnd1->kind, opnd1->type ? opnd1->type->name : "NULL" ));
@@ -1314,7 +1315,7 @@ $LN2@evaluate:
 	mov	QWORD PTR tv166[rsp], rax
 	jmp	SHORT $LN47@evaluate
 $LN46@evaluate:
-	lea	rax, OFFSET FLAT:$SG12311
+	lea	rax, OFFSET FLAT:$SG12310
 	mov	QWORD PTR tv166[rsp], rax
 $LN47@evaluate:
 	movsxd	rax, DWORD PTR curr_operator$4[rsp]
@@ -1326,7 +1327,7 @@ $LN47@evaluate:
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	r8, QWORD PTR [rcx+rax+8]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG12312
+	lea	rcx, OFFSET FLAT:$SG12311
 	call	DoDebugMsg1
 
 ; 3246 :                    evallvl, tokenarray[curr_operator].string_ptr, opnd1->sym, (opnd1->type ? opnd1->type->name : "NULL") ));
@@ -1406,7 +1407,7 @@ $LN14@evaluate:
 	mov	r9d, ecx
 	mov	r8d, DWORD PTR curr_operator$4[rsp]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG12320
+	lea	rcx, OFFSET FLAT:$SG12319
 	call	DoDebugMsg
 
 ; 3254 :                 rc = ERROR;
@@ -1418,7 +1419,7 @@ $LN14@evaluate:
 ; 3257 :                 if ( !opnd1->is_opattr )
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 4
 	and	eax, 1
 	test	eax, eax
@@ -1511,7 +1512,7 @@ $LN20@evaluate:
 ; 3277 :             } else if ( opnd1->is_dot ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 7
 	and	eax, 1
 	test	eax, eax
@@ -1525,9 +1526,9 @@ $LN20@evaluate:
 
 ; 3279 :                 opnd2.is_dot = TRUE;
 
-	mov	eax, DWORD PTR opnd2$5[rsp+76]
+	mov	eax, DWORD PTR opnd2$5[rsp+72]
 	bts	eax, 7
-	mov	DWORD PTR opnd2$5[rsp+76], eax
+	mov	DWORD PTR opnd2$5[rsp+72], eax
 $LN22@evaluate:
 $LN21@evaluate:
 
@@ -1571,7 +1572,7 @@ $LN49@evaluate:
 	mov	r9d, DWORD PTR [rax]
 	mov	r8d, DWORD PTR exp_token$6[rsp]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG12330
+	lea	rcx, OFFSET FLAT:$SG12329
 	call	DoDebugMsg
 
 ; 3287 :                 if ( rc != ERROR ) {
@@ -1822,7 +1823,7 @@ $LN34@evaluate:
 	mov	rax, QWORD PTR i$[rsp]
 	mov	r8d, DWORD PTR [rax]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG12342
+	lea	rcx, OFFSET FLAT:$SG12341
 	call	DoDebugMsg
 
 ; 3323 :                 rc = ERROR;
@@ -1831,7 +1832,7 @@ $LN34@evaluate:
 
 ; 3324 :                 if ( !opnd2.is_opattr ) /* don't emit error if expression is OPATTR operand */
 
-	mov	eax, DWORD PTR opnd2$5[rsp+76]
+	mov	eax, DWORD PTR opnd2$5[rsp+72]
 	shr	eax, 4
 	and	eax, 1
 	test	eax, eax
@@ -1904,7 +1905,7 @@ $LN5@evaluate:
 
 	cmp	DWORD PTR rc$[rsp], -1
 	jne	$LN38@evaluate
-	mov	eax, DWORD PTR opnd2$5[rsp+76]
+	mov	eax, DWORD PTR opnd2$5[rsp+72]
 	shr	eax, 4
 	and	eax, 1
 	test	eax, eax
@@ -2015,7 +2016,7 @@ $LN3@evaluate:
 	mov	QWORD PTR tv485[rsp], rax
 	jmp	SHORT $LN51@evaluate
 $LN50@evaluate:
-	lea	rax, OFFSET FLAT:$SG12350
+	lea	rax, OFFSET FLAT:$SG12349
 	mov	QWORD PTR tv485[rsp], rax
 $LN51@evaluate:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -2027,7 +2028,7 @@ $LN51@evaluate:
 	mov	QWORD PTR tv494[rsp], rax
 	jmp	SHORT $LN53@evaluate
 $LN52@evaluate:
-	lea	rax, OFFSET FLAT:$SG12351
+	lea	rax, OFFSET FLAT:$SG12350
 	mov	QWORD PTR tv494[rsp], rax
 $LN53@evaluate:
 	mov	eax, DWORD PTR evallvl
@@ -2036,7 +2037,7 @@ $LN53@evaluate:
 	dec	eax
 	mov	DWORD PTR evallvl, eax
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	mov	rcx, QWORD PTR tv485[rsp]
 	mov	QWORD PTR [rsp+72], rcx
@@ -2056,7 +2057,7 @@ $LN53@evaluate:
 	mov	r9d, DWORD PTR [rax+60]
 	mov	r8d, DWORD PTR rc$[rsp]
 	mov	edx, DWORD PTR tv506[rsp]
-	lea	rcx, OFFSET FLAT:$SG12352
+	lea	rcx, OFFSET FLAT:$SG12351
 	call	DoDebugMsg1
 
 ; 3355 :                    evallvl--, rc, opnd1->kind, opnd1->llvalue, opnd1->llvalue, opnd1->mem_type,
@@ -2079,13 +2080,13 @@ $LN41@evaluate:
 	mov	QWORD PTR tv513[rsp], rax
 	jmp	SHORT $LN55@evaluate
 $LN54@evaluate:
-	lea	rax, OFFSET FLAT:$SG12353
+	lea	rax, OFFSET FLAT:$SG12352
 	mov	QWORD PTR tv513[rsp], rax
 $LN55@evaluate:
 	mov	rax, QWORD PTR opnd1$[rsp]
 	cmp	DWORD PTR [rax+56], -2
 	jne	SHORT $LN56@evaluate
-	lea	rax, OFFSET FLAT:$SG12354
+	lea	rax, OFFSET FLAT:$SG12353
 	mov	QWORD PTR tv521[rsp], rax
 	jmp	SHORT $LN57@evaluate
 $LN56@evaluate:
@@ -2104,7 +2105,7 @@ $LN57@evaluate:
 	mov	QWORD PTR tv537[rsp], rax
 	jmp	SHORT $LN59@evaluate
 $LN58@evaluate:
-	lea	rax, OFFSET FLAT:$SG12355
+	lea	rax, OFFSET FLAT:$SG12354
 	mov	QWORD PTR tv537[rsp], rax
 $LN59@evaluate:
 	mov	eax, DWORD PTR evallvl
@@ -2115,11 +2116,11 @@ $LN59@evaluate:
 	mov	rax, QWORD PTR opnd1$[rsp]
 	movzx	eax, BYTE PTR [rax+69]
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	shr	ecx, 1
 	and	ecx, 1
 	mov	rdx, QWORD PTR opnd1$[rsp]
-	mov	edx, DWORD PTR [rdx+76]
+	mov	edx, DWORD PTR [rdx+72]
 	and	edx, 1
 	mov	r8, QWORD PTR tv513[rsp]
 	mov	QWORD PTR [rsp+96], r8
@@ -2143,7 +2144,7 @@ $LN59@evaluate:
 	mov	r9d, DWORD PTR [rax+60]
 	mov	r8d, DWORD PTR rc$[rsp]
 	mov	edx, DWORD PTR tv549[rsp]
-	lea	rcx, OFFSET FLAT:$SG12356
+	lea	rcx, OFFSET FLAT:$SG12355
 	call	DoDebugMsg1
 $LN42@evaluate:
 
@@ -2255,18 +2256,18 @@ PrepareOp PROC
 ; 3157 :     opnd->is_opattr = old->is_opattr;
 
 	mov	rax, QWORD PTR old$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 4
 	and	eax, 1
 	and	eax, 1
 	shl	eax, 4
 	mov	rcx, QWORD PTR opnd$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	and	ecx, -17				; ffffffefH
 	or	ecx, eax
 	mov	eax, ecx
 	mov	rcx, QWORD PTR opnd$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 3158 : 
 ; 3159 :     switch ( oper->token ) {
@@ -2293,7 +2294,7 @@ $LN6@PrepareOp:
 	mov	QWORD PTR tv86[rsp], rax
 	jmp	SHORT $LN14@PrepareOp
 $LN13@PrepareOp:
-	lea	rax, OFFSET FLAT:$SG12264
+	lea	rax, OFFSET FLAT:$SG12263
 	mov	QWORD PTR tv86[rsp], rax
 $LN14@PrepareOp:
 	mov	rax, QWORD PTR oper$[rsp]
@@ -2305,7 +2306,7 @@ $LN14@PrepareOp:
 	mov	r8, QWORD PTR tv86[rsp]
 	mov	rax, QWORD PTR old$[rsp]
 	mov	rdx, QWORD PTR [rax+80]
-	lea	rcx, OFFSET FLAT:$SG12265
+	lea	rcx, OFFSET FLAT:$SG12264
 	call	DoDebugMsg
 
 ; 3162 :         if ( old->type ) {
@@ -2319,7 +2320,7 @@ $LN14@PrepareOp:
 	mov	rax, QWORD PTR old$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12268
+	lea	rcx, OFFSET FLAT:$SG12267
 	call	DoDebugMsg1
 
 ; 3164 :             opnd->type = old->type;
@@ -2332,10 +2333,10 @@ $LN14@PrepareOp:
 ; 3165 :             opnd->is_dot = TRUE;
 
 	mov	rax, QWORD PTR opnd$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	bts	eax, 7
 	mov	rcx, QWORD PTR opnd$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 	jmp	SHORT $LN8@PrepareOp
 $LN7@PrepareOp:
 
@@ -2375,7 +2376,7 @@ $LN7@PrepareOp:
 	mov	rax, QWORD PTR old$[rsp]
 	mov	rax, QWORD PTR [rax+80]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12270
+	lea	rcx, OFFSET FLAT:$SG12269
 	call	DoDebugMsg1
 
 ; 3184 :             opnd->type = NULL;
@@ -2386,10 +2387,10 @@ $LN7@PrepareOp:
 ; 3185 :             opnd->is_dot = TRUE;
 
 	mov	rax, QWORD PTR opnd$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	bts	eax, 7
 	mov	rcx, QWORD PTR opnd$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 $LN9@PrepareOp:
 $LN8@PrepareOp:
 
@@ -2425,7 +2426,7 @@ $LN11@PrepareOp:
 	mov	QWORD PTR tv162[rsp], rax
 	jmp	SHORT $LN16@PrepareOp
 $LN15@PrepareOp:
-	lea	rax, OFFSET FLAT:$SG12273
+	lea	rax, OFFSET FLAT:$SG12272
 	mov	QWORD PTR tv162[rsp], rax
 $LN16@PrepareOp:
 	mov	rax, QWORD PTR oper$[rsp]
@@ -2437,17 +2438,17 @@ $LN16@PrepareOp:
 	mov	r8, QWORD PTR tv162[rsp]
 	mov	rax, QWORD PTR old$[rsp]
 	mov	rdx, QWORD PTR [rax+80]
-	lea	rcx, OFFSET FLAT:$SG12274
+	lea	rcx, OFFSET FLAT:$SG12273
 	call	DoDebugMsg
 
 ; 3193 :                       old->sym, (old->type ? old->type->name : "NULL" ), oper->tokpos + strlen( oper->string_ptr ) ));
 ; 3194 :             opnd->is_opattr = TRUE;
 
 	mov	rax, QWORD PTR opnd$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	or	eax, 16
 	mov	rcx, QWORD PTR opnd$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 $LN4@PrepareOp:
 $LN2@PrepareOp:
 
@@ -2540,7 +2541,7 @@ calculate PROC
 ; 2576 :         if ( opnd2->is_opattr || ( ( oper->token == '+' || oper->token == '-' ) && oper->specval == UNARY_PLUSMINUS ) )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 4
 	and	eax, 1
 	test	eax, eax
@@ -2571,7 +2572,7 @@ $LN9@calculate:
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG12083
+	lea	rcx, OFFSET FLAT:$SG12082
 	call	DoDebugMsg
 
 ; 2580 :             return( fnEmitErr( CONSTANT_VALUE_TOO_LARGE_EX, opnd2->hlvalue, opnd2->value64 ) );
@@ -2618,7 +2619,7 @@ $LN13@calculate:
 ; 2593 :         if ( opnd2->assumecheck == TRUE ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 6
 	and	eax, 1
 	cmp	eax, 1
@@ -2627,10 +2628,10 @@ $LN13@calculate:
 ; 2594 :             opnd2->assumecheck = FALSE;   /* check ONE time only! */
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, -65				; ffffffbfH
 	mov	rcx, QWORD PTR opnd2$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 2595 :             if ( opnd1->sym == NULL ) /* v2.10: added; see assume10.asm */
 
@@ -2658,7 +2659,7 @@ $LN14@calculate:
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG12088
+	lea	rcx, OFFSET FLAT:$SG12087
 	call	DoDebugMsg1
 
 ; 2601 :             TokenAssign( opnd1, opnd2 );
@@ -2677,7 +2678,7 @@ $LN14@calculate:
 ; 2603 :             if ( opnd1->is_type && opnd1->kind == EXPR_CONST )
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	test	eax, eax
@@ -2689,10 +2690,10 @@ $LN14@calculate:
 ; 2604 :                 opnd1->is_type = 0;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, -9					; fffffff7H
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 $LN17@calculate:
 
 ; 2605 :             break;
@@ -2715,7 +2716,7 @@ $LN16@calculate:
 ; 2618 :         if ( opnd1->is_type == TRUE && opnd1->type == NULL &&
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	cmp	eax, 1
@@ -2736,7 +2737,7 @@ $LN19@calculate:
 
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12092
+	lea	rcx, OFFSET FLAT:$SG12091
 	call	DoDebugMsg
 
 ; 2621 :             return( fnEmitErr( SYNTAX_ERROR_IN_EXPRESSION ) );
@@ -2804,7 +2805,7 @@ $LN22@calculate:
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG12097
+	lea	rcx, OFFSET FLAT:$SG12096
 	call	DoDebugMsg1
 
 ; 2639 :             TokenAssign( opnd1, opnd2 );
@@ -2832,7 +2833,7 @@ $LN23@calculate:
 ; 2646 :         if ( opnd1->is_type == TRUE && opnd2->kind == EXPR_ADDR ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	cmp	eax, 1
@@ -2845,7 +2846,7 @@ $LN23@calculate:
 
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12099
+	lea	rcx, OFFSET FLAT:$SG12098
 	call	DoDebugMsg
 
 ; 2648 :             return( fnEmitErr( SYNTAX_ERROR_IN_EXPRESSION ) );
@@ -2881,7 +2882,7 @@ $LN25@calculate:
 
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12101
+	lea	rcx, OFFSET FLAT:$SG12100
 	call	DoDebugMsg1
 
 ; 2656 : #ifdef DEBUG_OUT
@@ -3057,7 +3058,7 @@ $LN37@calculate:
 	mov	r8d, DWORD PTR [rax+60]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax+60]
-	lea	rcx, OFFSET FLAT:$SG12114
+	lea	rcx, OFFSET FLAT:$SG12113
 	call	DoDebugMsg1
 
 ; 2707 :                    opnd1->kind,    opnd2->kind,
@@ -3116,7 +3117,7 @@ $LN38@calculate:
 
 ; 2718 :                 DebugMsg(("calculate(*) error direct register\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12120
+	lea	rcx, OFFSET FLAT:$SG12119
 	call	DoDebugMsg
 
 ; 2719 :                 return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
@@ -3202,10 +3203,10 @@ $LN45@calculate:
 ; 2739 :             opnd1->indirect = TRUE;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	or	eax, 1
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 2740 :             opnd1->kind = EXPR_ADDR;
 
@@ -3219,7 +3220,7 @@ $LN40@calculate:
 
 ; 2742 :             DebugMsg(("calculate(*) error 2\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12124
+	lea	rcx, OFFSET FLAT:$SG12123
 	call	DoDebugMsg
 
 ; 2743 :             return( ConstError( opnd1, opnd2 ) );
@@ -3253,7 +3254,7 @@ $LN46@calculate:
 	mov	r8d, DWORD PTR [rax+60]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax+60]
-	lea	rcx, OFFSET FLAT:$SG12126
+	lea	rcx, OFFSET FLAT:$SG12125
 	call	DoDebugMsg1
 
 ; 2752 :                    opnd1->kind,    opnd2->kind,
@@ -3287,7 +3288,7 @@ $LN140@calculate:
 
 ; 2758 :             DebugMsg(("calculate(/) error 1\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12128
+	lea	rcx, OFFSET FLAT:$SG12127
 	call	DoDebugMsg
 
 ; 2759 :             return( ConstError( opnd1, opnd2 ) );
@@ -3308,7 +3309,7 @@ $LN47@calculate:
 
 ; 2763 :             DebugMsg(("calculate(/) error 2\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12130
+	lea	rcx, OFFSET FLAT:$SG12129
 	call	DoDebugMsg
 
 ; 2764 :             return( fnEmitErr( DIVIDE_BY_ZERO_IN_EXPR ) );
@@ -3347,7 +3348,7 @@ $LN49@calculate:
 	mov	QWORD PTR tv341[rsp], rax
 	jmp	SHORT $LN142@calculate
 $LN141@calculate:
-	lea	rax, OFFSET FLAT:$SG12132
+	lea	rax, OFFSET FLAT:$SG12131
 	mov	QWORD PTR tv341[rsp], rax
 $LN142@calculate:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -3359,7 +3360,7 @@ $LN142@calculate:
 	mov	QWORD PTR tv347[rsp], rax
 	jmp	SHORT $LN144@calculate
 $LN143@calculate:
-	lea	rax, OFFSET FLAT:$SG12133
+	lea	rax, OFFSET FLAT:$SG12132
 	mov	QWORD PTR tv347[rsp], rax
 $LN144@calculate:
 	mov	rax, QWORD PTR opnd2$[rsp]
@@ -3371,7 +3372,7 @@ $LN144@calculate:
 	mov	QWORD PTR tv353[rsp], rax
 	jmp	SHORT $LN146@calculate
 $LN145@calculate:
-	lea	rax, OFFSET FLAT:$SG12134
+	lea	rax, OFFSET FLAT:$SG12133
 	mov	QWORD PTR tv353[rsp], rax
 $LN146@calculate:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -3383,7 +3384,7 @@ $LN146@calculate:
 	mov	QWORD PTR tv359[rsp], rax
 	jmp	SHORT $LN148@calculate
 $LN147@calculate:
-	lea	rax, OFFSET FLAT:$SG12135
+	lea	rax, OFFSET FLAT:$SG12134
 	mov	QWORD PTR tv359[rsp], rax
 $LN148@calculate:
 	mov	rax, QWORD PTR tv341[rsp]
@@ -3406,7 +3407,7 @@ $LN148@calculate:
 	mov	r8d, DWORD PTR [rax+60]
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12136
+	lea	rcx, OFFSET FLAT:$SG12135
 	call	DoDebugMsg1
 
 ; 2771 :                    oper->string_ptr,
@@ -3426,7 +3427,7 @@ $LN148@calculate:
 ; 2780 :             if ( opnd1->is_type == FALSE ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	test	eax, eax
@@ -3465,10 +3466,10 @@ $LN148@calculate:
 ; 2785 :                     opnd1->is_type = TRUE;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	or	eax, 8
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 2786 :                 } else {
 
@@ -3477,7 +3478,7 @@ $LN52@calculate:
 
 ; 2787 :                     DebugMsg(("calculate(PTR), error 1: t1 is_type == FALSE\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12141
+	lea	rcx, OFFSET FLAT:$SG12140
 	call	DoDebugMsg
 
 ; 2788 :                     return( fnEmitErr( INVALID_TYPE_EXPRESSION ) );
@@ -3493,10 +3494,10 @@ $LN51@calculate:
 ; 2791 :             opnd2->explicit = TRUE;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	or	eax, 2
 	mov	rcx, QWORD PTR opnd2$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 2792 :             /* v2.02: if operand is a register, make sure
 ; 2793 :              * that invalid combinations ("DWORD PTR AX") are flagged.
@@ -3515,12 +3516,12 @@ $LN51@calculate:
 	cmp	DWORD PTR [rax+60], 2
 	jne	$LN54@calculate
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	test	eax, eax
 	je	SHORT $LN56@calculate
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 6
 	and	eax, 1
 	cmp	eax, 1
@@ -3558,7 +3559,7 @@ $LN56@calculate:
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG12148
+	lea	rcx, OFFSET FLAT:$SG12147
 	call	DoDebugMsg
 
 ; 2809 :                         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
@@ -3588,7 +3589,7 @@ $LN57@calculate:
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	r8d, DWORD PTR [rcx]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG12150
+	lea	rcx, OFFSET FLAT:$SG12149
 	call	DoDebugMsg
 
 ; 2813 :                     return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
@@ -3622,7 +3623,7 @@ $LN54@calculate:
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax+64]
-	lea	rcx, OFFSET FLAT:$SG12153
+	lea	rcx, OFFSET FLAT:$SG12152
 	call	DoDebugMsg
 
 ; 2818 :                     return( fnEmitErr( REAL_OR_BCD_NUMBER_NOT_ALLOWED ) );
@@ -3654,7 +3655,7 @@ $LN55@calculate:
 ; 2824 :             if ( opnd2->is_type )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	test	eax, eax
@@ -3763,7 +3764,7 @@ $LN66@calculate:
 	cmp	DWORD PTR [rax+60], 1
 	jne	$LN70@calculate
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	test	eax, eax
 	jne	$LN70@calculate
@@ -3777,7 +3778,7 @@ $LN66@calculate:
 	cmp	DWORD PTR [rax+60], 1
 	jne	SHORT $LN72@calculate
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	test	eax, eax
 	jne	SHORT $LN72@calculate
@@ -3797,7 +3798,7 @@ $LN66@calculate:
 
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12166
+	lea	rcx, OFFSET FLAT:$SG12165
 	call	DoDebugMsg
 
 ; 2859 :                         return( ERROR );
@@ -3823,11 +3824,11 @@ $LN72@calculate:
 	mov	QWORD PTR tv502[rsp], rax
 	jmp	SHORT $LN150@calculate
 $LN149@calculate:
-	lea	rax, OFFSET FLAT:$SG12167
+	lea	rax, OFFSET FLAT:$SG12166
 	mov	QWORD PTR tv502[rsp], rax
 $LN150@calculate:
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	mov	rcx, QWORD PTR tv502[rsp]
 	mov	QWORD PTR [rsp+32], rcx
@@ -3836,7 +3837,7 @@ $LN150@calculate:
 	mov	r8d, DWORD PTR [rax+60]
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12168
+	lea	rcx, OFFSET FLAT:$SG12167
 	call	DoDebugMsg
 
 ; 2863 :                               oper->string_ptr, opnd2->kind, opnd2->indirect,
@@ -3858,7 +3859,7 @@ $LN70@calculate:
 
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12169
+	lea	rcx, OFFSET FLAT:$SG12168
 	call	DoDebugMsg
 
 ; 2869 :                 return( fnEmitErr( CONSTANT_OR_RELOCATABLE_LABEL_EXPECTED ) );
@@ -3878,7 +3879,7 @@ $LN68@calculate:
 
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12170
+	lea	rcx, OFFSET FLAT:$SG12169
 	call	DoDebugMsg
 
 ; 2873 :             return( ConstError( opnd1, opnd2 ) );
@@ -3895,11 +3896,11 @@ $LN67@calculate:
 ; 2876 :         DebugMsg1(("calculate(%s): values=%" I64_SPEC "d/%" I64_SPEC "d is_type=%u/%u memtypes=%X/%X\n", oper->string_ptr,
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	shr	ecx, 3
 	and	ecx, 1
 	mov	rdx, QWORD PTR opnd2$[rsp]
@@ -3916,7 +3917,7 @@ $LN67@calculate:
 	mov	r8, QWORD PTR [rax]
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12171
+	lea	rcx, OFFSET FLAT:$SG12170
 	call	DoDebugMsg1
 
 ; 2877 :                    opnd1->value64, opnd2->value64, opnd1->is_type, opnd2->is_type, opnd1->mem_type, opnd2->mem_type  ));
@@ -3957,13 +3958,13 @@ $LN75@calculate:
 ; 2882 :             if ( opnd1->is_type && opnd2->is_type ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	test	eax, eax
 	je	SHORT $LN76@calculate
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	test	eax, eax
@@ -4010,13 +4011,13 @@ $LN78@calculate:
 ; 2891 :             if ( opnd1->is_type && opnd2->is_type ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	test	eax, eax
 	je	SHORT $LN79@calculate
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	test	eax, eax
@@ -4189,7 +4190,7 @@ $LN88@calculate:
 	mov	r8d, DWORD PTR [rax]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rdx, QWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG12186
+	lea	rcx, OFFSET FLAT:$SG12185
 	call	DoDebugMsg1
 
 ; 2918 :             if ( opnd2->value < 0 )
@@ -4392,7 +4393,7 @@ $LN102@calculate:
 	mov	QWORD PTR tv710[rsp], rax
 	jmp	SHORT $LN165@calculate
 $LN164@calculate:
-	lea	rax, OFFSET FLAT:$SG12201
+	lea	rax, OFFSET FLAT:$SG12200
 	mov	QWORD PTR tv710[rsp], rax
 $LN165@calculate:
 	mov	rax, QWORD PTR opnd2$[rsp]
@@ -4404,7 +4405,7 @@ $LN165@calculate:
 	mov	QWORD PTR tv716[rsp], rax
 	jmp	SHORT $LN167@calculate
 $LN166@calculate:
-	lea	rax, OFFSET FLAT:$SG12202
+	lea	rax, OFFSET FLAT:$SG12201
 	mov	QWORD PTR tv716[rsp], rax
 $LN167@calculate:
 	mov	rax, QWORD PTR opnd2$[rsp]
@@ -4416,14 +4417,14 @@ $LN167@calculate:
 	mov	QWORD PTR tv722[rsp], rax
 	jmp	SHORT $LN169@calculate
 $LN168@calculate:
-	lea	rax, OFFSET FLAT:$SG12203
+	lea	rax, OFFSET FLAT:$SG12202
 	mov	QWORD PTR tv722[rsp], rax
 $LN169@calculate:
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	mov	rcx, QWORD PTR opnd2$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	shr	ecx, 3
 	and	ecx, 1
 	mov	DWORD PTR [rsp+64], eax
@@ -4440,7 +4441,7 @@ $LN169@calculate:
 	mov	r8d, DWORD PTR [rax+60]
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12204
+	lea	rcx, OFFSET FLAT:$SG12203
 	call	DoDebugMsg1
 
 ; 2970 :                    oper->string_ptr,
@@ -4473,7 +4474,7 @@ $LN169@calculate:
 
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12207
+	lea	rcx, OFFSET FLAT:$SG12206
 	call	DoDebugMsg
 
 ; 2983 :                 return( fnEmitErr( CONSTANT_OPERAND_EXPECTED ) );
@@ -4596,7 +4597,7 @@ $LN108@calculate:
 	cmp	QWORD PTR [rax+24], 0
 	je	SHORT $LN110@calculate
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	test	eax, eax
 	jne	SHORT $LN110@calculate
@@ -4712,7 +4713,7 @@ $LN113@calculate:
 ; 3044 :             } else if ( opnd2->is_type ) { /* is item a type? */
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	test	eax, eax
@@ -4772,7 +4773,7 @@ $LN123@calculate:
 ; 3056 :             if ( opnd2->indirect == TRUE && opnd2->sym == NULL ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	cmp	eax, 1
 	jne	SHORT $LN124@calculate
@@ -4893,7 +4894,7 @@ $LN130@calculate:
 
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12235
+	lea	rcx, OFFSET FLAT:$SG12234
 	call	DoDebugMsg
 
 ; 3103 :                 return( fnEmitErr( REAL_OR_BCD_NUMBER_NOT_ALLOWED ) );
@@ -4949,7 +4950,7 @@ $LN133@calculate:
 
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12238
+	lea	rcx, OFFSET FLAT:$SG12237
 	call	DoDebugMsg
 
 ; 3117 :         return( fnEmitErr( SYNTAX_ERROR_EX, oper->string_ptr ) );
@@ -4981,11 +4982,11 @@ $LN2@calculate:
 	mov	QWORD PTR tv886[rsp], rax
 	jmp	SHORT $LN171@calculate
 $LN170@calculate:
-	lea	rax, OFFSET FLAT:$SG12241
+	lea	rax, OFFSET FLAT:$SG12240
 	mov	QWORD PTR tv886[rsp], rax
 $LN171@calculate:
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	mov	rcx, QWORD PTR tv886[rsp]
 	mov	QWORD PTR [rsp+64], rcx
@@ -5004,7 +5005,7 @@ $LN171@calculate:
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG12242
+	lea	rcx, OFFSET FLAT:$SG12241
 	call	DoDebugMsg1
 	jmp	$LN135@calculate
 $LN134@calculate:
@@ -5032,11 +5033,11 @@ $LN134@calculate:
 	mov	QWORD PTR tv909[rsp], rax
 	jmp	SHORT $LN173@calculate
 $LN172@calculate:
-	lea	rax, OFFSET FLAT:$SG12245
+	lea	rax, OFFSET FLAT:$SG12244
 	mov	QWORD PTR tv909[rsp], rax
 $LN173@calculate:
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	mov	rcx, QWORD PTR tv909[rsp]
 	mov	QWORD PTR [rsp+64], rcx
@@ -5055,7 +5056,7 @@ $LN173@calculate:
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG12246
+	lea	rcx, OFFSET FLAT:$SG12245
 	call	DoDebugMsg1
 
 ; 3131 :                    evallvl,
@@ -5080,7 +5081,7 @@ $LN136@calculate:
 	mov	QWORD PTR tv930[rsp], rax
 	jmp	SHORT $LN175@calculate
 $LN174@calculate:
-	lea	rax, OFFSET FLAT:$SG12247
+	lea	rax, OFFSET FLAT:$SG12246
 	mov	QWORD PTR tv930[rsp], rax
 $LN175@calculate:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -5092,15 +5093,15 @@ $LN175@calculate:
 	mov	QWORD PTR tv936[rsp], rax
 	jmp	SHORT $LN177@calculate
 $LN176@calculate:
-	lea	rax, OFFSET FLAT:$SG12248
+	lea	rax, OFFSET FLAT:$SG12247
 	mov	QWORD PTR tv936[rsp], rax
 $LN177@calculate:
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 1
 	and	eax, 1
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	and	ecx, 1
 	mov	rdx, QWORD PTR tv930[rsp]
 	mov	QWORD PTR [rsp+80], rdx
@@ -5122,7 +5123,7 @@ $LN177@calculate:
 	mov	rax, QWORD PTR oper$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG12249
+	lea	rcx, OFFSET FLAT:$SG12248
 	call	DoDebugMsg1
 $LN137@calculate:
 $LN135@calculate:
@@ -5322,7 +5323,7 @@ $LN8@cmp_types:
 	jmp	SHORT $LN10@cmp_types
 $LN9@cmp_types:
 	mov	edx, 2512				; 000009d0H
-	lea	rcx, OFFSET FLAT:$SG12044
+	lea	rcx, OFFSET FLAT:$SG12043
 	call	InternalError
 	mov	DWORD PTR tv79[rsp], eax
 $LN10@cmp_types:
@@ -5421,7 +5422,7 @@ $LN16@cmp_types:
 	mov	r8d, edx
 	mov	eax, DWORD PTR tv159[rsp]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG12045
+	lea	rcx, OFFSET FLAT:$SG12044
 	call	DoDebugMsg1
 
 ; 2520 :                    type1->is_ptr, type2->is_ptr,
@@ -5443,7 +5444,7 @@ $LN2@cmp_types:
 	mov	r8d, DWORD PTR [rax+64]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax+64]
-	lea	rcx, OFFSET FLAT:$SG12046
+	lea	rcx, OFFSET FLAT:$SG12045
 	call	DoDebugMsg1
 
 ; 2525 :                    opnd1->mem_type, opnd2->mem_type, opnd1->type, opnd2->type ));
@@ -5635,7 +5636,7 @@ CheckAssume PROC
 ; 2431 :     if ( opnd->explicit ) { /* perhaps check mem_type instead of explicit */
 
 	mov	rax, QWORD PTR opnd$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 1
 	and	eax, 1
 	test	eax, eax
@@ -5656,7 +5657,7 @@ CheckAssume PROC
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12006
+	lea	rcx, OFFSET FLAT:$SG12005
 	call	DoDebugMsg1
 
 ; 2434 :             if ( opnd->type->is_ptr == 1 ) { /* dereference only if indirection is 1 */
@@ -5755,7 +5756,7 @@ $LN6@CheckAssum:
 	mov	QWORD PTR tv143[rsp], rax
 	jmp	SHORT $LN15@CheckAssum
 $LN14@CheckAssum:
-	lea	rax, OFFSET FLAT:$SG12011
+	lea	rax, OFFSET FLAT:$SG12010
 	mov	QWORD PTR tv143[rsp], rax
 $LN15@CheckAssum:
 	mov	rax, QWORD PTR sym$[rsp]
@@ -5767,7 +5768,7 @@ $LN15@CheckAssum:
 	mov	QWORD PTR tv149[rsp], rax
 	jmp	SHORT $LN17@CheckAssum
 $LN16@CheckAssum:
-	lea	rax, OFFSET FLAT:$SG12012
+	lea	rax, OFFSET FLAT:$SG12011
 	mov	QWORD PTR tv149[rsp], rax
 $LN17@CheckAssum:
 	mov	rax, QWORD PTR opnd$[rsp]
@@ -5779,7 +5780,7 @@ $LN17@CheckAssum:
 	mov	QWORD PTR tv162[rsp], rax
 	jmp	SHORT $LN19@CheckAssum
 $LN18@CheckAssum:
-	lea	rax, OFFSET FLAT:$SG12013
+	lea	rax, OFFSET FLAT:$SG12012
 	mov	QWORD PTR tv162[rsp], rax
 $LN19@CheckAssum:
 	mov	rax, QWORD PTR opnd$[rsp]
@@ -5791,7 +5792,7 @@ $LN19@CheckAssum:
 	mov	QWORD PTR tv168[rsp], rax
 	jmp	SHORT $LN21@CheckAssum
 $LN20@CheckAssum:
-	lea	rax, OFFSET FLAT:$SG12014
+	lea	rax, OFFSET FLAT:$SG12013
 	mov	QWORD PTR tv168[rsp], rax
 $LN21@CheckAssum:
 	mov	rax, QWORD PTR opnd$[rsp]
@@ -5834,7 +5835,7 @@ $LN23@CheckAssum:
 	mov	r9, QWORD PTR tv162[rsp]
 	mov	r8, QWORD PTR tv168[rsp]
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG12015
+	lea	rcx, OFFSET FLAT:$SG12014
 	call	DoDebugMsg1
 
 ; 2459 :                    GetResWName( ( opnd->idx_reg ? opnd->idx_reg->tokval : opnd->base_reg->tokval ), NULL ),
@@ -5943,7 +5944,7 @@ negative_op PROC
 	mov	r8, QWORD PTR [rax+8]
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rdx, QWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG11990
+	lea	rcx, OFFSET FLAT:$SG11989
 	call	DoDebugMsg1
 
 ; 2394 :     /*
@@ -5999,7 +6000,7 @@ $LN4@negative_o:
 ; 2410 :         opnd1->negative = 1 - opnd2->negative; /* ??? supposed to be used for EXPR_FLOAT only! */
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 5
 	and	eax, 1
 	mov	ecx, 1
@@ -6008,12 +6009,12 @@ $LN4@negative_o:
 	and	eax, 1
 	shl	eax, 5
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	and	ecx, -33				; ffffffdfH
 	or	ecx, eax
 	mov	eax, ecx
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 	jmp	$LN3@negative_o
 $LN2@negative_o:
 
@@ -6038,7 +6039,7 @@ $LN2@negative_o:
 ; 2414 :         opnd1->negative = 1 - opnd2->negative;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 5
 	and	eax, 1
 	mov	ecx, 1
@@ -6047,12 +6048,12 @@ $LN2@negative_o:
 	and	eax, 1
 	shl	eax, 5
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	and	ecx, -33				; ffffffdfH
 	or	ecx, eax
 	mov	eax, ecx
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 2415 :     } else {
 
@@ -6063,7 +6064,7 @@ $LN5@negative_o:
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	edx, DWORD PTR [rax+60]
-	lea	rcx, OFFSET FLAT:$SG11996
+	lea	rcx, OFFSET FLAT:$SG11995
 	call	DoDebugMsg
 
 ; 2417 :         return( fnEmitErr( CONSTANT_EXPECTED ) );
@@ -6112,7 +6113,7 @@ positive_op PROC
 	mov	r8, QWORD PTR [rax+8]
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rdx, QWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG11978
+	lea	rcx, OFFSET FLAT:$SG11977
 	call	DoDebugMsg1
 
 ; 2366 :     /*
@@ -6176,18 +6177,18 @@ $LN2@positive_o:
 ; 2382 :         opnd1->negative = opnd2->negative;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 5
 	and	eax, 1
 	and	eax, 1
 	shl	eax, 5
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	and	ecx, -33				; ffffffdfH
 	or	ecx, eax
 	mov	eax, ecx
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 2383 :     } else {
 
@@ -6196,7 +6197,7 @@ $LN4@positive_o:
 
 ; 2384 :         DebugMsg(("positive_op: error 1\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11983
+	lea	rcx, OFFSET FLAT:$SG11982
 	call	DoDebugMsg
 
 ; 2385 :         return( fnEmitErr( CONSTANT_EXPECTED ) );
@@ -6267,7 +6268,7 @@ colon_op PROC
 	mov	QWORD PTR tv76[rsp], rax
 	jmp	SHORT $LN28@colon_op
 $LN27@colon_op:
-	lea	rax, OFFSET FLAT:$SG11942
+	lea	rax, OFFSET FLAT:$SG11941
 	mov	QWORD PTR tv76[rsp], rax
 $LN28@colon_op:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -6279,15 +6280,15 @@ $LN28@colon_op:
 	mov	QWORD PTR tv82[rsp], rax
 	jmp	SHORT $LN30@colon_op
 $LN29@colon_op:
-	lea	rax, OFFSET FLAT:$SG11943
+	lea	rax, OFFSET FLAT:$SG11942
 	mov	QWORD PTR tv82[rsp], rax
 $LN30@colon_op:
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	shr	ecx, 3
 	and	ecx, 1
 	mov	DWORD PTR [rsp+48], eax
@@ -6299,7 +6300,7 @@ $LN30@colon_op:
 	mov	r8d, DWORD PTR [rax+60]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax+60]
-	lea	rcx, OFFSET FLAT:$SG11944
+	lea	rcx, OFFSET FLAT:$SG11943
 	call	DoDebugMsg1
 
 ; 2247 :                opnd1->kind, opnd2->kind,
@@ -6340,7 +6341,7 @@ $LN6@colon_op:
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+48]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11949
+	lea	rcx, OFFSET FLAT:$SG11948
 	call	DoDebugMsg
 
 ; 2256 :             return( fnEmitErr( MULTIPLE_OVERRIDES ) );
@@ -6370,14 +6371,14 @@ $LN8@colon_op:
 ; 2262 :         if ( opnd2->indirect == FALSE ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	test	eax, eax
 	jne	SHORT $LN9@colon_op
 
 ; 2263 :             DebugMsg(("colon_op: register after : not enclosed in []\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11952
+	lea	rcx, OFFSET FLAT:$SG11951
 	call	DoDebugMsg
 
 ; 2264 :             return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
@@ -6419,7 +6420,7 @@ $LN2@colon_op:
 
 ; 2275 :             DebugMsg(("colon_op: register before ':' has idx_reg set!?\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11957
+	lea	rcx, OFFSET FLAT:$SG11956
 	call	DoDebugMsg
 
 ; 2276 :             return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
@@ -6480,20 +6481,20 @@ $LN14@colon_op:
 ; 2298 :         opnd2->indirect |= opnd1->indirect;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	and	ecx, 1
 	or	eax, ecx
 	and	eax, 1
 	mov	rcx, QWORD PTR opnd2$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	and	ecx, -2					; fffffffeH
 	or	ecx, eax
 	mov	eax, ecx
 	mov	rcx, QWORD PTR opnd2$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 2299 : 
 ; 2300 :         if ( opnd2->kind == EXPR_CONST ) {
@@ -6518,7 +6519,7 @@ $LN15@colon_op:
 ; 2309 :         if( opnd1->explicit ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 1
 	and	eax, 1
 	test	eax, eax
@@ -6527,18 +6528,18 @@ $LN15@colon_op:
 ; 2310 :             opnd2->explicit = opnd1->explicit;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 1
 	and	eax, 1
 	and	eax, 1
 	shl	eax, 1
 	mov	rcx, QWORD PTR opnd2$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	and	ecx, -3					; fffffffdH
 	or	ecx, eax
 	mov	eax, ecx
 	mov	rcx, QWORD PTR opnd2$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 2311 :             opnd2->mem_type = opnd1->mem_type;
 
@@ -6655,25 +6656,25 @@ $LN22@colon_op:
 ; 2342 :             opnd2->indirect |= opnd1->indirect;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	and	ecx, 1
 	or	eax, ecx
 	and	eax, 1
 	mov	rcx, QWORD PTR opnd2$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	and	ecx, -2					; fffffffeH
 	or	ecx, eax
 	mov	eax, ecx
 	mov	rcx, QWORD PTR opnd2$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 2343 :             if( opnd1->explicit ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 1
 	and	eax, 1
 	test	eax, eax
@@ -6682,18 +6683,18 @@ $LN22@colon_op:
 ; 2344 :                 opnd2->explicit = opnd1->explicit;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 1
 	and	eax, 1
 	and	eax, 1
 	shl	eax, 1
 	mov	rcx, QWORD PTR opnd2$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	and	ecx, -3					; fffffffdH
 	or	ecx, eax
 	mov	eax, ecx
 	mov	rcx, QWORD PTR opnd2$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 2345 :                 opnd2->mem_type = opnd1->mem_type;
 
@@ -6738,7 +6739,7 @@ $LN25@colon_op:
 
 ; 2352 :             DebugMsg(("colon_op error 4\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11970
+	lea	rcx, OFFSET FLAT:$SG11969
 	call	DoDebugMsg
 
 ; 2353 :             return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
@@ -6757,7 +6758,7 @@ $LN18@colon_op:
 
 ; 2356 :         DebugMsg(("colon_op error 5\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11971
+	lea	rcx, OFFSET FLAT:$SG11970
 	call	DoDebugMsg
 
 ; 2357 :         return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
@@ -6825,7 +6826,7 @@ dot_op	PROC
 	mov	QWORD PTR tv68[rsp], rax
 	jmp	SHORT $LN40@dot_op
 $LN39@dot_op:
-	lea	rax, OFFSET FLAT:$SG11864
+	lea	rax, OFFSET FLAT:$SG11863
 	mov	QWORD PTR tv68[rsp], rax
 $LN40@dot_op:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -6837,7 +6838,7 @@ $LN40@dot_op:
 	mov	QWORD PTR tv74[rsp], rax
 	jmp	SHORT $LN42@dot_op
 $LN41@dot_op:
-	lea	rax, OFFSET FLAT:$SG11865
+	lea	rax, OFFSET FLAT:$SG11864
 	mov	QWORD PTR tv74[rsp], rax
 $LN42@dot_op:
 	mov	rax, QWORD PTR opnd2$[rsp]
@@ -6849,7 +6850,7 @@ $LN42@dot_op:
 	mov	QWORD PTR tv80[rsp], rax
 	jmp	SHORT $LN44@dot_op
 $LN43@dot_op:
-	lea	rax, OFFSET FLAT:$SG11866
+	lea	rax, OFFSET FLAT:$SG11865
 	mov	QWORD PTR tv80[rsp], rax
 $LN44@dot_op:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -6861,7 +6862,7 @@ $LN44@dot_op:
 	mov	QWORD PTR tv86[rsp], rax
 	jmp	SHORT $LN46@dot_op
 $LN45@dot_op:
-	lea	rax, OFFSET FLAT:$SG11867
+	lea	rax, OFFSET FLAT:$SG11866
 	mov	QWORD PTR tv86[rsp], rax
 $LN46@dot_op:
 	mov	rax, QWORD PTR opnd2$[rsp]
@@ -6873,7 +6874,7 @@ $LN46@dot_op:
 	mov	QWORD PTR tv92[rsp], rax
 	jmp	SHORT $LN48@dot_op
 $LN47@dot_op:
-	lea	rax, OFFSET FLAT:$SG11868
+	lea	rax, OFFSET FLAT:$SG11867
 	mov	QWORD PTR tv92[rsp], rax
 $LN48@dot_op:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -6885,7 +6886,7 @@ $LN48@dot_op:
 	mov	QWORD PTR tv130[rsp], rax
 	jmp	SHORT $LN50@dot_op
 $LN49@dot_op:
-	lea	rax, OFFSET FLAT:$SG11869
+	lea	rax, OFFSET FLAT:$SG11868
 	mov	QWORD PTR tv130[rsp], rax
 $LN50@dot_op:
 	mov	rax, QWORD PTR tv68[rsp]
@@ -6903,7 +6904,7 @@ $LN50@dot_op:
 	mov	r8d, DWORD PTR [rax+60]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax+60]
-	lea	rcx, OFFSET FLAT:$SG11870
+	lea	rcx, OFFSET FLAT:$SG11869
 	call	DoDebugMsg1
 
 ; 2033 :                opnd1->kind, opnd2->kind,
@@ -6935,7 +6936,7 @@ $LN50@dot_op:
 
 ; 2053 :         DebugMsg(("dot_op: error direct register\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11872
+	lea	rcx, OFFSET FLAT:$SG11871
 	call	DoDebugMsg
 
 ; 2054 :         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
@@ -6991,7 +6992,7 @@ $LN4@dot_op:
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11876
+	lea	rcx, OFFSET FLAT:$SG11875
 	call	DoDebugMsg
 
 ; 2066 :         if ( !nullstruct )
@@ -7002,7 +7003,7 @@ $LN4@dot_op:
 ; 2067 :             nullstruct = CreateTypeSymbol( NULL, "", FALSE );
 
 	xor	r8d, r8d
-	lea	rdx, OFFSET FLAT:$SG11878
+	lea	rdx, OFFSET FLAT:$SG11877
 	xor	ecx, ecx
 	call	CreateTypeSymbol
 	mov	QWORD PTR nullstruct, rax
@@ -7017,10 +7018,10 @@ $LN6@dot_op:
 ; 2069 :         opnd2->is_type = TRUE; /* v2.10: added */
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	or	eax, 8
 	mov	rcx, QWORD PTR opnd2$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 2070 :         opnd2->sym = NULL;
 
@@ -7056,7 +7057,7 @@ $LN5@dot_op:
 	mov	QWORD PTR tv179[rsp], rax
 	jmp	SHORT $LN52@dot_op
 $LN51@dot_op:
-	lea	rax, OFFSET FLAT:$SG11881
+	lea	rax, OFFSET FLAT:$SG11880
 	mov	QWORD PTR tv179[rsp], rax
 $LN52@dot_op:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -7068,7 +7069,7 @@ $LN52@dot_op:
 	mov	QWORD PTR tv185[rsp], rax
 	jmp	SHORT $LN54@dot_op
 $LN53@dot_op:
-	lea	rax, OFFSET FLAT:$SG11882
+	lea	rax, OFFSET FLAT:$SG11881
 	mov	QWORD PTR tv185[rsp], rax
 $LN54@dot_op:
 	mov	rax, QWORD PTR tv179[rsp]
@@ -7078,7 +7079,7 @@ $LN54@dot_op:
 	mov	r8d, DWORD PTR [rax+64]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax+64]
-	lea	rcx, OFFSET FLAT:$SG11883
+	lea	rcx, OFFSET FLAT:$SG11882
 	call	DoDebugMsg1
 
 ; 2077 :                    opnd1->mem_type, opnd2->mem_type,
@@ -7099,7 +7100,7 @@ $LN54@dot_op:
 
 ; 2083 :             DebugMsg(("dot_op: error, mbr 2 is NULL\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11885
+	lea	rcx, OFFSET FLAT:$SG11884
 	call	DoDebugMsg
 
 ; 2084 :             return( struct_field_error( opnd1 ) );
@@ -7156,7 +7157,7 @@ $LN10@dot_op:
 	mov	rcx, QWORD PTR [rcx+80]
 	mov	r8, QWORD PTR [rax+8]
 	mov	rdx, QWORD PTR [rcx+8]
-	lea	rcx, OFFSET FLAT:$SG11889
+	lea	rcx, OFFSET FLAT:$SG11888
 	call	DoDebugMsg
 
 ; 2095 :                 return( fnEmitErr( CANNOT_ADD_TWO_RELOCATABLE_LABELS ) );
@@ -7210,7 +7211,7 @@ $LN13@dot_op:
 ; 2104 :         if( opnd1->explicit == FALSE ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 1
 	and	eax, 1
 	test	eax, eax
@@ -7255,11 +7256,11 @@ $LN7@dot_op:
 ; 2112 :         DebugMsg1(("dot_op, CONST - ADDR: t1-t2 memtype=%Xh-%Xh istype=%u-%u\n",
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	shr	ecx, 3
 	and	ecx, 1
 	mov	DWORD PTR [rsp+32], eax
@@ -7268,7 +7269,7 @@ $LN7@dot_op:
 	mov	r8d, DWORD PTR [rax+64]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax+64]
-	lea	rcx, OFFSET FLAT:$SG11895
+	lea	rcx, OFFSET FLAT:$SG11894
 	call	DoDebugMsg1
 
 ; 2113 :                    opnd1->mem_type, opnd2->mem_type, opnd1->is_type, opnd2->is_type ));
@@ -7276,7 +7277,7 @@ $LN7@dot_op:
 ; 2115 :         if ( opnd1->is_type && opnd1->type ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	test	eax, eax
@@ -7288,10 +7289,10 @@ $LN7@dot_op:
 ; 2116 :             opnd2->assumecheck = FALSE;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, -65				; ffffffbfH
 	mov	rcx, QWORD PTR opnd2$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 2117 :             opnd1->llvalue = 0;  /* v2.08: this was previously done in get_operand() */
 
@@ -7310,7 +7311,7 @@ $LN18@dot_op:
 	test	eax, eax
 	jne	SHORT $LN19@dot_op
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	test	eax, eax
@@ -7350,20 +7351,20 @@ $LN20@dot_op:
 ; 2127 :         opnd2->indirect |= opnd1->indirect;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	and	ecx, 1
 	or	eax, ecx
 	and	eax, 1
 	mov	rcx, QWORD PTR opnd2$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	and	ecx, -2					; fffffffeH
 	or	ecx, eax
 	mov	eax, ecx
 	mov	rcx, QWORD PTR opnd2$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 2128 :         opnd2->llvalue += opnd1->llvalue;
 
@@ -7385,7 +7386,7 @@ $LN20@dot_op:
 	mov	QWORD PTR tv310[rsp], rax
 	jmp	SHORT $LN56@dot_op
 $LN55@dot_op:
-	lea	rax, OFFSET FLAT:$SG11899
+	lea	rax, OFFSET FLAT:$SG11898
 	mov	QWORD PTR tv310[rsp], rax
 $LN56@dot_op:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -7397,7 +7398,7 @@ $LN56@dot_op:
 	mov	QWORD PTR tv318[rsp], rax
 	jmp	SHORT $LN58@dot_op
 $LN57@dot_op:
-	lea	rax, OFFSET FLAT:$SG11900
+	lea	rax, OFFSET FLAT:$SG11899
 	mov	QWORD PTR tv318[rsp], rax
 $LN58@dot_op:
 	mov	rax, QWORD PTR tv310[rsp]
@@ -7407,7 +7408,7 @@ $LN58@dot_op:
 	mov	r8, QWORD PTR tv318[rsp]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rdx, QWORD PTR [rax+96]
-	lea	rcx, OFFSET FLAT:$SG11901
+	lea	rcx, OFFSET FLAT:$SG11900
 	call	DoDebugMsg1
 
 ; 2130 :                    opnd1->type,
@@ -7451,7 +7452,7 @@ $LN16@dot_op:
 ; 2141 :         DebugMsg1(("dot_op, ADDR - CONST: t1-t2 memtype=%Xh-%Xh t1.explicit=%u\n",
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 1
 	and	eax, 1
 	mov	r9d, eax
@@ -7459,7 +7460,7 @@ $LN16@dot_op:
 	mov	r8d, DWORD PTR [rax+64]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax+64]
-	lea	rcx, OFFSET FLAT:$SG11905
+	lea	rcx, OFFSET FLAT:$SG11904
 	call	DoDebugMsg1
 
 ; 2142 :                    opnd1->mem_type, opnd2->mem_type, opnd1->explicit ));
@@ -7477,7 +7478,7 @@ $LN16@dot_op:
 	cmp	QWORD PTR [rax+96], 0
 	je	SHORT $LN25@dot_op
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	test	eax, eax
@@ -7489,7 +7490,7 @@ $LN25@dot_op:
 
 ; 2147 :             DebugMsg(("dot_op: error, constant or simple type after dot\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11908
+	lea	rcx, OFFSET FLAT:$SG11907
 	call	DoDebugMsg
 
 ; 2148 :             return( struct_field_error( opnd1 ) );
@@ -7505,7 +7506,7 @@ $LN24@dot_op:
 ; 2152 :         if ( opnd2->is_type && opnd2->type ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	test	eax, eax
@@ -7517,10 +7518,10 @@ $LN24@dot_op:
 ; 2153 :             opnd1->assumecheck = FALSE;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, -65				; ffffffbfH
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 2154 :             opnd2->llvalue = 0;  /* v2.08: this was previously done in get_operand() */
 
@@ -7603,7 +7604,7 @@ $LN28@dot_op:
 	mov	QWORD PTR tv389[rsp], rax
 	jmp	SHORT $LN60@dot_op
 $LN59@dot_op:
-	lea	rax, OFFSET FLAT:$SG11912
+	lea	rax, OFFSET FLAT:$SG11911
 	mov	QWORD PTR tv389[rsp], rax
 $LN60@dot_op:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -7615,7 +7616,7 @@ $LN60@dot_op:
 	mov	QWORD PTR tv397[rsp], rax
 	jmp	SHORT $LN62@dot_op
 $LN61@dot_op:
-	lea	rax, OFFSET FLAT:$SG11913
+	lea	rax, OFFSET FLAT:$SG11912
 	mov	QWORD PTR tv397[rsp], rax
 $LN62@dot_op:
 	mov	rax, QWORD PTR tv389[rsp]
@@ -7625,7 +7626,7 @@ $LN62@dot_op:
 	mov	r8, QWORD PTR tv397[rsp]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rdx, QWORD PTR [rax+96]
-	lea	rcx, OFFSET FLAT:$SG11914
+	lea	rcx, OFFSET FLAT:$SG11913
 	call	DoDebugMsg1
 
 ; 2177 :                    opnd1->type,
@@ -7658,11 +7659,11 @@ $LN22@dot_op:
 ; 2188 :         DebugMsg1(("dot_op, CONST - CONST, t1-t2 value=%u-%u, memtype=%Xh-%Xh istype=%u-%u\n",
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	shr	ecx, 3
 	and	ecx, 1
 	mov	DWORD PTR [rsp+48], eax
@@ -7676,7 +7677,7 @@ $LN22@dot_op:
 	mov	r8d, DWORD PTR [rax]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG11917
+	lea	rcx, OFFSET FLAT:$SG11916
 	call	DoDebugMsg1
 
 ; 2189 :                    opnd1->value, opnd2->value, opnd1->mem_type, opnd2->mem_type, opnd1->is_type, opnd2->is_type));
@@ -7693,7 +7694,7 @@ $LN22@dot_op:
 
 ; 2191 :             DebugMsg(("dot_op: error, opnd2.mbr=NULL\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11919
+	lea	rcx, OFFSET FLAT:$SG11918
 	call	DoDebugMsg
 
 ; 2192 :             return( struct_field_error( opnd1 ) );
@@ -7762,18 +7763,18 @@ $LN35@dot_op:
 ; 2210 :             opnd1->is_type = opnd2->is_type;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	and	eax, 1
 	shl	eax, 3
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	and	ecx, -9					; fffffff7H
 	or	ecx, eax
 	mov	eax, ecx
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 2211 :             /* either clear <type> or use the renewed one */
 ; 2212 :             if ( opnd1->type != opnd2->type )
@@ -7844,7 +7845,7 @@ $LN29@dot_op:
 	mov	r8d, DWORD PTR [rax+60]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax+60]
-	lea	rcx, OFFSET FLAT:$SG11926
+	lea	rcx, OFFSET FLAT:$SG11925
 	call	DoDebugMsg
 
 ; 2226 :         return( struct_field_error( opnd1 ) );
@@ -7890,7 +7891,7 @@ struct_field_error PROC
 ; 2020 :     if ( opnd->is_opattr ) {
 
 	mov	rax, QWORD PTR opnd$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 4
 	and	eax, 1
 	test	eax, eax
@@ -7957,7 +7958,7 @@ minus_op PROC
 	mov	r8d, DWORD PTR [rax+60]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax+60]
-	lea	rcx, OFFSET FLAT:$SG11801
+	lea	rcx, OFFSET FLAT:$SG11800
 	call	DoDebugMsg1
 
 ; 1885 : 
@@ -7971,7 +7972,7 @@ minus_op PROC
 
 ; 1887 :         DebugMsg(("minus_op: error direct register\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11803
+	lea	rcx, OFFSET FLAT:$SG11802
 	call	DoDebugMsg
 
 ; 1888 :         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
@@ -8030,7 +8031,7 @@ $LN4@minus_op:
 ; 1903 : 
 ; 1904 :         DebugMsg1(("minus_op: CONST-CONST\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11808
+	lea	rcx, OFFSET FLAT:$SG11807
 	call	DoDebugMsg1
 
 ; 1905 :         opnd1->llvalue -= opnd2->llvalue;
@@ -8059,7 +8060,7 @@ $LN5@minus_op:
 ; 1909 : 
 ; 1910 :         DebugMsg1(("minus_op: ADDR-CONST\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11811
+	lea	rcx, OFFSET FLAT:$SG11810
 	call	DoDebugMsg1
 
 ; 1911 :         opnd1->llvalue -= opnd2->llvalue;
@@ -8092,7 +8093,7 @@ $LN7@minus_op:
 ; 1915 : 
 ; 1916 :         DebugMsg1(("minus_op: ADDR-ADDR\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11814
+	lea	rcx, OFFSET FLAT:$SG11813
 	call	DoDebugMsg1
 
 ; 1917 :         fix_struct_value( opnd1 );
@@ -8109,14 +8110,14 @@ $LN7@minus_op:
 ; 1920 :         if( opnd2->indirect ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	test	eax, eax
 	je	SHORT $LN11@minus_op
 
 ; 1921 :             DebugMsg(("minus_op error, opnd2->indirect==TRUE\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11816
+	lea	rcx, OFFSET FLAT:$SG11815
 	call	DoDebugMsg
 
 ; 1922 :             return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
@@ -8148,20 +8149,20 @@ $LN11@minus_op:
 ; 1928 :             opnd1->indirect |= opnd2->indirect;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	mov	rcx, QWORD PTR opnd2$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	and	ecx, 1
 	or	eax, ecx
 	and	eax, 1
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	and	ecx, -2					; fffffffeH
 	or	ecx, eax
 	mov	eax, ecx
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 1929 :         } else {
 
@@ -8189,7 +8190,7 @@ $LN15@minus_op:
 	mov	r8, QWORD PTR [rax+80]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rdx, QWORD PTR [rax+40]
-	lea	rcx, OFFSET FLAT:$SG11821
+	lea	rcx, OFFSET FLAT:$SG11820
 	call	DoDebugMsg
 
 ; 1932 :                 /* v2.05: error msg changed */
@@ -8251,7 +8252,7 @@ $LN18@minus_op:
 ; 1946 :                     sym != opnd1->sym ) {
 ; 1947 :                     DebugMsg(("minus_op error 6\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11825
+	lea	rcx, OFFSET FLAT:$SG11824
 	call	DoDebugMsg
 
 ; 1948 :                     return( fnEmitErr(INVALID_USE_OF_EXTERNAL_SYMBOL, opnd1->sym->name ) );
@@ -8282,7 +8283,7 @@ $LN17@minus_op:
 	mov	r8, QWORD PTR [rax+24]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+24]
-	lea	rcx, OFFSET FLAT:$SG11827
+	lea	rcx, OFFSET FLAT:$SG11826
 	call	DoDebugMsg
 
 ; 1953 :                     return( fnEmitErr( OPERANDS_MUST_BE_IN_SAME_SEGMENT ) );
@@ -8404,7 +8405,7 @@ $LN21@minus_op:
 ; 1988 :             if( opnd1->indirect == FALSE ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	test	eax, eax
 	jne	SHORT $LN24@minus_op
@@ -8436,7 +8437,7 @@ $LN24@minus_op:
 	mov	r8, QWORD PTR [rax+32]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rdx, QWORD PTR [rax+24]
-	lea	rcx, OFFSET FLAT:$SG11835
+	lea	rcx, OFFSET FLAT:$SG11834
 	call	DoDebugMsg1
 
 ; 1994 :                 opnd1->kind = EXPR_ADDR;
@@ -8450,10 +8451,10 @@ $LN25@minus_op:
 ; 1997 :             opnd1->explicit = FALSE;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, -3					; fffffffdH
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 1998 :             opnd1->mem_type = MT_EMPTY;
 
@@ -8488,20 +8489,20 @@ $LN9@minus_op:
 ; 2005 :         opnd1->indirect |= opnd2->indirect;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	mov	rcx, QWORD PTR opnd2$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	and	ecx, 1
 	or	eax, ecx
 	and	eax, 1
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	and	ecx, -2					; fffffffeH
 	or	ecx, eax
 	mov	eax, ecx
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 2006 :         opnd1->kind = EXPR_ADDR;
 
@@ -8520,7 +8521,7 @@ $LN27@minus_op:
 	mov	r8d, DWORD PTR [rax+60]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax+60]
-	lea	rcx, OFFSET FLAT:$SG11838
+	lea	rcx, OFFSET FLAT:$SG11837
 	call	DoDebugMsg
 
 ; 2010 :         return( ConstError( opnd1, opnd2 ) );
@@ -8583,7 +8584,7 @@ plus_op	PROC
 	mov	QWORD PTR tv68[rsp], rax
 	jmp	SHORT $LN32@plus_op
 $LN31@plus_op:
-	lea	rax, OFFSET FLAT:$SG11745
+	lea	rax, OFFSET FLAT:$SG11744
 	mov	QWORD PTR tv68[rsp], rax
 $LN32@plus_op:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -8595,7 +8596,7 @@ $LN32@plus_op:
 	mov	QWORD PTR tv74[rsp], rax
 	jmp	SHORT $LN34@plus_op
 $LN33@plus_op:
-	lea	rax, OFFSET FLAT:$SG11746
+	lea	rax, OFFSET FLAT:$SG11745
 	mov	QWORD PTR tv74[rsp], rax
 $LN34@plus_op:
 	mov	rax, QWORD PTR opnd2$[rsp]
@@ -8607,7 +8608,7 @@ $LN34@plus_op:
 	mov	QWORD PTR tv80[rsp], rax
 	jmp	SHORT $LN36@plus_op
 $LN35@plus_op:
-	lea	rax, OFFSET FLAT:$SG11747
+	lea	rax, OFFSET FLAT:$SG11746
 	mov	QWORD PTR tv80[rsp], rax
 $LN36@plus_op:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -8619,7 +8620,7 @@ $LN36@plus_op:
 	mov	QWORD PTR tv86[rsp], rax
 	jmp	SHORT $LN38@plus_op
 $LN37@plus_op:
-	lea	rax, OFFSET FLAT:$SG11748
+	lea	rax, OFFSET FLAT:$SG11747
 	mov	QWORD PTR tv86[rsp], rax
 $LN38@plus_op:
 	mov	rax, QWORD PTR opnd2$[rsp]
@@ -8631,7 +8632,7 @@ $LN38@plus_op:
 	mov	QWORD PTR tv92[rsp], rax
 	jmp	SHORT $LN40@plus_op
 $LN39@plus_op:
-	lea	rax, OFFSET FLAT:$SG11749
+	lea	rax, OFFSET FLAT:$SG11748
 	mov	QWORD PTR tv92[rsp], rax
 $LN40@plus_op:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -8643,7 +8644,7 @@ $LN40@plus_op:
 	mov	QWORD PTR tv130[rsp], rax
 	jmp	SHORT $LN42@plus_op
 $LN41@plus_op:
-	lea	rax, OFFSET FLAT:$SG11750
+	lea	rax, OFFSET FLAT:$SG11749
 	mov	QWORD PTR tv130[rsp], rax
 $LN42@plus_op:
 	mov	rax, QWORD PTR tv68[rsp]
@@ -8673,7 +8674,7 @@ $LN42@plus_op:
 	mov	r8d, DWORD PTR [rax+60]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax+60]
-	lea	rcx, OFFSET FLAT:$SG11751
+	lea	rcx, OFFSET FLAT:$SG11750
 	call	DoDebugMsg1
 
 ; 1748 :                opnd1->kind, opnd2->kind,
@@ -8705,7 +8706,7 @@ $LN42@plus_op:
 
 ; 1768 :         DebugMsg(("plus_op: error direct register\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11753
+	lea	rcx, OFFSET FLAT:$SG11752
 	call	DoDebugMsg
 
 ; 1769 :         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
@@ -8769,7 +8770,7 @@ $LN4@plus_op:
 
 ; 1782 :                 DebugMsg(("plus_op: multiple overrides\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11759
+	lea	rcx, OFFSET FLAT:$SG11758
 	call	DoDebugMsg
 
 ; 1783 :                 return( fnEmitErr( MULTIPLE_OVERRIDES ) );
@@ -8804,7 +8805,7 @@ $LN5@plus_op:
 ; 1790 : 
 ; 1791 :         DebugMsg1(("plus_op: CONST - CONST\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11762
+	lea	rcx, OFFSET FLAT:$SG11761
 	call	DoDebugMsg1
 
 ; 1792 :         opnd1->llvalue += opnd2->llvalue;
@@ -8831,7 +8832,7 @@ $LN8@plus_op:
 ; 1795 : 
 ; 1796 :         DebugMsg1(("plus_op: ADDR - ADDR\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11765
+	lea	rcx, OFFSET FLAT:$SG11764
 	call	DoDebugMsg1
 
 ; 1797 :         fix_struct_value( opnd1 );
@@ -8891,7 +8892,7 @@ $LN12@plus_op:
 	mov	rcx, QWORD PTR [rcx+80]
 	mov	r8, QWORD PTR [rax+8]
 	mov	rdx, QWORD PTR [rcx+8]
-	lea	rcx, OFFSET FLAT:$SG11769
+	lea	rcx, OFFSET FLAT:$SG11768
 	call	DoDebugMsg
 
 ; 1809 :                 return( fnEmitErr( CANNOT_ADD_TWO_RELOCATABLE_LABELS ) );
@@ -8995,7 +8996,7 @@ $LN10@plus_op:
 
 ; 1828 :             DebugMsg1(("plus_op: CONST - ADDR\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11777
+	lea	rcx, OFFSET FLAT:$SG11776
 	call	DoDebugMsg1
 
 ; 1829 :             opnd2->llvalue += opnd1->llvalue;
@@ -9010,26 +9011,26 @@ $LN10@plus_op:
 ; 1830 :             opnd2->indirect |= opnd1->indirect;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	and	ecx, 1
 	or	eax, ecx
 	and	eax, 1
 	mov	rcx, QWORD PTR opnd2$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	and	ecx, -2					; fffffffeH
 	or	ecx, eax
 	mov	eax, ecx
 	mov	rcx, QWORD PTR opnd2$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 1831 : 
 ; 1832 :             if( opnd1->explicit == TRUE ) {
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 1
 	and	eax, 1
 	cmp	eax, 1
@@ -9038,10 +9039,10 @@ $LN10@plus_op:
 ; 1833 :                 opnd2->explicit = TRUE;
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	or	eax, 2
 	mov	rcx, QWORD PTR opnd2$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 1834 :                 opnd2->mem_type = opnd1->mem_type;
 
@@ -9114,7 +9115,7 @@ $LN20@plus_op:
 
 ; 1849 :             DebugMsg1(("plus_op: ADDR - CONST\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11783
+	lea	rcx, OFFSET FLAT:$SG11782
 	call	DoDebugMsg1
 
 ; 1850 :             opnd1->llvalue += opnd2->llvalue;
@@ -9162,7 +9163,7 @@ $LN27@plus_op:
 	cmp	DWORD PTR [rax+64], 192			; 000000c0H
 	jne	SHORT $LN29@plus_op
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	test	eax, eax
@@ -9195,7 +9196,7 @@ $LN18@plus_op:
 	mov	r8d, DWORD PTR [rax+60]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax+60]
-	lea	rcx, OFFSET FLAT:$SG11787
+	lea	rcx, OFFSET FLAT:$SG11786
 	call	DoDebugMsg
 
 ; 1866 :         return( ConstError( opnd1, opnd2 ) );
@@ -9253,7 +9254,7 @@ wimask_op PROC
 ; 1692 :     if ( opnd2->is_type ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	test	eax, eax
@@ -9324,7 +9325,7 @@ $LN9@wimask_op:
 ; 1705 :         if ( opnd2->is_type ) { /* get mask of the RECORD? */
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	test	eax, eax
@@ -9399,7 +9400,7 @@ $LN13@wimask_op:
 ; 1724 :         if ( opnd2->is_type ) { /* get width of the RECORD? */
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	test	eax, eax
@@ -9497,7 +9498,7 @@ this_op	PROC
 ; 1648 :     if ( opnd2->is_type == FALSE ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	test	eax, eax
@@ -9547,7 +9548,7 @@ $LN4@this_op:
 
 ; 1661 :         thissym = SymAlloc( "" );
 
-	lea	rcx, OFFSET FLAT:$SG11690
+	lea	rcx, OFFSET FLAT:$SG11689
 	call	SymAlloc
 	mov	QWORD PTR thissym, rax
 
@@ -9579,13 +9580,13 @@ $LN5@this_op:
 	mov	QWORD PTR tv87[rsp], rax
 	jmp	SHORT $LN10@this_op
 $LN9@this_op:
-	lea	rax, OFFSET FLAT:$SG11691
+	lea	rax, OFFSET FLAT:$SG11690
 	mov	QWORD PTR tv87[rsp], rax
 $LN10@this_op:
 	mov	r8, QWORD PTR tv87[rsp]
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	edx, DWORD PTR [rax+64]
-	lea	rcx, OFFSET FLAT:$SG11692
+	lea	rcx, OFFSET FLAT:$SG11691
 	call	DoDebugMsg1
 
 ; 1668 :     opnd1->kind = EXPR_ADDR;
@@ -9711,7 +9712,7 @@ $LN3@high32_op:
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+16]
 	mov	rcx, QWORD PTR opnd2$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	shr	ecx, 5
 	and	ecx, 1
 	mov	rdx, QWORD PTR opnd2$[rsp]
@@ -9838,7 +9839,7 @@ $LN3@low32_op:
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+16]
 	mov	rcx, QWORD PTR opnd2$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	shr	ecx, 5
 	and	ecx, 1
 	mov	rdx, QWORD PTR opnd2$[rsp]
@@ -10306,7 +10307,7 @@ $LN4@offset_op:
 ; 1505 :     if ( opnd2->is_type )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	test	eax, eax
@@ -10335,7 +10336,7 @@ $LN7@offset_op:
 ; 1511 :     if ( opnd2->indirect ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	test	eax, eax
 	je	SHORT $LN8@offset_op
@@ -10416,7 +10417,7 @@ seg_op	PROC
 	cmp	DWORD PTR [rax+32], 5
 	je	SHORT $LN3@seg_op
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 2
 	and	eax, 1
 	test	eax, eax
@@ -10584,7 +10585,7 @@ opattr_op PROC
 	mov	QWORD PTR tv68[rsp], rax
 	jmp	SHORT $LN33@opattr_op
 $LN32@opattr_op:
-	lea	rax, OFFSET FLAT:$SG11505
+	lea	rax, OFFSET FLAT:$SG11504
 	mov	QWORD PTR tv68[rsp], rax
 $LN33@opattr_op:
 	mov	r9, QWORD PTR tv68[rsp]
@@ -10592,7 +10593,7 @@ $LN33@opattr_op:
 	mov	r8d, DWORD PTR [rax+64]
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	edx, DWORD PTR [rax+60]
-	lea	rcx, OFFSET FLAT:$SG11506
+	lea	rcx, OFFSET FLAT:$SG11505
 	call	DoDebugMsg1
 
 ; 1360 :                opnd2->kind, opnd2->mem_type,
@@ -10620,10 +10621,10 @@ $LN33@opattr_op:
 ; 1366 :     opnd1->is_opattr = FALSE; /* v2: added */
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, -17				; ffffffefH
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 1367 : 
 ; 1368 :     if ( opnd2->kind == EXPR_EMPTY )
@@ -10750,7 +10751,7 @@ $LN3@opattr_op:
 	cmp	DWORD PTR [rax+60], -1
 	je	SHORT $LN8@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	test	eax, eax
 	je	SHORT $LN8@opattr_op
@@ -10798,7 +10799,7 @@ $LN9@opattr_op:
 	cmp	DWORD PTR [rax+60], 1
 	jne	SHORT $LN11@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	test	eax, eax
 	jne	SHORT $LN11@opattr_op
@@ -10863,7 +10864,7 @@ $LN10@opattr_op:
 	cmp	DWORD PTR [rax+60], 1
 	jne	$LN16@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	test	eax, eax
 	jne	$LN16@opattr_op
@@ -10918,7 +10919,7 @@ $LN16@opattr_op:
 	cmp	DWORD PTR [rax+60], 2
 	jne	SHORT $LN20@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	test	eax, eax
 	jne	SHORT $LN20@opattr_op
@@ -10999,7 +11000,7 @@ $LN22@opattr_op:
 	je	SHORT $LN26@opattr_op
 $LN27@opattr_op:
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	test	eax, eax
 	je	SHORT $LN25@opattr_op
@@ -11087,7 +11088,7 @@ $LN29@opattr_op:
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG11536
+	lea	rcx, OFFSET FLAT:$SG11535
 	call	DoDebugMsg1
 
 ; 1455 :     return( NOT_ERROR );
@@ -11145,7 +11146,7 @@ type_op	PROC
 	mov	QWORD PTR tv78[rsp], rax
 	jmp	SHORT $LN43@type_op
 $LN42@type_op:
-	lea	rax, OFFSET FLAT:$SG11435
+	lea	rax, OFFSET FLAT:$SG11434
 	mov	QWORD PTR tv78[rsp], rax
 $LN43@type_op:
 	cmp	QWORD PTR sym$[rsp], 0
@@ -11155,15 +11156,15 @@ $LN43@type_op:
 	mov	QWORD PTR tv82[rsp], rax
 	jmp	SHORT $LN45@type_op
 $LN44@type_op:
-	lea	rax, OFFSET FLAT:$SG11436
+	lea	rax, OFFSET FLAT:$SG11435
 	mov	QWORD PTR tv82[rsp], rax
 $LN45@type_op:
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 1
 	and	eax, 1
 	mov	rcx, QWORD PTR opnd2$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	shr	ecx, 3
 	and	ecx, 1
 	mov	DWORD PTR [rsp+56], eax
@@ -11178,7 +11179,7 @@ $LN45@type_op:
 	mov	r8d, DWORD PTR [rax+64]
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	edx, DWORD PTR [rax+60]
-	lea	rcx, OFFSET FLAT:$SG11437
+	lea	rcx, OFFSET FLAT:$SG11436
 	call	DoDebugMsg1
 
 ; 1178 :                opnd2->kind,
@@ -11314,10 +11315,10 @@ $LN11@type_op:
 ; 1226 :                 opnd1->is_type = TRUE; /* v2.03: added */
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	or	eax, 8
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 $LN2@type_op:
 $LN7@type_op:
 
@@ -11338,7 +11339,7 @@ $LN5@type_op:
 ; 1233 :         if ( opnd2->is_type == TRUE ) {
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	cmp	eax, 1
@@ -11397,7 +11398,7 @@ $LN14@type_op:
 	cmp	DWORD PTR [rax+60], 2
 	jne	$LN17@type_op
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	test	eax, eax
 	jne	$LN17@type_op
@@ -11414,10 +11415,10 @@ $LN14@type_op:
 ; 1252 :             opnd1->is_type = TRUE; /* v2.03: added */
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	or	eax, 8
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 1253 :             /* v2.10: check for assumes if it's a full size GPR */
 ; 1254 :             if ( opnd1->value == CurrWordSize &&
@@ -11457,7 +11458,7 @@ $LN14@type_op:
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	rdx, QWORD PTR sym$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11455
+	lea	rcx, OFFSET FLAT:$SG11454
 	call	DoDebugMsg1
 
 ; 1259 :                 opnd1->type = sym;
@@ -11535,7 +11536,7 @@ $LN17@type_op:
 	cmp	DWORD PTR [rax+64], 192			; 000000c0H
 	jne	SHORT $LN24@type_op
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 1
 	and	eax, 1
 	test	eax, eax
@@ -11602,10 +11603,10 @@ $LN26@type_op:
 ; 1286 :             opnd1->is_type = TRUE; /* v2.04: added */
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	or	eax, 8
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 1287 :             opnd1->type = opnd2->type; /* v2.09: added */
 
@@ -11657,10 +11658,10 @@ $LN12@type_op:
 ; 1301 :         opnd1->is_type = TRUE;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	or	eax, 8
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 	jmp	$LN29@type_op
 $LN28@type_op:
 
@@ -11671,7 +11672,7 @@ $LN28@type_op:
 	cmp	DWORD PTR [rax+36], 196			; 000000c4H
 	jne	SHORT $LN30@type_op
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 1
 	and	eax, 1
 	test	eax, eax
@@ -11688,10 +11689,10 @@ $LN28@type_op:
 ; 1305 :         opnd1->is_type = TRUE; /* v2.03: added */
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	or	eax, 8
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 1306 :         //if ( opnd1->mem_type == MT_EMPTY ) /* v2.09 */
 ; 1307 :         opnd1->mem_type = sym->type->mem_type; /* v2.09 */
@@ -11719,10 +11720,10 @@ $LN30@type_op:
 ; 1312 :         opnd1->is_type = TRUE;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	or	eax, 8
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 1313 :         if ( opnd1->mem_type == MT_EMPTY )
 
@@ -11894,18 +11895,18 @@ $LN6@type_op:
 	mov	QWORD PTR tv336[rsp], rax
 	jmp	SHORT $LN51@type_op
 $LN50@type_op:
-	lea	rax, OFFSET FLAT:$SG11476
+	lea	rax, OFFSET FLAT:$SG11475
 	mov	QWORD PTR tv336[rsp], rax
 $LN51@type_op:
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	mov	r9, QWORD PTR tv336[rsp]
 	mov	r8d, eax
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG11477
+	lea	rcx, OFFSET FLAT:$SG11476
 	call	DoDebugMsg1
 
 ; 1335 :     return( NOT_ERROR );
@@ -11983,7 +11984,7 @@ sizlen_op PROC
 	mov	QWORD PTR tv69[rsp], rax
 	jmp	SHORT $LN51@sizlen_op
 $LN50@sizlen_op:
-	lea	rax, OFFSET FLAT:$SG11365
+	lea	rax, OFFSET FLAT:$SG11364
 	mov	QWORD PTR tv69[rsp], rax
 $LN51@sizlen_op:
 	xor	edx, edx
@@ -11996,7 +11997,7 @@ $LN51@sizlen_op:
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	r8, QWORD PTR [rcx+80]
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11366
+	lea	rcx, OFFSET FLAT:$SG11365
 	call	DoDebugMsg1
 
 ; 1065 :                opnd2->sym, opnd2->mbr, opnd2->type ? opnd2->type->name : "NULL" ));
@@ -12383,14 +12384,14 @@ $LN57@sizlen_op:
 	mov	QWORD PTR tv209[rsp], rax
 	jmp	SHORT $LN59@sizlen_op
 $LN58@sizlen_op:
-	lea	rax, OFFSET FLAT:$SG11401
+	lea	rax, OFFSET FLAT:$SG11400
 	mov	QWORD PTR tv209[rsp], rax
 $LN59@sizlen_op:
 	mov	r9d, DWORD PTR tv205[rsp]
 	mov	r8, QWORD PTR tv209[rsp]
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	edx, DWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG11402
+	lea	rcx, OFFSET FLAT:$SG11401
 	call	DoDebugMsg1
 
 ; 1142 :         break;
@@ -12413,7 +12414,7 @@ $LN38@sizlen_op:
 	mov	r8d, DWORD PTR [rax+32]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11406
+	lea	rcx, OFFSET FLAT:$SG11405
 	call	DoDebugMsg1
 	jmp	SHORT $LN40@sizlen_op
 $LN39@sizlen_op:
@@ -12421,7 +12422,7 @@ $LN39@sizlen_op:
 ; 1147 :         else if ( opnd2->is_type && opnd2->type )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	test	eax, eax
@@ -12437,7 +12438,7 @@ $LN39@sizlen_op:
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	r8d, DWORD PTR [rcx]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11409
+	lea	rcx, OFFSET FLAT:$SG11408
 	call	DoDebugMsg1
 	jmp	SHORT $LN42@sizlen_op
 $LN41@sizlen_op:
@@ -12447,7 +12448,7 @@ $LN41@sizlen_op:
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	edx, DWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG11410
+	lea	rcx, OFFSET FLAT:$SG11409
 	call	DoDebugMsg1
 $LN42@sizlen_op:
 $LN40@sizlen_op:
@@ -12463,7 +12464,7 @@ $LN40@sizlen_op:
 ; 1155 :             if ( opnd2->is_type && opnd2->type && opnd2->type->typekind == TYPE_RECORD )
 
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	test	eax, eax
@@ -12575,7 +12576,7 @@ invalid_operand PROC
 ; 1042 :     if ( !opnd->is_opattr )
 
 	mov	rax, QWORD PTR opnd$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 4
 	and	eax, 1
 	test	eax, eax
@@ -12747,7 +12748,7 @@ check_direct_reg PROC
 	cmp	DWORD PTR [rax+60], 2
 	jne	SHORT $LN4@check_dire
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	test	eax, eax
 	je	SHORT $LN3@check_dire
@@ -12756,7 +12757,7 @@ $LN4@check_dire:
 	cmp	DWORD PTR [rax+60], 2
 	jne	SHORT $LN2@check_dire
 	mov	rax, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	test	eax, eax
 	jne	SHORT $LN2@check_dire
@@ -12847,7 +12848,7 @@ ConstError PROC
 ; 985  :     if ( opnd1->is_opattr )
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 4
 	and	eax, 1
 	test	eax, eax
@@ -13033,7 +13034,7 @@ MakeConst PROC
 	cmp	DWORD PTR [rax+60], 1
 	jne	SHORT $LN3@MakeConst
 	mov	rax, QWORD PTR opnd$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	test	eax, eax
 	je	SHORT $LN2@MakeConst
@@ -13090,7 +13091,7 @@ $LN9@MakeConst:
 	cmp	eax, 1
 	jne	SHORT $LN6@MakeConst
 	mov	rax, QWORD PTR opnd$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 2
 	and	eax, 1
 	cmp	eax, 1
@@ -13185,10 +13186,10 @@ $LN13@MakeConst:
 ; 955  :     opnd->explicit = FALSE;
 
 	mov	rax, QWORD PTR opnd$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, -3					; fffffffdH
 	mov	rcx, QWORD PTR opnd$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 956  :     opnd->mem_type = MT_EMPTY;
 
@@ -13306,10 +13307,10 @@ $LN4@index_conn:
 ; 884  :         opnd1->indirect = TRUE;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	or	eax, 1
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 $LN2@index_conn:
 
 ; 885  :     }
@@ -13359,10 +13360,10 @@ $LN11@index_conn:
 ; 897  :         opnd1->indirect = TRUE;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	or	eax, 1
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 $LN9@index_conn:
 
 ; 898  :     }
@@ -13516,7 +13517,7 @@ get_operand PROC
 	mov	r9, QWORD PTR [rcx+rax+24]
 	mov	r8d, DWORD PTR i$[rsp]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG11083
+	lea	rcx, OFFSET FLAT:$SG11082
 	call	DoDebugMsg1
 
 ; 355  :     switch( tokenarray[i].token ) {
@@ -13556,7 +13557,7 @@ $LN18@get_operan:
 	mov	rax, QWORD PTR tokenarray$[rsp]
 	mov	r8, QWORD PTR [rax+rdx+8]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG11085
+	lea	rcx, OFFSET FLAT:$SG11084
 	call	DoDebugMsg1
 
 ; 358  :         opnd->kind = EXPR_CONST;
@@ -13603,7 +13604,7 @@ $LN19@get_operan:
 	mov	rax, QWORD PTR tokenarray$[rsp]
 	mov	r8, QWORD PTR [rax+rcx+8]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG11087
+	lea	rcx, OFFSET FLAT:$SG11086
 	call	DoDebugMsg1
 
 ; 365  :         /* string enclosed in <> or {} are rejected since v1.94! */
@@ -13641,7 +13642,7 @@ $LN19@get_operan:
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
 	mov	r8d, 6
-	lea	rdx, OFFSET FLAT:$SG11091
+	lea	rdx, OFFSET FLAT:$SG11090
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	memcmp
@@ -13688,7 +13689,7 @@ $LN21@get_operan:
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
 	mov	r8d, 6
-	lea	rdx, OFFSET FLAT:$SG11095
+	lea	rdx, OFFSET FLAT:$SG11094
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	memcmp
@@ -13735,7 +13736,7 @@ $LN24@get_operan:
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
 	mov	r8d, 6
-	lea	rdx, OFFSET FLAT:$SG11099
+	lea	rdx, OFFSET FLAT:$SG11098
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	memcmp
@@ -13782,7 +13783,7 @@ $LN27@get_operan:
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
 	mov	r8d, 6
-	lea	rdx, OFFSET FLAT:$SG11103
+	lea	rdx, OFFSET FLAT:$SG11102
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	memcmp
@@ -13829,7 +13830,7 @@ $LN30@get_operan:
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
 	mov	r8d, 3
-	lea	rdx, OFFSET FLAT:$SG11107
+	lea	rdx, OFFSET FLAT:$SG11106
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	memcmp
@@ -13868,7 +13869,7 @@ $LN33@get_operan:
 ; 410  : 			else if (opnd->is_opattr) /* OPATTR operator accepts anything! */
 
 	mov	rax, QWORD PTR opnd$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 4
 	and	eax, 1
 	test	eax, eax
@@ -14033,7 +14034,7 @@ $LN40@get_operan:
 	mov	rax, QWORD PTR tokenarray$[rsp]
 	mov	r8, QWORD PTR [rax+rdx+8]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG11114
+	lea	rcx, OFFSET FLAT:$SG11113
 	call	DoDebugMsg1
 
 ; 435  :         opnd->kind = EXPR_REG;
@@ -14146,18 +14147,18 @@ $LN41@get_operan:
 ; 454  :                 opnd->indirect = TRUE;
 
 	mov	rax, QWORD PTR opnd$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	or	eax, 1
 	mov	rcx, QWORD PTR opnd$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 455  :                 opnd->assumecheck = TRUE;
 
 	mov	rax, QWORD PTR opnd$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	or	eax, 64					; 00000040H
 	mov	rcx, QWORD PTR opnd$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 	jmp	$LN48@get_operan
 $LN47@get_operan:
 
@@ -14219,7 +14220,7 @@ $LN49@get_operan:
 ; 470  :                 if ( opnd->is_opattr ) /* v2.11: just set error for opattr */
 
 	mov	rax, QWORD PTR opnd$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 4
 	and	eax, 1
 	test	eax, eax
@@ -14236,10 +14237,10 @@ $LN53@get_operan:
 ; 473  :                   opnd->indirect = TRUE;
 
 	mov	rax, QWORD PTR opnd$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	or	eax, 1
 	mov	rcx, QWORD PTR opnd$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 $LN54@get_operan:
 $LN50@get_operan:
 $LN48@get_operan:
@@ -14266,7 +14267,7 @@ $LN55@get_operan:
 ; 481  :         if ( opnd->is_dot ) {
 
 	mov	rax, QWORD PTR opnd$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 7
 	and	eax, 1
 	test	eax, eax
@@ -14283,7 +14284,7 @@ $LN55@get_operan:
 	mov	QWORD PTR tv451[rsp], rax
 	jmp	SHORT $LN136@get_operan
 $LN135@get_operan:
-	lea	rax, OFFSET FLAT:$SG11132
+	lea	rax, OFFSET FLAT:$SG11131
 	mov	QWORD PTR tv451[rsp], rax
 $LN136@get_operan:
 	movsxd	rax, DWORD PTR i$[rsp]
@@ -14292,7 +14293,7 @@ $LN136@get_operan:
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	r8, QWORD PTR [rcx+rax+8]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG11133
+	lea	rcx, OFFSET FLAT:$SG11132
 	call	DoDebugMsg1
 
 ; 483  :             //__debugbreak();
@@ -14330,14 +14331,14 @@ $LN138@get_operan:
 	mov	QWORD PTR tv475[rsp], rax
 	jmp	SHORT $LN140@get_operan
 $LN139@get_operan:
-	lea	rax, OFFSET FLAT:$SG11134
+	lea	rax, OFFSET FLAT:$SG11133
 	mov	QWORD PTR tv475[rsp], rax
 $LN140@get_operan:
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	r9d, DWORD PTR [rax]
 	mov	r8, QWORD PTR tv475[rsp]
 	mov	rdx, QWORD PTR tmp$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11135
+	lea	rcx, OFFSET FLAT:$SG11134
 	call	DoDebugMsg1
 
 ; 487  :                        tmp, sym ? sym->name : "NULL", opnd->uvalue ));
@@ -14483,7 +14484,7 @@ $LN56@get_operan:
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	r8, QWORD PTR [rcx+rax+8]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG11147
+	lea	rcx, OFFSET FLAT:$SG11146
 	call	DoDebugMsg1
 
 ; 538  :             /* ensure anonym labels are uppercase */
@@ -14591,7 +14592,7 @@ $LN77@get_operan:
 ; 563  :             if ( opnd->is_opattr ) {
 
 	mov	rax, QWORD PTR opnd$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 4
 	and	eax, 1
 	test	eax, eax
@@ -14603,7 +14604,7 @@ $LN77@get_operan:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG11159
+	lea	rcx, OFFSET FLAT:$SG11158
 	call	DoDebugMsg1
 
 ; 565  :                 opnd->kind = EXPR_ERROR;
@@ -14646,7 +14647,7 @@ $LN81@get_operan:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG11162
+	lea	rcx, OFFSET FLAT:$SG11161
 	call	DoDebugMsg1
 
 ; 581  :                 fnEmitErr( INVALID_SYMBOL_TYPE_IN_EXPRESSION, sym->name );
@@ -14722,12 +14723,12 @@ $LN80@get_operan:
 	mov	QWORD PTR tv592[rsp], rax
 	jmp	SHORT $LN142@get_operan
 $LN141@get_operan:
-	lea	rax, OFFSET FLAT:$SG11168
+	lea	rax, OFFSET FLAT:$SG11167
 	mov	QWORD PTR tv592[rsp], rax
 $LN142@get_operan:
 	mov	r8, QWORD PTR tv592[rsp]
 	mov	rdx, QWORD PTR tmp$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11169
+	lea	rcx, OFFSET FLAT:$SG11168
 	call	DoDebugMsg1
 	jmp	$LN86@get_operan
 $LN85@get_operan:
@@ -14766,13 +14767,13 @@ $LN144@get_operan:
 	mov	QWORD PTR tv643[rsp], rax
 	jmp	SHORT $LN146@get_operan
 $LN145@get_operan:
-	lea	rax, OFFSET FLAT:$SG11172
+	lea	rax, OFFSET FLAT:$SG11171
 	mov	QWORD PTR tv643[rsp], rax
 $LN146@get_operan:
 	mov	r9d, DWORD PTR tv605[rsp]
 	mov	r8, QWORD PTR tv643[rsp]
 	mov	rdx, QWORD PTR tmp$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11173
+	lea	rcx, OFFSET FLAT:$SG11172
 	call	DoDebugMsg
 
 ; 605  :                         if ( *opnd->type->name )
@@ -14823,7 +14824,7 @@ $LN87@get_operan:
 
 ; 615  :                             nullmbr = SymAlloc( "" );
 
-	lea	rcx, OFFSET FLAT:$SG11177
+	lea	rcx, OFFSET FLAT:$SG11176
 	call	SymAlloc
 	mov	QWORD PTR nullmbr, rax
 $LN91@get_operan:
@@ -14832,7 +14833,7 @@ $LN91@get_operan:
 ; 617  :                         DebugMsg(("get_operand(%s): forward reference to a struct (using nullmbr)\n", tmp ));
 
 	mov	rdx, QWORD PTR tmp$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11178
+	lea	rcx, OFFSET FLAT:$SG11177
 	call	DoDebugMsg
 
 ; 618  :                         /* "break" because nullmbr has state SYM_UNDEFINED */
@@ -14870,7 +14871,7 @@ $LN82@get_operan:
 	mov	QWORD PTR tv668[rsp], rax
 	jmp	SHORT $LN148@get_operan
 $LN147@get_operan:
-	lea	rax, OFFSET FLAT:$SG11179
+	lea	rax, OFFSET FLAT:$SG11178
 	mov	QWORD PTR tv668[rsp], rax
 $LN148@get_operan:
 	movsxd	rax, DWORD PTR i$[rsp]
@@ -14879,7 +14880,7 @@ $LN148@get_operan:
 	mov	r8, QWORD PTR tmp$[rsp]
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG11180
+	lea	rcx, OFFSET FLAT:$SG11179
 	call	DoDebugMsg1
 
 ; 626  :                 if ( opnd->type && *opnd->type->name ) {
@@ -14914,7 +14915,7 @@ $LN92@get_operan:
 	movsx	eax, BYTE PTR [rax+1]
 	cmp	eax, 38					; 00000026H
 	jne	SHORT $LN149@get_operan
-	lea	rax, OFFSET FLAT:$SG11183
+	lea	rax, OFFSET FLAT:$SG11182
 	mov	QWORD PTR tv693[rsp], rax
 	jmp	SHORT $LN150@get_operan
 $LN149@get_operan:
@@ -14978,7 +14979,7 @@ $LN76@get_operan:
 	mov	QWORD PTR tv716[rsp], rax
 	jmp	SHORT $LN152@get_operan
 $LN151@get_operan:
-	lea	rax, OFFSET FLAT:$SG11185
+	lea	rax, OFFSET FLAT:$SG11184
 	mov	QWORD PTR tv716[rsp], rax
 $LN152@get_operan:
 	mov	rax, QWORD PTR sym$[rsp]
@@ -15003,7 +15004,7 @@ $LN152@get_operan:
 	mov	r8d, DWORD PTR [rax+32]
 	mov	rax, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rax+rcx+8]
-	lea	rcx, OFFSET FLAT:$SG11186
+	lea	rcx, OFFSET FLAT:$SG11185
 	call	DoDebugMsg1
 
 ; 644  :                 tokenarray[i].string_ptr, sym->state, sym->type ? sym->type->name : "NULL", sym->offset, sym->mem_type, sym->total_size, sym->isdefined ));
@@ -15040,7 +15041,7 @@ $LN95@get_operan:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11189
+	lea	rcx, OFFSET FLAT:$SG11188
 	call	DoDebugMsg1
 
 ; 650  :                 opnd->kind = EXPR_ERROR;
@@ -15086,10 +15087,10 @@ $LN10@get_operan:
 ; 657  :             opnd->is_type = TRUE;
 
 	mov	rax, QWORD PTR opnd$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	or	eax, 8
 	mov	rcx, QWORD PTR opnd$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 658  :             opnd->type = sym;
 
@@ -15104,7 +15105,7 @@ $LN10@get_operan:
 	mov	r8d, eax
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11190
+	lea	rcx, OFFSET FLAT:$SG11189
 	call	DoDebugMsg1
 
 ; 660  : 
@@ -15203,7 +15204,7 @@ $LN103@get_operan:
 	mov	r8d, DWORD PTR [rax+16]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11198
+	lea	rcx, OFFSET FLAT:$SG11197
 	call	DoDebugMsg1
 
 ; 682  : 
@@ -15285,13 +15286,13 @@ $LN154@get_operan:
 	mov	QWORD PTR tv808[rsp], rax
 	jmp	SHORT $LN156@get_operan
 $LN155@get_operan:
-	lea	rax, OFFSET FLAT:$SG11199
+	lea	rax, OFFSET FLAT:$SG11198
 	mov	QWORD PTR tv808[rsp], rax
 $LN156@get_operan:
 	mov	r8, QWORD PTR tv808[rsp]
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	edx, DWORD PTR [rax+64]
-	lea	rcx, OFFSET FLAT:$SG11200
+	lea	rcx, OFFSET FLAT:$SG11199
 	call	DoDebugMsg1
 
 ; 697  :             break;
@@ -15364,7 +15365,7 @@ $LN105@get_operan:
 	mov	r8d, DWORD PTR [rax+4]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11205
+	lea	rcx, OFFSET FLAT:$SG11204
 	call	DoDebugMsg1
 
 ; 709  :                 opnd->mem_type = sym->mem_type;
@@ -15402,10 +15403,10 @@ $LN106@get_operan:
 ; 716  :                 opnd->is_abs = TRUE;
 
 	mov	rax, QWORD PTR opnd$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	or	eax, 4
 	mov	rcx, QWORD PTR opnd$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 717  :                 opnd->sym = sym;
 
@@ -15547,10 +15548,10 @@ $LN113@get_operan:
 ; 748  :                     opnd->indirect = TRUE;
 
 	mov	rax, QWORD PTR opnd$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	or	eax, 1
 	mov	rcx, QWORD PTR opnd$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 749  :                     /* v2.10: base register values now set here */
 ; 750  :                     opnd->base_reg = &tokenarray[i];
@@ -15658,7 +15659,7 @@ $LN114@get_operan:
 	mov	rax, QWORD PTR tokenarray$[rsp]
 	mov	r8, QWORD PTR [rax+rcx+8]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG11213
+	lea	rcx, OFFSET FLAT:$SG11212
 	call	DoDebugMsg1
 
 ; 770  :         opnd->kind = EXPR_CONST;
@@ -15706,10 +15707,10 @@ $LN114@get_operan:
 ; 776  :         opnd->is_type = TRUE;
 
 	mov	rax, QWORD PTR opnd$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	or	eax, 8
 	mov	rcx, QWORD PTR opnd$[rsp]
-	mov	DWORD PTR [rcx+76], eax
+	mov	DWORD PTR [rcx+72], eax
 
 ; 777  :         opnd->type = NULL; /* v2.08: added */
 
@@ -15733,7 +15734,7 @@ $LN115@get_operan:
 	mov	rax, QWORD PTR tokenarray$[rsp]
 	mov	r8, QWORD PTR [rax+rcx+8]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG11215
+	lea	rcx, OFFSET FLAT:$SG11214
 	call	DoDebugMsg1
 
 ; 781  :         if ( tokenarray[i].tokval == T_FLAT ) {
@@ -15842,7 +15843,7 @@ $LN121@get_operan:
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	r8, QWORD PTR [rcx+rax+8]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG11222
+	lea	rcx, OFFSET FLAT:$SG11221
 	call	DoDebugMsg1
 
 ; 804  :         opnd->kind = EXPR_FLOAT;
@@ -15881,13 +15882,13 @@ $LN122@get_operan:
 	mov	r9, QWORD PTR [rdx+rax+8]
 	mov	r8d, ecx
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG11224
+	lea	rcx, OFFSET FLAT:$SG11223
 	call	DoDebugMsg1
 
 ; 812  :         if ( opnd->is_opattr ) {    /* for OPATTR, allow any operand */
 
 	mov	rax, QWORD PTR opnd$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 4
 	and	eax, 1
 	test	eax, eax
@@ -16028,7 +16029,7 @@ $LN2@get_operan:
 	mov	QWORD PTR tv1110[rsp], rax
 	jmp	SHORT $LN160@get_operan
 $LN159@get_operan:
-	lea	rax, OFFSET FLAT:$SG11234
+	lea	rax, OFFSET FLAT:$SG11233
 	mov	QWORD PTR tv1110[rsp], rax
 $LN160@get_operan:
 	mov	rax, QWORD PTR opnd$[rsp]
@@ -16040,7 +16041,7 @@ $LN160@get_operan:
 	mov	QWORD PTR tv1116[rsp], rax
 	jmp	SHORT $LN162@get_operan
 $LN161@get_operan:
-	lea	rax, OFFSET FLAT:$SG11235
+	lea	rax, OFFSET FLAT:$SG11234
 	mov	QWORD PTR tv1116[rsp], rax
 $LN162@get_operan:
 	mov	rax, QWORD PTR opnd$[rsp]
@@ -16052,7 +16053,7 @@ $LN162@get_operan:
 	mov	QWORD PTR tv1122[rsp], rax
 	jmp	SHORT $LN164@get_operan
 $LN163@get_operan:
-	lea	rax, OFFSET FLAT:$SG11236
+	lea	rax, OFFSET FLAT:$SG11235
 	mov	QWORD PTR tv1122[rsp], rax
 $LN164@get_operan:
 	mov	rax, QWORD PTR opnd$[rsp]
@@ -16064,15 +16065,15 @@ $LN164@get_operan:
 	mov	QWORD PTR tv1132[rsp], rax
 	jmp	SHORT $LN166@get_operan
 $LN165@get_operan:
-	lea	rax, OFFSET FLAT:$SG11237
+	lea	rax, OFFSET FLAT:$SG11236
 	mov	QWORD PTR tv1132[rsp], rax
 $LN166@get_operan:
 	mov	rax, QWORD PTR opnd$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 3
 	and	eax, 1
 	mov	rcx, QWORD PTR opnd$[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
+	mov	ecx, DWORD PTR [rcx+72]
 	shr	ecx, 2
 	and	ecx, 1
 	mov	rdx, QWORD PTR tv1110[rsp]
@@ -16096,7 +16097,7 @@ $LN166@get_operan:
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	r8d, DWORD PTR [rax+60]
 	mov	edx, DWORD PTR evallvl
-	lea	rcx, OFFSET FLAT:$SG11238
+	lea	rcx, OFFSET FLAT:$SG11237
 	call	DoDebugMsg1
 
 ; 832  :                evallvl, opnd->kind, opnd->llvalue, opnd->hlvalue, opnd->mem_type, opnd->is_abs,
@@ -16667,7 +16668,7 @@ $LN2@get_preced:
 
 	mov	rax, QWORD PTR item$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10986
+	lea	rcx, OFFSET FLAT:$SG10985
 	call	DoDebugMsg
 
 ; 230  :     fnEmitErr( SYNTAX_ERROR_EX, item->string_ptr );
@@ -16919,7 +16920,7 @@ init_expr PROC
 ; 104  :     opnd->flags1   = 0;
 
 	mov	rax, QWORD PTR opnd$[rsp]
-	mov	BYTE PTR [rax+76], 0
+	mov	BYTE PTR [rax+72], 0
 
 ; 105  :     opnd->sym      = NULL;
 
@@ -17091,7 +17092,7 @@ $LN9:
 	mov	r8d, DWORD PTR end_tok$[rsp]
 	mov	rax, QWORD PTR start_tok$[rsp]
 	mov	edx, DWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG12393
+	lea	rcx, OFFSET FLAT:$SG12392
 	call	DoDebugMsg1
 
 ; 3444 : 

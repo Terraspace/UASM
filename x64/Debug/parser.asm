@@ -11,242 +11,243 @@ COMM	SegOverride:QWORD
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 COMM	evex:BYTE
+COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG12327 DB	'check_size enter, optype1=%X, optype2=%X', 0aH, 00H
+$SG12326 DB	'check_size enter, optype1=%X, optype2=%X', 0aH, 00H
 	ORG $+6
-$SG12353 DB	'check_size, MOVZX/MOVSX: op2_size=%u, opndx.memtype=%Xh,'
+$SG12352 DB	'check_size, MOVZX/MOVSX: op2_size=%u, opndx.memtype=%Xh,'
 	DB	' opndx.sym=%X', 0aH, 00H
 	ORG $+1
-$SG12357 DB	'BYTE', 00H
+$SG12356 DB	'BYTE', 00H
 	ORG $+3
-$SG12404 DB	'check_size: OP_A flag reset, new op2=%X', 0aH, 00H
+$SG12403 DB	'check_size: OP_A flag reset, new op2=%X', 0aH, 00H
 	ORG $+7
-$SG12407 DB	'check_size: OP_A flag reset, new op2=%X', 0aH, 00H
+$SG12406 DB	'check_size: OP_A flag reset, new op2=%X', 0aH, 00H
 	ORG $+7
-$SG12411 DB	'check_size: OP_A flag reset, new op1=%X', 0aH, 00H
+$SG12410 DB	'check_size: OP_A flag reset, new op1=%X', 0aH, 00H
 	ORG $+7
-$SG12414 DB	'check_size: OP_A flag reset, new op2=%X', 0aH, 00H
+$SG12413 DB	'check_size: OP_A flag reset, new op2=%X', 0aH, 00H
 	ORG $+7
-$SG12416 DB	'check_size default: op1_size1=%u, op2_size=%u', 0aH, 00H
+$SG12415 DB	'check_size default: op1_size1=%u, op2_size=%u', 0aH, 00H
 	ORG $+1
-$SG12430 DB	'WORD', 00H
+$SG12429 DB	'WORD', 00H
 	ORG $+3
-$SG12438 DB	'DWORD', 00H
+$SG12437 DB	'DWORD', 00H
 	ORG $+2
-$SG12434 DB	'check_size: op1=%X op1_size=0, op2=%X, op2_size=%u CodeI'
+$SG12433 DB	'check_size: op1=%X op1_size=0, op2=%X, op2_size=%u CodeI'
 	DB	'nfo->data[2]=%X', 0aH, 00H
 	ORG $+3
-$SG12442 DB	'BYTE', 00H
+$SG12441 DB	'BYTE', 00H
 	ORG $+3
-$SG12459 DB	'BYTE', 00H
+$SG12458 DB	'BYTE', 00H
 	ORG $+3
-$SG12462 DB	'WORD', 00H
+$SG12461 DB	'WORD', 00H
 	ORG $+3
-$SG12466 DB	'DWORD', 00H
+$SG12465 DB	'DWORD', 00H
 	ORG $+6
-$SG12467 DB	'check_size exit [CodeInfo->mem_type=%Xh]', 0aH, 00H
+$SG12466 DB	'check_size exit [CodeInfo->mem_type=%Xh]', 0aH, 00H
 	ORG $+6
-$SG11484 DB	'SizeFromMemtype( MT_NEAR, Ofssize=%u )=%u', 0aH, 00H
+$SG11483 DB	'SizeFromMemtype( MT_NEAR, Ofssize=%u )=%u', 0aH, 00H
 	ORG $+5
-$SG11486 DB	'SizeFromMemtype( MT_FAR, Ofssize=%u )=%u', 0aH, 00H
+$SG11485 DB	'SizeFromMemtype( MT_FAR, Ofssize=%u )=%u', 0aH, 00H
 	ORG $+6
-$SG11488 DB	'SizeFromMemtype( MT_PROC, Ofssize=%u, type=%s )=%u', 0aH
+$SG11487 DB	'SizeFromMemtype( MT_PROC, Ofssize=%u, type=%s )=%u', 0aH
 	DB	00H
 	ORG $+4
-$SG11490 DB	'SizeFromMemtype( MT_PTR, Ofssize=%u )=%u', 0aH, 00H
+$SG11489 DB	'SizeFromMemtype( MT_PTR, Ofssize=%u )=%u', 0aH, 00H
 	ORG $+6
-$SG11494 DB	'SizeFromMemtype( memtype=%Xh, Ofssize=%u )=%u', 0aH, 00H
+$SG11493 DB	'SizeFromMemtype( memtype=%Xh, Ofssize=%u )=%u', 0aH, 00H
 	ORG $+1
-$SG12536 DB	'ParseLine enter, Token_Count=%u, ofs=%Xh', 0aH, 00H
+$SG12535 DB	'ParseLine enter, Token_Count=%u, ofs=%Xh', 0aH, 00H
 	ORG $+6
-$SG12539 DB	'ParseLine T_COLON, code label=%s', 0aH, 00H
+$SG12538 DB	'ParseLine T_COLON, code label=%s', 0aH, 00H
 	ORG $+6
-$SG12542 DB	'ParseLine, CreateLabel(%s) failed, exit', 0aH, 00H
+$SG12541 DB	'ParseLine, CreateLabel(%s) failed, exit', 0aH, 00H
 	ORG $+7
-$SG12556 DB	'ParseLine: T_DIRECTIVE >%s<', 0aH, 00H
+$SG12555 DB	'ParseLine: T_DIRECTIVE >%s<', 0aH, 00H
 	ORG $+3
-$SG11537 DB	'OperandSize: unhandled operand type %Xh!!!', 0aH, 00H
+$SG11536 DB	'OperandSize: unhandled operand type %Xh!!!', 0aH, 00H
 	ORG $+4
-$SG12580 DB	'ParseLine: T_STYPE >%s<', 0aH, 00H
+$SG12579 DB	'ParseLine: T_STYPE >%s<', 0aH, 00H
 	ORG $+7
-$SG12582 DB	'ParseLine: T_ID >%s<', 0aH, 00H
+$SG12581 DB	'ParseLine: T_ID >%s<', 0aH, 00H
 	ORG $+2
-$SG12586 DB	'ParseLine: unexpected colon', 0aH, 00H
+$SG12585 DB	'ParseLine: unexpected colon', 0aH, 00H
 	ORG $+3
-$SG12588 DB	'ParseLine: unexpected token=%u, i=%u, string=%s', 0aH, 00H
+$SG12587 DB	'ParseLine: unexpected token=%u, i=%u, string=%s', 0aH, 00H
 	ORG $+7
-$SG12589 DB	'ParseLine: %s', 0aH, 00H
+$SG12588 DB	'ParseLine: %s', 0aH, 00H
 	ORG $+1
+$SG11568 DB	'NULL', 00H
+	ORG $+3
 $SG11569 DB	'NULL', 00H
 	ORG $+3
-$SG11570 DB	'NULL', 00H
-	ORG $+3
-$SG11571 DB	'check_assume(%s): calling SetFixupFrame(%s, FALSE)', 0aH
+$SG11570 DB	'check_assume(%s): calling SetFixupFrame(%s, FALSE)', 0aH
 	DB	00H
 	ORG $+4
-$SG12599 DB	'ParseLine: unexpected token %u after prefix, exit, error'
+$SG12598 DB	'ParseLine: unexpected token %u after prefix, exit, error'
 	DB	0aH, 00H
 	ORG $+6
-$SG12600 DB	'ParseLine: %s', 0aH, 00H
+$SG12599 DB	'ParseLine: %s', 0aH, 00H
 	ORG $+1
-$SG12616 DB	'ParseLine(%s): EvalOperand() failed', 0aH, 00H
+$SG12615 DB	'ParseLine(%s): EvalOperand() failed', 0aH, 00H
 	ORG $+3
-$SG11578 DB	'check_assume: no segment register available to access la'
+$SG11577 DB	'check_assume: no segment register available to access la'
 	DB	'bel %s', 0aH, 00H
-$SG11579 DB	'check_assume: no segment register available to access se'
+$SG11578 DB	'check_assume: no segment register available to access se'
 	DB	'g-label %s', 0aH, 00H
 	ORG $+4
-$SG12614 DB	'ParseLine(%s): calling EvalOperand, i=%u', 0aH, 00H
+$SG12613 DB	'ParseLine(%s): calling EvalOperand, i=%u', 0aH, 00H
 	ORG $+6
-$SG12628 DB	'ParseLine(%s): unexpected operand kind=%d, error, exit', 0aH
+$SG12627 DB	'ParseLine(%s): unexpected operand kind=%d, error, exit', 0aH
 	DB	00H
-$SG11605 DB	'seg_override: sym=%s', 0aH, 00H
+$SG11604 DB	'seg_override: sym=%s', 0aH, 00H
 	ORG $+2
-$SG12630 DB	'ParseLine(%s): too many operands (%s) ', 0aH, 00H
-$SG11609 DB	'seg_override, direct addressing: prefix.adrsiz will be s'
+$SG12629 DB	'ParseLine(%s): too many operands (%s) ', 0aH, 00H
+$SG11608 DB	'seg_override, direct addressing: prefix.adrsiz will be s'
 	DB	'et, assume=%s CI->ofssize=%u', 0aH, 00H
 	ORG $+2
-$SG12653 DB	'ParseLine(%s,%u): avx invalid operand, op2.kind=%u', 0aH
+$SG12652 DB	'ParseLine(%s,%u): avx invalid operand, op2.kind=%u', 0aH
 	DB	00H
 	ORG $+4
-$SG12657 DB	'ParseLine(%s,%u): avx not enough operands (%u)', 0aH, 00H
-$SG12660 DB	'ParseLine(%s,%u): avx VX_DST, op3.kind=CONST (value=%u),'
+$SG12656 DB	'ParseLine(%s,%u): avx not enough operands (%u)', 0aH, 00H
+$SG12659 DB	'ParseLine(%s,%u): avx VX_DST, op3.kind=CONST (value=%u),'
 	DB	' numops=%u', 0aH, 00H
-$SG11650 DB	'NULL', 00H
+$SG11649 DB	'NULL', 00H
 	ORG $+7
-$SG12668 DB	'ParseLine(%s,%u): opnd2 is avx reg (%s), flags=%X ci.typ'
+$SG12667 DB	'ParseLine(%s,%u): opnd2 is avx reg (%s), flags=%X ci.typ'
 	DB	'e[0]=%X numops=%u', 0aH, 00H
 	ORG $+5
-$SG12674 DB	'ParseLine(%s,%u): avx invalid opnd 2, flags=%X ci.type[0'
+$SG12673 DB	'ParseLine(%s,%u): avx invalid opnd 2, flags=%X ci.type[0'
 	DB	']=%X', 0aH, 00H
 	ORG $+2
-$SG12675 DB	'ParseLine(%s,%u): type/value/mem_type/ofssize=%Xh/%I64Xh'
+$SG12674 DB	'ParseLine(%s,%u): type/value/mem_type/ofssize=%Xh/%I64Xh'
 	DB	'/%Xh/%d', 0aH, 00H
 	ORG $+7
-$SG12678 DB	'ParseLine(%s,%u): type ADDRESS', 0aH, 00H
-$SG12681 DB	'ParseLine(%s,%u): type CONST, opndx.memtype=%Xh', 0aH, 00H
+$SG12677 DB	'ParseLine(%s,%u): type ADDRESS', 0aH, 00H
+$SG12680 DB	'ParseLine(%s,%u): type CONST, opndx.memtype=%Xh', 0aH, 00H
 	ORG $+7
-$SG11651 DB	'set_rm_sib(scale=%u, index=%d, base=%d, sym=%s) enter [C'
+$SG11650 DB	'set_rm_sib(scale=%u, index=%d, base=%d, sym=%s) enter [C'
 	DB	'I.adrsiz=%u]', 0aH, 00H
 	ORG $+2
-$SG12684 DB	'ParseLine(%s,%u): type REG', 0aH, 00H
-$SG11999 DB	'NULL', 00H
+$SG12683 DB	'ParseLine(%s,%u): type REG', 0aH, 00H
+$SG11998 DB	'NULL', 00H
 	ORG $+7
-$SG11662 DB	'set_rm_sib: direct addressing, CI.Ofssize=%u / adrsize=%'
+$SG11661 DB	'set_rm_sib: direct addressing, CI.Ofssize=%u / adrsize=%'
 	DB	'u / data=%X', 0aH, 00H
 	ORG $+3
-$SG11668 DB	'set_rm_sib: error, Ofssize=%u, adrsize=%u, data=%X', 0aH
+$SG11667 DB	'set_rm_sib: error, Ofssize=%u, adrsize=%u, data=%X', 0aH
 	DB	00H
 	ORG $+4
-$SG11670 DB	'set_rm_sib: 64-bit, no fixup, data64=%I64X', 0aH, 00H
+$SG11669 DB	'set_rm_sib: 64-bit, no fixup, data64=%I64X', 0aH, 00H
 	ORG $+4
-$SG11671 DB	'set_rm_sib, direct, CodeInfo->prefix.adrsiz=%u', 0aH, 00H
-$SG12699 DB	'ParseLine(%s): CurrOpnd != j ( %u - %u ) >%s<', 0aH, 00H
+$SG11670 DB	'set_rm_sib, direct, CodeInfo->prefix.adrsiz=%u', 0aH, 00H
+$SG12698 DB	'ParseLine(%s): CurrOpnd != j ( %u - %u ) >%s<', 0aH, 00H
 	ORG $+1
-$SG12706 DB	'ParseLine(%s): ( %u - %u ) >%s<', 0aH, 00H
+$SG12705 DB	'ParseLine(%s): ( %u - %u ) >%s<', 0aH, 00H
 	ORG $+7
-$SG11682 DB	'set_rm_sib: base_reg is %u', 0aH, 00H
-$SG12124 DB	'NULL', 00H
+$SG11681 DB	'set_rm_sib: base_reg is %u', 0aH, 00H
+$SG12123 DB	'NULL', 00H
 	ORG $+7
-$SG11687 DB	'set_rm_sib, indirect with base, mod_field=%X, rm_field=%'
+$SG11686 DB	'set_rm_sib, indirect with base, mod_field=%X, rm_field=%'
 	DB	'X, rex=%X', 0aH, 00H
 	ORG $+5
-$SG12720 DB	'ParseLine(%s): no third operand expected', 0aH, 00H
+$SG12719 DB	'ParseLine(%s): no third operand expected', 0aH, 00H
 	ORG $+6
-$SG12726 DB	'ParseLine(%s): check_size() failed, exit', 0aH, 00H
+$SG12725 DB	'ParseLine(%s): check_size() failed, exit', 0aH, 00H
 	ORG $+6
-$SG11723 DB	'segm_override: assume error, reg=%u', 0aH, 00H
+$SG11722 DB	'segm_override: assume error, reg=%u', 0aH, 00H
 	ORG $+3
-$SG11704 DB	'set_rm_sib, indirect, base+index: mod_field=%X, rm_field'
+$SG11703 DB	'set_rm_sib, indirect, base+index: mod_field=%X, rm_field'
 	DB	'=%X, rex=%X', 0aH, 00H
 	ORG $+3
-$SG11749 DB	'idata_nofixup: error, hlvalue=%I64X', 0aH, 00H
+$SG11748 DB	'idata_nofixup: error, hlvalue=%I64X', 0aH, 00H
 	ORG $+3
-$SG11746 DB	'idata_nofixup( CurrOpnd=%u ) enter [opnd kind=%u mem_typ'
+$SG11745 DB	'idata_nofixup( CurrOpnd=%u ) enter [opnd kind=%u mem_typ'
 	DB	'e=%Xh value=%I64X]', 0aH, 00H
 	ORG $+4
-$SG11755 DB	'idata_nofixup: error, hvalue=%Xh', 0aH, 00H
+$SG11754 DB	'idata_nofixup: error, hvalue=%Xh', 0aH, 00H
 	ORG $+6
-$SG11762 DB	'idata_nofixup: invalid size %d for immediate operand', 0aH
+$SG11761 DB	'idata_nofixup: invalid size %d for immediate operand', 0aH
 	DB	00H
 	ORG $+2
-$SG11780 DB	'idata_nofixup exit, op_type=%X', 0aH, 00H
-$SG11806 DB	'idata_fixup( CurrOpnd=%u ) enter [opndx.kind=%u mem_type'
+$SG11779 DB	'idata_nofixup exit, op_type=%X', 0aH, 00H
+$SG11805 DB	'idata_fixup( CurrOpnd=%u ) enter [opndx.kind=%u mem_type'
 	DB	'=%Xh, CodeInfo.mem_type=%Xh]', 0aH, 00H
 	ORG $+2
-$SG11870 DB	'idata_fixup, unexpected size %u', 0aH, 00H
+$SG11869 DB	'idata_fixup, unexpected size %u', 0aH, 00H
 	ORG $+7
-$SG11871 DB	'parser.c', 00H
+$SG11870 DB	'parser.c', 00H
 	ORG $+7
-$SG11876 DB	'idata_fixup, mem_type=BYTE', 0aH, 00H
+$SG11875 DB	'idata_fixup, mem_type=BYTE', 0aH, 00H
 	ORG $+4
-$SG11879 DB	'idata_fixup, FIX_HIBYTE', 0aH, 00H
+$SG11878 DB	'idata_fixup, FIX_HIBYTE', 0aH, 00H
 	ORG $+7
-$SG11880 DB	'idata_fixup, FIX_OFF8', 0aH, 00H
+$SG11879 DB	'idata_fixup, FIX_OFF8', 0aH, 00H
 	ORG $+1
-$SG12016 DB	'memory_operand, JMP/CALL: CodeInfo->memtype set to %Xh', 0aH
+$SG12015 DB	'memory_operand, JMP/CALL: CodeInfo->memtype set to %Xh', 0aH
 	DB	00H
-$SG11897 DB	'idata_fixup exit [CodeInfo.mem_type=%Xh Ofssize=%u opsiz'
+$SG11896 DB	'idata_fixup exit [CodeInfo.mem_type=%Xh Ofssize=%u opsiz'
 	DB	'=%u fixup.type=%u fixup.frame=%d]', 0aH, 00H
 	ORG $+5
-$SG11920 DB	'SetPtrMemtype: model with FAR data pointers', 0aH, 00H
+$SG11919 DB	'SetPtrMemtype: model with FAR data pointers', 0aH, 00H
 	ORG $+3
-$SG11922 DB	'SetPtrMemtype: size=%u, new memtype=0x%x', 0aH, 00H
+$SG11921 DB	'SetPtrMemtype: size=%u, new memtype=0x%x', 0aH, 00H
 	ORG $+6
-$SG12000 DB	'memory_operand(opndx.value=%X / sym=%s / memtype=%Xh, wi'
+$SG11999 DB	'memory_operand(opndx.value=%X / sym=%s / memtype=%Xh, wi'
 	DB	'th_fixup=%u) enter, [CodeInfo->memtype=%Xh, Ofssize=%u, adrsi'
 	DB	'z=%u]', 0aH, 00H
 	ORG $+4
-$SG12007 DB	'memory_operand: mbr %s has mem_type MT_TYPE, total_size='
+$SG12006 DB	'memory_operand: mbr %s has mem_type MT_TYPE, total_size='
 	DB	'%u', 0aH, 00H
 	ORG $+4
-$SG12015 DB	'memory_operand, JMP/CALL: CodeInfo->memtype=empty, instr'
+$SG12014 DB	'memory_operand, JMP/CALL: CodeInfo->memtype=empty, instr'
 	DB	'uction operand must have size', 0aH, 00H
 	ORG $+1
-$SG12019 DB	'memory_operand: invalid operand, size=%u', 0aH, 00H
+$SG12018 DB	'memory_operand: invalid operand, size=%u', 0aH, 00H
 	ORG $+6
-$SG12025 DB	'memory_operand: JMP/CALL, CodeInfo->far=%u', 0aH, 00H
+$SG12024 DB	'memory_operand: JMP/CALL, CodeInfo->far=%u', 0aH, 00H
 	ORG $+4
-$SG12038 DB	'memory_operand: unexpected mem_type=%X', 0aH, 00H
-$SG12039 DB	'parser.c', 00H
+$SG12037 DB	'memory_operand: unexpected mem_type=%X', 0aH, 00H
+$SG12038 DB	'parser.c', 00H
 	ORG $+7
-$SG12059 DB	'memory_operand: error, base regno=%u, index regno=%u, op'
+$SG12058 DB	'memory_operand: error, base regno=%u, index regno=%u, op'
 	DB	'nd.scale=%u', 0aH, 00H
 	ORG $+3
-$SG12087 DB	'memory_operand: direct addressing, fixup type=%u', 0aH, 00H
+$SG12086 DB	'memory_operand: direct addressing, fixup type=%u', 0aH, 00H
 	ORG $+6
-$SG12088 DB	'memory_operand: CodeInfo->Ofssize=%u/prefix.adrsize=%u, '
+$SG12087 DB	'memory_operand: CodeInfo->Ofssize=%u/prefix.adrsize=%u, '
 	DB	'Ofssize=%u', 0aH, 00H
-$SG12125 DB	'NULL', 00H
+$SG12124 DB	'NULL', 00H
 	ORG $+7
-$SG12101 DB	'memory_operand exit, ok, opndx.type/value=%Xh/%Xh, CodeI'
+$SG12100 DB	'memory_operand exit, ok, opndx.type/value=%Xh/%Xh, CodeI'
 	DB	'nfo.memtype/rmbyte=%X/%X opndtype=%Xh fix=%Xh', 0aH, 00H
 	ORG $+1
-$SG12126 DB	'process_address: INDIRECT, sym=%s mbr=%s ci.adrsiz=%u', 0aH
+$SG12125 DB	'process_address: INDIRECT, sym=%s mbr=%s ci.adrsiz=%u', 0aH
 	DB	00H
 	ORG $+1
-$SG12129 DB	'process_address: displacement doesn''t fit in 32 bits: %'
+$SG12128 DB	'process_address: displacement doesn''t fit in 32 bits: %'
 	DB	'I64X', 0aH, 00H
 	ORG $+3
-$SG12135 DB	'process_address: instr=%s', 0aH, 00H
+$SG12134 DB	'process_address: instr=%s', 0aH, 00H
 	ORG $+5
-$SG12141 DB	'process_address: symbol=NULL', 0aH, 00H
+$SG12140 DB	'process_address: symbol=NULL', 0aH, 00H
 	ORG $+2
-$SG12149 DB	'process_address: sym=SYM_UNDEFINED, name=%s, state=%X', 0aH
+$SG12148 DB	'process_address: sym=SYM_UNDEFINED, name=%s, state=%X', 0aH
 	DB	00H
 	ORG $+1
-$SG12160 DB	'process_address: sym->state=SEG/GROUP', 0aH, 00H
+$SG12159 DB	'process_address: sym->state=SEG/GROUP', 0aH, 00H
 	ORG $+1
-$SG12161 DB	'process_address direct, sym=%s sym.memtype=%X opndx.memt'
+$SG12160 DB	'process_address direct, sym=%s sym.memtype=%X opndx.memt'
 	DB	'ype=%X', 0aH, 00H
-$SG12190 DB	'process_register enter (%s)', 0aH, 00H
+$SG12189 DB	'process_register enter (%s)', 0aH, 00H
 	ORG $+3
-$SG12198 DB	'process_register: assume error, reg=%u', 0aH, 00H
-$SG12206 DB	'process_register: assume error, reg=%u', 0aH, 00H
-$SG12210 DB	'process_register: assume error, reg=%u', 0aH, 00H
+$SG12197 DB	'process_register: assume error, reg=%u', 0aH, 00H
+$SG12205 DB	'process_register: assume error, reg=%u', 0aH, 00H
+$SG12209 DB	'process_register: assume error, reg=%u', 0aH, 00H
 	ORG $+8
-$SG12260 DB	'HandleStringInstructions: CMPS: CodeInfo->RegOverride=%X'
+$SG12259 DB	'HandleStringInstructions: CMPS: CodeInfo->RegOverride=%X'
 	DB	', opndx->override=%s', 0aH, 00H
 _DATA	ENDS
 PUBLIC	SizeFromMemtype
@@ -666,7 +667,7 @@ check_size PROC
 
 	mov	r8d, DWORD PTR op2$[rsp]
 	mov	edx, DWORD PTR op1$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12327
+	lea	rcx, OFFSET FLAT:$SG12326
 	call	DoDebugMsg1
 
 ; 2343 :     if (CodeInfo->token >= T_KADDB && CodeInfo->token <= T_KUNPCKDQ){
@@ -1035,7 +1036,7 @@ $LN28@check_size:
 	mov	eax, 104				; 00000068H
 	imul	rax, rax, 1
 	mov	rcx, QWORD PTR opndx$[rsp]
-	mov	eax, DWORD PTR [rcx+rax+76]
+	mov	eax, DWORD PTR [rcx+rax+72]
 	and	eax, 1
 	test	eax, eax
 	jne	SHORT $LN30@check_size
@@ -1214,7 +1215,7 @@ $LN36@check_size:
 	mov	rax, QWORD PTR opndx$[rsp]
 	mov	r8d, DWORD PTR [rax+rcx+64]
 	mov	edx, DWORD PTR op2_size$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12353
+	lea	rcx, OFFSET FLAT:$SG12352
 	call	DoDebugMsg1
 
 ; 2491 :         if ( op2_size == 0 && Parse_Pass == PASS_2 )
@@ -1231,7 +1232,7 @@ $LN36@check_size:
 
 ; 2493 :                 EmitWarn( 2, SIZE_NOT_SPECIFIED_ASSUMING, "BYTE" );
 
-	lea	r8, OFFSET FLAT:$SG12357
+	lea	r8, OFFSET FLAT:$SG12356
 	mov	edx, 73					; 00000049H
 	mov	ecx, 2
 	call	EmitWarn
@@ -1657,7 +1658,7 @@ $LN61@check_size:
 	mov	eax, 104				; 00000068H
 	imul	rax, rax, 1
 	mov	rcx, QWORD PTR opndx$[rsp]
-	mov	eax, DWORD PTR [rcx+rax+76]
+	mov	eax, DWORD PTR [rcx+rax+72]
 	and	eax, 1
 	test	eax, eax
 	je	SHORT $LN62@check_size
@@ -1946,7 +1947,7 @@ $LN78@check_size:
 	imul	rax, rax, 1
 	mov	rcx, QWORD PTR CodeInfo$[rsp]
 	mov	edx, DWORD PTR [rcx+rax+32]
-	lea	rcx, OFFSET FLAT:$SG12404
+	lea	rcx, OFFSET FLAT:$SG12403
 	call	DoDebugMsg1
 	jmp	$LN85@check_size
 $LN84@check_size:
@@ -1993,7 +1994,7 @@ $LN87@check_size:
 	imul	rax, rax, 1
 	mov	rcx, QWORD PTR CodeInfo$[rsp]
 	mov	edx, DWORD PTR [rcx+rax+32]
-	lea	rcx, OFFSET FLAT:$SG12407
+	lea	rcx, OFFSET FLAT:$SG12406
 	call	DoDebugMsg1
 $LN86@check_size:
 $LN85@check_size:
@@ -2045,7 +2046,7 @@ $LN82@check_size:
 	imul	rax, rax, 0
 	mov	rcx, QWORD PTR CodeInfo$[rsp]
 	mov	edx, DWORD PTR [rcx+rax+32]
-	lea	rcx, OFFSET FLAT:$SG12411
+	lea	rcx, OFFSET FLAT:$SG12410
 	call	DoDebugMsg1
 	jmp	$LN90@check_size
 $LN89@check_size:
@@ -2088,7 +2089,7 @@ $LN92@check_size:
 	imul	rax, rax, 0
 	mov	rcx, QWORD PTR CodeInfo$[rsp]
 	mov	edx, DWORD PTR [rcx+rax+32]
-	lea	rcx, OFFSET FLAT:$SG12414
+	lea	rcx, OFFSET FLAT:$SG12413
 	call	DoDebugMsg1
 $LN91@check_size:
 $LN90@check_size:
@@ -2126,7 +2127,7 @@ $def_check$156:
 
 	mov	r8d, DWORD PTR op2_size$[rsp]
 	mov	edx, DWORD PTR op1_size$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12416
+	lea	rcx, OFFSET FLAT:$SG12415
 	call	DoDebugMsg1
 
 ; 2723 :         if( op1_size > op2_size ) {
@@ -2294,7 +2295,7 @@ $LN99@check_size:
 
 ; 2777 :                     char *p = "WORD";
 
-	lea	rax, OFFSET FLAT:$SG12430
+	lea	rax, OFFSET FLAT:$SG12429
 	mov	QWORD PTR p$2[rsp], rax
 
 ; 2778 :                     if( (uint_32)CodeInfo->opnd[OPND2].data32l > USHRT_MAX || op2_size == 4 ) {
@@ -2326,7 +2327,7 @@ $LN109@check_size:
 	mov	r9d, DWORD PTR op2_size$[rsp]
 	mov	r8d, DWORD PTR op2$[rsp]
 	mov	edx, DWORD PTR op1$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12434
+	lea	rcx, OFFSET FLAT:$SG12433
 	call	DoDebugMsg1
 
 ; 2781 : #if 1 /* added v1.95: in 16bit code, 'mov [di],8000h' should warn: assuming WORD */
@@ -2405,7 +2406,7 @@ $LN111@check_size:
 
 ; 2791 :                             p = "DWORD";
 
-	lea	rax, OFFSET FLAT:$SG12438
+	lea	rax, OFFSET FLAT:$SG12437
 	mov	QWORD PTR p$2[rsp], rax
 $LN112@check_size:
 
@@ -2464,7 +2465,7 @@ $LN113@check_size:
 
 ; 2800 :                          p = "BYTE";
 
-	lea	rax, OFFSET FLAT:$SG12442
+	lea	rax, OFFSET FLAT:$SG12441
 	mov	QWORD PTR p$2[rsp], rax
 $LN114@check_size:
 $LN108@check_size:
@@ -2475,7 +2476,7 @@ $LN108@check_size:
 	mov	eax, 104				; 00000068H
 	imul	rax, rax, 1
 	mov	rcx, QWORD PTR opndx$[rsp]
-	mov	eax, DWORD PTR [rcx+rax+76]
+	mov	eax, DWORD PTR [rcx+rax+72]
 	shr	eax, 1
 	and	eax, 1
 	test	eax, eax
@@ -2645,7 +2646,7 @@ $LN130@check_size:
 
 ; 2825 :                             EmitWarn( 1, SIZE_NOT_SPECIFIED_ASSUMING, "BYTE" );
 
-	lea	r8, OFFSET FLAT:$SG12459
+	lea	r8, OFFSET FLAT:$SG12458
 	mov	edx, 73					; 00000049H
 	mov	ecx, 1
 	call	EmitWarn
@@ -2682,7 +2683,7 @@ $LN132@check_size:
 
 ; 2832 :                             EmitWarn( 1, SIZE_NOT_SPECIFIED_ASSUMING, "WORD" );
 
-	lea	r8, OFFSET FLAT:$SG12462
+	lea	r8, OFFSET FLAT:$SG12461
 	mov	edx, 73					; 00000049H
 	mov	ecx, 1
 	call	EmitWarn
@@ -2735,7 +2736,7 @@ $LN135@check_size:
 
 ; 2841 :                             EmitWarn( 1, SIZE_NOT_SPECIFIED_ASSUMING, "DWORD" );
 
-	lea	r8, OFFSET FLAT:$SG12466
+	lea	r8, OFFSET FLAT:$SG12465
 	mov	edx, 73					; 00000049H
 	mov	ecx, 1
 	call	EmitWarn
@@ -2760,7 +2761,7 @@ $LN2@check_size:
 
 	mov	rax, QWORD PTR CodeInfo$[rsp]
 	mov	edx, DWORD PTR [rax+28]
-	lea	rcx, OFFSET FLAT:$SG12467
+	lea	rcx, OFFSET FLAT:$SG12466
 	call	DoDebugMsg1
 
 ; 2850 :     return( rc );
@@ -3112,7 +3113,7 @@ $LN12@HandleStri:
 	mov	r8, QWORD PTR [rax+8]
 	mov	rax, QWORD PTR CodeInfo$[rsp]
 	mov	edx, DWORD PTR [rax+4]
-	lea	rcx, OFFSET FLAT:$SG12260
+	lea	rcx, OFFSET FLAT:$SG12259
 	call	DoDebugMsg1
 
 ; 2204 :                     EmitError( INVALID_INSTRUCTION_OPERANDS );
@@ -3695,7 +3696,7 @@ process_register PROC
 	mov	rcx, QWORD PTR opndx$[rsp]
 	mov	rax, QWORD PTR [rcx+rax+24]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12190
+	lea	rcx, OFFSET FLAT:$SG12189
 	call	DoDebugMsg1
 
 ; 2008 :     regtok = opndx[CurrOpnd].base_reg->tokval;
@@ -3811,7 +3812,7 @@ $LN5@process_re:
 ; 2028 : 		DebugMsg(("process_register: assume error, reg=%u\n", regno));
 
 	mov	edx, DWORD PTR regno$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12198
+	lea	rcx, OFFSET FLAT:$SG12197
 	call	DoDebugMsg
 
 ; 2029 : 		return(EmitError(USE_OF_REGISTER_ASSUMED_TO_ERROR));
@@ -3911,7 +3912,7 @@ $LN45@process_re:
 ; 2045 :             DebugMsg(("process_register: assume error, reg=%u\n", regno ));
 
 	mov	edx, DWORD PTR regno$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12206
+	lea	rcx, OFFSET FLAT:$SG12205
 	call	DoDebugMsg
 
 ; 2046 :             return( EmitError( USE_OF_REGISTER_ASSUMED_TO_ERROR ) );
@@ -3955,7 +3956,7 @@ $LN9@process_re:
 ; 2051 :             DebugMsg(("process_register: assume error, reg=%u\n", regno ));
 
 	mov	edx, DWORD PTR regno$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12210
+	lea	rcx, OFFSET FLAT:$SG12209
 	call	DoDebugMsg
 
 ; 2052 :             return( EmitError( USE_OF_REGISTER_ASSUMED_TO_ERROR ) );
@@ -4552,7 +4553,7 @@ process_address PROC
 ; 1803 :     if( opndx->indirect ) {  /* indirect register operand or stack var */
 
 	mov	rax, QWORD PTR opndx$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	and	eax, 1
 	test	eax, eax
 	je	$LN7@process_ad
@@ -4569,7 +4570,7 @@ process_address PROC
 	mov	QWORD PTR tv75[rsp], rax
 	jmp	SHORT $LN47@process_ad
 $LN46@process_ad:
-	lea	rax, OFFSET FLAT:$SG12124
+	lea	rax, OFFSET FLAT:$SG12123
 	mov	QWORD PTR tv75[rsp], rax
 $LN47@process_ad:
 	mov	rax, QWORD PTR opndx$[rsp]
@@ -4581,7 +4582,7 @@ $LN47@process_ad:
 	mov	QWORD PTR tv81[rsp], rax
 	jmp	SHORT $LN49@process_ad
 $LN48@process_ad:
-	lea	rax, OFFSET FLAT:$SG12125
+	lea	rax, OFFSET FLAT:$SG12124
 	mov	QWORD PTR tv81[rsp], rax
 $LN49@process_ad:
 	mov	rax, QWORD PTR CodeInfo$[rsp]
@@ -4591,7 +4592,7 @@ $LN49@process_ad:
 	mov	r9d, eax
 	mov	r8, QWORD PTR tv75[rsp]
 	mov	rdx, QWORD PTR tv81[rsp]
-	lea	rcx, OFFSET FLAT:$SG12126
+	lea	rcx, OFFSET FLAT:$SG12125
 	call	DoDebugMsg1
 
 ; 1806 :                    opndx->sym ? opndx->sym->name : "NULL",
@@ -4620,7 +4621,7 @@ $LN10@process_ad:
 
 	mov	rax, QWORD PTR opndx$[rsp]
 	mov	rdx, QWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG12129
+	lea	rcx, OFFSET FLAT:$SG12128
 	call	DoDebugMsg1
 
 ; 1817 : #if AMD64_SUPPORT
@@ -4691,7 +4692,7 @@ $LN7@process_ad:
 	mov	ecx, DWORD PTR [rax+56]
 	call	GetResWName
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG12135
+	lea	rcx, OFFSET FLAT:$SG12134
 	call	DoDebugMsg1
 
 ; 1832 :         if( opndx->sym == NULL ) { /* better to check opndx->type? */
@@ -4755,7 +4756,7 @@ $LN14@process_ad:
 
 ; 1841 :         DebugMsg1(("process_address: symbol=NULL\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG12141
+	lea	rcx, OFFSET FLAT:$SG12140
 	call	DoDebugMsg1
 
 ; 1842 :         if( opndx->override != NULL ) {
@@ -4836,7 +4837,7 @@ $LN19@process_ad:
 	cmp	DWORD PTR [rax+32], 0
 	jne	$LN26@process_ad
 	mov	rax, QWORD PTR opndx$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 1
 	and	eax, 1
 	test	eax, eax
@@ -4850,7 +4851,7 @@ $LN19@process_ad:
 	mov	rcx, QWORD PTR [rcx+80]
 	mov	r8d, DWORD PTR [rax+32]
 	mov	rdx, QWORD PTR [rcx+8]
-	lea	rcx, OFFSET FLAT:$SG12149
+	lea	rcx, OFFSET FLAT:$SG12148
 	call	DoDebugMsg1
 
 ; 1863 :         /* v2.04: unnecessary, the expression evaluator will have emitted an error already */
@@ -5025,7 +5026,7 @@ $LN37@process_ad:
 ; 1908 :                ( opndx->sym->state == SYM_GRP ) ) {
 ; 1909 :         DebugMsg1(("process_address: sym->state=SEG/GROUP\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12160
+	lea	rcx, OFFSET FLAT:$SG12159
 	call	DoDebugMsg1
 
 ; 1910 :         /* SEGMENT and GROUP symbol is converted to SEG symbol
@@ -5058,7 +5059,7 @@ $LN35@process_ad:
 	mov	r9d, DWORD PTR [rdx+64]
 	mov	r8d, DWORD PTR [rax+36]
 	mov	rdx, QWORD PTR [rcx+8]
-	lea	rcx, OFFSET FLAT:$SG12161
+	lea	rcx, OFFSET FLAT:$SG12160
 	call	DoDebugMsg1
 
 ; 1916 : 
@@ -5066,7 +5067,7 @@ $LN35@process_ad:
 ; 1918 :         if( opndx->is_abs ) {
 
 	mov	rax, QWORD PTR opndx$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 2
 	and	eax, 1
 	test	eax, eax
@@ -5240,7 +5241,7 @@ memory_operand PROC
 	mov	QWORD PTR tv81[rsp], rax
 	jmp	SHORT $LN102@memory_ope
 $LN101@memory_ope:
-	lea	rax, OFFSET FLAT:$SG11999
+	lea	rax, OFFSET FLAT:$SG11998
 	mov	QWORD PTR tv81[rsp], rax
 $LN102@memory_ope:
 	mov	rax, QWORD PTR CodeInfo$[rsp]
@@ -5261,7 +5262,7 @@ $LN102@memory_ope:
 	mov	r8, QWORD PTR tv81[rsp]
 	mov	rax, QWORD PTR opndx$[rsp]
 	mov	edx, DWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG12000
+	lea	rcx, OFFSET FLAT:$SG11999
 	call	DoDebugMsg1
 
 ; 1437 :                opndx->value, opndx->sym ? opndx->sym->name : "NULL", opndx->mem_type, with_fixup, CodeInfo->mem_type, CodeInfo->Ofssize, CodeInfo->prefix.adrsiz ));
@@ -5410,7 +5411,7 @@ $LN11@memory_ope:
 	mov	rcx, QWORD PTR [rcx+88]
 	mov	r8d, DWORD PTR [rax+56]
 	mov	rdx, QWORD PTR [rcx+8]
-	lea	rcx, OFFSET FLAT:$SG12007
+	lea	rcx, OFFSET FLAT:$SG12006
 	call	DoDebugMsg1
 
 ; 1478 : #if AVXSUPP
@@ -5524,7 +5525,7 @@ $LN20@memory_ope:
 ; 1509 :                 ( Parse_Pass > PASS_1 && opndx->sym == NULL ) ) {
 ; 1510 :                 DebugMsg1(("memory_operand, JMP/CALL: CodeInfo->memtype=empty, instruction operand must have size\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG12015
+	lea	rcx, OFFSET FLAT:$SG12014
 	call	DoDebugMsg1
 
 ; 1511 :                 return( EmitError( INSTRUCTION_OPERAND_MUST_HAVE_SIZE ) );
@@ -5575,7 +5576,7 @@ $LN106@memory_ope:
 
 	mov	rax, QWORD PTR CodeInfo$[rsp]
 	mov	edx, DWORD PTR [rax+28]
-	lea	rcx, OFFSET FLAT:$SG12016
+	lea	rcx, OFFSET FLAT:$SG12015
 	call	DoDebugMsg1
 $LN21@memory_ope:
 
@@ -5611,7 +5612,7 @@ $LN24@memory_ope:
 ; 1528 :             DebugMsg1(("memory_operand: invalid operand, size=%u\n", j ));
 
 	mov	edx, DWORD PTR j$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12019
+	lea	rcx, OFFSET FLAT:$SG12018
 	call	DoDebugMsg1
 
 ; 1529 :             return( EmitError( INVALID_OPERAND_SIZE ) );
@@ -5686,7 +5687,7 @@ $LN25@memory_ope:
 	and	al, 1
 	movzx	eax, al
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG12025
+	lea	rcx, OFFSET FLAT:$SG12024
 	call	DoDebugMsg1
 $LN2@memory_ope:
 
@@ -5807,13 +5808,13 @@ $LN41@memory_ope:
 
 	mov	rax, QWORD PTR CodeInfo$[rsp]
 	mov	edx, DWORD PTR [rax+28]
-	lea	rcx, OFFSET FLAT:$SG12038
+	lea	rcx, OFFSET FLAT:$SG12037
 	call	DoDebugMsg1
 
 ; 1562 :             /**/myassert( 0 );
 
 	mov	edx, 1562				; 0000061aH
-	lea	rcx, OFFSET FLAT:$SG12039
+	lea	rcx, OFFSET FLAT:$SG12038
 	call	InternalError
 $LN4@memory_ope:
 
@@ -6165,7 +6166,7 @@ $LN56@memory_ope:
 	movzx	edx, BYTE PTR [r8+rdx+10]
 	mov	r9d, eax
 	mov	r8d, ecx
-	lea	rcx, OFFSET FLAT:$SG12059
+	lea	rcx, OFFSET FLAT:$SG12058
 	call	DoDebugMsg
 
 ; 1653 :             //int tmp = index;
@@ -6362,7 +6363,7 @@ $LN54@memory_ope:
 ; 1707 :         if( opndx->is_abs ) {
 
 	mov	rax, QWORD PTR opndx$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 2
 	and	eax, 1
 	test	eax, eax
@@ -6532,7 +6533,7 @@ $LN85@memory_ope:
 ; 1733 :             DebugMsg1(( "memory_operand: direct addressing, fixup type=%u\n", fixup_type ));
 
 	mov	edx, DWORD PTR fixup_type$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12087
+	lea	rcx, OFFSET FLAT:$SG12086
 	call	DoDebugMsg1
 
 ; 1734 :         } else {
@@ -6551,7 +6552,7 @@ $LN82@memory_ope:
 	movzx	edx, BYTE PTR [rdx+106]
 	mov	r9d, eax
 	mov	r8d, ecx
-	lea	rcx, OFFSET FLAT:$SG12088
+	lea	rcx, OFFSET FLAT:$SG12087
 	call	DoDebugMsg1
 
 ; 1736 :                       CodeInfo->Ofssize, CodeInfo->prefix.adrsiz, Ofssize ));
@@ -6793,7 +6794,7 @@ $LN99@memory_ope:
 	mov	r8d, DWORD PTR [rax]
 	mov	rax, QWORD PTR opndx$[rsp]
 	mov	rdx, QWORD PTR [rax+96]
-	lea	rcx, OFFSET FLAT:$SG12101
+	lea	rcx, OFFSET FLAT:$SG12100
 	call	DoDebugMsg1
 
 ; 1791 :               opndx->type, opndx->value, CodeInfo->mem_type, CodeInfo->rm_byte, CodeInfo->opnd[CurrOpnd].type, CodeInfo->opnd[CurrOpnd].InsFixup ));
@@ -7557,7 +7558,7 @@ $LN2@SetPtrMemt:
 ; 1251 :     if ( opndx->explicit && opndx->type ) {
 
 	mov	rax, QWORD PTR opndx$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 1
 	and	eax, 1
 	test	eax, eax
@@ -7758,7 +7759,7 @@ $LN5@SetPtrMemt:
 
 ; 1277 :             DebugMsg1(("SetPtrMemtype: model with FAR data pointers\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11920
+	lea	rcx, OFFSET FLAT:$SG11919
 	call	DoDebugMsg1
 
 ; 1278 :             size = 2;
@@ -7802,7 +7803,7 @@ $LN15@SetPtrMemt:
 	mov	rax, QWORD PTR opndx$[rsp]
 	mov	r8d, DWORD PTR [rax+64]
 	mov	edx, DWORD PTR size$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11922
+	lea	rcx, OFFSET FLAT:$SG11921
 	call	DoDebugMsg1
 
 ; 1285 : }
@@ -7875,7 +7876,7 @@ $LN124:
 	mov	rax, QWORD PTR opndx$[rsp]
 	mov	r8d, DWORD PTR [rax+60]
 	mov	edx, DWORD PTR CurrOpnd$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11806
+	lea	rcx, OFFSET FLAT:$SG11805
 	call	DoDebugMsg1
 
 ; 930  : 
@@ -7952,7 +7953,7 @@ $LN15@idata_fixu:
 ; 943  :     } else if( opndx->is_abs ) {  /* an (external) absolute symbol? */
 
 	mov	rax, QWORD PTR opndx$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 2
 	and	eax, 1
 	test	eax, eax
@@ -8009,13 +8010,13 @@ $LN20@idata_fixu:
 ; 965  :     if ( opndx->explicit && !opndx->is_abs ) {
 
 	mov	rax, QWORD PTR opndx$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 1
 	and	eax, 1
 	test	eax, eax
 	je	SHORT $LN21@idata_fixu
 	mov	rax, QWORD PTR opndx$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 2
 	and	eax, 1
 	test	eax, eax
@@ -8180,7 +8181,7 @@ $LN30@idata_fixu:
 ; 998  :             if ( opndx->is_abs || opndx->instr == T_LOW || opndx->instr == T_HIGH )
 
 	mov	rax, QWORD PTR opndx$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 2
 	and	eax, 1
 	test	eax, eax
@@ -8211,7 +8212,7 @@ $LN33@idata_fixu:
 ; 1005 :                 opndx->instr == T_LOWWORD ||
 
 	mov	rax, QWORD PTR opndx$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 2
 	and	eax, 1
 	test	eax, eax
@@ -8320,7 +8321,7 @@ $LN23@idata_fixu:
 ; 1032 :         if( opndx->is_abs ) {
 
 	mov	rax, QWORD PTR opndx$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 2
 	and	eax, 1
 	test	eax, eax
@@ -8497,7 +8498,7 @@ $LN51@idata_fixu:
 	cmp	DWORD PTR [rax+64], 130			; 00000082H
 	jne	SHORT $LN54@idata_fixu
 	mov	rax, QWORD PTR opndx$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 1
 	and	eax, 1
 	test	eax, eax
@@ -8753,7 +8754,7 @@ $LN67@idata_fixu:
 	cmp	QWORD PTR [rax], -2147483648		; ffffffff80000000H
 	jl	SHORT $LN70@idata_fixu
 	mov	rax, QWORD PTR opndx$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 1
 	and	eax, 1
 	test	eax, eax
@@ -8872,13 +8873,13 @@ $LN74@idata_fixu:
 ; 1129 :         DebugMsg1(("idata_fixup, unexpected size %u\n", size ));
 
 	mov	edx, DWORD PTR size$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11870
+	lea	rcx, OFFSET FLAT:$SG11869
 	call	DoDebugMsg1
 
 ; 1130 :         /**/myassert( 0 );
 
 	mov	edx, 1130				; 0000046aH
-	lea	rcx, OFFSET FLAT:$SG11871
+	lea	rcx, OFFSET FLAT:$SG11870
 	call	InternalError
 $LN10@idata_fixu:
 
@@ -8907,7 +8908,7 @@ $LN75@idata_fixu:
 
 ; 1139 :         DebugMsg1(("idata_fixup, mem_type=BYTE\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11876
+	lea	rcx, OFFSET FLAT:$SG11875
 	call	DoDebugMsg1
 
 ; 1140 :         if ( opndx->instr == T_HIGH ) {
@@ -8918,7 +8919,7 @@ $LN75@idata_fixu:
 
 ; 1141 :             DebugMsg1(("idata_fixup, FIX_HIBYTE\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11879
+	lea	rcx, OFFSET FLAT:$SG11878
 	call	DoDebugMsg1
 
 ; 1142 :             fixup_type = FIX_HIBYTE;
@@ -8932,7 +8933,7 @@ $LN79@idata_fixu:
 
 ; 1144 :             DebugMsg1(("idata_fixup, FIX_OFF8\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11880
+	lea	rcx, OFFSET FLAT:$SG11879
 	call	DoDebugMsg1
 
 ; 1145 :             fixup_type = FIX_OFF8;
@@ -9043,7 +9044,7 @@ $LN83@idata_fixu:
 ; 1177 :                 if ( opndx->explicit && Ofssize == USE16 && opndx->mem_type == MT_FAR )
 
 	mov	rax, QWORD PTR opndx$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 1
 	and	eax, 1
 	test	eax, eax
@@ -9259,7 +9260,7 @@ $LN96@idata_fixu:
 	mov	r9d, edx
 	mov	rax, QWORD PTR CodeInfo$[rsp]
 	mov	edx, DWORD PTR [rax+28]
-	lea	rcx, OFFSET FLAT:$SG11897
+	lea	rcx, OFFSET FLAT:$SG11896
 	call	DoDebugMsg1
 
 ; 1228 :                CodeInfo->mem_type, CodeInfo->Ofssize, CodeInfo->prefix.opsiz,
@@ -9571,7 +9572,7 @@ idata_nofixup PROC
 	mov	rax, QWORD PTR opndx$[rsp]
 	mov	r8d, DWORD PTR [rax+60]
 	mov	edx, DWORD PTR CurrOpnd$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11746
+	lea	rcx, OFFSET FLAT:$SG11745
 	call	DoDebugMsg1
 
 ; 790  : 
@@ -9623,7 +9624,7 @@ $LN6@idata_nofi:
 
 	mov	rax, QWORD PTR opndx$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11749
+	lea	rcx, OFFSET FLAT:$SG11748
 	call	DoDebugMsg1
 
 ; 803  :         return( EmitConstError( opndx ) );
@@ -9671,7 +9672,7 @@ $LN7@idata_nofi:
 	cmp	QWORD PTR [rax], -2147483648		; ffffffff80000000H
 	jl	SHORT $LN9@idata_nofi
 	mov	rax, QWORD PTR opndx$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 1
 	and	eax, 1
 	test	eax, eax
@@ -9733,7 +9734,7 @@ $LN12@idata_nofi:
 
 	mov	rax, QWORD PTR opndx$[rsp]
 	mov	edx, DWORD PTR [rax+4]
-	lea	rcx, OFFSET FLAT:$SG11755
+	lea	rcx, OFFSET FLAT:$SG11754
 	call	DoDebugMsg1
 
 ; 827  :         return( EmitConstError( opndx ) );
@@ -9756,7 +9757,7 @@ $LN11@idata_nofi:
 ; 838  :     if ( opndx->explicit ) {
 
 	mov	rax, QWORD PTR opndx$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 1
 	and	eax, 1
 	test	eax, eax
@@ -9821,7 +9822,7 @@ $LN18@idata_nofi:
 ; 850  :             DebugMsg1(("idata_nofixup: invalid size %d for immediate operand\n", size ));
 
 	mov	edx, DWORD PTR size$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11762
+	lea	rcx, OFFSET FLAT:$SG11761
 	call	DoDebugMsg1
 
 ; 851  :             return( EmitError( INVALID_INSTRUCTION_OPERANDS ) );
@@ -9899,7 +9900,7 @@ $LN23@idata_nofi:
 ; 873  :         if ( opndx->explicit == FALSE ) {
 
 	mov	rax, QWORD PTR opndx$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+72]
 	shr	eax, 1
 	and	eax, 1
 	test	eax, eax
@@ -10073,7 +10074,7 @@ $LN34@idata_nofi:
 ; 905  :     DebugMsg1(("idata_nofixup exit, op_type=%" I32_SPEC "X\n", op_type ));
 
 	mov	edx, DWORD PTR op_type$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11780
+	lea	rcx, OFFSET FLAT:$SG11779
 	call	DoDebugMsg1
 
 ; 906  :     return( NOT_ERROR );
@@ -10148,7 +10149,7 @@ $LN11:
 ; 749  :                 DebugMsg(("segm_override: assume error, reg=%u\n", temp ));
 
 	mov	edx, DWORD PTR temp$1[rsp]
-	lea	rcx, OFFSET FLAT:$SG11723
+	lea	rcx, OFFSET FLAT:$SG11722
 	call	DoDebugMsg
 
 ; 750  :                 return( EmitError( USE_OF_REGISTER_ASSUMED_TO_ERROR ) );
@@ -10311,7 +10312,7 @@ set_rm_sib PROC
 	mov	QWORD PTR tv70[rsp], rax
 	jmp	SHORT $LN59@set_rm_sib
 $LN58@set_rm_sib:
-	lea	rax, OFFSET FLAT:$SG11650
+	lea	rax, OFFSET FLAT:$SG11649
 	mov	QWORD PTR tv70[rsp], rax
 $LN59@set_rm_sib:
 	mov	rax, QWORD PTR CodeInfo$[rsp]
@@ -10329,7 +10330,7 @@ $LN59@set_rm_sib:
 	mov	r9d, DWORD PTR base$[rsp]
 	mov	r8d, DWORD PTR index$[rsp]
 	mov	edx, ecx
-	lea	rcx, OFFSET FLAT:$SG11651
+	lea	rcx, OFFSET FLAT:$SG11650
 	call	DoDebugMsg1
 
 ; 516  : 
@@ -10470,7 +10471,7 @@ $LN7@set_rm_sib:
 	mov	r8, QWORD PTR CodeInfo$[rsp]
 	mov	r9d, DWORD PTR [r8+rax+40]
 	mov	r8d, ecx
-	lea	rcx, OFFSET FLAT:$SG11662
+	lea	rcx, OFFSET FLAT:$SG11661
 	call	DoDebugMsg1
 
 ; 547  :                    CodeInfo->Ofssize, CodeInfo->prefix.adrsiz, CodeInfo->opnd[CurrOpnd].data32l ));
@@ -10535,7 +10536,7 @@ $LN61@set_rm_sib:
 	mov	r8, QWORD PTR CodeInfo$[rsp]
 	mov	r9d, DWORD PTR [r8+rax+40]
 	mov	r8d, ecx
-	lea	rcx, OFFSET FLAT:$SG11668
+	lea	rcx, OFFSET FLAT:$SG11667
 	call	DoDebugMsg1
 
 ; 554  :                         CodeInfo->Ofssize, CodeInfo->prefix.adrsiz, CodeInfo->opnd[CurrOpnd].data32l ));
@@ -10582,7 +10583,7 @@ $LN16@set_rm_sib:
 	imul	rax, rax, 24
 	mov	rcx, QWORD PTR CodeInfo$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+40]
-	lea	rcx, OFFSET FLAT:$SG11670
+	lea	rcx, OFFSET FLAT:$SG11669
 	call	DoDebugMsg1
 
 ; 566  :                 rm_field = RM_SIB;
@@ -10606,7 +10607,7 @@ $LN17@set_rm_sib:
 	and	al, 1
 	movzx	eax, al
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11671
+	lea	rcx, OFFSET FLAT:$SG11670
 	call	DoDebugMsg1
 	jmp	$LN15@set_rm_sib
 $LN14@set_rm_sib:
@@ -10735,7 +10736,7 @@ $LN31@set_rm_sib:
 
 	movzx	eax, BYTE PTR base_reg$[rsp]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11682
+	lea	rcx, OFFSET FLAT:$SG11681
 	call	DoDebugMsg1
 
 ; 603  :             if ( base_reg == 4 ) {
@@ -10796,7 +10797,7 @@ $LN2@set_rm_sib:
 	movzx	edx, BYTE PTR mod_field$[rsp]
 	mov	r9d, eax
 	mov	r8d, ecx
-	lea	rcx, OFFSET FLAT:$SG11687
+	lea	rcx, OFFSET FLAT:$SG11686
 	call	DoDebugMsg1
 
 ; 621  : #else
@@ -11163,7 +11164,7 @@ $LN4@set_rm_sib:
 	movzx	edx, BYTE PTR mod_field$[rsp]
 	mov	r9d, eax
 	mov	r8d, ecx
-	lea	rcx, OFFSET FLAT:$SG11704
+	lea	rcx, OFFSET FLAT:$SG11703
 	call	DoDebugMsg1
 $LN37@set_rm_sib:
 $LN23@set_rm_sib:
@@ -11548,7 +11549,7 @@ $LN2@seg_overri:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11605
+	lea	rcx, OFFSET FLAT:$SG11604
 	call	DoDebugMsg1
 
 ; 437  :             SetFixupFrame( assume ? assume : sym, FALSE );
@@ -11587,7 +11588,7 @@ $LN11@seg_overri:
 	mov	r8d, eax
 	mov	rax, QWORD PTR assume$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11609
+	lea	rcx, OFFSET FLAT:$SG11608
 	call	DoDebugMsg1
 
 ; 442  :                 CodeInfo->prefix.adrsiz = ADDRSIZE( CodeInfo->Ofssize, GetSymOfssize( assume ) );
@@ -11826,7 +11827,7 @@ $LN2@check_assu:
 	mov	QWORD PTR tv74[rsp], rax
 	jmp	SHORT $LN12@check_assu
 $LN11@check_assu:
-	lea	rax, OFFSET FLAT:$SG11569
+	lea	rax, OFFSET FLAT:$SG11568
 	mov	QWORD PTR tv74[rsp], rax
 $LN12@check_assu:
 	cmp	QWORD PTR sym$[rsp], 0
@@ -11836,12 +11837,12 @@ $LN12@check_assu:
 	mov	QWORD PTR tv78[rsp], rax
 	jmp	SHORT $LN14@check_assu
 $LN13@check_assu:
-	lea	rax, OFFSET FLAT:$SG11570
+	lea	rax, OFFSET FLAT:$SG11569
 	mov	QWORD PTR tv78[rsp], rax
 $LN14@check_assu:
 	mov	r8, QWORD PTR tv74[rsp]
 	mov	rdx, QWORD PTR tv78[rsp]
-	lea	rcx, OFFSET FLAT:$SG11571
+	lea	rcx, OFFSET FLAT:$SG11570
 	call	DoDebugMsg1
 
 ; 374  :     SetFixupFrame( assume, FALSE );
@@ -11875,7 +11876,7 @@ $LN14@check_assu:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11578
+	lea	rcx, OFFSET FLAT:$SG11577
 	call	DoDebugMsg1
 
 ; 384  :                 EmitErr( CANNOT_ACCESS_LABEL_THROUGH_SEGMENT_REGISTERS, sym->name );
@@ -11906,7 +11907,7 @@ $LN5@check_assu:
 
 	mov	rax, QWORD PTR SegOverride
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11579
+	lea	rcx, OFFSET FLAT:$SG11578
 	call	DoDebugMsg1
 
 ; 389  :             EmitErr( CANNOT_ACCESS_LABEL_THROUGH_SEGMENT_REGISTERS, SegOverride->name );
@@ -12204,7 +12205,7 @@ $LN215:
 	call	GetCurrOffset
 	mov	r8d, eax
 	mov	edx, DWORD PTR ModuleInfo+496
-	lea	rcx, OFFSET FLAT:$SG12536
+	lea	rcx, OFFSET FLAT:$SG12535
 	call	DoDebugMsg1
 
 ; 2895 :     Token_Count, GetCurrOffset()));
@@ -12245,7 +12246,7 @@ $LN36@ParseLine:
 	imul	rax, rax, 0
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG12539
+	lea	rcx, OFFSET FLAT:$SG12538
 	call	DoDebugMsg1
 
 ; 2901 :     if (ProcStatus & PRST_PROLOGUE_NOT_DONE) write_prologue(tokenarray);
@@ -12298,7 +12299,7 @@ $LN207@ParseLine:
 	imul	rax, rax, 0
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG12542
+	lea	rcx, OFFSET FLAT:$SG12541
 	call	DoDebugMsg
 
 ; 2907 :       return(ERROR);
@@ -12501,7 +12502,7 @@ $LN51@ParseLine:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG12556
+	lea	rcx, OFFSET FLAT:$SG12555
 	call	DoDebugMsg1
 
 ; 2954 :       if (tokenarray[i].dirtype == DRT_DATADIR) {
@@ -12833,7 +12834,7 @@ $LN74@ParseLine:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG12580
+	lea	rcx, OFFSET FLAT:$SG12579
 	call	DoDebugMsg1
 
 ; 3022 :       return(data_dir(i, tokenarray, NULL));
@@ -12852,7 +12853,7 @@ $LN75@ParseLine:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG12582
+	lea	rcx, OFFSET FLAT:$SG12581
 	call	DoDebugMsg1
 
 ; 3025 :       if (sym = IsType(tokenarray[i].string_ptr)) {
@@ -12893,7 +12894,7 @@ $LN77@ParseLine:
 
 ; 3031 :         DebugMsg(("ParseLine: unexpected colon\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12586
+	lea	rcx, OFFSET FLAT:$SG12585
 	call	DoDebugMsg
 
 ; 3032 :         return(EmitError(SYNTAX_ERROR_UNEXPECTED_COLON));
@@ -12939,7 +12940,7 @@ $LN79@ParseLine:
 	mov	r9, QWORD PTR [rdx+rax+8]
 	mov	r8d, DWORD PTR i$[rsp]
 	mov	edx, ecx
-	lea	rcx, OFFSET FLAT:$SG12588
+	lea	rcx, OFFSET FLAT:$SG12587
 	call	DoDebugMsg
 
 ; 3039 :     return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
@@ -12961,7 +12962,7 @@ $LN43@ParseLine:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG12589
+	lea	rcx, OFFSET FLAT:$SG12588
 	call	DoDebugMsg1
 
 ; 3043 :   /* v2.04 added */
@@ -13234,7 +13235,7 @@ $LN84@ParseLine:
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	movzx	eax, BYTE PTR [rcx+rax]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG12599
+	lea	rcx, OFFSET FLAT:$SG12598
 	call	DoDebugMsg
 
 ; 3108 :       return(EmitError(PREFIX_MUST_BE_FOLLOWED_BY_AN_INSTRUCTION));
@@ -13251,7 +13252,7 @@ $LN88@ParseLine:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	lea	rcx, OFFSET FLAT:$SG12600
+	lea	rcx, OFFSET FLAT:$SG12599
 	call	DoDebugMsg1
 $LN87@ParseLine:
 
@@ -13515,7 +13516,7 @@ $LN100@ParseLine:
 
 	mov	r8d, DWORD PTR i$[rsp]
 	mov	rdx, QWORD PTR instr$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12614
+	lea	rcx, OFFSET FLAT:$SG12613
 	call	DoDebugMsg1
 
 ; 3164 :     //if (CodeInfo.token == T_VMOVSS) __debugbreak();
@@ -13536,7 +13537,7 @@ $LN100@ParseLine:
 ; 3166 :       DebugMsg(("ParseLine(%s): EvalOperand() failed\n", instr));
 
 	mov	rdx, QWORD PTR instr$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12616
+	lea	rcx, OFFSET FLAT:$SG12615
 	call	DoDebugMsg
 
 ; 3167 :       return(ERROR);
@@ -13627,7 +13628,7 @@ $LN211@ParseLine:
 	mov	rax, QWORD PTR opndx$[rsp+rax+16]
 	movsxd	rcx, DWORD PTR j$[rsp]
 	imul	rcx, rcx, 104				; 00000068H
-	mov	ecx, DWORD PTR opndx$[rsp+rcx+76]
+	mov	ecx, DWORD PTR opndx$[rsp+rcx+72]
 	shr	ecx, 5
 	and	ecx, 1
 	movsxd	rdx, DWORD PTR j$[rsp]
@@ -13684,7 +13685,7 @@ $LN108@ParseLine:
 	dec	eax
 	cdqe
 	imul	rax, rax, 104				; 00000068H
-	mov	eax, DWORD PTR opndx$[rsp+rax+76]
+	mov	eax, DWORD PTR opndx$[rsp+rax+72]
 	and	eax, 1
 	test	eax, eax
 	jne	SHORT $LN110@ParseLine
@@ -13692,7 +13693,7 @@ $LN108@ParseLine:
 	sub	eax, 2
 	cdqe
 	imul	rax, rax, 104				; 00000068H
-	mov	eax, DWORD PTR opndx$[rsp+rax+76]
+	mov	eax, DWORD PTR opndx$[rsp+rax+72]
 	and	eax, 1
 	test	eax, eax
 	je	SHORT $LN109@ParseLine
@@ -13748,7 +13749,7 @@ $LN113@ParseLine:
 	imul	rax, rax, 104				; 00000068H
 	mov	r8d, DWORD PTR opndx$[rsp+rax+60]
 	mov	rdx, QWORD PTR instr$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12628
+	lea	rcx, OFFSET FLAT:$SG12627
 	call	DoDebugMsg
 
 ; 3206 :       return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
@@ -13784,7 +13785,7 @@ $LN12@ParseLine:
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	r8, QWORD PTR [rcx+rax+24]
 	mov	rdx, QWORD PTR instr$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12630
+	lea	rcx, OFFSET FLAT:$SG12629
 	call	DoDebugMsg
 
 ; 3211 :     return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
@@ -14076,7 +14077,7 @@ $LN133@ParseLine:
 	jne	SHORT $LN134@ParseLine
 	mov	eax, 104				; 00000068H
 	imul	rax, rax, 1
-	mov	eax, DWORD PTR opndx$[rsp+rax+76]
+	mov	eax, DWORD PTR opndx$[rsp+rax+72]
 	and	eax, 1
 	cmp	eax, 1
 	jne	SHORT $LN130@ParseLine
@@ -14120,7 +14121,7 @@ $LN136@ParseLine:
 	mov	r9d, DWORD PTR opndx$[rsp+rax+60]
 	mov	r8d, DWORD PTR CurrOpnd$[rsp]
 	mov	rdx, QWORD PTR instr$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12653
+	lea	rcx, OFFSET FLAT:$SG12652
 	call	DoDebugMsg
 
 ; 3263 :           if ((CodeInfo.token < T_KMOVB) && (CodeInfo.token > T_KMOVW))
@@ -14157,7 +14158,7 @@ $LN135@ParseLine:
 	mov	r9d, DWORD PTR opndx$[rsp+rax+60]
 	mov	r8d, DWORD PTR CurrOpnd$[rsp]
 	mov	rdx, QWORD PTR instr$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12657
+	lea	rcx, OFFSET FLAT:$SG12656
 	call	DoDebugMsg
 
 ; 3272 :           /* v2.11: next line should be activated - currently the error is emitted below as syntax error */
@@ -14199,7 +14200,7 @@ $LN138@ParseLine:
 	mov	r9d, DWORD PTR opndx$[rsp+rcx+60]
 	mov	r8d, DWORD PTR CurrOpnd$[rsp]
 	mov	rdx, QWORD PTR instr$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12660
+	lea	rcx, OFFSET FLAT:$SG12659
 	call	DoDebugMsg1
 
 ; 3281 : 				if (opndx[OPND2].idx_reg)
@@ -14335,7 +14336,7 @@ $LN148@ParseLine:
 	mov	r9, QWORD PTR [rcx+8]
 	mov	r8d, DWORD PTR CurrOpnd$[rsp]
 	mov	rdx, QWORD PTR instr$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12668
+	lea	rcx, OFFSET FLAT:$SG12667
 	call	DoDebugMsg1
 
 ; 3302 :               instr, CurrOpnd, opndx[CurrOpnd].base_reg->string_ptr, flags, CodeInfo.opnd[OPND1].type, j));
@@ -14393,7 +14394,7 @@ $LN152@ParseLine:
 	mov	r9d, DWORD PTR flags$6[rsp]
 	mov	r8d, DWORD PTR CurrOpnd$[rsp]
 	mov	rdx, QWORD PTR instr$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12674
+	lea	rcx, OFFSET FLAT:$SG12673
 	call	DoDebugMsg
 
 ; 3315 :                 return(EmitErr(INVALID_INSTRUCTION_OPERANDS));
@@ -14498,7 +14499,7 @@ $LN115@ParseLine:
 	mov	r9d, DWORD PTR opndx$[rsp+r8+60]
 	mov	r8d, DWORD PTR CurrOpnd$[rsp]
 	mov	rdx, QWORD PTR instr$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12675
+	lea	rcx, OFFSET FLAT:$SG12674
 	call	DoDebugMsg1
 
 ; 3335 :     switch (opndx[CurrOpnd].kind) {
@@ -14539,7 +14540,7 @@ $LN155@ParseLine:
 
 	mov	r8d, DWORD PTR CurrOpnd$[rsp]
 	mov	rdx, QWORD PTR instr$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12678
+	lea	rcx, OFFSET FLAT:$SG12677
 	call	DoDebugMsg1
 
 ; 3341 :       if (process_address(&CodeInfo, CurrOpnd, &opndx[CurrOpnd]) == ERROR)
@@ -14573,7 +14574,7 @@ $LN157@ParseLine:
 	mov	r9d, DWORD PTR opndx$[rsp+rax+64]
 	mov	r8d, DWORD PTR CurrOpnd$[rsp]
 	mov	rdx, QWORD PTR instr$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12681
+	lea	rcx, OFFSET FLAT:$SG12680
 	call	DoDebugMsg1
 
 ; 3346 :       if (process_const(&CodeInfo, CurrOpnd, &opndx[CurrOpnd]) == ERROR)
@@ -14604,14 +14605,14 @@ $LN159@ParseLine:
 
 	mov	r8d, DWORD PTR CurrOpnd$[rsp]
 	mov	rdx, QWORD PTR instr$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12684
+	lea	rcx, OFFSET FLAT:$SG12683
 	call	DoDebugMsg1
 
 ; 3351 :       if (opndx[CurrOpnd].indirect) { /* indirect operand ( "[EBX+...]" )? */
 
 	mov	eax, DWORD PTR CurrOpnd$[rsp]
 	imul	rax, rax, 104				; 00000068H
-	mov	eax, DWORD PTR opndx$[rsp+rax+76]
+	mov	eax, DWORD PTR opndx$[rsp+rax+72]
 	and	eax, 1
 	test	eax, eax
 	je	SHORT $LN160@ParseLine
@@ -14834,7 +14835,7 @@ $LN22@ParseLine:
 	mov	r9d, DWORD PTR j$[rsp]
 	mov	r8d, DWORD PTR CurrOpnd$[rsp]
 	mov	rdx, QWORD PTR instr$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12699
+	lea	rcx, OFFSET FLAT:$SG12698
 	call	DoDebugMsg
 
 ; 3388 : 	   if (CodeInfo.token < VEX_START)
@@ -14893,7 +14894,7 @@ $LN179@ParseLine:
 	mov	r9d, DWORD PTR j$[rsp]
 	mov	r8d, DWORD PTR CurrOpnd$[rsp]
 	mov	rdx, QWORD PTR instr$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12706
+	lea	rcx, OFFSET FLAT:$SG12705
 	call	DoDebugMsg
 
 ; 3396 : 	   if (CodeInfo.opnd[OPND3].type == OP_NONE) {
@@ -15071,7 +15072,7 @@ $LN189@ParseLine:
 ; 3457 :             DebugMsg(("ParseLine(%s): no third operand expected\n", instr));
 
 	mov	rdx, QWORD PTR instr$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12720
+	lea	rcx, OFFSET FLAT:$SG12719
 	call	DoDebugMsg
 	jmp	SHORT $LN32@ParseLine
 $LN30@ParseLine:
@@ -15213,7 +15214,7 @@ $LN193@ParseLine:
 ; 3481 :         DebugMsg(("ParseLine(%s): check_size() failed, exit\n", instr));
 
 	mov	rdx, QWORD PTR instr$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12726
+	lea	rcx, OFFSET FLAT:$SG12725
 	call	DoDebugMsg
 
 ; 3482 :         return(ERROR);
@@ -15711,7 +15712,7 @@ $LN3@OperandSiz:
 ; 327  :     DebugMsg1(("OperandSize: unhandled operand type %Xh!!!\n", opnd ));
 
 	mov	edx, DWORD PTR opnd$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11537
+	lea	rcx, OFFSET FLAT:$SG11536
 	call	DoDebugMsg1
 
 ; 328  :     return( 0 );
@@ -16434,7 +16435,7 @@ $LN6@SizeFromMe:
 	shl	eax, cl
 	mov	r8d, eax
 	mov	edx, DWORD PTR Ofssize$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11484
+	lea	rcx, OFFSET FLAT:$SG11483
 	call	DoDebugMsg1
 
 ; 245  :         return ( 2 << Ofssize );
@@ -16460,7 +16461,7 @@ $LN7@SizeFromMe:
 	add	eax, 2
 	mov	r8d, eax
 	mov	edx, DWORD PTR Ofssize$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11486
+	lea	rcx, OFFSET FLAT:$SG11485
 	call	DoDebugMsg1
 
 ; 248  :         return ( ( 2 << Ofssize ) + 2 );
@@ -16501,7 +16502,7 @@ $LN15@SizeFromMe:
 	mov	rax, QWORD PTR type$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	edx, DWORD PTR Ofssize$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11488
+	lea	rcx, OFFSET FLAT:$SG11487
 	call	DoDebugMsg1
 
 ; 251  :         /* v2.09: use type->isfar setting */
@@ -16556,7 +16557,7 @@ $LN19@SizeFromMe:
 	add	eax, DWORD PTR tv140[rsp]
 	mov	r8d, eax
 	mov	edx, DWORD PTR Ofssize$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11490
+	lea	rcx, OFFSET FLAT:$SG11489
 	call	DoDebugMsg1
 
 ; 256  :         return( ( 2 << Ofssize ) + ( ( SIZE_DATAPTR & ( 1 << ModuleInfo.model ) ) ? 2 : 0 ) );
@@ -16606,7 +16607,7 @@ $LN12@SizeFromMe:
 	xor	r9d, r9d
 	mov	r8d, DWORD PTR Ofssize$[rsp]
 	mov	edx, DWORD PTR mem_type$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11494
+	lea	rcx, OFFSET FLAT:$SG11493
 	call	DoDebugMsg1
 
 ; 263  :         return( 0 );

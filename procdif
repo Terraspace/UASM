@@ -1,0 +1,58 @@
+diff --git a/hll.c b/hll.c
+index 9169aaf..8ea8fc4 100644
+--- a/hll.c
++++ b/hll.c
+@@ -103,30 +103,31 @@ static ret_code GetExpression(struct hll_item *hll, int *i, struct asm_tok[], in
+ * must not be changed.
+ */
+ enum c_bop {
+-  COP_NONE,
+-  COP_EQ,   /* == */
+-  COP_NE,   /* != */
+-  COP_GT,   /* >  */
+-  COP_LT,   /* <  */
+-  COP_GE,   /* >= */
+-  COP_LE,   /* <= */
+-  COP_AND,  /* && */
+-  COP_OR,   /* || */
+-  COP_ANDB, /* &  */
+-  COP_NEG,  /* !  */
+-  COP_ZERO, /* ZERO?   not really a valid C operator */
+-  COP_CARRY,/* CARRY?  not really a valid C operator */
+-  COP_SIGN, /* SIGN?   not really a valid C operator */
+-  COP_PARITY,  /* PARITY?   not really a valid C operator */
+-  COP_OVERFLOW, /* OVERFLOW? not really a valid C operator */
+-  //added by habran
+-  COP_LESS,/* SIGN=OVERFLOW  not really a valid C operator */
+-  COP_GREATER, /* SIGNED ZERO OR CARRY   not really a valid C operator */
+-  COP_ABOVE,  /* ZERO OR CARRY  not really a valid C operator */
+-  COP_EQUAL,
+-  COP_BELOW
++	COP_NONE,
++	COP_EQ,       /* == */
++	COP_NE,       /* != */
++	COP_GT,       /* >  */
++	COP_LT,       /* <  */
++	COP_GE,       /* >= */
++	COP_LE,       /* <= */
++	COP_AND,      /* && */
++	COP_OR,       /* || */
++	COP_ANDB,     /* &  */
++	COP_NEG,      /* !  */
++	COP_ZERO,     /* ZERO?     not really a valid C operator */
++	COP_CARRY,    /* CARRY?    not really a valid C operator */
++	COP_SIGN,     /* SIGN?     not really a valid C operator */
++	COP_PARITY,   /* PARITY?   not really a valid C operator */
++	COP_OVERFLOW, /* OVERFLOW? not really a valid C operator */
++				  //added by habran
++	COP_LESS,     /* Used for signed integers SIGN=OVERFLOW */
++	COP_GREATER,  /* Used for signed integers SIGNED ZERO OR CARRY */
++	COP_ABOVE,    /* Used for unsigned integers ZERO OR CARRY */
++	COP_EQUAL,
++	COP_BELOW     /* Used for unsigned integers */
+ };
+ 
++
+ /* items in table below must match order COP_ZERO - COP_OVERFLOW */
+ static const char flaginstr[] = { 'z', 'c', 's', 'p', 'o', 'l', 'g', 'a', 'e', 'b' };
+ 

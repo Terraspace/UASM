@@ -9,18 +9,19 @@ _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 COMM	evex:BYTE
+COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10852 DB	'%X', 00H
+$SG10853 DB	'%X', 00H
 	ORG $+1
-$SG10915 DB	'<>"''', 00H
+$SG10916 DB	'<>"''', 00H
 	ORG $+3
-$SG11007 DB	'REQ', 00H
-$SG11016 DB	'VARARGML', 00H
+$SG11008 DB	'REQ', 00H
+$SG11017 DB	'VARARGML', 00H
 	ORG $+7
-$SG11128 DB	'macro name', 00H
+$SG11129 DB	'macro name', 00H
 	ORG $+5
-$SG11151 DB	'@Environ', 00H
+$SG11152 DB	'@Environ', 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	sprintf
@@ -466,7 +467,7 @@ $LN27@PurgeDirec:
 
 ; 749  :             return( EmitErr( EXPECTED, "macro name" ) );
 
-	lea	rdx, OFFSET FLAT:$SG11128
+	lea	rdx, OFFSET FLAT:$SG11129
 	mov	ecx, 230				; 000000e6H
 	jmp	SHORT $LN38@PurgeDirec
 $LN26@PurgeDirec:
@@ -945,7 +946,7 @@ $LN22@store_plac:
 	jne	SHORT $LN23@store_plac
 	movsx	edx, BYTE PTR [rbx+1]
 	lea	rdi, QWORD PTR [rbx+1]
-	lea	rcx, OFFSET FLAT:$SG10915
+	lea	rcx, OFFSET FLAT:$SG10916
 	call	strchr
 	test	rax, rax
 	cmovne	rbx, rdi
@@ -1364,7 +1365,7 @@ $LN9:
 ; 814  : 
 ; 815  :         macro = CreateMacro( "@Environ" );
 
-	lea	rcx, OFFSET FLAT:$SG11151
+	lea	rcx, OFFSET FLAT:$SG11152
 	call	SymCreate
 	mov	rbx, rax
 	test	rax, rax
@@ -1732,7 +1733,7 @@ $LN41@StoreMacro:
 ; 356  :                 } else if( _stricmp( tokenarray[i].string_ptr, "REQ" ) == 0 ) {
 
 	mov	rcx, QWORD PTR [rdi+8]
-	lea	rdx, OFFSET FLAT:$SG11007
+	lea	rdx, OFFSET FLAT:$SG11008
 	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN45@StoreMacro
@@ -1800,7 +1801,7 @@ $LN50@StoreMacro:
 ; 381  :                 } else if( _stricmp( tokenarray[i].string_ptr, "VARARGML" ) == 0 ) {
 
 	mov	rcx, QWORD PTR [rdi+8]
-	lea	rdx, OFFSET FLAT:$SG11016
+	lea	rdx, OFFSET FLAT:$SG11017
 	call	_stricmp
 	test	eax, eax
 	jne	$LN53@StoreMacro
@@ -2826,7 +2827,7 @@ $LL2@fill_place:
 ; 97   :                     i = sprintf( dst, "%X", i );
 
 	mov	r8d, eax
-	lea	rdx, OFFSET FLAT:$SG10852
+	lea	rdx, OFFSET FLAT:$SG10853
 	mov	rcx, rbx
 	call	sprintf
 	mov	eax, eax

@@ -10,6 +10,7 @@ _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 COMM	evex:BYTE
+COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 CONST	SEGMENT
 szNull	DB	'<NULL>', 00H
@@ -22,59 +23,59 @@ sr_prefix DB	026H
 	DB	065H
 CONST	ENDS
 _DATA	SEGMENT
-$SG11282 DB	'output_3rd_operand, expected I8, op3=%X', 0aH, 00H
+$SG11283 DB	'output_3rd_operand, expected I8, op3=%X', 0aH, 00H
 	ORG $+7
-$SG11287 DB	'output_3rd_operand, expected OP3_HID, op3=%X', 0aH, 00H
+$SG11288 DB	'output_3rd_operand, expected OP3_HID, op3=%X', 0aH, 00H
 	ORG $+2
-$SG11334 DB	'match_phase_3 enter, opnd1=%X, searching op2=%X', 0aH, 00H
+$SG11335 DB	'match_phase_3 enter, opnd1=%X, searching op2=%X', 0aH, 00H
 	ORG $+7
-$SG11349 DB	'match_phase_3: instr table op2=%X', 0aH, 00H
+$SG11350 DB	'match_phase_3: instr table op2=%X', 0aH, 00H
 	ORG $+5
-$SG11352 DB	'match_phase_3: matched OP_I', 0aH, 00H
+$SG11353 DB	'match_phase_3: matched OP_I', 0aH, 00H
 	ORG $+3
-$SG11368 DB	'match_phase_3: matched OP_I8_U', 0aH, 00H
-$SG11383 DB	'match_phase_3: matched OP_I8', 0aH, 00H
+$SG11369 DB	'match_phase_3: matched OP_I8_U', 0aH, 00H
+$SG11384 DB	'match_phase_3: matched OP_I8', 0aH, 00H
 	ORG $+2
-$SG11387 DB	'match_phase_3: matched OP_I_1', 0aH, 00H
+$SG11388 DB	'match_phase_3: matched OP_I_1', 0aH, 00H
 	ORG $+1
-$SG11395 DB	'match_phase_3: matched opnd2', 0aH, 00H
+$SG11396 DB	'match_phase_3: matched opnd2', 0aH, 00H
 	ORG $+2
-$SG11401 DB	'match_phase_3: returns EMPTY', 0aH, 00H
+$SG11402 DB	'match_phase_3: returns EMPTY', 0aH, 00H
 	ORG $+2
-$SG11420 DB	'NULL', 00H
-	ORG $+3
 $SG11421 DB	'NULL', 00H
 	ORG $+3
-$SG11422 DB	'check_operand_2: error: undef_sym=%u Fixup[0]=%X [%s]', 0aH
+$SG11422 DB	'NULL', 00H
+	ORG $+3
+$SG11423 DB	'check_operand_2: error: undef_sym=%u Fixup[0]=%X [%s]', 0aH
 	DB	00H
 	ORG $+1
-$SG11476 DB	'codegen: no matching format found', 0aH, 00H
+$SG11477 DB	'codegen: no matching format found', 0aH, 00H
 	ORG $+5
-$SG11463 DB	'codegen(ofs=%X): %s opnd1=%X codeinfo: ofssize=%u wide=%'
+$SG11464 DB	'codegen(ofs=%X): %s opnd1=%X codeinfo: ofssize=%u wide=%'
 	DB	'u rm=%Xh sib=%Xh rex=%Xh opsiz=%u', 0aH, 00H
 	ORG $+5
-$SG10638 DB	'output_opc enter, ins.opc/rm=%X/%X, byte1_info=%X CodeIn'
+$SG10639 DB	'output_opc enter, ins.opc/rm=%X/%X, byte1_info=%X CodeIn'
 	DB	'fo->rm=%X opsiz=%u', 0aH, 00H
 	ORG $+4
-$SG10648 DB	'output_opc: wrong cpu setting: instr.cpu=%X, ModuleInfo.'
+$SG10649 DB	'output_opc: wrong cpu setting: instr.cpu=%X, ModuleInfo.'
 	DB	'cpu=%X', 0aH, 00H
-$SG10687 DB	'output_opc: ERROR: FP emulation byte sequence destroyed '
+$SG10688 DB	'output_opc: ERROR: FP emulation byte sequence destroyed '
 	DB	'by 32-bit address prefix!', 0aH, 00H
 	ORG $+5
-$SG10690 DB	'output_opc: instruction form requires 386', 0aH, 00H
+$SG10691 DB	'output_opc: instruction form requires 386', 0aH, 00H
 	ORG $+5
-$SG11232 DB	'output_data: size=%u cont=%I64X', 0aH, 00H
+$SG11233 DB	'output_data: size=%u cont=%I64X', 0aH, 00H
 	ORG $+7
-$SG11199 DB	'output_data(idx=%u, op=%X [data=%X fixup=%p typ=%u] ) en'
+$SG11200 DB	'output_data(idx=%u, op=%X [data=%X fixup=%p typ=%u] ) en'
 	DB	'ter [rm=%X]', 0aH, 00H
 	ORG $+3
-$SG11235 DB	'output_data: size=%u cont=%X', 0aH, 00H
+$SG11236 DB	'output_data: size=%u cont=%X', 0aH, 00H
 	ORG $+2
-$SG11236 DB	'output_data: size=0', 0aH, 00H
+$SG11237 DB	'output_data: size=0', 0aH, 00H
 	ORG $+3
-$SG11200 DB	'output_data(idx=%u, op=%X [data=%X fixup=NULL] ) enter ['
+$SG11201 DB	'output_data(idx=%u, op=%X [data=%X fixup=NULL] ) enter ['
 	DB	'rm=%X]', 0aH, 00H
-$SG11252 DB	'check_3rd_operand: tab=%X <-> codeinfo=%X', 0aH, 00H
+$SG11253 DB	'check_3rd_operand: tab=%X <-> codeinfo=%X', 0aH, 00H
 _DATA	ENDS
 PUBLIC	codegen
 PUBLIC	GetByteDisp
@@ -390,14 +391,14 @@ $LN10@check_oper:
 	mov	QWORD PTR tv168[rsp], rax
 	jmp	SHORT $LN18@check_oper
 $LN17@check_oper:
-	lea	rax, OFFSET FLAT:$SG11420
+	lea	rax, OFFSET FLAT:$SG11421
 	mov	QWORD PTR tv168[rsp], rax
 $LN18@check_oper:
 	mov	rax, QWORD PTR tv168[rsp]
 	mov	QWORD PTR tv170[rsp], rax
 	jmp	SHORT $LN20@check_oper
 $LN19@check_oper:
-	lea	rax, OFFSET FLAT:$SG11421
+	lea	rax, OFFSET FLAT:$SG11422
 	mov	QWORD PTR tv170[rsp], rax
 $LN20@check_oper:
 	mov	eax, 24
@@ -411,7 +412,7 @@ $LN20@check_oper:
 	mov	rdx, QWORD PTR CodeInfo$[rsp]
 	mov	r8, QWORD PTR [rdx+rax+48]
 	mov	edx, ecx
-	lea	rcx, OFFSET FLAT:$SG11422
+	lea	rcx, OFFSET FLAT:$SG11423
 	call	DoDebugMsg
 
 ; 1833 :                               CodeInfo->undef_sym, CodeInfo->opnd[OPND1].InsFixup,
@@ -635,7 +636,7 @@ match_phase_3 PROC
 
 	mov	r8d, DWORD PTR opnd2$[rsp]
 	mov	edx, DWORD PTR opnd1$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11334
+	lea	rcx, OFFSET FLAT:$SG11335
 	call	DoDebugMsg1
 
 ; 1610 :     
@@ -813,7 +814,7 @@ $LN4@match_phas:
 ; 1639 :         DebugMsg1(("match_phase_3: instr table op2=%" I32_SPEC "X\n", tbl_op2 ));
 
 	mov	edx, DWORD PTR tbl_op2$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11349
+	lea	rcx, OFFSET FLAT:$SG11350
 	call	DoDebugMsg1
 
 ; 1640 :         switch( tbl_op2 ) {
@@ -843,7 +844,7 @@ $LN23@match_phas:
 
 ; 1643 :                 DebugMsg1(("match_phase_3: matched OP_I\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11352
+	lea	rcx, OFFSET FLAT:$SG11353
 	call	DoDebugMsg1
 
 ; 1644 :                 /* This branch exits with either ERROR or NOT_ERROR.
@@ -1136,7 +1137,7 @@ $LN38@match_phas:
 
 ; 1711 :                 DebugMsg1(("match_phase_3: matched OP_I8_U\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11368
+	lea	rcx, OFFSET FLAT:$SG11369
 	call	DoDebugMsg1
 
 ; 1712 :                 if ( CodeInfo->const_size_fixed && opnd2 != OP_I8 )
@@ -1372,7 +1373,7 @@ $LN49@match_phas:
 
 ; 1757 :                 DebugMsg1(("match_phase_3: matched OP_I8\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11383
+	lea	rcx, OFFSET FLAT:$SG11384
 	call	DoDebugMsg1
 
 ; 1758 :                 output_opc( CodeInfo );
@@ -1426,7 +1427,7 @@ $LN54@match_phas:
 
 ; 1767 :                    DebugMsg1(("match_phase_3: matched OP_I_1\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11387
+	lea	rcx, OFFSET FLAT:$SG11388
 	call	DoDebugMsg1
 
 ; 1768 :                    output_opc( CodeInfo );
@@ -1504,7 +1505,7 @@ $LN63@match_phas:
 
 ; 1782 :                 DebugMsg1(("match_phase_3: matched opnd2\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11395
+	lea	rcx, OFFSET FLAT:$SG11396
 	call	DoDebugMsg1
 
 ; 1783 :                 output_opc( CodeInfo );
@@ -1631,7 +1632,7 @@ $LN68@match_phas:
 
 ; 1800 :     DebugMsg(("match_phase_3: returns EMPTY\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11401
+	lea	rcx, OFFSET FLAT:$SG11402
 	call	DoDebugMsg
 
 ; 1801 :     return( ERROR );
@@ -1680,7 +1681,7 @@ output_3rd_operand PROC
 	imul	rax, rax, 2
 	mov	rcx, QWORD PTR CodeInfo$[rsp]
 	mov	edx, DWORD PTR [rcx+rax+32]
-	lea	rcx, OFFSET FLAT:$SG11282
+	lea	rcx, OFFSET FLAT:$SG11283
 	call	DoDebugMsg1
 
 ; 1511 :         /* v2.06: the type has been checked already! */
@@ -1741,7 +1742,7 @@ $LN4@output_3rd:
 	imul	rax, rax, 2
 	mov	rcx, QWORD PTR CodeInfo$[rsp]
 	mov	edx, DWORD PTR [rcx+rax+32]
-	lea	rcx, OFFSET FLAT:$SG11287
+	lea	rcx, OFFSET FLAT:$SG11288
 	call	DoDebugMsg1
 
 ; 1523 :       /* v2.06: to avoid having to add 3*8 operand categories there's a
@@ -2250,7 +2251,7 @@ $LN4@check_3rd_:
 	mov	rdx, QWORD PTR CodeInfo$[rsp]
 	mov	r8d, DWORD PTR [rdx+rax+32]
 	mov	edx, ecx
-	lea	rcx, OFFSET FLAT:$SG11252
+	lea	rcx, OFFSET FLAT:$SG11253
 	call	DoDebugMsg1
 
 ; 1471 : 
@@ -2675,7 +2676,7 @@ $LN7@output_dat:
 	mov	r9d, DWORD PTR [rax+r8+40]
 	mov	r8d, DWORD PTR determinant$[rsp]
 	mov	edx, DWORD PTR index$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11199
+	lea	rcx, OFFSET FLAT:$SG11200
 	call	DoDebugMsg1
 	jmp	SHORT $LN29@output_dat
 $LN28@output_dat:
@@ -2692,7 +2693,7 @@ $LN28@output_dat:
 	mov	r9d, DWORD PTR [rax+rcx+40]
 	mov	r8d, DWORD PTR determinant$[rsp]
 	mov	edx, DWORD PTR index$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11200
+	lea	rcx, OFFSET FLAT:$SG11201
 	call	DoDebugMsg1
 $LN29@output_dat:
 
@@ -3011,7 +3012,7 @@ $LN31@output_dat:
 	mov	rcx, QWORD PTR CodeInfo$[rsp]
 	mov	r8, QWORD PTR [rcx+rax+40]
 	mov	edx, DWORD PTR size$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11232
+	lea	rcx, OFFSET FLAT:$SG11233
 	call	DoDebugMsg1
 	jmp	SHORT $LN60@output_dat
 $LN59@output_dat:
@@ -3028,7 +3029,7 @@ $LN59@output_dat:
 	mov	rcx, QWORD PTR CodeInfo$[rsp]
 	mov	r8d, DWORD PTR [rcx+rax+40]
 	mov	edx, DWORD PTR size$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11235
+	lea	rcx, OFFSET FLAT:$SG11236
 	call	DoDebugMsg1
 	jmp	SHORT $LN62@output_dat
 $LN61@output_dat:
@@ -3036,7 +3037,7 @@ $LN61@output_dat:
 ; 1431 :     else
 ; 1432 :         DebugMsg1(( "output_data: size=0\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11236
+	lea	rcx, OFFSET FLAT:$SG11237
 	call	DoDebugMsg1
 $LN62@output_dat:
 $LN60@output_dat:
@@ -3282,7 +3283,7 @@ output_opc PROC
 	mov	r9d, edx
 	mov	eax, DWORD PTR tv80[rsp]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG10638
+	lea	rcx, OFFSET FLAT:$SG10639
 	call	DoDebugMsg1
 
 ; 177  :   /*
@@ -3413,7 +3414,7 @@ $LN29@output_opc:
 	movzx	eax, WORD PTR [rax+10]
 	mov	r8d, DWORD PTR ModuleInfo+392
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG10648
+	lea	rcx, OFFSET FLAT:$SG10649
 	call	DoDebugMsg
 
 ; 206  :       ins->cpu, ModuleInfo.curr_cpu));
@@ -3976,7 +3977,7 @@ $LN66@output_opc:
 
 ; 348  :       DebugMsg(("output_opc: ERROR: FP emulation byte sequence destroyed by 32-bit address prefix!\n"));
 
-	lea	rcx, OFFSET FLAT:$SG10687
+	lea	rcx, OFFSET FLAT:$SG10688
 	call	DoDebugMsg
 $LN67@output_opc:
 $LN65@output_opc:
@@ -4003,7 +4004,7 @@ $LN65@output_opc:
 
 ; 354  :       DebugMsg(("output_opc: instruction form requires 386\n"));
 
-	lea	rcx, OFFSET FLAT:$SG10690
+	lea	rcx, OFFSET FLAT:$SG10691
 	call	DoDebugMsg
 
 ; 355  :       EmitError(INSTRUCTION_FORM_REQUIRES_80386);
@@ -11270,7 +11271,7 @@ $LN12@codegen:
 	mov	r8, rax
 	mov	rax, QWORD PTR ModuleInfo+432
 	mov	edx, DWORD PTR [rax+16]
-	lea	rcx, OFFSET FLAT:$SG11463
+	lea	rcx, OFFSET FLAT:$SG11464
 	call	DoDebugMsg1
 $LN4@codegen:
 
@@ -11489,7 +11490,7 @@ $LN27@codegen:
 ; 1967 : 
 ; 1968 :     DebugMsg(("codegen: no matching format found\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11476
+	lea	rcx, OFFSET FLAT:$SG11477
 	call	DoDebugMsg
 
 ; 1969 :     EmitError( INVALID_INSTRUCTION_OPERANDS );

@@ -9,6 +9,7 @@ _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 COMM	evex:BYTE
+COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 CONST	SEGMENT
 cv_idx_type DW	012H
@@ -31,67 +32,67 @@ reg64	DB	00H
 	DB	05H
 CONST	ENDS
 _DATA	SEGMENT
-$SG11271 DB	'cv_write_symbol(%X): INTERN16=%s typeref=%Xh', 0aH, 00H
+$SG11272 DB	'cv_write_symbol(%X): INTERN16=%s typeref=%Xh', 0aH, 00H
 	ORG $+2
-$SG11274 DB	'TLS', 00H
+$SG11275 DB	'TLS', 00H
 	ORG $+4
-$SG11275 DB	'cv_write_symbol(%X): INTERN32=%s typeref=%Xh', 0aH, 00H
+$SG11276 DB	'cv_write_symbol(%X): INTERN32=%s typeref=%Xh', 0aH, 00H
 	ORG $+2
-$SG11331 DB	'dbgcv.c', 00H
-$SG11283 DB	'cv_write_symbol(%X): proc=%s, S_BPREL16, var=%s [memt=%X'
+$SG11332 DB	'dbgcv.c', 00H
+$SG11284 DB	'cv_write_symbol(%X): proc=%s, S_BPREL16, var=%s [memt=%X'
 	DB	' typeref=%X]', 0aH, 00H
 	ORG $+2
-$SG11341 DB	'dbgcv.c', 00H
-$SG11291 DB	'cv_write_symbol(%X): proc=%s, S_REGREL32, var=%s [memt=%'
+$SG11342 DB	'dbgcv.c', 00H
+$SG11292 DB	'cv_write_symbol(%X): proc=%s, S_REGREL32, var=%s [memt=%'
 	DB	'X typeref=%X]', 0aH, 00H
 	ORG $+1
-$SG11347 DB	'dbgcv.c', 00H
-$SG11292 DB	'cv_write_symbol(%X): proc=%s, S_BPREL32, var=%s [memt=%X'
+$SG11348 DB	'dbgcv.c', 00H
+$SG11293 DB	'cv_write_symbol(%X): proc=%s, S_BPREL32, var=%s [memt=%X'
 	DB	' typeref=%X]', 0aH, 00H
 	ORG $+2
-$SG11330 DB	'cv_write_debug_tables enter', 0aH, 00H
+$SG11331 DB	'cv_write_debug_tables enter', 0aH, 00H
 	ORG $+3
-$SG11334 DB	'cv_write_debug_tables: at %X objname=%s', 0aH, 00H
+$SG11335 DB	'cv_write_debug_tables: at %X objname=%s', 0aH, 00H
 	ORG $+7
-$SG11339 DB	'cv_write_debug_tables: at %X compiler=%s', 0aH, 00H
+$SG11340 DB	'cv_write_debug_tables: at %X compiler=%s', 0aH, 00H
 	ORG $+6
-$SG11348 DB	'cv_write_debug_tables exit, max type=%Xh', 0aH, 00H
+$SG11349 DB	'cv_write_debug_tables exit, max type=%Xh', 0aH, 00H
 	ORG $+6
-$SG10885 DB	'GetTypeRef, MT_TYPE: sym=%s state=%X memt=%X', 0aH, 00H
+$SG10886 DB	'GetTypeRef, MT_TYPE: sym=%s state=%X memt=%X', 0aH, 00H
 	ORG $+2
-$SG10981 DB	'NULL', 00H
+$SG10982 DB	'NULL', 00H
 	ORG $+3
-$SG10982 DB	'%u cv_write_ptr_type(%Xh, typeref=%X ): name=%s [memt=%X'
+$SG10983 DB	'%u cv_write_ptr_type(%Xh, typeref=%X ): name=%s [memt=%X'
 	DB	' ptr_memt=%X target_type=%s] reftype=%X', 0aH, 00H
 	ORG $+3
-$SG11062 DB	'@@%u', 00H
+$SG11063 DB	'@@%u', 00H
 	ORG $+7
-$SG11038 DB	'%u cv_memberproc(%Xh, %u): struct=%s MEMBER=%s [memt=%X]'
+$SG11039 DB	'%u cv_memberproc(%Xh, %u): struct=%s MEMBER=%s [memt=%X]'
 	DB	', typeref=%X', 0aH, 00H
 	ORG $+2
-$SG11124 DB	'cv_write_type: %s has typekind=TYPE_NONE, ignored!', 0aH
+$SG11125 DB	'cv_write_type: %s has typekind=TYPE_NONE, ignored!', 0aH
 	DB	00H
 	ORG $+4
-$SG11120 DB	'%u cv_write_type(%Xh): TYPEDEF=%s target type=%s [kind=%'
+$SG11121 DB	'%u cv_write_type(%Xh): TYPEDEF=%s target type=%s [kind=%'
 	DB	'u memt=%X] not defined yet', 0aH, 00H
 	ORG $+4
-$SG11122 DB	'%u cv_write_type(%Xh): TYPEDEF=%s typeref=%X', 0aH, 00H
+$SG11123 DB	'%u cv_write_type(%Xh): TYPEDEF=%s typeref=%X', 0aH, 00H
 	ORG $+2
-$SG11126 DB	'%u cv_write_type(%Xh, ref=%X): UNION=%s', 0aH, 00H
+$SG11127 DB	'%u cv_write_type(%Xh, ref=%X): UNION=%s', 0aH, 00H
 	ORG $+7
-$SG11129 DB	'%u cv_write_type(%Xh, ref=%X): STRUCT=%s', 0aH, 00H
+$SG11130 DB	'%u cv_write_type(%Xh, ref=%X): STRUCT=%s', 0aH, 00H
 	ORG $+6
-$SG11132 DB	'__unnamed', 00H
+$SG11133 DB	'__unnamed', 00H
 	ORG $+6
-$SG11133 DB	'%u cv_write_type(%Xh, ref=%X): FIELDLIST, size=%u', 0aH, 00H
+$SG11134 DB	'%u cv_write_type(%Xh, ref=%X): FIELDLIST, size=%u', 0aH, 00H
 	ORG $+5
-$SG11249 DB	'cv_write_symbol(%X): TYPE=%s typeref=%Xh', 0aH, 00H
+$SG11250 DB	'cv_write_symbol(%X): TYPE=%s typeref=%Xh', 0aH, 00H
 	ORG $+6
-$SG11253 DB	'cv_write_symbol(%X): PROC=%s', 0aH, 00H
+$SG11254 DB	'cv_write_symbol(%X): PROC=%s', 0aH, 00H
 	ORG $+2
-$SG11261 DB	'cv_write_symbol(%X): LABEL16=%s', 0aH, 00H
+$SG11262 DB	'cv_write_symbol(%X): LABEL16=%s', 0aH, 00H
 	ORG $+7
-$SG11262 DB	'cv_write_symbol(%X): LABEL32=%s', 0aH, 00H
+$SG11263 DB	'cv_write_symbol(%X): LABEL32=%s', 0aH, 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	_vsnprintf_l
@@ -420,7 +421,7 @@ $LN38:
 ; 993  : 
 ; 994  :     DebugMsg(( "cv_write_debug_tables enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11330
+	lea	rcx, OFFSET FLAT:$SG11331
 	call	DoDebugMsg
 
 ; 995  : 
@@ -440,7 +441,7 @@ $LN38:
 	jmp	SHORT $LN25@cv_write_d
 $LN24@cv_write_d:
 	mov	edx, 996				; 000003e4H
-	lea	rcx, OFFSET FLAT:$SG11331
+	lea	rcx, OFFSET FLAT:$SG11332
 	call	InternalError
 	mov	DWORD PTR tv74[rsp], eax
 $LN25@cv_write_d:
@@ -609,7 +610,7 @@ $LN3@cv_write_d:
 	add	rax, rcx
 	mov	r8, QWORD PTR objname$[rsp]
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11334
+	lea	rcx, OFFSET FLAT:$SG11335
 	call	DoDebugMsg
 
 ; 1031 :     cv.ps += sizeof( struct cv_symrec_objname );
@@ -797,7 +798,7 @@ $LN14@cv_write_d:
 	add	rax, rcx
 	lea	r8, OFFSET FLAT:szCVCompiler
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11339
+	lea	rcx, OFFSET FLAT:$SG11340
 	call	DoDebugMsg
 
 ; 1057 :     cv.ps += sizeof( struct cv_symrec_compile );
@@ -868,7 +869,7 @@ $LN5@cv_write_d:
 	jmp	SHORT $LN33@cv_write_d
 $LN32@cv_write_d:
 	mov	edx, 1068				; 0000042cH
-	lea	rcx, OFFSET FLAT:$SG11341
+	lea	rcx, OFFSET FLAT:$SG11342
 	call	InternalError
 	mov	DWORD PTR tv244[rsp], eax
 $LN33@cv_write_d:
@@ -982,7 +983,7 @@ $LN21@cv_write_d:
 	jmp	SHORT $LN37@cv_write_d
 $LN36@cv_write_d:
 	mov	edx, 1092				; 00000444H
-	lea	rcx, OFFSET FLAT:$SG11347
+	lea	rcx, OFFSET FLAT:$SG11348
 	call	InternalError
 	mov	DWORD PTR tv277[rsp], eax
 $LN37@cv_write_d:
@@ -1062,7 +1063,7 @@ $LN8@cv_write_d:
 	movzx	eax, WORD PTR cv$[rsp+44]
 	dec	eax
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11348
+	lea	rcx, OFFSET FLAT:$SG11349
 	call	DoDebugMsg
 
 ; 1112 :     return;
@@ -1276,7 +1277,7 @@ $LN17@cv_write_s:
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	rdx, rcx
-	lea	rcx, OFFSET FLAT:$SG11249
+	lea	rcx, OFFSET FLAT:$SG11250
 	call	DoDebugMsg
 
 ; 707  :         cv->ps += len;
@@ -1497,7 +1498,7 @@ $LN3@cv_write_s:
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	r8, QWORD PTR [rcx+8]
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11253
+	lea	rcx, OFFSET FLAT:$SG11254
 	call	DoDebugMsg
 
 ; 745  :         if ( Ofssize == USE16 ) {
@@ -1864,7 +1865,7 @@ $LN66@cv_write_s:
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	r8, QWORD PTR [rcx+8]
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11261
+	lea	rcx, OFFSET FLAT:$SG11262
 	call	DoDebugMsg
 
 ; 793  :         } else {
@@ -1942,7 +1943,7 @@ $LN68@cv_write_s:
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	r8, QWORD PTR [rcx+8]
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11262
+	lea	rcx, OFFSET FLAT:$SG11263
 	call	DoDebugMsg
 $LN27@cv_write_s:
 
@@ -2200,7 +2201,7 @@ $LN70@cv_write_s:
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	rdx, rcx
-	lea	rcx, OFFSET FLAT:$SG11271
+	lea	rcx, OFFSET FLAT:$SG11272
 	call	DoDebugMsg
 
 ; 839  :         } else {
@@ -2233,7 +2234,7 @@ $LN34@cv_write_s:
 	mov	rax, QWORD PTR [rax+24]
 	mov	rax, QWORD PTR [rax+96]
 	mov	rax, QWORD PTR [rax+80]
-	lea	rdx, OFFSET FLAT:$SG11274
+	lea	rdx, OFFSET FLAT:$SG11275
 	mov	rcx, QWORD PTR [rax+8]
 	call	strcmp
 	test	eax, eax
@@ -2333,7 +2334,7 @@ $LN37@cv_write_s:
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	rdx, rcx
-	lea	rcx, OFFSET FLAT:$SG11275
+	lea	rcx, OFFSET FLAT:$SG11276
 	call	DoDebugMsg
 $LN35@cv_write_s:
 $LN29@cv_write_s:
@@ -2724,7 +2725,7 @@ $LN41@cv_write_s:
 	mov	rax, QWORD PTR proc$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	rdx, rcx
-	lea	rcx, OFFSET FLAT:$SG11283
+	lea	rcx, OFFSET FLAT:$SG11284
 	call	DoDebugMsg
 
 ; 910  :                               GetPos(cv->symbols,cv->ps), proc->sym.name, lcl->sym.name, lcl->sym.mem_type, cv->ps_br16->type ));
@@ -2950,7 +2951,7 @@ $LN51@cv_write_s:
 	mov	rax, QWORD PTR proc$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	rdx, rcx
-	lea	rcx, OFFSET FLAT:$SG11291
+	lea	rcx, OFFSET FLAT:$SG11292
 	call	DoDebugMsg
 
 ; 949  :                                   GetPos(cv->symbols,cv->ps), proc->sym.name, lcl->sym.name, lcl->sym.mem_type, cv->ps_rr32->type ));
@@ -3045,7 +3046,7 @@ $LN45@cv_write_s:
 	mov	rax, QWORD PTR proc$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	rdx, rcx
-	lea	rcx, OFFSET FLAT:$SG11292
+	lea	rcx, OFFSET FLAT:$SG11293
 	call	DoDebugMsg
 $LN46@cv_write_s:
 $LN44@cv_write_s:
@@ -3712,7 +3713,7 @@ $LN7@cv_enum_fi:
 	inc	eax
 	mov	DWORD PTR i$[rsp], eax
 	mov	r8d, DWORD PTR i$[rsp]
-	lea	rdx, OFFSET FLAT:$SG11062
+	lea	rdx, OFFSET FLAT:$SG11063
 	lea	rcx, QWORD PTR tmpname$5[rsp]
 	call	sprintf
 	mov	rcx, QWORD PTR curr$[rsp]
@@ -4055,7 +4056,7 @@ $LN5@cv_memberp:
 	mov	r8, rcx
 	mov	rax, QWORD PTR cv$[rsp]
 	mov	edx, DWORD PTR [rax+40]
-	lea	rcx, OFFSET FLAT:$SG11038
+	lea	rcx, OFFSET FLAT:$SG11039
 	call	DoDebugMsg
 
 ; 391  :     SetPrefixName( tmp, mbr->name, mbr->name_size );
@@ -4409,7 +4410,7 @@ cv_write_type PROC
 	mov	r9, QWORD PTR [rax+8]
 	mov	rax, QWORD PTR cv$[rsp]
 	mov	edx, DWORD PTR [rax+40]
-	lea	rcx, OFFSET FLAT:$SG11120
+	lea	rcx, OFFSET FLAT:$SG11121
 	call	DoDebugMsg
 
 ; 503  :                           cv->level, GetPos(cv->types, cv->pt), sym->name, sym->target_type->name, sym->target_type->typekind, sym->target_type->mem_type ));
@@ -4463,7 +4464,7 @@ $LN7@cv_write_t:
 	mov	r8, rcx
 	mov	rax, QWORD PTR cv$[rsp]
 	mov	edx, DWORD PTR [rax+40]
-	lea	rcx, OFFSET FLAT:$SG11122
+	lea	rcx, OFFSET FLAT:$SG11123
 	call	DoDebugMsg
 $LN6@cv_write_t:
 
@@ -4501,7 +4502,7 @@ $LN4@cv_write_t:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11124
+	lea	rcx, OFFSET FLAT:$SG11125
 	call	DoDebugMsg
 
 ; 532  :         return;
@@ -4631,7 +4632,7 @@ $LN10@cv_write_t:
 	mov	r8, rcx
 	mov	rax, QWORD PTR cv$[rsp]
 	mov	edx, DWORD PTR [rax+40]
-	lea	rcx, OFFSET FLAT:$SG11126
+	lea	rcx, OFFSET FLAT:$SG11127
 	call	DoDebugMsg
 
 ; 552  :         size = ( sizeof( struct cv_typerec_union ) + typelen + 1 + namesize + 3 ) & ~3;
@@ -4758,7 +4759,7 @@ $LN12@cv_write_t:
 	mov	r8, rcx
 	mov	rax, QWORD PTR cv$[rsp]
 	mov	edx, DWORD PTR [rax+40]
-	lea	rcx, OFFSET FLAT:$SG11129
+	lea	rcx, OFFSET FLAT:$SG11130
 	call	DoDebugMsg
 
 ; 566  :         size = ( sizeof( struct cv_typerec_structure ) + typelen + 1 + namesize + 3 ) & ~3;
@@ -4962,7 +4963,7 @@ $LN34@cv_write_t:
 	mov	QWORD PTR tv339[rsp], rax
 	jmp	SHORT $LN23@cv_write_t
 $LN22@cv_write_t:
-	lea	rax, OFFSET FLAT:$SG11132
+	lea	rax, OFFSET FLAT:$SG11133
 	mov	QWORD PTR tv339[rsp], rax
 $LN23@cv_write_t:
 	cmp	BYTE PTR $T7[rsp], 0
@@ -5089,7 +5090,7 @@ $LN40@cv_write_t:
 	mov	r8, rcx
 	mov	rax, QWORD PTR cv$[rsp]
 	mov	edx, DWORD PTR [rax+40]
-	lea	rcx, OFFSET FLAT:$SG11133
+	lea	rcx, OFFSET FLAT:$SG11134
 	call	DoDebugMsg
 
 ; 597  :     cv->pt += sizeof( struct cv_typerec_fieldlist );
@@ -5389,7 +5390,7 @@ $LN8@cv_write_p:
 	mov	QWORD PTR tv194[rsp], rax
 	jmp	SHORT $LN19@cv_write_p
 $LN18@cv_write_p:
-	lea	rax, OFFSET FLAT:$SG10981
+	lea	rax, OFFSET FLAT:$SG10982
 	mov	QWORD PTR tv194[rsp], rax
 $LN19@cv_write_p:
 	mov	rax, QWORD PTR cv$[rsp]
@@ -5425,7 +5426,7 @@ $LN19@cv_write_p:
 	mov	r9d, edx
 	mov	rax, QWORD PTR cv$[rsp]
 	mov	edx, DWORD PTR [rax+40]
-	lea	rcx, OFFSET FLAT:$SG10982
+	lea	rcx, OFFSET FLAT:$SG10983
 	call	DoDebugMsg
 
 ; 301  :               cv->level, GetPos(cv->types, cv->pt), cv->currtype, sym->name, sym->mem_type, sym->ptr_memtype, sym->target_type ? sym->target_type->name : "NULL", cv->pt_ptr->type ));
@@ -6466,7 +6467,7 @@ $LN38@GetTyperef:
 	mov	r8d, DWORD PTR [rax+32]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10885
+	lea	rcx, OFFSET FLAT:$SG10886
 	call	DoDebugMsg
 
 ; 161  :             return( GetTyperef( sym, Ofssize ) );

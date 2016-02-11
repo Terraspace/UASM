@@ -9,9 +9,10 @@ _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 COMM	evex:BYTE
+COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11394 DB	'$$$%05u', 00H
+$SG11395 DB	'$$$%05u', 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	sprintf
@@ -351,7 +352,7 @@ $LN4@AddLinnumD:
 ; 94   :         sprintf( procname, "$$$%05u", procidx );
 
 	mov	r8d, DWORD PTR procidx
-	lea	rdx, OFFSET FLAT:$SG11394
+	lea	rdx, OFFSET FLAT:$SG11395
 	lea	rcx, QWORD PTR procname$1[rsp]
 	call	sprintf
 

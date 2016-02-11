@@ -63,6 +63,7 @@ _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 COMM	evex:BYTE
+COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 CONST	SEGMENT
 directive_tab DQ FLAT:CondAsmDirective
@@ -121,26 +122,26 @@ directive_tab DQ FLAT:CondAsmDirective
 	DQ	FLAT:ContextDirective
 CONST	ENDS
 _DATA	SEGMENT
-$SG11268 DB	'IncBinDirective enter', 0aH, 00H
+$SG11267 DB	'IncBinDirective enter', 0aH, 00H
 	ORG $+1
-$SG11290 DB	'IncBinDirective: filename=%s, offset=%u, size=%u', 0aH, 00H
+$SG11289 DB	'IncBinDirective: filename=%s, offset=%u, size=%u', 0aH, 00H
 	ORG $+2
-$SG11210 DB	'%s', 0aH, 00H
-$SG11308 DB	'AliasDirective: first argument is not a literal: %s', 0aH
+$SG11209 DB	'%s', 0aH, 00H
+$SG11307 DB	'AliasDirective: first argument is not a literal: %s', 0aH
 	DB	00H
 	ORG $+3
-$SG11311 DB	'AliasDirective: syntax error: %s', 0aH, 00H
+$SG11310 DB	'AliasDirective: syntax error: %s', 0aH, 00H
 	ORG $+6
-$SG11314 DB	'AliasDirective: second argument is not a literal: %s', 0aH
+$SG11313 DB	'AliasDirective: second argument is not a literal: %s', 0aH
 	DB	00H
 	ORG $+2
-$SG11325 DB	'AliasDirective: symbol redefinition', 0aH, 00H
+$SG11324 DB	'AliasDirective: symbol redefinition', 0aH, 00H
 	ORG $+3
-$SG11343 DB	'NameDirective: ignored name >%s<', 0aH, 00H
+$SG11342 DB	'NameDirective: ignored name >%s<', 0aH, 00H
 	ORG $+6
-$SG11356 DB	'RadixDirective: new radix=%u', 0aH, 00H
+$SG11355 DB	'RadixDirective: new radix=%u', 0aH, 00H
 	ORG $+2
-$SG11221 DB	'IncludeDirective enter', 0aH, 00H
+$SG11220 DB	'IncludeDirective enter', 0aH, 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	_vfprintf_l
@@ -570,7 +571,7 @@ $LN3@NameDirect:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG11343
+	lea	rcx, OFFSET FLAT:$SG11342
 	call	DoDebugMsg
 
 ; 430  :     return( NOT_ERROR );
@@ -812,7 +813,7 @@ $LN25:
 ; 201  : 
 ; 202  :     DebugMsg(("IncBinDirective enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11268
+	lea	rcx, OFFSET FLAT:$SG11267
 	call	DoDebugMsg
 
 ; 203  : 
@@ -1131,7 +1132,7 @@ $LN22@IncBinDire:
 	mov	r9d, DWORD PTR sizemax$[rsp]
 	mov	r8d, DWORD PTR fileoffset$[rsp]
 	mov	rdx, QWORD PTR ModuleInfo+488
-	lea	rcx, OFFSET FLAT:$SG11290
+	lea	rcx, OFFSET FLAT:$SG11289
 	call	DoDebugMsg1
 
 ; 261  : 
@@ -1270,7 +1271,7 @@ $LN5:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	lea	rcx, OFFSET FLAT:$SG11210
+	lea	rcx, OFFSET FLAT:$SG11209
 	call	printf
 $LN3@EchoDirect:
 $LN2@EchoDirect:
@@ -1344,7 +1345,7 @@ $LN3@AliasDirec:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG11308
+	lea	rcx, OFFSET FLAT:$SG11307
 	call	DoDebugMsg
 
 ; 316  :         return( EmitError( TEXT_ITEM_REQUIRED ) );
@@ -1387,7 +1388,7 @@ $LN5@AliasDirec:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG11311
+	lea	rcx, OFFSET FLAT:$SG11310
 	call	DoDebugMsg
 
 ; 324  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i+1].string_ptr ) );
@@ -1434,7 +1435,7 @@ $LN7@AliasDirec:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG11314
+	lea	rcx, OFFSET FLAT:$SG11313
 	call	DoDebugMsg
 
 ; 330  :         return( EmitError( TEXT_ITEM_REQUIRED ) );
@@ -1647,7 +1648,7 @@ $LN17@AliasDirec:
 
 ; 366  :         DebugMsg(("AliasDirective: symbol redefinition\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11325
+	lea	rcx, OFFSET FLAT:$SG11324
 	call	DoDebugMsg
 
 ; 367  :         return( EmitErr( SYMBOL_REDEFINITION, sym->name ) );
@@ -1883,7 +1884,7 @@ $LN5@RadixDirec:
 
 	movzx	eax, BYTE PTR ModuleInfo+396
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11356
+	lea	rcx, OFFSET FLAT:$SG11355
 	call	DoDebugMsg
 
 ; 464  : 
@@ -2062,7 +2063,7 @@ $LN12:
 ; 72   : 
 ; 73   :     DebugMsg1(("IncludeDirective enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11221
+	lea	rcx, OFFSET FLAT:$SG11220
 	call	DoDebugMsg1
 
 ; 74   : 

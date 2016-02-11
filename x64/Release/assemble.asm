@@ -18,48 +18,49 @@ COMM	LinnumQueue:BYTE:010H
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 COMM	evex:BYTE
+COMM	ZEROLOCALS:BYTE
 COMM	ModuleInfo:BYTE:0308H
 COMM	Parse_Pass:DWORD
 COMM	write_to_file:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11721 DB	'_TEXT', 00H
+$SG11722 DB	'_TEXT', 00H
 	ORG $+2
-$SG11722 DB	'.text', 00H
+$SG11723 DB	'.text', 00H
 	ORG $+2
-$SG11723 DB	'_DATA', 00H
+$SG11724 DB	'_DATA', 00H
 	ORG $+2
-$SG11724 DB	'.data', 00H
+$SG11725 DB	'.data', 00H
 	ORG $+2
-$SG11725 DB	'CONST', 00H
+$SG11726 DB	'CONST', 00H
 	ORG $+2
-$SG11726 DB	'.rdata', 00H
+$SG11727 DB	'.rdata', 00H
 	ORG $+1
-$SG11727 DB	'_BSS', 00H
+$SG11728 DB	'_BSS', 00H
 	ORG $+3
-$SG11728 DB	'.bss', 00H
+$SG11729 DB	'.bss', 00H
 	ORG $+3
-$SG11841 DB	'w', 00H
+$SG11842 DB	'w', 00H
 	ORG $+2
-$SG11905 DB	'%s', 0aH, 00H
-$SG11845 DB	'import ''%s''  %s.%s', 0aH, 00H
-$SG11907 DB	0aH, 00H
+$SG11906 DB	'%s', 0aH, 00H
+$SG11846 DB	'import ''%s''  %s.%s', 0aH, 00H
+$SG11908 DB	0aH, 00H
 	ORG $+2
-$SG11893 DB	'INCLUDE', 00H
-$SG11930 DB	'%r %s', 00H
+$SG11894 DB	'INCLUDE', 00H
+$SG11932 DB	'%r %s', 00H
 	ORG $+2
-$SG12030 DB	'rb', 00H
+$SG12032 DB	'rb', 00H
 	ORG $+1
-$SG12033 DB	'wb', 00H
+$SG12035 DB	'wb', 00H
 	ORG $+1
-$SG12036 DB	'wb', 00H
+$SG12038 DB	'wb', 00H
 	ORG $+1
-$SG12069 DB	'EXE', 00H
-$SG12070 DB	'BIN', 00H
-$SG12071 DB	'obj', 00H
-$SG12073 DB	'lst', 00H
-$SG12075 DB	'err', 00H
-$SG12142 DB	'%s', 0aH, 00H
+$SG12071 DB	'EXE', 00H
+$SG12072 DB	'BIN', 00H
+$SG12073 DB	'obj', 00H
+$SG12075 DB	'lst', 00H
+$SG12077 DB	'err', 00H
+$SG12144 DB	'%s', 0aH, 00H
 _DATA	ENDS
 CONST	SEGMENT
 formatoptions DQ FLAT:bin_init
@@ -81,23 +82,23 @@ formatoptions DQ FLAT:bin_init
 cst	DB	05H
 	DB	01H
 	ORG $+6
-	DQ	FLAT:$SG11721
 	DQ	FLAT:$SG11722
-	DB	05H
-	DB	01H
-	ORG $+6
 	DQ	FLAT:$SG11723
-	DQ	FLAT:$SG11724
 	DB	05H
 	DB	01H
 	ORG $+6
+	DQ	FLAT:$SG11724
 	DQ	FLAT:$SG11725
+	DB	05H
+	DB	01H
+	ORG $+6
 	DQ	FLAT:$SG11726
+	DQ	FLAT:$SG11727
 	DB	04H
 	DB	00H
 	ORG $+6
-	DQ	FLAT:$SG11727
 	DQ	FLAT:$SG11728
+	DQ	FLAT:$SG11729
 CONST	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	printf
@@ -349,7 +350,7 @@ pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$ModulePassInit DD imagerel ModulePassInit
-	DD	imagerel ModulePassInit+499
+	DD	imagerel ModulePassInit+531
 	DD	imagerel $unwind$ModulePassInit
 pdata	ENDS
 ;	COMDAT pdata
@@ -693,41 +694,41 @@ xdata	ENDS
 _TEXT	SEGMENT
 AssembleFini PROC					; COMDAT
 
-; 1391 : {
+; 1400 : {
 
 	sub	rsp, 40					; 00000028H
 
-; 1392 :     int i;
-; 1393 :     SegmentFini();
+; 1401 :     int i;
+; 1402 :     SegmentFini();
 
 	call	SegmentFini
 
-; 1394 :     SymFini();
+; 1403 :     SymFini();
 
 	call	SymFini
 
-; 1395 :     ResWordsFini();
+; 1404 :     ResWordsFini();
 
 	call	ResWordsFini
 
-; 1396 : #ifdef DEBUG_OUT
-; 1397 :     DumpInstrStats();
-; 1398 :     MacroFini();
-; 1399 : #endif
-; 1400 :     FreePubQueue();
+; 1405 : #ifdef DEBUG_OUT
+; 1406 :     DumpInstrStats();
+; 1407 :     MacroFini();
+; 1408 : #endif
+; 1409 :     FreePubQueue();
 
 	call	FreePubQueue
 
-; 1401 : #if FASTMEM==0
-; 1402 :     FreeLibQueue();
-; 1403 :     ContextFini();
-; 1404 :     HllFini();
-; 1405 : #endif
-; 1406 :     InputFini();
+; 1410 : #if FASTMEM==0
+; 1411 :     FreeLibQueue();
+; 1412 :     ContextFini();
+; 1413 :     HllFini();
+; 1414 : #endif
+; 1415 :     InputFini();
 
 	call	InputFini
 
-; 1407 :     close_files();
+; 1416 :     close_files();
 
 	call	close_files
 	xorps	xmm0, xmm0
@@ -735,24 +736,24 @@ AssembleFini PROC					; COMDAT
 	movdqu	XMMWORD PTR ModuleInfo+128, xmm0
 	movdqu	XMMWORD PTR ModuleInfo+144, xmm1
 
-; 1421 :     return;
-; 1422 : }
+; 1430 :     return;
+; 1431 : }
 
 	add	rsp, 40					; 00000028H
 
-; 1408 : 
-; 1409 : #if FASTPASS
-; 1410 : #if FASTMEM==0
-; 1411 :     FreeLineStore();
-; 1412 : #endif
-; 1413 : #endif
-; 1414 : 
-; 1415 :     for ( i = 0; i < NUM_FILE_TYPES; i++ ) {
-; 1416 :         LclFree( CurrFName[i] );
-; 1417 :         /* v2.05: make sure the pointer for ERR is cleared */
-; 1418 :         CurrFName[i] = NULL;
-; 1419 :     }
-; 1420 :     MemFini();
+; 1417 : 
+; 1418 : #if FASTPASS
+; 1419 : #if FASTMEM==0
+; 1420 :     FreeLineStore();
+; 1421 : #endif
+; 1422 : #endif
+; 1423 : 
+; 1424 :     for ( i = 0; i < NUM_FILE_TYPES; i++ ) {
+; 1425 :         LclFree( CurrFName[i] );
+; 1426 :         /* v2.05: make sure the pointer for ERR is cleared */
+; 1427 :         CurrFName[i] = NULL;
+; 1428 :     }
+; 1429 :     MemFini();
 
 	jmp	MemFini
 AssembleFini ENDP
@@ -764,46 +765,46 @@ _TEXT	SEGMENT
 source$ = 48
 AssembleInit PROC					; COMDAT
 
-; 1351 : {
+; 1360 : {
 
 	push	rbx
 	sub	rsp, 32					; 00000020H
 	mov	rbx, rcx
 
-; 1352 :     DebugMsg(("AssembleInit(\"%s\") enter\n", source ));
-; 1353 : 
-; 1354 :     MemInit();
+; 1361 :     DebugMsg(("AssembleInit(\"%s\") enter\n", source ));
+; 1362 : 
+; 1363 :     MemInit();
 
 	call	MemInit
 
-; 1355 :     //start_label   = NULL;
-; 1356 :     //start_displ   = 0;
-; 1357 :     write_to_file = FALSE;
-; 1358 :     //GeneratedCode = 0;
-; 1359 :     LinnumQueue.head = NULL;
-; 1360 : 
-; 1361 :     SetFilenames( source );
+; 1364 :     //start_label   = NULL;
+; 1365 :     //start_displ   = 0;
+; 1366 :     write_to_file = FALSE;
+; 1367 :     //GeneratedCode = 0;
+; 1368 :     LinnumQueue.head = NULL;
+; 1369 : 
+; 1370 :     SetFilenames( source );
 
 	mov	rcx, rbx
 	mov	BYTE PTR write_to_file, 0
 	mov	QWORD PTR LinnumQueue, 0
 	call	SetFilenames
 
-; 1362 : 
-; 1363 : #if FASTPASS
-; 1364 :     FastpassInit();
+; 1371 : 
+; 1372 : #if FASTPASS
+; 1373 :     FastpassInit();
 
 	call	FastpassInit
 
-; 1365 : #endif
-; 1366 :     open_files();
+; 1374 : #endif
+; 1375 :     open_files();
 
 	call	open_files
 
-; 1367 : #if BUILD_TARGET
-; 1368 :     get_os_include();
-; 1369 : #endif
-; 1370 :     ReswTableInit();
+; 1376 : #if BUILD_TARGET
+; 1377 :     get_os_include();
+; 1378 : #endif
+; 1379 :     ReswTableInit();
 
 	call	ResWordsInit
 	cmp	DWORD PTR Options+144, 1
@@ -821,36 +822,36 @@ $LN4@AssembleIn:
 	call	DisableKeyword
 $LN5@AssembleIn:
 
-; 1371 :     SymInit();
+; 1380 :     SymInit();
 
 	call	SymInit
 
-; 1372 :     InputInit();
+; 1381 :     InputInit();
 
 	call	InputInit
 
-; 1373 : 
-; 1374 :     ModuleInit();
+; 1382 : 
+; 1383 :     ModuleInit();
 
 	call	ModuleInit
 
-; 1375 :     CondInit();
+; 1384 :     CondInit();
 
 	call	CondInit
 
-; 1376 :     ExprEvalInit();
+; 1385 :     ExprEvalInit();
 
 	call	ExprEvalInit
 
-; 1378 : 
-; 1379 :     DebugMsg(("AssembleInit() exit\n"));
-; 1380 :     return;
-; 1381 : }
+; 1387 : 
+; 1388 :     DebugMsg(("AssembleInit() exit\n"));
+; 1389 :     return;
+; 1390 : }
 
 	add	rsp, 32					; 00000020H
 	pop	rbx
 
-; 1377 :     LstInit();
+; 1386 :     LstInit();
 
 	jmp	LstInit
 AssembleInit ENDP
@@ -863,7 +864,7 @@ path$ = 32
 name$ = 320
 SetFilenames PROC					; COMDAT
 
-; 1303 : {
+; 1312 : {
 
 	mov	QWORD PTR [rsp+8], rbx
 	mov	QWORD PTR [rsp+16], rbp
@@ -873,15 +874,15 @@ SetFilenames PROC					; COMDAT
 	sub	rsp, 304				; 00000130H
 	mov	rbx, rcx
 
-; 1304 :     int i;
-; 1305 :     const char *fn;
-; 1306 :     char *ext;
-; 1307 :     char path[ FILENAME_MAX ];
-; 1308 : 
-; 1309 :     DebugMsg(("SetFilenames(\"%s\") enter\n", name ));
-; 1310 : 
-; 1311 :     /* set CurrFName[ASM] */
-; 1312 :     CurrFName[ASM] = LclAlloc( strlen( name ) + 1 );
+; 1313 :     int i;
+; 1314 :     const char *fn;
+; 1315 :     char *ext;
+; 1316 :     char path[ FILENAME_MAX ];
+; 1317 : 
+; 1318 :     DebugMsg(("SetFilenames(\"%s\") enter\n", name ));
+; 1319 : 
+; 1320 :     /* set CurrFName[ASM] */
+; 1321 :     CurrFName[ASM] = LclAlloc( strlen( name ) + 1 );
 
 	or	rcx, -1
 $LL70@SetFilenam:
@@ -892,7 +893,7 @@ $LL70@SetFilenam:
 	call	LclAlloc
 	mov	QWORD PTR ModuleInfo+128, rax
 
-; 1313 :     strcpy( CurrFName[ASM], name );
+; 1322 :     strcpy( CurrFName[ASM], name );
 
 	mov	rdx, rbx
 	npad	1
@@ -904,39 +905,39 @@ $LL11@SetFilenam:
 	test	cl, cl
 	jne	SHORT $LL11@SetFilenam
 
-; 1314 : 
-; 1315 :     /* set [OBJ], [ERR], [LST] */
-; 1316 :     fn = GetFNamePart( name );
+; 1323 : 
+; 1324 :     /* set [OBJ], [ERR], [LST] */
+; 1325 :     fn = GetFNamePart( name );
 
 	mov	rcx, rbx
 	call	GetFNamePart
 	mov	rdi, rax
 
-; 1317 :     for ( i = ASM+1; i < NUM_FILE_TYPES; i++ ) {
+; 1326 :     for ( i = ASM+1; i < NUM_FILE_TYPES; i++ ) {
 
 	lea	rbp, OFFSET FLAT:__ImageBase
 	xor	esi, esi
-	lea	r14, OFFSET FLAT:$SG12069
+	lea	r14, OFFSET FLAT:$SG12071
 	mov	ebx, 1
 $LL4@SetFilenam:
 
-; 1318 :         if( Options.names[i] == NULL ) {
+; 1327 :         if( Options.names[i] == NULL ) {
 
 	mov	rcx, QWORD PTR Options[rsi+rbp+24]
 	test	rcx, rcx
 	jne	$LN5@SetFilenam
 
-; 1319 :             path[0] = NULLC;
+; 1328 :             path[0] = NULLC;
 
 	mov	BYTE PTR path$[rsp], cl
 	mov	rcx, QWORD PTR DefaultDir[rsi+rbp+8]
 
-; 1320 :             if ( DefaultDir[i])
+; 1329 :             if ( DefaultDir[i])
 
 	test	rcx, rcx
 	je	SHORT $LN7@SetFilenam
 
-; 1321 :                 strcpy( path, DefaultDir[i] );
+; 1330 :                 strcpy( path, DefaultDir[i] );
 
 	lea	rdx, QWORD PTR path$[rsp]
 	sub	rdx, rcx
@@ -949,7 +950,7 @@ $LL12@SetFilenam:
 	jne	SHORT $LL12@SetFilenam
 $LN7@SetFilenam:
 
-; 1322 :             strcat( path, fn );
+; 1331 :             strcat( path, fn );
 
 	lea	rcx, QWORD PTR path$[rsp]
 	dec	rcx
@@ -966,17 +967,17 @@ $LL69@SetFilenam:
 	test	al, al
 	jne	SHORT $LL69@SetFilenam
 
-; 1323 :             ext = GetExtPart( path );
+; 1332 :             ext = GetExtPart( path );
 
 	lea	rcx, QWORD PTR path$[rsp]
 	call	GetExtPart
 
-; 1324 :             *ext++  = '.';
+; 1333 :             *ext++  = '.';
 
 	mov	BYTE PTR [rax], 46			; 0000002eH
 	lea	rdx, QWORD PTR [rax+1]
 
-; 1325 :             strcpy( ext, GetExt( i ) );
+; 1334 :             strcpy( ext, GetExt( i ) );
 
 	mov	eax, ebx
 	sub	eax, 1
@@ -988,22 +989,22 @@ $LL69@SetFilenam:
 	xor	ecx, ecx
 	jmp	SHORT $LN18@SetFilenam
 $LN27@SetFilenam:
-	lea	rcx, OFFSET FLAT:$SG12075
+	lea	rcx, OFFSET FLAT:$SG12077
 	jmp	SHORT $LN18@SetFilenam
 $LN26@SetFilenam:
-	lea	rcx, OFFSET FLAT:$SG12073
+	lea	rcx, OFFSET FLAT:$SG12075
 	jmp	SHORT $LN18@SetFilenam
 $LN21@SetFilenam:
 	cmp	DWORD PTR Options+144, 0
 	jne	SHORT $LN24@SetFilenam
 	mov	eax, DWORD PTR Options+148
-	lea	rcx, OFFSET FLAT:$SG12070
+	lea	rcx, OFFSET FLAT:$SG12072
 	dec	eax
 	cmp	eax, 1
 	cmovbe	rcx, r14
 	jmp	SHORT $LN18@SetFilenam
 $LN24@SetFilenam:
-	lea	rcx, OFFSET FLAT:$SG12071
+	lea	rcx, OFFSET FLAT:$SG12073
 $LN18@SetFilenam:
 	sub	rdx, rcx
 $LL13@SetFilenam:
@@ -1013,15 +1014,15 @@ $LL13@SetFilenam:
 	test	al, al
 	jne	SHORT $LL13@SetFilenam
 
-; 1326 : 
-; 1327 :         } else {
+; 1335 : 
+; 1336 :         } else {
 
 	jmp	$LN9@SetFilenam
 $LN5@SetFilenam:
 
-; 1328 :             /* filename has been set by cmdline option -Fo, -Fl or -Fr */
-; 1329 :             const char *fn2;
-; 1330 :             strcpy( path, Options.names[i] );
+; 1337 :             /* filename has been set by cmdline option -Fo, -Fl or -Fr */
+; 1338 :             const char *fn2;
+; 1339 :             strcpy( path, Options.names[i] );
 
 	lea	rdx, QWORD PTR path$[rsp]
 	sub	rdx, rcx
@@ -1033,17 +1034,17 @@ $LL14@SetFilenam:
 	test	al, al
 	jne	SHORT $LL14@SetFilenam
 
-; 1331 :             fn2 = GetFNamePart( path );
+; 1340 :             fn2 = GetFNamePart( path );
 
 	lea	rcx, QWORD PTR path$[rsp]
 	call	GetFNamePart
 
-; 1332 :             if( *fn2 == NULLC )
+; 1341 :             if( *fn2 == NULLC )
 
 	cmp	BYTE PTR [rax], 0
 	jne	SHORT $LN8@SetFilenam
 
-; 1333 :                 strcpy( (char *)fn2, fn );
+; 1342 :                 strcpy( (char *)fn2, fn );
 
 	mov	r8, rax
 	mov	rdx, rdi
@@ -1057,23 +1058,23 @@ $LL15@SetFilenam:
 	jne	SHORT $LL15@SetFilenam
 $LN8@SetFilenam:
 
-; 1334 :             ext = GetExtPart( fn2 );
+; 1343 :             ext = GetExtPart( fn2 );
 
 	mov	rcx, rax
 	call	GetExtPart
 	mov	rdx, rax
 
-; 1335 :             if( *ext == NULLC ) {
+; 1344 :             if( *ext == NULLC ) {
 
 	cmp	BYTE PTR [rax], 0
 	jne	SHORT $LN9@SetFilenam
 
-; 1336 :                 *ext++  = '.';
+; 1345 :                 *ext++  = '.';
 
 	mov	BYTE PTR [rax], 46			; 0000002eH
 	inc	rdx
 
-; 1337 :                 strcpy( ext, GetExt( i ) );
+; 1346 :                 strcpy( ext, GetExt( i ) );
 
 	mov	eax, ebx
 	sub	eax, 1
@@ -1085,22 +1086,22 @@ $LN8@SetFilenam:
 	xor	eax, eax
 	jmp	SHORT $LN29@SetFilenam
 $LN38@SetFilenam:
-	lea	rax, OFFSET FLAT:$SG12075
+	lea	rax, OFFSET FLAT:$SG12077
 	jmp	SHORT $LN29@SetFilenam
 $LN37@SetFilenam:
-	lea	rax, OFFSET FLAT:$SG12073
+	lea	rax, OFFSET FLAT:$SG12075
 	jmp	SHORT $LN29@SetFilenam
 $LN32@SetFilenam:
 	cmp	DWORD PTR Options+144, 0
 	jne	SHORT $LN35@SetFilenam
 	mov	ecx, DWORD PTR Options+148
-	lea	rax, OFFSET FLAT:$SG12070
+	lea	rax, OFFSET FLAT:$SG12072
 	dec	ecx
 	cmp	ecx, 1
 	cmovbe	rax, r14
 	jmp	SHORT $LN29@SetFilenam
 $LN35@SetFilenam:
-	lea	rax, OFFSET FLAT:$SG12071
+	lea	rax, OFFSET FLAT:$SG12073
 $LN29@SetFilenam:
 	sub	rdx, rax
 	npad	9
@@ -1112,10 +1113,10 @@ $LL16@SetFilenam:
 	jne	SHORT $LL16@SetFilenam
 $LN9@SetFilenam:
 
-; 1338 :             }
-; 1339 :         }
-; 1340 :         DebugMsg(("SetFilenames: i=%u >%s<\n", i, path ));
-; 1341 :         CurrFName[i] = LclAlloc( strlen( path ) + 1 );
+; 1347 :             }
+; 1348 :         }
+; 1349 :         DebugMsg(("SetFilenames: i=%u >%s<\n", i, path ));
+; 1350 :         CurrFName[i] = LclAlloc( strlen( path ) + 1 );
 
 	lea	rax, QWORD PTR path$[rsp]
 	or	rcx, -1
@@ -1127,7 +1128,7 @@ $LL67@SetFilenam:
 	call	LclAlloc
 	mov	QWORD PTR ModuleInfo[rsi+rbp+136], rax
 
-; 1342 :         strcpy( CurrFName[i], path );
+; 1351 :         strcpy( CurrFName[i], path );
 
 	lea	rdx, QWORD PTR path$[rsp]
 	npad	11
@@ -1139,16 +1140,16 @@ $LL17@SetFilenam:
 	test	cl, cl
 	jne	SHORT $LL17@SetFilenam
 
-; 1317 :     for ( i = ASM+1; i < NUM_FILE_TYPES; i++ ) {
+; 1326 :     for ( i = ASM+1; i < NUM_FILE_TYPES; i++ ) {
 
 	inc	ebx
 	add	rsi, 8
 	cmp	ebx, 4
 	jl	$LL4@SetFilenam
 
-; 1343 :     }
-; 1344 :     return;
-; 1345 : }
+; 1352 :     }
+; 1353 :     return;
+; 1354 : }
 
 	lea	r11, QWORD PTR [rsp+304]
 	mov	rbx, QWORD PTR [r11+16]
@@ -1167,7 +1168,7 @@ _TEXT	SEGMENT
 type$ = 8
 GetExt	PROC						; COMDAT
 
-; 1268 :     switch ( type ) {
+; 1277 :     switch ( type ) {
 
 	sub	ecx, 1
 	je	SHORT $LN4@GetExt
@@ -1176,39 +1177,39 @@ GetExt	PROC						; COMDAT
 	cmp	ecx, 1
 	je	SHORT $LN10@GetExt
 
-; 1288 :     }
-; 1289 :     return( NULL );
+; 1297 :     }
+; 1298 :     return( NULL );
 
 	xor	eax, eax
 
-; 1290 : }
+; 1299 : }
 
 	ret	0
 $LN10@GetExt:
 
-; 1286 :     case ERR:
-; 1287 :         return( ERR_EXT );
+; 1295 :     case ERR:
+; 1296 :         return( ERR_EXT );
 
-	lea	rax, OFFSET FLAT:$SG12075
+	lea	rax, OFFSET FLAT:$SG12077
 
-; 1290 : }
+; 1299 : }
 
 	ret	0
 $LN9@GetExt:
 
-; 1284 :     case LST:
-; 1285 :         return( LST_EXT );
+; 1293 :     case LST:
+; 1294 :         return( LST_EXT );
 
-	lea	rax, OFFSET FLAT:$SG12073
+	lea	rax, OFFSET FLAT:$SG12075
 
-; 1290 : }
+; 1299 : }
 
 	ret	0
 $LN4@GetExt:
 
-; 1269 :     case OBJ:
-; 1270 : #if BIN_SUPPORT
-; 1271 :         if ( Options.output_format == OFORMAT_BIN )
+; 1278 :     case OBJ:
+; 1279 : #if BIN_SUPPORT
+; 1280 :         if ( Options.output_format == OFORMAT_BIN )
 
 	cmp	DWORD PTR Options+144, 0
 	jne	SHORT $LN7@GetExt
@@ -1217,38 +1218,38 @@ $LN4@GetExt:
 	cmp	eax, 1
 	jbe	SHORT $LN8@GetExt
 
-; 1279 :             else
-; 1280 : #endif
-; 1281 :                 return( BIN_EXT );
+; 1288 :             else
+; 1289 : #endif
+; 1290 :                 return( BIN_EXT );
 
-	lea	rax, OFFSET FLAT:$SG12070
+	lea	rax, OFFSET FLAT:$SG12072
 
-; 1290 : }
+; 1299 : }
 
 	ret	0
 $LN8@GetExt:
 
-; 1272 : #if MZ_SUPPORT || PE_SUPPORT
-; 1273 :             if ( Options.sub_format == SFORMAT_MZ
-; 1274 : #if PE_SUPPORT
-; 1275 :                 || Options.sub_format == SFORMAT_PE
-; 1276 : #endif
-; 1277 :                )
-; 1278 :                 return( EXE_EXT );
+; 1281 : #if MZ_SUPPORT || PE_SUPPORT
+; 1282 :             if ( Options.sub_format == SFORMAT_MZ
+; 1283 : #if PE_SUPPORT
+; 1284 :                 || Options.sub_format == SFORMAT_PE
+; 1285 : #endif
+; 1286 :                )
+; 1287 :                 return( EXE_EXT );
 
-	lea	rax, OFFSET FLAT:$SG12069
+	lea	rax, OFFSET FLAT:$SG12071
 
-; 1290 : }
+; 1299 : }
 
 	ret	0
 $LN7@GetExt:
 
-; 1282 : #endif
-; 1283 :         return( OBJ_EXT );
+; 1291 : #endif
+; 1292 :         return( OBJ_EXT );
 
-	lea	rax, OFFSET FLAT:$SG12071
+	lea	rax, OFFSET FLAT:$SG12073
 
-; 1290 : }
+; 1299 : }
 
 	ret	0
 GetExt	ENDP
@@ -1259,29 +1260,29 @@ _TEXT	ENDS
 _TEXT	SEGMENT
 open_files PROC						; COMDAT
 
-; 1191 : {
+; 1200 : {
 
 	sub	rsp, 40					; 00000028H
 
-; 1192 :     /* open ASM file */
-; 1193 :     DebugMsg(("open_files() enter\n" ));
-; 1194 : 
-; 1195 :     //memset( CurrFile, 0, sizeof( CurrFile ) );
-; 1196 :     /* CurrFile[ASM] = fopen( CurrFName[ASM], "r" ); */
-; 1197 :     CurrFile[ASM] = fopen( CurrFName[ASM], "rb" );
+; 1201 :     /* open ASM file */
+; 1202 :     DebugMsg(("open_files() enter\n" ));
+; 1203 : 
+; 1204 :     //memset( CurrFile, 0, sizeof( CurrFile ) );
+; 1205 :     /* CurrFile[ASM] = fopen( CurrFName[ASM], "r" ); */
+; 1206 :     CurrFile[ASM] = fopen( CurrFName[ASM], "rb" );
 
 	mov	rcx, QWORD PTR ModuleInfo+128
-	lea	rdx, OFFSET FLAT:$SG12030
+	lea	rdx, OFFSET FLAT:$SG12032
 	call	fopen
 	mov	QWORD PTR ModuleInfo+96, rax
 
-; 1198 :     if( CurrFile[ASM] == NULL ) {
+; 1207 :     if( CurrFile[ASM] == NULL ) {
 
 	test	rax, rax
 	jne	SHORT $LN2@open_files
 
-; 1199 :         DebugMsg(("open_files(): cannot open source file, fopen(\"%s\") failed\n", CurrFName[ASM] ));
-; 1200 :         Fatal( CANNOT_OPEN_FILE, CurrFName[ASM], ErrnoStr() );
+; 1208 :         DebugMsg(("open_files(): cannot open source file, fopen(\"%s\") failed\n", CurrFName[ASM] ));
+; 1209 :         Fatal( CANNOT_OPEN_FILE, CurrFName[ASM], ErrnoStr() );
 
 	call	ErrnoStr
 	mov	rdx, QWORD PTR ModuleInfo+128
@@ -1290,28 +1291,28 @@ open_files PROC						; COMDAT
 	call	Fatal
 $LN2@open_files:
 
-; 1201 :     }
-; 1202 : 
-; 1203 :     /* open OBJ file */
-; 1204 :     if ( Options.syntax_check_only == FALSE ) {
+; 1210 :     }
+; 1211 : 
+; 1212 :     /* open OBJ file */
+; 1213 :     if ( Options.syntax_check_only == FALSE ) {
 
 	cmp	BYTE PTR Options+172, 0
 	jne	SHORT $LN4@open_files
 
-; 1205 :         CurrFile[OBJ] = fopen( CurrFName[OBJ], "wb" );
+; 1214 :         CurrFile[OBJ] = fopen( CurrFName[OBJ], "wb" );
 
 	mov	rcx, QWORD PTR ModuleInfo+136
-	lea	rdx, OFFSET FLAT:$SG12033
+	lea	rdx, OFFSET FLAT:$SG12035
 	call	fopen
 	mov	QWORD PTR ModuleInfo+104, rax
 
-; 1206 :         if( CurrFile[OBJ] == NULL ) {
+; 1215 :         if( CurrFile[OBJ] == NULL ) {
 
 	test	rax, rax
 	jne	SHORT $LN4@open_files
 
-; 1207 :             DebugMsg(("open_files(): cannot open object file, fopen(\"%s\") failed\n", CurrFName[OBJ] ));
-; 1208 :             Fatal( CANNOT_OPEN_FILE, CurrFName[OBJ], ErrnoStr() );
+; 1216 :             DebugMsg(("open_files(): cannot open object file, fopen(\"%s\") failed\n", CurrFName[OBJ] ));
+; 1217 :             Fatal( CANNOT_OPEN_FILE, CurrFName[OBJ], ErrnoStr() );
 
 	call	ErrnoStr
 	mov	rdx, QWORD PTR ModuleInfo+136
@@ -1320,48 +1321,48 @@ $LN2@open_files:
 	call	Fatal
 $LN4@open_files:
 
-; 1209 :         }
-; 1210 :         DebugMsg(("open_files(): output, fopen(\"%s\") ok\n", CurrFName[OBJ] ));
-; 1211 :     }
-; 1212 : 
-; 1213 :     if( Options.write_listing ) {
+; 1218 :         }
+; 1219 :         DebugMsg(("open_files(): output, fopen(\"%s\") ok\n", CurrFName[OBJ] ));
+; 1220 :     }
+; 1221 : 
+; 1222 :     if( Options.write_listing ) {
 
 	cmp	BYTE PTR Options+121, 0
 	je	SHORT $LN6@open_files
 
-; 1214 :         CurrFile[LST] = fopen( CurrFName[LST], "wb" );
+; 1223 :         CurrFile[LST] = fopen( CurrFName[LST], "wb" );
 
 	mov	rcx, QWORD PTR ModuleInfo+144
-	lea	rdx, OFFSET FLAT:$SG12036
+	lea	rdx, OFFSET FLAT:$SG12038
 	call	fopen
 	mov	QWORD PTR ModuleInfo+112, rax
 
-; 1215 :         if ( CurrFile[LST] == NULL )
+; 1224 :         if ( CurrFile[LST] == NULL )
 
 	test	rax, rax
 	jne	SHORT $LN6@open_files
 
-; 1216 :             Fatal( CANNOT_OPEN_FILE, CurrFName[LST], ErrnoStr() );
+; 1225 :             Fatal( CANNOT_OPEN_FILE, CurrFName[LST], ErrnoStr() );
 
 	call	ErrnoStr
 	mov	rdx, QWORD PTR ModuleInfo+144
 	mov	r8, rax
 	mov	ecx, 106				; 0000006aH
 
-; 1217 :     }
-; 1218 :     return;
-; 1219 : }
+; 1226 :     }
+; 1227 :     return;
+; 1228 : }
 
 	add	rsp, 40					; 00000028H
 
-; 1216 :             Fatal( CANNOT_OPEN_FILE, CurrFName[LST], ErrnoStr() );
+; 1225 :             Fatal( CANNOT_OPEN_FILE, CurrFName[LST], ErrnoStr() );
 
 	jmp	Fatal
 $LN6@open_files:
 
-; 1217 :     }
-; 1218 :     return;
-; 1219 : }
+; 1226 :     }
+; 1227 :     return;
+; 1228 : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
@@ -1373,69 +1374,69 @@ _TEXT	ENDS
 _TEXT	SEGMENT
 ReswTableInit PROC					; COMDAT
 
-; 1167 : {
+; 1176 : {
 
 	sub	rsp, 40					; 00000028H
 
-; 1168 :     ResWordsInit();
+; 1177 :     ResWordsInit();
 
 	call	ResWordsInit
 
-; 1169 :     if ( Options.output_format == OFORMAT_OMF ) {
+; 1178 :     if ( Options.output_format == OFORMAT_OMF ) {
 
 	cmp	DWORD PTR Options+144, 1
 	jne	SHORT $LN2@ReswTableI
 
-; 1170 :         /* DebugMsg(("InitAsm: disable IMAGEREL+SECTIONREL\n")); */
-; 1171 :         /* for OMF, IMAGEREL and SECTIONREL are disabled */
-; 1172 : #if IMAGERELSUPP
-; 1173 :         DisableKeyword( T_IMAGEREL );
+; 1179 :         /* DebugMsg(("InitAsm: disable IMAGEREL+SECTIONREL\n")); */
+; 1180 :         /* for OMF, IMAGEREL and SECTIONREL are disabled */
+; 1181 : #if IMAGERELSUPP
+; 1182 :         DisableKeyword( T_IMAGEREL );
 
 	mov	ecx, 233				; 000000e9H
 	call	DisableKeyword
 
-; 1174 : #endif
-; 1175 : #if SECTIONRELSUPP
-; 1176 :         DisableKeyword( T_SECTIONREL );
+; 1183 : #endif
+; 1184 : #if SECTIONRELSUPP
+; 1185 :         DisableKeyword( T_SECTIONREL );
 
 	mov	ecx, 243				; 000000f3H
 	call	DisableKeyword
 $LN2@ReswTableI:
 
-; 1177 : #endif
-; 1178 :     }
-; 1179 : 
-; 1180 :     if ( Options.strict_masm_compat == TRUE ) {
+; 1186 : #endif
+; 1187 :     }
+; 1188 : 
+; 1189 :     if ( Options.strict_masm_compat == TRUE ) {
 
 	cmp	BYTE PTR Options+127, 1
 	jne	SHORT $LN3@ReswTableI
 
-; 1181 :         DebugMsg(("ReswTableInit: disable INCBIN + FASTCALL keywords\n"));
-; 1182 :         DisableKeyword( T_INCBIN );
+; 1190 :         DebugMsg(("ReswTableInit: disable INCBIN + FASTCALL keywords\n"));
+; 1191 :         DisableKeyword( T_INCBIN );
 
 	mov	ecx, 444				; 000001bcH
 	call	DisableKeyword
 
-; 1183 :         DisableKeyword( T_FASTCALL );
+; 1192 :         DisableKeyword( T_FASTCALL );
 
 	mov	ecx, 270				; 0000010eH
 
-; 1184 :     }
-; 1185 : 
-; 1186 :     return;
-; 1187 : }
+; 1193 :     }
+; 1194 : 
+; 1195 :     return;
+; 1196 : }
 
 	add	rsp, 40					; 00000028H
 
-; 1183 :         DisableKeyword( T_FASTCALL );
+; 1192 :         DisableKeyword( T_FASTCALL );
 
 	jmp	DisableKeyword
 $LN3@ReswTableI:
 
-; 1184 :     }
-; 1185 : 
-; 1186 :     return;
-; 1187 : }
+; 1193 :     }
+; 1194 : 
+; 1195 :     return;
+; 1196 : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
@@ -1447,15 +1448,15 @@ _TEXT	ENDS
 _TEXT	SEGMENT
 ModuleInit PROC						; COMDAT
 
-; 1141 : {
+; 1150 : {
 
 	sub	rsp, 40					; 00000028H
 
-; 1142 :     ModuleInfo.sub_format = Options.sub_format;
+; 1151 :     ModuleInfo.sub_format = Options.sub_format;
 
 	mov	eax, DWORD PTR Options+148
 
-; 1143 :     ModuleInfo.fmtopt = &formatoptions[Options.output_format];
+; 1152 :     ModuleInfo.fmtopt = &formatoptions[Options.output_format];
 
 	lea	rdx, OFFSET FLAT:formatoptions
 	movsxd	rcx, DWORD PTR Options+144
@@ -1465,7 +1466,7 @@ ModuleInit PROC						; COMDAT
 	add	rax, rdx
 	mov	QWORD PTR ModuleInfo+344, rax
 
-; 1144 :     ModuleInfo.CommentDataInCode = (Options.output_format == OFORMAT_OMF &&
+; 1153 :     ModuleInfo.CommentDataInCode = (Options.output_format == OFORMAT_OMF &&
 
 	cmp	ecx, 1
 	jne	SHORT $LN3@ModuleInit
@@ -1476,13 +1477,13 @@ $LN3@ModuleInit:
 	mov	BYTE PTR ModuleInfo+423, 0
 $LN4@ModuleInit:
 
-; 1145 :                          Options.no_comment_data_in_code_records == FALSE);
-; 1146 :     ModuleInfo.g.error_count = 0;
-; 1147 :     ModuleInfo.g.warning_count = 0;
-; 1148 :     ModuleInfo.model = MODEL_NONE;
-; 1149 :     /* ModuleInfo.distance = STACK_NONE; */
-; 1150 :     ModuleInfo.ostype = OPSYS_DOS;
-; 1151 :     ModuleInfo.emulator = (Options.floating_point == FPO_EMULATION);
+; 1154 :                          Options.no_comment_data_in_code_records == FALSE);
+; 1155 :     ModuleInfo.g.error_count = 0;
+; 1156 :     ModuleInfo.g.warning_count = 0;
+; 1157 :     ModuleInfo.model = MODEL_NONE;
+; 1158 :     /* ModuleInfo.distance = STACK_NONE; */
+; 1159 :     ModuleInfo.ostype = OPSYS_DOS;
+; 1160 :     ModuleInfo.emulator = (Options.floating_point == FPO_EMULATION);
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	xor	ecx, ecx
@@ -1497,35 +1498,35 @@ $LN4@ModuleInit:
 	xor	eax, ecx
 	mov	DWORD PTR ModuleInfo+408, eax
 
-; 1152 :     //ModuleInfo.flatgrp_idx = 0;
-; 1153 : 
-; 1154 :     get_module_name(); /* set ModuleInfo.name */
+; 1161 :     //ModuleInfo.flatgrp_idx = 0;
+; 1162 : 
+; 1163 :     get_module_name(); /* set ModuleInfo.name */
 
 	call	get_module_name
 
-; 1155 : 
-; 1156 :     /* v2.06: ST_PROC has been removed */
-; 1157 :     //SimpleType[ST_PROC].mem_type = MT_NEAR;
-; 1158 : 
-; 1159 :     memset( SymTables, 0, sizeof( SymTables[0] ) * TAB_LAST );
+; 1164 : 
+; 1165 :     /* v2.06: ST_PROC has been removed */
+; 1166 :     //SimpleType[ST_PROC].mem_type = MT_NEAR;
+; 1167 : 
+; 1168 :     memset( SymTables, 0, sizeof( SymTables[0] ) * TAB_LAST );
 
 	xor	edx, edx
 	lea	rcx, OFFSET FLAT:SymTables
 	lea	r8d, QWORD PTR [rdx+96]
 	call	memset
 
-; 1160 :     ModuleInfo.fmtopt->init( &ModuleInfo );
+; 1169 :     ModuleInfo.fmtopt->init( &ModuleInfo );
 
 	mov	rax, QWORD PTR ModuleInfo+344
 	lea	rcx, OFFSET FLAT:ModuleInfo
 
-; 1161 : 
-; 1162 :     return;
-; 1163 : }
+; 1170 : 
+; 1171 :     return;
+; 1172 : }
 
 	add	rsp, 40					; 00000028H
 
-; 1160 :     ModuleInfo.fmtopt->init( &ModuleInfo );
+; 1169 :     ModuleInfo.fmtopt->init( &ModuleInfo );
 
 	rex_jmp	QWORD PTR [rax]
 ModuleInit ENDP
@@ -1536,52 +1537,52 @@ _TEXT	ENDS
 _TEXT	SEGMENT
 get_module_name PROC					; COMDAT
 
-; 1102 : {
+; 1111 : {
 
 	mov	QWORD PTR [rsp+8], rbx
 	push	rdi
 	sub	rsp, 32					; 00000020H
 
-; 1103 :     //char dummy[_MAX_EXT];
-; 1104 :     char        *p;
-; 1105 : 
-; 1106 :     /* v2.08: prefer name given by -nm option */
-; 1107 :     if ( Options.names[OPTN_MODULE_NAME] ) {
+; 1112 :     //char dummy[_MAX_EXT];
+; 1113 :     char        *p;
+; 1114 : 
+; 1115 :     /* v2.08: prefer name given by -nm option */
+; 1116 :     if ( Options.names[OPTN_MODULE_NAME] ) {
 
 	mov	rdx, QWORD PTR Options+56
 	test	rdx, rdx
 	je	SHORT $LN5@get_module
 
-; 1108 :         strncpy( ModuleInfo.name, Options.names[OPTN_MODULE_NAME], sizeof( ModuleInfo.name ) );
+; 1117 :         strncpy( ModuleInfo.name, Options.names[OPTN_MODULE_NAME], sizeof( ModuleInfo.name ) );
 
 	lea	rbx, OFFSET FLAT:ModuleInfo+512
 	mov	r8d, 260				; 00000104H
 	mov	rcx, rbx
 	call	strncpy
 
-; 1109 :         ModuleInfo.name[ sizeof( ModuleInfo.name ) - 1] = NULLC;
+; 1118 :         ModuleInfo.name[ sizeof( ModuleInfo.name ) - 1] = NULLC;
 
 	mov	BYTE PTR ModuleInfo+771, 0
 
-; 1110 :     } else {
+; 1119 :     } else {
 
 	jmp	SHORT $LN6@get_module
 $LN5@get_module:
 
-; 1111 :         /* v2.12: _splitpath()/_makepath() removed */
-; 1112 :         const char *fn = GetFNamePart( CurrFName[ASM] );
+; 1120 :         /* v2.12: _splitpath()/_makepath() removed */
+; 1121 :         const char *fn = GetFNamePart( CurrFName[ASM] );
 
 	mov	rcx, QWORD PTR ModuleInfo+128
 	call	GetFNamePart
 
-; 1113 :         char *ext = GetExtPart( fn );
+; 1122 :         char *ext = GetExtPart( fn );
 
 	mov	rcx, rax
 	mov	rbx, rax
 	call	GetExtPart
 	mov	rdi, rax
 
-; 1114 :         memcpy( ModuleInfo.name, fn, ext - fn );
+; 1123 :         memcpy( ModuleInfo.name, fn, ext - fn );
 
 	mov	rdx, rbx
 	sub	rdi, rbx
@@ -1590,23 +1591,23 @@ $LN5@get_module:
 	mov	r8, rdi
 	call	memcpy
 
-; 1115 :         ModuleInfo.name[ ext - fn ] = NULLC;
+; 1124 :         ModuleInfo.name[ ext - fn ] = NULLC;
 
 	mov	BYTE PTR [rdi+rbx], 0
 $LN6@get_module:
 
-; 1116 :         //_splitpath( CurrFName[ASM], NULL, NULL, ModuleInfo.name, dummy );
-; 1117 :     }
-; 1118 : 
-; 1119 :     _strupr( ModuleInfo.name );
+; 1125 :         //_splitpath( CurrFName[ASM], NULL, NULL, ModuleInfo.name, dummy );
+; 1126 :     }
+; 1127 : 
+; 1128 :     _strupr( ModuleInfo.name );
 
 	mov	rcx, rbx
 	call	_strupr
 
-; 1120 :     /* the module name must be a valid identifier, because it's used
-; 1121 :      * as part of a segment name in certain memory models.
-; 1122 :      */
-; 1123 :     for( p = ModuleInfo.name; *p; ++p ) {
+; 1129 :     /* the module name must be a valid identifier, because it's used
+; 1130 :      * as part of a segment name in certain memory models.
+; 1131 :      */
+; 1132 :     for( p = ModuleInfo.name; *p; ++p ) {
 
 	movzx	eax, BYTE PTR ModuleInfo+512
 	test	al, al
@@ -1614,7 +1615,7 @@ $LN6@get_module:
 	mov	rdi, 576460752706076673			; 0800000018000001H
 $LL4@get_module:
 
-; 1124 :         if( !( isalnum( *p ) || ( *p == '_' ) || ( *p == '$' )
+; 1133 :         if( !( isalnum( *p ) || ( *p == '_' ) || ( *p == '$' )
 
 	movsx	ecx, BYTE PTR [rbx]
 	call	isalnum
@@ -1629,17 +1630,17 @@ $LL4@get_module:
 	jb	SHORT $LN2@get_module
 $LN14@get_module:
 
-; 1125 :             || ( *p == '@' ) || ( *p == '?') ) ) {
-; 1126 :             /* it's not a legal character for a symbol name */
-; 1127 :             *p = '_';
+; 1134 :             || ( *p == '@' ) || ( *p == '?') ) ) {
+; 1135 :             /* it's not a legal character for a symbol name */
+; 1136 :             *p = '_';
 
 	mov	BYTE PTR [rbx], 95			; 0000005fH
 $LN2@get_module:
 
-; 1120 :     /* the module name must be a valid identifier, because it's used
-; 1121 :      * as part of a segment name in certain memory models.
-; 1122 :      */
-; 1123 :     for( p = ModuleInfo.name; *p; ++p ) {
+; 1129 :     /* the module name must be a valid identifier, because it's used
+; 1130 :      * as part of a segment name in certain memory models.
+; 1131 :      */
+; 1132 :     for( p = ModuleInfo.name; *p; ++p ) {
 
 	inc	rbx
 	cmp	BYTE PTR [rbx], 0
@@ -1647,19 +1648,19 @@ $LN2@get_module:
 	movzx	eax, BYTE PTR ModuleInfo+512
 $LN3@get_module:
 
-; 1128 :         }
-; 1129 :     }
-; 1130 :     /* first character can't be a digit either */
-; 1131 :     if( isdigit( ModuleInfo.name[0] ) ) {
+; 1137 :         }
+; 1138 :     }
+; 1139 :     /* first character can't be a digit either */
+; 1140 :     if( isdigit( ModuleInfo.name[0] ) ) {
 
 	movsx	ecx, al
 	call	isdigit
 	movzx	ecx, BYTE PTR ModuleInfo+512
 	test	eax, eax
 
-; 1132 :         ModuleInfo.name[0] = '_';
-; 1133 :     }
-; 1134 : }
+; 1141 :         ModuleInfo.name[0] = '_';
+; 1142 :     }
+; 1143 : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	mov	edx, 95					; 0000005fH
@@ -1676,63 +1677,63 @@ _TEXT	ENDS
 _TEXT	SEGMENT
 OnePass	PROC						; COMDAT
 
-; 992  : {
+; 1001 : {
 
 	sub	rsp, 40					; 00000028H
 	mov	QWORD PTR [rsp+32], rbx
 
-; 993  : 
-; 994  :     InputPassInit();
+; 1002 : 
+; 1003 :     InputPassInit();
 
 	call	InputPassInit
 
-; 995  :     ModulePassInit();
+; 1004 :     ModulePassInit();
 
 	call	ModulePassInit
 
-; 996  :     SymPassInit( Parse_Pass );
+; 1005 :     SymPassInit( Parse_Pass );
 
 	mov	ecx, DWORD PTR Parse_Pass
 	call	SymPassInit
 
-; 997  :     LabelInit();
+; 1006 :     LabelInit();
 
 	call	LabelInit
 
-; 998  :     SegmentInit( Parse_Pass );
+; 1007 :     SegmentInit( Parse_Pass );
 
 	mov	ecx, DWORD PTR Parse_Pass
 	call	SegmentInit
 
-; 999  :     ContextInit( Parse_Pass );
+; 1008 :     ContextInit( Parse_Pass );
 
 	mov	ecx, DWORD PTR Parse_Pass
 	call	ContextInit
 
-; 1000 :     ProcInit();
+; 1009 :     ProcInit();
 
 	call	ProcInit
 
-; 1001 :     TypesInit();
+; 1010 :     TypesInit();
 
 	call	TypesInit
 
-; 1002 :     HllInit( Parse_Pass );
+; 1011 :     HllInit( Parse_Pass );
 
 	mov	ecx, DWORD PTR Parse_Pass
 	call	HllInit
 
-; 1003 :     MacroInit( Parse_Pass ); /* insert predefined macros */
+; 1012 :     MacroInit( Parse_Pass ); /* insert predefined macros */
 
 	mov	ecx, DWORD PTR Parse_Pass
 	call	MacroInit
 
-; 1004 :     AssumeInit( Parse_Pass );
+; 1013 :     AssumeInit( Parse_Pass );
 
 	mov	ecx, DWORD PTR Parse_Pass
 	call	AssumeInit
 
-; 1005 :     CmdlParamsInit( Parse_Pass );
+; 1014 :     CmdlParamsInit( Parse_Pass );
 
 	cmp	DWORD PTR Parse_Pass, 0
 	jne	SHORT $LN17@OnePass
@@ -1750,7 +1751,7 @@ $LL22@OnePass:
 $LN21@OnePass:
 	cmp	BYTE PTR Options+140, 0
 	jne	SHORT $LN17@OnePass
-	lea	rcx, OFFSET FLAT:$SG11893
+	lea	rcx, OFFSET FLAT:$SG11894
 	call	getenv
 	test	rax, rax
 	je	SHORT $LN17@OnePass
@@ -1758,48 +1759,48 @@ $LN21@OnePass:
 	call	AddStringToIncludePath
 $LN17@OnePass:
 
-; 1006 : 
-; 1007 :     ModuleInfo.EndDirFound = FALSE;
+; 1015 : 
+; 1016 :     ModuleInfo.EndDirFound = FALSE;
 
 	and	DWORD PTR ModuleInfo+408, -65537	; fffeffffH
 
-; 1008 :     ModuleInfo.PhaseError = FALSE;
+; 1017 :     ModuleInfo.PhaseError = FALSE;
 
 	mov	BYTE PTR ModuleInfo+422, 0
 
-; 1009 :     //Modend = FALSE;
-; 1010 :     /* LineNumber = 0; */
-; 1011 :     LinnumInit();
+; 1018 :     //Modend = FALSE;
+; 1019 :     /* LineNumber = 0; */
+; 1020 :     LinnumInit();
 
 	call	LinnumInit
 
-; 1012 : 
-; 1013 : #ifdef DEBUG_OUT
-; 1014 :     if ( Parse_Pass > PASS_1 ) {
-; 1015 :         DebugMsg(("OnePass(%u) segments (current=%s):\n", Parse_Pass + 1, CurrSeg ? CurrSeg->sym.name : "NULL" ));
-; 1016 :         {
-; 1017 :             struct dsym *dir;
-; 1018 :             for( dir = SymTables[TAB_SEG].head; dir; dir = dir->next ) {
-; 1019 :                 DebugMsg(("OnePass(%u): segm=%-8s typ=%X start=%8X max_ofs=%8X\n", Parse_Pass + 1,
-; 1020 :                           dir->sym.name, dir->e.seginfo->segtype, dir->e.seginfo->start_loc, dir->sym.max_offset ));
-; 1021 :             }
-; 1022 :         }
-; 1023 :     }
-; 1024 : #endif
-; 1025 :     /* the functions above might have written something to the line queue */
-; 1026 :     if ( is_linequeue_populated() )
+; 1021 : 
+; 1022 : #ifdef DEBUG_OUT
+; 1023 :     if ( Parse_Pass > PASS_1 ) {
+; 1024 :         DebugMsg(("OnePass(%u) segments (current=%s):\n", Parse_Pass + 1, CurrSeg ? CurrSeg->sym.name : "NULL" ));
+; 1025 :         {
+; 1026 :             struct dsym *dir;
+; 1027 :             for( dir = SymTables[TAB_SEG].head; dir; dir = dir->next ) {
+; 1028 :                 DebugMsg(("OnePass(%u): segm=%-8s typ=%X start=%8X max_ofs=%8X\n", Parse_Pass + 1,
+; 1029 :                           dir->sym.name, dir->e.seginfo->segtype, dir->e.seginfo->start_loc, dir->sym.max_offset ));
+; 1030 :             }
+; 1031 :         }
+; 1032 :     }
+; 1033 : #endif
+; 1034 :     /* the functions above might have written something to the line queue */
+; 1035 :     if ( is_linequeue_populated() )
 
 	cmp	QWORD PTR ModuleInfo+184, 0
 	je	SHORT $LN7@OnePass
 
-; 1027 :         RunLineQueue();
+; 1036 :         RunLineQueue();
 
 	call	RunLineQueue
 $LN7@OnePass:
 
-; 1028 : #if FASTPASS
-; 1029 :     StoreState = FALSE;
-; 1030 :     if ( Parse_Pass > PASS_1 && UseSavedState == TRUE ) {
+; 1037 : #if FASTPASS
+; 1038 :     StoreState = FALSE;
+; 1039 :     if ( Parse_Pass > PASS_1 && UseSavedState == TRUE ) {
 
 	cmp	DWORD PTR Parse_Pass, 0
 	mov	BYTE PTR StoreState, 0
@@ -1807,12 +1808,12 @@ $LN7@OnePass:
 	cmp	BYTE PTR UseSavedState, 1
 	jne	$LN8@OnePass
 
-; 1031 :         LineStoreCurr = RestoreState();
+; 1040 :         LineStoreCurr = RestoreState();
 
 	call	RestoreState
 	mov	QWORD PTR LineStoreCurr, rax
 
-; 1032 :         while ( LineStoreCurr && ModuleInfo.EndDirFound == FALSE ) {
+; 1041 :         while ( LineStoreCurr && ModuleInfo.EndDirFound == FALSE ) {
 
 	test	rax, rax
 	je	$LN9@OnePass
@@ -1821,11 +1822,11 @@ $LL2@OnePass:
 	test	BYTE PTR ModuleInfo+410, 1
 	jne	$LN9@OnePass
 
-; 1033 :             /* the source line is modified in Tokenize() if it contains a comment! */
-; 1034 : #if USELSLINE==0
-; 1035 :             strcpy( CurrSource, LineStoreCurr->line );
-; 1036 : #endif
-; 1037 :             set_curr_srcfile( LineStoreCurr->srcfile, LineStoreCurr->lineno );
+; 1042 :             /* the source line is modified in Tokenize() if it contains a comment! */
+; 1043 : #if USELSLINE==0
+; 1044 :             strcpy( CurrSource, LineStoreCurr->line );
+; 1045 : #endif
+; 1046 :             set_curr_srcfile( LineStoreCurr->srcfile, LineStoreCurr->lineno );
 
 	mov	ecx, DWORD PTR [rax+8]
 	mov	edx, ecx
@@ -1833,16 +1834,16 @@ $LL2@OnePass:
 	shr	ecx, 20
 	call	set_curr_srcfile
 
-; 1038 :             /* v2.06: list flags now initialized on the top level */
-; 1039 :             ModuleInfo.line_flags = 0;
-; 1040 :             MacroLevel = ( LineStoreCurr->srcfile == 0xFFF ? 1 : 0 );
+; 1047 :             /* v2.06: list flags now initialized on the top level */
+; 1048 :             ModuleInfo.line_flags = 0;
+; 1049 :             MacroLevel = ( LineStoreCurr->srcfile == 0xFFF ? 1 : 0 );
 
 	mov	rcx, QWORD PTR LineStoreCurr
 
-; 1041 :             DebugMsg1(("OnePass(%u) cur/nxt=%X/%X src=%X.%u mlvl=%u: >%s<\n", Parse_Pass+1, LineStoreCurr, LineStoreCurr->next, LineStoreCurr->srcfile, LineStoreCurr->lineno, MacroLevel, LineStoreCurr->line ));
-; 1042 :             ModuleInfo.CurrComment = NULL; /* v2.08: added (var is never reset because GetTextLine() isn't called) */
-; 1043 : #if USELSLINE
-; 1044 :             if ( Token_Count = Tokenize( LineStoreCurr->line, 0, ModuleInfo.tokenarray, TOK_DEFAULT ) )
+; 1050 :             DebugMsg1(("OnePass(%u) cur/nxt=%X/%X src=%X.%u mlvl=%u: >%s<\n", Parse_Pass+1, LineStoreCurr, LineStoreCurr->next, LineStoreCurr->srcfile, LineStoreCurr->lineno, MacroLevel, LineStoreCurr->line ));
+; 1051 :             ModuleInfo.CurrComment = NULL; /* v2.08: added (var is never reset because GetTextLine() isn't called) */
+; 1052 : #if USELSLINE
+; 1053 :             if ( Token_Count = Tokenize( LineStoreCurr->line, 0, ModuleInfo.tokenarray, TOK_DEFAULT ) )
 
 	mov	r8, QWORD PTR ModuleInfo+480
 	mov	BYTE PTR ModuleInfo+398, bl
@@ -1859,16 +1860,16 @@ $LL2@OnePass:
 	test	eax, eax
 	je	SHORT $LN10@OnePass
 
-; 1045 : #else
-; 1046 :             if ( Token_Count = Tokenize( CurrSource, 0, ModuleInfo.tokenarray, TOK_DEFAULT ) )
-; 1047 : #endif
-; 1048 :                 ParseLine( ModuleInfo.tokenarray );
+; 1054 : #else
+; 1055 :             if ( Token_Count = Tokenize( CurrSource, 0, ModuleInfo.tokenarray, TOK_DEFAULT ) )
+; 1056 : #endif
+; 1057 :                 ParseLine( ModuleInfo.tokenarray );
 
 	mov	rcx, QWORD PTR ModuleInfo+480
 	call	ParseLine
 $LN10@OnePass:
 
-; 1049 :             LineStoreCurr = LineStoreCurr->next;
+; 1058 :             LineStoreCurr = LineStoreCurr->next;
 
 	mov	rax, QWORD PTR LineStoreCurr
 	mov	rax, QWORD PTR [rax]
@@ -1876,17 +1877,17 @@ $LN10@OnePass:
 	test	rax, rax
 	jne	$LL2@OnePass
 
-; 1050 :         }
-; 1051 :     } else
+; 1059 :         }
+; 1060 :     } else
 
 	jmp	SHORT $LN9@OnePass
 $LN8@OnePass:
 
-; 1052 : #endif
-; 1053 :     {
-; 1054 :         struct qitem *pq;
-; 1055 :         /* v2.11: handle -Fi files here ( previously in CmdlParamsInit ) */
-; 1056 :         for ( pq = Options.queues[OPTQ_FINCLUDE]; pq; pq = pq->next ) {
+; 1061 : #endif
+; 1062 :     {
+; 1063 :         struct qitem *pq;
+; 1064 :         /* v2.11: handle -Fi files here ( previously in CmdlParamsInit ) */
+; 1065 :         for ( pq = Options.queues[OPTQ_FINCLUDE]; pq; pq = pq->next ) {
 
 	mov	rbx, QWORD PTR Options+88
 	test	rbx, rbx
@@ -1894,8 +1895,8 @@ $LN8@OnePass:
 	npad	5
 $LL6@OnePass:
 
-; 1057 :             DebugMsg(("OnePass: force include of file: %s\n", pq->value ));
-; 1058 :             if ( SearchFile( pq->value, TRUE ) )
+; 1066 :             DebugMsg(("OnePass: force include of file: %s\n", pq->value ));
+; 1067 :             if ( SearchFile( pq->value, TRUE ) )
 
 	lea	rcx, QWORD PTR [rbx+8]
 	mov	dl, 1
@@ -1903,59 +1904,59 @@ $LL6@OnePass:
 	test	rax, rax
 	je	SHORT $LN4@OnePass
 
-; 1059 :                 ProcessFile( ModuleInfo.tokenarray );
+; 1068 :                 ProcessFile( ModuleInfo.tokenarray );
 
 	mov	rcx, QWORD PTR ModuleInfo+480
 	call	ProcessFile
 $LN4@OnePass:
 
-; 1052 : #endif
-; 1053 :     {
-; 1054 :         struct qitem *pq;
-; 1055 :         /* v2.11: handle -Fi files here ( previously in CmdlParamsInit ) */
-; 1056 :         for ( pq = Options.queues[OPTQ_FINCLUDE]; pq; pq = pq->next ) {
+; 1061 : #endif
+; 1062 :     {
+; 1063 :         struct qitem *pq;
+; 1064 :         /* v2.11: handle -Fi files here ( previously in CmdlParamsInit ) */
+; 1065 :         for ( pq = Options.queues[OPTQ_FINCLUDE]; pq; pq = pq->next ) {
 
 	mov	rbx, QWORD PTR [rbx]
 	test	rbx, rbx
 	jne	SHORT $LL6@OnePass
 $LN5@OnePass:
 
-; 1060 :         }
-; 1061 :         ProcessFile( ModuleInfo.tokenarray ); /* process the main source file */
+; 1069 :         }
+; 1070 :         ProcessFile( ModuleInfo.tokenarray ); /* process the main source file */
 
 	mov	rcx, QWORD PTR ModuleInfo+480
 	call	ProcessFile
 $LN9@OnePass:
 
-; 1062 :     }
-; 1063 : 
-; 1064 :     LinnumFini();
+; 1071 :     }
+; 1072 : 
+; 1073 :     LinnumFini();
 
 	call	LinnumFini
 
-; 1065 : 
-; 1066 :     if ( Parse_Pass == PASS_1 )
+; 1074 : 
+; 1075 :     if ( Parse_Pass == PASS_1 )
 
 	cmp	DWORD PTR Parse_Pass, 0
 	mov	rbx, QWORD PTR [rsp+32]
 	jne	SHORT $LN12@OnePass
 
-; 1067 :         PassOneChecks();
+; 1076 :         PassOneChecks();
 
 	call	PassOneChecks
 $LN12@OnePass:
 
-; 1068 : 
-; 1069 :     ClearSrcStack();
+; 1077 : 
+; 1078 :     ClearSrcStack();
 
 	call	ClearSrcStack
 
-; 1070 : 
-; 1071 :     return( 1 );
+; 1079 : 
+; 1080 :     return( 1 );
 
 	mov	eax, 1
 
-; 1072 : }
+; 1081 : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
@@ -1967,59 +1968,59 @@ _TEXT	ENDS
 _TEXT	SEGMENT
 PassOneChecks PROC					; COMDAT
 
-; 766  : {
+; 775  : {
 
 	sub	rsp, 40					; 00000028H
 
-; 767  :     struct dsym *curr;
-; 768  :     struct dsym *next;
-; 769  :     struct qnode *q;
-; 770  :     struct qnode *qn;
-; 771  : #ifdef DEBUG_OUT
-; 772  :     int cntUnusedExt = 0;
-; 773  : #endif
-; 774  : 
-; 775  :     /* check for open structures and segments has been done inside the
-; 776  :      * END directive handling already
-; 777  :      * v2.10: now done for PROCs as well, since procedures
-; 778  :      * must be closed BEFORE segments are to be closed.
-; 779  :      */
-; 780  :     //ProcCheckOpen();
-; 781  :     HllCheckOpen();
+; 776  :     struct dsym *curr;
+; 777  :     struct dsym *next;
+; 778  :     struct qnode *q;
+; 779  :     struct qnode *qn;
+; 780  : #ifdef DEBUG_OUT
+; 781  :     int cntUnusedExt = 0;
+; 782  : #endif
+; 783  : 
+; 784  :     /* check for open structures and segments has been done inside the
+; 785  :      * END directive handling already
+; 786  :      * v2.10: now done for PROCs as well, since procedures
+; 787  :      * must be closed BEFORE segments are to be closed.
+; 788  :      */
+; 789  :     //ProcCheckOpen();
+; 790  :     HllCheckOpen();
 
 	call	HllCheckOpen
 
-; 782  :     CondCheckOpen();
+; 791  :     CondCheckOpen();
 
 	call	CondCheckOpen
 
-; 783  : 
-; 784  :     if( ModuleInfo.EndDirFound == FALSE )
+; 792  : 
+; 793  :     if( ModuleInfo.EndDirFound == FALSE )
 
 	test	BYTE PTR ModuleInfo+410, 1
 	jne	SHORT $LN17@PassOneChe
 
-; 785  :         EmitError( END_DIRECTIVE_REQUIRED );
+; 794  :         EmitError( END_DIRECTIVE_REQUIRED );
 
 	mov	ecx, 99					; 00000063H
 	call	EmitError
 $LN17@PassOneChe:
 
-; 786  : 
-; 787  : #ifdef DEBUG_OUT
-; 788  :     for ( curr = SymTables[TAB_UNDEF].head; curr; curr = curr->next ) {
-; 789  :         DebugMsg(("PassOneChecks: undefined symbol %s\n", curr->sym.name ));
-; 790  :     }
-; 791  : #endif
-; 792  :     /* v2.04: check the publics queue.
-; 793  :      * - only internal symbols can be public.
-; 794  :      * - weak external symbols are filtered ( since v2.11 )
-; 795  :      * - anything else is an error
-; 796  :      * v2.11: moved here ( from inside the "#if FASTPASS"-block )
-; 797  :      * because the loop will now filter weak externals [ this
-; 798  :      * was previously done in GetPublicSymbols() ]
-; 799  :      */
-; 800  :     for( q = ModuleInfo.g.PubQueue.head, qn = (struct qnode *)&ModuleInfo.g.PubQueue ; q; q = q->next ) {
+; 795  : 
+; 796  : #ifdef DEBUG_OUT
+; 797  :     for ( curr = SymTables[TAB_UNDEF].head; curr; curr = curr->next ) {
+; 798  :         DebugMsg(("PassOneChecks: undefined symbol %s\n", curr->sym.name ));
+; 799  :     }
+; 800  : #endif
+; 801  :     /* v2.04: check the publics queue.
+; 802  :      * - only internal symbols can be public.
+; 803  :      * - weak external symbols are filtered ( since v2.11 )
+; 804  :      * - anything else is an error
+; 805  :      * v2.11: moved here ( from inside the "#if FASTPASS"-block )
+; 806  :      * because the loop will now filter weak externals [ this
+; 807  :      * was previously done in GetPublicSymbols() ]
+; 808  :      */
+; 809  :     for( q = ModuleInfo.g.PubQueue.head, qn = (struct qnode *)&ModuleInfo.g.PubQueue ; q; q = q->next ) {
 
 	mov	rax, QWORD PTR ModuleInfo+16
 	lea	rcx, OFFSET FLAT:ModuleInfo+16
@@ -2028,159 +2029,159 @@ $LN17@PassOneChe:
 	npad	12
 $LL4@PassOneChe:
 
-; 801  : 
-; 802  :         if ( q->sym->state == SYM_INTERNAL )
+; 810  : 
+; 811  :         if ( q->sym->state == SYM_INTERNAL )
 
 	mov	r8, QWORD PTR [rax+8]
 	mov	edx, DWORD PTR [r8+32]
 	cmp	edx, 1
 	jne	SHORT $LN18@PassOneChe
 
-; 803  :             qn = q;
+; 812  :             qn = q;
 
 	mov	rcx, rax
 	jmp	SHORT $LN2@PassOneChe
 $LN18@PassOneChe:
 
-; 804  :         else if ( q->sym->state == SYM_EXTERNAL && q->sym->weak == TRUE ) {
+; 813  :         else if ( q->sym->state == SYM_EXTERNAL && q->sym->weak == TRUE ) {
 
 	cmp	edx, 2
 	jne	SHORT $LN20@PassOneChe
 	test	BYTE PTR [r8+47], 8
 	je	SHORT $LN20@PassOneChe
 
-; 805  :             DebugMsg(("PassOneChecks: public for weak external skipped: %s\n", q->sym->name ));
-; 806  :             qn->next = q->next;
+; 814  :             DebugMsg(("PassOneChecks: public for weak external skipped: %s\n", q->sym->name ));
+; 815  :             qn->next = q->next;
 
 	mov	rax, QWORD PTR [rax]
 	mov	QWORD PTR [rcx], rax
 
-; 807  :             LclFree( q );
-; 808  :             q = qn;
+; 816  :             LclFree( q );
+; 817  :             q = qn;
 
 	mov	rax, rcx
 $LN2@PassOneChe:
 
-; 786  : 
-; 787  : #ifdef DEBUG_OUT
-; 788  :     for ( curr = SymTables[TAB_UNDEF].head; curr; curr = curr->next ) {
-; 789  :         DebugMsg(("PassOneChecks: undefined symbol %s\n", curr->sym.name ));
-; 790  :     }
-; 791  : #endif
-; 792  :     /* v2.04: check the publics queue.
-; 793  :      * - only internal symbols can be public.
-; 794  :      * - weak external symbols are filtered ( since v2.11 )
-; 795  :      * - anything else is an error
-; 796  :      * v2.11: moved here ( from inside the "#if FASTPASS"-block )
-; 797  :      * because the loop will now filter weak externals [ this
-; 798  :      * was previously done in GetPublicSymbols() ]
-; 799  :      */
-; 800  :     for( q = ModuleInfo.g.PubQueue.head, qn = (struct qnode *)&ModuleInfo.g.PubQueue ; q; q = q->next ) {
+; 795  : 
+; 796  : #ifdef DEBUG_OUT
+; 797  :     for ( curr = SymTables[TAB_UNDEF].head; curr; curr = curr->next ) {
+; 798  :         DebugMsg(("PassOneChecks: undefined symbol %s\n", curr->sym.name ));
+; 799  :     }
+; 800  : #endif
+; 801  :     /* v2.04: check the publics queue.
+; 802  :      * - only internal symbols can be public.
+; 803  :      * - weak external symbols are filtered ( since v2.11 )
+; 804  :      * - anything else is an error
+; 805  :      * v2.11: moved here ( from inside the "#if FASTPASS"-block )
+; 806  :      * because the loop will now filter weak externals [ this
+; 807  :      * was previously done in GetPublicSymbols() ]
+; 808  :      */
+; 809  :     for( q = ModuleInfo.g.PubQueue.head, qn = (struct qnode *)&ModuleInfo.g.PubQueue ; q; q = q->next ) {
 
 	mov	rax, QWORD PTR [rax]
 	test	rax, rax
 	jne	SHORT $LL4@PassOneChe
 
-; 864  :             /* check if symbol is external or public */
-; 865  :             if ( sym == NULL ||
+; 873  :             /* check if symbol is external or public */
+; 874  :             if ( sym == NULL ||
 
 	jmp	SHORT $LN3@PassOneChe
 $LN20@PassOneChe:
 
-; 809  :         } else {
-; 810  :             DebugMsg(("PassOneChecks: invalid public attribute for %s [state=%u weak=%u]\n", q->sym->name, q->sym->state, q->sym->weak ));
-; 811  : #if FASTPASS
-; 812  :             SkipSavedState();
+; 818  :         } else {
+; 819  :             DebugMsg(("PassOneChecks: invalid public attribute for %s [state=%u weak=%u]\n", q->sym->name, q->sym->state, q->sym->weak ));
+; 820  : #if FASTPASS
+; 821  :             SkipSavedState();
 
 	call	SkipSavedState
 $LN3@PassOneChe:
 
-; 813  : #endif
-; 814  :             break;
-; 815  :         }
-; 816  :     }
-; 817  : #if FASTPASS
-; 818  :     if ( SymTables[TAB_UNDEF].head ) {
-; 819  :         /* to force a full second pass in case of missing symbols,
-; 820  :          * activate the next line. It was implemented to have proper
-; 821  :          * error displays if a forward reference wasn't found.
-; 822  :          * However, v1.95 final won't need this anymore, because both
-; 823  :          * filename + lineno for every line is known now in pass 2.
-; 824  :          */
-; 825  :         /* SkipSavedState(); */
-; 826  :     }
-; 827  : 
-; 828  :     /* check if there's an undefined segment reference.
-; 829  :      * This segment was an argument to a group definition then.
-; 830  :      * Just do a full second pass, the GROUP directive will report
-; 831  :      * the error.
-; 832  :      */
-; 833  :     for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
+; 822  : #endif
+; 823  :             break;
+; 824  :         }
+; 825  :     }
+; 826  : #if FASTPASS
+; 827  :     if ( SymTables[TAB_UNDEF].head ) {
+; 828  :         /* to force a full second pass in case of missing symbols,
+; 829  :          * activate the next line. It was implemented to have proper
+; 830  :          * error displays if a forward reference wasn't found.
+; 831  :          * However, v1.95 final won't need this anymore, because both
+; 832  :          * filename + lineno for every line is known now in pass 2.
+; 833  :          */
+; 834  :         /* SkipSavedState(); */
+; 835  :     }
+; 836  : 
+; 837  :     /* check if there's an undefined segment reference.
+; 838  :      * This segment was an argument to a group definition then.
+; 839  :      * Just do a full second pass, the GROUP directive will report
+; 840  :      * the error.
+; 841  :      */
+; 842  :     for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
 
 	mov	rax, QWORD PTR SymTables+32
 	test	rax, rax
 	je	SHORT $LN6@PassOneChe
 $LL7@PassOneChe:
 
-; 834  :         if( curr->sym.segment == NULL ) {
+; 843  :         if( curr->sym.segment == NULL ) {
 
 	cmp	QWORD PTR [rax+24], 0
 	je	SHORT $LN51@PassOneChe
 
-; 813  : #endif
-; 814  :             break;
-; 815  :         }
-; 816  :     }
-; 817  : #if FASTPASS
-; 818  :     if ( SymTables[TAB_UNDEF].head ) {
-; 819  :         /* to force a full second pass in case of missing symbols,
-; 820  :          * activate the next line. It was implemented to have proper
-; 821  :          * error displays if a forward reference wasn't found.
-; 822  :          * However, v1.95 final won't need this anymore, because both
-; 823  :          * filename + lineno for every line is known now in pass 2.
-; 824  :          */
-; 825  :         /* SkipSavedState(); */
-; 826  :     }
-; 827  : 
-; 828  :     /* check if there's an undefined segment reference.
-; 829  :      * This segment was an argument to a group definition then.
-; 830  :      * Just do a full second pass, the GROUP directive will report
-; 831  :      * the error.
-; 832  :      */
-; 833  :     for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
+; 822  : #endif
+; 823  :             break;
+; 824  :         }
+; 825  :     }
+; 826  : #if FASTPASS
+; 827  :     if ( SymTables[TAB_UNDEF].head ) {
+; 828  :         /* to force a full second pass in case of missing symbols,
+; 829  :          * activate the next line. It was implemented to have proper
+; 830  :          * error displays if a forward reference wasn't found.
+; 831  :          * However, v1.95 final won't need this anymore, because both
+; 832  :          * filename + lineno for every line is known now in pass 2.
+; 833  :          */
+; 834  :         /* SkipSavedState(); */
+; 835  :     }
+; 836  : 
+; 837  :     /* check if there's an undefined segment reference.
+; 838  :      * This segment was an argument to a group definition then.
+; 839  :      * Just do a full second pass, the GROUP directive will report
+; 840  :      * the error.
+; 841  :      */
+; 842  :     for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
 
 	mov	rax, QWORD PTR [rax+104]
 	test	rax, rax
 	jne	SHORT $LL7@PassOneChe
 
-; 864  :             /* check if symbol is external or public */
-; 865  :             if ( sym == NULL ||
+; 873  :             /* check if symbol is external or public */
+; 874  :             if ( sym == NULL ||
 
 	jmp	SHORT $LN6@PassOneChe
 $LN51@PassOneChe:
 
-; 835  :             DebugMsg(("PassOneChecks: undefined segment %s\n", curr->sym.name ));
-; 836  :             SkipSavedState();
+; 844  :             DebugMsg(("PassOneChecks: undefined segment %s\n", curr->sym.name ));
+; 845  :             SkipSavedState();
 
 	call	SkipSavedState
 $LN6@PassOneChe:
 
-; 837  :             break;
-; 838  :         }
-; 839  :     }
-; 840  : #if COFF_SUPPORT
-; 841  :     /* if there's an item in the safeseh list which is not an
-; 842  :      * internal proc, make a full second pass to emit a proper
-; 843  :      * error msg at the .SAFESEH directive
-; 844  :      */
-; 845  :     for ( q = ModuleInfo.g.SafeSEHQueue.head; q; q = q->next ) {
+; 846  :             break;
+; 847  :         }
+; 848  :     }
+; 849  : #if COFF_SUPPORT
+; 850  :     /* if there's an item in the safeseh list which is not an
+; 851  :      * internal proc, make a full second pass to emit a proper
+; 852  :      * error msg at the .SAFESEH directive
+; 853  :      */
+; 854  :     for ( q = ModuleInfo.g.SafeSEHQueue.head; q; q = q->next ) {
 
 	mov	rax, QWORD PTR ModuleInfo+48
 	test	rax, rax
 	je	SHORT $LN9@PassOneChe
 $LL10@PassOneChe:
 
-; 846  :         if ( q->sym->state != SYM_INTERNAL || q->sym->isproc == FALSE ) {
+; 855  :         if ( q->sym->state != SYM_INTERNAL || q->sym->isproc == FALSE ) {
 
 	mov	rcx, QWORD PTR [rax+8]
 	cmp	DWORD PTR [rcx+32], 1
@@ -2188,27 +2189,27 @@ $LL10@PassOneChe:
 	test	BYTE PTR [rcx+41], 8
 	je	SHORT $LN52@PassOneChe
 
-; 837  :             break;
-; 838  :         }
-; 839  :     }
-; 840  : #if COFF_SUPPORT
-; 841  :     /* if there's an item in the safeseh list which is not an
-; 842  :      * internal proc, make a full second pass to emit a proper
-; 843  :      * error msg at the .SAFESEH directive
-; 844  :      */
-; 845  :     for ( q = ModuleInfo.g.SafeSEHQueue.head; q; q = q->next ) {
+; 846  :             break;
+; 847  :         }
+; 848  :     }
+; 849  : #if COFF_SUPPORT
+; 850  :     /* if there's an item in the safeseh list which is not an
+; 851  :      * internal proc, make a full second pass to emit a proper
+; 852  :      * error msg at the .SAFESEH directive
+; 853  :      */
+; 854  :     for ( q = ModuleInfo.g.SafeSEHQueue.head; q; q = q->next ) {
 
 	mov	rax, QWORD PTR [rax]
 	test	rax, rax
 	jne	SHORT $LL10@PassOneChe
 
-; 864  :             /* check if symbol is external or public */
-; 865  :             if ( sym == NULL ||
+; 873  :             /* check if symbol is external or public */
+; 874  :             if ( sym == NULL ||
 
 	jmp	SHORT $LN9@PassOneChe
 $LN52@PassOneChe:
 
-; 847  :             SkipSavedState();
+; 856  :             SkipSavedState();
 
 	call	SkipSavedState
 $LN9@PassOneChe:
@@ -2217,20 +2218,20 @@ $LN9@PassOneChe:
 	cmp	eax, 1
 	ja	SHORT $LN12@PassOneChe
 
-; 848  :             break;
-; 849  :         }
-; 850  :     }
-; 851  : #endif
-; 852  : 
-; 853  :     /* scan ALIASes for COFF/ELF */
-; 854  : 
-; 855  : #if COFF_SUPPORT || ELF_SUPPORT
-; 856  :     if ( Options.output_format == OFORMAT_COFF
-; 857  : #if ELF_SUPPORT
-; 858  :         || Options.output_format == OFORMAT_ELF
-; 859  : #endif
-; 860  :        ) {
-; 861  :         for( curr = SymTables[TAB_ALIAS].head ; curr != NULL ;curr = curr->next ) {
+; 857  :             break;
+; 858  :         }
+; 859  :     }
+; 860  : #endif
+; 861  : 
+; 862  :     /* scan ALIASes for COFF/ELF */
+; 863  : 
+; 864  : #if COFF_SUPPORT || ELF_SUPPORT
+; 865  :     if ( Options.output_format == OFORMAT_COFF
+; 866  : #if ELF_SUPPORT
+; 867  :         || Options.output_format == OFORMAT_ELF
+; 868  : #endif
+; 869  :        ) {
+; 870  :         for( curr = SymTables[TAB_ALIAS].head ; curr != NULL ;curr = curr->next ) {
 
 	mov	rcx, QWORD PTR SymTables+80
 	test	rcx, rcx
@@ -2238,13 +2239,13 @@ $LN9@PassOneChe:
 	npad	2
 $LL13@PassOneChe:
 
-; 862  :             struct asym *sym;
-; 863  :             sym = curr->sym.substitute;
+; 871  :             struct asym *sym;
+; 872  :             sym = curr->sym.substitute;
 
 	mov	rax, QWORD PTR [rcx+16]
 
-; 864  :             /* check if symbol is external or public */
-; 865  :             if ( sym == NULL ||
+; 873  :             /* check if symbol is external or public */
+; 874  :             if ( sym == NULL ||
 
 	test	rax, rax
 	je	SHORT $LN53@PassOneChe
@@ -2256,61 +2257,61 @@ $LL13@PassOneChe:
 	test	BYTE PTR [rax+40], 128			; 00000080H
 	je	SHORT $LN53@PassOneChe
 
-; 869  :                 break;
-; 870  :             }
-; 871  :             /* make sure it becomes a strong external */
-; 872  :             if ( sym->state == SYM_EXTERNAL )
+; 878  :                 break;
+; 879  :             }
+; 880  :             /* make sure it becomes a strong external */
+; 881  :             if ( sym->state == SYM_EXTERNAL )
 
 	cmp	edx, 2
 	jne	SHORT $LN11@PassOneChe
 $LN72@PassOneChe:
 
-; 873  :                 sym->used = TRUE;
+; 882  :                 sym->used = TRUE;
 
 	or	BYTE PTR [rax+40], 1
 $LN11@PassOneChe:
 
-; 848  :             break;
-; 849  :         }
-; 850  :     }
-; 851  : #endif
-; 852  : 
-; 853  :     /* scan ALIASes for COFF/ELF */
-; 854  : 
-; 855  : #if COFF_SUPPORT || ELF_SUPPORT
-; 856  :     if ( Options.output_format == OFORMAT_COFF
-; 857  : #if ELF_SUPPORT
-; 858  :         || Options.output_format == OFORMAT_ELF
-; 859  : #endif
-; 860  :        ) {
-; 861  :         for( curr = SymTables[TAB_ALIAS].head ; curr != NULL ;curr = curr->next ) {
+; 857  :             break;
+; 858  :         }
+; 859  :     }
+; 860  : #endif
+; 861  : 
+; 862  :     /* scan ALIASes for COFF/ELF */
+; 863  : 
+; 864  : #if COFF_SUPPORT || ELF_SUPPORT
+; 865  :     if ( Options.output_format == OFORMAT_COFF
+; 866  : #if ELF_SUPPORT
+; 867  :         || Options.output_format == OFORMAT_ELF
+; 868  : #endif
+; 869  :        ) {
+; 870  :         for( curr = SymTables[TAB_ALIAS].head ; curr != NULL ;curr = curr->next ) {
 
 	mov	rcx, QWORD PTR [rcx+104]
 	test	rcx, rcx
 	jne	SHORT $LL13@PassOneChe
 
-; 864  :             /* check if symbol is external or public */
-; 865  :             if ( sym == NULL ||
+; 873  :             /* check if symbol is external or public */
+; 874  :             if ( sym == NULL ||
 
 	jmp	SHORT $LN12@PassOneChe
 $LN53@PassOneChe:
 
-; 866  :                 ( sym->state != SYM_EXTERNAL &&
-; 867  :                  ( sym->state != SYM_INTERNAL || sym->ispublic == FALSE ))) {
-; 868  :                 SkipSavedState();
+; 875  :                 ( sym->state != SYM_EXTERNAL &&
+; 876  :                  ( sym->state != SYM_INTERNAL || sym->ispublic == FALSE ))) {
+; 877  :                 SkipSavedState();
 
 	call	SkipSavedState
 $LN12@PassOneChe:
 
-; 874  :         }
-; 875  :     }
-; 876  : #endif
-; 877  : 
-; 878  : #endif /* FASTPASS */
-; 879  : 
-; 880  :     /* scan the EXTERN/EXTERNDEF items */
-; 881  : 
-; 882  :     for( curr = SymTables[TAB_EXT].head ; curr; curr = next ) {
+; 883  :         }
+; 884  :     }
+; 885  : #endif
+; 886  : 
+; 887  : #endif /* FASTPASS */
+; 888  : 
+; 889  :     /* scan the EXTERN/EXTERNDEF items */
+; 890  : 
+; 891  :     for( curr = SymTables[TAB_EXT].head ; curr; curr = next ) {
 
 	mov	rax, QWORD PTR SymTables+16
 	test	rax, rax
@@ -2319,24 +2320,24 @@ $LN12@PassOneChe:
 	npad	6
 $LL16@PassOneChe:
 
-; 883  :         next = curr->next;
-; 884  :         /* v2.01: externdefs which have been "used" become "strong" */
-; 885  :         if ( curr->sym.used )
+; 892  :         next = curr->next;
+; 893  :         /* v2.01: externdefs which have been "used" become "strong" */
+; 894  :         if ( curr->sym.used )
 
 	movzx	ecx, BYTE PTR [rax+40]
 	mov	rbx, QWORD PTR [rax+104]
 	test	cl, 1
 	je	SHORT $LN32@PassOneChe
 
-; 886  :             curr->sym.weak = FALSE;
+; 895  :             curr->sym.weak = FALSE;
 
 	and	BYTE PTR [rax+47], 247			; 000000f7H
 $LN32@PassOneChe:
 
-; 887  :         /* remove unused EXTERNDEF/PROTO items from queue. */
-; 888  :         if ( curr->sym.weak == TRUE
-; 889  : #if DLLIMPORT
-; 890  :             && curr->sym.iat_used == FALSE
+; 896  :         /* remove unused EXTERNDEF/PROTO items from queue. */
+; 897  :         if ( curr->sym.weak == TRUE
+; 898  : #if DLLIMPORT
+; 899  :             && curr->sym.iat_used == FALSE
 
 	movzx	edx, BYTE PTR [rax+47]
 	test	dl, 8
@@ -2344,66 +2345,66 @@ $LN32@PassOneChe:
 	test	cl, 8
 	jne	SHORT $LN33@PassOneChe
 
-; 891  : #endif
-; 892  :            ) {
-; 893  :             sym_remove_table( &SymTables[TAB_EXT], curr );
+; 900  : #endif
+; 901  :            ) {
+; 902  :             sym_remove_table( &SymTables[TAB_EXT], curr );
 
 	mov	rdx, rax
 	lea	rcx, OFFSET FLAT:SymTables+16
 	call	sym_remove_table
 
-; 894  : #ifdef DEBUG_OUT
-; 895  :             cntUnusedExt++;
-; 896  : #endif
-; 897  :             continue;
+; 903  : #ifdef DEBUG_OUT
+; 904  :             cntUnusedExt++;
+; 905  : #endif
+; 906  :             continue;
 
 	jmp	SHORT $LN14@PassOneChe
 $LN33@PassOneChe:
 
-; 898  :         }
-; 899  : 
-; 900  : #if FASTMEM==0
-; 901  :         /* v2.05: clear fixup list (used for backpatching in pass one) */
-; 902  :         if ( curr->sym.bp_fixup ) {
-; 903  :             struct fixup *c;
-; 904  :             struct fixup *n;
-; 905  :             for( c = curr->sym.bp_fixup ; c; ) {
-; 906  :                 n = c->nextbp;
-; 907  :                 LclFree( c );
-; 908  :                 c = n;
-; 909  :             }
-; 910  :             curr->sym.bp_fixup = NULL;
-; 911  :         }
-; 912  : #endif
-; 913  : 
-; 914  :         if ( curr->sym.iscomm == TRUE )
+; 907  :         }
+; 908  : 
+; 909  : #if FASTMEM==0
+; 910  :         /* v2.05: clear fixup list (used for backpatching in pass one) */
+; 911  :         if ( curr->sym.bp_fixup ) {
+; 912  :             struct fixup *c;
+; 913  :             struct fixup *n;
+; 914  :             for( c = curr->sym.bp_fixup ; c; ) {
+; 915  :                 n = c->nextbp;
+; 916  :                 LclFree( c );
+; 917  :                 c = n;
+; 918  :             }
+; 919  :             curr->sym.bp_fixup = NULL;
+; 920  :         }
+; 921  : #endif
+; 922  : 
+; 923  :         if ( curr->sym.iscomm == TRUE )
 
 	test	dl, 4
 	jne	SHORT $LN14@PassOneChe
 
-; 915  :             continue;
-; 916  :         /* optional alternate symbol must be INTERNAL or EXTERNAL.
-; 917  :          * COFF ( and ELF? ) also wants internal symbols to be public
-; 918  :          * ( which is reasonable, since the linker won't know private
-; 919  :          * symbols and hence will search for a symbol of that name
-; 920  :          * "elsewhere" ).
-; 921  :          */
-; 922  : #if FASTPASS
-; 923  :         if ( curr->sym.altname ) {
+; 924  :             continue;
+; 925  :         /* optional alternate symbol must be INTERNAL or EXTERNAL.
+; 926  :          * COFF ( and ELF? ) also wants internal symbols to be public
+; 927  :          * ( which is reasonable, since the linker won't know private
+; 928  :          * symbols and hence will search for a symbol of that name
+; 929  :          * "elsewhere" ).
+; 930  :          */
+; 931  : #if FASTPASS
+; 932  :         if ( curr->sym.altname ) {
 
 	mov	rcx, QWORD PTR [rax+64]
 	test	rcx, rcx
 	je	SHORT $LN14@PassOneChe
 
-; 924  :             if ( curr->sym.altname->state == SYM_INTERNAL ) {
+; 933  :             if ( curr->sym.altname->state == SYM_INTERNAL ) {
 
 	mov	eax, DWORD PTR [rcx+32]
 	cmp	eax, 1
 	jne	SHORT $LN36@PassOneChe
 
-; 925  : #if COFF_SUPPORT || ELF_SUPPORT
-; 926  :                 /* for COFF/ELF, the altname must be public or external */
-; 927  :                 if ( curr->sym.altname->ispublic == FALSE &&
+; 934  : #if COFF_SUPPORT || ELF_SUPPORT
+; 935  :                 /* for COFF/ELF, the altname must be public or external */
+; 936  :                 if ( curr->sym.altname->ispublic == FALSE &&
 
 	test	BYTE PTR [rcx+40], 128			; 00000080H
 	jne	SHORT $LN14@PassOneChe
@@ -2412,39 +2413,39 @@ $LN33@PassOneChe:
 	cmp	eax, 1
 	ja	SHORT $LN14@PassOneChe
 
-; 928  :                     ( Options.output_format == OFORMAT_COFF
-; 929  : #if ELF_SUPPORT
-; 930  :                      || Options.output_format == OFORMAT_ELF
-; 931  : #endif
-; 932  :                     ) ) {
-; 933  :                     SkipSavedState();
-; 934  :                 }
+; 937  :                     ( Options.output_format == OFORMAT_COFF
+; 938  : #if ELF_SUPPORT
+; 939  :                      || Options.output_format == OFORMAT_ELF
+; 940  : #endif
+; 941  :                     ) ) {
+; 942  :                     SkipSavedState();
+; 943  :                 }
 
 	jmp	SHORT $LN73@PassOneChe
 $LN36@PassOneChe:
 
-; 935  : #endif
-; 936  :             } else if ( curr->sym.altname->state != SYM_EXTERNAL ) {
+; 944  : #endif
+; 945  :             } else if ( curr->sym.altname->state != SYM_EXTERNAL ) {
 
 	cmp	eax, 2
 	je	SHORT $LN14@PassOneChe
 $LN73@PassOneChe:
 
-; 937  :                 /* do not use saved state, scan full source in second pass */
-; 938  :                 SkipSavedState();
+; 946  :                 /* do not use saved state, scan full source in second pass */
+; 947  :                 SkipSavedState();
 
 	call	SkipSavedState
 $LN14@PassOneChe:
 
-; 874  :         }
-; 875  :     }
-; 876  : #endif
-; 877  : 
-; 878  : #endif /* FASTPASS */
-; 879  : 
-; 880  :     /* scan the EXTERN/EXTERNDEF items */
-; 881  : 
-; 882  :     for( curr = SymTables[TAB_EXT].head ; curr; curr = next ) {
+; 883  :         }
+; 884  :     }
+; 885  : #endif
+; 886  : 
+; 887  : #endif /* FASTPASS */
+; 888  : 
+; 889  :     /* scan the EXTERN/EXTERNDEF items */
+; 890  : 
+; 891  :     for( curr = SymTables[TAB_EXT].head ; curr; curr = next ) {
 
 	mov	rax, rbx
 	test	rbx, rbx
@@ -2452,47 +2453,47 @@ $LN14@PassOneChe:
 	mov	rbx, QWORD PTR [rsp+32]
 $LN15@PassOneChe:
 
-; 939  :             }
-; 940  :         }
-; 941  : #endif
-; 942  :     }
-; 943  : 
-; 944  : #ifdef DEBUG_OUT
-; 945  :     DebugMsg(("PassOneChecks: removed unused externals: %u\n", cntUnusedExt ));
-; 946  :     DebugMsg(("PassOneChecks: forward references:\n"));
-; 947  :     for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
-; 948  :         int i;
-; 949  :         int j;
-; 950  :         struct asym * sym;
-; 951  :         struct fixup * fix;
-; 952  :         for ( i = 0, j = 0, sym = curr->e.seginfo->label_list; sym; sym = (struct asym *)((struct dsym *)sym)->next ) {
-; 953  :             i++;
-; 954  :             for ( fix = sym->bp_fixup; fix ; fix = fix->nextbp, j++ );
-; 955  :         }
-; 956  :         DebugMsg(("PassOneChecks: segm=%s, labels=%u forward refs=%u\n", curr->sym.name, i, j));
-; 957  :     }
-; 958  : #endif
-; 959  : 
-; 960  :     if ( ModuleInfo.g.error_count == 0 ) {
+; 948  :             }
+; 949  :         }
+; 950  : #endif
+; 951  :     }
+; 952  : 
+; 953  : #ifdef DEBUG_OUT
+; 954  :     DebugMsg(("PassOneChecks: removed unused externals: %u\n", cntUnusedExt ));
+; 955  :     DebugMsg(("PassOneChecks: forward references:\n"));
+; 956  :     for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
+; 957  :         int i;
+; 958  :         int j;
+; 959  :         struct asym * sym;
+; 960  :         struct fixup * fix;
+; 961  :         for ( i = 0, j = 0, sym = curr->e.seginfo->label_list; sym; sym = (struct asym *)((struct dsym *)sym)->next ) {
+; 962  :             i++;
+; 963  :             for ( fix = sym->bp_fixup; fix ; fix = fix->nextbp, j++ );
+; 964  :         }
+; 965  :         DebugMsg(("PassOneChecks: segm=%s, labels=%u forward refs=%u\n", curr->sym.name, i, j));
+; 966  :     }
+; 967  : #endif
+; 968  : 
+; 969  :     if ( ModuleInfo.g.error_count == 0 ) {
 
 	cmp	DWORD PTR ModuleInfo, 0
 	jne	SHORT $LN44@PassOneChe
 
-; 961  : 
-; 962  :         /* make all symbols of type SYM_INTERNAL, which aren't
-; 963  :          a constant, public.  */
-; 964  :         if ( Options.all_symbols_public )
+; 970  : 
+; 971  :         /* make all symbols of type SYM_INTERNAL, which aren't
+; 972  :          a constant, public.  */
+; 973  :         if ( Options.all_symbols_public )
 
 	cmp	BYTE PTR Options+138, 0
 	je	SHORT $LN42@PassOneChe
 
-; 965  :             SymMakeAllSymbolsPublic();
+; 974  :             SymMakeAllSymbolsPublic();
 
 	call	SymMakeAllSymbolsPublic
 $LN42@PassOneChe:
 
-; 966  : 
-; 967  :         if ( Options.syntax_check_only == FALSE )
+; 975  : 
+; 976  :         if ( Options.syntax_check_only == FALSE )
 
 	movzx	eax, BYTE PTR write_to_file
 	mov	ecx, 1
@@ -2500,36 +2501,36 @@ $LN42@PassOneChe:
 	cmove	eax, ecx
 	mov	BYTE PTR write_to_file, al
 
-; 968  :             write_to_file = TRUE;
-; 969  : 
-; 970  :         if ( ModuleInfo.g.Pass1Checks )
+; 977  :             write_to_file = TRUE;
+; 978  : 
+; 979  :         if ( ModuleInfo.g.Pass1Checks )
 
 	mov	rax, QWORD PTR ModuleInfo+304
 	test	rax, rax
 	je	SHORT $LN44@PassOneChe
 
-; 971  :             ModuleInfo.g.Pass1Checks( &ModuleInfo );
+; 980  :             ModuleInfo.g.Pass1Checks( &ModuleInfo );
 
 	lea	rcx, OFFSET FLAT:ModuleInfo
 
-; 972  :     }
-; 973  : 
-; 974  : 
-; 975  :     return;
-; 976  : }
+; 981  :     }
+; 982  : 
+; 983  : 
+; 984  :     return;
+; 985  : }
 
 	add	rsp, 40					; 00000028H
 
-; 971  :             ModuleInfo.g.Pass1Checks( &ModuleInfo );
+; 980  :             ModuleInfo.g.Pass1Checks( &ModuleInfo );
 
 	rex_jmp	rax
 $LN44@PassOneChe:
 
-; 972  :     }
-; 973  : 
-; 974  : 
-; 975  :     return;
-; 976  : }
+; 981  :     }
+; 982  : 
+; 983  : 
+; 984  :     return;
+; 985  : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
@@ -2578,97 +2579,118 @@ ModulePassInit PROC					; COMDAT
 	cmp	BYTE PTR UseSavedState, 0
 	mov	DWORD PTR ModuleInfo+384, 0
 	mov	DWORD PTR ModuleInfo+408, edx
-	jne	$LN11@ModulePass
+	jne	$LN12@ModulePass
 
 ; 662  : #endif
 ; 663  :         ModuleInfo.langtype = Options.langtype;
 ; 664  :         ModuleInfo.fctype = Options.fctype;
-; 665  : #if AMD64_SUPPORT
-; 666  :         if ( ModuleInfo.sub_format == SFORMAT_64BIT ) {
+; 665  : 
+; 666  : 		#if AMD64_SUPPORT
+; 667  : 		if (Options.output_format == OFORMAT_ELF)
 
-	cmp	DWORD PTR ModuleInfo+372, 3
-	mov	edx, DWORD PTR Options+156
+	mov	edx, DWORD PTR Options+144
+	mov	r8d, DWORD PTR Options+156
 	mov	eax, DWORD PTR Options+168
-	mov	DWORD PTR ModuleInfo+364, edx
+	mov	DWORD PTR ModuleInfo+364, r8d
 	mov	DWORD PTR ModuleInfo+376, eax
+	cmp	edx, 3
 	jne	SHORT $LN6@ModulePass
 
-; 667  :             /* v2.06: force cpu to be at least P_64, without side effect to Options.cpu */
-; 668  :             if ( ( cpu &  P_CPU_MASK ) < P_64 ) /* enforce cpu to be 64-bit */
+; 668  : 		{
+; 669  : 			ModuleInfo.fctype = FCT_WIN64;
 
-	mov	r8d, 112				; 00000070H
+	mov	DWORD PTR ModuleInfo+376, 2
+
+; 670  : 			Options.fctype = FCT_WIN64;
+
+	mov	DWORD PTR Options+168, 2
+$LN6@ModulePass:
+
+; 671  : 		}
+; 672  : 		#endif /* John Hankinson 2016-02-10 force elf64 to use win64 abi */
+; 673  : 
+; 674  : #if AMD64_SUPPORT
+; 675  :         if ( ModuleInfo.sub_format == SFORMAT_64BIT ) {
+
+	cmp	DWORD PTR ModuleInfo+372, 3
+	jne	SHORT $LN7@ModulePass
+
+; 676  :             /* v2.06: force cpu to be at least P_64, without side effect to Options.cpu */
+; 677  :             if ( ( cpu &  P_CPU_MASK ) < P_64 ) /* enforce cpu to be 64-bit */
+
+	mov	r9d, 112				; 00000070H
 	mov	eax, ecx
 	and	eax, 240				; 000000f0H
-	cmp	eax, r8d
-	cmovl	ecx, r8d
+	cmp	eax, r9d
+	cmovl	ecx, r9d
 
-; 669  :                 cpu = P_64;
-; 670  :             /* ignore -m switch for 64-bit formats.
-; 671  :              * there's no other model than FLAT possible.
-; 672  :              */
-; 673  :             model = MODEL_FLAT;
+; 678  :                 cpu = P_64;
+; 679  :             /* ignore -m switch for 64-bit formats.
+; 680  :              * there's no other model than FLAT possible.
+; 681  :              */
+; 682  :             model = MODEL_FLAT;
 
-	lea	ebx, QWORD PTR [r8-105]
+	lea	ebx, QWORD PTR [r9-105]
 
-; 674  :             if ( ModuleInfo.langtype == LANG_NONE && Options.output_format == OFORMAT_COFF )
+; 683  :             if ( ModuleInfo.langtype == LANG_NONE && Options.output_format == OFORMAT_COFF )
 
-	test	edx, edx
-	jne	SHORT $LN10@ModulePass
-	cmp	DWORD PTR Options+144, 2
-	jne	SHORT $LN10@ModulePass
+	test	r8d, r8d
+	jne	SHORT $LN11@ModulePass
+	cmp	edx, 2
+	jne	SHORT $LN11@ModulePass
 
-; 675  :                 ModuleInfo.langtype = LANG_FASTCALL;
+; 684  :                 ModuleInfo.langtype = LANG_FASTCALL;
 
 	mov	DWORD PTR ModuleInfo+364, ebx
 
-; 676  :         } else
+; 685  :         } else
 
-	jmp	SHORT $LN10@ModulePass
-$LN6@ModulePass:
+	jmp	SHORT $LN11@ModulePass
+$LN7@ModulePass:
 
-; 677  : #endif
-; 678  :             /* if model FLAT is to be set, ensure that cpu is compat. */
-; 679  :             if ( model == MODEL_FLAT && ( cpu & P_CPU_MASK ) < P_386 ) /* cpu < 386? */
+; 686  : #endif
+; 687  :             /* if model FLAT is to be set, ensure that cpu is compat. */
+; 688  :             if ( model == MODEL_FLAT && ( cpu & P_CPU_MASK ) < P_386 ) /* cpu < 386? */
 
 	cmp	ebx, 7
-	jne	SHORT $LN10@ModulePass
+	jne	SHORT $LN11@ModulePass
 	mov	eax, ecx
 	mov	edx, 48					; 00000030H
 	and	eax, 240				; 000000f0H
 	cmp	eax, edx
 	cmovl	ecx, edx
-$LN10@ModulePass:
+$LN11@ModulePass:
 
-; 680  :                 cpu = P_386;
-; 681  : 
-; 682  :         SetCPU( cpu );
+; 689  :                 cpu = P_386;
+; 690  : 
+; 691  :         SetCPU( cpu );
 
 	call	SetCPU
 
-; 683  :         /* table ModelToken starts with MODEL_TINY, which is index 1" */
-; 684  :         if ( model != MODEL_NONE )
+; 692  :         /* table ModelToken starts with MODEL_TINY, which is index 1" */
+; 693  :         if ( model != MODEL_NONE )
 
 	test	ebx, ebx
-	je	SHORT $LN23@ModulePass
+	je	SHORT $LN24@ModulePass
 
-; 685  :             AddLineQueueX( "%r %s", T_DOT_MODEL, ModelToken[model - 1] );
+; 694  :             AddLineQueueX( "%r %s", T_DOT_MODEL, ModelToken[model - 1] );
 
 	lea	rax, OFFSET FLAT:ModelToken
 	movsxd	r8, ebx
 	mov	edx, 342				; 00000156H
-	lea	rcx, OFFSET FLAT:$SG11930
+	lea	rcx, OFFSET FLAT:$SG11932
 	mov	r8, QWORD PTR [rax+r8*8-8]
 	call	AddLineQueueX
-$LN23@ModulePass:
+$LN24@ModulePass:
 	mov	edx, DWORD PTR ModuleInfo+408
-$LN11@ModulePass:
+$LN12@ModulePass:
 
-; 686  : 
-; 687  : #if FASTPASS
-; 688  :     }
-; 689  : #endif
-; 690  : 
-; 691  :     SetMasm510( Options.masm51_compat );
+; 695  : 
+; 696  : #if FASTPASS
+; 697  :     }
+; 698  : #endif
+; 699  : 
+; 700  :     SetMasm510( Options.masm51_compat );
 
 	movzx	ecx, BYTE PTR Options+126
 	and	edx, -1361				; fffffaafH
@@ -2683,33 +2705,33 @@ $LN11@ModulePass:
 	shl	r8d, 4
 	or	r8d, edx
 	test	cl, cl
-	je	SHORT $LN17@ModulePass
+	je	SHORT $LN18@ModulePass
 	cmp	DWORD PTR ModuleInfo+360, 0
-	jne	SHORT $LN17@ModulePass
+	jne	SHORT $LN18@ModulePass
 	cmp	DWORD PTR ModuleInfo+364, 0
 	mov	DWORD PTR ModuleInfo+384, 2
-	jne	SHORT $LN17@ModulePass
+	jne	SHORT $LN18@ModulePass
 	btr	r8d, 7
 	or	r8d, 4
-$LN17@ModulePass:
+$LN18@ModulePass:
 
-; 692  :     ModuleInfo.defOfssize = USE16;
-; 693  :     ModuleInfo.ljmp     = TRUE;
-; 694  : 
-; 695  :     ModuleInfo.list   = Options.write_listing;
-; 696  :     ModuleInfo.cref   = TRUE;
-; 697  :     ModuleInfo.listif = Options.listif;
-; 698  :     ModuleInfo.list_generated_code = Options.list_generated_code;
+; 701  :     ModuleInfo.defOfssize = USE16;
+; 702  :     ModuleInfo.ljmp     = TRUE;
+; 703  : 
+; 704  :     ModuleInfo.list   = Options.write_listing;
+; 705  :     ModuleInfo.cref   = TRUE;
+; 706  :     ModuleInfo.listif = Options.listif;
+; 707  :     ModuleInfo.list_generated_code = Options.list_generated_code;
 
 	movzx	edx, BYTE PTR Options+131
 	and	r8d, -26625				; ffff97ffH
 	movzx	eax, BYTE PTR Options+130
 	and	edx, 1
 
-; 699  :     ModuleInfo.list_macro = Options.list_macro;
-; 700  : 
-; 701  :     ModuleInfo.case_sensitive = Options.case_sensitive;
-; 702  :     ModuleInfo.convert_uppercase = Options.convert_uppercase;
+; 708  :     ModuleInfo.list_macro = Options.list_macro;
+; 709  : 
+; 710  :     ModuleInfo.case_sensitive = Options.case_sensitive;
+; 711  :     ModuleInfo.convert_uppercase = Options.convert_uppercase;
 
 	movzx	ecx, BYTE PTR Options+124
 	add	edx, edx
@@ -2734,20 +2756,20 @@ $LN17@ModulePass:
 	or	ecx, edx
 	mov	DWORD PTR ModuleInfo+408, ecx
 
-; 703  :     SymSetCmpFunc();
+; 712  :     SymSetCmpFunc();
 
 	call	SymSetCmpFunc
 
-; 704  : 
-; 705  :     ModuleInfo.segorder = SEGORDER_SEQ;
-; 706  :     ModuleInfo.radix = 10;
-; 707  :     ModuleInfo.fieldalign = Options.fieldalign;
-; 708  : #if PROCALIGN
-; 709  :     ModuleInfo.procalign = 0;
-; 710  : #endif
-; 711  : #if DLLIMPORT
-; 712  :     /* if OPTION DLLIMPORT was used, reset all iat_used flags */
-; 713  :     if ( ModuleInfo.g.DllQueue )
+; 713  : 
+; 714  :     ModuleInfo.segorder = SEGORDER_SEQ;
+; 715  :     ModuleInfo.radix = 10;
+; 716  :     ModuleInfo.fieldalign = Options.fieldalign;
+; 717  : #if PROCALIGN
+; 718  :     ModuleInfo.procalign = 0;
+; 719  : #endif
+; 720  : #if DLLIMPORT
+; 721  :     /* if OPTION DLLIMPORT was used, reset all iat_used flags */
+; 722  :     if ( ModuleInfo.g.DllQueue )
 
 	cmp	QWORD PTR ModuleInfo+80, 0
 	movzx	eax, BYTE PTR Options+152
@@ -2757,15 +2779,15 @@ $LN17@ModulePass:
 	mov	BYTE PTR ModuleInfo+399, 0
 	je	SHORT $LN3@ModulePass
 
-; 714  :         for ( curr = SymTables[TAB_EXT].head; curr; curr = curr->next )
+; 723  :         for ( curr = SymTables[TAB_EXT].head; curr; curr = curr->next )
 
 	mov	rax, QWORD PTR SymTables+16
 	test	rax, rax
 	je	SHORT $LN3@ModulePass
-	npad	6
+	npad	8
 $LL4@ModulePass:
 
-; 715  :             curr->sym.iat_used = FALSE;
+; 724  :             curr->sym.iat_used = FALSE;
 
 	and	BYTE PTR [rax+40], 247			; 000000f7H
 	mov	rax, QWORD PTR [rax+104]
@@ -2773,8 +2795,8 @@ $LL4@ModulePass:
 	jne	SHORT $LL4@ModulePass
 $LN3@ModulePass:
 
-; 716  : #endif
-; 717  : }
+; 725  : #endif
+; 726  : }
 
 	add	rsp, 32					; 00000020H
 	pop	rbx
@@ -2872,7 +2894,7 @@ $LN8@CmdlParams:
 
 ; 575  :             if ( env = getenv( "INCLUDE" ) )
 
-	lea	rcx, OFFSET FLAT:$SG11893
+	lea	rcx, OFFSET FLAT:$SG11894
 	call	getenv
 	test	rax, rax
 	je	SHORT $LN4@CmdlParams
@@ -3388,7 +3410,7 @@ $LN3@WriteModul:
 ; 408  :         FILE *ld;
 ; 409  :         ld = fopen( Options.names[OPTN_LNKDEF_FN], "w" );
 
-	lea	rdx, OFFSET FLAT:$SG11841
+	lea	rdx, OFFSET FLAT:$SG11842
 	call	fopen
 	mov	rsi, rax
 
@@ -3451,7 +3473,7 @@ $LN14@WriteModul:
 ; 419  :                 size = sprintf( CurrSource, "import '%s'  %s.%s\n", StringBufferEnd, curr->sym.dll->name, curr->sym.name );
 
 	mov	r9, QWORD PTR [rbx+56]
-	lea	rdx, OFFSET FLAT:$SG11845
+	lea	rdx, OFFSET FLAT:$SG11846
 	mov	rax, QWORD PTR [rbx+8]
 	add	r9, 12
 	mov	r8, QWORD PTR ModuleInfo+488
@@ -3724,7 +3746,7 @@ $LN3@WritePrepr:
 	lea	rdi, QWORD PTR [rbx+1]
 $LN9@WritePrepr:
 	mov	rdx, rdi
-	lea	rcx, OFFSET FLAT:$SG11905
+	lea	rcx, OFFSET FLAT:$SG11906
 	call	printf
 	mov	rbx, QWORD PTR [rsp+48]
 
@@ -3748,7 +3770,7 @@ $LN5@WritePrepr:
 ; 609  :         PrintEmptyLine = FALSE;
 ; 610  :         printf("\n");
 
-	lea	rcx, OFFSET FLAT:$SG11907
+	lea	rcx, OFFSET FLAT:$SG11908
 	mov	BYTE PTR ?PrintEmptyLine@?1??WritePreprocessedLine@@9@9, 0
 
 ; 611  :     }
@@ -3946,32 +3968,32 @@ _TEXT	ENDS
 _TEXT	SEGMENT
 close_files PROC
 
-; 1223 : {
+; 1232 : {
 
 $LN13:
 	push	rbx
 	sub	rsp, 32					; 00000020H
 
-; 1224 :     /* v2.11: no fatal errors anymore if fclose() fails.
-; 1225 :      * That's because Fatal() may cause close_files() to be
-; 1226 :      * reentered and thus cause an endless loop.
-; 1227 :      */
-; 1228 : 
-; 1229 :     /* close ASM file */
-; 1230 :     if( CurrFile[ASM] != NULL ) {
+; 1233 :     /* v2.11: no fatal errors anymore if fclose() fails.
+; 1234 :      * That's because Fatal() may cause close_files() to be
+; 1235 :      * reentered and thus cause an endless loop.
+; 1236 :      */
+; 1237 : 
+; 1238 :     /* close ASM file */
+; 1239 :     if( CurrFile[ASM] != NULL ) {
 
 	mov	rcx, QWORD PTR ModuleInfo+96
 	xor	ebx, ebx
 	test	rcx, rcx
 	je	SHORT $LN2@close_file
 
-; 1231 :         if( fclose( CurrFile[ASM] ) != 0 )
+; 1240 :         if( fclose( CurrFile[ASM] ) != 0 )
 
 	call	fclose
 	test	eax, eax
 	je	SHORT $LN3@close_file
 
-; 1232 :             EmitErr( CANNOT_CLOSE_FILE, CurrFName[ASM], errno );
+; 1241 :             EmitErr( CANNOT_CLOSE_FILE, CurrFName[ASM], errno );
 
 	call	_errno
 	mov	rdx, QWORD PTR ModuleInfo+128
@@ -3980,27 +4002,27 @@ $LN13:
 	call	EmitErr
 $LN3@close_file:
 
-; 1233 :         CurrFile[ASM] = NULL;
+; 1242 :         CurrFile[ASM] = NULL;
 
 	mov	QWORD PTR ModuleInfo+96, rbx
 $LN2@close_file:
 
-; 1234 :     }
-; 1235 : 
-; 1236 :     /* close OBJ file */
-; 1237 :     if ( CurrFile[OBJ] != NULL ) {
+; 1243 :     }
+; 1244 : 
+; 1245 :     /* close OBJ file */
+; 1246 :     if ( CurrFile[OBJ] != NULL ) {
 
 	mov	rcx, QWORD PTR ModuleInfo+104
 	test	rcx, rcx
 	je	SHORT $LN4@close_file
 
-; 1238 :         if ( fclose( CurrFile[OBJ] ) != 0 )
+; 1247 :         if ( fclose( CurrFile[OBJ] ) != 0 )
 
 	call	fclose
 	test	eax, eax
 	je	SHORT $LN5@close_file
 
-; 1239 :             EmitErr( CANNOT_CLOSE_FILE, CurrFName[OBJ], errno );
+; 1248 :             EmitErr( CANNOT_CLOSE_FILE, CurrFName[OBJ], errno );
 
 	call	_errno
 	mov	rdx, QWORD PTR ModuleInfo+136
@@ -4009,89 +4031,89 @@ $LN2@close_file:
 	call	EmitErr
 $LN5@close_file:
 
-; 1240 :         CurrFile[OBJ] = NULL;
+; 1249 :         CurrFile[OBJ] = NULL;
 
 	mov	QWORD PTR ModuleInfo+104, rbx
 $LN4@close_file:
 
-; 1241 :     }
-; 1242 :     /* delete the object module if errors occured */
-; 1243 :     if ( Options.syntax_check_only == FALSE &&
+; 1250 :     }
+; 1251 :     /* delete the object module if errors occured */
+; 1252 :     if ( Options.syntax_check_only == FALSE &&
 
 	cmp	BYTE PTR Options+172, bl
 	jne	SHORT $LN6@close_file
 	cmp	DWORD PTR ModuleInfo, ebx
 	jbe	SHORT $LN6@close_file
 
-; 1244 :         ModuleInfo.g.error_count > 0 ) {
-; 1245 :         remove( CurrFName[OBJ] );
+; 1253 :         ModuleInfo.g.error_count > 0 ) {
+; 1254 :         remove( CurrFName[OBJ] );
 
 	mov	rcx, QWORD PTR ModuleInfo+136
 	call	remove
 $LN6@close_file:
 
-; 1246 :     }
-; 1247 : 
-; 1248 :     if( CurrFile[LST] != NULL ) {
+; 1255 :     }
+; 1256 : 
+; 1257 :     if( CurrFile[LST] != NULL ) {
 
 	mov	rcx, QWORD PTR ModuleInfo+112
 	test	rcx, rcx
 	je	SHORT $LN7@close_file
 
-; 1249 :         fclose( CurrFile[LST] );
+; 1258 :         fclose( CurrFile[LST] );
 
 	call	fclose
 
-; 1250 :         CurrFile[LST] = NULL;
+; 1259 :         CurrFile[LST] = NULL;
 
 	mov	QWORD PTR ModuleInfo+112, rbx
 $LN7@close_file:
 
-; 1251 :     }
-; 1252 : 
-; 1253 :     /* close ERR file */
-; 1254 :     if ( CurrFile[ERR] != NULL ) {
+; 1260 :     }
+; 1261 : 
+; 1262 :     /* close ERR file */
+; 1263 :     if ( CurrFile[ERR] != NULL ) {
 
 	mov	rcx, QWORD PTR ModuleInfo+120
 	test	rcx, rcx
 	je	SHORT $LN8@close_file
 
-; 1255 :         fclose( CurrFile[ERR] );
+; 1264 :         fclose( CurrFile[ERR] );
 
 	call	fclose
 
-; 1256 :         CurrFile[ERR] = NULL;
+; 1265 :         CurrFile[ERR] = NULL;
 
 	mov	QWORD PTR ModuleInfo+120, rbx
 
-; 1260 :     return;
-; 1261 : }
+; 1269 :     return;
+; 1270 : }
 
 	add	rsp, 32					; 00000020H
 	pop	rbx
 	ret	0
 $LN8@close_file:
 
-; 1257 :     } else if ( CurrFName[ERR] )
+; 1266 :     } else if ( CurrFName[ERR] )
 
 	mov	rcx, QWORD PTR ModuleInfo+152
 	test	rcx, rcx
 	je	SHORT $LN10@close_file
 
-; 1260 :     return;
-; 1261 : }
+; 1269 :     return;
+; 1270 : }
 
 	add	rsp, 32					; 00000020H
 	pop	rbx
 
-; 1258 :         /* nothing written, delete any existing ERR file */
-; 1259 :         remove( CurrFName[ERR] );
+; 1267 :         /* nothing written, delete any existing ERR file */
+; 1268 :         remove( CurrFName[ERR] );
 
 	jmp	remove
 $LN10@close_file:
 
-; 1260 :     return;
-; 1261 : }
+; 1269 :     return;
+; 1270 : }
 
 	add	rsp, 32					; 00000020H
 	pop	rbx
@@ -4169,7 +4191,7 @@ prev_written$ = 64
 source$ = 112
 AssembleModule PROC
 
-; 1428 : {
+; 1437 : {
 
 $LN59:
 	mov	QWORD PTR [rsp+16], rbx
@@ -4181,15 +4203,15 @@ $LN59:
 	push	r15
 	sub	rsp, 80					; 00000050H
 
-; 1429 :     uint_32       prev_written = -1;
-; 1430 :     uint_32       curr_written;
-; 1431 :     int           starttime;
-; 1432 :     int           endtime;
-; 1433 :     struct dsym   *seg;
-; 1434 : 
-; 1435 :     DebugMsg(("AssembleModule(\"%s\") enter\n", source ));
-; 1436 : 
-; 1437 :     memset( &ModuleInfo, 0, sizeof(ModuleInfo) );
+; 1438 :     uint_32       prev_written = -1;
+; 1439 :     uint_32       curr_written;
+; 1440 :     int           starttime;
+; 1441 :     int           endtime;
+; 1442 :     struct dsym   *seg;
+; 1443 : 
+; 1444 :     DebugMsg(("AssembleModule(\"%s\") enter\n", source ));
+; 1445 : 
+; 1446 :     memset( &ModuleInfo, 0, sizeof(ModuleInfo) );
 
 	xor	edx, edx
 	mov	DWORD PTR prev_written$[rsp], -1	; ffffffffH
@@ -4197,13 +4219,13 @@ $LN59:
 	lea	rcx, OFFSET FLAT:ModuleInfo
 	call	memset
 
-; 1438 :     DebugCmd( ModuleInfo.cref = TRUE ); /* enable debug displays */
-; 1439 : 
-; 1440 : #if 1 //def __SW_BD
-; 1441 :     /* fatal errors during assembly won't terminate the program,
-; 1442 :      * just the assembly step.!
-; 1443 :      */
-; 1444 :     if ( setjmp( jmpenv ) ) {
+; 1447 :     DebugCmd( ModuleInfo.cref = TRUE ); /* enable debug displays */
+; 1448 : 
+; 1449 : #if 1 //def __SW_BD
+; 1450 :     /* fatal errors during assembly won't terminate the program,
+; 1451 :      * just the assembly step.!
+; 1452 :      */
+; 1453 :     if ( setjmp( jmpenv ) ) {
 
 	lea	rcx, OFFSET FLAT:jmpenv
 	mov	rdx, rsp
@@ -4212,52 +4234,52 @@ $LN59:
 	test	eax, eax
 	je	SHORT $LN11@AssembleMo
 
-; 1445 :         if ( ModuleInfo.g.src_stack )
+; 1454 :         if ( ModuleInfo.g.src_stack )
 
 	cmp	QWORD PTR ModuleInfo+200, rbp
 	je	$done$60
 
-; 1446 :             ClearSrcStack(); /* avoid memory leaks! */
+; 1455 :             ClearSrcStack(); /* avoid memory leaks! */
 
 	call	ClearSrcStack
 
-; 1447 :         goto done;
+; 1456 :         goto done;
 
 	jmp	$done$60
 $LN11@AssembleMo:
 
-; 1448 :     }
-; 1449 : #endif
-; 1450 : 
-; 1451 :     AssembleInit( source );
+; 1457 :     }
+; 1458 : #endif
+; 1459 : 
+; 1460 :     AssembleInit( source );
 
 	mov	rcx, QWORD PTR source$[rsp]
 	call	AssembleInit
 
-; 1452 : 
-; 1453 :     starttime = clock();
+; 1461 : 
+; 1462 :     starttime = clock();
 
 	call	clock
 	mov	r15d, eax
 
-; 1454 : 
-; 1455 : #if 0 /* 1=trigger a protection fault */
-; 1456 :     seg = NULL;
-; 1457 :     seg->sym.state = SYM_UNDEFINED;
-; 1458 : #endif
-; 1459 : 
-; 1460 :     for( Parse_Pass = PASS_1; ; Parse_Pass++ ) {
+; 1463 : 
+; 1464 : #if 0 /* 1=trigger a protection fault */
+; 1465 :     seg = NULL;
+; 1466 :     seg->sym.state = SYM_UNDEFINED;
+; 1467 : #endif
+; 1468 : 
+; 1469 :     for( Parse_Pass = PASS_1; ; Parse_Pass++ ) {
 
 	mov	DWORD PTR Parse_Pass, ebp
 
-; 1461 : 
-; 1462 :         DebugMsg(( "*************\npass %u\n*************\n", Parse_Pass + 1 ));
-; 1463 :         OnePass();
+; 1470 : 
+; 1471 :         DebugMsg(( "*************\npass %u\n*************\n", Parse_Pass + 1 ));
+; 1472 :         OnePass();
 
 	call	OnePass
 
-; 1464 : 
-; 1465 :         if( ModuleInfo.g.error_count > 0 ) {
+; 1473 : 
+; 1474 :         if( ModuleInfo.g.error_count > 0 ) {
 
 	cmp	DWORD PTR ModuleInfo, ebp
 	ja	$LN37@AssembleMo
@@ -4265,12 +4287,12 @@ $LN11@AssembleMo:
 	npad	14
 $LL4@AssembleMo:
 
-; 1466 :             DebugMsg(("AssembleModule(%u): errorcnt=%u\n", Parse_Pass + 1, ModuleInfo.g.error_count ));
-; 1467 :             break;
-; 1468 :         }
-; 1469 : 
-; 1470 :         /* calculate total size of segments */
-; 1471 :         for ( curr_written = 0, seg = SymTables[TAB_SEG].head; seg ; seg = seg->next ) {
+; 1475 :             DebugMsg(("AssembleModule(%u): errorcnt=%u\n", Parse_Pass + 1, ModuleInfo.g.error_count ));
+; 1476 :             break;
+; 1477 :         }
+; 1478 : 
+; 1479 :         /* calculate total size of segments */
+; 1480 :         for ( curr_written = 0, seg = SymTables[TAB_SEG].head; seg ; seg = seg->next ) {
 
 	mov	rbx, QWORD PTR SymTables+32
 	mov	ecx, ebp
@@ -4279,11 +4301,11 @@ $LL4@AssembleMo:
 	je	SHORT $LN6@AssembleMo
 $LL7@AssembleMo:
 
-; 1472 :             /* v2.04: use <max_offset> instead of <bytes_written>
-; 1473 :              * (the latter is not always reliable due to backpatching).
-; 1474 :              */
-; 1475 :             //curr_written += seg->e.seginfo->bytes_written;
-; 1476 :             curr_written += seg->sym.max_offset;
+; 1481 :             /* v2.04: use <max_offset> instead of <bytes_written>
+; 1482 :              * (the latter is not always reliable due to backpatching).
+; 1483 :              */
+; 1484 :             //curr_written += seg->e.seginfo->bytes_written;
+; 1485 :             curr_written += seg->sym.max_offset;
 
 	add	ecx, DWORD PTR [rax+56]
 	mov	rax, QWORD PTR [rax+104]
@@ -4291,14 +4313,14 @@ $LL7@AssembleMo:
 	jne	SHORT $LL7@AssembleMo
 $LN6@AssembleMo:
 
-; 1477 :             DebugMsg(("AssembleModule(%u): segm=%-8s start=%8" I32_SPEC "X max_ofs=%8" I32_SPEC "X written=%" I32_SPEC "X\n",
-; 1478 :                       Parse_Pass + 1, seg->sym.name, seg->e.seginfo->start_loc, seg->sym.max_offset,
-; 1479 :                       seg->e.seginfo->bytes_written ));
-; 1480 :         }
-; 1481 : 
-; 1482 :         /* if there's no phase error and size of segments didn't change, we're done */
-; 1483 :         DebugMsg(("AssembleModule(%u): PhaseError=%u, prev_written=%" I32_SPEC "X, curr_written=%" I32_SPEC "X\n", Parse_Pass + 1, ModuleInfo.PhaseError, prev_written, curr_written));
-; 1484 :         if( !ModuleInfo.PhaseError && prev_written == curr_written )
+; 1486 :             DebugMsg(("AssembleModule(%u): segm=%-8s start=%8" I32_SPEC "X max_ofs=%8" I32_SPEC "X written=%" I32_SPEC "X\n",
+; 1487 :                       Parse_Pass + 1, seg->sym.name, seg->e.seginfo->start_loc, seg->sym.max_offset,
+; 1488 :                       seg->e.seginfo->bytes_written ));
+; 1489 :         }
+; 1490 : 
+; 1491 :         /* if there's no phase error and size of segments didn't change, we're done */
+; 1492 :         DebugMsg(("AssembleModule(%u): PhaseError=%u, prev_written=%" I32_SPEC "X, curr_written=%" I32_SPEC "X\n", Parse_Pass + 1, ModuleInfo.PhaseError, prev_written, curr_written));
+; 1493 :         if( !ModuleInfo.PhaseError && prev_written == curr_written )
 
 	cmp	BYTE PTR ModuleInfo+422, bpl
 	jne	SHORT $LN14@AssembleMo
@@ -4306,18 +4328,18 @@ $LN6@AssembleMo:
 	je	$LN37@AssembleMo
 $LN14@AssembleMo:
 
-; 1485 :             break;
-; 1486 : 
-; 1487 : #ifdef DEBUG_OUT
-; 1488 :         if ( curr_written < prev_written && prev_written != -1 ) {
-; 1489 :             printf( "size shrank from %" I32_SPEC "X to %" I32_SPEC "X in pass %u\n", prev_written, curr_written, Parse_Pass + 1 );
-; 1490 :         }
-; 1491 : #endif
-; 1492 : 
-; 1493 :         DebugMsg(("AssembleModule(%u): prepare for next pass\n", Parse_Pass + 1));
-; 1494 :         prev_written = curr_written;
+; 1494 :             break;
 ; 1495 : 
-; 1496 :         if ( Parse_Pass % 200 == 199 )
+; 1496 : #ifdef DEBUG_OUT
+; 1497 :         if ( curr_written < prev_written && prev_written != -1 ) {
+; 1498 :             printf( "size shrank from %" I32_SPEC "X to %" I32_SPEC "X in pass %u\n", prev_written, curr_written, Parse_Pass + 1 );
+; 1499 :         }
+; 1500 : #endif
+; 1501 : 
+; 1502 :         DebugMsg(("AssembleModule(%u): prepare for next pass\n", Parse_Pass + 1));
+; 1503 :         prev_written = curr_written;
+; 1504 : 
+; 1505 :         if ( Parse_Pass % 200 == 199 )
 
 	mov	r8d, DWORD PTR Parse_Pass
 	mov	edi, ecx
@@ -4331,7 +4353,7 @@ $LN14@AssembleMo:
 	cmp	ecx, 199				; 000000c7H
 	jne	SHORT $LN15@AssembleMo
 
-; 1497 :             EmitWarn( 2, ASSEMBLY_PASSES, Parse_Pass+1 );
+; 1506 :             EmitWarn( 2, ASSEMBLY_PASSES, Parse_Pass+1 );
 
 	lea	edx, QWORD PTR [rcx+41]
 	inc	r8d
@@ -4340,41 +4362,41 @@ $LN14@AssembleMo:
 	mov	rbx, QWORD PTR SymTables+32
 $LN15@AssembleMo:
 
-; 1498 : #ifdef DEBUG_OUT
-; 1499 :         if ( Options.max_passes && Parse_Pass == (Options.max_passes - 1) )
-; 1500 :             break;
-; 1501 : #endif
-; 1502 :         if ( Options.line_numbers ) {
+; 1507 : #ifdef DEBUG_OUT
+; 1508 :         if ( Options.max_passes && Parse_Pass == (Options.max_passes - 1) )
+; 1509 :             break;
+; 1510 : #endif
+; 1511 :         if ( Options.line_numbers ) {
 
 	cmp	BYTE PTR Options+1, bpl
 	je	SHORT $LN18@AssembleMo
 
-; 1503 : #if COFF_SUPPORT
-; 1504 :             if ( Options.output_format == OFORMAT_COFF ) {
+; 1512 : #if COFF_SUPPORT
+; 1513 :             if ( Options.output_format == OFORMAT_COFF ) {
 
 	cmp	DWORD PTR Options+144, 2
 	jne	SHORT $LN17@AssembleMo
 
-; 1505 :                 for( seg = SymTables[TAB_SEG].head; seg; seg = seg->next ) {
+; 1514 :                 for( seg = SymTables[TAB_SEG].head; seg; seg = seg->next ) {
 
 	test	rbx, rbx
 	je	SHORT $LN18@AssembleMo
 	npad	9
 $LL10@AssembleMo:
 
-; 1506 :                     if ( seg->e.seginfo->LinnumQueue )
+; 1515 :                     if ( seg->e.seginfo->LinnumQueue )
 
 	mov	rax, QWORD PTR [rbx+96]
 	mov	rcx, QWORD PTR [rax+56]
 	test	rcx, rcx
 	je	SHORT $LN19@AssembleMo
 
-; 1507 :                         QueueDeleteLinnum( seg->e.seginfo->LinnumQueue );
+; 1516 :                         QueueDeleteLinnum( seg->e.seginfo->LinnumQueue );
 
 	call	QueueDeleteLinnum
 $LN19@AssembleMo:
 
-; 1508 :                     seg->e.seginfo->LinnumQueue = NULL;
+; 1517 :                     seg->e.seginfo->LinnumQueue = NULL;
 
 	mov	rax, QWORD PTR [rbx+96]
 	mov	QWORD PTR [rax+56], rbp
@@ -4382,50 +4404,50 @@ $LN19@AssembleMo:
 	test	rbx, rbx
 	jne	SHORT $LL10@AssembleMo
 
-; 1509 :                 }
-; 1510 :             } else {
+; 1518 :                 }
+; 1519 :             } else {
 
 	jmp	SHORT $LN18@AssembleMo
 $LN17@AssembleMo:
 
-; 1511 : #endif
-; 1512 :                 QueueDeleteLinnum( &LinnumQueue );
+; 1520 : #endif
+; 1521 :                 QueueDeleteLinnum( &LinnumQueue );
 
 	lea	rcx, OFFSET FLAT:LinnumQueue
 	call	QueueDeleteLinnum
 
-; 1513 :                 LinnumQueue.head = NULL;
+; 1522 :                 LinnumQueue.head = NULL;
 
 	mov	QWORD PTR LinnumQueue, rbp
 $LN18@AssembleMo:
 
-; 1514 : #if COFF_SUPPORT
-; 1515 :             }
-; 1516 : #endif
-; 1517 :         }
-; 1518 : 
-; 1519 :         /* set file position of ASM and LST files for next pass */
-; 1520 : 
-; 1521 :         rewind( CurrFile[ASM] );
+; 1523 : #if COFF_SUPPORT
+; 1524 :             }
+; 1525 : #endif
+; 1526 :         }
+; 1527 : 
+; 1528 :         /* set file position of ASM and LST files for next pass */
+; 1529 : 
+; 1530 :         rewind( CurrFile[ASM] );
 
 	mov	rcx, QWORD PTR ModuleInfo+96
 	call	rewind
 
-; 1522 :         if ( write_to_file && Options.output_format == OFORMAT_OMF )
+; 1531 :         if ( write_to_file && Options.output_format == OFORMAT_OMF )
 
 	cmp	BYTE PTR write_to_file, bpl
 	je	SHORT $LN20@AssembleMo
 	cmp	DWORD PTR Options+144, 1
 	jne	SHORT $LN20@AssembleMo
 
-; 1523 :             omf_set_filepos();
+; 1532 :             omf_set_filepos();
 
 	call	omf_set_filepos
 $LN20@AssembleMo:
 
-; 1524 : 
-; 1525 : #if FASTPASS
-; 1526 :         if ( UseSavedState == FALSE && CurrFile[LST] ) {
+; 1533 : 
+; 1534 : #if FASTPASS
+; 1535 :         if ( UseSavedState == FALSE && CurrFile[LST] ) {
 
 	cmp	BYTE PTR UseSavedState, bpl
 	jne	SHORT $LN2@AssembleMo
@@ -4433,66 +4455,66 @@ $LN20@AssembleMo:
 	test	rcx, rcx
 	je	SHORT $LN2@AssembleMo
 
-; 1527 : #else
-; 1528 :         if ( CurrFile[LST] ) {
-; 1529 : #endif
-; 1530 :             rewind( CurrFile[LST] );
+; 1536 : #else
+; 1537 :         if ( CurrFile[LST] ) {
+; 1538 : #endif
+; 1539 :             rewind( CurrFile[LST] );
 
 	call	rewind
 
-; 1531 :             LstInit();
+; 1540 :             LstInit();
 
 	call	LstInit
 $LN2@AssembleMo:
 
-; 1461 : 
-; 1462 :         DebugMsg(( "*************\npass %u\n*************\n", Parse_Pass + 1 ));
-; 1463 :         OnePass();
+; 1470 : 
+; 1471 :         DebugMsg(( "*************\npass %u\n*************\n", Parse_Pass + 1 ));
+; 1472 :         OnePass();
 
 	inc	DWORD PTR Parse_Pass
 	call	OnePass
 
-; 1464 : 
-; 1465 :         if( ModuleInfo.g.error_count > 0 ) {
+; 1473 : 
+; 1474 :         if( ModuleInfo.g.error_count > 0 ) {
 
 	cmp	DWORD PTR ModuleInfo, ebp
 	jbe	$LL4@AssembleMo
 $LN37@AssembleMo:
 
-; 1532 :         }
-; 1533 :     } /* end for() */
-; 1534 : 
-; 1535 :     if ( ( Parse_Pass > PASS_1 ) && write_to_file )
+; 1541 :         }
+; 1542 :     } /* end for() */
+; 1543 : 
+; 1544 :     if ( ( Parse_Pass > PASS_1 ) && write_to_file )
 
 	cmp	DWORD PTR Parse_Pass, ebp
 	jbe	SHORT $LN22@AssembleMo
 	cmp	BYTE PTR write_to_file, bpl
 	je	SHORT $LN22@AssembleMo
 
-; 1536 :         WriteModule( &ModuleInfo );
+; 1545 :         WriteModule( &ModuleInfo );
 
 	lea	rcx, OFFSET FLAT:ModuleInfo
 	call	WriteModule
 $LN22@AssembleMo:
 
-; 1537 : 
-; 1538 :     if ( ModuleInfo.pCodeBuff ) {
-; 1539 :         LclFree( ModuleInfo.pCodeBuff );
-; 1540 :     }
-; 1541 :     DebugMsg(("AssembleModule: finished, cleanup\n"));
-; 1542 : 
-; 1543 :     /* Write a symbol listing file (if requested) */
-; 1544 :     LstWriteCRef();
+; 1546 : 
+; 1547 :     if ( ModuleInfo.pCodeBuff ) {
+; 1548 :         LclFree( ModuleInfo.pCodeBuff );
+; 1549 :     }
+; 1550 :     DebugMsg(("AssembleModule: finished, cleanup\n"));
+; 1551 : 
+; 1552 :     /* Write a symbol listing file (if requested) */
+; 1553 :     LstWriteCRef();
 
 	call	LstWriteCRef
 
-; 1545 : 
-; 1546 :     endtime = clock(); /* is in ms already */
+; 1554 : 
+; 1555 :     endtime = clock(); /* is in ms already */
 
 	call	clock
 
-; 1547 : 
-; 1548 :     sprintf( CurrSource, MsgGetEx( MSG_ASSEMBLY_RESULTS ),
+; 1556 : 
+; 1557 :     sprintf( CurrSource, MsgGetEx( MSG_ASSEMBLY_RESULTS ),
 
 	mov	ecx, DWORD PTR ModuleInfo+428
 	mov	esi, eax
@@ -4517,45 +4539,45 @@ $LN22@AssembleMo:
 	mov	DWORD PTR [rsp+32], edi
 	call	sprintf
 
-; 1549 :              GetFName( ModuleInfo.srcfile )->fname,
-; 1550 :              GetLineNumber(),
-; 1551 :              Parse_Pass + 1,
-; 1552 :              endtime - starttime,
-; 1553 :              ModuleInfo.g.warning_count,
-; 1554 :              ModuleInfo.g.error_count);
-; 1555 :     if ( Options.quiet == FALSE )
+; 1558 :              GetFName( ModuleInfo.srcfile )->fname,
+; 1559 :              GetLineNumber(),
+; 1560 :              Parse_Pass + 1,
+; 1561 :              endtime - starttime,
+; 1562 :              ModuleInfo.g.warning_count,
+; 1563 :              ModuleInfo.g.error_count);
+; 1564 :     if ( Options.quiet == FALSE )
 
 	cmp	BYTE PTR Options, bpl
 	jne	SHORT $LN24@AssembleMo
 
-; 1556 :         printf( "%s\n", CurrSource );
+; 1565 :         printf( "%s\n", CurrSource );
 
 	mov	rdx, QWORD PTR ModuleInfo+464
-	lea	rcx, OFFSET FLAT:$SG12142
+	lea	rcx, OFFSET FLAT:$SG12144
 	call	printf
 $LN24@AssembleMo:
 
-; 1557 : 
-; 1558 :     if ( CurrFile[LST] ) {
+; 1566 : 
+; 1567 :     if ( CurrFile[LST] ) {
 
 	cmp	QWORD PTR ModuleInfo+112, rbp
 	je	SHORT $done$60
 
-; 1559 :         LstPrintf( CurrSource );
+; 1568 :         LstPrintf( CurrSource );
 
 	mov	rcx, QWORD PTR ModuleInfo+464
 	call	LstPrintf
 
-; 1560 :         LstNL();
+; 1569 :         LstNL();
 
 	call	LstNL
 $done$60:
 
-; 1561 :     }
-; 1562 : #if 1 //def __SW_BD
-; 1563 : done:
-; 1564 : #endif
-; 1565 :     AssembleFini();
+; 1570 :     }
+; 1571 : #if 1 //def __SW_BD
+; 1572 : done:
+; 1573 : #endif
+; 1574 :     AssembleFini();
 
 	call	SegmentFini
 	call	SymFini
@@ -4569,12 +4591,12 @@ $done$60:
 	movdqu	XMMWORD PTR ModuleInfo+144, xmm1
 	call	MemFini
 
-; 1566 :     DebugMsg(("AssembleModule exit\n"));
-; 1567 :     return( ModuleInfo.g.error_count == 0 );
+; 1575 :     DebugMsg(("AssembleModule exit\n"));
+; 1576 :     return( ModuleInfo.g.error_count == 0 );
 
 	cmp	DWORD PTR ModuleInfo, ebp
 
-; 1568 : }
+; 1577 : }
 
 	lea	r11, QWORD PTR [rsp+80]
 	mov	rbx, QWORD PTR [r11+40]

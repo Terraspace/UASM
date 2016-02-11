@@ -53,8 +53,28 @@ OPTFUNC(SetEvex)
 	return(NOT_ERROR);
 }
 
-/* OPTION DOTNAME */
+/* Set ZEROLOCALS  */
+OPTFUNC(SetZeroLocals)
+{
+	int i = *pi;
+	struct expr opndx;
 
+	if (EvalOperand(&i, tokenarray, Token_Count, &opndx, 0) == ERROR)
+		return(ERROR);
+	if (opndx.kind == EXPR_CONST) {
+		if (opndx.llvalue > 1) {
+			return(EmitConstError(&opndx));
+		}
+		ZEROLOCALS = opndx.llvalue;
+	}
+	else {
+		return(EmitError(CONSTANT_EXPECTED));
+	}
+	*pi = i;
+	return(NOT_ERROR);
+}
+
+/* OPTION DOTNAME */
 OPTFUNC( SetDotName )
 /*******************/
 {
@@ -900,6 +920,7 @@ static const struct asm_option optiontab[] = {
 #endif
 #if AVXSUPP
 	{ "EVEX",         SetEvex        }, /* EVEX: <value> 1 or 0 */
+	{ "ZEROLOCALS",   SetZeroLocals  }, /* ZEROLOCALS: <value> 1 or 0 */
 #endif
 };
 

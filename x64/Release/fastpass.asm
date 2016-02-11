@@ -12,9 +12,10 @@ COMM	UseSavedState:BYTE
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 COMM	evex:BYTE
+COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10796 DB	'OUT', 00H
+$SG10797 DB	'OUT', 00H
 _DATA	ENDS
 PUBLIC	FastpassInit
 PUBLIC	StoreLine
@@ -618,7 +619,7 @@ $LN28@StoreLine:
 	jne	SHORT $LN11@StoreLine
 	lea	rcx, QWORD PTR [rbx+1]
 	mov	r8d, 3
-	lea	rdx, OFFSET FLAT:$SG10796
+	lea	rdx, OFFSET FLAT:$SG10797
 	call	_memicmp
 	test	eax, eax
 	jne	SHORT $LN13@StoreLine

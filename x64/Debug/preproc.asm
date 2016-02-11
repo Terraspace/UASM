@@ -9,17 +9,18 @@ _DATA	SEGMENT
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 COMM	evex:BYTE
+COMM	ZEROLOCALS:BYTE
 COMM	cntppl0:DWORD
 COMM	cntppl1:DWORD
 COMM	cntppl2:DWORD
 _DATA	ENDS
 _BSS	SEGMENT
-$SG10890 DB	01H DUP (?)
+$SG10891 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG10889 DB	'PreprocessLine: >%s<', 0aH, 00H
+$SG10890 DB	'PreprocessLine: >%s<', 0aH, 00H
 	ORG $+2
-$SG10891 DB	'PreprocessLine(%s): >%s< cmt=%s', 0aH, 00H
+$SG10892 DB	'PreprocessLine(%s): >%s< cmt=%s', 0aH, 00H
 _DATA	ENDS
 PUBLIC	WriteCodeLabel
 PUBLIC	PreprocessLine
@@ -133,7 +134,7 @@ $LN34:
 ; 88   :         DebugMsg1(("PreprocessLine: >%s<\n", line ));
 
 	mov	rdx, QWORD PTR line$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10889
+	lea	rcx, OFFSET FLAT:$SG10890
 	call	DoDebugMsg1
 	jmp	SHORT $LN5@Preprocess
 $LN4@Preprocess:
@@ -147,14 +148,14 @@ $LN4@Preprocess:
 	mov	QWORD PTR tv74[rsp], rax
 	jmp	SHORT $LN29@Preprocess
 $LN28@Preprocess:
-	lea	rax, OFFSET FLAT:$SG10890
+	lea	rax, OFFSET FLAT:$SG10891
 	mov	QWORD PTR tv74[rsp], rax
 $LN29@Preprocess:
 	call	GetTopSrcName
 	mov	r9, QWORD PTR tv74[rsp]
 	mov	r8, QWORD PTR line$[rsp]
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG10891
+	lea	rcx, OFFSET FLAT:$SG10892
 	call	DoDebugMsg1
 $LN5@Preprocess:
 
