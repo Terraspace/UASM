@@ -2437,36 +2437,32 @@ static void write_win64_default_prologue( struct proc_info *info )
             AddLineQueueX( "mov %r, %r", T_RSP, T_RAX );
         } else
 #endif
-			if (ZEROLOCALS && info->localsize) {
-				if (info->localsize <= 128) {
-					AddLineQueueX(*(ppfmt + 0), T_RSP, NUMQUAL info->localsize, sym_ReservedStack->name);
-					AddLineQueueX(*(ppfmt + 1), T_DOT_ALLOCSTACK, NUMQUAL info->localsize, sym_ReservedStack->name);
 
-					AddLineQueueX("mov %r, %u", T_EAX, info->localsize);
-					AddLineQueueX("dec %r", T_EAX);
-					AddLineQueueX("mov byte ptr [%r + %r], 0", T_RSP, T_RAX);
-					AddLineQueueX("dw 0F875h");
-				}
-				else
-				{
-					AddLineQueueX(*(ppfmt + 0), T_RSP, NUMQUAL info->localsize + 16, sym_ReservedStack->name);
-					AddLineQueueX(*(ppfmt + 1), T_DOT_ALLOCSTACK, NUMQUAL info->localsize + 16, sym_ReservedStack->name);
-					AddLineQueueX("mov [%r], %r", T_RSP, T_RDI);
-					AddLineQueueX("mov [%r+8], %r", T_RSP, T_RCX);
-					AddLineQueueX("xor %r, %r", T_EAX, T_EAX);
-					AddLineQueueX("mov %r, %u", T_ECX, info->localsize);
-					AddLineQueueX("mov %r, %r", T_RDI, T_RSP);
-					AddLineQueueX("add %r, %u", T_RDI, 16);
-					AddLineQueueX("rep stosb");
-					AddLineQueueX("mov %r,[%r]", T_RDI, T_RSP);
-					AddLineQueueX("mov %r,[%r+8]", T_RCX, T_RSP);
-				}
+		AddLineQueueX(*(ppfmt + 0), T_RSP, NUMQUAL info->localsize, sym_ReservedStack->name);
+		AddLineQueueX(*(ppfmt + 1), T_DOT_ALLOCSTACK, NUMQUAL info->localsize, sym_ReservedStack->name);
+		/* Handle ZEROLOCALS option */
+		if (ZEROLOCALS && info->localsize) 
+		{
+			if (info->localsize <= 128) 
+			{
+				AddLineQueueX("mov %r, %u", T_EAX, info->localsize);
+				AddLineQueueX("dec %r", T_EAX);
+				AddLineQueueX("mov byte ptr [%r + %r], 0", T_RSP, T_RAX);
+				AddLineQueueX("dw 0F875h");
 			}
-			else {
-				AddLineQueueX(*(ppfmt + 0), T_RSP, NUMQUAL info->localsize, sym_ReservedStack->name);
-				AddLineQueueX(*(ppfmt + 1), T_DOT_ALLOCSTACK, NUMQUAL info->localsize, sym_ReservedStack->name);
+			else
+			{
+				AddLineQueueX("push %r", T_RDI);
+				AddLineQueueX("push %r", T_RCX);
+				AddLineQueueX("xor %r, %r", T_EAX, T_EAX);
+				AddLineQueueX("mov %r, %u", T_ECX, info->localsize);
+				AddLineQueueX("cld");
+				AddLineQueueX("lea %r, [%r+16]", T_RDI, T_RSP);
+				AddLineQueueX("rep stosb");
+				AddLineQueueX("pop %r", T_RCX);
+				AddLineQueueX("pop %r", T_RDI);
 			}
-
+		}
 
         /* save xmm registers */
         if ( cntxmm ) {

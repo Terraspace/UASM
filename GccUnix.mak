@@ -19,7 +19,7 @@ extra_c_flags = -DDEBUG_OUT -g
 OUTD=GccUnixD
 endif
 
-c_flags =-D__UNIX__ $(extra_c_flags)
+c_flags =-D __UNIX__ $(extra_c_flags)
 
 CC = gcc
 
@@ -31,7 +31,7 @@ include gccmod.inc
 #.c.o:
 #	$(CC) -c $(inc_dirs) $(c_flags) -o $(OUTD)/$*.o $<
 $(OUTD)/%.o: %.c
-	$(CC) -c $(inc_dirs) $(c_flags) -o $(OUTD)/$*.o $<
+	$(CC) -D __UNIX__ -c $(inc_dirs) $(c_flags) -o $(OUTD)/$*.o $<
 
 all:  $(OUTD) $(OUTD)/$(TARGET1)
 
@@ -40,16 +40,16 @@ $(OUTD):
 
 $(OUTD)/$(TARGET1) : $(OUTD)/main.o $(proj_obj)
 ifeq ($(DEBUG),0)
-	$(CC) $(OUTD)/main.o $(proj_obj) -s -o $@ -Wl,-Map,$(OUTD)/$(TARGET1).map
+	$(CC) -D __UNIX__ $(OUTD)/main.o $(proj_obj) -s -o $@ -Wl,-Map,$(OUTD)/$(TARGET1).map
 else
-	$(CC) $(OUTD)/main.o $(proj_obj) -o $@ -Wl,-Map,$(OUTD)/$(TARGET1).map
+	$(CC) -D __UNIX__ $(OUTD)/main.o $(proj_obj) -o $@ -Wl,-Map,$(OUTD)/$(TARGET1).map
 endif
 
 $(OUTD)/msgtext.o: msgtext.c H/msgdef.h
-	$(CC) -c $(inc_dirs) $(c_flags) -o $*.o msgtext.c
+	$(CC) -D __UNIX__ -c $(inc_dirs) $(c_flags) -o $*.o msgtext.c
 
 $(OUTD)/reswords.o: reswords.c H/instruct.h H/special.h H/directve.h H/opndcls.h H/instravx.h
-	$(CC) -c $(inc_dirs) $(c_flags) -o $*.o reswords.c
+	$(CC) -D __UNIX__ -c $(inc_dirs) $(c_flags) -o $*.o reswords.c
 
 ######
 
