@@ -14,8 +14,8 @@ COMM	MacroLevel:BYTE
 COMM	MacroLocals:DWORD
 _DATA	ENDS
 _BSS	SEGMENT
-$SG11068 DB	01H DUP (?)
-$SG11139 DB	01H DUP (?)
+$SG11072 DB	01H DUP (?)
+$SG11143 DB	01H DUP (?)
 _BSS	ENDS
 PUBLIC	myltoa
 PUBLIC	RunMacro
@@ -1975,7 +1975,7 @@ $LN53@ExpandLine:
 
 	cmp	BYTE PTR [r15+1], 10
 	jne	SHORT $LN93@ExpandLine
-	lea	eax, DWORD PTR [r9-356]
+	lea	eax, DWORD PTR [r9-360]
 	cmp	eax, 1
 	ja	SHORT $LN93@ExpandLine
 
@@ -3845,7 +3845,7 @@ $LN51@RunMacro:
 
 ; 211  :             mi.parm_array[parmidx] = "";
 
-	lea	rax, OFFSET FLAT:$SG11068
+	lea	rax, OFFSET FLAT:$SG11072
 	mov	QWORD PTR [rcx], rax
 $LN52@RunMacro:
 
@@ -5302,7 +5302,7 @@ $LN121@RunMacro:
 
 ; 536  :                 mi.parm_array[parmidx] = "";
 
-	lea	rcx, OFFSET FLAT:$SG11139
+	lea	rcx, OFFSET FLAT:$SG11143
 	jmp	SHORT $LN430@RunMacro
 $LN422@RunMacro:
 	mov	r10, QWORD PTR macro$[rbp]
@@ -5845,7 +5845,7 @@ $LN135@RunMacro:
 ; 651  :                 if ( tokenarray[0].tokval == T_EXITM ) {
 
 	mov	eax, DWORD PTR [rdi+16]
-	cmp	eax, 393				; 00000189H
+	cmp	eax, 397				; 0000018dH
 	je	$LN327@RunMacro
 
 ; 700  :                     break;
@@ -5856,7 +5856,7 @@ $LN135@RunMacro:
 ; 705  : #endif
 ; 706  :                 } else if ( tokenarray[0].tokval == T_GOTO ) {
 
-	cmp	eax, 395				; 0000018bH
+	cmp	eax, 399				; 0000018fH
 	jne	$LN154@RunMacro
 
 ; 707  :                     if ( tokenarray[1].token != T_FINAL ) {

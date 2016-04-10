@@ -13,7 +13,7 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11205 DB	'if-else', 00H
+$SG11209 DB	'if-else', 00H
 _DATA	ENDS
 PUBLIC	conditional_assembly_prepare
 PUBLIC	GetIfNestLevel
@@ -484,7 +484,7 @@ $LN36@ErrorDirec:
 ; 554  :         /* Masm "usually" ignores the optional errtxt! */
 ; 555  :         if( direct == T_DOT_ERRDEF && sym != NULL )
 
-	cmp	r15d, 356				; 00000164H
+	cmp	r15d, 360				; 00000168H
 	jne	SHORT $LN37@ErrorDirec
 	test	rdi, rdi
 	je	$LN108@ErrorDirec
@@ -499,7 +499,7 @@ $LN37@ErrorDirec:
 
 ; 557  :         else if( direct == T_DOT_ERRNDEF && sym == NULL )
 
-	cmp	r15d, 357				; 00000165H
+	cmp	r15d, 361				; 00000169H
 	jne	$LN108@ErrorDirec
 	test	rdi, rdi
 	jne	$LN108@ErrorDirec
@@ -565,7 +565,7 @@ $LN43@ErrorDirec:
 ; 571  :             break;
 ; 572  :         if ( direct == T_DOT_ERRB && check_blank( string1 ) )
 
-	cmp	r15d, 354				; 00000162H
+	cmp	r15d, 358				; 00000166H
 	jne	SHORT $LN45@ErrorDirec
 	mov	rcx, rbx
 	call	check_blank
@@ -580,7 +580,7 @@ $LN45@ErrorDirec:
 
 ; 574  :         else if ( direct == T_DOT_ERRNB && !check_blank( string1 ) )
 
-	cmp	r15d, 355				; 00000163H
+	cmp	r15d, 359				; 00000167H
 	jne	$LN23@ErrorDirec
 	mov	rcx, rbx
 	call	check_blank
@@ -709,7 +709,7 @@ $LN55@ErrorDirec:
 ; 600  : 
 ; 601  :         switch ( direct ) {
 
-	sub	r15d, 350				; 0000015eH
+	sub	r15d, 354				; 00000162H
 	je	SHORT $LN57@ErrorDirec
 	sub	r15d, 1
 	je	SHORT $LN59@ErrorDirec
@@ -893,7 +893,7 @@ $LN18@ErrorDirec:
 ; 485  :             break;
 ; 486  :         if ( direct == T_DOT_ERRNZ && opndx.value ) {
 
-	cmp	r15d, 349				; 0000015dH
+	cmp	r15d, 353				; 00000161H
 	jne	SHORT $LN20@ErrorDirec
 	cmp	DWORD PTR opndx$[rbp-121], 0
 	je	SHORT $LN23@ErrorDirec
@@ -906,7 +906,7 @@ $LN20@ErrorDirec:
 
 ; 488  :         } else if ( direct == T_DOT_ERRE && !opndx.value ) {
 
-	cmp	r15d, 348				; 0000015cH
+	cmp	r15d, 352				; 00000160H
 	jne	SHORT $LN23@ErrorDirec
 	cmp	DWORD PTR opndx$[rbp-121], 0
 	jne	SHORT $LN23@ErrorDirec
@@ -1254,9 +1254,9 @@ $LN22@CondAsmDir:
 ; 276  :         }
 ; 277  :         if ( directive == T_IF || directive == T_ELSEIF )
 
-	cmp	r14d, 359				; 00000167H
+	cmp	r14d, 363				; 0000016bH
 	je	SHORT $LN25@CondAsmDir
-	cmp	r14d, 372				; 00000174H
+	cmp	r14d, 376				; 00000178H
 	je	SHORT $LN25@CondAsmDir
 
 ; 279  :         else
@@ -1358,7 +1358,7 @@ $LN31@CondAsmDir:
 ; 305  :         DebugMsg1(("CondAsmDirective(%s), cmp >%s< and >%s<\n", GetResWName(directive, NULL), string1, string2 ));
 ; 306  :         switch ( directive ) {
 
-	add	r14d, -363				; fffffffffffffe95H
+	add	r14d, -367				; fffffffffffffe91H
 	mov	DWORD PTR i$[rbp-89], r8d
 	cmp	r14d, 15
 	ja	$LN39@CondAsmDir
@@ -1494,9 +1494,9 @@ $LN40@CondAsmDir:
 
 ; 334  :         if ( directive == T_IFB || directive == T_ELSEIFB ) {
 
-	cmp	r14d, 367				; 0000016fH
+	cmp	r14d, 371				; 00000173H
 	je	SHORT $LN47@CondAsmDir
-	cmp	r14d, 380				; 0000017cH
+	cmp	r14d, 384				; 00000180H
 	je	SHORT $LN47@CondAsmDir
 
 ; 336  :         } else {
@@ -1836,9 +1836,9 @@ $LN10@CondAsmDir:
 ; 403  :         }
 ; 404  :         if ( directive == T_IFNDEF || directive == T_ELSEIFNDEF )
 
-	cmp	r14d, 370				; 00000172H
+	cmp	r14d, 374				; 00000176H
 	je	SHORT $LN67@CondAsmDir
-	cmp	r14d, 383				; 0000017fH
+	cmp	r14d, 387				; 00000183H
 	jne	SHORT $LN2@CondAsmDir
 $LN67@CondAsmDir:
 
@@ -2132,7 +2132,7 @@ CondCheckOpen PROC
 
 ; 645  :         EmitErr( BLOCK_NESTING_ERROR, "if-else" );
 
-	lea	rdx, OFFSET FLAT:$SG11205
+	lea	rdx, OFFSET FLAT:$SG11209
 	mov	ecx, 80					; 00000050H
 	jmp	EmitErr
 $LN2@CondCheckO:
@@ -2190,13 +2190,13 @@ $LN22:
 ; 94   :                GetResWName( directive, NULL), GetCurrIfStatString(), blocknestlevel, falseblocknestlevel));
 ; 95   :     switch( directive ) {
 
-	cmp	ecx, 359				; 00000167H
+	cmp	ecx, 363				; 0000016bH
 	jl	$LN15@conditiona
-	cmp	ecx, 370				; 00000172H
+	cmp	ecx, 374				; 00000176H
 	jle	$LN4@conditiona
-	cmp	ecx, 383				; 0000017fH
+	cmp	ecx, 387				; 00000183H
 	jle	SHORT $LN7@conditiona
-	cmp	ecx, 384				; 00000180H
+	cmp	ecx, 388				; 00000184H
 	jne	$LN15@conditiona
 
 ; 151  :         }
@@ -2258,7 +2258,7 @@ $LN14@conditiona:
 ; 161  :         } else {
 ; 162  :             EmitErr( BLOCK_NESTING_ERROR, GetResWName( directive, NULL ) );
 
-	mov	ecx, 384				; 00000180H
+	mov	ecx, 388				; 00000184H
 	jmp	SHORT $LN20@conditiona
 $LN7@conditiona:
 
@@ -2335,7 +2335,7 @@ $LN11@conditiona:
 ; 146  :             /* v2.06: no further ELSEx once ELSE was detected */
 ; 147  :             if ( directive == T_ELSE )
 
-	cmp	r8d, 371				; 00000173H
+	cmp	r8d, 375				; 00000177H
 	jne	SHORT $LN15@conditiona
 
 ; 148  :                 elseoccured |= ( 1 << ( blocknestlevel - 1 ) );

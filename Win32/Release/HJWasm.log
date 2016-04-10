@@ -1,4 +1,4 @@
-﻿Build started 2016/02/13 05:39:43 PM.
+﻿Build started 2016/04/10 09:25:53 AM.
      1>Project "D:\HJWasm\HJWasm2.13.1s\HJWasm2.13.1s\HJWasm.vcxproj" on node 2 (Rebuild target(s)).
      1>ClCompile:
          D:\vs2015\VC\bin\CL.exe /c /I.\\H /nologo /W2 /WX- /Ox /Oy- /D WIN32 /D NDEBUG /D _UNICODE /D UNICODE /Gm- /MT /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Win32\Release\\" /Fd"Win32\Release\vc140.pdb" /Gd /TC /analyze- /errorReport:prompt apiemu.c assemble.c assume.c atofloat.c backptch.c bin.c branch.c cmdline.c codegen.c coff.c condasm.c context.c cpumodel.c data.c dbgcv.c directiv.c elf.c end.c equate.c errmsg.c expans.c expreval.c extern.c fastpass.c fixup.c fpfixup.c hll.c input.c invoke.c label.c linnum.c listing.c loop.c lqueue.c macro.c main.c mangle.c memalloc.c msgtext.c omf.c omffixup.c omfint.c option.c parser.c posndir.c preproc.c proc.c queue.c reswords.c safeseh.c segment.c simsegm.c string.c symbols.c tbyte.c tokenize.c trmem.c types.c
@@ -27,8 +27,9 @@
          Compiling...
          expans.c
          expreval.c
-     1>expreval.c(2403): warning C4146: unary minus operator applied to unsigned type, result still unsigned
      1>expreval.c(2409): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>expreval.c(2415): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>expreval.c(2464): warning C4047: '!=': 'asym *' differs in levels of indirection from 'int'
          extern.c
          fastpass.c
          fixup.c
@@ -56,8 +57,8 @@
          posndir.c
          preproc.c
          proc.c
-     1>proc.c(2612): warning C4146: unary minus operator applied to unsigned type, result still unsigned
-     1>proc.c(2758): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>proc.c(2651): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+     1>proc.c(2796): warning C4146: unary minus operator applied to unsigned type, result still unsigned
          queue.c
          reswords.c
          safeseh.c
@@ -136,4 +137,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:07.10
+Time Elapsed 00:00:05.31

@@ -12,7 +12,7 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG10972 DB	01H DUP (?)
+$SG10976 DB	01H DUP (?)
 _BSS	ENDS
 PUBLIC	LoopDirective
 EXTRN	isalpha:PROC
@@ -117,11 +117,11 @@ $LN23@LoopDirect:
 ; 50   :     switch ( directive ) {
 
 	xor	r13d, r13d
-	cmp	r15d, 389				; 00000185H
+	cmp	r15d, 393				; 00000189H
 	jl	SHORT $LN31@LoopDirect
-	cmp	r15d, 390				; 00000186H
+	cmp	r15d, 394				; 0000018aH
 	jle	SHORT $LN108@LoopDirect
-	cmp	r15d, 391				; 00000187H
+	cmp	r15d, 395				; 0000018bH
 	je	SHORT $LN25@LoopDirect
 $LN31@LoopDirect:
 
@@ -267,7 +267,7 @@ $LN33@LoopDirect:
 ; 89   :         arg_loc = i;
 
 	mov	r14d, ecx
-	lea	eax, DWORD PTR [r15-386]
+	lea	eax, DWORD PTR [r15-390]
 
 ; 90   :         i++;
 
@@ -566,7 +566,7 @@ $LN2@LoopDirect:
 
 ; 167  :     tmpmacro.sym.name = "";
 
-	lea	rax, OFFSET FLAT:$SG10972
+	lea	rax, OFFSET FLAT:$SG10976
 	mov	QWORD PTR tmpmacro$[rbp+8], rax
 
 ; 168  :     tmpmacro.e.macroinfo = &macinfo;
@@ -640,17 +640,17 @@ $LN45@LoopDirect:
 
 	cmp	QWORD PTR macinfo$[rbp+16], r13
 	je	$LN78@LoopDirect
-	lea	eax, DWORD PTR [r15-386]
+	lea	eax, DWORD PTR [r15-390]
 	test	eax, -3					; fffffffdH
 	je	$LN52@LoopDirect
 
 ; 200  :     switch ( directive ) {
 
-	cmp	r15d, 388				; 00000184H
+	cmp	r15d, 392				; 00000188H
 	jle	$LN59@LoopDirect
-	cmp	r15d, 390				; 00000186H
+	cmp	r15d, 394				; 0000018aH
 	jle	$LN47@LoopDirect
-	cmp	r15d, 391				; 00000187H
+	cmp	r15d, 395				; 0000018bH
 	jne	$LN59@LoopDirect
 
 ; 215  :     case T_WHILE:

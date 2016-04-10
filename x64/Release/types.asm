@@ -6,9 +6,9 @@ INCLUDELIB LIBCMT
 INCLUDELIB OLDNAMES
 
 _BSS	SEGMENT
-$SG11275 DB	01H DUP (?)
-$SG11283 DB	01H DUP (?)
-$SG11433 DB	01H DUP (?)
+$SG11279 DB	01H DUP (?)
+$SG11287 DB	01H DUP (?)
+$SG11437 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	CurrStruct:QWORD
@@ -18,9 +18,9 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG11116 DB	01H DUP (?)
-$SG11185 DB	01H DUP (?)
-$SG11194 DB	01H DUP (?)
+$SG11120 DB	01H DUP (?)
+$SG11189 DB	01H DUP (?)
+$SG11198 DB	01H DUP (?)
 _BSS	ENDS
 CONST	SEGMENT
 szStructure DB	'structure', 00H
@@ -1236,7 +1236,7 @@ $LN12@TypedefDir:
 	movzx	eax, BYTE PTR [rsi+64]
 	cmp	al, 3
 	jne	$LN16@TypedefDir
-	cmp	DWORD PTR [rsi+80], 427			; 000001abH
+	cmp	DWORD PTR [rsi+80], 431			; 000001afH
 	jne	$LN16@TypedefDir
 
 ; 1005 :         struct dsym *proto;  /* create a PROTOtype item without name */
@@ -1253,7 +1253,7 @@ $LN12@TypedefDir:
 
 	lea	r8d, QWORD PTR [rdi+7]
 	xor	ecx, ecx
-	lea	rdx, OFFSET FLAT:$SG11433
+	lea	rdx, OFFSET FLAT:$SG11437
 	call	CreateProc
 	mov	rdi, rax
 	jmp	SHORT $LN20@TypedefDir
@@ -2071,7 +2071,7 @@ $LN18@EndstructD:
 
 ; 465  :         dir->sym.name = ""; /* the type becomes anonymous */
 
-	lea	rax, OFFSET FLAT:$SG11194
+	lea	rax, OFFSET FLAT:$SG11198
 	mov	QWORD PTR [rbx+8], rax
 
 ; 466  :         dir->sym.name_size = 0;
@@ -2252,7 +2252,7 @@ $LN36@EndstructD:
 ; 406  :         //EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr );
 ; 407  :         return( EmitErr( UNMATCHED_BLOCK_NESTING, i == 1 ? tokenarray[0].string_ptr : "" ) );
 
-	lea	rdx, OFFSET FLAT:$SG11185
+	lea	rdx, OFFSET FLAT:$SG11189
 $LN37@EndstructD:
 	mov	ecx, 142				; 0000008eH
 $LN58@EndstructD:
@@ -2314,7 +2314,7 @@ $LN89:
 	movsxd	r8, ecx
 	mov	rdx, r8
 	shl	rdx, 5
-	cmp	DWORD PTR [rdx+rdi+16], 419		; 000001a3H
+	cmp	DWORD PTR [rdx+rdi+16], 423		; 000001a7H
 	sete	r14b
 	inc	r14b
 	test	r10, r10
@@ -2412,7 +2412,7 @@ $LN12@StructDire:
 
 ; 207  :             name = "";
 
-	lea	rsi, OFFSET FLAT:$SG11116
+	lea	rsi, OFFSET FLAT:$SG11120
 
 ; 208  :         }
 ; 209  :     } else {
@@ -3447,7 +3447,7 @@ $LN12@CreateStru:
 ; 582  :         }
 ; 583  :         name = "";
 
-	lea	r13, OFFSET FLAT:$SG11275
+	lea	r13, OFFSET FLAT:$SG11279
 
 ; 584  :         len = 0;
 
@@ -3688,7 +3688,7 @@ $LN19@CreateStru:
 
 ; 642  :         f->sym.name = "";
 
-	lea	rax, OFFSET FLAT:$SG11283
+	lea	rax, OFFSET FLAT:$SG11287
 	mov	QWORD PTR [rdi+8], rax
 $LN20@CreateStru:
 
@@ -4017,7 +4017,7 @@ $LL4@GetQualifi:
 
 	cmp	al, 3
 	jne	SHORT $LN2@GetQualifi
-	cmp	DWORD PTR [rdx+16], 428			; 000001acH
+	cmp	DWORD PTR [rdx+16], 432			; 000001b0H
 	jne	SHORT $LN2@GetQualifi
 
 ; 818  :             tokenarray[tmp].token = T_STYPE;

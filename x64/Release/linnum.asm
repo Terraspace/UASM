@@ -12,7 +12,7 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11395 DB	'$$$%05u', 00H
+$SG11399 DB	'$$$%05u', 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	sprintf
@@ -352,7 +352,7 @@ $LN4@AddLinnumD:
 ; 94   :         sprintf( procname, "$$$%05u", procidx );
 
 	mov	r8d, DWORD PTR procidx
-	lea	rdx, OFFSET FLAT:$SG11395
+	lea	rdx, OFFSET FLAT:$SG11399
 	lea	rcx, QWORD PTR procname$1[rsp]
 	call	sprintf
 

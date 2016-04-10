@@ -176,7 +176,7 @@ $LN39:
 	mov	r8, r9
 	shl	r8, 5
 	mov	ecx, DWORD PTR [r8+rdx+16]
-	sub	ecx, 434				; 000001b2H
+	sub	ecx, 438				; 000001b6H
 	je	SHORT $LN7@AlignDirec
 	cmp	ecx, 1
 	jne	SHORT $LN35@AlignDirec

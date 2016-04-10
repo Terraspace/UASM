@@ -455,7 +455,6 @@ ret_code LocalDir( int i, struct asm_tok tokenarray[] )
     if( !( ProcStatus & PRST_PROLOGUE_NOT_DONE ) || CurrProc == NULL ) {
         return( EmitError( PROC_MACRO_MUST_PRECEDE_LOCAL ) );
     }
-
     info = CurrProc->e.procinfo;
 #if STACKBASESUPP
     /* ensure the fpo bit is set - it's too late to set it in write_prologue().
@@ -2333,6 +2332,8 @@ static void write_win64_default_prologue( struct proc_info *info )
     uint_16             *regist;
     const char * const  *ppfmt;
     int                 cntxmm;
+    int                 n;
+    int                 m;
     int                 resstack = ( ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) ? sym_ReservedStack->value : 0 );
 
     DebugMsg1(("write_win64_default_prologue enter\n"));
@@ -2420,10 +2421,45 @@ static void write_win64_default_prologue( struct proc_info *info )
     if( info->localsize + resstack ) {
         DebugMsg1(("write_win64_default_prologue: localsize=%u resstack=%u\n", info->localsize, resstack ));
         if (ModuleInfo.win64_flags & W64F_HABRAN){
-          if (((info->pushed_reg & 1) && (info->localsize & 0xF)) ||
-            ((!(info->pushed_reg & 1)) && (!(info->localsize & 0xF))) && (!(info->pushed_reg & 1)) && (!(cntxmm)))
-            info->localsize += 8;
-        }
+          if (info->localsize == 0){
+            if (info->pushed_reg == 0)        
+              info->localsize += 0x18;  
+            else 
+              info->localsize += 0x10; 
+          }
+          else {
+              n = info->localsize + resstack;
+              if (n < XYZMMsize)   
+                n = XYZMMsize;
+              else {
+                m = n & (XYZMMsize - 1);
+                if (m != 0){
+                  n += XYZMMsize;
+                  n &= ~(XYZMMsize - 1);
+                }
+              }
+                info->localsize = n - resstack;
+              if (info->pushed_reg == 0) {      
+                info->localsize += 0x18;    
+              }
+              else{
+                info->localsize += 0x10;
+                n = info->pushed_reg - 1;
+                if (OP_XYZMM == OP_ZMM){
+                  if (n >= 8) 
+                    n -= 8;
+                }
+                else {
+                  if (n >= 4) n -= 4;
+                  if (n >= 4) n -= 4;
+                }
+                while (n){
+                  info->localsize += 0x8;
+                  n--;
+                }
+              }
+            }
+          }          
           /*
          * SUB  RSP, localsize
          * .ALLOCSTACK localsize
@@ -2440,6 +2476,7 @@ static void write_win64_default_prologue( struct proc_info *info )
 
 		AddLineQueueX(*(ppfmt + 0), T_RSP, NUMQUAL info->localsize, sym_ReservedStack->name);
 		AddLineQueueX(*(ppfmt + 1), T_DOT_ALLOCSTACK, NUMQUAL info->localsize, sym_ReservedStack->name);
+
 		/* Handle ZEROLOCALS option */
 		if (ZEROLOCALS && info->localsize) 
 		{
@@ -2469,7 +2506,7 @@ static void write_win64_default_prologue( struct proc_info *info )
             int i;
             int cnt;
             regist = info->regslist;
-            i = ( info->localsize - cntxmm * 32 ) & ~(32-1);
+            i = ( info->localsize - cntxmm * XYZMMsize ) & ~(XYZMMsize-1);
             for( cnt = *regist++; cnt; cnt--, regist++ ) {
                 if ( GetValueSp( *regist ) & OP_XYZMM ) {
                     if ( resstack ) {
@@ -2483,7 +2520,7 @@ static void write_win64_default_prologue( struct proc_info *info )
                             AddLineQueueX( "%r %r, %u", T_DOT_SAVEYMM256, *regist, NUMQUAL i );
                         }
                     }
-                    i += 32;
+                    i += XYZMMsize;
                 }
             }
         }
@@ -2602,6 +2639,7 @@ static ret_code write_default_prologue( void )
         //    AddLineQueueX( "sub %r, 8 + %s", stackreg[ModuleInfo.Ofssize], sym_ReservedStack->name );
         //else
         AddLineQueueX( "sub %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize, sym_ReservedStack->name );
+    
     } else
 #endif
     if( info->localsize  ) {
@@ -2681,7 +2719,6 @@ static void SetLocalOffsets( struct proc_info *info )
     int         rspalign = FALSE;
 #endif
     int         align = CurrWordSize;
-
 #if AMD64_SUPPORT
     if ( info->isframe || ( ModuleInfo.fctype == FCT_WIN64 && ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) ) ) {
         rspalign = TRUE;
@@ -2724,16 +2761,16 @@ static void SetLocalOffsets( struct proc_info *info )
           info->localsize += start;
           cntstd = info->pushed_reg;
           if (rspalign && cntxmm) {
-              if (!(cntstd & 1)) info->localsize += 8;
-              info->localsize += 32 * cntxmm;
+              //if ((cntstd & 1)) info->localsize += 8;
+              info->localsize += XYZMMsize * cntxmm;
               }
            }
         else {
           if (rspalign) {
             info->localsize = start + cntstd * CurrWordSize;
             if (cntxmm) {
-              info->localsize += 16 * cntxmm;
-              info->localsize = ROUND_UP(info->localsize, 16);
+              info->localsize += XYZMMsize * cntxmm;
+              info->localsize = ROUND_UP(info->localsize, XYZMMsize);
             }
           }
         }
@@ -2767,7 +2804,7 @@ static void SetLocalOffsets( struct proc_info *info )
     /* RSP 16-byte alignment? */
     if ( rspalign ) {
       if (ModuleInfo.win64_flags & W64F_HABRAN)info->localsize = ROUND_UP(info->localsize, 8);
-      else  info->localsize = ROUND_UP( info->localsize, 16 );
+      else  info->localsize = ROUND_UP( info->localsize, XYZMMsize);
     }
 #endif
 

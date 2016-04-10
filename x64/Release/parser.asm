@@ -14,19 +14,19 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG12343 DB	'WORD', 00H
+$SG12347 DB	'WORD', 00H
 	ORG $+3
-$SG12350 DB	'DWORD', 00H
+$SG12354 DB	'DWORD', 00H
 	ORG $+2
-$SG12354 DB	'BYTE', 00H
+$SG12358 DB	'BYTE', 00H
 	ORG $+3
-$SG12371 DB	'BYTE', 00H
+$SG12375 DB	'BYTE', 00H
 	ORG $+3
-$SG12374 DB	'WORD', 00H
+$SG12378 DB	'WORD', 00H
 	ORG $+3
-$SG12378 DB	'DWORD', 00H
+$SG12382 DB	'DWORD', 00H
 	ORG $+2
-$SG12275 DB	'BYTE', 00H
+$SG12279 DB	'BYTE', 00H
 _DATA	ENDS
 PUBLIC	SizeFromMemtype
 PUBLIC	MemtypeFromSize
@@ -620,7 +620,7 @@ check_size PROC						; COMDAT
 	mov	ecx, DWORD PTR [rcx+24]
 	mov	r13, rdx
 	mov	r12d, 262144				; 00040000H
-	lea	eax, DWORD PTR [rcx-1682]
+	lea	eax, DWORD PTR [rcx-1686]
 	cmp	eax, 26
 	ja	SHORT $LN12@check_size
 
@@ -662,11 +662,11 @@ $LN12@check_size:
 ; 2355 : 
 ; 2356 :     switch( CodeInfo->token ) {
 
-	cmp	ecx, 1020				; 000003fcH
+	cmp	ecx, 1024				; 00000400H
 	jg	$LN140@check_size
-	cmp	ecx, 1019				; 000003fbH
+	cmp	ecx, 1023				; 000003ffH
 	jge	$LN131@check_size
-	sub	ecx, 508				; 000001fcH
+	sub	ecx, 512				; 00000200H
 	cmp	ecx, 131				; 00000083H
 	ja	$def_check$171
 	movsxd	rax, ecx
@@ -973,7 +973,7 @@ $LN36@check_size:
 
 ; 2493 :                 EmitWarn( 2, SIZE_NOT_SPECIFIED_ASSUMING, "BYTE" );
 
-	lea	r8, OFFSET FLAT:$SG12275
+	lea	r8, OFFSET FLAT:$SG12279
 	mov	ecx, esi
 	lea	edx, QWORD PTR [rax+73]
 	call	EmitWarn
@@ -1415,18 +1415,18 @@ $LN140@check_size:
 ; 2355 : 
 ; 2356 :     switch( CodeInfo->token ) {
 
-	cmp	ecx, 1329				; 00000531H
+	cmp	ecx, 1333				; 00000535H
 	jg	$LN141@check_size
 	je	$LN64@check_size
-	cmp	ecx, 1262				; 000004eeH
+	cmp	ecx, 1266				; 000004f2H
 	jg	SHORT $LN142@check_size
 	je	SHORT $LN67@check_size
-	lea	eax, DWORD PTR [rcx-1027]
+	lea	eax, DWORD PTR [rcx-1031]
 	cmp	eax, 1
 	jbe	$LN131@check_size
-	cmp	ecx, 1205				; 000004b5H
+	cmp	ecx, 1209				; 000004b9H
 	je	$LN131@check_size
-	cmp	ecx, 1041				; 00000411H
+	cmp	ecx, 1045				; 00000415H
 	jne	$def_check$171
 
 ; 2651 : #endif
@@ -1492,7 +1492,7 @@ $LN70@check_size:
 
 	jmp	$LN131@check_size
 $LN142@check_size:
-	add	ecx, -1289				; fffffffffffffaf7H
+	add	ecx, -1293				; fffffffffffffaf3H
 	cmp	ecx, 22
 	ja	$def_check$171
 	mov	eax, 4194331				; 0040001bH
@@ -1503,16 +1503,16 @@ $LN142@check_size:
 
 	jmp	$LN165@check_size
 $LN141@check_size:
-	cmp	ecx, 1598				; 0000063eH
+	cmp	ecx, 1602				; 00000642H
 	jg	SHORT $LN143@check_size
 	je	SHORT $LN60@check_size
-	cmp	ecx, 1334				; 00000536H
-	je	SHORT $LN61@check_size
-	cmp	ecx, 1336				; 00000538H
-	jle	$def_check$171
 	cmp	ecx, 1338				; 0000053aH
+	je	SHORT $LN61@check_size
+	cmp	ecx, 1340				; 0000053cH
+	jle	$def_check$171
+	cmp	ecx, 1342				; 0000053eH
 	jle	SHORT $LN61@check_size
-	cmp	ecx, 1339				; 0000053bH
+	cmp	ecx, 1343				; 0000053fH
 	jne	SHORT $def_check$171
 
 ; 2627 :         }
@@ -1593,9 +1593,9 @@ $LN60@check_size:
 
 	jmp	$LN131@check_size
 $LN143@check_size:
-	cmp	ecx, 1626				; 0000065aH
+	cmp	ecx, 1630				; 0000065eH
 	je	$LN131@check_size
-	add	ecx, -1904				; fffffffffffff890H
+	add	ecx, -1908				; fffffffffffff88cH
 	cmp	ecx, 6
 	ja	SHORT $def_check$171
 	mov	eax, 99					; 00000063H
@@ -1708,10 +1708,10 @@ $LN96@check_size:
 	test	esi, esi
 	je	SHORT $LN102@check_size
 	mov	ecx, DWORD PTR [rbx+24]
-	lea	eax, DWORD PTR [rcx-1598]
+	lea	eax, DWORD PTR [rcx-1602]
 	cmp	eax, 1
 	jbe	SHORT $LN103@check_size
-	lea	eax, DWORD PTR [rcx-1618]
+	lea	eax, DWORD PTR [rcx-1622]
 	cmp	eax, 1
 	jbe	SHORT $LN103@check_size
 
@@ -1760,7 +1760,7 @@ $LN145@check_size:
 ; 2778 :                     if( (uint_32)CodeInfo->opnd[OPND2].data32l > USHRT_MAX || op2_size == 4 ) {
 
 	mov	ecx, DWORD PTR [rbx+64]
-	lea	r8, OFFSET FLAT:$SG12343
+	lea	r8, OFFSET FLAT:$SG12347
 	cmp	ecx, 65535				; 0000ffffH
 	ja	SHORT $LN109@check_size
 	cmp	esi, 4
@@ -1783,7 +1783,7 @@ $LN145@check_size:
 
 ; 2800 :                          p = "BYTE";
 
-	lea	r8, OFFSET FLAT:$SG12354
+	lea	r8, OFFSET FLAT:$SG12358
 	jmp	SHORT $LN112@check_size
 $LN115@check_size:
 
@@ -1852,7 +1852,7 @@ $LN111@check_size:
 ; 2790 :                             CodeInfo->opnd[OPND2].type = OP_I32;
 ; 2791 :                             p = "DWORD";
 
-	lea	r8, OFFSET FLAT:$SG12350
+	lea	r8, OFFSET FLAT:$SG12354
 	mov	DWORD PTR [rbx+56], 524288		; 00080000H
 $LN112@check_size:
 
@@ -1963,7 +1963,7 @@ $LN122@check_size:
 
 ; 2841 :                             EmitWarn( 1, SIZE_NOT_SPECIFIED_ASSUMING, "DWORD" );
 
-	lea	r8, OFFSET FLAT:$SG12378
+	lea	r8, OFFSET FLAT:$SG12382
 	jmp	SHORT $LN118@check_size
 $LN132@check_size:
 
@@ -1986,7 +1986,7 @@ $LN132@check_size:
 ; 2832 :                             EmitWarn( 1, SIZE_NOT_SPECIFIED_ASSUMING, "WORD" );
 
 	mov	edx, 73					; 00000049H
-	lea	r8, OFFSET FLAT:$SG12374
+	lea	r8, OFFSET FLAT:$SG12378
 	lea	ecx, QWORD PTR [rdx-72]
 	call	EmitWarn
 $LN133@check_size:
@@ -2020,7 +2020,7 @@ $LN130@check_size:
 
 ; 2825 :                             EmitWarn( 1, SIZE_NOT_SPECIFIED_ASSUMING, "BYTE" );
 
-	lea	r8, OFFSET FLAT:$SG12371
+	lea	r8, OFFSET FLAT:$SG12375
 $LN118@check_size:
 	mov	edx, 73					; 00000049H
 	lea	ecx, QWORD PTR [rdx-72]
@@ -2224,13 +2224,13 @@ HandleStringInstructions PROC				; COMDAT
 	lea	rsi, OFFSET FLAT:__ImageBase
 	mov	ecx, DWORD PTR [rcx+24]
 	xor	edi, edi
-	cmp	ecx, 1206				; 000004b6H
+	cmp	ecx, 1210				; 000004baH
 	jg	SHORT $LN53@HandleStri
 	je	$LN7@HandleStri
-	cmp	ecx, 531				; 00000213H
+	cmp	ecx, 535				; 00000217H
 	jg	SHORT $LN54@HandleStri
 	je	$LN17@HandleStri
-	sub	ecx, 516				; 00000204H
+	sub	ecx, 520				; 00000208H
 	cmp	ecx, 14
 	ja	$LN29@HandleStri
 	movsxd	rax, ecx
@@ -2238,11 +2238,11 @@ HandleStringInstructions PROC				; COMDAT
 	add	rcx, rsi
 	jmp	rcx
 $LN54@HandleStri:
-	cmp	ecx, 535				; 00000217H
+	cmp	ecx, 539				; 0000021bH
 	jle	SHORT $LN25@HandleStri
-	cmp	ecx, 1042				; 00000412H
+	cmp	ecx, 1046				; 00000416H
 	je	$LN18@HandleStri
-	cmp	ecx, 1048				; 00000418H
+	cmp	ecx, 1052				; 0000041cH
 	jmp	SHORT $LN58@HandleStri
 $LN25@HandleStri:
 
@@ -2280,15 +2280,15 @@ $LN53@HandleStri:
 ; 2166 : 
 ; 2167 :     switch( CodeInfo->token ) {
 
-	cmp	ecx, 1453				; 000005adH
+	cmp	ecx, 1457				; 000005b1H
 	jg	SHORT $LN55@HandleStri
-	cmp	ecx, 1452				; 000005acH
+	cmp	ecx, 1456				; 000005b0H
 	jge	SHORT $LN6@HandleStri
-	cmp	ecx, 1207				; 000004b7H
+	cmp	ecx, 1211				; 000004bbH
 	je	SHORT $LN27@HandleStri
-	cmp	ecx, 1208				; 000004b8H
+	cmp	ecx, 1212				; 000004bcH
 	je	SHORT $LN18@HandleStri
-	lea	eax, DWORD PTR [rcx-1446]
+	lea	eax, DWORD PTR [rcx-1450]
 	cmp	eax, 1
 	ja	SHORT $LN29@HandleStri
 $LN6@HandleStri:
@@ -2352,7 +2352,7 @@ $LN55@HandleStri:
 ; 2166 : 
 ; 2167 :     switch( CodeInfo->token ) {
 
-	sub	ecx, 1758				; 000006deH
+	sub	ecx, 1762				; 000006e2H
 	je	SHORT $LN6@HandleStri
 	sub	ecx, 181				; 000000b5H
 	je	SHORT $LN17@HandleStri
@@ -2493,12 +2493,12 @@ $LN33@HandleStri:
 ; 2285 :         if (CodeInfo->token == T_KMOVB) op_size = 1;
 
 	mov	eax, DWORD PTR [rbx+24]
-	cmp	eax, 1725				; 000006bdH
+	cmp	eax, 1729				; 000006c1H
 	je	$LN45@HandleStri
 
 ; 2286 :         else if (CodeInfo->token == T_KMOVW) op_size = 2;
 
-	cmp	eax, 1728				; 000006c0H
+	cmp	eax, 1732				; 000006c4H
 	jne	SHORT $LN37@HandleStri
 	mov	ecx, 2
 	jmp	$LN44@HandleStri
@@ -2552,7 +2552,7 @@ $LN37@HandleStri:
 
 ; 2287 :         else if (CodeInfo->token == T_KMOVD) op_size = 4;
 
-	cmp	eax, 1726				; 000006beH
+	cmp	eax, 1730				; 000006c2H
 	jne	SHORT $LN39@HandleStri
 	mov	ecx, 4
 	jmp	SHORT $LN44@HandleStri
@@ -2560,7 +2560,7 @@ $LN39@HandleStri:
 
 ; 2288 :         else if (CodeInfo->token == T_KMOVQ) op_size = 8;
 
-	cmp	eax, 1727				; 000006bfH
+	cmp	eax, 1731				; 000006c3H
 	jne	SHORT $LN41@HandleStri
 	mov	ecx, 8
 	jmp	SHORT $LN44@HandleStri
@@ -2984,7 +2984,7 @@ $LN16@process_re:
 ; 2063 :             /* POP CS is not allowed */
 ; 2064 :             if( CodeInfo->token == T_POP ) {
 
-	cmp	DWORD PTR [r10+24], 597			; 00000255H
+	cmp	DWORD PTR [r10+24], 601			; 00000259H
 	jne	$LN31@process_re
 
 ; 2065 :                 return( EmitError( POP_CS_IS_NOT_ALLOWED ) );
@@ -3046,7 +3046,7 @@ $LN27@process_re:
 
 ; 2081 :         if( CodeInfo->token != T_MOV ) {
 
-	cmp	DWORD PTR [r10+24], 601			; 00000259H
+	cmp	DWORD PTR [r10+24], 605			; 0000025dH
 	je	SHORT $LN32@process_re
 
 ; 2082 :             return( EmitError( ONLY_MOV_CAN_USE_SPECIAL_REGISTER ) );
@@ -3179,7 +3179,7 @@ $LN39@process_re:
 ; 2127 :          * XCHG can use short form if op1 is AX/EAX/RAX */
 ; 2128 :         if( ( CodeInfo->token == T_XCHG ) && ( CodeInfo->opnd[OPND1].type & OP_A ) &&
 
-	cmp	DWORD PTR [r10+24], 661			; 00000295H
+	cmp	DWORD PTR [r10+24], 665			; 00000299H
 	jne	SHORT $LN41@process_re
 	mov	eax, DWORD PTR [r10+32]
 	and	eax, 513				; 00000201H
@@ -3476,7 +3476,7 @@ $LN16@process_ad:
 ; 1835 :             /* allow "lea <reg>, [offset <sym>]" */
 ; 1836 :             if( CodeInfo->token == T_LEA && opndx->instr == T_OFFSET )
 
-	cmp	DWORD PTR [rdi+24], 629			; 00000275H
+	cmp	DWORD PTR [rdi+24], 633			; 00000279H
 	jne	$LN18@process_ad
 	cmp	eax, 241				; 000000f1H
 	jne	$LN18@process_ad
@@ -3580,7 +3580,7 @@ $LN19@process_ad:
 ; 1873 :         if( IS_ANY_BRANCH( CodeInfo->token ) )
 
 	mov	ecx, DWORD PTR [rdi+24]
-	lea	eax, DWORD PTR [rcx-450]
+	lea	eax, DWORD PTR [rcx-454]
 	cmp	eax, 49					; 00000031H
 	ja	SHORT $LN28@process_ad
 
@@ -3603,7 +3603,7 @@ $LN28@process_ad:
 ; 1875 : 
 ; 1876 :         switch( CodeInfo->token ) {
 
-	sub	ecx, 560				; 00000230H
+	sub	ecx, 564				; 00000234H
 	je	SHORT $LN29@process_ad
 	sub	ecx, 36					; 00000024H
 	je	SHORT $LN29@process_ad
@@ -3741,7 +3741,7 @@ $LN40@process_ad:
 ; 1923 :         if ( opndx->mem_type == MT_NEAR || opndx->mem_type == MT_FAR ) {
 ; 1924 :             if( CodeInfo->token == T_LEA ) {
 
-	cmp	DWORD PTR [rdi+24], 629			; 00000275H
+	cmp	DWORD PTR [rdi+24], 633			; 00000279H
 	je	$LN53@process_ad
 
 ; 1925 :                 return( memory_operand( CodeInfo, CurrOpnd, opndx, TRUE ) );
@@ -3951,7 +3951,7 @@ $LN12@memory_ope:
 ; 1478 : #if AVXSUPP
 ; 1479 :             if (CodeInfo->token == T_VMOVSS){       //MemtypeFromSize returns OP_M128
 
-	cmp	DWORD PTR [rbx+24], 1940		; 00000794H
+	cmp	DWORD PTR [rbx+24], 1944		; 00000798H
 	jne	SHORT $LN16@memory_ope
 
 ; 1480 :               mem_type = MT_DWORD;                  //but we need MT_DWORD ;habran
@@ -4020,7 +4020,7 @@ $LN19@memory_ope:
 ; 1496 :     switch ( CodeInfo->token ) {
 
 	mov	eax, DWORD PTR [rbx+24]
-	add	eax, -450				; fffffe3eH
+	add	eax, -454				; fffffe3aH
 	mov	QWORD PTR [rsp+128], r14
 	mov	QWORD PTR [rsp+48], r15
 	cmp	eax, 1
@@ -4257,11 +4257,11 @@ $LN30@memory_ope:
 ; 1571 :         switch ( CodeInfo->token ) {
 
 	mov	eax, DWORD PTR [rbx+24]
-	cmp	eax, 594				; 00000252H
+	cmp	eax, 598				; 00000256H
 	jl	SHORT $LN43@memory_ope
-	cmp	eax, 595				; 00000253H
+	cmp	eax, 599				; 00000257H
 	jle	SHORT $LN42@memory_ope
-	cmp	eax, 597				; 00000255H
+	cmp	eax, 601				; 00000259H
 	jg	SHORT $LN43@memory_ope
 
 ; 1576 :                 return( EmitError( INSTRUCTION_OPERAND_MUST_HAVE_SIZE ) );
@@ -4822,7 +4822,7 @@ $LN89@memory_ope:
 	call	EmitWarn
 $LN95@memory_ope:
 	mov	eax, DWORD PTR [rbx+24]
-	sub	eax, 662				; 00000296H
+	sub	eax, 666				; 0000029aH
 	cmp	eax, 1
 	jbe	SHORT $LN132@memory_ope
 
@@ -4999,7 +4999,7 @@ Set_Memtype PROC					; COMDAT
 
 	mov	r9d, DWORD PTR [rcx+24]
 	mov	r8, rcx
-	cmp	r9d, 629				; 00000275H
+	cmp	r9d, 633				; 00000279H
 	je	$LN10@Set_Memtyp
 	cmp	edx, 192				; 000000c0H
 	je	$LN10@Set_Memtyp
@@ -5044,12 +5044,12 @@ Set_Memtype PROC					; COMDAT
 	and	edx, 31
 	cmp	dl, 7
 	jne	$LN10@Set_Memtyp
-	cmp	r9d, 612				; 00000264H
+	cmp	r9d, 616				; 00000268H
 	je	$LN10@Set_Memtyp
-	lea	eax, DWORD PTR [r9-596]
+	lea	eax, DWORD PTR [r9-600]
 	cmp	eax, 1
 	jbe	$LN10@Set_Memtyp
-	lea	eax, DWORD PTR [r9-1283]
+	lea	eax, DWORD PTR [r9-1287]
 	cmp	eax, 3
 	jbe	$LN10@Set_Memtyp
 
@@ -5094,21 +5094,21 @@ Set_Memtype PROC					; COMDAT
 	mov	ecx, 65280				; 0000ff00H
 	test	ax, cx
 	je	$LN23@Set_Memtyp
-	cmp	r9d, 1441				; 000005a1H
+	cmp	r9d, 1445				; 000005a5H
 	je	$LN23@Set_Memtyp
-	lea	eax, DWORD PTR [r9-1023]
+	lea	eax, DWORD PTR [r9-1027]
 	cmp	eax, 1
 	jbe	$LN23@Set_Memtyp
-	cmp	r9d, 1041				; 00000411H
+	cmp	r9d, 1045				; 00000415H
 	je	$LN23@Set_Memtyp
-	lea	eax, DWORD PTR [r9-1211]
+	lea	eax, DWORD PTR [r9-1215]
 	cmp	eax, 1
 	jbe	$LN23@Set_Memtyp
-	cmp	r9d, 1907				; 00000773H
+	cmp	r9d, 1911				; 00000777H
 	je	$LN23@Set_Memtyp
-	cmp	r9d, 1929				; 00000789H
+	cmp	r9d, 1933				; 0000078dH
 	je	$LN23@Set_Memtyp
-	lea	eax, DWORD PTR [r9-1985]
+	lea	eax, DWORD PTR [r9-1989]
 	cmp	eax, 1
 	ja	$LN10@Set_Memtyp
 
@@ -5193,7 +5193,7 @@ $LN11@Set_Memtyp:
 ; 1383 :              */
 ; 1384 :             switch( CodeInfo->token ) {
 
-	add	r9d, -450				; fffffffffffffe3eH
+	add	r9d, -454				; fffffffffffffe3aH
 	cmp	r9d, 183				; 000000b7H
 	ja	SHORT $LN28@Set_Memtyp
 	lea	rdx, OFFSET FLAT:__ImageBase
@@ -5261,7 +5261,7 @@ $LN25@Set_Memtyp:
 ; 1407 :                 ;
 ; 1408 :             } else if ( CodeInfo->token != T_CMPXCHG8B )
 
-	cmp	r9d, 612				; 00000264H
+	cmp	r9d, 616				; 00000268H
 	je	SHORT $LN10@Set_Memtyp
 $LN23@Set_Memtyp:
 
@@ -5715,7 +5715,7 @@ $LN158:
 	sub	rsp, 48					; 00000030H
 	mov	eax, DWORD PTR [rcx+24]
 	mov	rdi, r8
-	sub	eax, 450				; 000001c2H
+	sub	eax, 454				; 000001c6H
 	mov	r12d, edx
 
 ; 923  :     //struct fixup      *fixup;
@@ -5984,7 +5984,7 @@ $LN28@idata_fixu:
 
 ; 1020 :                 if ( CodeInfo->token == T_MOV &&
 
-	cmp	DWORD PTR [rbx+24], 601			; 00000259H
+	cmp	DWORD PTR [rbx+24], 605			; 0000025dH
 	jne	SHORT $LN39@idata_fixu
 	test	sil, 8
 	je	SHORT $LN39@idata_fixu
@@ -6090,7 +6090,7 @@ $LN31@idata_fixu:
 ; 1035 :                 CodeInfo->mem_type = opndx->mem_type;
 ; 1036 :             } else if ( CodeInfo->token == T_PUSHW ) { /* v2.10: special handling PUSHW */
 
-	cmp	DWORD PTR [rbx+24], 598			; 00000256H
+	cmp	DWORD PTR [rbx+24], 602			; 0000025aH
 	jne	SHORT $LN48@idata_fixu
 
 ; 1037 :                 CodeInfo->mem_type = MT_WORD;
@@ -6124,7 +6124,7 @@ $LN44@idata_fixu:
 ; 1042 :             switch ( CodeInfo->token ) {
 
 	mov	ecx, DWORD PTR [rbx+24]
-	sub	ecx, 560				; 00000230H
+	sub	ecx, 564				; 00000234H
 	je	SHORT $LN50@idata_fixu
 	sub	ecx, 36					; 00000024H
 	je	SHORT $LN50@idata_fixu
@@ -6202,7 +6202,7 @@ $LN54@idata_fixu:
 ; 1073 :                 if ( CodeInfo->token == T_PUSHW ) {
 
 	mov	eax, DWORD PTR [rbx+24]
-	cmp	eax, 598				; 00000256H
+	cmp	eax, 602				; 0000025aH
 	jne	SHORT $LN55@idata_fixu
 
 ; 1074 :                     if ( SizeFromMemtype( opndx->mem_type, Ofssize, opndx->type ) < 2 )
@@ -6227,7 +6227,7 @@ $LN54@idata_fixu:
 
 	jmp	SHORT $LN59@idata_fixu
 $LN55@idata_fixu:
-	cmp	eax, 560				; 00000230H
+	cmp	eax, 564				; 00000234H
 	jne	SHORT $LN146@idata_fixu
 
 ; 1077 :                     if ( SizeFromMemtype( opndx->mem_type, Ofssize, opndx->type ) < 4 )
@@ -6393,7 +6393,7 @@ $LN68@idata_fixu:
 	jne	SHORT $LN66@idata_fixu
 	cmp	DWORD PTR [rdi+56], 241			; 000000f1H
 	je	SHORT $LN70@idata_fixu
-	cmp	DWORD PTR [rbx+24], 601			; 00000259H
+	cmp	DWORD PTR [rbx+24], 605			; 0000025dH
 	jne	SHORT $LN66@idata_fixu
 	test	BYTE PTR [rbx+32], 8
 	je	SHORT $LN66@idata_fixu
@@ -7041,7 +7041,7 @@ idata_nofixup PROC					; COMDAT
 	sub	rsp, 48					; 00000030H
 	mov	eax, DWORD PTR [rcx+24]
 	mov	rdi, r8
-	sub	eax, 450				; 000001c2H
+	sub	eax, 454				; 000001c6H
 	mov	r14d, edx
 	mov	rbx, rcx
 	cmp	eax, 49					; 00000031H
@@ -7126,7 +7126,7 @@ $LN7@idata_nofi:
 	movzx	ebp, BYTE PTR [rbx+106]
 	cmp	bpl, 2
 	jne	SHORT $LN8@idata_nofi
-	cmp	DWORD PTR [rbx+24], 601			; 00000259H
+	cmp	DWORD PTR [rbx+24], 605			; 0000025dH
 	jne	SHORT $LN8@idata_nofi
 	cmp	r14d, 1
 	jne	SHORT $LN8@idata_nofi
@@ -7293,7 +7293,7 @@ $LN21@idata_nofi:
 ; 871  :     switch ( CodeInfo->token ) {
 
 	mov	edx, DWORD PTR [rbx+24]
-	sub	edx, 560				; 00000230H
+	sub	edx, 564				; 00000234H
 	je	SHORT $LN32@idata_nofi
 	sub	edx, 36					; 00000024H
 	je	SHORT $LN23@idata_nofi
@@ -8427,7 +8427,7 @@ seg_override PROC					; COMDAT
 ; 413  : 
 ; 414  :     if( CodeInfo->token == T_LEA ) {
 
-	cmp	DWORD PTR [rcx+24], 629			; 00000275H
+	cmp	DWORD PTR [rcx+24], 633			; 00000279H
 	jne	SHORT $LN6@seg_overri
 
 ; 415  :         CodeInfo->prefix.RegOverride = EMPTY; /* skip segment override */
@@ -9408,7 +9408,7 @@ $LN67@ParseLine:
 
 	mov	ecx, DWORD PTR [rdx+16]
 	or	ebx, -1
-	sub	ecx, 393				; 00000189H
+	sub	ecx, 397				; 0000018dH
 	je	SHORT $LN70@ParseLine
 	sub	ecx, r14d
 	je	SHORT $LN69@ParseLine
@@ -9554,7 +9554,7 @@ $LN321@ParseLine:
 	movzx	eax, BYTE PTR ModuleInfo+404
 	mov	BYTE PTR CodeInfo$[rbp-150], al
 	mov	eax, DWORD PTR [rsi+16]
-	sub	eax, 1682				; 00000692H
+	sub	eax, 1686				; 00000696H
 	mov	DWORD PTR CodeInfo$[rsp], -2
 	mov	DWORD PTR CodeInfo$[rsp+4], -2
 	mov	BYTE PTR CodeInfo$[rsp+8], bl
@@ -9638,7 +9638,7 @@ $LN85@ParseLine:
 	add	rcx, rsi
 	mov	BYTE PTR CodeInfo$[rbp-114], bl
 	mov	edx, DWORD PTR [rcx+16]
-	lea	eax, DWORD PTR [rdx-577]
+	lea	eax, DWORD PTR [rdx-581]
 	cmp	eax, 5
 	ja	SHORT $LN88@ParseLine
 
@@ -9679,12 +9679,12 @@ $LN88@ParseLine:
 ; 3114 :     switch (tokenarray[i].tokval) {
 
 	mov	edx, DWORD PTR [rcx+16]
-	lea	eax, DWORD PTR [rdx-622]
+	lea	eax, DWORD PTR [rdx-626]
 	cmp	eax, r14d
 	jbe	SHORT $LN90@ParseLine
-	cmp	edx, 644				; 00000284H
+	cmp	edx, 648				; 00000288H
 	je	SHORT $LN90@ParseLine
-	cmp	edx, 1203				; 000004b3H
+	cmp	edx, 1207				; 000004b7H
 	jne	$LN94@ParseLine
 $LN90@ParseLine:
 
@@ -9743,14 +9743,14 @@ $LN91@ParseLine:
 ; 3130 :       /* v2.08: this code must run even if PRST_INSIDE_EPILOGUE is set */
 ; 3131 :       if (tokenarray[i].tokval == T_RET && CurrProc->sym.mem_type == MT_FAR)
 
-	cmp	edx, 644				; 00000284H
+	cmp	edx, 648				; 00000288H
 	jne	SHORT $LN94@ParseLine
 	cmp	DWORD PTR [r8+36], 130			; 00000082H
 	jne	SHORT $LN94@ParseLine
 
 ; 3132 :         tokenarray[i].tokval = T_RETF;
 
-	mov	DWORD PTR [rcx+16], 646			; 00000286H
+	mov	DWORD PTR [rcx+16], 650			; 0000028aH
 	mov	r9d, DWORD PTR i$[rbp-256]
 $LN94@ParseLine:
 
@@ -9788,7 +9788,7 @@ $LN95@ParseLine:
 	movsxd	r8, DWORD PTR [rax+rsi+16]
 	mov	DWORD PTR CodeInfo$[rsp+24], r8d
 	mov	DWORD PTR i$[rbp-256], r9d
-	movzx	eax, WORD PTR optable_idx[rcx+r8*2-900]
+	movzx	eax, WORD PTR optable_idx[rcx+r8*2-908]
 	imul	rcx, rax, 14
 	lea	rax, OFFSET FLAT:InstrTable
 	add	rcx, rax
@@ -9943,9 +9943,9 @@ $LN104@ParseLine:
 
 	cmp	edi, 1
 	je	SHORT $LN106@ParseLine
-	cmp	r8d, 596				; 00000254H
+	cmp	r8d, 600				; 00000258H
 	je	SHORT $LN106@ParseLine
-	cmp	r8d, 560				; 00000230H
+	cmp	r8d, 564				; 00000234H
 	je	SHORT $LN106@ParseLine
 $LN105@ParseLine:
 
@@ -10151,7 +10151,7 @@ $LL18@ParseLine:
 ; 3224 :       CurrOpnd == OPND2 &&
 
 	movsxd	r8, DWORD PTR CodeInfo$[rsp+24]
-	cmp	r8d, 1291				; 0000050bH
+	cmp	r8d, 1295				; 0000050fH
 	jl	$LN313@ParseLine
 	cmp	ebx, 1
 	jne	$LN313@ParseLine
@@ -10261,10 +10261,10 @@ $LN121@ParseLine:
 $LN314@ParseLine:
 	lea	r10, OFFSET FLAT:__ImageBase
 $LN123@ParseLine:
-	lea	eax, DWORD PTR [r8-1669]
+	lea	eax, DWORD PTR [r8-1673]
 	cmp	eax, 1
 	jbe	$putinvex$332
-	lea	eax, DWORD PTR [r8-1679]
+	lea	eax, DWORD PTR [r8-1683]
 	cmp	eax, 1
 	jbe	$putinvex$332
 
@@ -10274,7 +10274,7 @@ $LN123@ParseLine:
 ; 3246 :         (CurrOpnd == OPND2 )) goto putinvex;
 ; 3247 :       if (vex_flags[CodeInfo.token - VEX_START] & VX_NND)
 
-	movzx	edx, BYTE PTR vex_flags[r8+r10-1291]
+	movzx	edx, BYTE PTR vex_flags[r8+r10-1295]
 	test	dl, 2
 	jne	$LN303@ParseLine
 
@@ -10297,7 +10297,7 @@ $LN128@ParseLine:
 	je	SHORT $LN136@ParseLine
 	test	DWORD PTR CodeInfo$[rsp+32], r13d
 	jne	$LN303@ParseLine
-	lea	eax, DWORD PTR [r8-1939]
+	lea	eax, DWORD PTR [r8-1943]
 	cmp	eax, 1
 	ja	SHORT $LN136@ParseLine
 	cmp	DWORD PTR opndx$[rbp-92], 2
@@ -10444,7 +10444,7 @@ $LN140@ParseLine:
 ; 3297 : 
 ; 3298 :           else if (CodeInfo.token < T_VGETMANTPD || CodeInfo.token > T_VGETMANTPS ) {
 
-	lea	eax, DWORD PTR [r8-1429]
+	lea	eax, DWORD PTR [r8-1433]
 	cmp	eax, 1
 	ja	SHORT $LN148@ParseLine
 
@@ -10800,9 +10800,9 @@ $LN22@ParseLine:
 ; 3387 : 	   DebugMsg(("ParseLine(%s): CurrOpnd != j ( %u - %u ) >%s<\n", instr, CurrOpnd, j, tokenarray[i].tokpos));
 ; 3388 : 	   if (CodeInfo.token < VEX_START)
 
-	cmp	r8d, 1291				; 0000050bH
+	cmp	r8d, 1295				; 0000050fH
 	jl	$LN31@ParseLine
-	lea	eax, DWORD PTR [r8-1321]
+	lea	eax, DWORD PTR [r8-1325]
 	cmp	eax, 1
 	ja	SHORT $LN176@ParseLine
 
@@ -10813,7 +10813,7 @@ $LN22@ParseLine:
 	cmp	edi, 3
 	jl	SHORT $LN327@ParseLine
 $LN176@ParseLine:
-	lea	eax, DWORD PTR [r8-1309]
+	lea	eax, DWORD PTR [r8-1313]
 	cmp	eax, 1
 	ja	SHORT $LN180@ParseLine
 
@@ -10849,7 +10849,7 @@ $LN180@ParseLine:
 	movzx	edx, BYTE PTR CodeInfo$[rbp-114]
 	test	dl, 4
 	je	SHORT $LN25@ParseLine
-	lea	eax, DWORD PTR [r8-450]
+	lea	eax, DWORD PTR [r8-454]
 	cmp	eax, 1
 	ja	SHORT $LN25@ParseLine
 	npad	5
@@ -10967,7 +10967,7 @@ $LN28@ParseLine:
 ; 3463 :       /* v2.06: moved here from process_const() */
 ; 3464 :       if (CodeInfo.token == T_IMUL) {
 
-	cmp	r8d, 616				; 00000268H
+	cmp	r8d, 620				; 0000026cH
 	jne	$LN196@ParseLine
 
 ; 3465 :         /* the 2-operand form with an immediate as second op
@@ -11102,14 +11102,14 @@ $LN199@ParseLine:
 ; 3494 :        */
 ; 3495 :       switch (CodeInfo.token) {
 
-	cmp	r8d, 601				; 00000259H
+	cmp	r8d, 605				; 0000025dH
 	jg	SHORT $LN210@ParseLine
 	je	SHORT $LN202@ParseLine
-	cmp	r8d, 450				; 000001c2H
+	cmp	r8d, 454				; 000001c6H
 	jl	SHORT $LN203@ParseLine
-	cmp	r8d, 451				; 000001c3H
+	cmp	r8d, 455				; 000001c7H
 	jle	SHORT $LN201@ParseLine
-	lea	eax, DWORD PTR [r8-596]
+	lea	eax, DWORD PTR [r8-600]
 $LN326@ParseLine:
 	cmp	eax, 1
 	ja	SHORT $LN203@ParseLine
@@ -11158,7 +11158,7 @@ $LN210@ParseLine:
 ; 3494 :        */
 ; 3495 :       switch (CodeInfo.token) {
 
-	lea	eax, DWORD PTR [r8-1287]
+	lea	eax, DWORD PTR [r8-1291]
 
 ; 3502 :       case T_CALL:
 ; 3503 :       case T_JMP:

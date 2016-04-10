@@ -15,6 +15,7 @@
 ****************************************************************************/
 
 #include <ctype.h>
+#include <string.h>
 
 #include "globals.h"
 #include "memalloc.h"
@@ -30,7 +31,7 @@
 #include "myassert.h"
 
 int Tokenize(char *, unsigned int, struct asm_tok[], unsigned int);
-
+void myatoi128( const char *src, uint_64 dst[], int base, int size );
 #define LABELSIZE 8
 #define LABELSGLOBAL 0 /* make the generated labels global */
 #define JMPPREFIX      /* define spaces before "jmp" or "loop" */
@@ -61,6 +62,7 @@ enum hll_cmd {
   HLL_REPEAT,
   HLL_BREAK,  /* .IF behind .BREAK or .CONTINUE */
   HLL_FOR,
+  HLL_SWITCH,  
 };
 
 /* index values for struct hll_item.labels[] */
@@ -69,25 +71,34 @@ enum hll_label_index {
   LEXIT,      /* block exit             */
   LSTART,     /* loop start             */
   LSKIP,      /* skip counters          */
-  LCONT,      /* for .CONTINUE in .for */
+  LCONT,      /* for .CONTINUE in .for  */
+  LDEF,       /* jump table for SWITCH  */
+  LDATA1,     /* jump table for SWITCH  */
+  LDATA2,     /* jump table for SWITCH  */
+  LTOP,       /* jump table for SWITCH  */
+  LJUMP,      /* jump table for SWITCH  */
 };
 
 /* values for struct hll_item.flags */
 enum hll_flags {
   HLLF_ELSEOCCURED = 0x01,
+  HLLF_DEFAULT	   = 0x02,
+  HLLF_WHILE		   = 0x04,
 };
 
 
-/* item for .IF, .WHILE, .REPEAT, .FOR, ... */
+/* item for .IF, .WHILE, .REPEAT, .FOR, .SWITCH ... */
 struct hll_item {
   struct hll_item     *next;
-  uint_32             labels[5];      /* labels for LTEST, LEXIT, LSTART, LSKIP */
-  char                *condlines;     /* .WHILE-blocks only: lines to add after 'test' label */
-  char                *counterlines;  /* pointer to allocated memory for counters */
-  uint_32             cmcnt;          /* comma counter  */
-  enum hll_cmd        cmd;            /* start cmd (IF, WHILE, REPEAT) */
+  uint_32             labels[10];    /* labels for LTEST, LEXIT, LSTART, LSKIP, LCONT, LDEF LDATA1, LDATA2, LTOP, LJUMP */
+  char                *condlines;    /* .WHILE-blocks only: lines to add after 'test' label */
+  char                *counterlines; /* pointer to allocated memory for counters */
+  uint_32             cmcnt;         /* comma counter  */
+  uint_32             casecnt;       /* case counter  */
+  enum hll_cmd        cmd;           /* start cmd (IF, WHILE, REPEAT) */
   bool                cond;          /* condision  */
-  enum hll_flags      flags;          /* v2.08: added */
+  char                cflag;         /* SWITCH decision flag */
+  enum hll_flags      flags;         /* v2.08: added */
 };
 
 /* v2.08: struct added */
@@ -138,7 +149,14 @@ static const char neg_cjmptype[] = { 0, 1, 0, 0, 1, 1 };
 /* in Masm, there's a nesting level limit of 20. In JWasm, there's
 * currently no limit.
 */
-
+int mid;
+int ncase;
+int casen;
+int maxcase;
+int mincase;
+int delta;
+int *pcases;
+uint_16 *plabels;
 #ifdef DEBUG_OUT
 static unsigned evallvl;
 static unsigned cntAlloc;  /* # of allocated hll_items */
@@ -230,9 +248,36 @@ static enum c_bop GetCOp(struct asm_tok *item)
   }
   return(rc);
 }
+static void bubblesort(uint_16 *lbl, int *src, int n){
+  /*******************************************************************************************************************************/
+  int i;
+  int j;
+  int temp1;
+  uint_16 temp2;
+
+   for (i = 0; i < n; ++i)
+    {
+     for (j = i + 1; j < n; ++j)
+       {
+          if (src[i] > src[j])
+            {
+                temp1 =  src[i];
+                src[i] = src[j];
+                src[j] = temp1;
+                temp2 =  lbl[i];
+                lbl[i] = lbl[j];
+                lbl[j] = temp2;
+            }
+        }
+    }
+
+  mincase = src[0];
+  maxcase = src[casen-1];
+  delta = maxcase - mincase;
+}
+
 
 /* render an instruction */
-
 static char *RenderInstr(char *dst, const char *instr, int start1, int end1, int start2, int end2, struct asm_tok tokenarray[])
 /*******************************************************************************************************************************/
 {
@@ -1244,9 +1289,32 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
     }
     break;
     // added by habran
+  case T_DOT_SWITCH:
+	  hll->cmd		= HLL_SWITCH;
+	  hll->flags	= HLLF_WHILE;
+    hll->labels[LEXIT]  = 0;
+	  hll->labels[LSTART] = GetHllLabel();    /* used by .ENDSWITCH  */ 
+	  hll->labels[LTEST]	= GetHllLabel();    /* used by .CASE  */      
+    hll->labels[LDEF]	  = GetHllLabel();    /* used by .CASE  */      
+	  hll->labels[LDATA1]	= GetHllLabel();    /* used by .ENDSWITCH  */ 
+	  hll->labels[LDATA2]	= GetHllLabel();    /* used by .ENDSWITCH */  
+    hll->labels[LTOP]   = GetHllLabel();    /* used by .ENDSWITCH  */ 
+    hll->labels[LCONT]  = GetHllLabel();    /* used by .ENDSWITCH */  
+    hll->labels[LSKIP]  = GetHllLabel();    /* used by .ENDSWITCH  */ 
+    hll->labels[LJUMP]  = GetHllLabel();    /* used by .ENDSWITCH */  
+    hll->casecnt		      = 0;
+    if (tokenarray[i].token != T_FINAL) {
+      p = tokenarray[i].tokpos;
+        if (0 != _memicmp(p, "eax", 3)){
+        AddLineQueueX(" mov eax, %s", tokenarray[i].tokpos);
+      }
+      i++;
+    }
+    AddLineQueueX( JMPPREFIX "jmp %s", GetLabelStr(hll->labels[LSTART], buff));
+    break;
   case T_DOT_FOR:
     /* create the label to loop start */
-    hll->labels[LEXIT] = 0; //this is needed for .FOR loop
+    //hll->labels[LEXIT] = 0; //this is needed for .FOR loop
     hll->labels[LSTART] = GetHllLabel();
     hll->labels[LSKIP] = GetHllLabel();
     hll->labels[LCONT] = 0;
@@ -1430,6 +1498,8 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
   struct hll_item     *hll;
   ret_code            rc = NOT_ERROR;
   int                 cmd = tokenarray[i].tokval;
+  int                 j,n;
+  int                 temp;
   char buff[16];
   //char buffer[MAX_LINE_LEN*2];
 
@@ -1462,6 +1532,194 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
     }
     break;
     // added by habran
+  case T_DOT_ENDSWITCH:
+	  if ( hll->cmd != HLL_SWITCH ){
+      DebugMsg(("HllExitDir stack error\n"));
+      return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
+    }
+	  i++;
+    casen = hll->casecnt;
+    AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LSTART], buff));   
+      if (Parse_Pass){
+        if (casen < 4)  
+          hll->cflag = 1;
+        else 
+        {
+          if (plabels){
+            bubblesort(plabels, pcases, casen);
+            if (delta < 256)
+              hll->cflag = 2;
+            else
+              hll->cflag = 3;
+          }
+        }
+        if (hll->cflag == 1){
+          AddLineQueueX("cmp  eax,%d",pcases[0]);
+          AddLineQueueX("je  %s", GetLabelStr(plabels[0], buff));
+          AddLineQueueX("cmp  eax,%d",pcases[1]);
+          AddLineQueueX("je  %s", GetLabelStr(plabels[1], buff));
+          AddLineQueueX("cmp  eax,%d",pcases[2]);
+          AddLineQueueX("je  %s", GetLabelStr(plabels[2], buff));
+          AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LDEF], buff));
+        }
+        else if (hll->cflag == 2){
+          AddLineQueueX("cmp eax,%d",maxcase);
+          AddLineQueueX("ja  %s", GetLabelStr(hll->labels[LDEF], buff));
+          AddLineQueueX("sub eax,%d",mincase);
+          AddLineQueueX("jc  %s", GetLabelStr(hll->labels[LDEF], buff));
+#ifdef _WIN64
+          AddLineQueueX("lea  rdx,%s", GetLabelStr(hll->labels[LDATA2], buff));
+          AddLineQueueX("movzx  rax,BYTE PTR[rdx+rax]");
+          AddLineQueueX("lea  rdx,%s", GetLabelStr(hll->labels[LDATA1], buff));
+          AddLineQueueX("jmp  QWORD PTR[rdx+rax*8]");
+#else
+          AddLineQueueX("lea  edx,%s", GetLabelStr(hll->labels[LDATA2], buff));
+          AddLineQueueX("movzx  eax,BYTE PTR[edx+eax]");
+          AddLineQueueX("lea  edx,%s", GetLabelStr(hll->labels[LDATA1], buff));
+          AddLineQueueX("jmp  DWORD PTR[edx+eax*4]");
+#endif
+
+        }
+        /* simple binary tree 
+         while (low <= high) {
+            int mid = (low + high) / 2;
+            if (pcases[mid] == casen) 
+              return mid;
+            else if (pcases[mid] < x) 
+              low = mid + 1;
+            else high = mid - 1;
+         }*/
+       else if (hll->cflag == 3){
+#ifdef _WIN64
+          AddLineQueueX("mov     r8d,eax");
+          AddLineQueueX("mov     r10d,%d", casen - 1)  ;//int high = len - 1;
+          AddLineQueueX("xor     r9d,r9d")      ;//int low = 0;
+          AddLineQueueX("lea     r11,%s", GetLabelStr(hll->labels[LDATA2], buff));//int pcases
+          AddLineQueueX("test    r10d,r10d")     ;//while (low <= high) {
+          AddLineQueueX("js      %s", GetLabelStr(hll->labels[LDEF], buff));
+#else
+          AddLineQueueX("push	ebx");
+          AddLineQueueX("push	esi");
+          AddLineQueueX("push	edi");
+          AddLineQueueX("mov     esi,eax");
+          AddLineQueueX("mov     ebx,%d", casen - 1)  ;//int high = len - 1;
+          AddLineQueueX("xor     ecx,ecx")      ;//int low = 0;
+          AddLineQueueX("lea     edi,%s", GetLabelStr(hll->labels[LDATA2], buff));//int pcases
+          AddLineQueueX("test    ebx,ebx")     ;//while (low <= high) {
+          AddLineQueueX("js      %s", GetLabelStr(hll->labels[LDEF], buff));
+#endif
+        }
+      }
+      AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LTOP], buff)); 
+      if (Parse_Pass){
+        if (hll->cflag == 3){
+#ifdef _WIN64
+          AddLineQueueX("lea     eax,[r10+r9]");//int mid = (low + high) / 2;
+          AddLineQueueX("cdq");
+          AddLineQueueX("sub     eax,edx");
+          AddLineQueueX("sar     eax,1");
+          AddLineQueueX("movsxd  rcx,eax");//if (pcases[mid] == x) return mid;
+          AddLineQueueX("cmp     [r11+rcx*4],r8d");
+          AddLineQueueX("je  %s", GetLabelStr(hll->labels[LJUMP], buff));
+          AddLineQueueX("jge %s", GetLabelStr(hll->labels[LSKIP], buff));//else if (pcases[mid] < casen) 
+          AddLineQueueX("lea     r9d,[rax+1]");                          //low = mid + 1
+          AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LCONT], buff));
+#else
+          AddLineQueueX("lea     eax,[ecx + ebx]");//int eax = (ecx + ebx) / 2;
+          AddLineQueueX("cdq");
+          AddLineQueueX("sub     eax,edx");
+          AddLineQueueX("sar     eax,1");
+          AddLineQueueX("cmp     [edi+eax*4],esi");
+          AddLineQueueX("je  %s", GetLabelStr(hll->labels[LJUMP], buff));
+          AddLineQueueX("jge %s", GetLabelStr(hll->labels[LSKIP], buff));//else if (pcases[mid] < casen) 
+          AddLineQueueX("lea     ecx,[eax+1]");                          //low = mid + 1
+          AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LCONT], buff));
+
+#endif
+        }
+      }
+         AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LJUMP], buff));
+         if (Parse_Pass){
+           if (hll->cflag == 3){
+#ifdef _WIN64
+             AddLineQueueX("lea     r11,%s", GetLabelStr(hll->labels[LDATA1], buff));
+             AddLineQueueX("jmp     qword ptr[r11+rcx*8]");
+#else
+             AddLineQueueX("lea edx,%s", GetLabelStr(hll->labels[LDATA1], buff));
+             AddLineQueueX("pop	edi");
+             AddLineQueueX("pop	esi");
+             AddLineQueueX("pop	ebx");
+             AddLineQueueX("jmp dword ptr[edx+eax*4]");
+#endif
+           }
+         }
+         AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LSKIP], buff));
+        if (Parse_Pass){
+          if (hll->cflag == 3){
+#ifdef _WIN64
+            AddLineQueueX("lea     r10d,[rax-1]");//else high = mid - 1;
+#else
+           AddLineQueueX("lea     ebx,[eax-1]");//else high = mid - 1;
+
+#endif
+          }
+        }
+          AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LCONT], buff)); 
+          if (Parse_Pass){
+            if (hll->cflag == 3){
+#if  _WIN64
+              AddLineQueueX("cmp     r9d,r10d");
+              AddLineQueueX("jle %s", GetLabelStr(hll->labels[LTOP], buff));
+              AddLineQueueX("jmp  %s", GetLabelStr(hll->labels[LDEF], buff));
+#else
+              AddLineQueueX("cmp     ecx,ebx");
+              AddLineQueueX("jle %s", GetLabelStr(hll->labels[LTOP], buff));
+              AddLineQueueX("pop	edi");
+              AddLineQueueX("pop	esi");
+              AddLineQueueX("pop	ebx");
+              AddLineQueueX("jmp  %s", GetLabelStr(hll->labels[LDEF], buff));
+#endif
+            }
+          }
+      AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LDATA1], buff));
+
+      if (hll->cflag > 1){
+#ifdef _WIN64
+        for (j = 0; j < casen; j++){
+          AddLineQueueX(" dq %s", GetLabelStr(plabels[j], buff));
+          }
+        AddLineQueueX(" dq %s", GetLabelStr(hll->labels[LDEF], buff));
+#else
+        for (j = 0; j < casen; j++){
+          AddLineQueueX(" dd %s", GetLabelStr(plabels[j], buff));
+          }
+        AddLineQueueX(" dd %s", GetLabelStr(hll->labels[LDEF], buff));
+#endif
+      }
+       AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LDATA2], buff));
+       if (hll->cflag == 2){
+           n = 0;
+           for (j = 0; j < casen; j++){
+             temp = pcases[j];
+             temp -= mincase;
+             while (n < temp){
+               AddLineQueueX(" db %d", casen);
+               n++;
+             }
+             AddLineQueueX(" db %d", j);
+             n++;
+           }
+       }
+       if (hll->cflag == 3){
+           n = 0;
+           for (j = 0; j < casen; j++){
+               AddLineQueueX(" dd %d", pcases[j]);
+             }
+       }
+
+       LclFree(pcases);
+       LclFree(plabels);
+	  break;
   case T_DOT_ENDFOR:
     if (hll->cmd != HLL_FOR) {
       DebugMsg(("HllEndDir: no .FOR on the hll stack\n"));
@@ -1592,6 +1850,12 @@ ret_code HllExitDir(int i, struct asm_tok tokenarray[])
   //struct asym       *sym;
   struct hll_item     *hll;
   ret_code            rc = NOT_ERROR;
+//#ifdef _WIN64
+  uint_64             n;
+//#else
+//  uint_32             n;
+//#endif
+  int                 j;
   int                 idx;
   int                 cmd = tokenarray[i].tokval;
   char buff[16];
@@ -1605,8 +1869,56 @@ ret_code HllExitDir(int i, struct asm_tok tokenarray[])
     DebugMsg(("HllExitDir stack error\n"));
     return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
   }
-
   switch (cmd) {
+  case T_DOT_DEFAULT:
+    if (hll->flags & HLLF_ELSEOCCURED){
+      DebugMsg(("HllExitDir stack error\n"));
+      return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
+    }
+    AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LDEF], buff));
+    hll->flags |= HLLF_ELSEOCCURED;
+     i++;
+    break;
+  case T_DOT_CASE:
+    if (hll->cmd != HLL_SWITCH){
+      DebugMsg(("HllExitDir stack error\n"));
+      return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
+    }
+    hll->labels[LTEST] = GetHllLabel();
+    AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LTEST], buff));
+    i++;
+    if (tokenarray[i].token != T_FINAL){
+      strcpy(buffer, tokenarray[i].tokpos);
+      i++;
+    }
+    else{
+      DebugMsg(("HllExitDir stack error\n"));
+      return(EmitError(MISSING_OPERATOR_IN_EXPRESSION));
+    }
+    if (!pcases){
+      if (casen > 256){
+        pcases = LclAlloc(sizeof(int) * casen);
+        plabels = LclAlloc(sizeof(uint_16) * casen);
+      }
+      else{
+        pcases = LclAlloc(sizeof(int) * 256);
+        plabels = LclAlloc(sizeof(uint_16) * 256);
+      }
+    }
+    j = strlen(buffer);
+    if ((buffer[j-1] | 0x20) == 'h' )
+      myatoi128( buffer, &n, 16, j-1);
+#if CHEXPREFIX
+    else if (((buffer[1] | 0x20)== 'x') && (*buffer == '0'))
+      myatoi128( buffer, &n, 16, j-2);
+#endif
+    else 
+      myatoi128( buffer, &n, 10, j);
+    pcases[hll->casecnt] = (int_32)n;
+    myatoi128( buff+2, &n, 16, 4);
+    plabels[hll->casecnt] = (uint_16)n;
+    hll->casecnt++;
+	  break;
   case T_DOT_ELSE:
   case T_DOT_ELSEIF:
     if (hll->cmd != HLL_IF) {

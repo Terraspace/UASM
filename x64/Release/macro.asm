@@ -12,16 +12,16 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10853 DB	'%X', 00H
+$SG10857 DB	'%X', 00H
 	ORG $+1
-$SG10916 DB	'<>"''', 00H
+$SG10920 DB	'<>"''', 00H
 	ORG $+3
-$SG11008 DB	'REQ', 00H
-$SG11017 DB	'VARARGML', 00H
+$SG11012 DB	'REQ', 00H
+$SG11021 DB	'VARARGML', 00H
 	ORG $+7
-$SG11129 DB	'macro name', 00H
+$SG11133 DB	'macro name', 00H
 	ORG $+5
-$SG11152 DB	'@Environ', 00H
+$SG11156 DB	'@Environ', 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	sprintf
@@ -467,7 +467,7 @@ $LN27@PurgeDirec:
 
 ; 749  :             return( EmitErr( EXPECTED, "macro name" ) );
 
-	lea	rdx, OFFSET FLAT:$SG11129
+	lea	rdx, OFFSET FLAT:$SG11133
 	mov	ecx, 230				; 000000e6H
 	jmp	SHORT $LN38@PurgeDirec
 $LN26@PurgeDirec:
@@ -946,7 +946,7 @@ $LN22@store_plac:
 	jne	SHORT $LN23@store_plac
 	movsx	edx, BYTE PTR [rbx+1]
 	lea	rdi, QWORD PTR [rbx+1]
-	lea	rcx, OFFSET FLAT:$SG10916
+	lea	rcx, OFFSET FLAT:$SG10920
 	call	strchr
 	test	rax, rax
 	cmovne	rbx, rdi
@@ -1365,7 +1365,7 @@ $LN9:
 ; 814  : 
 ; 815  :         macro = CreateMacro( "@Environ" );
 
-	lea	rcx, OFFSET FLAT:$SG11152
+	lea	rcx, OFFSET FLAT:$SG11156
 	call	SymCreate
 	mov	rbx, rax
 	test	rax, rax
@@ -1733,7 +1733,7 @@ $LN41@StoreMacro:
 ; 356  :                 } else if( _stricmp( tokenarray[i].string_ptr, "REQ" ) == 0 ) {
 
 	mov	rcx, QWORD PTR [rdi+8]
-	lea	rdx, OFFSET FLAT:$SG11008
+	lea	rdx, OFFSET FLAT:$SG11012
 	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN45@StoreMacro
@@ -1773,7 +1773,7 @@ $LN47@StoreMacro:
 
 	cmp	al, 3
 	jne	SHORT $LN50@StoreMacro
-	cmp	DWORD PTR [rdi+16], 431			; 000001afH
+	cmp	DWORD PTR [rdi+16], 435			; 000001b3H
 	jne	SHORT $LN50@StoreMacro
 	cmp	BYTE PTR Options+127, 0
 	jne	SHORT $LN50@StoreMacro
@@ -1801,7 +1801,7 @@ $LN50@StoreMacro:
 ; 381  :                 } else if( _stricmp( tokenarray[i].string_ptr, "VARARGML" ) == 0 ) {
 
 	mov	rcx, QWORD PTR [rdi+8]
-	lea	rdx, OFFSET FLAT:$SG11017
+	lea	rdx, OFFSET FLAT:$SG11021
 	call	_stricmp
 	test	eax, eax
 	jne	$LN53@StoreMacro
@@ -2177,7 +2177,7 @@ $LN63@StoreMacro:
 	jne	$LN66@StoreMacro
 	cmp	al, 3
 	jne	$LN66@StoreMacro
-	cmp	ecx, 430				; 000001aeH
+	cmp	ecx, 434				; 000001b2H
 	jne	$LN66@StoreMacro
 
 ; 485  :             if( !store_data )
@@ -2426,7 +2426,7 @@ $LN79@StoreMacro:
 
 ; 534  :             if ( tok[0].tokval == T_EXITM ) {
 
-	cmp	ecx, 393				; 00000189H
+	cmp	ecx, 397				; 0000018dH
 	jne	SHORT $LN83@StoreMacro
 
 ; 535  :                 DebugMsg1(("StoreMacro(%s): exitm found, lvl=%u, >%s<\n", macro->sym.name, nesting_depth, ls.input ));
@@ -2471,7 +2471,7 @@ $LN83@StoreMacro:
 
 ; 543  :             } else if( tok[0].tokval == T_ENDM ) {
 
-	cmp	ecx, 394				; 0000018aH
+	cmp	ecx, 398				; 0000018eH
 	jne	$LN87@StoreMacro
 
 ; 544  :                 DebugMsg1(("StoreMacro(%s): endm found, lvl=%u\n", macro->sym.name, nesting_depth ));
@@ -2597,7 +2597,7 @@ $LN129@StoreMacro:
 ; 572  :                 /* MACRO or loop directive? */
 ; 573  :                 if ( tok[0].tokval == T_MACRO || tok[0].dirtype == DRT_LOOPDIR )
 
-	cmp	DWORD PTR tok$[rbp+16], 392		; 00000188H
+	cmp	DWORD PTR tok$[rbp+16], 396		; 0000018cH
 	je	SHORT $LN101@StoreMacro
 $LN87@StoreMacro:
 	cmp	BYTE PTR tok$[rbp+1], 1
@@ -2827,7 +2827,7 @@ $LL2@fill_place:
 ; 97   :                     i = sprintf( dst, "%X", i );
 
 	mov	r8d, eax
-	lea	rdx, OFFSET FLAT:$SG10853
+	lea	rdx, OFFSET FLAT:$SG10857
 	mov	rcx, rbx
 	call	sprintf
 	mov	eax, eax

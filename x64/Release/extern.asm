@@ -12,10 +12,10 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10858 DB	'ABS', 00H
-$SG10974 DB	')', 00H
+$SG10862 DB	'ABS', 00H
+$SG10978 DB	')', 00H
 	ORG $+2
-$SG10978 DB	'ABS', 00H
+$SG10982 DB	'ABS', 00H
 _DATA	ENDS
 CONST	SEGMENT
 szCOMM	DB	'COMM', 00H
@@ -1329,7 +1329,7 @@ $LN6@ExternDire:
 	cmp	BYTE PTR [rcx+r12], 8
 	jne	SHORT $LN10@ExternDire
 	mov	rcx, QWORD PTR [rcx+r12+8]
-	lea	rdx, OFFSET FLAT:$SG10978
+	lea	rdx, OFFSET FLAT:$SG10982
 	call	_stricmp
 
 ; 558  :             //ti.mem_type = MT_ABS;
@@ -1354,7 +1354,7 @@ $LN10@ExternDire:
 	movzx	eax, BYTE PTR [rax+r12]
 	cmp	al, 3
 	jne	SHORT $LN12@ExternDire
-	cmp	DWORD PTR [rcx+16], 427			; 000001abH
+	cmp	DWORD PTR [rcx+16], 431			; 000001afH
 	je	$LN61@ExternDire
 $LN12@ExternDire:
 
@@ -1741,7 +1741,7 @@ $LN59@ExternDire:
 
 ; 537  :                 return( EmitErr( EXPECTED, ")" ) );
 
-	lea	rdx, OFFSET FLAT:$SG10974
+	lea	rdx, OFFSET FLAT:$SG10978
 	mov	ecx, 230				; 000000e6H
 	jmp	SHORT $LN69@ExternDire
 $LN58@ExternDire:
@@ -2319,7 +2319,7 @@ $LL4@ExterndefD:
 	cmp	BYTE PTR [rcx+r14], 8
 	jne	SHORT $LN13@ExterndefD
 	mov	rcx, QWORD PTR [rcx+r14+8]
-	lea	rdx, OFFSET FLAT:$SG10858
+	lea	rdx, OFFSET FLAT:$SG10862
 	call	_stricmp
 
 ; 230  :             /* v2.07: MT_ABS is obsolete */
@@ -2343,7 +2343,7 @@ $LN13@ExterndefD:
 	movzx	eax, BYTE PTR [rax+r14]
 	cmp	al, 3
 	jne	SHORT $LN15@ExterndefD
-	cmp	DWORD PTR [rcx+16], 427			; 000001abH
+	cmp	DWORD PTR [rcx+16], 431			; 000001afH
 	je	$LN58@ExterndefD
 $LN15@ExterndefD:
 

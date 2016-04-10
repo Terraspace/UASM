@@ -1719,6 +1719,26 @@ ResWordTable DW	00H
 	ORG $+4
 	DQ	0000000000000000H
 	DW	00H
+	DB	07H
+	DB	00H
+	ORG $+4
+	DQ	0000000000000000H
+	DW	00H
+	DB	05H
+	DB	00H
+	ORG $+4
+	DQ	0000000000000000H
+	DW	00H
+	DB	08H
+	DB	00H
+	ORG $+4
+	DQ	0000000000000000H
+	DW	00H
+	DB	0aH
+	DB	00H
+	ORG $+4
+	DQ	0000000000000000H
+	DW	00H
 	DB	05H
 	DB	00H
 	ORG $+4
@@ -12965,219 +12985,219 @@ resw_strings DB	'alcldlblahchdhbhaxcxdxbxspbpsidieaxecxedxebxespebpesiedi'
 	DB	'pagesubtitlesubttltitle.listmacro.listmacroall.nolistmacro.xa'
 	DB	'll.lall.sall.alpha.dosseg.seqdosseg.code.stack.data.data?.far'
 	DB	'data.fardata?.const.if.repeat.while.for.break.continue.else.e'
-	DB	'lseif.endif.endw.until.untilcxz.endfor.exit.startup.model.rad'
-	DB	'ix.safeseh.err.err1.err2.erre.errnz.errdif.errdifi.erridn.err'
-	DB	'idni.errb.errnb.errdef.errndefcommentififeif1if2ifdififdifiif'
-	DB	'idnifidniifbifnbifdefifndefelseelseifelseifeelseif1elseif2els'
-	DB	'eifdifelseifdifielseifidnelseifidnielseifbelseifnbelseifdefel'
-	DB	'seifndefendifforforcirpirpcrepeatreptwhilemacroexitmendmgotop'
-	DB	'urgeincludetextequcatstrsubstrinstrsizestrdbdwdddfdqdt.allocs'
-	DB	'tack.endprolog.pushframe.pushreg.savereg.savexmm128.saveymm25'
-	DB	'6.setframestrucstructuniontypedefrecordcommexternextrnexternd'
-	DB	'efpublicprotoprocendplocallabelinvokeorgalignevensegmentendsg'
-	DB	'roupassumealiasechoendequincbinincludelibnameoptionpopcontext'
-	DB	'pushcontextcalljmpjajaejbjbejcjejgjgejljlejnajnaejnbjnbejncjn'
-	DB	'ejngjngejnljnlejnojnpjnsjnzjojpjpejpojsjzjcxzjecxzjrcxzlooplo'
-	DB	'opeloopzloopneloopnzloopdloopedloopzdloopnedloopnzdloopwloope'
-	DB	'wloopzwloopnewloopnzwaddoradcsbbandsubxorcmprclrcrrolrorsalsa'
-	DB	'rshlshrcmpscmpsbcmpswcmpsdinsinsbinswinsdlodslodsblodswlodsdm'
-	DB	'ovsmovsbmovswmovsdoutsoutsboutswoutsdscasscasbscaswscasdstoss'
-	DB	'tosbstoswstosdaaaaadaamaasdaadasldslespopapopadpopawpopfdpush'
-	DB	'apushadpushawpushfdpushdretdretwarpllldtlmswltrsldtsmswstrver'
-	DB	'rverwdividivmulnegnotlockrepreperepnerepnzrepzbtbtcbtrbtscmcc'
-	DB	'lcstcclisticldstdincdecpushpoppushwpushfpopfmovboundbsfbsrbsw'
-	DB	'apcbwcdqcwdcwdecltscmpxchgcmpxchg8bcpuidenterhltimulinintinto'
-	DB	'invdinvlpgiretiretdiretfiretdflahflarlsllealeavelfslgslsslgdt'
-	DB	'lidtmovsxmovzxnopoutrdmsrrdpmcrdtscrdtscpretretnretfrsmsahfsg'
-	DB	'dtsidtshldshrdsysentersysexittestud2waitwbinvdwrmsrxaddxchgxl'
-	DB	'atxlatbsetasetaesetbsetbesetcsetesetgsetgesetlsetlesetnasetna'
-	DB	'esetnbsetnbesetncsetnesetngsetngesetnlsetnlesetnosetnpsetnsse'
-	DB	'tnzsetosetpsetpesetposetssetzcmovacmovaecmovbcmovbecmovccmove'
-	DB	'cmovgcmovgecmovlcmovlecmovnacmovnaecmovnbcmovnbecmovnccmovnec'
-	DB	'movngcmovngecmovnlcmovnlecmovnocmovnpcmovnscmovnzcmovocmovpcm'
-	DB	'ovpecmovpocmovscmovzfcmovbfcmovbefcmovefcmovnbfcmovnbefcmovne'
-	DB	'fcmovnufcmovufcomfcompfcomppfucomfucompfucomppfcomifcomipfuco'
-	DB	'mifucomipfaddfaddpfmulfmulpfdivfdivpfdivrfdivrpfsubfsubpfsubr'
-	DB	'fsubrpfiaddficomficompfidivfidivrfimulfisubfisubrfildfistpfis'
-	DB	'tfldfstpfstfldenvfldenvdfldenvwfnsavefnsavedfnsavewfnstenvfns'
-	DB	'tenvdfnstenvwfrstorfrstordfrstorwfsavefsavedfsavewfstenvfsten'
-	DB	'vdfstenvwfldcwfnstcwfnstswfstcwfstswfcosfpatanfptanfsinfsinco'
-	DB	'sfinitfninitfdisifndisifenifnenifclexfnclexf2xm1fabsfbldfbstp'
-	DB	'fchsfld1fldl2efldl2tfldlg2fldln2fldpifldzfdecstpfincstpffreef'
-	DB	'freepfnopfpremfprem1frndintfscalefsetpmfsqrtftstfwaitfxamfxch'
-	DB	'fxrstorfxsavefxtractfyl2xfyl2xp1emmsclflushldmxcsrstmxcsrlfen'
-	DB	'cemfencesfenceprefetchntaprefetcht0prefetcht1prefetcht2pausea'
-	DB	'ddpdaddpsaddsdaddssdivpddivpsdivsddivssmaxpdmaxpsmaxsdmaxssmi'
-	DB	'npdminpsminsdminssmulpdmulpsmulsdmulsssqrtpdsqrtpssqrtsdsqrts'
-	DB	'ssubpdsubpssubsdsubsscmppdcmppscmpsscmpeqpdcmpltpdcmplepdcmpu'
-	DB	'nordpdcmpneqpdcmpnltpdcmpnlepdcmpordpdcmpeq_uqpdcmpngepdcmpng'
-	DB	'tpdcmpfalsepdcmpneq_oqpdcmpgepdcmpgtpdcmptruepdcmpeq_ospdcmpl'
-	DB	't_oqpdcmple_oqpdcmpunord_spdcmpneq_uspdcmpnlt_uqpdcmpnle_uqpd'
-	DB	'cmpord_spdcmpeq_uspdcmpnge_uqpdcmpngt_uqpdcmpfalse_ospdcmpneq'
-	DB	'_ospdcmpge_oqpdcmpgt_oqpdcmptrue_uspdcmpeqpscmpltpscmplepscmp'
-	DB	'unordpscmpneqpscmpnltpscmpnlepscmpordpscmpeq_uqpscmpngepscmpn'
-	DB	'gtpscmpfalsepscmpneq_oqpscmpgepscmpgtpscmptruepscmpeq_ospscmp'
-	DB	'lt_oqpscmple_oqpscmpunord_spscmpneq_uspscmpnlt_uqpscmpnle_uqp'
-	DB	'scmpord_spscmpeq_uspscmpnge_uqpscmpngt_uqpscmpfalse_ospscmpne'
-	DB	'q_ospscmpge_oqpscmpgt_oqpscmptrue_uspscmpeqsdcmpltsdcmplesdcm'
-	DB	'punordsdcmpneqsdcmpnltsdcmpnlesdcmpordsdcmpeq_uqsdcmpngesdcmp'
-	DB	'ngtsdcmpfalsesdcmpneq_oqsdcmpgesdcmpgtsdcmptruesdcmpeq_ossdcm'
-	DB	'plt_oqsdcmple_oqsdcmpunord_ssdcmpneq_ussdcmpnlt_uqsdcmpnle_uq'
-	DB	'sdcmpord_ssdcmpeq_ussdcmpnge_uqsdcmpngt_uqsdcmpfalse_ossdcmpn'
-	DB	'eq_ossdcmpge_oqsdcmpgt_oqsdcmptrue_ussdcmpeqsscmpltsscmplessc'
-	DB	'mpunordsscmpneqsscmpnltsscmpnlesscmpordsscmpeq_uqsscmpngesscm'
-	DB	'pngtsscmpfalsesscmpneq_oqsscmpgesscmpgtsscmptruesscmpeq_osssc'
-	DB	'mplt_oqsscmple_oqsscmpunord_ssscmpneq_ussscmpnlt_uqsscmpnle_u'
-	DB	'qsscmpord_ssscmpeq_ussscmpnge_uqsscmpngt_uqsscmpfalse_ossscmp'
-	DB	'neq_ossscmpge_oqsscmpgt_oqsscmptrue_usssandnpdandnpsandpdandp'
-	DB	'sorpdorpscomisdcomissxorpdxorpscvtpd2picvtps2picvtsd2sicvtss2'
-	DB	'sicvtpi2pdcvtpi2pscvtsi2sdcvtsi2sscvttpd2picvttps2picvttsd2si'
-	DB	'cvttss2sicvtdq2pscvtps2dqcvttps2dqcvtpd2dqcvtdq2pdcvttpd2dqcv'
-	DB	'tpd2pscvtps2pdcvtsd2sscvtss2sdmaskmovdqumaskmovqmovdmovqmovap'
-	DB	'dmovapsmovdqamovdqumovupdmovupsmovhpdmovhpsmovlpdmovlpsmovhlp'
-	DB	'smovlhpsmovdq2qmovq2dqmovmskpdmovmskpsmovntdqmovntimovntpdmov'
-	DB	'ntpsmovntqmovsspackssdwpacksswbpackuswbpaddbpaddwpadddpaddqpa'
-	DB	'ddsbpaddswpaddusbpadduswpandpandnpavgbpavgwpcmpeqbpcmpeqwpcmp'
-	DB	'eqdpcmpgtbpcmpgtwpcmpgtdpextrwpinsrwpmaddwdpmaxswpmaxubpminsw'
-	DB	'pminubpmovmskbpmulhuwpmulhwpmullwpmuludqporpsadbwpshufdpshufw'
-	DB	'pshufhwpshuflwpsllwpslldpsllqpsrawpsradpsrlwpsrldpsrlqpslldqp'
-	DB	'srldqpsubbpsubwpsubdpsubqpsubsbpsubswpsubusbpsubuswpxorpunpck'
-	DB	'hbwpunpckhwdpunpckhdqpunpcklbwpunpcklwdpunpckldqpunpckhqdqpun'
-	DB	'pcklqdqrcppsrcpssrsqrtpsrsqrtssshufpdshufpsucomisducomissunpc'
-	DB	'khpdunpckhpsunpcklpdunpcklpsfemmsprefetchprefetchwpavgusbpf2i'
-	DB	'dpf2iwpfaccpfaddpfcmpeqpfcmpgepfcmpgtpfmaxpfminpfmulpfnaccpfp'
-	DB	'naccpfrcppfrcpit1pfrcpit2pfrsqit1pfrsqrtpfsubpfsubrpi2fdpi2fw'
-	DB	'pmulhrwpswapdaddsubpdaddsubpsfisttphaddpdhaddpshsubpdhsubpsld'
-	DB	'dqumonitormovddupmovshdupmovsldupmwaitpabsbpabsdpabswpalignrp'
-	DB	'hadddphaddswphaddwphsubdphsubswphsubwpmaddubswpmulhrswpshufbp'
-	DB	'signbpsigndpsignwcdqecqopushfqpopfqiretqcmpxchg16bmovsxdcmpsq'
-	DB	'lodsqmovsqscasqstosqpextrqpinsrqswapgssyscallsysretblendpdble'
-	DB	'ndpsblendvpdblendvpsdppddppsextractpsinsertpsmovntdqampsadbwp'
-	DB	'ackusdwpblendvbpblendwpcmpeqqpextrbpextrdphminposuwpinsrbpins'
-	DB	'rdpmaxsbpmaxsdpmaxuwpmaxudpminsbpminsdpminuwpminudpmovsxbwpmo'
-	DB	'vsxbdpmovsxbqpmovsxwdpmovsxwqpmovsxdqpmovzxbwpmovzxbdpmovzxbq'
-	DB	'pmovzxwdpmovzxwqpmovzxdqpmuldqpmulldptestroundpsroundpdrounds'
-	DB	'sroundsdcrc32pcmpestrmpcmpestripcmpistrmpcmpistripcmpgtqpopcn'
-	DB	'trdrandrdseedlzcnttzcntinvpcidxrstorxsavexsaveoptxgetbvxsetbv'
-	DB	'vmcallvmlaunchvmresumevmxoffvmptrldvmptrstvmclearvmxonvmreadv'
-	DB	'mwriteinveptinvvpidvbroadcastssvbroadcastsdvbroadcastf128vpbr'
-	DB	'oadcastbvpbroadcastwvpbroadcastdvpbroadcastqvbroadcasti32x2vb'
-	DB	'roadcasti32x4vbroadcasti64x2vbroadcasti32x8vbroadcasti64x4vbr'
-	DB	'oadcastf32x4vbroadcastf64x2vbroadcastf32x8vbroadcastf64x4vpbr'
-	DB	'oadcastmb2qvpbroadcastmw2dvblendvpdvblendvpsvextractf128vextr'
-	DB	'actf32x4vextractf64x2vextractf32x8vextractf64x4vextracti128ve'
-	DB	'xtracti32x4vextracti64x2vextracti32x8vextracti64x4vmaskmovpsv'
-	DB	'maskmovpdvpblendvbvpermilpdvpermilpsvpermpdvpermpsvpermqvperm'
-	DB	'2f128vtestpsvtestpdvzeroallvzerouppervcvtpd2dqvcvtpd2udqvcvtp'
-	DB	's2udqvcvttpd2dqvcvtpd2psvmovddupvpgatherddvpgatherqdvpgatherd'
-	DB	'qvpgatherqqvgatherdpdvgatherqpdvgatherdpsvgatherqpsvpscatterd'
-	DB	'dvpscatterdqvpscatterqdvpscatterqqvscatterdpsvscatterdpdvscat'
-	DB	'terqpsvscatterqpdvpabsqvpanddvpandqvpandndvpandnqvpblendmdvpb'
-	DB	'lendmqvfmadd132pdvfmadd213pdvfmadd231pdvfmadd132psvfmadd213ps'
-	DB	'vfmadd231psvfmadd132sdvfmadd213sdvfmadd231sdvfmadd132ssvfmadd'
-	DB	'213ssvfmadd231ssvfmaddsub132pdvfmaddsub213pdvfmaddsub231pdvfm'
-	DB	'addsub132psvfmaddsub213psvfmaddsub231psvfmsub132pdvfmsub213pd'
-	DB	'vfmsub231pdvfmsub132psvfmsub213psvfmsub231psvfmsub132sdvfmsub'
-	DB	'213sdvfmsub231sdvfmsub132ssvfmsub213ssvfmsub231ssvfmsubadd132'
-	DB	'pdvfmsubadd213pdvfmsubadd231pdvfmsubadd132psvfmsubadd213psvfm'
-	DB	'subadd231psvfnmadd132pdvfnmadd213pdvfnmadd231pdvfnmadd132psvf'
-	DB	'nmadd213psvfnmadd231psvfnmadd132sdvfnmadd213sdvfnmadd231sdvfn'
-	DB	'madd132ssvfnmadd213ssvfnmadd231ssvfnmsub132pdvfnmsub213pdvfnm'
-	DB	'sub231pdvfnmsub132psvfnmsub213psvfnmsub231psvfnmsub132sdvfnms'
-	DB	'ub213sdvfnmsub231sdvfnmsub132ssvfnmsub213ssvfnmsub231ssvgetex'
-	DB	'ppdvgetexppsvgetexpsdvgetexpssvcvtph2psvcvtps2phvgetmantpdvge'
-	DB	'tmantpsvgetmantsdvgetmantssvaligndvalignqvblendmpdvblendmpsvc'
-	DB	'ompresspdvcompresspsvpcompressdvpcompressqvcvtsi2sdvcvtudq2pd'
-	DB	'vcvtudq2psvexpandpdvexpandpsvpcmpdvpcmpudvpcmpqvpcmpuqvpcmpwv'
-	DB	'pcmpuwvpcmpbvpcmpubvpcmpeqdvpcmpltdvpcmpledvpcmpfalsedvpcmpne'
-	DB	'qdvpcmpnltdvpcmpnledvpcmptruedvpcmpequdvpcmpltudvpcmpleudvpcm'
-	DB	'pfalseudvpcmpnequdvpcmpnltudvpcmpnleudvpcmptrueudvpcmpeqqvpcm'
-	DB	'pltqvpcmpleqvpcmpfalseqvpcmpneqqvpcmpnltqvpcmpnleqvpcmptrueqv'
-	DB	'pcmpequqvpcmpltuqvpcmpleuqvpcmpfalseuqvpcmpnequqvpcmpnltuqvpc'
-	DB	'mpnleuqvpcmptrueuqvpcmpeqwvpcmpltwvpcmplewvpcmpfalsewvpcmpneq'
-	DB	'wvpcmpnltwvpcmpnlewvpcmptruewvpcmpequwvpcmpltuwvpcmpleuwvpcmp'
-	DB	'falseuwvpcmpnequwvpcmpnltuwvpcmpnleuwvpcmptrueuwvpcmpeqbvpcmp'
-	DB	'ltbvpcmplebvpcmpfalsebvpcmpneqbvpcmpnltbvpcmpnlebvpcmptruebvp'
-	DB	'cmpequbvpcmpltubvpcmpleubvpcmpfalseubvpcmpnequbvpcmpnltubvpcm'
-	DB	'pnleubvpcmptrueubvpermdvpermwvpermbvpexpanddvpexpandqvpmaxsqv'
-	DB	'pmaxuqvpminsqvpminuqvpordvporqvpsllvdvpsllvqvpsllvwvproldvpro'
-	DB	'lvdvprolqvprolvqvprordvprorvdvprorqvprorvqvpsraqvpsravdvpsrav'
-	DB	'qvpsravwvpsrlvdvpsrlvqvpsrlvwvptestmbvptestmwvptestmdvptestmq'
-	DB	'vptestnmbvptestnmwvptestnmdvptestnmqvreducepdvreducesdvreduce'
-	DB	'psvreducessvpxordvpxorqvrcp14pdvrcp14sdvrcp14psvrcp14ssvrsqrt'
-	DB	'14pdvrsqrt14sdvrsqrt14psvrsqrt14ssvpternlogdvpternlogqvpmovqb'
-	DB	'vpmovsqbvpmovusqbvpmovqwvpmovsqwvpmovusqwvpmovqdvpmovsqdvpmov'
-	DB	'usqdvpmovdbvpmovsdbvpmovusdbvpmovdwvpmovsdwvpmovusdwvpmovwbvp'
-	DB	'movswbvpmovuswbvshuff32x4vshuff64x2vshufi32x4vshufi64x2vpermt'
-	DB	'2wvpermt2dvpermt2qvpermt2psvpermt2pdvcvtsd2usivcvtss2usivcvtu'
-	DB	'si2sdvcvtusi2ssvscalefpdvscalefpsvscalefsdvscalefssvfixupimmp'
-	DB	'dvfixupimmpsvfixupimmsdvfixupimmssvrndscalepdvrndscalepsvrnds'
-	DB	'calesdvrndscalessvcvttpd2udqvcvttpd2uqqvcvttps2udqvcvttps2uqq'
-	DB	'vcvttsd2usivcvttss2usivpermi2bvpermi2wvpermi2dvpermi2qvpermi2'
-	DB	'psvpermi2pdvinsertf128vinsertf32x4vinsertf64x2vinsertf32x8vin'
-	DB	'sertf64x4vinserti128vinserti32x4vinserti64x2vinserti32x8vinse'
-	DB	'rti64x4vmovdqu8vmovdqu16vmovdqa32vmovdqu32vmovdqa64vmovdqu64v'
-	DB	'dbpsadbwvfpclasspdvfpclasspsvfpclasssdvfpclassssvpconflictdvp'
-	DB	'conflictqvplzcntdvplzcntqvpmadd52luqvpmadd52huqvpmovm2bvpmovm'
-	DB	'2wvpmovm2dvpmovm2qvpmovb2mvpmovw2mvpmovd2mvpmovq2mvpmullqvran'
-	DB	'gepdvrangepsvrangesdvrangessvpblenddvpmaskmovdvpmaskmovqandnm'
-	DB	'ulxbextrsarxshlxshrxblsiblsmskblsrbzhipdeppextrorxkaddbkaddwk'
-	DB	'andbkandwkandnbkandnwkorbkorwkxorbkxorwkxnorbkxnorwkunpckbwku'
-	DB	'npckwdkadddkaddqkanddkandqkandndkandnqkordkorqkxordkxorqkxnor'
-	DB	'dkxnorqkunpckdqknotbknotwknotdknotqkortestbkortestwkortestdko'
-	DB	'rtestqkshiftlbkshiftlwkshiftldkshiftlqkshiftrbkshiftrwkshiftr'
-	DB	'dkshiftrqkmovbkmovdkmovqkmovwvaddpdvaddsdvdivpdvdivsdvmaxpdvm'
-	DB	'axsdvminpdvminsdvmulpdvmulsdvsqrtpdvsqrtsdvsubpdvsubsdvaddpsv'
-	DB	'addssvdivpsvdivssvmaxpsvmaxssvminpsvminssvmulpsvmulssvsqrtpsv'
-	DB	'sqrtssvsubpsvsubssvcmppdvcmpsdvcmppsvcmpssvcmpeqpdvcmpltpdvcm'
-	DB	'plepdvcmpunordpdvcmpneqpdvcmpnltpdvcmpnlepdvcmpordpdvcmpeq_uq'
-	DB	'pdvcmpngepdvcmpngtpdvcmpfalsepdvcmpneq_oqpdvcmpgepdvcmpgtpdvc'
-	DB	'mptruepdvcmpeq_ospdvcmplt_oqpdvcmple_oqpdvcmpunord_spdvcmpneq'
-	DB	'_uspdvcmpnlt_uqpdvcmpnle_uqpdvcmpord_spdvcmpeq_uspdvcmpnge_uq'
-	DB	'pdvcmpngt_uqpdvcmpfalse_ospdvcmpneq_ospdvcmpge_oqpdvcmpgt_oqp'
-	DB	'dvcmptrue_uspdvcmpeqpsvcmpltpsvcmplepsvcmpunordpsvcmpneqpsvcm'
-	DB	'pnltpsvcmpnlepsvcmpordpsvcmpeq_uqpsvcmpngepsvcmpngtpsvcmpfals'
-	DB	'epsvcmpneq_oqpsvcmpgepsvcmpgtpsvcmptruepsvcmpeq_ospsvcmplt_oq'
-	DB	'psvcmple_oqpsvcmpunord_spsvcmpneq_uspsvcmpnlt_uqpsvcmpnle_uqp'
-	DB	'svcmpord_spsvcmpeq_uspsvcmpnge_uqpsvcmpngt_uqpsvcmpfalse_osps'
-	DB	'vcmpneq_ospsvcmpge_oqpsvcmpgt_oqpsvcmptrue_uspsvcmpeqsdvcmplt'
-	DB	'sdvcmplesdvcmpunordsdvcmpneqsdvcmpnltsdvcmpnlesdvcmpordsdvcmp'
-	DB	'eq_uqsdvcmpngesdvcmpngtsdvcmpfalsesdvcmpneq_oqsdvcmpgesdvcmpg'
-	DB	'tsdvcmptruesdvcmpeq_ossdvcmplt_oqsdvcmple_oqsdvcmpunord_ssdvc'
-	DB	'mpneq_ussdvcmpnlt_uqsdvcmpnle_uqsdvcmpord_ssdvcmpeq_ussdvcmpn'
-	DB	'ge_uqsdvcmpngt_uqsdvcmpfalse_ossdvcmpneq_ossdvcmpge_oqsdvcmpg'
-	DB	't_oqsdvcmptrue_ussdvcmpeqssvcmpltssvcmplessvcmpunordssvcmpneq'
-	DB	'ssvcmpnltssvcmpnlessvcmpordssvcmpeq_uqssvcmpngessvcmpngtssvcm'
-	DB	'pfalsessvcmpneq_oqssvcmpgessvcmpgtssvcmptruessvcmpeq_osssvcmp'
-	DB	'lt_oqssvcmple_oqssvcmpunord_sssvcmpneq_usssvcmpnlt_uqssvcmpnl'
-	DB	'e_uqssvcmpord_sssvcmpeq_usssvcmpnge_uqssvcmpngt_uqssvcmpfalse'
-	DB	'_osssvcmpneq_osssvcmpge_oqssvcmpgt_oqssvcmptrue_usssvandpdvan'
-	DB	'dnpdvorpdvcomisdvxorpdvandpsvandnpsvorpsvcomissvxorpsvcvtdq2p'
-	DB	'dvcvtdq2psvcvtps2dqvcvttps2dqvcvtps2pdvcvtsd2sivcvttsd2sivcvt'
-	DB	'sd2ssvcvtsi2ssvcvtss2sdvcvtss2sivcvttss2sivaddsubpdvaddsubpsv'
-	DB	'blendpdvblendpsvdppdvdppsvextractpsvhaddpdvhaddpsvhsubpdvhsub'
-	DB	'psvinsertpsvlddquvldmxcsrvstmxcsrvmaskmovdquvmovapdvmovapsvmo'
-	DB	'vdvmovqvmovdqavmovdquvmovhlpsvmovlhpsvmovhpdvmovhpsvmovlpdvmo'
-	DB	'vlpsvmovsdvmovssvmovmskpdvmovmskpsvmovntdqvmovntdqavmovntpdvm'
-	DB	'ovntpsvmovshdupvmovsldupvmovupdvmovupsvmpsadbwvpabsbvpabswvpa'
-	DB	'bsdvpacksswbvpackssdwvpackuswbvpackusdwvpaddbvpaddwvpadddvpad'
-	DB	'dqvpaddsbvpaddswvpaddusbvpadduswvpalignrvpandvpandnvpavgbvpav'
-	DB	'gwvpblendwvpcmpestrivpcmpestrmvpcmpistrivpcmpistrmvpcmpgtdvpc'
-	DB	'mpgtqvpextrbvpextrwvpextrdvpinsrbvpinsrwvpinsrdvpextrqvpinsrq'
-	DB	'vphaddwvphadddvphaddswvphminposuwvphsubwvphsubdvphsubswvpmadd'
-	DB	'wdvpmaddubswvpmaxsbvpmaxswvpmaxsdvpmaxubvpmaxuwvpmaxudvpminsb'
-	DB	'vpminswvpminsdvpminubvpminuwvpminudvpmovmskbvpmovsxbwvpmovsxb'
-	DB	'dvpmovsxbqvpmovsxwdvpmovsxwqvpmovsxdqvpmovzxbwvpmovzxbdvpmovz'
-	DB	'xbqvpmovzxwdvpmovzxwqvpmovzxdqvpmulhuwvpmulhrswvpmulhwvpmullw'
-	DB	'vpmulldvpmuludqvpmuldqvporvpsadbwvpshufbvpshufdvpshufhwvpshuf'
-	DB	'lwvpsignbvpsignwvpsigndvpslldqvpsrldqvpsllwvpslldvpsllqvpsraw'
-	DB	'vpsradvpsrlwvpsrldvpsrlqvptestvpsubbvpsubwvpsubdvpsubqvpsubsb'
-	DB	'vpsubswvpsubusbvpsubuswvpunpckhbwvpunpckhwdvpunpckhdqvpunpckh'
-	DB	'qdqvpunpcklbwvpunpcklwdvpunpckldqvpunpcklqdqvpxorvrcppsvrcpss'
-	DB	'vrsqrtpsvrsqrtssvroundpdvroundpsvroundsdvroundssvshufpdvshufp'
-	DB	'svucomisdvucomissvunpckhpdvunpckhpsvunpcklpdvunpcklpssyscall_'
-	DB	00H
-	ORG $+5
+	DB	'lseif.endif.endw.until.untilcxz.endfor.switch.case.default.en'
+	DB	'dswitch.exit.startup.model.radix.safeseh.err.err1.err2.erre.e'
+	DB	'rrnz.errdif.errdifi.erridn.erridni.errb.errnb.errdef.errndefc'
+	DB	'ommentififeif1if2ifdififdifiifidnifidniifbifnbifdefifndefelse'
+	DB	'elseifelseifeelseif1elseif2elseifdifelseifdifielseifidnelseif'
+	DB	'idnielseifbelseifnbelseifdefelseifndefendifforforcirpirpcrepe'
+	DB	'atreptwhilemacroexitmendmgotopurgeincludetextequcatstrsubstri'
+	DB	'nstrsizestrdbdwdddfdqdt.allocstack.endprolog.pushframe.pushre'
+	DB	'g.savereg.savexmm128.saveymm256.setframestrucstructuniontyped'
+	DB	'efrecordcommexternextrnexterndefpublicprotoprocendplocallabel'
+	DB	'invokeorgalignevensegmentendsgroupassumealiasechoendequincbin'
+	DB	'includelibnameoptionpopcontextpushcontextcalljmpjajaejbjbejcj'
+	DB	'ejgjgejljlejnajnaejnbjnbejncjnejngjngejnljnlejnojnpjnsjnzjojp'
+	DB	'jpejpojsjzjcxzjecxzjrcxzlooploopeloopzloopneloopnzloopdlooped'
+	DB	'loopzdloopnedloopnzdloopwloopewloopzwloopnewloopnzwaddoradcsb'
+	DB	'bandsubxorcmprclrcrrolrorsalsarshlshrcmpscmpsbcmpswcmpsdinsin'
+	DB	'sbinswinsdlodslodsblodswlodsdmovsmovsbmovswmovsdoutsoutsbouts'
+	DB	'woutsdscasscasbscaswscasdstosstosbstoswstosdaaaaadaamaasdaada'
+	DB	'sldslespopapopadpopawpopfdpushapushadpushawpushfdpushdretdret'
+	DB	'warpllldtlmswltrsldtsmswstrverrverwdividivmulnegnotlockreprep'
+	DB	'erepnerepnzrepzbtbtcbtrbtscmcclcstcclisticldstdincdecpushpopp'
+	DB	'ushwpushfpopfmovboundbsfbsrbswapcbwcdqcwdcwdecltscmpxchgcmpxc'
+	DB	'hg8bcpuidenterhltimulinintintoinvdinvlpgiretiretdiretfiretdfl'
+	DB	'ahflarlsllealeavelfslgslsslgdtlidtmovsxmovzxnopoutrdmsrrdpmcr'
+	DB	'dtscrdtscpretretnretfrsmsahfsgdtsidtshldshrdsysentersysexitte'
+	DB	'stud2waitwbinvdwrmsrxaddxchgxlatxlatbsetasetaesetbsetbesetcse'
+	DB	'tesetgsetgesetlsetlesetnasetnaesetnbsetnbesetncsetnesetngsetn'
+	DB	'gesetnlsetnlesetnosetnpsetnssetnzsetosetpsetpesetposetssetzcm'
+	DB	'ovacmovaecmovbcmovbecmovccmovecmovgcmovgecmovlcmovlecmovnacmo'
+	DB	'vnaecmovnbcmovnbecmovnccmovnecmovngcmovngecmovnlcmovnlecmovno'
+	DB	'cmovnpcmovnscmovnzcmovocmovpcmovpecmovpocmovscmovzfcmovbfcmov'
+	DB	'befcmovefcmovnbfcmovnbefcmovnefcmovnufcmovufcomfcompfcomppfuc'
+	DB	'omfucompfucomppfcomifcomipfucomifucomipfaddfaddpfmulfmulpfdiv'
+	DB	'fdivpfdivrfdivrpfsubfsubpfsubrfsubrpfiaddficomficompfidivfidi'
+	DB	'vrfimulfisubfisubrfildfistpfistfldfstpfstfldenvfldenvdfldenvw'
+	DB	'fnsavefnsavedfnsavewfnstenvfnstenvdfnstenvwfrstorfrstordfrsto'
+	DB	'rwfsavefsavedfsavewfstenvfstenvdfstenvwfldcwfnstcwfnstswfstcw'
+	DB	'fstswfcosfpatanfptanfsinfsincosfinitfninitfdisifndisifenifnen'
+	DB	'ifclexfnclexf2xm1fabsfbldfbstpfchsfld1fldl2efldl2tfldlg2fldln'
+	DB	'2fldpifldzfdecstpfincstpffreeffreepfnopfpremfprem1frndintfsca'
+	DB	'lefsetpmfsqrtftstfwaitfxamfxchfxrstorfxsavefxtractfyl2xfyl2xp'
+	DB	'1emmsclflushldmxcsrstmxcsrlfencemfencesfenceprefetchntaprefet'
+	DB	'cht0prefetcht1prefetcht2pauseaddpdaddpsaddsdaddssdivpddivpsdi'
+	DB	'vsddivssmaxpdmaxpsmaxsdmaxssminpdminpsminsdminssmulpdmulpsmul'
+	DB	'sdmulsssqrtpdsqrtpssqrtsdsqrtsssubpdsubpssubsdsubsscmppdcmpps'
+	DB	'cmpsscmpeqpdcmpltpdcmplepdcmpunordpdcmpneqpdcmpnltpdcmpnlepdc'
+	DB	'mpordpdcmpeq_uqpdcmpngepdcmpngtpdcmpfalsepdcmpneq_oqpdcmpgepd'
+	DB	'cmpgtpdcmptruepdcmpeq_ospdcmplt_oqpdcmple_oqpdcmpunord_spdcmp'
+	DB	'neq_uspdcmpnlt_uqpdcmpnle_uqpdcmpord_spdcmpeq_uspdcmpnge_uqpd'
+	DB	'cmpngt_uqpdcmpfalse_ospdcmpneq_ospdcmpge_oqpdcmpgt_oqpdcmptru'
+	DB	'e_uspdcmpeqpscmpltpscmplepscmpunordpscmpneqpscmpnltpscmpnleps'
+	DB	'cmpordpscmpeq_uqpscmpngepscmpngtpscmpfalsepscmpneq_oqpscmpgep'
+	DB	'scmpgtpscmptruepscmpeq_ospscmplt_oqpscmple_oqpscmpunord_spscm'
+	DB	'pneq_uspscmpnlt_uqpscmpnle_uqpscmpord_spscmpeq_uspscmpnge_uqp'
+	DB	'scmpngt_uqpscmpfalse_ospscmpneq_ospscmpge_oqpscmpgt_oqpscmptr'
+	DB	'ue_uspscmpeqsdcmpltsdcmplesdcmpunordsdcmpneqsdcmpnltsdcmpnles'
+	DB	'dcmpordsdcmpeq_uqsdcmpngesdcmpngtsdcmpfalsesdcmpneq_oqsdcmpge'
+	DB	'sdcmpgtsdcmptruesdcmpeq_ossdcmplt_oqsdcmple_oqsdcmpunord_ssdc'
+	DB	'mpneq_ussdcmpnlt_uqsdcmpnle_uqsdcmpord_ssdcmpeq_ussdcmpnge_uq'
+	DB	'sdcmpngt_uqsdcmpfalse_ossdcmpneq_ossdcmpge_oqsdcmpgt_oqsdcmpt'
+	DB	'rue_ussdcmpeqsscmpltsscmplesscmpunordsscmpneqsscmpnltsscmpnle'
+	DB	'sscmpordsscmpeq_uqsscmpngesscmpngtsscmpfalsesscmpneq_oqsscmpg'
+	DB	'esscmpgtsscmptruesscmpeq_ossscmplt_oqsscmple_oqsscmpunord_sss'
+	DB	'cmpneq_ussscmpnlt_uqsscmpnle_uqsscmpord_ssscmpeq_ussscmpnge_u'
+	DB	'qsscmpngt_uqsscmpfalse_ossscmpneq_ossscmpge_oqsscmpgt_oqsscmp'
+	DB	'true_usssandnpdandnpsandpdandpsorpdorpscomisdcomissxorpdxorps'
+	DB	'cvtpd2picvtps2picvtsd2sicvtss2sicvtpi2pdcvtpi2pscvtsi2sdcvtsi'
+	DB	'2sscvttpd2picvttps2picvttsd2sicvttss2sicvtdq2pscvtps2dqcvttps'
+	DB	'2dqcvtpd2dqcvtdq2pdcvttpd2dqcvtpd2pscvtps2pdcvtsd2sscvtss2sdm'
+	DB	'askmovdqumaskmovqmovdmovqmovapdmovapsmovdqamovdqumovupdmovups'
+	DB	'movhpdmovhpsmovlpdmovlpsmovhlpsmovlhpsmovdq2qmovq2dqmovmskpdm'
+	DB	'ovmskpsmovntdqmovntimovntpdmovntpsmovntqmovsspackssdwpacksswb'
+	DB	'packuswbpaddbpaddwpadddpaddqpaddsbpaddswpaddusbpadduswpandpan'
+	DB	'dnpavgbpavgwpcmpeqbpcmpeqwpcmpeqdpcmpgtbpcmpgtwpcmpgtdpextrwp'
+	DB	'insrwpmaddwdpmaxswpmaxubpminswpminubpmovmskbpmulhuwpmulhwpmul'
+	DB	'lwpmuludqporpsadbwpshufdpshufwpshufhwpshuflwpsllwpslldpsllqps'
+	DB	'rawpsradpsrlwpsrldpsrlqpslldqpsrldqpsubbpsubwpsubdpsubqpsubsb'
+	DB	'psubswpsubusbpsubuswpxorpunpckhbwpunpckhwdpunpckhdqpunpcklbwp'
+	DB	'unpcklwdpunpckldqpunpckhqdqpunpcklqdqrcppsrcpssrsqrtpsrsqrtss'
+	DB	'shufpdshufpsucomisducomissunpckhpdunpckhpsunpcklpdunpcklpsfem'
+	DB	'msprefetchprefetchwpavgusbpf2idpf2iwpfaccpfaddpfcmpeqpfcmpgep'
+	DB	'fcmpgtpfmaxpfminpfmulpfnaccpfpnaccpfrcppfrcpit1pfrcpit2pfrsqi'
+	DB	't1pfrsqrtpfsubpfsubrpi2fdpi2fwpmulhrwpswapdaddsubpdaddsubpsfi'
+	DB	'sttphaddpdhaddpshsubpdhsubpslddqumonitormovddupmovshdupmovsld'
+	DB	'upmwaitpabsbpabsdpabswpalignrphadddphaddswphaddwphsubdphsubsw'
+	DB	'phsubwpmaddubswpmulhrswpshufbpsignbpsigndpsignwcdqecqopushfqp'
+	DB	'opfqiretqcmpxchg16bmovsxdcmpsqlodsqmovsqscasqstosqpextrqpinsr'
+	DB	'qswapgssyscallsysretblendpdblendpsblendvpdblendvpsdppddppsext'
+	DB	'ractpsinsertpsmovntdqampsadbwpackusdwpblendvbpblendwpcmpeqqpe'
+	DB	'xtrbpextrdphminposuwpinsrbpinsrdpmaxsbpmaxsdpmaxuwpmaxudpmins'
+	DB	'bpminsdpminuwpminudpmovsxbwpmovsxbdpmovsxbqpmovsxwdpmovsxwqpm'
+	DB	'ovsxdqpmovzxbwpmovzxbdpmovzxbqpmovzxwdpmovzxwqpmovzxdqpmuldqp'
+	DB	'mulldptestroundpsroundpdroundssroundsdcrc32pcmpestrmpcmpestri'
+	DB	'pcmpistrmpcmpistripcmpgtqpopcntrdrandrdseedlzcnttzcntinvpcidx'
+	DB	'rstorxsavexsaveoptxgetbvxsetbvvmcallvmlaunchvmresumevmxoffvmp'
+	DB	'trldvmptrstvmclearvmxonvmreadvmwriteinveptinvvpidvbroadcastss'
+	DB	'vbroadcastsdvbroadcastf128vpbroadcastbvpbroadcastwvpbroadcast'
+	DB	'dvpbroadcastqvbroadcasti32x2vbroadcasti32x4vbroadcasti64x2vbr'
+	DB	'oadcasti32x8vbroadcasti64x4vbroadcastf32x4vbroadcastf64x2vbro'
+	DB	'adcastf32x8vbroadcastf64x4vpbroadcastmb2qvpbroadcastmw2dvblen'
+	DB	'dvpdvblendvpsvextractf128vextractf32x4vextractf64x2vextractf3'
+	DB	'2x8vextractf64x4vextracti128vextracti32x4vextracti64x2vextrac'
+	DB	'ti32x8vextracti64x4vmaskmovpsvmaskmovpdvpblendvbvpermilpdvper'
+	DB	'milpsvpermpdvpermpsvpermqvperm2f128vtestpsvtestpdvzeroallvzer'
+	DB	'ouppervcvtpd2dqvcvtpd2udqvcvtps2udqvcvttpd2dqvcvtpd2psvmovddu'
+	DB	'pvpgatherddvpgatherqdvpgatherdqvpgatherqqvgatherdpdvgatherqpd'
+	DB	'vgatherdpsvgatherqpsvpscatterddvpscatterdqvpscatterqdvpscatte'
+	DB	'rqqvscatterdpsvscatterdpdvscatterqpsvscatterqpdvpabsqvpanddvp'
+	DB	'andqvpandndvpandnqvpblendmdvpblendmqvfmadd132pdvfmadd213pdvfm'
+	DB	'add231pdvfmadd132psvfmadd213psvfmadd231psvfmadd132sdvfmadd213'
+	DB	'sdvfmadd231sdvfmadd132ssvfmadd213ssvfmadd231ssvfmaddsub132pdv'
+	DB	'fmaddsub213pdvfmaddsub231pdvfmaddsub132psvfmaddsub213psvfmadd'
+	DB	'sub231psvfmsub132pdvfmsub213pdvfmsub231pdvfmsub132psvfmsub213'
+	DB	'psvfmsub231psvfmsub132sdvfmsub213sdvfmsub231sdvfmsub132ssvfms'
+	DB	'ub213ssvfmsub231ssvfmsubadd132pdvfmsubadd213pdvfmsubadd231pdv'
+	DB	'fmsubadd132psvfmsubadd213psvfmsubadd231psvfnmadd132pdvfnmadd2'
+	DB	'13pdvfnmadd231pdvfnmadd132psvfnmadd213psvfnmadd231psvfnmadd13'
+	DB	'2sdvfnmadd213sdvfnmadd231sdvfnmadd132ssvfnmadd213ssvfnmadd231'
+	DB	'ssvfnmsub132pdvfnmsub213pdvfnmsub231pdvfnmsub132psvfnmsub213p'
+	DB	'svfnmsub231psvfnmsub132sdvfnmsub213sdvfnmsub231sdvfnmsub132ss'
+	DB	'vfnmsub213ssvfnmsub231ssvgetexppdvgetexppsvgetexpsdvgetexpssv'
+	DB	'cvtph2psvcvtps2phvgetmantpdvgetmantpsvgetmantsdvgetmantssvali'
+	DB	'gndvalignqvblendmpdvblendmpsvcompresspdvcompresspsvpcompressd'
+	DB	'vpcompressqvcvtsi2sdvcvtudq2pdvcvtudq2psvexpandpdvexpandpsvpc'
+	DB	'mpdvpcmpudvpcmpqvpcmpuqvpcmpwvpcmpuwvpcmpbvpcmpubvpcmpeqdvpcm'
+	DB	'pltdvpcmpledvpcmpfalsedvpcmpneqdvpcmpnltdvpcmpnledvpcmptruedv'
+	DB	'pcmpequdvpcmpltudvpcmpleudvpcmpfalseudvpcmpnequdvpcmpnltudvpc'
+	DB	'mpnleudvpcmptrueudvpcmpeqqvpcmpltqvpcmpleqvpcmpfalseqvpcmpneq'
+	DB	'qvpcmpnltqvpcmpnleqvpcmptrueqvpcmpequqvpcmpltuqvpcmpleuqvpcmp'
+	DB	'falseuqvpcmpnequqvpcmpnltuqvpcmpnleuqvpcmptrueuqvpcmpeqwvpcmp'
+	DB	'ltwvpcmplewvpcmpfalsewvpcmpneqwvpcmpnltwvpcmpnlewvpcmptruewvp'
+	DB	'cmpequwvpcmpltuwvpcmpleuwvpcmpfalseuwvpcmpnequwvpcmpnltuwvpcm'
+	DB	'pnleuwvpcmptrueuwvpcmpeqbvpcmpltbvpcmplebvpcmpfalsebvpcmpneqb'
+	DB	'vpcmpnltbvpcmpnlebvpcmptruebvpcmpequbvpcmpltubvpcmpleubvpcmpf'
+	DB	'alseubvpcmpnequbvpcmpnltubvpcmpnleubvpcmptrueubvpermdvpermwvp'
+	DB	'ermbvpexpanddvpexpandqvpmaxsqvpmaxuqvpminsqvpminuqvpordvporqv'
+	DB	'psllvdvpsllvqvpsllvwvproldvprolvdvprolqvprolvqvprordvprorvdvp'
+	DB	'rorqvprorvqvpsraqvpsravdvpsravqvpsravwvpsrlvdvpsrlvqvpsrlvwvp'
+	DB	'testmbvptestmwvptestmdvptestmqvptestnmbvptestnmwvptestnmdvpte'
+	DB	'stnmqvreducepdvreducesdvreducepsvreducessvpxordvpxorqvrcp14pd'
+	DB	'vrcp14sdvrcp14psvrcp14ssvrsqrt14pdvrsqrt14sdvrsqrt14psvrsqrt1'
+	DB	'4ssvpternlogdvpternlogqvpmovqbvpmovsqbvpmovusqbvpmovqwvpmovsq'
+	DB	'wvpmovusqwvpmovqdvpmovsqdvpmovusqdvpmovdbvpmovsdbvpmovusdbvpm'
+	DB	'ovdwvpmovsdwvpmovusdwvpmovwbvpmovswbvpmovuswbvshuff32x4vshuff'
+	DB	'64x2vshufi32x4vshufi64x2vpermt2wvpermt2dvpermt2qvpermt2psvper'
+	DB	'mt2pdvcvtsd2usivcvtss2usivcvtusi2sdvcvtusi2ssvscalefpdvscalef'
+	DB	'psvscalefsdvscalefssvfixupimmpdvfixupimmpsvfixupimmsdvfixupim'
+	DB	'mssvrndscalepdvrndscalepsvrndscalesdvrndscalessvcvttpd2udqvcv'
+	DB	'ttpd2uqqvcvttps2udqvcvttps2uqqvcvttsd2usivcvttss2usivpermi2bv'
+	DB	'permi2wvpermi2dvpermi2qvpermi2psvpermi2pdvinsertf128vinsertf3'
+	DB	'2x4vinsertf64x2vinsertf32x8vinsertf64x4vinserti128vinserti32x'
+	DB	'4vinserti64x2vinserti32x8vinserti64x4vmovdqu8vmovdqu16vmovdqa'
+	DB	'32vmovdqu32vmovdqa64vmovdqu64vdbpsadbwvfpclasspdvfpclasspsvfp'
+	DB	'classsdvfpclassssvpconflictdvpconflictqvplzcntdvplzcntqvpmadd'
+	DB	'52luqvpmadd52huqvpmovm2bvpmovm2wvpmovm2dvpmovm2qvpmovb2mvpmov'
+	DB	'w2mvpmovd2mvpmovq2mvpmullqvrangepdvrangepsvrangesdvrangessvpb'
+	DB	'lenddvpmaskmovdvpmaskmovqandnmulxbextrsarxshlxshrxblsiblsmskb'
+	DB	'lsrbzhipdeppextrorxkaddbkaddwkandbkandwkandnbkandnwkorbkorwkx'
+	DB	'orbkxorwkxnorbkxnorwkunpckbwkunpckwdkadddkaddqkanddkandqkandn'
+	DB	'dkandnqkordkorqkxordkxorqkxnordkxnorqkunpckdqknotbknotwknotdk'
+	DB	'notqkortestbkortestwkortestdkortestqkshiftlbkshiftlwkshiftldk'
+	DB	'shiftlqkshiftrbkshiftrwkshiftrdkshiftrqkmovbkmovdkmovqkmovwva'
+	DB	'ddpdvaddsdvdivpdvdivsdvmaxpdvmaxsdvminpdvminsdvmulpdvmulsdvsq'
+	DB	'rtpdvsqrtsdvsubpdvsubsdvaddpsvaddssvdivpsvdivssvmaxpsvmaxssvm'
+	DB	'inpsvminssvmulpsvmulssvsqrtpsvsqrtssvsubpsvsubssvcmppdvcmpsdv'
+	DB	'cmppsvcmpssvcmpeqpdvcmpltpdvcmplepdvcmpunordpdvcmpneqpdvcmpnl'
+	DB	'tpdvcmpnlepdvcmpordpdvcmpeq_uqpdvcmpngepdvcmpngtpdvcmpfalsepd'
+	DB	'vcmpneq_oqpdvcmpgepdvcmpgtpdvcmptruepdvcmpeq_ospdvcmplt_oqpdv'
+	DB	'cmple_oqpdvcmpunord_spdvcmpneq_uspdvcmpnlt_uqpdvcmpnle_uqpdvc'
+	DB	'mpord_spdvcmpeq_uspdvcmpnge_uqpdvcmpngt_uqpdvcmpfalse_ospdvcm'
+	DB	'pneq_ospdvcmpge_oqpdvcmpgt_oqpdvcmptrue_uspdvcmpeqpsvcmpltpsv'
+	DB	'cmplepsvcmpunordpsvcmpneqpsvcmpnltpsvcmpnlepsvcmpordpsvcmpeq_'
+	DB	'uqpsvcmpngepsvcmpngtpsvcmpfalsepsvcmpneq_oqpsvcmpgepsvcmpgtps'
+	DB	'vcmptruepsvcmpeq_ospsvcmplt_oqpsvcmple_oqpsvcmpunord_spsvcmpn'
+	DB	'eq_uspsvcmpnlt_uqpsvcmpnle_uqpsvcmpord_spsvcmpeq_uspsvcmpnge_'
+	DB	'uqpsvcmpngt_uqpsvcmpfalse_ospsvcmpneq_ospsvcmpge_oqpsvcmpgt_o'
+	DB	'qpsvcmptrue_uspsvcmpeqsdvcmpltsdvcmplesdvcmpunordsdvcmpneqsdv'
+	DB	'cmpnltsdvcmpnlesdvcmpordsdvcmpeq_uqsdvcmpngesdvcmpngtsdvcmpfa'
+	DB	'lsesdvcmpneq_oqsdvcmpgesdvcmpgtsdvcmptruesdvcmpeq_ossdvcmplt_'
+	DB	'oqsdvcmple_oqsdvcmpunord_ssdvcmpneq_ussdvcmpnlt_uqsdvcmpnle_u'
+	DB	'qsdvcmpord_ssdvcmpeq_ussdvcmpnge_uqsdvcmpngt_uqsdvcmpfalse_os'
+	DB	'sdvcmpneq_ossdvcmpge_oqsdvcmpgt_oqsdvcmptrue_ussdvcmpeqssvcmp'
+	DB	'ltssvcmplessvcmpunordssvcmpneqssvcmpnltssvcmpnlessvcmpordssvc'
+	DB	'mpeq_uqssvcmpngessvcmpngtssvcmpfalsessvcmpneq_oqssvcmpgessvcm'
+	DB	'pgtssvcmptruessvcmpeq_osssvcmplt_oqssvcmple_oqssvcmpunord_sss'
+	DB	'vcmpneq_usssvcmpnlt_uqssvcmpnle_uqssvcmpord_sssvcmpeq_usssvcm'
+	DB	'pnge_uqssvcmpngt_uqssvcmpfalse_osssvcmpneq_osssvcmpge_oqssvcm'
+	DB	'pgt_oqssvcmptrue_usssvandpdvandnpdvorpdvcomisdvxorpdvandpsvan'
+	DB	'dnpsvorpsvcomissvxorpsvcvtdq2pdvcvtdq2psvcvtps2dqvcvttps2dqvc'
+	DB	'vtps2pdvcvtsd2sivcvttsd2sivcvtsd2ssvcvtsi2ssvcvtss2sdvcvtss2s'
+	DB	'ivcvttss2sivaddsubpdvaddsubpsvblendpdvblendpsvdppdvdppsvextra'
+	DB	'ctpsvhaddpdvhaddpsvhsubpdvhsubpsvinsertpsvlddquvldmxcsrvstmxc'
+	DB	'srvmaskmovdquvmovapdvmovapsvmovdvmovqvmovdqavmovdquvmovhlpsvm'
+	DB	'ovlhpsvmovhpdvmovhpsvmovlpdvmovlpsvmovsdvmovssvmovmskpdvmovms'
+	DB	'kpsvmovntdqvmovntdqavmovntpdvmovntpsvmovshdupvmovsldupvmovupd'
+	DB	'vmovupsvmpsadbwvpabsbvpabswvpabsdvpacksswbvpackssdwvpackuswbv'
+	DB	'packusdwvpaddbvpaddwvpadddvpaddqvpaddsbvpaddswvpaddusbvpaddus'
+	DB	'wvpalignrvpandvpandnvpavgbvpavgwvpblendwvpcmpestrivpcmpestrmv'
+	DB	'pcmpistrivpcmpistrmvpcmpgtdvpcmpgtqvpextrbvpextrwvpextrdvpins'
+	DB	'rbvpinsrwvpinsrdvpextrqvpinsrqvphaddwvphadddvphaddswvphminpos'
+	DB	'uwvphsubwvphsubdvphsubswvpmaddwdvpmaddubswvpmaxsbvpmaxswvpmax'
+	DB	'sdvpmaxubvpmaxuwvpmaxudvpminsbvpminswvpminsdvpminubvpminuwvpm'
+	DB	'inudvpmovmskbvpmovsxbwvpmovsxbdvpmovsxbqvpmovsxwdvpmovsxwqvpm'
+	DB	'ovsxdqvpmovzxbwvpmovzxbdvpmovzxbqvpmovzxwdvpmovzxwqvpmovzxdqv'
+	DB	'pmulhuwvpmulhrswvpmulhwvpmullwvpmulldvpmuludqvpmuldqvporvpsad'
+	DB	'bwvpshufbvpshufdvpshufhwvpshuflwvpsignbvpsignwvpsigndvpslldqv'
+	DB	'psrldqvpsllwvpslldvpsllqvpsrawvpsradvpsrlwvpsrldvpsrlqvptestv'
+	DB	'psubbvpsubwvpsubdvpsubqvpsubsbvpsubswvpsubusbvpsubuswvpunpckh'
+	DB	'bwvpunpckhwdvpunpckhdqvpunpckhqdqvpunpcklbwvpunpcklwdvpunpckl'
+	DB	'dqvpunpcklqdqvpxorvrcppsvrcpssvrsqrtpsvrsqrtssvroundpdvroundp'
+	DB	'svroundsdvroundssvshufpdvshufpsvucomisdvucomissvunpckhpdvunpc'
+	DB	'khpsvunpcklpdvunpcklpssyscall_', 00H
+	ORG $+7
 vex_flags DB	042H
 	DB	042H
 	DB	02H
@@ -35426,6 +35446,26 @@ SpecialTable DD	00H
 	DW	00H
 	DB	012H
 	DB	03H
+	DD	01d1H
+	DD	00H
+	DW	00H
+	DB	010H
+	DB	03H
+	DD	0101H
+	DD	00H
+	DW	00H
+	DB	011H
+	DB	03H
+	DD	0101H
+	DD	00H
+	DW	00H
+	DB	011H
+	DB	03H
+	DD	0100H
+	DD	00H
+	DW	00H
+	DB	012H
+	DB	03H
 	DD	0180H
 	DD	00H
 	DW	00H
@@ -36063,15 +36103,15 @@ pdata	ENDS
 CONST	SEGMENT
 patchtab64 DD	057H
 	DD	0107H
-	DD	0199H
-	DD	01e4H
-	DD	04afH
-	DD	07c1H
+	DD	019dH
+	DD	01e8H
+	DD	04b3H
+	DD	07c5H
 patchtab32 DD	052H
-	DD	0158H
-	DD	0220H
-	DD	01e2H
-	DD	01efH
+	DD	015cH
+	DD	0224H
+	DD	01e6H
+	DD	01f3H
 CONST	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
@@ -36643,7 +36683,7 @@ $LN34:
 ; 1214 :   * RWF_ flags aren't contained in instravx.h */
 ; 1215 :   ResWordTable[T_VPEXTRQ].flags |= RWF_X64;
 
-	or	BYTE PTR ResWordTable+31763, 4
+	or	BYTE PTR ResWordTable+31827, 4
 
 ; 1216 :   ResWordTable[T_VPINSRQ].flags |= RWF_X64;
 ; 1217 : #endif
@@ -36655,7 +36695,7 @@ $LN34:
 ; 1223 :   for (i = 1; i < sizeof(ResWordTable) / sizeof(ResWordTable[0]); i++) {
 
 	lea	rsi, OFFSET FLAT:ResWordTable
-	or	BYTE PTR ResWordTable+31779, 4
+	or	BYTE PTR ResWordTable+31843, 4
 	mov	r11d, 1
 	mov	r10d, r11d
 	npad	1
@@ -36746,7 +36786,7 @@ $LN2@ResWordsIn:
 
 	inc	r11d
 	movsxd	r10, r11d
-	cmp	r10, 2081				; 00000821H
+	cmp	r10, 2085				; 00000825H
 	jb	$LL4@ResWordsIn
 	mov	r14, QWORD PTR [rsp+64]
 	mov	rsi, QWORD PTR [rsp+56]
@@ -36824,7 +36864,7 @@ $LN81:
 	mov	ecx, 265				; 00000109H
 	inc	BYTE PTR ResWordTable+4242
 	mov	QWORD PTR ?syscallname@?1??Set64Bit@@9@9, rax
-	lea	rax, OFFSET FLAT:resw_strings+14322
+	lea	rax, OFFSET FLAT:resw_strings+14352
 	mov	QWORD PTR ResWordTable+4248, rax
 	call	AddResWord
 
@@ -37189,7 +37229,7 @@ $LN5@RenameKeyw:
 	lea	rcx, OFFSET FLAT:resw_strings
 	cmp	rax, rcx
 	jb	$LN6@RenameKeyw
-	lea	rcx, OFFSET FLAT:resw_strings+14331
+	lea	rcx, OFFSET FLAT:resw_strings+14361
 	cmp	rax, rcx
 	jae	$LN6@RenameKeyw
 

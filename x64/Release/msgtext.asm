@@ -19,14 +19,14 @@ $SG7544	DB	01H DUP (?)
 $SG7703	DB	01H DUP (?)
 _BSS	ENDS
 CONST	SEGMENT
-szCVCompiler DB	'HJWasm v2.13', 00H
+szCVCompiler DB	'HJWasm v2.14', 00H
 CONST	ENDS
 _DATA	SEGMENT
 $SG7517	DB	'usage: HJWasm [ options ] filelist [@env_var]', 0aH, 'Ru'
 	DB	'n "HJWasm -?" or "HJWasm -h" for more info', 0aH, 00H
 	ORG $+4
 $SG7518	DB	'%s: %lu lines, %u passes, %u ms, %u warnings, %u errors', 00H
-$SG7519	DB	'HJWasm v2.13, Feb 13 2016', 00H
+$SG7519	DB	'HJWasm v2.14, Apr 10 2016', 00H
 	ORG $+2
 $SG7521	DB	'Error', 00H
 	ORG $+6

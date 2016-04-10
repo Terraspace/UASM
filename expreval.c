@@ -314,6 +314,12 @@ void myatoi128( const char *src, uint_64 dst[], int base, int size )
 
     dst[0] = 0;
     dst[1] = 0;
+#if CHEXPREFIX
+    if (((src[1] | 0x20) == 'x') && (*src == '0')){
+      src += 2;
+      end += 2;
+    }
+#endif
     do {
         val = ( *src <= '9' ? *src - '0' : ( *src | 0x20 ) - 'a' + 10 );
         px = (uint_16 *)dst;
@@ -2455,6 +2461,7 @@ static void CheckAssume( struct expr *opnd )
         sym = GetStdAssumeEx( opnd->idx_reg->bytval );
     }
     if ( sym ) {
+      if ((opnd->type != 0x7b)&&(opnd->type != NULL)){ //this is temporary fix for VGATHER instructions in DEBUG mode
         DebugMsg1(( "CheckAssume(%s, type=>%s<, mbr=>%s<): assume=%s [memtype=%X isptr=%u type=%s target_type=%s ptr_memt=%X]\n",
                    GetResWName( ( opnd->idx_reg ? opnd->idx_reg->tokval : opnd->base_reg->tokval ), NULL ),
                    opnd->type ? opnd->type->name : "NULL",
@@ -2463,6 +2470,7 @@ static void CheckAssume( struct expr *opnd )
                    sym->type ? sym->type->name : "NULL",
                    sym->target_type ? sym->target_type->name : "NULL",
                    sym->ptr_memtype ));
+      }
         /* v2.08: skip ASSUMEd type if type or mbr is set */
         //if ( opnd->type || opnd->mbr )
         //    return;
