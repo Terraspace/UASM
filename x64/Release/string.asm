@@ -2033,7 +2033,7 @@ $LL2@CatStrDir:
 
 	mov	eax, DWORD PTR [r8+16]
 	add	ebx, eax
-	cmp	ebx, 600				; 00000258H
+	cmp	ebx, 1024				; 00000400H
 	jae	$LN29@CatStrDir
 
 ; 109  :         }

@@ -777,7 +777,7 @@ $LN8@cv_write_d:
 ; 1101 :     checkflush( cv.types, cv.pt, SIZE_CV_SEGBUF, cv.param );
 
 	mov	rcx, QWORD PTR cv$[rbp-56]
-	mov	r8d, 1200				; 000004b0H
+	mov	r8d, 2048				; 00000800H
 	mov	r9, QWORD PTR cv$[rbp-48]
 	mov	rdx, QWORD PTR cv$[rbp-64]
 	mov	rax, QWORD PTR [rcx+96]
@@ -786,7 +786,7 @@ $LN8@cv_write_d:
 ; 1102 :     checkflush( cv.symbols, cv.ps, SIZE_CV_SEGBUF, cv.param );
 
 	mov	rcx, QWORD PTR cv$[rbp-72]
-	mov	r8d, 1200				; 000004b0H
+	mov	r8d, 2048				; 00000800H
 	mov	r9, QWORD PTR cv$[rbp-48]
 	mov	rdx, QWORD PTR cv$[rbp-80]
 	mov	rax, QWORD PTR [rcx+96]

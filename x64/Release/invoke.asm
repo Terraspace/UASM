@@ -445,10 +445,10 @@ CONST	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
 $unwind$PushInvokeParam DD 0db401H
-	DD	0b0e4b4H
-	DD	0b174acH
-	DD	0b8349dH
-	DD	0b20121H
+	DD	0118e4b4H
+	DD	011974acH
+	DD	0120349dH
+	DD	011a0121H
 	DD	0d010f012H
 	DD	0600cc00eH
 	DD	0500bH
@@ -1414,13 +1414,13 @@ tv172 = 72
 asize$3$ = 76
 opnd$ = 80
 fullparam$ = 192
-buffer$ = 800
-i$ = 1472
-tokenarray$ = 1480
-proc$ = 1488
-curr$ = 1496
-reqParam$ = 1504
-r0flags$ = 1512
+buffer$ = 1216
+i$ = 2304
+tokenarray$ = 2312
+proc$ = 2320
+curr$ = 2328
+reqParam$ = 2336
+r0flags$ = 2344
 PushInvokeParam PROC					; COMDAT
 
 ; 723  : {
@@ -1432,8 +1432,8 @@ PushInvokeParam PROC					; COMDAT
 	push	r12
 	push	r13
 	push	r15
-	lea	rbp, QWORD PTR [rsp-1168]
-	sub	rsp, 1424				; 00000590H
+	lea	rbp, QWORD PTR [rsp-2000]
+	sub	rsp, 2256				; 000008d0H
 	mov	r13, rdx
 	movsxd	r12, ecx
 
@@ -1504,7 +1504,7 @@ $LN3@PushInvoke:
 
 ; 1433 : }
 
-	add	rsp, 1424				; 00000590H
+	add	rsp, 2256				; 000008d0H
 	pop	r15
 	pop	r13
 	pop	r12
@@ -1520,7 +1520,7 @@ $LN252@PushInvoke:
 
 ; 1433 : }
 
-	add	rsp, 1424				; 00000590H
+	add	rsp, 2256				; 000008d0H
 	pop	r15
 	pop	r13
 	pop	r12
@@ -1528,7 +1528,7 @@ $LN252@PushInvoke:
 	pop	rbp
 	ret	0
 $LN18@PushInvoke:
-	mov	QWORD PTR [rsp+1472], rbx
+	mov	QWORD PTR [rsp+2304], rbx
 
 ; 749  : 
 ; 750  : #if 1 /* v2.05 */
@@ -1550,8 +1550,8 @@ $LN18@PushInvoke:
 
 	movsxd	rax, r12d
 	shl	rax, 5
-	mov	QWORD PTR [rsp+1416], rdi
-	mov	QWORD PTR [rsp+1408], r14
+	mov	QWORD PTR [rsp+2248], rdi
+	mov	QWORD PTR [rsp+2240], r14
 	mov	r14d, DWORD PTR [r9+56]
 	cmp	BYTE PTR [rax+r13], 7
 	jne	SHORT $LN19@PushInvoke
@@ -4263,13 +4263,13 @@ $LN294@PushInvoke:
 
 	xor	eax, eax
 $LN291@PushInvoke:
-	mov	rdi, QWORD PTR [rsp+1416]
-	mov	rbx, QWORD PTR [rsp+1472]
-	mov	r14, QWORD PTR [rsp+1408]
+	mov	rdi, QWORD PTR [rsp+2248]
+	mov	rbx, QWORD PTR [rsp+2304]
+	mov	r14, QWORD PTR [rsp+2240]
 
 ; 1433 : }
 
-	add	rsp, 1424				; 00000590H
+	add	rsp, 2256				; 000008d0H
 	pop	r15
 	pop	r13
 	pop	r12

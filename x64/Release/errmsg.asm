@@ -289,8 +289,8 @@ xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
 $chain$1$PutMsg DD 040b21H
-	DD	068e40bH
-	DD	0675404H
+	DD	09ce40bH
+	DD	09b5404H
 	DD	imagerel PutMsg
 	DD	imagerel PutMsg+27
 	DD	imagerel $unwind$PutMsg
@@ -298,8 +298,8 @@ xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
 $unwind$PutMsg DD 071b01H
-	DD	069341bH
-	DD	062011bH
+	DD	09d341bH
+	DD	096011bH
 	DD	07012f014H
 	DD	06011H
 xdata	ENDS
@@ -520,11 +520,11 @@ _TEXT	ENDS
 ;	COMDAT PutMsg
 _TEXT	SEGMENT
 buffer$ = 48
-i$ = 816
-fp$ = 816
-severity$ = 824
-msgnum$ = 832
-args$ = 840
+i$ = 1232
+fp$ = 1232
+severity$ = 1240
+msgnum$ = 1248
+args$ = 1256
 PutMsg	PROC						; COMDAT
 
 ; 163  :     int             i,j;
@@ -541,7 +541,7 @@ PutMsg	PROC						; COMDAT
 	push	rsi
 	push	rdi
 	push	r15
-	sub	rsp, 784				; 00000310H
+	sub	rsp, 1200				; 000004b0H
 	mov	QWORD PTR [rax+16], rbp
 
 ; 162  : {
@@ -676,8 +676,8 @@ $LN10@PutMsg:
 ; 191  :              Parse_Pass == PASS_1 &&
 
 	cmp	QWORD PTR ModuleInfo+112, 0
-	mov	r14, QWORD PTR [rsp+832]
-	mov	rbp, QWORD PTR [rsp+824]
+	mov	r14, QWORD PTR [rsp+1248]
+	mov	rbp, QWORD PTR [rsp+1240]
 	je	SHORT $LN11@PutMsg
 	test	edi, edi
 	je	SHORT $LN11@PutMsg
@@ -711,8 +711,8 @@ $LN11@PutMsg:
 ; 198  :     }
 ; 199  : }
 
-	mov	rbx, QWORD PTR [rsp+840]
-	add	rsp, 784				; 00000310H
+	mov	rbx, QWORD PTR [rsp+1256]
+	add	rsp, 1200				; 000004b0H
 	pop	r15
 	pop	rdi
 	pop	rsi

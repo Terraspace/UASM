@@ -85,13 +85,13 @@ $unwind$CreateAssemblyTimeVariable DD 050d01H
 xdata	ENDS
 xdata	SEGMENT
 $unwind$CreateConstant DD 091d01H
-	DD	067641dH
-	DD	066341dH
-	DD	060011dH
+	DD	09b641dH
+	DD	09a341dH
+	DD	094011dH
 	DD	0700cf00eH
 	DD	0500bH
 $chain$0$CreateConstant DD 020821H
-	DD	065e408H
+	DD	099e408H
 	DD	imagerel $LN47
 	DD	imagerel $LN47+213
 	DD	imagerel $unwind$CreateConstant
@@ -100,7 +100,7 @@ $chain$1$CreateConstant DD 021H
 	DD	imagerel $LN47+213
 	DD	imagerel $unwind$CreateConstant
 $chain$2$CreateConstant DD 020021H
-	DD	065e400H
+	DD	099e400H
 	DD	imagerel $LN47
 	DD	imagerel $LN47+213
 	DD	imagerel $unwind$CreateConstant
@@ -1053,8 +1053,8 @@ _TEXT	ENDS
 _TEXT	SEGMENT
 opnd$ = 48
 argbuffer$ = 160
-i$ = 800
-tokenarray$ = 800
+i$ = 1216
+tokenarray$ = 1216
 CreateConstant PROC
 
 ; 344  : {
@@ -1065,8 +1065,8 @@ $LN47:
 	push	rbp
 	push	rdi
 	push	r15
-	lea	rbp, QWORD PTR [rsp-512]
-	sub	rsp, 768				; 00000300H
+	lea	rbp, QWORD PTR [rsp-928]
+	sub	rsp, 1184				; 000004a0H
 
 ; 345  :     struct asym         *sym;
 ; 346  :     const char          *name = tokenarray[0].string_ptr;
@@ -1191,7 +1191,7 @@ $LN5@CreateCons:
 
 	cmp	BYTE PTR [rdi+64], 10
 	mov	r8d, DWORD PTR ModuleInfo+496
-	mov	QWORD PTR [rsp+808], r14
+	mov	QWORD PTR [rsp+1224], r14
 	jne	SHORT $LN11@CreateCons
 	cmp	r8d, 3
 	jne	SHORT $LN11@CreateCons
@@ -1404,12 +1404,12 @@ $LN44@CreateCons:
 	mov	rcx, rdi
 	call	SetTextMacro
 $LN43@CreateCons:
-	mov	r14, QWORD PTR [rsp+808]
+	mov	r14, QWORD PTR [rsp+1224]
 $LN1@CreateCons:
 
 ; 502  : }
 
-	lea	r11, QWORD PTR [rsp+768]
+	lea	r11, QWORD PTR [rsp+1184]
 	mov	rbx, QWORD PTR [r11+48]
 	mov	rsi, QWORD PTR [r11+56]
 	mov	rsp, r11

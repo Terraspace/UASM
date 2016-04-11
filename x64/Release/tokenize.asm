@@ -2310,7 +2310,7 @@ $LN36@get_string:
 $LL10@get_string:
 	test	al, al
 	je	SHORT $LN11@get_string
-	cmp	ebp, 567				; 00000237H
+	cmp	ebp, 991				; 000003dfH
 	jge	SHORT $LN11@get_string
 
 ; 396  :                     if ( symbol_o == '<' && *src == '!' && *(src+1) != NULLC )
@@ -2537,7 +2537,7 @@ $LL98@get_string:
 	jne	SHORT $LL98@get_string
 	movsxd	rax, ebp
 	add	rcx, rax
-	cmp	rcx, 600				; 00000258H
+	cmp	rcx, 1024				; 00000400H
 	jae	SHORT $LN68@get_string
 
 ; 443  :                             }
@@ -2557,7 +2557,7 @@ $LN75@get_string:
 ; 358  :         src++;
 ; 359  :         for( level = 0; count < MAX_STRING_LEN; ) {
 
-	cmp	ebp, 568				; 00000238H
+	cmp	ebp, 992				; 000003e0H
 	jl	$LL7@get_string
 $LN103@get_string:
 	mov	rcx, QWORD PTR buf$[rsp]
@@ -2569,7 +2569,7 @@ $LN5@get_string:
 ; 496  : 
 ; 497  :     if ( count == MAX_STRING_LEN ) {
 
-	cmp	ebp, 568				; 00000238H
+	cmp	ebp, 992				; 000003e0H
 $LN104@get_string:
 	jne	$LN58@get_string
 
@@ -2636,7 +2636,7 @@ $undelimited_string$107:
 ; 473  :             //*src && !isspace( *src ) && *src != ',' && *src != ')' && *src != '<' && *src != '%'; ) {
 ; 474  :             *src && !isspace( *src ) && *src != ',' && *src != ')' && *src != '%'; ) {
 
-	cmp	ebp, 568				; 00000238H
+	cmp	ebp, 992				; 000003e0H
 	jge	SHORT $LN104@get_string
 	mov	rdi, 19928648253440			; 0000122000000000H
 $LL16@get_string:
@@ -2714,7 +2714,7 @@ $LN55@get_string:
 	cmp	BYTE PTR [rbx+1], 0
 	lea	rax, QWORD PTR [rbx+1]
 	je	SHORT $LN57@get_string
-	cmp	ebp, 567				; 00000237H
+	cmp	ebp, 991				; 000003dfH
 	jge	SHORT $LN57@get_string
 
 ; 490  :                 *dst++ = *src++;
@@ -2749,7 +2749,7 @@ $LN76@get_string:
 ; 473  :             //*src && !isspace( *src ) && *src != ',' && *src != ')' && *src != '<' && *src != '%'; ) {
 ; 474  :             *src && !isspace( *src ) && *src != ',' && *src != ')' && *src != '%'; ) {
 
-	cmp	ebp, 568				; 00000238H
+	cmp	ebp, 992				; 000003e0H
 	jl	$LL16@get_string
 	jmp	$LN103@get_string
 $LN19@get_string:
@@ -2816,7 +2816,7 @@ $LN4@get_string:
 
 	inc	rbx
 	inc	ebp
-	cmp	ebp, 568				; 00000238H
+	cmp	ebp, 992				; 000003e0H
 	jl	SHORT $LL6@get_string
 
 ; 339  :                     break; /* exit loop */
@@ -2981,7 +2981,7 @@ $LN9@ConcatLine:
 	movsxd	rax, ecx
 	sub	rax, QWORD PTR [rbp+16]
 	add	rax, rsi
-	cmp	rax, 600				; 00000258H
+	cmp	rax, 1024				; 00000400H
 	jl	SHORT $LN10@ConcatLine
 
 ; 303  :                 EmitError( LINE_TOO_LONG );
@@ -2993,7 +2993,7 @@ $LN9@ConcatLine:
 
 	mov	eax, DWORD PTR [rbp+16]
 	sub	eax, esi
-	add	eax, 599				; 00000257H
+	add	eax, 1023				; 000003ffH
 	movsxd	rcx, eax
 
 ; 305  :                 *(p+max) = NULLC;
@@ -4135,7 +4135,7 @@ $LL90@Tokenize:
 	inc	rax
 	cmp	BYTE PTR [rcx+rax], 0
 	jne	SHORT $LL90@Tokenize
-	cmp	rax, 600				; 00000258H
+	cmp	rax, 1024				; 00000400H
 	jae	$LN45@Tokenize
 
 ; 1164 :                             }
@@ -4271,7 +4271,7 @@ $LN33@Tokenize:
 
 ; 1210 :         if( p.index >= MAX_TOKEN ) {
 
-	cmp	r14d, 150				; 00000096H
+	cmp	r14d, 256				; 00000100H
 	jae	SHORT $LN50@Tokenize
 
 ; 1214 :             goto skipline;

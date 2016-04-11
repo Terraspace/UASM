@@ -1759,7 +1759,7 @@ $LN10:
 ; 927  : 
 ; 928  :     srclinebuffer = LclAlloc( SIZE_SRCLINES + SIZE_TOKENARRAY + SIZE_STRINGBUFFER );
 
-	mov	ecx, 240600				; 0003abd8H
+	mov	ecx, 410624				; 00064400H
 	mov	QWORD PTR SrcFree, 0
 	call	LclAlloc
 
@@ -1779,10 +1779,10 @@ $LN10:
 	mov	rbx, QWORD PTR SrcFree
 	mov	rdi, QWORD PTR ModuleInfo+96
 	mov	QWORD PTR srclinebuffer, rax
-	lea	rcx, QWORD PTR [rax+24000]
+	lea	rcx, QWORD PTR [rax+40960]
 	mov	QWORD PTR commentbuffer, rcx
-	lea	rcx, QWORD PTR [rax+24600]
-	add	rax, 216600				; 00034e18H
+	lea	rcx, QWORD PTR [rax+41984]
+	add	rax, 369664				; 0005a400H
 	mov	QWORD PTR ModuleInfo+480, rcx
 	mov	QWORD PTR token_stringbuf, rax
 	test	rbx, rbx
@@ -2079,7 +2079,7 @@ $LN26:
 ; 699  :         if( my_fgets( buffer, MAX_LINE_LEN, curr->file ) ) {
 
 	mov	r8, QWORD PTR [rbx+16]
-	mov	edx, 600				; 00000258H
+	mov	edx, 1024				; 00000400H
 	call	my_fgets
 	test	rax, rax
 	jne	$LN11@GetTextLin

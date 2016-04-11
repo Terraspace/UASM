@@ -203,9 +203,9 @@ $chain$2$fill_placeholders DD 021H
 	DD	imagerel $LN35+34
 	DD	imagerel $unwind$fill_placeholders
 $unwind$StoreMacro DD 0250c3001H
-	DD	02673430H
+	DD	029b3430H
 	DD	011d2322H
-	DD	0f010025eH
+	DD	0f0100292H
 	DD	0d00ce00eH
 	DD	07008c00aH
 	DD	050066007H
@@ -306,8 +306,8 @@ $LL5@EnvironFun:
 
 ; 789  :         if ( i >= MAX_LINE_LEN )
 
-	cmp	ecx, 600				; 00000258H
-	mov	edx, 599				; 00000257H
+	cmp	ecx, 1024				; 00000400H
+	mov	edx, 1023				; 000003ffH
 	cmovge	ecx, edx
 
 ; 790  :             i = MAX_LINE_LEN - 1;
@@ -1448,14 +1448,14 @@ info$1$ = 8
 ls$ = 16
 tok$ = 48
 buffer$ = 112
-mnames$ = 720
-locals_done$1$ = 4880
-mindex$1$ = 4880
-macro$ = 4880
-i$ = 4888
-tokenarray$ = 4896
-mindex$ = 4904
-store_data$ = 4904
+mnames$ = 1136
+locals_done$1$ = 5296
+mindex$1$ = 5296
+macro$ = 5296
+i$ = 5304
+tokenarray$ = 5312
+mindex$ = 5320
+store_data$ = 5320
 StoreMacro PROC
 
 ; 287  : {
@@ -1469,7 +1469,7 @@ $LN213:
 	push	r13
 	push	r14
 	push	r15
-	mov	eax, 4848				; 000012f0H
+	mov	eax, 5264				; 00001490H
 	call	__chkstk
 	sub	rsp, rax
 	lea	rbp, QWORD PTR [rsp+32]
@@ -1495,7 +1495,7 @@ $LN213:
 
 	mov	r12, QWORD PTR [rcx+96]
 	mov	r14, r8
-	mov	QWORD PTR [rbp+4888], rbx
+	mov	QWORD PTR [rbp+5304], rbx
 	mov	r13, rcx
 	mov	ebx, edx
 	mov	QWORD PTR info$1$[rbp], r12
@@ -2738,8 +2738,8 @@ $LN1@StoreMacro:
 
 ; 600  : }
 
-	mov	rbx, QWORD PTR [rbp+4888]
-	lea	rsp, QWORD PTR [rbp+4816]
+	mov	rbx, QWORD PTR [rbp+5304]
+	lea	rsp, QWORD PTR [rbp+5232]
 	pop	r15
 	pop	r14
 	pop	r13

@@ -128,8 +128,8 @@ CONST	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
 $unwind$ExpandToken DD 0b2e01H
-	DD	072342eH
-	DD	068012eH
+	DD	0a6342eH
+	DD	09c012eH
 	DD	0e01df01fH
 	DD	0c019d01bH
 	DD	060167017H
@@ -138,10 +138,10 @@ xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
 $unwind$RebuildLine DD 0d1f01H
-	DD	059641fH
-	DD	057541fH
-	DD	056341fH
-	DD	050011fH
+	DD	08d641fH
+	DD	08b541fH
+	DD	08a341fH
+	DD	084011fH
 	DD	0e016f018H
 	DD	0c012d014H
 	DD	07010H
@@ -149,15 +149,15 @@ xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
 $unwind$SkipMacro DD 030901H
-	DD	0500109H
+	DD	0840109H
 	DD	03002H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
 $chain$4$ExpandTMacro DD 060021H
-	DD	0577400H
-	DD	0586400H
-	DD	0595400H
+	DD	08b7400H
+	DD	08c6400H
+	DD	08d5400H
 	DD	imagerel ExpandTMacro
 	DD	imagerel ExpandTMacro+67
 	DD	imagerel $unwind$ExpandTMacro
@@ -165,9 +165,9 @@ xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
 $chain$2$ExpandTMacro DD 061821H
-	DD	0577418H
-	DD	0586410H
-	DD	0595408H
+	DD	08b7418H
+	DD	08c6410H
+	DD	08d5408H
 	DD	imagerel ExpandTMacro
 	DD	imagerel ExpandTMacro+67
 	DD	imagerel $unwind$ExpandTMacro
@@ -175,7 +175,7 @@ xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
 $unwind$ExpandTMacro DD 031c01H
-	DD	05a011cH
+	DD	08e011cH
 	DD	03015H
 xdata	ENDS
 xdata	SEGMENT
@@ -192,7 +192,7 @@ $chain$1$myltoa DD 021H
 	DD	imagerel $unwind$myltoa
 $unwind$RunMacro DD 035072301H
 	DD	011e3323H
-	DD	07017007bH
+	DD	0701700afH
 	DD	030156016H
 	DD	05014H
 $unwind$ExpandText DD 0a2201H
@@ -239,13 +239,13 @@ is_exitm$ = 60
 tmpbuf$1 = 64
 opndx$ = 112
 buffer$ = 224
-line$ = 896
-pi$ = 904
-tokenarray$ = 912
-pos$ = 920
-max$ = 920
-bracket_flags$ = 928
-equmode$ = 936
+line$ = 1312
+pi$ = 1320
+tokenarray$ = 1328
+pos$ = 1336
+max$ = 1336
+bracket_flags$ = 1344
+equmode$ = 1352
 ExpandToken PROC					; COMDAT
 
 ; 1101 : {
@@ -261,8 +261,8 @@ ExpandToken PROC					; COMDAT
 	push	r13
 	push	r14
 	push	r15
-	lea	rbp, QWORD PTR [rsp-576]
-	sub	rsp, 832				; 00000340H
+	lea	rbp, QWORD PTR [rsp-992]
+	sub	rsp, 1248				; 000004e0H
 
 ; 1102 :     int pos;
 ; 1103 :     int tmp;
@@ -1000,8 +1000,8 @@ $LN1@ExpandToke:
 
 ; 1308 : }
 
-	mov	rbx, QWORD PTR [rsp+912]
-	add	rsp, 832				; 00000340H
+	mov	rbx, QWORD PTR [rsp+1328]
+	add	rsp, 1248				; 000004e0H
 	pop	r15
 	pop	r14
 	pop	r13
@@ -1017,13 +1017,13 @@ _TEXT	ENDS
 ;	COMDAT RebuildLine
 _TEXT	SEGMENT
 buffer$ = 32
-newstring$ = 688
-i$ = 696
-tv327 = 704
-tokenarray$ = 704
-oldlen$ = 712
-pos_line$ = 720
-addbrackets$ = 728
+newstring$ = 1104
+i$ = 1112
+tv327 = 1120
+tokenarray$ = 1120
+oldlen$ = 1128
+pos_line$ = 1136
+addbrackets$ = 1144
 RebuildLine PROC					; COMDAT
 
 ; 1051 : {
@@ -1036,7 +1036,7 @@ RebuildLine PROC					; COMDAT
 	push	r13
 	push	r14
 	push	r15
-	sub	rsp, 640				; 00000280H
+	sub	rsp, 1056				; 00000420H
 	movsxd	r14, edx
 	mov	r13, r8
 
@@ -1129,7 +1129,7 @@ $LN3@RebuildLin:
 	sub	eax, r12d
 	add	eax, edi
 	add	eax, DWORD PTR pos_line$[rsp]
-	cmp	eax, 600				; 00000258H
+	cmp	eax, 1024				; 00000400H
 	jb	SHORT $LN15@RebuildLin
 
 ; 1069 :             return( EmitErr( EXPANDED_LINE_TOO_LONG, tokenarray[0].tokpos ) );
@@ -1250,7 +1250,7 @@ $LN1@RebuildLin:
 
 ; 1092 : }
 
-	lea	r11, QWORD PTR [rsp+640]
+	lea	r11, QWORD PTR [rsp+1056]
 	mov	rbx, QWORD PTR [r11+48]
 	mov	rbp, QWORD PTR [r11+56]
 	mov	rsi, QWORD PTR [r11+72]
@@ -1362,13 +1362,13 @@ _TEXT	ENDS
 ;	COMDAT SkipMacro
 _TEXT	SEGMENT
 buffer$ = 32
-tokenarray$ = 656
+tokenarray$ = 1072
 SkipMacro PROC						; COMDAT
 
 ; 103  : {
 
 	push	rbx
-	sub	rsp, 640				; 00000280H
+	sub	rsp, 1056				; 00000420H
 	mov	rbx, rcx
 
 ; 104  :     char buffer[MAX_LINE_LEN];
@@ -1403,7 +1403,7 @@ $LN3@SkipMacro:
 ; 113  : 
 ; 114  : }
 
-	add	rsp, 640				; 00000280H
+	add	rsp, 1056				; 00000420H
 	pop	rbx
 	ret	0
 SkipMacro ENDP
@@ -1417,10 +1417,10 @@ old_tokencount$1$ = 52
 tv495 = 56
 tv485 = 64
 buffer$ = 80
-outbuf$ = 736
-tokenarray$ = 744
-equmode$ = 752
-level$ = 760
+outbuf$ = 1152
+tokenarray$ = 1160
+equmode$ = 1168
+level$ = 1176
 ExpandTMacro PROC					; COMDAT
 
 ; 972  : {
@@ -1430,7 +1430,7 @@ ExpandTMacro PROC					; COMDAT
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
 	push	rbx
-	sub	rsp, 720				; 000002d0H
+	sub	rsp, 1136				; 00000470H
 	mov	rbx, rdx
 
 ; 973  :     int old_tokencount = Token_Count;
@@ -1460,13 +1460,13 @@ ExpandTMacro PROC					; COMDAT
 
 ; 1039 : }
 
-	add	rsp, 720				; 000002d0H
+	add	rsp, 1136				; 00000470H
 	pop	rbx
 	ret	0
 $LN18@ExpandTMac:
-	mov	QWORD PTR [rsp+712], rbp
-	mov	QWORD PTR [rsp+704], rsi
-	mov	QWORD PTR [rsp+696], rdi
+	mov	QWORD PTR [rsp+1128], rbp
+	mov	QWORD PTR [rsp+1120], rsi
+	mov	QWORD PTR [rsp+1112], rdi
 	lea	rdi, QWORD PTR [rdx+1]
 	inc	edx
 	mov	QWORD PTR tv485[rsp], rdi
@@ -1566,13 +1566,13 @@ $LN3@ExpandTMac:
 
 	xor	eax, eax
 $LN50@ExpandTMac:
-	mov	rsi, QWORD PTR [rsp+704]
-	mov	rbp, QWORD PTR [rsp+712]
-	mov	rdi, QWORD PTR [rsp+696]
+	mov	rsi, QWORD PTR [rsp+1120]
+	mov	rbp, QWORD PTR [rsp+1128]
+	mov	rdi, QWORD PTR [rsp+1112]
 
 ; 1039 : }
 
-	add	rsp, 720				; 000002d0H
+	add	rsp, 1136				; 00000470H
 	pop	rbx
 	ret	0
 $LN23@ExpandTMac:
@@ -2794,7 +2794,7 @@ $LN103:
 
 ; 839  :     StringBufferEnd += MAX_LINE_LEN;
 
-	add	rax, 600				; 00000258H
+	add	rax, 1024				; 00000400H
 	mov	DWORD PTR tv701[rsp], esi
 
 ; 840  :     rc = NOT_ERROR;
@@ -3484,12 +3484,12 @@ oldstat$4 = 160
 opndx$ = 208
 buffer$5 = 320
 buffer$6 = 320
-macro$ = 976
-idx$ = 984
-tokenarray$ = 992
-out$ = 1000
-mflags$ = 1008
-is_exitm$ = 1016
+macro$ = 1392
+idx$ = 1400
+tokenarray$ = 1408
+out$ = 1416
+mflags$ = 1424
+is_exitm$ = 1432
 RunMacro PROC
 
 ; 131  : {
@@ -3503,7 +3503,7 @@ $LN436:
 	push	rbx
 	push	rsi
 	push	rdi
-	sub	rsp, 984				; 000003d8H
+	sub	rsp, 1400				; 00000578H
 	lea	rbp, QWORD PTR [rsp+48]
 
 ; 132  :     char        *currparm;
@@ -3553,7 +3553,7 @@ $LN436:
 
 ; 791  : }
 
-	lea	rsp, QWORD PTR [rbp+936]
+	lea	rsp, QWORD PTR [rbp+1352]
 	pop	rdi
 	pop	rsi
 	pop	rbx
@@ -3690,7 +3690,7 @@ $LN2@RunMacro:
 
 ; 791  : }
 
-	lea	rsp, QWORD PTR [rbp+936]
+	lea	rsp, QWORD PTR [rbp+1352]
 	pop	rdi
 	pop	rsi
 	pop	rbx
@@ -3729,7 +3729,7 @@ $LN44@RunMacro:
 
 ; 791  : }
 
-	lea	rsp, QWORD PTR [rbp+936]
+	lea	rsp, QWORD PTR [rbp+1352]
 	pop	rdi
 	pop	rsi
 	pop	rbx
@@ -3752,7 +3752,7 @@ $LN43@RunMacro:
 ; 190  :         mi.parm_array = (char **)myalloca( info->parmcnt * sizeof( char * ) + PARMSTRINGSIZE );
 
 	movzx	eax, ax
-	lea	rax, QWORD PTR [rax*8+1200]
+	lea	rax, QWORD PTR [rax*8+2048]
 	lea	rcx, QWORD PTR [rax+15]
 	cmp	rcx, rax
 	ja	SHORT $LN402@RunMacro
@@ -5363,7 +5363,7 @@ $LN322@RunMacro:
 
 ; 791  : }
 
-	lea	rsp, QWORD PTR [rbp+936]
+	lea	rsp, QWORD PTR [rbp+1352]
 	pop	rdi
 	pop	rsi
 	pop	rbx
@@ -5402,7 +5402,7 @@ $LN324@RunMacro:
 
 ; 791  : }
 
-	lea	rsp, QWORD PTR [rbp+936]
+	lea	rsp, QWORD PTR [rbp+1352]
 	pop	rdi
 	pop	rsi
 	pop	rbx
@@ -5473,7 +5473,7 @@ $LN431@RunMacro:
 
 ; 791  : }
 
-	lea	rsp, QWORD PTR [rbp+936]
+	lea	rsp, QWORD PTR [rbp+1352]
 	pop	rdi
 	pop	rsi
 	pop	rbx
@@ -5501,7 +5501,7 @@ $LN325@RunMacro:
 
 ; 791  : }
 
-	lea	rsp, QWORD PTR [rbp+936]
+	lea	rsp, QWORD PTR [rbp+1352]
 	pop	rdi
 	pop	rsi
 	pop	rbx
@@ -5522,7 +5522,7 @@ $LN59@RunMacro:
 
 ; 791  : }
 
-	lea	rsp, QWORD PTR [rbp+936]
+	lea	rsp, QWORD PTR [rbp+1352]
 	pop	rdi
 	pop	rsi
 	pop	rbx
@@ -5612,7 +5612,7 @@ $LN129@RunMacro:
 
 ; 791  : }
 
-	lea	rsp, QWORD PTR [rbp+936]
+	lea	rsp, QWORD PTR [rbp+1352]
 	pop	rdi
 	pop	rsi
 	pop	rbx
@@ -6303,7 +6303,7 @@ $LN163@RunMacro:
 
 ; 791  : }
 
-	lea	rsp, QWORD PTR [rbp+936]
+	lea	rsp, QWORD PTR [rbp+1352]
 	pop	rdi
 	pop	rsi
 	pop	rbx

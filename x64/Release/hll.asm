@@ -602,19 +602,19 @@ neg_cjmptype DB	00H
 CONST	ENDS
 xdata	SEGMENT
 $unwind$HllStartDir DD 041c01H
-	DD	0221011cH
+	DD	038f011cH
 	DD	05005c007H
 $chain$4$HllStartDir DD 0a5b21H
-	DD	0227745bH
-	DD	021ef433H
-	DD	0220d428H
-	DD	02266410H
-	DD	02253408H
+	DD	0395745bH
+	DD	038cf433H
+	DD	038ed428H
+	DD	03946410H
+	DD	03933408H
 	DD	imagerel $LN294
 	DD	imagerel $LN294+28
 	DD	imagerel $unwind$HllStartDir
 $chain$5$HllStartDir DD 020821H
-	DD	021fe408H
+	DD	038de408H
 	DD	imagerel $LN294+28
 	DD	imagerel $LN294+481
 	DD	imagerel $chain$4$HllStartDir
@@ -623,13 +623,13 @@ $chain$6$HllStartDir DD 021H
 	DD	imagerel $LN294+481
 	DD	imagerel $chain$4$HllStartDir
 $chain$7$HllStartDir DD 040021H
-	DD	021ef400H
-	DD	02266400H
+	DD	038cf400H
+	DD	03946400H
 	DD	imagerel $LN294
 	DD	imagerel $LN294+28
 	DD	imagerel $unwind$HllStartDir
 $chain$8$HllStartDir DD 020021H
-	DD	02266400H
+	DD	03946400H
 	DD	imagerel $LN294
 	DD	imagerel $LN294+28
 	DD	imagerel $unwind$HllStartDir
@@ -638,22 +638,22 @@ $chain$9$HllStartDir DD 021H
 	DD	imagerel $LN294+28
 	DD	imagerel $unwind$HllStartDir
 $unwind$HllEndDir DD 061801H
-	DD	0a30118H
+	DD	010d0118H
 	DD	06007c009H
 	DD	050053006H
 $chain$1$HllEndDir DD 041021H
-	DD	0abe410H
-	DD	0a97408H
+	DD	0115e410H
+	DD	01137408H
 	DD	imagerel $LN205
 	DD	imagerel $LN205+101
 	DD	imagerel $unwind$HllEndDir
 $chain$2$HllEndDir DD 020821H
-	DD	0a2f408H
+	DD	010cf408H
 	DD	imagerel $LN205+101
 	DD	imagerel $LN205+1715
 	DD	imagerel $chain$1$HllEndDir
 $chain$3$HllEndDir DD 020821H
-	DD	0aad408H
+	DD	0114d408H
 	DD	imagerel $LN205+1715
 	DD	imagerel $LN205+1767
 	DD	imagerel $chain$2$HllEndDir
@@ -670,27 +670,27 @@ $chain$6$HllEndDir DD 021H
 	DD	imagerel $LN205+101
 	DD	imagerel $unwind$HllEndDir
 $unwind$HllExitDir DD 071901H
-	DD	0a40119H
+	DD	010e0119H
 	DD	07008c00aH
 	DD	030066007H
 	DD	05005H
 $chain$0$HllExitDir DD 020821H
-	DD	0acd408H
+	DD	0116d408H
 	DD	imagerel $LN125
 	DD	imagerel $LN125+84
 	DD	imagerel $unwind$HllExitDir
 $chain$1$HllExitDir DD 020821H
-	DD	0a2f408H
+	DD	010cf408H
 	DD	imagerel $LN125+84
 	DD	imagerel $LN125+1186
 	DD	imagerel $chain$0$HllExitDir
 $chain$3$HllExitDir DD 020021H
-	DD	0a2f400H
+	DD	010cf400H
 	DD	imagerel $LN125+84
 	DD	imagerel $LN125+1186
 	DD	imagerel $chain$0$HllExitDir
 $chain$4$HllExitDir DD 020821H
-	DD	0a3e408H
+	DD	010de408H
 	DD	imagerel $LN125+1290
 	DD	imagerel $LN125+1323
 	DD	imagerel $chain$3$HllExitDir
@@ -887,9 +887,9 @@ buff$ = 64
 hllop$1 = 80
 hllop$2 = 80
 buffer$ = 96
-i$ = 1360
-n$ = 1368
-tokenarray$ = 1368
+i$ = 2208
+n$ = 2216
+tokenarray$ = 2216
 HllExitDir PROC
 
 ; 1848 : {
@@ -901,8 +901,8 @@ $LN125:
 	push	rsi
 	push	rdi
 	push	r12
-	lea	rbp, QWORD PTR [rsp-1056]
-	sub	rsp, 1312				; 00000520H
+	lea	rbp, QWORD PTR [rsp-1904]
+	sub	rsp, 2160				; 00000870H
 
 ; 1849 :   //int               level;
 ; 1850 :   //struct asym       *sym;
@@ -944,7 +944,7 @@ $LN125:
 
 ; 2020 : }
 
-	add	rsp, 1312				; 00000520H
+	add	rsp, 2160				; 00000870H
 	pop	r12
 	pop	rdi
 	pop	rsi
@@ -957,7 +957,7 @@ $LN7@HllExitDir:
 ; 1872 :   switch (cmd) {
 
 	lea	eax, DWORD PTR [rdi-331]
-	mov	QWORD PTR [rsp+1376], r13
+	mov	QWORD PTR [rsp+2224], r13
 	mov	r13d, 4
 	cmp	eax, 11
 	ja	$LN39@HllExitDir
@@ -1506,7 +1506,7 @@ $LN35@HllExitDir:
 ; 1993 :         rc = EvaluateHllExpression(hll, &i, tokenarray, idx, TRUE, buffer);
 
 	lea	rax, QWORD PTR hllop$1[rsp]
-	mov	QWORD PTR [rsp+1296], r15
+	mov	QWORD PTR [rsp+2144], r15
 	mov	r15d, DWORD PTR [rbx+72]
 	lea	rdx, QWORD PTR i$[rbp-256]
 	mov	QWORD PTR [rsp+48], rax
@@ -1529,7 +1529,7 @@ $LN35@HllExitDir:
 
 	mov	DWORD PTR [rbx+72], r15d
 	or	esi, eax
-	mov	r15, QWORD PTR [rsp+1296]
+	mov	r15, QWORD PTR [rsp+2144]
 
 ; 1997 :       }
 ; 1998 :     }
@@ -1566,7 +1566,7 @@ $LN79@HllExitDir:
 
 ; 1995 :           QueueTestLines(buffer);
 
-	mov	QWORD PTR [rsp+1304], r14
+	mov	QWORD PTR [rsp+2152], r14
 	lea	rdi, QWORD PTR buffer$[rsp]
 	npad	8
 $LL82@HllExitDir:
@@ -1587,13 +1587,13 @@ $LN84@HllExitDir:
 $LN85@HllExitDir:
 	test	rdi, rdi
 	jne	SHORT $LL82@HllExitDir
-	mov	r14, QWORD PTR [rsp+1304]
+	mov	r14, QWORD PTR [rsp+2152]
 $LN83@HllExitDir:
 
 ; 1996 :         hll->cmd = savedcmd;
 
 	mov	DWORD PTR [rbx+72], r15d
-	mov	r15, QWORD PTR [rsp+1296]
+	mov	r15, QWORD PTR [rsp+2144]
 
 ; 1997 :       }
 ; 1998 :     }
@@ -1673,11 +1673,11 @@ $LN44@HllExitDir:
 
 	mov	eax, esi
 $LN120@HllExitDir:
-	mov	r13, QWORD PTR [rsp+1376]
+	mov	r13, QWORD PTR [rsp+2224]
 
 ; 2020 : }
 
-	add	rsp, 1312				; 00000520H
+	add	rsp, 2160				; 00000870H
 	pop	r12
 	pop	rdi
 	pop	rsi
@@ -1707,8 +1707,8 @@ buff$ = 64
 hllop$1 = 80
 hllop$2 = 80
 buffer$ = 96
-i$ = 1344
-tokenarray$ = 1352
+i$ = 2192
+tokenarray$ = 2200
 HllEndDir PROC
 
 ; 1496 : {
@@ -1719,8 +1719,8 @@ $LN205:
 	push	rbx
 	push	rsi
 	push	r12
-	lea	rbp, QWORD PTR [rsp-1048]
-	sub	rsp, 1304				; 00000518H
+	lea	rbp, QWORD PTR [rsp-1896]
+	sub	rsp, 2152				; 00000868H
 
 ; 1497 :   //struct asym       *sym;
 ; 1498 :   struct hll_item     *hll;
@@ -1755,7 +1755,7 @@ $LN205:
 
 ; 1834 : }
 
-	add	rsp, 1304				; 00000518H
+	add	rsp, 2152				; 00000868H
 	pop	r12
 	pop	rsi
 	pop	rbx
@@ -1782,8 +1782,8 @@ $LN15@HllEndDir:
 ; 1522 :   switch (cmd) {
 
 	lea	eax, DWORD PTR [rcx-335]
-	mov	QWORD PTR [rsp+1352], rdi
-	mov	QWORD PTR [rsp+1368], r14
+	mov	QWORD PTR [rsp+2200], rdi
+	mov	QWORD PTR [rsp+2216], r14
 	mov	QWORD PTR ModuleInfo+232, rbx
 	cmp	eax, 8
 	ja	$LN193@HllEndDir
@@ -2432,7 +2432,7 @@ $LN40@HllEndDir:
 	mov	r8d, DWORD PTR [rbx+36]
 	lea	rdx, OFFSET FLAT:$SG11064
 	lea	rcx, QWORD PTR buff$[rsp]
-	mov	QWORD PTR [rsp+1296], r15
+	mov	QWORD PTR [rsp+2144], r15
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
 	lea	rcx, OFFSET FLAT:$SG11767
@@ -2451,7 +2451,7 @@ $LN40@HllEndDir:
 	mov	r15d, esi
 	test	ecx, ecx
 	jle	SHORT $LN8@HllEndDir
-	mov	QWORD PTR [rsp+1360], r13
+	mov	QWORD PTR [rsp+2208], r13
 	mov	r13, rsi
 $LL9@HllEndDir:
 
@@ -2506,7 +2506,7 @@ $LN199@HllEndDir:
 	add	r13, 4
 	cmp	r15d, ecx
 	jl	SHORT $LL9@HllEndDir
-	mov	r13, QWORD PTR [rsp+1360]
+	mov	r13, QWORD PTR [rsp+2208]
 $LN8@HllEndDir:
 
 ; 1711 :            }
@@ -2514,7 +2514,7 @@ $LN8@HllEndDir:
 ; 1713 :        if (hll->cflag == 3){
 
 	cmp	BYTE PTR [rbx+77], 3
-	mov	r15, QWORD PTR [rsp+1296]
+	mov	r15, QWORD PTR [rsp+2144]
 	jne	$LN193@HllEndDir
 
 ; 1714 :            n = 0;
@@ -3070,12 +3070,12 @@ $LN72@HllEndDir:
 
 	mov	eax, esi
 $LN201@HllEndDir:
-	mov	rdi, QWORD PTR [rsp+1352]
-	mov	r14, QWORD PTR [rsp+1368]
+	mov	rdi, QWORD PTR [rsp+2200]
+	mov	r14, QWORD PTR [rsp+2216]
 
 ; 1834 : }
 
-	add	rsp, 1304				; 00000518H
+	add	rsp, 2152				; 00000868H
 	pop	r12
 	pop	rsi
 	pop	rbx
@@ -3102,13 +3102,13 @@ hllop$2 = 64
 hllop$3 = 64
 buff$ = 80
 forbuff$ = 96
-forbuffcnt$ = 704
-forbuffcond$ = 1312
-buffer$ = 1920
-forbuffinit$ = 3120
-transformed$ = 3728
-i$ = 4384
-tokenarray$ = 4392
+forbuffcnt$ = 1120
+forbuffcond$ = 2144
+buffer$ = 3168
+forbuffinit$ = 5216
+transformed$ = 6240
+i$ = 7312
+tokenarray$ = 7320
 HllStartDir PROC
 
 ; 1203 : {
@@ -3117,12 +3117,12 @@ $LN294:
 	mov	DWORD PTR [rsp+8], ecx
 	push	rbp
 	push	r12
-	lea	rbp, QWORD PTR [rsp-4104]
-	mov	eax, 4360				; 00001108H
+	lea	rbp, QWORD PTR [rsp-7032]
+	mov	eax, 7288				; 00001c78H
 	call	__chkstk
 	sub	rsp, rax
-	mov	QWORD PTR [rsp+4392], rbx
-	mov	QWORD PTR [rsp+4400], rsi
+	mov	QWORD PTR [rsp+7320], rbx
+	mov	QWORD PTR [rsp+7328], rsi
 
 ; 1204 :   struct hll_item      *hll;
 ; 1205 :   ret_code             rc = NOT_ERROR;
@@ -3160,9 +3160,9 @@ $LN294:
 	movsxd	rax, ecx
 	inc	ecx
 	shl	rax, 5
-	mov	QWORD PTR [rsp+4352], r13
+	mov	QWORD PTR [rsp+7280], r13
 	xor	r13d, r13d
-	mov	QWORD PTR [rsp+4336], r15
+	mov	QWORD PTR [rsp+7264], r15
 	mov	r15, rdx
 	mov	r12d, r13d
 	mov	ebx, DWORD PTR [rax+rdx+16]
@@ -3215,7 +3215,7 @@ $LN17@HllStartDi:
 ; 1271 : 
 ; 1272 :   hll->labels[LEXIT] = 0;
 
-	mov	QWORD PTR [rsp+4408], rdi
+	mov	QWORD PTR [rsp+7336], rdi
 	mov	DWORD PTR [rsi+12], r13d
 
 ; 1273 : 
@@ -3364,7 +3364,7 @@ $LN24@HllStartDi:
 
 	mov	eax, DWORD PTR ModuleInfo+352
 	inc	eax
-	mov	QWORD PTR [rsp+4344], r14
+	mov	QWORD PTR [rsp+7272], r14
 	mov	DWORD PTR ModuleInfo+352, eax
 
 ; 1319 :     hll->labels[LSKIP] = GetHllLabel();
@@ -3461,7 +3461,7 @@ $LN5@HllStartDi:
 	lea	rcx, QWORD PTR forbuff$[rsp]
 	mov	BYTE PTR forbuff$[rsp+rax], r12b
 	call	_memicmp
-	mov	r14, QWORD PTR [rsp+4344]
+	mov	r14, QWORD PTR [rsp+7272]
 	test	eax, eax
 	jne	SHORT $LN29@HllStartDi
 
@@ -4277,9 +4277,9 @@ $LN20@HllStartDi:
 ; 1469 :   if (tokenarray[i].token != T_FINAL && rc == NOT_ERROR) {
 
 	movsxd	rax, DWORD PTR i$[rbp-256]
-	mov	r13, QWORD PTR [rsp+4352]
-	mov	rdi, QWORD PTR [rsp+4408]
-	mov	rbx, QWORD PTR [rsp+4392]
+	mov	r13, QWORD PTR [rsp+7280]
+	mov	rdi, QWORD PTR [rsp+7336]
+	mov	rbx, QWORD PTR [rsp+7320]
 	shl	rax, 5
 	cmp	BYTE PTR [rax+r15], 0
 	je	SHORT $LN55@HllStartDi
@@ -4304,7 +4304,7 @@ $LN55@HllStartDi:
 ; 1476 :   if (hll == HllFree)
 
 	cmp	rsi, QWORD PTR ModuleInfo+232
-	mov	r15, QWORD PTR [rsp+4336]
+	mov	r15, QWORD PTR [rsp+7264]
 	jne	SHORT $LN56@HllStartDi
 
 ; 1477 :     HllFree = hll->next;
@@ -4324,7 +4324,7 @@ $LN56@HllStartDi:
 
 	test	DWORD PTR ModuleInfo+408, 2048		; 00000800H
 	mov	QWORD PTR ModuleInfo+224, rsi
-	mov	rsi, QWORD PTR [rsp+4400]
+	mov	rsi, QWORD PTR [rsp+7328]
 	je	SHORT $LN57@HllStartDi
 
 ; 1482 :     LstWrite(LSTTYPE_DIRECTIVE, GetCurrOffset(), NULL);
@@ -4354,7 +4354,7 @@ $LN289@HllStartDi:
 
 ; 1488 : }
 
-	add	rsp, 4360				; 00001108H
+	add	rsp, 7288				; 00001c78H
 	pop	r12
 	pop	rbp
 	ret	0

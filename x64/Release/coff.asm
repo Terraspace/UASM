@@ -658,7 +658,7 @@ $LL4@coff_write:
 
 	movsxd	rdx, edi
 	add	rsi, 8
-	add	edi, 1200				; 000004b0H
+	add	edi, 2048				; 00000800H
 	mov	BYTE PTR [rax+105], 66			; 00000042H
 	mov	rax, QWORD PTR [rbx]
 	add	rdx, QWORD PTR ModuleInfo+464
@@ -675,7 +675,7 @@ $LL4@coff_write:
 
 	mov	QWORD PTR [rbx+8], r12
 	add	rbx, 24
-	cmp	edi, 2400				; 00000960H
+	cmp	edi, 4096				; 00001000H
 	jl	SHORT $LL4@coff_write
 $LN38@coff_write:
 	mov	r13, QWORD PTR [rsp+224]
@@ -3034,7 +3034,7 @@ coff_flushfunc PROC
 ; 784  :     if ( ( currsize + size ) > SIZE_CV_SEGBUF ) {
 
 	lea	eax, DWORD PTR [r14+r8]
-	cmp	eax, 1200				; 000004b0H
+	cmp	eax, 2048				; 00000800H
 	jbe	$LN2@coff_flush
 
 ; 785  :         if ( currsize ) {

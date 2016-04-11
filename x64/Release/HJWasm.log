@@ -1,4 +1,4 @@
-﻿Build started 2016/04/11 09:25:42 AM.
+﻿Build started 2016/04/11 10:15:26 AM.
      1>Project "D:\HJWasm\HJWasm2.13.1s\HJWasm2.13.1s\HJWasm.vcxproj" on node 2 (Rebuild target(s)).
      1>ClCompile:
          D:\vs2015\VC\bin\x86_amd64\CL.exe /c /I.\\H /nologo /W2 /WX- /Ox /Ot /D WIN64 /D NDEBUG /D _UNICODE /D UNICODE /Gm- /MT /Zp8 /GS- /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /FAs /Fa"x64\Release\\" /Fo"x64\Release\\" /Fd"x64\Release\vc140.pdb" /Gd /TC /errorReport:prompt apiemu.c assemble.c assume.c atofloat.c backptch.c bin.c branch.c cmdline.c codegen.c coff.c condasm.c context.c cpumodel.c data.c dbgcv.c directiv.c elf.c end.c equate.c errmsg.c expans.c expreval.c extern.c fastpass.c fixup.c fpfixup.c hll.c input.c invoke.c label.c linnum.c listing.c loop.c lqueue.c macro.c main.c mangle.c memalloc.c msgtext.c omf.c omffixup.c omfint.c option.c parser.c posndir.c preproc.c proc.c queue.c reswords.c safeseh.c segment.c simsegm.c string.c symbols.c tbyte.c tokenize.c trmem.c types.c
@@ -202,4 +202,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:06.10
+Time Elapsed 00:00:05.97

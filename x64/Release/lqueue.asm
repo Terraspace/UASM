@@ -87,22 +87,22 @@ $unwind$AddLineQueue DD 060f01H
 	DD	06340fH
 	DD	0700b320fH
 $unwind$AddLineQueueX DD 031b01H
-	DD	058011bH
+	DD	08c011bH
 	DD	03014H
 $chain$0$AddLineQueueX DD 020421H
-	DD	0575404H
+	DD	08b5404H
 	DD	imagerel $LN32
 	DD	imagerel $LN32+27
 	DD	imagerel $unwind$AddLineQueueX
 $chain$2$AddLineQueueX DD 041221H
-	DD	054e412H
-	DD	0566404H
+	DD	088e412H
+	DD	08a6404H
 	DD	imagerel $LN32+27
 	DD	imagerel $LN32+36
 	DD	imagerel $chain$0$AddLineQueueX
 $chain$4$AddLineQueueX DD 041321H
-	DD	0557413H
-	DD	053f404H
+	DD	0897413H
+	DD	087f404H
 	DD	imagerel $LN32+36
 	DD	imagerel $LN32+64
 	DD	imagerel $chain$2$AddLineQueueX
@@ -268,7 +268,7 @@ _TEXT	ENDS
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\lqueue.c
 _TEXT	SEGMENT
 buffer$ = 48
-fmt$ = 720
+fmt$ = 1136
 AddLineQueueX PROC
 
 ; 98   : {
@@ -280,7 +280,7 @@ $LN32:
 	mov	QWORD PTR [rax+24], r8
 	mov	QWORD PTR [rax+32], r9
 	push	rbx
-	sub	rsp, 704				; 000002c0H
+	sub	rsp, 1120				; 00000460H
 	mov	QWORD PTR [rax-16], rbp
 
 ; 109  :     for ( s = fmt, d = buffer; *s; s++ ) {
@@ -487,10 +487,10 @@ $LN2@AddLineQue:
 	inc	rsi
 	cmp	BYTE PTR [rsi], 0
 	jne	$LL4@AddLineQue
-	mov	r15, QWORD PTR [rsp+664]
-	mov	rdi, QWORD PTR [rsp+680]
+	mov	r15, QWORD PTR [rsp+1080]
+	mov	rdi, QWORD PTR [rsp+1096]
 $LN3@AddLineQue:
-	mov	r14, QWORD PTR [rsp+672]
+	mov	r14, QWORD PTR [rsp+1088]
 
 ; 151  :     }
 ; 152  :     *d = NULLC;
@@ -499,7 +499,7 @@ $LN3@AddLineQue:
 ; 155  :     AddLineQueue( buffer );
 
 	lea	rax, QWORD PTR buffer$[rsp]
-	mov	rsi, QWORD PTR [rsp+688]
+	mov	rsi, QWORD PTR [rsp+1104]
 	mov	BYTE PTR [rbx], 0
 $LL25@AddLineQue:
 	inc	rbp
@@ -515,7 +515,7 @@ $LL25@AddLineQue:
 	mov	QWORD PTR [rax], 0
 	call	memcpy
 	cmp	QWORD PTR ModuleInfo+184, 0
-	mov	rbp, QWORD PTR [rsp+696]
+	mov	rbp, QWORD PTR [rsp+1112]
 	jne	SHORT $LN18@AddLineQue
 	mov	QWORD PTR ModuleInfo+184, rbx
 	mov	QWORD PTR ModuleInfo+192, rbx
@@ -523,7 +523,7 @@ $LL25@AddLineQue:
 ; 156  :     return;
 ; 157  : }
 
-	add	rsp, 704				; 000002c0H
+	add	rsp, 1120				; 00000460H
 	pop	rbx
 	ret	0
 
@@ -541,7 +541,7 @@ $LN18@AddLineQue:
 ; 156  :     return;
 ; 157  : }
 
-	add	rsp, 704				; 000002c0H
+	add	rsp, 1120				; 00000460H
 	pop	rbx
 	ret	0
 AddLineQueueX ENDP

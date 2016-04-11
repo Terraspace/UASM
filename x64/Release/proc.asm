@@ -855,8 +855,8 @@ xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
 $chain$3$write_userdef_epilogue DD 041021H
-	DD	06b7410H
-	DD	06a6408H
+	DD	09f7410H
+	DD	09e6408H
 	DD	imagerel write_userdef_epilogue+92
 	DD	imagerel write_userdef_epilogue+211
 	DD	imagerel $chain$1$write_userdef_epilogue
@@ -864,7 +864,7 @@ xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
 $chain$1$write_userdef_epilogue DD 020821H
-	DD	064f408H
+	DD	098f408H
 	DD	imagerel write_userdef_epilogue+81
 	DD	imagerel write_userdef_epilogue+92
 	DD	imagerel $chain$0$write_userdef_epilogue
@@ -872,7 +872,7 @@ xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
 $chain$0$write_userdef_epilogue DD 020821H
-	DD	06dd408H
+	DD	0a1d408H
 	DD	imagerel write_userdef_epilogue
 	DD	imagerel write_userdef_epilogue+81
 	DD	imagerel $unwind$write_userdef_epilogue
@@ -880,7 +880,7 @@ xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
 $unwind$write_userdef_epilogue DD 060e01H
-	DD	065010eH
+	DD	099010eH
 	DD	0c005e007H
 	DD	030025003H
 xdata	ENDS
@@ -1087,7 +1087,7 @@ xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
 $chain$5$write_userdef_prologue DD 020821H
-	DD	06d7408H
+	DD	0a17408H
 	DD	imagerel write_userdef_prologue+220
 	DD	imagerel write_userdef_prologue+263
 	DD	imagerel $chain$4$write_userdef_prologue
@@ -1095,8 +1095,8 @@ xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
 $chain$4$write_userdef_prologue DD 041021H
-	DD	06c6410H
-	DD	06a3408H
+	DD	0a06410H
+	DD	09e3408H
 	DD	imagerel write_userdef_prologue
 	DD	imagerel write_userdef_prologue+220
 	DD	imagerel $unwind$write_userdef_prologue
@@ -1104,10 +1104,10 @@ xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
 $unwind$write_userdef_prologue DD 0a5901H
-	DD	064f459H
-	DD	065e44dH
-	DD	066d442H
-	DD	067010bH
+	DD	098f459H
+	DD	099e44dH
+	DD	09ad442H
+	DD	09b010bH
 	DD	05002c004H
 xdata	ENDS
 ;	COMDAT xdata
@@ -1299,11 +1299,11 @@ $unwind$CopyPrototype DD 062a01H
 	DD	063425H
 	DD	070023206H
 $unwind$RetInstr DD 0b1d01H
-	DD	055741dH
-	DD	054641dH
-	DD	053541dH
-	DD	052341dH
-	DD	050011dH
+	DD	089741dH
+	DD	088641dH
+	DD	087541dH
+	DD	086341dH
+	DD	084011dH
 	DD	0e016H
 $unwind$write_prologue DD 020601H
 	DD	030023206H
@@ -1477,9 +1477,9 @@ xdata	ENDS
 _TEXT	SEGMENT
 reglst$ = 64
 buffer$ = 192
-flag_iret$ = 848
-tokenarray$ = 856
-is_exitm$ = 864
+flag_iret$ = 1264
+tokenarray$ = 1272
+is_exitm$ = 1280
 write_userdef_epilogue PROC				; COMDAT
 
 ; 3176 : {
@@ -1488,7 +1488,7 @@ write_userdef_epilogue PROC				; COMDAT
 	push	rbp
 	push	r12
 	push	r14
-	sub	rsp, 808				; 00000328H
+	sub	rsp, 1224				; 000004c8H
 
 ; 3177 :     uint_16 *regs;
 ; 3178 :     int i;
@@ -1527,7 +1527,7 @@ write_userdef_epilogue PROC				; COMDAT
 ; 3194 :     info = CurrProc->e.procinfo;
 
 	mov	rdx, QWORD PTR CurrProc
-	mov	QWORD PTR [rsp+872], r13
+	mov	QWORD PTR [rsp+1288], r13
 
 ; 3195 : 
 ; 3196 : #if AMD64_SUPPORT
@@ -1535,7 +1535,7 @@ write_userdef_epilogue PROC				; COMDAT
 ; 3198 :     if ( CurrProc->sym.langtype == LANG_FASTCALL && ModuleInfo.fctype == FCT_WIN64 )
 
 	xor	r13d, r13d
-	mov	QWORD PTR [rsp+800], r15
+	mov	QWORD PTR [rsp+1216], r15
 	mov	ecx, DWORD PTR [rdx+76]
 	mov	r15, QWORD PTR [rdx+96]
 	cmp	ecx, 7
@@ -1599,8 +1599,8 @@ $LN8@write_user:
 
 ; 3214 :         int cnt = *info->regslist;
 
-	mov	QWORD PTR [rsp+848], rsi
-	mov	QWORD PTR [rsp+856], rdi
+	mov	QWORD PTR [rsp+1264], rsi
+	mov	QWORD PTR [rsp+1272], rdi
 	movzx	edi, WORD PTR [rcx]
 
 ; 3215 :         regs = info->regslist + cnt;
@@ -1647,8 +1647,8 @@ $LN2@write_user:
 	sub	edi, 1
 	jne	SHORT $LL4@write_user
 $LN23@write_user:
-	mov	rsi, QWORD PTR [rsp+848]
-	mov	rdi, QWORD PTR [rsp+856]
+	mov	rsi, QWORD PTR [rsp+1264]
+	mov	rdi, QWORD PTR [rsp+1272]
 $LN3@write_user:
 
 ; 3221 :         }
@@ -1700,7 +1700,7 @@ $LN3@write_user:
 ; 3235 :     if ( Options.preprocessor_stdout )
 
 	cmp	BYTE PTR Options+125, r13b
-	mov	r15, QWORD PTR [rsp+800]
+	mov	r15, QWORD PTR [rsp+1216]
 	je	SHORT $LN12@write_user
 
 ; 3236 :         printf( "option epilogue:none\n" );
@@ -1720,7 +1720,7 @@ $LN12@write_user:
 	mov	DWORD PTR [rsp+32], r13d
 	mov	rcx, r14
 	call	RunMacro
-	mov	r13, QWORD PTR [rsp+872]
+	mov	r13, QWORD PTR [rsp+1288]
 
 ; 3239 :     Token_Count = i - 1;
 ; 3240 :     return( NOT_ERROR );
@@ -1730,7 +1730,7 @@ $LN12@write_user:
 
 ; 3241 : }
 
-	add	rsp, 808				; 00000328H
+	add	rsp, 1224				; 000004c8H
 	pop	r14
 	pop	r12
 	pop	rbp
@@ -1747,7 +1747,7 @@ $LN6@write_user:
 
 ; 3241 : }
 
-	add	rsp, 808				; 00000328H
+	add	rsp, 1224				; 000004c8H
 	pop	r14
 	pop	r12
 	pop	rbp
@@ -4300,15 +4300,15 @@ _TEXT	ENDS
 _TEXT	SEGMENT
 reglst$ = 64
 buffer$ = 192
-tokenarray$ = 848
-is_exitm$ = 856
+tokenarray$ = 1264
+is_exitm$ = 1272
 write_userdef_prologue PROC				; COMDAT
 
 ; 2107 : {
 
 	push	rbp
 	push	r12
-	sub	rsp, 824				; 00000338H
+	sub	rsp, 1240				; 000004d8H
 
 ; 2108 :     int                 len;
 ; 2109 :     int                 i;
@@ -4340,12 +4340,12 @@ write_userdef_prologue PROC				; COMDAT
 
 ; 2190 : }
 
-	add	rsp, 824				; 00000338H
+	add	rsp, 1240				; 000004d8H
 	pop	r12
 	pop	rbp
 	ret	0
 $LN8@write_user:
-	mov	QWORD PTR [rsp+816], r13
+	mov	QWORD PTR [rsp+1232], r13
 
 ; 2123 : #endif
 ; 2124 : 
@@ -4357,9 +4357,9 @@ $LN8@write_user:
 ; 2130 :     if ( CurrProc->sym.langtype == LANG_FASTCALL && ModuleInfo.fctype == FCT_WIN64 )
 
 	xor	r13d, r13d
-	mov	QWORD PTR [rsp+808], r14
+	mov	QWORD PTR [rsp+1224], r14
 	mov	r14, QWORD PTR [r8+96]
-	mov	QWORD PTR [rsp+800], r15
+	mov	QWORD PTR [rsp+1216], r15
 	cmp	edx, 7
 	jne	SHORT $LN9@write_user
 	cmp	DWORD PTR ModuleInfo+376, 2
@@ -4428,8 +4428,8 @@ $LN10@write_user:
 ; 2152 :     if ( Options.preprocessor_stdout )
 
 	cmp	BYTE PTR Options+125, r13b
-	mov	QWORD PTR [rsp+848], rbx
-	mov	QWORD PTR [rsp+864], rsi
+	mov	QWORD PTR [rsp+1264], rbx
+	mov	QWORD PTR [rsp+1280], rsi
 	je	SHORT $LN14@write_user
 
 ; 2153 :         printf( "option prologue:none\n" );
@@ -4450,7 +4450,7 @@ $LN14@write_user:
 ; 2157 :         regs = info->regslist;
 ; 2158 :         for ( len = *regs++; len; len--, regs++ ) {
 
-	mov	QWORD PTR [rsp+872], rdi
+	mov	QWORD PTR [rsp+1288], rdi
 	movzx	edi, WORD PTR [rsi]
 	add	rsi, 2
 	test	edi, edi
@@ -4492,7 +4492,7 @@ $LN2@write_user:
 	sub	edi, 1
 	jne	SHORT $LL4@write_user
 $LN34@write_user:
-	mov	rdi, QWORD PTR [rsp+872]
+	mov	rdi, QWORD PTR [rsp+1288]
 $LN3@write_user:
 
 ; 2163 :         }
@@ -4559,9 +4559,9 @@ $LN3@write_user:
 ; 2181 :     if ( Parse_Pass == PASS_1 ) {
 
 	cmp	DWORD PTR Parse_Pass, r13d
-	mov	rsi, QWORD PTR [rsp+864]
+	mov	rsi, QWORD PTR [rsp+1280]
 	mov	DWORD PTR ModuleInfo+496, ebx
-	mov	rbx, QWORD PTR [rsp+848]
+	mov	rbx, QWORD PTR [rsp+1264]
 	jne	SHORT $LN6@write_user
 
 ; 2182 :         struct dsym *curr;
@@ -4600,13 +4600,13 @@ $LN13@write_user:
 	mov	ecx, 156				; 0000009cH
 	call	EmitError
 $LN33@write_user:
-	mov	r13, QWORD PTR [rsp+816]
-	mov	r14, QWORD PTR [rsp+808]
-	mov	r15, QWORD PTR [rsp+800]
+	mov	r13, QWORD PTR [rsp+1232]
+	mov	r14, QWORD PTR [rsp+1224]
+	mov	r15, QWORD PTR [rsp+1216]
 
 ; 2190 : }
 
-	add	rsp, 824				; 00000338H
+	add	rsp, 1240				; 000004d8H
 	pop	r12
 	pop	rbp
 	ret	0
@@ -10369,9 +10369,9 @@ _TEXT	ENDS
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\proc.c
 _TEXT	SEGMENT
 buffer$ = 32
-i$ = 656
-tokenarray$ = 664
-count$ = 672
+i$ = 1072
+tokenarray$ = 1080
+count$ = 1088
 RetInstr PROC
 
 ; 3249 : {
@@ -10382,7 +10382,7 @@ $LN36:
 	mov	QWORD PTR [rsp+24], rsi
 	mov	QWORD PTR [rsp+32], rdi
 	push	r14
-	sub	rsp, 640				; 00000280H
+	sub	rsp, 1056				; 00000420H
 	movsxd	rdi, ecx
 
 ; 3250 :     struct proc_info   *info;
@@ -10702,7 +10702,7 @@ $LN1@RetInstr:
 
 ; 3343 : }
 
-	lea	r11, QWORD PTR [rsp+640]
+	lea	r11, QWORD PTR [rsp+1056]
 	mov	rbx, QWORD PTR [r11+16]
 	mov	rbp, QWORD PTR [r11+24]
 	mov	rsi, QWORD PTR [r11+32]
