@@ -275,51 +275,56 @@ ret_code EqualSgnDirective( int i, struct asm_tok tokenarray[] )
  * this is used for some internally generated variables (SIZESTR, INSTR, @Cpu)
  * NO listing is written! The value is ensured to be max 16-bit wide.
  */
-struct asym *CreateVariable( const char *name, int value )
-/********************************************************/
+struct asym *CreateVariable(const char *name, int value)
+	/********************************************************/
 {
-    struct asym      *sym;
+	struct asym      *sym;
 
-    DebugMsg1(( "CreateVariable(%s, %d ) enter\n", name, value ));
+	DebugMsg1(("CreateVariable(%s, %d ) enter\n", name, value));
 
-    sym = SymSearch( name );
-    if( sym == NULL ) {
-        sym = SymCreate( name );
+	sym = SymSearch(name);
+	if (sym == NULL) {
+		sym = SymCreate(name);
 #if FASTPASS
-        //sym->issaved = FALSE;
-        sym->issaved = StoreState; /* v2.10 */
+		//sym->issaved = FALSE;
+		sym->issaved = StoreState; /* v2.10 */
 #endif
-    } else if ( sym->state == SYM_UNDEFINED ) {
-        sym_remove_table( &SymTables[TAB_UNDEF], (struct dsym *)sym );
-        sym->fwdref = TRUE;
+	}
+	else if (sym->state == SYM_UNDEFINED) {
+		sym->value3264 = 0;   //fixed by HSE on qWord indication
+		sym_remove_table(&SymTables[TAB_UNDEF], (struct dsym *)sym);
+		sym->fwdref = TRUE;
 #if FASTPASS
-        sym->issaved = StoreState; /* v2.10 */
+		sym->issaved = StoreState; /* v2.10 */
 #endif
-    } else {
-        if ( sym->isequate == FALSE ) {
-            EmitErr( SYMBOL_REDEFINITION, name );
-            return( NULL );
-        }
+	}
+	else {
+		sym->value3264 = 0;  //fixed by HSE on qWord indication
+		if (sym->isequate == FALSE) {
+			EmitErr(SYMBOL_REDEFINITION, name);
+			return(NULL);
+		}
 #if FASTPASS
-        /*
-         * v2.09: don't save variable when it is defined the first time
-         * v2.10: store state only when variable is changed and has been
-         * defined BEFORE SaveState() has been called.
-         */
-        //if ( StoreState && sym->issaved == FALSE && sym->isdefined == TRUE ) {
-        if ( StoreState && sym->issaved == FALSE ) {
-            SaveVariableState( sym );
-        }
+		/*
+		* v2.09: don't save variable when it is defined the first time
+		* v2.10: store state only when variable is changed and has been
+		* defined BEFORE SaveState() has been called.
+		*/
+		//if ( StoreState && sym->issaved == FALSE && sym->isdefined == TRUE ) {
+		if (StoreState && sym->issaved == FALSE) {
+			SaveVariableState(sym);
+		}
 #endif
-    }
-    sym->isdefined  = TRUE;
-    sym->state    = SYM_INTERNAL;
-    //sym->mem_type = MT_ABS;
-    sym->variable = TRUE;
-    sym->value    = value;
-    sym->isequate = TRUE;
-    return( sym );
+	}
+	sym->isdefined = TRUE;
+	sym->state = SYM_INTERNAL;
+	//sym->mem_type = MT_ABS;
+	sym->variable = TRUE;
+	sym->value = value;
+	sym->isequate = TRUE;
+	return(sym);
 }
+
 
 /*
  * CreateConstant()
