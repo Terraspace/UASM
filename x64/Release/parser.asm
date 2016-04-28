@@ -14,19 +14,19 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG12347 DB	'WORD', 00H
+$SG12290 DB	'BYTE', 00H
 	ORG $+3
-$SG12354 DB	'DWORD', 00H
+$SG12358 DB	'WORD', 00H
+	ORG $+3
+$SG12365 DB	'DWORD', 00H
 	ORG $+2
-$SG12358 DB	'BYTE', 00H
+$SG12369 DB	'BYTE', 00H
 	ORG $+3
-$SG12375 DB	'BYTE', 00H
+$SG12386 DB	'BYTE', 00H
 	ORG $+3
-$SG12378 DB	'WORD', 00H
+$SG12389 DB	'WORD', 00H
 	ORG $+3
-$SG12382 DB	'DWORD', 00H
-	ORG $+2
-$SG12279 DB	'BYTE', 00H
+$SG12393 DB	'DWORD', 00H
 _DATA	ENDS
 PUBLIC	SizeFromMemtype
 PUBLIC	MemtypeFromSize
@@ -973,7 +973,7 @@ $LN36@check_size:
 
 ; 2493 :                 EmitWarn( 2, SIZE_NOT_SPECIFIED_ASSUMING, "BYTE" );
 
-	lea	r8, OFFSET FLAT:$SG12279
+	lea	r8, OFFSET FLAT:$SG12290
 	mov	ecx, esi
 	lea	edx, QWORD PTR [rax+73]
 	call	EmitWarn
@@ -1760,7 +1760,7 @@ $LN145@check_size:
 ; 2778 :                     if( (uint_32)CodeInfo->opnd[OPND2].data32l > USHRT_MAX || op2_size == 4 ) {
 
 	mov	ecx, DWORD PTR [rbx+64]
-	lea	r8, OFFSET FLAT:$SG12347
+	lea	r8, OFFSET FLAT:$SG12358
 	cmp	ecx, 65535				; 0000ffffH
 	ja	SHORT $LN109@check_size
 	cmp	esi, 4
@@ -1783,7 +1783,7 @@ $LN145@check_size:
 
 ; 2800 :                          p = "BYTE";
 
-	lea	r8, OFFSET FLAT:$SG12358
+	lea	r8, OFFSET FLAT:$SG12369
 	jmp	SHORT $LN112@check_size
 $LN115@check_size:
 
@@ -1852,7 +1852,7 @@ $LN111@check_size:
 ; 2790 :                             CodeInfo->opnd[OPND2].type = OP_I32;
 ; 2791 :                             p = "DWORD";
 
-	lea	r8, OFFSET FLAT:$SG12354
+	lea	r8, OFFSET FLAT:$SG12365
 	mov	DWORD PTR [rbx+56], 524288		; 00080000H
 $LN112@check_size:
 
@@ -1963,7 +1963,7 @@ $LN122@check_size:
 
 ; 2841 :                             EmitWarn( 1, SIZE_NOT_SPECIFIED_ASSUMING, "DWORD" );
 
-	lea	r8, OFFSET FLAT:$SG12382
+	lea	r8, OFFSET FLAT:$SG12393
 	jmp	SHORT $LN118@check_size
 $LN132@check_size:
 
@@ -1986,7 +1986,7 @@ $LN132@check_size:
 ; 2832 :                             EmitWarn( 1, SIZE_NOT_SPECIFIED_ASSUMING, "WORD" );
 
 	mov	edx, 73					; 00000049H
-	lea	r8, OFFSET FLAT:$SG12378
+	lea	r8, OFFSET FLAT:$SG12389
 	lea	ecx, QWORD PTR [rdx-72]
 	call	EmitWarn
 $LN133@check_size:
@@ -2020,7 +2020,7 @@ $LN130@check_size:
 
 ; 2825 :                             EmitWarn( 1, SIZE_NOT_SPECIFIED_ASSUMING, "BYTE" );
 
-	lea	r8, OFFSET FLAT:$SG12375
+	lea	r8, OFFSET FLAT:$SG12386
 $LN118@check_size:
 	mov	edx, 73					; 00000049H
 	lea	ecx, QWORD PTR [rdx-72]

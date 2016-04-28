@@ -12,28 +12,28 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG12382 DB	01H DUP (?)
-$SG12620 DB	01H DUP (?)
+$SG12393 DB	01H DUP (?)
+$SG12631 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	LastCodeBufSize:DWORD
 _DATA	ENDS
 CONST	SEGMENT
-SymDebParm DQ	FLAT:$SG12172
-	DQ	FLAT:$SG12173
-	DQ	FLAT:$SG12174
-	DQ	FLAT:$SG12175
+SymDebParm DQ	FLAT:$SG12183
+	DQ	FLAT:$SG12184
+	DQ	FLAT:$SG12185
+	DQ	FLAT:$SG12186
 CONST	ENDS
 _DATA	SEGMENT
-$SG12374 DB	01H, 00H
+$SG12385 DB	01H, 00H
 	ORG $+2
-$SG12707 DB	01H, 'CV', 00H
-$SG12172 DB	'$$SYMBOLS', 00H
+$SG12718 DB	01H, 'CV', 00H
+$SG12183 DB	'$$SYMBOLS', 00H
 	ORG $+2
-$SG12173 DB	'DEBSYM', 00H
+$SG12184 DB	'DEBSYM', 00H
 	ORG $+5
-$SG12174 DB	'$$TYPES', 00H
-$SG12175 DB	'DEBTYP', 00H
+$SG12185 DB	'$$TYPES', 00H
+$SG12186 DB	'DEBTYP', 00H
 _DATA	ENDS
 PUBLIC	omf_init
 PUBLIC	omf_set_filepos
@@ -884,7 +884,7 @@ $LN4@omf_write_:
 
 ; 1632 :         omf_write_dosseg(); /* write dosseg COMENT records */
 
-	lea	rax, OFFSET FLAT:$SG12382
+	lea	rax, OFFSET FLAT:$SG12393
 	mov	QWORD PTR obj$2[rsp], 0
 	lea	rcx, QWORD PTR obj$2[rsp]
 	mov	QWORD PTR obj$2[rsp+8], rax
@@ -979,7 +979,7 @@ $LN7@omf_write_:
 
 ; 1663 :         omf_end_of_pass1();
 
-	lea	rax, OFFSET FLAT:$SG12374
+	lea	rax, OFFSET FLAT:$SG12385
 	mov	QWORD PTR obj$1[rsp], 1
 	lea	rcx, QWORD PTR obj$1[rsp]
 	mov	QWORD PTR obj$1[rsp+8], rax
@@ -1197,7 +1197,7 @@ omf_write_header_dbgcv PROC				; COMDAT
 ; 1531 :     obj.d.coment.cmt_class = CMT_MS_OMF; /* MS extensions present */
 ; 1532 :     AttachData( &obj, "\001CV", 3 );
 
-	lea	rax, OFFSET FLAT:$SG12707
+	lea	rax, OFFSET FLAT:$SG12718
 	mov	QWORD PTR obj$[rsp], 3
 
 ; 1533 :     omf_write_record( &obj );
@@ -2074,7 +2074,7 @@ $LN3@omf_write_:
 ; 1309 :     obj.d.coment.cmt_class = CMT_DEPENDENCY;
 ; 1310 :     AttachData( &obj, (uint_8 *)"", 0 );
 
-	lea	rax, OFFSET FLAT:$SG12620
+	lea	rax, OFFSET FLAT:$SG12631
 	mov	QWORD PTR obj$[rsp], r15
 
 ; 1311 :     omf_write_record( &obj );
@@ -4296,7 +4296,7 @@ omf_write_dosseg PROC					; COMDAT
 ; 637  :     AttachData( &obj, (uint_8 *)"", 0 );
 
 	mov	QWORD PTR obj$[rsp], rcx
-	lea	rax, OFFSET FLAT:$SG12382
+	lea	rax, OFFSET FLAT:$SG12393
 
 ; 638  :     omf_write_record( &obj );
 
@@ -4329,7 +4329,7 @@ omf_end_of_pass1 PROC					; COMDAT
 ; 611  :     obj.d.coment.cmt_class = CMT_MS_END_PASS_1;
 ; 612  :     AttachData( &obj, (uint_8 *)"\x001", 1 );
 
-	lea	rax, OFFSET FLAT:$SG12374
+	lea	rax, OFFSET FLAT:$SG12385
 	mov	QWORD PTR obj$[rsp], 1
 
 ; 613  :     omf_write_record( &obj );

@@ -16,25 +16,25 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG10896 DB	01H DUP (?)
-$SG10900 DB	01H DUP (?)
-$SG10901 DB	01H DUP (?)
-$SG10902 DB	01H DUP (?)
+$SG10907 DB	01H DUP (?)
+$SG10911 DB	01H DUP (?)
+$SG10912 DB	01H DUP (?)
+$SG10913 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG10879 DB	'%s(%u) : ', 00H
+$SG10890 DB	'%s(%u) : ', 00H
 	ORG $+2
-$SG10880 DB	'%s : ', 00H
+$SG10891 DB	'%s : ', 00H
 	ORG $+2
-$SG10925 DB	'rb', 00H
+$SG10936 DB	'rb', 00H
 	ORG $+1
-$SG10899 DB	'MacroLoop', 00H
+$SG10910 DB	'MacroLoop', 00H
 	ORG $+2
-$SG10953 DB	'rb', 00H
+$SG10964 DB	'rb', 00H
 	ORG $+1
-$SG10955 DB	'rb', 00H
+$SG10966 DB	'rb', 00H
 	ORG $+1
-$SG10986 DB	';', 00H
+$SG10997 DB	';', 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	sprintf
@@ -516,7 +516,7 @@ $LL14@open_file_:
 ; 579  :         DebugMsg(("open_file_in_include_path: >%s<\n", fullpath ));
 ; 580  :         file = fopen( fullpath, "rb" );
 
-	lea	rdx, OFFSET FLAT:$SG10925
+	lea	rdx, OFFSET FLAT:$SG10936
 	mov	rcx, r12
 	call	fopen
 	mov	rbx, rax
@@ -618,7 +618,7 @@ $LL4@print_sour:
 ; 518  :             PrintNote( NOTE_INCLUDED_BY, tab, "", GetFName( curr->srcfile )->fname, curr->line_num );
 
 	movzx	ecx, WORD PTR [rbx+10]
-	lea	r8, OFFSET FLAT:$SG10896
+	lea	r8, OFFSET FLAT:$SG10907
 	mov	r9, QWORD PTR ModuleInfo+160
 	mov	edx, edi
 	mov	eax, DWORD PTR [rbx+24]
@@ -645,9 +645,9 @@ $LN7@print_sour:
 ; 523  :                 PrintNote( NOTE_ITERATION_MACRO_CALLED_FROM, tab, "", "MacroLoop", curr->line_num, curr->mi->macro->value + 1 );
 
 	mov	eax, DWORD PTR [rax+16]
-	lea	r9, OFFSET FLAT:$SG10899
+	lea	r9, OFFSET FLAT:$SG10910
 	inc	eax
-	lea	r8, OFFSET FLAT:$SG10900
+	lea	r8, OFFSET FLAT:$SG10911
 	mov	DWORD PTR [rsp+40], eax
 	mov	ecx, 125				; 0000007dH
 
@@ -681,7 +681,7 @@ $LN17@print_sour:
 $LN18@print_sour:
 	mov	QWORD PTR [rsp+40], r8
 	mov	ecx, 124				; 0000007cH
-	lea	r8, OFFSET FLAT:$SG10901
+	lea	r8, OFFSET FLAT:$SG10912
 $LN34@print_sour:
 	mov	eax, DWORD PTR [rbx+24]
 	mov	edx, edi
@@ -702,7 +702,7 @@ $LN10@print_sour:
 ; 530  :     PrintNote( NOTE_MAIN_LINE_CODE, tab, "", GetFName( curr->srcfile )->fname, curr->line_num );
 
 	movzx	ecx, WORD PTR [rbx+10]
-	lea	r8, OFFSET FLAT:$SG10902
+	lea	r8, OFFSET FLAT:$SG10913
 	mov	r9, QWORD PTR ModuleInfo+160
 	mov	edx, edi
 	mov	eax, DWORD PTR [rbx+24]
@@ -1377,12 +1377,12 @@ $LN10@GetCurrSrc:
 ; 495  :             return( sprintf( buffer, ModuleInfo.EndDirFound == FALSE ? "%s(%" I32_SPEC "u) : " : "%s : ", GetFName( curr->srcfile )->fname , curr->line_num ) );
 
 	mov	rcx, QWORD PTR ModuleInfo+160
-	lea	r9, OFFSET FLAT:$SG10879
+	lea	r9, OFFSET FLAT:$SG10890
 	movzx	edx, WORD PTR [rax+10]
 	lea	r8, QWORD PTR [rcx+rdx*8]
 	movzx	ecx, BYTE PTR ModuleInfo+410
 	mov	r8, QWORD PTR [r8]
-	lea	rdx, OFFSET FLAT:$SG10880
+	lea	rdx, OFFSET FLAT:$SG10891
 	and	cl, 1
 	mov	rcx, r10
 	cmove	rdx, r9
@@ -1949,7 +1949,7 @@ $LL22@AddStringT:
 	cmp	BYTE PTR [rcx+1], 0
 	lea	rcx, QWORD PTR [rcx+1]
 	jne	SHORT $LL22@AddStringT
-	lea	r8, OFFSET FLAT:$SG10986
+	lea	r8, OFFSET FLAT:$SG10997
 	xor	edx, edx
 	npad	13
 $LL23@AddStringT:
@@ -2437,7 +2437,7 @@ $LL19@SearchFile:
 
 ; 634  :                     if ( file = fopen( fullpath, "rb" ) ) {
 
-	lea	rdx, OFFSET FLAT:$SG10953
+	lea	rdx, OFFSET FLAT:$SG10964
 	lea	rcx, QWORD PTR fullpath$[rsp]
 	call	fopen
 	mov	rsi, rax
@@ -2496,7 +2496,7 @@ $LN59@SearchFile:
 ; 648  :         fullpath[0] = NULLC;
 ; 649  :         file = fopen( path, "rb" );
 
-	lea	rdx, OFFSET FLAT:$SG10955
+	lea	rdx, OFFSET FLAT:$SG10966
 	mov	BYTE PTR fullpath$[rsp], 0
 	mov	rcx, rdi
 	call	fopen

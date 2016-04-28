@@ -12,16 +12,16 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10857 DB	'%X', 00H
+$SG10868 DB	'%X', 00H
 	ORG $+1
-$SG10920 DB	'<>"''', 00H
+$SG10931 DB	'<>"''', 00H
 	ORG $+3
-$SG11012 DB	'REQ', 00H
-$SG11021 DB	'VARARGML', 00H
+$SG11023 DB	'REQ', 00H
+$SG11032 DB	'VARARGML', 00H
 	ORG $+7
-$SG11133 DB	'macro name', 00H
+$SG11144 DB	'macro name', 00H
 	ORG $+5
-$SG11156 DB	'@Environ', 00H
+$SG11167 DB	'@Environ', 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	sprintf
@@ -467,7 +467,7 @@ $LN27@PurgeDirec:
 
 ; 749  :             return( EmitErr( EXPECTED, "macro name" ) );
 
-	lea	rdx, OFFSET FLAT:$SG11133
+	lea	rdx, OFFSET FLAT:$SG11144
 	mov	ecx, 230				; 000000e6H
 	jmp	SHORT $LN38@PurgeDirec
 $LN26@PurgeDirec:
@@ -946,7 +946,7 @@ $LN22@store_plac:
 	jne	SHORT $LN23@store_plac
 	movsx	edx, BYTE PTR [rbx+1]
 	lea	rdi, QWORD PTR [rbx+1]
-	lea	rcx, OFFSET FLAT:$SG10920
+	lea	rcx, OFFSET FLAT:$SG10931
 	call	strchr
 	test	rax, rax
 	cmovne	rbx, rdi
@@ -1365,7 +1365,7 @@ $LN9:
 ; 814  : 
 ; 815  :         macro = CreateMacro( "@Environ" );
 
-	lea	rcx, OFFSET FLAT:$SG11156
+	lea	rcx, OFFSET FLAT:$SG11167
 	call	SymCreate
 	mov	rbx, rax
 	test	rax, rax
@@ -1733,7 +1733,7 @@ $LN41@StoreMacro:
 ; 356  :                 } else if( _stricmp( tokenarray[i].string_ptr, "REQ" ) == 0 ) {
 
 	mov	rcx, QWORD PTR [rdi+8]
-	lea	rdx, OFFSET FLAT:$SG11012
+	lea	rdx, OFFSET FLAT:$SG11023
 	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN45@StoreMacro
@@ -1801,7 +1801,7 @@ $LN50@StoreMacro:
 ; 381  :                 } else if( _stricmp( tokenarray[i].string_ptr, "VARARGML" ) == 0 ) {
 
 	mov	rcx, QWORD PTR [rdi+8]
-	lea	rdx, OFFSET FLAT:$SG11021
+	lea	rdx, OFFSET FLAT:$SG11032
 	call	_stricmp
 	test	eax, eax
 	jne	$LN53@StoreMacro
@@ -2827,7 +2827,7 @@ $LL2@fill_place:
 ; 97   :                     i = sprintf( dst, "%X", i );
 
 	mov	r8d, eax
-	lea	rdx, OFFSET FLAT:$SG10857
+	lea	rdx, OFFSET FLAT:$SG10868
 	mov	rcx, rbx
 	call	sprintf
 	mov	eax, eax

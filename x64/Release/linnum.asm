@@ -12,7 +12,7 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11399 DB	'$$$%05u', 00H
+$SG11417 DB	'$$$%05u', 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	sprintf
@@ -71,7 +71,7 @@ pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$AddLinnumData DD imagerel AddLinnumData
-	DD	imagerel AddLinnumData+124
+	DD	imagerel AddLinnumData+181
 	DD	imagerel $unwind$AddLinnumData
 pdata	ENDS
 ;	COMDAT xdata
@@ -120,90 +120,143 @@ AddLinnumData PROC					; COMDAT
 	sub	rsp, 32					; 00000020H
 
 ; 41   :     struct qdesc *q;
-; 42   : #if COFF_SUPPORT
-; 43   :     if ( Options.output_format == OFORMAT_COFF ) {
+; 42   :    
+; 43   : #if COFF_SUPPORT
+; 44   :     if ( Options.output_format == OFORMAT_COFF ) {
 
 	cmp	DWORD PTR Options+144, 2
 	mov	rbx, rcx
 	jne	SHORT $LN2@AddLinnumD
 
-; 44   :         q = (struct qdesc *)CurrSeg->e.seginfo->LinnumQueue;
+; 45   :         q = (struct qdesc *)CurrSeg->e.seginfo->LinnumQueue;
 
 	mov	rax, QWORD PTR ModuleInfo+432
 	mov	rdx, QWORD PTR [rax+96]
 	mov	r8, QWORD PTR [rdx+56]
 
-; 45   :         if ( q == NULL ) {
+; 46   :         if ( q == NULL ) {
 
 	test	r8, r8
 	jne	SHORT $LN3@AddLinnumD
 
-; 46   :             q = LclAlloc( sizeof( struct qdesc ) );
+; 47   :             q = LclAlloc( sizeof( struct qdesc ) );
 
 	lea	ecx, QWORD PTR [r8+16]
 	call	LclAlloc
 
-; 47   :             CurrSeg->e.seginfo->LinnumQueue = q;
+; 48   :             CurrSeg->e.seginfo->LinnumQueue = q;
 
 	mov	rcx, QWORD PTR ModuleInfo+432
 	mov	r8, rax
 	mov	rdx, QWORD PTR [rcx+96]
 	mov	QWORD PTR [rdx+56], rax
 
-; 48   :             q->head = NULL;
+; 49   :             q->head = NULL;
 
 	mov	QWORD PTR [rax], 0
 
-; 49   :         }
-; 50   :     } else
+; 50   :         }
+; 51   :     }
 
 	jmp	SHORT $LN3@AddLinnumD
 $LN2@AddLinnumD:
 
-; 51   : #endif
-; 52   :         q = &LinnumQueue;
+; 52   :     else
+; 53   : #endif
+; 54   :         q = &LinnumQueue;
 
 	lea	r8, OFFSET FLAT:LinnumQueue
 $LN3@AddLinnumD:
 
-; 53   : 
-; 54   :     data->next = NULL;
+; 55   : 
+; 56   :     data->next = NULL;
 
 	mov	QWORD PTR [rbx], 0
 
-; 55   :     if ( q->head == NULL)
+; 57   :     if ( q->head == NULL)
 
 	cmp	QWORD PTR [r8], 0
 	jne	SHORT $LN5@AddLinnumD
 
-; 56   :         q->head = q->tail = data;
+; 58   :         q->head = q->tail = data;
 
 	mov	QWORD PTR [r8], rbx
 
-; 59   :         q->tail = data;
+; 70   :           q->tail = data;
 
 	mov	QWORD PTR [r8+8], rbx
 
-; 60   :     }
-; 61   : }
+; 71   :         }
+; 72   :       }
+; 73   : #endif
+; 74   :     }
+; 75   : }
 
 	add	rsp, 32					; 00000020H
 	pop	rbx
 	ret	0
 $LN5@AddLinnumD:
 
-; 57   :     else {
-; 58   :         ((struct line_num_info *)q->tail)->next = data;
+; 59   :     else {
+; 60   :       if (ModuleInfo.Ofssize == USE32) {
+
+	cmp	BYTE PTR ModuleInfo+404, 1
+	jne	SHORT $LN7@AddLinnumD
+
+; 61   :         if ((q->tail && ((uint_32)q->tail < 0x00FFFFFF))) {
 
 	mov	rax, QWORD PTR [r8+8]
+	test	rax, rax
+	je	SHORT $LN10@AddLinnumD
+	cmp	eax, 16777215				; 00ffffffH
+	jae	SHORT $LN10@AddLinnumD
+
+; 62   :           ((struct line_num_info *)q->tail)->next = data;
+
 	mov	QWORD PTR [rax], rbx
 
-; 59   :         q->tail = data;
+; 70   :           q->tail = data;
 
 	mov	QWORD PTR [r8+8], rbx
 
-; 60   :     }
-; 61   : }
+; 71   :         }
+; 72   :       }
+; 73   : #endif
+; 74   :     }
+; 75   : }
+
+	add	rsp, 32					; 00000020H
+	pop	rbx
+	ret	0
+$LN7@AddLinnumD:
+
+; 63   :           q->tail = data;
+; 64   :           }
+; 65   :         }
+; 66   : #if AMD64_SUPPORT
+; 67   :       else{
+; 68   :         if (q->tail && ((uint_64)q->tail < 0x00007FFFFFFFFFFF)) {
+
+	mov	rcx, QWORD PTR [r8+8]
+	mov	rdx, 140737488355325			; 00007ffffffffffdH
+	lea	rax, QWORD PTR [rcx-1]
+	cmp	rax, rdx
+	ja	SHORT $LN10@AddLinnumD
+
+; 69   :           ((struct line_num_info *)q->tail)->next = data;
+
+	mov	QWORD PTR [rcx], rbx
+
+; 70   :           q->tail = data;
+
+	mov	QWORD PTR [r8+8], rbx
+$LN10@AddLinnumD:
+
+; 71   :         }
+; 72   :       }
+; 73   : #endif
+; 74   :     }
+; 75   : }
 
 	add	rsp, 32					; 00000020H
 	pop	rbx
@@ -216,18 +269,68 @@ _TEXT	SEGMENT
 queue$ = 8
 QueueDeleteLinnum PROC
 
-; 203  :     struct line_num_info    *curr;
-; 204  :     struct line_num_info    *next;
-; 205  : 
-; 206  :     if ( queue == NULL )
-; 207  :         return;
-; 208  :     curr = queue->head;
-; 209  :     for( ; curr ; curr = next ) {
-; 210  :         next = curr->next;
-; 211  :         LclFree( curr );
-; 212  :     }
-; 213  :     return;
-; 214  : }
+; 217  :     struct line_num_info    *curr;
+; 218  :     struct line_num_info    *next;
+; 219  : 
+; 220  :     if ( queue == NULL )
+
+	test	rcx, rcx
+	je	SHORT $LN14@QueueDelet
+
+; 221  :         return;
+; 222  :     curr = queue->head;
+
+	mov	rax, QWORD PTR [rcx]
+
+; 223  :     for( ; curr ; curr = next ) {
+
+	test	rax, rax
+	je	SHORT $LN14@QueueDelet
+	movzx	edx, BYTE PTR ModuleInfo+404
+	mov	r8, -34359738367			; fffffff800000001H
+	mov	r9, 140703128616960			; 00007ff800000000H
+$LL4@QueueDelet:
+
+; 224  :       if (ModuleInfo.Ofssize == USE32) {
+
+	cmp	dl, 1
+	jne	SHORT $LN6@QueueDelet
+
+; 225  :           if (((uint_32) curr > 0x00FFFFFF) || ((uint_32)curr < 0x07FFFF))
+
+	lea	ecx, DWORD PTR [rax-524287]
+	cmp	ecx, 16252928				; 00f80000H
+
+; 226  :             break;
+; 227  :       }
+
+	jmp	SHORT $LN20@QueueDelet
+$LN6@QueueDelet:
+
+; 228  : #if AMD64_SUPPORT
+; 229  :       else {
+; 230  :         if (((uint_64)curr > 0x00007FFFFFFFFFFF)|| ((uint_64)curr < 0x00007FFFFFFFF))
+
+	lea	rcx, QWORD PTR [rax+r8]
+	cmp	rcx, r9
+$LN20@QueueDelet:
+	ja	SHORT $LN14@QueueDelet
+
+; 223  :     for( ; curr ; curr = next ) {
+
+	mov	rax, QWORD PTR [rax]
+	test	rax, rax
+	jne	SHORT $LL4@QueueDelet
+$LN14@QueueDelet:
+
+; 231  :           break;
+; 232  :       }
+; 233  : #endif
+; 234  :         next = curr->next;
+; 235  :         LclFree( curr );
+; 236  :     }
+; 237  :     return;
+; 238  : }
 
 	ret	0
 QueueDeleteLinnum ENDP
@@ -237,14 +340,14 @@ _TEXT	ENDS
 _TEXT	SEGMENT
 LinnumFini PROC
 
-; 222  : #if COFF_SUPPORT
-; 223  :     if ( dmyproc ) {
+; 246  : #if COFF_SUPPORT
+; 247  :     if ( dmyproc ) {
 
 	mov	rdx, QWORD PTR dmyproc
 	test	rdx, rdx
 	je	SHORT $LN2@LinnumFini
 
-; 224  :         dmyproc->total_size =
+; 248  :         dmyproc->total_size =
 
 	mov	rax, QWORD PTR [rdx+24]
 	mov	rcx, QWORD PTR [rax+96]
@@ -253,12 +356,12 @@ LinnumFini PROC
 	mov	DWORD PTR [rdx+56], eax
 $LN2@LinnumFini:
 
-; 225  :             ((struct dsym *)dmyproc->segment)->e.seginfo->current_loc -
-; 226  :             dmyproc->offset;
-; 227  :         DebugMsg(("LinnumFini: last dummy proc size=%Xh\n"));
-; 228  :     }
-; 229  : #endif
-; 230  : }
+; 249  :             ((struct dsym *)dmyproc->segment)->e.seginfo->current_loc -
+; 250  :             dmyproc->offset;
+; 251  :         DebugMsg(("LinnumFini: last dummy proc size=%Xh\n"));
+; 252  :     }
+; 253  : #endif
+; 254  : }
 
 	ret	0
 LinnumFini ENDP
@@ -268,18 +371,18 @@ _TEXT	ENDS
 _TEXT	SEGMENT
 LinnumInit PROC
 
-; 235  :     lastLineNumber = 0;
+; 259  :     lastLineNumber = 0;
 
 	xor	eax, eax
 	mov	DWORD PTR lastLineNumber, eax
 
-; 236  : #if COFF_SUPPORT
-; 237  :     dmyproc = NULL;
+; 260  : #if COFF_SUPPORT
+; 261  :     dmyproc = NULL;
 
 	mov	QWORD PTR dmyproc, rax
 
-; 238  : #endif
-; 239  : }
+; 262  : #endif
+; 263  : }
 
 	ret	0
 LinnumInit ENDP
@@ -292,7 +395,7 @@ srcfile$ = 64
 line_num$ = 72
 AddLinnumDataRef PROC
 
-; 71   : {
+; 85   : {
 
 $LN23:
 	mov	QWORD PTR [rsp+8], rbx
@@ -300,18 +403,18 @@ $LN23:
 	push	rdi
 	sub	rsp, 48					; 00000030H
 
-; 72   :     struct line_num_info    *curr;
-; 73   : 
-; 74   : #if COFF_SUPPORT
-; 75   :     /* COFF line number info is related to functions/procedures. Since
-; 76   :      * assembly allows code lines outside of procs, "dummy" procs must
-; 77   :      * be generated. A dummy proc lasts until
-; 78   :      * - a true PROC is detected or
-; 79   :      * - the source file changes or
-; 80   :      * - the segment/section changes ( added in v2.11 )
-; 81   :      */
-; 82   :     if ( Options.output_format == OFORMAT_COFF &&
-; 83   :         CurrProc == NULL &&
+; 86   :     struct line_num_info    *curr;
+; 87   : 
+; 88   : #if COFF_SUPPORT
+; 89   :     /* COFF line number info is related to functions/procedures. Since
+; 90   :      * assembly allows code lines outside of procs, "dummy" procs must
+; 91   :      * be generated. A dummy proc lasts until
+; 92   :      * - a true PROC is detected or
+; 93   :      * - the source file changes or
+; 94   :      * - the segment/section changes ( added in v2.11 )
+; 95   :      */
+; 96   :     if ( Options.output_format == OFORMAT_COFF &&
+; 97   :         CurrProc == NULL &&
 
 	cmp	DWORD PTR Options+144, 2
 	mov	edi, edx
@@ -331,13 +434,13 @@ $LN23:
 	je	$LN20@AddLinnumD
 $LN3@AddLinnumD:
 
-; 84   :         ( dmyproc == NULL ||
-; 85   :         dmyproc->debuginfo->file != srcfile ||
-; 86   :         dmyproc->segment != (struct asym *)CurrSeg ) ) {
-; 87   :         char procname[12];
-; 88   :         if ( dmyproc ) {
-; 89   :             /**/myassert( dmyproc->segment );
-; 90   :             dmyproc->total_size =
+; 98   :         ( dmyproc == NULL ||
+; 99   :         dmyproc->debuginfo->file != srcfile ||
+; 100  :         dmyproc->segment != (struct asym *)CurrSeg ) ) {
+; 101  :         char procname[12];
+; 102  :         if ( dmyproc ) {
+; 103  :             /**/myassert( dmyproc->segment );
+; 104  :             dmyproc->total_size =
 
 	mov	rax, QWORD PTR [r8+24]
 	mov	rcx, QWORD PTR [rax+96]
@@ -346,127 +449,127 @@ $LN3@AddLinnumD:
 	mov	DWORD PTR [r8+56], eax
 $LN4@AddLinnumD:
 
-; 91   :                 ((struct dsym *)dmyproc->segment)->e.seginfo->current_loc -
-; 92   :                 dmyproc->offset;
-; 93   :         }
-; 94   :         sprintf( procname, "$$$%05u", procidx );
+; 105  :                 ((struct dsym *)dmyproc->segment)->e.seginfo->current_loc -
+; 106  :                 dmyproc->offset;
+; 107  :         }
+; 108  :         sprintf( procname, "$$$%05u", procidx );
 
 	mov	r8d, DWORD PTR procidx
-	lea	rdx, OFFSET FLAT:$SG11399
+	lea	rdx, OFFSET FLAT:$SG11417
 	lea	rcx, QWORD PTR procname$1[rsp]
 	call	sprintf
 
-; 95   :         DebugMsg1(("AddLinnumDataRef(src=%u.%u): CurrProc==NULL, dmyproc=%s searching proc=%s\n", srcfile, line_num, dmyproc ? dmyproc->name : "NULL", procname ));
-; 96   :         dmyproc = SymSearch( procname );
+; 109  :         DebugMsg1(("AddLinnumDataRef(src=%u.%u): CurrProc==NULL, dmyproc=%s searching proc=%s\n", srcfile, line_num, dmyproc ? dmyproc->name : "NULL", procname ));
+; 110  :         dmyproc = SymSearch( procname );
 
 	lea	rcx, QWORD PTR procname$1[rsp]
 	call	SymFind
 	mov	QWORD PTR dmyproc, rax
 
-; 97   : 
-; 98   :         /* in pass 1, create the proc */
-; 99   :         if ( dmyproc == NULL ) {
+; 111  : 
+; 112  :         /* in pass 1, create the proc */
+; 113  :         if ( dmyproc == NULL ) {
 
 	test	rax, rax
 	jne	SHORT $LN5@AddLinnumD
 
-; 100  :             dmyproc = CreateProc( NULL, procname, SYM_INTERNAL );
+; 114  :             dmyproc = CreateProc( NULL, procname, SYM_INTERNAL );
 
 	lea	r8d, QWORD PTR [rax+1]
 	xor	ecx, ecx
 	lea	rdx, QWORD PTR procname$1[rsp]
 	call	CreateProc
 
-; 101  :             DebugMsg1(("AddLinnumDataRef: new proc %s created\n", procname ));
-; 102  :             dmyproc->isproc = TRUE; /* flag is usually set inside ParseProc() */
-; 103  :             dmyproc->included = TRUE;
-; 104  :             AddPublicData( dmyproc );
+; 115  :             DebugMsg1(("AddLinnumDataRef: new proc %s created\n", procname ));
+; 116  :             dmyproc->isproc = TRUE; /* flag is usually set inside ParseProc() */
+; 117  :             dmyproc->included = TRUE;
+; 118  :             AddPublicData( dmyproc );
 
 	mov	rcx, rax
 	mov	QWORD PTR dmyproc, rax
 	or	BYTE PTR [rax+41], 72			; 00000048H
 	call	AddPublicData
 
-; 105  :         } else
+; 119  :         } else
 
 	mov	rax, QWORD PTR dmyproc
 	jmp	SHORT $LN6@AddLinnumD
 $LN5@AddLinnumD:
 
-; 106  :             procidx++; /* for passes > 1, adjust procidx */
+; 120  :             procidx++; /* for passes > 1, adjust procidx */
 
 	inc	DWORD PTR procidx
 $LN6@AddLinnumD:
 
-; 107  : 
-; 108  :         /* if the symbols isn't a PROC, the symbol name has been used
-; 109  :          * by the user - bad! A warning should be displayed */
-; 110  :         if ( dmyproc->isproc == TRUE ) {
+; 121  : 
+; 122  :         /* if the symbols isn't a PROC, the symbol name has been used
+; 123  :          * by the user - bad! A warning should be displayed */
+; 124  :         if ( dmyproc->isproc == TRUE ) {
 
 	test	BYTE PTR [rax+41], 8
 	je	SHORT $LN20@AddLinnumD
 
-; 111  :             SetSymSegOfs( dmyproc );
+; 125  :             SetSymSegOfs( dmyproc );
 
 	mov	rcx, rax
 	call	SetSymSegOfs
 
-; 112  :             dmyproc->Ofssize = ModuleInfo.Ofssize;
+; 126  :             dmyproc->Ofssize = ModuleInfo.Ofssize;
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	mov	rcx, QWORD PTR dmyproc
 	mov	BYTE PTR [rcx+44], al
 
-; 113  :             dmyproc->langtype = ModuleInfo.langtype;
+; 127  :             dmyproc->langtype = ModuleInfo.langtype;
 
 	mov	eax, DWORD PTR ModuleInfo+364
 	mov	DWORD PTR [rcx+76], eax
 
-; 114  :             if ( write_to_file == TRUE ) {
+; 128  :             if ( write_to_file == TRUE ) {
 
 	cmp	BYTE PTR write_to_file, 1
 	jne	SHORT $LN20@AddLinnumD
 
-; 115  :                 curr = LclAlloc( sizeof( struct line_num_info ) );
+; 129  :                 curr = LclAlloc( sizeof( struct line_num_info ) );
 
 	mov	ecx, 24
 	call	LclAlloc
 
-; 116  :                 curr->sym = dmyproc;
+; 130  :                 curr->sym = dmyproc;
 
 	mov	rcx, QWORD PTR dmyproc
 	mov	rbx, rax
 	mov	QWORD PTR [rax+16], rcx
 
-; 117  :                 curr->line_number = GetLineNumber();
+; 131  :                 curr->line_number = GetLineNumber();
 
 	call	GetLineNumber
 
-; 118  :                 curr->file = srcfile;
+; 132  :                 curr->file = srcfile;
 
 	mov	ecx, esi
 
-; 119  :                 curr->number = 0;
+; 133  :                 curr->number = 0;
 
 	mov	DWORD PTR [rbx+8], 0
 	shl	ecx, 20
 	and	eax, 1048575				; 000fffffH
 	or	eax, ecx
 
-; 120  :                 DebugMsg1(("AddLinnumDataRef: CURRPROC=NULL, sym=%s, calling AddLinnumData(src=%u.%u)\n", curr->sym->name, curr->file, curr->line_number ));
-; 121  :                 AddLinnumData( curr );
+; 134  :                 DebugMsg1(("AddLinnumDataRef: CURRPROC=NULL, sym=%s, calling AddLinnumData(src=%u.%u)\n", curr->sym->name, curr->file, curr->line_number ));
+; 135  :                 AddLinnumData( curr );
 
 	mov	rcx, rbx
 	mov	DWORD PTR [rbx+12], eax
 	call	AddLinnumData
 $LN20@AddLinnumD:
 
-; 122  :             }
-; 123  :         }
-; 124  :     }
-; 125  : #endif
-; 126  : 
-; 127  :     if(  line_num && ( write_to_file == FALSE || lastLineNumber == line_num )) {
+; 136  :             }
+; 137  :         }
+; 138  :     }
+; 139  : #endif
+; 140  : 
+; 141  :     if(  line_num && ( write_to_file == FALSE || lastLineNumber == line_num )) {
 
 	test	edi, edi
 	je	SHORT $LN9@AddLinnumD
@@ -476,36 +579,36 @@ $LN20@AddLinnumD:
 	je	$LN1@AddLinnumD
 $LN9@AddLinnumD:
 
-; 128  : #ifdef DEBUG_OUT
-; 129  :         if ( write_to_file == TRUE )
-; 130  :             DebugMsg1(("AddLinnumDataRef(src=%u.%u) line skipped, lastline=%u\n", srcfile, line_num, lastLineNumber ));
-; 131  : #endif
-; 132  :         return;
-; 133  :     }
-; 134  :     DebugMsg1(("AddLinnumDataRef(src=%u.%u): currofs=%Xh, CurrProc=%s, GeneratedCode=%u\n", srcfile, line_num, GetCurrOffset(), CurrProc ? CurrProc->sym.name : "NULL", ModuleInfo.GeneratedCode ));
-; 135  : 
-; 136  :     curr = LclAlloc( sizeof( struct line_num_info ) );
+; 142  : #ifdef DEBUG_OUT
+; 143  :         if ( write_to_file == TRUE )
+; 144  :             DebugMsg1(("AddLinnumDataRef(src=%u.%u) line skipped, lastline=%u\n", srcfile, line_num, lastLineNumber ));
+; 145  : #endif
+; 146  :         return;
+; 147  :     }
+; 148  :     DebugMsg1(("AddLinnumDataRef(src=%u.%u): currofs=%Xh, CurrProc=%s, GeneratedCode=%u\n", srcfile, line_num, GetCurrOffset(), CurrProc ? CurrProc->sym.name : "NULL", ModuleInfo.GeneratedCode ));
+; 149  : 
+; 150  :     curr = LclAlloc( sizeof( struct line_num_info ) );
 
 	mov	ecx, 24
 	call	LclAlloc
 	mov	rbx, rax
 
-; 137  :     curr->number = line_num;
+; 151  :     curr->number = line_num;
 
 	mov	DWORD PTR [rax+8], edi
 
-; 138  : #if COFF_SUPPORT
-; 139  :     if ( line_num == 0 ) { /* happens for COFF only */
+; 152  : #if COFF_SUPPORT
+; 153  :     if ( line_num == 0 ) { /* happens for COFF only */
 
 	test	edi, edi
 	jne	$LN11@AddLinnumD
 
-; 140  :         /* changed v2.03 (CurrProc might have been NULL) */
-; 141  :         /* if ( Options.output_format == OFORMAT_COFF && CurrProc->sym.public == FALSE ) { */
-; 142  :         /* v2.09: avoid duplicates, check for pass 1 */
-; 143  :         //if ( Options.output_format == OFORMAT_COFF && CurrProc && CurrProc->sym.public == FALSE ) {
-; 144  :         if ( Parse_Pass == PASS_1 &&
-; 145  :             Options.output_format == OFORMAT_COFF && CurrProc && CurrProc->sym.ispublic == FALSE ) {
+; 154  :         /* changed v2.03 (CurrProc might have been NULL) */
+; 155  :         /* if ( Options.output_format == OFORMAT_COFF && CurrProc->sym.public == FALSE ) { */
+; 156  :         /* v2.09: avoid duplicates, check for pass 1 */
+; 157  :         //if ( Options.output_format == OFORMAT_COFF && CurrProc && CurrProc->sym.public == FALSE ) {
+; 158  :         if ( Parse_Pass == PASS_1 &&
+; 159  :             Options.output_format == OFORMAT_COFF && CurrProc && CurrProc->sym.ispublic == FALSE ) {
 
 	cmp	DWORD PTR Parse_Pass, edi
 	jne	SHORT $LN21@AddLinnumD
@@ -517,11 +620,11 @@ $LN9@AddLinnumD:
 	test	BYTE PTR [rcx+40], 128			; 00000080H
 	jne	SHORT $LN13@AddLinnumD
 
-; 146  :             CurrProc->sym.included = TRUE;
+; 160  :             CurrProc->sym.included = TRUE;
 
 	or	BYTE PTR [rcx+41], 64			; 00000040H
 
-; 147  :             AddPublicData( (struct asym *)CurrProc );
+; 161  :             AddPublicData( (struct asym *)CurrProc );
 
 	mov	rcx, QWORD PTR CurrProc
 	call	AddPublicData
@@ -529,23 +632,23 @@ $LN21@AddLinnumD:
 	mov	rcx, QWORD PTR CurrProc
 $LN13@AddLinnumD:
 
-; 148  :         }
-; 149  :         /* changed v2.03 */
-; 150  :         /* curr->sym = (struct asym *)CurrProc; */
-; 151  :         curr->sym = ( CurrProc ? (struct asym *)CurrProc : dmyproc );
+; 162  :         }
+; 163  :         /* changed v2.03 */
+; 164  :         /* curr->sym = (struct asym *)CurrProc; */
+; 165  :         curr->sym = ( CurrProc ? (struct asym *)CurrProc : dmyproc );
 
 	mov	rax, QWORD PTR dmyproc
 	test	rcx, rcx
 	cmovne	rax, rcx
 	mov	QWORD PTR [rbx+16], rax
 
-; 152  :         curr->line_number = GetLineNumber();
+; 166  :         curr->line_number = GetLineNumber();
 
 	call	GetLineNumber
 
-; 153  :         curr->file        = srcfile;
-; 154  :         /* set the function's size! */
-; 155  :         if ( dmyproc ) {
+; 167  :         curr->file        = srcfile;
+; 168  :         /* set the function's size! */
+; 169  :         if ( dmyproc ) {
 
 	mov	rdx, QWORD PTR dmyproc
 	and	eax, 1048575				; 000fffffH
@@ -556,14 +659,14 @@ $LN13@AddLinnumD:
 	test	rdx, rdx
 	je	SHORT $LN14@AddLinnumD
 
-; 156  :             /**/myassert( dmyproc->segment );
-; 157  :             dmyproc->total_size =
+; 170  :             /**/myassert( dmyproc->segment );
+; 171  :             dmyproc->total_size =
 
 	mov	rax, QWORD PTR [rdx+24]
 
-; 158  :                 ((struct dsym *)dmyproc->segment)->e.seginfo->current_loc -
-; 159  :                 dmyproc->offset;
-; 160  :             dmyproc = NULL;
+; 172  :                 ((struct dsym *)dmyproc->segment)->e.seginfo->current_loc -
+; 173  :                 dmyproc->offset;
+; 174  :             dmyproc = NULL;
 
 	mov	QWORD PTR dmyproc, 0
 	mov	rcx, QWORD PTR [rax+96]
@@ -572,9 +675,9 @@ $LN13@AddLinnumD:
 	mov	DWORD PTR [rdx+56], eax
 $LN14@AddLinnumD:
 
-; 161  :         }
-; 162  :         /* v2.11: write a 0x7fff line item if prologue exists */
-; 163  :         if ( CurrProc && CurrProc->e.procinfo->size_prolog ) {
+; 175  :         }
+; 176  :         /* v2.11: write a 0x7fff line item if prologue exists */
+; 177  :         if ( CurrProc && CurrProc->e.procinfo->size_prolog ) {
 
 	mov	rax, QWORD PTR CurrProc
 	test	rax, rax
@@ -583,63 +686,63 @@ $LN14@AddLinnumD:
 	cmp	BYTE PTR [rax+85], 0
 	je	SHORT $LN12@AddLinnumD
 
-; 164  :             DebugMsg1(("AddLinnumDataRef: calling AddLinnumData(src=%u.%u) sym=%s\n", curr->file, curr->line_number, curr->sym->name ));
-; 165  :             AddLinnumData( curr );
+; 178  :             DebugMsg1(("AddLinnumDataRef: calling AddLinnumData(src=%u.%u) sym=%s\n", curr->file, curr->line_number, curr->sym->name ));
+; 179  :             AddLinnumData( curr );
 
 	mov	rcx, rbx
 	call	AddLinnumData
 
-; 166  :             curr = LclAlloc( sizeof( struct line_num_info ) );
+; 180  :             curr = LclAlloc( sizeof( struct line_num_info ) );
 
 	mov	ecx, 24
 	call	LclAlloc
 	mov	rbx, rax
 
-; 167  :             curr->number = GetLineNumber();
+; 181  :             curr->number = GetLineNumber();
 
 	call	GetLineNumber
 	mov	DWORD PTR [rbx+8], eax
 $LN11@AddLinnumD:
 
-; 168  :             curr->offset = GetCurrOffset();
-; 169  :             curr->srcfile = srcfile;
-; 170  :         }
-; 171  :     } else {
-; 172  : #endif
-; 173  :         curr->offset = GetCurrOffset();
+; 182  :             curr->offset = GetCurrOffset();
+; 183  :             curr->srcfile = srcfile;
+; 184  :         }
+; 185  :     } else {
+; 186  : #endif
+; 187  :         curr->offset = GetCurrOffset();
 
 	call	GetCurrOffset
 
-; 174  :         curr->srcfile = srcfile;
+; 188  :         curr->srcfile = srcfile;
 
 	mov	DWORD PTR [rbx+16], esi
 	mov	DWORD PTR [rbx+12], eax
 $LN12@AddLinnumD:
 
-; 175  : #if COFF_SUPPORT
-; 176  :     }
-; 177  : #endif
-; 178  :     lastLineNumber = line_num;
-; 179  : 
-; 180  :     /* v2.11: added, improved multi source support for CV.
-; 181  :      * Also, the size of line number info could have become > 1024,
-; 182  :      * ( even > 4096, thus causing an "internal error in omfint.c" )
-; 183  :      */
-; 184  :     if ( Options.output_format == OFORMAT_OMF )
+; 189  : #if COFF_SUPPORT
+; 190  :     }
+; 191  : #endif
+; 192  :     lastLineNumber = line_num;
+; 193  : 
+; 194  :     /* v2.11: added, improved multi source support for CV.
+; 195  :      * Also, the size of line number info could have become > 1024,
+; 196  :      * ( even > 4096, thus causing an "internal error in omfint.c" )
+; 197  :      */
+; 198  :     if ( Options.output_format == OFORMAT_OMF )
 
 	cmp	DWORD PTR Options+144, 1
 	mov	DWORD PTR lastLineNumber, edi
 	jne	SHORT $LN16@AddLinnumD
 
-; 185  :         omf_check_flush( curr );
+; 199  :         omf_check_flush( curr );
 
 	mov	rcx, rbx
 	call	omf_check_flush
 $LN16@AddLinnumD:
 
-; 186  : 
-; 187  :     /* v2.10: warning if line-numbers for segments without class code! */
-; 188  :     if ( CurrSeg->e.seginfo->linnum_init == FALSE ) {
+; 200  : 
+; 201  :     /* v2.10: warning if line-numbers for segments without class code! */
+; 202  :     if ( CurrSeg->e.seginfo->linnum_init == FALSE ) {
 
 	mov	rax, QWORD PTR ModuleInfo+432
 	mov	rcx, QWORD PTR [rax+96]
@@ -647,12 +750,12 @@ $LN16@AddLinnumD:
 	test	al, 64					; 00000040H
 	jne	SHORT $LN18@AddLinnumD
 
-; 189  :         CurrSeg->e.seginfo->linnum_init = TRUE;
+; 203  :         CurrSeg->e.seginfo->linnum_init = TRUE;
 
 	or	al, 64					; 00000040H
 	mov	BYTE PTR [rcx+107], al
 
-; 190  :         if ( TypeFromClassName( CurrSeg, CurrSeg->e.seginfo->clsym ) != SEGTYPE_CODE ) {
+; 204  :         if ( TypeFromClassName( CurrSeg, CurrSeg->e.seginfo->clsym ) != SEGTYPE_CODE ) {
 
 	mov	rcx, QWORD PTR ModuleInfo+432
 	mov	rdx, QWORD PTR [rcx+96]
@@ -661,7 +764,7 @@ $LN16@AddLinnumD:
 	cmp	eax, 1
 	je	SHORT $LN18@AddLinnumD
 
-; 191  :             EmitWarn( 2, LINNUM_INFO_FOR_SEGMENT_WITHOUT_CLASS_CODE, CurrSeg->sym.name );
+; 205  :             EmitWarn( 2, LINNUM_INFO_FOR_SEGMENT_WITHOUT_CLASS_CODE, CurrSeg->sym.name );
 
 	mov	r8, QWORD PTR ModuleInfo+432
 	mov	edx, 187				; 000000bbH
@@ -670,18 +773,18 @@ $LN16@AddLinnumD:
 	call	EmitWarn
 $LN18@AddLinnumD:
 
-; 192  :         }
-; 193  :     }
-; 194  :     DebugMsg1(("AddLinnumDataRef: calling AddLinnumData(src=%u.%u ofs=%X)\n", curr->number == 0 ? curr->file : curr->srcfile, curr->number, curr->offset ));
-; 195  :     AddLinnumData( curr );
+; 206  :         }
+; 207  :     }
+; 208  :     DebugMsg1(("AddLinnumDataRef: calling AddLinnumData(src=%u.%u ofs=%X)\n", curr->number == 0 ? curr->file : curr->srcfile, curr->number, curr->offset ));
+; 209  :     AddLinnumData( curr );
 
 	mov	rcx, rbx
 	call	AddLinnumData
 $LN1@AddLinnumD:
 
-; 196  : 
-; 197  :     return;
-; 198  : }
+; 210  : 
+; 211  :     return;
+; 212  : }
 
 	mov	rbx, QWORD PTR [rsp+64]
 	mov	rsi, QWORD PTR [rsp+72]

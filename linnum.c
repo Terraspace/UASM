@@ -39,6 +39,7 @@ static void AddLinnumData( struct line_num_info *data )
 /*****************************************************/
 {
     struct qdesc *q;
+   
 #if COFF_SUPPORT
     if ( Options.output_format == OFORMAT_COFF ) {
         q = (struct qdesc *)CurrSeg->e.seginfo->LinnumQueue;
@@ -47,7 +48,8 @@ static void AddLinnumData( struct line_num_info *data )
             CurrSeg->e.seginfo->LinnumQueue = q;
             q->head = NULL;
         }
-    } else
+    }
+    else
 #endif
         q = &LinnumQueue;
 
@@ -55,8 +57,20 @@ static void AddLinnumData( struct line_num_info *data )
     if ( q->head == NULL)
         q->head = q->tail = data;
     else {
-        ((struct line_num_info *)q->tail)->next = data;
-        q->tail = data;
+      if (ModuleInfo.Ofssize == USE32) {
+        if ((q->tail && ((uint_32)q->tail < 0x00FFFFFF))) {
+          ((struct line_num_info *)q->tail)->next = data;
+          q->tail = data;
+          }
+        }
+#if AMD64_SUPPORT
+      else{
+        if (q->tail && ((uint_64)q->tail < 0x00007FFFFFFFFFFF)) {
+          ((struct line_num_info *)q->tail)->next = data;
+          q->tail = data;
+        }
+      }
+#endif
     }
 }
 
@@ -207,6 +221,16 @@ void QueueDeleteLinnum( struct qdesc *queue )
         return;
     curr = queue->head;
     for( ; curr ; curr = next ) {
+      if (ModuleInfo.Ofssize == USE32) {
+          if (((uint_32) curr > 0x00FFFFFF) || ((uint_32)curr < 0x07FFFF))
+            break;
+      }
+#if AMD64_SUPPORT
+      else {
+        if (((uint_64)curr > 0x00007FFFFFFFFFFF)|| ((uint_64)curr < 0x00007FFFFFFFF))
+          break;
+      }
+#endif
         next = curr->next;
         LclFree( curr );
     }

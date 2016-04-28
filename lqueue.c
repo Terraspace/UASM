@@ -100,6 +100,7 @@ void AddLineQueueX( const char *fmt, ... )
     char *d;
     int i;
     int_32 l;
+    int_64 q;
     const char *s;
     const char *p;
     char buffer[MAX_LINE_LEN];
@@ -124,6 +125,16 @@ void AddLineQueueX( const char *fmt, ... )
                 d += i;
                 *d = NULLC;
                 break;
+#if AMD64_SUPPORT
+            case 'q':
+              q = va_arg(args, int_64);
+              myqtoa(q, d, 10, q < 0, FALSE);
+              d += strlen(d);
+              /* v2.07: add a 't' suffix if radix is != 10 */
+              if (ModuleInfo.radix != 10)
+                *d++ = 't';
+              break;
+#endif
             case 'd':
             case 'u':
             case 'x':

@@ -13,12 +13,12 @@ COMM	StackAdj:DWORD
 COMM	StackAdjHigh:DWORD
 _DATA	ENDS
 _BSS	SEGMENT
-$SG12532 DB	01H DUP (?)
-$SG11588 DB	01H DUP (?)
-$SG11618 DB	01H DUP (?)
-$SG11621 DB	01H DUP (?)
-$SG11640 DB	01H DUP (?)
-$SG11762 DB	01H DUP (?)
+$SG12543 DB	01H DUP (?)
+$SG11599 DB	01H DUP (?)
+$SG11629 DB	01H DUP (?)
+$SG11632 DB	01H DUP (?)
+$SG11651 DB	01H DUP (?)
+$SG11773 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	decoflags:BYTE
@@ -27,7 +27,7 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG12096 DB	01H DUP (?)
+$SG12107 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	CurrProc:QWORD
@@ -44,183 +44,182 @@ stackreg DD	0dH
 	DD	015H
 	DD	077H
 	ORG $+4
-fmtstk0	DQ	FLAT:$SG11318
-	DQ	FLAT:$SG11319
-fmtstk1	DQ	FLAT:$SG11321
-	DQ	FLAT:$SG11322
+fmtstk0	DQ	FLAT:$SG11329
+	DQ	FLAT:$SG11330
+fmtstk1	DQ	FLAT:$SG11332
+	DQ	FLAT:$SG11333
 CONST	ENDS
 _DATA	SEGMENT
-$SG12288 DB	'%r %r, %u', 00H
-	ORG $+2
-$SG12289 DB	'%r', 00H
+$SG12288 DB	'pop %r', 00H
 	ORG $+1
-$SG12315 DB	'push %r', 00H
-$SG12316 DB	'mov %r, %r', 00H
+$SG12289 DB	'pop %r', 00H
 	ORG $+1
-$SG11364 DB	'::', 00H
+$SG12294 DB	'vmovdqa [%r+%u+%s], %r', 00H
 	ORG $+1
-$SG12320 DB	'push %r', 00H
-$SG12321 DB	'sub %r, %d + %s', 00H
-$SG12326 DB	'add %r, %d', 00H
-	ORG $+1
-$SG11921 DB	'dw', 00H
-	ORG $+1
-$SG12327 DB	'sub %r, %d', 00H
-	ORG $+1
-$SG11923 DB	',', 00H
-	ORG $+2
-$SG12329 DB	'push %r', 00H
-$SG12330 DB	'mov %r, %s', 00H
-	ORG $+1
-$SG11926 DB	'dw', 00H
-	ORG $+1
-$SG12331 DB	'mov %r, %r', 00H
-	ORG $+1
-$SG12274 DB	'cld', 00H
-$SG12333 DB	'push %r', 00H
-$SG11318 DB	'sub %r, %d', 00H
-	ORG $+1
-$SG11319 DB	'%r %d', 00H
-	ORG $+2
-$SG11367 DB	'%s::%s', 00H
-	ORG $+5
-$SG11321 DB	'sub %r, %d + %s', 00H
-$SG11322 DB	'%r %d + %s', 00H
-	ORG $+1
-$SG11376 DB	'%d%c', 00H
+$SG12296 DB	'%r %r, %u+%s', 00H
 	ORG $+3
-$SG11394 DB	'%d%c', 00H
-	ORG $+3
-$SG12425 DB	'pop %r', 00H
+$SG12297 DB	'vmovdqa [%r+%u], %r', 00H
+$SG12300 DB	'%r', 00H
 	ORG $+1
-$SG12427 DB	'pop %r', 00H
-	ORG $+5
-$SG12455 DB	'vmovdqa %r, [%r + %u + %s]', 00H
-	ORG $+5
-$SG12456 DB	'vmovdqa %r, [%r + %u]', 00H
+$SG12299 DB	'%r %r, %u', 00H
 	ORG $+2
-$SG12462 DB	'add %r, %d + %s', 00H
-$SG12463 DB	'add %r, %d + %s', 00H
-$SG12464 DB	'add %r, %d', 00H
-	ORG $+5
-$SG12473 DB	'mov %r, [%r+%u]', 00H
-$SG12476 DB	'pop %r', 00H
+$SG11375 DB	'::', 00H
 	ORG $+1
-$SG12486 DB	'add %r, %d + %s', 00H
-$SG12488 DB	'pop %r', 00H
+$SG12326 DB	'push %r', 00H
+$SG12327 DB	'mov %r, %r', 00H
 	ORG $+1
-$SG12494 DB	'leave', 00H
+$SG11932 DB	'dw', 00H
+	ORG $+1
+$SG12331 DB	'push %r', 00H
+$SG12332 DB	'sub %r, %d + %s', 00H
+$SG12337 DB	'add %r, %d', 00H
+	ORG $+1
+$SG11934 DB	',', 00H
 	ORG $+2
-$SG12499 DB	'add %r, %d', 00H
+$SG12338 DB	'sub %r, %d', 00H
+	ORG $+1
+$SG11937 DB	'dw', 00H
+	ORG $+1
+$SG12340 DB	'push %r', 00H
+$SG12341 DB	'mov %r, %s', 00H
+	ORG $+1
+$SG12285 DB	'cld', 00H
+$SG12342 DB	'mov %r, %r', 00H
 	ORG $+5
-$SG12501 DB	'mov %r, %r', 00H
+$SG12344 DB	'push %r', 00H
+$SG11329 DB	'sub %r, %d', 00H
 	ORG $+1
-$SG12502 DB	'pop %r', 00H
-	ORG $+5
-$SG12533 DB	'%s, 0%XH, 0%XH, 0%XH, <<%s>>, <%s>', 00H
-	ORG $+5
-$SG12535 DB	'option epilogue:none', 0aH, 00H
-	ORG $+2
-$SG12566 DB	'%d%c', 00H
-	ORG $+3
-$SG12570 DB	'%d%c', 00H
-	ORG $+3
-$SG11716 DB	'PRIVATE', 00H
-$SG11721 DB	'PUBLIC', 00H
-	ORG $+1
-$SG11723 DB	'EXPORT', 00H
-	ORG $+1
-$SG11735 DB	'FORCEFRAME', 00H
-	ORG $+1
-$SG11738 DB	'LOADDS', 00H
-	ORG $+1
-$SG11751 DB	'USES', 00H
-	ORG $+3
-$SG11910 DB	'.xdata', 00H
-	ORG $+1
-$SG11915 DB	'%s %r', 00H
+$SG11330 DB	'%r %d', 00H
 	ORG $+6
-$SG11916 DB	'%s %r align(%u) flat read ''DATA''', 00H
-	ORG $+7
-$SG11917 DB	'$xdatasym label near', 00H
+$SG11332 DB	'sub %r, %d + %s', 00H
+$SG11333 DB	'%r %d + %s', 00H
+	ORG $+1
+$SG11378 DB	'%s::%s', 00H
+	ORG $+1
+$SG11387 DB	'%d%c', 00H
 	ORG $+3
-$SG11919 DB	'db %ut + (0%xh shl 3), %ut, %ut, 0%xh + (0%xh shl 4)', 00H
+$SG11405 DB	'%d%c', 00H
 	ORG $+3
-$SG11922 DB	'%s 0%xh', 00H
-$SG11927 DB	'%r 4', 00H
-	ORG $+3
-$SG11929 DB	'dd %r %s', 00H
-	ORG $+3
-$SG11930 DB	'%r 8', 00H
-	ORG $+3
-$SG11931 DB	'%s %r', 00H
-	ORG $+2
-$SG11934 DB	'.pdata', 00H
+$SG12436 DB	'pop %r', 00H
+	ORG $+1
+$SG12438 DB	'pop %r', 00H
 	ORG $+5
-$SG11935 DB	'.pdata$%04u', 00H
-$SG11938 DB	'%s %r', 00H
-	ORG $+6
-$SG11939 DB	'%s %r align(%u) flat read ''DATA''', 00H
-	ORG $+7
-$SG11940 DB	'dd %r %s, %r %s+0%xh, %r $xdatasym+0%xh', 00H
-$SG11941 DB	'%s %r', 00H
-	ORG $+2
-$SG12027 DB	'CODE', 00H
-	ORG $+3
-$SG12093 DB	'option prologue:none', 0aH, 00H
-	ORG $+2
-$SG12097 DB	' (%s, 0%XH, 0%XH, 0%XH, <<%s>>, <%s>)', 00H
-	ORG $+2
-$SG12120 DB	'movq [%r+%u], %r', 00H
-	ORG $+7
-$SG12122 DB	'mov [%r+%u], %r', 00H
-$SG12123 DB	'mov [%r+%u], %r', 00H
-$SG12128 DB	'movq [%r+%u], %r', 00H
-	ORG $+7
-$SG12129 DB	'mov [%r+%u], %r', 00H
-$SG12130 DB	'mov [%r+%u], %r', 00H
-$SG12190 DB	'mov [%r+%u], %r', 00H
-$SG12191 DB	'%r %r, %u', 00H
-	ORG $+6
-$SG12224 DB	'push %r', 00H
-$SG12225 DB	'%r %r', 00H
-	ORG $+2
-$SG12226 DB	'mov %r, %r', 00H
+$SG12466 DB	'vmovdqa %r, [%r + %u + %s]', 00H
 	ORG $+5
-$SG12227 DB	'%r %r, 0', 00H
+$SG12467 DB	'vmovdqa %r, [%r + %u]', 00H
+	ORG $+2
+$SG12473 DB	'add %r, %d + %s', 00H
+$SG12474 DB	'add %r, %d + %s', 00H
+$SG12475 DB	'add %r, %d', 00H
+	ORG $+5
+$SG12484 DB	'mov %r, [%r+%u]', 00H
+$SG12487 DB	'pop %r', 00H
+	ORG $+1
+$SG12497 DB	'add %r, %d + %s', 00H
+$SG12499 DB	'pop %r', 00H
+	ORG $+1
+$SG12505 DB	'leave', 00H
+	ORG $+2
+$SG12510 DB	'add %r, %d', 00H
+	ORG $+5
+$SG12512 DB	'mov %r, %r', 00H
+	ORG $+1
+$SG12513 DB	'pop %r', 00H
+	ORG $+5
+$SG12544 DB	'%s, 0%XH, 0%XH, 0%XH, <<%s>>, <%s>', 00H
+	ORG $+5
+$SG12546 DB	'option epilogue:none', 0aH, 00H
+	ORG $+2
+$SG12577 DB	'%d%c', 00H
+	ORG $+3
+$SG12581 DB	'%d%c', 00H
+	ORG $+3
+$SG11727 DB	'PRIVATE', 00H
+$SG11732 DB	'PUBLIC', 00H
+	ORG $+1
+$SG11734 DB	'EXPORT', 00H
+	ORG $+1
+$SG11746 DB	'FORCEFRAME', 00H
+	ORG $+1
+$SG11749 DB	'LOADDS', 00H
+	ORG $+1
+$SG11762 DB	'USES', 00H
+	ORG $+3
+$SG11921 DB	'.xdata', 00H
+	ORG $+1
+$SG11926 DB	'%s %r', 00H
+	ORG $+6
+$SG11927 DB	'%s %r align(%u) flat read ''DATA''', 00H
 	ORG $+7
+$SG11928 DB	'$xdatasym label near', 00H
+	ORG $+3
+$SG11930 DB	'db %ut + (0%xh shl 3), %ut, %ut, 0%xh + (0%xh shl 4)', 00H
+	ORG $+3
+$SG11933 DB	'%s 0%xh', 00H
+$SG11938 DB	'%r 4', 00H
+	ORG $+3
+$SG11940 DB	'dd %r %s', 00H
+	ORG $+3
+$SG11941 DB	'%r 8', 00H
+	ORG $+3
+$SG11942 DB	'%s %r', 00H
+	ORG $+2
+$SG11945 DB	'.pdata', 00H
+	ORG $+5
+$SG11946 DB	'.pdata$%04u', 00H
+$SG11949 DB	'%s %r', 00H
+	ORG $+6
+$SG11950 DB	'%s %r align(%u) flat read ''DATA''', 00H
+	ORG $+7
+$SG11951 DB	'dd %r %s, %r %s+0%xh, %r $xdatasym+0%xh', 00H
+$SG11952 DB	'%s %r', 00H
+	ORG $+2
+$SG12038 DB	'CODE', 00H
+	ORG $+3
+$SG12104 DB	'option prologue:none', 0aH, 00H
+	ORG $+2
+$SG12108 DB	' (%s, 0%XH, 0%XH, 0%XH, <<%s>>, <%s>)', 00H
+	ORG $+2
+$SG12131 DB	'movq [%r+%u], %r', 00H
+	ORG $+7
+$SG12133 DB	'mov [%r+%u], %r', 00H
+$SG12134 DB	'mov [%r+%u], %r', 00H
+$SG12139 DB	'movq [%r+%u], %r', 00H
+	ORG $+7
+$SG12140 DB	'mov [%r+%u], %r', 00H
+$SG12141 DB	'mov [%r+%u], %r', 00H
+$SG12201 DB	'mov [%r+%u], %r', 00H
+$SG12202 DB	'%r %r, %u', 00H
+	ORG $+6
 $SG12235 DB	'push %r', 00H
-$SG12237 DB	'%r %r', 00H
+$SG12236 DB	'%r %r', 00H
 	ORG $+2
-$SG12241 DB	'push %r', 00H
-$SG12243 DB	'%r %r', 00H
-	ORG $+2
-$SG12266 DB	'mov %r, %u', 00H
-	ORG $+1
-$SG12267 DB	'dec %r', 00H
+$SG12237 DB	'mov %r, %r', 00H
 	ORG $+5
-$SG12268 DB	'mov byte ptr [%r + %r], 0', 00H
+$SG12238 DB	'%r %r, 0', 00H
+	ORG $+7
+$SG12246 DB	'push %r', 00H
+$SG12248 DB	'%r %r', 00H
+	ORG $+2
+$SG12252 DB	'push %r', 00H
+$SG12254 DB	'%r %r', 00H
+	ORG $+2
+$SG12277 DB	'mov %r, %u', 00H
+	ORG $+1
+$SG12278 DB	'dec %r', 00H
+	ORG $+5
+$SG12279 DB	'mov byte ptr [%r + %r], 0', 00H
 	ORG $+6
-$SG12269 DB	'dw 0F875h', 00H
+$SG12280 DB	'dw 0F875h', 00H
 	ORG $+6
-$SG12270 DB	'push %r', 00H
-$SG12271 DB	'push %r', 00H
-$SG12272 DB	'xor %r, %r', 00H
+$SG12281 DB	'push %r', 00H
+$SG12282 DB	'push %r', 00H
+$SG12283 DB	'xor %r, %r', 00H
 	ORG $+5
-$SG12273 DB	'mov %r, %u', 00H
+$SG12284 DB	'mov %r, %u', 00H
 	ORG $+5
-$SG12275 DB	'lea %r, [%r+16]', 00H
-$SG12276 DB	'rep stosb', 00H
-	ORG $+2
-$SG12277 DB	'pop %r', 00H
-	ORG $+1
-$SG12278 DB	'pop %r', 00H
-	ORG $+5
-$SG12283 DB	'vmovdqa [%r+%u+%s], %r', 00H
-	ORG $+1
-$SG12285 DB	'%r %r, %u+%s', 00H
-	ORG $+3
-$SG12286 DB	'vmovdqa [%r+%u], %r', 00H
+$SG12286 DB	'lea %r, [%r+16]', 00H
+$SG12287 DB	'rep stosb', 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	printf
@@ -1663,9 +1662,9 @@ $LN3@write_user:
 ; 3227 :     //sprintf( buffer,"%s %s, %02XH, %02XH, %02XH, <<%s>>, <%s>", ModuleInfo.proc_epilogue,
 ; 3228 :     sprintf( buffer,"%s, 0%XH, 0%XH, 0%XH, <<%s>>, <%s>",
 
-	lea	rcx, OFFSET FLAT:$SG12532
+	lea	rcx, OFFSET FLAT:$SG12543
 	mov	rax, QWORD PTR [r15+40]
-	lea	rdx, OFFSET FLAT:$SG12533
+	lea	rdx, OFFSET FLAT:$SG12544
 	mov	r8, QWORD PTR CurrProc
 	test	rax, rax
 	mov	r9d, ebp
@@ -1705,7 +1704,7 @@ $LN3@write_user:
 
 ; 3236 :         printf( "option epilogue:none\n" );
 
-	lea	rcx, OFFSET FLAT:$SG12535
+	lea	rcx, OFFSET FLAT:$SG12546
 	call	printf
 $LN12@write_user:
 
@@ -1832,7 +1831,7 @@ $LN2@write_defa:
 ; 3108 :         //else
 ; 3109 :         AddLineQueueX( "add %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize, sym_ReservedStack->name );
 
-	lea	rcx, OFFSET FLAT:$SG12486
+	lea	rcx, OFFSET FLAT:$SG12497
 	mov	r8d, DWORD PTR [rbx+36]
 	mov	edx, 119				; 00000077H
 	mov	edi, DWORD PTR [r9+16]
@@ -1860,7 +1859,7 @@ $LN4@write_defa:
 ; 3117 :         AddLineQueueX( "pop %r", T_DS );
 
 	mov	edx, 28
-	lea	rcx, OFFSET FLAT:$SG12488
+	lea	rcx, OFFSET FLAT:$SG12499
 	call	AddLineQueueX
 $LN5@write_defa:
 
@@ -1914,7 +1913,7 @@ $LN7@write_defa:
 
 ; 3138 :         AddLineQueue( "leave" );
 
-	lea	rcx, OFFSET FLAT:$SG12494
+	lea	rcx, OFFSET FLAT:$SG12505
 
 ; 3165 : #else
 ; 3166 :         AddLineQueueX( "pop %r", basereg[ModuleInfo.Ofssize] );
@@ -1964,7 +1963,7 @@ $LN12@write_defa:
 	movzx	eax, al
 	lea	rcx, OFFSET FLAT:stackreg
 	mov	edx, DWORD PTR [rcx+rax*4]
-	lea	rcx, OFFSET FLAT:$SG12499
+	lea	rcx, OFFSET FLAT:$SG12510
 
 ; 3165 : #else
 ; 3166 :         AddLineQueueX( "pop %r", basereg[ModuleInfo.Ofssize] );
@@ -2000,7 +1999,7 @@ $LN11@write_defa:
 	lea	rcx, OFFSET FLAT:stackreg
 	movzx	r8d, WORD PTR [rbx+86]
 	mov	edx, DWORD PTR [rcx+rax*4]
-	lea	rcx, OFFSET FLAT:$SG12501
+	lea	rcx, OFFSET FLAT:$SG12512
 	call	AddLineQueueX
 $LN15@write_defa:
 
@@ -2012,7 +2011,7 @@ $LN15@write_defa:
 ; 3164 :         AddLineQueueX( "pop %r", info->basereg );
 
 	movzx	edx, WORD PTR [rbx+86]
-	lea	rcx, OFFSET FLAT:$SG12502
+	lea	rcx, OFFSET FLAT:$SG12513
 	call	AddLineQueueX
 $LN10@write_defa:
 
@@ -2148,7 +2147,7 @@ $LL7@write_win6:
 	mov	rcx, QWORD PTR [rax+8]
 	mov	r8d, DWORD PTR stackreg[r15+r8*4]
 	mov	QWORD PTR [rsp+32], rcx
-	lea	rcx, OFFSET FLAT:$SG12455
+	lea	rcx, OFFSET FLAT:$SG12466
 	call	AddLineQueueX
 	jmp	SHORT $LN16@write_win6
 $LN15@write_win6:
@@ -2157,7 +2156,7 @@ $LN15@write_win6:
 ; 2969 :                         AddLineQueueX( "vmovdqa %r, [%r + %u]", *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i );
 
 	movzx	eax, BYTE PTR ModuleInfo+404
-	lea	rcx, OFFSET FLAT:$SG12456
+	lea	rcx, OFFSET FLAT:$SG12467
 	mov	r8d, DWORD PTR stackreg[r15+rax*4]
 	call	AddLineQueueX
 $LN16@write_win6:
@@ -2202,7 +2201,7 @@ $LN6@write_win6:
 ; 2979 :           AddLineQueueX("add %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize, sym_ReservedStack->name);
 
 	movzx	eax, BYTE PTR ModuleInfo+404
-	lea	rcx, OFFSET FLAT:$SG12462
+	lea	rcx, OFFSET FLAT:$SG12473
 	mov	r9, QWORD PTR [r9+8]
 	mov	edx, DWORD PTR stackreg[r15+rax*4]
 	call	AddLineQueueX
@@ -2216,7 +2215,7 @@ $LN19@write_win6:
 ; 2982 :           AddLineQueueX("add %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize, sym_ReservedStack->name);
 
 	movzx	eax, BYTE PTR ModuleInfo+404
-	lea	rcx, OFFSET FLAT:$SG12463
+	lea	rcx, OFFSET FLAT:$SG12474
 	mov	r9, QWORD PTR [r9+8]
 	mov	edx, DWORD PTR stackreg[r15+rax*4]
 	call	AddLineQueueX
@@ -2230,7 +2229,7 @@ $LN17@write_win6:
 ; 2985 :         AddLineQueueX( "add %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize );
 
 	movzx	eax, BYTE PTR ModuleInfo+404
-	lea	rcx, OFFSET FLAT:$SG12464
+	lea	rcx, OFFSET FLAT:$SG12475
 	mov	r8d, DWORD PTR [r14+36]
 	mov	edx, DWORD PTR stackreg[r15+rax*4]
 	call	AddLineQueueX
@@ -2307,7 +2306,7 @@ $LL10@write_win6:
 	movzx	eax, BYTE PTR ModuleInfo+404
 	mov	edx, ecx
 	mov	r9d, ebp
-	lea	rcx, OFFSET FLAT:$SG12473
+	lea	rcx, OFFSET FLAT:$SG12484
 	mov	r8d, DWORD PTR stackreg[r15+rax*4]
 	call	AddLineQueueX
 
@@ -2364,7 +2363,7 @@ $LN31@write_win6:
 ; 3018 :         AddLineQueueX( "pop %r", info->basereg );
 
 	mov	edx, ecx
-	lea	rcx, OFFSET FLAT:$SG12476
+	lea	rcx, OFFSET FLAT:$SG12487
 
 ; 3019 : #else
 ; 3020 :     AddLineQueueX( "pop %r", basereg[ModuleInfo.Ofssize] );
@@ -2454,7 +2453,7 @@ $LN11@pop_regist:
 ; 2918 :         AddLineQueueX("pop %r", *regist);
 
 	mov	edx, ecx
-	lea	rcx, OFFSET FLAT:$SG12425
+	lea	rcx, OFFSET FLAT:$SG12436
 	call	AddLineQueueX
 $LN2@pop_regist:
 
@@ -2499,7 +2498,7 @@ $LL7@pop_regist:
 ; 2926 :         AddLineQueueX("pop %r", *regist);
 
 	mov	edx, ecx
-	lea	rcx, OFFSET FLAT:$SG12427
+	lea	rcx, OFFSET FLAT:$SG12438
 	call	AddLineQueueX
 $LN5@pop_regist:
 
@@ -2679,13 +2678,13 @@ $LN14@write_defa:
 ; 2619 :             AddLineQueueX( "push %r", info->basereg );
 
 	movzx	edx, WORD PTR [rsi+86]
-	lea	rcx, OFFSET FLAT:$SG12315
+	lea	rcx, OFFSET FLAT:$SG12326
 	call	AddLineQueueX
 
 ; 2620 :             AddLineQueueX( "mov %r, %r", info->basereg, stackreg[ModuleInfo.Ofssize] );
 
 	movzx	eax, BYTE PTR ModuleInfo+404
-	lea	rcx, OFFSET FLAT:$SG12316
+	lea	rcx, OFFSET FLAT:$SG12327
 	movzx	edx, WORD PTR [rsi+86]
 	mov	r8d, DWORD PTR [r14+rax*4]
 	call	AddLineQueueX
@@ -2722,7 +2721,7 @@ $LL4@write_defa:
 ; 2632 :                 AddLineQueueX( "push %r", *regist );
 
 	movzx	edx, WORD PTR [rdi]
-	lea	rcx, OFFSET FLAT:$SG12320
+	lea	rcx, OFFSET FLAT:$SG12331
 	call	AddLineQueueX
 	lea	rdi, QWORD PTR [rdi+2]
 	sub	ebx, 1
@@ -2750,7 +2749,7 @@ $LN18@write_defa:
 	mov	r9, QWORD PTR sym_ReservedStack
 	mov	r8d, DWORD PTR [rsi+36]
 	movzx	eax, cl
-	lea	rcx, OFFSET FLAT:$SG12321
+	lea	rcx, OFFSET FLAT:$SG12332
 	mov	r9, QWORD PTR [r9+8]
 	mov	edx, DWORD PTR [r14+rax*4]
 	call	AddLineQueueX
@@ -2783,7 +2782,7 @@ $LN16@write_defa:
 ; 2653 :             AddLineQueueX( "sub %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize );
 
 	movzx	eax, cl
-	lea	rcx, OFFSET FLAT:$SG12327
+	lea	rcx, OFFSET FLAT:$SG12338
 	jmp	SHORT $LN39@write_defa
 $LN22@write_defa:
 
@@ -2791,7 +2790,7 @@ $LN22@write_defa:
 
 	movzx	eax, cl
 	neg	r8d
-	lea	rcx, OFFSET FLAT:$SG12326
+	lea	rcx, OFFSET FLAT:$SG12337
 $LN39@write_defa:
 	mov	edx, DWORD PTR [r14+rax*4]
 	call	AddLineQueueX
@@ -2808,7 +2807,7 @@ $LN21@write_defa:
 ; 2657 :         AddLineQueueX( "push %r", T_DS );
 
 	mov	edx, 28
-	lea	rcx, OFFSET FLAT:$SG12329
+	lea	rcx, OFFSET FLAT:$SG12340
 	call	AddLineQueueX
 
 ; 2658 :         AddLineQueueX( "mov %r, %s", T_AX, szDgroup );
@@ -2816,13 +2815,13 @@ $LN21@write_defa:
 	mov	ebx, 9
 	lea	r8, OFFSET FLAT:szDgroup
 	mov	edx, ebx
-	lea	rcx, OFFSET FLAT:$SG12330
+	lea	rcx, OFFSET FLAT:$SG12341
 	call	AddLineQueueX
 
 ; 2659 :         AddLineQueueX( "mov %r, %r", T_DS, ModuleInfo.Ofssize ? T_EAX : T_AX );
 
 	cmp	BYTE PTR ModuleInfo+404, 0
-	lea	rcx, OFFSET FLAT:$SG12331
+	lea	rcx, OFFSET FLAT:$SG12342
 	mov	eax, 17
 	cmovne	ebx, eax
 	mov	r8d, ebx
@@ -2850,7 +2849,7 @@ $LL7@write_defa:
 ; 2665 :             AddLineQueueX( "push %r", *regist );
 
 	movzx	edx, WORD PTR [rdi]
-	lea	rcx, OFFSET FLAT:$SG12333
+	lea	rcx, OFFSET FLAT:$SG12344
 	call	AddLineQueueX
 	lea	rdi, QWORD PTR [rdi+2]
 	sub	ebx, 1
@@ -3026,27 +3025,27 @@ $LN15@write_win6:
 ; 2357 :         AddLineQueueX( "push %r", info->basereg );
 
 	movzx	edx, WORD PTR [rdi+86]
-	lea	rcx, OFFSET FLAT:$SG12224
+	lea	rcx, OFFSET FLAT:$SG12235
 	call	AddLineQueueX
 
 ; 2358 :         AddLineQueueX( "%r %r", T_DOT_PUSHREG, info->basereg );
 
 	movzx	r8d, WORD PTR [rdi+86]
-	lea	rcx, OFFSET FLAT:$SG12225
+	lea	rcx, OFFSET FLAT:$SG12236
 	mov	edx, 416				; 000001a0H
 	call	AddLineQueueX
 
 ; 2359 :         AddLineQueueX( "mov %r, %r", info->basereg, T_RSP );
 
 	movzx	edx, WORD PTR [rdi+86]
-	lea	rcx, OFFSET FLAT:$SG12226
+	lea	rcx, OFFSET FLAT:$SG12237
 	mov	r8d, 119				; 00000077H
 	call	AddLineQueueX
 
 ; 2360 :         AddLineQueueX( "%r %r, 0", T_DOT_SETFRAME, info->basereg );
 
 	movzx	r8d, WORD PTR [rdi+86]
-	lea	rcx, OFFSET FLAT:$SG12227
+	lea	rcx, OFFSET FLAT:$SG12238
 	mov	edx, 420				; 000001a4H
 	call	AddLineQueueX
 $LN17@write_win6:
@@ -3125,7 +3124,7 @@ $LN23@write_win6:
 
 ; 2383 :               AddLineQueueX("push %r", *regist);
 
-	lea	rcx, OFFSET FLAT:$SG12235
+	lea	rcx, OFFSET FLAT:$SG12246
 	movzx	edx, WORD PTR [rbx]
 	call	AddLineQueueX
 
@@ -3142,7 +3141,7 @@ $LN23@write_win6:
 ; 2385 :                 AddLineQueueX("%r %r", T_DOT_PUSHREG, *regist);
 
 	mov	r8d, edx
-	lea	rcx, OFFSET FLAT:$SG12237
+	lea	rcx, OFFSET FLAT:$SG12248
 	mov	edx, 416				; 000001a0H
 	call	AddLineQueueX
 $LN2@write_win6:
@@ -3205,7 +3204,7 @@ $LN27@write_win6:
 ; 2405 :             AddLineQueueX("push %r", *regist);
 
 	mov	edx, ecx
-	lea	rcx, OFFSET FLAT:$SG12241
+	lea	rcx, OFFSET FLAT:$SG12252
 	call	AddLineQueueX
 
 ; 2406 :             if ((1 << GetRegNo(*regist)) & win64_nvgpr) {
@@ -3221,7 +3220,7 @@ $LN27@write_win6:
 ; 2407 :               AddLineQueueX("%r %r", T_DOT_PUSHREG, *regist);
 
 	mov	r8d, edx
-	lea	rcx, OFFSET FLAT:$SG12243
+	lea	rcx, OFFSET FLAT:$SG12254
 	mov	edx, 416				; 000001a0H
 	call	AddLineQueueX
 $LN5@write_win6:
@@ -3455,25 +3454,25 @@ $LN78@write_win6:
 ; 2485 : 				AddLineQueueX("mov %r, %u", T_EAX, info->localsize);
 
 	mov	edx, 17
-	lea	rcx, OFFSET FLAT:$SG12266
+	lea	rcx, OFFSET FLAT:$SG12277
 	call	AddLineQueueX
 
 ; 2486 : 				AddLineQueueX("dec %r", T_EAX);
 
 	mov	edx, 17
-	lea	rcx, OFFSET FLAT:$SG12267
+	lea	rcx, OFFSET FLAT:$SG12278
 	call	AddLineQueueX
 
 ; 2487 : 				AddLineQueueX("mov byte ptr [%r + %r], 0", T_RSP, T_RAX);
 
 	mov	edx, 119				; 00000077H
-	lea	rcx, OFFSET FLAT:$SG12268
+	lea	rcx, OFFSET FLAT:$SG12279
 	lea	r8d, QWORD PTR [rdx-4]
 	call	AddLineQueueX
 
 ; 2488 : 				AddLineQueueX("dw 0F875h");
 
-	lea	rcx, OFFSET FLAT:$SG12269
+	lea	rcx, OFFSET FLAT:$SG12280
 	call	AddLineQueueX
 
 ; 2489 : 			}
@@ -3486,56 +3485,56 @@ $LN50@write_win6:
 ; 2492 : 				AddLineQueueX("push %r", T_RDI);
 
 	mov	edx, 122				; 0000007aH
-	lea	rcx, OFFSET FLAT:$SG12270
+	lea	rcx, OFFSET FLAT:$SG12281
 	call	AddLineQueueX
 
 ; 2493 : 				AddLineQueueX("push %r", T_RCX);
 
 	mov	edx, 116				; 00000074H
-	lea	rcx, OFFSET FLAT:$SG12271
+	lea	rcx, OFFSET FLAT:$SG12282
 	call	AddLineQueueX
 
 ; 2494 : 				AddLineQueueX("xor %r, %r", T_EAX, T_EAX);
 
 	mov	edx, 17
-	lea	rcx, OFFSET FLAT:$SG12272
+	lea	rcx, OFFSET FLAT:$SG12283
 	mov	r8d, edx
 	call	AddLineQueueX
 
 ; 2495 : 				AddLineQueueX("mov %r, %u", T_ECX, info->localsize);
 
 	mov	r8d, DWORD PTR [rdi+36]
-	lea	rcx, OFFSET FLAT:$SG12273
+	lea	rcx, OFFSET FLAT:$SG12284
 	mov	edx, 18
 	call	AddLineQueueX
 
 ; 2496 : 				AddLineQueueX("cld");
 
-	lea	rcx, OFFSET FLAT:$SG12274
+	lea	rcx, OFFSET FLAT:$SG12285
 	call	AddLineQueueX
 
 ; 2497 : 				AddLineQueueX("lea %r, [%r+16]", T_RDI, T_RSP);
 
 	mov	edx, 122				; 0000007aH
-	lea	rcx, OFFSET FLAT:$SG12275
+	lea	rcx, OFFSET FLAT:$SG12286
 	lea	r8d, QWORD PTR [rdx-3]
 	call	AddLineQueueX
 
 ; 2498 : 				AddLineQueueX("rep stosb");
 
-	lea	rcx, OFFSET FLAT:$SG12276
+	lea	rcx, OFFSET FLAT:$SG12287
 	call	AddLineQueueX
 
 ; 2499 : 				AddLineQueueX("pop %r", T_RCX);
 
 	mov	edx, 116				; 00000074H
-	lea	rcx, OFFSET FLAT:$SG12277
+	lea	rcx, OFFSET FLAT:$SG12288
 	call	AddLineQueueX
 
 ; 2500 : 				AddLineQueueX("pop %r", T_RDI);
 
 	mov	edx, 122				; 0000007aH
-	lea	rcx, OFFSET FLAT:$SG12278
+	lea	rcx, OFFSET FLAT:$SG12289
 	call	AddLineQueueX
 $LN51@write_win6:
 
@@ -3586,7 +3585,7 @@ $LL12@write_win6:
 	je	SHORT $LN54@write_win6
 	mov	r9, QWORD PTR sym_ReservedStack
 	mov	DWORD PTR [rsp+32], ecx
-	lea	rcx, OFFSET FLAT:$SG12283
+	lea	rcx, OFFSET FLAT:$SG12294
 	mov	r9, QWORD PTR [r9+8]
 	call	AddLineQueueX
 
@@ -3608,7 +3607,7 @@ $LL12@write_win6:
 	mov	edx, 419				; 000001a3H
 	mov	rcx, QWORD PTR [rax+8]
 	mov	QWORD PTR [rsp+32], rcx
-	lea	rcx, OFFSET FLAT:$SG12285
+	lea	rcx, OFFSET FLAT:$SG12296
 	call	AddLineQueueX
 
 ; 2516 :                         }
@@ -3620,7 +3619,7 @@ $LN54@write_win6:
 ; 2518 :                         AddLineQueueX( "vmovdqa [%r+%u], %r", T_RSP, NUMQUAL i, *regist );
 
 	mov	r9d, ecx
-	lea	rcx, OFFSET FLAT:$SG12286
+	lea	rcx, OFFSET FLAT:$SG12297
 	call	AddLineQueueX
 
 ; 2519 :                         if ( ( 1 << GetRegNo( *regist ) ) & win64_nvxmm )  {
@@ -3636,7 +3635,7 @@ $LN54@write_win6:
 ; 2520 :                             AddLineQueueX( "%r %r, %u", T_DOT_SAVEYMM256, *regist, NUMQUAL i );
 
 	mov	r8d, edx
-	lea	rcx, OFFSET FLAT:$SG12288
+	lea	rcx, OFFSET FLAT:$SG12299
 	mov	edx, 419				; 000001a3H
 	mov	r9d, ebx
 	call	AddLineQueueX
@@ -3664,7 +3663,7 @@ $LN11@write_win6:
 ; 2529 :     AddLineQueueX( "%r", T_DOT_ENDPROLOG );
 
 	mov	edx, 414				; 0000019eH
-	lea	rcx, OFFSET FLAT:$SG12289
+	lea	rcx, OFFSET FLAT:$SG12300
 	mov	rsi, QWORD PTR [rsp+112]
 	mov	rbp, QWORD PTR [rsp+104]
 	mov	rbx, QWORD PTR [rsp+96]
@@ -3990,14 +3989,14 @@ $LL25@win64_Stor:
 
 	mov	r9d, ecx
 	mov	r8d, r14d
-	lea	rcx, OFFSET FLAT:$SG12190
+	lea	rcx, OFFSET FLAT:$SG12201
 	mov	edx, 119				; 00000077H
 	call	AddLineQueueX
 
 ; 2313 :             AddLineQueueX("%r %r, %u", T_DOT_SAVEREG, *regist, NUMQUAL sizestd);
 
 	movzx	r8d, WORD PTR [rdi]
-	lea	rcx, OFFSET FLAT:$SG12191
+	lea	rcx, OFFSET FLAT:$SG12202
 	mov	r9d, r14d
 	mov	edx, 417				; 000001a1H
 	call	AddLineQueueX
@@ -4115,7 +4114,7 @@ $LL4@win64_Save:
 ; 2213 :             AddLineQueueX("movq [%r+%u], %r", T_RSP, 8 + i * 8, T_XMM0 + i);
 
 	lea	r9d, DWORD PTR [rbp+40]
-	lea	rcx, OFFSET FLAT:$SG12120
+	lea	rcx, OFFSET FLAT:$SG12131
 
 ; 2214 :             info->home_used[i] = 1;
 ; 2215 :             ++info->home_taken;
@@ -4133,7 +4132,7 @@ $LN13@win64_Save:
 ; 2219 :               AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
 
 	mov	r9d, DWORD PTR [rsi]
-	lea	rcx, OFFSET FLAT:$SG12122
+	lea	rcx, OFFSET FLAT:$SG12133
 $LN31@win64_Save:
 	mov	r8d, ebx
 	mov	edx, 119				; 00000077H
@@ -4163,7 +4162,7 @@ $LN11@win64_Save:
 ; 2227 :           AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
 
 	mov	r9d, DWORD PTR [rsi]
-	lea	rcx, OFFSET FLAT:$SG12123
+	lea	rcx, OFFSET FLAT:$SG12134
 	mov	r8d, ebx
 	mov	edx, 119				; 00000077H
 	call	AddLineQueueX
@@ -4228,7 +4227,7 @@ $LL7@win64_Save:
 ; 2238 :             AddLineQueueX("movq [%r+%u], %r", T_RSP, 8 + i * 8, T_XMM0 + i);
 
 	lea	r9d, DWORD PTR [rbp+40]
-	lea	rcx, OFFSET FLAT:$SG12128
+	lea	rcx, OFFSET FLAT:$SG12139
 
 ; 2239 :           else
 ; 2240 :             AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
@@ -4248,7 +4247,7 @@ $LN18@win64_Save:
 ; 2240 :             AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
 
 	mov	r9d, DWORD PTR [rsi]
-	lea	rcx, OFFSET FLAT:$SG12129
+	lea	rcx, OFFSET FLAT:$SG12140
 	call	AddLineQueueX
 
 ; 2241 :           param = param->nextparam;
@@ -4264,7 +4263,7 @@ $LN16@win64_Save:
 ; 2244 :           AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
 
 	mov	r9d, DWORD PTR [rsi]
-	lea	rcx, OFFSET FLAT:$SG12130
+	lea	rcx, OFFSET FLAT:$SG12141
 	call	AddLineQueueX
 $LN5@win64_Save:
 
@@ -4434,7 +4433,7 @@ $LN10@write_user:
 
 ; 2153 :         printf( "option prologue:none\n" );
 
-	lea	rcx, OFFSET FLAT:$SG12093
+	lea	rcx, OFFSET FLAT:$SG12104
 	call	printf
 $LN14@write_user:
 
@@ -4508,9 +4507,9 @@ $LN3@write_user:
 ; 2170 :      */
 ; 2171 :     sprintf( buffer," (%s, 0%XH, 0%XH, 0%XH, <<%s>>, <%s>)",
 
-	lea	rcx, OFFSET FLAT:$SG12096
+	lea	rcx, OFFSET FLAT:$SG12107
 	mov	rax, QWORD PTR [r14+40]
-	lea	rdx, OFFSET FLAT:$SG12097
+	lea	rdx, OFFSET FLAT:$SG12108
 	mov	r8, QWORD PTR CurrProc
 	test	rax, rax
 	mov	r9d, ebp
@@ -4974,7 +4973,7 @@ $LN24@ExcFrameDi:
 	cmp	BYTE PTR [rax+r15], 8
 	jne	SHORT $LN25@ExcFrameDi
 	mov	rcx, QWORD PTR [rax+r15+8]
-	lea	rdx, OFFSET FLAT:$SG12027
+	lea	rdx, OFFSET FLAT:$SG12038
 	call	_stricmp
 
 ; 1961 :             i++;
@@ -6495,10 +6494,10 @@ $LN6@WriteSEHDa:
 
 ; 1674 :         AddLineQueueX("%s %r", segname, T_SEGMENT );
 
-	lea	rdx, OFFSET FLAT:$SG11910
+	lea	rdx, OFFSET FLAT:$SG11921
 	mov	r8d, 440				; 000001b8H
 	je	SHORT $LN7@WriteSEHDa
-	lea	rcx, OFFSET FLAT:$SG11915
+	lea	rcx, OFFSET FLAT:$SG11926
 	call	AddLineQueueX
 	jmp	SHORT $LN8@WriteSEHDa
 $LN7@WriteSEHDa:
@@ -6507,12 +6506,12 @@ $LN7@WriteSEHDa:
 ; 1676 :         AddLineQueueX("%s %r align(%u) flat read 'DATA'", segname, T_SEGMENT, 8 );
 
 	mov	r9d, 8
-	lea	rcx, OFFSET FLAT:$SG11916
+	lea	rcx, OFFSET FLAT:$SG11927
 	call	AddLineQueueX
 
 ; 1677 :         AddLineQueue("$xdatasym label near");
 
-	lea	rcx, OFFSET FLAT:$SG11917
+	lea	rcx, OFFSET FLAT:$SG11928
 	call	AddLineQueue
 $LN8@WriteSEHDa:
 
@@ -6520,7 +6519,7 @@ $LN8@WriteSEHDa:
 ; 1679 :     xdataofs = 0;
 ; 1680 :     xdata = (struct dsym *)SymSearch( segname );
 
-	lea	rcx, OFFSET FLAT:$SG11910
+	lea	rcx, OFFSET FLAT:$SG11921
 	xor	ebp, ebp
 	call	SymFind
 
@@ -6552,7 +6551,7 @@ $LN9@WriteSEHDa:
 	movzx	r9d, BYTE PTR unw_info+1
 	shr	ecx, 4
 	mov	DWORD PTR [rsp+48], ecx
-	lea	rcx, OFFSET FLAT:$SG11919
+	lea	rcx, OFFSET FLAT:$SG11930
 	mov	DWORD PTR [rsp+40], edx
 	mov	edx, 1
 	shr	r8d, 3
@@ -6570,7 +6569,7 @@ $LN9@WriteSEHDa:
 ; 1695 :         char *pfx = "dw";
 
 	mov	QWORD PTR [rsp+248], rdi
-	lea	r8, OFFSET FLAT:$SG11921
+	lea	r8, OFFSET FLAT:$SG11932
 
 ; 1696 :         buffer[0] = NULLC;
 ; 1697 :         /* write the codes from right to left */
@@ -6598,12 +6597,12 @@ $LL26@WriteSEHDa:
 	jne	SHORT $LL26@WriteSEHDa
 	lea	rcx, QWORD PTR buffer$[rsp]
 	add	rcx, rax
-	lea	rdx, OFFSET FLAT:$SG11922
+	lea	rdx, OFFSET FLAT:$SG11933
 	call	sprintf
 
 ; 1702 :             pfx = ",";
 
-	lea	r8, OFFSET FLAT:$SG11923
+	lea	r8, OFFSET FLAT:$SG11934
 
 ; 1703 :             if ( i == 1 || strlen( buffer ) > 72 ) {
 
@@ -6627,7 +6626,7 @@ $LN12@WriteSEHDa:
 ; 1705 :                 buffer[0] = NULLC;
 ; 1706 :                 pfx = "dw";
 
-	lea	r8, OFFSET FLAT:$SG11926
+	lea	r8, OFFSET FLAT:$SG11937
 	mov	BYTE PTR buffer$[rsp], 0
 $LN2@WriteSEHDa:
 
@@ -6648,7 +6647,7 @@ $LN3@WriteSEHDa:
 ; 1711 :     AddLineQueueX( "%r 4", T_ALIGN );
 
 	mov	edx, 438				; 000001b6H
-	lea	rcx, OFFSET FLAT:$SG11927
+	lea	rcx, OFFSET FLAT:$SG11938
 	call	AddLineQueueX
 
 ; 1712 : 
@@ -6662,14 +6661,14 @@ $LN3@WriteSEHDa:
 ; 1714 :         AddLineQueueX( "dd %r %s", T_IMAGEREL, proc->e.procinfo->exc_handler->name );
 
 	mov	r8, QWORD PTR [r8+8]
-	lea	rcx, OFFSET FLAT:$SG11929
+	lea	rcx, OFFSET FLAT:$SG11940
 	mov	edx, 233				; 000000e9H
 	call	AddLineQueueX
 
 ; 1715 :         AddLineQueueX( "%r 8", T_ALIGN );
 
 	mov	edx, 438				; 000001b6H
-	lea	rcx, OFFSET FLAT:$SG11930
+	lea	rcx, OFFSET FLAT:$SG11941
 	call	AddLineQueueX
 $LN13@WriteSEHDa:
 
@@ -6677,8 +6676,8 @@ $LN13@WriteSEHDa:
 ; 1717 :     AddLineQueueX( "%s %r", segname, T_ENDS );
 
 	mov	r8d, 441				; 000001b9H
-	lea	rdx, OFFSET FLAT:$SG11910
-	lea	rcx, OFFSET FLAT:$SG11931
+	lea	rdx, OFFSET FLAT:$SG11921
+	lea	rcx, OFFSET FLAT:$SG11942
 	call	AddLineQueueX
 
 ; 1718 : 
@@ -6707,7 +6706,7 @@ $LN24@WriteSEHDa:
 ; 1722 :         simplespec = ( unw_segs_defined & 1 );
 
 	movzx	eax, BYTE PTR unw_segs_defined
-	lea	rbx, OFFSET FLAT:$SG11934
+	lea	rbx, OFFSET FLAT:$SG11945
 
 ; 1723 :         unw_segs_defined = 3;
 
@@ -6723,7 +6722,7 @@ $LN24@WriteSEHDa:
 ; 1732 :         AddLineQueueX( "%s %r", segname, T_SEGMENT );
 
 	mov	r8d, 440				; 000001b8H
-	lea	rcx, OFFSET FLAT:$SG11938
+	lea	rcx, OFFSET FLAT:$SG11949
 	mov	rdx, rbx
 	call	AddLineQueueX
 	jmp	SHORT $LN17@WriteSEHDa
@@ -6737,7 +6736,7 @@ $LN14@WriteSEHDa:
 	lea	rbx, QWORD PTR segnamebuff$[rsp]
 	call	GetSegIdx
 	mov	r8d, eax
-	lea	rdx, OFFSET FLAT:$SG11935
+	lea	rdx, OFFSET FLAT:$SG11946
 	lea	rcx, QWORD PTR segnamebuff$[rsp]
 	call	sprintf
 
@@ -6751,7 +6750,7 @@ $LN16@WriteSEHDa:
 ; 1734 :         AddLineQueueX( "%s %r align(%u) flat read 'DATA'", segname, T_SEGMENT, 4 );
 
 	mov	r9d, 4
-	lea	rcx, OFFSET FLAT:$SG11939
+	lea	rcx, OFFSET FLAT:$SG11950
 	mov	r8d, 440				; 000001b8H
 	mov	rdx, rbx
 	call	AddLineQueueX
@@ -6761,7 +6760,7 @@ $LN17@WriteSEHDa:
 ; 1736 :     AddLineQueueX( "dd %r %s, %r %s+0%xh, %r $xdatasym+0%xh",
 
 	mov	r8, QWORD PTR [rsi+8]
-	lea	rcx, OFFSET FLAT:$SG11940
+	lea	rcx, OFFSET FLAT:$SG11951
 	mov	eax, DWORD PTR [rsi+56]
 	mov	edx, 233				; 000000e9H
 	mov	DWORD PTR [rsp+56], ebp
@@ -6777,7 +6776,7 @@ $LN17@WriteSEHDa:
 ; 1740 :     AddLineQueueX("%s %r", segname, T_ENDS );
 
 	mov	r8d, 441				; 000001b9H
-	lea	rcx, OFFSET FLAT:$SG11941
+	lea	rcx, OFFSET FLAT:$SG11952
 	mov	rdx, rbx
 	call	AddLineQueueX
 
@@ -7604,7 +7603,7 @@ $LN43@ParseParam:
 ; 670  :             else
 ; 671  :                 name = "";
 
-	lea	r12, OFFSET FLAT:$SG11588
+	lea	r12, OFFSET FLAT:$SG11599
 $LN44@ParseParam:
 
 ; 676  :         }
@@ -8036,7 +8035,7 @@ $LN74@ParseParam:
 
 ; 838  :                 paranode = (struct dsym *)SymAlloc( "" );/* for PROTO, no param name needed */
 
-	lea	rcx, OFFSET FLAT:$SG11621
+	lea	rcx, OFFSET FLAT:$SG11632
 	call	SymAlloc
 $LN165@ParseParam:
 	mov	rbx, rax
@@ -8355,7 +8354,7 @@ $LN126@ParseParam:
 ; 832  :             DebugMsg(("ParseParams: different param count\n"));
 ; 833  :             return( EmitErr( CONFLICTING_PARAMETER_DEFINITION, "" ) );
 
-	lea	rdx, OFFSET FLAT:$SG11618
+	lea	rdx, OFFSET FLAT:$SG11629
 	mov	ecx, 137				; 00000089H
 	call	EmitErr
 	jmp	$LN1@ParseParam
@@ -8398,7 +8397,7 @@ $LN161@ParseParam:
 ; 928  :             DebugMsg(("ParseParams: a param is left over, cntParam=%u\n", cntParam));
 ; 929  :             return( EmitErr( CONFLICTING_PARAMETER_DEFINITION, "" ) );
 
-	lea	rdx, OFFSET FLAT:$SG11640
+	lea	rdx, OFFSET FLAT:$SG11651
 	mov	ecx, 137				; 00000089H
 	call	EmitErr
 	jmp	$LN1@ParseParam
@@ -9410,7 +9409,7 @@ $LL4@watc_retur:
 	cmp	BYTE PTR [rdx+rcx], 0
 	jne	SHORT $LL4@watc_retur
 	add	rcx, rdx
-	lea	rdx, OFFSET FLAT:$SG11376
+	lea	rdx, OFFSET FLAT:$SG11387
 	jmp	sprintf
 $LN2@watc_retur:
 
@@ -9641,7 +9640,7 @@ $LN23@watc_pchec:
 ; 269  :             for( firstreg = 0, regname[0] = NULLC; firstreg < 4; firstreg++ ) {
 
 	mov	BYTE PTR ?regname@?1??watc_pcheck@@9@9, bl
-	lea	rbp, OFFSET FLAT:$SG11364
+	lea	rbp, OFFSET FLAT:$SG11375
 $LL9@watc_pchec:
 
 ; 270  :                 GetResWName( watc_regs_qw[firstreg], regname + strlen( regname ) );
@@ -9768,7 +9767,7 @@ $LN8@watc_pchec:
 	mov	rbx, rax
 	call	GetResWName
 	mov	r8, rax
-	lea	rdx, OFFSET FLAT:$SG11367
+	lea	rdx, OFFSET FLAT:$SG11378
 	mov	r9, rbx
 	mov	rcx, rdi
 	call	sprintf
@@ -9870,7 +9869,7 @@ $LL4@ms32_retur:
 	jne	SHORT $LL4@ms32_retur
 	add	rcx, rdx
 	mov	r9d, eax
-	lea	rdx, OFFSET FLAT:$SG11394
+	lea	rdx, OFFSET FLAT:$SG11405
 	jmp	sprintf
 $LN2@ms32_retur:
 
@@ -10624,7 +10623,7 @@ $LN18@RetInstr:
 ; 3319 :                     sprintf( p, "%d%c", info->parasize, ModuleInfo.radix != 10 ? 't' : NULLC );
 
 	xor	r9d, r9d
-	lea	rdx, OFFSET FLAT:$SG12566
+	lea	rdx, OFFSET FLAT:$SG12577
 	cmp	BYTE PTR ModuleInfo+396, 10
 	mov	eax, 116				; 00000074H
 	mov	rcx, rbx
@@ -10649,7 +10648,7 @@ $LN21@RetInstr:
 ; 3327 :                     sprintf( p, "%d%c", info->parasize, ModuleInfo.radix != 10 ? 't' : NULLC  );
 
 	xor	r9d, r9d
-	lea	rdx, OFFSET FLAT:$SG12570
+	lea	rdx, OFFSET FLAT:$SG12581
 	cmp	BYTE PTR ModuleInfo+396, 10
 	mov	eax, 116				; 00000074H
 	mov	rcx, rbx
@@ -11595,7 +11594,7 @@ $LN37@ParseProc:
 
 ; 1135 :         if ( _stricmp( token, "PRIVATE") == 0 ) {
 
-	lea	rdx, OFFSET FLAT:$SG11716
+	lea	rdx, OFFSET FLAT:$SG11727
 	mov	rcx, rdi
 	call	_stricmp
 	test	eax, eax
@@ -11638,7 +11637,7 @@ $LN38@ParseProc:
 
 	test	r15b, r15b
 	je	SHORT $LN42@ParseProc
-	lea	rdx, OFFSET FLAT:$SG11721
+	lea	rdx, OFFSET FLAT:$SG11732
 	mov	rcx, rdi
 	call	_stricmp
 	test	eax, eax
@@ -11665,7 +11664,7 @@ $LN42@ParseProc:
 
 ; 1152 :         } else if ( _stricmp(token, "EXPORT") == 0 ) {
 
-	lea	rdx, OFFSET FLAT:$SG11723
+	lea	rdx, OFFSET FLAT:$SG11734
 	mov	rcx, rdi
 	call	_stricmp
 	test	eax, eax
@@ -11813,7 +11812,7 @@ $LL4@ParseProc:
 ; 1183 :                     if ( _stricmp( tokenarray[idx].string_ptr, "FORCEFRAME") == 0 ) {
 
 	mov	rcx, QWORD PTR [rdi+8]
-	lea	rdx, OFFSET FLAT:$SG11735
+	lea	rdx, OFFSET FLAT:$SG11746
 	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN54@ParseProc
@@ -11831,7 +11830,7 @@ $LN54@ParseProc:
 	cmp	BYTE PTR ModuleInfo+404, 2
 	je	$LN56@ParseProc
 	mov	rcx, QWORD PTR [rdi+8]
-	lea	rdx, OFFSET FLAT:$SG11738
+	lea	rdx, OFFSET FLAT:$SG11749
 	call	_stricmp
 	test	eax, eax
 	jne	$LN56@ParseProc
@@ -12080,7 +12079,7 @@ $LN61@ParseProc:
 	cmp	BYTE PTR [rax+rsi], 8
 	jne	$LN9@ParseProc
 	mov	rcx, QWORD PTR [rax+rsi+8]
-	lea	rdx, OFFSET FLAT:$SG11751
+	lea	rdx, OFFSET FLAT:$SG11762
 	call	_stricmp
 	test	eax, eax
 	jne	$LN123@ParseProc
@@ -12253,7 +12252,7 @@ $LN76@ParseProc:
 
 ; 1289 :             EmitErr( CONFLICTING_PARAMETER_DEFINITION, "" );
 
-	lea	rdx, OFFSET FLAT:$SG11762
+	lea	rdx, OFFSET FLAT:$SG11773
 	mov	ecx, 137				; 00000089H
 	call	EmitErr
 

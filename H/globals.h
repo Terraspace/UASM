@@ -886,6 +886,7 @@ extern void             AddLinnumDataRef( unsigned, uint_32 );
 extern void             SetMasm510( bool );
 extern void             close_files( void );
 extern char             *myltoa( uint_32 value, char *buffer, unsigned radix, bool sign, bool addzero );
+extern char             *myqtoa(uint_64 value, char *buffer, unsigned radix, bool sign, bool addzero);
 #if COFF_SUPPORT || PE_SUPPORT
 extern char             *ConvertSectionName( const struct asym *, enum seg_type *pst, char *buffer );
 #endif

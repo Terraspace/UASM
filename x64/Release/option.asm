@@ -12,205 +12,205 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 CONST	SEGMENT
-optiontab DQ	FLAT:$SG11213
+optiontab DQ	FLAT:$SG11224
 	DQ	FLAT:SetDotName
-	DQ	FLAT:$SG11214
-	DQ	FLAT:SetNoDotName
-	DQ	FLAT:$SG11215
-	DQ	FLAT:SetM510
-	DQ	FLAT:$SG11216
-	DQ	FLAT:SetNoM510
-	DQ	FLAT:$SG11217
-	DQ	FLAT:SetScoped
-	DQ	FLAT:$SG11218
-	DQ	FLAT:SetNoScoped
-	DQ	FLAT:$SG11219
-	DQ	FLAT:SetOldStructs
-	DQ	FLAT:$SG11220
-	DQ	FLAT:SetNoOldStructs
-	DQ	FLAT:$SG11221
-	DQ	FLAT:SetEmulator
-	DQ	FLAT:$SG11222
-	DQ	FLAT:SetNoEmulator
-	DQ	FLAT:$SG11223
-	DQ	FLAT:SetLJmp
-	DQ	FLAT:$SG11224
-	DQ	FLAT:SetNoLJmp
 	DQ	FLAT:$SG11225
-	DQ	FLAT:Unsupported
+	DQ	FLAT:SetNoDotName
 	DQ	FLAT:$SG11226
-	DQ	FLAT:SetNoReadonly
+	DQ	FLAT:SetM510
 	DQ	FLAT:$SG11227
-	DQ	FLAT:Unsupported
+	DQ	FLAT:SetNoM510
 	DQ	FLAT:$SG11228
-	DQ	FLAT:SetNoOldmacros
+	DQ	FLAT:SetScoped
 	DQ	FLAT:$SG11229
-	DQ	FLAT:Unsupported
+	DQ	FLAT:SetNoScoped
 	DQ	FLAT:$SG11230
-	DQ	FLAT:SetExpr32
+	DQ	FLAT:SetOldStructs
 	DQ	FLAT:$SG11231
-	DQ	FLAT:SetNoSignExt
+	DQ	FLAT:SetNoOldStructs
 	DQ	FLAT:$SG11232
-	DQ	FLAT:SetCaseMap
+	DQ	FLAT:SetEmulator
 	DQ	FLAT:$SG11233
-	DQ	FLAT:SetProc
+	DQ	FLAT:SetNoEmulator
 	DQ	FLAT:$SG11234
-	DQ	FLAT:SetPrologue
+	DQ	FLAT:SetLJmp
 	DQ	FLAT:$SG11235
-	DQ	FLAT:SetEpilogue
+	DQ	FLAT:SetNoLJmp
 	DQ	FLAT:$SG11236
-	DQ	FLAT:SetLanguage
+	DQ	FLAT:Unsupported
 	DQ	FLAT:$SG11237
-	DQ	FLAT:SetNoKeyword
+	DQ	FLAT:SetNoReadonly
 	DQ	FLAT:$SG11238
-	DQ	FLAT:SetSetIF2
+	DQ	FLAT:Unsupported
 	DQ	FLAT:$SG11239
-	DQ	FLAT:SetOffset
+	DQ	FLAT:SetNoOldmacros
 	DQ	FLAT:$SG11240
-	DQ	FLAT:SetSegment
+	DQ	FLAT:Unsupported
 	DQ	FLAT:$SG11241
-	DQ	FLAT:SetFieldAlign
+	DQ	FLAT:SetExpr32
 	DQ	FLAT:$SG11242
-	DQ	FLAT:SetProcAlign
+	DQ	FLAT:SetNoSignExt
 	DQ	FLAT:$SG11243
-	DQ	FLAT:SetMZ
+	DQ	FLAT:SetCaseMap
 	DQ	FLAT:$SG11244
-	DQ	FLAT:SetFrame
+	DQ	FLAT:SetProc
 	DQ	FLAT:$SG11245
-	DQ	FLAT:SetElf
+	DQ	FLAT:SetPrologue
 	DQ	FLAT:$SG11246
-	DQ	FLAT:SetRenameKey
+	DQ	FLAT:SetEpilogue
 	DQ	FLAT:$SG11247
-	DQ	FLAT:SetWin64
+	DQ	FLAT:SetLanguage
 	DQ	FLAT:$SG11248
-	DQ	FLAT:SetDllImport
+	DQ	FLAT:SetNoKeyword
 	DQ	FLAT:$SG11249
-	DQ	FLAT:SetCodeView
+	DQ	FLAT:SetSetIF2
 	DQ	FLAT:$SG11250
-	DQ	FLAT:SetStackBase
+	DQ	FLAT:SetOffset
 	DQ	FLAT:$SG11251
-	DQ	FLAT:SetEvex
+	DQ	FLAT:SetSegment
 	DQ	FLAT:$SG11252
+	DQ	FLAT:SetFieldAlign
+	DQ	FLAT:$SG11253
+	DQ	FLAT:SetProcAlign
+	DQ	FLAT:$SG11254
+	DQ	FLAT:SetMZ
+	DQ	FLAT:$SG11255
+	DQ	FLAT:SetFrame
+	DQ	FLAT:$SG11256
+	DQ	FLAT:SetElf
+	DQ	FLAT:$SG11257
+	DQ	FLAT:SetRenameKey
+	DQ	FLAT:$SG11258
+	DQ	FLAT:SetWin64
+	DQ	FLAT:$SG11259
+	DQ	FLAT:SetDllImport
+	DQ	FLAT:$SG11260
+	DQ	FLAT:SetCodeView
+	DQ	FLAT:$SG11261
+	DQ	FLAT:SetStackBase
+	DQ	FLAT:$SG11262
+	DQ	FLAT:SetEvex
+	DQ	FLAT:$SG11263
 	DQ	FLAT:SetZeroLocals
 CONST	ENDS
 _DATA	SEGMENT
-$SG10782 DB	'NONE', 00H
+$SG10793 DB	'NONE', 00H
 	ORG $+3
-$SG10785 DB	'NOTPUBLIC', 00H
+$SG10796 DB	'NOTPUBLIC', 00H
 	ORG $+2
-$SG10788 DB	'ALL', 00H
-$SG10931 DB	'TRUE', 00H
+$SG10799 DB	'ALL', 00H
+$SG10942 DB	'TRUE', 00H
 	ORG $+3
-$SG10933 DB	'FALSE', 00H
+$SG10944 DB	'FALSE', 00H
 	ORG $+2
-$SG10946 DB	'NONE', 00H
+$SG10957 DB	'NONE', 00H
 	ORG $+3
-$SG10949 DB	'PROLOGUEDEF', 00H
-$SG10962 DB	'NONE', 00H
+$SG10960 DB	'PROLOGUEDEF', 00H
+$SG10973 DB	'NONE', 00H
 	ORG $+3
-$SG10975 DB	'GROUP', 00H
+$SG10986 DB	'GROUP', 00H
 	ORG $+2
-$SG10996 DB	'EXPORT', 00H
+$SG11007 DB	'EXPORT', 00H
 	ORG $+1
-$SG11243 DB	'MZ', 00H
+$SG11254 DB	'MZ', 00H
 	ORG $+1
-$SG10965 DB	'EPILOGUEDEF', 00H
-$SG10978 DB	'FLAT', 00H
+$SG10976 DB	'EPILOGUEDEF', 00H
+$SG10989 DB	'FLAT', 00H
 	ORG $+3
-$SG11012 DB	'USE16', 00H
+$SG11023 DB	'USE16', 00H
 	ORG $+2
-$SG11101 DB	'NOAUTO', 00H
+$SG11112 DB	'NOAUTO', 00H
 	ORG $+1
-$SG11245 DB	'ELF', 00H
-$SG10981 DB	'SEGMENT', 00H
-$SG10994 DB	'PRIVATE', 00H
-$SG11015 DB	'USE32', 00H
+$SG11256 DB	'ELF', 00H
+$SG10992 DB	'SEGMENT', 00H
+$SG11005 DB	'PRIVATE', 00H
+$SG11026 DB	'USE32', 00H
 	ORG $+2
-$SG11018 DB	'USE64', 00H
+$SG11029 DB	'USE64', 00H
 	ORG $+2
-$SG11099 DB	'AUTO', 00H
+$SG11110 DB	'AUTO', 00H
 	ORG $+3
-$SG11157 DB	'__imp_', 00H
+$SG11168 DB	'__imp_', 00H
 	ORG $+1
-$SG11158 DB	'_imp_', 00H
+$SG11169 DB	'_imp_', 00H
 	ORG $+2
-$SG11169 DB	'NONE', 00H
+$SG11180 DB	'NONE', 00H
 	ORG $+3
-$SG11199 DB	'@StackBase', 00H
+$SG11210 DB	'@StackBase', 00H
 	ORG $+5
-$SG11200 DB	'@ProcStatus', 00H
+$SG11211 DB	'@ProcStatus', 00H
 	ORG $+4
-$SG11213 DB	'DOTNAME', 00H
-$SG11214 DB	'NODOTNAME', 00H
+$SG11224 DB	'DOTNAME', 00H
+$SG11225 DB	'NODOTNAME', 00H
 	ORG $+2
-$SG11215 DB	'M510', 00H
+$SG11226 DB	'M510', 00H
 	ORG $+3
-$SG11216 DB	'NOM510', 00H
+$SG11227 DB	'NOM510', 00H
 	ORG $+1
-$SG11217 DB	'SCOPED', 00H
+$SG11228 DB	'SCOPED', 00H
 	ORG $+5
-$SG11218 DB	'NOSCOPED', 00H
+$SG11229 DB	'NOSCOPED', 00H
 	ORG $+7
-$SG11219 DB	'OLDSTRUCTS', 00H
+$SG11230 DB	'OLDSTRUCTS', 00H
 	ORG $+5
-$SG11220 DB	'NOOLDSTRUCTS', 00H
+$SG11231 DB	'NOOLDSTRUCTS', 00H
 	ORG $+3
-$SG11221 DB	'EMULATOR', 00H
+$SG11232 DB	'EMULATOR', 00H
 	ORG $+7
-$SG11222 DB	'NOEMULATOR', 00H
+$SG11233 DB	'NOEMULATOR', 00H
 	ORG $+1
-$SG11223 DB	'LJMP', 00H
+$SG11234 DB	'LJMP', 00H
 	ORG $+3
-$SG11224 DB	'NOLJMP', 00H
+$SG11235 DB	'NOLJMP', 00H
 	ORG $+5
-$SG11225 DB	'READONLY', 00H
+$SG11236 DB	'READONLY', 00H
 	ORG $+7
-$SG11226 DB	'NOREADONLY', 00H
+$SG11237 DB	'NOREADONLY', 00H
 	ORG $+5
-$SG11227 DB	'OLDMACROS', 00H
+$SG11238 DB	'OLDMACROS', 00H
 	ORG $+6
-$SG11228 DB	'NOOLDMACROS', 00H
-$SG11229 DB	'EXPR16', 00H
+$SG11239 DB	'NOOLDMACROS', 00H
+$SG11240 DB	'EXPR16', 00H
 	ORG $+1
-$SG11230 DB	'EXPR32', 00H
+$SG11241 DB	'EXPR32', 00H
 	ORG $+5
-$SG11231 DB	'NOSIGNEXTEND', 00H
+$SG11242 DB	'NOSIGNEXTEND', 00H
 	ORG $+3
-$SG11232 DB	'CASEMAP', 00H
-$SG11233 DB	'PROC', 00H
+$SG11243 DB	'CASEMAP', 00H
+$SG11244 DB	'PROC', 00H
 	ORG $+3
-$SG11234 DB	'PROLOGUE', 00H
+$SG11245 DB	'PROLOGUE', 00H
 	ORG $+7
-$SG11235 DB	'EPILOGUE', 00H
+$SG11246 DB	'EPILOGUE', 00H
 	ORG $+7
-$SG11236 DB	'LANGUAGE', 00H
+$SG11247 DB	'LANGUAGE', 00H
 	ORG $+7
-$SG11237 DB	'NOKEYWORD', 00H
+$SG11248 DB	'NOKEYWORD', 00H
 	ORG $+2
-$SG11238 DB	'SETIF2', 00H
+$SG11249 DB	'SETIF2', 00H
 	ORG $+1
-$SG11239 DB	'OFFSET', 00H
+$SG11250 DB	'OFFSET', 00H
 	ORG $+5
-$SG11240 DB	'SEGMENT', 00H
-$SG11241 DB	'FIELDALIGN', 00H
+$SG11251 DB	'SEGMENT', 00H
+$SG11252 DB	'FIELDALIGN', 00H
 	ORG $+5
-$SG11242 DB	'PROCALIGN', 00H
+$SG11253 DB	'PROCALIGN', 00H
 	ORG $+2
-$SG11244 DB	'FRAME', 00H
+$SG11255 DB	'FRAME', 00H
 	ORG $+6
-$SG11246 DB	'RENAMEKEYWORD', 00H
+$SG11257 DB	'RENAMEKEYWORD', 00H
 	ORG $+2
-$SG11247 DB	'WIN64', 00H
+$SG11258 DB	'WIN64', 00H
 	ORG $+2
-$SG11248 DB	'DLLIMPORT', 00H
+$SG11259 DB	'DLLIMPORT', 00H
 	ORG $+6
-$SG11249 DB	'CODEVIEW', 00H
+$SG11260 DB	'CODEVIEW', 00H
 	ORG $+7
-$SG11250 DB	'STACKBASE', 00H
+$SG11261 DB	'STACKBASE', 00H
 	ORG $+2
-$SG11251 DB	'EVEX', 00H
+$SG11262 DB	'EVEX', 00H
 	ORG $+7
-$SG11252 DB	'ZEROLOCALS', 00H
+$SG11263 DB	'ZEROLOCALS', 00H
 _DATA	ENDS
 PUBLIC	OptionDirective
 EXTRN	isspace:PROC
@@ -822,7 +822,7 @@ $LN3@SetStackBa:
 ; 832  :         ModuleInfo.g.StackBase = CreateVariable( "@StackBase", 0 );
 
 	xor	edx, edx
-	lea	rcx, OFFSET FLAT:$SG11199
+	lea	rcx, OFFSET FLAT:$SG11210
 	call	CreateVariable
 	mov	QWORD PTR ModuleInfo+272, rax
 
@@ -837,7 +837,7 @@ $LN3@SetStackBa:
 	or	BYTE PTR [rax+40], 32			; 00000020H
 	mov	rax, QWORD PTR ModuleInfo+272
 	mov	QWORD PTR [rax+64], rcx
-	lea	rcx, OFFSET FLAT:$SG11200
+	lea	rcx, OFFSET FLAT:$SG11211
 	call	CreateVariable
 	mov	QWORD PTR ModuleInfo+280, rax
 
@@ -989,7 +989,7 @@ SetDllImport PROC
 	cmp	BYTE PTR [rsi], 8
 	jne	SHORT $LN2@SetDllImpo
 	mov	rcx, QWORD PTR [rsi+8]
-	lea	rdx, OFFSET FLAT:$SG11169
+	lea	rdx, OFFSET FLAT:$SG11180
 	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN2@SetDllImpo
@@ -1141,9 +1141,9 @@ $LL8@IncludeDll:
 ; 761  : #if AMD64_SUPPORT
 ; 762  :     ModuleInfo.g.imp_prefix = ( ( ModuleInfo.defOfssize == USE64 ) ? "__imp_" : "_imp_" );
 
-	lea	rcx, OFFSET FLAT:$SG11157
+	lea	rcx, OFFSET FLAT:$SG11168
 	cmp	BYTE PTR ModuleInfo+405, 2
-	lea	rax, OFFSET FLAT:$SG11158
+	lea	rax, OFFSET FLAT:$SG11169
 	mov	rdi, QWORD PTR [rsp+48]
 	cmove	rax, rcx
 	mov	QWORD PTR ModuleInfo+88, rax
@@ -1635,7 +1635,7 @@ SetFrame PROC
 	mov	rsi, rbx
 	shl	rsi, 5
 	add	rsi, rdx
-	lea	rdx, OFFSET FLAT:$SG11099
+	lea	rdx, OFFSET FLAT:$SG11110
 	mov	rcx, QWORD PTR [rsi+8]
 	call	_stricmp
 	test	eax, eax
@@ -1653,7 +1653,7 @@ $LN2@SetFrame:
 ; 630  :     } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "NOAUTO" ) ) {
 
 	mov	rcx, QWORD PTR [rsi+8]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11112
 	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN6@SetFrame
@@ -2254,7 +2254,7 @@ $LN2@SetSegment:
 	cmp	al, 8
 	jne	SHORT $LN6@SetSegment
 	mov	rcx, QWORD PTR [rbx+8]
-	lea	rdx, OFFSET FLAT:$SG11012
+	lea	rdx, OFFSET FLAT:$SG11023
 	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN6@SetSegment
@@ -2290,7 +2290,7 @@ $LN6@SetSegment:
 	cmp	BYTE PTR [rbx], 8
 	jne	SHORT $LN10@SetSegment
 	mov	rcx, QWORD PTR [rbx+8]
-	lea	rdx, OFFSET FLAT:$SG11015
+	lea	rdx, OFFSET FLAT:$SG11026
 	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN8@SetSegment
@@ -2325,7 +2325,7 @@ $LN8@SetSegment:
 	cmp	BYTE PTR [rbx], 8
 	jne	SHORT $LN10@SetSegment
 	mov	rcx, QWORD PTR [rbx+8]
-	lea	rdx, OFFSET FLAT:$SG11018
+	lea	rdx, OFFSET FLAT:$SG11029
 	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN10@SetSegment
@@ -2411,7 +2411,7 @@ SetProc	PROC
 ; 454  :         if ( 0 == _stricmp( tokenarray[i].string_ptr, "PRIVATE" ) ) {
 
 	mov	rcx, QWORD PTR [rdi+8]
-	lea	rdx, OFFSET FLAT:$SG10994
+	lea	rdx, OFFSET FLAT:$SG11005
 	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN5@SetProc
@@ -2432,7 +2432,7 @@ $LN5@SetProc:
 ; 458  :         } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "EXPORT" ) ) {
 
 	mov	rcx, QWORD PTR [rdi+8]
-	lea	rdx, OFFSET FLAT:$SG10996
+	lea	rdx, OFFSET FLAT:$SG11007
 	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN9@SetProc
@@ -2516,7 +2516,7 @@ SetOffset PROC
 	mov	rbx, rsi
 	shl	rbx, 5
 	add	rbx, rdx
-	lea	rdx, OFFSET FLAT:$SG10975
+	lea	rdx, OFFSET FLAT:$SG10986
 	mov	rcx, QWORD PTR [rbx+8]
 	call	_stricmp
 	test	eax, eax
@@ -2551,7 +2551,7 @@ $LN2@SetOffset:
 ; 433  :     } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "FLAT" ) ) {
 
 	mov	rcx, QWORD PTR [rbx+8]
-	lea	rdx, OFFSET FLAT:$SG10978
+	lea	rdx, OFFSET FLAT:$SG10989
 	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN4@SetOffset
@@ -2583,7 +2583,7 @@ $LN4@SetOffset:
 ; 435  :     } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "SEGMENT" ) ) {
 
 	mov	rcx, QWORD PTR [rbx+8]
-	lea	rdx, OFFSET FLAT:$SG10981
+	lea	rdx, OFFSET FLAT:$SG10992
 	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN6@SetOffset
@@ -2693,7 +2693,7 @@ $LN2@SetEpilogu:
 ; 406  : 
 ; 407  :     if ( 0 == _stricmp( tokenarray[i].string_ptr, "NONE" ) ) {
 
-	lea	rdx, OFFSET FLAT:$SG10962
+	lea	rdx, OFFSET FLAT:$SG10973
 	mov	rcx, QWORD PTR [rbx+8]
 	call	_stricmp
 	test	eax, eax
@@ -2708,7 +2708,7 @@ $LN4@SetEpilogu:
 ; 409  :     } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "EPILOGUEDEF" ) ) {
 
 	mov	rcx, QWORD PTR [rbx+8]
-	lea	rdx, OFFSET FLAT:$SG10965
+	lea	rdx, OFFSET FLAT:$SG10976
 	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN6@SetEpilogu
@@ -2827,7 +2827,7 @@ $LN2@SetPrologu:
 ; 373  :     }
 ; 374  :     if ( 0 == _stricmp( tokenarray[i].string_ptr, "NONE" ) ) {
 
-	lea	rdx, OFFSET FLAT:$SG10946
+	lea	rdx, OFFSET FLAT:$SG10957
 	mov	rcx, QWORD PTR [rbx+8]
 	call	_stricmp
 	test	eax, eax
@@ -2842,7 +2842,7 @@ $LN4@SetPrologu:
 ; 376  :     } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "PROLOGUEDEF" ) ) {
 
 	mov	rcx, QWORD PTR [rbx+8]
-	lea	rdx, OFFSET FLAT:$SG10949
+	lea	rdx, OFFSET FLAT:$SG10960
 	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN6@SetPrologu
@@ -2926,7 +2926,7 @@ SetSetIF2 PROC
 	mov	rsi, rbx
 	shl	rsi, 5
 	add	rsi, rdx
-	lea	rdx, OFFSET FLAT:$SG10931
+	lea	rdx, OFFSET FLAT:$SG10942
 	mov	rcx, QWORD PTR [rsi+8]
 	call	_stricmp
 	test	eax, eax
@@ -2944,7 +2944,7 @@ $LN2@SetSetIF2:
 ; 337  :     } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "FALSE" ) ) {
 
 	mov	rcx, QWORD PTR [rsi+8]
-	lea	rdx, OFFSET FLAT:$SG10933
+	lea	rdx, OFFSET FLAT:$SG10944
 	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN6@SetSetIF2
@@ -3662,7 +3662,7 @@ SetCaseMap PROC
 ; 101  :         if ( 0 == _stricmp( tokenarray[i].string_ptr, "NONE" ) ) {
 
 	mov	rcx, QWORD PTR [rbx+8]
-	lea	rdx, OFFSET FLAT:$SG10782
+	lea	rdx, OFFSET FLAT:$SG10793
 	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN4@SetCaseMap
@@ -3679,7 +3679,7 @@ $LN4@SetCaseMap:
 ; 104  :         } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "NOTPUBLIC" ) ) {
 
 	mov	rcx, QWORD PTR [rbx+8]
-	lea	rdx, OFFSET FLAT:$SG10785
+	lea	rdx, OFFSET FLAT:$SG10796
 	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN6@SetCaseMap
@@ -3720,7 +3720,7 @@ $LN6@SetCaseMap:
 ; 107  :         } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "ALL" ) ) {
 
 	mov	rcx, QWORD PTR [rbx+8]
-	lea	rdx, OFFSET FLAT:$SG10788
+	lea	rdx, OFFSET FLAT:$SG10799
 	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN2@SetCaseMap

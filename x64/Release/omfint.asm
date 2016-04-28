@@ -12,9 +12,9 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG7749	DB	'omfint.c', 00H
+$SG7760	DB	'omfint.c', 00H
 	ORG $+7
-$SG7856	DB	'omfint.c', 00H
+$SG7867	DB	'omfint.c', 00H
 _DATA	ENDS
 PUBLIC	omf_write_record
 EXTRN	fwrite:PROC
@@ -207,7 +207,7 @@ writeUnexp PROC
 ; 458  :     Fatal( INTERNAL_ERROR, __FILE__, __LINE__ );
 
 	mov	r8d, 458				; 000001caH
-	lea	rdx, OFFSET FLAT:$SG7856
+	lea	rdx, OFFSET FLAT:$SG7867
 	mov	ecx, 110				; 0000006eH
 	call	Fatal
 
@@ -286,7 +286,7 @@ $LN10@writeLinsy:
 	jmp	SHORT $LN16@writeLinsy
 $LN15@writeLinsy:
 	mov	r8d, 168				; 000000a8H
-	lea	rdx, OFFSET FLAT:$SG7749
+	lea	rdx, OFFSET FLAT:$SG7760
 	lea	ecx, QWORD PTR [r8-58]
 	call	Fatal
 $LN16@writeLinsy:
@@ -441,7 +441,7 @@ $LN28@writeComda:
 	jmp	SHORT $LN34@writeComda
 $LN33@writeComda:
 	mov	r8d, 168				; 000000a8H
-	lea	rdx, OFFSET FLAT:$SG7749
+	lea	rdx, OFFSET FLAT:$SG7760
 	lea	ecx, QWORD PTR [r8-58]
 	call	Fatal
 $LN34@writeComda:
@@ -509,7 +509,7 @@ writeLinnum PROC
 	jmp	SHORT $LN7@writeLinnu
 $LN6@writeLinnu:
 	mov	r8d, 168				; 000000a8H
-	lea	rdx, OFFSET FLAT:$SG7749
+	lea	rdx, OFFSET FLAT:$SG7760
 	lea	ecx, QWORD PTR [r8-58]
 	call	Fatal
 $LN7@writeLinnu:
@@ -576,7 +576,7 @@ writePubdef PROC
 	jmp	SHORT $LN7@writePubde
 $LN6@writePubde:
 	mov	r8d, 168				; 000000a8H
-	lea	rdx, OFFSET FLAT:$SG7749
+	lea	rdx, OFFSET FLAT:$SG7760
 	lea	ecx, QWORD PTR [r8-58]
 	call	Fatal
 $LN7@writePubde:
@@ -746,7 +746,7 @@ $LN6@writeModen:
 	jmp	SHORT $LN15@writeModen
 $LN12@writeModen:
 	mov	r8d, 168				; 000000a8H
-	lea	rdx, OFFSET FLAT:$SG7749
+	lea	rdx, OFFSET FLAT:$SG7760
 	lea	ecx, QWORD PTR [r8-58]
 	call	Fatal
 
@@ -811,7 +811,7 @@ writeTheadr PROC
 	jmp	SHORT $LN9@writeThead
 $LN8@writeThead:
 	mov	r8d, 168				; 000000a8H
-	lea	rdx, OFFSET FLAT:$SG7749
+	lea	rdx, OFFSET FLAT:$SG7760
 	lea	ecx, QWORD PTR [r8-58]
 	call	Fatal
 $LN9@writeThead:
@@ -909,7 +909,7 @@ $LN16@writeLedat:
 	jmp	SHORT $LN20@writeLedat
 $LN19@writeLedat:
 	mov	r8d, 168				; 000000a8H
-	lea	rdx, OFFSET FLAT:$SG7749
+	lea	rdx, OFFSET FLAT:$SG7760
 	lea	ecx, QWORD PTR [r8-58]
 	call	Fatal
 $LN20@writeLedat:
@@ -1194,7 +1194,7 @@ writeComent PROC
 	jmp	SHORT $LN11@writeComen
 $LN10@writeComen:
 	mov	r8d, 168				; 000000a8H
-	lea	rdx, OFFSET FLAT:$SG7749
+	lea	rdx, OFFSET FLAT:$SG7760
 	lea	ecx, QWORD PTR [r8-58]
 	call	Fatal
 $LN11@writeComen:
@@ -1250,7 +1250,7 @@ writeMisc32 PROC
 	jmp	SHORT $LN7@writeMisc3
 $LN6@writeMisc3:
 	mov	r8d, 168				; 000000a8H
-	lea	rdx, OFFSET FLAT:$SG7749
+	lea	rdx, OFFSET FLAT:$SG7760
 	lea	ecx, QWORD PTR [r8-58]
 	call	Fatal
 $LN7@writeMisc3:
@@ -1305,7 +1305,7 @@ writeMisc PROC
 	jmp	SHORT $LN7@writeMisc
 $LN6@writeMisc:
 	mov	r8d, 168				; 000000a8H
-	lea	rdx, OFFSET FLAT:$SG7749
+	lea	rdx, OFFSET FLAT:$SG7760
 	lea	ecx, QWORD PTR [r8-58]
 	call	Fatal
 $LN7@writeMisc:
@@ -1380,7 +1380,7 @@ $LN2@PutMem:
 ; 168  :         Fatal( INTERNAL_ERROR, __FILE__, __LINE__ );
 
 	mov	r8d, 168				; 000000a8H
-	lea	rdx, OFFSET FLAT:$SG7749
+	lea	rdx, OFFSET FLAT:$SG7760
 	lea	ecx, QWORD PTR [r8-58]
 
 ; 169  :     }

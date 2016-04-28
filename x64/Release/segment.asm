@@ -9,7 +9,7 @@ _DATA	SEGMENT
 COMM	symCurSeg:QWORD
 _DATA	ENDS
 _BSS	SEGMENT
-$SG11372 DB	01H DUP (?)
+$SG11383 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	decoflags:BYTE
@@ -18,95 +18,84 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11288 DB	'READONLY', 00H
+$SG11299 DB	'READONLY', 00H
 	ORG $+3
-$SG11289 DB	'BYTE', 00H
+$SG11300 DB	'BYTE', 00H
 	ORG $+3
-$SG11290 DB	'WORD', 00H
+$SG11301 DB	'WORD', 00H
 	ORG $+3
-$SG11291 DB	'DWORD', 00H
+$SG11302 DB	'DWORD', 00H
 	ORG $+2
-$SG11292 DB	'PARA', 00H
+$SG11303 DB	'PARA', 00H
 	ORG $+3
-$SG11293 DB	'PAGE', 00H
+$SG11304 DB	'PAGE', 00H
 	ORG $+3
-$SG11294 DB	'ALIGN', 00H
+$SG11305 DB	'ALIGN', 00H
 	ORG $+2
-$SG11296 DB	'PUBLIC', 00H
+$SG11307 DB	'PUBLIC', 00H
 	ORG $+1
-$SG11300 DB	'AT', 00H
+$SG11311 DB	'AT', 00H
 	ORG $+1
-$SG11295 DB	'PRIVATE', 00H
-$SG11297 DB	'STACK', 00H
+$SG11306 DB	'PRIVATE', 00H
+$SG11308 DB	'STACK', 00H
 	ORG $+2
-$SG11298 DB	'COMMON', 00H
+$SG11309 DB	'COMMON', 00H
 	ORG $+1
-$SG11299 DB	'MEMORY', 00H
+$SG11310 DB	'MEMORY', 00H
 	ORG $+1
-$SG11301 DB	'COMDAT', 00H
+$SG11312 DB	'COMDAT', 00H
 	ORG $+1
-$SG11302 DB	'USE16', 00H
+$SG11313 DB	'USE16', 00H
 	ORG $+2
-$SG11303 DB	'USE32', 00H
+$SG11314 DB	'USE32', 00H
 	ORG $+2
-$SG11304 DB	'USE64', 00H
+$SG11315 DB	'USE64', 00H
 	ORG $+2
-$SG11305 DB	'FLAT', 00H
+$SG11316 DB	'FLAT', 00H
 	ORG $+3
-$SG11306 DB	'INFO', 00H
+$SG11317 DB	'INFO', 00H
 	ORG $+3
-$SG11307 DB	'DISCARD', 00H
-$SG11308 DB	'NOCACHE', 00H
-$SG11309 DB	'NOPAGE', 00H
+$SG11318 DB	'DISCARD', 00H
+$SG11319 DB	'NOCACHE', 00H
+$SG11320 DB	'NOPAGE', 00H
 	ORG $+1
-$SG11310 DB	'SHARED', 00H
+$SG11321 DB	'SHARED', 00H
 	ORG $+1
-$SG11311 DB	'EXECUTE', 00H
-$SG11312 DB	'READ', 00H
+$SG11322 DB	'EXECUTE', 00H
+$SG11323 DB	'READ', 00H
 	ORG $+3
-$SG11313 DB	'WRITE', 00H
+$SG11324 DB	'WRITE', 00H
 	ORG $+2
-$SG11314 DB	'ALIAS', 00H
+$SG11325 DB	'ALIAS', 00H
 	ORG $+2
-$SG11513 DB	'FLAT', 00H
+$SG11524 DB	'FLAT', 00H
 	ORG $+3
-$SG11560 DB	'CONST', 00H
+$SG11571 DB	'CONST', 00H
 	ORG $+2
-$SG11562 DB	'DBTYP', 00H
+$SG11573 DB	'DBTYP', 00H
 	ORG $+2
-$SG11564 DB	'DBSYM', 00H
+$SG11575 DB	'DBSYM', 00H
 	ORG $+2
-$SG11567 DB	'CODE', 00H
+$SG11578 DB	'CODE', 00H
 	ORG $+3
-$SG11569 DB	'DATA', 00H
+$SG11580 DB	'DATA', 00H
 	ORG $+3
-$SG11572 DB	'BSS', 00H
-$SG11741 DB	'(', 00H
+$SG11583 DB	'BSS', 00H
+$SG11752 DB	'(', 00H
 	ORG $+2
-$SG11744 DB	')', 00H
+$SG11755 DB	')', 00H
 	ORG $+2
-$SG11755 DB	'(', 00H
+$SG11766 DB	'(', 00H
 	ORG $+2
-$SG11761 DB	'1-6', 00H
-$SG11769 DB	')', 00H
+$SG11772 DB	'1-6', 00H
+$SG11780 DB	')', 00H
 	ORG $+2
-$SG11782 DB	'(', 00H
+$SG11793 DB	'(', 00H
 	ORG $+2
-$SG11786 DB	')', 00H
+$SG11797 DB	')', 00H
 _DATA	ENDS
 CONST	SEGMENT
-SegAttrToken DQ	FLAT:$SG11288
-	DQ	FLAT:$SG11289
-	DQ	FLAT:$SG11290
-	DQ	FLAT:$SG11291
-	DQ	FLAT:$SG11292
-	DQ	FLAT:$SG11293
-	DQ	FLAT:$SG11294
-	DQ	FLAT:$SG11295
-	DQ	FLAT:$SG11296
-	DQ	FLAT:$SG11297
-	DQ	FLAT:$SG11298
-	DQ	FLAT:$SG11299
+SegAttrToken DQ	FLAT:$SG11299
 	DQ	FLAT:$SG11300
 	DQ	FLAT:$SG11301
 	DQ	FLAT:$SG11302
@@ -122,6 +111,17 @@ SegAttrToken DQ	FLAT:$SG11288
 	DQ	FLAT:$SG11312
 	DQ	FLAT:$SG11313
 	DQ	FLAT:$SG11314
+	DQ	FLAT:$SG11315
+	DQ	FLAT:$SG11316
+	DQ	FLAT:$SG11317
+	DQ	FLAT:$SG11318
+	DQ	FLAT:$SG11319
+	DQ	FLAT:$SG11320
+	DQ	FLAT:$SG11321
+	DQ	FLAT:$SG11322
+	DQ	FLAT:$SG11323
+	DQ	FLAT:$SG11324
+	DQ	FLAT:$SG11325
 SegAttrValue DB	00H
 	DB	01H
 	DB	00H
@@ -1343,7 +1343,7 @@ $LN29@SegmentDir:
 
 ; 1083 :                 EmitErr( EXPECTED, "(" );
 
-	lea	rdx, OFFSET FLAT:$SG11741
+	lea	rdx, OFFSET FLAT:$SG11752
 	mov	ecx, 230				; 000000e6H
 	call	EmitErr
 
@@ -1377,7 +1377,7 @@ $LN30@SegmentDir:
 
 ; 1090 :                 EmitErr( EXPECTED, ")" );
 
-	lea	rdx, OFFSET FLAT:$SG11744
+	lea	rdx, OFFSET FLAT:$SG11755
 	mov	ecx, 230				; 000000e6H
 	call	EmitErr
 
@@ -1536,7 +1536,7 @@ $LN40@SegmentDir:
 
 ; 1139 :                 EmitErr( EXPECTED, "(" );
 
-	lea	rdx, OFFSET FLAT:$SG11755
+	lea	rdx, OFFSET FLAT:$SG11766
 	mov	ecx, 230				; 000000e6H
 	call	EmitErr
 
@@ -1691,7 +1691,7 @@ $LN47@SegmentDir:
 
 ; 1151 :                 EmitErr( VALUE_NOT_WITHIN_ALLOWED_RANGE, "1-6" );
 
-	lea	rdx, OFFSET FLAT:$SG11761
+	lea	rdx, OFFSET FLAT:$SG11772
 	mov	ecx, 24
 	call	EmitErr
 $LN152@SegmentDir:
@@ -1709,7 +1709,7 @@ $LN48@SegmentDir:
 
 ; 1182 :                 EmitErr( EXPECTED, ")" );
 
-	lea	rdx, OFFSET FLAT:$SG11769
+	lea	rdx, OFFSET FLAT:$SG11780
 	mov	ecx, 230				; 000000e6H
 	call	EmitErr
 
@@ -1877,7 +1877,7 @@ $LN64@SegmentDir:
 
 ; 1235 :                 EmitErr( EXPECTED, "(" );
 
-	lea	rdx, OFFSET FLAT:$SG11782
+	lea	rdx, OFFSET FLAT:$SG11793
 	mov	ecx, 230				; 000000e6H
 	call	EmitErr
 
@@ -1926,7 +1926,7 @@ $LN67@SegmentDir:
 
 ; 1249 :                 EmitErr( EXPECTED, ")" );
 
-	lea	rdx, OFFSET FLAT:$SG11786
+	lea	rdx, OFFSET FLAT:$SG11797
 	mov	ecx, 230				; 000000e6H
 	call	EmitErr
 
@@ -3979,7 +3979,7 @@ UpdateCurrSegVars PROC					; COMDAT
 
 	mov	rax, QWORD PTR symCurSeg
 	mov	QWORD PTR SegAssumeTable+16, rcx
-	lea	rcx, OFFSET FLAT:$SG11372
+	lea	rcx, OFFSET FLAT:$SG11383
 	mov	WORD PTR SegAssumeTable+24, 1
 	mov	QWORD PTR [rax+16], rcx
 
@@ -4502,7 +4502,7 @@ $LN6:
 ; 576  :         /* can't fail because <FLAT> is a reserved word */
 ; 577  :         ModuleInfo.flat_grp = CreateGroup( "FLAT" );
 
-	lea	rcx, OFFSET FLAT:$SG11513
+	lea	rcx, OFFSET FLAT:$SG11524
 	call	CreateGroup
 
 ; 578  :         ModuleInfo.flat_grp->sym.Ofssize = ModuleInfo.defOfssize;
@@ -4656,10 +4656,10 @@ $LN8@TypeFromCl:
 ; 668  :         if( memcmp( uname, "CONST", 6 ) == 0 )
 
 	mov	ecx, DWORD PTR uname$[rsp]
-	cmp	ecx, DWORD PTR $SG11560
+	cmp	ecx, DWORD PTR $SG11571
 	movzx	eax, WORD PTR uname$[rsp+4]
 	jne	SHORT $LN9@TypeFromCl
-	cmp	ax, WORD PTR $SG11560+4
+	cmp	ax, WORD PTR $SG11571+4
 	je	SHORT $LN20@TypeFromCl
 $LN9@TypeFromCl:
 
@@ -4668,18 +4668,18 @@ $LN9@TypeFromCl:
 ; 671  :         //    return( SEGTYPE_DATA );
 ; 672  :         if( memcmp( uname, "DBTYP", 6 ) == 0 )
 
-	cmp	ecx, DWORD PTR $SG11562
+	cmp	ecx, DWORD PTR $SG11573
 	jne	SHORT $LN10@TypeFromCl
-	cmp	ax, WORD PTR $SG11562+4
+	cmp	ax, WORD PTR $SG11573+4
 	je	SHORT $LN20@TypeFromCl
 $LN10@TypeFromCl:
 
 ; 673  :             return( SEGTYPE_DATA );
 ; 674  :         if( memcmp( uname, "DBSYM", 6 ) == 0 )
 
-	cmp	ecx, DWORD PTR $SG11564
+	cmp	ecx, DWORD PTR $SG11575
 	jne	SHORT $LN11@TypeFromCl
-	cmp	ax, WORD PTR $SG11564+4
+	cmp	ax, WORD PTR $SG11575+4
 	je	SHORT $LN20@TypeFromCl
 $LN11@TypeFromCl:
 
@@ -4693,7 +4693,7 @@ $LN11@TypeFromCl:
 	movsxd	rax, ebx
 	lea	rcx, QWORD PTR uname$[rsp+rax-4]
 	mov	eax, DWORD PTR uname$[rsp+rax-4]
-	cmp	eax, DWORD PTR $SG11567
+	cmp	eax, DWORD PTR $SG11578
 	jne	SHORT $LN13@TypeFromCl
 
 ; 681  :             return( SEGTYPE_CODE );
@@ -4711,7 +4711,7 @@ $LN13@TypeFromCl:
 
 ; 682  :         if( memcmp( uname + slen - 4, "DATA", 4 ) == 0 )
 
-	cmp	eax, DWORD PTR $SG11569
+	cmp	eax, DWORD PTR $SG11580
 	jne	SHORT $LN14@TypeFromCl
 $LN20@TypeFromCl:
 
@@ -4733,10 +4733,10 @@ $LN14@TypeFromCl:
 
 	movzx	eax, WORD PTR uname$[rsp+rbx-3]
 	lea	rcx, QWORD PTR uname$[rsp+rbx-3]
-	cmp	ax, WORD PTR $SG11572
+	cmp	ax, WORD PTR $SG11583
 	jne	SHORT $LN16@TypeFromCl
 	movzx	eax, BYTE PTR [rcx+2]
-	cmp	al, BYTE PTR $SG11572+2
+	cmp	al, BYTE PTR $SG11583+2
 	jne	SHORT $LN16@TypeFromCl
 
 ; 686  :             return( SEGTYPE_BSS );

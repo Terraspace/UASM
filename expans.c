@@ -75,7 +75,37 @@ char *myltoa( uint_32 value, char *buffer, unsigned radix, bool sign, bool addze
     DebugMsg1(("myltoa( value=%" I32_SPEC "Xh, out=%s, radix=%u, sign=%u, %u)\n", saved_value, buffer, radix, sign, addzero ));
     return( buffer );
 }
-
+/* C ltoa() isn't fully compatible since hex digits are lower case.
+* for HJWasm, it's ensured that 2 <= radix <= 16.
+*/
+#if AMD64_SUPPORT
+char *myqtoa(uint_64 value, char *buffer, unsigned radix, bool sign, bool addzero)
+/**********************************************************************************/
+{
+  char   *p;
+  char   *dst = buffer;
+  char   tmpbuf[34];
+#ifdef DEBUG_OUT
+  uint_64 saved_value = value;
+#endif
+  if (sign) {
+    *dst++ = '-';
+    value = 0 - value;
+  }
+  else if (value == 0) {
+    *dst++ = '0';
+    *dst = NULLC;
+    return(buffer);
+    }
+  for (p = &tmpbuf[33], *p = NULLC; value; value = value / radix)
+    *(--p) = __digits[value % radix];
+  if (addzero && (*p > '9')) /* v2: add a leading '0' if first digit is alpha */
+    *dst++ = '0';
+  memcpy(dst, p, &tmpbuf[33] + 1 - p);
+  DebugMsg1(("myltoa( value=%" I32_SPEC "Xh, out=%s, radix=%u, sign=%u, %u)\n", saved_value, buffer, radix, sign, addzero));
+  return(buffer);
+}
+#endif
 /* get value of a literal, skip literal-character operators(!) */
 /* returns no of characters copied into buffer (without terminating 00) */
 /* v2.09: obsolete, the text is stored without '!' operators now */
