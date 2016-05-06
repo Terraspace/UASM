@@ -12,7 +12,7 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG10987 DB	01H DUP (?)
+$SG10988 DB	01H DUP (?)
 _BSS	ENDS
 PUBLIC	LoopDirective
 EXTRN	isalpha:PROC
@@ -566,7 +566,7 @@ $LN2@LoopDirect:
 
 ; 167  :     tmpmacro.sym.name = "";
 
-	lea	rax, OFFSET FLAT:$SG10987
+	lea	rax, OFFSET FLAT:$SG10988
 	mov	QWORD PTR tmpmacro$[rbp+8], rax
 
 ; 168  :     tmpmacro.e.macroinfo = &macinfo;

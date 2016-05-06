@@ -13,7 +13,7 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11220 DB	'if-else', 00H
+$SG11221 DB	'if-else', 00H
 _DATA	ENDS
 PUBLIC	conditional_assembly_prepare
 PUBLIC	GetIfNestLevel
@@ -2132,7 +2132,7 @@ CondCheckOpen PROC
 
 ; 645  :         EmitErr( BLOCK_NESTING_ERROR, "if-else" );
 
-	lea	rdx, OFFSET FLAT:$SG11220
+	lea	rdx, OFFSET FLAT:$SG11221
 	mov	ecx, 80					; 00000050H
 	jmp	EmitErr
 $LN2@CondCheckO:
@@ -2301,7 +2301,7 @@ $LN7@conditiona:
 
 ; 138  :                 EmitError( ELSE_CLAUSE_ALREADY_OCCURED_IN_THIS_IF_BLOCK );
 
-	mov	ecx, 273				; 00000111H
+	mov	ecx, 274				; 00000112H
 
 ; 163  :         }
 ; 164  :         break;

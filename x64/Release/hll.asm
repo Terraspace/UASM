@@ -6,16 +6,16 @@ INCLUDELIB LIBCMT
 INCLUDELIB OLDNAMES
 
 _BSS	SEGMENT
-$SG11687 DB	01H DUP (?)
+$SG11701 DB	01H DUP (?)
 	ALIGN	4
 
-$SG11695 DB	01H DUP (?)
+$SG11709 DB	01H DUP (?)
 	ALIGN	4
 
-$SG11698 DB	02H DUP (?)
+$SG11712 DB	02H DUP (?)
 	ALIGN	4
 
-$SG11703 DB	01H DUP (?)
+$SG11717 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	decoflags:BYTE
@@ -24,457 +24,458 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11283 DB	0aH, 00H
+$SG11297 DB	0aH, 00H
 	ORG $+2
-$SG11286 DB	':', 0aH, 00H
+$SG11300 DB	':', 0aH, 00H
 	ORG $+1
-$SG11316 DB	0aH, 00H
+$SG11330 DB	0aH, 00H
 	ORG $+2
-$SG11320 DB	'%s:', 0aH, 00H
+$SG11334 DB	'%s:', 0aH, 00H
 	ORG $+3
-$SG11321 DB	'%s:', 0aH, 00H
+$SG11335 DB	'%s:', 0aH, 00H
 	ORG $+3
-$SG11325 DB	':', 0aH, 00H
+$SG11339 DB	':', 0aH, 00H
 	ORG $+1
-$SG11374 DB	'loope', 00H
+$SG11388 DB	'loope', 00H
 	ORG $+2
-$SG11378 DB	'loop', 00H
+$SG11392 DB	'loop', 00H
 	ORG $+3
-$SG11381 DB	'ax', 00H
+$SG11395 DB	'ax', 00H
 	ORG $+1
-$SG11382 DB	'eax', 00H
-$SG11383 DB	'rax', 00H
-$SG11385 DB	'dx', 00H
+$SG11396 DB	'eax', 00H
+$SG11397 DB	'rax', 00H
+$SG11399 DB	'dx', 00H
 	ORG $+1
-$SG11386 DB	'edx', 00H
-$SG11387 DB	'rdx', 00H
-$SG11389 DB	'cx', 00H
+$SG11400 DB	'edx', 00H
+$SG11401 DB	'rdx', 00H
+$SG11403 DB	'cx', 00H
 	ORG $+1
-$SG11390 DB	'ecx', 00H
-$SG11391 DB	'rcx', 00H
-$SG11401 DB	', ', 00H
+$SG11404 DB	'ecx', 00H
+$SG11405 DB	'rcx', 00H
+$SG11415 DB	', ', 00H
 	ORG $+1
-$SG11439 DB	'=!<>&|-+*^%/', 00H
+$SG11453 DB	'=!<>&|-+*^%/', 00H
 	ORG $+3
-$SG11447 DB	' inc ', 00H
+$SG11461 DB	' inc ', 00H
 	ORG $+2
-$SG11449 DB	' dec ', 00H
+$SG11463 DB	' dec ', 00H
 	ORG $+2
-$SG11467 DB	' mov  ', 00H
+$SG11481 DB	' mov  ', 00H
 	ORG $+1
-$SG11470 DB	' cdq ', 00H
+$SG11484 DB	' cdq ', 00H
 	ORG $+2
-$SG11473 DB	' mov  ', 00H
+$SG11487 DB	' mov  ', 00H
 	ORG $+1
-$SG11477 DB	' idiv ', 00H
-	ORG $+1
-$SG11478 DB	' imul ', 00H
-	ORG $+1
-$SG11482 DB	' idiv ', 00H
-	ORG $+1
-$SG11483 DB	' imul ', 00H
-	ORG $+1
-$SG11485 DB	' mov  ', 00H
-	ORG $+1
-$SG11486 DB	' mov  ', 00H
-	ORG $+1
-$SG11490 DB	' cdq ', 00H
-	ORG $+2
 $SG11491 DB	' idiv ', 00H
 	ORG $+1
 $SG11492 DB	' imul ', 00H
 	ORG $+1
-$SG11495 DB	' mov  ', 00H
+$SG11496 DB	' idiv ', 00H
 	ORG $+1
-$SG11496 DB	' mov  ', 00H
+$SG11497 DB	' imul ', 00H
 	ORG $+1
-$SG11502 DB	' cdq ', 00H
+$SG11499 DB	' mov  ', 00H
+	ORG $+1
+$SG11500 DB	' mov  ', 00H
+	ORG $+1
+$SG11504 DB	' cdq ', 00H
 	ORG $+2
-$SG11503 DB	' idiv ', 00H
+$SG11505 DB	' idiv ', 00H
 	ORG $+1
-$SG11504 DB	' imul ', 00H
+$SG11506 DB	' imul ', 00H
 	ORG $+1
-$SG11506 DB	' mov  ', 00H
+$SG11509 DB	' mov  ', 00H
 	ORG $+1
-$SG11512 DB	' cdq ', 00H
+$SG11510 DB	' mov  ', 00H
+	ORG $+1
+$SG11516 DB	' cdq ', 00H
 	ORG $+2
-$SG11513 DB	' idiv ', 00H
+$SG11517 DB	' idiv ', 00H
 	ORG $+1
-$SG11514 DB	' imul ', 00H
+$SG11518 DB	' imul ', 00H
 	ORG $+1
-$SG11516 DB	' mov  ', 00H
+$SG11520 DB	' mov  ', 00H
 	ORG $+1
-$SG11519 DB	' mov  ', 00H
-	ORG $+1
-$SG11523 DB	' cdq ', 00H
+$SG11526 DB	' cdq ', 00H
 	ORG $+2
-$SG11524 DB	' idiv ', 00H
+$SG11527 DB	' idiv ', 00H
 	ORG $+1
-$SG11525 DB	' imul ', 00H
+$SG11528 DB	' imul ', 00H
 	ORG $+1
-$SG11527 DB	' mov  ', 00H
+$SG11530 DB	' mov  ', 00H
 	ORG $+1
-$SG11530 DB	' sub ', 00H
+$SG11533 DB	' mov  ', 00H
+	ORG $+1
+$SG11537 DB	' cdq ', 00H
 	ORG $+2
-$SG11533 DB	' add ', 00H
+$SG11538 DB	' idiv ', 00H
+	ORG $+1
+$SG11539 DB	' imul ', 00H
+	ORG $+1
+$SG11541 DB	' mov  ', 00H
+	ORG $+1
+$SG11544 DB	' sub ', 00H
 	ORG $+2
-$SG11536 DB	' and ', 00H
+$SG11547 DB	' add ', 00H
 	ORG $+2
-$SG11539 DB	' or ', 00H
+$SG11550 DB	' and ', 00H
+	ORG $+2
+$SG11553 DB	' or ', 00H
 	ORG $+3
-$SG11542 DB	' xor ', 00H
+$SG11556 DB	' xor ', 00H
 	ORG $+2
-$SG11545 DB	' shl ', 00H
+$SG11559 DB	' shl ', 00H
 	ORG $+2
-$SG11547 DB	' shr ', 00H
+$SG11561 DB	' shr ', 00H
 	ORG $+2
-$SG11554 DB	' xor  ', 00H
+$SG11568 DB	' xor  ', 00H
 	ORG $+1
-$SG11561 DB	'BYTE PTR', 00H
+$SG11575 DB	'BYTE PTR', 00H
 	ORG $+3
-$SG11562 DB	'BPTR', 00H
+$SG11576 DB	'BPTR', 00H
 	ORG $+3
-$SG11563 DB	'WPTR', 00H
+$SG11577 DB	'WPTR', 00H
 	ORG $+3
-$SG11569 DB	' lea  ', 00H
+$SG11583 DB	' lea  ', 00H
 	ORG $+1
-$SG11663 DB	'eax', 00H
-$SG11564 DB	'WORD PTR', 00H
+$SG11677 DB	'eax', 00H
+$SG11578 DB	'WORD PTR', 00H
 	ORG $+3
-$SG11570 DB	' mov  ', 00H
+$SG11584 DB	' mov  ', 00H
 	ORG $+1
-$SG11667 DB	'rax', 00H
-$SG11565 DB	' movzx  ', 00H
+$SG11681 DB	'rax', 00H
+$SG11579 DB	' movzx  ', 00H
 	ORG $+3
-$SG11568 DB	'ADDR', 00H
+$SG11582 DB	'ADDR', 00H
 	ORG $+3
-$SG11576 DB	'OFFSET', 00H
+$SG11590 DB	'OFFSET', 00H
 	ORG $+1
-$SG11577 DB	' lea  ', 00H
+$SG11591 DB	' lea  ', 00H
 	ORG $+1
-$SG11578 DB	' mov  ', 00H
+$SG11592 DB	' mov  ', 00H
 	ORG $+1
-$SG11669 DB	'eax', 00H
-$SG11585 DB	'DWORD PTR', 00H
+$SG11683 DB	'eax', 00H
+$SG11599 DB	'DWORD PTR', 00H
 	ORG $+2
-$SG11586 DB	'DPTR', 00H
+$SG11600 DB	'DPTR', 00H
 	ORG $+3
-$SG11589 DB	' mov  ', 00H
-	ORG $+1
-$SG11704 DB	'%s:', 00H
-$SG11588 DB	' movsxd  ', 00H
-	ORG $+2
-$SG11596 DB	' mov  ', 00H
-	ORG $+1
-$SG11712 DB	'jmp', 00H
-$SG11595 DB	' invoke  ', 00H
-	ORG $+2
-$SG11599 DB	' mov  ', 00H
-	ORG $+1
-$SG11714 DB	'%s:', 00H
-$SG11602 DB	' mov  byte ptr ', 00H
 $SG11603 DB	' mov  ', 00H
 	ORG $+1
-$SG11664 DB	' mov eax, %s', 00H
-	ORG $+3
-$SG11670 DB	' mov rax, %s', 00H
-	ORG $+3
-$SG11671 DB	'jmp %s', 00H
-	ORG $+1
-$SG11679 DB	'(::)', 00H
-	ORG $+3
-$SG11694 DB	' jmp %s', 00H
-$SG11697 DB	'.for ', 00H
+$SG11718 DB	'%s:', 00H
+$SG11602 DB	' movsxd  ', 00H
 	ORG $+2
-$SG11699 DB	'.for', 00H, 00H
+$SG11610 DB	' mov  ', 00H
+	ORG $+1
+$SG11726 DB	'jmp', 00H
+$SG11609 DB	' invoke  ', 00H
 	ORG $+2
-$SG11713 DB	'jmp %s', 00H
+$SG11613 DB	' mov  ', 00H
 	ORG $+1
-$SG11766 DB	'%s:', 00H
-$SG11769 DB	'%s:', 00H
-$SG11790 DB	'cmp  eax,%d', 00H
-$SG11791 DB	'je  %s', 00H
+$SG11728 DB	'%s:', 00H
+$SG11616 DB	' mov  byte ptr ', 00H
+$SG11617 DB	' mov  ', 00H
 	ORG $+1
-$SG11792 DB	'jmp %s', 00H
-	ORG $+1
-$SG11886 DB	'%s:', 00H
-$SG11793 DB	'mov rcx, %q', 00H
-$SG11892 DB	'cdq', 00H
-$SG11794 DB	'cmp rax, rcx', 00H
+$SG11678 DB	' mov eax, %s', 00H
 	ORG $+3
-$SG11795 DB	'je  %s', 00H
+$SG11684 DB	' mov rax, %s', 00H
+	ORG $+3
+$SG11685 DB	'jmp %s', 00H
 	ORG $+1
-$SG11796 DB	'jmp %s', 00H
+$SG11693 DB	'(::)', 00H
+	ORG $+3
+$SG11708 DB	' jmp %s', 00H
+$SG11711 DB	'.for ', 00H
+	ORG $+2
+$SG11713 DB	'.for', 00H, 00H
+	ORG $+2
+$SG11727 DB	'jmp %s', 00H
 	ORG $+1
-$SG11802 DB	'cmp  eax,%d', 00H
-$SG11803 DB	'je  %s', 00H
-	ORG $+1
-$SG11903 DB	'cdq', 00H
+$SG11780 DB	'%s:', 00H
+$SG11783 DB	'%s:', 00H
 $SG11804 DB	'cmp  eax,%d', 00H
 $SG11805 DB	'je  %s', 00H
 	ORG $+1
 $SG11806 DB	'jmp %s', 00H
 	ORG $+1
-$SG11913 DB	'cdq', 00H
+$SG11900 DB	'%s:', 00H
 $SG11807 DB	'mov rcx, %q', 00H
-$SG11922 DB	'%s:', 00H
+$SG11906 DB	'cdq', 00H
 $SG11808 DB	'cmp rax, rcx', 00H
 	ORG $+3
 $SG11809 DB	'je  %s', 00H
 	ORG $+1
-$SG11810 DB	'mov rcx, %q', 00H
-$SG11934 DB	'%s:', 00H
-$SG11811 DB	'cmp rax, rcx', 00H
+$SG11810 DB	'jmp %s', 00H
+	ORG $+1
+$SG11816 DB	'cmp  eax,%d', 00H
+$SG11817 DB	'je  %s', 00H
+	ORG $+1
+$SG11917 DB	'cdq', 00H
+$SG11818 DB	'cmp  eax,%d', 00H
+$SG11819 DB	'je  %s', 00H
+	ORG $+1
+$SG11820 DB	'jmp %s', 00H
+	ORG $+1
+$SG11927 DB	'cdq', 00H
+$SG11821 DB	'mov rcx, %q', 00H
+$SG11936 DB	'%s:', 00H
+$SG11822 DB	'cmp rax, rcx', 00H
 	ORG $+3
-$SG11812 DB	'je  %s', 00H
+$SG11823 DB	'je  %s', 00H
 	ORG $+1
-$SG11813 DB	'jmp %s', 00H
-	ORG $+1
-$SG11819 DB	'cmp  eax,%d', 00H
-$SG11820 DB	'je  %s', 00H
-	ORG $+1
-$SG11944 DB	'%s:', 00H
-$SG11821 DB	'cmp  eax,%d', 00H
-$SG11822 DB	'je  %s', 00H
-	ORG $+1
-$SG11961 DB	'%s:', 00H
-$SG11823 DB	'cmp  eax,%d', 00H
-$SG11824 DB	'je  %s', 00H
-	ORG $+1
-$SG11825 DB	'jmp %s', 00H
-	ORG $+1
-$SG11969 DB	'%s:', 00H
-$SG11826 DB	'mov rcx, %q', 00H
-$SG11987 DB	'%s:', 00H
-$SG11827 DB	'cmp rax, rcx', 00H
+$SG11824 DB	'mov rcx, %q', 00H
+$SG11948 DB	'%s:', 00H
+$SG11825 DB	'cmp rax, rcx', 00H
 	ORG $+3
-$SG11828 DB	'je  %s', 00H
+$SG11826 DB	'je  %s', 00H
 	ORG $+1
-$SG11829 DB	'mov rcx, %q', 00H
-$SG11993 DB	'%s:', 00H
-$SG11830 DB	'cmp rax, rcx', 00H
-	ORG $+3
-$SG11831 DB	'je  %s', 00H
+$SG11827 DB	'jmp %s', 00H
 	ORG $+1
-$SG11832 DB	'mov rcx, %q', 00H
-$SG11995 DB	'%s:', 00H
-$SG11833 DB	'cmp rax, rcx', 00H
-	ORG $+3
+$SG11833 DB	'cmp  eax,%d', 00H
 $SG11834 DB	'je  %s', 00H
 	ORG $+1
-$SG11835 DB	'jmp %s', 00H
+$SG11958 DB	'%s:', 00H
+$SG11835 DB	'cmp  eax,%d', 00H
+$SG11836 DB	'je  %s', 00H
 	ORG $+1
-$SG11840 DB	'cmp eax,%d', 00H
+$SG11975 DB	'%s:', 00H
+$SG11837 DB	'cmp  eax,%d', 00H
+$SG11838 DB	'je  %s', 00H
 	ORG $+1
-$SG11841 DB	'ja  %s', 00H
+$SG11839 DB	'jmp %s', 00H
 	ORG $+1
-$SG12002 DB	'%s:', 00H
-$SG11842 DB	'sub eax,%d', 00H
+$SG11983 DB	'%s:', 00H
+$SG11840 DB	'mov rcx, %q', 00H
+$SG12001 DB	'%s:', 00H
+$SG11841 DB	'cmp rax, rcx', 00H
+	ORG $+3
+$SG11842 DB	'je  %s', 00H
 	ORG $+1
-$SG11843 DB	'jc  %s', 00H
+$SG11843 DB	'mov rcx, %q', 00H
+$SG12007 DB	'%s:', 00H
+$SG11844 DB	'cmp rax, rcx', 00H
+	ORG $+3
+$SG11845 DB	'je  %s', 00H
 	ORG $+1
-$SG12006 DB	'%s:', 00H
-$SG11844 DB	'mov rcx, %q', 00H
+$SG11846 DB	'mov rcx, %q', 00H
+$SG12009 DB	'%s:', 00H
+$SG11847 DB	'cmp rax, rcx', 00H
+	ORG $+3
+$SG11848 DB	'je  %s', 00H
+	ORG $+1
+$SG11849 DB	'jmp %s', 00H
+	ORG $+1
+$SG11854 DB	'cmp eax,%d', 00H
+	ORG $+1
+$SG11855 DB	'ja  %s', 00H
+	ORG $+1
 $SG12016 DB	'%s:', 00H
-$SG11845 DB	'cmp rax, rcx', 00H
-	ORG $+3
-$SG11846 DB	'ja  %s', 00H
+$SG11856 DB	'sub eax,%d', 00H
 	ORG $+1
-$SG11847 DB	'mov rcx, %q', 00H
+$SG11857 DB	'jc  %s', 00H
+	ORG $+1
 $SG12020 DB	'%s:', 00H
-$SG11848 DB	'sub rax, rcx', 00H
+$SG11858 DB	'mov rcx, %q', 00H
+$SG12030 DB	'%s:', 00H
+$SG11859 DB	'cmp rax, rcx', 00H
 	ORG $+3
-$SG11849 DB	'jc  %s', 00H
+$SG11860 DB	'ja  %s', 00H
 	ORG $+1
-$SG11852 DB	'lea  edx,%s', 00H
-$SG12067 DB	'%s:', 00H
-$SG11853 DB	'movzx  eax,BYTE PTR[edx+eax]', 00H
+$SG11861 DB	'mov rcx, %q', 00H
+$SG12034 DB	'%s:', 00H
+$SG11862 DB	'sub rax, rcx', 00H
 	ORG $+3
-$SG11854 DB	'lea  edx,%s', 00H
-$SG12070 DB	'%s:', 00H
-$SG11855 DB	'jmp  dword ptr[edx+eax*4]', 00H
+$SG11863 DB	'jc  %s', 00H
+	ORG $+1
+$SG11866 DB	'lea  edx,%s', 00H
+$SG12084 DB	'%s:', 00H
+$SG11867 DB	'movzx  eax,BYTE PTR[edx+eax]', 00H
+	ORG $+3
+$SG11868 DB	'lea  edx,%s', 00H
+$SG12087 DB	'%s:', 00H
+$SG11869 DB	'jmp  dword ptr[edx+eax*4]', 00H
 	ORG $+2
-$SG11896 DB	'je  %s', 00H
+$SG11910 DB	'je  %s', 00H
 	ORG $+1
-$SG12100 DB	'%s:', 00H
-$SG11856 DB	'lea  rdx,%s', 00H
-$SG11200 DB	'cmp', 00H
-$SG11857 DB	'movzx  rax,byte ptr[rdx+rax]', 00H
+$SG12120 DB	'%s:', 00H
+$SG11870 DB	'lea  rdx,%s', 00H
+$SG11214 DB	'cmp', 00H
+$SG11871 DB	'movzx  rax,byte ptr[rdx+rax]', 00H
 	ORG $+3
-$SG11858 DB	'lea  rdx,%s', 00H
-$SG11218 DB	'or', 00H
+$SG11872 DB	'lea  rdx,%s', 00H
+$SG11232 DB	'or', 00H
 	ORG $+1
-$SG11859 DB	'jmp  qword ptr[rdx+rax*8]', 00H
+$SG11873 DB	'jmp  qword ptr[rdx+rax*8]', 00H
 	ORG $+2
-$SG11897 DB	'jge %s', 00H
+$SG11911 DB	'jge %s', 00H
 	ORG $+1
-$SG11219 DB	'cmp', 00H
-$SG11863 DB	'push', 09H, 'ebx', 00H
+$SG11233 DB	'cmp', 00H
+$SG11877 DB	'push', 09H, 'ebx', 00H
 	ORG $+3
-$SG11899 DB	'jmp %s', 00H
+$SG11913 DB	'jmp %s', 00H
 	ORG $+5
-$SG11864 DB	'push', 09H, 'esi', 00H
+$SG11878 DB	'push', 09H, 'esi', 00H
 	ORG $+7
-$SG11865 DB	'push', 09H, 'edi', 00H
+$SG11879 DB	'push', 09H, 'edi', 00H
 	ORG $+7
-$SG11866 DB	'mov     esi,eax', 00H
-$SG11867 DB	'mov     ebx,%d', 00H
+$SG11880 DB	'mov     esi,eax', 00H
+$SG11881 DB	'mov     ebx,%d', 00H
 	ORG $+1
-$SG11868 DB	'xor     ecx,ecx', 00H
-$SG11869 DB	'lea     edi,%s', 00H
+$SG11882 DB	'xor     ecx,ecx', 00H
+$SG11883 DB	'lea     edi,%s', 00H
 	ORG $+1
-$SG11870 DB	'test    ebx,ebx', 00H
-$SG11871 DB	'js      %s', 00H
-	ORG $+5
-$SG11874 DB	'mov     r8d,eax', 00H
-$SG11875 DB	'mov     r10d,%d', 00H
-$SG11876 DB	'xor     r9d,r9d', 00H
-$SG11877 DB	'lea     r11,%s', 00H
-	ORG $+1
-$SG11878 DB	'test    r10d,r10d', 00H
-	ORG $+6
-$SG11879 DB	'js      %s', 00H
-	ORG $+5
-$SG11880 DB	'mov     r8,rax', 00H
-	ORG $+1
-$SG11881 DB	'mov     r10d,%d', 00H
-$SG11882 DB	'xor     r9d,r9d', 00H
-$SG11883 DB	'lea     r11,%s', 00H
-	ORG $+1
-$SG11884 DB	'test    r10,r10', 00H
+$SG11884 DB	'test    ebx,ebx', 00H
 $SG11885 DB	'js      %s', 00H
 	ORG $+5
-$SG11891 DB	'lea     eax,[ecx + ebx]', 00H
-$SG11893 DB	'sub     eax,edx', 00H
-$SG11894 DB	'sar     eax,1', 00H
+$SG11888 DB	'mov     r8d,eax', 00H
+$SG11889 DB	'mov     r10d,%d', 00H
+$SG11890 DB	'xor     r9d,r9d', 00H
+$SG11891 DB	'lea     r11,%s', 00H
+	ORG $+1
+$SG11892 DB	'test    r10d,r10d', 00H
+	ORG $+6
+$SG11893 DB	'js      %s', 00H
+	ORG $+5
+$SG11894 DB	'mov     r8,rax', 00H
+	ORG $+1
+$SG11895 DB	'mov     r10d,%d', 00H
+$SG11896 DB	'xor     r9d,r9d', 00H
+$SG11897 DB	'lea     r11,%s', 00H
+	ORG $+1
+$SG11898 DB	'test    r10,r10', 00H
+$SG11899 DB	'js      %s', 00H
+	ORG $+5
+$SG11905 DB	'lea     eax,[ecx + ebx]', 00H
+$SG11907 DB	'sub     eax,edx', 00H
+$SG11908 DB	'sar     eax,1', 00H
 	ORG $+2
-$SG11895 DB	'cmp     [edi+eax*4],esi', 00H
-$SG11898 DB	'lea     ecx,[eax+1]', 00H
+$SG11909 DB	'cmp     [edi+eax*4],esi', 00H
+$SG11912 DB	'lea     ecx,[eax+1]', 00H
 	ORG $+4
-$SG11902 DB	'lea     eax,[r10+r9]', 00H
+$SG11916 DB	'lea     eax,[r10+r9]', 00H
 	ORG $+3
-$SG11904 DB	'sub     eax,edx', 00H
-$SG11905 DB	'sar     eax,1', 00H
+$SG11918 DB	'sub     eax,edx', 00H
+$SG11919 DB	'sar     eax,1', 00H
 	ORG $+2
-$SG11906 DB	'movsxd  rcx,eax', 00H
-$SG11907 DB	'cmp     [r11+rcx*4],r8d', 00H
-$SG11908 DB	'je  %s', 00H
+$SG11920 DB	'movsxd  rcx,eax', 00H
+$SG11921 DB	'cmp     [r11+rcx*4],r8d', 00H
+$SG11922 DB	'je  %s', 00H
 	ORG $+1
-$SG11909 DB	'jge %s', 00H
+$SG11923 DB	'jge %s', 00H
 	ORG $+1
-$SG11910 DB	'lea     r9d,[rax+1]', 00H
-$SG11911 DB	'jmp %s', 00H
+$SG11924 DB	'lea     r9d,[rax+1]', 00H
+$SG11925 DB	'jmp %s', 00H
 	ORG $+5
-$SG11912 DB	'lea     rax,[r10+r9]', 00H
+$SG11926 DB	'lea     rax,[r10+r9]', 00H
 	ORG $+3
-$SG11914 DB	'sub     rax,rdx', 00H
-$SG11915 DB	'sar     rax,1', 00H
+$SG11928 DB	'sub     rax,rdx', 00H
+$SG11929 DB	'sar     rax,1', 00H
 	ORG $+2
-$SG11916 DB	'mov     rcx,rax', 00H
-$SG11917 DB	'cmp     [r11+rcx*8],r8', 00H
+$SG11930 DB	'mov     rcx,rax', 00H
+$SG11931 DB	'cmp     [r11+rcx*8],r8', 00H
 	ORG $+1
-$SG11918 DB	'je  %s', 00H
+$SG11932 DB	'je  %s', 00H
 	ORG $+1
-$SG11919 DB	'jge %s', 00H
+$SG11933 DB	'jge %s', 00H
 	ORG $+1
-$SG11920 DB	'lea     r9,[rax+1]', 00H
+$SG11934 DB	'lea     r9,[rax+1]', 00H
 	ORG $+1
-$SG11921 DB	'jmp %s', 00H
+$SG11935 DB	'jmp %s', 00H
 	ORG $+5
-$SG11927 DB	'lea edx,%s', 00H
+$SG11941 DB	'lea edx,%s', 00H
 	ORG $+5
-$SG11928 DB	'pop', 09H, 'edi', 00H
-$SG11929 DB	'pop', 09H, 'esi', 00H
-$SG11930 DB	'pop', 09H, 'ebx', 00H
-$SG11931 DB	'jmp dword ptr[edx+eax*4]', 00H
+$SG11942 DB	'pop', 09H, 'edi', 00H
+$SG11943 DB	'pop', 09H, 'esi', 00H
+$SG11944 DB	'pop', 09H, 'ebx', 00H
+$SG11945 DB	'jmp dword ptr[edx+eax*4]', 00H
 	ORG $+7
-$SG11932 DB	'lea     r11,%s', 00H
+$SG11946 DB	'lea     r11,%s', 00H
 	ORG $+1
-$SG11933 DB	'jmp     qword ptr[r11+rcx*8]', 00H
+$SG11947 DB	'jmp     qword ptr[r11+rcx*8]', 00H
 	ORG $+3
-$SG11939 DB	'lea     ebx,[eax-1]', 00H
+$SG11953 DB	'lea     ebx,[eax-1]', 00H
 	ORG $+4
-$SG11942 DB	'lea     r10d,[rax-1]', 00H
+$SG11956 DB	'lea     r10d,[rax-1]', 00H
 	ORG $+3
-$SG11943 DB	'lea     r10,[rax-1]', 00H
+$SG11957 DB	'lea     r10,[rax-1]', 00H
 	ORG $+4
-$SG11949 DB	'cmp  ecx,ebx', 00H
+$SG11963 DB	'cmp  ecx,ebx', 00H
 	ORG $+3
-$SG11950 DB	'jle %s', 00H
+$SG11964 DB	'jle %s', 00H
 	ORG $+1
-$SG11951 DB	'pop', 09H, 'edi', 00H
-$SG11952 DB	'pop', 09H, 'esi', 00H
-$SG11953 DB	'pop', 09H, 'ebx', 00H
-$SG11954 DB	'jmp  %s', 00H
-$SG11957 DB	'cmp  r9d,r10d', 00H
+$SG11965 DB	'pop', 09H, 'edi', 00H
+$SG11966 DB	'pop', 09H, 'esi', 00H
+$SG11967 DB	'pop', 09H, 'ebx', 00H
+$SG11968 DB	'jmp  %s', 00H
+$SG11971 DB	'cmp  r9d,r10d', 00H
 	ORG $+2
-$SG11958 DB	'cmp  r9,r10', 00H
-$SG11959 DB	'jle %s', 00H
+$SG11972 DB	'cmp  r9,r10', 00H
+$SG11973 DB	'jle %s', 00H
 	ORG $+5
-$SG11960 DB	'jmp  %s', 00H
-$SG11965 DB	' dd %s', 00H
+$SG11974 DB	'jmp  %s', 00H
+$SG11979 DB	' dd %s', 00H
 	ORG $+1
-$SG11966 DB	' dd %s', 00H
+$SG11980 DB	' dd %s', 00H
 	ORG $+1
-$SG11967 DB	' dq %s', 00H
+$SG11981 DB	' dq %s', 00H
 	ORG $+1
-$SG11968 DB	' dq %s', 00H
+$SG11982 DB	' dq %s', 00H
 	ORG $+1
-$SG11973 DB	' db %d', 00H
+$SG11987 DB	' db %d', 00H
 	ORG $+1
-$SG11974 DB	' db %d', 00H
+$SG11988 DB	' db %d', 00H
 	ORG $+1
-$SG11975 DB	' db %d', 00H
+$SG11989 DB	' db %d', 00H
 	ORG $+1
-$SG11976 DB	' db %d', 00H
+$SG11990 DB	' db %d', 00H
 	ORG $+1
-$SG11980 DB	' dd %d', 00H
+$SG11994 DB	' dd %d', 00H
 	ORG $+1
-$SG11981 DB	' dq %q', 00H
+$SG11995 DB	' dq %q', 00H
 	ORG $+1
-$SG11996 DB	' jmp %s', 00H
-$SG11998 DB	' jmp %s', 00H
-$SG12012 DB	'loop %s', 00H
-$SG11004 DB	'ZERO', 00H
+$SG12010 DB	' jmp %s', 00H
+$SG12012 DB	' jmp %s', 00H
+$SG12026 DB	'loop %s', 00H
+$SG11005 DB	'ZERO', 00H
 	ORG $+3
-$SG11007 DB	'CARRY', 00H
+$SG11008 DB	'CARRY', 00H
 	ORG $+2
-$SG11010 DB	'SIGN', 00H
+$SG11011 DB	'SIGN', 00H
 	ORG $+3
-$SG11013 DB	'PARITY', 00H
+$SG11014 DB	'PARITY', 00H
 	ORG $+1
-$SG11016 DB	'OVERFLOW', 00H
+$SG11017 DB	'OVERFLOW', 00H
 	ORG $+3
-$SG11019 DB	'LESS', 00H
+$SG11020 DB	'LESS', 00H
 	ORG $+7
-$SG11022 DB	'GREATER', 00H
-$SG11025 DB	'ABOVE', 00H
+$SG11023 DB	'GREATER', 00H
+$SG11026 DB	'ABOVE', 00H
 	ORG $+2
-$SG11028 DB	'EQUAL', 00H
+$SG11029 DB	'EQUAL', 00H
 	ORG $+2
-$SG11031 DB	'BELOW', 00H
+$SG11032 DB	'BELOW', 00H
 	ORG $+2
-$SG12098 DB	'jmp %s', 00H
+$SG12118 DB	'jmp %s', 00H
 	ORG $+1
-$SG12117 DB	'jmp %s', 00H
-	ORG $+1
-$SG11094 DB	', %d', 00H
+$SG11108 DB	', %d', 00H
 	ORG $+3
-$SG12124 DB	'.if-.repeat-.while', 00H
+$SG12137 DB	'jmp %s', 00H
 	ORG $+1
-$SG11101 DB	'@C%04X', 00H
+$SG11115 DB	'@C%04X', 00H
 	ORG $+1
-$SG11198 DB	'test', 00H
-	ORG $+7
-$SG11207 DB	'jmp @C%04X', 0aH, 00H
+$SG12144 DB	'.if-.repeat-.while', 00H
+	ORG $+1
 $SG11212 DB	'test', 00H
+	ORG $+7
+$SG11221 DB	'jmp @C%04X', 0aH, 00H
+$SG11226 DB	'test', 00H
 	ORG $+3
-$SG11225 DB	'jmp ', 00H
+$SG11239 DB	'jmp ', 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	sprintf
 PUBLIC	HllInit
 PUBLIC	HllCheckOpen
+PUBLIC	hex2dec
 PUBLIC	HllStartDir
 PUBLIC	HllEndDir
 PUBLIC	HllExitDir
@@ -497,7 +498,6 @@ EXTRN	AddLineQueue:PROC
 EXTRN	AddLineQueueX:PROC
 EXTRN	RunLineQueue:PROC
 EXTRN	Tokenize:PROC
-EXTRN	myatoi128:PROC
 EXTRN	atofloat:PROC
 EXTRN	__chkstk:PROC
 EXTRN	memcpy:PROC
@@ -707,42 +707,36 @@ $pdata$4$HllEndDir DD imagerel $LN355+4187
 $pdata$5$HllEndDir DD imagerel $LN355+5476
 	DD	imagerel $LN355+5512
 	DD	imagerel $chain$5$HllEndDir
-$pdata$HllExitDir DD imagerel $LN137
-	DD	imagerel $LN137+87
+$pdata$HllExitDir DD imagerel $LN164
+	DD	imagerel $LN164+78
 	DD	imagerel $unwind$HllExitDir
-$pdata$0$HllExitDir DD imagerel $LN137+87
-	DD	imagerel $LN137+1385
-	DD	imagerel $chain$0$HllExitDir
-$pdata$1$HllExitDir DD imagerel $LN137+1385
-	DD	imagerel $LN137+1489
+$pdata$1$HllExitDir DD imagerel $LN164+78
+	DD	imagerel $LN164+1506
 	DD	imagerel $chain$1$HllExitDir
-$pdata$3$HllExitDir DD imagerel $LN137+1489
-	DD	imagerel $LN137+1523
-	DD	imagerel $chain$3$HllExitDir
-$pdata$4$HllExitDir DD imagerel $LN137+1523
-	DD	imagerel $LN137+1592
+$pdata$2$HllExitDir DD imagerel $LN164+1506
+	DD	imagerel $LN164+1608
+	DD	imagerel $chain$2$HllExitDir
+$pdata$4$HllExitDir DD imagerel $LN164+1608
+	DD	imagerel $LN164+1711
 	DD	imagerel $chain$4$HllExitDir
-$pdata$5$HllExitDir DD imagerel $LN137+1592
-	DD	imagerel $LN137+1606
+$pdata$5$HllExitDir DD imagerel $LN164+1711
+	DD	imagerel $LN164+1872
 	DD	imagerel $chain$5$HllExitDir
-$pdata$6$HllExitDir DD imagerel $LN137+1606
-	DD	imagerel $LN137+1764
+$pdata$6$HllExitDir DD imagerel $LN164+1872
+	DD	imagerel $LN164+1920
 	DD	imagerel $chain$6$HllExitDir
-$pdata$7$HllExitDir DD imagerel $LN137+1764
-	DD	imagerel $LN137+1812
-	DD	imagerel $chain$7$HllExitDir
 pdata	ENDS
 _DATA	SEGMENT
 	ORG $+7
-reax	DQ	FLAT:$SG11381
-	DQ	FLAT:$SG11382
-	DQ	FLAT:$SG11383
-redx	DQ	FLAT:$SG11385
-	DQ	FLAT:$SG11386
-	DQ	FLAT:$SG11387
-recx	DQ	FLAT:$SG11389
-	DQ	FLAT:$SG11390
-	DQ	FLAT:$SG11391
+reax	DQ	FLAT:$SG11395
+	DQ	FLAT:$SG11396
+	DQ	FLAT:$SG11397
+redx	DQ	FLAT:$SG11399
+	DQ	FLAT:$SG11400
+	DQ	FLAT:$SG11401
+recx	DQ	FLAT:$SG11403
+	DQ	FLAT:$SG11404
+	DQ	FLAT:$SG11405
 _DATA	ENDS
 CONST	SEGMENT
 flaginstr DB	07aH
@@ -838,42 +832,34 @@ $chain$5$HllEndDir DD 021H
 	DD	imagerel $LN355
 	DD	imagerel $LN355+107
 	DD	imagerel $unwind$HllEndDir
-$unwind$HllExitDir DD 071a01H
-	DD	09c011aH
-	DD	0e009f00bH
-	DD	030067007H
+$unwind$HllExitDir DD 071901H
+	DD	09a0119H
+	DD	07008c00aH
+	DD	030066007H
 	DD	05005H
-$chain$0$HllExitDir DD 020821H
-	DD	0a5d408H
-	DD	imagerel $LN137
-	DD	imagerel $LN137+87
+$chain$1$HllExitDir DD 041621H
+	DD	0a2e416H
+	DD	0a1d408H
+	DD	imagerel $LN164
+	DD	imagerel $LN164+78
 	DD	imagerel $unwind$HllExitDir
-$chain$1$HllExitDir DD 020821H
-	DD	0a4c408H
-	DD	imagerel $LN137+87
-	DD	imagerel $LN137+1385
-	DD	imagerel $chain$0$HllExitDir
-$chain$3$HllExitDir DD 020021H
-	DD	0a4c400H
-	DD	imagerel $LN137+87
-	DD	imagerel $LN137+1385
-	DD	imagerel $chain$0$HllExitDir
-$chain$4$HllExitDir DD 020821H
-	DD	0a36408H
-	DD	imagerel $LN137+1489
-	DD	imagerel $LN137+1523
-	DD	imagerel $chain$3$HllExitDir
+$chain$2$HllExitDir DD 020821H
+	DD	0a3f408H
+	DD	imagerel $LN164+78
+	DD	imagerel $LN164+1506
+	DD	imagerel $chain$1$HllExitDir
+$chain$4$HllExitDir DD 020021H
+	DD	0a3f400H
+	DD	imagerel $LN164+78
+	DD	imagerel $LN164+1506
+	DD	imagerel $chain$1$HllExitDir
 $chain$5$HllExitDir DD 021H
-	DD	imagerel $LN137+1489
-	DD	imagerel $LN137+1523
-	DD	imagerel $chain$3$HllExitDir
+	DD	imagerel $LN164+78
+	DD	imagerel $LN164+1506
+	DD	imagerel $chain$1$HllExitDir
 $chain$6$HllExitDir DD 021H
-	DD	imagerel $LN137+87
-	DD	imagerel $LN137+1385
-	DD	imagerel $chain$0$HllExitDir
-$chain$7$HllExitDir DD 021H
-	DD	imagerel $LN137
-	DD	imagerel $LN137+87
+	DD	imagerel $LN164
+	DD	imagerel $LN164+78
 	DD	imagerel $unwind$HllExitDir
 xdata	ENDS
 ;	COMDAT xdata
@@ -1079,139 +1065,137 @@ _TEXT	SEGMENT
 buff$ = 64
 hllop$1 = 80
 hllop$2 = 80
-dst$ = 96
-opndx$ = 112
-buffer$ = 224
-i$ = 1296
-tokenarray$ = 1304
+opndx$ = 96
+buffer$ = 208
+i$ = 1280
+tokenarray$ = 1288
 HllExitDir PROC
 
-; 2049 : {
+; 2069 : {
 
-$LN137:
+$LN164:
 	mov	DWORD PTR [rsp+8], ecx
 	push	rbp
 	push	rbx
+	push	rsi
 	push	rdi
-	push	r14
-	push	r15
-	lea	rbp, QWORD PTR [rsp-992]
-	sub	rsp, 1248				; 000004e0H
+	push	r12
+	lea	rbp, QWORD PTR [rsp-976]
+	sub	rsp, 1232				; 000004d0H
 
-; 2050 :   struct expr         opndx;
-; 2051 :   struct hll_item     *hll;
-; 2052 :   ret_code            rc = NOT_ERROR;
-; 2053 :   uint_64             n;
-; 2054 :   uint_64             dst[2];
-; 2055 :   int                 j;
-; 2056 :   int                 idx;
-; 2057 :   int                 cmd = tokenarray[i].tokval;
-; 2058 :   int                 *newcp;
-; 2059 :   uint_16             *newlp;
-; 2060 :   char buff[16];
-; 2061 :   char buffer[MAX_LINE_LEN];
-; 2062 : #if AMD64_SUPPORT
-; 2063 :   int_64              *newcp64;
-; 2064 : #endif
-; 2065 : 
-; 2066 : 
-; 2067 :   DebugMsg1(("HllExitDir(%s) enter\n", tokenarray[i].string_ptr));
-; 2068 : 
-; 2069 :   hll = HllStack;
+; 2070 :   struct expr         opndx;
+; 2071 :   struct hll_item     *hll;
+; 2072 :   ret_code            rc = NOT_ERROR;
+; 2073 :   int                 j;
+; 2074 :   int                 idx;
+; 2075 :   int                 cmd = tokenarray[i].tokval;
+; 2076 :   int                 *newcp;
+; 2077 :   uint_16             *newlp;
+; 2078 :   char buff[16];
+; 2079 :   char buffer[MAX_LINE_LEN];
+; 2080 : #if AMD64_SUPPORT
+; 2081 :   int_64              *newcp64;
+; 2082 : #endif
+; 2083 : 
+; 2084 : 
+; 2085 :   DebugMsg1(("HllExitDir(%s) enter\n", tokenarray[i].string_ptr));
+; 2086 : 
+; 2087 :   hll = HllStack;
 
 	mov	rbx, QWORD PTR ModuleInfo+224
-	mov	r15, rdx
+	mov	r12, rdx
 	movsxd	rdx, ecx
-	xor	r14d, r14d
+	xor	esi, esi
 	shl	rdx, 5
-	mov	edi, DWORD PTR [rdx+r15+16]
+	mov	edi, DWORD PTR [rdx+r12+16]
 
-; 2070 : 
-; 2071 :   if (hll == NULL) {
+; 2088 : 
+; 2089 :   if (hll == NULL) {
 
 	test	rbx, rbx
-	jne	SHORT $LN9@HllExitDir
+	jne	SHORT $LN15@HllExitDir
 
-; 2072 :     DebugMsg(("HllExitDir stack error\n"));
-; 2073 :     return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
+; 2090 :     DebugMsg(("HllExitDir stack error\n"));
+; 2091 :     return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
 
 	mov	ecx, 245				; 000000f5H
 	call	EmitError
 
-; 2267 : }
+; 2295 : }
 
-	add	rsp, 1248				; 000004e0H
-	pop	r15
-	pop	r14
+	add	rsp, 1232				; 000004d0H
+	pop	r12
 	pop	rdi
+	pop	rsi
 	pop	rbx
 	pop	rbp
 	ret	0
-$LN9@HllExitDir:
+$LN15@HllExitDir:
+	mov	QWORD PTR [rsp+1288], r13
 
-; 2074 :   }
-; 2075 :   switch (cmd) {
+; 2092 :   }
+; 2093 :   switch (cmd) {
 
 	lea	eax, DWORD PTR [rdi-331]
-	mov	QWORD PTR [rsp+1320], r13
+	mov	QWORD PTR [rsp+1296], r14
 	mov	r13d, 4
 	cmp	eax, 11
-	ja	$LN55@HllExitDir
+	ja	$LN64@HllExitDir
 	lea	r8, OFFSET FLAT:__ImageBase
 	cdqe
-	mov	ecx, DWORD PTR $LN121@HllExitDir[r8+rax*4]
+	mov	ecx, DWORD PTR $LN144@HllExitDir[r8+rax*4]
 	add	rcx, r8
 	jmp	rcx
-$LN10@HllExitDir:
+$LN16@HllExitDir:
 
-; 2076 :   case T_DOT_DEFAULT:
-; 2077 :     if (hll->flags & HLLF_ELSEOCCURED) {
+; 2094 :   case T_DOT_DEFAULT:
+; 2095 :     if (hll->flags & HLLF_ELSEOCCURED) {
 
 	test	BYTE PTR [rbx+104], 1
-	jne	$LN135@HllExitDir
+	jne	$LN162@HllExitDir
 
-; 2078 :       DebugMsg(("HllExitDir stack error\n"));
-; 2079 :       return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
-; 2080 :     }
-; 2081 :     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LDEF], buff));
+; 2096 :       DebugMsg(("HllExitDir stack error\n"));
+; 2097 :       return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
+; 2098 :     }
+; 2099 :     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LDEF], buff));
 
 	mov	r8d, DWORD PTR [rbx+52]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12067
+	lea	rcx, OFFSET FLAT:$SG12084
 	call	AddLineQueueX
 
-; 2082 :     hll->flags |= HLLF_ELSEOCCURED;
+; 2100 :     hll->flags |= HLLF_ELSEOCCURED;
 
 	or	DWORD PTR [rbx+104], 1
 
-; 2083 :     i++;
+; 2101 :     i++;
 
 	inc	DWORD PTR i$[rbp-256]
 
-; 2084 :     break;
+; 2102 :     break;
 
-	jmp	$LN55@HllExitDir
-$LN12@HllExitDir:
+	jmp	$LN64@HllExitDir
+$LN18@HllExitDir:
 
-; 2085 :   case T_DOT_CASE:
-; 2086 :     if (hll->cmd != HLL_SWITCH) {
+; 2103 :   case T_DOT_CASE:
+; 2104 :     if (hll->cmd != HLL_SWITCH) {
 
 	cmp	DWORD PTR [rbx+96], 5
-	jne	$LN135@HllExitDir
+	jne	$LN162@HllExitDir
 
-; 2087 :       DebugMsg(("HllExitDir stack error\n"));
-; 2088 :       return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
-; 2089 :     }
-; 2090 :     hll->labels[LTEST] = GetHllLabel();
+; 2105 :       DebugMsg(("HllExitDir stack error\n"));
+; 2106 :       return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
+; 2107 :     }
+; 2108 :     hll->labels[LTEST] = GetHllLabel();
 
 	mov	eax, DWORD PTR ModuleInfo+352
 
-; 2091 :     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LTEST], buff));
+; 2109 :     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LTEST], buff));
 
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	inc	eax
 	lea	rcx, QWORD PTR buff$[rsp]
 	mov	DWORD PTR ModuleInfo+352, eax
@@ -1219,68 +1203,85 @@ $LN12@HllExitDir:
 	mov	DWORD PTR [rbx+32], eax
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12070
+	lea	rcx, OFFSET FLAT:$SG12087
 	call	AddLineQueueX
 
-; 2092 :     i++;
+; 2110 :     i++;
 
 	mov	eax, DWORD PTR i$[rbp-256]
 	inc	eax
+
+; 2111 :     if (tokenarray[i].token != T_FINAL) 
+
+	movsxd	r8, eax
+	shl	r8, 5
 	mov	DWORD PTR i$[rbp-256], eax
+	cmp	BYTE PTR [r8+r12], sil
+	je	$LN21@HllExitDir
 
-; 2093 :     if (tokenarray[i].token != T_FINAL) {
+; 2112 :       strcpy(buffer, tokenarray[i].tokpos);
 
-	cdqe
-	shl	rax, 5
-	cmp	BYTE PTR [rax+r15], r14b
-	je	$LN14@HllExitDir
+	mov	rcx, QWORD PTR [r8+r12+24]
+	lea	rdx, QWORD PTR buffer$[rbp-256]
+$LL71@HllExitDir:
+	movzx	eax, BYTE PTR [rcx]
+	lea	rcx, QWORD PTR [rcx+1]
+	mov	BYTE PTR [rdx], al
+	lea	rdx, QWORD PTR [rdx+1]
+	test	al, al
+	jne	SHORT $LL71@HllExitDir
 
-; 2094 :       DebugMsg1(("HllExitDir(%s): calling EvalOperand, i=%u\n", tokenarray[i].string_ptr, i));
-; 2095 :       if (EvalOperand(&i, tokenarray, Token_Count, &opndx, 0) == ERROR) {
+; 2113 :     if (tokenarray[i].token != T_FINAL) {
+
+	cmp	BYTE PTR [r8+r12], sil
+	je	$LN21@HllExitDir
+
+; 2114 :       DebugMsg1(("HllExitDir(%s): calling EvalOperand, i=%u\n", tokenarray[i].string_ptr, i));
+; 2115 :       if (EvalOperand(&i, tokenarray, Token_Count, &opndx, 0) == ERROR) {
 
 	mov	r8d, DWORD PTR ModuleInfo+496
 	lea	r9, QWORD PTR opndx$[rsp]
-	mov	rdx, r15
-	mov	BYTE PTR [rsp+32], r14b
+	mov	rdx, r12
+	mov	BYTE PTR [rsp+32], sil
 	lea	rcx, QWORD PTR i$[rbp-256]
 	call	EvalOperand
 	cmp	eax, -1
-	jne	SHORT $LN16@HllExitDir
+	jne	SHORT $LN23@HllExitDir
 
-; 2096 :         DebugMsg(("HllExitDir(%s): EvalOperand() failed\n", tokenarray[i].string_ptr));
-; 2097 :         return(ERROR);
+; 2116 :         DebugMsg(("HllExitDir(%s): EvalOperand() failed\n", tokenarray[i].string_ptr));
+; 2117 :         return(ERROR);
 
 	or	eax, eax
-	jmp	$LN131@HllExitDir
-$LN16@HllExitDir:
+	jmp	$LN157@HllExitDir
+$LN23@HllExitDir:
 
-; 2098 :       }
-; 2099 :       i++;
+; 2118 :       }
+; 2119 :       i++;
 
 	mov	eax, DWORD PTR i$[rbp-256]
 
-; 2100 :       switch (opndx.kind) {
+; 2120 :       switch (opndx.kind) {
 
 	mov	ecx, DWORD PTR opndx$[rbp-196]
 	inc	eax
 	mov	DWORD PTR i$[rbp-256], eax
 	test	ecx, ecx
-	je	SHORT $LN17@HllExitDir
+	je	SHORT $LN24@HllExitDir
 	cmp	ecx, 3
-	jne	SHORT $LN19@HllExitDir
+	jne	SHORT $LN26@HllExitDir
 
-; 2103 :         break;
-; 2104 :       case EXPR_FLOAT:
-; 2105 : #if FPIMMEDIATE
-; 2106 :         if (Options.strict_masm_compat == FALSE) {
+; 2123 :         break;
+; 2124 :       case EXPR_FLOAT:
+; 2125 : #if FPIMMEDIATE
+; 2126 :         if (Options.strict_masm_compat == FALSE) {
 
-	cmp	BYTE PTR Options+127, r14b
-	jne	SHORT $LN19@HllExitDir
+	cmp	BYTE PTR Options+127, sil
+	jne	SHORT $LN26@HllExitDir
 
-; 2107 :           /* convert to REAL4, unless REAL8 coercion is requested */
-; 2108 :           atofloat(&opndx.fvalue, opndx.float_tok->string_ptr, opndx.mem_type == MT_REAL8 ? 8 : 4, opndx.negative, opndx.float_tok->floattype);
+; 2127 :           /* convert to REAL4, unless REAL8 coercion is requested */
+; 2128 :           atofloat(&opndx.fvalue, opndx.float_tok->string_ptr, opndx.mem_type == MT_REAL8 ? 8 : 4, opndx.negative, opndx.float_tok->floattype);
 
-	mov	rdx, QWORD PTR opndx$[rbp-240]
+	mov	rdx, QWORD PTR opndx$[rsp+16]
 	mov	r8d, r13d
 	mov	r9d, DWORD PTR opndx$[rbp-184]
 	mov	ecx, 8
@@ -1294,62 +1295,62 @@ $LN16@HllExitDir:
 	lea	rcx, QWORD PTR opndx$[rsp]
 	call	atofloat
 
-; 2109 :           tokenarray[i].token = T_FINAL;
+; 2129 :           tokenarray[i].token = T_FINAL;
 
 	movsxd	rax, DWORD PTR i$[rbp-256]
 
-; 2110 :           break;
+; 2130 :           break;
 
-	jmp	SHORT $LN132@HllExitDir
-$LN17@HllExitDir:
+	jmp	SHORT $LN159@HllExitDir
+$LN24@HllExitDir:
 
-; 2101 :       case EXPR_CONST:
-; 2102 :         tokenarray[i].token = T_FINAL;
+; 2121 :       case EXPR_CONST:
+; 2122 :         tokenarray[i].token = T_FINAL;
 
 	cdqe
-$LN132@HllExitDir:
+$LN159@HllExitDir:
 	shl	rax, 5
-	mov	BYTE PTR [rax+r15], r14b
-$LN19@HllExitDir:
+	mov	BYTE PTR [rax+r12], sil
+$LN26@HllExitDir:
 
-; 2118 :     }
-; 2119 :     if (hll->csize == 4) {
+; 2138 :     }
+; 2139 :     if (hll->csize == 4) {
 
 	movzx	eax, BYTE PTR [rbx+102]
 	cmp	al, r13b
-	jne	SHORT $LN20@HllExitDir
+	jne	SHORT $LN27@HllExitDir
 
-; 2120 :       if (!hll->maxalloccasen) {
+; 2140 :       if (!hll->maxalloccasen) {
 
-	cmp	DWORD PTR [rbx+120], r14d
-	jne	SHORT $LN22@HllExitDir
+	cmp	DWORD PTR [rbx+120], esi
+	jne	SHORT $LN29@HllExitDir
 
-; 2121 :         hll->pcases = LclAlloc(hll->csize * 20);
+; 2141 :         hll->pcases = LclAlloc(hll->csize * 20);
 
 	mov	ecx, 80					; 00000050H
 	call	LclAlloc
 
-; 2122 :         hll->plabels = LclAlloc(sizeof(uint_16) * 20);
+; 2142 :         hll->plabels = LclAlloc(sizeof(uint_16) * 20);
 
 	mov	ecx, 40					; 00000028H
 	mov	QWORD PTR [rbx+8], rax
 	call	LclAlloc
 	mov	QWORD PTR [rbx+24], rax
 
-; 2123 :         hll->maxalloccasen = 20;
+; 2143 :         hll->maxalloccasen = 20;
 
 	mov	DWORD PTR [rbx+120], 20
-$LN22@HllExitDir:
+$LN29@HllExitDir:
 
-; 2124 :       }
-; 2125 :       if (hll->casecnt > hll->maxalloccasen) {
+; 2144 :       }
+; 2145 :       if (hll->casecnt > hll->maxalloccasen) {
 
 	mov	ecx, DWORD PTR [rbx+120]
 	cmp	DWORD PTR [rbx+92], ecx
-	jbe	$LN33@HllExitDir
+	jbe	$LN40@HllExitDir
 
-; 2126 :         hll->maxalloccasen += 20;
-; 2127 :         if ((newcp = realloc(hll->pcases, hll->csize * hll->maxalloccasen)) == NULL)
+; 2146 :         hll->maxalloccasen += 20;
+; 2147 :         if ((newcp = realloc(hll->pcases, hll->csize * hll->maxalloccasen)) == NULL)
 
 	movsx	eax, BYTE PTR [rbx+102]
 	add	ecx, 20
@@ -1359,38 +1360,38 @@ $LN22@HllExitDir:
 	movsxd	rdx, eax
 	call	realloc
 	test	rax, rax
-	jne	SHORT $LN24@HllExitDir
+	jne	SHORT $LN31@HllExitDir
 
-; 2128 :           Fatal(OUT_OF_MEMORY);
+; 2148 :           Fatal(OUT_OF_MEMORY);
 
 	lea	ecx, QWORD PTR [rax+105]
 	call	Fatal
-	jmp	SHORT $LN31@HllExitDir
-$LN24@HllExitDir:
+	jmp	SHORT $LN38@HllExitDir
+$LN31@HllExitDir:
 
-; 2129 :         else
-; 2130 :           hll->pcases = newcp;
+; 2149 :         else
+; 2150 :           hll->pcases = newcp;
 
 	mov	QWORD PTR [rbx+8], rax
 
-; 2131 :         if ((newlp = realloc(hll->plabels, sizeof(uint_16) * hll->maxalloccasen)) == NULL)
-; 2132 :           Fatal(OUT_OF_MEMORY);
-; 2133 :         else
-; 2134 :           hll->plabels = newlp;
-; 2135 :       }
-; 2136 :     }
+; 2151 :         if ((newlp = realloc(hll->plabels, sizeof(uint_16) * hll->maxalloccasen)) == NULL)
+; 2152 :           Fatal(OUT_OF_MEMORY);
+; 2153 :         else
+; 2154 :           hll->plabels = newlp;
+; 2155 :       }
+; 2156 :     }
 
-	jmp	SHORT $LN31@HllExitDir
-$LN20@HllExitDir:
+	jmp	SHORT $LN38@HllExitDir
+$LN27@HllExitDir:
 
-; 2137 : #if AMD64_SUPPORT
-; 2138 :     else {
-; 2139 :       if (!hll->maxalloccasen) {
+; 2157 : #if AMD64_SUPPORT
+; 2158 :     else {
+; 2159 :       if (!hll->maxalloccasen) {
 
-	cmp	DWORD PTR [rbx+120], r14d
-	jne	SHORT $LN28@HllExitDir
+	cmp	DWORD PTR [rbx+120], esi
+	jne	SHORT $LN35@HllExitDir
 
-; 2140 :         hll->pcases64 = LclAlloc(hll->csize * 20);
+; 2160 :         hll->pcases64 = LclAlloc(hll->csize * 20);
 
 	movsx	eax, al
 	lea	ecx, DWORD PTR [rax+rax*4]
@@ -1398,27 +1399,27 @@ $LN20@HllExitDir:
 	movsxd	rcx, ecx
 	call	LclAlloc
 
-; 2141 :         hll->plabels = LclAlloc(sizeof(uint_16) * 20);
+; 2161 :         hll->plabels = LclAlloc(sizeof(uint_16) * 20);
 
 	mov	ecx, 40					; 00000028H
 	mov	QWORD PTR [rbx+16], rax
 	call	LclAlloc
 	mov	QWORD PTR [rbx+24], rax
 
-; 2142 :         hll->maxalloccasen = 20;
+; 2162 :         hll->maxalloccasen = 20;
 
 	mov	DWORD PTR [rbx+120], 20
-$LN28@HllExitDir:
+$LN35@HllExitDir:
 
-; 2143 :       }
-; 2144 :       if (hll->casecnt > hll->maxalloccasen) {
+; 2163 :       }
+; 2164 :       if (hll->casecnt > hll->maxalloccasen) {
 
 	mov	ecx, DWORD PTR [rbx+120]
 	cmp	DWORD PTR [rbx+92], ecx
-	jbe	SHORT $LN33@HllExitDir
+	jbe	SHORT $LN40@HllExitDir
 
-; 2145 :         hll->maxalloccasen += 20;
-; 2146 :         if ((newcp64 = realloc(hll->pcases64, hll->csize * hll->maxalloccasen)) == NULL)
+; 2165 :         hll->maxalloccasen += 20;
+; 2166 :         if ((newcp64 = realloc(hll->pcases64, hll->csize * hll->maxalloccasen)) == NULL)
 
 	movsx	eax, BYTE PTR [rbx+102]
 	add	ecx, 20
@@ -1428,318 +1429,213 @@ $LN28@HllExitDir:
 	movsxd	rdx, eax
 	call	realloc
 	test	rax, rax
-	jne	SHORT $LN30@HllExitDir
+	jne	SHORT $LN37@HllExitDir
 
-; 2147 :           Fatal(OUT_OF_MEMORY);
+; 2167 :           Fatal(OUT_OF_MEMORY);
 
 	lea	ecx, QWORD PTR [rax+105]
 	call	Fatal
-	jmp	SHORT $LN31@HllExitDir
-$LN30@HllExitDir:
+	jmp	SHORT $LN38@HllExitDir
+$LN37@HllExitDir:
 
-; 2148 :         else
-; 2149 :           hll->pcases64 = newcp64;
+; 2168 :         else
+; 2169 :           hll->pcases64 = newcp64;
 
 	mov	QWORD PTR [rbx+16], rax
-$LN31@HllExitDir:
+$LN38@HllExitDir:
 
-; 2150 :         if ((newlp = realloc(hll->plabels, sizeof(uint_16) * hll->maxalloccasen)) == NULL)
+; 2170 :         if ((newlp = realloc(hll->plabels, sizeof(uint_16) * hll->maxalloccasen)) == NULL)
 
 	movsxd	rdx, DWORD PTR [rbx+120]
 	mov	rcx, QWORD PTR [rbx+24]
 	add	rdx, rdx
 	call	realloc
 	test	rax, rax
-	jne	SHORT $LN32@HllExitDir
+	jne	SHORT $LN39@HllExitDir
 
-; 2151 :           Fatal(OUT_OF_MEMORY);
+; 2171 :           Fatal(OUT_OF_MEMORY);
 
 	lea	ecx, QWORD PTR [rax+105]
 	call	Fatal
-	jmp	SHORT $LN33@HllExitDir
-$LN32@HllExitDir:
+	jmp	SHORT $LN40@HllExitDir
+$LN39@HllExitDir:
 
-; 2152 :         else
-; 2153 :           hll->plabels = newlp;
+; 2172 :         else
+; 2173 :           hll->plabels = newlp;
 
 	mov	QWORD PTR [rbx+24], rax
-$LN33@HllExitDir:
+$LN40@HllExitDir:
 
-; 2154 :       }
-; 2155 :     }
-; 2156 : #endif
-; 2157 :     if ((ModuleInfo.Ofssize == USE32) || (hll->csize == 4))
+; 2174 :       }
+; 2175 :     }
+; 2176 : #endif
+; 2177 :     if ((ModuleInfo.Ofssize == USE32) || (hll->csize == 4)) {
 
 	cmp	BYTE PTR ModuleInfo+404, 1
-	je	SHORT $LN36@HllExitDir
+	je	SHORT $LN43@HllExitDir
 	cmp	BYTE PTR [rbx+102], r13b
-	je	SHORT $LN36@HllExitDir
+	je	SHORT $LN43@HllExitDir
 
-; 2159 : #if AMD64_SUPPORT
-; 2160 :     else 
-; 2161 :       hll->pcases64[hll->casecnt] = opndx.value64;
+; 2183 :     }
+; 2184 : #if AMD64_SUPPORT
+; 2185 :     else {
+; 2186 :       for (j = 0; j < hll->casecnt; j++) {
+
+	mov	edi, esi
+	cmp	DWORD PTR [rbx+92], esi
+	jbe	SHORT $LN149@HllExitDir
+	mov	r14, rsi
+	npad	2
+$LL11@HllExitDir:
+
+; 2187 :         if (hll->pcases64[j] == opndx.value64)
+
+	mov	rcx, QWORD PTR [rbx+16]
+	mov	rax, QWORD PTR opndx$[rsp]
+	cmp	QWORD PTR [r14+rcx], rax
+	jne	SHORT $LN9@HllExitDir
+
+; 2188 :           EmitErr(CASE_ALREADY_OCCURED_IN_THIS_SWITCH_BLOCK, buffer);
+
+	lea	rdx, QWORD PTR buffer$[rbp-256]
+	mov	ecx, 253				; 000000fdH
+	call	EmitErr
+$LN9@HllExitDir:
+
+; 2183 :     }
+; 2184 : #if AMD64_SUPPORT
+; 2185 :     else {
+; 2186 :       for (j = 0; j < hll->casecnt; j++) {
+
+	inc	edi
+	add	r14, 8
+	cmp	edi, DWORD PTR [rbx+92]
+	jb	SHORT $LL11@HllExitDir
+$LN149@HllExitDir:
+
+; 2189 :       }
+; 2190 :       hll->pcases64[hll->casecnt] = opndx.value64;
 
 	mov	edx, DWORD PTR [rbx+92]
 	mov	rcx, QWORD PTR [rbx+16]
 	mov	rax, QWORD PTR opndx$[rsp]
 	mov	QWORD PTR [rcx+rdx*8], rax
-	jmp	SHORT $LN35@HllExitDir
-$LN36@HllExitDir:
+	jmp	SHORT $LN42@HllExitDir
+$LN43@HllExitDir:
 
-; 2158 :        hll->pcases[hll->casecnt] = opndx.value;
+; 2178 :       for (j = 0; j < hll->casecnt; j++) {
+
+	mov	edi, esi
+	cmp	DWORD PTR [rbx+92], esi
+	jbe	SHORT $LN150@HllExitDir
+	mov	r14, rsi
+	npad	12
+$LL8@HllExitDir:
+
+; 2179 :         if (hll->pcases[j] == opndx.value)
+
+	mov	rcx, QWORD PTR [rbx+8]
+	mov	eax, DWORD PTR opndx$[rsp]
+	cmp	DWORD PTR [r14+rcx], eax
+	jne	SHORT $LN6@HllExitDir
+
+; 2180 :           EmitErr(CASE_ALREADY_OCCURED_IN_THIS_SWITCH_BLOCK, buffer);
+
+	lea	rdx, QWORD PTR buffer$[rbp-256]
+	mov	ecx, 253				; 000000fdH
+	call	EmitErr
+$LN6@HllExitDir:
+
+; 2178 :       for (j = 0; j < hll->casecnt; j++) {
+
+	inc	edi
+	add	r14, r13
+	cmp	edi, DWORD PTR [rbx+92]
+	jb	SHORT $LL8@HllExitDir
+$LN150@HllExitDir:
+
+; 2181 :       }
+; 2182 :       hll->pcases[hll->casecnt] = opndx.value;
 
 	mov	edx, DWORD PTR [rbx+92]
 	mov	rcx, QWORD PTR [rbx+8]
 	mov	eax, DWORD PTR opndx$[rsp]
 	mov	DWORD PTR [rcx+rdx*4], eax
-$LN35@HllExitDir:
+$LN42@HllExitDir:
 
-; 2162 : #endif
-; 2163 :     myatoi128(buff + 2, dst, 16, 4);
+; 2191 :     }
+; 2192 : #endif
+; 2193 :     hll->plabels[hll->casecnt] = hex2dec(buff + 2);
 
-	mov	r9d, r13d
-	lea	rdx, QWORD PTR dst$[rsp]
-	mov	r8d, 16
 	lea	rcx, QWORD PTR buff$[rsp+2]
-	call	myatoi128
-
-; 2164 :     n = dst[0];
-; 2165 :     hll->plabels[hll->casecnt] = (uint_16)n;
-
+	call	hex2dec
 	mov	edx, DWORD PTR [rbx+92]
-	movzx	eax, WORD PTR dst$[rsp]
 	mov	rcx, QWORD PTR [rbx+24]
 	mov	WORD PTR [rcx+rdx*2], ax
 
-; 2166 :     hll->casecnt++;
+; 2194 :     hll->casecnt++;
 
 	inc	DWORD PTR [rbx+92]
 
-; 2167 :     break;
+; 2195 :     break;
 
-	jmp	$LN55@HllExitDir
-$LN14@HllExitDir:
+	jmp	$LN64@HllExitDir
+$LN21@HllExitDir:
 
-; 2111 :         }
-; 2112 : #endif
-; 2113 :       }
-; 2114 :     }
-; 2115 :     else {
-; 2116 :       DebugMsg(("HllExitDir stack error\n"));
-; 2117 :       return(EmitError(MISSING_OPERATOR_IN_EXPRESSION));
+; 2131 :         }
+; 2132 : #endif
+; 2133 :       }
+; 2134 :     }
+; 2135 :     else {
+; 2136 :       DebugMsg(("HllExitDir stack error\n"));
+; 2137 :       return(EmitError(MISSING_OPERATOR_IN_EXPRESSION));
 
 	mov	ecx, 150				; 00000096H
 	call	EmitError
-	jmp	$LN131@HllExitDir
-$LN37@HllExitDir:
+	jmp	$LN157@HllExitDir
+$LN46@HllExitDir:
 
-; 2168 :   case T_DOT_ELSE:
-; 2169 :   case T_DOT_ELSEIF:
-; 2170 :     if (hll->cmd != HLL_IF) {
+; 2196 :   case T_DOT_ELSE:
+; 2197 :   case T_DOT_ELSEIF:
+; 2198 :     if (hll->cmd != HLL_IF) {
 
-	cmp	DWORD PTR [rbx+96], r14d
-	je	SHORT $LN38@HllExitDir
+	cmp	DWORD PTR [rbx+96], esi
+	je	SHORT $LN47@HllExitDir
 
-; 2171 :       DebugMsg(("HllExitDir(%s): labels[LTEST]=%X\n", tokenarray[i].string_ptr, hll->labels[LTEST]));
-; 2172 :       return(EmitErr(BLOCK_NESTING_ERROR, tokenarray[i].string_ptr));
+; 2199 :       DebugMsg(("HllExitDir(%s): labels[LTEST]=%X\n", tokenarray[i].string_ptr, hll->labels[LTEST]));
+; 2200 :       return(EmitErr(BLOCK_NESTING_ERROR, tokenarray[i].string_ptr));
 
-	mov	rdx, QWORD PTR [rdx+r15+8]
+	mov	rdx, QWORD PTR [rdx+r12+8]
 	mov	ecx, 80					; 00000050H
 	call	EmitErr
-	jmp	$LN131@HllExitDir
-$LN38@HllExitDir:
+	jmp	$LN157@HllExitDir
+$LN47@HllExitDir:
 
-; 2173 :     }
-; 2174 :     /* v2.08: check for multiple ELSE clauses */
-; 2175 :     if (hll->flags & HLLF_ELSEOCCURED) {
+; 2201 :     }
+; 2202 :     /* v2.08: check for multiple ELSE clauses */
+; 2203 :     if (hll->flags & HLLF_ELSEOCCURED) {
 
 	test	BYTE PTR [rbx+104], 1
-	je	SHORT $LN39@HllExitDir
+	je	SHORT $LN48@HllExitDir
 
-; 2176 :       return(EmitError(DOT_ELSE_CLAUSE_ALREADY_OCCURED_IN_THIS_DOT_IF_BLOCK));
+; 2204 :       return(EmitError(DOT_ELSE_CLAUSE_ALREADY_OCCURED_IN_THIS_DOT_IF_BLOCK));
 
 	mov	ecx, 67					; 00000043H
 	call	EmitError
-	jmp	$LN131@HllExitDir
-$LN39@HllExitDir:
+	jmp	$LN157@HllExitDir
+$LN48@HllExitDir:
 
-; 2177 :     }
-; 2178 : 
-; 2179 :     /* the 'exit'-label is only needed if an .ELSE branch exists.
-; 2180 :     * That's why it is created delayed.
-; 2181 :     */
-; 2182 :     if (hll->labels[LEXIT] == 0)
-
-	cmp	DWORD PTR [rbx+36], r14d
-	jne	SHORT $LN40@HllExitDir
-
-; 2183 :       hll->labels[LEXIT] = GetHllLabel();
-
-	mov	eax, DWORD PTR ModuleInfo+352
-	inc	eax
-	mov	DWORD PTR ModuleInfo+352, eax
-	mov	DWORD PTR [rbx+36], eax
-$LN40@HllExitDir:
-
-; 2184 :     AddLineQueueX(JMPPREFIX "jmp %s", GetLabelStr(hll->labels[LEXIT], buff));
-
-	mov	r8d, DWORD PTR [rbx+36]
-	lea	rdx, OFFSET FLAT:$SG11101
-	lea	rcx, QWORD PTR buff$[rsp]
-	call	sprintf
-	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12098
-	call	AddLineQueueX
-
-; 2185 : 
-; 2186 :     if (hll->labels[LTEST] > 0) {
-
-	mov	r8d, DWORD PTR [rbx+32]
-	test	r8d, r8d
-	je	SHORT $LN41@HllExitDir
-
-; 2187 :       AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LTEST], buff));
-
-	lea	rdx, OFFSET FLAT:$SG11101
-	lea	rcx, QWORD PTR buff$[rsp]
-	call	sprintf
-	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12100
-	call	AddLineQueueX
-
-; 2188 :       hll->labels[LTEST] = 0;
-
-	mov	DWORD PTR [rbx+32], r14d
-$LN41@HllExitDir:
-
-; 2189 :     }
-; 2190 :     i++;
-
-	inc	DWORD PTR i$[rbp-256]
-
-; 2191 :     if (cmd == T_DOT_ELSEIF) {
-
-	cmp	edi, 334				; 0000014eH
-	jne	$LN42@HllExitDir
-
-; 2192 :       /* create new labels[LTEST] label */
-; 2193 :       hll->labels[LTEST] = GetHllLabel();
-
-	mov	eax, DWORD PTR ModuleInfo+352
-
-; 2194 :       rc = EvaluateHllExpression(hll, &i, tokenarray, LTEST, FALSE, buffer);
-
-	lea	rdx, QWORD PTR i$[rbp-256]
-	inc	eax
-	mov	QWORD PTR hllop$2[rsp], r14
-	mov	DWORD PTR ModuleInfo+352, eax
-	xor	r9d, r9d
-	mov	DWORD PTR [rbx+32], eax
-	mov	r8, r15
-	lea	rax, QWORD PTR hllop$2[rsp]
-	mov	DWORD PTR hllop$2[rsp+8], r14d
-	mov	QWORD PTR [rsp+48], rax
-	mov	rcx, rbx
-	lea	rax, QWORD PTR buffer$[rbp-256]
-	mov	BYTE PTR buffer$[rbp-256], r14b
-	mov	QWORD PTR [rsp+40], rax
-	mov	BYTE PTR [rsp+32], r14b
-	call	GetExpression
-	cmp	eax, -1
-	jne	SHORT $LN77@HllExitDir
-	or	r14d, eax
-	jmp	$LN55@HllExitDir
-$LN77@HllExitDir:
-	movsxd	rax, DWORD PTR i$[rbp-256]
-	shl	rax, 5
-	cmp	BYTE PTR [rax+r15], r14b
-	je	SHORT $LN78@HllExitDir
-	mov	ecx, 199				; 000000c7H
-	call	EmitError
-	mov	r14d, eax
-
-; 2195 :       if (rc == NOT_ERROR)
-
-	test	eax, eax
-	jne	$LN55@HllExitDir
-
-; 2194 :       rc = EvaluateHllExpression(hll, &i, tokenarray, LTEST, FALSE, buffer);
-
-$LN78@HllExitDir:
-
-; 2196 :         QueueTestLines(buffer);
-
-	lea	rbx, QWORD PTR buffer$[rbp-256]
-	npad	6
-$LL81@HllExitDir:
-	mov	edx, 10
-	mov	rcx, rbx
-	mov	rdi, rbx
-	call	strchr
-	mov	rbx, rax
-	test	rax, rax
-	je	SHORT $LN83@HllExitDir
-	mov	BYTE PTR [rax], 0
-	inc	rbx
-$LN83@HllExitDir:
-	cmp	BYTE PTR [rdi], 0
-	je	SHORT $LN84@HllExitDir
-	mov	rcx, rdi
-	call	AddLineQueue
-$LN84@HllExitDir:
-	test	rbx, rbx
-	jne	SHORT $LL81@HllExitDir
-
-; 2197 :     }
-
-	jmp	$LN55@HllExitDir
-$LN42@HllExitDir:
-
-; 2198 :     else
-; 2199 :       hll->flags |= HLLF_ELSEOCCURED;
-
-	or	DWORD PTR [rbx+104], 1
-
-; 2200 : 
-; 2201 :     break;
-
-	jmp	$LN55@HllExitDir
-	npad	2
-$LL127@HllExitDir:
-
-; 2202 :   case T_DOT_BREAK:
-; 2203 :   case T_DOT_CONTINUE:
-; 2204 :     for (; hll && hll->cmd == HLL_IF; hll = hll->next);
-
-	cmp	DWORD PTR [rbx+96], r14d
-	jne	SHORT $LN46@HllExitDir
-	mov	rbx, QWORD PTR [rbx]
-	test	rbx, rbx
-	jne	SHORT $LL127@HllExitDir
-$LN135@HllExitDir:
-
-; 2205 :     if (hll == NULL) {
-; 2206 :       return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
-
-	mov	ecx, 245				; 000000f5H
-	call	EmitError
-	jmp	$LN131@HllExitDir
-$LN46@HllExitDir:
-
-; 2207 :     }
-; 2208 :     /* v2.11: create 'exit' and 'test' labels delayed.
+; 2205 :     }
+; 2206 : 
+; 2207 :     /* the 'exit'-label is only needed if an .ELSE branch exists.
+; 2208 :     * That's why it is created delayed.
 ; 2209 :     */
-; 2210 :     if (cmd == T_DOT_BREAK) {
+; 2210 :     if (hll->labels[LEXIT] == 0)
 
-	cmp	edi, 331				; 0000014bH
-	jne	SHORT $LN47@HllExitDir
-
-; 2211 :       if (hll->labels[LEXIT] == 0)
-
-	cmp	DWORD PTR [rbx+36], r14d
+	cmp	DWORD PTR [rbx+36], esi
 	jne	SHORT $LN49@HllExitDir
 
-; 2212 :         hll->labels[LEXIT] = GetHllLabel();
+; 2211 :       hll->labels[LEXIT] = GetHllLabel();
 
 	mov	eax, DWORD PTR ModuleInfo+352
 	inc	eax
@@ -1747,296 +1643,461 @@ $LN46@HllExitDir:
 	mov	DWORD PTR [rbx+36], eax
 $LN49@HllExitDir:
 
-; 2213 :       idx = LEXIT;
+; 2212 :     AddLineQueueX(JMPPREFIX "jmp %s", GetLabelStr(hll->labels[LEXIT], buff));
+
+	mov	r8d, DWORD PTR [rbx+36]
+	lea	rdx, OFFSET FLAT:$SG11115
+	lea	rcx, QWORD PTR buff$[rsp]
+	call	sprintf
+	lea	rdx, QWORD PTR buff$[rsp]
+	lea	rcx, OFFSET FLAT:$SG12118
+	call	AddLineQueueX
+
+; 2213 : 
+; 2214 :     if (hll->labels[LTEST] > 0) {
+
+	mov	r8d, DWORD PTR [rbx+32]
+	test	r8d, r8d
+	je	SHORT $LN50@HllExitDir
+
+; 2215 :       AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LTEST], buff));
+
+	lea	rdx, OFFSET FLAT:$SG11115
+	lea	rcx, QWORD PTR buff$[rsp]
+	call	sprintf
+	lea	rdx, QWORD PTR buff$[rsp]
+	lea	rcx, OFFSET FLAT:$SG12120
+	call	AddLineQueueX
+
+; 2216 :       hll->labels[LTEST] = 0;
+
+	mov	DWORD PTR [rbx+32], esi
+$LN50@HllExitDir:
+
+; 2217 :     }
+; 2218 :     i++;
+
+	inc	DWORD PTR i$[rbp-256]
+
+; 2219 :     if (cmd == T_DOT_ELSEIF) {
+
+	cmp	edi, 334				; 0000014eH
+	jne	$LN51@HllExitDir
+
+; 2220 :       /* create new labels[LTEST] label */
+; 2221 :       hll->labels[LTEST] = GetHllLabel();
+
+	mov	eax, DWORD PTR ModuleInfo+352
+
+; 2222 :       rc = EvaluateHllExpression(hll, &i, tokenarray, LTEST, FALSE, buffer);
+
+	lea	rdx, QWORD PTR i$[rbp-256]
+	inc	eax
+	mov	QWORD PTR hllop$2[rsp], rsi
+	mov	DWORD PTR ModuleInfo+352, eax
+	xor	r9d, r9d
+	mov	DWORD PTR [rbx+32], eax
+	mov	r8, r12
+	lea	rax, QWORD PTR hllop$2[rsp]
+	mov	DWORD PTR hllop$2[rsp+8], esi
+	mov	QWORD PTR [rsp+48], rax
+	mov	rcx, rbx
+	lea	rax, QWORD PTR buffer$[rbp-256]
+	mov	BYTE PTR buffer$[rbp-256], sil
+	mov	QWORD PTR [rsp+40], rax
+	mov	BYTE PTR [rsp+32], sil
+	call	GetExpression
+	cmp	eax, -1
+	jne	SHORT $LN87@HllExitDir
+	or	esi, eax
+	jmp	$LN64@HllExitDir
+$LN87@HllExitDir:
+	movsxd	rax, DWORD PTR i$[rbp-256]
+	shl	rax, 5
+	cmp	BYTE PTR [rax+r12], sil
+	je	SHORT $LN88@HllExitDir
+	mov	ecx, 199				; 000000c7H
+	call	EmitError
+	mov	esi, eax
+
+; 2223 :       if (rc == NOT_ERROR)
+
+	test	eax, eax
+	jne	$LN64@HllExitDir
+
+; 2222 :       rc = EvaluateHllExpression(hll, &i, tokenarray, LTEST, FALSE, buffer);
+
+$LN88@HllExitDir:
+
+; 2224 :         QueueTestLines(buffer);
+
+	lea	rbx, QWORD PTR buffer$[rbp-256]
+	npad	6
+$LL91@HllExitDir:
+	mov	edx, 10
+	mov	rcx, rbx
+	mov	rdi, rbx
+	call	strchr
+	mov	rbx, rax
+	test	rax, rax
+	je	SHORT $LN93@HllExitDir
+	mov	BYTE PTR [rax], 0
+	inc	rbx
+$LN93@HllExitDir:
+	cmp	BYTE PTR [rdi], 0
+	je	SHORT $LN94@HllExitDir
+	mov	rcx, rdi
+	call	AddLineQueue
+$LN94@HllExitDir:
+	test	rbx, rbx
+	jne	SHORT $LL91@HllExitDir
+
+; 2225 :     }
+
+	jmp	$LN64@HllExitDir
+$LN51@HllExitDir:
+
+; 2226 :     else
+; 2227 :       hll->flags |= HLLF_ELSEOCCURED;
+
+	or	DWORD PTR [rbx+104], 1
+
+; 2228 : 
+; 2229 :     break;
+
+	jmp	$LN64@HllExitDir
+	npad	2
+$LL152@HllExitDir:
+
+; 2230 :   case T_DOT_BREAK:
+; 2231 :   case T_DOT_CONTINUE:
+; 2232 :     for (; hll && hll->cmd == HLL_IF; hll = hll->next);
+
+	cmp	DWORD PTR [rbx+96], esi
+	jne	SHORT $LN55@HllExitDir
+	mov	rbx, QWORD PTR [rbx]
+	test	rbx, rbx
+	jne	SHORT $LL152@HllExitDir
+$LN162@HllExitDir:
+
+; 2233 :     if (hll == NULL) {
+; 2234 :       return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
+
+	mov	ecx, 245				; 000000f5H
+	call	EmitError
+	jmp	$LN157@HllExitDir
+$LN55@HllExitDir:
+
+; 2235 :     }
+; 2236 :     /* v2.11: create 'exit' and 'test' labels delayed.
+; 2237 :     */
+; 2238 :     if (cmd == T_DOT_BREAK) {
+
+	cmp	edi, 331				; 0000014bH
+	jne	SHORT $LN56@HllExitDir
+
+; 2239 :       if (hll->labels[LEXIT] == 0)
+
+	cmp	DWORD PTR [rbx+36], esi
+	jne	SHORT $LN58@HllExitDir
+
+; 2240 :         hll->labels[LEXIT] = GetHllLabel();
+
+	mov	eax, DWORD PTR ModuleInfo+352
+	inc	eax
+	mov	DWORD PTR ModuleInfo+352, eax
+	mov	DWORD PTR [rbx+36], eax
+$LN58@HllExitDir:
+
+; 2241 :       idx = LEXIT;
 
 	mov	ecx, 1
 
-; 2214 :     }
+; 2242 :     }
 
-	jmp	SHORT $LN51@HllExitDir
-$LN47@HllExitDir:
+	jmp	SHORT $LN60@HllExitDir
+$LN56@HllExitDir:
 
-; 2215 :     else if (hll->cmd == HLL_FOR) {
+; 2243 :     else if (hll->cmd == HLL_FOR) {
 
 	mov	eax, DWORD PTR [rbx+96]
 	cmp	eax, r13d
-	jne	SHORT $LN50@HllExitDir
+	jne	SHORT $LN59@HllExitDir
 
-; 2216 :       /* added by habran
-; 2217 :       .CONTINUE label is created here for .FOR loops only if it exists.
-; 2218 :       It is different than .WHILE because it has to first alter counters
-; 2219 :       */
-; 2220 :       if (hll->labels[LCONT] == 0) hll->labels[LCONT] = GetHllLabel();
+; 2244 :       /* added by habran
+; 2245 :       .CONTINUE label is created here for .FOR loops only if it exists.
+; 2246 :       It is different than .WHILE because it has to first alter counters
+; 2247 :       */
+; 2248 :       if (hll->labels[LCONT] == 0) hll->labels[LCONT] = GetHllLabel();
 
-	cmp	DWORD PTR [rbx+48], r14d
-	jne	SHORT $LN52@HllExitDir
+	cmp	DWORD PTR [rbx+48], esi
+	jne	SHORT $LN61@HllExitDir
 	mov	eax, DWORD PTR ModuleInfo+352
 	inc	eax
 	mov	DWORD PTR ModuleInfo+352, eax
 	mov	DWORD PTR [rbx+48], eax
-$LN52@HllExitDir:
+$LN61@HllExitDir:
 
-; 2221 :       idx = (hll->labels[LCONT] ? LCONT : LSTART);
+; 2249 :       idx = (hll->labels[LCONT] ? LCONT : LSTART);
 
-	cmp	DWORD PTR [rbx+48], r14d
+	cmp	DWORD PTR [rbx+48], esi
 	mov	ecx, 2
 	cmovne	ecx, r13d
 
-; 2222 :     }
+; 2250 :     }
 
-	jmp	SHORT $LN51@HllExitDir
-$LN50@HllExitDir:
+	jmp	SHORT $LN60@HllExitDir
+$LN59@HllExitDir:
 
-; 2223 :     else {
-; 2224 :       /* 'test' is not created for .WHILE loops here; because
-; 2225 :       * if it doesn't exist, there's no condition to test.
-; 2226 :       */
-; 2227 :       if (hll->cmd == HLL_REPEAT && hll->labels[LTEST] == 0)
+; 2251 :     else {
+; 2252 :       /* 'test' is not created for .WHILE loops here; because
+; 2253 :       * if it doesn't exist, there's no condition to test.
+; 2254 :       */
+; 2255 :       if (hll->cmd == HLL_REPEAT && hll->labels[LTEST] == 0)
 
 	cmp	eax, 2
-	jne	SHORT $LN53@HllExitDir
-	cmp	DWORD PTR [rbx+32], r14d
-	jne	SHORT $LN53@HllExitDir
+	jne	SHORT $LN62@HllExitDir
+	cmp	DWORD PTR [rbx+32], esi
+	jne	SHORT $LN62@HllExitDir
 
-; 2228 :         hll->labels[LTEST] = GetHllLabel();
+; 2256 :         hll->labels[LTEST] = GetHllLabel();
 
 	mov	eax, DWORD PTR ModuleInfo+352
 	inc	eax
 	mov	DWORD PTR ModuleInfo+352, eax
 	mov	DWORD PTR [rbx+32], eax
-$LN53@HllExitDir:
+$LN62@HllExitDir:
 
-; 2229 :       idx = (hll->labels[LTEST] ? LTEST : LSTART);
+; 2257 :       idx = (hll->labels[LTEST] ? LTEST : LSTART);
 
-	cmp	DWORD PTR [rbx+32], r14d
+	cmp	DWORD PTR [rbx+32], esi
 	mov	ecx, 2
-	cmovne	ecx, r14d
-$LN51@HllExitDir:
+	cmovne	ecx, esi
+$LN60@HllExitDir:
 
-; 2230 :     }
-; 2231 : 
-; 2232 :     /* .BREAK .IF ... or .CONTINUE .IF ? */
-; 2233 :     i++;
+; 2258 :     }
+; 2259 : 
+; 2260 :     /* .BREAK .IF ... or .CONTINUE .IF ? */
+; 2261 :     i++;
 
 	mov	eax, DWORD PTR i$[rbp-256]
 	inc	eax
 	mov	DWORD PTR i$[rbp-256], eax
 
-; 2234 :     if (tokenarray[i].token != T_FINAL) {
+; 2262 :     if (tokenarray[i].token != T_FINAL) {
 
 	cdqe
 	shl	rax, 5
-	lea	rdx, QWORD PTR [rax+r15]
-	movzx	eax, BYTE PTR [rax+r15]
+	lea	rdx, QWORD PTR [rax+r12]
+	movzx	eax, BYTE PTR [rax+r12]
 	test	al, al
-	je	$LN54@HllExitDir
+	je	$LN63@HllExitDir
 
-; 2235 :       if (tokenarray[i].token == T_DIRECTIVE && tokenarray[i].tokval == T_DOT_IF) {
+; 2263 :       if (tokenarray[i].token == T_DIRECTIVE && tokenarray[i].tokval == T_DOT_IF) {
 
 	cmp	al, 3
-	jne	$LN55@HllExitDir
+	jne	$LN64@HllExitDir
 	cmp	DWORD PTR [rdx+16], 327			; 00000147H
-	jne	$LN55@HllExitDir
+	jne	$LN64@HllExitDir
 
-; 2236 :         enum hll_cmd savedcmd = hll->cmd;
-; 2237 :         hll->cmd = HLL_BREAK;
-; 2238 :         i++;
-; 2239 :         /* v2.11: set rc and don't exit if an error occurs; see hll3.aso */
-; 2240 :         rc = EvaluateHllExpression(hll, &i, tokenarray, idx, TRUE, buffer);
+; 2264 :         enum hll_cmd savedcmd = hll->cmd;
+; 2265 :         hll->cmd = HLL_BREAK;
+; 2266 :         i++;
+; 2267 :         /* v2.11: set rc and don't exit if an error occurs; see hll3.aso */
+; 2268 :         rc = EvaluateHllExpression(hll, &i, tokenarray, idx, TRUE, buffer);
 
 	lea	rax, QWORD PTR hllop$1[rsp]
-	mov	QWORD PTR [rsp+1312], r12
-	mov	r12d, DWORD PTR [rbx+96]
+	mov	QWORD PTR [rsp+1304], r15
+	mov	r15d, DWORD PTR [rbx+96]
 	lea	rdx, QWORD PTR i$[rbp-256]
 	mov	QWORD PTR [rsp+48], rax
 	mov	r9d, ecx
 	mov	DWORD PTR [rbx+96], 3
 	lea	rax, QWORD PTR buffer$[rbp-256]
 	inc	DWORD PTR i$[rbp-256]
-	mov	r8, r15
+	mov	r8, r12
 	mov	QWORD PTR [rsp+40], rax
 	mov	rcx, rbx
 	mov	BYTE PTR [rsp+32], 1
-	mov	QWORD PTR hllop$1[rsp], r14
-	mov	DWORD PTR hllop$1[rsp+8], r14d
-	mov	BYTE PTR buffer$[rbp-256], r14b
+	mov	QWORD PTR hllop$1[rsp], rsi
+	mov	DWORD PTR hllop$1[rsp+8], esi
+	mov	BYTE PTR buffer$[rbp-256], sil
 	call	GetExpression
 	cmp	eax, -1
-	jne	SHORT $LN93@HllExitDir
+	jne	SHORT $LN103@HllExitDir
 
-; 2243 :         hll->cmd = savedcmd;
+; 2271 :         hll->cmd = savedcmd;
 
-	mov	DWORD PTR [rbx+96], r12d
-	or	r14d, eax
-	mov	r12, QWORD PTR [rsp+1312]
+	mov	DWORD PTR [rbx+96], r15d
+	or	esi, eax
+	mov	r15, QWORD PTR [rsp+1304]
 
-; 2244 :       }
-; 2245 :     }
+; 2272 :       }
+; 2273 :     }
 
-	jmp	$LN55@HllExitDir
+	jmp	$LN64@HllExitDir
 
-; 2236 :         enum hll_cmd savedcmd = hll->cmd;
-; 2237 :         hll->cmd = HLL_BREAK;
-; 2238 :         i++;
-; 2239 :         /* v2.11: set rc and don't exit if an error occurs; see hll3.aso */
-; 2240 :         rc = EvaluateHllExpression(hll, &i, tokenarray, idx, TRUE, buffer);
+; 2264 :         enum hll_cmd savedcmd = hll->cmd;
+; 2265 :         hll->cmd = HLL_BREAK;
+; 2266 :         i++;
+; 2267 :         /* v2.11: set rc and don't exit if an error occurs; see hll3.aso */
+; 2268 :         rc = EvaluateHllExpression(hll, &i, tokenarray, idx, TRUE, buffer);
 
-$LN93@HllExitDir:
+$LN103@HllExitDir:
 	movsxd	rax, DWORD PTR i$[rbp-256]
 	shl	rax, 5
-	cmp	BYTE PTR [rax+r15], r14b
-	je	SHORT $LN94@HllExitDir
+	cmp	BYTE PTR [rax+r12], sil
+	je	SHORT $LN104@HllExitDir
 	mov	ecx, 199				; 000000c7H
 	call	EmitError
-	mov	r14d, eax
+	mov	esi, eax
 
-; 2241 :         if (rc == NOT_ERROR)
+; 2269 :         if (rc == NOT_ERROR)
 
 	test	eax, eax
-	jne	SHORT $LN98@HllExitDir
+	jne	SHORT $LN108@HllExitDir
 
-; 2236 :         enum hll_cmd savedcmd = hll->cmd;
-; 2237 :         hll->cmd = HLL_BREAK;
-; 2238 :         i++;
-; 2239 :         /* v2.11: set rc and don't exit if an error occurs; see hll3.aso */
-; 2240 :         rc = EvaluateHllExpression(hll, &i, tokenarray, idx, TRUE, buffer);
+; 2264 :         enum hll_cmd savedcmd = hll->cmd;
+; 2265 :         hll->cmd = HLL_BREAK;
+; 2266 :         i++;
+; 2267 :         /* v2.11: set rc and don't exit if an error occurs; see hll3.aso */
+; 2268 :         rc = EvaluateHllExpression(hll, &i, tokenarray, idx, TRUE, buffer);
 
-$LN94@HllExitDir:
+$LN104@HllExitDir:
 
-; 2242 :           QueueTestLines(buffer);
+; 2270 :           QueueTestLines(buffer);
 
-	mov	QWORD PTR [rsp+1304], rsi
 	lea	rdi, QWORD PTR buffer$[rbp-256]
-	npad	1
-$LL97@HllExitDir:
+	npad	3
+$LL107@HllExitDir:
 	mov	edx, 10
 	mov	rcx, rdi
-	mov	rsi, rdi
+	mov	r14, rdi
 	call	strchr
 	mov	rdi, rax
 	test	rax, rax
-	je	SHORT $LN99@HllExitDir
+	je	SHORT $LN109@HllExitDir
 	mov	BYTE PTR [rax], 0
 	inc	rdi
-$LN99@HllExitDir:
-	cmp	BYTE PTR [rsi], 0
-	je	SHORT $LN100@HllExitDir
-	mov	rcx, rsi
+$LN109@HllExitDir:
+	cmp	BYTE PTR [r14], 0
+	je	SHORT $LN110@HllExitDir
+	mov	rcx, r14
 	call	AddLineQueue
-$LN100@HllExitDir:
+$LN110@HllExitDir:
 	test	rdi, rdi
-	jne	SHORT $LL97@HllExitDir
-	mov	rsi, QWORD PTR [rsp+1304]
-$LN98@HllExitDir:
+	jne	SHORT $LL107@HllExitDir
+$LN108@HllExitDir:
 
-; 2243 :         hll->cmd = savedcmd;
+; 2271 :         hll->cmd = savedcmd;
 
-	mov	DWORD PTR [rbx+96], r12d
-	mov	r12, QWORD PTR [rsp+1312]
+	mov	DWORD PTR [rbx+96], r15d
+	mov	r15, QWORD PTR [rsp+1304]
 
-; 2244 :       }
-; 2245 :     }
+; 2272 :       }
+; 2273 :     }
 
-	jmp	SHORT $LN55@HllExitDir
-$LN54@HllExitDir:
+	jmp	SHORT $LN64@HllExitDir
+$LN63@HllExitDir:
 
-; 2246 :     else {
-; 2247 :       AddLineQueueX(JMPPREFIX "jmp %s", GetLabelStr(hll->labels[idx], buff));
+; 2274 :     else {
+; 2275 :       AddLineQueueX(JMPPREFIX "jmp %s", GetLabelStr(hll->labels[idx], buff));
 
 	movsxd	rax, ecx
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	mov	r8d, DWORD PTR [rbx+rax*4+32]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12117
+	lea	rcx, OFFSET FLAT:$SG12137
 	call	AddLineQueueX
-$LN55@HllExitDir:
+$LN64@HllExitDir:
 
-; 2248 :     }
-; 2249 :     break;
-; 2250 : #ifdef DEBUG_OUT
-; 2251 :   default: /**/myassert(0); break;
-; 2252 : #endif
-; 2253 :   }
-; 2254 :   if (tokenarray[i].token != T_FINAL && rc == NOT_ERROR) {
+; 2276 :     }
+; 2277 :     break;
+; 2278 : #ifdef DEBUG_OUT
+; 2279 :   default: /**/myassert(0); break;
+; 2280 : #endif
+; 2281 :   }
+; 2282 :   if (tokenarray[i].token != T_FINAL && rc == NOT_ERROR) {
 
 	movsxd	rax, DWORD PTR i$[rbp-256]
 	shl	rax, 5
-	cmp	BYTE PTR [rax+r15], 0
-	je	SHORT $LN58@HllExitDir
-	test	r14d, r14d
-	jne	SHORT $LN58@HllExitDir
+	cmp	BYTE PTR [rax+r12], 0
+	je	SHORT $LN67@HllExitDir
+	test	esi, esi
+	jne	SHORT $LN67@HllExitDir
 
-; 2255 :     EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos);
+; 2283 :     EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos);
 
-	mov	rdx, QWORD PTR [rax+r15+24]
+	mov	rdx, QWORD PTR [rax+r12+24]
 	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
-; 2256 :     rc = ERROR;
+; 2284 :     rc = ERROR;
 
-	or	r14d, -1
-$LN58@HllExitDir:
+	or	esi, -1
+$LN67@HllExitDir:
 
-; 2257 :   }
-; 2258 : 
-; 2259 :   if (ModuleInfo.list)
+; 2285 :   }
+; 2286 : 
+; 2287 :   if (ModuleInfo.list)
 
 	test	DWORD PTR ModuleInfo+408, 2048		; 00000800H
-	je	SHORT $LN59@HllExitDir
+	je	SHORT $LN68@HllExitDir
 
-; 2260 :     LstWrite(LSTTYPE_DIRECTIVE, GetCurrOffset(), NULL);
+; 2288 :     LstWrite(LSTTYPE_DIRECTIVE, GetCurrOffset(), NULL);
 
 	call	GetCurrOffset
 	mov	edx, eax
 	xor	r8d, r8d
 	mov	ecx, r13d
 	call	LstWrite
-$LN59@HllExitDir:
+$LN68@HllExitDir:
 
-; 2261 : 
-; 2262 :   /* v2.11: always run line-queue if it's not empty. */
-; 2263 :   if (is_linequeue_populated())
+; 2289 : 
+; 2290 :   /* v2.11: always run line-queue if it's not empty. */
+; 2291 :   if (is_linequeue_populated())
 
 	cmp	QWORD PTR ModuleInfo+184, 0
-	je	SHORT $LN60@HllExitDir
+	je	SHORT $LN69@HllExitDir
 
-; 2264 :     RunLineQueue();
+; 2292 :     RunLineQueue();
 
 	call	RunLineQueue
-$LN60@HllExitDir:
+$LN69@HllExitDir:
 
-; 2265 : 
-; 2266 :   return(rc);
+; 2293 : 
+; 2294 :   return(rc);
 
-	mov	eax, r14d
-$LN131@HllExitDir:
-	mov	r13, QWORD PTR [rsp+1320]
+	mov	eax, esi
+$LN157@HllExitDir:
+	mov	r13, QWORD PTR [rsp+1288]
+	mov	r14, QWORD PTR [rsp+1296]
 
-; 2267 : }
+; 2295 : }
 
-	add	rsp, 1248				; 000004e0H
-	pop	r15
-	pop	r14
+	add	rsp, 1232				; 000004d0H
+	pop	r12
 	pop	rdi
+	pop	rsi
 	pop	rbx
 	pop	rbp
 	ret	0
-	npad	3
-$LN121@HllExitDir:
-	DD	$LL127@HllExitDir
-	DD	$LL127@HllExitDir
-	DD	$LN37@HllExitDir
-	DD	$LN37@HllExitDir
-	DD	$LN55@HllExitDir
-	DD	$LN55@HllExitDir
-	DD	$LN55@HllExitDir
-	DD	$LN55@HllExitDir
-	DD	$LN55@HllExitDir
-	DD	$LN55@HllExitDir
-	DD	$LN12@HllExitDir
-	DD	$LN10@HllExitDir
+	npad	2
+$LN144@HllExitDir:
+	DD	$LL152@HllExitDir
+	DD	$LL152@HllExitDir
+	DD	$LN46@HllExitDir
+	DD	$LN46@HllExitDir
+	DD	$LN64@HllExitDir
+	DD	$LN64@HllExitDir
+	DD	$LN64@HllExitDir
+	DD	$LN64@HllExitDir
+	DD	$LN64@HllExitDir
+	DD	$LN64@HllExitDir
+	DD	$LN18@HllExitDir
+	DD	$LN16@HllExitDir
 HllExitDir ENDP
 _TEXT	ENDS
 ; Function compile flags: /Ogtpy
@@ -2050,7 +2111,7 @@ i$ = 2208
 tokenarray$ = 2216
 HllEndDir PROC
 
-; 1540 : {
+; 1560 : {
 
 $LN355:
 	mov	QWORD PTR [rsp+16], rdx
@@ -2062,21 +2123,21 @@ $LN355:
 	lea	rbp, QWORD PTR [rsp-1912]
 	sub	rsp, 2168				; 00000878H
 
-; 1541 :   //struct asym       *sym;
-; 1542 :   struct hll_item     *hll;
-; 1543 :   ret_code            rc = NOT_ERROR;
-; 1544 :   int                 cmd = tokenarray[i].tokval;
-; 1545 :   int                 j, n;
-; 1546 :   int                 temp;
-; 1547 :   char buff[16];
-; 1548 :   //char buffer[MAX_LINE_LEN*2];
-; 1549 : 
-; 1550 : 
-; 1551 :   char buffer[MAX_LINE_LEN * 2];
-; 1552 : 
-; 1553 :   DebugMsg1(("HllEndDir(%s) enter\n", tokenarray[i].string_ptr));
-; 1554 : 
-; 1555 :   if (HllStack == NULL) {
+; 1561 :   //struct asym       *sym;
+; 1562 :   struct hll_item     *hll;
+; 1563 :   ret_code            rc = NOT_ERROR;
+; 1564 :   int                 cmd = tokenarray[i].tokval;
+; 1565 :   int                 j, n;
+; 1566 :   int                 temp;
+; 1567 :   char buff[16];
+; 1568 :   //char buffer[MAX_LINE_LEN*2];
+; 1569 : 
+; 1570 : 
+; 1571 :   char buffer[MAX_LINE_LEN * 2];
+; 1572 : 
+; 1573 :   DebugMsg1(("HllEndDir(%s) enter\n", tokenarray[i].string_ptr));
+; 1574 : 
+; 1575 :   if (HllStack == NULL) {
 
 	mov	rbx, QWORD PTR ModuleInfo+224
 	xor	r15d, r15d
@@ -2087,13 +2148,13 @@ $LN355:
 	test	rbx, rbx
 	jne	SHORT $LN26@HllEndDir
 
-; 1556 :     DebugMsg(("HllEndDir: hll stack is empty\n"));
-; 1557 :     return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
+; 1576 :     DebugMsg(("HllEndDir: hll stack is empty\n"));
+; 1577 :     return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
 
 	mov	ecx, 245				; 000000f5H
 	call	EmitError
 
-; 2035 : }
+; 2055 : }
 
 	add	rsp, 2168				; 00000878H
 	pop	r15
@@ -2103,23 +2164,23 @@ $LN355:
 	ret	0
 $LN26@HllEndDir:
 
-; 1558 :   }
-; 1559 : 
-; 1560 :   hll = HllStack;
-; 1561 :   HllStack = hll->next;
+; 1578 :   }
+; 1579 : 
+; 1580 :   hll = HllStack;
+; 1581 :   HllStack = hll->next;
 
 	mov	rax, QWORD PTR [rbx]
 	mov	QWORD PTR ModuleInfo+224, rax
 
-; 1562 :   /* v2.06: move the item to the free stack */
-; 1563 :   hll->next = HllFree;
+; 1582 :   /* v2.06: move the item to the free stack */
+; 1583 :   hll->next = HllFree;
 
 	mov	rax, QWORD PTR ModuleInfo+232
 	mov	QWORD PTR [rbx], rax
 
-; 1564 :   HllFree = hll;
-; 1565 : 
-; 1566 :   switch (cmd) {
+; 1584 :   HllFree = hll;
+; 1585 : 
+; 1586 :   switch (cmd) {
 
 	lea	eax, DWORD PTR [rcx-335]
 	mov	QWORD PTR [rsp+2224], rsi
@@ -2133,155 +2194,155 @@ $LN26@HllEndDir:
 	jmp	rcx
 $LN27@HllEndDir:
 
-; 1567 :   case T_DOT_ENDIF:
-; 1568 :     if (hll->cmd != HLL_IF) {
+; 1587 :   case T_DOT_ENDIF:
+; 1588 :     if (hll->cmd != HLL_IF) {
 
 	cmp	DWORD PTR [rbx+96], r15d
 	jne	$LN353@HllEndDir
 
-; 1569 :       DebugMsg(("HllEndDir: no .IF on the hll stack\n"));
-; 1570 :       return(EmitErr(BLOCK_NESTING_ERROR, tokenarray[i].string_ptr));
-; 1571 :     }
-; 1572 :     i++;
+; 1589 :       DebugMsg(("HllEndDir: no .IF on the hll stack\n"));
+; 1590 :       return(EmitErr(BLOCK_NESTING_ERROR, tokenarray[i].string_ptr));
+; 1591 :     }
+; 1592 :     i++;
 
 	inc	DWORD PTR i$[rbp-256]
 
-; 1573 :     /* if a test label isn't created yet, create it */
-; 1574 :     if (hll->labels[LTEST]) {
+; 1593 :     /* if a test label isn't created yet, create it */
+; 1594 :     if (hll->labels[LTEST]) {
 
 	mov	r8d, DWORD PTR [rbx+32]
 	test	r8d, r8d
 	je	$LN336@HllEndDir
 
-; 1575 :       AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LTEST], buff));
+; 1595 :       AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LTEST], buff));
 
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11766
+	lea	rcx, OFFSET FLAT:$SG11780
 	call	AddLineQueueX
 
-; 1576 :     }
-; 1577 :     break;
+; 1596 :     }
+; 1597 :     break;
 
 	jmp	$LN336@HllEndDir
 $LN30@HllEndDir:
 
-; 1578 :     // added by habran
-; 1579 :   case T_DOT_ENDSWITCH:
-; 1580 :     if (hll->cmd != HLL_SWITCH) {
+; 1598 :     // added by habran
+; 1599 :   case T_DOT_ENDSWITCH:
+; 1600 :     if (hll->cmd != HLL_SWITCH) {
 
 	cmp	DWORD PTR [rbx+96], 5
 	je	SHORT $LN31@HllEndDir
 
-; 1581 :       DebugMsg(("HllExitDir stack error\n"));
-; 1582 :       return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
+; 1601 :       DebugMsg(("HllExitDir stack error\n"));
+; 1602 :       return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
 
 	mov	ecx, 245				; 000000f5H
 	call	EmitError
 	jmp	$LN340@HllEndDir
 $LN31@HllEndDir:
 
-; 1583 :     }
-; 1584 :     i++;
+; 1603 :     }
+; 1604 :     i++;
 
 	inc	DWORD PTR i$[rbp-256]
 
-; 1585 :     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LSTART], buff));
+; 1605 :     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LSTART], buff));
 
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	mov	r8d, DWORD PTR [rbx+40]
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11769
+	lea	rcx, OFFSET FLAT:$SG11783
 	call	AddLineQueueX
 
-; 1586 :     if (Parse_Pass) {
+; 1606 :     if (Parse_Pass) {
 
 	cmp	DWORD PTR Parse_Pass, r15d
 	je	$LN72@HllEndDir
 
-; 1587 :       if (hll->casecnt == 1)
+; 1607 :       if (hll->casecnt == 1)
 
 	mov	r9d, DWORD PTR [rbx+92]
 	cmp	r9d, 1
 	jne	SHORT $LN33@HllEndDir
 
-; 1588 :         hll->cflag = 1;
+; 1608 :         hll->cflag = 1;
 
 	mov	BYTE PTR [rbx+101], r9b
 	jmp	SHORT $LN43@HllEndDir
 $LN33@HllEndDir:
 
-; 1589 :       else if (hll->casecnt == 2)
+; 1609 :       else if (hll->casecnt == 2)
 
 	cmp	r9d, 2
 	jne	SHORT $LN35@HllEndDir
 
-; 1590 :         hll->cflag = 2;
+; 1610 :         hll->cflag = 2;
 
 	mov	BYTE PTR [rbx+101], r9b
 	jmp	SHORT $LN43@HllEndDir
 $LN35@HllEndDir:
 
-; 1591 :       else if (hll->casecnt == 3)
+; 1611 :       else if (hll->casecnt == 3)
 
 	cmp	r9d, 3
 	jne	SHORT $LN37@HllEndDir
 
-; 1592 :         hll->cflag = 3;
+; 1612 :         hll->cflag = 3;
 
 	mov	BYTE PTR [rbx+101], r9b
 	jmp	SHORT $LN43@HllEndDir
 $LN37@HllEndDir:
 
-; 1593 :       else
-; 1594 :       {
-; 1595 :         if (hll->plabels) {
+; 1613 :       else
+; 1614 :       {
+; 1615 :         if (hll->plabels) {
 
 	mov	rdx, QWORD PTR [rbx+24]
 	test	rdx, rdx
 	je	SHORT $LN43@HllEndDir
 
-; 1596 :           if ((ModuleInfo.Ofssize == USE32)|| (hll->csize == 4)){
+; 1616 :           if ((ModuleInfo.Ofssize == USE32)|| (hll->csize == 4)){
 
 	cmp	BYTE PTR ModuleInfo+404, 1
 	je	SHORT $LN42@HllEndDir
 	cmp	BYTE PTR [rbx+102], 4
 	je	SHORT $LN42@HllEndDir
 
-; 1599 :               hll->cflag = 4;
-; 1600 :             else
-; 1601 :               hll->cflag = 5;
-; 1602 :           }
-; 1603 : #if AMD64_SUPPORT
-; 1604 :           else {     //USE64
-; 1605 :             bubblesort64(hll, hll->plabels,hll->pcases64, hll->casecnt);
+; 1619 :               hll->cflag = 4;
+; 1620 :             else
+; 1621 :               hll->cflag = 5;
+; 1622 :           }
+; 1623 : #if AMD64_SUPPORT
+; 1624 :           else {     //USE64
+; 1625 :             bubblesort64(hll, hll->plabels,hll->pcases64, hll->casecnt);
 
 	mov	r8, QWORD PTR [rbx+16]
 	mov	rcx, rbx
 	call	bubblesort64
 
-; 1606 :             if (hll->delta64 < 256)
+; 1626 :             if (hll->delta64 < 256)
 
 	cmp	QWORD PTR [rbx+144], 256		; 00000100H
 
-; 1607 :               hll->cflag = 4;
-; 1608 :             else
-; 1609 :               hll->cflag = 5;
+; 1627 :               hll->cflag = 4;
+; 1628 :             else
+; 1629 :               hll->cflag = 5;
 
 	jmp	SHORT $LN344@HllEndDir
 $LN42@HllEndDir:
 
-; 1597 :             bubblesort(hll, hll->plabels, hll->pcases, hll->casecnt);
+; 1617 :             bubblesort(hll, hll->plabels, hll->pcases, hll->casecnt);
 
 	mov	r8, QWORD PTR [rbx+8]
 	mov	rcx, rbx
 	call	bubblesort
 
-; 1598 :             if (hll->delta < 256)
+; 1618 :             if (hll->delta < 256)
 
 	cmp	DWORD PTR [rbx+116], 256		; 00000100H
 $LN344@HllEndDir:
@@ -2290,125 +2351,43 @@ $LN344@HllEndDir:
 	mov	BYTE PTR [rbx+101], al
 $LN43@HllEndDir:
 
-; 1610 :           }
-; 1611 : #endif
-; 1612 :         }
-; 1613 :       }
-; 1614 :       if (hll->cflag == 1) {
+; 1630 :           }
+; 1631 : #endif
+; 1632 :         }
+; 1633 :       }
+; 1634 :       if (hll->cflag == 1) {
 
 	movzx	eax, BYTE PTR [rbx+101]
 	cmp	al, 1
 	jne	$LN47@HllEndDir
 
-; 1615 :         if ((ModuleInfo.Ofssize == USE32) || (hll->csize == 4)) {
+; 1635 :         if ((ModuleInfo.Ofssize == USE32) || (hll->csize == 4)) {
 
 	cmp	BYTE PTR ModuleInfo+404, al
 	je	SHORT $LN51@HllEndDir
 	cmp	BYTE PTR [rbx+102], 4
 	je	SHORT $LN51@HllEndDir
 
-; 1619 :         }
-; 1620 : #if AMD64_SUPPORT
-; 1621 :         else
-; 1622 :         {
-; 1623 :           AddLineQueueX("mov rcx, %q", hll->pcases64[0]);
-
-	mov	rdx, QWORD PTR [rbx+16]
-	lea	rcx, OFFSET FLAT:$SG11793
-	mov	rdx, QWORD PTR [rdx]
-	call	AddLineQueueX
-
-; 1624 :           AddLineQueueX("cmp rax, rcx");
-
-	lea	rcx, OFFSET FLAT:$SG11794
-	call	AddLineQueueX
-
-; 1625 :           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[0], buff));
-
-	mov	rax, QWORD PTR [rbx+24]
-	lea	rdx, OFFSET FLAT:$SG11101
-	lea	rcx, QWORD PTR buff$[rsp]
-	movzx	r8d, WORD PTR [rax]
-	call	sprintf
-	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11795
-	call	AddLineQueueX
-
-; 1626 :           AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LDEF], buff));
-
-	mov	r8d, DWORD PTR [rbx+52]
-	lea	rdx, OFFSET FLAT:$SG11101
-	lea	rcx, QWORD PTR buff$[rsp]
-	call	sprintf
-	lea	rcx, OFFSET FLAT:$SG11796
-	jmp	$LN345@HllEndDir
-$LN51@HllEndDir:
-
-; 1616 :           AddLineQueueX("cmp  eax,%d", hll->pcases[0]);
-
-	mov	rax, QWORD PTR [rbx+8]
-	lea	rcx, OFFSET FLAT:$SG11790
-	mov	edx, DWORD PTR [rax]
-	call	AddLineQueueX
-
-; 1617 :           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[0], buff));
-
-	mov	rax, QWORD PTR [rbx+24]
-	lea	rdx, OFFSET FLAT:$SG11101
-	lea	rcx, QWORD PTR buff$[rsp]
-	movzx	r8d, WORD PTR [rax]
-	call	sprintf
-	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11791
-	call	AddLineQueueX
-
-; 1618 :           AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LDEF], buff));
-
-	mov	r8d, DWORD PTR [rbx+52]
-	lea	rdx, OFFSET FLAT:$SG11101
-	lea	rcx, QWORD PTR buff$[rsp]
-	call	sprintf
-	lea	rcx, OFFSET FLAT:$SG11792
-
-; 1627 :         }
-; 1628 : #endif
-; 1629 :       }
-
-	jmp	$LN345@HllEndDir
-$LN47@HllEndDir:
-
-; 1630 :       else if (hll->cflag == 2) {
-
-	cmp	al, 2
-	jne	$LN52@HllEndDir
-
-; 1631 :         if ((ModuleInfo.Ofssize == USE32) || (hll->csize == 4)) {
-
-	cmp	BYTE PTR ModuleInfo+404, 1
-	je	$LN56@HllEndDir
-	cmp	BYTE PTR [rbx+102], 4
-	je	$LN56@HllEndDir
-
-; 1637 :         }
-; 1638 : #if AMD64_SUPPORT
-; 1639 :         else
-; 1640 :         {
-; 1641 :           AddLineQueueX("mov rcx, %q", hll->pcases64[0]);
+; 1639 :         }
+; 1640 : #if AMD64_SUPPORT
+; 1641 :         else
+; 1642 :         {
+; 1643 :           AddLineQueueX("mov rcx, %q", hll->pcases64[0]);
 
 	mov	rdx, QWORD PTR [rbx+16]
 	lea	rcx, OFFSET FLAT:$SG11807
 	mov	rdx, QWORD PTR [rdx]
 	call	AddLineQueueX
 
-; 1642 :           AddLineQueueX("cmp rax, rcx");
+; 1644 :           AddLineQueueX("cmp rax, rcx");
 
 	lea	rcx, OFFSET FLAT:$SG11808
 	call	AddLineQueueX
 
-; 1643 :           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[0], buff));
+; 1645 :           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[0], buff));
 
 	mov	rax, QWORD PTR [rbx+24]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	movzx	r8d, WORD PTR [rax]
 	call	sprintf
@@ -2416,1107 +2395,1189 @@ $LN47@HllEndDir:
 	lea	rcx, OFFSET FLAT:$SG11809
 	call	AddLineQueueX
 
-; 1644 :           AddLineQueueX("mov rcx, %q", hll->pcases64[1]);
-
-	mov	rdx, QWORD PTR [rbx+16]
-	lea	rcx, OFFSET FLAT:$SG11810
-	mov	rdx, QWORD PTR [rdx+8]
-	call	AddLineQueueX
-
-; 1645 :           AddLineQueueX("cmp rax, rcx");
-
-	lea	rcx, OFFSET FLAT:$SG11811
-	call	AddLineQueueX
-
-; 1646 :           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[1], buff));
-
-	mov	rax, QWORD PTR [rbx+24]
-	lea	rdx, OFFSET FLAT:$SG11101
-	lea	rcx, QWORD PTR buff$[rsp]
-	movzx	r8d, WORD PTR [rax+2]
-	call	sprintf
-	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11812
-	call	AddLineQueueX
-
-; 1647 :           AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LDEF], buff));
+; 1646 :           AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LDEF], buff));
 
 	mov	r8d, DWORD PTR [rbx+52]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
-	lea	rcx, OFFSET FLAT:$SG11813
+	lea	rcx, OFFSET FLAT:$SG11810
 	jmp	$LN345@HllEndDir
-$LN56@HllEndDir:
+$LN51@HllEndDir:
 
-; 1632 :           AddLineQueueX("cmp  eax,%d", hll->pcases[0]);
-
-	mov	rax, QWORD PTR [rbx+8]
-	lea	rcx, OFFSET FLAT:$SG11802
-	mov	edx, DWORD PTR [rax]
-	call	AddLineQueueX
-
-; 1633 :           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[0], buff));
-
-	mov	rax, QWORD PTR [rbx+24]
-	lea	rdx, OFFSET FLAT:$SG11101
-	lea	rcx, QWORD PTR buff$[rsp]
-	movzx	r8d, WORD PTR [rax]
-	call	sprintf
-	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11803
-	call	AddLineQueueX
-
-; 1634 :           AddLineQueueX("cmp  eax,%d", hll->pcases[1]);
+; 1636 :           AddLineQueueX("cmp  eax,%d", hll->pcases[0]);
 
 	mov	rax, QWORD PTR [rbx+8]
 	lea	rcx, OFFSET FLAT:$SG11804
-	mov	edx, DWORD PTR [rax+4]
+	mov	edx, DWORD PTR [rax]
 	call	AddLineQueueX
 
-; 1635 :           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[1], buff));
+; 1637 :           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[0], buff));
 
 	mov	rax, QWORD PTR [rbx+24]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
-	movzx	r8d, WORD PTR [rax+2]
+	movzx	r8d, WORD PTR [rax]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
 	lea	rcx, OFFSET FLAT:$SG11805
 	call	AddLineQueueX
 
-; 1636 :           AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LDEF], buff));
+; 1638 :           AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LDEF], buff));
 
 	mov	r8d, DWORD PTR [rbx+52]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rcx, OFFSET FLAT:$SG11806
 
-; 1648 :         }
-; 1649 : #endif
-; 1650 :       }
+; 1647 :         }
+; 1648 : #endif
+; 1649 :       }
+
+	jmp	$LN345@HllEndDir
+$LN47@HllEndDir:
+
+; 1650 :       else if (hll->cflag == 2) {
+
+	cmp	al, 2
+	jne	$LN52@HllEndDir
+
+; 1651 :         if ((ModuleInfo.Ofssize == USE32) || (hll->csize == 4)) {
+
+	cmp	BYTE PTR ModuleInfo+404, 1
+	je	$LN56@HllEndDir
+	cmp	BYTE PTR [rbx+102], 4
+	je	$LN56@HllEndDir
+
+; 1657 :         }
+; 1658 : #if AMD64_SUPPORT
+; 1659 :         else
+; 1660 :         {
+; 1661 :           AddLineQueueX("mov rcx, %q", hll->pcases64[0]);
+
+	mov	rdx, QWORD PTR [rbx+16]
+	lea	rcx, OFFSET FLAT:$SG11821
+	mov	rdx, QWORD PTR [rdx]
+	call	AddLineQueueX
+
+; 1662 :           AddLineQueueX("cmp rax, rcx");
+
+	lea	rcx, OFFSET FLAT:$SG11822
+	call	AddLineQueueX
+
+; 1663 :           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[0], buff));
+
+	mov	rax, QWORD PTR [rbx+24]
+	lea	rdx, OFFSET FLAT:$SG11115
+	lea	rcx, QWORD PTR buff$[rsp]
+	movzx	r8d, WORD PTR [rax]
+	call	sprintf
+	lea	rdx, QWORD PTR buff$[rsp]
+	lea	rcx, OFFSET FLAT:$SG11823
+	call	AddLineQueueX
+
+; 1664 :           AddLineQueueX("mov rcx, %q", hll->pcases64[1]);
+
+	mov	rdx, QWORD PTR [rbx+16]
+	lea	rcx, OFFSET FLAT:$SG11824
+	mov	rdx, QWORD PTR [rdx+8]
+	call	AddLineQueueX
+
+; 1665 :           AddLineQueueX("cmp rax, rcx");
+
+	lea	rcx, OFFSET FLAT:$SG11825
+	call	AddLineQueueX
+
+; 1666 :           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[1], buff));
+
+	mov	rax, QWORD PTR [rbx+24]
+	lea	rdx, OFFSET FLAT:$SG11115
+	lea	rcx, QWORD PTR buff$[rsp]
+	movzx	r8d, WORD PTR [rax+2]
+	call	sprintf
+	lea	rdx, QWORD PTR buff$[rsp]
+	lea	rcx, OFFSET FLAT:$SG11826
+	call	AddLineQueueX
+
+; 1667 :           AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LDEF], buff));
+
+	mov	r8d, DWORD PTR [rbx+52]
+	lea	rdx, OFFSET FLAT:$SG11115
+	lea	rcx, QWORD PTR buff$[rsp]
+	call	sprintf
+	lea	rcx, OFFSET FLAT:$SG11827
+	jmp	$LN345@HllEndDir
+$LN56@HllEndDir:
+
+; 1652 :           AddLineQueueX("cmp  eax,%d", hll->pcases[0]);
+
+	mov	rax, QWORD PTR [rbx+8]
+	lea	rcx, OFFSET FLAT:$SG11816
+	mov	edx, DWORD PTR [rax]
+	call	AddLineQueueX
+
+; 1653 :           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[0], buff));
+
+	mov	rax, QWORD PTR [rbx+24]
+	lea	rdx, OFFSET FLAT:$SG11115
+	lea	rcx, QWORD PTR buff$[rsp]
+	movzx	r8d, WORD PTR [rax]
+	call	sprintf
+	lea	rdx, QWORD PTR buff$[rsp]
+	lea	rcx, OFFSET FLAT:$SG11817
+	call	AddLineQueueX
+
+; 1654 :           AddLineQueueX("cmp  eax,%d", hll->pcases[1]);
+
+	mov	rax, QWORD PTR [rbx+8]
+	lea	rcx, OFFSET FLAT:$SG11818
+	mov	edx, DWORD PTR [rax+4]
+	call	AddLineQueueX
+
+; 1655 :           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[1], buff));
+
+	mov	rax, QWORD PTR [rbx+24]
+	lea	rdx, OFFSET FLAT:$SG11115
+	lea	rcx, QWORD PTR buff$[rsp]
+	movzx	r8d, WORD PTR [rax+2]
+	call	sprintf
+	lea	rdx, QWORD PTR buff$[rsp]
+	lea	rcx, OFFSET FLAT:$SG11819
+	call	AddLineQueueX
+
+; 1656 :           AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LDEF], buff));
+
+	mov	r8d, DWORD PTR [rbx+52]
+	lea	rdx, OFFSET FLAT:$SG11115
+	lea	rcx, QWORD PTR buff$[rsp]
+	call	sprintf
+	lea	rcx, OFFSET FLAT:$SG11820
+
+; 1668 :         }
+; 1669 : #endif
+; 1670 :       }
 
 	jmp	$LN345@HllEndDir
 $LN52@HllEndDir:
 
-; 1651 :       else if (hll->cflag == 3) {
+; 1671 :       else if (hll->cflag == 3) {
 
 	cmp	al, 3
 	jne	$LN57@HllEndDir
 
-; 1652 :         if ((ModuleInfo.Ofssize == USE32) || (hll->csize == 4)) {
+; 1672 :         if ((ModuleInfo.Ofssize == USE32) || (hll->csize == 4)) {
 
 	cmp	BYTE PTR ModuleInfo+404, 1
 	je	$LN61@HllEndDir
 	cmp	BYTE PTR [rbx+102], 4
 	je	$LN61@HllEndDir
 
-; 1660 :         }
-; 1661 : #if AMD64_SUPPORT
-; 1662 :         else
-; 1663 :         {
-; 1664 :           AddLineQueueX("mov rcx, %q", hll->pcases64[0]);
+; 1680 :         }
+; 1681 : #if AMD64_SUPPORT
+; 1682 :         else
+; 1683 :         {
+; 1684 :           AddLineQueueX("mov rcx, %q", hll->pcases64[0]);
 
 	mov	rdx, QWORD PTR [rbx+16]
-	lea	rcx, OFFSET FLAT:$SG11826
+	lea	rcx, OFFSET FLAT:$SG11840
 	mov	rdx, QWORD PTR [rdx]
 	call	AddLineQueueX
 
-; 1665 :           AddLineQueueX("cmp rax, rcx");
+; 1685 :           AddLineQueueX("cmp rax, rcx");
 
-	lea	rcx, OFFSET FLAT:$SG11827
+	lea	rcx, OFFSET FLAT:$SG11841
 	call	AddLineQueueX
 
-; 1666 :           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[0], buff));
+; 1686 :           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[0], buff));
 
 	mov	rax, QWORD PTR [rbx+24]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	movzx	r8d, WORD PTR [rax]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11828
+	lea	rcx, OFFSET FLAT:$SG11842
 	call	AddLineQueueX
 
-; 1667 :           AddLineQueueX("mov rcx, %q", hll->pcases64[1]);
+; 1687 :           AddLineQueueX("mov rcx, %q", hll->pcases64[1]);
 
 	mov	rdx, QWORD PTR [rbx+16]
-	lea	rcx, OFFSET FLAT:$SG11829
+	lea	rcx, OFFSET FLAT:$SG11843
 	mov	rdx, QWORD PTR [rdx+8]
 	call	AddLineQueueX
 
-; 1668 :           AddLineQueueX("cmp rax, rcx");
+; 1688 :           AddLineQueueX("cmp rax, rcx");
 
-	lea	rcx, OFFSET FLAT:$SG11830
+	lea	rcx, OFFSET FLAT:$SG11844
 	call	AddLineQueueX
 
-; 1669 :           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[1], buff));
+; 1689 :           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[1], buff));
 
 	mov	rax, QWORD PTR [rbx+24]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	movzx	r8d, WORD PTR [rax+2]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11831
+	lea	rcx, OFFSET FLAT:$SG11845
 	call	AddLineQueueX
 
-; 1670 :           AddLineQueueX("mov rcx, %q", hll->pcases64[2]);
+; 1690 :           AddLineQueueX("mov rcx, %q", hll->pcases64[2]);
 
 	mov	rdx, QWORD PTR [rbx+16]
-	lea	rcx, OFFSET FLAT:$SG11832
+	lea	rcx, OFFSET FLAT:$SG11846
 	mov	rdx, QWORD PTR [rdx+16]
 	call	AddLineQueueX
 
-; 1671 :           AddLineQueueX("cmp rax, rcx");
+; 1691 :           AddLineQueueX("cmp rax, rcx");
 
-	lea	rcx, OFFSET FLAT:$SG11833
+	lea	rcx, OFFSET FLAT:$SG11847
 	call	AddLineQueueX
 
-; 1672 :           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[2], buff));
+; 1692 :           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[2], buff));
 
 	mov	rax, QWORD PTR [rbx+24]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	movzx	r8d, WORD PTR [rax+4]
+	call	sprintf
+	lea	rdx, QWORD PTR buff$[rsp]
+	lea	rcx, OFFSET FLAT:$SG11848
+	call	AddLineQueueX
+
+; 1693 :           AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LDEF], buff));
+
+	mov	r8d, DWORD PTR [rbx+52]
+	lea	rdx, OFFSET FLAT:$SG11115
+	lea	rcx, QWORD PTR buff$[rsp]
+	call	sprintf
+	lea	rcx, OFFSET FLAT:$SG11849
+	jmp	$LN345@HllEndDir
+$LN61@HllEndDir:
+
+; 1673 :           AddLineQueueX("cmp  eax,%d", hll->pcases[0]);
+
+	mov	rax, QWORD PTR [rbx+8]
+	lea	rcx, OFFSET FLAT:$SG11833
+	mov	edx, DWORD PTR [rax]
+	call	AddLineQueueX
+
+; 1674 :           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[0], buff));
+
+	mov	rax, QWORD PTR [rbx+24]
+	lea	rdx, OFFSET FLAT:$SG11115
+	lea	rcx, QWORD PTR buff$[rsp]
+	movzx	r8d, WORD PTR [rax]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
 	lea	rcx, OFFSET FLAT:$SG11834
 	call	AddLineQueueX
 
-; 1673 :           AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LDEF], buff));
+; 1675 :           AddLineQueueX("cmp  eax,%d", hll->pcases[1]);
 
-	mov	r8d, DWORD PTR [rbx+52]
-	lea	rdx, OFFSET FLAT:$SG11101
-	lea	rcx, QWORD PTR buff$[rsp]
-	call	sprintf
+	mov	rax, QWORD PTR [rbx+8]
 	lea	rcx, OFFSET FLAT:$SG11835
-	jmp	$LN345@HllEndDir
-$LN61@HllEndDir:
-
-; 1653 :           AddLineQueueX("cmp  eax,%d", hll->pcases[0]);
-
-	mov	rax, QWORD PTR [rbx+8]
-	lea	rcx, OFFSET FLAT:$SG11819
-	mov	edx, DWORD PTR [rax]
-	call	AddLineQueueX
-
-; 1654 :           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[0], buff));
-
-	mov	rax, QWORD PTR [rbx+24]
-	lea	rdx, OFFSET FLAT:$SG11101
-	lea	rcx, QWORD PTR buff$[rsp]
-	movzx	r8d, WORD PTR [rax]
-	call	sprintf
-	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11820
-	call	AddLineQueueX
-
-; 1655 :           AddLineQueueX("cmp  eax,%d", hll->pcases[1]);
-
-	mov	rax, QWORD PTR [rbx+8]
-	lea	rcx, OFFSET FLAT:$SG11821
 	mov	edx, DWORD PTR [rax+4]
 	call	AddLineQueueX
 
-; 1656 :           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[1], buff));
+; 1676 :           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[1], buff));
 
 	mov	rax, QWORD PTR [rbx+24]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	movzx	r8d, WORD PTR [rax+2]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11822
+	lea	rcx, OFFSET FLAT:$SG11836
 	call	AddLineQueueX
 
-; 1657 :           AddLineQueueX("cmp  eax,%d", hll->pcases[2]);
+; 1677 :           AddLineQueueX("cmp  eax,%d", hll->pcases[2]);
 
 	mov	rax, QWORD PTR [rbx+8]
-	lea	rcx, OFFSET FLAT:$SG11823
+	lea	rcx, OFFSET FLAT:$SG11837
 	mov	edx, DWORD PTR [rax+8]
 	call	AddLineQueueX
 
-; 1658 :           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[2], buff));
+; 1678 :           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[2], buff));
 
 	mov	rax, QWORD PTR [rbx+24]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	movzx	r8d, WORD PTR [rax+4]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11824
+	lea	rcx, OFFSET FLAT:$SG11838
 	call	AddLineQueueX
 
-; 1659 :           AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LDEF], buff));
+; 1679 :           AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LDEF], buff));
 
 	mov	r8d, DWORD PTR [rbx+52]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
-	lea	rcx, OFFSET FLAT:$SG11825
+	lea	rcx, OFFSET FLAT:$SG11839
 
-; 1674 :         }
-; 1675 : #endif
-; 1676 :       }
+; 1694 :         }
+; 1695 : #endif
+; 1696 :       }
 
 	jmp	$LN345@HllEndDir
 $LN57@HllEndDir:
 
-; 1677 :       else if (hll->cflag == 4) {
+; 1697 :       else if (hll->cflag == 4) {
 
 	cmp	al, 4
 	jne	$LN62@HllEndDir
 
-; 1678 :         if (hll->csize == 4) {
+; 1698 :         if (hll->csize == 4) {
 
 	cmp	BYTE PTR [rbx+102], al
 	jne	SHORT $LN64@HllEndDir
 
-; 1679 :           AddLineQueueX("cmp eax,%d", hll->maxcase);
+; 1699 :           AddLineQueueX("cmp eax,%d", hll->maxcase);
 
 	mov	edx, DWORD PTR [rbx+108]
-	lea	rcx, OFFSET FLAT:$SG11840
+	lea	rcx, OFFSET FLAT:$SG11854
 	call	AddLineQueueX
 
-; 1680 :           AddLineQueueX("ja  %s", GetLabelStr(hll->labels[LDEF], buff));
+; 1700 :           AddLineQueueX("ja  %s", GetLabelStr(hll->labels[LDEF], buff));
 
 	mov	r8d, DWORD PTR [rbx+52]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11841
+	lea	rcx, OFFSET FLAT:$SG11855
 	call	AddLineQueueX
 
-; 1681 :           AddLineQueueX("sub eax,%d", hll->mincase);
+; 1701 :           AddLineQueueX("sub eax,%d", hll->mincase);
 
 	mov	edx, DWORD PTR [rbx+112]
-	lea	rcx, OFFSET FLAT:$SG11842
+	lea	rcx, OFFSET FLAT:$SG11856
 	call	AddLineQueueX
 
-; 1682 :           AddLineQueueX("jc  %s", GetLabelStr(hll->labels[LDEF], buff));
+; 1702 :           AddLineQueueX("jc  %s", GetLabelStr(hll->labels[LDEF], buff));
 
 	mov	r8d, DWORD PTR [rbx+52]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
-	lea	rcx, OFFSET FLAT:$SG11843
+	lea	rcx, OFFSET FLAT:$SG11857
 
-; 1683 :         }
+; 1703 :         }
 
 	jmp	$LN346@HllEndDir
 $LN64@HllEndDir:
 
-; 1684 : #if AMD64_SUPPORT
-; 1685 :         else {
-; 1686 :           AddLineQueueX("mov rcx, %q", hll->maxcase64);
+; 1704 : #if AMD64_SUPPORT
+; 1705 :         else {
+; 1706 :           AddLineQueueX("mov rcx, %q", hll->maxcase64);
 
 	mov	rdx, QWORD PTR [rbx+128]
-	lea	rcx, OFFSET FLAT:$SG11844
+	lea	rcx, OFFSET FLAT:$SG11858
 	call	AddLineQueueX
 
-; 1687 :           AddLineQueueX("cmp rax, rcx");
+; 1707 :           AddLineQueueX("cmp rax, rcx");
 
-	lea	rcx, OFFSET FLAT:$SG11845
+	lea	rcx, OFFSET FLAT:$SG11859
 	call	AddLineQueueX
 
-; 1688 :           AddLineQueueX("ja  %s", GetLabelStr(hll->labels[LDEF], buff));
+; 1708 :           AddLineQueueX("ja  %s", GetLabelStr(hll->labels[LDEF], buff));
 
 	mov	r8d, DWORD PTR [rbx+52]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11846
+	lea	rcx, OFFSET FLAT:$SG11860
 	call	AddLineQueueX
 
-; 1689 :           AddLineQueueX("mov rcx, %q", hll->mincase64);
+; 1709 :           AddLineQueueX("mov rcx, %q", hll->mincase64);
 
 	mov	rdx, QWORD PTR [rbx+136]
-	lea	rcx, OFFSET FLAT:$SG11847
+	lea	rcx, OFFSET FLAT:$SG11861
 	call	AddLineQueueX
 
-; 1690 :           AddLineQueueX("sub rax, rcx");
+; 1710 :           AddLineQueueX("sub rax, rcx");
 
-	lea	rcx, OFFSET FLAT:$SG11848
+	lea	rcx, OFFSET FLAT:$SG11862
 	call	AddLineQueueX
 
-; 1691 :           AddLineQueueX("jc  %s", GetLabelStr(hll->labels[LDEF], buff));
+; 1711 :           AddLineQueueX("jc  %s", GetLabelStr(hll->labels[LDEF], buff));
 
 	mov	r8d, DWORD PTR [rbx+52]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
-	lea	rcx, OFFSET FLAT:$SG11849
+	lea	rcx, OFFSET FLAT:$SG11863
 $LN346@HllEndDir:
 	lea	rdx, QWORD PTR buff$[rsp]
 	call	AddLineQueueX
 
-; 1692 :         }
-; 1693 : #endif
-; 1694 :         if (ModuleInfo.Ofssize == USE32) {
+; 1712 :         }
+; 1713 : #endif
+; 1714 :         if (ModuleInfo.Ofssize == USE32) {
 
 	cmp	BYTE PTR ModuleInfo+404, 1
 
-; 1695 :           AddLineQueueX("lea  edx,%s", GetLabelStr(hll->labels[LDATA2], buff));
+; 1715 :           AddLineQueueX("lea  edx,%s", GetLabelStr(hll->labels[LDATA2], buff));
 
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	mov	r8d, DWORD PTR [rbx+60]
 	lea	rcx, QWORD PTR buff$[rsp]
 	jne	SHORT $LN66@HllEndDir
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11852
+	lea	rcx, OFFSET FLAT:$SG11866
 	call	AddLineQueueX
 
-; 1696 :           AddLineQueueX("movzx  eax,BYTE PTR[edx+eax]");
+; 1716 :           AddLineQueueX("movzx  eax,BYTE PTR[edx+eax]");
 
-	lea	rcx, OFFSET FLAT:$SG11853
+	lea	rcx, OFFSET FLAT:$SG11867
 	call	AddLineQueueX
 
-; 1697 :           AddLineQueueX("lea  edx,%s", GetLabelStr(hll->labels[LDATA1], buff));
+; 1717 :           AddLineQueueX("lea  edx,%s", GetLabelStr(hll->labels[LDATA1], buff));
 
 	mov	r8d, DWORD PTR [rbx+56]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11854
+	lea	rcx, OFFSET FLAT:$SG11868
 	call	AddLineQueueX
 
-; 1698 :           AddLineQueueX("jmp  dword ptr[edx+eax*4]");
+; 1718 :           AddLineQueueX("jmp  dword ptr[edx+eax*4]");
 
-	lea	rcx, OFFSET FLAT:$SG11855
+	lea	rcx, OFFSET FLAT:$SG11869
 	call	AddLineQueueX
 
-; 1699 :         }
+; 1719 :         }
 
 	jmp	$LN72@HllEndDir
 $LN66@HllEndDir:
 
-; 1700 : #if AMD64_SUPPORT
-; 1701 :         else {
-; 1702 :           AddLineQueueX("lea  rdx,%s", GetLabelStr(hll->labels[LDATA2], buff));
+; 1720 : #if AMD64_SUPPORT
+; 1721 :         else {
+; 1722 :           AddLineQueueX("lea  rdx,%s", GetLabelStr(hll->labels[LDATA2], buff));
 
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11856
+	lea	rcx, OFFSET FLAT:$SG11870
 	call	AddLineQueueX
 
-; 1703 :           AddLineQueueX("movzx  rax,byte ptr[rdx+rax]");
+; 1723 :           AddLineQueueX("movzx  rax,byte ptr[rdx+rax]");
 
-	lea	rcx, OFFSET FLAT:$SG11857
+	lea	rcx, OFFSET FLAT:$SG11871
 	call	AddLineQueueX
 
-; 1704 :           AddLineQueueX("lea  rdx,%s", GetLabelStr(hll->labels[LDATA1], buff));
+; 1724 :           AddLineQueueX("lea  rdx,%s", GetLabelStr(hll->labels[LDATA1], buff));
 
 	mov	r8d, DWORD PTR [rbx+56]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11858
+	lea	rcx, OFFSET FLAT:$SG11872
 	call	AddLineQueueX
 
-; 1705 :           AddLineQueueX("jmp  qword ptr[rdx+rax*8]");
+; 1725 :           AddLineQueueX("jmp  qword ptr[rdx+rax*8]");
 
-	lea	rcx, OFFSET FLAT:$SG11859
+	lea	rcx, OFFSET FLAT:$SG11873
 	call	AddLineQueueX
 
-; 1706 :         }
-; 1707 : #endif
-; 1708 :       }
+; 1726 :         }
+; 1727 : #endif
+; 1728 :       }
 
 	jmp	$LN72@HllEndDir
 $LN62@HllEndDir:
 
-; 1709 :       /* simple binary tree
-; 1710 :       while (low <= high) {
-; 1711 :       int mid = (low + high) / 2;
-; 1712 :       if (hll->pcases[mid] == hll->casecnt)
-; 1713 :       return mid;
-; 1714 :       else if (hll->pcases[mid] < x)
-; 1715 :       low = mid + 1;
-; 1716 :       else high = mid - 1;
-; 1717 :       }*/
-; 1718 :       else if (hll->cflag == 5) {
+; 1729 :       /* simple binary tree
+; 1730 :       while (low <= high) {
+; 1731 :       int mid = (low + high) / 2;
+; 1732 :       if (hll->pcases[mid] == hll->casecnt)
+; 1733 :       return mid;
+; 1734 :       else if (hll->pcases[mid] < x)
+; 1735 :       low = mid + 1;
+; 1736 :       else high = mid - 1;
+; 1737 :       }*/
+; 1738 :       else if (hll->cflag == 5) {
 
 	cmp	al, 5
 	jne	$LN72@HllEndDir
 
-; 1719 :         if (ModuleInfo.Ofssize == USE32) {
+; 1739 :         if (ModuleInfo.Ofssize == USE32) {
 
 	cmp	BYTE PTR ModuleInfo+404, 1
 	jne	$LN69@HllEndDir
 
-; 1720 :           AddLineQueueX("push	ebx");
+; 1740 :           AddLineQueueX("push	ebx");
 
-	lea	rcx, OFFSET FLAT:$SG11863
-	call	AddLineQueueX
-
-; 1721 :           AddLineQueueX("push	esi");
-
-	lea	rcx, OFFSET FLAT:$SG11864
-	call	AddLineQueueX
-
-; 1722 :           AddLineQueueX("push	edi");
-
-	lea	rcx, OFFSET FLAT:$SG11865
-	call	AddLineQueueX
-
-; 1723 :           AddLineQueueX("mov     esi,eax");
-
-	lea	rcx, OFFSET FLAT:$SG11866
-	call	AddLineQueueX
-
-; 1724 :           AddLineQueueX("mov     ebx,%d", hll->casecnt - 1);//int high = len - 1;
-
-	mov	edx, DWORD PTR [rbx+92]
-	lea	rcx, OFFSET FLAT:$SG11867
-	dec	edx
-	call	AddLineQueueX
-
-; 1725 :           AddLineQueueX("xor     ecx,ecx");//int low = 0;
-
-	lea	rcx, OFFSET FLAT:$SG11868
-	call	AddLineQueueX
-
-; 1726 :           AddLineQueueX("lea     edi,%s", GetLabelStr(hll->labels[LDATA2], buff));//int hll->pcases
-
-	mov	r8d, DWORD PTR [rbx+60]
-	lea	rdx, OFFSET FLAT:$SG11101
-	lea	rcx, QWORD PTR buff$[rsp]
-	call	sprintf
-	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11869
-	call	AddLineQueueX
-
-; 1727 :           AddLineQueueX("test    ebx,ebx");//while (low <= high) {
-
-	lea	rcx, OFFSET FLAT:$SG11870
-	call	AddLineQueueX
-
-; 1728 :           AddLineQueueX("js      %s", GetLabelStr(hll->labels[LDEF], buff));
-
-	mov	r8d, DWORD PTR [rbx+52]
-	lea	rdx, OFFSET FLAT:$SG11101
-	lea	rcx, QWORD PTR buff$[rsp]
-	call	sprintf
-	lea	rcx, OFFSET FLAT:$SG11871
-
-; 1729 :         }
-
-	jmp	$LN345@HllEndDir
-$LN69@HllEndDir:
-
-; 1730 : #if AMD64_SUPPORT
-; 1731 :         else {
-; 1732 :           if (hll->csize == 4) {
-
-	cmp	BYTE PTR [rbx+102], 4
-	jne	SHORT $LN71@HllEndDir
-
-; 1733 :             AddLineQueueX("mov     r8d,eax");
-
-	lea	rcx, OFFSET FLAT:$SG11874
-	call	AddLineQueueX
-
-; 1734 :             AddLineQueueX("mov     r10d,%d", hll->casecnt - 1);//int high = len - 1;
-
-	mov	edx, DWORD PTR [rbx+92]
-	lea	rcx, OFFSET FLAT:$SG11875
-	dec	edx
-	call	AddLineQueueX
-
-; 1735 :             AddLineQueueX("xor     r9d,r9d");//int low = 0;
-
-	lea	rcx, OFFSET FLAT:$SG11876
-	call	AddLineQueueX
-
-; 1736 :             AddLineQueueX("lea     r11,%s", GetLabelStr(hll->labels[LDATA2], buff));//int hll->pcases
-
-	mov	r8d, DWORD PTR [rbx+60]
-	lea	rdx, OFFSET FLAT:$SG11101
-	lea	rcx, QWORD PTR buff$[rsp]
-	call	sprintf
-	lea	rdx, QWORD PTR buff$[rsp]
 	lea	rcx, OFFSET FLAT:$SG11877
 	call	AddLineQueueX
 
-; 1737 :             AddLineQueueX("test    r10d,r10d");//while (low <= high) {
+; 1741 :           AddLineQueueX("push	esi");
 
 	lea	rcx, OFFSET FLAT:$SG11878
 	call	AddLineQueueX
 
-; 1738 :             AddLineQueueX("js      %s", GetLabelStr(hll->labels[LDEF], buff));
+; 1742 :           AddLineQueueX("push	edi");
 
-	mov	r8d, DWORD PTR [rbx+52]
-	lea	rdx, OFFSET FLAT:$SG11101
-	lea	rcx, QWORD PTR buff$[rsp]
-	call	sprintf
 	lea	rcx, OFFSET FLAT:$SG11879
+	call	AddLineQueueX
 
-; 1739 :           }
-
-	jmp	SHORT $LN345@HllEndDir
-$LN71@HllEndDir:
-
-; 1740 :           else {
-; 1741 :             AddLineQueueX("mov     r8,rax");
+; 1743 :           AddLineQueueX("mov     esi,eax");
 
 	lea	rcx, OFFSET FLAT:$SG11880
 	call	AddLineQueueX
 
-; 1742 :             AddLineQueueX("mov     r10d,%d", hll->casecnt - 1);//int high = len - 1;
+; 1744 :           AddLineQueueX("mov     ebx,%d", hll->casecnt - 1);//int high = len - 1;
 
 	mov	edx, DWORD PTR [rbx+92]
 	lea	rcx, OFFSET FLAT:$SG11881
 	dec	edx
 	call	AddLineQueueX
 
-; 1743 :             AddLineQueueX("xor     r9d,r9d");//int low = 0;
+; 1745 :           AddLineQueueX("xor     ecx,ecx");//int low = 0;
 
 	lea	rcx, OFFSET FLAT:$SG11882
 	call	AddLineQueueX
 
-; 1744 :             AddLineQueueX("lea     r11,%s", GetLabelStr(hll->labels[LDATA2], buff));//int hll->pcases
+; 1746 :           AddLineQueueX("lea     edi,%s", GetLabelStr(hll->labels[LDATA2], buff));//int hll->pcases
 
 	mov	r8d, DWORD PTR [rbx+60]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
 	lea	rcx, OFFSET FLAT:$SG11883
 	call	AddLineQueueX
 
-; 1745 :             AddLineQueueX("test    r10,r10");//while (low <= high) {
+; 1747 :           AddLineQueueX("test    ebx,ebx");//while (low <= high) {
 
 	lea	rcx, OFFSET FLAT:$SG11884
 	call	AddLineQueueX
 
-; 1746 :             AddLineQueueX("js      %s", GetLabelStr(hll->labels[LDEF], buff));
+; 1748 :           AddLineQueueX("js      %s", GetLabelStr(hll->labels[LDEF], buff));
 
 	mov	r8d, DWORD PTR [rbx+52]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rcx, OFFSET FLAT:$SG11885
-$LN345@HllEndDir:
-	lea	rdx, QWORD PTR buff$[rsp]
+
+; 1749 :         }
+
+	jmp	$LN345@HllEndDir
+$LN69@HllEndDir:
+
+; 1750 : #if AMD64_SUPPORT
+; 1751 :         else {
+; 1752 :           if (hll->csize == 4) {
+
+	cmp	BYTE PTR [rbx+102], 4
+	jne	SHORT $LN71@HllEndDir
+
+; 1753 :             AddLineQueueX("mov     r8d,eax");
+
+	lea	rcx, OFFSET FLAT:$SG11888
 	call	AddLineQueueX
-$LN72@HllEndDir:
 
-; 1747 :           }
-; 1748 :         }
-; 1749 : #endif
-; 1750 :       }
-; 1751 :     } //end if Parse_Pass
-; 1752 :     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LTOP], buff));
+; 1754 :             AddLineQueueX("mov     r10d,%d", hll->casecnt - 1);//int high = len - 1;
 
-	mov	r8d, DWORD PTR [rbx+64]
-	lea	rdx, OFFSET FLAT:$SG11101
+	mov	edx, DWORD PTR [rbx+92]
+	lea	rcx, OFFSET FLAT:$SG11889
+	dec	edx
+	call	AddLineQueueX
+
+; 1755 :             AddLineQueueX("xor     r9d,r9d");//int low = 0;
+
+	lea	rcx, OFFSET FLAT:$SG11890
+	call	AddLineQueueX
+
+; 1756 :             AddLineQueueX("lea     r11,%s", GetLabelStr(hll->labels[LDATA2], buff));//int hll->pcases
+
+	mov	r8d, DWORD PTR [rbx+60]
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11886
-	call	AddLineQueueX
-
-; 1753 :     if (Parse_Pass) {
-
-	cmp	DWORD PTR Parse_Pass, r15d
-	je	$LN78@HllEndDir
-
-; 1754 :       if (hll->cflag == 5) {
-
-	cmp	BYTE PTR [rbx+101], 5
-	jne	$LN78@HllEndDir
-
-; 1755 :         if (ModuleInfo.Ofssize == USE32) {
-
-	cmp	BYTE PTR ModuleInfo+404, 1
-	jne	$LN75@HllEndDir
-
-; 1756 :           AddLineQueueX("lea     eax,[ecx + ebx]");//int eax = (ecx + ebx) / 2;
-
 	lea	rcx, OFFSET FLAT:$SG11891
 	call	AddLineQueueX
 
-; 1757 :           AddLineQueueX("cdq");
+; 1757 :             AddLineQueueX("test    r10d,r10d");//while (low <= high) {
 
 	lea	rcx, OFFSET FLAT:$SG11892
 	call	AddLineQueueX
 
-; 1758 :           AddLineQueueX("sub     eax,edx");
+; 1758 :             AddLineQueueX("js      %s", GetLabelStr(hll->labels[LDEF], buff));
 
+	mov	r8d, DWORD PTR [rbx+52]
+	lea	rdx, OFFSET FLAT:$SG11115
+	lea	rcx, QWORD PTR buff$[rsp]
+	call	sprintf
 	lea	rcx, OFFSET FLAT:$SG11893
-	call	AddLineQueueX
 
-; 1759 :           AddLineQueueX("sar     eax,1");
+; 1759 :           }
+
+	jmp	SHORT $LN345@HllEndDir
+$LN71@HllEndDir:
+
+; 1760 :           else {
+; 1761 :             AddLineQueueX("mov     r8,rax");
 
 	lea	rcx, OFFSET FLAT:$SG11894
 	call	AddLineQueueX
 
-; 1760 :           AddLineQueueX("cmp     [edi+eax*4],esi");
+; 1762 :             AddLineQueueX("mov     r10d,%d", hll->casecnt - 1);//int high = len - 1;
 
+	mov	edx, DWORD PTR [rbx+92]
 	lea	rcx, OFFSET FLAT:$SG11895
+	dec	edx
 	call	AddLineQueueX
 
-; 1761 :           AddLineQueueX("je  %s", GetLabelStr(hll->labels[LJUMP], buff));
+; 1763 :             AddLineQueueX("xor     r9d,r9d");//int low = 0;
 
-	mov	r8d, DWORD PTR [rbx+68]
-	lea	rdx, OFFSET FLAT:$SG11101
-	lea	rcx, QWORD PTR buff$[rsp]
-	call	sprintf
-	lea	rdx, QWORD PTR buff$[rsp]
 	lea	rcx, OFFSET FLAT:$SG11896
 	call	AddLineQueueX
 
-; 1762 :           AddLineQueueX("jge %s", GetLabelStr(hll->labels[LSKIP], buff));//else if (hll->pcases[mid] < hll->casecnt) 
+; 1764 :             AddLineQueueX("lea     r11,%s", GetLabelStr(hll->labels[LDATA2], buff));//int hll->pcases
 
-	mov	r8d, DWORD PTR [rbx+44]
-	lea	rdx, OFFSET FLAT:$SG11101
+	mov	r8d, DWORD PTR [rbx+60]
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
 	lea	rcx, OFFSET FLAT:$SG11897
 	call	AddLineQueueX
 
-; 1763 :           AddLineQueueX("lea     ecx,[eax+1]");                          //low = mid + 1
+; 1765 :             AddLineQueueX("test    r10,r10");//while (low <= high) {
 
 	lea	rcx, OFFSET FLAT:$SG11898
 	call	AddLineQueueX
 
-; 1764 :           AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LCONT], buff));
+; 1766 :             AddLineQueueX("js      %s", GetLabelStr(hll->labels[LDEF], buff));
 
-	mov	r8d, DWORD PTR [rbx+48]
-	lea	rdx, OFFSET FLAT:$SG11101
+	mov	r8d, DWORD PTR [rbx+52]
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rcx, OFFSET FLAT:$SG11899
+$LN345@HllEndDir:
+	lea	rdx, QWORD PTR buff$[rsp]
+	call	AddLineQueueX
+$LN72@HllEndDir:
 
-; 1765 :         }
+; 1767 :           }
+; 1768 :         }
+; 1769 : #endif
+; 1770 :       }
+; 1771 :     } //end if Parse_Pass
+; 1772 :     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LTOP], buff));
 
-	jmp	$LN347@HllEndDir
-$LN75@HllEndDir:
-
-; 1766 : #if AMD64_SUPPORT
-; 1767 :         else {
-; 1768 :           if (hll->csize == 4) {
-
-	cmp	BYTE PTR [rbx+102], 4
-	jne	$LN77@HllEndDir
-
-; 1769 :             AddLineQueueX("lea     eax,[r10+r9]");//int mid = (low + high) / 2;
-
-	lea	rcx, OFFSET FLAT:$SG11902
+	mov	r8d, DWORD PTR [rbx+64]
+	lea	rdx, OFFSET FLAT:$SG11115
+	lea	rcx, QWORD PTR buff$[rsp]
+	call	sprintf
+	lea	rdx, QWORD PTR buff$[rsp]
+	lea	rcx, OFFSET FLAT:$SG11900
 	call	AddLineQueueX
 
-; 1770 :             AddLineQueueX("cdq");
+; 1773 :     if (Parse_Pass) {
 
-	lea	rcx, OFFSET FLAT:$SG11903
-	call	AddLineQueueX
+	cmp	DWORD PTR Parse_Pass, r15d
+	je	$LN78@HllEndDir
 
-; 1771 :             AddLineQueueX("sub     eax,edx");
+; 1774 :       if (hll->cflag == 5) {
 
-	lea	rcx, OFFSET FLAT:$SG11904
-	call	AddLineQueueX
+	cmp	BYTE PTR [rbx+101], 5
+	jne	$LN78@HllEndDir
 
-; 1772 :             AddLineQueueX("sar     eax,1");
+; 1775 :         if (ModuleInfo.Ofssize == USE32) {
+
+	cmp	BYTE PTR ModuleInfo+404, 1
+	jne	$LN75@HllEndDir
+
+; 1776 :           AddLineQueueX("lea     eax,[ecx + ebx]");//int eax = (ecx + ebx) / 2;
 
 	lea	rcx, OFFSET FLAT:$SG11905
 	call	AddLineQueueX
 
-; 1773 :             AddLineQueueX("movsxd  rcx,eax");//if (hll->pcases[mid] == x) return mid;
+; 1777 :           AddLineQueueX("cdq");
 
 	lea	rcx, OFFSET FLAT:$SG11906
 	call	AddLineQueueX
 
-; 1774 :             AddLineQueueX("cmp     [r11+rcx*4],r8d");
+; 1778 :           AddLineQueueX("sub     eax,edx");
 
 	lea	rcx, OFFSET FLAT:$SG11907
 	call	AddLineQueueX
 
-; 1775 :             AddLineQueueX("je  %s", GetLabelStr(hll->labels[LJUMP], buff));
+; 1779 :           AddLineQueueX("sar     eax,1");
 
-	mov	r8d, DWORD PTR [rbx+68]
-	lea	rdx, OFFSET FLAT:$SG11101
-	lea	rcx, QWORD PTR buff$[rsp]
-	call	sprintf
-	lea	rdx, QWORD PTR buff$[rsp]
 	lea	rcx, OFFSET FLAT:$SG11908
 	call	AddLineQueueX
 
-; 1776 :             AddLineQueueX("jge %s", GetLabelStr(hll->labels[LSKIP], buff));//else if (hll->pcases[mid] < hll->casecnt) 
+; 1780 :           AddLineQueueX("cmp     [edi+eax*4],esi");
 
-	mov	r8d, DWORD PTR [rbx+44]
-	lea	rdx, OFFSET FLAT:$SG11101
-	lea	rcx, QWORD PTR buff$[rsp]
-	call	sprintf
-	lea	rdx, QWORD PTR buff$[rsp]
 	lea	rcx, OFFSET FLAT:$SG11909
 	call	AddLineQueueX
 
-; 1777 :             AddLineQueueX("lea     r9d,[rax+1]");                          //low = mid + 1
+; 1781 :           AddLineQueueX("je  %s", GetLabelStr(hll->labels[LJUMP], buff));
 
+	mov	r8d, DWORD PTR [rbx+68]
+	lea	rdx, OFFSET FLAT:$SG11115
+	lea	rcx, QWORD PTR buff$[rsp]
+	call	sprintf
+	lea	rdx, QWORD PTR buff$[rsp]
 	lea	rcx, OFFSET FLAT:$SG11910
 	call	AddLineQueueX
 
-; 1778 :             AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LCONT], buff));
+; 1782 :           AddLineQueueX("jge %s", GetLabelStr(hll->labels[LSKIP], buff));//else if (hll->pcases[mid] < hll->casecnt) 
 
-	mov	r8d, DWORD PTR [rbx+48]
-	lea	rdx, OFFSET FLAT:$SG11101
+	mov	r8d, DWORD PTR [rbx+44]
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
+	lea	rdx, QWORD PTR buff$[rsp]
 	lea	rcx, OFFSET FLAT:$SG11911
+	call	AddLineQueueX
 
-; 1779 :           }
-
-	jmp	$LN347@HllEndDir
-$LN77@HllEndDir:
-
-; 1780 :           else {
-; 1781 :             AddLineQueueX("lea     rax,[r10+r9]");//int mid = (low + high) / 2;
+; 1783 :           AddLineQueueX("lea     ecx,[eax+1]");                          //low = mid + 1
 
 	lea	rcx, OFFSET FLAT:$SG11912
 	call	AddLineQueueX
 
-; 1782 :             AddLineQueueX("cdq");
+; 1784 :           AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LCONT], buff));
 
+	mov	r8d, DWORD PTR [rbx+48]
+	lea	rdx, OFFSET FLAT:$SG11115
+	lea	rcx, QWORD PTR buff$[rsp]
+	call	sprintf
 	lea	rcx, OFFSET FLAT:$SG11913
-	call	AddLineQueueX
 
-; 1783 :             AddLineQueueX("sub     rax,rdx");
+; 1785 :         }
 
-	lea	rcx, OFFSET FLAT:$SG11914
-	call	AddLineQueueX
+	jmp	$LN347@HllEndDir
+$LN75@HllEndDir:
 
-; 1784 :             AddLineQueueX("sar     rax,1");
+; 1786 : #if AMD64_SUPPORT
+; 1787 :         else {
+; 1788 :           if (hll->csize == 4) {
 
-	lea	rcx, OFFSET FLAT:$SG11915
-	call	AddLineQueueX
+	cmp	BYTE PTR [rbx+102], 4
+	jne	$LN77@HllEndDir
 
-; 1785 :             AddLineQueueX("mov     rcx,rax");//if (hll->pcases[mid] == x) return mid;
+; 1789 :             AddLineQueueX("lea     eax,[r10+r9]");//int mid = (low + high) / 2;
 
 	lea	rcx, OFFSET FLAT:$SG11916
 	call	AddLineQueueX
 
-; 1786 :             AddLineQueueX("cmp     [r11+rcx*8],r8");
+; 1790 :             AddLineQueueX("cdq");
 
 	lea	rcx, OFFSET FLAT:$SG11917
 	call	AddLineQueueX
 
-; 1787 :             AddLineQueueX("je  %s", GetLabelStr(hll->labels[LJUMP], buff));
+; 1791 :             AddLineQueueX("sub     eax,edx");
 
-	mov	r8d, DWORD PTR [rbx+68]
-	lea	rdx, OFFSET FLAT:$SG11101
-	lea	rcx, QWORD PTR buff$[rsp]
-	call	sprintf
-	lea	rdx, QWORD PTR buff$[rsp]
 	lea	rcx, OFFSET FLAT:$SG11918
 	call	AddLineQueueX
 
-; 1788 :             AddLineQueueX("jge %s", GetLabelStr(hll->labels[LSKIP], buff));//else if (hll->pcases[mid] < hll->casecnt) 
+; 1792 :             AddLineQueueX("sar     eax,1");
 
-	mov	r8d, DWORD PTR [rbx+44]
-	lea	rdx, OFFSET FLAT:$SG11101
-	lea	rcx, QWORD PTR buff$[rsp]
-	call	sprintf
-	lea	rdx, QWORD PTR buff$[rsp]
 	lea	rcx, OFFSET FLAT:$SG11919
 	call	AddLineQueueX
 
-; 1789 :             AddLineQueueX("lea     r9,[rax+1]");                          //low = mid + 1
+; 1793 :             AddLineQueueX("movsxd  rcx,eax");//if (hll->pcases[mid] == x) return mid;
 
 	lea	rcx, OFFSET FLAT:$SG11920
 	call	AddLineQueueX
 
-; 1790 :             AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LCONT], buff));
+; 1794 :             AddLineQueueX("cmp     [r11+rcx*4],r8d");
 
-	mov	r8d, DWORD PTR [rbx+48]
-	lea	rdx, OFFSET FLAT:$SG11101
-	lea	rcx, QWORD PTR buff$[rsp]
-	call	sprintf
 	lea	rcx, OFFSET FLAT:$SG11921
-$LN347@HllEndDir:
-	lea	rdx, QWORD PTR buff$[rsp]
 	call	AddLineQueueX
-$LN78@HllEndDir:
 
-; 1791 : 
-; 1792 :           }
-; 1793 :         }
-; 1794 : #endif
-; 1795 :       }
-; 1796 :     }
-; 1797 :     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LJUMP], buff));
+; 1795 :             AddLineQueueX("je  %s", GetLabelStr(hll->labels[LJUMP], buff));
 
 	mov	r8d, DWORD PTR [rbx+68]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
 	lea	rcx, OFFSET FLAT:$SG11922
 	call	AddLineQueueX
 
-; 1798 :     if (Parse_Pass) {
+; 1796 :             AddLineQueueX("jge %s", GetLabelStr(hll->labels[LSKIP], buff));//else if (hll->pcases[mid] < hll->casecnt) 
 
-	cmp	DWORD PTR Parse_Pass, r15d
-	je	$LN82@HllEndDir
-
-; 1799 :       if (hll->cflag == 5) {
-
-	cmp	BYTE PTR [rbx+101], 5
-	jne	SHORT $LN82@HllEndDir
-
-; 1800 :         if (ModuleInfo.Ofssize == USE32) {
-
-	cmp	BYTE PTR ModuleInfo+404, 1
-
-; 1801 :           AddLineQueueX("lea edx,%s", GetLabelStr(hll->labels[LDATA1], buff));
-
-	lea	rdx, OFFSET FLAT:$SG11101
-	mov	r8d, DWORD PTR [rbx+56]
+	mov	r8d, DWORD PTR [rbx+44]
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
-	jne	SHORT $LN81@HllEndDir
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
+	lea	rcx, OFFSET FLAT:$SG11923
+	call	AddLineQueueX
+
+; 1797 :             AddLineQueueX("lea     r9d,[rax+1]");                          //low = mid + 1
+
+	lea	rcx, OFFSET FLAT:$SG11924
+	call	AddLineQueueX
+
+; 1798 :             AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LCONT], buff));
+
+	mov	r8d, DWORD PTR [rbx+48]
+	lea	rdx, OFFSET FLAT:$SG11115
+	lea	rcx, QWORD PTR buff$[rsp]
+	call	sprintf
+	lea	rcx, OFFSET FLAT:$SG11925
+
+; 1799 :           }
+
+	jmp	$LN347@HllEndDir
+$LN77@HllEndDir:
+
+; 1800 :           else {
+; 1801 :             AddLineQueueX("lea     rax,[r10+r9]");//int mid = (low + high) / 2;
+
+	lea	rcx, OFFSET FLAT:$SG11926
+	call	AddLineQueueX
+
+; 1802 :             AddLineQueueX("cdq");
+
 	lea	rcx, OFFSET FLAT:$SG11927
 	call	AddLineQueueX
 
-; 1802 :           AddLineQueueX("pop	edi");
+; 1803 :             AddLineQueueX("sub     rax,rdx");
 
 	lea	rcx, OFFSET FLAT:$SG11928
 	call	AddLineQueueX
 
-; 1803 :           AddLineQueueX("pop	esi");
+; 1804 :             AddLineQueueX("sar     rax,1");
 
 	lea	rcx, OFFSET FLAT:$SG11929
 	call	AddLineQueueX
 
-; 1804 :           AddLineQueueX("pop	ebx");
+; 1805 :             AddLineQueueX("mov     rcx,rax");//if (hll->pcases[mid] == x) return mid;
 
 	lea	rcx, OFFSET FLAT:$SG11930
 	call	AddLineQueueX
 
-; 1805 :           AddLineQueueX("jmp dword ptr[edx+eax*4]");
+; 1806 :             AddLineQueueX("cmp     [r11+rcx*8],r8");
 
 	lea	rcx, OFFSET FLAT:$SG11931
+	call	AddLineQueueX
 
-; 1806 :         }
+; 1807 :             AddLineQueueX("je  %s", GetLabelStr(hll->labels[LJUMP], buff));
 
-	jmp	SHORT $LN348@HllEndDir
-$LN81@HllEndDir:
-
-; 1807 : #if AMD64_SUPPORT
-; 1808 :         else {
-; 1809 :           AddLineQueueX("lea     r11,%s", GetLabelStr(hll->labels[LDATA1], buff));
-
+	mov	r8d, DWORD PTR [rbx+68]
+	lea	rdx, OFFSET FLAT:$SG11115
+	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
 	lea	rcx, OFFSET FLAT:$SG11932
 	call	AddLineQueueX
 
-; 1810 :           AddLineQueueX("jmp     qword ptr[r11+rcx*8]");
+; 1808 :             AddLineQueueX("jge %s", GetLabelStr(hll->labels[LSKIP], buff));//else if (hll->pcases[mid] < hll->casecnt) 
 
+	mov	r8d, DWORD PTR [rbx+44]
+	lea	rdx, OFFSET FLAT:$SG11115
+	lea	rcx, QWORD PTR buff$[rsp]
+	call	sprintf
+	lea	rdx, QWORD PTR buff$[rsp]
 	lea	rcx, OFFSET FLAT:$SG11933
+	call	AddLineQueueX
+
+; 1809 :             AddLineQueueX("lea     r9,[rax+1]");                          //low = mid + 1
+
+	lea	rcx, OFFSET FLAT:$SG11934
+	call	AddLineQueueX
+
+; 1810 :             AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LCONT], buff));
+
+	mov	r8d, DWORD PTR [rbx+48]
+	lea	rdx, OFFSET FLAT:$SG11115
+	lea	rcx, QWORD PTR buff$[rsp]
+	call	sprintf
+	lea	rcx, OFFSET FLAT:$SG11935
+$LN347@HllEndDir:
+	lea	rdx, QWORD PTR buff$[rsp]
+	call	AddLineQueueX
+$LN78@HllEndDir:
+
+; 1811 : 
+; 1812 :           }
+; 1813 :         }
+; 1814 : #endif
+; 1815 :       }
+; 1816 :     }
+; 1817 :     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LJUMP], buff));
+
+	mov	r8d, DWORD PTR [rbx+68]
+	lea	rdx, OFFSET FLAT:$SG11115
+	lea	rcx, QWORD PTR buff$[rsp]
+	call	sprintf
+	lea	rdx, QWORD PTR buff$[rsp]
+	lea	rcx, OFFSET FLAT:$SG11936
+	call	AddLineQueueX
+
+; 1818 :     if (Parse_Pass) {
+
+	cmp	DWORD PTR Parse_Pass, r15d
+	je	$LN82@HllEndDir
+
+; 1819 :       if (hll->cflag == 5) {
+
+	cmp	BYTE PTR [rbx+101], 5
+	jne	SHORT $LN82@HllEndDir
+
+; 1820 :         if (ModuleInfo.Ofssize == USE32) {
+
+	cmp	BYTE PTR ModuleInfo+404, 1
+
+; 1821 :           AddLineQueueX("lea edx,%s", GetLabelStr(hll->labels[LDATA1], buff));
+
+	lea	rdx, OFFSET FLAT:$SG11115
+	mov	r8d, DWORD PTR [rbx+56]
+	lea	rcx, QWORD PTR buff$[rsp]
+	jne	SHORT $LN81@HllEndDir
+	call	sprintf
+	lea	rdx, QWORD PTR buff$[rsp]
+	lea	rcx, OFFSET FLAT:$SG11941
+	call	AddLineQueueX
+
+; 1822 :           AddLineQueueX("pop	edi");
+
+	lea	rcx, OFFSET FLAT:$SG11942
+	call	AddLineQueueX
+
+; 1823 :           AddLineQueueX("pop	esi");
+
+	lea	rcx, OFFSET FLAT:$SG11943
+	call	AddLineQueueX
+
+; 1824 :           AddLineQueueX("pop	ebx");
+
+	lea	rcx, OFFSET FLAT:$SG11944
+	call	AddLineQueueX
+
+; 1825 :           AddLineQueueX("jmp dword ptr[edx+eax*4]");
+
+	lea	rcx, OFFSET FLAT:$SG11945
+
+; 1826 :         }
+
+	jmp	SHORT $LN348@HllEndDir
+$LN81@HllEndDir:
+
+; 1827 : #if AMD64_SUPPORT
+; 1828 :         else {
+; 1829 :           AddLineQueueX("lea     r11,%s", GetLabelStr(hll->labels[LDATA1], buff));
+
+	call	sprintf
+	lea	rdx, QWORD PTR buff$[rsp]
+	lea	rcx, OFFSET FLAT:$SG11946
+	call	AddLineQueueX
+
+; 1830 :           AddLineQueueX("jmp     qword ptr[r11+rcx*8]");
+
+	lea	rcx, OFFSET FLAT:$SG11947
 $LN348@HllEndDir:
 	call	AddLineQueueX
 $LN82@HllEndDir:
 
-; 1811 :         }
-; 1812 : #endif
-; 1813 :       }
-; 1814 :     }
-; 1815 :     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LSKIP], buff));
+; 1831 :         }
+; 1832 : #endif
+; 1833 :       }
+; 1834 :     }
+; 1835 :     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LSKIP], buff));
 
 	mov	r8d, DWORD PTR [rbx+44]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11934
+	lea	rcx, OFFSET FLAT:$SG11948
 	call	AddLineQueueX
 
-; 1816 :     if (Parse_Pass) {
+; 1836 :     if (Parse_Pass) {
 
 	cmp	DWORD PTR Parse_Pass, r15d
 	je	SHORT $LN88@HllEndDir
 
-; 1817 :       if (hll->cflag == 5) {
+; 1837 :       if (hll->cflag == 5) {
 
 	cmp	BYTE PTR [rbx+101], 5
 	jne	SHORT $LN88@HllEndDir
 
-; 1818 :         if (ModuleInfo.Ofssize == USE32)
+; 1838 :         if (ModuleInfo.Ofssize == USE32)
 
 	cmp	BYTE PTR ModuleInfo+404, 1
 	jne	SHORT $LN85@HllEndDir
 
-; 1819 :           AddLineQueueX("lea     ebx,[eax-1]");//else high = mid - 1;
+; 1839 :           AddLineQueueX("lea     ebx,[eax-1]");//else high = mid - 1;
 
-	lea	rcx, OFFSET FLAT:$SG11939
+	lea	rcx, OFFSET FLAT:$SG11953
 	jmp	SHORT $LN349@HllEndDir
 $LN85@HllEndDir:
 
-; 1820 : #if AMD64_SUPPORT
-; 1821 :         else {
-; 1822 :           if (hll->csize == 4)
+; 1840 : #if AMD64_SUPPORT
+; 1841 :         else {
+; 1842 :           if (hll->csize == 4)
 
 	cmp	BYTE PTR [rbx+102], 4
 
-; 1823 :             AddLineQueueX("lea     r10d,[rax-1]");//else high = mid - 1;
+; 1843 :             AddLineQueueX("lea     r10d,[rax-1]");//else high = mid - 1;
 
-	lea	rcx, OFFSET FLAT:$SG11942
+	lea	rcx, OFFSET FLAT:$SG11956
 	je	SHORT $LN349@HllEndDir
 
-; 1824 :           else
-; 1825 :             AddLineQueueX("lea     r10,[rax-1]");//else high = mid - 1;
+; 1844 :           else
+; 1845 :             AddLineQueueX("lea     r10,[rax-1]");//else high = mid - 1;
 
-	lea	rcx, OFFSET FLAT:$SG11943
+	lea	rcx, OFFSET FLAT:$SG11957
 $LN349@HllEndDir:
 	call	AddLineQueueX
 $LN88@HllEndDir:
 
-; 1826 :         }
-; 1827 : #endif
-; 1828 :       }
-; 1829 :     }
-; 1830 :     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LCONT], buff));
+; 1846 :         }
+; 1847 : #endif
+; 1848 :       }
+; 1849 :     }
+; 1850 :     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LCONT], buff));
 
 	mov	r8d, DWORD PTR [rbx+48]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11944
+	lea	rcx, OFFSET FLAT:$SG11958
 	call	AddLineQueueX
 
-; 1831 :     if (Parse_Pass) {
+; 1851 :     if (Parse_Pass) {
 
 	cmp	DWORD PTR Parse_Pass, r15d
 	je	$LN92@HllEndDir
 
-; 1832 :       if (hll->cflag == 5) {
+; 1852 :       if (hll->cflag == 5) {
 
 	cmp	BYTE PTR [rbx+101], 5
 	jne	$LN92@HllEndDir
 
-; 1833 :         if (ModuleInfo.Ofssize == USE32) {
+; 1853 :         if (ModuleInfo.Ofssize == USE32) {
 
 	cmp	BYTE PTR ModuleInfo+404, 1
 	jne	SHORT $LN91@HllEndDir
 
-; 1834 :           AddLineQueueX("cmp  ecx,ebx");
+; 1854 :           AddLineQueueX("cmp  ecx,ebx");
 
-	lea	rcx, OFFSET FLAT:$SG11949
+	lea	rcx, OFFSET FLAT:$SG11963
 	call	AddLineQueueX
 
-; 1835 :           AddLineQueueX("jle %s", GetLabelStr(hll->labels[LTOP], buff));
+; 1855 :           AddLineQueueX("jle %s", GetLabelStr(hll->labels[LTOP], buff));
 
 	mov	r8d, DWORD PTR [rbx+64]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11950
+	lea	rcx, OFFSET FLAT:$SG11964
 	call	AddLineQueueX
 
-; 1836 :           AddLineQueueX("pop	edi");
+; 1856 :           AddLineQueueX("pop	edi");
 
-	lea	rcx, OFFSET FLAT:$SG11951
+	lea	rcx, OFFSET FLAT:$SG11965
 	call	AddLineQueueX
 
-; 1837 :           AddLineQueueX("pop	esi");
+; 1857 :           AddLineQueueX("pop	esi");
 
-	lea	rcx, OFFSET FLAT:$SG11952
+	lea	rcx, OFFSET FLAT:$SG11966
 	call	AddLineQueueX
 
-; 1838 :           AddLineQueueX("pop	ebx");
+; 1858 :           AddLineQueueX("pop	ebx");
 
-	lea	rcx, OFFSET FLAT:$SG11953
+	lea	rcx, OFFSET FLAT:$SG11967
 	call	AddLineQueueX
 
-; 1839 :           AddLineQueueX("jmp  %s", GetLabelStr(hll->labels[LDEF], buff));
+; 1859 :           AddLineQueueX("jmp  %s", GetLabelStr(hll->labels[LDEF], buff));
 
 	mov	r8d, DWORD PTR [rbx+52]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
-	lea	rcx, OFFSET FLAT:$SG11954
+	lea	rcx, OFFSET FLAT:$SG11968
 
-; 1840 :         }
+; 1860 :         }
 
 	jmp	SHORT $LN350@HllEndDir
 $LN91@HllEndDir:
 
-; 1841 : #if AMD64_SUPPORT
-; 1842 :         else
-; 1843 :         {
-; 1844 :           if (hll->csize == 4)
+; 1861 : #if AMD64_SUPPORT
+; 1862 :         else
+; 1863 :         {
+; 1864 :           if (hll->csize == 4)
 
 	cmp	BYTE PTR [rbx+102], 4
 
-; 1845 :             AddLineQueueX("cmp  r9d,r10d");
+; 1865 :             AddLineQueueX("cmp  r9d,r10d");
 
-	lea	rcx, OFFSET FLAT:$SG11957
+	lea	rcx, OFFSET FLAT:$SG11971
 	je	SHORT $LN351@HllEndDir
 
-; 1846 :           else
-; 1847 :             AddLineQueueX("cmp  r9,r10");
+; 1866 :           else
+; 1867 :             AddLineQueueX("cmp  r9,r10");
 
-	lea	rcx, OFFSET FLAT:$SG11958
+	lea	rcx, OFFSET FLAT:$SG11972
 $LN351@HllEndDir:
 	call	AddLineQueueX
 
-; 1848 : 
-; 1849 :           AddLineQueueX("jle %s", GetLabelStr(hll->labels[LTOP], buff));
+; 1868 : 
+; 1869 :           AddLineQueueX("jle %s", GetLabelStr(hll->labels[LTOP], buff));
 
 	mov	r8d, DWORD PTR [rbx+64]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11959
+	lea	rcx, OFFSET FLAT:$SG11973
 	call	AddLineQueueX
 
-; 1850 :           AddLineQueueX("jmp  %s", GetLabelStr(hll->labels[LDEF], buff));
+; 1870 :           AddLineQueueX("jmp  %s", GetLabelStr(hll->labels[LDEF], buff));
 
 	mov	r8d, DWORD PTR [rbx+52]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
-	lea	rcx, OFFSET FLAT:$SG11960
+	lea	rcx, OFFSET FLAT:$SG11974
 $LN350@HllEndDir:
 	lea	rdx, QWORD PTR buff$[rsp]
 	call	AddLineQueueX
 $LN92@HllEndDir:
 
-; 1851 :         }
-; 1852 : #endif
-; 1853 :       }
-; 1854 :     }
-; 1855 :     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LDATA1], buff));
+; 1871 :         }
+; 1872 : #endif
+; 1873 :       }
+; 1874 :     }
+; 1875 :     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LDATA1], buff));
 
 	mov	r8d, DWORD PTR [rbx+56]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11961
+	lea	rcx, OFFSET FLAT:$SG11975
 	call	AddLineQueueX
 
-; 1856 :     if (hll->cflag > 3) {
+; 1876 :     if (hll->cflag > 3) {
 
 	cmp	BYTE PTR [rbx+101], 3
 	jle	$LN97@HllEndDir
 
-; 1857 :       if (ModuleInfo.Ofssize == USE32) {
+; 1877 :       if (ModuleInfo.Ofssize == USE32) {
 
 	cmp	BYTE PTR ModuleInfo+404, 1
 
-; 1858 :         for (j = 0; j < hll->casecnt; j++)
+; 1878 :         for (j = 0; j < hll->casecnt; j++)
 
 	mov	edi, r15d
 	jne	SHORT $LN96@HllEndDir
@@ -3526,15 +3587,15 @@ $LN92@HllEndDir:
 	npad	3
 $LL6@HllEndDir:
 
-; 1859 :           AddLineQueueX(" dd %s", GetLabelStr(hll->plabels[j], buff));
+; 1879 :           AddLineQueueX(" dd %s", GetLabelStr(hll->plabels[j], buff));
 
 	mov	rax, QWORD PTR [rbx+24]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	movzx	r8d, WORD PTR [rsi+rax]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11965
+	lea	rcx, OFFSET FLAT:$SG11979
 	call	AddLineQueueX
 	inc	edi
 	lea	rsi, QWORD PTR [rsi+2]
@@ -3542,22 +3603,22 @@ $LL6@HllEndDir:
 	jb	SHORT $LL6@HllEndDir
 $LN5@HllEndDir:
 
-; 1860 :         AddLineQueueX(" dd %s", GetLabelStr(hll->labels[LDEF], buff));
+; 1880 :         AddLineQueueX(" dd %s", GetLabelStr(hll->labels[LDEF], buff));
 
 	mov	r8d, DWORD PTR [rbx+52]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
-	lea	rcx, OFFSET FLAT:$SG11966
+	lea	rcx, OFFSET FLAT:$SG11980
 
-; 1861 :       }
+; 1881 :       }
 
 	jmp	SHORT $LN352@HllEndDir
 $LN96@HllEndDir:
 
-; 1862 : #if AMD64_SUPPORT
-; 1863 :       else {
-; 1864 :         for (j = 0; j < hll->casecnt; j++)
+; 1882 : #if AMD64_SUPPORT
+; 1883 :       else {
+; 1884 :         for (j = 0; j < hll->casecnt; j++)
 
 	cmp	DWORD PTR [rbx+92], edi
 	jbe	SHORT $LN8@HllEndDir
@@ -3565,15 +3626,15 @@ $LN96@HllEndDir:
 	npad	4
 $LL9@HllEndDir:
 
-; 1865 :           AddLineQueueX(" dq %s", GetLabelStr(hll->plabels[j], buff));
+; 1885 :           AddLineQueueX(" dq %s", GetLabelStr(hll->plabels[j], buff));
 
 	mov	rax, QWORD PTR [rbx+24]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	movzx	r8d, WORD PTR [rsi+rax]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11967
+	lea	rcx, OFFSET FLAT:$SG11981
 	call	AddLineQueueX
 	inc	edi
 	lea	rsi, QWORD PTR [rsi+2]
@@ -3581,47 +3642,47 @@ $LL9@HllEndDir:
 	jb	SHORT $LL9@HllEndDir
 $LN8@HllEndDir:
 
-; 1866 :         AddLineQueueX(" dq %s", GetLabelStr(hll->labels[LDEF], buff));
+; 1886 :         AddLineQueueX(" dq %s", GetLabelStr(hll->labels[LDEF], buff));
 
 	mov	r8d, DWORD PTR [rbx+52]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
-	lea	rcx, OFFSET FLAT:$SG11968
+	lea	rcx, OFFSET FLAT:$SG11982
 $LN352@HllEndDir:
 	lea	rdx, QWORD PTR buff$[rsp]
 	call	AddLineQueueX
 $LN97@HllEndDir:
 
-; 1867 :       }
-; 1868 : #endif
-; 1869 :     }
-; 1870 :    // OutputByte(unsigned char byte)
-; 1871 :    //   OutputBinBytes(unsigned char* pBytes, uint_32 len)
-; 1872 : 
-; 1873 :     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LDATA2], buff));
+; 1887 :       }
+; 1888 : #endif
+; 1889 :     }
+; 1890 :    // OutputByte(unsigned char byte)
+; 1891 :    //   OutputBinBytes(unsigned char* pBytes, uint_32 len)
+; 1892 : 
+; 1893 :     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LDATA2], buff));
 
 	mov	r8d, DWORD PTR [rbx+60]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11969
+	lea	rcx, OFFSET FLAT:$SG11983
 	call	AddLineQueueX
 
-; 1874 :     if (hll->cflag == 4) {
+; 1894 :     if (hll->cflag == 4) {
 
 	cmp	BYTE PTR [rbx+101], 4
 	jne	$LN16@HllEndDir
 
-; 1875 :       n = 0;
-; 1876 :       if (hll->csize == 4) {
+; 1895 :       n = 0;
+; 1896 :       if (hll->csize == 4) {
 
 	cmp	BYTE PTR [rbx+102], 4
 	mov	edi, r15d
 	mov	QWORD PTR [rsp+2160], r12
 
-; 1877 :         for (j = 0; j < hll->casecnt; j++) {
+; 1897 :         for (j = 0; j < hll->casecnt; j++) {
 
 	mov	r12d, r15d
 	mov	QWORD PTR [rsp+2152], r13
@@ -3633,49 +3694,49 @@ $LN97@HllEndDir:
 	npad	3
 $LL12@HllEndDir:
 
-; 1878 :           temp = hll->pcases[j] - hll->mincase;
+; 1898 :           temp = hll->pcases[j] - hll->mincase;
 
 	mov	rax, QWORD PTR [rbx+8]
 	mov	r14d, DWORD PTR [rax+r13]
 	sub	r14d, DWORD PTR [rbx+112]
 
-; 1879 :           //temp -= hll->mincase;
-; 1880 :           while (n < temp) {
+; 1899 :           //temp -= hll->mincase;
+; 1900 :           while (n < temp) {
 
 	cmp	edi, r14d
 	jge	SHORT $LN14@HllEndDir
 
-; 1878 :           temp = hll->pcases[j] - hll->mincase;
+; 1898 :           temp = hll->pcases[j] - hll->mincase;
 
 	mov	eax, r14d
 	sub	eax, edi
 	mov	esi, eax
 
-; 1879 :           //temp -= hll->mincase;
-; 1880 :           while (n < temp) {
+; 1899 :           //temp -= hll->mincase;
+; 1900 :           while (n < temp) {
 
 	add	edi, eax
 	npad	6
 $LL13@HllEndDir:
 
-; 1881 :             AddLineQueueX(" db %d", temp);
+; 1901 :             AddLineQueueX(" db %d", temp);
 
 	mov	edx, r14d
-	lea	rcx, OFFSET FLAT:$SG11973
+	lea	rcx, OFFSET FLAT:$SG11987
 	call	AddLineQueueX
 	sub	rsi, 1
 	jne	SHORT $LL13@HllEndDir
 $LN14@HllEndDir:
 
-; 1882 :             n++;
-; 1883 :           }
-; 1884 :           AddLineQueueX(" db %d", j);
+; 1902 :             n++;
+; 1903 :           }
+; 1904 :           AddLineQueueX(" db %d", j);
 
 	mov	edx, r12d
-	lea	rcx, OFFSET FLAT:$SG11974
+	lea	rcx, OFFSET FLAT:$SG11988
 	call	AddLineQueueX
 
-; 1885 :           n++;
+; 1905 :           n++;
 
 	inc	edi
 	inc	r12d
@@ -3683,15 +3744,15 @@ $LN14@HllEndDir:
 	cmp	r12d, DWORD PTR [rbx+92]
 	jb	SHORT $LL12@HllEndDir
 
-; 1886 :         }
-; 1887 :       }
+; 1906 :         }
+; 1907 :       }
 
 	jmp	SHORT $LN343@HllEndDir
 $LN99@HllEndDir:
 
-; 1888 : #if AMD64_SUPPORT
-; 1889 :       else {
-; 1890 :         for (j = 0; j < hll->casecnt; j++) {
+; 1908 : #if AMD64_SUPPORT
+; 1909 :       else {
+; 1910 :         for (j = 0; j < hll->casecnt; j++) {
 
 	cmp	DWORD PTR [rbx+92], edi
 	jbe	SHORT $LN343@HllEndDir
@@ -3699,47 +3760,47 @@ $LN99@HllEndDir:
 	npad	3
 $LL17@HllEndDir:
 
-; 1891 :           temp = (int) hll->pcases64[j]- hll->mincase64;
+; 1911 :           temp = (int) hll->pcases64[j]- hll->mincase64;
 
 	mov	rax, QWORD PTR [rbx+16]
 	mov	ecx, DWORD PTR [rax+r13]
 	sub	ecx, DWORD PTR [rbx+136]
 
-; 1892 :           while (n < temp) {
+; 1912 :           while (n < temp) {
 
 	cmp	edi, ecx
 	jge	SHORT $LN19@HllEndDir
 
-; 1891 :           temp = (int) hll->pcases64[j]- hll->mincase64;
+; 1911 :           temp = (int) hll->pcases64[j]- hll->mincase64;
 
 	movsx	r14d, cl
 	sub	ecx, edi
 	mov	esi, ecx
 
-; 1892 :           while (n < temp) {
+; 1912 :           while (n < temp) {
 
 	add	edi, ecx
 	npad	4
 $LL18@HllEndDir:
 
-; 1893 :             AddLineQueueX(" db %d",(int_8)temp);
+; 1913 :             AddLineQueueX(" db %d",(int_8)temp);
 
 	mov	edx, r14d
-	lea	rcx, OFFSET FLAT:$SG11975
+	lea	rcx, OFFSET FLAT:$SG11989
 	call	AddLineQueueX
 	sub	rsi, 1
 	jne	SHORT $LL18@HllEndDir
 $LN19@HllEndDir:
 
-; 1894 :             n++;
-; 1895 :           }
-; 1896 :           AddLineQueueX(" db %d", j);
+; 1914 :             n++;
+; 1915 :           }
+; 1916 :           AddLineQueueX(" db %d", j);
 
 	mov	edx, r12d
-	lea	rcx, OFFSET FLAT:$SG11976
+	lea	rcx, OFFSET FLAT:$SG11990
 	call	AddLineQueueX
 
-; 1897 :           n++;
+; 1917 :           n++;
 
 	inc	edi
 	inc	r12d
@@ -3752,21 +3813,21 @@ $LN343@HllEndDir:
 	mov	r14, QWORD PTR [rsp+2144]
 $LN16@HllEndDir:
 
-; 1898 :         }
-; 1899 :       }
-; 1900 : #endif
-; 1901 :     }
-; 1902 :     if (hll->cflag == 5) {
+; 1918 :         }
+; 1919 :       }
+; 1920 : #endif
+; 1921 :     }
+; 1922 :     if (hll->cflag == 5) {
 
 	cmp	BYTE PTR [rbx+101], 5
 	jne	$LN339@HllEndDir
 
-; 1903 :       n = 0;
-; 1904 :       if (hll->csize == 4) {
+; 1923 :       n = 0;
+; 1924 :       if (hll->csize == 4) {
 
 	cmp	BYTE PTR [rbx+102], 4
 
-; 1905 :         for (j = 0; j < hll->casecnt; j++) 
+; 1925 :         for (j = 0; j < hll->casecnt; j++) 
 
 	mov	edi, r15d
 	jne	SHORT $LN102@HllEndDir
@@ -3776,10 +3837,10 @@ $LN16@HllEndDir:
 	npad	5
 $LL22@HllEndDir:
 
-; 1906 :           AddLineQueueX(" dd %d", hll->pcases[j]);
+; 1926 :           AddLineQueueX(" dd %d", hll->pcases[j]);
 
 	mov	rax, QWORD PTR [rbx+8]
-	lea	rcx, OFFSET FLAT:$SG11980
+	lea	rcx, OFFSET FLAT:$SG11994
 	mov	edx, DWORD PTR [rsi+rax]
 	call	AddLineQueueX
 	inc	edi
@@ -3787,14 +3848,14 @@ $LL22@HllEndDir:
 	cmp	edi, DWORD PTR [rbx+92]
 	jb	SHORT $LL22@HllEndDir
 
-; 1907 :       }
+; 1927 :       }
 
 	jmp	$LN339@HllEndDir
 $LN102@HllEndDir:
 
-; 1908 : #if AMD64_SUPPORT
-; 1909 :       else {
-; 1910 :         for (j = 0; j < hll->casecnt; j++)
+; 1928 : #if AMD64_SUPPORT
+; 1929 :       else {
+; 1930 :         for (j = 0; j < hll->casecnt; j++)
 
 	cmp	DWORD PTR [rbx+92], edi
 	jbe	$LN339@HllEndDir
@@ -3802,10 +3863,10 @@ $LN102@HllEndDir:
 	npad	1
 $LL25@HllEndDir:
 
-; 1911 :           AddLineQueueX(" dq %q", hll->pcases64[j]);
+; 1931 :           AddLineQueueX(" dq %q", hll->pcases64[j]);
 
 	mov	rdx, QWORD PTR [rbx+16]
-	lea	rcx, OFFSET FLAT:$SG11981
+	lea	rcx, OFFSET FLAT:$SG11995
 	mov	rdx, QWORD PTR [rdx+rsi]
 	call	AddLineQueueX
 	inc	edi
@@ -3813,30 +3874,30 @@ $LL25@HllEndDir:
 	cmp	edi, DWORD PTR [rbx+92]
 	jb	SHORT $LL25@HllEndDir
 
-; 1912 :       }
-; 1913 : #endif
-; 1914 :     }
-; 1915 :     if (hll->csize == 4) {
-; 1916 :       LclFree(hll->pcases);
-; 1917 :     }
-; 1918 : #if AMD64_SUPPORT
-; 1919 :     else
-; 1920 :       LclFree(hll->pcases64);
-; 1921 : #endif
-; 1922 :       LclFree(hll->plabels);
-; 1923 :     break;
+; 1932 :       }
+; 1933 : #endif
+; 1934 :     }
+; 1935 :     if (hll->csize == 4) {
+; 1936 :       LclFree(hll->pcases);
+; 1937 :     }
+; 1938 : #if AMD64_SUPPORT
+; 1939 :     else
+; 1940 :       LclFree(hll->pcases64);
+; 1941 : #endif
+; 1942 :       LclFree(hll->plabels);
+; 1943 :     break;
 
 	jmp	$LN339@HllEndDir
 $LN106@HllEndDir:
 
-; 1924 :   case T_DOT_ENDFOR:
-; 1925 :     if (hll->cmd != HLL_FOR) {
+; 1944 :   case T_DOT_ENDFOR:
+; 1945 :     if (hll->cmd != HLL_FOR) {
 
 	cmp	DWORD PTR [rbx+96], 4
 	je	SHORT $LN107@HllEndDir
 
-; 1926 :       DebugMsg(("HllEndDir: no .FOR on the hll stack\n"));
-; 1927 :       EmitErr(BLOCK_NESTING_ERROR, tokenarray[i].string_ptr);
+; 1946 :       DebugMsg(("HllEndDir: no .FOR on the hll stack\n"));
+; 1947 :       EmitErr(BLOCK_NESTING_ERROR, tokenarray[i].string_ptr);
 
 	movsxd	rdx, DWORD PTR i$[rbp-256]
 	mov	ecx, 80					; 00000050H
@@ -3844,228 +3905,228 @@ $LN106@HllEndDir:
 	mov	rdx, QWORD PTR [rdx+rdi+8]
 	call	EmitErr
 
-; 1928 :       return(ERROR);
+; 1948 :       return(ERROR);
 
 	or	eax, -1
 	jmp	$LN340@HllEndDir
 $LN107@HllEndDir:
 
-; 1929 :     }
-; 1930 :     i++;
+; 1949 :     }
+; 1950 :     i++;
 
 	inc	DWORD PTR i$[rbp-256]
 
-; 1931 :     //Insert .CONTINUE label here if there is any 
-; 1932 :     if (hll->labels[LCONT])
+; 1951 :     //Insert .CONTINUE label here if there is any 
+; 1952 :     if (hll->labels[LCONT])
 
 	mov	r8d, DWORD PTR [rbx+48]
 	test	r8d, r8d
 	je	SHORT $LN108@HllEndDir
 
-; 1933 :       AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LCONT], buff));
+; 1953 :       AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LCONT], buff));
 
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11987
+	lea	rcx, OFFSET FLAT:$SG12001
 	call	AddLineQueueX
 $LN108@HllEndDir:
 
-; 1934 :     //forever loop '.for (::)'
-; 1935 :     if (hll->cmcnt == 0) goto adlabel;
+; 1954 :     //forever loop '.for (::)'
+; 1955 :     if (hll->cmcnt == 0) goto adlabel;
 
 	mov	edx, DWORD PTR [rbx+88]
 	test	edx, edx
 	je	$adlabel$356
 
-; 1936 :     //If counters exist  
-; 1937 :     else if (hll->counterlines[0]) {
+; 1956 :     //If counters exist  
+; 1957 :     else if (hll->counterlines[0]) {
 
 	mov	r8, QWORD PTR [rbx+80]
 	cmp	BYTE PTR [r8], r15b
 	je	SHORT $LN111@HllEndDir
 
-; 1938 :       //here we write counters
-; 1939 :       if (hll->counterlines) {      //if there is something after second ':' expand it here
+; 1958 :       //here we write counters
+; 1959 :       if (hll->counterlines) {      //if there is something after second ':' expand it here
 
 	test	r8, r8
 	je	SHORT $LN113@HllEndDir
 
-; 1940 :         ForInitAndNext(tokenarray, hll->cmcnt, hll->counterlines);
+; 1960 :         ForInitAndNext(tokenarray, hll->cmcnt, hll->counterlines);
 
 	mov	rcx, rdi
 	call	ForInitAndNext
 $LN113@HllEndDir:
 
-; 1941 :         LclFree(hll->counterlines);
-; 1942 :       }
-; 1943 :       //first jump from the top happens here after the counters
-; 1944 :       AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LSKIP], buff));
+; 1961 :         LclFree(hll->counterlines);
+; 1962 :       }
+; 1963 :       //first jump from the top happens here after the counters
+; 1964 :       AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LSKIP], buff));
 
 	mov	r8d, DWORD PTR [rbx+44]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11993
+	lea	rcx, OFFSET FLAT:$SG12007
 	call	AddLineQueueX
 
-; 1945 :       /* create test label */
-; 1946 :       if (hll->labels[LTEST]) {
+; 1965 :       /* create test label */
+; 1966 :       if (hll->labels[LTEST]) {
 
 	mov	r8d, DWORD PTR [rbx+32]
 	test	r8d, r8d
 	je	SHORT $LN114@HllEndDir
 
-; 1947 :         AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LTEST], buff));
+; 1967 :         AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LTEST], buff));
 
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11995
+	lea	rcx, OFFSET FLAT:$SG12009
 	call	AddLineQueueX
 $LN114@HllEndDir:
 
-; 1948 :       }
-; 1949 :       QueueTestLines(hll->condlines);
+; 1968 :       }
+; 1969 :       QueueTestLines(hll->condlines);
 
 	mov	rcx, QWORD PTR [rbx+72]
 	call	QueueTestLines
 
-; 1950 :       LclFree(hll->condlines);
-; 1951 :     }
+; 1970 :       LclFree(hll->condlines);
+; 1971 :     }
 
 	jmp	SHORT $LN112@HllEndDir
 $LN111@HllEndDir:
 
-; 1952 :     else
-; 1953 :       AddLineQueueX(" jmp %s", GetLabelStr(hll->labels[LSTART], buff));
+; 1972 :     else
+; 1973 :       AddLineQueueX(" jmp %s", GetLabelStr(hll->labels[LSTART], buff));
 
 	mov	r8d, DWORD PTR [rbx+40]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11996
+	lea	rcx, OFFSET FLAT:$SG12010
 	call	AddLineQueueX
 $LN112@HllEndDir:
 
-; 1954 :     if (!hll->cond)
+; 1974 :     if (!hll->cond)
 
 	cmp	BYTE PTR [rbx+100], r15b
 	jne	SHORT $LN115@HllEndDir
 $adlabel$356:
 
-; 1955 :       adlabel:
-; 1956 :     AddLineQueueX(" jmp %s", GetLabelStr(hll->labels[LSTART], buff));
+; 1975 :       adlabel:
+; 1976 :     AddLineQueueX(" jmp %s", GetLabelStr(hll->labels[LSTART], buff));
 
 	mov	r8d, DWORD PTR [rbx+40]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11998
+	lea	rcx, OFFSET FLAT:$SG12012
 	call	AddLineQueueX
 $LN115@HllEndDir:
 
-; 1957 :     tokenarray[i].token = T_FINAL;
+; 1977 :     tokenarray[i].token = T_FINAL;
 
 	movsxd	rax, DWORD PTR i$[rbp-256]
 	shl	rax, 5
 	mov	BYTE PTR [rax+rdi], r15b
 
-; 1958 :     break;
+; 1978 :     break;
 
 	jmp	$LN336@HllEndDir
 $LN116@HllEndDir:
 
-; 1959 :     //end of .ENDFOR
-; 1960 :   case T_DOT_ENDW:
-; 1961 :     if (hll->cmd != HLL_WHILE) {
+; 1979 :     //end of .ENDFOR
+; 1980 :   case T_DOT_ENDW:
+; 1981 :     if (hll->cmd != HLL_WHILE) {
 
 	cmp	DWORD PTR [rbx+96], 1
 	jne	$LN353@HllEndDir
 
-; 1962 :       DebugMsg(("HllEndDir: no .WHILE on the hll stack\n"));
-; 1963 :       return(EmitErr(BLOCK_NESTING_ERROR, tokenarray[i].string_ptr));
-; 1964 :     }
-; 1965 :     i++;
+; 1982 :       DebugMsg(("HllEndDir: no .WHILE on the hll stack\n"));
+; 1983 :       return(EmitErr(BLOCK_NESTING_ERROR, tokenarray[i].string_ptr));
+; 1984 :     }
+; 1985 :     i++;
 
 	inc	DWORD PTR i$[rbp-256]
 
-; 1966 :     /* create test label */
-; 1967 :     if (hll->labels[LTEST]) {
+; 1986 :     /* create test label */
+; 1987 :     if (hll->labels[LTEST]) {
 
 	mov	r8d, DWORD PTR [rbx+32]
 	test	r8d, r8d
 	je	SHORT $LN118@HllEndDir
 
-; 1968 :       AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LTEST], buff));
+; 1988 :       AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LTEST], buff));
 
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12002
+	lea	rcx, OFFSET FLAT:$SG12016
 	call	AddLineQueueX
 $LN118@HllEndDir:
 
-; 1969 :     }
-; 1970 :     QueueTestLines(hll->condlines);
+; 1989 :     }
+; 1990 :     QueueTestLines(hll->condlines);
 
 	mov	rcx, QWORD PTR [rbx+72]
 	call	QueueTestLines
 
-; 1971 :     LclFree(hll->condlines);
-; 1972 :     break;
+; 1991 :     LclFree(hll->condlines);
+; 1992 :     break;
 
 	jmp	$LN336@HllEndDir
 $LN119@HllEndDir:
 
-; 1973 :   case T_DOT_UNTILCXZ:
-; 1974 :     if (hll->cmd != HLL_REPEAT) {
+; 1993 :   case T_DOT_UNTILCXZ:
+; 1994 :     if (hll->cmd != HLL_REPEAT) {
 
 	cmp	DWORD PTR [rbx+96], 2
 	jne	$LN353@HllEndDir
 
-; 1975 :       DebugMsg(("HllEndDir: no .REPEAT on the hll stack\n"));
-; 1976 :       return(EmitErr(BLOCK_NESTING_ERROR, tokenarray[i].string_ptr));
-; 1977 :     }
-; 1978 :     i++;
+; 1995 :       DebugMsg(("HllEndDir: no .REPEAT on the hll stack\n"));
+; 1996 :       return(EmitErr(BLOCK_NESTING_ERROR, tokenarray[i].string_ptr));
+; 1997 :     }
+; 1998 :     i++;
 
 	mov	eax, DWORD PTR i$[rbp-256]
 	inc	eax
 	mov	DWORD PTR i$[rbp-256], eax
 
-; 1979 :     if (hll->labels[LTEST]) /* v2.11: LTEST only needed if .CONTINUE has occured */
+; 1999 :     if (hll->labels[LTEST]) /* v2.11: LTEST only needed if .CONTINUE has occured */
 
 	mov	r8d, DWORD PTR [rbx+32]
 	test	r8d, r8d
 	je	SHORT $LN121@HllEndDir
 
-; 1980 :       AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LTEST], buff));
+; 2000 :       AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LTEST], buff));
 
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12006
+	lea	rcx, OFFSET FLAT:$SG12020
 	call	AddLineQueueX
 	mov	eax, DWORD PTR i$[rbp-256]
 $LN121@HllEndDir:
 
-; 1981 : 
-; 1982 :     /* read in optional (simple) expression */
-; 1983 :     if (tokenarray[i].token != T_FINAL) {
+; 2001 : 
+; 2002 :     /* read in optional (simple) expression */
+; 2003 :     if (tokenarray[i].token != T_FINAL) {
 
 	cdqe
 	shl	rax, 5
 	cmp	BYTE PTR [rax+rdi], r15b
 	je	$LN122@HllEndDir
 
-; 1984 :       rc = EvaluateHllExpression(hll, &i, tokenarray, LSTART, FALSE, buffer);
+; 2004 :       rc = EvaluateHllExpression(hll, &i, tokenarray, LSTART, FALSE, buffer);
 
 	lea	rax, QWORD PTR hllop$2[rsp]
 	mov	QWORD PTR hllop$2[rsp], r15
@@ -4093,24 +4154,24 @@ $LN270@HllEndDir:
 	call	EmitError
 	mov	r15d, eax
 
-; 1985 :       if (rc == NOT_ERROR) {
+; 2005 :       if (rc == NOT_ERROR) {
 
 	test	eax, eax
 	jne	$LN336@HllEndDir
 $LN333@HllEndDir:
 
-; 1986 :         rc = CheckCXZLines(buffer);
+; 2006 :         rc = CheckCXZLines(buffer);
 
 	lea	rcx, QWORD PTR buffer$[rsp]
 	call	CheckCXZLines
 	mov	r15d, eax
 
-; 1987 :         if (rc == NOT_ERROR)
+; 2007 :         if (rc == NOT_ERROR)
 
 	test	eax, eax
 	jne	SHORT $LN125@HllEndDir
 
-; 1988 :           QueueTestLines(buffer); /* write condition lines */
+; 2008 :           QueueTestLines(buffer); /* write condition lines */
 
 	lea	rdi, QWORD PTR buffer$[rsp]
 	npad	5
@@ -4135,44 +4196,44 @@ $LN277@HllEndDir:
 	jmp	$LN339@HllEndDir
 $LN125@HllEndDir:
 
-; 1989 :         else
-; 1990 :           EmitError(EXPR_TOO_COMPLEX_FOR_UNTILCXZ);
+; 2009 :         else
+; 2010 :           EmitError(EXPR_TOO_COMPLEX_FOR_UNTILCXZ);
 
 	mov	ecx, 191				; 000000bfH
 	call	EmitError
 
-; 1991 :       }
-; 1992 :     }
+; 2011 :       }
+; 2012 :     }
 
 	jmp	$LN336@HllEndDir
 $LN122@HllEndDir:
 
-; 1993 :     else {
-; 1994 :       AddLineQueueX(JMPPREFIX "loop %s", GetLabelStr(hll->labels[LSTART], buff));
+; 2013 :     else {
+; 2014 :       AddLineQueueX(JMPPREFIX "loop %s", GetLabelStr(hll->labels[LSTART], buff));
 
 	mov	r8d, DWORD PTR [rbx+40]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12012
+	lea	rcx, OFFSET FLAT:$SG12026
 	call	AddLineQueueX
 
-; 1995 :     }
-; 1996 :     break;
+; 2015 :     }
+; 2016 :     break;
 
 	jmp	$LN336@HllEndDir
 $LN127@HllEndDir:
 
-; 1997 :   case T_DOT_UNTIL:
-; 1998 :     if (hll->cmd != HLL_REPEAT) {
+; 2017 :   case T_DOT_UNTIL:
+; 2018 :     if (hll->cmd != HLL_REPEAT) {
 
 	cmp	DWORD PTR [rbx+96], 2
 	je	SHORT $LN128@HllEndDir
 $LN353@HllEndDir:
 
-; 1999 :       DebugMsg(("HllEndDir: no .REPEAT on the hll stack\n"));
-; 2000 :       return(EmitErr(BLOCK_NESTING_ERROR, tokenarray[i].string_ptr));
+; 2019 :       DebugMsg(("HllEndDir: no .REPEAT on the hll stack\n"));
+; 2020 :       return(EmitErr(BLOCK_NESTING_ERROR, tokenarray[i].string_ptr));
 
 	movsxd	rdx, DWORD PTR i$[rbp-256]
 	mov	ecx, 80					; 00000050H
@@ -4182,38 +4243,38 @@ $LN353@HllEndDir:
 	jmp	$LN340@HllEndDir
 $LN128@HllEndDir:
 
-; 2001 :     }
-; 2002 :     i++;
+; 2021 :     }
+; 2022 :     i++;
 
 	inc	DWORD PTR i$[rbp-256]
 
-; 2003 :     if (hll->labels[LTEST]) /* v2.11: LTEST only needed if .CONTINUE has occured */
+; 2023 :     if (hll->labels[LTEST]) /* v2.11: LTEST only needed if .CONTINUE has occured */
 
 	mov	r8d, DWORD PTR [rbx+32]
 	test	r8d, r8d
 	je	SHORT $LN129@HllEndDir
 
-; 2004 :       AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LTEST], buff));
+; 2024 :       AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LTEST], buff));
 
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12016
+	lea	rcx, OFFSET FLAT:$SG12030
 	call	AddLineQueueX
 $LN129@HllEndDir:
 
-; 2005 : 
-; 2006 :     /* read in (optional) expression */
-; 2007 :     /* if expression is missing, just generate nothing */
-; 2008 :     if (tokenarray[i].token != T_FINAL) {
+; 2025 : 
+; 2026 :     /* read in (optional) expression */
+; 2027 :     /* if expression is missing, just generate nothing */
+; 2028 :     if (tokenarray[i].token != T_FINAL) {
 
 	movsxd	rax, DWORD PTR i$[rbp-256]
 	shl	rax, 5
 	cmp	BYTE PTR [rax+rdi], r15b
 	je	$LN336@HllEndDir
 
-; 2009 :       rc = EvaluateHllExpression(hll, &i, tokenarray, LSTART, FALSE, buffer);
+; 2029 :       rc = EvaluateHllExpression(hll, &i, tokenarray, LSTART, FALSE, buffer);
 
 	lea	rax, QWORD PTR hllop$1[rsp]
 	mov	QWORD PTR hllop$1[rsp], r15
@@ -4241,16 +4302,16 @@ $LN284@HllEndDir:
 	call	EmitError
 	mov	r15d, eax
 
-; 2010 :       if (rc == NOT_ERROR)
+; 2030 :       if (rc == NOT_ERROR)
 
 	test	eax, eax
 	jne	SHORT $LN336@HllEndDir
 
-; 2009 :       rc = EvaluateHllExpression(hll, &i, tokenarray, LSTART, FALSE, buffer);
+; 2029 :       rc = EvaluateHllExpression(hll, &i, tokenarray, LSTART, FALSE, buffer);
 
 $LN285@HllEndDir:
 
-; 2011 :         QueueTestLines(buffer); /* write condition lines */
+; 2031 :         QueueTestLines(buffer); /* write condition lines */
 
 	lea	rdi, QWORD PTR buffer$[rsp]
 	npad	5
@@ -4276,32 +4337,32 @@ $LN339@HllEndDir:
 	mov	rdi, QWORD PTR tokenarray$[rbp-256]
 $LN336@HllEndDir:
 
-; 2012 :     }
-; 2013 :     break;
-; 2014 : #ifdef DEBUG_OUT
-; 2015 :   default: /**/myassert(0); break;
-; 2016 : #endif
-; 2017 :   }
-; 2018 : 
-; 2019 :   /* create the exit label if it has been referenced */
-; 2020 :   if (hll->labels[LEXIT])
+; 2032 :     }
+; 2033 :     break;
+; 2034 : #ifdef DEBUG_OUT
+; 2035 :   default: /**/myassert(0); break;
+; 2036 : #endif
+; 2037 :   }
+; 2038 : 
+; 2039 :   /* create the exit label if it has been referenced */
+; 2040 :   if (hll->labels[LEXIT])
 
 	mov	r8d, DWORD PTR [rbx+36]
 	test	r8d, r8d
 	je	SHORT $LN132@HllEndDir
 
-; 2021 :     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LEXIT], buff));
+; 2041 :     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LEXIT], buff));
 
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12020
+	lea	rcx, OFFSET FLAT:$SG12034
 	call	AddLineQueueX
 $LN132@HllEndDir:
 
-; 2022 : 
-; 2023 :   if (tokenarray[i].token != T_FINAL && rc == NOT_ERROR) {
+; 2042 : 
+; 2043 :   if (tokenarray[i].token != T_FINAL && rc == NOT_ERROR) {
 
 	movsxd	rax, DWORD PTR i$[rbp-256]
 	shl	rax, 5
@@ -4310,24 +4371,24 @@ $LN132@HllEndDir:
 	test	r15d, r15d
 	jne	SHORT $LN133@HllEndDir
 
-; 2024 :     EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos);
+; 2044 :     EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos);
 
 	mov	rdx, QWORD PTR [rax+rdi+24]
 	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
-; 2025 :     rc = ERROR;
+; 2045 :     rc = ERROR;
 
 	or	r15d, -1
 $LN133@HllEndDir:
 
-; 2026 :   }
-; 2027 :   if (ModuleInfo.list)
+; 2046 :   }
+; 2047 :   if (ModuleInfo.list)
 
 	test	DWORD PTR ModuleInfo+408, 2048		; 00000800H
 	je	SHORT $LN134@HllEndDir
 
-; 2028 :     LstWrite(LSTTYPE_DIRECTIVE, GetCurrOffset(), NULL);
+; 2048 :     LstWrite(LSTTYPE_DIRECTIVE, GetCurrOffset(), NULL);
 
 	call	GetCurrOffset
 	xor	r8d, r8d
@@ -4336,26 +4397,26 @@ $LN133@HllEndDir:
 	call	LstWrite
 $LN134@HllEndDir:
 
-; 2029 : 
-; 2030 :   /* v2.11: always run line-queue if it's not empty. */
-; 2031 :   if (is_linequeue_populated())
+; 2049 : 
+; 2050 :   /* v2.11: always run line-queue if it's not empty. */
+; 2051 :   if (is_linequeue_populated())
 
 	cmp	QWORD PTR ModuleInfo+184, 0
 	je	SHORT $LN135@HllEndDir
 
-; 2032 :     RunLineQueue();
+; 2052 :     RunLineQueue();
 
 	call	RunLineQueue
 $LN135@HllEndDir:
 
-; 2033 : 
-; 2034 :   return(rc);
+; 2053 : 
+; 2054 :   return(rc);
 
 	mov	eax, r15d
 $LN340@HllEndDir:
 	mov	rsi, QWORD PTR [rsp+2224]
 
-; 2035 : }
+; 2055 : }
 
 	add	rsp, 2168				; 00000878H
 	pop	r15
@@ -4393,7 +4454,7 @@ i$ = 7312
 tokenarray$ = 7320
 HllStartDir PROC
 
-; 1232 : {
+; 1252 : {
 
 $LN279:
 	mov	DWORD PTR [rsp+8], ecx
@@ -4406,37 +4467,37 @@ $LN279:
 	mov	QWORD PTR [rsp+7320], rbx
 	mov	QWORD PTR [rsp+7336], rdi
 
-; 1233 :   struct hll_item      *hll;
-; 1234 :   ret_code             rc = NOT_ERROR;
-; 1235 :   int                  cmd = tokenarray[i].tokval;
-; 1236 :   char buff[16];
-; 1237 :   char buffer[MAX_LINE_LEN * 2];
-; 1238 :   char codebuff[256];
-; 1239 :   char param[256];
-; 1240 :   char init[256];
-; 1241 :   char limit[MAX_LINE_LEN];
-; 1242 :   char op[4];
-; 1243 :   char forbuff[MAX_LINE_LEN];
-; 1244 :   char forbuffinit[MAX_LINE_LEN];
-; 1245 :   char forbuffcond[MAX_LINE_LEN];
-; 1246 :   char forbuffcnt[MAX_LINE_LEN];
-; 1247 :   char transformed[MAX_LINE_LEN];
-; 1248 :   int a;
-; 1249 :   int j;
-; 1250 :   int b;
-; 1251 :   int e;
-; 1252 :   int size;
-; 1253 :   int eqcnt;
-; 1254 :   int cmcnt;
-; 1255 :   char *p;
-; 1256 :   char c;
-; 1257 : 
-; 1258 :   DebugMsg1(("HllStartDir(%s) enter\n", tokenarray[i].string_ptr));
-; 1259 : 
-; 1260 :   i++; /* skip directive */
-; 1261 : 
-; 1262 :        /* v2.06: is there an item on the free stack? */
-; 1263 :   if (HllFree) {
+; 1253 :   struct hll_item      *hll;
+; 1254 :   ret_code             rc = NOT_ERROR;
+; 1255 :   int                  cmd = tokenarray[i].tokval;
+; 1256 :   char buff[16];
+; 1257 :   char buffer[MAX_LINE_LEN * 2];
+; 1258 :   char codebuff[256];
+; 1259 :   char param[256];
+; 1260 :   char init[256];
+; 1261 :   char limit[MAX_LINE_LEN];
+; 1262 :   char op[4];
+; 1263 :   char forbuff[MAX_LINE_LEN];
+; 1264 :   char forbuffinit[MAX_LINE_LEN];
+; 1265 :   char forbuffcond[MAX_LINE_LEN];
+; 1266 :   char forbuffcnt[MAX_LINE_LEN];
+; 1267 :   char transformed[MAX_LINE_LEN];
+; 1268 :   int a;
+; 1269 :   int j;
+; 1270 :   int b;
+; 1271 :   int e;
+; 1272 :   int size;
+; 1273 :   int eqcnt;
+; 1274 :   int cmcnt;
+; 1275 :   char *p;
+; 1276 :   char c;
+; 1277 : 
+; 1278 :   DebugMsg1(("HllStartDir(%s) enter\n", tokenarray[i].string_ptr));
+; 1279 : 
+; 1280 :   i++; /* skip directive */
+; 1281 : 
+; 1282 :        /* v2.06: is there an item on the free stack? */
+; 1283 :   if (HllFree) {
 
 	mov	rdi, QWORD PTR ModuleInfo+232
 	movsxd	rax, ecx
@@ -4452,56 +4513,56 @@ $LN279:
 	test	rdi, rdi
 	jne	SHORT $LN17@HllStartDi
 
-; 1264 :     hll = HllFree;
-; 1265 :     DebugCmd(cntReused++);
-; 1266 :   }
-; 1267 :   else {
-; 1268 :     hll = LclAlloc(sizeof(struct hll_item));
+; 1284 :     hll = HllFree;
+; 1285 :     DebugCmd(cntReused++);
+; 1286 :   }
+; 1287 :   else {
+; 1288 :     hll = LclAlloc(sizeof(struct hll_item));
 
 	mov	ecx, 152				; 00000098H
 	call	LclAlloc
 	mov	rdi, rax
 $LN17@HllStartDi:
 
-; 1269 :     DebugCmd(cntAlloc++);
-; 1270 :   }
-; 1271 : 
-; 1272 :   /* structure for .IF .ELSE .ENDIF
-; 1273 :   *    cond jump to LTEST-label
-; 1274 :   *    ...
-; 1275 :   *    jmp LEXIT
-; 1276 :   *  LTEST:
-; 1277 :   *    ...
-; 1278 :   *  LEXIT:
-; 1279 : 
-; 1280 :   * structure for .IF .ELSEIF
-; 1281 :   *    cond jump to LTEST
-; 1282 :   *    ...
-; 1283 :   *    jmp LEXIT
-; 1284 :   *  LTEST:
-; 1285 :   *    cond jump to (new) LTEST
-; 1286 :   *    ...
-; 1287 :   *    jmp LEXIT
-; 1288 :   *  LTEST:
-; 1289 :   *    ...
-; 1290 : 
-; 1291 :   * structure for .WHILE and .REPEAT:
-; 1292 :   *   jmp LTEST (for .WHILE only)
-; 1293 :   * LSTART:
-; 1294 :   *   ...
-; 1295 :   * LTEST: (jumped to by .continue)
-; 1296 :   *   a) test end condition, cond jump to LSTART label
-; 1297 :   *   b) unconditional jump to LSTART label
-; 1298 :   * LEXIT: (jumped to by .BREAK)
-; 1299 :   */
-; 1300 : 
-; 1301 :   hll->labels[LEXIT] = 0;
+; 1289 :     DebugCmd(cntAlloc++);
+; 1290 :   }
+; 1291 : 
+; 1292 :   /* structure for .IF .ELSE .ENDIF
+; 1293 :   *    cond jump to LTEST-label
+; 1294 :   *    ...
+; 1295 :   *    jmp LEXIT
+; 1296 :   *  LTEST:
+; 1297 :   *    ...
+; 1298 :   *  LEXIT:
+; 1299 : 
+; 1300 :   * structure for .IF .ELSEIF
+; 1301 :   *    cond jump to LTEST
+; 1302 :   *    ...
+; 1303 :   *    jmp LEXIT
+; 1304 :   *  LTEST:
+; 1305 :   *    cond jump to (new) LTEST
+; 1306 :   *    ...
+; 1307 :   *    jmp LEXIT
+; 1308 :   *  LTEST:
+; 1309 :   *    ...
+; 1310 : 
+; 1311 :   * structure for .WHILE and .REPEAT:
+; 1312 :   *   jmp LTEST (for .WHILE only)
+; 1313 :   * LSTART:
+; 1314 :   *   ...
+; 1315 :   * LTEST: (jumped to by .continue)
+; 1316 :   *   a) test end condition, cond jump to LSTART label
+; 1317 :   *   b) unconditional jump to LSTART label
+; 1318 :   * LEXIT: (jumped to by .BREAK)
+; 1319 :   */
+; 1320 : 
+; 1321 :   hll->labels[LEXIT] = 0;
 
 	mov	QWORD PTR [rsp+7328], rsi
 	mov	DWORD PTR [rdi+36], r13d
 
-; 1302 : 
-; 1303 :   switch (cmd) {
+; 1322 : 
+; 1323 :   switch (cmd) {
 
 	cmp	ebx, 327				; 00000147H
 	je	$LN18@HllStartDi
@@ -4513,211 +4574,211 @@ $LN17@HllStartDi:
 	cmp	ebx, 340				; 00000154H
 	jne	$LN20@HllStartDi
 
-; 1317 :       }
-; 1318 :     }
-; 1319 :     break;
-; 1320 :     // added by habran
-; 1321 :   case T_DOT_SWITCH:
-; 1322 :     hll->cmd = HLL_SWITCH;
+; 1337 :       }
+; 1338 :     }
+; 1339 :     break;
+; 1340 :     // added by habran
+; 1341 :   case T_DOT_SWITCH:
+; 1342 :     hll->cmd = HLL_SWITCH;
 
 	mov	DWORD PTR [rdi+96], 5
 
-; 1323 :     hll->flags = HLLF_WHILE;
+; 1343 :     hll->flags = HLLF_WHILE;
 
 	mov	DWORD PTR [rdi+104], 4
 
-; 1324 :     hll->labels[LSKIP] = GetHllLabel();    /* used by .ENDSWITCH  */
+; 1344 :     hll->labels[LSKIP] = GetHllLabel();    /* used by .ENDSWITCH  */
 
 	mov	eax, DWORD PTR ModuleInfo+352
 	inc	eax
 	mov	DWORD PTR ModuleInfo+352, eax
 	mov	DWORD PTR [rdi+44], eax
 
-; 1325 :     hll->labels[LJUMP] = GetHllLabel();    /* used by .ENDSWITCH */
+; 1345 :     hll->labels[LJUMP] = GetHllLabel();    /* used by .ENDSWITCH */
 
 	mov	eax, DWORD PTR ModuleInfo+352
 	inc	eax
 	mov	DWORD PTR ModuleInfo+352, eax
 	mov	DWORD PTR [rdi+68], eax
 
-; 1326 :     hll->labels[LEXIT] = GetHllLabel();
+; 1346 :     hll->labels[LEXIT] = GetHllLabel();
 
 	mov	eax, DWORD PTR ModuleInfo+352
 	inc	eax
 	mov	DWORD PTR ModuleInfo+352, eax
 	mov	DWORD PTR [rdi+36], eax
 
-; 1327 :     hll->labels[LDATA1] = GetHllLabel();    /* used by .ENDSWITCH  */
+; 1347 :     hll->labels[LDATA1] = GetHllLabel();    /* used by .ENDSWITCH  */
 
 	mov	eax, DWORD PTR ModuleInfo+352
 	inc	eax
 	mov	DWORD PTR ModuleInfo+352, eax
 	mov	DWORD PTR [rdi+56], eax
 
-; 1328 :     hll->labels[LSTART] = GetHllLabel();    /* used by .ENDSWITCH  */
+; 1348 :     hll->labels[LSTART] = GetHllLabel();    /* used by .ENDSWITCH  */
 
 	mov	eax, DWORD PTR ModuleInfo+352
 	inc	eax
 	mov	DWORD PTR ModuleInfo+352, eax
 	mov	DWORD PTR [rdi+40], eax
 
-; 1329 :     hll->labels[LTEST] = 0;                /* used by .CASE  */
+; 1349 :     hll->labels[LTEST] = 0;                /* used by .CASE  */
 
 	mov	DWORD PTR [rdi+32], r13d
 
-; 1330 :     hll->labels[LDEF] = GetHllLabel();    /* used by .CASE  */
+; 1350 :     hll->labels[LDEF] = GetHllLabel();    /* used by .CASE  */
 
 	mov	eax, DWORD PTR ModuleInfo+352
 	inc	eax
 	mov	DWORD PTR ModuleInfo+352, eax
 	mov	DWORD PTR [rdi+52], eax
 
-; 1331 :     hll->labels[LDATA2] = GetHllLabel();    /* used by .ENDSWITCH */
+; 1351 :     hll->labels[LDATA2] = GetHllLabel();    /* used by .ENDSWITCH */
 
 	mov	eax, DWORD PTR ModuleInfo+352
 	inc	eax
 	mov	DWORD PTR ModuleInfo+352, eax
 	mov	DWORD PTR [rdi+60], eax
 
-; 1332 :     hll->labels[LTOP] = GetHllLabel();    /* used by .ENDSWITCH  */
+; 1352 :     hll->labels[LTOP] = GetHllLabel();    /* used by .ENDSWITCH  */
 
 	mov	eax, DWORD PTR ModuleInfo+352
 	inc	eax
 	mov	DWORD PTR ModuleInfo+352, eax
 	mov	DWORD PTR [rdi+64], eax
 
-; 1333 :     hll->labels[LCONT] = GetHllLabel();    /* used by .ENDSWITCH */
+; 1353 :     hll->labels[LCONT] = GetHllLabel();    /* used by .ENDSWITCH */
 
 	mov	eax, DWORD PTR ModuleInfo+352
 	inc	eax
 	mov	DWORD PTR ModuleInfo+352, eax
 	mov	DWORD PTR [rdi+48], eax
 
-; 1334 :     hll->maxalloccasen = 0;
+; 1354 :     hll->maxalloccasen = 0;
 
 	mov	DWORD PTR [rdi+120], r13d
 
-; 1335 :     hll->casecnt = 0;
+; 1355 :     hll->casecnt = 0;
 
 	mov	DWORD PTR [rdi+92], r13d
 
-; 1336 :     hll->csize = 4;
+; 1356 :     hll->csize = 4;
 
 	mov	BYTE PTR [rdi+102], 4
 
-; 1337 :     if (tokenarray[i].token != T_FINAL) {
+; 1357 :     if (tokenarray[i].token != T_FINAL) {
 
 	movsxd	rax, DWORD PTR i$[rbp-256]
 	shl	rax, 5
 	cmp	BYTE PTR [rax+r15], r12b
 	je	$LN22@HllStartDi
 
-; 1338 :       p = tokenarray[i].tokpos;
-; 1339 :       if (ModuleInfo.Ofssize == USE32) {
+; 1358 :       p = tokenarray[i].tokpos;
+; 1359 :       if (ModuleInfo.Ofssize == USE32) {
 
 	cmp	BYTE PTR ModuleInfo+404, 1
 
-; 1340 :         if (0 != _memicmp(p, "eax", 3)) {
+; 1360 :         if (0 != _memicmp(p, "eax", 3)) {
 
 	mov	r8d, 3
 	mov	rbx, QWORD PTR [rax+r15+24]
 	mov	rcx, rbx
 	jne	SHORT $LN23@HllStartDi
-	lea	rdx, OFFSET FLAT:$SG11663
+	lea	rdx, OFFSET FLAT:$SG11677
 	call	_memicmp
 	test	eax, eax
 	je	SHORT $LN28@HllStartDi
 
-; 1341 :           AddLineQueueX(" mov eax, %s", tokenarray[i].tokpos);
+; 1361 :           AddLineQueueX(" mov eax, %s", tokenarray[i].tokpos);
 
 	movsxd	rdx, DWORD PTR i$[rbp-256]
-	lea	rcx, OFFSET FLAT:$SG11664
+	lea	rcx, OFFSET FLAT:$SG11678
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+r15+24]
 	call	AddLineQueueX
 
-; 1342 :         }
-; 1343 :       }
+; 1362 :         }
+; 1363 :       }
 
 	jmp	SHORT $LN28@HllStartDi
 $LN23@HllStartDi:
 
-; 1344 : #if AMD64_SUPPORT
-; 1345 :       else             //USE64
-; 1346 :       {
-; 1347 :         if (0 == _memicmp(p, "rax", 3)) 
+; 1364 : #if AMD64_SUPPORT
+; 1365 :       else             //USE64
+; 1366 :       {
+; 1367 :         if (0 == _memicmp(p, "rax", 3)) 
 
-	lea	rdx, OFFSET FLAT:$SG11667
+	lea	rdx, OFFSET FLAT:$SG11681
 	call	_memicmp
 	test	eax, eax
 	je	SHORT $LN276@HllStartDi
 
-; 1348 :           hll->csize = 8;
-; 1349 :         else if (0 != _memicmp(p, "eax", 3)) {
+; 1368 :           hll->csize = 8;
+; 1369 :         else if (0 != _memicmp(p, "eax", 3)) {
 
 	mov	r8d, 3
-	lea	rdx, OFFSET FLAT:$SG11669
+	lea	rdx, OFFSET FLAT:$SG11683
 	mov	rcx, rbx
 	call	_memicmp
 	test	eax, eax
 	je	SHORT $LN28@HllStartDi
 
-; 1350 :           AddLineQueueX(" mov rax, %s", tokenarray[i].tokpos);
+; 1370 :           AddLineQueueX(" mov rax, %s", tokenarray[i].tokpos);
 
 	movsxd	rdx, DWORD PTR i$[rbp-256]
-	lea	rcx, OFFSET FLAT:$SG11670
+	lea	rcx, OFFSET FLAT:$SG11684
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+r15+24]
 	call	AddLineQueueX
 $LN276@HllStartDi:
 
-; 1351 :           hll->csize = 8;
+; 1371 :           hll->csize = 8;
 
 	mov	BYTE PTR [rdi+102], 8
 $LN28@HllStartDi:
 
-; 1352 :         }
-; 1353 :       }// end USE64
-; 1354 : #endif
-; 1355 :       i++;
+; 1372 :         }
+; 1373 :       }// end USE64
+; 1374 : #endif
+; 1375 :       i++;
 
 	inc	DWORD PTR i$[rbp-256]
 $LN22@HllStartDi:
 
-; 1356 :     }
-; 1357 :     AddLineQueueX(JMPPREFIX "jmp %s", GetLabelStr(hll->labels[LSTART], buff));
+; 1376 :     }
+; 1377 :     AddLineQueueX(JMPPREFIX "jmp %s", GetLabelStr(hll->labels[LSTART], buff));
 
 	mov	r8d, DWORD PTR [rdi+40]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11671
+	lea	rcx, OFFSET FLAT:$SG11685
 	call	AddLineQueueX
 
-; 1358 :     break;
+; 1378 :     break;
 
 	jmp	$LN20@HllStartDi
 $LN29@HllStartDi:
 
-; 1359 :   case T_DOT_FOR:
-; 1360 :     /* create the label to loop start */
-; 1361 :     //hll->labels[LEXIT] = 0; //this is needed for .FOR loop
-; 1362 :     hll->labels[LSTART] = GetHllLabel();
+; 1379 :   case T_DOT_FOR:
+; 1380 :     /* create the label to loop start */
+; 1381 :     //hll->labels[LEXIT] = 0; //this is needed for .FOR loop
+; 1382 :     hll->labels[LSTART] = GetHllLabel();
 
 	mov	eax, DWORD PTR ModuleInfo+352
 	inc	eax
 	mov	QWORD PTR [rsp+7272], r14
 	mov	DWORD PTR ModuleInfo+352, eax
 
-; 1363 :     hll->labels[LSKIP] = GetHllLabel();
-; 1364 :     hll->labels[LCONT] = 0;
-; 1365 :     hll->labels[LTEST] = 0;
-; 1366 :     hll->flags = 0;
-; 1367 :     hll->cmd = HLL_FOR;
-; 1368 :     //copy string to the buffer and get read of spaces
-; 1369 :     p = tokenarray[i].tokpos;
-; 1370 :     for (b = 0; *p; p++)
+; 1383 :     hll->labels[LSKIP] = GetHllLabel();
+; 1384 :     hll->labels[LCONT] = 0;
+; 1385 :     hll->labels[LTEST] = 0;
+; 1386 :     hll->flags = 0;
+; 1387 :     hll->cmd = HLL_FOR;
+; 1388 :     //copy string to the buffer and get read of spaces
+; 1389 :     p = tokenarray[i].tokpos;
+; 1390 :     for (b = 0; *p; p++)
 
 	mov	r14d, r13d
 	mov	DWORD PTR [rdi+40], eax
@@ -4739,8 +4800,8 @@ $LN29@HllStartDi:
 	npad	6
 $LL6@HllStartDi:
 
-; 1371 :     {
-; 1372 :       if ((*p == ' ') || (*p == '\t')) {
+; 1391 :     {
+; 1392 :       if ((*p == ' ') || (*p == '\t')) {
 
 	cmp	al, 32					; 00000020H
 	je	SHORT $LN32@HllStartDi
@@ -4748,38 +4809,38 @@ $LL6@HllStartDi:
 	jne	SHORT $LN277@HllStartDi
 $LN32@HllStartDi:
 
-; 1373 :         //if there is QWORD PTR, DWORD PTR, WORD PTR, BYTE PTR, OFFSET or ADDR leave a space between
-; 1374 :         c = tolower(*(p + 1));
+; 1393 :         //if there is QWORD PTR, DWORD PTR, WORD PTR, BYTE PTR, OFFSET or ADDR leave a space between
+; 1394 :         c = tolower(*(p + 1));
 
 	movsx	ecx, BYTE PTR [rsi+1]
 	call	tolower
 
-; 1375 :         if ((c >= 'a') && (c <= 'z')) {
+; 1395 :         if ((c >= 'a') && (c <= 'z')) {
 
 	sub	al, 97					; 00000061H
 	cmp	al, 25
 	ja	SHORT $LN4@HllStartDi
 
-; 1376 :           forbuff[b] = *p;
+; 1396 :           forbuff[b] = *p;
 
 	movzx	eax, BYTE PTR [rsi]
 $LN277@HllStartDi:
 
-; 1377 :           b++;
+; 1397 :           b++;
 
 	inc	r14d
 	mov	BYTE PTR [rbx], al
 	inc	rbx
 $LN4@HllStartDi:
 
-; 1363 :     hll->labels[LSKIP] = GetHllLabel();
-; 1364 :     hll->labels[LCONT] = 0;
-; 1365 :     hll->labels[LTEST] = 0;
-; 1366 :     hll->flags = 0;
-; 1367 :     hll->cmd = HLL_FOR;
-; 1368 :     //copy string to the buffer and get read of spaces
-; 1369 :     p = tokenarray[i].tokpos;
-; 1370 :     for (b = 0; *p; p++)
+; 1383 :     hll->labels[LSKIP] = GetHllLabel();
+; 1384 :     hll->labels[LCONT] = 0;
+; 1385 :     hll->labels[LTEST] = 0;
+; 1386 :     hll->flags = 0;
+; 1387 :     hll->cmd = HLL_FOR;
+; 1388 :     //copy string to the buffer and get read of spaces
+; 1389 :     p = tokenarray[i].tokpos;
+; 1390 :     for (b = 0; *p; p++)
 
 	movzx	eax, BYTE PTR [rsi+1]
 	inc	rsi
@@ -4787,20 +4848,20 @@ $LN4@HllStartDi:
 	jne	SHORT $LL6@HllStartDi
 $LN5@HllStartDi:
 
-; 1378 :         }
-; 1379 :       }
-; 1380 :       else {
-; 1381 :         forbuff[b] = *p;
-; 1382 :         b++;
-; 1383 :       }
-; 1384 :     }
-; 1385 :     forbuff[b] = NULLC;
+; 1398 :         }
+; 1399 :       }
+; 1400 :       else {
+; 1401 :         forbuff[b] = *p;
+; 1402 :         b++;
+; 1403 :       }
+; 1404 :     }
+; 1405 :     forbuff[b] = NULLC;
 
 	movsxd	rax, r14d
 
-; 1386 :     if (0 == _memicmp(forbuff, "(::)", 4)) {
+; 1406 :     if (0 == _memicmp(forbuff, "(::)", 4)) {
 
-	lea	rdx, OFFSET FLAT:$SG11679
+	lea	rdx, OFFSET FLAT:$SG11693
 	mov	r8d, 4
 	lea	rcx, QWORD PTR forbuff$[rsp]
 	mov	BYTE PTR forbuff$[rsp+rax], r12b
@@ -4809,20 +4870,20 @@ $LN5@HllStartDi:
 	test	eax, eax
 	jne	SHORT $LN34@HllStartDi
 
-; 1387 :       hll->cmcnt = 0;
+; 1407 :       hll->cmcnt = 0;
 
 	mov	DWORD PTR [rdi+88], r13d
 
-; 1388 :     }
+; 1408 :     }
 
 	jmp	$LN51@HllStartDi
 $LN34@HllStartDi:
 
-; 1389 :     else {
-; 1390 :       //count initializers
-; 1391 :       eqcnt = 1;
-; 1392 :       forbuffinit[0] = NULLC;
-; 1393 :       for (j = 1, b = 0; forbuff[j];) {
+; 1409 :     else {
+; 1410 :       //count initializers
+; 1411 :       eqcnt = 1;
+; 1412 :       forbuffinit[0] = NULLC;
+; 1413 :       for (j = 1, b = 0; forbuff[j];) {
 
 	mov	r9d, r13d
 	mov	BYTE PTR forbuffinit$[rbp-256], r12b
@@ -4834,24 +4895,24 @@ $LN34@HllStartDi:
 	mov	rax, r13
 $LL7@HllStartDi:
 
-; 1394 :         c = forbuff[j];
+; 1414 :         c = forbuff[j];
 
 	movzx	edx, BYTE PTR forbuff$[rsp+rcx]
 
-; 1395 :         if (c == ':') {
+; 1415 :         if (c == ':') {
 
 	cmp	dl, 58					; 0000003aH
 	jne	SHORT $LN37@HllStartDi
 
-; 1396 :           if (forbuff[j - 1] != 39 && forbuff[j + 1] != 39) break;
+; 1416 :           if (forbuff[j - 1] != 39 && forbuff[j + 1] != 39) break;
 
 	cmp	BYTE PTR forbuff$[rsp+rcx-1], 39	; 00000027H
 	je	SHORT $LN38@HllStartDi
 	cmp	BYTE PTR forbuff$[rsp+rcx+1], 39	; 00000027H
 	jne	SHORT $LN274@HllStartDi
 
-; 1397 :         }
-; 1398 :         if (c == ',' && forbuff[j - 1] != 39 && forbuff[j + 1] != 39) eqcnt++;
+; 1417 :         }
+; 1418 :         if (c == ',' && forbuff[j - 1] != 39 && forbuff[j + 1] != 39) eqcnt++;
 
 	jmp	SHORT $LN38@HllStartDi
 $LN37@HllStartDi:
@@ -4864,34 +4925,34 @@ $LN37@HllStartDi:
 	inc	r10d
 $LN38@HllStartDi:
 
-; 1399 :         forbuffinit[b] = c;
+; 1419 :         forbuffinit[b] = c;
 
 	mov	BYTE PTR forbuffinit$[rbp+rax-256], dl
 
-; 1400 :         if (c == 39 && forbuffinit[b - 2] == 39) {
+; 1420 :         if (c == 39 && forbuffinit[b - 2] == 39) {
 
 	cmp	dl, 39					; 00000027H
 	jne	SHORT $LN39@HllStartDi
 	cmp	BYTE PTR forbuffinit$[rbp+rax-258], dl
 	jne	SHORT $LN39@HllStartDi
 
-; 1401 :           b++;
+; 1421 :           b++;
 
 	inc	r9d
 
-; 1402 :           forbuffinit[b] = ' ';
+; 1422 :           forbuffinit[b] = ' ';
 
 	mov	BYTE PTR forbuffinit$[rbp+rax-255], 32	; 00000020H
 	inc	rax
 $LN39@HllStartDi:
 
-; 1403 :         }
-; 1404 :         j++;
+; 1423 :         }
+; 1424 :         j++;
 
 	inc	rcx
 	inc	r8d
 
-; 1405 :         b++;
+; 1425 :         b++;
 
 	inc	r9d
 	inc	rax
@@ -4899,15 +4960,15 @@ $LN39@HllStartDi:
 	jne	SHORT $LL7@HllStartDi
 $LN274@HllStartDi:
 
-; 1406 :       }
-; 1407 :       forbuffinit[b] = NULLC;
+; 1426 :       }
+; 1427 :       forbuffinit[b] = NULLC;
 
 	movsxd	rax, r9d
 
-; 1409 :       //coppy the condition to the buffer
-; 1410 :       forbuffcond[0] = NULLC;
-; 1411 :       hll->labels[LTEST] = 0;
-; 1412 :       for (b = 0; forbuff[j] && forbuff[j] != ':'; forbuffcond[b] = forbuff[j], j++, b++);
+; 1429 :       //coppy the condition to the buffer
+; 1430 :       forbuffcond[0] = NULLC;
+; 1431 :       hll->labels[LTEST] = 0;
+; 1432 :       for (b = 0; forbuff[j] && forbuff[j] != ':'; forbuffcond[b] = forbuff[j], j++, b++);
 
 	lea	rcx, QWORD PTR forbuff$[rsp]
 	inc	r8d
@@ -4920,16 +4981,16 @@ $LN274@HllStartDi:
 	cmp	BYTE PTR [rcx], r9b
 	je	SHORT $LN275@HllStartDi
 
-; 1408 :       j++;
+; 1428 :       j++;
 
 	lea	rax, QWORD PTR forbuffcond$[rbp-256]
 	npad	6
 $LL12@HllStartDi:
 
-; 1409 :       //coppy the condition to the buffer
-; 1410 :       forbuffcond[0] = NULLC;
-; 1411 :       hll->labels[LTEST] = 0;
-; 1412 :       for (b = 0; forbuff[j] && forbuff[j] != ':'; forbuffcond[b] = forbuff[j], j++, b++);
+; 1429 :       //coppy the condition to the buffer
+; 1430 :       forbuffcond[0] = NULLC;
+; 1431 :       hll->labels[LTEST] = 0;
+; 1432 :       for (b = 0; forbuff[j] && forbuff[j] != ':'; forbuffcond[b] = forbuff[j], j++, b++);
 
 	movzx	edx, BYTE PTR [rcx]
 	cmp	dl, 58					; 0000003aH
@@ -4943,7 +5004,7 @@ $LL12@HllStartDi:
 	jne	SHORT $LL12@HllStartDi
 $LN275@HllStartDi:
 
-; 1413 :       if (forbuffcond[b - 2] == '>' && forbuffcond[b - 1] == '0') forbuffcond[b - 2] = NULLC;
+; 1433 :       if (forbuffcond[b - 2] == '>' && forbuffcond[b - 1] == '0') forbuffcond[b - 2] = NULLC;
 
 	movsxd	rax, r9d
 	cmp	BYTE PTR forbuffcond$[rbp+rax-258], 62	; 0000003eH
@@ -4953,22 +5014,22 @@ $LN275@HllStartDi:
 	mov	BYTE PTR forbuffcond$[rbp+rax-258], r12b
 $LN40@HllStartDi:
 
-; 1414 :       forbuffcond[b] = NULLC;
-; 1415 :       if (!b) hll->cond = FALSE;
+; 1434 :       forbuffcond[b] = NULLC;
+; 1435 :       if (!b) hll->cond = FALSE;
 
 	test	r9d, r9d
 	mov	BYTE PTR forbuffcond$[rbp+rax-256], r12b
 
-; 1416 :       else    hll->cond = TRUE;
-; 1417 :       j++;
-; 1418 :       //copy the counter to the buffer
-; 1419 :       cmcnt = 0;
+; 1436 :       else    hll->cond = TRUE;
+; 1437 :       j++;
+; 1438 :       //copy the counter to the buffer
+; 1439 :       cmcnt = 0;
 
 	mov	esi, r13d
 
-; 1420 :       forbuffcnt[0] = NULLC;
-; 1421 :       hll->condlines = "";
-; 1422 :       for (b = 0; forbuff[j] != ')'; b++, j++) {
+; 1440 :       forbuffcnt[0] = NULLC;
+; 1441 :       hll->condlines = "";
+; 1442 :       for (b = 0; forbuff[j] != ')'; b++, j++) {
 
 	mov	edx, r13d
 	setne	al
@@ -4976,7 +5037,7 @@ $LN40@HllStartDi:
 	inc	r8d
 	mov	BYTE PTR [rdi+100], al
 	movsxd	rcx, r8d
-	lea	rax, OFFSET FLAT:$SG11687
+	lea	rax, OFFSET FLAT:$SG11701
 	mov	QWORD PTR [rdi+72], rax
 	cmp	BYTE PTR forbuff$[rsp+rcx], 41		; 00000029H
 	je	SHORT $LN14@HllStartDi
@@ -4984,12 +5045,12 @@ $LN40@HllStartDi:
 	npad	13
 $LL15@HllStartDi:
 
-; 1423 :         forbuffcnt[b] = forbuff[j];
+; 1443 :         forbuffcnt[b] = forbuff[j];
 
 	movzx	r8d, BYTE PTR forbuff$[rsp+rcx]
 	mov	BYTE PTR forbuffcnt$[rbp+rax-256], r8b
 
-; 1424 :         if (forbuffcnt[b] == ',' && forbuff[j - 1] != 39 && forbuff[j + 1] != 39) ++cmcnt;
+; 1444 :         if (forbuffcnt[b] == ',' && forbuff[j - 1] != 39 && forbuff[j + 1] != 39) ++cmcnt;
 
 	cmp	r8b, 44					; 0000002cH
 	jne	SHORT $LN43@HllStartDi
@@ -4999,7 +5060,7 @@ $LL15@HllStartDi:
 	je	SHORT $LN13@HllStartDi
 	inc	esi
 
-; 1425 :         if (forbuffcnt[b] == 39 && forbuffcnt[b - 2] == 39) {
+; 1445 :         if (forbuffcnt[b] == 39 && forbuffcnt[b - 2] == 39) {
 
 	jmp	SHORT $LN13@HllStartDi
 $LN43@HllStartDi:
@@ -5008,19 +5069,19 @@ $LN43@HllStartDi:
 	cmp	BYTE PTR forbuffcnt$[rbp+rax-258], r8b
 	jne	SHORT $LN13@HllStartDi
 
-; 1426 :           b++;
+; 1446 :           b++;
 
 	inc	edx
 
-; 1427 :           forbuffcnt[b] = ' ';
+; 1447 :           forbuffcnt[b] = ' ';
 
 	mov	BYTE PTR forbuffcnt$[rbp+rax-255], 32	; 00000020H
 	inc	rax
 $LN13@HllStartDi:
 
-; 1420 :       forbuffcnt[0] = NULLC;
-; 1421 :       hll->condlines = "";
-; 1422 :       for (b = 0; forbuff[j] != ')'; b++, j++) {
+; 1440 :       forbuffcnt[0] = NULLC;
+; 1441 :       hll->condlines = "";
+; 1442 :       for (b = 0; forbuff[j] != ')'; b++, j++) {
 
 	inc	rcx
 	inc	edx
@@ -5029,9 +5090,9 @@ $LN13@HllStartDi:
 	jne	SHORT $LL15@HllStartDi
 $LN14@HllStartDi:
 
-; 1428 :         }
-; 1429 :       }
-; 1430 :       if (forbuffcnt[b - 1] == ')') b--;
+; 1448 :         }
+; 1449 :       }
+; 1450 :       if (forbuffcnt[b - 1] == ')') b--;
 
 	movsxd	rax, edx
 	cmp	BYTE PTR forbuffcnt$[rbp+rax-257], 41	; 00000029H
@@ -5039,14 +5100,14 @@ $LN14@HllStartDi:
 	dec	edx
 $LN45@HllStartDi:
 
-; 1431 :       forbuffcnt[b] = NULLC;
+; 1451 :       forbuffcnt[b] = NULLC;
 
 	movsxd	rax, edx
 	mov	BYTE PTR forbuffcnt$[rbp+rax-256], r12b
 
-; 1432 :       //create valid command and add to LineQueue to initiate .for loop vars
-; 1433 :       //anything that is before the first ':'
-; 1434 :       if (forbuffinit[0]) ForInitAndNext(tokenarray, eqcnt, forbuffinit);
+; 1452 :       //create valid command and add to LineQueue to initiate .for loop vars
+; 1453 :       //anything that is before the first ':'
+; 1454 :       if (forbuffinit[0]) ForInitAndNext(tokenarray, eqcnt, forbuffinit);
 
 	cmp	BYTE PTR forbuffinit$[rbp-256], r12b
 	je	SHORT $LN46@HllStartDi
@@ -5056,32 +5117,32 @@ $LN45@HllStartDi:
 	call	ForInitAndNext
 $LN46@HllStartDi:
 
-; 1435 :       //note hll->counterlines is new var in the struct hll_item for store of forbuffcnt used in .ENDFOR
-; 1436 :       //hll->cmcnt is also new var in the struct hll_item for commas counter used in .ENDFOR
-; 1437 :       //copy forbuffcnt context to hll->counterlines 
-; 1438 :       //forbuffcnt contains anything that is written after the second ':'
-; 1439 :       hll->cmcnt = 0;
+; 1455 :       //note hll->counterlines is new var in the struct hll_item for store of forbuffcnt used in .ENDFOR
+; 1456 :       //hll->cmcnt is also new var in the struct hll_item for commas counter used in .ENDFOR
+; 1457 :       //copy forbuffcnt context to hll->counterlines 
+; 1458 :       //forbuffcnt contains anything that is written after the second ':'
+; 1459 :       hll->cmcnt = 0;
 
 	mov	DWORD PTR [rdi+88], r13d
 
-; 1440 :       if (forbuffcnt[0])
+; 1460 :       if (forbuffcnt[0])
 
 	cmp	BYTE PTR forbuffcnt$[rbp-256], r12b
 	je	SHORT $LN47@HllStartDi
 
-; 1441 :       {
-; 1442 :         //skip altering conditions the first time
-; 1443 :         AddLineQueueX(" jmp %s", GetLabelStr(hll->labels[LSKIP], buff));
+; 1461 :       {
+; 1462 :         //skip altering conditions the first time
+; 1463 :         AddLineQueueX(" jmp %s", GetLabelStr(hll->labels[LSKIP], buff));
 
 	mov	r8d, DWORD PTR [rdi+44]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11694
+	lea	rcx, OFFSET FLAT:$SG11708
 	call	AddLineQueueX
 
-; 1444 :         size = strlen(forbuffcnt) + 1;
+; 1464 :         size = strlen(forbuffcnt) + 1;
 
 	lea	rcx, QWORD PTR forbuffcnt$[rbp-256]
 	or	rax, -1
@@ -5091,13 +5152,13 @@ $LL272@HllStartDi:
 	jne	SHORT $LL272@HllStartDi
 	inc	eax
 
-; 1445 :         hll->counterlines = LclAlloc(size);
+; 1465 :         hll->counterlines = LclAlloc(size);
 
 	movsxd	rbx, eax
 	mov	rcx, rbx
 	call	LclAlloc
 
-; 1446 :         memcpy(hll->counterlines, forbuffcnt, size);
+; 1466 :         memcpy(hll->counterlines, forbuffcnt, size);
 
 	mov	r8, rbx
 	mov	QWORD PTR [rdi+80], rax
@@ -5105,31 +5166,31 @@ $LL272@HllStartDi:
 	mov	rcx, rax
 	call	memcpy
 
-; 1447 :         hll->cmcnt = cmcnt + 1;
+; 1467 :         hll->cmcnt = cmcnt + 1;
 
 	lea	eax, DWORD PTR [rsi+1]
 	mov	DWORD PTR [rdi+88], eax
 
-; 1448 :       }
+; 1468 :       }
 
 	jmp	SHORT $LN48@HllStartDi
 $LN47@HllStartDi:
 
-; 1449 :       else hll->counterlines = "";    //there is nothing after the second ':'
+; 1469 :       else hll->counterlines = "";    //there is nothing after the second ':'
 
-	lea	rax, OFFSET FLAT:$SG11695
+	lea	rax, OFFSET FLAT:$SG11709
 	mov	QWORD PTR [rdi+80], rax
 $LN48@HllStartDi:
 
-; 1450 :       if (forbuffcond[0]) {
+; 1470 :       if (forbuffcond[0]) {
 
 	cmp	BYTE PTR forbuffcond$[rbp-256], r12b
 	je	$LN51@HllStartDi
 
-; 1451 :         strcpy(transformed, ".for ");
+; 1471 :         strcpy(transformed, ".for ");
 
 	mov	rcx, r13
-	lea	rdx, OFFSET FLAT:$SG11697
+	lea	rdx, OFFSET FLAT:$SG11711
 	npad	5
 $LL65@HllStartDi:
 	movzx	eax, BYTE PTR [rcx+rdx]
@@ -5138,7 +5199,7 @@ $LL65@HllStartDi:
 	test	al, al
 	jne	SHORT $LL65@HllStartDi
 
-; 1452 :         strcat(transformed, forbuffcond);
+; 1472 :         strcat(transformed, forbuffcond);
 
 	lea	rcx, QWORD PTR transformed$[rbp-256]
 	dec	rcx
@@ -5157,7 +5218,7 @@ $LL271@HllStartDi:
 	test	al, al
 	jne	SHORT $LL271@HllStartDi
 
-; 1453 :         strcat(transformed, "\0");
+; 1473 :         strcat(transformed, "\0");
 
 	lea	rcx, QWORD PTR transformed$[rbp-256]
 	dec	rcx
@@ -5166,7 +5227,7 @@ $LL268@HllStartDi:
 	cmp	BYTE PTR [rcx+1], r12b
 	lea	rcx, QWORD PTR [rcx+1]
 	jne	SHORT $LL268@HllStartDi
-	lea	r8, OFFSET FLAT:$SG11698
+	lea	r8, OFFSET FLAT:$SG11712
 	xor	edx, edx
 	npad	13
 $LL269@HllStartDi:
@@ -5176,12 +5237,12 @@ $LL269@HllStartDi:
 	test	al, al
 	jne	SHORT $LL269@HllStartDi
 
-; 1454 :         tokenarray[0].string_ptr = ".for\0";
+; 1474 :         tokenarray[0].string_ptr = ".for\0";
 
-	lea	rax, OFFSET FLAT:$SG11699
+	lea	rax, OFFSET FLAT:$SG11713
 
-; 1455 :         tokenarray[0].tokpos = transformed;
-; 1456 :         Token_Count = Tokenize(tokenarray[0].tokpos, 0, tokenarray, 0);
+; 1475 :         tokenarray[0].tokpos = transformed;
+; 1476 :         Token_Count = Tokenize(tokenarray[0].tokpos, 0, tokenarray, 0);
 
 	xor	r9d, r9d
 	mov	QWORD PTR [r15+8], rax
@@ -5193,14 +5254,14 @@ $LL269@HllStartDi:
 	call	Tokenize
 	mov	DWORD PTR ModuleInfo+496, eax
 
-; 1457 :         if (tokenarray[i].token != T_FINAL) {
+; 1477 :         if (tokenarray[i].token != T_FINAL) {
 
 	movsxd	rax, DWORD PTR i$[rbp-256]
 	shl	rax, 5
 	cmp	BYTE PTR [rax+r15], r12b
 	je	$LN50@HllStartDi
 
-; 1458 :           rc = EvaluateHllExpression(hll, &i, tokenarray, LSTART, TRUE, buffer);
+; 1478 :           rc = EvaluateHllExpression(hll, &i, tokenarray, LSTART, TRUE, buffer);
 
 	lea	rax, QWORD PTR hllop$2[rsp]
 	mov	QWORD PTR hllop$2[rsp], r13
@@ -5260,13 +5321,13 @@ $LN105@HllStartDi:
 	call	EmitError
 	mov	r12d, eax
 
-; 1459 :           if (rc == NOT_ERROR) {
+; 1479 :           if (rc == NOT_ERROR) {
 
 	test	eax, eax
 	jne	SHORT $LN51@HllStartDi
 $LN260@HllStartDi:
 
-; 1460 :             size = strlen(buffer) + 1;
+; 1480 :             size = strlen(buffer) + 1;
 
 	lea	rcx, QWORD PTR buffer$[rbp-256]
 	or	rax, -1
@@ -5276,13 +5337,13 @@ $LL266@HllStartDi:
 	jne	SHORT $LL266@HllStartDi
 	inc	eax
 
-; 1461 :             hll->condlines = LclAlloc(size);
+; 1481 :             hll->condlines = LclAlloc(size);
 
 	movsxd	rbx, eax
 	mov	rcx, rbx
 	call	LclAlloc
 
-; 1462 :             memcpy(hll->condlines, buffer, size);
+; 1482 :             memcpy(hll->condlines, buffer, size);
 
 	mov	r8, rbx
 	mov	QWORD PTR [rdi+72], rax
@@ -5290,84 +5351,84 @@ $LL266@HllStartDi:
 	mov	rcx, rax
 	call	memcpy
 
-; 1463 :             DebugCmd(cntCond++); DebugCmd(cntCondBytes += size);
-; 1464 :           }
-; 1465 :         }
+; 1483 :             DebugCmd(cntCond++); DebugCmd(cntCondBytes += size);
+; 1484 :           }
+; 1485 :         }
 
 	jmp	SHORT $LN51@HllStartDi
 $LN259@HllStartDi:
 
-; 1458 :           rc = EvaluateHllExpression(hll, &i, tokenarray, LSTART, TRUE, buffer);
+; 1478 :           rc = EvaluateHllExpression(hll, &i, tokenarray, LSTART, TRUE, buffer);
 
 	or	r12d, -1
 	jmp	SHORT $LN51@HllStartDi
 $LN50@HllStartDi:
 
-; 1466 :         else
-; 1467 :           hll->condlines = "";
+; 1486 :         else
+; 1487 :           hll->condlines = "";
 
-	lea	rax, OFFSET FLAT:$SG11703
+	lea	rax, OFFSET FLAT:$SG11717
 	mov	QWORD PTR [rdi+72], rax
 $LN51@HllStartDi:
 
-; 1468 :       }
-; 1469 :     }
-; 1470 :     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LSTART], buff));
+; 1488 :       }
+; 1489 :     }
+; 1490 :     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LSTART], buff));
 
 	mov	r8d, DWORD PTR [rdi+40]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11704
+	lea	rcx, OFFSET FLAT:$SG11718
 	call	AddLineQueueX
 
-; 1471 :     tokenarray[i].token = T_FINAL;
+; 1491 :     tokenarray[i].token = T_FINAL;
 
 	movsxd	rax, DWORD PTR i$[rbp-256]
 	shl	rax, 5
 	mov	BYTE PTR [rax+r15], r13b
 
-; 1472 :     break;
+; 1492 :     break;
 
 	jmp	$LN20@HllStartDi
 $LN53@HllStartDi:
 
-; 1473 :     //end of .FOR
-; 1474 :   case T_DOT_WHILE:
-; 1475 :   case T_DOT_REPEAT:
-; 1476 :     /* create the label to start of loop */
-; 1477 :     hll->labels[LSTART] = GetHllLabel();
+; 1493 :     //end of .FOR
+; 1494 :   case T_DOT_WHILE:
+; 1495 :   case T_DOT_REPEAT:
+; 1496 :     /* create the label to start of loop */
+; 1497 :     hll->labels[LSTART] = GetHllLabel();
 
 	mov	eax, DWORD PTR ModuleInfo+352
 	inc	eax
 	mov	DWORD PTR ModuleInfo+352, eax
 	mov	DWORD PTR [rdi+40], eax
 
-; 1478 :     hll->labels[LTEST] = 0; /* v2.11: test label is created only if needed */
+; 1498 :     hll->labels[LTEST] = 0; /* v2.11: test label is created only if needed */
 
 	mov	DWORD PTR [rdi+32], r13d
 
-; 1479 :                             //hll->labels[LEXIT] = GetHllLabel(); /* v2.11: LEXIT is only needed for .BREAK */
-; 1480 :     if (cmd == T_DOT_WHILE) {
+; 1499 :                             //hll->labels[LEXIT] = GetHllLabel(); /* v2.11: LEXIT is only needed for .BREAK */
+; 1500 :     if (cmd == T_DOT_WHILE) {
 
 	cmp	ebx, 329				; 00000149H
 	jne	$LN54@HllStartDi
 
-; 1481 :       hll->cmd = HLL_WHILE;
-; 1482 :       hll->condlines = NULL;
+; 1501 :       hll->cmd = HLL_WHILE;
+; 1502 :       hll->condlines = NULL;
 
 	mov	QWORD PTR [rdi+72], r13
 	mov	r10d, 1
 	mov	DWORD PTR [rdi+96], r10d
 
-; 1483 :       if (tokenarray[i].token != T_FINAL) {
+; 1503 :       if (tokenarray[i].token != T_FINAL) {
 
 	movsxd	rax, DWORD PTR i$[rbp-256]
 	shl	rax, 5
 	cmp	BYTE PTR [rax+r15], r12b
 
-; 1484 :         rc = EvaluateHllExpression(hll, &i, tokenarray, LSTART, TRUE, buffer);
+; 1504 :         rc = EvaluateHllExpression(hll, &i, tokenarray, LSTART, TRUE, buffer);
 
 	mov	BYTE PTR buffer$[rbp-256], r12b
 	je	$LN57@HllStartDi
@@ -5429,14 +5490,14 @@ $LN158@HllStartDi:
 	call	EmitError
 	mov	r12d, eax
 
-; 1485 :         if (rc == NOT_ERROR) {
+; 1505 :         if (rc == NOT_ERROR) {
 
 	test	eax, eax
 	jne	SHORT $LN57@HllStartDi
 $LN262@HllStartDi:
 
-; 1486 :           int size;
-; 1487 :           size = strlen(buffer) + 1;
+; 1506 :           int size;
+; 1507 :           size = strlen(buffer) + 1;
 
 	lea	rcx, QWORD PTR buffer$[rbp-256]
 	or	rax, -1
@@ -5446,13 +5507,13 @@ $LL264@HllStartDi:
 	jne	SHORT $LL264@HllStartDi
 	inc	eax
 
-; 1488 :           hll->condlines = LclAlloc(size);
+; 1508 :           hll->condlines = LclAlloc(size);
 
 	movsxd	rbx, eax
 	mov	rcx, rbx
 	call	LclAlloc
 
-; 1489 :           memcpy(hll->condlines, buffer, size);
+; 1509 :           memcpy(hll->condlines, buffer, size);
 
 	mov	r8, rbx
 	mov	QWORD PTR [rdi+72], rax
@@ -5460,39 +5521,39 @@ $LL264@HllStartDi:
 	mov	rcx, rax
 	call	memcpy
 
-; 1490 :           DebugCmd(cntCond++); DebugCmd(cntCondBytes += size);
-; 1491 :         }
-; 1492 :       }
+; 1510 :           DebugCmd(cntCond++); DebugCmd(cntCondBytes += size);
+; 1511 :         }
+; 1512 :       }
 
 	jmp	SHORT $LN57@HllStartDi
 $LN261@HllStartDi:
 
-; 1484 :         rc = EvaluateHllExpression(hll, &i, tokenarray, LSTART, TRUE, buffer);
+; 1504 :         rc = EvaluateHllExpression(hll, &i, tokenarray, LSTART, TRUE, buffer);
 
 	or	r12d, -1
 $LN57@HllStartDi:
 
-; 1493 :       else
-; 1494 :         buffer[0] = NULLC;  /* just ".while" without expression is accepted */
-; 1495 : 
-; 1496 :                             /* create a jump to test label */
-; 1497 :                             /* optimisation: if line at 'test' label is just a jump, dont create label and don't jump! */
-; 1498 :       if (_memicmp(buffer, "jmp", 3)) {
+; 1513 :       else
+; 1514 :         buffer[0] = NULLC;  /* just ".while" without expression is accepted */
+; 1515 : 
+; 1516 :                             /* create a jump to test label */
+; 1517 :                             /* optimisation: if line at 'test' label is just a jump, dont create label and don't jump! */
+; 1518 :       if (_memicmp(buffer, "jmp", 3)) {
 
 	mov	r8d, 3
-	lea	rdx, OFFSET FLAT:$SG11712
+	lea	rdx, OFFSET FLAT:$SG11726
 	lea	rcx, QWORD PTR buffer$[rbp-256]
 	call	_memicmp
 	test	eax, eax
 	je	SHORT $LN55@HllStartDi
 
-; 1499 :         hll->labels[LTEST] = GetHllLabel();
+; 1519 :         hll->labels[LTEST] = GetHllLabel();
 
 	mov	eax, DWORD PTR ModuleInfo+352
 
-; 1500 :         AddLineQueueX(JMPPREFIX "jmp %s", GetLabelStr(hll->labels[LTEST], buff));
+; 1520 :         AddLineQueueX(JMPPREFIX "jmp %s", GetLabelStr(hll->labels[LTEST], buff));
 
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	inc	eax
 	lea	rcx, QWORD PTR buff$[rsp]
 	mov	DWORD PTR ModuleInfo+352, eax
@@ -5500,44 +5561,44 @@ $LN57@HllStartDi:
 	mov	DWORD PTR [rdi+32], eax
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11713
+	lea	rcx, OFFSET FLAT:$SG11727
 	call	AddLineQueueX
 
-; 1501 :       }
-; 1502 :     }
+; 1521 :       }
+; 1522 :     }
 
 	jmp	SHORT $LN55@HllStartDi
 $LN54@HllStartDi:
 
-; 1503 :     else {
-; 1504 :       hll->cmd = HLL_REPEAT;
+; 1523 :     else {
+; 1524 :       hll->cmd = HLL_REPEAT;
 
 	mov	DWORD PTR [rdi+96], 2
 $LN55@HllStartDi:
 
-; 1505 :     }
-; 1506 :     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LSTART], buff));
+; 1525 :     }
+; 1526 :     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LSTART], buff));
 
 	mov	r8d, DWORD PTR [rdi+40]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11714
+	lea	rcx, OFFSET FLAT:$SG11728
 	call	AddLineQueueX
 	jmp	$LN20@HllStartDi
 $LN18@HllStartDi:
 
-; 1304 :   case T_DOT_IF:
-; 1305 :     hll->labels[LSTART] = 0; /* not used by .IF */
+; 1324 :   case T_DOT_IF:
+; 1325 :     hll->labels[LSTART] = 0; /* not used by .IF */
 
 	mov	DWORD PTR [rdi+40], r13d
 
-; 1306 :     hll->labels[LTEST] = GetHllLabel();
-; 1307 :     hll->cmd = HLL_IF;
-; 1308 :     hll->flags = 0;
-; 1309 :     /* get the C-style expression, convert to ASM code lines */
-; 1310 :     rc = EvaluateHllExpression(hll, &i, tokenarray, LTEST, FALSE, buffer);
+; 1326 :     hll->labels[LTEST] = GetHllLabel();
+; 1327 :     hll->cmd = HLL_IF;
+; 1328 :     hll->flags = 0;
+; 1329 :     /* get the C-style expression, convert to ASM code lines */
+; 1330 :     rc = EvaluateHllExpression(hll, &i, tokenarray, LTEST, FALSE, buffer);
 
 	lea	rdx, QWORD PTR i$[rbp-256]
 	mov	eax, DWORD PTR ModuleInfo+352
@@ -5571,13 +5632,13 @@ $LN69@HllStartDi:
 	call	EmitError
 	mov	r12d, eax
 
-; 1311 :     if (rc == NOT_ERROR) {
+; 1331 :     if (rc == NOT_ERROR) {
 
 	test	eax, eax
 	jne	SHORT $LN20@HllStartDi
 $LN263@HllStartDi:
 
-; 1312 :       QueueTestLines(buffer);
+; 1332 :       QueueTestLines(buffer);
 
 	lea	rbx, QWORD PTR buffer$[rbp-256]
 	npad	15
@@ -5600,25 +5661,25 @@ $LN76@HllStartDi:
 	test	rbx, rbx
 	jne	SHORT $LL73@HllStartDi
 
-; 1313 :       /* if no lines have been created, the LTEST label isn't needed */
-; 1314 :       //if ( !is_linequeue_populated() ) {
-; 1315 :       if (buffer[0] == NULLC) {
+; 1333 :       /* if no lines have been created, the LTEST label isn't needed */
+; 1334 :       //if ( !is_linequeue_populated() ) {
+; 1335 :       if (buffer[0] == NULLC) {
 
 	cmp	BYTE PTR buffer$[rbp-256], r13b
 	jne	SHORT $LN20@HllStartDi
 
-; 1316 :         hll->labels[LTEST] = 0;
+; 1336 :         hll->labels[LTEST] = 0;
 
 	mov	DWORD PTR [rdi+32], r13d
 $LN20@HllStartDi:
 
-; 1507 :     break;
-; 1508 : #ifdef DEBUG_OUT
-; 1509 :   default: /**/myassert(0); break;
-; 1510 : #endif
-; 1511 :   }
-; 1512 : 
-; 1513 :   if (tokenarray[i].token != T_FINAL && rc == NOT_ERROR) {
+; 1527 :     break;
+; 1528 : #ifdef DEBUG_OUT
+; 1529 :   default: /**/myassert(0); break;
+; 1530 : #endif
+; 1531 :   }
+; 1532 : 
+; 1533 :   if (tokenarray[i].token != T_FINAL && rc == NOT_ERROR) {
 
 	movsxd	rax, DWORD PTR i$[rbp-256]
 	mov	r13, QWORD PTR [rsp+7280]
@@ -5630,48 +5691,48 @@ $LN20@HllStartDi:
 	test	r12d, r12d
 	jne	SHORT $LN60@HllStartDi
 
-; 1514 :     DebugMsg(("HllStartDir: unexpected token [%s]\n", tokenarray[i].tokpos));
-; 1515 :     EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos);
+; 1534 :     DebugMsg(("HllStartDir: unexpected token [%s]\n", tokenarray[i].tokpos));
+; 1535 :     EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos);
 
 	mov	rdx, QWORD PTR [rax+r15+24]
 	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
-; 1516 :     rc = ERROR;
+; 1536 :     rc = ERROR;
 
 	or	r12d, -1
 $LN60@HllStartDi:
 
-; 1517 :     //return( ERROR ); /* v2.08: continue and parse the line queue */
-; 1518 :   }
-; 1519 :   /* v2.06: remove the item from the free stack */
-; 1520 :   if (hll == HllFree)
+; 1537 :     //return( ERROR ); /* v2.08: continue and parse the line queue */
+; 1538 :   }
+; 1539 :   /* v2.06: remove the item from the free stack */
+; 1540 :   if (hll == HllFree)
 
 	cmp	rdi, QWORD PTR ModuleInfo+232
 	mov	r15, QWORD PTR [rsp+7264]
 	jne	SHORT $LN61@HllStartDi
 
-; 1521 :     HllFree = hll->next;
+; 1541 :     HllFree = hll->next;
 
 	mov	rax, QWORD PTR [rdi]
 	mov	QWORD PTR ModuleInfo+232, rax
 $LN61@HllStartDi:
 
-; 1522 :   hll->next = HllStack;
+; 1542 :   hll->next = HllStack;
 
 	mov	rax, QWORD PTR ModuleInfo+224
 	mov	QWORD PTR [rdi], rax
 
-; 1523 :   HllStack = hll;
-; 1524 : 
-; 1525 :   if (ModuleInfo.list)
+; 1543 :   HllStack = hll;
+; 1544 : 
+; 1545 :   if (ModuleInfo.list)
 
 	test	DWORD PTR ModuleInfo+408, 2048		; 00000800H
 	mov	QWORD PTR ModuleInfo+224, rdi
 	mov	rdi, QWORD PTR [rsp+7336]
 	je	SHORT $LN62@HllStartDi
 
-; 1526 :     LstWrite(LSTTYPE_DIRECTIVE, GetCurrOffset(), NULL);
+; 1546 :     LstWrite(LSTTYPE_DIRECTIVE, GetCurrOffset(), NULL);
 
 	call	GetCurrOffset
 	xor	r8d, r8d
@@ -5680,23 +5741,23 @@ $LN61@HllStartDi:
 	call	LstWrite
 $LN62@HllStartDi:
 
-; 1527 : 
-; 1528 :   if (is_linequeue_populated()) /* might be NULL! (".if 1") */
+; 1547 : 
+; 1548 :   if (is_linequeue_populated()) /* might be NULL! (".if 1") */
 
 	cmp	QWORD PTR ModuleInfo+184, 0
 	je	SHORT $LN273@HllStartDi
 
-; 1529 :     RunLineQueue();
+; 1549 :     RunLineQueue();
 
 	call	RunLineQueue
 $LN273@HllStartDi:
 
-; 1530 : 
-; 1531 :   return(rc);
+; 1550 : 
+; 1551 :   return(rc);
 
 	mov	eax, r12d
 
-; 1532 : }
+; 1552 : }
 
 	add	rsp, 7288				; 00001c78H
 	pop	r12
@@ -5737,7 +5798,7 @@ cnt$ = 1128
 buff$ = 1136
 ForInitAndNext PROC					; COMDAT
 
-; 981  : static ret_code ForInitAndNext(struct asm_tok tokenarray[], int cnt, char *buff) {
+; 1001 : static ret_code ForInitAndNext(struct asm_tok tokenarray[], int cnt, char *buff) {
 
 	mov	QWORD PTR [rsp+32], rbx
 	mov	QWORD PTR [rsp+24], r8
@@ -5752,14 +5813,14 @@ ForInitAndNext PROC					; COMDAT
 	lea	rbp, QWORD PTR [rsp-800]
 	sub	rsp, 1056				; 00000420H
 
-; 982  :   int a;
-; 983  :   int j;
-; 984  :   int	b = 0;
+; 1002 :   int a;
+; 1003 :   int j;
+; 1004 :   int	b = 0;
 
 	xor	r15d, r15d
 	mov	r12, r8
 
-; 985  :   bool brct = 0;
+; 1005 :   bool brct = 0;
 
 	xor	r14b, r14b
 	mov	esi, edx
@@ -5767,16 +5828,16 @@ ForInitAndNext PROC					; COMDAT
 	mov	r9, 145272973819904			; 0000842000000000H
 $LL4@ForInitAnd:
 
-; 986  :   char codebuff[256];
-; 987  :   char param[256];
-; 988  :   char init[256];
-; 989  :   char op[4];
-; 990  :   char *p;
-; 991  :   //create valid command and add to LineQueue
-; 992  :   do {
-; 993  :     //extracting the first parameter "param" before the operator
-; 994  :     a = 0;
-; 995  :     while (buff[b] && !strchr("=!<>&|-+*^%/", buff[b]))
+; 1006 :   char codebuff[256];
+; 1007 :   char param[256];
+; 1008 :   char init[256];
+; 1009 :   char op[4];
+; 1010 :   char *p;
+; 1011 :   //create valid command and add to LineQueue
+; 1012 :   do {
+; 1013 :     //extracting the first parameter "param" before the operator
+; 1014 :     a = 0;
+; 1015 :     while (buff[b] && !strchr("=!<>&|-+*^%/", buff[b]))
 
 	movsxd	rbx, r15d
 	xor	edi, edi
@@ -5786,27 +5847,27 @@ $LL4@ForInitAnd:
 	npad	2
 $LL5@ForInitAnd:
 	movsx	edx, BYTE PTR [rbx]
-	lea	rcx, OFFSET FLAT:$SG11439
+	lea	rcx, OFFSET FLAT:$SG11453
 	call	strchr
 	test	rax, rax
 	jne	SHORT $LN531@ForInitAnd
 
-; 996  :     {
-; 997  :       if (buff[b] == '-' || buff[b] == '+') break;
+; 1016 :     {
+; 1017 :       if (buff[b] == '-' || buff[b] == '+') break;
 
 	movzx	ecx, BYTE PTR [rbx]
 	lea	eax, DWORD PTR [rcx-43]
 	test	al, 253					; 000000fdH
 	je	SHORT $LN531@ForInitAnd
 
-; 998  :       param[a] = buff[b];
-; 999  :       b++;
+; 1018 :       param[a] = buff[b];
+; 1019 :       b++;
 
 	inc	rbx
 	mov	BYTE PTR param$[rbp+rdi-256], cl
 	inc	r15d
 
-; 1000 :       a++;
+; 1020 :       a++;
 
 	inc	rdi
 	cmp	BYTE PTR [rbx], 0
@@ -5815,11 +5876,11 @@ $LN531@ForInitAnd:
 	mov	r9, 145272973819904			; 0000842000000000H
 $LN268@ForInitAnd:
 
-; 1001 :     }
-; 1002 :     param[a] = '\0';
-; 1003 :     //end of param
-; 1004 :     //is it simple operator
-; 1005 :     if ((buff[b + 1] == '+') || (buff[b + 1] == '-')) {            //if ++ or -- finish it here
+; 1021 :     }
+; 1022 :     param[a] = '\0';
+; 1023 :     //end of param
+; 1024 :     //is it simple operator
+; 1025 :     if ((buff[b + 1] == '+') || (buff[b + 1] == '-')) {            //if ++ or -- finish it here
 
 	movsxd	rax, r15d
 	movzx	edx, BYTE PTR [rax+r12+1]
@@ -5829,41 +5890,41 @@ $LN268@ForInitAnd:
 	test	al, 253					; 000000fdH
 	je	$LN23@ForInitAnd
 
-; 1012 :     }
-; 1013 : 
-; 1014 :     //we finis here "inc REX" or  "dec REX" or "inc mem" or "dec mem"
-; 1015 :     else						//if not ++ or -- 
-; 1016 :     {							//extracting the operator
-; 1017 :       op[0] = buff[b];
+; 1032 :     }
+; 1033 : 
+; 1034 :     //we finis here "inc REX" or  "dec REX" or "inc mem" or "dec mem"
+; 1035 :     else						//if not ++ or -- 
+; 1036 :     {							//extracting the operator
+; 1037 :       op[0] = buff[b];
 
 	movzx	ebx, BYTE PTR [rcx]
 
-; 1018 :       b++;
+; 1038 :       b++;
 
 	inc	r15d
 	mov	BYTE PTR op$[rbp-256], bl
 
-; 1019 :       if (op[0] == '=') {     //if operator is only '='
+; 1039 :       if (op[0] == '=') {     //if operator is only '='
 
 	cmp	bl, 61					; 0000003dH
 	jne	SHORT $LN27@ForInitAnd
 
-; 1020 :         op[1] = '\0';       //finish here
+; 1040 :         op[1] = '\0';       //finish here
 
 	xor	r8b, r8b
 	mov	BYTE PTR op$[rbp-255], r8b
 
-; 1021 :       }
+; 1041 :       }
 
 	jmp	SHORT $LN30@ForInitAnd
 $LN27@ForInitAnd:
 
-; 1022 :       else {                 //extract next operator
-; 1023 :         op[1] = buff[b];
+; 1042 :       else {                 //extract next operator
+; 1043 :         op[1] = buff[b];
 
 	movsxd	rax, r15d
 
-; 1024 :         b++;
+; 1044 :         b++;
 
 	inc	r15d
 	movzx	r8d, BYTE PTR [rax+r12]
@@ -5872,36 +5933,36 @@ $LN27@ForInitAnd:
 	test	al, 253					; 000000fdH
 	jne	SHORT $LN29@ForInitAnd
 
-; 1025 :         if ((op[1] == '<' || op[1] == '>') && (buff[b] == '=')) {
+; 1045 :         if ((op[1] == '<' || op[1] == '>') && (buff[b] == '=')) {
 
 	movsxd	rax, r15d
 	cmp	BYTE PTR [rax+r12], 61			; 0000003dH
 	jne	SHORT $LN29@ForInitAnd
 
-; 1026 :           op[2] = buff[b]; //if a second operator is shift sign "<<=" or ">>="
+; 1046 :           op[2] = buff[b]; //if a second operator is shift sign "<<=" or ">>="
 
 	mov	WORD PTR op$[rbp-254], 61		; 0000003dH
 
-; 1027 :           op[3] = NULLC;
-; 1028 :           b++;
+; 1047 :           op[3] = NULLC;
+; 1048 :           b++;
 
 	inc	r15d
 
-; 1029 :         }
+; 1049 :         }
 
 	jmp	SHORT $LN30@ForInitAnd
 $LN29@ForInitAnd:
 
-; 1030 :         else op[2] = NULLC; //not shift so we have two operands
+; 1050 :         else op[2] = NULLC; //not shift so we have two operands
 
 	mov	BYTE PTR op$[rbp-254], 0
 $LN30@ForInitAnd:
 
-; 1031 : 
-; 1032 :       }
-; 1033 :       //we finished with param and op
-; 1034 :       //now extracting the second parameter "init" after the operator
-; 1035 :       for (a = 0; buff[b];) { //checking if we have a char in a single ' '
+; 1051 : 
+; 1052 :       }
+; 1053 :       //we finished with param and op
+; 1054 :       //now extracting the second parameter "init" after the operator
+; 1055 :       for (a = 0; buff[b];) { //checking if we have a char in a single ' '
 
 	movsxd	rax, r15d
 	xor	edx, edx
@@ -5910,12 +5971,12 @@ $LN30@ForInitAnd:
 	je	SHORT $LN532@ForInitAnd
 $LL7@ForInitAnd:
 
-; 1036 :         if (buff[b] == '(' && buff[b - 1] != 39 && buff[b + 1] != 39 && b) break;
+; 1056 :         if (buff[b] == '(' && buff[b - 1] != 39 && buff[b + 1] != 39 && b) break;
 
 	cmp	cl, 40					; 00000028H
 	je	SHORT $LN541@ForInitAnd
 
-; 1037 :         if (buff[b] == ',' && buff[b - 1] != 39 && buff[b + 1] != 39 && b) break;
+; 1057 :         if (buff[b] == ',' && buff[b - 1] != 39 && buff[b + 1] != 39 && b) break;
 
 	cmp	cl, 44					; 0000002cH
 	jne	SHORT $LN33@ForInitAnd
@@ -5928,14 +5989,14 @@ $LN541@ForInitAnd:
 	jne	SHORT $LN532@ForInitAnd
 $LN33@ForInitAnd:
 
-; 1038 :         init[a] = buff[b];
-; 1039 :         b++;
+; 1058 :         init[a] = buff[b];
+; 1059 :         b++;
 
 	inc	rax
 	mov	BYTE PTR init$[rbp+rdx-256], cl
 	inc	r15d
 
-; 1040 :         a++;
+; 1060 :         a++;
 
 	inc	rdx
 	movzx	ecx, BYTE PTR [rax+r12]
@@ -5943,8 +6004,8 @@ $LN33@ForInitAnd:
 	jne	SHORT $LL7@ForInitAnd
 $LN532@ForInitAnd:
 
-; 1041 :       }
-; 1042 :       if (buff[b] == '(' && buff[b - 1] != 39 && buff[b + 1] != 39 && b) {
+; 1061 :       }
+; 1062 :       if (buff[b] == '(' && buff[b - 1] != 39 && buff[b + 1] != 39 && b) {
 
 	movsxd	rax, r15d
 	cmp	BYTE PTR [rax+r12], 40			; 00000028H
@@ -5960,13 +6021,13 @@ $LN532@ForInitAnd:
 	npad	6
 $LL12@ForInitAnd:
 
-; 1043 :         for (; buff[b] && buff[b] != ')'; b++, a++) {
+; 1063 :         for (; buff[b] && buff[b] != ')'; b++, a++) {
 
 	cmp	al, 41					; 00000029H
 	je	SHORT $LN11@ForInitAnd
 	inc	rcx
 
-; 1044 :           init[a] = buff[b];
+; 1064 :           init[a] = buff[b];
 
 	mov	BYTE PTR init$[rbp+rdx-256], al
 	inc	r15d
@@ -5976,8 +6037,8 @@ $LL12@ForInitAnd:
 	jne	SHORT $LL12@ForInitAnd
 $LN11@ForInitAnd:
 
-; 1045 :         }
-; 1046 :         if (buff[b] == ')' && buff[b - 1] != 39 && buff[b + 1] != 39) {
+; 1065 :         }
+; 1066 :         if (buff[b] == ')' && buff[b - 1] != 39 && buff[b + 1] != 39) {
 
 	movsxd	rax, r15d
 	cmp	BYTE PTR [rax+r12], 41			; 00000029H
@@ -5987,26 +6048,26 @@ $LN11@ForInitAnd:
 	cmp	BYTE PTR [rax+r12+1], 39		; 00000027H
 	je	SHORT $LN35@ForInitAnd
 
-; 1047 :           init[a] = buff[b];
-; 1048 :           b++;
+; 1067 :           init[a] = buff[b];
+; 1068 :           b++;
 
 	inc	r15d
 	mov	BYTE PTR init$[rbp+rdx-256], 41		; 00000029H
 
-; 1049 :           a++;
+; 1069 :           a++;
 
 	inc	rdx
 $LN35@ForInitAnd:
 
-; 1050 :         }
-; 1051 :         brct = TRUE;
+; 1070 :         }
+; 1071 :         brct = TRUE;
 
 	mov	r14b, 1
 $LN34@ForInitAnd:
 
-; 1052 :       }
-; 1053 :       init[a] = NULLC;
-; 1054 :       b++;
+; 1072 :       }
+; 1073 :       init[a] = NULLC;
+; 1074 :       b++;
 
 	inc	r15d
 	mov	BYTE PTR init$[rbp+rdx-256], 0
@@ -6016,10 +6077,10 @@ $LN34@ForInitAnd:
 	bt	r9, rax
 	jae	$LN386@ForInitAnd
 
-; 1055 :       //we finished with init
-; 1056 :       //is operator devision, multiplication or mod
-; 1057 :       if (op[0] == '/' || op[0] == '*' || op[0] == '%') {
-; 1058 :         Tokenize(param, 0, tokenarray, 0);
+; 1075 :       //we finished with init
+; 1076 :       //is operator devision, multiplication or mod
+; 1077 :       if (op[0] == '/' || op[0] == '*' || op[0] == '%') {
+; 1078 :         Tokenize(param, 0, tokenarray, 0);
 
 	xor	r9d, r9d
 	lea	rcx, QWORD PTR param$[rbp-256]
@@ -6027,7 +6088,7 @@ $LN34@ForInitAnd:
 	xor	edx, edx
 	call	Tokenize
 
-; 1059 :         if (strcasecmp(param, reax[ModuleInfo.Ofssize]) && strcasecmp(init, reax[ModuleInfo.Ofssize])) { //param not rax init not rax?    
+; 1079 :         if (strcasecmp(param, reax[ModuleInfo.Ofssize]) && strcasecmp(init, reax[ModuleInfo.Ofssize])) { //param not rax init not rax?    
 
 	movzx	edx, BYTE PTR ModuleInfo+404
 	lea	rax, OFFSET FLAT:__ImageBase
@@ -6044,13 +6105,13 @@ $LN34@ForInitAnd:
 	test	eax, eax
 	je	$LN39@ForInitAnd
 
-; 1060 :           if (tokenarray[0].token == T_REG) {			//is param register              
+; 1080 :           if (tokenarray[0].token == T_REG) {			//is param register              
 
 	movzx	eax, BYTE PTR [r13]
 	cmp	al, 2
 	jne	$LN41@ForInitAnd
 
-; 1061 :             if (strcasecmp(param, recx[ModuleInfo.Ofssize])) {				//make sure that param is not rcx
+; 1081 :             if (strcasecmp(param, recx[ModuleInfo.Ofssize])) {				//make sure that param is not rcx
 
 	movzx	edx, BYTE PTR ModuleInfo+404
 	lea	rax, OFFSET FLAT:recx
@@ -6060,7 +6121,7 @@ $LN34@ForInitAnd:
 	test	eax, eax
 	je	$LN43@ForInitAnd
 
-; 1062 :               WriteAsmLine(" mov  ", reax[ModuleInfo.Ofssize], param);				// MOV RAX,param
+; 1082 :               WriteAsmLine(" mov  ", reax[ModuleInfo.Ofssize], param);				// MOV RAX,param
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	lea	rdx, OFFSET FLAT:__ImageBase
@@ -6068,7 +6129,7 @@ $LN34@ForInitAnd:
 	mov	r8, QWORD PTR reax[rdx+rax*8]
 	npad	5
 $LL157@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11467[rcx+rdx]
+	movzx	eax, BYTE PTR $SG11481[rcx+rdx]
 	mov	BYTE PTR codebuff$20[rsp+rcx], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -6096,7 +6157,7 @@ $LL526@ForInitAnd:
 	lea	rcx, QWORD PTR [rcx+1]
 	jne	SHORT $LL526@ForInitAnd
 	xor	edx, edx
-	lea	r8, OFFSET FLAT:$SG11401
+	lea	r8, OFFSET FLAT:$SG11415
 	npad	13
 $LL527@ForInitAnd:
 	movzx	eax, BYTE PTR [r8+rdx]
@@ -6124,7 +6185,7 @@ $LL525@ForInitAnd:
 	call	AddLineQueue
 $LN43@ForInitAnd:
 
-; 1063 :             }						if (op[0] == '/' || op[0] == '%') {
+; 1083 :             }						if (op[0] == '/' || op[0] == '%') {
 
 	cmp	bl, 47					; 0000002fH
 	je	SHORT $LN45@ForInitAnd
@@ -6132,27 +6193,27 @@ $LN43@ForInitAnd:
 	jne	SHORT $LN44@ForInitAnd
 $LN45@ForInitAnd:
 
-; 1064 :               strcpy(codebuff, " cdq ");			//extend to RDX if division	
+; 1084 :               strcpy(codebuff, " cdq ");			//extend to RDX if division	
 
 	xor	ecx, ecx
 	lea	r12, OFFSET FLAT:__ImageBase
 	npad	3
 $LL130@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11470[rcx+r12]
+	movzx	eax, BYTE PTR $SG11484[rcx+r12]
 	mov	BYTE PTR codebuff$[rbp+rcx-256], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
 	jne	SHORT $LL130@ForInitAnd
 
-; 1065 :               AddLineQueue(codebuff);
+; 1085 :               AddLineQueue(codebuff);
 
 	mov	r12, QWORD PTR buff$[rbp-256]
 	lea	rcx, QWORD PTR codebuff$[rbp-256]
 	call	AddLineQueue
 $LN44@ForInitAnd:
 
-; 1066 :             }
-; 1067 :             Tokenize(init, 0, tokenarray, 0);
+; 1086 :             }
+; 1087 :             Tokenize(init, 0, tokenarray, 0);
 
 	xor	r9d, r9d
 	lea	rcx, QWORD PTR init$[rbp-256]
@@ -6160,12 +6221,12 @@ $LN44@ForInitAnd:
 	xor	edx, edx
 	call	Tokenize
 
-; 1068 :             if (tokenarray[0].token == T_NUM) {      //is init number? 
+; 1088 :             if (tokenarray[0].token == T_NUM) {      //is init number? 
 
 	cmp	BYTE PTR [r13], 10
 	jne	$LN46@ForInitAnd
 
-; 1069 :               WriteAsmLine(" mov  ", recx[ModuleInfo.Ofssize], init);        //MOV RCX,init
+; 1089 :               WriteAsmLine(" mov  ", recx[ModuleInfo.Ofssize], init);        //MOV RCX,init
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	lea	r8, OFFSET FLAT:recx
@@ -6174,7 +6235,7 @@ $LN44@ForInitAnd:
 	mov	r8, QWORD PTR [r8+rax*8]
 	npad	1
 $LL160@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11473[rcx+r12]
+	movzx	eax, BYTE PTR $SG11487[rcx+r12]
 	mov	BYTE PTR codebuff$19[rsp+rcx], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -6202,7 +6263,7 @@ $LL520@ForInitAnd:
 	lea	rcx, QWORD PTR [rcx+1]
 	jne	SHORT $LL520@ForInitAnd
 	xor	edx, edx
-	lea	r13, OFFSET FLAT:$SG11401
+	lea	r13, OFFSET FLAT:$SG11415
 	npad	13
 $LL521@ForInitAnd:
 	movzx	eax, BYTE PTR [rdx+r13]
@@ -6230,20 +6291,20 @@ $LL519@ForInitAnd:
 	lea	rcx, QWORD PTR codebuff$19[rsp]
 	call	AddLineQueue
 
-; 1070 :               if (op[0] == '/' || op[0] == '%')
+; 1090 :               if (op[0] == '/' || op[0] == '%')
 
 	cmp	bl, 47					; 0000002fH
 	je	SHORT $LN50@ForInitAnd
 	cmp	bl, 37					; 00000025H
 	je	SHORT $LN50@ForInitAnd
 
-; 1072 :               else strcpy(codebuff, " imul ");		//IMUL RCX        
+; 1092 :               else strcpy(codebuff, " imul ");		//IMUL RCX        
 
 	xor	ecx, ecx
 	lea	r12, OFFSET FLAT:__ImageBase
 	npad	3
 $LL132@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11478[rcx+r12]
+	movzx	eax, BYTE PTR $SG11492[rcx+r12]
 	mov	BYTE PTR codebuff$[rbp+rcx-256], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -6251,12 +6312,12 @@ $LL132@ForInitAnd:
 	jmp	SHORT $LN542@ForInitAnd
 $LN50@ForInitAnd:
 
-; 1071 :                 strcpy(codebuff, " idiv ");		//IDIV RCX        
+; 1091 :                 strcpy(codebuff, " idiv ");		//IDIV RCX        
 
 	xor	ecx, ecx
 	lea	r12, OFFSET FLAT:__ImageBase
 $LL131@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11477[rcx+r12]
+	movzx	eax, BYTE PTR $SG11491[rcx+r12]
 	mov	BYTE PTR codebuff$[rbp+rcx-256], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -6264,7 +6325,7 @@ $LL131@ForInitAnd:
 $LN542@ForInitAnd:
 	mov	r12, QWORD PTR buff$[rbp-256]
 
-; 1073 :               strcat(codebuff, recx[ModuleInfo.Ofssize]);
+; 1093 :               strcat(codebuff, recx[ModuleInfo.Ofssize]);
 
 	lea	rcx, QWORD PTR codebuff$[rbp-256]
 	movzx	r8d, BYTE PTR ModuleInfo+404
@@ -6285,28 +6346,28 @@ $LL517@ForInitAnd:
 	test	al, al
 	jne	SHORT $LL517@ForInitAnd
 
-; 1074 :               AddLineQueue(codebuff);
-; 1075 :               goto cont;
+; 1094 :               AddLineQueue(codebuff);
+; 1095 :               goto cont;
 
 	jmp	$LN543@ForInitAnd
 $LN46@ForInitAnd:
 
-; 1076 :             }
-; 1077 :             else {
-; 1078 :               if (op[0] == '/' || op[0] == '%') //it is a variable
+; 1096 :             }
+; 1097 :             else {
+; 1098 :               if (op[0] == '/' || op[0] == '%') //it is a variable
 
 	cmp	bl, 47					; 0000002fH
 	je	SHORT $LN53@ForInitAnd
 	cmp	bl, 37					; 00000025H
 	je	SHORT $LN53@ForInitAnd
 
-; 1080 :               else strcpy(codebuff, " imul ");
+; 1100 :               else strcpy(codebuff, " imul ");
 
 	xor	ecx, ecx
 	lea	r12, OFFSET FLAT:__ImageBase
 	npad	8
 $LL134@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11483[rcx+r12]
+	movzx	eax, BYTE PTR $SG11497[rcx+r12]
 	mov	BYTE PTR codebuff$[rbp+rcx-256], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -6315,13 +6376,13 @@ $LL134@ForInitAnd:
 	jmp	SHORT $LN52@ForInitAnd
 $LN53@ForInitAnd:
 
-; 1079 :                 strcpy(codebuff, " idiv ");
+; 1099 :                 strcpy(codebuff, " idiv ");
 
 	xor	ecx, ecx
 	lea	r13, OFFSET FLAT:__ImageBase
 	npad	9
 $LL133@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11482[rcx+r13]
+	movzx	eax, BYTE PTR $SG11496[rcx+r13]
 	mov	BYTE PTR codebuff$[rbp+rcx-256], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -6329,7 +6390,7 @@ $LL133@ForInitAnd:
 	mov	r13, QWORD PTR tokenarray$[rbp-256]
 $LN52@ForInitAnd:
 
-; 1081 :               strcat(codebuff, init);
+; 1101 :               strcat(codebuff, init);
 
 	lea	rcx, QWORD PTR codebuff$[rbp-256]
 	dec	rcx
@@ -6347,21 +6408,21 @@ $LL515@ForInitAnd:
 	test	al, al
 	jne	SHORT $LL515@ForInitAnd
 
-; 1082 :               AddLineQueue(codebuff);
-; 1083 :               goto cont;
+; 1102 :               AddLineQueue(codebuff);
+; 1103 :               goto cont;
 
 	jmp	$LN543@ForInitAnd
 $LN41@ForInitAnd:
 
-; 1084 :             }
-; 1085 :           }
-; 1086 :           //if param is a variable
-; 1087 :           else if (tokenarray[0].token == T_ID) {		 //YES             
+; 1104 :             }
+; 1105 :           }
+; 1106 :           //if param is a variable
+; 1107 :           else if (tokenarray[0].token == T_ID) {		 //YES             
 
 	cmp	al, 8
 	jne	$LN537@ForInitAnd
 
-; 1088 :             WriteAsmLine(" mov  ", recx[ModuleInfo.Ofssize], init);        //MOV RCX,init
+; 1108 :             WriteAsmLine(" mov  ", recx[ModuleInfo.Ofssize], init);        //MOV RCX,init
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	lea	r8, OFFSET FLAT:recx
@@ -6370,7 +6431,7 @@ $LN41@ForInitAnd:
 	mov	r8, QWORD PTR [r8+rax*8]
 	npad	8
 $LL163@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11485[rcx+r12]
+	movzx	eax, BYTE PTR $SG11499[rcx+r12]
 	mov	BYTE PTR codebuff$18[rsp+rcx], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -6398,7 +6459,7 @@ $LL510@ForInitAnd:
 	lea	rcx, QWORD PTR [rcx+1]
 	jne	SHORT $LL510@ForInitAnd
 	xor	edx, edx
-	lea	r13, OFFSET FLAT:$SG11401
+	lea	r13, OFFSET FLAT:$SG11415
 	npad	13
 $LL511@ForInitAnd:
 	movzx	eax, BYTE PTR [rdx+r13]
@@ -6425,7 +6486,7 @@ $LL509@ForInitAnd:
 	lea	rcx, QWORD PTR codebuff$18[rsp]
 	call	AddLineQueue
 
-; 1089 :             WriteAsmLine(" mov  ", reax[ModuleInfo.Ofssize], param);		// MOV RAX,param
+; 1109 :             WriteAsmLine(" mov  ", reax[ModuleInfo.Ofssize], param);		// MOV RAX,param
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	lea	rdx, OFFSET FLAT:__ImageBase
@@ -6433,7 +6494,7 @@ $LL509@ForInitAnd:
 	mov	r8, QWORD PTR reax[rdx+rax*8]
 	npad	14
 $LL166@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11486[rcx+rdx]
+	movzx	eax, BYTE PTR $SG11500[rcx+rdx]
 	mov	BYTE PTR codebuff$17[rsp+rcx], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -6461,7 +6522,7 @@ $LL504@ForInitAnd:
 	lea	rcx, QWORD PTR [rcx+1]
 	jne	SHORT $LL504@ForInitAnd
 	xor	edx, edx
-	lea	r13, OFFSET FLAT:$SG11401
+	lea	r13, OFFSET FLAT:$SG11415
 	npad	13
 $LL505@ForInitAnd:
 	movzx	eax, BYTE PTR [rdx+r13]
@@ -6489,21 +6550,21 @@ $LL503@ForInitAnd:
 	lea	rcx, QWORD PTR codebuff$17[rsp]
 	call	AddLineQueue
 
-; 1090 :             if (op[0] == '/' || op[0] == '%') {
+; 1110 :             if (op[0] == '/' || op[0] == '%') {
 
 	cmp	bl, 47					; 0000002fH
 	je	SHORT $LN57@ForInitAnd
 	cmp	bl, 37					; 00000025H
 	je	SHORT $LN57@ForInitAnd
 
-; 1094 :             }
-; 1095 :             else strcpy(codebuff, " imul ");
+; 1114 :             }
+; 1115 :             else strcpy(codebuff, " imul ");
 
 	xor	ecx, ecx
 	lea	r12, OFFSET FLAT:__ImageBase
 	npad	3
 $LL137@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11492[rcx+r12]
+	movzx	eax, BYTE PTR $SG11506[rcx+r12]
 	mov	BYTE PTR codebuff$[rbp+rcx-256], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -6511,30 +6572,30 @@ $LL137@ForInitAnd:
 	jmp	SHORT $LN544@ForInitAnd
 $LN57@ForInitAnd:
 
-; 1091 :               strcpy(codebuff, " cdq ");
+; 1111 :               strcpy(codebuff, " cdq ");
 
 	xor	ecx, ecx
 	lea	r13, OFFSET FLAT:__ImageBase
 $LL135@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11490[rcx+r13]
+	movzx	eax, BYTE PTR $SG11504[rcx+r13]
 	mov	BYTE PTR codebuff$[rbp+rcx-256], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
 	jne	SHORT $LL135@ForInitAnd
 
-; 1092 :               AddLineQueue(codebuff);
+; 1112 :               AddLineQueue(codebuff);
 
 	mov	r13, QWORD PTR tokenarray$[rbp-256]
 	lea	rcx, QWORD PTR codebuff$[rbp-256]
 	call	AddLineQueue
 
-; 1093 :               strcpy(codebuff, " idiv ");
+; 1113 :               strcpy(codebuff, " idiv ");
 
 	xor	ecx, ecx
 	lea	r12, OFFSET FLAT:__ImageBase
 	npad	2
 $LL136@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11491[rcx+r12]
+	movzx	eax, BYTE PTR $SG11505[rcx+r12]
 	mov	BYTE PTR codebuff$[rbp+rcx-256], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -6542,7 +6603,7 @@ $LL136@ForInitAnd:
 $LN544@ForInitAnd:
 	mov	r12, QWORD PTR buff$[rbp-256]
 
-; 1096 :             strcat(codebuff, recx[ModuleInfo.Ofssize]);
+; 1116 :             strcat(codebuff, recx[ModuleInfo.Ofssize]);
 
 	lea	rcx, QWORD PTR codebuff$[rbp-256]
 	movzx	r8d, BYTE PTR ModuleInfo+404
@@ -6564,15 +6625,15 @@ $LL501@ForInitAnd:
 	jne	SHORT $LL501@ForInitAnd
 $LN543@ForInitAnd:
 
-; 1097 :             AddLineQueue(codebuff);
+; 1117 :             AddLineQueue(codebuff);
 
 	lea	rcx, QWORD PTR codebuff$[rbp-256]
 	call	AddLineQueue
 $cont$553:
 
-; 1098 :           cont:
-; 1099 :             if (op[0] == '%') {
-; 1100 :               WriteAsmLine(" mov  ", param, redx[ModuleInfo.Ofssize]);
+; 1118 :           cont:
+; 1119 :             if (op[0] == '%') {
+; 1120 :               WriteAsmLine(" mov  ", param, redx[ModuleInfo.Ofssize]);
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	xor	ecx, ecx
@@ -6582,7 +6643,7 @@ $cont$553:
 	mov	r8, QWORD PTR redx[rbx+rax*8]
 	npad	6
 $LL169@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11495[rcx+rbx]
+	movzx	eax, BYTE PTR $SG11509[rcx+rbx]
 	mov	BYTE PTR codebuff$16[rsp+rcx], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -6611,7 +6672,7 @@ $LL496@ForInitAnd:
 	lea	rcx, QWORD PTR [rcx+1]
 	jne	SHORT $LL496@ForInitAnd
 	xor	edx, edx
-	lea	r12, OFFSET FLAT:$SG11401
+	lea	r12, OFFSET FLAT:$SG11415
 	npad	13
 $LL497@ForInitAnd:
 	movzx	eax, BYTE PTR [r12+rdx]
@@ -6638,19 +6699,19 @@ $LL495@ForInitAnd:
 	lea	rcx, QWORD PTR codebuff$16[rsp]
 	call	AddLineQueue
 
-; 1101 :               goto skip;
+; 1121 :               goto skip;
 
 	jmp	$skip$554
 $LN58@ForInitAnd:
 
-; 1102 :             }
-; 1103 :             else {
-; 1104 :               WriteAsmLine(" mov  ", param, reax[ModuleInfo.Ofssize]);
+; 1122 :             }
+; 1123 :             else {
+; 1124 :               WriteAsmLine(" mov  ", param, reax[ModuleInfo.Ofssize]);
 
 	mov	r8, QWORD PTR reax[rbx+rax*8]
 	npad	10
 $LL172@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11496[rcx+rbx]
+	movzx	eax, BYTE PTR $SG11510[rcx+rbx]
 	mov	BYTE PTR codebuff$15[rsp+rcx], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -6679,7 +6740,7 @@ $LL490@ForInitAnd:
 	lea	rcx, QWORD PTR [rcx+1]
 	jne	SHORT $LL490@ForInitAnd
 	xor	edx, edx
-	lea	r13, OFFSET FLAT:$SG11401
+	lea	r13, OFFSET FLAT:$SG11415
 	npad	13
 $LL491@ForInitAnd:
 	movzx	eax, BYTE PTR [rdx+r13]
@@ -6706,16 +6767,16 @@ $LL489@ForInitAnd:
 	lea	rcx, QWORD PTR codebuff$15[rsp]
 	call	AddLineQueue
 
-; 1105 :               goto skip;
+; 1125 :               goto skip;
 
 	jmp	$skip$554
 $LN39@ForInitAnd:
 
-; 1106 :             }
-; 1107 :           }
-; 1108 :         }
-; 1109 :         // if param is not RAX and init is RCX
-; 1110 :         else if ((strcasecmp(param, reax[ModuleInfo.Ofssize]) && !(strcasecmp(init, recx[ModuleInfo.Ofssize])))) {
+; 1126 :             }
+; 1127 :           }
+; 1128 :         }
+; 1129 :         // if param is not RAX and init is RCX
+; 1130 :         else if ((strcasecmp(param, reax[ModuleInfo.Ofssize]) && !(strcasecmp(init, recx[ModuleInfo.Ofssize])))) {
 
 	movzx	edx, BYTE PTR ModuleInfo+404
 	lea	rax, OFFSET FLAT:__ImageBase
@@ -6732,20 +6793,20 @@ $LN39@ForInitAnd:
 	test	eax, eax
 	jne	$LN60@ForInitAnd
 
-; 1111 :           if (op[0] == '/' || op[0] == '%') {
+; 1131 :           if (op[0] == '/' || op[0] == '%') {
 
 	cmp	bl, 47					; 0000002fH
 	je	SHORT $LN64@ForInitAnd
 	cmp	bl, 37					; 00000025H
 	je	SHORT $LN64@ForInitAnd
 
-; 1115 :           }
-; 1116 :           else strcpy(codebuff, " imul ");
+; 1135 :           }
+; 1136 :           else strcpy(codebuff, " imul ");
 
 	xor	ecx, ecx
 	lea	r12, OFFSET FLAT:__ImageBase
 $LL140@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11504[rcx+r12]
+	movzx	eax, BYTE PTR $SG11518[rcx+r12]
 	mov	BYTE PTR codebuff$[rbp+rcx-256], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -6753,30 +6814,30 @@ $LL140@ForInitAnd:
 	jmp	SHORT $LN545@ForInitAnd
 $LN64@ForInitAnd:
 
-; 1112 :             strcpy(codebuff, " cdq ");
+; 1132 :             strcpy(codebuff, " cdq ");
 
 	xor	ecx, ecx
 	lea	r13, OFFSET FLAT:__ImageBase
 $LL138@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11502[rcx+r13]
+	movzx	eax, BYTE PTR $SG11516[rcx+r13]
 	mov	BYTE PTR codebuff$[rbp+rcx-256], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
 	jne	SHORT $LL138@ForInitAnd
 
-; 1113 :             AddLineQueue(codebuff);
+; 1133 :             AddLineQueue(codebuff);
 
 	mov	r13, QWORD PTR tokenarray$[rbp-256]
 	lea	rcx, QWORD PTR codebuff$[rbp-256]
 	call	AddLineQueue
 
-; 1114 :             strcpy(codebuff, " idiv ");
+; 1134 :             strcpy(codebuff, " idiv ");
 
 	xor	ecx, ecx
 	lea	r12, OFFSET FLAT:__ImageBase
 	npad	1
 $LL139@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11503[rcx+r12]
+	movzx	eax, BYTE PTR $SG11517[rcx+r12]
 	mov	BYTE PTR codebuff$[rbp+rcx-256], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -6784,7 +6845,7 @@ $LL139@ForInitAnd:
 $LN545@ForInitAnd:
 	mov	r12, QWORD PTR buff$[rbp-256]
 
-; 1117 :           strcat(codebuff, recx[ModuleInfo.Ofssize]);
+; 1137 :           strcat(codebuff, recx[ModuleInfo.Ofssize]);
 
 	lea	rcx, QWORD PTR codebuff$[rbp-256]
 	movzx	r8d, BYTE PTR ModuleInfo+404
@@ -6805,12 +6866,12 @@ $LL487@ForInitAnd:
 	test	al, al
 	jne	SHORT $LL487@ForInitAnd
 
-; 1118 :           AddLineQueue(codebuff);
+; 1138 :           AddLineQueue(codebuff);
 
 	lea	rcx, QWORD PTR codebuff$[rbp-256]
 	call	AddLineQueue
 
-; 1119 :           if (op[0] == '%') WriteAsmLine(" mov  ", param, redx[ModuleInfo.Ofssize]);
+; 1139 :           if (op[0] == '%') WriteAsmLine(" mov  ", param, redx[ModuleInfo.Ofssize]);
 
 	cmp	bl, 37					; 00000025H
 	jne	$skip$554
@@ -6820,7 +6881,7 @@ $LL487@ForInitAnd:
 	mov	r8, QWORD PTR redx[rbx+rax*8]
 	npad	7
 $LL175@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11506[rcx+rbx]
+	movzx	eax, BYTE PTR $SG11520[rcx+rbx]
 	mov	BYTE PTR codebuff$14[rsp+rcx], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -6849,7 +6910,7 @@ $LL482@ForInitAnd:
 	lea	rcx, QWORD PTR [rcx+1]
 	jne	SHORT $LL482@ForInitAnd
 	xor	edx, edx
-	lea	r13, OFFSET FLAT:$SG11401
+	lea	r13, OFFSET FLAT:$SG11415
 	npad	13
 $LL483@ForInitAnd:
 	movzx	eax, BYTE PTR [rdx+r13]
@@ -6876,14 +6937,14 @@ $LL481@ForInitAnd:
 	lea	rcx, QWORD PTR codebuff$14[rsp]
 	call	AddLineQueue
 
-; 1120 :           goto skip;
+; 1140 :           goto skip;
 
 	jmp	$skip$554
 $LN60@ForInitAnd:
 
-; 1121 :         }
-; 1122 :         // if param is RAX and init is RCX
-; 1123 :         else if ((!(strcasecmp(param, reax[ModuleInfo.Ofssize])) && (!(strcmp(init, recx[ModuleInfo.Ofssize]))))) {
+; 1141 :         }
+; 1142 :         // if param is RAX and init is RCX
+; 1143 :         else if ((!(strcasecmp(param, reax[ModuleInfo.Ofssize])) && (!(strcmp(init, recx[ModuleInfo.Ofssize]))))) {
 
 	movzx	edx, BYTE PTR ModuleInfo+404
 	lea	rax, OFFSET FLAT:__ImageBase
@@ -6911,21 +6972,21 @@ $LN479@ForInitAnd:
 	test	edx, edx
 	jne	$LN66@ForInitAnd
 
-; 1124 :           if (op[0] == '/' || op[0] == '%') {
+; 1144 :           if (op[0] == '/' || op[0] == '%') {
 
 	cmp	bl, 47					; 0000002fH
 	je	SHORT $LN70@ForInitAnd
 	cmp	bl, 37					; 00000025H
 	je	SHORT $LN70@ForInitAnd
 
-; 1128 :           }
-; 1129 :           else strcpy(codebuff, " imul ");
+; 1148 :           }
+; 1149 :           else strcpy(codebuff, " imul ");
 
 	xor	ecx, ecx
 	lea	r12, OFFSET FLAT:__ImageBase
 	npad	2
 $LL143@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11514[rcx+r12]
+	movzx	eax, BYTE PTR $SG11528[rcx+r12]
 	mov	BYTE PTR codebuff$[rbp+rcx-256], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -6933,30 +6994,30 @@ $LL143@ForInitAnd:
 	jmp	SHORT $LN546@ForInitAnd
 $LN70@ForInitAnd:
 
-; 1125 :             strcpy(codebuff, " cdq ");
+; 1145 :             strcpy(codebuff, " cdq ");
 
 	xor	ecx, ecx
 	lea	r13, OFFSET FLAT:__ImageBase
 $LL141@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11512[rcx+r13]
+	movzx	eax, BYTE PTR $SG11526[rcx+r13]
 	mov	BYTE PTR codebuff$[rbp+rcx-256], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
 	jne	SHORT $LL141@ForInitAnd
 
-; 1126 :             AddLineQueue(codebuff);
+; 1146 :             AddLineQueue(codebuff);
 
 	mov	r13, QWORD PTR tokenarray$[rbp-256]
 	lea	rcx, QWORD PTR codebuff$[rbp-256]
 	call	AddLineQueue
 
-; 1127 :             strcpy(codebuff, " idiv ");
+; 1147 :             strcpy(codebuff, " idiv ");
 
 	xor	ecx, ecx
 	lea	r12, OFFSET FLAT:__ImageBase
 	npad	2
 $LL142@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11513[rcx+r12]
+	movzx	eax, BYTE PTR $SG11527[rcx+r12]
 	mov	BYTE PTR codebuff$[rbp+rcx-256], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -6965,7 +7026,7 @@ $LL142@ForInitAnd:
 	lea	r10, OFFSET FLAT:recx
 $LN546@ForInitAnd:
 
-; 1130 :           strcat(codebuff, recx[ModuleInfo.Ofssize]);
+; 1150 :           strcat(codebuff, recx[ModuleInfo.Ofssize]);
 
 	mov	r12, QWORD PTR buff$[rbp-256]
 	lea	rcx, QWORD PTR codebuff$[rbp-256]
@@ -6985,12 +7046,12 @@ $LL477@ForInitAnd:
 	test	al, al
 	jne	SHORT $LL477@ForInitAnd
 
-; 1131 :           AddLineQueue(codebuff);
+; 1151 :           AddLineQueue(codebuff);
 
 	lea	rcx, QWORD PTR codebuff$[rbp-256]
 	call	AddLineQueue
 
-; 1132 :           if (op[0] == '%') WriteAsmLine(" mov  ", param, redx[ModuleInfo.Ofssize]);
+; 1152 :           if (op[0] == '%') WriteAsmLine(" mov  ", param, redx[ModuleInfo.Ofssize]);
 
 	cmp	bl, 37					; 00000025H
 	jne	$skip$554
@@ -7000,7 +7061,7 @@ $LL477@ForInitAnd:
 	mov	r8, QWORD PTR redx[rbx+rax*8]
 	npad	7
 $LL178@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11516[rcx+rbx]
+	movzx	eax, BYTE PTR $SG11530[rcx+rbx]
 	mov	BYTE PTR codebuff$13[rsp+rcx], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -7029,7 +7090,7 @@ $LL472@ForInitAnd:
 	lea	rcx, QWORD PTR [rcx+1]
 	jne	SHORT $LL472@ForInitAnd
 	xor	edx, edx
-	lea	r13, OFFSET FLAT:$SG11401
+	lea	r13, OFFSET FLAT:$SG11415
 	npad	13
 $LL473@ForInitAnd:
 	movzx	eax, BYTE PTR [rdx+r13]
@@ -7056,14 +7117,14 @@ $LL471@ForInitAnd:
 	lea	rcx, QWORD PTR codebuff$13[rsp]
 	call	AddLineQueue
 
-; 1133 :           goto skip;
+; 1153 :           goto skip;
 
 	jmp	$skip$554
 $LN66@ForInitAnd:
 
-; 1134 :         }
-; 1135 :         // if param is RAX and init is not RCX
-; 1136 :         else if (!(strcasecmp(param, reax[ModuleInfo.Ofssize]) && (strcasecmp(init, recx[ModuleInfo.Ofssize])))) {
+; 1154 :         }
+; 1155 :         // if param is RAX and init is not RCX
+; 1156 :         else if (!(strcasecmp(param, reax[ModuleInfo.Ofssize]) && (strcasecmp(init, recx[ModuleInfo.Ofssize])))) {
 
 	movzx	edx, r9b
 	lea	rax, OFFSET FLAT:__ImageBase
@@ -7081,7 +7142,7 @@ $LN66@ForInitAnd:
 	jne	$LN537@ForInitAnd
 $LN73@ForInitAnd:
 
-; 1137 :           WriteAsmLine(" mov  ", recx[ModuleInfo.Ofssize], init);        //MOV RCX,init
+; 1157 :           WriteAsmLine(" mov  ", recx[ModuleInfo.Ofssize], init);        //MOV RCX,init
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	lea	r8, OFFSET FLAT:recx
@@ -7089,7 +7150,7 @@ $LN73@ForInitAnd:
 	lea	r12, OFFSET FLAT:__ImageBase
 	mov	r8, QWORD PTR [r8+rax*8]
 $LL181@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11519[rcx+r12]
+	movzx	eax, BYTE PTR $SG11533[rcx+r12]
 	mov	BYTE PTR codebuff$12[rsp+rcx], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -7117,7 +7178,7 @@ $LL466@ForInitAnd:
 	lea	rcx, QWORD PTR [rcx+1]
 	jne	SHORT $LL466@ForInitAnd
 	xor	edx, edx
-	lea	r13, OFFSET FLAT:$SG11401
+	lea	r13, OFFSET FLAT:$SG11415
 	npad	13
 $LL467@ForInitAnd:
 	movzx	eax, BYTE PTR [rdx+r13]
@@ -7145,21 +7206,21 @@ $LL465@ForInitAnd:
 	lea	rcx, QWORD PTR codebuff$12[rsp]
 	call	AddLineQueue
 
-; 1138 :           if (op[0] == '/' || op[0] == '%') {
+; 1158 :           if (op[0] == '/' || op[0] == '%') {
 
 	cmp	bl, 47					; 0000002fH
 	je	SHORT $LN76@ForInitAnd
 	cmp	bl, 37					; 00000025H
 	je	SHORT $LN76@ForInitAnd
 
-; 1142 :           }
-; 1143 :           else strcpy(codebuff, " imul ");
+; 1162 :           }
+; 1163 :           else strcpy(codebuff, " imul ");
 
 	xor	ecx, ecx
 	lea	r12, OFFSET FLAT:__ImageBase
 	npad	3
 $LL146@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11525[rcx+r12]
+	movzx	eax, BYTE PTR $SG11539[rcx+r12]
 	mov	BYTE PTR codebuff$[rbp+rcx-256], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -7167,30 +7228,30 @@ $LL146@ForInitAnd:
 	jmp	SHORT $LN547@ForInitAnd
 $LN76@ForInitAnd:
 
-; 1139 :             strcpy(codebuff, " cdq ");
+; 1159 :             strcpy(codebuff, " cdq ");
 
 	xor	ecx, ecx
 	lea	r13, OFFSET FLAT:__ImageBase
 $LL144@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11523[rcx+r13]
+	movzx	eax, BYTE PTR $SG11537[rcx+r13]
 	mov	BYTE PTR codebuff$[rbp+rcx-256], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
 	jne	SHORT $LL144@ForInitAnd
 
-; 1140 :             AddLineQueue(codebuff);
+; 1160 :             AddLineQueue(codebuff);
 
 	mov	r13, QWORD PTR tokenarray$[rbp-256]
 	lea	rcx, QWORD PTR codebuff$[rbp-256]
 	call	AddLineQueue
 
-; 1141 :             strcpy(codebuff, " idiv ");
+; 1161 :             strcpy(codebuff, " idiv ");
 
 	xor	ecx, ecx
 	lea	r12, OFFSET FLAT:__ImageBase
 	npad	2
 $LL145@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11524[rcx+r12]
+	movzx	eax, BYTE PTR $SG11538[rcx+r12]
 	mov	BYTE PTR codebuff$[rbp+rcx-256], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -7198,7 +7259,7 @@ $LL145@ForInitAnd:
 $LN547@ForInitAnd:
 	mov	r12, QWORD PTR buff$[rbp-256]
 
-; 1144 :           strcat(codebuff, recx[ModuleInfo.Ofssize]);
+; 1164 :           strcat(codebuff, recx[ModuleInfo.Ofssize]);
 
 	lea	rcx, QWORD PTR codebuff$[rbp-256]
 	movzx	r8d, BYTE PTR ModuleInfo+404
@@ -7219,12 +7280,12 @@ $LL463@ForInitAnd:
 	test	al, al
 	jne	SHORT $LL463@ForInitAnd
 
-; 1145 :           AddLineQueue(codebuff);
+; 1165 :           AddLineQueue(codebuff);
 
 	lea	rcx, QWORD PTR codebuff$[rbp-256]
 	call	AddLineQueue
 
-; 1146 :           if (op[0] == '%') WriteAsmLine(" mov  ", param, redx[ModuleInfo.Ofssize]);
+; 1166 :           if (op[0] == '%') WriteAsmLine(" mov  ", param, redx[ModuleInfo.Ofssize]);
 
 	cmp	bl, 37					; 00000025H
 	jne	$skip$554
@@ -7234,7 +7295,7 @@ $LL463@ForInitAnd:
 	mov	r8, QWORD PTR redx[rbx+rax*8]
 	npad	7
 $LL184@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11527[rcx+rbx]
+	movzx	eax, BYTE PTR $SG11541[rcx+rbx]
 	mov	BYTE PTR codebuff$11[rsp+rcx], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -7263,7 +7324,7 @@ $LL458@ForInitAnd:
 	lea	rcx, QWORD PTR [rcx+1]
 	jne	SHORT $LL458@ForInitAnd
 	xor	edx, edx
-	lea	r12, OFFSET FLAT:$SG11401
+	lea	r12, OFFSET FLAT:$SG11415
 	npad	13
 $LL459@ForInitAnd:
 	movzx	eax, BYTE PTR [r12+rdx]
@@ -7290,15 +7351,15 @@ $LL457@ForInitAnd:
 	lea	rcx, QWORD PTR codebuff$11[rsp]
 	call	AddLineQueue
 
-; 1147 :           goto skip;
+; 1167 :           goto skip;
 
 	jmp	$skip$554
 $LN386@ForInitAnd:
 
-; 1148 :         }
-; 1149 :       }
-; 1150 :       //if operator not devision, multiplication or mod
-; 1151 :       else if (op[0] == '-') strcpy(codebuff, " sub ");
+; 1168 :         }
+; 1169 :       }
+; 1170 :       //if operator not devision, multiplication or mod
+; 1171 :       else if (op[0] == '-') strcpy(codebuff, " sub ");
 
 	cmp	bl, 45					; 0000002dH
 	jne	SHORT $LN78@ForInitAnd
@@ -7306,7 +7367,7 @@ $LN386@ForInitAnd:
 	lea	rbx, OFFSET FLAT:__ImageBase
 	npad	4
 $LL147@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11530[rcx+rbx]
+	movzx	eax, BYTE PTR $SG11544[rcx+rbx]
 	mov	BYTE PTR codebuff$[rbp+rcx-256], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -7314,7 +7375,7 @@ $LL147@ForInitAnd:
 	jmp	$LN72@ForInitAnd
 $LN78@ForInitAnd:
 
-; 1152 :       else if (op[0] == '+') strcpy(codebuff, " add ");
+; 1172 :       else if (op[0] == '+') strcpy(codebuff, " add ");
 
 	cmp	bl, 43					; 0000002bH
 	jne	SHORT $LN80@ForInitAnd
@@ -7322,7 +7383,7 @@ $LN78@ForInitAnd:
 	lea	rbx, OFFSET FLAT:__ImageBase
 	npad	9
 $LL148@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11533[rcx+rbx]
+	movzx	eax, BYTE PTR $SG11547[rcx+rbx]
 	mov	BYTE PTR codebuff$[rbp+rcx-256], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -7330,7 +7391,7 @@ $LL148@ForInitAnd:
 	jmp	$LN72@ForInitAnd
 $LN80@ForInitAnd:
 
-; 1153 :       else if (op[0] == '&') strcpy(codebuff, " and ");
+; 1173 :       else if (op[0] == '&') strcpy(codebuff, " and ");
 
 	cmp	bl, 38					; 00000026H
 	jne	SHORT $LN82@ForInitAnd
@@ -7338,7 +7399,7 @@ $LN80@ForInitAnd:
 	lea	rbx, OFFSET FLAT:__ImageBase
 	npad	9
 $LL149@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11536[rcx+rbx]
+	movzx	eax, BYTE PTR $SG11550[rcx+rbx]
 	mov	BYTE PTR codebuff$[rbp+rcx-256], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -7346,7 +7407,7 @@ $LL149@ForInitAnd:
 	jmp	$LN72@ForInitAnd
 $LN82@ForInitAnd:
 
-; 1154 :       else if (op[0] == '|') strcpy(codebuff, " or ");
+; 1174 :       else if (op[0] == '|') strcpy(codebuff, " or ");
 
 	cmp	bl, 124					; 0000007cH
 	jne	SHORT $LN84@ForInitAnd
@@ -7354,7 +7415,7 @@ $LN82@ForInitAnd:
 	lea	rbx, OFFSET FLAT:__ImageBase
 	npad	9
 $LL150@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11539[rcx+rbx]
+	movzx	eax, BYTE PTR $SG11553[rcx+rbx]
 	mov	BYTE PTR codebuff$[rbp+rcx-256], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -7362,7 +7423,7 @@ $LL150@ForInitAnd:
 	jmp	$LN72@ForInitAnd
 $LN84@ForInitAnd:
 
-; 1155 :       else if (op[0] == '^') strcpy(codebuff, " xor ");
+; 1175 :       else if (op[0] == '^') strcpy(codebuff, " xor ");
 
 	cmp	bl, 94					; 0000005eH
 	jne	SHORT $LN86@ForInitAnd
@@ -7370,7 +7431,7 @@ $LN84@ForInitAnd:
 	lea	rbx, OFFSET FLAT:__ImageBase
 	npad	9
 $LL151@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11542[rcx+rbx]
+	movzx	eax, BYTE PTR $SG11556[rcx+rbx]
 	mov	BYTE PTR codebuff$[rbp+rcx-256], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -7378,7 +7439,7 @@ $LL151@ForInitAnd:
 	jmp	SHORT $LN72@ForInitAnd
 $LN86@ForInitAnd:
 
-; 1156 :       else if (op[0] == '<' && op[1] == '<') strcpy(codebuff, " shl ");
+; 1176 :       else if (op[0] == '<' && op[1] == '<') strcpy(codebuff, " shl ");
 
 	cmp	bl, 60					; 0000003cH
 	jne	SHORT $LN88@ForInitAnd
@@ -7388,7 +7449,7 @@ $LN86@ForInitAnd:
 	xor	ecx, ecx
 	npad	6
 $LL152@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11545[rcx+rbx]
+	movzx	eax, BYTE PTR $SG11559[rcx+rbx]
 	mov	BYTE PTR codebuff$[rbp+rcx-256], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -7396,7 +7457,7 @@ $LL152@ForInitAnd:
 	jmp	SHORT $LN72@ForInitAnd
 $LN88@ForInitAnd:
 
-; 1157 :       else if (op[0] == '>' && op[1] == '>') strcpy(codebuff, " shr ");
+; 1177 :       else if (op[0] == '>' && op[1] == '>') strcpy(codebuff, " shr ");
 
 	cmp	bl, 62					; 0000003eH
 	jne	SHORT $LN537@ForInitAnd
@@ -7406,7 +7467,7 @@ $LN88@ForInitAnd:
 	xor	ecx, ecx
 	npad	6
 $LL153@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11547[rbx+rcx]
+	movzx	eax, BYTE PTR $SG11561[rbx+rcx]
 	mov	BYTE PTR codebuff$[rbp+rcx-256], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -7416,7 +7477,7 @@ $LN537@ForInitAnd:
 	lea	rbx, OFFSET FLAT:__ImageBase
 $LN72@ForInitAnd:
 
-; 1158 :       Tokenize(init, 0, tokenarray, 0);
+; 1178 :       Tokenize(init, 0, tokenarray, 0);
 
 	xor	r9d, r9d
 	lea	rcx, QWORD PTR init$[rbp-256]
@@ -7428,9 +7489,9 @@ $LN72@ForInitAnd:
 	test	al, 246					; 000000f6H
 	je	$simple$555
 
-; 1159 :       if (tokenarray[0].token == T_REG || tokenarray[0].token == T_NUM || tokenarray[0].token == T_FLOAT || tokenarray[0].token == T_DIRECTIVE)
-; 1160 :         goto simple;
-; 1161 :       Tokenize(param, 0, tokenarray, 0);
+; 1179 :       if (tokenarray[0].token == T_REG || tokenarray[0].token == T_NUM || tokenarray[0].token == T_FLOAT || tokenarray[0].token == T_DIRECTIVE)
+; 1180 :         goto simple;
+; 1181 :       Tokenize(param, 0, tokenarray, 0);
 
 	xor	r9d, r9d
 	lea	rcx, QWORD PTR param$[rbp-256]
@@ -7438,26 +7499,26 @@ $LN72@ForInitAnd:
 	xor	edx, edx
 	call	Tokenize
 
-; 1162 :       if (tokenarray[0].token == T_REG) {
+; 1182 :       if (tokenarray[0].token == T_REG) {
 
 	cmp	BYTE PTR [r13], 2
 	je	$simple$555
 
-; 1212 :       else
-; 1213 :       {
-; 1214 :         if (init[0] == 39 && init[2] == 39)
+; 1232 :       else
+; 1233 :       {
+; 1234 :         if (init[0] == 39 && init[2] == 39)
 
 	cmp	BYTE PTR init$[rbp-256], 39		; 00000027H
 	jne	$LN124@ForInitAnd
 	cmp	BYTE PTR init$[rbp-254], 39		; 00000027H
 	jne	$LN124@ForInitAnd
 
-; 1215 :           WriteAsmLine(" mov  byte ptr ", param, init);
+; 1235 :           WriteAsmLine(" mov  byte ptr ", param, init);
 
 	xor	ecx, ecx
 	npad	5
 $LL214@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11602[rcx+rbx]
+	movzx	eax, BYTE PTR $SG11616[rcx+rbx]
 	mov	BYTE PTR codebuff$1[rsp+rcx], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -7486,7 +7547,7 @@ $LL452@ForInitAnd:
 	lea	rcx, QWORD PTR [rcx+1]
 	jne	SHORT $LL452@ForInitAnd
 	xor	edx, edx
-	lea	r12, OFFSET FLAT:$SG11401
+	lea	r12, OFFSET FLAT:$SG11415
 	npad	13
 $LL453@ForInitAnd:
 	movzx	eax, BYTE PTR [r12+rdx]
@@ -7516,16 +7577,16 @@ $LL451@ForInitAnd:
 	jmp	$skip$554
 $LN124@ForInitAnd:
 
-; 1216 :         else {
-; 1217 :           WriteAsmLine(" mov  ", reax[ModuleInfo.Ofssize], init);
+; 1236 :         else {
+; 1237 :           WriteAsmLine(" mov  ", reax[ModuleInfo.Ofssize], init);
 
 	movzx	edx, BYTE PTR ModuleInfo+404
 	lea	r8, QWORD PTR init$[rbp-256]
-	lea	rcx, OFFSET FLAT:$SG11603
+	lea	rcx, OFFSET FLAT:$SG11617
 	mov	rdx, QWORD PTR reax[rbx+rdx*8]
 	call	WriteAsmLine
 
-; 1218 :           WriteAsmLine(codebuff, param, reax[ModuleInfo.Ofssize]);
+; 1238 :           WriteAsmLine(codebuff, param, reax[ModuleInfo.Ofssize]);
 
 	movzx	r8d, BYTE PTR ModuleInfo+404
 	lea	rdx, QWORD PTR param$[rbp-256]
@@ -7535,7 +7596,7 @@ $LN124@ForInitAnd:
 	jmp	$skip$554
 $simple$555:
 
-; 1163 :       simple:			Tokenize(param, 0, tokenarray, 0);
+; 1183 :       simple:			Tokenize(param, 0, tokenarray, 0);
 
 	xor	r9d, r9d
 	lea	rcx, QWORD PTR param$[rbp-256]
@@ -7543,8 +7604,8 @@ $simple$555:
 	xor	edx, edx
 	call	Tokenize
 
-; 1164 : 
-; 1165 :         if (strlen(init) == 1 && init[0] == '0')                        //REX=0?
+; 1184 : 
+; 1185 :         if (strlen(init) == 1 && init[0] == '0')                        //REX=0?
 
 	lea	rax, QWORD PTR init$[rbp-256]
 	or	rcx, -1
@@ -7557,12 +7618,12 @@ $LL449@ForInitAnd:
 	cmp	BYTE PTR init$[rbp-256], 48		; 00000030H
 	jne	$LN95@ForInitAnd
 
-; 1166 :           WriteAsmLine(" xor  ", param, param);							            //XOR REX,REX //instead MOV REX,0				
+; 1186 :           WriteAsmLine(" xor  ", param, param);							            //XOR REX,REX //instead MOV REX,0				
 
 	xor	ecx, ecx
 	npad	10
 $LL187@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11554[rcx+rbx]
+	movzx	eax, BYTE PTR $SG11568[rcx+rbx]
 	mov	BYTE PTR codebuff$10[rsp+rcx], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -7591,7 +7652,7 @@ $LL445@ForInitAnd:
 	lea	rcx, QWORD PTR [rcx+1]
 	jne	SHORT $LL445@ForInitAnd
 	xor	edx, edx
-	lea	r12, OFFSET FLAT:$SG11401
+	lea	r12, OFFSET FLAT:$SG11415
 	npad	13
 $LL446@ForInitAnd:
 	movzx	eax, BYTE PTR [r12+rdx]
@@ -7621,7 +7682,7 @@ $LL444@ForInitAnd:
 	jmp	$skip$554
 $LN95@ForInitAnd:
 
-; 1167 :         else if ((strlen(op) == 1) && ((init[4] == ' ') || (init[4] == '\t'))) {  //op is '='
+; 1187 :         else if ((strlen(op) == 1) && ((init[4] == ' ') || (init[4] == '\t'))) {  //op is '='
 
 	lea	rdx, QWORD PTR op$[rbp-256]
 	or	rax, -1
@@ -7639,59 +7700,59 @@ $LL442@ForInitAnd:
 	jne	$LN97@ForInitAnd
 $LN99@ForInitAnd:
 
-; 1168 :           if ((0 == _memicmp(init, "BYTE PTR", 8)) ||                   //reax=BYTE PTR al 
-; 1169 :             (0 == _memicmp(init, "BPTR", 4)) ||
-; 1170 :             (0 == _memicmp(init, "WPTR", 4)) ||
+; 1188 :           if ((0 == _memicmp(init, "BYTE PTR", 8)) ||                   //reax=BYTE PTR al 
+; 1189 :             (0 == _memicmp(init, "BPTR", 4)) ||
+; 1190 :             (0 == _memicmp(init, "WPTR", 4)) ||
 
 	mov	r8d, 8
-	lea	rdx, OFFSET FLAT:$SG11561
+	lea	rdx, OFFSET FLAT:$SG11575
 	lea	rcx, QWORD PTR init$[rbp-256]
 	call	_memicmp
 	test	eax, eax
 	je	$LN102@ForInitAnd
 	mov	r8d, 4
-	lea	rdx, OFFSET FLAT:$SG11562
+	lea	rdx, OFFSET FLAT:$SG11576
 	lea	rcx, QWORD PTR init$[rbp-256]
 	call	_memicmp
 	test	eax, eax
 	je	$LN102@ForInitAnd
 	mov	r8d, 4
-	lea	rdx, OFFSET FLAT:$SG11563
+	lea	rdx, OFFSET FLAT:$SG11577
 	lea	rcx, QWORD PTR init$[rbp-256]
 	call	_memicmp
 	test	eax, eax
 	je	$LN102@ForInitAnd
 	mov	r8d, 8
-	lea	rdx, OFFSET FLAT:$SG11564
+	lea	rdx, OFFSET FLAT:$SG11578
 	lea	rcx, QWORD PTR init$[rbp-256]
 	call	_memicmp
 	test	eax, eax
 	je	$LN102@ForInitAnd
 
-; 1174 :           else if (0 == _memicmp(init, "ADDR", 4))
+; 1194 :           else if (0 == _memicmp(init, "ADDR", 4))
 
 	mov	r8d, 4
-	lea	rdx, OFFSET FLAT:$SG11568
+	lea	rdx, OFFSET FLAT:$SG11582
 	lea	rcx, QWORD PTR init$[rbp-256]
 	call	_memicmp
 	test	eax, eax
 	jne	SHORT $LN103@ForInitAnd
 
-; 1175 :             WriteAsmLine(" lea  ", param, init + 5);
+; 1195 :             WriteAsmLine(" lea  ", param, init + 5);
 
 	lea	r8, QWORD PTR init$[rbp-251]
 	lea	rdx, QWORD PTR param$[rbp-256]
-	lea	rcx, OFFSET FLAT:$SG11569
+	lea	rcx, OFFSET FLAT:$SG11583
 	call	WriteAsmLine
 	jmp	$skip$554
 $LN103@ForInitAnd:
 
-; 1176 :           else WriteAsmLine(" mov  ", param, init);
+; 1196 :           else WriteAsmLine(" mov  ", param, init);
 
 	xor	ecx, ecx
 	npad	6
 $LL193@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11570[rcx+rbx]
+	movzx	eax, BYTE PTR $SG11584[rcx+rbx]
 	mov	BYTE PTR codebuff$8[rsp+rcx], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -7720,7 +7781,7 @@ $LL438@ForInitAnd:
 	lea	rcx, QWORD PTR [rcx+1]
 	jne	SHORT $LL438@ForInitAnd
 	xor	edx, edx
-	lea	r12, OFFSET FLAT:$SG11401
+	lea	r12, OFFSET FLAT:$SG11415
 	npad	13
 $LL439@ForInitAnd:
 	movzx	eax, BYTE PTR [r12+rdx]
@@ -7750,13 +7811,13 @@ $LL437@ForInitAnd:
 	jmp	$skip$554
 $LN102@ForInitAnd:
 
-; 1171 :             (0 == _memicmp(init, "WORD PTR", 8)))                     //reax=WORD PTR ax 
-; 1172 : 
-; 1173 :             WriteAsmLine(" movzx  ", param, init);                      //movzx reax,ax					    
+; 1191 :             (0 == _memicmp(init, "WORD PTR", 8)))                     //reax=WORD PTR ax 
+; 1192 : 
+; 1193 :             WriteAsmLine(" movzx  ", param, init);                      //movzx reax,ax					    
 
 	xor	ecx, ecx
 $LL190@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11565[rbx+rcx]
+	movzx	eax, BYTE PTR $SG11579[rbx+rcx]
 	mov	BYTE PTR codebuff$9[rsp+rcx], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -7785,7 +7846,7 @@ $LL432@ForInitAnd:
 	lea	rcx, QWORD PTR [rcx+1]
 	jne	SHORT $LL432@ForInitAnd
 	xor	edx, edx
-	lea	r12, OFFSET FLAT:$SG11401
+	lea	r12, OFFSET FLAT:$SG11415
 	npad	13
 $LL433@ForInitAnd:
 	movzx	eax, BYTE PTR [r12+rdx]
@@ -7813,12 +7874,12 @@ $LL431@ForInitAnd:
 	lea	rcx, QWORD PTR codebuff$9[rsp]
 	call	AddLineQueue
 
-; 1177 :         }
+; 1197 :         }
 
 	jmp	$skip$554
 $LN97@ForInitAnd:
 
-; 1178 :         else if ((strlen(op) == 1) && ((init[6] == ' ') || (init[6] == '\t'))) {
+; 1198 :         else if ((strlen(op) == 1) && ((init[6] == ' ') || (init[6] == '\t'))) {
 
 	cmp	rax, 1
 	jne	$LN122@ForInitAnd
@@ -7829,30 +7890,30 @@ $LN97@ForInitAnd:
 	jne	$LN105@ForInitAnd
 $LN107@ForInitAnd:
 
-; 1179 :           if (0 == _memicmp(init, "OFFSET", 6))
+; 1199 :           if (0 == _memicmp(init, "OFFSET", 6))
 
 	mov	r8d, 6
-	lea	rdx, OFFSET FLAT:$SG11576
+	lea	rdx, OFFSET FLAT:$SG11590
 	lea	rcx, QWORD PTR init$[rbp-256]
 	call	_memicmp
 	test	eax, eax
 	jne	SHORT $LN108@ForInitAnd
 
-; 1180 :             WriteAsmLine(" lea  ", param, init + 7);
+; 1200 :             WriteAsmLine(" lea  ", param, init + 7);
 
 	lea	r8, QWORD PTR init$[rbp-249]
 	lea	rdx, QWORD PTR param$[rbp-256]
-	lea	rcx, OFFSET FLAT:$SG11577
+	lea	rcx, OFFSET FLAT:$SG11591
 	call	WriteAsmLine
 	jmp	$skip$554
 $LN108@ForInitAnd:
 
-; 1181 :           else WriteAsmLine(" mov  ", param, init);
+; 1201 :           else WriteAsmLine(" mov  ", param, init);
 
 	xor	ecx, ecx
 	npad	5
 $LL196@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11578[rcx+rbx]
+	movzx	eax, BYTE PTR $SG11592[rcx+rbx]
 	mov	BYTE PTR codebuff$7[rsp+rcx], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -7881,7 +7942,7 @@ $LL426@ForInitAnd:
 	lea	rcx, QWORD PTR [rcx+1]
 	jne	SHORT $LL426@ForInitAnd
 	xor	edx, edx
-	lea	r12, OFFSET FLAT:$SG11401
+	lea	r12, OFFSET FLAT:$SG11415
 	npad	13
 $LL427@ForInitAnd:
 	movzx	eax, BYTE PTR [r12+rdx]
@@ -7909,12 +7970,12 @@ $LL425@ForInitAnd:
 	lea	rcx, QWORD PTR codebuff$7[rsp]
 	call	AddLineQueue
 
-; 1182 :         }
+; 1202 :         }
 
 	jmp	$skip$554
 $LN105@ForInitAnd:
 
-; 1183 :         else if ((strlen(op) == 1) && ((init[5] == ' ') || (init[5] == '\t'))) {            //op is '='
+; 1203 :         else if ((strlen(op) == 1) && ((init[5] == ' ') || (init[5] == '\t'))) {            //op is '='
 
 	cmp	rax, 1
 	jne	$LN122@ForInitAnd
@@ -7925,16 +7986,16 @@ $LN105@ForInitAnd:
 	jne	$LN110@ForInitAnd
 $LN112@ForInitAnd:
 
-; 1184 :           if ((0 == _memicmp(init, "DWORD PTR", 9) || 0 == _memicmp(init, "DPTR", 4)
+; 1204 :           if ((0 == _memicmp(init, "DWORD PTR", 9) || 0 == _memicmp(init, "DPTR", 4)
 
 	mov	r8d, 9
-	lea	rdx, OFFSET FLAT:$SG11585
+	lea	rdx, OFFSET FLAT:$SG11599
 	lea	rcx, QWORD PTR init$[rbp-256]
 	call	_memicmp
 	test	eax, eax
 	je	$LN116@ForInitAnd
 	mov	r8d, 4
-	lea	rdx, OFFSET FLAT:$SG11586
+	lea	rdx, OFFSET FLAT:$SG11600
 	lea	rcx, QWORD PTR init$[rbp-256]
 	call	_memicmp
 	test	eax, eax
@@ -7945,12 +8006,12 @@ $LN112@ForInitAnd:
 	je	$LN116@ForInitAnd
 $LN113@ForInitAnd:
 
-; 1187 :           else WriteAsmLine(" mov  ", param, init);
+; 1207 :           else WriteAsmLine(" mov  ", param, init);
 
 	xor	ecx, ecx
 	npad	2
 $LL202@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11589[rcx+rbx]
+	movzx	eax, BYTE PTR $SG11603[rcx+rbx]
 	mov	BYTE PTR codebuff$5[rsp+rcx], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -7979,7 +8040,7 @@ $LL420@ForInitAnd:
 	lea	rcx, QWORD PTR [rcx+1]
 	jne	SHORT $LL420@ForInitAnd
 	xor	edx, edx
-	lea	r13, OFFSET FLAT:$SG11401
+	lea	r13, OFFSET FLAT:$SG11415
 	npad	13
 $LL421@ForInitAnd:
 	movzx	eax, BYTE PTR [rdx+r13]
@@ -8009,12 +8070,12 @@ $LL419@ForInitAnd:
 	jmp	$skip$554
 $LN116@ForInitAnd:
 
-; 1185 :             && (param[0] == 'r' || param[0] == 'R'))) 							   //rax=DWORD PTR eax
-; 1186 :             WriteAsmLine(" movsxd  ", param, init);								     //movsxd rax,eax
+; 1205 :             && (param[0] == 'r' || param[0] == 'R'))) 							   //rax=DWORD PTR eax
+; 1206 :             WriteAsmLine(" movsxd  ", param, init);								     //movsxd rax,eax
 
 	xor	ecx, ecx
 $LL199@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11588[rcx+rbx]
+	movzx	eax, BYTE PTR $SG11602[rcx+rbx]
 	mov	BYTE PTR codebuff$6[rsp+rcx], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -8043,7 +8104,7 @@ $LL414@ForInitAnd:
 	lea	rcx, QWORD PTR [rcx+1]
 	jne	SHORT $LL414@ForInitAnd
 	xor	edx, edx
-	lea	r12, OFFSET FLAT:$SG11401
+	lea	r12, OFFSET FLAT:$SG11415
 	npad	13
 $LL415@ForInitAnd:
 	movzx	eax, BYTE PTR [r12+rdx]
@@ -8071,19 +8132,19 @@ $LL413@ForInitAnd:
 	lea	rcx, QWORD PTR codebuff$6[rsp]
 	call	AddLineQueue
 
-; 1188 :         }
+; 1208 :         }
 
 	jmp	$skip$554
 $LN110@ForInitAnd:
 
-; 1189 :         else if ((strlen(op) == 1) && brct) {											    //op is '='
+; 1209 :         else if ((strlen(op) == 1) && brct) {											    //op is '='
 
 	cmp	rax, 1
 	jne	$LN122@ForInitAnd
 	test	r14b, r14b
 	je	$LN117@ForInitAnd
 
-; 1190 :           for (j = strlen(init); j; j--) {
+; 1210 :           for (j = strlen(init); j; j--) {
 
 	movsxd	r8, ecx
 	test	ecx, ecx
@@ -8093,26 +8154,26 @@ $LL15@ForInitAnd:
 	lea	rdx, QWORD PTR init$[rbp-256]
 	add	rdx, r8
 
-; 1191 :             if (init[j] == ')') init[j] = NULLC;
+; 1211 :             if (init[j] == ')') init[j] = NULLC;
 
 	cmp	BYTE PTR [rdx], 41			; 00000029H
 	jne	SHORT $LN119@ForInitAnd
 	mov	BYTE PTR [rdx], 0
 $LN119@ForInitAnd:
 
-; 1192 :             if (init[j] == '(') {
+; 1212 :             if (init[j] == '(') {
 
 	cmp	BYTE PTR [rdx], 40			; 00000028H
 	jne	SHORT $LN13@ForInitAnd
 
-; 1193 :               for (p = init, p += j; *p; p++) {
+; 1213 :               for (p = init, p += j; *p; p++) {
 
 	mov	rcx, rdx
 	mov	al, 40					; 00000028H
 	npad	4
 $LL18@ForInitAnd:
 
-; 1194 :                 if (*p == ',' && cnt) --cnt;
+; 1214 :                 if (*p == ',' && cnt) --cnt;
 
 	cmp	al, 44					; 0000002cH
 	jne	SHORT $LN16@ForInitAnd
@@ -8121,38 +8182,38 @@ $LL18@ForInitAnd:
 	dec	esi
 $LN16@ForInitAnd:
 
-; 1193 :               for (p = init, p += j; *p; p++) {
+; 1213 :               for (p = init, p += j; *p; p++) {
 
 	movzx	eax, BYTE PTR [rcx+1]
 	inc	rcx
 	test	al, al
 	jne	SHORT $LL18@ForInitAnd
 
-; 1195 :               }
-; 1196 :               init[j] = ',';
+; 1215 :               }
+; 1216 :               init[j] = ',';
 
 	mov	BYTE PTR [rdx], 44			; 0000002cH
 $LN13@ForInitAnd:
 
-; 1190 :           for (j = strlen(init); j; j--) {
+; 1210 :           for (j = strlen(init); j; j--) {
 
 	sub	r8, 1
 	jne	SHORT $LL15@ForInitAnd
 $LN14@ForInitAnd:
 
-; 1197 :             }
-; 1198 :           }
-; 1199 :           strcpy(codebuff, " invoke  ");
+; 1217 :             }
+; 1218 :           }
+; 1219 :           strcpy(codebuff, " invoke  ");
 
 	xor	ecx, ecx
 $LL154@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11595[rcx+rbx]
+	movzx	eax, BYTE PTR $SG11609[rcx+rbx]
 	mov	BYTE PTR codebuff$[rbp+rcx-256], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
 	jne	SHORT $LL154@ForInitAnd
 
-; 1200 :           strcat(codebuff, init);
+; 1220 :           strcat(codebuff, init);
 
 	lea	rcx, QWORD PTR codebuff$[rbp-256]
 	dec	rcx
@@ -8171,19 +8232,19 @@ $LL411@ForInitAnd:
 	test	al, al
 	jne	SHORT $LL411@ForInitAnd
 
-; 1201 :           AddLineQueue(codebuff);
+; 1221 :           AddLineQueue(codebuff);
 
 	lea	rcx, QWORD PTR codebuff$[rbp-256]
 	call	AddLineQueue
 
-; 1202 :           WriteAsmLine(" mov  ", param, reax[ModuleInfo.Ofssize]);
+; 1222 :           WriteAsmLine(" mov  ", param, reax[ModuleInfo.Ofssize]);
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	xor	ecx, ecx
 	mov	r8, QWORD PTR reax[rbx+rax*8]
 	npad	6
 $LL205@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11596[rcx+rbx]
+	movzx	eax, BYTE PTR $SG11610[rcx+rbx]
 	mov	BYTE PTR codebuff$4[rsp+rcx], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -8212,7 +8273,7 @@ $LL406@ForInitAnd:
 	lea	rcx, QWORD PTR [rcx+1]
 	jne	SHORT $LL406@ForInitAnd
 	xor	edx, edx
-	lea	r12, OFFSET FLAT:$SG11401
+	lea	r12, OFFSET FLAT:$SG11415
 	npad	13
 $LL407@ForInitAnd:
 	movzx	eax, BYTE PTR [r12+rdx]
@@ -8239,27 +8300,27 @@ $LL405@ForInitAnd:
 	lea	rcx, QWORD PTR codebuff$4[rsp]
 	call	AddLineQueue
 
-; 1203 :           brct = FALSE;
+; 1223 :           brct = FALSE;
 
 	xor	r14b, r14b
 
-; 1204 :         }
+; 1224 :         }
 
 	jmp	$skip$554
 $LN117@ForInitAnd:
 
-; 1205 :         else {
-; 1206 :           if (strlen(op) == 1)
+; 1225 :         else {
+; 1226 :           if (strlen(op) == 1)
 
 	cmp	rax, 1
 	jne	$LN122@ForInitAnd
 
-; 1207 :             WriteAsmLine(" mov  ", param, init);
+; 1227 :             WriteAsmLine(" mov  ", param, init);
 
 	xor	ecx, ecx
 	npad	3
 $LL208@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11599[rcx+rbx]
+	movzx	eax, BYTE PTR $SG11613[rcx+rbx]
 	mov	BYTE PTR codebuff$3[rsp+rcx], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -8288,7 +8349,7 @@ $LL400@ForInitAnd:
 	lea	rcx, QWORD PTR [rcx+1]
 	jne	SHORT $LL400@ForInitAnd
 	xor	edx, edx
-	lea	r12, OFFSET FLAT:$SG11401
+	lea	r12, OFFSET FLAT:$SG11415
 	npad	13
 $LL401@ForInitAnd:
 	movzx	eax, BYTE PTR [r12+rdx]
@@ -8318,8 +8379,8 @@ $LL399@ForInitAnd:
 	jmp	$skip$554
 $LN122@ForInitAnd:
 
-; 1208 :           else
-; 1209 :             WriteAsmLine(codebuff, param, init);
+; 1228 :           else
+; 1229 :             WriteAsmLine(codebuff, param, init);
 
 	xor	ecx, ecx
 $LL211@ForInitAnd:
@@ -8352,7 +8413,7 @@ $LL394@ForInitAnd:
 	lea	rcx, QWORD PTR [rcx+1]
 	jne	SHORT $LL394@ForInitAnd
 	xor	edx, edx
-	lea	r12, OFFSET FLAT:$SG11401
+	lea	r12, OFFSET FLAT:$SG11415
 	npad	13
 $LL395@ForInitAnd:
 	movzx	eax, BYTE PTR [r12+rdx]
@@ -8380,14 +8441,14 @@ $LL393@ForInitAnd:
 	lea	rcx, QWORD PTR codebuff$2[rsp]
 	call	AddLineQueue
 
-; 1210 :         }
-; 1211 :       }
+; 1230 :         }
+; 1231 :       }
 
 	jmp	$skip$554
 $LN23@ForInitAnd:
 
-; 1006 :       param[a] = '\0';
-; 1007 :       if ((buff[b] == '+') && (buff[b + 1] == '+')) strcpy(codebuff, " inc ");
+; 1026 :       param[a] = '\0';
+; 1027 :       if ((buff[b] == '+') && (buff[b + 1] == '+')) strcpy(codebuff, " inc ");
 
 	movzx	eax, BYTE PTR [rcx]
 	mov	BYTE PTR param$[rbp+rdi-256], 0
@@ -8399,7 +8460,7 @@ $LN23@ForInitAnd:
 	lea	rbx, OFFSET FLAT:__ImageBase
 	npad	6
 $LL128@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11447[rcx+rbx]
+	movzx	eax, BYTE PTR $SG11461[rcx+rbx]
 	mov	BYTE PTR codebuff$[rbp+rcx-256], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
@@ -8407,7 +8468,7 @@ $LL128@ForInitAnd:
 	jmp	SHORT $LN26@ForInitAnd
 $LN24@ForInitAnd:
 
-; 1008 :       else if ((buff[b] == '-') && (buff[b + 1] == '-')) strcpy(codebuff, " dec ");
+; 1028 :       else if ((buff[b] == '-') && (buff[b + 1] == '-')) strcpy(codebuff, " dec ");
 
 	cmp	al, 45					; 0000002dH
 	jne	SHORT $LN26@ForInitAnd
@@ -8417,14 +8478,14 @@ $LN24@ForInitAnd:
 	lea	rbx, OFFSET FLAT:__ImageBase
 	npad	9
 $LL129@ForInitAnd:
-	movzx	eax, BYTE PTR $SG11449[rcx+rbx]
+	movzx	eax, BYTE PTR $SG11463[rcx+rbx]
 	mov	BYTE PTR codebuff$[rbp+rcx-256], al
 	lea	rcx, QWORD PTR [rcx+1]
 	test	al, al
 	jne	SHORT $LL129@ForInitAnd
 $LN26@ForInitAnd:
 
-; 1009 :       strcat(codebuff, param);
+; 1029 :       strcat(codebuff, param);
 
 	lea	rcx, QWORD PTR codebuff$[rbp-256]
 	dec	rcx
@@ -8443,37 +8504,37 @@ $LL391@ForInitAnd:
 	test	al, al
 	jne	SHORT $LL391@ForInitAnd
 
-; 1010 :       AddLineQueue(codebuff);
+; 1030 :       AddLineQueue(codebuff);
 
 	lea	rcx, QWORD PTR codebuff$[rbp-256]
 	call	AddLineQueue
 
-; 1011 :       b += 3;
+; 1031 :       b += 3;
 
 	add	r15d, 3
 $skip$554:
 
-; 1219 :         }
-; 1220 :       }
-; 1221 :     }
-; 1222 :   skip:
-; 1223 :     if (cnt) cnt--;
+; 1239 :         }
+; 1240 :       }
+; 1241 :     }
+; 1242 :   skip:
+; 1243 :     if (cnt) cnt--;
 
 	test	esi, esi
 	je	SHORT $LN530@ForInitAnd
 
-; 1224 :   } while (cnt);
+; 1244 :   } while (cnt);
 
 	mov	r9, 145272973819904			; 0000842000000000H
 	sub	esi, 1
 	jne	$LL4@ForInitAnd
 $LN530@ForInitAnd:
 
-; 1225 :   return(NOT_ERROR);
+; 1245 :   return(NOT_ERROR);
 
 	xor	eax, eax
 
-; 1226 : }
+; 1246 : }
 
 	mov	rbx, QWORD PTR [rsp+1144]
 	add	rsp, 1056				; 00000420H
@@ -8497,12 +8558,12 @@ s1$ = 312
 s2$ = 320
 WriteAsmLine PROC					; COMDAT
 
-; 972  : static void WriteAsmLine(const char *cmd, const char *s1, const char *s2) {
+; 992  : static void WriteAsmLine(const char *cmd, const char *s1, const char *s2) {
 
 	sub	rsp, 296				; 00000128H
 
-; 973  :   char codebuff[256];
-; 974  :   strcpy(codebuff, cmd);
+; 993  :   char codebuff[256];
+; 994  :   strcpy(codebuff, cmd);
 
 	lea	r9, QWORD PTR codebuff$[rsp]
 	mov	r10, rdx
@@ -8515,7 +8576,7 @@ $LL3@WriteAsmLi:
 	test	al, al
 	jne	SHORT $LL3@WriteAsmLi
 
-; 975  :   strcat(codebuff, s1);
+; 995  :   strcat(codebuff, s1);
 
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	dec	rcx
@@ -8533,7 +8594,7 @@ $LL12@WriteAsmLi:
 	test	al, al
 	jne	SHORT $LL12@WriteAsmLi
 
-; 976  :   strcat(codebuff, ", ");
+; 996  :   strcat(codebuff, ", ");
 
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	dec	rcx
@@ -8542,7 +8603,7 @@ $LL9@WriteAsmLi:
 	cmp	BYTE PTR [rcx+1], 0
 	lea	rcx, QWORD PTR [rcx+1]
 	jne	SHORT $LL9@WriteAsmLi
-	lea	r9, OFFSET FLAT:$SG11401
+	lea	r9, OFFSET FLAT:$SG11415
 	xor	edx, edx
 	npad	13
 $LL10@WriteAsmLi:
@@ -8552,7 +8613,7 @@ $LL10@WriteAsmLi:
 	test	al, al
 	jne	SHORT $LL10@WriteAsmLi
 
-; 977  :   strcat(codebuff, s2);
+; 997  :   strcat(codebuff, s2);
 
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	dec	rcx
@@ -8570,13 +8631,13 @@ $LL8@WriteAsmLi:
 	test	al, al
 	jne	SHORT $LL8@WriteAsmLi
 
-; 978  :   AddLineQueue(codebuff);				// MOV RAX,param
+; 998  :   AddLineQueue(codebuff);				// MOV RAX,param
 
 	lea	rcx, QWORD PTR codebuff$[rsp]
 	call	AddLineQueue
 
-; 979  :   return;
-; 980  : }
+; 999  :   return;
+; 1000 : }
 
 	add	rsp, 296				; 00000128H
 	ret	0
@@ -8589,24 +8650,24 @@ _TEXT	SEGMENT
 p$ = 48
 CheckCXZLines PROC					; COMDAT
 
-; 915  : {
+; 935  : {
 
 	mov	QWORD PTR [rsp+8], rbx
 	mov	QWORD PTR [rsp+16], rsi
 	push	rdi
 	sub	rsp, 32					; 00000020H
 
-; 916  :   int lines = 0;
-; 917  :   int i;
-; 918  :   int addchars;
-; 919  :   char *px;
-; 920  :   bool NL = TRUE;
-; 921  : 
-; 922  :   DebugMsg1(("CheckCXZLines enter, p=>%s<\n", p));
-; 923  :   /* syntax ".untilcxz 1" has a problem: there's no "jmp" generated at all.
-; 924  :   * if this syntax is to be supported, activate the #if below.
-; 925  :   */
-; 926  :   for (; *p; p++) {
+; 936  :   int lines = 0;
+; 937  :   int i;
+; 938  :   int addchars;
+; 939  :   char *px;
+; 940  :   bool NL = TRUE;
+; 941  : 
+; 942  :   DebugMsg1(("CheckCXZLines enter, p=>%s<\n", p));
+; 943  :   /* syntax ".untilcxz 1" has a problem: there's no "jmp" generated at all.
+; 944  :   * if this syntax is to be supported, activate the #if below.
+; 945  :   */
+; 946  :   for (; *p; p++) {
 
 	movzx	eax, BYTE PTR [rcx]
 	xor	edi, edi
@@ -8616,41 +8677,41 @@ CheckCXZLines PROC					; COMDAT
 	je	$LN17@CheckCXZLi
 $LL4@CheckCXZLi:
 
-; 927  :     if (*p == EOLCHAR) {
+; 947  :     if (*p == EOLCHAR) {
 
 	cmp	al, 10
 	jne	SHORT $LN8@CheckCXZLi
 
-; 928  :       NL = TRUE;
+; 948  :       NL = TRUE;
 
 	mov	sil, 1
 
-; 929  :       lines++;
+; 949  :       lines++;
 
 	inc	edi
 
-; 930  :     }
+; 950  :     }
 
 	jmp	$LN2@CheckCXZLi
 $LN8@CheckCXZLi:
 
-; 931  :     else if (NL) {
+; 951  :     else if (NL) {
 
 	test	sil, sil
 	je	$LN2@CheckCXZLi
 
-; 932  :       NL = FALSE;
+; 952  :       NL = FALSE;
 
 	xor	sil, sil
 
-; 933  :       if (*p == 'j') {
+; 953  :       if (*p == 'j') {
 
 	cmp	al, 106					; 0000006aH
 	jne	$LN2@CheckCXZLi
 
-; 934  :         p++;
-; 935  :         /* v2.06: rewritten */
-; 936  :         if (*p == 'm' && lines == 0) {
+; 954  :         p++;
+; 955  :         /* v2.06: rewritten */
+; 956  :         if (*p == 'm' && lines == 0) {
 
 	movzx	eax, BYTE PTR [rbx+1]
 	cmp	al, 109					; 0000006dH
@@ -8658,20 +8719,20 @@ $LN8@CheckCXZLi:
 	test	edi, edi
 	jne	SHORT $LN12@CheckCXZLi
 
-; 937  :           addchars = 2; /* make room for 2 chars, to replace "jmp" by "loope" */
+; 957  :           addchars = 2; /* make room for 2 chars, to replace "jmp" by "loope" */
 
 	lea	r8d, QWORD PTR [rdi+2]
 
-; 938  :           px = "loope";
+; 958  :           px = "loope";
 
-	lea	r9, OFFSET FLAT:$SG11374
+	lea	r9, OFFSET FLAT:$SG11388
 
-; 939  :         }
+; 959  :         }
 
 	jmp	SHORT $LN15@CheckCXZLi
 $LN12@CheckCXZLi:
 
-; 940  :         else if (lines == 1 && (*p == 'z' || (*p == 'n' && *(p + 1) == 'z'))) {
+; 960  :         else if (lines == 1 && (*p == 'z' || (*p == 'n' && *(p + 1) == 'z'))) {
 
 	cmp	edi, 1
 	jne	$LN14@CheckCXZLi
@@ -8683,20 +8744,20 @@ $LN12@CheckCXZLi:
 	jne	$LN14@CheckCXZLi
 $LN16@CheckCXZLi:
 
-; 941  :           addchars = 3; /* make room for 3 chars, to replace "jz"/"jnz" by "loopz"/"loopnz" */
+; 961  :           addchars = 3; /* make room for 3 chars, to replace "jz"/"jnz" by "loopz"/"loopnz" */
 
 	mov	r8d, 3
 
-; 942  :           px = "loop";
+; 962  :           px = "loop";
 
-	lea	r9, OFFSET FLAT:$SG11378
+	lea	r9, OFFSET FLAT:$SG11392
 $LN15@CheckCXZLi:
 
-; 943  :         }
-; 944  :         else
-; 945  :           return(ERROR); /* anything else is "too complex" */
-; 946  :                          //replace_instr:
-; 947  :         for (p--, i = strlen(p); i >= 0; i--) {
+; 963  :         }
+; 964  :         else
+; 965  :           return(ERROR); /* anything else is "too complex" */
+; 966  :                          //replace_instr:
+; 967  :         for (p--, i = strlen(p); i >= 0; i--) {
 
 	or	rax, -1
 	npad	3
@@ -8714,7 +8775,7 @@ $LL29@CheckCXZLi:
 	npad	3
 $LL7@CheckCXZLi:
 
-; 948  :           *(p + addchars + i) = *(p + i);
+; 968  :           *(p + addchars + i) = *(p + i);
 
 	movzx	ecx, BYTE PTR [r8+rax]
 	mov	BYTE PTR [rax], cl
@@ -8723,8 +8784,8 @@ $LL7@CheckCXZLi:
 	jne	SHORT $LL7@CheckCXZLi
 $LN6@CheckCXZLi:
 
-; 949  :         }
-; 950  :         memcpy(p, px, strlen(px));
+; 969  :         }
+; 970  :         memcpy(p, px, strlen(px));
 
 	or	r8, -1
 $LL28@CheckCXZLi:
@@ -8736,48 +8797,48 @@ $LL28@CheckCXZLi:
 	call	memcpy
 $LN2@CheckCXZLi:
 
-; 916  :   int lines = 0;
-; 917  :   int i;
-; 918  :   int addchars;
-; 919  :   char *px;
-; 920  :   bool NL = TRUE;
-; 921  : 
-; 922  :   DebugMsg1(("CheckCXZLines enter, p=>%s<\n", p));
-; 923  :   /* syntax ".untilcxz 1" has a problem: there's no "jmp" generated at all.
-; 924  :   * if this syntax is to be supported, activate the #if below.
-; 925  :   */
-; 926  :   for (; *p; p++) {
+; 936  :   int lines = 0;
+; 937  :   int i;
+; 938  :   int addchars;
+; 939  :   char *px;
+; 940  :   bool NL = TRUE;
+; 941  : 
+; 942  :   DebugMsg1(("CheckCXZLines enter, p=>%s<\n", p));
+; 943  :   /* syntax ".untilcxz 1" has a problem: there's no "jmp" generated at all.
+; 944  :   * if this syntax is to be supported, activate the #if below.
+; 945  :   */
+; 946  :   for (; *p; p++) {
 
 	movzx	eax, BYTE PTR [rbx+1]
 	inc	rbx
 	test	al, al
 	jne	$LL4@CheckCXZLi
 
-; 951  :       }
-; 952  : #if 0 /* handle ".untilcxz 1" like masm does */
-; 953  :       else if (*p == ' ' && *(p + 1) == EOLCHAR && lines == 0) {
-; 954  :         p++;
-; 955  :         GetLabelStr(hll->labels[LSTART], p);
-; 956  :         strcat(p, EOLSTR);
-; 957  :         addchars = 5;
-; 958  :         px = "loope";
-; 959  :         goto replace_instr;
-; 960  :       }
-; 961  : #endif
-; 962  :     }
-; 963  :   }
-; 964  :   if (lines > 2)
+; 971  :       }
+; 972  : #if 0 /* handle ".untilcxz 1" like masm does */
+; 973  :       else if (*p == ' ' && *(p + 1) == EOLCHAR && lines == 0) {
+; 974  :         p++;
+; 975  :         GetLabelStr(hll->labels[LSTART], p);
+; 976  :         strcat(p, EOLSTR);
+; 977  :         addchars = 5;
+; 978  :         px = "loope";
+; 979  :         goto replace_instr;
+; 980  :       }
+; 981  : #endif
+; 982  :     }
+; 983  :   }
+; 984  :   if (lines > 2)
 
 	cmp	edi, 2
 	jg	SHORT $LN14@CheckCXZLi
 $LN17@CheckCXZLi:
 
-; 965  :     return(ERROR);
-; 966  :   return(NOT_ERROR);
+; 985  :     return(ERROR);
+; 986  :   return(NOT_ERROR);
 
 	xor	eax, eax
 
-; 967  : }
+; 987  : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	mov	rsi, QWORD PTR [rsp+56]
@@ -8806,23 +8867,23 @@ is_true$ = 128
 buffer$ = 136
 EvaluateHllExpression PROC				; COMDAT
 
-; 890  : {
+; 910  : {
 
 	mov	QWORD PTR [rsp+8], rbx
 	push	rdi
 	sub	rsp, 80					; 00000050H
 
-; 891  :   struct hll_opnd hllop = { NULL, 0 };
+; 911  :   struct hll_opnd hllop = { NULL, 0 };
 
 	xor	eax, eax
 	mov	rdi, rdx
 	mov	QWORD PTR hllop$[rsp], rax
 
-; 892  : 
-; 893  :   DebugMsg1(("EvaluateHllExpression enter\n"));
-; 894  : 
-; 895  :   *buffer = NULLC;
-; 896  :   if (ERROR == GetExpression(hll, i, tokenarray, ilabel, is_true, buffer, &hllop))
+; 912  : 
+; 913  :   DebugMsg1(("EvaluateHllExpression enter\n"));
+; 914  : 
+; 915  :   *buffer = NULLC;
+; 916  :   if (ERROR == GetExpression(hll, i, tokenarray, ilabel, is_true, buffer, &hllop))
 
 	lea	rdx, QWORD PTR hllop$[rsp]
 	mov	QWORD PTR [rsp+48], rdx
@@ -8838,11 +8899,11 @@ EvaluateHllExpression PROC				; COMDAT
 	cmp	eax, -1
 	jne	SHORT $LN2@EvaluateHl
 
-; 897  :     return(ERROR);
+; 917  :     return(ERROR);
 
 	or	eax, eax
 
-; 906  : }
+; 926  : }
 
 	mov	rbx, QWORD PTR [rsp+96]
 	add	rsp, 80					; 00000050H
@@ -8850,23 +8911,23 @@ EvaluateHllExpression PROC				; COMDAT
 	ret	0
 $LN2@EvaluateHl:
 
-; 898  :   /* v2.11: changed */
-; 899  :   //if ( *buffer == EOLCHAR ) {
-; 900  :   //DebugMsg(( "EvaluateHllExpression: EOL at pos 0 in line buffer\n" ));
-; 901  :   if (tokenarray[*i].token != T_FINAL) {
+; 918  :   /* v2.11: changed */
+; 919  :   //if ( *buffer == EOLCHAR ) {
+; 920  :   //DebugMsg(( "EvaluateHllExpression: EOL at pos 0 in line buffer\n" ));
+; 921  :   if (tokenarray[*i].token != T_FINAL) {
 
 	movsxd	rax, DWORD PTR [rdi]
 	shl	rax, 5
 	cmp	BYTE PTR [rax+rbx], 0
 	je	SHORT $LN3@EvaluateHl
 
-; 902  :     DebugMsg(("EvaluateHllExpression: unexpected tokens >%s<\n", tokenarray[*i].tokpos));
-; 903  :     return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
+; 922  :     DebugMsg(("EvaluateHllExpression: unexpected tokens >%s<\n", tokenarray[*i].tokpos));
+; 923  :     return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
 
 	mov	ecx, 199				; 000000c7H
 	call	EmitError
 
-; 906  : }
+; 926  : }
 
 	mov	rbx, QWORD PTR [rsp+96]
 	add	rsp, 80					; 00000050H
@@ -8874,12 +8935,12 @@ $LN2@EvaluateHl:
 	ret	0
 $LN3@EvaluateHl:
 
-; 904  :   }
-; 905  :   return(NOT_ERROR);
+; 924  :   }
+; 925  :   return(NOT_ERROR);
 
 	xor	eax, eax
 
-; 906  : }
+; 926  : }
 
 	mov	rbx, QWORD PTR [rsp+96]
 	add	rsp, 80					; 00000050H
@@ -8894,16 +8955,16 @@ _TEXT	SEGMENT
 src$ = 48
 QueueTestLines PROC					; COMDAT
 
-; 853  : {
+; 873  : {
 
 	push	rbx
 	sub	rsp, 32					; 00000020H
 	mov	rbx, rcx
 
-; 854  :   char *start;
-; 855  : 
-; 856  :   DebugMsg1(("QueueTestLines(\"%s\") enter\n", src ? src : "NULL"));
-; 857  :   while (src) {
+; 874  :   char *start;
+; 875  : 
+; 876  :   DebugMsg1(("QueueTestLines(\"%s\") enter\n", src ? src : "NULL"));
+; 877  :   while (src) {
 
 	test	rcx, rcx
 	je	SHORT $LN10@QueueTestL
@@ -8911,9 +8972,9 @@ QueueTestLines PROC					; COMDAT
 	npad	13
 $LL2@QueueTestL:
 
-; 858  :     //if (*src == ' ') src++; /* v2.11: obsolete */
-; 859  :     start = src;
-; 860  :     if (src = strchr(src, EOLCHAR))
+; 878  :     //if (*src == ' ') src++; /* v2.11: obsolete */
+; 879  :     start = src;
+; 880  :     if (src = strchr(src, EOLCHAR))
 
 	mov	edx, 10
 	mov	rcx, rbx
@@ -8923,41 +8984,41 @@ $LL2@QueueTestL:
 	test	rax, rax
 	je	SHORT $LN4@QueueTestL
 
-; 861  :       *src++ = NULLC;
+; 881  :       *src++ = NULLC;
 
 	mov	BYTE PTR [rax], 0
 	inc	rbx
 $LN4@QueueTestL:
 
-; 862  :     if (*start)
+; 882  :     if (*start)
 
 	cmp	BYTE PTR [rdi], 0
 	je	SHORT $LN5@QueueTestL
 
-; 863  :       AddLineQueue(start);
+; 883  :       AddLineQueue(start);
 
 	mov	rcx, rdi
 	call	AddLineQueue
 $LN5@QueueTestL:
 
-; 854  :   char *start;
-; 855  : 
-; 856  :   DebugMsg1(("QueueTestLines(\"%s\") enter\n", src ? src : "NULL"));
-; 857  :   while (src) {
+; 874  :   char *start;
+; 875  : 
+; 876  :   DebugMsg1(("QueueTestLines(\"%s\") enter\n", src ? src : "NULL"));
+; 877  :   while (src) {
 
 	test	rbx, rbx
 	jne	SHORT $LL2@QueueTestL
 	mov	rdi, QWORD PTR [rsp+48]
 $LN10@QueueTestL:
 
-; 864  :   }
-; 865  : 
-; 866  :   DebugMsg1(("QueueTestLines exit\n"));
-; 867  :   return(NOT_ERROR);
+; 884  :   }
+; 885  : 
+; 886  :   DebugMsg1(("QueueTestLines exit\n"));
+; 887  :   return(NOT_ERROR);
 
 	xor	eax, eax
 
-; 868  : }
+; 888  : }
 
 	add	rsp, 32					; 00000020H
 	pop	rbx
@@ -8977,7 +9038,7 @@ buffer$ = 168
 hllop$ = 176
 GetAndExpression PROC					; COMDAT
 
-; 701  : {
+; 721  : {
 
 	mov	QWORD PTR [rsp+16], rbx
 	mov	DWORD PTR [rsp+32], r9d
@@ -8991,15 +9052,15 @@ GetAndExpression PROC					; COMDAT
 	push	r15
 	sub	rsp, 64					; 00000040H
 
-; 702  :   char *ptr = buffer;
-; 703  :   uint_32 truelabel = 0;
-; 704  :   //char buff[16];
-; 705  :   //char *nlabel;
-; 706  :   //char *olabel;
-; 707  : 
-; 708  :   DebugMsg1(("%u GetAndExpression(>%.32s< buf=>%s<) enter\n", evallvl, tokenarray[*i].tokpos, buffer));
-; 709  : 
-; 710  :   if (ERROR == GetSimpleExpression(hll, i, tokenarray, ilabel, is_true, ptr, hllop))
+; 722  :   char *ptr = buffer;
+; 723  :   uint_32 truelabel = 0;
+; 724  :   //char buff[16];
+; 725  :   //char *nlabel;
+; 726  :   //char *olabel;
+; 727  : 
+; 728  :   DebugMsg1(("%u GetAndExpression(>%.32s< buf=>%s<) enter\n", evallvl, tokenarray[*i].tokpos, buffer));
+; 729  : 
+; 730  :   if (ERROR == GetSimpleExpression(hll, i, tokenarray, ilabel, is_true, ptr, hllop))
 
 	mov	r15, QWORD PTR hllop$[rsp]
 	mov	rax, rcx
@@ -9018,13 +9079,13 @@ GetAndExpression PROC					; COMDAT
 	cmp	eax, -1
 	jne	SHORT $LN20@GetAndExpr
 
-; 711  :     return(ERROR);
+; 731  :     return(ERROR);
 
 	or	rax, -1
 	jmp	$LN1@GetAndExpr
 $LN20@GetAndExpr:
 
-; 712  :   while (COP_AND == GetCOp(&tokenarray[*i])) {
+; 732  :   while (COP_AND == GetCOp(&tokenarray[*i])) {
 
 	movsxd	rcx, DWORD PTR [r14]
 	shl	rcx, 5
@@ -9036,45 +9097,45 @@ $LN20@GetAndExpr:
 	npad	7
 $LL2@GetAndExpr:
 
-; 713  : 
-; 714  :     (*i)++;
+; 733  : 
+; 734  :     (*i)++;
 
 	inc	DWORD PTR [r14]
 
-; 715  :     DebugMsg1(("%u GetAndExpression: &&-operator found, is_true=%u, lastjmp=%s\n", evallvl, is_true, hllop->lastjmp ? hllop->lastjmp : "NULL"));
-; 716  : 
-; 717  :     if (is_true) {
+; 735  :     DebugMsg1(("%u GetAndExpression: &&-operator found, is_true=%u, lastjmp=%s\n", evallvl, is_true, hllop->lastjmp ? hllop->lastjmp : "NULL"));
+; 736  : 
+; 737  :     if (is_true) {
 
 	test	r12b, r12b
 	je	$LN6@GetAndExpr
 
-; 718  :       /* todo: please describe what's done here and why! */
-; 719  :       if (hllop->lastjmp) {
+; 738  :       /* todo: please describe what's done here and why! */
+; 739  :       if (hllop->lastjmp) {
 
 	mov	rbx, QWORD PTR [r15]
 	test	rbx, rbx
 	je	$LN31@GetAndExpr
 
-; 720  :         char *p = hllop->lastjmp;
-; 721  :         InvertJump(p);          /* step 1 */
+; 740  :         char *p = hllop->lastjmp;
+; 741  :         InvertJump(p);          /* step 1 */
 
 	mov	rcx, rbx
 	call	InvertJump
 
-; 722  :         if (truelabel == 0)     /* step 2 */
+; 742  :         if (truelabel == 0)     /* step 2 */
 
 	test	ebp, ebp
 	jne	SHORT $LN7@GetAndExpr
 
-; 723  :           truelabel = GetHllLabel();
+; 743  :           truelabel = GetHllLabel();
 
 	mov	ebp, DWORD PTR ModuleInfo+352
 	inc	ebp
 	mov	DWORD PTR ModuleInfo+352, ebp
 $LN7@GetAndExpr:
 
-; 724  : 
-; 725  :         if (*p && strlen(p) < 11) {/* v2.11: there might be a 0 at lastjmp */
+; 744  : 
+; 745  :         if (*p && strlen(p) < 11) {/* v2.11: there might be a 0 at lastjmp */
 
 	cmp	BYTE PTR [rbx], 0
 	je	SHORT $LN8@GetAndExpr
@@ -9087,15 +9148,15 @@ $LL30@GetAndExpr:
 	cmp	rax, 11
 	jae	SHORT $LN8@GetAndExpr
 
-; 726  :           p += 4;               /* skip 'jcc ' or 'jmp ' */
-; 727  :           GetLabelStr(truelabel, p);
+; 746  :           p += 4;               /* skip 'jcc ' or 'jmp ' */
+; 747  :           GetLabelStr(truelabel, p);
 
 	mov	r8d, ebp
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR [rbx+4]
 	call	sprintf
 
-; 728  :           strcat(p, EOLSTR);
+; 748  :           strcat(p, EOLSTR);
 
 	sub	rbx, -3
 $LL28@GetAndExpr:
@@ -9103,7 +9164,7 @@ $LL28@GetAndExpr:
 	lea	rbx, QWORD PTR [rbx+1]
 	jne	SHORT $LL28@GetAndExpr
 	xor	ecx, ecx
-	lea	r12, OFFSET FLAT:$SG11283
+	lea	r12, OFFSET FLAT:$SG11297
 	npad	7
 $LL29@GetAndExpr:
 	movzx	eax, BYTE PTR [r12+rcx]
@@ -9114,10 +9175,10 @@ $LL29@GetAndExpr:
 	movzx	r12d, BYTE PTR is_true$[rsp]
 $LN8@GetAndExpr:
 
-; 729  :         }
-; 730  : 
-; 731  :         DebugMsg1(("%u GetAndExpression: jmp inverted >%s<\n", evallvl, hllop->lastjmp));
-; 732  :         ReplaceLabel(buffer, GetLabel(hll, ilabel), truelabel);
+; 749  :         }
+; 750  : 
+; 751  :         DebugMsg1(("%u GetAndExpression: jmp inverted >%s<\n", evallvl, hllop->lastjmp));
+; 752  :         ReplaceLabel(buffer, GetLabel(hll, ilabel), truelabel);
 
 	mov	rcx, QWORD PTR hll$[rsp]
 	mov	r8d, ebp
@@ -9126,7 +9187,7 @@ $LN8@GetAndExpr:
 	mov	rcx, QWORD PTR buffer$[rsp]
 	call	ReplaceLabel
 
-; 733  :         hllop->lastjmp = NULL;
+; 753  :         hllop->lastjmp = NULL;
 
 	mov	QWORD PTR [r15], 0
 	jmp	SHORT $LN6@GetAndExpr
@@ -9134,9 +9195,9 @@ $LN31@GetAndExpr:
 	mov	ebx, DWORD PTR ilabel$[rsp]
 $LN6@GetAndExpr:
 
-; 734  :       }
-; 735  :     }
-; 736  :     ptr += strlen(ptr);
+; 754  :       }
+; 755  :     }
+; 756  :     ptr += strlen(ptr);
 
 	mov	rax, rsi
 $LL27@GetAndExpr:
@@ -9144,8 +9205,8 @@ $LL27@GetAndExpr:
 	cmp	BYTE PTR [rdi+rax], 0
 	jne	SHORT $LL27@GetAndExpr
 
-; 737  :     hllop->lasttruelabel = 0; /* v2.08 */
-; 738  :     if (ERROR == GetSimpleExpression(hll, i, tokenarray, ilabel, is_true, ptr, hllop))
+; 757  :     hllop->lasttruelabel = 0; /* v2.08 */
+; 758  :     if (ERROR == GetSimpleExpression(hll, i, tokenarray, ilabel, is_true, ptr, hllop))
 
 	mov	rcx, QWORD PTR hll$[rsp]
 	add	rdi, rax
@@ -9160,7 +9221,7 @@ $LL27@GetAndExpr:
 	cmp	eax, -1
 	je	$LN21@GetAndExpr
 
-; 712  :   while (COP_AND == GetCOp(&tokenarray[*i])) {
+; 732  :   while (COP_AND == GetCOp(&tokenarray[*i])) {
 
 	movsxd	rcx, DWORD PTR [r14]
 	shl	rcx, 5
@@ -9169,37 +9230,37 @@ $LL27@GetAndExpr:
 	cmp	eax, 7
 	je	$LL2@GetAndExpr
 
-; 740  :   };
-; 741  : 
-; 742  :   if (truelabel > 0) {
+; 760  :   };
+; 761  : 
+; 762  :   if (truelabel > 0) {
 
 	test	ebp, ebp
 	je	SHORT $LN10@GetAndExpr
 	npad	2
 $LL26@GetAndExpr:
 
-; 743  :     ptr += strlen(ptr);
+; 763  :     ptr += strlen(ptr);
 
 	inc	rsi
 	cmp	BYTE PTR [rdi+rsi], 0
 	jne	SHORT $LL26@GetAndExpr
 	add	rdi, rsi
 
-; 744  :     GetLabelStr(truelabel, ptr);
+; 764  :     GetLabelStr(truelabel, ptr);
 
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	mov	rcx, rdi
 	mov	r8d, ebp
 	call	sprintf
 
-; 745  :     strcat(ptr, LABELQUAL EOLSTR);
+; 765  :     strcat(ptr, LABELQUAL EOLSTR);
 
 	dec	rdi
 $LL24@GetAndExpr:
 	cmp	BYTE PTR [rdi+1], 0
 	lea	rdi, QWORD PTR [rdi+1]
 	jne	SHORT $LL24@GetAndExpr
-	lea	rdx, OFFSET FLAT:$SG11286
+	lea	rdx, OFFSET FLAT:$SG11300
 	xor	ecx, ecx
 	npad	12
 $LL25@GetAndExpr:
@@ -9209,19 +9270,19 @@ $LL25@GetAndExpr:
 	test	al, al
 	jne	SHORT $LL25@GetAndExpr
 
-; 746  :     DebugMsg1(("%u GetAndExpression: label added >%s<\n", evallvl, ptr));
-; 747  :     hllop->lastjmp = NULL;
+; 766  :     DebugMsg1(("%u GetAndExpression: label added >%s<\n", evallvl, ptr));
+; 767  :     hllop->lastjmp = NULL;
 
 	mov	QWORD PTR [r15], 0
 $LN10@GetAndExpr:
 
-; 748  :   }
-; 749  :   return(NOT_ERROR);
+; 768  :   }
+; 769  :   return(NOT_ERROR);
 
 	xor	eax, eax
 $LN1@GetAndExpr:
 
-; 750  : }
+; 770  : }
 
 	mov	rbx, QWORD PTR [rsp+136]
 	add	rsp, 64					; 00000040H
@@ -9235,7 +9296,7 @@ $LN1@GetAndExpr:
 	ret	0
 $LN21@GetAndExpr:
 
-; 739  :       return(ERROR);
+; 759  :       return(ERROR);
 
 	mov	eax, esi
 	jmp	SHORT $LN1@GetAndExpr
@@ -9252,7 +9313,7 @@ olabel$ = 88
 nlabel$ = 96
 ReplaceLabel PROC					; COMDAT
 
-; 680  : {
+; 700  : {
 
 	mov	QWORD PTR [rsp+8], rbx
 	push	rdi
@@ -9260,26 +9321,26 @@ ReplaceLabel PROC					; COMDAT
 	mov	ebx, r8d
 	mov	rdi, rcx
 
-; 681  :   char oldlbl[16];
-; 682  :   char newlbl[16];
-; 683  :   int i;
-; 684  : 
-; 685  :   GetLabelStr(olabel, oldlbl);
+; 701  :   char oldlbl[16];
+; 702  :   char newlbl[16];
+; 703  :   int i;
+; 704  : 
+; 705  :   GetLabelStr(olabel, oldlbl);
 
 	mov	r8d, edx
 	lea	rcx, QWORD PTR oldlbl$[rsp]
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	call	sprintf
 
-; 686  :   GetLabelStr(nlabel, newlbl);
+; 706  :   GetLabelStr(nlabel, newlbl);
 
 	mov	r8d, ebx
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR newlbl$[rsp]
 	call	sprintf
 
-; 687  : 
-; 688  :   i = strlen(newlbl);
+; 707  : 
+; 708  :   i = strlen(newlbl);
 
 	lea	rax, QWORD PTR newlbl$[rsp]
 	or	rbx, -1
@@ -9288,9 +9349,9 @@ $LL13@ReplaceLab:
 	cmp	BYTE PTR [rax+rbx], 0
 	jne	SHORT $LL13@ReplaceLab
 
-; 689  : 
-; 690  :   DebugMsg1(("%u ReplaceLabel(%s->%s, >%s<)\n", evallvl, oldlbl, newlbl, p));
-; 691  :   while (p = strstr(p, oldlbl)) {
+; 709  : 
+; 710  :   DebugMsg1(("%u ReplaceLabel(%s->%s, >%s<)\n", evallvl, oldlbl, newlbl, p));
+; 711  :   while (p = strstr(p, oldlbl)) {
 
 	lea	rdx, QWORD PTR oldlbl$[rsp]
 	mov	rcx, rdi
@@ -9302,14 +9363,14 @@ $LL13@ReplaceLab:
 	npad	14
 $LL2@ReplaceLab:
 
-; 692  :     memcpy(p, newlbl, i);
+; 712  :     memcpy(p, newlbl, i);
 
 	mov	r8, rbx
 	lea	rdx, QWORD PTR newlbl$[rsp]
 	mov	rcx, rdi
 	call	memcpy
 
-; 693  :     p += i;
+; 713  :     p += i;
 
 	lea	rcx, QWORD PTR [rbx+rdi]
 	lea	rdx, QWORD PTR oldlbl$[rsp]
@@ -9319,8 +9380,8 @@ $LL2@ReplaceLab:
 	jne	SHORT $LL2@ReplaceLab
 $LN3@ReplaceLab:
 
-; 694  :   }
-; 695  : }
+; 714  :   }
+; 715  : }
 
 	mov	rbx, QWORD PTR [rsp+80]
 	add	rsp, 64					; 00000040H
@@ -9335,14 +9396,14 @@ _TEXT	SEGMENT
 p$ = 8
 InvertJump PROC						; COMDAT
 
-; 629  :   if (*p == NULLC) { /* v2.11: convert 0 to "jmp" */
+; 649  :   if (*p == NULLC) { /* v2.11: convert 0 to "jmp" */
 
 	cmp	BYTE PTR [rcx], 0
 	jne	SHORT $LN2@InvertJump
 
-; 630  :     strcpy(p, "jmp ");
+; 650  :     strcpy(p, "jmp ");
 
-	lea	rdx, OFFSET FLAT:$SG11225
+	lea	rdx, OFFSET FLAT:$SG11239
 	sub	rcx, rdx
 	npad	1
 $LL20@InvertJump:
@@ -9352,20 +9413,20 @@ $LL20@InvertJump:
 	test	al, al
 	jne	SHORT $LL20@InvertJump
 
-; 666  :     *p = ' ';
-; 667  :   else
-; 668  :     *p = 'e';
-; 669  :   return;
-; 670  : }
+; 686  :     *p = ' ';
+; 687  :   else
+; 688  :     *p = 'e';
+; 689  :   return;
+; 690  : }
 
 	ret	0
 $LN2@InvertJump:
 
-; 631  :     return;
-; 632  :   }
-; 633  : 
-; 634  :   p++;
-; 635  :   if (*p == 'e' || *p == 'z' || *p == 'c' || *p == 's' || *p == 'p' || *p == 'o') {
+; 651  :     return;
+; 652  :   }
+; 653  : 
+; 654  :   p++;
+; 655  :   if (*p == 'e' || *p == 'z' || *p == 'c' || *p == 's' || *p == 'p' || *p == 'o') {
 
 	movzx	edx, BYTE PTR [rcx+1]
 	lea	eax, DWORD PTR [rdx-99]
@@ -9375,107 +9436,107 @@ $LN2@InvertJump:
 	bt	r8d, eax
 	jae	SHORT $LN24@InvertJump
 
-; 636  :     *(p + 1) = *p;
+; 656  :     *(p + 1) = *p;
 
 	mov	BYTE PTR [rcx+2], dl
 
-; 637  :     *p = 'n';
+; 657  :     *p = 'n';
 
 	mov	BYTE PTR [rcx+1], 110			; 0000006eH
 
-; 666  :     *p = ' ';
-; 667  :   else
-; 668  :     *p = 'e';
-; 669  :   return;
-; 670  : }
+; 686  :     *p = ' ';
+; 687  :   else
+; 688  :     *p = 'e';
+; 689  :   return;
+; 690  : }
 
 	ret	0
 $LN24@InvertJump:
 
-; 638  :     return;
-; 639  :   }
-; 640  :   else if (*p == 'n') {
+; 658  :     return;
+; 659  :   }
+; 660  :   else if (*p == 'n') {
 
 	cmp	dl, 110					; 0000006eH
 	jne	SHORT $LN6@InvertJump
 
-; 641  :     *p = *(p + 1);
+; 661  :     *p = *(p + 1);
 
 	movzx	eax, BYTE PTR [rcx+2]
 	mov	BYTE PTR [rcx+1], al
 
-; 642  :     *(p + 1) = ' ';
+; 662  :     *(p + 1) = ' ';
 
 	mov	BYTE PTR [rcx+2], 32			; 00000020H
 
-; 666  :     *p = ' ';
-; 667  :   else
-; 668  :     *p = 'e';
-; 669  :   return;
-; 670  : }
+; 686  :     *p = ' ';
+; 687  :   else
+; 688  :     *p = 'e';
+; 689  :   return;
+; 690  : }
 
 	ret	0
 $LN6@InvertJump:
 
-; 643  :     return;
-; 644  :   }
-; 645  :   else if (*p == 'a') {
+; 663  :     return;
+; 664  :   }
+; 665  :   else if (*p == 'a') {
 
 	cmp	dl, 97					; 00000061H
 	jne	SHORT $LN8@InvertJump
 
-; 646  :     *p++ = 'b';
+; 666  :     *p++ = 'b';
 
 	mov	BYTE PTR [rcx+1], 98			; 00000062H
 
-; 647  :   }
+; 667  :   }
 
 	jmp	SHORT $LN26@InvertJump
 $LN8@InvertJump:
 
-; 648  :   else if (*p == 'b') {
+; 668  :   else if (*p == 'b') {
 
 	cmp	dl, 98					; 00000062H
 	jne	SHORT $LN10@InvertJump
 
-; 649  :     *p++ = 'a';
+; 669  :     *p++ = 'a';
 
 	mov	BYTE PTR [rcx+1], 97			; 00000061H
 
-; 650  :   }
+; 670  :   }
 
 	jmp	SHORT $LN26@InvertJump
 $LN10@InvertJump:
 
-; 651  :   else if (*p == 'g') {
+; 671  :   else if (*p == 'g') {
 
 	cmp	dl, 103					; 00000067H
 	jne	SHORT $LN12@InvertJump
 
-; 652  :     *p++ = 'l';
+; 672  :     *p++ = 'l';
 
 	mov	BYTE PTR [rcx+1], 108			; 0000006cH
 
-; 653  :   }
+; 673  :   }
 
 	jmp	SHORT $LN26@InvertJump
 $LN12@InvertJump:
 
-; 654  :   else if (*p == 'l') {
+; 674  :   else if (*p == 'l') {
 
 	cmp	dl, 108					; 0000006cH
 	jne	SHORT $LN14@InvertJump
 
-; 655  :     *p++ = 'g';
+; 675  :     *p++ = 'g';
 
 	mov	BYTE PTR [rcx+1], 103			; 00000067H
 $LN26@InvertJump:
 	add	rcx, 2
 
-; 662  :     }
-; 663  :     return;
-; 664  :   }
-; 665  :   if (*p == 'e')
+; 682  :     }
+; 683  :     return;
+; 684  :   }
+; 685  :   if (*p == 'e')
 
 	mov	eax, 101				; 00000065H
 	mov	edx, 32					; 00000020H
@@ -9483,34 +9544,34 @@ $LN26@InvertJump:
 	cmove	eax, edx
 	mov	BYTE PTR [rcx], al
 
-; 666  :     *p = ' ';
-; 667  :   else
-; 668  :     *p = 'e';
-; 669  :   return;
-; 670  : }
+; 686  :     *p = ' ';
+; 687  :   else
+; 688  :     *p = 'e';
+; 689  :   return;
+; 690  : }
 
 	ret	0
 $LN14@InvertJump:
 
-; 656  :   }
-; 657  :   else {
-; 658  :     /* v2.11: convert "jmp" to 0 */
-; 659  :     if (*p == 'm') {
+; 676  :   }
+; 677  :   else {
+; 678  :     /* v2.11: convert "jmp" to 0 */
+; 679  :     if (*p == 'm') {
 
 	cmp	dl, 109					; 0000006dH
 	jne	SHORT $LN18@InvertJump
 
-; 660  :       p--;
-; 661  :       *p = NULLC;
+; 680  :       p--;
+; 681  :       *p = NULLC;
 
 	mov	BYTE PTR [rcx], 0
 $LN18@InvertJump:
 
-; 666  :     *p = ' ';
-; 667  :   else
-; 668  :     *p = 'e';
-; 669  :   return;
-; 670  : }
+; 686  :     *p = ' ';
+; 687  :   else
+; 688  :     *p = 'e';
+; 689  :   return;
+; 690  : }
 
 	ret	0
 InvertJump ENDP
@@ -9531,7 +9592,7 @@ buffer$ = 392
 hllop$ = 400
 GetSimpleExpression PROC				; COMDAT
 
-; 427  : {
+; 447  : {
 
 	mov	DWORD PTR [rsp+32], r9d
 	mov	QWORD PTR [rsp+8], rcx
@@ -9544,20 +9605,20 @@ GetSimpleExpression PROC				; COMDAT
 	push	r15
 	sub	rsp, 288				; 00000120H
 
-; 428  :   enum c_bop op;
-; 429  :   char instr;
-; 430  :   int op1_pos;
-; 431  :   int op1_end;
-; 432  :   int op2_pos;
-; 433  :   int op2_end;
-; 434  :   char *p;
-; 435  :   struct expr op1;
-; 436  :   struct expr op2;
-; 437  :   uint_32 label;
-; 438  : 
-; 439  :   DebugMsg1(("%u GetSimpleExpression(>%.32s< buf=>%s<) enter\n", evallvl, tokenarray[*i].tokpos, buffer));
-; 440  : 
-; 441  :   while (tokenarray[*i].string_ptr[0] == '!' && tokenarray[*i].string_ptr[1] == '\0') {
+; 448  :   enum c_bop op;
+; 449  :   char instr;
+; 450  :   int op1_pos;
+; 451  :   int op1_end;
+; 452  :   int op2_pos;
+; 453  :   int op2_end;
+; 454  :   char *p;
+; 455  :   struct expr op1;
+; 456  :   struct expr op2;
+; 457  :   uint_32 label;
+; 458  : 
+; 459  :   DebugMsg1(("%u GetSimpleExpression(>%.32s< buf=>%s<) enter\n", evallvl, tokenarray[*i].tokpos, buffer));
+; 460  : 
+; 461  :   while (tokenarray[*i].string_ptr[0] == '!' && tokenarray[*i].string_ptr[1] == '\0') {
 
 	movsxd	rax, DWORD PTR [rdx]
 	mov	r12d, r9d
@@ -9579,11 +9640,11 @@ $LL2@GetSimpleE:
 	cmp	BYTE PTR [rax+1], 0
 	jne	SHORT $LN3@GetSimpleE
 
-; 442  :     (*i)++; //GetCOp( i );
+; 462  :     (*i)++; //GetCOp( i );
 
 	inc	ecx
 
-; 443  :     is_true = 1 - is_true;
+; 463  :     is_true = 1 - is_true;
 
 	mov	eax, ebx
 	sub	al, bpl
@@ -9596,14 +9657,14 @@ $LL2@GetSimpleE:
 	je	SHORT $LL2@GetSimpleE
 $LN3@GetSimpleE:
 
-; 444  :   }
-; 445  : 
-; 446  :   /* the problem with '()' is that is might enclose just a standard Masm
-; 447  :   * expression or a "hll" expression. The first case is to be handled
-; 448  :   * entirely by the expression evaluator, while the latter case is to be
-; 449  :   * handled HERE!
-; 450  :   */
-; 451  :   if (tokenarray[*i].token == T_OP_BRACKET) {
+; 464  :   }
+; 465  : 
+; 466  :   /* the problem with '()' is that is might enclose just a standard Masm
+; 467  :   * expression or a "hll" expression. The first case is to be handled
+; 468  :   * entirely by the expression evaluator, while the latter case is to be
+; 469  :   * handled HERE!
+; 470  :   */
+; 471  :   if (tokenarray[*i].token == T_OP_BRACKET) {
 
 	movsxd	r15, DWORD PTR [rdx]
 	mov	rax, r15
@@ -9612,9 +9673,9 @@ $LN3@GetSimpleE:
 	cmp	BYTE PTR [rax+r8], 40			; 00000028H
 	jne	SHORT $LN18@GetSimpleE
 
-; 452  :     int brcnt;
-; 453  :     int j;
-; 454  :     for (brcnt = 1, j = *i + 1; tokenarray[j].token != T_FINAL; j++) {
+; 472  :     int brcnt;
+; 473  :     int j;
+; 474  :     for (brcnt = 1, j = *i + 1; tokenarray[j].token != T_FINAL; j++) {
 
 	inc	r15d
 	movsxd	r14, r15d
@@ -9626,40 +9687,40 @@ $LN3@GetSimpleE:
 $LL6@GetSimpleE:
 	movzx	eax, BYTE PTR [rcx]
 
-; 455  :       if (tokenarray[j].token == T_OP_BRACKET)
+; 475  :       if (tokenarray[j].token == T_OP_BRACKET)
 
 	cmp	al, 40					; 00000028H
 	jne	SHORT $LN12@GetSimpleE
 
-; 456  :         brcnt++;
+; 476  :         brcnt++;
 
 	inc	ebx
 	jmp	SHORT $LN4@GetSimpleE
 $LN12@GetSimpleE:
 
-; 457  :       else if (tokenarray[j].token == T_CL_BRACKET) {
+; 477  :       else if (tokenarray[j].token == T_CL_BRACKET) {
 
 	cmp	al, 41					; 00000029H
 	jne	SHORT $LN14@GetSimpleE
 
-; 458  :         brcnt--;
+; 478  :         brcnt--;
 
 	sub	ebx, 1
 
-; 459  :         if (brcnt == 0) /* a standard Masm expression? */
+; 479  :         if (brcnt == 0) /* a standard Masm expression? */
 
 	jne	SHORT $LN4@GetSimpleE
 $LN18@GetSimpleE:
 
-; 478  :     }
-; 479  :   }
-; 480  : 
-; 481  :   /* get (first) operand */
-; 482  :   op1_pos = *i;
+; 498  :     }
+; 499  :   }
+; 500  : 
+; 501  :   /* get (first) operand */
+; 502  :   op1_pos = *i;
 
 	movsxd	r12, DWORD PTR [rdi]
 
-; 483  :   if (ERROR == GetToken(hll, i, tokenarray, &op1))
+; 503  :   if (ERROR == GetToken(hll, i, tokenarray, &op1))
 
 	lea	r9, QWORD PTR op1$[rsp]
 	mov	r8, rsi
@@ -9669,13 +9730,13 @@ $LN18@GetSimpleE:
 	cmp	eax, -1
 	je	$LN119@GetSimpleE
 
-; 484  :     return (ERROR);
-; 485  :   op1_end = *i;
+; 504  :     return (ERROR);
+; 505  :   op1_end = *i;
 
 	movsxd	r15, DWORD PTR [rdi]
 
-; 486  : 
-; 487  :   op = GetCOp(&tokenarray[*i]); /* get operator */
+; 506  : 
+; 507  :   op = GetCOp(&tokenarray[*i]); /* get operator */
 
 	mov	rcx, r15
 	shl	rcx, 5
@@ -9687,21 +9748,21 @@ $LN18@GetSimpleE:
 	cmp	ecx, 1
 	jbe	$LN24@GetSimpleE
 
-; 495  :   }
-; 496  :   else if (op != COP_NONE)
+; 515  :   }
+; 516  :   else if (op != COP_NONE)
 
 	test	eax, eax
 	je	$LN25@GetSimpleE
 
-; 497  :     (*i)++;
+; 517  :     (*i)++;
 
 	inc	DWORD PTR [rdi]
 	jmp	$LN25@GetSimpleE
 $LN14@GetSimpleE:
 
-; 460  :           break;
-; 461  :       }
-; 462  :       else if ((GetCOp(&tokenarray[j])) != COP_NONE)
+; 480  :           break;
+; 481  :       }
+; 482  :       else if ((GetCOp(&tokenarray[j])) != COP_NONE)
 
 	movsxd	rcx, r15d
 	shl	rcx, 5
@@ -9711,9 +9772,9 @@ $LN14@GetSimpleE:
 	jne	SHORT $LN100@GetSimpleE
 $LN4@GetSimpleE:
 
-; 452  :     int brcnt;
-; 453  :     int j;
-; 454  :     for (brcnt = 1, j = *i + 1; tokenarray[j].token != T_FINAL; j++) {
+; 472  :     int brcnt;
+; 473  :     int j;
+; 474  :     for (brcnt = 1, j = *i + 1; tokenarray[j].token != T_FINAL; j++) {
 
 	inc	r14
 	inc	r15d
@@ -9724,17 +9785,17 @@ $LN4@GetSimpleE:
 	jne	$LL6@GetSimpleE
 $LN100@GetSimpleE:
 
-; 463  :         break;
-; 464  :     }
-; 465  :     if (brcnt) {
+; 483  :         break;
+; 484  :     }
+; 485  :     if (brcnt) {
 
 	test	ebx, ebx
 	je	$LN18@GetSimpleE
 $LN108@GetSimpleE:
 
-; 466  :       (*i)++;
-; 467  :       DebugMsg1(("%u GetSimpleExpression: calling GetExpression, i=%u\n", evallvl, *i));
-; 468  :       if (ERROR == GetExpression(hll, i, tokenarray, ilabel, is_true, buffer, hllop))
+; 486  :       (*i)++;
+; 487  :       DebugMsg1(("%u GetSimpleExpression: calling GetExpression, i=%u\n", evallvl, *i));
+; 488  :       if (ERROR == GetExpression(hll, i, tokenarray, ilabel, is_true, buffer, hllop))
 
 	mov	rax, QWORD PTR hllop$[rsp]
 	mov	r9d, r12d
@@ -9751,14 +9812,14 @@ $LN108@GetSimpleE:
 	jne	SHORT $LN19@GetSimpleE
 $LN119@GetSimpleE:
 
-; 469  :         return(ERROR);
+; 489  :         return(ERROR);
 
 	or	rax, -1
 	jmp	$LN1@GetSimpleE
 $LN19@GetSimpleE:
 
-; 470  : 
-; 471  :       if (tokenarray[*i].token != T_CL_BRACKET) {
+; 490  : 
+; 491  :       if (tokenarray[*i].token != T_CL_BRACKET) {
 
 	movsxd	rcx, DWORD PTR [rdi]
 	mov	rax, rcx
@@ -9766,63 +9827,63 @@ $LN19@GetSimpleE:
 	cmp	BYTE PTR [rax+rsi], 41			; 00000029H
 	jne	$LN28@GetSimpleE
 
-; 472  :         //if (( tokenarray[*i].token == T_FINAL ) || ( tokenarray[*i].token == T_CL_BRACKET ))
-; 473  :         DebugMsg(("GetSimpleExpression: expected ')', found: %s\n", tokenarray[*i].string_ptr));
-; 474  :         return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
-; 475  :       }
-; 476  :       (*i)++;
+; 492  :         //if (( tokenarray[*i].token == T_FINAL ) || ( tokenarray[*i].token == T_CL_BRACKET ))
+; 493  :         DebugMsg(("GetSimpleExpression: expected ')', found: %s\n", tokenarray[*i].string_ptr));
+; 494  :         return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
+; 495  :       }
+; 496  :       (*i)++;
 
 	lea	eax, DWORD PTR [rcx+1]
 	mov	DWORD PTR [rdi], eax
 
-; 477  :       return(NOT_ERROR);
+; 497  :       return(NOT_ERROR);
 
 	xor	eax, eax
 	jmp	$LN1@GetSimpleE
 $LN24@GetSimpleE:
 
-; 488  : 
-; 489  :                                 /* lower precedence operator ( && or || ) detected? */
-; 490  :   if (op == COP_AND || op == COP_OR) {
-; 491  :     /* v2.11: next 2 lines removed - && and || operators need a valid first operand */
-; 492  :     //if ( op1.kind == EXPR_EMPTY )
-; 493  :     //    return( NOT_ERROR );
-; 494  :     op = COP_NONE;
+; 508  : 
+; 509  :                                 /* lower precedence operator ( && or || ) detected? */
+; 510  :   if (op == COP_AND || op == COP_OR) {
+; 511  :     /* v2.11: next 2 lines removed - && and || operators need a valid first operand */
+; 512  :     //if ( op1.kind == EXPR_EMPTY )
+; 513  :     //    return( NOT_ERROR );
+; 514  :     op = COP_NONE;
 
 	mov	ebx, r14d
 $LN25@GetSimpleE:
 
-; 498  : 
-; 499  :   label = GetLabel(hll, ilabel);
+; 518  : 
+; 519  :   label = GetLabel(hll, ilabel);
 
 	movsxd	rax, DWORD PTR ilabel$[rsp]
 	mov	r13d, DWORD PTR [r13+rax*4+32]
 
-; 500  : 
-; 501  :   DebugMsg1(("%u GetSimpleExpression: EvalOperand ok, kind=%X, i=%u [%s]\n", evallvl, op1.kind, *i, tokenarray[*i].tokpos));
-; 502  : 
-; 503  :   /* check for special operators with implicite operand:
-; 504  :   * COP_ZERO, COP_CARRY, COP_SIGN, COP_PARITY, COP_OVERFLOW
-; 505  :   */
-; 506  :   if (op >= COP_ZERO) {
+; 520  : 
+; 521  :   DebugMsg1(("%u GetSimpleExpression: EvalOperand ok, kind=%X, i=%u [%s]\n", evallvl, op1.kind, *i, tokenarray[*i].tokpos));
+; 522  : 
+; 523  :   /* check for special operators with implicite operand:
+; 524  :   * COP_ZERO, COP_CARRY, COP_SIGN, COP_PARITY, COP_OVERFLOW
+; 525  :   */
+; 526  :   if (op >= COP_ZERO) {
 
 	cmp	ebx, 11
 	jl	SHORT $LN26@GetSimpleE
 
-; 507  :     if (op1.kind != EXPR_EMPTY) {
+; 527  :     if (op1.kind != EXPR_EMPTY) {
 
 	cmp	DWORD PTR op1$[rsp+60], -2
 	jne	$LN28@GetSimpleE
 
-; 508  :       DebugMsg(("GetSimpleExpression: non-empty expression rejected: %s\n", tokenarray[op1_pos].tokpos));
-; 509  :       return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
-; 510  :     }
-; 511  :     p = buffer;
-; 512  :     hllop->lastjmp = p;
+; 528  :       DebugMsg(("GetSimpleExpression: non-empty expression rejected: %s\n", tokenarray[op1_pos].tokpos));
+; 529  :       return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
+; 530  :     }
+; 531  :     p = buffer;
+; 532  :     hllop->lastjmp = p;
 
 	mov	rax, QWORD PTR hllop$[rsp]
 
-; 513  :     RenderJcc(p, flaginstr[op - COP_ZERO], !is_true, label);
+; 533  :     RenderJcc(p, flaginstr[op - COP_ZERO], !is_true, label);
 
 	lea	rdx, OFFSET FLAT:__ImageBase
 	mov	rcx, QWORD PTR buffer$[rsp]
@@ -9835,15 +9896,15 @@ $LN25@GetSimpleE:
 	movzx	edx, BYTE PTR flaginstr[rax+rdx-11]
 	call	RenderJcc
 
-; 514  :     return(NOT_ERROR);
+; 534  :     return(NOT_ERROR);
 
 	xor	eax, eax
 	jmp	$LN1@GetSimpleE
 $LN26@GetSimpleE:
 
-; 515  :   }
-; 516  : 
-; 517  :   switch (op1.kind) {
+; 535  :   }
+; 536  : 
+; 537  :   switch (op1.kind) {
 
 	mov	ecx, DWORD PTR op1$[rsp+60]
 	cmp	ecx, -2
@@ -9851,14 +9912,14 @@ $LN26@GetSimpleE:
 	cmp	ecx, 3
 	je	$LN29@GetSimpleE
 
-; 524  :   }
-; 525  : 
-; 526  :   if (op == COP_NONE) {
+; 544  :   }
+; 545  : 
+; 546  :   if (op == COP_NONE) {
 
 	test	ebx, ebx
 	jne	$LN30@GetSimpleE
 
-; 527  :     switch (op1.kind) {
+; 547  :     switch (op1.kind) {
 
 	test	ecx, ecx
 	je	$LN34@GetSimpleE
@@ -9867,16 +9928,16 @@ $LN26@GetSimpleE:
 	cmp	ecx, 1
 	jne	$LN37@GetSimpleE
 
-; 528  :     case EXPR_REG:
-; 529  :       if (op1.indirect == FALSE) {
+; 548  :     case EXPR_REG:
+; 549  :       if (op1.indirect == FALSE) {
 
 	test	BYTE PTR op1$[rsp+72], cl
 	jne	SHORT $LN32@GetSimpleE
 
-; 530  :         p = RenderInstr(buffer, "test", op1_pos, op1_end, op1_pos, op1_end, tokenarray);
+; 550  :         p = RenderInstr(buffer, "test", op1_pos, op1_end, op1_pos, op1_end, tokenarray);
 
 	mov	rcx, QWORD PTR buffer$[rsp]
-	lea	rdx, OFFSET FLAT:$SG11198
+	lea	rdx, OFFSET FLAT:$SG11212
 	mov	QWORD PTR [rsp+48], rsi
 	mov	r9d, r15d
 	mov	DWORD PTR [rsp+40], r15d
@@ -9884,11 +9945,11 @@ $LN26@GetSimpleE:
 	mov	DWORD PTR [rsp+32], r12d
 	call	RenderInstr
 
-; 531  :         hllop->lastjmp = p;
+; 551  :         hllop->lastjmp = p;
 
 	mov	rcx, QWORD PTR hllop$[rsp]
 
-; 532  :         RenderJcc(p, 'z', is_true, label);
+; 552  :         RenderJcc(p, 'z', is_true, label);
 
 	mov	r9d, r13d
 	movzx	r8d, bpl
@@ -9897,25 +9958,25 @@ $LN26@GetSimpleE:
 	mov	rcx, rax
 	call	RenderJcc
 
-; 561  :       }
-; 562  :       break;
-; 563  : #ifdef DEBUG_OUT
-; 564  :     default: /**/myassert(0); break;
-; 565  : #endif
-; 566  :     }
-; 567  :     return(NOT_ERROR);
+; 581  :       }
+; 582  :       break;
+; 583  : #ifdef DEBUG_OUT
+; 584  :     default: /**/myassert(0); break;
+; 585  : #endif
+; 586  :     }
+; 587  :     return(NOT_ERROR);
 
 	xor	eax, eax
 	jmp	$LN1@GetSimpleE
 $LN32@GetSimpleE:
 
-; 533  :         break;
-; 534  :       }
-; 535  :       /* no break */
-; 536  :     case EXPR_ADDR:
-; 537  :       p = RenderInstr(buffer, "cmp", op1_pos, op1_end, EMPTY, 0, tokenarray);
+; 553  :         break;
+; 554  :       }
+; 555  :       /* no break */
+; 556  :     case EXPR_ADDR:
+; 557  :       p = RenderInstr(buffer, "cmp", op1_pos, op1_end, EMPTY, 0, tokenarray);
 
-	lea	rdx, OFFSET FLAT:$SG11200
+	lea	rdx, OFFSET FLAT:$SG11214
 	or	rax, -1
 $LL113@GetSimpleE:
 	inc	rax
@@ -9940,14 +10001,14 @@ $LL113@GetSimpleE:
 	mov	r8, rbx
 	call	memcpy
 	add	rdi, rbx
-	lea	rdx, OFFSET FLAT:$SG11094
+	lea	rdx, OFFSET FLAT:$SG11108
 	mov	rcx, rdi
 	xor	r8d, r8d
 	call	sprintf
 	movsxd	rdx, eax
 
-; 538  :       hllop->lastjmp = p;
-; 539  :       RenderJcc(p, 'z', is_true, label);
+; 558  :       hllop->lastjmp = p;
+; 559  :       RenderJcc(p, 'z', is_true, label);
 
 	mov	r9d, r13d
 	mov	rax, QWORD PTR hllop$[rsp]
@@ -9961,13 +10022,13 @@ $LL113@GetSimpleE:
 	mov	QWORD PTR [rax], rdi
 	call	RenderJcc
 
-; 561  :       }
-; 562  :       break;
-; 563  : #ifdef DEBUG_OUT
-; 564  :     default: /**/myassert(0); break;
-; 565  : #endif
-; 566  :     }
-; 567  :     return(NOT_ERROR);
+; 581  :       }
+; 582  :       break;
+; 583  : #ifdef DEBUG_OUT
+; 584  :     default: /**/myassert(0); break;
+; 585  : #endif
+; 586  :     }
+; 587  :     return(NOT_ERROR);
 
 	xor	eax, eax
 	jmp	$LN1@GetSimpleE
@@ -9977,32 +10038,32 @@ $LN34@GetSimpleE:
 	cmp	eax, 1
 	jbe	SHORT $LN35@GetSimpleE
 
-; 540  :       break;
-; 541  :     case EXPR_CONST:
-; 542  : #if 0
-; 543  :       /* v2.05: string constant is allowed! */
-; 544  :       if (op1.string != NULL) {
-; 545  :         return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
-; 546  :       }
-; 547  : #endif
-; 548  :       /* v2.11: error if constant doesn't fit in 32-bits */
-; 549  :       if (op1.hvalue != 0 && op1.hvalue != -1)
-; 550  :         return(EmitConstError(&op1));
+; 560  :       break;
+; 561  :     case EXPR_CONST:
+; 562  : #if 0
+; 563  :       /* v2.05: string constant is allowed! */
+; 564  :       if (op1.string != NULL) {
+; 565  :         return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
+; 566  :       }
+; 567  : #endif
+; 568  :       /* v2.11: error if constant doesn't fit in 32-bits */
+; 569  :       if (op1.hvalue != 0 && op1.hvalue != -1)
+; 570  :         return(EmitConstError(&op1));
 
 	lea	rcx, QWORD PTR op1$[rsp]
 	call	EmitConstError
 	jmp	$LN1@GetSimpleE
 $LN35@GetSimpleE:
 
-; 551  : 
-; 552  :       hllop->lastjmp = buffer;
+; 571  : 
+; 572  :       hllop->lastjmp = buffer;
 
 	mov	rax, QWORD PTR hllop$[rsp]
 	mov	rcx, QWORD PTR buffer$[rsp]
 	mov	QWORD PTR [rax], rcx
 
-; 553  : 
-; 554  :       if ((is_true == TRUE && op1.value) ||
+; 573  : 
+; 574  :       if ((is_true == TRUE && op1.value) ||
 
 	cmp	bpl, 1
 	jne	SHORT $LN39@GetSimpleE
@@ -10010,28 +10071,28 @@ $LN35@GetSimpleE:
 	jne	SHORT $LN38@GetSimpleE
 $LN36@GetSimpleE:
 
-; 557  :       }
-; 558  :       else {
-; 559  :         //strcpy( buffer, " " EOLSTR ); /* v2.11: obsolete */
-; 560  :         *buffer = NULLC;
+; 577  :       }
+; 578  :       else {
+; 579  :         //strcpy( buffer, " " EOLSTR ); /* v2.11: obsolete */
+; 580  :         *buffer = NULLC;
 
 	mov	BYTE PTR [rcx], r14b
 $LN37@GetSimpleE:
 
-; 561  :       }
-; 562  :       break;
-; 563  : #ifdef DEBUG_OUT
-; 564  :     default: /**/myassert(0); break;
-; 565  : #endif
-; 566  :     }
-; 567  :     return(NOT_ERROR);
+; 581  :       }
+; 582  :       break;
+; 583  : #ifdef DEBUG_OUT
+; 584  :     default: /**/myassert(0); break;
+; 585  : #endif
+; 586  :     }
+; 587  :     return(NOT_ERROR);
 
 	xor	eax, eax
 	jmp	$LN1@GetSimpleE
 $LN39@GetSimpleE:
 
-; 553  : 
-; 554  :       if ((is_true == TRUE && op1.value) ||
+; 573  : 
+; 574  :       if ((is_true == TRUE && op1.value) ||
 
 	test	bpl, bpl
 	jne	SHORT $LN36@GetSimpleE
@@ -10039,33 +10100,33 @@ $LN39@GetSimpleE:
 	jne	SHORT $LN36@GetSimpleE
 $LN38@GetSimpleE:
 
-; 555  :         (is_true == FALSE && op1.value == 0)) {
-; 556  :         sprintf(buffer, "jmp " LABELFMT EOLSTR, label);
+; 575  :         (is_true == FALSE && op1.value == 0)) {
+; 576  :         sprintf(buffer, "jmp " LABELFMT EOLSTR, label);
 
 	mov	r8d, r13d
-	lea	rdx, OFFSET FLAT:$SG11207
+	lea	rdx, OFFSET FLAT:$SG11221
 	call	sprintf
 
-; 561  :       }
-; 562  :       break;
-; 563  : #ifdef DEBUG_OUT
-; 564  :     default: /**/myassert(0); break;
-; 565  : #endif
-; 566  :     }
-; 567  :     return(NOT_ERROR);
+; 581  :       }
+; 582  :       break;
+; 583  : #ifdef DEBUG_OUT
+; 584  :     default: /**/myassert(0); break;
+; 585  : #endif
+; 586  :     }
+; 587  :     return(NOT_ERROR);
 
 	xor	eax, eax
 	jmp	$LN1@GetSimpleE
 $LN30@GetSimpleE:
 
-; 568  :   }
-; 569  : 
-; 570  :   /* get second operand for binary operator */
-; 571  :   op2_pos = *i;
+; 588  :   }
+; 589  : 
+; 590  :   /* get second operand for binary operator */
+; 591  :   op2_pos = *i;
 
 	mov	eax, DWORD PTR [rdi]
 
-; 572  :   if (ERROR == GetToken(hll, i, tokenarray, &op2)) {
+; 592  :   if (ERROR == GetToken(hll, i, tokenarray, &op2)) {
 
 	lea	r9, QWORD PTR op2$[rsp]
 	mov	rcx, QWORD PTR hll$[rsp]
@@ -10076,31 +10137,31 @@ $LN30@GetSimpleE:
 	cmp	eax, -1
 	je	$LN119@GetSimpleE
 
-; 573  :     return(ERROR);
-; 574  :   }
-; 575  :   DebugMsg1(("%u GetSimpleExpression: EvalOperand 2 ok, type=%X, i=%u [%s]\n", evallvl, op2.type, *i, tokenarray[*i].tokpos));
-; 576  :   if (op2.kind != EXPR_CONST && op2.kind != EXPR_ADDR && op2.kind != EXPR_REG) {
-; 577  :     DebugMsg(("GetSimpleExpression: syntax error, op2.kind=%u\n", op2.kind));
-; 578  :     return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
+; 593  :     return(ERROR);
+; 594  :   }
+; 595  :   DebugMsg1(("%u GetSimpleExpression: EvalOperand 2 ok, type=%X, i=%u [%s]\n", evallvl, op2.type, *i, tokenarray[*i].tokpos));
+; 596  :   if (op2.kind != EXPR_CONST && op2.kind != EXPR_ADDR && op2.kind != EXPR_REG) {
+; 597  :     DebugMsg(("GetSimpleExpression: syntax error, op2.kind=%u\n", op2.kind));
+; 598  :     return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
 
 	mov	ecx, DWORD PTR op2$[rsp+60]
 	cmp	ecx, 2
 	ja	$LN28@GetSimpleE
 
-; 579  :   }
-; 580  :   op2_end = *i;
+; 599  :   }
+; 600  :   op2_end = *i;
 
 	mov	edx, DWORD PTR [rdi]
 
-; 581  : 
-; 582  :   /* now generate ASM code for expression */
-; 583  : 
-; 584  :   if (op == COP_ANDB) {
+; 601  : 
+; 602  :   /* now generate ASM code for expression */
+; 603  : 
+; 604  :   if (op == COP_ANDB) {
 
 	cmp	ebx, 9
 	jne	SHORT $LN42@GetSimpleE
 
-; 585  :     p = RenderInstr(buffer, "test", op1_pos, op1_end, op2_pos, op2_end, tokenarray);
+; 605  :     p = RenderInstr(buffer, "test", op1_pos, op1_end, op2_pos, op2_end, tokenarray);
 
 	mov	eax, DWORD PTR op2_pos$1$[rsp]
 	mov	r9d, r15d
@@ -10108,51 +10169,51 @@ $LN30@GetSimpleE:
 	mov	r8d, r12d
 	mov	QWORD PTR [rsp+48], rsi
 	mov	DWORD PTR [rsp+40], edx
-	lea	rdx, OFFSET FLAT:$SG11212
+	lea	rdx, OFFSET FLAT:$SG11226
 	mov	DWORD PTR [rsp+32], eax
 	call	RenderInstr
 
-; 586  :     hllop->lastjmp = p;
+; 606  :     hllop->lastjmp = p;
 
 	mov	rcx, QWORD PTR hllop$[rsp]
 
-; 587  :     RenderJcc(p, 'e', is_true, label);
+; 607  :     RenderJcc(p, 'e', is_true, label);
 
 	mov	dl, 101					; 00000065H
 	movzx	r8d, bpl
 
-; 606  :     RenderJcc(p, instr, neg_cjmptype[op - COP_EQ] ? is_true : !is_true, label);
+; 626  :     RenderJcc(p, instr, neg_cjmptype[op - COP_EQ] ? is_true : !is_true, label);
 
 	mov	r9d, r13d
 	mov	QWORD PTR [rcx], rax
 	mov	rcx, rax
 	call	RenderJcc
 
-; 607  :   }
-; 608  :   else {
-; 609  :     DebugMsg(("GetSimpleExpression: unexpected operator %s\n", tokenarray[op1_pos].tokpos));
-; 610  :     return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
-; 611  :   }
-; 612  :   return(NOT_ERROR);
+; 627  :   }
+; 628  :   else {
+; 629  :     DebugMsg(("GetSimpleExpression: unexpected operator %s\n", tokenarray[op1_pos].tokpos));
+; 630  :     return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
+; 631  :   }
+; 632  :   return(NOT_ERROR);
 
 	xor	eax, eax
 	jmp	$LN1@GetSimpleE
 $LN42@GetSimpleE:
 
-; 588  :   }
-; 589  :   else if (op <= COP_LE) { /* ==, !=, >, <, >= or <= operator */
+; 608  :   }
+; 609  :   else if (op <= COP_LE) { /* ==, !=, >, <, >= or <= operator */
 
 	cmp	ebx, 6
 	jg	$LN28@GetSimpleE
 
-; 590  :                            /*
-; 591  :                            * optimisation: generate 'or EAX,EAX' instead of 'cmp EAX,0'.
-; 592  :                            * v2.11: use op2.value64 instead of op2.value
-; 593  :                            */
-; 594  :     if (Options.masm_compat_gencode &&
-; 595  :       (op == COP_EQ || op == COP_NE) &&
-; 596  :       op1.kind == EXPR_REG && op1.indirect == FALSE &&
-; 597  :       op2.kind == EXPR_CONST && op2.value64 == 0) {
+; 610  :                            /*
+; 611  :                            * optimisation: generate 'or EAX,EAX' instead of 'cmp EAX,0'.
+; 612  :                            * v2.11: use op2.value64 instead of op2.value
+; 613  :                            */
+; 614  :     if (Options.masm_compat_gencode &&
+; 615  :       (op == COP_EQ || op == COP_NE) &&
+; 616  :       op1.kind == EXPR_REG && op1.indirect == FALSE &&
+; 617  :       op2.kind == EXPR_CONST && op2.value64 == 0) {
 
 	cmp	BYTE PTR Options+128, r14b
 	je	SHORT $LN46@GetSimpleE
@@ -10168,25 +10229,25 @@ $LN42@GetSimpleE:
 	cmp	QWORD PTR op2$[rsp], r14
 	jne	SHORT $LN46@GetSimpleE
 
-; 598  :       p = RenderInstr(buffer, "or", op1_pos, op1_end, op1_pos, op1_end, tokenarray);
+; 618  :       p = RenderInstr(buffer, "or", op1_pos, op1_end, op1_pos, op1_end, tokenarray);
 
 	mov	QWORD PTR [rsp+48], rsi
-	lea	rdx, OFFSET FLAT:$SG11218
+	lea	rdx, OFFSET FLAT:$SG11232
 	mov	DWORD PTR [rsp+40], r15d
 	mov	DWORD PTR [rsp+32], r12d
 
-; 599  :     }
+; 619  :     }
 
 	jmp	SHORT $LN116@GetSimpleE
 $LN46@GetSimpleE:
 
-; 600  :     else {
-; 601  :       p = RenderInstr(buffer, "cmp", op1_pos, op1_end, op2_pos, op2_end, tokenarray);
+; 620  :     else {
+; 621  :       p = RenderInstr(buffer, "cmp", op1_pos, op1_end, op2_pos, op2_end, tokenarray);
 
 	mov	eax, DWORD PTR op2_pos$1$[rsp]
 	mov	QWORD PTR [rsp+48], rsi
 	mov	DWORD PTR [rsp+40], edx
-	lea	rdx, OFFSET FLAT:$SG11219
+	lea	rdx, OFFSET FLAT:$SG11233
 	mov	DWORD PTR [rsp+32], eax
 $LN116@GetSimpleE:
 	mov	rcx, QWORD PTR buffer$[rsp]
@@ -10195,9 +10256,9 @@ $LN116@GetSimpleE:
 	call	RenderInstr
 	mov	r10, rax
 
-; 602  :     }
-; 603  : 
-; 604  :     instr = ((IS_SIGNED(op1.mem_type) || IS_SIGNED(op2.mem_type)) ? signed_cjmptype[op - COP_EQ] : unsigned_cjmptype[op - COP_EQ]);
+; 622  :     }
+; 623  : 
+; 624  :     instr = ((IS_SIGNED(op1.mem_type) || IS_SIGNED(op2.mem_type)) ? signed_cjmptype[op - COP_EQ] : unsigned_cjmptype[op - COP_EQ]);
 
 	mov	eax, DWORD PTR op1$[rsp+64]
 	and	al, -64					; ffffffffffffffc0H
@@ -10217,12 +10278,12 @@ $LN50@GetSimpleE:
 	movzx	r11d, BYTE PTR signed_cjmptype[rcx+rdx-1]
 $LN51@GetSimpleE:
 
-; 605  :     hllop->lastjmp = p;
+; 625  :     hllop->lastjmp = p;
 
 	mov	rax, QWORD PTR hllop$[rsp]
 	mov	QWORD PTR [rax], r10
 
-; 606  :     RenderJcc(p, instr, neg_cjmptype[op - COP_EQ] ? is_true : !is_true, label);
+; 626  :     RenderJcc(p, instr, neg_cjmptype[op - COP_EQ] ? is_true : !is_true, label);
 
 	cmp	BYTE PTR neg_cjmptype[rcx+rdx-1], r14b
 	je	SHORT $LN52@GetSimpleE
@@ -10238,28 +10299,28 @@ $LN53@GetSimpleE:
 	mov	r9d, r13d
 	call	RenderJcc
 
-; 607  :   }
-; 608  :   else {
-; 609  :     DebugMsg(("GetSimpleExpression: unexpected operator %s\n", tokenarray[op1_pos].tokpos));
-; 610  :     return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
-; 611  :   }
-; 612  :   return(NOT_ERROR);
+; 627  :   }
+; 628  :   else {
+; 629  :     DebugMsg(("GetSimpleExpression: unexpected operator %s\n", tokenarray[op1_pos].tokpos));
+; 630  :     return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
+; 631  :   }
+; 632  :   return(NOT_ERROR);
 
 	xor	eax, eax
 	jmp	SHORT $LN1@GetSimpleE
 $LN29@GetSimpleE:
 
-; 521  :   case EXPR_FLOAT:
-; 522  :     DebugMsg(("GetSimpleExpression: float expression rejected: %s\n", tokenarray[op1_pos].tokpos));
-; 523  :     return(EmitError(REAL_OR_BCD_NUMBER_NOT_ALLOWED)); /* v2.10: added */
+; 541  :   case EXPR_FLOAT:
+; 542  :     DebugMsg(("GetSimpleExpression: float expression rejected: %s\n", tokenarray[op1_pos].tokpos));
+; 543  :     return(EmitError(REAL_OR_BCD_NUMBER_NOT_ALLOWED)); /* v2.10: added */
 
-	mov	ecx, 270				; 0000010eH
+	mov	ecx, 271				; 0000010fH
 	jmp	SHORT $LN118@GetSimpleE
 $LN28@GetSimpleE:
 
-; 518  :   case EXPR_EMPTY:
-; 519  :     DebugMsg(("GetSimpleExpression: empty expression rejected\n"));
-; 520  :     return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE)); /* v2.09: changed from NOT_ERROR to ERROR */
+; 538  :   case EXPR_EMPTY:
+; 539  :     DebugMsg(("GetSimpleExpression: empty expression rejected\n"));
+; 540  :     return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE)); /* v2.09: changed from NOT_ERROR to ERROR */
 
 	mov	ecx, 199				; 000000c7H
 $LN118@GetSimpleE:
@@ -10267,7 +10328,7 @@ $LN118@GetSimpleE:
 $LN1@GetSimpleE:
 	mov	r14, QWORD PTR [rsp+368]
 
-; 613  : }
+; 633  : }
 
 	add	rsp, 288				; 00000120H
 	pop	r15
@@ -10288,13 +10349,13 @@ hll$ = 8
 index$ = 16
 GetLabel PROC						; COMDAT
 
-; 415  :   /**/myassert(hll->labels[index]);
-; 416  :   return(hll->labels[index]);
+; 435  :   /**/myassert(hll->labels[index]);
+; 436  :   return(hll->labels[index]);
 
 	movsxd	rax, edx
 	mov	eax, DWORD PTR [rcx+rax*4+32]
 
-; 417  : }
+; 437  : }
 
 	ret	0
 GetLabel ENDP
@@ -10309,7 +10370,7 @@ tokenarray$ = 96
 opnd$ = 104
 GetToken PROC						; COMDAT
 
-; 384  : {
+; 404  : {
 
 	mov	QWORD PTR [rsp+32], rbp
 	push	rdi
@@ -10317,13 +10378,13 @@ GetToken PROC						; COMDAT
 	push	r15
 	sub	rsp, 48					; 00000030H
 
-; 385  :   int end_tok;
-; 386  : 
-; 387  :   /* scan for the next C operator in the token array.
-; 388  :   * because the ASM evaluator may report an error if such a thing
-; 389  :   * is found ( CARRY?, ZERO? and alikes will be regarded as - not yet defined - labels )
-; 390  :   */
-; 391  :   for (end_tok = *i; end_tok < Token_Count; end_tok++) {
+; 405  :   int end_tok;
+; 406  : 
+; 407  :   /* scan for the next C operator in the token array.
+; 408  :   * because the ASM evaluator may report an error if such a thing
+; 409  :   * is found ( CARRY?, ZERO? and alikes will be regarded as - not yet defined - labels )
+; 410  :   */
+; 411  :   for (end_tok = *i; end_tok < Token_Count; end_tok++) {
 
 	movsxd	rdi, DWORD PTR [rdx]
 	mov	rbp, r9
@@ -10341,7 +10402,7 @@ GetToken PROC						; COMDAT
 	npad	7
 $LL4@GetToken:
 
-; 392  :     if ((GetCOp(&tokenarray[end_tok])) != COP_NONE)
+; 412  :     if ((GetCOp(&tokenarray[end_tok])) != COP_NONE)
 
 	movzx	ecx, BYTE PTR [rsi]
 	mov	rbx, QWORD PTR [rsi+8]
@@ -10390,60 +10451,60 @@ $LL80@GetToken:
 	jne	SHORT $LN33@GetToken
 	lea	r8d, QWORD PTR [rcx-1]
 	mov	rcx, rbx
-	lea	rdx, OFFSET FLAT:$SG11004
+	lea	rdx, OFFSET FLAT:$SG11005
 	call	_memicmp
 	test	eax, eax
 	je	$LN84@GetToken
 	mov	r8d, 4
-	lea	rdx, OFFSET FLAT:$SG11010
+	lea	rdx, OFFSET FLAT:$SG11011
 	mov	rcx, rbx
 	call	_memicmp
 	test	eax, eax
 	je	$LN84@GetToken
 	mov	r8d, 4
-	lea	rdx, OFFSET FLAT:$SG11019
+	lea	rdx, OFFSET FLAT:$SG11020
 	jmp	$LN86@GetToken
 $LN33@GetToken:
 	cmp	ecx, 6
 	jne	SHORT $LN37@GetToken
 	lea	r8d, QWORD PTR [rcx-1]
 	mov	rcx, rbx
-	lea	rdx, OFFSET FLAT:$SG11007
+	lea	rdx, OFFSET FLAT:$SG11008
 	call	_memicmp
 	test	eax, eax
 	je	$LN84@GetToken
 	mov	r8d, 5
-	lea	rdx, OFFSET FLAT:$SG11025
+	lea	rdx, OFFSET FLAT:$SG11026
 	mov	rcx, rbx
 	call	_memicmp
 	test	eax, eax
 	je	SHORT $LN84@GetToken
 	mov	r8d, 5
-	lea	rdx, OFFSET FLAT:$SG11028
+	lea	rdx, OFFSET FLAT:$SG11029
 	mov	rcx, rbx
 	call	_memicmp
 	test	eax, eax
 	je	SHORT $LN84@GetToken
 	mov	r8d, 5
-	lea	rdx, OFFSET FLAT:$SG11031
+	lea	rdx, OFFSET FLAT:$SG11032
 	jmp	SHORT $LN86@GetToken
 $LN37@GetToken:
 	cmp	ecx, 7
 	jne	SHORT $LN39@GetToken
 	lea	r8d, QWORD PTR [rcx-1]
-	lea	rdx, OFFSET FLAT:$SG11013
+	lea	rdx, OFFSET FLAT:$SG11014
 	jmp	SHORT $LN86@GetToken
 $LN39@GetToken:
 	cmp	ecx, 9
 	jne	SHORT $LN43@GetToken
 	lea	r8d, QWORD PTR [rcx-1]
-	lea	rdx, OFFSET FLAT:$SG11016
+	lea	rdx, OFFSET FLAT:$SG11017
 	jmp	SHORT $LN86@GetToken
 $LN43@GetToken:
 	cmp	ecx, 8
 	jne	SHORT $LN51@GetToken
 	lea	r8d, QWORD PTR [rcx-1]
-	lea	rdx, OFFSET FLAT:$SG11022
+	lea	rdx, OFFSET FLAT:$SG11023
 $LN86@GetToken:
 	mov	rcx, rbx
 	call	_memicmp
@@ -10452,13 +10513,13 @@ $LN85@GetToken:
 	je	SHORT $LN84@GetToken
 $LN51@GetToken:
 
-; 385  :   int end_tok;
-; 386  : 
-; 387  :   /* scan for the next C operator in the token array.
-; 388  :   * because the ASM evaluator may report an error if such a thing
-; 389  :   * is found ( CARRY?, ZERO? and alikes will be regarded as - not yet defined - labels )
-; 390  :   */
-; 391  :   for (end_tok = *i; end_tok < Token_Count; end_tok++) {
+; 405  :   int end_tok;
+; 406  : 
+; 407  :   /* scan for the next C operator in the token array.
+; 408  :   * because the ASM evaluator may report an error if such a thing
+; 409  :   * is found ( CARRY?, ZERO? and alikes will be regarded as - not yet defined - labels )
+; 410  :   */
+; 411  :   for (end_tok = *i; end_tok < Token_Count; end_tok++) {
 
 	inc	edi
 	add	rsi, 32					; 00000020H
@@ -10470,25 +10531,25 @@ $LN84@GetToken:
 	mov	r12, QWORD PTR [rsp+96]
 $LN81@GetToken:
 
-; 393  :       break;
-; 394  :   }
-; 395  :   if (end_tok == *i) {
+; 413  :       break;
+; 414  :   }
+; 415  :   if (end_tok == *i) {
 
 	cmp	edi, DWORD PTR [r14]
 	jne	SHORT $LN6@GetToken
 
-; 396  :     opnd->kind = EXPR_EMPTY;
+; 416  :     opnd->kind = EXPR_EMPTY;
 
 	mov	DWORD PTR [rbp+60], -2
 $LN8@GetToken:
 
-; 407  :   }
-; 408  : 
-; 409  :   return(NOT_ERROR);
+; 427  :   }
+; 428  : 
+; 429  :   return(NOT_ERROR);
 
 	xor	eax, eax
 
-; 410  : }
+; 430  : }
 
 	mov	rbp, QWORD PTR [rsp+104]
 	add	rsp, 48					; 00000030H
@@ -10498,9 +10559,9 @@ $LN8@GetToken:
 	ret	0
 $LN6@GetToken:
 
-; 397  :     return(NOT_ERROR);
-; 398  :   }
-; 399  :   if (ERROR == EvalOperand(i, tokenarray, end_tok, opnd, 0))
+; 417  :     return(NOT_ERROR);
+; 418  :   }
+; 419  :   if (ERROR == EvalOperand(i, tokenarray, end_tok, opnd, 0))
 
 	mov	r9, rbp
 	mov	BYTE PTR [rsp+32], 0
@@ -10511,11 +10572,11 @@ $LN6@GetToken:
 	cmp	eax, -1
 	jne	SHORT $LN7@GetToken
 
-; 400  :     return(ERROR);
+; 420  :     return(ERROR);
 
 	or	eax, eax
 
-; 410  : }
+; 430  : }
 
 	mov	rbp, QWORD PTR [rsp+104]
 	add	rsp, 48					; 00000030H
@@ -10525,20 +10586,20 @@ $LN6@GetToken:
 	ret	0
 $LN7@GetToken:
 
-; 401  : 
-; 402  :   /* v2.11: emit error 'syntax error in control flow directive'.
-; 403  :   * May happen for expressions like ".if 1 + CARRY?"
-; 404  :   */
-; 405  :   if (*i > end_tok) {
+; 421  : 
+; 422  :   /* v2.11: emit error 'syntax error in control flow directive'.
+; 423  :   * May happen for expressions like ".if 1 + CARRY?"
+; 424  :   */
+; 425  :   if (*i > end_tok) {
 
 	cmp	DWORD PTR [r14], edi
 	jle	SHORT $LN8@GetToken
 
-; 406  :     return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
+; 426  :     return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
 
 	mov	ecx, 199				; 000000c7H
 
-; 410  : }
+; 430  : }
 
 	mov	rbp, QWORD PTR [rsp+104]
 	add	rsp, 48					; 00000030H
@@ -10546,7 +10607,7 @@ $LN7@GetToken:
 	pop	r14
 	pop	rdi
 
-; 406  :     return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
+; 426  :     return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
 
 	jmp	EmitError
 GetToken ENDP
@@ -10561,58 +10622,58 @@ neg$ = 64
 label$ = 72
 RenderJcc PROC						; COMDAT
 
-; 359  : {
+; 379  : {
 
 	push	rbx
 	sub	rsp, 32					; 00000020H
 
-; 360  : #ifdef DEBUG_OUT
-; 361  :   char *old = dst;
-; 362  : #endif
-; 363  :   /* create the jump opcode: j[n]cc */
-; 364  :   *dst++ = 'j';
+; 380  : #ifdef DEBUG_OUT
+; 381  :   char *old = dst;
+; 382  : #endif
+; 383  :   /* create the jump opcode: j[n]cc */
+; 384  :   *dst++ = 'j';
 
 	mov	BYTE PTR [rcx], 106			; 0000006aH
 	lea	rbx, QWORD PTR [rcx+1]
 
-; 365  :   if (neg)
+; 385  :   if (neg)
 
 	test	r8d, r8d
 	je	SHORT $LN2@RenderJcc
 
-; 366  :     *dst++ = 'n';
+; 386  :     *dst++ = 'n';
 
 	mov	BYTE PTR [rbx], 110			; 0000006eH
 	inc	rbx
 $LN2@RenderJcc:
 
-; 367  :   *dst++ = cc;
+; 387  :   *dst++ = cc;
 
 	mov	BYTE PTR [rbx], dl
 	inc	rbx
 
-; 368  :   if (neg == FALSE)
+; 388  :   if (neg == FALSE)
 
 	test	r8d, r8d
 	jne	SHORT $LN3@RenderJcc
 
-; 369  :     *dst++ = ' '; /* make sure there's room for the inverse jmp */
+; 389  :     *dst++ = ' '; /* make sure there's room for the inverse jmp */
 
 	mov	BYTE PTR [rbx], 32			; 00000020H
 	inc	rbx
 $LN3@RenderJcc:
 
-; 370  : 
-; 371  :   *dst++ = ' ';
-; 372  :   GetLabelStr(label, dst);
+; 390  : 
+; 391  :   *dst++ = ' ';
+; 392  :   GetLabelStr(label, dst);
 
 	mov	r8d, r9d
 	mov	BYTE PTR [rbx], 32			; 00000020H
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR [rbx+1]
 	call	sprintf
 
-; 373  :   dst += strlen(dst);
+; 393  :   dst += strlen(dst);
 
 	or	rax, -1
 $LL7@RenderJcc:
@@ -10620,18 +10681,18 @@ $LL7@RenderJcc:
 	cmp	BYTE PTR [rbx+rax+1], 0
 	jne	SHORT $LL7@RenderJcc
 
-; 374  :   *dst++ = EOLCHAR;
+; 394  :   *dst++ = EOLCHAR;
 
 	mov	WORD PTR [rbx+rax+1], 10
 
-; 375  :   *dst = NULLC;
-; 376  :   DebugMsg1(("%u RenderJcc()=>%s<\n", evallvl, old));
-; 377  :   return(dst);
+; 395  :   *dst = NULLC;
+; 396  :   DebugMsg1(("%u RenderJcc()=>%s<\n", evallvl, old));
+; 397  :   return(dst);
 
 	add	rbx, 2
 	add	rax, rbx
 
-; 378  : }
+; 398  : }
 
 	add	rsp, 32					; 00000020H
 	pop	rbx
@@ -10646,24 +10707,24 @@ label$ = 48
 buff$ = 56
 GetLabelStr PROC					; COMDAT
 
-; 350  : {
+; 370  : {
 
 	push	rbx
 	sub	rsp, 32					; 00000020H
 	mov	rbx, rdx
 
-; 351  :   sprintf(buff, LABELFMT, label);
+; 371  :   sprintf(buff, LABELFMT, label);
 
 	mov	r8d, ecx
 	mov	rcx, rbx
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	call	sprintf
 
-; 352  :   return(buff);
+; 372  :   return(buff);
 
 	mov	rax, rbx
 
-; 353  : }
+; 373  : }
 
 	add	rsp, 32					; 00000020H
 	pop	rbx
@@ -10683,7 +10744,7 @@ end2$ = 88
 tokenarray$ = 96
 RenderInstr PROC					; COMDAT
 
-; 317  : {
+; 337  : {
 
 	mov	QWORD PTR [rsp+8], rbx
 	mov	QWORD PTR [rsp+16], rbp
@@ -10694,11 +10755,11 @@ RenderInstr PROC					; COMDAT
 	mov	rbx, rcx
 	movsxd	rsi, r8d
 
-; 318  :   int i;
-; 319  : #ifdef DEBUG_OUT
-; 320  :   char *old = dst;
-; 321  : #endif
-; 322  :   i = strlen(instr);
+; 338  :   int i;
+; 339  : #ifdef DEBUG_OUT
+; 340  :   char *old = dst;
+; 341  : #endif
+; 342  :   i = strlen(instr);
 
 	or	rax, -1
 $LL6@RenderInst:
@@ -10706,20 +10767,20 @@ $LL6@RenderInst:
 	cmp	BYTE PTR [rdx+rax], 0
 	jne	SHORT $LL6@RenderInst
 
-; 323  :   /* copy the instruction */
-; 324  :   memcpy(dst, instr, i);
+; 343  :   /* copy the instruction */
+; 344  :   memcpy(dst, instr, i);
 
 	movsxd	rdi, eax
 	mov	r8, rdi
 	call	memcpy
 
-; 325  :   dst += i;
+; 345  :   dst += i;
 
 	add	rbx, rdi
 
-; 326  :   /* copy the first operand's tokens */
-; 327  :   *dst++ = ' ';
-; 328  :   i = tokenarray[end1].tokpos - tokenarray[start1].tokpos;
+; 346  :   /* copy the first operand's tokens */
+; 347  :   *dst++ = ' ';
+; 348  :   i = tokenarray[end1].tokpos - tokenarray[start1].tokpos;
 
 	mov	rdx, rsi
 	mov	rsi, QWORD PTR tokenarray$[rsp]
@@ -10731,7 +10792,7 @@ $LL6@RenderInst:
 	mov	ecx, DWORD PTR [rax+rsi+24]
 	sub	ecx, DWORD PTR [rdx+rsi+24]
 
-; 329  :   memcpy(dst, tokenarray[start1].tokpos, i);
+; 349  :   memcpy(dst, tokenarray[start1].tokpos, i);
 
 	mov	rdx, QWORD PTR [rdx+rsi+24]
 	movsxd	rdi, ecx
@@ -10739,21 +10800,21 @@ $LL6@RenderInst:
 	mov	r8, rdi
 	call	memcpy
 
-; 330  :   dst += i;
-; 331  :   if (start2 != EMPTY) {
+; 350  :   dst += i;
+; 351  :   if (start2 != EMPTY) {
 
 	movsxd	rax, DWORD PTR start2$[rsp]
 	add	rbx, rdi
 	cmp	eax, -2
 	je	SHORT $LN2@RenderInst
 
-; 332  :     *dst++ = ',';
+; 352  :     *dst++ = ',';
 
 	mov	WORD PTR [rbx], 8236			; 0000202cH
 
-; 333  :     /* copy the second operand's tokens */
-; 334  :     *dst++ = ' ';
-; 335  :     i = tokenarray[end2].tokpos - tokenarray[start2].tokpos;
+; 353  :     /* copy the second operand's tokens */
+; 354  :     *dst++ = ' ';
+; 355  :     i = tokenarray[end2].tokpos - tokenarray[start2].tokpos;
 
 	mov	rdx, rax
 	movsxd	rax, DWORD PTR end2$[rsp]
@@ -10763,7 +10824,7 @@ $LL6@RenderInst:
 	mov	ecx, DWORD PTR [rax+rsi+24]
 	sub	ecx, DWORD PTR [rdx+rsi+24]
 
-; 336  :     memcpy(dst, tokenarray[start2].tokpos, i);
+; 356  :     memcpy(dst, tokenarray[start2].tokpos, i);
 
 	mov	rdx, QWORD PTR [rdx+rsi+24]
 	movsxd	rdi, ecx
@@ -10771,36 +10832,36 @@ $LL6@RenderInst:
 	mov	r8, rdi
 	call	memcpy
 
-; 337  :     dst += i;
+; 357  :     dst += i;
 
 	add	rbx, rdi
 
-; 338  :   }
+; 358  :   }
 
 	jmp	SHORT $LN4@RenderInst
 $LN2@RenderInst:
 
-; 339  :   else if (end2 != EMPTY) {
+; 359  :   else if (end2 != EMPTY) {
 
 	mov	r8d, DWORD PTR end2$[rsp]
 	cmp	r8d, -2
 	je	SHORT $LN4@RenderInst
 
-; 340  :     dst += sprintf(dst, ", %d", end2);
+; 360  :     dst += sprintf(dst, ", %d", end2);
 
-	lea	rdx, OFFSET FLAT:$SG11094
+	lea	rdx, OFFSET FLAT:$SG11108
 	mov	rcx, rbx
 	call	sprintf
 	movsxd	rcx, eax
 	add	rbx, rcx
 $LN4@RenderInst:
 
-; 341  :   }
-; 342  :   *dst++ = EOLCHAR;
-; 343  :   *dst = NULLC;
-; 344  :   DebugMsg1(("%u RenderInstr(%s)=>%s<\n", evallvl, instr, old));
-; 345  :   return(dst);
-; 346  : }
+; 361  :   }
+; 362  :   *dst++ = EOLCHAR;
+; 363  :   *dst = NULLC;
+; 364  :   DebugMsg1(("%u RenderInstr(%s)=>%s<\n", evallvl, instr, old));
+; 365  :   return(dst);
+; 366  : }
 
 	mov	rbp, QWORD PTR [rsp+56]
 	lea	rax, QWORD PTR [rbx+1]
@@ -10822,7 +10883,7 @@ src$ = 32
 n$ = 40
 bubblesort64 PROC					; COMDAT
 
-; 287  : static void bubblesort64(struct hll_item *hll, uint_16 *lbl, int_64 *src, int n) {
+; 307  : static void bubblesort64(struct hll_item *hll, uint_16 *lbl, int_64 *src, int n) {
 
 	mov	QWORD PTR [rsp+24], rbp
 	mov	QWORD PTR [rsp+32], rdi
@@ -10832,12 +10893,12 @@ bubblesort64 PROC					; COMDAT
 	mov	r11, rdx
 	mov	rbp, rcx
 
-; 288  :   /*******************************************************************************************************************************/
-; 289  :   int i;
-; 290  :   int j;
-; 291  :   int_64 temp1;
-; 292  :   uint_16 temp2;
-; 293  :   for (i = 0; i < n; ++i)
+; 308  :   /*******************************************************************************************************************************/
+; 309  :   int i;
+; 310  :   int j;
+; 311  :   int_64 temp1;
+; 312  :   uint_16 temp2;
+; 313  :   for (i = 0; i < n; ++i)
 
 	test	r9d, r9d
 	jle	SHORT $LN3@bubblesort
@@ -10848,8 +10909,8 @@ bubblesort64 PROC					; COMDAT
 	mov	esi, edi
 $LL4@bubblesort:
 
-; 294  :   {
-; 295  :     for (j = i + 1; j < n; ++j)
+; 314  :   {
+; 315  :     for (j = i + 1; j < n; ++j)
 
 	cmp	ebx, edi
 	jge	SHORT $LN2@bubblesort
@@ -10859,38 +10920,38 @@ $LL4@bubblesort:
 	lea	rax, QWORD PTR [r10+8]
 $LL7@bubblesort:
 
-; 296  :     {
-; 297  :       if (src[i] > src[j])
+; 316  :     {
+; 317  :       if (src[i] > src[j])
 
 	mov	rcx, QWORD PTR [r10]
 	mov	rdx, QWORD PTR [rax]
 	cmp	rcx, rdx
 	jle	SHORT $LN5@bubblesort
 
-; 298  :       {
-; 299  :         temp1 = src[i];
-; 300  :         src[i] = src[j];
+; 318  :       {
+; 319  :         temp1 = src[i];
+; 320  :         src[i] = src[j];
 
 	mov	QWORD PTR [r10], rdx
 
-; 301  :         src[j] = temp1;
+; 321  :         src[j] = temp1;
 
 	mov	QWORD PTR [rax], rcx
 
-; 302  :         temp2 = lbl[i];
-; 303  :         lbl[i] = lbl[j];
+; 322  :         temp2 = lbl[i];
+; 323  :         lbl[i] = lbl[j];
 
 	movzx	ecx, WORD PTR [r8]
 	movzx	edx, WORD PTR [r11]
 	mov	WORD PTR [r11], cx
 
-; 304  :         lbl[j] = temp2;
+; 324  :         lbl[j] = temp2;
 
 	mov	WORD PTR [r8], dx
 $LN5@bubblesort:
 
-; 294  :   {
-; 295  :     for (j = i + 1; j < n; ++j)
+; 314  :   {
+; 315  :     for (j = i + 1; j < n; ++j)
 
 	add	rax, 8
 	add	r8, 2
@@ -10898,12 +10959,12 @@ $LN5@bubblesort:
 	jne	SHORT $LL7@bubblesort
 $LN2@bubblesort:
 
-; 288  :   /*******************************************************************************************************************************/
-; 289  :   int i;
-; 290  :   int j;
-; 291  :   int_64 temp1;
-; 292  :   uint_16 temp2;
-; 293  :   for (i = 0; i < n; ++i)
+; 308  :   /*******************************************************************************************************************************/
+; 309  :   int i;
+; 310  :   int j;
+; 311  :   int_64 temp1;
+; 312  :   uint_16 temp2;
+; 313  :   for (i = 0; i < n; ++i)
 
 	inc	ebx
 	add	r10, 8
@@ -10914,21 +10975,21 @@ $LN2@bubblesort:
 	mov	rbx, QWORD PTR [rsp+16]
 $LN3@bubblesort:
 
-; 305  :       }
-; 306  :     }
-; 307  :   }
-; 308  : 
-; 309  :   hll->mincase64 = src[0];
+; 325  :       }
+; 326  :     }
+; 327  :   }
+; 328  : 
+; 329  :   hll->mincase64 = src[0];
 
 	mov	rdx, QWORD PTR [r14]
 	mov	QWORD PTR [rbp+136], rdx
 
-; 310  :   hll->maxcase64 = src[n - 1];
+; 330  :   hll->maxcase64 = src[n - 1];
 
 	mov	rcx, QWORD PTR [r14+rdi*8-8]
 
-; 311  :   hll->delta64 = hll->maxcase64 - hll->mincase64;
-; 312  : }
+; 331  :   hll->delta64 = hll->maxcase64 - hll->mincase64;
+; 332  : }
 
 	mov	rdi, QWORD PTR [rsp+40]
 	mov	QWORD PTR [rbp+128], rcx
@@ -10949,7 +11010,7 @@ src$ = 32
 n$ = 40
 bubblesort PROC						; COMDAT
 
-; 259  : static void bubblesort(struct hll_item *hll, uint_16 *lbl, int *src, int n) {
+; 279  : static void bubblesort(struct hll_item *hll, uint_16 *lbl, int *src, int n) {
 
 	mov	QWORD PTR [rsp+24], rbp
 	mov	QWORD PTR [rsp+32], rdi
@@ -10959,13 +11020,13 @@ bubblesort PROC						; COMDAT
 	mov	r11, rdx
 	mov	rbp, rcx
 
-; 260  :   /*******************************************************************************************************************************/
-; 261  :   int i;
-; 262  :   int j;
-; 263  :   int temp1;
-; 264  :   uint_16 temp2;
-; 265  : 
-; 266  :   for (i = 0; i < n; ++i)
+; 280  :   /*******************************************************************************************************************************/
+; 281  :   int i;
+; 282  :   int j;
+; 283  :   int temp1;
+; 284  :   uint_16 temp2;
+; 285  : 
+; 286  :   for (i = 0; i < n; ++i)
 
 	test	r9d, r9d
 	jle	SHORT $LN3@bubblesort
@@ -10976,8 +11037,8 @@ bubblesort PROC						; COMDAT
 	mov	esi, edi
 $LL4@bubblesort:
 
-; 267  :   {
-; 268  :     for (j = i + 1; j < n; ++j)
+; 287  :   {
+; 288  :     for (j = i + 1; j < n; ++j)
 
 	cmp	ebx, edi
 	jge	SHORT $LN2@bubblesort
@@ -10987,38 +11048,38 @@ $LL4@bubblesort:
 	lea	rax, QWORD PTR [r10+4]
 $LL7@bubblesort:
 
-; 269  :     {
-; 270  :       if (src[i] > src[j])
+; 289  :     {
+; 290  :       if (src[i] > src[j])
 
 	mov	ecx, DWORD PTR [r10]
 	mov	edx, DWORD PTR [rax]
 	cmp	ecx, edx
 	jle	SHORT $LN5@bubblesort
 
-; 271  :       {
-; 272  :         temp1 = src[i];
-; 273  :         src[i] = src[j];
+; 291  :       {
+; 292  :         temp1 = src[i];
+; 293  :         src[i] = src[j];
 
 	mov	DWORD PTR [r10], edx
 
-; 274  :         src[j] = temp1;
+; 294  :         src[j] = temp1;
 
 	mov	DWORD PTR [rax], ecx
 
-; 275  :         temp2 = lbl[i];
-; 276  :         lbl[i] = lbl[j];
+; 295  :         temp2 = lbl[i];
+; 296  :         lbl[i] = lbl[j];
 
 	movzx	ecx, WORD PTR [r8]
 	movzx	edx, WORD PTR [r11]
 	mov	WORD PTR [r11], cx
 
-; 277  :         lbl[j] = temp2;
+; 297  :         lbl[j] = temp2;
 
 	mov	WORD PTR [r8], dx
 $LN5@bubblesort:
 
-; 267  :   {
-; 268  :     for (j = i + 1; j < n; ++j)
+; 287  :   {
+; 288  :     for (j = i + 1; j < n; ++j)
 
 	add	rax, 4
 	add	r8, 2
@@ -11026,13 +11087,13 @@ $LN5@bubblesort:
 	jne	SHORT $LL7@bubblesort
 $LN2@bubblesort:
 
-; 260  :   /*******************************************************************************************************************************/
-; 261  :   int i;
-; 262  :   int j;
-; 263  :   int temp1;
-; 264  :   uint_16 temp2;
-; 265  : 
-; 266  :   for (i = 0; i < n; ++i)
+; 280  :   /*******************************************************************************************************************************/
+; 281  :   int i;
+; 282  :   int j;
+; 283  :   int temp1;
+; 284  :   uint_16 temp2;
+; 285  : 
+; 286  :   for (i = 0; i < n; ++i)
 
 	inc	ebx
 	add	r10, 4
@@ -11043,21 +11104,21 @@ $LN2@bubblesort:
 	mov	rbx, QWORD PTR [rsp+16]
 $LN3@bubblesort:
 
-; 278  :       }
-; 279  :     }
-; 280  :   }
-; 281  : 
-; 282  :   hll->mincase = src[0];
+; 298  :       }
+; 299  :     }
+; 300  :   }
+; 301  : 
+; 302  :   hll->mincase = src[0];
 
 	mov	edx, DWORD PTR [r14]
 	mov	DWORD PTR [rbp+112], edx
 
-; 283  :   hll->maxcase = src[n - 1];
+; 303  :   hll->maxcase = src[n - 1];
 
 	mov	ecx, DWORD PTR [r14+rdi*4-4]
 
-; 284  :   hll->delta = hll->maxcase - hll->mincase;
-; 285  : }
+; 304  :   hll->delta = hll->maxcase - hll->mincase;
+; 305  : }
 
 	mov	rdi, QWORD PTR [rsp+40]
 	mov	DWORD PTR [rbp+108], ecx
@@ -11067,6 +11128,76 @@ $LN3@bubblesort:
 	pop	r14
 	ret	0
 bubblesort ENDP
+_TEXT	ENDS
+; Function compile flags: /Ogtpy
+; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\hll.c
+_TEXT	SEGMENT
+src$ = 8
+hex2dec	PROC
+
+; 261  :   uint_32 a;
+; 262  :   uint_32 b = 0;
+; 263  :   for (;;)
+; 264  :   {
+; 265  :     a = *src;
+
+	movsx	eax, BYTE PTR [rcx]
+	xor	edx, edx
+	mov	r9, rcx
+
+; 266  :     if (!a) break;
+
+	test	eax, eax
+	je	SHORT $LN16@hex2dec
+	npad	4
+$LL2@hex2dec:
+
+; 267  :     b = (b << 4);
+
+	shl	edx, 4
+
+; 268  :     if (a >= '0' && a <= '9') a -= '0';
+
+	lea	r8d, DWORD PTR [rax-48]
+	cmp	r8d, 9
+	ja	SHORT $LN6@hex2dec
+	mov	eax, r8d
+	jmp	SHORT $LN8@hex2dec
+$LN6@hex2dec:
+
+; 269  :     else {
+; 270  :       a |= 0x20;
+
+	or	eax, 32					; 00000020H
+
+; 271  :       if (a >= 'a' && a <= 'f') a -= 'a' - 10;
+
+	lea	ecx, DWORD PTR [rax-97]
+	cmp	ecx, 5
+	ja	SHORT $LN8@hex2dec
+	add	eax, -87				; ffffffa9H
+$LN8@hex2dec:
+
+; 272  :     }
+; 273  :     b = b + a;
+; 274  :     src++;
+
+	inc	r9
+	add	edx, eax
+	movsx	eax, BYTE PTR [r9]
+	test	eax, eax
+	jne	SHORT $LL2@hex2dec
+$LN16@hex2dec:
+
+; 275  :   }
+; 276  :   return (b);
+
+	mov	eax, edx
+
+; 277  : }
+
+	ret	0
+hex2dec	ENDP
 _TEXT	ENDS
 ; Function compile flags: /Ogtpy
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\hll.c
@@ -11301,7 +11432,7 @@ $LL53@GetCOp:
 	jne	SHORT $LN24@GetCOp
 	lea	r8d, QWORD PTR [rcx-1]
 	mov	rcx, rbx
-	lea	rdx, OFFSET FLAT:$SG11004
+	lea	rdx, OFFSET FLAT:$SG11005
 	call	_memicmp
 	test	eax, eax
 	jne	SHORT $LN48@GetCOp
@@ -11322,7 +11453,7 @@ $LN48@GetCOp:
 ; 237  :     else if (size == 5 && (0 == _memicmp(p, "SIGN", 4)))
 
 	mov	r8d, 4
-	lea	rdx, OFFSET FLAT:$SG11010
+	lea	rdx, OFFSET FLAT:$SG11011
 	mov	rcx, rbx
 	call	_memicmp
 	test	eax, eax
@@ -11345,7 +11476,7 @@ $LN50@GetCOp:
 ; 244  :     else if (size == 5 && (0 == _memicmp(p, "LESS", 4)))
 
 	mov	r8d, 4
-	lea	rdx, OFFSET FLAT:$SG11019
+	lea	rdx, OFFSET FLAT:$SG11020
 	mov	rcx, rbx
 	call	_memicmp
 	test	eax, eax
@@ -11370,7 +11501,7 @@ $LN24@GetCOp:
 	jne	$LN28@GetCOp
 	lea	r8d, QWORD PTR [rcx-1]
 	mov	rcx, rbx
-	lea	rdx, OFFSET FLAT:$SG11007
+	lea	rdx, OFFSET FLAT:$SG11008
 	call	_memicmp
 	test	eax, eax
 	jne	SHORT $LN49@GetCOp
@@ -11391,7 +11522,7 @@ $LN49@GetCOp:
 ; 248  :     else if (size == 6 && (0 == _memicmp(p, "ABOVE", 5)))
 
 	mov	r8d, 5
-	lea	rdx, OFFSET FLAT:$SG11025
+	lea	rdx, OFFSET FLAT:$SG11026
 	mov	rcx, rbx
 	call	_memicmp
 	test	eax, eax
@@ -11413,7 +11544,7 @@ $LN51@GetCOp:
 ; 250  :     else if (size == 6 && (0 == _memicmp(p, "EQUAL", 5)))
 
 	mov	r8d, 5
-	lea	rdx, OFFSET FLAT:$SG11028
+	lea	rdx, OFFSET FLAT:$SG11029
 	mov	rcx, rbx
 	call	_memicmp
 	test	eax, eax
@@ -11435,7 +11566,7 @@ $LN52@GetCOp:
 ; 252  :     else if (size == 6 && (0 == _memicmp(p, "BELOW", 5)))
 
 	mov	r8d, 5
-	lea	rdx, OFFSET FLAT:$SG11031
+	lea	rdx, OFFSET FLAT:$SG11032
 	mov	rcx, rbx
 	call	_memicmp
 	test	eax, eax
@@ -11460,7 +11591,7 @@ $LN28@GetCOp:
 	jne	SHORT $LN30@GetCOp
 	lea	r8d, QWORD PTR [rcx-1]
 	mov	rcx, rbx
-	lea	rdx, OFFSET FLAT:$SG11013
+	lea	rdx, OFFSET FLAT:$SG11014
 	call	_memicmp
 	test	eax, eax
 	jne	SHORT $LN42@GetCOp
@@ -11484,7 +11615,7 @@ $LN30@GetCOp:
 	jne	SHORT $LN34@GetCOp
 	lea	r8d, QWORD PTR [rcx-1]
 	mov	rcx, rbx
-	lea	rdx, OFFSET FLAT:$SG11016
+	lea	rdx, OFFSET FLAT:$SG11017
 	call	_memicmp
 	test	eax, eax
 	jne	SHORT $LN42@GetCOp
@@ -11508,7 +11639,7 @@ $LN34@GetCOp:
 	jne	SHORT $LN42@GetCOp
 	lea	r8d, QWORD PTR [rcx-1]
 	mov	rcx, rbx
-	lea	rdx, OFFSET FLAT:$SG11022
+	lea	rdx, OFFSET FLAT:$SG11023
 	call	_memicmp
 	test	eax, eax
 	jne	SHORT $LN42@GetCOp
@@ -11571,7 +11702,7 @@ buffer$ = 184
 hllop$ = 192
 GetExpression PROC					; COMDAT
 
-; 756  : {
+; 776  : {
 
 	mov	QWORD PTR [rsp+8], rbx
 	mov	DWORD PTR [rsp+32], r9d
@@ -11585,17 +11716,17 @@ GetExpression PROC					; COMDAT
 	push	r15
 	sub	rsp, 80					; 00000050H
 
-; 757  :   char *ptr = buffer;
-; 758  :   uint_32 truelabel = 0;
-; 759  : 
-; 760  :   DebugMsg1(("%u GetExpression(>%.32s< buf=>%s<) enter\n", ++evallvl, tokenarray[*i].tokpos, buffer));
-; 761  : 
-; 762  :   /* v2.08: structure changed from for(;;) to while() to increase
-; 763  :   * readability and - optionally - handle the second operand differently
-; 764  :   * than the first.
-; 765  :   */
-; 766  : 
-; 767  :   if (ERROR == GetAndExpression(hll, i, tokenarray, ilabel, is_true, ptr, hllop)) {
+; 777  :   char *ptr = buffer;
+; 778  :   uint_32 truelabel = 0;
+; 779  : 
+; 780  :   DebugMsg1(("%u GetExpression(>%.32s< buf=>%s<) enter\n", ++evallvl, tokenarray[*i].tokpos, buffer));
+; 781  : 
+; 782  :   /* v2.08: structure changed from for(;;) to while() to increase
+; 783  :   * readability and - optionally - handle the second operand differently
+; 784  :   * than the first.
+; 785  :   */
+; 786  : 
+; 787  :   if (ERROR == GetAndExpression(hll, i, tokenarray, ilabel, is_true, ptr, hllop)) {
 
 	mov	r15, QWORD PTR hllop$[rsp]
 	mov	r13, rcx
@@ -11613,15 +11744,15 @@ GetExpression PROC					; COMDAT
 	cmp	eax, -1
 	jne	SHORT $LN30@GetExpress
 
-; 768  :     DebugMsg1(("%u GetExpression exit, error\n", evallvl--));
-; 769  :     return(ERROR);
+; 788  :     DebugMsg1(("%u GetExpression exit, error\n", evallvl--));
+; 789  :     return(ERROR);
 
 	or	rax, -1
 	jmp	$LN1@GetExpress
 $LN30@GetExpress:
 
-; 770  :   }
-; 771  :   while (COP_OR == GetCOp(&tokenarray[*i])) {
+; 790  :   }
+; 791  :   while (COP_OR == GetCOp(&tokenarray[*i])) {
 
 	movsxd	rcx, DWORD PTR [r12]
 	shl	rcx, 5
@@ -11633,72 +11764,72 @@ $LN30@GetExpress:
 	npad	9
 $LL2@GetExpress:
 
-; 772  : 
-; 773  :     uint_32 nlabel;
-; 774  :     uint_32 olabel;
-; 775  :     char buff[16];
-; 776  : 
-; 777  :     /* the generated code of last simple expression has to be modified
-; 778  :     1. the last jump must be inverted
-; 779  :     2. a "is_true" label must be created (it's used to jump "behind" the expr)
-; 780  :     3. create a new label
-; 781  :     4. the current "false" label must be generated
-; 782  : 
-; 783  :     if it is a .REPEAT, step 4 is slightly more difficult, since the "false"
-; 784  :     label is already "gone":
-; 785  :     4a. create a new label
-; 786  :     4b. replace the "false" label in the generated code by the new label
-; 787  :     */
-; 788  : 
-; 789  :     (*i)++;
+; 792  : 
+; 793  :     uint_32 nlabel;
+; 794  :     uint_32 olabel;
+; 795  :     char buff[16];
+; 796  : 
+; 797  :     /* the generated code of last simple expression has to be modified
+; 798  :     1. the last jump must be inverted
+; 799  :     2. a "is_true" label must be created (it's used to jump "behind" the expr)
+; 800  :     3. create a new label
+; 801  :     4. the current "false" label must be generated
+; 802  : 
+; 803  :     if it is a .REPEAT, step 4 is slightly more difficult, since the "false"
+; 804  :     label is already "gone":
+; 805  :     4a. create a new label
+; 806  :     4b. replace the "false" label in the generated code by the new label
+; 807  :     */
+; 808  : 
+; 809  :     (*i)++;
 
 	inc	DWORD PTR [r12]
 
-; 790  :     DebugMsg1(("%u GetExpression: ||-operator found, is_true=%u, lastjmp=%s\n", evallvl, is_true, hllop->lastjmp ? hllop->lastjmp : "NULL"));
-; 791  : 
-; 792  :     if (is_true == FALSE) {
+; 810  :     DebugMsg1(("%u GetExpression: ||-operator found, is_true=%u, lastjmp=%s\n", evallvl, is_true, hllop->lastjmp ? hllop->lastjmp : "NULL"));
+; 811  : 
+; 812  :     if (is_true == FALSE) {
 
 	test	bpl, bpl
 	jne	$LN11@GetExpress
 
-; 793  :       if (hllop->lastjmp) {
+; 813  :       if (hllop->lastjmp) {
 
 	mov	rbx, QWORD PTR [r15]
 	test	rbx, rbx
 	je	$LN42@GetExpress
 
-; 794  :         char *p = hllop->lastjmp;
-; 795  :         InvertJump(p);           /* step 1 */
+; 814  :         char *p = hllop->lastjmp;
+; 815  :         InvertJump(p);           /* step 1 */
 
 	mov	rcx, rbx
 	call	InvertJump
 
-; 796  :         if (truelabel == 0)      /* step 2 */
+; 816  :         if (truelabel == 0)      /* step 2 */
 
 	test	r14d, r14d
 	jne	SHORT $LN7@GetExpress
 
-; 797  :           truelabel = GetHllLabel();
+; 817  :           truelabel = GetHllLabel();
 
 	mov	r14d, DWORD PTR ModuleInfo+352
 	inc	r14d
 	mov	DWORD PTR ModuleInfo+352, r14d
 $LN7@GetExpress:
 
-; 798  :         if (*p) { /* v2.11: there might be a 0 at lastjmp */
+; 818  :         if (*p) { /* v2.11: there might be a 0 at lastjmp */
 
 	cmp	BYTE PTR [rbx], 0
 	je	SHORT $LN8@GetExpress
 
-; 799  :           p += 4;                /* skip 'jcc ' or 'jmp ' */
-; 800  :           GetLabelStr(truelabel, p);
+; 819  :           p += 4;                /* skip 'jcc ' or 'jmp ' */
+; 820  :           GetLabelStr(truelabel, p);
 
 	mov	r8d, r14d
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR [rbx+4]
 	call	sprintf
 
-; 801  :           strcat(p, EOLSTR);
+; 821  :           strcat(p, EOLSTR);
 
 	sub	rbx, -3
 $LL40@GetExpress:
@@ -11706,7 +11837,7 @@ $LL40@GetExpress:
 	lea	rbx, QWORD PTR [rbx+1]
 	jne	SHORT $LL40@GetExpress
 	xor	ecx, ecx
-	lea	r15, OFFSET FLAT:$SG11316
+	lea	r15, OFFSET FLAT:$SG11330
 	npad	10
 $LL41@GetExpress:
 	movzx	eax, BYTE PTR [r15+rcx]
@@ -11717,26 +11848,26 @@ $LL41@GetExpress:
 	mov	r15, QWORD PTR hllop$[rsp]
 $LN8@GetExpress:
 
-; 802  :         }
-; 803  :         /* v2.08: if-block added */
-; 804  :         if (hllop->lasttruelabel)
+; 822  :         }
+; 823  :         /* v2.08: if-block added */
+; 824  :         if (hllop->lasttruelabel)
 
 	mov	edx, DWORD PTR [r15+8]
 	test	edx, edx
 	je	SHORT $LN9@GetExpress
 
-; 805  :           ReplaceLabel(ptr, hllop->lasttruelabel, truelabel);
+; 825  :           ReplaceLabel(ptr, hllop->lasttruelabel, truelabel);
 
 	mov	r8d, r14d
 	mov	rcx, rdi
 	call	ReplaceLabel
 $LN9@GetExpress:
 
-; 806  :         DebugMsg1(("%u GetExpression: jmp inverted, dest changed >%s<\n", evallvl, ptr));
-; 807  :         hllop->lastjmp = NULL;
-; 808  : 
-; 809  :         nlabel = GetHllLabel();  /* step 3 */
-; 810  :         olabel = GetLabel(hll, ilabel);
+; 826  :         DebugMsg1(("%u GetExpression: jmp inverted, dest changed >%s<\n", evallvl, ptr));
+; 827  :         hllop->lastjmp = NULL;
+; 828  : 
+; 829  :         nlabel = GetHllLabel();  /* step 3 */
+; 830  :         olabel = GetLabel(hll, ilabel);
 
 	movsxd	rax, DWORD PTR ilabel$[rsp]
 	mov	QWORD PTR [r15], 0
@@ -11744,23 +11875,23 @@ $LN9@GetExpress:
 	inc	ebx
 	mov	DWORD PTR ModuleInfo+352, ebx
 
-; 811  :         if (hll->cmd == HLL_REPEAT) {
+; 831  :         if (hll->cmd == HLL_REPEAT) {
 
 	cmp	DWORD PTR [r13+96], 2
 	mov	ebp, DWORD PTR [r13+rax*4+32]
 	jne	SHORT $LN10@GetExpress
 
-; 812  :           ReplaceLabel(buffer, olabel, nlabel);
+; 832  :           ReplaceLabel(buffer, olabel, nlabel);
 
 	mov	rcx, QWORD PTR buffer$[rsp]
 	mov	r8d, ebx
 	mov	edx, ebp
 	call	ReplaceLabel
 
-; 813  :           sprintf(ptr + strlen(ptr), "%s" LABELQUAL EOLSTR, GetLabelStr(nlabel, buff));
+; 833  :           sprintf(ptr + strlen(ptr), "%s" LABELQUAL EOLSTR, GetLabelStr(nlabel, buff));
 
 	mov	r8d, ebx
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$1[rsp]
 	call	sprintf
 	mov	rcx, rsi
@@ -11771,19 +11902,19 @@ $LL39@GetExpress:
 	jne	SHORT $LL39@GetExpress
 	add	rcx, rdi
 	lea	r8, QWORD PTR buff$1[rsp]
-	lea	rdx, OFFSET FLAT:$SG11320
+	lea	rdx, OFFSET FLAT:$SG11334
 	call	sprintf
 
-; 814  :         }
+; 834  :         }
 
 	jmp	SHORT $LN46@GetExpress
 $LN10@GetExpress:
 
-; 815  :         else {
-; 816  :           sprintf(ptr + strlen(ptr), "%s" LABELQUAL EOLSTR, GetLabelStr(olabel, buff));
+; 835  :         else {
+; 836  :           sprintf(ptr + strlen(ptr), "%s" LABELQUAL EOLSTR, GetLabelStr(olabel, buff));
 
 	mov	r8d, ebp
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$1[rsp]
 	call	sprintf
 	mov	rcx, rsi
@@ -11793,10 +11924,10 @@ $LL38@GetExpress:
 	jne	SHORT $LL38@GetExpress
 	add	rcx, rdi
 	lea	r8, QWORD PTR buff$1[rsp]
-	lea	rdx, OFFSET FLAT:$SG11321
+	lea	rdx, OFFSET FLAT:$SG11335
 	call	sprintf
 
-; 817  :           ReplaceLabel(buffer, olabel, nlabel);
+; 837  :           ReplaceLabel(buffer, olabel, nlabel);
 
 	mov	rcx, QWORD PTR buffer$[rsp]
 	mov	r8d, ebx
@@ -11808,11 +11939,11 @@ $LN42@GetExpress:
 	mov	rbx, QWORD PTR tokenarray$[rsp]
 $LN11@GetExpress:
 
-; 818  :         }
-; 819  :         DebugMsg1(("%u GetExpression: dest changed, label added >%s<\n", evallvl, ptr));
-; 820  :       }
-; 821  :     }
-; 822  :     ptr += strlen(ptr);
+; 838  :         }
+; 839  :         DebugMsg1(("%u GetExpression: dest changed, label added >%s<\n", evallvl, ptr));
+; 840  :       }
+; 841  :     }
+; 842  :     ptr += strlen(ptr);
 
 	mov	rax, rsi
 	npad	8
@@ -11821,8 +11952,8 @@ $LL37@GetExpress:
 	cmp	BYTE PTR [rdi+rax], 0
 	jne	SHORT $LL37@GetExpress
 
-; 823  :     hllop->lasttruelabel = 0; /* v2.08 */
-; 824  :     if (ERROR == GetAndExpression(hll, i, tokenarray, ilabel, is_true, ptr, hllop)) {
+; 843  :     hllop->lasttruelabel = 0; /* v2.08 */
+; 844  :     if (ERROR == GetAndExpression(hll, i, tokenarray, ilabel, is_true, ptr, hllop)) {
 
 	mov	r9d, DWORD PTR ilabel$[rsp]
 	add	rdi, rax
@@ -11837,8 +11968,8 @@ $LL37@GetExpress:
 	cmp	eax, -1
 	je	$LN31@GetExpress
 
-; 770  :   }
-; 771  :   while (COP_OR == GetCOp(&tokenarray[*i])) {
+; 790  :   }
+; 791  :   while (COP_OR == GetCOp(&tokenarray[*i])) {
 
 	movsxd	rcx, DWORD PTR [r12]
 	shl	rcx, 5
@@ -11847,15 +11978,15 @@ $LL37@GetExpress:
 	cmp	eax, 8
 	je	$LL2@GetExpress
 
-; 827  :     }
-; 828  :   }
-; 829  :   if (truelabel > 0) {
+; 847  :     }
+; 848  :   }
+; 849  :   if (truelabel > 0) {
 
 	test	r14d, r14d
 	je	$LN13@GetExpress
 
-; 830  :     /* v2.08: this is needed, but ober-hackish. to be improved... */
-; 831  :     if (hllop->lastjmp && hllop->lasttruelabel) {
+; 850  :     /* v2.08: this is needed, but ober-hackish. to be improved... */
+; 851  :     if (hllop->lastjmp && hllop->lasttruelabel) {
 
 	cmp	QWORD PTR [r15], 0
 	je	SHORT $LL14@GetExpress
@@ -11863,14 +11994,14 @@ $LL37@GetExpress:
 	test	edx, edx
 	je	SHORT $LL14@GetExpress
 
-; 832  :       DebugMsg1(("%u GetExpression: suppressed ReplaceLabel %u -> %u, lastjmp=%s\n", evallvl, hllop->lasttruelabel, truelabel, hllop->lastjmp));
-; 833  :       ReplaceLabel(ptr, hllop->lasttruelabel, truelabel);
+; 852  :       DebugMsg1(("%u GetExpression: suppressed ReplaceLabel %u -> %u, lastjmp=%s\n", evallvl, hllop->lasttruelabel, truelabel, hllop->lastjmp));
+; 853  :       ReplaceLabel(ptr, hllop->lasttruelabel, truelabel);
 
 	mov	r8d, r14d
 	mov	rcx, rdi
 	call	ReplaceLabel
 
-; 834  :       *(strchr(hllop->lastjmp, EOLCHAR) + 1) = NULLC;
+; 854  :       *(strchr(hllop->lastjmp, EOLCHAR) + 1) = NULLC;
 
 	mov	rcx, QWORD PTR [r15]
 	mov	edx, 10
@@ -11879,29 +12010,29 @@ $LL37@GetExpress:
 	npad	2
 $LL14@GetExpress:
 
-; 835  :     }
-; 836  :     ptr += strlen(ptr);
+; 855  :     }
+; 856  :     ptr += strlen(ptr);
 
 	inc	rsi
 	cmp	BYTE PTR [rdi+rsi], 0
 	jne	SHORT $LL14@GetExpress
 	add	rdi, rsi
 
-; 837  :     GetLabelStr(truelabel, ptr);
+; 857  :     GetLabelStr(truelabel, ptr);
 
-	lea	rdx, OFFSET FLAT:$SG11101
+	lea	rdx, OFFSET FLAT:$SG11115
 	mov	rcx, rdi
 	mov	r8d, r14d
 	call	sprintf
 
-; 838  :     strcat(ptr, LABELQUAL EOLSTR);
+; 858  :     strcat(ptr, LABELQUAL EOLSTR);
 
 	dec	rdi
 $LL34@GetExpress:
 	cmp	BYTE PTR [rdi+1], 0
 	lea	rdi, QWORD PTR [rdi+1]
 	jne	SHORT $LL34@GetExpress
-	lea	rdx, OFFSET FLAT:$SG11325
+	lea	rdx, OFFSET FLAT:$SG11339
 	xor	ecx, ecx
 	npad	12
 $LL35@GetExpress:
@@ -11911,20 +12042,20 @@ $LL35@GetExpress:
 	test	al, al
 	jne	SHORT $LL35@GetExpress
 
-; 839  :     DebugMsg1(("%u GetExpression: label added >%s<\n", evallvl, ptr));
-; 840  :     hllop->lasttruelabel = truelabel; /* v2.08 */
+; 859  :     DebugMsg1(("%u GetExpression: label added >%s<\n", evallvl, ptr));
+; 860  :     hllop->lasttruelabel = truelabel; /* v2.08 */
 
 	mov	DWORD PTR [r15+8], r14d
 $LN13@GetExpress:
 
-; 841  :   }
-; 842  :   DebugMsg1(("%u GetExpression exit\n", evallvl--));
-; 843  :   return(NOT_ERROR);
+; 861  :   }
+; 862  :   DebugMsg1(("%u GetExpression exit\n", evallvl--));
+; 863  :   return(NOT_ERROR);
 
 	xor	eax, eax
 $LN1@GetExpress:
 
-; 844  : }
+; 864  : }
 
 	mov	rbx, QWORD PTR [rsp+144]
 	add	rsp, 80					; 00000050H
@@ -11938,8 +12069,8 @@ $LN1@GetExpress:
 	ret	0
 $LN31@GetExpress:
 
-; 825  :       DebugMsg1(("%u GetExpression exit, error\n", evallvl--));
-; 826  :       return(ERROR);
+; 845  :       DebugMsg1(("%u GetExpression exit, error\n", evallvl--));
+; 846  :       return(ERROR);
 
 	mov	eax, esi
 	jmp	SHORT $LN1@GetExpress
@@ -11950,22 +12081,22 @@ _TEXT	ENDS
 _TEXT	SEGMENT
 HllCheckOpen PROC
 
-; 2274 :   if (HllStack) {
+; 2302 :   if (HllStack) {
 
 	cmp	QWORD PTR ModuleInfo+224, 0
 	je	SHORT $LN2@HllCheckOp
 
-; 2275 :     //EmitErr( BLOCK_NESTING_ERROR, ".if-.repeat-.while" );
-; 2276 :     EmitErr(UNMATCHED_BLOCK_NESTING, ".if-.repeat-.while");
+; 2303 :     //EmitErr( BLOCK_NESTING_ERROR, ".if-.repeat-.while" );
+; 2304 :     EmitErr(UNMATCHED_BLOCK_NESTING, ".if-.repeat-.while");
 
-	lea	rdx, OFFSET FLAT:$SG12124
+	lea	rdx, OFFSET FLAT:$SG12144
 	mov	ecx, 142				; 0000008eH
 	jmp	EmitErr
 $LN2@HllCheckOp:
 
-; 2277 :   }
-; 2278 :   DebugMsg(("HllCheckOpen: allocated items:%u, reused items:%u, .while cond-blocks/bytes:%u/%u\n", cntAlloc, cntReused, cntCond, cntCondBytes));
-; 2279 : }
+; 2305 :   }
+; 2306 :   DebugMsg(("HllCheckOpen: allocated items:%u, reused items:%u, .while cond-blocks/bytes:%u/%u\n", cntAlloc, cntReused, cntCond, cntCondBytes));
+; 2307 : }
 
 	ret	0
 HllCheckOpen ENDP
@@ -11976,25 +12107,25 @@ _TEXT	SEGMENT
 pass$ = 8
 HllInit	PROC
 
-; 2302 :   //if ( pass == PASS_1 )
-; 2303 :   //    HllFree = NULL;
-; 2304 : 
-; 2305 :   //HllStack = NULL; /* empty stack of open hll directives */
-; 2306 :   ModuleInfo.hll_label = 0; /* init hll label counter */
+; 2330 :   //if ( pass == PASS_1 )
+; 2331 :   //    HllFree = NULL;
+; 2332 : 
+; 2333 :   //HllStack = NULL; /* empty stack of open hll directives */
+; 2334 :   ModuleInfo.hll_label = 0; /* init hll label counter */
 
 	mov	DWORD PTR ModuleInfo+352, 0
 
-; 2307 : #ifdef DEBUG_OUT
-; 2308 :   evallvl = 0;
-; 2309 :   if (pass == PASS_1) {
-; 2310 :     cntAlloc = 0;
-; 2311 :     cntReused = 0;
-; 2312 :     cntCond = 0;
-; 2313 :     cntCondBytes = 0;
-; 2314 :   }
-; 2315 : #endif
-; 2316 :   return;
-; 2317 : }
+; 2335 : #ifdef DEBUG_OUT
+; 2336 :   evallvl = 0;
+; 2337 :   if (pass == PASS_1) {
+; 2338 :     cntAlloc = 0;
+; 2339 :     cntReused = 0;
+; 2340 :     cntCond = 0;
+; 2341 :     cntCondBytes = 0;
+; 2342 :   }
+; 2343 : #endif
+; 2344 :   return;
+; 2345 : }
 
 	ret	0
 HllInit	ENDP

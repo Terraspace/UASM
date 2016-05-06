@@ -12,10 +12,10 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10873 DB	'ABS', 00H
-$SG10989 DB	')', 00H
+$SG10874 DB	'ABS', 00H
+$SG10990 DB	')', 00H
 	ORG $+2
-$SG10993 DB	'ABS', 00H
+$SG10994 DB	'ABS', 00H
 _DATA	ENDS
 CONST	SEGMENT
 szCOMM	DB	'COMM', 00H
@@ -1118,7 +1118,7 @@ $LN3@MakeComm:
 ; 692  :             EmitWarn( 2, COMM_VAR_EXCEEDS_64K, sym->name );
 
 	mov	r8, QWORD PTR [rbx+8]
-	mov	edx, 267				; 0000010bH
+	mov	edx, 268				; 0000010cH
 	mov	ecx, 2
 	call	EmitWarn
 $LN6@MakeComm:
@@ -1329,7 +1329,7 @@ $LN6@ExternDire:
 	cmp	BYTE PTR [rcx+r12], 8
 	jne	SHORT $LN10@ExternDire
 	mov	rcx, QWORD PTR [rcx+r12+8]
-	lea	rdx, OFFSET FLAT:$SG10993
+	lea	rdx, OFFSET FLAT:$SG10994
 	call	_stricmp
 
 ; 558  :             //ti.mem_type = MT_ABS;
@@ -1741,7 +1741,7 @@ $LN59@ExternDire:
 
 ; 537  :                 return( EmitErr( EXPECTED, ")" ) );
 
-	lea	rdx, OFFSET FLAT:$SG10989
+	lea	rdx, OFFSET FLAT:$SG10990
 	mov	ecx, 230				; 000000e6H
 	jmp	SHORT $LN69@ExternDire
 $LN58@ExternDire:
@@ -1973,7 +1973,7 @@ $LN6@HandleAltn:
 ; 450  :                         EmitErr( MUST_BE_PUBLIC_OR_EXTERNAL, altname );
 
 	mov	rdx, rdi
-	mov	ecx, 268				; 0000010cH
+	mov	ecx, 269				; 0000010dH
 	call	EmitErr
 $LN11@HandleAltn:
 
@@ -2319,7 +2319,7 @@ $LL4@ExterndefD:
 	cmp	BYTE PTR [rcx+r14], 8
 	jne	SHORT $LN13@ExterndefD
 	mov	rcx, QWORD PTR [rcx+r14+8]
-	lea	rdx, OFFSET FLAT:$SG10873
+	lea	rdx, OFFSET FLAT:$SG10874
 	call	_stricmp
 
 ; 230  :             /* v2.07: MT_ABS is obsolete */

@@ -313,6 +313,7 @@ pick( JUMP_DESTINATION_MUST_SPECIFY_A_LABEL, "Jump destination must specify a la
 pick( TOKEN_IGNORED,                     "Ignored: %s" )
 pick( MISSING_ARGUMENT_FOR_CMDLINE_OPTION, "Missing argument for cmdline option" )
 pick( INVALID_COPROCESSOR_REGISTER,      "Invalid coprocessor register" )
+pick( CASE_ALREADY_OCCURED_IN_THIS_SWITCH_BLOCK, ".case %s already occured in this .switch block")
 #if AMD64_SUPPORT
 pick( INVALID_USAGE_OF_AHBHCHDH,         "Registers AH-DH may not be used with SPL-DIL or R8-R15" )
 pick( ENDPROLOG_FOUND_BEFORE_EH_DIRECTIVES, ".ENDPROLOG found before EH directives" )

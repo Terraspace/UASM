@@ -511,6 +511,7 @@ static void output_opc(struct code_info *CodeInfo)
               if (CodeInfo->opnd[OPND2].type == OP_I8){
                 if ((CodeInfo->token >= T_VPSLLW) && (CodeInfo->token <= T_VPSRLQ) ||
                   (CodeInfo->token >= T_VPSLLVD) && (CodeInfo->token <= T_VPSRLVW)){
+                  //__debugbreak();
                   byte1 |= EVEX_P0R1MASK;
                   byte1 |= EVEX_P0RMASK;
                   if ((CodeInfo->opnd[OPND1].type == OP_R64) || (CodeInfo->opnd[OPND1].type == OP_RAX) ||
@@ -570,12 +571,22 @@ static void output_opc(struct code_info *CodeInfo)
                 if (CodeInfo->token == T_VCVTDQ2PD)
                 CodeInfo->evex_p2 &= ~EVEX_P2L1MASK;
               }
-
               OutputCodeByte( byte1 );
+              //ovde treba proveriti sada je 91 a treba biti D1
               if (CodeInfo->opnd[OPND2].type == OP_I8){
+                //__debugbreak();
                 if ((CodeInfo->token >= T_VPSLLW) && (CodeInfo->token <= T_VPSRLQ) ||
-                  (CodeInfo->token >= T_VPSLLVD) && (CodeInfo->token <= T_VPSRLVW))
+                  (CodeInfo->token >= T_VPSLLVD) && (CodeInfo->token <= T_VPSRLVW)) {
+                  c = CodeInfo->reg1;
+                  lbyte &= 0x0f;
+                  c = (c << 3);
+                  c = ~c;
+                  c &= EVEX_P1VVVV;
+                  lbyte |= c;
+                  lbyte |= 4;
+                  if (ins->byte1_info == F_660F) lbyte |= 0x1;
                   CodeInfo->tuple = TRUE;
+                }
               }
             else
             lbyte |= ( ( CodeInfo->prefix.rex & REX_W ) ? 0x80 : 0 );
@@ -776,6 +787,9 @@ static void output_opc(struct code_info *CodeInfo)
                 CodeInfo->evex_p2 |= decoflags;
               if (CodeInfo->token == T_VCVTDQ2PD)
                 CodeInfo->evex_p2 &= ~EVEX_P2L1MASK;
+              if ((CodeInfo->token >= T_VPSLLW) && (CodeInfo->token <= T_VPSRLQ) ||
+                (CodeInfo->token >= T_VPSLLVD) && (CodeInfo->token <= T_VPSRLVW)) 
+                CodeInfo->evex_p2 &= ~EVEX_P2VMASK;
                 OutputCodeByte(CodeInfo->evex_p2);
                 }
             }
@@ -1194,7 +1208,8 @@ static void output_opc(struct code_info *CodeInfo)
               (CodeInfo->token == T_VRNDSCALEPD) || (CodeInfo->token == T_VRNDSCALEPS)||
               (CodeInfo->token >= T_VPSLLVD) && (CodeInfo->token <= T_VPSRLVW)){
               if ((CodeInfo->vexconst) && ((Check4CompDisp8(CodeInfo, &comprdsp, &d, CodeInfo->vexconst)) && comprdsp)){
-                CodeInfo->opnd[OPND1].data32l = comprdsp;                tmp &= ~MOD_10;     /* if        mod = 10, r/m = 100, s-i-b is present */
+                CodeInfo->opnd[OPND1].data32l = comprdsp;                
+                tmp &= ~MOD_10;     /* if        mod = 10, r/m = 100, s-i-b is present */
                 tmp |= MOD_01;      /* change to mod = 01, r/m = 100, s-i-b is present */
                 if ((CodeInfo->token == T_VRNDSCALEPD) || (CodeInfo->token == T_VRNDSCALEPS)){                   
                      c = CodeInfo->reg2;
@@ -1257,11 +1272,16 @@ static void output_opc(struct code_info *CodeInfo)
                    else {
                      if ((CodeInfo->r2type)&&((CodeInfo->token == T_VRNDSCALEPD) || (CodeInfo->token == T_VRNDSCALEPS)))
                        tmp &= ~0xc0;
-                     c = CodeInfo->reg2;
-                     if (c > 15) c -= 16;
-                     if (c > 7) c -= 8;
-                     tmp |= c;
-                   }
+                     if ((CodeInfo->token >= T_VPSLLW) && (CodeInfo->token <= T_VPSRLQ) ||
+                       (CodeInfo->token >= T_VPSLLVD) && (CodeInfo->token <= T_VPSRLVW)) {
+                       tmp &= ~7;
+					   if ((CodeInfo->r2type == OP_R64) || (CodeInfo->r2type == OP_R32)) tmp &= ~0xc0;
+                     }
+                       c = CodeInfo->reg2;
+                       if (c > 15) c -= 16;
+                       if (c > 7) c -= 8;
+                       tmp |= c;
+                    }
                   }
                 }
               }

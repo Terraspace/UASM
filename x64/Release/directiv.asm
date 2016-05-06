@@ -66,7 +66,7 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11218 DB	'%s', 0aH, 00H
+$SG11219 DB	'%s', 0aH, 00H
 _DATA	ENDS
 CONST	SEGMENT
 directive_tab DQ FLAT:CondAsmDirective
@@ -1222,7 +1222,7 @@ $LN8:
 ; 58   :             printf( "%s\n", tokenarray[i+1].tokpos );
 
 	movsxd	rdx, ecx
-	lea	rcx, OFFSET FLAT:$SG11218
+	lea	rcx, OFFSET FLAT:$SG11219
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rax+56]
 	call	printf
@@ -1422,7 +1422,7 @@ $LN24@AliasDirec:
 ; 382  :                 return( EmitErr( MUST_BE_PUBLIC_OR_EXTERNAL, subst ) );
 
 	mov	rdx, rsi
-	mov	ecx, 268				; 0000010cH
+	mov	ecx, 269				; 0000010dH
 	mov	rbx, QWORD PTR [rsp+48]
 	mov	rsi, QWORD PTR [rsp+56]
 
@@ -1524,7 +1524,7 @@ $LN11@AliasDirec:
 ; 351  :             return( EmitErr( MUST_BE_PUBLIC_OR_EXTERNAL, subst ) );
 
 	mov	rdx, rsi
-	mov	ecx, 268				; 0000010cH
+	mov	ecx, 269				; 0000010dH
 	call	EmitErr
 $LN32@AliasDirec:
 	mov	rdi, QWORD PTR [rsp+64]

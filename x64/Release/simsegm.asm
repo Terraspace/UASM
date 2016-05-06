@@ -12,93 +12,93 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG10945 DB	01H DUP (?)
+$SG10946 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG10885 DB	'_TEXT', 00H
+$SG10886 DB	'_TEXT', 00H
 	ORG $+2
-$SG10886 DB	'STACK', 00H
+$SG10887 DB	'STACK', 00H
 	ORG $+2
-$SG10887 DB	'_DATA', 00H
+$SG10888 DB	'_DATA', 00H
 	ORG $+2
-$SG10888 DB	'_BSS', 00H
+$SG10889 DB	'_BSS', 00H
 	ORG $+3
-$SG10889 DB	'FAR_DATA', 00H
+$SG10890 DB	'FAR_DATA', 00H
 	ORG $+3
-$SG10891 DB	'CONST', 00H
+$SG10892 DB	'CONST', 00H
 	ORG $+2
-$SG10896 DB	'BSS', 00H
-$SG10890 DB	'FAR_BSS', 00H
-$SG10893 DB	'CODE', 00H
+$SG10897 DB	'BSS', 00H
+$SG10891 DB	'FAR_BSS', 00H
+$SG10894 DB	'CODE', 00H
 	ORG $+3
-$SG10894 DB	'STACK', 00H
+$SG10895 DB	'STACK', 00H
 	ORG $+2
-$SG10895 DB	'DATA', 00H
+$SG10896 DB	'DATA', 00H
 	ORG $+3
-$SG10897 DB	'FAR_DATA', 00H
+$SG10898 DB	'FAR_DATA', 00H
 	ORG $+3
-$SG10899 DB	'CONST', 00H
+$SG10900 DB	'CONST', 00H
 	ORG $+2
-$SG10901 DB	'PUBLIC', 00H
+$SG10902 DB	'PUBLIC', 00H
 	ORG $+5
-$SG10898 DB	'FAR_BSS', 00H
-$SG10902 DB	'STACK', 00H
+$SG10899 DB	'FAR_BSS', 00H
+$SG10903 DB	'STACK', 00H
 	ORG $+2
-$SG10903 DB	'PUBLIC', 00H
-	ORG $+1
 $SG10904 DB	'PUBLIC', 00H
 	ORG $+1
-$SG10905 DB	'PRIVATE', 00H
-$SG10906 DB	'PRIVATE', 00H
-$SG10907 DB	'PUBLIC', 00H
+$SG10905 DB	'PUBLIC', 00H
 	ORG $+1
-$SG10924 DB	'%s %r %s', 00H
+$SG10906 DB	'PRIVATE', 00H
+$SG10907 DB	'PRIVATE', 00H
+$SG10908 DB	'PUBLIC', 00H
+	ORG $+1
+$SG10925 DB	'%s %r %s', 00H
 	ORG $+3
-$SG10929 DB	'%s %r', 00H
+$SG10930 DB	'%s %r', 00H
 	ORG $+2
-$SG10943 DB	'WORD', 00H
+$SG10944 DB	'WORD', 00H
 	ORG $+3
-$SG10944 DB	'PARA', 00H
+$SG10945 DB	'PARA', 00H
 	ORG $+3
-$SG10949 DB	'FLAT', 00H
+$SG10950 DB	'FLAT', 00H
 	ORG $+3
-$SG10950 DB	'USE32', 00H
+$SG10951 DB	'USE32', 00H
 	ORG $+2
-$SG10953 DB	'DWORD', 00H
+$SG10954 DB	'DWORD', 00H
 	ORG $+2
-$SG10954 DB	'PARA', 00H
+$SG10955 DB	'PARA', 00H
 	ORG $+7
-$SG10959 DB	'%s %r %s %s %s ''%s''', 00H
-$SG10964 DB	'%s %r', 00H
+$SG10960 DB	'%s %r %s %s %s ''%s''', 00H
+$SG10965 DB	'%s %r', 00H
 	ORG $+2
-$SG10968 DB	'%s %r', 00H
+$SG10969 DB	'%s %r', 00H
 	ORG $+2
-$SG10970 DB	'%s %r', 00H
+$SG10971 DB	'%s %r', 00H
 	ORG $+2
-$SG10975 DB	'%s %r', 00H
+$SG10976 DB	'%s %r', 00H
 	ORG $+2
-$SG11014 DB	'FLAT', 00H
+$SG11015 DB	'FLAT', 00H
 	ORG $+7
-$SG11016 DB	'%r %r:%s', 00H
+$SG11017 DB	'%r %r:%s', 00H
 	ORG $+7
-$SG11018 DB	'ORG 0%xh', 00H
+$SG11019 DB	'ORG 0%xh', 00H
 	ORG $+7
-$SG11022 DB	'%r %r:ERROR', 00H
+$SG11023 DB	'%r %r:ERROR', 00H
 	ORG $+4
-$SG11026 DB	'%r %r:ERROR', 00H
+$SG11027 DB	'%r %r:ERROR', 00H
 	ORG $+4
-$SG11042 DB	'%s %r %s', 00H
+$SG11043 DB	'%s %r %s', 00H
 	ORG $+3
-$SG11045 DB	', %s', 00H
+$SG11046 DB	', %s', 00H
 _DATA	ENDS
 CONST	SEGMENT
-SegmNamesDef DQ	FLAT:$SG10885
-	DQ	FLAT:$SG10886
+SegmNamesDef DQ	FLAT:$SG10886
 	DQ	FLAT:$SG10887
 	DQ	FLAT:$SG10888
 	DQ	FLAT:$SG10889
 	DQ	FLAT:$SG10890
 	DQ	FLAT:$SG10891
+	DQ	FLAT:$SG10892
 CONST	ENDS
 PUBLIC	SimGetSegName
 PUBLIC	GetCodeClass
@@ -160,20 +160,20 @@ $pdata$2$SimplifiedSegDir DD imagerel $LN55+768
 	DD	imagerel $chain$2$SimplifiedSegDir
 pdata	ENDS
 CONST	SEGMENT
-SegmClass DQ	FLAT:$SG10893
-	DQ	FLAT:$SG10894
+SegmClass DQ	FLAT:$SG10894
 	DQ	FLAT:$SG10895
 	DQ	FLAT:$SG10896
 	DQ	FLAT:$SG10897
 	DQ	FLAT:$SG10898
 	DQ	FLAT:$SG10899
-SegmCombine DQ	FLAT:$SG10901
-	DQ	FLAT:$SG10902
+	DQ	FLAT:$SG10900
+SegmCombine DQ	FLAT:$SG10902
 	DQ	FLAT:$SG10903
 	DQ	FLAT:$SG10904
 	DQ	FLAT:$SG10905
 	DQ	FLAT:$SG10906
 	DQ	FLAT:$SG10907
+	DQ	FLAT:$SG10908
 CONST	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
@@ -415,7 +415,7 @@ $LN14@Simplified:
 	test	rdx, rdx
 	je	SHORT $LN34@Simplified
 	mov	rdx, QWORD PTR [rdx+8]
-	lea	rcx, OFFSET FLAT:$SG10929
+	lea	rcx, OFFSET FLAT:$SG10930
 	mov	r8d, 441				; 000001b9H
 	call	AddLineQueueX
 $LN34@Simplified:
@@ -487,7 +487,7 @@ $LN18@Simplified:
 
 ; 238  :             name = "FLAT";
 
-	lea	rbx, OFFSET FLAT:$SG11014
+	lea	rbx, OFFSET FLAT:$SG11015
 
 ; 239  :         } else {
 
@@ -505,7 +505,7 @@ $LN23@Simplified:
 ; 243  :         AddLineQueueX( "%r %r:%s", T_ASSUME, T_CS, name );
 
 	mov	r9, rbx
-	lea	rcx, OFFSET FLAT:$SG11016
+	lea	rcx, OFFSET FLAT:$SG11017
 	mov	edx, 443				; 000001bbH
 	mov	r8d, 26
 	call	AddLineQueueX
@@ -531,13 +531,13 @@ $LN24@Simplified:
 ; 253  :         AddLineQueueX( "ORG 0%xh", opndx.value );
 
 	mov	edx, DWORD PTR opndx$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11018
+	lea	rcx, OFFSET FLAT:$SG11019
 	call	AddLineQueueX
 
 ; 254  :         EndSimSeg( SIM_STACK );
 
 	mov	rdx, QWORD PTR SegmNames+8
-	lea	rcx, OFFSET FLAT:$SG10975
+	lea	rcx, OFFSET FLAT:$SG10976
 	mov	r8d, 441				; 000001b9H
 	call	AddLineQueueX
 
@@ -563,7 +563,7 @@ $LN24@Simplified:
 	mov	r9, QWORD PTR SegmNames+8
 	lea	rdx, OFFSET FLAT:szDgroup
 	mov	r8d, 442				; 000001baH
-	lea	rcx, OFFSET FLAT:$SG10924
+	lea	rcx, OFFSET FLAT:$SG10925
 	call	AddLineQueueX
 
 ; 259  :         break;
@@ -583,7 +583,7 @@ $LN27@Simplified:
 ; 264  :         AddLineQueueX( "%r %r:ERROR", T_ASSUME, T_CS );
 
 	mov	edx, 443				; 000001bbH
-	lea	rcx, OFFSET FLAT:$SG11022
+	lea	rcx, OFFSET FLAT:$SG11023
 	mov	r8d, 26
 	call	AddLineQueueX
 
@@ -617,7 +617,7 @@ $LN30@Simplified:
 ; 271  :         AddLineQueueX( "%r %r:ERROR", T_ASSUME, T_CS );
 
 	mov	edx, 443				; 000001bbH
-	lea	rcx, OFFSET FLAT:$SG11026
+	lea	rcx, OFFSET FLAT:$SG11027
 	mov	r8d, 26
 	call	AddLineQueueX
 $LN31@Simplified:
@@ -670,7 +670,7 @@ EndSimSeg PROC						; COMDAT
 	movsxd	rdx, ecx
 	lea	rax, OFFSET FLAT:SegmNames
 	mov	r8d, 441				; 000001b9H
-	lea	rcx, OFFSET FLAT:$SG10975
+	lea	rcx, OFFSET FLAT:$SG10976
 	mov	rdx, QWORD PTR [rax+rdx*8]
 	jmp	AddLineQueueX
 EndSimSeg ENDP
@@ -704,27 +704,27 @@ SetSimSeg PROC						; COMDAT
 ; 105  :     if ( ModuleInfo.defOfssize > USE16 ) {
 
 	cmp	BYTE PTR ModuleInfo+405, 0
-	lea	rdi, OFFSET FLAT:$SG10943
+	lea	rdi, OFFSET FLAT:$SG10944
 	movsxd	rbx, ecx
-	lea	r15, OFFSET FLAT:$SG10945
-	lea	rcx, OFFSET FLAT:$SG10944
+	lea	r15, OFFSET FLAT:$SG10946
+	lea	rcx, OFFSET FLAT:$SG10945
 	mov	rbp, rdx
 	jbe	SHORT $LN2@SetSimSeg
 
 ; 106  :         if ( ModuleInfo.model == MODEL_FLAT )
 
 	cmp	DWORD PTR ModuleInfo+360, 7
-	lea	rax, OFFSET FLAT:$SG10950
+	lea	rax, OFFSET FLAT:$SG10951
 
 ; 107  :             pUse = "FLAT";
 ; 108  :         else
 ; 109  :             pUse = "USE32";
 ; 110  :         if (( ModuleInfo.curr_cpu & P_CPU_MASK ) <= P_386 )
 
-	lea	rcx, OFFSET FLAT:$SG10954
-	lea	r15, OFFSET FLAT:$SG10949
+	lea	rcx, OFFSET FLAT:$SG10955
+	lea	r15, OFFSET FLAT:$SG10950
 	cmovne	r15, rax
-	lea	rdi, OFFSET FLAT:$SG10953
+	lea	rdi, OFFSET FLAT:$SG10954
 	mov	eax, DWORD PTR ModuleInfo+392
 	and	eax, 240				; 000000f0H
 	cmp	eax, 48					; 00000030H
@@ -777,7 +777,7 @@ $LN9@SetSimSeg:
 ; 124  : 
 ; 125  :     pFmt = "%s %r %s %s %s '%s'";
 
-	lea	rsi, OFFSET FLAT:$SG10959
+	lea	rsi, OFFSET FLAT:$SG10960
 
 ; 126  :     if ( name == NULL ) {
 
@@ -797,7 +797,7 @@ $LN9@SetSimSeg:
 
 ; 129  :             pFmt = "%s %r";
 
-	lea	rsi, OFFSET FLAT:$SG10964
+	lea	rsi, OFFSET FLAT:$SG10965
 	jmp	SHORT $LN18@SetSimSeg
 $LN13@SetSimSeg:
 
@@ -851,7 +851,7 @@ $LN16@SetSimSeg:
 
 ; 145  :                 pFmt = "%s %r";
 
-	lea	rsi, OFFSET FLAT:$SG10968
+	lea	rsi, OFFSET FLAT:$SG10969
 
 ; 146  :         }
 ; 147  :     } else {
@@ -878,7 +878,7 @@ $LN11@SetSimSeg:
 	cmp	DWORD PTR [rax+32], 3
 	jne	SHORT $LN18@SetSimSeg
 	movzx	eax, BYTE PTR [rax+40]
-	lea	rdx, OFFSET FLAT:$SG10970
+	lea	rdx, OFFSET FLAT:$SG10971
 	and	al, 2
 	cmove	rdx, rsi
 	mov	rsi, rdx
@@ -929,7 +929,7 @@ close_currseg PROC					; COMDAT
 ; 87   :         AddLineQueueX( "%s %r", CurrSeg->sym.name, T_ENDS );
 
 	mov	rdx, QWORD PTR [rdx+8]
-	lea	rcx, OFFSET FLAT:$SG10929
+	lea	rcx, OFFSET FLAT:$SG10930
 	mov	r8d, 441				; 000001b9H
 	jmp	AddLineQueueX
 $LN2@close_curr:
@@ -983,7 +983,7 @@ $LN4@AddToDgrou:
 ; 77   :     AddLineQueueX( "%s %r %s", szDgroup, T_GROUP, name );
 
 	mov	r9, rdx
-	lea	rcx, OFFSET FLAT:$SG10924
+	lea	rcx, OFFSET FLAT:$SG10925
 	lea	rdx, OFFSET FLAT:szDgroup
 	mov	r8d, 442				; 000001baH
 	jmp	AddLineQueueX
@@ -1178,7 +1178,7 @@ $LN9:
 ; 364  :         close_currseg();
 
 	mov	rdx, QWORD PTR [rdx+8]
-	lea	rcx, OFFSET FLAT:$SG10929
+	lea	rcx, OFFSET FLAT:$SG10930
 	mov	r8d, 441				; 000001b9H
 	call	AddLineQueueX
 
@@ -1232,7 +1232,7 @@ $LN21:
 ; 332  :         EndSimSeg( SIM_CODE );
 
 	mov	rdx, QWORD PTR SegmNames
-	lea	rcx, OFFSET FLAT:$SG10975
+	lea	rcx, OFFSET FLAT:$SG10976
 	mov	r8d, 441				; 000001b9H
 	call	AddLineQueueX
 
@@ -1247,7 +1247,7 @@ $LN21:
 ; 336  :         EndSimSeg( SIM_DATA );
 
 	mov	rdx, QWORD PTR SegmNames+16
-	lea	rcx, OFFSET FLAT:$SG10975
+	lea	rcx, OFFSET FLAT:$SG10976
 	mov	r8d, 441				; 000001b9H
 	call	AddLineQueueX
 
@@ -1268,7 +1268,7 @@ $LN21:
 ; 345  :             strcpy( buffer, "%s %r %s" );
 
 	xor	ecx, ecx
-	lea	rdx, OFFSET FLAT:$SG11042
+	lea	rdx, OFFSET FLAT:$SG11043
 	npad	13
 $LL7@ModelSimSe:
 	movzx	eax, BYTE PTR [rcx+rdx]
@@ -1291,7 +1291,7 @@ $LL16@ModelSimSe:
 	cmp	BYTE PTR [rax+1], 0
 	lea	rax, QWORD PTR [rax+1]
 	jne	SHORT $LL16@ModelSimSe
-	lea	r8, OFFSET FLAT:$SG11045
+	lea	r8, OFFSET FLAT:$SG11046
 	xor	edx, edx
 	npad	13
 $LL17@ModelSimSe:

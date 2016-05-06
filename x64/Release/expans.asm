@@ -14,8 +14,8 @@ COMM	MacroLevel:BYTE
 COMM	MacroLocals:DWORD
 _DATA	ENDS
 _BSS	SEGMENT
-$SG11104 DB	01H DUP (?)
-$SG11175 DB	01H DUP (?)
+$SG11105 DB	01H DUP (?)
+$SG11176 DB	01H DUP (?)
 _BSS	ENDS
 PUBLIC	myltoa
 PUBLIC	myqtoa
@@ -3851,7 +3851,7 @@ $LN51@RunMacro:
 
 ; 241  :             mi.parm_array[parmidx] = "";
 
-	lea	rax, OFFSET FLAT:$SG11104
+	lea	rax, OFFSET FLAT:$SG11105
 	mov	QWORD PTR [rcx], rax
 $LN52@RunMacro:
 
@@ -5308,7 +5308,7 @@ $LN121@RunMacro:
 
 ; 566  :                 mi.parm_array[parmidx] = "";
 
-	lea	rcx, OFFSET FLAT:$SG11175
+	lea	rcx, OFFSET FLAT:$SG11176
 	jmp	SHORT $LN430@RunMacro
 $LN422@RunMacro:
 	mov	r10, QWORD PTR macro$[rbp]
@@ -5983,7 +5983,7 @@ $LN328@RunMacro:
 ; 764  :                             EmitErr( MACRO_LABEL_NOT_DEFINED, tokenarray[1].string_ptr );
 
 	mov	rdi, QWORD PTR tokenarray$[rbp]
-	mov	ecx, 264				; 00000108H
+	mov	ecx, 265				; 00000109H
 	mov	rdx, QWORD PTR [rdi+40]
 
 ; 773  :                         }

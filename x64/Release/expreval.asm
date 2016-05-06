@@ -6,8 +6,8 @@ INCLUDELIB LIBCMT
 INCLUDELIB OLDNAMES
 
 _BSS	SEGMENT
-$SG11642 DB	01H DUP (?)
-$SG11793 DB	01H DUP (?)
+$SG11643 DB	01H DUP (?)
+$SG11794 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	decoflags:BYTE
@@ -16,19 +16,19 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG11170 DB	01H DUP (?)
+$SG11171 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG11096 DB	'rn-sae', 00H
+$SG11097 DB	'rn-sae', 00H
 	ORG $+1
-$SG11100 DB	'rd-sae', 00H
+$SG11101 DB	'rd-sae', 00H
 	ORG $+1
-$SG11104 DB	'ru-sae', 00H
+$SG11105 DB	'ru-sae', 00H
 	ORG $+1
-$SG11108 DB	'rz-sae', 00H
+$SG11109 DB	'rz-sae', 00H
 	ORG $+1
-$SG11112 DB	'sae', 00H
-$SG11173 DB	'@@', 00H
+$SG11113 DB	'sae', 00H
+$SG11174 DB	'@@', 00H
 _DATA	ENDS
 PUBLIC	EvalOperand
 PUBLIC	ExprEvalInit
@@ -1661,7 +1661,7 @@ $LN9@calculate:
 ; 2588 :             return( fnEmitErr( CONSTANT_VALUE_TOO_LARGE_EX, opnd2->hlvalue, opnd2->value64 ) );
 
 	mov	r8, QWORD PTR [rdi]
-	mov	ecx, 272				; 00000110H
+	mov	ecx, 273				; 00000111H
 
 ; 3158 : }
 
@@ -1951,7 +1951,7 @@ $LN192@calculate:
 ; 2655 :             DebugMsg(("calculate(%s): incompatible usage of (simple) type\n", oper->string_ptr ));
 ; 2656 :             return( fnEmitErr( SYNTAX_ERROR_IN_EXPRESSION ) );
 
-	mov	ecx, 263				; 00000107H
+	mov	ecx, 264				; 00000108H
 
 ; 2820 :                     DebugMsg(("calculate(PTR): register size doesn't match type size; %u != %u\n", SizeFromRegister( temp ), opnd1->value ));
 ; 2821 :                     return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
@@ -2537,7 +2537,7 @@ $LN48@calculate:
 ; 2825 :                     DebugMsg(("calculate(PTR): type memtype=%Xh ( MT_FLOAT not set, although right op is FLOAT )\n", opnd1->mem_type ));
 ; 2826 :                     return( fnEmitErr( REAL_OR_BCD_NUMBER_NOT_ALLOWED ) );
 
-	mov	ecx, 270				; 0000010eH
+	mov	ecx, 271				; 0000010fH
 	call	QWORD PTR fnEmitErr
 	jmp	$LN180@calculate
 $LN56@calculate:
@@ -3824,7 +3824,7 @@ $LN105@calculate:
 ; 3110 :                 DebugMsg(("calculate %s 'float' error\n", oper->string_ptr ));
 ; 3111 :                 return( fnEmitErr( REAL_OR_BCD_NUMBER_NOT_ALLOWED ) );
 
-	mov	ecx, 270				; 0000010eH
+	mov	ecx, 271				; 0000010fH
 	call	QWORD PTR fnEmitErr
 $LN181@calculate:
 	mov	r15, QWORD PTR [rsp+88]
@@ -4816,7 +4816,7 @@ $LN5@colon_op:
 ; 2273 :     case EXPR_FLOAT:
 ; 2274 :         return( fnEmitErr( REAL_OR_BCD_NUMBER_NOT_ALLOWED ) );
 
-	mov	ecx, 270				; 0000010eH
+	mov	ecx, 271				; 0000010fH
 
 ; 2358 :             DebugMsg(("colon_op error 4\n"));
 ; 2359 :             return( fnEmitErr( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
@@ -5245,7 +5245,7 @@ $LN4@dot_op:
 ; 2073 :             nullstruct = CreateTypeSymbol( NULL, "", FALSE );
 
 	xor	r8d, r8d
-	lea	rdx, OFFSET FLAT:$SG11793
+	lea	rdx, OFFSET FLAT:$SG11794
 	xor	ecx, ecx
 	call	CreateTypeSymbol
 	mov	QWORD PTR nullstruct, rax
@@ -5838,7 +5838,7 @@ $LN29@dot_op:
 ; 2232 :         return( struct_field_error( opnd1 ) );
 
 $LN59@dot_op:
-	mov	ecx, 271				; 0000010fH
+	mov	ecx, 272				; 00000110H
 
 ; 2235 : }
 
@@ -5884,7 +5884,7 @@ $LN2@struct_fie:
 ; 2029 :     }
 ; 2030 :     return( fnEmitErr( STRUCTURE_FIELD_EXPECTED ) );
 
-	mov	ecx, 271				; 0000010fH
+	mov	ecx, 272				; 00000110H
 	rex_jmp	QWORD PTR fnEmitErr
 struct_field_error ENDP
 _TEXT	ENDS
@@ -6426,7 +6426,7 @@ $LN45@minus_op:
 	mov	ecx, 65					; 00000041H
 	jne	SHORT $LN53@minus_op
 $LN48@minus_op:
-	mov	ecx, 270				; 0000010eH
+	mov	ecx, 271				; 0000010fH
 $LN53@minus_op:
 	call	QWORD PTR fnEmitErr
 	or	ecx, -1
@@ -6961,7 +6961,7 @@ $LN52@plus_op:
 	mov	ecx, 65					; 00000041H
 	jne	SHORT $LN61@plus_op
 $LN55@plus_op:
-	mov	ecx, 270				; 0000010eH
+	mov	ecx, 271				; 0000010fH
 $LN61@plus_op:
 	call	QWORD PTR fnEmitErr
 
@@ -7281,7 +7281,7 @@ $LN4@this_op:
 
 ; 1667 :         thissym = SymAlloc( "" );
 
-	lea	rcx, OFFSET FLAT:$SG11642
+	lea	rcx, OFFSET FLAT:$SG11643
 	call	SymAlloc
 	mov	rdx, rax
 	mov	QWORD PTR thissym, rax
@@ -7401,7 +7401,7 @@ high32_op PROC
 ; 1634 :             return( ConstError( opnd1, opnd2 ) );
 
 $LN7@high32_op:
-	mov	ecx, 270				; 0000010eH
+	mov	ecx, 271				; 0000010fH
 	call	QWORD PTR fnEmitErr
 	or	eax, -1
 
@@ -7520,7 +7520,7 @@ low32_op PROC
 
 	test	BYTE PTR [rdx+72], 16
 	jne	SHORT $LN6@low32_op
-	mov	ecx, 270				; 0000010eH
+	mov	ecx, 271				; 0000010fH
 	call	QWORD PTR fnEmitErr
 	or	esi, -1
 $LN6@low32_op:
@@ -9792,7 +9792,7 @@ $LN5@ConstError:
 
 ; 994  :         fnEmitErr( REAL_OR_BCD_NUMBER_NOT_ALLOWED );
 
-	mov	ecx, 270				; 0000010eH
+	mov	ecx, 271				; 0000010fH
 $LN7@ConstError:
 	call	QWORD PTR fnEmitErr
 
@@ -10280,10 +10280,10 @@ $LN19@get_operan:
 	jne	$LN33@get_operan
 	mov	rdx, QWORD PTR [rsi+8]
 	mov	eax, DWORD PTR [rdx]
-	cmp	eax, DWORD PTR $SG11096
+	cmp	eax, DWORD PTR $SG11097
 	jne	SHORT $LN21@get_operan
 	movzx	eax, WORD PTR [rdx+4]
-	cmp	ax, WORD PTR $SG11096+4
+	cmp	ax, WORD PTR $SG11097+4
 	jne	SHORT $LN21@get_operan
 
 ; 382  : 				(0 == memcmp(tokenarray[i].string_ptr, "rn-sae", 6))) {
@@ -10291,7 +10291,7 @@ $LN19@get_operan:
 
 	cmp	BYTE PTR evex, 0
 	jne	SHORT $LN23@get_operan
-	mov	ecx, 277				; 00000115H
+	mov	ecx, 278				; 00000116H
 	call	EmitError
 $LN23@get_operan:
 
@@ -10328,10 +10328,10 @@ $LN21@get_operan:
 	jne	$LN33@get_operan
 	mov	rdx, QWORD PTR [rsi+8]
 	mov	eax, DWORD PTR [rdx]
-	cmp	eax, DWORD PTR $SG11100
+	cmp	eax, DWORD PTR $SG11101
 	jne	SHORT $LN24@get_operan
 	movzx	eax, WORD PTR [rdx+4]
-	cmp	ax, WORD PTR $SG11100+4
+	cmp	ax, WORD PTR $SG11101+4
 	jne	SHORT $LN24@get_operan
 
 ; 389  : 				(0 == memcmp(tokenarray[i].string_ptr, "rd-sae", 6))) {
@@ -10339,7 +10339,7 @@ $LN21@get_operan:
 
 	cmp	BYTE PTR evex, 0
 	jne	SHORT $LN26@get_operan
-	mov	ecx, 277				; 00000115H
+	mov	ecx, 278				; 00000116H
 	call	EmitError
 $LN26@get_operan:
 
@@ -10376,10 +10376,10 @@ $LN24@get_operan:
 	jne	$LN33@get_operan
 	mov	rdx, QWORD PTR [rsi+8]
 	mov	eax, DWORD PTR [rdx]
-	cmp	eax, DWORD PTR $SG11104
+	cmp	eax, DWORD PTR $SG11105
 	jne	SHORT $LN27@get_operan
 	movzx	eax, WORD PTR [rdx+4]
-	cmp	ax, WORD PTR $SG11104+4
+	cmp	ax, WORD PTR $SG11105+4
 	jne	SHORT $LN27@get_operan
 
 ; 396  : 				(0 == memcmp(tokenarray[i].string_ptr, "ru-sae", 6))) {
@@ -10387,7 +10387,7 @@ $LN24@get_operan:
 
 	cmp	BYTE PTR evex, 0
 	jne	SHORT $LN29@get_operan
-	mov	ecx, 277				; 00000115H
+	mov	ecx, 278				; 00000116H
 	call	EmitError
 $LN29@get_operan:
 
@@ -10424,10 +10424,10 @@ $LN27@get_operan:
 	jne	$LN33@get_operan
 	mov	rdx, QWORD PTR [rsi+8]
 	mov	eax, DWORD PTR [rdx]
-	cmp	eax, DWORD PTR $SG11108
+	cmp	eax, DWORD PTR $SG11109
 	jne	SHORT $LN30@get_operan
 	movzx	eax, WORD PTR [rdx+4]
-	cmp	ax, WORD PTR $SG11108+4
+	cmp	ax, WORD PTR $SG11109+4
 	jne	SHORT $LN30@get_operan
 
 ; 403  : 				(0 == memcmp(tokenarray[i].string_ptr, "rz-sae", 6))) {
@@ -10435,7 +10435,7 @@ $LN27@get_operan:
 
 	cmp	BYTE PTR evex, 0
 	jne	SHORT $LN32@get_operan
-	mov	ecx, 277				; 00000115H
+	mov	ecx, 278				; 00000116H
 	call	EmitError
 $LN32@get_operan:
 
@@ -10472,10 +10472,10 @@ $LN30@get_operan:
 	jne	SHORT $LN33@get_operan
 	mov	rdx, QWORD PTR [rsi+8]
 	movzx	eax, WORD PTR [rdx]
-	cmp	ax, WORD PTR $SG11112
+	cmp	ax, WORD PTR $SG11113
 	jne	SHORT $LN33@get_operan
 	movzx	eax, BYTE PTR [rdx+2]
-	cmp	al, BYTE PTR $SG11112+2
+	cmp	al, BYTE PTR $SG11113+2
 	jne	SHORT $LN33@get_operan
 
 ; 410  : 				(0 == memcmp(tokenarray[i].string_ptr, "sae", 3))) {
@@ -10483,7 +10483,7 @@ $LN30@get_operan:
 
 	cmp	BYTE PTR evex, 0
 	jne	SHORT $LN35@get_operan
-	mov	ecx, 277				; 00000115H
+	mov	ecx, 278				; 00000116H
 	call	EmitError
 $LN35@get_operan:
 
@@ -11213,7 +11213,7 @@ $LN87@get_operan:
 
 ; 621  :                             nullmbr = SymAlloc( "" );
 
-	lea	rcx, OFFSET FLAT:$SG11170
+	lea	rcx, OFFSET FLAT:$SG11171
 	call	SymAlloc
 	mov	QWORD PTR nullmbr, rax
 $LN91@get_operan:
@@ -11702,7 +11702,7 @@ $LN92@get_operan:
 ; 635  :                     fnEmitErr( SYMBOL_NOT_DEFINED, *(tmp+1) == '&' ? "@@" : tmp );
 
 	cmp	BYTE PTR [rbp+1], 38			; 00000026H
-	lea	rax, OFFSET FLAT:$SG11173
+	lea	rax, OFFSET FLAT:$SG11174
 	cmove	rbp, rax
 $LN89@get_operan:
 	mov	rdx, rbp
@@ -12708,7 +12708,7 @@ $LN7:
 ; 3468 :         EmitErr( CONSTANT_VALUE_TOO_LARGE_EX, opnd->hlvalue, opnd->value64 );
 
 	mov	r8, QWORD PTR [rcx]
-	mov	ecx, 272				; 00000110H
+	mov	ecx, 273				; 00000111H
 	call	EmitErr
 
 ; 3471 :     return( ERROR );

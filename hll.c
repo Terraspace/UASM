@@ -256,6 +256,26 @@ static enum c_bop GetCOp(struct asm_tok *item)
   }
   return(rc);
 }
+uint_32  hex2dec(const char *src)
+{
+  uint_32 a;
+  uint_32 b = 0;
+  for (;;)
+  {
+    a = *src;
+    if (!a) break;
+    b = (b << 4);
+    if (a >= '0' && a <= '9') a -= '0';
+    else {
+      a |= 0x20;
+      if (a >= 'a' && a <= 'f') a -= 'a' - 10;
+    }
+    b = b + a;
+    src++;
+  }
+  return (b);
+}
+
 static void bubblesort(struct hll_item *hll, uint_16 *lbl, int *src, int n) {
   /*******************************************************************************************************************************/
   int i;
@@ -2050,8 +2070,6 @@ ret_code HllExitDir(int i, struct asm_tok tokenarray[])
   struct expr         opndx;
   struct hll_item     *hll;
   ret_code            rc = NOT_ERROR;
-  uint_64             n;
-  uint_64             dst[2];
   int                 j;
   int                 idx;
   int                 cmd = tokenarray[i].tokval;
@@ -2090,6 +2108,8 @@ ret_code HllExitDir(int i, struct asm_tok tokenarray[])
     hll->labels[LTEST] = GetHllLabel();
     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LTEST], buff));
     i++;
+    if (tokenarray[i].token != T_FINAL) 
+      strcpy(buffer, tokenarray[i].tokpos);
     if (tokenarray[i].token != T_FINAL) {
       DebugMsg1(("HllExitDir(%s): calling EvalOperand, i=%u\n", tokenarray[i].string_ptr, i));
       if (EvalOperand(&i, tokenarray, Token_Count, &opndx, 0) == ERROR) {
@@ -2154,15 +2174,23 @@ ret_code HllExitDir(int i, struct asm_tok tokenarray[])
       }
     }
 #endif
-    if ((ModuleInfo.Ofssize == USE32) || (hll->csize == 4))
-       hll->pcases[hll->casecnt] = opndx.value;
+    if ((ModuleInfo.Ofssize == USE32) || (hll->csize == 4)) {
+      for (j = 0; j < hll->casecnt; j++) {
+        if (hll->pcases[j] == opndx.value)
+          EmitErr(CASE_ALREADY_OCCURED_IN_THIS_SWITCH_BLOCK, buffer);
+      }
+      hll->pcases[hll->casecnt] = opndx.value;
+    }
 #if AMD64_SUPPORT
-    else 
+    else {
+      for (j = 0; j < hll->casecnt; j++) {
+        if (hll->pcases64[j] == opndx.value64)
+          EmitErr(CASE_ALREADY_OCCURED_IN_THIS_SWITCH_BLOCK, buffer);
+      }
       hll->pcases64[hll->casecnt] = opndx.value64;
+    }
 #endif
-    myatoi128(buff + 2, dst, 16, 4);
-    n = dst[0];
-    hll->plabels[hll->casecnt] = (uint_16)n;
+    hll->plabels[hll->casecnt] = hex2dec(buff + 2);
     hll->casecnt++;
     break;
   case T_DOT_ELSE:

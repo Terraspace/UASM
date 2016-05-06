@@ -12,16 +12,16 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10868 DB	'%X', 00H
+$SG10869 DB	'%X', 00H
 	ORG $+1
-$SG10931 DB	'<>"''', 00H
+$SG10932 DB	'<>"''', 00H
 	ORG $+3
-$SG11023 DB	'REQ', 00H
-$SG11032 DB	'VARARGML', 00H
+$SG11024 DB	'REQ', 00H
+$SG11033 DB	'VARARGML', 00H
 	ORG $+7
-$SG11144 DB	'macro name', 00H
+$SG11145 DB	'macro name', 00H
 	ORG $+5
-$SG11167 DB	'@Environ', 00H
+$SG11168 DB	'@Environ', 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	sprintf
@@ -467,7 +467,7 @@ $LN27@PurgeDirec:
 
 ; 749  :             return( EmitErr( EXPECTED, "macro name" ) );
 
-	lea	rdx, OFFSET FLAT:$SG11144
+	lea	rdx, OFFSET FLAT:$SG11145
 	mov	ecx, 230				; 000000e6H
 	jmp	SHORT $LN38@PurgeDirec
 $LN26@PurgeDirec:
@@ -946,7 +946,7 @@ $LN22@store_plac:
 	jne	SHORT $LN23@store_plac
 	movsx	edx, BYTE PTR [rbx+1]
 	lea	rdi, QWORD PTR [rbx+1]
-	lea	rcx, OFFSET FLAT:$SG10931
+	lea	rcx, OFFSET FLAT:$SG10932
 	call	strchr
 	test	rax, rax
 	cmovne	rbx, rdi
@@ -1365,7 +1365,7 @@ $LN9:
 ; 814  : 
 ; 815  :         macro = CreateMacro( "@Environ" );
 
-	lea	rcx, OFFSET FLAT:$SG11167
+	lea	rcx, OFFSET FLAT:$SG11168
 	call	SymCreate
 	mov	rbx, rax
 	test	rax, rax
@@ -1623,7 +1623,7 @@ $LN38@StoreMacro:
 ; 330  :                 EmitWarn( 4, PARAM_IS_RESERVED_WORD, tokenarray[i].string_ptr );
 
 	mov	r8, QWORD PTR [r15+r14+8]
-	mov	edx, 269				; 0000010dH
+	mov	edx, 270				; 0000010eH
 	mov	ecx, 4
 	call	EmitWarn
 $LN39@StoreMacro:
@@ -1733,7 +1733,7 @@ $LN41@StoreMacro:
 ; 356  :                 } else if( _stricmp( tokenarray[i].string_ptr, "REQ" ) == 0 ) {
 
 	mov	rcx, QWORD PTR [rdi+8]
-	lea	rdx, OFFSET FLAT:$SG11023
+	lea	rdx, OFFSET FLAT:$SG11024
 	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN45@StoreMacro
@@ -1801,7 +1801,7 @@ $LN50@StoreMacro:
 ; 381  :                 } else if( _stricmp( tokenarray[i].string_ptr, "VARARGML" ) == 0 ) {
 
 	mov	rcx, QWORD PTR [rdi+8]
-	lea	rdx, OFFSET FLAT:$SG11032
+	lea	rdx, OFFSET FLAT:$SG11033
 	call	_stricmp
 	test	eax, eax
 	jne	$LN53@StoreMacro
@@ -2264,7 +2264,7 @@ $LN70@StoreMacro:
 
 	mov	r8, rdx
 	mov	ecx, 4
-	mov	edx, 269				; 0000010dH
+	mov	edx, 270				; 0000010eH
 	call	EmitWarn
 	mov	rdx, QWORD PTR ModuleInfo+488
 $LN73@StoreMacro:
@@ -2827,7 +2827,7 @@ $LL2@fill_place:
 ; 97   :                     i = sprintf( dst, "%X", i );
 
 	mov	r8d, eax
-	lea	rdx, OFFSET FLAT:$SG10868
+	lea	rdx, OFFSET FLAT:$SG10869
 	mov	rcx, rbx
 	call	sprintf
 	mov	eax, eax
