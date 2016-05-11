@@ -1554,7 +1554,7 @@ static ret_code highword_op( int oper, struct expr *opnd1, struct expr *opnd2, s
         //opnd1->mem_type = MT_WORD; /* v2.05 */
         opnd1->mem_type = MT_EMPTY;
     }
-	opnd1->value = (opnd1->value >> 16) & 0xFFFF; /* ASMC v2.14 (fix borrowed from nidud) */
+	opnd1->llvalue = (opnd1->value >> 16) & 0xFFFF; /* ASMC v2.14 (fix borrowed from nidud) */
     return( NOT_ERROR );
 }
 
@@ -2461,7 +2461,7 @@ static void CheckAssume( struct expr *opnd )
         sym = GetStdAssumeEx( opnd->idx_reg->bytval );
     }
     if ( sym ) {
-      if ((opnd->type != 0x7b)&&(opnd->type != NULL)){ //this is temporary fix for VGATHER instructions in DEBUG mode
+      if ( opnd->type != NULL ){ 
         DebugMsg1(( "CheckAssume(%s, type=>%s<, mbr=>%s<): assume=%s [memtype=%X isptr=%u type=%s target_type=%s ptr_memt=%X]\n",
                    GetResWName( ( opnd->idx_reg ? opnd->idx_reg->tokval : opnd->base_reg->tokval ), NULL ),
                    opnd->type ? opnd->type->name : "NULL",

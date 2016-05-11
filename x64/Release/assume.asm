@@ -15,7 +15,7 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG11115 DB	01H DUP (?)
+$SG11117 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 $SG11043 DB	'%r %r:%r,%r:%r,%r:%r,%r:%r,%r:%s,%r:%s', 00H
@@ -138,7 +138,7 @@ i$ = 240
 tokenarray$ = 248
 AssumeDirective PROC
 
-; 286  : {
+; 287  : {
 
 $LN114:
 	mov	QWORD PTR [rsp+16], rbx
@@ -152,17 +152,17 @@ $LN114:
 	lea	rbp, QWORD PTR [rsp-55]
 	sub	rsp, 192				; 000000c0H
 
-; 287  :     int             reg;
-; 288  :     int             j;
-; 289  :     int             size;
-; 290  :     uint_32         flags;
-; 291  :     struct assume_info *info;
-; 292  :     bool            segtable;
-; 293  :     struct qualified_type ti;
-; 294  : 
-; 295  :     DebugMsg1(( "AssumeDirective enter, pass=%u\n", Parse_Pass+1 ));
-; 296  : 
-; 297  :     for( i++; i < Token_Count; i++ ) {
+; 288  :     int             reg;
+; 289  :     int             j;
+; 290  :     int             size;
+; 291  :     uint_32         flags;
+; 292  :     struct assume_info *info;
+; 293  :     bool            segtable;
+; 294  :     struct qualified_type ti;
+; 295  : 
+; 296  :     DebugMsg1(( "AssumeDirective enter, pass=%u\n", Parse_Pass+1 ));
+; 297  : 
+; 298  :     for( i++; i < Token_Count; i++ ) {
 
 	lea	r8d, DWORD PTR [rcx+1]
 	mov	r12, rdx
@@ -173,9 +173,9 @@ $LN114:
 	xor	r13d, r13d
 $LN112@AssumeDire:
 
-; 298  : 
-; 299  :         if( ( tokenarray[i].token == T_ID )
-; 300  :             && (0 == _stricmp( tokenarray[i].string_ptr, szNothing )) ) {
+; 299  : 
+; 300  :         if( ( tokenarray[i].token == T_ID )
+; 301  :             && (0 == _stricmp( tokenarray[i].string_ptr, szNothing )) ) {
 
 	movsxd	rax, r8d
 	lea	r9, OFFSET FLAT:StdAssumeTable
@@ -193,41 +193,41 @@ $LN112@AssumeDire:
 	lea	r9, OFFSET FLAT:StdAssumeTable
 $LN7@AssumeDire:
 
-; 304  :         }
-; 305  : 
-; 306  :         /*---- get the info ptr for the register ----*/
-; 307  : 
-; 308  :         info = NULL;
-; 309  :         if ( tokenarray[i].token == T_REG ) {
+; 305  :         }
+; 306  : 
+; 307  :         /*---- get the info ptr for the register ----*/
+; 308  : 
+; 309  :         info = NULL;
+; 310  :         if ( tokenarray[i].token == T_REG ) {
 
 	movsxd	rax, r8d
 	shl	rax, 5
 	cmp	BYTE PTR [rax+r12], 2
 	jne	$LN82@AssumeDire
 
-; 310  :             reg = tokenarray[i].tokval;
+; 311  :             reg = tokenarray[i].tokval;
 
 	movsxd	r14, DWORD PTR [rax+r12+16]
 
-; 311  :             j = GetRegNo( reg );
+; 312  :             j = GetRegNo( reg );
 
 	lea	rcx, QWORD PTR [r14+r14*2]
 	movzx	eax, BYTE PTR SpecialTable[rdi+rcx*4+10]
 
-; 312  :             flags = GetValueSp( reg );
+; 313  :             flags = GetValueSp( reg );
 
 	mov	edi, DWORD PTR SpecialTable[rdi+rcx*4]
 
-; 313  :             if ( flags & OP_SR ) {
+; 314  :             if ( flags & OP_SR ) {
 
 	test	edi, 24576				; 00006000H
 	je	SHORT $LN9@AssumeDire
 
-; 314  :                 info = &SegAssumeTable[j];
+; 315  :                 info = &SegAssumeTable[j];
 
 	movsxd	r15, eax
 
-; 315  :                 segtable = TRUE;
+; 316  :                 segtable = TRUE;
 
 	mov	sil, 1
 	mov	rbx, r15
@@ -236,33 +236,33 @@ $LN7@AssumeDire:
 	jmp	SHORT $LN11@AssumeDire
 $LN9@AssumeDire:
 
-; 316  :             } else if ( flags & OP_R ) {
+; 317  :             } else if ( flags & OP_R ) {
 
 	test	dil, 15
 	je	$LN82@AssumeDire
 
-; 317  :                 info = &StdAssumeTable[j];
+; 318  :                 info = &StdAssumeTable[j];
 
 	mov	rbx, rax
 	mov	r15, rax
 	shl	rbx, 4
 	add	rbx, r9
 
-; 318  :                 segtable = FALSE;
+; 319  :                 segtable = FALSE;
 
 	xor	sil, sil
 $LN11@AssumeDire:
 
-; 319  :             }
-; 320  :         }
-; 321  :         if ( info == NULL ) {
+; 320  :             }
+; 321  :         }
+; 322  :         if ( info == NULL ) {
 
 	test	rbx, rbx
 	je	$LN82@AssumeDire
 
-; 323  :         }
-; 324  : 
-; 325  :         if( ( ModuleInfo.curr_cpu & P_CPU_MASK ) < GetCpuSp( reg ) ) {
+; 324  :         }
+; 325  : 
+; 326  :         if( ( ModuleInfo.curr_cpu & P_CPU_MASK ) < GetCpuSp( reg ) ) {
 
 	lea	rax, OFFSET FLAT:__ImageBase
 	movzx	ecx, WORD PTR SpecialTable[rax+rcx*4+8]
@@ -271,14 +271,14 @@ $LN11@AssumeDire:
 	cmp	eax, ecx
 	jl	$LN83@AssumeDire
 
-; 327  :         }
-; 328  : 
-; 329  :         i++; /* go past register */
+; 328  :         }
+; 329  : 
+; 330  :         i++; /* go past register */
 
 	inc	r8d
 
-; 330  : 
-; 331  :         if( tokenarray[i].token != T_COLON ) {
+; 331  : 
+; 332  :         if( tokenarray[i].token != T_COLON ) {
 
 	movsxd	rax, r8d
 	shl	rax, 5
@@ -286,13 +286,13 @@ $LN11@AssumeDire:
 	cmp	BYTE PTR [rax+r12], 58			; 0000003aH
 	jne	$LN84@AssumeDire
 
-; 333  :         }
-; 334  :         i++;
+; 334  :         }
+; 335  :         i++;
 
 	inc	r8d
 
-; 335  : 
-; 336  :         if( tokenarray[i].token == T_FINAL ) {
+; 336  : 
+; 337  :         if( tokenarray[i].token == T_FINAL ) {
 
 	movsxd	rax, r8d
 	shl	rax, 5
@@ -300,11 +300,11 @@ $LN11@AssumeDire:
 	cmp	BYTE PTR [rax+r12], r13b
 	je	$LN85@AssumeDire
 
-; 338  :         }
-; 339  : 
-; 340  :         /* check for ERROR and NOTHING */
-; 341  : 
-; 342  :         if( 0 == _stricmp( tokenarray[i].string_ptr, szError )) {
+; 339  :         }
+; 340  : 
+; 341  :         /* check for ERROR and NOTHING */
+; 342  : 
+; 343  :         if( 0 == _stricmp( tokenarray[i].string_ptr, szError )) {
 
 	mov	rcx, QWORD PTR [rax+r12+8]
 	lea	rdx, OFFSET FLAT:szError
@@ -312,22 +312,22 @@ $LN11@AssumeDire:
 	test	eax, eax
 	jne	SHORT $LN16@AssumeDire
 
-; 343  :             if ( segtable ) {
+; 344  :             if ( segtable ) {
 
 	test	sil, sil
 	je	SHORT $LN18@AssumeDire
 
-; 344  :                 info->is_flat = FALSE;
-; 345  :                 info->error = TRUE;
+; 345  :                 info->is_flat = FALSE;
+; 346  :                 info->error = TRUE;
 
 	mov	WORD PTR [rbx+8], 1
 
-; 346  :             } else
+; 347  :             } else
 
 	jmp	SHORT $LN23@AssumeDire
 $LN18@AssumeDire:
 
-; 347  :                 info->error |= (( reg >= T_AH && reg <= T_BH ) ? RH_ERROR : ( flags & OP_R ));
+; 348  :                 info->error |= (( reg >= T_AH && reg <= T_BH ) ? RH_ERROR : ( flags & OP_R ));
 
 	lea	eax, DWORD PTR [r14-5]
 	cmp	eax, 3
@@ -335,24 +335,24 @@ $LN18@AssumeDire:
 	mov	edi, 16
 	or	BYTE PTR [rbx+8], dil
 
-; 348  :             info->symbol = NULL;
-; 349  :             i++;
+; 349  :             info->symbol = NULL;
+; 350  :             i++;
 
 	jmp	SHORT $LN23@AssumeDire
 $LN53@AssumeDire:
 
-; 347  :                 info->error |= (( reg >= T_AH && reg <= T_BH ) ? RH_ERROR : ( flags & OP_R ));
+; 348  :                 info->error |= (( reg >= T_AH && reg <= T_BH ) ? RH_ERROR : ( flags & OP_R ));
 
 	and	edi, 15
 	or	BYTE PTR [rbx+8], dil
 
-; 348  :             info->symbol = NULL;
-; 349  :             i++;
+; 349  :             info->symbol = NULL;
+; 350  :             i++;
 
 	jmp	SHORT $LN23@AssumeDire
 $LN16@AssumeDire:
 
-; 350  :         } else if( 0 == _stricmp( tokenarray[i].string_ptr, szNothing )) {
+; 351  :         } else if( 0 == _stricmp( tokenarray[i].string_ptr, szNothing )) {
 
 	movsxd	rcx, DWORD PTR i$[rbp-137]
 	lea	rdx, OFFSET FLAT:szNothing
@@ -362,22 +362,22 @@ $LN16@AssumeDire:
 	test	eax, eax
 	jne	SHORT $LN20@AssumeDire
 
-; 351  :             if ( segtable ) {
+; 352  :             if ( segtable ) {
 
 	test	sil, sil
 	je	SHORT $LN22@AssumeDire
 
-; 352  :                 info->is_flat = FALSE;
-; 353  :                 info->error = FALSE;
+; 353  :                 info->is_flat = FALSE;
+; 354  :                 info->error = FALSE;
 
 	mov	WORD PTR [rbx+8], r13w
 
-; 354  :             } else
+; 355  :             } else
 
 	jmp	SHORT $LN23@AssumeDire
 $LN22@AssumeDire:
 
-; 355  :                 info->error &= ~(( reg >= T_AH && reg <= T_BH ) ? RH_ERROR : ( flags & OP_R ));
+; 356  :                 info->error &= ~(( reg >= T_AH && reg <= T_BH ) ? RH_ERROR : ( flags & OP_R ));
 
 	lea	eax, DWORD PTR [r14-5]
 	cmp	eax, 3
@@ -391,8 +391,8 @@ $LN56@AssumeDire:
 	and	BYTE PTR [rbx+8], dil
 $LN23@AssumeDire:
 
-; 356  :             info->symbol = NULL;
-; 357  :             i++;
+; 357  :             info->symbol = NULL;
+; 358  :             i++;
 
 	mov	r8d, DWORD PTR i$[rbp-137]
 	lea	rdi, OFFSET FLAT:__ImageBase
@@ -402,17 +402,17 @@ $LN23@AssumeDire:
 	jmp	$LN25@AssumeDire
 $LN20@AssumeDire:
 
-; 358  :         } else if ( segtable == FALSE ) {
-; 359  : 
-; 360  :             /* v2.05: changed to use new GetQualifiedType() function */
-; 361  :             ti.size = 0;
-; 362  :             ti.is_ptr = 0;
-; 363  :             ti.is_far = FALSE;
-; 364  :             ti.mem_type = MT_EMPTY;
-; 365  :             ti.ptr_memtype = MT_EMPTY;
-; 366  :             ti.symtype = NULL;
-; 367  :             ti.Ofssize = ModuleInfo.Ofssize;
-; 368  :             if ( GetQualifiedType( &i, tokenarray, &ti ) == ERROR )
+; 359  :         } else if ( segtable == FALSE ) {
+; 360  : 
+; 361  :             /* v2.05: changed to use new GetQualifiedType() function */
+; 362  :             ti.size = 0;
+; 363  :             ti.is_ptr = 0;
+; 364  :             ti.is_far = FALSE;
+; 365  :             ti.mem_type = MT_EMPTY;
+; 366  :             ti.ptr_memtype = MT_EMPTY;
+; 367  :             ti.symtype = NULL;
+; 368  :             ti.Ofssize = ModuleInfo.Ofssize;
+; 369  :             if ( GetQualifiedType( &i, tokenarray, &ti ) == ERROR )
 
 	lea	rcx, QWORD PTR i$[rbp-137]
 	mov	rdx, r12
@@ -430,15 +430,15 @@ $LN20@AssumeDire:
 	cmp	eax, -1
 	je	$LN86@AssumeDire
 
-; 370  : 
-; 371  :             /* v2.04: check size of argument! */
-; 372  :             size = OperandSize( flags, NULL );
+; 371  : 
+; 372  :             /* v2.04: check size of argument! */
+; 373  :             size = OperandSize( flags, NULL );
 
 	xor	edx, edx
 	mov	ecx, edi
 	call	OperandSize
 
-; 373  :             if ( ( ti.is_ptr == 0 && size != ti.size ) ||
+; 374  :             if ( ( ti.is_ptr == 0 && size != ti.size ) ||
 
 	mov	edx, DWORD PTR ti$[rbp-137]
 	mov	ecx, eax
@@ -449,23 +449,23 @@ $LN20@AssumeDire:
 	je	SHORT $LN27@AssumeDire
 $LN28@AssumeDire:
 
-; 374  :                 ( ti.is_ptr > 0 && size < CurrWordSize ) ) {
-; 375  :                 return( EmitError( TYPE_IS_WRONG_SIZE_FOR_REGISTER ) );
+; 375  :                 ( ti.is_ptr > 0 && size < CurrWordSize ) ) {
+; 376  :                 return( EmitError( TYPE_IS_WRONG_SIZE_FOR_REGISTER ) );
 
 	mov	ecx, 247				; 000000f7H
 	call	EmitError
 	jmp	$LN1@AssumeDire
 $LN109@AssumeDire:
 
-; 373  :             if ( ( ti.is_ptr == 0 && size != ti.size ) ||
+; 374  :             if ( ( ti.is_ptr == 0 && size != ti.size ) ||
 
 	movzx	eax, BYTE PTR ModuleInfo+406
 	cmp	ecx, eax
 	jl	SHORT $LN28@AssumeDire
 $LN27@AssumeDire:
 
-; 376  :             }
-; 377  :             info->error &= ~(( reg >= T_AH && reg <= T_BH ) ? RH_ERROR : ( flags & OP_R ));
+; 377  :             }
+; 378  :             info->error &= ~(( reg >= T_AH && reg <= T_BH ) ? RH_ERROR : ( flags & OP_R ));
 
 	lea	eax, DWORD PTR [r14-5]
 	cmp	eax, 3
@@ -478,46 +478,46 @@ $LN58@AssumeDire:
 	not	dil
 	and	BYTE PTR [rbx+8], dil
 
-; 378  :             if ( stdsym[j] == NULL ) {
+; 379  :             if ( stdsym[j] == NULL ) {
 
 	lea	rdi, OFFSET FLAT:__ImageBase
 	cmp	QWORD PTR stdsym[rdi+r15*8], r13
 	jne	SHORT $LN30@AssumeDire
 
-; 379  :                 stdsym[j] = CreateTypeSymbol( NULL, "", FALSE );
+; 380  :                 stdsym[j] = CreateTypeSymbol( NULL, "", FALSE );
 
 	xor	r8d, r8d
-	lea	rdx, OFFSET FLAT:$SG11115
+	lea	rdx, OFFSET FLAT:$SG11117
 	xor	ecx, ecx
 	call	CreateTypeSymbol
 	mov	QWORD PTR stdsym[rdi+r15*8], rax
 
-; 380  :                 stdsym[j]->typekind = TYPE_TYPEDEF;
+; 381  :                 stdsym[j]->typekind = TYPE_TYPEDEF;
 
 	mov	BYTE PTR [rax+66], 3
 	mov	edx, DWORD PTR ti$[rbp-137]
 $LN30@AssumeDire:
 
-; 381  :             }
-; 382  : 
-; 383  :             stdsym[j]->total_size = ti.size;
+; 382  :             }
+; 383  : 
+; 384  :             stdsym[j]->total_size = ti.size;
 
 	mov	rax, QWORD PTR stdsym[rdi+r15*8]
 	mov	DWORD PTR [rax+56], edx
 
-; 384  :             stdsym[j]->mem_type   = ti.mem_type;
+; 385  :             stdsym[j]->mem_type   = ti.mem_type;
 
 	mov	eax, DWORD PTR ti$[rbp-121]
 	mov	rcx, QWORD PTR stdsym[rdi+r15*8]
 	mov	DWORD PTR [rcx+36], eax
 
-; 385  :             stdsym[j]->is_ptr     = ti.is_ptr;
+; 386  :             stdsym[j]->is_ptr     = ti.is_ptr;
 
 	movzx	eax, BYTE PTR ti$[rbp-117]
 	mov	rcx, QWORD PTR stdsym[rdi+r15*8]
 	mov	BYTE PTR [rcx+45], al
 
-; 386  :             stdsym[j]->isfar      = ti.is_far;
+; 387  :             stdsym[j]->isfar      = ti.is_far;
 
 	mov	rcx, QWORD PTR stdsym[rdi+r15*8]
 	movzx	eax, BYTE PTR ti$[rbp-116]
@@ -526,62 +526,62 @@ $LN30@AssumeDire:
 	and	al, 16
 	xor	BYTE PTR [rcx+47], al
 
-; 387  :             stdsym[j]->Ofssize    = ti.Ofssize;
+; 388  :             stdsym[j]->Ofssize    = ti.Ofssize;
 
 	movzx	eax, BYTE PTR ti$[rbp-115]
 	mov	rcx, QWORD PTR stdsym[rdi+r15*8]
 	mov	BYTE PTR [rcx+44], al
 
-; 388  :             stdsym[j]->ptr_memtype = ti.ptr_memtype; /* added v2.05 rc13 */
+; 389  :             stdsym[j]->ptr_memtype = ti.ptr_memtype; /* added v2.05 rc13 */
 
 	mov	rcx, QWORD PTR stdsym[rdi+r15*8]
 	movzx	eax, BYTE PTR ti$[rbp-113]
 	mov	BYTE PTR [rcx+46], al
 
-; 389  :             if ( ti.mem_type == MT_TYPE )
+; 390  :             if ( ti.mem_type == MT_TYPE )
 
 	cmp	DWORD PTR ti$[rbp-121], 196		; 000000c4H
 
-; 390  :                 stdsym[j]->type = ti.symtype;
+; 391  :                 stdsym[j]->type = ti.symtype;
 
 	mov	rcx, QWORD PTR stdsym[rdi+r15*8]
 	mov	rax, QWORD PTR ti$[rbp-129]
 	jne	SHORT $LN31@AssumeDire
 	mov	QWORD PTR [rcx+80], rax
 
-; 393  : 
-; 394  :             info->symbol = stdsym[j];
+; 394  : 
+; 395  :             info->symbol = stdsym[j];
 
 	mov	rax, QWORD PTR stdsym[rdi+r15*8]
 	mov	QWORD PTR [rbx], rax
 
-; 395  : 
-; 396  :         } else { /* segment register */
+; 396  : 
+; 397  :         } else { /* segment register */
 
 	jmp	$LN110@AssumeDire
 $LN31@AssumeDire:
 
-; 391  :             else
-; 392  :                 stdsym[j]->target_type = ti.symtype;
+; 392  :             else
+; 393  :                 stdsym[j]->target_type = ti.symtype;
 
 	mov	QWORD PTR [rcx+48], rax
 
-; 393  : 
-; 394  :             info->symbol = stdsym[j];
+; 394  : 
+; 395  :             info->symbol = stdsym[j];
 
 	mov	rax, QWORD PTR stdsym[rdi+r15*8]
 	mov	QWORD PTR [rbx], rax
 
-; 395  : 
-; 396  :         } else { /* segment register */
+; 396  : 
+; 397  :         } else { /* segment register */
 
 	jmp	$LN110@AssumeDire
 $LN24@AssumeDire:
 
-; 397  :             struct expr opnd;
-; 398  : 
-; 399  :             /* v2.08: read expression with standard evaluator */
-; 400  :             if( EvalOperand( &i, tokenarray, Token_Count, &opnd, 0 ) == ERROR )
+; 398  :             struct expr opnd;
+; 399  : 
+; 400  :             /* v2.08: read expression with standard evaluator */
+; 401  :             if( EvalOperand( &i, tokenarray, Token_Count, &opnd, 0 ) == ERROR )
 
 	mov	r8d, DWORD PTR ModuleInfo+496
 	lea	r9, QWORD PTR opnd$1[rbp-137]
@@ -590,8 +590,8 @@ $LN24@AssumeDire:
 	cmp	eax, -1
 	je	$LN86@AssumeDire
 
-; 401  :                 return( ERROR );
-; 402  :             switch ( opnd.kind ) {
+; 402  :                 return( ERROR );
+; 403  :             switch ( opnd.kind ) {
 
 	mov	ecx, DWORD PTR opnd$1[rbp-77]
 	sub	ecx, 1
@@ -599,9 +599,9 @@ $LN24@AssumeDire:
 	cmp	ecx, 1
 	jne	$LN37@AssumeDire
 
-; 420  :                 break;
-; 421  :             case EXPR_REG:
-; 422  :                 if ( GetValueSp( opnd.base_reg->tokval ) & OP_SR ) {
+; 421  :                 break;
+; 422  :             case EXPR_REG:
+; 423  :                 if ( GetValueSp( opnd.base_reg->tokval ) & OP_SR ) {
 
 	mov	rdx, QWORD PTR opnd$1[rbp-113]
 	lea	rdi, OFFSET FLAT:__ImageBase
@@ -610,7 +610,7 @@ $LN24@AssumeDire:
 	test	DWORD PTR SpecialTable[rdi+rcx*4], 24576 ; 00006000H
 	je	$LN37@AssumeDire
 
-; 423  :                     info->symbol = SegAssumeTable[ GetRegNo( opnd.base_reg->tokval ) ].symbol;
+; 424  :                     info->symbol = SegAssumeTable[ GetRegNo( opnd.base_reg->tokval ) ].symbol;
 
 	movzx	eax, BYTE PTR SpecialTable[rdi+rcx*4+10]
 	lea	r8, OFFSET FLAT:SegAssumeTable
@@ -618,7 +618,7 @@ $LN24@AssumeDire:
 	mov	rax, QWORD PTR [r8+rax*8]
 	mov	QWORD PTR [rbx], rax
 
-; 424  :                     info->is_flat = SegAssumeTable[ GetRegNo( opnd.base_reg->tokval ) ].is_flat;
+; 425  :                     info->is_flat = SegAssumeTable[ GetRegNo( opnd.base_reg->tokval ) ].is_flat;
 
 	mov	eax, DWORD PTR [rdx+16]
 	lea	rcx, QWORD PTR [rax+rax*2]
@@ -626,13 +626,13 @@ $LN24@AssumeDire:
 	add	rax, rax
 	movzx	eax, BYTE PTR [r8+rax*8+9]
 
-; 425  :                     break;
+; 426  :                     break;
 
 	jmp	$LN111@AssumeDire
 $LN34@AssumeDire:
 
-; 403  :             case EXPR_ADDR:
-; 404  :                 if ( opnd.sym == NULL || opnd.indirect == TRUE || opnd.value ) {
+; 404  :             case EXPR_ADDR:
+; 405  :                 if ( opnd.sym == NULL || opnd.indirect == TRUE || opnd.value ) {
 
 	mov	rcx, QWORD PTR opnd$1[rbp-57]
 	test	rcx, rcx
@@ -642,16 +642,16 @@ $LN34@AssumeDire:
 	cmp	DWORD PTR opnd$1[rbp-137], r13d
 	jne	$LN37@AssumeDire
 
-; 406  :                 } else if ( opnd.sym->state == SYM_UNDEFINED ) {
+; 407  :                 } else if ( opnd.sym->state == SYM_UNDEFINED ) {
 
 	mov	eax, DWORD PTR [rcx+32]
 	test	eax, eax
 	jne	SHORT $LN38@AssumeDire
 
-; 407  :                     /* ensure that directive is rerun in pass 2
-; 408  :                      * so an error msg can be emitted.
-; 409  :                      */
-; 410  :                     FStoreLine( 0 );
+; 408  :                     /* ensure that directive is rerun in pass 2
+; 409  :                      * so an error msg can be emitted.
+; 410  :                      */
+; 411  :                     FStoreLine( 0 );
 
 	cmp	DWORD PTR Parse_Pass, r13d
 	jne	SHORT $LN40@AssumeDire
@@ -662,7 +662,7 @@ $LN34@AssumeDire:
 	mov	rcx, QWORD PTR opnd$1[rbp-57]
 $LN40@AssumeDire:
 
-; 411  :                     info->symbol = opnd.sym;
+; 412  :                     info->symbol = opnd.sym;
 
 	mov	QWORD PTR [rbx], rcx
 	jmp	SHORT $LN46@AssumeDire
@@ -672,32 +672,32 @@ $LN38@AssumeDire:
 	cmp	eax, 1
 	ja	SHORT $LN42@AssumeDire
 
-; 412  :                 } else if ( ( opnd.sym->state == SYM_SEG || opnd.sym->state == SYM_GRP ) && opnd.instr == EMPTY ) {
+; 413  :                 } else if ( ( opnd.sym->state == SYM_SEG || opnd.sym->state == SYM_GRP ) && opnd.instr == EMPTY ) {
 
 	cmp	edx, -2
 	jne	SHORT $LN42@AssumeDire
 
-; 413  :                     info->symbol = opnd.sym;
+; 414  :                     info->symbol = opnd.sym;
 
 	mov	QWORD PTR [rbx], rcx
 	jmp	SHORT $LN46@AssumeDire
 $LN42@AssumeDire:
 
-; 414  :                 } else if ( opnd.instr == T_SEG ) {
+; 415  :                 } else if ( opnd.instr == T_SEG ) {
 
 	cmp	edx, 244				; 000000f4H
 	jne	$LN37@AssumeDire
 
-; 415  :                     info->symbol = opnd.sym->segment;
+; 416  :                     info->symbol = opnd.sym->segment;
 
 	mov	rax, QWORD PTR [rcx+24]
 	mov	QWORD PTR [rbx], rax
 $LN46@AssumeDire:
 
-; 416  :                 } else {
-; 417  :                     return( EmitError( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
-; 418  :                 }
-; 419  :                 info->is_flat = ( info->symbol == &ModuleInfo.flat_grp->sym );
+; 417  :                 } else {
+; 418  :                     return( EmitError( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
+; 419  :                 }
+; 420  :                 info->is_flat = ( info->symbol == &ModuleInfo.flat_grp->sym );
 
 	mov	rax, QWORD PTR ModuleInfo+440
 	lea	rdi, OFFSET FLAT:__ImageBase
@@ -706,21 +706,21 @@ $LN46@AssumeDire:
 $LN111@AssumeDire:
 	mov	BYTE PTR [rbx+9], al
 
-; 426  :                 }
-; 427  :             default:
-; 428  :                 return( EmitError( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
-; 429  :             }
-; 430  :             info->error = FALSE;
+; 427  :                 }
+; 428  :             default:
+; 429  :                 return( EmitError( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
+; 430  :             }
+; 431  :             info->error = FALSE;
 
 	mov	BYTE PTR [rbx+8], r13b
 $LN110@AssumeDire:
 	mov	r8d, DWORD PTR i$[rbp-137]
 $LN25@AssumeDire:
 
-; 431  :         }
-; 432  : 
-; 433  :         /* comma expected */
-; 434  :         if( i < Token_Count && tokenarray[i].token != T_COMMA )
+; 432  :         }
+; 433  : 
+; 434  :         /* comma expected */
+; 435  :         if( i < Token_Count && tokenarray[i].token != T_COMMA )
 
 	mov	ecx, DWORD PTR ModuleInfo+496
 	cmp	r8d, ecx
@@ -731,17 +731,17 @@ $LN25@AssumeDire:
 	jne	$LN3@AssumeDire
 $LN2@AssumeDire:
 
-; 287  :     int             reg;
-; 288  :     int             j;
-; 289  :     int             size;
-; 290  :     uint_32         flags;
-; 291  :     struct assume_info *info;
-; 292  :     bool            segtable;
-; 293  :     struct qualified_type ti;
-; 294  : 
-; 295  :     DebugMsg1(( "AssumeDirective enter, pass=%u\n", Parse_Pass+1 ));
-; 296  : 
-; 297  :     for( i++; i < Token_Count; i++ ) {
+; 288  :     int             reg;
+; 289  :     int             j;
+; 290  :     int             size;
+; 291  :     uint_32         flags;
+; 292  :     struct assume_info *info;
+; 293  :     bool            segtable;
+; 294  :     struct qualified_type ti;
+; 295  : 
+; 296  :     DebugMsg1(( "AssumeDirective enter, pass=%u\n", Parse_Pass+1 ));
+; 297  : 
+; 298  :     for( i++; i < Token_Count; i++ ) {
 
 	inc	r8d
 	mov	DWORD PTR i$[rbp-137], r8d
@@ -749,13 +749,13 @@ $LN2@AssumeDire:
 	jl	$LN112@AssumeDire
 $LN51@AssumeDire:
 
-; 439  :     }
-; 440  :     return( NOT_ERROR );
+; 440  :     }
+; 441  :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@AssumeDire:
 
-; 441  : }
+; 442  : }
 
 	lea	r11, QWORD PTR [rsp+192]
 	mov	rbx, QWORD PTR [r11+56]
@@ -770,7 +770,7 @@ $LN1@AssumeDire:
 	ret	0
 $LN81@AssumeDire:
 
-; 301  :             AssumeInit( -1 );
+; 302  :             AssumeInit( -1 );
 
 	mov	QWORD PTR SegAssumeTable, r13
 	lea	rax, OFFSET FLAT:StdAssumeTable+8
@@ -794,25 +794,25 @@ $LL65@AssumeDire:
 	cmp	rax, rcx
 	jl	SHORT $LL65@AssumeDire
 
-; 302  :             i++;
+; 303  :             i++;
 
 	mov	r8d, DWORD PTR i$[rbp-137]
 
-; 303  :             break;
+; 304  :             break;
 
 	mov	ecx, DWORD PTR ModuleInfo+496
 	inc	r8d
 	mov	DWORD PTR i$[rbp-137], r8d
 $LN3@AssumeDire:
 
-; 435  :             break;
-; 436  :     }
-; 437  :     if ( i < Token_Count ) {
+; 436  :             break;
+; 437  :     }
+; 438  :     if ( i < Token_Count ) {
 
 	cmp	r8d, ecx
 	jge	$LN51@AssumeDire
 
-; 438  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
+; 439  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	movsxd	rdx, r8d
 	mov	ecx, 209				; 000000d1H
@@ -822,41 +822,41 @@ $LN3@AssumeDire:
 	jmp	$LN1@AssumeDire
 $LN86@AssumeDire:
 
-; 369  :                 return( ERROR );
+; 370  :                 return( ERROR );
 
 	or	eax, -1
 	jmp	$LN1@AssumeDire
 $LN37@AssumeDire:
 
-; 405  :                     return( EmitError( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
+; 406  :                     return( EmitError( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
 
 	mov	ecx, 69					; 00000045H
 	call	EmitError
 	jmp	$LN1@AssumeDire
 $LN85@AssumeDire:
 
-; 337  :             return( EmitError( SYNTAX_ERROR ) );
+; 338  :             return( EmitError( SYNTAX_ERROR ) );
 
 	mov	ecx, 45					; 0000002dH
 	call	EmitError
 	jmp	$LN1@AssumeDire
 $LN84@AssumeDire:
 
-; 332  :             return( EmitError( COLON_EXPECTED ) );
+; 333  :             return( EmitError( COLON_EXPECTED ) );
 
 	mov	ecx, 84					; 00000054H
 	call	EmitError
 	jmp	$LN1@AssumeDire
 $LN83@AssumeDire:
 
-; 326  :             return( EmitError( INSTRUCTION_OR_REGISTER_NOT_ACCEPTED_IN_CURRENT_CPU_MODE ) );
+; 327  :             return( EmitError( INSTRUCTION_OR_REGISTER_NOT_ACCEPTED_IN_CURRENT_CPU_MODE ) );
 
 	mov	ecx, 30
 	call	EmitError
 	jmp	$LN1@AssumeDire
 $LN82@AssumeDire:
 
-; 322  :             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
+; 323  :             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	movsxd	rdx, r8d
 	mov	ecx, 209				; 000000d1H
@@ -1323,14 +1323,28 @@ _TEXT	SEGMENT
 reg$ = 8
 GetStdAssumeEx PROC
 
-; 273  :     return( StdAssumeTable[reg].symbol );
+; 273  :   if (reg >= NUM_STDREGS)
+
+	cmp	ecx, 16
+	jl	SHORT $LN2@GetStdAssu
+
+; 274  :     return NULL;
+
+	xor	eax, eax
+
+; 276  : }
+
+	ret	0
+$LN2@GetStdAssu:
+
+; 275  :   return(StdAssumeTable[reg].symbol);
 
 	movsxd	rax, ecx
 	lea	rcx, OFFSET FLAT:StdAssumeTable
 	add	rax, rax
 	mov	rax, QWORD PTR [rcx+rax*8]
 
-; 274  : }
+; 276  : }
 
 	ret	0
 GetStdAssumeEx ENDP
@@ -1384,7 +1398,7 @@ _TEXT	SEGMENT
 override$ = 8
 GetOverrideAssume PROC
 
-; 507  :     if( SegAssumeTable[override].is_flat ) {
+; 508  :     if( SegAssumeTable[override].is_flat ) {
 
 	movsxd	rax, ecx
 	lea	rcx, OFFSET FLAT:SegAssumeTable
@@ -1392,23 +1406,23 @@ GetOverrideAssume PROC
 	cmp	BYTE PTR [rcx+rax*8+9], 0
 	je	SHORT $LN2@GetOverrid
 
-; 508  :         return( (struct asym *)ModuleInfo.flat_grp );
+; 509  :         return( (struct asym *)ModuleInfo.flat_grp );
 
 	mov	rax, QWORD PTR ModuleInfo+440
 
-; 511  : 
-; 512  : }
+; 512  : 
+; 513  : }
 
 	ret	0
 $LN2@GetOverrid:
 
-; 509  :     }
-; 510  :     return( SegAssumeTable[override].symbol);
+; 510  :     }
+; 511  :     return( SegAssumeTable[override].symbol);
 
 	mov	rax, QWORD PTR [rcx+rax*8]
 
-; 511  : 
-; 512  : }
+; 512  : 
+; 513  : }
 
 	ret	0
 GetOverrideAssume ENDP
@@ -1422,7 +1436,7 @@ def$ = 64
 passume$ = 72
 GetAssume PROC
 
-; 526  : {
+; 527  : {
 
 $LN43:
 	mov	QWORD PTR [rsp+8], rbx
@@ -1433,9 +1447,9 @@ $LN43:
 	sub	rsp, 32					; 00000020H
 	movsxd	rbx, r8d
 
-; 527  :     enum assume_segreg  reg;
-; 528  : 
-; 529  :     if( ( def != ASSUME_NOTHING ) && SegAssumeTable[def].is_flat ) {
+; 528  :     enum assume_segreg  reg;
+; 529  : 
+; 530  :     if( ( def != ASSUME_NOTHING ) && SegAssumeTable[def].is_flat ) {
 
 	lea	rbp, OFFSET FLAT:SegAssumeTable
 	mov	r14, r9
@@ -1448,24 +1462,24 @@ $LN43:
 	cmp	BYTE PTR [rbp+rax*8+9], 0
 	je	SHORT $LN2@GetAssume
 
-; 530  :         *passume = (struct asym *)ModuleInfo.flat_grp;
+; 531  :         *passume = (struct asym *)ModuleInfo.flat_grp;
 
 	mov	rax, QWORD PTR ModuleInfo+440
 	mov	QWORD PTR [r9], rax
 
-; 531  :         return( def );
+; 532  :         return( def );
 
 	mov	eax, ebx
 	jmp	SHORT $LN1@GetAssume
 $LN2@GetAssume:
 
-; 532  :     }
-; 533  :     if( override != NULL ) {
+; 533  :     }
+; 534  :     if( override != NULL ) {
 
 	test	rcx, rcx
 	je	SHORT $LN3@GetAssume
 
-; 534  :         reg = search_assume( override, def, FALSE );
+; 535  :         reg = search_assume( override, def, FALSE );
 
 	call	GetGroup
 	cmp	ebx, -2
@@ -1492,34 +1506,34 @@ $LL14@GetAssume:
 	jmp	SHORT $LN41@GetAssume
 $LN3@GetAssume:
 
-; 535  : #if 1 /* v2.10: added */
-; 536  :     } else if ( sym->state == SYM_STACK ) {
+; 536  : #if 1 /* v2.10: added */
+; 537  :     } else if ( sym->state == SYM_STACK ) {
 
 	cmp	DWORD PTR [rdx+32], 5
 	jne	SHORT $LN5@GetAssume
 
-; 537  :         /* stack symbols don't have a segment part.
-; 538  :          * In case [R|E]BP is used as base, it doesn't matter.
-; 539  :          * However, if option -Zg is set, this isn't true.
-; 540  :          */
-; 541  :         reg = ASSUME_SS;
+; 538  :         /* stack symbols don't have a segment part.
+; 539  :          * In case [R|E]BP is used as base, it doesn't matter.
+; 540  :          * However, if option -Zg is set, this isn't true.
+; 541  :          */
+; 542  :         reg = ASSUME_SS;
 
 	mov	edx, 2
 $LN40@GetAssume:
 
-; 552  :         *passume = SegAssumeTable[reg].symbol;
+; 553  :         *passume = SegAssumeTable[reg].symbol;
 
 	movsxd	rax, edx
 	add	rax, rax
 	mov	rax, QWORD PTR [rbp+rax*8]
 	mov	QWORD PTR [r14], rax
 
-; 553  :         return( reg );
+; 554  :         return( reg );
 
 	mov	eax, edx
 $LN1@GetAssume:
 
-; 557  : }
+; 558  : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	mov	rbp, QWORD PTR [rsp+56]
@@ -1530,9 +1544,9 @@ $LN1@GetAssume:
 	ret	0
 $LN5@GetAssume:
 
-; 542  : #endif
-; 543  :     } else {
-; 544  :         reg = search_assume( sym->segment, def, TRUE );
+; 543  : #endif
+; 544  :     } else {
+; 545  :         reg = search_assume( sym->segment, def, TRUE );
 
 	mov	rcx, QWORD PTR [rsi+24]
 	mov	r8b, 1
@@ -1541,14 +1555,14 @@ $LN5@GetAssume:
 	mov	edx, eax
 $LN6@GetAssume:
 
-; 545  :     }
-; 546  :     if( reg == ASSUME_NOTHING ) {
+; 546  :     }
+; 547  :     if( reg == ASSUME_NOTHING ) {
 
 	cmp	edx, -2
 	jne	SHORT $LN40@GetAssume
 $LN41@GetAssume:
 
-; 547  :         if( sym && sym->state == SYM_EXTERNAL && sym->segment == NULL ) {
+; 548  :         if( sym && sym->state == SYM_EXTERNAL && sym->segment == NULL ) {
 
 	test	rsi, rsi
 	je	SHORT $LN9@GetAssume
@@ -1557,24 +1571,24 @@ $LN41@GetAssume:
 	cmp	QWORD PTR [rsi+24], 0
 	jne	SHORT $LN9@GetAssume
 
-; 548  :             reg = def;
+; 549  :             reg = def;
 
 	mov	edx, ebx
 
-; 549  :         }
-; 550  :     }
-; 551  :     if( reg != ASSUME_NOTHING ) {
+; 550  :         }
+; 551  :     }
+; 552  :     if( reg != ASSUME_NOTHING ) {
 
 	cmp	ebx, -2
 	jne	SHORT $LN40@GetAssume
 $LN9@GetAssume:
 
-; 554  :     }
-; 555  :     *passume = NULL;
+; 555  :     }
+; 556  :     *passume = NULL;
 
 	mov	QWORD PTR [r14], 0
 
-; 556  :     return( ASSUME_NOTHING );
+; 557  :     return( ASSUME_NOTHING );
 
 	mov	eax, -2
 	jmp	SHORT $LN1@GetAssume
@@ -1588,7 +1602,7 @@ def$ = 56
 search_grps$ = 64
 search_assume PROC
 
-; 456  : {
+; 457  : {
 
 $LN33:
 	mov	QWORD PTR [rsp+8], rbx
@@ -1599,23 +1613,23 @@ $LN33:
 	movzx	esi, r8b
 	mov	rdi, rcx
 
-; 457  :     struct asym *grp;
-; 458  : 
-; 459  :     if( sym == NULL )
+; 458  :     struct asym *grp;
+; 459  : 
+; 460  :     if( sym == NULL )
 
 	test	rcx, rcx
 	je	$LN6@search_ass
 
-; 460  :         return( ASSUME_NOTHING );
-; 461  : 
-; 462  :     grp = GetGroup( sym );
+; 461  :         return( ASSUME_NOTHING );
+; 462  : 
+; 463  :     grp = GetGroup( sym );
 
 	call	GetGroup
 
-; 463  : 
-; 464  :     /* first check the default segment register */
-; 465  : 
-; 466  :     if( def != ASSUME_NOTHING ) {
+; 464  : 
+; 465  :     /* first check the default segment register */
+; 466  : 
+; 467  :     if( def != ASSUME_NOTHING ) {
 
 	mov	r10, QWORD PTR ModuleInfo+440
 	mov	r8, rax
@@ -1623,7 +1637,7 @@ $LN33:
 	cmp	ebx, -2
 	je	SHORT $LN13@search_ass
 
-; 467  :         if( SegAssumeTable[def].symbol == sym )
+; 468  :         if( SegAssumeTable[def].symbol == sym )
 
 	mov	rax, rbx
 	add	rax, rax
@@ -1632,11 +1646,11 @@ $LN33:
 	jne	SHORT $LN10@search_ass
 $LN31@search_ass:
 
-; 468  :             return( def );
+; 469  :             return( def );
 
 	mov	eax, ebx
 
-; 496  : }
+; 497  : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	mov	rsi, QWORD PTR [rsp+56]
@@ -1645,14 +1659,14 @@ $LN31@search_ass:
 	ret	0
 $LN10@search_ass:
 
-; 469  :         if( search_grps && grp ) {
+; 470  :         if( search_grps && grp ) {
 
 	test	sil, sil
 	je	SHORT $LN13@search_ass
 	test	r8, r8
 	je	SHORT $LN13@search_ass
 
-; 470  :             if( SegAssumeTable[def].is_flat && grp == &ModuleInfo.flat_grp->sym )
+; 471  :             if( SegAssumeTable[def].is_flat && grp == &ModuleInfo.flat_grp->sym )
 
 	cmp	BYTE PTR [r11+rax*8+9], 0
 	je	SHORT $LN12@search_ass
@@ -1660,20 +1674,20 @@ $LN10@search_ass:
 	je	SHORT $LN31@search_ass
 $LN12@search_ass:
 
-; 471  :                 return( def );
-; 472  :             if( SegAssumeTable[def].symbol == grp )
+; 472  :                 return( def );
+; 473  :             if( SegAssumeTable[def].symbol == grp )
 
 	cmp	rcx, r8
 	je	SHORT $LN31@search_ass
 $LN13@search_ass:
 
-; 473  :                 return( def );
-; 474  :         }
-; 475  :     }
-; 476  : 
-; 477  :     /* now check all segment registers */
-; 478  : 
-; 479  :     for( def = 0; def < NUM_SEGREGS; def++ ) {
+; 474  :                 return( def );
+; 475  :         }
+; 476  :     }
+; 477  : 
+; 478  :     /* now check all segment registers */
+; 479  : 
+; 480  :     for( def = 0; def < NUM_SEGREGS; def++ ) {
 
 	lea	rdx, OFFSET FLAT:searchtab
 	mov	rcx, rdx
@@ -1681,7 +1695,7 @@ $LN13@search_ass:
 	npad	5
 $LL4@search_ass:
 
-; 480  :         if( SegAssumeTable[searchtab[def]].symbol == sym ) {
+; 481  :         if( SegAssumeTable[searchtab[def]].symbol == sym ) {
 
 	movsxd	r9, DWORD PTR [rcx]
 	mov	rax, r9
@@ -1689,38 +1703,38 @@ $LL4@search_ass:
 	cmp	QWORD PTR [r11+rax*8], rdi
 	je	SHORT $LN21@search_ass
 
-; 473  :                 return( def );
-; 474  :         }
-; 475  :     }
-; 476  : 
-; 477  :     /* now check all segment registers */
-; 478  : 
-; 479  :     for( def = 0; def < NUM_SEGREGS; def++ ) {
+; 474  :                 return( def );
+; 475  :         }
+; 476  :     }
+; 477  : 
+; 478  :     /* now check all segment registers */
+; 479  : 
+; 480  :     for( def = 0; def < NUM_SEGREGS; def++ ) {
 
 	add	rcx, 4
 	cmp	rcx, rbx
 	jl	SHORT $LL4@search_ass
 
-; 481  :             return( searchtab[def] );
-; 482  :         }
-; 483  :     }
-; 484  : 
-; 485  :     /* now check the groups */
-; 486  :     if( search_grps && grp )
+; 482  :             return( searchtab[def] );
+; 483  :         }
+; 484  :     }
+; 485  : 
+; 486  :     /* now check the groups */
+; 487  :     if( search_grps && grp )
 
 	test	sil, sil
 	je	SHORT $LN6@search_ass
 	test	r8, r8
 	je	SHORT $LN6@search_ass
 
-; 487  :         for( def = 0; def < NUM_SEGREGS; def++ ) {
+; 488  :         for( def = 0; def < NUM_SEGREGS; def++ ) {
 
 	xor	eax, eax
 	npad	12
 $LL7@search_ass:
 	movsxd	r9, DWORD PTR [rdx]
 
-; 488  :             if( SegAssumeTable[searchtab[def]].is_flat && grp == &ModuleInfo.flat_grp->sym )
+; 489  :             if( SegAssumeTable[searchtab[def]].is_flat && grp == &ModuleInfo.flat_grp->sym )
 
 	mov	rcx, r9
 	add	rcx, rcx
@@ -1730,13 +1744,13 @@ $LL7@search_ass:
 	je	SHORT $LN21@search_ass
 $LN16@search_ass:
 
-; 489  :                 return( searchtab[def] );
-; 490  :             if( SegAssumeTable[searchtab[def]].symbol == grp ) {
+; 490  :                 return( searchtab[def] );
+; 491  :             if( SegAssumeTable[searchtab[def]].symbol == grp ) {
 
 	cmp	QWORD PTR [r11+rcx*8], r8
 	je	SHORT $LN21@search_ass
 
-; 487  :         for( def = 0; def < NUM_SEGREGS; def++ ) {
+; 488  :         for( def = 0; def < NUM_SEGREGS; def++ ) {
 
 	inc	eax
 	add	rdx, 4
@@ -1744,15 +1758,15 @@ $LN16@search_ass:
 	jl	SHORT $LL7@search_ass
 $LN6@search_ass:
 
-; 491  :                 return( searchtab[def] );
-; 492  :             }
-; 493  :         }
-; 494  : 
-; 495  :     return( ASSUME_NOTHING );
+; 492  :                 return( searchtab[def] );
+; 493  :             }
+; 494  :         }
+; 495  : 
+; 496  :     return( ASSUME_NOTHING );
 
 	mov	eax, -2
 
-; 496  : }
+; 497  : }
 
 	mov	rbx, QWORD PTR [rsp+48]
 	mov	rsi, QWORD PTR [rsp+56]

@@ -4425,7 +4425,7 @@ $LN16@CheckAssum:
 	je	SHORT $LN13@CheckAssum
 $LN15@CheckAssum:
 
-; 2464 :       if ((opnd->type != 0x7b)&&(opnd->type != NULL)){ //this is temporary fix for VGATHER instructions in DEBUG mode
+; 2464 :       if ( opnd->type != NULL ){ 
 ; 2465 :         DebugMsg1(( "CheckAssume(%s, type=>%s<, mbr=>%s<): assume=%s [memtype=%X isptr=%u type=%s target_type=%s ptr_memt=%X]\n",
 ; 2466 :                    GetResWName( ( opnd->idx_reg ? opnd->idx_reg->tokval : opnd->base_reg->tokval ), NULL ),
 ; 2467 :                    opnd->type ? opnd->type->name : "NULL",
@@ -7782,14 +7782,15 @@ highword_op PROC
 $LN2@highword_o:
 
 ; 1556 :     }
-; 1557 : 	opnd1->value = (opnd1->value >> 16) & 0xFFFF; /* ASMC v2.14 (fix borrowed from nidud) */
+; 1557 : 	opnd1->llvalue = (opnd1->value >> 16) & 0xFFFF; /* ASMC v2.14 (fix borrowed from nidud) */
 
-	movzx	eax, WORD PTR [rdx+2]
-	mov	DWORD PTR [rdx], eax
+	movsx	rax, WORD PTR [rdx+2]
+	movzx	ecx, ax
 
 ; 1558 :     return( NOT_ERROR );
 
 	xor	eax, eax
+	mov	QWORD PTR [rdx], rcx
 
 ; 1559 : }
 

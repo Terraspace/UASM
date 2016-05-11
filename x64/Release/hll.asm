@@ -287,16 +287,16 @@ $SG11862 DB	'sub rax, rcx', 00H
 $SG11863 DB	'jc  %s', 00H
 	ORG $+1
 $SG11866 DB	'lea  edx,%s', 00H
-$SG12084 DB	'%s:', 00H
+$SG12082 DB	'%s:', 00H
 $SG11867 DB	'movzx  eax,BYTE PTR[edx+eax]', 00H
 	ORG $+3
 $SG11868 DB	'lea  edx,%s', 00H
-$SG12087 DB	'%s:', 00H
+$SG12085 DB	'%s:', 00H
 $SG11869 DB	'jmp  dword ptr[edx+eax*4]', 00H
 	ORG $+2
 $SG11910 DB	'je  %s', 00H
 	ORG $+1
-$SG12120 DB	'%s:', 00H
+$SG12110 DB	'%s:', 00H
 $SG11870 DB	'lea  rdx,%s', 00H
 $SG11214 DB	'cmp', 00H
 $SG11871 DB	'movzx  rax,byte ptr[rdx+rax]', 00H
@@ -454,15 +454,15 @@ $SG11029 DB	'EQUAL', 00H
 	ORG $+2
 $SG11032 DB	'BELOW', 00H
 	ORG $+2
-$SG12118 DB	'jmp %s', 00H
+$SG12108 DB	'jmp %s', 00H
+	ORG $+1
+$SG12127 DB	'jmp %s', 00H
 	ORG $+1
 $SG11108 DB	', %d', 00H
 	ORG $+3
-$SG12137 DB	'jmp %s', 00H
+$SG12134 DB	'.if-.repeat-.while', 00H
 	ORG $+1
 $SG11115 DB	'@C%04X', 00H
-	ORG $+1
-$SG12144 DB	'.if-.repeat-.while', 00H
 	ORG $+1
 $SG11212 DB	'test', 00H
 	ORG $+7
@@ -485,8 +485,6 @@ EXTRN	strstr:PROC
 EXTRN	_memicmp:PROC
 EXTRN	_stricmp:PROC
 EXTRN	__stdio_common_vsprintf:PROC
-EXTRN	realloc:PROC
-EXTRN	Fatal:PROC
 EXTRN	EmitError:PROC
 EXTRN	EmitErr:PROC
 EXTRN	LclAlloc:PROC
@@ -707,23 +705,23 @@ $pdata$4$HllEndDir DD imagerel $LN355+4187
 $pdata$5$HllEndDir DD imagerel $LN355+5476
 	DD	imagerel $LN355+5512
 	DD	imagerel $chain$5$HllEndDir
-$pdata$HllExitDir DD imagerel $LN164
-	DD	imagerel $LN164+78
+$pdata$HllExitDir DD imagerel $LN155
+	DD	imagerel $LN155+78
 	DD	imagerel $unwind$HllExitDir
-$pdata$1$HllExitDir DD imagerel $LN164+78
-	DD	imagerel $LN164+1506
+$pdata$1$HllExitDir DD imagerel $LN155+78
+	DD	imagerel $LN155+1522
 	DD	imagerel $chain$1$HllExitDir
-$pdata$2$HllExitDir DD imagerel $LN164+1506
-	DD	imagerel $LN164+1608
+$pdata$2$HllExitDir DD imagerel $LN155+1522
+	DD	imagerel $LN155+1624
 	DD	imagerel $chain$2$HllExitDir
-$pdata$4$HllExitDir DD imagerel $LN164+1608
-	DD	imagerel $LN164+1711
+$pdata$4$HllExitDir DD imagerel $LN155+1624
+	DD	imagerel $LN155+1727
 	DD	imagerel $chain$4$HllExitDir
-$pdata$5$HllExitDir DD imagerel $LN164+1711
-	DD	imagerel $LN164+1872
+$pdata$5$HllExitDir DD imagerel $LN155+1727
+	DD	imagerel $LN155+1888
 	DD	imagerel $chain$5$HllExitDir
-$pdata$6$HllExitDir DD imagerel $LN164+1872
-	DD	imagerel $LN164+1920
+$pdata$6$HllExitDir DD imagerel $LN155+1888
+	DD	imagerel $LN155+1936
 	DD	imagerel $chain$6$HllExitDir
 pdata	ENDS
 _DATA	SEGMENT
@@ -834,32 +832,32 @@ $chain$5$HllEndDir DD 021H
 	DD	imagerel $unwind$HllEndDir
 $unwind$HllExitDir DD 071901H
 	DD	09a0119H
-	DD	07008c00aH
+	DD	07008f00aH
 	DD	030066007H
 	DD	05005H
 $chain$1$HllExitDir DD 041621H
-	DD	0a2e416H
-	DD	0a1d408H
-	DD	imagerel $LN164
-	DD	imagerel $LN164+78
+	DD	0a3e416H
+	DD	0a2d408H
+	DD	imagerel $LN155
+	DD	imagerel $LN155+78
 	DD	imagerel $unwind$HllExitDir
 $chain$2$HllExitDir DD 020821H
-	DD	0a3f408H
-	DD	imagerel $LN164+78
-	DD	imagerel $LN164+1506
+	DD	0a1c408H
+	DD	imagerel $LN155+78
+	DD	imagerel $LN155+1522
 	DD	imagerel $chain$1$HllExitDir
 $chain$4$HllExitDir DD 020021H
-	DD	0a3f400H
-	DD	imagerel $LN164+78
-	DD	imagerel $LN164+1506
+	DD	0a1c400H
+	DD	imagerel $LN155+78
+	DD	imagerel $LN155+1522
 	DD	imagerel $chain$1$HllExitDir
 $chain$5$HllExitDir DD 021H
-	DD	imagerel $LN164+78
-	DD	imagerel $LN164+1506
+	DD	imagerel $LN155+78
+	DD	imagerel $LN155+1522
 	DD	imagerel $chain$1$HllExitDir
 $chain$6$HllExitDir DD 021H
-	DD	imagerel $LN164
-	DD	imagerel $LN164+78
+	DD	imagerel $LN155
+	DD	imagerel $LN155+78
 	DD	imagerel $unwind$HllExitDir
 xdata	ENDS
 ;	COMDAT xdata
@@ -1073,13 +1071,13 @@ HllExitDir PROC
 
 ; 2069 : {
 
-$LN164:
+$LN155:
 	mov	DWORD PTR [rsp+8], ecx
 	push	rbp
 	push	rbx
 	push	rsi
 	push	rdi
-	push	r12
+	push	r15
 	lea	rbp, QWORD PTR [rsp-976]
 	sub	rsp, 1232				; 000004d0H
 
@@ -1103,11 +1101,11 @@ $LN164:
 ; 2087 :   hll = HllStack;
 
 	mov	rbx, QWORD PTR ModuleInfo+224
-	mov	r12, rdx
+	mov	r15, rdx
 	movsxd	rdx, ecx
 	xor	esi, esi
 	shl	rdx, 5
-	mov	edi, DWORD PTR [rdx+r12+16]
+	mov	edi, DWORD PTR [rdx+r15+16]
 
 ; 2088 : 
 ; 2089 :   if (hll == NULL) {
@@ -1121,29 +1119,29 @@ $LN164:
 	mov	ecx, 245				; 000000f5H
 	call	EmitError
 
-; 2295 : }
+; 2297 : }
 
 	add	rsp, 1232				; 000004d0H
-	pop	r12
+	pop	r15
 	pop	rdi
 	pop	rsi
 	pop	rbx
 	pop	rbp
 	ret	0
 $LN15@HllExitDir:
-	mov	QWORD PTR [rsp+1288], r13
+	mov	QWORD PTR [rsp+1296], r13
 
 ; 2092 :   }
 ; 2093 :   switch (cmd) {
 
 	lea	eax, DWORD PTR [rdi-331]
-	mov	QWORD PTR [rsp+1296], r14
+	mov	QWORD PTR [rsp+1304], r14
 	mov	r13d, 4
 	cmp	eax, 11
-	ja	$LN64@HllExitDir
+	ja	$LN56@HllExitDir
 	lea	r8, OFFSET FLAT:__ImageBase
 	cdqe
-	mov	ecx, DWORD PTR $LN144@HllExitDir[r8+rax*4]
+	mov	ecx, DWORD PTR $LN136@HllExitDir[r8+rax*4]
 	add	rcx, r8
 	jmp	rcx
 $LN16@HllExitDir:
@@ -1152,7 +1150,7 @@ $LN16@HllExitDir:
 ; 2095 :     if (hll->flags & HLLF_ELSEOCCURED) {
 
 	test	BYTE PTR [rbx+104], 1
-	jne	$LN162@HllExitDir
+	jne	$LN153@HllExitDir
 
 ; 2096 :       DebugMsg(("HllExitDir stack error\n"));
 ; 2097 :       return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
@@ -1164,7 +1162,7 @@ $LN16@HllExitDir:
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12084
+	lea	rcx, OFFSET FLAT:$SG12082
 	call	AddLineQueueX
 
 ; 2100 :     hll->flags |= HLLF_ELSEOCCURED;
@@ -1177,14 +1175,14 @@ $LN16@HllExitDir:
 
 ; 2102 :     break;
 
-	jmp	$LN64@HllExitDir
+	jmp	$LN56@HllExitDir
 $LN18@HllExitDir:
 
 ; 2103 :   case T_DOT_CASE:
 ; 2104 :     if (hll->cmd != HLL_SWITCH) {
 
 	cmp	DWORD PTR [rbx+96], 5
-	jne	$LN162@HllExitDir
+	jne	$LN153@HllExitDir
 
 ; 2105 :       DebugMsg(("HllExitDir stack error\n"));
 ; 2106 :       return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
@@ -1203,7 +1201,7 @@ $LN18@HllExitDir:
 	mov	DWORD PTR [rbx+32], eax
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12087
+	lea	rcx, OFFSET FLAT:$SG12085
 	call	AddLineQueueX
 
 ; 2110 :     i++;
@@ -1216,24 +1214,24 @@ $LN18@HllExitDir:
 	movsxd	r8, eax
 	shl	r8, 5
 	mov	DWORD PTR i$[rbp-256], eax
-	cmp	BYTE PTR [r8+r12], sil
+	cmp	BYTE PTR [r8+r15], sil
 	je	$LN21@HllExitDir
 
 ; 2112 :       strcpy(buffer, tokenarray[i].tokpos);
 
-	mov	rcx, QWORD PTR [r8+r12+24]
+	mov	rcx, QWORD PTR [r8+r15+24]
 	lea	rdx, QWORD PTR buffer$[rbp-256]
-$LL71@HllExitDir:
+$LL63@HllExitDir:
 	movzx	eax, BYTE PTR [rcx]
 	lea	rcx, QWORD PTR [rcx+1]
 	mov	BYTE PTR [rdx], al
 	lea	rdx, QWORD PTR [rdx+1]
 	test	al, al
-	jne	SHORT $LL71@HllExitDir
+	jne	SHORT $LL63@HllExitDir
 
 ; 2113 :     if (tokenarray[i].token != T_FINAL) {
 
-	cmp	BYTE PTR [r8+r12], sil
+	cmp	BYTE PTR [r8+r15], sil
 	je	$LN21@HllExitDir
 
 ; 2114 :       DebugMsg1(("HllExitDir(%s): calling EvalOperand, i=%u\n", tokenarray[i].string_ptr, i));
@@ -1241,7 +1239,7 @@ $LL71@HllExitDir:
 
 	mov	r8d, DWORD PTR ModuleInfo+496
 	lea	r9, QWORD PTR opndx$[rsp]
-	mov	rdx, r12
+	mov	rdx, r15
 	mov	BYTE PTR [rsp+32], sil
 	lea	rcx, QWORD PTR i$[rbp-256]
 	call	EvalOperand
@@ -1252,7 +1250,7 @@ $LL71@HllExitDir:
 ; 2117 :         return(ERROR);
 
 	or	eax, eax
-	jmp	$LN157@HllExitDir
+	jmp	$LN149@HllExitDir
 $LN23@HllExitDir:
 
 ; 2118 :       }
@@ -1301,16 +1299,16 @@ $LN23@HllExitDir:
 
 ; 2130 :           break;
 
-	jmp	SHORT $LN159@HllExitDir
+	jmp	SHORT $LN151@HllExitDir
 $LN24@HllExitDir:
 
 ; 2121 :       case EXPR_CONST:
 ; 2122 :         tokenarray[i].token = T_FINAL;
 
 	cdqe
-$LN159@HllExitDir:
+$LN151@HllExitDir:
 	shl	rax, 5
-	mov	BYTE PTR [rax+r12], sil
+	mov	BYTE PTR [rax+r15], sil
 $LN26@HllExitDir:
 
 ; 2138 :     }
@@ -1325,247 +1323,245 @@ $LN26@HllExitDir:
 	cmp	DWORD PTR [rbx+120], esi
 	jne	SHORT $LN29@HllExitDir
 
-; 2141 :         hll->pcases = LclAlloc(hll->csize * 20);
+; 2141 :         hll->pcases = LclAlloc(hll->csize * 50);
 
-	mov	ecx, 80					; 00000050H
+	mov	ecx, 200				; 000000c8H
 	call	LclAlloc
 
-; 2142 :         hll->plabels = LclAlloc(sizeof(uint_16) * 20);
+; 2142 :         hll->plabels = LclAlloc(sizeof(uint_16) * 50);
 
-	mov	ecx, 40					; 00000028H
+	mov	ecx, 100				; 00000064H
 	mov	QWORD PTR [rbx+8], rax
 	call	LclAlloc
 	mov	QWORD PTR [rbx+24], rax
 
-; 2143 :         hll->maxalloccasen = 20;
+; 2143 :         hll->maxalloccasen = 50;
 
-	mov	DWORD PTR [rbx+120], 20
+	mov	DWORD PTR [rbx+120], 50			; 00000032H
 $LN29@HllExitDir:
 
 ; 2144 :       }
-; 2145 :       if (hll->casecnt > hll->maxalloccasen) {
+; 2145 :       if (hll->casecnt >= hll->maxalloccasen) {
 
 	mov	ecx, DWORD PTR [rbx+120]
 	cmp	DWORD PTR [rbx+92], ecx
-	jbe	$LN40@HllExitDir
+	jb	$LN32@HllExitDir
 
-; 2146 :         hll->maxalloccasen += 20;
-; 2147 :         if ((newcp = realloc(hll->pcases, hll->csize * hll->maxalloccasen)) == NULL)
+; 2146 :         hll->maxalloccasen += 50;
+; 2147 :         newcp = LclAlloc(hll->csize * hll->maxalloccasen);
 
 	movsx	eax, BYTE PTR [rbx+102]
-	add	ecx, 20
+	add	ecx, 50					; 00000032H
 	imul	eax, ecx
 	mov	DWORD PTR [rbx+120], ecx
-	mov	rcx, QWORD PTR [rbx+8]
-	movsxd	rdx, eax
-	call	realloc
-	test	rax, rax
-	jne	SHORT $LN31@HllExitDir
+	movsxd	rcx, eax
+	call	LclAlloc
 
-; 2148 :           Fatal(OUT_OF_MEMORY);
+; 2148 :         memcpy(newcp, hll->pcases, hll->casecnt * hll->csize);
 
-	lea	ecx, QWORD PTR [rax+105]
-	call	Fatal
-	jmp	SHORT $LN38@HllExitDir
-$LN31@HllExitDir:
+	movsx	r8d, BYTE PTR [rbx+102]
+	mov	rcx, rax
+	imul	r8d, DWORD PTR [rbx+92]
+	mov	rdi, rax
+	mov	rdx, QWORD PTR [rbx+8]
+	call	memcpy
 
-; 2149 :         else
-; 2150 :           hll->pcases = newcp;
+; 2149 :         LclFree(hll->pcases);
+; 2150 :         hll->pcases = newcp;
 
-	mov	QWORD PTR [rbx+8], rax
+	mov	QWORD PTR [rbx+8], rdi
 
-; 2151 :         if ((newlp = realloc(hll->plabels, sizeof(uint_16) * hll->maxalloccasen)) == NULL)
-; 2152 :           Fatal(OUT_OF_MEMORY);
-; 2153 :         else
-; 2154 :           hll->plabels = newlp;
-; 2155 :       }
-; 2156 :     }
+; 2151 :         
+; 2152 :         newlp = LclAlloc(sizeof(uint_16) * hll->maxalloccasen);
+; 2153 :         memcpy(newlp, hll->plabels, hll->casecnt * sizeof(uint_16));
+; 2154 :         LclFree(hll->plabels);
+; 2155 :         hll->plabels = newlp;
+; 2156 :       }
+; 2157 :     }
 
-	jmp	SHORT $LN38@HllExitDir
+	jmp	SHORT $LN152@HllExitDir
 $LN27@HllExitDir:
 
-; 2157 : #if AMD64_SUPPORT
-; 2158 :     else {
-; 2159 :       if (!hll->maxalloccasen) {
+; 2158 : #if AMD64_SUPPORT
+; 2159 :     else {
+; 2160 :       if (!hll->maxalloccasen) {
 
 	cmp	DWORD PTR [rbx+120], esi
-	jne	SHORT $LN35@HllExitDir
+	jne	SHORT $LN31@HllExitDir
 
-; 2160 :         hll->pcases64 = LclAlloc(hll->csize * 20);
+; 2161 :         hll->pcases64 = LclAlloc(hll->csize * 50);
 
 	movsx	eax, al
-	lea	ecx, DWORD PTR [rax+rax*4]
-	shl	ecx, 2
+	imul	ecx, eax, 50				; 00000032H
 	movsxd	rcx, ecx
 	call	LclAlloc
 
-; 2161 :         hll->plabels = LclAlloc(sizeof(uint_16) * 20);
+; 2162 :         hll->plabels = LclAlloc(sizeof(uint_16) * 50);
 
-	mov	ecx, 40					; 00000028H
+	mov	ecx, 100				; 00000064H
 	mov	QWORD PTR [rbx+16], rax
 	call	LclAlloc
 	mov	QWORD PTR [rbx+24], rax
 
-; 2162 :         hll->maxalloccasen = 20;
+; 2163 :         hll->maxalloccasen = 50;
 
-	mov	DWORD PTR [rbx+120], 20
-$LN35@HllExitDir:
+	mov	DWORD PTR [rbx+120], 50			; 00000032H
+$LN31@HllExitDir:
 
-; 2163 :       }
-; 2164 :       if (hll->casecnt > hll->maxalloccasen) {
+; 2164 :       }
+; 2165 :       if (hll->casecnt >= hll->maxalloccasen) {
 
 	mov	ecx, DWORD PTR [rbx+120]
 	cmp	DWORD PTR [rbx+92], ecx
-	jbe	SHORT $LN40@HllExitDir
+	jb	SHORT $LN32@HllExitDir
 
-; 2165 :         hll->maxalloccasen += 20;
-; 2166 :         if ((newcp64 = realloc(hll->pcases64, hll->csize * hll->maxalloccasen)) == NULL)
+; 2166 :         hll->maxalloccasen += 50;
+; 2167 :         newcp64 = LclAlloc(hll->csize * hll->maxalloccasen);
 
 	movsx	eax, BYTE PTR [rbx+102]
-	add	ecx, 20
+	add	ecx, 50					; 00000032H
 	imul	eax, ecx
 	mov	DWORD PTR [rbx+120], ecx
-	mov	rcx, QWORD PTR [rbx+16]
-	movsxd	rdx, eax
-	call	realloc
-	test	rax, rax
-	jne	SHORT $LN37@HllExitDir
+	movsxd	rcx, eax
+	call	LclAlloc
 
-; 2167 :           Fatal(OUT_OF_MEMORY);
+; 2168 :         memcpy(newcp64, hll->pcases64, hll->casecnt * hll->csize);
 
-	lea	ecx, QWORD PTR [rax+105]
-	call	Fatal
-	jmp	SHORT $LN38@HllExitDir
-$LN37@HllExitDir:
+	movsx	r8d, BYTE PTR [rbx+102]
+	mov	rcx, rax
+	imul	r8d, DWORD PTR [rbx+92]
+	mov	rdi, rax
+	mov	rdx, QWORD PTR [rbx+16]
+	call	memcpy
 
-; 2168 :         else
-; 2169 :           hll->pcases64 = newcp64;
+; 2169 :         LclFree(hll->pcases64);
+; 2170 :         hll->pcases64 = newcp64;
 
-	mov	QWORD PTR [rbx+16], rax
-$LN38@HllExitDir:
+	mov	QWORD PTR [rbx+16], rdi
+$LN152@HllExitDir:
 
-; 2170 :         if ((newlp = realloc(hll->plabels, sizeof(uint_16) * hll->maxalloccasen)) == NULL)
+; 2171 : 
+; 2172 :         newlp = LclAlloc(sizeof(uint_16) * hll->maxalloccasen);
 
-	movsxd	rdx, DWORD PTR [rbx+120]
-	mov	rcx, QWORD PTR [rbx+24]
-	add	rdx, rdx
-	call	realloc
-	test	rax, rax
-	jne	SHORT $LN39@HllExitDir
+	movsxd	rcx, DWORD PTR [rbx+120]
+	add	rcx, rcx
+	call	LclAlloc
 
-; 2171 :           Fatal(OUT_OF_MEMORY);
+; 2173 :         memcpy(newlp, hll->plabels, hll->casecnt * sizeof(uint_16));
 
-	lea	ecx, QWORD PTR [rax+105]
-	call	Fatal
-	jmp	SHORT $LN40@HllExitDir
-$LN39@HllExitDir:
+	mov	r8d, DWORD PTR [rbx+92]
+	mov	rcx, rax
+	mov	rdx, QWORD PTR [rbx+24]
+	add	r8, r8
+	mov	rdi, rax
+	call	memcpy
 
-; 2172 :         else
-; 2173 :           hll->plabels = newlp;
+; 2174 :         LclFree(hll->plabels);
+; 2175 :         hll->plabels = newlp;
 
-	mov	QWORD PTR [rbx+24], rax
-$LN40@HllExitDir:
+	mov	QWORD PTR [rbx+24], rdi
+$LN32@HllExitDir:
 
-; 2174 :       }
-; 2175 :     }
-; 2176 : #endif
-; 2177 :     if ((ModuleInfo.Ofssize == USE32) || (hll->csize == 4)) {
+; 2176 :       }
+; 2177 :     }
+; 2178 : #endif
+; 2179 :     if ((ModuleInfo.Ofssize == USE32) || (hll->csize == 4)) {
 
 	cmp	BYTE PTR ModuleInfo+404, 1
-	je	SHORT $LN43@HllExitDir
+	je	SHORT $LN35@HllExitDir
 	cmp	BYTE PTR [rbx+102], r13b
-	je	SHORT $LN43@HllExitDir
+	je	SHORT $LN35@HllExitDir
 
-; 2183 :     }
-; 2184 : #if AMD64_SUPPORT
-; 2185 :     else {
-; 2186 :       for (j = 0; j < hll->casecnt; j++) {
+; 2185 :     }
+; 2186 : #if AMD64_SUPPORT
+; 2187 :     else {
+; 2188 :       for (j = 0; j < hll->casecnt; j++) {
 
 	mov	edi, esi
 	cmp	DWORD PTR [rbx+92], esi
-	jbe	SHORT $LN149@HllExitDir
+	jbe	SHORT $LN141@HllExitDir
 	mov	r14, rsi
-	npad	2
+	npad	6
 $LL11@HllExitDir:
 
-; 2187 :         if (hll->pcases64[j] == opndx.value64)
+; 2189 :         if (hll->pcases64[j] == opndx.value64)
 
 	mov	rcx, QWORD PTR [rbx+16]
 	mov	rax, QWORD PTR opndx$[rsp]
 	cmp	QWORD PTR [r14+rcx], rax
 	jne	SHORT $LN9@HllExitDir
 
-; 2188 :           EmitErr(CASE_ALREADY_OCCURED_IN_THIS_SWITCH_BLOCK, buffer);
+; 2190 :           EmitErr(CASE_ALREADY_OCCURED_IN_THIS_SWITCH_BLOCK, buffer);
 
 	lea	rdx, QWORD PTR buffer$[rbp-256]
 	mov	ecx, 253				; 000000fdH
 	call	EmitErr
 $LN9@HllExitDir:
 
-; 2183 :     }
-; 2184 : #if AMD64_SUPPORT
-; 2185 :     else {
-; 2186 :       for (j = 0; j < hll->casecnt; j++) {
+; 2185 :     }
+; 2186 : #if AMD64_SUPPORT
+; 2187 :     else {
+; 2188 :       for (j = 0; j < hll->casecnt; j++) {
 
 	inc	edi
 	add	r14, 8
 	cmp	edi, DWORD PTR [rbx+92]
 	jb	SHORT $LL11@HllExitDir
-$LN149@HllExitDir:
+$LN141@HllExitDir:
 
-; 2189 :       }
-; 2190 :       hll->pcases64[hll->casecnt] = opndx.value64;
+; 2191 :       }
+; 2192 :       hll->pcases64[hll->casecnt] = opndx.value64;
 
 	mov	edx, DWORD PTR [rbx+92]
 	mov	rcx, QWORD PTR [rbx+16]
 	mov	rax, QWORD PTR opndx$[rsp]
 	mov	QWORD PTR [rcx+rdx*8], rax
-	jmp	SHORT $LN42@HllExitDir
-$LN43@HllExitDir:
+	jmp	SHORT $LN34@HllExitDir
+$LN35@HllExitDir:
 
-; 2178 :       for (j = 0; j < hll->casecnt; j++) {
+; 2180 :       for (j = 0; j < hll->casecnt; j++) {
 
 	mov	edi, esi
 	cmp	DWORD PTR [rbx+92], esi
-	jbe	SHORT $LN150@HllExitDir
+	jbe	SHORT $LN142@HllExitDir
 	mov	r14, rsi
 	npad	12
 $LL8@HllExitDir:
 
-; 2179 :         if (hll->pcases[j] == opndx.value)
+; 2181 :         if (hll->pcases[j] == opndx.value)
 
 	mov	rcx, QWORD PTR [rbx+8]
 	mov	eax, DWORD PTR opndx$[rsp]
 	cmp	DWORD PTR [r14+rcx], eax
 	jne	SHORT $LN6@HllExitDir
 
-; 2180 :           EmitErr(CASE_ALREADY_OCCURED_IN_THIS_SWITCH_BLOCK, buffer);
+; 2182 :           EmitErr(CASE_ALREADY_OCCURED_IN_THIS_SWITCH_BLOCK, buffer);
 
 	lea	rdx, QWORD PTR buffer$[rbp-256]
 	mov	ecx, 253				; 000000fdH
 	call	EmitErr
 $LN6@HllExitDir:
 
-; 2178 :       for (j = 0; j < hll->casecnt; j++) {
+; 2180 :       for (j = 0; j < hll->casecnt; j++) {
 
 	inc	edi
 	add	r14, r13
 	cmp	edi, DWORD PTR [rbx+92]
 	jb	SHORT $LL8@HllExitDir
-$LN150@HllExitDir:
+$LN142@HllExitDir:
 
-; 2181 :       }
-; 2182 :       hll->pcases[hll->casecnt] = opndx.value;
+; 2183 :       }
+; 2184 :       hll->pcases[hll->casecnt] = opndx.value;
 
 	mov	edx, DWORD PTR [rbx+92]
 	mov	rcx, QWORD PTR [rbx+8]
 	mov	eax, DWORD PTR opndx$[rsp]
 	mov	DWORD PTR [rcx+rdx*4], eax
-$LN42@HllExitDir:
+$LN34@HllExitDir:
 
-; 2191 :     }
-; 2192 : #endif
-; 2193 :     hll->plabels[hll->casecnt] = hex2dec(buff + 2);
+; 2193 :     }
+; 2194 : #endif
+; 2195 :     hll->plabels[hll->casecnt] = hex2dec(buff + 2);
 
 	lea	rcx, QWORD PTR buff$[rsp+2]
 	call	hex2dec
@@ -1573,13 +1569,13 @@ $LN42@HllExitDir:
 	mov	rcx, QWORD PTR [rbx+24]
 	mov	WORD PTR [rcx+rdx*2], ax
 
-; 2194 :     hll->casecnt++;
+; 2196 :     hll->casecnt++;
 
 	inc	DWORD PTR [rbx+92]
 
-; 2195 :     break;
+; 2197 :     break;
 
-	jmp	$LN64@HllExitDir
+	jmp	$LN56@HllExitDir
 $LN21@HllExitDir:
 
 ; 2131 :         }
@@ -1592,104 +1588,104 @@ $LN21@HllExitDir:
 
 	mov	ecx, 150				; 00000096H
 	call	EmitError
-	jmp	$LN157@HllExitDir
-$LN46@HllExitDir:
+	jmp	$LN149@HllExitDir
+$LN38@HllExitDir:
 
-; 2196 :   case T_DOT_ELSE:
-; 2197 :   case T_DOT_ELSEIF:
-; 2198 :     if (hll->cmd != HLL_IF) {
+; 2198 :   case T_DOT_ELSE:
+; 2199 :   case T_DOT_ELSEIF:
+; 2200 :     if (hll->cmd != HLL_IF) {
 
 	cmp	DWORD PTR [rbx+96], esi
-	je	SHORT $LN47@HllExitDir
+	je	SHORT $LN39@HllExitDir
 
-; 2199 :       DebugMsg(("HllExitDir(%s): labels[LTEST]=%X\n", tokenarray[i].string_ptr, hll->labels[LTEST]));
-; 2200 :       return(EmitErr(BLOCK_NESTING_ERROR, tokenarray[i].string_ptr));
+; 2201 :       DebugMsg(("HllExitDir(%s): labels[LTEST]=%X\n", tokenarray[i].string_ptr, hll->labels[LTEST]));
+; 2202 :       return(EmitErr(BLOCK_NESTING_ERROR, tokenarray[i].string_ptr));
 
-	mov	rdx, QWORD PTR [rdx+r12+8]
+	mov	rdx, QWORD PTR [rdx+r15+8]
 	mov	ecx, 80					; 00000050H
 	call	EmitErr
-	jmp	$LN157@HllExitDir
-$LN47@HllExitDir:
+	jmp	$LN149@HllExitDir
+$LN39@HllExitDir:
 
-; 2201 :     }
-; 2202 :     /* v2.08: check for multiple ELSE clauses */
-; 2203 :     if (hll->flags & HLLF_ELSEOCCURED) {
+; 2203 :     }
+; 2204 :     /* v2.08: check for multiple ELSE clauses */
+; 2205 :     if (hll->flags & HLLF_ELSEOCCURED) {
 
 	test	BYTE PTR [rbx+104], 1
-	je	SHORT $LN48@HllExitDir
+	je	SHORT $LN40@HllExitDir
 
-; 2204 :       return(EmitError(DOT_ELSE_CLAUSE_ALREADY_OCCURED_IN_THIS_DOT_IF_BLOCK));
+; 2206 :       return(EmitError(DOT_ELSE_CLAUSE_ALREADY_OCCURED_IN_THIS_DOT_IF_BLOCK));
 
 	mov	ecx, 67					; 00000043H
 	call	EmitError
-	jmp	$LN157@HllExitDir
-$LN48@HllExitDir:
+	jmp	$LN149@HllExitDir
+$LN40@HllExitDir:
 
-; 2205 :     }
-; 2206 : 
-; 2207 :     /* the 'exit'-label is only needed if an .ELSE branch exists.
-; 2208 :     * That's why it is created delayed.
-; 2209 :     */
-; 2210 :     if (hll->labels[LEXIT] == 0)
+; 2207 :     }
+; 2208 : 
+; 2209 :     /* the 'exit'-label is only needed if an .ELSE branch exists.
+; 2210 :     * That's why it is created delayed.
+; 2211 :     */
+; 2212 :     if (hll->labels[LEXIT] == 0)
 
 	cmp	DWORD PTR [rbx+36], esi
-	jne	SHORT $LN49@HllExitDir
+	jne	SHORT $LN41@HllExitDir
 
-; 2211 :       hll->labels[LEXIT] = GetHllLabel();
+; 2213 :       hll->labels[LEXIT] = GetHllLabel();
 
 	mov	eax, DWORD PTR ModuleInfo+352
 	inc	eax
 	mov	DWORD PTR ModuleInfo+352, eax
 	mov	DWORD PTR [rbx+36], eax
-$LN49@HllExitDir:
+$LN41@HllExitDir:
 
-; 2212 :     AddLineQueueX(JMPPREFIX "jmp %s", GetLabelStr(hll->labels[LEXIT], buff));
+; 2214 :     AddLineQueueX(JMPPREFIX "jmp %s", GetLabelStr(hll->labels[LEXIT], buff));
 
 	mov	r8d, DWORD PTR [rbx+36]
 	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12118
+	lea	rcx, OFFSET FLAT:$SG12108
 	call	AddLineQueueX
 
-; 2213 : 
-; 2214 :     if (hll->labels[LTEST] > 0) {
+; 2215 : 
+; 2216 :     if (hll->labels[LTEST] > 0) {
 
 	mov	r8d, DWORD PTR [rbx+32]
 	test	r8d, r8d
-	je	SHORT $LN50@HllExitDir
+	je	SHORT $LN42@HllExitDir
 
-; 2215 :       AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LTEST], buff));
+; 2217 :       AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LTEST], buff));
 
 	lea	rdx, OFFSET FLAT:$SG11115
 	lea	rcx, QWORD PTR buff$[rsp]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12120
+	lea	rcx, OFFSET FLAT:$SG12110
 	call	AddLineQueueX
 
-; 2216 :       hll->labels[LTEST] = 0;
+; 2218 :       hll->labels[LTEST] = 0;
 
 	mov	DWORD PTR [rbx+32], esi
-$LN50@HllExitDir:
+$LN42@HllExitDir:
 
-; 2217 :     }
-; 2218 :     i++;
+; 2219 :     }
+; 2220 :     i++;
 
 	inc	DWORD PTR i$[rbp-256]
 
-; 2219 :     if (cmd == T_DOT_ELSEIF) {
+; 2221 :     if (cmd == T_DOT_ELSEIF) {
 
 	cmp	edi, 334				; 0000014eH
-	jne	$LN51@HllExitDir
+	jne	$LN43@HllExitDir
 
-; 2220 :       /* create new labels[LTEST] label */
-; 2221 :       hll->labels[LTEST] = GetHllLabel();
+; 2222 :       /* create new labels[LTEST] label */
+; 2223 :       hll->labels[LTEST] = GetHllLabel();
 
 	mov	eax, DWORD PTR ModuleInfo+352
 
-; 2222 :       rc = EvaluateHllExpression(hll, &i, tokenarray, LTEST, FALSE, buffer);
+; 2224 :       rc = EvaluateHllExpression(hll, &i, tokenarray, LTEST, FALSE, buffer);
 
 	lea	rdx, QWORD PTR i$[rbp-256]
 	inc	eax
@@ -1697,7 +1693,7 @@ $LN50@HllExitDir:
 	mov	DWORD PTR ModuleInfo+352, eax
 	xor	r9d, r9d
 	mov	DWORD PTR [rbx+32], eax
-	mov	r8, r12
+	mov	r8, r15
 	lea	rax, QWORD PTR hllop$2[rsp]
 	mov	DWORD PTR hllop$2[rsp+8], esi
 	mov	QWORD PTR [rsp+48], rax
@@ -1708,214 +1704,214 @@ $LN50@HllExitDir:
 	mov	BYTE PTR [rsp+32], sil
 	call	GetExpression
 	cmp	eax, -1
-	jne	SHORT $LN87@HllExitDir
+	jne	SHORT $LN79@HllExitDir
 	or	esi, eax
-	jmp	$LN64@HllExitDir
-$LN87@HllExitDir:
+	jmp	$LN56@HllExitDir
+$LN79@HllExitDir:
 	movsxd	rax, DWORD PTR i$[rbp-256]
 	shl	rax, 5
-	cmp	BYTE PTR [rax+r12], sil
-	je	SHORT $LN88@HllExitDir
+	cmp	BYTE PTR [rax+r15], sil
+	je	SHORT $LN80@HllExitDir
 	mov	ecx, 199				; 000000c7H
 	call	EmitError
 	mov	esi, eax
 
-; 2223 :       if (rc == NOT_ERROR)
+; 2225 :       if (rc == NOT_ERROR)
 
 	test	eax, eax
-	jne	$LN64@HllExitDir
+	jne	$LN56@HllExitDir
 
-; 2222 :       rc = EvaluateHllExpression(hll, &i, tokenarray, LTEST, FALSE, buffer);
+; 2224 :       rc = EvaluateHllExpression(hll, &i, tokenarray, LTEST, FALSE, buffer);
 
-$LN88@HllExitDir:
+$LN80@HllExitDir:
 
-; 2224 :         QueueTestLines(buffer);
+; 2226 :         QueueTestLines(buffer);
 
 	lea	rbx, QWORD PTR buffer$[rbp-256]
 	npad	6
-$LL91@HllExitDir:
+$LL83@HllExitDir:
 	mov	edx, 10
 	mov	rcx, rbx
 	mov	rdi, rbx
 	call	strchr
 	mov	rbx, rax
 	test	rax, rax
-	je	SHORT $LN93@HllExitDir
+	je	SHORT $LN85@HllExitDir
 	mov	BYTE PTR [rax], 0
 	inc	rbx
-$LN93@HllExitDir:
+$LN85@HllExitDir:
 	cmp	BYTE PTR [rdi], 0
-	je	SHORT $LN94@HllExitDir
+	je	SHORT $LN86@HllExitDir
 	mov	rcx, rdi
 	call	AddLineQueue
-$LN94@HllExitDir:
+$LN86@HllExitDir:
 	test	rbx, rbx
-	jne	SHORT $LL91@HllExitDir
+	jne	SHORT $LL83@HllExitDir
 
-; 2225 :     }
+; 2227 :     }
 
-	jmp	$LN64@HllExitDir
-$LN51@HllExitDir:
+	jmp	$LN56@HllExitDir
+$LN43@HllExitDir:
 
-; 2226 :     else
-; 2227 :       hll->flags |= HLLF_ELSEOCCURED;
+; 2228 :     else
+; 2229 :       hll->flags |= HLLF_ELSEOCCURED;
 
 	or	DWORD PTR [rbx+104], 1
 
-; 2228 : 
-; 2229 :     break;
+; 2230 : 
+; 2231 :     break;
 
-	jmp	$LN64@HllExitDir
+	jmp	$LN56@HllExitDir
 	npad	2
-$LL152@HllExitDir:
+$LL144@HllExitDir:
 
-; 2230 :   case T_DOT_BREAK:
-; 2231 :   case T_DOT_CONTINUE:
-; 2232 :     for (; hll && hll->cmd == HLL_IF; hll = hll->next);
+; 2232 :   case T_DOT_BREAK:
+; 2233 :   case T_DOT_CONTINUE:
+; 2234 :     for (; hll && hll->cmd == HLL_IF; hll = hll->next);
 
 	cmp	DWORD PTR [rbx+96], esi
-	jne	SHORT $LN55@HllExitDir
+	jne	SHORT $LN47@HllExitDir
 	mov	rbx, QWORD PTR [rbx]
 	test	rbx, rbx
-	jne	SHORT $LL152@HllExitDir
-$LN162@HllExitDir:
+	jne	SHORT $LL144@HllExitDir
+$LN153@HllExitDir:
 
-; 2233 :     if (hll == NULL) {
-; 2234 :       return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
+; 2235 :     if (hll == NULL) {
+; 2236 :       return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
 
 	mov	ecx, 245				; 000000f5H
 	call	EmitError
-	jmp	$LN157@HllExitDir
-$LN55@HllExitDir:
+	jmp	$LN149@HllExitDir
+$LN47@HllExitDir:
 
-; 2235 :     }
-; 2236 :     /* v2.11: create 'exit' and 'test' labels delayed.
-; 2237 :     */
-; 2238 :     if (cmd == T_DOT_BREAK) {
+; 2237 :     }
+; 2238 :     /* v2.11: create 'exit' and 'test' labels delayed.
+; 2239 :     */
+; 2240 :     if (cmd == T_DOT_BREAK) {
 
 	cmp	edi, 331				; 0000014bH
-	jne	SHORT $LN56@HllExitDir
+	jne	SHORT $LN48@HllExitDir
 
-; 2239 :       if (hll->labels[LEXIT] == 0)
+; 2241 :       if (hll->labels[LEXIT] == 0)
 
 	cmp	DWORD PTR [rbx+36], esi
-	jne	SHORT $LN58@HllExitDir
+	jne	SHORT $LN50@HllExitDir
 
-; 2240 :         hll->labels[LEXIT] = GetHllLabel();
+; 2242 :         hll->labels[LEXIT] = GetHllLabel();
 
 	mov	eax, DWORD PTR ModuleInfo+352
 	inc	eax
 	mov	DWORD PTR ModuleInfo+352, eax
 	mov	DWORD PTR [rbx+36], eax
-$LN58@HllExitDir:
+$LN50@HllExitDir:
 
-; 2241 :       idx = LEXIT;
+; 2243 :       idx = LEXIT;
 
 	mov	ecx, 1
 
-; 2242 :     }
+; 2244 :     }
 
-	jmp	SHORT $LN60@HllExitDir
-$LN56@HllExitDir:
+	jmp	SHORT $LN52@HllExitDir
+$LN48@HllExitDir:
 
-; 2243 :     else if (hll->cmd == HLL_FOR) {
+; 2245 :     else if (hll->cmd == HLL_FOR) {
 
 	mov	eax, DWORD PTR [rbx+96]
 	cmp	eax, r13d
-	jne	SHORT $LN59@HllExitDir
+	jne	SHORT $LN51@HllExitDir
 
-; 2244 :       /* added by habran
-; 2245 :       .CONTINUE label is created here for .FOR loops only if it exists.
-; 2246 :       It is different than .WHILE because it has to first alter counters
-; 2247 :       */
-; 2248 :       if (hll->labels[LCONT] == 0) hll->labels[LCONT] = GetHllLabel();
+; 2246 :       /* added by habran
+; 2247 :       .CONTINUE label is created here for .FOR loops only if it exists.
+; 2248 :       It is different than .WHILE because it has to first alter counters
+; 2249 :       */
+; 2250 :       if (hll->labels[LCONT] == 0) hll->labels[LCONT] = GetHllLabel();
 
 	cmp	DWORD PTR [rbx+48], esi
-	jne	SHORT $LN61@HllExitDir
+	jne	SHORT $LN53@HllExitDir
 	mov	eax, DWORD PTR ModuleInfo+352
 	inc	eax
 	mov	DWORD PTR ModuleInfo+352, eax
 	mov	DWORD PTR [rbx+48], eax
-$LN61@HllExitDir:
+$LN53@HllExitDir:
 
-; 2249 :       idx = (hll->labels[LCONT] ? LCONT : LSTART);
+; 2251 :       idx = (hll->labels[LCONT] ? LCONT : LSTART);
 
 	cmp	DWORD PTR [rbx+48], esi
 	mov	ecx, 2
 	cmovne	ecx, r13d
 
-; 2250 :     }
+; 2252 :     }
 
-	jmp	SHORT $LN60@HllExitDir
-$LN59@HllExitDir:
+	jmp	SHORT $LN52@HllExitDir
+$LN51@HllExitDir:
 
-; 2251 :     else {
-; 2252 :       /* 'test' is not created for .WHILE loops here; because
-; 2253 :       * if it doesn't exist, there's no condition to test.
-; 2254 :       */
-; 2255 :       if (hll->cmd == HLL_REPEAT && hll->labels[LTEST] == 0)
+; 2253 :     else {
+; 2254 :       /* 'test' is not created for .WHILE loops here; because
+; 2255 :       * if it doesn't exist, there's no condition to test.
+; 2256 :       */
+; 2257 :       if (hll->cmd == HLL_REPEAT && hll->labels[LTEST] == 0)
 
 	cmp	eax, 2
-	jne	SHORT $LN62@HllExitDir
+	jne	SHORT $LN54@HllExitDir
 	cmp	DWORD PTR [rbx+32], esi
-	jne	SHORT $LN62@HllExitDir
+	jne	SHORT $LN54@HllExitDir
 
-; 2256 :         hll->labels[LTEST] = GetHllLabel();
+; 2258 :         hll->labels[LTEST] = GetHllLabel();
 
 	mov	eax, DWORD PTR ModuleInfo+352
 	inc	eax
 	mov	DWORD PTR ModuleInfo+352, eax
 	mov	DWORD PTR [rbx+32], eax
-$LN62@HllExitDir:
+$LN54@HllExitDir:
 
-; 2257 :       idx = (hll->labels[LTEST] ? LTEST : LSTART);
+; 2259 :       idx = (hll->labels[LTEST] ? LTEST : LSTART);
 
 	cmp	DWORD PTR [rbx+32], esi
 	mov	ecx, 2
 	cmovne	ecx, esi
-$LN60@HllExitDir:
+$LN52@HllExitDir:
 
-; 2258 :     }
-; 2259 : 
-; 2260 :     /* .BREAK .IF ... or .CONTINUE .IF ? */
-; 2261 :     i++;
+; 2260 :     }
+; 2261 : 
+; 2262 :     /* .BREAK .IF ... or .CONTINUE .IF ? */
+; 2263 :     i++;
 
 	mov	eax, DWORD PTR i$[rbp-256]
 	inc	eax
 	mov	DWORD PTR i$[rbp-256], eax
 
-; 2262 :     if (tokenarray[i].token != T_FINAL) {
+; 2264 :     if (tokenarray[i].token != T_FINAL) {
 
 	cdqe
 	shl	rax, 5
-	lea	rdx, QWORD PTR [rax+r12]
-	movzx	eax, BYTE PTR [rax+r12]
+	lea	rdx, QWORD PTR [rax+r15]
+	movzx	eax, BYTE PTR [rax+r15]
 	test	al, al
-	je	$LN63@HllExitDir
+	je	$LN55@HllExitDir
 
-; 2263 :       if (tokenarray[i].token == T_DIRECTIVE && tokenarray[i].tokval == T_DOT_IF) {
+; 2265 :       if (tokenarray[i].token == T_DIRECTIVE && tokenarray[i].tokval == T_DOT_IF) {
 
 	cmp	al, 3
-	jne	$LN64@HllExitDir
+	jne	$LN56@HllExitDir
 	cmp	DWORD PTR [rdx+16], 327			; 00000147H
-	jne	$LN64@HllExitDir
+	jne	$LN56@HllExitDir
 
-; 2264 :         enum hll_cmd savedcmd = hll->cmd;
-; 2265 :         hll->cmd = HLL_BREAK;
-; 2266 :         i++;
-; 2267 :         /* v2.11: set rc and don't exit if an error occurs; see hll3.aso */
-; 2268 :         rc = EvaluateHllExpression(hll, &i, tokenarray, idx, TRUE, buffer);
+; 2266 :         enum hll_cmd savedcmd = hll->cmd;
+; 2267 :         hll->cmd = HLL_BREAK;
+; 2268 :         i++;
+; 2269 :         /* v2.11: set rc and don't exit if an error occurs; see hll3.aso */
+; 2270 :         rc = EvaluateHllExpression(hll, &i, tokenarray, idx, TRUE, buffer);
 
 	lea	rax, QWORD PTR hllop$1[rsp]
-	mov	QWORD PTR [rsp+1304], r15
-	mov	r15d, DWORD PTR [rbx+96]
+	mov	QWORD PTR [rsp+1288], r12
+	mov	r12d, DWORD PTR [rbx+96]
 	lea	rdx, QWORD PTR i$[rbp-256]
 	mov	QWORD PTR [rsp+48], rax
 	mov	r9d, ecx
 	mov	DWORD PTR [rbx+96], 3
 	lea	rax, QWORD PTR buffer$[rbp-256]
 	inc	DWORD PTR i$[rbp-256]
-	mov	r8, r12
+	mov	r8, r15
 	mov	QWORD PTR [rsp+40], rax
 	mov	rcx, rbx
 	mov	BYTE PTR [rsp+32], 1
@@ -1924,84 +1920,84 @@ $LN60@HllExitDir:
 	mov	BYTE PTR buffer$[rbp-256], sil
 	call	GetExpression
 	cmp	eax, -1
-	jne	SHORT $LN103@HllExitDir
+	jne	SHORT $LN95@HllExitDir
 
-; 2271 :         hll->cmd = savedcmd;
+; 2273 :         hll->cmd = savedcmd;
 
-	mov	DWORD PTR [rbx+96], r15d
+	mov	DWORD PTR [rbx+96], r12d
 	or	esi, eax
-	mov	r15, QWORD PTR [rsp+1304]
+	mov	r12, QWORD PTR [rsp+1288]
 
-; 2272 :       }
-; 2273 :     }
+; 2274 :       }
+; 2275 :     }
 
-	jmp	$LN64@HllExitDir
+	jmp	$LN56@HllExitDir
 
-; 2264 :         enum hll_cmd savedcmd = hll->cmd;
-; 2265 :         hll->cmd = HLL_BREAK;
-; 2266 :         i++;
-; 2267 :         /* v2.11: set rc and don't exit if an error occurs; see hll3.aso */
-; 2268 :         rc = EvaluateHllExpression(hll, &i, tokenarray, idx, TRUE, buffer);
+; 2266 :         enum hll_cmd savedcmd = hll->cmd;
+; 2267 :         hll->cmd = HLL_BREAK;
+; 2268 :         i++;
+; 2269 :         /* v2.11: set rc and don't exit if an error occurs; see hll3.aso */
+; 2270 :         rc = EvaluateHllExpression(hll, &i, tokenarray, idx, TRUE, buffer);
 
-$LN103@HllExitDir:
+$LN95@HllExitDir:
 	movsxd	rax, DWORD PTR i$[rbp-256]
 	shl	rax, 5
-	cmp	BYTE PTR [rax+r12], sil
-	je	SHORT $LN104@HllExitDir
+	cmp	BYTE PTR [rax+r15], sil
+	je	SHORT $LN96@HllExitDir
 	mov	ecx, 199				; 000000c7H
 	call	EmitError
 	mov	esi, eax
 
-; 2269 :         if (rc == NOT_ERROR)
+; 2271 :         if (rc == NOT_ERROR)
 
 	test	eax, eax
-	jne	SHORT $LN108@HllExitDir
+	jne	SHORT $LN100@HllExitDir
 
-; 2264 :         enum hll_cmd savedcmd = hll->cmd;
-; 2265 :         hll->cmd = HLL_BREAK;
-; 2266 :         i++;
-; 2267 :         /* v2.11: set rc and don't exit if an error occurs; see hll3.aso */
-; 2268 :         rc = EvaluateHllExpression(hll, &i, tokenarray, idx, TRUE, buffer);
+; 2266 :         enum hll_cmd savedcmd = hll->cmd;
+; 2267 :         hll->cmd = HLL_BREAK;
+; 2268 :         i++;
+; 2269 :         /* v2.11: set rc and don't exit if an error occurs; see hll3.aso */
+; 2270 :         rc = EvaluateHllExpression(hll, &i, tokenarray, idx, TRUE, buffer);
 
-$LN104@HllExitDir:
+$LN96@HllExitDir:
 
-; 2270 :           QueueTestLines(buffer);
+; 2272 :           QueueTestLines(buffer);
 
 	lea	rdi, QWORD PTR buffer$[rbp-256]
 	npad	3
-$LL107@HllExitDir:
+$LL99@HllExitDir:
 	mov	edx, 10
 	mov	rcx, rdi
 	mov	r14, rdi
 	call	strchr
 	mov	rdi, rax
 	test	rax, rax
-	je	SHORT $LN109@HllExitDir
+	je	SHORT $LN101@HllExitDir
 	mov	BYTE PTR [rax], 0
 	inc	rdi
-$LN109@HllExitDir:
+$LN101@HllExitDir:
 	cmp	BYTE PTR [r14], 0
-	je	SHORT $LN110@HllExitDir
+	je	SHORT $LN102@HllExitDir
 	mov	rcx, r14
 	call	AddLineQueue
-$LN110@HllExitDir:
+$LN102@HllExitDir:
 	test	rdi, rdi
-	jne	SHORT $LL107@HllExitDir
-$LN108@HllExitDir:
+	jne	SHORT $LL99@HllExitDir
+$LN100@HllExitDir:
 
-; 2271 :         hll->cmd = savedcmd;
+; 2273 :         hll->cmd = savedcmd;
 
-	mov	DWORD PTR [rbx+96], r15d
-	mov	r15, QWORD PTR [rsp+1304]
+	mov	DWORD PTR [rbx+96], r12d
+	mov	r12, QWORD PTR [rsp+1288]
 
-; 2272 :       }
-; 2273 :     }
+; 2274 :       }
+; 2275 :     }
 
-	jmp	SHORT $LN64@HllExitDir
-$LN63@HllExitDir:
+	jmp	SHORT $LN56@HllExitDir
+$LN55@HllExitDir:
 
-; 2274 :     else {
-; 2275 :       AddLineQueueX(JMPPREFIX "jmp %s", GetLabelStr(hll->labels[idx], buff));
+; 2276 :     else {
+; 2277 :       AddLineQueueX(JMPPREFIX "jmp %s", GetLabelStr(hll->labels[idx], buff));
 
 	movsxd	rax, ecx
 	lea	rdx, OFFSET FLAT:$SG11115
@@ -2009,93 +2005,93 @@ $LN63@HllExitDir:
 	mov	r8d, DWORD PTR [rbx+rax*4+32]
 	call	sprintf
 	lea	rdx, QWORD PTR buff$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12137
+	lea	rcx, OFFSET FLAT:$SG12127
 	call	AddLineQueueX
-$LN64@HllExitDir:
+$LN56@HllExitDir:
 
-; 2276 :     }
-; 2277 :     break;
-; 2278 : #ifdef DEBUG_OUT
-; 2279 :   default: /**/myassert(0); break;
-; 2280 : #endif
-; 2281 :   }
-; 2282 :   if (tokenarray[i].token != T_FINAL && rc == NOT_ERROR) {
+; 2278 :     }
+; 2279 :     break;
+; 2280 : #ifdef DEBUG_OUT
+; 2281 :   default: /**/myassert(0); break;
+; 2282 : #endif
+; 2283 :   }
+; 2284 :   if (tokenarray[i].token != T_FINAL && rc == NOT_ERROR) {
 
 	movsxd	rax, DWORD PTR i$[rbp-256]
 	shl	rax, 5
-	cmp	BYTE PTR [rax+r12], 0
-	je	SHORT $LN67@HllExitDir
+	cmp	BYTE PTR [rax+r15], 0
+	je	SHORT $LN59@HllExitDir
 	test	esi, esi
-	jne	SHORT $LN67@HllExitDir
+	jne	SHORT $LN59@HllExitDir
 
-; 2283 :     EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos);
+; 2285 :     EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos);
 
-	mov	rdx, QWORD PTR [rax+r12+24]
+	mov	rdx, QWORD PTR [rax+r15+24]
 	mov	ecx, 209				; 000000d1H
 	call	EmitErr
 
-; 2284 :     rc = ERROR;
+; 2286 :     rc = ERROR;
 
 	or	esi, -1
-$LN67@HllExitDir:
+$LN59@HllExitDir:
 
-; 2285 :   }
-; 2286 : 
-; 2287 :   if (ModuleInfo.list)
+; 2287 :   }
+; 2288 : 
+; 2289 :   if (ModuleInfo.list)
 
 	test	DWORD PTR ModuleInfo+408, 2048		; 00000800H
-	je	SHORT $LN68@HllExitDir
+	je	SHORT $LN60@HllExitDir
 
-; 2288 :     LstWrite(LSTTYPE_DIRECTIVE, GetCurrOffset(), NULL);
+; 2290 :     LstWrite(LSTTYPE_DIRECTIVE, GetCurrOffset(), NULL);
 
 	call	GetCurrOffset
 	mov	edx, eax
 	xor	r8d, r8d
 	mov	ecx, r13d
 	call	LstWrite
-$LN68@HllExitDir:
+$LN60@HllExitDir:
 
-; 2289 : 
-; 2290 :   /* v2.11: always run line-queue if it's not empty. */
-; 2291 :   if (is_linequeue_populated())
+; 2291 : 
+; 2292 :   /* v2.11: always run line-queue if it's not empty. */
+; 2293 :   if (is_linequeue_populated())
 
 	cmp	QWORD PTR ModuleInfo+184, 0
-	je	SHORT $LN69@HllExitDir
+	je	SHORT $LN61@HllExitDir
 
-; 2292 :     RunLineQueue();
+; 2294 :     RunLineQueue();
 
 	call	RunLineQueue
-$LN69@HllExitDir:
+$LN61@HllExitDir:
 
-; 2293 : 
-; 2294 :   return(rc);
+; 2295 : 
+; 2296 :   return(rc);
 
 	mov	eax, esi
-$LN157@HllExitDir:
-	mov	r13, QWORD PTR [rsp+1288]
-	mov	r14, QWORD PTR [rsp+1296]
+$LN149@HllExitDir:
+	mov	r13, QWORD PTR [rsp+1296]
+	mov	r14, QWORD PTR [rsp+1304]
 
-; 2295 : }
+; 2297 : }
 
 	add	rsp, 1232				; 000004d0H
-	pop	r12
+	pop	r15
 	pop	rdi
 	pop	rsi
 	pop	rbx
 	pop	rbp
 	ret	0
 	npad	2
-$LN144@HllExitDir:
-	DD	$LL152@HllExitDir
-	DD	$LL152@HllExitDir
-	DD	$LN46@HllExitDir
-	DD	$LN46@HllExitDir
-	DD	$LN64@HllExitDir
-	DD	$LN64@HllExitDir
-	DD	$LN64@HllExitDir
-	DD	$LN64@HllExitDir
-	DD	$LN64@HllExitDir
-	DD	$LN64@HllExitDir
+$LN136@HllExitDir:
+	DD	$LL144@HllExitDir
+	DD	$LL144@HllExitDir
+	DD	$LN38@HllExitDir
+	DD	$LN38@HllExitDir
+	DD	$LN56@HllExitDir
+	DD	$LN56@HllExitDir
+	DD	$LN56@HllExitDir
+	DD	$LN56@HllExitDir
+	DD	$LN56@HllExitDir
+	DD	$LN56@HllExitDir
 	DD	$LN18@HllExitDir
 	DD	$LN16@HllExitDir
 HllExitDir ENDP
@@ -12081,22 +12077,22 @@ _TEXT	ENDS
 _TEXT	SEGMENT
 HllCheckOpen PROC
 
-; 2302 :   if (HllStack) {
+; 2304 :   if (HllStack) {
 
 	cmp	QWORD PTR ModuleInfo+224, 0
 	je	SHORT $LN2@HllCheckOp
 
-; 2303 :     //EmitErr( BLOCK_NESTING_ERROR, ".if-.repeat-.while" );
-; 2304 :     EmitErr(UNMATCHED_BLOCK_NESTING, ".if-.repeat-.while");
+; 2305 :     //EmitErr( BLOCK_NESTING_ERROR, ".if-.repeat-.while" );
+; 2306 :     EmitErr(UNMATCHED_BLOCK_NESTING, ".if-.repeat-.while");
 
-	lea	rdx, OFFSET FLAT:$SG12144
+	lea	rdx, OFFSET FLAT:$SG12134
 	mov	ecx, 142				; 0000008eH
 	jmp	EmitErr
 $LN2@HllCheckOp:
 
-; 2305 :   }
-; 2306 :   DebugMsg(("HllCheckOpen: allocated items:%u, reused items:%u, .while cond-blocks/bytes:%u/%u\n", cntAlloc, cntReused, cntCond, cntCondBytes));
-; 2307 : }
+; 2307 :   }
+; 2308 :   DebugMsg(("HllCheckOpen: allocated items:%u, reused items:%u, .while cond-blocks/bytes:%u/%u\n", cntAlloc, cntReused, cntCond, cntCondBytes));
+; 2309 : }
 
 	ret	0
 HllCheckOpen ENDP
@@ -12107,25 +12103,25 @@ _TEXT	SEGMENT
 pass$ = 8
 HllInit	PROC
 
-; 2330 :   //if ( pass == PASS_1 )
-; 2331 :   //    HllFree = NULL;
-; 2332 : 
-; 2333 :   //HllStack = NULL; /* empty stack of open hll directives */
-; 2334 :   ModuleInfo.hll_label = 0; /* init hll label counter */
+; 2332 :   //if ( pass == PASS_1 )
+; 2333 :   //    HllFree = NULL;
+; 2334 : 
+; 2335 :   //HllStack = NULL; /* empty stack of open hll directives */
+; 2336 :   ModuleInfo.hll_label = 0; /* init hll label counter */
 
 	mov	DWORD PTR ModuleInfo+352, 0
 
-; 2335 : #ifdef DEBUG_OUT
-; 2336 :   evallvl = 0;
-; 2337 :   if (pass == PASS_1) {
-; 2338 :     cntAlloc = 0;
-; 2339 :     cntReused = 0;
-; 2340 :     cntCond = 0;
-; 2341 :     cntCondBytes = 0;
-; 2342 :   }
-; 2343 : #endif
-; 2344 :   return;
-; 2345 : }
+; 2337 : #ifdef DEBUG_OUT
+; 2338 :   evallvl = 0;
+; 2339 :   if (pass == PASS_1) {
+; 2340 :     cntAlloc = 0;
+; 2341 :     cntReused = 0;
+; 2342 :     cntCond = 0;
+; 2343 :     cntCondBytes = 0;
+; 2344 :   }
+; 2345 : #endif
+; 2346 :   return;
+; 2347 : }
 
 	ret	0
 HllInit	ENDP

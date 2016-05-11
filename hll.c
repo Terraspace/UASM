@@ -2138,39 +2138,41 @@ ret_code HllExitDir(int i, struct asm_tok tokenarray[])
     }
     if (hll->csize == 4) {
       if (!hll->maxalloccasen) {
-        hll->pcases = LclAlloc(hll->csize * 20);
-        hll->plabels = LclAlloc(sizeof(uint_16) * 20);
-        hll->maxalloccasen = 20;
+        hll->pcases = LclAlloc(hll->csize * 50);
+        hll->plabels = LclAlloc(sizeof(uint_16) * 50);
+        hll->maxalloccasen = 50;
       }
-      if (hll->casecnt > hll->maxalloccasen) {
-        hll->maxalloccasen += 20;
-        if ((newcp = realloc(hll->pcases, hll->csize * hll->maxalloccasen)) == NULL)
-          Fatal(OUT_OF_MEMORY);
-        else
-          hll->pcases = newcp;
-        if ((newlp = realloc(hll->plabels, sizeof(uint_16) * hll->maxalloccasen)) == NULL)
-          Fatal(OUT_OF_MEMORY);
-        else
-          hll->plabels = newlp;
+      if (hll->casecnt >= hll->maxalloccasen) {
+        hll->maxalloccasen += 50;
+        newcp = LclAlloc(hll->csize * hll->maxalloccasen);
+        memcpy(newcp, hll->pcases, hll->casecnt * hll->csize);
+        LclFree(hll->pcases);
+        hll->pcases = newcp;
+        
+        newlp = LclAlloc(sizeof(uint_16) * hll->maxalloccasen);
+        memcpy(newlp, hll->plabels, hll->casecnt * sizeof(uint_16));
+        LclFree(hll->plabels);
+        hll->plabels = newlp;
       }
     }
 #if AMD64_SUPPORT
     else {
       if (!hll->maxalloccasen) {
-        hll->pcases64 = LclAlloc(hll->csize * 20);
-        hll->plabels = LclAlloc(sizeof(uint_16) * 20);
-        hll->maxalloccasen = 20;
+        hll->pcases64 = LclAlloc(hll->csize * 50);
+        hll->plabels = LclAlloc(sizeof(uint_16) * 50);
+        hll->maxalloccasen = 50;
       }
-      if (hll->casecnt > hll->maxalloccasen) {
-        hll->maxalloccasen += 20;
-        if ((newcp64 = realloc(hll->pcases64, hll->csize * hll->maxalloccasen)) == NULL)
-          Fatal(OUT_OF_MEMORY);
-        else
-          hll->pcases64 = newcp64;
-        if ((newlp = realloc(hll->plabels, sizeof(uint_16) * hll->maxalloccasen)) == NULL)
-          Fatal(OUT_OF_MEMORY);
-        else
-          hll->plabels = newlp;
+      if (hll->casecnt >= hll->maxalloccasen) {
+        hll->maxalloccasen += 50;
+        newcp64 = LclAlloc(hll->csize * hll->maxalloccasen);
+        memcpy(newcp64, hll->pcases64, hll->casecnt * hll->csize);
+        LclFree(hll->pcases64);
+        hll->pcases64 = newcp64;
+
+        newlp = LclAlloc(sizeof(uint_16) * hll->maxalloccasen);
+        memcpy(newlp, hll->plabels, hll->casecnt * sizeof(uint_16));
+        LclFree(hll->plabels);
+        hll->plabels = newlp;
       }
     }
 #endif

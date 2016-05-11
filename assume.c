@@ -265,14 +265,15 @@ struct asym *GetStdAssume( int reg )
 
 /* v2.05: new, used by
  * expression evaluator if a register is used for indirect addressing
+ * v2.14 fixed by nidud
  */
-
-struct asym *GetStdAssumeEx( int reg )
-/************************************/
+struct asym *GetStdAssumeEx(int reg)
+  /************************************/
 {
-    return( StdAssumeTable[reg].symbol );
+  if (reg >= NUM_STDREGS)
+    return NULL;
+  return(StdAssumeTable[reg].symbol);
 }
-
 ret_code AssumeDirective( int i, struct asm_tok tokenarray[] )
 /************************************************************/
 /* Handles ASSUME
