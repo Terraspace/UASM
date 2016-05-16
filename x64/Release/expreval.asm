@@ -6,8 +6,8 @@ INCLUDELIB LIBCMT
 INCLUDELIB OLDNAMES
 
 _BSS	SEGMENT
-$SG11643 DB	01H DUP (?)
-$SG11794 DB	01H DUP (?)
+$SG11644 DB	01H DUP (?)
+$SG11795 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	decoflags:BYTE
@@ -16,19 +16,19 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG11171 DB	01H DUP (?)
+$SG11172 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG11097 DB	'rn-sae', 00H
+$SG11098 DB	'rn-sae', 00H
 	ORG $+1
-$SG11101 DB	'rd-sae', 00H
+$SG11102 DB	'rd-sae', 00H
 	ORG $+1
-$SG11105 DB	'ru-sae', 00H
+$SG11106 DB	'ru-sae', 00H
 	ORG $+1
-$SG11109 DB	'rz-sae', 00H
+$SG11110 DB	'rz-sae', 00H
 	ORG $+1
-$SG11113 DB	'sae', 00H
-$SG11174 DB	'@@', 00H
+$SG11114 DB	'sae', 00H
+$SG11175 DB	'@@', 00H
 _DATA	ENDS
 PUBLIC	EvalOperand
 PUBLIC	ExprEvalInit
@@ -5245,7 +5245,7 @@ $LN4@dot_op:
 ; 2073 :             nullstruct = CreateTypeSymbol( NULL, "", FALSE );
 
 	xor	r8d, r8d
-	lea	rdx, OFFSET FLAT:$SG11794
+	lea	rdx, OFFSET FLAT:$SG11795
 	xor	ecx, ecx
 	call	CreateTypeSymbol
 	mov	QWORD PTR nullstruct, rax
@@ -7281,7 +7281,7 @@ $LN4@this_op:
 
 ; 1667 :         thissym = SymAlloc( "" );
 
-	lea	rcx, OFFSET FLAT:$SG11643
+	lea	rcx, OFFSET FLAT:$SG11644
 	call	SymAlloc
 	mov	rdx, rax
 	mov	QWORD PTR thissym, rax
@@ -10281,10 +10281,10 @@ $LN19@get_operan:
 	jne	$LN33@get_operan
 	mov	rdx, QWORD PTR [rsi+8]
 	mov	eax, DWORD PTR [rdx]
-	cmp	eax, DWORD PTR $SG11097
+	cmp	eax, DWORD PTR $SG11098
 	jne	SHORT $LN21@get_operan
 	movzx	eax, WORD PTR [rdx+4]
-	cmp	ax, WORD PTR $SG11097+4
+	cmp	ax, WORD PTR $SG11098+4
 	jne	SHORT $LN21@get_operan
 
 ; 382  : 				(0 == memcmp(tokenarray[i].string_ptr, "rn-sae", 6))) {
@@ -10329,10 +10329,10 @@ $LN21@get_operan:
 	jne	$LN33@get_operan
 	mov	rdx, QWORD PTR [rsi+8]
 	mov	eax, DWORD PTR [rdx]
-	cmp	eax, DWORD PTR $SG11101
+	cmp	eax, DWORD PTR $SG11102
 	jne	SHORT $LN24@get_operan
 	movzx	eax, WORD PTR [rdx+4]
-	cmp	ax, WORD PTR $SG11101+4
+	cmp	ax, WORD PTR $SG11102+4
 	jne	SHORT $LN24@get_operan
 
 ; 389  : 				(0 == memcmp(tokenarray[i].string_ptr, "rd-sae", 6))) {
@@ -10377,10 +10377,10 @@ $LN24@get_operan:
 	jne	$LN33@get_operan
 	mov	rdx, QWORD PTR [rsi+8]
 	mov	eax, DWORD PTR [rdx]
-	cmp	eax, DWORD PTR $SG11105
+	cmp	eax, DWORD PTR $SG11106
 	jne	SHORT $LN27@get_operan
 	movzx	eax, WORD PTR [rdx+4]
-	cmp	ax, WORD PTR $SG11105+4
+	cmp	ax, WORD PTR $SG11106+4
 	jne	SHORT $LN27@get_operan
 
 ; 396  : 				(0 == memcmp(tokenarray[i].string_ptr, "ru-sae", 6))) {
@@ -10425,10 +10425,10 @@ $LN27@get_operan:
 	jne	$LN33@get_operan
 	mov	rdx, QWORD PTR [rsi+8]
 	mov	eax, DWORD PTR [rdx]
-	cmp	eax, DWORD PTR $SG11109
+	cmp	eax, DWORD PTR $SG11110
 	jne	SHORT $LN30@get_operan
 	movzx	eax, WORD PTR [rdx+4]
-	cmp	ax, WORD PTR $SG11109+4
+	cmp	ax, WORD PTR $SG11110+4
 	jne	SHORT $LN30@get_operan
 
 ; 403  : 				(0 == memcmp(tokenarray[i].string_ptr, "rz-sae", 6))) {
@@ -10473,10 +10473,10 @@ $LN30@get_operan:
 	jne	SHORT $LN33@get_operan
 	mov	rdx, QWORD PTR [rsi+8]
 	movzx	eax, WORD PTR [rdx]
-	cmp	ax, WORD PTR $SG11113
+	cmp	ax, WORD PTR $SG11114
 	jne	SHORT $LN33@get_operan
 	movzx	eax, BYTE PTR [rdx+2]
-	cmp	al, BYTE PTR $SG11113+2
+	cmp	al, BYTE PTR $SG11114+2
 	jne	SHORT $LN33@get_operan
 
 ; 410  : 				(0 == memcmp(tokenarray[i].string_ptr, "sae", 3))) {
@@ -11214,7 +11214,7 @@ $LN87@get_operan:
 
 ; 621  :                             nullmbr = SymAlloc( "" );
 
-	lea	rcx, OFFSET FLAT:$SG11171
+	lea	rcx, OFFSET FLAT:$SG11172
 	call	SymAlloc
 	mov	QWORD PTR nullmbr, rax
 $LN91@get_operan:
@@ -11703,7 +11703,7 @@ $LN92@get_operan:
 ; 635  :                     fnEmitErr( SYMBOL_NOT_DEFINED, *(tmp+1) == '&' ? "@@" : tmp );
 
 	cmp	BYTE PTR [rbp+1], 38			; 00000026H
-	lea	rax, OFFSET FLAT:$SG11174
+	lea	rax, OFFSET FLAT:$SG11175
 	cmove	rbp, rax
 $LN89@get_operan:
 	mov	rdx, rbp

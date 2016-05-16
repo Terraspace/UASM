@@ -81,7 +81,6 @@
 
 #define MAX_LNAME              255 /* OMF lnames - length must fit in 1 byte */
 #define LNAME_NULL             0   /* OMF first entry in lnames array */
-
 /* output format switches */
 #ifndef BIN_SUPPORT
 #define BIN_SUPPORT  1 /* support BIN output format              */
@@ -197,7 +196,7 @@
 #define strcasecmp _stricmp 
 #define strncasecmp _strnicmp 
 #endif
-
+#define ASMSWITCH 0
 #define NULLC  '\0'
 //#define NULLS  ""
 
@@ -789,6 +788,7 @@ struct module_info {
     unsigned            frame_auto:1;    /* win64 only */
 #endif
     unsigned            NoSignExtend:1;  /* option nosignextend */
+    unsigned            switch_style:1;
 #if ELF_SUPPORT || AMD64_SUPPORT || MZ_SUPPORT
     union {
 #if ELF_SUPPORT || AMD64_SUPPORT

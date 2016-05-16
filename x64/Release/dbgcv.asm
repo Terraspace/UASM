@@ -12,10 +12,10 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11283 DB	'TLS', 00H
-$SG11082 DB	'@@%u', 00H
+$SG11284 DB	'TLS', 00H
+$SG11083 DB	'@@%u', 00H
 	ORG $+7
-$SG11147 DB	'__unnamed', 00H
+$SG11148 DB	'__unnamed', 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	sprintf
@@ -1441,7 +1441,7 @@ $LN34@cv_write_s:
 	test	rax, rax
 	je	SHORT $LN36@cv_write_s
 	mov	rax, QWORD PTR [rax+8]
-	lea	r8, OFFSET FLAT:$SG11283
+	lea	r8, OFFSET FLAT:$SG11284
 	sub	r8, rax
 	npad	9
 $LL91@cv_write_s:
@@ -2490,7 +2490,7 @@ $LN7@cv_enum_fi:
 ; 424  :             char tmpname[8];
 ; 425  :             curr->sym.name_size = sprintf( tmpname, "@@%u", ++i );
 
-	lea	rdx, OFFSET FLAT:$SG11082
+	lea	rdx, OFFSET FLAT:$SG11083
 	inc	eax
 	lea	rcx, QWORD PTR tmpname$1[rsp]
 	mov	r8d, eax
@@ -3256,7 +3256,7 @@ $LN14@cv_write_t:
 	mov	rdx, QWORD PTR [rsi+8]
 	jmp	SHORT $LN19@cv_write_t
 $LN18@cv_write_t:
-	lea	rdx, OFFSET FLAT:$SG11147
+	lea	rdx, OFFSET FLAT:$SG11148
 $LN19@cv_write_t:
 	mov	r8, rax
 	mov	rcx, rbp

@@ -95,6 +95,7 @@ struct hll_item {
   int_64                 *pcases64;
 #endif
   uint_16             *plabels;
+  uint_16             savedlab;
   uint_32             labels[10];    /* labels for LTEST, LEXIT, LSTART, LSKIP, LCONT, LDEF LDATA1, LDATA2, LTOP, LJUMP */
   char                *condlines;    /* .WHILE-blocks only: lines to add after 'test' label */
   char                *counterlines; /* pointer to allocated memory for counters */
@@ -102,6 +103,7 @@ struct hll_item {
   uint_32             casecnt;       /* case counter  */
   enum hll_cmd        cmd;           /* start cmd (IF, WHILE, REPEAT) */
   bool                cond;          /* condision  */
+  bool                breakoccured;   /* condision  */
   char                cflag;         /* SWITCH decision flag */
   char                csize;         /* SWITCH decision flag */
   enum hll_flags      flags;         /* v2.08: added */
@@ -282,7 +284,6 @@ static void bubblesort(struct hll_item *hll, uint_16 *lbl, int *src, int n) {
   int j;
   int temp1;
   uint_16 temp2;
-
   for (i = 0; i < n; ++i)
   {
     for (j = i + 1; j < n; ++j)
@@ -298,7 +299,6 @@ static void bubblesort(struct hll_item *hll, uint_16 *lbl, int *src, int n) {
       }
     }
   }
-
   hll->mincase = src[0];
   hll->maxcase = src[n - 1];
   hll->delta = hll->maxcase - hll->mincase;
@@ -1274,7 +1274,8 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
   int cmcnt;
   char *p;
   char c;
-
+  struct expr         opndx;
+  struct asm_tok      *t;
   DebugMsg1(("HllStartDir(%s) enter\n", tokenarray[i].string_ptr));
 
   i++; /* skip directive */
@@ -1341,44 +1342,88 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
   case T_DOT_SWITCH:
     hll->cmd = HLL_SWITCH;
     hll->flags = HLLF_WHILE;
-    hll->labels[LSKIP] = GetHllLabel();    /* used by .ENDSWITCH  */
-    hll->labels[LJUMP] = GetHllLabel();    /* used by .ENDSWITCH */
+    hll->labels[LSKIP] = GetHllLabel();   /* used by .ENDSWITCH */
+    hll->labels[LJUMP] = GetHllLabel();   /* used by .ENDSWITCH */
     hll->labels[LEXIT] = GetHllLabel();
-    hll->labels[LDATA1] = GetHllLabel();    /* used by .ENDSWITCH  */
-    hll->labels[LSTART] = GetHllLabel();    /* used by .ENDSWITCH  */
-    hll->labels[LTEST] = 0;                /* used by .CASE  */
-    hll->labels[LDEF] = GetHllLabel();    /* used by .CASE  */
-    hll->labels[LDATA2] = GetHllLabel();    /* used by .ENDSWITCH */
-    hll->labels[LTOP] = GetHllLabel();    /* used by .ENDSWITCH  */
-    hll->labels[LCONT] = GetHllLabel();    /* used by .ENDSWITCH */
+    hll->labels[LDATA1] = GetHllLabel();   /* used by .ENDSWITCH */
+    hll->labels[LSTART] = GetHllLabel();   /* used by .CASE      */
+    hll->labels[LTEST] = 0;               /* used by .CASE      */
+    hll->labels[LDEF] = 0;   /* used by .DEFAULT   */
+    hll->labels[LDATA2] = GetHllLabel();   /* used by .ENDSWITCH */
+    hll->labels[LTOP] = GetHllLabel();   /* used by .ENDSWITCH */
+    hll->labels[LCONT] = GetHllLabel();   /* used by .ENDSWITCH */
     hll->maxalloccasen = 0;
     hll->casecnt = 0;
     hll->csize = 4;
+    hll->breakoccured = TRUE; //first label for .CASE hast to be set
+
     if (tokenarray[i].token != T_FINAL) {
-      p = tokenarray[i].tokpos;
-      if (ModuleInfo.Ofssize == USE32) {
-        if (0 != _memicmp(p, "eax", 3)) {
-          AddLineQueueX(" mov eax, %s", tokenarray[i].tokpos);
-        }
+      DebugMsg1(("HllStartDir(%s): calling EvalOperand, i=%u\n", tokenarray[i].string_ptr, i));
+      if (EvalOperand(&i, tokenarray, Token_Count, &opndx, 0) == ERROR) {
+        DebugMsg(("HllStartDir(%s): EvalOperand() failed\n", tokenarray[i].string_ptr));
+        return(ERROR);
       }
-#if AMD64_SUPPORT
-      else             //USE64
-      {
-        if (0 == _memicmp(p, "rax", 3)) 
-          hll->csize = 8;
-        else if (0 != _memicmp(p, "eax", 3)) {
-          AddLineQueueX(" mov rax, %s", tokenarray[i].tokpos);
-          hll->csize = 8;
+      i--; //EvalOperand increases i, decrease it to point to proper tokenarray[i].tokpos 
+      switch (opndx.kind) {
+      case EXPR_REG:
+        t = opndx.base_reg;
+        if (ModuleInfo.Ofssize == USE32) {
+          if (t->tokval <= T_BX)   // AL, CL, DL, BL, AH, CH, DH, BH, AX, CX, DX, BX
+            AddLineQueueX(" movzx eax, %s", tokenarray[i].tokpos);
+          else {
+            if (t->tokval != T_EAX) //skip it, no need to write MOV EAX,EAX
+              AddLineQueueX(" mov eax, %s", tokenarray[i].tokpos);
+          }
         }
-      }// end USE64
+#if AMD64_SUPPORT
+        else             //USE64
+        {
+          if ((t->tokval <= T_EAX))
+            ; //skip it, no need to write MOV EAX,EAX
+          else if (t->tokval <= T_BX) // AL, CL, DL, BL, AH, CH, DH, BH, AX, CX, DX, BX
+            AddLineQueueX(" movzx eax, %s", tokenarray[i].tokpos);
+          else if (t->tokval <= T_EDI) //EAX,ECX,EDX,EBX,ESP,EBP,ESI,EDI
+            AddLineQueueX(" mov eax, %s", tokenarray[i].tokpos);
+          else {
+            if (t->tokval != T_RAX) //skip it, no need to write MOV RAX,RAX
+              AddLineQueueX(" mov rax, %s", tokenarray[i].tokpos);
+            hll->csize = 8;
+          }
+        }               //end USE64
 #endif
-      i++;
+        break;
+      case EXPR_ADDR:
+        if (ModuleInfo.Ofssize == USE32) {
+          if (opndx.mem_type == MT_BYTE || opndx.mem_type == MT_WORD)
+            AddLineQueueX(" movzx eax, %s", tokenarray[i].tokpos);
+          else
+            AddLineQueueX(" mov eax, %s", tokenarray[i].tokpos);
+        }
+#if AMD64_SUPPORT
+        else             //USE64
+        {
+          if (opndx.mem_type == MT_BYTE || opndx.mem_type == MT_WORD)
+            AddLineQueueX(" movzx eax, %s", tokenarray[i].tokpos);
+          else if (opndx.mem_type == MT_DWORD)
+            AddLineQueueX(" mov eax, %s", tokenarray[i].tokpos);
+          else {
+            AddLineQueueX(" mov rax, %s", tokenarray[i].tokpos);
+            hll->csize = 8;
+          }
+        }                //end USE64
+#endif
+        break;
+      }
     }
+    else {
+      DebugMsg(("HllExitDir stack error\n"));
+      return(EmitError(MISSING_OPERATOR_IN_EXPRESSION));
+    }
+    i++;
     AddLineQueueX(JMPPREFIX "jmp %s", GetLabelStr(hll->labels[LSTART], buff));
     break;
   case T_DOT_FOR:
     /* create the label to loop start */
-    //hll->labels[LEXIT] = 0; //this is needed for .FOR loop
     hll->labels[LSTART] = GetHllLabel();
     hll->labels[LSKIP] = GetHllLabel();
     hll->labels[LCONT] = 0;
@@ -1552,8 +1597,8 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
 }
 
 /*
-* .ENDIF, .ENDW, .ENDFOR .UNTIL and .UNTILCXZ directives.
-* These directives end a .IF, .WHILE or .REPEAT block.
+* .ENDIF, .ENDW, .ENDFOR .UNTIL and .UNTILCXZ .ENDSWITCH directives.
+* These directives end a .IF, .WHILE or .REPEAT .SWITCH block.
 */
 ret_code HllEndDir(int i, struct asm_tok tokenarray[])
 /******************************************************/
@@ -1564,6 +1609,10 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
   int                 cmd = tokenarray[i].tokval;
   int                 j, n;
   int                 temp;
+  int                 acnt = 0;
+  int                 bcnt = 0;
+  uint_16             lbl;
+
   char buff[16];
   //char buffer[MAX_LINE_LEN*2];
 
@@ -1602,6 +1651,15 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
       return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
     }
     i++;
+    if (ModuleInfo.switch_style == ASMSWITCH) {
+      if (hll->labels[LEXIT] == 0)
+        hll->labels[LEXIT] = GetHllLabel();
+      AddLineQueueX(JMPPREFIX "jmp %s", GetLabelStr(hll->labels[LEXIT], buff));
+    }
+    if (hll->labels[LDEF] == 0) {
+      hll->labels[LDEF] = GetHllLabel();
+      AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LDEF], buff));
+    }
     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LSTART], buff));
     if (Parse_Pass) {
       if (hll->casecnt == 1)
@@ -1613,7 +1671,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
       else
       {
         if (hll->plabels) {
-          if ((ModuleInfo.Ofssize == USE32)|| (hll->csize == 4)){
+          if ((ModuleInfo.Ofssize == USE32) || (hll->csize == 4)) {
             bubblesort(hll, hll->plabels, hll->pcases, hll->casecnt);
             if (hll->delta < 256)
               hll->cflag = 4;
@@ -1622,7 +1680,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
           }
 #if AMD64_SUPPORT
           else {     //USE64
-            bubblesort64(hll, hll->plabels,hll->pcases64, hll->casecnt);
+            bubblesort64(hll, hll->plabels, hll->pcases64, hll->casecnt);
             if (hll->delta64 < 256)
               hll->cflag = 4;
             else
@@ -1875,46 +1933,70 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LDATA1], buff));
     if (hll->cflag > 3) {
       if (ModuleInfo.Ofssize == USE32) {
-        for (j = 0; j < hll->casecnt; j++)
-          AddLineQueueX(" dd %s", GetLabelStr(hll->plabels[j], buff));
+        lbl = 0;
+        if (hll->cflag == 4) {
+          for (j = 0; j < hll->casecnt; j++) {
+            if (hll->plabels[j] != lbl) {
+              AddLineQueueX(" dd %s", GetLabelStr(hll->plabels[j], buff));
+              acnt++;
+            }
+            lbl = hll->plabels[j];
+          }
+        }
+        else {
+          for (j = 0; j < hll->casecnt; j++)
+            AddLineQueueX(" dd %s", GetLabelStr(hll->plabels[j], buff));
+        }
         AddLineQueueX(" dd %s", GetLabelStr(hll->labels[LDEF], buff));
       }
 #if AMD64_SUPPORT
       else {
-        for (j = 0; j < hll->casecnt; j++)
-          AddLineQueueX(" dq %s", GetLabelStr(hll->plabels[j], buff));
+        lbl = 0;
+        if (hll->cflag == 4) {
+          for (j = 0; j < hll->casecnt; j++) {
+            if (hll->plabels[j] != lbl) {
+              AddLineQueueX(" dq %s", GetLabelStr(hll->plabels[j], buff));
+              acnt++;
+            }
+            lbl = hll->plabels[j];
+          }
+        }
+        else {
+          for (j = 0; j < hll->casecnt; j++)
+            AddLineQueueX(" dq %s", GetLabelStr(hll->plabels[j], buff));
+        }
         AddLineQueueX(" dq %s", GetLabelStr(hll->labels[LDEF], buff));
       }
 #endif
     }
-   // OutputByte(unsigned char byte)
-   //   OutputBinBytes(unsigned char* pBytes, uint_32 len)
-
     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LDATA2], buff));
     if (hll->cflag == 4) {
       n = 0;
       if (hll->csize == 4) {
         for (j = 0; j < hll->casecnt; j++) {
           temp = hll->pcases[j] - hll->mincase;
-          //temp -= hll->mincase;
           while (n < temp) {
-            AddLineQueueX(" db %d", temp);
+            AddLineQueueX(" db %d", (int_8)acnt);
             n++;
           }
-          AddLineQueueX(" db %d", j);
+          AddLineQueueX(" db %d", (int_8)bcnt);
           n++;
+          if (hll->plabels[j] != hll->plabels[j + 1])
+            bcnt++;
         }
       }
 #if AMD64_SUPPORT
       else {
+        n = 0;
         for (j = 0; j < hll->casecnt; j++) {
-          temp = (int) hll->pcases64[j]- hll->mincase64;
+          temp = (int)hll->pcases64[j] - hll->mincase64;
           while (n < temp) {
-            AddLineQueueX(" db %d",(int_8)temp);
+            AddLineQueueX(" db %d", (int_8)acnt);
             n++;
           }
-          AddLineQueueX(" db %d", j);
+          AddLineQueueX(" db %d", (int_8)bcnt);
           n++;
+          if (hll->plabels[j] != hll->plabels[j + 1]) bcnt++;
         }
       }
 #endif
@@ -1922,7 +2004,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
     if (hll->cflag == 5) {
       n = 0;
       if (hll->csize == 4) {
-        for (j = 0; j < hll->casecnt; j++) 
+        for (j = 0; j < hll->casecnt; j++)
           AddLineQueueX(" dd %d", hll->pcases[j]);
       }
 #if AMD64_SUPPORT
@@ -1939,7 +2021,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
     else
       LclFree(hll->pcases64);
 #endif
-      LclFree(hll->plabels);
+    LclFree(hll->plabels);
     break;
   case T_DOT_ENDFOR:
     if (hll->cmd != HLL_FOR) {
@@ -2055,8 +2137,8 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
 }
 
 /*
-* .ELSE, .ELSEIF, .CONTINUE and .BREAK directives.
-* .ELSE, .ELSEIF:
+* .ELSE, .ELSEIF, .CONTINUE .CASE .DEFAULT and .BREAK directives.
+* .ELSE, .ELSEIF .SWITCH:
 *    - create a jump to exit label
 *    - render test label if it was referenced
 *    - for .ELSEIF, create new test label and evaluate expression
@@ -2076,6 +2158,7 @@ ret_code HllExitDir(int i, struct asm_tok tokenarray[])
   int                 *newcp;
   uint_16             *newlp;
   char buff[16];
+  char                *p;
   char buffer[MAX_LINE_LEN];
 #if AMD64_SUPPORT
   int_64              *newcp64;
@@ -2096,6 +2179,11 @@ ret_code HllExitDir(int i, struct asm_tok tokenarray[])
       DebugMsg(("HllExitDir stack error\n"));
       return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
     }
+    if (hll->labels[LEXIT] == 0)
+      hll->labels[LEXIT] = GetHllLabel();
+    AddLineQueueX(JMPPREFIX "jmp %s", GetLabelStr(hll->labels[LEXIT], buff));
+    if (hll->labels[LDEF] == 0)
+      hll->labels[LDEF] = GetHllLabel();
     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LDEF], buff));
     hll->flags |= HLLF_ELSEOCCURED;
     i++;
@@ -2105,95 +2193,116 @@ ret_code HllExitDir(int i, struct asm_tok tokenarray[])
       DebugMsg(("HllExitDir stack error\n"));
       return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
     }
-    hll->labels[LTEST] = GetHllLabel();
-    AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LTEST], buff));
-    i++;
-    if (tokenarray[i].token != T_FINAL) 
-      strcpy(buffer, tokenarray[i].tokpos);
-    if (tokenarray[i].token != T_FINAL) {
-      DebugMsg1(("HllExitDir(%s): calling EvalOperand, i=%u\n", tokenarray[i].string_ptr, i));
-      if (EvalOperand(&i, tokenarray, Token_Count, &opndx, 0) == ERROR) {
-        DebugMsg(("HllExitDir(%s): EvalOperand() failed\n", tokenarray[i].string_ptr));
-        return(ERROR);
+    if (ModuleInfo.switch_style == ASMSWITCH) {
+      if (hll->casecnt) {
+        if (hll->labels[LEXIT] == 0)
+          hll->labels[LEXIT] = GetHllLabel();
+        AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LEXIT], buff));
+        hll->breakoccured = TRUE;
       }
-      i++;
-      switch (opndx.kind) {
-      case EXPR_CONST:
-        tokenarray[i].token = T_FINAL;
-        break;
-      case EXPR_FLOAT:
-#if FPIMMEDIATE
-        if (Options.strict_masm_compat == FALSE) {
-          /* convert to REAL4, unless REAL8 coercion is requested */
-          atofloat(&opndx.fvalue, opndx.float_tok->string_ptr, opndx.mem_type == MT_REAL8 ? 8 : 4, opndx.negative, opndx.float_tok->floattype);
-          tokenarray[i].token = T_FINAL;
-          break;
+    }
+    for (;;) {
+    if (hll->breakoccured) {
+      hll->labels[LTEST] = GetHllLabel();
+      hll->breakoccured = FALSE;  // if .break did not occure label will not be increased
+      AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LTEST], buff));
+      hll->savedlab = hex2dec(buff + 2);
+    }
+    i++;    
+      if (tokenarray[i].token != T_FINAL) {
+        strcpy(buffer, tokenarray[i].tokpos);
+        DebugMsg1(("HllExitDir(%s): calling EvalOperand, i=%u\n", tokenarray[i].string_ptr, i));
+        if (EvalOperand(&i, tokenarray, Token_Count, &opndx, 0) == ERROR) {
+          DebugMsg(("HllExitDir(%s): EvalOperand() failed\n", tokenarray[i].string_ptr));
+          return(ERROR);
         }
+        //i++;
+        p = tokenarray[i].tokpos;
+        switch (opndx.kind) {
+        case EXPR_CONST:
+          //tokenarray[i].token = T_FINAL;
+          break;
+        case EXPR_FLOAT:
+#if FPIMMEDIATE
+          if (Options.strict_masm_compat == FALSE) {
+            /* convert to REAL4, unless REAL8 coercion is requested */
+            atofloat(&opndx.fvalue, opndx.float_tok->string_ptr, opndx.mem_type == MT_REAL8 ? 8 : 4, opndx.negative, opndx.float_tok->floattype);
+            //tokenarray[i].token = T_FINAL;
+            break;
+          }
 #endif
+        }
       }
-    }
-    else {
-      DebugMsg(("HllExitDir stack error\n"));
-      return(EmitError(MISSING_OPERATOR_IN_EXPRESSION));
-    }
-    if (hll->csize == 4) {
-      if (!hll->maxalloccasen) {
-        hll->pcases = LclAlloc(hll->csize * 50);
-        hll->plabels = LclAlloc(sizeof(uint_16) * 50);
-        hll->maxalloccasen = 50;
+      else {
+        DebugMsg(("HllExitDir stack error\n"));
+        return(EmitError(MISSING_OPERATOR_IN_EXPRESSION));
       }
-      if (hll->casecnt >= hll->maxalloccasen) {
-        hll->maxalloccasen += 50;
-        newcp = LclAlloc(hll->csize * hll->maxalloccasen);
-        memcpy(newcp, hll->pcases, hll->casecnt * hll->csize);
-        LclFree(hll->pcases);
-        hll->pcases = newcp;
-        
-        newlp = LclAlloc(sizeof(uint_16) * hll->maxalloccasen);
-        memcpy(newlp, hll->plabels, hll->casecnt * sizeof(uint_16));
-        LclFree(hll->plabels);
-        hll->plabels = newlp;
-      }
-    }
-#if AMD64_SUPPORT
-    else {
-      if (!hll->maxalloccasen) {
-        hll->pcases64 = LclAlloc(hll->csize * 50);
-        hll->plabels = LclAlloc(sizeof(uint_16) * 50);
-        hll->maxalloccasen = 50;
-      }
-      if (hll->casecnt >= hll->maxalloccasen) {
-        hll->maxalloccasen += 50;
-        newcp64 = LclAlloc(hll->csize * hll->maxalloccasen);
-        memcpy(newcp64, hll->pcases64, hll->casecnt * hll->csize);
-        LclFree(hll->pcases64);
-        hll->pcases64 = newcp64;
+      if (hll->csize == 4) {
+        if (!hll->maxalloccasen) {
+          hll->pcases = LclAlloc(hll->csize * 50);
+          hll->plabels = LclAlloc(sizeof(uint_16) * 50);
+          hll->maxalloccasen = 50;
+        }
+        if (hll->casecnt >= hll->maxalloccasen) {
+          hll->maxalloccasen += 50;
+          newcp = LclAlloc(hll->csize * hll->maxalloccasen);
+          memcpy(newcp, hll->pcases, hll->casecnt * hll->csize);
+          LclFree(hll->pcases);
+          hll->pcases = newcp;
 
-        newlp = LclAlloc(sizeof(uint_16) * hll->maxalloccasen);
-        memcpy(newlp, hll->plabels, hll->casecnt * sizeof(uint_16));
-        LclFree(hll->plabels);
-        hll->plabels = newlp;
+          newlp = LclAlloc(sizeof(uint_16) * hll->maxalloccasen);
+          memcpy(newlp, hll->plabels, hll->casecnt * sizeof(uint_16));
+          LclFree(hll->plabels);
+          hll->plabels = newlp;
+        }
       }
-    }
-#endif
-    if ((ModuleInfo.Ofssize == USE32) || (hll->csize == 4)) {
-      for (j = 0; j < hll->casecnt; j++) {
-        if (hll->pcases[j] == opndx.value)
-          EmitErr(CASE_ALREADY_OCCURED_IN_THIS_SWITCH_BLOCK, buffer);
-      }
-      hll->pcases[hll->casecnt] = opndx.value;
-    }
 #if AMD64_SUPPORT
-    else {
-      for (j = 0; j < hll->casecnt; j++) {
-        if (hll->pcases64[j] == opndx.value64)
-          EmitErr(CASE_ALREADY_OCCURED_IN_THIS_SWITCH_BLOCK, buffer);
+      else {
+        if (!hll->maxalloccasen) {
+          hll->pcases64 = LclAlloc(hll->csize * 50);
+          hll->plabels = LclAlloc(sizeof(uint_16) * 50);
+          hll->maxalloccasen = 50;
+        }
+        if (hll->casecnt >= hll->maxalloccasen) {
+          hll->maxalloccasen += 50;
+          newcp64 = LclAlloc(hll->csize * hll->maxalloccasen);
+          memcpy(newcp64, hll->pcases64, hll->casecnt * hll->csize);
+          LclFree(hll->pcases64);
+          hll->pcases64 = newcp64;
+
+          newlp = LclAlloc(sizeof(uint_16) * hll->maxalloccasen);
+          memcpy(newlp, hll->plabels, hll->casecnt * sizeof(uint_16));
+          LclFree(hll->plabels);
+          hll->plabels = newlp;
+        }
       }
-      hll->pcases64[hll->casecnt] = opndx.value64;
-    }
 #endif
-    hll->plabels[hll->casecnt] = hex2dec(buff + 2);
-    hll->casecnt++;
+      if ((ModuleInfo.Ofssize == USE32) || (hll->csize == 4)) {
+        for (j = 0; j < hll->casecnt; j++) {
+          if (hll->pcases[j] == opndx.value)
+            EmitErr(CASE_ALREADY_OCCURED_IN_THIS_SWITCH_BLOCK, buffer);
+        }
+        hll->pcases[hll->casecnt] = opndx.value;
+      }
+#if AMD64_SUPPORT
+      else {
+        for (j = 0; j < hll->casecnt; j++) {
+          if (hll->pcases64[j] == opndx.value64)
+            EmitErr(CASE_ALREADY_OCCURED_IN_THIS_SWITCH_BLOCK, buffer);
+        }
+        hll->pcases64[hll->casecnt] = opndx.value64;
+      }
+#endif
+      hll->plabels[hll->casecnt] = hll->savedlab;
+      hll->casecnt++;
+      if (tokenarray[i].token != T_COMMA)
+      break;
+    }
+    tokenarray[i].token = T_FINAL;
+    //hll->breakoccured = TRUE;
+    //if (hll->labels[LEXIT] == 0)
+    //  hll->labels[LEXIT] = GetHllLabel();
+    //AddLineQueueX(JMPPREFIX "jmp %s", GetLabelStr(hll->labels[LEXIT], buff));
     break;
   case T_DOT_ELSE:
   case T_DOT_ELSEIF:
@@ -2238,6 +2347,7 @@ ret_code HllExitDir(int i, struct asm_tok tokenarray[])
     /* v2.11: create 'exit' and 'test' labels delayed.
     */
     if (cmd == T_DOT_BREAK) {
+      hll->breakoccured = TRUE;
       if (hll->labels[LEXIT] == 0)
         hll->labels[LEXIT] = GetHllLabel();
       idx = LEXIT;

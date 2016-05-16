@@ -12,9 +12,9 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10630 DB	'coff', 00H
+$SG10631 DB	'coff', 00H
 	ORG $+3
-$SG10633 DB	'safeseh', 00H
+$SG10634 DB	'safeseh', 00H
 _DATA	ENDS
 PUBLIC	SafeSEHDirective
 EXTRN	EmitErr:PROC
@@ -106,7 +106,7 @@ $LN32:
 
 ; 34   :             EmitWarn( 2, DIRECTIVE_IGNORED_WITHOUT_X, "coff" );
 
-	lea	r8, OFFSET FLAT:$SG10630
+	lea	r8, OFFSET FLAT:$SG10631
 $LN30@SafeSEHDir:
 	mov	edx, 262				; 00000106H
 	mov	ecx, 2
@@ -138,7 +138,7 @@ $LN5@SafeSEHDir:
 
 ; 39   :             EmitWarn( 2, DIRECTIVE_IGNORED_WITHOUT_X, "safeseh" );
 
-	lea	r8, OFFSET FLAT:$SG10633
+	lea	r8, OFFSET FLAT:$SG10634
 
 ; 40   :         return( NOT_ERROR );
 

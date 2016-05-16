@@ -52,6 +52,26 @@ OPTFUNC(SetEvex)
 	*pi = i;
 	return(NOT_ERROR);
 }
+///* Set CSWITCH  */
+//OPTFUNC(SetNoBreakswitch)
+//{
+//  int i = *pi;
+//  struct expr opndx;
+//
+//  if (EvalOperand(&i, tokenarray, Token_Count, &opndx, 0) == ERROR)
+//    return(ERROR);
+//  if (opndx.kind == EXPR_CONST) {
+//    if (opndx.llvalue > 1) {
+//      return(EmitConstError(&opndx));
+//    }
+//    NO_BREAK_SWITCH = opndx.llvalue;
+//  }
+//  else {
+//    return(EmitError(CONSTANT_EXPECTED));
+//  }
+//  *pi = i;
+//  return(NOT_ERROR);
+//}
 
 /* Set ZEROLOCALS  */
 OPTFUNC(SetZeroLocals)
@@ -635,6 +655,22 @@ OPTFUNC( SetFrame )
     return( NOT_ERROR );
 }
 #endif
+OPTFUNC(SetSwitchStile)
+/*****************/
+{
+  int i = *pi;
+
+  if (0 == _stricmp(tokenarray[i].string_ptr, "CSTYLE")) {
+    ModuleInfo.switch_style = 1;
+    i++;
+  }
+  else if (0 == _stricmp(tokenarray[i].string_ptr, "ASMSTYLE")) {
+    ModuleInfo.switch_style = 0;
+    i++;
+  }
+  *pi = i;
+  return(NOT_ERROR);
+}
 
 #if ELF_SUPPORT
 OPTFUNC( SetElf )
@@ -922,6 +958,7 @@ static const struct asm_option optiontab[] = {
 	{ "EVEX",         SetEvex        }, /* EVEX: <value> 1 or 0 */
 	{ "ZEROLOCALS",   SetZeroLocals  }, /* ZEROLOCALS: <value> 1 or 0 */
 #endif
+  { "SWITCHSTYLE",      SetSwitchStile }, /* SWITCH_STYLE: <CSWITCH> or <ASMSWITCH> */
 };
 
 #define TABITEMS sizeof( optiontab) / sizeof( optiontab[0] )

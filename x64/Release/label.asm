@@ -12,8 +12,8 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10661 DB	'L&_%04u', 00H
-$SG10690 DB	'L&_%04u', 00H
+$SG10662 DB	'L&_%04u', 00H
+$SG10691 DB	'L&_%04u', 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	sprintf
@@ -535,7 +535,7 @@ $LN4@CreateLabe:
 ; 102  :         sprintf( buffer, "L&_%04u", ++ModuleInfo.g.anonymous_label );
 
 	mov	r8d, DWORD PTR ModuleInfo+268
-	lea	rdx, OFFSET FLAT:$SG10690
+	lea	rdx, OFFSET FLAT:$SG10691
 	inc	r8d
 	lea	rcx, QWORD PTR buffer$[rsp]
 	mov	DWORD PTR ModuleInfo+268, r8d
@@ -899,7 +899,7 @@ $LN4:
 	mov	r8d, DWORD PTR ModuleInfo+268
 	mov	rbx, rcx
 	add	r8d, edx
-	lea	rdx, OFFSET FLAT:$SG10661
+	lea	rdx, OFFSET FLAT:$SG10662
 	call	sprintf
 
 ; 65   :     return( buffer );
