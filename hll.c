@@ -16,7 +16,6 @@
 
 #include <ctype.h>
 #include <string.h>
-
 #include "globals.h"
 #include "memalloc.h"
 #include "parser.h"
@@ -82,7 +81,7 @@ enum hll_label_index {
 /* values for struct hll_item.flags */
 enum hll_flags {
   HLLF_ELSEOCCURED = 0x01,
-  HLLF_DEFAULT = 0x02,
+  HLLF_DEFAULTOCCURED = 0x02,
   HLLF_WHILE = 0x04,
 };
 
@@ -303,7 +302,7 @@ static void bubblesort(struct hll_item *hll, uint_16 *lbl, int *src, int n) {
   hll->maxcase = src[n - 1];
   hll->delta = hll->maxcase - hll->mincase;
 }
-#if AMD64_SUPPORT 
+#if AMD64_SUPPORT
 static void bubblesort64(struct hll_item *hll, uint_16 *lbl, int_64 *src, int n) {
   /*******************************************************************************************************************************/
   int i;
@@ -325,7 +324,6 @@ static void bubblesort64(struct hll_item *hll, uint_16 *lbl, int_64 *src, int n)
       }
     }
   }
-
   hll->mincase64 = src[0];
   hll->maxcase64 = src[n - 1];
   hll->delta64 = hll->maxcase64 - hll->mincase64;
@@ -1032,7 +1030,7 @@ static ret_code ForInitAndNext(struct asm_tok tokenarray[], int cnt, char *buff)
     }
 
     //we finis here "inc REX" or  "dec REX" or "inc mem" or "dec mem"
-    else						//if not ++ or -- 
+    else						//if not ++ or --
     {							//extracting the operator
       op[0] = buff[b];
       b++;
@@ -1076,20 +1074,20 @@ static ret_code ForInitAndNext(struct asm_tok tokenarray[], int cnt, char *buff)
       //is operator devision, multiplication or mod
       if (op[0] == '/' || op[0] == '*' || op[0] == '%') {
         Tokenize(param, 0, tokenarray, 0);
-        if (strcasecmp(param, reax[ModuleInfo.Ofssize]) && strcasecmp(init, reax[ModuleInfo.Ofssize])) { //param not rax init not rax?    
-          if (tokenarray[0].token == T_REG) {			//is param register              
+        if (strcasecmp(param, reax[ModuleInfo.Ofssize]) && strcasecmp(init, reax[ModuleInfo.Ofssize])) { //param not rax init not rax?
+          if (tokenarray[0].token == T_REG) {			//is param register
             if (strcasecmp(param, recx[ModuleInfo.Ofssize])) {				//make sure that param is not rcx
               WriteAsmLine(" mov  ", reax[ModuleInfo.Ofssize], param);				// MOV RAX,param
             }						if (op[0] == '/' || op[0] == '%') {
-              strcpy(codebuff, " cdq ");			//extend to RDX if division	
+              strcpy(codebuff, " cdq ");			//extend to RDX if division
               AddLineQueue(codebuff);
             }
             Tokenize(init, 0, tokenarray, 0);
-            if (tokenarray[0].token == T_NUM) {      //is init number? 
+            if (tokenarray[0].token == T_NUM) {      //is init number?
               WriteAsmLine(" mov  ", recx[ModuleInfo.Ofssize], init);        //MOV RCX,init
               if (op[0] == '/' || op[0] == '%')
-                strcpy(codebuff, " idiv ");		//IDIV RCX        
-              else strcpy(codebuff, " imul ");		//IMUL RCX        
+                strcpy(codebuff, " idiv ");		//IDIV RCX
+              else strcpy(codebuff, " imul ");		//IMUL RCX
               strcat(codebuff, recx[ModuleInfo.Ofssize]);
               AddLineQueue(codebuff);
               goto cont;
@@ -1104,7 +1102,7 @@ static ret_code ForInitAndNext(struct asm_tok tokenarray[], int cnt, char *buff)
             }
           }
           //if param is a variable
-          else if (tokenarray[0].token == T_ID) {		 //YES             
+          else if (tokenarray[0].token == T_ID) {		 //YES
             WriteAsmLine(" mov  ", recx[ModuleInfo.Ofssize], init);        //MOV RCX,init
             WriteAsmLine(" mov  ", reax[ModuleInfo.Ofssize], param);		// MOV RAX,param
             if (op[0] == '/' || op[0] == '%') {
@@ -1183,14 +1181,14 @@ static ret_code ForInitAndNext(struct asm_tok tokenarray[], int cnt, char *buff)
       simple:			Tokenize(param, 0, tokenarray, 0);
 
         if (strlen(init) == 1 && init[0] == '0')                        //REX=0?
-          WriteAsmLine(" xor  ", param, param);							            //XOR REX,REX //instead MOV REX,0				
+          WriteAsmLine(" xor  ", param, param);							            //XOR REX,REX //instead MOV REX,0
         else if ((strlen(op) == 1) && ((init[4] == ' ') || (init[4] == '\t'))) {  //op is '='
-          if ((0 == _memicmp(init, "BYTE PTR", 8)) ||                   //reax=BYTE PTR al 
+          if ((0 == _memicmp(init, "BYTE PTR", 8)) ||                   //reax=BYTE PTR al
             (0 == _memicmp(init, "BPTR", 4)) ||
             (0 == _memicmp(init, "WPTR", 4)) ||
-            (0 == _memicmp(init, "WORD PTR", 8)))                     //reax=WORD PTR ax 
+            (0 == _memicmp(init, "WORD PTR", 8)))                     //reax=WORD PTR ax
 
-            WriteAsmLine(" movzx  ", param, init);                      //movzx reax,ax					    
+            WriteAsmLine(" movzx  ", param, init);                      //movzx reax,ax
           else if (0 == _memicmp(init, "ADDR", 4))
             WriteAsmLine(" lea  ", param, init + 5);
           else WriteAsmLine(" mov  ", param, init);
@@ -1363,7 +1361,7 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
         DebugMsg(("HllStartDir(%s): EvalOperand() failed\n", tokenarray[i].string_ptr));
         return(ERROR);
       }
-      i--; //EvalOperand increases i, decrease it to point to proper tokenarray[i].tokpos 
+      i--; //EvalOperand increases i, decrease it to point to proper tokenarray[i].tokpos
       switch (opndx.kind) {
       case EXPR_REG:
         t = opndx.base_reg;
@@ -1499,7 +1497,7 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
       if (forbuffinit[0]) ForInitAndNext(tokenarray, eqcnt, forbuffinit);
       //note hll->counterlines is new var in the struct hll_item for store of forbuffcnt used in .ENDFOR
       //hll->cmcnt is also new var in the struct hll_item for commas counter used in .ENDFOR
-      //copy forbuffcnt context to hll->counterlines 
+      //copy forbuffcnt context to hll->counterlines
       //forbuffcnt contains anything that is written after the second ':'
       hll->cmcnt = 0;
       if (forbuffcnt[0])
@@ -1693,15 +1691,23 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
         if ((ModuleInfo.Ofssize == USE32) || (hll->csize == 4)) {
           AddLineQueueX("cmp  eax,%d", hll->pcases[0]);
           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[0], buff));
-          AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LDEF], buff));
+          if (hll->flags & HLLF_DEFAULTOCCURED)
+            AddLineQueueX("jmp  %s", GetLabelStr(hll->labels[LDEF], buff));
+          else
+            AddLineQueueX("jmp  %s", GetLabelStr(hll->labels[LEXIT], buff));
         }
 #if AMD64_SUPPORT
         else
         {
-          AddLineQueueX("mov rcx, %q", hll->pcases64[0]);
-          AddLineQueueX("cmp rax, rcx");
+          AddLineQueueX("push rdx");
+          AddLineQueueX("mov rdx, %q", hll->pcases64[0]);
+          AddLineQueueX("cmp rax, rdx");
+          AddLineQueueX("pop rdx");
           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[0], buff));
-          AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LDEF], buff));
+          if (hll->flags & HLLF_DEFAULTOCCURED)
+            AddLineQueueX("jmp  %s", GetLabelStr(hll->labels[LDEF], buff));
+          else
+            AddLineQueueX("jmp  %s", GetLabelStr(hll->labels[LEXIT], buff));
         }
 #endif
       }
@@ -1711,18 +1717,26 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[0], buff));
           AddLineQueueX("cmp  eax,%d", hll->pcases[1]);
           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[1], buff));
-          AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LDEF], buff));
+          if (hll->flags & HLLF_DEFAULTOCCURED)
+            AddLineQueueX("jmp  %s", GetLabelStr(hll->labels[LDEF], buff));
+          else
+            AddLineQueueX("jmp  %s", GetLabelStr(hll->labels[LEXIT], buff));
         }
 #if AMD64_SUPPORT
         else
         {
-          AddLineQueueX("mov rcx, %q", hll->pcases64[0]);
-          AddLineQueueX("cmp rax, rcx");
+          AddLineQueueX("push rdx");
+          AddLineQueueX("mov rdx, %q", hll->pcases64[0]);
+          AddLineQueueX("cmp rax, rdx");
           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[0], buff));
-          AddLineQueueX("mov rcx, %q", hll->pcases64[1]);
-          AddLineQueueX("cmp rax, rcx");
+          AddLineQueueX("mov rdx, %q", hll->pcases64[1]);
+          AddLineQueueX("cmp rax, rdx");
+          AddLineQueueX("pop rdx");
           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[1], buff));
-          AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LDEF], buff));
+          if (hll->flags & HLLF_DEFAULTOCCURED)
+            AddLineQueueX("jmp  %s", GetLabelStr(hll->labels[LDEF], buff));
+          else
+            AddLineQueueX("jmp  %s", GetLabelStr(hll->labels[LEXIT], buff));
         }
 #endif
       }
@@ -1734,53 +1748,80 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[1], buff));
           AddLineQueueX("cmp  eax,%d", hll->pcases[2]);
           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[2], buff));
-          AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LDEF], buff));
+          if (hll->flags & HLLF_DEFAULTOCCURED)
+            AddLineQueueX("jmp  %s", GetLabelStr(hll->labels[LDEF], buff));
+          else
+            AddLineQueueX("jmp  %s", GetLabelStr(hll->labels[LEXIT], buff));
         }
 #if AMD64_SUPPORT
         else
         {
-          AddLineQueueX("mov rcx, %q", hll->pcases64[0]);
-          AddLineQueueX("cmp rax, rcx");
+          AddLineQueueX("push rdx");
+          AddLineQueueX("mov rdx, %q", hll->pcases64[0]);
+          AddLineQueueX("cmp rax, rdx");
           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[0], buff));
-          AddLineQueueX("mov rcx, %q", hll->pcases64[1]);
-          AddLineQueueX("cmp rax, rcx");
+          AddLineQueueX("mov rdx, %q", hll->pcases64[1]);
+          AddLineQueueX("cmp rax, rdx");
           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[1], buff));
-          AddLineQueueX("mov rcx, %q", hll->pcases64[2]);
-          AddLineQueueX("cmp rax, rcx");
+          AddLineQueueX("mov rdx, %q", hll->pcases64[2]);
+          AddLineQueueX("cmp rax, rdx");
+          AddLineQueueX("pop rdx");
           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[2], buff));
-          AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LDEF], buff));
+          if (hll->flags & HLLF_DEFAULTOCCURED)
+            AddLineQueueX("jmp  %s", GetLabelStr(hll->labels[LDEF], buff));
+          else
+            AddLineQueueX("jmp  %s", GetLabelStr(hll->labels[LEXIT], buff));
         }
 #endif
       }
       else if (hll->cflag == 4) {
+        if (hll->flags & HLLF_DEFAULTOCCURED)
+          GetLabelStr(hll->labels[LDEF], buff);
+        else {
+          GetLabelStr(hll->labels[LEXIT], buff);
+        }
         if (hll->csize == 4) {
+          AddLineQueueX("cmp eax,%d", hll->mincase);
+          AddLineQueueX("jl  %s",  buff);
           AddLineQueueX("cmp eax,%d", hll->maxcase);
-          AddLineQueueX("ja  %s", GetLabelStr(hll->labels[LDEF], buff));
-          AddLineQueueX("sub eax,%d", hll->mincase);
-          AddLineQueueX("jc  %s", GetLabelStr(hll->labels[LDEF], buff));
+          AddLineQueueX("ja  %s", buff);
         }
 #if AMD64_SUPPORT
         else {
-          AddLineQueueX("mov rcx, %q", hll->maxcase64);
-          AddLineQueueX("cmp rax, rcx");
-          AddLineQueueX("ja  %s", GetLabelStr(hll->labels[LDEF], buff));
-          AddLineQueueX("mov rcx, %q", hll->mincase64);
-          AddLineQueueX("sub rax, rcx");
-          AddLineQueueX("jc  %s", GetLabelStr(hll->labels[LDEF], buff));
+          AddLineQueueX("push	rax");
+          AddLineQueueX("push	rdx");
+          AddLineQueueX("mov rdx, %q", hll->maxcase64);
+          AddLineQueueX("cmp rax, rdx");
+          AddLineQueueX("pop	rdx");
+          AddLineQueueX("pop	rax");
+          AddLineQueueX("jl  %s", buff);
+          AddLineQueueX("mov rdx, %q", hll->mincase64);
+          AddLineQueueX("cmp rax, rdx");
+          AddLineQueueX("pop	rdx");
+          AddLineQueueX("pop	rax");
+          AddLineQueueX("jl  %s", buff);
         }
 #endif
         if (ModuleInfo.Ofssize == USE32) {
-          AddLineQueueX("lea  edx,%s", GetLabelStr(hll->labels[LDATA2], buff));
-          AddLineQueueX("movzx  eax,BYTE PTR[edx+eax]");
-          AddLineQueueX("lea  edx,%s", GetLabelStr(hll->labels[LDATA1], buff));
-          AddLineQueueX("jmp  dword ptr[edx+eax*4]");
+          GetLabelStr(hll->labels[LDATA2], buff);
+          AddLineQueueX("push	 eax");
+          AddLineQueueX("movzx eax,byte ptr %s[%r - %d]", buff, T_EAX, hll->mincase);
+          GetLabelStr(hll->labels[LDATA1], buff);
+          AddLineQueueX("mov   eax,%s[%r*4]", buff, T_EAX);
+          AddLineQueueX("xchg	 eax,[esp]");
+          AddLineQueueX("retn");
         }
 #if AMD64_SUPPORT
         else {
-          AddLineQueueX("lea  rdx,%s", GetLabelStr(hll->labels[LDATA2], buff));
-          AddLineQueueX("movzx  rax,byte ptr[rdx+rax]");
-          AddLineQueueX("lea  rdx,%s", GetLabelStr(hll->labels[LDATA1], buff));
-          AddLineQueueX("jmp  qword ptr[rdx+rax*8]");
+          GetLabelStr(hll->labels[LDATA2], buff);
+          AddLineQueueX("lea   rdx,%s", buff);
+          AddLineQueueX("movzx rdx,byte ptr[rdx+rax-%u]", hll->mincase);
+          GetLabelStr(hll->labels[LDATA1], buff);
+          AddLineQueueX("lea   rax,%s", buff);
+          AddLineQueueX("mov   rax, qword ptr[rax+rdx*8]");
+          AddLineQueueX("pop   rdx");
+          AddLineQueueX("xchg	 rax,[rsp]");
+          AddLineQueueX("retn");
         }
 #endif
       }
@@ -1795,35 +1836,48 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
       }*/
       else if (hll->cflag == 5) {
         if (ModuleInfo.Ofssize == USE32) {
+          AddLineQueueX("push	eax");
+          AddLineQueueX("push	edx");
           AddLineQueueX("push	ebx");
           AddLineQueueX("push	esi");
           AddLineQueueX("push	edi");
-          AddLineQueueX("mov     esi,eax");
-          AddLineQueueX("mov     ebx,%d", hll->casecnt - 1);//int high = len - 1;
-          AddLineQueueX("xor     ecx,ecx");//int low = 0;
-          AddLineQueueX("lea     edi,%s", GetLabelStr(hll->labels[LDATA2], buff));//int hll->pcases
-          AddLineQueueX("test    ebx,ebx");//while (low <= high) {
-          AddLineQueueX("js      %s", GetLabelStr(hll->labels[LDEF], buff));
+          AddLineQueueX("mov  esi,eax");
+          AddLineQueueX("mov  ebx,%d", hll->casecnt - 1);//int high = len - 1;
+          AddLineQueueX("xor  ecx,ecx");//int low = 0;
+          AddLineQueueX("lea  edi,%s", GetLabelStr(hll->labels[LDATA2], buff));//int hll->pcases
+          AddLineQueueX("test ebx,ebx");//while (low <= high) {
+          if (hll->flags & HLLF_DEFAULTOCCURED)
+            AddLineQueueX("js  %s", GetLabelStr(hll->labels[LDEF], buff));
+          else
+            AddLineQueueX("js  %s", GetLabelStr(hll->labels[LEXIT], buff));
+
         }
 #if AMD64_SUPPORT
         else {
+            AddLineQueueX("push	rax");
+            AddLineQueueX("push	rdx");
+            AddLineQueueX("push	rbx");
+            AddLineQueueX("push	rsi");
+            AddLineQueueX("push	rdi");
           if (hll->csize == 4) {
-            AddLineQueueX("mov     r8d,eax");
-            AddLineQueueX("mov     r10d,%d", hll->casecnt - 1);//int high = len - 1;
-            AddLineQueueX("xor     r9d,r9d");//int low = 0;
-            AddLineQueueX("lea     r11,%s", GetLabelStr(hll->labels[LDATA2], buff));//int hll->pcases
-            AddLineQueueX("test    r10d,r10d");//while (low <= high) {
-            AddLineQueueX("js      %s", GetLabelStr(hll->labels[LDEF], buff));
+            AddLineQueueX("mov  esi,eax");
+            AddLineQueueX("mov  ebx,%d", hll->casecnt - 1);//int high = len - 1;
+            AddLineQueueX("xor  ecx,ecx");//int low = 0;
+            AddLineQueueX("lea  rdi,%s", GetLabelStr(hll->labels[LDATA2], buff));//int hll->pcases
+            AddLineQueueX("test ebx,ebx");//while (low <= high) {
           }
           else {
-            AddLineQueueX("mov     r8,rax");
-            AddLineQueueX("mov     r10d,%d", hll->casecnt - 1);//int high = len - 1;
-            AddLineQueueX("xor     r9d,r9d");//int low = 0;
-            AddLineQueueX("lea     r11,%s", GetLabelStr(hll->labels[LDATA2], buff));//int hll->pcases
-            AddLineQueueX("test    r10,r10");//while (low <= high) {
-            AddLineQueueX("js      %s", GetLabelStr(hll->labels[LDEF], buff));
+            AddLineQueueX("mov  rsi,rax");
+            AddLineQueueX("mov  rbx,%q", hll->casecnt - 1);//int high = len - 1;
+            AddLineQueueX("xor  ecx,ecx");//int low = 0;
+            AddLineQueueX("lea  rdi,%s", GetLabelStr(hll->labels[LDATA2], buff));//int hll->pcases
+            AddLineQueueX("test rbx,rbx");//while (low <= high) {
           }
-        }
+            if (hll->flags & HLLF_DEFAULTOCCURED)
+              AddLineQueueX("js  %s", GetLabelStr(hll->labels[LDEF], buff));
+            else
+              AddLineQueueX("js  %s", GetLabelStr(hll->labels[LEXIT], buff));
+       }
 #endif
       }
     } //end if Parse_Pass
@@ -1837,36 +1891,33 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
           AddLineQueueX("sar     eax,1");
           AddLineQueueX("cmp     [edi+eax*4],esi");
           AddLineQueueX("je  %s", GetLabelStr(hll->labels[LJUMP], buff));
-          AddLineQueueX("jge %s", GetLabelStr(hll->labels[LSKIP], buff));//else if (hll->pcases[mid] < hll->casecnt) 
+          AddLineQueueX("jge %s", GetLabelStr(hll->labels[LSKIP], buff));//else if (hll->pcases[mid] < hll->casecnt)
           AddLineQueueX("lea     ecx,[eax+1]");                          //low = mid + 1
           AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LCONT], buff));
         }
 #if AMD64_SUPPORT
         else {
           if (hll->csize == 4) {
-            AddLineQueueX("lea     eax,[r10+r9]");//int mid = (low + high) / 2;
+            AddLineQueueX("lea     eax,[rcx + rbx]");//int eax = (ecx + ebx) / 2;
             AddLineQueueX("cdq");
             AddLineQueueX("sub     eax,edx");
-            AddLineQueueX("sar     eax,1");
-            AddLineQueueX("movsxd  rcx,eax");//if (hll->pcases[mid] == x) return mid;
-            AddLineQueueX("cmp     [r11+rcx*4],r8d");
+            AddLineQueueX("sar     rax,1");
+            AddLineQueueX("cmp     [rdi+rax*8],esi");
             AddLineQueueX("je  %s", GetLabelStr(hll->labels[LJUMP], buff));
-            AddLineQueueX("jge %s", GetLabelStr(hll->labels[LSKIP], buff));//else if (hll->pcases[mid] < hll->casecnt) 
-            AddLineQueueX("lea     r9d,[rax+1]");                          //low = mid + 1
+            AddLineQueueX("jge %s", GetLabelStr(hll->labels[LSKIP], buff));//else if (hll->pcases[mid] < hll->casecnt)
+            AddLineQueueX("lea     ecx,[rax+1]");                          //low = mid + 1
             AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LCONT], buff));
           }
           else {
-            AddLineQueueX("lea     rax,[r10+r9]");//int mid = (low + high) / 2;
+            AddLineQueueX("lea     rax,[rcx + rbx]");//int eax = (ecx + ebx) / 2;
             AddLineQueueX("cdq");
             AddLineQueueX("sub     rax,rdx");
             AddLineQueueX("sar     rax,1");
-            AddLineQueueX("mov     rcx,rax");//if (hll->pcases[mid] == x) return mid;
-            AddLineQueueX("cmp     [r11+rcx*8],r8");
+            AddLineQueueX("cmp     [rdi+rax*8],rsi");
             AddLineQueueX("je  %s", GetLabelStr(hll->labels[LJUMP], buff));
-            AddLineQueueX("jge %s", GetLabelStr(hll->labels[LSKIP], buff));//else if (hll->pcases[mid] < hll->casecnt) 
-            AddLineQueueX("lea     r9,[rax+1]");                          //low = mid + 1
+            AddLineQueueX("jge %s", GetLabelStr(hll->labels[LSKIP], buff));//else if (hll->pcases[mid] < hll->casecnt)
+            AddLineQueueX("lea     rcx,[rax+1]");                          //low = mid + 1
             AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LCONT], buff));
-
           }
         }
 #endif
@@ -1876,16 +1927,26 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
     if (Parse_Pass) {
       if (hll->cflag == 5) {
         if (ModuleInfo.Ofssize == USE32) {
-          AddLineQueueX("lea edx,%s", GetLabelStr(hll->labels[LDATA1], buff));
+          GetLabelStr(hll->labels[LDATA1], buff);
           AddLineQueueX("pop	edi");
           AddLineQueueX("pop	esi");
           AddLineQueueX("pop	ebx");
-          AddLineQueueX("jmp dword ptr[edx+eax*4]");
+          AddLineQueueX("pop	edx");
+          AddLineQueueX("mov  eax,%s[%r*4]", buff, T_EAX);
+          AddLineQueueX("xchg	 eax,[esp]");
+          AddLineQueueX("retn");
         }
 #if AMD64_SUPPORT
         else {
-          AddLineQueueX("lea     r11,%s", GetLabelStr(hll->labels[LDATA1], buff));
-          AddLineQueueX("jmp     qword ptr[r11+rcx*8]");
+          AddLineQueueX("pop	rdi");
+          AddLineQueueX("pop	rsi");
+          AddLineQueueX("pop	rbx");
+          GetLabelStr(hll->labels[LDATA1], buff);
+          AddLineQueueX("lea   rdx,%s", buff);
+          AddLineQueueX("mov   rax, qword ptr[rdx+rax*8]");
+          AddLineQueueX("pop   rdx");
+          AddLineQueueX("xchg	 rax,[rsp]");
+          AddLineQueueX("retn");
         }
 #endif
       }
@@ -1898,9 +1959,9 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
 #if AMD64_SUPPORT
         else {
           if (hll->csize == 4)
-            AddLineQueueX("lea     r10d,[rax-1]");//else high = mid - 1;
+            AddLineQueueX("lea     ebx,[rax-1]");//else high = mid - 1;
           else
-            AddLineQueueX("lea     r10,[rax-1]");//else high = mid - 1;
+            AddLineQueueX("lea     rbx,[rax-1]");//else high = mid - 1;
         }
 #endif
       }
@@ -1911,21 +1972,33 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
         if (ModuleInfo.Ofssize == USE32) {
           AddLineQueueX("cmp  ecx,ebx");
           AddLineQueueX("jle %s", GetLabelStr(hll->labels[LTOP], buff));
+          AddLineQueueX("pop	eax");
+          AddLineQueueX("pop	edx");
           AddLineQueueX("pop	edi");
           AddLineQueueX("pop	esi");
           AddLineQueueX("pop	ebx");
-          AddLineQueueX("jmp  %s", GetLabelStr(hll->labels[LDEF], buff));
+          if (hll->flags & HLLF_DEFAULTOCCURED)
+            AddLineQueueX("jmp  %s", GetLabelStr(hll->labels[LDEF], buff));
+          else
+            AddLineQueueX("jmp  %s", GetLabelStr(hll->labels[LEXIT], buff));
         }
 #if AMD64_SUPPORT
         else
         {
           if (hll->csize == 4)
-            AddLineQueueX("cmp  r9d,r10d");
+            AddLineQueueX("cmp  ecx,ebx");
           else
-            AddLineQueueX("cmp  r9,r10");
-
-          AddLineQueueX("jle %s", GetLabelStr(hll->labels[LTOP], buff));
-          AddLineQueueX("jmp  %s", GetLabelStr(hll->labels[LDEF], buff));
+            AddLineQueueX("cmp  rcx,rbx");
+            AddLineQueueX("jle  %s", GetLabelStr(hll->labels[LTOP], buff));
+            AddLineQueueX("pop	rax");
+            AddLineQueueX("pop	rdx");
+            AddLineQueueX("pop	rdi");
+            AddLineQueueX("pop	rsi");
+            AddLineQueueX("pop	rbx");
+            if (hll->flags & HLLF_DEFAULTOCCURED)
+            AddLineQueueX("jmp  %s", GetLabelStr(hll->labels[LDEF], buff));
+          else
+            AddLineQueueX("jmp  %s", GetLabelStr(hll->labels[LEXIT], buff));
         }
 #endif
       }
@@ -1947,7 +2020,10 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
           for (j = 0; j < hll->casecnt; j++)
             AddLineQueueX(" dd %s", GetLabelStr(hll->plabels[j], buff));
         }
-        AddLineQueueX(" dd %s", GetLabelStr(hll->labels[LDEF], buff));
+        if (hll->flags & HLLF_DEFAULTOCCURED)
+          AddLineQueueX(" dd %s", GetLabelStr(hll->labels[LDEF], buff));
+        else
+          AddLineQueueX(" dd %s", GetLabelStr(hll->labels[LEXIT], buff));
       }
 #if AMD64_SUPPORT
       else {
@@ -1965,7 +2041,10 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
           for (j = 0; j < hll->casecnt; j++)
             AddLineQueueX(" dq %s", GetLabelStr(hll->plabels[j], buff));
         }
-        AddLineQueueX(" dq %s", GetLabelStr(hll->labels[LDEF], buff));
+        if (hll->flags & HLLF_DEFAULTOCCURED)
+          AddLineQueueX(" dq %s", GetLabelStr(hll->labels[LDEF], buff));
+        else
+          AddLineQueueX(" dq %s", GetLabelStr(hll->labels[LEXIT], buff));
       }
 #endif
     }
@@ -2030,12 +2109,12 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
       return(ERROR);
     }
     i++;
-    //Insert .CONTINUE label here if there is any 
+    //Insert .CONTINUE label here if there is any
     if (hll->labels[LCONT])
       AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LCONT], buff));
     //forever loop '.for (::)'
     if (hll->cmcnt == 0) goto adlabel;
-    //If counters exist  
+    //If counters exist
     else if (hll->counterlines[0]) {
       //here we write counters
       if (hll->counterlines) {      //if there is something after second ':' expand it here
@@ -2175,17 +2254,14 @@ ret_code HllExitDir(int i, struct asm_tok tokenarray[])
   }
   switch (cmd) {
   case T_DOT_DEFAULT:
-    if (hll->flags & HLLF_ELSEOCCURED) {
+    if (hll->flags & HLLF_DEFAULTOCCURED) {
       DebugMsg(("HllExitDir stack error\n"));
       return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
     }
-    if (hll->labels[LEXIT] == 0)
-      hll->labels[LEXIT] = GetHllLabel();
-    AddLineQueueX(JMPPREFIX "jmp %s", GetLabelStr(hll->labels[LEXIT], buff));
     if (hll->labels[LDEF] == 0)
       hll->labels[LDEF] = GetHllLabel();
     AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LDEF], buff));
-    hll->flags |= HLLF_ELSEOCCURED;
+    hll->flags |= HLLF_DEFAULTOCCURED;
     i++;
     break;
   case T_DOT_CASE:
@@ -2208,7 +2284,7 @@ ret_code HllExitDir(int i, struct asm_tok tokenarray[])
       AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LTEST], buff));
       hll->savedlab = hex2dec(buff + 2);
     }
-    i++;    
+    i++;
       if (tokenarray[i].token != T_FINAL) {
         strcpy(buffer, tokenarray[i].tokpos);
         DebugMsg1(("HllExitDir(%s): calling EvalOperand, i=%u\n", tokenarray[i].string_ptr, i));
@@ -2216,18 +2292,15 @@ ret_code HllExitDir(int i, struct asm_tok tokenarray[])
           DebugMsg(("HllExitDir(%s): EvalOperand() failed\n", tokenarray[i].string_ptr));
           return(ERROR);
         }
-        //i++;
         p = tokenarray[i].tokpos;
         switch (opndx.kind) {
         case EXPR_CONST:
-          //tokenarray[i].token = T_FINAL;
           break;
         case EXPR_FLOAT:
 #if FPIMMEDIATE
           if (Options.strict_masm_compat == FALSE) {
             /* convert to REAL4, unless REAL8 coercion is requested */
             atofloat(&opndx.fvalue, opndx.float_tok->string_ptr, opndx.mem_type == MT_REAL8 ? 8 : 4, opndx.negative, opndx.float_tok->floattype);
-            //tokenarray[i].token = T_FINAL;
             break;
           }
 #endif
@@ -2298,11 +2371,6 @@ ret_code HllExitDir(int i, struct asm_tok tokenarray[])
       if (tokenarray[i].token != T_COMMA)
       break;
     }
-    tokenarray[i].token = T_FINAL;
-    //hll->breakoccured = TRUE;
-    //if (hll->labels[LEXIT] == 0)
-    //  hll->labels[LEXIT] = GetHllLabel();
-    //AddLineQueueX(JMPPREFIX "jmp %s", GetLabelStr(hll->labels[LEXIT], buff));
     break;
   case T_DOT_ELSE:
   case T_DOT_ELSEIF:
