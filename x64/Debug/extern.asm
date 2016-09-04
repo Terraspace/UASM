@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 _DATA	SEGMENT
@@ -12,51 +12,51 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10804 DB	'NULL', 00H
+$SG10842 DB	'NULL', 00H
 	ORG $+3
-$SG10805 DB	'CreateProto( i=%u, name=%s, lang=%u )', 0aH, 00H
+$SG10843 DB	'CreateProto( i=%u, name=%s, lang=%u )', 0aH, 00H
 	ORG $+1
-$SG10848 DB	'ExterndefDirective(%u) enter', 0aH, 00H
+$SG10886 DB	'ExterndefDirective(%u) enter', 0aH, 00H
 	ORG $+2
-$SG10853 DB	'ABS', 00H
-$SG10975 DB	')', 00H
+$SG10891 DB	'ABS', 00H
+$SG11013 DB	')', 00H
 	ORG $+2
-$SG10862 DB	'ExterndefDirective(%s): memtype=%X set, ofssize=%X', 0aH
+$SG10900 DB	'ExterndefDirective(%s): memtype=%X set, ofssize=%X', 0aH
 	DB	00H
 	ORG $+4
-$SG10876 DB	'ExterndefDirective: type conflict for %s. mem_types old-'
+$SG10914 DB	'ExterndefDirective: type conflict for %s. mem_types old-'
 	DB	'new: %X-%X', 0aH, 00H
-$SG10979 DB	'ABS', 00H
-$SG10878 DB	'ExterndefDirective(%s): types differ: %X (%s) - %X (%s)', 0aH
+$SG11017 DB	'ABS', 00H
+$SG10916 DB	'ExterndefDirective(%s): types differ: %X (%s) - %X (%s)', 0aH
 	DB	00H
 	ORG $+7
-$SG10938 DB	'HandleAltname: symbol ''%s'' found, state=%u', 0aH, 00H
+$SG10976 DB	'HandleAltname: symbol ''%s'' found, state=%u', 0aH, 00H
 	ORG $+12
-$SG10880 DB	'ExterndefDirective(%s): type conflict old-new: %X (%s) -'
+$SG10918 DB	'ExterndefDirective(%s): type conflict old-new: %X (%s) -'
 	DB	' %X (%s)', 0aH, 00H
 	ORG $+6
-$SG10970 DB	'ExternDirective(%u) enter', 0aH, 00H
+$SG11008 DB	'ExternDirective(%u) enter', 0aH, 00H
 	ORG $+5
-$SG10982 DB	'ExternDirective(%s): CreateProto()=%X', 0aH, 00H
+$SG11020 DB	'ExternDirective(%s): CreateProto()=%X', 0aH, 00H
 	ORG $+1
-$SG10988 DB	'ExternDirective(%s): mem_type=%Xh', 0aH, 00H
+$SG11026 DB	'ExternDirective(%s): mem_type=%Xh', 0aH, 00H
 	ORG $+5
-$SG10994 DB	'ExternDirective(%s): prototype copied, memtype=%X', 0aH, 00H
+$SG11032 DB	'ExternDirective(%s): prototype copied, memtype=%X', 0aH, 00H
 	ORG $+5
-$SG10998 DB	'ExternDirective: symbol %s redefinition, state=%u', 0aH, 00H
+$SG11036 DB	'ExternDirective: symbol %s redefinition, state=%u', 0aH, 00H
 	ORG $+13
-$SG11003 DB	'ExternDirective: memtype:%X-%X ptr=%X-%X far=%X-%X ptr_m'
+$SG11041 DB	'ExternDirective: memtype:%X-%X ptr=%X-%X far=%X-%X ptr_m'
 	DB	'emtype=%X-%X lang=%u-%u', 0aH, 00H
 	ORG $+7
-$SG11055 DB	'CommDirective(%u) enter', 0aH, 00H
+$SG11093 DB	'CommDirective(%u) enter', 0aH, 00H
 	ORG $+7
-$SG11092 DB	'AddPublicData(%s)', 0aH, 00H
+$SG11130 DB	'AddPublicData(%s)', 0aH, 00H
 	ORG $+5
-$SG11115 DB	'PublicDirective(%u) enter', 0aH, 00H
+$SG11153 DB	'PublicDirective(%u) enter', 0aH, 00H
 	ORG $+5
-$SG11117 DB	'PublicDirective: sym=%s', 0aH, 00H
+$SG11155 DB	'PublicDirective: sym=%s', 0aH, 00H
 	ORG $+7
-$SG11123 DB	'PublicDirective(%s): new symbol', 0aH, 00H
+$SG11161 DB	'PublicDirective(%s): new symbol', 0aH, 00H
 _DATA	ENDS
 CONST	SEGMENT
 szCOMM	DB	'COMM', 00H
@@ -69,7 +69,7 @@ PUBLIC	ProtoDirective
 PUBLIC	ExternDirective
 PUBLIC	CommDirective
 PUBLIC	PublicDirective
-EXTRN	__imp__stricmp:PROC
+EXTRN	_stricmp:PROC
 EXTRN	DoDebugMsg:PROC
 EXTRN	DoDebugMsg1:PROC
 EXTRN	EmitError:PROC
@@ -89,10 +89,6 @@ EXTRN	GetQualifiedType:PROC
 EXTRN	ParseProc:PROC
 EXTRN	CreateProc:PROC
 EXTRN	CopyPrototype:PROC
-EXTRN	_RTC_CheckStackVars:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
-EXTRN	_RTC_UninitUse:PROC
 EXTRN	Options:BYTE
 EXTRN	ModuleInfo:BYTE
 EXTRN	Parse_Pass:DWORD
@@ -100,216 +96,86 @@ EXTRN	SymTables:BYTE
 EXTRN	__ImageBase:BYTE
 pdata	SEGMENT
 $pdata$MakeExtern DD imagerel $LN8
-	DD	imagerel $LN8+219
+	DD	imagerel $LN8+197
 	DD	imagerel $unwind$MakeExtern
 $pdata$AddPublicData DD imagerel $LN3
-	DD	imagerel $LN3+74
+	DD	imagerel $LN3+52
 	DD	imagerel $unwind$AddPublicData
-$pdata$FreePubQueue DD imagerel $LN3
-	DD	imagerel $LN3+15
-	DD	imagerel $unwind$FreePubQueue
 $pdata$CreateExternal DD imagerel CreateExternal
-	DD	imagerel CreateExternal+258
+	DD	imagerel CreateExternal+236
 	DD	imagerel $unwind$CreateExternal
 $pdata$CreateComm DD imagerel CreateComm
-	DD	imagerel CreateComm+256
+	DD	imagerel CreateComm+234
 	DD	imagerel $unwind$CreateComm
 $pdata$CreateProto DD imagerel CreateProto
-	DD	imagerel CreateProto+565
+	DD	imagerel CreateProto+544
 	DD	imagerel $unwind$CreateProto
 $pdata$ExterndefDirective DD imagerel $LN47
-	DD	imagerel $LN47+1970
+	DD	imagerel $LN47+1879
 	DD	imagerel $unwind$ExterndefDirective
 $pdata$ProtoDirective DD imagerel $LN8
-	DD	imagerel $LN8+236
+	DD	imagerel $LN8+215
 	DD	imagerel $unwind$ProtoDirective
 $pdata$HandleAltname DD imagerel HandleAltname
-	DD	imagerel HandleAltname+513
+	DD	imagerel HandleAltname+491
 	DD	imagerel $unwind$HandleAltname
 $pdata$ExternDirective DD imagerel $LN45
-	DD	imagerel $LN45+2469
+	DD	imagerel $LN45+2392
 	DD	imagerel $unwind$ExternDirective
 $pdata$MakeComm DD imagerel MakeComm
-	DD	imagerel MakeComm+263
+	DD	imagerel MakeComm+241
 	DD	imagerel $unwind$MakeComm
 $pdata$CommDirective DD imagerel $LN45
-	DD	imagerel $LN45+1356
+	DD	imagerel $LN45+1280
 	DD	imagerel $unwind$CommDirective
-$pdata$PublicDirective DD imagerel $LN32
-	DD	imagerel $LN32+867
+$pdata$PublicDirective DD imagerel $LN31
+	DD	imagerel $LN31+773
 	DD	imagerel $unwind$PublicDirective
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
-CONST	SEGMENT
-	ORG $+3
-ExterndefDirective$rtcName$0 DB 06cH
-	DB	061H
-	DB	06eH
-	DB	067H
-	DB	074H
-	DB	079H
-	DB	070H
-	DB	065H
-	DB	00H
-	ORG $+3
-ExterndefDirective$rtcName$1 DB 074H
-	DB	069H
-	DB	00H
-	ORG $+1
-ExterndefDirective$rtcFrameData DD 02H
-	DD	00H
-	DQ	FLAT:ExterndefDirective$rtcVarDesc
-ExternDirective$rtcName$1 DB 074H
-	DB	069H
-	DB	00H
-	ORG $+5
-ExterndefDirective$rtcVarDesc DD 068H
-	DD	020H
-	DQ	FLAT:ExterndefDirective$rtcName$1
-	DD	044H
-	DD	04H
-	DQ	FLAT:ExterndefDirective$rtcName$0
-	ORG $+96
-ExternDirective$rtcName$0 DB 06cH
-	DB	061H
-	DB	06eH
-	DB	067H
-	DB	074H
-	DB	079H
-	DB	070H
-	DB	065H
-	DB	00H
-	ORG $+7
-ExternDirective$rtcVarDesc DD 0a8H
-	DD	020H
-	DQ	FLAT:ExternDirective$rtcName$1
-	DD	084H
-	DD	04H
-	DQ	FLAT:ExternDirective$rtcName$0
-	ORG $+96
-ExternDirective$rtcFrameData DD 02H
-	DD	00H
-	DQ	FLAT:ExternDirective$rtcVarDesc
-CommDirective$rtcName$0 DB 06fH
-	DB	070H
-	DB	06eH
-	DB	064H
-	DB	078H
-	DB	00H
-	ORG $+2
-CommDirective$rtcName$1 DB 06cH
-	DB	061H
-	DB	06eH
-	DB	067H
-	DB	074H
-	DB	079H
-	DB	070H
-	DB	065H
-	DB	00H
-	ORG $+7
-CommDirective$rtcFrameData DD 02H
-	DD	00H
-	DQ	FLAT:CommDirective$rtcVarDesc
-	ORG $+8
-CommDirective$rtcVarDesc DD 0e4H
-	DD	04H
-	DQ	FLAT:CommDirective$rtcName$1
-	DD	060H
-	DD	068H
-	DQ	FLAT:CommDirective$rtcName$0
-	ORG $+96
-PublicDirective$rtcName$0 DB 073H
-	DB	06bH
-	DB	069H
-	DB	070H
-	DB	069H
-	DB	074H
-	DB	065H
-	DB	06dH
-	DB	00H
-	ORG $+7
-PublicDirective$rtcName$1 DB 06cH
-	DB	061H
-	DB	06eH
-	DB	067H
-	DB	074H
-	DB	079H
-	DB	070H
-	DB	065H
-	DB	00H
-	ORG $+7
-PublicDirective$rtcVarDesc DD 044H
-	DD	04H
-	DQ	FLAT:PublicDirective$rtcName$1
-	ORG $+48
-PublicDirective$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:PublicDirective$rtcVarDesc
-CONST	ENDS
 xdata	SEGMENT
-$unwind$MakeExtern DD 022c01H
-	DD	070143218H
-$unwind$AddPublicData DD 021e01H
-	DD	07006320aH
-$unwind$FreePubQueue DD 010201H
-	DD	07002H
-$unwind$CreateExternal DD 022801H
-	DD	070103214H
-$unwind$CreateComm DD 022301H
-	DD	0700b320fH
-$unwind$CreateProto DD 022b01H
-	DD	070149218H
-$unwind$ExterndefDirective DD 032701H
-	DD	0160111H
-	DD	0700aH
-$unwind$ProtoDirective DD 022101H
-	DD	0700a520eH
-$unwind$HandleAltname DD 022301H
-	DD	0700b520fH
-$unwind$ExternDirective DD 032701H
-	DD	01e0111H
-	DD	0700aH
-$unwind$MakeComm DD 022d01H
-	DD	070153219H
-$unwind$CommDirective DD 032701H
-	DD	0200111H
-	DD	0700aH
-$unwind$PublicDirective DD 022101H
-	DD	0700ab20eH
+$unwind$MakeExtern DD 011701H
+	DD	04217H
+$unwind$AddPublicData DD 010901H
+	DD	04209H
+$unwind$CreateExternal DD 011301H
+	DD	04213H
+$unwind$CreateComm DD 010e01H
+	DD	0420eH
+$unwind$CreateProto DD 011701H
+	DD	0a217H
+$unwind$ExterndefDirective DD 021001H
+	DD	0110110H
+$unwind$ProtoDirective DD 010d01H
+	DD	0620dH
+$unwind$HandleAltname DD 010e01H
+	DD	0620eH
+$unwind$ExternDirective DD 021001H
+	DD	0190110H
+$unwind$MakeComm DD 011801H
+	DD	04218H
+$unwind$CommDirective DD 021001H
+	DD	01b0110H
+$unwind$PublicDirective DD 010d01H
+	DD	0820dH
 xdata	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\extern.c
 _TEXT	SEGMENT
-token$ = 32
-sym$ = 40
-skipitem$ = 48
-langtype$ = 68
-$T5 = 84
-tv143 = 88
-i$ = 112
-tokenarray$ = 120
+skipitem$ = 32
+tv143 = 36
+langtype$ = 40
+sym$ = 48
+token$ = 56
+i$ = 80
+tokenarray$ = 88
 PublicDirective PROC
 
 ; 888  : {
 
-$LN32:
+$LN31:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 96					; 00000060H
-	mov	rdi, rsp
-	mov	ecx, 24
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+112]
-	mov	BYTE PTR $T5[rsp], 0
+	sub	rsp, 72					; 00000048H
 
 ; 889  : #if MANGLERSUPP
 ; 890  :     char                *mangle_type = NULL;
@@ -323,7 +189,7 @@ $LN32:
 ; 898  :     DebugMsg1(("PublicDirective(%u) enter\n", i));
 
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11115
+	lea	rcx, OFFSET FLAT:$SG11153
 	call	DoDebugMsg1
 
 ; 899  :     i++; /* skip PUBLIC directive */
@@ -389,7 +255,7 @@ $LN7@PublicDire:
 ; 915  :         DebugMsg1(("PublicDirective: sym=%s\n", token ));
 
 	mov	rdx, QWORD PTR token$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11117
+	lea	rcx, OFFSET FLAT:$SG11155
 	call	DoDebugMsg1
 
 ; 916  : 
@@ -433,7 +299,7 @@ $LN7@PublicDire:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11123
+	lea	rcx, OFFSET FLAT:$SG11161
 	call	DoDebugMsg1
 
 ; 924  :                 } else
@@ -451,7 +317,6 @@ $LN10@PublicDire:
 ; 926  :             }
 ; 927  :             skipitem = FALSE;
 
-	mov	BYTE PTR $T5[rsp], 1
 	mov	BYTE PTR skipitem$[rsp], 0
 
 ; 928  :         } else {
@@ -524,7 +389,6 @@ $LN17@PublicDire:
 
 ; 941  :                     skipitem = TRUE;
 
-	mov	BYTE PTR $T5[rsp], 1
 	mov	BYTE PTR skipitem$[rsp], 1
 $LN18@PublicDire:
 
@@ -532,7 +396,7 @@ $LN18@PublicDire:
 ; 943  :                 }
 ; 944  :                 break;
 
-	jmp	$LN5@PublicDire
+	jmp	SHORT $LN5@PublicDire
 $LN19@PublicDire:
 
 ; 945  :             case SYM_EXTERNAL:
@@ -555,7 +419,6 @@ $LN19@PublicDire:
 
 ; 948  :                     skipitem = TRUE;
 
-	mov	BYTE PTR $T5[rsp], 1
 	mov	BYTE PTR skipitem$[rsp], 1
 	jmp	SHORT $LN21@PublicDire
 $LN20@PublicDire:
@@ -581,7 +444,6 @@ $LN20@PublicDire:
 
 ; 953  :                     skipitem = TRUE;
 
-	mov	BYTE PTR $T5[rsp], 1
 	mov	BYTE PTR skipitem$[rsp], 1
 $LN22@PublicDire:
 $LN21@PublicDire:
@@ -603,7 +465,6 @@ $LN23@PublicDire:
 
 ; 959  :                 skipitem = TRUE;
 
-	mov	BYTE PTR $T5[rsp], 1
 	mov	BYTE PTR skipitem$[rsp], 1
 $LN5@PublicDire:
 
@@ -613,11 +474,6 @@ $LN5@PublicDire:
 
 	cmp	DWORD PTR Parse_Pass, 0
 	jne	SHORT $LN24@PublicDire
-	cmp	BYTE PTR $T5[rsp], 0
-	jne	SHORT $LN31@PublicDire
-	lea	rcx, OFFSET FLAT:PublicDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN31@PublicDire:
 	movsx	eax, BYTE PTR skipitem$[rsp]
 	test	eax, eax
 	jne	SHORT $LN24@PublicDire
@@ -724,30 +580,24 @@ $LN1@PublicDire:
 
 ; 982  : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:PublicDirective$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
-	add	rsp, 96					; 00000060H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 PublicDirective ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\extern.c
 _TEXT	SEGMENT
-token$ = 48
-isfar$ = 56
-tmp$ = 60
-size$ = 64
+isfar$ = 48
+tmp$ = 52
+sym$ = 56
+tv82 = 64
 count$ = 68
-sym$ = 72
+size$ = 72
+langtype$ = 76
+token$ = 80
 opndx$ = 96
-langtype$ = 228
-tv82 = 244
-i$ = 272
-tokenarray$ = 280
+i$ = 224
+tokenarray$ = 232
 CommDirective PROC
 
 ; 707  : {
@@ -755,13 +605,7 @@ CommDirective PROC
 $LN45:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 256				; 00000100H
-	mov	rdi, rsp
-	mov	ecx, 64					; 00000040H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+272]
+	sub	rsp, 216				; 000000d8H
 
 ; 708  :     char            *token;
 ; 709  : #if MANGLERSUPP
@@ -779,7 +623,7 @@ $LN45:
 ; 721  :     DebugMsg1(("CommDirective(%u) enter\n", i));
 
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11055
+	lea	rcx, OFFSET FLAT:$SG11093
 	call	DoDebugMsg1
 
 ; 722  :     i++; /* skip COMM token */
@@ -829,7 +673,7 @@ $LN4@CommDirect:
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	movzx	eax, BYTE PTR [rcx+rax]
 	cmp	eax, 6
-	jne	$LN10@CommDirect
+	jne	SHORT $LN10@CommDirect
 
 ; 734  :             switch ( tokenarray[i].tokval ) {
 
@@ -1314,15 +1158,8 @@ $LN1@CommDirect:
 
 ; 828  : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:CommDirective$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
-	add	rsp, 256				; 00000100H
-	pop	rdi
+	add	rsp, 216				; 000000d8H
 	ret	0
-	npad	3
 $LN44@CommDirect:
 	DD	$LN14@CommDirect
 	DD	$LN11@CommDirect
@@ -1332,7 +1169,7 @@ $LN44@CommDirect:
 	DD	$LN11@CommDirect
 CommDirective ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\extern.c
 _TEXT	SEGMENT
 name$ = 48
@@ -1348,13 +1185,7 @@ MakeComm PROC
 	mov	DWORD PTR [rsp+24], r8d
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 675  :     sym = CreateComm( sym, name );
 
@@ -1442,7 +1273,7 @@ $LN3@MakeComm:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8, QWORD PTR [rax+8]
-	mov	edx, 267				; 0000010bH
+	mov	edx, 268				; 0000010cH
 	mov	ecx, 2
 	call	EmitWarn
 $LN6@MakeComm:
@@ -1464,24 +1295,23 @@ $LN1@MakeComm:
 
 ; 697  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 MakeComm ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\extern.c
 _TEXT	SEGMENT
-token$ = 96
-altname$ = 104
-sym$ = 112
-langtype$ = 132
-ti$ = 168
-tv242 = 212
-tv247 = 216
-tv316 = 224
-i$ = 256
-tokenarray$ = 264
+sym$ = 96
+langtype$ = 104
+ti$ = 112
+token$ = 144
+tv242 = 152
+altname$ = 160
+tv247 = 168
+tv316 = 176
+i$ = 208
+tokenarray$ = 216
 ExternDirective PROC
 
 ; 499  : {
@@ -1489,13 +1319,7 @@ ExternDirective PROC
 $LN45:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 240				; 000000f0H
-	mov	rdi, rsp
-	mov	ecx, 60					; 0000003cH
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+256]
+	sub	rsp, 200				; 000000c8H
 
 ; 500  :     char                *token;
 ; 501  : #if MANGLERSUPP
@@ -1509,7 +1333,7 @@ $LN45:
 ; 509  :     DebugMsg1(("ExternDirective(%u) enter\n", i));
 
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10970
+	lea	rcx, OFFSET FLAT:$SG11008
 	call	DoDebugMsg1
 
 ; 510  :     i++; /* skip EXT[E]RN token */
@@ -1639,7 +1463,7 @@ $LN7@ExternDire:
 
 ; 537  :                 return( EmitErr( EXPECTED, ")" ) );
 
-	lea	rdx, OFFSET FLAT:$SG10975
+	lea	rdx, OFFSET FLAT:$SG11013
 	mov	ecx, 230				; 000000e6H
 	call	EmitErr
 	jmp	$LN1@ExternDire
@@ -1726,10 +1550,10 @@ $LN9@ExternDire:
 	jne	SHORT $LN10@ExternDire
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
-	lea	rdx, OFFSET FLAT:$SG10979
+	lea	rdx, OFFSET FLAT:$SG11017
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
-	call	QWORD PTR __imp__stricmp
+	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN10@ExternDire
 
@@ -1753,7 +1577,7 @@ $LN10@ExternDire:
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
-	cmp	DWORD PTR [rcx+rax+16], 427		; 000001abH
+	cmp	DWORD PTR [rcx+rax+16], 432		; 000001b0H
 	jne	$LN12@ExternDire
 
 ; 561  :             /* dont scan this line further */
@@ -1773,7 +1597,7 @@ $LN10@ExternDire:
 
 	mov	r8, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR token$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10982
+	lea	rcx, OFFSET FLAT:$SG11020
 	call	DoDebugMsg1
 
 ; 565  :             if ( sym == NULL )
@@ -1867,7 +1691,7 @@ $LN11@ExternDire:
 
 	mov	r8d, DWORD PTR ti$[rsp+16]
 	mov	rdx, QWORD PTR token$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10988
+	lea	rcx, OFFSET FLAT:$SG11026
 	call	DoDebugMsg1
 
 ; 580  : 
@@ -1932,7 +1756,7 @@ $LN22@ExternDire:
 	test	eax, eax
 	jne	$LN23@ExternDire
 	cmp	QWORD PTR ti$[rsp+8], 0
-	je	$LN23@ExternDire
+	je	SHORT $LN23@ExternDire
 	mov	rax, QWORD PTR ti$[rsp+8]
 	movzx	eax, BYTE PTR [rax+41]
 	shr	al, 3
@@ -1976,7 +1800,7 @@ $LN22@ExternDire:
 
 	mov	r8d, DWORD PTR ti$[rsp+16]
 	mov	rdx, QWORD PTR token$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10994
+	lea	rcx, OFFSET FLAT:$SG11032
 	call	DoDebugMsg1
 $LN23@ExternDire:
 
@@ -2017,7 +1841,7 @@ $LN24@ExternDire:
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8d, DWORD PTR [rax+32]
 	mov	rdx, QWORD PTR token$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10998
+	lea	rcx, OFFSET FLAT:$SG11036
 	call	DoDebugMsg
 
 ; 612  :                 return( EmitErr( SYMBOL_REDEFINITION, token ) );
@@ -2145,7 +1969,7 @@ $LN29@ExternDire:
 	mov	r8d, DWORD PTR ti$[rsp+16]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	edx, DWORD PTR [rax+36]
-	lea	rcx, OFFSET FLAT:$SG11003
+	lea	rcx, OFFSET FLAT:$SG11041
 	call	DoDebugMsg
 
 ; 627  :                           sym->mem_type, ti.mem_type,
@@ -2356,17 +2180,11 @@ $LN1@ExternDire:
 
 ; 668  : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:ExternDirective$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
-	add	rsp, 240				; 000000f0H
-	pop	rdi
+	add	rsp, 200				; 000000c8H
 	ret	0
 ExternDirective ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\extern.c
 _TEXT	SEGMENT
 symalt$ = 32
@@ -2378,13 +2196,7 @@ HandleAltname PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 426  :     struct asym *symalt;
 ; 427  : 
@@ -2494,7 +2306,7 @@ $LN12@HandleAltn:
 ; 450  :                         EmitErr( MUST_BE_PUBLIC_OR_EXTERNAL, altname );
 
 	mov	rdx, QWORD PTR altname$[rsp]
-	mov	ecx, 268				; 0000010cH
+	mov	ecx, 269				; 0000010dH
 	call	EmitErr
 $LN11@HandleAltn:
 $LN10@HandleAltn:
@@ -2535,7 +2347,7 @@ $LN4@HandleAltn:
 	mov	rax, QWORD PTR symalt$[rsp]
 	mov	r8d, DWORD PTR [rax+32]
 	mov	rdx, QWORD PTR altname$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10938
+	lea	rcx, OFFSET FLAT:$SG10976
 	call	DoDebugMsg
 
 ; 460  :                 if ( symalt->state != SYM_INTERNAL &&
@@ -2640,16 +2452,15 @@ $LN1@HandleAltn:
 
 ; 493  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 HandleAltname ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\extern.c
 _TEXT	SEGMENT
-sym$1 = 32
-tv128 = 40
+tv128 = 32
+sym$1 = 40
 i$ = 64
 tokenarray$ = 72
 ProtoDirective PROC
@@ -2659,13 +2470,7 @@ ProtoDirective PROC
 $LN8:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 381  :     if( Parse_Pass != PASS_1 ) {
 
@@ -2748,24 +2553,23 @@ $LN1@ProtoDirec:
 
 ; 393  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 ProtoDirective ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\extern.c
 _TEXT	SEGMENT
-token$ = 48
-sym$ = 56
-langtype$ = 68
-isnew$ = 84
-ti$ = 104
-sym2$5 = 152
-tv164 = 160
-tv210 = 164
-i$ = 192
-tokenarray$ = 200
+sym$ = 48
+isnew$ = 56
+langtype$ = 60
+ti$ = 64
+sym2$1 = 96
+tv164 = 104
+tv210 = 108
+token$ = 112
+i$ = 144
+tokenarray$ = 152
 ExterndefDirective PROC
 
 ; 183  : {
@@ -2773,13 +2577,7 @@ ExterndefDirective PROC
 $LN47:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 176				; 000000b0H
-	mov	rdi, rsp
-	mov	ecx, 44					; 0000002cH
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+192]
+	sub	rsp, 136				; 00000088H
 
 ; 184  :     char                *token;
 ; 185  : #if MANGLERSUPP
@@ -2793,7 +2591,7 @@ $LN47:
 ; 193  :     DebugMsg1(("ExterndefDirective(%u) enter\n", i));
 
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10848
+	lea	rcx, OFFSET FLAT:$SG10886
 	call	DoDebugMsg1
 
 ; 194  : 
@@ -2935,10 +2733,10 @@ $LN12@ExterndefD:
 	jne	SHORT $LN13@ExterndefD
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
-	lea	rdx, OFFSET FLAT:$SG10853
+	lea	rdx, OFFSET FLAT:$SG10891
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
-	call	QWORD PTR __imp__stricmp
+	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN13@ExterndefD
 
@@ -2963,7 +2761,7 @@ $LN13@ExterndefD:
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
-	cmp	DWORD PTR [rcx+rax+16], 427		; 000001abH
+	cmp	DWORD PTR [rcx+rax+16], 432		; 000001b0H
 	jne	SHORT $LN15@ExterndefD
 
 ; 234  :             /* dont scan this line further!
@@ -3078,7 +2876,7 @@ $LN19@ExterndefD:
 	mov	r9d, eax
 	mov	r8d, DWORD PTR ti$[rsp+16]
 	mov	rdx, QWORD PTR token$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10862
+	lea	rcx, OFFSET FLAT:$SG10900
 	call	DoDebugMsg1
 
 ; 261  : 
@@ -3342,7 +3140,7 @@ $LN33@ExterndefD:
 	mov	r8d, DWORD PTR [rax+36]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10876
+	lea	rcx, OFFSET FLAT:$SG10914
 	call	DoDebugMsg
 
 ; 321  :                 EmitWarn( 1, SYMBOL_TYPE_CONFLICT, sym->name );
@@ -3368,7 +3166,7 @@ $LN34@ExterndefD:
 ; 323  :                 struct asym *sym2 = sym;
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	QWORD PTR sym2$5[rsp], rax
+	mov	QWORD PTR sym2$1[rsp], rax
 
 ; 324  :                 /* skip alias types and compare the base types */
 ; 325  :                 DebugMsg(("ExterndefDirective(%s): types differ: %X (%s) - %X (%s)\n", sym->name, sym->type, sym->type->name, ti.symtype, ti.symtype->name));
@@ -3385,21 +3183,21 @@ $LN34@ExterndefD:
 	mov	r8, QWORD PTR [rax+80]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10878
+	lea	rcx, OFFSET FLAT:$SG10916
 	call	DoDebugMsg
 $LN7@ExterndefD:
 
 ; 326  :                 while ( sym2->type )
 
-	mov	rax, QWORD PTR sym2$5[rsp]
+	mov	rax, QWORD PTR sym2$1[rsp]
 	cmp	QWORD PTR [rax+80], 0
 	je	SHORT $LN8@ExterndefD
 
 ; 327  :                     sym2 = sym2->type;
 
-	mov	rax, QWORD PTR sym2$5[rsp]
+	mov	rax, QWORD PTR sym2$1[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	mov	QWORD PTR sym2$5[rsp], rax
+	mov	QWORD PTR sym2$1[rsp], rax
 	jmp	SHORT $LN7@ExterndefD
 $LN8@ExterndefD:
 $LN9@ExterndefD:
@@ -3421,7 +3219,7 @@ $LN10@ExterndefD:
 ; 330  :                 if ( sym2 != ti.symtype ) {
 
 	mov	rax, QWORD PTR ti$[rsp+8]
-	cmp	QWORD PTR sym2$5[rsp], rax
+	cmp	QWORD PTR sym2$1[rsp], rax
 	je	SHORT $LN37@ExterndefD
 
 ; 331  :                     DebugMsg(("ExterndefDirective(%s): type conflict old-new: %X (%s) - %X (%s)\n", sym->name, sym2, sym2->name, ti.symtype, ti.symtype->name));
@@ -3431,12 +3229,12 @@ $LN10@ExterndefD:
 	mov	QWORD PTR [rsp+40], rax
 	mov	rax, QWORD PTR ti$[rsp+8]
 	mov	QWORD PTR [rsp+32], rax
-	mov	rax, QWORD PTR sym2$5[rsp]
+	mov	rax, QWORD PTR sym2$1[rsp]
 	mov	r9, QWORD PTR [rax+8]
-	mov	r8, QWORD PTR sym2$5[rsp]
+	mov	r8, QWORD PTR sym2$1[rsp]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10880
+	lea	rcx, OFFSET FLAT:$SG10918
 	call	DoDebugMsg
 
 ; 332  :                     EmitWarn( 1, SYMBOL_TYPE_CONFLICT, sym->name );
@@ -3591,23 +3389,17 @@ $LN1@ExterndefD:
 
 ; 371  : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:ExterndefDirective$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
-	add	rsp, 176				; 000000b0H
-	pop	rdi
+	add	rsp, 136				; 00000088H
 	ret	0
 ExterndefDirective ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\extern.c
 _TEXT	SEGMENT
 sym$ = 48
-dir$ = 56
-sym2$1 = 64
-tv66 = 72
+sym2$1 = 56
+tv66 = 64
+dir$ = 72
 i$ = 96
 tokenarray$ = 104
 name$ = 112
@@ -3620,13 +3412,7 @@ CreateProto PROC
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 80					; 00000050H
-	mov	rdi, rsp
-	mov	ecx, 20
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+96]
+	sub	rsp, 88					; 00000058H
 
 ; 127  :     struct asym      *sym;
 ; 128  :     struct dsym      *dir;
@@ -3639,13 +3425,13 @@ CreateProto PROC
 	mov	QWORD PTR tv66[rsp], rax
 	jmp	SHORT $LN15@CreateProt
 $LN14@CreateProt:
-	lea	rax, OFFSET FLAT:$SG10804
+	lea	rax, OFFSET FLAT:$SG10842
 	mov	QWORD PTR tv66[rsp], rax
 $LN15@CreateProt:
 	mov	r9d, DWORD PTR langtype$[rsp]
 	mov	r8, QWORD PTR tv66[rsp]
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10805
+	lea	rcx, OFFSET FLAT:$SG10843
 	call	DoDebugMsg1
 
 ; 131  :     sym = SymSearch( name );
@@ -3872,12 +3658,11 @@ $LN1@CreateProt:
 
 ; 177  : }
 
-	add	rsp, 80					; 00000050H
-	pop	rdi
+	add	rsp, 88					; 00000058H
 	ret	0
 CreateProto ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\extern.c
 _TEXT	SEGMENT
 sym$ = 48
@@ -3888,13 +3673,7 @@ CreateComm PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 104  :     if ( sym == NULL )
 
@@ -3988,12 +3767,11 @@ $LN4@CreateComm:
 
 ; 118  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 CreateComm ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\extern.c
 _TEXT	SEGMENT
 sym$ = 48
@@ -4006,13 +3784,7 @@ CreateExternal PROC
 	mov	BYTE PTR [rsp+24], r8b
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 83   :     if ( sym == NULL )
 
@@ -4103,20 +3875,14 @@ $LN4@CreateExte:
 
 ; 96   : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 CreateExternal ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\extern.c
 _TEXT	SEGMENT
 FreePubQueue PROC
-
-; 872  : {
-
-$LN3:
-	push	rdi
 
 ; 873  : #if FASTMEM==0
 ; 874  :     struct qnode *curr;
@@ -4132,11 +3898,10 @@ $LN3:
 
 ; 882  : }
 
-	pop	rdi
 	ret	0
 FreePubQueue ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\extern.c
 _TEXT	SEGMENT
 sym$ = 48
@@ -4146,19 +3911,13 @@ AddPublicData PROC
 
 $LN3:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 833  :     DebugMsg1(("AddPublicData(%s)\n", sym->name ));
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11092
+	lea	rcx, OFFSET FLAT:$SG11130
 	call	DoDebugMsg1
 
 ; 834  :     QAddItem( &ModuleInfo.g.PubQueue, sym );
@@ -4169,12 +3928,11 @@ $LN3:
 
 ; 835  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 AddPublicData ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\extern.c
 _TEXT	SEGMENT
 name$ = 48
@@ -4191,13 +3949,7 @@ $LN8:
 	mov	QWORD PTR [rsp+24], r8
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 403  :     sym = CreateExternal( sym, name, FALSE );
 
@@ -4287,8 +4039,7 @@ $LN1@MakeExtern:
 
 ; 418  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 MakeExtern ENDP
 _TEXT	ENDS

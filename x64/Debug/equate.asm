@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 PUBLIC	maxintvalues
@@ -14,54 +14,54 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11027 DB	'SetValue(%s): Phase error, enforced by alias equate', 0aH
+$SG11065 DB	'SetValue(%s): Phase error, enforced by alias equate', 0aH
 	DB	00H
 	ORG $+3
-$SG11030 DB	'SetValue(%s): Phase error, enforced by alias equate %X !'
+$SG11068 DB	'SetValue(%s): Phase error, enforced by alias equate %X !'
 	DB	'= %X', 0aH, 00H
 	ORG $+2
-$SG11050 DB	'CreateAssemblyTimeVariable(%s) enter', 0aH, 00H
+$SG11088 DB	'CreateAssemblyTimeVariable(%s) enter', 0aH, 00H
 	ORG $+2
-$SG11060 DB	'CreateAssemblyTimeVariable(%s) kind=%u sym=%p state=%u', 0aH
+$SG11098 DB	'CreateAssemblyTimeVariable(%s) kind=%u sym=%p state=%u', 0aH
 	DB	00H
-$SG11087 DB	'CreateAssemblyTimeVariable(%s) memtype=%Xh value=%d', 0aH
+$SG11125 DB	'CreateAssemblyTimeVariable(%s) memtype=%Xh value=%d', 0aH
 	DB	00H
 	ORG $+3
-$SG11082 DB	'CreateAssemblyTimeVariable(%s): kind=%u, value changed ('
+$SG11120 DB	'CreateAssemblyTimeVariable(%s): kind=%u, value changed ('
 	DB	' %d -> %d )', 0aH, 00H
 	ORG $+3
-$SG11107 DB	'CreateVariable(%s, %d ) enter', 0aH, 00H
+$SG11145 DB	'CreateVariable(%s, %d ) enter', 0aH, 00H
 	ORG $+1
-$SG11151 DB	'CreateConstant(%s): simple numeric value=%I64d', 0aH, 00H
-$SG11153 DB	'CreateConstant(%s): before ExpandLineItems: >%s<', 0aH, 00H
+$SG11189 DB	'CreateConstant(%s): simple numeric value=%I64d', 0aH, 00H
+$SG11191 DB	'CreateConstant(%s): before ExpandLineItems: >%s<', 0aH, 00H
 	ORG $+6
-$SG11084 DB	'CreateAssemblyTimeVariable(%s): kind=%u, value changed ('
+$SG11122 DB	'CreateAssemblyTimeVariable(%s): kind=%u, value changed ('
 	DB	' %d -> %d )', 0aH, 00H
 	ORG $+3
-$SG11136 DB	'CreateConstant(%s) enter', 0aH, 00H
+$SG11174 DB	'CreateConstant(%s) enter', 0aH, 00H
 	ORG $+6
-$SG11156 DB	'CreateConstant(%s): after ExpandLineItems: >%s<', 0aH, 00H
+$SG11194 DB	'CreateConstant(%s): after ExpandLineItems: >%s<', 0aH, 00H
 	ORG $+7
-$SG11145 DB	'CreateConstant(%s) state=%u, mem_type=%Xh, value=%X, sym'
+$SG11183 DB	'CreateConstant(%s) state=%u, mem_type=%Xh, value=%X, sym'
 	DB	'bol redefinition', 0aH, 00H
 	ORG $+6
-$SG11172 DB	'CreateConstant(%s), CONST value changed: old=%X, new=%X', 0aH
+$SG11210 DB	'CreateConstant(%s), CONST value changed: old=%X, new=%X', 0aH
 	DB	00H
 	ORG $+7
-$SG11176 DB	'CreateConstant(%s), ADDR value changed: old=%X, new ofs+'
+$SG11214 DB	'CreateConstant(%s), ADDR value changed: old=%X, new ofs+'
 	DB	'val=%X+%X', 0aH, 00H
 	ORG $+1
-$SG11177 DB	'NULL', 00H
+$SG11215 DB	'NULL', 00H
 	ORG $+7
-$SG11178 DB	'CreateConstant(%s): memtype=%Xh value=%I64X isproc=%u va'
+$SG11216 DB	'CreateConstant(%s): memtype=%Xh value=%I64X isproc=%u va'
 	DB	'riable=%u type=%s', 0aH, 00H
 	ORG $+5
-$SG11179 DB	'CreateConstant(%s): calling SetTextMacro() [MI.Ofssize=%'
+$SG11217 DB	'CreateConstant(%s): calling SetTextMacro() [MI.Ofssize=%'
 	DB	'u]', 0aH, 00H
 	ORG $+4
-$SG11189 DB	'EquDirective(%s): calling CreateConstant', 0aH, 00H
+$SG11227 DB	'EquDirective(%s): calling CreateConstant', 0aH, 00H
 	ORG $+6
-$SG11191 DB	'equate.c', 00H
+$SG11229 DB	'equate.c', 00H
 _DATA	ENDS
 CONST	SEGMENT
 maxintvalues DQ	00000000ffffffffH
@@ -94,9 +94,6 @@ EXTRN	LstWrite:PROC
 EXTRN	BackPatch:PROC
 EXTRN	InternalError:PROC
 EXTRN	myatoi128:PROC
-EXTRN	_RTC_CheckStackVars:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
 EXTRN	__GSHandlerCheck:PROC
 EXTRN	__security_check_cookie:PROC
 EXTRN	ModuleInfo:BYTE
@@ -106,129 +103,59 @@ EXTRN	StoreState:BYTE
 EXTRN	__security_cookie:QWORD
 pdata	SEGMENT
 $pdata$CreateConstant DD imagerel $LN39
-	DD	imagerel $LN39+1958
+	DD	imagerel $LN39+1903
 	DD	imagerel $unwind$CreateConstant
 $pdata$CreateVariable DD imagerel $LN9
-	DD	imagerel $LN9+417
+	DD	imagerel $LN9+419
 	DD	imagerel $unwind$CreateVariable
 $pdata$SetValue DD imagerel SetValue
-	DD	imagerel SetValue+681
+	DD	imagerel SetValue+659
 	DD	imagerel $unwind$SetValue
 $pdata$CreateAssemblyTimeVariable DD imagerel CreateAssemblyTimeVariable
-	DD	imagerel CreateAssemblyTimeVariable+1461
+	DD	imagerel CreateAssemblyTimeVariable+1403
 	DD	imagerel $unwind$CreateAssemblyTimeVariable
 $pdata$EqualSgnDirective DD imagerel $LN6
-	DD	imagerel $LN6+159
+	DD	imagerel $LN6+138
 	DD	imagerel $unwind$EqualSgnDirective
 $pdata$EquDirective DD imagerel $LN8
-	DD	imagerel $LN8+235
+	DD	imagerel $LN8+214
 	DD	imagerel $unwind$EquDirective
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
 xdata	SEGMENT
-$unwind$CreateConstant DD 033619H
-	DD	076010dH
-	DD	07006H
+$unwind$CreateConstant DD 021e19H
+	DD	0a3010cH
 	DD	imagerel __GSHandlerCheck
-	DD	03a0H
-$unwind$CreateVariable DD 022201H
-	DD	0700a520eH
-$unwind$SetValue DD 022301H
-	DD	0700b520fH
-$unwind$CreateAssemblyTimeVariable DD 032401H
-	DD	020010dH
-	DD	07006H
-$unwind$EqualSgnDirective DD 022101H
-	DD	0700a520eH
-$unwind$EquDirective DD 022101H
-	DD	0700a520eH
+	DD	0500H
+$unwind$CreateVariable DD 010d01H
+	DD	0620dH
+$unwind$SetValue DD 010e01H
+	DD	0620eH
+$unwind$CreateAssemblyTimeVariable DD 020c01H
+	DD	01b010cH
+$unwind$EqualSgnDirective DD 010d01H
+	DD	0620dH
+$unwind$EquDirective DD 010d01H
+	DD	0620dH
 xdata	ENDS
-CONST	SEGMENT
-CreateConstant$rtcName$0 DB 069H
-	DB	00H
-	ORG $+2
-CreateConstant$rtcName$1 DB 06fH
-	DB	070H
-	DB	06eH
-	DB	064H
-	DB	00H
-	ORG $+3
-CreateAssemblyTimeVariable$rtcName$0 DB 069H
-	DB	00H
-	ORG $+2
-CreateConstant$rtcName$2 DB 061H
-	DB	072H
-	DB	067H
-	DB	062H
-	DB	075H
-	DB	066H
-	DB	066H
-	DB	065H
-	DB	072H
-	DB	00H
-	ORG $+6
-CreateConstant$rtcVarDesc DD 0120H
-	DD	0258H
-	DQ	FLAT:CreateConstant$rtcName$2
-	DD	090H
-	DD	068H
-	DQ	FLAT:CreateConstant$rtcName$1
-	DD	054H
-	DD	04H
-	DQ	FLAT:CreateConstant$rtcName$0
-	ORG $+144
-CreateConstant$rtcFrameData DD 03H
-	DD	00H
-	DQ	FLAT:CreateConstant$rtcVarDesc
-CreateAssemblyTimeVariable$rtcName$1 DB 06fH
-	DB	070H
-	DB	06eH
-	DB	064H
-	DB	00H
-	ORG $+3
-CreateAssemblyTimeVariable$rtcFrameData DD 02H
-	DD	00H
-	DQ	FLAT:CreateAssemblyTimeVariable$rtcVarDesc
-	ORG $+8
-CreateAssemblyTimeVariable$rtcVarDesc DD 070H
-	DD	068H
-	DQ	FLAT:CreateAssemblyTimeVariable$rtcName$1
-	DD	044H
-	DD	04H
-	DQ	FLAT:CreateAssemblyTimeVariable$rtcName$0
-CONST	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\equate.c
 _TEXT	SEGMENT
-sym$ = 32
-tv88 = 40
+tv88 = 32
+sym$ = 40
 i$ = 64
 tokenarray$ = 72
 EquDirective PROC
 
-; 508  : {
+; 513  : {
 
 $LN8:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
-; 509  :     struct asym *sym;
-; 510  : 
-; 511  :     if( tokenarray[0].token != T_ID ) {
+; 514  :     struct asym *sym;
+; 515  : 
+; 516  :     if( tokenarray[0].token != T_ID ) {
 
 	mov	eax, 32					; 00000020H
 	imul	rax, rax, 0
@@ -237,7 +164,7 @@ $LN8:
 	cmp	eax, 8
 	je	SHORT $LN2@EquDirecti
 
-; 512  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[0].string_ptr ) );
+; 517  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[0].string_ptr ) );
 
 	mov	eax, 32					; 00000020H
 	imul	rax, rax, 0
@@ -248,17 +175,17 @@ $LN8:
 	jmp	$LN1@EquDirecti
 $LN2@EquDirecti:
 
-; 513  :     }
-; 514  :     DebugMsg1(("EquDirective(%s): calling CreateConstant\n", tokenarray[0].string_ptr ));
+; 518  :     }
+; 519  :     DebugMsg1(("EquDirective(%s): calling CreateConstant\n", tokenarray[0].string_ptr ));
 
 	mov	eax, 32					; 00000020H
 	imul	rax, rax, 0
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG11189
+	lea	rcx, OFFSET FLAT:$SG11227
 	call	DoDebugMsg1
 
-; 515  :     if ( sym = CreateConstant( tokenarray ) ) {
+; 520  :     if ( sym = CreateConstant( tokenarray ) ) {
 
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	call	CreateConstant
@@ -266,7 +193,7 @@ $LN2@EquDirecti:
 	cmp	QWORD PTR sym$[rsp], 0
 	je	SHORT $LN3@EquDirecti
 
-; 516  :         /**/myassert( sym->state == SYM_INTERNAL ); /* must not be a text macro */
+; 521  :         /**/myassert( sym->state == SYM_INTERNAL ); /* must not be a text macro */
 
 	mov	rax, QWORD PTR sym$[rsp]
 	cmp	DWORD PTR [rax+32], 1
@@ -274,13 +201,13 @@ $LN2@EquDirecti:
 	mov	DWORD PTR tv88[rsp], 0
 	jmp	SHORT $LN7@EquDirecti
 $LN6@EquDirecti:
-	mov	edx, 516				; 00000204H
-	lea	rcx, OFFSET FLAT:$SG11191
+	mov	edx, 521				; 00000209H
+	lea	rcx, OFFSET FLAT:$SG11229
 	call	InternalError
 	mov	DWORD PTR tv88[rsp], eax
 $LN7@EquDirecti:
 
-; 517  :         if ( ModuleInfo.list == TRUE ) {
+; 522  :         if ( ModuleInfo.list == TRUE ) {
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	shr	eax, 11
@@ -288,7 +215,7 @@ $LN7@EquDirecti:
 	cmp	eax, 1
 	jne	SHORT $LN4@EquDirecti
 
-; 518  :             LstWrite( LSTTYPE_EQUATE, 0, sym );
+; 523  :             LstWrite( LSTTYPE_EQUATE, 0, sym );
 
 	mov	r8, QWORD PTR sym$[rsp]
 	xor	edx, edx
@@ -296,27 +223,26 @@ $LN7@EquDirecti:
 	call	LstWrite
 $LN4@EquDirecti:
 
-; 519  :         }
-; 520  :         return( NOT_ERROR );
+; 524  :         }
+; 525  :         return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	SHORT $LN1@EquDirecti
 $LN3@EquDirecti:
 
-; 521  :     }
-; 522  :     return( ERROR );
+; 526  :     }
+; 527  :     return( ERROR );
 
 	mov	eax, -1
 $LN1@EquDirecti:
 
-; 523  : }
+; 528  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 EquDirective ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\equate.c
 _TEXT	SEGMENT
 sym$ = 32
@@ -329,13 +255,7 @@ EqualSgnDirective PROC
 $LN6:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 259  :     struct asym *sym;
 ; 260  : 
@@ -399,33 +319,26 @@ $LN1@EqualSgnDi:
 
 ; 271  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 EqualSgnDirective ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\equate.c
 _TEXT	SEGMENT
 sym$ = 48
-name$ = 56
-i$ = 68
-opnd$ = 112
-tv92 = 232
-tv166 = 240
-tokenarray$ = 272
+i$ = 56
+name$ = 64
+tv166 = 72
+opnd$ = 80
+tv92 = 192
+tokenarray$ = 224
 CreateAssemblyTimeVariable PROC
 
 ; 128  : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 256				; 00000100H
-	mov	rdi, rsp
-	mov	ecx, 64					; 00000040H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+272]
+	sub	rsp, 216				; 000000d8H
 
 ; 129  :     struct asym         *sym;
 ; 130  :     const char          *name = tokenarray[0].string_ptr;
@@ -445,7 +358,7 @@ CreateAssemblyTimeVariable PROC
 ; 134  :     DebugMsg1(( "CreateAssemblyTimeVariable(%s) enter\n", name ));
 
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11050
+	lea	rcx, OFFSET FLAT:$SG11088
 	call	DoDebugMsg1
 
 ; 135  : 
@@ -624,7 +537,7 @@ $LN37@CreateAsse:
 	mov	r9, QWORD PTR opnd$[rsp+80]
 	mov	r8d, DWORD PTR opnd$[rsp+60]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11060
+	lea	rcx, OFFSET FLAT:$SG11098
 	call	DoDebugMsg
 
 ; 175  :             /* v2.09: no error if argument is a forward reference,
@@ -924,7 +837,7 @@ $LN19@CreateAsse:
 	mov	r9d, DWORD PTR [rax+16]
 	mov	r8d, DWORD PTR opnd$[rsp+60]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11082
+	lea	rcx, OFFSET FLAT:$SG11120
 	call	DoDebugMsg1
 	jmp	SHORT $LN31@CreateAsse
 $LN30@CreateAsse:
@@ -954,7 +867,7 @@ $LN30@CreateAsse:
 	mov	r9d, DWORD PTR [rax+16]
 	mov	r8d, DWORD PTR opnd$[rsp+60]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11084
+	lea	rcx, OFFSET FLAT:$SG11122
 	call	DoDebugMsg1
 $LN32@CreateAsse:
 $LN31@CreateAsse:
@@ -1000,7 +913,7 @@ $LN34@CreateAsse:
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8d, DWORD PTR [rax+36]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11087
+	lea	rcx, OFFSET FLAT:$SG11125
 	call	DoDebugMsg1
 
 ; 251  :     return( sym );
@@ -1010,17 +923,11 @@ $LN1@CreateAsse:
 
 ; 252  : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:CreateAssemblyTimeVariable$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
-	add	rsp, 256				; 00000100H
-	pop	rdi
+	add	rsp, 216				; 000000d8H
 	ret	0
 CreateAssemblyTimeVariable ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\equate.c
 _TEXT	SEGMENT
 dir$1 = 32
@@ -1032,13 +939,7 @@ SetValue PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 59   : 
 ; 60   :     sym->isequate = TRUE;
@@ -1258,7 +1159,7 @@ $LN5@SetValue:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11027
+	lea	rcx, OFFSET FLAT:$SG11065
 	call	DoDebugMsg
 $LN9@SetValue:
 
@@ -1306,7 +1207,7 @@ $LN6@SetValue:
 	mov	r8d, DWORD PTR [rax+16]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11030
+	lea	rcx, OFFSET FLAT:$SG11068
 	call	DoDebugMsg1
 $LN11@SetValue:
 
@@ -1340,12 +1241,11 @@ $LN3@SetValue:
 ; 119  :     return;
 ; 120  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 SetValue ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\equate.c
 _TEXT	SEGMENT
 sym$ = 32
@@ -1358,44 +1258,38 @@ CreateVariable PROC
 $LN9:
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
-; 281  :     struct asym      *sym;
+; 281  : 	struct asym      *sym;
 ; 282  : 
-; 283  :     DebugMsg1(( "CreateVariable(%s, %d ) enter\n", name, value ));
+; 283  : 	DebugMsg1(("CreateVariable(%s, %d ) enter\n", name, value));
 
 	mov	r8d, DWORD PTR value$[rsp]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11107
+	lea	rcx, OFFSET FLAT:$SG11145
 	call	DoDebugMsg1
 
 ; 284  : 
-; 285  :     sym = SymSearch( name );
+; 285  : 	sym = SymSearch(name);
 
 	mov	rcx, QWORD PTR name$[rsp]
 	call	SymFind
 	mov	QWORD PTR sym$[rsp], rax
 
-; 286  :     if( sym == NULL ) {
+; 286  : 	if (sym == NULL) {
 
 	cmp	QWORD PTR sym$[rsp], 0
 	jne	SHORT $LN2@CreateVari
 
-; 287  :         sym = SymCreate( name );
+; 287  : 		sym = SymCreate(name);
 
 	mov	rcx, QWORD PTR name$[rsp]
 	call	SymCreate
 	mov	QWORD PTR sym$[rsp], rax
 
 ; 288  : #if FASTPASS
-; 289  :         //sym->issaved = FALSE;
-; 290  :         sym->issaved = StoreState; /* v2.10 */
+; 289  : 		//sym->issaved = FALSE;
+; 290  : 		sym->issaved = StoreState; /* v2.10 */
 
 	movzx	eax, BYTE PTR StoreState
 	and	al, 1
@@ -1407,17 +1301,25 @@ $LN9:
 	movzx	eax, cl
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	BYTE PTR [rcx+41], al
+
+; 291  : #endif
+; 292  : 	}
+
 	jmp	$LN3@CreateVari
 $LN2@CreateVari:
 
-; 291  : #endif
-; 292  :     } else if ( sym->state == SYM_UNDEFINED ) {
+; 293  : 	else if (sym->state == SYM_UNDEFINED) {
 
 	mov	rax, QWORD PTR sym$[rsp]
 	cmp	DWORD PTR [rax+32], 0
 	jne	SHORT $LN4@CreateVari
 
-; 293  :         sym_remove_table( &SymTables[TAB_UNDEF], (struct dsym *)sym );
+; 294  : 		sym->value3264 = 0;   //fixed by HSE on qWord indication
+
+	mov	rax, QWORD PTR sym$[rsp]
+	mov	DWORD PTR [rax+56], 0
+
+; 295  : 		sym_remove_table(&SymTables[TAB_UNDEF], (struct dsym *)sym);
 
 	mov	eax, 16
 	imul	rax, rax, 0
@@ -1428,7 +1330,7 @@ $LN2@CreateVari:
 	mov	rcx, rax
 	call	sym_remove_table
 
-; 294  :         sym->fwdref = TRUE;
+; 296  : 		sym->fwdref = TRUE;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+41]
@@ -1436,8 +1338,8 @@ $LN2@CreateVari:
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	BYTE PTR [rcx+41], al
 
-; 295  : #if FASTPASS
-; 296  :         sym->issaved = StoreState; /* v2.10 */
+; 297  : #if FASTPASS
+; 298  : 		sym->issaved = StoreState; /* v2.10 */
 
 	movzx	eax, BYTE PTR StoreState
 	and	al, 1
@@ -1450,13 +1352,19 @@ $LN2@CreateVari:
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	BYTE PTR [rcx+41], al
 
-; 297  : #endif
-; 298  :     } else {
+; 299  : #endif
+; 300  : 	}
 
 	jmp	SHORT $LN5@CreateVari
 $LN4@CreateVari:
 
-; 299  :         if ( sym->isequate == FALSE ) {
+; 301  : 	else {
+; 302  : 		sym->value3264 = 0;  //fixed by HSE on qWord indication
+
+	mov	rax, QWORD PTR sym$[rsp]
+	mov	DWORD PTR [rax+56], 0
+
+; 303  : 		if (sym->isequate == FALSE) {
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+40]
@@ -1466,27 +1374,27 @@ $LN4@CreateVari:
 	test	eax, eax
 	jne	SHORT $LN6@CreateVari
 
-; 300  :             EmitErr( SYMBOL_REDEFINITION, name );
+; 304  : 			EmitErr(SYMBOL_REDEFINITION, name);
 
 	mov	rdx, QWORD PTR name$[rsp]
 	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 
-; 301  :             return( NULL );
+; 305  : 			return(NULL);
 
 	xor	eax, eax
 	jmp	$LN1@CreateVari
 $LN6@CreateVari:
 
-; 302  :         }
-; 303  : #if FASTPASS
-; 304  :         /*
-; 305  :          * v2.09: don't save variable when it is defined the first time
-; 306  :          * v2.10: store state only when variable is changed and has been
-; 307  :          * defined BEFORE SaveState() has been called.
-; 308  :          */
-; 309  :         //if ( StoreState && sym->issaved == FALSE && sym->isdefined == TRUE ) {
-; 310  :         if ( StoreState && sym->issaved == FALSE ) {
+; 306  : 		}
+; 307  : #if FASTPASS
+; 308  : 		/*
+; 309  : 		* v2.09: don't save variable when it is defined the first time
+; 310  : 		* v2.10: store state only when variable is changed and has been
+; 311  : 		* defined BEFORE SaveState() has been called.
+; 312  : 		*/
+; 313  : 		//if ( StoreState && sym->issaved == FALSE && sym->isdefined == TRUE ) {
+; 314  : 		if (StoreState && sym->issaved == FALSE) {
 
 	movzx	eax, BYTE PTR StoreState
 	test	eax, eax
@@ -1499,7 +1407,7 @@ $LN6@CreateVari:
 	test	eax, eax
 	jne	SHORT $LN7@CreateVari
 
-; 311  :             SaveVariableState( sym );
+; 315  : 			SaveVariableState(sym);
 
 	mov	rcx, QWORD PTR sym$[rsp]
 	call	SaveVariableState
@@ -1507,10 +1415,10 @@ $LN7@CreateVari:
 $LN5@CreateVari:
 $LN3@CreateVari:
 
-; 312  :         }
-; 313  : #endif
-; 314  :     }
-; 315  :     sym->isdefined  = TRUE;
+; 316  : 		}
+; 317  : #endif
+; 318  : 	}
+; 319  : 	sym->isdefined = TRUE;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+40]
@@ -1518,13 +1426,13 @@ $LN3@CreateVari:
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	BYTE PTR [rcx+40], al
 
-; 316  :     sym->state    = SYM_INTERNAL;
+; 320  : 	sym->state = SYM_INTERNAL;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	DWORD PTR [rax+32], 1
 
-; 317  :     //sym->mem_type = MT_ABS;
-; 318  :     sym->variable = TRUE;
+; 321  : 	//sym->mem_type = MT_ABS;
+; 322  : 	sym->variable = TRUE;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+40]
@@ -1532,13 +1440,13 @@ $LN3@CreateVari:
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	BYTE PTR [rcx+40], al
 
-; 319  :     sym->value    = value;
+; 323  : 	sym->value = value;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	ecx, DWORD PTR value$[rsp]
 	mov	DWORD PTR [rax+16], ecx
 
-; 320  :     sym->isequate = TRUE;
+; 324  : 	sym->isequate = TRUE;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+40]
@@ -1546,52 +1454,45 @@ $LN3@CreateVari:
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	BYTE PTR [rcx+40], al
 
-; 321  :     return( sym );
+; 325  : 	return(sym);
 
 	mov	rax, QWORD PTR sym$[rsp]
 $LN1@CreateVari:
 
-; 322  : }
+; 326  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 CreateVariable ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\equate.c
 _TEXT	SEGMENT
 sym$ = 64
-name$ = 72
-i$ = 84
-rc$ = 100
-p$ = 104
-cmpvalue$ = 112
-opnd$ = 144
-argbuffer$ = 288
-tv182 = 912
-tv310 = 920
-__$ArrayPad$ = 928
-tokenarray$ = 960
+cmpvalue$ = 72
+name$ = 80
+i$ = 88
+p$ = 96
+rc$ = 104
+tv310 = 112
+opnd$ = 128
+tv182 = 240
+argbuffer$ = 256
+__$ArrayPad$ = 1280
+tokenarray$ = 1312
 CreateConstant PROC
 
-; 339  : {
+; 344  : {
 
 $LN39:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 944				; 000003b0H
-	mov	rdi, rsp
-	mov	ecx, 236				; 000000ecH
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+960]
+	sub	rsp, 1304				; 00000518H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
 
-; 340  :     struct asym         *sym;
-; 341  :     const char          *name = tokenarray[0].string_ptr;
+; 345  :     struct asym         *sym;
+; 346  :     const char          *name = tokenarray[0].string_ptr;
 
 	mov	eax, 32					; 00000020H
 	imul	rax, rax, 0
@@ -1599,35 +1500,35 @@ $LN39:
 	mov	rax, QWORD PTR [rcx+rax+8]
 	mov	QWORD PTR name$[rsp], rax
 
-; 342  :     int                 i = 2;
+; 347  :     int                 i = 2;
 
 	mov	DWORD PTR i$[rsp], 2
 
-; 343  :     ret_code            rc;
-; 344  :     char                *p;
-; 345  :     bool                cmpvalue = FALSE;
+; 348  :     ret_code            rc;
+; 349  :     char                *p;
+; 350  :     bool                cmpvalue = FALSE;
 
 	mov	BYTE PTR cmpvalue$[rsp], 0
 
-; 346  :     struct expr         opnd;
-; 347  :     char                argbuffer[MAX_LINE_LEN];
-; 348  : 
-; 349  :     DebugMsg1(( "CreateConstant(%s) enter\n", name ));
+; 351  :     struct expr         opnd;
+; 352  :     char                argbuffer[MAX_LINE_LEN];
+; 353  : 
+; 354  :     DebugMsg1(( "CreateConstant(%s) enter\n", name ));
 
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11136
+	lea	rcx, OFFSET FLAT:$SG11174
 	call	DoDebugMsg1
 
-; 350  : 
-; 351  :     sym = SymSearch( name );
+; 355  : 
+; 356  :     sym = SymSearch( name );
 
 	mov	rcx, QWORD PTR name$[rsp]
 	call	SymFind
 	mov	QWORD PTR sym$[rsp], rax
 
-; 352  : 
-; 353  :     /* if a literal follows, the equate MUST be(come) a text macro */
-; 354  :     if ( tokenarray[2].token == T_STRING && tokenarray[2].string_delim == '<' )
+; 357  : 
+; 358  :     /* if a literal follows, the equate MUST be(come) a text macro */
+; 359  :     if ( tokenarray[2].token == T_STRING && tokenarray[2].string_delim == '<' )
 
 	mov	eax, 32					; 00000020H
 	imul	rax, rax, 2
@@ -1642,7 +1543,7 @@ $LN39:
 	cmp	eax, 60					; 0000003cH
 	jne	SHORT $LN2@CreateCons
 
-; 355  :         return ( SetTextMacro( tokenarray, sym, name, NULL ) );
+; 360  :         return ( SetTextMacro( tokenarray, sym, name, NULL ) );
 
 	xor	r9d, r9d
 	mov	r8, QWORD PTR name$[rsp]
@@ -1652,9 +1553,9 @@ $LN39:
 	jmp	$LN1@CreateCons
 $LN2@CreateCons:
 
-; 356  : 
-; 357  :     if( sym == NULL ||
-; 358  :        sym->state == SYM_UNDEFINED ||
+; 361  : 
+; 362  :     if( sym == NULL ||
+; 363  :        sym->state == SYM_UNDEFINED ||
 
 	cmp	QWORD PTR sym$[rsp], 0
 	je	SHORT $LN5@CreateCons
@@ -1680,11 +1581,11 @@ $LN2@CreateCons:
 	jne	SHORT $LN3@CreateCons
 $LN5@CreateCons:
 
-; 359  :        ( sym->state == SYM_EXTERNAL && sym->weak == TRUE && sym->isproc == FALSE ) ) {
-; 360  :         /* It's a "new" equate.
-; 361  :          * wait with definition until type of equate is clear
-; 362  :          */
-; 363  :     } else if( sym->state == SYM_TMACRO ) {
+; 364  :        ( sym->state == SYM_EXTERNAL && sym->weak == TRUE && sym->isproc == FALSE ) ) {
+; 365  :         /* It's a "new" equate.
+; 366  :          * wait with definition until type of equate is clear
+; 367  :          */
+; 368  :     } else if( sym->state == SYM_TMACRO ) {
 
 	jmp	$LN4@CreateCons
 $LN3@CreateCons:
@@ -1692,8 +1593,8 @@ $LN3@CreateCons:
 	cmp	DWORD PTR [rax+32], 10
 	jne	SHORT $LN6@CreateCons
 
-; 364  : 
-; 365  :         return ( SetTextMacro( tokenarray, sym, name, tokenarray[2].tokpos ) );
+; 369  : 
+; 370  :         return ( SetTextMacro( tokenarray, sym, name, tokenarray[2].tokpos ) );
 
 	mov	eax, 32					; 00000020H
 	imul	rax, rax, 2
@@ -1707,8 +1608,8 @@ $LN3@CreateCons:
 	jmp	$LN7@CreateCons
 $LN6@CreateCons:
 
-; 366  : 
-; 367  :     } else if( sym->isequate == FALSE ) {
+; 371  : 
+; 372  :     } else if( sym->isequate == FALSE ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+40]
@@ -1718,8 +1619,8 @@ $LN6@CreateCons:
 	test	eax, eax
 	jne	SHORT $LN8@CreateCons
 
-; 368  : 
-; 369  :         DebugMsg1(( "CreateConstant(%s) state=%u, mem_type=%Xh, value=%" I32_SPEC "X, symbol redefinition\n", name, sym->state, sym->mem_type, sym->value));
+; 373  : 
+; 374  :         DebugMsg1(( "CreateConstant(%s) state=%u, mem_type=%Xh, value=%" I32_SPEC "X, symbol redefinition\n", name, sym->state, sym->mem_type, sym->value));
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	eax, DWORD PTR [rax+16]
@@ -1729,27 +1630,27 @@ $LN6@CreateCons:
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8d, DWORD PTR [rax+32]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11145
+	lea	rcx, OFFSET FLAT:$SG11183
 	call	DoDebugMsg1
 
-; 370  :         EmitErr( SYMBOL_REDEFINITION, name );
+; 375  :         EmitErr( SYMBOL_REDEFINITION, name );
 
 	mov	rdx, QWORD PTR name$[rsp]
 	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 
-; 371  :         return( NULL );
+; 376  :         return( NULL );
 
 	xor	eax, eax
 	jmp	$LN1@CreateCons
 
-; 372  : 
-; 373  :     } else {
+; 377  : 
+; 378  :     } else {
 
 	jmp	SHORT $LN9@CreateCons
 $LN8@CreateCons:
 
-; 374  :         if ( sym->asmpass == ( Parse_Pass & 0xFF ) )
+; 379  :         if ( sym->asmpass == ( Parse_Pass & 0xFF ) )
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+46]
@@ -1758,12 +1659,12 @@ $LN8@CreateCons:
 	cmp	eax, ecx
 	jne	SHORT $LN10@CreateCons
 
-; 375  :             cmpvalue = TRUE;
+; 380  :             cmpvalue = TRUE;
 
 	mov	BYTE PTR cmpvalue$[rsp], 1
 $LN10@CreateCons:
 
-; 376  :         sym->asmpass = Parse_Pass;
+; 381  :         sym->asmpass = Parse_Pass;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	ecx, BYTE PTR Parse_Pass
@@ -1772,11 +1673,11 @@ $LN9@CreateCons:
 $LN7@CreateCons:
 $LN4@CreateCons:
 
-; 377  :     }
-; 378  : 
-; 379  :     /* try to evaluate the expression */
-; 380  : 
-; 381  :     if ( tokenarray[2].token == T_NUM && Token_Count == 3 ) {
+; 382  :     }
+; 383  : 
+; 384  :     /* try to evaluate the expression */
+; 385  : 
+; 386  :     if ( tokenarray[2].token == T_NUM && Token_Count == 3 ) {
 
 	mov	eax, 32					; 00000020H
 	imul	rax, rax, 2
@@ -1787,8 +1688,8 @@ $LN4@CreateCons:
 	cmp	DWORD PTR ModuleInfo+496, 3
 	jne	$LN11@CreateCons
 
-; 382  : 
-; 383  :         p = tokenarray[2].string_ptr;
+; 387  : 
+; 388  :         p = tokenarray[2].string_ptr;
 
 	mov	eax, 32					; 00000020H
 	imul	rax, rax, 2
@@ -1797,11 +1698,11 @@ $LN4@CreateCons:
 	mov	QWORD PTR p$[rsp], rax
 $do_single_number$40:
 
-; 384  :     do_single_number:
-; 385  :         /* value is a plain number. it will be accepted only if it fits into 32-bits.
-; 386  :          * Else a text macro is created.
-; 387  :          */
-; 388  :         myatoi128( tokenarray[2].string_ptr, &opnd.llvalue, tokenarray[2].numbase, tokenarray[2].itemlen );
+; 389  :     do_single_number:
+; 390  :         /* value is a plain number. it will be accepted only if it fits into 32-bits.
+; 391  :          * Else a text macro is created.
+; 392  :          */
+; 393  :         myatoi128( tokenarray[2].string_ptr, &opnd.llvalue, tokenarray[2].numbase, tokenarray[2].itemlen );
 
 	mov	eax, 32					; 00000020H
 	imul	rax, rax, 2
@@ -1822,25 +1723,25 @@ $do_single_number$40:
 	call	myatoi128
 $check_single_number$41:
 
-; 389  :     check_single_number:
-; 390  :         opnd.instr = EMPTY;
+; 394  :     check_single_number:
+; 395  :         opnd.instr = EMPTY;
 
 	mov	DWORD PTR opnd$[rsp+56], -2
 
-; 391  :         opnd.kind = EXPR_CONST;
+; 396  :         opnd.kind = EXPR_CONST;
 
 	mov	DWORD PTR opnd$[rsp+60], 0
 
-; 392  :         opnd.mem_type = MT_EMPTY; /* v2.07: added */
+; 397  :         opnd.mem_type = MT_EMPTY; /* v2.07: added */
 
 	mov	DWORD PTR opnd$[rsp+64], 192		; 000000c0H
 
-; 393  :         opnd.flags1 = 0;
+; 398  :         opnd.flags1 = 0;
 
 	mov	BYTE PTR opnd$[rsp+72], 0
 
-; 394  :         /* v2.08: does it fit in 32-bits */
-; 395  :         if ( opnd.hlvalue == 0 && opnd.value64 >= minintvalues[ModuleInfo.Ofssize] &&
+; 399  :         /* v2.08: does it fit in 32-bits */
+; 400  :         if ( opnd.hlvalue == 0 && opnd.value64 >= minintvalues[ModuleInfo.Ofssize] &&
 
 	cmp	QWORD PTR opnd$[rsp+8], 0
 	jne	SHORT $LN13@CreateCons
@@ -1855,30 +1756,30 @@ $check_single_number$41:
 	cmp	QWORD PTR opnd$[rsp], rax
 	jg	SHORT $LN13@CreateCons
 
-; 396  :             opnd.value64 <= maxintvalues[ModuleInfo.Ofssize] ) {
-; 397  :             rc = NOT_ERROR;
+; 401  :             opnd.value64 <= maxintvalues[ModuleInfo.Ofssize] ) {
+; 402  :             rc = NOT_ERROR;
 
 	mov	DWORD PTR rc$[rsp], 0
 
-; 398  :             DebugMsg1(( "CreateConstant(%s): simple numeric value=%" I64_SPEC "d\n", name, opnd.value64 ));
+; 403  :             DebugMsg1(( "CreateConstant(%s): simple numeric value=%" I64_SPEC "d\n", name, opnd.value64 ));
 
 	mov	r8, QWORD PTR opnd$[rsp]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11151
+	lea	rcx, OFFSET FLAT:$SG11189
 	call	DoDebugMsg1
 
-; 399  :             i++;
+; 404  :             i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
 	mov	DWORD PTR i$[rsp], eax
 
-; 400  :         } else
+; 405  :         } else
 
 	jmp	SHORT $LN14@CreateCons
 $LN13@CreateCons:
 
-; 401  :             return ( SetTextMacro( tokenarray, sym, name, p ) );
+; 406  :             return ( SetTextMacro( tokenarray, sym, name, p ) );
 
 	mov	r9, QWORD PTR p$[rsp]
 	mov	r8, QWORD PTR name$[rsp]
@@ -1888,13 +1789,13 @@ $LN13@CreateCons:
 	jmp	$LN1@CreateCons
 $LN14@CreateCons:
 
-; 402  : 
-; 403  :     } else {
+; 407  : 
+; 408  :     } else {
 
 	jmp	$LN12@CreateCons
 $LN11@CreateCons:
 
-; 404  :         p = tokenarray[2].tokpos;
+; 409  :         p = tokenarray[2].tokpos;
 
 	mov	eax, 32					; 00000020H
 	imul	rax, rax, 2
@@ -1902,31 +1803,31 @@ $LN11@CreateCons:
 	mov	rax, QWORD PTR [rcx+rax+24]
 	mov	QWORD PTR p$[rsp], rax
 
-; 405  :         if ( Parse_Pass == PASS_1 ) {
+; 410  :         if ( Parse_Pass == PASS_1 ) {
 
 	cmp	DWORD PTR Parse_Pass, 0
 	jne	$LN15@CreateCons
 
-; 406  :             /* if the expression cannot be evaluated to a numeric value,
-; 407  :              * it's to become a text macro. The value of this macro will be
-; 408  :              * the original (unexpanded!) line - that's why it has to be
-; 409  :              * saved here to argbuffer[].
-; 410  :              */
-; 411  :             strcpy( argbuffer, p );
+; 411  :             /* if the expression cannot be evaluated to a numeric value,
+; 412  :              * it's to become a text macro. The value of this macro will be
+; 413  :              * the original (unexpanded!) line - that's why it has to be
+; 414  :              * saved here to argbuffer[].
+; 415  :              */
+; 416  :             strcpy( argbuffer, p );
 
 	mov	rdx, QWORD PTR p$[rsp]
 	lea	rcx, QWORD PTR argbuffer$[rsp]
 	call	strcpy
 
-; 412  :             DebugMsg1(("CreateConstant(%s): before ExpandLineItems: >%s<\n", name, p ));
+; 417  :             DebugMsg1(("CreateConstant(%s): before ExpandLineItems: >%s<\n", name, p ));
 
 	mov	r8, QWORD PTR p$[rsp]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11153
+	lea	rcx, OFFSET FLAT:$SG11191
 	call	DoDebugMsg1
 
-; 413  :             /* expand EQU argument (macro functions won't be expanded!) */
-; 414  :             if ( ExpandLineItems( p, 2, tokenarray, FALSE, TRUE ) )
+; 418  :             /* expand EQU argument (macro functions won't be expanded!) */
+; 419  :             if ( ExpandLineItems( p, 2, tokenarray, FALSE, TRUE ) )
 
 	mov	DWORD PTR [rsp+32], 1
 	xor	r9d, r9d
@@ -1937,16 +1838,16 @@ $LN11@CreateCons:
 	test	eax, eax
 	je	SHORT $LN16@CreateCons
 
-; 415  :                 /* v2.08: if expansion result is a plain number, handle is specifically.
-; 416  :                  * this is necessary because values of expressions may be 64-bit now.
-; 417  :                  */
-; 418  :                 p = argbuffer; /* ensure that p points to unexpanded source */
+; 420  :                 /* v2.08: if expansion result is a plain number, handle is specifically.
+; 421  :                  * this is necessary because values of expressions may be 64-bit now.
+; 422  :                  */
+; 423  :                 p = argbuffer; /* ensure that p points to unexpanded source */
 
 	lea	rax, QWORD PTR argbuffer$[rsp]
 	mov	QWORD PTR p$[rsp], rax
 $LN16@CreateCons:
 
-; 419  :                 if ( tokenarray[2].token == T_NUM && Token_Count == 3 ) {
+; 424  :                 if ( tokenarray[2].token == T_NUM && Token_Count == 3 ) {
 
 	mov	eax, 32					; 00000020H
 	imul	rax, rax, 2
@@ -1957,22 +1858,22 @@ $LN16@CreateCons:
 	cmp	DWORD PTR ModuleInfo+496, 3
 	jne	SHORT $LN17@CreateCons
 
-; 420  :                     goto do_single_number;
+; 425  :                     goto do_single_number;
 
 	jmp	$do_single_number$40
 $LN17@CreateCons:
 
-; 421  :                 }
-; 422  :             DebugMsg1(("CreateConstant(%s): after ExpandLineItems: >%s<\n", name, p ));
+; 426  :                 }
+; 427  :             DebugMsg1(("CreateConstant(%s): after ExpandLineItems: >%s<\n", name, p ));
 
 	mov	r8, QWORD PTR p$[rsp]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11156
+	lea	rcx, OFFSET FLAT:$SG11194
 	call	DoDebugMsg1
 $LN15@CreateCons:
 
-; 423  :         }
-; 424  :         rc = EvalOperand( &i, tokenarray, Token_Count, &opnd, EXPF_NOERRMSG | EXPF_NOUNDEF );
+; 428  :         }
+; 429  :         rc = EvalOperand( &i, tokenarray, Token_Count, &opnd, EXPF_NOERRMSG | EXPF_NOUNDEF );
 
 	mov	BYTE PTR [rsp+32], 3
 	lea	r9, QWORD PTR opnd$[rsp]
@@ -1982,49 +1883,49 @@ $LN15@CreateCons:
 	call	EvalOperand
 	mov	DWORD PTR rc$[rsp], eax
 
-; 425  : 
-; 426  :         /* v2.08: if it's a quoted string, handle it like a plain number */
-; 427  :         /* v2.10: quoted_string field is != 0 if kind == EXPR_FLOAT,
-; 428  :          * so this is a regression in v2.08-2.09.
-; 429  :          */
-; 430  :         if ( opnd.quoted_string && opnd.kind == EXPR_CONST ) {
+; 430  : 
+; 431  :         /* v2.08: if it's a quoted string, handle it like a plain number */
+; 432  :         /* v2.10: quoted_string field is != 0 if kind == EXPR_FLOAT,
+; 433  :          * so this is a regression in v2.08-2.09.
+; 434  :          */
+; 435  :         if ( opnd.quoted_string && opnd.kind == EXPR_CONST ) {
 
 	cmp	QWORD PTR opnd$[rsp+16], 0
 	je	SHORT $LN18@CreateCons
 	cmp	DWORD PTR opnd$[rsp+60], 0
 	jne	SHORT $LN18@CreateCons
 
-; 431  :             i--; /* v2.09: added; regression in v2.08 and v2.08a */
+; 436  :             i--; /* v2.09: added; regression in v2.08 and v2.08a */
 
 	mov	eax, DWORD PTR i$[rsp]
 	dec	eax
 	mov	DWORD PTR i$[rsp], eax
 
-; 432  :             goto check_single_number;
+; 437  :             goto check_single_number;
 
 	jmp	$check_single_number$41
 $LN18@CreateCons:
 $LN12@CreateCons:
 
-; 433  :         }
-; 434  : 
-; 435  :         /* check here if last token has been reached? */
-; 436  :     }
-; 437  :     /* what is an acceptable 'number' for EQU?
-; 438  :      * 1. a numeric value - if magnitude is <= 64 (or 32, if it's a plain number)
-; 439  :      *    This includes struct fields.
-; 440  :      * 2. an address - if it is direct, has a label and is of type SYM_INTERNAL -
-; 441  :      *    that is, no forward references, no seg, groups, externals;
-; 442  :      *    Anything else will be stored as a text macro.
-; 443  :      * v2.04: large parts rewritten.
-; 444  :      */
-; 445  :     if ( rc != ERROR &&
-; 446  :         tokenarray[i].token == T_FINAL &&
-; 447  :         ( ( opnd.kind == EXPR_CONST && opnd.hlvalue == 0 ) || /* magnitude <= 64 bits? */
-; 448  :          ( opnd.kind == EXPR_ADDR && opnd.indirect == FALSE &&
-; 449  :           opnd.sym != NULL &&
-; 450  :           //opnd.sym->state != SYM_EXTERNAL ) ) && /* SYM_SEG, SYM_GROUP are also not ok */
-; 451  :           opnd.sym->state == SYM_INTERNAL ) ) &&
+; 438  :         }
+; 439  : 
+; 440  :         /* check here if last token has been reached? */
+; 441  :     }
+; 442  :     /* what is an acceptable 'number' for EQU?
+; 443  :      * 1. a numeric value - if magnitude is <= 64 (or 32, if it's a plain number)
+; 444  :      *    This includes struct fields.
+; 445  :      * 2. an address - if it is direct, has a label and is of type SYM_INTERNAL -
+; 446  :      *    that is, no forward references, no seg, groups, externals;
+; 447  :      *    Anything else will be stored as a text macro.
+; 448  :      * v2.04: large parts rewritten.
+; 449  :      */
+; 450  :     if ( rc != ERROR &&
+; 451  :         tokenarray[i].token == T_FINAL &&
+; 452  :         ( ( opnd.kind == EXPR_CONST && opnd.hlvalue == 0 ) || /* magnitude <= 64 bits? */
+; 453  :          ( opnd.kind == EXPR_ADDR && opnd.indirect == FALSE &&
+; 454  :           opnd.sym != NULL &&
+; 455  :           //opnd.sym->state != SYM_EXTERNAL ) ) && /* SYM_SEG, SYM_GROUP are also not ok */
+; 456  :           opnd.sym->state == SYM_INTERNAL ) ) &&
 
 	cmp	DWORD PTR rc$[rsp], -1
 	je	$LN19@CreateCons
@@ -2054,20 +1955,20 @@ $LN20@CreateCons:
 	cmp	DWORD PTR opnd$[rsp+56], -2
 	jne	$LN19@CreateCons
 
-; 452  :         ( opnd.instr == EMPTY ) ) {
-; 453  : 
-; 454  :         if ( !sym ) {
+; 457  :         ( opnd.instr == EMPTY ) ) {
+; 458  : 
+; 459  :         if ( !sym ) {
 
 	cmp	QWORD PTR sym$[rsp], 0
 	jne	SHORT $LN22@CreateCons
 
-; 455  :             sym = SymCreate( name );
+; 460  :             sym = SymCreate( name );
 
 	mov	rcx, QWORD PTR name$[rsp]
 	call	SymCreate
 	mov	QWORD PTR sym$[rsp], rax
 
-; 456  :             sym->asmpass = Parse_Pass;
+; 461  :             sym->asmpass = Parse_Pass;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	ecx, BYTE PTR Parse_Pass
@@ -2075,13 +1976,13 @@ $LN20@CreateCons:
 	jmp	$LN23@CreateCons
 $LN22@CreateCons:
 
-; 457  :         } else if ( sym->state == SYM_UNDEFINED ) {
+; 462  :         } else if ( sym->state == SYM_UNDEFINED ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
 	cmp	DWORD PTR [rax+32], 0
 	jne	SHORT $LN24@CreateCons
 
-; 458  :             sym_remove_table( &SymTables[TAB_UNDEF], (struct dsym *)sym );
+; 463  :             sym_remove_table( &SymTables[TAB_UNDEF], (struct dsym *)sym );
 
 	mov	eax, 16
 	imul	rax, rax, 0
@@ -2092,7 +1993,7 @@ $LN22@CreateCons:
 	mov	rcx, rax
 	call	sym_remove_table
 
-; 459  :             sym->fwdref = TRUE;
+; 464  :             sym->fwdref = TRUE;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+41]
@@ -2102,34 +2003,34 @@ $LN22@CreateCons:
 	jmp	$LN25@CreateCons
 $LN24@CreateCons:
 
-; 460  :         } else if ( sym->state == SYM_EXTERNAL ) {
+; 465  :         } else if ( sym->state == SYM_EXTERNAL ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
 	cmp	DWORD PTR [rax+32], 2
 	jne	SHORT $LN26@CreateCons
 
-; 461  :             sym_ext2int( sym );
+; 466  :             sym_ext2int( sym );
 
 	mov	rcx, QWORD PTR sym$[rsp]
 	call	sym_ext2int
 	jmp	$LN27@CreateCons
 $LN26@CreateCons:
 
-; 462  :         } else if ( cmpvalue ) {
+; 467  :         } else if ( cmpvalue ) {
 
 	movzx	eax, BYTE PTR cmpvalue$[rsp]
 	test	eax, eax
 	je	$LN28@CreateCons
 
-; 463  :             if ( opnd.kind == EXPR_CONST ) {
+; 468  :             if ( opnd.kind == EXPR_CONST ) {
 
 	cmp	DWORD PTR opnd$[rsp+60], 0
 	jne	SHORT $LN29@CreateCons
 
-; 464  :                 /* for 64bit, it may be necessary to check 64bit value! */
-; 465  :                 /* v2.08: always compare 64-bit values */
-; 466  :                 //if ( sym->value != opnd.value ) {
-; 467  :                 if ( sym->value != opnd.value || sym->value3264 != opnd.hvalue ) {
+; 469  :                 /* for 64bit, it may be necessary to check 64bit value! */
+; 470  :                 /* v2.08: always compare 64-bit values */
+; 471  :                 //if ( sym->value != opnd.value ) {
+; 472  :                 if ( sym->value != opnd.value || sym->value3264 != opnd.hvalue ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	ecx, DWORD PTR opnd$[rsp]
@@ -2141,38 +2042,38 @@ $LN26@CreateCons:
 	je	SHORT $LN31@CreateCons
 $LN32@CreateCons:
 
-; 468  :                     DebugMsg(("CreateConstant(%s), CONST value changed: old=%X, new=%X\n", name, sym->offset, opnd.value ));
+; 473  :                     DebugMsg(("CreateConstant(%s), CONST value changed: old=%X, new=%X\n", name, sym->offset, opnd.value ));
 
 	mov	r9d, DWORD PTR opnd$[rsp]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8d, DWORD PTR [rax+16]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11172
+	lea	rcx, OFFSET FLAT:$SG11210
 	call	DoDebugMsg
 
-; 469  :                     EmitErr( SYMBOL_REDEFINITION, name );
+; 474  :                     EmitErr( SYMBOL_REDEFINITION, name );
 
 	mov	rdx, QWORD PTR name$[rsp]
 	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 
-; 470  :                     return( NULL );
+; 475  :                     return( NULL );
 
 	xor	eax, eax
 	jmp	$LN1@CreateCons
 $LN31@CreateCons:
 
-; 471  :                 }
+; 476  :                 }
 
 	jmp	$LN30@CreateCons
 $LN29@CreateCons:
 
-; 472  :             } else if ( opnd.kind == EXPR_ADDR ) {
+; 477  :             } else if ( opnd.kind == EXPR_ADDR ) {
 
 	cmp	DWORD PTR opnd$[rsp+60], 1
 	jne	SHORT $LN33@CreateCons
 
-; 473  :                 if ( ( sym->offset != ( opnd.sym->offset + opnd.value ) ) || ( sym->segment != opnd.sym->segment ) ) {
+; 478  :                 if ( ( sym->offset != ( opnd.sym->offset + opnd.value ) ) || ( sym->segment != opnd.sym->segment ) ) {
 
 	mov	rax, QWORD PTR opnd$[rsp+80]
 	mov	eax, DWORD PTR [rax+16]
@@ -2187,7 +2088,7 @@ $LN29@CreateCons:
 	je	SHORT $LN34@CreateCons
 $LN35@CreateCons:
 
-; 474  :                     DebugMsg(("CreateConstant(%s), ADDR value changed: old=%X, new ofs+val=%X+%X\n", name, sym->offset, opnd.sym->offset, opnd.value));
+; 479  :                     DebugMsg(("CreateConstant(%s), ADDR value changed: old=%X, new ofs+val=%X+%X\n", name, sym->offset, opnd.sym->offset, opnd.value));
 
 	mov	eax, DWORD PTR opnd$[rsp]
 	mov	DWORD PTR [rsp+32], eax
@@ -2196,16 +2097,16 @@ $LN35@CreateCons:
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8d, DWORD PTR [rax+16]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11176
+	lea	rcx, OFFSET FLAT:$SG11214
 	call	DoDebugMsg
 
-; 475  :                     EmitErr( SYMBOL_REDEFINITION, name );
+; 480  :                     EmitErr( SYMBOL_REDEFINITION, name );
 
 	mov	rdx, QWORD PTR name$[rsp]
 	mov	ecx, 143				; 0000008fH
 	call	EmitErr
 
-; 476  :                     return( NULL );
+; 481  :                     return( NULL );
 
 	xor	eax, eax
 	jmp	$LN1@CreateCons
@@ -2217,19 +2118,19 @@ $LN27@CreateCons:
 $LN25@CreateCons:
 $LN23@CreateCons:
 
-; 477  :                 }
-; 478  :             }
-; 479  :         }
-; 480  :         /* change from alias to number is ok if value (=offset) won't change!
-; 481  :          * memtype must not be checked!
-; 482  :          */
-; 483  :         //if ( opnd.kind == EXPR_CONST ) {
-; 484  :         //    if ( sym->mem_type != MT_ABS && sym->mem_type != MT_EMPTY ) {
-; 485  :         //        EmitErr( SYMBOL_REDEFINITION, name );
-; 486  :         //        return( NULL );
-; 487  :         //    }
-; 488  :         //}
-; 489  :         sym->variable = FALSE;
+; 482  :                 }
+; 483  :             }
+; 484  :         }
+; 485  :         /* change from alias to number is ok if value (=offset) won't change!
+; 486  :          * memtype must not be checked!
+; 487  :          */
+; 488  :         //if ( opnd.kind == EXPR_CONST ) {
+; 489  :         //    if ( sym->mem_type != MT_ABS && sym->mem_type != MT_EMPTY ) {
+; 490  :         //        EmitErr( SYMBOL_REDEFINITION, name );
+; 491  :         //        return( NULL );
+; 492  :         //    }
+; 493  :         //}
+; 494  :         sym->variable = FALSE;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+40]
@@ -2237,13 +2138,13 @@ $LN23@CreateCons:
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	BYTE PTR [rcx+40], al
 
-; 490  :         SetValue( sym, &opnd );
+; 495  :         SetValue( sym, &opnd );
 
 	lea	rdx, QWORD PTR opnd$[rsp]
 	mov	rcx, QWORD PTR sym$[rsp]
 	call	SetValue
 
-; 491  :         DebugMsg1(("CreateConstant(%s): memtype=%Xh value=%" I64_SPEC "X isproc=%u variable=%u type=%s\n",
+; 496  :         DebugMsg1(("CreateConstant(%s): memtype=%Xh value=%" I64_SPEC "X isproc=%u variable=%u type=%s\n",
 
 	mov	rax, QWORD PTR sym$[rsp]
 	cmp	QWORD PTR [rax+80], 0
@@ -2254,7 +2155,7 @@ $LN23@CreateCons:
 	mov	QWORD PTR tv310[rsp], rax
 	jmp	SHORT $LN38@CreateCons
 $LN37@CreateCons:
-	lea	rax, OFFSET FLAT:$SG11177
+	lea	rax, OFFSET FLAT:$SG11215
 	mov	QWORD PTR tv310[rsp], rax
 $LN38@CreateCons:
 	mov	rax, QWORD PTR sym$[rsp]
@@ -2281,26 +2182,26 @@ $LN38@CreateCons:
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8d, DWORD PTR [rax+36]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11178
+	lea	rcx, OFFSET FLAT:$SG11216
 	call	DoDebugMsg1
 
-; 492  :             name, sym->mem_type, (uint_64)sym->value + ( (uint_64)sym->value3264 << 32), sym->isproc, sym->variable, sym->type ? sym->type->name : "NULL" ));
-; 493  :         return( sym );
+; 497  :             name, sym->mem_type, (uint_64)sym->value + ( (uint_64)sym->value3264 << 32), sym->isproc, sym->variable, sym->type ? sym->type->name : "NULL" ));
+; 498  :         return( sym );
 
 	mov	rax, QWORD PTR sym$[rsp]
 	jmp	SHORT $LN1@CreateCons
 $LN19@CreateCons:
 
-; 494  :     }
-; 495  :     DebugMsg1(("CreateConstant(%s): calling SetTextMacro() [MI.Ofssize=%u]\n", name, ModuleInfo.Ofssize ));
+; 499  :     }
+; 500  :     DebugMsg1(("CreateConstant(%s): calling SetTextMacro() [MI.Ofssize=%u]\n", name, ModuleInfo.Ofssize ));
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	mov	r8d, eax
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11179
+	lea	rcx, OFFSET FLAT:$SG11217
 	call	DoDebugMsg1
 
-; 496  :     return ( SetTextMacro( tokenarray, sym, name, argbuffer ) );
+; 501  :     return ( SetTextMacro( tokenarray, sym, name, argbuffer ) );
 
 	lea	r9, QWORD PTR argbuffer$[rsp]
 	mov	r8, QWORD PTR name$[rsp]
@@ -2309,18 +2210,12 @@ $LN19@CreateCons:
 	call	SetTextMacro
 $LN1@CreateCons:
 
-; 497  : }
+; 502  : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:CreateConstant$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 944				; 000003b0H
-	pop	rdi
+	add	rsp, 1304				; 00000518H
 	ret	0
 CreateConstant ENDP
 _TEXT	ENDS

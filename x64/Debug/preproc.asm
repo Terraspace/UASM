@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 _DATA	SEGMENT
@@ -15,12 +15,12 @@ COMM	cntppl1:DWORD
 COMM	cntppl2:DWORD
 _DATA	ENDS
 _BSS	SEGMENT
-$SG10891 DB	01H DUP (?)
+$SG10929 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG10890 DB	'PreprocessLine: >%s<', 0aH, 00H
+$SG10928 DB	'PreprocessLine: >%s<', 0aH, 00H
 	ORG $+2
-$SG10892 DB	'PreprocessLine(%s): >%s< cmt=%s', 0aH, 00H
+$SG10930 DB	'PreprocessLine(%s): >%s< cmt=%s', 0aH, 00H
 _DATA	ENDS
 PUBLIC	WriteCodeLabel
 PUBLIC	PreprocessLine
@@ -36,8 +36,6 @@ EXTRN	GetTopSrcName:PROC
 EXTRN	StoreLine:PROC
 EXTRN	LstWrite:PROC
 EXTRN	LstWriteSrcLine:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
 EXTRN	Options:BYTE
 EXTRN	ModuleInfo:BYTE
 EXTRN	Parse_Pass:DWORD
@@ -46,39 +44,31 @@ EXTRN	StoreState:BYTE
 EXTRN	directive_tab:BYTE
 pdata	SEGMENT
 $pdata$WriteCodeLabel DD imagerel $LN6
-	DD	imagerel $LN6+336
+	DD	imagerel $LN6+314
 	DD	imagerel $unwind$WriteCodeLabel
 $pdata$PreprocessLine DD imagerel $LN34
-	DD	imagerel $LN34+937
+	DD	imagerel $LN34+915
 	DD	imagerel $unwind$PreprocessLine
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
 xdata	SEGMENT
-$unwind$WriteCodeLabel DD 022301H
-	DD	0700b520fH
-$unwind$PreprocessLine DD 022301H
-	DD	0700bb20fH
+$unwind$WriteCodeLabel DD 010e01H
+	DD	0620eH
+$unwind$PreprocessLine DD 010e01H
+	DD	0a20eH
 xdata	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\preproc.c
 _TEXT	SEGMENT
 i$ = 32
-sym$1 = 40
-tv74 = 48
-tv135 = 56
+tv189 = 36
+tv135 = 40
+tv211 = 44
+sym$1 = 48
+tv74 = 56
 tv227 = 64
-tv189 = 72
-tv211 = 76
-tv228 = 80
-line$ = 112
-tokenarray$ = 120
+tv228 = 72
+line$ = 96
+tokenarray$ = 104
 PreprocessLine PROC
 
 ; 73   : {
@@ -86,13 +76,7 @@ PreprocessLine PROC
 $LN34:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 96					; 00000060H
-	mov	rdi, rsp
-	mov	ecx, 24
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+112]
+	sub	rsp, 88					; 00000058H
 
 ; 74   :     int i;
 ; 75   : 
@@ -134,7 +118,7 @@ $LN34:
 ; 88   :         DebugMsg1(("PreprocessLine: >%s<\n", line ));
 
 	mov	rdx, QWORD PTR line$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10890
+	lea	rcx, OFFSET FLAT:$SG10928
 	call	DoDebugMsg1
 	jmp	SHORT $LN5@Preprocess
 $LN4@Preprocess:
@@ -148,14 +132,14 @@ $LN4@Preprocess:
 	mov	QWORD PTR tv74[rsp], rax
 	jmp	SHORT $LN29@Preprocess
 $LN28@Preprocess:
-	lea	rax, OFFSET FLAT:$SG10891
+	lea	rax, OFFSET FLAT:$SG10929
 	mov	QWORD PTR tv74[rsp], rax
 $LN29@Preprocess:
 	call	GetTopSrcName
 	mov	r9, QWORD PTR tv74[rsp]
 	mov	r8, QWORD PTR line$[rsp]
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG10892
+	lea	rcx, OFFSET FLAT:$SG10930
 	call	DoDebugMsg1
 $LN5@Preprocess:
 
@@ -516,17 +500,16 @@ $LN1@Preprocess:
 
 ; 181  : }
 
-	add	rsp, 96					; 00000060H
-	pop	rdi
+	add	rsp, 88					; 00000058H
 	ret	0
 PreprocessLine ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\preproc.c
 _TEXT	SEGMENT
-oldcnt$ = 32
-oldtoken$ = 36
-oldchar$ = 40
+oldchar$ = 32
+oldcnt$ = 36
+oldtoken$ = 40
 line$ = 64
 tokenarray$ = 72
 WriteCodeLabel PROC
@@ -536,13 +519,7 @@ WriteCodeLabel PROC
 $LN6:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 41   :     int oldcnt;
 ; 42   :     int oldtoken;
@@ -671,8 +648,7 @@ $LN1@WriteCodeL:
 
 ; 64   : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 WriteCodeLabel ENDP
 _TEXT	ENDS

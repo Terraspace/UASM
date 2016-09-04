@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 PUBLIC	banner_printed
@@ -14,31 +14,31 @@ COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
 banner_printed DB 01H DUP (?)
-$SG10994 DB	01H DUP (?)
-$SG11014 DB	01H DUP (?)
+$SG11032 DB	01H DUP (?)
+$SG11052 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG10909 DB	'%u%s. ', 00H
+$SG10947 DB	'%u%s. ', 00H
 	ORG $+1
-$SG10913 DB	'%s, %s', 0aH, 00H
-$SG10921 DB	'%-20s %s', 0aH, 00H
+$SG10951 DB	'%s, %s', 0aH, 00H
+$SG10959 DB	'%-20s %s', 0aH, 00H
 	ORG $+2
-$SG10949 DB	0aH, 00H
+$SG10987 DB	0aH, 00H
 	ORG $+2
-$SG10948 DB	'%s A%4u: ', 00H
+$SG10986 DB	'%s A%4u: ', 00H
 	ORG $+2
-$SG10968 DB	'w', 00H
+$SG11006 DB	'w', 00H
 	ORG $+2
-$SG10951 DB	'                           %s', 00H
+$SG10989 DB	'                           %s', 00H
 	ORG $+2
-$SG10995 DB	'%s', 0aH, 00H
-$SG11015 DB	'%s', 0aH, 00H
-$SG11022 DB	'ENOENT', 00H
+$SG11033 DB	'%s', 0aH, 00H
+$SG11053 DB	'%s', 0aH, 00H
+$SG11060 DB	'ENOENT', 00H
 	ORG $+1
-$SG11037 DB	'WriteError occured', 0aH, 00H
-$SG11046 DB	'%s', 00H
+$SG11075 DB	'WriteError occured', 0aH, 00H
+$SG11084 DB	'%s', 00H
 	ORG $+1
-$SG11045 DB	'InternalError enter', 0aH, 00H
+$SG11083 DB	'InternalError enter', 0aH, 00H
 _DATA	ENDS
 CONST	SEGMENT
 usage	DB	'   HJWasm [options] asm-file [options] [asm-file] ... [@'
@@ -140,14 +140,14 @@ PUBLIC	PrintUsage
 PUBLIC	WriteError
 PUBLIC	InternalError
 EXTRN	longjmp:PROC
-EXTRN	__imp___acrt_iob_func:PROC
-EXTRN	__imp_fflush:PROC
-EXTRN	__imp_fopen:PROC
-EXTRN	__imp_fwrite:PROC
-EXTRN	__imp___stdio_common_vfprintf:PROC
-EXTRN	__imp___stdio_common_vsprintf:PROC
-EXTRN	__imp__errno:PROC
-EXTRN	__imp_exit:PROC
+EXTRN	__acrt_iob_func:PROC
+EXTRN	fflush:PROC
+EXTRN	fopen:PROC
+EXTRN	fwrite:PROC
+EXTRN	__stdio_common_vfprintf:PROC
+EXTRN	__stdio_common_vsprintf:PROC
+EXTRN	_errno:PROC
+EXTRN	exit:PROC
 EXTRN	strlen:PROC
 EXTRN	close_files:PROC
 EXTRN	myltoa:PROC
@@ -160,9 +160,6 @@ EXTRN	LstPrintf:PROC
 EXTRN	LstNL:PROC
 EXTRN	GetCurrOffset:PROC
 EXTRN	print_source_nesting_structure:PROC
-EXTRN	_RTC_CheckStackVars:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
 EXTRN	__GSHandlerCheck:PROC
 EXTRN	__security_check_cookie:PROC
 EXTRN	Options:BYTE
@@ -181,427 +178,180 @@ _BSS	SEGMENT
 _BSS	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$__local_stdio_printf_options DD imagerel $LN3
-	DD	imagerel $LN3+11
-	DD	imagerel $unwind$__local_stdio_printf_options
-pdata	ENDS
-;	COMDAT pdata
-pdata	SEGMENT
 $pdata$_vfprintf_l DD imagerel $LN3
-	DD	imagerel $LN3+90
+	DD	imagerel $LN3+67
 	DD	imagerel $unwind$_vfprintf_l
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$vprintf DD imagerel $LN3
-	DD	imagerel $LN3+73
+	DD	imagerel $LN3+50
 	DD	imagerel $unwind$vprintf
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$fprintf DD imagerel $LN3
-	DD	imagerel $LN3+120
+	DD	imagerel $LN3+79
 	DD	imagerel $unwind$fprintf
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$printf DD imagerel $LN3
-	DD	imagerel $LN3+129
+	DD	imagerel $LN3+87
 	DD	imagerel $unwind$printf
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$_vsnprintf_l DD imagerel $LN5
-	DD	imagerel $LN5+140
+	DD	imagerel $LN5+117
 	DD	imagerel $unwind$_vsnprintf_l
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$_vsprintf_l DD imagerel $LN3
-	DD	imagerel $LN3+88
+	DD	imagerel $LN3+66
 	DD	imagerel $unwind$_vsprintf_l
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$vsprintf DD imagerel $LN3
-	DD	imagerel $LN3+81
+	DD	imagerel $LN3+59
 	DD	imagerel $unwind$vsprintf
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$sprintf DD imagerel $LN3
-	DD	imagerel $LN3+120
+	DD	imagerel $LN3+79
 	DD	imagerel $unwind$sprintf
 pdata	ENDS
 pdata	SEGMENT
 $pdata$DoDebugMsg DD imagerel $LN5
-	DD	imagerel $LN5+154
+	DD	imagerel $LN5+117
 	DD	imagerel $unwind$DoDebugMsg
 $pdata$DoDebugMsg1 DD imagerel $LN6
-	DD	imagerel $LN6+238
+	DD	imagerel $LN6+192
 	DD	imagerel $unwind$DoDebugMsg1
 $pdata$Fatal DD	imagerel $LN4
-	DD	imagerel $LN4+191
+	DD	imagerel $LN4+154
 	DD	imagerel $unwind$Fatal
 $pdata$EmitError DD imagerel $LN3
-	DD	imagerel $LN3+43
+	DD	imagerel $LN3+22
 	DD	imagerel $unwind$EmitError
 $pdata$EmitErr DD imagerel $LN6
-	DD	imagerel $LN6+263
+	DD	imagerel $LN6+223
 	DD	imagerel $unwind$EmitErr
 $pdata$EmitWarn DD imagerel $LN8
-	DD	imagerel $LN8+285
+	DD	imagerel $LN8+243
 	DD	imagerel $unwind$EmitWarn
 $pdata$PrintNote DD imagerel $LN3
-	DD	imagerel $LN3+123
+	DD	imagerel $LN3+87
 	DD	imagerel $unwind$PrintNote
 $pdata$ErrnoStr DD imagerel $LN5
-	DD	imagerel $LN5+96
+	DD	imagerel $LN5+76
 	DD	imagerel $unwind$ErrnoStr
 $pdata$write_logo DD imagerel $LN4
-	DD	imagerel $LN4+102
+	DD	imagerel $LN4+84
 	DD	imagerel $unwind$write_logo
 $pdata$PrintUsage DD imagerel $LN6
-	DD	imagerel $LN6+131
+	DD	imagerel $LN6+113
 	DD	imagerel $unwind$PrintUsage
 $pdata$WriteError DD imagerel $LN3
-	DD	imagerel $LN3+78
+	DD	imagerel $LN3+59
 	DD	imagerel $unwind$WriteError
 $pdata$PutMsg DD imagerel PutMsg
-	DD	imagerel PutMsg+593
+	DD	imagerel PutMsg+538
 	DD	imagerel $unwind$PutMsg
 $pdata$PrtMsg DD imagerel PrtMsg
-	DD	imagerel PrtMsg+388
+	DD	imagerel PrtMsg+363
 	DD	imagerel $unwind$PrtMsg
 $pdata$InternalError DD imagerel $LN3
-	DD	imagerel $LN3+253
+	DD	imagerel $LN3+198
 	DD	imagerel $unwind$InternalError
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
 xdata	SEGMENT
-$unwind$DoDebugMsg DD 022d01H
-	DD	070157219H
-$unwind$DoDebugMsg1 DD 034519H
-	DD	05a011cH
-	DD	07015H
+$unwind$DoDebugMsg DD 011801H
+	DD	06218H
+$unwind$DoDebugMsg1 DD 022d19H
+	DD	089011bH
 	DD	imagerel __GSHandlerCheck
-	DD	02c8H
-$unwind$Fatal DD 022b01H
-	DD	07014b218H
-$unwind$EmitError DD 021c01H
-	DD	070053209H
-$unwind$EmitErr DD 022b01H
-	DD	07014b218H
-$unwind$EmitWarn DD 022a01H
-	DD	07013b217H
-$unwind$PrintNote DD 022b01H
-	DD	07014b218H
-$unwind$ErrnoStr DD 021501H
-	DD	070027206H
-$unwind$write_logo DD 021501H
-	DD	070025206H
-$unwind$PrintUsage DD 021501H
-	DD	070025206H
-$unwind$WriteError DD 021501H
-	DD	070023206H
-$unwind$PutMsg DD 034419H
-	DD	06a011bH
-	DD	07014H
+	DD	0430H
+$unwind$Fatal DD 011701H
+	DD	06217H
+$unwind$EmitError DD 010801H
+	DD	04208H
+$unwind$EmitErr DD 011701H
+	DD	08217H
+$unwind$EmitWarn DD 011601H
+	DD	08216H
+$unwind$PrintNote DD 011701H
+	DD	06217H
+$unwind$ErrnoStr DD 010401H
+	DD	08204H
+$unwind$write_logo DD 010401H
+	DD	06204H
+$unwind$PrintUsage DD 010401H
+	DD	06204H
+$unwind$WriteError DD 010401H
+	DD	04204H
+$unwind$PutMsg DD 022c19H
+	DD	09b011aH
 	DD	imagerel __GSHandlerCheck
-	DD	0348H
-$unwind$PrtMsg DD 022a01H
-	DD	070135217H
-$unwind$InternalError DD 033a19H
-	DD	0560111H
-	DD	0700aH
+	DD	04c0H
+$unwind$PrtMsg DD 011601H
+	DD	06216H
+$unwind$InternalError DD 022219H
+	DD	0890110H
 	DD	imagerel __GSHandlerCheck
-	DD	02a8H
-xdata	ENDS
-CONST	SEGMENT
-DoDebugMsg$rtcName$0 DB 061H
-	DB	072H
-	DB	067H
-	DB	073H
-	DB	00H
-	ORG $+7
-DoDebugMsg$rtcVarDesc DD 028H
-	DD	08H
-	DQ	FLAT:DoDebugMsg$rtcName$0
-	ORG $+48
-DoDebugMsg$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:DoDebugMsg$rtcVarDesc
-DoDebugMsg1$rtcName$0 DB 061H
-	DB	072H
-	DB	067H
-	DB	073H
-	DB	00H
-	ORG $+3
-DoDebugMsg1$rtcName$1 DB 062H
-	DB	075H
-	DB	066H
-	DB	066H
-	DB	065H
-	DB	072H
-	DB	00H
-	ORG $+1
-DoDebugMsg1$rtcVarDesc DD 050H
-	DD	0258H
-	DQ	FLAT:DoDebugMsg1$rtcName$1
-	DD	028H
-	DD	08H
-	DQ	FLAT:DoDebugMsg1$rtcName$0
-	ORG $+96
-DoDebugMsg1$rtcFrameData DD 02H
-	DD	00H
-	DQ	FLAT:DoDebugMsg1$rtcVarDesc
-Fatal$rtcName$0 DB 061H
-	DB	072H
-	DB	067H
-	DB	073H
-	DB	031H
-	DB	00H
-	ORG $+2
-Fatal$rtcName$1 DB 061H
-	DB	072H
-	DB	067H
-	DB	073H
-	DB	032H
-	DB	00H
-	ORG $+2
-Fatal$rtcVarDesc DD 048H
-	DD	08H
-	DQ	FLAT:Fatal$rtcName$1
-	DD	028H
-	DD	08H
-	DQ	FLAT:Fatal$rtcName$0
-	ORG $+96
-Fatal$rtcFrameData DD 02H
-	DD	00H
-	DQ	FLAT:Fatal$rtcVarDesc
-EmitErr$rtcName$0 DB 061H
-	DB	072H
-	DB	067H
-	DB	073H
-	DB	031H
-	DB	00H
-	ORG $+2
-EmitErr$rtcName$1 DB 061H
-	DB	072H
-	DB	067H
-	DB	073H
-	DB	032H
-	DB	00H
-	ORG $+2
-EmitErr$rtcVarDesc DD 048H
-	DD	08H
-	DQ	FLAT:EmitErr$rtcName$1
-	DD	028H
-	DD	08H
-	DQ	FLAT:EmitErr$rtcName$0
-	ORG $+96
-EmitErr$rtcFrameData DD 02H
-	DD	00H
-	DQ	FLAT:EmitErr$rtcVarDesc
-EmitWarn$rtcName$0 DB 061H
-	DB	072H
-	DB	067H
-	DB	073H
-	DB	031H
-	DB	00H
-	ORG $+2
-EmitWarn$rtcName$1 DB 061H
-	DB	072H
-	DB	067H
-	DB	073H
-	DB	032H
-	DB	00H
-	ORG $+2
-EmitWarn$rtcVarDesc DD 048H
-	DD	08H
-	DQ	FLAT:EmitWarn$rtcName$1
-	DD	028H
-	DD	08H
-	DQ	FLAT:EmitWarn$rtcName$0
-	ORG $+96
-EmitWarn$rtcFrameData DD 02H
-	DD	00H
-	DQ	FLAT:EmitWarn$rtcVarDesc
-PrintNote$rtcName$0 DB 061H
-	DB	072H
-	DB	067H
-	DB	073H
-	DB	031H
-	DB	00H
-	ORG $+2
-PrintNote$rtcName$1 DB 061H
-	DB	072H
-	DB	067H
-	DB	073H
-	DB	032H
-	DB	00H
-	ORG $+2
-PrintNote$rtcVarDesc DD 048H
-	DD	08H
-	DQ	FLAT:PrintNote$rtcName$1
-	DD	028H
-	DD	08H
-	DQ	FLAT:PrintNote$rtcName$0
-	ORG $+96
-PrintNote$rtcFrameData DD 02H
-	DD	00H
-	DQ	FLAT:PrintNote$rtcVarDesc
-PutMsg$rtcName$0 DB 062H
-	DB	075H
-	DB	066H
-	DB	066H
-	DB	065H
-	DB	072H
-	DB	00H
-	ORG $+1
-PutMsg$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:PutMsg$rtcVarDesc
-InternalError$rtcName$0 DB 062H
-	DB	075H
-	DB	066H
-	DB	066H
-	DB	065H
-	DB	072H
-	DB	00H
-	ORG $+1
-PutMsg$rtcVarDesc DD 050H
-	DD	02d8H
-	DQ	FLAT:PutMsg$rtcName$0
-	ORG $+48
-InternalError$rtcVarDesc DD 030H
-	DD	0258H
-	DQ	FLAT:InternalError$rtcName$0
-	ORG $+48
-InternalError$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:InternalError$rtcVarDesc
-CONST	ENDS
-;	COMDAT xdata
-xdata	SEGMENT
-$unwind$sprintf DD 022d01H
-	DD	070159219H
-xdata	ENDS
-;	COMDAT CONST
-CONST	SEGMENT
-sprintf$rtcName$0 DB 05fH
-	DB	041H
-	DB	072H
-	DB	067H
-	DB	04cH
-	DB	069H
-	DB	073H
-	DB	074H
-	DB	00H
-	ORG $+7
-sprintf$rtcVarDesc DD 038H
-	DD	08H
-	DQ	FLAT:sprintf$rtcName$0
-	ORG $+48
-sprintf$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:sprintf$rtcVarDesc
-CONST	ENDS
-;	COMDAT xdata
-xdata	SEGMENT
-$unwind$vsprintf DD 022801H
-	DD	070105214H
+	DD	0430H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$_vsprintf_l DD 022d01H
-	DD	070155219H
+$unwind$sprintf DD 011801H
+	DD	06218H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$_vsnprintf_l DD 022d01H
-	DD	070157219H
+$unwind$vsprintf DD 011301H
+	DD	06213H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$printf DD 022d01H
-	DD	070159219H
-xdata	ENDS
-;	COMDAT CONST
-CONST	SEGMENT
-printf$rtcName$0 DB 05fH
-	DB	041H
-	DB	072H
-	DB	067H
-	DB	04cH
-	DB	069H
-	DB	073H
-	DB	074H
-	DB	00H
-	ORG $+7
-printf$rtcVarDesc DD 038H
-	DD	08H
-	DQ	FLAT:printf$rtcName$0
-	ORG $+48
-printf$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:printf$rtcVarDesc
-CONST	ENDS
-;	COMDAT xdata
-xdata	SEGMENT
-$unwind$fprintf DD 022d01H
-	DD	070159219H
-xdata	ENDS
-;	COMDAT CONST
-CONST	SEGMENT
-fprintf$rtcName$0 DB 05fH
-	DB	041H
-	DB	072H
-	DB	067H
-	DB	04cH
-	DB	069H
-	DB	073H
-	DB	074H
-	DB	00H
-	ORG $+7
-fprintf$rtcVarDesc DD 038H
-	DD	08H
-	DQ	FLAT:fprintf$rtcName$0
-	ORG $+48
-fprintf$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:fprintf$rtcVarDesc
-CONST	ENDS
-;	COMDAT xdata
-xdata	SEGMENT
-$unwind$vprintf DD 022301H
-	DD	0700b320fH
+$unwind$_vsprintf_l DD 011801H
+	DD	06218H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$_vfprintf_l DD 022d01H
-	DD	070155219H
+$unwind$_vsnprintf_l DD 011801H
+	DD	08218H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$__local_stdio_printf_options DD 010201H
-	DD	07002H
+$unwind$printf DD 011801H
+	DD	06218H
 xdata	ENDS
-; Function compile flags: /Odtp /RTCsu
+;	COMDAT xdata
+xdata	SEGMENT
+$unwind$fprintf DD 011801H
+	DD	06218H
+xdata	ENDS
+;	COMDAT xdata
+xdata	SEGMENT
+$unwind$vprintf DD 010e01H
+	DD	0420eH
+xdata	ENDS
+;	COMDAT xdata
+xdata	SEGMENT
+$unwind$_vfprintf_l DD 011801H
+	DD	06218H
+xdata	ENDS
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\errmsg.c
 _TEXT	SEGMENT
+tv75 = 32
 buffer$ = 48
-tv75 = 672
-__$ArrayPad$ = 680
-file$ = 704
-line$ = 712
+__$ArrayPad$ = 1072
+file$ = 1104
+line$ = 1112
 InternalError PROC
 
 ; 356  : {
@@ -609,13 +359,7 @@ InternalError PROC
 $LN3:
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 688				; 000002b0H
-	mov	rdi, rsp
-	mov	ecx, 172				; 000000acH
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+704]
+	sub	rsp, 1096				; 00000448H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -624,7 +368,7 @@ $LN3:
 ; 358  :     char buffer[MAX_LINE_LEN];
 ; 359  :     DebugMsg(("InternalError enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11045
+	lea	rcx, OFFSET FLAT:$SG11083
 	call	DoDebugMsg
 
 ; 360  :     ModuleInfo.g.error_count++;
@@ -641,9 +385,9 @@ $LN3:
 ; 362  :     fprintf( errout, "%s", buffer );
 
 	mov	ecx, 1
-	call	QWORD PTR __imp___acrt_iob_func
+	call	__acrt_iob_func
 	lea	r8, QWORD PTR buffer$[rsp]
-	lea	rdx, OFFSET FLAT:$SG11046
+	lea	rdx, OFFSET FLAT:$SG11084
 	mov	rcx, rax
 	call	fprintf
 
@@ -653,7 +397,7 @@ $LN3:
 	call	MsgGetEx
 	mov	QWORD PTR tv75[rsp], rax
 	mov	ecx, 1
-	call	QWORD PTR __imp___acrt_iob_func
+	call	__acrt_iob_func
 	mov	r9d, DWORD PTR line$[rsp]
 	mov	r8, QWORD PTR file$[rsp]
 	mov	rcx, QWORD PTR tv75[rsp]
@@ -668,7 +412,7 @@ $LN3:
 ; 365  :     exit( EXIT_FAILURE );
 
 	mov	ecx, 1
-	call	QWORD PTR __imp_exit
+	call	exit
 
 ; 366  : #else
 ; 367  :     Fatal( INTERNAL_ERROR, file, line );
@@ -680,20 +424,14 @@ $LN2@InternalEr:
 
 ; 370  : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:InternalError$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 688				; 000002b0H
-	pop	rdi
+	add	rsp, 1096				; 00000448H
 	ret	0
 InternalError ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\errmsg.c
 _TEXT	SEGMENT
 p$1 = 32
@@ -709,13 +447,7 @@ PrtMsg	PROC
 	mov	QWORD PTR [rsp+24], r8
 	mov	DWORD PTR [rsp+16], edx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 204  : #ifndef __SW_BD
 ; 205  :     write_logo();
@@ -742,9 +474,9 @@ PrtMsg	PROC
 	mov	eax, 8
 	imul	rax, rax, 3
 	lea	rcx, OFFSET FLAT:ModuleInfo+128
-	lea	rdx, OFFSET FLAT:$SG10968
+	lea	rdx, OFFSET FLAT:$SG11006
 	mov	rcx, QWORD PTR [rcx+rax]
-	call	QWORD PTR __imp_fopen
+	call	fopen
 	mov	ecx, 8
 	imul	rcx, rcx, 3
 	lea	rdx, OFFSET FLAT:ModuleInfo+96
@@ -802,7 +534,7 @@ $LN2@PrtMsg:
 ; 222  :         PutMsg( errout, severity, msgnum, args1 );
 
 	mov	ecx, 1
-	call	QWORD PTR __imp___acrt_iob_func
+	call	__acrt_iob_func
 	mov	r9, QWORD PTR args1$[rsp]
 	mov	r8d, DWORD PTR msgnum$[rsp]
 	mov	edx, DWORD PTR severity$[rsp]
@@ -812,9 +544,9 @@ $LN2@PrtMsg:
 ; 223  :         fflush( errout );                       /* 27-feb-90 */
 
 	mov	ecx, 1
-	call	QWORD PTR __imp___acrt_iob_func
+	call	__acrt_iob_func
 	mov	rcx, rax
-	call	QWORD PTR __imp_fflush
+	call	fflush
 $LN4@PrtMsg:
 
 ; 224  :     }
@@ -842,25 +574,24 @@ $LN5@PrtMsg:
 ; 228  :     }
 ; 229  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 PrtMsg	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\errmsg.c
 _TEXT	SEGMENT
 i$ = 32
-j$ = 36
-type$ = 40
-pMsg$ = 48
-buffer$ = 80
-tv76 = 832
-__$ArrayPad$ = 840
-fp$ = 864
-severity$ = 872
-msgnum$ = 880
-args$ = 888
+tv76 = 36
+j$ = 40
+type$ = 48
+pMsg$ = 56
+buffer$ = 64
+__$ArrayPad$ = 1216
+fp$ = 1248
+severity$ = 1256
+msgnum$ = 1264
+args$ = 1272
 PutMsg	PROC
 
 ; 162  : {
@@ -869,13 +600,7 @@ PutMsg	PROC
 	mov	DWORD PTR [rsp+24], r8d
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 848				; 00000350H
-	mov	rdi, rsp
-	mov	ecx, 212				; 000000d4H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+864]
+	sub	rsp, 1240				; 000004d8H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -908,7 +633,7 @@ PutMsg	PROC
 	mov	r8, rax
 	mov	edx, 1
 	lea	rcx, QWORD PTR buffer$[rsp]
-	call	QWORD PTR __imp_fwrite
+	call	fwrite
 $LN5@PutMsg:
 
 ; 172  :         }
@@ -973,7 +698,7 @@ $LN2@PutMsg:
 	add	eax, DWORD PTR msgnum$[rsp]
 	mov	r9d, eax
 	mov	r8, QWORD PTR type$[rsp]
-	lea	rdx, OFFSET FLAT:$SG10948
+	lea	rdx, OFFSET FLAT:$SG10986
 	lea	rcx, QWORD PTR buffer$[rsp]
 	call	sprintf
 	mov	DWORD PTR i$[rsp], eax
@@ -1001,15 +726,15 @@ $LN10@PutMsg:
 	mov	r8, rax
 	mov	edx, 1
 	lea	rcx, QWORD PTR buffer$[rsp]
-	call	QWORD PTR __imp_fwrite
+	call	fwrite
 
 ; 186  :         fwrite( "\n", 1, 1, fp );
 
 	mov	r9, QWORD PTR fp$[rsp]
 	mov	r8d, 1
 	mov	edx, 1
-	lea	rcx, OFFSET FLAT:$SG10949
-	call	QWORD PTR __imp_fwrite
+	lea	rcx, OFFSET FLAT:$SG10987
+	call	fwrite
 
 ; 187  : 
 ; 188  :         /* if in Pass 1, add the error msg to the listing */
@@ -1046,7 +771,7 @@ $LN10@PutMsg:
 ; 195  :             LstPrintf( "                           %s", buffer );
 
 	lea	rdx, QWORD PTR buffer$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10951
+	lea	rcx, OFFSET FLAT:$SG10989
 	call	LstPrintf
 
 ; 196  :             LstNL();
@@ -1059,18 +784,14 @@ $LN4@PutMsg:
 ; 198  :     }
 ; 199  : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:PutMsg$rtcFrameData
-	call	_RTC_CheckStackVars
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 848				; 00000350H
-	pop	rdi
+	add	rsp, 1240				; 000004d8H
 	ret	0
 PutMsg	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\errmsg.c
 _TEXT	SEGMENT
 WriteError PROC
@@ -1078,21 +799,16 @@ WriteError PROC
 ; 346  : {
 
 $LN3:
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 
 ; 347  :     DebugMsg(("WriteError occured\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11037
+	lea	rcx, OFFSET FLAT:$SG11075
 	call	DoDebugMsg
 
 ; 348  :     Fatal( FILE_WRITE_ERROR, CurrFName[OBJ], errno );
 
-	call	QWORD PTR __imp__errno
+	call	_errno
 	mov	ecx, 8
 	imul	rcx, rcx, 1
 	lea	rdx, OFFSET FLAT:ModuleInfo+128
@@ -1103,12 +819,11 @@ $LN3:
 
 ; 349  : };
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 WriteError ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\errmsg.c
 _TEXT	SEGMENT
 p$ = 32
@@ -1118,12 +833,7 @@ PrintUsage PROC
 ; 150  : {
 
 $LN6:
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 56					; 00000038H
 
 ; 151  :     const char *p;
 ; 152  :     write_logo();
@@ -1152,7 +862,7 @@ $LN2@PrintUsage:
 
 	mov	r8, QWORD PTR p2$1[rsp]
 	mov	rdx, QWORD PTR p$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10921
+	lea	rcx, OFFSET FLAT:$SG10959
 	call	printf
 
 ; 156  :         p = p2 + strlen( p2 ) + 1;
@@ -1170,12 +880,11 @@ $LN3@PrintUsage:
 
 ; 158  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 PrintUsage ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\errmsg.c
 _TEXT	SEGMENT
 tv67 = 32
@@ -1184,12 +893,7 @@ write_logo PROC
 ; 139  : {
 
 $LN4:
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 56					; 00000038H
 
 ; 140  :     if( banner_printed == FALSE ) {
 
@@ -1211,7 +915,7 @@ $LN4:
 	mov	rcx, QWORD PTR tv67[rsp]
 	mov	r8, rcx
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG10913
+	lea	rcx, OFFSET FLAT:$SG10951
 	call	printf
 
 ; 143  :         return( 4 ); /* return number of lines printed */
@@ -1228,12 +932,11 @@ $LN1@write_logo:
 
 ; 146  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 write_logo ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\errmsg.c
 _TEXT	SEGMENT
 tv73 = 48
@@ -1242,24 +945,19 @@ ErrnoStr PROC
 ; 299  : {
 
 $LN5:
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 72					; 00000048H
 
 ; 300  :     static char buffer[32];
 ; 301  :     return( ( errno == ENOENT ) ? "ENOENT" : myltoa( errno, buffer, 10, FALSE, FALSE ) );
 
-	call	QWORD PTR __imp__errno
+	call	_errno
 	cmp	DWORD PTR [rax], 2
 	jne	SHORT $LN3@ErrnoStr
-	lea	rax, OFFSET FLAT:$SG11022
+	lea	rax, OFFSET FLAT:$SG11060
 	mov	QWORD PTR tv73[rsp], rax
 	jmp	SHORT $LN4@ErrnoStr
 $LN3@ErrnoStr:
-	call	QWORD PTR __imp__errno
+	call	_errno
 	mov	BYTE PTR [rsp+32], 0
 	xor	r9d, r9d
 	mov	r8d, 10
@@ -1272,17 +970,16 @@ $LN4@ErrnoStr:
 
 ; 302  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 ErrnoStr ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\errmsg.c
 _TEXT	SEGMENT
-args1$ = 40
-args2$ = 72
-msgnum$ = 112
+args1$ = 32
+args2$ = 40
+msgnum$ = 64
 PrintNote PROC
 
 ; 235  : {
@@ -1292,13 +989,7 @@ $LN3:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+32], r9
-	push	rdi
-	sub	rsp, 96					; 00000060H
-	mov	rdi, rsp
-	mov	ecx, 24
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+112]
+	sub	rsp, 56					; 00000038H
 
 ; 236  :     va_list args1, args2;
 ; 237  : 
@@ -1331,22 +1022,18 @@ $LN3:
 
 ; 244  : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:PrintNote$rtcFrameData
-	call	_RTC_CheckStackVars
-	add	rsp, 96					; 00000060H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 PrintNote ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\errmsg.c
 _TEXT	SEGMENT
-args1$ = 40
-args2$ = 72
-tv71 = 88
-level$ = 112
-msgnum$ = 120
+args1$ = 32
+args2$ = 40
+tv71 = 48
+level$ = 80
+msgnum$ = 88
 EmitWarn PROC
 
 ; 275  : {
@@ -1356,13 +1043,7 @@ $LN8:
 	mov	DWORD PTR [rsp+8], ecx
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+32], r9
-	push	rdi
-	sub	rsp, 96					; 00000060H
-	mov	rdi, rsp
-	mov	ecx, 24
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+112]
+	sub	rsp, 72					; 00000048H
 
 ; 276  :     va_list args1, args2;
 ; 277  : 
@@ -1384,11 +1065,11 @@ $LN8:
 	mov	QWORD PTR tv71[rsp], rax
 	jmp	SHORT $LN7@EmitWarn
 $LN6@EmitWarn:
-	lea	rax, OFFSET FLAT:$SG11014
+	lea	rax, OFFSET FLAT:$SG11052
 	mov	QWORD PTR tv71[rsp], rax
 $LN7@EmitWarn:
 	mov	rdx, QWORD PTR tv71[rsp]
-	lea	rcx, OFFSET FLAT:$SG11015
+	lea	rcx, OFFSET FLAT:$SG11053
 	call	printf
 
 ; 281  : #endif
@@ -1459,21 +1140,17 @@ $LN2@EmitWarn:
 ; 294  :     }
 ; 295  : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:EmitWarn$rtcFrameData
-	call	_RTC_CheckStackVars
-	add	rsp, 96					; 00000060H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 EmitWarn ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\errmsg.c
 _TEXT	SEGMENT
+tv69 = 32
 args1$ = 40
-args2$ = 72
-tv69 = 88
-msgnum$ = 112
+args2$ = 48
+msgnum$ = 80
 EmitErr	PROC
 
 ; 248  : {
@@ -1483,13 +1160,7 @@ $LN6:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+32], r9
-	push	rdi
-	sub	rsp, 96					; 00000060H
-	mov	rdi, rsp
-	mov	ecx, 24
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+112]
+	sub	rsp, 72					; 00000048H
 
 ; 249  :     va_list args1, args2;
 ; 250  : 
@@ -1505,11 +1176,11 @@ $LN6:
 	mov	QWORD PTR tv69[rsp], rax
 	jmp	SHORT $LN5@EmitErr
 $LN4@EmitErr:
-	lea	rax, OFFSET FLAT:$SG10994
+	lea	rax, OFFSET FLAT:$SG11032
 	mov	QWORD PTR tv69[rsp], rax
 $LN5@EmitErr:
 	mov	rdx, QWORD PTR tv69[rsp]
-	lea	rcx, OFFSET FLAT:$SG10995
+	lea	rcx, OFFSET FLAT:$SG11033
 	call	printf
 
 ; 253  : #endif
@@ -1574,17 +1245,11 @@ $LN2@EmitErr:
 
 ; 265  : }
 
-	mov	edi, eax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:EmitErr$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	eax, edi
-	add	rsp, 96					; 00000060H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 EmitErr	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\errmsg.c
 _TEXT	SEGMENT
 msgnum$ = 48
@@ -1594,13 +1259,7 @@ EmitError PROC
 
 $LN3:
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 270  :     return( EmitErr( msgnum ) );
 
@@ -1609,17 +1268,16 @@ $LN3:
 
 ; 271  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 EmitError ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\errmsg.c
 _TEXT	SEGMENT
-args1$ = 40
-args2$ = 72
-msgnum$ = 112
+args1$ = 32
+args2$ = 40
+msgnum$ = 64
 Fatal	PROC
 
 ; 310  : {
@@ -1629,13 +1287,7 @@ $LN4:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+32], r9
-	push	rdi
-	sub	rsp, 96					; 00000060H
-	mov	rdi, rsp
-	mov	ecx, 24
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+112]
+	sub	rsp, 56					; 00000038H
 
 ; 311  :     va_list     args1, args2;
 ; 312  : 
@@ -1700,27 +1352,23 @@ $LN2@Fatal:
 ; 332  :     exit(1);
 
 	mov	ecx, 1
-	call	QWORD PTR __imp_exit
+	call	exit
 $LN3@Fatal:
 
 ; 333  : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:Fatal$rtcFrameData
-	call	_RTC_CheckStackVars
-	add	rsp, 96					; 00000060H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 Fatal	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\errmsg.c
 _TEXT	SEGMENT
-args$ = 40
-buffer$ = 80
-tv71 = 704
-__$ArrayPad$ = 712
-format$ = 736
+args$ = 32
+tv71 = 40
+buffer$ = 48
+__$ArrayPad$ = 1072
+format$ = 1104
 DoDebugMsg1 PROC
 
 ; 99   : {
@@ -1730,13 +1378,7 @@ $LN6:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+32], r9
-	push	rdi
-	sub	rsp, 720				; 000002d0H
-	mov	rdi, rsp
-	mov	ecx, 180				; 000000b4H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+736]
+	sub	rsp, 1096				; 00000448H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -1786,7 +1428,7 @@ $LN3@DoDebugMsg:
 	mov	rcx, QWORD PTR tv71[rsp]
 	mov	r8, rcx
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG10909
+	lea	rcx, OFFSET FLAT:$SG10947
 	call	printf
 $LN4@DoDebugMsg:
 
@@ -1822,22 +1464,18 @@ $LN1@DoDebugMsg:
 ; 133  : #endif
 ; 134  : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:DoDebugMsg1$rtcFrameData
-	call	_RTC_CheckStackVars
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 720				; 000002d0H
-	pop	rdi
+	add	rsp, 1096				; 00000448H
 	ret	0
 DoDebugMsg1 ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\errmsg.c
 _TEXT	SEGMENT
-args$ = 40
-format$ = 80
+args$ = 32
+format$ = 64
 DoDebugMsg PROC
 
 ; 73   : {
@@ -1847,13 +1485,7 @@ $LN5:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+32], r9
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 56					; 00000038H
 
 ; 74   :     va_list args;
 ; 75   :     if( !Options.debug ) return;
@@ -1915,22 +1547,18 @@ $LN1@DoDebugMsg:
 ; 95   : #endif
 ; 96   : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:DoDebugMsg$rtcFrameData
-	call	_RTC_CheckStackVars
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 DoDebugMsg ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT sprintf
 _TEXT	SEGMENT
 _Result$ = 32
-_ArgList$ = 56
-_Buffer$ = 96
-_Format$ = 104
+_ArgList$ = 40
+_Buffer$ = 64
+_Format$ = 72
 sprintf	PROC						; COMDAT
 
 ; 1776 : {
@@ -1940,13 +1568,7 @@ $LN3:
 	mov	QWORD PTR [rsp+8], rcx
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+32], r9
-	push	rdi
-	sub	rsp, 80					; 00000050H
-	mov	rdi, rsp
-	mov	ecx, 20
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+96]
+	sub	rsp, 56					; 00000038H
 
 ; 1777 :     int _Result;
 ; 1778 :     va_list _ArgList;
@@ -1979,17 +1601,11 @@ $LN3:
 
 ; 1788 : }
 
-	mov	edi, eax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:sprintf$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	eax, edi
-	add	rsp, 80					; 00000050H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 sprintf	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT vsprintf
 _TEXT	SEGMENT
@@ -2004,13 +1620,7 @@ $LN3:
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 1474 :     #pragma warning(push)
 ; 1475 :     #pragma warning(disable: 4996) // Deprecation
@@ -2027,12 +1637,11 @@ $LN3:
 ; 1477 :     #pragma warning(pop)
 ; 1478 : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 vsprintf ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT _vsprintf_l
 _TEXT	SEGMENT
@@ -2049,13 +1658,7 @@ $LN3:
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 1456 :     #pragma warning(push)
 ; 1457 :     #pragma warning(disable: 4996) // Deprecation
@@ -2072,12 +1675,11 @@ $LN3:
 ; 1459 :     #pragma warning(pop)
 ; 1460 : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 _vsprintf_l ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT _vsnprintf_l
 _TEXT	SEGMENT
@@ -2097,13 +1699,7 @@ $LN5:
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 72					; 00000048H
 
 ; 1386 :     int const _Result = __stdio_common_vsprintf(
 
@@ -2118,7 +1714,7 @@ $LN5:
 	mov	r8, QWORD PTR _BufferCount$[rsp]
 	mov	rdx, QWORD PTR _Buffer$[rsp]
 	mov	rcx, rax
-	call	QWORD PTR __imp___stdio_common_vsprintf
+	call	__stdio_common_vsprintf
 	mov	DWORD PTR _Result$[rsp], eax
 
 ; 1387 :         _CRT_INTERNAL_LOCAL_PRINTF_OPTIONS | _CRT_INTERNAL_PRINTF_LEGACY_VSPRINTF_NULL_TERMINATION,
@@ -2138,18 +1734,17 @@ $LN4@vsnprintf_:
 
 ; 1391 : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 _vsnprintf_l ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT printf
 _TEXT	SEGMENT
 _Result$ = 32
-_ArgList$ = 56
-_Format$ = 96
+_ArgList$ = 40
+_Format$ = 64
 printf	PROC						; COMDAT
 
 ; 950  : {
@@ -2159,13 +1754,7 @@ $LN3:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+32], r9
-	push	rdi
-	sub	rsp, 80					; 00000050H
-	mov	rdi, rsp
-	mov	ecx, 20
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+96]
+	sub	rsp, 56					; 00000038H
 
 ; 951  :     int _Result;
 ; 952  :     va_list _ArgList;
@@ -2177,7 +1766,7 @@ $LN3:
 ; 954  :     _Result = _vfprintf_l(stdout, _Format, NULL, _ArgList);
 
 	mov	ecx, 1
-	call	QWORD PTR __imp___acrt_iob_func
+	call	__acrt_iob_func
 	mov	r9, QWORD PTR _ArgList$[rsp]
 	xor	r8d, r8d
 	mov	rdx, QWORD PTR _Format$[rsp]
@@ -2195,24 +1784,18 @@ $LN3:
 
 ; 957  : }
 
-	mov	edi, eax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:printf$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	eax, edi
-	add	rsp, 80					; 00000050H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 printf	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT fprintf
 _TEXT	SEGMENT
 _Result$ = 32
-_ArgList$ = 56
-_Stream$ = 96
-_Format$ = 104
+_ArgList$ = 40
+_Stream$ = 64
+_Format$ = 72
 fprintf	PROC						; COMDAT
 
 ; 831  : {
@@ -2222,13 +1805,7 @@ $LN3:
 	mov	QWORD PTR [rsp+8], rcx
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+32], r9
-	push	rdi
-	sub	rsp, 80					; 00000050H
-	mov	rdi, rsp
-	mov	ecx, 20
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+96]
+	sub	rsp, 56					; 00000038H
 
 ; 832  :     int _Result;
 ; 833  :     va_list _ArgList;
@@ -2256,17 +1833,11 @@ $LN3:
 
 ; 838  : }
 
-	mov	edi, eax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:fprintf$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	eax, edi
-	add	rsp, 80					; 00000050H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 fprintf	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT vprintf
 _TEXT	SEGMENT
@@ -2279,18 +1850,12 @@ vprintf	PROC						; COMDAT
 $LN3:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 742  :     return _vfprintf_l(stdout, _Format, NULL, _ArgList);
 
 	mov	ecx, 1
-	call	QWORD PTR __imp___acrt_iob_func
+	call	__acrt_iob_func
 	mov	r9, QWORD PTR _ArgList$[rsp]
 	xor	r8d, r8d
 	mov	rdx, QWORD PTR _Format$[rsp]
@@ -2299,12 +1864,11 @@ $LN3:
 
 ; 743  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 vprintf	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT _vfprintf_l
 _TEXT	SEGMENT
@@ -2321,13 +1885,7 @@ $LN3:
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 639  :     return __stdio_common_vfprintf(_CRT_INTERNAL_LOCAL_PRINTF_OPTIONS, _Stream, _Format, _Locale, _ArgList);
 
@@ -2338,25 +1896,19 @@ $LN3:
 	mov	r8, QWORD PTR _Format$[rsp]
 	mov	rdx, QWORD PTR _Stream$[rsp]
 	mov	rcx, QWORD PTR [rax]
-	call	QWORD PTR __imp___stdio_common_vfprintf
+	call	__stdio_common_vfprintf
 
 ; 640  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 _vfprintf_l ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\corecrt_stdio_config.h
 ;	COMDAT __local_stdio_printf_options
 _TEXT	SEGMENT
 __local_stdio_printf_options PROC			; COMDAT
-
-; 73   : {
-
-$LN3:
-	push	rdi
 
 ; 74   :     static unsigned __int64 _OptionsStorage;
 ; 75   :     return &_OptionsStorage;
@@ -2365,7 +1917,6 @@ $LN3:
 
 ; 76   : }
 
-	pop	rdi
 	ret	0
 __local_stdio_printf_options ENDP
 _TEXT	ENDS

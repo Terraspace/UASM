@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 _DATA	SEGMENT
@@ -12,9 +12,9 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10579 DB	'F__RQQ', 00H
+$SG10617 DB	'F__RQQ', 00H
 	ORG $+9
-$SG10580 DB	'AddFloatingPointEmulationFixup enter, token=%u, regoverr'
+$SG10618 DB	'AddFloatingPointEmulationFixup enter, token=%u, regoverr'
 	DB	'ide=%d', 0aH, 00H
 _DATA	ENDS
 CONST	SEGMENT
@@ -36,9 +36,6 @@ EXTRN	MakeExtern:PROC
 EXTRN	CreateFixup:PROC
 EXTRN	store_fixup:PROC
 EXTRN	omf_FlushCurrSeg:PROC
-EXTRN	_RTC_CheckStackVars:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
 EXTRN	__GSHandlerCheck:PROC
 EXTRN	__security_check_cookie:PROC
 EXTRN	Options:BYTE
@@ -47,66 +44,27 @@ EXTRN	write_to_file:BYTE
 EXTRN	__security_cookie:QWORD
 pdata	SEGMENT
 $pdata$AddFloatingPointEmulationFixup DD imagerel $LN19
-	DD	imagerel $LN19+704
+	DD	imagerel $LN19+636
 	DD	imagerel $unwind$AddFloatingPointEmulationFixup
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
 xdata	SEGMENT
-$unwind$AddFloatingPointEmulationFixup DD 043719H
-	DD	019010eH
-	DD	060067007H
+$unwind$AddFloatingPointEmulationFixup DD 031a19H
+	DD	07007e20bH
+	DD	06006H
 	DD	imagerel __GSHandlerCheck
-	DD	0b0H
+	DD	060H
 xdata	ENDS
-CONST	SEGMENT
-AddFloatingPointEmulationFixup$rtcName$0 DB 073H
-	DB	079H
-	DB	06dH
-	DB	00H
-AddFloatingPointEmulationFixup$rtcName$1 DB 064H
-	DB	061H
-	DB	074H
-	DB	061H
-	DB	00H
-	ORG $+3
-AddFloatingPointEmulationFixup$rtcName$2 DB 06eH
-	DB	061H
-	DB	06dH
-	DB	065H
-	DB	00H
-	ORG $+15
-AddFloatingPointEmulationFixup$rtcVarDesc DD 098H
-	DD	08H
-	DQ	FLAT:AddFloatingPointEmulationFixup$rtcName$2
-	DD	074H
-	DD	04H
-	DQ	FLAT:AddFloatingPointEmulationFixup$rtcName$1
-	DD	048H
-	DD	010H
-	DQ	FLAT:AddFloatingPointEmulationFixup$rtcName$0
-	ORG $+144
-AddFloatingPointEmulationFixup$rtcFrameData DD 03H
-	DD	00H
-	DQ	FLAT:AddFloatingPointEmulationFixup$rtcVarDesc
-CONST	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\fpfixup.c
 _TEXT	SEGMENT
 i$ = 48
 patch$ = 52
-sym$ = 72
-fixup$ = 104
-data$ = 116
-name$ = 152
-__$ArrayPad$ = 176
-CodeInfo$ = 224
+fixup$ = 56
+sym$ = 64
+data$ = 80
+name$ = 88
+__$ArrayPad$ = 96
+CodeInfo$ = 144
 AddFloatingPointEmulationFixup PROC
 
 ; 68   : {
@@ -115,12 +73,7 @@ $LN19:
 	mov	QWORD PTR [rsp+8], rcx
 	push	rsi
 	push	rdi
-	sub	rsp, 200				; 000000c8H
-	mov	rdi, rsp
-	mov	ecx, 50					; 00000032H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+224]
+	sub	rsp, 120				; 00000078H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -133,7 +86,7 @@ $LN19:
 ; 74   :     char name[8] = "F__RQQ";
 
 	lea	rax, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10579
+	lea	rcx, OFFSET FLAT:$SG10617
 	mov	rdi, rax
 	mov	rsi, rcx
 	mov	ecx, 7
@@ -151,14 +104,14 @@ $LN19:
 	mov	r8d, DWORD PTR [rax+4]
 	mov	rax, QWORD PTR CodeInfo$[rsp]
 	mov	edx, DWORD PTR [rax+24]
-	lea	rcx, OFFSET FLAT:$SG10580
+	lea	rcx, OFFSET FLAT:$SG10618
 	call	DoDebugMsg
 
 ; 77   : 
 ; 78   :     if( CodeInfo->token == T_FWAIT ) {
 
 	mov	rax, QWORD PTR CodeInfo$[rsp]
-	cmp	DWORD PTR [rax+24], 828			; 0000033cH
+	cmp	DWORD PTR [rax+24], 833			; 00000341H
 	jne	SHORT $LN8@AddFloatin
 
 ; 79   :         patch = FPP_WAIT;
@@ -390,13 +343,10 @@ $LN1@AddFloatin:
 ; 123  :     return;
 ; 124  : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:AddFloatingPointEmulationFixup$rtcFrameData
-	call	_RTC_CheckStackVars
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 200				; 000000c8H
+	add	rsp, 120				; 00000078H
 	pop	rdi
 	pop	rsi
 	ret	0

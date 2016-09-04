@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 _DATA	SEGMENT
@@ -12,9 +12,9 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10617 DB	'coff', 00H
+$SG10655 DB	'coff', 00H
 	ORG $+3
-$SG10620 DB	'safeseh', 00H
+$SG10658 DB	'safeseh', 00H
 _DATA	ENDS
 PUBLIC	SafeSEHDirective
 EXTRN	EmitErr:PROC
@@ -22,29 +22,19 @@ EXTRN	EmitWarn:PROC
 EXTRN	QAddItem:PROC
 EXTRN	SymCreate:PROC
 EXTRN	SymFind:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
 EXTRN	Options:BYTE
 EXTRN	ModuleInfo:BYTE
 EXTRN	Parse_Pass:DWORD
 pdata	SEGMENT
 $pdata$SafeSEHDirective DD imagerel $LN22
-	DD	imagerel $LN22+575
+	DD	imagerel $LN22+554
 	DD	imagerel $unwind$SafeSEHDirective
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
 xdata	SEGMENT
-$unwind$SafeSEHDirective DD 022101H
-	DD	0700a520eH
+$unwind$SafeSEHDirective DD 010d01H
+	DD	0620dH
 xdata	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\safeseh.c
 _TEXT	SEGMENT
 sym$ = 32
@@ -58,13 +48,7 @@ SafeSEHDirective PROC
 $LN22:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 29   :     struct asym    *sym;
 ; 30   :     struct qnode   *node;
@@ -81,8 +65,8 @@ $LN22:
 
 ; 34   :             EmitWarn( 2, DIRECTIVE_IGNORED_WITHOUT_X, "coff" );
 
-	lea	r8, OFFSET FLAT:$SG10617
-	mov	edx, 261				; 00000105H
+	lea	r8, OFFSET FLAT:$SG10655
+	mov	edx, 262				; 00000106H
 	mov	ecx, 2
 	call	EmitWarn
 $LN6@SafeSEHDir:
@@ -107,8 +91,8 @@ $LN5@SafeSEHDir:
 
 ; 39   :             EmitWarn( 2, DIRECTIVE_IGNORED_WITHOUT_X, "safeseh" );
 
-	lea	r8, OFFSET FLAT:$SG10620
-	mov	edx, 261				; 00000105H
+	lea	r8, OFFSET FLAT:$SG10658
+	mov	edx, 262				; 00000106H
 	mov	ecx, 2
 	call	EmitWarn
 $LN8@SafeSEHDir:
@@ -204,7 +188,7 @@ $LN10@SafeSEHDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	ecx, 260				; 00000104H
+	mov	ecx, 261				; 00000105H
 	call	EmitErr
 	jmp	$LN1@SafeSEHDir
 $LN14@SafeSEHDir:
@@ -339,8 +323,7 @@ $LN1@SafeSEHDir:
 
 ; 89   : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 SafeSEHDirective ENDP
 _TEXT	ENDS

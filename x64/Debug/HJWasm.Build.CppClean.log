@@ -16,8 +16,6 @@ d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\x64\debug\posndir.obj
 d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\x64\debug\posndir.asm
 d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\x64\debug\preproc.obj
 d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\x64\debug\preproc.asm
-d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\x64\debug\proc.obj
-d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\x64\debug\proc.asm
 d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\x64\debug\queue.obj
 d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\x64\debug\queue.asm
 d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\x64\debug\reswords.obj
@@ -116,11 +114,6 @@ d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\x64\debug\elf.obj
 d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\x64\debug\elf.asm
 d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\x64\debug\end.obj
 d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\x64\debug\end.asm
-d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\x64\debug\hjwasm.exe
-d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\x64\debug\hjwasm.pdb
 d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\x64\debug\hjwasm.tlog\cl.command.1.tlog
 d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\x64\debug\hjwasm.tlog\cl.read.1.tlog
 d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\x64\debug\hjwasm.tlog\cl.write.1.tlog
-d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\x64\debug\hjwasm.tlog\link.command.1.tlog
-d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\x64\debug\hjwasm.tlog\link.read.1.tlog
-d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\x64\debug\hjwasm.tlog\link.write.1.tlog

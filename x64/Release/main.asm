@@ -12,12 +12,12 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG8073	DB	01H DUP (?)
+$SG8074	DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG8071	DB	'HJWASM', 00H
+$SG8072	DB	'HJWASM', 00H
 	ORG $+1
-$SG8077	DB	'%s', 00H
+$SG8078	DB	'%s', 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	printf
@@ -169,7 +169,7 @@ $LN28:
 ; 90   : 
 ; 91   : 	pEnv = getenv("HJWASM");
 
-	lea	rcx, OFFSET FLAT:$SG8071
+	lea	rcx, OFFSET FLAT:$SG8072
 	mov	DWORD PTR [rax+16], ebp
 	mov	esi, ebp
 	mov	r14, rdx
@@ -178,7 +178,7 @@ $LN28:
 ; 92   : 	if (pEnv == NULL)
 
 	test	rax, rax
-	lea	rcx, OFFSET FLAT:$SG8073
+	lea	rcx, OFFSET FLAT:$SG8074
 
 ; 93   : 		pEnv = "";
 ; 94   : 	argv[0] = pEnv;
@@ -344,7 +344,7 @@ $LN3@main:
 	xor	ecx, ecx
 	call	MsgGetEx
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG8077
+	lea	rcx, OFFSET FLAT:$SG8078
 	call	printf
 
 ; 141  : 

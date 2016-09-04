@@ -115,8 +115,8 @@ res(ZMM6, zmm6, RWT_REG, OP_ZMM, 6, 0, P_AVX, 64)
 res(ZMM7, zmm7, RWT_REG, OP_ZMM, 7, 0, P_AVX, 64)
 #endif
 
-res(CR0, cr0, RWT_REG, OP_RSPEC, 0, 0, P_386, 0)
-res(CR2, cr2, RWT_REG, OP_RSPEC, 2, 0, P_386, 0)
+res(CR0, cr0, RWT_REG, OP_RIP, 0, 0, P_386, 0)
+res(CR2, cr2, RWT_REG, OP_RIP, 2, 0, P_386, 0)
 res(CR3, cr3, RWT_REG, OP_RSPEC, 3, 0, P_386, 0)
 res(CR4, cr4, RWT_REG, OP_RSPEC, 4, 0, P_586, 0)
 
@@ -185,7 +185,7 @@ res(R12, r12, RWT_REG, OP_R64, 12, RWF_X64, P_64, SFR_IREG | 8)
 res(R13, r13, RWT_REG, OP_R64, 13, RWF_X64, P_64, SFR_IREG | 8)
 res(R14, r14, RWT_REG, OP_R64, 14, RWF_X64, P_64, SFR_IREG | 8)
 res(R15, r15, RWT_REG, OP_R64, 15, RWF_X64, P_64, SFR_IREG | 8)
-res(RIP, rip, RWT_REG, OP_RSPEC, 16, RWF_X64, P_64, SFR_IREG | 8)  //added by habran
+res(RIP, rip, RWT_REG, OP_RIP, 16, RWF_X64, P_64, SFR_IREG | 8)  //added by habran
 
 res(XMM8,  xmm8,  RWT_REG, OP_XMM, 8,  RWF_X64, P_64, 16)
 res(XMM9,  xmm9,  RWT_REG, OP_XMM, 9,  RWF_X64, P_64, 16)
@@ -291,6 +291,7 @@ res(OWORD,  oword,   RWT_STYPE,   0,     MT_OWORD,   0,  P_86, USE_EMPTY)
 #if AVXSUPP
 res(YMMWORD, ymmword, RWT_STYPE, 0, MT_YMMWORD, 0, P_AVX, USE_EMPTY)
 res(ZMMWORD, zmmword, RWT_STYPE, 0, MT_ZMMWORD, 0, P_AVX, USE_EMPTY)
+/* 2.15 used for VECTORCALL functions*/
 #endif
 /* NEAR must be first, FAR32 must be last, all contiguous */
 res(NEAR, near, RWT_STYPE, 0, MT_NEAR, 0, P_86, USE_EMPTY)
@@ -369,5 +370,7 @@ res(STDCALL, stdcall, RWT_RES_ID, 0, LANG_STDCALL, 0, P_86, 0)
 res(PASCAL, pascal, RWT_RES_ID, 0, LANG_PASCAL, 0, P_86, 0)
 res(FORTRAN, fortran, RWT_RES_ID, 0, LANG_FORTRAN, 0, P_86, 0)
 res(BASIC, basic, RWT_RES_ID, 0, LANG_BASIC, 0, P_86, 0)
-res(FASTCALL, fastcall, RWT_RES_ID, 0, LANG_FASTCALL, 0, P_86, 0)
+res(FASTCALL, fastcall, RWT_RES_ID, 0, LANG_FASTCALL, 0, P_64, 0)
+/* 2.15 implemented the VECTORCALL */
+res(VECTORCALL, vectorcall, RWT_RES_ID, 0, LANG_VECTORCALL, 0, P_64, 0)
 

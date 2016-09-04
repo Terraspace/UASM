@@ -1,8 +1,6 @@
 d:\hjwasm\sample.asm(3) : Warning A4095: Multiple .MODEL directives, .MODEL ignored
 d:\hjwasm\sample.asm(3) : Error A2132: Incompatible CPU mode for 64-bit segment
 d:\hjwasm\sample.asm(3) : Error A2132: Incompatible CPU mode for 64-bit segment
-d:\hjwasm\sample.asm(8) : Error A2106: Cannot open file: "\masm32\include\windows.inc" [ENOENT]
-d:\hjwasm\sample.asm(9) : Error A2106: Cannot open file: "\masm32\include\masm32.inc" [ENOENT]
 d:\hjwasm\sample.asm(20) : Error A2132: Incompatible CPU mode for 64-bit segment
 d:\hjwasm\sample.asm(24) : Error A2065: Constant expected
  opax(1)[sample.asm]: Macro called from

@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 _DATA	SEGMENT
@@ -12,44 +12,44 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10859 DB	'%X', 00H
+$SG10897 DB	'%X', 00H
 	ORG $+5
-$SG10916 DB	'store_placeholders: found ID: %s', 0aH, 00H
+$SG10954 DB	'store_placeholders: found ID: %s', 0aH, 00H
 	ORG $+2
-$SG10923 DB	'<>"''', 00H
+$SG10961 DB	'<>"''', 00H
 	ORG $+3
-$SG11031 DB	'REQ', 00H
-$SG11014 DB	'StoreMacro(%s, i=%u, store_data=%u) enter, params=>%s<', 0aH
+$SG11069 DB	'REQ', 00H
+$SG11052 DB	'StoreMacro(%s, i=%u, store_data=%u) enter, params=>%s<', 0aH
 	DB	00H
-$SG11040 DB	'VARARGML', 00H
+$SG11078 DB	'VARARGML', 00H
 	ORG $+7
-$SG11042 DB	'StoreMacro(%s): param=>%s< found', 0aH, 00H
+$SG11080 DB	'StoreMacro(%s): param=>%s< found', 0aH, 00H
 	ORG $+6
-$SG11044 DB	'StoreMacro(%s): macro parameters done', 0aH, 00H
+$SG11082 DB	'StoreMacro(%s): macro parameters done', 0aH, 00H
 	ORG $+1
-$SG11054 DB	'StoreMacro(%s): no token', 0aH, 00H
+$SG11092 DB	'StoreMacro(%s): no token', 0aH, 00H
 	ORG $+6
-$SG11064 DB	'StoreMacro(%s, %u): local=>%s< added, rest=%s', 0aH, 00H
+$SG11102 DB	'StoreMacro(%s, %u): local=>%s< added, rest=%s', 0aH, 00H
 	ORG $+1
-$SG11075 DB	'StoreMacro(%s): exitm found, lvl=%u, >%s<', 0aH, 00H
+$SG11113 DB	'StoreMacro(%s): exitm found, lvl=%u, >%s<', 0aH, 00H
 	ORG $+5
-$SG11080 DB	'StoreMacro(%s): endm found, lvl=%u', 0aH, 00H
+$SG11118 DB	'StoreMacro(%s): endm found, lvl=%u', 0aH, 00H
 	ORG $+4
-$SG11096 DB	'StoreMacro(%s, %u): cnt=%u, %u. line >%s<', 0aH, 00H
+$SG11134 DB	'StoreMacro(%s, %u): cnt=%u, %u. line >%s<', 0aH, 00H
 	ORG $+5
-$SG11097 DB	'StoreMacro(%s): exit, no error, isfunc=%u', 0aH, 00H
+$SG11135 DB	'StoreMacro(%s): exit, no error, isfunc=%u', 0aH, 00H
 	ORG $+5
-$SG11121 DB	'ReleaseMacroData(%s) enter', 0aH, 00H
+$SG11159 DB	'ReleaseMacroData(%s) enter', 0aH, 00H
 	ORG $+4
-$SG11137 DB	'MacroDir(%s) enter, i=%u', 0aH, 00H
+$SG11175 DB	'MacroDir(%s) enter, i=%u', 0aH, 00H
 	ORG $+6
-$SG11146 DB	'MacroDir(%s): macro already defined', 0aH, 00H
+$SG11184 DB	'MacroDir(%s): macro already defined', 0aH, 00H
 	ORG $+3
-$SG11163 DB	'macro name', 00H
+$SG11201 DB	'macro name', 00H
 	ORG $+5
-$SG11185 DB	'MacroInit(%u)', 0aH, 00H
+$SG11223 DB	'MacroInit(%u)', 0aH, 00H
 	ORG $+1
-$SG11187 DB	'@Environ', 00H
+$SG11225 DB	'@Environ', 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	_vsnprintf_l
@@ -64,17 +64,17 @@ PUBLIC	MacroFini
 PUBLIC	RenderMacroLine
 PUBLIC	MacroDir
 PUBLIC	PurgeDirective
-EXTRN	__imp_isalpha:PROC
-EXTRN	__imp_isdigit:PROC
-EXTRN	__imp_isspace:PROC
-EXTRN	__imp_isalnum:PROC
-EXTRN	__imp___stdio_common_vsprintf:PROC
-EXTRN	__imp_getenv:PROC
+EXTRN	isalpha:PROC
+EXTRN	isdigit:PROC
+EXTRN	isspace:PROC
+EXTRN	isalnum:PROC
+EXTRN	__stdio_common_vsprintf:PROC
+EXTRN	getenv:PROC
 EXTRN	memcpy:PROC
-EXTRN	__imp_memmove:PROC
+EXTRN	memmove:PROC
 EXTRN	memset:PROC
-EXTRN	__imp_strchr:PROC
-EXTRN	__imp__stricmp:PROC
+EXTRN	strchr:PROC
+EXTRN	_stricmp:PROC
 EXTRN	strlen:PROC
 EXTRN	DoDebugMsg:PROC
 EXTRN	DoDebugMsg1:PROC
@@ -93,11 +93,6 @@ EXTRN	StringInit:PROC
 EXTRN	StringFini:PROC
 EXTRN	LstWrite:PROC
 EXTRN	LstWriteSrcLine:PROC
-EXTRN	_RTC_AllocaHelper:PROC
-EXTRN	_RTC_CheckStackVars:PROC
-EXTRN	_RTC_CheckStackVars2:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
 EXTRN	__GSHandlerCheck:PROC
 EXTRN	__chkstk:PROC
 EXTRN	__security_check_cookie:PROC
@@ -113,218 +108,118 @@ _DATA	SEGMENT
 COMM	?_OptionsStorage@?1??__local_stdio_printf_options@@9@9:QWORD							; `__local_stdio_printf_options'::`2'::_OptionsStorage
 _DATA	ENDS
 _BSS	SEGMENT
-?buffer@?1??RenderMacroLine@@9@9 DB 0258H DUP (?)	; `RenderMacroLine'::`2'::buffer
+?buffer@?1??RenderMacroLine@@9@9 DB 0400H DUP (?)	; `RenderMacroLine'::`2'::buffer
 _BSS	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$__local_stdio_printf_options DD imagerel $LN3
-	DD	imagerel $LN3+11
-	DD	imagerel $unwind$__local_stdio_printf_options
-pdata	ENDS
-;	COMDAT pdata
-pdata	SEGMENT
 $pdata$_vsnprintf_l DD imagerel $LN5
-	DD	imagerel $LN5+140
+	DD	imagerel $LN5+117
 	DD	imagerel $unwind$_vsnprintf_l
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$_vsprintf_l DD imagerel $LN3
-	DD	imagerel $LN3+88
+	DD	imagerel $LN3+66
 	DD	imagerel $unwind$_vsprintf_l
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$sprintf DD imagerel $LN3
-	DD	imagerel $LN3+120
+	DD	imagerel $LN3+79
 	DD	imagerel $unwind$sprintf
 pdata	ENDS
 pdata	SEGMENT
 $pdata$CreateMacro DD imagerel $LN4
-	DD	imagerel $LN4+232
+	DD	imagerel $LN4+210
 	DD	imagerel $unwind$CreateMacro
 $pdata$ReleaseMacroData DD imagerel $LN10
-	DD	imagerel $LN10+262
+	DD	imagerel $LN10+240
 	DD	imagerel $unwind$ReleaseMacroData
 $pdata$fill_placeholders DD imagerel $LN13
-	DD	imagerel $LN13+552
+	DD	imagerel $LN13+530
 	DD	imagerel $unwind$fill_placeholders
 $pdata$StoreMacro DD imagerel $LN106
-	DD	imagerel $LN106+4308
+	DD	imagerel $LN106+4075
 	DD	imagerel $unwind$StoreMacro
 $pdata$MacroInit DD imagerel $LN4
-	DD	imagerel $LN4+270
+	DD	imagerel $LN4+249
 	DD	imagerel $unwind$MacroInit
 $pdata$MacroFini DD imagerel $LN3
-	DD	imagerel $LN3+32
+	DD	imagerel $LN3+14
 	DD	imagerel $unwind$MacroFini
 $pdata$HexDigit DD imagerel HexDigit
-	DD	imagerel HexDigit+85
+	DD	imagerel HexDigit+63
 	DD	imagerel $unwind$HexDigit
 $pdata$replace_parm DD imagerel replace_parm
-	DD	imagerel replace_parm+477
+	DD	imagerel replace_parm+454
 	DD	imagerel $unwind$replace_parm
 $pdata$store_placeholders DD imagerel store_placeholders
-	DD	imagerel store_placeholders+987
+	DD	imagerel store_placeholders+959
 	DD	imagerel $unwind$store_placeholders
 $pdata$RenderMacroLine DD imagerel $LN10
-	DD	imagerel $LN10+293
+	DD	imagerel $LN10+271
 	DD	imagerel $unwind$RenderMacroLine
 $pdata$MacroDir DD imagerel $LN12
-	DD	imagerel $LN12+454
+	DD	imagerel $LN12+433
 	DD	imagerel $unwind$MacroDir
 $pdata$PurgeDirective DD imagerel $LN12
-	DD	imagerel $LN12+387
+	DD	imagerel $LN12+366
 	DD	imagerel $unwind$PurgeDirective
 $pdata$EnvironFunc DD imagerel EnvironFunc
-	DD	imagerel EnvironFunc+176
+	DD	imagerel EnvironFunc+153
 	DD	imagerel $unwind$EnvironFunc
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
-CONST	SEGMENT
-StoreMacro$rtcName$0 DB 06cH
-	DB	073H
-	DB	00H
-	ORG $+1
-StoreMacro$rtcName$1 DB 074H
-	DB	06fH
-	DB	06bH
-	DB	00H
-StoreMacro$rtcName$2 DB 06dH
-	DB	06eH
-	DB	061H
-	DB	06dH
-	DB	065H
-	DB	073H
-	DB	00H
-	ORG $+1
-StoreMacro$rtcName$3 DB 062H
-	DB	075H
-	DB	066H
-	DB	066H
-	DB	065H
-	DB	072H
-	DB	00H
-	ORG $+1
-StoreMacro$rtcName$4 DB 05fH
-	DB	05fH
-	DB	024H
-	DB	041H
-	DB	06cH
-	DB	06cH
-	DB	06fH
-	DB	063H
-	DB	061H
-	DB	050H
-	DB	061H
-	DB	064H
-	DB	024H
-	DB	00H
-	ORG $+2
-StoreMacro$rtcFrameData DD 05H
-	DD	00H
-	DQ	FLAT:StoreMacro$rtcVarDesc
-	ORG $+8
-StoreMacro$rtcVarDesc DD 013d8H
-	DD	08H
-	DQ	FLAT:StoreMacro$rtcName$4
-	DD	01140H
-	DD	0258H
-	DQ	FLAT:StoreMacro$rtcName$3
-	DD	0120H
-	DD	01000H
-	DQ	FLAT:StoreMacro$rtcName$2
-	DD	0c0H
-	DD	040H
-	DQ	FLAT:StoreMacro$rtcName$1
-	DD	078H
-	DD	020H
-	DQ	FLAT:StoreMacro$rtcName$0
-CONST	ENDS
 xdata	SEGMENT
-$unwind$CreateMacro DD 021e01H
-	DD	07006520aH
-$unwind$ReleaseMacroData DD 021e01H
-	DD	07006720aH
-$unwind$fill_placeholders DD 022d01H
-	DD	070157219H
-$unwind$StoreMacro DD 035054f19H
-	DD	01223327H
-	DD	070150281H
-	DD	05014H
+$unwind$CreateMacro DD 010901H
+	DD	06209H
+$unwind$ReleaseMacroData DD 010901H
+	DD	08209H
+$unwind$fill_placeholders DD 011801H
+	DD	06218H
+$unwind$StoreMacro DD 035043719H
+	DD	01213326H
+	DD	0501402a0H
 	DD	imagerel __GSHandlerCheck
-	DD	013f8H
-$unwind$MacroInit DD 021c01H
-	DD	070055209H
-$unwind$MacroFini DD 021501H
-	DD	070023206H
-$unwind$HexDigit DD 021d01H
-	DD	070051209H
-$unwind$replace_parm DD 022d01H
-	DD	070157219H
-$unwind$store_placeholders DD 022301H
-	DD	0700b920fH
-$unwind$RenderMacroLine DD 021e01H
-	DD	07006120aH
-$unwind$MacroDir DD 022101H
-	DD	0700a720eH
-$unwind$PurgeDirective DD 022101H
-	DD	0700a520eH
-$unwind$EnvironFunc DD 022801H
-	DD	070105214H
+	DD	014f0H
+$unwind$MacroInit DD 010801H
+	DD	06208H
+$unwind$MacroFini DD 010401H
+	DD	04204H
+$unwind$HexDigit DD 010801H
+	DD	02208H
+$unwind$replace_parm DD 011801H
+	DD	08218H
+$unwind$store_placeholders DD 010e01H
+	DD	0c20eH
+$unwind$RenderMacroLine DD 010901H
+	DD	02209H
+$unwind$MacroDir DD 010d01H
+	DD	0820dH
+$unwind$PurgeDirective DD 010d01H
+	DD	0620dH
+$unwind$EnvironFunc DD 011301H
+	DD	06213H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$sprintf DD 022d01H
-	DD	070159219H
-xdata	ENDS
-;	COMDAT CONST
-CONST	SEGMENT
-sprintf$rtcName$0 DB 05fH
-	DB	041H
-	DB	072H
-	DB	067H
-	DB	04cH
-	DB	069H
-	DB	073H
-	DB	074H
-	DB	00H
-	ORG $+7
-sprintf$rtcVarDesc DD 038H
-	DD	08H
-	DQ	FLAT:sprintf$rtcName$0
-	ORG $+48
-sprintf$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:sprintf$rtcVarDesc
-CONST	ENDS
-;	COMDAT xdata
-xdata	SEGMENT
-$unwind$_vsprintf_l DD 022d01H
-	DD	070155219H
+$unwind$sprintf DD 011801H
+	DD	06218H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$_vsnprintf_l DD 022d01H
-	DD	070157219H
+$unwind$_vsprintf_l DD 011801H
+	DD	06218H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$__local_stdio_printf_options DD 010201H
-	DD	07002H
+$unwind$_vsnprintf_l DD 011801H
+	DD	08218H
 xdata	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\macro.c
 _TEXT	SEGMENT
-p$ = 32
-i$ = 40
+i$ = 32
+p$ = 40
 mi$ = 64
 buffer$ = 72
 tokenarray$ = 80
@@ -335,13 +230,7 @@ EnvironFunc PROC
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 783  :     char *p = getenv( mi->parm_array[0] );
 
@@ -350,7 +239,7 @@ EnvironFunc PROC
 	mov	rcx, QWORD PTR mi$[rsp]
 	mov	rcx, QWORD PTR [rcx+24]
 	mov	rcx, QWORD PTR [rcx+rax]
-	call	QWORD PTR __imp_getenv
+	call	getenv
 	mov	QWORD PTR p$[rsp], rax
 
 ; 784  :     int i;
@@ -375,12 +264,12 @@ EnvironFunc PROC
 
 ; 789  :         if ( i >= MAX_LINE_LEN )
 
-	cmp	DWORD PTR i$[rsp], 600			; 00000258H
+	cmp	DWORD PTR i$[rsp], 1024			; 00000400H
 	jl	SHORT $LN3@EnvironFun
 
 ; 790  :             i = MAX_LINE_LEN - 1;
 
-	mov	DWORD PTR i$[rsp], 599			; 00000257H
+	mov	DWORD PTR i$[rsp], 1023			; 000003ffH
 $LN3@EnvironFun:
 
 ; 791  :         memcpy( buffer, p, i );
@@ -405,12 +294,11 @@ $LN2@EnvironFun:
 
 ; 795  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 EnvironFunc ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\macro.c
 _TEXT	SEGMENT
 sym$ = 32
@@ -423,13 +311,7 @@ PurgeDirective PROC
 $LN12:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 737  :     struct asym *sym;
 ; 738  : 
@@ -496,7 +378,7 @@ $LN6@PurgeDirec:
 
 ; 749  :             return( EmitErr( EXPECTED, "macro name" ) );
 
-	lea	rdx, OFFSET FLAT:$SG11163
+	lea	rdx, OFFSET FLAT:$SG11201
 	mov	ecx, 230				; 000000e6H
 	call	EmitErr
 	jmp	$LN1@PurgeDirec
@@ -599,17 +481,16 @@ $LN1@PurgeDirec:
 
 ; 775  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 PurgeDirective ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\macro.c
 _TEXT	SEGMENT
-name$ = 32
-store_data$ = 40
-macro$ = 48
+store_data$ = 32
+macro$ = 40
+name$ = 48
 i$ = 80
 tokenarray$ = 88
 MacroDir PROC
@@ -619,13 +500,7 @@ MacroDir PROC
 $LN12:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+80]
+	sub	rsp, 72					; 00000048H
 
 ; 676  :     char                *name;
 ; 677  :     bool                store_data;
@@ -643,7 +518,7 @@ $LN12:
 
 	mov	r8d, DWORD PTR i$[rsp]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11137
+	lea	rcx, OFFSET FLAT:$SG11175
 	call	DoDebugMsg1
 
 ; 682  : 
@@ -759,7 +634,7 @@ $LN8@MacroDir:
 ; 706  :             DebugMsg(("MacroDir(%s): macro already defined\n", name));
 
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11146
+	lea	rcx, OFFSET FLAT:$SG11184
 	call	DoDebugMsg
 
 ; 707  : #if FASTMEM==0
@@ -834,12 +709,11 @@ $LN1@MacroDir:
 
 ; 725  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 MacroDir ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\macro.c
 _TEXT	SEGMENT
 dst$ = 0
@@ -850,13 +724,7 @@ RenderMacroLine PROC
 
 $LN10:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 16
-	mov	rdi, rsp
-	mov	ecx, 4
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+32]
+	sub	rsp, 24
 
 ; 255  :     /* a macro line cannot be displayed directly due to the format of
 ; 256  :      * the index field. for debug log, convert it to a readable format.
@@ -995,39 +863,32 @@ $LN3@RenderMacr:
 
 ; 277  : }
 
-	add	rsp, 16
-	pop	rdi
+	add	rsp, 24
 	ret	0
 RenderMacroLine ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\macro.c
 _TEXT	SEGMENT
-p$ = 32
-start$ = 40
-quote$ = 48
+quote$ = 32
+p$ = 40
+substprf$ = 48
 brlevel$ = 52
-params$ = 56
-qlevel$ = 60
-substprf$ = 64
-tv153 = 68
-tv177 = 72
-tv193 = 76
-line$ = 96
-mnames$ = 104
+tv193 = 56
+params$ = 60
+start$ = 64
+tv153 = 72
+tv177 = 76
+qlevel$ = 80
+line$ = 112
+mnames$ = 120
 store_placeholders PROC
 
 ; 178  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 80					; 00000050H
-	mov	rdi, rsp
-	mov	ecx, 20
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+96]
+	sub	rsp, 104				; 00000068H
 
 ; 179  :     /* scan a macro source line for parameter and local names.
 ; 180  :      * - line: the source line
@@ -1069,7 +930,7 @@ $LN2@store_plac:
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isdigit
+	call	isdigit
 	test	eax, eax
 	je	SHORT $LN11@store_plac
 $LN5@store_plac:
@@ -1083,7 +944,7 @@ $LN5@store_plac:
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isalnum
+	call	isalnum
 	test	eax, eax
 	jne	SHORT $LN13@store_plac
 	mov	rax, QWORD PTR p$[rsp]
@@ -1116,7 +977,7 @@ $LN11@store_plac:
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isalnum
+	call	isalnum
 	test	eax, eax
 	jne	$LN16@store_plac
 	mov	rax, QWORD PTR p$[rsp]
@@ -1154,7 +1015,7 @@ $LN11@store_plac:
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax-1]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isalnum
+	call	isalnum
 	test	eax, eax
 	jne	SHORT $LN33@store_plac
 	mov	rax, QWORD PTR p$[rsp]
@@ -1191,7 +1052,7 @@ $LN16@store_plac:
 ; 205  :             DebugMsg1(("store_placeholders: found ID: %s\n", p));
 
 	mov	rdx, QWORD PTR p$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10916
+	lea	rcx, OFFSET FLAT:$SG10954
 	call	DoDebugMsg1
 
 ; 206  :             start = p++;
@@ -1208,7 +1069,7 @@ $LN7@store_plac:
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isalnum
+	call	isalnum
 	test	eax, eax
 	jne	SHORT $LN18@store_plac
 	mov	rax, QWORD PTR p$[rsp]
@@ -1332,8 +1193,8 @@ $LN22@store_plac:
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax+1]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG10923
-	call	QWORD PTR __imp_strchr
+	lea	rcx, OFFSET FLAT:$SG10961
+	call	strchr
 	test	rax, rax
 	je	SHORT $LN23@store_plac
 
@@ -1452,16 +1313,15 @@ $LN3@store_plac:
 
 ; 249  : }
 
-	add	rsp, 80					; 00000050H
-	pop	rdi
+	add	rsp, 104				; 00000068H
 	ret	0
 store_placeholders ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\macro.c
 _TEXT	SEGMENT
-rest$ = 32
-count$ = 40
+count$ = 32
+rest$ = 40
 end$1 = 48
 dst$2 = 56
 line$ = 80
@@ -1476,13 +1336,7 @@ replace_parm PROC
 	mov	DWORD PTR [rsp+24], r8d
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 72					; 00000048H
 
 ; 121  :     /* scan list of macro paras/locals if current word is found.
 ; 122  :      * - line: current line
@@ -1676,7 +1530,7 @@ $LN11@replace_pa:
 	mov	r8, rax
 	mov	rdx, QWORD PTR rest$[rsp]
 	mov	rcx, QWORD PTR start$[rsp]
-	call	QWORD PTR __imp_memmove
+	call	memmove
 $LN12@replace_pa:
 
 ; 169  :             }
@@ -1699,12 +1553,11 @@ $LN1@replace_pa:
 
 ; 174  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 replace_parm ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\macro.c
 _TEXT	SEGMENT
 tv74 = 0
@@ -1714,13 +1567,7 @@ HexDigit PROC
 ; 68   : {
 
 	mov	BYTE PTR [rsp+8], cl
-	push	rdi
-	sub	rsp, 16
-	mov	rdi, rsp
-	mov	ecx, 4
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	movzx	ecx, BYTE PTR [rsp+32]
+	sub	rsp, 24
 
 ; 69   :     x &= 0xF;
 
@@ -1746,12 +1593,11 @@ $LN4@HexDigit:
 
 ; 71   : }
 
-	add	rsp, 16
-	pop	rdi
+	add	rsp, 24
 	ret	0
 HexDigit ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\macro.c
 _TEXT	SEGMENT
 MacroFini PROC
@@ -1759,12 +1605,7 @@ MacroFini PROC
 ; 830  : {
 
 $LN3:
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 
 ; 831  :     StringFini();
 
@@ -1772,12 +1613,11 @@ $LN3:
 
 ; 832  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 MacroFini ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\macro.c
 _TEXT	SEGMENT
 macro$ = 32
@@ -1788,20 +1628,14 @@ MacroInit PROC
 
 $LN4:
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 803  :     struct dsym *macro;
 ; 804  : 
 ; 805  :     DebugMsg(( "MacroInit(%u)\n", pass ));
 
 	mov	edx, DWORD PTR pass$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11185
+	lea	rcx, OFFSET FLAT:$SG11223
 	call	DoDebugMsg
 
 ; 806  : 
@@ -1828,7 +1662,7 @@ $LN4:
 ; 814  : 
 ; 815  :         macro = CreateMacro( "@Environ" );
 
-	lea	rcx, OFFSET FLAT:$SG11187
+	lea	rcx, OFFSET FLAT:$SG11225
 	call	CreateMacro
 	mov	QWORD PTR macro$[rsp], rax
 
@@ -1904,41 +1738,37 @@ $LN2@MacroInit:
 
 ; 826  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 MacroInit ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\macro.c
 _TEXT	SEGMENT
-info$ = 0
-src$ = 8
-token$ = 16
-mindex$ = 24
-paranode$ = 32
-nextline$ = 40
-lineno$ = 48
-nesting_depth$ = 52
-locals_done$ = 56
-ls$ = 72
-tok$ = 144
-mnames$ = 240
-buffer$ = 4368
-j$8 = 4980
-ptr$9 = 4984
-size$10 = 4992
-oldc$11 = 4996
-j$12 = 5000
-phs$13 = 5004
-__$AllocaPad$$ = 5032
-tv750 = 5048
-tv537 = 5056
-__$ArrayPad$ = 5064
-macro$ = 5104
-i$ = 5112
-tokenarray$ = 5120
-store_data$ = 5128
+phs$1 = 0
+mindex$ = 4
+nesting_depth$ = 8
+locals_done$ = 12
+oldc$2 = 13
+ls$ = 16
+j$3 = 48
+info$ = 56
+nextline$ = 64
+paranode$ = 72
+token$ = 80
+src$ = 88
+size$4 = 96
+lineno$ = 100
+ptr$5 = 104
+j$6 = 112
+tok$ = 128
+mnames$ = 192
+buffer$ = 4288
+__$ArrayPad$ = 5312
+macro$ = 5344
+i$ = 5352
+tokenarray$ = 5360
+store_data$ = 5368
 StoreMacro PROC
 
 ; 287  : {
@@ -1949,20 +1779,13 @@ $LN106:
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
 	push	rbp
-	push	rdi
-	mov	eax, 5128				; 00001408H
+	mov	eax, 5376				; 00001500H
 	call	__chkstk
 	sub	rsp, rax
 	lea	rbp, QWORD PTR [rsp+48]
-	mov	rdi, rsp
-	mov	ecx, 1282				; 00000502H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+5160]
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rbp
 	mov	QWORD PTR __$ArrayPad$[rbp], rax
-	mov	QWORD PTR __$AllocaPad$$[rbp], 0
 
 ; 288  :     struct macro_info   *info;
 ; 289  :     char                *src;
@@ -1998,7 +1821,7 @@ $LN106:
 	mov	r8d, DWORD PTR i$[rbp]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11014
+	lea	rcx, OFFSET FLAT:$SG11052
 	call	DoDebugMsg1
 
 ; 305  :     info = macro->e.macroinfo;
@@ -2020,28 +1843,28 @@ $LN106:
 
 	mov	eax, DWORD PTR ModuleInfo+496
 	cmp	DWORD PTR i$[rbp], eax
-	jge	$LN32@StoreMacro
+	jge	SHORT $LN32@StoreMacro
 
 ; 311  :             for ( j = i, info->parmcnt = 1; j < Token_Count; j++ )
 
 	mov	eax, DWORD PTR i$[rbp]
-	mov	DWORD PTR j$8[rbp], eax
+	mov	DWORD PTR j$3[rbp], eax
 	mov	eax, 1
 	mov	rcx, QWORD PTR info$[rbp]
 	mov	WORD PTR [rcx], ax
 	jmp	SHORT $LN4@StoreMacro
 $LN2@StoreMacro:
-	mov	eax, DWORD PTR j$8[rbp]
+	mov	eax, DWORD PTR j$3[rbp]
 	inc	eax
-	mov	DWORD PTR j$8[rbp], eax
+	mov	DWORD PTR j$3[rbp], eax
 $LN4@StoreMacro:
 	mov	eax, DWORD PTR ModuleInfo+496
-	cmp	DWORD PTR j$8[rbp], eax
+	cmp	DWORD PTR j$3[rbp], eax
 	jge	SHORT $LN3@StoreMacro
 
 ; 312  :                 if ( tokenarray[j].token == T_COMMA )
 
-	movsxd	rax, DWORD PTR j$8[rbp]
+	movsxd	rax, DWORD PTR j$3[rbp]
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rbp]
 	movzx	eax, BYTE PTR [rcx+rax]
@@ -2121,7 +1944,7 @@ $LN7@StoreMacro:
 	mov	rax, QWORD PTR token$[rbp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isalpha
+	call	isalpha
 	test	eax, eax
 	jne	SHORT $LN38@StoreMacro
 	mov	rax, QWORD PTR token$[rbp]
@@ -2185,7 +2008,7 @@ $LN35@StoreMacro:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rbp]
 	mov	r8, QWORD PTR [rcx+rax+8]
-	mov	edx, 269				; 0000010dH
+	mov	edx, 270				; 0000010eH
 	mov	ecx, 4
 	call	EmitWarn
 $LN39@StoreMacro:
@@ -2211,7 +2034,7 @@ $LN36@StoreMacro:
 
 	mov	rcx, QWORD PTR token$[rbp]
 	call	strlen
-	mov	DWORD PTR j$8[rbp], eax
+	mov	DWORD PTR j$3[rbp], eax
 
 ; 337  :             mnames[mindex].label = token;
 
@@ -2224,7 +2047,7 @@ $LN36@StoreMacro:
 
 	movsxd	rax, DWORD PTR mindex$[rbp]
 	imul	rax, rax, 16
-	movzx	ecx, WORD PTR j$8[rbp]
+	movzx	ecx, WORD PTR j$3[rbp]
 	mov	WORD PTR mnames$[rbp+rax+8], cx
 
 ; 339  :             mindex++;
@@ -2353,10 +2176,10 @@ $LN41@StoreMacro:
 
 	movsxd	rax, DWORD PTR i$[rbp]
 	imul	rax, rax, 32				; 00000020H
-	lea	rdx, OFFSET FLAT:$SG11031
+	lea	rdx, OFFSET FLAT:$SG11069
 	mov	rcx, QWORD PTR tokenarray$[rbp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
-	call	QWORD PTR __imp__stricmp
+	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN45@StoreMacro
 
@@ -2445,7 +2268,7 @@ $LN47@StoreMacro:
 	movsxd	rax, DWORD PTR i$[rbp]
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rbp]
-	cmp	DWORD PTR [rcx+rax+16], 431		; 000001afH
+	cmp	DWORD PTR [rcx+rax+16], 436		; 000001b4H
 	jne	SHORT $LN50@StoreMacro
 	movzx	eax, BYTE PTR Options+143
 	test	eax, eax
@@ -2493,10 +2316,10 @@ $LN50@StoreMacro:
 
 	movsxd	rax, DWORD PTR i$[rbp]
 	imul	rax, rax, 32				; 00000020H
-	lea	rdx, OFFSET FLAT:$SG11040
+	lea	rdx, OFFSET FLAT:$SG11078
 	mov	rcx, QWORD PTR tokenarray$[rbp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
-	call	QWORD PTR __imp__stricmp
+	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN53@StoreMacro
 
@@ -2579,7 +2402,7 @@ $LN40@StoreMacro:
 	mov	r8, QWORD PTR mnames$[rbp+rax]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11042
+	lea	rcx, OFFSET FLAT:$SG11080
 	call	DoDebugMsg1
 
 ; 397  :             if( i < Token_Count && tokenarray[i].token != T_COMMA ) {
@@ -2626,7 +2449,7 @@ $LN6@StoreMacro:
 
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11044
+	lea	rcx, OFFSET FLAT:$SG11082
 	call	DoDebugMsg1
 $LN31@StoreMacro:
 
@@ -2719,7 +2542,7 @@ $LN11@StoreMacro:
 	mov	rax, QWORD PTR ls$[rbp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isspace
+	call	isspace
 	test	eax, eax
 	je	SHORT $LN12@StoreMacro
 	mov	rax, QWORD PTR ls$[rbp]
@@ -2839,14 +2662,14 @@ $LN62@StoreMacro:
 
 	mov	edx, 92					; 0000005cH
 	mov	rcx, QWORD PTR ls$[rbp]
-	call	QWORD PTR __imp_strchr
+	call	strchr
 	test	rax, rax
 	je	$LN63@StoreMacro
 
 ; 465  :             ptr = ls.input;
 
 	mov	rax, QWORD PTR ls$[rbp]
-	mov	QWORD PTR ptr$9[rbp], rax
+	mov	QWORD PTR ptr$5[rbp], rax
 $LN13@StoreMacro:
 
 ; 466  :             while ( *ls.input && *ls.input != ';' ) {
@@ -2908,7 +2731,7 @@ $LN15@StoreMacro:
 	mov	rax, QWORD PTR ls$[rbp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isspace
+	call	isspace
 	test	eax, eax
 	je	SHORT $LN16@StoreMacro
 	mov	rax, QWORD PTR ls$[rbp]
@@ -2924,7 +2747,7 @@ $LN14@StoreMacro:
 
 ; 477  :             ls.input = ptr;
 
-	mov	rax, QWORD PTR ptr$9[rbp]
+	mov	rax, QWORD PTR ptr$5[rbp]
 	mov	QWORD PTR ls$[rbp], rax
 $LN63@StoreMacro:
 
@@ -2941,7 +2764,7 @@ $LN63@StoreMacro:
 
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11054
+	lea	rcx, OFFSET FLAT:$SG11092
 	call	DoDebugMsg1
 
 ; 481  :             goto continue_scan;
@@ -2963,7 +2786,7 @@ $LN65@StoreMacro:
 	jne	$LN66@StoreMacro
 	mov	eax, 32					; 00000020H
 	imul	rax, rax, 0
-	cmp	DWORD PTR tok$[rbp+rax+16], 430		; 000001aeH
+	cmp	DWORD PTR tok$[rbp+rax+16], 435		; 000001b3H
 	jne	$LN66@StoreMacro
 
 ; 485  :             if( !store_data )
@@ -2986,7 +2809,7 @@ $LN20@StoreMacro:
 	mov	rax, QWORD PTR ls$[rbp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isspace
+	call	isspace
 	test	eax, eax
 	je	SHORT $LN21@StoreMacro
 	mov	rax, QWORD PTR ls$[rbp]
@@ -3031,7 +2854,7 @@ $LN68@StoreMacro:
 	mov	rax, QWORD PTR ModuleInfo+488
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isalpha
+	call	isalpha
 	test	eax, eax
 	jne	SHORT $LN70@StoreMacro
 	mov	rax, QWORD PTR ModuleInfo+488
@@ -3084,7 +2907,7 @@ $LN70@StoreMacro:
 ; 498  :                     EmitWarn( 4, PARAM_IS_RESERVED_WORD, StringBufferEnd );
 
 	mov	r8, QWORD PTR ModuleInfo+488
-	mov	edx, 269				; 0000010dH
+	mov	edx, 270				; 0000010eH
 	mov	ecx, 4
 	call	EmitWarn
 $LN73@StoreMacro:
@@ -3111,37 +2934,29 @@ $LN74@StoreMacro:
 
 	mov	rcx, QWORD PTR ModuleInfo+488
 	call	strlen
-	mov	DWORD PTR size$10[rbp], eax
+	mov	DWORD PTR size$4[rbp], eax
 
 ; 505  :                 mnames[mindex].label = myalloca( size );
 
-	movsxd	rax, DWORD PTR size$10[rbp]
-	add	rax, 36					; 00000024H
-	mov	QWORD PTR tv750[rbp], rax
-	mov	rax, QWORD PTR tv750[rbp]
-	add	rax, 15
-	cmp	rax, QWORD PTR tv750[rbp]
+	movsxd	rax, DWORD PTR size$4[rbp]
+	mov	rcx, rax
+	add	rcx, 15
+	cmp	rcx, rax
 	ja	SHORT $LN105@StoreMacro
-	mov	rax, 1152921504606846960		; 0ffffffffffffff0H
+	mov	rcx, 1152921504606846960		; 0ffffffffffffff0H
 $LN105@StoreMacro:
-	and	rax, -16
+	and	rcx, -16
+	mov	rax, rcx
 	call	__chkstk
 	sub	rsp, rax
 	lea	rax, QWORD PTR [rsp+48]
-	mov	QWORD PTR tv537[rbp], rax
-	lea	r8, QWORD PTR __$AllocaPad$$[rbp]
-	mov	rdx, QWORD PTR tv750[rbp]
-	mov	rcx, QWORD PTR tv537[rbp]
-	call	_RTC_AllocaHelper
-	add	QWORD PTR tv537[rbp], 32		; 00000020H
-	movsxd	rax, DWORD PTR mindex$[rbp]
-	imul	rax, rax, 16
-	mov	rcx, QWORD PTR tv537[rbp]
-	mov	QWORD PTR mnames$[rbp+rax], rcx
+	movsxd	rcx, DWORD PTR mindex$[rbp]
+	imul	rcx, rcx, 16
+	mov	QWORD PTR mnames$[rbp+rcx], rax
 
 ; 506  :                 memcpy( mnames[mindex].label, StringBufferEnd, size );
 
-	movsxd	rax, DWORD PTR size$10[rbp]
+	movsxd	rax, DWORD PTR size$4[rbp]
 	movsxd	rcx, DWORD PTR mindex$[rbp]
 	imul	rcx, rcx, 16
 	mov	r8, rax
@@ -3153,7 +2968,7 @@ $LN105@StoreMacro:
 
 	movsxd	rax, DWORD PTR mindex$[rbp]
 	imul	rax, rax, 16
-	movzx	ecx, WORD PTR size$10[rbp]
+	movzx	ecx, WORD PTR size$4[rbp]
 	mov	WORD PTR mnames$[rbp+rax+8], cx
 
 ; 508  :                 mindex++;
@@ -3186,7 +3001,7 @@ $LN105@StoreMacro:
 	mov	r8d, DWORD PTR nesting_depth$[rbp]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11064
+	lea	rcx, OFFSET FLAT:$SG11102
 	call	DoDebugMsg1
 $LN22@StoreMacro:
 
@@ -3195,7 +3010,7 @@ $LN22@StoreMacro:
 	mov	rax, QWORD PTR ls$[rbp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isspace
+	call	isspace
 	test	eax, eax
 	je	SHORT $LN23@StoreMacro
 	mov	rax, QWORD PTR ls$[rbp]
@@ -3224,7 +3039,7 @@ $LN75@StoreMacro:
 	mov	rax, QWORD PTR ls$[rbp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isalpha
+	call	isalpha
 	test	eax, eax
 	jne	SHORT $LN78@StoreMacro
 	mov	rax, QWORD PTR ls$[rbp]
@@ -3318,8 +3133,8 @@ $LN79@StoreMacro:
 
 	mov	eax, 32					; 00000020H
 	imul	rax, rax, 0
-	cmp	DWORD PTR tok$[rbp+rax+16], 393		; 00000189H
-	jne	$LN83@StoreMacro
+	cmp	DWORD PTR tok$[rbp+rax+16], 398		; 0000018eH
+	jne	SHORT $LN83@StoreMacro
 
 ; 535  :                 DebugMsg1(("StoreMacro(%s): exitm found, lvl=%u, >%s<\n", macro->sym.name, nesting_depth, ls.input ));
 
@@ -3327,7 +3142,7 @@ $LN79@StoreMacro:
 	mov	r8d, DWORD PTR nesting_depth$[rbp]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11075
+	lea	rcx, OFFSET FLAT:$SG11113
 	call	DoDebugMsg1
 
 ; 536  :                 if ( nesting_depth == 0 ) {
@@ -3338,30 +3153,30 @@ $LN79@StoreMacro:
 ; 537  :                     ptr = ls.input;
 
 	mov	rax, QWORD PTR ls$[rbp]
-	mov	QWORD PTR ptr$9[rbp], rax
+	mov	QWORD PTR ptr$5[rbp], rax
 $LN24@StoreMacro:
 
 ; 538  :                     while( isspace( *ptr ) ) ptr++;
 
-	mov	rax, QWORD PTR ptr$9[rbp]
+	mov	rax, QWORD PTR ptr$5[rbp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isspace
+	call	isspace
 	test	eax, eax
 	je	SHORT $LN25@StoreMacro
-	mov	rax, QWORD PTR ptr$9[rbp]
+	mov	rax, QWORD PTR ptr$5[rbp]
 	inc	rax
-	mov	QWORD PTR ptr$9[rbp], rax
+	mov	QWORD PTR ptr$5[rbp], rax
 	jmp	SHORT $LN24@StoreMacro
 $LN25@StoreMacro:
 
 ; 539  :                     if ( *ptr && *ptr != ';' )
 
-	mov	rax, QWORD PTR ptr$9[rbp]
+	mov	rax, QWORD PTR ptr$5[rbp]
 	movsx	eax, BYTE PTR [rax]
 	test	eax, eax
 	je	SHORT $LN86@StoreMacro
-	mov	rax, QWORD PTR ptr$9[rbp]
+	mov	rax, QWORD PTR ptr$5[rbp]
 	movsx	eax, BYTE PTR [rax]
 	cmp	eax, 59					; 0000003bH
 	je	SHORT $LN86@StoreMacro
@@ -3386,7 +3201,7 @@ $LN83@StoreMacro:
 
 	mov	eax, 32					; 00000020H
 	imul	rax, rax, 0
-	cmp	DWORD PTR tok$[rbp+rax+16], 394		; 0000018aH
+	cmp	DWORD PTR tok$[rbp+rax+16], 399		; 0000018fH
 	jne	SHORT $LN87@StoreMacro
 
 ; 544  :                 DebugMsg1(("StoreMacro(%s): endm found, lvl=%u\n", macro->sym.name, nesting_depth ));
@@ -3394,7 +3209,7 @@ $LN83@StoreMacro:
 	mov	r8d, DWORD PTR nesting_depth$[rbp]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11080
+	lea	rcx, OFFSET FLAT:$SG11118
 	call	DoDebugMsg1
 
 ; 545  :                 if( nesting_depth ) {
@@ -3477,7 +3292,7 @@ $LN29@StoreMacro:
 	mov	rax, QWORD PTR ls$[rbp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isspace
+	call	isspace
 	test	eax, eax
 	je	SHORT $LN30@StoreMacro
 	mov	rax, QWORD PTR ls$[rbp]
@@ -3507,7 +3322,7 @@ $LN94@StoreMacro:
 
 	mov	rax, QWORD PTR ls$[rbp]
 	movzx	eax, BYTE PTR [rax-1]
-	mov	BYTE PTR oldc$11[rbp], al
+	mov	BYTE PTR oldc$2[rbp], al
 
 ; 565  :                 if ( GetToken( &tok[0], &ls ) == ERROR )
 
@@ -3539,7 +3354,7 @@ $LN96@StoreMacro:
 	cmp	eax, 3
 	jne	SHORT $LN97@StoreMacro
 $LN98@StoreMacro:
-	movsx	eax, BYTE PTR oldc$11[rbp]
+	movsx	eax, BYTE PTR oldc$2[rbp]
 	cmp	eax, 38					; 00000026H
 	je	SHORT $LN97@StoreMacro
 	mov	rax, QWORD PTR ls$[rbp]
@@ -3570,7 +3385,7 @@ $LN27@StoreMacro:
 
 	mov	eax, 32					; 00000020H
 	imul	rax, rax, 0
-	cmp	DWORD PTR tok$[rbp+rax+16], 392		; 00000188H
+	cmp	DWORD PTR tok$[rbp+rax+16], 397		; 0000018dH
 	je	SHORT $LN101@StoreMacro
 	mov	eax, 32					; 00000020H
 	imul	rax, rax, 0
@@ -3606,7 +3421,7 @@ $LN80@StoreMacro:
 ; 583  :             int j;
 ; 584  :             uint_8 phs = 0;
 
-	mov	BYTE PTR phs$13[rbp], 0
+	mov	BYTE PTR phs$1[rbp], 0
 
 ; 585  :             if ( mindex )
 
@@ -3618,18 +3433,18 @@ $LN80@StoreMacro:
 	lea	rdx, QWORD PTR mnames$[rbp]
 	mov	rcx, QWORD PTR src$[rbp]
 	call	store_placeholders
-	mov	BYTE PTR phs$13[rbp], al
+	mov	BYTE PTR phs$1[rbp], al
 $LN103@StoreMacro:
 
 ; 587  :             j = strlen( src );
 
 	mov	rcx, QWORD PTR src$[rbp]
 	call	strlen
-	mov	DWORD PTR j$12[rbp], eax
+	mov	DWORD PTR j$6[rbp], eax
 
 ; 588  :             *nextline = LclAlloc( sizeof( struct srcline ) + j );
 
-	movsxd	rax, DWORD PTR j$12[rbp]
+	movsxd	rax, DWORD PTR j$6[rbp]
 	add	rax, 16
 	mov	rcx, rax
 	call	LclAlloc
@@ -3646,12 +3461,12 @@ $LN103@StoreMacro:
 
 	mov	rax, QWORD PTR nextline$[rbp]
 	mov	rax, QWORD PTR [rax]
-	movzx	ecx, BYTE PTR phs$13[rbp]
+	movzx	ecx, BYTE PTR phs$1[rbp]
 	mov	BYTE PTR [rax+8], cl
 
 ; 591  :             memcpy( (*nextline)->line, src, j + 1 );
 
-	mov	eax, DWORD PTR j$12[rbp]
+	mov	eax, DWORD PTR j$6[rbp]
 	inc	eax
 	cdqe
 	mov	rcx, QWORD PTR nextline$[rbp]
@@ -3674,7 +3489,7 @@ $LN103@StoreMacro:
 	mov	DWORD PTR lineno$[rbp], eax
 	mov	rcx, QWORD PTR src$[rbp]
 	call	RenderMacroLine
-	movzx	ecx, BYTE PTR phs$13[rbp]
+	movzx	ecx, BYTE PTR phs$1[rbp]
 	mov	QWORD PTR [rsp+40], rax
 	mov	eax, DWORD PTR lineno$[rbp]
 	mov	DWORD PTR [rsp+32], eax
@@ -3682,7 +3497,7 @@ $LN103@StoreMacro:
 	mov	r8d, DWORD PTR nesting_depth$[rbp]
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11096
+	lea	rcx, OFFSET FLAT:$SG11134
 	call	DoDebugMsg1
 $LN102@StoreMacro:
 
@@ -3718,7 +3533,7 @@ $LN9@StoreMacro:
 	mov	r8d, eax
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11097
+	lea	rcx, OFFSET FLAT:$SG11135
 	call	DoDebugMsg1
 
 ; 599  :     return( NOT_ERROR );
@@ -3728,32 +3543,25 @@ $LN1@StoreMacro:
 
 ; 600  : }
 
-	mov	rdi, rax
-	lea	rcx, QWORD PTR [rbp-48]
-	lea	rdx, OFFSET FLAT:StoreMacro$rtcFrameData
-	mov	r8, QWORD PTR __$AllocaPad$$[rbp]
-	call	_RTC_CheckStackVars2
-	mov	rax, rdi
 	mov	rcx, QWORD PTR __$ArrayPad$[rbp]
 	xor	rcx, rbp
 	call	__security_check_cookie
-	lea	rsp, QWORD PTR [rbp+5080]
-	pop	rdi
+	lea	rsp, QWORD PTR [rbp+5328]
 	pop	rbp
 	ret	0
 StoreMacro ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\macro.c
 _TEXT	SEGMENT
 i$ = 32
+parmno$ = 36
 p$ = 40
-parmno$ = 48
-dst$ = 80
-src$ = 88
-argc$ = 96
-localstart$ = 104
-argv$ = 112
+dst$ = 64
+src$ = 72
+argc$ = 80
+localstart$ = 88
+argv$ = 96
 fill_placeholders PROC
 
 ; 79   : {
@@ -3763,13 +3571,7 @@ $LN13:
 	mov	DWORD PTR [rsp+24], r8d
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 56					; 00000038H
 
 ; 80   :     uint_32 i;
 ; 81   :     const char *p;
@@ -3853,7 +3655,7 @@ $LN2@fill_place:
 ; 97   :                     i = sprintf( dst, "%X", i );
 
 	mov	r8d, DWORD PTR i$[rsp]
-	lea	rdx, OFFSET FLAT:$SG10859
+	lea	rdx, OFFSET FLAT:$SG10897
 	mov	rcx, QWORD PTR dst$[rsp]
 	call	sprintf
 	mov	DWORD PTR i$[rsp], eax
@@ -3992,12 +3794,11 @@ $LN3@fill_place:
 ; 115  :     return;
 ; 116  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 fill_placeholders ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\macro.c
 _TEXT	SEGMENT
 i$ = 32
@@ -4010,13 +3811,7 @@ ReleaseMacroData PROC
 
 $LN10:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 72					; 00000048H
 
 ; 630  :     int             i;
 ; 631  :     struct srcline  *datacurr;
@@ -4026,7 +3821,7 @@ $LN10:
 
 	mov	rax, QWORD PTR macro$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11121
+	lea	rcx, OFFSET FLAT:$SG11159
 	call	DoDebugMsg1
 
 ; 635  :     /* free the parm list */
@@ -4145,12 +3940,11 @@ $LN6@ReleaseMac:
 ; 667  :     return;
 ; 668  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 ReleaseMacroData ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\macro.c
 _TEXT	SEGMENT
 macro$ = 32
@@ -4161,13 +3955,7 @@ CreateMacro PROC
 
 $LN4:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 607  :     struct dsym *macro;
 ; 608  :     if ( macro = (struct dsym *)SymCreate( name ) ) {
@@ -4254,19 +4042,18 @@ $LN2@CreateMacr:
 
 ; 623  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 CreateMacro ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT sprintf
 _TEXT	SEGMENT
 _Result$ = 32
-_ArgList$ = 56
-_Buffer$ = 96
-_Format$ = 104
+_ArgList$ = 40
+_Buffer$ = 64
+_Format$ = 72
 sprintf	PROC						; COMDAT
 
 ; 1776 : {
@@ -4276,13 +4063,7 @@ $LN3:
 	mov	QWORD PTR [rsp+8], rcx
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+32], r9
-	push	rdi
-	sub	rsp, 80					; 00000050H
-	mov	rdi, rsp
-	mov	ecx, 20
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+96]
+	sub	rsp, 56					; 00000038H
 
 ; 1777 :     int _Result;
 ; 1778 :     va_list _ArgList;
@@ -4315,17 +4096,11 @@ $LN3:
 
 ; 1788 : }
 
-	mov	edi, eax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:sprintf$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	eax, edi
-	add	rsp, 80					; 00000050H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 sprintf	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT _vsprintf_l
 _TEXT	SEGMENT
@@ -4342,13 +4117,7 @@ $LN3:
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 1456 :     #pragma warning(push)
 ; 1457 :     #pragma warning(disable: 4996) // Deprecation
@@ -4365,12 +4134,11 @@ $LN3:
 ; 1459 :     #pragma warning(pop)
 ; 1460 : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 _vsprintf_l ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT _vsnprintf_l
 _TEXT	SEGMENT
@@ -4390,13 +4158,7 @@ $LN5:
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 72					; 00000048H
 
 ; 1386 :     int const _Result = __stdio_common_vsprintf(
 
@@ -4411,7 +4173,7 @@ $LN5:
 	mov	r8, QWORD PTR _BufferCount$[rsp]
 	mov	rdx, QWORD PTR _Buffer$[rsp]
 	mov	rcx, rax
-	call	QWORD PTR __imp___stdio_common_vsprintf
+	call	__stdio_common_vsprintf
 	mov	DWORD PTR _Result$[rsp], eax
 
 ; 1387 :         _CRT_INTERNAL_LOCAL_PRINTF_OPTIONS | _CRT_INTERNAL_PRINTF_LEGACY_VSPRINTF_NULL_TERMINATION,
@@ -4431,21 +4193,15 @@ $LN4@vsnprintf_:
 
 ; 1391 : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 _vsnprintf_l ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\corecrt_stdio_config.h
 ;	COMDAT __local_stdio_printf_options
 _TEXT	SEGMENT
 __local_stdio_printf_options PROC			; COMDAT
-
-; 73   : {
-
-$LN3:
-	push	rdi
 
 ; 74   :     static unsigned __int64 _OptionsStorage;
 ; 75   :     return &_OptionsStorage;
@@ -4454,7 +4210,6 @@ $LN3:
 
 ; 76   : }
 
-	pop	rdi
 	ret	0
 __local_stdio_printf_options ENDP
 _TEXT	ENDS

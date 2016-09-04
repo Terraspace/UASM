@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 _DATA	SEGMENT
@@ -17,17 +17,17 @@ _BSS	SEGMENT
 ?cnt@?1??CreateFixup@@9@9 DD 01H DUP (?)		; `CreateFixup'::`2'::cnt
 _BSS	ENDS
 _DATA	SEGMENT
-$SG10551 DB	'NULL', 00H
+$SG10589 DB	'NULL', 00H
 	ORG $+3
-$SG10552 DB	'CreateFixup(sym=%s type=%u, opt=%u) cnt=%X, loc=%Xh', 0aH
+$SG10590 DB	'CreateFixup(sym=%s type=%u, opt=%u) cnt=%X, loc=%Xh', 0aH
 	DB	00H
 	ORG $+3
-$SG10587 DB	'SetFixupFrame(%s): unexpected state=%u', 0aH, 00H
-$SG10588 DB	'fixup.c', 00H
-$SG10600 DB	'store_fixup: type=%u, loc=%s.%X, target=%s(%X+% X)', 0aH
+$SG10625 DB	'SetFixupFrame(%s): unexpected state=%u', 0aH, 00H
+$SG10626 DB	'fixup.c', 00H
+$SG10638 DB	'store_fixup: type=%u, loc=%s.%X, target=%s(%X+% X)', 0aH
 	DB	00H
 	ORG $+4
-$SG10601 DB	'store_fixup: type=%u, loc=%s.%X, target=%X', 0aH, 00H
+$SG10639 DB	'store_fixup: type=%u, loc=%s.%X, target=%X', 0aH, 00H
 _DATA	ENDS
 PUBLIC	CreateFixup
 PUBLIC	SetFixupFrame
@@ -40,45 +40,35 @@ EXTRN	GetCurrOffset:PROC
 EXTRN	GetSegIdx:PROC
 EXTRN	GetGroup:PROC
 EXTRN	InternalError:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
 EXTRN	Options:BYTE
 EXTRN	ModuleInfo:BYTE
 EXTRN	Parse_Pass:DWORD
 EXTRN	__ImageBase:BYTE
 pdata	SEGMENT
 $pdata$CreateFixup DD imagerel $LN10
-	DD	imagerel $LN10+409
+	DD	imagerel $LN10+387
 	DD	imagerel $unwind$CreateFixup
 $pdata$SetFixupFrame DD imagerel $LN15
-	DD	imagerel $LN15+336
+	DD	imagerel $LN15+312
 	DD	imagerel $unwind$SetFixupFrame
 $pdata$FreeFixup DD imagerel $LN11
-	DD	imagerel $LN11+190
+	DD	imagerel $LN11+167
 	DD	imagerel $unwind$FreeFixup
 $pdata$store_fixup DD imagerel $LN19
-	DD	imagerel $LN19+591
+	DD	imagerel $LN19+569
 	DD	imagerel $unwind$store_fixup
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
 xdata	SEGMENT
-$unwind$CreateFixup DD 022701H
-	DD	0700f7213H
-$unwind$SetFixupFrame DD 022201H
-	DD	0700a520eH
-$unwind$FreeFixup DD 021e01H
-	DD	07006120aH
-$unwind$store_fixup DD 022801H
-	DD	070107214H
+$unwind$CreateFixup DD 011201H
+	DD	08212H
+$unwind$SetFixupFrame DD 010d01H
+	DD	0620dH
+$unwind$FreeFixup DD 010901H
+	DD	02209H
+$unwind$store_fixup DD 011301H
+	DD	08213H
 xdata	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\fixup.c
 _TEXT	SEGMENT
 fixup$ = 80
@@ -92,13 +82,7 @@ $LN19:
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 72					; 00000048H
 
 ; 197  :     //struct fixup     *fixup;
 ; 198  : 
@@ -140,7 +124,7 @@ $LN19:
 	mov	r8, QWORD PTR [rax+8]
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	edx, DWORD PTR [rax+24]
-	lea	rcx, OFFSET FLAT:$SG10600
+	lea	rcx, OFFSET FLAT:$SG10638
 	call	DoDebugMsg1
 	jmp	SHORT $LN3@store_fixu
 $LN2@store_fixu:
@@ -158,7 +142,7 @@ $LN2@store_fixu:
 	mov	r8, QWORD PTR [rax+8]
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	edx, DWORD PTR [rax+24]
-	lea	rcx, OFFSET FLAT:$SG10601
+	lea	rcx, OFFSET FLAT:$SG10639
 	call	DoDebugMsg1
 $LN3@store_fixu:
 
@@ -409,16 +393,15 @@ $LN17@store_fixu:
 ; 299  :     return;
 ; 300  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 store_fixup ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\fixup.c
 _TEXT	SEGMENT
-dir$ = 0
-fixup2$ = 8
+fixup2$ = 0
+dir$ = 8
 fixup$ = 32
 FreeFixup PROC
 
@@ -426,13 +409,7 @@ FreeFixup PROC
 
 $LN11:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 16
-	mov	rdi, rsp
-	mov	ecx, 4
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+32]
+	sub	rsp, 24
 
 ; 120  :     struct dsym *dir;
 ; 121  :     struct fixup *fixup2;
@@ -523,16 +500,15 @@ $LN5@FreeFixup:
 ; 138  :     LclFree( fixup );
 ; 139  : }
 
-	add	rsp, 16
-	pop	rdi
+	add	rsp, 24
 	ret	0
 FreeFixup ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\fixup.c
 _TEXT	SEGMENT
-grp$ = 32
-tv66 = 40
+tv66 = 32
+grp$ = 40
 sym$ = 64
 ign_grp$ = 72
 SetFixupFrame PROC
@@ -542,13 +518,7 @@ SetFixupFrame PROC
 $LN15:
 	mov	BYTE PTR [rsp+16], dl
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 151  :     struct dsym *grp;
 ; 152  : 
@@ -675,13 +645,13 @@ $LN12@SetFixupFr:
 	mov	r8d, DWORD PTR [rax+32]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10587
+	lea	rcx, OFFSET FLAT:$SG10625
 	call	DoDebugMsg
 
 ; 181  :             /**/myassert( 0 );
 
 	mov	edx, 181				; 000000b5H
-	lea	rcx, OFFSET FLAT:$SG10588
+	lea	rcx, OFFSET FLAT:$SG10626
 	call	InternalError
 $LN2@SetFixupFr:
 $LN4@SetFixupFr:
@@ -692,10 +662,8 @@ $LN4@SetFixupFr:
 ; 185  :     }
 ; 186  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
-	npad	2
 $LN14@SetFixupFr:
 	DD	$LN11@SetFixupFr
 	DD	$LN5@SetFixupFr
@@ -705,7 +673,7 @@ $LN14@SetFixupFr:
 	DD	$LN11@SetFixupFr
 SetFixupFrame ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\fixup.c
 _TEXT	SEGMENT
 fixup$ = 48
@@ -721,13 +689,7 @@ $LN10:
 	mov	DWORD PTR [rsp+24], r8d
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 72					; 00000048H
 
 ; 62   : #ifdef DEBUG_OUT
 ; 63   :     static uint_32 cnt = 0;
@@ -886,7 +848,7 @@ $LN2@CreateFixu:
 	mov	QWORD PTR tv131[rsp], rax
 	jmp	SHORT $LN9@CreateFixu
 $LN8@CreateFixu:
-	lea	rax, OFFSET FLAT:$SG10551
+	lea	rax, OFFSET FLAT:$SG10589
 	mov	QWORD PTR tv131[rsp], rax
 $LN9@CreateFixu:
 	mov	eax, DWORD PTR ?cnt@?1??CreateFixup@@9@9
@@ -900,7 +862,7 @@ $LN9@CreateFixu:
 	mov	r9d, DWORD PTR option$[rsp]
 	mov	r8d, DWORD PTR type$[rsp]
 	mov	rdx, QWORD PTR tv131[rsp]
-	lea	rcx, OFFSET FLAT:$SG10552
+	lea	rcx, OFFSET FLAT:$SG10590
 	call	DoDebugMsg1
 
 ; 111  :         sym ? sym->name : "NULL", type, option, ++cnt, fixup->locofs ));
@@ -910,8 +872,7 @@ $LN9@CreateFixu:
 
 ; 113  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 CreateFixup ENDP
 _TEXT	ENDS

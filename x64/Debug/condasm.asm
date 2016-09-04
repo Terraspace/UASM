@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 _DATA	SEGMENT
@@ -13,37 +13,36 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10987 DB	'BLOCK_ACTIVE', 00H
+$SG11278 DB	'if-else', 00H
+$SG11025 DB	'BLOCK_ACTIVE', 00H
 	ORG $+3
-$SG10989 DB	'BLOCK_INACTIVE', 00H
+$SG11027 DB	'BLOCK_INACTIVE', 00H
 	ORG $+1
-$SG10991 DB	'BLOCK_DONE', 00H
+$SG11029 DB	'BLOCK_DONE', 00H
 	ORG $+5
-$SG11001 DB	'condasm_prepare(%s), old status: %s, lvl=%u, falselvl=%u'
+$SG11039 DB	'condasm_prepare(%s), old status: %s, lvl=%u, falselvl=%u'
 	DB	0aH, 00H
 	ORG $+6
-$SG11015 DB	'condasm_prepare(%s), new status: %s, lvl=%u, falselvl=%u'
+$SG11053 DB	'condasm_prepare(%s), new status: %s, lvl=%u, falselvl=%u'
 	DB	0aH, 00H
 	ORG $+6
-$SG11023 DB	'check_defd(%s): state=%u defined=%u', 0aH, 00H
+$SG11061 DB	'check_defd(%s): state=%u defined=%u', 0aH, 00H
 	ORG $+3
-$SG11024 DB	'check_defd(%s): sym=NULL', 0aH, 00H
+$SG11062 DB	'check_defd(%s): sym=NULL', 0aH, 00H
 	ORG $+6
-$SG11074 DB	'CondAsmDirective(%s), CurrIfState=%u(%s), lvl=%u, falsel'
+$SG11112 DB	'CondAsmDirective(%s), CurrIfState=%u(%s), lvl=%u, falsel'
 	DB	'vl=%u', 0aH, 00H
 	ORG $+1
-$SG11080 DB	'CondAsmDirective(%s), BLOCK_ACTIVE, lvl=%u, falselvl=%u '
+$SG11118 DB	'CondAsmDirective(%s), BLOCK_ACTIVE, lvl=%u, falselvl=%u '
 	DB	'[%s]', 0aH, 00H
 	ORG $+2
-$SG11083 DB	'CondAsmDirective(%s), EvalOperand returned with ERROR', 0aH
+$SG11121 DB	'CondAsmDirective(%s), EvalOperand returned with ERROR', 0aH
 	DB	00H
 	ORG $+1
-$SG11101 DB	'CondAsmDirective(%s), cmp >%s< and >%s<', 0aH, 00H
+$SG11139 DB	'CondAsmDirective(%s), cmp >%s< and >%s<', 0aH, 00H
 	ORG $+7
-$SG11136 DB	'CondAsmDirective(%s) exit, state=%s, lvl=%u, falselvl=%u'
+$SG11174 DB	'CondAsmDirective(%s) exit, state=%s, lvl=%u, falselvl=%u'
 	DB	0aH, 00H
-	ORG $+6
-$SG11240 DB	'if-else', 00H
 _DATA	ENDS
 PUBLIC	conditional_assembly_prepare
 PUBLIC	GetIfNestLevel
@@ -52,11 +51,11 @@ PUBLIC	CondCheckOpen
 PUBLIC	CondInit
 PUBLIC	CondAsmDirective
 PUBLIC	ErrorDirective
-EXTRN	__imp_isspace:PROC
+EXTRN	isspace:PROC
 EXTRN	memcpy:PROC
 EXTRN	strcmp:PROC
 EXTRN	strcpy:PROC
-EXTRN	__imp__stricmp:PROC
+EXTRN	_stricmp:PROC
 EXTRN	DoDebugMsg:PROC
 EXTRN	DoDebugMsg1:PROC
 EXTRN	EmitError:PROC
@@ -68,10 +67,6 @@ EXTRN	EvalOperand:PROC
 EXTRN	LstWriteSrcLine:PROC
 EXTRN	TextItemError:PROC
 EXTRN	SearchNameInStruct:PROC
-EXTRN	_RTC_CheckStackVars:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
-EXTRN	_RTC_UninitUse:PROC
 EXTRN	Options:BYTE
 EXTRN	ModuleInfo:BYTE
 EXTRN	Parse_Pass:DWORD
@@ -85,158 +80,71 @@ elseoccured DD	01H DUP (?)
 _BSS	ENDS
 pdata	SEGMENT
 $pdata$conditional_assembly_prepare DD imagerel $LN20
-	DD	imagerel $LN20+631
+	DD	imagerel $LN20+610
 	DD	imagerel $unwind$conditional_assembly_prepare
-$pdata$GetIfNestLevel DD imagerel $LN3
-	DD	imagerel $LN3+10
-	DD	imagerel $unwind$GetIfNestLevel
-$pdata$SetIfNestLevel DD imagerel $LN3
-	DD	imagerel $LN3+17
-	DD	imagerel $unwind$SetIfNestLevel
 $pdata$CondCheckOpen DD imagerel $LN4
-	DD	imagerel $LN4+53
+	DD	imagerel $LN4+35
 	DD	imagerel $unwind$CondCheckOpen
-$pdata$CondInit DD imagerel $LN3
-	DD	imagerel $LN3+34
-	DD	imagerel $unwind$CondInit
 $pdata$GetCurrIfStatString DD imagerel GetCurrIfStatString
-	DD	imagerel GetCurrIfStatString+75
+	DD	imagerel GetCurrIfStatString+57
 	DD	imagerel $unwind$GetCurrIfStatString
 $pdata$check_defd DD imagerel check_defd
-	DD	imagerel check_defd+150
+	DD	imagerel check_defd+128
 	DD	imagerel $unwind$check_defd
 $pdata$check_blank DD imagerel check_blank
-	DD	imagerel check_blank+91
+	DD	imagerel check_blank+68
 	DD	imagerel $unwind$check_blank
 $pdata$check_dif DD imagerel check_dif
-	DD	imagerel check_dif+144
+	DD	imagerel check_dif+121
 	DD	imagerel $unwind$check_dif
-$pdata$CondAsmDirective DD imagerel $LN107
-	DD	imagerel $LN107+3588
+$pdata$CondAsmDirective DD imagerel $LN105
+	DD	imagerel $LN105+3220
 	DD	imagerel $unwind$CondAsmDirective
 $pdata$GetErrText DD imagerel GetErrText
-	DD	imagerel GetErrText+200
+	DD	imagerel GetErrText+179
 	DD	imagerel $unwind$GetErrText
 $pdata$ErrorDirective DD imagerel $LN74
-	DD	imagerel $LN74+3084
+	DD	imagerel $LN74+2741
 	DD	imagerel $unwind$ErrorDirective
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
-CONST	SEGMENT
-CondAsmDirective$rtcName$0 DB 04eH
-	DB	065H
-	DB	078H
-	DB	074H
-	DB	049H
-	DB	066H
-	DB	053H
-	DB	074H
-	DB	061H
-	DB	074H
-	DB	065H
-	DB	00H
-CondAsmDirective$rtcName$1 DB 06fH
-	DB	070H
-	DB	06eH
-	DB	064H
-	DB	078H
-	DB	00H
-	ORG $+2
-CondAsmDirective$rtcName$2 DB 076H
-	DB	061H
-	DB	06cH
-	DB	075H
-	DB	065H
-	DB	00H
-	ORG $+6
-CondAsmDirective$rtcVarDesc DD 0e4H
-	DD	04H
-	DQ	FLAT:CondAsmDirective$rtcName$2
-	DD	060H
-	DD	068H
-	DQ	FLAT:CondAsmDirective$rtcName$1
-	ORG $+96
-CondAsmDirective$rtcFrameData DD 02H
-	DD	00H
-	DQ	FLAT:CondAsmDirective$rtcVarDesc
-ErrorDirective$rtcName$0 DB 06fH
-	DB	070H
-	DB	06eH
-	DB	064H
-	DB	078H
-	DB	00H
-	ORG $+2
-ErrorDirective$rtcName$1 DB 076H
-	DB	061H
-	DB	06cH
-	DB	075H
-	DB	065H
-	DB	00H
-	ORG $+2
-ErrorDirective$rtcVarDesc DD 0e4H
-	DD	04H
-	DQ	FLAT:ErrorDirective$rtcName$1
-	DD	040H
-	DD	068H
-	DQ	FLAT:ErrorDirective$rtcName$0
-	ORG $+96
-ErrorDirective$rtcFrameData DD 02H
-	DD	00H
-	DQ	FLAT:ErrorDirective$rtcVarDesc
-CONST	ENDS
 xdata	SEGMENT
-$unwind$conditional_assembly_prepare DD 021c01H
-	DD	07005b209H
-$unwind$GetIfNestLevel DD 010201H
-	DD	07002H
-$unwind$SetIfNestLevel DD 010501H
-	DD	07005H
-$unwind$CondCheckOpen DD 021501H
-	DD	070023206H
-$unwind$CondInit DD 010201H
-	DD	07002H
-$unwind$GetCurrIfStatString DD 021501H
-	DD	070021206H
-$unwind$check_defd DD 021e01H
-	DD	07006520aH
-$unwind$check_blank DD 021e01H
-	DD	07006320aH
-$unwind$check_dif DD 022801H
-	DD	070105214H
-$unwind$CondAsmDirective DD 032701H
-	DD	02c0111H
-	DD	0700aH
-$unwind$GetErrText DD 022101H
-	DD	0700a320eH
-$unwind$ErrorDirective DD 032701H
-	DD	0220111H
-	DD	0700aH
+$unwind$conditional_assembly_prepare DD 010801H
+	DD	0c208H
+$unwind$CondCheckOpen DD 010401H
+	DD	04204H
+$unwind$GetCurrIfStatString DD 010401H
+	DD	02204H
+$unwind$check_defd DD 010901H
+	DD	06209H
+$unwind$check_blank DD 010901H
+	DD	04209H
+$unwind$check_dif DD 011301H
+	DD	06213H
+$unwind$CondAsmDirective DD 021001H
+	DD	0270110H
+$unwind$GetErrText DD 010d01H
+	DD	0420dH
+$unwind$ErrorDirective DD 021001H
+	DD	01f0110H
 xdata	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\condasm.c
 _TEXT	SEGMENT
-opndx$ = 64
-direct$ = 180
-string1$ = 184
-string2$ = 192
-errmsg$ = 200
-erridx$ = 204
-sym$ = 208
-idloc$ = 216
-value$5 = 228
-j$6 = 244
-size$7 = 248
-tv73 = 252
-tv430 = 256
-i$ = 288
-tokenarray$ = 296
+errmsg$ = 48
+j$1 = 52
+erridx$ = 56
+direct$ = 60
+idloc$ = 64
+sym$ = 72
+tv73 = 80
+string1$ = 88
+tv430 = 96
+size$2 = 100
+string2$ = 104
+value$3 = 112
+opndx$ = 128
+i$ = 256
+tokenarray$ = 264
 ErrorDirective PROC
 
 ; 453  : {
@@ -244,13 +152,7 @@ ErrorDirective PROC
 $LN74:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 272				; 00000110H
-	mov	rdi, rsp
-	mov	ecx, 68					; 00000044H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+288]
+	sub	rsp, 248				; 000000f8H
 
 ; 454  :     struct expr opndx;
 ; 455  :     unsigned direct;
@@ -407,7 +309,7 @@ $LN19@ErrorDirec:
 
 ; 486  :         if ( direct == T_DOT_ERRNZ && opndx.value ) {
 
-	cmp	DWORD PTR direct$[rsp], 349		; 0000015dH
+	cmp	DWORD PTR direct$[rsp], 354		; 00000162H
 	jne	SHORT $LN20@ErrorDirec
 	cmp	DWORD PTR opndx$[rsp], 0
 	je	SHORT $LN20@ErrorDirec
@@ -420,7 +322,7 @@ $LN20@ErrorDirec:
 
 ; 488  :         } else if ( direct == T_DOT_ERRE && !opndx.value ) {
 
-	cmp	DWORD PTR direct$[rsp], 348		; 0000015cH
+	cmp	DWORD PTR direct$[rsp], 353		; 00000161H
 	jne	SHORT $LN22@ErrorDirec
 	cmp	DWORD PTR opndx$[rsp], 0
 	jne	SHORT $LN22@ErrorDirec
@@ -599,20 +501,20 @@ $LN30@ErrorDirec:
 ; 529  :             int j = idloc;
 
 	mov	eax, DWORD PTR idloc$[rsp]
-	mov	DWORD PTR j$6[rsp], eax
+	mov	DWORD PTR j$1[rsp], eax
 
 ; 530  :             int size;
 ; 531  :             value = 0;
 
-	mov	DWORD PTR value$5[rsp], 0
+	mov	DWORD PTR value$3[rsp], 0
 $LN9@ErrorDirec:
 
 ; 532  :             do {
 ; 533  :                 j += 2;
 
-	mov	eax, DWORD PTR j$6[rsp]
+	mov	eax, DWORD PTR j$1[rsp]
 	add	eax, 2
-	mov	DWORD PTR j$6[rsp], eax
+	mov	DWORD PTR j$1[rsp], eax
 
 ; 534  :                 /* if it's a structured variable, use its type! */
 ; 535  :                 if ( sym->state != SYM_TYPE )
@@ -630,10 +532,10 @@ $LN31@ErrorDirec:
 
 ; 537  :                 sym = SearchNameInStruct( sym, tokenarray[j].string_ptr, &value, 0 );
 
-	movsxd	rax, DWORD PTR j$6[rsp]
+	movsxd	rax, DWORD PTR j$1[rsp]
 	imul	rax, rax, 32				; 00000020H
 	xor	r9d, r9d
-	lea	r8, QWORD PTR value$5[rsp]
+	lea	r8, QWORD PTR value$3[rsp]
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
 	mov	rcx, QWORD PTR sym$[rsp]
@@ -644,19 +546,19 @@ $LN31@ErrorDirec:
 
 	cmp	QWORD PTR sym$[rsp], 0
 	je	SHORT $LN32@ErrorDirec
-	mov	eax, DWORD PTR j$6[rsp]
+	mov	eax, DWORD PTR j$1[rsp]
 	inc	eax
 	cdqe
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	movzx	eax, BYTE PTR [rcx+rax]
 	cmp	eax, 46					; 0000002eH
-	je	$LN9@ErrorDirec
+	je	SHORT $LN9@ErrorDirec
 $LN32@ErrorDirec:
 
 ; 539  :             if ( tokenarray[j].token == T_ID )
 
-	movsxd	rax, DWORD PTR j$6[rsp]
+	movsxd	rax, DWORD PTR j$1[rsp]
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	movzx	eax, BYTE PTR [rcx+rax]
@@ -665,21 +567,21 @@ $LN32@ErrorDirec:
 
 ; 540  :                 j++;
 
-	mov	eax, DWORD PTR j$6[rsp]
+	mov	eax, DWORD PTR j$1[rsp]
 	inc	eax
-	mov	DWORD PTR j$6[rsp], eax
+	mov	DWORD PTR j$1[rsp], eax
 	jmp	SHORT $LN34@ErrorDirec
 $LN33@ErrorDirec:
 
 ; 541  :             else if ( tokenarray[j].token != T_FINAL && tokenarray[j].token != T_COMMA ) {
 
-	movsxd	rax, DWORD PTR j$6[rsp]
+	movsxd	rax, DWORD PTR j$1[rsp]
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	movzx	eax, BYTE PTR [rcx+rax]
 	test	eax, eax
 	je	SHORT $LN35@ErrorDirec
-	movsxd	rax, DWORD PTR j$6[rsp]
+	movsxd	rax, DWORD PTR j$1[rsp]
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	movzx	eax, BYTE PTR [rcx+rax]
@@ -688,7 +590,7 @@ $LN33@ErrorDirec:
 
 ; 542  :                 return( EmitErr( SYNTAX_ERROR_EX, tokenarray[j].string_ptr ) );
 
-	movsxd	rax, DWORD PTR j$6[rsp]
+	movsxd	rax, DWORD PTR j$1[rsp]
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
@@ -701,7 +603,7 @@ $LN34@ErrorDirec:
 ; 543  :             }
 ; 544  :             size = tokenarray[j].tokpos - tokenarray[idloc].tokpos;
 
-	movsxd	rax, DWORD PTR j$6[rsp]
+	movsxd	rax, DWORD PTR j$1[rsp]
 	imul	rax, rax, 32				; 00000020H
 	movsxd	rcx, DWORD PTR idloc$[rsp]
 	imul	rcx, rcx, 32				; 00000020H
@@ -710,11 +612,11 @@ $LN34@ErrorDirec:
 	mov	rcx, QWORD PTR [r8+rcx+24]
 	mov	rax, QWORD PTR [rdx+rax+24]
 	sub	rax, rcx
-	mov	DWORD PTR size$7[rsp], eax
+	mov	DWORD PTR size$2[rsp], eax
 
 ; 545  :             memcpy( StringBufferEnd, tokenarray[idloc].tokpos, size );
 
-	movsxd	rax, DWORD PTR size$7[rsp]
+	movsxd	rax, DWORD PTR size$2[rsp]
 	movsxd	rcx, DWORD PTR idloc$[rsp]
 	imul	rcx, rcx, 32				; 00000020H
 	mov	r8, rax
@@ -725,7 +627,7 @@ $LN34@ErrorDirec:
 
 ; 546  :             *(StringBufferEnd+size) = NULLC;
 
-	movsxd	rax, DWORD PTR size$7[rsp]
+	movsxd	rax, DWORD PTR size$2[rsp]
 	mov	rcx, QWORD PTR ModuleInfo+488
 	mov	BYTE PTR [rcx+rax], 0
 
@@ -771,7 +673,7 @@ $LN36@ErrorDirec:
 ; 554  :         /* Masm "usually" ignores the optional errtxt! */
 ; 555  :         if( direct == T_DOT_ERRDEF && sym != NULL )
 
-	cmp	DWORD PTR direct$[rsp], 356		; 00000164H
+	cmp	DWORD PTR direct$[rsp], 361		; 00000169H
 	jne	SHORT $LN37@ErrorDirec
 	cmp	QWORD PTR sym$[rsp], 0
 	je	SHORT $LN37@ErrorDirec
@@ -786,7 +688,7 @@ $LN37@ErrorDirec:
 
 ; 557  :         else if( direct == T_DOT_ERRNDEF && sym == NULL )
 
-	cmp	DWORD PTR direct$[rsp], 357		; 00000165H
+	cmp	DWORD PTR direct$[rsp], 362		; 0000016aH
 	jne	SHORT $LN39@ErrorDirec
 	cmp	QWORD PTR sym$[rsp], 0
 	jne	SHORT $LN39@ErrorDirec
@@ -893,7 +795,7 @@ $LN44@ErrorDirec:
 
 ; 572  :         if ( direct == T_DOT_ERRB && check_blank( string1 ) )
 
-	cmp	DWORD PTR direct$[rsp], 354		; 00000162H
+	cmp	DWORD PTR direct$[rsp], 359		; 00000167H
 	jne	SHORT $LN45@ErrorDirec
 	mov	rcx, QWORD PTR string1$[rsp]
 	call	check_blank
@@ -909,7 +811,7 @@ $LN45@ErrorDirec:
 
 ; 574  :         else if ( direct == T_DOT_ERRNB && !check_blank( string1 ) )
 
-	cmp	DWORD PTR direct$[rsp], 355		; 00000163H
+	cmp	DWORD PTR direct$[rsp], 360		; 00000168H
 	jne	SHORT $LN47@ErrorDirec
 	mov	rcx, QWORD PTR string1$[rsp]
 	call	check_blank
@@ -1106,13 +1008,13 @@ $LN56@ErrorDirec:
 
 	mov	eax, DWORD PTR direct$[rsp]
 	mov	DWORD PTR tv430[rsp], eax
-	cmp	DWORD PTR tv430[rsp], 350		; 0000015eH
+	cmp	DWORD PTR tv430[rsp], 355		; 00000163H
 	je	SHORT $LN57@ErrorDirec
-	cmp	DWORD PTR tv430[rsp], 351		; 0000015fH
+	cmp	DWORD PTR tv430[rsp], 356		; 00000164H
 	je	SHORT $LN59@ErrorDirec
-	cmp	DWORD PTR tv430[rsp], 352		; 00000160H
+	cmp	DWORD PTR tv430[rsp], 357		; 00000165H
 	je	SHORT $LN61@ErrorDirec
-	jmp	$LN63@ErrorDirec
+	jmp	SHORT $LN63@ErrorDirec
 $LN57@ErrorDirec:
 
 ; 602  :         case T_DOT_ERRDIF:
@@ -1133,7 +1035,7 @@ $LN58@ErrorDirec:
 
 ; 605  :             break;
 
-	jmp	$LN10@ErrorDirec
+	jmp	SHORT $LN10@ErrorDirec
 $LN59@ErrorDirec:
 
 ; 606  :         case T_DOT_ERRDIFI:
@@ -1215,7 +1117,7 @@ $LN65@ErrorDirec:
 
 ; 620  :         break;
 
-	jmp	$LN2@ErrorDirec
+	jmp	SHORT $LN2@ErrorDirec
 $LN66@ErrorDirec:
 
 ; 621  :     case CC_PASS2: /* .ERR2 */
@@ -1307,17 +1209,11 @@ $LN1@ErrorDirec:
 
 ; 639  : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:ErrorDirective$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
-	add	rsp, 272				; 00000110H
-	pop	rdi
+	add	rsp, 248				; 000000f8H
 	ret	0
 ErrorDirective ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\condasm.c
 _TEXT	SEGMENT
 i$ = 48
@@ -1328,13 +1224,7 @@ GetErrText PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 426  :     *StringBufferEnd = NULLC;
 
@@ -1409,60 +1299,51 @@ $LN2@GetErrText:
 ; 438  : 
 ; 439  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 GetErrText ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\condasm.c
 _TEXT	SEGMENT
-directive$ = 48
+NextIfState$ = 48
+directive$ = 52
 string1$ = 56
-string2$ = 64
-NextIfState$ = 72
-opndx$ = 96
-sym$6 = 216
-value$7 = 228
-$T8 = 244
-tv71 = 248
-tv93 = 256
-tv141 = 264
-tv167 = 268
-tv169 = 272
-tv171 = 276
-tv251 = 280
-tv258 = 284
-tv265 = 288
-tv272 = 292
-tv274 = 296
-tv281 = 300
-tv283 = 304
-tv321 = 308
-tv326 = 312
-tv328 = 316
-tv387 = 320
-tv396 = 324
-tv415 = 328
-tv481 = 332
-tv499 = 336
-i$ = 368
-tokenarray$ = 376
+sym$1 = 64
+tv141 = 72
+tv251 = 76
+string2$ = 80
+tv167 = 88
+tv169 = 92
+tv171 = 96
+tv258 = 100
+tv265 = 104
+tv272 = 108
+tv274 = 112
+tv281 = 116
+tv283 = 120
+tv321 = 124
+tv326 = 128
+tv328 = 132
+tv387 = 136
+tv396 = 140
+tv415 = 144
+tv481 = 148
+value$2 = 152
+tv71 = 160
+tv93 = 168
+tv499 = 176
+opndx$ = 192
+i$ = 320
+tokenarray$ = 328
 CondAsmDirective PROC
 
 ; 221  : {
 
-$LN107:
+$LN105:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 352				; 00000160H
-	mov	rdi, rsp
-	mov	ecx, 88					; 00000058H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+368]
-	mov	BYTE PTR $T8[rsp], 0
+	sub	rsp, 312				; 00000138H
 
 ; 222  :     int directive = tokenarray[i].tokval;
 
@@ -1497,7 +1378,7 @@ $LN107:
 	mov	r9, rcx
 	mov	r8d, DWORD PTR CurrIfState
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11074
+	lea	rcx, OFFSET FLAT:$SG11112
 	call	DoDebugMsg1
 
 ; 230  :                    GetResWName(directive, NULL), CurrIfState, GetCurrIfStatString(), blocknestlevel, falseblocknestlevel));
@@ -1573,7 +1454,7 @@ $LN14@CondAsmDir:
 	mov	r9d, DWORD PTR falseblocknestlevel
 	mov	r8d, DWORD PTR blocknestlevel
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11080
+	lea	rcx, OFFSET FLAT:$SG11118
 	call	DoDebugMsg1
 
 ; 245  : 
@@ -1600,7 +1481,7 @@ $LN14@CondAsmDir:
 	ja	$LN68@CondAsmDir
 	mov	eax, DWORD PTR tv141[rsp]
 	lea	rcx, OFFSET FLAT:__ImageBase
-	mov	eax, DWORD PTR $LN106@CondAsmDir[rcx+rax*4]
+	mov	eax, DWORD PTR $LN104@CondAsmDir[rcx+rax*4]
 	add	rax, rcx
 	jmp	rax
 $LN17@CondAsmDir:
@@ -1624,7 +1505,7 @@ $LN17@CondAsmDir:
 	mov	ecx, DWORD PTR directive$[rsp]
 	call	GetResWName
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11083
+	lea	rcx, OFFSET FLAT:$SG11121
 	call	DoDebugMsg
 
 ; 255  :             /* v2.11: don't exit, assume 0 */
@@ -1702,9 +1583,9 @@ $LN20@CondAsmDir:
 ; 276  :         }
 ; 277  :         if ( directive == T_IF || directive == T_ELSEIF )
 
-	cmp	DWORD PTR directive$[rsp], 359		; 00000167H
+	cmp	DWORD PTR directive$[rsp], 364		; 0000016cH
 	je	SHORT $LN25@CondAsmDir
-	cmp	DWORD PTR directive$[rsp], 372		; 00000174H
+	cmp	DWORD PTR directive$[rsp], 377		; 00000179H
 	jne	SHORT $LN23@CondAsmDir
 $LN25@CondAsmDir:
 
@@ -1717,7 +1598,6 @@ $LN25@CondAsmDir:
 $LN71@CondAsmDir:
 	mov	DWORD PTR tv167[rsp], 1
 $LN72@CondAsmDir:
-	mov	BYTE PTR $T8[rsp], 1
 	mov	eax, DWORD PTR tv167[rsp]
 	mov	DWORD PTR NextIfState$[rsp], eax
 	jmp	SHORT $LN24@CondAsmDir
@@ -1740,7 +1620,6 @@ $LN74@CondAsmDir:
 $LN75@CondAsmDir:
 	mov	DWORD PTR tv171[rsp], 1
 $LN76@CondAsmDir:
-	mov	BYTE PTR $T8[rsp], 1
 	mov	eax, DWORD PTR tv171[rsp]
 	mov	DWORD PTR NextIfState$[rsp], eax
 $LN24@CondAsmDir:
@@ -1916,7 +1795,7 @@ $LN32@CondAsmDir:
 	mov	r9, QWORD PTR string2$[rsp]
 	mov	r8, QWORD PTR string1$[rsp]
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11101
+	lea	rcx, OFFSET FLAT:$SG11139
 	call	DoDebugMsg1
 
 ; 306  :         switch ( directive ) {
@@ -1924,13 +1803,13 @@ $LN32@CondAsmDir:
 	mov	eax, DWORD PTR directive$[rsp]
 	mov	DWORD PTR tv251[rsp], eax
 	mov	eax, DWORD PTR tv251[rsp]
-	sub	eax, 363				; 0000016bH
+	sub	eax, 368				; 00000170H
 	mov	DWORD PTR tv251[rsp], eax
 	cmp	DWORD PTR tv251[rsp], 15
 	ja	$LN39@CondAsmDir
 	movsxd	rax, DWORD PTR tv251[rsp]
 	lea	rcx, OFFSET FLAT:__ImageBase
-	mov	eax, DWORD PTR $LN105@CondAsmDir[rcx+rax*4]
+	mov	eax, DWORD PTR $LN103@CondAsmDir[rcx+rax*4]
 	add	rax, rcx
 	jmp	rax
 $LN36@CondAsmDir:
@@ -1951,7 +1830,6 @@ $LN36@CondAsmDir:
 $LN77@CondAsmDir:
 	mov	DWORD PTR tv258[rsp], 1
 $LN78@CondAsmDir:
-	mov	BYTE PTR $T8[rsp], 1
 	mov	eax, DWORD PTR tv258[rsp]
 	mov	DWORD PTR NextIfState$[rsp], eax
 
@@ -1976,7 +1854,6 @@ $LN37@CondAsmDir:
 $LN79@CondAsmDir:
 	mov	DWORD PTR tv265[rsp], 1
 $LN80@CondAsmDir:
-	mov	BYTE PTR $T8[rsp], 1
 	mov	eax, DWORD PTR tv265[rsp]
 	mov	DWORD PTR NextIfState$[rsp], eax
 
@@ -2008,7 +1885,6 @@ $LN82@CondAsmDir:
 $LN83@CondAsmDir:
 	mov	DWORD PTR tv274[rsp], 1
 $LN84@CondAsmDir:
-	mov	BYTE PTR $T8[rsp], 1
 	mov	eax, DWORD PTR tv274[rsp]
 	mov	DWORD PTR NextIfState$[rsp], eax
 
@@ -2039,7 +1915,6 @@ $LN86@CondAsmDir:
 $LN87@CondAsmDir:
 	mov	DWORD PTR tv283[rsp], 1
 $LN88@CondAsmDir:
-	mov	BYTE PTR $T8[rsp], 1
 	mov	eax, DWORD PTR tv283[rsp]
 	mov	DWORD PTR NextIfState$[rsp], eax
 $LN4@CondAsmDir:
@@ -2119,9 +1994,9 @@ $LN41@CondAsmDir:
 
 ; 334  :         if ( directive == T_IFB || directive == T_ELSEIFB ) {
 
-	cmp	DWORD PTR directive$[rsp], 367		; 0000016fH
+	cmp	DWORD PTR directive$[rsp], 372		; 00000174H
 	je	SHORT $LN47@CondAsmDir
-	cmp	DWORD PTR directive$[rsp], 380		; 0000017cH
+	cmp	DWORD PTR directive$[rsp], 385		; 00000181H
 	jne	SHORT $LN45@CondAsmDir
 $LN47@CondAsmDir:
 
@@ -2137,7 +2012,6 @@ $LN47@CondAsmDir:
 $LN89@CondAsmDir:
 	mov	DWORD PTR tv321[rsp], 1
 $LN90@CondAsmDir:
-	mov	BYTE PTR $T8[rsp], 1
 	mov	eax, DWORD PTR tv321[rsp]
 	mov	DWORD PTR NextIfState$[rsp], eax
 
@@ -2165,7 +2039,6 @@ $LN92@CondAsmDir:
 $LN93@CondAsmDir:
 	mov	DWORD PTR tv328[rsp], 1
 $LN94@CondAsmDir:
-	mov	BYTE PTR $T8[rsp], 1
 	mov	eax, DWORD PTR tv328[rsp]
 	mov	DWORD PTR NextIfState$[rsp], eax
 $LN46@CondAsmDir:
@@ -2181,7 +2054,6 @@ $LN48@CondAsmDir:
 ; 342  :         //NextIfState = ((Parse_Pass == PASS_1) ? BLOCK_ACTIVE : BLOCK_INACTIVE);
 ; 343  :         NextIfState = BLOCK_ACTIVE;
 
-	mov	BYTE PTR $T8[rsp], 1
 	mov	DWORD PTR NextIfState$[rsp], 0
 
 ; 344  :         break;
@@ -2213,7 +2085,6 @@ $LN50@CondAsmDir:
 ; 351  :         //NextIfState = ((Parse_Pass == PASS_1) ? BLOCK_INACTIVE : BLOCK_ACTIVE);
 ; 352  :         NextIfState = BLOCK_ACTIVE;
 
-	mov	BYTE PTR $T8[rsp], 1
 	mov	DWORD PTR NextIfState$[rsp], 0
 
 ; 353  :         break;
@@ -2224,7 +2095,6 @@ $LN51@CondAsmDir:
 ; 354  :     case CC_SYMARG: /* [ELSE]IF[N]DEF */
 ; 355  :         NextIfState = BLOCK_INACTIVE;
 
-	mov	BYTE PTR $T8[rsp], 1
 	mov	DWORD PTR NextIfState$[rsp], 1
 
 ; 356  :         /* Masm's implementation works with IDs as arguments only. The rest
@@ -2275,13 +2145,13 @@ $LN52@CondAsmDir:
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	SymFind
-	mov	QWORD PTR sym$6[rsp], rax
-	cmp	QWORD PTR sym$6[rsp], 0
+	mov	QWORD PTR sym$1[rsp], rax
+	cmp	QWORD PTR sym$1[rsp], 0
 	je	$LN56@CondAsmDir
-	mov	rax, QWORD PTR sym$6[rsp]
+	mov	rax, QWORD PTR sym$1[rsp]
 	cmp	DWORD PTR [rax+32], 7
 	je	SHORT $LN58@CondAsmDir
-	mov	rax, QWORD PTR sym$6[rsp]
+	mov	rax, QWORD PTR sym$1[rsp]
 	cmp	QWORD PTR [rax+80], 0
 	je	$LN56@CondAsmDir
 $LN58@CondAsmDir:
@@ -2290,7 +2160,7 @@ $LN58@CondAsmDir:
 ; 370  :                 uint_32 value;
 ; 371  :                 value = 0;
 
-	mov	DWORD PTR value$7[rsp], 0
+	mov	DWORD PTR value$2[rsp], 0
 $LN8@CondAsmDir:
 
 ; 372  :                 do {
@@ -2303,15 +2173,15 @@ $LN8@CondAsmDir:
 ; 374  :                     /* if it's a structured variable, use its type! */
 ; 375  :                     if ( sym->state != SYM_TYPE )
 
-	mov	rax, QWORD PTR sym$6[rsp]
+	mov	rax, QWORD PTR sym$1[rsp]
 	cmp	DWORD PTR [rax+32], 7
 	je	SHORT $LN59@CondAsmDir
 
 ; 376  :                         sym = sym->type;
 
-	mov	rax, QWORD PTR sym$6[rsp]
+	mov	rax, QWORD PTR sym$1[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	mov	QWORD PTR sym$6[rsp], rax
+	mov	QWORD PTR sym$1[rsp], rax
 $LN59@CondAsmDir:
 
 ; 377  :                     sym = SearchNameInStruct( sym, tokenarray[i].string_ptr, &value, 0 );
@@ -2319,16 +2189,16 @@ $LN59@CondAsmDir:
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
 	xor	r9d, r9d
-	lea	r8, QWORD PTR value$7[rsp]
+	lea	r8, QWORD PTR value$2[rsp]
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	mov	rcx, QWORD PTR sym$6[rsp]
+	mov	rcx, QWORD PTR sym$1[rsp]
 	call	SearchNameInStruct
-	mov	QWORD PTR sym$6[rsp], rax
+	mov	QWORD PTR sym$1[rsp], rax
 
 ; 378  :                 } while ( sym && tokenarray[i+1].token == T_DOT );
 
-	cmp	QWORD PTR sym$6[rsp], 0
+	cmp	QWORD PTR sym$1[rsp], 0
 	je	SHORT $LN60@CondAsmDir
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
@@ -2342,14 +2212,13 @@ $LN60@CondAsmDir:
 
 ; 379  :                 NextIfState = ( sym ? BLOCK_ACTIVE : BLOCK_INACTIVE );
 
-	cmp	QWORD PTR sym$6[rsp], 0
+	cmp	QWORD PTR sym$1[rsp], 0
 	je	SHORT $LN95@CondAsmDir
 	mov	DWORD PTR tv387[rsp], 0
 	jmp	SHORT $LN96@CondAsmDir
 $LN95@CondAsmDir:
 	mov	DWORD PTR tv387[rsp], 1
 $LN96@CondAsmDir:
-	mov	BYTE PTR $T8[rsp], 1
 	mov	eax, DWORD PTR tv387[rsp]
 	mov	DWORD PTR NextIfState$[rsp], eax
 
@@ -2373,7 +2242,6 @@ $LN56@CondAsmDir:
 $LN97@CondAsmDir:
 	mov	DWORD PTR tv396[rsp], 1
 $LN98@CondAsmDir:
-	mov	BYTE PTR $T8[rsp], 1
 	mov	eax, DWORD PTR tv396[rsp]
 	mov	DWORD PTR NextIfState$[rsp], eax
 $LN57@CondAsmDir:
@@ -2418,7 +2286,6 @@ $LN54@CondAsmDir:
 $LN99@CondAsmDir:
 	mov	DWORD PTR tv415[rsp], 1
 $LN100@CondAsmDir:
-	mov	BYTE PTR $T8[rsp], 1
 	mov	eax, DWORD PTR tv415[rsp]
 	mov	DWORD PTR NextIfState$[rsp], eax
 
@@ -2487,7 +2354,6 @@ $LN64@CondAsmDir:
 ; 396  :                    tokenarray[i+1].token == T_FINAL ) {
 ; 397  :             NextIfState = BLOCK_ACTIVE;
 
-	mov	BYTE PTR $T8[rsp], 1
 	mov	DWORD PTR NextIfState$[rsp], 0
 
 ; 398  :             i++;
@@ -2541,19 +2407,14 @@ $LN65@CondAsmDir:
 ; 403  :         }
 ; 404  :         if ( directive == T_IFNDEF || directive == T_ELSEIFNDEF )
 
-	cmp	DWORD PTR directive$[rsp], 370		; 00000172H
+	cmp	DWORD PTR directive$[rsp], 375		; 00000177H
 	je	SHORT $LN67@CondAsmDir
-	cmp	DWORD PTR directive$[rsp], 383		; 0000017fH
+	cmp	DWORD PTR directive$[rsp], 388		; 00000184H
 	jne	SHORT $LN66@CondAsmDir
 $LN67@CondAsmDir:
 
 ; 405  :             NextIfState = ( ( NextIfState == BLOCK_ACTIVE ) ? BLOCK_INACTIVE : BLOCK_ACTIVE );
 
-	cmp	BYTE PTR $T8[rsp], 0
-	jne	SHORT $LN103@CondAsmDir
-	lea	rcx, OFFSET FLAT:CondAsmDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN103@CondAsmDir:
 	cmp	DWORD PTR NextIfState$[rsp], 0
 	jne	SHORT $LN101@CondAsmDir
 	mov	DWORD PTR tv481[rsp], 1
@@ -2561,7 +2422,6 @@ $LN103@CondAsmDir:
 $LN101@CondAsmDir:
 	mov	DWORD PTR tv481[rsp], 0
 $LN102@CondAsmDir:
-	mov	BYTE PTR $T8[rsp], 1
 	mov	eax, DWORD PTR tv481[rsp]
 	mov	DWORD PTR NextIfState$[rsp], eax
 $LN66@CondAsmDir:
@@ -2574,7 +2434,6 @@ $LN68@CondAsmDir:
 ; 407  :     default: /* ELSE and ENDIF */
 ; 408  :         NextIfState = BLOCK_ACTIVE;
 
-	mov	BYTE PTR $T8[rsp], 1
 	mov	DWORD PTR NextIfState$[rsp], 0
 $LN2@CondAsmDir:
 
@@ -2605,11 +2464,6 @@ $LN69@CondAsmDir:
 ; 415  : 
 ; 416  :     CurrIfState = NextIfState;
 
-	cmp	BYTE PTR $T8[rsp], 0
-	jne	SHORT $LN104@CondAsmDir
-	lea	rcx, OFFSET FLAT:CondAsmDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN104@CondAsmDir:
 	mov	eax, DWORD PTR NextIfState$[rsp]
 	mov	DWORD PTR CurrIfState, eax
 
@@ -2627,7 +2481,7 @@ $LN104@CondAsmDir:
 	mov	rcx, QWORD PTR tv499[rsp]
 	mov	r8, rcx
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11136
+	lea	rcx, OFFSET FLAT:$SG11174
 	call	DoDebugMsg1
 
 ; 419  :                GetResWName(directive, NULL), GetCurrIfStatString(), blocknestlevel, falseblocknestlevel));
@@ -2638,23 +2492,17 @@ $LN1@CondAsmDir:
 
 ; 421  : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:CondAsmDirective$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
-	add	rsp, 352				; 00000160H
-	pop	rdi
+	add	rsp, 312				; 00000138H
 	ret	0
 	npad	1
-$LN106@CondAsmDir:
+$LN104@CondAsmDir:
 	DD	$LN17@CondAsmDir
 	DD	$LN26@CondAsmDir
 	DD	$LN40@CondAsmDir
 	DD	$LN51@CondAsmDir
 	DD	$LN48@CondAsmDir
 	DD	$LN49@CondAsmDir
-$LN105@CondAsmDir:
+$LN103@CondAsmDir:
 	DD	$LN36@CondAsmDir
 	DD	$LN37@CondAsmDir
 	DD	$LN38@CondAsmDir
@@ -2673,7 +2521,7 @@ $LN105@CondAsmDir:
 	DD	$LN38@CondAsmDir
 CondAsmDirective ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\condasm.c
 _TEXT	SEGMENT
 tv70 = 32
@@ -2688,13 +2536,7 @@ check_dif PROC
 	mov	BYTE PTR [rsp+24], r8b
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 212  :     if( sensitive ) {
 
@@ -2726,7 +2568,7 @@ $LN2@check_dif:
 
 	mov	rdx, QWORD PTR string2$[rsp]
 	mov	rcx, QWORD PTR string1$[rsp]
-	call	QWORD PTR __imp__stricmp
+	call	_stricmp
 	test	eax, eax
 	je	SHORT $LN7@check_dif
 	mov	DWORD PTR tv76[rsp], 1
@@ -2741,12 +2583,11 @@ $LN1@check_dif:
 ; 216  :     }
 ; 217  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 check_dif ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\condasm.c
 _TEXT	SEGMENT
 string$ = 48
@@ -2755,13 +2596,7 @@ check_blank PROC
 ; 198  : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 199  :     for ( ;*string; string++ )
 
@@ -2781,7 +2616,7 @@ $LN4@check_blan:
 	mov	rax, QWORD PTR string$[rsp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isspace
+	call	isspace
 	test	eax, eax
 	jne	SHORT $LN5@check_blan
 
@@ -2800,12 +2635,11 @@ $LN1@check_blan:
 
 ; 203  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 check_blank ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\condasm.c
 _TEXT	SEGMENT
 sym$ = 32
@@ -2815,13 +2649,7 @@ check_defd PROC
 ; 179  : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 180  :     struct asym      *sym;
 ; 181  :     if ( *name ) {
@@ -2853,7 +2681,7 @@ check_defd PROC
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8d, DWORD PTR [rax+32]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11023
+	lea	rcx, OFFSET FLAT:$SG11061
 	call	DoDebugMsg1
 
 ; 185  :             /* v2.04: changed. the "defined" flag is active for ALL symbols */
@@ -2871,7 +2699,7 @@ $LN3@check_defd:
 ; 189  :         DebugMsg1(("check_defd(%s): sym=NULL\n", name ));
 
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11024
+	lea	rcx, OFFSET FLAT:$SG11062
 	call	DoDebugMsg1
 $LN2@check_defd:
 
@@ -2883,12 +2711,11 @@ $LN1@check_defd:
 
 ; 192  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 check_defd ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\condasm.c
 _TEXT	SEGMENT
 tv64 = 0
@@ -2896,12 +2723,7 @@ GetCurrIfStatString PROC
 
 ; 75   : {
 
-	push	rdi
-	sub	rsp, 16
-	mov	rdi, rsp
-	mov	ecx, 4
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 24
 
 ; 76   :     switch ( CurrIfState ) {
 
@@ -2916,38 +2738,32 @@ $LN4@GetCurrIfS:
 
 ; 77   :     case BLOCK_ACTIVE:   return( "BLOCK_ACTIVE" );
 
-	lea	rax, OFFSET FLAT:$SG10987
+	lea	rax, OFFSET FLAT:$SG11025
 	jmp	SHORT $LN1@GetCurrIfS
 $LN5@GetCurrIfS:
 
 ; 78   :     case BLOCK_INACTIVE: return( "BLOCK_INACTIVE" );
 
-	lea	rax, OFFSET FLAT:$SG10989
+	lea	rax, OFFSET FLAT:$SG11027
 	jmp	SHORT $LN1@GetCurrIfS
 $LN6@GetCurrIfS:
 
 ; 79   :     default:             return( "BLOCK_DONE" );
 
-	lea	rax, OFFSET FLAT:$SG10991
+	lea	rax, OFFSET FLAT:$SG11029
 $LN1@GetCurrIfS:
 
 ; 80   :     }
 ; 81   : }
 
-	add	rsp, 16
-	pop	rdi
+	add	rsp, 24
 	ret	0
 GetCurrIfStatString ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\condasm.c
 _TEXT	SEGMENT
 CondInit PROC
-
-; 667  : {
-
-$LN3:
-	push	rdi
 
 ; 668  :     CurrIfState = BLOCK_ACTIVE;
 
@@ -2963,11 +2779,10 @@ $LN3:
 
 ; 671  : }
 
-	pop	rdi
 	ret	0
 CondInit ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\condasm.c
 _TEXT	SEGMENT
 CondCheckOpen PROC
@@ -2975,12 +2790,7 @@ CondCheckOpen PROC
 ; 643  : {
 
 $LN4:
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 
 ; 644  :     if( blocknestlevel > 0 ) {
 
@@ -2989,7 +2799,7 @@ $LN4:
 
 ; 645  :         EmitErr( BLOCK_NESTING_ERROR, "if-else" );
 
-	lea	rdx, OFFSET FLAT:$SG11240
+	lea	rdx, OFFSET FLAT:$SG11278
 	mov	ecx, 80					; 00000050H
 	call	EmitErr
 $LN2@CondCheckO:
@@ -2998,22 +2808,19 @@ $LN2@CondCheckO:
 ; 647  :     return;
 ; 648  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 CondCheckOpen ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\condasm.c
 _TEXT	SEGMENT
-newlevel$ = 16
+newlevel$ = 8
 SetIfNestLevel PROC
 
 ; 658  : {
 
-$LN3:
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
 
 ; 659  :     blocknestlevel = newlevel;
 
@@ -3023,19 +2830,13 @@ $LN3:
 ; 660  :     return;
 ; 661  : }
 
-	pop	rdi
 	ret	0
 SetIfNestLevel ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\condasm.c
 _TEXT	SEGMENT
 GetIfNestLevel PROC
-
-; 652  : {
-
-$LN3:
-	push	rdi
 
 ; 653  :     return( blocknestlevel );
 
@@ -3043,19 +2844,18 @@ $LN3:
 
 ; 654  : }
 
-	pop	rdi
 	ret	0
 GetIfNestLevel ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\condasm.c
 _TEXT	SEGMENT
-tv66 = 48
-tv73 = 56
-tv170 = 60
-tv177 = 64
-tv90 = 68
-tv183 = 72
+tv73 = 48
+tv90 = 52
+tv170 = 56
+tv177 = 60
+tv183 = 64
+tv66 = 72
 tv148 = 80
 directive$ = 112
 conditional_assembly_prepare PROC
@@ -3064,13 +2864,7 @@ conditional_assembly_prepare PROC
 
 $LN20:
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 96					; 00000060H
-	mov	rdi, rsp
-	mov	ecx, 24
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+112]
+	sub	rsp, 104				; 00000068H
 
 ; 93   :     DebugMsg1(("condasm_prepare(%s), old status: %s, lvl=%u, falselvl=%u\n",
 
@@ -3085,7 +2879,7 @@ $LN20:
 	mov	rcx, QWORD PTR tv66[rsp]
 	mov	r8, rcx
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11001
+	lea	rcx, OFFSET FLAT:$SG11039
 	call	DoDebugMsg1
 
 ; 94   :                GetResWName( directive, NULL), GetCurrIfStatString(), blocknestlevel, falseblocknestlevel));
@@ -3093,15 +2887,15 @@ $LN20:
 
 	mov	eax, DWORD PTR directive$[rsp]
 	mov	DWORD PTR tv73[rsp], eax
-	cmp	DWORD PTR tv73[rsp], 359		; 00000167H
+	cmp	DWORD PTR tv73[rsp], 364		; 0000016cH
 	jl	$LN2@conditiona
-	cmp	DWORD PTR tv73[rsp], 370		; 00000172H
+	cmp	DWORD PTR tv73[rsp], 375		; 00000177H
 	jle	SHORT $LN4@conditiona
-	cmp	DWORD PTR tv73[rsp], 370		; 00000172H
+	cmp	DWORD PTR tv73[rsp], 375		; 00000177H
 	jle	$LN2@conditiona
-	cmp	DWORD PTR tv73[rsp], 383		; 0000017fH
+	cmp	DWORD PTR tv73[rsp], 388		; 00000184H
 	jle	$LN7@conditiona
-	cmp	DWORD PTR tv73[rsp], 384		; 00000180H
+	cmp	DWORD PTR tv73[rsp], 389		; 00000185H
 	je	$LN13@conditiona
 	jmp	$LN2@conditiona
 $LN4@conditiona:
@@ -3223,7 +3017,7 @@ $LN10@conditiona:
 
 ; 138  :                 EmitError( ELSE_CLAUSE_ALREADY_OCCURED_IN_THIS_IF_BLOCK );
 
-	mov	ecx, 273				; 00000111H
+	mov	ecx, 274				; 00000112H
 	call	EmitError
 
 ; 139  :                 break;
@@ -3251,7 +3045,7 @@ $LN19@conditiona:
 ; 146  :             /* v2.06: no further ELSEx once ELSE was detected */
 ; 147  :             if ( directive == T_ELSE )
 
-	cmp	DWORD PTR directive$[rsp], 371		; 00000173H
+	cmp	DWORD PTR directive$[rsp], 376		; 00000178H
 	jne	SHORT $LN12@conditiona
 
 ; 148  :                 elseoccured |= ( 1 << ( blocknestlevel - 1 ) );
@@ -3355,15 +3149,14 @@ $LN2@conditiona:
 	mov	rcx, QWORD PTR tv148[rsp]
 	mov	r8, rcx
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11015
+	lea	rcx, OFFSET FLAT:$SG11053
 	call	DoDebugMsg1
 
 ; 167  :                GetResWName( directive, NULL ), GetCurrIfStatString(), blocknestlevel, falseblocknestlevel));
 ; 168  :     return;
 ; 169  : }
 
-	add	rsp, 96					; 00000060H
-	pop	rdi
+	add	rsp, 104				; 00000068H
 	ret	0
 conditional_assembly_prepare ENDP
 _TEXT	ENDS

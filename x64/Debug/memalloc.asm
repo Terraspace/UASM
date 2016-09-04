@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 _DATA	SEGMENT
@@ -15,16 +15,16 @@ _BSS	SEGMENT
 memcalls DD	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG7476	DB	'memory used: %u kB', 0aH, 00H
+$SG7490	DB	'memory used: %u kB', 0aH, 00H
 	ORG $+4
-$SG7478	DB	'still allocated memory blocks : %u', 0aH, 00H
+$SG7492	DB	'still allocated memory blocks : %u', 0aH, 00H
 	ORG $+4
-$SG7494	DB	'LclAlloc: new block needed, req. size=%Xh > currfree=%Xh'
+$SG7508	DB	'LclAlloc: new block needed, req. size=%Xh > currfree=%Xh'
 	DB	0aH, 00H
 	ORG $+6
-$SG7501	DB	'MemAlloc(0x%X)=%p cnt=%u', 0aH, 00H
+$SG7515	DB	'MemAlloc(0x%X)=%p cnt=%u', 0aH, 00H
 	ORG $+6
-$SG7506	DB	'MemFree(0x%p) cnt=%u', 0aH, 00H
+$SG7520	DB	'MemFree(0x%p) cnt=%u', 0aH, 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	_vfprintf_l
@@ -34,18 +34,15 @@ PUBLIC	MemFini
 PUBLIC	MemAlloc
 PUBLIC	MemFree
 PUBLIC	LclAlloc
-EXTRN	__imp___acrt_iob_func:PROC
-EXTRN	__imp___stdio_common_vfprintf:PROC
-EXTRN	__imp_free:PROC
-EXTRN	__imp_malloc:PROC
+EXTRN	__acrt_iob_func:PROC
+EXTRN	__stdio_common_vfprintf:PROC
+EXTRN	free:PROC
+EXTRN	malloc:PROC
 EXTRN	DoDebugMsg:PROC
 EXTRN	DoDebugMsg1:PROC
 EXTRN	Fatal:PROC
 EXTRN	__imp_VirtualAlloc:PROC
 EXTRN	__imp_VirtualFree:PROC
-EXTRN	_RTC_CheckStackVars:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
 EXTRN	Options:BYTE
 _DATA	SEGMENT
 COMM	?_OptionsStorage@?1??__local_stdio_printf_options@@9@9:QWORD							; `__local_stdio_printf_options'::`2'::_OptionsStorage
@@ -61,99 +58,55 @@ memstart DD	01H DUP (?)
 _BSS	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$__local_stdio_printf_options DD imagerel $LN3
-	DD	imagerel $LN3+11
-	DD	imagerel $unwind$__local_stdio_printf_options
-pdata	ENDS
-;	COMDAT pdata
-pdata	SEGMENT
 $pdata$_vfprintf_l DD imagerel $LN3
-	DD	imagerel $LN3+90
+	DD	imagerel $LN3+67
 	DD	imagerel $unwind$_vfprintf_l
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$printf DD imagerel $LN3
-	DD	imagerel $LN3+129
+	DD	imagerel $LN3+87
 	DD	imagerel $unwind$printf
 pdata	ENDS
 pdata	SEGMENT
-$pdata$MemInit DD imagerel $LN3
-	DD	imagerel $LN3+47
-	DD	imagerel $unwind$MemInit
 $pdata$MemFini DD imagerel $LN7
-	DD	imagerel $LN7+181
+	DD	imagerel $LN7+163
 	DD	imagerel $unwind$MemFini
 $pdata$MemAlloc DD imagerel $LN4
-	DD	imagerel $LN4+118
+	DD	imagerel $LN4+95
 	DD	imagerel $unwind$MemAlloc
 $pdata$MemFree DD imagerel $LN3
-	DD	imagerel $LN3+85
+	DD	imagerel $LN3+62
 	DD	imagerel $unwind$MemFree
 $pdata$LclAlloc DD imagerel $LN7
-	DD	imagerel $LN7+329
+	DD	imagerel $LN7+307
 	DD	imagerel $unwind$LclAlloc
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
 xdata	SEGMENT
-$unwind$MemInit DD 010201H
-	DD	07002H
-$unwind$MemFini DD 021501H
-	DD	070025206H
-$unwind$MemAlloc DD 021e01H
-	DD	07006520aH
-$unwind$MemFree DD 021e01H
-	DD	07006320aH
-$unwind$LclAlloc DD 021e01H
-	DD	07006520aH
+$unwind$MemFini DD 010401H
+	DD	06204H
+$unwind$MemAlloc DD 010901H
+	DD	06209H
+$unwind$MemFree DD 010901H
+	DD	04209H
+$unwind$LclAlloc DD 010901H
+	DD	06209H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$printf DD 022d01H
-	DD	070159219H
-xdata	ENDS
-;	COMDAT CONST
-CONST	SEGMENT
-printf$rtcName$0 DB 05fH
-	DB	041H
-	DB	072H
-	DB	067H
-	DB	04cH
-	DB	069H
-	DB	073H
-	DB	074H
-	DB	00H
-	ORG $+7
-printf$rtcVarDesc DD 038H
-	DD	08H
-	DQ	FLAT:printf$rtcName$0
-	ORG $+48
-printf$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:printf$rtcVarDesc
-CONST	ENDS
-;	COMDAT xdata
-xdata	SEGMENT
-$unwind$_vfprintf_l DD 022d01H
-	DD	070155219H
+$unwind$printf DD 011801H
+	DD	06218H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$__local_stdio_printf_options DD 010201H
-	DD	07002H
+$unwind$_vfprintf_l DD 011801H
+	DD	06218H
 xdata	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\memalloc.c
 _TEXT	SEGMENT
-ptr$ = 32
-tv73 = 40
+tv73 = 32
+ptr$ = 40
 size$ = 64
 LclAlloc PROC
 
@@ -161,13 +114,7 @@ LclAlloc PROC
 
 $LN7:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 184  :     void        *ptr;
 ; 185  : 
@@ -189,7 +136,7 @@ $LN7:
 
 	mov	r8d, DWORD PTR currfree
 	mov	rdx, QWORD PTR size$[rsp]
-	lea	rcx, OFFSET FLAT:$SG7494
+	lea	rcx, OFFSET FLAT:$SG7508
 	call	DoDebugMsg
 
 ; 190  :         currfree = ( size <= ( BLKSIZE - sizeof( struct linked_list ) ) ? BLKSIZE - sizeof( struct linked_list ) : size );
@@ -293,12 +240,11 @@ $LN2@LclAlloc:
 
 ; 216  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 LclAlloc ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\memalloc.c
 _TEXT	SEGMENT
 ptr$ = 48
@@ -308,13 +254,7 @@ MemFree	PROC
 
 $LN3:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 247  :     DebugMsg1(("MemFree(0x%p) cnt=%" I32_SPEC "u\n", ptr, --memcalls ));
 
@@ -323,23 +263,22 @@ $LN3:
 	mov	DWORD PTR memcalls, eax
 	mov	r8d, DWORD PTR memcalls
 	mov	rdx, QWORD PTR ptr$[rsp]
-	lea	rcx, OFFSET FLAT:$SG7506
+	lea	rcx, OFFSET FLAT:$SG7520
 	call	DoDebugMsg1
 
 ; 248  :     free( ptr );
 
 	mov	rcx, QWORD PTR ptr$[rsp]
-	call	QWORD PTR __imp_free
+	call	free
 
 ; 249  :     return;
 ; 250  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 MemFree	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\memalloc.c
 _TEXT	SEGMENT
 ptr$ = 32
@@ -350,19 +289,13 @@ MemAlloc PROC
 
 $LN4:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 234  :     void        *ptr;
 ; 235  :     ptr = malloc( size );
 
 	mov	rcx, QWORD PTR size$[rsp]
-	call	QWORD PTR __imp_malloc
+	call	malloc
 	mov	QWORD PTR ptr$[rsp], rax
 
 ; 236  :     DebugMsg1(("MemAlloc(0x%X)=%p cnt=%" I32_SPEC "u\n", size, ptr, ++memcalls ));
@@ -373,7 +306,7 @@ $LN4:
 	mov	r9d, DWORD PTR memcalls
 	mov	r8, QWORD PTR ptr$[rsp]
 	mov	rdx, QWORD PTR size$[rsp]
-	lea	rcx, OFFSET FLAT:$SG7501
+	lea	rcx, OFFSET FLAT:$SG7515
 	call	DoDebugMsg1
 
 ; 237  :     if( ptr == NULL ) {
@@ -395,12 +328,11 @@ $LN2@MemAlloc:
 
 ; 242  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 MemAlloc ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\memalloc.c
 _TEXT	SEGMENT
 pNext$1 = 32
@@ -409,12 +341,7 @@ MemFini	PROC
 ; 162  : {
 
 $LN7:
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 56					; 00000038H
 
 ; 163  : 
 ; 164  : #if FASTMEM
@@ -433,7 +360,7 @@ $LN7:
 	mov	ecx, 1024				; 00000400H
 	div	ecx
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG7476
+	lea	rcx, OFFSET FLAT:$SG7490
 	call	printf
 $LN4@MemFini:
 $LN2@MemFini:
@@ -482,27 +409,21 @@ $LN3@MemFini:
 	sub	ecx, eax
 	mov	eax, ecx
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG7478
+	lea	rcx, OFFSET FLAT:$SG7492
 	call	printf
 $LN5@MemFini:
 
 ; 178  : #endif
 ; 179  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 MemFini	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\memalloc.c
 _TEXT	SEGMENT
 MemInit	PROC
-
-; 151  : {
-
-$LN3:
-	push	rdi
 
 ; 152  : #if FASTMEM
 ; 153  :     pBase = NULL;
@@ -525,17 +446,16 @@ $LN3:
 
 ; 158  : }
 
-	pop	rdi
 	ret	0
 MemInit	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT printf
 _TEXT	SEGMENT
 _Result$ = 32
-_ArgList$ = 56
-_Format$ = 96
+_ArgList$ = 40
+_Format$ = 64
 printf	PROC						; COMDAT
 
 ; 950  : {
@@ -545,13 +465,7 @@ $LN3:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+32], r9
-	push	rdi
-	sub	rsp, 80					; 00000050H
-	mov	rdi, rsp
-	mov	ecx, 20
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+96]
+	sub	rsp, 56					; 00000038H
 
 ; 951  :     int _Result;
 ; 952  :     va_list _ArgList;
@@ -563,7 +477,7 @@ $LN3:
 ; 954  :     _Result = _vfprintf_l(stdout, _Format, NULL, _ArgList);
 
 	mov	ecx, 1
-	call	QWORD PTR __imp___acrt_iob_func
+	call	__acrt_iob_func
 	mov	r9, QWORD PTR _ArgList$[rsp]
 	xor	r8d, r8d
 	mov	rdx, QWORD PTR _Format$[rsp]
@@ -581,17 +495,11 @@ $LN3:
 
 ; 957  : }
 
-	mov	edi, eax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:printf$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	eax, edi
-	add	rsp, 80					; 00000050H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 printf	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT _vfprintf_l
 _TEXT	SEGMENT
@@ -608,13 +516,7 @@ $LN3:
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 639  :     return __stdio_common_vfprintf(_CRT_INTERNAL_LOCAL_PRINTF_OPTIONS, _Stream, _Format, _Locale, _ArgList);
 
@@ -625,25 +527,19 @@ $LN3:
 	mov	r8, QWORD PTR _Format$[rsp]
 	mov	rdx, QWORD PTR _Stream$[rsp]
 	mov	rcx, QWORD PTR [rax]
-	call	QWORD PTR __imp___stdio_common_vfprintf
+	call	__stdio_common_vfprintf
 
 ; 640  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 _vfprintf_l ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\corecrt_stdio_config.h
 ;	COMDAT __local_stdio_printf_options
 _TEXT	SEGMENT
 __local_stdio_printf_options PROC			; COMDAT
-
-; 73   : {
-
-$LN3:
-	push	rdi
 
 ; 74   :     static unsigned __int64 _OptionsStorage;
 ; 75   :     return &_OptionsStorage;
@@ -652,7 +548,6 @@ $LN3:
 
 ; 76   : }
 
-	pop	rdi
 	ret	0
 __local_stdio_printf_options ENDP
 _TEXT	ENDS

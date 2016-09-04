@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 PUBLIC	szDgroup
@@ -15,24 +15,24 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG11102 DB	01H DUP (?)
+$SG11142 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG10975 DB	'SetSegAssumeTable', 0aH, 00H
+$SG11013 DB	'SetSegAssumeTable', 0aH, 00H
 	ORG $+5
-$SG10979 DB	'GetSegAssumeTable', 0aH, 00H
+$SG11017 DB	'GetSegAssumeTable', 0aH, 00H
 	ORG $+5
-$SG10989 DB	'SetStdAssumeTable enter', 0aH, 00H
+$SG11027 DB	'SetStdAssumeTable enter', 0aH, 00H
 	ORG $+7
-$SG11000 DB	'GetStdAssumeTable', 0aH, 00H
+$SG11038 DB	'GetStdAssumeTable', 0aH, 00H
 	ORG $+5
-$SG11029 DB	'%r %r:%r,%r:%r,%r:%r,%r:%r,%r:%s,%r:%s', 00H
+$SG11067 DB	'%r %r:%r,%r:%r,%r:%r,%r:%r,%r:%s,%r:%s', 00H
 	ORG $+1
-$SG11037 DB	'%r %r:%s,%r:%s,%r:%s', 00H
+$SG11075 DB	'%r %r:%s,%r:%s,%r:%s', 00H
 	ORG $+3
-$SG11038 DB	'%r %r:%s,%r:%s', 00H
+$SG11076 DB	'%r %r:%s,%r:%s', 00H
 	ORG $+1
-$SG11077 DB	'AssumeDirective enter, pass=%u', 0aH, 00H
+$SG11117 DB	'AssumeDirective enter, pass=%u', 0aH, 00H
 _DATA	ENDS
 CONST	SEGMENT
 searchtab DD	03H
@@ -61,7 +61,7 @@ PUBLIC	AssumeSaveState
 PUBLIC	AssumeDirective
 EXTRN	memcpy:PROC
 EXTRN	memset:PROC
-EXTRN	__imp__stricmp:PROC
+EXTRN	_stricmp:PROC
 EXTRN	DoDebugMsg:PROC
 EXTRN	DoDebugMsg1:PROC
 EXTRN	EmitError:PROC
@@ -74,10 +74,6 @@ EXTRN	GetQualifiedType:PROC
 EXTRN	AddLineQueueX:PROC
 EXTRN	EvalOperand:PROC
 EXTRN	StoreLine:PROC
-EXTRN	_RTC_CheckStackVars:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
-EXTRN	_RTC_UninitUse:PROC
 EXTRN	Options:BYTE
 EXTRN	ModuleInfo:BYTE
 EXTRN	Parse_Pass:DWORD
@@ -93,189 +89,103 @@ saved_StdTypeInfo DB 0180H DUP (?)
 _BSS	ENDS
 pdata	SEGMENT
 $pdata$AssumeInit DD imagerel $LN12
-	DD	imagerel $LN12+286
+	DD	imagerel $LN12+265
 	DD	imagerel $unwind$AssumeInit
 $pdata$search_assume DD imagerel $LN19
-	DD	imagerel $LN19+497
+	DD	imagerel $LN19+475
 	DD	imagerel $unwind$search_assume
 $pdata$GetAssume DD imagerel $LN11
-	DD	imagerel $LN11+288
+	DD	imagerel $LN11+266
 	DD	imagerel $unwind$GetAssume
-$pdata$GetOverrideAssume DD imagerel $LN4
-	DD	imagerel $LN4+61
-	DD	imagerel $unwind$GetOverrideAssume
-$pdata$GetStdAssume DD imagerel $LN6
-	DD	imagerel $LN6+115
-	DD	imagerel $unwind$GetStdAssume
-$pdata$GetStdAssumeEx DD imagerel $LN3
-	DD	imagerel $LN3+27
-	DD	imagerel $unwind$GetStdAssumeEx
 $pdata$ModelAssumeInit DD imagerel $LN14
-	DD	imagerel $LN14+429
+	DD	imagerel $LN14+405
 	DD	imagerel $unwind$ModelAssumeInit
 $pdata$SetSegAssumeTable DD imagerel $LN3
-	DD	imagerel $LN3+71
+	DD	imagerel $LN3+49
 	DD	imagerel $unwind$SetSegAssumeTable
 $pdata$GetSegAssumeTable DD imagerel $LN3
-	DD	imagerel $LN3+71
+	DD	imagerel $LN3+49
 	DD	imagerel $unwind$GetSegAssumeTable
 $pdata$SetStdAssumeTable DD imagerel $LN7
-	DD	imagerel $LN7+313
+	DD	imagerel $LN7+291
 	DD	imagerel $unwind$SetStdAssumeTable
 $pdata$GetStdAssumeTable DD imagerel $LN7
-	DD	imagerel $LN7+313
+	DD	imagerel $LN7+291
 	DD	imagerel $unwind$GetStdAssumeTable
 $pdata$AssumeSaveState DD imagerel $LN3
-	DD	imagerel $LN3+58
+	DD	imagerel $LN3+40
 	DD	imagerel $unwind$AssumeSaveState
-$pdata$AssumeDirective DD imagerel $LN94
-	DD	imagerel $LN94+3057
+$pdata$AssumeDirective DD imagerel $LN61
+	DD	imagerel $LN61+2152
 	DD	imagerel $unwind$AssumeDirective
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
-CONST	SEGMENT
-	ORG $+1
-AssumeDirective$rtcName$0 DB 072H
-	DB	065H
-	DB	067H
-	DB	00H
-AssumeDirective$rtcName$1 DB 066H
-	DB	06cH
-	DB	061H
-	DB	067H
-	DB	073H
-	DB	00H
-	ORG $+2
-AssumeDirective$rtcName$2 DB 06aH
-	DB	00H
-	ORG $+2
-AssumeDirective$rtcName$3 DB 073H
-	DB	065H
-	DB	067H
-	DB	074H
-	DB	061H
-	DB	062H
-	DB	06cH
-	DB	065H
-	DB	00H
-	ORG $+3
-AssumeDirective$rtcName$4 DB 074H
-	DB	069H
-	DB	00H
-	ORG $+1
-AssumeDirective$rtcName$5 DB 06fH
-	DB	070H
-	DB	06eH
-	DB	064H
-	DB	00H
-	ORG $+3
-AssumeDirective$rtcFrameData DD 02H
-	DD	00H
-	DQ	FLAT:AssumeDirective$rtcVarDesc
-	ORG $+8
-AssumeDirective$rtcVarDesc DD 0a0H
-	DD	068H
-	DQ	FLAT:AssumeDirective$rtcName$5
-	DD	058H
-	DD	020H
-	DQ	FLAT:AssumeDirective$rtcName$4
-CONST	ENDS
 xdata	SEGMENT
-$unwind$AssumeInit DD 021c01H
-	DD	070055209H
-$unwind$search_assume DD 022701H
-	DD	0700f5213H
-$unwind$GetAssume DD 022d01H
-	DD	070155219H
-$unwind$GetOverrideAssume DD 010501H
-	DD	07005H
-$unwind$GetStdAssume DD 010501H
-	DD	07005H
-$unwind$GetStdAssumeEx DD 010501H
-	DD	07005H
-$unwind$ModelAssumeInit DD 031801H
-	DD	0140109H
-	DD	07002H
-$unwind$SetSegAssumeTable DD 021e01H
-	DD	07006320aH
-$unwind$GetSegAssumeTable DD 021e01H
-	DD	07006320aH
-$unwind$SetStdAssumeTable DD 022301H
-	DD	0700b520fH
-$unwind$GetStdAssumeTable DD 022301H
-	DD	0700b520fH
-$unwind$AssumeSaveState DD 021501H
-	DD	070023206H
-$unwind$AssumeDirective DD 032701H
-	DD	0260111H
-	DD	0700aH
+$unwind$AssumeInit DD 010801H
+	DD	06208H
+$unwind$search_assume DD 011201H
+	DD	06212H
+$unwind$GetAssume DD 011801H
+	DD	06218H
+$unwind$ModelAssumeInit DD 020701H
+	DD	0150107H
+$unwind$SetSegAssumeTable DD 010901H
+	DD	04209H
+$unwind$GetSegAssumeTable DD 010901H
+	DD	04209H
+$unwind$SetStdAssumeTable DD 010e01H
+	DD	0620eH
+$unwind$GetStdAssumeTable DD 010e01H
+	DD	0620eH
+$unwind$AssumeSaveState DD 010401H
+	DD	04204H
+$unwind$AssumeDirective DD 021001H
+	DD	01f0110H
 xdata	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\assume.c
 _TEXT	SEGMENT
-reg$ = 48
+segtable$ = 48
 j$ = 52
-size$ = 56
-flags$ = 60
-info$ = 64
-segtable$ = 72
-ti$ = 88
-opnd$9 = 160
-$T10 = 276
-$T11 = 277
-$T12 = 278
-$T13 = 279
-tv198 = 280
-tv221 = 284
-tv252 = 288
-tv325 = 292
-tv386 = 296
-i$ = 320
-tokenarray$ = 328
+info$ = 56
+reg$ = 64
+flags$ = 68
+tv198 = 72
+tv221 = 76
+size$ = 80
+tv252 = 84
+tv325 = 88
+tv386 = 92
+ti$ = 96
+opnd$1 = 128
+i$ = 256
+tokenarray$ = 264
 AssumeDirective PROC
 
-; 286  : {
+; 287  : {
 
-$LN94:
+$LN61:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 304				; 00000130H
-	mov	rdi, rsp
-	mov	ecx, 76					; 0000004cH
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+320]
-	mov	BYTE PTR $T10[rsp], 0
-	mov	BYTE PTR $T11[rsp], 0
-	mov	BYTE PTR $T13[rsp], 0
-	mov	BYTE PTR $T12[rsp], 0
+	sub	rsp, 248				; 000000f8H
 
-; 287  :     int             reg;
-; 288  :     int             j;
-; 289  :     int             size;
-; 290  :     uint_32         flags;
-; 291  :     struct assume_info *info;
-; 292  :     bool            segtable;
-; 293  :     struct qualified_type ti;
-; 294  : 
-; 295  :     DebugMsg1(( "AssumeDirective enter, pass=%u\n", Parse_Pass+1 ));
+; 288  :     int             reg;
+; 289  :     int             j;
+; 290  :     int             size;
+; 291  :     uint_32         flags;
+; 292  :     struct assume_info *info;
+; 293  :     bool            segtable;
+; 294  :     struct qualified_type ti;
+; 295  : 
+; 296  :     DebugMsg1(( "AssumeDirective enter, pass=%u\n", Parse_Pass+1 ));
 
 	mov	eax, DWORD PTR Parse_Pass
 	inc	eax
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11077
+	lea	rcx, OFFSET FLAT:$SG11117
 	call	DoDebugMsg1
 
-; 296  : 
-; 297  :     for( i++; i < Token_Count; i++ ) {
+; 297  : 
+; 298  :     for( i++; i < Token_Count; i++ ) {
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
@@ -290,9 +200,9 @@ $LN4@AssumeDire:
 	cmp	DWORD PTR i$[rsp], eax
 	jge	$LN3@AssumeDire
 
-; 298  : 
-; 299  :         if( ( tokenarray[i].token == T_ID )
-; 300  :             && (0 == _stricmp( tokenarray[i].string_ptr, szNothing )) ) {
+; 299  : 
+; 300  :         if( ( tokenarray[i].token == T_ID )
+; 301  :             && (0 == _stricmp( tokenarray[i].string_ptr, szNothing )) ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -305,35 +215,35 @@ $LN4@AssumeDire:
 	lea	rdx, OFFSET FLAT:szNothing
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
-	call	QWORD PTR __imp__stricmp
+	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN7@AssumeDire
 
-; 301  :             AssumeInit( -1 );
+; 302  :             AssumeInit( -1 );
 
 	mov	ecx, -1
 	call	AssumeInit
 
-; 302  :             i++;
+; 303  :             i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
 	mov	DWORD PTR i$[rsp], eax
 
-; 303  :             break;
+; 304  :             break;
 
 	jmp	$LN3@AssumeDire
 $LN7@AssumeDire:
 
-; 304  :         }
-; 305  : 
-; 306  :         /*---- get the info ptr for the register ----*/
-; 307  : 
-; 308  :         info = NULL;
+; 305  :         }
+; 306  : 
+; 307  :         /*---- get the info ptr for the register ----*/
+; 308  : 
+; 309  :         info = NULL;
 
 	mov	QWORD PTR info$[rsp], 0
 
-; 309  :         if ( tokenarray[i].token == T_REG ) {
+; 310  :         if ( tokenarray[i].token == T_REG ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -342,62 +252,39 @@ $LN7@AssumeDire:
 	cmp	eax, 2
 	jne	$LN8@AssumeDire
 
-; 310  :             reg = tokenarray[i].tokval;
+; 311  :             reg = tokenarray[i].tokval;
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
-	mov	BYTE PTR $T10[rsp], 1
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	eax, DWORD PTR [rcx+rax+16]
 	mov	DWORD PTR reg$[rsp], eax
 
-; 311  :             j = GetRegNo( reg );
+; 312  :             j = GetRegNo( reg );
 
-	cmp	BYTE PTR $T10[rsp], 0
-	jne	SHORT $LN61@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN61@AssumeDire:
 	movsxd	rax, DWORD PTR reg$[rsp]
 	imul	rax, rax, 12
 	lea	rcx, OFFSET FLAT:SpecialTable
 	movzx	eax, BYTE PTR [rcx+rax+10]
-	mov	BYTE PTR $T11[rsp], 1
 	mov	DWORD PTR j$[rsp], eax
 
-; 312  :             flags = GetValueSp( reg );
+; 313  :             flags = GetValueSp( reg );
 
-	cmp	BYTE PTR $T10[rsp], 0
-	jne	SHORT $LN62@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN62@AssumeDire:
 	movsxd	rax, DWORD PTR reg$[rsp]
 	imul	rax, rax, 12
 	lea	rcx, OFFSET FLAT:SpecialTable
-	mov	BYTE PTR $T12[rsp], 1
 	mov	eax, DWORD PTR [rcx+rax]
 	mov	DWORD PTR flags$[rsp], eax
 
-; 313  :             if ( flags & OP_SR ) {
+; 314  :             if ( flags & OP_SR ) {
 
-	cmp	BYTE PTR $T12[rsp], 0
-	jne	SHORT $LN63@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$1
-	call	_RTC_UninitUse
-$LN63@AssumeDire:
 	mov	eax, DWORD PTR flags$[rsp]
 	and	eax, 24576				; 00006000H
 	test	eax, eax
 	je	SHORT $LN9@AssumeDire
 
-; 314  :                 info = &SegAssumeTable[j];
+; 315  :                 info = &SegAssumeTable[j];
 
-	cmp	BYTE PTR $T11[rsp], 0
-	jne	SHORT $LN64@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$2
-	call	_RTC_UninitUse
-$LN64@AssumeDire:
 	movsxd	rax, DWORD PTR j$[rsp]
 	imul	rax, rax, 16
 	lea	rcx, OFFSET FLAT:SegAssumeTable
@@ -405,32 +292,21 @@ $LN64@AssumeDire:
 	mov	rax, rcx
 	mov	QWORD PTR info$[rsp], rax
 
-; 315  :                 segtable = TRUE;
+; 316  :                 segtable = TRUE;
 
-	mov	BYTE PTR $T13[rsp], 1
 	mov	BYTE PTR segtable$[rsp], 1
 	jmp	SHORT $LN10@AssumeDire
 $LN9@AssumeDire:
 
-; 316  :             } else if ( flags & OP_R ) {
+; 317  :             } else if ( flags & OP_R ) {
 
-	cmp	BYTE PTR $T12[rsp], 0
-	jne	SHORT $LN65@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$1
-	call	_RTC_UninitUse
-$LN65@AssumeDire:
 	mov	eax, DWORD PTR flags$[rsp]
 	and	eax, 15
 	test	eax, eax
 	je	SHORT $LN11@AssumeDire
 
-; 317  :                 info = &StdAssumeTable[j];
+; 318  :                 info = &StdAssumeTable[j];
 
-	cmp	BYTE PTR $T11[rsp], 0
-	jne	SHORT $LN66@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$2
-	call	_RTC_UninitUse
-$LN66@AssumeDire:
 	movsxd	rax, DWORD PTR j$[rsp]
 	imul	rax, rax, 16
 	lea	rcx, OFFSET FLAT:StdAssumeTable
@@ -438,22 +314,21 @@ $LN66@AssumeDire:
 	mov	rax, rcx
 	mov	QWORD PTR info$[rsp], rax
 
-; 318  :                 segtable = FALSE;
+; 319  :                 segtable = FALSE;
 
-	mov	BYTE PTR $T13[rsp], 1
 	mov	BYTE PTR segtable$[rsp], 0
 $LN11@AssumeDire:
 $LN10@AssumeDire:
 $LN8@AssumeDire:
 
-; 319  :             }
-; 320  :         }
-; 321  :         if ( info == NULL ) {
+; 320  :             }
+; 321  :         }
+; 322  :         if ( info == NULL ) {
 
 	cmp	QWORD PTR info$[rsp], 0
 	jne	SHORT $LN12@AssumeDire
 
-; 322  :             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
+; 323  :             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -464,15 +339,10 @@ $LN8@AssumeDire:
 	jmp	$LN1@AssumeDire
 $LN12@AssumeDire:
 
-; 323  :         }
-; 324  : 
-; 325  :         if( ( ModuleInfo.curr_cpu & P_CPU_MASK ) < GetCpuSp( reg ) ) {
+; 324  :         }
+; 325  : 
+; 326  :         if( ( ModuleInfo.curr_cpu & P_CPU_MASK ) < GetCpuSp( reg ) ) {
 
-	cmp	BYTE PTR $T10[rsp], 0
-	jne	SHORT $LN67@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN67@AssumeDire:
 	mov	eax, DWORD PTR ModuleInfo+392
 	and	eax, 240				; 000000f0H
 	movsxd	rcx, DWORD PTR reg$[rsp]
@@ -482,23 +352,23 @@ $LN67@AssumeDire:
 	cmp	eax, ecx
 	jge	SHORT $LN13@AssumeDire
 
-; 326  :             return( EmitError( INSTRUCTION_OR_REGISTER_NOT_ACCEPTED_IN_CURRENT_CPU_MODE ) );
+; 327  :             return( EmitError( INSTRUCTION_OR_REGISTER_NOT_ACCEPTED_IN_CURRENT_CPU_MODE ) );
 
 	mov	ecx, 30
 	call	EmitError
 	jmp	$LN1@AssumeDire
 $LN13@AssumeDire:
 
-; 327  :         }
-; 328  : 
-; 329  :         i++; /* go past register */
+; 328  :         }
+; 329  : 
+; 330  :         i++; /* go past register */
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
 	mov	DWORD PTR i$[rsp], eax
 
-; 330  : 
-; 331  :         if( tokenarray[i].token != T_COLON ) {
+; 331  : 
+; 332  :         if( tokenarray[i].token != T_COLON ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -507,22 +377,22 @@ $LN13@AssumeDire:
 	cmp	eax, 58					; 0000003aH
 	je	SHORT $LN14@AssumeDire
 
-; 332  :             return( EmitError( COLON_EXPECTED ) );
+; 333  :             return( EmitError( COLON_EXPECTED ) );
 
 	mov	ecx, 84					; 00000054H
 	call	EmitError
 	jmp	$LN1@AssumeDire
 $LN14@AssumeDire:
 
-; 333  :         }
-; 334  :         i++;
+; 334  :         }
+; 335  :         i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
 	mov	DWORD PTR i$[rsp], eax
 
-; 335  : 
-; 336  :         if( tokenarray[i].token == T_FINAL ) {
+; 336  : 
+; 337  :         if( tokenarray[i].token == T_FINAL ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -531,78 +401,58 @@ $LN14@AssumeDire:
 	test	eax, eax
 	jne	SHORT $LN15@AssumeDire
 
-; 337  :             return( EmitError( SYNTAX_ERROR ) );
+; 338  :             return( EmitError( SYNTAX_ERROR ) );
 
 	mov	ecx, 45					; 0000002dH
 	call	EmitError
 	jmp	$LN1@AssumeDire
 $LN15@AssumeDire:
 
-; 338  :         }
-; 339  : 
-; 340  :         /* check for ERROR and NOTHING */
-; 341  : 
-; 342  :         if( 0 == _stricmp( tokenarray[i].string_ptr, szError )) {
+; 339  :         }
+; 340  : 
+; 341  :         /* check for ERROR and NOTHING */
+; 342  : 
+; 343  :         if( 0 == _stricmp( tokenarray[i].string_ptr, szError )) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
 	lea	rdx, OFFSET FLAT:szError
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
-	call	QWORD PTR __imp__stricmp
+	call	_stricmp
 	test	eax, eax
-	jne	$LN16@AssumeDire
+	jne	SHORT $LN16@AssumeDire
 
-; 343  :             if ( segtable ) {
+; 344  :             if ( segtable ) {
 
-	cmp	BYTE PTR $T13[rsp], 0
-	jne	SHORT $LN68@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$3
-	call	_RTC_UninitUse
-$LN68@AssumeDire:
 	movzx	eax, BYTE PTR segtable$[rsp]
 	test	eax, eax
 	je	SHORT $LN18@AssumeDire
 
-; 344  :                 info->is_flat = FALSE;
+; 345  :                 info->is_flat = FALSE;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	BYTE PTR [rax+9], 0
 
-; 345  :                 info->error = TRUE;
+; 346  :                 info->error = TRUE;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	BYTE PTR [rax+8], 1
 
-; 346  :             } else
+; 347  :             } else
 
-	jmp	$LN19@AssumeDire
+	jmp	SHORT $LN19@AssumeDire
 $LN18@AssumeDire:
 
-; 347  :                 info->error |= (( reg >= T_AH && reg <= T_BH ) ? RH_ERROR : ( flags & OP_R ));
+; 348  :                 info->error |= (( reg >= T_AH && reg <= T_BH ) ? RH_ERROR : ( flags & OP_R ));
 
-	cmp	BYTE PTR $T10[rsp], 0
-	jne	SHORT $LN69@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN69@AssumeDire:
 	cmp	DWORD PTR reg$[rsp], 5
 	jl	SHORT $LN53@AssumeDire
-	cmp	BYTE PTR $T10[rsp], 0
-	jne	SHORT $LN70@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN70@AssumeDire:
 	cmp	DWORD PTR reg$[rsp], 8
 	jg	SHORT $LN53@AssumeDire
 	mov	DWORD PTR tv198[rsp], 16
 	jmp	SHORT $LN54@AssumeDire
 $LN53@AssumeDire:
-	cmp	BYTE PTR $T12[rsp], 0
-	jne	SHORT $LN71@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$1
-	call	_RTC_UninitUse
-$LN71@AssumeDire:
 	mov	eax, DWORD PTR flags$[rsp]
 	and	eax, 15
 	mov	DWORD PTR tv198[rsp], eax
@@ -614,12 +464,12 @@ $LN54@AssumeDire:
 	mov	BYTE PTR [rcx+8], al
 $LN19@AssumeDire:
 
-; 348  :             info->symbol = NULL;
+; 349  :             info->symbol = NULL;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	QWORD PTR [rax], 0
 
-; 349  :             i++;
+; 350  :             i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
@@ -627,67 +477,47 @@ $LN19@AssumeDire:
 	jmp	$LN17@AssumeDire
 $LN16@AssumeDire:
 
-; 350  :         } else if( 0 == _stricmp( tokenarray[i].string_ptr, szNothing )) {
+; 351  :         } else if( 0 == _stricmp( tokenarray[i].string_ptr, szNothing )) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
 	lea	rdx, OFFSET FLAT:szNothing
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
-	call	QWORD PTR __imp__stricmp
+	call	_stricmp
 	test	eax, eax
-	jne	$LN20@AssumeDire
+	jne	SHORT $LN20@AssumeDire
 
-; 351  :             if ( segtable ) {
+; 352  :             if ( segtable ) {
 
-	cmp	BYTE PTR $T13[rsp], 0
-	jne	SHORT $LN72@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$3
-	call	_RTC_UninitUse
-$LN72@AssumeDire:
 	movzx	eax, BYTE PTR segtable$[rsp]
 	test	eax, eax
 	je	SHORT $LN22@AssumeDire
 
-; 352  :                 info->is_flat = FALSE;
+; 353  :                 info->is_flat = FALSE;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	BYTE PTR [rax+9], 0
 
-; 353  :                 info->error = FALSE;
+; 354  :                 info->error = FALSE;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	BYTE PTR [rax+8], 0
 
-; 354  :             } else
+; 355  :             } else
 
-	jmp	$LN23@AssumeDire
+	jmp	SHORT $LN23@AssumeDire
 $LN22@AssumeDire:
 
-; 355  :                 info->error &= ~(( reg >= T_AH && reg <= T_BH ) ? RH_ERROR : ( flags & OP_R ));
+; 356  :                 info->error &= ~(( reg >= T_AH && reg <= T_BH ) ? RH_ERROR : ( flags & OP_R ));
 
-	cmp	BYTE PTR $T10[rsp], 0
-	jne	SHORT $LN73@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN73@AssumeDire:
 	cmp	DWORD PTR reg$[rsp], 5
 	jl	SHORT $LN55@AssumeDire
-	cmp	BYTE PTR $T10[rsp], 0
-	jne	SHORT $LN74@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN74@AssumeDire:
 	cmp	DWORD PTR reg$[rsp], 8
 	jg	SHORT $LN55@AssumeDire
 	mov	DWORD PTR tv221[rsp], 16
 	jmp	SHORT $LN56@AssumeDire
 $LN55@AssumeDire:
-	cmp	BYTE PTR $T12[rsp], 0
-	jne	SHORT $LN75@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$1
-	call	_RTC_UninitUse
-$LN75@AssumeDire:
 	mov	eax, DWORD PTR flags$[rsp]
 	and	eax, 15
 	mov	DWORD PTR tv221[rsp], eax
@@ -702,12 +532,12 @@ $LN56@AssumeDire:
 	mov	BYTE PTR [rcx+8], al
 $LN23@AssumeDire:
 
-; 356  :             info->symbol = NULL;
+; 357  :             info->symbol = NULL;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	QWORD PTR [rax], 0
 
-; 357  :             i++;
+; 358  :             i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
@@ -715,49 +545,44 @@ $LN23@AssumeDire:
 	jmp	$LN21@AssumeDire
 $LN20@AssumeDire:
 
-; 358  :         } else if ( segtable == FALSE ) {
+; 359  :         } else if ( segtable == FALSE ) {
 
-	cmp	BYTE PTR $T13[rsp], 0
-	jne	SHORT $LN76@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$3
-	call	_RTC_UninitUse
-$LN76@AssumeDire:
 	movzx	eax, BYTE PTR segtable$[rsp]
 	test	eax, eax
 	jne	$LN24@AssumeDire
 
-; 359  : 
-; 360  :             /* v2.05: changed to use new GetQualifiedType() function */
-; 361  :             ti.size = 0;
+; 360  : 
+; 361  :             /* v2.05: changed to use new GetQualifiedType() function */
+; 362  :             ti.size = 0;
 
 	mov	DWORD PTR ti$[rsp], 0
 
-; 362  :             ti.is_ptr = 0;
+; 363  :             ti.is_ptr = 0;
 
 	mov	BYTE PTR ti$[rsp+20], 0
 
-; 363  :             ti.is_far = FALSE;
+; 364  :             ti.is_far = FALSE;
 
 	mov	BYTE PTR ti$[rsp+21], 0
 
-; 364  :             ti.mem_type = MT_EMPTY;
+; 365  :             ti.mem_type = MT_EMPTY;
 
 	mov	DWORD PTR ti$[rsp+16], 192		; 000000c0H
 
-; 365  :             ti.ptr_memtype = MT_EMPTY;
+; 366  :             ti.ptr_memtype = MT_EMPTY;
 
 	mov	DWORD PTR ti$[rsp+24], 192		; 000000c0H
 
-; 366  :             ti.symtype = NULL;
+; 367  :             ti.symtype = NULL;
 
 	mov	QWORD PTR ti$[rsp+8], 0
 
-; 367  :             ti.Ofssize = ModuleInfo.Ofssize;
+; 368  :             ti.Ofssize = ModuleInfo.Ofssize;
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	mov	BYTE PTR ti$[rsp+22], al
 
-; 368  :             if ( GetQualifiedType( &i, tokenarray, &ti ) == ERROR )
+; 369  :             if ( GetQualifiedType( &i, tokenarray, &ti ) == ERROR )
 
 	lea	r8, QWORD PTR ti$[rsp]
 	mov	rdx, QWORD PTR tokenarray$[rsp]
@@ -766,27 +591,22 @@ $LN76@AssumeDire:
 	cmp	eax, -1
 	jne	SHORT $LN26@AssumeDire
 
-; 369  :                 return( ERROR );
+; 370  :                 return( ERROR );
 
 	mov	eax, -1
 	jmp	$LN1@AssumeDire
 $LN26@AssumeDire:
 
-; 370  : 
-; 371  :             /* v2.04: check size of argument! */
-; 372  :             size = OperandSize( flags, NULL );
+; 371  : 
+; 372  :             /* v2.04: check size of argument! */
+; 373  :             size = OperandSize( flags, NULL );
 
-	cmp	BYTE PTR $T12[rsp], 0
-	jne	SHORT $LN77@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$1
-	call	_RTC_UninitUse
-$LN77@AssumeDire:
 	xor	edx, edx
 	mov	ecx, DWORD PTR flags$[rsp]
 	call	OperandSize
 	mov	DWORD PTR size$[rsp], eax
 
-; 373  :             if ( ( ti.is_ptr == 0 && size != ti.size ) ||
+; 374  :             if ( ( ti.is_ptr == 0 && size != ti.size ) ||
 
 	movzx	eax, BYTE PTR ti$[rsp+20]
 	test	eax, eax
@@ -803,39 +623,24 @@ $LN29@AssumeDire:
 	jge	SHORT $LN27@AssumeDire
 $LN28@AssumeDire:
 
-; 374  :                 ( ti.is_ptr > 0 && size < CurrWordSize ) ) {
-; 375  :                 return( EmitError( TYPE_IS_WRONG_SIZE_FOR_REGISTER ) );
+; 375  :                 ( ti.is_ptr > 0 && size < CurrWordSize ) ) {
+; 376  :                 return( EmitError( TYPE_IS_WRONG_SIZE_FOR_REGISTER ) );
 
 	mov	ecx, 247				; 000000f7H
 	call	EmitError
 	jmp	$LN1@AssumeDire
 $LN27@AssumeDire:
 
-; 376  :             }
-; 377  :             info->error &= ~(( reg >= T_AH && reg <= T_BH ) ? RH_ERROR : ( flags & OP_R ));
+; 377  :             }
+; 378  :             info->error &= ~(( reg >= T_AH && reg <= T_BH ) ? RH_ERROR : ( flags & OP_R ));
 
-	cmp	BYTE PTR $T10[rsp], 0
-	jne	SHORT $LN78@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN78@AssumeDire:
 	cmp	DWORD PTR reg$[rsp], 5
 	jl	SHORT $LN57@AssumeDire
-	cmp	BYTE PTR $T10[rsp], 0
-	jne	SHORT $LN79@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN79@AssumeDire:
 	cmp	DWORD PTR reg$[rsp], 8
 	jg	SHORT $LN57@AssumeDire
 	mov	DWORD PTR tv252[rsp], 16
 	jmp	SHORT $LN58@AssumeDire
 $LN57@AssumeDire:
-	cmp	BYTE PTR $T12[rsp], 0
-	jne	SHORT $LN80@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$1
-	call	_RTC_UninitUse
-$LN80@AssumeDire:
 	mov	eax, DWORD PTR flags$[rsp]
 	and	eax, 15
 	mov	DWORD PTR tv252[rsp], eax
@@ -849,99 +654,59 @@ $LN58@AssumeDire:
 	mov	rcx, QWORD PTR info$[rsp]
 	mov	BYTE PTR [rcx+8], al
 
-; 378  :             if ( stdsym[j] == NULL ) {
+; 379  :             if ( stdsym[j] == NULL ) {
 
-	cmp	BYTE PTR $T11[rsp], 0
-	jne	SHORT $LN81@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$2
-	call	_RTC_UninitUse
-$LN81@AssumeDire:
 	movsxd	rax, DWORD PTR j$[rsp]
 	lea	rcx, OFFSET FLAT:stdsym
 	cmp	QWORD PTR [rcx+rax*8], 0
 	jne	SHORT $LN30@AssumeDire
 
-; 379  :                 stdsym[j] = CreateTypeSymbol( NULL, "", FALSE );
+; 380  :                 stdsym[j] = CreateTypeSymbol( NULL, "", FALSE );
 
-	cmp	BYTE PTR $T11[rsp], 0
-	jne	SHORT $LN82@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$2
-	call	_RTC_UninitUse
-$LN82@AssumeDire:
 	xor	r8d, r8d
-	lea	rdx, OFFSET FLAT:$SG11102
+	lea	rdx, OFFSET FLAT:$SG11142
 	xor	ecx, ecx
 	call	CreateTypeSymbol
 	movsxd	rcx, DWORD PTR j$[rsp]
 	lea	rdx, OFFSET FLAT:stdsym
 	mov	QWORD PTR [rdx+rcx*8], rax
 
-; 380  :                 stdsym[j]->typekind = TYPE_TYPEDEF;
+; 381  :                 stdsym[j]->typekind = TYPE_TYPEDEF;
 
-	cmp	BYTE PTR $T11[rsp], 0
-	jne	SHORT $LN83@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$2
-	call	_RTC_UninitUse
-$LN83@AssumeDire:
 	movsxd	rax, DWORD PTR j$[rsp]
 	lea	rcx, OFFSET FLAT:stdsym
 	mov	rax, QWORD PTR [rcx+rax*8]
 	mov	BYTE PTR [rax+66], 3
 $LN30@AssumeDire:
 
-; 381  :             }
-; 382  : 
-; 383  :             stdsym[j]->total_size = ti.size;
+; 382  :             }
+; 383  : 
+; 384  :             stdsym[j]->total_size = ti.size;
 
-	cmp	BYTE PTR $T11[rsp], 0
-	jne	SHORT $LN84@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$2
-	call	_RTC_UninitUse
-$LN84@AssumeDire:
 	movsxd	rax, DWORD PTR j$[rsp]
 	lea	rcx, OFFSET FLAT:stdsym
 	mov	rax, QWORD PTR [rcx+rax*8]
 	mov	ecx, DWORD PTR ti$[rsp]
 	mov	DWORD PTR [rax+56], ecx
 
-; 384  :             stdsym[j]->mem_type   = ti.mem_type;
+; 385  :             stdsym[j]->mem_type   = ti.mem_type;
 
-	cmp	BYTE PTR $T11[rsp], 0
-	jne	SHORT $LN85@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$2
-	call	_RTC_UninitUse
-$LN85@AssumeDire:
 	movsxd	rax, DWORD PTR j$[rsp]
 	lea	rcx, OFFSET FLAT:stdsym
 	mov	rax, QWORD PTR [rcx+rax*8]
 	mov	ecx, DWORD PTR ti$[rsp+16]
 	mov	DWORD PTR [rax+36], ecx
 
-; 385  :             stdsym[j]->is_ptr     = ti.is_ptr;
+; 386  :             stdsym[j]->is_ptr     = ti.is_ptr;
 
-	cmp	BYTE PTR $T11[rsp], 0
-	jne	SHORT $LN86@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$2
-	call	_RTC_UninitUse
-$LN86@AssumeDire:
 	movsxd	rax, DWORD PTR j$[rsp]
 	lea	rcx, OFFSET FLAT:stdsym
 	mov	rax, QWORD PTR [rcx+rax*8]
 	movzx	ecx, BYTE PTR ti$[rsp+20]
 	mov	BYTE PTR [rax+45], cl
 
-; 386  :             stdsym[j]->isfar      = ti.is_far;
+; 387  :             stdsym[j]->isfar      = ti.is_far;
 
-	cmp	BYTE PTR $T11[rsp], 0
-	jne	SHORT $LN87@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$2
-	call	_RTC_UninitUse
-$LN87@AssumeDire:
-	cmp	BYTE PTR $T11[rsp], 0
-	jne	SHORT $LN88@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$2
-	call	_RTC_UninitUse
-$LN88@AssumeDire:
 	movsxd	rax, DWORD PTR j$[rsp]
 	lea	rcx, OFFSET FLAT:stdsym
 	mov	rax, QWORD PTR [rcx+rax*8]
@@ -956,44 +721,29 @@ $LN88@AssumeDire:
 	mov	rcx, QWORD PTR [rdx+rcx*8]
 	mov	BYTE PTR [rcx+47], al
 
-; 387  :             stdsym[j]->Ofssize    = ti.Ofssize;
+; 388  :             stdsym[j]->Ofssize    = ti.Ofssize;
 
-	cmp	BYTE PTR $T11[rsp], 0
-	jne	SHORT $LN89@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$2
-	call	_RTC_UninitUse
-$LN89@AssumeDire:
 	movsxd	rax, DWORD PTR j$[rsp]
 	lea	rcx, OFFSET FLAT:stdsym
 	mov	rax, QWORD PTR [rcx+rax*8]
 	movzx	ecx, BYTE PTR ti$[rsp+22]
 	mov	BYTE PTR [rax+44], cl
 
-; 388  :             stdsym[j]->ptr_memtype = ti.ptr_memtype; /* added v2.05 rc13 */
+; 389  :             stdsym[j]->ptr_memtype = ti.ptr_memtype; /* added v2.05 rc13 */
 
-	cmp	BYTE PTR $T11[rsp], 0
-	jne	SHORT $LN90@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$2
-	call	_RTC_UninitUse
-$LN90@AssumeDire:
 	movsxd	rax, DWORD PTR j$[rsp]
 	lea	rcx, OFFSET FLAT:stdsym
 	mov	rax, QWORD PTR [rcx+rax*8]
 	movzx	ecx, BYTE PTR ti$[rsp+24]
 	mov	BYTE PTR [rax+46], cl
 
-; 389  :             if ( ti.mem_type == MT_TYPE )
+; 390  :             if ( ti.mem_type == MT_TYPE )
 
 	cmp	DWORD PTR ti$[rsp+16], 196		; 000000c4H
 	jne	SHORT $LN31@AssumeDire
 
-; 390  :                 stdsym[j]->type = ti.symtype;
+; 391  :                 stdsym[j]->type = ti.symtype;
 
-	cmp	BYTE PTR $T11[rsp], 0
-	jne	SHORT $LN91@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$2
-	call	_RTC_UninitUse
-$LN91@AssumeDire:
 	movsxd	rax, DWORD PTR j$[rsp]
 	lea	rcx, OFFSET FLAT:stdsym
 	mov	rax, QWORD PTR [rcx+rax*8]
@@ -1002,14 +752,9 @@ $LN91@AssumeDire:
 	jmp	SHORT $LN32@AssumeDire
 $LN31@AssumeDire:
 
-; 391  :             else
-; 392  :                 stdsym[j]->target_type = ti.symtype;
+; 392  :             else
+; 393  :                 stdsym[j]->target_type = ti.symtype;
 
-	cmp	BYTE PTR $T11[rsp], 0
-	jne	SHORT $LN92@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$2
-	call	_RTC_UninitUse
-$LN92@AssumeDire:
 	movsxd	rax, DWORD PTR j$[rsp]
 	lea	rcx, OFFSET FLAT:stdsym
 	mov	rax, QWORD PTR [rcx+rax*8]
@@ -1017,33 +762,28 @@ $LN92@AssumeDire:
 	mov	QWORD PTR [rax+48], rcx
 $LN32@AssumeDire:
 
-; 393  : 
-; 394  :             info->symbol = stdsym[j];
+; 394  : 
+; 395  :             info->symbol = stdsym[j];
 
-	cmp	BYTE PTR $T11[rsp], 0
-	jne	SHORT $LN93@AssumeDire
-	lea	rcx, OFFSET FLAT:AssumeDirective$rtcName$2
-	call	_RTC_UninitUse
-$LN93@AssumeDire:
 	movsxd	rax, DWORD PTR j$[rsp]
 	lea	rcx, OFFSET FLAT:stdsym
 	mov	rdx, QWORD PTR info$[rsp]
 	mov	rax, QWORD PTR [rcx+rax*8]
 	mov	QWORD PTR [rdx], rax
 
-; 395  : 
-; 396  :         } else { /* segment register */
+; 396  : 
+; 397  :         } else { /* segment register */
 
 	jmp	$LN25@AssumeDire
 $LN24@AssumeDire:
 
-; 397  :             struct expr opnd;
-; 398  : 
-; 399  :             /* v2.08: read expression with standard evaluator */
-; 400  :             if( EvalOperand( &i, tokenarray, Token_Count, &opnd, 0 ) == ERROR )
+; 398  :             struct expr opnd;
+; 399  : 
+; 400  :             /* v2.08: read expression with standard evaluator */
+; 401  :             if( EvalOperand( &i, tokenarray, Token_Count, &opnd, 0 ) == ERROR )
 
 	mov	BYTE PTR [rsp+32], 0
-	lea	r9, QWORD PTR opnd$9[rsp]
+	lea	r9, QWORD PTR opnd$1[rsp]
 	mov	r8d, DWORD PTR ModuleInfo+496
 	mov	rdx, QWORD PTR tokenarray$[rsp]
 	lea	rcx, QWORD PTR i$[rsp]
@@ -1051,15 +791,15 @@ $LN24@AssumeDire:
 	cmp	eax, -1
 	jne	SHORT $LN33@AssumeDire
 
-; 401  :                 return( ERROR );
+; 402  :                 return( ERROR );
 
 	mov	eax, -1
 	jmp	$LN1@AssumeDire
 $LN33@AssumeDire:
 
-; 402  :             switch ( opnd.kind ) {
+; 403  :             switch ( opnd.kind ) {
 
-	mov	eax, DWORD PTR opnd$9[rsp+60]
+	mov	eax, DWORD PTR opnd$1[rsp+60]
 	mov	DWORD PTR tv325[rsp], eax
 	cmp	DWORD PTR tv325[rsp], 1
 	je	SHORT $LN34@AssumeDire
@@ -1068,20 +808,20 @@ $LN33@AssumeDire:
 	jmp	$LN49@AssumeDire
 $LN34@AssumeDire:
 
-; 403  :             case EXPR_ADDR:
-; 404  :                 if ( opnd.sym == NULL || opnd.indirect == TRUE || opnd.value ) {
+; 404  :             case EXPR_ADDR:
+; 405  :                 if ( opnd.sym == NULL || opnd.indirect == TRUE || opnd.value ) {
 
-	cmp	QWORD PTR opnd$9[rsp+80], 0
+	cmp	QWORD PTR opnd$1[rsp+80], 0
 	je	SHORT $LN37@AssumeDire
-	mov	eax, DWORD PTR opnd$9[rsp+72]
+	mov	eax, DWORD PTR opnd$1[rsp+72]
 	and	eax, 1
 	cmp	eax, 1
 	je	SHORT $LN37@AssumeDire
-	cmp	DWORD PTR opnd$9[rsp], 0
+	cmp	DWORD PTR opnd$1[rsp], 0
 	je	SHORT $LN35@AssumeDire
 $LN37@AssumeDire:
 
-; 405  :                     return( EmitError( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
+; 406  :                     return( EmitError( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
 
 	mov	ecx, 69					; 00000045H
 	call	EmitError
@@ -1089,16 +829,16 @@ $LN37@AssumeDire:
 	jmp	$LN36@AssumeDire
 $LN35@AssumeDire:
 
-; 406  :                 } else if ( opnd.sym->state == SYM_UNDEFINED ) {
+; 407  :                 } else if ( opnd.sym->state == SYM_UNDEFINED ) {
 
-	mov	rax, QWORD PTR opnd$9[rsp+80]
+	mov	rax, QWORD PTR opnd$1[rsp+80]
 	cmp	DWORD PTR [rax+32], 0
 	jne	SHORT $LN38@AssumeDire
 
-; 407  :                     /* ensure that directive is rerun in pass 2
-; 408  :                      * so an error msg can be emitted.
-; 409  :                      */
-; 410  :                     FStoreLine( 0 );
+; 408  :                     /* ensure that directive is rerun in pass 2
+; 409  :                      * so an error msg can be emitted.
+; 410  :                      */
+; 411  :                     FStoreLine( 0 );
 
 	cmp	DWORD PTR Parse_Pass, 0
 	jne	SHORT $LN40@AssumeDire
@@ -1108,52 +848,52 @@ $LN35@AssumeDire:
 	call	StoreLine
 $LN40@AssumeDire:
 
-; 411  :                     info->symbol = opnd.sym;
+; 412  :                     info->symbol = opnd.sym;
 
 	mov	rax, QWORD PTR info$[rsp]
-	mov	rcx, QWORD PTR opnd$9[rsp+80]
+	mov	rcx, QWORD PTR opnd$1[rsp+80]
 	mov	QWORD PTR [rax], rcx
 	jmp	SHORT $LN39@AssumeDire
 $LN38@AssumeDire:
 
-; 412  :                 } else if ( ( opnd.sym->state == SYM_SEG || opnd.sym->state == SYM_GRP ) && opnd.instr == EMPTY ) {
+; 413  :                 } else if ( ( opnd.sym->state == SYM_SEG || opnd.sym->state == SYM_GRP ) && opnd.instr == EMPTY ) {
 
-	mov	rax, QWORD PTR opnd$9[rsp+80]
+	mov	rax, QWORD PTR opnd$1[rsp+80]
 	cmp	DWORD PTR [rax+32], 3
 	je	SHORT $LN44@AssumeDire
-	mov	rax, QWORD PTR opnd$9[rsp+80]
+	mov	rax, QWORD PTR opnd$1[rsp+80]
 	cmp	DWORD PTR [rax+32], 4
 	jne	SHORT $LN42@AssumeDire
 $LN44@AssumeDire:
-	cmp	DWORD PTR opnd$9[rsp+56], -2
+	cmp	DWORD PTR opnd$1[rsp+56], -2
 	jne	SHORT $LN42@AssumeDire
 
-; 413  :                     info->symbol = opnd.sym;
+; 414  :                     info->symbol = opnd.sym;
 
 	mov	rax, QWORD PTR info$[rsp]
-	mov	rcx, QWORD PTR opnd$9[rsp+80]
+	mov	rcx, QWORD PTR opnd$1[rsp+80]
 	mov	QWORD PTR [rax], rcx
 	jmp	SHORT $LN43@AssumeDire
 $LN42@AssumeDire:
 
-; 414  :                 } else if ( opnd.instr == T_SEG ) {
+; 415  :                 } else if ( opnd.instr == T_SEG ) {
 
-	cmp	DWORD PTR opnd$9[rsp+56], 244		; 000000f4H
+	cmp	DWORD PTR opnd$1[rsp+56], 244		; 000000f4H
 	jne	SHORT $LN45@AssumeDire
 
-; 415  :                     info->symbol = opnd.sym->segment;
+; 416  :                     info->symbol = opnd.sym->segment;
 
 	mov	rax, QWORD PTR info$[rsp]
-	mov	rcx, QWORD PTR opnd$9[rsp+80]
+	mov	rcx, QWORD PTR opnd$1[rsp+80]
 	mov	rcx, QWORD PTR [rcx+24]
 	mov	QWORD PTR [rax], rcx
 
-; 416  :                 } else {
+; 417  :                 } else {
 
 	jmp	SHORT $LN46@AssumeDire
 $LN45@AssumeDire:
 
-; 417  :                     return( EmitError( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
+; 418  :                     return( EmitError( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
 
 	mov	ecx, 69					; 00000045H
 	call	EmitError
@@ -1163,8 +903,8 @@ $LN43@AssumeDire:
 $LN39@AssumeDire:
 $LN36@AssumeDire:
 
-; 418  :                 }
-; 419  :                 info->is_flat = ( info->symbol == &ModuleInfo.flat_grp->sym );
+; 419  :                 }
+; 420  :                 info->is_flat = ( info->symbol == &ModuleInfo.flat_grp->sym );
 
 	mov	rax, QWORD PTR ModuleInfo+440
 	mov	rcx, QWORD PTR info$[rsp]
@@ -1179,15 +919,15 @@ $LN60@AssumeDire:
 	movzx	ecx, BYTE PTR tv386[rsp]
 	mov	BYTE PTR [rax+9], cl
 
-; 420  :                 break;
+; 421  :                 break;
 
 	jmp	$LN5@AssumeDire
 $LN47@AssumeDire:
 
-; 421  :             case EXPR_REG:
-; 422  :                 if ( GetValueSp( opnd.base_reg->tokval ) & OP_SR ) {
+; 422  :             case EXPR_REG:
+; 423  :                 if ( GetValueSp( opnd.base_reg->tokval ) & OP_SR ) {
 
-	mov	rax, QWORD PTR opnd$9[rsp+24]
+	mov	rax, QWORD PTR opnd$1[rsp+24]
 	mov	eax, DWORD PTR [rax+16]
 	imul	rax, rax, 12
 	lea	rcx, OFFSET FLAT:SpecialTable
@@ -1196,9 +936,9 @@ $LN47@AssumeDire:
 	test	eax, eax
 	je	SHORT $LN48@AssumeDire
 
-; 423  :                     info->symbol = SegAssumeTable[ GetRegNo( opnd.base_reg->tokval ) ].symbol;
+; 424  :                     info->symbol = SegAssumeTable[ GetRegNo( opnd.base_reg->tokval ) ].symbol;
 
-	mov	rax, QWORD PTR opnd$9[rsp+24]
+	mov	rax, QWORD PTR opnd$1[rsp+24]
 	mov	eax, DWORD PTR [rax+16]
 	imul	rax, rax, 12
 	lea	rcx, OFFSET FLAT:SpecialTable
@@ -1209,9 +949,9 @@ $LN47@AssumeDire:
 	mov	rax, QWORD PTR [rcx+rax]
 	mov	QWORD PTR [rdx], rax
 
-; 424  :                     info->is_flat = SegAssumeTable[ GetRegNo( opnd.base_reg->tokval ) ].is_flat;
+; 425  :                     info->is_flat = SegAssumeTable[ GetRegNo( opnd.base_reg->tokval ) ].is_flat;
 
-	mov	rax, QWORD PTR opnd$9[rsp+24]
+	mov	rax, QWORD PTR opnd$1[rsp+24]
 	mov	eax, DWORD PTR [rax+16]
 	imul	rax, rax, 12
 	lea	rcx, OFFSET FLAT:SpecialTable
@@ -1222,23 +962,23 @@ $LN47@AssumeDire:
 	movzx	eax, BYTE PTR [rcx+rax+9]
 	mov	BYTE PTR [rdx+9], al
 
-; 425  :                     break;
+; 426  :                     break;
 
 	jmp	SHORT $LN5@AssumeDire
 $LN48@AssumeDire:
 $LN49@AssumeDire:
 
-; 426  :                 }
-; 427  :             default:
-; 428  :                 return( EmitError( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
+; 427  :                 }
+; 428  :             default:
+; 429  :                 return( EmitError( SEGMENT_GROUP_OR_SEGREG_EXPECTED ) );
 
 	mov	ecx, 69					; 00000045H
 	call	EmitError
 	jmp	SHORT $LN1@AssumeDire
 $LN5@AssumeDire:
 
-; 429  :             }
-; 430  :             info->error = FALSE;
+; 430  :             }
+; 431  :             info->error = FALSE;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	BYTE PTR [rax+8], 0
@@ -1246,10 +986,10 @@ $LN25@AssumeDire:
 $LN21@AssumeDire:
 $LN17@AssumeDire:
 
-; 431  :         }
-; 432  : 
-; 433  :         /* comma expected */
-; 434  :         if( i < Token_Count && tokenarray[i].token != T_COMMA )
+; 432  :         }
+; 433  : 
+; 434  :         /* comma expected */
+; 435  :         if( i < Token_Count && tokenarray[i].token != T_COMMA )
 
 	mov	eax, DWORD PTR ModuleInfo+496
 	cmp	DWORD PTR i$[rsp], eax
@@ -1261,23 +1001,23 @@ $LN17@AssumeDire:
 	cmp	eax, 44					; 0000002cH
 	je	SHORT $LN50@AssumeDire
 
-; 435  :             break;
+; 436  :             break;
 
 	jmp	SHORT $LN3@AssumeDire
 $LN50@AssumeDire:
 
-; 436  :     }
+; 437  :     }
 
 	jmp	$LN2@AssumeDire
 $LN3@AssumeDire:
 
-; 437  :     if ( i < Token_Count ) {
+; 438  :     if ( i < Token_Count ) {
 
 	mov	eax, DWORD PTR ModuleInfo+496
 	cmp	DWORD PTR i$[rsp], eax
 	jge	SHORT $LN51@AssumeDire
 
-; 438  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
+; 439  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -1288,25 +1028,19 @@ $LN3@AssumeDire:
 	jmp	SHORT $LN1@AssumeDire
 $LN51@AssumeDire:
 
-; 439  :     }
-; 440  :     return( NOT_ERROR );
+; 440  :     }
+; 441  :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@AssumeDire:
 
-; 441  : }
+; 442  : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:AssumeDirective$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
-	add	rsp, 304				; 00000130H
-	pop	rdi
+	add	rsp, 248				; 000000f8H
 	ret	0
 AssumeDirective ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\assume.c
 _TEXT	SEGMENT
 AssumeSaveState PROC
@@ -1314,12 +1048,7 @@ AssumeSaveState PROC
 ; 145  : {
 
 $LN3:
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 
 ; 146  :     GetSegAssumeTable( &saved_SegAssumeTable );
 
@@ -1334,12 +1063,11 @@ $LN3:
 
 ; 148  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 AssumeSaveState ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\assume.c
 _TEXT	SEGMENT
 i$ = 32
@@ -1352,18 +1080,12 @@ GetStdAssumeTable PROC
 $LN7:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 128  :     int i;
 ; 129  :     DebugMsg(("GetStdAssumeTable\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11000
+	lea	rcx, OFFSET FLAT:$SG11038
 	call	DoDebugMsg
 
 ; 130  :     memcpy( savedstate, &StdAssumeTable, sizeof(StdAssumeTable) );
@@ -1455,12 +1177,11 @@ $LN3@GetStdAssu:
 
 ; 140  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 GetStdAssumeTable ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\assume.c
 _TEXT	SEGMENT
 i$ = 32
@@ -1473,19 +1194,13 @@ SetStdAssumeTable PROC
 $LN7:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 110  :     int i;
 ; 111  : 
 ; 112  :     DebugMsg(("SetStdAssumeTable enter\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG10989
+	lea	rcx, OFFSET FLAT:$SG11027
 	call	DoDebugMsg
 
 ; 113  :     memcpy( &StdAssumeTable, savedstate, sizeof(StdAssumeTable) );
@@ -1577,12 +1292,11 @@ $LN3@SetStdAssu:
 
 ; 123  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 SetStdAssumeTable ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\assume.c
 _TEXT	SEGMENT
 savedstate$ = 48
@@ -1592,17 +1306,11 @@ GetSegAssumeTable PROC
 
 $LN3:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 96   :     DebugMsg(("GetSegAssumeTable\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG10979
+	lea	rcx, OFFSET FLAT:$SG11017
 	call	DoDebugMsg
 
 ; 97   :     memcpy( savedstate, &SegAssumeTable, sizeof(SegAssumeTable) );
@@ -1614,12 +1322,11 @@ $LN3:
 
 ; 98   : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 GetSegAssumeTable ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\assume.c
 _TEXT	SEGMENT
 savedstate$ = 48
@@ -1629,17 +1336,11 @@ SetSegAssumeTable PROC
 
 $LN3:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 90   :     DebugMsg(("SetSegAssumeTable\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG10975
+	lea	rcx, OFFSET FLAT:$SG11013
 	call	DoDebugMsg
 
 ; 91   :     memcpy( &SegAssumeTable, savedstate, sizeof(SegAssumeTable) );
@@ -1651,30 +1352,24 @@ $LN3:
 
 ; 92   : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 SetSegAssumeTable ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\assume.c
 _TEXT	SEGMENT
-pCS$ = 112
-pFSassume$ = 120
-pGSassume$ = 128
+tv64 = 112
+pGSassume$ = 120
+pCS$ = 128
 pFmt$ = 136
-tv64 = 144
+pFSassume$ = 144
 ModelAssumeInit PROC
 
 ; 208  : {
 
 $LN14:
-	push	rdi
-	sub	rsp, 160				; 000000a0H
-	mov	rdi, rsp
-	mov	ecx, 40					; 00000028H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 168				; 000000a8H
 
 ; 209  :     const char *pCS;
 ; 210  :     const char *pFSassume = szError;
@@ -1733,8 +1428,8 @@ $LN5@ModelAssum:
 	mov	DWORD PTR [rsp+32], 28
 	mov	r9d, 261				; 00000105H
 	mov	r8d, 26
-	mov	edx, 439				; 000001b7H
-	lea	rcx, OFFSET FLAT:$SG11029
+	mov	edx, 444				; 000001bcH
+	lea	rcx, OFFSET FLAT:$SG11067
 	call	AddLineQueueX
 
 ; 222  :                   T_ASSUME, T_CS, T_FLAT, T_DS, T_FLAT, T_SS, T_FLAT, T_ES, T_FLAT, T_FS, pFSassume, T_GS, pGSassume );
@@ -1797,7 +1492,7 @@ $LN10@ModelAssum:
 
 ; 245  :             pFmt = "%r %r:%s,%r:%s,%r:%s";
 
-	lea	rax, OFFSET FLAT:$SG11037
+	lea	rax, OFFSET FLAT:$SG11075
 	mov	QWORD PTR pFmt$[rsp], rax
 	jmp	SHORT $LN12@ModelAssum
 $LN11@ModelAssum:
@@ -1805,7 +1500,7 @@ $LN11@ModelAssum:
 ; 246  :         else
 ; 247  :             pFmt = "%r %r:%s,%r:%s";
 
-	lea	rax, OFFSET FLAT:$SG11038
+	lea	rax, OFFSET FLAT:$SG11076
 	mov	QWORD PTR pFmt$[rsp], rax
 $LN12@ModelAssum:
 
@@ -1819,7 +1514,7 @@ $LN12@ModelAssum:
 	mov	DWORD PTR [rsp+32], 28
 	mov	r9, QWORD PTR pCS$[rsp]
 	mov	r8d, 26
-	mov	edx, 439				; 000001b7H
+	mov	edx, 444				; 000001bcH
 	mov	rcx, QWORD PTR pFmt$[rsp]
 	call	AddLineQueueX
 $LN2@ModelAssum:
@@ -1828,47 +1523,53 @@ $LN2@ModelAssum:
 ; 250  :     }
 ; 251  : }
 
-	add	rsp, 160				; 000000a0H
-	pop	rdi
+	add	rsp, 168				; 000000a8H
 	ret	0
 ModelAssumeInit ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\assume.c
 _TEXT	SEGMENT
-reg$ = 16
+reg$ = 8
 GetStdAssumeEx PROC
 
 ; 272  : {
 
-$LN3:
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
 
-; 273  :     return( StdAssumeTable[reg].symbol );
+; 273  :   if (reg >= NUM_STDREGS)
+
+	cmp	DWORD PTR reg$[rsp], 16
+	jl	SHORT $LN2@GetStdAssu
+
+; 274  :     return NULL;
+
+	xor	eax, eax
+	jmp	SHORT $LN1@GetStdAssu
+$LN2@GetStdAssu:
+
+; 275  :   return(StdAssumeTable[reg].symbol);
 
 	movsxd	rax, DWORD PTR reg$[rsp]
 	imul	rax, rax, 16
 	lea	rcx, OFFSET FLAT:StdAssumeTable
 	mov	rax, QWORD PTR [rcx+rax]
+$LN1@GetStdAssu:
 
-; 274  : }
+; 276  : }
 
-	pop	rdi
 	ret	0
 GetStdAssumeEx ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\assume.c
 _TEXT	SEGMENT
-reg$ = 16
+reg$ = 8
 GetStdAssume PROC
 
 ; 257  : {
 
-$LN6:
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
 
 ; 258  :     if ( StdAssumeTable[reg].symbol )
 
@@ -1917,23 +1618,20 @@ $LN1@GetStdAssu:
 
 ; 264  : }
 
-	pop	rdi
 	ret	0
 GetStdAssume ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\assume.c
 _TEXT	SEGMENT
-override$ = 16
+override$ = 8
 GetOverrideAssume PROC
 
-; 506  : {
+; 507  : {
 
-$LN4:
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
 
-; 507  :     if( SegAssumeTable[override].is_flat ) {
+; 508  :     if( SegAssumeTable[override].is_flat ) {
 
 	movsxd	rax, DWORD PTR override$[rsp]
 	imul	rax, rax, 16
@@ -1942,14 +1640,14 @@ $LN4:
 	test	eax, eax
 	je	SHORT $LN2@GetOverrid
 
-; 508  :         return( (struct asym *)ModuleInfo.flat_grp );
+; 509  :         return( (struct asym *)ModuleInfo.flat_grp );
 
 	mov	rax, QWORD PTR ModuleInfo+440
 	jmp	SHORT $LN1@GetOverrid
 $LN2@GetOverrid:
 
-; 509  :     }
-; 510  :     return( SegAssumeTable[override].symbol);
+; 510  :     }
+; 511  :     return( SegAssumeTable[override].symbol);
 
 	movsxd	rax, DWORD PTR override$[rsp]
 	imul	rax, rax, 16
@@ -1957,14 +1655,13 @@ $LN2@GetOverrid:
 	mov	rax, QWORD PTR [rcx+rax]
 $LN1@GetOverrid:
 
-; 511  : 
-; 512  : }
+; 512  : 
+; 513  : }
 
-	pop	rdi
 	ret	0
 GetOverrideAssume ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\assume.c
 _TEXT	SEGMENT
 reg$ = 32
@@ -1974,24 +1671,18 @@ def$ = 80
 passume$ = 88
 GetAssume PROC
 
-; 526  : {
+; 527  : {
 
 $LN11:
 	mov	QWORD PTR [rsp+32], r9
 	mov	DWORD PTR [rsp+24], r8d
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
-; 527  :     enum assume_segreg  reg;
-; 528  : 
-; 529  :     if( ( def != ASSUME_NOTHING ) && SegAssumeTable[def].is_flat ) {
+; 528  :     enum assume_segreg  reg;
+; 529  : 
+; 530  :     if( ( def != ASSUME_NOTHING ) && SegAssumeTable[def].is_flat ) {
 
 	cmp	DWORD PTR def$[rsp], -2
 	je	SHORT $LN2@GetAssume
@@ -2002,25 +1693,25 @@ $LN11:
 	test	eax, eax
 	je	SHORT $LN2@GetAssume
 
-; 530  :         *passume = (struct asym *)ModuleInfo.flat_grp;
+; 531  :         *passume = (struct asym *)ModuleInfo.flat_grp;
 
 	mov	rax, QWORD PTR passume$[rsp]
 	mov	rcx, QWORD PTR ModuleInfo+440
 	mov	QWORD PTR [rax], rcx
 
-; 531  :         return( def );
+; 532  :         return( def );
 
 	mov	eax, DWORD PTR def$[rsp]
 	jmp	$LN1@GetAssume
 $LN2@GetAssume:
 
-; 532  :     }
-; 533  :     if( override != NULL ) {
+; 533  :     }
+; 534  :     if( override != NULL ) {
 
 	cmp	QWORD PTR override$[rsp], 0
 	je	SHORT $LN3@GetAssume
 
-; 534  :         reg = search_assume( override, def, FALSE );
+; 535  :         reg = search_assume( override, def, FALSE );
 
 	xor	r8d, r8d
 	mov	edx, DWORD PTR def$[rsp]
@@ -2030,28 +1721,28 @@ $LN2@GetAssume:
 	jmp	SHORT $LN4@GetAssume
 $LN3@GetAssume:
 
-; 535  : #if 1 /* v2.10: added */
-; 536  :     } else if ( sym->state == SYM_STACK ) {
+; 536  : #if 1 /* v2.10: added */
+; 537  :     } else if ( sym->state == SYM_STACK ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
 	cmp	DWORD PTR [rax+32], 5
 	jne	SHORT $LN5@GetAssume
 
-; 537  :         /* stack symbols don't have a segment part.
-; 538  :          * In case [R|E]BP is used as base, it doesn't matter.
-; 539  :          * However, if option -Zg is set, this isn't true.
-; 540  :          */
-; 541  :         reg = ASSUME_SS;
+; 538  :         /* stack symbols don't have a segment part.
+; 539  :          * In case [R|E]BP is used as base, it doesn't matter.
+; 540  :          * However, if option -Zg is set, this isn't true.
+; 541  :          */
+; 542  :         reg = ASSUME_SS;
 
 	mov	DWORD PTR reg$[rsp], 2
 
-; 542  : #endif
-; 543  :     } else {
+; 543  : #endif
+; 544  :     } else {
 
 	jmp	SHORT $LN6@GetAssume
 $LN5@GetAssume:
 
-; 544  :         reg = search_assume( sym->segment, def, TRUE );
+; 545  :         reg = search_assume( sym->segment, def, TRUE );
 
 	mov	r8b, 1
 	mov	edx, DWORD PTR def$[rsp]
@@ -2062,13 +1753,13 @@ $LN5@GetAssume:
 $LN6@GetAssume:
 $LN4@GetAssume:
 
-; 545  :     }
-; 546  :     if( reg == ASSUME_NOTHING ) {
+; 546  :     }
+; 547  :     if( reg == ASSUME_NOTHING ) {
 
 	cmp	DWORD PTR reg$[rsp], -2
 	jne	SHORT $LN7@GetAssume
 
-; 547  :         if( sym && sym->state == SYM_EXTERNAL && sym->segment == NULL ) {
+; 548  :         if( sym && sym->state == SYM_EXTERNAL && sym->segment == NULL ) {
 
 	cmp	QWORD PTR sym$[rsp], 0
 	je	SHORT $LN8@GetAssume
@@ -2079,21 +1770,21 @@ $LN4@GetAssume:
 	cmp	QWORD PTR [rax+24], 0
 	jne	SHORT $LN8@GetAssume
 
-; 548  :             reg = def;
+; 549  :             reg = def;
 
 	mov	eax, DWORD PTR def$[rsp]
 	mov	DWORD PTR reg$[rsp], eax
 $LN8@GetAssume:
 $LN7@GetAssume:
 
-; 549  :         }
-; 550  :     }
-; 551  :     if( reg != ASSUME_NOTHING ) {
+; 550  :         }
+; 551  :     }
+; 552  :     if( reg != ASSUME_NOTHING ) {
 
 	cmp	DWORD PTR reg$[rsp], -2
 	je	SHORT $LN9@GetAssume
 
-; 552  :         *passume = SegAssumeTable[reg].symbol;
+; 553  :         *passume = SegAssumeTable[reg].symbol;
 
 	movsxd	rax, DWORD PTR reg$[rsp]
 	imul	rax, rax, 16
@@ -2102,31 +1793,30 @@ $LN7@GetAssume:
 	mov	rax, QWORD PTR [rcx+rax]
 	mov	QWORD PTR [rdx], rax
 
-; 553  :         return( reg );
+; 554  :         return( reg );
 
 	mov	eax, DWORD PTR reg$[rsp]
 	jmp	SHORT $LN1@GetAssume
 $LN9@GetAssume:
 
-; 554  :     }
-; 555  :     *passume = NULL;
+; 555  :     }
+; 556  :     *passume = NULL;
 
 	mov	rax, QWORD PTR passume$[rsp]
 	mov	QWORD PTR [rax], 0
 
-; 556  :     return( ASSUME_NOTHING );
+; 557  :     return( ASSUME_NOTHING );
 
 	mov	eax, -2
 $LN1@GetAssume:
 
-; 557  : }
+; 558  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 GetAssume ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\assume.c
 _TEXT	SEGMENT
 grp$ = 32
@@ -2135,49 +1825,43 @@ def$ = 72
 search_grps$ = 80
 search_assume PROC
 
-; 456  : {
+; 457  : {
 
 $LN19:
 	mov	BYTE PTR [rsp+24], r8b
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
-; 457  :     struct asym *grp;
-; 458  : 
-; 459  :     if( sym == NULL )
+; 458  :     struct asym *grp;
+; 459  : 
+; 460  :     if( sym == NULL )
 
 	cmp	QWORD PTR sym$[rsp], 0
 	jne	SHORT $LN8@search_ass
 
-; 460  :         return( ASSUME_NOTHING );
+; 461  :         return( ASSUME_NOTHING );
 
 	mov	eax, -2
 	jmp	$LN1@search_ass
 $LN8@search_ass:
 
-; 461  : 
-; 462  :     grp = GetGroup( sym );
+; 462  : 
+; 463  :     grp = GetGroup( sym );
 
 	mov	rcx, QWORD PTR sym$[rsp]
 	call	GetGroup
 	mov	QWORD PTR grp$[rsp], rax
 
-; 463  : 
-; 464  :     /* first check the default segment register */
-; 465  : 
-; 466  :     if( def != ASSUME_NOTHING ) {
+; 464  : 
+; 465  :     /* first check the default segment register */
+; 466  : 
+; 467  :     if( def != ASSUME_NOTHING ) {
 
 	cmp	DWORD PTR def$[rsp], -2
 	je	$LN9@search_ass
 
-; 467  :         if( SegAssumeTable[def].symbol == sym )
+; 468  :         if( SegAssumeTable[def].symbol == sym )
 
 	movsxd	rax, DWORD PTR def$[rsp]
 	imul	rax, rax, 16
@@ -2186,13 +1870,13 @@ $LN8@search_ass:
 	cmp	QWORD PTR [rcx+rax], rdx
 	jne	SHORT $LN10@search_ass
 
-; 468  :             return( def );
+; 469  :             return( def );
 
 	mov	eax, DWORD PTR def$[rsp]
 	jmp	$LN1@search_ass
 $LN10@search_ass:
 
-; 469  :         if( search_grps && grp ) {
+; 470  :         if( search_grps && grp ) {
 
 	movzx	eax, BYTE PTR search_grps$[rsp]
 	test	eax, eax
@@ -2200,7 +1884,7 @@ $LN10@search_ass:
 	cmp	QWORD PTR grp$[rsp], 0
 	je	SHORT $LN11@search_ass
 
-; 470  :             if( SegAssumeTable[def].is_flat && grp == &ModuleInfo.flat_grp->sym )
+; 471  :             if( SegAssumeTable[def].is_flat && grp == &ModuleInfo.flat_grp->sym )
 
 	movsxd	rax, DWORD PTR def$[rsp]
 	imul	rax, rax, 16
@@ -2212,13 +1896,13 @@ $LN10@search_ass:
 	cmp	QWORD PTR grp$[rsp], rax
 	jne	SHORT $LN12@search_ass
 
-; 471  :                 return( def );
+; 472  :                 return( def );
 
 	mov	eax, DWORD PTR def$[rsp]
 	jmp	$LN1@search_ass
 $LN12@search_ass:
 
-; 472  :             if( SegAssumeTable[def].symbol == grp )
+; 473  :             if( SegAssumeTable[def].symbol == grp )
 
 	movsxd	rax, DWORD PTR def$[rsp]
 	imul	rax, rax, 16
@@ -2227,7 +1911,7 @@ $LN12@search_ass:
 	cmp	QWORD PTR [rcx+rax], rdx
 	jne	SHORT $LN13@search_ass
 
-; 473  :                 return( def );
+; 474  :                 return( def );
 
 	mov	eax, DWORD PTR def$[rsp]
 	jmp	$LN1@search_ass
@@ -2235,12 +1919,12 @@ $LN13@search_ass:
 $LN11@search_ass:
 $LN9@search_ass:
 
-; 474  :         }
-; 475  :     }
-; 476  : 
-; 477  :     /* now check all segment registers */
-; 478  : 
-; 479  :     for( def = 0; def < NUM_SEGREGS; def++ ) {
+; 475  :         }
+; 476  :     }
+; 477  : 
+; 478  :     /* now check all segment registers */
+; 479  : 
+; 480  :     for( def = 0; def < NUM_SEGREGS; def++ ) {
 
 	mov	DWORD PTR def$[rsp], 0
 	jmp	SHORT $LN4@search_ass
@@ -2252,7 +1936,7 @@ $LN4@search_ass:
 	cmp	DWORD PTR def$[rsp], 6
 	jge	SHORT $LN3@search_ass
 
-; 480  :         if( SegAssumeTable[searchtab[def]].symbol == sym ) {
+; 481  :         if( SegAssumeTable[searchtab[def]].symbol == sym ) {
 
 	movsxd	rax, DWORD PTR def$[rsp]
 	lea	rcx, OFFSET FLAT:searchtab
@@ -2263,7 +1947,7 @@ $LN4@search_ass:
 	cmp	QWORD PTR [rcx+rax], rdx
 	jne	SHORT $LN14@search_ass
 
-; 481  :             return( searchtab[def] );
+; 482  :             return( searchtab[def] );
 
 	movsxd	rax, DWORD PTR def$[rsp]
 	lea	rcx, OFFSET FLAT:searchtab
@@ -2271,15 +1955,15 @@ $LN4@search_ass:
 	jmp	$LN1@search_ass
 $LN14@search_ass:
 
-; 482  :         }
-; 483  :     }
+; 483  :         }
+; 484  :     }
 
 	jmp	SHORT $LN2@search_ass
 $LN3@search_ass:
 
-; 484  : 
-; 485  :     /* now check the groups */
-; 486  :     if( search_grps && grp )
+; 485  : 
+; 486  :     /* now check the groups */
+; 487  :     if( search_grps && grp )
 
 	movzx	eax, BYTE PTR search_grps$[rsp]
 	test	eax, eax
@@ -2287,7 +1971,7 @@ $LN3@search_ass:
 	cmp	QWORD PTR grp$[rsp], 0
 	je	$LN15@search_ass
 
-; 487  :         for( def = 0; def < NUM_SEGREGS; def++ ) {
+; 488  :         for( def = 0; def < NUM_SEGREGS; def++ ) {
 
 	mov	DWORD PTR def$[rsp], 0
 	jmp	SHORT $LN7@search_ass
@@ -2299,7 +1983,7 @@ $LN7@search_ass:
 	cmp	DWORD PTR def$[rsp], 6
 	jge	SHORT $LN6@search_ass
 
-; 488  :             if( SegAssumeTable[searchtab[def]].is_flat && grp == &ModuleInfo.flat_grp->sym )
+; 489  :             if( SegAssumeTable[searchtab[def]].is_flat && grp == &ModuleInfo.flat_grp->sym )
 
 	movsxd	rax, DWORD PTR def$[rsp]
 	lea	rcx, OFFSET FLAT:searchtab
@@ -2313,7 +1997,7 @@ $LN7@search_ass:
 	cmp	QWORD PTR grp$[rsp], rax
 	jne	SHORT $LN16@search_ass
 
-; 489  :                 return( searchtab[def] );
+; 490  :                 return( searchtab[def] );
 
 	movsxd	rax, DWORD PTR def$[rsp]
 	lea	rcx, OFFSET FLAT:searchtab
@@ -2321,7 +2005,7 @@ $LN7@search_ass:
 	jmp	SHORT $LN1@search_ass
 $LN16@search_ass:
 
-; 490  :             if( SegAssumeTable[searchtab[def]].symbol == grp ) {
+; 491  :             if( SegAssumeTable[searchtab[def]].symbol == grp ) {
 
 	movsxd	rax, DWORD PTR def$[rsp]
 	lea	rcx, OFFSET FLAT:searchtab
@@ -2332,7 +2016,7 @@ $LN16@search_ass:
 	cmp	QWORD PTR [rcx+rax], rdx
 	jne	SHORT $LN17@search_ass
 
-; 491  :                 return( searchtab[def] );
+; 492  :                 return( searchtab[def] );
 
 	movsxd	rax, DWORD PTR def$[rsp]
 	lea	rcx, OFFSET FLAT:searchtab
@@ -2340,27 +2024,26 @@ $LN16@search_ass:
 	jmp	SHORT $LN1@search_ass
 $LN17@search_ass:
 
-; 492  :             }
-; 493  :         }
+; 493  :             }
+; 494  :         }
 
 	jmp	$LN5@search_ass
 $LN6@search_ass:
 $LN15@search_ass:
 
-; 494  : 
-; 495  :     return( ASSUME_NOTHING );
+; 495  : 
+; 496  :     return( ASSUME_NOTHING );
 
 	mov	eax, -2
 $LN1@search_ass:
 
-; 496  : }
+; 497  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 search_assume ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\assume.c
 _TEXT	SEGMENT
 reg$ = 32
@@ -2371,13 +2054,7 @@ AssumeInit PROC
 
 $LN12:
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 154  :     int reg;
 ; 155  : 
@@ -2521,8 +2198,7 @@ $LN10@AssumeInit:
 ; 200  : #endif
 ; 201  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 AssumeInit ENDP
 _TEXT	ENDS

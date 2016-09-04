@@ -176,7 +176,7 @@ $LN39:
 	mov	r8, r9
 	shl	r8, 5
 	mov	ecx, DWORD PTR [r8+rdx+16]
-	sub	ecx, 438				; 000001b6H
+	sub	ecx, 439				; 000001b7H
 	je	SHORT $LN7@AlignDirec
 	cmp	ecx, 1
 	jne	SHORT $LN35@AlignDirec
@@ -282,7 +282,7 @@ $LN9@AlignDirec:
 ; 217  :                 align_value = CurrStruct->e.structinfo->alignment;
 
 	mov	rax, QWORD PTR [rax+96]
-	movzx	ecx, BYTE PTR [rax+16]
+	movzx	ecx, BYTE PTR [rax+28]
 	mov	DWORD PTR opndx$[rsp], ecx
 	jmp	SHORT $LN34@AlignDirec
 $LN14@AlignDirec:

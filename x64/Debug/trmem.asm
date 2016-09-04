@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 _DATA	SEGMENT
@@ -96,22 +96,19 @@ PUBLIC	_trmem_chk_range
 PUBLIC	_trmem_whoami
 PUBLIC	tm_Init
 PUBLIC	tm_Fini
-EXTRN	__imp___acrt_iob_func:PROC
-EXTRN	__imp_fclose:PROC
-EXTRN	__imp_fopen:PROC
-EXTRN	__imp_fwrite:PROC
-EXTRN	__imp___stdio_common_vfprintf:PROC
-EXTRN	__imp_free:PROC
-EXTRN	__imp_malloc:PROC
-EXTRN	__imp__errno:PROC
-EXTRN	__imp_exit:PROC
+EXTRN	__acrt_iob_func:PROC
+EXTRN	fclose:PROC
+EXTRN	fopen:PROC
+EXTRN	fwrite:PROC
+EXTRN	__stdio_common_vfprintf:PROC
+EXTRN	free:PROC
+EXTRN	malloc:PROC
+EXTRN	_errno:PROC
+EXTRN	exit:PROC
 EXTRN	memcpy:PROC
 EXTRN	memset:PROC
 EXTRN	strlen:PROC
-EXTRN	__imp_isprint:PROC
-EXTRN	_RTC_CheckStackVars:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
+EXTRN	isprint:PROC
 EXTRN	__GSHandlerCheck:PROC
 EXTRN	__security_check_cookie:PROC
 EXTRN	__ImageBase:BYTE
@@ -121,268 +118,158 @@ COMM	?_OptionsStorage@?1??__local_stdio_printf_options@@9@9:QWORD							; `__loc
 _DATA	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$__local_stdio_printf_options DD imagerel $LN3
-	DD	imagerel $LN3+11
-	DD	imagerel $unwind$__local_stdio_printf_options
-pdata	ENDS
-;	COMDAT pdata
-pdata	SEGMENT
 $pdata$_vfprintf_l DD imagerel $LN3
-	DD	imagerel $LN3+90
+	DD	imagerel $LN3+67
 	DD	imagerel $unwind$_vfprintf_l
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$printf DD imagerel $LN3
-	DD	imagerel $LN3+129
+	DD	imagerel $LN3+87
 	DD	imagerel $unwind$printf
 pdata	ENDS
 pdata	SEGMENT
 $pdata$_trmem_open DD imagerel $LN4
-	DD	imagerel $LN4+242
+	DD	imagerel $LN4+220
 	DD	imagerel $unwind$_trmem_open
 $pdata$_trmem_close DD imagerel $LN10
-	DD	imagerel $LN10+272
+	DD	imagerel $LN10+250
 	DD	imagerel $unwind$_trmem_close
 $pdata$_trmem_alloc DD imagerel $LN9
-	DD	imagerel $LN9+399
+	DD	imagerel $LN9+377
 	DD	imagerel $unwind$_trmem_alloc
 $pdata$_trmem_free DD imagerel $LN6
-	DD	imagerel $LN6+302
+	DD	imagerel $LN6+280
 	DD	imagerel $unwind$_trmem_free
 $pdata$_trmem_realloc DD imagerel $LN3
-	DD	imagerel $LN3+102
+	DD	imagerel $LN3+80
 	DD	imagerel $unwind$_trmem_realloc
 $pdata$_trmem_expand DD imagerel $LN3
-	DD	imagerel $LN3+102
+	DD	imagerel $LN3+80
 	DD	imagerel $unwind$_trmem_expand
 $pdata$_trmem_strdup DD imagerel $LN4
-	DD	imagerel $LN4+122
+	DD	imagerel $LN4+100
 	DD	imagerel $unwind$_trmem_strdup
 $pdata$_trmem_msize DD imagerel $LN3
-	DD	imagerel $LN3+64
+	DD	imagerel $LN3+42
 	DD	imagerel $unwind$_trmem_msize
 $pdata$_trmem_prt_usage DD imagerel $LN3
-	DD	imagerel $LN3+71
+	DD	imagerel $LN3+49
 	DD	imagerel $unwind$_trmem_prt_usage
 $pdata$_trmem_prt_list DD imagerel $LN8
-	DD	imagerel $LN8+258
+	DD	imagerel $LN8+236
 	DD	imagerel $unwind$_trmem_prt_list
-$pdata$_trmem_get_current_usage DD imagerel $LN3
-	DD	imagerel $LN3+16
-	DD	imagerel $unwind$_trmem_get_current_usage
-$pdata$_trmem_get_peak_usage DD imagerel $LN3
-	DD	imagerel $LN3+16
-	DD	imagerel $unwind$_trmem_get_peak_usage
-$pdata$_trmem_guess_who DD imagerel $LN3
-	DD	imagerel $LN3+17
-	DD	imagerel $unwind$_trmem_guess_who
 $pdata$isValidChunk DD imagerel isValidChunk
-	DD	imagerel isValidChunk+196
+	DD	imagerel isValidChunk+174
 	DD	imagerel $unwind$isValidChunk
-$pdata$setSize DD imagerel setSize
-	DD	imagerel setSize+56
-	DD	imagerel $unwind$setSize
-$pdata$getSize DD imagerel getSize
-	DD	imagerel getSize+43
-	DD	imagerel $unwind$getSize
-$pdata$stpcpy DD imagerel stpcpy
-	DD	imagerel stpcpy+88
-	DD	imagerel $unwind$stpcpy
 $pdata$formHex DD imagerel formHex
-	DD	imagerel formHex+158
+	DD	imagerel formHex+136
 	DD	imagerel $unwind$formHex
 $pdata$formCodePtr DD imagerel formCodePtr
-	DD	imagerel formCodePtr+66
+	DD	imagerel formCodePtr+44
 	DD	imagerel $unwind$formCodePtr
 $pdata$trPrt DD	imagerel trPrt
-	DD	imagerel trPrt+1588
+	DD	imagerel trPrt+1252
 	DD	imagerel $unwind$trPrt
 $pdata$allocEntry DD imagerel allocEntry
-	DD	imagerel allocEntry+99
+	DD	imagerel allocEntry+77
 	DD	imagerel $unwind$allocEntry
 $pdata$freeEntry DD imagerel freeEntry
-	DD	imagerel freeEntry+54
+	DD	imagerel freeEntry+32
 	DD	imagerel $unwind$freeEntry
-$pdata$addToList DD imagerel addToList
-	DD	imagerel addToList+42
-	DD	imagerel $unwind$addToList
 $pdata$findOnList DD imagerel findOnList
-	DD	imagerel findOnList+96
+	DD	imagerel findOnList+74
 	DD	imagerel $unwind$findOnList
 $pdata$removeFromList DD imagerel removeFromList
-	DD	imagerel removeFromList+127
+	DD	imagerel removeFromList+105
 	DD	imagerel $unwind$removeFromList
 $pdata$_trmem_validate_all DD imagerel $LN6
-	DD	imagerel $LN6+121
+	DD	imagerel $LN6+99
 	DD	imagerel $unwind$_trmem_validate_all
-$pdata$_trmem_set_min_alloc DD imagerel $LN3
-	DD	imagerel $LN3+27
-	DD	imagerel $unwind$_trmem_set_min_alloc
 $pdata$_trmem_validate DD imagerel $LN4
-	DD	imagerel $LN4+144
+	DD	imagerel $LN4+122
 	DD	imagerel $unwind$_trmem_validate
 $pdata$ChangeAlloc DD imagerel ChangeAlloc
-	DD	imagerel ChangeAlloc+1089
+	DD	imagerel ChangeAlloc+1067
 	DD	imagerel $unwind$ChangeAlloc
 $pdata$_trmem_chk_range DD imagerel $LN9
-	DD	imagerel $LN9+353
+	DD	imagerel $LN9+331
 	DD	imagerel $unwind$_trmem_chk_range
-$pdata$_trmem_whoami DD imagerel $LN3
-	DD	imagerel $LN3+6
-	DD	imagerel $unwind$_trmem_whoami
 $pdata$memLine DD imagerel memLine
-	DD	imagerel memLine+74
+	DD	imagerel memLine+51
 	DD	imagerel $unwind$memLine
 $pdata$tm_Init DD imagerel $LN6
-	DD	imagerel $LN6+194
+	DD	imagerel $LN6+172
 	DD	imagerel $unwind$tm_Init
 $pdata$tm_Fini DD imagerel $LN3
-	DD	imagerel $LN3+64
+	DD	imagerel $LN3+45
 	DD	imagerel $unwind$tm_Fini
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
-CONST	SEGMENT
-	ORG $+1
-trPrt$rtcName$0 DB 061H
-	DB	072H
-	DB	067H
-	DB	073H
-	DB	00H
-	ORG $+3
-trPrt$rtcName$1 DB 062H
-	DB	075H
-	DB	066H
-	DB	066H
-	DB	00H
-	ORG $+3
-trPrt$rtcVarDesc DD 050H
-	DD	064H
-	DQ	FLAT:trPrt$rtcName$1
-	DD	028H
-	DD	08H
-	DQ	FLAT:trPrt$rtcName$0
-	ORG $+96
-trPrt$rtcFrameData DD 02H
-	DD	00H
-	DQ	FLAT:trPrt$rtcVarDesc
-CONST	ENDS
 xdata	SEGMENT
-$unwind$_trmem_open DD 022d01H
-	DD	070155219H
-$unwind$_trmem_close DD 021e01H
-	DD	07006720aH
-$unwind$_trmem_alloc DD 022801H
-	DD	070107214H
-$unwind$_trmem_free DD 022801H
-	DD	070107214H
-$unwind$_trmem_realloc DD 022d01H
-	DD	070155219H
-$unwind$_trmem_expand DD 022d01H
-	DD	070155219H
-$unwind$_trmem_strdup DD 022801H
-	DD	070105214H
-$unwind$_trmem_msize DD 022301H
-	DD	0700b320fH
-$unwind$_trmem_prt_usage DD 021e01H
-	DD	07006320aH
-$unwind$_trmem_prt_list DD 021e01H
-	DD	07006b20aH
-$unwind$_trmem_get_current_usage DD 010601H
-	DD	07006H
-$unwind$_trmem_get_peak_usage DD 010601H
-	DD	07006H
-$unwind$_trmem_guess_who DD 010601H
-	DD	07006H
-$unwind$isValidChunk DD 022d01H
-	DD	07015b219H
-$unwind$setSize DD 010b01H
-	DD	0700bH
-$unwind$getSize DD 010601H
-	DD	07006H
-$unwind$stpcpy DD 010b01H
-	DD	0700bH
-$unwind$formHex DD 022701H
-	DD	0700f1213H
-$unwind$formCodePtr DD 022801H
-	DD	070103214H
-$unwind$trPrt DD 034519H
-	DD	026011cH
-	DD	07015H
+$unwind$_trmem_open DD 011801H
+	DD	06218H
+$unwind$_trmem_close DD 010901H
+	DD	08209H
+$unwind$_trmem_alloc DD 011301H
+	DD	08213H
+$unwind$_trmem_free DD 011301H
+	DD	08213H
+$unwind$_trmem_realloc DD 011801H
+	DD	06218H
+$unwind$_trmem_expand DD 011801H
+	DD	06218H
+$unwind$_trmem_strdup DD 011301H
+	DD	06213H
+$unwind$_trmem_msize DD 010e01H
+	DD	0420eH
+$unwind$_trmem_prt_usage DD 010901H
+	DD	04209H
+$unwind$_trmem_prt_list DD 010901H
+	DD	0c209H
+$unwind$isValidChunk DD 011801H
+	DD	0c218H
+$unwind$formHex DD 011201H
+	DD	02212H
+$unwind$formCodePtr DD 011301H
+	DD	04213H
+$unwind$trPrt DD 022d19H
+	DD	01f011bH
 	DD	imagerel __GSHandlerCheck
-	DD	0120H
-$unwind$allocEntry DD 021e01H
-	DD	07006520aH
-$unwind$freeEntry DD 022301H
-	DD	0700b320fH
-$unwind$addToList DD 010b01H
-	DD	0700bH
-$unwind$findOnList DD 022301H
-	DD	0700b120fH
-$unwind$removeFromList DD 022301H
-	DD	0700b120fH
-$unwind$_trmem_validate_all DD 021e01H
-	DD	07006520aH
-$unwind$_trmem_set_min_alloc DD 010b01H
-	DD	0700bH
-$unwind$_trmem_validate DD 022801H
-	DD	070107214H
-$unwind$ChangeAlloc DD 022d01H
-	DD	070159219H
-$unwind$_trmem_chk_range DD 022d01H
-	DD	07015b219H
-$unwind$_trmem_whoami DD 010201H
-	DD	07002H
-$unwind$memLine DD 022801H
-	DD	070103214H
-$unwind$tm_Init DD 021501H
-	DD	070027206H
-$unwind$tm_Fini DD 021501H
-	DD	070023206H
+	DD	0e0H
+$unwind$allocEntry DD 010901H
+	DD	06209H
+$unwind$freeEntry DD 010e01H
+	DD	0420eH
+$unwind$findOnList DD 010e01H
+	DD	0220eH
+$unwind$removeFromList DD 010e01H
+	DD	0220eH
+$unwind$_trmem_validate_all DD 010901H
+	DD	06209H
+$unwind$_trmem_validate DD 011301H
+	DD	08213H
+$unwind$ChangeAlloc DD 011801H
+	DD	0a218H
+$unwind$_trmem_chk_range DD 011801H
+	DD	0c218H
+$unwind$memLine DD 011301H
+	DD	04213H
+$unwind$tm_Init DD 010401H
+	DD	08204H
+$unwind$tm_Fini DD 010401H
+	DD	04204H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$printf DD 022d01H
-	DD	070159219H
-xdata	ENDS
-;	COMDAT CONST
-CONST	SEGMENT
-printf$rtcName$0 DB 05fH
-	DB	041H
-	DB	072H
-	DB	067H
-	DB	04cH
-	DB	069H
-	DB	073H
-	DB	074H
-	DB	00H
-	ORG $+7
-printf$rtcVarDesc DD 038H
-	DD	08H
-	DQ	FLAT:printf$rtcName$0
-	ORG $+48
-printf$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:printf$rtcVarDesc
-CONST	ENDS
-;	COMDAT xdata
-xdata	SEGMENT
-$unwind$_vfprintf_l DD 022d01H
-	DD	070155219H
+$unwind$printf DD 011801H
+	DD	06218H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$__local_stdio_printf_options DD 010201H
-	DD	07002H
+$unwind$_vfprintf_l DD 011801H
+	DD	06218H
 xdata	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
 tm_Fini	PROC
@@ -390,12 +277,7 @@ tm_Fini	PROC
 ; 790  : {
 
 $LN3:
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 
 ; 791  :     /* if tm_Fini() is called, both hTrmem & memFile are != NULL */
 ; 792  :     _trmem_prt_list( hTrmem );
@@ -411,16 +293,15 @@ $LN3:
 ; 794  :     fclose( FileTrmem );
 
 	mov	rcx, QWORD PTR FileTrmem
-	call	QWORD PTR __imp_fclose
+	call	fclose
 
 ; 795  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 tm_Fini	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
 tm_Init	PROC
@@ -428,18 +309,13 @@ tm_Init	PROC
 ; 773  : {
 
 $LN6:
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 72					; 00000048H
 
 ; 774  :     if ( FileTrmem = fopen( TRMEM_LOGFN, "w" ) ) {
 
 	lea	rdx, OFFSET FLAT:$SG7679
 	lea	rcx, OFFSET FLAT:$SG7680
-	call	QWORD PTR __imp_fopen
+	call	fopen
 	mov	QWORD PTR FileTrmem, rax
 	cmp	QWORD PTR FileTrmem, 0
 	je	SHORT $LN2@tm_Init
@@ -454,8 +330,8 @@ $LN6:
 	mov	QWORD PTR [rsp+32], rax
 	xor	r9d, r9d
 	xor	r8d, r8d
-	mov	rdx, QWORD PTR __imp_free
-	mov	rcx, QWORD PTR __imp_malloc
+	lea	rdx, OFFSET FLAT:free
+	lea	rcx, OFFSET FLAT:malloc
 	call	_trmem_open
 	mov	QWORD PTR hTrmem, rax
 
@@ -473,7 +349,7 @@ $LN6:
 ; 780  :             exit( EXIT_FAILURE );
 
 	mov	ecx, 1
-	call	QWORD PTR __imp_exit
+	call	exit
 $LN4@tm_Init:
 
 ; 781  :         }
@@ -484,7 +360,7 @@ $LN2@tm_Init:
 
 ; 783  :         printf("tm_Init: fopen(\"" TRMEM_LOGFN "\") failed [%u]\n", errno );
 
-	call	QWORD PTR __imp__errno
+	call	_errno
 	mov	edx, DWORD PTR [rax]
 	lea	rcx, OFFSET FLAT:$SG7683
 	call	printf
@@ -492,19 +368,18 @@ $LN2@tm_Init:
 ; 784  :         exit( EXIT_FAILURE );
 
 	mov	ecx, 1
-	call	QWORD PTR __imp_exit
+	call	exit
 $LN3@tm_Init:
 $LN5@tm_Init:
 
 ; 785  :     }
 ; 786  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 tm_Init	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
 fh$ = 48
@@ -517,13 +392,7 @@ memLine	PROC
 	mov	DWORD PTR [rsp+24], r8d
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 766  :     //fwrite( "***",1, 3, stderr );
 ; 767  :     //fwrite( buf, 1, size, stderr );
@@ -534,24 +403,18 @@ memLine	PROC
 	mov	r8d, eax
 	mov	edx, 1
 	mov	rcx, QWORD PTR buf$[rsp]
-	call	QWORD PTR __imp_fwrite
+	call	fwrite
 
 ; 769  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 memLine	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
 _trmem_whoami PROC
-
-; 748  : {
-
-$LN3:
-	push	rdi
 
 ; 749  :     return 0;
 
@@ -559,16 +422,15 @@ $LN3:
 
 ; 750  : }
 
-	pop	rdi
 	ret	0
 _trmem_whoami ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
 tr$ = 64
-end$ = 72
-end_of_mem$ = 80
+end_of_mem$ = 72
+end$ = 80
 start$ = 112
 len$ = 120
 who$ = 128
@@ -582,13 +444,7 @@ $LN9:
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 96					; 00000060H
-	mov	rdi, rsp
-	mov	ecx, 24
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+112]
+	sub	rsp, 104				; 00000068H
 
 ; 659  :     entry_ptr   tr;
 ; 660  :     void        *end;
@@ -710,12 +566,11 @@ $LN1@trmem_chk_:
 
 ; 682  : }
 
-	add	rsp, 96					; 00000060H
-	pop	rdi
+	add	rsp, 104				; 00000068H
 	ret	0
 _trmem_chk_range ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
 tr$ = 48
@@ -735,13 +590,7 @@ ChangeAlloc PROC
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 80					; 00000050H
-	mov	rdi, rsp
-	mov	ecx, 20
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+96]
+	sub	rsp, 88					; 00000058H
 
 ; 541  :     entry_ptr   tr;
 ; 542  :     void *      new_block;
@@ -1197,12 +1046,11 @@ $LN1@ChangeAllo:
 
 ; 628  : }
 
-	add	rsp, 80					; 00000050H
-	pop	rdi
+	add	rsp, 88					; 00000058H
 	ret	0
 ChangeAlloc ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
 tr$ = 48
@@ -1217,13 +1065,7 @@ $LN4:
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 72					; 00000048H
 
 ; 499  :     entry_ptr tr;
 ; 500  : 
@@ -1267,24 +1109,21 @@ $LN1@trmem_vali:
 
 ; 507  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 _trmem_validate ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
-size$ = 16
-hdl$ = 24
+size$ = 8
+hdl$ = 16
 _trmem_set_min_alloc PROC
 
 ; 430  : {
 
-$LN3:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
 
 ; 431  :     hdl->min_alloc = size;
 
@@ -1294,15 +1133,14 @@ $LN3:
 
 ; 432  : }
 
-	pop	rdi
 	ret	0
 _trmem_set_min_alloc ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
-walk$ = 32
-result$ = 40
+result$ = 32
+walk$ = 40
 hdl$ = 64
 _trmem_validate_all PROC
 
@@ -1310,13 +1148,7 @@ _trmem_validate_all PROC
 
 $LN6:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 379  :     entry_ptr   walk;
 ; 380  :     int result = 1;
@@ -1370,12 +1202,11 @@ $LN3@trmem_vali:
 
 ; 391  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 _trmem_validate_all ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
 walk$ = 0
@@ -1388,13 +1219,7 @@ removeFromList PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 16
-	mov	rdi, rsp
-	mov	ecx, 4
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+32]
+	sub	rsp, 24
 
 ; 329  :     entry_ptr_ptr   walk;
 ; 330  :     entry_ptr       found;
@@ -1458,12 +1283,11 @@ $LN1@removeFrom:
 
 ; 343  : }
 
-	add	rsp, 16
-	pop	rdi
+	add	rsp, 24
 	ret	0
 removeFromList ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
 walk$ = 0
@@ -1475,13 +1299,7 @@ findOnList PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 16
-	mov	rdi, rsp
-	mov	ecx, 4
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+32]
+	sub	rsp, 24
 
 ; 314  :     entry_ptr       walk;
 ; 315  : 
@@ -1529,23 +1347,21 @@ $LN1@findOnList:
 
 ; 324  : }
 
-	add	rsp, 16
-	pop	rdi
+	add	rsp, 24
 	ret	0
 findOnList ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
-tr$ = 16
-hdl$ = 24
+tr$ = 8
+hdl$ = 16
 addToList PROC
 
 ; 307  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
 
 ; 308  :     tr->next = hdl->alloc_list;
 
@@ -1562,11 +1378,10 @@ addToList PROC
 
 ; 310  : }
 
-	pop	rdi
 	ret	0
 addToList ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
 tr$ = 48
@@ -1577,13 +1392,7 @@ freeEntry PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 303  :     hdl->free( tr );
 
@@ -1593,12 +1402,11 @@ freeEntry PROC
 
 ; 304  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 freeEntry ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
 tr$ = 32
@@ -1608,13 +1416,7 @@ allocEntry PROC
 ; 291  : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 292  :     entry_ptr   tr;
 ; 293  : 
@@ -1649,30 +1451,29 @@ $LN2@allocEntry:
 
 ; 299  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 allocEntry ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
-args$ = 40
-buff$ = 80
-ptr$ = 200
-ch$ = 208
-ui$ = 212
-ul$ = 216
-dp$ = 224
-who$ = 232
-start$ = 240
-xptr$ = 248
-i$ = 256
-size$ = 264
-tv74 = 280
-__$ArrayPad$ = 288
-hdl$ = 320
-fmt$ = 328
+ch$ = 32
+ptr$ = 40
+args$ = 48
+i$ = 56
+tv74 = 60
+start$ = 64
+who$ = 72
+size$ = 80
+ui$ = 88
+ul$ = 92
+xptr$ = 96
+dp$ = 104
+buff$ = 112
+__$ArrayPad$ = 224
+hdl$ = 256
+fmt$ = 264
 trPrt	PROC
 
 ; 192  : {
@@ -1681,13 +1482,7 @@ trPrt	PROC
 	mov	QWORD PTR [rsp+8], rcx
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+32], r9
-	push	rdi
-	sub	rsp, 304				; 00000130H
-	mov	rdi, rsp
-	mov	ecx, 76					; 0000004cH
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+320]
+	sub	rsp, 248				; 000000f8H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -1984,7 +1779,7 @@ $LN7@trPrt:
 	mov	DWORD PTR i$[rsp], eax
 $LN9@trPrt:
 	cmp	DWORD PTR i$[rsp], 14
-	jge	$LN8@trPrt
+	jge	SHORT $LN8@trPrt
 
 ; 253  :                     if( i < size ) {
 
@@ -2072,7 +1867,7 @@ $LN12@trPrt:
 	mov	rax, QWORD PTR start$[rsp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isprint
+	call	isprint
 	test	eax, eax
 	je	SHORT $LN28@trPrt
 
@@ -2109,7 +1904,7 @@ $LN29@trPrt:
 
 ; 274  :                 }
 
-	jmp	$LN10@trPrt
+	jmp	SHORT $LN10@trPrt
 $LN11@trPrt:
 
 ; 275  :                 break;
@@ -2183,14 +1978,10 @@ $LN3@trPrt:
 
 ; 288  : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:trPrt$rtcFrameData
-	call	_RTC_CheckStackVars
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 304				; 00000130H
-	pop	rdi
+	add	rsp, 248				; 000000f8H
 	ret	0
 $LN32@trPrt:
 	DD	$LN18@trPrt
@@ -2217,7 +2008,7 @@ $LN32@trPrt:
 	DD	$LN23@trPrt
 trPrt	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
 hdl$ = 48
@@ -2230,13 +2021,7 @@ formCodePtr PROC
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 184  : #if defined( M_I86LM ) || defined( M_I86HM ) || defined( M_I86MM )
 ; 185  :     return formFarPtr( ptr, who );
@@ -2251,12 +2036,11 @@ formCodePtr PROC
 ; 188  : #endif
 ; 189  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 formCodePtr ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
 str$ = 0
@@ -2270,13 +2054,7 @@ formHex	PROC
 	mov	DWORD PTR [rsp+24], r8d
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 16
-	mov	rdi, rsp
-	mov	ecx, 4
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+32]
+	sub	rsp, 24
 
 ; 157  :     char            *str;
 ; 158  : 
@@ -2340,23 +2118,21 @@ $LN3@formHex:
 
 ; 167  : }
 
-	add	rsp, 16
-	pop	rdi
+	add	rsp, 24
 	ret	0
 formHex	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
-dest$ = 16
-src$ = 24
+dest$ = 8
+src$ = 16
 stpcpy	PROC
 
 ; 145  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
 
 ; 146  :     *dest = *src;
 
@@ -2403,20 +2179,18 @@ $LN3@stpcpy:
 
 ; 153  : }
 
-	pop	rdi
 	ret	0
 stpcpy	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
-p$ = 16
+p$ = 8
 getSize	PROC
 
 ; 136  : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
 
 ; 137  :     return( p->size ^ (size_t)p->mem ^ (size_t)p->who ^ (size_t)p );
 
@@ -2431,22 +2205,20 @@ getSize	PROC
 
 ; 138  : }
 
-	pop	rdi
 	ret	0
 getSize	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
-p$ = 16
-size$ = 24
+p$ = 8
+size$ = 16
 setSize	PROC
 
 ; 131  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
 
 ; 132  :     p->size = size ^ (size_t)p->mem ^ (size_t)p->who ^ (size_t)p;
 
@@ -2463,11 +2235,10 @@ setSize	PROC
 
 ; 133  : }
 
-	pop	rdi
 	ret	0
 setSize	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
 mem$ = 64
@@ -2485,13 +2256,7 @@ isValidChunk PROC
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 96					; 00000060H
-	mov	rdi, rsp
-	mov	ecx, 24
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+112]
+	sub	rsp, 104				; 00000068H
 
 ; 469  :     void *mem;
 ; 470  :     size_t size;
@@ -2567,22 +2332,19 @@ $LN1@isValidChu:
 
 ; 494  : }
 
-	add	rsp, 96					; 00000060H
-	pop	rdi
+	add	rsp, 104				; 00000068H
 	ret	0
 isValidChunk ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
-p$ = 16
+p$ = 8
 _trmem_guess_who PROC
 
 ; 739  : {
 
-$LN3:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
 
 ; 740  :     return( (_trmem_who)*((void **)p-1) );
 
@@ -2591,21 +2353,18 @@ $LN3:
 
 ; 741  : }
 
-	pop	rdi
 	ret	0
 _trmem_guess_who ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
-hdl$ = 16
+hdl$ = 8
 _trmem_get_peak_usage PROC
 
 ; 731  : unsigned long _trmem_get_peak_usage( _trmem_hdl hdl ) {
 
-$LN3:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
 
 ; 732  : /*****************************************************/
 ; 733  :     return hdl->max_mem;
@@ -2615,21 +2374,18 @@ $LN3:
 
 ; 734  : }
 
-	pop	rdi
 	ret	0
 _trmem_get_peak_usage ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
-hdl$ = 16
+hdl$ = 8
 _trmem_get_current_usage PROC
 
 ; 726  : unsigned long _trmem_get_current_usage( _trmem_hdl hdl ) {
 
-$LN3:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
 
 ; 727  : /********************************************************/
 ; 728  :     return hdl->mem_used;
@@ -2639,15 +2395,14 @@ $LN3:
 
 ; 729  : }
 
-	pop	rdi
 	ret	0
 _trmem_get_current_usage ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
-tr$ = 64
-chunks$ = 72
+chunks$ = 64
+tr$ = 72
 size$ = 80
 hdl$ = 112
 _trmem_prt_list PROC
@@ -2656,13 +2411,7 @@ _trmem_prt_list PROC
 
 $LN8:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 96					; 00000060H
-	mov	rdi, rsp
-	mov	ecx, 24
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+112]
+	sub	rsp, 104				; 00000068H
 
 ; 693  :     entry_ptr   tr;
 ; 694  :     unsigned    chunks;
@@ -2769,12 +2518,11 @@ $LN1@trmem_prt_:
 
 ; 719  : }
 
-	add	rsp, 96					; 00000060H
-	pop	rdi
+	add	rsp, 104				; 00000068H
 	ret	0
 _trmem_prt_list ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
 hdl$ = 48
@@ -2784,13 +2532,7 @@ _trmem_prt_usage PROC
 
 $LN3:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 687  :     trPrt( hdl, MSG_PRT_USAGE, hdl->mem_used, hdl->max_mem );
 
@@ -2804,12 +2546,11 @@ $LN3:
 
 ; 688  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 _trmem_prt_usage ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
 mem$ = 48
@@ -2821,13 +2562,7 @@ _trmem_msize PROC
 $LN3:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 722  : /************************************************/
 ; 723  :     return( getSize( findOnList( mem, hdl ) ) );
@@ -2840,12 +2575,11 @@ $LN3:
 
 ; 724  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 _trmem_msize ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
 mem$ = 32
@@ -2861,13 +2595,7 @@ $LN4:
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 645  :     char    *mem;
 ; 646  :     size_t  len;
@@ -2906,12 +2634,11 @@ $LN2@trmem_strd:
 
 ; 653  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 _trmem_strdup ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
 old$ = 64
@@ -2927,13 +2654,7 @@ $LN3:
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 639  :     return( ChangeAlloc( old, size, who, hdl, hdl->expand, "Expand" ) );
 
@@ -2950,12 +2671,11 @@ $LN3:
 
 ; 640  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 _trmem_expand ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
 old$ = 64
@@ -2971,13 +2691,7 @@ $LN3:
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 633  :     return( ChangeAlloc( old, size, who, hdl, hdl->realloc, "Realloc" ) );
 
@@ -2994,12 +2708,11 @@ $LN3:
 
 ; 634  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 _trmem_realloc ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
 tr$ = 48
@@ -3015,13 +2728,7 @@ $LN6:
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 72					; 00000048H
 
 ; 512  :     entry_ptr   tr;
 ; 513  :     size_t      size;
@@ -3136,16 +2843,15 @@ $LN1@trmem_free:
 
 ; 534  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 _trmem_free ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
-mem$ = 48
-tr$ = 56
+tr$ = 48
+mem$ = 56
 size$ = 80
 who$ = 88
 hdl$ = 96
@@ -3157,13 +2863,7 @@ $LN9:
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 72					; 00000048H
 
 ; 437  :     void        *mem;
 ; 438  :     entry_ptr   tr;
@@ -3322,12 +3022,11 @@ $LN1@trmem_allo:
 
 ; 464  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 _trmem_alloc ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
 chunks$ = 32
@@ -3341,13 +3040,7 @@ _trmem_close PROC
 
 $LN10:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 72					; 00000048H
 
 ; 396  :     uint        chunks;
 ; 397  :     uint_32     mem_used;
@@ -3489,12 +3182,11 @@ $LN7@trmem_clos:
 
 ; 426  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 _trmem_close ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\trmem.c
 _TEXT	SEGMENT
 hdl$ = 32
@@ -3514,13 +3206,7 @@ $LN4:
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 355  :     _trmem_hdl  hdl;
 ; 356  : 
@@ -3616,18 +3302,17 @@ $LN1@trmem_open:
 
 ; 374  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 _trmem_open ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT printf
 _TEXT	SEGMENT
 _Result$ = 32
-_ArgList$ = 56
-_Format$ = 96
+_ArgList$ = 40
+_Format$ = 64
 printf	PROC						; COMDAT
 
 ; 950  : {
@@ -3637,13 +3322,7 @@ $LN3:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+32], r9
-	push	rdi
-	sub	rsp, 80					; 00000050H
-	mov	rdi, rsp
-	mov	ecx, 20
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+96]
+	sub	rsp, 56					; 00000038H
 
 ; 951  :     int _Result;
 ; 952  :     va_list _ArgList;
@@ -3655,7 +3334,7 @@ $LN3:
 ; 954  :     _Result = _vfprintf_l(stdout, _Format, NULL, _ArgList);
 
 	mov	ecx, 1
-	call	QWORD PTR __imp___acrt_iob_func
+	call	__acrt_iob_func
 	mov	r9, QWORD PTR _ArgList$[rsp]
 	xor	r8d, r8d
 	mov	rdx, QWORD PTR _Format$[rsp]
@@ -3673,17 +3352,11 @@ $LN3:
 
 ; 957  : }
 
-	mov	edi, eax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:printf$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	eax, edi
-	add	rsp, 80					; 00000050H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 printf	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT _vfprintf_l
 _TEXT	SEGMENT
@@ -3700,13 +3373,7 @@ $LN3:
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 639  :     return __stdio_common_vfprintf(_CRT_INTERNAL_LOCAL_PRINTF_OPTIONS, _Stream, _Format, _Locale, _ArgList);
 
@@ -3717,25 +3384,19 @@ $LN3:
 	mov	r8, QWORD PTR _Format$[rsp]
 	mov	rdx, QWORD PTR _Stream$[rsp]
 	mov	rcx, QWORD PTR [rax]
-	call	QWORD PTR __imp___stdio_common_vfprintf
+	call	__stdio_common_vfprintf
 
 ; 640  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 _vfprintf_l ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\corecrt_stdio_config.h
 ;	COMDAT __local_stdio_printf_options
 _TEXT	SEGMENT
 __local_stdio_printf_options PROC			; COMDAT
-
-; 73   : {
-
-$LN3:
-	push	rdi
 
 ; 74   :     static unsigned __int64 _OptionsStorage;
 ; 75   :     return &_OptionsStorage;
@@ -3744,7 +3405,6 @@ $LN3:
 
 ; 76   : }
 
-	pop	rdi
 	ret	0
 __local_stdio_printf_options ENDP
 _TEXT	ENDS

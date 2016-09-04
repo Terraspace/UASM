@@ -12,7 +12,7 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10603 DB	'F__RQQ', 00H
+$SG10626 DB	'F__RQQ', 00H
 _DATA	ENDS
 PUBLIC	AddFloatingPointEmulationFixup
 EXTRN	SymFind:PROC
@@ -72,7 +72,7 @@ $LN28:
 ; 73   :     int_32 data;
 ; 74   :     char name[8] = "F__RQQ";
 
-	mov	eax, DWORD PTR $SG10603
+	mov	eax, DWORD PTR $SG10626
 
 ; 75   : 
 ; 76   :     DebugMsg(("AddFloatingPointEmulationFixup enter, token=%u, regoverride=%d\n", CodeInfo->token, CodeInfo->prefix.RegOverride ));
@@ -81,12 +81,12 @@ $LN28:
 
 	xor	ebp, ebp
 	mov	DWORD PTR name$[rsp], eax
-	movzx	eax, WORD PTR $SG10603+4
+	movzx	eax, WORD PTR $SG10626+4
 	mov	WORD PTR name$[rsp+4], ax
-	movzx	eax, BYTE PTR $SG10603+6
+	movzx	eax, BYTE PTR $SG10626+6
 	mov	BYTE PTR name$[rsp+6], al
 	xor	eax, eax
-	cmp	DWORD PTR [rcx+24], 832			; 00000340H
+	cmp	DWORD PTR [rcx+24], 833			; 00000341H
 	mov	BYTE PTR name$[rsp+7], al
 	jne	SHORT $LN8@AddFloatin
 

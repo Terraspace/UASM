@@ -2,14 +2,14 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 _DATA	SEGMENT
 COMM	symCurSeg:QWORD
 _DATA	ENDS
 _BSS	SEGMENT
-$SG11378 DB	01H DUP (?)
+$SG11416 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	decoflags:BYTE
@@ -18,187 +18,187 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11289 DB	'READONLY', 00H
+$SG11327 DB	'READONLY', 00H
 	ORG $+3
-$SG11290 DB	'BYTE', 00H
+$SG11328 DB	'BYTE', 00H
 	ORG $+3
-$SG11291 DB	'WORD', 00H
+$SG11329 DB	'WORD', 00H
 	ORG $+3
-$SG11292 DB	'DWORD', 00H
+$SG11330 DB	'DWORD', 00H
 	ORG $+2
-$SG11293 DB	'PARA', 00H
+$SG11331 DB	'PARA', 00H
 	ORG $+3
-$SG11294 DB	'PAGE', 00H
+$SG11332 DB	'PAGE', 00H
 	ORG $+3
-$SG11295 DB	'ALIGN', 00H
+$SG11333 DB	'ALIGN', 00H
 	ORG $+2
-$SG11297 DB	'PUBLIC', 00H
+$SG11335 DB	'PUBLIC', 00H
 	ORG $+1
-$SG11301 DB	'AT', 00H
+$SG11339 DB	'AT', 00H
 	ORG $+1
-$SG11296 DB	'PRIVATE', 00H
-$SG11298 DB	'STACK', 00H
+$SG11334 DB	'PRIVATE', 00H
+$SG11336 DB	'STACK', 00H
 	ORG $+2
-$SG11299 DB	'COMMON', 00H
+$SG11337 DB	'COMMON', 00H
 	ORG $+1
-$SG11300 DB	'MEMORY', 00H
+$SG11338 DB	'MEMORY', 00H
 	ORG $+1
-$SG11302 DB	'COMDAT', 00H
+$SG11340 DB	'COMDAT', 00H
 	ORG $+1
-$SG11303 DB	'USE16', 00H
+$SG11341 DB	'USE16', 00H
 	ORG $+2
-$SG11304 DB	'USE32', 00H
+$SG11342 DB	'USE32', 00H
 	ORG $+2
-$SG11305 DB	'USE64', 00H
+$SG11343 DB	'USE64', 00H
 	ORG $+2
-$SG11306 DB	'FLAT', 00H
+$SG11344 DB	'FLAT', 00H
 	ORG $+3
-$SG11307 DB	'INFO', 00H
+$SG11345 DB	'INFO', 00H
 	ORG $+3
-$SG11308 DB	'DISCARD', 00H
-$SG11309 DB	'NOCACHE', 00H
-$SG11310 DB	'NOPAGE', 00H
+$SG11346 DB	'DISCARD', 00H
+$SG11347 DB	'NOCACHE', 00H
+$SG11348 DB	'NOPAGE', 00H
 	ORG $+1
-$SG11311 DB	'SHARED', 00H
+$SG11349 DB	'SHARED', 00H
 	ORG $+1
-$SG11312 DB	'EXECUTE', 00H
-$SG11313 DB	'READ', 00H
+$SG11350 DB	'EXECUTE', 00H
+$SG11351 DB	'READ', 00H
 	ORG $+3
-$SG11314 DB	'WRITE', 00H
+$SG11352 DB	'WRITE', 00H
 	ORG $+2
-$SG11315 DB	'ALIAS', 00H
+$SG11353 DB	'ALIAS', 00H
 	ORG $+2
-$SG11351 DB	'UpdateCurPC: curr value=%Xh', 0aH, 00H
+$SG11389 DB	'UpdateCurPC: curr value=%Xh', 0aH, 00H
 	ORG $+3
-$SG11364 DB	'FreeLnameQueue enter', 0aH, 00H
+$SG11402 DB	'FreeLnameQueue enter', 0aH, 00H
 	ORG $+2
-$SG11366 DB	'FreeLnameQueue exit', 0aH, 00H
+$SG11404 DB	'FreeLnameQueue exit', 0aH, 00H
 	ORG $+3
-$SG11374 DB	'NULL', 00H
+$SG11412 DB	'NULL', 00H
 	ORG $+3
-$SG11375 DB	'UpdateCurrSegVars(%s)', 0aH, 00H
+$SG11413 DB	'UpdateCurrSegVars(%s)', 0aH, 00H
 	ORG $+1
-$SG11445 DB	'DeleteGroup(%s): free seg_item=%p', 0aH, 00H
+$SG11483 DB	'DeleteGroup(%s): free seg_item=%p', 0aH, 00H
 	ORG $+1
-$SG11593 DB	'BSS', 00H
-$SG11446 DB	'DeleteGroup(%s): extension %p will be freed', 0aH, 00H
+$SG11631 DB	'BSS', 00H
+$SG11484 DB	'DeleteGroup(%s): extension %p will be freed', 0aH, 00H
 	ORG $+3
-$SG11489 DB	'GrpDir: segment >%s< is in group >%s< already', 0aH, 00H
+$SG11527 DB	'GrpDir: segment >%s< is in group >%s< already', 0aH, 00H
 	ORG $+1
-$SG11514 DB	'SetOfssize, error: CurrSeg=%s, ModuleInfo.Ofssize=%u, cu'
+$SG11552 DB	'SetOfssize, error: CurrSeg=%s, ModuleInfo.Ofssize=%u, cu'
 	DB	'rr_cpu=%X, defOfssize=%u', 0aH, 00H
 	ORG $+2
-$SG11524 DB	'(null)', 00H
+$SG11562 DB	'(null)', 00H
 	ORG $+1
-$SG11770 DB	'(', 00H
+$SG11808 DB	'(', 00H
 	ORG $+2
-$SG11515 DB	'SetOfssize: ModuleInfo.Ofssize=%u', 0aH, 00H
+$SG11553 DB	'SetOfssize: ModuleInfo.Ofssize=%u', 0aH, 00H
 	ORG $+1
-$SG11773 DB	')', 00H
+$SG11811 DB	')', 00H
 	ORG $+2
-$SG11521 DB	'CloseSeg(%s) enter', 0aH, 00H
-$SG11787 DB	'(', 00H
+$SG11559 DB	'CloseSeg(%s) enter', 0aH, 00H
+$SG11825 DB	'(', 00H
 	ORG $+2
-$SG11525 DB	'CloseSeg(%s): nesting error, CurrSeg=%s', 0aH, 00H
+$SG11563 DB	'CloseSeg(%s): nesting error, CurrSeg=%s', 0aH, 00H
 	ORG $+3
-$SG11581 DB	'CONST', 00H
+$SG11619 DB	'CONST', 00H
 	ORG $+2
-$SG11793 DB	'1-6', 00H
-$SG11526 DB	'CloseSeg(%s): current ofs=%X', 0aH, 00H
+$SG11831 DB	'1-6', 00H
+$SG11564 DB	'CloseSeg(%s): current ofs=%X', 0aH, 00H
 	ORG $+2
-$SG11533 DB	'FLAT', 00H
+$SG11571 DB	'FLAT', 00H
 	ORG $+3
-$SG11534 DB	'DefineFlatGroup(): Ofssize=%u', 0aH, 00H
+$SG11572 DB	'DefineFlatGroup(): Ofssize=%u', 0aH, 00H
 	ORG $+1
-$SG11583 DB	'DBTYP', 00H
+$SG11621 DB	'DBTYP', 00H
 	ORG $+2
-$SG11585 DB	'DBSYM', 00H
+$SG11623 DB	'DBSYM', 00H
 	ORG $+2
-$SG11588 DB	'CODE', 00H
+$SG11626 DB	'CODE', 00H
 	ORG $+3
-$SG11590 DB	'DATA', 00H
+$SG11628 DB	'DATA', 00H
 	ORG $+3
-$SG11675 DB	'SetCurrSeg(%s) sym=%p', 0aH, 00H
+$SG11713 DB	'SetCurrSeg(%s) sym=%p', 0aH, 00H
 	ORG $+1
-$SG11745 DB	'SegmentDir(%s) enter: ModuleInfo.Ofssize=%u, num_seg=%u', 0aH
+$SG11783 DB	'SegmentDir(%s) enter: ModuleInfo.Ofssize=%u, num_seg=%u', 0aH
 	DB	00H
 	ORG $+3
-$SG11801 DB	')', 00H
+$SG11839 DB	')', 00H
 	ORG $+2
-$SG11755 DB	'SegmentDir(%s): symbol redefinition', 0aH, 00H
+$SG11793 DB	'SegmentDir(%s): symbol redefinition', 0aH, 00H
 	ORG $+3
-$SG11756 DB	'SegmentDir(%s): i=%u, string=%s token=%X', 0aH, 00H
+$SG11794 DB	'SegmentDir(%s): i=%u, string=%s token=%X', 0aH, 00H
 	ORG $+2
-$SG11817 DB	'(', 00H
+$SG11855 DB	'(', 00H
 	ORG $+2
-$SG11759 DB	'SegmentDir(%s): class found: %s', 0aH, 00H
+$SG11797 DB	'SegmentDir(%s): class found: %s', 0aH, 00H
 	ORG $+3
-$SG11821 DB	')', 00H
+$SG11859 DB	')', 00H
 	ORG $+2
-$SG11765 DB	'SegmentDir(%s): align attribute found', 0aH, 00H
+$SG11803 DB	'SegmentDir(%s): align attribute found', 0aH, 00H
 	ORG $+1
-$SG11767 DB	'SegmentDir(%s): ALIGN() found', 0aH, 00H
+$SG11805 DB	'SegmentDir(%s): ALIGN() found', 0aH, 00H
 	ORG $+1
-$SG11777 DB	'SegmentDir(%s): combine attribute found', 0aH, 00H
+$SG11815 DB	'SegmentDir(%s): combine attribute found', 0aH, 00H
 	ORG $+7
-$SG11779 DB	'SegmentDir(%s): AT found', 0aH, 00H
+$SG11817 DB	'SegmentDir(%s): AT found', 0aH, 00H
 	ORG $+6
-$SG11784 DB	'SegmentDir(%s): COMDAT found', 0aH, 00H
+$SG11822 DB	'SegmentDir(%s): COMDAT found', 0aH, 00H
 	ORG $+2
-$SG11807 DB	'SegmentDir(%s): characteristics found', 0aH, 00H
+$SG11845 DB	'SegmentDir(%s): characteristics found', 0aH, 00H
 	ORG $+1
-$SG11812 DB	'NULL', 00H
+$SG11850 DB	'NULL', 00H
 	ORG $+3
-$SG11813 DB	'SegmentDir(%s): ALIAS found, curr value=%s', 0aH, 00H
+$SG11851 DB	'SegmentDir(%s): ALIAS found, curr value=%s', 0aH, 00H
 	ORG $+4
-$SG11826 DB	'SegmentDir(%s): ALIAS argument=>%s<', 0aH, 00H
+$SG11864 DB	'SegmentDir(%s): ALIAS argument=>%s<', 0aH, 00H
 	ORG $+3
-$SG11828 DB	'segment.c', 00H
+$SG11866 DB	'segment.c', 00H
 	ORG $+6
-$SG11872 DB	'segment.c', 00H
+$SG11910 DB	'segment.c', 00H
 	ORG $+6
-$SG11884 DB	'SegmentFini() enter', 0aH, 00H
+$SG11922 DB	'SegmentFini() enter', 0aH, 00H
 	ORG $+3
-$SG11886 DB	'SegmentFini() exit', 0aH, 00H
+$SG11924 DB	'SegmentFini() exit', 0aH, 00H
 	ORG $+4
-$SG11904 DB	'SegmentInit(%u) enter', 0aH, 00H
+$SG11942 DB	'SegmentInit(%u) enter', 0aH, 00H
 	ORG $+1
-$SG11910 DB	'SegmentInit(%u), %s: max_ofs=%X, alloc_size=%Xh', 0aH, 00H
+$SG11948 DB	'SegmentInit(%u), %s: max_ofs=%X, alloc_size=%Xh', 0aH, 00H
 	ORG $+7
-$SG11912 DB	'SegmentInit(%u): total buffer size=%X, start=%p', 0aH, 00H
+$SG11950 DB	'SegmentInit(%u): total buffer size=%X, start=%p', 0aH, 00H
 	ORG $+7
-$SG11917 DB	'SegmentInit(%u), %s: buffer=%p', 0aH, 00H
-$SG11918 DB	'SegmentInit(%u), %s: size=%X buffer=%p', 0aH, 00H
-$SG11928 DB	'SegmentSaveState: saved_segStack=%X', 0aH, 00H
+$SG11955 DB	'SegmentInit(%u), %s: buffer=%p', 0aH, 00H
+$SG11956 DB	'SegmentInit(%u), %s: size=%X buffer=%p', 0aH, 00H
+$SG11966 DB	'SegmentSaveState: saved_segStack=%X', 0aH, 00H
 _DATA	ENDS
 CONST	SEGMENT
-SegAttrToken DQ	FLAT:$SG11289
-	DQ	FLAT:$SG11290
-	DQ	FLAT:$SG11291
-	DQ	FLAT:$SG11292
-	DQ	FLAT:$SG11293
-	DQ	FLAT:$SG11294
-	DQ	FLAT:$SG11295
-	DQ	FLAT:$SG11296
-	DQ	FLAT:$SG11297
-	DQ	FLAT:$SG11298
-	DQ	FLAT:$SG11299
-	DQ	FLAT:$SG11300
-	DQ	FLAT:$SG11301
-	DQ	FLAT:$SG11302
-	DQ	FLAT:$SG11303
-	DQ	FLAT:$SG11304
-	DQ	FLAT:$SG11305
-	DQ	FLAT:$SG11306
-	DQ	FLAT:$SG11307
-	DQ	FLAT:$SG11308
-	DQ	FLAT:$SG11309
-	DQ	FLAT:$SG11310
-	DQ	FLAT:$SG11311
-	DQ	FLAT:$SG11312
-	DQ	FLAT:$SG11313
-	DQ	FLAT:$SG11314
-	DQ	FLAT:$SG11315
+SegAttrToken DQ	FLAT:$SG11327
+	DQ	FLAT:$SG11328
+	DQ	FLAT:$SG11329
+	DQ	FLAT:$SG11330
+	DQ	FLAT:$SG11331
+	DQ	FLAT:$SG11332
+	DQ	FLAT:$SG11333
+	DQ	FLAT:$SG11334
+	DQ	FLAT:$SG11335
+	DQ	FLAT:$SG11336
+	DQ	FLAT:$SG11337
+	DQ	FLAT:$SG11338
+	DQ	FLAT:$SG11339
+	DQ	FLAT:$SG11340
+	DQ	FLAT:$SG11341
+	DQ	FLAT:$SG11342
+	DQ	FLAT:$SG11343
+	DQ	FLAT:$SG11344
+	DQ	FLAT:$SG11345
+	DQ	FLAT:$SG11346
+	DQ	FLAT:$SG11347
+	DQ	FLAT:$SG11348
+	DQ	FLAT:$SG11349
+	DQ	FLAT:$SG11350
+	DQ	FLAT:$SG11351
+	DQ	FLAT:$SG11352
+	DQ	FLAT:$SG11353
 SegAttrValue DB	00H
 	DB	01H
 	DB	00H
@@ -283,9 +283,9 @@ EXTRN	memcmp:PROC
 EXTRN	memcpy:PROC
 EXTRN	memset:PROC
 EXTRN	strcmp:PROC
-EXTRN	__imp__stricmp:PROC
+EXTRN	_stricmp:PROC
 EXTRN	strlen:PROC
-EXTRN	__imp__strupr:PROC
+EXTRN	_strupr:PROC
 EXTRN	DoDebugMsg:PROC
 EXTRN	DoDebugMsg1:PROC
 EXTRN	EmitError:PROC
@@ -308,10 +308,6 @@ EXTRN	LstWrite:PROC
 EXTRN	MsgGetEx:PROC
 EXTRN	InternalError:PROC
 EXTRN	EndstructDirective:PROC
-EXTRN	_RTC_CheckStackVars:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
-EXTRN	_RTC_UninitUse:PROC
 EXTRN	__GSHandlerCheck:PROC
 EXTRN	__security_check_cookie:PROC
 EXTRN	Options:BYTE
@@ -341,283 +337,192 @@ buffer_size DD	01H DUP (?)
 _BSS	ENDS
 pdata	SEGMENT
 $pdata$SetSymSegOfs DD imagerel $LN3
-	DD	imagerel $LN3+65
+	DD	imagerel $LN3+43
 	DD	imagerel $unwind$SetSymSegOfs
 $pdata$GetSymOfssize DD imagerel $LN10
-	DD	imagerel $LN10+183
+	DD	imagerel $LN10+161
 	DD	imagerel $unwind$GetSymOfssize
 $pdata$GetCurrOffset DD imagerel $LN5
-	DD	imagerel $LN5+66
+	DD	imagerel $LN5+48
 	DD	imagerel $unwind$GetCurrOffset
 $pdata$CreateIntSegment DD imagerel $LN11
-	DD	imagerel $LN11+372
+	DD	imagerel $LN11+350
 	DD	imagerel $unwind$CreateIntSegment
-$pdata$GetSegIdx DD imagerel $LN4
-	DD	imagerel $LN4+32
-	DD	imagerel $unwind$GetSegIdx
 $pdata$SegmentInit DD imagerel $LN23
-	DD	imagerel $LN23+955
+	DD	imagerel $LN23+934
 	DD	imagerel $unwind$SegmentInit
 $pdata$SegmentFini DD imagerel $LN4
-	DD	imagerel $LN4+56
+	DD	imagerel $LN4+38
 	DD	imagerel $unwind$SegmentFini
 $pdata$GetGroup DD imagerel $LN4
-	DD	imagerel $LN4+71
+	DD	imagerel $LN4+49
 	DD	imagerel $unwind$GetGroup
 $pdata$GetCurrSegAlign DD imagerel $LN5
-	DD	imagerel $LN5+101
+	DD	imagerel $LN5+83
 	DD	imagerel $unwind$GetCurrSegAlign
 $pdata$SetOfssize DD imagerel $LN8
-	DD	imagerel $LN8+289
+	DD	imagerel $LN8+271
 	DD	imagerel $unwind$SetOfssize
 $pdata$TypeFromClassName DD imagerel $LN19
-	DD	imagerel $LN19+598
+	DD	imagerel $LN19+535
 	DD	imagerel $unwind$TypeFromClassName
 $pdata$DefineFlatGroup DD imagerel $LN4
-	DD	imagerel $LN4+121
+	DD	imagerel $LN4+103
 	DD	imagerel $unwind$DefineFlatGroup
 $pdata$SegmentModuleExit DD imagerel $LN7
-	DD	imagerel $LN7+106
+	DD	imagerel $LN7+88
 	DD	imagerel $unwind$SegmentModuleExit
 $pdata$DeleteGroup DD imagerel $LN6
-	DD	imagerel $LN6+144
+	DD	imagerel $LN6+122
 	DD	imagerel $unwind$DeleteGroup
 $pdata$SegmentSaveState DD imagerel $LN4
-	DD	imagerel $LN4+140
+	DD	imagerel $LN4+122
 	DD	imagerel $unwind$SegmentSaveState
 $pdata$FindToken DD imagerel FindToken
-	DD	imagerel FindToken+126
+	DD	imagerel FindToken+103
 	DD	imagerel $unwind$FindToken
 $pdata$UpdateCurPC DD imagerel $LN9
-	DD	imagerel $LN9+225
+	DD	imagerel $LN9+203
 	DD	imagerel $unwind$UpdateCurPC
 $pdata$AddLnameItem DD imagerel AddLnameItem
-	DD	imagerel AddLnameItem+53
+	DD	imagerel AddLnameItem+31
 	DD	imagerel $unwind$AddLnameItem
 $pdata$FreeLnameQueue DD imagerel FreeLnameQueue
-	DD	imagerel FreeLnameQueue+127
+	DD	imagerel FreeLnameQueue+109
 	DD	imagerel $unwind$FreeLnameQueue
 $pdata$UpdateCurrSegVars DD imagerel UpdateCurrSegVars
-	DD	imagerel UpdateCurrSegVars+293
+	DD	imagerel UpdateCurrSegVars+275
 	DD	imagerel $unwind$UpdateCurrSegVars
 $pdata$push_seg DD imagerel push_seg
-	DD	imagerel push_seg+113
+	DD	imagerel push_seg+91
 	DD	imagerel $unwind$push_seg
 $pdata$pop_seg DD imagerel pop_seg
-	DD	imagerel pop_seg+80
+	DD	imagerel pop_seg+62
 	DD	imagerel $unwind$pop_seg
 $pdata$CreateGroup DD imagerel CreateGroup
-	DD	imagerel CreateGroup+352
+	DD	imagerel CreateGroup+330
 	DD	imagerel $unwind$CreateGroup
 $pdata$CreateSegment DD imagerel CreateSegment
-	DD	imagerel CreateSegment+427
+	DD	imagerel CreateSegment+405
 	DD	imagerel $unwind$CreateSegment
 $pdata$GrpDir DD imagerel $LN33
-	DD	imagerel $LN33+1021
+	DD	imagerel $LN33+999
 	DD	imagerel $unwind$GrpDir
-$pdata$UpdateWordSize DD imagerel $LN3
-	DD	imagerel $LN3+28
-	DD	imagerel $unwind$UpdateWordSize
 $pdata$CloseSeg DD imagerel CloseSeg
-	DD	imagerel CloseSeg+264
+	DD	imagerel CloseSeg+242
 	DD	imagerel $unwind$CloseSeg
 $pdata$FindClass DD imagerel FindClass
-	DD	imagerel FindClass+143
+	DD	imagerel FindClass+121
 	DD	imagerel $unwind$FindClass
 $pdata$CreateClassLname DD imagerel CreateClassLname
-	DD	imagerel CreateClassLname+143
+	DD	imagerel CreateClassLname+121
 	DD	imagerel $unwind$CreateClassLname
 $pdata$SetSegmentClass DD imagerel SetSegmentClass
-	DD	imagerel SetSegmentClass+91
+	DD	imagerel SetSegmentClass+69
 	DD	imagerel $unwind$SetSegmentClass
 $pdata$EndsDir DD imagerel $LN9
-	DD	imagerel $LN9+251
+	DD	imagerel $LN9+230
 	DD	imagerel $unwind$EndsDir
 $pdata$SetCurrSeg DD imagerel SetCurrSeg
-	DD	imagerel SetCurrSeg+261
+	DD	imagerel SetCurrSeg+240
 	DD	imagerel $unwind$SetCurrSeg
 $pdata$UnlinkSeg DD imagerel UnlinkSeg
-	DD	imagerel UnlinkSeg+209
+	DD	imagerel UnlinkSeg+187
 	DD	imagerel $unwind$UnlinkSeg
-$pdata$SegmentDir DD imagerel $LN101
-	DD	imagerel $LN101+4768
+$pdata$SegmentDir DD imagerel $LN98
+	DD	imagerel $LN98+4592
 	DD	imagerel $unwind$SegmentDir
 $pdata$SortSegments DD imagerel $LN21
-	DD	imagerel $LN21+498
+	DD	imagerel $LN21+476
 	DD	imagerel $unwind$SortSegments
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
-CONST	SEGMENT
-	ORG $+2
-TypeFromClassName$rtcName$0 DB 075H
-	DB	06eH
-	DB	061H
-	DB	06dH
-	DB	065H
-	DB	00H
-	ORG $+2
-TypeFromClassName$rtcVarDesc DD 040H
-	DD	0f8H
-	DQ	FLAT:TypeFromClassName$rtcName$0
-	ORG $+48
-TypeFromClassName$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:TypeFromClassName$rtcVarDesc
-SegmentDir$rtcName$0 DB 06fH
-	DB	06cH
-	DB	064H
-	DB	061H
-	DB	06cH
-	DB	069H
-	DB	067H
-	DB	06eH
-	DB	00H
-	ORG $+3
-SegmentDir$rtcName$3 DB 06fH
-	DB	070H
-	DB	06eH
-	DB	064H
-	DB	078H
-	DB	00H
-	ORG $+6
-SegmentDir$rtcName$1 DB 06fH
-	DB	06cH
-	DB	064H
-	DB	063H
-	DB	06fH
-	DB	06dH
-	DB	062H
-	DB	069H
-	DB	06eH
-	DB	065H
-	DB	00H
-	ORG $+5
-SegmentDir$rtcName$2 DB 06fH
-	DB	06cH
-	DB	064H
-	DB	04fH
-	DB	066H
-	DB	073H
-	DB	073H
-	DB	069H
-	DB	07aH
-	DB	065H
-	DB	00H
-	ORG $+5
-SegmentDir$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:SegmentDir$rtcVarDesc
-	ORG $+8
-SegmentDir$rtcVarDesc DD 090H
-	DD	068H
-	DQ	FLAT:SegmentDir$rtcName$3
-CONST	ENDS
 xdata	SEGMENT
-$unwind$SetSymSegOfs DD 021e01H
-	DD	07006320aH
-$unwind$GetSymOfssize DD 021e01H
-	DD	07006120aH
-$unwind$GetCurrOffset DD 021501H
-	DD	070021206H
-$unwind$CreateIntSegment DD 022d01H
-	DD	070155219H
-$unwind$GetSegIdx DD 010601H
-	DD	07006H
-$unwind$SegmentInit DD 021c01H
-	DD	070059209H
-$unwind$SegmentFini DD 021501H
-	DD	070023206H
-$unwind$GetGroup DD 021e01H
-	DD	07006120aH
-$unwind$GetCurrSegAlign DD 021501H
-	DD	070021206H
-$unwind$SetOfssize DD 021501H
-	DD	070027206H
-$unwind$TypeFromClassName DD 033b19H
-	DD	02c0112H
-	DD	0700bH
+$unwind$SetSymSegOfs DD 010901H
+	DD	04209H
+$unwind$GetSymOfssize DD 010901H
+	DD	02209H
+$unwind$GetCurrOffset DD 010401H
+	DD	02204H
+$unwind$CreateIntSegment DD 011801H
+	DD	06218H
+$unwind$SegmentInit DD 010801H
+	DD	0a208H
+$unwind$SegmentFini DD 010401H
+	DD	04204H
+$unwind$GetGroup DD 010901H
+	DD	02209H
+$unwind$GetCurrSegAlign DD 010401H
+	DD	02204H
+$unwind$SetOfssize DD 010401H
+	DD	08204H
+$unwind$TypeFromClassName DD 022319H
+	DD	0290111H
 	DD	imagerel __GSHandlerCheck
-	DD	0158H
-$unwind$DefineFlatGroup DD 021501H
-	DD	070023206H
-$unwind$SegmentModuleExit DD 021501H
-	DD	070023206H
-$unwind$DeleteGroup DD 021e01H
-	DD	07006520aH
-$unwind$SegmentSaveState DD 021501H
-	DD	070023206H
-$unwind$FindToken DD 022801H
-	DD	070105214H
-$unwind$UpdateCurPC DD 022301H
-	DD	0700b520fH
-$unwind$AddLnameItem DD 021e01H
-	DD	07006320aH
-$unwind$FreeLnameQueue DD 021501H
-	DD	070025206H
-$unwind$UpdateCurrSegVars DD 021501H
-	DD	070025206H
-$unwind$push_seg DD 021e01H
-	DD	07006320aH
-$unwind$pop_seg DD 021501H
-	DD	070023206H
-$unwind$CreateGroup DD 021e01H
-	DD	07006520aH
-$unwind$CreateSegment DD 022801H
-	DD	070105214H
-$unwind$GrpDir DD 022101H
-	DD	0700a920eH
-$unwind$UpdateWordSize DD 010b01H
-	DD	0700bH
-$unwind$CloseSeg DD 021e01H
-	DD	07006520aH
-$unwind$FindClass DD 022201H
-	DD	0700a520eH
-$unwind$CreateClassLname DD 021e01H
-	DD	07006520aH
-$unwind$SetSegmentClass DD 022301H
-	DD	0700b520fH
-$unwind$EndsDir DD 022101H
-	DD	0700a320eH
-$unwind$SetCurrSeg DD 022101H
-	DD	0700a520eH
-$unwind$UnlinkSeg DD 021e01H
-	DD	07006120aH
-$unwind$SegmentDir DD 032701H
-	DD	02a0111H
-	DD	0700aH
-$unwind$SortSegments DD 021c01H
-	DD	070059209H
+	DD	0130H
+$unwind$DefineFlatGroup DD 010401H
+	DD	04204H
+$unwind$SegmentModuleExit DD 010401H
+	DD	04204H
+$unwind$DeleteGroup DD 010901H
+	DD	06209H
+$unwind$SegmentSaveState DD 010401H
+	DD	04204H
+$unwind$FindToken DD 011301H
+	DD	06213H
+$unwind$UpdateCurPC DD 010e01H
+	DD	0620eH
+$unwind$AddLnameItem DD 010901H
+	DD	04209H
+$unwind$FreeLnameQueue DD 010401H
+	DD	06204H
+$unwind$UpdateCurrSegVars DD 010401H
+	DD	06204H
+$unwind$push_seg DD 010901H
+	DD	04209H
+$unwind$pop_seg DD 010401H
+	DD	04204H
+$unwind$CreateGroup DD 010901H
+	DD	06209H
+$unwind$CreateSegment DD 011301H
+	DD	06213H
+$unwind$GrpDir DD 010d01H
+	DD	0a20dH
+$unwind$CloseSeg DD 010901H
+	DD	06209H
+$unwind$FindClass DD 010d01H
+	DD	0620dH
+$unwind$CreateClassLname DD 010901H
+	DD	06209H
+$unwind$SetSegmentClass DD 010e01H
+	DD	0620eH
+$unwind$EndsDir DD 010d01H
+	DD	0420dH
+$unwind$SetCurrSeg DD 010d01H
+	DD	0620dH
+$unwind$UnlinkSeg DD 010901H
+	DD	02209H
+$unwind$SegmentDir DD 021001H
+	DD	0270110H
+$unwind$SortSegments DD 010801H
+	DD	08208H
 xdata	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
-changed$ = 32
-swap$ = 33
+swap$ = 32
+changed$ = 33
+tv73 = 36
 curr$ = 40
-prev$1 = 48
-tmp$2 = 56
-tv73 = 64
-type$ = 96
+tmp$1 = 48
+prev$2 = 56
+type$ = 80
 SortSegments PROC
 
 ; 1361 : {
 
 $LN21:
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 80					; 00000050H
-	mov	rdi, rsp
-	mov	ecx, 20
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+96]
+	sub	rsp, 72					; 00000048H
 
 ; 1362 :     bool changed = TRUE;
 
@@ -636,7 +541,7 @@ $LN2@SortSegmen:
 
 ; 1368 :         struct dsym *prev = NULL;
 
-	mov	QWORD PTR prev$1[rsp], 0
+	mov	QWORD PTR prev$2[rsp], 0
 
 ; 1369 :         changed = FALSE;
 
@@ -652,7 +557,7 @@ $LN2@SortSegmen:
 	jmp	SHORT $LN6@SortSegmen
 $LN4@SortSegmen:
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	QWORD PTR prev$1[rsp], rax
+	mov	QWORD PTR prev$2[rsp], rax
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rax, QWORD PTR [rax+104]
 	mov	QWORD PTR curr$[rsp], rax
@@ -748,7 +653,7 @@ $LN13@SortSegmen:
 	mov	rdx, QWORD PTR [rax+8]
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rcx, QWORD PTR [rax+8]
-	call	QWORD PTR __imp__stricmp
+	call	_stricmp
 	test	eax, eax
 	jle	SHORT $LN14@SortSegmen
 $LN15@SortSegmen:
@@ -769,7 +674,7 @@ $LN16@SortSegmen:
 ; 1388 :             default: /**/myassert( 0 );
 
 	mov	edx, 1388				; 0000056cH
-	lea	rcx, OFFSET FLAT:$SG11872
+	lea	rcx, OFFSET FLAT:$SG11910
 	call	InternalError
 $LN7@SortSegmen:
 
@@ -785,7 +690,7 @@ $LN7@SortSegmen:
 
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rax, QWORD PTR [rax+104]
-	mov	QWORD PTR tmp$2[rsp], rax
+	mov	QWORD PTR tmp$1[rsp], rax
 
 ; 1393 :                 changed = TRUE;
 
@@ -793,7 +698,7 @@ $LN7@SortSegmen:
 
 ; 1394 :                 if ( prev == NULL ) {
 
-	cmp	QWORD PTR prev$1[rsp], 0
+	cmp	QWORD PTR prev$2[rsp], 0
 	jne	SHORT $LN18@SortSegmen
 
 ; 1395 :                     SymTables[TAB_SEG].head = tmp;
@@ -801,7 +706,7 @@ $LN7@SortSegmen:
 	mov	eax, 16
 	imul	rax, rax, 2
 	lea	rcx, OFFSET FLAT:SymTables
-	mov	rdx, QWORD PTR tmp$2[rsp]
+	mov	rdx, QWORD PTR tmp$1[rsp]
 	mov	QWORD PTR [rcx+rax], rdx
 
 ; 1396 :                 } else {
@@ -811,8 +716,8 @@ $LN18@SortSegmen:
 
 ; 1397 :                     prev->next = tmp;
 
-	mov	rax, QWORD PTR prev$1[rsp]
-	mov	rcx, QWORD PTR tmp$2[rsp]
+	mov	rax, QWORD PTR prev$2[rsp]
+	mov	rcx, QWORD PTR tmp$1[rsp]
 	mov	QWORD PTR [rax+104], rcx
 $LN19@SortSegmen:
 
@@ -820,13 +725,13 @@ $LN19@SortSegmen:
 ; 1399 :                 curr->next = tmp->next;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rcx, QWORD PTR tmp$2[rsp]
+	mov	rcx, QWORD PTR tmp$1[rsp]
 	mov	rcx, QWORD PTR [rcx+104]
 	mov	QWORD PTR [rax+104], rcx
 
 ; 1400 :                 tmp->next = curr;
 
-	mov	rax, QWORD PTR tmp$2[rsp]
+	mov	rax, QWORD PTR tmp$1[rsp]
 	mov	rcx, QWORD PTR curr$[rsp]
 	mov	QWORD PTR [rax+104], rcx
 $LN17@SortSegmen:
@@ -849,60 +754,47 @@ $LN3@SortSegmen:
 ; 1408 :     //}
 ; 1409 : }
 
-	add	rsp, 80					; 00000050H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 SortSegments ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
-is_old$ = 48
-token$ = 56
-typeidx$ = 64
-type$ = 72
-temp$ = 80
-temp2$ = 84
-initstate$ = 88
-oldOfssize$ = 92
-oldalign$ = 93
-oldcombine$ = 94
-newcharacteristics$ = 95
-dir$ = 96
-name$ = 104
-sym$ = 112
-opndx$ = 144
-sym2$7 = 264
-res$8 = 272
-txt$9 = 276
-$T10 = 280
-$T11 = 281
-$T12 = 282
-tv237 = 284
-tv452 = 288
-tv518 = 296
-tv579 = 304
-tv750 = 312
-tv746 = 320
-i$ = 352
-tokenarray$ = 360
+newcharacteristics$ = 48
+dir$ = 56
+is_old$ = 64
+temp$ = 68
+sym$ = 72
+oldalign$ = 80
+oldcombine$ = 81
+oldOfssize$ = 82
+name$ = 88
+txt$1 = 96
+token$ = 104
+type$ = 112
+tv237 = 120
+initstate$ = 124
+temp2$ = 128
+typeidx$ = 132
+tv452 = 136
+res$2 = 140
+sym2$3 = 144
+tv518 = 152
+tv579 = 160
+tv744 = 168
+tv740 = 176
+opndx$ = 192
+i$ = 320
+tokenarray$ = 328
 SegmentDir PROC
 
 ; 919  : {
 
-$LN101:
+$LN98:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 336				; 00000150H
-	mov	rdi, rsp
-	mov	ecx, 84					; 00000054H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+352]
-	mov	BYTE PTR $T12[rsp], 0
-	mov	BYTE PTR $T11[rsp], 0
-	mov	BYTE PTR $T10[rsp], 0
+	sub	rsp, 312				; 00000138H
 
 ; 920  :     char                is_old = FALSE;
 
@@ -979,7 +871,7 @@ $LN11@SegmentDir:
 	mov	r9d, DWORD PTR ModuleInfo+8
 	mov	r8d, eax
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11745
+	lea	rcx, OFFSET FLAT:$SG11783
 	call	DoDebugMsg1
 
 ; 949  : 
@@ -1149,7 +1041,6 @@ $LN17@SegmentDir:
 
 	mov	rax, QWORD PTR dir$[rsp]
 	mov	rax, QWORD PTR [rax+96]
-	mov	BYTE PTR $T10[rsp], 1
 	movzx	eax, BYTE PTR [rax+104]
 	mov	BYTE PTR oldOfssize$[rsp], al
 
@@ -1157,7 +1048,6 @@ $LN17@SegmentDir:
 
 	mov	rax, QWORD PTR dir$[rsp]
 	mov	rax, QWORD PTR [rax+96]
-	mov	BYTE PTR $T11[rsp], 1
 	movzx	eax, BYTE PTR [rax+106]
 	mov	BYTE PTR oldalign$[rsp], al
 
@@ -1167,7 +1057,6 @@ $LN17@SegmentDir:
 	mov	rax, QWORD PTR [rax+96]
 	movzx	eax, BYTE PTR [rax+108]
 	and	al, 7
-	mov	BYTE PTR $T12[rsp], 1
 	mov	BYTE PTR oldcombine$[rsp], al
 $LN18@SegmentDir:
 
@@ -1185,7 +1074,7 @@ $LN15@SegmentDir:
 ; 1019 :         DebugMsg(("SegmentDir(%s): symbol redefinition\n", name ));
 
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11755
+	lea	rcx, OFFSET FLAT:$SG11793
 	call	DoDebugMsg
 
 ; 1020 :         return( EmitErr( SYMBOL_REDEFINITION, name ) );
@@ -1236,7 +1125,7 @@ $LN4@SegmentDir:
 	mov	r9, QWORD PTR token$[rsp]
 	mov	r8d, DWORD PTR i$[rsp]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11756
+	lea	rcx, OFFSET FLAT:$SG11794
 	call	DoDebugMsg1
 
 ; 1028 :         if( tokenarray[i].token == T_STRING ) {
@@ -1307,7 +1196,7 @@ $LN22@SegmentDir:
 
 	mov	r8, QWORD PTR token$[rsp]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11759
+	lea	rcx, OFFSET FLAT:$SG11797
 	call	DoDebugMsg1
 
 ; 1044 :             continue;
@@ -1404,8 +1293,8 @@ $LN25@SegmentDir:
 	ja	$LN74@SegmentDir
 	movsxd	rax, DWORD PTR tv237[rsp]
 	lea	rcx, OFFSET FLAT:__ImageBase
-	movzx	eax, BYTE PTR $LN99@SegmentDir[rcx+rax]
-	mov	eax, DWORD PTR $LN100@SegmentDir[rcx+rax*4]
+	movzx	eax, BYTE PTR $LN96@SegmentDir[rcx+rax]
+	mov	eax, DWORD PTR $LN97@SegmentDir[rcx+rax*4]
 	add	rax, rcx
 	jmp	rax
 $LN26@SegmentDir:
@@ -1430,7 +1319,7 @@ $LN27@SegmentDir:
 ; 1071 :             DebugMsg1(("SegmentDir(%s): align attribute found\n", name ));
 
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11765
+	lea	rcx, OFFSET FLAT:$SG11803
 	call	DoDebugMsg1
 
 ; 1072 :             dir->e.seginfo->alignment = type->value;
@@ -1450,7 +1339,7 @@ $LN28@SegmentDir:
 ; 1075 :             DebugMsg1(("SegmentDir(%s): ALIGN() found\n", name ));
 
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11767
+	lea	rcx, OFFSET FLAT:$SG11805
 	call	DoDebugMsg1
 
 ; 1076 :             if ( Options.output_format == OFORMAT_OMF ) {
@@ -1495,7 +1384,7 @@ $LN29@SegmentDir:
 
 ; 1083 :                 EmitErr( EXPECTED, "(" );
 
-	lea	rdx, OFFSET FLAT:$SG11770
+	lea	rdx, OFFSET FLAT:$SG11808
 	mov	ecx, 230				; 000000e6H
 	call	EmitErr
 
@@ -1538,7 +1427,7 @@ $LN31@SegmentDir:
 
 ; 1090 :                 EmitErr( EXPECTED, ")" );
 
-	lea	rdx, OFFSET FLAT:$SG11773
+	lea	rdx, OFFSET FLAT:$SG11811
 	mov	ecx, 230				; 000000e6H
 	call	EmitErr
 
@@ -1619,7 +1508,7 @@ $LN35@SegmentDir:
 ; 1108 :             DebugMsg1(("SegmentDir(%s): combine attribute found\n", name ));
 
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11777
+	lea	rcx, OFFSET FLAT:$SG11815
 	call	DoDebugMsg1
 
 ; 1109 :             dir->e.seginfo->combine = type->value;
@@ -1645,7 +1534,7 @@ $LN36@SegmentDir:
 ; 1112 :             DebugMsg1(("SegmentDir(%s): AT found\n", name ));
 
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11779
+	lea	rcx, OFFSET FLAT:$SG11817
 	call	DoDebugMsg1
 
 ; 1113 :             dir->e.seginfo->combine = type->value;
@@ -1729,7 +1618,7 @@ $LN40@SegmentDir:
 ; 1129 :             DebugMsg1(("SegmentDir(%s): COMDAT found\n", name ));
 
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11784
+	lea	rcx, OFFSET FLAT:$SG11822
 	call	DoDebugMsg1
 
 ; 1130 :             /* v2.12: COMDAT supported by OMF */
@@ -1778,7 +1667,7 @@ $LN41@SegmentDir:
 
 ; 1139 :                 EmitErr( EXPECTED, "(" );
 
-	lea	rdx, OFFSET FLAT:$SG11787
+	lea	rdx, OFFSET FLAT:$SG11825
 	mov	ecx, 230				; 000000e6H
 	call	EmitErr
 
@@ -1841,7 +1730,7 @@ $LN47@SegmentDir:
 
 ; 1151 :                 EmitErr( VALUE_NOT_WITHIN_ALLOWED_RANGE, "1-6" );
 
-	lea	rdx, OFFSET FLAT:$SG11793
+	lea	rdx, OFFSET FLAT:$SG11831
 	mov	ecx, 24
 	call	EmitErr
 
@@ -1931,18 +1820,18 @@ $LN50@SegmentDir:
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	SymFind
-	mov	QWORD PTR sym2$7[rsp], rax
+	mov	QWORD PTR sym2$3[rsp], rax
 
 ; 1171 :                     if ( sym2 == NULL ||
 ; 1172 :                         sym2->state != SYM_SEG ||
 ; 1173 :                         ((struct dsym *)sym2)->e.seginfo->comdat_selection == 0 ||
 
-	cmp	QWORD PTR sym2$7[rsp], 0
+	cmp	QWORD PTR sym2$3[rsp], 0
 	je	SHORT $LN53@SegmentDir
-	mov	rax, QWORD PTR sym2$7[rsp]
+	mov	rax, QWORD PTR sym2$3[rsp]
 	cmp	DWORD PTR [rax+32], 3
 	jne	SHORT $LN53@SegmentDir
-	mov	rax, QWORD PTR sym2$7[rsp]
+	mov	rax, QWORD PTR sym2$3[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	movzx	eax, BYTE PTR [rax+108]
 	shr	al, 3
@@ -1950,7 +1839,7 @@ $LN50@SegmentDir:
 	movzx	eax, al
 	test	eax, eax
 	je	SHORT $LN53@SegmentDir
-	mov	rax, QWORD PTR sym2$7[rsp]
+	mov	rax, QWORD PTR sym2$3[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	movzx	eax, BYTE PTR [rax+108]
 	shr	al, 3
@@ -1975,7 +1864,7 @@ $LN51@SegmentDir:
 ; 1176 :                     else
 ; 1177 :                         dir->e.seginfo->comdat_number = ((struct dsym *)sym2)->e.seginfo->seg_idx;
 
-	mov	rax, QWORD PTR sym2$7[rsp]
+	mov	rax, QWORD PTR sym2$3[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	rcx, QWORD PTR dir$[rsp]
 	mov	rcx, QWORD PTR [rcx+96]
@@ -2004,7 +1893,7 @@ $LN46@SegmentDir:
 
 ; 1182 :                 EmitErr( EXPECTED, ")" );
 
-	lea	rdx, OFFSET FLAT:$SG11801
+	lea	rdx, OFFSET FLAT:$SG11839
 	mov	ecx, 230				; 000000e6H
 	call	EmitErr
 
@@ -2133,7 +2022,7 @@ $LN59@SegmentDir:
 ; 1212 :             DebugMsg1(("SegmentDir(%s): characteristics found\n", name ));
 
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11807
+	lea	rcx, OFFSET FLAT:$SG11845
 	call	DoDebugMsg1
 
 ; 1213 :             /* characteristics are restricted to COFF/ELF/BIN-PE */
@@ -2193,12 +2082,12 @@ $LN63@SegmentDir:
 	mov	QWORD PTR tv518[rsp], rax
 	jmp	SHORT $LN95@SegmentDir
 $LN94@SegmentDir:
-	lea	rax, OFFSET FLAT:$SG11812
+	lea	rax, OFFSET FLAT:$SG11850
 	mov	QWORD PTR tv518[rsp], rax
 $LN95@SegmentDir:
 	mov	r8, QWORD PTR tv518[rsp]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11813
+	lea	rcx, OFFSET FLAT:$SG11851
 	call	DoDebugMsg1
 
 ; 1225 :             /* alias() is restricted to COFF/ELF/BIN-PE */
@@ -2251,7 +2140,7 @@ $LN64@SegmentDir:
 
 ; 1235 :                 EmitErr( EXPECTED, "(" );
 
-	lea	rdx, OFFSET FLAT:$SG11817
+	lea	rdx, OFFSET FLAT:$SG11855
 	mov	ecx, 230				; 000000e6H
 	call	EmitErr
 
@@ -2330,7 +2219,7 @@ $LN67@SegmentDir:
 
 ; 1249 :                 EmitErr( EXPECTED, ")" );
 
-	lea	rdx, OFFSET FLAT:$SG11821
+	lea	rdx, OFFSET FLAT:$SG11859
 	mov	ecx, 230				; 000000e6H
 	call	EmitErr
 
@@ -2377,10 +2266,10 @@ $LN69@SegmentDir:
 	inc	rcx
 	mov	rdx, QWORD PTR dir$[rsp]
 	mov	rdx, QWORD PTR [rdx+96]
-	mov	QWORD PTR tv750[rsp], rdx
+	mov	QWORD PTR tv744[rsp], rdx
 	mov	r8d, eax
 	mov	rdx, rcx
-	mov	rax, QWORD PTR tv750[rsp]
+	mov	rax, QWORD PTR tv744[rsp]
 	mov	rcx, QWORD PTR [rax+96]
 	call	memcmp
 	test	eax, eax
@@ -2437,10 +2326,10 @@ $LN70@SegmentDir:
 	inc	rcx
 	mov	rdx, QWORD PTR dir$[rsp]
 	mov	rdx, QWORD PTR [rdx+96]
-	mov	QWORD PTR tv746[rsp], rdx
+	mov	QWORD PTR tv740[rsp], rdx
 	mov	r8d, eax
 	mov	rdx, rcx
-	mov	rax, QWORD PTR tv746[rsp]
+	mov	rax, QWORD PTR tv740[rsp]
 	mov	rcx, QWORD PTR [rax+96]
 	call	memcpy
 
@@ -2463,7 +2352,7 @@ $LN71@SegmentDir:
 	mov	rax, QWORD PTR [rax+96]
 	mov	r8, QWORD PTR [rax+96]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11826
+	lea	rcx, OFFSET FLAT:$SG11864
 	call	DoDebugMsg1
 
 ; 1267 :             break;
@@ -2477,7 +2366,7 @@ $LN74@SegmentDir:
 ; 1271 :             /**/myassert( 0 );
 
 	mov	edx, 1271				; 000004f7H
-	lea	rcx, OFFSET FLAT:$SG11828
+	lea	rcx, OFFSET FLAT:$SG11866
 	call	InternalError
 $LN5@SegmentDir:
 
@@ -2508,18 +2397,18 @@ $LN3@SegmentDir:
 	mov	rdx, QWORD PTR [rax+80]
 	mov	rcx, QWORD PTR dir$[rsp]
 	call	TypeFromClassName
-	mov	DWORD PTR res$8[rsp], eax
+	mov	DWORD PTR res$2[rsp], eax
 
 ; 1283 :         if( res != SEGTYPE_UNDEF ) {
 
-	cmp	DWORD PTR res$8[rsp], 0
+	cmp	DWORD PTR res$2[rsp], 0
 	je	SHORT $LN76@SegmentDir
 
 ; 1284 :             dir->e.seginfo->segtype = res;
 
 	mov	rax, QWORD PTR dir$[rsp]
 	mov	rax, QWORD PTR [rax+96]
-	mov	ecx, DWORD PTR res$8[rsp]
+	mov	ecx, DWORD PTR res$2[rsp]
 	mov	DWORD PTR [rax+72], ecx
 $LN76@SegmentDir:
 $LN75@SegmentDir:
@@ -2541,7 +2430,7 @@ $LN75@SegmentDir:
 
 ; 1295 :         int txt = 0;
 
-	mov	DWORD PTR txt$9[rsp], 0
+	mov	DWORD PTR txt$1[rsp], 0
 
 ; 1296 : 
 ; 1297 :         /* Check if new definition is different from previous one */
@@ -2549,11 +2438,6 @@ $LN75@SegmentDir:
 ; 1299 :         // oldobj = dir->e.seginfo->segrec;
 ; 1300 :         if ( oldalign    != dir->e.seginfo->alignment )
 
-	cmp	BYTE PTR $T11[rsp], 0
-	jne	SHORT $LN96@SegmentDir
-	lea	rcx, OFFSET FLAT:SegmentDir$rtcName$0
-	call	_RTC_UninitUse
-$LN96@SegmentDir:
 	movsx	eax, BYTE PTR oldalign$[rsp]
 	mov	rcx, QWORD PTR dir$[rsp]
 	mov	rcx, QWORD PTR [rcx+96]
@@ -2563,17 +2447,12 @@ $LN96@SegmentDir:
 
 ; 1301 :             txt = TXT_ALIGNMENT;
 
-	mov	DWORD PTR txt$9[rsp], 8
-	jmp	$LN80@SegmentDir
+	mov	DWORD PTR txt$1[rsp], 8
+	jmp	SHORT $LN80@SegmentDir
 $LN79@SegmentDir:
 
 ; 1302 :         else if ( oldcombine  != dir->e.seginfo->combine )
 
-	cmp	BYTE PTR $T12[rsp], 0
-	jne	SHORT $LN97@SegmentDir
-	lea	rcx, OFFSET FLAT:SegmentDir$rtcName$1
-	call	_RTC_UninitUse
-$LN97@SegmentDir:
 	movsx	eax, BYTE PTR oldcombine$[rsp]
 	mov	rcx, QWORD PTR dir$[rsp]
 	mov	rcx, QWORD PTR [rcx+96]
@@ -2585,17 +2464,12 @@ $LN97@SegmentDir:
 
 ; 1303 :             txt = TXT_COMBINE;
 
-	mov	DWORD PTR txt$9[rsp], 9
+	mov	DWORD PTR txt$1[rsp], 9
 	jmp	SHORT $LN82@SegmentDir
 $LN81@SegmentDir:
 
 ; 1304 :         else if ( oldOfssize  != dir->e.seginfo->Ofssize )
 
-	cmp	BYTE PTR $T10[rsp], 0
-	jne	SHORT $LN98@SegmentDir
-	lea	rcx, OFFSET FLAT:SegmentDir$rtcName$2
-	call	_RTC_UninitUse
-$LN98@SegmentDir:
 	movzx	eax, BYTE PTR oldOfssize$[rsp]
 	mov	rcx, QWORD PTR dir$[rsp]
 	mov	rcx, QWORD PTR [rcx+96]
@@ -2605,7 +2479,7 @@ $LN98@SegmentDir:
 
 ; 1305 :             txt = TXT_SEG_WORD_SIZE;
 
-	mov	DWORD PTR txt$9[rsp], 10
+	mov	DWORD PTR txt$1[rsp], 10
 	jmp	SHORT $LN84@SegmentDir
 $LN83@SegmentDir:
 
@@ -2631,7 +2505,7 @@ $LN83@SegmentDir:
 
 ; 1315 :             txt = TXT_CHARACTERISTICS;
 
-	mov	DWORD PTR txt$9[rsp], 12
+	mov	DWORD PTR txt$1[rsp], 12
 $LN85@SegmentDir:
 $LN84@SegmentDir:
 $LN82@SegmentDir:
@@ -2640,12 +2514,12 @@ $LN80@SegmentDir:
 ; 1316 : 
 ; 1317 :         if ( txt ) {
 
-	cmp	DWORD PTR txt$9[rsp], 0
+	cmp	DWORD PTR txt$1[rsp], 0
 	je	SHORT $LN86@SegmentDir
 
 ; 1318 :             EmitErr( SEGDEF_CHANGED, dir->sym.name, MsgGetEx( txt ) );
 
-	mov	ecx, DWORD PTR txt$9[rsp]
+	mov	ecx, DWORD PTR txt$1[rsp]
 	call	MsgGetEx
 	mov	r8, rax
 	mov	rax, QWORD PTR dir$[rsp]
@@ -2773,15 +2647,10 @@ $LN1@SegmentDir:
 
 ; 1351 : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:SegmentDir$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
-	add	rsp, 336				; 00000150H
-	pop	rdi
+	add	rsp, 312				; 00000138H
 	ret	0
-$LN100@SegmentDir:
+	npad	1
+$LN97@SegmentDir:
 	DD	$LN26@SegmentDir
 	DD	$LN27@SegmentDir
 	DD	$LN35@SegmentDir
@@ -2793,7 +2662,7 @@ $LN100@SegmentDir:
 	DD	$LN58@SegmentDir
 	DD	$LN40@SegmentDir
 	DD	$LN74@SegmentDir
-$LN99@SegmentDir:
+$LN96@SegmentDir:
 	DB	0
 	DB	1
 	DB	10
@@ -2992,7 +2861,7 @@ $LN99@SegmentDir:
 	DB	9
 SegmentDir ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
 curr$ = 0
@@ -3003,13 +2872,7 @@ UnlinkSeg PROC
 ; 896  : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 16
-	mov	rdi, rsp
-	mov	ecx, 4
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+32]
+	sub	rsp, 24
 
 ; 897  :     struct dsym *curr;
 ; 898  :     struct dsym *prev;
@@ -3094,12 +2957,11 @@ $LN3@UnlinkSeg:
 ; 912  :     return;
 ; 913  : }
 
-	add	rsp, 16
-	pop	rdi
+	add	rsp, 24
 	ret	0
 UnlinkSeg ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
 sym$ = 32
@@ -3111,13 +2973,7 @@ SetCurrSeg PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 872  :     struct asym *sym;
 ; 873  : 
@@ -3137,7 +2993,7 @@ SetCurrSeg PROC
 	mov	r8, QWORD PTR sym$[rsp]
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG11675
+	lea	rcx, OFFSET FLAT:$SG11713
 	call	DoDebugMsg1
 
 ; 876  :     if ( sym == NULL || sym->state != SYM_SEG ) {
@@ -3225,12 +3081,11 @@ $LN1@SetCurrSeg:
 
 ; 892  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 SetCurrSeg ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
 i$ = 48
@@ -3242,13 +3097,7 @@ EndsDir	PROC
 $LN9:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 847  :     if( CurrStruct != NULL ) {
 
@@ -3354,12 +3203,11 @@ $LN1@EndsDir:
 
 ; 865  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 EndsDir	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
 clsym$ = 32
@@ -3371,13 +3219,7 @@ SetSegmentClass PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 788  :     struct asym *clsym;
 ; 789  : 
@@ -3421,29 +3263,22 @@ $LN1@SetSegment:
 
 ; 804  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 SetSegmentClass ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
-sym$ = 32
-len$ = 40
+len$ = 32
+sym$ = 40
 name$ = 64
 CreateClassLname PROC
 
 ; 761  : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 762  :     struct asym *sym;
 ; 763  :     int len = strlen( name );
@@ -3509,12 +3344,11 @@ $LN1@CreateClas:
 
 ; 780  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 CreateClassLname ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
 node$ = 32
@@ -3527,13 +3361,7 @@ FindClass PROC
 
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 743  :     struct qnode    *node;
 ; 744  : 
@@ -3590,12 +3418,11 @@ $LN1@FindClass:
 
 ; 753  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 FindClass ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
 tv77 = 32
@@ -3605,20 +3432,14 @@ CloseSeg PROC
 ; 546  : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 547  :     //struct asym      *sym;
 ; 548  : 
 ; 549  :     DebugMsg1(("CloseSeg(%s) enter\n", name));
 
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11521
+	lea	rcx, OFFSET FLAT:$SG11559
 	call	DoDebugMsg1
 
 ; 550  : 
@@ -3646,12 +3467,12 @@ $LN3@CloseSeg:
 	mov	QWORD PTR tv77[rsp], rax
 	jmp	SHORT $LN8@CloseSeg
 $LN7@CloseSeg:
-	lea	rax, OFFSET FLAT:$SG11524
+	lea	rax, OFFSET FLAT:$SG11562
 	mov	QWORD PTR tv77[rsp], rax
 $LN8@CloseSeg:
 	mov	r8, QWORD PTR tv77[rsp]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11525
+	lea	rcx, OFFSET FLAT:$SG11563
 	call	DoDebugMsg
 
 ; 553  :         return( EmitErr( BLOCK_NESTING_ERROR, name ) );
@@ -3670,7 +3491,7 @@ $LN2@CloseSeg:
 	mov	rax, QWORD PTR [rax+96]
 	mov	r8d, DWORD PTR [rax+12]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11526
+	lea	rcx, OFFSET FLAT:$SG11564
 	call	DoDebugMsg1
 
 ; 557  : 
@@ -3716,24 +3537,21 @@ $LN1@CloseSeg:
 
 ; 570  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 CloseSeg ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
-sym$ = 16
-p$ = 24
+sym$ = 8
+p$ = 16
 UpdateWordSize PROC
 
 ; 510  : {
 
-$LN3:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
 
 ; 511  :     sym->value = CurrWordSize;
 
@@ -3744,18 +3562,17 @@ $LN3:
 ; 512  :     return;
 ; 513  : }
 
-	pop	rdi
 	ret	0
 UpdateWordSize ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
-name$ = 32
+seg$ = 32
 grp$ = 40
-seg$ = 48
-si$1 = 56
-curr$2 = 64
+name$ = 48
+curr$1 = 56
+si$2 = 64
 i$ = 96
 tokenarray$ = 104
 GrpDir	PROC
@@ -3765,13 +3582,7 @@ GrpDir	PROC
 $LN33:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 80					; 00000050H
-	mov	rdi, rsp
-	mov	ecx, 20
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+96]
+	sub	rsp, 88					; 00000058H
 
 ; 400  :     char        *name;
 ; 401  :     struct dsym *grp;
@@ -3822,7 +3633,7 @@ $LN9@GrpDir:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
-	call	QWORD PTR __imp__strupr
+	call	_strupr
 	mov	rdx, rax
 	mov	ecx, 224				; 000000e0H
 	call	EmitErr
@@ -3991,7 +3802,7 @@ $LN18@GrpDir:
 	mov	rax, QWORD PTR [rax]
 	mov	r8, QWORD PTR [rax+8]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11489
+	lea	rcx, OFFSET FLAT:$SG11527
 	call	DoDebugMsg
 
 ; 451  :                 return( EmitErr( SEGMENT_IN_ANOTHER_GROUP, name ) );
@@ -4102,17 +3913,17 @@ $LN13@GrpDir:
 
 	mov	ecx, 16
 	call	LclAlloc
-	mov	QWORD PTR si$1[rsp], rax
+	mov	QWORD PTR si$2[rsp], rax
 
 ; 477  :             si->seg = seg;
 
-	mov	rax, QWORD PTR si$1[rsp]
+	mov	rax, QWORD PTR si$2[rsp]
 	mov	rcx, QWORD PTR seg$[rsp]
 	mov	QWORD PTR [rax+8], rcx
 
 ; 478  :             si->next = NULL;
 
-	mov	rax, QWORD PTR si$1[rsp]
+	mov	rax, QWORD PTR si$2[rsp]
 	mov	QWORD PTR [rax], 0
 
 ; 479  :             grp->e.grpinfo->numseg++;
@@ -4138,7 +3949,7 @@ $LN13@GrpDir:
 
 	mov	rax, QWORD PTR grp$[rsp]
 	mov	rax, QWORD PTR [rax+96]
-	mov	rcx, QWORD PTR si$1[rsp]
+	mov	rcx, QWORD PTR si$2[rsp]
 	mov	QWORD PTR [rax], rcx
 
 ; 484  :             } else {
@@ -4152,20 +3963,20 @@ $LN27@GrpDir:
 	mov	rax, QWORD PTR grp$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	rax, QWORD PTR [rax]
-	mov	QWORD PTR curr$2[rsp], rax
+	mov	QWORD PTR curr$1[rsp], rax
 $LN5@GrpDir:
 
 ; 487  :                 while( curr->next != NULL ) {
 
-	mov	rax, QWORD PTR curr$2[rsp]
+	mov	rax, QWORD PTR curr$1[rsp]
 	cmp	QWORD PTR [rax], 0
 	je	SHORT $LN6@GrpDir
 
 ; 488  :                     curr = curr->next;
 
-	mov	rax, QWORD PTR curr$2[rsp]
+	mov	rax, QWORD PTR curr$1[rsp]
 	mov	rax, QWORD PTR [rax]
-	mov	QWORD PTR curr$2[rsp], rax
+	mov	QWORD PTR curr$1[rsp], rax
 
 ; 489  :                 }
 
@@ -4174,8 +3985,8 @@ $LN6@GrpDir:
 
 ; 490  :                 curr->next = si;
 
-	mov	rax, QWORD PTR curr$2[rsp]
-	mov	rcx, QWORD PTR si$1[rsp]
+	mov	rax, QWORD PTR curr$1[rsp]
+	mov	rcx, QWORD PTR si$2[rsp]
 	mov	QWORD PTR [rax], rcx
 $LN28@GrpDir:
 $LN26@GrpDir:
@@ -4242,12 +4053,11 @@ $LN1@GrpDir:
 
 ; 504  : }
 
-	add	rsp, 80					; 00000050H
-	pop	rdi
+	add	rsp, 88					; 00000058H
 	ret	0
 GrpDir	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
 tv71 = 32
@@ -4261,13 +4071,7 @@ CreateSegment PROC
 	mov	BYTE PTR [rsp+24], r8b
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 348  :     if ( seg == NULL )
 
@@ -4422,12 +4226,11 @@ $LN5@CreateSegm:
 
 ; 374  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 CreateSegment ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
 grp$ = 32
@@ -4437,13 +4240,7 @@ CreateGroup PROC
 ; 315  : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 316  :     struct dsym    *grp;
 ; 317  : 
@@ -4589,24 +4386,18 @@ $LN1@CreateGrou:
 
 ; 343  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 CreateGroup ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
 pop_seg	PROC
 
 ; 266  : {
 
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 
 ; 267  :     //seg = popitem( &CurrSeg ); /* changed in v1.96 */
 ; 268  :     /* it's already checked that CurrSeg is != NULL, so
@@ -4639,12 +4430,11 @@ $LN2@pop_seg:
 ; 276  :     return;
 ; 277  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 pop_seg	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
 seg$ = 48
@@ -4653,13 +4443,7 @@ push_seg PROC
 ; 250  : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 251  :     //pushitem( &CurrSeg, seg ); /* changed in v1.96 */
 ; 252  :     if ( stkindex >= MAX_SEG_NESTING ) {
@@ -4704,12 +4488,11 @@ $LN1@push_seg:
 ; 260  :     return;
 ; 261  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 push_seg ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
 info$ = 32
@@ -4718,12 +4501,7 @@ UpdateCurrSegVars PROC
 
 ; 219  : {
 
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 56					; 00000038H
 
 ; 220  :     struct assume_info *info;
 ; 221  : 
@@ -4736,11 +4514,11 @@ UpdateCurrSegVars PROC
 	mov	QWORD PTR tv66[rsp], rax
 	jmp	SHORT $LN9@UpdateCurr
 $LN8@UpdateCurr:
-	lea	rax, OFFSET FLAT:$SG11374
+	lea	rax, OFFSET FLAT:$SG11412
 	mov	QWORD PTR tv66[rsp], rax
 $LN9@UpdateCurr:
 	mov	rdx, QWORD PTR tv66[rsp]
-	lea	rcx, OFFSET FLAT:$SG11375
+	lea	rcx, OFFSET FLAT:$SG11413
 	call	DoDebugMsg1
 
 ; 223  :     info = &(SegAssumeTable[ ASSUME_CS ]);
@@ -4775,7 +4553,7 @@ $LN9@UpdateCurr:
 ; 228  :         symCurSeg->string_ptr = "";
 
 	mov	rax, QWORD PTR symCurSeg
-	lea	rcx, OFFSET FLAT:$SG11378
+	lea	rcx, OFFSET FLAT:$SG11416
 	mov	QWORD PTR [rax+16], rcx
 
 ; 229  :         //symPC.segment = NULL; /* v2.05: removed */
@@ -4849,12 +4627,11 @@ $LN3@UpdateCurr:
 ; 244  :     return;
 ; 245  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 UpdateCurrSegVars ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
 curr$ = 32
@@ -4863,19 +4640,14 @@ FreeLnameQueue PROC
 
 ; 195  : {
 
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 56					; 00000038H
 
 ; 196  :     struct qnode *curr;
 ; 197  :     struct qnode *next;
 ; 198  : 
 ; 199  :     DebugMsg(("FreeLnameQueue enter\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11364
+	lea	rcx, OFFSET FLAT:$SG11402
 	call	DoDebugMsg
 
 ; 200  :     for( curr = ModuleInfo.g.LnameQueue.head; curr; curr = next ) {
@@ -4922,17 +4694,16 @@ $LN3@FreeLnameQ:
 
 ; 210  :     DebugMsg(("FreeLnameQueue exit\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11366
+	lea	rcx, OFFSET FLAT:$SG11404
 	call	DoDebugMsg
 
 ; 211  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 FreeLnameQueue ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
 sym$ = 48
@@ -4941,13 +4712,7 @@ AddLnameItem PROC
 ; 180  : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 181  :     QAddItem( &ModuleInfo.g.LnameQueue, sym );
 
@@ -4960,12 +4725,11 @@ AddLnameItem PROC
 ; 184  : 
 ; 185  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 AddLnameItem ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
 tv73 = 32
@@ -4978,13 +4742,7 @@ UpdateCurPC PROC
 $LN9:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 132  :     if( CurrStruct ) {
 
@@ -5063,17 +4821,16 @@ $LN3@UpdateCurP:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	edx, DWORD PTR [rax+16]
-	lea	rcx, OFFSET FLAT:$SG11351
+	lea	rcx, OFFSET FLAT:$SG11389
 	call	DoDebugMsg1
 
 ; 146  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 UpdateCurPC ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
 i$ = 32
@@ -5087,13 +4844,7 @@ FindToken PROC
 	mov	DWORD PTR [rsp+24], r8d
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 118  :     int i;
 ; 119  :     for( i = 0; i < size; i++, table++ ) {
@@ -5117,7 +4868,7 @@ $LN4@FindToken:
 	mov	rdx, QWORD PTR token$[rsp]
 	mov	rax, QWORD PTR table$[rsp]
 	mov	rcx, QWORD PTR [rax]
-	call	QWORD PTR __imp__stricmp
+	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN5@FindToken
 
@@ -5140,12 +4891,11 @@ $LN1@FindToken:
 
 ; 125  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 FindToken ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
 SegmentSaveState PROC
@@ -5153,12 +4903,7 @@ SegmentSaveState PROC
 ; 1587 : {
 
 $LN4:
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 
 ; 1588 :     //int i;
 ; 1589 : 
@@ -5199,7 +4944,7 @@ $LN4:
 ; 1597 :         DebugMsg(("SegmentSaveState: saved_segStack=%X\n", saved_SegStack ));
 
 	mov	rdx, QWORD PTR saved_SegStack
-	lea	rcx, OFFSET FLAT:$SG11928
+	lea	rcx, OFFSET FLAT:$SG11966
 	call	DoDebugMsg
 $LN2@SegmentSav:
 
@@ -5208,12 +4953,11 @@ $LN2@SegmentSav:
 ; 1600 :     //saved_CurSeg_name  = symCurSeg->string_ptr;
 ; 1601 : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 SegmentSaveState ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
 curr$ = 32
@@ -5225,13 +4969,7 @@ DeleteGroup PROC
 
 $LN6:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 380  : #if FASTMEM==0 || defined(DEBUG_OUT)
 ; 381  :     struct seg_item    *curr;
@@ -5262,7 +5000,7 @@ $LN4@DeleteGrou:
 	mov	r8, QWORD PTR curr$[rsp]
 	mov	rax, QWORD PTR dir$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11445
+	lea	rcx, OFFSET FLAT:$SG11483
 	call	DoDebugMsg
 
 ; 387  :         LclFree( curr );
@@ -5278,19 +5016,18 @@ $LN3@DeleteGrou:
 	mov	r8, QWORD PTR [rax+96]
 	mov	rax, QWORD PTR dir$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11446
+	lea	rcx, OFFSET FLAT:$SG11484
 	call	DoDebugMsg
 
 ; 391  :     LclFree( dir->e.grpinfo );
 ; 392  :     return;
 ; 393  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 DeleteGroup ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
 SegmentModuleExit PROC
@@ -5298,12 +5035,7 @@ SegmentModuleExit PROC
 ; 1415 : {
 
 $LN7:
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 
 ; 1416 :     if ( ModuleInfo.model != MODEL_NONE )
 
@@ -5351,12 +5083,11 @@ $LN5@SegmentMod:
 
 ; 1426 : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 SegmentModuleExit ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
 DefineFlatGroup PROC
@@ -5364,12 +5095,7 @@ DefineFlatGroup PROC
 ; 574  : {
 
 $LN4:
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 
 ; 575  :     if( ModuleInfo.flat_grp == NULL ) {
 
@@ -5379,7 +5105,7 @@ $LN4:
 ; 576  :         /* can't fail because <FLAT> is a reserved word */
 ; 577  :         ModuleInfo.flat_grp = CreateGroup( "FLAT" );
 
-	lea	rcx, OFFSET FLAT:$SG11533
+	lea	rcx, OFFSET FLAT:$SG11571
 	call	CreateGroup
 	mov	QWORD PTR ModuleInfo+440, rax
 
@@ -5394,7 +5120,7 @@ $LN4:
 	mov	rax, QWORD PTR ModuleInfo+440
 	movzx	eax, BYTE PTR [rax+44]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11534
+	lea	rcx, OFFSET FLAT:$SG11572
 	call	DoDebugMsg1
 $LN2@DefineFlat:
 
@@ -5409,20 +5135,19 @@ $LN2@DefineFlat:
 
 ; 582  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 DefineFlatGroup ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
-slen$ = 32
-uname$ = 64
-tv82 = 336
-__$ArrayPad$ = 344
-seg$ = 368
-clname$ = 376
+tv82 = 32
+slen$ = 36
+uname$ = 48
+__$ArrayPad$ = 304
+seg$ = 336
+clname$ = 344
 TypeFromClassName PROC
 
 ; 645  : {
@@ -5430,13 +5155,7 @@ TypeFromClassName PROC
 $LN19:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 352				; 00000160H
-	mov	rdi, rsp
-	mov	ecx, 88					; 00000058H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+368]
+	sub	rsp, 328				; 00000148H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -5495,7 +5214,7 @@ $LN6@TypeFromCl:
 	mov	rdx, rax
 	mov	rax, QWORD PTR clname$[rsp]
 	mov	rcx, QWORD PTR [rax+8]
-	call	QWORD PTR __imp__stricmp
+	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN7@TypeFromCl
 
@@ -5527,7 +5246,7 @@ $LN7@TypeFromCl:
 ; 664  :     _strupr( uname );
 
 	lea	rcx, QWORD PTR uname$[rsp]
-	call	QWORD PTR __imp__strupr
+	call	_strupr
 
 ; 665  :     switch( slen ) {
 
@@ -5548,7 +5267,7 @@ $LN8@TypeFromCl:
 ; 668  :         if( memcmp( uname, "CONST", 6 ) == 0 )
 
 	mov	r8d, 6
-	lea	rdx, OFFSET FLAT:$SG11581
+	lea	rdx, OFFSET FLAT:$SG11619
 	lea	rcx, QWORD PTR uname$[rsp]
 	call	memcmp
 	test	eax, eax
@@ -5565,7 +5284,7 @@ $LN9@TypeFromCl:
 ; 672  :         if( memcmp( uname, "DBTYP", 6 ) == 0 )
 
 	mov	r8d, 6
-	lea	rdx, OFFSET FLAT:$SG11583
+	lea	rdx, OFFSET FLAT:$SG11621
 	lea	rcx, QWORD PTR uname$[rsp]
 	call	memcmp
 	test	eax, eax
@@ -5580,7 +5299,7 @@ $LN10@TypeFromCl:
 ; 674  :         if( memcmp( uname, "DBSYM", 6 ) == 0 )
 
 	mov	r8d, 6
-	lea	rdx, OFFSET FLAT:$SG11585
+	lea	rdx, OFFSET FLAT:$SG11623
 	lea	rcx, QWORD PTR uname$[rsp]
 	call	memcmp
 	test	eax, eax
@@ -5602,7 +5321,7 @@ $LN12@TypeFromCl:
 	movsxd	rax, DWORD PTR slen$[rsp]
 	lea	rax, QWORD PTR uname$[rsp+rax-4]
 	mov	r8d, 4
-	lea	rdx, OFFSET FLAT:$SG11588
+	lea	rdx, OFFSET FLAT:$SG11626
 	mov	rcx, rax
 	call	memcmp
 	test	eax, eax
@@ -5619,7 +5338,7 @@ $LN13@TypeFromCl:
 	movsxd	rax, DWORD PTR slen$[rsp]
 	lea	rax, QWORD PTR uname$[rsp+rax-4]
 	mov	r8d, 4
-	lea	rdx, OFFSET FLAT:$SG11590
+	lea	rdx, OFFSET FLAT:$SG11628
 	mov	rcx, rax
 	call	memcmp
 	test	eax, eax
@@ -5638,7 +5357,7 @@ $LN15@TypeFromCl:
 	movsxd	rax, DWORD PTR slen$[rsp]
 	lea	rax, QWORD PTR uname$[rsp+rax-3]
 	mov	r8d, 3
-	lea	rdx, OFFSET FLAT:$SG11593
+	lea	rdx, OFFSET FLAT:$SG11631
 	mov	rcx, rax
 	call	memcmp
 	test	eax, eax
@@ -5662,36 +5381,25 @@ $LN1@TypeFromCl:
 ; 691  :     }
 ; 692  : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:TypeFromClassName$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 352				; 00000160H
-	pop	rdi
+	add	rsp, 328				; 00000148H
 	ret	0
 TypeFromClassName ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
-tv141 = 48
-tv144 = 52
-tv94 = 56
+tv94 = 48
+tv141 = 52
+tv144 = 56
 SetOfssize PROC
 
 ; 520  : {
 
 $LN8:
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 72					; 00000048H
 
 ; 521  :     if( CurrSeg == NULL ) {
 
@@ -5733,7 +5441,7 @@ $LN2@SetOfssize:
 	mov	r8d, ecx
 	mov	rax, QWORD PTR ModuleInfo+432
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11514
+	lea	rcx, OFFSET FLAT:$SG11552
 	call	DoDebugMsg
 
 ; 527  :                       CurrSeg->sym.name, ModuleInfo.Ofssize, ModuleInfo.curr_cpu, ModuleInfo.defOfssize ));
@@ -5758,7 +5466,7 @@ $LN3@SetOfssize:
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11515
+	lea	rcx, OFFSET FLAT:$SG11553
 	call	DoDebugMsg1
 
 ; 532  : 
@@ -5796,12 +5504,11 @@ $LN1@SetOfssize:
 
 ; 540  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 SetOfssize ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
 tv79 = 0
@@ -5810,12 +5517,7 @@ GetCurrSegAlign PROC
 ; 305  : {
 
 $LN5:
-	push	rdi
-	sub	rsp, 16
-	mov	rdi, rsp
-	mov	ecx, 4
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 24
 
 ; 306  :     if( CurrSeg == NULL )
 
@@ -5856,12 +5558,11 @@ $LN1@GetCurrSeg:
 
 ; 311  : }
 
-	add	rsp, 16
-	pop	rdi
+	add	rsp, 24
 	ret	0
 GetCurrSegAlign ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
 curr$ = 0
@@ -5872,13 +5573,7 @@ GetGroup PROC
 
 $LN4:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 16
-	mov	rdi, rsp
-	mov	ecx, 4
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+32]
+	sub	rsp, 24
 
 ; 597  :     struct dsym  *curr;
 ; 598  : 
@@ -5908,12 +5603,11 @@ $LN1@GetGroup:
 
 ; 603  : }
 
-	add	rsp, 16
-	pop	rdi
+	add	rsp, 24
 	ret	0
 GetGroup ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
 SegmentFini PROC
@@ -5921,12 +5615,7 @@ SegmentFini PROC
 ; 1432 : {
 
 $LN4:
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 
 ; 1433 : #if FASTMEM==0
 ; 1434 :     struct dsym    *curr;
@@ -5934,7 +5623,7 @@ $LN4:
 ; 1436 : 
 ; 1437 :     DebugMsg(("SegmentFini() enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11884
+	lea	rcx, OFFSET FLAT:$SG11922
 	call	DoDebugMsg
 
 ; 1438 : #if FASTMEM==0
@@ -5961,21 +5650,20 @@ $LN4:
 
 ; 1457 :     DebugMsg(("SegmentFini() exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11886
+	lea	rcx, OFFSET FLAT:$SG11924
 	call	DoDebugMsg
 
 ; 1458 : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 SegmentFini ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
-curr$ = 48
-i$ = 56
+i$ = 48
+curr$ = 56
 p$ = 64
 pass$ = 96
 SegmentInit PROC
@@ -5984,13 +5672,7 @@ SegmentInit PROC
 
 $LN23:
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 80					; 00000050H
-	mov	rdi, rsp
-	mov	ecx, 20
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+96]
+	sub	rsp, 88					; 00000058H
 
 ; 1465 :     struct dsym *curr;
 ; 1466 :     uint_32     i;
@@ -6004,7 +5686,7 @@ $LN23:
 ; 1474 :     DebugMsg(("SegmentInit(%u) enter\n", pass ));
 
 	mov	edx, DWORD PTR pass$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11904
+	lea	rcx, OFFSET FLAT:$SG11942
 	call	DoDebugMsg
 
 ; 1475 :     CurrSeg      = NULL;
@@ -6147,7 +5829,7 @@ $LN12@SegmentIni:
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	edx, DWORD PTR pass$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11910
+	lea	rcx, OFFSET FLAT:$SG11948
 	call	DoDebugMsg
 
 ; 1523 :                 buffer_size += i;
@@ -6182,7 +5864,7 @@ $LN3@SegmentIni:
 	mov	r9, QWORD PTR ModuleInfo+448
 	mov	r8d, DWORD PTR buffer_size
 	mov	edx, DWORD PTR pass$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11912
+	lea	rcx, OFFSET FLAT:$SG11950
 	call	DoDebugMsg
 $LN13@SegmentIni:
 $LN9@SegmentIni:
@@ -6262,7 +5944,7 @@ $LN14@SegmentIni:
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	edx, DWORD PTR pass$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11917
+	lea	rcx, OFFSET FLAT:$SG11955
 	call	DoDebugMsg
 
 ; 1547 :             } else {
@@ -6296,7 +5978,7 @@ $LN16@SegmentIni:
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	edx, DWORD PTR pass$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11918
+	lea	rcx, OFFSET FLAT:$SG11956
 	call	DoDebugMsg
 
 ; 1551 :                 p += i;
@@ -6429,22 +6111,19 @@ $LN20@SegmentIni:
 ; 1582 : #endif
 ; 1583 : }
 
-	add	rsp, 80					; 00000050H
-	pop	rdi
+	add	rsp, 88					; 00000058H
 	ret	0
 SegmentInit ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
-sym$ = 16
+sym$ = 8
 GetSegIdx PROC
 
 ; 587  : {
 
-$LN4:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
 
 ; 588  :     if( sym )
 
@@ -6466,11 +6145,10 @@ $LN1@GetSegIdx:
 
 ; 591  : }
 
-	pop	rdi
 	ret	0
 GetSegIdx ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
 seg$ = 32
@@ -6488,13 +6166,7 @@ $LN11:
 	mov	BYTE PTR [rsp+24], r8b
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 813  :     struct dsym *seg;
 ; 814  :     if ( add_global ) {
@@ -6655,12 +6327,11 @@ $LN1@CreateIntS:
 
 ; 840  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 CreateIntSegment ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
 tv67 = 0
@@ -6669,12 +6340,7 @@ GetCurrOffset PROC
 ; 281  : {
 
 $LN5:
-	push	rdi
-	sub	rsp, 16
-	mov	rdi, rsp
-	mov	ecx, 4
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 24
 
 ; 282  :     return( CurrSeg ? CurrSeg->e.seginfo->current_loc : 0 );
 
@@ -6692,12 +6358,11 @@ $LN4@GetCurrOff:
 
 ; 283  : }
 
-	add	rsp, 16
-	pop	rdi
+	add	rsp, 24
 	ret	0
 GetCurrOffset ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
 curr$ = 0
@@ -6708,13 +6373,7 @@ GetSymOfssize PROC
 
 $LN10:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 16
-	mov	rdi, rsp
-	mov	ecx, 4
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+32]
+	sub	rsp, 24
 
 ; 609  :     struct dsym   *curr;
 ; 610  : 
@@ -6815,12 +6474,11 @@ $LN1@GetSymOfss:
 
 ; 632  : }
 
-	add	rsp, 16
-	pop	rdi
+	add	rsp, 24
 	ret	0
 GetSymOfssize ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\segment.c
 _TEXT	SEGMENT
 sym$ = 48
@@ -6830,13 +6488,7 @@ SetSymSegOfs PROC
 
 $LN3:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 637  :     sym->segment = &CurrSeg->sym;
 
@@ -6852,8 +6504,7 @@ $LN3:
 
 ; 639  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 SetSymSegOfs ENDP
 _TEXT	ENDS

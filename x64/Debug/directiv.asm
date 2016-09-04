@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 PUBLIC	IncludeDirective
@@ -122,44 +122,44 @@ directive_tab DQ FLAT:CondAsmDirective
 	DQ	FLAT:ContextDirective
 CONST	ENDS
 _DATA	SEGMENT
-$SG11267 DB	'IncBinDirective enter', 0aH, 00H
+$SG11305 DB	'IncBinDirective enter', 0aH, 00H
 	ORG $+1
-$SG11289 DB	'IncBinDirective: filename=%s, offset=%u, size=%u', 0aH, 00H
+$SG11327 DB	'IncBinDirective: filename=%s, offset=%u, size=%u', 0aH, 00H
 	ORG $+2
-$SG11209 DB	'%s', 0aH, 00H
-$SG11307 DB	'AliasDirective: first argument is not a literal: %s', 0aH
+$SG11247 DB	'%s', 0aH, 00H
+$SG11345 DB	'AliasDirective: first argument is not a literal: %s', 0aH
 	DB	00H
 	ORG $+3
-$SG11310 DB	'AliasDirective: syntax error: %s', 0aH, 00H
+$SG11348 DB	'AliasDirective: syntax error: %s', 0aH, 00H
 	ORG $+6
-$SG11313 DB	'AliasDirective: second argument is not a literal: %s', 0aH
+$SG11351 DB	'AliasDirective: second argument is not a literal: %s', 0aH
 	DB	00H
 	ORG $+2
-$SG11324 DB	'AliasDirective: symbol redefinition', 0aH, 00H
+$SG11362 DB	'AliasDirective: symbol redefinition', 0aH, 00H
 	ORG $+3
-$SG11342 DB	'NameDirective: ignored name >%s<', 0aH, 00H
+$SG11380 DB	'NameDirective: ignored name >%s<', 0aH, 00H
 	ORG $+6
-$SG11355 DB	'RadixDirective: new radix=%u', 0aH, 00H
+$SG11393 DB	'RadixDirective: new radix=%u', 0aH, 00H
 	ORG $+2
-$SG11220 DB	'IncludeDirective enter', 0aH, 00H
+$SG11258 DB	'IncludeDirective enter', 0aH, 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	_vfprintf_l
 PUBLIC	printf
-EXTRN	__imp_isspace:PROC
-EXTRN	__imp___acrt_iob_func:PROC
-EXTRN	__imp_fclose:PROC
-EXTRN	__imp_fread:PROC
-EXTRN	__imp_fseek:PROC
-EXTRN	__imp_ftell:PROC
-EXTRN	__imp___stdio_common_vfprintf:PROC
-EXTRN	__imp_free:PROC
-EXTRN	__imp_malloc:PROC
+EXTRN	isspace:PROC
+EXTRN	__acrt_iob_func:PROC
+EXTRN	fclose:PROC
+EXTRN	fread:PROC
+EXTRN	fseek:PROC
+EXTRN	ftell:PROC
+EXTRN	__stdio_common_vfprintf:PROC
+EXTRN	free:PROC
+EXTRN	malloc:PROC
 EXTRN	memcpy:PROC
 EXTRN	strcmp:PROC
 EXTRN	strcpy:PROC
 EXTRN	strlen:PROC
-EXTRN	__imp__strupr:PROC
+EXTRN	_strupr:PROC
 EXTRN	DoDebugMsg:PROC
 EXTRN	DoDebugMsg1:PROC
 EXTRN	EmitError:PROC
@@ -178,9 +178,6 @@ EXTRN	Tokenize:PROC
 EXTRN	EvalOperand:PROC
 EXTRN	LstWriteSrcLine:PROC
 EXTRN	omf_OutSelect:PROC
-EXTRN	_RTC_CheckStackVars:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
 EXTRN	Options:BYTE
 EXTRN	ModuleInfo:BYTE
 EXTRN	Parse_Pass:DWORD
@@ -192,152 +189,76 @@ COMM	?_OptionsStorage@?1??__local_stdio_printf_options@@9@9:QWORD							; `__loc
 _DATA	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$__local_stdio_printf_options DD imagerel $LN3
-	DD	imagerel $LN3+11
-	DD	imagerel $unwind$__local_stdio_printf_options
-pdata	ENDS
-;	COMDAT pdata
-pdata	SEGMENT
 $pdata$_vfprintf_l DD imagerel $LN3
-	DD	imagerel $LN3+90
+	DD	imagerel $LN3+67
 	DD	imagerel $unwind$_vfprintf_l
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$printf DD imagerel $LN3
-	DD	imagerel $LN3+129
+	DD	imagerel $LN3+87
 	DD	imagerel $unwind$printf
 pdata	ENDS
 pdata	SEGMENT
 $pdata$IncludeDirective DD imagerel $LN12
-	DD	imagerel $LN12+400
+	DD	imagerel $LN12+378
 	DD	imagerel $unwind$IncludeDirective
-$pdata$StubDir DD imagerel $LN3
-	DD	imagerel $LN3+17
-	DD	imagerel $unwind$StubDir
 $pdata$SegOrderDirective DD imagerel $LN8
-	DD	imagerel $LN8+232
+	DD	imagerel $LN8+210
 	DD	imagerel $unwind$SegOrderDirective
 $pdata$RadixDirective DD imagerel $LN8
-	DD	imagerel $LN8+375
+	DD	imagerel $LN8+327
 	DD	imagerel $unwind$RadixDirective
 $pdata$AliasDirective DD imagerel $LN26
-	DD	imagerel $LN26+1022
+	DD	imagerel $LN26+1001
 	DD	imagerel $unwind$AliasDirective
 $pdata$EchoDirective DD imagerel $LN5
-	DD	imagerel $LN5+95
+	DD	imagerel $LN5+74
 	DD	imagerel $unwind$EchoDirective
 $pdata$IncBinDirective DD imagerel $LN25
-	DD	imagerel $LN25+1150
+	DD	imagerel $LN25+1068
 	DD	imagerel $unwind$IncBinDirective
 $pdata$IncludeLibDirective DD imagerel $LN11
-	DD	imagerel $LN11+359
+	DD	imagerel $LN11+337
 	DD	imagerel $unwind$IncludeLibDirective
 $pdata$NameDirective DD imagerel $LN7
-	DD	imagerel $LN7+344
+	DD	imagerel $LN7+323
 	DD	imagerel $unwind$NameDirective
 $pdata$IncludeLibrary DD imagerel IncludeLibrary
-	DD	imagerel IncludeLibrary+185
+	DD	imagerel IncludeLibrary+163
 	DD	imagerel $unwind$IncludeLibrary
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
-CONST	SEGMENT
-RadixDirective$rtcName$0 DB 06fH
-	DB	070H
-	DB	06eH
-	DB	064H
-	DB	078H
-	DB	00H
-	ORG $+10
-RadixDirective$rtcVarDesc DD 050H
-	DD	068H
-	DQ	FLAT:RadixDirective$rtcName$0
-	ORG $+48
-RadixDirective$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:RadixDirective$rtcVarDesc
-IncBinDirective$rtcName$0 DB 06fH
-	DB	070H
-	DB	06eH
-	DB	064H
-	DB	078H
-	DB	00H
-	ORG $+2
-IncBinDirective$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:IncBinDirective$rtcVarDesc
-	ORG $+8
-IncBinDirective$rtcVarDesc DD 050H
-	DD	068H
-	DQ	FLAT:IncBinDirective$rtcName$0
-CONST	ENDS
 xdata	SEGMENT
-$unwind$IncludeDirective DD 022101H
-	DD	0700a520eH
-$unwind$StubDir DD 010a01H
-	DD	0700aH
-$unwind$SegOrderDirective DD 022101H
-	DD	0700a320eH
-$unwind$RadixDirective DD 032701H
-	DD	01a0111H
-	DD	0700aH
-$unwind$AliasDirective DD 022101H
-	DD	0700a720eH
-$unwind$EchoDirective DD 022101H
-	DD	0700a320eH
-$unwind$IncBinDirective DD 032701H
-	DD	01c0111H
-	DD	0700aH
-$unwind$IncludeLibDirective DD 022101H
-	DD	0700a520eH
-$unwind$NameDirective DD 022101H
-	DD	0700a320eH
-$unwind$IncludeLibrary DD 021e01H
-	DD	07006520aH
+$unwind$IncludeDirective DD 010d01H
+	DD	0620dH
+$unwind$SegOrderDirective DD 010d01H
+	DD	0420dH
+$unwind$RadixDirective DD 021001H
+	DD	0170110H
+$unwind$AliasDirective DD 010d01H
+	DD	0820dH
+$unwind$EchoDirective DD 010d01H
+	DD	0420dH
+$unwind$IncBinDirective DD 021001H
+	DD	01b0110H
+$unwind$IncludeLibDirective DD 010d01H
+	DD	0620dH
+$unwind$NameDirective DD 010d01H
+	DD	0420dH
+$unwind$IncludeLibrary DD 010901H
+	DD	06209H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$printf DD 022d01H
-	DD	070159219H
-xdata	ENDS
-;	COMDAT CONST
-CONST	SEGMENT
-printf$rtcName$0 DB 05fH
-	DB	041H
-	DB	072H
-	DB	067H
-	DB	04cH
-	DB	069H
-	DB	073H
-	DB	074H
-	DB	00H
-	ORG $+7
-printf$rtcVarDesc DD 038H
-	DD	08H
-	DQ	FLAT:printf$rtcName$0
-	ORG $+48
-printf$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:printf$rtcVarDesc
-CONST	ENDS
-;	COMDAT xdata
-xdata	SEGMENT
-$unwind$_vfprintf_l DD 022d01H
-	DD	070155219H
+$unwind$printf DD 011801H
+	DD	06218H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$__local_stdio_printf_options DD 010201H
-	DD	07002H
+$unwind$_vfprintf_l DD 011801H
+	DD	06218H
 xdata	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\directiv.c
 _TEXT	SEGMENT
 q$ = 32
@@ -347,13 +268,7 @@ IncludeLibrary PROC
 ; 108  : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 109  :     struct qitem *q;
 ; 110  : 
@@ -432,12 +347,11 @@ $LN1@IncludeLib:
 
 ; 128  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 IncludeLibrary ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\directiv.c
 _TEXT	SEGMENT
 i$ = 48
@@ -449,13 +363,7 @@ NameDirective PROC
 $LN7:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 395  :     if( Parse_Pass != PASS_1 )
 
@@ -507,32 +415,32 @@ $LN2@NameDirect:
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
-	cmp	DWORD PTR [rcx+rax+16], 436		; 000001b4H
+	cmp	DWORD PTR [rcx+rax+16], 441		; 000001b9H
 	je	$LN4@NameDirect
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
-	cmp	DWORD PTR [rcx+rax+16], 418		; 000001a2H
+	cmp	DWORD PTR [rcx+rax+16], 423		; 000001a7H
 	je	SHORT $LN4@NameDirect
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
-	cmp	DWORD PTR [rcx+rax+16], 417		; 000001a1H
+	cmp	DWORD PTR [rcx+rax+16], 422		; 000001a6H
 	je	SHORT $LN4@NameDirect
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
-	cmp	DWORD PTR [rcx+rax+16], 419		; 000001a3H
+	cmp	DWORD PTR [rcx+rax+16], 424		; 000001a8H
 	je	SHORT $LN4@NameDirect
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
-	cmp	DWORD PTR [rcx+rax+16], 420		; 000001a4H
+	cmp	DWORD PTR [rcx+rax+16], 425		; 000001a9H
 	je	SHORT $LN4@NameDirect
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
-	cmp	DWORD PTR [rcx+rax+16], 421		; 000001a5H
+	cmp	DWORD PTR [rcx+rax+16], 426		; 000001aaH
 	je	SHORT $LN4@NameDirect
 $LN5@NameDirect:
 	movsxd	rax, DWORD PTR i$[rsp]
@@ -571,7 +479,7 @@ $LN3@NameDirect:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG11342
+	lea	rcx, OFFSET FLAT:$SG11380
 	call	DoDebugMsg
 
 ; 430  :     return( NOT_ERROR );
@@ -581,16 +489,15 @@ $LN1@NameDirect:
 
 ; 431  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 NameDirective ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\directiv.c
 _TEXT	SEGMENT
-name$ = 32
-p$1 = 40
+p$1 = 32
+name$ = 40
 i$ = 64
 tokenarray$ = 72
 IncludeLibDirective PROC
@@ -600,13 +507,7 @@ IncludeLibDirective PROC
 $LN11:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 151  :     char *name;
 ; 152  :     //struct asym *sym;
@@ -740,7 +641,7 @@ $LN4@IncludeLib:
 	mov	rax, QWORD PTR p$1[rsp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isspace
+	call	isspace
 	test	eax, eax
 	je	SHORT $LN3@IncludeLib
 	jmp	SHORT $LN2@IncludeLib
@@ -761,23 +662,22 @@ $LN1@IncludeLib:
 
 ; 184  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 IncludeLibDirective ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\directiv.c
 _TEXT	SEGMENT
-file$ = 48
-fileoffset$ = 56
-sizemax$ = 60
-opndx$ = 80
-sz$ = 196
-pBinData$ = 200
-result$ = 208
-i$ = 240
-tokenarray$ = 248
+fileoffset$ = 48
+sz$ = 52
+file$ = 56
+sizemax$ = 64
+pBinData$ = 72
+result$ = 80
+opndx$ = 96
+i$ = 224
+tokenarray$ = 232
 IncBinDirective PROC
 
 ; 192  : {
@@ -785,13 +685,7 @@ IncBinDirective PROC
 $LN25:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 224				; 000000e0H
-	mov	rdi, rsp
-	mov	ecx, 56					; 00000038H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+240]
+	sub	rsp, 216				; 000000d8H
 
 ; 193  :     FILE *file;
 ; 194  :     //int size;
@@ -813,7 +707,7 @@ $LN25:
 ; 201  : 
 ; 202  :     DebugMsg(("IncBinDirective enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11267
+	lea	rcx, OFFSET FLAT:$SG11305
 	call	DoDebugMsg
 
 ; 203  : 
@@ -1132,7 +1026,7 @@ $LN22@IncBinDire:
 	mov	r9d, DWORD PTR sizemax$[rsp]
 	mov	r8d, DWORD PTR fileoffset$[rsp]
 	mov	rdx, QWORD PTR ModuleInfo+488
-	lea	rcx, OFFSET FLAT:$SG11289
+	lea	rcx, OFFSET FLAT:$SG11327
 	call	DoDebugMsg1
 
 ; 261  : 
@@ -1153,12 +1047,12 @@ $LN22@IncBinDire:
 	mov	r8d, 2
 	xor	edx, edx
 	mov	rcx, QWORD PTR file$[rsp]
-	call	QWORD PTR __imp_fseek
+	call	fseek
 
 ; 267  : 		sz = ftell( file ) - fileoffset; // sz = total data size to load into segment/section.
 
 	mov	rcx, QWORD PTR file$[rsp]
-	call	QWORD PTR __imp_ftell
+	call	ftell
 	sub	eax, DWORD PTR fileoffset$[rsp]
 	mov	DWORD PTR sz$[rsp], eax
 
@@ -1167,13 +1061,13 @@ $LN22@IncBinDire:
 	xor	r8d, r8d
 	xor	edx, edx
 	mov	rcx, QWORD PTR file$[rsp]
-	call	QWORD PTR __imp_fseek
+	call	fseek
 
 ; 269  : 		pBinData = (unsigned char*)malloc(sz);
 
 	movsxd	rax, DWORD PTR sz$[rsp]
 	mov	rcx, rax
-	call	QWORD PTR __imp_malloc
+	call	malloc
 	mov	QWORD PTR pBinData$[rsp], rax
 
 ; 270  : 		result = fread(pBinData, sz, 1, file);
@@ -1183,7 +1077,7 @@ $LN22@IncBinDire:
 	mov	r8d, 1
 	mov	rdx, rax
 	mov	rcx, QWORD PTR pBinData$[rsp]
-	call	QWORD PTR __imp_fread
+	call	fread
 	mov	QWORD PTR result$[rsp], rax
 
 ; 271  : 		OutputBinBytes(pBinData, sz);
@@ -1205,12 +1099,12 @@ $LN22@IncBinDire:
 ; 282  : 		free((void*)pBinData);
 
 	mov	rcx, QWORD PTR pBinData$[rsp]
-	call	QWORD PTR __imp_free
+	call	free
 
 ; 283  :         fclose( file );
 
 	mov	rcx, QWORD PTR file$[rsp]
-	call	QWORD PTR __imp_fclose
+	call	fclose
 $LN23@IncBinDire:
 
 ; 284  :     }
@@ -1222,17 +1116,11 @@ $LN1@IncBinDire:
 
 ; 287  : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:IncBinDirective$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
-	add	rsp, 224				; 000000e0H
-	pop	rdi
+	add	rsp, 216				; 000000d8H
 	ret	0
 IncBinDirective ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\directiv.c
 _TEXT	SEGMENT
 i$ = 48
@@ -1244,13 +1132,7 @@ EchoDirective PROC
 $LN5:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 56   :     if ( Parse_Pass == PASS_1 ) /* display in pass 1 only */
 
@@ -1271,7 +1153,7 @@ $LN5:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	lea	rcx, OFFSET FLAT:$SG11209
+	lea	rcx, OFFSET FLAT:$SG11247
 	call	printf
 $LN3@EchoDirect:
 $LN2@EchoDirect:
@@ -1283,17 +1165,16 @@ $LN2@EchoDirect:
 
 ; 61   : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 EchoDirective ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\directiv.c
 _TEXT	SEGMENT
 sym$ = 32
-subst$ = 40
-sym2$1 = 48
+sym2$1 = 40
+subst$ = 48
 i$ = 80
 tokenarray$ = 88
 AliasDirective PROC
@@ -1303,13 +1184,7 @@ AliasDirective PROC
 $LN26:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+80]
+	sub	rsp, 72					; 00000048H
 
 ; 307  :     //char *tmp;
 ; 308  :     struct asym *sym;
@@ -1345,7 +1220,7 @@ $LN3@AliasDirec:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG11307
+	lea	rcx, OFFSET FLAT:$SG11345
 	call	DoDebugMsg
 
 ; 316  :         return( EmitError( TEXT_ITEM_REQUIRED ) );
@@ -1388,7 +1263,7 @@ $LN5@AliasDirec:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG11310
+	lea	rcx, OFFSET FLAT:$SG11348
 	call	DoDebugMsg
 
 ; 324  :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i+1].string_ptr ) );
@@ -1435,7 +1310,7 @@ $LN7@AliasDirec:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG11313
+	lea	rcx, OFFSET FLAT:$SG11351
 	call	DoDebugMsg
 
 ; 330  :         return( EmitError( TEXT_ITEM_REQUIRED ) );
@@ -1558,7 +1433,7 @@ $LN11@AliasDirec:
 ; 351  :             return( EmitErr( MUST_BE_PUBLIC_OR_EXTERNAL, subst ) );
 
 	mov	rdx, QWORD PTR subst$[rsp]
-	mov	ecx, 268				; 0000010cH
+	mov	ecx, 269				; 0000010dH
 	call	EmitErr
 	jmp	$LN1@AliasDirec
 $LN13@AliasDirec:
@@ -1648,7 +1523,7 @@ $LN17@AliasDirec:
 
 ; 366  :         DebugMsg(("AliasDirective: symbol redefinition\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11324
+	lea	rcx, OFFSET FLAT:$SG11362
 	call	DoDebugMsg
 
 ; 367  :         return( EmitErr( SYMBOL_REDEFINITION, sym->name ) );
@@ -1721,7 +1596,7 @@ $LN24@AliasDirec:
 ; 382  :                 return( EmitErr( MUST_BE_PUBLIC_OR_EXTERNAL, subst ) );
 
 	mov	rdx, QWORD PTR subst$[rsp]
-	mov	ecx, 268				; 0000010cH
+	mov	ecx, 269				; 0000010dH
 	call	EmitErr
 	jmp	SHORT $LN1@AliasDirec
 $LN23@AliasDirec:
@@ -1740,18 +1615,17 @@ $LN1@AliasDirec:
 
 ; 388  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 AliasDirective ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\directiv.c
 _TEXT	SEGMENT
 oldradix$ = 48
-opndx$ = 80
-i$ = 224
-tokenarray$ = 232
+opndx$ = 64
+i$ = 192
+tokenarray$ = 200
 RadixDirective PROC
 
 ; 437  : {
@@ -1759,13 +1633,7 @@ RadixDirective PROC
 $LN8:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 208				; 000000d0H
-	mov	rdi, rsp
-	mov	ecx, 52					; 00000034H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+224]
+	sub	rsp, 184				; 000000b8H
 
 ; 438  :     uint_8          oldradix;
 ; 439  :     struct expr     opndx;
@@ -1884,7 +1752,7 @@ $LN5@RadixDirec:
 
 	movzx	eax, BYTE PTR ModuleInfo+396
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11355
+	lea	rcx, OFFSET FLAT:$SG11393
 	call	DoDebugMsg
 
 ; 464  : 
@@ -1895,17 +1763,11 @@ $LN1@RadixDirec:
 
 ; 466  : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:RadixDirective$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
-	add	rsp, 208				; 000000d0H
-	pop	rdi
+	add	rsp, 184				; 000000b8H
 	ret	0
 RadixDirective ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\directiv.c
 _TEXT	SEGMENT
 i$ = 48
@@ -1917,13 +1779,7 @@ SegOrderDirective PROC
 $LN8:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 473  :     if ( tokenarray[i+1].token != T_FINAL ) {
 
@@ -1981,7 +1837,7 @@ $LN5@SegOrderDi:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
-	call	QWORD PTR __imp__strupr
+	call	_strupr
 	mov	r8, rax
 	mov	edx, 224				; 000000e0H
 	mov	ecx, 2
@@ -2014,34 +1870,30 @@ $LN1@SegOrderDi:
 
 ; 492  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 SegOrderDirective ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\directiv.c
 _TEXT	SEGMENT
-i$ = 16
-tokenarray$ = 24
+i$ = 8
+tokenarray$ = 16
 StubDir	PROC
 
 ; 48   : ret_code StubDir( int i, struct asm_tok tokenarray[] ){ return( ERROR ); }
 
-$LN3:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
 	mov	eax, -1
-	pop	rdi
 	ret	0
 StubDir	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\directiv.c
 _TEXT	SEGMENT
-name$ = 32
-p$1 = 40
+p$1 = 32
+name$ = 40
 i$ = 64
 tokenarray$ = 72
 IncludeDirective PROC
@@ -2051,19 +1903,13 @@ IncludeDirective PROC
 $LN12:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 71   :     char *name;
 ; 72   : 
 ; 73   :     DebugMsg1(("IncludeDirective enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11220
+	lea	rcx, OFFSET FLAT:$SG11258
 	call	DoDebugMsg1
 
 ; 74   : 
@@ -2197,7 +2043,7 @@ $LN4@IncludeDir:
 	mov	rax, QWORD PTR p$1[rsp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isspace
+	call	isspace
 	test	eax, eax
 	je	SHORT $LN3@IncludeDir
 	jmp	SHORT $LN2@IncludeDir
@@ -2226,18 +2072,17 @@ $LN1@IncludeDir:
 
 ; 104  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 IncludeDirective ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT printf
 _TEXT	SEGMENT
 _Result$ = 32
-_ArgList$ = 56
-_Format$ = 96
+_ArgList$ = 40
+_Format$ = 64
 printf	PROC						; COMDAT
 
 ; 950  : {
@@ -2247,13 +2092,7 @@ $LN3:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+32], r9
-	push	rdi
-	sub	rsp, 80					; 00000050H
-	mov	rdi, rsp
-	mov	ecx, 20
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+96]
+	sub	rsp, 56					; 00000038H
 
 ; 951  :     int _Result;
 ; 952  :     va_list _ArgList;
@@ -2265,7 +2104,7 @@ $LN3:
 ; 954  :     _Result = _vfprintf_l(stdout, _Format, NULL, _ArgList);
 
 	mov	ecx, 1
-	call	QWORD PTR __imp___acrt_iob_func
+	call	__acrt_iob_func
 	mov	r9, QWORD PTR _ArgList$[rsp]
 	xor	r8d, r8d
 	mov	rdx, QWORD PTR _Format$[rsp]
@@ -2283,17 +2122,11 @@ $LN3:
 
 ; 957  : }
 
-	mov	edi, eax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:printf$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	eax, edi
-	add	rsp, 80					; 00000050H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 printf	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT _vfprintf_l
 _TEXT	SEGMENT
@@ -2310,13 +2143,7 @@ $LN3:
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 639  :     return __stdio_common_vfprintf(_CRT_INTERNAL_LOCAL_PRINTF_OPTIONS, _Stream, _Format, _Locale, _ArgList);
 
@@ -2327,25 +2154,19 @@ $LN3:
 	mov	r8, QWORD PTR _Format$[rsp]
 	mov	rdx, QWORD PTR _Stream$[rsp]
 	mov	rcx, QWORD PTR [rax]
-	call	QWORD PTR __imp___stdio_common_vfprintf
+	call	__stdio_common_vfprintf
 
 ; 640  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 _vfprintf_l ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\corecrt_stdio_config.h
 ;	COMDAT __local_stdio_printf_options
 _TEXT	SEGMENT
 __local_stdio_printf_options PROC			; COMDAT
-
-; 73   : {
-
-$LN3:
-	push	rdi
 
 ; 74   :     static unsigned __int64 _OptionsStorage;
 ; 75   :     return &_OptionsStorage;
@@ -2354,7 +2175,6 @@ $LN3:
 
 ; 76   : }
 
-	pop	rdi
 	ret	0
 __local_stdio_printf_options ENDP
 _TEXT	ENDS

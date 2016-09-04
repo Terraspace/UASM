@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 _DATA	SEGMENT
@@ -12,14 +12,14 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10397 DB	'AddLineQueue(%p): #=%u >%s<', 0aH, 00H
+$SG10435 DB	'AddLineQueue(%p): #=%u >%s<', 0aH, 00H
 	ORG $+3
-$SG10469 DB	'RunLineQueue() enter', 0aH, 00H
+$SG10520 DB	'RunLineQueue() enter', 0aH, 00H
 	ORG $+10
-$SG10472 DB	'!!!!! Warning: End directive found in generated-code par'
+$SG10523 DB	'!!!!! Warning: End directive found in generated-code par'
 	DB	'ser loop!', 0aH, 00H
 	ORG $+5
-$SG10473 DB	'RunLineQueue() exit', 0aH, 00H
+$SG10524 DB	'RunLineQueue() exit', 0aH, 00H
 _DATA	ENDS
 PUBLIC	GetLqLine
 PUBLIC	DeleteLineQueue
@@ -32,6 +32,7 @@ EXTRN	strlen:PROC
 EXTRN	DoDebugMsg:PROC
 EXTRN	DoDebugMsg1:PROC
 EXTRN	myltoa:PROC
+EXTRN	myqtoa:PROC
 EXTRN	MemAlloc:PROC
 EXTRN	MemFree:PROC
 EXTRN	GetResWName:PROC
@@ -39,176 +40,113 @@ EXTRN	PushInputStatus:PROC
 EXTRN	PopInputStatus:PROC
 EXTRN	ParseLine:PROC
 EXTRN	PreprocessLine:PROC
-EXTRN	_RTC_CheckStackVars:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
 EXTRN	__GSHandlerCheck:PROC
 EXTRN	__security_check_cookie:PROC
 EXTRN	ModuleInfo:BYTE
 EXTRN	ResWordTable:BYTE
+EXTRN	__ImageBase:BYTE
 EXTRN	__security_cookie:QWORD
 _BSS	SEGMENT
 lqlines_written DD 01H DUP (?)
 lqlines_read DD	01H DUP (?)
 _BSS	ENDS
 pdata	SEGMENT
-$pdata$GetLqLine DD imagerel $LN3
-	DD	imagerel $LN3+10
-	DD	imagerel $unwind$GetLqLine
 $pdata$DeleteLineQueue DD imagerel $LN6
-	DD	imagerel $LN6+95
+	DD	imagerel $LN6+77
 	DD	imagerel $unwind$DeleteLineQueue
 $pdata$AddLineQueue DD imagerel $LN5
-	DD	imagerel $LN5+222
+	DD	imagerel $LN5+200
 	DD	imagerel $unwind$AddLineQueue
-$pdata$AddLineQueueX DD imagerel $LN19
-	DD	imagerel $LN19+786
+$pdata$AddLineQueueX DD imagerel $LN25
+	DD	imagerel $LN25+909
 	DD	imagerel $unwind$AddLineQueueX
 $pdata$RunLineQueue DD imagerel $LN8
-	DD	imagerel $LN8+303
+	DD	imagerel $LN8+270
 	DD	imagerel $unwind$RunLineQueue
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
-CONST	SEGMENT
-AddLineQueueX$rtcName$0 DB 061H
-	DB	072H
-	DB	067H
-	DB	073H
-	DB	00H
-	ORG $+3
-AddLineQueueX$rtcName$1 DB 062H
-	DB	075H
-	DB	066H
-	DB	066H
-	DB	065H
-	DB	072H
-	DB	00H
-	ORG $+1
-AddLineQueueX$rtcVarDesc DD 080H
-	DD	0258H
-	DQ	FLAT:AddLineQueueX$rtcName$1
-	DD	038H
-	DD	08H
-	DQ	FLAT:AddLineQueueX$rtcName$0
-	ORG $+96
-AddLineQueueX$rtcFrameData DD 02H
-	DD	00H
-	DQ	FLAT:AddLineQueueX$rtcVarDesc
-RunLineQueue$rtcName$0 DB 06fH
-	DB	06cH
-	DB	064H
-	DB	073H
-	DB	074H
-	DB	061H
-	DB	074H
-	DB	00H
-	ORG $+8
-RunLineQueue$rtcVarDesc DD 028H
-	DD	020H
-	DQ	FLAT:RunLineQueue$rtcName$0
-	ORG $+48
-RunLineQueue$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:RunLineQueue$rtcVarDesc
-CONST	ENDS
 xdata	SEGMENT
-$unwind$GetLqLine DD 010201H
-	DD	07002H
-$unwind$DeleteLineQueue DD 021501H
-	DD	070025206H
-$unwind$AddLineQueue DD 021e01H
-	DD	07006520aH
-$unwind$AddLineQueueX DD 034519H
-	DD	060011cH
-	DD	07015H
+$unwind$DeleteLineQueue DD 010401H
+	DD	06204H
+$unwind$AddLineQueue DD 010901H
+	DD	06209H
+$unwind$AddLineQueueX DD 022d19H
+	DD	091011bH
 	DD	imagerel __GSHandlerCheck
-	DD	02f8H
-$unwind$RunLineQueue DD 021501H
-	DD	07002d206H
+	DD	0470H
+$unwind$RunLineQueue DD 010401H
+	DD	0c204H
 xdata	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\lqueue.c
 _TEXT	SEGMENT
-oldstat$ = 40
-tokenarray$ = 88
-currline$ = 96
-nextline$4 = 104
+currline$ = 32
+tokenarray$ = 40
+nextline$1 = 48
+oldstat$ = 56
 RunLineQueue PROC
 
-; 168  : {
+; 179  : {
 
 $LN8:
-	push	rdi
-	sub	rsp, 112				; 00000070H
-	mov	rdi, rsp
-	mov	ecx, 28
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 104				; 00000068H
 
-; 169  :     struct input_status oldstat;
-; 170  :     struct asm_tok *tokenarray;
-; 171  :     struct lq_line *currline = line_queue.head;
+; 180  :     struct input_status oldstat;
+; 181  :     struct asm_tok *tokenarray;
+; 182  :     struct lq_line *currline = line_queue.head;
 
 	mov	rax, QWORD PTR ModuleInfo+184
 	mov	QWORD PTR currline$[rsp], rax
 
-; 172  : 
-; 173  :     DebugMsg1(( "RunLineQueue() enter\n" ));
+; 183  : 
+; 184  :     DebugMsg1(( "RunLineQueue() enter\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG10469
+	lea	rcx, OFFSET FLAT:$SG10520
 	call	DoDebugMsg1
 
-; 174  : 
-; 175  :     /* v2.03: ensure the current source buffer is still aligned */
-; 176  :     tokenarray = PushInputStatus( &oldstat );
+; 185  : 
+; 186  :     /* v2.03: ensure the current source buffer is still aligned */
+; 187  :     tokenarray = PushInputStatus( &oldstat );
 
 	lea	rcx, QWORD PTR oldstat$[rsp]
 	call	PushInputStatus
 	mov	QWORD PTR tokenarray$[rsp], rax
 
-; 177  :     ModuleInfo.GeneratedCode++;
+; 188  :     ModuleInfo.GeneratedCode++;
 
 	mov	eax, DWORD PTR ModuleInfo+456
 	inc	eax
 	mov	DWORD PTR ModuleInfo+456, eax
 
-; 178  : 
-; 179  :     /* v2.11: line queues are no longer pushed onto the file stack.
-; 180  :      * Instead, the queue is processed directly here.
-; 181  :      */
-; 182  :     line_queue.head = NULL;
+; 189  : 
+; 190  :     /* v2.11: line queues are no longer pushed onto the file stack.
+; 191  :      * Instead, the queue is processed directly here.
+; 192  :      */
+; 193  :     line_queue.head = NULL;
 
 	mov	QWORD PTR ModuleInfo+184, 0
 
-; 183  :     DebugCmd( lqlines_written = 0 ); /* reset counter for AddLineQueue() */
+; 194  :     DebugCmd( lqlines_written = 0 ); /* reset counter for AddLineQueue() */
 
 	mov	DWORD PTR lqlines_written, 0
 
-; 184  :     DebugCmd( lqlines_read = 0 ); /* reset counter for line-queue reads below */
+; 195  :     DebugCmd( lqlines_read = 0 ); /* reset counter for line-queue reads below */
 
 	mov	DWORD PTR lqlines_read, 0
 $LN2@RunLineQue:
 
-; 185  : 
-; 186  :     for ( ; currline; ) {
+; 196  : 
+; 197  :     for ( ; currline; ) {
 
 	cmp	QWORD PTR currline$[rsp], 0
 	je	SHORT $LN3@RunLineQue
 
-; 187  :         struct lq_line *nextline = currline->next;
+; 198  :         struct lq_line *nextline = currline->next;
 
 	mov	rax, QWORD PTR currline$[rsp]
 	mov	rax, QWORD PTR [rax]
-	mov	QWORD PTR nextline$4[rsp], rax
+	mov	QWORD PTR nextline$1[rsp], rax
 
-; 188  :         strcpy( CurrSource, currline->line );
+; 199  :         strcpy( CurrSource, currline->line );
 
 	mov	rax, QWORD PTR currline$[rsp]
 	add	rax, 9
@@ -216,18 +154,18 @@ $LN2@RunLineQue:
 	mov	rcx, QWORD PTR ModuleInfo+464
 	call	strcpy
 
-; 189  :         DebugCmd ( lqlines_read++ );
+; 200  :         DebugCmd ( lqlines_read++ );
 
 	mov	eax, DWORD PTR lqlines_read
 	inc	eax
 	mov	DWORD PTR lqlines_read, eax
 
-; 190  :         MemFree( currline );
+; 201  :         MemFree( currline );
 
 	mov	rcx, QWORD PTR currline$[rsp]
 	call	MemFree
 
-; 191  :         if ( PreprocessLine( CurrSource, tokenarray ) )
+; 202  :         if ( PreprocessLine( CurrSource, tokenarray ) )
 
 	mov	rdx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR ModuleInfo+464
@@ -235,25 +173,25 @@ $LN2@RunLineQue:
 	test	eax, eax
 	je	SHORT $LN5@RunLineQue
 
-; 192  :             ParseLine( tokenarray );
+; 203  :             ParseLine( tokenarray );
 
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	call	ParseLine
 $LN5@RunLineQue:
 
-; 193  :         currline = nextline;
+; 204  :         currline = nextline;
 
-	mov	rax, QWORD PTR nextline$4[rsp]
+	mov	rax, QWORD PTR nextline$1[rsp]
 	mov	QWORD PTR currline$[rsp], rax
 
-; 194  :     }
+; 205  :     }
 
 	jmp	SHORT $LN2@RunLineQue
 $LN3@RunLineQue:
 
-; 195  : 
-; 196  : #ifdef DEBUG_OUT
-; 197  :     if ( ModuleInfo.EndDirFound == TRUE ) {
+; 206  : 
+; 207  : #ifdef DEBUG_OUT
+; 208  :     if ( ModuleInfo.EndDirFound == TRUE ) {
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	shr	eax, 16
@@ -261,72 +199,64 @@ $LN3@RunLineQue:
 	cmp	eax, 1
 	jne	SHORT $LN6@RunLineQue
 
-; 198  :         DebugMsg(("!!!!! Warning: End directive found in generated-code parser loop!\n"));
+; 209  :         DebugMsg(("!!!!! Warning: End directive found in generated-code parser loop!\n"));
 
-	lea	rcx, OFFSET FLAT:$SG10472
+	lea	rcx, OFFSET FLAT:$SG10523
 	call	DoDebugMsg
 $LN6@RunLineQue:
 
-; 199  :     }
-; 200  : #endif
-; 201  :     ModuleInfo.GeneratedCode--;
+; 210  :     }
+; 211  : #endif
+; 212  :     ModuleInfo.GeneratedCode--;
 
 	mov	eax, DWORD PTR ModuleInfo+456
 	dec	eax
 	mov	DWORD PTR ModuleInfo+456, eax
 
-; 202  :     PopInputStatus( &oldstat );
+; 213  :     PopInputStatus( &oldstat );
 
 	lea	rcx, QWORD PTR oldstat$[rsp]
 	call	PopInputStatus
 
-; 203  : 
-; 204  :     DebugMsg1(( "RunLineQueue() exit\n" ));
+; 214  : 
+; 215  :     DebugMsg1(( "RunLineQueue() exit\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG10473
+	lea	rcx, OFFSET FLAT:$SG10524
 	call	DoDebugMsg1
 
-; 205  :     return;
-; 206  : }
+; 216  :     return;
+; 217  : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:RunLineQueue$rtcFrameData
-	call	_RTC_CheckStackVars
-	add	rsp, 112				; 00000070H
-	pop	rdi
+	add	rsp, 104				; 00000068H
 	ret	0
 RunLineQueue ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\lqueue.c
 _TEXT	SEGMENT
+d$ = 48
 args$ = 56
-d$ = 72
-i$ = 80
+i$ = 64
+s$ = 72
+tv74 = 80
 l$ = 84
-s$ = 88
+tv133 = 88
+tv159 = 92
 p$ = 96
-buffer$ = 128
-tv74 = 752
-tv143 = 756
-__$ArrayPad$ = 760
-fmt$ = 784
+q$ = 104
+buffer$ = 112
+__$ArrayPad$ = 1136
+fmt$ = 1168
 AddLineQueueX PROC
 
 ; 98   : {
 
-$LN19:
+$LN25:
 	mov	QWORD PTR [rsp+8], rcx
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+32], r9
-	push	rdi
-	sub	rsp, 768				; 00000300H
-	mov	rdi, rsp
-	mov	ecx, 192				; 000000c0H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+784]
+	sub	rsp, 1160				; 00000488H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -335,17 +265,18 @@ $LN19:
 ; 100  :     char *d;
 ; 101  :     int i;
 ; 102  :     int_32 l;
-; 103  :     const char *s;
-; 104  :     const char *p;
-; 105  :     char buffer[MAX_LINE_LEN];
-; 106  : 
-; 107  :     //DebugMsg(("AddlineQueueX(%s) enter\n", fmt ));
-; 108  :     va_start( args, fmt );
+; 103  :     int_64 q;
+; 104  :     const char *s;
+; 105  :     const char *p;
+; 106  :     char buffer[MAX_LINE_LEN];
+; 107  : 
+; 108  :     //DebugMsg(("AddlineQueueX(%s) enter\n", fmt ));
+; 109  :     va_start( args, fmt );
 
 	lea	rax, QWORD PTR fmt$[rsp+8]
 	mov	QWORD PTR args$[rsp], rax
 
-; 109  :     for ( s = fmt, d = buffer; *s; s++ ) {
+; 110  :     for ( s = fmt, d = buffer; *s; s++ ) {
 
 	mov	rax, QWORD PTR fmt$[rsp]
 	mov	QWORD PTR s$[rsp], rax
@@ -362,39 +293,39 @@ $LN4@AddLineQue:
 	test	eax, eax
 	je	$LN3@AddLineQue
 
-; 110  :         if ( *s == '%' ) {
+; 111  :         if ( *s == '%' ) {
 
 	mov	rax, QWORD PTR s$[rsp]
 	movsx	eax, BYTE PTR [rax]
 	cmp	eax, 37					; 00000025H
 	jne	$LN7@AddLineQue
 
-; 111  :             s++;
+; 112  :             s++;
 
 	mov	rax, QWORD PTR s$[rsp]
 	inc	rax
 	mov	QWORD PTR s$[rsp], rax
 
-; 112  :             switch ( *s ) {
+; 113  :             switch ( *s ) {
 
 	mov	rax, QWORD PTR s$[rsp]
-	movzx	eax, BYTE PTR [rax]
-	mov	BYTE PTR tv74[rsp], al
-	cmp	BYTE PTR tv74[rsp], 100			; 00000064H
-	je	$LN11@AddLineQue
-	cmp	BYTE PTR tv74[rsp], 114			; 00000072H
-	je	SHORT $LN9@AddLineQue
-	cmp	BYTE PTR tv74[rsp], 115			; 00000073H
-	je	SHORT $LN10@AddLineQue
-	cmp	BYTE PTR tv74[rsp], 117			; 00000075H
-	je	$LN11@AddLineQue
-	cmp	BYTE PTR tv74[rsp], 120			; 00000078H
-	je	$LN11@AddLineQue
-	jmp	$LN15@AddLineQue
+	movsx	eax, BYTE PTR [rax]
+	mov	DWORD PTR tv74[rsp], eax
+	mov	eax, DWORD PTR tv74[rsp]
+	sub	eax, 100				; 00000064H
+	mov	DWORD PTR tv74[rsp], eax
+	cmp	DWORD PTR tv74[rsp], 20
+	ja	$LN17@AddLineQue
+	movsxd	rax, DWORD PTR tv74[rsp]
+	lea	rcx, OFFSET FLAT:__ImageBase
+	movzx	eax, BYTE PTR $LN23@AddLineQue[rcx+rax]
+	mov	eax, DWORD PTR $LN24@AddLineQue[rcx+rax*4]
+	add	rax, rcx
+	jmp	rax
 $LN9@AddLineQue:
 
-; 113  :             case 'r':
-; 114  :                 i = va_arg( args, int );
+; 114  :             case 'r':
+; 115  :                 i = va_arg( args, int );
 
 	mov	rax, QWORD PTR args$[rsp]
 	add	rax, 8
@@ -403,15 +334,15 @@ $LN9@AddLineQue:
 	mov	eax, DWORD PTR [rax-8]
 	mov	DWORD PTR i$[rsp], eax
 
-; 115  :                 GetResWName( i , d );
+; 116  :                 GetResWName( i , d );
 
 	mov	rdx, QWORD PTR d$[rsp]
 	mov	ecx, DWORD PTR i$[rsp]
 	call	GetResWName
 
-; 116  :                 /* v2.06: the name is already copied */
-; 117  :                 //memcpy( d, ResWordTable[i].name, ResWordTable[i].len );
-; 118  :                 d += ResWordTable[i].len;
+; 117  :                 /* v2.06: the name is already copied */
+; 118  :                 //memcpy( d, ResWordTable[i].name, ResWordTable[i].len );
+; 119  :                 d += ResWordTable[i].len;
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 16
@@ -422,13 +353,13 @@ $LN9@AddLineQue:
 	mov	rax, rcx
 	mov	QWORD PTR d$[rsp], rax
 
-; 119  :                 break;
+; 120  :                 break;
 
 	jmp	$LN5@AddLineQue
 $LN10@AddLineQue:
 
-; 120  :             case 's':
-; 121  :                 p = va_arg( args, char * );
+; 121  :             case 's':
+; 122  :                 p = va_arg( args, char * );
 
 	mov	rax, QWORD PTR args$[rsp]
 	add	rax, 8
@@ -437,13 +368,13 @@ $LN10@AddLineQue:
 	mov	rax, QWORD PTR [rax-8]
 	mov	QWORD PTR p$[rsp], rax
 
-; 122  :                 i = strlen( p );
+; 123  :                 i = strlen( p );
 
 	mov	rcx, QWORD PTR p$[rsp]
 	call	strlen
 	mov	DWORD PTR i$[rsp], eax
 
-; 123  :                 memcpy( d, p, i );
+; 124  :                 memcpy( d, p, i );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	mov	r8, rax
@@ -451,7 +382,7 @@ $LN10@AddLineQue:
 	mov	rcx, QWORD PTR d$[rsp]
 	call	memcpy
 
-; 124  :                 d += i;
+; 125  :                 d += i;
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	mov	rcx, QWORD PTR d$[rsp]
@@ -459,23 +390,81 @@ $LN10@AddLineQue:
 	mov	rax, rcx
 	mov	QWORD PTR d$[rsp], rax
 
-; 125  :                 *d = NULLC;
+; 126  :                 *d = NULLC;
 
 	mov	rax, QWORD PTR d$[rsp]
 	mov	BYTE PTR [rax], 0
 
-; 126  :                 break;
+; 127  :                 break;
 
 	jmp	$LN5@AddLineQue
 $LN11@AddLineQue:
 
-; 127  :             case 'd':
-; 128  :             case 'u':
-; 129  :             case 'x':
-; 130  : #ifdef __I86__ /* v2.08: use long only if size(int) is 16-bit */
-; 131  :                 l = va_arg( args, long );
-; 132  : #else
-; 133  :                 l = va_arg( args, int );
+; 128  : #if AMD64_SUPPORT
+; 129  :             case 'q':
+; 130  :               q = va_arg(args, int_64);
+
+	mov	rax, QWORD PTR args$[rsp]
+	add	rax, 8
+	mov	QWORD PTR args$[rsp], rax
+	mov	rax, QWORD PTR args$[rsp]
+	mov	rax, QWORD PTR [rax-8]
+	mov	QWORD PTR q$[rsp], rax
+
+; 131  :               myqtoa(q, d, 10, q < 0, FALSE);
+
+	cmp	QWORD PTR q$[rsp], 0
+	jge	SHORT $LN19@AddLineQue
+	mov	DWORD PTR tv133[rsp], 1
+	jmp	SHORT $LN20@AddLineQue
+$LN19@AddLineQue:
+	mov	DWORD PTR tv133[rsp], 0
+$LN20@AddLineQue:
+	mov	BYTE PTR [rsp+32], 0
+	movzx	r9d, BYTE PTR tv133[rsp]
+	mov	r8d, 10
+	mov	rdx, QWORD PTR d$[rsp]
+	mov	rcx, QWORD PTR q$[rsp]
+	call	myqtoa
+
+; 132  :               d += strlen(d);
+
+	mov	rcx, QWORD PTR d$[rsp]
+	call	strlen
+	mov	rcx, QWORD PTR d$[rsp]
+	add	rcx, rax
+	mov	rax, rcx
+	mov	QWORD PTR d$[rsp], rax
+
+; 133  :               /* v2.07: add a 't' suffix if radix is != 10 */
+; 134  :               if (ModuleInfo.radix != 10)
+
+	movzx	eax, BYTE PTR ModuleInfo+396
+	cmp	eax, 10
+	je	SHORT $LN12@AddLineQue
+
+; 135  :                 *d++ = 't';
+
+	mov	rax, QWORD PTR d$[rsp]
+	mov	BYTE PTR [rax], 116			; 00000074H
+	mov	rax, QWORD PTR d$[rsp]
+	inc	rax
+	mov	QWORD PTR d$[rsp], rax
+$LN12@AddLineQue:
+
+; 136  :               break;
+
+	jmp	$LN5@AddLineQue
+$LN13@AddLineQue:
+
+; 137  : #endif
+; 138  :             case 'd':
+; 139  :             case 'u':
+; 140  :             case 'x':
+; 141  : #ifdef __I86__ /* v2.08: use long only if size(int) is 16-bit */
+; 142  :                 l = va_arg( args, long );
+; 143  : #else
+; 144  :                 l = va_arg( args, int );
 
 	mov	rax, QWORD PTR args$[rsp]
 	add	rax, 8
@@ -484,15 +473,15 @@ $LN11@AddLineQue:
 	mov	eax, DWORD PTR [rax-8]
 	mov	DWORD PTR l$[rsp], eax
 
-; 134  : #endif
-; 135  :                 if ( *s == 'x' ) {
+; 145  : #endif
+; 146  :                 if ( *s == 'x' ) {
 
 	mov	rax, QWORD PTR s$[rsp]
 	movsx	eax, BYTE PTR [rax]
 	cmp	eax, 120				; 00000078H
-	jne	SHORT $LN12@AddLineQue
+	jne	SHORT $LN14@AddLineQue
 
-; 136  :                     myltoa( l, d, 16, FALSE, FALSE );
+; 147  :                     myltoa( l, d, 16, FALSE, FALSE );
 
 	mov	BYTE PTR [rsp+32], 0
 	xor	r9d, r9d
@@ -501,7 +490,7 @@ $LN11@AddLineQue:
 	mov	ecx, DWORD PTR l$[rsp]
 	call	myltoa
 
-; 137  :                     d += strlen( d );
+; 148  :                     d += strlen( d );
 
 	mov	rcx, QWORD PTR d$[rsp]
 	call	strlen
@@ -510,28 +499,28 @@ $LN11@AddLineQue:
 	mov	rax, rcx
 	mov	QWORD PTR d$[rsp], rax
 
-; 138  :                 } else {
+; 149  :                 } else {
 
-	jmp	SHORT $LN13@AddLineQue
-$LN12@AddLineQue:
+	jmp	SHORT $LN15@AddLineQue
+$LN14@AddLineQue:
 
-; 139  :                     myltoa( l, d, 10, l < 0, FALSE );
+; 150  :                     myltoa( l, d, 10, l < 0, FALSE );
 
 	cmp	DWORD PTR l$[rsp], 0
-	jge	SHORT $LN17@AddLineQue
-	mov	DWORD PTR tv143[rsp], 1
-	jmp	SHORT $LN18@AddLineQue
-$LN17@AddLineQue:
-	mov	DWORD PTR tv143[rsp], 0
-$LN18@AddLineQue:
+	jge	SHORT $LN21@AddLineQue
+	mov	DWORD PTR tv159[rsp], 1
+	jmp	SHORT $LN22@AddLineQue
+$LN21@AddLineQue:
+	mov	DWORD PTR tv159[rsp], 0
+$LN22@AddLineQue:
 	mov	BYTE PTR [rsp+32], 0
-	movzx	r9d, BYTE PTR tv143[rsp]
+	movzx	r9d, BYTE PTR tv159[rsp]
 	mov	r8d, 10
 	mov	rdx, QWORD PTR d$[rsp]
 	mov	ecx, DWORD PTR l$[rsp]
 	call	myltoa
 
-; 140  :                     d += strlen( d );
+; 151  :                     d += strlen( d );
 
 	mov	rcx, QWORD PTR d$[rsp]
 	call	strlen
@@ -540,31 +529,31 @@ $LN18@AddLineQue:
 	mov	rax, rcx
 	mov	QWORD PTR d$[rsp], rax
 
-; 141  :                     /* v2.07: add a 't' suffix if radix is != 10 */
-; 142  :                     if ( ModuleInfo.radix != 10 )
+; 152  :                     /* v2.07: add a 't' suffix if radix is != 10 */
+; 153  :                     if ( ModuleInfo.radix != 10 )
 
 	movzx	eax, BYTE PTR ModuleInfo+396
 	cmp	eax, 10
-	je	SHORT $LN14@AddLineQue
+	je	SHORT $LN16@AddLineQue
 
-; 143  :                         *d++ = 't';
+; 154  :                         *d++ = 't';
 
 	mov	rax, QWORD PTR d$[rsp]
 	mov	BYTE PTR [rax], 116			; 00000074H
 	mov	rax, QWORD PTR d$[rsp]
 	inc	rax
 	mov	QWORD PTR d$[rsp], rax
-$LN14@AddLineQue:
-$LN13@AddLineQue:
-
-; 144  :                 }
-; 145  :                 break;
-
-	jmp	SHORT $LN5@AddLineQue
+$LN16@AddLineQue:
 $LN15@AddLineQue:
 
-; 146  :             default:
-; 147  :                 *d++ = *s;
+; 155  :                 }
+; 156  :                 break;
+
+	jmp	SHORT $LN5@AddLineQue
+$LN17@AddLineQue:
+
+; 157  :             default:
+; 158  :                 *d++ = *s;
 
 	mov	rax, QWORD PTR d$[rsp]
 	mov	rcx, QWORD PTR s$[rsp]
@@ -575,13 +564,13 @@ $LN15@AddLineQue:
 	mov	QWORD PTR d$[rsp], rax
 $LN5@AddLineQue:
 
-; 148  :             }
-; 149  :         } else
+; 159  :             }
+; 160  :         } else
 
 	jmp	SHORT $LN8@AddLineQue
 $LN7@AddLineQue:
 
-; 150  :             *d++ = *s;
+; 161  :             *d++ = *s;
 
 	mov	rax, QWORD PTR d$[rsp]
 	mov	rcx, QWORD PTR s$[rsp]
@@ -592,41 +581,66 @@ $LN7@AddLineQue:
 	mov	QWORD PTR d$[rsp], rax
 $LN8@AddLineQue:
 
-; 151  :     }
+; 162  :     }
 
 	jmp	$LN2@AddLineQue
 $LN3@AddLineQue:
 
-; 152  :     *d = NULLC;
+; 163  :     *d = NULLC;
 
 	mov	rax, QWORD PTR d$[rsp]
 	mov	BYTE PTR [rax], 0
 
-; 153  :     va_end( args );
+; 164  :     va_end( args );
 
 	mov	QWORD PTR args$[rsp], 0
 
-; 154  :     //DebugMsg(("AddlineQueueX() done\n" ));
-; 155  :     AddLineQueue( buffer );
+; 165  :     //DebugMsg(("AddlineQueueX() done\n" ));
+; 166  :     AddLineQueue( buffer );
 
 	lea	rcx, QWORD PTR buffer$[rsp]
 	call	AddLineQueue
 
-; 156  :     return;
-; 157  : }
+; 167  :     return;
+; 168  : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:AddLineQueueX$rtcFrameData
-	call	_RTC_CheckStackVars
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 768				; 00000300H
-	pop	rdi
+	add	rsp, 1160				; 00000488H
 	ret	0
+	npad	3
+$LN24@AddLineQue:
+	DD	$LN13@AddLineQue
+	DD	$LN11@AddLineQue
+	DD	$LN9@AddLineQue
+	DD	$LN10@AddLineQue
+	DD	$LN17@AddLineQue
+$LN23@AddLineQue:
+	DB	0
+	DB	4
+	DB	4
+	DB	4
+	DB	4
+	DB	4
+	DB	4
+	DB	4
+	DB	4
+	DB	4
+	DB	4
+	DB	4
+	DB	4
+	DB	1
+	DB	2
+	DB	3
+	DB	4
+	DB	0
+	DB	4
+	DB	4
+	DB	0
 AddLineQueueX ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\lqueue.c
 _TEXT	SEGMENT
 i$ = 32
@@ -638,13 +652,7 @@ AddLineQueue PROC
 
 $LN5:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 69   :     unsigned i = strlen( line );
 
@@ -662,7 +670,7 @@ $LN5:
 	mov	r9, QWORD PTR line$[rsp]
 	mov	r8d, DWORD PTR lqlines_written
 	mov	rdx, QWORD PTR line$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10397
+	lea	rcx, OFFSET FLAT:$SG10435
 	call	DoDebugMsg1
 
 ; 73   : 
@@ -734,12 +742,11 @@ $LN3@AddLineQue:
 ; 91   :     return;
 ; 92   : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 AddLineQueue ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\lqueue.c
 _TEXT	SEGMENT
 curr$ = 32
@@ -749,12 +756,7 @@ DeleteLineQueue PROC
 ; 45   : {
 
 $LN6:
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 56					; 00000038H
 
 ; 46   :     struct qitem *curr;
 ; 47   :     struct qitem *next;
@@ -792,22 +794,18 @@ $LN3@DeleteLine:
 
 ; 53   : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 DeleteLineQueue ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\lqueue.c
 _TEXT	SEGMENT
 GetLqLine PROC
 
 ; 38   : unsigned GetLqLine( void ) { return( lqlines_read ); }
 
-$LN3:
-	push	rdi
 	mov	eax, DWORD PTR lqlines_read
-	pop	rdi
 	ret	0
 GetLqLine ENDP
 _TEXT	ENDS

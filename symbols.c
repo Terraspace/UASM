@@ -270,7 +270,8 @@ struct asym *SymFind( const char *name )
     if ( CurrProc ) {
         for( lsym = &lsym_table[ i % LHASH_TABLE_SIZE ]; *lsym; lsym = &((*lsym)->nextitem ) ) {
             if ( len == (*lsym)->name_size && SYMCMP( name, (*lsym)->name, len ) == 0 ) {
-                DebugMsg1(("SymFind(%s): found in local table, state=%u, local=%u\n", name, (*lsym)->state, (*lsym)->scoped ));
+                DebugMsg1(("SymFind(%s): found in local table, state=%u, local=%u\n", name, (*lsym)->state, (*lsym)->scoped ));  			
+				(*lsym)->used = TRUE;
                 return( *lsym );
             }
         }
@@ -286,13 +287,48 @@ struct asym *SymFind( const char *name )
     return( NULL );
 }
 
+/* Version to be used during declaration of a LOCAL to avoid it being marked as used */
+struct asym *SymFindDeclare(const char *name)
+	/**************************************/
+	/* find a symbol in the local/global symbol table,
+	* return ptr to next free entry in global table if not found.
+	* Note: lsym must be global, thus if the symbol isn't
+	* found and is to be added to the local table, there's no
+	* second scan necessary.
+	*/
+{
+	int i;
+	int len;
+
+	len = strlen(name);
+	i = hashpjw(name);
+
+	if (CurrProc) {
+		for (lsym = &lsym_table[i % LHASH_TABLE_SIZE]; *lsym; lsym = &((*lsym)->nextitem)) {
+			if (len == (*lsym)->name_size && SYMCMP(name, (*lsym)->name, len) == 0) {
+				DebugMsg1(("SymFind(%s): found in local table, state=%u, local=%u\n", name, (*lsym)->state, (*lsym)->scoped));
+				return(*lsym);
+			}
+		}
+	}
+
+	for (gsym = &gsym_table[i % GHASH_TABLE_SIZE]; *gsym; gsym = &((*gsym)->nextitem)) {
+		if (len == (*gsym)->name_size && SYMCMP(name, (*gsym)->name, len) == 0) {
+			DebugMsg1(("SymFind(%s): found, state=%u memtype=%X lang=%u\n", name, (*gsym)->state, (*gsym)->mem_type, (*gsym)->langtype));
+			return(*gsym);
+		}
+	}
+
+	return(NULL);
+}
+
 #if 0
 /* Search a symbol */
 
 struct asym *SymSearch( const char *name )
 /****************************************/
 {
-    return( *SymFind( name ) );
+    return( *SymFindDeclare( name ) );
 }
 #endif
 
@@ -509,7 +545,7 @@ struct asym *SymLCreate( const char *name )
 
     /* v2.10: ignore symbols with state SYM_UNDEFINED */
     //if( SymFind( name ) ) {
-    if( ( sym = SymFind( name ) ) && sym->state != SYM_UNDEFINED ) {
+    if( ( sym = SymFindDeclare( name ) ) && sym->state != SYM_UNDEFINED ) {
         EmitErr( SYMBOL_ALREADY_DEFINED, name );
         return( NULL );
     }
@@ -729,6 +765,177 @@ struct asym *SymEnum( struct asym *sym, int *pi )
     return( sym );
 }
 
+void SymSimd(struct dsym *sym)
+{
+  struct sfield *pMember = sym->e.structinfo->head;
+  if (pMember == NULL && sym->sym.typekind != TYPE_UNION) return;
+  int memberCount = 0;
+  sym->e.structinfo->isHomogenous = 1;
+
+  int vtotal = sym->sym.total_size;
+  int msize = pMember->sym.total_size;
+  enum memtype ctype = pMember->sym.mem_type;
+  enum memtype htype = pMember->sym.mem_type;
+
+  while (pMember)
+  {
+    if (pMember->sym.total_size != msize && pMember->sym.mem_type != ctype && sym->e.structinfo->isHomogenous == 1)
+    {
+      sym->e.structinfo->isHomogenous = 0;
+    }
+    pMember = pMember->next;
+    memberCount = memberCount + 1;
+  }
+
+
+  sym->e.structinfo->memberCount = memberCount;
+  if (vtotal == 0x20 && sym->e.structinfo->isHomogenous == 1 && ((sym->sym.typekind == TYPE_UNION) || 
+    (htype == MT_REAL4 || htype == MT_REAL8 || htype == MT_BYTE || htype == MT_WORD | htype == MT_DWORD || htype == MT_QWORD)))  
+    sym->e.structinfo->stype = MM256;
+  else if (vtotal == 0x10 && sym->e.structinfo->isHomogenous == 1 && ((sym->sym.typekind == TYPE_UNION) ||
+    (htype == MT_REAL4 || htype == MT_REAL8 || htype == MT_BYTE || htype == MT_WORD | htype == MT_DWORD || htype == MT_QWORD)))
+    sym->e.structinfo->stype = MM128;
+#if EVEXSUPP
+  else if (vtotal == 0x40 && sym->e.structinfo->isHomogenous == 1 && ((sym->sym.typekind == TYPE_UNION) ||
+    (htype == MT_REAL4 || htype == MT_REAL8 || htype == MT_BYTE || htype == MT_WORD | htype == MT_DWORD || htype == MT_QWORD)))
+    sym->e.structinfo->stype = MM512;
+#endif
+
+  // Ensure unions of multiple MM128 or MM256 types default to a 4/8 member float arrangement.
+  if (sym->sym.typekind == TYPE_UNION && sym->e.structinfo->isHomogenous == 1)
+  {
+	  if (sym->e.structinfo->stype == MM128) {
+		  memberCount = 4;
+		  sym->e.structinfo->memberCount = memberCount;
+	  }
+	  if (sym->e.structinfo->stype == MM256) {
+		  memberCount = 8;
+		  sym->e.structinfo->memberCount = memberCount;
+	  }
+  }
+
+       sym->e.structinfo->isHFA = 0;
+       if ((memberCount >= 1 && memberCount <= 4) && (htype == MT_REAL4 || htype == MT_REAL8) && sym->e.structinfo->isHomogenous == 1)
+       {
+              sym->e.structinfo->isHFA = 1;
+			  sym->e.structinfo->stype = NOVEC;
+       }
+
+	   // Due to vectorcall convention, __m128 which is technically also an HFA (4 floats) must be marked as nonHFA.
+	   // And consequently any structure with name __m128/__m256/__m512 must be marked as non-HFA. (This is a bit ugly, but it's the only way to ensure the types are correctly handled by invoke/proc).
+
+	   int c0 = strncmp(sym->sym.name, "__m128", 6);
+	   int c1 = strncmp(sym->sym.name, "__m256", 6);
+#if EVEXSUPP
+	   int c2 = strncmp(sym->sym.name, "__m512", 6);
+#endif
+	   if (c0 == 0)
+	   {
+		   sym->e.structinfo->isHFA = 0;
+		   sym->e.structinfo->stype = MM128;
+	   }
+	   else if (c1 == 0)
+	   {
+		   sym->e.structinfo->isHFA = 0;
+		   sym->e.structinfo->stype = MM256;
+	   }
+#if EVEXSUPP
+	   else if (c2 == 0)
+	   {
+		   sym->e.structinfo->isHFA = 0;
+		   sym->e.structinfo->stype = MM512;
+	   }
+#endif
+
+	   sym->e.structinfo->isHVA = 0;
+	   if (memberCount == 4 && sym->e.structinfo->isHomogenous == 1 && htype == MT_TYPE && sym->sym.typekind != TYPE_UNION)
+	   {
+		   pMember = sym->e.structinfo->head;
+		   uint_8 member1Valid = 0;
+		   uint_8 member2Valid = 0;
+		   uint_8 member3Valid = 0;
+		   uint_8 member4Valid = 0;
+		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member1Valid = 1;
+		   pMember = pMember->next;
+		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member2Valid = 1;
+		   pMember = pMember->next;
+		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member3Valid = 1;
+		   pMember = pMember->next;
+		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member4Valid = 1;
+
+		   pMember = sym->e.structinfo->head;
+		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member1Valid = 1;
+		   pMember = pMember->next;
+		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member2Valid = 1;
+		   pMember = pMember->next;
+		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member3Valid = 1;
+		   pMember = pMember->next;
+		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member4Valid = 1;
+
+		   if (member1Valid == 1 && member2Valid == 1 && member3Valid == 1 && member4Valid == 1)
+		   {
+			   sym->e.structinfo->isHVA = 1;
+		   }
+	   }
+	   else if (memberCount == 3 && sym->e.structinfo->isHomogenous == 1 && htype == MT_TYPE && sym->sym.typekind != TYPE_UNION)
+	   {
+		   pMember = sym->e.structinfo->head;
+		   uint_8 member1Valid = 0;
+		   uint_8 member2Valid = 0;
+		   uint_8 member3Valid = 0;
+		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member1Valid = 1;
+		   pMember = pMember->next;
+		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member2Valid = 1;
+		   pMember = pMember->next;
+		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member3Valid = 1;
+
+		   pMember = sym->e.structinfo->head;
+		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member1Valid = 1;
+		   pMember = pMember->next;
+		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member2Valid = 1;
+		   pMember = pMember->next;
+		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member3Valid = 1;
+
+		   if (member1Valid == 1 && member2Valid == 1 && member3Valid == 1)
+		   {
+			   sym->e.structinfo->isHVA = 1;
+		   }
+	   }
+	   else if (memberCount == 2 && sym->e.structinfo->isHomogenous == 1 && htype == MT_TYPE && sym->sym.typekind != TYPE_UNION)
+	   {
+		   pMember = sym->e.structinfo->head;
+		   uint_8 member1Valid = 0;
+		   uint_8 member2Valid = 0;
+		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member1Valid = 1;
+		   pMember = pMember->next;
+		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member2Valid = 1;
+
+		   pMember = sym->e.structinfo->head;
+		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member1Valid = 1;
+		   pMember = pMember->next;
+		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member2Valid = 1;
+
+		   if (member1Valid == 1 && member2Valid == 1)
+		   {
+			   sym->e.structinfo->isHVA = 1;
+		   }
+	   }
+	   else if (memberCount == 1 && sym->e.structinfo->isHomogenous == 1 && htype == MT_TYPE && sym->sym.typekind != TYPE_UNION)
+	   {
+		   pMember = sym->e.structinfo->head;
+		   uint_8 member1Valid = 0;
+		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member1Valid = 1;
+		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member1Valid = 1;
+		   if (member1Valid == 1)
+		   {
+			   sym->e.structinfo->isHVA = 1;
+		   }
+	   }
+		#ifdef DEBUG_OUT	   
+			printf("Symbol VectorCall Settings: %s isHomogenous:%u isHFA:%u isHVA:%u MMType:%u memberCount:%u\n", sym->sym.name, sym->e.structinfo->isHomogenous, sym->e.structinfo->isHFA, sym->e.structinfo->isHVA, sym->e.structinfo->stype, sym->e.structinfo->memberCount);
+		#endif
+
+}
 #ifdef DEBUG_OUT
 
 static void DumpSymbol( struct asym *sym )

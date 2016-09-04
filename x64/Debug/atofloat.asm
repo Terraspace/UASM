@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 _DATA	SEGMENT
@@ -12,18 +12,18 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG8602	DB	'atofloat(%s, 4): magnitude too large; FLT_MAX=%e FLT_MIN'
+$SG8616	DB	'atofloat(%s, 4): magnitude too large; FLT_MAX=%e FLT_MIN'
 	DB	'=%e', 0aH, 00H
 	ORG $+3
-$SG8606	DB	'atofloat(%s, 8): magnitude too large', 0aH, 00H
+$SG8620	DB	'atofloat(%s, 8): magnitude too large', 0aH, 00H
 _DATA	ENDS
 PUBLIC	atofloat
 PUBLIC	__real@0000000000000000
 PUBLIC	__real@3810000000000000
 PUBLIC	__real@47efffffe0000000
 PUBLIC	__real@bff0000000000000
-EXTRN	__imp__errno:PROC
-EXTRN	__imp_strtod:PROC
+EXTRN	_errno:PROC
+EXTRN	strtod:PROC
 EXTRN	memset:PROC
 EXTRN	strlen:PROC
 EXTRN	DoDebugMsg:PROC
@@ -31,13 +31,11 @@ EXTRN	EmitErr:PROC
 EXTRN	EmitWarn:PROC
 EXTRN	strtotb:PROC
 EXTRN	myatoi128:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
 EXTRN	Parse_Pass:DWORD
 EXTRN	_fltused:DWORD
 pdata	SEGMENT
 $pdata$atofloat DD imagerel $LN22
-	DD	imagerel $LN22+607
+	DD	imagerel $LN22+578
 	DD	imagerel $unwind$atofloat
 pdata	ENDS
 ;	COMDAT __real@bff0000000000000
@@ -56,31 +54,23 @@ CONST	ENDS
 CONST	SEGMENT
 __real@0000000000000000 DQ 00000000000000000r	; 0
 CONST	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
 xdata	SEGMENT
-$unwind$atofloat DD 022d01H
-	DD	070159219H
+$unwind$atofloat DD 011801H
+	DD	08218H
 xdata	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\atofloat.c
 _TEXT	SEGMENT
-double_value$ = 32
-float_value$ = 40
+tv81 = 32
+float_value$ = 36
+double_value$ = 40
 p$1 = 48
 end$2 = 56
-tv81 = 64
-out$ = 96
-inp$ = 104
-size$ = 112
-negative$ = 120
-ftype$ = 128
+out$ = 80
+inp$ = 88
+size$ = 96
+negative$ = 104
+ftype$ = 112
 atofloat PROC
 
 ; 26   : {
@@ -90,13 +80,7 @@ $LN22:
 	mov	DWORD PTR [rsp+24], r8d
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 80					; 00000050H
-	mov	rdi, rsp
-	mov	ecx, 20
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+96]
+	sub	rsp, 72					; 00000048H
 
 ; 27   :     //const char *inp;
 ; 28   :     double  double_value;
@@ -204,7 +188,7 @@ $LN10@atofloat:
 
 	xor	edx, edx
 	mov	rcx, QWORD PTR inp$[rsp]
-	call	QWORD PTR __imp_strtod
+	call	strtod
 	movsd	QWORD PTR double_value$[rsp], xmm0
 
 ; 61   :             /* v2.06: check FLT_MAX added */
@@ -232,7 +216,7 @@ $LN12@atofloat:
 	movsd	xmm2, QWORD PTR __real@47efffffe0000000
 	movd	r8, xmm2
 	mov	rdx, QWORD PTR inp$[rsp]
-	lea	rcx, OFFSET FLAT:$SG8602
+	lea	rcx, OFFSET FLAT:$SG8616
 	call	DoDebugMsg
 
 ; 66   :                 EmitErr( MAGNITUDE_TOO_LARGE_FOR_SPECIFIED_SIZE );
@@ -275,27 +259,27 @@ $LN14@atofloat:
 ; 74   :         case 8:
 ; 75   :             errno = 0; /* v2.11: init errno; errno is set on over- and under-flow */
 
-	call	QWORD PTR __imp__errno
+	call	_errno
 	mov	DWORD PTR [rax], 0
 
 ; 76   :             double_value = strtod( inp, NULL );
 
 	xor	edx, edx
 	mov	rcx, QWORD PTR inp$[rsp]
-	call	QWORD PTR __imp_strtod
+	call	strtod
 	movsd	QWORD PTR double_value$[rsp], xmm0
 
 ; 77   :             /* v2.11: check added */
 ; 78   :             if ( errno == ERANGE ) {
 
-	call	QWORD PTR __imp__errno
+	call	_errno
 	cmp	DWORD PTR [rax], 34			; 00000022H
 	jne	SHORT $LN15@atofloat
 
 ; 79   :                 DebugMsg(("atofloat(%s, 8): magnitude too large\n", inp ));
 
 	mov	rdx, QWORD PTR inp$[rsp]
-	lea	rcx, OFFSET FLAT:$SG8606
+	lea	rcx, OFFSET FLAT:$SG8620
 	call	DoDebugMsg
 
 ; 80   :                 EmitErr( MAGNITUDE_TOO_LARGE_FOR_SPECIFIED_SIZE );
@@ -373,8 +357,7 @@ $LN8@atofloat:
 ; 98   :     return;
 ; 99   : }
 
-	add	rsp, 80					; 00000050H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 atofloat ENDP
 _TEXT	ENDS

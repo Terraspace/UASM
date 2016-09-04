@@ -12,9 +12,9 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10669 DB	'_%s@%d', 00H
+$SG10692 DB	'_%s@%d', 00H
 	ORG $+1
-$SG10676 DB	'@%s@%u', 00H
+$SG10699 DB	'@%s@%u', 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	sprintf
@@ -138,7 +138,7 @@ StdcallMangler PROC
 ; 107  :         return( sprintf( buffer, "_%s@%d", sym->name, dir->e.procinfo->parasize ) );
 
 	mov	rax, QWORD PTR [rcx+96]
-	lea	rdx, OFFSET FLAT:$SG10669
+	lea	rdx, OFFSET FLAT:$SG10692
 	mov	r8, QWORD PTR [rcx+8]
 	mov	rcx, r10
 	mov	r9d, DWORD PTR [rax+32]
@@ -447,7 +447,7 @@ ms32_decorate PROC
 	mov	rax, QWORD PTR [rcx+96]
 	mov	r10, rdx
 	mov	r8, QWORD PTR [rcx+8]
-	lea	rdx, OFFSET FLAT:$SG10676
+	lea	rdx, OFFSET FLAT:$SG10699
 	mov	rcx, r10
 	mov	r9d, DWORD PTR [rax+32]
 	jmp	sprintf

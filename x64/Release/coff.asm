@@ -6,9 +6,9 @@ INCLUDELIB LIBCMT
 INCLUDELIB OLDNAMES
 
 _BSS	SEGMENT
-$SG11944 DB	01H DUP (?)
-$SG12004 DB	01H DUP (?)
-$SG12009 DB	01H DUP (?)
+$SG11967 DB	01H DUP (?)
+$SG12027 DB	01H DUP (?)
+$SG12032 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	decoflags:BYTE
@@ -27,33 +27,33 @@ isFeat00 DB	'@feat.00'
 	DB	00H
 CONST	ENDS
 _DATA	SEGMENT
-$SG11437 DB	'.debug$S', 00H
+$SG11460 DB	'.debug$S', 00H
 	ORG $+7
-$SG11438 DB	'.debug$T', 00H
+$SG11461 DB	'.debug$T', 00H
 	ORG $+3
-$SG11513 DB	'/%u', 00H
-$SG11526 DB	'CONST', 00H
-	ORG $+2
-$SG11653 DB	'.file', 00H
+$SG11536 DB	'/%u', 00H
+$SG11549 DB	'CONST', 00H
 	ORG $+2
 $SG11676 DB	'.file', 00H
 	ORG $+2
-$SG11689 DB	'.bf', 00H
-$SG11694 DB	'.lf', 00H
-$SG11696 DB	'.ef', 00H
+$SG11699 DB	'.file', 00H
+	ORG $+2
+$SG11712 DB	'.bf', 00H
+$SG11717 DB	'.lf', 00H
+$SG11719 DB	'.ef', 00H
 	ORG $+4
-$SG11953 DB	'-export:%s ', 00H
+$SG11976 DB	'-export:%s ', 00H
 	ORG $+4
-$SG11954 DB	'-export:%s=%s ', 00H
+$SG11977 DB	'-export:%s=%s ', 00H
 	ORG $+1
-$SG11957 DB	'-defaultlib:"%s" ', 00H
+$SG11980 DB	'-defaultlib:"%s" ', 00H
 	ORG $+6
-$SG11958 DB	'-defaultlib:%s ', 00H
-$SG11960 DB	'-entry:%s ', 00H
+$SG11981 DB	'-defaultlib:%s ', 00H
+$SG11983 DB	'-entry:%s ', 00H
 	ORG $+5
-$SG11963 DB	'-import:', 00H
+$SG11986 DB	'-import:', 00H
 	ORG $+7
-$SG12010 DB	'.sxdata', 00H
+$SG12033 DB	'.sxdata', 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	sprintf
@@ -227,31 +227,31 @@ pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$coff_create_drectve DD imagerel coff_create_drectve
-	DD	imagerel coff_create_drectve+220
+	DD	imagerel coff_create_drectve+223
 	DD	imagerel $unwind$coff_create_drectve
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$0$coff_create_drectve DD imagerel coff_create_drectve+220
-	DD	imagerel coff_create_drectve+231
+$pdata$0$coff_create_drectve DD imagerel coff_create_drectve+223
+	DD	imagerel coff_create_drectve+234
 	DD	imagerel $chain$0$coff_create_drectve
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$1$coff_create_drectve DD imagerel coff_create_drectve+231
-	DD	imagerel coff_create_drectve+751
+$pdata$1$coff_create_drectve DD imagerel coff_create_drectve+234
+	DD	imagerel coff_create_drectve+765
 	DD	imagerel $chain$1$coff_create_drectve
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$2$coff_create_drectve DD imagerel coff_create_drectve+751
-	DD	imagerel coff_create_drectve+1194
+$pdata$2$coff_create_drectve DD imagerel coff_create_drectve+765
+	DD	imagerel coff_create_drectve+1210
 	DD	imagerel $chain$2$coff_create_drectve
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$3$coff_create_drectve DD imagerel coff_create_drectve+1194
-	DD	imagerel coff_create_drectve+1219
+$pdata$3$coff_create_drectve DD imagerel coff_create_drectve+1210
+	DD	imagerel coff_create_drectve+1235
 	DD	imagerel $chain$3$coff_create_drectve
 pdata	ENDS
 pdata	SEGMENT
@@ -291,29 +291,29 @@ $pdata$11$coff_write_module DD imagerel coff_write_module+836
 pdata	ENDS
 CONST	SEGMENT
 	ORG $+6
-SymDebName DQ	FLAT:$SG11437
-	DQ	FLAT:$SG11438
+SymDebName DQ	FLAT:$SG11460
+	DQ	FLAT:$SG11461
 CONST	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
 $chain$3$coff_create_drectve DD 021H
 	DD	imagerel coff_create_drectve
-	DD	imagerel coff_create_drectve+220
+	DD	imagerel coff_create_drectve+223
 	DD	imagerel $unwind$coff_create_drectve
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
 $chain$2$coff_create_drectve DD 021H
-	DD	imagerel coff_create_drectve+220
-	DD	imagerel coff_create_drectve+231
+	DD	imagerel coff_create_drectve+223
+	DD	imagerel coff_create_drectve+234
 	DD	imagerel $chain$0$coff_create_drectve
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
 $chain$1$coff_create_drectve DD 020821H
 	DD	04be408H
-	DD	imagerel coff_create_drectve+220
-	DD	imagerel coff_create_drectve+231
+	DD	imagerel coff_create_drectve+223
+	DD	imagerel coff_create_drectve+234
 	DD	imagerel $chain$0$coff_create_drectve
 xdata	ENDS
 ;	COMDAT xdata
@@ -321,7 +321,7 @@ xdata	SEGMENT
 $chain$0$coff_create_drectve DD 020821H
 	DD	04a3408H
 	DD	imagerel coff_create_drectve
-	DD	imagerel coff_create_drectve+220
+	DD	imagerel coff_create_drectve+223
 	DD	imagerel $unwind$coff_create_drectve
 xdata	ENDS
 ;	COMDAT xdata
@@ -637,7 +637,7 @@ $LL4@coff_write:
 ; 1390 :             if ( NULL == ( cm.SymDeb[i].seg = (struct dsym *)CreateIntSegment( SymDebName[i], "", 0, USE32, TRUE ) ) )
 
 	mov	rcx, QWORD PTR [rsi]
-	lea	rdx, OFFSET FLAT:$SG12004
+	lea	rdx, OFFSET FLAT:$SG12027
 	mov	r9b, 1
 	mov	BYTE PTR [rsp+32], 1
 	xor	r8d, r8d
@@ -774,9 +774,9 @@ $LN6@coff_write:
 ; 1424 :         if ( cm.sxdata = (struct dsym *)CreateIntSegment( ".sxdata", "", MAX_SEGALIGNMENT, modinfo->Ofssize, FALSE ) ) {
 
 	movzx	r9d, BYTE PTR [r15+404]
-	lea	rdx, OFFSET FLAT:$SG12009
+	lea	rdx, OFFSET FLAT:$SG12032
 	mov	ebx, r12d
-	lea	rcx, OFFSET FLAT:$SG12010
+	lea	rcx, OFFSET FLAT:$SG12033
 	mov	r8b, 255				; 000000ffH
 	mov	BYTE PTR [rsp+32], bl
 	call	CreateIntSegment
@@ -1059,7 +1059,7 @@ $LL4@coff_creat:
 ; 1230 :         if( exp->e.procinfo->isexport )
 
 	mov	rax, QWORD PTR [rbp+96]
-	test	BYTE PTR [rax+84], 4
+	test	BYTE PTR [rax+128], 4
 	jne	SHORT $LN120@coff_creat
 
 ; 1222 :     struct dsym *exp;
@@ -1148,7 +1148,7 @@ $LN32@coff_creat:
 ; 1253 :         if ( cm->directives = (struct dsym *)CreateIntSegment( szdrectve, "", MAX_SEGALIGNMENT, modinfo->Ofssize, FALSE ) ) {
 
 	movzx	r9d, BYTE PTR [rcx+404]
-	lea	rdx, OFFSET FLAT:$SG11944
+	lea	rdx, OFFSET FLAT:$SG11967
 	lea	rcx, OFFSET FLAT:szdrectve
 	mov	BYTE PTR [rsp+32], sil
 	mov	r8b, 255				; 000000ffH
@@ -1178,13 +1178,13 @@ $LN32@coff_creat:
 	or	BYTE PTR [rax+107], 2
 	test	rbp, rbp
 	je	SHORT $LN9@coff_creat
-	npad	5
+	npad	2
 $LL10@coff_creat:
 
 ; 1264 :                 if( tmp->e.procinfo->isexport ) {
 
 	mov	rax, QWORD PTR [rbx+96]
-	test	BYTE PTR [rax+84], 4
+	test	BYTE PTR [rax+128], 4
 	je	SHORT $LN8@coff_creat
 
 ; 1265 :                     size += Mangle( &tmp->sym, buffer );
@@ -1229,7 +1229,7 @@ $LN9@coff_creat:
 	mov	rbx, QWORD PTR [r15+64]
 	test	rbx, rbx
 	je	SHORT $LN12@coff_creat
-	npad	13
+	npad	10
 $LL13@coff_creat:
 
 ; 1273 :                 size += strlen( q->value ) + sizeof("-defaultlib:");
@@ -1378,12 +1378,13 @@ $LN15@coff_creat:
 
 	test	rbp, rbp
 	je	SHORT $LN18@coff_creat
+	npad	11
 $LL19@coff_creat:
 
 ; 1309 :                 if( tmp->e.procinfo->isexport ) {
 
 	mov	rax, QWORD PTR [rbp+96]
-	test	BYTE PTR [rax+84], 4
+	test	BYTE PTR [rax+128], 4
 	je	SHORT $LN17@coff_creat
 
 ; 1310 :                     Mangle( &tmp->sym, buffer );
@@ -1401,7 +1402,7 @@ $LL19@coff_creat:
 	mov	rcx, rbx
 	jne	SHORT $LN40@coff_creat
 	lea	r8, QWORD PTR buffer$[rsp]
-	lea	rdx, OFFSET FLAT:$SG11953
+	lea	rdx, OFFSET FLAT:$SG11976
 	call	sprintf
 	jmp	SHORT $LN129@coff_creat
 $LN40@coff_creat:
@@ -1411,7 +1412,7 @@ $LN40@coff_creat:
 
 	mov	r8, QWORD PTR [rbp+8]
 	lea	r9, QWORD PTR buffer$[rsp]
-	lea	rdx, OFFSET FLAT:$SG11954
+	lea	rdx, OFFSET FLAT:$SG11977
 	call	sprintf
 $LN129@coff_creat:
 	movsxd	rcx, eax
@@ -1449,7 +1450,7 @@ $LL22@coff_creat:
 
 ; 1320 :                     p += sprintf( (char *)p,"-defaultlib:\"%s\" ", (char *)q->value );
 
-	lea	rdx, OFFSET FLAT:$SG11957
+	lea	rdx, OFFSET FLAT:$SG11980
 	test	rax, rax
 	jne	SHORT $LN130@coff_creat
 $LN42@coff_creat:
@@ -1457,7 +1458,7 @@ $LN42@coff_creat:
 ; 1321 :                 else
 ; 1322 :                     p += sprintf( (char *)p,"-defaultlib:%s ", (char *)q->value );
 
-	lea	rdx, OFFSET FLAT:$SG11958
+	lea	rdx, OFFSET FLAT:$SG11981
 $LN130@coff_creat:
 	lea	r8, QWORD PTR [r14+8]
 	mov	rcx, rbx
@@ -1486,7 +1487,7 @@ $LN21@coff_creat:
 	call	Mangle
 	cmp	BYTE PTR Options+120, sil
 	je	SHORT $LN52@coff_creat
-	npad	11
+	npad	13
 $LL60@coff_creat:
 	movzx	eax, BYTE PTR temp$1[rsp+rsi]
 	mov	BYTE PTR buffer$[rsp+rsi], al
@@ -1531,7 +1532,7 @@ $LN55@coff_creat:
 
 	lea	r8, QWORD PTR buffer$[rsp]
 	mov	rcx, rbx
-	lea	rdx, OFFSET FLAT:$SG11960
+	lea	rdx, OFFSET FLAT:$SG11983
 	call	sprintf
 	movsxd	rcx, eax
 	add	rbx, rcx
@@ -1544,7 +1545,7 @@ $LN44@coff_creat:
 
 	test	rdi, rdi
 	je	$LN128@coff_creat
-	lea	rsi, OFFSET FLAT:$SG11963
+	lea	rsi, OFFSET FLAT:$SG11986
 	npad	2
 $LL25@coff_creat:
 
@@ -3400,7 +3401,7 @@ $LN20@coff_write:
 ; 449  :         strncpy( is.N.ShortName, ".file", IMAGE_SIZEOF_SHORT_NAME );
 
 	mov	r8d, 8
-	lea	rdx, OFFSET FLAT:$SG11653
+	lea	rdx, OFFSET FLAT:$SG11676
 	lea	rcx, QWORD PTR is$[rsp]
 	call	strncpy
 
@@ -4081,7 +4082,7 @@ $LL13@coff_write:
 ; 594  :             strncpy( is.N.ShortName, ".file", IMAGE_SIZEOF_SHORT_NAME );
 
 	lea	rcx, QWORD PTR is$[rsp]
-	lea	rdx, OFFSET FLAT:$SG11676
+	lea	rdx, OFFSET FLAT:$SG11699
 	mov	r8d, 8
 	call	strncpy
 
@@ -4417,7 +4418,7 @@ $LN56@coff_write:
 ; 661  :             strncpy( is.N.ShortName, ".bf", IMAGE_SIZEOF_SHORT_NAME );
 
 	mov	r8d, 8
-	lea	rdx, OFFSET FLAT:$SG11689
+	lea	rdx, OFFSET FLAT:$SG11712
 	lea	rcx, QWORD PTR is$[rsp]
 	call	strncpy
 
@@ -4489,7 +4490,7 @@ $LN60@coff_write:
 ; 676  :             strncpy( is.N.ShortName, ".lf", IMAGE_SIZEOF_SHORT_NAME );
 
 	mov	r8d, 8
-	lea	rdx, OFFSET FLAT:$SG11694
+	lea	rdx, OFFSET FLAT:$SG11717
 	lea	rcx, QWORD PTR is$[rsp]
 	call	strncpy
 
@@ -4520,7 +4521,7 @@ $LN61@coff_write:
 ; 684  :             strncpy( is.N.ShortName, ".ef", IMAGE_SIZEOF_SHORT_NAME );
 
 	mov	r8d, 8
-	lea	rdx, OFFSET FLAT:$SG11696
+	lea	rdx, OFFSET FLAT:$SG11719
 	lea	rcx, QWORD PTR is$[rsp]
 	call	strncpy
 
@@ -5253,7 +5254,7 @@ $LN40@coff_write:
 	mov	QWORD PTR [r15+96], rax
 $LN41@coff_write:
 	mov	r8d, esi
-	lea	rdx, OFFSET FLAT:$SG11513
+	lea	rdx, OFFSET FLAT:$SG11536
 	lea	rcx, QWORD PTR ish$[rsp]
 	call	sprintf
 $LN9@coff_write:
@@ -5369,7 +5370,7 @@ $LN18@coff_write:
 	test	rax, rax
 	je	SHORT $LN20@coff_write
 	mov	rax, QWORD PTR [rax+8]
-	lea	r9, OFFSET FLAT:$SG11526
+	lea	r9, OFFSET FLAT:$SG11549
 	sub	r9, rax
 	npad	1
 $LL64@coff_write:

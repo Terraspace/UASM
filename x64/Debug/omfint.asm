@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 _DATA	SEGMENT
@@ -64,54 +64,51 @@ func_index DB	06H
 	DB	01H
 CONST	ENDS
 _DATA	SEGMENT
-$SG7698	DB	'omfint.c', 00H
+$SG7712	DB	'omfint.c', 00H
 	ORG $+7
-$SG7740	DB	'PutMem: buffer overflow error [length=%u, free=%u]', 0aH
+$SG7754	DB	'PutMem: buffer overflow error [length=%u, free=%u]', 0aH
 	DB	00H
 	ORG $+4
-$SG7741	DB	'omfint.c', 00H
+$SG7755	DB	'omfint.c', 00H
 	ORG $+7
-$SG7750	DB	'omfint.c', 00H
+$SG7764	DB	'omfint.c', 00H
 	ORG $+7
-$SG7759	DB	'omfint.c', 00H
+$SG7773	DB	'omfint.c', 00H
 	ORG $+7
-$SG7768	DB	'omfint.c', 00H
+$SG7782	DB	'omfint.c', 00H
 	ORG $+7
-$SG7779	DB	'omfint.c', 00H
+$SG7793	DB	'omfint.c', 00H
 	ORG $+7
-$SG7791	DB	'omfint.c', 00H
+$SG7805	DB	'omfint.c', 00H
 	ORG $+7
-$SG7801	DB	'omfint.c', 00H
+$SG7815	DB	'omfint.c', 00H
 	ORG $+7
-$SG7811	DB	'omfint.c', 00H
+$SG7825	DB	'omfint.c', 00H
 	ORG $+7
-$SG7828	DB	'omfint.c', 00H
+$SG7842	DB	'omfint.c', 00H
 	ORG $+7
-$SG7836	DB	'omfint.c', 00H
+$SG7850	DB	'omfint.c', 00H
 	ORG $+7
-$SG7844	DB	'omfint.c', 00H
+$SG7858	DB	'omfint.c', 00H
 	ORG $+7
-$SG7855	DB	'omfint.c', 00H
+$SG7869	DB	'omfint.c', 00H
 	ORG $+7
-$SG7862	DB	'unexpected OMF record type 0x%02X', 0aH, 00H
+$SG7876	DB	'unexpected OMF record type 0x%02X', 0aH, 00H
 	ORG $+5
-$SG7863	DB	'omfint.c', 00H
+$SG7877	DB	'omfint.c', 00H
 	ORG $+7
-$SG7888	DB	'omfint.c', 00H
+$SG7902	DB	'omfint.c', 00H
 	ORG $+7
-$SG7889	DB	'omf_write_record( cmd=%X data=%p length=%u )', 0aH, 00H
+$SG7903	DB	'omf_write_record( cmd=%X data=%p length=%u )', 0aH, 00H
 _DATA	ENDS
 PUBLIC	omf_write_record
-EXTRN	__imp_fwrite:PROC
+EXTRN	fwrite:PROC
 EXTRN	memcpy:PROC
 EXTRN	DoDebugMsg:PROC
 EXTRN	DoDebugMsg1:PROC
 EXTRN	Fatal:PROC
 EXTRN	WriteError:PROC
 EXTRN	InternalError:PROC
-EXTRN	_RTC_CheckStackVars:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
 EXTRN	__GSHandlerCheck:PROC
 EXTRN	__chkstk:PROC
 EXTRN	__security_check_cookie:PROC
@@ -119,145 +116,101 @@ EXTRN	ModuleInfo:BYTE
 EXTRN	__security_cookie:QWORD
 pdata	SEGMENT
 $pdata$omf_write_record DD imagerel $LN5
-	DD	imagerel $LN5+307
+	DD	imagerel $LN5+255
 	DD	imagerel $unwind$omf_write_record
 $pdata$safeWrite DD imagerel safeWrite
-	DD	imagerel safeWrite+88
+	DD	imagerel safeWrite+65
 	DD	imagerel $unwind$safeWrite
-$pdata$WBegRec DD imagerel WBegRec
-	DD	imagerel WBegRec+36
-	DD	imagerel $unwind$WBegRec
 $pdata$WEndRec DD imagerel WEndRec
-	DD	imagerel WEndRec+328
+	DD	imagerel WEndRec+306
 	DD	imagerel $unwind$WEndRec
-$pdata$PutByte DD imagerel PutByte
-	DD	imagerel PutByte+49
-	DD	imagerel $unwind$PutByte
 $pdata$PutIndex DD imagerel PutIndex
-	DD	imagerel PutIndex+99
+	DD	imagerel PutIndex+77
 	DD	imagerel $unwind$PutIndex
-$pdata$PutWord DD imagerel PutWord
-	DD	imagerel PutWord+53
-	DD	imagerel $unwind$PutWord
-$pdata$PutDword DD imagerel PutDword
-	DD	imagerel PutDword+50
-	DD	imagerel $unwind$PutDword
 $pdata$PutMem DD imagerel PutMem
-	DD	imagerel PutMem+176
+	DD	imagerel PutMem+154
 	DD	imagerel $unwind$PutMem
 $pdata$writeMisc DD imagerel writeMisc
-	DD	imagerel writeMisc+142
+	DD	imagerel writeMisc+120
 	DD	imagerel $unwind$writeMisc
 $pdata$writeMisc32 DD imagerel writeMisc32
-	DD	imagerel writeMisc32+156
+	DD	imagerel writeMisc32+134
 	DD	imagerel $unwind$writeMisc32
 $pdata$writeComent DD imagerel writeComent
-	DD	imagerel writeComent+173
+	DD	imagerel writeComent+151
 	DD	imagerel $unwind$writeComent
 $pdata$writeSegdef DD imagerel writeSegdef
-	DD	imagerel writeSegdef+394
+	DD	imagerel writeSegdef+372
 	DD	imagerel $unwind$writeSegdef
 $pdata$writeLedata DD imagerel writeLedata
-	DD	imagerel writeLedata+247
+	DD	imagerel writeLedata+225
 	DD	imagerel $unwind$writeLedata
 $pdata$writeTheadr DD imagerel writeTheadr
-	DD	imagerel writeTheadr+103
+	DD	imagerel writeTheadr+81
 	DD	imagerel $unwind$writeTheadr
 $pdata$writeModend DD imagerel writeModend
-	DD	imagerel writeModend+298
+	DD	imagerel writeModend+276
 	DD	imagerel $unwind$writeModend
 $pdata$PutBase DD imagerel PutBase
-	DD	imagerel PutBase+122
+	DD	imagerel PutBase+100
 	DD	imagerel $unwind$PutBase
 $pdata$writePubdef DD imagerel writePubdef
-	DD	imagerel writePubdef+198
+	DD	imagerel writePubdef+176
 	DD	imagerel $unwind$writePubdef
 $pdata$writeLinnum DD imagerel writeLinnum
-	DD	imagerel writeLinnum+176
+	DD	imagerel writeLinnum+154
 	DD	imagerel $unwind$writeLinnum
 $pdata$writeComdat DD imagerel writeComdat
-	DD	imagerel writeComdat+345
+	DD	imagerel writeComdat+323
 	DD	imagerel $unwind$writeComdat
 $pdata$writeLinsym DD imagerel writeLinsym
-	DD	imagerel writeLinsym+192
+	DD	imagerel writeLinsym+170
 	DD	imagerel $unwind$writeLinsym
 $pdata$writeUnexp DD imagerel writeUnexp
-	DD	imagerel writeUnexp+89
+	DD	imagerel writeUnexp+67
 	DD	imagerel $unwind$writeUnexp
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
 xdata	SEGMENT
-$unwind$omf_write_record DD 033c19H
-	DD	020c0113H
-	DD	07006H
+$unwind$omf_write_record DD 022419H
+	DD	02090112H
 	DD	imagerel __GSHandlerCheck
-	DD	01050H
-$unwind$safeWrite DD 022801H
-	DD	070103214H
-$unwind$WBegRec DD 010a01H
-	DD	0700aH
-$unwind$WEndRec DD 021e01H
-	DD	07006920aH
-$unwind$PutByte DD 010a01H
-	DD	0700aH
-$unwind$PutIndex DD 022301H
-	DD	0700b320fH
-$unwind$PutWord DD 010b01H
-	DD	0700bH
-$unwind$PutDword DD 010a01H
-	DD	0700aH
-$unwind$PutMem DD 022801H
-	DD	070103214H
-$unwind$writeMisc DD 022301H
-	DD	0700b520fH
-$unwind$writeMisc32 DD 022301H
-	DD	0700b520fH
-$unwind$writeComent DD 022301H
-	DD	0700b520fH
-$unwind$writeSegdef DD 022301H
-	DD	0700b520fH
-$unwind$writeLedata DD 022301H
-	DD	0700b520fH
-$unwind$writeTheadr DD 022301H
-	DD	0700b520fH
-$unwind$writeModend DD 022301H
-	DD	0700b720fH
-$unwind$PutBase DD 022301H
-	DD	0700b320fH
-$unwind$writePubdef DD 022301H
-	DD	0700b520fH
-$unwind$writeLinnum DD 022301H
-	DD	0700b520fH
-$unwind$writeComdat DD 022301H
-	DD	0700b520fH
-$unwind$writeLinsym DD 022301H
-	DD	0700b520fH
-$unwind$writeUnexp DD 022301H
-	DD	0700b320fH
+	DD	01030H
+$unwind$safeWrite DD 011301H
+	DD	04213H
+$unwind$WEndRec DD 010901H
+	DD	0a209H
+$unwind$PutIndex DD 010e01H
+	DD	0420eH
+$unwind$PutMem DD 011301H
+	DD	04213H
+$unwind$writeMisc DD 010e01H
+	DD	0620eH
+$unwind$writeMisc32 DD 010e01H
+	DD	0620eH
+$unwind$writeComent DD 010e01H
+	DD	0620eH
+$unwind$writeSegdef DD 010e01H
+	DD	0620eH
+$unwind$writeLedata DD 010e01H
+	DD	0620eH
+$unwind$writeTheadr DD 010e01H
+	DD	0620eH
+$unwind$writeModend DD 010e01H
+	DD	0820eH
+$unwind$PutBase DD 010e01H
+	DD	0420eH
+$unwind$writePubdef DD 010e01H
+	DD	0620eH
+$unwind$writeLinnum DD 010e01H
+	DD	0620eH
+$unwind$writeComdat DD 010e01H
+	DD	0620eH
+$unwind$writeLinsym DD 010e01H
+	DD	0620eH
+$unwind$writeUnexp DD 010e01H
+	DD	0420eH
 xdata	ENDS
-CONST	SEGMENT
-	ORG $+2
-omf_write_record$rtcName$0 DB 06fH
-	DB	075H
-	DB	074H
-	DB	00H
-	ORG $+4
-omf_write_record$rtcVarDesc DD 030H
-	DD	0ff7H
-	DQ	FLAT:omf_write_record$rtcName$0
-	ORG $+48
-omf_write_record$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:omf_write_record$rtcVarDesc
-CONST	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omfint.c
 _TEXT	SEGMENT
 out$ = 48
@@ -268,26 +221,20 @@ writeUnexp PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 457  :     DebugMsg(("unexpected OMF record type 0x%02X\n", objr->command ));
 
 	mov	rax, QWORD PTR objr$[rsp]
 	movzx	eax, BYTE PTR [rax+16]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG7862
+	lea	rcx, OFFSET FLAT:$SG7876
 	call	DoDebugMsg
 
 ; 458  :     Fatal( INTERNAL_ERROR, __FILE__, __LINE__ );
 
 	mov	r8d, 458				; 000001caH
-	lea	rdx, OFFSET FLAT:$SG7863
+	lea	rdx, OFFSET FLAT:$SG7877
 	mov	ecx, 110				; 0000006eH
 	call	Fatal
 
@@ -298,12 +245,11 @@ writeUnexp PROC
 
 ; 461  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 writeUnexp ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omfint.c
 _TEXT	SEGMENT
 tv70 = 32
@@ -315,13 +261,7 @@ writeLinsym PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 441  : 
 ; 442  :     /**/myassert( objr->command == CMD_LINSYM );
@@ -334,7 +274,7 @@ writeLinsym PROC
 	jmp	SHORT $LN4@writeLinsy
 $LN3@writeLinsy:
 	mov	edx, 442				; 000001baH
-	lea	rcx, OFFSET FLAT:$SG7855
+	lea	rcx, OFFSET FLAT:$SG7869
 	call	InternalError
 	mov	DWORD PTR tv70[rsp], eax
 $LN4@writeLinsy:
@@ -383,12 +323,11 @@ $LN4@writeLinsy:
 
 ; 450  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 writeLinsym ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omfint.c
 _TEXT	SEGMENT
 tv70 = 32
@@ -400,13 +339,7 @@ writeComdat PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 413  :     /**/myassert( objr->command == CMD_COMDAT );
 
@@ -418,7 +351,7 @@ writeComdat PROC
 	jmp	SHORT $LN7@writeComda
 $LN6@writeComda:
 	mov	edx, 413				; 0000019dH
-	lea	rcx, OFFSET FLAT:$SG7844
+	lea	rcx, OFFSET FLAT:$SG7858
 	call	InternalError
 	mov	DWORD PTR tv70[rsp], eax
 $LN7@writeComda:
@@ -538,12 +471,11 @@ $LN4@writeComda:
 
 ; 434  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 writeComdat ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omfint.c
 _TEXT	SEGMENT
 tv70 = 32
@@ -555,13 +487,7 @@ writeLinnum PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 394  : 
 ; 395  :     /**/myassert( objr->command == CMD_LINNUM );
@@ -574,7 +500,7 @@ writeLinnum PROC
 	jmp	SHORT $LN4@writeLinnu
 $LN3@writeLinnu:
 	mov	edx, 395				; 0000018bH
-	lea	rcx, OFFSET FLAT:$SG7836
+	lea	rcx, OFFSET FLAT:$SG7850
 	call	InternalError
 	mov	DWORD PTR tv70[rsp], eax
 $LN4@writeLinnu:
@@ -617,12 +543,11 @@ $LN4@writeLinnu:
 
 ; 402  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 writeLinnum ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omfint.c
 _TEXT	SEGMENT
 tv73 = 32
@@ -634,13 +559,7 @@ writePubdef PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 382  :     /**/myassert( objr->command == CMD_PUBDEF || objr->command == CMD_LPUBDEF );
 
@@ -653,7 +572,7 @@ writePubdef PROC
 	cmp	eax, 182				; 000000b6H
 	je	SHORT $LN3@writePubde
 	mov	edx, 382				; 0000017eH
-	lea	rcx, OFFSET FLAT:$SG7828
+	lea	rcx, OFFSET FLAT:$SG7842
 	call	InternalError
 	mov	DWORD PTR tv73[rsp], eax
 	jmp	SHORT $LN4@writePubde
@@ -701,12 +620,11 @@ $LN4@writePubde:
 
 ; 389  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 writePubdef ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omfint.c
 _TEXT	SEGMENT
 out$ = 48
@@ -717,13 +635,7 @@ PutBase	PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 372  :     PutIndex( out, base->grp_idx );
 
@@ -761,19 +673,18 @@ $LN2@PutBase:
 ; 376  :     }
 ; 377  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 PutBase	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omfint.c
 _TEXT	SEGMENT
-is32$ = 32
-mtype$ = 36
-tv70 = 40
-tv77 = 44
-tv85 = 48
+mtype$ = 32
+tv77 = 36
+tv85 = 40
+tv70 = 44
+is32$ = 48
 out$ = 80
 objr$ = 88
 writeModend PROC
@@ -782,13 +693,7 @@ writeModend PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 72					; 00000048H
 
 ; 337  :     int     is32;
 ; 338  :     //uint_8  is_log;
@@ -804,7 +709,7 @@ writeModend PROC
 	jmp	SHORT $LN6@writeModen
 $LN5@writeModen:
 	mov	edx, 341				; 00000155H
-	lea	rcx, OFFSET FLAT:$SG7811
+	lea	rcx, OFFSET FLAT:$SG7825
 	call	InternalError
 	mov	DWORD PTR tv70[rsp], eax
 $LN6@writeModen:
@@ -912,12 +817,11 @@ $LN3@writeModen:
 
 ; 365  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 writeModend ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omfint.c
 _TEXT	SEGMENT
 tv70 = 32
@@ -929,13 +833,7 @@ writeTheadr PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 329  :     /**/myassert( objr->command == CMD_THEADR );
 
@@ -947,7 +845,7 @@ writeTheadr PROC
 	jmp	SHORT $LN4@writeThead
 $LN3@writeThead:
 	mov	edx, 329				; 00000149H
-	lea	rcx, OFFSET FLAT:$SG7801
+	lea	rcx, OFFSET FLAT:$SG7815
 	call	InternalError
 	mov	DWORD PTR tv70[rsp], eax
 $LN4@writeThead:
@@ -961,12 +859,11 @@ $LN4@writeThead:
 
 ; 332  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 writeTheadr ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omfint.c
 _TEXT	SEGMENT
 tv73 = 32
@@ -978,13 +875,7 @@ writeLedata PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 312  :     /**/myassert( objr->command == CMD_LEDATA || objr->command == CMD_LIDATA );
 
@@ -997,7 +888,7 @@ writeLedata PROC
 	cmp	eax, 162				; 000000a2H
 	je	SHORT $LN5@writeLedat
 	mov	edx, 312				; 00000138H
-	lea	rcx, OFFSET FLAT:$SG7791
+	lea	rcx, OFFSET FLAT:$SG7805
 	call	InternalError
 	mov	DWORD PTR tv73[rsp], eax
 	jmp	SHORT $LN6@writeLedat
@@ -1072,17 +963,16 @@ $LN3@writeLedat:
 
 ; 324  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 writeLedata ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omfint.c
 _TEXT	SEGMENT
-is32$ = 32
-acbp$ = 36
-align$ = 37
+acbp$ = 32
+align$ = 33
+is32$ = 36
 tv70 = 40
 out$ = 64
 objr$ = 72
@@ -1092,13 +982,7 @@ writeSegdef PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 216  :     int         is32;
 ; 217  :     uint_8      acbp;
@@ -1114,7 +998,7 @@ writeSegdef PROC
 	jmp	SHORT $LN8@writeSegde
 $LN7@writeSegde:
 	mov	edx, 220				; 000000dcH
-	lea	rcx, OFFSET FLAT:$SG7779
+	lea	rcx, OFFSET FLAT:$SG7793
 	call	InternalError
 	mov	DWORD PTR tv70[rsp], eax
 $LN8@writeSegde:
@@ -1306,12 +1190,11 @@ $LN5@writeSegde:
 
 ; 290  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 writeSegdef ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omfint.c
 _TEXT	SEGMENT
 tv69 = 32
@@ -1323,13 +1206,7 @@ writeComent PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 203  :     /**/myassert( objr->data != NULL );
 
@@ -1340,7 +1217,7 @@ writeComent PROC
 	jmp	SHORT $LN4@writeComen
 $LN3@writeComen:
 	mov	edx, 203				; 000000cbH
-	lea	rcx, OFFSET FLAT:$SG7768
+	lea	rcx, OFFSET FLAT:$SG7782
 	call	InternalError
 	mov	DWORD PTR tv69[rsp], eax
 $LN4@writeComen:
@@ -1386,12 +1263,11 @@ $LN4@writeComen:
 
 ; 211  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 writeComent ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omfint.c
 _TEXT	SEGMENT
 tv69 = 32
@@ -1403,13 +1279,7 @@ writeMisc32 PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 192  :     /**/myassert( objr->data != NULL );
 
@@ -1420,7 +1290,7 @@ writeMisc32 PROC
 	jmp	SHORT $LN4@writeMisc3
 $LN3@writeMisc3:
 	mov	edx, 192				; 000000c0H
-	lea	rcx, OFFSET FLAT:$SG7759
+	lea	rcx, OFFSET FLAT:$SG7773
 	call	InternalError
 	mov	DWORD PTR tv69[rsp], eax
 $LN4@writeMisc3:
@@ -1457,12 +1327,11 @@ $LN4@writeMisc3:
 
 ; 198  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 writeMisc32 ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omfint.c
 _TEXT	SEGMENT
 tv69 = 32
@@ -1474,13 +1343,7 @@ writeMisc PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 179  :     /**/myassert( objr->data != NULL );
 
@@ -1491,7 +1354,7 @@ writeMisc PROC
 	jmp	SHORT $LN4@writeMisc
 $LN3@writeMisc:
 	mov	edx, 179				; 000000b3H
-	lea	rcx, OFFSET FLAT:$SG7750
+	lea	rcx, OFFSET FLAT:$SG7764
 	call	InternalError
 	mov	DWORD PTR tv69[rsp], eax
 $LN4@writeMisc:
@@ -1524,12 +1387,11 @@ $LN4@writeMisc:
 
 ; 185  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 writeMisc ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omfint.c
 _TEXT	SEGMENT
 out$ = 48
@@ -1542,13 +1404,7 @@ PutMem	PROC
 	mov	DWORD PTR [rsp+24], r8d
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 159  :     /* ensure that there is enough free space in the buffer,
 ; 160  :      * and also 1 byte left for the chksum!
@@ -1595,13 +1451,13 @@ $LN2@PutMem:
 	mov	eax, ecx
 	mov	r8d, eax
 	mov	edx, DWORD PTR length$[rsp]
-	lea	rcx, OFFSET FLAT:$SG7740
+	lea	rcx, OFFSET FLAT:$SG7754
 	call	DoDebugMsg
 
 ; 168  :         Fatal( INTERNAL_ERROR, __FILE__, __LINE__ );
 
 	mov	r8d, 168				; 000000a8H
-	lea	rdx, OFFSET FLAT:$SG7741
+	lea	rdx, OFFSET FLAT:$SG7755
 	mov	ecx, 110				; 0000006eH
 	call	Fatal
 $LN3@PutMem:
@@ -1609,23 +1465,21 @@ $LN3@PutMem:
 ; 169  :     }
 ; 170  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 PutMem	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omfint.c
 _TEXT	SEGMENT
-out$ = 16
-value$ = 24
+out$ = 8
+value$ = 16
 PutDword PROC
 
 ; 149  : {
 
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
 
 ; 150  :     WriteU32( out->buffer + out->in_buf, value );
 
@@ -1645,22 +1499,20 @@ PutDword PROC
 
 ; 152  : }
 
-	pop	rdi
 	ret	0
 PutDword ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omfint.c
 _TEXT	SEGMENT
-out$ = 16
-value$ = 24
+out$ = 8
+value$ = 16
 PutWord	PROC
 
 ; 140  : {
 
 	mov	WORD PTR [rsp+16], dx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
 
 ; 141  :     WriteU16( out->buffer + out->in_buf, value );
 
@@ -1680,11 +1532,10 @@ PutWord	PROC
 
 ; 143  : }
 
-	pop	rdi
 	ret	0
 PutWord	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omfint.c
 _TEXT	SEGMENT
 out$ = 48
@@ -1695,13 +1546,7 @@ PutIndex PROC
 
 	mov	WORD PTR [rsp+16], dx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 130  :     if( index > 0x7f ) {
 
@@ -1730,23 +1575,21 @@ $LN2@PutIndex:
 
 ; 134  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 PutIndex ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omfint.c
 _TEXT	SEGMENT
-out$ = 16
-value$ = 24
+out$ = 8
+value$ = 16
 PutByte	PROC
 
 ; 121  : {
 
 	mov	BYTE PTR [rsp+16], dl
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
 
 ; 122  :     out->buffer[ out->in_buf++ ] = value;
 
@@ -1763,32 +1606,25 @@ PutByte	PROC
 
 ; 123  : }
 
-	pop	rdi
 	ret	0
 PutByte	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omfint.c
 _TEXT	SEGMENT
 checksum$ = 32
+tv71 = 36
 p$ = 40
 end$ = 48
-tv71 = 56
+tv140 = 56
 tv137 = 64
-tv140 = 72
 out$ = 96
 WEndRec	PROC
 
 ; 91   : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 80					; 00000050H
-	mov	rdi, rsp
-	mov	ecx, 20
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+96]
+	sub	rsp, 88					; 00000058H
 
 ; 92   :     uint_8  checksum;
 ; 93   :     uint_8  *p;
@@ -1806,7 +1642,7 @@ WEndRec	PROC
 	jmp	SHORT $LN7@WEndRec
 $LN6@WEndRec:
 	mov	edx, 96					; 00000060H
-	lea	rcx, OFFSET FLAT:$SG7698
+	lea	rcx, OFFSET FLAT:$SG7712
 	call	InternalError
 	mov	DWORD PTR tv71[rsp], eax
 $LN7@WEndRec:
@@ -1909,23 +1745,21 @@ $LN3@WEndRec:
 ; 114  : 
 ; 115  : }
 
-	add	rsp, 80					; 00000050H
-	pop	rdi
+	add	rsp, 88					; 00000058H
 	ret	0
 WEndRec	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omfint.c
 _TEXT	SEGMENT
-out$ = 16
-command$ = 24
+out$ = 8
+command$ = 16
 WBegRec	PROC
 
 ; 78   : {
 
 	mov	BYTE PTR [rsp+16], dl
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
 
 ; 79   :     out->in_buf = 0;
 
@@ -1940,11 +1774,10 @@ WBegRec	PROC
 
 ; 81   : }
 
-	pop	rdi
 	ret	0
 WBegRec	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omfint.c
 _TEXT	SEGMENT
 file$ = 48
@@ -1957,13 +1790,7 @@ safeWrite PROC
 	mov	DWORD PTR [rsp+24], r8d
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 57   :     if( fwrite( buf, 1, len, file ) != len )
 
@@ -1972,7 +1799,7 @@ safeWrite PROC
 	mov	r8d, eax
 	mov	edx, 1
 	mov	rcx, QWORD PTR buf$[rsp]
-	call	QWORD PTR __imp_fwrite
+	call	fwrite
 	mov	ecx, DWORD PTR len$[rsp]
 	cmp	rax, rcx
 	je	SHORT $LN2@safeWrite
@@ -1984,34 +1811,27 @@ $LN2@safeWrite:
 
 ; 59   : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 safeWrite ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omfint.c
 _TEXT	SEGMENT
+tv74 = 32
+tv128 = 40
 out$ = 48
-tv74 = 4160
-tv128 = 4168
-__$ArrayPad$ = 4176
-objr$ = 4208
+__$ArrayPad$ = 4144
+objr$ = 4176
 omf_write_record PROC
 
 ; 522  : {
 
 $LN5:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	mov	eax, 4192				; 00001060H
+	mov	eax, 4168				; 00001048H
 	call	__chkstk
 	sub	rsp, rax
-	mov	rdi, rsp
-	mov	ecx, 1048				; 00000418H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+4208]
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -2034,7 +1854,7 @@ $LN5:
 	jmp	SHORT $LN4@omf_write_
 $LN3@omf_write_:
 	mov	edx, 525				; 0000020dH
-	lea	rcx, OFFSET FLAT:$SG7888
+	lea	rcx, OFFSET FLAT:$SG7902
 	call	InternalError
 	mov	DWORD PTR tv74[rsp], eax
 $LN4@omf_write_:
@@ -2048,7 +1868,7 @@ $LN4@omf_write_:
 	mov	rcx, QWORD PTR objr$[rsp]
 	mov	r8, QWORD PTR [rcx+8]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG7889
+	lea	rcx, OFFSET FLAT:$SG7903
 	call	DoDebugMsg1
 
 ; 527  :     myFuncs[ func_index[JUMP_INDEX(objr->command) ] ] ( &out, objr );
@@ -2069,14 +1889,10 @@ $LN4@omf_write_:
 
 ; 528  : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:omf_write_record$rtcFrameData
-	call	_RTC_CheckStackVars
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 4192				; 00001060H
-	pop	rdi
+	add	rsp, 4168				; 00001048H
 	ret	0
 omf_write_record ENDP
 _TEXT	ENDS

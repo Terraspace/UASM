@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 _DATA	SEGMENT
@@ -12,25 +12,25 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10826 DB	'ASSUMES', 00H
-$SG10827 DB	'RADIX', 00H
+$SG10864 DB	'ASSUMES', 00H
+$SG10865 DB	'RADIX', 00H
 	ORG $+2
-$SG10828 DB	'LISTING', 00H
-$SG10829 DB	'CPU', 00H
-$SG10831 DB	'ALL', 00H
-$SG10830 DB	'ALIGNMENT', 00H
+$SG10866 DB	'LISTING', 00H
+$SG10867 DB	'CPU', 00H
+$SG10869 DB	'ALL', 00H
+$SG10868 DB	'ALIGNMENT', 00H
 	ORG $+6
-$SG10890 DB	'%s directive enter', 0aH, 00H
+$SG10928 DB	'%s directive enter', 0aH, 00H
 	ORG $+4
-$SG10898 DB	'POPCONTEXT type=%X', 0aH, 00H
+$SG10936 DB	'POPCONTEXT type=%X', 0aH, 00H
 	ORG $+4
-$SG10899 DB	'POPCONTEXT: found item with type=%X', 0aH, 00H
+$SG10937 DB	'POPCONTEXT: found item with type=%X', 0aH, 00H
 	ORG $+3
-$SG10910 DB	'POPCONTEXT error, remaining type flags=%X', 0aH, 00H
+$SG10948 DB	'POPCONTEXT error, remaining type flags=%X', 0aH, 00H
 	ORG $+5
-$SG10911 DB	'PUSHCONTEXT type=%X', 0aH, 00H
+$SG10949 DB	'PUSHCONTEXT type=%X', 0aH, 00H
 	ORG $+3
-$SG10937 DB	'ContextSaveState: SavedContexts=%X', 0aH, 00H
+$SG10975 DB	'ContextSaveState: SavedContexts=%X', 0aH, 00H
 _DATA	ENDS
 CONST	SEGMENT
 typetab	DD	01H
@@ -39,18 +39,18 @@ typetab	DD	01H
 	DD	08H
 	DD	010H
 	DD	0fH
-contextnames DQ	FLAT:$SG10826
-	DQ	FLAT:$SG10827
-	DQ	FLAT:$SG10828
-	DQ	FLAT:$SG10829
-	DQ	FLAT:$SG10830
-	DQ	FLAT:$SG10831
+contextnames DQ	FLAT:$SG10864
+	DQ	FLAT:$SG10865
+	DQ	FLAT:$SG10866
+	DQ	FLAT:$SG10867
+	DQ	FLAT:$SG10868
+	DQ	FLAT:$SG10869
 CONST	ENDS
 PUBLIC	ContextSaveState
 PUBLIC	ContextDirective
 PUBLIC	ContextInit
 EXTRN	memcpy:PROC
-EXTRN	__imp__stricmp:PROC
+EXTRN	_stricmp:PROC
 EXTRN	DoDebugMsg:PROC
 EXTRN	EmitErr:PROC
 EXTRN	LclAlloc:PROC
@@ -58,52 +58,34 @@ EXTRN	SetSegAssumeTable:PROC
 EXTRN	GetSegAssumeTable:PROC
 EXTRN	SetStdAssumeTable:PROC
 EXTRN	GetStdAssumeTable:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
-EXTRN	_RTC_UninitUse:PROC
 EXTRN	Options:BYTE
 EXTRN	ModuleInfo:BYTE
 EXTRN	sym_Cpu:QWORD
 pdata	SEGMENT
 $pdata$ContextSaveState DD imagerel $LN10
-	DD	imagerel $LN10+235
+	DD	imagerel $LN10+217
 	DD	imagerel $unwind$ContextSaveState
-$pdata$ContextDirective DD imagerel $LN60
-	DD	imagerel $LN60+2057
+$pdata$ContextDirective DD imagerel $LN46
+	DD	imagerel $LN46+1736
 	DD	imagerel $unwind$ContextDirective
 $pdata$ContextRestoreState DD imagerel ContextRestoreState
-	DD	imagerel ContextRestoreState+193
+	DD	imagerel ContextRestoreState+175
 	DD	imagerel $unwind$ContextRestoreState
 $pdata$ContextInit DD imagerel $LN4
-	DD	imagerel $LN4+46
+	DD	imagerel $LN4+25
 	DD	imagerel $unwind$ContextInit
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
-CONST	SEGMENT
-ContextDirective$rtcName$0 DB 074H
-	DB	079H
-	DB	070H
-	DB	065H
-	DB	00H
-CONST	ENDS
 xdata	SEGMENT
-$unwind$ContextSaveState DD 021501H
-	DD	070027206H
-$unwind$ContextDirective DD 022101H
-	DD	0700ab20eH
-$unwind$ContextRestoreState DD 021501H
-	DD	070025206H
-$unwind$ContextInit DD 021c01H
-	DD	070053209H
+$unwind$ContextSaveState DD 010401H
+	DD	08204H
+$unwind$ContextDirective DD 010d01H
+	DD	0c20dH
+$unwind$ContextRestoreState DD 010401H
+	DD	06204H
+$unwind$ContextInit DD 010801H
+	DD	04208H
 xdata	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\context.c
 _TEXT	SEGMENT
 pass$ = 48
@@ -113,13 +95,7 @@ ContextInit PROC
 
 $LN4:
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 299  :     /* if ContextStack isn't NULL, then at least one PUSHCONTEXT
 ; 300  :      * didn't have a matching POPCONTEXT. No need to reset it to NULL -
@@ -141,12 +117,11 @@ $LN2@ContextIni:
 ; 308  : #endif
 ; 309  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 ContextInit ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\context.c
 _TEXT	SEGMENT
 i$ = 32
@@ -155,12 +130,7 @@ ContextRestoreState PROC
 
 ; 276  : {
 
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 56					; 00000038H
 
 ; 277  :     int i;
 ; 278  :     struct context *dst;
@@ -238,42 +208,33 @@ $LN3@ContextRes:
 
 ; 290  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 ContextRestoreState ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\context.c
 _TEXT	SEGMENT
-start$ = 32
-directive$ = 36
+curr$ = 32
 type$ = 40
 j$ = 44
-curr$ = 48
-prev$2 = 56
-next$3 = 64
-$T4 = 72
-tv355 = 80
-tv154 = 88
-tv245 = 92
+tv154 = 48
+tv245 = 52
+directive$ = 56
+start$ = 60
+prev$1 = 64
+next$2 = 72
+tv327 = 80
 i$ = 112
 tokenarray$ = 120
 ContextDirective PROC
 
 ; 107  : {
 
-$LN60:
+$LN46:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 96					; 00000060H
-	mov	rdi, rsp
-	mov	ecx, 24
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+112]
-	mov	BYTE PTR $T4[rsp], 0
+	sub	rsp, 104				; 00000068H
 
 ; 108  :     int start = i;
 
@@ -298,7 +259,7 @@ $LN60:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG10890
+	lea	rcx, OFFSET FLAT:$SG10928
 	call	DoDebugMsg
 
 ; 115  : 
@@ -322,7 +283,6 @@ $LN2@ContextDir:
 ; 119  :         for ( j = 0, type = -1; j < ( sizeof(typetab) / sizeof(typetab[0]) ); j++ ) {
 
 	mov	DWORD PTR j$[rsp], 0
-	mov	BYTE PTR $T4[rsp], 1
 	mov	DWORD PTR type$[rsp], -1
 	jmp	SHORT $LN6@ContextDir
 $LN4@ContextDir:
@@ -340,12 +300,12 @@ $LN6@ContextDir:
 	imul	rax, rax, 32				; 00000020H
 	movsxd	rcx, DWORD PTR j$[rsp]
 	lea	rdx, OFFSET FLAT:contextnames
-	mov	QWORD PTR tv355[rsp], rdx
+	mov	QWORD PTR tv327[rsp], rdx
 	mov	r8, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [r8+rax+8]
-	mov	rax, QWORD PTR tv355[rsp]
+	mov	rax, QWORD PTR tv327[rsp]
 	mov	rcx, QWORD PTR [rax+rcx*8]
-	call	QWORD PTR __imp__stricmp
+	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN17@ContextDir
 
@@ -353,7 +313,6 @@ $LN6@ContextDir:
 
 	movsxd	rax, DWORD PTR j$[rsp]
 	lea	rcx, OFFSET FLAT:typetab
-	mov	BYTE PTR $T4[rsp], 1
 	mov	eax, DWORD PTR [rcx+rax*4]
 	mov	DWORD PTR type$[rsp], eax
 
@@ -371,11 +330,6 @@ $LN5@ContextDir:
 ; 125  : 
 ; 126  :         if ( type == -1 )
 
-	cmp	BYTE PTR $T4[rsp], 0
-	jne	SHORT $LN46@ContextDir
-	lea	rcx, OFFSET FLAT:ContextDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN46@ContextDir:
 	cmp	DWORD PTR type$[rsp], -1
 	jne	SHORT $LN18@ContextDir
 
@@ -394,11 +348,6 @@ $LN18@ContextDir:
 
 ; 131  :             if ( type == CONT_ALIGNMENT )
 
-	cmp	BYTE PTR $T4[rsp], 0
-	jne	SHORT $LN47@ContextDir
-	lea	rcx, OFFSET FLAT:ContextDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN47@ContextDir:
 	cmp	DWORD PTR type$[rsp], 16
 	jne	SHORT $LN20@ContextDir
 
@@ -411,14 +360,8 @@ $LN20@ContextDir:
 ; 133  :             else
 ; 134  :                 type &= ~CONT_ALIGNMENT; /* in case ALIGNMENT is again included in ALL */
 
-	cmp	BYTE PTR $T4[rsp], 0
-	jne	SHORT $LN48@ContextDir
-	lea	rcx, OFFSET FLAT:ContextDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN48@ContextDir:
 	mov	eax, DWORD PTR type$[rsp]
 	and	eax, -17
-	mov	BYTE PTR $T4[rsp], 1
 	mov	DWORD PTR type$[rsp], eax
 $LN21@ContextDir:
 $LN19@ContextDir:
@@ -427,40 +370,30 @@ $LN19@ContextDir:
 ; 136  : 
 ; 137  :         if ( directive == T_POPCONTEXT ) {
 
-	cmp	DWORD PTR directive$[rsp], 448		; 000001c0H
+	cmp	DWORD PTR directive$[rsp], 453		; 000001c5H
 	jne	$LN22@ContextDir
 
 ; 138  :             struct context *prev;
 ; 139  :             struct context *next;
 ; 140  :             DebugMsg(( "POPCONTEXT type=%X\n", type ));
 
-	cmp	BYTE PTR $T4[rsp], 0
-	jne	SHORT $LN49@ContextDir
-	lea	rcx, OFFSET FLAT:ContextDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN49@ContextDir:
 	mov	edx, DWORD PTR type$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10898
+	lea	rcx, OFFSET FLAT:$SG10936
 	call	DoDebugMsg
 
 ; 141  :             /* for POPCONTEXT, check if appropriate items are on the stack */
 ; 142  :             for ( prev = NULL, curr = ContextStack; curr && type; curr = next ) {
 
-	mov	QWORD PTR prev$2[rsp], 0
+	mov	QWORD PTR prev$1[rsp], 0
 	mov	rax, QWORD PTR ModuleInfo+240
 	mov	QWORD PTR curr$[rsp], rax
 	jmp	SHORT $LN9@ContextDir
 $LN7@ContextDir:
-	mov	rax, QWORD PTR next$3[rsp]
+	mov	rax, QWORD PTR next$2[rsp]
 	mov	QWORD PTR curr$[rsp], rax
 $LN9@ContextDir:
 	cmp	QWORD PTR curr$[rsp], 0
 	je	$LN8@ContextDir
-	cmp	BYTE PTR $T4[rsp], 0
-	jne	SHORT $LN50@ContextDir
-	lea	rcx, OFFSET FLAT:ContextDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN50@ContextDir:
 	cmp	DWORD PTR type$[rsp], 0
 	je	$LN8@ContextDir
 
@@ -469,23 +402,18 @@ $LN50@ContextDir:
 
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	edx, DWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10899
+	lea	rcx, OFFSET FLAT:$SG10937
 	call	DoDebugMsg
 
 ; 145  :                 next = curr->next;
 
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rax, QWORD PTR [rax]
-	mov	QWORD PTR next$3[rsp], rax
+	mov	QWORD PTR next$2[rsp], rax
 
 ; 146  :                 /* matching item on the stack? */
 ; 147  :                 if ( !( curr->type & type ) ) {
 
-	cmp	BYTE PTR $T4[rsp], 0
-	jne	SHORT $LN51@ContextDir
-	lea	rcx, OFFSET FLAT:ContextDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN51@ContextDir:
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	ecx, DWORD PTR type$[rsp]
 	mov	eax, DWORD PTR [rax+8]
@@ -496,40 +424,34 @@ $LN51@ContextDir:
 ; 148  :                     prev = curr;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	QWORD PTR prev$2[rsp], rax
+	mov	QWORD PTR prev$1[rsp], rax
 
 ; 149  :                     continue;
 
-	jmp	$LN7@ContextDir
+	jmp	SHORT $LN7@ContextDir
 $LN24@ContextDir:
 
 ; 150  :                 }
 ; 151  : 
 ; 152  :                 type &= ~curr->type;
 
-	cmp	BYTE PTR $T4[rsp], 0
-	jne	SHORT $LN52@ContextDir
-	lea	rcx, OFFSET FLAT:ContextDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN52@ContextDir:
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	eax, DWORD PTR [rax+8]
 	not	eax
 	mov	ecx, DWORD PTR type$[rsp]
 	and	ecx, eax
 	mov	eax, ecx
-	mov	BYTE PTR $T4[rsp], 1
 	mov	DWORD PTR type$[rsp], eax
 
 ; 153  :                 if ( prev )
 
-	cmp	QWORD PTR prev$2[rsp], 0
+	cmp	QWORD PTR prev$1[rsp], 0
 	je	SHORT $LN25@ContextDir
 
 ; 154  :                     prev->next = next;
 
-	mov	rax, QWORD PTR prev$2[rsp]
-	mov	rcx, QWORD PTR next$3[rsp]
+	mov	rax, QWORD PTR prev$1[rsp]
+	mov	rcx, QWORD PTR next$2[rsp]
 	mov	QWORD PTR [rax], rcx
 	jmp	SHORT $LN26@ContextDir
 $LN25@ContextDir:
@@ -537,7 +459,7 @@ $LN25@ContextDir:
 ; 155  :                 else
 ; 156  :                     ContextStack = next;
 
-	mov	rax, QWORD PTR next$3[rsp]
+	mov	rax, QWORD PTR next$2[rsp]
 	mov	QWORD PTR ModuleInfo+240, rax
 $LN26@ContextDir:
 
@@ -731,23 +653,13 @@ $LN8@ContextDir:
 
 ; 188  :             if ( type ) {
 
-	cmp	BYTE PTR $T4[rsp], 0
-	jne	SHORT $LN53@ContextDir
-	lea	rcx, OFFSET FLAT:ContextDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN53@ContextDir:
 	cmp	DWORD PTR type$[rsp], 0
 	je	SHORT $LN33@ContextDir
 
 ; 189  :                 DebugMsg(( "POPCONTEXT error, remaining type flags=%X\n", type ));
 
-	cmp	BYTE PTR $T4[rsp], 0
-	jne	SHORT $LN54@ContextDir
-	lea	rcx, OFFSET FLAT:ContextDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN54@ContextDir:
 	mov	edx, DWORD PTR type$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10910
+	lea	rcx, OFFSET FLAT:$SG10948
 	call	DoDebugMsg
 
 ; 190  :                 return( EmitErr( UNMATCHED_BLOCK_NESTING, tokenarray[start].tokpos ) );
@@ -769,13 +681,8 @@ $LN22@ContextDir:
 
 ; 193  :             DebugMsg(( "PUSHCONTEXT type=%X\n", type ));
 
-	cmp	BYTE PTR $T4[rsp], 0
-	jne	SHORT $LN55@ContextDir
-	lea	rcx, OFFSET FLAT:ContextDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN55@ContextDir:
 	mov	edx, DWORD PTR type$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10911
+	lea	rcx, OFFSET FLAT:$SG10949
 	call	DoDebugMsg
 
 ; 194  :             for ( j = 0; j < ( sizeof(typetab) / sizeof(typetab[0] ) ) && type; j++ ) {
@@ -790,21 +697,11 @@ $LN14@ContextDir:
 	movsxd	rax, DWORD PTR j$[rsp]
 	cmp	rax, 6
 	jae	$LN13@ContextDir
-	cmp	BYTE PTR $T4[rsp], 0
-	jne	SHORT $LN56@ContextDir
-	lea	rcx, OFFSET FLAT:ContextDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN56@ContextDir:
 	cmp	DWORD PTR type$[rsp], 0
 	je	$LN13@ContextDir
 
 ; 195  :                 if ( type & typetab[j] ) {
 
-	cmp	BYTE PTR $T4[rsp], 0
-	jne	SHORT $LN57@ContextDir
-	lea	rcx, OFFSET FLAT:ContextDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN57@ContextDir:
 	movsxd	rax, DWORD PTR j$[rsp]
 	lea	rcx, OFFSET FLAT:typetab
 	mov	eax, DWORD PTR [rcx+rax*4]
@@ -817,11 +714,6 @@ $LN57@ContextDir:
 ; 196  : 
 ; 197  :                     type &= ~typetab[j];
 
-	cmp	BYTE PTR $T4[rsp], 0
-	jne	SHORT $LN58@ContextDir
-	lea	rcx, OFFSET FLAT:ContextDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN58@ContextDir:
 	movsxd	rax, DWORD PTR j$[rsp]
 	lea	rcx, OFFSET FLAT:typetab
 	mov	eax, DWORD PTR [rcx+rax*4]
@@ -829,7 +721,6 @@ $LN58@ContextDir:
 	mov	ecx, DWORD PTR type$[rsp]
 	and	ecx, eax
 	mov	eax, ecx
-	mov	BYTE PTR $T4[rsp], 1
 	mov	DWORD PTR type$[rsp], eax
 
 ; 198  : 
@@ -1094,11 +985,6 @@ $LN3@ContextDir:
 	movzx	eax, BYTE PTR [rcx+rax]
 	test	eax, eax
 	jne	SHORT $LN44@ContextDir
-	cmp	BYTE PTR $T4[rsp], 0
-	jne	SHORT $LN59@ContextDir
-	lea	rcx, OFFSET FLAT:ContextDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN59@ContextDir:
 	cmp	DWORD PTR type$[rsp], -1
 	jne	SHORT $LN43@ContextDir
 $LN44@ContextDir:
@@ -1123,12 +1009,11 @@ $LN1@ContextDir:
 
 ; 247  : }
 
-	add	rsp, 96					; 00000060H
-	pop	rdi
+	add	rsp, 104				; 00000068H
 	ret	0
 ContextDirective ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\context.c
 _TEXT	SEGMENT
 i$ = 32
@@ -1139,12 +1024,7 @@ ContextSaveState PROC
 ; 255  : {
 
 $LN10:
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 72					; 00000048H
 
 ; 256  :     int i;
 ; 257  :     struct context *src;
@@ -1191,7 +1071,7 @@ $LN3@ContextSav:
 ; 265  :         DebugMsg(( "ContextSaveState: SavedContexts=%X\n", SavedContexts ));
 
 	mov	rdx, QWORD PTR ModuleInfo+256
-	lea	rcx, OFFSET FLAT:$SG10937
+	lea	rcx, OFFSET FLAT:$SG10975
 	call	DoDebugMsg
 
 ; 266  :         for ( src = ContextStack, dst = SavedContexts ; src ; src = src->next, dst++ ) {
@@ -1228,8 +1108,7 @@ $LN8@ContextSav:
 ; 269  :     }
 ; 270  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 ContextSaveState ENDP
 _TEXT	ENDS

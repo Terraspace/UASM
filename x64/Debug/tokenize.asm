@@ -2,11 +2,11 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 _BSS	SEGMENT
-$SG11310 DB	01H DUP (?)
+$SG11348 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	decoflags:BYTE
@@ -30,64 +30,64 @@ stokstr2 DW	05bH
 	DW	05dH
 CONST	ENDS
 _DATA	SEGMENT
-$SG11282 DB	'COMMENT active, delim is >%c<, line is >%s<', 0aH, 00H
+$SG11264 DB	'tokenize.c', 00H
+	ORG $+5
+$SG11320 DB	'COMMENT active, delim is >%c<, line is >%s<', 0aH, 00H
 	ORG $+3
-$SG11284 DB	'COMMENT mode exited', 0aH, 00H
+$SG11322 DB	'COMMENT mode exited', 0aH, 00H
 	ORG $+3
-$SG11289 DB	'Tokenize: calling IsMultiLine()', 0aH, 00H
+$SG11327 DB	'Tokenize: calling IsMultiLine()', 0aH, 00H
 	ORG $+3
-$SG10922 DB	'1to16', 00H
+$SG10960 DB	'1to16', 00H
 	ORG $+2
-$SG11095 DB	'::', 00H
+$SG11133 DB	'::', 00H
 	ORG $+1
-$SG11291 DB	'Tokenize: IsMultiLine(%s)=TRUE', 0aH, 00H
-$SG11295 DB	'Tokenize: line concatenation, line=%s', 0aH, 00H
+$SG11329 DB	'Tokenize: IsMultiLine(%s)=TRUE', 0aH, 00H
+$SG11333 DB	'Tokenize: line concatenation, line=%s', 0aH, 00H
 	ORG $+1
-$SG11305 DB	'tokenize: COMMENT starting, delim is >%c<', 0aH, 00H
+$SG11343 DB	'tokenize: COMMENT starting, delim is >%c<', 0aH, 00H
 	ORG $+1
-$SG11096 DB	':', 00H
+$SG11134 DB	':', 00H
 	ORG $+2
-$SG11309 DB	'tokenize: token index %u >= MAX_TOKEN (=%u), line=>%s<', 0aH
+$SG11347 DB	'tokenize: token index %u >= MAX_TOKEN (=%u), line=>%s<', 0aH
 	DB	00H
-$SG10913 DB	'1to2', 00H
+$SG10951 DB	'1to2', 00H
 	ORG $+3
-$SG10916 DB	'1to4', 00H
+$SG10954 DB	'1to4', 00H
 	ORG $+3
-$SG10919 DB	'1to8', 00H
+$SG10957 DB	'1to8', 00H
 	ORG $+3
-$SG11063 DB	'Tokenize.get_string: comma concatenation: %s', 0aH, 00H
+$SG11101 DB	'Tokenize.get_string: comma concatenation: %s', 0aH, 00H
 	ORG $+2
-$SG11071 DB	'Tokenize.get_string: backslash concatenation: >%s<', 0aH
+$SG11109 DB	'Tokenize.get_string: backslash concatenation: >%s<', 0aH
 	DB	00H
-$SG11099 DB	'OUT', 00H
-$SG11101 DB	'%', 00H
+$SG11137 DB	'OUT', 00H
+$SG11139 DB	'%', 00H
 	ORG $+2
-$SG11113 DB	'=', 00H
+$SG11151 DB	'=', 00H
 	ORG $+2
-$SG11116 DB	'=!<>&|', 0a6H, 00H
-$SG11123 DB	'&', 00H
+$SG11154 DB	'=!<>&|', 0a6H, 00H
+$SG11161 DB	'&', 00H
 	ORG $+6
-$SG11174 DB	'get_number: BAD_NUMBER (%s), radix=%u, base=%u, ptr=>%s<'
+$SG11212 DB	'get_number: BAD_NUMBER (%s), radix=%u, base=%u, ptr=>%s<'
 	DB	', digits_seen=%Xh', 0aH, 00H
 	ORG $+1
-$SG11209 DB	'?', 00H
+$SG11247 DB	'?', 00H
 	ORG $+2
-$SG11225 DB	'get_id: error, unknown type in SpecialTable[%u]=%u', 0aH
+$SG11263 DB	'get_id: error, unknown type in SpecialTable[%u]=%u', 0aH
 	DB	00H
-	ORG $+4
-$SG11226 DB	'tokenize.c', 00H
 _DATA	ENDS
 PUBLIC	GetToken
 PUBLIC	Tokenize
 PUBLIC	get_broads
 PUBLIC	get_decos
-EXTRN	__imp_isalpha:PROC
-EXTRN	__imp_isdigit:PROC
-EXTRN	__imp_isspace:PROC
-EXTRN	__imp_isalnum:PROC
+EXTRN	isalpha:PROC
+EXTRN	isdigit:PROC
+EXTRN	isspace:PROC
+EXTRN	isalnum:PROC
 EXTRN	memcpy:PROC
-EXTRN	__imp_strchr:PROC
-EXTRN	__imp__memicmp:PROC
+EXTRN	strchr:PROC
+EXTRN	_memicmp:PROC
 EXTRN	strcpy:PROC
 EXTRN	strlen:PROC
 EXTRN	DoDebugMsg:PROC
@@ -99,10 +99,6 @@ EXTRN	conditional_assembly_prepare:PROC
 EXTRN	FindResWord:PROC
 EXTRN	GetTextLine:PROC
 EXTRN	InternalError:PROC
-EXTRN	_RTC_CheckStackVars:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
-EXTRN	_RTC_UninitUse:PROC
 EXTRN	Options:BYTE
 EXTRN	ModuleInfo:BYTE
 EXTRN	Parse_Pass:DWORD
@@ -116,104 +112,74 @@ EXTRN	commentbuffer:QWORD
 EXTRN	__ImageBase:BYTE
 pdata	SEGMENT
 $pdata$GetToken DD imagerel $LN13
-	DD	imagerel $LN13+494
+	DD	imagerel $LN13+469
 	DD	imagerel $unwind$GetToken
 $pdata$Tokenize DD imagerel $LN36
-	DD	imagerel $LN36+1426
+	DD	imagerel $LN36+1284
 	DD	imagerel $unwind$Tokenize
 $pdata$IsMultiLine DD imagerel IsMultiLine
-	DD	imagerel IsMultiLine+391
+	DD	imagerel IsMultiLine+369
 	DD	imagerel $unwind$IsMultiLine
-$pdata$get_broads DD imagerel $LN15
-	DD	imagerel $LN15+389
+$pdata$get_broads DD imagerel $LN13
+	DD	imagerel $LN13+338
 	DD	imagerel $unwind$get_broads
 $pdata$get_decos DD imagerel $LN26
-	DD	imagerel $LN26+936
+	DD	imagerel $LN26+912
 	DD	imagerel $unwind$get_decos
 $pdata$get_float DD imagerel get_float
-	DD	imagerel get_float+415
+	DD	imagerel get_float+392
 	DD	imagerel $unwind$get_float
 $pdata$ConcatLine DD imagerel ConcatLine
-	DD	imagerel ConcatLine+376
+	DD	imagerel ConcatLine+352
 	DD	imagerel $unwind$ConcatLine
 $pdata$get_string DD imagerel get_string
-	DD	imagerel get_string+2265
+	DD	imagerel get_string+2237
 	DD	imagerel $unwind$get_string
 $pdata$get_special_symbol DD imagerel get_special_symbol
-	DD	imagerel get_special_symbol+1633
+	DD	imagerel get_special_symbol+1609
 	DD	imagerel $unwind$get_special_symbol
 $pdata$get_number DD imagerel get_number
-	DD	imagerel get_number+1652
+	DD	imagerel get_number+1528
 	DD	imagerel $unwind$get_number
 $pdata$get_id_in_backquotes DD imagerel get_id_in_backquotes
-	DD	imagerel get_id_in_backquotes+290
+	DD	imagerel get_id_in_backquotes+268
 	DD	imagerel $unwind$get_id_in_backquotes
 $pdata$get_id DD imagerel get_id
-	DD	imagerel get_id+1160
+	DD	imagerel get_id+1136
 	DD	imagerel $unwind$get_id
 $pdata$StartComment DD imagerel StartComment
-	DD	imagerel StartComment+154
+	DD	imagerel StartComment+130
 	DD	imagerel $unwind$StartComment
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
-CONST	SEGMENT
-	ORG $+2
-Tokenize$rtcName$0 DB 070H
-	DB	00H
-	ORG $+6
-Tokenize$rtcVarDesc DD 038H
-	DD	020H
-	DQ	FLAT:Tokenize$rtcName$0
-	ORG $+48
-Tokenize$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:Tokenize$rtcVarDesc
-get_number$rtcName$0 DB 064H
-	DB	069H
-	DB	067H
-	DB	05fH
-	DB	065H
-	DB	06eH
-	DB	064H
-	DB	00H
-CONST	ENDS
 xdata	SEGMENT
-$unwind$GetToken DD 022301H
-	DD	0700b320fH
-$unwind$Tokenize DD 022f01H
-	DD	07014d218H
-$unwind$IsMultiLine DD 021e01H
-	DD	07006520aH
-$unwind$get_broads DD 021e01H
-	DD	07006520aH
-$unwind$get_decos DD 021e01H
-	DD	07006520aH
-$unwind$get_float DD 022301H
-	DD	0700b720fH
-$unwind$ConcatLine DD 022c01H
-	DD	070147218H
-$unwind$get_string DD 022601H
-	DD	0700bd20fH
-$unwind$get_special_symbol DD 022301H
-	DD	0700b720fH
-$unwind$get_number DD 032901H
-	DD	0120112H
-	DD	0700bH
-$unwind$get_id_in_backquotes DD 022301H
-	DD	0700b520fH
-$unwind$get_id DD 022301H
-	DD	0700b720fH
-$unwind$StartComment DD 021e01H
-	DD	07006320aH
+$unwind$GetToken DD 010e01H
+	DD	0420eH
+$unwind$Tokenize DD 011701H
+	DD	0a217H
+$unwind$IsMultiLine DD 010901H
+	DD	06209H
+$unwind$get_broads DD 010901H
+	DD	06209H
+$unwind$get_decos DD 010901H
+	DD	06209H
+$unwind$get_float DD 010e01H
+	DD	0620eH
+$unwind$ConcatLine DD 011701H
+	DD	08217H
+$unwind$get_string DD 010e01H
+	DD	0e20eH
+$unwind$get_special_symbol DD 010e01H
+	DD	0620eH
+$unwind$get_number DD 021101H
+	DD	0130111H
+$unwind$get_id_in_backquotes DD 010e01H
+	DD	0620eH
+$unwind$get_id DD 010e01H
+	DD	0820eH
+$unwind$StartComment DD 010901H
+	DD	04209H
 xdata	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\tokenize.c
 _TEXT	SEGMENT
 p$ = 48
@@ -222,13 +188,7 @@ StartComment PROC
 ; 1068 : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 $LN2@StartComme:
 
 ; 1069 :     while ( isspace( *p ) ) p++;
@@ -236,7 +196,7 @@ $LN2@StartComme:
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isspace
+	call	isspace
 	test	eax, eax
 	je	SHORT $LN3@StartComme
 	mov	rax, QWORD PTR p$[rsp]
@@ -277,7 +237,7 @@ $LN4@StartComme:
 	movzx	eax, BYTE PTR ModuleInfo+407
 	mov	edx, eax
 	mov	rcx, QWORD PTR p$[rsp]
-	call	QWORD PTR __imp_strchr
+	call	strchr
 	test	rax, rax
 	je	SHORT $LN5@StartComme
 
@@ -290,19 +250,18 @@ $LN1@StartComme:
 ; 1077 :     return;
 ; 1078 : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 StartComment ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\tokenize.c
 _TEXT	SEGMENT
-src$ = 32
-dst$ = 40
-index$ = 48
-size$ = 52
-tv195 = 56
+index$ = 32
+tv195 = 36
+size$ = 40
+src$ = 48
+dst$ = 56
 buf$ = 80
 p$ = 88
 get_id	PROC
@@ -311,13 +270,7 @@ get_id	PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 72					; 00000048H
 
 ; 856  :     //struct ReservedWord *resw;
 ; 857  :     char *src = p->input;
@@ -362,7 +315,7 @@ $LN4@get_id:
 	mov	rax, QWORD PTR src$[rsp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isalnum
+	call	isalnum
 	test	eax, eax
 	jne	SHORT $LN4@get_id
 	mov	rax, QWORD PTR src$[rsp]
@@ -471,7 +424,7 @@ $LN9@get_id:
 ; 906  :         buf->string_ptr = "?";
 
 	mov	rax, QWORD PTR buf$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11209
+	lea	rcx, OFFSET FLAT:$SG11247
 	mov	QWORD PTR [rax+8], rcx
 
 ; 907  :         return( NOT_ERROR );
@@ -591,7 +544,7 @@ $LN11@get_id:
 ; 930  :     //if ( ! ( ResWordTable[index].flags & RWF_SPECIAL ) ) {
 ; 931  :     if ( index >= SPECIAL_LAST ) {
 
-	cmp	DWORD PTR index$[rsp], 450		; 000001c2H
+	cmp	DWORD PTR index$[rsp], 455		; 000001c7H
 	jl	$LN13@get_id
 
 ; 932  : 
@@ -628,7 +581,7 @@ $LN11@get_id:
 
 	mov	rax, QWORD PTR buf$[rsp]
 	mov	eax, DWORD PTR [rax+16]
-	sub	eax, 450				; 000001c2H
+	sub	eax, 455				; 000001c7H
 	mov	eax, eax
 	lea	rcx, OFFSET FLAT:optable_idx
 	movzx	eax, WORD PTR [rcx+rax*2]
@@ -752,7 +705,7 @@ $LN7@get_id:
 	mov	rax, QWORD PTR [rax]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isspace
+	call	isspace
 	test	eax, eax
 	je	SHORT $LN8@get_id
 	mov	rax, QWORD PTR p$[rsp]
@@ -873,13 +826,13 @@ $LN25@get_id:
 	movzx	eax, BYTE PTR [rcx+rax+11]
 	mov	r8d, eax
 	mov	edx, DWORD PTR index$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11225
+	lea	rcx, OFFSET FLAT:$SG11263
 	call	DoDebugMsg
 
 ; 1014 :         /**/myassert( 0 );
 
 	mov	edx, 1014				; 000003f6H
-	lea	rcx, OFFSET FLAT:$SG11226
+	lea	rcx, OFFSET FLAT:$SG11264
 	call	InternalError
 
 ; 1015 :         buf->token = T_ID;
@@ -902,8 +855,7 @@ $LN1@get_id:
 
 ; 1020 : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 	npad	3
 $LN31@get_id:
@@ -915,7 +867,7 @@ $LN31@get_id:
 	DD	$LN24@get_id
 get_id	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\tokenize.c
 _TEXT	SEGMENT
 optr$ = 32
@@ -927,13 +879,7 @@ get_id_in_backquotes PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 831  :     char *optr = p->output;
 
@@ -1053,34 +999,32 @@ $LN1@get_id_in_:
 
 ; 848  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 get_id_in_backquotes ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\tokenize.c
 _TEXT	SEGMENT
-ptr$ = 48
-dig_start$ = 56
-dig_end$ = 64
-base$ = 72
-len$ = 76
-digits_seen$ = 80
-last_char$ = 84
-tmp$2 = 88
-max$3 = 96
-$T4 = 97
-tv78 = 100
-tv286 = 104
-tv129 = 108
-tv297 = 112
-tv148 = 116
-tv173 = 120
-tv323 = 124
-tv184 = 128
-tv195 = 132
-tv335 = 136
+last_char$ = 48
+ptr$ = 56
+base$ = 64
+digits_seen$ = 68
+max$1 = 72
+tv148 = 76
+dig_end$ = 80
+tv78 = 88
+tv129 = 92
+tv173 = 96
+tv184 = 100
+tv195 = 104
+len$ = 108
+tmp$2 = 112
+tv280 = 120
+tv291 = 124
+tv317 = 128
+tv329 = 132
+dig_start$ = 136
 buf$ = 160
 p$ = 168
 get_number PROC
@@ -1089,14 +1033,7 @@ get_number PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 144				; 00000090H
-	mov	rdi, rsp
-	mov	ecx, 36					; 00000024H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+160]
-	mov	BYTE PTR $T4[rsp], 0
+	sub	rsp, 152				; 00000098H
 
 ; 674  :     char                *ptr = p->input;
 
@@ -1195,9 +1132,9 @@ $LN4@get_number:
 	movsx	eax, BYTE PTR [rax]
 	sub	eax, 48					; 00000030H
 	mov	ecx, 1
-	mov	DWORD PTR tv286[rsp], ecx
+	mov	DWORD PTR tv280[rsp], ecx
 	movzx	ecx, al
-	mov	eax, DWORD PTR tv286[rsp]
+	mov	eax, DWORD PTR tv280[rsp]
 	shl	eax, cl
 	mov	ecx, DWORD PTR digits_seen$[rsp]
 	or	ecx, eax
@@ -1244,9 +1181,9 @@ $LN41@get_number:
 	movsx	eax, BYTE PTR last_char$[rsp]
 	sub	eax, 87					; 00000057H
 	mov	ecx, 1
-	mov	DWORD PTR tv297[rsp], ecx
+	mov	DWORD PTR tv291[rsp], ecx
 	movzx	ecx, al
-	mov	eax, DWORD PTR tv297[rsp]
+	mov	eax, DWORD PTR tv291[rsp]
 	shl	eax, cl
 	mov	ecx, DWORD PTR digits_seen$[rsp]
 	or	ecx, eax
@@ -1306,7 +1243,6 @@ $LN17@get_number:
 
 ; 726  :         dig_end = ptr;
 
-	mov	BYTE PTR $T4[rsp], 1
 	mov	rax, QWORD PTR ptr$[rsp]
 	mov	QWORD PTR dig_end$[rsp], rax
 
@@ -1337,7 +1273,7 @@ $LN18@get_number:
 	ja	$LN29@get_number
 	movsxd	rax, DWORD PTR tv148[rsp]
 	lea	rcx, OFFSET FLAT:__ImageBase
-	mov	eax, DWORD PTR $LN51@get_number[rcx+rax*4]
+	mov	eax, DWORD PTR $LN48@get_number[rcx+rax*4]
 	add	rax, rcx
 	jmp	rax
 $LN21@get_number:
@@ -1361,7 +1297,7 @@ $LN21@get_number:
 
 ; 736  :         goto number_done;
 
-	jmp	$number_done$52
+	jmp	$number_done$49
 $LN22@get_number:
 
 ; 737  :     case 'h':
@@ -1371,7 +1307,6 @@ $LN22@get_number:
 
 ; 739  :         dig_end = ptr;
 
-	mov	BYTE PTR $T4[rsp], 1
 	mov	rax, QWORD PTR ptr$[rsp]
 	mov	QWORD PTR dig_end$[rsp], rax
 
@@ -1401,7 +1336,6 @@ $LN23@get_number:
 
 ; 746  :             dig_end = ptr;
 
-	mov	BYTE PTR $T4[rsp], 1
 	mov	rax, QWORD PTR ptr$[rsp]
 	mov	QWORD PTR dig_end$[rsp], rax
 
@@ -1433,7 +1367,6 @@ $LN25@get_number:
 
 ; 754  :             dig_end = ptr;
 
-	mov	BYTE PTR $T4[rsp], 1
 	mov	rax, QWORD PTR ptr$[rsp]
 	mov	QWORD PTR dig_end$[rsp], rax
 
@@ -1465,7 +1398,6 @@ $LN27@get_number:
 
 ; 762  :             dig_end = ptr;
 
-	mov	BYTE PTR $T4[rsp], 1
 	mov	rax, QWORD PTR ptr$[rsp]
 	mov	QWORD PTR dig_end$[rsp], rax
 
@@ -1517,9 +1449,9 @@ $LN43@get_number:
 $LN31@get_number:
 	movzx	eax, BYTE PTR ModuleInfo+396
 	mov	ecx, 1
-	mov	DWORD PTR tv323[rsp], ecx
+	mov	DWORD PTR tv317[rsp], ecx
 	movzx	ecx, al
-	mov	eax, DWORD PTR tv323[rsp]
+	mov	eax, DWORD PTR tv317[rsp]
 	shl	eax, cl
 	cmp	DWORD PTR digits_seen$[rsp], eax
 	jb	$LN30@get_number
@@ -1540,13 +1472,12 @@ $LN44@get_number:
 	mov	DWORD PTR tv184[rsp], 57		; 00000039H
 $LN45@get_number:
 	movzx	eax, BYTE PTR tv184[rsp]
-	mov	BYTE PTR max$3[rsp], al
+	mov	BYTE PTR max$1[rsp], al
 
 ; 771  :             for ( dig_end = ptr-1; tmp < dig_end && *tmp <= max; tmp++ );
 
 	mov	rax, QWORD PTR ptr$[rsp]
 	dec	rax
-	mov	BYTE PTR $T4[rsp], 1
 	mov	QWORD PTR dig_end$[rsp], rax
 	jmp	SHORT $LN9@get_number
 $LN7@get_number:
@@ -1554,17 +1485,12 @@ $LN7@get_number:
 	inc	rax
 	mov	QWORD PTR tmp$2[rsp], rax
 $LN9@get_number:
-	cmp	BYTE PTR $T4[rsp], 0
-	jne	SHORT $LN48@get_number
-	lea	rcx, OFFSET FLAT:get_number$rtcName$0
-	call	_RTC_UninitUse
-$LN48@get_number:
 	mov	rax, QWORD PTR dig_end$[rsp]
 	cmp	QWORD PTR tmp$2[rsp], rax
 	jae	SHORT $LN8@get_number
 	mov	rax, QWORD PTR tmp$2[rsp]
 	movsx	eax, BYTE PTR [rax]
-	movsx	ecx, BYTE PTR max$3[rsp]
+	movsx	ecx, BYTE PTR max$1[rsp]
 	cmp	eax, ecx
 	jg	SHORT $LN8@get_number
 	jmp	SHORT $LN7@get_number
@@ -1572,11 +1498,6 @@ $LN8@get_number:
 
 ; 772  :             if ( tmp == dig_end ) {
 
-	cmp	BYTE PTR $T4[rsp], 0
-	jne	SHORT $LN49@get_number
-	lea	rcx, OFFSET FLAT:get_number$rtcName$0
-	call	_RTC_UninitUse
-$LN49@get_number:
 	mov	rax, QWORD PTR dig_end$[rsp]
 	cmp	QWORD PTR tmp$2[rsp], rax
 	jne	SHORT $LN32@get_number
@@ -1604,7 +1525,6 @@ $LN30@get_number:
 ; 776  :         }
 ; 777  :         dig_end = ptr;
 
-	mov	BYTE PTR $T4[rsp], 1
 	mov	rax, QWORD PTR ptr$[rsp]
 	mov	QWORD PTR dig_end$[rsp], rax
 
@@ -1627,9 +1547,9 @@ $LN30@get_number:
 
 	movzx	eax, BYTE PTR ModuleInfo+396
 	mov	ecx, 1
-	mov	DWORD PTR tv335[rsp], ecx
+	mov	DWORD PTR tv329[rsp], ecx
 	movzx	ecx, al
-	mov	eax, DWORD PTR tv335[rsp]
+	mov	eax, DWORD PTR tv329[rsp]
 	shl	eax, cl
 	cmp	DWORD PTR digits_seen$[rsp], eax
 	jae	SHORT $LN33@get_number
@@ -1670,11 +1590,6 @@ $LN19@get_number:
 
 ; 808  :         buf->itemlen = dig_end - dig_start;
 
-	cmp	BYTE PTR $T4[rsp], 0
-	jne	SHORT $LN50@get_number
-	lea	rcx, OFFSET FLAT:get_number$rtcName$0
-	call	_RTC_UninitUse
-$LN50@get_number:
 	mov	rax, QWORD PTR dig_start$[rsp]
 	mov	rcx, QWORD PTR dig_end$[rsp]
 	sub	rcx, rax
@@ -1703,7 +1618,7 @@ $LN34@get_number:
 	mov	r9d, DWORD PTR base$[rsp]
 	mov	r8d, eax
 	mov	rdx, QWORD PTR dig_start$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11174
+	lea	rcx, OFFSET FLAT:$SG11212
 	call	DoDebugMsg
 $LN10@get_number:
 
@@ -1713,7 +1628,7 @@ $LN10@get_number:
 	mov	rax, QWORD PTR ptr$[rsp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isalnum
+	call	isalnum
 	test	eax, eax
 	jne	SHORT $LN36@get_number
 	mov	rax, QWORD PTR ptr$[rsp]
@@ -1739,7 +1654,7 @@ $LN36@get_number:
 	jmp	SHORT $LN10@get_number
 $LN11@get_number:
 $LN35@get_number:
-$number_done$52:
+$number_done$49:
 
 ; 815  :     }
 ; 816  : number_done:
@@ -1796,11 +1711,10 @@ $LN1@get_number:
 
 ; 825  : }
 
-	add	rsp, 144				; 00000090H
-	pop	rdi
+	add	rsp, 152				; 00000098H
 	ret	0
-	npad	3
-$LN51@get_number:
+	npad	2
+$LN48@get_number:
 	DD	$LN22@get_number
 	DD	$LN29@get_number
 	DD	$LN29@get_number
@@ -1821,28 +1735,22 @@ $LN51@get_number:
 	DD	$LN23@get_number
 get_number ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\tokenize.c
 _TEXT	SEGMENT
 symbol$ = 32
 c$ = 33
-sym$1 = 48
-tv67 = 56
-buf$ = 80
-p$ = 88
+tv67 = 36
+sym$1 = 40
+buf$ = 64
+p$ = 72
 get_special_symbol PROC
 
 ; 511  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 56					; 00000038H
 
 ; 512  :     char    symbol;
 ; 513  :     char    c;
@@ -1906,7 +1814,7 @@ $LN6@get_specia:
 ; 524  :             buf->string_ptr = "::";
 
 	mov	rax, QWORD PTR buf$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11095
+	lea	rcx, OFFSET FLAT:$SG11133
 	mov	QWORD PTR [rax+8], rcx
 
 ; 525  :         } else {
@@ -1922,7 +1830,7 @@ $LN7@get_specia:
 ; 527  :             buf->string_ptr = ":";
 
 	mov	rax, QWORD PTR buf$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11096
+	lea	rcx, OFFSET FLAT:$SG11134
 	mov	QWORD PTR [rax+8], rcx
 $LN8@get_specia:
 
@@ -1941,16 +1849,16 @@ $LN9@get_specia:
 	mov	rax, QWORD PTR [rax]
 	inc	rax
 	mov	r8d, 3
-	lea	rdx, OFFSET FLAT:$SG11099
+	lea	rdx, OFFSET FLAT:$SG11137
 	mov	rcx, rax
-	call	QWORD PTR __imp__memicmp
+	call	_memicmp
 	test	eax, eax
 	jne	$LN10@get_specia
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rax, QWORD PTR [rax]
 	movsx	eax, BYTE PTR [rax+4]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isalnum
+	call	isalnum
 	test	eax, eax
 	jne	$LN10@get_specia
 	mov	rax, QWORD PTR p$[rsp]
@@ -1982,7 +1890,7 @@ $LN9@get_specia:
 ; 535  :             buf->tokval = T_ECHO;
 
 	mov	rax, QWORD PTR buf$[rsp]
-	mov	DWORD PTR [rax+16], 441			; 000001b9H
+	mov	DWORD PTR [rax+16], 446			; 000001beH
 
 ; 536  :             buf->dirtype = DRT_ECHO;
 
@@ -2073,7 +1981,7 @@ $LN11@get_specia:
 ; 550  :         buf->string_ptr = "%";
 
 	mov	rax, QWORD PTR buf$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11101
+	lea	rcx, OFFSET FLAT:$SG11139
 	mov	QWORD PTR [rax+8], rcx
 
 ; 551  :         break;
@@ -2194,7 +2102,7 @@ $LN4@get_specia:
 	mov	rax, QWORD PTR [rax]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isspace
+	call	isspace
 	test	eax, eax
 	je	SHORT $LN5@get_specia
 	mov	rax, QWORD PTR p$[rsp]
@@ -2304,7 +2212,7 @@ $LN21@get_specia:
 ; 601  :             buf->tokval = T_EQU;
 
 	mov	rax, QWORD PTR buf$[rsp]
-	mov	DWORD PTR [rax+16], 443			; 000001bbH
+	mov	DWORD PTR [rax+16], 448			; 000001c0H
 
 ; 602  :             buf->dirtype = DRT_EQUALSGN; /* to make it differ from EQU directive */
 
@@ -2314,7 +2222,7 @@ $LN21@get_specia:
 ; 603  :             buf->string_ptr = "=";
 
 	mov	rax, QWORD PTR buf$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11113
+	lea	rcx, OFFSET FLAT:$SG11151
 	mov	QWORD PTR [rax+8], rcx
 
 ; 604  :             p->input++;
@@ -2351,8 +2259,8 @@ $LN23@get_specia:
 	je	$LN24@get_specia
 	movsx	eax, BYTE PTR symbol$[rsp]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11116
-	call	QWORD PTR __imp_strchr
+	lea	rcx, OFFSET FLAT:$SG11154
+	call	strchr
 	test	rax, rax
 	je	$LN24@get_specia
 
@@ -2516,7 +2424,7 @@ $LN24@get_specia:
 ; 641  :             buf->string_ptr = "&";
 
 	mov	rax, QWORD PTR buf$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11123
+	lea	rcx, OFFSET FLAT:$SG11161
 	mov	QWORD PTR [rax+8], rcx
 
 ; 642  :             break;
@@ -2544,10 +2452,9 @@ $LN1@get_specia:
 
 ; 650  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
-	npad	1
+	npad	3
 $LN33@get_specia:
 	DD	$LN9@get_specia
 	DD	$LN12@get_specia
@@ -2616,23 +2523,23 @@ $LN32@get_specia:
 	DB	5
 get_special_symbol ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\tokenize.c
 _TEXT	SEGMENT
-symbol_o$ = 32
-symbol_c$ = 33
-c$ = 34
+c$ = 32
+symbol_o$ = 33
+count$ = 36
 src$ = 40
 dst$ = 48
-count$ = 56
+delim$1 = 56
+symbol_c$ = 57
 level$ = 60
-delim$1 = 64
-tdst$2 = 72
-tsrc$3 = 80
-tcount$4 = 88
-tmp$5 = 96
-tv67 = 104
-tv94 = 108
+tmp$2 = 64
+tv67 = 72
+tv94 = 76
+tcount$3 = 80
+tsrc$4 = 88
+tdst$5 = 96
 buf$ = 128
 p$ = 136
 get_string PROC
@@ -2641,13 +2548,7 @@ get_string PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 112				; 00000070H
-	mov	rdi, rsp
-	mov	ecx, 28
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+128]
+	sub	rsp, 120				; 00000078H
 
 ; 317  :     char    symbol_o;
 ; 318  :     char    symbol_c;
@@ -2726,7 +2627,7 @@ $LN4@get_string:
 	inc	eax
 	mov	DWORD PTR count$[rsp], eax
 $LN6@get_string:
-	cmp	DWORD PTR count$[rsp], 568		; 00000238H
+	cmp	DWORD PTR count$[rsp], 992		; 000003e0H
 	jge	$LN5@get_string
 
 ; 334  :             c = *src;
@@ -2868,7 +2769,7 @@ $LN61@get_string:
 
 	mov	DWORD PTR level$[rsp], 0
 $LN7@get_string:
-	cmp	DWORD PTR count$[rsp], 568		; 00000238H
+	cmp	DWORD PTR count$[rsp], 992		; 000003e0H
 	jge	$LN8@get_string
 
 ; 360  :             c = *src;
@@ -3022,17 +2923,17 @@ $LN36@get_string:
 ; 392  :                 tdst = dst;
 
 	mov	rax, QWORD PTR dst$[rsp]
-	mov	QWORD PTR tdst$2[rsp], rax
+	mov	QWORD PTR tdst$5[rsp], rax
 
 ; 393  :                 tsrc = src;
 
 	mov	rax, QWORD PTR src$[rsp]
-	mov	QWORD PTR tsrc$3[rsp], rax
+	mov	QWORD PTR tsrc$4[rsp], rax
 
 ; 394  :                 tcount = count;
 
 	mov	eax, DWORD PTR count$[rsp]
-	mov	DWORD PTR tcount$4[rsp], eax
+	mov	DWORD PTR tcount$3[rsp], eax
 $LN10@get_string:
 
 ; 395  :                 while (*src != delim && *src != NULLC && count < MAX_STRING_LEN-1 ) {
@@ -3046,7 +2947,7 @@ $LN10@get_string:
 	movsx	eax, BYTE PTR [rax]
 	test	eax, eax
 	je	SHORT $LN11@get_string
-	cmp	DWORD PTR count$[rsp], 567		; 00000237H
+	cmp	DWORD PTR count$[rsp], 991		; 000003dfH
 	jge	SHORT $LN11@get_string
 
 ; 396  :                     if ( symbol_o == '<' && *src == '!' && *(src+1) != NULLC )
@@ -3133,17 +3034,17 @@ $LN38@get_string:
 ; 406  :                     /* restore values */
 ; 407  :                     src = tsrc;
 
-	mov	rax, QWORD PTR tsrc$3[rsp]
+	mov	rax, QWORD PTR tsrc$4[rsp]
 	mov	QWORD PTR src$[rsp], rax
 
 ; 408  :                     dst = tdst;
 
-	mov	rax, QWORD PTR tdst$2[rsp]
+	mov	rax, QWORD PTR tdst$5[rsp]
 	mov	QWORD PTR dst$[rsp], rax
 
 ; 409  :                     count = tcount;
 
-	mov	eax, DWORD PTR tcount$4[rsp]
+	mov	eax, DWORD PTR tcount$3[rsp]
 	mov	DWORD PTR count$[rsp], eax
 $LN39@get_string:
 
@@ -3256,26 +3157,26 @@ $LN46@get_string:
 
 	mov	rax, QWORD PTR dst$[rsp]
 	dec	rax
-	mov	QWORD PTR tmp$5[rsp], rax
+	mov	QWORD PTR tmp$2[rsp], rax
 $LN12@get_string:
 
 ; 432  :                     while ( isspace(*tmp) ) tmp--;
 
-	mov	rax, QWORD PTR tmp$5[rsp]
+	mov	rax, QWORD PTR tmp$2[rsp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isspace
+	call	isspace
 	test	eax, eax
 	je	SHORT $LN13@get_string
-	mov	rax, QWORD PTR tmp$5[rsp]
+	mov	rax, QWORD PTR tmp$2[rsp]
 	dec	rax
-	mov	QWORD PTR tmp$5[rsp], rax
+	mov	QWORD PTR tmp$2[rsp], rax
 	jmp	SHORT $LN12@get_string
 $LN13@get_string:
 
 ; 433  :                     if ( *tmp == ',' ) {
 
-	mov	rax, QWORD PTR tmp$5[rsp]
+	mov	rax, QWORD PTR tmp$2[rsp]
 	movsx	eax, BYTE PTR [rax]
 	cmp	eax, 44					; 0000002cH
 	jne	$LN48@get_string
@@ -3283,7 +3184,7 @@ $LN13@get_string:
 ; 434  :                         DebugMsg1(("Tokenize.get_string: comma concatenation: %s\n", src ));
 
 	mov	rdx, QWORD PTR src$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11063
+	lea	rcx, OFFSET FLAT:$SG11101
 	call	DoDebugMsg1
 
 ; 435  :                         tmp = GetAlignedPointer( p->output, strlen( p->output ) );
@@ -3295,11 +3196,11 @@ $LN13@get_string:
 	and	rax, -8
 	mov	rcx, QWORD PTR p$[rsp]
 	add	rax, QWORD PTR [rcx+8]
-	mov	QWORD PTR tmp$5[rsp], rax
+	mov	QWORD PTR tmp$2[rsp], rax
 
 ; 436  :                         if( GetTextLine( tmp ) ) {
 
-	mov	rcx, QWORD PTR tmp$5[rsp]
+	mov	rcx, QWORD PTR tmp$2[rsp]
 	call	GetTextLine
 	test	rax, rax
 	je	SHORT $LN49@get_string
@@ -3308,26 +3209,26 @@ $LN14@get_string:
 ; 437  :                             /* skip leading spaces */
 ; 438  :                             while ( isspace( *tmp ) ) tmp++;
 
-	mov	rax, QWORD PTR tmp$5[rsp]
+	mov	rax, QWORD PTR tmp$2[rsp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isspace
+	call	isspace
 	test	eax, eax
 	je	SHORT $LN15@get_string
-	mov	rax, QWORD PTR tmp$5[rsp]
+	mov	rax, QWORD PTR tmp$2[rsp]
 	inc	rax
-	mov	QWORD PTR tmp$5[rsp], rax
+	mov	QWORD PTR tmp$2[rsp], rax
 	jmp	SHORT $LN14@get_string
 $LN15@get_string:
 
 ; 439  :                             /* this size check isn't fool-proved yet */
 ; 440  :                             if ( strlen( tmp ) + count >= MAX_LINE_LEN ) {
 
-	mov	rcx, QWORD PTR tmp$5[rsp]
+	mov	rcx, QWORD PTR tmp$2[rsp]
 	call	strlen
 	movsxd	rcx, DWORD PTR count$[rsp]
 	add	rax, rcx
-	cmp	rax, 600				; 00000258H
+	cmp	rax, 1024				; 00000400H
 	jb	SHORT $LN50@get_string
 
 ; 441  :                                 EmitError( LINE_TOO_LONG );
@@ -3344,7 +3245,7 @@ $LN50@get_string:
 ; 443  :                             }
 ; 444  :                             strcpy( src, tmp );
 
-	mov	rdx, QWORD PTR tmp$5[rsp]
+	mov	rdx, QWORD PTR tmp$2[rsp]
 	mov	rcx, QWORD PTR src$[rsp]
 	call	strcpy
 
@@ -3453,7 +3354,7 @@ $LN16@get_string:
 ; 473  :             //*src && !isspace( *src ) && *src != ',' && *src != ')' && *src != '<' && *src != '%'; ) {
 ; 474  :             *src && !isspace( *src ) && *src != ',' && *src != ')' && *src != '%'; ) {
 
-	cmp	DWORD PTR count$[rsp], 568		; 00000238H
+	cmp	DWORD PTR count$[rsp], 992		; 000003e0H
 	jge	$LN17@get_string
 	mov	rax, QWORD PTR src$[rsp]
 	movsx	eax, BYTE PTR [rax]
@@ -3462,7 +3363,7 @@ $LN16@get_string:
 	mov	rax, QWORD PTR src$[rsp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isspace
+	call	isspace
 	test	eax, eax
 	jne	$LN17@get_string
 	mov	rax, QWORD PTR src$[rsp]
@@ -3526,7 +3427,7 @@ $LN54@get_string:
 ; 481  :                     DebugMsg1(("Tokenize.get_string: backslash concatenation: >%s<\n", src ));
 
 	mov	rdx, QWORD PTR src$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11071
+	lea	rcx, OFFSET FLAT:$SG11109
 	call	DoDebugMsg1
 
 ; 482  :                     p->flags3 |= TF3_ISCONCAT;
@@ -3567,7 +3468,7 @@ $LN53@get_string:
 	movsx	eax, BYTE PTR [rax+1]
 	test	eax, eax
 	je	SHORT $LN57@get_string
-	cmp	DWORD PTR count$[rsp], 567		; 00000237H
+	cmp	DWORD PTR count$[rsp], 991		; 000003dfH
 	jge	SHORT $LN57@get_string
 
 ; 490  :                 *dst++ = *src++;
@@ -3614,7 +3515,7 @@ $LN2@get_string:
 ; 496  : 
 ; 497  :     if ( count == MAX_STRING_LEN ) {
 
-	cmp	DWORD PTR count$[rsp], 568		; 00000238H
+	cmp	DWORD PTR count$[rsp], 992		; 000003e0H
 	jne	SHORT $LN58@get_string
 
 ; 498  :         EmitError( STRING_OR_TEXT_LITERAL_TOO_LONG );
@@ -3667,16 +3568,15 @@ $LN1@get_string:
 
 ; 507  : }
 
-	add	rsp, 112				; 00000070H
-	pop	rdi
+	add	rsp, 120				; 00000078H
 	ret	0
 get_string ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\tokenize.c
 _TEXT	SEGMENT
-p$ = 32
-max$ = 40
+max$ = 32
+p$ = 40
 buffer$1 = 48
 src$ = 80
 cnt$ = 88
@@ -3690,13 +3590,7 @@ ConcatLine PROC
 	mov	QWORD PTR [rsp+24], r8
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 72					; 00000048H
 
 ; 288  :     char *p = src+1;
 
@@ -3712,7 +3606,7 @@ $LN2@ConcatLine:
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isspace
+	call	isspace
 	test	eax, eax
 	je	SHORT $LN3@ConcatLine
 	mov	rax, QWORD PTR p$[rsp]
@@ -3758,7 +3652,7 @@ $LN4@ConcatLine:
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isspace
+	call	isspace
 	test	eax, eax
 	je	SHORT $LN5@ConcatLine
 	mov	rax, QWORD PTR p$[rsp]
@@ -3796,7 +3690,7 @@ $LN9@ConcatLine:
 	mov	rax, rcx
 	movsxd	rcx, DWORD PTR max$[rsp]
 	add	rax, rcx
-	cmp	rax, 600				; 00000258H
+	cmp	rax, 1024				; 00000400H
 	jl	SHORT $LN10@ConcatLine
 
 ; 303  :                 EmitError( LINE_TOO_LONG );
@@ -3812,7 +3706,7 @@ $LN9@ConcatLine:
 	sub	rcx, rax
 	mov	rax, rcx
 	inc	rax
-	mov	ecx, 600				; 00000258H
+	mov	ecx, 1024				; 00000400H
 	sub	rcx, rax
 	mov	rax, rcx
 	mov	DWORD PTR max$[rsp], eax
@@ -3851,34 +3745,27 @@ $LN1@ConcatLine:
 
 ; 312  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 ConcatLine ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\tokenize.c
 _TEXT	SEGMENT
-got_decimal$ = 32
-got_e$ = 33
+c$1 = 32
+got_decimal$ = 33
+got_e$ = 34
+tv83 = 36
 ptr$ = 40
-c$1 = 48
-tv83 = 52
-buf$ = 80
-p$ = 88
+buf$ = 64
+p$ = 72
 get_float PROC
 
 ; 245  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 56					; 00000038H
 
 ; 246  :     /* valid floats look like:  (int)[.(int)][e(int)]
 ; 247  :      * Masm also allows hex format, terminated by 'r' (3F800000r)
@@ -3922,7 +3809,7 @@ $LN4@get_float:
 
 	movsx	eax, BYTE PTR c$1[rsp]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isdigit
+	call	isdigit
 	test	eax, eax
 	je	SHORT $LN5@get_float
 	jmp	$LN6@get_float
@@ -4074,12 +3961,11 @@ $LN3@get_float:
 
 ; 283  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 get_float ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\tokenize.c
 _TEXT	SEGMENT
 c$ = 32
@@ -4090,13 +3976,7 @@ get_decos PROC
 
 $LN26:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 156  : 			/************************************************/
 ; 157  : 			unsigned char c;
@@ -4108,7 +3988,7 @@ $LN26:
 
 ; 159  : 				EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
 
-	mov	ecx, 277				; 00000115H
+	mov	ecx, 278				; 00000116H
 	call	EmitError
 $LN6@get_decos:
 
@@ -4188,7 +4068,7 @@ $LN2@get_decos:
 	mov	rax, QWORD PTR [rax]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isspace
+	call	isspace
 	test	eax, eax
 	je	SHORT $LN3@get_decos
 	mov	rax, QWORD PTR p$[rsp]
@@ -4443,7 +4323,7 @@ $LN4@get_decos:
 	mov	rax, QWORD PTR [rax]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isspace
+	call	isspace
 	test	eax, eax
 	je	SHORT $LN5@get_decos
 	mov	rax, QWORD PTR p$[rsp]
@@ -4572,30 +4452,22 @@ $LN1@get_decos:
 ; 240  :         }
 ; 241  :       }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 get_decos ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\tokenize.c
 _TEXT	SEGMENT
 tv143 = 32
-tv144 = 36
 p$ = 64
 get_broads PROC
 
 ; 126  : void get_broads(struct line_status *p) {
 
-$LN15:
+$LN13:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 127  : 	/************************************************/
 ; 128  : 	if (!evex)
@@ -4606,7 +4478,7 @@ $LN15:
 
 ; 129  : 		EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
 
-	mov	ecx, 277				; 00000115H
+	mov	ecx, 278				; 00000116H
 	call	EmitError
 $LN2@get_broads:
 
@@ -4614,10 +4486,10 @@ $LN2@get_broads:
 ; 131  : 	if (_memicmp(p->input, "1to2", 4) == 0) {
 
 	mov	r8d, 4
-	lea	rdx, OFFSET FLAT:$SG10913
+	lea	rdx, OFFSET FLAT:$SG10951
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR [rax]
-	call	QWORD PTR __imp__memicmp
+	call	_memicmp
 	test	eax, eax
 	jne	SHORT $LN3@get_broads
 
@@ -4641,10 +4513,10 @@ $LN3@get_broads:
 ; 135  : 	else if (_memicmp(p->input, "1to4", 4) == 0){
 
 	mov	r8d, 4
-	lea	rdx, OFFSET FLAT:$SG10916
+	lea	rdx, OFFSET FLAT:$SG10954
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR [rax]
-	call	QWORD PTR __imp__memicmp
+	call	_memicmp
 	test	eax, eax
 	jne	SHORT $LN5@get_broads
 
@@ -4668,10 +4540,10 @@ $LN5@get_broads:
 ; 139  :     else if (_memicmp(p->input, "1to8", 4) == 0){
 
 	mov	r8d, 4
-	lea	rdx, OFFSET FLAT:$SG10919
+	lea	rdx, OFFSET FLAT:$SG10957
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR [rax]
-	call	QWORD PTR __imp__memicmp
+	call	_memicmp
 	test	eax, eax
 	jne	SHORT $LN7@get_broads
 
@@ -4695,10 +4567,10 @@ $LN7@get_broads:
 ; 143  :     else if (_memicmp(p->input, "1to16", 5) == 0){
 
 	mov	r8d, 5
-	lea	rdx, OFFSET FLAT:$SG10922
+	lea	rdx, OFFSET FLAT:$SG10960
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR [rax]
-	call	QWORD PTR __imp__memicmp
+	call	_memicmp
 	test	eax, eax
 	jne	SHORT $LN9@get_broads
 
@@ -4741,13 +4613,6 @@ $LN4@get_broads:
 	mov	rcx, QWORD PTR p$[rsp]
 	mov	QWORD PTR [rcx], rax
 	cmp	DWORD PTR tv143[rsp], 125		; 0000007dH
-	je	SHORT $LN13@get_broads
-	mov	DWORD PTR tv144[rsp], 1
-	jmp	SHORT $LN14@get_broads
-$LN13@get_broads:
-	mov	DWORD PTR tv144[rsp], 0
-$LN14@get_broads:
-	cmp	DWORD PTR tv144[rsp], 0
 	je	SHORT $LN11@get_broads
 
 ; 150  :       EmitError(DECORATOR_OR_BRACE_EXPECTED);
@@ -4759,30 +4624,23 @@ $LN11@get_broads:
 ; 151  : 
 ; 152  :   }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 get_broads ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\tokenize.c
 _TEXT	SEGMENT
-sym$ = 32
-i$ = 40
-tv78 = 44
+i$ = 32
+tv78 = 36
+sym$ = 40
 tokenarray$ = 64
 IsMultiLine PROC
 
 ; 98   : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 99   :     struct asym *sym;
 ; 100  :     int i;
@@ -4798,7 +4656,7 @@ IsMultiLine PROC
 	mov	eax, 32					; 00000020H
 	imul	rax, rax, 1
 	mov	rcx, QWORD PTR tokenarray$[rsp]
-	cmp	DWORD PTR [rcx+rax+16], 443		; 000001bbH
+	cmp	DWORD PTR [rcx+rax+16], 448		; 000001c0H
 	jne	SHORT $LN2@IsMultiLin
 
 ; 103  :         return( FALSE );
@@ -4886,22 +4744,22 @@ $LN3@IsMultiLin:
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
-	cmp	DWORD PTR [rcx+rax+16], 441		; 000001b9H
+	cmp	DWORD PTR [rcx+rax+16], 446		; 000001beH
 	je	SHORT $LN8@IsMultiLin
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
-	cmp	DWORD PTR [rcx+rax+16], 397		; 0000018dH
+	cmp	DWORD PTR [rcx+rax+16], 402		; 00000192H
 	je	SHORT $LN8@IsMultiLin
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
-	cmp	DWORD PTR [rcx+rax+16], 386		; 00000182H
+	cmp	DWORD PTR [rcx+rax+16], 391		; 00000187H
 	je	SHORT $LN8@IsMultiLin
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
-	cmp	DWORD PTR [rcx+rax+16], 388		; 00000184H
+	cmp	DWORD PTR [rcx+rax+16], 393		; 00000189H
 	jne	SHORT $LN6@IsMultiLin
 $LN8@IsMultiLin:
 $LN7@IsMultiLin:
@@ -4926,21 +4784,20 @@ $LN1@IsMultiLin:
 
 ; 123  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 IsMultiLine ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\tokenize.c
 _TEXT	SEGMENT
 rc$ = 32
-p$ = 56
-ptr$4 = 104
-line$ = 128
-start$ = 136
-tokenarray$ = 144
-flags$ = 152
+ptr$1 = 40
+p$ = 48
+line$ = 96
+start$ = 104
+tokenarray$ = 112
+flags$ = 120
 Tokenize PROC
 
 ; 1089 : {
@@ -4950,13 +4807,7 @@ $LN36:
 	mov	QWORD PTR [rsp+24], r8
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 112				; 00000070H
-	mov	rdi, rsp
-	mov	ecx, 28
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+128]
+	sub	rsp, 88					; 00000058H
 
 ; 1090 :     int                         rc;
 ; 1091 :     struct line_status          p;
@@ -5021,7 +4872,7 @@ $LN36:
 	movzx	eax, BYTE PTR ModuleInfo+407
 	mov	r8, QWORD PTR line$[rsp]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11282
+	lea	rcx, OFFSET FLAT:$SG11320
 	call	DoDebugMsg1
 
 ; 1109 :             if( strchr( line, ModuleInfo.inside_comment ) != NULL ) {
@@ -5029,13 +4880,13 @@ $LN36:
 	movzx	eax, BYTE PTR ModuleInfo+407
 	mov	edx, eax
 	mov	rcx, QWORD PTR line$[rsp]
-	call	QWORD PTR __imp_strchr
+	call	strchr
 	test	rax, rax
 	je	SHORT $LN14@Tokenize
 
 ; 1110 :                 DebugMsg1(("COMMENT mode exited\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11284
+	lea	rcx, OFFSET FLAT:$SG11322
 	call	DoDebugMsg1
 
 ; 1111 :                 ModuleInfo.inside_comment = NULLC;
@@ -5087,7 +4938,7 @@ $LN5@Tokenize:
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isspace
+	call	isspace
 	test	eax, eax
 	je	SHORT $LN6@Tokenize
 	mov	rax, QWORD PTR p$[rsp]
@@ -5115,7 +4966,7 @@ $LN7@Tokenize:
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax-1]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isspace
+	call	isspace
 	test	eax, eax
 	je	SHORT $LN8@Tokenize
 	mov	rax, QWORD PTR p$[rsp]
@@ -5190,7 +5041,7 @@ $LN18@Tokenize:
 
 ; 1152 :                 DebugMsg1(("Tokenize: calling IsMultiLine()\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11289
+	lea	rcx, OFFSET FLAT:$SG11327
 	call	DoDebugMsg1
 
 ; 1153 :                 if ( IsMultiLine( tokenarray ) ) {
@@ -5210,46 +5061,46 @@ $LN18@Tokenize:
 	mov	rcx, QWORD PTR p$[rsp+8]
 	add	rcx, rax
 	mov	rax, rcx
-	mov	QWORD PTR ptr$4[rsp], rax
+	mov	QWORD PTR ptr$1[rsp], rax
 
 ; 1155 :                     DebugMsg1(("Tokenize: IsMultiLine(%s)=TRUE\n", line ));
 
 	mov	rdx, QWORD PTR line$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11291
+	lea	rcx, OFFSET FLAT:$SG11329
 	call	DoDebugMsg1
 
 ; 1156 :                     if ( GetTextLine( ptr ) ) {
 
-	mov	rcx, QWORD PTR ptr$4[rsp]
+	mov	rcx, QWORD PTR ptr$1[rsp]
 	call	GetTextLine
 	test	rax, rax
-	je	$LN20@Tokenize
+	je	SHORT $LN20@Tokenize
 $LN9@Tokenize:
 
 ; 1157 :                         while ( isspace( *ptr ) ) ptr++;
 
-	mov	rax, QWORD PTR ptr$4[rsp]
+	mov	rax, QWORD PTR ptr$1[rsp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isspace
+	call	isspace
 	test	eax, eax
 	je	SHORT $LN10@Tokenize
-	mov	rax, QWORD PTR ptr$4[rsp]
+	mov	rax, QWORD PTR ptr$1[rsp]
 	inc	rax
-	mov	QWORD PTR ptr$4[rsp], rax
+	mov	QWORD PTR ptr$1[rsp], rax
 	jmp	SHORT $LN9@Tokenize
 $LN10@Tokenize:
 
 ; 1158 :                         if ( *ptr ) {
 
-	mov	rax, QWORD PTR ptr$4[rsp]
+	mov	rax, QWORD PTR ptr$1[rsp]
 	movsx	eax, BYTE PTR [rax]
 	test	eax, eax
 	je	SHORT $LN21@Tokenize
 
 ; 1159 :                             strcpy( p.input, ptr );
 
-	mov	rdx, QWORD PTR ptr$4[rsp]
+	mov	rdx, QWORD PTR ptr$1[rsp]
 	mov	rcx, QWORD PTR p$[rsp]
 	call	strcpy
 
@@ -5257,7 +5108,7 @@ $LN10@Tokenize:
 
 	mov	rcx, QWORD PTR p$[rsp+16]
 	call	strlen
-	cmp	rax, 600				; 00000258H
+	cmp	rax, 1024				; 00000400H
 	jb	SHORT $LN22@Tokenize
 
 ; 1161 :                                 EmitError( LINE_TOO_LONG );
@@ -5279,7 +5130,7 @@ $LN22@Tokenize:
 ; 1165 :                             DebugMsg1(("Tokenize: line concatenation, line=%s\n", line ));
 
 	mov	rdx, QWORD PTR line$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11295
+	lea	rcx, OFFSET FLAT:$SG11333
 	call	DoDebugMsg1
 
 ; 1166 :                             continue;
@@ -5403,14 +5254,14 @@ $LN27@Tokenize:
 	mov	eax, DWORD PTR p$[rsp+24]
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
-	cmp	DWORD PTR [rcx+rax+16], 358		; 00000166H
+	cmp	DWORD PTR [rcx+rax+16], 363		; 0000016bH
 	jne	SHORT $LN31@Tokenize
 
 ; 1194 :                         DebugMsg1(("tokenize: COMMENT starting, delim is >%c<\n", ModuleInfo.inside_comment));
 
 	movzx	eax, BYTE PTR ModuleInfo+407
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11305
+	lea	rcx, OFFSET FLAT:$SG11343
 	call	DoDebugMsg1
 
 ; 1195 :                         StartComment( p.input );
@@ -5478,15 +5329,15 @@ $LN25@Tokenize:
 
 ; 1210 :         if( p.index >= MAX_TOKEN ) {
 
-	cmp	DWORD PTR p$[rsp+24], 150		; 00000096H
+	cmp	DWORD PTR p$[rsp+24], 256		; 00000100H
 	jb	SHORT $LN34@Tokenize
 
 ; 1211 :             DebugMsg1(("tokenize: token index %u >= MAX_TOKEN (=%u), line=>%s<\n", p.index, MAX_TOKEN, line ));
 
 	mov	r9, QWORD PTR line$[rsp]
-	mov	r8d, 150				; 00000096H
+	mov	r8d, 256				; 00000100H
 	mov	edx, DWORD PTR p$[rsp+24]
-	lea	rcx, OFFSET FLAT:$SG11309
+	lea	rcx, OFFSET FLAT:$SG11347
 	call	DoDebugMsg1
 
 ; 1212 :             EmitError( TOO_MANY_TOKENS );
@@ -5569,7 +5420,7 @@ $skipline$37:
 	mov	eax, DWORD PTR p$[rsp+24]
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
-	lea	rdx, OFFSET FLAT:$SG11310
+	lea	rdx, OFFSET FLAT:$SG11348
 	mov	QWORD PTR [rcx+rax+8], rdx
 
 ; 1230 :     return( p.index );
@@ -5578,17 +5429,11 @@ $skipline$37:
 
 ; 1231 : }
 
-	mov	edi, eax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:Tokenize$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	eax, edi
-	add	rsp, 112				; 00000070H
-	pop	rdi
+	add	rsp, 88					; 00000058H
 	ret	0
 Tokenize ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\tokenize.c
 _TEXT	SEGMENT
 token$ = 48
@@ -5600,13 +5445,7 @@ GetToken PROC
 $LN13:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 1042 :     if( isdigit( *p->input ) ) {
 
@@ -5614,7 +5453,7 @@ $LN13:
 	mov	rax, QWORD PTR [rax]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isdigit
+	call	isdigit
 	test	eax, eax
 	je	SHORT $LN2@GetToken
 
@@ -5633,7 +5472,7 @@ $LN2@GetToken:
 	mov	rax, QWORD PTR [rax]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isalpha
+	call	isalpha
 	test	eax, eax
 	jne	SHORT $LN6@GetToken
 	mov	rax, QWORD PTR p$[rsp]
@@ -5684,7 +5523,7 @@ $LN4@GetToken:
 	mov	rax, QWORD PTR [rax]
 	movsx	eax, BYTE PTR [rax+1]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isalnum
+	call	isalnum
 	test	eax, eax
 	jne	SHORT $LN9@GetToken
 	mov	rax, QWORD PTR p$[rsp]
@@ -5784,8 +5623,7 @@ $LN1@GetToken:
 
 ; 1062 : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 GetToken ENDP
 _TEXT	ENDS

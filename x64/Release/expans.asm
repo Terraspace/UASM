@@ -14,9 +14,12 @@ COMM	MacroLevel:BYTE
 COMM	MacroLocals:DWORD
 _DATA	ENDS
 _BSS	SEGMENT
-$SG11106 DB	01H DUP (?)
-$SG11177 DB	01H DUP (?)
+$SG11129 DB	01H DUP (?)
+$SG11200 DB	01H DUP (?)
 _BSS	ENDS
+_DATA	SEGMENT
+$SG11446 DB	'LOCAL', 00H
+_DATA	ENDS
 PUBLIC	myltoa
 PUBLIC	myqtoa
 PUBLIC	RunMacro
@@ -29,10 +32,12 @@ EXTRN	isspace:PROC
 EXTRN	isalnum:PROC
 EXTRN	strchr:PROC
 EXTRN	_memicmp:PROC
+EXTRN	_stricmp:PROC
 EXTRN	EmitError:PROC
 EXTRN	EmitErr:PROC
 EXTRN	EmitWarn:PROC
 EXTRN	SymFind:PROC
+EXTRN	SymFindDeclare:PROC
 EXTRN	ParseLine:PROC
 EXTRN	WritePreprocessedLine:PROC
 EXTRN	PreprocessLine:PROC
@@ -123,7 +128,7 @@ pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$ExpandToken DD imagerel ExpandToken
-	DD	imagerel ExpandToken+1381
+	DD	imagerel ExpandToken+1425
 	DD	imagerel $unwind$ExpandToken
 pdata	ENDS
 CONST	SEGMENT
@@ -241,8 +246,9 @@ _TEXT	SEGMENT
 evaluate$1$ = 48
 i$3$ = 52
 tmp$ = 56
-is_exitm$ = 60
-tmpbuf$1 = 64
+tv851 = 60
+is_exitm$ = 64
+tmpbuf$1 = 72
 opndx$ = 112
 buffer$ = 224
 line$ = 1312
@@ -290,188 +296,220 @@ ExpandToken PROC					; COMDAT
 ; 1142 :     ret_code rc = NOT_ERROR;
 
 	xor	r14d, r14d
+
+; 1143 :     char buffer[MAX_LINE_LEN];
+; 1144 : 	char inLocal = FALSE;
+
+	xor	sil, sil
 	mov	BYTE PTR evaluate$1$[rsp], cl
 	mov	r15, r8
 	mov	r12d, r14d
 
-; 1143 :     char buffer[MAX_LINE_LEN];
-; 1144 : 
-; 1145 :     for ( ; i < max && tokenarray[i].token != T_COMMA; i++ ) {
+; 1145 : 
+; 1146 :     for ( ; i < max && tokenarray[i].token != T_COMMA; i++ ) {
 
 	cmp	ebx, r9d
-	jge	$LN78@ExpandToke
-	mov	esi, DWORD PTR pos$[rbp-256]
-	mov	DWORD PTR i$3$[rsp], esi
-	npad	7
+	jge	$LN81@ExpandToke
+	mov	eax, DWORD PTR pos$[rbp-256]
+	mov	DWORD PTR i$3$[rsp], eax
+	npad	4
 $LL4@ExpandToke:
-	movsxd	rax, ebx
-	shl	rax, 5
-	lea	rsi, QWORD PTR [rax+r15]
-	movzx	eax, BYTE PTR [rax+r15]
-	cmp	al, 44					; 0000002cH
-	je	$LN85@ExpandToke
+	movsxd	rdi, ebx
+	shl	rdi, 5
+	add	rdi, r15
+	cmp	BYTE PTR [rdi], 44			; 0000002cH
+	je	$LN90@ExpandToke
 
-; 1146 :         /* v2.05: the '%' should only be handled as an operator if addbrackets==TRUE,
-; 1147 :          * which means that the current directive is a preprocessor directive and the
-; 1148 :          * expected argument is a literal (or text macro).
-; 1149 :          */
-; 1150 :         if ( tokenarray[i].token == T_PERCENT && addbrackets && evaluate == FALSE ) {
+; 1147 :     
+; 1148 : 		if (strcasecmp(tokenarray[i].string_ptr, "LOCAL") == 0)
+
+	mov	rcx, QWORD PTR [rdi+8]
+	lea	rdx, OFFSET FLAT:$SG11446
+	call	_stricmp
+	test	eax, eax
+	movzx	esi, sil
+	mov	eax, 1
+	cmove	esi, eax
+	movzx	eax, BYTE PTR [rdi]
+	mov	DWORD PTR tv851[rsp], esi
+
+; 1149 : 		{
+; 1150 : 			inLocal = TRUE;
+; 1151 : 		}
+; 1152 : 		/* v2.05: the '%' should only be handled as an operator if addbrackets==TRUE,
+; 1153 :          * which means that the current directive is a preprocessor directive and the
+; 1154 :          * expected argument is a literal (or text macro).
+; 1155 :          */
+; 1156 :         if ( tokenarray[i].token == T_PERCENT && addbrackets && evaluate == FALSE ) {
 
 	cmp	al, 37					; 00000025H
-	jne	SHORT $LN8@ExpandToke
+	jne	SHORT $LN9@ExpandToke
+	movzx	ecx, BYTE PTR evaluate$1$[rsp]
 	test	r13d, r13d
-	je	$LN88@ExpandToke
+	je	$LN91@ExpandToke
 	test	cl, cl
-	jne	$LN88@ExpandToke
+	jne	$LN91@ExpandToke
 
-; 1151 :             evaluate = TRUE;
+; 1157 :             evaluate = TRUE;
 
 	mov	cl, 1
 
-; 1152 :             addbrackets = FALSE;
-; 1153 :             equmode = FALSE;
+; 1158 :             addbrackets = FALSE;
+; 1159 :             equmode = FALSE;
 
 	mov	DWORD PTR equmode$[rbp-256], r14d
 	mov	BYTE PTR evaluate$1$[rsp], cl
 	mov	r13d, r14d
 
-; 1154 :             pos = i;
+; 1160 :             pos = i;
 
 	mov	edx, ebx
 	mov	DWORD PTR i$3$[rsp], ebx
 
-; 1155 :             DebugMsg1(("ExpandToken: %% found, line=%s\n", tokenarray[i].tokpos ));
-; 1156 :             continue;
+; 1161 :             DebugMsg1(("ExpandToken: %% found, line=%s\n", tokenarray[i].tokpos ));
+; 1162 :             continue;
 
 	jmp	$LN2@ExpandToke
-$LN8@ExpandToke:
+$LN9@ExpandToke:
 
-; 1157 :         }
-; 1158 :         if( tokenarray[i].token == T_ID ) {
+; 1163 :         }
+; 1164 :         if( tokenarray[i].token == T_ID ) {
 
 	cmp	al, 8
-	jne	$LN88@ExpandToke
+	jne	$LN89@ExpandToke
 
-; 1159 :             sym = SymSearch( tokenarray[i].string_ptr );
+; 1165 : 			if(inLocal == TRUE)
+; 1166 : 				sym = SymFindDeclare(tokenarray[i].string_ptr);
 
-	mov	rcx, QWORD PTR [rsi+8]
+	mov	rcx, QWORD PTR [rdi+8]
+	cmp	sil, 1
+	jne	SHORT $LN11@ExpandToke
+	call	SymFindDeclare
+	jmp	SHORT $LN92@ExpandToke
+$LN11@ExpandToke:
+
+; 1167 : 			else
+; 1168 : 				sym = SymSearch( tokenarray[i].string_ptr );
+
 	call	SymFind
-	mov	rdi, rax
+$LN92@ExpandToke:
+	mov	rsi, rax
 
-; 1160 :             DebugMsg1(("ExpandToken: testing id >%s< equmode=%u\n", tokenarray[i].string_ptr, equmode ));
-; 1161 :             /* don't check isdefined flag (which cannot occur in pass one, and this code usually runs
-; 1162 :              * in pass one only!
-; 1163 :              */
-; 1164 :             //if( sym && sym->isdefined ) {
-; 1165 :             if( sym ) {
+; 1169 :             DebugMsg1(("ExpandToken: testing id >%s< equmode=%u\n", tokenarray[i].string_ptr, equmode ));
+; 1170 :             /* don't check isdefined flag (which cannot occur in pass one, and this code usually runs
+; 1171 :              * in pass one only!
+; 1172 :              */
+; 1173 :             //if( sym && sym->isdefined ) {
+; 1174 :             if( sym ) {
 
 	test	rax, rax
 	je	$LN84@ExpandToke
 
-; 1166 :                 if ( sym->state == SYM_MACRO ) {
+; 1175 :                 if ( sym->state == SYM_MACRO ) {
 
 	mov	eax, DWORD PTR [rax+32]
 	cmp	eax, 9
-	jne	$LN11@ExpandToke
+	jne	$LN14@ExpandToke
 
-; 1167 :                     tmp = i; /* save index of macro name */
+; 1176 :                     tmp = i; /* save index of macro name */
 
 	mov	DWORD PTR tmp$[rsp], ebx
 	mov	ecx, ebx
 
-; 1168 :                     if ( sym->isfunc == TRUE ) {
+; 1177 :                     if ( sym->isfunc == TRUE ) {
 
-	movzx	eax, BYTE PTR [rdi+44]
+	movzx	eax, BYTE PTR [rsi+44]
 	test	al, 2
-	je	$LN13@ExpandToke
+	je	$LN16@ExpandToke
 
-; 1169 :                         /* ignore macro functions without a following '(' */
-; 1170 :                         if ( tokenarray[i+1].token != T_OP_BRACKET ) {
+; 1178 :                         /* ignore macro functions without a following '(' */
+; 1179 :                         if ( tokenarray[i+1].token != T_OP_BRACKET ) {
 
-	cmp	BYTE PTR [rsi+32], 40			; 00000028H
+	cmp	BYTE PTR [rdi+32], 40			; 00000028H
 	jne	$LN84@ExpandToke
 
-; 1171 :                             DebugMsg1(("ExpandToken(%s): macro function without () - not expanded!\n", sym->name ));
-; 1172 :                             continue;
-; 1173 :                         }
-; 1174 :                         i++;
-; 1175 :                         if ( equmode == TRUE ) {
+; 1180 :                             DebugMsg1(("ExpandToken(%s): macro function without () - not expanded!\n", sym->name ));
+; 1181 :                             continue;
+; 1182 :                         }
+; 1183 :                         i++;
+; 1184 :                         if ( equmode == TRUE ) {
 
-	cmp	DWORD PTR equmode$[rbp-256], 1
-	jne	SHORT $LN16@ExpandToke
+	mov	edi, DWORD PTR equmode$[rbp-256]
+	cmp	edi, 1
+	jne	SHORT $LN19@ExpandToke
 
-; 1177 :                             /* go beyond the ')' */
-; 1178 :                             for ( tmp = 1; i < max; i++ ) {
+; 1186 :                             /* go beyond the ')' */
+; 1187 :                             for ( tmp = 1; i < max; i++ ) {
 
 	movsxd	r9, DWORD PTR max$[rbp-256]
 	add	ebx, 2
 	movsxd	rdx, ebx
-	mov	eax, 1
+	mov	eax, edi
 	mov	DWORD PTR tmp$[rsp], eax
 	cmp	rdx, r9
-	jge	SHORT $LN80@ExpandToke
+	jge	SHORT $LN83@ExpandToke
 
-; 1176 :                             i++; /* skip '(' */
+; 1185 :                             i++; /* skip '(' */
 
 	mov	rcx, rdx
 	shl	rcx, 5
 	add	rcx, r15
-	npad	5
+	npad	4
 $LL7@ExpandToke:
 
-; 1179 :                                 if ( tokenarray[i].token == T_OP_BRACKET )
+; 1188 :                                 if ( tokenarray[i].token == T_OP_BRACKET )
 
 	movzx	r8d, BYTE PTR [rcx]
 	cmp	r8b, 40					; 00000028H
-	jne	SHORT $LN17@ExpandToke
+	jne	SHORT $LN20@ExpandToke
 
-; 1180 :                                     tmp++;
+; 1189 :                                     tmp++;
 
 	inc	eax
 	mov	DWORD PTR tmp$[rsp], eax
 	jmp	SHORT $LN5@ExpandToke
-$LN17@ExpandToke:
+$LN20@ExpandToke:
 
-; 1181 :                                 else if ( tokenarray[i].token == T_CL_BRACKET ) {
+; 1190 :                                 else if ( tokenarray[i].token == T_CL_BRACKET ) {
 
 	cmp	r8b, 41					; 00000029H
 	jne	SHORT $LN5@ExpandToke
 
-; 1182 :                                     tmp--;
+; 1191 :                                     tmp--;
 
 	sub	eax, 1
 	mov	DWORD PTR tmp$[rsp], eax
 
-; 1183 :                                     if ( tmp == 0 )
+; 1192 :                                     if ( tmp == 0 )
 
-	je	SHORT $LN80@ExpandToke
+	je	SHORT $LN83@ExpandToke
 $LN5@ExpandToke:
 
-; 1177 :                             /* go beyond the ')' */
-; 1178 :                             for ( tmp = 1; i < max; i++ ) {
+; 1186 :                             /* go beyond the ')' */
+; 1187 :                             for ( tmp = 1; i < max; i++ ) {
 
 	inc	ebx
 	inc	rdx
 	add	rcx, 32					; 00000020H
 	cmp	rdx, r9
 	jl	SHORT $LL7@ExpandToke
-$LN80@ExpandToke:
+$LN83@ExpandToke:
 
-; 1184 :                                         break;
-; 1185 :                                 }
-; 1186 :                             }
-; 1187 :                             i--;
+; 1193 :                                         break;
+; 1194 :                                 }
+; 1195 :                             }
+; 1196 :                             i--;
 
 	dec	ebx
 
-; 1188 :                             continue;
+; 1197 :                             continue;
 
 	jmp	$LN84@ExpandToke
-$LN16@ExpandToke:
+$LN19@ExpandToke:
 
-; 1189 :                         }
-; 1190 :                         //DebugMsg1(("ExpandToken: macro function %s to be expanded\n", sym->name ));
-; 1191 :                         i = RunMacro( (struct dsym *)sym, i, tokenarray, buffer,
+; 1198 :                         }
+; 1199 :                         //DebugMsg1(("ExpandToken: macro function %s to be expanded\n", sym->name ));
+; 1200 :                         i = RunMacro( (struct dsym *)sym, i, tokenarray, buffer,
 
 	mov	eax, r14d
 	lea	rcx, QWORD PTR is_exitm$[rsp]
@@ -480,47 +518,47 @@ $LN16@ExpandToke:
 	cmp	ebx, 1
 	lea	edx, DWORD PTR [rbx+1]
 	mov	r8, r15
-	mov	rcx, rdi
+	mov	rcx, rsi
 	sete	al
 	mov	DWORD PTR [rsp+32], eax
 	call	RunMacro
 	movsxd	r12, eax
 
-; 1192 : #if MACROLABEL
-; 1193 :                                      (tmp == 1 ? MF_LABEL : 0),
-; 1194 : #else
-; 1195 :                                      0,
-; 1196 : #endif
-; 1197 :                                      &is_exitm );
-; 1198 :                         if ( i == -1 )
+; 1201 : #if MACROLABEL
+; 1202 :                                      (tmp == 1 ? MF_LABEL : 0),
+; 1203 : #else
+; 1204 :                                      0,
+; 1205 : #endif
+; 1206 :                                      &is_exitm );
+; 1207 :                         if ( i == -1 )
 
 	cmp	r12d, -1
-	je	$LN58@ExpandToke
+	je	$LN61@ExpandToke
 
-; 1200 :                         DebugMsg1(("ExpandToken(%s, addbr=%u): macro function expanded to >%s<\n", sym->name, addbrackets, buffer));
-; 1201 :                         /* expand text, but don't if macro was at position 0 (might be a text macro definition directive */
-; 1202 :                         /* v2.09: don't expand further if addbrackets is set */
-; 1203 :                         if ( tmp && (!addbrackets) && ( ERROR == ExpandTMacro( buffer, tokenarray, equmode, 0 ) ) )
+; 1209 :                         DebugMsg1(("ExpandToken(%s, addbr=%u): macro function expanded to >%s<\n", sym->name, addbrackets, buffer));
+; 1210 :                         /* expand text, but don't if macro was at position 0 (might be a text macro definition directive */
+; 1211 :                         /* v2.09: don't expand further if addbrackets is set */
+; 1212 :                         if ( tmp && (!addbrackets) && ( ERROR == ExpandTMacro( buffer, tokenarray, equmode, 0 ) ) )
 
 	mov	esi, DWORD PTR tmp$[rsp]
 	test	esi, esi
-	je	SHORT $LN22@ExpandToke
+	je	SHORT $LN25@ExpandToke
 	test	r13d, r13d
-	jne	SHORT $LN22@ExpandToke
-	mov	r8d, DWORD PTR equmode$[rbp-256]
-	lea	rcx, QWORD PTR buffer$[rbp-256]
+	jne	SHORT $LN25@ExpandToke
 	xor	r9d, r9d
+	lea	rcx, QWORD PTR buffer$[rbp-256]
+	mov	r8d, edi
 	mov	rdx, r15
 	call	ExpandTMacro
 	cmp	eax, -1
-	je	$LN58@ExpandToke
+	je	$LN61@ExpandToke
 	mov	esi, DWORD PTR tmp$[rsp]
-$LN22@ExpandToke:
+$LN25@ExpandToke:
 
-; 1204 :                             return( ERROR );
-; 1205 :                         /* get size of string to replace ( must be done before AddTokens() */
-; 1206 :                         size = ( tokenarray[i-1].tokpos + 1) - tokenarray[tmp].tokpos;
-; 1207 :                         AddTokens( tokenarray, tmp+1, tmp+1 - i, Token_Count );
+; 1213 :                             return( ERROR );
+; 1214 :                         /* get size of string to replace ( must be done before AddTokens() */
+; 1215 :                         size = ( tokenarray[i-1].tokpos + 1) - tokenarray[tmp].tokpos;
+; 1216 :                         AddTokens( tokenarray, tmp+1, tmp+1 - i, Token_Count );
 
 	mov	r9d, DWORD PTR ModuleInfo+496
 	lea	edx, DWORD PTR [rsi+1]
@@ -536,13 +574,13 @@ $LN22@ExpandToke:
 	sub	edi, DWORD PTR [rbx+r15+24]
 	call	AddTokens
 
-; 1208 :                         Token_Count += (tmp+1) - i;
+; 1217 :                         Token_Count += (tmp+1) - i;
 
 	mov	eax, DWORD PTR ModuleInfo+496
 
-; 1209 :                         if ( Token_Count < max ) /* take care not to read beyond T_FINAL */
-; 1210 :                             max = Token_Count;
-; 1211 :                         if ( ERROR == RebuildLine( buffer, tmp, tokenarray,
+; 1218 :                         if ( Token_Count < max ) /* take care not to read beyond T_FINAL */
+; 1219 :                             max = Token_Count;
+; 1220 :                         if ( ERROR == RebuildLine( buffer, tmp, tokenarray,
 
 	lea	r9d, DWORD PTR [rdi+1]
 	inc	eax
@@ -563,64 +601,64 @@ $LN22@ExpandToke:
 	mov	DWORD PTR [rsp+32], eax
 	call	RebuildLine
 	cmp	eax, -1
-	je	$LN58@ExpandToke
+	je	$LN61@ExpandToke
 
-; 1212 :                                                   size, tokenarray[tmp].tokpos - line, addbrackets ) )
-; 1213 :                             return( ERROR );
-; 1214 :                         rc = STRING_EXPANDED;
-; 1215 :                         i = tmp;
+; 1221 :                                                   size, tokenarray[tmp].tokpos - line, addbrackets ) )
+; 1222 :                             return( ERROR );
+; 1223 :                         rc = STRING_EXPANDED;
+; 1224 :                         i = tmp;
 
 	mov	ebx, DWORD PTR tmp$[rsp]
 
-; 1269 :                         break;
-; 1270 :                     }
+; 1278 :                         break;
+; 1279 :                     }
 
-	jmp	$LN89@ExpandToke
-$LN13@ExpandToke:
+	jmp	$LN93@ExpandToke
+$LN16@ExpandToke:
 
-; 1216 :                     } else {
-; 1217 :                         /* a macro proc is expanded at pos 0 or pos 2
-; 1218 :                          * (or at pos 1 if sym->label is on)
-; 1219 :                          */
-; 1220 :                         if ( i == 0 ||
-; 1221 :                             ( i == 2 && ( tokenarray[1].token == T_COLON ||
-; 1222 :                                          tokenarray[1].token == T_DBL_COLON ))
-; 1223 : #if MACROLABEL
-; 1224 :                             || ( i == 1 && sym->label )
+; 1225 :                     } else {
+; 1226 :                         /* a macro proc is expanded at pos 0 or pos 2
+; 1227 :                          * (or at pos 1 if sym->label is on)
+; 1228 :                          */
+; 1229 :                         if ( i == 0 ||
+; 1230 :                             ( i == 2 && ( tokenarray[1].token == T_COLON ||
+; 1231 :                                          tokenarray[1].token == T_DBL_COLON ))
+; 1232 : #if MACROLABEL
+; 1233 :                             || ( i == 1 && sym->label )
 
 	test	ebx, ebx
-	je	SHORT $LN30@ExpandToke
+	je	SHORT $LN33@ExpandToke
 	cmp	ebx, 2
-	jne	SHORT $LN28@ExpandToke
+	jne	SHORT $LN31@ExpandToke
 	movzx	eax, BYTE PTR [r15+32]
 	cmp	al, 58					; 0000003aH
-	je	SHORT $LN75@ExpandToke
+	je	SHORT $LN78@ExpandToke
 	cmp	al, 13
 	jne	$LN84@ExpandToke
-$LN75@ExpandToke:
+$LN78@ExpandToke:
 
-; 1232 : #else
-; 1233 :                             return( EmitErr( SYNTAX_ERROR_EX, sym->name ) );
-; 1234 : #endif
-; 1235 :                         }
-; 1236 :                         /* v2.08: write optional code label. This has been
-; 1237 :                          * moved out from RunMacro().
-; 1238 :                          */
-; 1239 :                         if ( i == 2 ) {
-; 1240 :                             if ( ERROR == WriteCodeLabel( line, tokenarray ) )
+; 1241 : #else
+; 1242 :                             return( EmitErr( SYNTAX_ERROR_EX, sym->name ) );
+; 1243 : #endif
+; 1244 :                         }
+; 1245 :                         /* v2.08: write optional code label. This has been
+; 1246 :                          * moved out from RunMacro().
+; 1247 :                          */
+; 1248 :                         if ( i == 2 ) {
+; 1249 :                             if ( ERROR == WriteCodeLabel( line, tokenarray ) )
 
 	mov	rcx, QWORD PTR line$[rbp-256]
 	mov	rdx, r15
 	call	WriteCodeLabel
 	cmp	eax, -1
-	je	$LN58@ExpandToke
-$LN30@ExpandToke:
+	je	$LN61@ExpandToke
+$LN33@ExpandToke:
 
-; 1241 :                                 return( ERROR );
-; 1242 :                         }
-; 1243 :                         //buffer[0] = NULLC; /* nothing should be returned, just to be safe */
-; 1244 :                         DebugMsg1(("ExpandToken(%s): macro proc to be expanded\n", sym->name ));
-; 1245 :                         i = RunMacro( (struct dsym *)sym, i+1, tokenarray, NULL,
+; 1250 :                                 return( ERROR );
+; 1251 :                         }
+; 1252 :                         //buffer[0] = NULLC; /* nothing should be returned, just to be safe */
+; 1253 :                         DebugMsg1(("ExpandToken(%s): macro proc to be expanded\n", sym->name ));
+; 1254 :                         i = RunMacro( (struct dsym *)sym, i+1, tokenarray, NULL,
 
 	mov	eax, r14d
 	lea	rcx, QWORD PTR is_exitm$[rsp]
@@ -628,92 +666,92 @@ $LN30@ExpandToke:
 	lea	edx, DWORD PTR [rbx+1]
 	cmp	ebx, 1
 	mov	r8, r15
-	mov	rcx, rdi
+	mov	rcx, rsi
 	sete	al
 	xor	r9d, r9d
 	or	eax, 2
 	mov	DWORD PTR [rsp+32], eax
 	call	RunMacro
 
-; 1246 : #if MACROLABEL
-; 1247 :                                      MF_NOSAVE | (i == 1 ? MF_LABEL : 0),
-; 1248 : #else
-; 1249 :                                      MF_NOSAVE,
-; 1250 : #endif
-; 1251 :                                      &is_exitm );
-; 1252 :                         DebugMsg1(("ExpandToken(%s): macro proc called\n", sym->name));
-; 1253 :                         if ( i == -1 )
+; 1255 : #if MACROLABEL
+; 1256 :                                      MF_NOSAVE | (i == 1 ? MF_LABEL : 0),
+; 1257 : #else
+; 1258 :                                      MF_NOSAVE,
+; 1259 : #endif
+; 1260 :                                      &is_exitm );
+; 1261 :                         DebugMsg1(("ExpandToken(%s): macro proc called\n", sym->name));
+; 1262 :                         if ( i == -1 )
 
 	cmp	eax, -1
 	sete	r14b
 	lea	eax, DWORD PTR [r14-2]
 
-; 1254 :                             return( ERROR );
-; 1255 : #if 0
-; 1256 :                         /* it's possible to "hide" the EXITM directive when the
-; 1257 :                          * macro lines are read. But it's not useful for macro
-; 1258 :                          * procs to check if exitm has been executed, because
-; 1259 :                          * Masm simply will ignore anything that's "returned".
-; 1260 :                          */
-; 1261 :                         if ( is_exitm ) {
-; 1262 :                             DebugMsg(("ExpandToken: EXITM in macro procedure!\n" ));
-; 1263 :                             strcat( buffer, tokenarray[tmp].tokpos );
-; 1264 :                             strcpy( line, buffer );
-; 1265 :                             rc = STRING_EXPANDED;
-; 1266 :                         } else
-; 1267 : #endif
-; 1268 :                             return( EMPTY ); /* no further processing */
+; 1263 :                             return( ERROR );
+; 1264 : #if 0
+; 1265 :                         /* it's possible to "hide" the EXITM directive when the
+; 1266 :                          * macro lines are read. But it's not useful for macro
+; 1267 :                          * procs to check if exitm has been executed, because
+; 1268 :                          * Masm simply will ignore anything that's "returned".
+; 1269 :                          */
+; 1270 :                         if ( is_exitm ) {
+; 1271 :                             DebugMsg(("ExpandToken: EXITM in macro procedure!\n" ));
+; 1272 :                             strcat( buffer, tokenarray[tmp].tokpos );
+; 1273 :                             strcpy( line, buffer );
+; 1274 :                             rc = STRING_EXPANDED;
+; 1275 :                         } else
+; 1276 : #endif
+; 1277 :                             return( EMPTY ); /* no further processing */
 
 	jmp	$LN1@ExpandToke
-$LN28@ExpandToke:
+$LN31@ExpandToke:
 
-; 1216 :                     } else {
-; 1217 :                         /* a macro proc is expanded at pos 0 or pos 2
-; 1218 :                          * (or at pos 1 if sym->label is on)
-; 1219 :                          */
-; 1220 :                         if ( i == 0 ||
-; 1221 :                             ( i == 2 && ( tokenarray[1].token == T_COLON ||
-; 1222 :                                          tokenarray[1].token == T_DBL_COLON ))
-; 1223 : #if MACROLABEL
-; 1224 :                             || ( i == 1 && sym->label )
+; 1225 :                     } else {
+; 1226 :                         /* a macro proc is expanded at pos 0 or pos 2
+; 1227 :                          * (or at pos 1 if sym->label is on)
+; 1228 :                          */
+; 1229 :                         if ( i == 0 ||
+; 1230 :                             ( i == 2 && ( tokenarray[1].token == T_COLON ||
+; 1231 :                                          tokenarray[1].token == T_DBL_COLON ))
+; 1232 : #if MACROLABEL
+; 1233 :                             || ( i == 1 && sym->label )
 
 	cmp	ebx, 1
 	jne	$LN84@ExpandToke
 	test	al, 4
-	jne	SHORT $LN30@ExpandToke
+	jne	SHORT $LN33@ExpandToke
 
-; 1225 : #endif
-; 1226 :                            )
-; 1227 :                             ;
-; 1228 :                         else {
-; 1229 :                             DebugMsg1(("ExpandToken(%s): macro proc at pos %u NOT expanded\n", sym->name, i ));
-; 1230 : #if 1 /* v2.03: no error, just don't expand! */
-; 1231 :                             continue;
+; 1234 : #endif
+; 1235 :                            )
+; 1236 :                             ;
+; 1237 :                         else {
+; 1238 :                             DebugMsg1(("ExpandToken(%s): macro proc at pos %u NOT expanded\n", sym->name, i ));
+; 1239 : #if 1 /* v2.03: no error, just don't expand! */
+; 1240 :                             continue;
 
 	jmp	$LN84@ExpandToke
-$LN11@ExpandToke:
+$LN14@ExpandToke:
 
-; 1271 :                 } else if( sym->state == SYM_TMACRO ) {
+; 1280 :                 } else if( sym->state == SYM_TMACRO ) {
 
 	cmp	eax, 10
-	jne	SHORT $LN84@ExpandToke
+	jne	$LN84@ExpandToke
 
-; 1272 : 
-; 1273 :                     //GetLiteralValue( buffer, sym->string_ptr );
-; 1274 :                     strcpy( buffer, sym->string_ptr );
+; 1281 : 
+; 1282 :                     //GetLiteralValue( buffer, sym->string_ptr );
+; 1283 :                     strcpy( buffer, sym->string_ptr );
 
-	mov	rcx, QWORD PTR [rdi+16]
+	mov	rcx, QWORD PTR [rsi+16]
 	lea	rdx, QWORD PTR buffer$[rbp-256]
 	npad	7
-$LL43@ExpandToke:
+$LL46@ExpandToke:
 	movzx	eax, BYTE PTR [rcx]
 	lea	rcx, QWORD PTR [rcx+1]
 	mov	BYTE PTR [rdx], al
 	lea	rdx, QWORD PTR [rdx+1]
 	test	al, al
-	jne	SHORT $LL43@ExpandToke
+	jne	SHORT $LL46@ExpandToke
 
-; 1275 :                     if ( ERROR == ExpandTMacro( buffer, tokenarray, equmode, 0 ) )
+; 1284 :                     if ( ERROR == ExpandTMacro( buffer, tokenarray, equmode, 0 ) )
 
 	mov	r8d, DWORD PTR equmode$[rbp-256]
 	lea	rcx, QWORD PTR buffer$[rbp-256]
@@ -721,20 +759,20 @@ $LL43@ExpandToke:
 	mov	rdx, r15
 	call	ExpandTMacro
 	cmp	eax, -1
-	je	SHORT $LN58@ExpandToke
+	je	SHORT $LN61@ExpandToke
 
-; 1277 :                     DebugMsg1(("ExpandToken(%s, addbr=%u): value >%s< expanded to >%s<\n", sym->name, addbrackets, sym->string_ptr, buffer ));
-; 1278 :                     if ( ERROR == RebuildLine( buffer, i, tokenarray, strlen( tokenarray[i].string_ptr ),
+; 1286 :                     DebugMsg1(("ExpandToken(%s, addbr=%u): value >%s< expanded to >%s<\n", sym->name, addbrackets, sym->string_ptr, buffer ));
+; 1287 :                     if ( ERROR == RebuildLine( buffer, i, tokenarray, strlen( tokenarray[i].string_ptr ),
 
-	mov	ecx, DWORD PTR [rsi+24]
+	mov	ecx, DWORD PTR [rdi+24]
 	sub	ecx, DWORD PTR line$[rbp-256]
-	mov	rax, QWORD PTR [rsi+8]
+	mov	rax, QWORD PTR [rdi+8]
 	or	r9, -1
 	npad	3
-$LL77@ExpandToke:
+$LL80@ExpandToke:
 	inc	r9
 	cmp	BYTE PTR [rax+r9], r14b
-	jne	SHORT $LL77@ExpandToke
+	jne	SHORT $LL80@ExpandToke
 	mov	DWORD PTR [rsp+40], r13d
 	mov	r8, r15
 	mov	DWORD PTR [rsp+32], ecx
@@ -742,85 +780,87 @@ $LL77@ExpandToke:
 	lea	rcx, QWORD PTR buffer$[rbp-256]
 	call	RebuildLine
 	cmp	eax, -1
-	je	SHORT $LN58@ExpandToke
-$LN89@ExpandToke:
+	je	SHORT $LN61@ExpandToke
+$LN93@ExpandToke:
 
-; 1279 :                                               tokenarray[i].tokpos - line, addbrackets ) )
-; 1280 :                         return( ERROR );
-; 1281 :                     rc = STRING_EXPANDED;
+; 1288 :                                               tokenarray[i].tokpos - line, addbrackets ) )
+; 1289 :                         return( ERROR );
+; 1290 :                     rc = STRING_EXPANDED;
 
 	mov	r12d, 1
 $LN84@ExpandToke:
+	mov	esi, DWORD PTR tv851[rsp]
+$LN89@ExpandToke:
 	movzx	ecx, BYTE PTR evaluate$1$[rsp]
-$LN88@ExpandToke:
+$LN91@ExpandToke:
 	mov	edx, DWORD PTR i$3$[rsp]
 $LN2@ExpandToke:
 
-; 1143 :     char buffer[MAX_LINE_LEN];
-; 1144 : 
-; 1145 :     for ( ; i < max && tokenarray[i].token != T_COMMA; i++ ) {
+; 1145 : 
+; 1146 :     for ( ; i < max && tokenarray[i].token != T_COMMA; i++ ) {
 
 	inc	ebx
 	cmp	ebx, DWORD PTR max$[rbp-256]
 	jl	$LL4@ExpandToke
-	jmp	SHORT $LN76@ExpandToke
-$LN58@ExpandToke:
+	jmp	SHORT $LN79@ExpandToke
+$LN61@ExpandToke:
 
-; 1199 :                             return( ERROR );
+; 1208 :                             return( ERROR );
 
 	or	eax, -1
 	jmp	$LN1@ExpandToke
-$LN78@ExpandToke:
+$LN81@ExpandToke:
 
-; 1276 :                         return( ERROR );
+; 1285 :                         return( ERROR );
 
 	mov	edx, DWORD PTR pos$[rbp-256]
 	mov	DWORD PTR i$3$[rsp], edx
-	jmp	SHORT $LN76@ExpandToke
-$LN85@ExpandToke:
+	jmp	SHORT $LN79@ExpandToke
+$LN90@ExpandToke:
 	mov	edx, DWORD PTR i$3$[rsp]
-$LN76@ExpandToke:
+$LN79@ExpandToke:
 
-; 1282 :                     DebugMsg1(("ExpandToken(%s): rest after expansion: %s\n", sym->name, tokenarray[i].tokpos ));
-; 1283 :                 }
-; 1284 :             }
-; 1285 :         }
-; 1286 :     }
-; 1287 :     *pi = i;
+; 1291 :                     DebugMsg1(("ExpandToken(%s): rest after expansion: %s\n", sym->name, tokenarray[i].tokpos ));
+; 1292 :                 }
+; 1293 :             }
+; 1294 :         }
+; 1295 :     }
+; 1296 :     *pi = i;
 
 	mov	r13, QWORD PTR pi$[rbp-256]
 	mov	DWORD PTR [r13], ebx
 
-; 1288 :     if ( evaluate ) {
+; 1297 :     if ( evaluate ) {
 
 	test	cl, cl
-	je	$LN35@ExpandToke
+	je	$LN44@ExpandToke
 
-; 1289 :         int old_tokencount = Token_Count;
+; 1298 :         int old_tokencount = Token_Count;
 
 	mov	edi, DWORD PTR ModuleInfo+496
 
-; 1290 :         if ( i == (pos+1) ) { /* just a single %? */
+; 1299 :         if ( i == (pos+1) ) { /* just a single %? */
 
 	lea	eax, DWORD PTR [rdx+1]
 	cmp	ebx, eax
-	jne	SHORT $LN36@ExpandToke
+	jne	SHORT $LN39@ExpandToke
 
-; 1291 :             opndx.value = 0;
+; 1300 :             opndx.value = 0;
 
 	mov	DWORD PTR opndx$[rsp], r14d
 
-; 1292 :             i = pos;
-; 1293 :         } else {
+; 1301 :             i = pos;
+; 1302 :         } else {
 
-	jmp	$LN37@ExpandToke
-$LN36@ExpandToke:
+	mov	r12d, 1
+	jmp	$LN40@ExpandToke
+$LN39@ExpandToke:
 
-; 1294 :             i = pos++;
+; 1303 :             i = pos++;
 
 	mov	DWORD PTR i$3$[rsp], edx
 
-; 1295 :             tmp = tokenarray[*pi].tokpos - tokenarray[pos].tokpos;
+; 1304 :             tmp = tokenarray[*pi].tokpos - tokenarray[pos].tokpos;
 
 	movsxd	rdx, eax
 	movsxd	rax, DWORD PTR [r13]
@@ -829,7 +869,7 @@ $LN36@ExpandToke:
 	mov	ecx, DWORD PTR [rax+r15+24]
 	sub	ecx, DWORD PTR [rdx+r15+24]
 
-; 1296 :             memcpy( buffer, tokenarray[pos].tokpos, tmp );
+; 1305 :             memcpy( buffer, tokenarray[pos].tokpos, tmp );
 
 	mov	rdx, QWORD PTR [rdx+r15+24]
 	movsxd	rbx, ecx
@@ -838,21 +878,22 @@ $LN36@ExpandToke:
 	lea	rcx, QWORD PTR buffer$[rbp-256]
 	call	memcpy
 
-; 1297 :             buffer[tmp] = NULLC;
-; 1298 :             tmp = old_tokencount + 1;
+; 1306 :             buffer[tmp] = NULLC;
+; 1307 :             tmp = old_tokencount + 1;
 
 	lea	edx, DWORD PTR [rdi+1]
 	mov	BYTE PTR buffer$[rbp+rbx-256], r14b
 
-; 1299 :             Token_Count = Tokenize( buffer, tmp, tokenarray, TOK_RESCAN );
+; 1308 :             Token_Count = Tokenize( buffer, tmp, tokenarray, TOK_RESCAN );
 
-	mov	r9d, 1
+	mov	r12d, 1
 	mov	DWORD PTR tmp$[rsp], edx
-	mov	r8, r15
+	mov	r9d, r12d
 	lea	rcx, QWORD PTR buffer$[rbp-256]
+	mov	r8, r15
 	call	Tokenize
 
-; 1300 :             if ( EvalOperand( &tmp, tokenarray, Token_Count, &opndx, EXPF_NOUNDEF ) == ERROR )
+; 1309 :             if ( EvalOperand( &tmp, tokenarray, Token_Count, &opndx, EXPF_NOUNDEF ) == ERROR )
 
 	lea	r9, QWORD PTR opndx$[rsp]
 	mov	DWORD PTR ModuleInfo+496, eax
@@ -862,92 +903,92 @@ $LN36@ExpandToke:
 	lea	rcx, QWORD PTR tmp$[rsp]
 	call	EvalOperand
 	cmp	eax, -1
-	jne	SHORT $LN38@ExpandToke
+	jne	SHORT $LN41@ExpandToke
 
-; 1301 :                 opndx.value = 0; /* v2.09: assume value 0, don't return with ERROR */
+; 1310 :                 opndx.value = 0; /* v2.09: assume value 0, don't return with ERROR */
 
 	mov	DWORD PTR opndx$[rsp], r14d
-	jmp	SHORT $LN40@ExpandToke
-$LN38@ExpandToke:
+	jmp	SHORT $LN43@ExpandToke
+$LN41@ExpandToke:
 
-; 1302 :             else if ( opndx.kind != EXPR_CONST ) {
+; 1311 :             else if ( opndx.kind != EXPR_CONST ) {
 
 	cmp	DWORD PTR opndx$[rbp-196], r14d
-	je	SHORT $LN79@ExpandToke
+	je	SHORT $LN82@ExpandToke
 
-; 1303 :                 /* v2.09: with flag EXPF_NOUNDEF, EvalOperand() will have returned
-; 1304 :                  * with error if there's an undefined symbol involved
-; 1305 :                  */
-; 1306 :                 //if ( opndx.sym && opndx.sym->state == SYM_UNDEFINED )
-; 1307 :                 //    EmitErr( SYMBOL_NOT_DEFINED, opndx.sym->name );
-; 1308 :                 //else {
-; 1309 :                     DebugMsg(("ExpandToken: 'constant expected' error\n"));
-; 1310 :                     EmitError( CONSTANT_EXPECTED );
+; 1312 :                 /* v2.09: with flag EXPF_NOUNDEF, EvalOperand() will have returned
+; 1313 :                  * with error if there's an undefined symbol involved
+; 1314 :                  */
+; 1315 :                 //if ( opndx.sym && opndx.sym->state == SYM_UNDEFINED )
+; 1316 :                 //    EmitErr( SYMBOL_NOT_DEFINED, opndx.sym->name );
+; 1317 :                 //else {
+; 1318 :                     DebugMsg(("ExpandToken: 'constant expected' error\n"));
+; 1319 :                     EmitError( CONSTANT_EXPECTED );
 
 	mov	ecx, 65					; 00000041H
 	call	EmitError
 
-; 1311 :                 //}
-; 1312 :                 //return( ERROR );
-; 1313 :                 opndx.value = 0; /* assume value 0 */
+; 1320 :                 //}
+; 1321 :                 //return( ERROR );
+; 1322 :                 opndx.value = 0; /* assume value 0 */
 
 	mov	DWORD PTR opndx$[rsp], r14d
-	jmp	SHORT $LN40@ExpandToke
-$LN79@ExpandToke:
+	jmp	SHORT $LN43@ExpandToke
+$LN82@ExpandToke:
 	mov	r14d, DWORD PTR opndx$[rsp]
-$LN40@ExpandToke:
+$LN43@ExpandToke:
 
-; 1314 :             }
-; 1315 :             Token_Count = old_tokencount;
+; 1323 :             }
+; 1324 :             Token_Count = old_tokencount;
 
 	mov	DWORD PTR ModuleInfo+496, edi
-$LN37@ExpandToke:
+$LN40@ExpandToke:
 
-; 1316 :         }
-; 1317 : #if TEVALUE_UNSIGNED
-; 1318 :         /* v2.03: Masm compatible: returns an unsigned value */
-; 1319 :         myltoa( opndx.value, StringBufferEnd, ModuleInfo.radix, FALSE, FALSE );
+; 1325 :         }
+; 1326 : #if TEVALUE_UNSIGNED
+; 1327 :         /* v2.03: Masm compatible: returns an unsigned value */
+; 1328 :         myltoa( opndx.value, StringBufferEnd, ModuleInfo.radix, FALSE, FALSE );
 
-	movzx	r10d, BYTE PTR ModuleInfo+396
-	mov	rcx, QWORD PTR ModuleInfo+488
+	movzx	ecx, BYTE PTR ModuleInfo+396
+	mov	r10, QWORD PTR ModuleInfo+488
 	test	r14d, r14d
-	jne	SHORT $LN50@ExpandToke
-	mov	WORD PTR [rcx], 48			; 00000030H
-	jmp	SHORT $LN44@ExpandToke
-$LN50@ExpandToke:
+	jne	SHORT $LN53@ExpandToke
+	mov	WORD PTR [r10], 48			; 00000030H
+	jmp	SHORT $LN47@ExpandToke
+$LN53@ExpandToke:
 	lea	r9, QWORD PTR tmpbuf$1[rsp+33]
 	mov	BYTE PTR tmpbuf$1[rsp+33], 0
 	lea	r11, OFFSET FLAT:__digits
-	npad	13
-$LL47@ExpandToke:
+$LL50@ExpandToke:
 	xor	edx, edx
 	mov	eax, r14d
-	div	r10d
+	div	ecx
 	dec	r9
 	mov	r14d, eax
 	movzx	eax, BYTE PTR [rdx+r11]
 	mov	BYTE PTR [r9], al
 	test	r14d, r14d
-	jne	SHORT $LL47@ExpandToke
+	jne	SHORT $LL50@ExpandToke
 	lea	r8, QWORD PTR tmpbuf$1[rsp+34]
 	mov	rdx, r9
 	sub	r8, r9
+	mov	rcx, r10
 	call	memcpy
-$LN44@ExpandToke:
+$LN47@ExpandToke:
 
-; 1320 : #else
-; 1321 :         myltoa( opndx.value, StringBufferEnd, ModuleInfo.radix, opndx.hvalue < 0, FALSE );
-; 1322 : #endif
-; 1323 :             /* v2.05: get size of string to be "replaced" */
-; 1324 :         tmp = tokenarray[*pi].tokpos - tokenarray[i].tokpos;
+; 1329 : #else
+; 1330 :         myltoa( opndx.value, StringBufferEnd, ModuleInfo.radix, opndx.hvalue < 0, FALSE );
+; 1331 : #endif
+; 1332 :             /* v2.05: get size of string to be "replaced" */
+; 1333 :         tmp = tokenarray[*pi].tokpos - tokenarray[i].tokpos;
 
 	movsxd	rax, DWORD PTR [r13]
 
-; 1325 :         DebugMsg1(("ExpandToken: curr pos=%u, start expr=%u, expr size=%d\n", *pi, i, tmp ));
-; 1326 : 
-; 1327 :         //tokenarray[i].token = T_STRING;
-; 1328 :         tokenarray[i].string_ptr = StringBufferEnd;
-; 1329 :         AddTokens( tokenarray, i+1, i+1 - *pi, Token_Count );
+; 1334 :         DebugMsg1(("ExpandToken: curr pos=%u, start expr=%u, expr size=%d\n", *pi, i, tmp ));
+; 1335 : 
+; 1336 :         //tokenarray[i].token = T_STRING;
+; 1337 :         tokenarray[i].string_ptr = StringBufferEnd;
+; 1338 :         AddTokens( tokenarray, i+1, i+1 - *pi, Token_Count );
 
 	mov	rcx, r15
 	movsxd	rsi, DWORD PTR i$3$[rsp]
@@ -966,7 +1007,7 @@ $LN44@ExpandToke:
 	mov	DWORD PTR tmp$[rsp], ebx
 	call	AddTokens
 
-; 1330 :         Token_Count += (i+1) - *pi;
+; 1339 :         Token_Count += (i+1) - *pi;
 
 	mov	eax, DWORD PTR ModuleInfo+496
 	mov	ecx, esi
@@ -974,8 +1015,8 @@ $LN44@ExpandToke:
 	inc	eax
 	add	ecx, eax
 
-; 1331 : 
-; 1332 :         if ( ERROR == RebuildLine( StringBufferEnd, i, tokenarray,
+; 1340 : 
+; 1341 :         if ( ERROR == RebuildLine( StringBufferEnd, i, tokenarray,
 
 	mov	r9d, ebx
 	mov	DWORD PTR ModuleInfo+496, ecx
@@ -989,22 +1030,19 @@ $LN44@ExpandToke:
 	mov	DWORD PTR [rsp+32], eax
 	call	RebuildLine
 	cmp	eax, -1
-	je	$LN58@ExpandToke
+	je	$LN61@ExpandToke
+$LN44@ExpandToke:
 
-; 1333 :                                   tmp, tokenarray[i].tokpos - line, bracket_flags ) )
-; 1334 :             return( ERROR );
-; 1335 :         rc = STRING_EXPANDED;
-
-	mov	r12d, 1
-$LN35@ExpandToke:
-
-; 1336 :     }
-; 1337 :     return( rc );
+; 1342 :                                   tmp, tokenarray[i].tokpos - line, bracket_flags ) )
+; 1343 :             return( ERROR );
+; 1344 :         rc = STRING_EXPANDED;
+; 1345 :     }
+; 1346 :     return( rc );
 
 	mov	eax, r12d
 $LN1@ExpandToke:
 
-; 1338 : }
+; 1347 : }
 
 	mov	rbx, QWORD PTR [rsp+1328]
 	add	rsp, 1248				; 000004e0H
@@ -1781,17 +1819,17 @@ i$ = 48
 tokenarray$ = 56
 ExpandLiterals PROC
 
-; 1385 : {
+; 1394 : {
 
 $LN20:
 	mov	QWORD PTR [rsp+16], rbx
 	push	rdi
 	sub	rsp, 32					; 00000020H
 
-; 1386 :     int cnt = 0;
-; 1387 :     int idx;
-; 1388 :     /* count non-empty literals */
-; 1389 :     for ( idx = i; idx < Token_Count; idx++ ) {
+; 1395 :     int cnt = 0;
+; 1396 :     int idx;
+; 1397 :     /* count non-empty literals */
+; 1398 :     for ( idx = i; idx < Token_Count; idx++ ) {
 
 	mov	r9d, DWORD PTR ModuleInfo+496
 	xor	r8d, r8d
@@ -1808,8 +1846,8 @@ $LN20:
 	mov	edx, r9d
 $LL12@ExpandLite:
 
-; 1390 :         if ( tokenarray[idx].token == T_STRING &&
-; 1391 :             tokenarray[idx].stringlen &&
+; 1399 :         if ( tokenarray[idx].token == T_STRING &&
+; 1400 :             tokenarray[idx].stringlen &&
 
 	cmp	BYTE PTR [rax-1], 9
 	jne	SHORT $LN14@ExpandLite
@@ -1822,32 +1860,32 @@ $LL12@ExpandLite:
 	jne	SHORT $LN14@ExpandLite
 $LN13@ExpandLite:
 
-; 1392 :             ( tokenarray[idx].string_delim == '<' || tokenarray[idx].string_delim == '{' ) ) {
-; 1393 :             cnt++;
+; 1401 :             ( tokenarray[idx].string_delim == '<' || tokenarray[idx].string_delim == '{' ) ) {
+; 1402 :             cnt++;
 
 	inc	r8d
 $LN14@ExpandLite:
 
-; 1386 :     int cnt = 0;
-; 1387 :     int idx;
-; 1388 :     /* count non-empty literals */
-; 1389 :     for ( idx = i; idx < Token_Count; idx++ ) {
+; 1395 :     int cnt = 0;
+; 1396 :     int idx;
+; 1397 :     /* count non-empty literals */
+; 1398 :     for ( idx = i; idx < Token_Count; idx++ ) {
 
 	add	rax, 32					; 00000020H
 	sub	rdx, 1
 	jne	SHORT $LL12@ExpandLite
 
-; 1394 :         }
-; 1395 :     }
-; 1396 :     /* if non-empty literals are found, expand the line. if the line
-; 1397 :      * was expanded, re-tokenize it.
-; 1398 :      */
-; 1399 :     if ( cnt ) {
+; 1403 :         }
+; 1404 :     }
+; 1405 :     /* if non-empty literals are found, expand the line. if the line
+; 1406 :      * was expanded, re-tokenize it.
+; 1407 :      */
+; 1408 :     if ( cnt ) {
 
 	test	r8d, r8d
 	je	SHORT $LN18@ExpandLite
 
-; 1400 :         if ( ExpandText( tokenarray[i].tokpos, tokenarray, FALSE ) == STRING_EXPANDED )
+; 1409 :         if ( ExpandText( tokenarray[i].tokpos, tokenarray, FALSE ) == STRING_EXPANDED )
 
 	mov	rcx, QWORD PTR [rsi+rdi+24]
 	xor	r8d, r8d
@@ -1856,7 +1894,7 @@ $LN14@ExpandLite:
 	cmp	eax, 1
 	jne	SHORT $LN18@ExpandLite
 
-; 1401 :             Tokenize( tokenarray[i].tokpos, i, tokenarray, TOK_RESCAN );
+; 1410 :             Tokenize( tokenarray[i].tokpos, i, tokenarray, TOK_RESCAN );
 
 	mov	rcx, QWORD PTR [rsi+rdi+24]
 	mov	r9d, eax
@@ -1867,9 +1905,9 @@ $LN18@ExpandLite:
 	mov	rsi, QWORD PTR [rsp+48]
 $LN8@ExpandLite:
 
-; 1402 :     }
-; 1403 : 
-; 1404 : }
+; 1411 :     }
+; 1412 : 
+; 1413 : }
 
 	mov	rbx, QWORD PTR [rsp+56]
 	add	rsp, 32					; 00000020H
@@ -1885,7 +1923,7 @@ tokenarray$ = 104
 count$ = 112
 ExpandLine PROC
 
-; 1412 : {
+; 1421 : {
 
 $LN102:
 	mov	QWORD PTR [rsp+8], rbx
@@ -1898,21 +1936,21 @@ $LN102:
 	push	r15
 	sub	rsp, 48					; 00000030H
 
-; 1413 :     int count;
-; 1414 :     unsigned int bracket_flags; /* flags */
-; 1415 :     int flags;
-; 1416 :     int lvl;
-; 1417 :     int i;
-; 1418 :     int j;
-; 1419 :     ret_code rc;
-; 1420 :     struct asym *sym;
-; 1421 : 
-; 1422 :     /* filter certain conditions.
-; 1423 :      * bracket_flags: for (preprocessor) directives that expect a literal
-; 1424 :      * parameter, the expanded argument has to be enclosed in '<>' again.
-; 1425 :      */
-; 1426 :     DebugMsg1(( "ExpandLine(>%s<) enter\n", string ));
-; 1427 :     for ( lvl = 0; lvl < MAX_TEXTMACRO_NESTING; lvl++ ) {
+; 1422 :     int count;
+; 1423 :     unsigned int bracket_flags; /* flags */
+; 1424 :     int flags;
+; 1425 :     int lvl;
+; 1426 :     int i;
+; 1427 :     int j;
+; 1428 :     ret_code rc;
+; 1429 :     struct asym *sym;
+; 1430 : 
+; 1431 :     /* filter certain conditions.
+; 1432 :      * bracket_flags: for (preprocessor) directives that expect a literal
+; 1433 :      * parameter, the expanded argument has to be enclosed in '<>' again.
+; 1434 :      */
+; 1435 :     DebugMsg1(( "ExpandLine(>%s<) enter\n", string ));
+; 1436 :     for ( lvl = 0; lvl < MAX_TEXTMACRO_NESTING; lvl++ ) {
 
 	mov	r8d, DWORD PTR ModuleInfo+496
 	xor	ebx, ebx
@@ -1921,8 +1959,8 @@ $LN102:
 	mov	r12, rcx
 $LN99@ExpandLine:
 
-; 1428 :         bracket_flags = 0;
-; 1429 :         count = 0;
+; 1437 :         bracket_flags = 0;
+; 1438 :         count = 0;
 
 	mov	DWORD PTR count$[rsp], ebx
 	mov	r10d, 1
@@ -1930,11 +1968,11 @@ $LN99@ExpandLine:
 	mov	edi, ebx
 	mov	edx, ebx
 
-; 1430 :         rc = NOT_ERROR;
+; 1439 :         rc = NOT_ERROR;
 
 	mov	ebp, ebx
 
-; 1431 :         i = ( Token_Count > 2 && ( tokenarray[1].token == T_COLON || tokenarray[1].token == T_DBL_COLON ) && tokenarray[2].token == T_DIRECTIVE ) ? 2 : 0;
+; 1440 :         i = ( Token_Count > 2 && ( tokenarray[1].token == T_COLON || tokenarray[1].token == T_DBL_COLON ) && tokenarray[2].token == T_DIRECTIVE ) ? 2 : 0;
 
 	cmp	r8d, 2
 	jle	SHORT $LN53@ExpandLine
@@ -1949,7 +1987,7 @@ $LN52@ExpandLine:
 	mov	ebx, 2
 $LN53@ExpandLine:
 
-; 1432 :         if ( tokenarray[i].token == T_DIRECTIVE ) {
+; 1441 :         if ( tokenarray[i].token == T_DIRECTIVE ) {
 
 	mov	r15, rbx
 	mov	r14d, ebx
@@ -1958,40 +1996,40 @@ $LN53@ExpandLine:
 	cmp	BYTE PTR [r15], 3
 	jne	$LN14@ExpandLine
 
-; 1433 :             flags = GetValueSp( tokenarray[i].tokval );
+; 1442 :             flags = GetValueSp( tokenarray[i].tokval );
 
 	mov	r9d, DWORD PTR [r15+16]
 	lea	rax, QWORD PTR [r9+r9*2]
 	mov	ecx, DWORD PTR SpecialTable[r11+rax*4]
 
-; 1434 :             if ( flags & DF_STRPARM ) {
+; 1443 :             if ( flags & DF_STRPARM ) {
 
 	test	cl, 2
 	je	$LN16@ExpandLine
 
-; 1435 :                 bracket_flags = -1;
+; 1444 :                 bracket_flags = -1;
 
 	or	edi, -1					; ffffffffH
 
-; 1436 :                 /* v2.08 handle .ERRDEF and .ERRNDEF here. Previously
-; 1437 :                  * expansion for these directives was handled in condasm.asm,
-; 1438 :                  * and the directives were flagged as DF_NOEXPAND.
-; 1439 :                  */
-; 1440 :                 if ( tokenarray[i].dirtype == DRT_ERRDIR ) {
+; 1445 :                 /* v2.08 handle .ERRDEF and .ERRNDEF here. Previously
+; 1446 :                  * expansion for these directives was handled in condasm.asm,
+; 1447 :                  * and the directives were flagged as DF_NOEXPAND.
+; 1448 :                  */
+; 1449 :                 if ( tokenarray[i].dirtype == DRT_ERRDIR ) {
 
 	cmp	BYTE PTR [r15+1], 10
 	jne	SHORT $LN93@ExpandLine
-	lea	eax, DWORD PTR [r9-360]
+	lea	eax, DWORD PTR [r9-361]
 	cmp	eax, 1
 	ja	SHORT $LN93@ExpandLine
 
-; 1441 :                     if (tokenarray[i].tokval == T_DOT_ERRDEF || tokenarray[i].tokval == T_DOT_ERRNDEF ) {
-; 1442 :                         if ( i )
+; 1450 :                     if (tokenarray[i].tokval == T_DOT_ERRDEF || tokenarray[i].tokval == T_DOT_ERRNDEF ) {
+; 1451 :                         if ( i )
 
 	test	ebx, ebx
 	je	SHORT $LN56@ExpandLine
 
-; 1443 :                             rc = ExpandToken( string, &count, tokenarray, 1, FALSE, FALSE );
+; 1452 :                             rc = ExpandToken( string, &count, tokenarray, 1, FALSE, FALSE );
 
 	xor	eax, eax
 	lea	rdx, QWORD PTR count$[rsp]
@@ -2005,7 +2043,7 @@ $LN53@ExpandLine:
 	mov	ebp, eax
 $LN56@ExpandLine:
 
-; 1444 :                         while ( tokenarray[i].token != T_FINAL && tokenarray[i].token != T_COMMA ) i++;
+; 1453 :                         while ( tokenarray[i].token != T_FINAL && tokenarray[i].token != T_COMMA ) i++;
 
 	movzx	eax, BYTE PTR [r15]
 	test	al, al
@@ -2023,12 +2061,12 @@ $LL5@ExpandLine:
 	jne	SHORT $LL5@ExpandLine
 $LN89@ExpandLine:
 
-; 1445 :                         count = i; /* don't expand the symbol name */
+; 1454 :                         count = i; /* don't expand the symbol name */
 
 	mov	edx, r14d
 $LN97@ExpandLine:
 
-; 1458 :                 count = 2;
+; 1467 :                 count = 2;
 
 	mov	DWORD PTR count$[rsp], edx
 $LN93@ExpandLine:
@@ -2037,43 +2075,43 @@ $LN94@ExpandLine:
 	xor	ebx, ebx
 $LN58@ExpandLine:
 
-; 1528 :                 }
-; 1529 :             }
-; 1530 : #endif
-; 1531 :         }
-; 1532 :         /* scan the line from left to right for (text) macros.
-; 1533 :          * it's currently not quite correct. a macro proc should only
-; 1534 :          * be evaluated in the following cases:
-; 1535 :          * 1. it is the first token of a line
-; 1536 :          * 2. it is the second token, and the first one is an ID
-; 1537 :          * 3. it is the third token, the first one is an ID and
-; 1538 :          *    the second is a ':' or '::'.
-; 1539 :          */
-; 1540 :         while ( count < Token_Count ) {
+; 1537 :                 }
+; 1538 :             }
+; 1539 : #endif
+; 1540 :         }
+; 1541 :         /* scan the line from left to right for (text) macros.
+; 1542 :          * it's currently not quite correct. a macro proc should only
+; 1543 :          * be evaluated in the following cases:
+; 1544 :          * 1. it is the first token of a line
+; 1545 :          * 2. it is the second token, and the first one is an ID
+; 1546 :          * 3. it is the third token, the first one is an ID and
+; 1547 :          *    the second is a ':' or '::'.
+; 1548 :          */
+; 1549 :         while ( count < Token_Count ) {
 
 	cmp	edx, r8d
 	jge	SHORT $LN13@ExpandLine
 	npad	3
 $LL12@ExpandLine:
 
-; 1541 :             int tmp;
-; 1542 :             int addbrackets;
-; 1543 :             addbrackets = bracket_flags & 1;
+; 1550 :             int tmp;
+; 1551 :             int addbrackets;
+; 1552 :             addbrackets = bracket_flags & 1;
 
 	mov	eax, edi
 	and	eax, 1
 
-; 1544 :             if ( bracket_flags != -1 )
+; 1553 :             if ( bracket_flags != -1 )
 
 	cmp	edi, -1					; ffffffffH
 	je	SHORT $LN44@ExpandLine
 
-; 1545 :                 bracket_flags = bracket_flags >> 1;
+; 1554 :                 bracket_flags = bracket_flags >> 1;
 
 	shr	edi, 1
 $LN44@ExpandLine:
 
-; 1546 :             tmp = ExpandToken( string, &count, tokenarray, Token_Count, addbrackets, FALSE );
+; 1555 :             tmp = ExpandToken( string, &count, tokenarray, Token_Count, addbrackets, FALSE );
 
 	mov	r9d, r8d
 	mov	DWORD PTR [rsp+40], ebx
@@ -2083,15 +2121,15 @@ $LN44@ExpandLine:
 	mov	rcx, r12
 	call	ExpandToken
 
-; 1547 :             if( tmp < NOT_ERROR ) /* ERROR or EMPTY? */
+; 1556 :             if( tmp < NOT_ERROR ) /* ERROR or EMPTY? */
 
 	test	eax, eax
 	js	$LN1@ExpandLine
 
-; 1548 :                 return( tmp );
-; 1549 :             if ( tmp == STRING_EXPANDED )
-; 1550 :                 rc = STRING_EXPANDED;
-; 1551 :             if ( tokenarray[count].token == T_COMMA )
+; 1557 :                 return( tmp );
+; 1558 :             if ( tmp == STRING_EXPANDED )
+; 1559 :                 rc = STRING_EXPANDED;
+; 1560 :             if ( tokenarray[count].token == T_COMMA )
 
 	movsxd	rcx, DWORD PTR count$[rsp]
 	cmp	eax, 1
@@ -2101,39 +2139,39 @@ $LN44@ExpandLine:
 	cmp	BYTE PTR [rax+rsi], 44			; 0000002cH
 	jne	SHORT $LN47@ExpandLine
 
-; 1552 :                 count++;
+; 1561 :                 count++;
 
 	inc	ecx
 	mov	DWORD PTR count$[rsp], ecx
 $LN47@ExpandLine:
 
-; 1528 :                 }
-; 1529 :             }
-; 1530 : #endif
-; 1531 :         }
-; 1532 :         /* scan the line from left to right for (text) macros.
-; 1533 :          * it's currently not quite correct. a macro proc should only
-; 1534 :          * be evaluated in the following cases:
-; 1535 :          * 1. it is the first token of a line
-; 1536 :          * 2. it is the second token, and the first one is an ID
-; 1537 :          * 3. it is the third token, the first one is an ID and
-; 1538 :          *    the second is a ':' or '::'.
-; 1539 :          */
-; 1540 :         while ( count < Token_Count ) {
+; 1537 :                 }
+; 1538 :             }
+; 1539 : #endif
+; 1540 :         }
+; 1541 :         /* scan the line from left to right for (text) macros.
+; 1542 :          * it's currently not quite correct. a macro proc should only
+; 1543 :          * be evaluated in the following cases:
+; 1544 :          * 1. it is the first token of a line
+; 1545 :          * 2. it is the second token, and the first one is an ID
+; 1546 :          * 3. it is the third token, the first one is an ID and
+; 1547 :          *    the second is a ':' or '::'.
+; 1548 :          */
+; 1549 :         while ( count < Token_Count ) {
 
 	mov	r8d, DWORD PTR ModuleInfo+496
 	cmp	ecx, r8d
 	jl	SHORT $LL12@ExpandLine
 $LN13@ExpandLine:
 
-; 1553 :         }
-; 1554 :         if( rc == STRING_EXPANDED ) {
+; 1562 :         }
+; 1563 :         if( rc == STRING_EXPANDED ) {
 
 	cmp	ebp, 1
 	jne	$LN84@ExpandLine
 
-; 1555 :             DebugMsg1(( "ExpandLine(%s): expansion occured, retokenize\n", string ));
-; 1556 :             Token_Count = Tokenize( string, 0, tokenarray, TOK_RESCAN | TOK_LINE );
+; 1564 :             DebugMsg1(( "ExpandLine(%s): expansion occured, retokenize\n", string ));
+; 1565 :             Token_Count = Tokenize( string, 0, tokenarray, TOK_RESCAN | TOK_LINE );
 
 	lea	r9d, QWORD PTR [rbp+4]
 $LN95@ExpandLine:
@@ -2147,55 +2185,55 @@ $LN95@ExpandLine:
 	cmp	r13d, 20
 	jge	$LN98@ExpandLine
 
-; 1413 :     int count;
-; 1414 :     unsigned int bracket_flags; /* flags */
-; 1415 :     int flags;
-; 1416 :     int lvl;
-; 1417 :     int i;
-; 1418 :     int j;
-; 1419 :     ret_code rc;
-; 1420 :     struct asym *sym;
-; 1421 : 
-; 1422 :     /* filter certain conditions.
-; 1423 :      * bracket_flags: for (preprocessor) directives that expect a literal
-; 1424 :      * parameter, the expanded argument has to be enclosed in '<>' again.
-; 1425 :      */
-; 1426 :     DebugMsg1(( "ExpandLine(>%s<) enter\n", string ));
-; 1427 :     for ( lvl = 0; lvl < MAX_TEXTMACRO_NESTING; lvl++ ) {
+; 1422 :     int count;
+; 1423 :     unsigned int bracket_flags; /* flags */
+; 1424 :     int flags;
+; 1425 :     int lvl;
+; 1426 :     int i;
+; 1427 :     int j;
+; 1428 :     ret_code rc;
+; 1429 :     struct asym *sym;
+; 1430 : 
+; 1431 :     /* filter certain conditions.
+; 1432 :      * bracket_flags: for (preprocessor) directives that expect a literal
+; 1433 :      * parameter, the expanded argument has to be enclosed in '<>' again.
+; 1434 :      */
+; 1435 :     DebugMsg1(( "ExpandLine(>%s<) enter\n", string ));
+; 1436 :     for ( lvl = 0; lvl < MAX_TEXTMACRO_NESTING; lvl++ ) {
 
 	jmp	$LN99@ExpandLine
 $LN16@ExpandLine:
 
-; 1446 :                     }
-; 1447 :                 }
-; 1448 :             } else if ( flags & DF_NOEXPAND ) {
+; 1455 :                     }
+; 1456 :                 }
+; 1457 :             } else if ( flags & DF_NOEXPAND ) {
 
 	test	cl, 4
 	je	$LN93@ExpandLine
 $LN60@ExpandLine:
 
-; 1449 :                 /* [ELSE]IF[N]DEF, ECHO, FOR[C]
-; 1450 :                  * .[NO|X]CREF, INCLUDE */
-; 1451 :                 /* don't expand arguments */
-; 1452 :                 return( NOT_ERROR );
+; 1458 :                 /* [ELSE]IF[N]DEF, ECHO, FOR[C]
+; 1459 :                  * .[NO|X]CREF, INCLUDE */
+; 1460 :                 /* don't expand arguments */
+; 1461 :                 return( NOT_ERROR );
 
 	xor	eax, eax
 
-; 1523 :                 if( rc == ERROR || rc == EMPTY )
-; 1524 :                     return( rc );
+; 1532 :                 if( rc == ERROR || rc == EMPTY )
+; 1533 :                     return( rc );
 
 	jmp	$LN1@ExpandLine
 $LN14@ExpandLine:
 
-; 1453 :             }
-; 1454 :         } else if ( Token_Count > 1 && tokenarray[1].token == T_DIRECTIVE ) {
+; 1462 :             }
+; 1463 :         } else if ( Token_Count > 1 && tokenarray[1].token == T_DIRECTIVE ) {
 
 	cmp	r8d, 1
 	jle	$LN23@ExpandLine
 	cmp	BYTE PTR [rsi+32], 3
 	jne	$LN23@ExpandLine
 
-; 1455 :             switch ( tokenarray[1].dirtype ) {
+; 1464 :             switch ( tokenarray[1].dirtype ) {
 
 	movzx	eax, BYTE PTR [rsi+33]
 	add	eax, -4
@@ -2208,40 +2246,40 @@ $LN14@ExpandLine:
 	jmp	rcx
 $LN25@ExpandLine:
 
-; 1456 :             case DRT_CATSTR:
-; 1457 :                 bracket_flags = -1;
+; 1465 :             case DRT_CATSTR:
+; 1466 :                 bracket_flags = -1;
 
 	or	edi, -1					; ffffffffH
 
-; 1458 :                 count = 2;
+; 1467 :                 count = 2;
 
 	mov	edx, 2
 
-; 1459 :                 break;
+; 1468 :                 break;
 
 	jmp	$LN97@ExpandLine
 $LN26@ExpandLine:
 
-; 1460 :             case DRT_SUBSTR:
-; 1461 :                 /* syntax: name SUBSTR <literal>, pos [, size] */
-; 1462 :                 bracket_flags = 0x1;
+; 1469 :             case DRT_SUBSTR:
+; 1470 :                 /* syntax: name SUBSTR <literal>, pos [, size] */
+; 1471 :                 bracket_flags = 0x1;
 
 	mov	r14d, 1
 
-; 1463 :                 count = 2;
+; 1472 :                 count = 2;
 
 	mov	edx, 2
 	mov	edi, r14d
 	mov	DWORD PTR count$[rsp], edx
 
-; 1464 :                 break;
+; 1473 :                 break;
 
 	jmp	$LN94@ExpandLine
 $LN27@ExpandLine:
 
-; 1465 :             case DRT_SIZESTR:
-; 1466 :                 /* syntax: label SIZESTR literal */
-; 1467 :                 rc = ExpandToken( string, &count, tokenarray, 1, FALSE, FALSE );
+; 1474 :             case DRT_SIZESTR:
+; 1475 :                 /* syntax: label SIZESTR literal */
+; 1476 :                 rc = ExpandToken( string, &count, tokenarray, 1, FALSE, FALSE );
 
 	xor	ebx, ebx
 	lea	rdx, QWORD PTR count$[rsp]
@@ -2253,8 +2291,8 @@ $LN27@ExpandLine:
 	mov	rcx, r12
 	call	ExpandToken
 
-; 1468 :                 bracket_flags = 0x1;
-; 1469 :                 count = 2;
+; 1477 :                 bracket_flags = 0x1;
+; 1478 :                 count = 2;
 
 	mov	edx, 2
 	mov	ebp, eax
@@ -2262,15 +2300,15 @@ $LN27@ExpandLine:
 	mov	edi, r14d
 $LN88@ExpandLine:
 
-; 1470 :                 break;
+; 1479 :                 break;
 
 	mov	r8d, DWORD PTR ModuleInfo+496
 	jmp	$LN58@ExpandLine
 $LN28@ExpandLine:
 
-; 1471 :             case DRT_INSTR:
-; 1472 :                 /* syntax: label INSTR [number,] literal, literal */
-; 1473 :                 rc = ExpandToken( string, &count, tokenarray, 1, FALSE, FALSE );
+; 1480 :             case DRT_INSTR:
+; 1481 :                 /* syntax: label INSTR [number,] literal, literal */
+; 1482 :                 rc = ExpandToken( string, &count, tokenarray, 1, FALSE, FALSE );
 
 	xor	ebx, ebx
 	lea	rdx, QWORD PTR count$[rsp]
@@ -2282,8 +2320,8 @@ $LN28@ExpandLine:
 	mov	rcx, r12
 	call	ExpandToken
 
-; 1474 :                 /* check if the optional <number> argument is given */
-; 1475 :                 for ( i = 2, count = 0, j = 0; i < Token_Count; i++ ) {
+; 1483 :                 /* check if the optional <number> argument is given */
+; 1484 :                 for ( i = 2, count = 0, j = 0; i < Token_Count; i++ ) {
 
 	mov	r8d, DWORD PTR ModuleInfo+496
 	mov	ebp, eax
@@ -2292,9 +2330,9 @@ $LN28@ExpandLine:
 	cmp	r8d, 2
 	jle	SHORT $LN10@ExpandLine
 
-; 1471 :             case DRT_INSTR:
-; 1472 :                 /* syntax: label INSTR [number,] literal, literal */
-; 1473 :                 rc = ExpandToken( string, &count, tokenarray, 1, FALSE, FALSE );
+; 1480 :             case DRT_INSTR:
+; 1481 :                 /* syntax: label INSTR [number,] literal, literal */
+; 1482 :                 rc = ExpandToken( string, &count, tokenarray, 1, FALSE, FALSE );
 
 	lea	eax, DWORD PTR [r8-2]
 	mov	r10d, eax
@@ -2302,85 +2340,85 @@ $LN28@ExpandLine:
 	npad	2
 $LL66@ExpandLine:
 
-; 1476 :                     if ( tokenarray[i].token == T_OP_BRACKET )
+; 1485 :                     if ( tokenarray[i].token == T_OP_BRACKET )
 
 	movzx	eax, BYTE PTR [rdx]
 	cmp	al, 40					; 00000028H
 	jne	SHORT $LN67@ExpandLine
 
-; 1477 :                         count++;
+; 1486 :                         count++;
 
 	inc	ecx
 	jmp	SHORT $LN69@ExpandLine
 $LN67@ExpandLine:
 
-; 1478 :                     else if ( tokenarray[i].token == T_CL_BRACKET )
+; 1487 :                     else if ( tokenarray[i].token == T_CL_BRACKET )
 
 	cmp	al, 41					; 00000029H
 	jne	SHORT $LN68@ExpandLine
 
-; 1479 :                         count--;
+; 1488 :                         count--;
 
 	dec	ecx
 	jmp	SHORT $LN69@ExpandLine
 $LN68@ExpandLine:
 
-; 1480 :                     else if ( tokenarray[i].token == T_COMMA && count == 0 )
+; 1489 :                     else if ( tokenarray[i].token == T_COMMA && count == 0 )
 
 	cmp	al, 44					; 0000002cH
 	jne	SHORT $LN69@ExpandLine
 	test	ecx, ecx
 	jne	SHORT $LN69@ExpandLine
 
-; 1481 :                         j++;
+; 1490 :                         j++;
 
 	inc	r9d
 $LN69@ExpandLine:
 
-; 1474 :                 /* check if the optional <number> argument is given */
-; 1475 :                 for ( i = 2, count = 0, j = 0; i < Token_Count; i++ ) {
+; 1483 :                 /* check if the optional <number> argument is given */
+; 1484 :                 for ( i = 2, count = 0, j = 0; i < Token_Count; i++ ) {
 
 	add	rdx, 32					; 00000020H
 	sub	r10, r14
 	jne	SHORT $LL66@ExpandLine
 $LN10@ExpandLine:
 
-; 1482 :                 }
-; 1483 : 
-; 1484 :                 bracket_flags = ( ( j > 1 ) ? 0x6 : 0x3 );
+; 1491 :                 }
+; 1492 : 
+; 1493 :                 bracket_flags = ( ( j > 1 ) ? 0x6 : 0x3 );
 
 	cmp	r9d, r14d
 	mov	edi, 3
 	mov	eax, 6
 
-; 1485 :                 count = 2;
+; 1494 :                 count = 2;
 
 	mov	edx, 2
 	cmovg	edi, eax
 	mov	DWORD PTR count$[rsp], edx
 
-; 1486 :                 break;
+; 1495 :                 break;
 
 	jmp	$LN58@ExpandLine
 $LN34@ExpandLine:
 
-; 1487 :             case DRT_MACRO:
-; 1488 :                 sym = SymSearch( tokenarray[0].string_ptr );
+; 1496 :             case DRT_MACRO:
+; 1497 :                 sym = SymSearch( tokenarray[0].string_ptr );
 
 	mov	rcx, QWORD PTR [rsi+8]
 	call	SymFind
 
-; 1489 :                 /* don't expand macro DEFINITIONs!
-; 1490 :                  * the name is an exception, if it's not the macro itself
-; 1491 :                  */
-; 1492 :                 if ( sym && sym->state != SYM_MACRO )
+; 1498 :                 /* don't expand macro DEFINITIONs!
+; 1499 :                  * the name is an exception, if it's not the macro itself
+; 1500 :                  */
+; 1501 :                 if ( sym && sym->state != SYM_MACRO )
 
 	test	rax, rax
 	je	$LN84@ExpandLine
 	cmp	DWORD PTR [rax+32], 9
 	je	$LN84@ExpandLine
 
-; 1493 :                     rc = ExpandToken( string, &count, tokenarray, 1, FALSE, FALSE );
+; 1502 :                     rc = ExpandToken( string, &count, tokenarray, 1, FALSE, FALSE );
 
 	xor	ebx, ebx
 	lea	rdx, QWORD PTR count$[rsp]
@@ -2392,27 +2430,27 @@ $LN34@ExpandLine:
 	call	ExpandToken
 	mov	ebp, eax
 
-; 1494 :                 count = Token_Count; /* stop further expansion */
-; 1495 :                 break;
-; 1496 :             case DRT_EQU:
-; 1497 :                 /* EQU is a special case. If the - expanded - expression is
-; 1498 :                  * a number, then the value for EQU is numeric. Else the
-; 1499 :                  * expression isn't expanded at all. This effectively makes it
-; 1500 :                  * impossible to expand EQU lines here.
-; 1501 :                  */
-; 1502 : #if 0 /* v2.09: EQU should NEVER be expanded here. See regression test equate20.aso */
-; 1503 :                 sym = SymSearch( tokenarray[0].string_ptr );
-; 1504 :                 if ( sym == NULL || sym->state == SYM_TMACRO )
-; 1505 : #endif
-; 1506 :                     return( NOT_ERROR );
-; 1507 :             }
-; 1508 :         } else {
+; 1503 :                 count = Token_Count; /* stop further expansion */
+; 1504 :                 break;
+; 1505 :             case DRT_EQU:
+; 1506 :                 /* EQU is a special case. If the - expanded - expression is
+; 1507 :                  * a number, then the value for EQU is numeric. Else the
+; 1508 :                  * expression isn't expanded at all. This effectively makes it
+; 1509 :                  * impossible to expand EQU lines here.
+; 1510 :                  */
+; 1511 : #if 0 /* v2.09: EQU should NEVER be expanded here. See regression test equate20.aso */
+; 1512 :                 sym = SymSearch( tokenarray[0].string_ptr );
+; 1513 :                 if ( sym == NULL || sym->state == SYM_TMACRO )
+; 1514 : #endif
+; 1515 :                     return( NOT_ERROR );
+; 1516 :             }
+; 1517 :         } else {
 
 	jmp	$LN13@ExpandLine
 $LN23@ExpandLine:
 
-; 1509 :             /* v2.08: expand the very first token and then ... */
-; 1510 :             rc = ExpandToken( string, &count, tokenarray, 1, FALSE, FALSE );
+; 1518 :             /* v2.08: expand the very first token and then ... */
+; 1519 :             rc = ExpandToken( string, &count, tokenarray, 1, FALSE, FALSE );
 
 	xor	ebx, ebx
 	lea	rdx, QWORD PTR count$[rsp]
@@ -2425,34 +2463,34 @@ $LN23@ExpandLine:
 	call	ExpandToken
 	mov	ebp, eax
 
-; 1511 :             if( rc == ERROR || rc == EMPTY )
+; 1520 :             if( rc == ERROR || rc == EMPTY )
 
 	cmp	eax, -1
 	je	$LN1@ExpandLine
 	cmp	eax, -2
 	je	$LN1@ExpandLine
 
-; 1512 :                 return( rc );
-; 1513 :             if ( rc == STRING_EXPANDED ) {
+; 1521 :                 return( rc );
+; 1522 :             if ( rc == STRING_EXPANDED ) {
 
 	cmp	eax, r14d
 	jne	SHORT $LN39@ExpandLine
 
-; 1514 :                 /* ... fully retokenize - the expansion might have revealed a conditional
-; 1515 :                  * assembly directive
-; 1516 :                  */
-; 1517 :                 Token_Count = Tokenize( string, 0, tokenarray, TOK_DEFAULT );
+; 1523 :                 /* ... fully retokenize - the expansion might have revealed a conditional
+; 1524 :                  * assembly directive
+; 1525 :                  */
+; 1526 :                 Token_Count = Tokenize( string, 0, tokenarray, TOK_DEFAULT );
 
 	xor	r9d, r9d
 
-; 1518 :                 continue;
+; 1527 :                 continue;
 
 	jmp	$LN95@ExpandLine
 $LN39@ExpandLine:
 
-; 1519 :             }
-; 1520 : #if 1 /* v2.10. see regression test equate27.asm */
-; 1521 :             if ( count == 1 && tokenarray[0].token == T_ID && tokenarray[1].token == T_ID ) {
+; 1528 :             }
+; 1529 : #if 1 /* v2.10. see regression test equate27.asm */
+; 1530 :             if ( count == 1 && tokenarray[0].token == T_ID && tokenarray[1].token == T_ID ) {
 
 	mov	edx, DWORD PTR count$[rsp]
 	cmp	edx, r14d
@@ -2462,7 +2500,7 @@ $LN39@ExpandLine:
 	cmp	BYTE PTR [rsi+32], 8
 	jne	$LN88@ExpandLine
 
-; 1522 :                 rc = ExpandToken( string, &count, tokenarray, 2, FALSE, FALSE );
+; 1531 :                 rc = ExpandToken( string, &count, tokenarray, 2, FALSE, FALSE );
 
 	mov	DWORD PTR [rsp+40], ebx
 	lea	rdx, QWORD PTR count$[rsp]
@@ -2476,16 +2514,16 @@ $LN39@ExpandLine:
 	cmp	eax, r14d
 	jbe	SHORT $LN50@ExpandLine
 
-; 1525 :                 if ( rc == STRING_EXPANDED ) {
+; 1534 :                 if ( rc == STRING_EXPANDED ) {
 
 	cmp	ebp, r14d
 	jne	SHORT $LN87@ExpandLine
 
-; 1526 :                     Token_Count = Tokenize( string, 0, tokenarray, TOK_DEFAULT );
+; 1535 :                     Token_Count = Tokenize( string, 0, tokenarray, TOK_DEFAULT );
 
 	xor	r9d, r9d
 
-; 1527 :                     continue;
+; 1536 :                     continue;
 
 	jmp	$LN95@ExpandLine
 $LN87@ExpandLine:
@@ -2494,30 +2532,30 @@ $LN87@ExpandLine:
 	jmp	$LN58@ExpandLine
 $LN84@ExpandLine:
 
-; 1557 :         } else
-; 1558 :             break;
-; 1559 :     } /* end for() */
-; 1560 :     if ( lvl == MAX_TEXTMACRO_NESTING ) {
+; 1566 :         } else
+; 1567 :             break;
+; 1568 :     } /* end for() */
+; 1569 :     if ( lvl == MAX_TEXTMACRO_NESTING ) {
 
 	cmp	r13d, 20
 $LN98@ExpandLine:
 	jne	SHORT $LN50@ExpandLine
 
-; 1561 :         return( EmitError( MACRO_NESTING_LEVEL_TOO_DEEP ) );
+; 1570 :         return( EmitError( MACRO_NESTING_LEVEL_TOO_DEEP ) );
 
 	mov	ecx, 101				; 00000065H
 	call	EmitError
 	jmp	SHORT $LN1@ExpandLine
 $LN50@ExpandLine:
 
-; 1562 :     }
-; 1563 :     DebugMsg1(( "ExpandLine(>%s<) exit, rc=%u, token_count=%u\n", string, rc, Token_Count ));
-; 1564 :     return( rc );
+; 1571 :     }
+; 1572 :     DebugMsg1(( "ExpandLine(>%s<) exit, rc=%u, token_count=%u\n", string, rc, Token_Count ));
+; 1573 :     return( rc );
 
 	mov	eax, ebp
 $LN1@ExpandLine:
 
-; 1565 : }
+; 1574 : }
 
 	mov	rbx, QWORD PTR [rsp+96]
 	mov	rbp, QWORD PTR [rsp+104]
@@ -2595,7 +2633,7 @@ addbrackets$ = 120
 equmode$ = 128
 ExpandLineItems PROC
 
-; 1347 : {
+; 1356 : {
 
 $LN25:
 	mov	QWORD PTR [rsp+8], rbx
@@ -2608,12 +2646,12 @@ $LN25:
 	push	r15
 	sub	rsp, 48					; 00000030H
 
-; 1348 :     int k;
-; 1349 :     int lvl;
-; 1350 :     int tmp;
-; 1351 :     ret_code rc;
-; 1352 : 
-; 1353 :     for ( lvl = 0; ; lvl++ ) {
+; 1357 :     int k;
+; 1358 :     int lvl;
+; 1359 :     int tmp;
+; 1360 :     ret_code rc;
+; 1361 : 
+; 1362 :     for ( lvl = 0; ; lvl++ ) {
 
 	mov	r12d, DWORD PTR equmode$[rsp]
 	xor	esi, esi
@@ -2626,11 +2664,11 @@ $LN25:
 	npad	4
 $LL4@ExpandLine:
 
-; 1354 :         rc = NOT_ERROR;
+; 1363 :         rc = NOT_ERROR;
 
 	xor	ebx, ebx
 
-; 1355 :         for( k = i; k < Token_Count; ) {
+; 1364 :         for( k = i; k < Token_Count; ) {
 
 	mov	DWORD PTR k$[rsp], r14d
 	cmp	r14d, eax
@@ -2638,7 +2676,7 @@ $LL4@ExpandLine:
 	npad	4
 $LL5@ExpandLine:
 
-; 1356 :             tmp = ExpandToken( line, &k, tokenarray, Token_Count, addbrackets, equmode );
+; 1365 :             tmp = ExpandToken( line, &k, tokenarray, Token_Count, addbrackets, equmode );
 
 	mov	DWORD PTR [rsp+40], r12d
 	lea	rdx, QWORD PTR k$[rsp]
@@ -2648,15 +2686,15 @@ $LL5@ExpandLine:
 	mov	rcx, rbp
 	call	ExpandToken
 
-; 1357 :             if ( tmp == ERROR )
+; 1366 :             if ( tmp == ERROR )
 
 	cmp	eax, -1
 	je	SHORT $LN3@ExpandLine
 
-; 1358 :                 return( lvl );
-; 1359 :             if ( tmp == STRING_EXPANDED )
-; 1360 :                 rc = STRING_EXPANDED;
-; 1361 :             if ( tokenarray[k].token == T_COMMA )
+; 1367 :                 return( lvl );
+; 1368 :             if ( tmp == STRING_EXPANDED )
+; 1369 :                 rc = STRING_EXPANDED;
+; 1370 :             if ( tokenarray[k].token == T_COMMA )
 
 	movsxd	rcx, DWORD PTR k$[rsp]
 	cmp	eax, r13d
@@ -2666,27 +2704,27 @@ $LL5@ExpandLine:
 	cmp	BYTE PTR [rax+rdi], 44			; 0000002cH
 	jne	SHORT $LN10@ExpandLine
 
-; 1362 :                 k++;
+; 1371 :                 k++;
 
 	inc	ecx
 	mov	DWORD PTR k$[rsp], ecx
 $LN10@ExpandLine:
 
-; 1355 :         for( k = i; k < Token_Count; ) {
+; 1364 :         for( k = i; k < Token_Count; ) {
 
 	mov	eax, DWORD PTR ModuleInfo+496
 	cmp	ecx, eax
 	jl	SHORT $LL5@ExpandLine
 
-; 1363 :         }
-; 1364 :         if ( rc == NOT_ERROR )
+; 1372 :         }
+; 1373 :         if ( rc == NOT_ERROR )
 
 	test	ebx, ebx
 	je	SHORT $LN3@ExpandLine
 
-; 1365 :             break;
-; 1366 :         /* expansion happened, re-tokenize and continue! */
-; 1367 :         Token_Count = Tokenize( line, i, tokenarray, TOK_RESCAN );
+; 1374 :             break;
+; 1375 :         /* expansion happened, re-tokenize and continue! */
+; 1376 :         Token_Count = Tokenize( line, i, tokenarray, TOK_RESCAN );
 
 	mov	r9d, r13d
 	mov	r8, rdi
@@ -2695,33 +2733,33 @@ $LN10@ExpandLine:
 	call	Tokenize
 	mov	DWORD PTR ModuleInfo+496, eax
 
-; 1368 :         if ( lvl == MAX_TEXTMACRO_NESTING ) {
+; 1377 :         if ( lvl == MAX_TEXTMACRO_NESTING ) {
 
 	cmp	esi, 20
 	je	SHORT $LN19@ExpandLine
 
-; 1348 :     int k;
-; 1349 :     int lvl;
-; 1350 :     int tmp;
-; 1351 :     ret_code rc;
-; 1352 : 
-; 1353 :     for ( lvl = 0; ; lvl++ ) {
+; 1357 :     int k;
+; 1358 :     int lvl;
+; 1359 :     int tmp;
+; 1360 :     ret_code rc;
+; 1361 : 
+; 1362 :     for ( lvl = 0; ; lvl++ ) {
 
 	inc	esi
 	jmp	SHORT $LL4@ExpandLine
 $LN19@ExpandLine:
 
-; 1369 :             EmitError( MACRO_NESTING_LEVEL_TOO_DEEP );
+; 1378 :             EmitError( MACRO_NESTING_LEVEL_TOO_DEEP );
 
 	mov	ecx, 101				; 00000065H
 	call	EmitError
 $LN3@ExpandLine:
 
-; 1370 :             break;
-; 1371 :         }
-; 1372 :     }
-; 1373 :     return( lvl );
-; 1374 : }
+; 1379 :             break;
+; 1380 :         }
+; 1381 :     }
+; 1382 :     return( lvl );
+; 1383 : }
 
 	mov	rbx, QWORD PTR [rsp+96]
 	mov	eax, esi
@@ -3540,7 +3578,7 @@ $LN436:
 ; 181  : 
 ; 182  :     if ( MacroLevel == MAX_MACRO_NESTING ) {
 
-	cmp	BYTE PTR MacroLevel, 40			; 00000028H
+	cmp	BYTE PTR MacroLevel, 128		; 00000080H
 	mov	rdi, r8
 	movsxd	rbx, edx
 	mov	rdx, rcx
@@ -3851,7 +3889,7 @@ $LN51@RunMacro:
 
 ; 241  :             mi.parm_array[parmidx] = "";
 
-	lea	rax, OFFSET FLAT:$SG11106
+	lea	rax, OFFSET FLAT:$SG11129
 	mov	QWORD PTR [rcx], rax
 $LN52@RunMacro:
 
@@ -5308,7 +5346,7 @@ $LN121@RunMacro:
 
 ; 566  :                 mi.parm_array[parmidx] = "";
 
-	lea	rcx, OFFSET FLAT:$SG11177
+	lea	rcx, OFFSET FLAT:$SG11200
 	jmp	SHORT $LN430@RunMacro
 $LN422@RunMacro:
 	mov	r10, QWORD PTR macro$[rbp]
@@ -5851,7 +5889,7 @@ $LN135@RunMacro:
 ; 681  :                 if ( tokenarray[0].tokval == T_EXITM ) {
 
 	mov	eax, DWORD PTR [rdi+16]
-	cmp	eax, 397				; 0000018dH
+	cmp	eax, 398				; 0000018eH
 	je	$LN327@RunMacro
 
 ; 730  :                     break;
@@ -5862,7 +5900,7 @@ $LN135@RunMacro:
 ; 735  : #endif
 ; 736  :                 } else if ( tokenarray[0].tokval == T_GOTO ) {
 
-	cmp	eax, 399				; 0000018fH
+	cmp	eax, 400				; 00000190H
 	jne	$LN154@RunMacro
 
 ; 737  :                     if ( tokenarray[1].token != T_FINAL ) {

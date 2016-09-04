@@ -2,16 +2,16 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 PUBLIC	Options
 PUBLIC	DefaultDir
 _BSS	SEGMENT
-$SG11571 DB	01H DUP (?)
+$SG11609 DB	01H DUP (?)
 	ALIGN	4
 
-$SG11603 DB	01H DUP (?)
+$SG11641 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	decoflags:BYTE
@@ -26,375 +26,375 @@ DefaultDir DQ	04H DUP (?)
 rspidx	DD	01H DUP (?)
 _BSS	ENDS
 CONST	SEGMENT
-cmdl_options DQ	FLAT:$SG11359
+cmdl_options DQ	FLAT:$SG11397
 	DD	00H
 	ORG $+4
 	DQ	FLAT:Set_h
-	DQ	FLAT:$SG11360
+	DQ	FLAT:$SG11398
 	DD	017H
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11361
+	DQ	FLAT:$SG11399
 	DD	00H
 	ORG $+4
 	DQ	FLAT:Set_ofmt
-	DQ	FLAT:$SG11362
+	DQ	FLAT:$SG11400
 	DD	00H
 	ORG $+4
 	DQ	FLAT:Set_Cp
-	DQ	FLAT:$SG11363
+	DQ	FLAT:$SG11401
 	DD	00H
 	ORG $+4
 	DQ	FLAT:Set_Cu
-	DQ	FLAT:$SG11364
+	DQ	FLAT:$SG11402
 	DD	00H
 	ORG $+4
 	DQ	FLAT:Set_Cx
-	DQ	FLAT:$SG11365
+	DQ	FLAT:$SG11403
 	DD	00H
 	ORG $+4
 	DQ	FLAT:Set_ce
-	DQ	FLAT:$SG11366
+	DQ	FLAT:$SG11404
 	DD	02H
 	ORG $+4
 	DQ	FLAT:Set_ofmt
-	DQ	FLAT:$SG11367
+	DQ	FLAT:$SG11405
 	DD	00H
 	ORG $+4
 	DQ	FLAT:Set_c
-	DQ	FLAT:$SG11368
-	DD	00H
-	ORG $+4
-	DQ	FLAT:Set_dm
-	DQ	FLAT:$SG11369
-	DD	019H
-	ORG $+4
-	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11370
-	DD	018H
-	ORG $+4
-	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11371
-	DD	01bH
-	ORG $+4
-	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11372
-	DD	01aH
-	ORG $+4
-	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11373
-	DD	00H
-	ORG $+4
-	DQ	FLAT:Set_dt
-	DQ	FLAT:$SG11374
-	DD	00H
-	ORG $+4
-	DQ	FLAT:Set_D
-	DQ	FLAT:$SG11375
-	DD	0303H
-	ORG $+4
-	DQ	FLAT:Set_ofmt
-	DQ	FLAT:$SG11376
-	DD	03H
-	ORG $+4
-	DQ	FLAT:Set_ofmt
-	DQ	FLAT:$SG11377
-	DD	00H
-	ORG $+4
-	DQ	FLAT:Set_EP
-	DQ	FLAT:$SG11378
-	DD	0cH
-	ORG $+4
-	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11379
-	DD	00H
-	ORG $+4
-	DQ	FLAT:Set_e
-	DQ	FLAT:$SG11380
-	DD	00H
-	ORG $+4
-	DQ	FLAT:Set_Fd
-	DQ	FLAT:$SG11381
-	DD	00H
-	ORG $+4
-	DQ	FLAT:Set_Fi
-	DQ	FLAT:$SG11382
-	DD	00H
-	ORG $+4
-	DQ	FLAT:Set_Fl
-	DQ	FLAT:$SG11383
-	DD	00H
-	ORG $+4
-	DQ	FLAT:Set_Fo
-	DQ	FLAT:$SG11384
-	DD	00H
-	ORG $+4
-	DQ	FLAT:Set_FPx
-	DQ	FLAT:$SG11385
-	DD	01H
-	ORG $+4
-	DQ	FLAT:Set_FPx
-	DQ	FLAT:$SG11386
-	DD	02H
-	ORG $+4
-	DQ	FLAT:Set_fp
-	DQ	FLAT:$SG11387
-	DD	03H
-	ORG $+4
-	DQ	FLAT:Set_fp
-	DQ	FLAT:$SG11388
-	DD	04H
-	ORG $+4
-	DQ	FLAT:Set_fp
-	DQ	FLAT:$SG11389
-	DD	01H
-	ORG $+4
-	DQ	FLAT:Set_fp
-	DQ	FLAT:$SG11390
-	DD	00H
-	ORG $+4
-	DQ	FLAT:Set_Fw
-	DQ	FLAT:$SG11391
-	DD	04H
-	ORG $+4
-	DQ	FLAT:Set_G
-	DQ	FLAT:$SG11392
-	DD	01H
-	ORG $+4
-	DQ	FLAT:Set_G
-	DQ	FLAT:$SG11393
-	DD	07H
-	ORG $+4
-	DQ	FLAT:Set_G
-	DQ	FLAT:$SG11394
-	DD	03H
-	ORG $+4
-	DQ	FLAT:Set_G
-	DQ	FLAT:$SG11395
-	DD	00H
-	ORG $+4
-	DQ	FLAT:Set_h
-	DQ	FLAT:$SG11396
-	DD	00H
-	ORG $+4
-	DQ	FLAT:Set_I
-	DQ	FLAT:$SG11397
-	DD	012H
-	ORG $+4
-	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11398
-	DD	03H
-	ORG $+4
-	DQ	FLAT:Set_m
-	DQ	FLAT:$SG11399
-	DD	07H
-	ORG $+4
-	DQ	FLAT:Set_m
-	DQ	FLAT:$SG11400
-	DD	06H
-	ORG $+4
-	DQ	FLAT:Set_m
-	DQ	FLAT:$SG11401
-	DD	05H
-	ORG $+4
-	DQ	FLAT:Set_m
-	DQ	FLAT:$SG11402
-	DD	04H
-	ORG $+4
-	DQ	FLAT:Set_m
-	DQ	FLAT:$SG11403
-	DD	02H
-	ORG $+4
-	DQ	FLAT:Set_m
-	DQ	FLAT:$SG11404
-	DD	01H
-	ORG $+4
-	DQ	FLAT:Set_m
-	DQ	FLAT:$SG11405
-	DD	0100H
-	ORG $+4
-	DQ	FLAT:Set_ofmt
 	DQ	FLAT:$SG11406
 	DD	00H
 	ORG $+4
-	DQ	FLAT:Set_nbp
+	DQ	FLAT:Set_dm
 	DQ	FLAT:$SG11407
-	DD	08H
+	DD	019H
 	ORG $+4
-	DQ	FLAT:Set_n
+	DQ	FLAT:Set_True
 	DQ	FLAT:$SG11408
-	DD	07H
+	DD	018H
 	ORG $+4
-	DQ	FLAT:Set_n
+	DQ	FLAT:Set_True
 	DQ	FLAT:$SG11409
-	DD	00H
+	DD	01bH
 	ORG $+4
-	DQ	FLAT:Set_nfp
+	DQ	FLAT:Set_True
 	DQ	FLAT:$SG11410
-	DD	05H
+	DD	01aH
 	ORG $+4
-	DQ	FLAT:Set_n
+	DQ	FLAT:Set_True
 	DQ	FLAT:$SG11411
 	DD	00H
 	ORG $+4
-	DQ	FLAT:Set_nologo
+	DQ	FLAT:Set_dt
 	DQ	FLAT:$SG11412
-	DD	06H
+	DD	00H
 	ORG $+4
-	DQ	FLAT:Set_n
+	DQ	FLAT:Set_D
 	DQ	FLAT:$SG11413
-	DD	01H
+	DD	0303H
 	ORG $+4
 	DQ	FLAT:Set_ofmt
 	DQ	FLAT:$SG11414
-	DD	0200H
+	DD	03H
 	ORG $+4
 	DQ	FLAT:Set_ofmt
 	DQ	FLAT:$SG11415
 	DD	00H
 	ORG $+4
-	DQ	FLAT:Set_pm
+	DQ	FLAT:Set_EP
 	DQ	FLAT:$SG11416
-	DD	00H
+	DD	0cH
 	ORG $+4
-	DQ	FLAT:Set_q
+	DQ	FLAT:Set_True
 	DQ	FLAT:$SG11417
 	DD	00H
 	ORG $+4
-	DQ	FLAT:Set_Sa
+	DQ	FLAT:Set_e
 	DQ	FLAT:$SG11418
+	DD	00H
+	ORG $+4
+	DQ	FLAT:Set_Fd
+	DQ	FLAT:$SG11419
+	DD	00H
+	ORG $+4
+	DQ	FLAT:Set_Fi
+	DQ	FLAT:$SG11420
+	DD	00H
+	ORG $+4
+	DQ	FLAT:Set_Fl
+	DQ	FLAT:$SG11421
+	DD	00H
+	ORG $+4
+	DQ	FLAT:Set_Fo
+	DQ	FLAT:$SG11422
+	DD	00H
+	ORG $+4
+	DQ	FLAT:Set_FPx
+	DQ	FLAT:$SG11423
+	DD	01H
+	ORG $+4
+	DQ	FLAT:Set_FPx
+	DQ	FLAT:$SG11424
+	DD	02H
+	ORG $+4
+	DQ	FLAT:Set_fp
+	DQ	FLAT:$SG11425
+	DD	03H
+	ORG $+4
+	DQ	FLAT:Set_fp
+	DQ	FLAT:$SG11426
+	DD	04H
+	ORG $+4
+	DQ	FLAT:Set_fp
+	DQ	FLAT:$SG11427
+	DD	01H
+	ORG $+4
+	DQ	FLAT:Set_fp
+	DQ	FLAT:$SG11428
+	DD	00H
+	ORG $+4
+	DQ	FLAT:Set_Fw
+	DQ	FLAT:$SG11429
+	DD	04H
+	ORG $+4
+	DQ	FLAT:Set_G
+	DQ	FLAT:$SG11430
+	DD	01H
+	ORG $+4
+	DQ	FLAT:Set_G
+	DQ	FLAT:$SG11431
+	DD	07H
+	ORG $+4
+	DQ	FLAT:Set_G
+	DQ	FLAT:$SG11432
+	DD	03H
+	ORG $+4
+	DQ	FLAT:Set_G
+	DQ	FLAT:$SG11433
+	DD	00H
+	ORG $+4
+	DQ	FLAT:Set_h
+	DQ	FLAT:$SG11434
+	DD	00H
+	ORG $+4
+	DQ	FLAT:Set_I
+	DQ	FLAT:$SG11435
+	DD	012H
+	ORG $+4
+	DQ	FLAT:Set_True
+	DQ	FLAT:$SG11436
+	DD	03H
+	ORG $+4
+	DQ	FLAT:Set_m
+	DQ	FLAT:$SG11437
+	DD	07H
+	ORG $+4
+	DQ	FLAT:Set_m
+	DQ	FLAT:$SG11438
+	DD	06H
+	ORG $+4
+	DQ	FLAT:Set_m
+	DQ	FLAT:$SG11439
+	DD	05H
+	ORG $+4
+	DQ	FLAT:Set_m
+	DQ	FLAT:$SG11440
+	DD	04H
+	ORG $+4
+	DQ	FLAT:Set_m
+	DQ	FLAT:$SG11441
+	DD	02H
+	ORG $+4
+	DQ	FLAT:Set_m
+	DQ	FLAT:$SG11442
+	DD	01H
+	ORG $+4
+	DQ	FLAT:Set_m
+	DQ	FLAT:$SG11443
+	DD	0100H
+	ORG $+4
+	DQ	FLAT:Set_ofmt
+	DQ	FLAT:$SG11444
+	DD	00H
+	ORG $+4
+	DQ	FLAT:Set_nbp
+	DQ	FLAT:$SG11445
+	DD	08H
+	ORG $+4
+	DQ	FLAT:Set_n
+	DQ	FLAT:$SG11446
+	DD	07H
+	ORG $+4
+	DQ	FLAT:Set_n
+	DQ	FLAT:$SG11447
+	DD	00H
+	ORG $+4
+	DQ	FLAT:Set_nfp
+	DQ	FLAT:$SG11448
+	DD	05H
+	ORG $+4
+	DQ	FLAT:Set_n
+	DQ	FLAT:$SG11449
+	DD	00H
+	ORG $+4
+	DQ	FLAT:Set_nologo
+	DQ	FLAT:$SG11450
+	DD	06H
+	ORG $+4
+	DQ	FLAT:Set_n
+	DQ	FLAT:$SG11451
+	DD	01H
+	ORG $+4
+	DQ	FLAT:Set_ofmt
+	DQ	FLAT:$SG11452
+	DD	0200H
+	ORG $+4
+	DQ	FLAT:Set_ofmt
+	DQ	FLAT:$SG11453
+	DD	00H
+	ORG $+4
+	DQ	FLAT:Set_pm
+	DQ	FLAT:$SG11454
+	DD	00H
+	ORG $+4
+	DQ	FLAT:Set_q
+	DQ	FLAT:$SG11455
+	DD	00H
+	ORG $+4
+	DQ	FLAT:Set_Sa
+	DQ	FLAT:$SG11456
 	DD	099H
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11419
+	DQ	FLAT:$SG11457
 	DD	093H
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11420
+	DQ	FLAT:$SG11458
 	DD	098H
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11421
+	DQ	FLAT:$SG11459
 	DD	092H
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11422
+	DQ	FLAT:$SG11460
 	DD	09bH
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11423
+	DQ	FLAT:$SG11461
 	DD	016H
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11424
+	DQ	FLAT:$SG11462
 	DD	00H
 	ORG $+4
 	DQ	FLAT:Set_WX
-	DQ	FLAT:$SG11425
+	DQ	FLAT:$SG11463
 	DD	00H
 	ORG $+4
 	DQ	FLAT:Set_W
-	DQ	FLAT:$SG11426
+	DQ	FLAT:$SG11464
 	DD	0302H
 	ORG $+4
 	DQ	FLAT:Set_ofmt
-	DQ	FLAT:$SG11427
+	DQ	FLAT:$SG11465
 	DD	00H
 	ORG $+4
 	DQ	FLAT:Set_w
-	DQ	FLAT:$SG11428
+	DQ	FLAT:$SG11466
 	DD	09cH
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11429
+	DQ	FLAT:$SG11467
 	DD	00H
 	ORG $+4
 	DQ	FLAT:Set_Zd
-	DQ	FLAT:$SG11430
+	DQ	FLAT:$SG11468
 	DD	09aH
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11431
+	DQ	FLAT:$SG11469
 	DD	090H
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11432
+	DQ	FLAT:$SG11470
 	DD	02H
 	ORG $+4
 	DQ	FLAT:Set_Zi
-	DQ	FLAT:$SG11433
+	DQ	FLAT:$SG11471
 	DD	08eH
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11434
+	DQ	FLAT:$SG11472
 	DD	08fH
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11435
+	DQ	FLAT:$SG11473
 	DD	00H
 	ORG $+4
 	DQ	FLAT:Set_Zp
-	DQ	FLAT:$SG11436
+	DQ	FLAT:$SG11474
 	DD	00H
 	ORG $+4
 	DQ	FLAT:Set_zcm
-	DQ	FLAT:$SG11437
+	DQ	FLAT:$SG11475
 	DD	085H
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11438
+	DQ	FLAT:$SG11476
 	DD	00H
 	ORG $+4
 	DQ	FLAT:Set_zf
-	DQ	FLAT:$SG11439
+	DQ	FLAT:$SG11477
 	DD	01H
 	ORG $+4
 	DQ	FLAT:Set_zf
-	DQ	FLAT:$SG11440
+	DQ	FLAT:$SG11478
 	DD	080H
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11441
+	DQ	FLAT:$SG11479
 	DD	081H
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11442
+	DQ	FLAT:$SG11480
 	DD	082H
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11443
+	DQ	FLAT:$SG11481
 	DD	083H
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11444
+	DQ	FLAT:$SG11482
 	DD	084H
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11445
+	DQ	FLAT:$SG11483
 	DD	0bcH
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11446
+	DQ	FLAT:$SG11484
 	DD	01H
 	ORG $+4
 	DQ	FLAT:Set_zt
-	DQ	FLAT:$SG11447
+	DQ	FLAT:$SG11485
 	DD	02H
 	ORG $+4
 	DQ	FLAT:Set_zt
-	DQ	FLAT:$SG11448
+	DQ	FLAT:$SG11486
 	DD	00H
 	ORG $+4
 	DQ	FLAT:Set_zt
-	DQ	FLAT:$SG11449
+	DQ	FLAT:$SG11487
 	DD	091H
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11450
+	DQ	FLAT:$SG11488
 	DD	087H
 	ORG $+4
 	DQ	FLAT:Set_True
-	DQ	FLAT:$SG11451
+	DQ	FLAT:$SG11489
 	DD	088H
 	ORG $+4
 	DQ	FLAT:Set_True
@@ -411,193 +411,193 @@ cpuoption DD	00H
 	DD	070H
 CONST	ENDS
 _DATA	SEGMENT
-$SG11284 DB	'%3u: %s', 0aH, 00H
-	ORG $+7
-$SG11288 DB	'debugging output on', 0aH, 00H
+$SG11299 DB	'W', 00H
+	ORG $+6
+$SG11322 DB	'%3u: %s', 0aH, 00H
 	ORG $+3
-$SG11292 DB	'FASTPASS disabled', 0aH, 00H
-	ORG $+1
-$SG11359 DB	'?', 00H
+$SG11397 DB	'?', 00H
 	ORG $+2
-$SG11296 DB	'backpatching disabled', 0aH, 00H
-	ORG $+1
-$SG11360 DB	'af', 00H
-	ORG $+1
-$SG11361 DB	'bin', 00H
-$SG11362 DB	'Cp', 00H
-	ORG $+1
-$SG11363 DB	'Cu', 00H
-	ORG $+1
-$SG11364 DB	'Cx', 00H
-	ORG $+1
-$SG11365 DB	'ce', 00H
-	ORG $+1
-$SG11366 DB	'coff', 00H
+$SG11326 DB	'debugging output on', 0aH, 00H
 	ORG $+3
-$SG11367 DB	'c', 00H
+$SG11330 DB	'FASTPASS disabled', 0aH, 00H
+	ORG $+1
+$SG11398 DB	'af', 00H
+	ORG $+1
+$SG11334 DB	'backpatching disabled', 0aH, 00H
+	ORG $+1
+$SG11399 DB	'bin', 00H
+$SG11400 DB	'Cp', 00H
+	ORG $+1
+$SG11401 DB	'Cu', 00H
+	ORG $+1
+$SG11402 DB	'Cx', 00H
+	ORG $+1
+$SG11403 DB	'ce', 00H
+	ORG $+1
+$SG11404 DB	'coff', 00H
+	ORG $+3
+$SG11405 DB	'c', 00H
 	ORG $+2
-$SG11368 DB	'dm', 00H
+$SG11406 DB	'dm', 00H
 	ORG $+1
-$SG11369 DB	'drh', 00H
-$SG11370 DB	'dr', 00H
+$SG11407 DB	'drh', 00H
+$SG11408 DB	'dr', 00H
 	ORG $+1
-$SG11371 DB	'dsh', 00H
-$SG11372 DB	'ds', 00H
+$SG11409 DB	'dsh', 00H
+$SG11410 DB	'ds', 00H
 	ORG $+1
-$SG11373 DB	'dt', 00H
+$SG11411 DB	'dt', 00H
 	ORG $+1
-$SG11374 DB	'D^$', 00H
-$SG11375 DB	'elf64', 00H
+$SG11412 DB	'D^$', 00H
+$SG11413 DB	'elf64', 00H
 	ORG $+2
-$SG11376 DB	'elf', 00H
-$SG11377 DB	'EP', 00H
+$SG11414 DB	'elf', 00H
+$SG11415 DB	'EP', 00H
 	ORG $+1
-$SG11378 DB	'eq', 00H
+$SG11416 DB	'eq', 00H
 	ORG $+1
-$SG11379 DB	'e=#', 00H
-$SG11380 DB	'Fd=@', 00H
+$SG11417 DB	'e=#', 00H
+$SG11418 DB	'Fd=@', 00H
 	ORG $+3
-$SG11381 DB	'Fi=^@', 00H
+$SG11419 DB	'Fi=^@', 00H
 	ORG $+2
-$SG11382 DB	'Fl=@', 00H
+$SG11420 DB	'Fl=@', 00H
 	ORG $+3
-$SG11383 DB	'Fo=^@', 00H
+$SG11421 DB	'Fo=^@', 00H
 	ORG $+2
-$SG11384 DB	'FPi87', 00H
+$SG11422 DB	'FPi87', 00H
 	ORG $+2
-$SG11385 DB	'FPi', 00H
-$SG11386 DB	'fp0', 00H
-$SG11387 DB	'fp2', 00H
-$SG11388 DB	'fp3', 00H
-$SG11389 DB	'fpc', 00H
-$SG11390 DB	'Fw=^@', 00H
+$SG11423 DB	'FPi', 00H
+$SG11424 DB	'fp0', 00H
+$SG11425 DB	'fp2', 00H
+$SG11426 DB	'fp3', 00H
+$SG11427 DB	'fpc', 00H
+$SG11428 DB	'Fw=^@', 00H
 	ORG $+2
-$SG11391 DB	'Gc', 00H
+$SG11429 DB	'Gc', 00H
 	ORG $+1
-$SG11392 DB	'Gd', 00H
+$SG11430 DB	'Gd', 00H
 	ORG $+1
-$SG11393 DB	'Gr', 00H
+$SG11431 DB	'Gr', 00H
 	ORG $+1
-$SG11394 DB	'Gz', 00H
+$SG11432 DB	'Gz', 00H
 	ORG $+1
-$SG11395 DB	'h', 00H
+$SG11433 DB	'h', 00H
 	ORG $+2
-$SG11396 DB	'I=^@', 00H
+$SG11434 DB	'I=^@', 00H
 	ORG $+3
-$SG11397 DB	'ls', 00H
+$SG11435 DB	'ls', 00H
 	ORG $+1
-$SG11398 DB	'mc', 00H
+$SG11436 DB	'mc', 00H
 	ORG $+1
-$SG11399 DB	'mf', 00H
+$SG11437 DB	'mf', 00H
 	ORG $+1
-$SG11400 DB	'mh', 00H
+$SG11438 DB	'mh', 00H
 	ORG $+1
-$SG11401 DB	'ml', 00H
+$SG11439 DB	'ml', 00H
 	ORG $+1
-$SG11402 DB	'mm', 00H
+$SG11440 DB	'mm', 00H
 	ORG $+1
-$SG11403 DB	'ms', 00H
+$SG11441 DB	'ms', 00H
 	ORG $+1
-$SG11404 DB	'mt', 00H
+$SG11442 DB	'mt', 00H
 	ORG $+1
-$SG11405 DB	'mz', 00H
+$SG11443 DB	'mz', 00H
 	ORG $+1
-$SG11406 DB	'nbp', 00H
-$SG11407 DB	'nc=$', 00H
+$SG11444 DB	'nbp', 00H
+$SG11445 DB	'nc=$', 00H
 	ORG $+3
-$SG11408 DB	'nd=$', 00H
+$SG11446 DB	'nd=$', 00H
 	ORG $+3
-$SG11409 DB	'nfp', 00H
-$SG11410 DB	'nm=$', 00H
+$SG11447 DB	'nfp', 00H
+$SG11448 DB	'nm=$', 00H
 	ORG $+3
-$SG11411 DB	'nologo', 00H
+$SG11449 DB	'nologo', 00H
 	ORG $+1
-$SG11412 DB	'nt=$', 00H
+$SG11450 DB	'nt=$', 00H
 	ORG $+3
-$SG11413 DB	'omf', 00H
-$SG11414 DB	'pe', 00H
+$SG11451 DB	'omf', 00H
+$SG11452 DB	'pe', 00H
 	ORG $+1
-$SG11415 DB	'pm=#', 00H
+$SG11453 DB	'pm=#', 00H
 	ORG $+3
-$SG11416 DB	'q', 00H
+$SG11454 DB	'q', 00H
 	ORG $+2
-$SG11417 DB	'Sa', 00H
+$SG11455 DB	'Sa', 00H
 	ORG $+1
-$SG11418 DB	'Sf', 00H
+$SG11456 DB	'Sf', 00H
 	ORG $+1
-$SG11419 DB	'Sg', 00H
+$SG11457 DB	'Sg', 00H
 	ORG $+1
-$SG11420 DB	'Sn', 00H
+$SG11458 DB	'Sn', 00H
 	ORG $+1
-$SG11421 DB	'Sx', 00H
+$SG11459 DB	'Sx', 00H
 	ORG $+1
-$SG11423 DB	'sp', 00H
+$SG11460 DB	'safeseh', 00H
+$SG11461 DB	'sp', 00H
 	ORG $+1
-$SG11422 DB	'safeseh', 00H
-$SG11424 DB	'WX', 00H
+$SG11462 DB	'WX', 00H
 	ORG $+1
-$SG11425 DB	'W=#', 00H
-$SG11426 DB	'win64', 00H
+$SG11463 DB	'W=#', 00H
+$SG11464 DB	'win64', 00H
 	ORG $+2
-$SG11427 DB	'w', 00H
+$SG11465 DB	'w', 00H
 	ORG $+2
-$SG11428 DB	'X', 00H
+$SG11466 DB	'X', 00H
 	ORG $+2
-$SG11429 DB	'Zd', 00H
+$SG11467 DB	'Zd', 00H
 	ORG $+1
-$SG11430 DB	'Zf', 00H
+$SG11468 DB	'Zf', 00H
 	ORG $+1
-$SG11431 DB	'Zg', 00H
+$SG11469 DB	'Zg', 00H
 	ORG $+1
-$SG11432 DB	'Zi=#', 00H
+$SG11470 DB	'Zi=#', 00H
 	ORG $+3
-$SG11433 DB	'Zm', 00H
+$SG11471 DB	'Zm', 00H
 	ORG $+1
-$SG11434 DB	'Zne', 00H
-$SG11435 DB	'Zp=#', 00H
+$SG11472 DB	'Zne', 00H
+$SG11473 DB	'Zp=#', 00H
 	ORG $+3
-$SG11436 DB	'zcm', 00H
-$SG11437 DB	'zcw', 00H
-$SG11438 DB	'zf0', 00H
-$SG11439 DB	'zf1', 00H
-$SG11440 DB	'zlc', 00H
-$SG11441 DB	'zld', 00H
-$SG11442 DB	'zlf', 00H
-$SG11443 DB	'zlp', 00H
-$SG11444 DB	'zls', 00H
-$SG11445 DB	'Zs', 00H
+$SG11474 DB	'zcm', 00H
+$SG11475 DB	'zcw', 00H
+$SG11476 DB	'zf0', 00H
+$SG11477 DB	'zf1', 00H
+$SG11478 DB	'zlc', 00H
+$SG11479 DB	'zld', 00H
+$SG11480 DB	'zlf', 00H
+$SG11481 DB	'zlp', 00H
+$SG11482 DB	'zls', 00H
+$SG11483 DB	'Zs', 00H
 	ORG $+1
-$SG11446 DB	'zt0', 00H
-$SG11447 DB	'zt1', 00H
-$SG11448 DB	'zt2', 00H
-$SG11449 DB	'Zv8', 00H
-$SG11450 DB	'zze', 00H
-$SG11451 DB	'zzs', 00H
-$SG11500 DB	'rb', 00H
+$SG11484 DB	'zt0', 00H
+$SG11485 DB	'zt1', 00H
+$SG11486 DB	'zt2', 00H
+$SG11487 DB	'Zv8', 00H
+$SG11488 DB	'zze', 00H
+$SG11489 DB	'zzs', 00H
+$SG11508 DB	'GetNameToken( %s, %u, ''%c'' ) enter, rspidx=%u', 0aH, 00H
 	ORG $+1
-$SG11470 DB	'GetNameToken( %s, %u, ''%c'' ) enter, rspidx=%u', 0aH, 00H
-	ORG $+1
-$SG11499 DB	'ReadParamFile(%s) enter', 0aH, 00H
+$SG11537 DB	'ReadParamFile(%s) enter', 0aH, 00H
 	ORG $+3
-$SG11181 DB	'Zi', 00H
+$SG11538 DB	'rb', 00H
 	ORG $+1
-$SG11552 DB	'ProcessOption(%s)', 0aH, 00H
+$SG11590 DB	'ProcessOption(%s)', 0aH, 00H
 	ORG $+1
-$SG11190 DB	'Zp', 00H
+$SG11219 DB	'Zi', 00H
 	ORG $+1
-$SG11569 DB	'ProcessOption: unknown option specifier: %s', 0aH, 00H
+$SG11607 DB	'ProcessOption: unknown option specifier: %s', 0aH, 00H
 	ORG $+3
-$SG11570 DB	'cmdline.c', 00H
+$SG11608 DB	'cmdline.c', 00H
 	ORG $+2
-$SG11612 DB	'NULL', 00H
+$SG11650 DB	'NULL', 00H
 	ORG $+3
-$SG11261 DB	'W', 00H
-	ORG $+2
-$SG11613 DB	'ParseCmdLine: file=>%s< rest=>%s<', 0aH, 00H
+$SG11228 DB	'Zp', 00H
+	ORG $+1
+$SG11651 DB	'ParseCmdLine: file=>%s< rest=>%s<', 0aH, 00H
 	ORG $+5
-$SG11636 DB	'CmdLineFini enter', 0aH, 00H
+$SG11674 DB	'CmdLineFini enter', 0aH, 00H
 	ORG $+5
-$SG11639 DB	'CmdLineFini exit', 0aH, 00H
+$SG11677 DB	'CmdLineFini exit', 0aH, 00H
 	ORG $+6
 Options	DB	00H
 	DB	00H
@@ -670,13 +670,13 @@ Options	DB	00H
 	DD	00H
 	DB	00H
 	ORG $+3
-$SG11128 DB	'queue_item(%u, %s) enter', 0aH, 00H
+$SG11166 DB	'queue_item(%u, %s) enter', 0aH, 00H
 	ORG $+6
-$SG11141 DB	'get_fname( type=%u, >%s< ) enter', 0aH, 00H
+$SG11179 DB	'get_fname( type=%u, >%s< ) enter', 0aH, 00H
 	ORG $+6
-$SG11143 DB	'get_fname(%u, >%s< ) name is empty or a directory', 0aH, 00H
+$SG11181 DB	'get_fname(%u, >%s< ) name is empty or a directory', 0aH, 00H
 	ORG $+5
-$SG11147 DB	'get_fname: default drive+dir used: %s', 0aH, 00H
+$SG11185 DB	'get_fname: default drive+dir used: %s', 0aH, 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	_vfprintf_l
@@ -684,18 +684,18 @@ PUBLIC	printf
 PUBLIC	ParseCmdline
 PUBLIC	CmdlineFini
 EXTRN	__report_rangecheckfailure:PROC
-EXTRN	__imp_isspace:PROC
-EXTRN	__imp_isalnum:PROC
-EXTRN	__imp___acrt_iob_func:PROC
-EXTRN	__imp_fclose:PROC
-EXTRN	__imp_fopen:PROC
-EXTRN	__imp_fread:PROC
-EXTRN	__imp_fseek:PROC
-EXTRN	__imp_ftell:PROC
-EXTRN	__imp_rewind:PROC
-EXTRN	__imp___stdio_common_vfprintf:PROC
-EXTRN	__imp_exit:PROC
-EXTRN	__imp_getenv:PROC
+EXTRN	isspace:PROC
+EXTRN	isalnum:PROC
+EXTRN	__acrt_iob_func:PROC
+EXTRN	fclose:PROC
+EXTRN	fopen:PROC
+EXTRN	fread:PROC
+EXTRN	fseek:PROC
+EXTRN	ftell:PROC
+EXTRN	rewind:PROC
+EXTRN	__stdio_common_vfprintf:PROC
+EXTRN	exit:PROC
+EXTRN	getenv:PROC
 EXTRN	strcat:PROC
 EXTRN	strcpy:PROC
 EXTRN	strlen:PROC
@@ -711,9 +711,6 @@ EXTRN	MemFree:PROC
 EXTRN	MsgGetEx:PROC
 EXTRN	InternalError:PROC
 EXTRN	GetFNamePart:PROC
-EXTRN	_RTC_CheckStackVars:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
 EXTRN	__GSHandlerCheck:PROC
 EXTRN	__security_check_cookie:PROC
 EXTRN	ModuleInfo:BYTE
@@ -731,367 +728,192 @@ cmdbuffers DQ	0fH DUP (?)
 _BSS	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$__local_stdio_printf_options DD imagerel $LN3
-	DD	imagerel $LN3+11
-	DD	imagerel $unwind$__local_stdio_printf_options
-pdata	ENDS
-;	COMDAT pdata
-pdata	SEGMENT
 $pdata$_vfprintf_l DD imagerel $LN3
-	DD	imagerel $LN3+90
+	DD	imagerel $LN3+67
 	DD	imagerel $unwind$_vfprintf_l
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$printf DD imagerel $LN3
-	DD	imagerel $LN3+129
+	DD	imagerel $LN3+87
 	DD	imagerel $unwind$printf
 pdata	ENDS
 pdata	SEGMENT
 $pdata$ParseCmdline DD imagerel $LN29
-	DD	imagerel $LN29+1101
+	DD	imagerel $LN29+1029
 	DD	imagerel $unwind$ParseCmdline
 $pdata$CmdlineFini DD imagerel $LN17
-	DD	imagerel $LN17+342
+	DD	imagerel $LN17+324
 	DD	imagerel $unwind$CmdlineFini
 $pdata$SetCpuCmdline DD imagerel SetCpuCmdline
-	DD	imagerel SetCpuCmdline+166
+	DD	imagerel SetCpuCmdline+145
 	DD	imagerel $unwind$SetCpuCmdline
 $pdata$queue_item DD imagerel queue_item
-	DD	imagerel queue_item+214
+	DD	imagerel queue_item+193
 	DD	imagerel $unwind$queue_item
 $pdata$get_fname DD imagerel get_fname
-	DD	imagerel get_fname+593
+	DD	imagerel get_fname+545
 	DD	imagerel $unwind$get_fname
 $pdata$set_option_n_name DD imagerel set_option_n_name
-	DD	imagerel set_option_n_name+239
+	DD	imagerel set_option_n_name+217
 	DD	imagerel $unwind$set_option_n_name
-$pdata$Set_c DD	imagerel Set_c
-	DD	imagerel Set_c+4
-	DD	imagerel $unwind$Set_c
-$pdata$Set_ce DD imagerel Set_ce
-	DD	imagerel Set_ce+22
-	DD	imagerel $unwind$Set_ce
-$pdata$Set_Cp DD imagerel Set_Cp
-	DD	imagerel Set_Cp+18
-	DD	imagerel $unwind$Set_Cp
-$pdata$Set_Cu DD imagerel Set_Cu
-	DD	imagerel Set_Cu+18
-	DD	imagerel $unwind$Set_Cu
-$pdata$Set_Cx DD imagerel Set_Cx
-	DD	imagerel Set_Cx+18
-	DD	imagerel $unwind$Set_Cx
-$pdata$Set_Zd DD imagerel Set_Zd
-	DD	imagerel Set_Zd+11
-	DD	imagerel $unwind$Set_Zd
 $pdata$Set_Zi DD imagerel Set_Zi
-	DD	imagerel Set_Zi+85
+	DD	imagerel Set_Zi+67
 	DD	imagerel $unwind$Set_Zi
 $pdata$Set_Zp DD imagerel Set_Zp
-	DD	imagerel Set_Zp+141
+	DD	imagerel Set_Zp+123
 	DD	imagerel $unwind$Set_Zp
 $pdata$Set_D DD	imagerel Set_D
-	DD	imagerel Set_D+44
+	DD	imagerel Set_D+26
 	DD	imagerel $unwind$Set_D
 $pdata$Set_Fi DD imagerel Set_Fi
-	DD	imagerel Set_Fi+41
+	DD	imagerel Set_Fi+23
 	DD	imagerel $unwind$Set_Fi
 $pdata$Set_I DD	imagerel Set_I
-	DD	imagerel Set_I+44
+	DD	imagerel Set_I+26
 	DD	imagerel $unwind$Set_I
-$pdata$Set_e DD	imagerel Set_e
-	DD	imagerel Set_e+16
-	DD	imagerel $unwind$Set_e
-$pdata$Set_nologo DD imagerel Set_nologo
-	DD	imagerel Set_nologo+11
-	DD	imagerel $unwind$Set_nologo
 $pdata$Set_q DD	imagerel Set_q
-	DD	imagerel Set_q+39
+	DD	imagerel Set_q+21
 	DD	imagerel $unwind$Set_q
 $pdata$Set_EP DD imagerel Set_EP
-	DD	imagerel Set_EP+39
+	DD	imagerel Set_EP+21
 	DD	imagerel $unwind$Set_EP
 $pdata$Set_Fd DD imagerel Set_Fd
-	DD	imagerel Set_Fd+51
+	DD	imagerel Set_Fd+33
 	DD	imagerel $unwind$Set_Fd
 $pdata$Set_Fw DD imagerel Set_Fw
-	DD	imagerel Set_Fw+44
+	DD	imagerel Set_Fw+26
 	DD	imagerel $unwind$Set_Fw
 $pdata$Set_Fl DD imagerel Set_Fl
-	DD	imagerel Set_Fl+51
+	DD	imagerel Set_Fl+33
 	DD	imagerel $unwind$Set_Fl
 $pdata$Set_Fo DD imagerel Set_Fo
-	DD	imagerel Set_Fo+44
+	DD	imagerel Set_Fo+26
 	DD	imagerel $unwind$Set_Fo
-$pdata$Set_fp DD imagerel Set_fp
-	DD	imagerel Set_fp+31
-	DD	imagerel $unwind$Set_fp
-$pdata$Set_FPx DD imagerel Set_FPx
-	DD	imagerel Set_FPx+16
-	DD	imagerel $unwind$Set_FPx
-$pdata$Set_G DD	imagerel Set_G
-	DD	imagerel Set_G+16
-	DD	imagerel $unwind$Set_G
-$pdata$Set_Sa DD imagerel Set_Sa
-	DD	imagerel Set_Sa+28
-	DD	imagerel $unwind$Set_Sa
 $pdata$Set_True DD imagerel Set_True
-	DD	imagerel Set_True+57
+	DD	imagerel Set_True+39
 	DD	imagerel $unwind$Set_True
-$pdata$Set_m DD	imagerel Set_m
-	DD	imagerel Set_m+16
-	DD	imagerel $unwind$Set_m
 $pdata$Set_n DD	imagerel Set_n
-	DD	imagerel Set_n+45
+	DD	imagerel Set_n+27
 	DD	imagerel $unwind$Set_n
-$pdata$Set_pm DD imagerel Set_pm
-	DD	imagerel Set_pm+18
-	DD	imagerel $unwind$Set_pm
-$pdata$Set_WX DD imagerel Set_WX
-	DD	imagerel Set_WX+11
-	DD	imagerel $unwind$Set_WX
 $pdata$Set_w DD	imagerel Set_w
-	DD	imagerel Set_w+39
+	DD	imagerel Set_w+21
 	DD	imagerel $unwind$Set_w
 $pdata$Set_W DD	imagerel Set_W
-	DD	imagerel Set_W+73
+	DD	imagerel Set_W+55
 	DD	imagerel $unwind$Set_W
-$pdata$Set_ofmt DD imagerel Set_ofmt
-	DD	imagerel Set_ofmt+36
-	DD	imagerel $unwind$Set_ofmt
-$pdata$Set_zcm DD imagerel Set_zcm
-	DD	imagerel Set_zcm+11
-	DD	imagerel $unwind$Set_zcm
-$pdata$Set_zf DD imagerel Set_zf
-	DD	imagerel Set_zf+16
-	DD	imagerel $unwind$Set_zf
-$pdata$Set_zt DD imagerel Set_zt
-	DD	imagerel Set_zt+17
-	DD	imagerel $unwind$Set_zt
 $pdata$Set_h DD	imagerel Set_h
-	DD	imagerel Set_h+43
+	DD	imagerel Set_h+24
 	DD	imagerel $unwind$Set_h
 $pdata$Set_dm DD imagerel Set_dm
-	DD	imagerel Set_dm+87
+	DD	imagerel Set_dm+69
 	DD	imagerel $unwind$Set_dm
 $pdata$Set_dt DD imagerel Set_dt
-	DD	imagerel Set_dt+62
+	DD	imagerel Set_dt+44
 	DD	imagerel $unwind$Set_dt
 $pdata$Set_nfp DD imagerel Set_nfp
-	DD	imagerel Set_nfp+46
+	DD	imagerel Set_nfp+28
 	DD	imagerel $unwind$Set_nfp
 $pdata$Set_nbp DD imagerel Set_nbp
-	DD	imagerel Set_nbp+46
+	DD	imagerel Set_nbp+28
 	DD	imagerel $unwind$Set_nbp
 $pdata$GetNameToken DD imagerel GetNameToken
-	DD	imagerel GetNameToken+561
+	DD	imagerel GetNameToken+539
 	DD	imagerel $unwind$GetNameToken
 $pdata$ReadParamFile DD imagerel ReadParamFile
-	DD	imagerel ReadParamFile+363
+	DD	imagerel ReadParamFile+335
 	DD	imagerel $unwind$ReadParamFile
 $pdata$getnextcmdstring DD imagerel getnextcmdstring
-	DD	imagerel getnextcmdstring+228
+	DD	imagerel getnextcmdstring+206
 	DD	imagerel $unwind$getnextcmdstring
-$pdata$GetNumber DD imagerel GetNumber
-	DD	imagerel GetNumber+91
-	DD	imagerel $unwind$GetNumber
 $pdata$ProcessOption DD imagerel ProcessOption
-	DD	imagerel ProcessOption+1083
+	DD	imagerel ProcessOption+1059
 	DD	imagerel $unwind$ProcessOption
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
 xdata	SEGMENT
-$unwind$ParseCmdline DD 033b19H
-	DD	0300112H
-	DD	0700bH
+$unwind$ParseCmdline DD 022319H
+	DD	02d0111H
 	DD	imagerel __GSHandlerCheck
-	DD	0170H
-$unwind$CmdlineFini DD 021501H
-	DD	070027206H
-$unwind$SetCpuCmdline DD 022101H
-	DD	0700a320eH
-$unwind$queue_item DD 022101H
-	DD	0700a520eH
-$unwind$get_fname DD 033919H
-	DD	02e0111H
-	DD	0700aH
+	DD	0150H
+$unwind$CmdlineFini DD 010401H
+	DD	08204H
+$unwind$SetCpuCmdline DD 010d01H
+	DD	0420dH
+$unwind$queue_item DD 010d01H
+	DD	0620dH
+$unwind$get_fname DD 022219H
+	DD	02b0110H
 	DD	imagerel __GSHandlerCheck
-	DD	0168H
-$unwind$set_option_n_name DD 022101H
-	DD	0700a320eH
-$unwind$Set_c DD 010201H
-	DD	07002H
-$unwind$Set_ce DD 010201H
-	DD	07002H
-$unwind$Set_Cp DD 010201H
-	DD	07002H
-$unwind$Set_Cu DD 010201H
-	DD	07002H
-$unwind$Set_Cx DD 010201H
-	DD	07002H
-$unwind$Set_Zd DD 010201H
-	DD	07002H
-$unwind$Set_Zi DD 021501H
-	DD	070023206H
-$unwind$Set_Zp DD 021501H
-	DD	070025206H
-$unwind$Set_D DD 021501H
-	DD	070023206H
-$unwind$Set_Fi DD 021501H
-	DD	070023206H
-$unwind$Set_I DD 021501H
-	DD	070023206H
-$unwind$Set_e DD 010201H
-	DD	07002H
-$unwind$Set_nologo DD 010201H
-	DD	07002H
-$unwind$Set_q DD 021501H
-	DD	070023206H
-$unwind$Set_EP DD 021501H
-	DD	070023206H
-$unwind$Set_Fd DD 021501H
-	DD	070023206H
-$unwind$Set_Fw DD 021501H
-	DD	070023206H
-$unwind$Set_Fl DD 021501H
-	DD	070023206H
-$unwind$Set_Fo DD 021501H
-	DD	070023206H
-$unwind$Set_fp DD 010201H
-	DD	07002H
-$unwind$Set_FPx DD 010201H
-	DD	07002H
-$unwind$Set_G DD 010201H
-	DD	07002H
-$unwind$Set_Sa DD 010201H
-	DD	07002H
-$unwind$Set_True DD 021501H
-	DD	070021206H
-$unwind$Set_m DD 010201H
-	DD	07002H
-$unwind$Set_n DD 021501H
-	DD	070023206H
-$unwind$Set_pm DD 010201H
-	DD	07002H
-$unwind$Set_WX DD 010201H
-	DD	07002H
-$unwind$Set_w DD 021501H
-	DD	070023206H
-$unwind$Set_W DD 021501H
-	DD	070023206H
-$unwind$Set_ofmt DD 010201H
-	DD	07002H
-$unwind$Set_zcm DD 010201H
-	DD	07002H
-$unwind$Set_zf DD 010201H
-	DD	07002H
-$unwind$Set_zt DD 010201H
-	DD	07002H
-$unwind$Set_h DD 021501H
-	DD	070023206H
-$unwind$Set_dm DD 021501H
-	DD	070025206H
-$unwind$Set_dt DD 021501H
-	DD	070023206H
-$unwind$Set_nfp DD 021501H
-	DD	070023206H
-$unwind$Set_nbp DD 021501H
-	DD	070023206H
-$unwind$GetNameToken DD 022d01H
-	DD	070157219H
-$unwind$ReadParamFile DD 021e01H
-	DD	07006720aH
-$unwind$getnextcmdstring DD 021e01H
-	DD	07006520aH
-$unwind$GetNumber DD 010601H
-	DD	07006H
-$unwind$ProcessOption DD 022301H
-	DD	0700b720fH
-xdata	ENDS
-CONST	SEGMENT
-	ORG $+4
-ParseCmdline$rtcName$0 DB 070H
-	DB	061H
-	DB	072H
-	DB	061H
-	DB	06dH
-	DB	066H
-	DB	069H
-	DB	06cH
-	DB	065H
-	DB	00H
-	ORG $+6
-ParseCmdline$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:ParseCmdline$rtcVarDesc
-get_fname$rtcName$0 DB 06eH
-	DB	061H
-	DB	06dH
-	DB	065H
-	DB	00H
-	ORG $+3
-ParseCmdline$rtcVarDesc DD 040H
-	DD	0104H
-	DQ	FLAT:ParseCmdline$rtcName$0
-	ORG $+48
-get_fname$rtcVarDesc DD 040H
-	DD	0104H
-	DQ	FLAT:get_fname$rtcName$0
-	ORG $+48
-get_fname$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:get_fname$rtcVarDesc
-CONST	ENDS
-;	COMDAT xdata
-xdata	SEGMENT
-$unwind$printf DD 022d01H
-	DD	070159219H
-xdata	ENDS
-;	COMDAT CONST
-CONST	SEGMENT
-printf$rtcName$0 DB 05fH
-	DB	041H
-	DB	072H
-	DB	067H
-	DB	04cH
-	DB	069H
-	DB	073H
-	DB	074H
-	DB	00H
-	ORG $+7
-printf$rtcVarDesc DD 038H
-	DD	08H
-	DQ	FLAT:printf$rtcName$0
-	ORG $+48
-printf$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:printf$rtcVarDesc
-CONST	ENDS
-;	COMDAT xdata
-xdata	SEGMENT
-$unwind$_vfprintf_l DD 022d01H
-	DD	070155219H
+	DD	0140H
+$unwind$set_option_n_name DD 010d01H
+	DD	0420dH
+$unwind$Set_Zi DD 010401H
+	DD	04204H
+$unwind$Set_Zp DD 010401H
+	DD	06204H
+$unwind$Set_D DD 010401H
+	DD	04204H
+$unwind$Set_Fi DD 010401H
+	DD	04204H
+$unwind$Set_I DD 010401H
+	DD	04204H
+$unwind$Set_q DD 010401H
+	DD	04204H
+$unwind$Set_EP DD 010401H
+	DD	04204H
+$unwind$Set_Fd DD 010401H
+	DD	04204H
+$unwind$Set_Fw DD 010401H
+	DD	04204H
+$unwind$Set_Fl DD 010401H
+	DD	04204H
+$unwind$Set_Fo DD 010401H
+	DD	04204H
+$unwind$Set_True DD 010401H
+	DD	02204H
+$unwind$Set_n DD 010401H
+	DD	04204H
+$unwind$Set_w DD 010401H
+	DD	04204H
+$unwind$Set_W DD 010401H
+	DD	04204H
+$unwind$Set_h DD 010401H
+	DD	04204H
+$unwind$Set_dm DD 010401H
+	DD	06204H
+$unwind$Set_dt DD 010401H
+	DD	04204H
+$unwind$Set_nfp DD 010401H
+	DD	04204H
+$unwind$Set_nbp DD 010401H
+	DD	04204H
+$unwind$GetNameToken DD 011801H
+	DD	08218H
+$unwind$ReadParamFile DD 010901H
+	DD	08209H
+$unwind$getnextcmdstring DD 010901H
+	DD	06209H
+$unwind$ProcessOption DD 010e01H
+	DD	0820eH
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$__local_stdio_printf_options DD 010201H
-	DD	07002H
+$unwind$printf DD 011801H
+	DD	06218H
 xdata	ENDS
-; Function compile flags: /Odtp /RTCsu
+;	COMDAT xdata
+xdata	SEGMENT
+$unwind$_vfprintf_l DD 011801H
+	DD	06218H
+xdata	ENDS
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 i$ = 32
 j$ = 36
-p$ = 40
-opt$ = 48
-tv156 = 56
+tv156 = 40
+p$ = 48
+opt$ = 56
 cmdline$ = 80
 buffer$ = 88
 ProcessOption PROC
@@ -1100,13 +922,7 @@ ProcessOption PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 72					; 00000048H
 
 ; 825  :     int   i;
 ; 826  :     int   j;
@@ -1122,7 +938,7 @@ ProcessOption PROC
 ; 831  :     DebugMsg(("ProcessOption(%s)\n", p ));
 
 	mov	rdx, QWORD PTR p$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11552
+	lea	rcx, OFFSET FLAT:$SG11590
 	call	DoDebugMsg
 
 ; 832  : 
@@ -1236,7 +1052,7 @@ $LN7@ProcessOpt:
 	mov	rax, QWORD PTR opt$[rsp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isalnum
+	call	isalnum
 	test	eax, eax
 	je	SHORT $LN6@ProcessOpt
 	mov	rax, QWORD PTR opt$[rsp]
@@ -1255,7 +1071,7 @@ $LN6@ProcessOpt:
 	mov	rax, QWORD PTR opt$[rsp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isalnum
+	call	isalnum
 	test	eax, eax
 	je	SHORT $LN18@ProcessOpt
 
@@ -1446,7 +1262,7 @@ $LN13@ProcessOpt:
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isspace
+	call	isspace
 	test	eax, eax
 	je	SHORT $LN14@ProcessOpt
 	mov	rax, QWORD PTR p$[rsp]
@@ -1497,13 +1313,13 @@ $LN30@ProcessOpt:
 ; 902  :                     DebugMsg(( "ProcessOption: unknown option specifier: %s\n", opt ));
 
 	mov	rdx, QWORD PTR opt$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11569
+	lea	rcx, OFFSET FLAT:$SG11607
 	call	DoDebugMsg
 
 ; 903  :                     /**/myassert( 0 );
 
 	mov	edx, 903				; 00000387H
-	lea	rcx, OFFSET FLAT:$SG11570
+	lea	rcx, OFFSET FLAT:$SG11608
 	call	InternalError
 $LN11@ProcessOpt:
 
@@ -1535,17 +1351,16 @@ $opt_error_exit$34:
 ; 911  :     *cmdline = "";
 
 	mov	rax, QWORD PTR cmdline$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11571
+	lea	rcx, OFFSET FLAT:$SG11609
 	mov	QWORD PTR [rax], rcx
 $LN1@ProcessOpt:
 
 ; 912  :     return;
 ; 913  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
-	npad	1
+	npad	2
 $LN33@ProcessOpt:
 	DD	$LN19@ProcessOpt
 	DD	$LN21@ProcessOpt
@@ -1651,16 +1466,15 @@ $LN32@ProcessOpt:
 	DB	4
 ProcessOption ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
-p$ = 16
+p$ = 8
 GetNumber PROC
 
 ; 807  : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
 
 ; 808  :     OptValue = 0;
 
@@ -1699,11 +1513,10 @@ $LN3@GetNumber:
 
 ; 812  : }
 
-	pop	rdi
 	ret	0
 GetNumber ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 src$ = 32
@@ -1714,13 +1527,7 @@ getnextcmdstring PROC
 ; 788  : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 789  :     const char **src;
 ; 790  :     const char **dst;
@@ -1803,32 +1610,25 @@ $LN1@getnextcmd:
 
 ; 803  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 getnextcmdstring ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
-env$ = 32
-str$ = 40
-file$ = 48
-len$ = 56
-ch$ = 60
+ch$ = 32
+len$ = 36
+file$ = 40
+str$ = 48
+env$ = 56
 name$ = 80
 ReadParamFile PROC
 
 ; 735  : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 72					; 00000048H
 
 ; 736  :     char        *env;
 ; 737  :     char        *str;
@@ -1838,7 +1638,7 @@ ReadParamFile PROC
 ; 741  : 
 ; 742  :     DebugMsg(("ReadParamFile(%s) enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11499
+	lea	rcx, OFFSET FLAT:$SG11537
 	call	DoDebugMsg
 
 ; 743  :     env = NULL;
@@ -1847,9 +1647,9 @@ ReadParamFile PROC
 
 ; 744  :     file = fopen( name, "rb" );
 
-	lea	rdx, OFFSET FLAT:$SG11500
+	lea	rdx, OFFSET FLAT:$SG11538
 	mov	rcx, QWORD PTR name$[rsp]
-	call	QWORD PTR __imp_fopen
+	call	fopen
 	mov	QWORD PTR file$[rsp], rax
 
 ; 745  :     if( file == NULL ) {
@@ -1883,20 +1683,20 @@ $LN4@ReadParamF:
 	mov	r8d, 2
 	xor	edx, edx
 	mov	rcx, QWORD PTR file$[rsp]
-	call	QWORD PTR __imp_fseek
+	call	fseek
 	test	eax, eax
 	jne	SHORT $LN5@ReadParamF
 
 ; 753  :         len = ftell( file );
 
 	mov	rcx, QWORD PTR file$[rsp]
-	call	QWORD PTR __imp_ftell
+	call	ftell
 	mov	DWORD PTR len$[rsp], eax
 
 ; 754  :         rewind( file );
 
 	mov	rcx, QWORD PTR file$[rsp]
-	call	QWORD PTR __imp_rewind
+	call	rewind
 
 ; 755  :         env = MemAlloc( len + 1 );
 
@@ -1917,7 +1717,7 @@ $LN4@ReadParamF:
 	mov	r8, rax
 	mov	edx, 1
 	mov	rcx, QWORD PTR env$[rsp]
-	call	QWORD PTR __imp_fread
+	call	fread
 
 ; 760  : #endif
 ; 761  :         env[len] = NULLC;
@@ -1931,7 +1731,7 @@ $LN5@ReadParamF:
 ; 763  :     fclose( file );
 
 	mov	rcx, QWORD PTR file$[rsp]
-	call	QWORD PTR __imp_fclose
+	call	fclose
 
 ; 764  :     if ( len == 0)
 
@@ -2018,12 +1818,11 @@ $LN1@ReadParamF:
 
 ; 782  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 ReadParamFile ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 equatefound$ = 48
@@ -2039,13 +1838,7 @@ GetNameToken PROC
 	mov	DWORD PTR [rsp+24], r8d
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 72					; 00000048H
 
 ; 681  :     bool equatefound = FALSE;
 
@@ -2060,7 +1853,7 @@ GetNameToken PROC
 	mov	r9d, eax
 	mov	r8d, DWORD PTR max$[rsp]
 	mov	rdx, QWORD PTR str$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11470
+	lea	rcx, OFFSET FLAT:$SG11508
 	call	DoDebugMsg
 $is_quote$22:
 
@@ -2308,24 +2101,18 @@ $LN9@GetNameTok:
 
 ; 726  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 GetNameToken ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_nbp	PROC
 
 ; 495  : {
 
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 
 ; 496  :     Options.nobackpatch = TRUE;
 
@@ -2333,29 +2120,23 @@ Set_nbp	PROC
 
 ; 497  :     DebugMsg(( "backpatching disabled\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11296
+	lea	rcx, OFFSET FLAT:$SG11334
 	call	DoDebugMsg
 
 ; 498  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 Set_nbp	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_nfp	PROC
 
 ; 488  : {
 
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 
 ; 489  :     Options.nofastpass = TRUE;
 
@@ -2363,29 +2144,23 @@ Set_nfp	PROC
 
 ; 490  :     DebugMsg(( "FASTPASS disabled\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11292
+	lea	rcx, OFFSET FLAT:$SG11330
 	call	DoDebugMsg
 
 ; 491  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 Set_nfp	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_dt	PROC
 
 ; 480  : {
 
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 
 ; 481  :     Options.debug = TRUE;
 
@@ -2399,17 +2174,16 @@ Set_dt	PROC
 
 ; 483  :     DebugMsg(( "debugging output on\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11288
+	lea	rcx, OFFSET FLAT:$SG11326
 	call	DoDebugMsg
 
 ; 484  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 Set_dt	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 i$ = 32
@@ -2417,12 +2191,7 @@ Set_dm	PROC
 
 ; 472  : {
 
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 56					; 00000038H
 
 ; 473  :     int i;
 ; 474  :     for ( i = 0; i < MSG_LAST; i++ ) {
@@ -2434,7 +2203,7 @@ $LN2@Set_dm:
 	inc	eax
 	mov	DWORD PTR i$[rsp], eax
 $LN4@Set_dm:
-	cmp	DWORD PTR i$[rsp], 278			; 00000116H
+	cmp	DWORD PTR i$[rsp], 279			; 00000117H
 	jge	SHORT $LN3@Set_dm
 
 ; 475  :         printf("%3u: %s\n", i, MsgGetEx(i) );
@@ -2443,7 +2212,7 @@ $LN4@Set_dm:
 	call	MsgGetEx
 	mov	r8, rax
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11284
+	lea	rcx, OFFSET FLAT:$SG11322
 	call	printf
 
 ; 476  :     }
@@ -2453,82 +2222,65 @@ $LN3@Set_dm:
 
 ; 477  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 Set_dm	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_h	PROC
 
 ; 467  : static void OPTQUAL Set_h( void ) {  PrintUsage();  exit(1); }
 
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 	call	PrintUsage
 	mov	ecx, 1
-	call	QWORD PTR __imp_exit
+	call	exit
 $LN2@Set_h:
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 Set_h	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_zt	PROC
 
 ; 465  : static void OPTQUAL Set_zt( void ) { Options.stdcall_decoration = OptValue; }
 
-	push	rdi
 	movzx	eax, BYTE PTR OptValue
 	mov	BYTE PTR Options+134, al
-	pop	rdi
 	ret	0
 Set_zt	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_zf	PROC
 
 ; 462  : static void OPTQUAL Set_zf( void )  { Options.fctype = OptValue; }
 
-	push	rdi
 	mov	eax, DWORD PTR OptValue
 	mov	DWORD PTR Options+184, eax
-	pop	rdi
 	ret	0
 Set_zf	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_zcm	PROC
 
 ; 460  : static void OPTQUAL Set_zcm( void ) { Options.no_cdecl_decoration = FALSE; }
 
-	push	rdi
 	mov	BYTE PTR Options+133, 0
-	pop	rdi
 	ret	0
 Set_zcm	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_ofmt PROC
-
-; 455  : {
-
-	push	rdi
 
 ; 456  :     Options.output_format = OptValue & 0xff;
 
@@ -2544,23 +2296,17 @@ Set_ofmt PROC
 
 ; 458  : }
 
-	pop	rdi
 	ret	0
 Set_ofmt ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_W	PROC
 
 ; 446  : {
 
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 
 ; 447  :     if ( OptValue <= 4 )
 
@@ -2577,7 +2323,7 @@ $LN2@Set_W:
 ; 449  :     else
 ; 450  :         EmitWarn( 1, INVALID_CMDLINE_VALUE, "W" );
 
-	lea	r8, OFFSET FLAT:$SG11261
+	lea	r8, OFFSET FLAT:$SG11299
 	mov	edx, 195				; 000000c3H
 	mov	ecx, 1
 	call	EmitWarn
@@ -2585,94 +2331,75 @@ $LN3@Set_W:
 
 ; 451  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 Set_W	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_w	PROC
 
 ; 442  : static void OPTQUAL Set_w( void ) { Set_WX(); Options.warning_level = 0; }
 
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 	call	Set_WX
 	mov	BYTE PTR Options+13, 0
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 Set_w	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_WX	PROC
 
 ; 440  : static void OPTQUAL Set_WX( void ) { Options.warning_error = TRUE; }
 
-	push	rdi
 	mov	BYTE PTR Options+14, 1
-	pop	rdi
 	ret	0
 Set_WX	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_pm	PROC
 
 ; 437  : static void OPTQUAL Set_pm( void ) { Options.max_passes = OptValue; };
 
-	push	rdi
 	movzx	eax, WORD PTR OptValue
 	mov	WORD PTR Options+20, ax
-	pop	rdi
 	ret	0
 Set_pm	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_n	PROC
 
 ; 434  : static void OPTQUAL Set_n( void ) { set_option_n_name( OptValue, OptName ); }
 
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 	mov	rdx, QWORD PTR OptName
 	mov	ecx, DWORD PTR OptValue
 	call	set_option_n_name
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 Set_n	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_m	PROC
 
 ; 433  : static void OPTQUAL Set_m( void ) { Options.model = OptValue; }
 
-	push	rdi
 	mov	eax, DWORD PTR OptValue
 	mov	DWORD PTR Options+176, eax
-	pop	rdi
 	ret	0
 Set_m	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 p$ = 0
@@ -2680,12 +2407,7 @@ Set_True PROC
 
 ; 428  : {
 
-	push	rdi
-	sub	rsp, 16
-	mov	rdi, rsp
-	mov	ecx, 4
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 24
 
 ; 429  :     char *p = ((char *)&Options) + OptValue;
 
@@ -2702,19 +2424,14 @@ Set_True PROC
 
 ; 431  : }
 
-	add	rsp, 16
-	pop	rdi
+	add	rsp, 24
 	ret	0
 Set_True ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_Sa	PROC
-
-; 420  : {
-
-	push	rdi
 
 ; 421  :     Options.listif = TRUE;
 
@@ -2730,272 +2447,207 @@ Set_Sa	PROC
 
 ; 424  : }
 
-	pop	rdi
 	ret	0
 Set_Sa	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_G	PROC
 
 ; 416  : static void OPTQUAL Set_G( void ) { Options.langtype = OptValue; }
 
-	push	rdi
 	mov	eax, DWORD PTR OptValue
 	mov	DWORD PTR Options+172, eax
-	pop	rdi
 	ret	0
 Set_G	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_FPx	PROC
 
 ; 415  : static void OPTQUAL Set_FPx( void ) { Options.floating_point = OptValue; }
 
-	push	rdi
 	mov	eax, DWORD PTR OptValue
 	mov	DWORD PTR Options+4, eax
-	pop	rdi
 	ret	0
 Set_FPx	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_fp	PROC
 
 ; 414  : static void OPTQUAL Set_fp( void ) { Options.cpu &= ~P_FPU_MASK; Options.cpu = OptValue; }
 
-	push	rdi
 	mov	eax, DWORD PTR Options+180
 	and	eax, -8
 	mov	DWORD PTR Options+180, eax
 	mov	eax, DWORD PTR OptValue
 	mov	DWORD PTR Options+180, eax
-	pop	rdi
 	ret	0
 Set_fp	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_Fo	PROC
 
 ; 412  : static void OPTQUAL Set_Fo( void ) { get_fname( OPTN_OBJ_FN, GetAFileName() ); }
 
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 	mov	rdx, QWORD PTR OptName
 	mov	ecx, 1
 	call	get_fname
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 Set_Fo	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_Fl	PROC
 
 ; 411  : static void OPTQUAL Set_Fl( void ) { get_fname( OPTN_LST_FN, GetAFileName() ); Options.write_listing = TRUE;}
 
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 	mov	rdx, QWORD PTR OptName
 	mov	ecx, 2
 	call	get_fname
 	mov	BYTE PTR Options+137, 1
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 Set_Fl	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_Fw	PROC
 
 ; 410  : static void OPTQUAL Set_Fw( void ) { get_fname( OPTN_ERR_FN, GetAFileName() ); }
 
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 	mov	rdx, QWORD PTR OptName
 	mov	ecx, 3
 	call	get_fname
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 Set_Fw	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_Fd	PROC
 
 ; 408  : static void OPTQUAL Set_Fd( void ) { get_fname( OPTN_LNKDEF_FN, GetAFileName() ); Options.write_impdef = TRUE;}
 
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 	mov	rdx, QWORD PTR OptName
 	mov	ecx, 4
 	call	get_fname
 	mov	BYTE PTR Options+138, 1
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 Set_Fd	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_EP	PROC
 
 ; 405  : static void OPTQUAL Set_EP( void ) { Options.preprocessor_stdout = TRUE; Set_q(); }
 
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 	mov	BYTE PTR Options+141, 1
 	call	Set_q
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 Set_EP	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_q	PROC
 
 ; 404  : static void OPTQUAL Set_q( void )      { Set_nologo(); Options.quiet = TRUE; }
 
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 	call	Set_nologo
 	mov	BYTE PTR Options, 1
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 Set_q	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_nologo PROC
 
 ; 403  : static void OPTQUAL Set_nologo( void ) { banner_printed = TRUE; }
 
-	push	rdi
 	mov	BYTE PTR banner_printed, 1
-	pop	rdi
 	ret	0
 Set_nologo ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_e	PROC
 
 ; 401  : static void OPTQUAL Set_e( void ) { Options.error_limit = OptValue; }
 
-	push	rdi
 	mov	eax, DWORD PTR OptValue
 	mov	DWORD PTR Options+8, eax
-	pop	rdi
 	ret	0
 Set_e	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_I	PROC
 
 ; 399  : static void OPTQUAL Set_I( void )  { queue_item( OPTQ_INCPATH,  GetAFileName() ); }
 
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 	mov	rdx, QWORD PTR OptName
 	mov	ecx, 2
 	call	queue_item
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 Set_I	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_Fi	PROC
 
 ; 398  : static void OPTQUAL Set_Fi( void ) { queue_item( OPTQ_FINCLUDE, GetAFileName() ); }
 
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 	mov	rdx, QWORD PTR OptName
 	xor	ecx, ecx
 	call	queue_item
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 Set_Fi	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_D	PROC
 
 ; 397  : static void OPTQUAL Set_D( void )  { queue_item( OPTQ_MACRO,    GetAFileName() ); }
 
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 	mov	rdx, QWORD PTR OptName
 	mov	ecx, 1
 	call	queue_item
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 Set_D	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 power$ = 32
@@ -3005,12 +2657,7 @@ Set_Zp	PROC
 
 ; 386  : {
 
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 56					; 00000038H
 
 ; 387  :     uint_8 power;
 ; 388  :     for ( power = 0; (1 << power) <= MAX_STRUCT_ALIGN; power++ )
@@ -3059,7 +2706,7 @@ $LN3@Set_Zp:
 
 ; 393  :     EmitWarn( 1, INVALID_CMDLINE_VALUE, "Zp" );
 
-	lea	r8, OFFSET FLAT:$SG11190
+	lea	r8, OFFSET FLAT:$SG11228
 	mov	edx, 195				; 000000c3H
 	mov	ecx, 1
 	call	EmitWarn
@@ -3068,24 +2715,18 @@ $LN1@Set_Zp:
 ; 394  :     return;
 ; 395  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 Set_Zp	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_Zi	PROC
 
 ; 374  : {
 
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 
 ; 375  :     Set_Zd();
 
@@ -3111,7 +2752,7 @@ $LN2@Set_Zi:
 ; 380  :     else
 ; 381  :         EmitWarn( 1, INVALID_CMDLINE_VALUE, "Zi" );
 
-	lea	r8, OFFSET FLAT:$SG11181
+	lea	r8, OFFSET FLAT:$SG11219
 	mov	edx, 195				; 000000c3H
 	mov	ecx, 1
 	call	EmitWarn
@@ -3119,95 +2760,82 @@ $LN3@Set_Zi:
 
 ; 382  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 Set_Zi	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_Zd	PROC
 
 ; 372  : static void OPTQUAL Set_Zd( void ) { Options.line_numbers = TRUE; }
 
-	push	rdi
 	mov	BYTE PTR Options+1, 1
-	pop	rdi
 	ret	0
 Set_Zd	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_Cx	PROC
 
 ; 370  : static void OPTQUAL Set_Cx( void ) { Options.case_sensitive = FALSE;  Options.convert_uppercase = FALSE; }
 
-	push	rdi
 	mov	BYTE PTR Options+139, 0
 	mov	BYTE PTR Options+140, 0
-	pop	rdi
 	ret	0
 Set_Cx	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_Cu	PROC
 
 ; 369  : static void OPTQUAL Set_Cu( void ) { Options.case_sensitive = FALSE;  Options.convert_uppercase = TRUE;  }
 
-	push	rdi
 	mov	BYTE PTR Options+139, 0
 	mov	BYTE PTR Options+140, 1
-	pop	rdi
 	ret	0
 Set_Cu	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_Cp	PROC
 
 ; 368  : static void OPTQUAL Set_Cp( void ) { Options.case_sensitive = TRUE;   Options.convert_uppercase = FALSE; }
 
-	push	rdi
 	mov	BYTE PTR Options+139, 1
 	mov	BYTE PTR Options+140, 0
-	pop	rdi
 	ret	0
 Set_Cp	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_ce	PROC
 
 ; 365  : static void OPTQUAL Set_ce( void ) { rspidx = 1 / rspidx; }
 
-	push	rdi
 	mov	eax, 1
 	cdq
 	idiv	DWORD PTR rspidx
 	mov	DWORD PTR rspidx, eax
-	pop	rdi
 	ret	0
 Set_ce	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 Set_c	PROC
 
 ; 362  : static void OPTQUAL Set_c( void ) { }
 
-	push	rdi
-	pop	rdi
 	ret	0
 Set_c	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 idx$ = 48
@@ -3218,13 +2846,7 @@ set_option_n_name PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 344  :     if ( *name != '.' && !is_valid_id_char( *name ) ) {
 
@@ -3235,7 +2857,7 @@ set_option_n_name PROC
 	mov	rax, QWORD PTR name$[rsp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isalnum
+	call	isalnum
 	test	eax, eax
 	jne	SHORT $LN2@set_option
 	mov	rax, QWORD PTR name$[rsp]
@@ -3305,33 +2927,26 @@ $LN1@set_option:
 
 ; 354  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 set_option_n_name ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
-pName$ = 32
-name$ = 64
-$T4 = 352
-__$ArrayPad$ = 360
-type$ = 384
-token$ = 392
+$T1 = 32
+pName$ = 40
+name$ = 48
+__$ArrayPad$ = 320
+type$ = 352
+token$ = 360
 get_fname PROC
 
 ; 287  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 368				; 00000170H
-	mov	rdi, rsp
-	mov	ecx, 92					; 0000005cH
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+384]
+	sub	rsp, 344				; 00000158H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -3343,7 +2958,7 @@ get_fname PROC
 
 	mov	r8, QWORD PTR token$[rsp]
 	mov	edx, DWORD PTR type$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11141
+	lea	rcx, OFFSET FLAT:$SG11179
 	call	DoDebugMsg
 
 ; 292  :     //_splitpath( token, drive, dir, fname, ext );
@@ -3368,7 +2983,7 @@ get_fname PROC
 
 	mov	r8, QWORD PTR token$[rsp]
 	mov	edx, DWORD PTR type$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11143
+	lea	rcx, OFFSET FLAT:$SG11181
 	call	DoDebugMsg
 
 ; 300  :         /* v2.10: ensure type is < NUM_FILE_TYPES */
@@ -3425,14 +3040,14 @@ $LN2@get_fname:
 
 	mov	eax, 1
 	imul	rax, rax, 0
-	mov	QWORD PTR $T4[rsp], rax
-	cmp	QWORD PTR $T4[rsp], 260			; 00000104H
+	mov	QWORD PTR $T1[rsp], rax
+	cmp	QWORD PTR $T1[rsp], 260			; 00000104H
 	jae	SHORT $LN8@get_fname
 	jmp	SHORT $LN9@get_fname
 $LN8@get_fname:
 	call	__report_rangecheckfailure
 $LN9@get_fname:
-	mov	rax, QWORD PTR $T4[rsp]
+	mov	rax, QWORD PTR $T1[rsp]
 	mov	BYTE PTR name$[rsp+rax], 0
 
 ; 312  :     if ( pName == token && type < NUM_FILE_TYPES && DefaultDir[type] ) {
@@ -3449,7 +3064,7 @@ $LN9@get_fname:
 
 ; 313  :         DebugMsg(("get_fname: default drive+dir used: %s\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11147
+	lea	rcx, OFFSET FLAT:$SG11185
 	call	DoDebugMsg
 
 ; 314  :         //_splitpath( DefaultDir[type], drive, dir, NULL, NULL );
@@ -3518,22 +3133,18 @@ $LN7@get_fname:
 
 ; 333  : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:get_fname$rtcFrameData
-	call	_RTC_CheckStackVars
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 368				; 00000170H
-	pop	rdi
+	add	rsp, 344				; 00000158H
 	ret	0
 get_fname ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
-p$ = 32
-q$ = 40
+q$ = 32
+p$ = 40
 i$ = 64
 string$ = 72
 queue_item PROC
@@ -3542,13 +3153,7 @@ queue_item PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 264  :     struct qitem *p;
 ; 265  :     struct qitem *q;
@@ -3557,7 +3162,7 @@ queue_item PROC
 
 	mov	r8, QWORD PTR string$[rsp]
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11128
+	lea	rcx, OFFSET FLAT:$SG11166
 	call	DoDebugMsg
 
 ; 268  :     p = MemAlloc( sizeof(struct qitem) + strlen( string ) );
@@ -3630,12 +3235,11 @@ $LN6@queue_item:
 ; 277  :     return;
 ; 278  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 queue_item ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 value$ = 48
@@ -3646,13 +3250,7 @@ SetCpuCmdline PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 228  : 
 ; 229  :     Options.cpu &= ~(P_CPU_MASK | P_EXT_MASK | P_PM);
@@ -3738,33 +3336,27 @@ $LN3@SetCpuCmdl:
 
 ; 255  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 SetCpuCmdline ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
 i$ = 32
-p$1 = 40
-q$2 = 48
+q$1 = 40
+p$2 = 48
 CmdlineFini PROC
 
 ; 1064 : {
 
 $LN17:
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 72					; 00000048H
 
 ; 1065 :     int i;
 ; 1066 :     DebugMsg(("CmdLineFini enter\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11636
+	lea	rcx, OFFSET FLAT:$SG11674
 	call	DoDebugMsg
 
 ; 1067 :     for ( i = 0; i < NUM_FILE_TYPES; i++ ) {
@@ -3863,26 +3455,26 @@ $LN10@CmdlineFin:
 	movsxd	rax, DWORD PTR i$[rsp]
 	lea	rcx, OFFSET FLAT:Options+104
 	mov	rax, QWORD PTR [rcx+rax*8]
-	mov	QWORD PTR q$2[rsp], rax
+	mov	QWORD PTR q$1[rsp], rax
 $LN11@CmdlineFin:
-	cmp	QWORD PTR q$2[rsp], 0
+	cmp	QWORD PTR q$1[rsp], 0
 	je	SHORT $LN12@CmdlineFin
 
 ; 1082 :             p = q->next;
 
-	mov	rax, QWORD PTR q$2[rsp]
+	mov	rax, QWORD PTR q$1[rsp]
 	mov	rax, QWORD PTR [rax]
-	mov	QWORD PTR p$1[rsp], rax
+	mov	QWORD PTR p$2[rsp], rax
 
 ; 1083 :             MemFree( q );
 
-	mov	rcx, QWORD PTR q$2[rsp]
+	mov	rcx, QWORD PTR q$1[rsp]
 	call	MemFree
 
 ; 1084 :             q = p;
 
-	mov	rax, QWORD PTR p$1[rsp]
-	mov	QWORD PTR q$2[rsp], rax
+	mov	rax, QWORD PTR p$2[rsp]
+	mov	QWORD PTR q$1[rsp], rax
 
 ; 1085 :         }
 
@@ -3902,29 +3494,28 @@ $LN9@CmdlineFin:
 
 ; 1088 :     DebugMsg(("CmdLineFini exit\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11639
+	lea	rcx, OFFSET FLAT:$SG11677
 	call	DoDebugMsg
 
 ; 1089 :     return;
 ; 1090 : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 CmdlineFini ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cmdline.c
 _TEXT	SEGMENT
-i$ = 32
-str$ = 40
+str$ = 32
+i$ = 40
+tv79 = 44
+len$1 = 48
+tv175 = 56
 paramfile$ = 64
-len$4 = 340
-tv79 = 352
-tv175 = 360
-__$ArrayPad$ = 368
-cmdline$ = 400
-pCntArgs$ = 408
+__$ArrayPad$ = 336
+cmdline$ = 368
+pCntArgs$ = 376
 ParseCmdline PROC
 
 ; 967  : {
@@ -3932,13 +3523,7 @@ ParseCmdline PROC
 $LN29:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 384				; 00000180H
-	mov	rdi, rsp
-	mov	ecx, 96					; 00000060H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+400]
+	sub	rsp, 360				; 00000168H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -4095,7 +3680,7 @@ $LN14@ParseCmdli:
 ; 1003 :                 *cmdline = "";
 
 	mov	rax, QWORD PTR cmdline$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11603
+	lea	rcx, OFFSET FLAT:$SG11641
 	mov	QWORD PTR [rax], rcx
 
 ; 1004 :                 return( NULL );
@@ -4177,7 +3762,7 @@ $LN17@ParseCmdli:
 ; 1021 :                 str = getenv( paramfile );
 
 	lea	rcx, QWORD PTR paramfile$[rsp]
-	call	QWORD PTR __imp_getenv
+	call	getenv
 	mov	QWORD PTR str$[rsp], rax
 $LN18@ParseCmdli:
 
@@ -4265,7 +3850,7 @@ $LN22@ParseCmdli:
 
 	mov	rcx, QWORD PTR str$[rsp]
 	call	strlen
-	mov	DWORD PTR len$4[rsp], eax
+	mov	DWORD PTR len$1[rsp], eax
 
 ; 1043 :                 get_fname( OPTN_ASM_FN, str );
 
@@ -4275,7 +3860,7 @@ $LN22@ParseCmdli:
 
 ; 1044 :                 str += len;
 
-	movsxd	rax, DWORD PTR len$4[rsp]
+	movsxd	rax, DWORD PTR len$1[rsp]
 	mov	rcx, QWORD PTR str$[rsp]
 	add	rcx, rax
 	mov	rax, rcx
@@ -4296,7 +3881,7 @@ $LN23@ParseCmdli:
 	mov	QWORD PTR tv175[rsp], rax
 	jmp	SHORT $LN26@ParseCmdli
 $LN25@ParseCmdli:
-	lea	rax, OFFSET FLAT:$SG11612
+	lea	rax, OFFSET FLAT:$SG11650
 	mov	QWORD PTR tv175[rsp], rax
 $LN26@ParseCmdli:
 	mov	eax, 8
@@ -4304,7 +3889,7 @@ $LN26@ParseCmdli:
 	lea	rcx, OFFSET FLAT:Options+32
 	mov	r8, QWORD PTR tv175[rsp]
 	mov	rdx, QWORD PTR [rcx+rax]
-	lea	rcx, OFFSET FLAT:$SG11613
+	lea	rcx, OFFSET FLAT:$SG11651
 	call	DoDebugMsg
 
 ; 1052 :             (*pCntArgs)++;
@@ -4349,18 +3934,12 @@ $LN1@ParseCmdli:
 
 ; 1059 : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:ParseCmdline$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 384				; 00000180H
-	pop	rdi
+	add	rsp, 360				; 00000168H
 	ret	0
-	npad	3
+	npad	2
 $LN28@ParseCmdli:
 	DD	$LN12@ParseCmdli
 	DD	$LN11@ParseCmdli
@@ -4435,13 +4014,13 @@ $LN27@ParseCmdli:
 	DB	3
 ParseCmdline ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT printf
 _TEXT	SEGMENT
 _Result$ = 32
-_ArgList$ = 56
-_Format$ = 96
+_ArgList$ = 40
+_Format$ = 64
 printf	PROC						; COMDAT
 
 ; 950  : {
@@ -4451,13 +4030,7 @@ $LN3:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+32], r9
-	push	rdi
-	sub	rsp, 80					; 00000050H
-	mov	rdi, rsp
-	mov	ecx, 20
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+96]
+	sub	rsp, 56					; 00000038H
 
 ; 951  :     int _Result;
 ; 952  :     va_list _ArgList;
@@ -4469,7 +4042,7 @@ $LN3:
 ; 954  :     _Result = _vfprintf_l(stdout, _Format, NULL, _ArgList);
 
 	mov	ecx, 1
-	call	QWORD PTR __imp___acrt_iob_func
+	call	__acrt_iob_func
 	mov	r9, QWORD PTR _ArgList$[rsp]
 	xor	r8d, r8d
 	mov	rdx, QWORD PTR _Format$[rsp]
@@ -4487,17 +4060,11 @@ $LN3:
 
 ; 957  : }
 
-	mov	edi, eax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:printf$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	eax, edi
-	add	rsp, 80					; 00000050H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 printf	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT _vfprintf_l
 _TEXT	SEGMENT
@@ -4514,13 +4081,7 @@ $LN3:
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 639  :     return __stdio_common_vfprintf(_CRT_INTERNAL_LOCAL_PRINTF_OPTIONS, _Stream, _Format, _Locale, _ArgList);
 
@@ -4531,25 +4092,19 @@ $LN3:
 	mov	r8, QWORD PTR _Format$[rsp]
 	mov	rdx, QWORD PTR _Stream$[rsp]
 	mov	rcx, QWORD PTR [rax]
-	call	QWORD PTR __imp___stdio_common_vfprintf
+	call	__stdio_common_vfprintf
 
 ; 640  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 _vfprintf_l ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\corecrt_stdio_config.h
 ;	COMDAT __local_stdio_printf_options
 _TEXT	SEGMENT
 __local_stdio_printf_options PROC			; COMDAT
-
-; 73   : {
-
-$LN3:
-	push	rdi
 
 ; 74   :     static unsigned __int64 _OptionsStorage;
 ; 75   :     return &_OptionsStorage;
@@ -4558,7 +4113,6 @@ $LN3:
 
 ; 76   : }
 
-	pop	rdi
 	ret	0
 __local_stdio_printf_options ENDP
 _TEXT	ENDS

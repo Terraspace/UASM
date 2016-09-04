@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 _DATA	SEGMENT
@@ -144,147 +144,77 @@ tab_minus_exp DD 0cccccccdH
 	ORG $+2
 CONST	ENDS
 PUBLIC	strtotb
-EXTRN	__imp_isspace:PROC
+EXTRN	isspace:PROC
 EXTRN	memcpy:PROC
 EXTRN	memset:PROC
-EXTRN	_RTC_CheckStackVars:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
 EXTRN	__GSHandlerCheck:PROC
 EXTRN	__security_check_cookie:PROC
 EXTRN	__security_cookie:QWORD
 pdata	SEGMENT
 $pdata$strtotb DD imagerel $LN40
-	DD	imagerel $LN40+1135
+	DD	imagerel $LN40+1052
 	DD	imagerel $unwind$strtotb
-$pdata$cmp_u96_max DD imagerel cmp_u96_max
-	DD	imagerel cmp_u96_max+214
-	DD	imagerel $unwind$cmp_u96_max
 $pdata$add_check_u96_overflow DD imagerel add_check_u96_overflow
-	DD	imagerel add_check_u96_overflow+167
+	DD	imagerel add_check_u96_overflow+145
 	DD	imagerel $unwind$add_check_u96_overflow
 $pdata$bitsize32 DD imagerel bitsize32
-	DD	imagerel bitsize32+87
+	DD	imagerel bitsize32+66
 	DD	imagerel $unwind$bitsize32
 $pdata$bitsize64 DD imagerel bitsize64
-	DD	imagerel bitsize64+105
+	DD	imagerel bitsize64+83
 	DD	imagerel $unwind$bitsize64
 $pdata$U96LD DD	imagerel U96LD
-	DD	imagerel U96LD+698
+	DD	imagerel U96LD+676
 	DD	imagerel $unwind$U96LD
 $pdata$normalize DD imagerel normalize
-	DD	imagerel normalize+688
+	DD	imagerel normalize+666
 	DD	imagerel $unwind$normalize
 $pdata$add192 DD imagerel add192
-	DD	imagerel add192+239
+	DD	imagerel add192+217
 	DD	imagerel $unwind$add192
 $pdata$multiply DD imagerel multiply
-	DD	imagerel multiply+1043
+	DD	imagerel multiply+927
 	DD	imagerel $unwind$multiply
 $pdata$TB_create DD imagerel TB_create
-	DD	imagerel TB_create+448
+	DD	imagerel TB_create+356
 	DD	imagerel $unwind$TB_create
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
 xdata	SEGMENT
-$unwind$strtotb DD 034019H
-	DD	0160117H
-	DD	07010H
+$unwind$strtotb DD 012219H
+	DD	0e213H
 	DD	imagerel __GSHandlerCheck
-	DD	0a8H
-$unwind$cmp_u96_max DD 010601H
-	DD	07006H
-$unwind$add_check_u96_overflow DD 022201H
-	DD	0700a520eH
-$unwind$bitsize32 DD 021c01H
-	DD	070051209H
-$unwind$bitsize64 DD 021e01H
-	DD	07006120aH
-$unwind$U96LD DD 022301H
-	DD	0700b720fH
-$unwind$normalize DD 021e01H
-	DD	07006720aH
-$unwind$add192 DD 022801H
-	DD	070101214H
-$unwind$multiply DD 023a19H
-	DD	07010d214H
+	DD	068H
+$unwind$add_check_u96_overflow DD 010d01H
+	DD	0620dH
+$unwind$bitsize32 DD 010801H
+	DD	02208H
+$unwind$bitsize64 DD 010901H
+	DD	02209H
+$unwind$U96LD DD 010e01H
+	DD	0820eH
+$unwind$normalize DD 010901H
+	DD	08209H
+$unwind$add192 DD 011301H
+	DD	02213H
+$unwind$multiply DD 012219H
+	DD	0a213H
 	DD	imagerel __GSHandlerCheck
-	DD	060H
-$unwind$TB_create DD 023919H
-	DD	0700fd213H
-	DD	imagerel __GSHandlerCheck
-	DD	060H
-xdata	ENDS
-CONST	SEGMENT
-strtotb$rtcName$0 DB 076H
-	DB	061H
-	DB	06cH
-	DB	075H
-	DB	065H
-	DB	00H
-	ORG $+2
-strtotb$rtcName$1 DB 076H
-	DB	061H
-	DB	06cH
-	DB	075H
-	DB	065H
-	DB	05fH
-	DB	074H
-	DB	06dH
-	DB	070H
-	DB	00H
-	ORG $+6
-strtotb$rtcFrameData DD 02H
-	DD	00H
-	DQ	FLAT:strtotb$rtcVarDesc
-multiply$rtcName$0 DB 072H
-	DB	031H
-	DB	00H
-	ORG $+5
-strtotb$rtcVarDesc DD 078H
-	DD	0cH
-	DQ	FLAT:strtotb$rtcName$1
 	DD	048H
-	DD	0cH
-	DQ	FLAT:strtotb$rtcName$0
-	ORG $+96
-multiply$rtcVarDesc DD 038H
-	DD	018H
-	DQ	FLAT:multiply$rtcName$0
-	ORG $+48
-multiply$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:multiply$rtcVarDesc
-TB_create$rtcName$0 DB 072H
-	DB	065H
-	DB	073H
-	DB	00H
-	ORG $+12
-TB_create$rtcVarDesc DD 038H
-	DD	010H
-	DQ	FLAT:TB_create$rtcName$0
-	ORG $+48
-TB_create$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:TB_create$rtcVarDesc
-CONST	ENDS
-; Function compile flags: /Odtp /RTCsu
+$unwind$TB_create DD 012119H
+	DD	0a212H
+	DD	imagerel __GSHandlerCheck
+	DD	040H
+xdata	ENDS
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\tbyte.c
 _TEXT	SEGMENT
-tabExp$ = 32
-i$ = 40
-res$ = 56
-__$ArrayPad$ = 96
-value$ = 128
-exponent$ = 136
-ld$ = 144
+i$ = 32
+tabExp$ = 40
+res$ = 48
+__$ArrayPad$ = 64
+value$ = 96
+exponent$ = 104
+ld$ = 112
 TB_create PROC
 
 ; 329  : {
@@ -292,13 +222,7 @@ TB_create PROC
 	mov	QWORD PTR [rsp+24], r8
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 112				; 00000070H
-	mov	rdi, rsp
-	mov	ecx, 28
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+128]
+	sub	rsp, 88					; 00000058H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -467,29 +391,23 @@ $LN10@TB_create:
 
 ; 363  : }
 
-	mov	edi, eax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:TB_create$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	eax, edi
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 112				; 00000070H
-	pop	rdi
+	add	rsp, 88					; 00000058H
 	ret	0
 TB_create ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\tbyte.c
 _TEXT	SEGMENT
 x1$ = 32
-r1$ = 56
-exp$ = 84
-__$ArrayPad$ = 96
-op1$ = 128
-op2$ = 136
-res$ = 144
+exp$ = 40
+r1$ = 48
+__$ArrayPad$ = 72
+op1$ = 96
+op2$ = 104
+res$ = 112
 multiply PROC
 
 ; 283  : {
@@ -497,13 +415,7 @@ multiply PROC
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 112				; 00000070H
-	mov	rdi, rsp
-	mov	ecx, 28
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+128]
+	sub	rsp, 88					; 00000058H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -808,24 +720,18 @@ $LN2@multiply:
 
 ; 322  : }
 
-	mov	edi, eax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:multiply$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	eax, edi
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 112				; 00000070H
-	pop	rdi
+	add	rsp, 88					; 00000058H
 	ret	0
 multiply ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\tbyte.c
 _TEXT	SEGMENT
-cy$ = 0
-i$ = 8
+i$ = 0
+cy$ = 8
 res$ = 32
 x$ = 40
 pos$ = 48
@@ -836,13 +742,7 @@ add192	PROC
 	mov	DWORD PTR [rsp+24], r8d
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 16
-	mov	rdi, rsp
-	mov	ecx, 4
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+32]
+	sub	rsp, 24
 
 ; 260  :     uint_64 cy;
 ; 261  :     int i;
@@ -947,17 +847,16 @@ $LN6@add192:
 
 ; 276  : }
 
-	add	rsp, 16
-	pop	rdi
+	add	rsp, 24
 	ret	0
 add192	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\tbyte.c
 _TEXT	SEGMENT
-shft$ = 32
-bs$ = 36
-bs1$ = 40
+bs$ = 32
+bs1$ = 36
+shft$ = 40
 tv161 = 48
 tv180 = 56
 res$ = 80
@@ -966,13 +865,7 @@ normalize PROC
 ; 222  : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 72					; 00000048H
 
 ; 223  :     int shft;
 ; 224  :     int bs;
@@ -1205,12 +1098,11 @@ $LN1@normalize:
 
 ; 253  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 normalize ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\tbyte.c
 _TEXT	SEGMENT
 bs$ = 32
@@ -1225,13 +1117,7 @@ U96LD	PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 72					; 00000048H
 
 ; 183  :     int bs;
 ; 184  :     int shft;
@@ -1481,12 +1367,11 @@ $LN5@U96LD:
 
 ; 215  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 U96LD	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\tbyte.c
 _TEXT	SEGMENT
 i$ = 0
@@ -1496,13 +1381,7 @@ bitsize64 PROC
 ; 168  : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 16
-	mov	rdi, rsp
-	mov	ecx, 4
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+32]
+	sub	rsp, 24
 
 ; 169  :     int i;
 ; 170  : 
@@ -1546,12 +1425,11 @@ $LN3@bitsize64:
 
 ; 176  : }
 
-	add	rsp, 16
-	pop	rdi
+	add	rsp, 24
 	ret	0
 bitsize64 ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\tbyte.c
 _TEXT	SEGMENT
 i$ = 0
@@ -1561,13 +1439,7 @@ bitsize32 PROC
 ; 154  : {
 
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 16
-	mov	rdi, rsp
-	mov	ecx, 4
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+32]
+	sub	rsp, 24
 
 ; 155  :     int i;
 ; 156  : 
@@ -1609,16 +1481,15 @@ $LN3@bitsize32:
 
 ; 162  : }
 
-	add	rsp, 16
-	pop	rdi
+	add	rsp, 24
 	ret	0
 bitsize32 ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\tbyte.c
 _TEXT	SEGMENT
-cy$ = 32
-i$ = 40
+i$ = 32
+cy$ = 40
 x$ = 64
 c$ = 72
 add_check_u96_overflow PROC
@@ -1627,13 +1498,7 @@ add_check_u96_overflow PROC
 
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 134  :     uint_64 cy;
 ; 135  :     int i;
@@ -1710,21 +1575,19 @@ $LN1@add_check_:
 ; 147  :     }
 ; 148  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 add_check_u96_overflow ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\tbyte.c
 _TEXT	SEGMENT
-x$ = 16
+x$ = 8
 cmp_u96_max PROC
 
 ; 110  : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
 
 ; 111  :     if( x->m32[2] > 0x19999999UL ) {
 
@@ -1833,28 +1696,27 @@ $LN1@cmp_u96_ma:
 ; 125  :     }
 ; 126  : }
 
-	pop	rdi
 	ret	0
 cmp_u96_max ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\tbyte.c
 _TEXT	SEGMENT
-sign$ = 32
-exp_sign$ = 36
+exp1$ = 32
+exponent_tmp$ = 36
 exp_value$ = 40
-overflow$ = 44
-exp1$ = 48
-exponent$ = 52
-exponent_tmp$ = 56
+sign$ = 44
+overflow$ = 48
+tv172 = 52
+tv70 = 56
+exp_sign$ = 60
+exponent$ = 64
 value$ = 72
-value_tmp$ = 120
-tv70 = 160
-tv172 = 164
-__$ArrayPad$ = 168
-p$ = 192
-ld$ = 200
-negative$ = 208
+value_tmp$ = 88
+__$ArrayPad$ = 104
+p$ = 128
+ld$ = 136
+negative$ = 144
 strtotb	PROC
 
 ; 370  : {
@@ -1863,13 +1725,7 @@ $LN40:
 	mov	BYTE PTR [rsp+24], r8b
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 176				; 000000b0H
-	mov	rdi, rsp
-	mov	ecx, 44					; 0000002cH
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+192]
+	sub	rsp, 120				; 00000078H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -1896,7 +1752,7 @@ $LN2@strtotb:
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isspace
+	call	isspace
 	test	eax, eax
 	je	SHORT $LN3@strtotb
 	mov	rax, QWORD PTR p$[rsp]
@@ -2352,16 +2208,10 @@ $LN1@strtotb:
 
 ; 468  : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:strtotb$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 176				; 000000b0H
-	pop	rdi
+	add	rsp, 120				; 00000078H
 	ret	0
 strtotb	ENDP
 _TEXT	ENDS

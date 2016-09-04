@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 _DATA	SEGMENT
@@ -12,124 +12,124 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG12414 DB	01H DUP (?)
-$SG12681 DB	01H DUP (?)
+$SG12452 DB	01H DUP (?)
+$SG12719 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	LastCodeBufSize:DWORD
 _DATA	ENDS
 CONST	SEGMENT
-SymDebParm DQ	FLAT:$SG12175
-	DQ	FLAT:$SG12176
-	DQ	FLAT:$SG12177
-	DQ	FLAT:$SG12178
+SymDebParm DQ	FLAT:$SG12213
+	DQ	FLAT:$SG12214
+	DQ	FLAT:$SG12215
+	DQ	FLAT:$SG12216
 CONST	ENDS
 _DATA	SEGMENT
-$SG12296 DB	'omf_OutSelect: data in code segment (%s), starting at %X'
+$SG12290 DB	'omf.c', 00H
+	ORG $+2
+$SG12303 DB	'omf.c', 00H
+	ORG $+2
+$SG12314 DB	'omf.c', 00H
+	ORG $+2
+$SG12334 DB	'omf_OutSelect: data in code segment (%s), starting at %X'
 	DB	0aH, 00H
-	ORG $+6
-$SG12299 DB	'omf_OutSelect: writing coment record about data in code:'
+	ORG $+2
+$SG12413 DB	'NULL', 00H
+	ORG $+7
+$SG12337 DB	'omf_OutSelect: writing coment record about data in code:'
 	DB	' start=%X curofs=%X', 0aH, 00H
 	ORG $+3
-$SG12362 DB	'omf_write_ledata enter, buffer=%p start ofs=%X, size=%X', 0aH
+$SG12400 DB	'omf_write_ledata enter, buffer=%p start ofs=%X, size=%X', 0aH
 	DB	00H
 	ORG $+3
-$SG12375 DB	'NULL', 00H
-	ORG $+3
-$SG12405 DB	01H, 00H
+$SG12443 DB	01H, 00H
 	ORG $+2
-$SG12376 DB	'omf_FlushCurrSeg() enter, CurrSeg=%s, currsrc=%u', 0aH, 00H
+$SG12414 DB	'omf_FlushCurrSeg() enter, CurrSeg=%s, currsrc=%u', 0aH, 00H
 	ORG $+2
-$SG12772 DB	01H, 'CV', 00H
-$SG12384 DB	'omf_write_theadr(%s) enter', 0aH, 00H
+$SG12810 DB	01H, 'CV', 00H
+$SG12422 DB	'omf_write_theadr(%s) enter', 0aH, 00H
 	ORG $+4
-$SG12385 DB	'omf_write_theadr() exit', 0aH, 00H
+$SG12423 DB	'omf_write_theadr() exit', 0aH, 00H
 	ORG $+3
-$SG12477 DB	'omf.c', 00H
+$SG12515 DB	'omf.c', 00H
 	ORG $+6
-$SG12408 DB	'omf_set_filepos: reset file pos to %X', 0aH, 00H
+$SG12446 DB	'omf_set_filepos: reset file pos to %X', 0aH, 00H
 	ORG $+1
-$SG12426 DB	'omf_write_lib() enter', 0aH, 00H
+$SG12464 DB	'omf_write_lib() enter', 0aH, 00H
 	ORG $+1
-$SG12427 DB	'omf_write_lib() exit', 0aH, 00H
+$SG12465 DB	'omf_write_lib() exit', 0aH, 00H
 	ORG $+2
-$SG12463 DB	'omf_write_grpdef enter', 0aH, 00H
-$SG12465 DB	'omf_write_grpdef exit', 0aH, 00H
+$SG12501 DB	'omf_write_grpdef enter', 0aH, 00H
+$SG12503 DB	'omf_write_grpdef exit', 0aH, 00H
 	ORG $+1
-$SG12488 DB	'omf_write_segdef enter', 0aH, 00H
-$SG12494 DB	'omf_write_segdef exit', 0aH, 00H
-	ORG $+1
-$SG12492 DB	'omf_write_segdef(%s): len=%X use32=%u align=%u comb=%u s'
+$SG12526 DB	'omf_write_segdef enter', 0aH, 00H
+$SG12530 DB	'omf_write_segdef(%s): len=%X use32=%u align=%u comb=%u s'
 	DB	'eg_lname=%u class_lname=%u ovl_lname=%u', 0aH, 00H
 	ORG $+3
-$SG12551 DB	'omf.c', 00H
+$SG12589 DB	'omf.c', 00H
 	ORG $+6
-$SG12517 DB	'omf_write_lnames() enter', 0aH, 00H
+$SG12532 DB	'omf_write_segdef exit', 0aH, 00H
+	ORG $+1
+$SG12555 DB	'omf_write_lnames() enter', 0aH, 00H
 	ORG $+6
-$SG12523 DB	'omf_write_lnames: %u=%s', 0aH, 00H
+$SG12561 DB	'omf_write_lnames: %u=%s', 0aH, 00H
 	ORG $+3
-$SG12554 DB	'omf.c', 00H
+$SG12592 DB	'omf.c', 00H
 	ORG $+6
-$SG12527 DB	'omf_write_lnames() exit, items=%u', 0aH, 00H
+$SG12565 DB	'omf_write_lnames() exit, items=%u', 0aH, 00H
 	ORG $+5
-$SG12581 DB	'omf_write_extdef enter', 0aH, 00H
-$SG12582 DB	'omf_write_extdef: %s', 0aH, 00H
+$SG12619 DB	'omf_write_extdef enter', 0aH, 00H
+$SG12620 DB	'omf_write_extdef: %s', 0aH, 00H
 	ORG $+2
-$SG12586 DB	'omf_write_extdef: write record, names=%u, size=%u, MAX=%'
+$SG12624 DB	'omf_write_extdef: write record, names=%u, size=%u, MAX=%'
 	DB	'u', 0aH, 00H
 	ORG $+5
-$SG12589 DB	'omf_write_extdef exit, index=%u', 0aH, 00H
+$SG12627 DB	'omf_write_extdef exit, index=%u', 0aH, 00H
 	ORG $+3
-$SG12645 DB	'omf.c', 00H
+$SG12683 DB	'omf.c', 00H
 	ORG $+6
-$SG12642 DB	'omf_write_comdef enter', 0aH, 00H
-$SG12650 DB	'omf_write_comdef: numsize=%u, length=%u, varsize=%u', 0aH
-	DB	00H
-	ORG $+3
-$SG12646 DB	'omf_write_comdef: %s, size=%u, sym.total_size=%u, sym.to'
+$SG12680 DB	'omf_write_comdef enter', 0aH, 00H
+$SG12684 DB	'omf_write_comdef: %s, size=%u, sym.total_size=%u, sym.to'
 	DB	'tal_length=%u, sym.isfar=%u', 0aH, 00H
 	ORG $+3
-$SG12651 DB	'omf_write_comdef: numsize=%u, value=%u', 0aH, 00H
-$SG12654 DB	'omf_write_comdef exit', 0aH, 00H
-	ORG $+1
-$SG12661 DB	'GetFileTimeStamp(%s): _stat() did return 0', 0aH, 00H
-	ORG $+4
-$SG12678 DB	'omf_write_autodep() enter', 0aH, 00H
-	ORG $+5
-$SG12680 DB	'omf_write_autodep(): write record: file=%s, time=%X', 0aH
+$SG12688 DB	'omf_write_comdef: numsize=%u, length=%u, varsize=%u', 0aH
 	DB	00H
 	ORG $+3
-$SG12682 DB	'omf_write_autodep() exit', 0aH, 00H
-	ORG $+6
-$SG12724 DB	'omf_write_pub enter', 0aH, 00H
-	ORG $+3
-$SG12738 DB	'omf_write_pub exit', 0aH, 00H
+$SG12689 DB	'omf_write_comdef: numsize=%u, value=%u', 0aH, 00H
+$SG12692 DB	'omf_write_comdef exit', 0aH, 00H
+	ORG $+1
+$SG12699 DB	'GetFileTimeStamp(%s): _stat() did return 0', 0aH, 00H
 	ORG $+4
-$SG12748 DB	'omf_write_modend( fixup=%p, displ=%X)', 0aH, 00H
-	ORG $+1
-$SG12803 DB	'omf_init enter', 0aH, 00H
-$SG12175 DB	'$$SYMBOLS', 00H
-	ORG $+2
-$SG12176 DB	'DEBSYM', 00H
+$SG12716 DB	'omf_write_autodep() enter', 0aH, 00H
 	ORG $+5
-$SG12177 DB	'$$TYPES', 00H
-$SG12178 DB	'DEBTYP', 00H
-	ORG $+1
-$SG12187 DB	'omf_InitRec(%p, %X)', 0aH, 00H
+$SG12718 DB	'omf_write_autodep(): write record: file=%s, time=%X', 0aH
+	DB	00H
 	ORG $+3
-$SG12203 DB	'omf.c', 00H
+$SG12720 DB	'omf_write_autodep() exit', 0aH, 00H
+	ORG $+6
+$SG12762 DB	'omf_write_pub enter', 0aH, 00H
+	ORG $+3
+$SG12776 DB	'omf_write_pub exit', 0aH, 00H
+	ORG $+4
+$SG12786 DB	'omf_write_modend( fixup=%p, displ=%X)', 0aH, 00H
+	ORG $+1
+$SG12841 DB	'omf_init enter', 0aH, 00H
+$SG12213 DB	'$$SYMBOLS', 00H
 	ORG $+2
-$SG12216 DB	'omf.c', 00H
+$SG12214 DB	'DEBSYM', 00H
+	ORG $+5
+$SG12215 DB	'$$TYPES', 00H
+$SG12216 DB	'DEBTYP', 00H
+	ORG $+1
+$SG12225 DB	'omf_InitRec(%p, %X)', 0aH, 00H
+	ORG $+3
+$SG12241 DB	'omf.c', 00H
 	ORG $+2
-$SG12229 DB	'omf.c', 00H
+$SG12254 DB	'omf.c', 00H
 	ORG $+2
-$SG12239 DB	'omf.c', 00H
+$SG12267 DB	'omf.c', 00H
 	ORG $+2
-$SG12252 DB	'omf.c', 00H
-	ORG $+2
-$SG12265 DB	'omf.c', 00H
-	ORG $+2
-$SG12276 DB	'omf.c', 00H
+$SG12277 DB	'omf.c', 00H
 _DATA	ENDS
 PUBLIC	omf_init
 PUBLIC	omf_set_filepos
@@ -138,15 +138,15 @@ PUBLIC	omf_FlushCurrSeg
 PUBLIC	omf_check_flush
 PUBLIC	omf_GetGrpIdx
 EXTRN	__report_rangecheckfailure:PROC
-EXTRN	__imp__localtime64:PROC
-EXTRN	__imp__stat64i32:PROC
-EXTRN	__imp__fileno:PROC
-EXTRN	__imp_fseek:PROC
-EXTRN	__imp_ftell:PROC
+EXTRN	_localtime64:PROC
+EXTRN	_stat64i32:PROC
+EXTRN	_fileno:PROC
+EXTRN	fseek:PROC
+EXTRN	ftell:PROC
 EXTRN	memcpy:PROC
 EXTRN	strcpy:PROC
 EXTRN	strlen:PROC
-EXTRN	__imp__strupr:PROC
+EXTRN	_strupr:PROC
 EXTRN	DoDebugMsg:PROC
 EXTRN	DoDebugMsg1:PROC
 EXTRN	EmitWarn:PROC
@@ -163,13 +163,9 @@ EXTRN	OmfFixGenFixModend:PROC
 EXTRN	InternalError:PROC
 EXTRN	get_curr_srcfile:PROC
 EXTRN	GetFName:PROC
-EXTRN	__imp__chsize:PROC
+EXTRN	_chsize:PROC
 EXTRN	cv_write_debug_tables:PROC
 EXTRN	SortSegments:PROC
-EXTRN	_RTC_CheckStackVars:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
-EXTRN	_RTC_UninitUse:PROC
 EXTRN	__GSHandlerCheck:PROC
 EXTRN	__security_check_cookie:PROC
 EXTRN	Options:BYTE
@@ -198,675 +194,259 @@ SymDebSeg DQ	02H DUP (?)
 _BSS	ENDS
 pdata	SEGMENT
 $pdata$localtime DD imagerel localtime
-	DD	imagerel localtime+47
+	DD	imagerel localtime+24
 	DD	imagerel $unwind$localtime
 $pdata$omf_init DD imagerel $LN3
-	DD	imagerel $LN3+160
+	DD	imagerel $LN3+138
 	DD	imagerel $unwind$omf_init
 $pdata$omf_set_filepos DD imagerel $LN3
-	DD	imagerel $LN3+80
+	DD	imagerel $LN3+61
 	DD	imagerel $unwind$omf_set_filepos
 $pdata$omf_OutSelect DD imagerel $LN12
-	DD	imagerel $LN12+559
+	DD	imagerel $LN12+507
 	DD	imagerel $unwind$omf_OutSelect
 $pdata$omf_FlushCurrSeg DD imagerel $LN6
-	DD	imagerel $LN6+136
+	DD	imagerel $LN6+118
 	DD	imagerel $unwind$omf_FlushCurrSeg
 $pdata$omf_check_flush DD imagerel $LN13
-	DD	imagerel $LN13+294
+	DD	imagerel $LN13+272
 	DD	imagerel $unwind$omf_check_flush
 $pdata$omf_InitRec DD imagerel omf_InitRec
-	DD	imagerel omf_InitRec+123
+	DD	imagerel omf_InitRec+101
 	DD	imagerel $unwind$omf_InitRec
 $pdata$timet2dostime DD imagerel timet2dostime
-	DD	imagerel timet2dostime+172
+	DD	imagerel timet2dostime+129
 	DD	imagerel $unwind$timet2dostime
 $pdata$Put8 DD	imagerel Put8
-	DD	imagerel Put8+134
+	DD	imagerel Put8+112
 	DD	imagerel $unwind$Put8
 $pdata$Put16 DD	imagerel Put16
-	DD	imagerel Put16+138
+	DD	imagerel Put16+116
 	DD	imagerel $unwind$Put16
 $pdata$Put32 DD	imagerel Put32
-	DD	imagerel Put32+135
+	DD	imagerel Put32+113
 	DD	imagerel $unwind$Put32
 $pdata$PutIndex DD imagerel PutIndex
-	DD	imagerel PutIndex+204
+	DD	imagerel PutIndex+182
 	DD	imagerel $unwind$PutIndex
 $pdata$PutData DD imagerel PutData
-	DD	imagerel PutData+153
+	DD	imagerel PutData+131
 	DD	imagerel $unwind$PutData
 $pdata$PutName DD imagerel PutName
-	DD	imagerel PutName+160
+	DD	imagerel PutName+138
 	DD	imagerel $unwind$PutName
 $pdata$AttachData DD imagerel AttachData
-	DD	imagerel AttachData+114
+	DD	imagerel AttachData+92
 	DD	imagerel $unwind$AttachData
 $pdata$omf_GetGrpIdx DD imagerel $LN5
-	DD	imagerel $LN5+71
+	DD	imagerel $LN5+49
 	DD	imagerel $unwind$omf_GetGrpIdx
 $pdata$omf_write_linnum DD imagerel omf_write_linnum
-	DD	imagerel omf_write_linnum+420
+	DD	imagerel omf_write_linnum+371
 	DD	imagerel $unwind$omf_write_linnum
 $pdata$omf_write_fixupp DD imagerel omf_write_fixupp
-	DD	imagerel omf_write_fixupp+465
+	DD	imagerel omf_write_fixupp+398
 	DD	imagerel $unwind$omf_write_fixupp
 $pdata$get_omfalign DD imagerel get_omfalign
-	DD	imagerel get_omfalign+143
+	DD	imagerel get_omfalign+121
 	DD	imagerel $unwind$get_omfalign
 $pdata$omf_write_ledata DD imagerel omf_write_ledata
-	DD	imagerel omf_write_ledata+886
+	DD	imagerel omf_write_ledata+840
 	DD	imagerel $unwind$omf_write_ledata
 $pdata$omf_write_theadr DD imagerel omf_write_theadr
-	DD	imagerel omf_write_theadr+212
+	DD	imagerel omf_write_theadr+157
 	DD	imagerel $unwind$omf_write_theadr
 $pdata$omf_end_of_pass1 DD imagerel omf_end_of_pass1
-	DD	imagerel omf_end_of_pass1+131
+	DD	imagerel omf_end_of_pass1+92
 	DD	imagerel $unwind$omf_end_of_pass1
 $pdata$omf_write_dosseg DD imagerel omf_write_dosseg
-	DD	imagerel omf_write_dosseg+128
+	DD	imagerel omf_write_dosseg+89
 	DD	imagerel $unwind$omf_write_dosseg
 $pdata$omf_write_lib DD imagerel omf_write_lib
-	DD	imagerel omf_write_lib+227
+	DD	imagerel omf_write_lib+182
 	DD	imagerel $unwind$omf_write_lib
 $pdata$omf_write_export DD imagerel omf_write_export
-	DD	imagerel omf_write_export+523
+	DD	imagerel omf_write_export+456
 	DD	imagerel $unwind$omf_write_export
 $pdata$omf_write_grpdef DD imagerel omf_write_grpdef
-	DD	imagerel omf_write_grpdef+398
+	DD	imagerel omf_write_grpdef+353
 	DD	imagerel $unwind$omf_write_grpdef
 $pdata$omf_write_segdef DD imagerel omf_write_segdef
-	DD	imagerel omf_write_segdef+807
+	DD	imagerel omf_write_segdef+744
 	DD	imagerel $unwind$omf_write_segdef
 $pdata$omf_write_lnames DD imagerel omf_write_lnames
-	DD	imagerel omf_write_lnames+643
+	DD	imagerel omf_write_lnames+591
 	DD	imagerel $unwind$omf_write_lnames
 $pdata$GetExt DD imagerel GetExt
-	DD	imagerel GetExt+541
+	DD	imagerel GetExt+519
 	DD	imagerel $unwind$GetExt
 $pdata$omf_write_extdef DD imagerel omf_write_extdef
-	DD	imagerel omf_write_extdef+934
+	DD	imagerel omf_write_extdef+864
 	DD	imagerel $unwind$omf_write_extdef
-$pdata$get_size_of_comdef_number DD imagerel get_size_of_comdef_number
-	DD	imagerel get_size_of_comdef_number+69
-	DD	imagerel $unwind$get_size_of_comdef_number
 $pdata$put_comdef_number DD imagerel put_comdef_number
-	DD	imagerel put_comdef_number+254
+	DD	imagerel put_comdef_number+232
 	DD	imagerel $unwind$put_comdef_number
 $pdata$omf_write_comdef DD imagerel omf_write_comdef
-	DD	imagerel omf_write_comdef+1252
+	DD	imagerel omf_write_comdef+1037
 	DD	imagerel $unwind$omf_write_comdef
 $pdata$GetFileTimeStamp DD imagerel GetFileTimeStamp
-	DD	imagerel GetFileTimeStamp+146
+	DD	imagerel GetFileTimeStamp+87
 	DD	imagerel $unwind$GetFileTimeStamp
 $pdata$omf_write_autodep DD imagerel omf_write_autodep
-	DD	imagerel omf_write_autodep+436
+	DD	imagerel omf_write_autodep+387
 	DD	imagerel $unwind$omf_write_autodep
 $pdata$omf_write_alias DD imagerel omf_write_alias
-	DD	imagerel omf_write_alias+386
+	DD	imagerel omf_write_alias+341
 	DD	imagerel $unwind$omf_write_alias
 $pdata$omf_write_pubdef DD imagerel omf_write_pubdef
-	DD	imagerel omf_write_pubdef+1236
+	DD	imagerel omf_write_pubdef+974
 	DD	imagerel $unwind$omf_write_pubdef
 $pdata$omf_write_modend DD imagerel omf_write_modend
-	DD	imagerel omf_write_modend+330
+	DD	imagerel omf_write_modend+260
 	DD	imagerel $unwind$omf_write_modend
 $pdata$omf_cv_flushfunc DD imagerel omf_cv_flushfunc
-	DD	imagerel omf_cv_flushfunc+186
+	DD	imagerel omf_cv_flushfunc+164
 	DD	imagerel $unwind$omf_cv_flushfunc
 $pdata$omf_write_header_dbgcv DD imagerel omf_write_header_dbgcv
-	DD	imagerel omf_write_header_dbgcv+385
+	DD	imagerel omf_write_header_dbgcv+331
 	DD	imagerel $unwind$omf_write_header_dbgcv
 $pdata$omf_write_debug_tables DD imagerel omf_write_debug_tables
-	DD	imagerel omf_write_debug_tables+225
+	DD	imagerel omf_write_debug_tables+207
 	DD	imagerel $unwind$omf_write_debug_tables
 $pdata$omf_write_module DD imagerel omf_write_module
-	DD	imagerel omf_write_module+236
+	DD	imagerel omf_write_module+209
 	DD	imagerel $unwind$omf_write_module
 $pdata$omf_write_header_initial DD imagerel omf_write_header_initial
-	DD	imagerel omf_write_header_initial+323
+	DD	imagerel omf_write_header_initial+298
 	DD	imagerel $unwind$omf_write_header_initial
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
-CONST	SEGMENT
-omf_OutSelect$rtcName$0 DB 06fH
-	DB	062H
-	DB	06aH
-	DB	00H
-omf_OutSelect$rtcName$1 DB 062H
-	DB	075H
-	DB	066H
-	DB	066H
-	DB	065H
-	DB	072H
-	DB	00H
-	ORG $+5
-omf_OutSelect$rtcVarDesc DD 078H
-	DD	0cH
-	DQ	FLAT:omf_OutSelect$rtcName$1
-	DD	028H
-	DD	030H
-	DQ	FLAT:omf_OutSelect$rtcName$0
-	ORG $+96
-omf_OutSelect$rtcFrameData DD 02H
-	DD	00H
-	DQ	FLAT:omf_OutSelect$rtcVarDesc
-timet2dostime$rtcName$0 DB 064H
-	DB	074H
-	DB	00H
-	ORG $+5
-timet2dostime$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:timet2dostime$rtcVarDesc
-omf_write_linnum$rtcName$0 DB 06fH
-	DB	062H
-	DB	06aH
-	DB	00H
-	ORG $+4
-timet2dostime$rtcVarDesc DD 038H
-	DD	08H
-	DQ	FLAT:timet2dostime$rtcName$0
-	ORG $+48
-omf_write_linnum$rtcVarDesc DD 048H
-	DD	030H
-	DQ	FLAT:omf_write_linnum$rtcName$0
-	ORG $+48
-omf_write_linnum$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:omf_write_linnum$rtcVarDesc
-omf_write_fixupp$rtcName$0 DB 06fH
-	DB	062H
-	DB	06aH
-	DB	00H
-omf_write_ledata$rtcName$0 DB 06fH
-	DB	062H
-	DB	06aH
-	DB	00H
-omf_write_theadr$rtcName$0 DB 06fH
-	DB	062H
-	DB	06aH
-	DB	00H
-	ORG $+4
-omf_write_fixupp$rtcVarDesc DD 048H
-	DD	030H
-	DQ	FLAT:omf_write_fixupp$rtcName$0
-	ORG $+48
-omf_write_fixupp$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:omf_write_fixupp$rtcVarDesc
-omf_write_ledata$rtcVarDesc DD 028H
-	DD	030H
-	DQ	FLAT:omf_write_ledata$rtcName$0
-	ORG $+48
-omf_write_ledata$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:omf_write_ledata$rtcVarDesc
-omf_write_theadr$rtcVarDesc DD 028H
-	DD	030H
-	DQ	FLAT:omf_write_theadr$rtcName$0
-	ORG $+48
-omf_write_theadr$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:omf_write_theadr$rtcVarDesc
-omf_end_of_pass1$rtcName$0 DB 06fH
-	DB	062H
-	DB	06aH
-	DB	00H
-omf_write_dosseg$rtcName$0 DB 06fH
-	DB	062H
-	DB	06aH
-	DB	00H
-omf_write_lib$rtcName$0 DB 06fH
-	DB	062H
-	DB	06aH
-	DB	00H
-	ORG $+4
-omf_end_of_pass1$rtcVarDesc DD 028H
-	DD	030H
-	DQ	FLAT:omf_end_of_pass1$rtcName$0
-	ORG $+48
-omf_end_of_pass1$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:omf_end_of_pass1$rtcVarDesc
-omf_write_dosseg$rtcVarDesc DD 028H
-	DD	030H
-	DQ	FLAT:omf_write_dosseg$rtcName$0
-	ORG $+48
-omf_write_dosseg$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:omf_write_dosseg$rtcVarDesc
-omf_write_lib$rtcVarDesc DD 028H
-	DD	030H
-	DQ	FLAT:omf_write_lib$rtcName$0
-	ORG $+48
-omf_write_lib$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:omf_write_lib$rtcVarDesc
-omf_write_export$rtcName$0 DB 06fH
-	DB	062H
-	DB	06aH
-	DB	00H
-omf_write_grpdef$rtcName$0 DB 067H
-	DB	072H
-	DB	070H
-	DB	00H
-omf_write_segdef$rtcName$0 DB 06fH
-	DB	062H
-	DB	06aH
-	DB	00H
-	ORG $+4
-omf_write_export$rtcVarDesc DD 048H
-	DD	030H
-	DQ	FLAT:omf_write_export$rtcName$0
-	ORG $+48
-omf_write_export$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:omf_write_export$rtcVarDesc
-omf_write_grpdef$rtcVarDesc DD 048H
-	DD	030H
-	DQ	FLAT:omf_write_grpdef$rtcName$0
-	ORG $+48
-omf_write_grpdef$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:omf_write_grpdef$rtcVarDesc
-omf_write_segdef$rtcName$1 DB 062H
-	DB	075H
-	DB	066H
-	DB	066H
-	DB	065H
-	DB	072H
-	DB	00H
-	ORG $+1
-omf_write_segdef$rtcFrameData DD 02H
-	DD	00H
-	DQ	FLAT:omf_write_segdef$rtcVarDesc
-omf_write_lnames$rtcName$0 DB 06fH
-	DB	062H
-	DB	06aH
-	DB	00H
-	ORG $+4
-omf_write_segdef$rtcVarDesc DD 0b4H
-	DD	04H
-	DQ	FLAT:omf_write_segdef$rtcName$1
-	DD	068H
-	DD	030H
-	DQ	FLAT:omf_write_segdef$rtcName$0
-	ORG $+96
-omf_write_lnames$rtcName$1 DB 062H
-	DB	075H
-	DB	066H
-	DB	066H
-	DB	065H
-	DB	072H
-	DB	00H
-	ORG $+1
-omf_write_lnames$rtcFrameData DD 02H
-	DD	00H
-	DQ	FLAT:omf_write_lnames$rtcVarDesc
-omf_write_extdef$rtcName$0 DB 06fH
-	DB	062H
-	DB	06aH
-	DB	00H
-	ORG $+4
-omf_write_lnames$rtcVarDesc DD 0a0H
-	DD	0400H
-	DQ	FLAT:omf_write_lnames$rtcName$1
-	DD	048H
-	DD	030H
-	DQ	FLAT:omf_write_lnames$rtcName$0
-	ORG $+96
-omf_write_extdef$rtcName$1 DB 072H
-	DB	00H
-	ORG $+2
-omf_write_extdef$rtcName$2 DB 064H
-	DB	061H
-	DB	074H
-	DB	061H
-	DB	00H
-	ORG $+3
-omf_write_extdef$rtcName$3 DB 062H
-	DB	075H
-	DB	066H
-	DB	066H
-	DB	065H
-	DB	072H
-	DB	00H
-	ORG $+5
-omf_write_extdef$rtcFrameData DD 04H
-	DD	00H
-	DQ	FLAT:omf_write_extdef$rtcVarDesc
-omf_write_comdef$rtcName$0 DB 06fH
-	DB	062H
-	DB	06aH
-	DB	00H
-	ORG $+4
-omf_write_extdef$rtcVarDesc DD 04e0H
-	DD	0100H
-	DQ	FLAT:omf_write_extdef$rtcName$3
-	DD	0c0H
-	DD	03fcH
-	DQ	FLAT:omf_write_extdef$rtcName$2
-	DD	088H
-	DD	010H
-	DQ	FLAT:omf_write_extdef$rtcName$1
-	DD	028H
-	DD	030H
-	DQ	FLAT:omf_write_extdef$rtcName$0
-	ORG $+192
-omf_write_comdef$rtcName$1 DB 062H
-	DB	075H
-	DB	066H
-	DB	066H
-	DB	065H
-	DB	072H
-	DB	00H
-	ORG $+1
-omf_write_comdef$rtcName$2 DB 064H
-	DB	061H
-	DB	074H
-	DB	061H
-	DB	00H
-	ORG $+3
-omf_write_comdef$rtcName$3 DB 06eH
-	DB	075H
-	DB	06dH
-	DB	062H
-	DB	065H
-	DB	072H
-	DB	00H
-	ORG $+1
-omf_write_comdef$rtcFrameData DD 04H
-	DD	00H
-	DQ	FLAT:omf_write_comdef$rtcVarDesc
-GetFileTimeStamp$rtcName$0 DB 073H
-	DB	074H
-	DB	061H
-	DB	074H
-	DB	062H
-	DB	075H
-	DB	066H
-	DB	00H
-omf_write_comdef$rtcVarDesc DD 05e8H
-	DD	010H
-	DQ	FLAT:omf_write_comdef$rtcName$3
-	DD	01d0H
-	DD	03fcH
-	DQ	FLAT:omf_write_comdef$rtcName$2
-	DD	0b0H
-	DD	0100H
-	DQ	FLAT:omf_write_comdef$rtcName$1
-	DD	038H
-	DD	030H
-	DQ	FLAT:omf_write_comdef$rtcName$0
-	ORG $+192
-GetFileTimeStamp$rtcVarDesc DD 028H
-	DD	030H
-	DQ	FLAT:GetFileTimeStamp$rtcName$0
-	ORG $+48
-GetFileTimeStamp$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:GetFileTimeStamp$rtcVarDesc
-omf_write_autodep$rtcName$0 DB 06fH
-	DB	062H
-	DB	06aH
-	DB	00H
-omf_write_alias$rtcName$0 DB 06fH
-	DB	062H
-	DB	06aH
-	DB	00H
-omf_write_alias$rtcName$1 DB 074H
-	DB	06dH
-	DB	070H
-	DB	00H
-	ORG $+4
-omf_write_autodep$rtcVarDesc DD 028H
-	DD	030H
-	DQ	FLAT:omf_write_autodep$rtcName$0
-	ORG $+48
-omf_write_autodep$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:omf_write_autodep$rtcVarDesc
-omf_write_alias$rtcName$2 DB 062H
-	DB	075H
-	DB	066H
-	DB	066H
-	DB	00H
-	ORG $+3
-omf_write_alias$rtcFrameData DD 03H
-	DD	00H
-	DQ	FLAT:omf_write_alias$rtcVarDesc
-omf_write_pubdef$rtcName$1 DB 063H
-	DB	075H
-	DB	072H
-	DB	072H
-	DB	033H
-	DB	032H
-	DB	00H
-	ORG $+1
-omf_write_alias$rtcVarDesc DD 01b0H
-	DD	01f0H
-	DQ	FLAT:omf_write_alias$rtcName$2
-	DD	090H
-	DD	0100H
-	DQ	FLAT:omf_write_alias$rtcName$1
-	DD	028H
-	DD	030H
-	DQ	FLAT:omf_write_alias$rtcName$0
-	ORG $+144
-omf_write_pubdef$rtcName$0 DB 063H
-	DB	075H
-	DB	072H
-	DB	072H
-	DB	05fH
-	DB	073H
-	DB	065H
-	DB	067H
-	DB	00H
-	ORG $+3
-omf_write_pubdef$rtcName$2 DB 06fH
-	DB	062H
-	DB	06aH
-	DB	00H
-omf_write_pubdef$rtcName$3 DB 06fH
-	DB	062H
-	DB	06aH
-	DB	00H
-omf_write_modend$rtcName$0 DB 06fH
-	DB	062H
-	DB	06aH
-	DB	00H
-omf_write_modend$rtcName$1 DB 062H
-	DB	075H
-	DB	066H
-	DB	066H
-	DB	065H
-	DB	072H
-	DB	00H
-	ORG $+1
-omf_write_pubdef$rtcVarDesc DD 0b8H
-	DD	030H
-	DQ	FLAT:omf_write_pubdef$rtcName$3
-	DD	068H
-	DD	030H
-	DQ	FLAT:omf_write_pubdef$rtcName$2
-	ORG $+96
-omf_write_pubdef$rtcFrameData DD 02H
-	DD	00H
-	DQ	FLAT:omf_write_pubdef$rtcVarDesc
-omf_write_modend$rtcVarDesc DD 078H
-	DD	09H
-	DQ	FLAT:omf_write_modend$rtcName$1
-	DD	028H
-	DD	030H
-	DQ	FLAT:omf_write_modend$rtcName$0
-	ORG $+96
-omf_write_modend$rtcFrameData DD 02H
-	DD	00H
-	DQ	FLAT:omf_write_modend$rtcVarDesc
-omf_write_header_dbgcv$rtcName$0 DB 06fH
-	DB	062H
-	DB	06aH
-	DB	00H
-	ORG $+12
-omf_write_header_dbgcv$rtcVarDesc DD 048H
-	DD	030H
-	DQ	FLAT:omf_write_header_dbgcv$rtcName$0
-	ORG $+48
-omf_write_header_dbgcv$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:omf_write_header_dbgcv$rtcVarDesc
-CONST	ENDS
 xdata	SEGMENT
-$unwind$localtime DD 021e01H
-	DD	07006320aH
-$unwind$omf_init DD 021e01H
-	DD	07006320aH
-$unwind$omf_set_filepos DD 021501H
-	DD	070023206H
-$unwind$omf_OutSelect DD 033519H
-	DD	016010cH
-	DD	07005H
+$unwind$localtime DD 010901H
+	DD	04209H
+$unwind$omf_init DD 010901H
+	DD	04209H
+$unwind$omf_set_filepos DD 010401H
+	DD	04204H
+$unwind$omf_OutSelect DD 011719H
+	DD	0e208H
 	DD	imagerel __GSHandlerCheck
-	DD	0a0H
-$unwind$omf_FlushCurrSeg DD 021501H
-	DD	070025206H
-$unwind$omf_check_flush DD 021e01H
-	DD	07006720aH
-$unwind$omf_InitRec DD 022201H
-	DD	0700a320eH
-$unwind$timet2dostime DD 021e01H
-	DD	07006920aH
-$unwind$Put8 DD	022201H
-	DD	0700a520eH
-$unwind$Put16 DD 022301H
-	DD	0700b520fH
-$unwind$Put32 DD 022201H
-	DD	0700a520eH
-$unwind$PutIndex DD 022201H
-	DD	0700a520eH
-$unwind$PutData DD 022801H
-	DD	070105214H
-$unwind$PutName DD 022801H
-	DD	070105214H
-$unwind$AttachData DD 022801H
-	DD	070105214H
-$unwind$omf_GetGrpIdx DD 021e01H
-	DD	07006120aH
-$unwind$omf_write_linnum DD 033519H
-	DD	014010cH
-	DD	07005H
+	DD	068H
+$unwind$omf_FlushCurrSeg DD 010401H
+	DD	06204H
+$unwind$omf_check_flush DD 010901H
+	DD	08209H
+$unwind$omf_InitRec DD 010d01H
+	DD	0420dH
+$unwind$timet2dostime DD 010901H
+	DD	08209H
+$unwind$Put8 DD	010d01H
+	DD	0620dH
+$unwind$Put16 DD 010e01H
+	DD	0620eH
+$unwind$Put32 DD 010d01H
+	DD	0620dH
+$unwind$PutIndex DD 010d01H
+	DD	0620dH
+$unwind$PutData DD 011301H
+	DD	06213H
+$unwind$PutName DD 011301H
+	DD	06213H
+$unwind$AttachData DD 011301H
+	DD	06213H
+$unwind$omf_GetGrpIdx DD 010901H
+	DD	02209H
+$unwind$omf_write_linnum DD 021d19H
+	DD	013010bH
 	DD	imagerel __GSHandlerCheck
-	DD	098H
-$unwind$omf_write_fixupp DD 033a19H
-	DD	0140111H
-	DD	0700aH
-	DD	imagerel __GSHandlerCheck
-	DD	098H
-$unwind$get_omfalign DD 021d01H
-	DD	070055209H
-$unwind$omf_write_ledata DD 023319H
-	DD	07006f20dH
+	DD	080H
+$unwind$omf_write_fixupp DD 021f19H
+	DD	0110110H
 	DD	imagerel __GSHandlerCheck
 	DD	078H
-$unwind$omf_write_theadr DD 023319H
-	DD	07006f20dH
+$unwind$get_omfalign DD 010801H
+	DD	06208H
+$unwind$omf_write_ledata DD 011819H
+	DD	0e209H
+	DD	imagerel __GSHandlerCheck
+	DD	060H
+$unwind$omf_write_theadr DD 011819H
+	DD	0c209H
+	DD	imagerel __GSHandlerCheck
+	DD	058H
+$unwind$omf_end_of_pass1 DD 011319H
+	DD	0c204H
+	DD	imagerel __GSHandlerCheck
+	DD	050H
+$unwind$omf_write_dosseg DD 011319H
+	DD	0c204H
+	DD	imagerel __GSHandlerCheck
+	DD	050H
+$unwind$omf_write_lib DD 011319H
+	DD	0e204H
+	DD	imagerel __GSHandlerCheck
+	DD	068H
+$unwind$omf_write_export DD 021619H
+	DD	0110107H
 	DD	imagerel __GSHandlerCheck
 	DD	070H
-$unwind$omf_end_of_pass1 DD 022719H
-	DD	07002f209H
+$unwind$omf_write_grpdef DD 011319H
+	DD	0e204H
 	DD	imagerel __GSHandlerCheck
-	DD	070H
-$unwind$omf_write_dosseg DD 022719H
-	DD	07002f209H
-	DD	imagerel __GSHandlerCheck
-	DD	070H
-$unwind$omf_write_lib DD 032a19H
-	DD	0120109H
-	DD	07002H
-	DD	imagerel __GSHandlerCheck
-	DD	088H
-$unwind$omf_write_export DD 032a19H
-	DD	0140109H
-	DD	07002H
+	DD	068H
+$unwind$omf_write_segdef DD 021919H
+	DD	0150107H
 	DD	imagerel __GSHandlerCheck
 	DD	098H
-$unwind$omf_write_grpdef DD 032a19H
-	DD	0140109H
-	DD	07002H
+$unwind$omf_write_lnames DD 021919H
+	DD	0930107H
 	DD	imagerel __GSHandlerCheck
-	DD	090H
-$unwind$omf_write_segdef DD 032a19H
-	DD	01e0109H
-	DD	07002H
+	DD	0480H
+$unwind$GetExt DD 010901H
+	DD	06209H
+$unwind$omf_write_extdef DD 021919H
+	DD	0b50107H
 	DD	imagerel __GSHandlerCheck
-	DD	0e0H
-$unwind$omf_write_lnames DD 032a19H
-	DD	09a0109H
-	DD	07002H
+	DD	0590H
+$unwind$put_comdef_number DD 010d01H
+	DD	0620dH
+$unwind$omf_write_comdef DD 021e19H
+	DD	0b7010cH
 	DD	imagerel __GSHandlerCheck
-	DD	04c0H
-$unwind$GetExt DD 021e01H
-	DD	07006520aH
-$unwind$omf_write_extdef DD 032a19H
-	DD	0c00109H
-	DD	07002H
+	DD	05a0H
+$unwind$GetFileTimeStamp DD 011819H
+	DD	0c209H
 	DD	imagerel __GSHandlerCheck
-	DD	05f8H
-$unwind$get_size_of_comdef_number DD 010501H
-	DD	07005H
-$unwind$put_comdef_number DD 022201H
-	DD	0700a520eH
-$unwind$omf_write_comdef DD 033619H
-	DD	0c6010dH
-	DD	07006H
+	DD	050H
+$unwind$omf_write_autodep DD 011319H
+	DD	0e204H
 	DD	imagerel __GSHandlerCheck
-	DD	0620H
-$unwind$GetFileTimeStamp DD 023319H
-	DD	07006f20dH
+	DD	068H
+$unwind$omf_write_alias DD 021919H
+	DD	06f0107H
 	DD	imagerel __GSHandlerCheck
-	DD	070H
-$unwind$omf_write_autodep DD 032a19H
-	DD	0120109H
-	DD	07002H
+	DD	0360H
+$unwind$omf_write_pubdef DD 021919H
+	DD	01b0107H
 	DD	imagerel __GSHandlerCheck
-	DD	088H
-$unwind$omf_write_alias DD 032a19H
-	DD	0780109H
-	DD	07002H
+	DD	0c8H
+$unwind$omf_write_modend DD 011c19H
+	DD	0e20dH
 	DD	imagerel __GSHandlerCheck
-	DD	03b0H
-$unwind$omf_write_pubdef DD 032a19H
-	DD	0240109H
-	DD	07002H
+	DD	068H
+$unwind$omf_cv_flushfunc DD 011801H
+	DD	06218H
+$unwind$omf_write_header_dbgcv DD 021919H
+	DD	0130107H
 	DD	imagerel __GSHandlerCheck
-	DD	0110H
-$unwind$omf_write_modend DD 033a19H
-	DD	0160111H
-	DD	0700aH
-	DD	imagerel __GSHandlerCheck
-	DD	0a8H
-$unwind$omf_cv_flushfunc DD 022d01H
-	DD	070155219H
-$unwind$omf_write_header_dbgcv DD 032a19H
-	DD	0160109H
-	DD	07002H
-	DD	imagerel __GSHandlerCheck
-	DD	0a8H
-$unwind$omf_write_debug_tables DD 021501H
-	DD	070025206H
-$unwind$omf_write_module DD 021e01H
-	DD	07006520aH
-$unwind$omf_write_header_initial DD 021e01H
-	DD	07006520aH
+	DD	080H
+$unwind$omf_write_debug_tables DD 010401H
+	DD	06204H
+$unwind$omf_write_module DD 010901H
+	DD	06209H
+$unwind$omf_write_header_initial DD 010901H
+	DD	06209H
 xdata	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
 ext_idx$ = 32
@@ -876,13 +456,7 @@ omf_write_header_initial PROC
 ; 1618 : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 1619 :     uint_16 ext_idx;
 ; 1620 : 
@@ -973,7 +547,7 @@ $LN6@omf_write_:
 	imul	rax, rax, 1
 	lea	rcx, OFFSET FLAT:ModuleInfo+96
 	mov	rcx, QWORD PTR [rcx+rax]
-	call	QWORD PTR __imp_ftell
+	call	ftell
 	mov	DWORD PTR seg_pos, eax
 
 ; 1643 :     omf_write_segdef();
@@ -1010,7 +584,7 @@ $LN6@omf_write_:
 	imul	rax, rax, 1
 	lea	rcx, OFFSET FLAT:ModuleInfo+96
 	mov	rcx, QWORD PTR [rcx+rax]
-	call	QWORD PTR __imp_ftell
+	call	ftell
 	mov	DWORD PTR public_pos, eax
 
 ; 1653 :     omf_write_pubdef();
@@ -1044,7 +618,7 @@ $LN8@omf_write_:
 	imul	rax, rax, 1
 	lea	rcx, OFFSET FLAT:ModuleInfo+96
 	mov	rcx, QWORD PTR [rcx+rax]
-	call	QWORD PTR __imp_ftell
+	call	ftell
 	mov	DWORD PTR end_of_header, eax
 
 ; 1665 :     return( NOT_ERROR );
@@ -1054,29 +628,22 @@ $LN1@omf_write_:
 
 ; 1666 : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 omf_write_header_initial ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
-fh$ = 32
-size$ = 36
+size$ = 32
+fh$ = 36
 modinfo$ = 64
 omf_write_module PROC
 
 ; 1563 : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 1564 : #if TRUNCATE
 ; 1565 :     int fh;
@@ -1123,7 +690,7 @@ $LN2@omf_write_:
 	imul	rax, rax, 1
 	lea	rcx, OFFSET FLAT:ModuleInfo+96
 	mov	rcx, QWORD PTR [rcx+rax]
-	call	QWORD PTR __imp_ftell
+	call	ftell
 	mov	DWORD PTR size$[rsp], eax
 
 ; 1588 : #if defined(__UNIX__) || defined(__CYGWIN__) || defined(__DJGPP__)
@@ -1139,14 +706,14 @@ $LN2@omf_write_:
 	imul	rax, rax, 1
 	lea	rcx, OFFSET FLAT:ModuleInfo+96
 	mov	rcx, QWORD PTR [rcx+rax]
-	call	QWORD PTR __imp__fileno
+	call	_fileno
 	mov	DWORD PTR fh$[rsp], eax
 
 ; 1596 :     _chsize( fh, size );
 
 	mov	edx, DWORD PTR size$[rsp]
 	mov	ecx, DWORD PTR fh$[rsp]
-	call	QWORD PTR __imp__chsize
+	call	_chsize
 
 ; 1597 : #endif
 ; 1598 : 
@@ -1163,7 +730,7 @@ $LN2@omf_write_:
 	xor	r8d, r8d
 	mov	edx, DWORD PTR seg_pos
 	mov	rcx, QWORD PTR [rcx+rax]
-	call	QWORD PTR __imp_fseek
+	call	fseek
 
 ; 1605 :     omf_write_segdef();
 
@@ -1180,7 +747,7 @@ $LN2@omf_write_:
 	xor	r8d, r8d
 	mov	edx, DWORD PTR public_pos
 	mov	rcx, QWORD PTR [rcx+rax]
-	call	QWORD PTR __imp_fseek
+	call	fseek
 
 ; 1610 :     omf_write_pubdef();
 
@@ -1192,26 +759,20 @@ $LN2@omf_write_:
 
 ; 1612 : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 omf_write_module ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
-tv83 = 32
-tv91 = 40
+tv91 = 32
+tv83 = 40
 omf_write_debug_tables PROC
 
 ; 1547 : {
 
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 56					; 00000038H
 
 ; 1548 :     if ( SymDebSeg[DBGS_SYMBOLS] && SymDebSeg[DBGS_TYPES] ) {
 
@@ -1268,30 +829,24 @@ $LN2@omf_write_:
 ; 1552 :     }
 ; 1553 : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 omf_write_debug_tables ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
 i$ = 48
-obj$ = 72
-tv85 = 144
-tv139 = 152
-tv75 = 160
-__$ArrayPad$ = 168
+tv75 = 56
+tv139 = 64
+tv85 = 72
+obj$ = 80
+__$ArrayPad$ = 128
 omf_write_header_dbgcv PROC
 
 ; 1525 : {
 
-	push	rdi
-	sub	rsp, 176				; 000000b0H
-	mov	rdi, rsp
-	mov	ecx, 44					; 0000002cH
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 152				; 00000098H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -1316,7 +871,7 @@ omf_write_header_dbgcv PROC
 ; 1532 :     AttachData( &obj, "\001CV", 3 );
 
 	mov	r8d, 3
-	lea	rdx, OFFSET FLAT:$SG12772
+	lea	rdx, OFFSET FLAT:$SG12810
 	lea	rcx, QWORD PTR obj$[rsp]
 	call	AttachData
 
@@ -1396,18 +951,14 @@ $LN3@omf_write_:
 ; 1540 :     return;
 ; 1541 : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:omf_write_header_dbgcv$rtcFrameData
-	call	_RTC_CheckStackVars
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 176				; 000000b0H
-	pop	rdi
+	add	rsp, 152				; 00000098H
 	ret	0
 omf_write_header_dbgcv ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
 buffer$ = 32
@@ -1423,13 +974,7 @@ omf_cv_flushfunc PROC
 	mov	DWORD PTR [rsp+24], r8d
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 1507 :     uint_8 *buffer = seg->e.seginfo->CodeBuffer;
 
@@ -1489,34 +1034,27 @@ $LN1@omf_cv_flu:
 
 ; 1515 : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 omf_cv_flushfunc ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
+tv74 = 32
+tv82 = 36
 obj$ = 40
-buffer$ = 120
-tv74 = 160
-tv82 = 164
-__$ArrayPad$ = 168
-fixup$ = 192
-displ$ = 200
+buffer$ = 88
+__$ArrayPad$ = 104
+fixup$ = 128
+displ$ = 136
 omf_write_modend PROC
 
 ; 1481 : {
 
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 176				; 000000b0H
-	mov	rdi, rsp
-	mov	ecx, 44					; 0000002cH
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+192]
+	sub	rsp, 120				; 00000078H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -1528,7 +1066,7 @@ omf_write_modend PROC
 
 	mov	r8d, DWORD PTR displ$[rsp]
 	mov	rdx, QWORD PTR fixup$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12748
+	lea	rcx, OFFSET FLAT:$SG12786
 	call	DoDebugMsg
 
 ; 1486 : 
@@ -1613,47 +1151,36 @@ $LN3@omf_write_:
 
 ; 1500 : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:omf_write_modend$rtcFrameData
-	call	_RTC_CheckStackVars
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 176				; 000000b0H
-	pop	rdi
+	add	rsp, 120				; 00000078H
 	ret	0
 omf_write_modend ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
-q$ = 32
-curr_seg$7 = 40
-data$8 = 48
-size$9 = 56
-curr32$10 = 60
-is32$11 = 61
-recsize$12 = 64
-len$13 = 68
-sym$14 = 72
-seg$15 = 80
-obj$16 = 104
-obj$17 = 184
-$T18 = 256
-$T19 = 257
-tv144 = 260
-tv156 = 264
-__$ArrayPad$ = 272
+is32$1 = 32
+curr32$2 = 33
+data$3 = 40
+sym$4 = 48
+len$5 = 56
+size$6 = 60
+tv144 = 64
+tv156 = 68
+q$ = 72
+seg$7 = 80
+curr_seg$8 = 88
+recsize$9 = 96
+obj$10 = 104
+obj$11 = 152
+__$ArrayPad$ = 200
 omf_write_pubdef PROC
 
 ; 1369 : {
 
-	push	rdi
-	sub	rsp, 288				; 00000120H
-	mov	rdi, rsp
-	mov	ecx, 72					; 00000048H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 216				; 000000d8H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -1662,7 +1189,7 @@ omf_write_pubdef PROC
 ; 1371 : 
 ; 1372 :     DebugMsg1(("omf_write_pub enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12724
+	lea	rcx, OFFSET FLAT:$SG12762
 	call	DoDebugMsg1
 
 ; 1373 : 
@@ -1683,8 +1210,6 @@ $LN2@omf_write_:
 
 	cmp	QWORD PTR q$[rsp], 0
 	je	$LN3@omf_write_
-	mov	BYTE PTR $T19[rsp], 0
-	mov	BYTE PTR $T18[rsp], 0
 
 ; 1383 :         struct asym     *curr_seg;
 ; 1384 :         uint_8          *data;
@@ -1694,9 +1219,9 @@ $LN2@omf_write_:
 ; 1388 : 
 ; 1389 :         for ( size = 0, data = StringBufferEnd; q; q = q->next ) {
 
-	mov	DWORD PTR size$9[rsp], 0
+	mov	DWORD PTR size$6[rsp], 0
 	mov	rax, QWORD PTR ModuleInfo+488
-	mov	QWORD PTR data$8[rsp], rax
+	mov	QWORD PTR data$3[rsp], rax
 	jmp	SHORT $LN6@omf_write_
 $LN4@omf_write_:
 	mov	rax, QWORD PTR q$[rsp]
@@ -1713,16 +1238,16 @@ $LN6@omf_write_:
 
 	mov	rax, QWORD PTR q$[rsp]
 	mov	rax, QWORD PTR [rax+8]
-	mov	QWORD PTR sym$14[rsp], rax
+	mov	QWORD PTR sym$4[rsp], rax
 
 ; 1394 : #if COMDATSUPP
 ; 1395 :             /* COMDAT symbol? Then write an LNAME record */
 ; 1396 :             if ( sym->segment && ((struct dsym *)sym->segment)->e.seginfo->comdat_selection ) {
 
-	mov	rax, QWORD PTR sym$14[rsp]
+	mov	rax, QWORD PTR sym$4[rsp]
 	cmp	QWORD PTR [rax+24], 0
 	je	$LN7@omf_write_
-	mov	rax, QWORD PTR sym$14[rsp]
+	mov	rax, QWORD PTR sym$4[rsp]
 	mov	rax, QWORD PTR [rax+24]
 	mov	rax, QWORD PTR [rax+96]
 	movzx	eax, BYTE PTR [rax+108]
@@ -1734,13 +1259,13 @@ $LN6@omf_write_:
 
 ; 1397 :                 struct dsym *seg = (struct dsym *)sym->segment;
 
-	mov	rax, QWORD PTR sym$14[rsp]
+	mov	rax, QWORD PTR sym$4[rsp]
 	mov	rax, QWORD PTR [rax+24]
-	mov	QWORD PTR seg$15[rsp], rax
+	mov	QWORD PTR seg$7[rsp], rax
 
 ; 1398 :                 if ( seg->e.seginfo->comdat_idx == 0 ) {
 
-	mov	rax, QWORD PTR seg$15[rsp]
+	mov	rax, QWORD PTR seg$7[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	movzx	eax, WORD PTR [rax+88]
 	test	eax, eax
@@ -1752,29 +1277,29 @@ $LN6@omf_write_:
 	mov	eax, DWORD PTR startitem
 	inc	eax
 	mov	DWORD PTR startitem, eax
-	mov	rax, QWORD PTR seg$15[rsp]
+	mov	rax, QWORD PTR seg$7[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	movzx	ecx, WORD PTR startitem
 	mov	WORD PTR [rax+88], cx
 
 ; 1401 :                     seg->sym.used = sym->used;
 
-	mov	rax, QWORD PTR sym$14[rsp]
+	mov	rax, QWORD PTR sym$4[rsp]
 	movzx	eax, BYTE PTR [rax+40]
 	and	al, 1
 	and	al, 1
-	mov	rcx, QWORD PTR seg$15[rsp]
+	mov	rcx, QWORD PTR seg$7[rsp]
 	movzx	ecx, BYTE PTR [rcx+40]
 	and	cl, 254					; 000000feH
 	or	cl, al
 	movzx	eax, cl
-	mov	rcx, QWORD PTR seg$15[rsp]
+	mov	rcx, QWORD PTR seg$7[rsp]
 	mov	BYTE PTR [rcx+40], al
 
 ; 1402 :                     omf_InitRec( &obj, CMD_LNAMES );
 
 	mov	dl, 150					; 00000096H
-	lea	rcx, QWORD PTR obj$16[rsp]
+	lea	rcx, QWORD PTR obj$11[rsp]
 	call	omf_InitRec
 
 ; 1403 :                     len = Mangle( sym, StringBufferEnd + 1 );
@@ -1782,14 +1307,14 @@ $LN6@omf_write_:
 	mov	rax, QWORD PTR ModuleInfo+488
 	inc	rax
 	mov	rdx, rax
-	mov	rcx, QWORD PTR sym$14[rsp]
+	mov	rcx, QWORD PTR sym$4[rsp]
 	call	Mangle
-	mov	DWORD PTR len$13[rsp], eax
+	mov	DWORD PTR len$5[rsp], eax
 
 ; 1404 :                     *StringBufferEnd = len;
 
 	mov	rax, QWORD PTR ModuleInfo+488
-	movzx	ecx, BYTE PTR len$13[rsp]
+	movzx	ecx, BYTE PTR len$5[rsp]
 	mov	BYTE PTR [rax], cl
 
 ; 1405 :                     if ( ModuleInfo.case_sensitive == FALSE )
@@ -1804,22 +1329,22 @@ $LN6@omf_write_:
 	mov	rax, QWORD PTR ModuleInfo+488
 	inc	rax
 	mov	rcx, rax
-	call	QWORD PTR __imp__strupr
+	call	_strupr
 $LN10@omf_write_:
 
 ; 1407 :                     AttachData( &obj, StringBufferEnd, len + 1 );
 
-	mov	eax, DWORD PTR len$13[rsp]
+	mov	eax, DWORD PTR len$5[rsp]
 	inc	eax
 	mov	eax, eax
 	mov	r8d, eax
 	mov	rdx, QWORD PTR ModuleInfo+488
-	lea	rcx, QWORD PTR obj$16[rsp]
+	lea	rcx, QWORD PTR obj$11[rsp]
 	call	AttachData
 
 ; 1408 :                     omf_write_record( &obj );
 
-	lea	rcx, QWORD PTR obj$16[rsp]
+	lea	rcx, QWORD PTR obj$11[rsp]
 	call	omf_write_record
 $LN8@omf_write_:
 
@@ -1845,7 +1370,7 @@ $LN7@omf_write_:
 ; 1424 : #if 1
 ; 1425 :             is32 = ( sym->offset > 0xffffUL ? 1 : 0 );
 
-	mov	rax, QWORD PTR sym$14[rsp]
+	mov	rax, QWORD PTR sym$4[rsp]
 	cmp	DWORD PTR [rax+16], 65535		; 0000ffffH
 	jbe	SHORT $LN21@omf_write_
 	mov	DWORD PTR tv144[rsp], 1
@@ -1854,7 +1379,7 @@ $LN21@omf_write_:
 	mov	DWORD PTR tv144[rsp], 0
 $LN22@omf_write_:
 	movzx	eax, BYTE PTR tv144[rsp]
-	mov	BYTE PTR is32$11[rsp], al
+	mov	BYTE PTR is32$1[rsp], al
 
 ; 1426 : #else
 ; 1427 :             is32 = ( sym->offset > 0xffff || sym->offset < -32768 ? 1 : 0 ); /* this is what Masm does */
@@ -1864,7 +1389,7 @@ $LN22@omf_write_:
 ; 1431 :              */
 ; 1432 :             recsize = size + sym->name_size + MANGLE_BYTES + 4+4+1+1+( is32 ? 4 : 2 );
 
-	movzx	eax, BYTE PTR is32$11[rsp]
+	movzx	eax, BYTE PTR is32$1[rsp]
 	test	eax, eax
 	je	SHORT $LN23@omf_write_
 	mov	DWORD PTR tv156[rsp], 4
@@ -1872,39 +1397,29 @@ $LN22@omf_write_:
 $LN23@omf_write_:
 	mov	DWORD PTR tv156[rsp], 2
 $LN24@omf_write_:
-	mov	rax, QWORD PTR sym$14[rsp]
+	mov	rax, QWORD PTR sym$4[rsp]
 	movzx	eax, BYTE PTR [rax+72]
-	mov	ecx, DWORD PTR size$9[rsp]
+	mov	ecx, DWORD PTR size$6[rsp]
 	add	ecx, eax
 	mov	eax, ecx
 	mov	ecx, DWORD PTR tv156[rsp]
 	lea	eax, DWORD PTR [rax+rcx+18]
-	mov	DWORD PTR recsize$12[rsp], eax
+	mov	DWORD PTR recsize$9[rsp], eax
 
 ; 1433 :             /* exit loop if segment or offset magnitude changes, or record becomes too big */
 ; 1434 :             if( size && ( sym->segment != curr_seg || is32 != curr32 || recsize > MAX_PUB_LENGTH ) )
 
-	cmp	DWORD PTR size$9[rsp], 0
+	cmp	DWORD PTR size$6[rsp], 0
 	je	SHORT $LN12@omf_write_
-	cmp	BYTE PTR $T18[rsp], 0
-	jne	SHORT $LN25@omf_write_
-	lea	rcx, OFFSET FLAT:omf_write_pubdef$rtcName$0
-	call	_RTC_UninitUse
-$LN25@omf_write_:
-	mov	rax, QWORD PTR sym$14[rsp]
-	mov	rcx, QWORD PTR curr_seg$7[rsp]
+	mov	rax, QWORD PTR sym$4[rsp]
+	mov	rcx, QWORD PTR curr_seg$8[rsp]
 	cmp	QWORD PTR [rax+24], rcx
 	jne	SHORT $LN13@omf_write_
-	cmp	BYTE PTR $T19[rsp], 0
-	jne	SHORT $LN26@omf_write_
-	lea	rcx, OFFSET FLAT:omf_write_pubdef$rtcName$1
-	call	_RTC_UninitUse
-$LN26@omf_write_:
-	movzx	eax, BYTE PTR is32$11[rsp]
-	movzx	ecx, BYTE PTR curr32$10[rsp]
+	movzx	eax, BYTE PTR is32$1[rsp]
+	movzx	ecx, BYTE PTR curr32$2[rsp]
 	cmp	eax, ecx
 	jne	SHORT $LN13@omf_write_
-	cmp	DWORD PTR recsize$12[rsp], 1024		; 00000400H
+	cmp	DWORD PTR recsize$9[rsp], 1024		; 00000400H
 	jbe	SHORT $LN12@omf_write_
 $LN13@omf_write_:
 
@@ -1915,12 +1430,12 @@ $LN12@omf_write_:
 
 ; 1436 :             len = Mangle( sym, data + 1 );
 
-	mov	rax, QWORD PTR data$8[rsp]
+	mov	rax, QWORD PTR data$3[rsp]
 	inc	rax
 	mov	rdx, rax
-	mov	rcx, QWORD PTR sym$14[rsp]
+	mov	rcx, QWORD PTR sym$4[rsp]
 	call	Mangle
-	mov	DWORD PTR len$13[rsp], eax
+	mov	DWORD PTR len$5[rsp], eax
 
 ; 1437 : #if MAX_ID_LEN > MAX_ID_LEN_OMF
 ; 1438 :             if ( len > 255 )
@@ -1936,65 +1451,58 @@ $LN12@omf_write_:
 
 ; 1442 :                 _strupr( data + 1 );
 
-	mov	rax, QWORD PTR data$8[rsp]
+	mov	rax, QWORD PTR data$3[rsp]
 	inc	rax
 	mov	rcx, rax
-	call	QWORD PTR __imp__strupr
+	call	_strupr
 $LN14@omf_write_:
 
 ; 1443 :             curr_seg = sym->segment;
 
-	mov	BYTE PTR $T18[rsp], 1
-	mov	rax, QWORD PTR sym$14[rsp]
+	mov	rax, QWORD PTR sym$4[rsp]
 	mov	rax, QWORD PTR [rax+24]
-	mov	QWORD PTR curr_seg$7[rsp], rax
+	mov	QWORD PTR curr_seg$8[rsp], rax
 
 ; 1444 :             curr32 = is32;
 
-	mov	BYTE PTR $T19[rsp], 1
-	movzx	eax, BYTE PTR is32$11[rsp]
-	mov	BYTE PTR curr32$10[rsp], al
+	movzx	eax, BYTE PTR is32$1[rsp]
+	mov	BYTE PTR curr32$2[rsp], al
 
 ; 1445 : 
 ; 1446 :             *data = len;
 
-	mov	rax, QWORD PTR data$8[rsp]
-	movzx	ecx, BYTE PTR len$13[rsp]
+	mov	rax, QWORD PTR data$3[rsp]
+	movzx	ecx, BYTE PTR len$5[rsp]
 	mov	BYTE PTR [rax], cl
 
 ; 1447 :             data += len + 1;
 
-	mov	eax, DWORD PTR len$13[rsp]
+	mov	eax, DWORD PTR len$5[rsp]
 	inc	eax
 	mov	eax, eax
-	mov	rcx, QWORD PTR data$8[rsp]
+	mov	rcx, QWORD PTR data$3[rsp]
 	add	rcx, rax
 	mov	rax, rcx
-	mov	QWORD PTR data$8[rsp], rax
+	mov	QWORD PTR data$3[rsp], rax
 
 ; 1448 :             if ( curr32 ) {
 
-	cmp	BYTE PTR $T19[rsp], 0
-	jne	SHORT $LN27@omf_write_
-	lea	rcx, OFFSET FLAT:omf_write_pubdef$rtcName$1
-	call	_RTC_UninitUse
-$LN27@omf_write_:
-	movzx	eax, BYTE PTR curr32$10[rsp]
+	movzx	eax, BYTE PTR curr32$2[rsp]
 	test	eax, eax
 	je	SHORT $LN15@omf_write_
 
 ; 1449 :                 *(uint_32 *)data = sym->offset;
 
-	mov	rax, QWORD PTR data$8[rsp]
-	mov	rcx, QWORD PTR sym$14[rsp]
+	mov	rax, QWORD PTR data$3[rsp]
+	mov	rcx, QWORD PTR sym$4[rsp]
 	mov	ecx, DWORD PTR [rcx+16]
 	mov	DWORD PTR [rax], ecx
 
 ; 1450 :                 data += sizeof( uint_32 );
 
-	mov	rax, QWORD PTR data$8[rsp]
+	mov	rax, QWORD PTR data$3[rsp]
 	add	rax, 4
-	mov	QWORD PTR data$8[rsp], rax
+	mov	QWORD PTR data$3[rsp], rax
 
 ; 1451 :             } else {
 
@@ -2003,34 +1511,34 @@ $LN15@omf_write_:
 
 ; 1452 :                 *(uint_16 *)data = sym->offset;
 
-	mov	rax, QWORD PTR data$8[rsp]
-	mov	rcx, QWORD PTR sym$14[rsp]
+	mov	rax, QWORD PTR data$3[rsp]
+	mov	rcx, QWORD PTR sym$4[rsp]
 	movzx	ecx, WORD PTR [rcx+16]
 	mov	WORD PTR [rax], cx
 
 ; 1453 :                 data += sizeof( uint_16 );
 
-	mov	rax, QWORD PTR data$8[rsp]
+	mov	rax, QWORD PTR data$3[rsp]
 	add	rax, 2
-	mov	QWORD PTR data$8[rsp], rax
+	mov	QWORD PTR data$3[rsp], rax
 $LN16@omf_write_:
 
 ; 1454 :             }
 ; 1455 :             *data++ = 0; /* type field */
 
-	mov	rax, QWORD PTR data$8[rsp]
+	mov	rax, QWORD PTR data$3[rsp]
 	mov	BYTE PTR [rax], 0
-	mov	rax, QWORD PTR data$8[rsp]
+	mov	rax, QWORD PTR data$3[rsp]
 	inc	rax
-	mov	QWORD PTR data$8[rsp], rax
+	mov	QWORD PTR data$3[rsp], rax
 
 ; 1456 :             size = (char *)data - StringBufferEnd;
 
 	mov	rax, QWORD PTR ModuleInfo+488
-	mov	rcx, QWORD PTR data$8[rsp]
+	mov	rcx, QWORD PTR data$3[rsp]
 	sub	rcx, rax
 	mov	rax, rcx
-	mov	DWORD PTR size$9[rsp], eax
+	mov	DWORD PTR size$6[rsp], eax
 
 ; 1457 :         }
 
@@ -2039,53 +1547,43 @@ $LN5@omf_write_:
 
 ; 1458 :         if ( size ) {
 
-	cmp	DWORD PTR size$9[rsp], 0
-	je	$LN17@omf_write_
+	cmp	DWORD PTR size$6[rsp], 0
+	je	SHORT $LN17@omf_write_
 
 ; 1459 :             struct omf_rec      obj;
 ; 1460 :             omf_InitRec( &obj, CMD_PUBDEF );
 
 	mov	dl, 144					; 00000090H
-	lea	rcx, QWORD PTR obj$17[rsp]
+	lea	rcx, QWORD PTR obj$10[rsp]
 	call	omf_InitRec
 
 ; 1461 :             AttachData( &obj, StringBufferEnd, size );
 
-	mov	eax, DWORD PTR size$9[rsp]
+	mov	eax, DWORD PTR size$6[rsp]
 	mov	r8d, eax
 	mov	rdx, QWORD PTR ModuleInfo+488
-	lea	rcx, QWORD PTR obj$17[rsp]
+	lea	rcx, QWORD PTR obj$10[rsp]
 	call	AttachData
 
 ; 1462 :             obj.is_32 = curr32;
 
-	cmp	BYTE PTR $T19[rsp], 0
-	jne	SHORT $LN28@omf_write_
-	lea	rcx, OFFSET FLAT:omf_write_pubdef$rtcName$1
-	call	_RTC_UninitUse
-$LN28@omf_write_:
-	movzx	eax, BYTE PTR curr32$10[rsp]
-	mov	BYTE PTR obj$17[rsp+17], al
+	movzx	eax, BYTE PTR curr32$2[rsp]
+	mov	BYTE PTR obj$10[rsp+17], al
 
 ; 1463 :             if( curr_seg == NULL ) { /* absolute symbol, no segment */
 
-	cmp	BYTE PTR $T18[rsp], 0
-	jne	SHORT $LN29@omf_write_
-	lea	rcx, OFFSET FLAT:omf_write_pubdef$rtcName$0
-	call	_RTC_UninitUse
-$LN29@omf_write_:
-	cmp	QWORD PTR curr_seg$7[rsp], 0
+	cmp	QWORD PTR curr_seg$8[rsp], 0
 	jne	SHORT $LN18@omf_write_
 
 ; 1464 :                 obj.d.pubdef.base.grp_idx = 0;
 
 	xor	eax, eax
-	mov	WORD PTR obj$17[rsp+20], ax
+	mov	WORD PTR obj$10[rsp+20], ax
 
 ; 1465 :                 obj.d.pubdef.base.seg_idx = 0;
 
 	xor	eax, eax
-	mov	WORD PTR obj$17[rsp+22], ax
+	mov	WORD PTR obj$10[rsp+22], ax
 
 ; 1466 :             } else {
 
@@ -2094,38 +1592,28 @@ $LN18@omf_write_:
 
 ; 1467 :                 obj.d.pubdef.base.seg_idx = GetSegIdx( curr_seg );
 
-	cmp	BYTE PTR $T18[rsp], 0
-	jne	SHORT $LN30@omf_write_
-	lea	rcx, OFFSET FLAT:omf_write_pubdef$rtcName$0
-	call	_RTC_UninitUse
-$LN30@omf_write_:
-	mov	rcx, QWORD PTR curr_seg$7[rsp]
+	mov	rcx, QWORD PTR curr_seg$8[rsp]
 	call	GetSegIdx
-	mov	WORD PTR obj$17[rsp+22], ax
+	mov	WORD PTR obj$10[rsp+22], ax
 
 ; 1468 :                 obj.d.pubdef.base.grp_idx = omf_GetGrpIdx( GetGroup( curr_seg ) );
 
-	cmp	BYTE PTR $T18[rsp], 0
-	jne	SHORT $LN31@omf_write_
-	lea	rcx, OFFSET FLAT:omf_write_pubdef$rtcName$0
-	call	_RTC_UninitUse
-$LN31@omf_write_:
-	mov	rcx, QWORD PTR curr_seg$7[rsp]
+	mov	rcx, QWORD PTR curr_seg$8[rsp]
 	call	GetGroup
 	mov	rcx, rax
 	call	omf_GetGrpIdx
-	mov	WORD PTR obj$17[rsp+20], ax
+	mov	WORD PTR obj$10[rsp+20], ax
 $LN19@omf_write_:
 
 ; 1469 :             }
 ; 1470 :             obj.d.pubdef.base.frame = 0;
 
 	xor	eax, eax
-	mov	WORD PTR obj$17[rsp+24], ax
+	mov	WORD PTR obj$10[rsp+24], ax
 
 ; 1471 :             omf_write_record( &obj );
 
-	lea	rcx, QWORD PTR obj$17[rsp]
+	lea	rcx, QWORD PTR obj$10[rsp]
 	call	omf_write_record
 $LN17@omf_write_:
 
@@ -2138,7 +1626,7 @@ $LN3@omf_write_:
 ; 1474 : 
 ; 1475 :     DebugMsg1(("omf_write_pub exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12738
+	lea	rcx, OFFSET FLAT:$SG12776
 	call	DoDebugMsg1
 
 ; 1476 :     return( NOT_ERROR );
@@ -2147,40 +1635,29 @@ $LN3@omf_write_:
 
 ; 1477 : }
 
-	mov	edi, eax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:omf_write_pubdef$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	eax, edi
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 288				; 00000120H
-	pop	rdi
+	add	rsp, 216				; 000000d8H
 	ret	0
 omf_write_pubdef ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
-obj$ = 40
-p$ = 104
-len1$ = 112
-len2$ = 113
-curr$ = 120
-tmp$ = 144
-buff$ = 432
-__$ArrayPad$ = 944
+len1$ = 32
+len2$ = 33
+p$ = 40
+curr$ = 48
+obj$ = 56
+tmp$ = 112
+buff$ = 368
+__$ArrayPad$ = 864
 omf_write_alias PROC
 
 ; 1318 : {
 
-	push	rdi
-	sub	rsp, 960				; 000003c0H
-	mov	rdi, rsp
-	mov	ecx, 240				; 000000f0H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 888				; 00000378H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -2318,36 +1795,27 @@ $LN3@omf_write_:
 
 ; 1357 : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:omf_write_alias$rtcFrameData
-	call	_RTC_CheckStackVars
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 960				; 000003c0H
-	pop	rdi
+	add	rsp, 888				; 00000378H
 	ret	0
 omf_write_alias ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
-obj$ = 40
-curr$ = 104
-p$ = 112
-len$ = 120
-idx$ = 124
-__$ArrayPad$ = 136
+len$ = 32
+idx$ = 36
+curr$ = 40
+p$ = 48
+obj$ = 56
+__$ArrayPad$ = 104
 omf_write_autodep PROC
 
 ; 1279 : {
 
-	push	rdi
-	sub	rsp, 144				; 00000090H
-	mov	rdi, rsp
-	mov	ecx, 36					; 00000024H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 120				; 00000078H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -2364,7 +1832,7 @@ omf_write_autodep PROC
 ; 1285 : 
 ; 1286 :     DebugMsg(("omf_write_autodep() enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12678
+	lea	rcx, OFFSET FLAT:$SG12716
 	call	DoDebugMsg
 
 ; 1287 :     for( idx = 0, curr = ModuleInfo.g.FNames; idx < ModuleInfo.g.cnt_fnames; idx++, curr++ ) {
@@ -2463,7 +1931,7 @@ $LN5@omf_write_:
 	mov	r8, QWORD PTR [rax]
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rdx, QWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG12680
+	lea	rcx, OFFSET FLAT:$SG12718
 	call	DoDebugMsg
 
 ; 1304 :         omf_write_record( &obj );
@@ -2494,7 +1962,7 @@ $LN3@omf_write_:
 ; 1310 :     AttachData( &obj, (uint_8 *)"", 0 );
 
 	xor	r8d, r8d
-	lea	rdx, OFFSET FLAT:$SG12681
+	lea	rdx, OFFSET FLAT:$SG12719
 	lea	rcx, QWORD PTR obj$[rsp]
 	call	AttachData
 
@@ -2505,7 +1973,7 @@ $LN3@omf_write_:
 
 ; 1312 :     DebugMsg(("omf_write_autodep() exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12682
+	lea	rcx, OFFSET FLAT:$SG12720
 	call	DoDebugMsg
 
 ; 1313 :     return( NOT_ERROR );
@@ -2514,37 +1982,25 @@ $LN3@omf_write_:
 
 ; 1314 : }
 
-	mov	edi, eax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:omf_write_autodep$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	eax, edi
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 144				; 00000090H
-	pop	rdi
+	add	rsp, 120				; 00000078H
 	ret	0
 omf_write_autodep ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
-statbuf$ = 40
-__$ArrayPad$ = 112
-filename$ = 144
+statbuf$ = 32
+__$ArrayPad$ = 80
+filename$ = 112
 GetFileTimeStamp PROC
 
 ; 1263 : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 128				; 00000080H
-	mov	rdi, rsp
-	mov	ecx, 32					; 00000020H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+144]
+	sub	rsp, 104				; 00000068H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -2555,14 +2011,14 @@ GetFileTimeStamp PROC
 
 	lea	rdx, QWORD PTR statbuf$[rsp]
 	mov	rcx, QWORD PTR filename$[rsp]
-	call	QWORD PTR __imp__stat64i32
+	call	_stat64i32
 	test	eax, eax
 	je	SHORT $LN2@GetFileTim
 
 ; 1267 :         DebugMsg(("GetFileTimeStamp(%s): _stat() did return 0\n", filename ));
 
 	mov	rdx, QWORD PTR filename$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12661
+	lea	rcx, OFFSET FLAT:$SG12699
 	call	DoDebugMsg
 
 ; 1268 :         return( 0 );
@@ -2579,49 +2035,37 @@ $LN1@GetFileTim:
 
 ; 1271 : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:GetFileTimeStamp$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 128				; 00000080H
-	pop	rdi
+	add	rsp, 104				; 00000068H
 	ret	0
 GetFileTimeStamp ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
-obj$ = 56
-curr$ = 120
-num$ = 128
-recsize$ = 132
-numsize$ = 136
-symsize$ = 140
-varsize$ = 144
-start$ = 148
-buffer$ = 176
-data$ = 464
-number$ = 1512
-$T7 = 1552
-tv128 = 1560
-__$ArrayPad$ = 1568
-index$ = 1600
+recsize$ = 48
+numsize$ = 52
+curr$ = 56
+varsize$ = 64
+num$ = 68
+symsize$ = 72
+start$ = 76
+tv128 = 80
+$T1 = 88
+obj$ = 96
+number$ = 144
+buffer$ = 160
+data$ = 416
+__$ArrayPad$ = 1440
+index$ = 1472
 omf_write_comdef PROC
 
 ; 1179 : {
 
 	mov	WORD PTR [rsp+8], cx
-	push	rdi
-	sub	rsp, 1584				; 00000630H
-	mov	rdi, rsp
-	mov	ecx, 396				; 0000018cH
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	movzx	ecx, WORD PTR [rsp+1600]
+	sub	rsp, 1464				; 000005b8H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -2643,7 +2087,7 @@ omf_write_comdef PROC
 ; 1191 : 
 ; 1192 :     DebugMsg1(("omf_write_comdef enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12642
+	lea	rcx, OFFSET FLAT:$SG12680
 	call	DoDebugMsg1
 
 ; 1193 :     curr = SymTables[TAB_EXT].head;
@@ -2712,7 +2156,7 @@ $LN7@omf_write_:
 ; 1205 :                 _strupr( buffer );
 
 	lea	rcx, QWORD PTR buffer$[rsp]
-	call	QWORD PTR __imp__strupr
+	call	_strupr
 $LN8@omf_write_:
 
 ; 1206 : 
@@ -2737,7 +2181,7 @@ $LN8@omf_write_:
 	jmp	SHORT $LN16@omf_write_
 $LN15@omf_write_:
 	mov	edx, 1209				; 000004b9H
-	lea	rcx, OFFSET FLAT:$SG12645
+	lea	rcx, OFFSET FLAT:$SG12683
 	call	InternalError
 	mov	DWORD PTR tv128[rsp], eax
 $LN16@omf_write_:
@@ -2768,7 +2212,7 @@ $LN16@omf_write_:
 	mov	r8d, DWORD PTR varsize$[rsp]
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12646
+	lea	rcx, OFFSET FLAT:$SG12684
 	call	DoDebugMsg1
 
 ; 1213 :                       curr->sym.name, varsize, curr->sym.total_size, curr->sym.total_length, curr->sym.isfar ));
@@ -2840,7 +2284,7 @@ $LN9@omf_write_:
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	r8d, DWORD PTR [rax+64]
 	mov	edx, DWORD PTR numsize$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12650
+	lea	rcx, OFFSET FLAT:$SG12688
 	call	DoDebugMsg
 
 ; 1223 :                           numsize, curr->sym.total_length, varsize ));
@@ -2877,7 +2321,7 @@ $LN10@omf_write_:
 	imul	eax, DWORD PTR varsize$[rsp]
 	mov	r8d, eax
 	mov	edx, DWORD PTR numsize$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12651
+	lea	rcx, OFFSET FLAT:$SG12689
 	call	DoDebugMsg1
 $LN11@omf_write_:
 
@@ -2933,17 +2377,17 @@ $LN12@omf_write_:
 ; 1240 :             data[recsize++] = 0;      /* for the type index */
 
 	mov	eax, DWORD PTR recsize$[rsp]
-	mov	QWORD PTR $T7[rsp], rax
+	mov	QWORD PTR $T1[rsp], rax
 	mov	eax, DWORD PTR recsize$[rsp]
 	inc	eax
 	mov	DWORD PTR recsize$[rsp], eax
-	cmp	QWORD PTR $T7[rsp], 1020		; 000003fcH
+	cmp	QWORD PTR $T1[rsp], 1020		; 000003fcH
 	jae	SHORT $LN17@omf_write_
 	jmp	SHORT $LN18@omf_write_
 $LN17@omf_write_:
 	call	__report_rangecheckfailure
 $LN18@omf_write_:
-	mov	rax, QWORD PTR $T7[rsp]
+	mov	rax, QWORD PTR $T1[rsp]
 	mov	BYTE PTR data$[rsp+rax], 0
 
 ; 1241 :             memcpy( data + recsize, number, numsize );
@@ -3028,7 +2472,7 @@ $LN3@omf_write_:
 
 ; 1257 :     DebugMsg1(("omf_write_comdef exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12654
+	lea	rcx, OFFSET FLAT:$SG12692
 	call	DoDebugMsg1
 
 ; 1258 :     return( index );
@@ -3038,25 +2482,19 @@ $LN14@omf_write_:
 
 ; 1259 : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:omf_write_comdef$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 1584				; 00000630H
-	pop	rdi
+	add	rsp, 1464				; 000005b8H
 	ret	0
 omf_write_comdef ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
-i$ = 32
-symsize$ = 36
-tv66 = 40
+tv66 = 32
+i$ = 36
+symsize$ = 40
 buffer$ = 64
 value$ = 72
 put_comdef_number PROC
@@ -3065,13 +2503,7 @@ put_comdef_number PROC
 
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 1150 :     unsigned i;
 ; 1151 :     unsigned symsize;
@@ -3179,21 +2611,19 @@ $LN5@put_comdef:
 
 ; 1166 : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 put_comdef_number ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
-value$ = 16
+value$ = 8
 get_size_of_comdef_number PROC
 
 ; 1129 : {
 
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
 
 ; 1130 :     /* The spec allows up to 128 in a one byte size field, but lots
 ; 1131 :        of software has problems with that, so we'll restrict ourselves
@@ -3249,33 +2679,27 @@ $LN1@get_size_o:
 ; 1142 :     }
 ; 1143 : }
 
-	pop	rdi
 	ret	0
 get_size_of_comdef_number ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
-obj$ = 40
-sym$ = 104
-symext$ = 112
-rec_size$ = 120
-len$ = 124
-r$ = 136
-data$ = 192
-buffer$ = 1248
-$T7 = 1520
-__$ArrayPad$ = 1528
+rec_size$ = 32
+symext$ = 40
+len$ = 48
+sym$ = 56
+r$ = 64
+$T1 = 80
+obj$ = 88
+buffer$ = 144
+data$ = 400
+__$ArrayPad$ = 1424
 omf_write_extdef PROC
 
 ; 1035 : {
 
-	push	rdi
-	sub	rsp, 1536				; 00000600H
-	mov	rdi, rsp
-	mov	ecx, 384				; 00000180H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 1448				; 000005a8H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -3291,7 +2715,7 @@ omf_write_extdef PROC
 ; 1044 : 
 ; 1045 :     DebugMsg1(("omf_write_extdef enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12581
+	lea	rcx, OFFSET FLAT:$SG12619
 	call	DoDebugMsg1
 
 ; 1046 : 
@@ -3351,7 +2775,7 @@ $LN6@omf_write_:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12582
+	lea	rcx, OFFSET FLAT:$SG12620
 	call	DoDebugMsg1
 
 ; 1059 :             len = Mangle( sym, buffer );
@@ -3376,7 +2800,7 @@ $LN6@omf_write_:
 ; 1065 :                 _strupr( buffer );
 
 	lea	rcx, QWORD PTR buffer$[rsp]
-	call	QWORD PTR __imp__strupr
+	call	_strupr
 $LN13@omf_write_:
 
 ; 1066 : 
@@ -3430,17 +2854,17 @@ $LN14@omf_write_:
 ; 1075 :             data[rec_size++] = 0;      /* for the type index */
 
 	mov	eax, DWORD PTR rec_size$[rsp]
-	mov	QWORD PTR $T7[rsp], rax
+	mov	QWORD PTR $T1[rsp], rax
 	mov	eax, DWORD PTR rec_size$[rsp]
 	inc	eax
 	mov	DWORD PTR rec_size$[rsp], eax
-	cmp	QWORD PTR $T7[rsp], 1020		; 000003fcH
+	cmp	QWORD PTR $T1[rsp], 1020		; 000003fcH
 	jae	SHORT $LN19@omf_write_
 	jmp	SHORT $LN20@omf_write_
 $LN19@omf_write_:
 	call	__report_rangecheckfailure
 $LN20@omf_write_:
-	mov	rax, QWORD PTR $T7[rsp]
+	mov	rax, QWORD PTR $T1[rsp]
 	mov	BYTE PTR data$[rsp+rax], 0
 
 ; 1076 :         }
@@ -3459,7 +2883,7 @@ $LN5@omf_write_:
 	mov	r9d, 1020				; 000003fcH
 	mov	r8d, DWORD PTR rec_size$[rsp]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG12586
+	lea	rcx, OFFSET FLAT:$SG12624
 	call	DoDebugMsg1
 
 ; 1079 :             omf_InitRec( &obj, CMD_EXTDEF );
@@ -3649,7 +3073,7 @@ $LN11@omf_write_:
 
 	movzx	eax, WORD PTR r$[rsp+8]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG12589
+	lea	rcx, OFFSET FLAT:$SG12627
 	call	DoDebugMsg1
 
 ; 1122 :     return( r.index );
@@ -3659,38 +3083,26 @@ $LN18@omf_write_:
 
 ; 1123 : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:omf_write_extdef$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 1536				; 00000600H
-	pop	rdi
+	add	rsp, 1448				; 000005a8H
 	ret	0
 omf_write_extdef ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
-sym$ = 32
-tv92 = 40
-tv167 = 44
+tv92 = 32
+tv167 = 36
+sym$ = 40
 r$ = 64
 GetExt	PROC
 
 ; 997  : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 998  :     struct asym *sym;
 ; 999  :     if ( r->method == 0 ) {
@@ -3760,7 +3172,7 @@ $LN9@GetExt:
 	jmp	SHORT $LN15@GetExt
 $LN14@GetExt:
 	mov	edx, 1006				; 000003eeH
-	lea	rcx, OFFSET FLAT:$SG12551
+	lea	rcx, OFFSET FLAT:$SG12589
 	call	InternalError
 	mov	DWORD PTR tv92[rsp], eax
 $LN15@GetExt:
@@ -3874,7 +3286,7 @@ $LN11@GetExt:
 	jmp	SHORT $LN17@GetExt
 $LN16@GetExt:
 	mov	edx, 1020				; 000003fcH
-	lea	rcx, OFFSET FLAT:$SG12554
+	lea	rcx, OFFSET FLAT:$SG12592
 	call	InternalError
 	mov	DWORD PTR tv167[rsp], eax
 $LN17@GetExt:
@@ -3909,34 +3321,28 @@ $LN1@GetExt:
 
 ; 1026 : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 GetExt	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
-size$ = 32
-items$ = 36
+items$ = 32
 p$ = 40
-curr$ = 48
-sym$ = 56
-obj$ = 72
-buffer$ = 160
-tv69 = 1200
-tv140 = 1208
-__$ArrayPad$ = 1216
+sym$ = 48
+size$ = 56
+tv140 = 60
+curr$ = 64
+tv69 = 72
+obj$ = 80
+buffer$ = 128
+__$ArrayPad$ = 1152
 omf_write_lnames PROC
 
 ; 923  : {
 
-	push	rdi
-	sub	rsp, 1232				; 000004d0H
-	mov	rdi, rsp
-	mov	ecx, 308				; 00000134H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 1176				; 00000498H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -3952,7 +3358,7 @@ omf_write_lnames PROC
 ; 932  : 
 ; 933  :     DebugMsg1(("omf_write_lnames() enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12517
+	lea	rcx, OFFSET FLAT:$SG12555
 	call	DoDebugMsg1
 
 ; 934  :     p = buffer;
@@ -4121,14 +3527,14 @@ $LN7@omf_write_:
 ; 967  :             _strupr( p );
 
 	mov	rcx, QWORD PTR p$[rsp]
-	call	QWORD PTR __imp__strupr
+	call	_strupr
 $LN11@omf_write_:
 
 ; 968  :         DebugMsg1(("omf_write_lnames: %u=%s\n", items, p ));
 
 	mov	r8, QWORD PTR p$[rsp]
 	mov	edx, DWORD PTR items$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12523
+	lea	rcx, OFFSET FLAT:$SG12561
 	call	DoDebugMsg1
 
 ; 969  :         p += sym->name_size; /* overwrite the null char */
@@ -4194,42 +3600,33 @@ $LN3@omf_write_:
 ; 979  :     DebugMsg1(("omf_write_lnames() exit, items=%u\n", items ));
 
 	mov	edx, DWORD PTR items$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12527
+	lea	rcx, OFFSET FLAT:$SG12565
 	call	DoDebugMsg1
 
 ; 980  : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:omf_write_lnames$rtcFrameData
-	call	_RTC_CheckStackVars
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 1232				; 000004d0H
-	pop	rdi
+	add	rsp, 1176				; 00000498H
 	ret	0
 omf_write_lnames ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
 curr$ = 80
+tv90 = 88
+tv130 = 92
+tv152 = 96
+buffer$1 = 100
 obj$ = 104
-buffer$5 = 180
-tv90 = 208
-tv130 = 212
-tv152 = 216
-__$ArrayPad$ = 224
+__$ArrayPad$ = 152
 omf_write_segdef PROC
 
 ; 855  : {
 
-	push	rdi
-	sub	rsp, 240				; 000000f0H
-	mov	rdi, rsp
-	mov	ecx, 60					; 0000003cH
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 168				; 000000a8H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -4239,7 +3636,7 @@ omf_write_segdef PROC
 ; 858  : 
 ; 859  :     DebugMsg1(("omf_write_segdef enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12488
+	lea	rcx, OFFSET FLAT:$SG12526
 	call	DoDebugMsg1
 
 ; 860  : 
@@ -4436,7 +3833,7 @@ $LN15@omf_write_:
 	mov	r8d, DWORD PTR obj$[rsp+36]
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12492
+	lea	rcx, OFFSET FLAT:$SG12530
 	call	DoDebugMsg1
 
 ; 887  :                   curr->sym.name,
@@ -4480,7 +3877,7 @@ $LN15@omf_write_:
 ; 905  :             AttachData( &obj, buffer, 3 );
 
 	mov	r8d, 3
-	lea	rdx, QWORD PTR buffer$5[rsp]
+	lea	rdx, QWORD PTR buffer$1[rsp]
 	lea	rcx, QWORD PTR obj$[rsp]
 	call	AttachData
 
@@ -4518,40 +3915,31 @@ $LN3@omf_write_:
 
 ; 913  :     DebugMsg1(("omf_write_segdef exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12494
+	lea	rcx, OFFSET FLAT:$SG12532
 	call	DoDebugMsg1
 
 ; 914  : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:omf_write_segdef$rtcFrameData
-	call	_RTC_CheckStackVars
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 240				; 000000f0H
-	pop	rdi
+	add	rsp, 168				; 000000a8H
 	ret	0
 omf_write_segdef ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
 curr$ = 32
-segminfo$ = 40
-seg$ = 48
-grp$ = 72
-__$ArrayPad$ = 144
+seg$ = 40
+segminfo$ = 48
+grp$ = 56
+__$ArrayPad$ = 104
 omf_write_grpdef PROC
 
 ; 783  : {
 
-	push	rdi
-	sub	rsp, 160				; 000000a0H
-	mov	rdi, rsp
-	mov	ecx, 40					; 00000028H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 120				; 00000078H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -4564,7 +3952,7 @@ omf_write_grpdef PROC
 ; 789  : 
 ; 790  :     DebugMsg1(("omf_write_grpdef enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12463
+	lea	rcx, OFFSET FLAT:$SG12501
 	call	DoDebugMsg1
 
 ; 791  :     //line_num = LineNumber;
@@ -4675,7 +4063,7 @@ $LN7@omf_write_:
 
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	r8, QWORD PTR [rax+8]
-	mov	edx, 266				; 0000010aH
+	mov	edx, 267				; 0000010bH
 	mov	ecx, 2
 	call	EmitWarn
 
@@ -4707,42 +4095,33 @@ $LN3@omf_write_:
 
 ; 823  :     DebugMsg1(("omf_write_grpdef exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12465
+	lea	rcx, OFFSET FLAT:$SG12503
 	call	DoDebugMsg1
 
 ; 824  : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:omf_write_grpdef$rtcFrameData
-	call	_RTC_CheckStackVars
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 160				; 000000a0H
-	pop	rdi
+	add	rsp, 120				; 00000078H
 	ret	0
 omf_write_grpdef ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
 parmcnt$ = 32
+len$ = 36
 dir$ = 40
-parm$ = 48
-obj$ = 72
-len$ = 132
-data$ = 136
-__$ArrayPad$ = 152
+data$ = 48
+parm$ = 56
+obj$ = 64
+__$ArrayPad$ = 112
 omf_write_export PROC
 
 ; 717  : {
 
-	push	rdi
-	sub	rsp, 160				; 000000a0H
-	mov	rdi, rsp
-	mov	ecx, 40					; 00000028H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 136				; 00000088H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -4778,7 +4157,7 @@ $LN4@omf_write_:
 
 	mov	rax, QWORD PTR dir$[rsp]
 	mov	rax, QWORD PTR [rax+96]
-	movzx	eax, BYTE PTR [rax+84]
+	movzx	eax, BYTE PTR [rax+128]
 	shr	al, 2
 	and	al, 1
 	movzx	eax, al
@@ -4864,7 +4243,7 @@ $LN10@omf_write_:
 	mov	rax, QWORD PTR data$[rsp]
 	add	rax, 3
 	mov	rcx, rax
-	call	QWORD PTR __imp__strupr
+	call	_strupr
 $LN11@omf_write_:
 
 ; 755  : #if MAX_ID_LEN > 255
@@ -4960,35 +4339,26 @@ $LN3@omf_write_:
 
 ; 776  : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:omf_write_export$rtcFrameData
-	call	_RTC_CheckStackVars
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 160				; 000000a0H
-	pop	rdi
+	add	rsp, 136				; 00000088H
 	ret	0
 omf_write_export ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
-obj$ = 40
-curr$ = 104
-next$ = 112
-name$ = 120
-__$ArrayPad$ = 136
+curr$ = 32
+name$ = 40
+next$ = 48
+obj$ = 56
+__$ArrayPad$ = 104
 omf_write_lib PROC
 
 ; 643  : {
 
-	push	rdi
-	sub	rsp, 144				; 00000090H
-	mov	rdi, rsp
-	mov	ecx, 36					; 00000024H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 120				; 00000078H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -5000,7 +4370,7 @@ omf_write_lib PROC
 ; 648  : 
 ; 649  :     DebugMsg1(("omf_write_lib() enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12426
+	lea	rcx, OFFSET FLAT:$SG12464
 	call	DoDebugMsg1
 
 ; 650  :     for( curr = ModuleInfo.g.LibQueue.head; curr; curr = next ) {
@@ -5062,37 +4432,28 @@ $LN3@omf_write_:
 
 ; 659  :     DebugMsg1(("omf_write_lib() exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12427
+	lea	rcx, OFFSET FLAT:$SG12465
 	call	DoDebugMsg1
 
 ; 660  : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:omf_write_lib$rtcFrameData
-	call	_RTC_CheckStackVars
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 144				; 00000090H
-	pop	rdi
+	add	rsp, 120				; 00000078H
 	ret	0
 omf_write_lib ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
-obj$ = 40
-__$ArrayPad$ = 112
+obj$ = 32
+__$ArrayPad$ = 80
 omf_write_dosseg PROC
 
 ; 631  : {
 
-	push	rdi
-	sub	rsp, 128				; 00000080H
-	mov	rdi, rsp
-	mov	ecx, 32					; 00000020H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 104				; 00000068H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -5116,7 +4477,7 @@ omf_write_dosseg PROC
 ; 637  :     AttachData( &obj, (uint_8 *)"", 0 );
 
 	xor	r8d, r8d
-	lea	rdx, OFFSET FLAT:$SG12414
+	lea	rdx, OFFSET FLAT:$SG12452
 	lea	rcx, QWORD PTR obj$[rsp]
 	call	AttachData
 
@@ -5127,32 +4488,23 @@ omf_write_dosseg PROC
 
 ; 639  : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:omf_write_dosseg$rtcFrameData
-	call	_RTC_CheckStackVars
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 128				; 00000080H
-	pop	rdi
+	add	rsp, 104				; 00000068H
 	ret	0
 omf_write_dosseg ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
-obj$ = 40
-__$ArrayPad$ = 112
+obj$ = 32
+__$ArrayPad$ = 80
 omf_end_of_pass1 PROC
 
 ; 606  : {
 
-	push	rdi
-	sub	rsp, 128				; 00000080H
-	mov	rdi, rsp
-	mov	ecx, 32					; 00000020H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 104				; 00000068H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -5176,7 +4528,7 @@ omf_end_of_pass1 PROC
 ; 612  :     AttachData( &obj, (uint_8 *)"\x001", 1 );
 
 	mov	r8d, 1
-	lea	rdx, OFFSET FLAT:$SG12405
+	lea	rdx, OFFSET FLAT:$SG12443
 	lea	rcx, QWORD PTR obj$[rsp]
 	call	AttachData
 
@@ -5187,36 +4539,26 @@ omf_end_of_pass1 PROC
 
 ; 614  : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:omf_end_of_pass1$rtcFrameData
-	call	_RTC_CheckStackVars
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 128				; 00000080H
-	pop	rdi
+	add	rsp, 104				; 00000068H
 	ret	0
 omf_end_of_pass1 ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
+len$ = 32
 obj$ = 40
-len$ = 100
-__$ArrayPad$ = 112
-name$ = 144
+__$ArrayPad$ = 88
+name$ = 112
 omf_write_theadr PROC
 
 ; 525  : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 128				; 00000080H
-	mov	rdi, rsp
-	mov	ecx, 32					; 00000020H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+144]
+	sub	rsp, 104				; 00000068H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -5228,7 +4570,7 @@ omf_write_theadr PROC
 ; 530  :     DebugMsg1(("omf_write_theadr(%s) enter\n", name));
 
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12384
+	lea	rcx, OFFSET FLAT:$SG12422
 	call	DoDebugMsg1
 
 ; 531  : 
@@ -5275,43 +4617,33 @@ omf_write_theadr PROC
 ; 542  : 
 ; 543  :     DebugMsg1(("omf_write_theadr() exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12385
+	lea	rcx, OFFSET FLAT:$SG12423
 	call	DoDebugMsg1
 
 ; 544  : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:omf_write_theadr$rtcFrameData
-	call	_RTC_CheckStackVars
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 128				; 00000080H
-	pop	rdi
+	add	rsp, 104				; 00000068H
 	ret	0
 omf_write_theadr ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
-obj$ = 40
-size$ = 100
-tv156 = 112
-tv159 = 116
-__$ArrayPad$ = 120
-seg$ = 144
+size$ = 32
+tv156 = 36
+tv159 = 40
+obj$ = 48
+__$ArrayPad$ = 96
+seg$ = 128
 omf_write_ledata PROC
 
 ; 421  : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 128				; 00000080H
-	mov	rdi, rsp
-	mov	ecx, 32					; 00000020H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+144]
+	sub	rsp, 120				; 00000078H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -5339,7 +4671,7 @@ omf_write_ledata PROC
 	mov	r9d, DWORD PTR size$[rsp]
 	mov	r8d, DWORD PTR [rax+8]
 	mov	rdx, QWORD PTR [rcx+16]
-	lea	rcx, OFFSET FLAT:$SG12362
+	lea	rcx, OFFSET FLAT:$SG12400
 	call	DoDebugMsg1
 
 ; 427  :               seg->e.seginfo->CodeBuffer, seg->e.seginfo->start_loc, size ));
@@ -5649,18 +4981,14 @@ $LN2@omf_write_:
 
 ; 494  : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:omf_write_ledata$rtcFrameData
-	call	_RTC_CheckStackVars
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 128				; 00000080H
-	pop	rdi
+	add	rsp, 120				; 00000078H
 	ret	0
 omf_write_ledata ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
 tv65 = 32
@@ -5671,13 +4999,7 @@ get_omfalign PROC
 ; 828  : {
 
 	mov	BYTE PTR [rsp+8], cl
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	movzx	ecx, BYTE PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 829  :     switch ( alignment ) {
 
@@ -5743,7 +5065,7 @@ $LN2@get_omfali:
 	jmp	SHORT $LN11@get_omfali
 $LN10@get_omfali:
 	mov	edx, 843				; 0000034bH
-	lea	rcx, OFFSET FLAT:$SG12477
+	lea	rcx, OFFSET FLAT:$SG12515
 	call	InternalError
 	mov	DWORD PTR tv78[rsp], eax
 $LN11@get_omfali:
@@ -5755,37 +5077,30 @@ $LN1@get_omfali:
 
 ; 845  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 get_omfalign ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
-data$ = 32
-size$ = 40
-fix$ = 48
-type$ = 56
+size$ = 32
+tv73 = 36
+fix$ = 40
+tv66 = 48
+data$ = 56
+type$ = 64
 obj$ = 72
-tv66 = 144
-tv73 = 148
-__$ArrayPad$ = 152
-seg$ = 176
-is32$ = 184
+__$ArrayPad$ = 120
+seg$ = 144
+is32$ = 152
 omf_write_fixupp PROC
 
 ; 381  : {
 
 	mov	BYTE PTR [rsp+16], dl
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 160				; 000000a0H
-	mov	rdi, rsp
-	mov	ecx, 40					; 00000028H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+176]
+	sub	rsp, 136				; 00000088H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -5953,41 +5268,31 @@ $LN3@omf_write_:
 
 ; 413  : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:omf_write_fixupp$rtcFrameData
-	call	_RTC_CheckStackVars
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 160				; 000000a0H
-	pop	rdi
+	add	rsp, 136				; 00000088H
 	ret	0
 omf_write_fixupp ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
-ofssize$ = 32
-size$ = 36
-data$ = 40
+data$ = 32
+size$ = 40
 node$ = 48
-next$ = 56
-obj$ = 72
-tv66 = 144
-__$ArrayPad$ = 152
-is32$ = 176
+ofssize$ = 56
+tv66 = 64
+next$ = 72
+obj$ = 80
+__$ArrayPad$ = 128
+is32$ = 160
 omf_write_linnum PROC
 
 ; 348  : {
 
 	mov	BYTE PTR [rsp+8], cl
-	push	rdi
-	sub	rsp, 160				; 000000a0H
-	mov	rdi, rsp
-	mov	ecx, 40					; 00000028H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	movzx	ecx, BYTE PTR [rsp+176]
+	sub	rsp, 152				; 00000098H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -6133,18 +5438,14 @@ $LN5@omf_write_:
 ; 376  :     return;
 ; 377  : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:omf_write_linnum$rtcFrameData
-	call	_RTC_CheckStackVars
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 160				; 000000a0H
-	pop	rdi
+	add	rsp, 152				; 00000098H
 	ret	0
 omf_write_linnum ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
 tv67 = 0
@@ -6155,13 +5456,7 @@ omf_GetGrpIdx PROC
 
 $LN5:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 16
-	mov	rdi, rsp
-	mov	ecx, 4
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+32]
+	sub	rsp, 24
 
 ; 277  :     return( sym ? ((struct dsym *)sym)->e.grpinfo->grp_idx : 0 );
 
@@ -6179,12 +5474,11 @@ $LN4@omf_GetGrp:
 
 ; 278  : }
 
-	add	rsp, 16
-	pop	rdi
+	add	rsp, 24
 	ret	0
 omf_GetGrpIdx ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
 tv69 = 32
@@ -6198,13 +5492,7 @@ AttachData PROC
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 257  : /**/myassert( objr->data == NULL );
 
@@ -6215,7 +5503,7 @@ AttachData PROC
 	jmp	SHORT $LN4@AttachData
 $LN3@AttachData:
 	mov	edx, 257				; 00000101H
-	lea	rcx, OFFSET FLAT:$SG12276
+	lea	rcx, OFFSET FLAT:$SG12314
 	call	InternalError
 	mov	DWORD PTR tv69[rsp], eax
 $LN4@AttachData:
@@ -6234,12 +5522,11 @@ $LN4@AttachData:
 
 ; 260  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 AttachData ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
 tv70 = 32
@@ -6253,13 +5540,7 @@ PutName	PROC
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 243  :     /**/myassert( objr != NULL && objr->data != NULL );
 
@@ -6272,7 +5553,7 @@ PutName	PROC
 	jmp	SHORT $LN4@PutName
 $LN3@PutName:
 	mov	edx, 243				; 000000f3H
-	lea	rcx, OFFSET FLAT:$SG12265
+	lea	rcx, OFFSET FLAT:$SG12303
 	call	InternalError
 	mov	DWORD PTR tv70[rsp], eax
 $LN4@PutName:
@@ -6306,12 +5587,11 @@ $LN4@PutName:
 
 ; 252  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 PutName	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
 tv70 = 32
@@ -6325,13 +5605,7 @@ PutData	PROC
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 235  :     /**/myassert( objr != NULL && objr->data != NULL );
 
@@ -6344,7 +5618,7 @@ PutData	PROC
 	jmp	SHORT $LN4@PutData
 $LN3@PutData:
 	mov	edx, 235				; 000000ebH
-	lea	rcx, OFFSET FLAT:$SG12252
+	lea	rcx, OFFSET FLAT:$SG12290
 	call	InternalError
 	mov	DWORD PTR tv70[rsp], eax
 $LN4@PutData:
@@ -6370,12 +5644,11 @@ $LN4@PutData:
 
 ; 238  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 PutData	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
 tv71 = 32
@@ -6387,13 +5660,7 @@ PutIndex PROC
 
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 225  : /**/myassert( objr != NULL && objr->data != NULL && idx <= 0x7FFF );
 
@@ -6408,7 +5675,7 @@ PutIndex PROC
 	jmp	SHORT $LN5@PutIndex
 $LN4@PutIndex:
 	mov	edx, 225				; 000000e1H
-	lea	rcx, OFFSET FLAT:$SG12239
+	lea	rcx, OFFSET FLAT:$SG12277
 	call	InternalError
 	mov	DWORD PTR tv71[rsp], eax
 $LN5@PutIndex:
@@ -6453,12 +5720,11 @@ $LN2@PutIndex:
 
 ; 230  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 PutIndex ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
 tv70 = 32
@@ -6470,13 +5736,7 @@ Put32	PROC
 
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 195  : /**/myassert( objr != NULL && objr->data != NULL );
 
@@ -6489,7 +5749,7 @@ Put32	PROC
 	jmp	SHORT $LN4@Put32
 $LN3@Put32:
 	mov	edx, 195				; 000000c3H
-	lea	rcx, OFFSET FLAT:$SG12229
+	lea	rcx, OFFSET FLAT:$SG12267
 	call	InternalError
 	mov	DWORD PTR tv70[rsp], eax
 $LN4@Put32:
@@ -6514,12 +5774,11 @@ $LN4@Put32:
 
 ; 199  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 Put32	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
 tv70 = 32
@@ -6531,13 +5790,7 @@ Put16	PROC
 
 	mov	WORD PTR [rsp+16], dx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 186  : /**/myassert( objr != NULL && objr->data != NULL );
 
@@ -6550,7 +5803,7 @@ Put16	PROC
 	jmp	SHORT $LN4@Put16
 $LN3@Put16:
 	mov	edx, 186				; 000000baH
-	lea	rcx, OFFSET FLAT:$SG12216
+	lea	rcx, OFFSET FLAT:$SG12254
 	call	InternalError
 	mov	DWORD PTR tv70[rsp], eax
 $LN4@Put16:
@@ -6575,12 +5828,11 @@ $LN4@Put16:
 
 ; 190  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 Put16	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
 tv70 = 32
@@ -6592,13 +5844,7 @@ Put8	PROC
 
 	mov	BYTE PTR [rsp+16], dl
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 179  : /**/myassert( objr != NULL && objr->data != NULL );
 
@@ -6611,7 +5857,7 @@ Put8	PROC
 	jmp	SHORT $LN4@Put8
 $LN3@Put8:
 	mov	edx, 179				; 000000b3H
-	lea	rcx, OFFSET FLAT:$SG12203
+	lea	rcx, OFFSET FLAT:$SG12241
 	call	InternalError
 	mov	DWORD PTR tv70[rsp], eax
 $LN4@Put8:
@@ -6632,30 +5878,23 @@ $LN4@Put8:
 
 ; 181  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 Put8	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
-ltime$ = 32
-dt$ = 56
-tv80 = 68
-x$ = 96
+tv80 = 32
+ltime$ = 40
+dt$ = 48
+x$ = 80
 timet2dostime PROC
 
 ; 162  : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 80					; 00000050H
-	mov	rdi, rsp
-	mov	ecx, 20
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+96]
+	sub	rsp, 72					; 00000048H
 
 ; 163  :     struct tm *    ltime;
 ; 164  :     union DOS_DATETIME dt;
@@ -6711,17 +5950,11 @@ timet2dostime PROC
 
 ; 174  : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:timet2dostime$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
-	add	rsp, 80					; 00000050H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 timet2dostime ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
 obj$ = 48
@@ -6732,13 +5965,7 @@ omf_InitRec PROC
 
 	mov	BYTE PTR [rsp+16], dl
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 151  :     obj->length = 0;
 
@@ -6771,18 +5998,17 @@ omf_InitRec PROC
 	movzx	eax, BYTE PTR command$[rsp]
 	mov	r8d, eax
 	mov	rdx, QWORD PTR obj$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12187
+	lea	rcx, OFFSET FLAT:$SG12225
 	call	DoDebugMsg1
 
 ; 157  :     return;
 ; 158  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 omf_InitRec ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
 is_32$ = 32
@@ -6796,13 +6022,7 @@ omf_check_flush PROC
 
 $LN13:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 72					; 00000048H
 
 ; 563  :     uint_8 is_32;
 ; 564  :     uint_16 size;
@@ -6942,12 +6162,11 @@ $LN1@omf_check_:
 ; 597  :     return;
 ; 598  : };
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 omf_check_flush ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
 tv68 = 32
@@ -6956,12 +6175,7 @@ omf_FlushCurrSeg PROC
 ; 503  : {
 
 $LN6:
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 56					; 00000038H
 
 ; 504  :     //unsigned i;
 ; 505  :     //unsigned size;
@@ -6975,13 +6189,13 @@ $LN6:
 	mov	QWORD PTR tv68[rsp], rax
 	jmp	SHORT $LN5@omf_FlushC
 $LN4@omf_FlushC:
-	lea	rax, OFFSET FLAT:$SG12375
+	lea	rax, OFFSET FLAT:$SG12413
 	mov	QWORD PTR tv68[rsp], rax
 $LN5@omf_FlushC:
 	call	get_curr_srcfile
 	mov	r8d, eax
 	mov	rdx, QWORD PTR tv68[rsp]
-	lea	rcx, OFFSET FLAT:$SG12376
+	lea	rcx, OFFSET FLAT:$SG12414
 	call	DoDebugMsg1
 
 ; 508  : 
@@ -7015,33 +6229,26 @@ $LN2@omf_FlushC:
 ; 518  :     return;
 ; 519  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 omf_FlushCurrSeg ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
+currofs$ = 32
+sel_idx$ = 36
 obj$ = 40
-currofs$ = 100
-sel_idx$ = 104
-buffer$ = 120
-__$ArrayPad$ = 160
-is_data$ = 192
+buffer$ = 88
+__$ArrayPad$ = 104
+is_data$ = 128
 omf_OutSelect PROC
 
 ; 286  : {
 
 $LN12:
 	mov	BYTE PTR [rsp+8], cl
-	push	rdi
-	sub	rsp, 176				; 000000b0H
-	mov	rdi, rsp
-	mov	ecx, 44					; 0000002cH
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	movzx	ecx, BYTE PTR [rsp+192]
+	sub	rsp, 120				; 00000078H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -7103,7 +6310,7 @@ $LN4@omf_OutSel:
 	mov	r8d, DWORD PTR ?sel_start@?1??omf_OutSelect@@9@9
 	mov	rax, QWORD PTR ModuleInfo+432
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12296
+	lea	rcx, OFFSET FLAT:$SG12334
 	call	DoDebugMsg
 	jmp	$LN3@omf_OutSel
 $LN2@omf_OutSel:
@@ -7177,7 +6384,7 @@ $LN2@omf_OutSel:
 
 	mov	r8d, DWORD PTR currofs$[rsp]
 	mov	edx, DWORD PTR ?sel_start@?1??omf_OutSelect@@9@9
-	lea	rcx, OFFSET FLAT:$SG12299
+	lea	rcx, OFFSET FLAT:$SG12337
 	call	DoDebugMsg
 
 ; 318  :             if( ( sel_start > 0xffffUL ) || ( currofs > 0xffffUL ) ) {
@@ -7261,18 +6468,14 @@ $LN1@omf_OutSel:
 ; 332  :     }
 ; 333  : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:omf_OutSelect$rtcFrameData
-	call	_RTC_CheckStackVars
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 176				; 000000b0H
-	pop	rdi
+	add	rsp, 120				; 00000078H
 	ret	0
 omf_OutSelect ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
 omf_set_filepos PROC
@@ -7280,17 +6483,12 @@ omf_set_filepos PROC
 ; 622  : {
 
 $LN3:
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 
 ; 623  :     DebugMsg1(( "omf_set_filepos: reset file pos to %X\n", end_of_header ));
 
 	mov	edx, DWORD PTR end_of_header
-	lea	rcx, OFFSET FLAT:$SG12408
+	lea	rcx, OFFSET FLAT:$SG12446
 	call	DoDebugMsg1
 
 ; 624  : #if MULTIHDR
@@ -7303,16 +6501,15 @@ $LN3:
 	xor	r8d, r8d
 	mov	edx, DWORD PTR end_of_header
 	mov	rcx, QWORD PTR [rcx+rax]
-	call	QWORD PTR __imp_fseek
+	call	fseek
 
 ; 627  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 omf_set_filepos ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omf.c
 _TEXT	SEGMENT
 modinfo$ = 48
@@ -7322,17 +6519,11 @@ omf_init PROC
 
 $LN3:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 1673 :     DebugMsg(("omf_init enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12803
+	lea	rcx, OFFSET FLAT:$SG12841
 	call	DoDebugMsg
 
 ; 1674 :     modinfo->g.WriteModule = omf_write_module;
@@ -7377,12 +6568,11 @@ $LN3:
 ; 1682 :     return;
 ; 1683 : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 omf_init ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\time.h
 _TEXT	SEGMENT
 _Time$ = 48
@@ -7391,26 +6581,19 @@ localtime PROC
 ; 508  :         {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 509  :             #pragma warning(push)
 ; 510  :             #pragma warning(disable: 4996)
 ; 511  :             return _localtime64(_Time);
 
 	mov	rcx, QWORD PTR _Time$[rsp]
-	call	QWORD PTR __imp__localtime64
+	call	_localtime64
 
 ; 512  :             #pragma warning(pop)
 ; 513  :         }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 localtime ENDP
 _TEXT	ENDS

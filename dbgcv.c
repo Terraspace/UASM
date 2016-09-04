@@ -935,7 +935,11 @@ static void cv_write_symbol( struct dbgcv *cv, struct asym *sym )
                             int cnt = proc->e.procinfo->pushed_reg;
                             cnt = cnt * 8;
                             cnt += lcl->sym.offset + proc->e.procinfo->localsize + proc->e.procinfo->xmmsize; //pointing to RSP
-                            cnt -= 8;     //pointing abowe RSP to the shadow space off RCX RDX R8 R9
+                            if (proc->sym.langtype == LANG_VECTORCALL)
+                            cnt += proc->e.procinfo->vsize;     //pointing abowe RSP to the shadow space off RCX RDX R8 R9
+                            //else 
+                              cnt -= 8;
+                              if ((cnt & 7) != 0) cnt = (cnt + 7)&(-8);
                             cv->ps_rr32->offset = cnt;
                           }
                         }

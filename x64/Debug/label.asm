@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 _DATA	SEGMENT
@@ -12,30 +12,30 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10633 DB	'L&_%04u', 00H
-$SG10658 DB	'CreateLabel(%s, memtype=%Xh, %Xh, %u) enter', 0aH, 00H
+$SG10671 DB	'L&_%04u', 00H
+$SG10696 DB	'CreateLabel(%s, memtype=%Xh, %Xh, %u) enter', 0aH, 00H
 	ORG $+3
-$SG10662 DB	'CreateLabel: code label and CS assumed error', 0aH, 00H
+$SG10700 DB	'CreateLabel: code label and CS assumed error', 0aH, 00H
 	ORG $+2
-$SG10664 DB	'L&_%04u', 00H
-$SG10671 DB	'CreateLabel(%s): error, EXTERNDEF for local label', 0aH, 00H
+$SG10702 DB	'L&_%04u', 00H
+$SG10709 DB	'CreateLabel(%s): error, EXTERNDEF for local label', 0aH, 00H
 	ORG $+5
-$SG10673 DB	'CreateLabel(%s): error, memtype conflict %X-%X', 0aH, 00H
-$SG10680 DB	'CreateLabel(%s): memtype MT_PROC detected, sym.isproc=%u'
+$SG10711 DB	'CreateLabel(%s): error, memtype conflict %X-%X', 0aH, 00H
+$SG10718 DB	'CreateLabel(%s): memtype MT_PROC detected, sym.isproc=%u'
 	DB	0aH, 00H
 	ORG $+2
-$SG10705 DB	'NULL', 00H
+$SG10743 DB	'NULL', 00H
 	ORG $+7
-$SG10689 DB	'CreateLabel: Phase error, pass %u, sym >%s< first time, '
+$SG10727 DB	'CreateLabel: Phase error, pass %u, sym >%s< first time, '
 	DB	'new=%X - old=%X', 0aH, 00H
 	ORG $+7
-$SG10690 DB	'CreateLabel: pass %u, sym >%s< changed, new=%X - old=%X', 0aH
+$SG10728 DB	'CreateLabel: pass %u, sym >%s< changed, new=%X - old=%X', 0aH
 	DB	00H
 	ORG $+7
-$SG10706 DB	'LabelDirective(%s): memtype=%Xh, far=%u, ptr=%u, ofssize'
+$SG10744 DB	'LabelDirective(%s): memtype=%Xh, far=%u, ptr=%u, ofssize'
 	DB	'=%u, type=%s)', 0aH, 00H
 	ORG $+1
-$SG10718 DB	'LabelDirective(%s): label created, memtype=%Xh size=%u', 0aH
+$SG10756 DB	'LabelDirective(%s): label created, memtype=%Xh size=%u', 0aH
 	DB	00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
@@ -46,7 +46,7 @@ PUBLIC	LabelInit
 PUBLIC	GetAnonymousLabel
 PUBLIC	CreateLabel
 PUBLIC	LabelDirective
-EXTRN	__imp___stdio_common_vsprintf:PROC
+EXTRN	__stdio_common_vsprintf:PROC
 EXTRN	DoDebugMsg:PROC
 EXTRN	DoDebugMsg1:PROC
 EXTRN	EmitError:PROC
@@ -62,9 +62,6 @@ EXTRN	CopyPrototype:PROC
 EXTRN	GetQualifiedType:PROC
 EXTRN	LstWrite:PROC
 EXTRN	EvalOperand:PROC
-EXTRN	_RTC_CheckStackVars:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
 EXTRN	__GSHandlerCheck:PROC
 EXTRN	__security_check_cookie:PROC
 EXTRN	Options:BYTE
@@ -79,151 +76,69 @@ COMM	?_OptionsStorage@?1??__local_stdio_printf_options@@9@9:QWORD							; `__loc
 _DATA	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$__local_stdio_printf_options DD imagerel $LN3
-	DD	imagerel $LN3+11
-	DD	imagerel $unwind$__local_stdio_printf_options
-pdata	ENDS
-;	COMDAT pdata
-pdata	SEGMENT
 $pdata$_vsnprintf_l DD imagerel $LN5
-	DD	imagerel $LN5+140
+	DD	imagerel $LN5+117
 	DD	imagerel $unwind$_vsnprintf_l
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$_vsprintf_l DD imagerel $LN3
-	DD	imagerel $LN3+88
+	DD	imagerel $LN3+66
 	DD	imagerel $unwind$_vsprintf_l
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$sprintf DD imagerel $LN3
-	DD	imagerel $LN3+120
+	DD	imagerel $LN3+79
 	DD	imagerel $unwind$sprintf
 pdata	ENDS
 pdata	SEGMENT
-$pdata$LabelInit DD imagerel $LN3
-	DD	imagerel $LN3+14
-	DD	imagerel $unwind$LabelInit
 $pdata$GetAnonymousLabel DD imagerel $LN3
-	DD	imagerel $LN3+79
+	DD	imagerel $LN3+57
 	DD	imagerel $unwind$GetAnonymousLabel
 $pdata$CreateLabel DD imagerel $LN30
-	DD	imagerel $LN30+1474
+	DD	imagerel $LN30+1422
 	DD	imagerel $unwind$CreateLabel
 $pdata$LabelDirective DD imagerel $LN21
-	DD	imagerel $LN21+1004
+	DD	imagerel $LN21+929
 	DD	imagerel $unwind$LabelDirective
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
-CONST	SEGMENT
-CreateLabel$rtcName$0 DB 062H
-	DB	075H
-	DB	066H
-	DB	066H
-	DB	065H
-	DB	072H
-	DB	00H
-	ORG $+9
-CreateLabel$rtcVarDesc DD 048H
-	DD	014H
-	DQ	FLAT:CreateLabel$rtcName$0
-	ORG $+48
-CreateLabel$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:CreateLabel$rtcVarDesc
-LabelDirective$rtcName$0 DB 074H
-	DB	069H
-	DB	00H
-	ORG $+1
-LabelDirective$rtcName$1 DB 06fH
-	DB	070H
-	DB	06eH
-	DB	064H
-	DB	00H
-	ORG $+7
-LabelDirective$rtcVarDesc DD 0a0H
-	DD	068H
-	DQ	FLAT:LabelDirective$rtcName$1
-	DD	048H
-	DD	020H
-	DQ	FLAT:LabelDirective$rtcName$0
-	ORG $+96
-LabelDirective$rtcFrameData DD 02H
-	DD	00H
-	DQ	FLAT:LabelDirective$rtcVarDesc
-CONST	ENDS
 xdata	SEGMENT
-$unwind$LabelInit DD 010201H
-	DD	07002H
-$unwind$GetAnonymousLabel DD 022201H
-	DD	0700a320eH
-$unwind$CreateLabel DD 024119H
-	DD	07014f21bH
+$unwind$GetAnonymousLabel DD 010d01H
+	DD	0420dH
+$unwind$CreateLabel DD 012619H
+	DD	0e217H
 	DD	imagerel __GSHandlerCheck
-	DD	078H
-$unwind$LabelDirective DD 032701H
-	DD	0260111H
-	DD	0700aH
+	DD	060H
+$unwind$LabelDirective DD 021001H
+	DD	01f0110H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$sprintf DD 022d01H
-	DD	070159219H
-xdata	ENDS
-;	COMDAT CONST
-CONST	SEGMENT
-sprintf$rtcName$0 DB 05fH
-	DB	041H
-	DB	072H
-	DB	067H
-	DB	04cH
-	DB	069H
-	DB	073H
-	DB	074H
-	DB	00H
-	ORG $+7
-sprintf$rtcVarDesc DD 038H
-	DD	08H
-	DQ	FLAT:sprintf$rtcName$0
-	ORG $+48
-sprintf$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:sprintf$rtcVarDesc
-CONST	ENDS
-;	COMDAT xdata
-xdata	SEGMENT
-$unwind$_vsprintf_l DD 022d01H
-	DD	070155219H
+$unwind$sprintf DD 011801H
+	DD	06218H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$_vsnprintf_l DD 022d01H
-	DD	070157219H
+$unwind$_vsprintf_l DD 011801H
+	DD	06218H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$__local_stdio_printf_options DD 010201H
-	DD	07002H
+$unwind$_vsnprintf_l DD 011801H
+	DD	08218H
 xdata	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\label.c
 _TEXT	SEGMENT
-ti$ = 72
-sym$ = 120
-length$ = 128
-opnd$5 = 160
-tv80 = 280
-tv89 = 288
-i$ = 320
-tokenarray$ = 328
+sym$ = 64
+length$ = 72
+ti$ = 80
+tv80 = 112
+tv89 = 120
+opnd$1 = 128
+i$ = 256
+tokenarray$ = 264
 LabelDirective PROC
 
 ; 208  : {
@@ -231,13 +146,7 @@ LabelDirective PROC
 $LN21:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 304				; 00000130H
-	mov	rdi, rsp
-	mov	ecx, 76					; 0000004cH
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+320]
+	sub	rsp, 248				; 000000f8H
 
 ; 209  :     struct qualified_type ti;
 ; 210  :     struct asym *sym;
@@ -324,7 +233,7 @@ $LN3@LabelDirec:
 	mov	QWORD PTR tv80[rsp], rax
 	jmp	SHORT $LN20@LabelDirec
 $LN19@LabelDirec:
-	lea	rax, OFFSET FLAT:$SG10705
+	lea	rax, OFFSET FLAT:$SG10743
 	mov	QWORD PTR tv80[rsp], rax
 $LN20@LabelDirec:
 	movzx	eax, BYTE PTR ti$[rsp+22]
@@ -342,7 +251,7 @@ $LN20@LabelDirec:
 	mov	rax, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR tv89[rsp]
 	mov	rdx, QWORD PTR [rax+rcx+8]
-	lea	rcx, OFFSET FLAT:$SG10706
+	lea	rcx, OFFSET FLAT:$SG10744
 	call	DoDebugMsg1
 
 ; 232  :                tokenarray[0].string_ptr, ti.mem_type, ti.is_far, ti.is_ptr, ti.Ofssize, ti.symtype ? ti.symtype->name : "NULL" ));
@@ -417,7 +326,7 @@ $LN4@LabelDirec:
 ; 249  :         if ( EvalOperand( &i, tokenarray, Token_Count, &opnd, 0 ) == ERROR )
 
 	mov	BYTE PTR [rsp+32], 0
-	lea	r9, QWORD PTR opnd$5[rsp]
+	lea	r9, QWORD PTR opnd$1[rsp]
 	mov	r8d, DWORD PTR ModuleInfo+496
 	mov	rdx, QWORD PTR tokenarray$[rsp]
 	lea	rcx, QWORD PTR i$[rsp]
@@ -433,20 +342,20 @@ $LN8@LabelDirec:
 
 ; 251  :         if ( opnd.kind != EXPR_CONST ) {
 
-	cmp	DWORD PTR opnd$5[rsp+60], 0
+	cmp	DWORD PTR opnd$1[rsp+60], 0
 	je	SHORT $LN9@LabelDirec
 
 ; 252  :             if ( opnd.sym && opnd.sym->state == SYM_UNDEFINED )
 
-	cmp	QWORD PTR opnd$5[rsp+80], 0
+	cmp	QWORD PTR opnd$1[rsp+80], 0
 	je	SHORT $LN10@LabelDirec
-	mov	rax, QWORD PTR opnd$5[rsp+80]
+	mov	rax, QWORD PTR opnd$1[rsp+80]
 	cmp	DWORD PTR [rax+32], 0
 	jne	SHORT $LN10@LabelDirec
 
 ; 253  :                 opnd.value = 1;
 
-	mov	DWORD PTR opnd$5[rsp], 1
+	mov	DWORD PTR opnd$1[rsp], 1
 	jmp	SHORT $LN11@LabelDirec
 $LN10@LabelDirec:
 
@@ -463,7 +372,7 @@ $LN9@LabelDirec:
 ; 257  :         }
 ; 258  :         length = opnd.value;
 
-	mov	eax, DWORD PTR opnd$5[rsp]
+	mov	eax, DWORD PTR opnd$1[rsp]
 	mov	DWORD PTR length$[rsp], eax
 $LN7@LabelDirec:
 $LN5@LabelDirec:
@@ -532,7 +441,7 @@ $LN13@LabelDirec:
 	mov	r8d, DWORD PTR [rax+36]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10718
+	lea	rcx, OFFSET FLAT:$SG10756
 	call	DoDebugMsg1
 
 ; 272  :         /* sym->isdata must be 0, else the LABEL directive was generated within data_item()
@@ -616,28 +525,22 @@ $LN1@LabelDirec:
 
 ; 291  : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:LabelDirective$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
-	add	rsp, 304				; 00000130H
-	pop	rdi
+	add	rsp, 248				; 000000f8H
 	ret	0
 LabelDirective ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\label.c
 _TEXT	SEGMENT
 sym$ = 48
 addr$ = 56
+tv135 = 64
 buffer$ = 72
-tv135 = 112
-__$ArrayPad$ = 120
-name$ = 144
-mem_type$ = 152
-ti$ = 160
-bLocal$ = 168
+__$ArrayPad$ = 96
+name$ = 128
+mem_type$ = 136
+ti$ = 144
+bLocal$ = 152
 CreateLabel PROC
 
 ; 77   : {
@@ -647,13 +550,7 @@ $LN30:
 	mov	QWORD PTR [rsp+24], r8
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 128				; 00000080H
-	mov	rdi, rsp
-	mov	ecx, 32					; 00000020H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+144]
+	sub	rsp, 120				; 00000078H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -669,7 +566,7 @@ $LN30:
 	mov	r9, QWORD PTR ti$[rsp]
 	mov	r8d, DWORD PTR mem_type$[rsp]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10658
+	lea	rcx, OFFSET FLAT:$SG10696
 	call	DoDebugMsg1
 
 ; 83   : 
@@ -712,7 +609,7 @@ $LN2@CreateLabe:
 
 ; 94   :             DebugMsg(("CreateLabel: code label and CS assumed error\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG10662
+	lea	rcx, OFFSET FLAT:$SG10700
 	call	DoDebugMsg
 
 ; 95   :             EmitError( USE_OF_REGISTER_ASSUMED_TO_ERROR );
@@ -758,7 +655,7 @@ $LN3@CreateLabe:
 	inc	eax
 	mov	DWORD PTR ModuleInfo+268, eax
 	mov	r8d, DWORD PTR ModuleInfo+268
-	lea	rdx, OFFSET FLAT:$SG10664
+	lea	rdx, OFFSET FLAT:$SG10702
 	lea	rcx, QWORD PTR buffer$[rsp]
 	call	sprintf
 
@@ -832,7 +729,7 @@ $LN11@CreateLabe:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10671
+	lea	rcx, OFFSET FLAT:$SG10709
 	call	DoDebugMsg
 
 ; 118  :                 EmitErr( SYMBOL_REDEFINITION, name );
@@ -867,7 +764,7 @@ $LN10@CreateLabe:
 	mov	r8d, DWORD PTR [rax+36]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10673
+	lea	rcx, OFFSET FLAT:$SG10711
 	call	DoDebugMsg
 
 ; 125  :                 EmitErr( SYMBOL_TYPE_CONFLICT, name );
@@ -999,7 +896,7 @@ $LN17@CreateLabe:
 	mov	r8d, eax
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10680
+	lea	rcx, OFFSET FLAT:$SG10718
 	call	DoDebugMsg1
 
 ; 154  :             if ( sym->isproc == FALSE ) {
@@ -1193,7 +1090,7 @@ $LN23@CreateLabe:
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	r8, QWORD PTR [rcx+8]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG10689
+	lea	rcx, OFFSET FLAT:$SG10727
 	call	DoDebugMsg
 	jmp	SHORT $LN26@CreateLabe
 $LN25@CreateLabe:
@@ -1210,7 +1107,7 @@ $LN25@CreateLabe:
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	r8, QWORD PTR [rcx+8]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG10690
+	lea	rcx, OFFSET FLAT:$SG10728
 	call	DoDebugMsg
 $LN26@CreateLabe:
 
@@ -1233,20 +1130,14 @@ $LN1@CreateLabe:
 
 ; 200  : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:CreateLabel$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 128				; 00000080H
-	pop	rdi
+	add	rsp, 120				; 00000078H
 	ret	0
 CreateLabel ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\label.c
 _TEXT	SEGMENT
 buffer$ = 48
@@ -1258,13 +1149,7 @@ GetAnonymousLabel PROC
 $LN3:
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 64   :     sprintf( buffer, "L&_%04u", ModuleInfo.g.anonymous_label + value );
 
@@ -1273,7 +1158,7 @@ $LN3:
 	add	ecx, eax
 	mov	eax, ecx
 	mov	r8d, eax
-	lea	rdx, OFFSET FLAT:$SG10633
+	lea	rdx, OFFSET FLAT:$SG10671
 	mov	rcx, QWORD PTR buffer$[rsp]
 	call	sprintf
 
@@ -1283,20 +1168,14 @@ $LN3:
 
 ; 66   : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 GetAnonymousLabel ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\label.c
 _TEXT	SEGMENT
 LabelInit PROC
-
-; 57   : {
-
-$LN3:
-	push	rdi
 
 ; 58   :     ModuleInfo.g.anonymous_label = 0;
 
@@ -1304,18 +1183,17 @@ $LN3:
 
 ; 59   : }
 
-	pop	rdi
 	ret	0
 LabelInit ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT sprintf
 _TEXT	SEGMENT
 _Result$ = 32
-_ArgList$ = 56
-_Buffer$ = 96
-_Format$ = 104
+_ArgList$ = 40
+_Buffer$ = 64
+_Format$ = 72
 sprintf	PROC						; COMDAT
 
 ; 1776 : {
@@ -1325,13 +1203,7 @@ $LN3:
 	mov	QWORD PTR [rsp+8], rcx
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+32], r9
-	push	rdi
-	sub	rsp, 80					; 00000050H
-	mov	rdi, rsp
-	mov	ecx, 20
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+96]
+	sub	rsp, 56					; 00000038H
 
 ; 1777 :     int _Result;
 ; 1778 :     va_list _ArgList;
@@ -1364,17 +1236,11 @@ $LN3:
 
 ; 1788 : }
 
-	mov	edi, eax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:sprintf$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	eax, edi
-	add	rsp, 80					; 00000050H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 sprintf	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT _vsprintf_l
 _TEXT	SEGMENT
@@ -1391,13 +1257,7 @@ $LN3:
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 1456 :     #pragma warning(push)
 ; 1457 :     #pragma warning(disable: 4996) // Deprecation
@@ -1414,12 +1274,11 @@ $LN3:
 ; 1459 :     #pragma warning(pop)
 ; 1460 : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 _vsprintf_l ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT _vsnprintf_l
 _TEXT	SEGMENT
@@ -1439,13 +1298,7 @@ $LN5:
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 72					; 00000048H
 
 ; 1386 :     int const _Result = __stdio_common_vsprintf(
 
@@ -1460,7 +1313,7 @@ $LN5:
 	mov	r8, QWORD PTR _BufferCount$[rsp]
 	mov	rdx, QWORD PTR _Buffer$[rsp]
 	mov	rcx, rax
-	call	QWORD PTR __imp___stdio_common_vsprintf
+	call	__stdio_common_vsprintf
 	mov	DWORD PTR _Result$[rsp], eax
 
 ; 1387 :         _CRT_INTERNAL_LOCAL_PRINTF_OPTIONS | _CRT_INTERNAL_PRINTF_LEGACY_VSPRINTF_NULL_TERMINATION,
@@ -1480,21 +1333,15 @@ $LN4@vsnprintf_:
 
 ; 1391 : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 _vsnprintf_l ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\corecrt_stdio_config.h
 ;	COMDAT __local_stdio_printf_options
 _TEXT	SEGMENT
 __local_stdio_printf_options PROC			; COMDAT
-
-; 73   : {
-
-$LN3:
-	push	rdi
 
 ; 74   :     static unsigned __int64 _OptionsStorage;
 ; 75   :     return &_OptionsStorage;
@@ -1503,7 +1350,6 @@ $LN3:
 
 ; 76   : }
 
-	pop	rdi
 	ret	0
 __local_stdio_printf_options ENDP
 _TEXT	ENDS

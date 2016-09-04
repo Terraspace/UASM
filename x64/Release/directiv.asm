@@ -66,7 +66,7 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11220 DB	'%s', 0aH, 00H
+$SG11243 DB	'%s', 0aH, 00H
 _DATA	ENDS
 CONST	SEGMENT
 directive_tab DQ FLAT:CondAsmDirective
@@ -580,9 +580,9 @@ $LN2@NameDirect:
 	cmp	al, 3
 	jne	SHORT $LN5@NameDirect
 	mov	eax, DWORD PTR [rdx+16]
-	cmp	eax, 440				; 000001b8H
+	cmp	eax, 441				; 000001b9H
 	je	SHORT $LN4@NameDirect
-	add	eax, -421				; fffffe5bH
+	add	eax, -422				; fffffe5aH
 	cmp	eax, 4
 	jbe	SHORT $LN4@NameDirect
 
@@ -1222,7 +1222,7 @@ $LN8:
 ; 58   :             printf( "%s\n", tokenarray[i+1].tokpos );
 
 	movsxd	rdx, ecx
-	lea	rcx, OFFSET FLAT:$SG11220
+	lea	rcx, OFFSET FLAT:$SG11243
 	shl	rdx, 5
 	mov	rdx, QWORD PTR [rdx+rax+56]
 	call	printf

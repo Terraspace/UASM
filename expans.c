@@ -1141,9 +1141,15 @@ static ret_code ExpandToken( char *line, int *pi, struct asm_tok tokenarray[], i
     struct asym *sym;
     ret_code rc = NOT_ERROR;
     char buffer[MAX_LINE_LEN];
+	char inLocal = FALSE;
 
     for ( ; i < max && tokenarray[i].token != T_COMMA; i++ ) {
-        /* v2.05: the '%' should only be handled as an operator if addbrackets==TRUE,
+    
+		if (strcasecmp(tokenarray[i].string_ptr, "LOCAL") == 0)
+		{
+			inLocal = TRUE;
+		}
+		/* v2.05: the '%' should only be handled as an operator if addbrackets==TRUE,
          * which means that the current directive is a preprocessor directive and the
          * expected argument is a literal (or text macro).
          */
@@ -1156,7 +1162,10 @@ static ret_code ExpandToken( char *line, int *pi, struct asm_tok tokenarray[], i
             continue;
         }
         if( tokenarray[i].token == T_ID ) {
-            sym = SymSearch( tokenarray[i].string_ptr );
+			if(inLocal == TRUE)
+				sym = SymFindDeclare(tokenarray[i].string_ptr);
+			else
+				sym = SymSearch( tokenarray[i].string_ptr );
             DebugMsg1(("ExpandToken: testing id >%s< equmode=%u\n", tokenarray[i].string_ptr, equmode ));
             /* don't check isdefined flag (which cannot occur in pass one, and this code usually runs
              * in pass one only!

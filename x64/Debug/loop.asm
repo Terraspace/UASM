@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 _DATA	SEGMENT
@@ -12,38 +12,38 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG10991 DB	01H DUP (?)
+$SG11029 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG10965 DB	'LoopDirective(%s) enter', 0aH, 00H
+$SG11003 DB	'LoopDirective(%s) enter', 0aH, 00H
 	ORG $+7
-$SG10973 DB	'LoopDirective(%s): invalid argument type %u', 0aH, 00H
+$SG11011 DB	'LoopDirective(%s): invalid argument type %u', 0aH, 00H
 	ORG $+3
-$SG10978 DB	'LoopDirective(FOR/FORC): token %s is not a valid paramet'
+$SG11016 DB	'LoopDirective(FOR/FORC): token %s is not a valid paramet'
 	DB	'er name', 0aH, 00H
 	ORG $+7
-$SG10990 DB	'LoopDirective(FOR): param string >%s<', 0aH, 00H
+$SG11028 DB	'LoopDirective(FOR): param string >%s<', 0aH, 00H
 	ORG $+1
-$SG10992 DB	'LoopDirective(%s): calling StoreMacro', 0aH, 00H
+$SG11030 DB	'LoopDirective(%s): calling StoreMacro', 0aH, 00H
 	ORG $+1
-$SG10997 DB	'LoopDirective REPT: iteration=%u', 0aH, 00H
+$SG11035 DB	'LoopDirective REPT: iteration=%u', 0aH, 00H
 	ORG $+6
-$SG10999 DB	'LoopDirective WHILE: cnt=%u', 0aH, 00H
+$SG11037 DB	'LoopDirective WHILE: cnt=%u', 0aH, 00H
 	ORG $+3
-$SG11009 DB	'LoopDirective FORC: call RunMacro(), cnt=%u, param=>%s<', 0aH
+$SG11047 DB	'LoopDirective FORC: call RunMacro(), cnt=%u, param=>%s<', 0aH
 	DB	00H
 	ORG $+7
-$SG11011 DB	'LoopDirective FOR: full param=>%s<', 0aH, 00H
+$SG11049 DB	'LoopDirective FOR: full param=>%s<', 0aH, 00H
 	ORG $+4
-$SG11013 DB	'LoopDirective FOR: cnt=%u, calling RunMacro( param=>%s< '
+$SG11051 DB	'LoopDirective FOR: cnt=%u, calling RunMacro( param=>%s< '
 	DB	')', 0aH, 00H
 	ORG $+5
-$SG11016 DB	'LoopDirective(%s) exit', 0aH, 00H
+$SG11054 DB	'LoopDirective(%s) exit', 0aH, 00H
 _DATA	ENDS
 PUBLIC	LoopDirective
 EXTRN	__report_rangecheckfailure:PROC
-EXTRN	__imp_isalpha:PROC
-EXTRN	__imp_isspace:PROC
+EXTRN	isalpha:PROC
+EXTRN	isspace:PROC
 EXTRN	memcpy:PROC
 EXTRN	memset:PROC
 EXTRN	strlen:PROC
@@ -59,196 +59,63 @@ EXTRN	ReleaseMacroData:PROC
 EXTRN	StoreMacro:PROC
 EXTRN	LstWriteSrcLine:PROC
 EXTRN	GetResWName:PROC
-EXTRN	_RTC_AllocaHelper:PROC
-EXTRN	_RTC_CheckStackVars2:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
-EXTRN	_RTC_UninitUse:PROC
 EXTRN	__GSHandlerCheck:PROC
 EXTRN	__chkstk:PROC
 EXTRN	__security_check_cookie:PROC
 EXTRN	ModuleInfo:BYTE
 EXTRN	__security_cookie:QWORD
 pdata	SEGMENT
-$pdata$LoopDirective DD imagerel $LN85
-	DD	imagerel $LN85+4377
+$pdata$LoopDirective DD imagerel $LN73
+	DD	imagerel $LN73+3672
 	DD	imagerel $unwind$LoopDirective
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
 xdata	SEGMENT
-$unwind$LoopDirective DD 035053e19H
-	DD	01123317H
-	DD	0700b0053H
-	DD	0500aH
+$unwind$LoopDirective DD 035042719H
+	DD	01113316H
+	DD	0500a0038H
 	DD	imagerel __GSHandlerCheck
-	DD	0280H
+	DD	01b0H
 xdata	ENDS
-CONST	SEGMENT
-LoopDirective$rtcName$0 DB 070H
-	DB	061H
-	DB	072H
-	DB	06dH
-	DB	073H
-	DB	074H
-	DB	072H
-	DB	069H
-	DB	06eH
-	DB	067H
-	DB	00H
-	ORG $+5
-LoopDirective$rtcName$1 DB 061H
-	DB	072H
-	DB	067H
-	DB	05fH
-	DB	06cH
-	DB	06fH
-	DB	063H
-	DB	00H
-LoopDirective$rtcName$2 DB 06fH
-	DB	070H
-	DB	06eH
-	DB	064H
-	DB	00H
-	ORG $+3
-LoopDirective$rtcName$3 DB 069H
-	DB	073H
-	DB	05fH
-	DB	065H
-	DB	078H
-	DB	069H
-	DB	074H
-	DB	06dH
-	DB	00H
-	ORG $+7
-LoopDirective$rtcName$4 DB 06dH
-	DB	061H
-	DB	063H
-	DB	069H
-	DB	06eH
-	DB	066H
-	DB	06fH
-	DB	00H
-LoopDirective$rtcName$5 DB 074H
-	DB	06dH
-	DB	070H
-	DB	06dH
-	DB	061H
-	DB	063H
-	DB	072H
-	DB	06fH
-	DB	00H
-	ORG $+3
-LoopDirective$rtcName$6 DB 062H
-	DB	075H
-	DB	066H
-	DB	066H
-	DB	065H
-	DB	072H
-	DB	00H
-	ORG $+5
-LoopDirective$rtcName$7 DB 05fH
-	DB	05fH
-	DB	024H
-	DB	041H
-	DB	06cH
-	DB	06cH
-	DB	06fH
-	DB	063H
-	DB	061H
-	DB	050H
-	DB	061H
-	DB	064H
-	DB	024H
-	DB	00H
-	ORG $+2
-LoopDirective$rtcVarDesc DD 0238H
-	DD	08H
-	DQ	FLAT:LoopDirective$rtcName$7
-	DD	01f4H
-	DD	04H
-	DQ	FLAT:LoopDirective$rtcName$6
-	DD	0160H
-	DD	078H
-	DQ	FLAT:LoopDirective$rtcName$5
-	DD	0118H
-	DD	020H
-	DQ	FLAT:LoopDirective$rtcName$4
-	DD	064H
-	DD	01H
-	DQ	FLAT:LoopDirective$rtcName$3
-	DD	090H
-	DD	068H
-	DQ	FLAT:LoopDirective$rtcName$2
-	ORG $+288
-LoopDirective$rtcFrameData DD 06H
-	DD	00H
-	DQ	FLAT:LoopDirective$rtcVarDesc
-CONST	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\loop.c
 _TEXT	SEGMENT
-directive$ = 0
-arg_loc$ = 4
-len$ = 8
-parmstring$ = 16
+is_exitm$ = 0
+buffer$ = 4
+count$ = 8
+len$ = 12
+macro$ = 16
 ptr$ = 24
-macro$ = 32
-is_exitm$ = 52
-opnd$ = 96
-macinfo$ = 232
-tmpmacro$ = 304
-count$ = 436
-buffer$ = 452
-ptr2$11 = 472
-$T12 = 488
-$T13 = 496
-$T14 = 504
-$T15 = 505
-$T16 = 506
-__$AllocaPad$$ = 520
-tv77 = 532
-tv198 = 536
-tv667 = 544
-tv254 = 552
-tv704 = 560
-tv302 = 568
-tv410 = 576
-tv434 = 580
-tv534 = 584
-tv619 = 588
-__$ArrayPad$ = 592
-i$ = 640
-tokenarray$ = 648
+directive$ = 32
+tv410 = 36
+parmstring$ = 40
+tv77 = 48
+arg_loc$ = 52
+tv198 = 56
+ptr2$1 = 64
+tv434 = 72
+tv534 = 76
+tv619 = 80
+$T2 = 88
+$T3 = 96
+macinfo$ = 104
+opnd$ = 144
+tmpmacro$ = 256
+__$ArrayPad$ = 384
+i$ = 416
+tokenarray$ = 424
 LoopDirective PROC
 
 ; 26   : {
 
-$LN85:
+$LN73:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
 	push	rbp
-	push	rdi
-	sub	rsp, 664				; 00000298H
+	sub	rsp, 448				; 000001c0H
 	lea	rbp, QWORD PTR [rsp+48]
-	mov	rdi, rsp
-	mov	ecx, 166				; 000000a6H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+696]
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rbp
 	mov	QWORD PTR __$ArrayPad$[rbp], rax
-	mov	QWORD PTR __$AllocaPad$$[rbp], 0
-	mov	BYTE PTR $T16[rbp], 0
-	mov	BYTE PTR $T14[rbp], 0
-	mov	BYTE PTR $T15[rbp], 0
 
 ; 27   :     int directive = tokenarray[i].tokval;
 
@@ -284,7 +151,7 @@ $LN85:
 	mov	ecx, DWORD PTR directive$[rbp]
 	call	GetResWName
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG10965
+	lea	rcx, OFFSET FLAT:$SG11003
 	call	DoDebugMsg1
 
 ; 46   : 
@@ -309,11 +176,11 @@ $LN23@LoopDirect:
 
 	mov	eax, DWORD PTR directive$[rbp]
 	mov	DWORD PTR tv77[rbp], eax
-	cmp	DWORD PTR tv77[rbp], 389		; 00000185H
+	cmp	DWORD PTR tv77[rbp], 394		; 0000018aH
 	jl	$LN31@LoopDirect
-	cmp	DWORD PTR tv77[rbp], 390		; 00000186H
+	cmp	DWORD PTR tv77[rbp], 395		; 0000018bH
 	jle	SHORT $LN25@LoopDirect
-	cmp	DWORD PTR tv77[rbp], 391		; 00000187H
+	cmp	DWORD PTR tv77[rbp], 396		; 0000018cH
 	je	SHORT $LN24@LoopDirect
 	jmp	$LN31@LoopDirect
 $LN24@LoopDirect:
@@ -321,7 +188,6 @@ $LN24@LoopDirect:
 ; 51   :     case T_WHILE:
 ; 52   :         arg_loc = i;
 
-	mov	BYTE PTR $T14[rbp], 1
 	mov	eax, DWORD PTR i$[rbp]
 	mov	DWORD PTR arg_loc$[rbp], eax
 $LN25@LoopDirect:
@@ -334,7 +200,6 @@ $LN25@LoopDirect:
 ; 58   :          */
 ; 59   :         if ( EvalOperand( &i, tokenarray, Token_Count, &opnd, EXPF_NOUNDEF ) == ERROR ) {
 
-	mov	BYTE PTR $T15[rbp], 1
 	mov	BYTE PTR [rsp+32], 2
 	lea	r9, QWORD PTR opnd$[rbp]
 	mov	r8d, DWORD PTR ModuleInfo+496
@@ -346,7 +211,6 @@ $LN25@LoopDirect:
 
 ; 60   :             opnd.value = 0;
 
-	mov	BYTE PTR $T15[rbp], 1
 	mov	DWORD PTR opnd$[rbp], 0
 
 ; 61   :             i = Token_Count;
@@ -368,7 +232,7 @@ $LN26@LoopDirect:
 	call	GetResWName
 	mov	r8d, DWORD PTR opnd$[rbp+60]
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG10973
+	lea	rcx, OFFSET FLAT:$SG11011
 	call	DoDebugMsg
 
 ; 64   :             EmitError( CONSTANT_EXPECTED );
@@ -378,7 +242,6 @@ $LN26@LoopDirect:
 
 ; 65   :             opnd.value = 0;
 
-	mov	BYTE PTR $T15[rbp], 1
 	mov	DWORD PTR opnd$[rbp], 0
 	jmp	SHORT $LN29@LoopDirect
 $LN28@LoopDirect:
@@ -405,7 +268,6 @@ $LN28@LoopDirect:
 ; 69   :             //return( ERROR );
 ; 70   :             opnd.value = 0;
 
-	mov	BYTE PTR $T15[rbp], 1
 	mov	DWORD PTR opnd$[rbp], 0
 $LN30@LoopDirect:
 $LN29@LoopDirect:
@@ -457,7 +319,7 @@ $LN32@LoopDirect:
 	mov	rax, QWORD PTR [rcx+rax+8]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isalpha
+	call	isalpha
 	test	eax, eax
 	jne	$LN64@LoopDirect
 	movsxd	rax, DWORD PTR i$[rbp]
@@ -515,7 +377,7 @@ $LN66@LoopDirect:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rbp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG10978
+	lea	rcx, OFFSET FLAT:$SG11016
 	call	DoDebugMsg
 
 ; 87   :             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
@@ -532,7 +394,6 @@ $LN33@LoopDirect:
 ; 88   :         }
 ; 89   :         arg_loc = i;
 
-	mov	BYTE PTR $T14[rbp], 1
 	mov	eax, DWORD PTR i$[rbp]
 	mov	DWORD PTR arg_loc$[rbp], eax
 
@@ -545,9 +406,9 @@ $LN33@LoopDirect:
 ; 91   : 
 ; 92   :         if( directive == T_FORC || directive == T_IRPC ) {
 
-	cmp	DWORD PTR directive$[rbp], 386		; 00000182H
+	cmp	DWORD PTR directive$[rbp], 391		; 00000187H
 	je	SHORT $LN36@LoopDirect
-	cmp	DWORD PTR directive$[rbp], 388		; 00000184H
+	cmp	DWORD PTR directive$[rbp], 393		; 00000189H
 	jne	$LN34@LoopDirect
 $LN36@LoopDirect:
 
@@ -613,36 +474,22 @@ $LN37@LoopDirect:
 ; 100  :                 parmstring = myalloca( len );
 
 	movsxd	rax, DWORD PTR len$[rbp]
-	add	rax, 36					; 00000024H
-	mov	QWORD PTR tv667[rbp], rax
-	mov	rax, QWORD PTR tv667[rbp]
-	add	rax, 15
-	cmp	rax, QWORD PTR tv667[rbp]
-	ja	SHORT $LN84@LoopDirect
-	mov	rax, 1152921504606846960		; 0ffffffffffffff0H
-$LN84@LoopDirect:
-	and	rax, -16
+	mov	rcx, rax
+	add	rcx, 15
+	cmp	rcx, rax
+	ja	SHORT $LN72@LoopDirect
+	mov	rcx, 1152921504606846960		; 0ffffffffffffff0H
+$LN72@LoopDirect:
+	and	rcx, -16
+	mov	rax, rcx
 	call	__chkstk
 	sub	rsp, rax
 	lea	rax, QWORD PTR [rsp+48]
-	mov	QWORD PTR tv254[rbp], rax
-	lea	r8, QWORD PTR __$AllocaPad$$[rbp]
-	mov	rdx, QWORD PTR tv667[rbp]
-	mov	rcx, QWORD PTR tv254[rbp]
-	call	_RTC_AllocaHelper
-	add	QWORD PTR tv254[rbp], 32		; 00000020H
-	mov	BYTE PTR $T16[rbp], 1
-	mov	rax, QWORD PTR tv254[rbp]
 	mov	QWORD PTR parmstring$[rbp], rax
 
 ; 101  :                 //GetLiteralValue( parmstring, tokenarray[i].string_ptr );
 ; 102  :                 memcpy( parmstring, tokenarray[i].tokpos+1, len );
 
-	cmp	BYTE PTR $T16[rbp], 0
-	jne	SHORT $LN71@LoopDirect
-	lea	rcx, OFFSET FLAT:LoopDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN71@LoopDirect:
 	movsxd	rax, DWORD PTR len$[rbp]
 	movsxd	rcx, DWORD PTR i$[rbp]
 	imul	rcx, rcx, 32				; 00000020H
@@ -657,11 +504,6 @@ $LN4@LoopDirect:
 
 ; 103  :                 while( *(parmstring+len-1) != '>' ) len--;
 
-	cmp	BYTE PTR $T16[rbp], 0
-	jne	SHORT $LN72@LoopDirect
-	lea	rcx, OFFSET FLAT:LoopDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN72@LoopDirect:
 	movsxd	rax, DWORD PTR len$[rbp]
 	mov	rcx, QWORD PTR parmstring$[rbp]
 	movsx	eax, BYTE PTR [rcx+rax-1]
@@ -675,11 +517,6 @@ $LN5@LoopDirect:
 
 ; 104  :                 *(parmstring+len-1) = NULLC;
 
-	cmp	BYTE PTR $T16[rbp], 0
-	jne	SHORT $LN73@LoopDirect
-	lea	rcx, OFFSET FLAT:LoopDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN73@LoopDirect:
 	movsxd	rax, DWORD PTR len$[rbp]
 	mov	rcx, QWORD PTR parmstring$[rbp]
 	mov	BYTE PTR [rcx+rax-1], 0
@@ -727,7 +564,7 @@ $LN38@LoopDirect:
 ; 113  :                 ptr2 = ptr;
 
 	mov	rax, QWORD PTR ptr$[rbp]
-	mov	QWORD PTR ptr2$11[rbp], rax
+	mov	QWORD PTR ptr2$1[rbp], rax
 $LN6@LoopDirect:
 
 ; 114  :                 /* this is what Masm does: use the string until a space
@@ -735,29 +572,29 @@ $LN6@LoopDirect:
 ; 116  :                  */
 ; 117  :                 while ( *ptr2 && ( isspace( *ptr2 ) == FALSE ) )
 
-	mov	rax, QWORD PTR ptr2$11[rbp]
+	mov	rax, QWORD PTR ptr2$1[rbp]
 	movsx	eax, BYTE PTR [rax]
 	test	eax, eax
 	je	SHORT $LN7@LoopDirect
-	mov	rax, QWORD PTR ptr2$11[rbp]
+	mov	rax, QWORD PTR ptr2$1[rbp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isspace
+	call	isspace
 	test	eax, eax
 	jne	SHORT $LN7@LoopDirect
 
 ; 118  :                     ptr2++;
 
-	mov	rax, QWORD PTR ptr2$11[rbp]
+	mov	rax, QWORD PTR ptr2$1[rbp]
 	inc	rax
-	mov	QWORD PTR ptr2$11[rbp], rax
+	mov	QWORD PTR ptr2$1[rbp], rax
 	jmp	SHORT $LN6@LoopDirect
 $LN7@LoopDirect:
 
 ; 119  :                 len = ptr2 - ptr;
 
 	mov	rax, QWORD PTR ptr$[rbp]
-	mov	rcx, QWORD PTR ptr2$11[rbp]
+	mov	rcx, QWORD PTR ptr2$1[rbp]
 	sub	rcx, rax
 	mov	rax, rcx
 	mov	DWORD PTR len$[rbp], eax
@@ -767,35 +604,21 @@ $LN7@LoopDirect:
 	mov	eax, DWORD PTR len$[rbp]
 	inc	eax
 	cdqe
-	add	rax, 36					; 00000024H
-	mov	QWORD PTR tv704[rbp], rax
-	mov	rax, QWORD PTR tv704[rbp]
-	add	rax, 15
-	cmp	rax, QWORD PTR tv704[rbp]
-	ja	SHORT $LN83@LoopDirect
-	mov	rax, 1152921504606846960		; 0ffffffffffffff0H
-$LN83@LoopDirect:
-	and	rax, -16
+	mov	rcx, rax
+	add	rcx, 15
+	cmp	rcx, rax
+	ja	SHORT $LN71@LoopDirect
+	mov	rcx, 1152921504606846960		; 0ffffffffffffff0H
+$LN71@LoopDirect:
+	and	rcx, -16
+	mov	rax, rcx
 	call	__chkstk
 	sub	rsp, rax
 	lea	rax, QWORD PTR [rsp+48]
-	mov	QWORD PTR tv302[rbp], rax
-	lea	r8, QWORD PTR __$AllocaPad$$[rbp]
-	mov	rdx, QWORD PTR tv704[rbp]
-	mov	rcx, QWORD PTR tv302[rbp]
-	call	_RTC_AllocaHelper
-	add	QWORD PTR tv302[rbp], 32		; 00000020H
-	mov	BYTE PTR $T16[rbp], 1
-	mov	rax, QWORD PTR tv302[rbp]
 	mov	QWORD PTR parmstring$[rbp], rax
 
 ; 121  :                 memcpy( parmstring, ptr, len );
 
-	cmp	BYTE PTR $T16[rbp], 0
-	jne	SHORT $LN74@LoopDirect
-	lea	rcx, OFFSET FLAT:LoopDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN74@LoopDirect:
 	movsxd	rax, DWORD PTR len$[rbp]
 	mov	r8, rax
 	mov	rdx, QWORD PTR ptr$[rbp]
@@ -804,11 +627,6 @@ $LN74@LoopDirect:
 
 ; 122  :                 *(parmstring+len) = NULLC;
 
-	cmp	BYTE PTR $T16[rbp], 0
-	jne	SHORT $LN75@LoopDirect
-	lea	rcx, OFFSET FLAT:LoopDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN75@LoopDirect:
 	movsxd	rax, DWORD PTR len$[rbp]
 	mov	rcx, QWORD PTR parmstring$[rbp]
 	mov	BYTE PTR [rcx+rax], 0
@@ -944,20 +762,14 @@ $LN44@LoopDirect:
 
 	movsxd	rax, DWORD PTR i$[rbp]
 	imul	rax, rax, 32				; 00000020H
-	mov	BYTE PTR $T16[rbp], 1
 	mov	rcx, QWORD PTR tokenarray$[rbp]
 	mov	rax, QWORD PTR [rcx+rax+8]
 	mov	QWORD PTR parmstring$[rbp], rax
 
 ; 154  :             DebugMsg1(("LoopDirective(FOR): param string >%s<\n", parmstring));
 
-	cmp	BYTE PTR $T16[rbp], 0
-	jne	SHORT $LN76@LoopDirect
-	lea	rcx, OFFSET FLAT:LoopDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN76@LoopDirect:
 	mov	rdx, QWORD PTR parmstring$[rbp]
-	lea	rcx, OFFSET FLAT:$SG10990
+	lea	rcx, OFFSET FLAT:$SG11028
 	call	DoDebugMsg1
 $LN35@LoopDirect:
 
@@ -984,11 +796,6 @@ $LN35@LoopDirect:
 
 ; 161  :         i = arg_loc;
 
-	cmp	BYTE PTR $T14[rbp], 0
-	jne	SHORT $LN77@LoopDirect
-	lea	rcx, OFFSET FLAT:LoopDirective$rtcName$1
-	call	_RTC_UninitUse
-$LN77@LoopDirect:
 	mov	eax, DWORD PTR arg_loc$[rbp]
 	mov	DWORD PTR i$[rbp], eax
 $LN2@LoopDirect:
@@ -1010,7 +817,7 @@ $LN2@LoopDirect:
 
 ; 167  :     tmpmacro.sym.name = "";
 
-	lea	rax, OFFSET FLAT:$SG10991
+	lea	rax, OFFSET FLAT:$SG11029
 	mov	QWORD PTR tmpmacro$[rbp+8], rax
 
 ; 168  :     tmpmacro.e.macroinfo = &macinfo;
@@ -1048,7 +855,7 @@ $LN2@LoopDirect:
 	mov	ecx, DWORD PTR directive$[rbp]
 	call	GetResWName
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG10992
+	lea	rcx, OFFSET FLAT:$SG11030
 	call	DoDebugMsg1
 
 ; 184  :     if( StoreMacro( macro, i, tokenarray, TRUE ) == ERROR ) {
@@ -1100,15 +907,15 @@ $LN45@LoopDirect:
 
 	mov	eax, DWORD PTR directive$[rbp]
 	mov	DWORD PTR tv410[rbp], eax
-	cmp	DWORD PTR tv410[rbp], 386		; 00000182H
-	je	$LN52@LoopDirect
-	cmp	DWORD PTR tv410[rbp], 388		; 00000184H
-	je	$LN52@LoopDirect
-	cmp	DWORD PTR tv410[rbp], 388		; 00000184H
-	jle	$LN59@LoopDirect
-	cmp	DWORD PTR tv410[rbp], 390		; 00000186H
-	jle	SHORT $LN47@LoopDirect
 	cmp	DWORD PTR tv410[rbp], 391		; 00000187H
+	je	$LN52@LoopDirect
+	cmp	DWORD PTR tv410[rbp], 393		; 00000189H
+	je	$LN52@LoopDirect
+	cmp	DWORD PTR tv410[rbp], 393		; 00000189H
+	jle	$LN59@LoopDirect
+	cmp	DWORD PTR tv410[rbp], 395		; 0000018bH
+	jle	SHORT $LN47@LoopDirect
+	cmp	DWORD PTR tv410[rbp], 396		; 0000018cH
 	je	$LN49@LoopDirect
 	jmp	$LN59@LoopDirect
 $LN47@LoopDirect:
@@ -1126,11 +933,6 @@ $LN12@LoopDirect:
 	mov	rcx, QWORD PTR macro$[rbp]
 	mov	DWORD PTR [rcx+16], eax
 $LN14@LoopDirect:
-	cmp	BYTE PTR $T15[rbp], 0
-	jne	SHORT $LN78@LoopDirect
-	lea	rcx, OFFSET FLAT:LoopDirective$rtcName$2
-	call	_RTC_UninitUse
-$LN78@LoopDirect:
 	mov	rax, QWORD PTR macro$[rbp]
 	mov	ecx, DWORD PTR opnd$[rbp]
 	cmp	DWORD PTR [rax+16], ecx
@@ -1177,7 +979,7 @@ $LN48@LoopDirect:
 	inc	eax
 	mov	DWORD PTR count$[rbp], eax
 	mov	edx, DWORD PTR count$[rbp]
-	lea	rcx, OFFSET FLAT:$SG10997
+	lea	rcx, OFFSET FLAT:$SG11035
 	call	DoDebugMsg1
 
 ; 213  :         }
@@ -1196,11 +998,6 @@ $LN15@LoopDirect:
 
 	cmp	DWORD PTR opnd$[rbp+60], 0
 	jne	$LN16@LoopDirect
-	cmp	BYTE PTR $T15[rbp], 0
-	jne	SHORT $LN79@LoopDirect
-	lea	rcx, OFFSET FLAT:LoopDirective$rtcName$2
-	call	_RTC_UninitUse
-$LN79@LoopDirect:
 	cmp	DWORD PTR opnd$[rbp], 0
 	je	$LN16@LoopDirect
 
@@ -1208,12 +1005,12 @@ $LN79@LoopDirect:
 
 	mov	eax, DWORD PTR count$[rbp]
 	mov	DWORD PTR tv434[rbp], eax
+	mov	edx, DWORD PTR tv434[rbp]
+	lea	rcx, OFFSET FLAT:$SG11037
+	call	DoDebugMsg1
 	mov	eax, DWORD PTR count$[rbp]
 	inc	eax
 	mov	DWORD PTR count$[rbp], eax
-	mov	edx, DWORD PTR tv434[rbp]
-	lea	rcx, OFFSET FLAT:$SG10999
-	call	DoDebugMsg1
 
 ; 218  :             RunMacro( macro, Token_Count, tokenarray, NULL, 0, &is_exitm );
 
@@ -1239,17 +1036,11 @@ $LN50@LoopDirect:
 
 ; 221  :             i = arg_loc;
 
-	cmp	BYTE PTR $T14[rbp], 0
-	jne	SHORT $LN80@LoopDirect
-	lea	rcx, OFFSET FLAT:LoopDirective$rtcName$1
-	call	_RTC_UninitUse
-$LN80@LoopDirect:
 	mov	eax, DWORD PTR arg_loc$[rbp]
 	mov	DWORD PTR i$[rbp], eax
 
 ; 222  :             if ( EvalOperand( &i, tokenarray, Token_Count, &opnd, 0 ) == ERROR )
 
-	mov	BYTE PTR $T15[rbp], 1
 	mov	BYTE PTR [rsp+32], 0
 	lea	r9, QWORD PTR opnd$[rbp]
 	mov	r8d, DWORD PTR ModuleInfo+496
@@ -1286,11 +1077,6 @@ $LN52@LoopDirect:
 ; 228  :     case T_IRPC:
 ; 229  :         for( ptr = parmstring; *ptr; ptr++, macro->sym.value++ ) {
 
-	cmp	BYTE PTR $T16[rbp], 0
-	jne	SHORT $LN81@LoopDirect
-	lea	rcx, OFFSET FLAT:LoopDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN81@LoopDirect:
 	mov	rax, QWORD PTR parmstring$[rbp]
 	mov	QWORD PTR ptr$[rbp], rax
 	jmp	SHORT $LN19@LoopDirect
@@ -1350,14 +1136,14 @@ $LN19@LoopDirect:
 
 	mov	eax, 1
 	imul	rax, rax, 2
-	mov	QWORD PTR $T12[rbp], rax
-	cmp	QWORD PTR $T12[rbp], 4
+	mov	QWORD PTR $T2[rbp], rax
+	cmp	QWORD PTR $T2[rbp], 4
 	jae	SHORT $LN67@LoopDirect
 	jmp	SHORT $LN68@LoopDirect
 $LN67@LoopDirect:
 	call	__report_rangecheckfailure
 $LN68@LoopDirect:
-	mov	rax, QWORD PTR $T12[rbp]
+	mov	rax, QWORD PTR $T2[rbp]
 	mov	BYTE PTR buffer$[rbp+rax], 0
 
 ; 236  :             Token_Count = 1;
@@ -1369,7 +1155,7 @@ $LN68@LoopDirect:
 	mov	rax, QWORD PTR ptr$[rbp]
 	movsx	eax, BYTE PTR [rax]
 	cmp	eax, 33					; 00000021H
-	jne	$LN53@LoopDirect
+	jne	SHORT $LN53@LoopDirect
 
 ; 238  :                 buffer[0] = *ptr++;
 
@@ -1426,7 +1212,7 @@ $LN53@LoopDirect:
 	mov	rax, QWORD PTR ptr$[rbp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isspace
+	call	isspace
 	test	eax, eax
 	je	SHORT $LN56@LoopDirect
 
@@ -1489,14 +1275,14 @@ $LN56@LoopDirect:
 
 ; 253  :                 buffer[1] = NULLC;
 
-	mov	QWORD PTR $T13[rbp], 1
-	cmp	QWORD PTR $T13[rbp], 4
+	mov	QWORD PTR $T3[rbp], 1
+	cmp	QWORD PTR $T3[rbp], 4
 	jae	SHORT $LN69@LoopDirect
 	jmp	SHORT $LN70@LoopDirect
 $LN69@LoopDirect:
 	call	__report_rangecheckfailure
 $LN70@LoopDirect:
-	mov	rax, QWORD PTR $T13[rbp]
+	mov	rax, QWORD PTR $T3[rbp]
 	mov	BYTE PTR buffer$[rbp+rax], 0
 $LN57@LoopDirect:
 $LN54@LoopDirect:
@@ -1528,13 +1314,13 @@ $LN58@LoopDirect:
 
 	mov	eax, DWORD PTR count$[rbp]
 	mov	DWORD PTR tv534[rbp], eax
+	lea	r8, QWORD PTR buffer$[rbp]
+	mov	edx, DWORD PTR tv534[rbp]
+	lea	rcx, OFFSET FLAT:$SG11047
+	call	DoDebugMsg1
 	mov	eax, DWORD PTR count$[rbp]
 	inc	eax
 	mov	DWORD PTR count$[rbp], eax
-	lea	r8, QWORD PTR buffer$[rbp]
-	mov	edx, DWORD PTR tv534[rbp]
-	lea	rcx, OFFSET FLAT:$SG11009
-	call	DoDebugMsg1
 
 ; 259  :         }
 
@@ -1555,11 +1341,6 @@ $LN59@LoopDirect:
 
 ; 263  :         Token_Count = Tokenize( parmstring, i, tokenarray, TOK_RESCAN | TOK_NOCURLBRACES );
 
-	cmp	BYTE PTR $T16[rbp], 0
-	jne	SHORT $LN82@LoopDirect
-	lea	rcx, OFFSET FLAT:LoopDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN82@LoopDirect:
 	mov	r9d, 3
 	mov	r8, QWORD PTR tokenarray$[rbp]
 	mov	edx, DWORD PTR i$[rbp]
@@ -1573,7 +1354,7 @@ $LN82@LoopDirect:
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rbp]
 	mov	rdx, QWORD PTR [rcx+rax+24]
-	lea	rcx, OFFSET FLAT:$SG11011
+	lea	rcx, OFFSET FLAT:$SG11049
 	call	DoDebugMsg1
 
 ; 265  : 
@@ -1695,22 +1476,22 @@ $LN20@LoopDirect:
 $LN22@LoopDirect:
 	mov	eax, DWORD PTR ModuleInfo+496
 	cmp	DWORD PTR i$[rbp], eax
-	jge	$LN21@LoopDirect
+	jge	SHORT $LN21@LoopDirect
 
 ; 289  :             DebugMsg1(("LoopDirective FOR: cnt=%" I32_SPEC "u, calling RunMacro( param=>%s< )\n", count++, tokenarray[i].tokpos ));
 
 	mov	eax, DWORD PTR count$[rbp]
 	mov	DWORD PTR tv619[rbp], eax
-	mov	eax, DWORD PTR count$[rbp]
-	inc	eax
-	mov	DWORD PTR count$[rbp], eax
 	movsxd	rax, DWORD PTR i$[rbp]
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rbp]
 	mov	r8, QWORD PTR [rcx+rax+24]
 	mov	edx, DWORD PTR tv619[rbp]
-	lea	rcx, OFFSET FLAT:$SG11013
+	lea	rcx, OFFSET FLAT:$SG11051
 	call	DoDebugMsg1
+	mov	eax, DWORD PTR count$[rbp]
+	inc	eax
+	mov	DWORD PTR count$[rbp], eax
 
 ; 290  :             i = RunMacro( macro, i, tokenarray, NULL, MF_IGNARGS, &is_exitm );
 
@@ -1757,7 +1538,7 @@ $LN46@LoopDirect:
 	mov	ecx, DWORD PTR directive$[rbp]
 	call	GetResWName
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11016
+	lea	rcx, OFFSET FLAT:$SG11054
 	call	DoDebugMsg1
 
 ; 297  :     return( NOT_ERROR );
@@ -1768,17 +1549,10 @@ $LN63@LoopDirect:
 
 ; 298  : }
 
-	mov	rdi, rax
-	lea	rcx, QWORD PTR [rbp-48]
-	lea	rdx, OFFSET FLAT:LoopDirective$rtcFrameData
-	mov	r8, QWORD PTR __$AllocaPad$$[rbp]
-	call	_RTC_CheckStackVars2
-	mov	rax, rdi
 	mov	rcx, QWORD PTR __$ArrayPad$[rbp]
 	xor	rcx, rbp
 	call	__security_check_cookie
-	lea	rsp, QWORD PTR [rbp+616]
-	pop	rdi
+	lea	rsp, QWORD PTR [rbp+400]
 	pop	rbp
 	ret	0
 LoopDirective ENDP

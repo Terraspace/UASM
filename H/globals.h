@@ -73,9 +73,9 @@
 //#define MAX_TEXTMACRO_NESTING   20
 #define MAX_SEG_NESTING         20 /* limit for segment nesting  */
 #ifdef __I86__
-#define MAX_MACRO_NESTING       20
+#define MAX_MACRO_NESTING       64
 #else
-#define MAX_MACRO_NESTING       40 /* macro call nesting  */
+#define MAX_MACRO_NESTING       128 /* macro call nesting  */
 #endif
 #define MAX_STRUCT_NESTING      32 /* limit for "anonymous structs" only */
 
@@ -127,6 +127,9 @@
 #endif
 #ifndef AVXSUPP
 #define AVXSUPP      1 /* support AVX extensions                 */
+#endif
+#ifndef EVEXSUPP
+#define EVEXSUPP      0 /* support AVX extensions                 */
 #endif
 #ifndef COMDATSUPP
 #define COMDATSUPP   1 /* support COMDAT segment attribute       */
@@ -182,11 +185,11 @@
 
 /* HJWasm version info */
 #ifdef _WIN64
-#define _HJWASM_VERSION_STR_ "2.14"
+#define _HJWASM_VERSION_STR_ "2.15"
 #else
-#define _HJWASM_VERSION_STR_ "2.14"
+#define _HJWASM_VERSION_STR_ "2.15"
 #endif
-#define _HJWASM_VERSION_INT_ 214
+#define _HJWASM_VERSION_INT_ 215
 #define _HJWASM_VERSION_SUFFIX_ "pre"
 #define _HJWASM_VERSION_ _HJWASM_VERSION_STR_ //_HJWASM_VERSION_SUFFIX_
 
@@ -263,14 +266,15 @@ enum fpo {
  * returned by OPATTR and used in user-defined prologue/epilogue.
  */
 enum lang_type {
-    LANG_NONE     = 0,
-    LANG_C        = 1,
-    LANG_SYSCALL  = 2,
-    LANG_STDCALL  = 3,
-    LANG_PASCAL   = 4,
-    LANG_FORTRAN  = 5,
-    LANG_BASIC    = 6,
-    LANG_FASTCALL = 7
+    LANG_NONE       = 0,
+    LANG_C          = 1,
+    LANG_SYSCALL    = 2,
+    LANG_STDCALL    = 3,
+    LANG_PASCAL     = 4,
+    LANG_FORTRAN    = 5,
+    LANG_BASIC      = 6,
+    LANG_FASTCALL   = 7,
+    LANG_VECTORCALL = 8,
 };
 
 /* Memory model type.

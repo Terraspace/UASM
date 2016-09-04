@@ -12,7 +12,7 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG10752 DB	01H DUP (?)
+$SG10775 DB	01H DUP (?)
 _BSS	ENDS
 PUBLIC	process_branch
 EXTRN	EmitError:PROC
@@ -113,7 +113,7 @@ $LN167:
 	mov	rbx, rcx
 	lea	rcx, OFFSET FLAT:__ImageBase
 	mov	rsi, r8
-	movzx	r13d, WORD PTR optable_idx[rcx+rax*2-908]
+	movzx	r13d, WORD PTR optable_idx[rcx+rax*2-910]
 
 ; 144  : 
 ; 145  :     /* v2.05: just 1 operand possible */
@@ -424,7 +424,7 @@ $LN41@process_br:
 ; 273  :             if( CodeInfo->token == T_CALL &&
 ; 274  :                 CodeInfo->mem_type == MT_EMPTY &&
 
-	cmp	DWORD PTR [rbx+24], 454			; 000001c6H
+	cmp	DWORD PTR [rbx+24], 455			; 000001c7H
 	jne	SHORT $LN42@process_br
 	cmp	eax, 192				; 000000c0H
 	jne	SHORT $LN42@process_br
@@ -491,7 +491,7 @@ $LN44@process_br:
 	mov	edx, DWORD PTR [rbx+28]
 	cmp	edx, 129				; 00000081H
 	je	SHORT $LN47@process_br
-	cmp	DWORD PTR [rbx+24], 454			; 000001c6H
+	cmp	DWORD PTR [rbx+24], 455			; 000001c7H
 	je	SHORT $LN47@process_br
 	lea	eax, DWORD PTR [rbp+128]
 	cmp	eax, 255				; 000000ffH
@@ -512,7 +512,7 @@ $LN47@process_br:
 	cmp	DWORD PTR [rsi+56], 245			; 000000f5H
 	je	$LN50@process_br
 	mov	eax, DWORD PTR [rbx+24]
-	sub	eax, 486				; 000001e6H
+	sub	eax, 487				; 000001e7H
 	cmp	eax, 17
 	jbe	$LN50@process_br
 
@@ -599,7 +599,7 @@ $LN157@process_br:
 	dec	ebp
 $LN60@process_br:
 	mov	eax, DWORD PTR [rbx+24]
-	sub	eax, 456				; 000001c8H
+	sub	eax, 457				; 000001c9H
 	cmp	eax, 29
 	ja	SHORT $LN61@process_br
 
@@ -632,7 +632,7 @@ $LN61@process_br:
 	cmp	eax, 48					; 00000030H
 	jge	SHORT $LN65@process_br
 	mov	eax, DWORD PTR [rbx+24]
-	sub	eax, 456				; 000001c8H
+	sub	eax, 457				; 000001c9H
 	cmp	eax, 29
 	ja	SHORT $LN65@process_br
 
@@ -702,7 +702,7 @@ $LN50@process_br:
 ; 300  :                     /* v2.06: added */
 ; 301  :                     if( CodeInfo->token == T_CALL ) {
 
-	cmp	DWORD PTR [rbx+24], 454			; 000001c6H
+	cmp	DWORD PTR [rbx+24], 455			; 000001c7H
 	je	$LN164@process_br
 
 ; 302  :                         return( EmitError( CANNOT_USE_SHORT_WITH_CALL ) );
@@ -844,7 +844,7 @@ $LN66@process_br:
 ; 396  :     if( CodeInfo->token == T_CALL &&
 ; 397  :        CodeInfo->mem_type == MT_EMPTY &&
 
-	cmp	DWORD PTR [rbx+24], 454			; 000001c6H
+	cmp	DWORD PTR [rbx+24], 455			; 000001c7H
 	mov	ebp, DWORD PTR [rsi+64]
 	jne	SHORT $LN69@process_br
 	cmp	DWORD PTR [rbx+28], 192			; 000000c0H
@@ -908,7 +908,7 @@ $LN69@process_br:
 	cmp	ecx, edi
 	jne	SHORT $LN160@process_br
 	mov	eax, DWORD PTR [rbx+24]
-	sub	eax, 454				; 000001c6H
+	sub	eax, 455				; 000001c7H
 	cmp	eax, edi
 	ja	SHORT $LN73@process_br
 
@@ -948,7 +948,7 @@ $LN76@process_br:
 ; 433  :     if ( IS_JMPCALL( CodeInfo->token ) &&
 
 	mov	edx, DWORD PTR [rbx+24]
-	lea	eax, DWORD PTR [rdx-454]
+	lea	eax, DWORD PTR [rdx-455]
 	cmp	eax, edi
 	ja	$LN78@process_br
 	movzx	eax, BYTE PTR [rbx+142]
@@ -1117,11 +1117,11 @@ $LN78@process_br:
 ; 473  :     switch( CodeInfo->token ) {
 
 	mov	ecx, edx
-	sub	ecx, 454				; 000001c6H
+	sub	ecx, 455				; 000001c7H
 	je	$LN89@process_br
 	cmp	ecx, edi
 	je	$LN91@process_br
-	lea	eax, DWORD PTR [rdx-486]
+	lea	eax, DWORD PTR [rdx-487]
 	cmp	eax, 17
 	ja	SHORT $LN104@process_br
 
@@ -1775,7 +1775,7 @@ $LN4@jumpExtend:
 ; 107  : }
 
 	mov	rbx, QWORD PTR [rsp+48]
-	mov	DWORD PTR [rdi+24], 455			; 000001c7H
+	mov	DWORD PTR [rdi+24], 456			; 000001c8H
 	movzx	eax, WORD PTR optable_idx+2
 	imul	rcx, rax, 14
 	lea	rax, OFFSET FLAT:InstrTable

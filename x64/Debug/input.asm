@@ -2,91 +2,91 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 _DATA	SEGMENT
 COMM	commentbuffer:QWORD
 COMM	FileCur:QWORD
 COMM	LineCur:QWORD
-COMM	end_tokenarray:QWORD
-COMM	end_stringbuf:QWORD
-COMM	token_stringbuf:QWORD
 COMM	decoflags:BYTE
 COMM	broadflags:BYTE
 COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
+COMM	end_tokenarray:QWORD
+COMM	end_stringbuf:QWORD
+COMM	token_stringbuf:QWORD
 _DATA	ENDS
 _BSS	SEGMENT
-$SG10929 DB	01H DUP (?)
-$SG10933 DB	01H DUP (?)
-$SG10934 DB	01H DUP (?)
-$SG10935 DB	01H DUP (?)
+$SG10967 DB	01H DUP (?)
+$SG10971 DB	01H DUP (?)
+$SG10972 DB	01H DUP (?)
+$SG10973 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG10805 DB	'AddFile(%s) enter, curr index=%u', 0aH, 00H
+$SG10843 DB	'AddFile(%s) enter, curr index=%u', 0aH, 00H
 	ORG $+2
-$SG10847 DB	'(%u)', 00H
+$SG10885 DB	'(%u)', 00H
 	ORG $+3
-$SG10913 DB	'%s : ', 00H
+$SG10951 DB	'%s : ', 00H
 	ORG $+2
-$SG10960 DB	'rb', 00H
+$SG10998 DB	'rb', 00H
 	ORG $+1
-$SG10849 DB	'[%s.%u]', 00H
-$SG10887 DB	'PushMacro(%s)', 0aH, 00H
+$SG10887 DB	'[%s.%u]', 00H
+$SG10925 DB	'PushMacro(%s)', 0aH, 00H
 	ORG $+1
-$SG10912 DB	'%s(%u) : ', 00H
+$SG10950 DB	'%s(%u) : ', 00H
 	ORG $+2
-$SG10992 DB	'rb', 00H
+$SG11030 DB	'rb', 00H
 	ORG $+1
-$SG10932 DB	'MacroLoop', 00H
+$SG10970 DB	'MacroLoop', 00H
 	ORG $+2
-$SG10996 DB	'rb', 00H
+$SG11034 DB	'rb', 00H
 	ORG $+1
-$SG10953 DB	'open_file_in_include_path(%s) enter', 0aH, 00H
+$SG10991 DB	'open_file_in_include_path(%s) enter', 0aH, 00H
 	ORG $+3
-$SG10959 DB	'open_file_in_include_path: >%s<', 0aH, 00H
+$SG10997 DB	'open_file_in_include_path: >%s<', 0aH, 00H
 	ORG $+3
-$SG11035 DB	';', 00H
+$SG11073 DB	';', 00H
 	ORG $+2
-$SG10962 DB	'open_file_in_include_path()=%p', 0aH, 00H
-$SG10986 DB	'SearchFile(%s) enter', 0aH, 00H
+$SG11000 DB	'open_file_in_include_path()=%p', 0aH, 00H
+$SG11024 DB	'SearchFile(%s) enter', 0aH, 00H
 	ORG $+2
-$SG10993 DB	'SearchFile(): file found, fopen(%s)=%X', 0aH, 00H
-$SG10994 DB	'SearchFile(): fopen(%s) failed', 0aH, 00H
-$SG10997 DB	'SearchFile(): fopen(%s)=%X', 0aH, 00H
+$SG11031 DB	'SearchFile(): file found, fopen(%s)=%X', 0aH, 00H
+$SG11032 DB	'SearchFile(): fopen(%s) failed', 0aH, 00H
+$SG11035 DB	'SearchFile(): fopen(%s)=%X', 0aH, 00H
 	ORG $+4
-$SG11001 DB	'SearchFile(): open_file_in_include_path(%s)=%X [%s]', 0aH
+$SG11039 DB	'SearchFile(): open_file_in_include_path(%s)=%X [%s]', 0aH
 	DB	00H
 	ORG $+3
-$SG11002 DB	'SearchFile(): open_file_in_include_path(%s)=NULL', 0aH, 00H
+$SG11040 DB	'SearchFile(): open_file_in_include_path(%s)=NULL', 0aH, 00H
 	ORG $+6
-$SG11017 DB	'GetTextLine: ***** EOF file %s (idx=%u) *****', 0aH, 00H
+$SG11055 DB	'GetTextLine: ***** EOF file %s (idx=%u) *****', 0aH, 00H
 	ORG $+1
-$SG11031 DB	'AddStringToIncludePath(%s) enter', 0aH, 00H
+$SG11069 DB	'AddStringToIncludePath(%s) enter', 0aH, 00H
 	ORG $+14
-$SG11045 DB	'PushInputStatus() stringbuf-tokencnt-currsrc old=%X-%u-%'
+$SG11083 DB	'PushInputStatus() stringbuf-tokencnt-currsrc old=%X-%u-%'
 	DB	'X new=%X-%X-%X', 0aH, 00H
-$SG11050 DB	'PopInputStatus() old=%X-%u-%X new=%X-%u-%X', 0aH, 00H
+$SG11088 DB	'PopInputStatus() old=%X-%u-%X new=%X-%u-%X', 0aH, 00H
 	ORG $+4
-$SG11061 DB	'InputInit() enter', 0aH, 00H
+$SG11099 DB	'InputInit() enter', 0aH, 00H
 	ORG $+5
-$SG11062 DB	'InputInit: srclinebuffer=%p, tokenarray=%p, token_string'
+$SG11100 DB	'InputInit: srclinebuffer=%p, tokenarray=%p, token_string'
 	DB	'buf=%p end_stringbuf=%p', 0aH, 00H
 	ORG $+7
-$SG11063 DB	'InputInit() exit', 0aH, 00H
+$SG11101 DB	'InputInit() exit', 0aH, 00H
 	ORG $+6
-$SG11066 DB	'InputPassInit() enter', 0aH, 00H
+$SG11104 DB	'InputPassInit() enter', 0aH, 00H
 	ORG $+1
-$SG11082 DB	'%2u: %5u *%2u %s', 0aH, 00H
+$SG11120 DB	'%2u: %5u *%2u %s', 0aH, 00H
 	ORG $+6
-$SG11083 DB	'%2u: %5u     %s', 0aH, 00H
+$SG11121 DB	'%2u: %5u     %s', 0aH, 00H
 	ORG $+7
-$SG11084 DB	'InputFini: idx=%u name=%s', 0aH, 00H
+$SG11122 DB	'InputFini: idx=%u name=%s', 0aH, 00H
 	ORG $+5
-$SG11087 DB	'lines read(files)/processed in pass one: %u / %u', 0aH, 00H
+$SG11125 DB	'lines read(files)/processed in pass one: %u / %u', 0aH, 00H
 	ORG $+6
-$SG11088 DB	'invokations: PreprocessLine=%u/%u/%u, Tokenize=%u/%u', 0aH
+$SG11126 DB	'invokations: PreprocessLine=%u/%u/%u, Tokenize=%u/%u', 0aH
 	DB	00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
@@ -118,18 +118,18 @@ PUBLIC	GetTopSrcName
 PUBLIC	UpdateLineNumber
 PUBLIC	print_source_nesting_structure
 EXTRN	__report_rangecheckfailure:PROC
-EXTRN	__imp_isspace:PROC
-EXTRN	__imp___acrt_iob_func:PROC
-EXTRN	__imp_fclose:PROC
-EXTRN	__imp_fopen:PROC
-EXTRN	__imp_getc:PROC
-EXTRN	__imp___stdio_common_vfprintf:PROC
-EXTRN	__imp___stdio_common_vsprintf:PROC
+EXTRN	isspace:PROC
+EXTRN	__acrt_iob_func:PROC
+EXTRN	fclose:PROC
+EXTRN	fopen:PROC
+EXTRN	getc:PROC
+EXTRN	__stdio_common_vfprintf:PROC
+EXTRN	__stdio_common_vsprintf:PROC
 EXTRN	memcpy:PROC
-EXTRN	__imp_strchr:PROC
+EXTRN	strchr:PROC
 EXTRN	strcat:PROC
 EXTRN	strcpy:PROC
-EXTRN	__imp__stricmp:PROC
+EXTRN	_stricmp:PROC
 EXTRN	strlen:PROC
 EXTRN	DoDebugMsg:PROC
 EXTRN	DoDebugMsg1:PROC
@@ -142,9 +142,6 @@ EXTRN	LclAlloc:PROC
 EXTRN	fill_placeholders:PROC
 EXTRN	DeleteLineQueue:PROC
 EXTRN	GetLqLine:PROC
-EXTRN	_RTC_CheckStackVars:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
 EXTRN	__GSHandlerCheck:PROC
 EXTRN	__security_check_cookie:PROC
 EXTRN	Options:BYTE
@@ -169,286 +166,192 @@ srclinebuffer DQ 01H DUP (?)
 _BSS	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$__local_stdio_printf_options DD imagerel $LN3
-	DD	imagerel $LN3+11
-	DD	imagerel $unwind$__local_stdio_printf_options
-pdata	ENDS
-;	COMDAT pdata
-pdata	SEGMENT
 $pdata$_vfprintf_l DD imagerel $LN3
-	DD	imagerel $LN3+90
+	DD	imagerel $LN3+67
 	DD	imagerel $unwind$_vfprintf_l
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$printf DD imagerel $LN3
-	DD	imagerel $LN3+129
+	DD	imagerel $LN3+87
 	DD	imagerel $unwind$printf
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$_vsnprintf_l DD imagerel $LN5
-	DD	imagerel $LN5+140
+	DD	imagerel $LN5+117
 	DD	imagerel $unwind$_vsnprintf_l
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$_vsprintf_l DD imagerel $LN3
-	DD	imagerel $LN3+88
+	DD	imagerel $LN3+66
 	DD	imagerel $unwind$_vsprintf_l
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$sprintf DD imagerel $LN3
-	DD	imagerel $LN3+120
+	DD	imagerel $LN3+79
 	DD	imagerel $unwind$sprintf
 pdata	ENDS
 pdata	SEGMENT
 $pdata$GetLineNumber DD imagerel $LN3
-	DD	imagerel $LN3+51
+	DD	imagerel $LN3+33
 	DD	imagerel $unwind$GetLineNumber
 $pdata$GetFNamePart DD imagerel $LN8
-	DD	imagerel $LN8+129
+	DD	imagerel $LN8+107
 	DD	imagerel $unwind$GetFNamePart
 $pdata$GetExtPart DD imagerel $LN12
-	DD	imagerel $LN12+177
+	DD	imagerel $LN12+155
 	DD	imagerel $unwind$GetExtPart
 $pdata$SearchFile DD imagerel $LN23
-	DD	imagerel $LN23+964
+	DD	imagerel $LN23+865
 	DD	imagerel $unwind$SearchFile
 $pdata$GetTextLine DD imagerel $LN17
-	DD	imagerel $LN17+688
+	DD	imagerel $LN17+665
 	DD	imagerel $unwind$GetTextLine
 $pdata$PushMacro DD imagerel $LN3
-	DD	imagerel $LN3+73
+	DD	imagerel $LN3+51
 	DD	imagerel $unwind$PushMacro
-$pdata$SetLineNumber DD imagerel $LN3
-	DD	imagerel $LN3+21
-	DD	imagerel $unwind$SetLineNumber
 $pdata$AddStringToIncludePath DD imagerel $LN8
-	DD	imagerel $LN8+276
+	DD	imagerel $LN8+253
 	DD	imagerel $unwind$AddStringToIncludePath
 $pdata$InputInit DD imagerel $LN3
-	DD	imagerel $LN3+397
+	DD	imagerel $LN3+379
 	DD	imagerel $unwind$InputInit
 $pdata$InputPassInit DD imagerel $LN3
-	DD	imagerel $LN3+91
+	DD	imagerel $LN3+73
 	DD	imagerel $unwind$InputPassInit
 $pdata$InputFini DD imagerel $LN12
-	DD	imagerel $LN12+512
+	DD	imagerel $LN12+494
 	DD	imagerel $unwind$InputFini
 $pdata$PushInputStatus DD imagerel $LN5
-	DD	imagerel $LN5+354
+	DD	imagerel $LN5+332
 	DD	imagerel $unwind$PushInputStatus
 $pdata$PopInputStatus DD imagerel $LN5
-	DD	imagerel $LN5+288
+	DD	imagerel $LN5+266
 	DD	imagerel $unwind$PopInputStatus
 $pdata$GetCurrSrcPos DD imagerel $LN9
-	DD	imagerel $LN9+183
+	DD	imagerel $LN9+161
 	DD	imagerel $unwind$GetCurrSrcPos
 $pdata$ClearSrcStack DD imagerel $LN7
-	DD	imagerel $LN7+139
+	DD	imagerel $LN7+120
 	DD	imagerel $unwind$ClearSrcStack
 $pdata$get_curr_srcfile DD imagerel $LN7
-	DD	imagerel $LN7+88
+	DD	imagerel $LN7+70
 	DD	imagerel $unwind$get_curr_srcfile
-$pdata$set_curr_srcfile DD imagerel $LN4
-	DD	imagerel $LN4+51
-	DD	imagerel $unwind$set_curr_srcfile
-$pdata$GetFName DD imagerel $LN3
-	DD	imagerel $LN3+28
-	DD	imagerel $unwind$GetFName
 $pdata$GetTopLine DD imagerel $LN6
-	DD	imagerel $LN6+148
+	DD	imagerel $LN6+126
 	DD	imagerel $unwind$GetTopLine
 $pdata$GetTopSrcName DD imagerel $LN4
-	DD	imagerel $LN4+85
+	DD	imagerel $LN4+67
 	DD	imagerel $unwind$GetTopSrcName
 $pdata$AddFile DD imagerel AddFile
-	DD	imagerel AddFile+403
+	DD	imagerel AddFile+380
 	DD	imagerel $unwind$AddFile
 $pdata$FreeFiles DD imagerel FreeFiles
-	DD	imagerel FreeFiles+71
+	DD	imagerel FreeFiles+53
 	DD	imagerel $unwind$FreeFiles
 $pdata$UpdateLineNumber DD imagerel $LN7
-	DD	imagerel $LN7+103
+	DD	imagerel $LN7+81
 	DD	imagerel $unwind$UpdateLineNumber
 $pdata$my_fgets DD imagerel my_fgets
-	DD	imagerel my_fgets+302
+	DD	imagerel my_fgets+278
 	DD	imagerel $unwind$my_fgets
 $pdata$PushSrcItem DD imagerel PushSrcItem
-	DD	imagerel PushSrcItem+165
+	DD	imagerel PushSrcItem+143
 	DD	imagerel $unwind$PushSrcItem
 $pdata$print_source_nesting_structure DD imagerel $LN12
-	DD	imagerel $LN12+428
+	DD	imagerel $LN12+410
 	DD	imagerel $unwind$print_source_nesting_structure
 $pdata$open_file_in_include_path DD imagerel open_file_in_include_path
-	DD	imagerel open_file_in_include_path+477
+	DD	imagerel open_file_in_include_path+452
 	DD	imagerel $unwind$open_file_in_include_path
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
-CONST	SEGMENT
-SearchFile$rtcName$0 DB 066H
-	DB	075H
-	DB	06cH
-	DB	06cH
-	DB	070H
-	DB	061H
-	DB	074H
-	DB	068H
-	DB	00H
-	ORG $+7
-SearchFile$rtcVarDesc DD 050H
-	DD	0104H
-	DQ	FLAT:SearchFile$rtcName$0
-	ORG $+48
-SearchFile$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:SearchFile$rtcVarDesc
-CONST	ENDS
 xdata	SEGMENT
-$unwind$GetLineNumber DD 021501H
-	DD	070023206H
-$unwind$GetFNamePart DD 021e01H
-	DD	07006120aH
-$unwind$GetExtPart DD 021e01H
-	DD	07006120aH
-$unwind$SearchFile DD 033a19H
-	DD	0340111H
-	DD	0700aH
+$unwind$GetLineNumber DD 010401H
+	DD	04204H
+$unwind$GetFNamePart DD 010901H
+	DD	02209H
+$unwind$GetExtPart DD 010901H
+	DD	02209H
+$unwind$SearchFile DD 022219H
+	DD	0310110H
 	DD	imagerel __GSHandlerCheck
-	DD	0198H
-$unwind$GetTextLine DD 021e01H
-	DD	07006920aH
-$unwind$PushMacro DD 021e01H
-	DD	07006320aH
-$unwind$SetLineNumber DD 010501H
-	DD	07005H
-$unwind$AddStringToIncludePath DD 021e01H
-	DD	07006520aH
-$unwind$InputInit DD 021501H
-	DD	070027206H
-$unwind$InputPassInit DD 021501H
-	DD	070023206H
-$unwind$InputFini DD 021501H
-	DD	070027206H
-$unwind$PushInputStatus DD 021e01H
-	DD	07006920aH
-$unwind$PopInputStatus DD 021e01H
-	DD	07006720aH
-$unwind$GetCurrSrcPos DD 021e01H
-	DD	07006520aH
-$unwind$ClearSrcStack DD 021501H
-	DD	070025206H
-$unwind$get_curr_srcfile DD 021501H
-	DD	070021206H
-$unwind$set_curr_srcfile DD 010901H
-	DD	07009H
-$unwind$GetFName DD 010501H
-	DD	07005H
-$unwind$GetTopLine DD 021e01H
-	DD	07006320aH
-$unwind$GetTopSrcName DD 021501H
-	DD	070023206H
-$unwind$AddFile DD 021e01H
-	DD	07006520aH
-$unwind$FreeFiles DD 021501H
-	DD	070023206H
-$unwind$UpdateLineNumber DD 022301H
-	DD	0700b120fH
-$unwind$my_fgets DD 022701H
-	DD	0700f7213H
-$unwind$PushSrcItem DD 022201H
-	DD	0700a520eH
-$unwind$print_source_nesting_structure DD 021501H
-	DD	070027206H
-$unwind$open_file_in_include_path DD 022301H
-	DD	0700b720fH
+	DD	0170H
+$unwind$GetTextLine DD 010901H
+	DD	0a209H
+$unwind$PushMacro DD 010901H
+	DD	04209H
+$unwind$AddStringToIncludePath DD 010901H
+	DD	06209H
+$unwind$InputInit DD 010401H
+	DD	08204H
+$unwind$InputPassInit DD 010401H
+	DD	04204H
+$unwind$InputFini DD 010401H
+	DD	08204H
+$unwind$PushInputStatus DD 010901H
+	DD	0a209H
+$unwind$PopInputStatus DD 010901H
+	DD	08209H
+$unwind$GetCurrSrcPos DD 010901H
+	DD	06209H
+$unwind$ClearSrcStack DD 010401H
+	DD	06204H
+$unwind$get_curr_srcfile DD 010401H
+	DD	02204H
+$unwind$GetTopLine DD 010901H
+	DD	04209H
+$unwind$GetTopSrcName DD 010401H
+	DD	04204H
+$unwind$AddFile DD 010901H
+	DD	06209H
+$unwind$FreeFiles DD 010401H
+	DD	04204H
+$unwind$UpdateLineNumber DD 010e01H
+	DD	0220eH
+$unwind$my_fgets DD 011201H
+	DD	08212H
+$unwind$PushSrcItem DD 010d01H
+	DD	0620dH
+$unwind$print_source_nesting_structure DD 010401H
+	DD	08204H
+$unwind$open_file_in_include_path DD 010e01H
+	DD	0820eH
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$sprintf DD 022d01H
-	DD	070159219H
-xdata	ENDS
-;	COMDAT CONST
-CONST	SEGMENT
-sprintf$rtcName$0 DB 05fH
-	DB	041H
-	DB	072H
-	DB	067H
-	DB	04cH
-	DB	069H
-	DB	073H
-	DB	074H
-	DB	00H
-	ORG $+7
-sprintf$rtcVarDesc DD 038H
-	DD	08H
-	DQ	FLAT:sprintf$rtcName$0
-	ORG $+48
-sprintf$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:sprintf$rtcVarDesc
-CONST	ENDS
-;	COMDAT xdata
-xdata	SEGMENT
-$unwind$_vsprintf_l DD 022d01H
-	DD	070155219H
+$unwind$sprintf DD 011801H
+	DD	06218H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$_vsnprintf_l DD 022d01H
-	DD	070157219H
+$unwind$_vsprintf_l DD 011801H
+	DD	06218H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$printf DD 022d01H
-	DD	070159219H
-xdata	ENDS
-;	COMDAT CONST
-CONST	SEGMENT
-printf$rtcName$0 DB 05fH
-	DB	041H
-	DB	072H
-	DB	067H
-	DB	04cH
-	DB	069H
-	DB	073H
-	DB	074H
-	DB	00H
-	ORG $+7
-printf$rtcVarDesc DD 038H
-	DD	08H
-	DQ	FLAT:printf$rtcName$0
-	ORG $+48
-printf$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:printf$rtcVarDesc
-CONST	ENDS
-;	COMDAT xdata
-xdata	SEGMENT
-$unwind$_vfprintf_l DD 022d01H
-	DD	070155219H
+$unwind$_vsnprintf_l DD 011801H
+	DD	08218H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$__local_stdio_printf_options DD 010201H
-	DD	07002H
+$unwind$printf DD 011801H
+	DD	06218H
 xdata	ENDS
-; Function compile flags: /Odtp /RTCsu
+;	COMDAT xdata
+xdata	SEGMENT
+$unwind$_vfprintf_l DD 011801H
+	DD	06218H
+xdata	ENDS
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\input.c
 _TEXT	SEGMENT
-curr$ = 32
-next$ = 40
-i$ = 48
-namelen$ = 52
+i$ = 32
+namelen$ = 36
+curr$ = 40
+next$ = 48
 file$ = 56
 name$ = 80
 fullpath$ = 88
@@ -458,13 +361,7 @@ open_file_in_include_path PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 72					; 00000048H
 
 ; 539  :     char            *curr;
 ; 540  :     char            *next;
@@ -481,7 +378,7 @@ $LN2@open_file_:
 	mov	rax, QWORD PTR name$[rsp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isspace
+	call	isspace
 	test	eax, eax
 	je	SHORT $LN3@open_file_
 
@@ -509,7 +406,7 @@ $LN3@open_file_:
 ; 551  :     DebugMsg(("open_file_in_include_path(%s) enter\n", name ));
 
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10953
+	lea	rcx, OFFSET FLAT:$SG10991
 	call	DoDebugMsg
 
 ; 552  :     for ( ; curr; curr = next ) {
@@ -526,7 +423,7 @@ $LN6@open_file_:
 
 	mov	edx, 59					; 0000003bH
 	mov	rcx, QWORD PTR curr$[rsp]
-	call	QWORD PTR __imp_strchr
+	call	strchr
 	mov	QWORD PTR next$[rsp], rax
 
 ; 554  :         if ( next ) {
@@ -648,14 +545,14 @@ $LN11@open_file_:
 ; 579  :         DebugMsg(("open_file_in_include_path: >%s<\n", fullpath ));
 
 	mov	rdx, QWORD PTR fullpath$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10959
+	lea	rcx, OFFSET FLAT:$SG10997
 	call	DoDebugMsg
 
 ; 580  :         file = fopen( fullpath, "rb" );
 
-	lea	rdx, OFFSET FLAT:$SG10960
+	lea	rdx, OFFSET FLAT:$SG10998
 	mov	rcx, QWORD PTR fullpath$[rsp]
-	call	QWORD PTR __imp_fopen
+	call	fopen
 	mov	QWORD PTR file$[rsp], rax
 
 ; 581  :         if( file ) {
@@ -677,7 +574,7 @@ $LN5@open_file_:
 ; 585  :     DebugMsg(("open_file_in_include_path()=%p\n", file ));
 
 	mov	rdx, QWORD PTR file$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10962
+	lea	rcx, OFFSET FLAT:$SG11000
 	call	DoDebugMsg
 
 ; 586  :     return( file );
@@ -686,27 +583,21 @@ $LN5@open_file_:
 
 ; 587  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 open_file_in_include_path ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\input.c
 _TEXT	SEGMENT
-curr$ = 48
-tab$ = 56
+tab$ = 48
+curr$ = 56
 print_source_nesting_structure PROC
 
 ; 508  : {
 
 $LN12:
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 72					; 00000048H
 
 ; 509  :     struct src_item *curr;
 ; 510  :     unsigned        tab = 1;
@@ -761,7 +652,7 @@ $LN4@print_sour:
 	mov	ecx, DWORD PTR [rcx+24]
 	mov	DWORD PTR [rsp+32], ecx
 	mov	r9, QWORD PTR [rax]
-	lea	r8, OFFSET FLAT:$SG10929
+	lea	r8, OFFSET FLAT:$SG10967
 	mov	edx, DWORD PTR tab$[rsp]
 	mov	ecx, 123				; 0000007bH
 	call	PrintNote
@@ -799,8 +690,8 @@ $LN7@print_sour:
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	eax, DWORD PTR [rax+24]
 	mov	DWORD PTR [rsp+32], eax
-	lea	r9, OFFSET FLAT:$SG10932
-	lea	r8, OFFSET FLAT:$SG10933
+	lea	r9, OFFSET FLAT:$SG10970
+	lea	r8, OFFSET FLAT:$SG10971
 	mov	edx, DWORD PTR tab$[rsp]
 	mov	ecx, 125				; 0000007dH
 	call	PrintNote
@@ -828,7 +719,7 @@ $LN9@print_sour:
 	mov	eax, DWORD PTR [rax+24]
 	mov	DWORD PTR [rsp+32], eax
 	mov	r9, QWORD PTR [rcx+8]
-	lea	r8, OFFSET FLAT:$SG10934
+	lea	r8, OFFSET FLAT:$SG10972
 	mov	edx, DWORD PTR tab$[rsp]
 	mov	ecx, 124				; 0000007cH
 	call	PrintNote
@@ -858,7 +749,7 @@ $LN3@print_sour:
 	mov	ecx, DWORD PTR [rcx+24]
 	mov	DWORD PTR [rsp+32], ecx
 	mov	r9, QWORD PTR [rax]
-	lea	r8, OFFSET FLAT:$SG10935
+	lea	r8, OFFSET FLAT:$SG10973
 	mov	edx, DWORD PTR tab$[rsp]
 	mov	ecx, 126				; 0000007eH
 	call	PrintNote
@@ -866,12 +757,11 @@ $LN1@print_sour:
 
 ; 531  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 print_source_nesting_structure ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\input.c
 _TEXT	SEGMENT
 curr$ = 32
@@ -883,13 +773,7 @@ PushSrcItem PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	BYTE PTR [rsp+8], cl
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	movzx	ecx, BYTE PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 417  :     struct src_item   *curr;
 ; 418  : 
@@ -955,19 +839,18 @@ $LN3@PushSrcIte:
 
 ; 430  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 PushSrcItem ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\input.c
 _TEXT	SEGMENT
-ptr$ = 32
-last$ = 40
-c$ = 48
-tv69 = 52
-tv73 = 56
+tv69 = 32
+c$ = 36
+ptr$ = 40
+tv73 = 48
+last$ = 56
 buffer$ = 80
 max$ = 88
 fp$ = 96
@@ -978,13 +861,7 @@ my_fgets PROC
 	mov	QWORD PTR [rsp+24], r8
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 72					; 00000048H
 
 ; 356  :     char        *ptr = buffer;
 
@@ -1004,7 +881,7 @@ my_fgets PROC
 ; 360  :     c = getc( fp );
 
 	mov	rcx, QWORD PTR fp$[rsp]
-	call	QWORD PTR __imp_getc
+	call	getc
 	mov	DWORD PTR c$[rsp], eax
 $LN2@my_fgets:
 
@@ -1106,7 +983,7 @@ $LN4@my_fgets:
 ; 387  :         c = getc( fp );
 
 	mov	rcx, QWORD PTR fp$[rsp]
-	call	QWORD PTR __imp_getc
+	call	getc
 	mov	DWORD PTR c$[rsp], eax
 
 ; 388  :     }
@@ -1131,12 +1008,11 @@ $LN1@my_fgets:
 
 ; 392  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 my_fgets ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\input.c
 _TEXT	SEGMENT
 curr$ = 0
@@ -1149,13 +1025,7 @@ UpdateLineNumber PROC
 $LN7:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 16
-	mov	rdi, rsp
-	mov	ecx, 4
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+32]
+	sub	rsp, 24
 
 ; 307  :     struct src_item *curr;
 ; 308  :     for ( curr = src_stack; curr ; curr = curr->next )
@@ -1198,24 +1068,18 @@ $LN3@UpdateLine:
 ; 313  :     return;
 ; 314  : }
 
-	add	rsp, 16
-	pop	rdi
+	add	rsp, 24
 	ret	0
 UpdateLineNumber ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\input.c
 _TEXT	SEGMENT
 FreeFiles PROC
 
 ; 241  : {
 
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 
 ; 242  : #if FASTMEM==0
 ; 243  :     int i;
@@ -1264,12 +1128,11 @@ $LN2@FreeFiles:
 ; 271  :     return;
 ; 272  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 FreeFiles ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\input.c
 _TEXT	SEGMENT
 index$ = 32
@@ -1280,13 +1143,7 @@ AddFile	PROC
 ; 192  : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 193  :     unsigned    index;
 ; 194  : 
@@ -1294,7 +1151,7 @@ AddFile	PROC
 
 	mov	r8d, DWORD PTR ModuleInfo+168
 	mov	rdx, QWORD PTR fname$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10805
+	lea	rcx, OFFSET FLAT:$SG10843
 	call	DoDebugMsg1
 
 ; 196  :     for( index = 0; index < ModuleInfo.g.cnt_fnames; index++ ) {
@@ -1317,7 +1174,7 @@ $LN4@AddFile:
 	mov	rcx, QWORD PTR ModuleInfo+160
 	mov	rdx, QWORD PTR [rcx+rax]
 	mov	rcx, QWORD PTR fname$[rsp]
-	call	QWORD PTR __imp__stricmp
+	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN5@AddFile
 
@@ -1451,12 +1308,11 @@ $LN1@AddFile:
 
 ; 227  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 AddFile	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\input.c
 _TEXT	SEGMENT
 GetTopSrcName PROC
@@ -1464,12 +1320,7 @@ GetTopSrcName PROC
 ; 340  : {
 
 $LN4:
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 
 ; 341  :     if ( src_stack->type == SIT_MACRO )
 
@@ -1498,12 +1349,11 @@ $LN1@GetTopSrcN:
 
 ; 344  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 GetTopSrcName ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\input.c
 _TEXT	SEGMENT
 buffer$ = 48
@@ -1513,13 +1363,7 @@ GetTopLine PROC
 
 $LN6:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 330  :     *buffer = NULLC;
 
@@ -1535,7 +1379,7 @@ $LN6:
 
 	call	GetLqLine
 	mov	r8d, eax
-	lea	rdx, OFFSET FLAT:$SG10847
+	lea	rdx, OFFSET FLAT:$SG10885
 	mov	rcx, QWORD PTR buffer$[rsp]
 	call	sprintf
 	jmp	SHORT $LN3@GetTopLine
@@ -1556,7 +1400,7 @@ $LN2@GetTopLine:
 	mov	rcx, QWORD PTR ModuleInfo+200
 	mov	r9d, DWORD PTR [rcx+24]
 	mov	r8, QWORD PTR [rax+8]
-	lea	rdx, OFFSET FLAT:$SG10849
+	lea	rdx, OFFSET FLAT:$SG10887
 	mov	rcx, QWORD PTR buffer$[rsp]
 	call	sprintf
 $LN4@GetTopLine:
@@ -1568,22 +1412,19 @@ $LN3@GetTopLine:
 
 ; 336  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 GetTopLine ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\input.c
 _TEXT	SEGMENT
-index$ = 16
+index$ = 8
 GetFName PROC
 
 ; 231  : {
 
-$LN3:
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
 
 ; 232  :     return( ModuleInfo.g.FNames+index );
 
@@ -1595,23 +1436,20 @@ $LN3:
 
 ; 233  : }
 
-	pop	rdi
 	ret	0
 GetFName ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\input.c
 _TEXT	SEGMENT
-file$ = 16
-line_num$ = 24
+file$ = 8
+line_num$ = 16
 set_curr_srcfile PROC
 
 ; 469  : {
 
-$LN4:
 	mov	DWORD PTR [rsp+16], edx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
 
 ; 470  :     if ( file != 0xFFF ) /* 0xFFF is the special value for macro lines */
 
@@ -1634,11 +1472,10 @@ $LN2@set_curr_s:
 ; 473  :     return;
 ; 474  : }
 
-	pop	rdi
 	ret	0
 set_curr_srcfile ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\input.c
 _TEXT	SEGMENT
 curr$ = 0
@@ -1647,12 +1484,7 @@ get_curr_srcfile PROC
 ; 458  : {
 
 $LN7:
-	push	rdi
-	sub	rsp, 16
-	mov	rdi, rsp
-	mov	ecx, 4
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 24
 
 ; 459  :     struct src_item *curr;
 ; 460  :     for ( curr = src_stack; curr ; curr = curr->next )
@@ -1691,12 +1523,11 @@ $LN1@get_curr_s:
 
 ; 464  : }
 
-	add	rsp, 16
-	pop	rdi
+	add	rsp, 24
 	ret	0
 get_curr_srcfile ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\input.c
 _TEXT	SEGMENT
 nextfile$ = 32
@@ -1705,12 +1536,7 @@ ClearSrcStack PROC
 ; 284  : {
 
 $LN7:
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 56					; 00000038H
 
 ; 285  :     struct src_item   *nextfile;
 ; 286  : 
@@ -1748,7 +1574,7 @@ $LN4@ClearSrcSt:
 
 	mov	rax, QWORD PTR ModuleInfo+200
 	mov	rcx, QWORD PTR [rax+16]
-	call	QWORD PTR __imp_fclose
+	call	fclose
 $LN5@ClearSrcSt:
 
 ; 294  :         }
@@ -1772,12 +1598,11 @@ $LN3@ClearSrcSt:
 ; 299  :     return;
 ; 300  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 ClearSrcStack ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\input.c
 _TEXT	SEGMENT
 curr$ = 32
@@ -1789,13 +1614,7 @@ GetCurrSrcPos PROC
 
 $LN9:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 491  :     struct src_item *curr;
 ; 492  : 
@@ -1826,11 +1645,11 @@ $LN4@GetCurrSrc:
 	and	eax, 1
 	test	eax, eax
 	jne	SHORT $LN7@GetCurrSrc
-	lea	rax, OFFSET FLAT:$SG10912
+	lea	rax, OFFSET FLAT:$SG10950
 	mov	QWORD PTR tv81[rsp], rax
 	jmp	SHORT $LN8@GetCurrSrc
 $LN7@GetCurrSrc:
-	lea	rax, OFFSET FLAT:$SG10913
+	lea	rax, OFFSET FLAT:$SG10951
 	mov	QWORD PTR tv81[rsp], rax
 $LN8@GetCurrSrc:
 	mov	rax, QWORD PTR curr$[rsp]
@@ -1864,12 +1683,11 @@ $LN1@GetCurrSrc:
 
 ; 500  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 GetCurrSrcPos ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\input.c
 _TEXT	SEGMENT
 newstat$ = 80
@@ -1879,13 +1697,7 @@ PopInputStatus PROC
 
 $LN5:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 72					; 00000048H
 
 ; 860  :     DebugMsg1(("PopInputStatus() old=%X-%u-%X new=%X-%u-%X\n",
 
@@ -1901,7 +1713,7 @@ $LN5:
 	mov	r9, QWORD PTR ModuleInfo+464
 	mov	r8d, DWORD PTR ModuleInfo+496
 	mov	rdx, QWORD PTR token_stringbuf
-	lea	rcx, OFFSET FLAT:$SG11050
+	lea	rcx, OFFSET FLAT:$SG11088
 	call	DoDebugMsg1
 
 ; 861  :                token_stringbuf, Token_Count, CurrSource,
@@ -1992,12 +1804,11 @@ $LN3@PopInputSt:
 ; 884  :     return;
 ; 885  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 PopInputStatus ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\input.c
 _TEXT	SEGMENT
 i$1 = 64
@@ -2008,13 +1819,7 @@ PushInputStatus PROC
 
 $LN5:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 80					; 00000050H
-	mov	rdi, rsp
-	mov	ecx, 20
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+96]
+	sub	rsp, 88					; 00000058H
 
 ; 826  :     oldstat->token_stringbuf = token_stringbuf;
 
@@ -2131,7 +1936,7 @@ $LN3@PushInputS:
 	mov	r8d, DWORD PTR [rax+24]
 	mov	rax, QWORD PTR oldstat$[rsp]
 	mov	rdx, QWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG11045
+	lea	rcx, OFFSET FLAT:$SG11083
 	call	DoDebugMsg1
 
 ; 852  :                oldstat->token_stringbuf, oldstat->token_count, oldstat->currsource,
@@ -2142,12 +1947,11 @@ $LN3@PushInputS:
 
 ; 855  : }
 
-	add	rsp, 80					; 00000050H
-	pop	rdi
+	add	rsp, 88					; 00000058H
 	ret	0
 PushInputStatus ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\input.c
 _TEXT	SEGMENT
 i$ = 48
@@ -2157,12 +1961,7 @@ InputFini PROC
 ; 967  : {
 
 $LN12:
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 72					; 00000048H
 
 ; 968  : #ifdef DEBUG_OUT
 ; 969  :     int   i;
@@ -2230,7 +2029,7 @@ $LN4@InputFini:
 	mov	r8d, DWORD PTR [rax+rdx+12]
 	mov	eax, DWORD PTR tv95[rsp]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11082
+	lea	rcx, OFFSET FLAT:$SG11120
 	call	printf
 	jmp	SHORT $LN8@InputFini
 $LN7@InputFini:
@@ -2248,7 +2047,7 @@ $LN7@InputFini:
 	mov	r9, QWORD PTR [r8+rax]
 	mov	rax, QWORD PTR ModuleInfo+160
 	mov	r8d, DWORD PTR [rax+rcx+12]
-	lea	rcx, OFFSET FLAT:$SG11083
+	lea	rcx, OFFSET FLAT:$SG11121
 	call	printf
 $LN8@InputFini:
 $LN6@InputFini:
@@ -2261,7 +2060,7 @@ $LN6@InputFini:
 	mov	rcx, QWORD PTR ModuleInfo+160
 	mov	r8, QWORD PTR [rcx+rax]
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11084
+	lea	rcx, OFFSET FLAT:$SG11122
 	call	DoDebugMsg
 
 ; 982  :     }
@@ -2298,7 +2097,7 @@ $LN9@InputFini:
 
 	mov	r8d, DWORD PTR cntlines
 	mov	edx, DWORD PTR cntflines
-	lea	rcx, OFFSET FLAT:$SG11087
+	lea	rcx, OFFSET FLAT:$SG11125
 	call	printf
 
 ; 992  :         printf("invokations: PreprocessLine=%" I32_SPEC "u/%" I32_SPEC "u/%" I32_SPEC "u, Tokenize=%" I32_SPEC "u/%" I32_SPEC "u\n", cntppl0, cntppl1, cntppl2, cnttok0, cnttok1 );
@@ -2310,7 +2109,7 @@ $LN9@InputFini:
 	mov	r9d, DWORD PTR cntppl2
 	mov	r8d, DWORD PTR cntppl1
 	mov	edx, DWORD PTR cntppl0
-	lea	rcx, OFFSET FLAT:$SG11088
+	lea	rcx, OFFSET FLAT:$SG11126
 	call	printf
 $LN10@InputFini:
 
@@ -2341,12 +2140,11 @@ $LN10@InputFini:
 ; 1002 :     LclFree( srclinebuffer );
 ; 1003 : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 InputFini ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\input.c
 _TEXT	SEGMENT
 InputPassInit PROC
@@ -2354,16 +2152,11 @@ InputPassInit PROC
 ; 953  : {
 
 $LN3:
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 
 ; 954  :     DebugMsg(( "InputPassInit() enter\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11066
+	lea	rcx, OFFSET FLAT:$SG11104
 	call	DoDebugMsg
 
 ; 955  :     src_stack->line_num = 0;
@@ -2390,12 +2183,11 @@ $LN3:
 ; 960  :     return;
 ; 961  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 InputPassInit ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\input.c
 _TEXT	SEGMENT
 fl$ = 48
@@ -2404,12 +2196,7 @@ InputInit PROC
 ; 891  : {
 
 $LN3:
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 72					; 00000048H
 
 ; 892  :     struct src_item *fl;
 ; 893  : #if 0
@@ -2420,7 +2207,7 @@ $LN3:
 ; 898  : 
 ; 899  :     DebugMsg(( "InputInit() enter\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11061
+	lea	rcx, OFFSET FLAT:$SG11099
 	call	DoDebugMsg
 
 ; 900  :     //ModuleInfo.g.cnt_fnames = 0;
@@ -2477,7 +2264,7 @@ $LN3:
 ; 927  : 
 ; 928  :     srclinebuffer = LclAlloc( SIZE_SRCLINES + SIZE_TOKENARRAY + SIZE_STRINGBUFFER );
 
-	mov	ecx, 240600				; 0003abd8H
+	mov	ecx, 1311744				; 00140400H
 	call	LclAlloc
 	mov	QWORD PTR srclinebuffer, rax
 
@@ -2485,20 +2272,20 @@ $LN3:
 ; 930  :     commentbuffer = srclinebuffer + SIZE_SRCLINES - MAX_LINE_LEN;
 
 	mov	rax, QWORD PTR srclinebuffer
-	add	rax, 24000				; 00005dc0H
+	add	rax, 131072				; 00020000H
 	mov	QWORD PTR commentbuffer, rax
 
 ; 931  :     /* behind the comment buffer is the token buffer */
 ; 932  :     ModuleInfo.tokenarray = (struct asm_tok *)( srclinebuffer + SIZE_SRCLINES );
 
 	mov	rax, QWORD PTR srclinebuffer
-	add	rax, 24600				; 00006018H
+	add	rax, 132096				; 00020400H
 	mov	QWORD PTR ModuleInfo+480, rax
 
 ; 933  :     token_stringbuf = srclinebuffer + SIZE_SRCLINES + SIZE_TOKENARRAY;
 
 	mov	rax, QWORD PTR srclinebuffer
-	add	rax, 216600				; 00034e18H
+	add	rax, 1180672				; 00120400H
 	mov	QWORD PTR token_stringbuf, rax
 
 ; 934  : #ifdef DEBUG_OUT
@@ -2510,7 +2297,7 @@ $LN3:
 ; 936  :     end_stringbuf = token_stringbuf + SIZE_STRINGBUFFER;
 
 	mov	rax, QWORD PTR token_stringbuf
-	add	rax, 24000				; 00005dc0H
+	add	rax, 131072				; 00020000H
 	mov	QWORD PTR end_stringbuf, rax
 
 ; 937  :     DebugMsg(( "InputInit: srclinebuffer=%p, tokenarray=%p, token_stringbuf=%p end_stringbuf=%p\n", srclinebuffer, ModuleInfo.tokenarray, token_stringbuf, end_stringbuf ));
@@ -2520,7 +2307,7 @@ $LN3:
 	mov	r9, QWORD PTR token_stringbuf
 	mov	r8, QWORD PTR ModuleInfo+480
 	mov	rdx, QWORD PTR srclinebuffer
-	lea	rcx, OFFSET FLAT:$SG11062
+	lea	rcx, OFFSET FLAT:$SG11100
 	call	DoDebugMsg
 
 ; 938  : #endif
@@ -2562,21 +2349,20 @@ $LN3:
 ; 945  : 
 ; 946  :     DebugMsg(( "InputInit() exit\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11063
+	lea	rcx, OFFSET FLAT:$SG11101
 	call	DoDebugMsg
 
 ; 947  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 InputInit ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\input.c
 _TEXT	SEGMENT
-tmp$ = 32
-len$ = 40
+len$ = 32
+tmp$ = 40
 string$ = 64
 AddStringToIncludePath PROC
 
@@ -2584,13 +2370,7 @@ AddStringToIncludePath PROC
 
 $LN8:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 758  :     char *tmp;
 ; 759  :     int len;
@@ -2598,7 +2378,7 @@ $LN8:
 ; 761  :     DebugMsg(("AddStringToIncludePath(%s) enter\n", string ));
 
 	mov	rdx, QWORD PTR string$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11031
+	lea	rcx, OFFSET FLAT:$SG11069
 	call	DoDebugMsg
 $LN2@AddStringT:
 
@@ -2607,7 +2387,7 @@ $LN2@AddStringT:
 	mov	rax, QWORD PTR string$[rsp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isspace
+	call	isspace
 	test	eax, eax
 	je	SHORT $LN3@AddStringT
 
@@ -2684,7 +2464,7 @@ $LN5@AddStringT:
 
 ; 775  :         strcat( ModuleInfo.g.IncludePath, INC_PATH_DELIM_STR );
 
-	lea	rdx, OFFSET FLAT:$SG11035
+	lea	rdx, OFFSET FLAT:$SG11073
 	mov	rcx, QWORD PTR ModuleInfo+176
 	call	strcat
 
@@ -2704,22 +2484,19 @@ $LN1@AddStringT:
 ; 778  :     }
 ; 779  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 AddStringToIncludePath ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\input.c
 _TEXT	SEGMENT
-line$ = 16
+line$ = 8
 SetLineNumber PROC
 
 ; 479  : {
 
-$LN3:
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
 
 ; 480  :     src_stack->line_num = line;
 
@@ -2730,11 +2507,10 @@ $LN3:
 ; 481  :     return;
 ; 482  : }
 
-	pop	rdi
 	ret	0
 SetLineNumber ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\input.c
 _TEXT	SEGMENT
 mi$ = 48
@@ -2744,20 +2520,14 @@ PushMacro PROC
 
 $LN3:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 437  :     DebugMsg1(( "PushMacro(%s)\n", mi->macro->name ));
 
 	mov	rax, QWORD PTR mi$[rsp]
 	mov	rax, QWORD PTR [rax+32]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10887
+	lea	rcx, OFFSET FLAT:$SG10925
 	call	DoDebugMsg1
 
 ; 438  :     PushSrcItem( SIT_MACRO, mi );
@@ -2769,16 +2539,15 @@ $LN3:
 ; 439  :     return;
 ; 440  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 PushMacro ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\input.c
 _TEXT	SEGMENT
-curr$ = 48
-tv86 = 56
+tv86 = 48
+curr$ = 56
 tv153 = 64
 tv173 = 72
 buffer$ = 96
@@ -2788,13 +2557,7 @@ GetTextLine PROC
 
 $LN17:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 80					; 00000050H
-	mov	rdi, rsp
-	mov	ecx, 20
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+96]
+	sub	rsp, 88					; 00000058H
 
 ; 695  :     struct src_item *curr = src_stack;
 
@@ -2814,7 +2577,7 @@ $LN17:
 
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	r8, QWORD PTR [rax+16]
-	mov	edx, 600				; 00000258H
+	mov	edx, 1024				; 00000400H
 	mov	rcx, QWORD PTR buffer$[rsp]
 	call	my_fgets
 	test	rax, rax
@@ -2867,7 +2630,7 @@ $LN7@GetTextLin:
 	mov	ecx, DWORD PTR tv86[rsp]
 	mov	r8d, ecx
 	mov	rdx, QWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG11017
+	lea	rcx, OFFSET FLAT:$SG11055
 	call	DoDebugMsg1
 
 ; 708  :         /* don't close and remove main source file */
@@ -2881,7 +2644,7 @@ $LN7@GetTextLin:
 
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rcx, QWORD PTR [rax+16]
-	call	QWORD PTR __imp_fclose
+	call	fclose
 
 ; 711  :             src_stack = curr->next;
 
@@ -3076,27 +2839,26 @@ $LN1@GetTextLin:
 
 ; 748  : }
 
-	add	rsp, 80					; 00000050H
-	pop	rdi
+	add	rsp, 88					; 00000058H
 	ret	0
 GetTextLine ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\input.c
 _TEXT	SEGMENT
-file$ = 32
-fl$ = 40
-fn$ = 48
-isabs$ = 56
-fullpath$ = 80
-fn2$4 = 360
-src$5 = 368
-i$6 = 376
-$T7 = 392
-tv83 = 400
-__$ArrayPad$ = 408
-path$ = 432
-queue$ = 440
+isabs$ = 32
+file$ = 40
+fl$ = 48
+tv83 = 56
+i$1 = 60
+src$2 = 64
+fn2$3 = 72
+$T4 = 80
+fn$ = 88
+fullpath$ = 96
+__$ArrayPad$ = 368
+path$ = 400
+queue$ = 408
 SearchFile PROC
 
 ; 597  : {
@@ -3104,13 +2866,7 @@ SearchFile PROC
 $LN23:
 	mov	BYTE PTR [rsp+16], dl
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 416				; 000001a0H
-	mov	rdi, rsp
-	mov	ecx, 104				; 00000068H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+432]
+	sub	rsp, 392				; 00000188H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -3127,7 +2883,7 @@ $LN23:
 ; 604  :     DebugMsg1(("SearchFile(%s) enter\n", path ));
 
 	mov	rdx, QWORD PTR path$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10986
+	lea	rcx, OFFSET FLAT:$SG11024
 	call	DoDebugMsg1
 
 ; 605  : 
@@ -3219,27 +2975,27 @@ $LN4@SearchFile:
 	mov	ecx, eax
 	call	GetFName
 	mov	rax, QWORD PTR [rax]
-	mov	QWORD PTR src$5[rsp], rax
+	mov	QWORD PTR src$2[rsp], rax
 
 ; 625  :                 fn2 = GetFNamePart( src );
 
-	mov	rcx, QWORD PTR src$5[rsp]
+	mov	rcx, QWORD PTR src$2[rsp]
 	call	GetFNamePart
-	mov	QWORD PTR fn2$4[rsp], rax
+	mov	QWORD PTR fn2$3[rsp], rax
 
 ; 626  :                 if ( fn2 != src ) {
 
-	mov	rax, QWORD PTR src$5[rsp]
-	cmp	QWORD PTR fn2$4[rsp], rax
+	mov	rax, QWORD PTR src$2[rsp]
+	cmp	QWORD PTR fn2$3[rsp], rax
 	je	$LN7@SearchFile
 
 ; 627  :                     int i = fn2 - src;
 
-	mov	rax, QWORD PTR src$5[rsp]
-	mov	rcx, QWORD PTR fn2$4[rsp]
+	mov	rax, QWORD PTR src$2[rsp]
+	mov	rcx, QWORD PTR fn2$3[rsp]
 	sub	rcx, rax
 	mov	rax, rcx
-	mov	DWORD PTR i$6[rsp], eax
+	mov	DWORD PTR i$1[rsp], eax
 
 ; 628  :                     /* v2.10: if there's a directory part, add it to the directory part of the current file.
 ; 629  :                      * fixme: check that both parts won't exceed FILENAME_MAX!
@@ -3247,15 +3003,15 @@ $LN4@SearchFile:
 ; 631  :                      */
 ; 632  :                     memcpy( fullpath, src, i );
 
-	movsxd	rax, DWORD PTR i$6[rsp]
+	movsxd	rax, DWORD PTR i$1[rsp]
 	mov	r8, rax
-	mov	rdx, QWORD PTR src$5[rsp]
+	mov	rdx, QWORD PTR src$2[rsp]
 	lea	rcx, QWORD PTR fullpath$[rsp]
 	call	memcpy
 
 ; 633  :                     strcpy( fullpath + i, path );
 
-	movsxd	rax, DWORD PTR i$6[rsp]
+	movsxd	rax, DWORD PTR i$1[rsp]
 	lea	rax, QWORD PTR fullpath$[rsp+rax]
 	mov	rdx, QWORD PTR path$[rsp]
 	mov	rcx, rax
@@ -3263,9 +3019,9 @@ $LN4@SearchFile:
 
 ; 634  :                     if ( file = fopen( fullpath, "rb" ) ) {
 
-	lea	rdx, OFFSET FLAT:$SG10992
+	lea	rdx, OFFSET FLAT:$SG11030
 	lea	rcx, QWORD PTR fullpath$[rsp]
-	call	QWORD PTR __imp_fopen
+	call	fopen
 	mov	QWORD PTR file$[rsp], rax
 	cmp	QWORD PTR file$[rsp], 0
 	je	SHORT $LN8@SearchFile
@@ -3274,7 +3030,7 @@ $LN4@SearchFile:
 
 	mov	r8, QWORD PTR file$[rsp]
 	lea	rdx, QWORD PTR fullpath$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10993
+	lea	rcx, OFFSET FLAT:$SG11031
 	call	DoDebugMsg1
 
 ; 636  :                         path = fullpath;
@@ -3292,7 +3048,7 @@ $LN8@SearchFile:
 ; 640  :                         DebugMsg1(("SearchFile(): fopen(%s) failed\n", fullpath ));
 
 	lea	rdx, QWORD PTR fullpath$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10994
+	lea	rcx, OFFSET FLAT:$SG11032
 	call	DoDebugMsg1
 $LN9@SearchFile:
 $LN7@SearchFile:
@@ -3321,28 +3077,28 @@ $LN5@SearchFile:
 
 	mov	eax, 1
 	imul	rax, rax, 0
-	mov	QWORD PTR $T7[rsp], rax
-	cmp	QWORD PTR $T7[rsp], 260			; 00000104H
+	mov	QWORD PTR $T4[rsp], rax
+	cmp	QWORD PTR $T4[rsp], 260			; 00000104H
 	jae	SHORT $LN21@SearchFile
 	jmp	SHORT $LN22@SearchFile
 $LN21@SearchFile:
 	call	__report_rangecheckfailure
 $LN22@SearchFile:
-	mov	rax, QWORD PTR $T7[rsp]
+	mov	rax, QWORD PTR $T4[rsp]
 	mov	BYTE PTR fullpath$[rsp+rax], 0
 
 ; 649  :         file = fopen( path, "rb" );
 
-	lea	rdx, OFFSET FLAT:$SG10996
+	lea	rdx, OFFSET FLAT:$SG11034
 	mov	rcx, QWORD PTR path$[rsp]
-	call	QWORD PTR __imp_fopen
+	call	fopen
 	mov	QWORD PTR file$[rsp], rax
 
 ; 650  :         DebugMsg1(("SearchFile(): fopen(%s)=%X\n", path, file ));
 
 	mov	r8, QWORD PTR file$[rsp]
 	mov	rdx, QWORD PTR path$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10997
+	lea	rcx, OFFSET FLAT:$SG11035
 	call	DoDebugMsg1
 
 ; 651  : 
@@ -3373,7 +3129,7 @@ $LN22@SearchFile:
 	lea	r9, QWORD PTR fullpath$[rsp]
 	mov	r8, QWORD PTR file$[rsp]
 	mov	rdx, QWORD PTR path$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11001
+	lea	rcx, OFFSET FLAT:$SG11039
 	call	DoDebugMsg1
 
 ; 658  :                 path = fullpath;
@@ -3391,7 +3147,7 @@ $LN12@SearchFile:
 ; 662  :                 DebugMsg1(("SearchFile(): open_file_in_include_path(%s)=NULL\n", path ));
 
 	mov	rdx, QWORD PTR path$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11002
+	lea	rcx, OFFSET FLAT:$SG11040
 	call	DoDebugMsg1
 $LN13@SearchFile:
 $LN11@SearchFile:
@@ -3467,20 +3223,14 @@ $LN16@SearchFile:
 
 ; 683  : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:SearchFile$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 416				; 000001a0H
-	pop	rdi
+	add	rsp, 392				; 00000188H
 	ret	0
 SearchFile ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\input.c
 _TEXT	SEGMENT
 rc$ = 0
@@ -3492,13 +3242,7 @@ GetExtPart PROC
 
 $LN12:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 16
-	mov	rdi, rsp
-	mov	ecx, 4
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+32]
+	sub	rsp, 24
 
 ; 172  :     char *rc;
 ; 173  :     for( rc = NULL; *fname; fname++ ) {
@@ -3572,12 +3316,11 @@ $LN11@GetExtPart:
 
 ; 181  : }
 
-	add	rsp, 16
-	pop	rdi
+	add	rsp, 24
 	ret	0
 GetExtPart ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\input.c
 _TEXT	SEGMENT
 rc$ = 0
@@ -3588,13 +3331,7 @@ GetFNamePart PROC
 
 $LN8:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 16
-	mov	rdi, rsp
-	mov	ecx, 4
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+32]
+	sub	rsp, 24
 
 ; 160  :     const char *rc;
 ; 161  :     for ( rc = fname; *fname; fname++ )
@@ -3643,12 +3380,11 @@ $LN3@GetFNamePa:
 
 ; 165  : }
 
-	add	rsp, 16
-	pop	rdi
+	add	rsp, 24
 	ret	0
 GetFNamePart ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\input.c
 _TEXT	SEGMENT
 GetLineNumber PROC
@@ -3656,12 +3392,7 @@ GetLineNumber PROC
 ; 318  : {
 
 $LN3:
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 
 ; 319  :     UpdateLineNumber( LineCur, NULL );
 
@@ -3676,19 +3407,18 @@ $LN3:
 
 ; 321  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 GetLineNumber ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT sprintf
 _TEXT	SEGMENT
 _Result$ = 32
-_ArgList$ = 56
-_Buffer$ = 96
-_Format$ = 104
+_ArgList$ = 40
+_Buffer$ = 64
+_Format$ = 72
 sprintf	PROC						; COMDAT
 
 ; 1776 : {
@@ -3698,13 +3428,7 @@ $LN3:
 	mov	QWORD PTR [rsp+8], rcx
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+32], r9
-	push	rdi
-	sub	rsp, 80					; 00000050H
-	mov	rdi, rsp
-	mov	ecx, 20
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+96]
+	sub	rsp, 56					; 00000038H
 
 ; 1777 :     int _Result;
 ; 1778 :     va_list _ArgList;
@@ -3737,17 +3461,11 @@ $LN3:
 
 ; 1788 : }
 
-	mov	edi, eax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:sprintf$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	eax, edi
-	add	rsp, 80					; 00000050H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 sprintf	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT _vsprintf_l
 _TEXT	SEGMENT
@@ -3764,13 +3482,7 @@ $LN3:
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 1456 :     #pragma warning(push)
 ; 1457 :     #pragma warning(disable: 4996) // Deprecation
@@ -3787,12 +3499,11 @@ $LN3:
 ; 1459 :     #pragma warning(pop)
 ; 1460 : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 _vsprintf_l ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT _vsnprintf_l
 _TEXT	SEGMENT
@@ -3812,13 +3523,7 @@ $LN5:
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 72					; 00000048H
 
 ; 1386 :     int const _Result = __stdio_common_vsprintf(
 
@@ -3833,7 +3538,7 @@ $LN5:
 	mov	r8, QWORD PTR _BufferCount$[rsp]
 	mov	rdx, QWORD PTR _Buffer$[rsp]
 	mov	rcx, rax
-	call	QWORD PTR __imp___stdio_common_vsprintf
+	call	__stdio_common_vsprintf
 	mov	DWORD PTR _Result$[rsp], eax
 
 ; 1387 :         _CRT_INTERNAL_LOCAL_PRINTF_OPTIONS | _CRT_INTERNAL_PRINTF_LEGACY_VSPRINTF_NULL_TERMINATION,
@@ -3853,18 +3558,17 @@ $LN4@vsnprintf_:
 
 ; 1391 : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 _vsnprintf_l ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT printf
 _TEXT	SEGMENT
 _Result$ = 32
-_ArgList$ = 56
-_Format$ = 96
+_ArgList$ = 40
+_Format$ = 64
 printf	PROC						; COMDAT
 
 ; 950  : {
@@ -3874,13 +3578,7 @@ $LN3:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+32], r9
-	push	rdi
-	sub	rsp, 80					; 00000050H
-	mov	rdi, rsp
-	mov	ecx, 20
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+96]
+	sub	rsp, 56					; 00000038H
 
 ; 951  :     int _Result;
 ; 952  :     va_list _ArgList;
@@ -3892,7 +3590,7 @@ $LN3:
 ; 954  :     _Result = _vfprintf_l(stdout, _Format, NULL, _ArgList);
 
 	mov	ecx, 1
-	call	QWORD PTR __imp___acrt_iob_func
+	call	__acrt_iob_func
 	mov	r9, QWORD PTR _ArgList$[rsp]
 	xor	r8d, r8d
 	mov	rdx, QWORD PTR _Format$[rsp]
@@ -3910,17 +3608,11 @@ $LN3:
 
 ; 957  : }
 
-	mov	edi, eax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:printf$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	eax, edi
-	add	rsp, 80					; 00000050H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 printf	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT _vfprintf_l
 _TEXT	SEGMENT
@@ -3937,13 +3629,7 @@ $LN3:
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 639  :     return __stdio_common_vfprintf(_CRT_INTERNAL_LOCAL_PRINTF_OPTIONS, _Stream, _Format, _Locale, _ArgList);
 
@@ -3954,25 +3640,19 @@ $LN3:
 	mov	r8, QWORD PTR _Format$[rsp]
 	mov	rdx, QWORD PTR _Stream$[rsp]
 	mov	rcx, QWORD PTR [rax]
-	call	QWORD PTR __imp___stdio_common_vfprintf
+	call	__stdio_common_vfprintf
 
 ; 640  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 _vfprintf_l ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\corecrt_stdio_config.h
 ;	COMDAT __local_stdio_printf_options
 _TEXT	SEGMENT
 __local_stdio_printf_options PROC			; COMDAT
-
-; 73   : {
-
-$LN3:
-	push	rdi
 
 ; 74   :     static unsigned __int64 _OptionsStorage;
 ; 75   :     return &_OptionsStorage;
@@ -3981,7 +3661,6 @@ $LN3:
 
 ; 76   : }
 
-	pop	rdi
 	ret	0
 __local_stdio_printf_options ENDP
 _TEXT	ENDS

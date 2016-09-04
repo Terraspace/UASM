@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 _DATA	SEGMENT
@@ -12,31 +12,21 @@ PUBLIC	QEnqueue
 PUBLIC	QAddItem
 EXTRN	LclAlloc:PROC
 EXTRN	InternalError:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
 pdata	SEGMENT
 $pdata$QEnqueue DD imagerel $LN7
-	DD	imagerel $LN7+167
+	DD	imagerel $LN7+145
 	DD	imagerel $unwind$QEnqueue
 $pdata$QAddItem DD imagerel $LN3
-	DD	imagerel $LN3+85
+	DD	imagerel $LN3+63
 	DD	imagerel $unwind$QAddItem
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
 xdata	SEGMENT
-$unwind$QEnqueue DD 022301H
-	DD	0700b520fH
-$unwind$QAddItem DD 022301H
-	DD	0700b520fH
+$unwind$QEnqueue DD 010e01H
+	DD	0620eH
+$unwind$QAddItem DD 010e01H
+	DD	0620eH
 xdata	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\queue.c
 _TEXT	SEGMENT
 node$ = 32
@@ -49,13 +39,7 @@ QAddItem PROC
 $LN3:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 64   :     struct qnode    *node;
 ; 65   : 
@@ -79,12 +63,11 @@ $LN3:
 
 ; 69   : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 QAddItem ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\queue.c
 _TEXT	SEGMENT
 tv73 = 32
@@ -97,13 +80,7 @@ QEnqueue PROC
 $LN7:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 49   :     if( q->head == NULL ) {
 
@@ -161,8 +138,7 @@ $LN3@QEnqueue:
 
 ; 57   : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 QEnqueue ENDP
 _TEXT	ENDS

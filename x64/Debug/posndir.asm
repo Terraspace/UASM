@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 _DATA	SEGMENT
@@ -12,10 +12,10 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10662 DB	'OrgDirective(%u) enter', 0aH, 00H
-$SG10722 DB	'AlignDirective enter', 0aH, 00H
+$SG10700 DB	'OrgDirective(%u) enter', 0aH, 00H
+$SG10760 DB	'AlignDirective enter', 0aH, 00H
 	ORG $+2
-$SG10744 DB	'AlignDirective exit', 0aH, 00H
+$SG10782 DB	'AlignDirective exit', 0aH, 00H
 _DATA	ENDS
 CONST	SEGMENT
 NopList16 DB	03H
@@ -108,10 +108,6 @@ EXTRN	SetStructCurrentOffset:PROC
 EXTRN	AlignInStruct:PROC
 EXTRN	LstWrite:PROC
 EXTRN	StoreLine:PROC
-EXTRN	_RTC_CheckStackVars:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
-EXTRN	_RTC_UninitUse:PROC
 EXTRN	__GSHandlerCheck:PROC
 EXTRN	__security_check_cookie:PROC
 EXTRN	Options:BYTE
@@ -122,112 +118,53 @@ EXTRN	StoreState:BYTE
 EXTRN	__security_cookie:QWORD
 pdata	SEGMENT
 $pdata$AlignCurrOffset DD imagerel $LN4
-	DD	imagerel $LN4+117
+	DD	imagerel $LN4+96
 	DD	imagerel $unwind$AlignCurrOffset
 $pdata$OrgDirective DD imagerel $LN18
-	DD	imagerel $LN18+532
+	DD	imagerel $LN18+478
 	DD	imagerel $unwind$OrgDirective
 $pdata$fill_in_objfile_space DD imagerel fill_in_objfile_space
-	DD	imagerel fill_in_objfile_space+459
+	DD	imagerel fill_in_objfile_space+438
 	DD	imagerel $unwind$fill_in_objfile_space
-$pdata$AlignDirective DD imagerel $LN38
-	DD	imagerel $LN38+1124
+$pdata$AlignDirective DD imagerel $LN29
+	DD	imagerel $LN29+790
 	DD	imagerel $unwind$AlignDirective
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
-CONST	SEGMENT
-OrgDirective$rtcName$0 DB 06fH
-	DB	070H
-	DB	06eH
-	DB	064H
-	DB	078H
-	DB	00H
-	ORG $+10
-OrgDirective$rtcVarDesc DD 040H
-	DD	068H
-	DQ	FLAT:OrgDirective$rtcName$0
-	ORG $+48
-OrgDirective$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:OrgDirective$rtcVarDesc
-AlignDirective$rtcName$0 DB 06fH
-	DB	070H
-	DB	06eH
-	DB	064H
-	DB	078H
-	DB	00H
-	ORG $+2
-AlignDirective$rtcName$1 DB 062H
-	DB	075H
-	DB	066H
-	DB	066H
-	DB	065H
-	DB	072H
-	DB	00H
-	ORG $+1
-AlignDirective$rtcVarDesc DD 0d8H
-	DD	020H
-	DQ	FLAT:AlignDirective$rtcName$1
-	DD	050H
-	DD	068H
-	DQ	FLAT:AlignDirective$rtcName$0
-	ORG $+96
-AlignDirective$rtcFrameData DD 02H
-	DD	00H
-	DQ	FLAT:AlignDirective$rtcVarDesc
-CONST	ENDS
 xdata	SEGMENT
-$unwind$AlignCurrOffset DD 021c01H
-	DD	070055209H
-$unwind$OrgDirective DD 032701H
-	DD	0180111H
-	DD	0700aH
-$unwind$fill_in_objfile_space DD 021c01H
-	DD	070055209H
-$unwind$AlignDirective DD 033919H
-	DD	0240111H
-	DD	0700aH
+$unwind$AlignCurrOffset DD 010801H
+	DD	06208H
+$unwind$OrgDirective DD 021001H
+	DD	0170110H
+$unwind$fill_in_objfile_space DD 010801H
+	DD	06208H
+$unwind$AlignDirective DD 022219H
+	DD	01d0110H
 	DD	imagerel __GSHandlerCheck
-	DD	0118H
+	DD	0d0H
 xdata	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\posndir.c
 _TEXT	SEGMENT
 seg_align$ = 48
-opndx$ = 80
-CurrAddr$ = 196
-buffer$ = 216
-power$5 = 260
-$T6 = 272
-tv69 = 276
-__$ArrayPad$ = 280
-i$ = 304
-tokenarray$ = 312
+power$1 = 52
+tv69 = 56
+CurrAddr$ = 60
+opndx$ = 64
+buffer$ = 176
+__$ArrayPad$ = 208
+i$ = 240
+tokenarray$ = 248
 AlignDirective PROC
 
 ; 194  : {
 
-$LN38:
+$LN29:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 288				; 00000120H
-	mov	rdi, rsp
-	mov	ecx, 72					; 00000048H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+304]
+	sub	rsp, 232				; 000000e8H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
-	mov	BYTE PTR $T6[rsp], 0
 
 ; 195  :     int seg_align;
 ; 196  :     struct expr opndx;
@@ -236,7 +173,7 @@ $LN38:
 ; 199  : 
 ; 200  :     DebugMsg1(("AlignDirective enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG10722
+	lea	rcx, OFFSET FLAT:$SG10760
 	call	DoDebugMsg1
 
 ; 201  : 
@@ -247,9 +184,9 @@ $LN38:
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	eax, DWORD PTR [rcx+rax+16]
 	mov	DWORD PTR tv69[rsp], eax
-	cmp	DWORD PTR tv69[rsp], 434		; 000001b2H
+	cmp	DWORD PTR tv69[rsp], 439		; 000001b7H
 	je	SHORT $LN7@AlignDirec
-	cmp	DWORD PTR tv69[rsp], 435		; 000001b3H
+	cmp	DWORD PTR tv69[rsp], 440		; 000001b8H
 	je	$LN16@AlignDirec
 	jmp	$LN2@AlignDirec
 $LN7@AlignDirec:
@@ -263,7 +200,6 @@ $LN7@AlignDirec:
 
 ; 205  :         if ( EvalOperand( &i, tokenarray, Token_Count, &opndx, EXPF_NOUNDEF ) == ERROR )
 
-	mov	BYTE PTR $T6[rsp], 1
 	mov	BYTE PTR [rsp+32], 2
 	lea	r9, QWORD PTR opndx$[rsp]
 	mov	r8d, DWORD PTR ModuleInfo+496
@@ -282,48 +218,33 @@ $LN8@AlignDirec:
 ; 207  :         if ( opndx.kind == EXPR_CONST ) {
 
 	cmp	DWORD PTR opndx$[rsp+60], 0
-	jne	$LN9@AlignDirec
+	jne	SHORT $LN9@AlignDirec
 
 ; 208  :             int_32 power;
 ; 209  :             /* check that the parm is a power of 2 */
 ; 210  :             for( power = 1; power < align_value; power <<= 1 );
 
-	mov	DWORD PTR power$5[rsp], 1
+	mov	DWORD PTR power$1[rsp], 1
 	jmp	SHORT $LN6@AlignDirec
 $LN4@AlignDirec:
-	mov	eax, DWORD PTR power$5[rsp]
+	mov	eax, DWORD PTR power$1[rsp]
 	shl	eax, 1
-	mov	DWORD PTR power$5[rsp], eax
+	mov	DWORD PTR power$1[rsp], eax
 $LN6@AlignDirec:
-	cmp	BYTE PTR $T6[rsp], 0
-	jne	SHORT $LN29@AlignDirec
-	lea	rcx, OFFSET FLAT:AlignDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN29@AlignDirec:
 	mov	eax, DWORD PTR opndx$[rsp]
-	cmp	DWORD PTR power$5[rsp], eax
+	cmp	DWORD PTR power$1[rsp], eax
 	jge	SHORT $LN5@AlignDirec
 	jmp	SHORT $LN4@AlignDirec
 $LN5@AlignDirec:
 
 ; 211  :             if( power != align_value ) {
 
-	cmp	BYTE PTR $T6[rsp], 0
-	jne	SHORT $LN30@AlignDirec
-	lea	rcx, OFFSET FLAT:AlignDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN30@AlignDirec:
 	mov	eax, DWORD PTR opndx$[rsp]
-	cmp	DWORD PTR power$5[rsp], eax
+	cmp	DWORD PTR power$1[rsp], eax
 	je	SHORT $LN11@AlignDirec
 
 ; 212  :                 return( EmitErr( POWER_OF_2, align_value ) );
 
-	cmp	BYTE PTR $T6[rsp], 0
-	jne	SHORT $LN31@AlignDirec
-	lea	rcx, OFFSET FLAT:AlignDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN31@AlignDirec:
 	mov	edx, DWORD PTR opndx$[rsp]
 	mov	ecx, 129				; 00000081H
 	call	EmitErr
@@ -350,8 +271,7 @@ $LN9@AlignDirec:
 
 	mov	rax, QWORD PTR CurrStruct
 	mov	rax, QWORD PTR [rax+96]
-	movzx	eax, BYTE PTR [rax+16]
-	mov	BYTE PTR $T6[rsp], 1
+	movzx	eax, BYTE PTR [rax+28]
 	mov	DWORD PTR opndx$[rsp], eax
 	jmp	SHORT $LN15@AlignDirec
 $LN14@AlignDirec:
@@ -360,7 +280,6 @@ $LN14@AlignDirec:
 ; 219  :                 align_value = GetCurrSegAlign();
 
 	call	GetCurrSegAlign
-	mov	BYTE PTR $T6[rsp], 1
 	mov	DWORD PTR opndx$[rsp], eax
 $LN15@AlignDirec:
 
@@ -386,7 +305,6 @@ $LN16@AlignDirec:
 ; 224  :     case T_EVEN:
 ; 225  :         align_value = 2;
 
-	mov	BYTE PTR $T6[rsp], 1
 	mov	DWORD PTR opndx$[rsp], 2
 
 ; 226  :         i++;
@@ -428,11 +346,6 @@ $LN17@AlignDirec:
 
 ; 235  :         return( AlignInStruct( align_value ));
 
-	cmp	BYTE PTR $T6[rsp], 0
-	jne	SHORT $LN32@AlignDirec
-	lea	rcx, OFFSET FLAT:AlignDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN32@AlignDirec:
 	mov	ecx, DWORD PTR opndx$[rsp]
 	call	AlignInStruct
 	jmp	$LN1@AlignDirec
@@ -475,11 +388,6 @@ $LN22@AlignDirec:
 ; 243  :     }
 ; 244  :     if( align_value > seg_align ) {
 
-	cmp	BYTE PTR $T6[rsp], 0
-	jne	SHORT $LN33@AlignDirec
-	lea	rcx, OFFSET FLAT:AlignDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN33@AlignDirec:
 	mov	eax, DWORD PTR seg_align$[rsp]
 	cmp	DWORD PTR opndx$[rsp], eax
 	jle	SHORT $LN23@AlignDirec
@@ -499,11 +407,6 @@ $LN33@AlignDirec:
 ; 246  :           (ModuleInfo.flat_grp->sym.isdefined == FALSE)) //No warning if "FLAT"
 ; 247  :             EmitWarn( 1, ALIGN_TOO_HIGH, myltoa( align_value, buffer, 10, FALSE, FALSE ) );
 
-	cmp	BYTE PTR $T6[rsp], 0
-	jne	SHORT $LN34@AlignDirec
-	lea	rcx, OFFSET FLAT:AlignDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN34@AlignDirec:
 	mov	BYTE PTR [rsp+32], 0
 	xor	r9d, r9d
 	mov	r8d, 10
@@ -553,11 +456,6 @@ $LN25@AlignDirec:
 
 ; 256  :     seg_align = CurrAddr % align_value;
 
-	cmp	BYTE PTR $T6[rsp], 0
-	jne	SHORT $LN35@AlignDirec
-	lea	rcx, OFFSET FLAT:AlignDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN35@AlignDirec:
 	xor	edx, edx
 	mov	eax, DWORD PTR CurrAddr$[rsp]
 	div	DWORD PTR opndx$[rsp]
@@ -571,25 +469,14 @@ $LN35@AlignDirec:
 
 ; 258  :         align_value -= seg_align;
 
-	cmp	BYTE PTR $T6[rsp], 0
-	jne	SHORT $LN36@AlignDirec
-	lea	rcx, OFFSET FLAT:AlignDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN36@AlignDirec:
 	mov	eax, DWORD PTR seg_align$[rsp]
 	mov	ecx, DWORD PTR opndx$[rsp]
 	sub	ecx, eax
 	mov	eax, ecx
-	mov	BYTE PTR $T6[rsp], 1
 	mov	DWORD PTR opndx$[rsp], eax
 
 ; 259  :         fill_in_objfile_space( align_value );
 
-	cmp	BYTE PTR $T6[rsp], 0
-	jne	SHORT $LN37@AlignDirec
-	lea	rcx, OFFSET FLAT:AlignDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN37@AlignDirec:
 	mov	ecx, DWORD PTR opndx$[rsp]
 	call	fill_in_objfile_space
 $LN26@AlignDirec:
@@ -614,7 +501,7 @@ $LN27@AlignDirec:
 ; 263  :     }
 ; 264  :     DebugMsg1(("AlignDirective exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG10744
+	lea	rcx, OFFSET FLAT:$SG10782
 	call	DoDebugMsg1
 
 ; 265  :     return( NOT_ERROR );
@@ -624,20 +511,14 @@ $LN1@AlignDirec:
 
 ; 266  : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:AlignDirective$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 288				; 00000120H
-	pop	rdi
+	add	rsp, 232				; 000000e8H
 	ret	0
 AlignDirective ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\posndir.c
 _TEXT	SEGMENT
 i$ = 32
@@ -648,13 +529,7 @@ fill_in_objfile_space PROC
 ; 132  : {
 
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 133  :     int i;
 ; 134  :     int nop_type;
@@ -852,18 +727,17 @@ $LN1@fill_in_ob:
 ; 170  :     }
 ; 171  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 fill_in_objfile_space ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\posndir.c
 _TEXT	SEGMENT
+tv70 = 48
 opndx$ = 64
-tv70 = 180
-i$ = 208
-tokenarray$ = 216
+i$ = 192
+tokenarray$ = 200
 OrgDirective PROC
 
 ; 94   : {
@@ -871,13 +745,7 @@ OrgDirective PROC
 $LN18:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 192				; 000000c0H
-	mov	rdi, rsp
-	mov	ecx, 48					; 00000030H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+208]
+	sub	rsp, 184				; 000000b8H
 
 ; 95   :     //struct asym  *sym;
 ; 96   :     //int_32       value = 0;
@@ -886,7 +754,7 @@ $LN18:
 ; 99   :     DebugMsg1(("OrgDirective(%u) enter\n", i));
 
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10662
+	lea	rcx, OFFSET FLAT:$SG10700
 	call	DoDebugMsg1
 
 ; 100  :     i++;
@@ -1068,23 +936,17 @@ $LN1@OrgDirecti:
 
 ; 128  : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:OrgDirective$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
-	add	rsp, 192				; 000000c0H
-	pop	rdi
+	add	rsp, 184				; 000000b8H
 	ret	0
 OrgDirective ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\posndir.c
 _TEXT	SEGMENT
-seg_align$ = 32
-alignment$ = 36
-CurrAddr$ = 40
-tv77 = 44
+alignment$ = 32
+seg_align$ = 36
+tv77 = 40
+CurrAddr$ = 44
 value$ = 64
 AlignCurrOffset PROC
 
@@ -1092,13 +954,7 @@ AlignCurrOffset PROC
 
 $LN4:
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 178  :     int seg_align;
 ; 179  :     int alignment = (1 << value);
@@ -1148,8 +1004,7 @@ $LN2@AlignCurrO:
 ; 187  :     }
 ; 188  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 AlignCurrOffset ENDP
 _TEXT	ENDS

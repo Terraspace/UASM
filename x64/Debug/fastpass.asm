@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 _DATA	SEGMENT
@@ -15,21 +15,21 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10776 DB	'SaveState enter', 0aH, 00H
+$SG10814 DB	'SaveState enter', 0aH, 00H
 	ORG $+7
-$SG10777 DB	'SaveState exit', 0aH, 00H
-$SG10800 DB	'StoreLine(>%s<, lst_position=%u): cur=%X', 0aH, 00H
+$SG10815 DB	'SaveState exit', 0aH, 00H
+$SG10838 DB	'StoreLine(>%s<, lst_position=%u): cur=%X', 0aH, 00H
 	ORG $+2
-$SG10803 DB	'OUT', 00H
-$SG10806 DB	'%s', 0aH, 00H
+$SG10841 DB	'OUT', 00H
+$SG10844 DB	'%s', 0aH, 00H
 	ORG $+4
-$SG10811 DB	'SkipSavedState enter', 0aH, 00H
+$SG10849 DB	'SkipSavedState enter', 0aH, 00H
 	ORG $+2
-$SG10818 DB	'SaveVariableState(%s)=%d', 0aH, 00H
+$SG10856 DB	'SaveVariableState(%s)=%d', 0aH, 00H
 	ORG $+6
-$SG10829 DB	'RestoreState enter', 0aH, 00H
+$SG10867 DB	'RestoreState enter', 0aH, 00H
 	ORG $+4
-$SG10831 DB	'RestoreState: sym >%s<, value=%Xh (hvalue=%Xh), defined='
+$SG10869 DB	'RestoreState: sym >%s<, value=%Xh (hvalue=%Xh), defined='
 	DB	'%u', 0aH, 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
@@ -40,12 +40,12 @@ PUBLIC	StoreLine
 PUBLIC	SkipSavedState
 PUBLIC	RestoreState
 PUBLIC	SaveVariableState
-EXTRN	__imp_isspace:PROC
-EXTRN	__imp_isalnum:PROC
-EXTRN	__imp___acrt_iob_func:PROC
-EXTRN	__imp___stdio_common_vfprintf:PROC
+EXTRN	isspace:PROC
+EXTRN	isalnum:PROC
+EXTRN	__acrt_iob_func:PROC
+EXTRN	__stdio_common_vfprintf:PROC
 EXTRN	memcpy:PROC
-EXTRN	__imp__memicmp:PROC
+EXTRN	_memicmp:PROC
 EXTRN	strlen:PROC
 EXTRN	DoDebugMsg:PROC
 EXTRN	DoDebugMsg1:PROC
@@ -57,9 +57,6 @@ EXTRN	SetOfssize:PROC
 EXTRN	SegmentSaveState:PROC
 EXTRN	AssumeSaveState:PROC
 EXTRN	ContextSaveState:PROC
-EXTRN	_RTC_CheckStackVars:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
 EXTRN	Options:BYTE
 EXTRN	ModuleInfo:BYTE
 EXTRN	MacroLevel:BYTE
@@ -73,116 +70,67 @@ LineStore DB	010H DUP (?)
 _BSS	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$__local_stdio_printf_options DD imagerel $LN3
-	DD	imagerel $LN3+11
-	DD	imagerel $unwind$__local_stdio_printf_options
-pdata	ENDS
-;	COMDAT pdata
-pdata	SEGMENT
 $pdata$_vfprintf_l DD imagerel $LN3
-	DD	imagerel $LN3+90
+	DD	imagerel $LN3+67
 	DD	imagerel $unwind$_vfprintf_l
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$printf DD imagerel $LN3
-	DD	imagerel $LN3+129
+	DD	imagerel $LN3+87
 	DD	imagerel $unwind$printf
 pdata	ENDS
 pdata	SEGMENT
-$pdata$FastpassInit DD imagerel $LN3
-	DD	imagerel $LN3+47
-	DD	imagerel $unwind$FastpassInit
 $pdata$StoreLine DD imagerel $LN23
-	DD	imagerel $LN23+826
+	DD	imagerel $LN23+801
 	DD	imagerel $unwind$StoreLine
 $pdata$SkipSavedState DD imagerel $LN3
-	DD	imagerel $LN3+46
+	DD	imagerel $LN3+28
 	DD	imagerel $unwind$SkipSavedState
 $pdata$RestoreState DD imagerel $LN7
-	DD	imagerel $LN7+308
+	DD	imagerel $LN7+290
 	DD	imagerel $unwind$RestoreState
 $pdata$SaveVariableState DD imagerel $LN5
-	DD	imagerel $LN5+260
+	DD	imagerel $LN5+238
 	DD	imagerel $unwind$SaveVariableState
 $pdata$SaveState DD imagerel SaveState
-	DD	imagerel SaveState+146
+	DD	imagerel SaveState+128
 	DD	imagerel $unwind$SaveState
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
 xdata	SEGMENT
-$unwind$FastpassInit DD 010201H
-	DD	07002H
-$unwind$StoreLine DD 022701H
-	DD	0700f9213H
-$unwind$SkipSavedState DD 021501H
-	DD	070023206H
-$unwind$RestoreState DD 021501H
-	DD	070027206H
-$unwind$SaveVariableState DD 021e01H
-	DD	07006520aH
-$unwind$SaveState DD 021501H
-	DD	070023206H
+$unwind$StoreLine DD 011201H
+	DD	0a212H
+$unwind$SkipSavedState DD 010401H
+	DD	04204H
+$unwind$RestoreState DD 010401H
+	DD	08204H
+$unwind$SaveVariableState DD 010901H
+	DD	06209H
+$unwind$SaveState DD 010401H
+	DD	04204H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$printf DD 022d01H
-	DD	070159219H
-xdata	ENDS
-;	COMDAT CONST
-CONST	SEGMENT
-printf$rtcName$0 DB 05fH
-	DB	041H
-	DB	072H
-	DB	067H
-	DB	04cH
-	DB	069H
-	DB	073H
-	DB	074H
-	DB	00H
-	ORG $+7
-printf$rtcVarDesc DD 038H
-	DD	08H
-	DQ	FLAT:printf$rtcName$0
-	ORG $+48
-printf$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:printf$rtcVarDesc
-CONST	ENDS
-;	COMDAT xdata
-xdata	SEGMENT
-$unwind$_vfprintf_l DD 022d01H
-	DD	070155219H
+$unwind$printf DD 011801H
+	DD	06218H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$__local_stdio_printf_options DD 010201H
-	DD	07002H
+$unwind$_vfprintf_l DD 011801H
+	DD	06218H
 xdata	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\fastpass.c
 _TEXT	SEGMENT
 SaveState PROC
 
 ; 51   : {
 
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 
 ; 52   :     DebugMsg1(("SaveState enter\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG10776
+	lea	rcx, OFFSET FLAT:$SG10814
 	call	DoDebugMsg1
 
 ; 53   :     StoreState = TRUE;
@@ -229,17 +177,16 @@ SaveState PROC
 ; 63   : 
 ; 64   :     DebugMsg(( "SaveState exit\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG10777
+	lea	rcx, OFFSET FLAT:$SG10815
 	call	DoDebugMsg
 
 ; 65   : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 SaveState ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\fastpass.c
 _TEXT	SEGMENT
 p$ = 32
@@ -250,13 +197,7 @@ SaveVariableState PROC
 
 $LN5:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 142  :     struct equ_item *p;
 ; 143  : 
@@ -266,7 +207,7 @@ $LN5:
 	mov	r8d, DWORD PTR [rax+16]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10818
+	lea	rcx, OFFSET FLAT:$SG10856
 	call	DoDebugMsg1
 
 ; 145  :     sym->issaved = TRUE; /* don't try to save this symbol (anymore) */
@@ -357,12 +298,11 @@ $LN3@SaveVariab:
 ; 159  : //    printf("state of symbol >%s< saved, value=%u, defined=%u\n", sym->name, sym->value, sym->defined);
 ; 160  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 SaveVariableState ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\fastpass.c
 _TEXT	SEGMENT
 curr$1 = 48
@@ -371,16 +311,11 @@ RestoreState PROC
 ; 164  : {
 
 $LN7:
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 72					; 00000048H
 
 ; 165  :     DebugMsg1(("RestoreState enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG10829
+	lea	rcx, OFFSET FLAT:$SG10867
 	call	DoDebugMsg1
 
 ; 166  :     if ( modstate.init ) {
@@ -416,7 +351,7 @@ $LN4@RestoreSta:
 	mov	rax, QWORD PTR curr$1[rsp]
 	mov	r8d, DWORD PTR [rax+16]
 	mov	rdx, QWORD PTR [rcx+8]
-	lea	rcx, OFFSET FLAT:$SG10831
+	lea	rcx, OFFSET FLAT:$SG10869
 	call	DoDebugMsg1
 
 ; 171  :             /* v2.07: MT_ABS is obsolete */
@@ -509,12 +444,11 @@ $LN5@RestoreSta:
 
 ; 202  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 RestoreState ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\fastpass.c
 _TEXT	SEGMENT
 SkipSavedState PROC
@@ -522,16 +456,11 @@ SkipSavedState PROC
 ; 123  : {
 
 $LN3:
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 40					; 00000028H
 
 ; 124  :     DebugMsg(("SkipSavedState enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG10811
+	lea	rcx, OFFSET FLAT:$SG10849
 	call	DoDebugMsg
 
 ; 125  :     UseSavedState = FALSE;
@@ -540,21 +469,20 @@ $LN3:
 
 ; 126  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 SkipSavedState ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\fastpass.c
 _TEXT	SEGMENT
 i$ = 32
 j$ = 36
-p$ = 40
-tv77 = 48
-tv87 = 56
-tv131 = 60
-tv139 = 64
+tv139 = 40
+tv87 = 44
+tv131 = 48
+p$ = 56
+tv77 = 64
 srcline$ = 96
 flags$ = 104
 lst_position$ = 112
@@ -566,13 +494,7 @@ $LN23:
 	mov	DWORD PTR [rsp+24], r8d
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 80					; 00000050H
-	mov	rdi, rsp
-	mov	ecx, 20
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+96]
+	sub	rsp, 88					; 00000058H
 
 ; 70   :     int i,j;
 ; 71   :     char *p;
@@ -769,7 +691,7 @@ $LN11@StoreLine:
 	mov	r9, QWORD PTR LineStoreCurr
 	mov	r8d, DWORD PTR lst_position$[rsp]
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG10800
+	lea	rcx, OFFSET FLAT:$SG10838
 	call	DoDebugMsg1
 
 ; 100  : 
@@ -792,7 +714,7 @@ $LN4@StoreLine:
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isspace
+	call	isspace
 	test	eax, eax
 	je	SHORT $LN3@StoreLine
 	jmp	SHORT $LN2@StoreLine
@@ -807,15 +729,15 @@ $LN3@StoreLine:
 	mov	rax, QWORD PTR p$[rsp]
 	inc	rax
 	mov	r8d, 3
-	lea	rdx, OFFSET FLAT:$SG10803
+	lea	rdx, OFFSET FLAT:$SG10841
 	mov	rcx, rax
-	call	QWORD PTR __imp__memicmp
+	call	_memicmp
 	test	eax, eax
 	jne	SHORT $LN13@StoreLine
 	mov	rax, QWORD PTR p$[rsp]
 	movsx	eax, BYTE PTR [rax+4]
 	mov	ecx, eax
-	call	QWORD PTR __imp_isalnum
+	call	isalnum
 	test	eax, eax
 	jne	SHORT $LN14@StoreLine
 	mov	rax, QWORD PTR p$[rsp]
@@ -856,7 +778,7 @@ $LN12@StoreLine:
 	mov	rax, QWORD PTR LineStoreCurr
 	add	rax, 16
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG10806
+	lea	rcx, OFFSET FLAT:$SG10844
 	call	printf
 $LN15@StoreLine:
 
@@ -889,20 +811,14 @@ $LN1@StoreLine:
 
 ; 115  : }
 
-	add	rsp, 80					; 00000050H
-	pop	rdi
+	add	rsp, 88					; 00000058H
 	ret	0
 StoreLine ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\fastpass.c
 _TEXT	SEGMENT
 FastpassInit PROC
-
-; 223  : {
-
-$LN3:
-	push	rdi
 
 ; 224  :     StoreState = FALSE;
 
@@ -926,17 +842,16 @@ $LN3:
 
 ; 229  : }
 
-	pop	rdi
 	ret	0
 FastpassInit ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT printf
 _TEXT	SEGMENT
 _Result$ = 32
-_ArgList$ = 56
-_Format$ = 96
+_ArgList$ = 40
+_Format$ = 64
 printf	PROC						; COMDAT
 
 ; 950  : {
@@ -946,13 +861,7 @@ $LN3:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+32], r9
-	push	rdi
-	sub	rsp, 80					; 00000050H
-	mov	rdi, rsp
-	mov	ecx, 20
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+96]
+	sub	rsp, 56					; 00000038H
 
 ; 951  :     int _Result;
 ; 952  :     va_list _ArgList;
@@ -964,7 +873,7 @@ $LN3:
 ; 954  :     _Result = _vfprintf_l(stdout, _Format, NULL, _ArgList);
 
 	mov	ecx, 1
-	call	QWORD PTR __imp___acrt_iob_func
+	call	__acrt_iob_func
 	mov	r9, QWORD PTR _ArgList$[rsp]
 	xor	r8d, r8d
 	mov	rdx, QWORD PTR _Format$[rsp]
@@ -982,17 +891,11 @@ $LN3:
 
 ; 957  : }
 
-	mov	edi, eax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:printf$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	eax, edi
-	add	rsp, 80					; 00000050H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 printf	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT _vfprintf_l
 _TEXT	SEGMENT
@@ -1009,13 +912,7 @@ $LN3:
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 639  :     return __stdio_common_vfprintf(_CRT_INTERNAL_LOCAL_PRINTF_OPTIONS, _Stream, _Format, _Locale, _ArgList);
 
@@ -1026,25 +923,19 @@ $LN3:
 	mov	r8, QWORD PTR _Format$[rsp]
 	mov	rdx, QWORD PTR _Stream$[rsp]
 	mov	rcx, QWORD PTR [rax]
-	call	QWORD PTR __imp___stdio_common_vfprintf
+	call	__stdio_common_vfprintf
 
 ; 640  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 _vfprintf_l ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\corecrt_stdio_config.h
 ;	COMDAT __local_stdio_printf_options
 _TEXT	SEGMENT
 __local_stdio_printf_options PROC			; COMDAT
-
-; 73   : {
-
-$LN3:
-	push	rdi
 
 ; 74   :     static unsigned __int64 _OptionsStorage;
 ; 75   :     return &_OptionsStorage;
@@ -1053,7 +944,6 @@ $LN3:
 
 ; 76   : }
 
-	pop	rdi
 	ret	0
 __local_stdio_printf_options ENDP
 _TEXT	ENDS

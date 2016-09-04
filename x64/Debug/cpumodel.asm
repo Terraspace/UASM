@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 PUBLIC	ModelToken
@@ -17,17 +17,17 @@ COMM	sym_Interface:QWORD
 COMM	sym_Cpu:QWORD
 _DATA	ENDS
 CONST	SEGMENT
-ModelToken DQ	FLAT:$SG11135
-	DQ	FLAT:$SG11136
-	DQ	FLAT:$SG11137
-	DQ	FLAT:$SG11138
-	DQ	FLAT:$SG11139
-	DQ	FLAT:$SG11140
-	DQ	FLAT:$SG11141
-ModelAttr DQ	FLAT:$SG11146
-	DQ	FLAT:$SG11147
-	DQ	FLAT:$SG11148
-	DQ	FLAT:$SG11149
+ModelToken DQ	FLAT:$SG11173
+	DQ	FLAT:$SG11174
+	DQ	FLAT:$SG11175
+	DQ	FLAT:$SG11176
+	DQ	FLAT:$SG11177
+	DQ	FLAT:$SG11178
+	DQ	FLAT:$SG11179
+ModelAttr DQ	FLAT:$SG11184
+	DQ	FLAT:$SG11185
+	DQ	FLAT:$SG11186
+	DQ	FLAT:$SG11187
 ModelAttrValue DB 00H
 	DB	02H
 	DB	01H
@@ -44,63 +44,63 @@ elf64_fmtopt DQ	0000000000000000H
 	DB	'ELF64', 00H
 CONST	ENDS
 _DATA	SEGMENT
-$SG11273 DB	'SetCPU(%X) enter', 0aH, 00H
-	ORG $+6
-$SG11295 DB	'SetCPU: ModuleInfo.curr_cpu=%X, @Cpu=%X', 0aH, 00H
-	ORG $+3
-$SG11299 DB	'@Cpu', 00H
-	ORG $+3
-$SG11135 DB	'TINY', 00H
-	ORG $+3
-$SG11136 DB	'SMALL', 00H
-	ORG $+6
-$SG11137 DB	'COMPACT', 00H
-$SG11138 DB	'MEDIUM', 00H
-	ORG $+1
-$SG11139 DB	'LARGE', 00H
+$SG11279 DB	'ModelDirective enter', 0aH, 00H
 	ORG $+2
-$SG11140 DB	'HUGE', 00H
-	ORG $+3
-$SG11141 DB	'FLAT', 00H
-	ORG $+3
-$SG11146 DB	'NEARSTACK', 00H
+$SG11311 DB	'SetCPU(%X) enter', 0aH, 00H
 	ORG $+6
-$SG11147 DB	'FARSTACK', 00H
+$SG11333 DB	'SetCPU: ModuleInfo.curr_cpu=%X, @Cpu=%X', 0aH, 00H
 	ORG $+3
-$SG11148 DB	'OS_OS2', 00H
+$SG11337 DB	'@Cpu', 00H
+	ORG $+3
+$SG11173 DB	'TINY', 00H
+	ORG $+3
+$SG11174 DB	'SMALL', 00H
+	ORG $+6
+$SG11175 DB	'COMPACT', 00H
+$SG11176 DB	'MEDIUM', 00H
 	ORG $+1
-$SG11149 DB	'OS_DOS', 00H
+$SG11177 DB	'LARGE', 00H
+	ORG $+2
+$SG11178 DB	'HUGE', 00H
+	ORG $+3
+$SG11179 DB	'FLAT', 00H
+	ORG $+3
+$SG11184 DB	'NEARSTACK', 00H
+	ORG $+6
+$SG11185 DB	'FARSTACK', 00H
+	ORG $+3
+$SG11186 DB	'OS_OS2', 00H
+	ORG $+1
+$SG11187 DB	'OS_DOS', 00H
 	ORG $+5
-$SG11194 DB	'SetModel() enter (model=%u)', 0aH, 00H
+$SG11232 DB	'SetModel() enter (model=%u)', 0aH, 00H
 	ORG $+3
-$SG11200 DB	'SetModel: FASTCALL type set to WIN64', 0aH, 00H
+$SG11238 DB	'SetModel: FASTCALL type set to WIN64', 0aH, 00H
 	ORG $+2
-$SG11205 DB	'@CodeSize', 00H
+$SG11243 DB	'@CodeSize', 00H
 	ORG $+2
-$SG11206 DB	'@code', 00H
+$SG11244 DB	'@code', 00H
 	ORG $+6
-$SG11210 DB	'@DataSize', 00H
+$SG11248 DB	'@DataSize', 00H
 	ORG $+2
-$SG11211 DB	'FLAT', 00H
+$SG11249 DB	'FLAT', 00H
 	ORG $+3
-$SG11212 DB	'@data', 00H
+$SG11250 DB	'@data', 00H
 	ORG $+2
-$SG11214 DB	'STACK', 00H
+$SG11252 DB	'STACK', 00H
 	ORG $+2
-$SG11215 DB	'@stack', 00H
+$SG11253 DB	'@stack', 00H
 	ORG $+1
-$SG11216 DB	'@Model', 00H
+$SG11254 DB	'@Model', 00H
 	ORG $+5
-$SG11217 DB	'@Interface', 00H
+$SG11255 DB	'@Interface', 00H
 	ORG $+5
-$SG11219 DB	'@ReservedStack', 00H
-	ORG $+1
-$SG11241 DB	'ModelDirective enter', 0aH, 00H
+$SG11257 DB	'@ReservedStack', 00H
 _DATA	ENDS
 PUBLIC	ModelDirective
 PUBLIC	SetCPU
 PUBLIC	CpuDirective
-EXTRN	__imp__stricmp:PROC
+EXTRN	_stricmp:PROC
 EXTRN	DoDebugMsg:PROC
 EXTRN	DoDebugMsg1:PROC
 EXTRN	EmitError:PROC
@@ -119,10 +119,6 @@ EXTRN	LstWriteSrcLine:PROC
 EXTRN	AddPredefinedText:PROC
 EXTRN	DumpResWords:PROC
 EXTRN	pe_create_PE_header:PROC
-EXTRN	_RTC_CheckStackVars:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
-EXTRN	_RTC_UninitUse:PROC
 EXTRN	Options:BYTE
 EXTRN	ModuleInfo:BYTE
 EXTRN	Parse_Pass:DWORD
@@ -137,89 +133,44 @@ sym_Model DQ	01H DUP (?)
 _BSS	ENDS
 pdata	SEGMENT
 $pdata$FindToken DD imagerel FindToken
-	DD	imagerel FindToken+126
+	DD	imagerel FindToken+103
 	DD	imagerel $unwind$FindToken
 $pdata$AddPredefinedConstant DD imagerel AddPredefinedConstant
-	DD	imagerel AddPredefinedConstant+91
+	DD	imagerel AddPredefinedConstant+69
 	DD	imagerel $unwind$AddPredefinedConstant
 $pdata$SetDefaultOfssize DD imagerel SetDefaultOfssize
-	DD	imagerel SetDefaultOfssize+60
+	DD	imagerel SetDefaultOfssize+39
 	DD	imagerel $unwind$SetDefaultOfssize
 $pdata$SetModel DD imagerel SetModel
-	DD	imagerel SetModel+636
+	DD	imagerel SetModel+618
 	DD	imagerel $unwind$SetModel
-$pdata$ModelDirective DD imagerel $LN34
-	DD	imagerel $LN34+963
+$pdata$ModelDirective DD imagerel $LN31
+	DD	imagerel $LN31+834
 	DD	imagerel $unwind$ModelDirective
 $pdata$SetCPU DD imagerel $LN35
-	DD	imagerel $LN35+949
+	DD	imagerel $LN35+929
 	DD	imagerel $unwind$SetCPU
 $pdata$CpuDirective DD imagerel $LN4
-	DD	imagerel $LN4+148
+	DD	imagerel $LN4+127
 	DD	imagerel $unwind$CpuDirective
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
-CONST	SEGMENT
-ModelDirective$rtcName$0 DB 06cH
-	DB	061H
-	DB	06eH
-	DB	067H
-	DB	075H
-	DB	061H
-	DB	067H
-	DB	065H
-	DB	00H
-	ORG $+7
-ModelDirective$rtcName$1 DB 064H
-	DB	069H
-	DB	073H
-	DB	074H
-	DB	061H
-	DB	06eH
-	DB	063H
-	DB	065H
-	DB	00H
-	ORG $+3
-ModelDirective$rtcName$2 DB 06fH
-	DB	073H
-	DB	074H
-	DB	079H
-	DB	070H
-	DB	065H
-	DB	00H
-	ORG $+5
-ModelDirective$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:ModelDirective$rtcVarDesc
-	ORG $+8
-ModelDirective$rtcVarDesc DD 034H
-	DD	04H
-	DQ	FLAT:ModelDirective$rtcName$0
-CONST	ENDS
 xdata	SEGMENT
-$unwind$FindToken DD 022801H
-	DD	070105214H
-$unwind$AddPredefinedConstant DD 022201H
-	DD	0700a520eH
-$unwind$SetDefaultOfssize DD 021c01H
-	DD	070053209H
-$unwind$SetModel DD 021501H
-	DD	070029206H
-$unwind$ModelDirective DD 022101H
-	DD	0700ab20eH
-$unwind$SetCPU DD 021c01H
-	DD	070055209H
-$unwind$CpuDirective DD 022101H
-	DD	0700a520eH
+$unwind$FindToken DD 011301H
+	DD	06213H
+$unwind$AddPredefinedConstant DD 010d01H
+	DD	0620dH
+$unwind$SetDefaultOfssize DD 010801H
+	DD	04208H
+$unwind$SetModel DD 010401H
+	DD	08204H
+$unwind$ModelDirective DD 010d01H
+	DD	0820dH
+$unwind$SetCPU DD 010801H
+	DD	06208H
+$unwind$CpuDirective DD 010d01H
+	DD	0620dH
 xdata	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cpumodel.c
 _TEXT	SEGMENT
 newcpu$ = 32
@@ -232,13 +183,7 @@ CpuDirective PROC
 $LN4:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 463  :     enum cpu_info newcpu;
 ; 464  : 
@@ -310,16 +255,15 @@ $LN1@CpuDirecti:
 
 ; 493  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 CpuDirective ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cpumodel.c
 _TEXT	SEGMENT
-temp$ = 32
-tv130 = 36
+tv130 = 32
+temp$ = 36
 tv139 = 40
 tv166 = 44
 newcpu$ = 64
@@ -329,20 +273,14 @@ SetCPU	PROC
 
 $LN35:
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 370  :     int temp;
 ; 371  : 
 ; 372  :     DebugMsg1(("SetCPU(%X) enter\n", newcpu ));
 
 	mov	edx, DWORD PTR newcpu$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11273
+	lea	rcx, OFFSET FLAT:$SG11311
 	call	DoDebugMsg1
 
 ; 373  :     if ( newcpu == P_86 || ( newcpu & P_CPU_MASK ) ) {
@@ -649,7 +587,7 @@ $LN4@SetCPU:
 	movsx	eax, WORD PTR ModuleInfo+388
 	mov	r8d, eax
 	mov	edx, DWORD PTR ModuleInfo+392
-	lea	rcx, OFFSET FLAT:$SG11295
+	lea	rcx, OFFSET FLAT:$SG11333
 	call	DoDebugMsg1
 
 ; 435  : 
@@ -702,7 +640,7 @@ $LN27@SetCPU:
 
 	movsx	eax, WORD PTR ModuleInfo+388
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG11299
+	lea	rcx, OFFSET FLAT:$SG11337
 	call	CreateVariable
 	mov	QWORD PTR sym_Cpu, rax
 
@@ -713,9 +651,9 @@ $LN27@SetCPU:
 
 ; 451  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
+	npad	1
 $LN34@SetCPU:
 	DD	$LN16@SetCPU
 	DD	$LN17@SetCPU
@@ -824,40 +762,28 @@ $LN33@SetCPU:
 	DB	5
 SetCPU	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cpumodel.c
 _TEXT	SEGMENT
-model$ = 32
+init$ = 32
+initv$ = 33
+index$ = 36
+model$ = 40
+tv163 = 44
+tv211 = 48
 language$ = 52
-distance$ = 68
-ostype$ = 72
-index$ = 76
-init$ = 80
-initv$ = 81
-$T6 = 82
-$T7 = 83
-$T8 = 84
-tv163 = 88
-tv211 = 92
-i$ = 112
-tokenarray$ = 120
+distance$ = 56
+ostype$ = 60
+i$ = 80
+tokenarray$ = 88
 ModelDirective PROC
 
 ; 249  : {
 
-$LN34:
+$LN31:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 96					; 00000060H
-	mov	rdi, rsp
-	mov	ecx, 24
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+112]
-	mov	BYTE PTR $T7[rsp], 0
-	mov	BYTE PTR $T8[rsp], 0
-	mov	BYTE PTR $T6[rsp], 0
+	sub	rsp, 72					; 00000048H
 
 ; 250  :     enum model_type model;
 ; 251  :     enum lang_type language;
@@ -869,7 +795,7 @@ $LN34:
 ; 257  : 
 ; 258  :     DebugMsg1(("ModelDirective enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11241
+	lea	rcx, OFFSET FLAT:$SG11279
 	call	DoDebugMsg1
 
 ; 259  :     /* v2.03: it may occur that "code" is defined BEFORE the MODEL
@@ -1022,7 +948,6 @@ $LN2@ModelDirec:
 
 ; 297  :             if ( GetLangType( &i, tokenarray, &language ) == NOT_ERROR ) {
 
-	mov	BYTE PTR $T6[rsp], 1
 	lea	r8, QWORD PTR language$[rsp]
 	mov	rdx, QWORD PTR tokenarray$[rsp]
 	lea	rcx, QWORD PTR i$[rsp]
@@ -1097,7 +1022,6 @@ $LN18@ModelDirec:
 	movsxd	rax, DWORD PTR index$[rsp]
 	lea	rcx, OFFSET FLAT:ModelAttrValue
 	movzx	eax, BYTE PTR [rcx+rax*2]
-	mov	BYTE PTR $T7[rsp], 1
 	mov	DWORD PTR distance$[rsp], eax
 
 ; 310  :                     break;
@@ -1111,7 +1035,6 @@ $LN19@ModelDirec:
 	movsxd	rax, DWORD PTR index$[rsp]
 	lea	rcx, OFFSET FLAT:ModelAttrValue
 	movzx	eax, BYTE PTR [rcx+rax*2]
-	mov	BYTE PTR $T8[rsp], 1
 	mov	DWORD PTR ostype$[rsp], eax
 $LN4@ModelDirec:
 
@@ -1258,11 +1181,6 @@ $LN22@ModelDirec:
 
 ; 347  :         ModuleInfo.langtype = language;
 
-	cmp	BYTE PTR $T6[rsp], 0
-	jne	SHORT $LN31@ModelDirec
-	lea	rcx, OFFSET FLAT:ModelDirective$rtcName$0
-	call	_RTC_UninitUse
-$LN31@ModelDirec:
 	mov	eax, DWORD PTR language$[rsp]
 	mov	DWORD PTR ModuleInfo+364, eax
 $LN27@ModelDirec:
@@ -1276,11 +1194,6 @@ $LN27@ModelDirec:
 
 ; 349  :         ModuleInfo.distance = distance;
 
-	cmp	BYTE PTR $T7[rsp], 0
-	jne	SHORT $LN32@ModelDirec
-	lea	rcx, OFFSET FLAT:ModelDirective$rtcName$1
-	call	_RTC_UninitUse
-$LN32@ModelDirec:
 	mov	eax, DWORD PTR distance$[rsp]
 	mov	DWORD PTR ModuleInfo+356, eax
 $LN28@ModelDirec:
@@ -1294,11 +1207,6 @@ $LN28@ModelDirec:
 
 ; 351  :         ModuleInfo.ostype = ostype;
 
-	cmp	BYTE PTR $T8[rsp], 0
-	jne	SHORT $LN33@ModelDirec
-	lea	rcx, OFFSET FLAT:ModelDirective$rtcName$2
-	call	_RTC_UninitUse
-$LN33@ModelDirec:
 	mov	eax, DWORD PTR ostype$[rsp]
 	mov	DWORD PTR ModuleInfo+368, eax
 $LN29@ModelDirec:
@@ -1320,35 +1228,24 @@ $LN1@ModelDirec:
 
 ; 357  : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:ModelDirective$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
-	add	rsp, 96					; 00000060H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 ModelDirective ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cpumodel.c
 _TEXT	SEGMENT
 value$ = 32
-textvalue$ = 40
-tv70 = 48
-tv196 = 52
-tv87 = 56
-tv131 = 64
+tv87 = 36
+tv70 = 40
+tv196 = 44
+textvalue$ = 48
+tv131 = 56
 SetModel PROC
 
 ; 134  : {
 
-	push	rdi
-	sub	rsp, 80					; 00000050H
-	mov	rdi, rsp
-	mov	ecx, 20
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 72					; 00000048H
 
 ; 135  :     int         value;
 ; 136  :     const char  *textvalue;
@@ -1357,7 +1254,7 @@ SetModel PROC
 ; 139  :     DebugMsg1(("SetModel() enter (model=%u)\n", ModuleInfo.model ));
 
 	mov	edx, DWORD PTR ModuleInfo+360
-	lea	rcx, OFFSET FLAT:$SG11194
+	lea	rcx, OFFSET FLAT:$SG11232
 	call	DoDebugMsg1
 
 ; 140  :     /* if model is set, it disables OT_SEGMENT of -Zm switch */
@@ -1409,7 +1306,7 @@ $LN22@SetModel:
 
 ; 153  :                     DebugMsg(("SetModel: FASTCALL type set to WIN64\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11200
+	lea	rcx, OFFSET FLAT:$SG11238
 	call	DoDebugMsg
 
 ; 154  :                     ModuleInfo.fctype = FCT_WIN64;
@@ -1514,7 +1411,7 @@ $LN12@SetModel:
 ; 185  :     sym_CodeSize = AddPredefinedConstant( "@CodeSize", value );
 
 	mov	edx, DWORD PTR value$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11205
+	lea	rcx, OFFSET FLAT:$SG11243
 	call	AddPredefinedConstant
 	mov	QWORD PTR sym_CodeSize, rax
 
@@ -1523,7 +1420,7 @@ $LN12@SetModel:
 	xor	ecx, ecx
 	call	SimGetSegName
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG11206
+	lea	rcx, OFFSET FLAT:$SG11244
 	call	AddPredefinedText
 
 ; 187  : 
@@ -1573,7 +1470,7 @@ $LN2@SetModel:
 ; 201  :     sym_DataSize = AddPredefinedConstant( "@DataSize", value );
 
 	mov	edx, DWORD PTR value$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11210
+	lea	rcx, OFFSET FLAT:$SG11248
 	call	AddPredefinedConstant
 	mov	QWORD PTR sym_DataSize, rax
 
@@ -1582,7 +1479,7 @@ $LN2@SetModel:
 
 	cmp	DWORD PTR ModuleInfo+360, 7
 	jne	SHORT $LN23@SetModel
-	lea	rax, OFFSET FLAT:$SG11211
+	lea	rax, OFFSET FLAT:$SG11249
 	mov	QWORD PTR tv131[rsp], rax
 	jmp	SHORT $LN24@SetModel
 $LN23@SetModel:
@@ -1595,7 +1492,7 @@ $LN24@SetModel:
 ; 204  :     AddPredefinedText( "@data", textvalue );
 
 	mov	rdx, QWORD PTR textvalue$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11212
+	lea	rcx, OFFSET FLAT:$SG11250
 	call	AddPredefinedText
 
 ; 205  : 
@@ -1606,14 +1503,14 @@ $LN24@SetModel:
 
 ; 207  :         textvalue = "STACK";
 
-	lea	rax, OFFSET FLAT:$SG11214
+	lea	rax, OFFSET FLAT:$SG11252
 	mov	QWORD PTR textvalue$[rsp], rax
 $LN16@SetModel:
 
 ; 208  :     AddPredefinedText( "@stack", textvalue );
 
 	mov	rdx, QWORD PTR textvalue$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11215
+	lea	rcx, OFFSET FLAT:$SG11253
 	call	AddPredefinedText
 
 ; 209  : 
@@ -1627,14 +1524,14 @@ $LN16@SetModel:
 ; 217  :     sym_Model     = AddPredefinedConstant( "@Model", ModuleInfo.model );
 
 	mov	edx, DWORD PTR ModuleInfo+360
-	lea	rcx, OFFSET FLAT:$SG11216
+	lea	rcx, OFFSET FLAT:$SG11254
 	call	AddPredefinedConstant
 	mov	QWORD PTR sym_Model, rax
 
 ; 218  :     sym_Interface = AddPredefinedConstant( "@Interface", ModuleInfo.langtype );
 
 	mov	edx, DWORD PTR ModuleInfo+364
-	lea	rcx, OFFSET FLAT:$SG11217
+	lea	rcx, OFFSET FLAT:$SG11255
 	call	AddPredefinedConstant
 	mov	QWORD PTR sym_Interface, rax
 
@@ -1651,7 +1548,7 @@ $LN16@SetModel:
 ; 222  :         sym_ReservedStack = AddPredefinedConstant( "@ReservedStack", 0 );
 
 	xor	edx, edx
-	lea	rcx, OFFSET FLAT:$SG11219
+	lea	rcx, OFFSET FLAT:$SG11257
 	call	AddPredefinedConstant
 	mov	QWORD PTR sym_ReservedStack, rax
 $LN17@SetModel:
@@ -1688,12 +1585,11 @@ $LN1@SetModel:
 ; 234  : 
 ; 235  : }
 
-	add	rsp, 80					; 00000050H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 SetModel ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cpumodel.c
 _TEXT	SEGMENT
 size$ = 48
@@ -1702,13 +1598,7 @@ SetDefaultOfssize PROC
 ; 109  : {
 
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 110  :     /* outside any segments? */
 ; 111  :     if( CurrSeg == NULL ) {
@@ -1729,12 +1619,11 @@ $LN2@SetDefault:
 
 ; 115  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 SetDefaultOfssize ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cpumodel.c
 _TEXT	SEGMENT
 sym$ = 32
@@ -1746,13 +1635,7 @@ AddPredefinedConstant PROC
 
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 99   :     struct asym *sym = CreateVariable( name, value );
 
@@ -1781,12 +1664,11 @@ $LN2@AddPredefi:
 
 ; 103  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 AddPredefinedConstant ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\cpumodel.c
 _TEXT	SEGMENT
 i$ = 32
@@ -1800,13 +1682,7 @@ FindToken PROC
 	mov	DWORD PTR [rsp+24], r8d
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 87   :     int i;
 ; 88   :     for( i = 0; i < size; i++, table++ ) {
@@ -1830,7 +1706,7 @@ $LN4@FindToken:
 	mov	rdx, QWORD PTR token$[rsp]
 	mov	rax, QWORD PTR table$[rsp]
 	mov	rcx, QWORD PTR [rax]
-	call	QWORD PTR __imp__stricmp
+	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN5@FindToken
 
@@ -1853,8 +1729,7 @@ $LN1@FindToken:
 
 ; 94   : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 FindToken ENDP
 _TEXT	ENDS

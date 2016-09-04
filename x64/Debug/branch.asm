@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 _DATA	SEGMENT
@@ -12,69 +12,69 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG10737 DB	01H DUP (?)
+$SG10775 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG10674 DB	'jumpExtend(far=%u), pass=%u, curr offset=%X, Ofssize=%u', 0aH
+$SG10712 DB	'jumpExtend(far=%u), pass=%u, curr offset=%X, Ofssize=%u', 0aH
 	DB	00H
 	ORG $+3
-$SG10733 DB	'NULL', 00H
+$SG10771 DB	'NULL', 00H
 	ORG $+7
-$SG10734 DB	'process_branch(%X): segment override %s', 0aH, 00H
+$SG10772 DB	'process_branch(%X): segment override %s', 0aH, 00H
 	ORG $+7
-$SG10739 DB	'process_branch(%X): segment override %s caused FAR jmp/c'
+$SG10777 DB	'process_branch(%X): segment override %s caused FAR jmp/c'
 	DB	'all', 0aH, 00H
 	ORG $+3
-$SG10741 DB	'process_branch(%X): sym=NULL, op.memtype=%Xh', 0aH, 00H
+$SG10779 DB	'process_branch(%X): sym=NULL, op.memtype=%Xh', 0aH, 00H
 	ORG $+2
-$SG10742 DB	'NULL', 00H
+$SG10780 DB	'NULL', 00H
 	ORG $+3
-$SG10743 DB	'process_branch(%X, %s): opnd.explicit=%u/memtype=%X/Ofss'
+$SG10781 DB	'process_branch(%X, %s): opnd.explicit=%u/memtype=%X/Ofss'
 	DB	'ize=%u CI.memtype=%X sym.state=%u/mem_type=%Xh/ofs=%X/seg=%s', 0aH
 	DB	00H
 	ORG $+2
-$SG10760 DB	'process_branch: error, opndx.mem_type is MT_NEAR', 0aH, 00H
+$SG10798 DB	'process_branch: error, opndx.mem_type is MT_NEAR', 0aH, 00H
 	ORG $+6
-$SG10745 DB	'process_branch(%s): EXTERNDEF assumed forward reference '
+$SG10783 DB	'process_branch(%s): EXTERNDEF assumed forward reference '
 	DB	'(=SYM_UNDEFINED)', 0aH, 00H
 	ORG $+6
-$SG10762 DB	'process_branch(%s): error, unexpected symbol state=%u', 0aH
+$SG10800 DB	'process_branch(%s): error, unexpected symbol state=%u', 0aH
 	DB	00H
 	ORG $+1
-$SG10770 DB	'process_branch: FAR call optimization applied!', 0aH, 00H
-$SG10771 DB	'process_branch: step1: addr=%Xh', 0aH, 00H
+$SG10808 DB	'process_branch: FAR call optimization applied!', 0aH, 00H
+$SG10809 DB	'process_branch: step1: addr=%Xh', 0aH, 00H
 	ORG $+7
-$SG10775 DB	'process_branch: CI.memtype=%Xh addr=%Xh', 0aH, 00H
+$SG10813 DB	'process_branch: CI.memtype=%Xh addr=%Xh', 0aH, 00H
 	ORG $+7
-$SG10781 DB	'process_branch: jump out of range, mem_type=%Xh addr=%Xh'
+$SG10819 DB	'process_branch: jump out of range, mem_type=%Xh addr=%Xh'
 	DB	0aH, 00H
 	ORG $+6
-$SG10792 DB	'process_branch: displacement=%X opnd_type=%X', 0aH, 00H
+$SG10830 DB	'process_branch: displacement=%X opnd_type=%X', 0aH, 00H
 	ORG $+2
-$SG10797 DB	'%u process_branch: CPU < 386 and Jcc distance != SHORT, '
+$SG10835 DB	'%u process_branch: CPU < 386 and Jcc distance != SHORT, '
 	DB	'mem_type=%X, curr_ofs=%X, addr=%d', 0aH, 00H
 	ORG $+5
-$SG10799 DB	'process_branch: fixup needed', 0aH, 00H
+$SG10837 DB	'process_branch: fixup needed', 0aH, 00H
 	ORG $+2
-$SG10804 DB	'process_branch: FAR call optimization applied!, seg=%X, '
+$SG10842 DB	'process_branch: FAR call optimization applied!, seg=%X, '
 	DB	'CurrSeg=%X, grps=%X/%X', 0aH, 00H
-$SG10812 DB	'process_branch: unexpected mem_type %Xh', 0aH, 00H
+$SG10850 DB	'process_branch: unexpected mem_type %Xh', 0aH, 00H
 	ORG $+7
-$SG10813 DB	'branch.c', 00H
+$SG10851 DB	'branch.c', 00H
 	ORG $+7
-$SG10817 DB	'process_branch: FAR call/jmp', 0aH, 00H
+$SG10855 DB	'process_branch: FAR call/jmp', 0aH, 00H
 	ORG $+2
-$SG10827 DB	'process_branch: JMP/CALL far, unexpected mem_type=%X', 0aH
+$SG10865 DB	'process_branch: JMP/CALL far, unexpected mem_type=%X', 0aH
 	DB	00H
 	ORG $+2
-$SG10828 DB	'branch.c', 00H
+$SG10866 DB	'branch.c', 00H
 	ORG $+7
-$SG10835 DB	'process_branch: JMP/CALL, CodeInfo->memtype=%X', 0aH, 00H
-$SG10845 DB	'process_branch: JMP/CALL, unexpected mem_type=%X', 0aH, 00H
+$SG10873 DB	'process_branch: JMP/CALL, CodeInfo->memtype=%X', 0aH, 00H
+$SG10883 DB	'process_branch: JMP/CALL, unexpected mem_type=%X', 0aH, 00H
 	ORG $+6
-$SG10846 DB	'branch.c', 00H
+$SG10884 DB	'branch.c', 00H
 	ORG $+7
-$SG10862 DB	'process_branch: JMP/CALL, FAR memtype, jump extension', 0aH
+$SG10900 DB	'process_branch: JMP/CALL, FAR memtype, jump extension', 0aH
 	DB	00H
 _DATA	ENDS
 PUBLIC	process_branch
@@ -91,8 +91,6 @@ EXTRN	GetCurrOffset:PROC
 EXTRN	GetOverrideAssume:PROC
 EXTRN	InternalError:PROC
 EXTRN	segm_override:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
 EXTRN	ModuleInfo:BYTE
 EXTRN	Parse_Pass:DWORD
 EXTRN	InstrTable:BYTE
@@ -100,77 +98,68 @@ EXTRN	optable_idx:BYTE
 EXTRN	SegOverride:QWORD
 pdata	SEGMENT
 $pdata$jumpExtend DD imagerel jumpExtend
-	DD	imagerel jumpExtend+360
+	DD	imagerel jumpExtend+338
 	DD	imagerel $unwind$jumpExtend
 $pdata$FarCallToNear DD imagerel FarCallToNear
-	DD	imagerel FarCallToNear+79
+	DD	imagerel FarCallToNear+57
 	DD	imagerel $unwind$FarCallToNear
 $pdata$process_branch DD imagerel $LN174
-	DD	imagerel $LN174+6326
+	DD	imagerel $LN174+6274
 	DD	imagerel $unwind$process_branch
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
 xdata	SEGMENT
-$unwind$jumpExtend DD 022201H
-	DD	0700a920eH
-$unwind$FarCallToNear DD 021e01H
-	DD	07006320aH
-$unwind$process_branch DD 032d01H
-	DD	0240116H
-	DD	0700fH
+$unwind$jumpExtend DD 010d01H
+	DD	0a20dH
+$unwind$FarCallToNear DD 010901H
+	DD	04209H
+$unwind$process_branch DD 021501H
+	DD	0230115H
 xdata	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\branch.c
 _TEXT	SEGMENT
 addr$ = 96
 fixup_type$ = 100
-fixup_option$ = 104
-state$ = 108
-sym$ = 112
-mem_type$ = 120
-symseg$ = 128
-opidx$ = 136
-tv87 = 144
-tv143 = 152
-tv179 = 160
-tv190 = 168
-tv196 = 172
-tv349 = 176
-tv373 = 180
-tv450 = 184
-tv488 = 188
-tv553 = 192
-tv571 = 196
-tv580 = 200
-tv584 = 204
-tv605 = 208
-tv607 = 212
-tv604 = 216
-tv634 = 220
-tv656 = 224
-tv663 = 228
-tv684 = 232
-tv727 = 236
-tv730 = 240
-tv744 = 244
-tv758 = 248
-tv782 = 252
-tv791 = 256
-tv795 = 260
-tv821 = 264
-tv823 = 268
-tv820 = 272
-tv839 = 276
-CodeInfo$ = 304
-CurrOpnd$ = 312
-opndx$ = 320
+sym$ = 104
+state$ = 112
+fixup_option$ = 116
+symseg$ = 120
+mem_type$ = 128
+tv553 = 132
+tv727 = 136
+tv839 = 140
+tv373 = 144
+tv450 = 148
+tv488 = 152
+tv571 = 156
+tv584 = 160
+tv605 = 164
+tv604 = 168
+tv607 = 172
+tv634 = 176
+tv656 = 180
+tv663 = 184
+tv684 = 188
+tv730 = 192
+tv744 = 196
+tv758 = 200
+tv782 = 204
+tv795 = 208
+tv821 = 212
+tv820 = 216
+tv823 = 220
+opidx$ = 224
+tv349 = 228
+tv580 = 232
+tv791 = 236
+tv190 = 240
+tv196 = 244
+tv87 = 248
+tv143 = 256
+tv179 = 264
+CodeInfo$ = 288
+CurrOpnd$ = 296
+opndx$ = 304
 process_branch PROC
 
 ; 135  : {
@@ -179,13 +168,7 @@ $LN174:
 	mov	QWORD PTR [rsp+24], r8
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 288				; 00000120H
-	mov	rdi, rsp
-	mov	ecx, 72					; 00000048H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+304]
+	sub	rsp, 280				; 00000118H
 
 ; 136  :     int_32              addr;
 ; 137  :     enum fixup_types    fixup_type;
@@ -198,7 +181,7 @@ $LN174:
 
 	mov	rax, QWORD PTR CodeInfo$[rsp]
 	mov	eax, DWORD PTR [rax+24]
-	sub	eax, 450				; 000001c2H
+	sub	eax, 455				; 000001c7H
 	cdqe
 	lea	rcx, OFFSET FLAT:optable_idx
 	movzx	eax, WORD PTR [rcx+rax*2]
@@ -266,13 +249,13 @@ $LN15@process_br:
 	mov	QWORD PTR tv87[rsp], rax
 	jmp	SHORT $LN133@process_br
 $LN132@process_br:
-	lea	rax, OFFSET FLAT:$SG10733
+	lea	rax, OFFSET FLAT:$SG10771
 	mov	QWORD PTR tv87[rsp], rax
 $LN133@process_br:
 	call	GetCurrOffset
 	mov	r8, QWORD PTR tv87[rsp]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG10734
+	lea	rcx, OFFSET FLAT:$SG10772
 	call	DoDebugMsg
 
 ; 160  :         if ( SegOverride && opndx->sym && opndx->sym->segment ) {
@@ -313,7 +296,7 @@ $LN133@process_br:
 	mov	QWORD PTR tv143[rsp], rax
 	jmp	SHORT $LN135@process_br
 $LN134@process_br:
-	lea	rax, OFFSET FLAT:$SG10737
+	lea	rax, OFFSET FLAT:$SG10775
 	mov	QWORD PTR tv143[rsp], rax
 $LN135@process_br:
 	mov	rdx, QWORD PTR tv143[rsp]
@@ -341,7 +324,7 @@ $LN18@process_br:
 	mov	rcx, QWORD PTR SegOverride
 	mov	r8, QWORD PTR [rcx+8]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG10739
+	lea	rcx, OFFSET FLAT:$SG10777
 	call	DoDebugMsg
 
 ; 167  :                 //CodeInfo->isfar = TRUE;
@@ -391,7 +374,7 @@ $LN16@process_br:
 	mov	rcx, QWORD PTR opndx$[rsp]
 	mov	r8d, DWORD PTR [rcx+64]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG10741
+	lea	rcx, OFFSET FLAT:$SG10779
 	call	DoDebugMsg
 
 ; 179  : 
@@ -427,7 +410,7 @@ $LN20@process_br:
 	mov	QWORD PTR tv179[rsp], rax
 	jmp	SHORT $LN137@process_br
 $LN136@process_br:
-	lea	rax, OFFSET FLAT:$SG10742
+	lea	rax, OFFSET FLAT:$SG10780
 	mov	QWORD PTR tv179[rsp], rax
 $LN137@process_br:
 	mov	rax, QWORD PTR opndx$[rsp]
@@ -463,7 +446,7 @@ $LN137@process_br:
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	r8, QWORD PTR [rcx+8]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG10743
+	lea	rcx, OFFSET FLAT:$SG10781
 	call	DoDebugMsg1
 
 ; 196  :               GetCurrOffset(), sym->name, opndx->explicit, opndx->mem_type, opndx->Ofssize, CodeInfo->mem_type,
@@ -501,7 +484,7 @@ $LN137@process_br:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10745
+	lea	rcx, OFFSET FLAT:$SG10783
 	call	DoDebugMsg1
 
 ; 208  :         state = SYM_UNDEFINED;
@@ -634,7 +617,7 @@ $LN33@process_br:
 
 ; 243  :                     DebugMsg(("process_branch: error, opndx.mem_type is MT_NEAR\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG10760
+	lea	rcx, OFFSET FLAT:$SG10798
 	call	DoDebugMsg
 
 ; 244  :                     return( EmitError( CANNOT_HAVE_IMPLICIT_FAR_JUMP_OR_CALL_TO_NEAR_LABEL ) );
@@ -671,7 +654,7 @@ $LN22@process_br:
 	mov	r8d, DWORD PTR [rax+32]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG10762
+	lea	rcx, OFFSET FLAT:$SG10800
 	call	DoDebugMsg
 
 ; 252  :         return( EmitErr( JUMP_DESTINATION_MUST_SPECIFY_A_LABEL ) );
@@ -745,7 +728,7 @@ $LN41@process_br:
 ; 274  :                 CodeInfo->mem_type == MT_EMPTY &&
 
 	mov	rax, QWORD PTR CodeInfo$[rsp]
-	cmp	DWORD PTR [rax+24], 450			; 000001c2H
+	cmp	DWORD PTR [rax+24], 455			; 000001c7H
 	jne	SHORT $LN42@process_br
 	mov	rax, QWORD PTR CodeInfo$[rsp]
 	cmp	DWORD PTR [rax+28], 192			; 000000c0H
@@ -760,7 +743,7 @@ $LN43@process_br:
 ; 275  :                 ( sym->mem_type == MT_FAR || SegOverride ) ) {
 ; 276  :                 DebugMsg1(("process_branch: FAR call optimization applied!\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG10770
+	lea	rcx, OFFSET FLAT:$SG10808
 	call	DoDebugMsg1
 
 ; 277  :                 FarCallToNear( CodeInfo ); /* switch mem_type to NEAR */
@@ -775,7 +758,7 @@ $LN42@process_br:
 ; 281  :             DebugMsg(("process_branch: step1: addr=%Xh\n", addr ));
 
 	mov	edx, DWORD PTR addr$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10771
+	lea	rcx, OFFSET FLAT:$SG10809
 	call	DoDebugMsg
 
 ; 282  :             addr -= ( GetCurrOffset() + 2 );  /* calculate the displacement */
@@ -843,7 +826,7 @@ $LN44@process_br:
 	mov	r8d, DWORD PTR addr$[rsp]
 	mov	rax, QWORD PTR CodeInfo$[rsp]
 	mov	edx, DWORD PTR [rax+28]
-	lea	rcx, OFFSET FLAT:$SG10775
+	lea	rcx, OFFSET FLAT:$SG10813
 	call	DoDebugMsg
 
 ; 295  :             if( CodeInfo->mem_type != MT_NEAR && CodeInfo->token != T_CALL &&
@@ -852,7 +835,7 @@ $LN44@process_br:
 	cmp	DWORD PTR [rax+28], 129			; 00000081H
 	je	SHORT $LN47@process_br
 	mov	rax, QWORD PTR CodeInfo$[rsp]
-	cmp	DWORD PTR [rax+24], 450			; 000001c2H
+	cmp	DWORD PTR [rax+24], 455			; 000001c7H
 	je	SHORT $LN47@process_br
 	cmp	DWORD PTR addr$[rsp], -128		; ffffffffffffff80H
 	jl	SHORT $LN47@process_br
@@ -878,10 +861,10 @@ $LN47@process_br:
 	cmp	DWORD PTR [rax+56], 245			; 000000f5H
 	je	SHORT $LN50@process_br
 	mov	rax, QWORD PTR CodeInfo$[rsp]
-	cmp	DWORD PTR [rax+24], 482			; 000001e2H
+	cmp	DWORD PTR [rax+24], 487			; 000001e7H
 	jl	$LN49@process_br
 	mov	rax, QWORD PTR CodeInfo$[rsp]
-	cmp	DWORD PTR [rax+24], 499			; 000001f3H
+	cmp	DWORD PTR [rax+24], 504			; 000001f8H
 	jg	$LN49@process_br
 $LN50@process_br:
 
@@ -889,7 +872,7 @@ $LN50@process_br:
 ; 301  :                     if( CodeInfo->token == T_CALL ) {
 
 	mov	rax, QWORD PTR CodeInfo$[rsp]
-	cmp	DWORD PTR [rax+24], 450			; 000001c2H
+	cmp	DWORD PTR [rax+24], 455			; 000001c7H
 	jne	SHORT $LN51@process_br
 
 ; 302  :                         return( EmitError( CANNOT_USE_SHORT_WITH_CALL ) );
@@ -909,7 +892,7 @@ $LN51@process_br:
 	mov	r8d, DWORD PTR addr$[rsp]
 	mov	rax, QWORD PTR CodeInfo$[rsp]
 	mov	edx, DWORD PTR [rax+28]
-	lea	rcx, OFFSET FLAT:$SG10781
+	lea	rcx, OFFSET FLAT:$SG10819
 	call	DoDebugMsg
 
 ; 309  :                     /* v2.06: removed */
@@ -1099,10 +1082,10 @@ $LN55@process_br:
 ; 341  :                 if( IS_CONDJMP( CodeInfo->token ) ) {
 
 	mov	rax, QWORD PTR CodeInfo$[rsp]
-	cmp	DWORD PTR [rax+24], 452			; 000001c4H
+	cmp	DWORD PTR [rax+24], 457			; 000001c9H
 	jl	SHORT $LN61@process_br
 	mov	rax, QWORD PTR CodeInfo$[rsp]
-	cmp	DWORD PTR [rax+24], 481			; 000001e1H
+	cmp	DWORD PTR [rax+24], 486			; 000001e6H
 	jg	SHORT $LN61@process_br
 
 ; 342  :                     /* 1 extra byte for opcode ( 0F ) */
@@ -1133,7 +1116,7 @@ $LN48@process_br:
 	mov	rcx, QWORD PTR CodeInfo$[rsp]
 	mov	r8d, DWORD PTR [rcx+rax+32]
 	mov	edx, DWORD PTR addr$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10792
+	lea	rcx, OFFSET FLAT:$SG10830
 	call	DoDebugMsg1
 
 ; 350  : 
@@ -1148,10 +1131,10 @@ $LN48@process_br:
 	cmp	eax, 48					; 00000030H
 	jge	$LN62@process_br
 	mov	rax, QWORD PTR CodeInfo$[rsp]
-	cmp	DWORD PTR [rax+24], 451			; 000001c3H
+	cmp	DWORD PTR [rax+24], 456			; 000001c8H
 	jle	$LN62@process_br
 	mov	rax, QWORD PTR CodeInfo$[rsp]
-	cmp	DWORD PTR [rax+24], 482			; 000001e2H
+	cmp	DWORD PTR [rax+24], 487			; 000001e7H
 	jge	$LN62@process_br
 
 ; 356  :                 /* look into jump extension */
@@ -1212,7 +1195,7 @@ $LN64@process_br:
 	mov	rax, QWORD PTR CodeInfo$[rsp]
 	mov	r8d, DWORD PTR [rax+28]
 	mov	edx, ecx
-	lea	rcx, OFFSET FLAT:$SG10797
+	lea	rcx, OFFSET FLAT:$SG10835
 	call	DoDebugMsg
 
 ; 366  :                         /* v2.11: don't emit "out of range" if OP_I16 was forced by type coercion ( jmp near ptr xxx ) */
@@ -1264,7 +1247,7 @@ $LN37@process_br:
 ; 384  : 
 ; 385  :     DebugMsg1(("process_branch: fixup needed\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG10799
+	lea	rcx, OFFSET FLAT:$SG10837
 	call	DoDebugMsg1
 
 ; 386  : 
@@ -1292,7 +1275,7 @@ $LN37@process_br:
 ; 397  :        CodeInfo->mem_type == MT_EMPTY &&
 
 	mov	rax, QWORD PTR CodeInfo$[rsp]
-	cmp	DWORD PTR [rax+24], 450			; 000001c2H
+	cmp	DWORD PTR [rax+24], 455			; 000001c7H
 	jne	$LN67@process_br
 	mov	rax, QWORD PTR CodeInfo$[rsp]
 	cmp	DWORD PTR [rax+28], 192			; 000000c0H
@@ -1343,7 +1326,7 @@ $LN70@process_br:
 	mov	r9, QWORD PTR [rcx]
 	mov	r8, QWORD PTR ModuleInfo+432
 	mov	rdx, QWORD PTR symseg$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10804
+	lea	rcx, OFFSET FLAT:$SG10842
 	call	DoDebugMsg1
 
 ; 403  :             FarCallToNear( CodeInfo ); /* switch mem_type to NEAR */
@@ -1386,10 +1369,10 @@ $LN72@process_br:
 ; 414  :             if( IS_JMPCALL( CodeInfo->token ) ) {
 
 	mov	rax, QWORD PTR CodeInfo$[rsp]
-	cmp	DWORD PTR [rax+24], 450			; 000001c2H
+	cmp	DWORD PTR [rax+24], 455			; 000001c7H
 	je	SHORT $LN74@process_br
 	mov	rax, QWORD PTR CodeInfo$[rsp]
-	cmp	DWORD PTR [rax+24], 451			; 000001c3H
+	cmp	DWORD PTR [rax+24], 456			; 000001c8H
 	jne	SHORT $LN73@process_br
 $LN74@process_br:
 
@@ -1430,13 +1413,13 @@ $LN77@process_br:
 ; 426  :             DebugMsg(("process_branch: unexpected mem_type %Xh\n", mem_type ));
 
 	mov	edx, DWORD PTR mem_type$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10812
+	lea	rcx, OFFSET FLAT:$SG10850
 	call	DoDebugMsg
 
 ; 427  :             /**/myassert( 0 );
 
 	mov	edx, 427				; 000001abH
-	lea	rcx, OFFSET FLAT:$SG10813
+	lea	rcx, OFFSET FLAT:$SG10851
 	call	InternalError
 
 ; 428  :             CodeInfo->mem_type = mem_type;
@@ -1454,10 +1437,10 @@ $LN71@process_br:
 ; 433  :     if ( IS_JMPCALL( CodeInfo->token ) &&
 
 	mov	rax, QWORD PTR CodeInfo$[rsp]
-	cmp	DWORD PTR [rax+24], 450			; 000001c2H
+	cmp	DWORD PTR [rax+24], 455			; 000001c7H
 	je	SHORT $LN79@process_br
 	mov	rax, QWORD PTR CodeInfo$[rsp]
-	cmp	DWORD PTR [rax+24], 451			; 000001c3H
+	cmp	DWORD PTR [rax+24], 456			; 000001c8H
 	jne	$LN78@process_br
 $LN79@process_br:
 	mov	rax, QWORD PTR CodeInfo$[rsp]
@@ -1483,7 +1466,7 @@ $LN80@process_br:
 
 ; 436  :         DebugMsg1(("process_branch: FAR call/jmp\n"));
 
-	lea	rcx, OFFSET FLAT:$SG10817
+	lea	rcx, OFFSET FLAT:$SG10855
 	call	DoDebugMsg1
 
 ; 437  :         switch( CodeInfo->mem_type ) {
@@ -1676,13 +1659,13 @@ $LN89@process_br:
 
 	mov	rax, QWORD PTR CodeInfo$[rsp]
 	mov	edx, DWORD PTR [rax+28]
-	lea	rcx, OFFSET FLAT:$SG10827
+	lea	rcx, OFFSET FLAT:$SG10865
 	call	DoDebugMsg
 
 ; 465  :             /**/myassert( 0 );
 
 	mov	edx, 465				; 000001d1H
-	lea	rcx, OFFSET FLAT:$SG10828
+	lea	rcx, OFFSET FLAT:$SG10866
 	call	InternalError
 $LN4@process_br:
 
@@ -1713,9 +1696,9 @@ $LN78@process_br:
 	mov	rax, QWORD PTR CodeInfo$[rsp]
 	mov	eax, DWORD PTR [rax+24]
 	mov	DWORD PTR tv634[rsp], eax
-	cmp	DWORD PTR tv634[rsp], 450		; 000001c2H
+	cmp	DWORD PTR tv634[rsp], 455		; 000001c7H
 	je	SHORT $LN90@process_br
-	cmp	DWORD PTR tv634[rsp], 451		; 000001c3H
+	cmp	DWORD PTR tv634[rsp], 456		; 000001c8H
 	je	$LN95@process_br
 	jmp	$LN105@process_br
 $LN90@process_br:
@@ -1794,7 +1777,7 @@ $LN95@process_br:
 
 	mov	rax, QWORD PTR CodeInfo$[rsp]
 	mov	edx, DWORD PTR [rax+28]
-	lea	rcx, OFFSET FLAT:$SG10835
+	lea	rcx, OFFSET FLAT:$SG10873
 	call	DoDebugMsg1
 
 ; 492  :         switch( CodeInfo->mem_type ) {
@@ -1974,13 +1957,13 @@ $LN104@process_br:
 
 	mov	rax, QWORD PTR CodeInfo$[rsp]
 	mov	edx, DWORD PTR [rax+28]
-	lea	rcx, OFFSET FLAT:$SG10845
+	lea	rcx, OFFSET FLAT:$SG10883
 	call	DoDebugMsg
 
 ; 527  :             /**/myassert( 0 );
 
 	mov	edx, 527				; 0000020fH
-	lea	rcx, OFFSET FLAT:$SG10846
+	lea	rcx, OFFSET FLAT:$SG10884
 	call	InternalError
 $LN8@process_br:
 
@@ -1999,10 +1982,10 @@ $LN105@process_br:
 ; 536  :         if ( IS_XCX_BRANCH( CodeInfo->token ) ) {
 
 	mov	rax, QWORD PTR CodeInfo$[rsp]
-	cmp	DWORD PTR [rax+24], 482			; 000001e2H
+	cmp	DWORD PTR [rax+24], 487			; 000001e7H
 	jl	SHORT $LN106@process_br
 	mov	rax, QWORD PTR CodeInfo$[rsp]
-	cmp	DWORD PTR [rax+24], 499			; 000001f3H
+	cmp	DWORD PTR [rax+24], 504			; 000001f8H
 	jg	SHORT $LN106@process_br
 
 ; 537  :             if( CodeInfo->mem_type != MT_EMPTY && opndx->instr != T_SHORT ) {
@@ -2272,7 +2255,7 @@ $LN119@process_br:
 ; 579  :                     /* destination is FAR (externdef <dest>:far */
 ; 580  :                     DebugMsg(("process_branch: JMP/CALL, FAR memtype, jump extension\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG10862
+	lea	rcx, OFFSET FLAT:$SG10900
 	call	DoDebugMsg
 
 ; 581  :                     jumpExtend( CodeInfo, TRUE );
@@ -2536,12 +2519,11 @@ $LN1@process_br:
 
 ; 632  : }
 
-	add	rsp, 288				; 00000120H
-	pop	rdi
+	add	rsp, 280				; 00000118H
 	ret	0
 process_branch ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\branch.c
 _TEXT	SEGMENT
 CodeInfo$ = 48
@@ -2550,13 +2532,7 @@ FarCallToNear PROC
 ; 114  : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 115  :     if( Parse_Pass == PASS_2 )
 
@@ -2585,19 +2561,18 @@ $LN2@FarCallToN:
 ; 121  :     return;
 ; 122  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 FarCallToNear ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\branch.c
 _TEXT	SEGMENT
 next_ins_size$ = 48
-tv68 = 52
-tv85 = 56
-tv89 = 60
-tv93 = 64
+tv85 = 52
+tv89 = 56
+tv93 = 60
+tv68 = 64
 CodeInfo$ = 96
 far_flag$ = 104
 jumpExtend PROC
@@ -2606,13 +2581,7 @@ jumpExtend PROC
 
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 80					; 00000050H
-	mov	rdi, rsp
-	mov	ecx, 20
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+96]
+	sub	rsp, 88					; 00000058H
 
 ; 77   :     //uint_8 opcode;
 ; 78   :     unsigned next_ins_size;
@@ -2643,7 +2612,7 @@ $LN2@jumpExtend:
 	mov	r9d, eax
 	mov	r8d, ecx
 	mov	edx, DWORD PTR far_flag$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10674
+	lea	rcx, OFFSET FLAT:$SG10712
 	call	DoDebugMsg
 
 ; 84   :     if( far_flag ) {
@@ -2742,7 +2711,7 @@ $LN4@jumpExtend:
 ; 103  :     CodeInfo->token = T_JMP;
 
 	mov	rax, QWORD PTR CodeInfo$[rsp]
-	mov	DWORD PTR [rax+24], 451			; 000001c3H
+	mov	DWORD PTR [rax+24], 456			; 000001c8H
 
 ; 104  :     CodeInfo->pinstr = &InstrTable[ IndexFromToken( T_JMP )];
 
@@ -2761,8 +2730,7 @@ $LN4@jumpExtend:
 ; 106  :     return;
 ; 107  : }
 
-	add	rsp, 80					; 00000050H
-	pop	rdi
+	add	rsp, 88					; 00000058H
 	ret	0
 jumpExtend ENDP
 _TEXT	ENDS

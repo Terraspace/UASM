@@ -6,12 +6,13 @@ INCLUDELIB LIBCMT
 INCLUDELIB OLDNAMES
 
 _BSS	SEGMENT
-$SG11454 DB	01H DUP (?)
-$SG11457 DB	01H DUP (?)
-$SG11460 DB	01H DUP (?)
-$SG11502 DB	01H DUP (?)
-$SG11506 DB	01H DUP (?)
-$SG11513 DB	01H DUP (?)
+$SG11265 DB	01H DUP (?)
+$SG11477 DB	01H DUP (?)
+$SG11480 DB	01H DUP (?)
+$SG11483 DB	01H DUP (?)
+$SG11525 DB	01H DUP (?)
+$SG11529 DB	01H DUP (?)
+$SG11536 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	decoflags:BYTE
@@ -19,16 +20,13 @@ COMM	broadflags:BYTE
 COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
-_BSS	SEGMENT
-$SG11242 DB	01H DUP (?)
-_BSS	ENDS
 _DATA	SEGMENT
-$SG11404 DB	'(', 00H
+$SG11427 DB	'(', 00H
 	ORG $+2
-$SG11414 DB	')', 00H
+$SG11437 DB	')', 00H
 	ORG $+2
-$SG11424 DB	'BSS', 00H
-$SG11425 DB	'AT', 00H
+$SG11447 DB	'BSS', 00H
+$SG11448 DB	'AT', 00H
 _DATA	ENDS
 PUBLIC	data_dir
 EXTRN	EmitError:PROC
@@ -359,7 +357,7 @@ $LN5@data_dir:
 	cmp	DWORD PTR [rdi+56], ebx
 	je	SHORT $LN9@data_dir
 	mov	rax, QWORD PTR [rdi+96]
-	test	BYTE PTR [rax+17], 4
+	test	BYTE PTR [rax+29], 4
 	je	SHORT $LN8@data_dir
 $LN9@data_dir:
 
@@ -2158,7 +2156,7 @@ $LN71@InitStruct:
 ; 230  :     } else {
 ; 231  :         return( EmitErr( INITIALIZER_MUST_BE_A_STRING_OR_SINGLE_ITEM, embedded ? embedded->name : "" ) );
 
-	lea	rdx, OFFSET FLAT:$SG11242
+	lea	rdx, OFFSET FLAT:$SG11265
 $LN72@InitStruct:
 	mov	ecx, 152				; 00000098H
 	call	EmitErr
@@ -3156,8 +3154,8 @@ $LN48@data_item:
 ; 654  :         EmitWarn( 2,
 
 	cmp	edx, 3
-	lea	rax, OFFSET FLAT:$SG11424
-	lea	r8, OFFSET FLAT:$SG11425
+	lea	rax, OFFSET FLAT:$SG11447
+	lea	r8, OFFSET FLAT:$SG11448
 	mov	edx, 184				; 000000b8H
 	cmove	r8, rax
 	mov	ecx, 2
@@ -3267,7 +3265,7 @@ $LN84@data_item:
 	mov	rdx, QWORD PTR [rbx+8]
 	jmp	SHORT $LN175@data_item
 $LN174@data_item:
-	lea	rdx, OFFSET FLAT:$SG11460
+	lea	rdx, OFFSET FLAT:$SG11483
 $LN175@data_item:
 	mov	ecx, 231				; 000000e7H
 	call	EmitErr
@@ -3826,7 +3824,7 @@ $LN180@data_item:
 ; 962  :                             DebugMsg(("data_item.ADDR: error, FAR32 won't fit in a DWORD\n" ));
 ; 963  :                             EmitErr( INITIALIZER_MAGNITUDE_TOO_LARGE, opndx.sym ? opndx.sym->name : "" );
 
-	lea	rdx, OFFSET FLAT:$SG11513
+	lea	rdx, OFFSET FLAT:$SG11536
 	mov	ecx, 172				; 000000acH
 	call	EmitErr
 $LN135@data_item:
@@ -3926,7 +3924,7 @@ $LN123@data_item:
 	mov	rdx, QWORD PTR [rax+8]
 	jmp	SHORT $LN179@data_item
 $LN176@data_item:
-	lea	rdx, OFFSET FLAT:$SG11502
+	lea	rdx, OFFSET FLAT:$SG11525
 
 ; 939  :                     };
 
@@ -3966,7 +3964,7 @@ $LN127@data_item:
 	mov	rdx, QWORD PTR [rax+8]
 	jmp	SHORT $LN179@data_item
 $LN178@data_item:
-	lea	rdx, OFFSET FLAT:$SG11506
+	lea	rdx, OFFSET FLAT:$SG11529
 $LN179@data_item:
 	mov	ecx, 172				; 000000acH
 	call	EmitErr
@@ -4491,7 +4489,7 @@ $LN209@data_item:
 ; 596  :             DebugMsg(("data_item: error 'missing ')', exit\n"));
 ; 597  :             return( EmitErr( EXPECTED, ")" ) );
 
-	lea	rdx, OFFSET FLAT:$SG11414
+	lea	rdx, OFFSET FLAT:$SG11437
 	mov	ecx, 230				; 000000e6H
 	call	EmitErr
 	jmp	$LN1@data_item
@@ -4500,7 +4498,7 @@ $LN207@data_item:
 ; 570  :             DebugMsg(("data_item error, missing '('\n"));
 ; 571  :             return( EmitErr( EXPECTED, "(" ) );
 
-	lea	rdx, OFFSET FLAT:$SG11404
+	lea	rdx, OFFSET FLAT:$SG11427
 	mov	ecx, 230				; 000000e6H
 	call	EmitErr
 	jmp	$LN1@data_item
@@ -4619,7 +4617,7 @@ $LN170@data_item:
 ; 761  :                             DebugMsg(("data_item.CONST: error, unhandled data is %" I64_SPEC "X_%016" I64_SPEC "X\n", opndx.hlvalue, opndx.llvalue));
 ; 762  :                             return( EmitErr( INITIALIZER_MAGNITUDE_TOO_LARGE, opndx.sym ? opndx.sym->name : "" ) );
 
-	lea	rdx, OFFSET FLAT:$SG11454
+	lea	rdx, OFFSET FLAT:$SG11477
 	mov	ecx, 172				; 000000acH
 	call	EmitErr
 	jmp	$LN1@data_item
@@ -4637,7 +4635,7 @@ $LN216@data_item:
 	call	EmitErr
 	jmp	SHORT $LN1@data_item
 $LN172@data_item:
-	lea	rdx, OFFSET FLAT:$SG11457
+	lea	rdx, OFFSET FLAT:$SG11480
 	mov	ecx, 172				; 000000acH
 	call	EmitErr
 	jmp	SHORT $LN1@data_item

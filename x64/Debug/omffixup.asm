@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 _DATA	SEGMENT
@@ -12,49 +12,49 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10674 DB	'omffixup.c', 00H
+$SG10712 DB	'omffixup.c', 00H
 	ORG $+5
-$SG10675 DB	'omffixup.c', 00H
+$SG10713 DB	'omffixup.c', 00H
 	ORG $+5
-$SG10676 DB	'omffixup.c', 00H
+$SG10714 DB	'omffixup.c', 00H
 	ORG $+5
-$SG10696 DB	'omf_write_modend(%p): fixup->frame_type/datum=%u/%u, EXT'
+$SG10734 DB	'omf_write_modend(%p): fixup->frame_type/datum=%u/%u, EXT'
 	DB	'ERNAL sym=%s', 0aH, 00H
 	ORG $+2
-$SG10698 DB	'NULL', 00H
+$SG10736 DB	'NULL', 00H
 	ORG $+3
-$SG10699 DB	'OmfFixGenFixModend(%p): fixup->frame_type/datum=%u/%u sy'
+$SG10737 DB	'OmfFixGenFixModend(%p): fixup->frame_type/datum=%u/%u sy'
 	DB	'm->name=%s state=%X segm=%s', 0aH, 00H
 	ORG $+3
-$SG10700 DB	'omffixup.c', 00H
+$SG10738 DB	'omffixup.c', 00H
 	ORG $+1
-$SG10717 DB	'NULL', 00H
+$SG10755 DB	'NULL', 00H
 	ORG $+7
-$SG10718 DB	'omf_fill_logref: sym=%s, state=%d, fixup->type=%u', 0aH, 00H
+$SG10756 DB	'omf_fill_logref: sym=%s, state=%d, fixup->type=%u', 0aH, 00H
 	ORG $+5
-$SG10721 DB	'omf_fill_logref: sym is NULL, frame_type=%u', 0aH, 00H
+$SG10759 DB	'omf_fill_logref: sym is NULL, frame_type=%u', 0aH, 00H
 	ORG $+3
-$SG10725 DB	'omf_fill_logref: sym->state is SYM_UNDEFINED', 0aH, 00H
+$SG10763 DB	'omf_fill_logref: sym->state is SYM_UNDEFINED', 0aH, 00H
 	ORG $+2
-$SG10728 DB	'omf_fill_logref: sym->state is SYM_GRP', 0aH, 00H
-$SG10733 DB	'omf_fill_logref: sym->state is SYM_SEG %s', 0aH, 00H
+$SG10766 DB	'omf_fill_logref: sym->state is SYM_GRP', 0aH, 00H
+$SG10771 DB	'omf_fill_logref: sym->state is SYM_SEG %s', 0aH, 00H
 	ORG $+5
-$SG10738 DB	'omf_fill_logref: sym->state is SYM_EXTERNAL, fixup->fram'
+$SG10776 DB	'omf_fill_logref: sym->state is SYM_EXTERNAL, fixup->fram'
 	DB	'e_type/datum=%u/%u', 0aH, 00H
 	ORG $+4
-$SG10740 DB	'omffixup.c', 00H
+$SG10778 DB	'omffixup.c', 00H
 	ORG $+1
-$SG10741 DB	'NULL', 00H
+$SG10779 DB	'NULL', 00H
 	ORG $+7
-$SG10774 DB	'omffixup.c', 00H
+$SG10812 DB	'omffixup.c', 00H
 	ORG $+13
-$SG10742 DB	'omf_fill_logref: sym->state is SYM_INTERNAL, sym->segmen'
+$SG10780 DB	'omf_fill_logref: sym->state is SYM_INTERNAL, sym->segmen'
 	DB	't=%s, fixup->frame/datum=%u/%u', 0aH, 00H
-$SG10775 DB	'omffixup.c', 00H
+$SG10813 DB	'omffixup.c', 00H
 	ORG $+5
-$SG10776 DB	'omffixup.c', 00H
+$SG10814 DB	'omffixup.c', 00H
 	ORG $+5
-$SG10789 DB	'omffixup.c', 00H
+$SG10827 DB	'omffixup.c', 00H
 _DATA	ENDS
 PUBLIC	OmfFixGenFix
 PUBLIC	OmfFixGenFixModend
@@ -64,9 +64,6 @@ EXTRN	EmitErr:PROC
 EXTRN	GetSegIdx:PROC
 EXTRN	InternalError:PROC
 EXTRN	omf_GetGrpIdx:PROC
-EXTRN	_RTC_CheckStackVars:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
 EXTRN	__GSHandlerCheck:PROC
 EXTRN	__security_check_cookie:PROC
 EXTRN	ModuleInfo:BYTE
@@ -75,100 +72,51 @@ EXTRN	__ImageBase:BYTE
 EXTRN	__security_cookie:QWORD
 pdata	SEGMENT
 $pdata$OmfFixGenFix DD imagerel $LN34
-	DD	imagerel $LN34+868
+	DD	imagerel $LN34+796
 	DD	imagerel $unwind$OmfFixGenFix
 $pdata$OmfFixGenFixModend DD imagerel $LN12
-	DD	imagerel $LN12+617
+	DD	imagerel $LN12+544
 	DD	imagerel $unwind$OmfFixGenFixModend
-$pdata$putIndex DD imagerel putIndex
-	DD	imagerel putIndex+85
-	DD	imagerel $unwind$putIndex
-$pdata$put16 DD	imagerel put16
-	DD	imagerel put16+35
-	DD	imagerel $unwind$put16
-$pdata$put32 DD	imagerel put32
-	DD	imagerel put32+32
-	DD	imagerel $unwind$put32
 $pdata$putFrameDatum DD imagerel putFrameDatum
-	DD	imagerel putFrameDatum+93
+	DD	imagerel putFrameDatum+71
 	DD	imagerel $unwind$putFrameDatum
 $pdata$putTargetDatum DD imagerel putTargetDatum
-	DD	imagerel putTargetDatum+61
+	DD	imagerel putTargetDatum+39
 	DD	imagerel $unwind$putTargetDatum
 $pdata$TranslateLogref DD imagerel TranslateLogref
-	DD	imagerel TranslateLogref+413
+	DD	imagerel TranslateLogref+391
 	DD	imagerel $unwind$TranslateLogref
 $pdata$omf_fill_logref DD imagerel omf_fill_logref
-	DD	imagerel omf_fill_logref+1161
+	DD	imagerel omf_fill_logref+1139
 	DD	imagerel $unwind$omf_fill_logref
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
 xdata	SEGMENT
-$unwind$OmfFixGenFix DD 034419H
-	DD	012011bH
-	DD	07014H
+$unwind$OmfFixGenFix DD 012619H
+	DD	0e217H
 	DD	imagerel __GSHandlerCheck
-	DD	088H
-$unwind$OmfFixGenFixModend DD 034519H
-	DD	014011cH
-	DD	07015H
+	DD	060H
+$unwind$OmfFixGenFixModend DD 012719H
+	DD	0e218H
 	DD	imagerel __GSHandlerCheck
-	DD	090H
-$unwind$putIndex DD 010b01H
-	DD	0700bH
-$unwind$put16 DD 010b01H
-	DD	0700bH
-$unwind$put32 DD 010a01H
-	DD	0700aH
-$unwind$putFrameDatum DD 022801H
-	DD	070105214H
-$unwind$putTargetDatum DD 022801H
-	DD	070103214H
-$unwind$TranslateLogref DD 022801H
-	DD	070107214H
-$unwind$omf_fill_logref DD 022301H
-	DD	0700b920fH
+	DD	068H
+$unwind$putFrameDatum DD 011301H
+	DD	06213H
+$unwind$putTargetDatum DD 011301H
+	DD	04213H
+$unwind$TranslateLogref DD 011301H
+	DD	08213H
+$unwind$omf_fill_logref DD 010e01H
+	DD	0a20eH
 xdata	ENDS
-CONST	SEGMENT
-OmfFixGenFix$rtcName$0 DB 06cH
-	DB	072H
-	DB	00H
-	ORG $+13
-OmfFixGenFix$rtcVarDesc DD 038H
-	DD	0cH
-	DQ	FLAT:OmfFixGenFix$rtcName$0
-	ORG $+48
-OmfFixGenFix$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:OmfFixGenFix$rtcVarDesc
-OmfFixGenFixModend$rtcName$0 DB 06cH
-	DB	072H
-	DB	00H
-	ORG $+5
-OmfFixGenFixModend$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:OmfFixGenFixModend$rtcVarDesc
-	ORG $+8
-OmfFixGenFixModend$rtcVarDesc DD 058H
-	DD	0cH
-	DQ	FLAT:OmfFixGenFixModend$rtcName$0
-CONST	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omffixup.c
 _TEXT	SEGMENT
-sym$ = 32
-tv69 = 40
-tv73 = 48
-tv191 = 56
+tv69 = 32
+tv214 = 36
+tv191 = 40
+sym$ = 48
+tv73 = 56
 tv202 = 64
-tv214 = 72
 fixup$ = 96
 lr$ = 104
 omf_fill_logref PROC
@@ -177,13 +125,7 @@ omf_fill_logref PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 80					; 00000050H
-	mov	rdi, rsp
-	mov	ecx, 20
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+96]
+	sub	rsp, 88					; 00000058H
 
 ; 239  :     struct asym      *sym;
 ; 240  : 
@@ -212,14 +154,14 @@ $LN29@omf_fill_l:
 	mov	QWORD PTR tv73[rsp], rax
 	jmp	SHORT $LN31@omf_fill_l
 $LN30@omf_fill_l:
-	lea	rax, OFFSET FLAT:$SG10717
+	lea	rax, OFFSET FLAT:$SG10755
 	mov	QWORD PTR tv73[rsp], rax
 $LN31@omf_fill_l:
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	r9d, DWORD PTR [rax+24]
 	mov	r8d, DWORD PTR tv69[rsp]
 	mov	rdx, QWORD PTR tv73[rsp]
-	lea	rcx, OFFSET FLAT:$SG10718
+	lea	rcx, OFFSET FLAT:$SG10756
 	call	DoDebugMsg1
 
 ; 244  :                sym ? sym->name : "NULL", sym ? sym->state : -1, fixup->type ));
@@ -239,7 +181,7 @@ $LN31@omf_fill_l:
 	mov	rax, QWORD PTR fixup$[rsp]
 	movsx	eax, BYTE PTR [rax+40]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG10721
+	lea	rcx, OFFSET FLAT:$SG10759
 	call	DoDebugMsg
 
 ; 253  :         if ( fixup->frame_type == FRAME_NONE ) /* v1.96: nothing to do without a frame */
@@ -286,7 +228,7 @@ $LN2@omf_fill_l:
 ; 260  : 
 ; 261  :         DebugMsg(("omf_fill_logref: sym->state is SYM_UNDEFINED\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG10725
+	lea	rcx, OFFSET FLAT:$SG10763
 	call	DoDebugMsg
 
 ; 262  :         EmitErr( SYMBOL_NOT_DEFINED, sym->name );
@@ -313,7 +255,7 @@ $LN5@omf_fill_l:
 ; 266  : 
 ; 267  :         DebugMsg1(("omf_fill_logref: sym->state is SYM_GRP\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG10728
+	lea	rcx, OFFSET FLAT:$SG10766
 	call	DoDebugMsg1
 
 ; 268  :         lr->target = TARGET_GRP;
@@ -383,7 +325,7 @@ $LN7@omf_fill_l:
 ; 279  : 
 ; 280  :         DebugMsg1(("omf_fill_logref: sym->state is SYM_SEG %s\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG10733
+	lea	rcx, OFFSET FLAT:$SG10771
 	call	DoDebugMsg1
 
 ; 281  :         lr->target = TARGET_SEG;
@@ -468,7 +410,7 @@ $LN11@omf_fill_l:
 	movsx	ecx, BYTE PTR [rcx+40]
 	mov	r8d, eax
 	mov	edx, ecx
-	lea	rcx, OFFSET FLAT:$SG10738
+	lea	rcx, OFFSET FLAT:$SG10776
 	call	DoDebugMsg1
 
 ; 298  :                       fixup->frame_type, fixup->frame_datum ));
@@ -521,7 +463,7 @@ $LN15@omf_fill_l:
 	jmp	SHORT $LN33@omf_fill_l
 $LN32@omf_fill_l:
 	mov	edx, 308				; 00000134H
-	lea	rcx, OFFSET FLAT:$SG10740
+	lea	rcx, OFFSET FLAT:$SG10778
 	call	InternalError
 	mov	DWORD PTR tv191[rsp], eax
 $LN33@omf_fill_l:
@@ -537,7 +479,7 @@ $LN33@omf_fill_l:
 	mov	QWORD PTR tv202[rsp], rax
 	jmp	SHORT $LN35@omf_fill_l
 $LN34@omf_fill_l:
-	lea	rax, OFFSET FLAT:$SG10741
+	lea	rax, OFFSET FLAT:$SG10779
 	mov	QWORD PTR tv202[rsp], rax
 $LN35@omf_fill_l:
 	mov	rax, QWORD PTR fixup$[rsp]
@@ -547,7 +489,7 @@ $LN35@omf_fill_l:
 	mov	r9d, eax
 	mov	r8d, ecx
 	mov	rdx, QWORD PTR tv202[rsp]
-	lea	rcx, OFFSET FLAT:$SG10742
+	lea	rcx, OFFSET FLAT:$SG10780
 	call	DoDebugMsg1
 
 ; 310  :                        sym->segment ? sym->segment->name : "NULL", fixup->frame_type, fixup->frame_datum ));
@@ -730,19 +672,18 @@ $LN1@omf_fill_l:
 
 ; 347  : }
 
-	add	rsp, 80					; 00000050H
-	pop	rdi
+	add	rsp, 88					; 00000058H
 	ret	0
 omf_fill_logref ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omffixup.c
 _TEXT	SEGMENT
-p$ = 32
-target$ = 40
-tv68 = 44
-tv73 = 48
-tv79 = 52
+target$ = 32
+tv68 = 36
+tv73 = 40
+tv79 = 44
+p$ = 48
 lr$ = 80
 buf$ = 88
 type$ = 96
@@ -753,13 +694,7 @@ TranslateLogref PROC
 	mov	DWORD PTR [rsp+24], r8d
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 72					; 00000048H
 
 ; 121  :     uint_8  *p;
 ; 122  :     uint_8  target;
@@ -772,7 +707,7 @@ TranslateLogref PROC
 	jmp	SHORT $LN8@TranslateL
 $LN7@TranslateL:
 	mov	edx, 124				; 0000007cH
-	lea	rcx, OFFSET FLAT:$SG10674
+	lea	rcx, OFFSET FLAT:$SG10712
 	call	InternalError
 	mov	DWORD PTR tv68[rsp], eax
 $LN8@TranslateL:
@@ -785,7 +720,7 @@ $LN8@TranslateL:
 	jmp	SHORT $LN10@TranslateL
 $LN9@TranslateL:
 	mov	edx, 125				; 0000007dH
-	lea	rcx, OFFSET FLAT:$SG10675
+	lea	rcx, OFFSET FLAT:$SG10713
 	call	InternalError
 	mov	DWORD PTR tv73[rsp], eax
 $LN10@TranslateL:
@@ -797,7 +732,7 @@ $LN10@TranslateL:
 	cmp	DWORD PTR type$[rsp], 1
 	je	SHORT $LN11@TranslateL
 	mov	edx, 126				; 0000007eH
-	lea	rcx, OFFSET FLAT:$SG10676
+	lea	rcx, OFFSET FLAT:$SG10714
 	call	InternalError
 	mov	DWORD PTR tv79[rsp], eax
 	jmp	SHORT $LN12@TranslateL
@@ -928,12 +863,11 @@ $LN3@TranslateL:
 
 ; 159  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 TranslateLogref ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omffixup.c
 _TEXT	SEGMENT
 p$ = 48
@@ -946,13 +880,7 @@ putTargetDatum PROC
 	mov	WORD PTR [rsp+24], r8w
 	mov	BYTE PTR [rsp+16], dl
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 98   : #if 0 /* v2.12: HJWasm won't use TARGE_ABSxx; also, it's not defined for FIXUP sub-records */
 ; 99   :     if( ( method & 0x03 ) == TARGET_ABSWD ) {
@@ -967,12 +895,11 @@ putTargetDatum PROC
 
 ; 104  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 putTargetDatum ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omffixup.c
 _TEXT	SEGMENT
 tv65 = 32
@@ -986,13 +913,7 @@ putFrameDatum PROC
 	mov	WORD PTR [rsp+24], r8w
 	mov	BYTE PTR [rsp+16], dl
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 81   :     switch( method ) {
 
@@ -1029,23 +950,21 @@ $LN1@putFrameDa:
 
 ; 93   : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 putFrameDatum ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omffixup.c
 _TEXT	SEGMENT
-p$ = 16
-value$ = 24
+p$ = 8
+value$ = 16
 put32	PROC
 
 ; 73   : {
 
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
 
 ; 74   :     WriteU32( p, value );
 
@@ -1060,22 +979,20 @@ put32	PROC
 
 ; 76   : }
 
-	pop	rdi
 	ret	0
 put32	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omffixup.c
 _TEXT	SEGMENT
-p$ = 16
-value$ = 24
+p$ = 8
+value$ = 16
 put16	PROC
 
 ; 66   : {
 
 	mov	WORD PTR [rsp+16], dx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
 
 ; 67   :     WriteU16( p, value );
 
@@ -1090,22 +1007,20 @@ put16	PROC
 
 ; 69   : }
 
-	pop	rdi
 	ret	0
 put16	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omffixup.c
 _TEXT	SEGMENT
-p$ = 16
-index$ = 24
+p$ = 8
+index$ = 16
 putIndex PROC
 
 ; 56   : {
 
 	mov	WORD PTR [rsp+16], dx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
 
 ; 57   :     if( index > 0x7f ) {
 
@@ -1141,22 +1056,21 @@ $LN2@putIndex:
 
 ; 62   : }
 
-	pop	rdi
 	ret	0
 putIndex ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omffixup.c
 _TEXT	SEGMENT
 sym$ = 64
+tv145 = 72
+tv94 = 80
 lr$ = 88
-tv94 = 128
-tv145 = 136
-__$ArrayPad$ = 144
-fixup$ = 176
-buf$ = 184
-displ$ = 192
-type$ = 200
+__$ArrayPad$ = 104
+fixup$ = 128
+buf$ = 136
+displ$ = 144
+type$ = 152
 OmfFixGenFixModend PROC
 
 ; 194  : {
@@ -1166,13 +1080,7 @@ $LN12:
 	mov	DWORD PTR [rsp+24], r8d
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 160				; 000000a0H
-	mov	rdi, rsp
-	mov	ecx, 40					; 00000028H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+176]
+	sub	rsp, 120				; 00000078H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -1225,7 +1133,7 @@ $LN12:
 	mov	r9d, eax
 	mov	r8d, ecx
 	mov	rdx, QWORD PTR fixup$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10696
+	lea	rcx, OFFSET FLAT:$SG10734
 	call	DoDebugMsg
 
 ; 208  :                   fixup, fixup->frame_type, fixup->frame_datum, sym->name));
@@ -1277,7 +1185,7 @@ $LN2@OmfFixGenF:
 	mov	QWORD PTR tv94[rsp], rax
 	jmp	SHORT $LN9@OmfFixGenF
 $LN8@OmfFixGenF:
-	lea	rax, OFFSET FLAT:$SG10698
+	lea	rax, OFFSET FLAT:$SG10736
 	mov	QWORD PTR tv94[rsp], rax
 $LN9@OmfFixGenF:
 	mov	rax, QWORD PTR fixup$[rsp]
@@ -1295,7 +1203,7 @@ $LN9@OmfFixGenF:
 	mov	r9d, eax
 	mov	r8d, ecx
 	mov	rdx, QWORD PTR fixup$[rsp]
-	lea	rcx, OFFSET FLAT:$SG10699
+	lea	rcx, OFFSET FLAT:$SG10737
 	call	DoDebugMsg
 
 ; 219  :                   fixup, fixup->frame_type, fixup->frame_datum, sym->name, sym->state, sym->segment ? sym->segment->name : "NULL" ));
@@ -1308,7 +1216,7 @@ $LN9@OmfFixGenF:
 	jmp	SHORT $LN11@OmfFixGenF
 $LN10@OmfFixGenF:
 	mov	edx, 220				; 000000dcH
-	lea	rcx, OFFSET FLAT:$SG10700
+	lea	rcx, OFFSET FLAT:$SG10738
 	call	InternalError
 	mov	DWORD PTR tv145[rsp], eax
 $LN11@OmfFixGenF:
@@ -1365,40 +1273,34 @@ $LN6@OmfFixGenF:
 
 ; 232  : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:OmfFixGenFixModend$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 160				; 000000a0H
-	pop	rdi
+	add	rsp, 120				; 00000078H
 	ret	0
 OmfFixGenFixModend ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\omffixup.c
 _TEXT	SEGMENT
 locat1$ = 32
 self_relative$ = 33
-data_rec_offset$ = 36
-lr$ = 56
-tv68 = 96
-tv73 = 100
-tv79 = 104
-tv81 = 108
-tv86 = 112
-tv92 = 116
-tv131 = 120
-tv139 = 128
-tv153 = 132
-__$ArrayPad$ = 136
-fixup$ = 160
-start_loc$ = 168
-buf$ = 176
-type$ = 184
+tv81 = 36
+tv86 = 40
+tv92 = 44
+tv139 = 48
+data_rec_offset$ = 52
+tv68 = 56
+tv73 = 60
+tv79 = 64
+tv153 = 68
+tv131 = 72
+lr$ = 80
+__$ArrayPad$ = 96
+fixup$ = 128
+start_loc$ = 136
+buf$ = 144
+type$ = 152
 OmfFixGenFix PROC
 
 ; 370  : {
@@ -1408,13 +1310,7 @@ $LN34:
 	mov	QWORD PTR [rsp+24], r8
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 144				; 00000090H
-	mov	rdi, rsp
-	mov	ecx, 36					; 00000024H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+160]
+	sub	rsp, 120				; 00000078H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -1435,7 +1331,7 @@ $LN34:
 	jmp	SHORT $LN18@OmfFixGenF
 $LN17@OmfFixGenF:
 	mov	edx, 376				; 00000178H
-	lea	rcx, OFFSET FLAT:$SG10774
+	lea	rcx, OFFSET FLAT:$SG10812
 	call	InternalError
 	mov	DWORD PTR tv68[rsp], eax
 $LN18@OmfFixGenF:
@@ -1448,7 +1344,7 @@ $LN18@OmfFixGenF:
 	jmp	SHORT $LN20@OmfFixGenF
 $LN19@OmfFixGenF:
 	mov	edx, 377				; 00000179H
-	lea	rcx, OFFSET FLAT:$SG10775
+	lea	rcx, OFFSET FLAT:$SG10813
 	call	InternalError
 	mov	DWORD PTR tv73[rsp], eax
 $LN20@OmfFixGenF:
@@ -1460,7 +1356,7 @@ $LN20@OmfFixGenF:
 	cmp	DWORD PTR type$[rsp], 1
 	je	SHORT $LN21@OmfFixGenF
 	mov	edx, 378				; 0000017aH
-	lea	rcx, OFFSET FLAT:$SG10776
+	lea	rcx, OFFSET FLAT:$SG10814
 	call	InternalError
 	mov	DWORD PTR tv79[rsp], eax
 	jmp	SHORT $LN22@OmfFixGenF
@@ -1684,7 +1580,7 @@ $LN15@OmfFixGenF:
 	jmp	SHORT $LN32@OmfFixGenF
 $LN31@OmfFixGenF:
 	mov	edx, 426				; 000001aaH
-	lea	rcx, OFFSET FLAT:$SG10789
+	lea	rcx, OFFSET FLAT:$SG10827
 	call	InternalError
 	mov	DWORD PTR tv153[rsp], eax
 $LN32@OmfFixGenF:
@@ -1734,18 +1630,12 @@ $LN1@OmfFixGenF:
 
 ; 435  : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:OmfFixGenFix$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 144				; 00000090H
-	pop	rdi
+	add	rsp, 120				; 00000078H
 	ret	0
-	npad	2
+	npad	3
 $LN33@OmfFixGenF:
 	DD	$LN4@OmfFixGenF
 	DD	$LN6@OmfFixGenF

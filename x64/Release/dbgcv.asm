@@ -12,10 +12,10 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11284 DB	'TLS', 00H
-$SG11083 DB	'@@%u', 00H
+$SG11307 DB	'TLS', 00H
+$SG11106 DB	'@@%u', 00H
 	ORG $+7
-$SG11148 DB	'__unnamed', 00H
+$SG11171 DB	'__unnamed', 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	sprintf
@@ -148,13 +148,13 @@ pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$3$cv_write_symbol DD imagerel cv_write_symbol+216
-	DD	imagerel cv_write_symbol+2387
+	DD	imagerel cv_write_symbol+2413
 	DD	imagerel $chain$3$cv_write_symbol
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$4$cv_write_symbol DD imagerel cv_write_symbol+2387
-	DD	imagerel cv_write_symbol+2398
+$pdata$4$cv_write_symbol DD imagerel cv_write_symbol+2413
+	DD	imagerel cv_write_symbol+2424
 	DD	imagerel $chain$4$cv_write_symbol
 pdata	ENDS
 pdata	SEGMENT
@@ -343,7 +343,7 @@ types$ = 136
 pv$ = 144
 cv_write_debug_tables PROC
 
-; 987  : {
+; 991  : {
 
 $LN45:
 	mov	QWORD PTR [rsp+16], rbx
@@ -356,25 +356,25 @@ $LN45:
 	mov	rbp, rsp
 	sub	rsp, 80					; 00000050H
 
-; 988  :     struct asym *sym;
-; 989  :     int        i;
-; 990  :     int        len;
-; 991  :     char       *objname;
-; 992  :     struct dbgcv cv;
-; 993  : 
-; 994  :     DebugMsg(( "cv_write_debug_tables enter\n"));
-; 995  : 
-; 996  :     /**/myassert( types && symbols && types->sym.state == SYM_SEG &&  symbols->sym.state == SYM_SEG );
+; 992  :     struct asym *sym;
+; 993  :     int        i;
+; 994  :     int        len;
+; 995  :     char       *objname;
+; 996  :     struct dbgcv cv;
 ; 997  : 
-; 998  :     cv.ps = symbols->e.seginfo->CodeBuffer;
+; 998  :     DebugMsg(( "cv_write_debug_tables enter\n"));
+; 999  : 
+; 1000 :     /**/myassert( types && symbols && types->sym.state == SYM_SEG &&  symbols->sym.state == SYM_SEG );
+; 1001 : 
+; 1002 :     cv.ps = symbols->e.seginfo->CodeBuffer;
 
 	mov	rax, QWORD PTR [rcx+96]
 
-; 999  :     cv.symbols = symbols;
-; 1000 :     cv.pt = types->e.seginfo->CodeBuffer;
-; 1001 :     cv.types   = types;
-; 1002 :     cv.currtype = 0x1000; /* user-defined types start at 0x1000 */
-; 1003 :     cv.level   = 0;
+; 1003 :     cv.symbols = symbols;
+; 1004 :     cv.pt = types->e.seginfo->CodeBuffer;
+; 1005 :     cv.types   = types;
+; 1006 :     cv.currtype = 0x1000; /* user-defined types start at 0x1000 */
+; 1007 :     cv.level   = 0;
 
 	xor	r12d, r12d
 	mov	r15, rcx
@@ -388,15 +388,15 @@ $LN45:
 	mov	QWORD PTR cv$[rbp-64], r9
 	mov	WORD PTR cv$[rbp-36], ax
 
-; 1004 :     cv.param = pv;
-; 1005 : #if GENPTRTYPE
-; 1006 :     cv.ptrtype[0] = 0;
-; 1007 :     cv.ptrtype[1] = 0;
-; 1008 :     cv.ptrtype[2] = 0;
-; 1009 : #endif
-; 1010 :     /* init types */
-; 1011 :     //memset( pt, 0, 1024 ); /* it's ensured to have at least size 1024 */
-; 1012 :     *(uint_32 *)cv.pt = Options.debug_symbols; /* "signature" */
+; 1008 :     cv.param = pv;
+; 1009 : #if GENPTRTYPE
+; 1010 :     cv.ptrtype[0] = 0;
+; 1011 :     cv.ptrtype[1] = 0;
+; 1012 :     cv.ptrtype[2] = 0;
+; 1013 : #endif
+; 1014 :     /* init types */
+; 1015 :     //memset( pt, 0, 1024 ); /* it's ensured to have at least size 1024 */
+; 1016 :     *(uint_32 *)cv.pt = Options.debug_symbols; /* "signature" */
 
 	movzx	eax, BYTE PTR Options+2
 	mov	QWORD PTR cv$[rbp-56], rdx
@@ -404,29 +404,29 @@ $LN45:
 	mov	QWORD PTR cv$[rbp-48], r8
 	mov	DWORD PTR [r9], eax
 
-; 1013 :     cv.pt += sizeof( uint_32 );
-; 1014 : 
-; 1015 :     /* init symbols */
-; 1016 :     //memset( ps, 0, 1024 ); /* it's ensured to has at least size 1024 */
-; 1017 :     *(uint_32 *)cv.ps = Options.debug_symbols; /* "signature" */
+; 1017 :     cv.pt += sizeof( uint_32 );
+; 1018 : 
+; 1019 :     /* init symbols */
+; 1020 :     //memset( ps, 0, 1024 ); /* it's ensured to has at least size 1024 */
+; 1021 :     *(uint_32 *)cv.ps = Options.debug_symbols; /* "signature" */
 
 	mov	rax, QWORD PTR cv$[rbp-80]
 	movzx	ecx, BYTE PTR Options+2
 	add	QWORD PTR cv$[rbp-64], 4
 	mov	DWORD PTR [rax], ecx
 
-; 1018 :     cv.ps += sizeof(uint_32);
+; 1022 :     cv.ps += sizeof(uint_32);
 
 	mov	r9, QWORD PTR cv$[rbp-80]
 
-; 1019 : 
-; 1020 :     /* 1. symbol record: object name */
-; 1021 :     objname = CurrFName[OBJ];
+; 1023 : 
+; 1024 :     /* 1. symbol record: object name */
+; 1025 :     objname = CurrFName[OBJ];
 
 	mov	rdx, QWORD PTR ModuleInfo+136
 	add	r9, 4
 
-; 1022 :     for ( i = strlen( objname ); i; i-- )
+; 1026 :     for ( i = strlen( objname ); i; i-- )
 
 	or	rdi, -1
 	mov	QWORD PTR cv$[rbp-80], r9
@@ -441,7 +441,7 @@ $LL41@cv_write_d:
 	je	SHORT $LN42@cv_write_d
 $LL4@cv_write_d:
 
-; 1023 :         if ( *(objname+i-1) == '/' || *(objname+i-1) == '\\' )
+; 1027 :         if ( *(objname+i-1) == '/' || *(objname+i-1) == '\\' )
 
 	movsxd	rax, ecx
 	movzx	r8d, BYTE PTR [rax+rdx-1]
@@ -450,19 +450,19 @@ $LL4@cv_write_d:
 	cmp	r8b, 92					; 0000005cH
 	je	SHORT $LN42@cv_write_d
 
-; 1022 :     for ( i = strlen( objname ); i; i-- )
+; 1026 :     for ( i = strlen( objname ); i; i-- )
 
 	sub	ecx, 1
 	mov	DWORD PTR i$[rbp-80], ecx
 	jne	SHORT $LL4@cv_write_d
 $LN42@cv_write_d:
 
-; 1024 :             break;
-; 1025 :     objname += i;
+; 1028 :             break;
+; 1029 :     objname += i;
 
 	movsxd	rax, ecx
 
-; 1026 :     len = strlen( objname );
+; 1030 :     len = strlen( objname );
 
 	mov	r8, rdi
 	add	rdx, rax
@@ -471,15 +471,15 @@ $LL40@cv_write_d:
 	cmp	BYTE PTR [rdx+r8], r12b
 	jne	SHORT $LL40@cv_write_d
 
-; 1027 :     cv.ps_on->sr.size = sizeof( struct cv_symrec_objname ) - sizeof(uint_16) + 1 + len;
+; 1031 :     cv.ps_on->sr.size = sizeof( struct cv_symrec_objname ) - sizeof(uint_16) + 1 + len;
 
 	lea	eax, DWORD PTR [r8+7]
 
-; 1028 :     cv.ps_on->sr.type = S_OBJNAME;
-; 1029 :     cv.ps_on->Signature = 1;
-; 1030 :     DebugMsg(( "cv_write_debug_tables: at %X objname=%s\n", GetPos(cv.symbols,cv.ps), objname ));
-; 1031 :     cv.ps += sizeof( struct cv_symrec_objname );
-; 1032 :     SetPrefixName( cv.ps, objname, len );
+; 1032 :     cv.ps_on->sr.type = S_OBJNAME;
+; 1033 :     cv.ps_on->Signature = 1;
+; 1034 :     DebugMsg(( "cv_write_debug_tables: at %X objname=%s\n", GetPos(cv.symbols,cv.ps), objname ));
+; 1035 :     cv.ps += sizeof( struct cv_symrec_objname );
+; 1036 :     SetPrefixName( cv.ps, objname, len );
 
 	movsxd	rbx, r8d
 	mov	WORD PTR [r9], ax
@@ -500,9 +500,9 @@ $LL40@cv_write_d:
 	call	memcpy
 	mov	rcx, QWORD PTR cv$[rbp-80]
 
-; 1033 : 
-; 1034 :     /* 2. symbol record: compiler */
-; 1035 :     len = strlen( szCVCompiler );
+; 1037 : 
+; 1038 :     /* 2. symbol record: compiler */
+; 1039 :     len = strlen( szCVCompiler );
 
 	lea	r9, OFFSET FLAT:szCVCompiler
 	add	rcx, rbx
@@ -512,19 +512,19 @@ $LL39@cv_write_d:
 	cmp	BYTE PTR [r9+rdi], r12b
 	jne	SHORT $LL39@cv_write_d
 
-; 1036 :     cv.ps_cp->sr.size = sizeof( struct cv_symrec_compile ) - sizeof(uint_16) + 1 + len;
+; 1040 :     cv.ps_cp->sr.size = sizeof( struct cv_symrec_compile ) - sizeof(uint_16) + 1 + len;
 
 	lea	eax, DWORD PTR [rdi+7]
 	mov	WORD PTR [rcx], ax
 
-; 1037 :     cv.ps_cp->sr.type = S_COMPILE;
+; 1041 :     cv.ps_cp->sr.type = S_COMPILE;
 
 	mov	rax, QWORD PTR cv$[rbp-80]
 	mov	WORD PTR [rax+2], si
 
-; 1038 : #if AMD64_SUPPORT
-; 1039 :     /* v2.11: use a valid 64-bit value */
-; 1040 :     cv.ps_cp->machine = ( ModuleInfo.defOfssize == USE64 ? CV_MACH_AMD64 : ( ModuleInfo.curr_cpu & P_CPU_MASK ) >> 4 );
+; 1042 : #if AMD64_SUPPORT
+; 1043 :     /* v2.11: use a valid 64-bit value */
+; 1044 :     cv.ps_cp->machine = ( ModuleInfo.defOfssize == USE64 ? CV_MACH_AMD64 : ( ModuleInfo.curr_cpu & P_CPU_MASK ) >> 4 );
 
 	cmp	BYTE PTR ModuleInfo+405, 2
 	jne	SHORT $LN24@cv_write_d
@@ -538,43 +538,43 @@ $LN25@cv_write_d:
 	mov	rax, QWORD PTR cv$[rbp-80]
 	mov	BYTE PTR [rax+4], cl
 
-; 1041 : #else
-; 1042 :     cv.ps_cp->machine = ( ModuleInfo.curr_cpu & P_CPU_MASK ) >> 4;
-; 1043 : #endif
-; 1044 :     /* 0 isnt possible, 1 is 8086 and 80186 */
-; 1045 :     if ( cv.ps_cp->machine == 0 )
+; 1045 : #else
+; 1046 :     cv.ps_cp->machine = ( ModuleInfo.curr_cpu & P_CPU_MASK ) >> 4;
+; 1047 : #endif
+; 1048 :     /* 0 isnt possible, 1 is 8086 and 80186 */
+; 1049 :     if ( cv.ps_cp->machine == 0 )
 
 	mov	rax, QWORD PTR cv$[rbp-80]
 	cmp	BYTE PTR [rax+4], r12b
 	jne	SHORT $LN13@cv_write_d
 
-; 1046 :         cv.ps_cp->machine = CV_MACH_8086;
+; 1050 :         cv.ps_cp->machine = CV_MACH_8086;
 
 	mov	BYTE PTR [rax+4], sil
 	mov	rax, QWORD PTR cv$[rbp-80]
 $LN13@cv_write_d:
 
-; 1047 :     cv.ps_cp->Language = CV_LANG_MASM;
+; 1051 :     cv.ps_cp->Language = CV_LANG_MASM;
 
 	mov	BYTE PTR [rax+5], 3
 
-; 1048 :     cv.ps_cp->flags = 0;
+; 1052 :     cv.ps_cp->flags = 0;
 
 	mov	rax, QWORD PTR cv$[rbp-80]
 	mov	WORD PTR [rax+6], r12w
 
-; 1049 :     if ( ModuleInfo.model ) {
+; 1053 :     if ( ModuleInfo.model ) {
 
 	mov	ecx, DWORD PTR ModuleInfo+360
 	test	ecx, ecx
 	je	SHORT $LN14@cv_write_d
 
-; 1050 :         if ( ModuleInfo.model == MODEL_HUGE )
+; 1054 :         if ( ModuleInfo.model == MODEL_HUGE )
 
 	cmp	ecx, 6
 	jne	SHORT $LN15@cv_write_d
 
-; 1051 :             cv.ps_cp->AmbientData = CV_AMB_HUGE;
+; 1055 :             cv.ps_cp->AmbientData = CV_AMB_HUGE;
 
 	mov	rcx, QWORD PTR cv$[rbp-80]
 	movzx	eax, BYTE PTR [rcx+6]
@@ -584,8 +584,8 @@ $LN13@cv_write_d:
 	jmp	SHORT $LN16@cv_write_d
 $LN15@cv_write_d:
 
-; 1052 :         else
-; 1053 :             cv.ps_cp->AmbientData = ( SIZE_DATAPTR & ( 1 << ModuleInfo.model ) ? CV_AMB_FAR : CV_AMB_NEAR );
+; 1056 :         else
+; 1057 :             cv.ps_cp->AmbientData = ( SIZE_DATAPTR & ( 1 << ModuleInfo.model ) ? CV_AMB_FAR : CV_AMB_NEAR );
 
 	mov	rdx, QWORD PTR cv$[rbp-80]
 	mov	eax, esi
@@ -599,7 +599,7 @@ $LN15@cv_write_d:
 	mov	BYTE PTR [rdx+6], cl
 $LN16@cv_write_d:
 
-; 1054 :         cv.ps_cp->AmbientCode = ( SIZE_CODEPTR & ( 1 << ModuleInfo.model ) ? CV_AMB_FAR : CV_AMB_NEAR );
+; 1058 :         cv.ps_cp->AmbientCode = ( SIZE_CODEPTR & ( 1 << ModuleInfo.model ) ? CV_AMB_FAR : CV_AMB_NEAR );
 
 	mov	ecx, DWORD PTR ModuleInfo+360
 	mov	r8, QWORD PTR cv$[rbp-80]
@@ -611,13 +611,13 @@ $LN16@cv_write_d:
 	xor	BYTE PTR [r8+7], al
 $LN14@cv_write_d:
 
-; 1055 :     }
-; 1056 :     DebugMsg(( "cv_write_debug_tables: at %X compiler=%s\n", GetPos(cv.symbols,cv.ps), szCVCompiler ));
-; 1057 :     cv.ps += sizeof( struct cv_symrec_compile );
+; 1059 :     }
+; 1060 :     DebugMsg(( "cv_write_debug_tables: at %X compiler=%s\n", GetPos(cv.symbols,cv.ps), szCVCompiler ));
+; 1061 :     cv.ps += sizeof( struct cv_symrec_compile );
 
 	mov	rax, QWORD PTR cv$[rbp-80]
 
-; 1058 :     SetPrefixName( cv.ps, szCVCompiler, len );
+; 1062 :     SetPrefixName( cv.ps, szCVCompiler, len );
 
 	mov	rdx, r9
 	add	rax, 8
@@ -631,14 +631,14 @@ $LN14@cv_write_d:
 	call	memcpy
 	add	QWORD PTR cv$[rbp-80], rbx
 
-; 1059 : 
-; 1060 :     /* CurrSeg must be set for store_fixup(); v2.12: obsolete */
-; 1061 :     //CurrSeg = symbols;
-; 1062 : 
-; 1063 :     /* scan symbol table for types */
-; 1064 : 
-; 1065 :     sym = NULL;
-; 1066 :     while ( sym = SymEnum( sym, &i ) ) {
+; 1063 : 
+; 1064 :     /* CurrSeg must be set for store_fixup(); v2.12: obsolete */
+; 1065 :     //CurrSeg = symbols;
+; 1066 : 
+; 1067 :     /* scan symbol table for types */
+; 1068 : 
+; 1069 :     sym = NULL;
+; 1070 :     while ( sym = SymEnum( sym, &i ) ) {
 
 	lea	rdx, QWORD PTR i$[rbp-80]
 	xor	ecx, ecx
@@ -648,7 +648,7 @@ $LN14@cv_write_d:
 	je	SHORT $LN6@cv_write_d
 $LL5@cv_write_d:
 
-; 1067 :         if ( sym->state == SYM_TYPE && sym->typekind != TYPE_TYPEDEF && sym->cvtyperef == 0 ) {
+; 1071 :         if ( sym->state == SYM_TYPE && sym->typekind != TYPE_TYPEDEF && sym->cvtyperef == 0 ) {
 
 	cmp	DWORD PTR [rbx+32], 7
 	jne	SHORT $LN17@cv_write_d
@@ -657,22 +657,22 @@ $LL5@cv_write_d:
 	cmp	WORD PTR [rbx+64], r12w
 	jne	SHORT $LN17@cv_write_d
 
-; 1068 :             /**/myassert( cv.currtype >= 0x1000 ); /* check for overflow */
-; 1069 :             cv_write_type( &cv, sym );
+; 1072 :             /**/myassert( cv.currtype >= 0x1000 ); /* check for overflow */
+; 1073 :             cv_write_type( &cv, sym );
 
 	mov	rdx, rbx
 	lea	rcx, QWORD PTR cv$[rbp-80]
 	call	cv_write_type
 $LN17@cv_write_d:
 
-; 1059 : 
-; 1060 :     /* CurrSeg must be set for store_fixup(); v2.12: obsolete */
-; 1061 :     //CurrSeg = symbols;
-; 1062 : 
-; 1063 :     /* scan symbol table for types */
-; 1064 : 
-; 1065 :     sym = NULL;
-; 1066 :     while ( sym = SymEnum( sym, &i ) ) {
+; 1063 : 
+; 1064 :     /* CurrSeg must be set for store_fixup(); v2.12: obsolete */
+; 1065 :     //CurrSeg = symbols;
+; 1066 : 
+; 1067 :     /* scan symbol table for types */
+; 1068 : 
+; 1069 :     sym = NULL;
+; 1070 :     while ( sym = SymEnum( sym, &i ) ) {
 
 	lea	rdx, QWORD PTR i$[rbp-80]
 	mov	rcx, rbx
@@ -682,13 +682,13 @@ $LN17@cv_write_d:
 	jne	SHORT $LL5@cv_write_d
 $LN6@cv_write_d:
 
-; 1070 :         }
-; 1071 :     }
-; 1072 : 
-; 1073 :     /* scan symbol table for SYM_TYPE, SYM_INTERNAL */
-; 1074 : 
-; 1075 :     sym = NULL;
-; 1076 :     while ( sym = SymEnum( sym, &i ) ) {
+; 1074 :         }
+; 1075 :     }
+; 1076 : 
+; 1077 :     /* scan symbol table for SYM_TYPE, SYM_INTERNAL */
+; 1078 : 
+; 1079 :     sym = NULL;
+; 1080 :     while ( sym = SymEnum( sym, &i ) ) {
 
 	lea	rdx, QWORD PTR i$[rbp-80]
 	xor	ecx, ecx
@@ -699,7 +699,7 @@ $LN6@cv_write_d:
 	npad	3
 $LL7@cv_write_d:
 
-; 1077 :         switch ( sym->state ) {
+; 1081 :         switch ( sym->state ) {
 
 	mov	eax, DWORD PTR [rbx+32]
 	movzx	ecx, BYTE PTR Options+3
@@ -708,23 +708,23 @@ $LL7@cv_write_d:
 	cmp	eax, 6
 	jne	SHORT $LN22@cv_write_d
 
-; 1078 :         case SYM_TYPE: /* may create an S_UDT entry in the symbols table */
-; 1079 :             if ( Options.debug_ext < CVEX_NORMAL ) /* v2.10: no UDTs for -Zi0 and -Zi1 */
+; 1082 :         case SYM_TYPE: /* may create an S_UDT entry in the symbols table */
+; 1083 :             if ( Options.debug_ext < CVEX_NORMAL ) /* v2.10: no UDTs for -Zi0 and -Zi1 */
 
 	cmp	cl, 2
 	jb	SHORT $LN22@cv_write_d
 $LN19@cv_write_d:
 
-; 1080 :                 break;
-; 1081 :         case SYM_INTERNAL:
-; 1082 :             if (
-; 1083 : #if EQUATESYMS
-; 1084 :                 /* emit constants if -Zi3 */
-; 1085 :                 ( Options.debug_ext < CVEX_MAX ? sym->isequate : sym->variable )
-; 1086 : #else
-; 1087 :                 sym->isequate
-; 1088 : #endif
-; 1089 :                 || sym->predefined ) { /* EQUates? */
+; 1084 :                 break;
+; 1085 :         case SYM_INTERNAL:
+; 1086 :             if (
+; 1087 : #if EQUATESYMS
+; 1088 :                 /* emit constants if -Zi3 */
+; 1089 :                 ( Options.debug_ext < CVEX_MAX ? sym->isequate : sym->variable )
+; 1090 : #else
+; 1091 :                 sym->isequate
+; 1092 : #endif
+; 1093 :                 || sym->predefined ) { /* EQUates? */
 
 	cmp	cl, 3
 	movzx	ecx, BYTE PTR [rbx+40]
@@ -741,23 +741,23 @@ $LN43@cv_write_d:
 	test	cl, 32					; 00000020H
 	jne	SHORT $LN22@cv_write_d
 
-; 1090 :                 break;
-; 1091 :             }
-; 1092 :             /**/myassert( cv.currtype >= 0x1000 ); /* check for overflow */
-; 1093 :             cv_write_symbol( &cv, sym );
+; 1094 :                 break;
+; 1095 :             }
+; 1096 :             /**/myassert( cv.currtype >= 0x1000 ); /* check for overflow */
+; 1097 :             cv_write_symbol( &cv, sym );
 
 	mov	rdx, rbx
 	lea	rcx, QWORD PTR cv$[rbp-80]
 	call	cv_write_symbol
 $LN22@cv_write_d:
 
-; 1070 :         }
-; 1071 :     }
-; 1072 : 
-; 1073 :     /* scan symbol table for SYM_TYPE, SYM_INTERNAL */
-; 1074 : 
-; 1075 :     sym = NULL;
-; 1076 :     while ( sym = SymEnum( sym, &i ) ) {
+; 1074 :         }
+; 1075 :     }
+; 1076 : 
+; 1077 :     /* scan symbol table for SYM_TYPE, SYM_INTERNAL */
+; 1078 : 
+; 1079 :     sym = NULL;
+; 1080 :     while ( sym = SymEnum( sym, &i ) ) {
 
 	lea	rdx, QWORD PTR i$[rbp-80]
 	mov	rcx, rbx
@@ -767,14 +767,14 @@ $LN22@cv_write_d:
 	jne	SHORT $LL7@cv_write_d
 $LN8@cv_write_d:
 
-; 1094 :             break;
-; 1095 :         }
-; 1096 :     }
-; 1097 : 
-; 1098 :     /* final flush for both types and symbols.
-; 1099 :      * use 'fictional' size of MAX_LINE_LEN * 2!
-; 1100 :      */
-; 1101 :     checkflush( cv.types, cv.pt, SIZE_CV_SEGBUF, cv.param );
+; 1098 :             break;
+; 1099 :         }
+; 1100 :     }
+; 1101 : 
+; 1102 :     /* final flush for both types and symbols.
+; 1103 :      * use 'fictional' size of MAX_LINE_LEN * 2!
+; 1104 :      */
+; 1105 :     checkflush( cv.types, cv.pt, SIZE_CV_SEGBUF, cv.param );
 
 	mov	rcx, QWORD PTR cv$[rbp-56]
 	mov	r8d, 2048				; 00000800H
@@ -783,7 +783,7 @@ $LN8@cv_write_d:
 	mov	rax, QWORD PTR [rcx+96]
 	call	QWORD PTR [rax+32]
 
-; 1102 :     checkflush( cv.symbols, cv.ps, SIZE_CV_SEGBUF, cv.param );
+; 1106 :     checkflush( cv.symbols, cv.ps, SIZE_CV_SEGBUF, cv.param );
 
 	mov	rcx, QWORD PTR cv$[rbp-72]
 	mov	r8d, 2048				; 00000800H
@@ -792,20 +792,20 @@ $LN8@cv_write_d:
 	mov	rax, QWORD PTR [rcx+96]
 	call	QWORD PTR [rax+32]
 
-; 1103 :     types->sym.max_offset = types->e.seginfo->current_loc;
+; 1107 :     types->sym.max_offset = types->e.seginfo->current_loc;
 
 	mov	rcx, QWORD PTR [r14+96]
 
-; 1104 :     types->e.seginfo->start_loc = 0; /* required for COFF */
-; 1105 :     symbols->sym.max_offset = symbols->e.seginfo->current_loc;
-; 1106 :     symbols->e.seginfo->start_loc = 0; /* required for COFF */
-; 1107 : 
-; 1108 :     //CurrSeg = NULL;
-; 1109 :     //Modend = TRUE;
-; 1110 : 
-; 1111 :     DebugMsg(( "cv_write_debug_tables exit, max type=%Xh\n", cv.currtype - 1 ));
-; 1112 :     return;
-; 1113 : }
+; 1108 :     types->e.seginfo->start_loc = 0; /* required for COFF */
+; 1109 :     symbols->sym.max_offset = symbols->e.seginfo->current_loc;
+; 1110 :     symbols->e.seginfo->start_loc = 0; /* required for COFF */
+; 1111 : 
+; 1112 :     //CurrSeg = NULL;
+; 1113 :     //Modend = TRUE;
+; 1114 : 
+; 1115 :     DebugMsg(( "cv_write_debug_tables exit, max type=%Xh\n", cv.currtype - 1 ));
+; 1116 :     return;
+; 1117 : }
 
 	lea	r11, QWORD PTR [rsp+80]
 	mov	rbx, QWORD PTR [r11+56]
@@ -969,9 +969,9 @@ $LN16@cv_write_s:
 	movzx	eax, BYTE PTR [rsi+72]
 	add	QWORD PTR [rbx], rax
 
-; 974  :     }
-; 975  :     return;
-; 976  : }
+; 978  :     }
+; 979  :     return;
+; 980  : }
 
 	add	rsp, 56					; 00000038H
 	pop	r13
@@ -1045,16 +1045,16 @@ $LL7@cv_write_s:
 ; 735  :                 typeref = ( lcl->sym.mem_type == MT_PTR ? cv_write_ptr_type( cv, &lcl->sym ) : GetTyperef( &lcl->sym, Ofssize ) );
 
 	cmp	DWORD PTR [rdi+36], 195			; 000000c3H
-	jne	SHORT $LN53@cv_write_s
+	jne	SHORT $LN55@cv_write_s
 	mov	rdx, rdi
 	mov	rcx, rbx
 	call	cv_write_ptr_type
-	jmp	SHORT $LN54@cv_write_s
-$LN53@cv_write_s:
+	jmp	SHORT $LN56@cv_write_s
+$LN55@cv_write_s:
 	movzx	edx, r13b
 	mov	rcx, rdi
 	call	GetTyperef
-$LN54@cv_write_s:
+$LN56@cv_write_s:
 
 ; 736  :                 if ( lcl->sym.isarray ) {
 
@@ -1147,7 +1147,7 @@ $LN2@cv_write_s:
 	movzx	eax, WORD PTR [rsi+56]
 	mov	WORD PTR [rcx+16], ax
 	mov	rax, QWORD PTR [rsi+96]
-	movzx	ecx, BYTE PTR [rax+85]
+	movzx	ecx, BYTE PTR [rax+129]
 	mov	rax, QWORD PTR [rbx]
 	mov	WORD PTR [rax+18], cx
 	mov	rcx, QWORD PTR [rbx]
@@ -1215,7 +1215,7 @@ $LN21@cv_write_s:
 	mov	eax, DWORD PTR [rsi+56]
 	mov	DWORD PTR [rcx+16], eax
 	mov	rax, QWORD PTR [rsi+96]
-	movzx	ecx, BYTE PTR [rax+85]
+	movzx	ecx, BYTE PTR [rax+129]
 	mov	rax, QWORD PTR [rbx]
 	mov	DWORD PTR [rax+20], ecx
 	mov	rcx, QWORD PTR [rbx]
@@ -1232,7 +1232,7 @@ $LN21@cv_write_s:
 	cmp	DWORD PTR [rsi+36], 130			; 00000082H
 	cmove	edx, eax
 	mov	rax, QWORD PTR [rsi+96]
-	movzx	ecx, BYTE PTR [rax+84]
+	movzx	ecx, BYTE PTR [rax+128]
 	mov	rax, QWORD PTR [rbx]
 	shr	cl, 7
 	or	dl, cl
@@ -1333,7 +1333,7 @@ $LN31@cv_write_s:
 
 ; 818  :         return;
 
-	jmp	$LN96@cv_write_s
+	jmp	$LN98@cv_write_s
 $LN28@cv_write_s:
 
 ; 819  : #endif
@@ -1420,7 +1420,7 @@ $LN33@cv_write_s:
 ; 838  :             DebugMsg(( "cv_write_symbol(%X): INTERN16=%s typeref=%Xh\n", GetPos(cv->symbols,cv->ps), sym->name, cv->ps_d16->type ));
 ; 839  :         } else {
 
-	jmp	$LN97@cv_write_s
+	jmp	$LN99@cv_write_s
 $LN34@cv_write_s:
 
 ; 840  :             cv->ps_d32->sr.size = sizeof( struct cv_symrec_ldata32 ) - sizeof(uint_16) + 1 + sym->name_size;
@@ -1441,18 +1441,17 @@ $LN34@cv_write_s:
 	test	rax, rax
 	je	SHORT $LN36@cv_write_s
 	mov	rax, QWORD PTR [rax+8]
-	lea	r8, OFFSET FLAT:$SG11284
+	lea	r8, OFFSET FLAT:$SG11307
 	sub	r8, rax
-	npad	9
-$LL91@cv_write_s:
+$LL93@cv_write_s:
 	movzx	edx, BYTE PTR [rax]
 	movzx	ecx, BYTE PTR [rax+r8]
 	sub	edx, ecx
-	jne	SHORT $LN92@cv_write_s
+	jne	SHORT $LN94@cv_write_s
 	inc	rax
 	test	ecx, ecx
-	jne	SHORT $LL91@cv_write_s
-$LN92@cv_write_s:
+	jne	SHORT $LL93@cv_write_s
+$LN94@cv_write_s:
 	test	edx, edx
 	jne	SHORT $LN36@cv_write_s
 
@@ -1464,7 +1463,7 @@ $LN92@cv_write_s:
 	mov	ecx, r14d
 	setne	cl
 	add	cx, 525					; 0000020dH
-	jmp	SHORT $LN98@cv_write_s
+	jmp	SHORT $LN100@cv_write_s
 $LN36@cv_write_s:
 
 ; 845  :             else
@@ -1476,7 +1475,7 @@ $LN36@cv_write_s:
 	mov	ecx, r14d
 	setne	cl
 	add	cx, 513					; 00000201H
-$LN98@cv_write_s:
+$LN100@cv_write_s:
 	mov	rax, QWORD PTR [rbx]
 
 ; 848  :             cv->ps_d32->offset = 0;
@@ -1493,7 +1492,7 @@ $LN98@cv_write_s:
 	mov	WORD PTR [rax+8], r14w
 	mov	rax, QWORD PTR [rbx]
 	mov	WORD PTR [rax+10], di
-	jmp	$LN99@cv_write_s
+	jmp	$LN101@cv_write_s
 $LN25@cv_write_s:
 
 ; 781  : 
@@ -1541,7 +1540,7 @@ $LN25@cv_write_s:
 ; 792  :             DebugMsg(( "cv_write_symbol(%X): LABEL16=%s\n", GetPos(cv->symbols,cv->ps), sym->name ));
 ; 793  :         } else {
 
-	jmp	SHORT $LN97@cv_write_s
+	jmp	SHORT $LN99@cv_write_s
 $LN26@cv_write_s:
 
 ; 794  :             cv->ps_l32->sr.size = sizeof( struct cv_symrec_label32 ) - sizeof(uint_16) + 1 + sym->name_size;
@@ -1573,12 +1572,12 @@ $LN26@cv_write_s:
 	mov	rax, QWORD PTR [rbx]
 	cmove	ecx, edx
 	mov	BYTE PTR [rax+10], cl
-$LN99@cv_write_s:
+$LN101@cv_write_s:
 
 ; 799  :             rlctype = FIX_PTR32;
 
 	mov	edi, 10
-$LN97@cv_write_s:
+$LN99@cv_write_s:
 
 ; 800  :             ofs = offsetof( struct cv_symrec_label32, offset );
 
@@ -1651,7 +1650,7 @@ $LN27@cv_write_s:
 ; 871  :         store_fixup( fixup, cv->symbols, (int_32 *)cv->ps );
 ; 872  :     } else {
 
-	jmp	SHORT $LN100@cv_write_s
+	jmp	SHORT $LN102@cv_write_s
 $LN38@cv_write_s:
 
 ; 873  : #endif
@@ -1665,7 +1664,7 @@ $LN38@cv_write_s:
 	mov	rcx, QWORD PTR [rbx+8]
 	mov	rdx, QWORD PTR [rcx+96]
 	mov	ecx, DWORD PTR [rdx+12]
-$LN100@cv_write_s:
+$LN102@cv_write_s:
 	mov	DWORD PTR [rax+20], ecx
 
 ; 876  :         /* todo: for OMF, delay fixup store until checkflush has been called! */
@@ -1706,9 +1705,9 @@ $LN100@cv_write_s:
 ; 888  :     if ( sym->isproc && Options.debug_ext >= CVEX_REDUCED ) { /* v2.10: no locals for -Zi0 */
 
 	test	BYTE PTR [rsi+41], 8
-	je	$LN96@cv_write_s
+	je	$LN98@cv_write_s
 	cmp	BYTE PTR Options+3, 1
-	jb	$LN96@cv_write_s
+	jb	$LN98@cv_write_s
 
 ; 889  : 
 ; 890  :         /* scan local symbols again */
@@ -1765,40 +1764,40 @@ $LL13@cv_write_s:
 	movzx	eax, WORD PTR [rdi+88]
 	mov	WORD PTR [rcx+4], ax
 	npad	3
-$LL58@cv_write_s:
+$LL60@cv_write_s:
 	movzx	eax, WORD PTR [r9]
 	test	ax, ax
-	je	SHORT $LN56@cv_write_s
+	je	SHORT $LN58@cv_write_s
 	movzx	eax, ax
 	lea	rcx, QWORD PTR [rax+rax*2]
 	movzx	eax, BYTE PTR SpecialTable[r12+rcx*4+10]
 	mov	r8d, DWORD PTR SpecialTable[r12+rcx*4]
 	inc	ax
 	test	r8b, 2
-	je	SHORT $LN60@cv_write_s
-	add	ax, si
-	jmp	SHORT $LN64@cv_write_s
-$LN60@cv_write_s:
-	test	r8b, 4
 	je	SHORT $LN62@cv_write_s
-	add	ax, 16
-	jmp	SHORT $LN64@cv_write_s
+	add	ax, si
+	jmp	SHORT $LN66@cv_write_s
 $LN62@cv_write_s:
-	test	r8d, 24576				; 00006000H
+	test	r8b, 4
 	je	SHORT $LN64@cv_write_s
-	add	ax, 24
+	add	ax, 16
+	jmp	SHORT $LN66@cv_write_s
 $LN64@cv_write_s:
+	test	r8d, 24576				; 00006000H
+	je	SHORT $LN66@cv_write_s
+	add	ax, 24
+$LN66@cv_write_s:
 	mov	ecx, edx
 	shl	ax, cl
 	or	r10w, ax
-$LN56@cv_write_s:
+$LN58@cv_write_s:
 	add	edx, esi
 	add	r9, 2
 	cmp	edx, 16
-	jl	SHORT $LL58@cv_write_s
+	jl	SHORT $LL60@cv_write_s
 	mov	rax, QWORD PTR [rbx]
 	mov	WORD PTR [rax+6], r10w
-	jmp	$LN51@cv_write_s
+	jmp	$LN53@cv_write_s
 $LN41@cv_write_s:
 
 ; 902  :                 } else if ( Ofssize == USE16 ) {
@@ -1847,7 +1846,7 @@ $LN41@cv_write_s:
 ; 910  :                               GetPos(cv->symbols,cv->ps), proc->sym.name, lcl->sym.name, lcl->sym.mem_type, cv->ps_br16->type ));
 ; 911  :                 } else {
 
-	jmp	$LN51@cv_write_s
+	jmp	$LN53@cv_write_s
 $LN43@cv_write_s:
 
 ; 912  : #if STACKBASESUPP || AMD64_SUPPORT
@@ -1861,17 +1860,17 @@ $LN43@cv_write_s:
 	cmp	r13b, 2
 	je	SHORT $LN47@cv_write_s
 	mov	rax, QWORD PTR [r15+96]
-	movzx	ecx, WORD PTR [rax+86]
+	movzx	ecx, WORD PTR [rax+130]
 	lea	rax, QWORD PTR [rcx+rcx*2]
 	cmp	BYTE PTR SpecialTable[r12+rax*4+10], 5
 	jne	SHORT $LN47@cv_write_s
 
-; 948  :                         DebugMsg(( "cv_write_symbol(%X): proc=%s, S_REGREL32, var=%s [memt=%X typeref=%X]\n",
-; 949  :                                   GetPos(cv->symbols,cv->ps), proc->sym.name, lcl->sym.name, lcl->sym.mem_type, cv->ps_rr32->type ));
-; 950  :                     } else {
-; 951  : #endif
-; 952  :                         len = sizeof( struct cv_symrec_bprel32 );
-; 953  :                         cv->ps = checkflush( cv->symbols, cv->ps, 1 + lcl->sym.name_size + len, cv->param );
+; 952  :                         DebugMsg(( "cv_write_symbol(%X): proc=%s, S_REGREL32, var=%s [memt=%X typeref=%X]\n",
+; 953  :                                   GetPos(cv->symbols,cv->ps), proc->sym.name, lcl->sym.name, lcl->sym.mem_type, cv->ps_rr32->type ));
+; 954  :                     } else {
+; 955  : #endif
+; 956  :                         len = sizeof( struct cv_symrec_bprel32 );
+; 957  :                         cv->ps = checkflush( cv->symbols, cv->ps, 1 + lcl->sym.name_size + len, cv->param );
 
 	mov	rcx, QWORD PTR [rbx+8]
 	mov	esi, 10
@@ -1883,30 +1882,30 @@ $LN43@cv_write_s:
 	call	QWORD PTR [rax+32]
 	mov	QWORD PTR [rbx], rax
 
-; 954  :                         cv->ps_br32->sr.size = sizeof( struct cv_symrec_bprel32 ) - sizeof(uint_16) + 1 + lcl->sym.name_size;
+; 958  :                         cv->ps_br32->sr.size = sizeof( struct cv_symrec_bprel32 ) - sizeof(uint_16) + 1 + lcl->sym.name_size;
 
 	movzx	ecx, BYTE PTR [rdi+72]
 	add	cx, 9
 	mov	WORD PTR [rax], cx
 
-; 955  :                         cv->ps_br32->sr.type = S_BPREL32;
+; 959  :                         cv->ps_br32->sr.type = S_BPREL32;
 
 	mov	ecx, 512				; 00000200H
 	mov	rax, QWORD PTR [rbx]
 	mov	WORD PTR [rax+2], cx
 
-; 956  :                         cv->ps_br32->offset = lcl->sym.offset;
+; 960  :                         cv->ps_br32->offset = lcl->sym.offset;
 
 	mov	rcx, QWORD PTR [rbx]
 	mov	eax, DWORD PTR [rdi+16]
 	mov	DWORD PTR [rcx+4], eax
 
-; 957  :                         cv->ps_br32->type = lcl->sym.ext_idx1;
+; 961  :                         cv->ps_br32->type = lcl->sym.ext_idx1;
 
 	mov	rcx, QWORD PTR [rbx]
 	movzx	eax, WORD PTR [rdi+88]
 	mov	WORD PTR [rcx+8], ax
-	jmp	$LN51@cv_write_s
+	jmp	$LN53@cv_write_s
 $LN47@cv_write_s:
 
 ; 919  : #endif
@@ -1970,83 +1969,105 @@ $LN47@cv_write_s:
 
 ; 936  :                             cnt = cnt * 8;
 
-	mov	ecx, DWORD PTR [r8+64]
+	mov	ecx, DWORD PTR [r8+104]
 
 ; 937  :                             cnt += lcl->sym.offset + proc->e.procinfo->localsize + proc->e.procinfo->xmmsize; //pointing to RSP
-; 938  :                             cnt -= 8;     //pointing abowe RSP to the shadow space off RCX RDX R8 R9
-; 939  :                             cv->ps_rr32->offset = cnt;
 
-	mov	eax, DWORD PTR [r8+72]
+	mov	eax, DWORD PTR [r8+112]
 	lea	edx, DWORD PTR [rax+rcx*8]
-	mov	ecx, DWORD PTR [rdi+16]
 	add	edx, DWORD PTR [r8+36]
-	add	ecx, -8
+	add	edx, DWORD PTR [rdi+16]
+
+; 938  :                             if (proc->sym.langtype == LANG_VECTORCALL)
+
+	cmp	DWORD PTR [r15+76], 8
+	jne	SHORT $LN50@cv_write_s
+
+; 939  :                             cnt += proc->e.procinfo->vsize;     //pointing abowe RSP to the shadow space off RCX RDX R8 R9
+
+	add	edx, DWORD PTR [r8+44]
+$LN50@cv_write_s:
+
+; 940  :                             //else 
+; 941  :                               cnt -= 8;
+
+	sub	edx, 8
+
+; 942  :                               if ((cnt & 7) != 0) cnt = (cnt + 7)&(-8);
+
+	test	dl, 7
+	je	SHORT $LN51@cv_write_s
+	add	edx, 7
+	and	edx, -8
+$LN51@cv_write_s:
+
+; 943  :                             cv->ps_rr32->offset = cnt;
+
 	mov	rax, QWORD PTR [rbx]
-	add	ecx, edx
-	mov	DWORD PTR [rax+4], ecx
+	mov	DWORD PTR [rax+4], edx
 $LN49@cv_write_s:
 
-; 940  :                           }
-; 941  :                         }
-; 942  :                         /* x64 register numbers are different */
-; 943  :                         if ( SpecialTable[ proc->e.procinfo->basereg ].cpu == P_64 )
+; 944  :                           }
+; 945  :                         }
+; 946  :                         /* x64 register numbers are different */
+; 947  :                         if ( SpecialTable[ proc->e.procinfo->basereg ].cpu == P_64 )
 
 	mov	rax, QWORD PTR [r15+96]
-	movzx	ecx, WORD PTR [rax+86]
+	movzx	ecx, WORD PTR [rax+130]
 	lea	rax, QWORD PTR [rcx+rcx*2]
 	lea	rax, QWORD PTR [rax*4]
 	cmp	WORD PTR SpecialTable[rax+r12+8], 112	; 00000070H
-	jne	SHORT $LN50@cv_write_s
+	jne	SHORT $LN52@cv_write_s
 
-; 944  :                             cv->ps_rr32->reg = cv_get_x64_regno( proc->e.procinfo->basereg );
+; 948  :                             cv->ps_rr32->reg = cv_get_x64_regno( proc->e.procinfo->basereg );
 
 	lea	eax, DWORD PTR [rcx-115]
 	cmp	ax, 7
-	ja	SHORT $LN67@cv_write_s
+	ja	SHORT $LN69@cv_write_s
 	movzx	ecx, BYTE PTR reg64[rcx+r12-115]
 	mov	eax, 328				; 00000148H
 	add	cx, ax
-	jmp	SHORT $LN66@cv_write_s
-$LN67@cv_write_s:
+	jmp	SHORT $LN68@cv_write_s
+$LN69@cv_write_s:
 	lea	eax, DWORD PTR [rcx-123]
 	cmp	ax, 7
-	ja	SHORT $LN68@cv_write_s
+	ja	SHORT $LN70@cv_write_s
 	add	cx, bp
-	jmp	SHORT $LN66@cv_write_s
-$LN68@cv_write_s:
+	jmp	SHORT $LN68@cv_write_s
+$LN70@cv_write_s:
 	mov	eax, 253				; 000000fdH
 	add	cx, ax
-	jmp	SHORT $LN66@cv_write_s
-$LN50@cv_write_s:
+	jmp	SHORT $LN68@cv_write_s
+$LN52@cv_write_s:
 
-; 945  :                         else
-; 946  : #endif
-; 947  :                             cv->ps_rr32->reg = GetRegNo( proc->e.procinfo->basereg ) + CV_REG_START32;
+; 949  :                         else
+; 950  : #endif
+; 951  :                             cv->ps_rr32->reg = GetRegNo( proc->e.procinfo->basereg ) + CV_REG_START32;
 
 	movzx	ecx, BYTE PTR SpecialTable[rax+r12+10]
 	add	cx, 17
-$LN66@cv_write_s:
+$LN68@cv_write_s:
 	mov	rax, QWORD PTR [rbx]
 	mov	WORD PTR [rax+8], cx
-$LN51@cv_write_s:
+$LN53@cv_write_s:
 
-; 958  :                         DebugMsg(( "cv_write_symbol(%X): proc=%s, S_BPREL32, var=%s [memt=%X typeref=%X]\n",
-; 959  :                                   GetPos(cv->symbols,cv->ps), proc->sym.name, lcl->sym.name, lcl->sym.mem_type, cv->ps_br32->type ));
-; 960  : #if STACKBASESUPP || AMD64_SUPPORT
-; 961  :                     }
-; 962  : #endif
-; 963  :                 }
-; 964  :                 lcl->sym.ext_idx1 = 0; /* to be safe, clear the temp. used field */
+; 962  :                         DebugMsg(( "cv_write_symbol(%X): proc=%s, S_BPREL32, var=%s [memt=%X typeref=%X]\n",
+; 963  :                                   GetPos(cv->symbols,cv->ps), proc->sym.name, lcl->sym.name, lcl->sym.mem_type, cv->ps_br32->type ));
+; 964  : #if STACKBASESUPP || AMD64_SUPPORT
+; 965  :                     }
+; 966  : #endif
+; 967  :                 }
+; 968  :                 lcl->sym.ext_idx1 = 0; /* to be safe, clear the temp. used field */
 
 	mov	WORD PTR [rdi+88], r14w
 
-; 965  :                 cv->ps += len;
+; 969  :                 cv->ps += len;
 
 	movsxd	rax, esi
 	add	QWORD PTR [rbx], rax
 	mov	rcx, QWORD PTR [rbx]
 
-; 966  :                 SetPrefixName( cv->ps, lcl->sym.name, lcl->sym.name_size );
+; 970  :                 SetPrefixName( cv->ps, lcl->sym.name, lcl->sym.name_size );
 
 	movzx	eax, BYTE PTR [rdi+72]
 	mov	BYTE PTR [rcx], al
@@ -2072,10 +2093,10 @@ $LN8@cv_write_s:
 	cmp	rbp, 2
 	jl	$LL10@cv_write_s
 
-; 967  :             }
-; 968  :         }
-; 969  : 
-; 970  :         cv->ps = checkflush( cv->symbols, cv->ps, sizeof( struct cv_symrec_endblk ), cv->param );
+; 971  :             }
+; 972  :         }
+; 973  : 
+; 974  :         cv->ps = checkflush( cv->symbols, cv->ps, sizeof( struct cv_symrec_endblk ), cv->param );
 
 	mov	rcx, QWORD PTR [rbx+8]
 	mov	r8d, 4
@@ -2085,30 +2106,30 @@ $LN8@cv_write_s:
 	call	QWORD PTR [rax+32]
 	mov	QWORD PTR [rbx], rax
 
-; 971  :         cv->ps_eb->sr.size = sizeof( struct cv_symrec_endblk ) - sizeof(uint_16);
+; 975  :         cv->ps_eb->sr.size = sizeof( struct cv_symrec_endblk ) - sizeof(uint_16);
 
 	mov	ecx, 2
 	mov	WORD PTR [rax], cx
 
-; 972  :         cv->ps_eb->sr.type = S_ENDBLK;
+; 976  :         cv->ps_eb->sr.type = S_ENDBLK;
 
 	mov	ecx, 6
 	mov	rax, QWORD PTR [rbx]
 	mov	WORD PTR [rax+2], cx
 
-; 973  :         cv->ps += sizeof( struct cv_symrec_endblk );
+; 977  :         cv->ps += sizeof( struct cv_symrec_endblk );
 
 	add	QWORD PTR [rbx], 4
-$LN96@cv_write_s:
+$LN98@cv_write_s:
 	mov	r14, QWORD PTR [rsp+120]
 	mov	rdi, QWORD PTR [rsp+112]
 	mov	rbp, QWORD PTR [rsp+104]
 	mov	r15, QWORD PTR [rsp+48]
 $LN40@cv_write_s:
 
-; 974  :     }
-; 975  :     return;
-; 976  : }
+; 978  :     }
+; 979  :     return;
+; 980  : }
 
 	add	rsp, 56					; 00000038H
 	pop	r13
@@ -2490,7 +2511,7 @@ $LN7@cv_enum_fi:
 ; 424  :             char tmpname[8];
 ; 425  :             curr->sym.name_size = sprintf( tmpname, "@@%u", ++i );
 
-	lea	rdx, OFFSET FLAT:$SG11083
+	lea	rdx, OFFSET FLAT:$SG11106
 	inc	eax
 	lea	rcx, QWORD PTR tmpname$1[rsp]
 	mov	r8d, eax
@@ -3256,7 +3277,7 @@ $LN14@cv_write_t:
 	mov	rdx, QWORD PTR [rsi+8]
 	jmp	SHORT $LN19@cv_write_t
 $LN18@cv_write_t:
-	lea	rdx, OFFSET FLAT:$SG11148
+	lea	rdx, OFFSET FLAT:$SG11171
 $LN19@cv_write_t:
 	mov	r8, rax
 	mov	rcx, rbp

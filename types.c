@@ -500,6 +500,11 @@ ret_code EndstructDirective( int i, struct asm_tok tokenarray[] )
         DebugMsg1(("EndstructDirective: new size of restored structure=%u\n", CurrStruct->sym.total_size));
     }
     //dir->sym.max_mbr_size = 0;
+    if (dir->sym.state == SYM_TYPE)
+    {  
+           dir->e.structinfo->isHomogenous = 0;
+           SymSimd(dir);
+    }
     if ( tokenarray[i].token != T_FINAL ) {
         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
     }

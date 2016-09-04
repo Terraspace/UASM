@@ -12,12 +12,12 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11214 DB	'@CatStr', 00H
-$SG11215 DB	'@InStr', 00H
+$SG11237 DB	'@CatStr', 00H
+$SG11238 DB	'@InStr', 00H
 	ORG $+1
-$SG11216 DB	'@SizeStr', 00H
+$SG11239 DB	'@SizeStr', 00H
 	ORG $+7
-$SG11217 DB	'@SubStr', 00H
+$SG11240 DB	'@SubStr', 00H
 _DATA	ENDS
 PUBLIC	SetTextMacro
 PUBLIC	AddPredefinedText
@@ -2363,7 +2363,7 @@ $LN24:
 ; 794  : 
 ; 795  :     macro = CreateMacro( "@CatStr" );
 
-	lea	rcx, OFFSET FLAT:$SG11214
+	lea	rcx, OFFSET FLAT:$SG11237
 	call	CreateMacro
 	mov	rbx, rax
 
@@ -2408,7 +2408,7 @@ $LN24:
 ; 808  : 
 ; 809  :     macro = CreateMacro( "@InStr" );
 
-	lea	rcx, OFFSET FLAT:$SG11215
+	lea	rcx, OFFSET FLAT:$SG11238
 	call	CreateMacro
 	mov	rbx, rax
 
@@ -2467,7 +2467,7 @@ $LN24:
 ; 824  : 
 ; 825  :     macro = CreateMacro( "@SizeStr" );
 
-	lea	rcx, OFFSET FLAT:$SG11216
+	lea	rcx, OFFSET FLAT:$SG11239
 	mov	rax, QWORD PTR [rbx+96]
 	mov	rdx, QWORD PTR [rax+8]
 	or	BYTE PTR [rdx+40], sil
@@ -2512,7 +2512,7 @@ $LN24:
 ; 839  : 
 ; 840  :     macro = CreateMacro( "@SubStr" );
 
-	lea	rcx, OFFSET FLAT:$SG11217
+	lea	rcx, OFFSET FLAT:$SG11240
 	call	CreateMacro
 	mov	rbx, rax
 

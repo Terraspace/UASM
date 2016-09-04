@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 _DATA	SEGMENT
@@ -12,27 +12,27 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG8049	DB	01H DUP (?)
+$SG8063	DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG8047	DB	'HJWASM', 00H
+$SG8061	DB	'HJWASM', 00H
 	ORG $+1
-$SG8051	DB	'main: _findfirst(%s) failed', 0aH, 00H
+$SG8065	DB	'main: _findfirst(%s) failed', 0aH, 00H
 	ORG $+3
-$SG8052	DB	'main: fname=%s', 0aH, 00H
-$SG8055	DB	'%s', 00H
+$SG8066	DB	'main: fname=%s', 0aH, 00H
+$SG8069	DB	'%s', 00H
 	ORG $+5
-$SG8057	DB	'main: exit, return code=%u', 0aH, 00H
+$SG8071	DB	'main: exit, return code=%u', 0aH, 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	_vfprintf_l
 PUBLIC	printf
 PUBLIC	main
-EXTRN	__imp_signal:PROC
-EXTRN	__imp___acrt_iob_func:PROC
-EXTRN	__imp___stdio_common_vfprintf:PROC
-EXTRN	__imp_exit:PROC
-EXTRN	__imp_getenv:PROC
+EXTRN	signal:PROC
+EXTRN	__acrt_iob_func:PROC
+EXTRN	__stdio_common_vfprintf:PROC
+EXTRN	exit:PROC
+EXTRN	getenv:PROC
 EXTRN	memcpy:PROC
 EXTRN	strcpy:PROC
 EXTRN	DoDebugMsg:PROC
@@ -46,12 +46,9 @@ EXTRN	MsgGetEx:PROC
 EXTRN	ParseCmdline:PROC
 EXTRN	CmdlineFini:PROC
 EXTRN	GetFNamePart:PROC
-EXTRN	__imp__findclose:PROC
-EXTRN	__imp__findfirst64i32:PROC
-EXTRN	__imp__findnext64i32:PROC
-EXTRN	_RTC_CheckStackVars:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
+EXTRN	_findclose:PROC
+EXTRN	_findfirst64i32:PROC
+EXTRN	_findnext64i32:PROC
 EXTRN	__GSHandlerCheck:PROC
 EXTRN	__security_check_cookie:PROC
 EXTRN	Options:BYTE
@@ -61,134 +58,57 @@ COMM	?_OptionsStorage@?1??__local_stdio_printf_options@@9@9:QWORD							; `__loc
 _DATA	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$__local_stdio_printf_options DD imagerel $LN3
-	DD	imagerel $LN3+11
-	DD	imagerel $unwind$__local_stdio_printf_options
-pdata	ENDS
-;	COMDAT pdata
-pdata	SEGMENT
 $pdata$_vfprintf_l DD imagerel $LN3
-	DD	imagerel $LN3+90
+	DD	imagerel $LN3+67
 	DD	imagerel $unwind$_vfprintf_l
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$printf DD imagerel $LN3
-	DD	imagerel $LN3+129
+	DD	imagerel $LN3+87
 	DD	imagerel $unwind$printf
 pdata	ENDS
 pdata	SEGMENT
 $pdata$genfailure DD imagerel genfailure
-	DD	imagerel genfailure+67
+	DD	imagerel genfailure+45
 	DD	imagerel $unwind$genfailure
 $pdata$main DD	imagerel $LN13
-	DD	imagerel $LN13+673
+	DD	imagerel $LN13+616
 	DD	imagerel $unwind$main
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
-CONST	SEGMENT
-main$rtcName$0 DB 06eH
-	DB	075H
-	DB	06dH
-	DB	041H
-	DB	072H
-	DB	067H
-	DB	073H
-	DB	00H
-main$rtcName$1 DB 066H
-	DB	069H
-	DB	06eH
-	DB	066H
-	DB	06fH
-	DB	00H
-	ORG $+2
-main$rtcName$2 DB 066H
-	DB	06eH
-	DB	061H
-	DB	06dH
-	DB	065H
-	DB	00H
-	ORG $+10
-main$rtcVarDesc DD 01d0H
-	DD	0104H
-	DQ	FLAT:main$rtcName$2
-	DD	080H
-	DD	0128H
-	DQ	FLAT:main$rtcName$1
-	DD	034H
-	DD	04H
-	DQ	FLAT:main$rtcName$0
-	ORG $+144
-main$rtcFrameData DD 03H
-	DD	00H
-	DQ	FLAT:main$rtcVarDesc
-CONST	ENDS
 xdata	SEGMENT
-$unwind$genfailure DD 021c01H
-	DD	070053209H
-$unwind$main DD	033919H
-	DD	0600111H
-	DD	0700aH
+$unwind$genfailure DD 010801H
+	DD	04208H
+$unwind$main DD	022219H
+	DD	0550110H
 	DD	imagerel __GSHandlerCheck
-	DD	02f0H
+	DD	0290H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$printf DD 022d01H
-	DD	070159219H
-xdata	ENDS
-;	COMDAT CONST
-CONST	SEGMENT
-printf$rtcName$0 DB 05fH
-	DB	041H
-	DB	072H
-	DB	067H
-	DB	04cH
-	DB	069H
-	DB	073H
-	DB	074H
-	DB	00H
-	ORG $+7
-printf$rtcVarDesc DD 038H
-	DD	08H
-	DQ	FLAT:printf$rtcName$0
-	ORG $+48
-printf$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:printf$rtcVarDesc
-CONST	ENDS
-;	COMDAT xdata
-xdata	SEGMENT
-$unwind$_vfprintf_l DD 022d01H
-	DD	070155219H
+$unwind$printf DD 011801H
+	DD	06218H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$__local_stdio_printf_options DD 010201H
-	DD	07002H
+$unwind$_vfprintf_l DD 011801H
+	DD	06218H
 xdata	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\main.c
 _TEXT	SEGMENT
-pEnv$ = 32
-numArgs$ = 52
-numFiles$ = 68
-rc$ = 72
-fh$ = 80
-pfn$ = 88
-dirsize$ = 96
-finfo$ = 128
-fname$ = 464
-__$ArrayPad$ = 752
-argc$ = 784
-argv$ = 792
+numFiles$ = 32
+rc$ = 36
+dirsize$ = 40
+numArgs$ = 44
+pEnv$ = 48
+fh$ = 56
+pfn$ = 64
+finfo$ = 80
+fname$ = 384
+__$ArrayPad$ = 656
+argc$ = 688
+argv$ = 696
 main	PROC
 
 ; 62   : {
@@ -196,13 +116,7 @@ main	PROC
 $LN13:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 768				; 00000300H
-	mov	rdi, rsp
-	mov	ecx, 192				; 000000c0H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+784]
+	sub	rsp, 680				; 000002a8H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -246,8 +160,8 @@ $LN13:
 ; 90   : 
 ; 91   : 	pEnv = getenv("HJWASM");
 
-	lea	rcx, OFFSET FLAT:$SG8047
-	call	QWORD PTR __imp_getenv
+	lea	rcx, OFFSET FLAT:$SG8061
+	call	getenv
 	mov	QWORD PTR pEnv$[rsp], rax
 
 ; 92   : 	if (pEnv == NULL)
@@ -257,7 +171,7 @@ $LN13:
 
 ; 93   : 		pEnv = "";
 
-	lea	rax, OFFSET FLAT:$SG8049
+	lea	rax, OFFSET FLAT:$SG8063
 	mov	QWORD PTR pEnv$[rsp], rax
 $LN7@main:
 
@@ -279,7 +193,7 @@ $LN7@main:
 
 	lea	rdx, OFFSET FLAT:genfailure
 	mov	ecx, 21
-	call	QWORD PTR __imp_signal
+	call	signal
 $LN2@main:
 
 ; 102  : #else
@@ -312,7 +226,7 @@ $LN2@main:
 	lea	rcx, OFFSET FLAT:Options+32
 	lea	rdx, QWORD PTR finfo$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax]
-	call	QWORD PTR __imp__findfirst64i32
+	call	_findfirst64i32
 	mov	QWORD PTR fh$[rsp], rax
 	cmp	QWORD PTR fh$[rsp], -1
 	jne	SHORT $LN8@main
@@ -323,7 +237,7 @@ $LN2@main:
 	imul	rax, rax, 0
 	lea	rcx, OFFSET FLAT:Options+32
 	mov	rdx, QWORD PTR [rcx+rax]
-	lea	rcx, OFFSET FLAT:$SG8051
+	lea	rcx, OFFSET FLAT:$SG8065
 	call	DoDebugMsg
 
 ; 112  : 			EmitErr(CANNOT_OPEN_FILE, Options.names[ASM], ErrnoStr());
@@ -393,7 +307,7 @@ $LN6@main:
 ; 126  : 				DebugMsg(("main: fname=%s\n", fname));
 
 	lea	rdx, QWORD PTR fname$[rsp]
-	lea	rcx, OFFSET FLAT:$SG8052
+	lea	rcx, OFFSET FLAT:$SG8066
 	call	DoDebugMsg
 
 ; 127  : 				rc = AssembleModule(fname);  /* assemble 1 module */
@@ -406,14 +320,14 @@ $LN6@main:
 
 	lea	rdx, QWORD PTR finfo$[rsp]
 	mov	rcx, QWORD PTR fh$[rsp]
-	call	QWORD PTR __imp__findnext64i32
+	call	_findnext64i32
 	cmp	eax, -1
 	jne	SHORT $LN6@main
 
 ; 129  : 		    _findclose(fh);
 
 	mov	rcx, QWORD PTR fh$[rsp]
-	call	QWORD PTR __imp__findclose
+	call	_findclose
 
 ; 130  : #else
 ; 131  : 		rc = AssembleModule( Options.names[ASM] );
@@ -441,7 +355,7 @@ $LN3@main:
 	xor	ecx, ecx
 	call	MsgGetEx
 	mov	rdx, rax
-	lea	rcx, OFFSET FLAT:$SG8055
+	lea	rcx, OFFSET FLAT:$SG8069
 	call	printf
 
 ; 138  : 	}
@@ -471,7 +385,7 @@ $LN10@main:
 	mov	eax, 1
 	sub	eax, DWORD PTR rc$[rsp]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG8057
+	lea	rcx, OFFSET FLAT:$SG8071
 	call	DoDebugMsg
 
 ; 147  : 	return(1 - rc); /* zero if no errors */
@@ -481,20 +395,14 @@ $LN10@main:
 
 ; 148  : }
 
-	mov	edi, eax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:main$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	eax, edi
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 768				; 00000300H
-	pop	rdi
+	add	rsp, 680				; 000002a8H
 	ret	0
 main	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\main.c
 _TEXT	SEGMENT
 signo$ = 48
@@ -503,13 +411,7 @@ genfailure PROC
 ; 50   : {
 
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 51   : #if CATCHBREAK
 ; 52   :     if (signo != SIGBREAK)
@@ -533,23 +435,22 @@ $LN2@genfailure:
 ; 58   :     exit( EXIT_FAILURE );
 
 	mov	ecx, 1
-	call	QWORD PTR __imp_exit
+	call	exit
 $LN3@genfailure:
 
 ; 59   : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 genfailure ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT printf
 _TEXT	SEGMENT
 _Result$ = 32
-_ArgList$ = 56
-_Format$ = 96
+_ArgList$ = 40
+_Format$ = 64
 printf	PROC						; COMDAT
 
 ; 950  : {
@@ -559,13 +460,7 @@ $LN3:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+32], r9
-	push	rdi
-	sub	rsp, 80					; 00000050H
-	mov	rdi, rsp
-	mov	ecx, 20
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+96]
+	sub	rsp, 56					; 00000038H
 
 ; 951  :     int _Result;
 ; 952  :     va_list _ArgList;
@@ -577,7 +472,7 @@ $LN3:
 ; 954  :     _Result = _vfprintf_l(stdout, _Format, NULL, _ArgList);
 
 	mov	ecx, 1
-	call	QWORD PTR __imp___acrt_iob_func
+	call	__acrt_iob_func
 	mov	r9, QWORD PTR _ArgList$[rsp]
 	xor	r8d, r8d
 	mov	rdx, QWORD PTR _Format$[rsp]
@@ -595,17 +490,11 @@ $LN3:
 
 ; 957  : }
 
-	mov	edi, eax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:printf$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	eax, edi
-	add	rsp, 80					; 00000050H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 printf	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT _vfprintf_l
 _TEXT	SEGMENT
@@ -622,13 +511,7 @@ $LN3:
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 639  :     return __stdio_common_vfprintf(_CRT_INTERNAL_LOCAL_PRINTF_OPTIONS, _Stream, _Format, _Locale, _ArgList);
 
@@ -639,25 +522,19 @@ $LN3:
 	mov	r8, QWORD PTR _Format$[rsp]
 	mov	rdx, QWORD PTR _Stream$[rsp]
 	mov	rcx, QWORD PTR [rax]
-	call	QWORD PTR __imp___stdio_common_vfprintf
+	call	__stdio_common_vfprintf
 
 ; 640  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 _vfprintf_l ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\corecrt_stdio_config.h
 ;	COMDAT __local_stdio_printf_options
 _TEXT	SEGMENT
 __local_stdio_printf_options PROC			; COMDAT
-
-; 73   : {
-
-$LN3:
-	push	rdi
 
 ; 74   :     static unsigned __int64 _OptionsStorage;
 ; 75   :     return &_OptionsStorage;
@@ -666,7 +543,6 @@ $LN3:
 
 ; 76   : }
 
-	pop	rdi
 	ret	0
 __local_stdio_printf_options ENDP
 _TEXT	ENDS

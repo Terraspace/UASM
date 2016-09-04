@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 _DATA	SEGMENT
@@ -12,153 +12,153 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11312 DB	'.shstrtab', 00H
+$SG11350 DB	'.shstrtab', 00H
 	ORG $+6
-$SG11313 DB	'.symtab', 00H
-$SG11314 DB	'.strtab', 00H
-$SG11337 DB	'_TEXT', 00H
+$SG11351 DB	'.symtab', 00H
+$SG11352 DB	'.strtab', 00H
+$SG11375 DB	'_TEXT', 00H
 	ORG $+2
-$SG11338 DB	'.text', 00H
+$SG11376 DB	'.text', 00H
 	ORG $+2
-$SG11339 DB	'_DATA', 00H
+$SG11377 DB	'_DATA', 00H
 	ORG $+2
-$SG11340 DB	'.data', 00H
+$SG11378 DB	'.data', 00H
 	ORG $+2
-$SG11341 DB	'CONST', 00H
+$SG11379 DB	'CONST', 00H
 	ORG $+2
-$SG11342 DB	'.rodata', 00H
-$SG11343 DB	'_BSS', 00H
+$SG11380 DB	'.rodata', 00H
+$SG11381 DB	'_BSS', 00H
 	ORG $+3
-$SG11344 DB	'.bss', 00H
+$SG11382 DB	'.bss', 00H
 	ORG $+3
-$SG11407 DB	'set_symtab32, LOCAL: symbol %s, value=%X', 0aH, 00H
+$SG11445 DB	'set_symtab32, LOCAL: symbol %s, value=%X', 0aH, 00H
 	ORG $+6
-$SG11411 DB	'set_symtab32, EXTERNAL: symbol %s, info=%X, shndx=%X, va'
+$SG11449 DB	'set_symtab32, EXTERNAL: symbol %s, info=%X, shndx=%X, va'
 	DB	'lue=%X', 0aH, 00H
-$SG11418 DB	'set_symtab32, PUBLIC+LOCAL: symbol %s, value=%X', 0aH, 00H
+$SG11456 DB	'set_symtab32, PUBLIC+LOCAL: symbol %s, value=%X', 0aH, 00H
 	ORG $+7
-$SG11457 DB	'set_symtab64, LOCAL: symbol %s, value=%I64X', 0aH, 00H
+$SG11495 DB	'set_symtab64, LOCAL: symbol %s, value=%I64X', 0aH, 00H
 	ORG $+3
-$SG11522 DB	'set_symtab_values: index after EXTERNALs: %u', 0aH, 00H
+$SG11560 DB	'set_symtab_values: index after EXTERNALs: %u', 0aH, 00H
 	ORG $+2
-$SG11526 DB	'set_symtab_values: creating string table, size=%X', 0aH, 00H
+$SG11564 DB	'set_symtab_values: creating string table, size=%X', 0aH, 00H
 	ORG $+5
-$SG11461 DB	'set_symtab64, EXTERNAL: symbol %s, info=%X, shndx=%X, va'
+$SG11499 DB	'set_symtab64, EXTERNAL: symbol %s, info=%X, shndx=%X, va'
 	DB	'lue=%I64X', 0aH, 00H
 	ORG $+5
-$SG11520 DB	'set_symtab_values: index after sections: %u', 0aH, 00H
+$SG11558 DB	'set_symtab_values: index after sections: %u', 0aH, 00H
 	ORG $+3
-$SG11528 DB	'set_symtab_values: exit, symindex=%u', 0aH, 00H
+$SG11566 DB	'set_symtab_values: exit, symindex=%u', 0aH, 00H
 	ORG $+2
-$SG11468 DB	'set_symtab64, PUBLIC+LOCAL: symbol %s, info=%X, shndx=%X'
+$SG11506 DB	'set_symtab64, PUBLIC+LOCAL: symbol %s, info=%X, shndx=%X'
 	DB	', value=%I64X', 0aH, 00H
 	ORG $+1
-$SG11523 DB	'set_symtab_values: index after PUBLICs: %u', 0aH, 00H
-$SG11558 DB	'.rela', 00H
+$SG11561 DB	'set_symtab_values: index after PUBLICs: %u', 0aH, 00H
+$SG11596 DB	'.rela', 00H
 	ORG $+2
-$SG11559 DB	'.rel', 00H
+$SG11597 DB	'.rel', 00H
 	ORG $+3
-$SG11560 DB	'elf.c', 00H
+$SG11598 DB	'elf.c', 00H
 	ORG $+6
-$SG11561 DB	'set_shstrtab_values: size=%X', 0aH, 00H
+$SG11599 DB	'set_shstrtab_values: size=%X', 0aH, 00H
 	ORG $+2
-$SG11608 DB	'elf_write_section_table32( fileofs=%X ): enter', 0aH, 00H
-$SG11618 DB	'CONST', 00H
+$SG11646 DB	'elf_write_section_table32( fileofs=%X ): enter', 0aH, 00H
+$SG11656 DB	'CONST', 00H
 	ORG $+2
-$SG11621 DB	'elf_write_section_table32(%s): ofs=%X size=%X numrelocs='
+$SG11659 DB	'elf_write_section_table32(%s): ofs=%X size=%X numrelocs='
 	DB	'%u', 0aH, 00H
 	ORG $+4
-$SG11625 DB	'elf_write_section_table32(%s): ofs=%X size=%X', 0aH, 00H
+$SG11663 DB	'elf_write_section_table32(%s): ofs=%X size=%X', 0aH, 00H
 	ORG $+1
-$SG11628 DB	'elf_write_section_table32(%s): relocs, ofs=%X size=%X', 0aH
+$SG11666 DB	'elf_write_section_table32(%s): relocs, ofs=%X size=%X', 0aH
 	DB	00H
 	ORG $+1
-$SG11629 DB	'elf_write_section_table32: exit, final fileofs=%X', 0aH, 00H
+$SG11667 DB	'elf_write_section_table32: exit, final fileofs=%X', 0aH, 00H
 	ORG $+5
-$SG11662 DB	'elf_write_section_table64( fileofs=%X ): enter', 0aH, 00H
-$SG11672 DB	'CONST', 00H
+$SG11700 DB	'elf_write_section_table64( fileofs=%X ): enter', 0aH, 00H
+$SG11710 DB	'CONST', 00H
 	ORG $+2
-$SG11675 DB	'elf_write_section_table64(%s): ofs=%I64X size=%I64X numr'
+$SG11713 DB	'elf_write_section_table64(%s): ofs=%I64X size=%I64X numr'
 	DB	'elocs=%u', 0aH, 00H
 	ORG $+6
-$SG11679 DB	'elf_write_section_table64(%s): ofs=%I64X size=%I64X', 0aH
+$SG11717 DB	'elf_write_section_table64(%s): ofs=%I64X size=%I64X', 0aH
 	DB	00H
 	ORG $+3
-$SG11682 DB	'elf_write_section_table64(%s): relocs, ofs=%I64X size=%I'
+$SG11720 DB	'elf_write_section_table64(%s): relocs, ofs=%I64X size=%I'
 	DB	'64X', 0aH, 00H
 	ORG $+3
-$SG11683 DB	'elf_write_section_table64: exit, final fileofs=%X', 0aH, 00H
+$SG11721 DB	'elf_write_section_table64: exit, final fileofs=%X', 0aH, 00H
 	ORG $+5
-$SG11699 DB	'write_relocs32: enter', 0aH, 00H
+$SG11737 DB	'write_relocs32: enter', 0aH, 00H
 	ORG $+1
-$SG11708 DB	'write_relocs32(): unhandled reloc loc=%X type=%u idx=%u '
+$SG11746 DB	'write_relocs32(): unhandled reloc loc=%X type=%u idx=%u '
 	DB	'sym=%s', 0aH, 00H
-$SG11712 DB	'write_relocs32: exit', 0aH, 00H
+$SG11750 DB	'write_relocs32: exit', 0aH, 00H
 	ORG $+2
-$SG11727 DB	'write_relocs64: enter', 0aH, 00H
+$SG11765 DB	'write_relocs64: enter', 0aH, 00H
 	ORG $+1
-$SG11728 DB	'write_relocs64(): reloc loc=%X type=%u idx=%u sym=%s ofs'
+$SG11766 DB	'write_relocs64(): reloc loc=%X type=%u idx=%u sym=%s ofs'
 	DB	'=%X addbyt=%u', 0aH, 00H
 	ORG $+1
-$SG11742 DB	'write_relocs64: exit', 0aH, 00H
+$SG11780 DB	'write_relocs64: exit', 0aH, 00H
 	ORG $+2
-$SG11738 DB	'write_relocs64(): unhandled reloc loc=%X type=%u idx=%u '
+$SG11776 DB	'write_relocs64(): unhandled reloc loc=%X type=%u idx=%u '
 	DB	'sym=%s', 0aH, 00H
-$SG11763 DB	'elf_write_data: enter', 0aH, 00H
+$SG11801 DB	'elf_write_data: enter', 0aH, 00H
 	ORG $+1
-$SG11764 DB	'elf_write_data(%s): program data at ofs=%X, size=%X', 0aH
+$SG11802 DB	'elf_write_data(%s): program data at ofs=%X, size=%X', 0aH
 	DB	00H
 	ORG $+3
-$SG11766 DB	'elf.c', 00H
+$SG11804 DB	'elf.c', 00H
 	ORG $+2
-$SG11769 DB	'elf_write_data(%s): internal at ofs=%X, size=%X', 0aH, 00H
+$SG11807 DB	'elf_write_data(%s): internal at ofs=%X, size=%X', 0aH, 00H
 	ORG $+7
-$SG11772 DB	'elf_write_data(%s): relocs at ofs=%X, size=%X', 0aH, 00H
+$SG11810 DB	'elf_write_data(%s): relocs at ofs=%X, size=%X', 0aH, 00H
 	ORG $+1
-$SG11776 DB	'elf_write_data: exit', 0aH, 00H
+$SG11814 DB	'elf_write_data: exit', 0aH, 00H
 	ORG $+2
-$SG11790 DB	'elf_write_module: enter', 0aH, 00H
+$SG11828 DB	'elf_write_module: enter', 0aH, 00H
 	ORG $+3
-$SG11792 DB	07fH, 'ELF', 00H
+$SG11830 DB	07fH, 'ELF', 00H
 	ORG $+3
-$SG11795 DB	07fH, 'ELF', 00H
+$SG11833 DB	07fH, 'ELF', 00H
 	ORG $+7
-$SG11797 DB	'elf_write_module: exit', 0aH, 00H
+$SG11835 DB	'elf_write_module: exit', 0aH, 00H
 _DATA	ENDS
 CONST	SEGMENT
-internal_segparms DQ FLAT:$SG11312
+internal_segparms DQ FLAT:$SG11350
 	DD	03H
 	ORG $+4
-	DQ	FLAT:$SG11313
+	DQ	FLAT:$SG11351
 	DD	02H
 	ORG $+4
-	DQ	FLAT:$SG11314
+	DQ	FLAT:$SG11352
 	DD	03H
 	ORG $+4
 cst	DB	05H
 	DB	01H
 	ORG $+6
-	DQ	FLAT:$SG11337
-	DQ	FLAT:$SG11338
+	DQ	FLAT:$SG11375
+	DQ	FLAT:$SG11376
 	DB	05H
 	DB	01H
 	ORG $+6
-	DQ	FLAT:$SG11339
-	DQ	FLAT:$SG11340
+	DQ	FLAT:$SG11377
+	DQ	FLAT:$SG11378
 	DB	05H
 	DB	01H
 	ORG $+6
-	DQ	FLAT:$SG11341
-	DQ	FLAT:$SG11342
+	DQ	FLAT:$SG11379
+	DQ	FLAT:$SG11380
 	DB	04H
 	DB	00H
 	ORG $+6
-	DQ	FLAT:$SG11343
-	DQ	FLAT:$SG11344
+	DQ	FLAT:$SG11381
+	DQ	FLAT:$SG11382
 CONST	ENDS
 PUBLIC	elf_init
-EXTRN	__imp_fseek:PROC
-EXTRN	__imp_fwrite:PROC
+EXTRN	fseek:PROC
+EXTRN	fwrite:PROC
 EXTRN	memcmp:PROC
 EXTRN	memcpy:PROC
 EXTRN	memset:PROC
@@ -174,9 +174,6 @@ EXTRN	LclAlloc:PROC
 EXTRN	Mangle:PROC
 EXTRN	GetSegIdx:PROC
 EXTRN	InternalError:PROC
-EXTRN	_RTC_CheckStackVars:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
 EXTRN	__GSHandlerCheck:PROC
 EXTRN	__security_check_cookie:PROC
 EXTRN	ModuleInfo:BYTE
@@ -184,267 +181,108 @@ EXTRN	SymTables:BYTE
 EXTRN	__ImageBase:BYTE
 EXTRN	__security_cookie:QWORD
 pdata	SEGMENT
-$pdata$elf_init DD imagerel $LN3
-	DD	imagerel $LN3+39
-	DD	imagerel $unwind$elf_init
 $pdata$ElfConvertSectionName DD imagerel ElfConvertSectionName
-	DD	imagerel ElfConvertSectionName+370
+	DD	imagerel ElfConvertSectionName+348
 	DD	imagerel $unwind$ElfConvertSectionName
 $pdata$get_num_reloc_sections DD imagerel get_num_reloc_sections
-	DD	imagerel get_num_reloc_sections+111
+	DD	imagerel get_num_reloc_sections+94
 	DD	imagerel $unwind$get_num_reloc_sections
 $pdata$set_symtab32 DD imagerel set_symtab32
-	DD	imagerel set_symtab32+1462
+	DD	imagerel set_symtab32+1409
 	DD	imagerel $unwind$set_symtab32
 $pdata$set_symtab64 DD imagerel set_symtab64
-	DD	imagerel set_symtab64+1502
+	DD	imagerel set_symtab64+1449
 	DD	imagerel $unwind$set_symtab64
 $pdata$set_symtab_values DD imagerel set_symtab_values
-	DD	imagerel set_symtab_values+1500
+	DD	imagerel set_symtab_values+1373
 	DD	imagerel $unwind$set_symtab_values
 $pdata$set_shstrtab_values DD imagerel set_shstrtab_values
-	DD	imagerel set_shstrtab_values+1135
+	DD	imagerel set_shstrtab_values+1041
 	DD	imagerel $unwind$set_shstrtab_values
 $pdata$get_relocation_count DD imagerel get_relocation_count
-	DD	imagerel get_relocation_count+98
+	DD	imagerel get_relocation_count+76
 	DD	imagerel $unwind$get_relocation_count
 $pdata$Get_Alignment DD imagerel Get_Alignment
-	DD	imagerel Get_Alignment+89
+	DD	imagerel Get_Alignment+67
 	DD	imagerel $unwind$Get_Alignment
 $pdata$elf_write_section_table32 DD imagerel elf_write_section_table32
-	DD	imagerel elf_write_section_table32+1752
+	DD	imagerel elf_write_section_table32+1689
 	DD	imagerel $unwind$elf_write_section_table32
 $pdata$elf_write_section_table64 DD imagerel elf_write_section_table64
-	DD	imagerel elf_write_section_table64+1844
+	DD	imagerel elf_write_section_table64+1736
 	DD	imagerel $unwind$elf_write_section_table64
 $pdata$write_relocs32 DD imagerel write_relocs32
-	DD	imagerel write_relocs32+604
+	DD	imagerel write_relocs32+564
 	DD	imagerel $unwind$write_relocs32
 $pdata$write_relocs64 DD imagerel write_relocs64
-	DD	imagerel write_relocs64+748
+	DD	imagerel write_relocs64+688
 	DD	imagerel $unwind$write_relocs64
 $pdata$elf_write_data DD imagerel elf_write_data
-	DD	imagerel elf_write_data+1005
+	DD	imagerel elf_write_data+975
 	DD	imagerel $unwind$elf_write_data
 $pdata$elf_write_module DD imagerel elf_write_module
-	DD	imagerel elf_write_module+1149
+	DD	imagerel elf_write_module+1084
 	DD	imagerel $unwind$elf_write_module
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
-CONST	SEGMENT
-set_symtab32$rtcName$0 DB 062H
-	DB	075H
-	DB	066H
-	DB	066H
-	DB	065H
-	DB	072H
-	DB	00H
-	ORG $+9
-set_symtab32$rtcVarDesc DD 080H
-	DD	0100H
-	DQ	FLAT:set_symtab32$rtcName$0
-	ORG $+48
-set_symtab32$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:set_symtab32$rtcVarDesc
-set_symtab64$rtcName$0 DB 062H
-	DB	075H
-	DB	066H
-	DB	066H
-	DB	065H
-	DB	072H
-	DB	00H
-	ORG $+1
-set_symtab64$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:set_symtab64$rtcVarDesc
-set_symtab_values$rtcName$0 DB 06cH
-	DB	06fH
-	DB	063H
-	DB	061H
-	DB	06cH
-	DB	073H
-	DB	00H
-	ORG $+1
-set_symtab64$rtcVarDesc DD 080H
-	DD	0100H
-	DQ	FLAT:set_symtab64$rtcName$0
-	ORG $+48
-set_symtab_values$rtcVarDesc DD 048H
-	DD	010H
-	DQ	FLAT:set_symtab_values$rtcName$0
-	ORG $+48
-set_symtab_values$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:set_symtab_values$rtcVarDesc
-set_shstrtab_values$rtcName$0 DB 062H
-	DB	075H
-	DB	066H
-	DB	066H
-	DB	065H
-	DB	072H
-	DB	00H
-	ORG $+1
-set_shstrtab_values$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:set_shstrtab_values$rtcVarDesc
-elf_write_section_table32$rtcName$0 DB 073H
-	DB	068H
-	DB	064H
-	DB	072H
-	DB	033H
-	DB	032H
-	DB	00H
-	ORG $+1
-set_shstrtab_values$rtcVarDesc DD 050H
-	DD	0f8H
-	DQ	FLAT:set_shstrtab_values$rtcName$0
-	ORG $+48
-elf_write_section_table32$rtcVarDesc DD 058H
-	DD	028H
-	DQ	FLAT:elf_write_section_table32$rtcName$0
-	ORG $+48
-elf_write_section_table32$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:elf_write_section_table32$rtcVarDesc
-elf_write_section_table64$rtcName$0 DB 073H
-	DB	068H
-	DB	064H
-	DB	072H
-	DB	036H
-	DB	034H
-	DB	00H
-	ORG $+1
-elf_write_section_table64$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:elf_write_section_table64$rtcVarDesc
-write_relocs32$rtcName$0 DB 072H
-	DB	065H
-	DB	06cH
-	DB	06fH
-	DB	063H
-	DB	033H
-	DB	032H
-	DB	00H
-elf_write_section_table64$rtcVarDesc DD 060H
-	DD	040H
-	DQ	FLAT:elf_write_section_table64$rtcName$0
-	ORG $+48
-write_relocs32$rtcVarDesc DD 048H
-	DD	08H
-	DQ	FLAT:write_relocs32$rtcName$0
-	ORG $+48
-write_relocs32$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:write_relocs32$rtcVarDesc
-write_relocs64$rtcName$0 DB 072H
-	DB	065H
-	DB	06cH
-	DB	06fH
-	DB	063H
-	DB	036H
-	DB	034H
-	DB	00H
-elf_write_module$rtcName$0 DB 065H
-	DB	06dH
-	DB	00H
-	ORG $+5
-write_relocs64$rtcVarDesc DD 058H
-	DD	018H
-	DQ	FLAT:write_relocs64$rtcName$0
-	ORG $+48
-write_relocs64$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:write_relocs64$rtcVarDesc
-elf_write_module$rtcVarDesc DD 030H
-	DD	088H
-	DQ	FLAT:elf_write_module$rtcName$0
-	ORG $+48
-elf_write_module$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:elf_write_module$rtcVarDesc
-CONST	ENDS
 xdata	SEGMENT
-$unwind$elf_init DD 010601H
-	DD	07006H
-$unwind$ElfConvertSectionName DD 022301H
-	DD	0700b520fH
-$unwind$get_num_reloc_sections DD 021501H
-	DD	070021206H
-$unwind$set_symtab32 DD 033f19H
-	DD	0340116H
-	DD	0700fH
+$unwind$ElfConvertSectionName DD 010e01H
+	DD	0620eH
+$unwind$get_num_reloc_sections DD 010401H
+	DD	02204H
+$unwind$set_symtab32 DD 022719H
+	DD	0330115H
 	DD	imagerel __GSHandlerCheck
-	DD	0198H
-$unwind$set_symtab64 DD 033f19H
-	DD	0340116H
-	DD	0700fH
+	DD	0180H
+$unwind$set_symtab64 DD 022719H
+	DD	0330115H
 	DD	imagerel __GSHandlerCheck
-	DD	0198H
-$unwind$set_symtab_values DD 022401H
-	DD	07006f20dH
-$unwind$set_shstrtab_values DD 033619H
-	DD	034010dH
-	DD	07006H
+	DD	0180H
+$unwind$set_symtab_values DD 010901H
+	DD	0c209H
+$unwind$set_shstrtab_values DD 021e19H
+	DD	031010cH
 	DD	imagerel __GSHandlerCheck
-	DD	0190H
-$unwind$get_relocation_count DD 021e01H
-	DD	07006120aH
-$unwind$Get_Alignment DD 021e01H
-	DD	07006120aH
-$unwind$elf_write_section_table32 DD 034019H
-	DD	0140117H
-	DD	07010H
+	DD	0170H
+$unwind$get_relocation_count DD 010901H
+	DD	02209H
+$unwind$Get_Alignment DD 010901H
+	DD	02209H
+$unwind$elf_write_section_table32 DD 022519H
+	DD	0110116H
 	DD	imagerel __GSHandlerCheck
-	DD	098H
-$unwind$elf_write_section_table64 DD 034019H
-	DD	0180117H
-	DD	07010H
+	DD	078H
+$unwind$elf_write_section_table64 DD 022819H
+	DD	0150116H
 	DD	imagerel __GSHandlerCheck
-	DD	0b8H
-$unwind$write_relocs32 DD 022301H
-	DD	0700bb20fH
-$unwind$write_relocs64 DD 033619H
-	DD	012010dH
-	DD	07006H
+	DD	090H
+$unwind$write_relocs32 DD 010e01H
+	DD	0a20eH
+$unwind$write_relocs64 DD 021b19H
+	DD	011010cH
 	DD	imagerel __GSHandlerCheck
-	DD	088H
-$unwind$elf_write_data DD 022601H
-	DD	0700bd20fH
-$unwind$elf_write_module DD 033619H
-	DD	01e010dH
-	DD	07006H
+	DD	070H
+$unwind$elf_write_data DD 010e01H
+	DD	0e20eH
+$unwind$elf_write_module DD 021e19H
+	DD	01b010cH
 	DD	imagerel __GSHandlerCheck
-	DD	0e0H
+	DD	0c0H
 xdata	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\elf.c
 _TEXT	SEGMENT
+tv90 = 32
+tv251 = 36
+tv249 = 40
 em$ = 48
-tv90 = 208
-tv251 = 212
-tv249 = 216
-__$ArrayPad$ = 224
-modinfo$ = 256
+__$ArrayPad$ = 192
+modinfo$ = 224
 elf_write_module PROC
 
 ; 1278 : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 240				; 000000f0H
-	mov	rdi, rsp
-	mov	ecx, 60					; 0000003cH
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+256]
+	sub	rsp, 216				; 000000d8H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -454,7 +292,7 @@ elf_write_module PROC
 ; 1281 : 
 ; 1282 :     DebugMsg(("elf_write_module: enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11790
+	lea	rcx, OFFSET FLAT:$SG11828
 	call	DoDebugMsg
 
 ; 1283 : 
@@ -521,7 +359,7 @@ $LN3@elf_write_:
 	xor	r8d, r8d
 	xor	edx, edx
 	mov	rcx, QWORD PTR [rcx+rax]
-	call	QWORD PTR __imp_fseek
+	call	fseek
 
 ; 1295 : 
 ; 1296 :     switch ( modinfo->defOfssize ) {
@@ -539,7 +377,7 @@ $LN6@elf_write_:
 ; 1299 :         memcpy( &em.ehdr64.e_ident, ELF_SIGNATURE, ELF_SIGNATURE_LEN );
 
 	mov	r8d, 4
-	lea	rdx, OFFSET FLAT:$SG11792
+	lea	rdx, OFFSET FLAT:$SG11830
 	lea	rcx, QWORD PTR em$[rsp+72]
 	call	memcpy
 
@@ -660,7 +498,7 @@ $LN6@elf_write_:
 	mov	r8d, 64					; 00000040H
 	mov	edx, 1
 	lea	rcx, QWORD PTR em$[rsp+72]
-	call	QWORD PTR __imp_fwrite
+	call	fwrite
 	cmp	rax, 64					; 00000040H
 	je	SHORT $LN7@elf_write_
 
@@ -692,7 +530,7 @@ $LN8@elf_write_:
 ; 1334 :         memcpy( &em.ehdr32.e_ident, ELF_SIGNATURE, ELF_SIGNATURE_LEN );
 
 	mov	r8d, 4
-	lea	rdx, OFFSET FLAT:$SG11795
+	lea	rdx, OFFSET FLAT:$SG11833
 	lea	rcx, QWORD PTR em$[rsp+72]
 	call	memcpy
 
@@ -813,7 +651,7 @@ $LN8@elf_write_:
 	mov	r8d, 52					; 00000034H
 	mov	edx, 1
 	lea	rcx, QWORD PTR em$[rsp+72]
-	call	QWORD PTR __imp_fwrite
+	call	fwrite
 	cmp	rax, 52					; 00000034H
 	je	SHORT $LN9@elf_write_
 
@@ -845,7 +683,7 @@ $LN4@elf_write_:
 
 ; 1368 :     DebugMsg(("elf_write_module: exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11797
+	lea	rcx, OFFSET FLAT:$SG11835
 	call	DoDebugMsg
 
 ; 1369 :     return( NOT_ERROR );
@@ -854,27 +692,21 @@ $LN4@elf_write_:
 
 ; 1370 : }
 
-	mov	edi, eax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:elf_write_module$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	eax, edi
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 240				; 000000f0H
-	pop	rdi
+	add	rsp, 216				; 000000d8H
 	ret	0
 elf_write_module ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\elf.c
 _TEXT	SEGMENT
-curr$ = 32
-size$ = 40
-i$ = 44
-tv246 = 48
-tv133 = 56
+i$ = 32
+curr$ = 40
+size$ = 48
+tv133 = 52
+tv246 = 56
 tv257 = 64
 tv248 = 72
 tv249 = 80
@@ -888,13 +720,7 @@ elf_write_data PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 112				; 00000070H
-	mov	rdi, rsp
-	mov	ecx, 28
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+128]
+	sub	rsp, 120				; 00000078H
 
 ; 1221 :     struct dsym *curr;
 ; 1222 :     //int seg_index;
@@ -904,7 +730,7 @@ elf_write_data PROC
 ; 1226 : 
 ; 1227 :     DebugMsg(("elf_write_data: enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11763
+	lea	rcx, OFFSET FLAT:$SG11801
 	call	DoDebugMsg
 
 ; 1228 : 
@@ -943,7 +769,7 @@ $LN4@elf_write_:
 	mov	r8d, DWORD PTR [rax+56]
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11764
+	lea	rcx, OFFSET FLAT:$SG11802
 	call	DoDebugMsg
 
 ; 1232 :         if ( curr->e.seginfo->segtype != SEGTYPE_BSS && size != 0 ) {
@@ -971,7 +797,7 @@ $LN4@elf_write_:
 	mov	edx, eax
 	mov	rax, QWORD PTR tv246[rsp]
 	mov	rcx, QWORD PTR [rax+rcx]
-	call	QWORD PTR __imp_fseek
+	call	fseek
 
 ; 1234 :             /**/myassert( curr->e.seginfo->CodeBuffer );
 
@@ -983,7 +809,7 @@ $LN4@elf_write_:
 	jmp	SHORT $LN21@elf_write_
 $LN20@elf_write_:
 	mov	edx, 1234				; 000004d2H
-	lea	rcx, OFFSET FLAT:$SG11766
+	lea	rcx, OFFSET FLAT:$SG11804
 	call	InternalError
 	mov	DWORD PTR tv133[rsp], eax
 $LN21@elf_write_:
@@ -1002,7 +828,7 @@ $LN21@elf_write_:
 	mov	edx, 1
 	mov	rax, QWORD PTR tv257[rsp]
 	mov	rcx, QWORD PTR [rax+16]
-	call	QWORD PTR __imp_fwrite
+	call	fwrite
 	mov	ecx, DWORD PTR size$[rsp]
 	cmp	rax, rcx
 	je	SHORT $LN12@elf_write_
@@ -1057,7 +883,7 @@ $LN7@elf_write_:
 	mov	r8d, DWORD PTR [rax+rcx+28]
 	mov	rax, QWORD PTR tv248[rsp]
 	mov	rdx, QWORD PTR [rax+rdx]
-	lea	rcx, OFFSET FLAT:$SG11769
+	lea	rcx, OFFSET FLAT:$SG11807
 	call	DoDebugMsg
 
 ; 1244 :             fseek( CurrFile[OBJ], em->internal_segs[i].fileoffset, SEEK_SET );
@@ -1073,7 +899,7 @@ $LN7@elf_write_:
 	mov	edx, DWORD PTR [r9+rax+28]
 	mov	rax, QWORD PTR tv249[rsp]
 	mov	rcx, QWORD PTR [rax+rcx]
-	call	QWORD PTR __imp_fseek
+	call	fseek
 
 ; 1245 :             if ( fwrite( em->internal_segs[i].data, 1, em->internal_segs[i].size, CurrFile[OBJ] ) != em->internal_segs[i].size )
 
@@ -1093,7 +919,7 @@ $LN7@elf_write_:
 	mov	rax, QWORD PTR em$[rsp]
 	mov	rcx, QWORD PTR tv196[rsp]
 	mov	rcx, QWORD PTR [rax+rcx+32]
-	call	QWORD PTR __imp_fwrite
+	call	fwrite
 	movsxd	rcx, DWORD PTR i$[rsp]
 	imul	rcx, rcx, 16
 	mov	rdx, QWORD PTR em$[rsp]
@@ -1150,7 +976,7 @@ $LN10@elf_write_:
 	mov	r8d, DWORD PTR [rcx+12]
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11772
+	lea	rcx, OFFSET FLAT:$SG11810
 	call	DoDebugMsg
 
 ; 1254 :             fseek( CurrFile[OBJ], curr->e.seginfo->reloc_offset, SEEK_SET );
@@ -1165,7 +991,7 @@ $LN10@elf_write_:
 	mov	edx, DWORD PTR [rax+12]
 	mov	rax, QWORD PTR tv252[rsp]
 	mov	rcx, QWORD PTR [rax+rcx]
-	call	QWORD PTR __imp_fseek
+	call	fseek
 
 ; 1255 : #if AMD64_SUPPORT
 ; 1256 :             if ( modinfo->defOfssize == USE64 )
@@ -1208,7 +1034,7 @@ $LN9@elf_write_:
 
 ; 1265 :         EmitWarn( 2, ELF_GNU_EXTENSIONS_USED );
 
-	mov	edx, 262				; 00000106H
+	mov	edx, 263				; 00000107H
 	mov	ecx, 2
 	call	EmitWarn
 $LN18@elf_write_:
@@ -1218,7 +1044,7 @@ $LN18@elf_write_:
 ; 1268 : 
 ; 1269 :     DebugMsg(("elf_write_data: exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11776
+	lea	rcx, OFFSET FLAT:$SG11814
 	call	DoDebugMsg
 
 ; 1270 : 
@@ -1228,33 +1054,26 @@ $LN18@elf_write_:
 
 ; 1272 : }
 
-	add	rsp, 112				; 00000070H
-	pop	rdi
+	add	rsp, 120				; 00000078H
 	ret	0
 elf_write_data ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\elf.c
 _TEXT	SEGMENT
 elftype$ = 64
 fixup$ = 72
+tv94 = 80
+symidx$1 = 84
 reloc64$ = 88
-symidx$4 = 116
-tv94 = 128
-__$ArrayPad$ = 136
-curr$ = 160
+__$ArrayPad$ = 112
+curr$ = 144
 write_relocs64 PROC
 
 ; 1132 : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 144				; 00000090H
-	mov	rdi, rsp
-	mov	ecx, 36					; 00000024H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+160]
+	sub	rsp, 136				; 00000088H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -1265,7 +1084,7 @@ write_relocs64 PROC
 ; 1136 : 
 ; 1137 :     DebugMsg(("write_relocs64: enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11727
+	lea	rcx, OFFSET FLAT:$SG11765
 	call	DoDebugMsg
 
 ; 1138 :     for ( fixup = curr->e.seginfo->FixupList.head; fixup; fixup = fixup->nextrlc ) {
@@ -1288,7 +1107,7 @@ $LN4@write_relo:
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	rax, QWORD PTR [rax+56]
 	mov	eax, DWORD PTR [rax+88]
-	mov	DWORD PTR symidx$4[rsp], eax
+	mov	DWORD PTR symidx$1[rsp], eax
 
 ; 1140 :         reloc64.r_offset = fixup->locofs;
 
@@ -1337,7 +1156,7 @@ $LN4@write_relo:
 	mov	r8d, DWORD PTR [rax+24]
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	edx, DWORD PTR [rax+20]
-	lea	rcx, OFFSET FLAT:$SG11728
+	lea	rcx, OFFSET FLAT:$SG11766
 	call	DoDebugMsg
 
 ; 1157 :                   fixup->locofs, fixup->type, fixup->sym->ext_idx, fixup->sym->name, fixup->offset, fixup->addbytes ));
@@ -1451,7 +1270,7 @@ $LN15@write_relo:
 	mov	r8d, DWORD PTR [rax+24]
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	edx, DWORD PTR [rax+20]
-	lea	rcx, OFFSET FLAT:$SG11738
+	lea	rcx, OFFSET FLAT:$SG11776
 	call	DoDebugMsg
 
 ; 1198 :                       fixup->locofs, fixup->type, fixup->sym->ext_idx, fixup->sym->name));
@@ -1503,7 +1322,7 @@ $LN5@write_relo:
 ; 1206 :         /* the high 24 bits are symbol table index */
 ; 1207 :         reloc64.r_info = ELF64_R_INFO( symidx, elftype );
 
-	mov	eax, DWORD PTR symidx$4[rsp]
+	mov	eax, DWORD PTR symidx$1[rsp]
 	shl	rax, 32					; 00000020H
 	movzx	ecx, BYTE PTR elftype$[rsp]
 	add	rax, rcx
@@ -1518,7 +1337,7 @@ $LN5@write_relo:
 	mov	r8d, 24
 	mov	edx, 1
 	lea	rcx, QWORD PTR reloc64$[rsp]
-	call	QWORD PTR __imp_fwrite
+	call	fwrite
 	cmp	rax, 24
 	je	SHORT $LN18@write_relo
 
@@ -1534,21 +1353,18 @@ $LN3@write_relo:
 
 ; 1211 :     DebugMsg(("write_relocs64: exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11742
+	lea	rcx, OFFSET FLAT:$SG11780
 	call	DoDebugMsg
 
 ; 1212 :     return;
 ; 1213 : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:write_relocs64$rtcFrameData
-	call	_RTC_CheckStackVars
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 144				; 00000090H
-	pop	rdi
+	add	rsp, 136				; 00000088H
 	ret	0
+	npad	2
 $LN20@write_relo:
 	DD	$LN14@write_relo
 	DD	$LN12@write_relo
@@ -1564,28 +1380,22 @@ $LN20@write_relo:
 	DD	$LN9@write_relo
 write_relocs64 ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\elf.c
 _TEXT	SEGMENT
 elftype$ = 48
+tv71 = 52
 fixup$ = 56
-reloc32$ = 72
-tv71 = 84
-em$ = 112
-curr$ = 120
+reloc32$ = 64
+em$ = 96
+curr$ = 104
 write_relocs32 PROC
 
 ; 1082 : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 96					; 00000060H
-	mov	rdi, rsp
-	mov	ecx, 24
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+112]
+	sub	rsp, 88					; 00000058H
 
 ; 1083 :     uint_8 elftype;
 ; 1084 :     struct fixup *fixup;
@@ -1593,7 +1403,7 @@ write_relocs32 PROC
 ; 1086 : 
 ; 1087 :     DebugMsg(("write_relocs32: enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11699
+	lea	rcx, OFFSET FLAT:$SG11737
 	call	DoDebugMsg
 
 ; 1088 :     for ( fixup = curr->e.seginfo->FixupList.head; fixup; fixup = fixup->nextrlc ) {
@@ -1707,7 +1517,7 @@ $LN14@write_relo:
 	mov	r8d, DWORD PTR [rax+24]
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	edx, DWORD PTR [rax+20]
-	lea	rcx, OFFSET FLAT:$SG11708
+	lea	rcx, OFFSET FLAT:$SG11746
 	call	DoDebugMsg
 
 ; 1109 :                       fixup->locofs, fixup->type, fixup->sym->ext_idx, fixup->sym->name));
@@ -1776,7 +1586,7 @@ $LN5@write_relo:
 	mov	r8d, 8
 	mov	edx, 1
 	lea	rcx, QWORD PTR reloc32$[rsp]
-	call	QWORD PTR __imp_fwrite
+	call	fwrite
 	cmp	rax, 8
 	je	SHORT $LN17@write_relo
 
@@ -1792,19 +1602,15 @@ $LN3@write_relo:
 
 ; 1122 :     DebugMsg(("write_relocs32: exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11712
+	lea	rcx, OFFSET FLAT:$SG11750
 	call	DoDebugMsg
 
 ; 1123 :     return;
 ; 1124 : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:write_relocs32$rtcFrameData
-	call	_RTC_CheckStackVars
-	add	rsp, 96					; 00000060H
-	pop	rdi
+	add	rsp, 88					; 00000058H
 	ret	0
-	npad	3
+	npad	1
 $LN19@write_relo:
 	DD	$LN13@write_relo
 	DD	$LN11@write_relo
@@ -1820,18 +1626,18 @@ $LN19@write_relo:
 	DD	$LN9@write_relo
 write_relocs32 ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\elf.c
 _TEXT	SEGMENT
-i$ = 48
-curr$ = 56
+curr$ = 48
+i$ = 56
 p$ = 64
-shdr64$ = 96
-tv144 = 176
-__$ArrayPad$ = 184
-modinfo$ = 208
-em$ = 216
-fileoffset$ = 224
+tv144 = 72
+shdr64$ = 80
+__$ArrayPad$ = 144
+modinfo$ = 176
+em$ = 184
+fileoffset$ = 192
 elf_write_section_table64 PROC
 
 ; 931  : {
@@ -1839,13 +1645,7 @@ elf_write_section_table64 PROC
 	mov	DWORD PTR [rsp+24], r8d
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 192				; 000000c0H
-	mov	rdi, rsp
-	mov	ecx, 48					; 00000030H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+208]
+	sub	rsp, 168				; 000000a8H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -1859,7 +1659,7 @@ elf_write_section_table64 PROC
 ; 938  :     DebugMsg(("elf_write_section_table64( fileofs=%X ): enter\n", fileoffset ));
 
 	mov	edx, DWORD PTR fileoffset$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11662
+	lea	rcx, OFFSET FLAT:$SG11700
 	call	DoDebugMsg
 
 ; 939  : 
@@ -1896,7 +1696,7 @@ elf_write_section_table64 PROC
 	mov	r8d, 64					; 00000040H
 	mov	edx, 1
 	lea	rcx, QWORD PTR shdr64$[rsp]
-	call	QWORD PTR __imp_fwrite
+	call	fwrite
 	cmp	rax, 64					; 00000040H
 	je	SHORT $LN11@elf_write_
 
@@ -2043,7 +1843,7 @@ $LN16@elf_write_:
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	rax, QWORD PTR [rax+80]
-	lea	rdx, OFFSET FLAT:$SG11672
+	lea	rdx, OFFSET FLAT:$SG11710
 	mov	rcx, QWORD PTR [rax+8]
 	call	strcmp
 	test	eax, eax
@@ -2130,7 +1930,7 @@ $LN13@elf_write_:
 	mov	r8d, 64					; 00000040H
 	mov	edx, 1
 	lea	rcx, QWORD PTR shdr64$[rsp]
-	call	QWORD PTR __imp_fwrite
+	call	fwrite
 	cmp	rax, 64					; 00000040H
 	je	SHORT $LN20@elf_write_
 
@@ -2180,7 +1980,7 @@ $LN21@elf_write_:
 	mov	r8, QWORD PTR shdr64$[rsp+24]
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11675
+	lea	rcx, OFFSET FLAT:$SG11713
 	call	DoDebugMsg
 
 ; 1008 :     }
@@ -2321,7 +2121,7 @@ $LN23@elf_write_:
 	mov	r8d, 64					; 00000040H
 	mov	edx, 1
 	lea	rcx, QWORD PTR shdr64$[rsp]
-	call	QWORD PTR __imp_fwrite
+	call	fwrite
 	cmp	rax, 64					; 00000040H
 	je	SHORT $LN24@elf_write_
 
@@ -2352,7 +2152,7 @@ $LN24@elf_write_:
 	mov	r9, QWORD PTR shdr64$[rsp+32]
 	mov	r8, QWORD PTR shdr64$[rsp+24]
 	mov	rdx, QWORD PTR [rcx+rax]
-	lea	rcx, OFFSET FLAT:$SG11679
+	lea	rcx, OFFSET FLAT:$SG11717
 	call	DoDebugMsg
 
 ; 1041 :     }
@@ -2485,7 +2285,7 @@ $LN25@elf_write_:
 	mov	r8d, 64					; 00000040H
 	mov	edx, 1
 	lea	rcx, QWORD PTR shdr64$[rsp]
-	call	QWORD PTR __imp_fwrite
+	call	fwrite
 	cmp	rax, 64					; 00000040H
 	je	SHORT $LN26@elf_write_
 
@@ -2514,7 +2314,7 @@ $LN26@elf_write_:
 	mov	r8, QWORD PTR shdr64$[rsp+24]
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11682
+	lea	rcx, OFFSET FLAT:$SG11720
 	call	DoDebugMsg
 
 ; 1072 :     }
@@ -2525,7 +2325,7 @@ $LN9@elf_write_:
 ; 1073 :     DebugMsg(("elf_write_section_table64: exit, final fileofs=%X\n", fileoffset ));
 
 	mov	edx, DWORD PTR fileoffset$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11683
+	lea	rcx, OFFSET FLAT:$SG11721
 	call	DoDebugMsg
 
 ; 1074 :     return( NOT_ERROR );
@@ -2534,31 +2334,25 @@ $LN9@elf_write_:
 
 ; 1075 : }
 
-	mov	edi, eax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:elf_write_section_table64$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	eax, edi
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 192				; 000000c0H
-	pop	rdi
+	add	rsp, 168				; 000000a8H
 	ret	0
 elf_write_section_table64 ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\elf.c
 _TEXT	SEGMENT
-i$ = 48
-curr$ = 56
+curr$ = 48
+i$ = 56
 p$ = 64
-shdr32$ = 88
-tv144 = 144
-__$ArrayPad$ = 152
-modinfo$ = 176
-em$ = 184
-fileoffset$ = 192
+tv144 = 72
+shdr32$ = 80
+__$ArrayPad$ = 120
+modinfo$ = 144
+em$ = 152
+fileoffset$ = 160
 elf_write_section_table32 PROC
 
 ; 776  : {
@@ -2566,13 +2360,7 @@ elf_write_section_table32 PROC
 	mov	DWORD PTR [rsp+24], r8d
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 160				; 000000a0H
-	mov	rdi, rsp
-	mov	ecx, 40					; 00000028H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+176]
+	sub	rsp, 136				; 00000088H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -2586,7 +2374,7 @@ elf_write_section_table32 PROC
 ; 783  :     DebugMsg(("elf_write_section_table32( fileofs=%X ): enter\n", fileoffset ));
 
 	mov	edx, DWORD PTR fileoffset$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11608
+	lea	rcx, OFFSET FLAT:$SG11646
 	call	DoDebugMsg
 
 ; 784  : 
@@ -2623,7 +2411,7 @@ elf_write_section_table32 PROC
 	mov	r8d, 40					; 00000028H
 	mov	edx, 1
 	lea	rcx, QWORD PTR shdr32$[rsp]
-	call	QWORD PTR __imp_fwrite
+	call	fwrite
 	cmp	rax, 40					; 00000028H
 	je	SHORT $LN11@elf_write_
 
@@ -2770,7 +2558,7 @@ $LN16@elf_write_:
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	rax, QWORD PTR [rax+80]
-	lea	rdx, OFFSET FLAT:$SG11618
+	lea	rdx, OFFSET FLAT:$SG11656
 	mov	rcx, QWORD PTR [rax+8]
 	call	strcmp
 	test	eax, eax
@@ -2856,7 +2644,7 @@ $LN13@elf_write_:
 	mov	r8d, 40					; 00000028H
 	mov	edx, 1
 	lea	rcx, QWORD PTR shdr32$[rsp]
-	call	QWORD PTR __imp_fwrite
+	call	fwrite
 	cmp	rax, 40					; 00000028H
 	je	SHORT $LN20@elf_write_
 
@@ -2911,7 +2699,7 @@ $LN21@elf_write_:
 	mov	r8d, DWORD PTR shdr32$[rsp+16]
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11621
+	lea	rcx, OFFSET FLAT:$SG11659
 	call	DoDebugMsg
 
 ; 856  :     }
@@ -3051,7 +2839,7 @@ $LN23@elf_write_:
 	mov	r8d, 40					; 00000028H
 	mov	edx, 1
 	lea	rcx, QWORD PTR shdr32$[rsp]
-	call	QWORD PTR __imp_fwrite
+	call	fwrite
 	cmp	rax, 40					; 00000028H
 	je	SHORT $LN24@elf_write_
 
@@ -3084,7 +2872,7 @@ $LN24@elf_write_:
 	mov	r9d, DWORD PTR shdr32$[rsp+20]
 	mov	r8d, DWORD PTR shdr32$[rsp+16]
 	mov	rdx, QWORD PTR [rcx+rax]
-	lea	rcx, OFFSET FLAT:$SG11625
+	lea	rcx, OFFSET FLAT:$SG11663
 	call	DoDebugMsg
 
 ; 888  :     }
@@ -3217,7 +3005,7 @@ $LN25@elf_write_:
 	mov	r8d, 40					; 00000028H
 	mov	edx, 1
 	lea	rcx, QWORD PTR shdr32$[rsp]
-	call	QWORD PTR __imp_fwrite
+	call	fwrite
 	cmp	rax, 40					; 00000028H
 	je	SHORT $LN26@elf_write_
 
@@ -3248,7 +3036,7 @@ $LN26@elf_write_:
 	mov	r8d, DWORD PTR shdr32$[rsp+16]
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11628
+	lea	rcx, OFFSET FLAT:$SG11666
 	call	DoDebugMsg
 
 ; 919  : 
@@ -3260,7 +3048,7 @@ $LN9@elf_write_:
 ; 921  :     DebugMsg(("elf_write_section_table32: exit, final fileofs=%X\n", fileoffset ));
 
 	mov	edx, DWORD PTR fileoffset$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11629
+	lea	rcx, OFFSET FLAT:$SG11667
 	call	DoDebugMsg
 
 ; 922  :     return( NOT_ERROR );
@@ -3269,20 +3057,14 @@ $LN9@elf_write_:
 
 ; 923  : }
 
-	mov	edi, eax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:elf_write_section_table32$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	eax, edi
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 160				; 000000a0H
-	pop	rdi
+	add	rsp, 136				; 00000088H
 	ret	0
 elf_write_section_table32 ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\elf.c
 _TEXT	SEGMENT
 tv78 = 0
@@ -3292,13 +3074,7 @@ Get_Alignment PROC
 ; 760  : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 16
-	mov	rdi, rsp
-	mov	ecx, 4
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+32]
+	sub	rsp, 24
 
 ; 761  :     if ( curr->e.seginfo->alignment == MAX_SEGALIGNMENT )
 
@@ -3328,12 +3104,11 @@ $LN1@Get_Alignm:
 
 ; 764  : }
 
-	add	rsp, 16
-	pop	rdi
+	add	rsp, 24
 	ret	0
 Get_Alignment ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\elf.c
 _TEXT	SEGMENT
 relocs$ = 0
@@ -3344,13 +3119,7 @@ get_relocation_count PROC
 ; 749  : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 16
-	mov	rdi, rsp
-	mov	ecx, 4
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+32]
+	sub	rsp, 24
 
 ; 750  :     unsigned relocs;
 ; 751  :     struct fixup *fix;
@@ -3383,39 +3152,32 @@ $LN3@get_reloca:
 
 ; 756  : }
 
-	add	rsp, 16
-	pop	rdi
+	add	rsp, 24
 	ret	0
 get_relocation_count ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\elf.c
 _TEXT	SEGMENT
-i$ = 32
+p$ = 32
 curr$ = 40
-p$ = 48
-size$ = 56
-buffer$ = 80
-tv78 = 352
-tv92 = 360
-tv172 = 368
-tv201 = 376
-tv216 = 384
-tv232 = 392
-__$ArrayPad$ = 400
-em$ = 432
+size$ = 48
+i$ = 52
+tv232 = 56
+tv78 = 64
+tv92 = 72
+tv172 = 80
+tv201 = 88
+tv216 = 96
+buffer$ = 112
+__$ArrayPad$ = 368
+em$ = 400
 set_shstrtab_values PROC
 
 ; 686  : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 416				; 000001a0H
-	mov	rdi, rsp
-	mov	ecx, 104				; 00000068H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+432]
+	sub	rsp, 392				; 00000188H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -3629,7 +3391,7 @@ $LN25@set_shstrt:
 
 ; 723  :     }
 
-	jmp	$LN8@set_shstrt
+	jmp	SHORT $LN8@set_shstrt
 $LN9@set_shstrt:
 
 ; 724  :     /* 2. names of internal sections */
@@ -3697,11 +3459,11 @@ $LN16@set_shstrt:
 	movzx	eax, BYTE PTR ModuleInfo+405
 	cmp	eax, 2
 	jne	SHORT $LN26@set_shstrt
-	lea	rax, OFFSET FLAT:$SG11558
+	lea	rax, OFFSET FLAT:$SG11596
 	mov	QWORD PTR tv201[rsp], rax
 	jmp	SHORT $LN27@set_shstrt
 $LN26@set_shstrt:
-	lea	rax, OFFSET FLAT:$SG11559
+	lea	rax, OFFSET FLAT:$SG11597
 	mov	QWORD PTR tv201[rsp], rax
 $LN27@set_shstrt:
 	mov	rdx, QWORD PTR tv201[rsp]
@@ -3773,7 +3535,7 @@ $LN15@set_shstrt:
 	jmp	SHORT $LN31@set_shstrt
 $LN30@set_shstrt:
 	mov	edx, 742				; 000002e6H
-	lea	rcx, OFFSET FLAT:$SG11560
+	lea	rcx, OFFSET FLAT:$SG11598
 	call	InternalError
 	mov	DWORD PTR tv232[rsp], eax
 $LN31@set_shstrt:
@@ -3781,47 +3543,37 @@ $LN31@set_shstrt:
 ; 743  :     DebugMsg(("set_shstrtab_values: size=%X\n", size));
 
 	mov	edx, DWORD PTR size$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11561
+	lea	rcx, OFFSET FLAT:$SG11599
 	call	DoDebugMsg
 
 ; 744  :     return;
 ; 745  : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:set_shstrtab_values$rtcFrameData
-	call	_RTC_CheckStackVars
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 416				; 000001a0H
-	pop	rdi
+	add	rsp, 392				; 00000188H
 	ret	0
 set_shstrtab_values ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\elf.c
 _TEXT	SEGMENT
 strsize$ = 32
 entries$ = 36
 curr$ = 40
-q$ = 48
-p2$ = 56
-locals$ = 72
-localscurr$ = 104
-fix$4 = 112
-em$ = 144
+p2$ = 48
+fix$1 = 56
+localscurr$ = 64
+q$ = 72
+locals$ = 80
+em$ = 112
 set_symtab_values PROC
 
 ; 540  : {
 
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 128				; 00000080H
-	mov	rdi, rsp
-	mov	ecx, 32					; 00000020H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+144]
+	sub	rsp, 104				; 00000068H
 
 ; 541  :     uint_32 strsize;
 ; 542  :     uint_32 entries;
@@ -3915,17 +3667,17 @@ $LN7@set_symtab:
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	rax, QWORD PTR [rax+40]
-	mov	QWORD PTR fix$4[rsp], rax
+	mov	QWORD PTR fix$1[rsp], rax
 
 ; 572  :             for ( ; fix; fix = fix->nextrlc ) {
 
 	jmp	SHORT $LN10@set_symtab
 $LN8@set_symtab:
-	mov	rax, QWORD PTR fix$4[rsp]
+	mov	rax, QWORD PTR fix$1[rsp]
 	mov	rax, QWORD PTR [rax+8]
-	mov	QWORD PTR fix$4[rsp], rax
+	mov	QWORD PTR fix$1[rsp], rax
 $LN10@set_symtab:
-	cmp	QWORD PTR fix$4[rsp], 0
+	cmp	QWORD PTR fix$1[rsp], 0
 	je	$LN9@set_symtab
 
 ; 573  :                 /* if it's not EXTERNAL/PUBLIC, add symbol. */
@@ -3933,7 +3685,7 @@ $LN10@set_symtab:
 ; 575  :                 /* use a raw section reference */
 ; 576  :                 if ( fix->sym->variable ) {
 
-	mov	rax, QWORD PTR fix$4[rsp]
+	mov	rax, QWORD PTR fix$1[rsp]
 	mov	rax, QWORD PTR [rax+56]
 	movzx	eax, BYTE PTR [rax+40]
 	shr	al, 6
@@ -3944,8 +3696,8 @@ $LN10@set_symtab:
 
 ; 577  :                     fix->sym = fix->segment_var;
 
-	mov	rax, QWORD PTR fix$4[rsp]
-	mov	rcx, QWORD PTR fix$4[rsp]
+	mov	rax, QWORD PTR fix$1[rsp]
+	mov	rcx, QWORD PTR fix$1[rsp]
 	mov	rcx, QWORD PTR [rcx+40]
 	mov	QWORD PTR [rax+56], rcx
 
@@ -3956,11 +3708,11 @@ $LN27@set_symtab:
 
 ; 579  :                     fix->sym->included == FALSE &&
 
-	mov	rax, QWORD PTR fix$4[rsp]
+	mov	rax, QWORD PTR fix$1[rsp]
 	mov	rax, QWORD PTR [rax+56]
 	cmp	DWORD PTR [rax+32], 1
 	jne	$LN29@set_symtab
-	mov	rax, QWORD PTR fix$4[rsp]
+	mov	rax, QWORD PTR fix$1[rsp]
 	mov	rax, QWORD PTR [rax+56]
 	movzx	eax, BYTE PTR [rax+41]
 	shr	al, 6
@@ -3968,7 +3720,7 @@ $LN27@set_symtab:
 	movzx	eax, al
 	test	eax, eax
 	jne	$LN29@set_symtab
-	mov	rax, QWORD PTR fix$4[rsp]
+	mov	rax, QWORD PTR fix$1[rsp]
 	mov	rax, QWORD PTR [rax+56]
 	movzx	eax, BYTE PTR [rax+40]
 	shr	al, 7
@@ -3980,11 +3732,11 @@ $LN27@set_symtab:
 ; 580  :                     fix->sym->ispublic == FALSE ) {
 ; 581  :                     fix->sym->included = TRUE;
 
-	mov	rax, QWORD PTR fix$4[rsp]
+	mov	rax, QWORD PTR fix$1[rsp]
 	mov	rax, QWORD PTR [rax+56]
 	movzx	eax, BYTE PTR [rax+41]
 	or	al, 64					; 00000040H
-	mov	rcx, QWORD PTR fix$4[rsp]
+	mov	rcx, QWORD PTR fix$1[rsp]
 	mov	rcx, QWORD PTR [rcx+56]
 	mov	BYTE PTR [rcx+41], al
 
@@ -4002,7 +3754,7 @@ $LN27@set_symtab:
 ; 584  :                     localscurr->sym = fix->sym;
 
 	mov	rax, QWORD PTR localscurr$[rsp]
-	mov	rcx, QWORD PTR fix$4[rsp]
+	mov	rcx, QWORD PTR fix$1[rsp]
 	mov	rcx, QWORD PTR [rcx+56]
 	mov	QWORD PTR [rax+8], rcx
 
@@ -4038,7 +3790,7 @@ $LN31@set_symtab:
 ; 590  :                     }
 ; 591  :                     fix->sym->ext_idx = em->symindex++;
 
-	mov	rax, QWORD PTR fix$4[rsp]
+	mov	rax, QWORD PTR fix$1[rsp]
 	mov	rax, QWORD PTR [rax+56]
 	mov	rcx, QWORD PTR em$[rsp]
 	mov	ecx, DWORD PTR [rcx]
@@ -4068,7 +3820,7 @@ $LN6@set_symtab:
 
 	mov	rax, QWORD PTR em$[rsp]
 	mov	edx, DWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG11520
+	lea	rcx, OFFSET FLAT:$SG11558
 	call	DoDebugMsg
 
 ; 597  :     em->start_globals = em->symindex;
@@ -4139,7 +3891,7 @@ $LN12@set_symtab:
 
 	mov	rax, QWORD PTR em$[rsp]
 	mov	edx, DWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG11522
+	lea	rcx, OFFSET FLAT:$SG11560
 	call	DoDebugMsg
 
 ; 606  : 
@@ -4187,7 +3939,7 @@ $LN15@set_symtab:
 
 	mov	rax, QWORD PTR em$[rsp]
 	mov	edx, DWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG11523
+	lea	rcx, OFFSET FLAT:$SG11561
 	call	DoDebugMsg
 
 ; 620  : 
@@ -4237,7 +3989,7 @@ $LN34@set_symtab:
 ; 637  :     DebugMsg(("set_symtab_values: creating string table, size=%X\n", strsize));
 
 	mov	edx, DWORD PTR strsize$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11526
+	lea	rcx, OFFSET FLAT:$SG11564
 	call	DoDebugMsg
 
 ; 638  : 
@@ -4438,37 +4190,33 @@ $LN24@set_symtab:
 
 	mov	rax, QWORD PTR em$[rsp]
 	mov	edx, DWORD PTR [rax]
-	lea	rcx, OFFSET FLAT:$SG11528
+	lea	rcx, OFFSET FLAT:$SG11566
 	call	DoDebugMsg
 
 ; 673  :     return;
 ; 674  : }
 
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:set_symtab_values$rtcFrameData
-	call	_RTC_CheckStackVars
-	add	rsp, 128				; 00000080H
-	pop	rdi
+	add	rsp, 104				; 00000068H
 	ret	0
 set_symtab_values ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\elf.c
 _TEXT	SEGMENT
-strsize$ = 48
-len$ = 52
-stt$ = 56
-curr$ = 64
-sym$ = 72
-localscurr$ = 80
-q$ = 88
-p64$ = 96
+stt$ = 48
+p64$ = 56
+strsize$ = 64
+curr$ = 72
+len$ = 80
+localscurr$ = 88
+tv229 = 96
+q$ = 104
+sym$ = 112
 buffer$ = 128
-tv229 = 400
-__$ArrayPad$ = 408
-em$ = 432
-entries$ = 440
-localshead$ = 448
+__$ArrayPad$ = 384
+em$ = 416
+entries$ = 424
+localshead$ = 432
 set_symtab64 PROC
 
 ; 366  : {
@@ -4476,13 +4224,7 @@ set_symtab64 PROC
 	mov	QWORD PTR [rsp+24], r8
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 416				; 000001a0H
-	mov	rdi, rsp
-	mov	ecx, 104				; 00000068H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+432]
+	sub	rsp, 408				; 00000198H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -4754,7 +4496,7 @@ $LN17@set_symtab:
 	mov	rax, QWORD PTR p64$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	lea	rdx, QWORD PTR buffer$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11457
+	lea	rcx, OFFSET FLAT:$SG11495
 	call	DoDebugMsg
 
 ; 427  :         p64++;
@@ -4921,7 +4663,7 @@ $LN20@set_symtab:
 	mov	r9d, eax
 	mov	r8d, ecx
 	lea	rdx, QWORD PTR buffer$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11461
+	lea	rcx, OFFSET FLAT:$SG11499
 	call	DoDebugMsg
 
 ; 458  :         p64++;
@@ -5103,7 +4845,7 @@ $LN24@set_symtab:
 	mov	r9d, eax
 	mov	r8d, ecx
 	lea	rdx, QWORD PTR buffer$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11468
+	lea	rcx, OFFSET FLAT:$SG11506
 	call	DoDebugMsg
 
 ; 516  : 
@@ -5136,36 +4878,30 @@ $LN12@set_symtab:
 
 ; 532  : }
 
-	mov	edi, eax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:set_symtab64$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	eax, edi
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 416				; 000001a0H
-	pop	rdi
+	add	rsp, 408				; 00000198H
 	ret	0
 set_symtab64 ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\elf.c
 _TEXT	SEGMENT
-strsize$ = 48
-len$ = 52
-stt$ = 56
-curr$ = 64
-sym$ = 72
-localscurr$ = 80
-q$ = 88
-p32$ = 96
+stt$ = 48
+p32$ = 56
+strsize$ = 64
+curr$ = 72
+len$ = 80
+localscurr$ = 88
+tv227 = 96
+q$ = 104
+sym$ = 112
 buffer$ = 128
-tv227 = 400
-__$ArrayPad$ = 408
-em$ = 432
-entries$ = 440
-localshead$ = 448
+__$ArrayPad$ = 384
+em$ = 416
+entries$ = 424
+localshead$ = 432
 set_symtab32 PROC
 
 ; 184  : {
@@ -5173,13 +4909,7 @@ set_symtab32 PROC
 	mov	QWORD PTR [rsp+24], r8
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 416				; 000001a0H
-	mov	rdi, rsp
-	mov	ecx, 104				; 00000068H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+432]
+	sub	rsp, 408				; 00000198H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -5451,7 +5181,7 @@ $LN17@set_symtab:
 	mov	rax, QWORD PTR p32$[rsp]
 	mov	r8d, DWORD PTR [rax+4]
 	lea	rdx, QWORD PTR buffer$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11407
+	lea	rcx, OFFSET FLAT:$SG11445
 	call	DoDebugMsg
 
 ; 245  :         p32++;
@@ -5618,7 +5348,7 @@ $LN20@set_symtab:
 	mov	r9d, eax
 	mov	r8d, ecx
 	lea	rdx, QWORD PTR buffer$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11411
+	lea	rcx, OFFSET FLAT:$SG11449
 	call	DoDebugMsg
 
 ; 276  :         p32++;
@@ -5792,7 +5522,7 @@ $LN24@set_symtab:
 	mov	rax, QWORD PTR p32$[rsp]
 	mov	r8d, DWORD PTR [rax+4]
 	lea	rdx, QWORD PTR buffer$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11418
+	lea	rcx, OFFSET FLAT:$SG11456
 	call	DoDebugMsg
 
 ; 333  : 
@@ -5825,34 +5555,23 @@ $LN12@set_symtab:
 
 ; 349  : }
 
-	mov	edi, eax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:set_symtab32$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	eax, edi
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 416				; 000001a0H
-	pop	rdi
+	add	rsp, 408				; 00000198H
 	ret	0
 set_symtab32 ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\elf.c
 _TEXT	SEGMENT
-curr$ = 0
-num$ = 8
+num$ = 0
+curr$ = 8
 get_num_reloc_sections PROC
 
 ; 169  : {
 
-	push	rdi
-	sub	rsp, 16
-	mov	rdi, rsp
-	mov	ecx, 4
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
+	sub	rsp, 24
 
 ; 170  :     struct dsym    *curr;
 ; 171  :     int num = 0;
@@ -5901,12 +5620,11 @@ $LN3@get_num_re:
 
 ; 178  : }
 
-	add	rsp, 16
-	pop	rdi
+	add	rsp, 24
 	ret	0
 get_num_reloc_sections ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\elf.c
 _TEXT	SEGMENT
 i$ = 32
@@ -5918,13 +5636,7 @@ ElfConvertSectionName PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 149  :     int i;
 ; 150  : 
@@ -6043,22 +5755,19 @@ $LN1@ElfConvert:
 
 ; 163  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 ElfConvertSectionName ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\elf.c
 _TEXT	SEGMENT
-modinfo$ = 16
+modinfo$ = 8
 elf_init PROC
 
 ; 1378 : {
 
-$LN3:
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
 
 ; 1379 :     modinfo->elf_osabi = ELFOSABI_LINUX;
 
@@ -6081,7 +5790,6 @@ $LN3:
 ; 1388 :     return;
 ; 1389 : }
 
-	pop	rdi
 	ret	0
 elf_init ENDP
 _TEXT	ENDS

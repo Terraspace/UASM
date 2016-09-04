@@ -81,6 +81,9 @@ extern uint_16         Frame_Datum;    /* Frame datum of current fixup */
 struct asym             *SegOverride;
 static enum assume_segreg  LastRegOverride;/* needed for CMPS */
 
+struct asm_tok      xmmOver0;        /* xmmword override tokens for -Zg switch (masm compatibility) */
+struct asm_tok      xmmOver1;
+
 /* linked lists of:     index
  *--------------------------------
  * - undefined symbols  TAB_UNDEF
@@ -165,20 +168,21 @@ ret_code GetLangType( int *i, struct asm_tok tokenarray[], enum lang_type *plang
     if( tokenarray[*i].token == T_RES_ID ) {
 #if 1 /* v2.03: simplified */
         if ( tokenarray[(*i)].tokval >= T_C &&
-            tokenarray[(*i)].tokval <= T_FASTCALL ) {
+            tokenarray[(*i)].tokval <= T_VECTORCALL ) { /* 2.15 implemented the VECTORCALL */
             *plang = tokenarray[(*i)].bytval;
             (*i)++;
             return( NOT_ERROR );
         }
 #else
         switch( tokenarray[(*i)].tokval ) {
-        case T_C:        *plang = LANG_C;        break;
-        case T_SYSCALL:  *plang = LANG_SYSCALL;  break;
-        case T_STDCALL:  *plang = LANG_STDCALL;  break;
-        case T_PASCAL:   *plang = LANG_PASCAL;   break;
-        case T_FORTRAN:  *plang = LANG_FORTRAN;  break;
-        case T_BASIC:    *plang = LANG_BASIC;    break;
-        case T_FASTCALL: *plang = LANG_FASTCALL; break;
+        case T_C:        *plang = LANG_C;          break;
+        case T_SYSCALL:  *plang = LANG_SYSCALL;    break;
+        case T_STDCALL:  *plang = LANG_STDCALL;    break;
+        case T_PASCAL:   *plang = LANG_PASCAL;     break;
+        case T_FORTRAN:  *plang = LANG_FORTRAN;    break;
+        case T_BASIC:    *plang = LANG_BASIC;      break;
+        case T_FASTCALL: *plang = LANG_FASTCALL;   break;
+        case T_FASTCALL: *plang = LANG_VECTORCALL; break;
         default:
             return( ERROR );
         }
@@ -256,8 +260,7 @@ int SizeFromMemtype( enum memtype mem_type, int Ofssize, struct asym *type )
         return( ( 2 << Ofssize ) + ( ( SIZE_DATAPTR & ( 1 << ModuleInfo.model ) ) ? 2 : 0 ) );
     case MT_TYPE:
         if ( type )
-
-return( type->total_size );
+          return( type->total_size );
     default:
         DebugMsg1(("SizeFromMemtype( memtype=%Xh, Ofssize=%u )=%u\n", mem_type, Ofssize, 0 ));
         return( 0 );
@@ -822,10 +825,10 @@ static ret_code idata_nofixup( struct code_info *CodeInfo, unsigned CurrOpnd, co
         CodeInfo->opnd[CurrOpnd].data32h = opndx->hvalue;
         return( NOT_ERROR );
     }
-    if ( opndx->value64 <= minintvalues[0] || opndx->value64 > maxintvalues[0] ) {
-        DebugMsg1(("idata_nofixup: error, hvalue=%Xh\n", opndx->hvalue ));
-        return( EmitConstError( opndx ) );
-    }
+    //if ( opndx->value64 <= minintvalues[0] || opndx->value64 > maxintvalues[0] ) {
+    //    DebugMsg1(("idata_nofixup: error, hvalue=%Xh\n", opndx->hvalue ));
+    //    return( EmitConstError( opndx ) );
+    //}
 #endif
 
     /* v2.06: code simplified.
@@ -3155,13 +3158,45 @@ ret_code ParseLine(struct asm_tok tokenarray[])
   /* get the instruction's arguments.
    * This loop accepts up to 4 arguments if AVXSUPP is on */
   for (j = 0; j < sizeof(opndx) / sizeof(opndx[0]) && tokenarray[i].token != T_FINAL; j++) {
-    if (j) {
-      if (tokenarray[i].token != T_COMMA)
-        break;
+    if (j) 
+	{
+		
+		if (tokenarray[i].token != T_COMMA)
+			break;
+
+		/* inject xmmword ptr to relevant sse instructions */
+		if (Options.masm_compat_gencode && tokenarray[i].token == T_COMMA && (CodeInfo.token == T_SUBPD) ||
+			(CodeInfo.token == T_SUBPS) || 
+			(CodeInfo.token == T_ADDPS) ||  
+			(CodeInfo.token == T_ADDPD) || 
+			(CodeInfo.token == T_MOVAPS) || 
+			(CodeInfo.token == T_MOVUPS))
+		{
+
+			xmmOver0.tokpos = tokenarray[i].tokpos;
+			xmmOver1.tokpos = tokenarray[i].tokpos;
+			int k = 0;
+			int n = ModuleInfo.token_count+1;
+			for (k = 0; k < n-1; k++)
+			{
+				if (tokenarray[k].tokval == T_XMMWORD && tokenarray[k + 1].tokval == T_PTR)
+					goto skipxmmsub;
+			}
+			for (k = n-1; k >= i+1; k--)
+			{
+				tokenarray[k+2] = tokenarray[k];
+			}
+			tokenarray[i + 1] = xmmOver0;
+			tokenarray[i + 2] = xmmOver1;
+			ModuleInfo.token_count += 2;
+		}
+
+		skipxmmsub:
       i++;
     }
+
     DebugMsg1(("ParseLine(%s): calling EvalOperand, i=%u\n", instr, i));
-    //if (CodeInfo.token == T_VMOVSS) __debugbreak();
+/*    if (CodeInfo.token == T_SUBPD) __debugbreak();*/
     if (EvalOperand(&i, tokenarray, Token_Count, &opndx[j], 0) == ERROR) {
       DebugMsg(("ParseLine(%s): EvalOperand() failed\n", instr));
       return(ERROR);
@@ -3225,6 +3260,9 @@ ret_code ParseLine(struct asm_tok tokenarray[])
       (CodeInfo.opnd[OPND1].type & (OP_R32 | OP_R64 | OP_K | OP_XMM | OP_YMM | OP_ZMM | OP_M | OP_M64 | OP_M256 | OP_M512))) {
       CodeInfo.indexreg = 0xFF;
       CodeInfo.basereg = 0xFF;
+      if (CodeInfo.token == T_VMOVSD || CodeInfo.token == T_VMOVSS){
+          if (opndx[1].kind == EXPR_CONST)
+          return(EmitErr(INVALID_INSTRUCTION_OPERANDS));       }
       if (opndx[OPND1].kind == EXPR_REG){
         regtok = opndx[OPND1].base_reg->tokval;
       CodeInfo.reg1 = GetRegNo(regtok);
@@ -3249,13 +3287,12 @@ ret_code ParseLine(struct asm_tok tokenarray[])
       else if ((vex_flags[CodeInfo.token - VEX_START] & VX_IMM) &&
         (opndx[OPND3].kind == EXPR_CONST) && (j > 2))
         ;
-      else if ( ( vex_flags[CodeInfo.token - VEX_START] & VX_NMEM ) &&
-               ( ( CodeInfo.opnd[OPND1].type & OP_M ) ||
-               /* v2.11: VMOVSD and VMOVSS always have 2 ops if a memory op is involved */
-               ( ( CodeInfo.token == T_VMOVSD || CodeInfo.token == T_VMOVSS ) &&
-               ( opndx[OPND2].kind != EXPR_REG || opndx[OPND2].indirect == TRUE ) ) )
-              )
-          ;
+      else if ((vex_flags[CodeInfo.token - VEX_START] & VX_NMEM) &&
+        ((CodeInfo.opnd[OPND1].type & OP_M) ||
+        /* v2.11: VMOVSD and VMOVSS always have 2 ops if a memory op is involved */
+        ((CodeInfo.token == T_VMOVSD || CodeInfo.token == T_VMOVSS) &&
+        (opndx[OPND2].kind != EXPR_REG || opndx[OPND2].indirect == TRUE))))
+         ;
       else {
         if (opndx[OPND2].kind != EXPR_REG ||
           (!(GetValueSp(opndx[CurrOpnd].base_reg->tokval) & (OP_R32 | OP_R64 |OP_K | OP_XMM | OP_YMM | OP_ZMM)))) {
@@ -3534,6 +3571,37 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 void ProcessFile( struct asm_tok tokenarray[] )
 /*********************************************/
 {
+	/* Initialize xmmword override tokens each pass */
+	xmmOver0.token = 6;
+	xmmOver0.specval = 15;
+	xmmOver0.floattype = 15;
+	xmmOver0.numbase = 15;
+	xmmOver0.string_delim = 15;
+	xmmOver0.precedence = 15;
+	xmmOver0.bytval = 15;
+	xmmOver0.dirtype = 15;
+	xmmOver0.tokval = T_XMMWORD;
+	xmmOver0.string_ptr = "xmmword";
+	xmmOver0.stringlen = T_XMMWORD;
+	xmmOver0.idarg = T_XMMWORD;
+	xmmOver0.itemlen = T_XMMWORD;
+	xmmOver0.lastidx = T_XMMWORD;
+
+	xmmOver1.token = 5;
+	xmmOver1.specval = 4;
+	xmmOver1.floattype = 4;
+	xmmOver1.numbase = 4;
+	xmmOver1.string_delim = 4;
+	xmmOver1.precedence = 4;
+	xmmOver1.bytval = 4;
+	xmmOver1.dirtype = 4;
+	xmmOver1.tokval = T_PTR;
+	xmmOver1.string_ptr = "ptr";
+	xmmOver1.stringlen = T_PTR;
+	xmmOver1.idarg = T_PTR;
+	xmmOver1.itemlen = T_PTR;
+	xmmOver1.lastidx = T_PTR;
+
     while ( ModuleInfo.EndDirFound == FALSE && GetTextLine( CurrSource ) ) {
         if ( PreprocessLine( CurrSource, tokenarray ) ) {
             ParseLine( tokenarray );

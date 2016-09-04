@@ -12,7 +12,7 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG11419 DB	'$$$%05u', 00H
+$SG11442 DB	'$$$%05u', 00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	sprintf
@@ -65,7 +65,7 @@ $pdata$sprintf DD imagerel $LN8
 pdata	ENDS
 pdata	SEGMENT
 $pdata$AddLinnumDataRef DD imagerel $LN23
-	DD	imagerel $LN23+683
+	DD	imagerel $LN23+686
 	DD	imagerel $unwind$AddLinnumDataRef
 pdata	ENDS
 ;	COMDAT pdata
@@ -455,7 +455,7 @@ $LN4@AddLinnumD:
 ; 108  :         sprintf( procname, "$$$%05u", procidx );
 
 	mov	r8d, DWORD PTR procidx
-	lea	rdx, OFFSET FLAT:$SG11419
+	lea	rdx, OFFSET FLAT:$SG11442
 	lea	rcx, QWORD PTR procname$1[rsp]
 	call	sprintf
 
@@ -683,7 +683,7 @@ $LN14@AddLinnumD:
 	test	rax, rax
 	je	SHORT $LN12@AddLinnumD
 	mov	rax, QWORD PTR [rax+96]
-	cmp	BYTE PTR [rax+85], 0
+	cmp	BYTE PTR [rax+129], 0
 	je	SHORT $LN12@AddLinnumD
 
 ; 178  :             DebugMsg1(("AddLinnumDataRef: calling AddLinnumData(src=%u.%u) sym=%s\n", curr->file, curr->line_number, curr->sym->name ));

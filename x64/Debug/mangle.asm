@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 _DATA	SEGMENT
@@ -12,9 +12,9 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _DATA	SEGMENT
-$SG10650 DB	'_%s@%d', 00H
+$SG10688 DB	'_%s@%d', 00H
 	ORG $+1
-$SG10657 DB	'@%s@%u', 00H
+$SG10695 DB	'@%s@%u', 00H
 _DATA	ENDS
 CONST	SEGMENT
 fcmanglers DQ	FLAT:ms32_decorate
@@ -27,12 +27,9 @@ PUBLIC	_vsprintf_l
 PUBLIC	sprintf
 PUBLIC	Mangle
 PUBLIC	SetMangler
-EXTRN	__imp___stdio_common_vsprintf:PROC
+EXTRN	__stdio_common_vsprintf:PROC
 EXTRN	memcpy:PROC
-EXTRN	__imp__strupr:PROC
-EXTRN	_RTC_CheckStackVars:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
+EXTRN	_strupr:PROC
 EXTRN	Options:BYTE
 EXTRN	ModuleInfo:BYTE
 EXTRN	__ImageBase:BYTE
@@ -41,126 +38,82 @@ COMM	?_OptionsStorage@?1??__local_stdio_printf_options@@9@9:QWORD							; `__loc
 _DATA	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
-$pdata$__local_stdio_printf_options DD imagerel $LN3
-	DD	imagerel $LN3+11
-	DD	imagerel $unwind$__local_stdio_printf_options
-pdata	ENDS
-;	COMDAT pdata
-pdata	SEGMENT
 $pdata$_vsnprintf_l DD imagerel $LN5
-	DD	imagerel $LN5+140
+	DD	imagerel $LN5+117
 	DD	imagerel $unwind$_vsnprintf_l
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$_vsprintf_l DD imagerel $LN3
-	DD	imagerel $LN3+88
+	DD	imagerel $LN3+66
 	DD	imagerel $unwind$_vsprintf_l
 pdata	ENDS
 ;	COMDAT pdata
 pdata	SEGMENT
 $pdata$sprintf DD imagerel $LN3
-	DD	imagerel $LN3+120
+	DD	imagerel $LN3+79
 	DD	imagerel $unwind$sprintf
 pdata	ENDS
 pdata	SEGMENT
 $pdata$Mangle DD imagerel $LN16
-	DD	imagerel $LN16+304
+	DD	imagerel $LN16+284
 	DD	imagerel $unwind$Mangle
-$pdata$SetMangler DD imagerel $LN4
-	DD	imagerel $LN4+36
-	DD	imagerel $unwind$SetMangler
 $pdata$ms32_decorate DD imagerel ms32_decorate
-	DD	imagerel ms32_decorate+80
+	DD	imagerel ms32_decorate+58
 	DD	imagerel $unwind$ms32_decorate
 $pdata$ow_decorate DD imagerel ow_decorate
-	DD	imagerel ow_decorate+309
+	DD	imagerel ow_decorate+287
 	DD	imagerel $unwind$ow_decorate
 $pdata$ms64_decorate DD imagerel ms64_decorate
-	DD	imagerel ms64_decorate+85
+	DD	imagerel ms64_decorate+63
 	DD	imagerel $unwind$ms64_decorate
 $pdata$VoidMangler DD imagerel VoidMangler
-	DD	imagerel VoidMangler+85
+	DD	imagerel VoidMangler+63
 	DD	imagerel $unwind$VoidMangler
 $pdata$UCaseMangler DD imagerel UCaseMangler
-	DD	imagerel UCaseMangler+96
+	DD	imagerel UCaseMangler+73
 	DD	imagerel $unwind$UCaseMangler
 $pdata$UScoreMangler DD imagerel UScoreMangler
-	DD	imagerel UScoreMangler+108
+	DD	imagerel UScoreMangler+86
 	DD	imagerel $unwind$UScoreMangler
 $pdata$StdcallMangler DD imagerel StdcallMangler
-	DD	imagerel StdcallMangler+141
+	DD	imagerel StdcallMangler+119
 	DD	imagerel $unwind$StdcallMangler
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
 xdata	SEGMENT
-$unwind$Mangle DD 022301H
-	DD	0700b720fH
-$unwind$SetMangler DD 010f01H
-	DD	0700fH
-$unwind$ms32_decorate DD 022301H
-	DD	0700b320fH
-$unwind$ow_decorate DD 022301H
-	DD	0700b520fH
-$unwind$ms64_decorate DD 022301H
-	DD	0700b320fH
-$unwind$VoidMangler DD 022301H
-	DD	0700b320fH
-$unwind$UCaseMangler DD 022301H
-	DD	0700b320fH
-$unwind$UScoreMangler DD 022301H
-	DD	0700b320fH
-$unwind$StdcallMangler DD 022301H
-	DD	0700b520fH
+$unwind$Mangle DD 010e01H
+	DD	0820eH
+$unwind$ms32_decorate DD 010e01H
+	DD	0420eH
+$unwind$ow_decorate DD 010e01H
+	DD	0620eH
+$unwind$ms64_decorate DD 010e01H
+	DD	0420eH
+$unwind$VoidMangler DD 010e01H
+	DD	0420eH
+$unwind$UCaseMangler DD 010e01H
+	DD	0420eH
+$unwind$UScoreMangler DD 010e01H
+	DD	0420eH
+$unwind$StdcallMangler DD 010e01H
+	DD	0620eH
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$sprintf DD 022d01H
-	DD	070159219H
-xdata	ENDS
-;	COMDAT CONST
-CONST	SEGMENT
-sprintf$rtcName$0 DB 05fH
-	DB	041H
-	DB	072H
-	DB	067H
-	DB	04cH
-	DB	069H
-	DB	073H
-	DB	074H
-	DB	00H
-	ORG $+7
-sprintf$rtcVarDesc DD 038H
-	DD	08H
-	DQ	FLAT:sprintf$rtcName$0
-	ORG $+48
-sprintf$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:sprintf$rtcVarDesc
-CONST	ENDS
-;	COMDAT xdata
-xdata	SEGMENT
-$unwind$_vsprintf_l DD 022d01H
-	DD	070155219H
+$unwind$sprintf DD 011801H
+	DD	06218H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$_vsnprintf_l DD 022d01H
-	DD	070157219H
+$unwind$_vsprintf_l DD 011801H
+	DD	06218H
 xdata	ENDS
 ;	COMDAT xdata
 xdata	SEGMENT
-$unwind$__local_stdio_printf_options DD 010201H
-	DD	07002H
+$unwind$_vsnprintf_l DD 011801H
+	DD	08218H
 xdata	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\mangle.c
 _TEXT	SEGMENT
 dir$ = 32
@@ -172,13 +125,7 @@ StdcallMangler PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 104  :     const struct dsym *dir = (struct dsym *)sym;
 
@@ -206,7 +153,7 @@ StdcallMangler PROC
 	mov	r9d, DWORD PTR [rax+32]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8, QWORD PTR [rax+8]
-	lea	rdx, OFFSET FLAT:$SG10650
+	lea	rdx, OFFSET FLAT:$SG10688
 	mov	rcx, QWORD PTR buffer$[rsp]
 	call	sprintf
 	jmp	SHORT $LN1@StdcallMan
@@ -227,12 +174,11 @@ $LN1@StdcallMan:
 ; 110  :     }
 ; 111  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 StdcallMangler ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\mangle.c
 _TEXT	SEGMENT
 sym$ = 48
@@ -243,13 +189,7 @@ UScoreMangler PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 93   :     buffer[0] = '_';
 
@@ -279,12 +219,11 @@ UScoreMangler PROC
 
 ; 96   : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 UScoreMangler ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\mangle.c
 _TEXT	SEGMENT
 sym$ = 48
@@ -295,13 +234,7 @@ UCaseMangler PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 83   :     memcpy( buffer, sym->name, sym->name_size + 1 );
 
@@ -318,7 +251,7 @@ UCaseMangler PROC
 ; 84   :     _strupr( buffer );
 
 	mov	rcx, QWORD PTR buffer$[rsp]
-	call	QWORD PTR __imp__strupr
+	call	_strupr
 
 ; 85   :     return( sym->name_size );
 
@@ -327,12 +260,11 @@ UCaseMangler PROC
 
 ; 86   : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 UCaseMangler ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\mangle.c
 _TEXT	SEGMENT
 sym$ = 48
@@ -343,13 +275,7 @@ VoidMangler PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 74   :     memcpy( buffer, sym->name, sym->name_size + 1 );
 
@@ -370,12 +296,11 @@ VoidMangler PROC
 
 ; 76   : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 VoidMangler ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\mangle.c
 _TEXT	SEGMENT
 sym$ = 48
@@ -386,13 +311,7 @@ ms64_decorate PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 176  :     memcpy( buffer, sym->name, sym->name_size + 1 );
 
@@ -413,17 +332,16 @@ ms64_decorate PROC
 
 ; 178  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 ms64_decorate ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\mangle.c
 _TEXT	SEGMENT
-name$ = 32
-changes$ = 40
-tv71 = 44
+changes$ = 32
+tv71 = 36
+name$ = 40
 sym$ = 64
 buffer$ = 72
 ow_decorate PROC
@@ -432,13 +350,7 @@ ow_decorate PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 138  :     char                *name;
 ; 139  :     enum changes        changes = NORMAL;
@@ -581,12 +493,11 @@ $LN9@ow_decorat:
 
 ; 166  : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 ow_decorate ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\mangle.c
 _TEXT	SEGMENT
 sym$ = 48
@@ -597,13 +508,7 @@ ms32_decorate PROC
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 32					; 00000020H
-	mov	rdi, rsp
-	mov	ecx, 8
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+48]
+	sub	rsp, 40					; 00000028H
 
 ; 118  :     return ( sprintf( buffer, "@%s@%u", sym->name, ((struct dsym *)sym)->e.procinfo->parasize ) );
 
@@ -612,32 +517,29 @@ ms32_decorate PROC
 	mov	r9d, DWORD PTR [rax+32]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8, QWORD PTR [rax+8]
-	lea	rdx, OFFSET FLAT:$SG10657
+	lea	rdx, OFFSET FLAT:$SG10695
 	mov	rcx, QWORD PTR buffer$[rsp]
 	call	sprintf
 
 ; 119  : }
 
-	add	rsp, 32					; 00000020H
-	pop	rdi
+	add	rsp, 40					; 00000028H
 	ret	0
 ms32_decorate ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\mangle.c
 _TEXT	SEGMENT
-sym$ = 16
-langtype$ = 24
-mangle_type$ = 32
+sym$ = 8
+langtype$ = 16
+mangle_type$ = 24
 SetMangler PROC
 
 ; 255  : {
 
-$LN4:
 	mov	QWORD PTR [rsp+24], r8
 	mov	DWORD PTR [rsp+16], edx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
 
 ; 256  : #if MANGLERSUPP
 ; 257  :     mangle_func mangler;
@@ -668,15 +570,14 @@ $LN2@SetMangler:
 ; 272  : #endif
 ; 273  : }
 
-	pop	rdi
 	ret	0
 SetMangler ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\mangle.c
 _TEXT	SEGMENT
-mangler$ = 32
-tv65 = 40
+tv65 = 32
+mangler$ = 40
 tv68 = 48
 tv71 = 56
 sym$ = 80
@@ -688,13 +589,7 @@ Mangle	PROC
 $LN16:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 72					; 00000048H
 
 ; 213  :     mangle_func mangler;
 ; 214  : 
@@ -821,9 +716,9 @@ $LN2@Mangle:
 
 ; 248  : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
+	npad	2
 $LN15@Mangle:
 	DD	$LN4@Mangle
 	DD	$LN5@Mangle
@@ -834,14 +729,14 @@ $LN15@Mangle:
 	DD	$LN8@Mangle
 Mangle	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT sprintf
 _TEXT	SEGMENT
 _Result$ = 32
-_ArgList$ = 56
-_Buffer$ = 96
-_Format$ = 104
+_ArgList$ = 40
+_Buffer$ = 64
+_Format$ = 72
 sprintf	PROC						; COMDAT
 
 ; 1776 : {
@@ -851,13 +746,7 @@ $LN3:
 	mov	QWORD PTR [rsp+8], rcx
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+32], r9
-	push	rdi
-	sub	rsp, 80					; 00000050H
-	mov	rdi, rsp
-	mov	ecx, 20
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+96]
+	sub	rsp, 56					; 00000038H
 
 ; 1777 :     int _Result;
 ; 1778 :     va_list _ArgList;
@@ -890,17 +779,11 @@ $LN3:
 
 ; 1788 : }
 
-	mov	edi, eax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:sprintf$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	eax, edi
-	add	rsp, 80					; 00000050H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 sprintf	ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT _vsprintf_l
 _TEXT	SEGMENT
@@ -917,13 +800,7 @@ $LN3:
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 48					; 00000030H
-	mov	rdi, rsp
-	mov	ecx, 12
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+64]
+	sub	rsp, 56					; 00000038H
 
 ; 1456 :     #pragma warning(push)
 ; 1457 :     #pragma warning(disable: 4996) // Deprecation
@@ -940,12 +817,11 @@ $LN3:
 ; 1459 :     #pragma warning(pop)
 ; 1460 : }
 
-	add	rsp, 48					; 00000030H
-	pop	rdi
+	add	rsp, 56					; 00000038H
 	ret	0
 _vsprintf_l ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h
 ;	COMDAT _vsnprintf_l
 _TEXT	SEGMENT
@@ -965,13 +841,7 @@ $LN5:
 	mov	QWORD PTR [rsp+24], r8
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
-	push	rdi
-	sub	rsp, 64					; 00000040H
-	mov	rdi, rsp
-	mov	ecx, 16
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	rcx, QWORD PTR [rsp+80]
+	sub	rsp, 72					; 00000048H
 
 ; 1386 :     int const _Result = __stdio_common_vsprintf(
 
@@ -986,7 +856,7 @@ $LN5:
 	mov	r8, QWORD PTR _BufferCount$[rsp]
 	mov	rdx, QWORD PTR _Buffer$[rsp]
 	mov	rcx, rax
-	call	QWORD PTR __imp___stdio_common_vsprintf
+	call	__stdio_common_vsprintf
 	mov	DWORD PTR _Result$[rsp], eax
 
 ; 1387 :         _CRT_INTERNAL_LOCAL_PRINTF_OPTIONS | _CRT_INTERNAL_PRINTF_LEGACY_VSPRINTF_NULL_TERMINATION,
@@ -1006,21 +876,15 @@ $LN4@vsnprintf_:
 
 ; 1391 : }
 
-	add	rsp, 64					; 00000040H
-	pop	rdi
+	add	rsp, 72					; 00000048H
 	ret	0
 _vsnprintf_l ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\corecrt_stdio_config.h
 ;	COMDAT __local_stdio_printf_options
 _TEXT	SEGMENT
 __local_stdio_printf_options PROC			; COMDAT
-
-; 73   : {
-
-$LN3:
-	push	rdi
 
 ; 74   :     static unsigned __int64 _OptionsStorage;
 ; 75   :     return &_OptionsStorage;
@@ -1029,7 +893,6 @@ $LN3:
 
 ; 76   : }
 
-	pop	rdi
 	ret	0
 __local_stdio_printf_options ENDP
 _TEXT	ENDS

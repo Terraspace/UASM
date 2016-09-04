@@ -65,20 +65,20 @@ enum memtype {
     MT_BYTE  = 1 - 1,
     MT_SBYTE = MT_BYTE | MT_SIGNED,
     MT_WORD  = 2 - 1,
-    MT_SWORD = MT_WORD | MT_SIGNED,
-    MT_DWORD = 4 - 1,
-    MT_SDWORD= MT_DWORD | MT_SIGNED,
-    MT_REAL4 = MT_DWORD | MT_FLOAT,
-    MT_FWORD = 6 - 1,
-    MT_QWORD = 8 - 1,
+    MT_SWORD = MT_WORD | MT_SIGNED,   
+    MT_DWORD = 4 - 1,                 
+    MT_SDWORD= MT_DWORD | MT_SIGNED,  
+    MT_REAL4 = MT_DWORD | MT_FLOAT,   
+    MT_FWORD = 6 - 1,                 
+    MT_QWORD = 8 - 1,                 
     MT_SQWORD= MT_QWORD | MT_SIGNED,
     MT_REAL8 = MT_QWORD | MT_FLOAT,
     MT_TBYTE = 10 - 1,
     MT_REAL10= MT_TBYTE | MT_FLOAT,
     MT_OWORD = 16 - 1,
 #if AVXSUPP    
-    MT_YMMWORD = 32 - 1,
-    MT_ZMMWORD = 64 - 1,
+    MT_YMMWORD  = 32 - 1,
+    MT_ZMMWORD  = 64 - 1,
 #endif
     MT_PROC  = 0x80,   /* symbol is a TYPEDEF PROTO, state=SYM_TYPE, typekind=TYPE_TYPEDEF, prototype is stored in target_type */
     MT_NEAR  = 0x81,
@@ -138,6 +138,7 @@ struct asym {
     enum sym_state  state;
     enum memtype    mem_type;
     unsigned char   used:1,       /* symbol has been referenced */
+    
                     isdefined:1,  /* symbol is "defined" in this pass */
                     scoped:1,     /* symbol is local label or SYM_STACK */
                     /* v2.07: removed */
@@ -253,7 +254,10 @@ struct asym {
         struct dsym *ttype;       /* for easier debugging */
     };
 #else
-    struct asym     *type;        /* set if memtype is MT_TYPE */
+    union {
+        struct asym *type;        /* set if memtype is MT_TYPE */
+        struct dsym *ttype;       /* for easier debugging */
+    };
 #endif
     union {
         /* SYM_INTERNAL, SYM_UNDEFINED, SYM_EXTERNAL: backpatching fixup */
@@ -358,7 +362,14 @@ struct proc_info {
     struct dsym         *labellist;     /* PROC: list of local labels */
     unsigned            parasize;       /* total no. of bytes used by parameters */
     unsigned            localsize;      /* PROC: total no. of bytes used by local variables */
+    unsigned            locals;
+    unsigned             vsize;
     char                *prologuearg;   /* PROC: prologuearg attribute */
+    unsigned char       vecregs[6];
+    unsigned char       vecregsize[6];
+    unsigned char       vregs[6];
+    unsigned char       xyzused[6];
+    unsigned char       vecused;
 #if AMD64_SUPPORT
     struct asym         *exc_handler;   /* PROC: exc handler set by FRAME */
     int                 ReservedStack;  /* PROC: win64: additional reserved stack */
@@ -367,7 +378,7 @@ struct proc_info {
     int					        pushed_reg;		  /* number of pushed registers */
     int                 home_taken;     /* number of taken spaces in a home space */
     int                 xmmsize;        /* size of saved xmm registers */
-    char                home_used[4];   /* used shadows home space */
+    char                home_used[6];   /* used shadows home space */
 #endif
     uint_32             prolog_list_pos;/* PROC: prologue list pos */
     union {
@@ -434,6 +445,12 @@ struct sfield {
     //char                *init_dir; /* v2.09: removed ; previously: not used by record fields */
     char                ivalue[1];  /* v2.09: type changed from char * to char[] */
 };
+//struct svecfield {
+//    struct dsym         sym;        /* field symbol ( state=SYM_STRUCT_FIELD ) */
+//    struct svecfield       *next;      /* next field in STRUCT,UNION,RECORD */
+//    //char                *init_dir; /* v2.09: removed ; previously: not used by record fields */
+//    char                ivalue[1];  /* v2.09: type changed from char * to char[] */
+//};
 
 enum type_kind {
     TYPE_NONE,
@@ -443,6 +460,16 @@ enum type_kind {
     TYPE_RECORD
 };
 
+
+enum struct_simd
+{
+       NOVEC,
+       MM128,
+       MM256,
+#if EVEXSUPP
+       MM512
+#endif
+}; 
 struct struct_info {
     struct sfield       *head; /* STRUCT/UNION/RECORD: start of field list */
     struct sfield       *tail; /* STRUCT/UNION/RECORD: current/next field */
@@ -452,6 +479,11 @@ struct struct_info {
     //#else
     //    uint_8              typekind;
     //#endif
+    enum struct_simd    stype;       /* indicates if the structure is a valid SIMD vector type */
+    uint_8              isHomogenous;
+    uint_8              isHVA;
+    uint_8              isHFA;
+    uint_32             memberCount;
     uint_8              alignment;   /* STRUCT: 1,2,4,8,16 or 32 */
     union {
         uint_8          flags;
@@ -462,7 +494,6 @@ struct struct_info {
         };
     };
 };
-
 /* dsym originally was a "directive_node"
  * However, currently all symbols except SYM_STRUCT_FIELDs are allocated as a dsym.
  * the additional 3 fields are used differently depending on symbol's type.
@@ -510,6 +541,9 @@ struct dsym {
         /* v2.11: removed; member is in use for SYM_EXTERNAL */
         //struct dsym *nextext;
     };
+        //unsigned char vecregs[6];
+        //unsigned char vecregsize[6];
+        //int           vsize;
 };
 
 extern  struct asym     *SymAlloc( const char * );
@@ -523,6 +557,7 @@ extern  struct asym     *SymLookup( const char * );
 extern  struct asym     *SymLookupLocal( const char * );
 
 extern  struct asym     *SymFind( const char *name );
+extern  struct asym     *SymFindDeclare( const char *name );
 #define SymSearch(x) SymFind(x)
 
 extern  void            SymInit( void );

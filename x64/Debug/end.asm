@@ -2,7 +2,7 @@
 
 include listing.inc
 
-INCLUDELIB MSVCRTD
+INCLUDELIB LIBCMTD
 INCLUDELIB OLDNAMES
 
 _DATA	SEGMENT
@@ -12,191 +12,191 @@ COMM	evex:BYTE
 COMM	ZEROLOCALS:BYTE
 _DATA	ENDS
 _BSS	SEGMENT
-$SG11108 DB	01H DUP (?)
+$SG11146 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
-$SG11012 DB	'mov %r,DGROUP', 00H
+$SG11050 DB	'mov %r,DGROUP', 00H
 	ORG $+2
-$SG11013 DB	'mov %r,%r', 00H
+$SG11051 DB	'mov %r,%r', 00H
 	ORG $+2
-$SG11020 DB	'cli', 00H
-$SG11014 DB	'mov %r,%r', 00H
+$SG11058 DB	'cli', 00H
+$SG11052 DB	'mov %r,%r', 00H
 	ORG $+2
-$SG11023 DB	'sti', 00H
-$SG11015 DB	'sub %r,%r', 00H
+$SG11061 DB	'sti', 00H
+$SG11053 DB	'sub %r,%r', 00H
 	ORG $+2
-$SG11037 DB	'push 1', 00H
+$SG11075 DB	'push 1', 00H
 	ORG $+5
-$SG11016 DB	'shl %r,1', 00H
+$SG11054 DB	'shl %r,1', 00H
 	ORG $+7
-$SG11017 DB	'shl %r,1', 00H
+$SG11055 DB	'shl %r,1', 00H
 	ORG $+7
-$SG11018 DB	'shl %r,1', 00H
+$SG11056 DB	'shl %r,1', 00H
 	ORG $+7
-$SG11019 DB	'shl %r,1', 00H
+$SG11057 DB	'shl %r,1', 00H
 	ORG $+7
-$SG11021 DB	'mov %r,%r', 00H
+$SG11059 DB	'mov %r,%r', 00H
 	ORG $+6
-$SG11022 DB	'add %r,%r', 00H
+$SG11060 DB	'add %r,%r', 00H
 	ORG $+6
-$SG11025 DB	'mov %r,DGROUP', 00H
+$SG11063 DB	'mov %r,DGROUP', 00H
 	ORG $+2
-$SG11026 DB	'mov %r,%r', 00H
+$SG11064 DB	'mov %r,%r', 00H
 	ORG $+6
-$SG11027 DB	'mov %r,%r', 00H
+$SG11065 DB	'mov %r,%r', 00H
 	ORG $+6
-$SG11028 DB	'sub %r,%r', 00H
+$SG11066 DB	'sub %r,%r', 00H
 	ORG $+6
-$SG11029 DB	'shl %r,4', 00H
+$SG11067 DB	'shl %r,4', 00H
 	ORG $+7
-$SG11030 DB	'mov %r,%r', 00H
+$SG11068 DB	'mov %r,%r', 00H
 	ORG $+6
-$SG11031 DB	'add %r,%r', 00H
+$SG11069 DB	'add %r,%r', 00H
 	ORG $+6
-$SG11033 DB	'mov %r,DGROUP', 00H
+$SG11071 DB	'mov %r,DGROUP', 00H
 	ORG $+2
-$SG11034 DB	'mov %r,%r', 00H
+$SG11072 DB	'mov %r,%r', 00H
 	ORG $+6
-$SG11036 DB	'mov %r,0', 00H
+$SG11074 DB	'mov %r,0', 00H
 	ORG $+7
-$SG11038 DB	'push %r', 00H
-$SG11039 DB	'call DOSEXIT', 00H
+$SG11076 DB	'push %r', 00H
+$SG11077 DB	'call DOSEXIT', 00H
 	ORG $+3
-$SG11041 DB	'mov %r,4ch', 00H
+$SG11079 DB	'mov %r,4ch', 00H
 	ORG $+5
-$SG11042 DB	'int 21h', 00H
-$SG11069 DB	'org 100h', 00H
+$SG11080 DB	'int 21h', 00H
+$SG11107 DB	'org 100h', 00H
 	ORG $+3
-$SG11070 DB	'%s::', 00H
+$SG11108 DB	'%s::', 00H
 	ORG $+7
-$SG11084 DB	'mov %r,%s', 00H
+$SG11122 DB	'mov %r,%s', 00H
 	ORG $+6
-$SG11088 DB	'mov %r,4C00h + %u', 00H
+$SG11126 DB	'mov %r,4C00h + %u', 00H
 	ORG $+6
-$SG11089 DB	'mov %r,%s', 00H
+$SG11127 DB	'mov %r,%s', 00H
 	ORG $+6
-$SG11090 DB	'mov %r,4Ch', 00H
+$SG11128 DB	'mov %r,4Ch', 00H
 	ORG $+5
-$SG11105 DB	'EndDirective enter', 0aH, 00H
+$SG11143 DB	'EndDirective enter', 0aH, 00H
 	ORG $+4
-$SG11116 DB	'EndDirective: start label=%s, add=%Xh', 0aH, 00H
+$SG11154 DB	'EndDirective: start label=%s, add=%Xh', 0aH, 00H
 	ORG $+1
-$SG11127 DB	'EndDirective: start symbol=NULL', 0aH, 00H
+$SG11165 DB	'EndDirective: start symbol=NULL', 0aH, 00H
 	ORG $+7
-$SG11124 DB	'EndDirective: start address invalid, opndx.kind=%X indir'
+$SG11162 DB	'EndDirective: start address invalid, opndx.kind=%X indir'
 	DB	'ect=%u', 0aH, 00H
-$SG11130 DB	'EndDirective: start address invalid, sym->state=%X', 0aH
+$SG11168 DB	'EndDirective: start address invalid, sym->state=%X', 0aH
 	DB	00H
 	ORG $+4
-$SG11131 DB	'EndDirective: start address not a code label, mem_type=%'
+$SG11169 DB	'EndDirective: start address not a code label, mem_type=%'
 	DB	'Xh', 0aH, 00H
 _DATA	ENDS
 CONST	SEGMENT
-StartupDosNear0 DQ FLAT:$SG11012
+StartupDosNear0 DQ FLAT:$SG11050
 	DW	0bH
 	DW	00H
 	ORG $+4
-	DQ	FLAT:$SG11013
+	DQ	FLAT:$SG11051
 	DW	01cH
 	DW	0bH
 	ORG $+4
-	DQ	FLAT:$SG11014
+	DQ	FLAT:$SG11052
 	DW	0cH
 	DW	01bH
 	ORG $+4
-	DQ	FLAT:$SG11015
+	DQ	FLAT:$SG11053
 	DW	0cH
 	DW	0bH
 	ORG $+4
-	DQ	FLAT:$SG11016
+	DQ	FLAT:$SG11054
 	DW	0cH
 	DW	00H
 	ORG $+4
-	DQ	FLAT:$SG11017
+	DQ	FLAT:$SG11055
 	DW	0cH
 	DW	00H
 	ORG $+4
-	DQ	FLAT:$SG11018
+	DQ	FLAT:$SG11056
 	DW	0cH
 	DW	00H
 	ORG $+4
-	DQ	FLAT:$SG11019
+	DQ	FLAT:$SG11057
 	DW	0cH
 	DW	00H
 	ORG $+4
-	DQ	FLAT:$SG11020
+	DQ	FLAT:$SG11058
 	DW	00H
 	DW	00H
 	ORG $+4
-	DQ	FLAT:$SG11021
+	DQ	FLAT:$SG11059
 	DW	01bH
 	DW	0bH
 	ORG $+4
-	DQ	FLAT:$SG11022
+	DQ	FLAT:$SG11060
 	DW	0dH
 	DW	0cH
 	ORG $+4
-	DQ	FLAT:$SG11023
+	DQ	FLAT:$SG11061
 	DW	00H
 	DW	00H
 	ORG $+4
-StartupDosNear1 DQ FLAT:$SG11025
+StartupDosNear1 DQ FLAT:$SG11063
 	DW	09H
 	DW	00H
 	ORG $+4
-	DQ	FLAT:$SG11026
+	DQ	FLAT:$SG11064
 	DW	01cH
 	DW	09H
 	ORG $+4
-	DQ	FLAT:$SG11027
+	DQ	FLAT:$SG11065
 	DW	0cH
 	DW	01bH
 	ORG $+4
-	DQ	FLAT:$SG11028
+	DQ	FLAT:$SG11066
 	DW	0cH
 	DW	09H
 	ORG $+4
-	DQ	FLAT:$SG11029
+	DQ	FLAT:$SG11067
 	DW	0cH
 	DW	00H
 	ORG $+4
-	DQ	FLAT:$SG11030
+	DQ	FLAT:$SG11068
 	DW	01bH
 	DW	09H
 	ORG $+4
-	DQ	FLAT:$SG11031
+	DQ	FLAT:$SG11069
 	DW	0dH
 	DW	0cH
 	ORG $+4
-StartupDosFar DQ FLAT:$SG11033
+StartupDosFar DQ FLAT:$SG11071
 	DW	0bH
 	DW	00H
 	ORG $+4
-	DQ	FLAT:$SG11034
+	DQ	FLAT:$SG11072
 	DW	01cH
 	DW	0bH
 	ORG $+4
-ExitOS2	DQ	FLAT:$SG11036
+ExitOS2	DQ	FLAT:$SG11074
 	DW	05H
 	DW	00H
 	ORG $+4
-	DQ	FLAT:$SG11037
+	DQ	FLAT:$SG11075
 	DW	00H
 	DW	00H
 	ORG $+4
-	DQ	FLAT:$SG11038
+	DQ	FLAT:$SG11076
 	DW	09H
 	DW	00H
 	ORG $+4
-	DQ	FLAT:$SG11039
+	DQ	FLAT:$SG11077
 	DW	00H
 	DW	00H
 	ORG $+4
-ExitDos	DQ	FLAT:$SG11041
+ExitDos	DQ	FLAT:$SG11079
 	DW	05H
 	DW	00H
 	ORG $+4
-	DQ	FLAT:$SG11042
+	DQ	FLAT:$SG11080
 	DW	00H
 	DW	00H
 	ORG $+4
@@ -218,9 +218,6 @@ EXTRN	EvalOperand:PROC
 EXTRN	LstWriteSrcLine:PROC
 EXTRN	ProcCheckOpen:PROC
 EXTRN	idata_fixup:PROC
-EXTRN	_RTC_CheckStackVars:PROC
-EXTRN	_RTC_InitBase:PROC
-EXTRN	_RTC_Shutdown:PROC
 EXTRN	__GSHandlerCheck:PROC
 EXTRN	__security_check_cookie:PROC
 EXTRN	Options:BYTE
@@ -232,82 +229,28 @@ EXTRN	CurrStruct:QWORD
 EXTRN	__security_cookie:QWORD
 pdata	SEGMENT
 $pdata$StartupExitDirective DD imagerel $LN32
-	DD	imagerel $LN32+1001
+	DD	imagerel $LN32+947
 	DD	imagerel $unwind$StartupExitDirective
 $pdata$EndDirective DD imagerel $LN26
-	DD	imagerel $LN26+1179
+	DD	imagerel $LN26+1113
 	DD	imagerel $unwind$EndDirective
 pdata	ENDS
-;	COMDAT rtc$TMZ
-rtc$TMZ	SEGMENT
-_RTC_Shutdown.rtc$TMZ DQ FLAT:_RTC_Shutdown
-rtc$TMZ	ENDS
-;	COMDAT rtc$IMZ
-rtc$IMZ	SEGMENT
-_RTC_InitBase.rtc$IMZ DQ FLAT:_RTC_InitBase
-rtc$IMZ	ENDS
 xdata	SEGMENT
-$unwind$StartupExitDirective DD 032701H
-	DD	01c0111H
-	DD	0700aH
-$unwind$EndDirective DD 033919H
-	DD	0300111H
-	DD	0700aH
+$unwind$StartupExitDirective DD 021001H
+	DD	0190110H
+$unwind$EndDirective DD 022219H
+	DD	0290110H
 	DD	imagerel __GSHandlerCheck
-	DD	0170H
+	DD	0130H
 xdata	ENDS
-CONST	SEGMENT
-	ORG $+3
-StartupExitDirective$rtcName$0 DB 06fH
-	DB	070H
-	DB	06eH
-	DB	064H
-	DB	078H
-	DB	00H
-	ORG $+6
-StartupExitDirective$rtcFrameData DD 01H
-	DD	00H
-	DQ	FLAT:StartupExitDirective$rtcVarDesc
-EndDirective$rtcName$0 DB 06fH
-	DB	070H
-	DB	06eH
-	DB	064H
-	DB	078H
-	DB	00H
-	ORG $+2
-StartupExitDirective$rtcVarDesc DD 060H
-	DD	068H
-	DQ	FLAT:StartupExitDirective$rtcName$0
-	ORG $+48
-EndDirective$rtcName$1 DB 043H
-	DB	06fH
-	DB	064H
-	DB	065H
-	DB	049H
-	DB	06eH
-	DB	066H
-	DB	06fH
-	DB	00H
-	ORG $+7
-EndDirective$rtcVarDesc DD 0d0H
-	DD	090H
-	DQ	FLAT:EndDirective$rtcName$1
-	DD	040H
-	DD	068H
-	DQ	FLAT:EndDirective$rtcName$0
-	ORG $+96
-EndDirective$rtcFrameData DD 02H
-	DD	00H
-	DQ	FLAT:EndDirective$rtcVarDesc
-CONST	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\end.c
 _TEXT	SEGMENT
-opndx$ = 64
-CodeInfo$5 = 208
-__$ArrayPad$ = 368
-i$ = 400
-tokenarray$ = 408
+opndx$ = 48
+CodeInfo$1 = 160
+__$ArrayPad$ = 304
+i$ = 336
+tokenarray$ = 344
 EndDirective PROC
 
 ; 190  : {
@@ -315,13 +258,7 @@ EndDirective PROC
 $LN26:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 384				; 00000180H
-	mov	rdi, rsp
-	mov	ecx, 96					; 00000060H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+400]
+	sub	rsp, 328				; 00000148H
 	mov	rax, QWORD PTR __security_cookie
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
@@ -330,7 +267,7 @@ $LN26:
 ; 192  : 
 ; 193  :     DebugMsg1(("EndDirective enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11105
+	lea	rcx, OFFSET FLAT:$SG11143
 	call	DoDebugMsg1
 
 ; 194  : 
@@ -412,7 +349,7 @@ $LN5@EndDirecti:
 	cdqe
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
-	lea	rdx, OFFSET FLAT:$SG11108
+	lea	rdx, OFFSET FLAT:$SG11146
 	mov	QWORD PTR [rcx+rax+8], rdx
 
 ; 213  :         Token_Count = i+1;
@@ -535,7 +472,7 @@ $LN12@EndDirecti:
 	mov	r8d, DWORD PTR opndx$[rsp]
 	mov	rax, QWORD PTR opndx$[rsp+80]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11116
+	lea	rcx, OFFSET FLAT:$SG11154
 	call	DoDebugMsg
 
 ; 237  : 
@@ -552,11 +489,11 @@ $LN12@EndDirecti:
 
 	mov	eax, 24
 	imul	rax, rax, 0
-	mov	QWORD PTR CodeInfo$5[rsp+rax+48], 0
+	mov	QWORD PTR CodeInfo$1[rsp+rax+48], 0
 
 ; 244  :             CodeInfo.token = T_NOP;
 
-	mov	DWORD PTR CodeInfo$5[rsp+24], 638	; 0000027eH
+	mov	DWORD PTR CodeInfo$1[rsp+24], 643	; 00000283H
 
 ; 245  :             CodeInfo.pinstr = &InstrTable[IndexFromToken( T_NOP )];
 
@@ -568,21 +505,21 @@ $LN12@EndDirecti:
 	lea	rcx, OFFSET FLAT:InstrTable
 	add	rcx, rax
 	mov	rax, rcx
-	mov	QWORD PTR CodeInfo$5[rsp+16], rax
+	mov	QWORD PTR CodeInfo$1[rsp+16], rax
 
 ; 246  :             CodeInfo.flags = 0;
 
-	mov	BYTE PTR CodeInfo$5[rsp+142], 0
+	mov	BYTE PTR CodeInfo$1[rsp+142], 0
 
 ; 247  :             CodeInfo.mem_type = MT_EMPTY;
 
-	mov	DWORD PTR CodeInfo$5[rsp+28], 192	; 000000c0H
+	mov	DWORD PTR CodeInfo$1[rsp+28], 192	; 000000c0H
 
 ; 248  :             idata_fixup( &CodeInfo, 0, &opndx );
 
 	lea	r8, QWORD PTR opndx$[rsp]
 	xor	edx, edx
-	lea	rcx, QWORD PTR CodeInfo$5[rsp]
+	lea	rcx, QWORD PTR CodeInfo$1[rsp]
 	call	idata_fixup
 
 ; 249  : #if FASTMEM==0
@@ -592,7 +529,7 @@ $LN12@EndDirecti:
 
 	mov	eax, 24
 	imul	rax, rax, 0
-	mov	rax, QWORD PTR CodeInfo$5[rsp+rax+48]
+	mov	rax, QWORD PTR CodeInfo$1[rsp+rax+48]
 	mov	QWORD PTR ModuleInfo+208, rax
 
 ; 253  :             ModuleInfo.g.start_displ = opndx.value;
@@ -670,7 +607,7 @@ $LN19@EndDirecti:
 	and	eax, 1
 	mov	r8d, eax
 	mov	edx, DWORD PTR opndx$[rsp+60]
-	lea	rcx, OFFSET FLAT:$SG11124
+	lea	rcx, OFFSET FLAT:$SG11162
 	call	DoDebugMsg
 	jmp	SHORT $LN18@EndDirecti
 $LN17@EndDirecti:
@@ -682,7 +619,7 @@ $LN17@EndDirecti:
 
 ; 270  :             DebugMsg(("EndDirective: start symbol=NULL\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG11127
+	lea	rcx, OFFSET FLAT:$SG11165
 	call	DoDebugMsg
 	jmp	SHORT $LN21@EndDirecti
 $LN20@EndDirecti:
@@ -700,7 +637,7 @@ $LN20@EndDirecti:
 
 	mov	rax, QWORD PTR opndx$[rsp+80]
 	mov	edx, DWORD PTR [rax+32]
-	lea	rcx, OFFSET FLAT:$SG11130
+	lea	rcx, OFFSET FLAT:$SG11168
 	call	DoDebugMsg
 
 ; 273  :         } else {
@@ -711,7 +648,7 @@ $LN22@EndDirecti:
 ; 274  :             DebugMsg(("EndDirective: start address not a code label, mem_type=%Xh\n", opndx.mem_type ));
 
 	mov	edx, DWORD PTR opndx$[rsp+64]
-	lea	rcx, OFFSET FLAT:$SG11131
+	lea	rcx, OFFSET FLAT:$SG11169
 	call	DoDebugMsg
 $LN23@EndDirecti:
 $LN21@EndDirecti:
@@ -761,30 +698,24 @@ $LN1@EndDirecti:
 
 ; 289  : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:EndDirective$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
 	call	__security_check_cookie
-	add	rsp, 384				; 00000180H
-	pop	rdi
+	add	rsp, 328				; 00000148H
 	ret	0
 EndDirective ENDP
 _TEXT	ENDS
-; Function compile flags: /Odtp /RTCsu
+; Function compile flags: /Odtp
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\end.c
 _TEXT	SEGMENT
 count$ = 48
-rc$ = 52
-j$ = 56
-p$ = 64
-opndx$ = 96
-tv80 = 212
-i$ = 240
-tokenarray$ = 248
+p$ = 56
+tv80 = 64
+rc$ = 68
+j$ = 72
+opndx$ = 80
+i$ = 208
+tokenarray$ = 216
 StartupExitDirective PROC
 
 ; 96   : {
@@ -792,13 +723,7 @@ StartupExitDirective PROC
 $LN32:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
-	push	rdi
-	sub	rsp, 224				; 000000e0H
-	mov	rdi, rsp
-	mov	ecx, 56					; 00000038H
-	mov	eax, -858993460				; ccccccccH
-	rep stosd
-	mov	ecx, DWORD PTR [rsp+240]
+	sub	rsp, 200				; 000000c8H
 
 ; 97   :     int         count;
 ; 98   :     ret_code    rc = NOT_ERROR;
@@ -853,9 +778,9 @@ $LN11@StartupExi:
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	eax, DWORD PTR [rcx+rax+16]
 	mov	DWORD PTR tv80[rsp], eax
-	cmp	DWORD PTR tv80[rsp], 340		; 00000154H
+	cmp	DWORD PTR tv80[rsp], 345		; 00000159H
 	je	$LN21@StartupExi
-	cmp	DWORD PTR tv80[rsp], 341		; 00000155H
+	cmp	DWORD PTR tv80[rsp], 346		; 0000015aH
 	je	SHORT $LN12@StartupExi
 	jmp	$LN2@StartupExi
 $LN12@StartupExi:
@@ -873,14 +798,14 @@ $LN12@StartupExi:
 
 ; 117  :             AddLineQueue( "org 100h" );
 
-	lea	rcx, OFFSET FLAT:$SG11069
+	lea	rcx, OFFSET FLAT:$SG11107
 	call	AddLineQueue
 $LN13@StartupExi:
 
 ; 118  :         AddLineQueueX( "%s::", szStartAddr );
 
 	lea	rdx, OFFSET FLAT:szStartAddr
-	lea	rcx, OFFSET FLAT:$SG11070
+	lea	rcx, OFFSET FLAT:$SG11108
 	call	AddLineQueueX
 
 ; 119  :         if( ModuleInfo.ostype == OPSYS_DOS ) {
@@ -1059,7 +984,7 @@ $LN23@StartupExi:
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	r8, QWORD PTR [rcx+rax+24]
 	mov	edx, 9
-	lea	rcx, OFFSET FLAT:$SG11084
+	lea	rcx, OFFSET FLAT:$SG11122
 	call	AddLineQueueX
 
 ; 154  :                 i = Token_Count;
@@ -1105,7 +1030,7 @@ $LN27@StartupExi:
 
 	mov	r8d, DWORD PTR opndx$[rsp]
 	mov	edx, 9
-	lea	rcx, OFFSET FLAT:$SG11088
+	lea	rcx, OFFSET FLAT:$SG11126
 	call	AddLineQueueX
 
 ; 161  :                 } else {
@@ -1120,13 +1045,13 @@ $LN28@StartupExi:
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	r8, QWORD PTR [rcx+rax+24]
 	mov	edx, 1
-	lea	rcx, OFFSET FLAT:$SG11089
+	lea	rcx, OFFSET FLAT:$SG11127
 	call	AddLineQueueX
 
 ; 163  :                     AddLineQueueX( "mov %r,4Ch", T_AH );
 
 	mov	edx, 5
-	lea	rcx, OFFSET FLAT:$SG11090
+	lea	rcx, OFFSET FLAT:$SG11128
 	call	AddLineQueueX
 $LN29@StartupExi:
 $LN26@StartupExi:
@@ -1220,13 +1145,7 @@ $LN1@StartupExi:
 
 ; 184  : }
 
-	mov	rdi, rax
-	mov	rcx, rsp
-	lea	rdx, OFFSET FLAT:StartupExitDirective$rtcFrameData
-	call	_RTC_CheckStackVars
-	mov	rax, rdi
-	add	rsp, 224				; 000000e0H
-	pop	rdi
+	add	rsp, 200				; 000000c8H
 	ret	0
 StartupExitDirective ENDP
 _TEXT	ENDS
