@@ -2878,6 +2878,8 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 {
   int                 i;
   int                 j;
+  int                 k = 0;
+  int                 n = 0;
   unsigned            dirflags;
   unsigned            CurrOpnd;
   ret_code            temp;
@@ -3175,8 +3177,8 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 
 			xmmOver0.tokpos = tokenarray[i].tokpos;
 			xmmOver1.tokpos = tokenarray[i].tokpos;
-			int k = 0;
-			int n = ModuleInfo.token_count+1;
+			k = 0;
+			n = ModuleInfo.token_count+1;
 			for (k = 0; k < n-1; k++)
 			{
 				if (tokenarray[k].tokval == T_XMMWORD && tokenarray[k + 1].tokval == T_PTR)

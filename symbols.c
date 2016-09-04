@@ -767,15 +767,28 @@ struct asym *SymEnum( struct asym *sym, int *pi )
 
 void SymSimd(struct dsym *sym)
 {
-  struct sfield *pMember = sym->e.structinfo->head;
+	int memberCount = 0;
+	int vtotal = 0;
+	int msize = 0;
+	enum memtype ctype;
+	enum memtype htype;
+	int c0;
+	int c1;
+	int c2;
+    struct sfield *pMember = sym->e.structinfo->head;
+	uint_8 member1Valid = 0;
+	uint_8 member2Valid = 0;
+	uint_8 member3Valid = 0;
+	uint_8 member4Valid = 0;
+
   if (pMember == NULL && sym->sym.typekind != TYPE_UNION) return;
-  int memberCount = 0;
+  memberCount = 0;
   sym->e.structinfo->isHomogenous = 1;
 
-  int vtotal = sym->sym.total_size;
-  int msize = pMember->sym.total_size;
-  enum memtype ctype = pMember->sym.mem_type;
-  enum memtype htype = pMember->sym.mem_type;
+  vtotal = sym->sym.total_size;
+  msize = pMember->sym.total_size;
+  ctype = pMember->sym.mem_type;
+  htype = pMember->sym.mem_type;
 
   while (pMember)
   {
@@ -824,10 +837,10 @@ void SymSimd(struct dsym *sym)
 	   // Due to vectorcall convention, __m128 which is technically also an HFA (4 floats) must be marked as nonHFA.
 	   // And consequently any structure with name __m128/__m256/__m512 must be marked as non-HFA. (This is a bit ugly, but it's the only way to ensure the types are correctly handled by invoke/proc).
 
-	   int c0 = strncmp(sym->sym.name, "__m128", 6);
-	   int c1 = strncmp(sym->sym.name, "__m256", 6);
+	   c0 = strncmp(sym->sym.name, "__m128", 6);
+	   c1 = strncmp(sym->sym.name, "__m256", 6);
 #if EVEXSUPP
-	   int c2 = strncmp(sym->sym.name, "__m512", 6);
+	   c2 = strncmp(sym->sym.name, "__m512", 6);
 #endif
 	   if (c0 == 0)
 	   {
@@ -851,10 +864,10 @@ void SymSimd(struct dsym *sym)
 	   if (memberCount == 4 && sym->e.structinfo->isHomogenous == 1 && htype == MT_TYPE && sym->sym.typekind != TYPE_UNION)
 	   {
 		   pMember = sym->e.structinfo->head;
-		   uint_8 member1Valid = 0;
-		   uint_8 member2Valid = 0;
-		   uint_8 member3Valid = 0;
-		   uint_8 member4Valid = 0;
+		   member1Valid = 0;
+		   member2Valid = 0;
+		   member3Valid = 0;
+		   member4Valid = 0;
 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member1Valid = 1;
 		   pMember = pMember->next;
 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member2Valid = 1;
@@ -880,9 +893,9 @@ void SymSimd(struct dsym *sym)
 	   else if (memberCount == 3 && sym->e.structinfo->isHomogenous == 1 && htype == MT_TYPE && sym->sym.typekind != TYPE_UNION)
 	   {
 		   pMember = sym->e.structinfo->head;
-		   uint_8 member1Valid = 0;
-		   uint_8 member2Valid = 0;
-		   uint_8 member3Valid = 0;
+		   member1Valid = 0;
+		   member2Valid = 0;
+		   member3Valid = 0;
 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member1Valid = 1;
 		   pMember = pMember->next;
 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member2Valid = 1;
@@ -904,8 +917,8 @@ void SymSimd(struct dsym *sym)
 	   else if (memberCount == 2 && sym->e.structinfo->isHomogenous == 1 && htype == MT_TYPE && sym->sym.typekind != TYPE_UNION)
 	   {
 		   pMember = sym->e.structinfo->head;
-		   uint_8 member1Valid = 0;
-		   uint_8 member2Valid = 0;
+		   member1Valid = 0;
+		   member2Valid = 0;
 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member1Valid = 1;
 		   pMember = pMember->next;
 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member2Valid = 1;
@@ -923,7 +936,7 @@ void SymSimd(struct dsym *sym)
 	   else if (memberCount == 1 && sym->e.structinfo->isHomogenous == 1 && htype == MT_TYPE && sym->sym.typekind != TYPE_UNION)
 	   {
 		   pMember = sym->e.structinfo->head;
-		   uint_8 member1Valid = 0;
+		   member1Valid = 0;
 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member1Valid = 1;
 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member1Valid = 1;
 		   if (member1Valid == 1)

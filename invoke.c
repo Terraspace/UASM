@@ -268,6 +268,9 @@ static int ms64_param( struct dsym const *proc, int index, struct dsym *param, b
     int reg2;
     int i;
     int j = 0;
+	int tCount = 0;
+	int freevecregs = 0;
+	int vecidx = -1;
     int membersize = 0;     /* used for vectorcall array */
     int memberCount= 0;     /* used for vectorcall array */
     int base;
@@ -488,8 +491,8 @@ vcall:
 		  if (t != 0 && t->e.structinfo->isHFA && (vcallpass == 1))
 		  {
       
-			  int freevecregs = 0;
-			  int vecidx = -1;
+			  freevecregs = 0;
+			  vecidx = -1;
 			  for (i = 0; i < 6; i++)
 			  {
 				  if (info->vregs[i] == 0)
@@ -502,8 +505,8 @@ vcall:
 			  memberCount = t->e.structinfo->memberCount;
 			  if (memberCount > freevecregs) goto uselea;
 			  membersize = psize / memberCount;     //get the size of a single element which is REAL4 in this case        
-			  int j = 0;
-			  int tCount = memberCount;
+			  j = 0;
+			  tCount = memberCount;
 			  while (tCount > 0)
 			  {
 				  if (info->vregs[vecidx] == 0)
@@ -527,8 +530,8 @@ vcall:
 		  if (t != 0 && t->e.structinfo->isHFA && (vcallpass == 1))
 		  {
 			  
-			  int freevecregs = 0;
-			  int vecidx = -1;
+			  freevecregs = 0;
+			  vecidx = -1;
 			  for (i = 0; i < 6; i++)
 			  {
 				  if (info->vregs[i] == 0)
@@ -541,8 +544,8 @@ vcall:
 			  memberCount = t->e.structinfo->memberCount;
 			  if (memberCount > freevecregs) goto uselea;
 			  membersize = psize / memberCount;          //get the size of a single element which is REAL4 in this case        
-			  int j = 0;
-			  int tCount = memberCount;
+			  j = 0;
+			  tCount = memberCount;
 			  if (membersize == 8)
 			  {
 				  while (tCount > 0)
@@ -587,8 +590,8 @@ vcall:
 		  t = param->sym.ttype;
 		  if (t != 0 && t->e.structinfo->isHFA && (vcallpass == 1))
 		  {
-			  int freevecregs = 0;
-			  int vecidx = -1;
+			  freevecregs = 0;
+			  vecidx = -1;
 			  for (i = 0; i < 6; i++)
 			  {
 				  if (info->vregs[i] == 0)
@@ -601,8 +604,8 @@ vcall:
 			  memberCount = t->e.structinfo->memberCount;
 			  if (memberCount > freevecregs) goto uselea;
 			  membersize = psize / memberCount;               //get the size of a single element which is REAL4 in this case        
-			  int j = 0;
-			  int tCount = memberCount;
+			  j = 0;
+			  tCount = memberCount;
 			  while (tCount > 0)
 			  {
 				  if (info->vregs[vecidx] == 0)
@@ -626,8 +629,8 @@ vcall:
 		  if (t != 0 && t->e.structinfo->isHFA && (vcallpass == 1))
 		  {
 
-			  int freevecregs = 0;
-			  int vecidx = -1;
+			  freevecregs = 0;
+			  vecidx = -1;
 			  for (i = 0; i < 6; i++)
 			  {
 				  if (info->vregs[i] == 0)
@@ -640,8 +643,8 @@ vcall:
 			  memberCount = t->e.structinfo->memberCount;
 			  if (memberCount > freevecregs) goto uselea;
 			  membersize = psize / memberCount;          //get the size of a single element which is REAL4 in this case        
-			  int j = 0;
-			  int tCount = memberCount;
+			  j = 0;
+			  tCount = memberCount;
 			  while (tCount > 0)
 			  {
 				  if (info->vregs[vecidx] == 0)
@@ -665,8 +668,8 @@ vcall:
 		  if (t != 0 && t->e.structinfo->isHFA && (vcallpass == 1))
 		  {
 
-			  int freevecregs = 0;
-			  int vecidx = -1;
+			  freevecregs = 0;
+			  vecidx = -1;
 			  for (i = 0; i < 6; i++)
 			  {
 				  if (info->vregs[i] == 0)
@@ -679,8 +682,8 @@ vcall:
 			  memberCount = t->e.structinfo->memberCount;
 			  if (memberCount > freevecregs) goto uselea;
 			  membersize = psize / memberCount;          //get the size of a single element which is REAL4 in this case        
-			  int j = 0;
-			  int tCount = memberCount;
+			  j = 0;
+			  tCount = memberCount;
 			  while (tCount > 0)
 			  {
 				  if (info->vregs[vecidx] == 0)
@@ -943,7 +946,6 @@ vcall:
 		  }
           else
                 EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, index+1 );
-          /*  *regs_used |= ( 1 << ( index + RPAR_START ) );*/
             return( 1 );
         }
         
@@ -974,7 +976,6 @@ vcall:
 			  EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
 		  }
 		  /* v2.11: use parameter size to allow argument extension */
-		  //switch ( size ) {
 		  switch (psize) {
 		  case 1: base = 0 * 4; break;
 		  case 2: base = 1 * 4; break;
@@ -997,28 +998,6 @@ vcall:
 				  }
 			  }
 		  }
-
-		  /* If we using vectorcall we should replace the index (which is normally the parameter position)
-			 with the index of the first free GP register.
-		  */
-		  /*if (proc->sym.langtype == LANG_VECTORCALL)
-		  {
-			  int tempindex = index;
-			  index = -1;
-			  int i = 0;
-			  for (; i < 4; i++)
-			  {
-				  if (!(*regs_used & (1 << (i + RPAR_START - 1))))
-				  {
-					  index = i;
-					  break;
-				  }
-			  }
-			  if (index == -1)
-			  {
-				  index = tempindex;
-			  }
-		  }*/
 
 		  /* v2.11: allow argument extension */
 		  if (size < psize)
