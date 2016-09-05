@@ -3171,6 +3171,11 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 			(CodeInfo.token == T_SUBPS) || 
 			(CodeInfo.token == T_ADDPS) ||  
 			(CodeInfo.token == T_ADDPD) || 
+			(CodeInfo.token == T_MULPD) ||
+			(CodeInfo.token == T_MULPS) ||
+			(CodeInfo.token == T_ANDPD) ||
+			(CodeInfo.token == T_ANDPS) ||
+			(CodeInfo.token == T_MOVAPD) ||
 			(CodeInfo.token == T_MOVAPS) || 
 			(CodeInfo.token == T_MOVUPS))
 		{
