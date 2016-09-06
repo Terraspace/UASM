@@ -141,6 +141,7 @@ static const struct eqitem eqtab[] = {
 	{ "__JWASM__", 212, NULL, NULL },
     { "$",         0,                   UpdateCurPC, &symPC },
     { "@Line",     0,                   UpdateLineNumber, &LineCur },
+	{ "@ProcLine", 0,                   NULL, NULL },
     { "@WordSize", 0,                   UpdateWordSize, NULL }, /* must be last (see SymInit()) */
 };
 

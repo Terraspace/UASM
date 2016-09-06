@@ -67,6 +67,7 @@ extern unsigned char regsize[6];
 
 struct dsym             *CurrProc;      /* current procedure */
 int                     procidx;        /* procedure index */
+int                     CurrProcLine;
 int XYZMMsize;
 static struct proc_info *ProcStack;
 
@@ -1455,6 +1456,13 @@ ret_code ProcDir( int i, struct asm_tok tokenarray[] )
     char                *name;
     bool                oldpubstate;
     bool                is_global;
+	struct asym*        cline;
+	struct asym*        procline;
+
+	/* Store the current source code line relating to the PROC */
+	cline = SymFind("@Line");
+	procline = SymFind("@ProcLine");
+	procline->value = cline->value;
 
     DebugMsg1(("ProcDir enter, curr ofs=%X\n", GetCurrOffset() ));
     if( i != 1 ) {
@@ -2188,6 +2196,8 @@ static ret_code write_userdef_prologue( struct asm_tok tokenarray[] )
     uint_16             *regs;
     char                reglst[128];
     char                buffer[MAX_LINE_LEN];
+	struct asym         *cline;
+	int                 curline;
 
 #if FASTPASS
     if ( Parse_Pass > PASS_1 && UseSavedState )
@@ -2257,7 +2267,7 @@ static ret_code write_userdef_prologue( struct asm_tok tokenarray[] )
             curr->sym.offset -= len;
         }
     }
-
+	
     return ( NOT_ERROR );
 }
 

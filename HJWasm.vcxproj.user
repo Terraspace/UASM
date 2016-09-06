@@ -5,7 +5,7 @@
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LocalDebuggerCommandArguments>-c -win64 -Zi -Zd -Zf -Zp8  -Zg d:\pointy\vcall.asm</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-c -coff d:\pointy\prologtest.asm</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>

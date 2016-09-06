@@ -26,7 +26,7 @@ symPC	DQ	01H DUP (?)
 $SG11066 DB	01H DUP (?)
 	ALIGN	4
 
-$SG11131 DB	01H DUP (?)
+$SG11134 DB	01H DUP (?)
 _BSS	ENDS
 CONST	SEGMENT
 tmtab	DQ	FLAT:$SG11059
@@ -47,118 +47,123 @@ tmtab	DQ	FLAT:$SG11059
 	DQ	FLAT:$SG11065
 	DQ	FLAT:$SG11066
 	DQ	FLAT:symCurSeg
-eqtab	DQ	FLAT:$SG11080
+eqtab	DQ	FLAT:$SG11082
 	DD	0d7H
 	ORG $+4
 	DQ	0000000000000000H
 	DQ	0000000000000000H
-	DQ	FLAT:$SG11081
+	DQ	FLAT:$SG11083
 	DD	0d4H
 	ORG $+4
 	DQ	0000000000000000H
 	DQ	0000000000000000H
-	DQ	FLAT:$SG11082
+	DQ	FLAT:$SG11084
 	DD	00H
 	ORG $+4
 	DQ	FLAT:UpdateCurPC
 	DQ	FLAT:symPC
-	DQ	FLAT:$SG11083
+	DQ	FLAT:$SG11085
 	DD	00H
 	ORG $+4
 	DQ	FLAT:UpdateLineNumber
 	DQ	FLAT:LineCur
-	DQ	FLAT:$SG11084
+	DQ	FLAT:$SG11086
+	DD	00H
+	ORG $+4
+	DQ	0000000000000000H
+	DQ	0000000000000000H
+	DQ	FLAT:$SG11087
 	DD	00H
 	ORG $+4
 	DQ	FLAT:UpdateWordSize
 	DQ	0000000000000000H
 CONST	ENDS
 _DATA	SEGMENT
-$SG11280 DB	'%4u ', 00H
+$SG11283 DB	'%4u ', 00H
 	ORG $+3
-$SG11281 DB	'%-16s ', 00H
+$SG11284 DB	'%-16s ', 00H
 	ORG $+1
-$SG11282 DB	0aH, 00H
+$SG11285 DB	0aH, 00H
 	ORG $+2
-$SG11397 DB	'__m128', 00H
+$SG11400 DB	'__m128', 00H
 	ORG $+1
 $SG11060 DB	'800', 00H
-$SG11283 DB	'symbols.c', 00H
+$SG11286 DB	'symbols.c', 00H
 	ORG $+2
-$SG11398 DB	'__m256', 00H
+$SG11401 DB	'__m256', 00H
 	ORG $+1
-$SG11082 DB	'$', 00H
+$SG11084 DB	'$', 00H
 	ORG $+2
-$SG11298 DB	'SymInit() enter', 0aH, 00H
+$SG11301 DB	'SymInit() enter', 0aH, 00H
 	ORG $+3
-$SG11460 DB	'Number', 00H
+$SG11463 DB	'Number', 00H
 	ORG $+5
-$SG11299 DB	'%02u/%02u/%02u', 00H
+$SG11302 DB	'%02u/%02u/%02u', 00H
 	ORG $+1
-$SG11300 DB	'%02u:%02u:%02u', 00H
+$SG11303 DB	'%02u:%02u:%02u', 00H
 	ORG $+1
-$SG11303 DB	'SymInit() exit', 0aH, 00H
-$SG11469 DB	'Proto', 00H
+$SG11306 DB	'SymInit() exit', 0aH, 00H
+$SG11472 DB	'Proto', 00H
 	ORG $+2
-$SG11433 DB	'Symbol VectorCall Settings: %s isHomogenous:%u isHFA:%u '
+$SG11436 DB	'Symbol VectorCall Settings: %s isHomogenous:%u isHFA:%u '
 	DB	'isHVA:%u MMType:%u memberCount:%u', 0aH, 00H
 	ORG $+5
-$SG11453 DB	'Undefined', 00H
+$SG11456 DB	'Undefined', 00H
 	ORG $+6
-$SG11457 DB	'Procedure', 00H
+$SG11460 DB	'Procedure', 00H
 	ORG $+6
-$SG11464 DB	'Code Label', 00H
+$SG11467 DB	'Code Label', 00H
 	ORG $+5
-$SG11465 DB	'Data Label', 00H
+$SG11468 DB	'Data Label', 00H
 	ORG $+5
-$SG11472 DB	'Communal', 00H
+$SG11475 DB	'Communal', 00H
 	ORG $+7
-$SG11475 DB	'Number (ext)', 00H
+$SG11478 DB	'Number (ext)', 00H
 	ORG $+3
-$SG11479 DB	'Code (ext)', 00H
+$SG11482 DB	'Code (ext)', 00H
 	ORG $+5
-$SG11480 DB	'Data (ext)', 00H
+$SG11483 DB	'Data (ext)', 00H
 	ORG $+5
-$SG11482 DB	'Segment', 00H
-$SG11484 DB	'Group', 00H
+$SG11485 DB	'Segment', 00H
+$SG11487 DB	'Group', 00H
 	ORG $+2
-$SG11486 DB	'Stack Var', 00H
+$SG11489 DB	'Stack Var', 00H
 	ORG $+6
-$SG11488 DB	'Struct Field', 00H
+$SG11491 DB	'Struct Field', 00H
 	ORG $+3
-$SG11491 DB	'Structure', 00H
+$SG11494 DB	'Structure', 00H
 	ORG $+2
-$SG11493 DB	'Union', 00H
+$SG11496 DB	'Union', 00H
 	ORG $+6
-$SG11495 DB	'Typedef', 00H
-$SG11497 DB	'Record', 00H
+$SG11498 DB	'Typedef', 00H
+$SG11500 DB	'Record', 00H
 	ORG $+1
-$SG11499 DB	'Undef Type', 00H
+$SG11502 DB	'Undef Type', 00H
 	ORG $+1
-$SG11501 DB	'Alias', 00H
+$SG11504 DB	'Alias', 00H
 	ORG $+2
-$SG11503 DB	'Macro', 00H
+$SG11506 DB	'Macro', 00H
 	ORG $+2
-$SG11505 DB	'Text', 00H
+$SG11508 DB	'Text', 00H
 	ORG $+7
-$SG11507 DB	'Unknown', 00H
-$SG11508 DB	'%-12s  %16I64X %02X %8p %c %8p %s', 0aH, 00H
+$SG11510 DB	'Unknown', 00H
+$SG11511 DB	'%-12s  %16I64X %02X %8p %c %8p %s', 0aH, 00H
 	ORG $+5
-$SG11526 DB	'DumpSymbols enter', 0aH, 00H
+$SG11529 DB	'DumpSymbols enter', 0aH, 00H
 	ORG $+5
-$SG11541 DB	'%u items in symbol table, expected %u', 0aH, 00H
+$SG11544 DB	'%u items in symbol table, expected %u', 0aH, 00H
 	ORG $+1
-$SG11528 DB	'   # Addr     Type                     Value MT    Ext  '
+$SG11531 DB	'   # Addr     Type                     Value MT    Ext  '
 	DB	' P  pName   Name', 0aH, 00H
 	ORG $+6
-$SG11529 DB	'--------------------------------------------------------'
+$SG11532 DB	'--------------------------------------------------------'
 	DB	'------------------------', 0aH, 00H
 	ORG $+6
-$SG11531 DB	'%4u %8p ', 00H
+$SG11534 DB	'%4u %8p ', 00H
 	ORG $+3
 $SG11061 DB	'@Date', 00H
 	ORG $+6
-$SG11542 DB	'max items in a line=%u, lines with 0/1/<=5/<=10 items=%u'
+$SG11545 DB	'max items in a line=%u, lines with 0/1/<=5/<=10 items=%u'
 	DB	'/%u/%u/%u, ', 0aH, 00H
 	ORG $+3
 $SG11059 DB	'@Version', 00H
@@ -170,42 +175,44 @@ $SG11063 DB	'@FileName', 00H
 $SG11064 DB	'@FileCur', 00H
 	ORG $+7
 $SG11065 DB	'@CurSeg', 00H
-$SG11080 DB	'__HJWASM__', 00H
+$SG11082 DB	'__HJWASM__', 00H
 	ORG $+5
-$SG11081 DB	'__JWASM__', 00H
+$SG11083 DB	'__JWASM__', 00H
 	ORG $+2
-$SG11083 DB	'@Line', 00H
+$SG11085 DB	'@Line', 00H
 	ORG $+6
-$SG11084 DB	'@WordSize', 00H
+$SG11086 DB	'@ProcLine', 00H
 	ORG $+6
-$SG11120 DB	'SymSetLocal(%s): label=%s', 0aH, 00H
+$SG11087 DB	'@WordSize', 00H
+	ORG $+6
+$SG11123 DB	'SymSetLocal(%s): label=%s', 0aH, 00H
 	ORG $+5
-$SG11146 DB	'SymFind(%s): found in local table, state=%u, local=%u', 0aH
+$SG11149 DB	'SymFind(%s): found in local table, state=%u, local=%u', 0aH
 	DB	00H
 	ORG $+1
-$SG11148 DB	'SymFind(%s): found, state=%u memtype=%X lang=%u', 0aH, 00H
+$SG11151 DB	'SymFind(%s): found, state=%u memtype=%X lang=%u', 0aH, 00H
 	ORG $+7
-$SG11163 DB	'SymFind(%s): found in local table, state=%u, local=%u', 0aH
+$SG11166 DB	'SymFind(%s): found in local table, state=%u, local=%u', 0aH
 	DB	00H
 	ORG $+1
-$SG11165 DB	'SymFind(%s): found, state=%u memtype=%X lang=%u', 0aH, 00H
+$SG11168 DB	'SymFind(%s): found, state=%u memtype=%X lang=%u', 0aH, 00H
 	ORG $+3
-$SG11172 DB	'NULL', 00H
+$SG11175 DB	'NULL', 00H
 	ORG $+7
-$SG11173 DB	'SymLookup(%s): created new symbol, CurrProc=%s', 0aH, 00H
-$SG11174 DB	'SymLookup(%s): found, state=%u, defined=%u', 0aH, 00H
+$SG11176 DB	'SymLookup(%s): created new symbol, CurrProc=%s', 0aH, 00H
+$SG11177 DB	'SymLookup(%s): found, state=%u, defined=%u', 0aH, 00H
 	ORG $+4
-$SG11183 DB	'SymLookupLocal(%s): local symbol created in %s', 0aH, 00H
-$SG11185 DB	'SymLookupLocal(%s): label moved into %s''s local namespa'
+$SG11186 DB	'SymLookupLocal(%s): local symbol created in %s', 0aH, 00H
+$SG11188 DB	'SymLookupLocal(%s): label moved into %s''s local namespa'
 	DB	'ce', 0aH, 00H
 	ORG $+5
-$SG11186 DB	'SymLookupLocal(%s): found, state=%u, defined=%u', 0aH, 00H
+$SG11189 DB	'SymLookupLocal(%s): found, state=%u, defined=%u', 0aH, 00H
 	ORG $+7
-$SG11199 DB	'free_ext: item=%p name=%s state=%u', 0aH, 00H
+$SG11202 DB	'free_ext: item=%p name=%s state=%u', 0aH, 00H
 	ORG $+4
-$SG11205 DB	'free_ext: external with private type: %s', 0aH, 00H
+$SG11208 DB	'free_ext: external with private type: %s', 0aH, 00H
 	ORG $+6
-$SG11215 DB	'free_ext: case SYM_STACK, sym=%s with private type', 0aH
+$SG11218 DB	'free_ext: case SYM_STACK, sym=%s with private type', 0aH
 	DB	00H
 _DATA	ENDS
 PUBLIC	__local_stdio_printf_options
@@ -483,26 +490,26 @@ dir$ = 96
 sym$ = 128
 DumpSymbol PROC
 
-; 956  : {
+; 957  : {
 
 	mov	QWORD PTR [rsp+8], rcx
 	sub	rsp, 120				; 00000078H
 
-; 957  :     struct dsym *dir = (struct dsym *)sym;
+; 958  :     struct dsym *dir = (struct dsym *)sym;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	QWORD PTR dir$[rsp], rax
 
-; 958  :     char        *type;
-; 959  :     uint_64     value = sym->uvalue;
+; 959  :     char        *type;
+; 960  :     uint_64     value = sym->uvalue;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	eax, DWORD PTR [rax+16]
 	mov	QWORD PTR value$[rsp], rax
 
-; 960  :     //const char  *langtype;
-; 961  : 
-; 962  :     switch( sym->state ) {
+; 961  :     //const char  *langtype;
+; 962  : 
+; 963  :     switch( sym->state ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	eax, DWORD PTR [rax+32]
@@ -516,19 +523,19 @@ DumpSymbol PROC
 	jmp	rax
 $LN6@DumpSymbol:
 
-; 963  :     case SYM_UNDEFINED:
-; 964  :         type = "Undefined";
+; 964  :     case SYM_UNDEFINED:
+; 965  :         type = "Undefined";
 
-	lea	rax, OFFSET FLAT:$SG11453
+	lea	rax, OFFSET FLAT:$SG11456
 	mov	QWORD PTR type$[rsp], rax
 
-; 965  :         break;
+; 966  :         break;
 
 	jmp	$LN2@DumpSymbol
 $LN7@DumpSymbol:
 
-; 966  :     case SYM_INTERNAL:
-; 967  :         if ( sym->isproc )
+; 967  :     case SYM_INTERNAL:
+; 968  :         if ( sym->isproc )
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+41]
@@ -538,26 +545,26 @@ $LN7@DumpSymbol:
 	test	eax, eax
 	je	SHORT $LN8@DumpSymbol
 
-; 968  :             type = "Procedure";
+; 969  :             type = "Procedure";
 
-	lea	rax, OFFSET FLAT:$SG11457
+	lea	rax, OFFSET FLAT:$SG11460
 	mov	QWORD PTR type$[rsp], rax
 	jmp	SHORT $LN9@DumpSymbol
 $LN8@DumpSymbol:
 
-; 969  :         //else if ( sym->mem_type == MT_ABS )
-; 970  :         else if ( sym->segment == NULL ) {
+; 970  :         //else if ( sym->mem_type == MT_ABS )
+; 971  :         else if ( sym->segment == NULL ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
 	cmp	QWORD PTR [rax+24], 0
 	jne	SHORT $LN10@DumpSymbol
 
-; 971  :             type = "Number";
+; 972  :             type = "Number";
 
-	lea	rax, OFFSET FLAT:$SG11460
+	lea	rax, OFFSET FLAT:$SG11463
 	mov	QWORD PTR type$[rsp], rax
 
-; 972  :             value += ((uint_64)(uint_32)sym->value3264) << 32;
+; 973  :             value += ((uint_64)(uint_32)sym->value3264) << 32;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	eax, DWORD PTR [rax+56]
@@ -569,7 +576,7 @@ $LN8@DumpSymbol:
 	jmp	SHORT $LN11@DumpSymbol
 $LN10@DumpSymbol:
 
-; 973  :         } else if ( sym->mem_type == MT_NEAR || sym->mem_type == MT_FAR )
+; 974  :         } else if ( sym->mem_type == MT_NEAR || sym->mem_type == MT_FAR )
 
 	mov	rax, QWORD PTR sym$[rsp]
 	cmp	DWORD PTR [rax+36], 129			; 00000081H
@@ -579,29 +586,29 @@ $LN10@DumpSymbol:
 	jne	SHORT $LN12@DumpSymbol
 $LN14@DumpSymbol:
 
-; 974  :             type = "Code Label";
+; 975  :             type = "Code Label";
 
-	lea	rax, OFFSET FLAT:$SG11464
+	lea	rax, OFFSET FLAT:$SG11467
 	mov	QWORD PTR type$[rsp], rax
 	jmp	SHORT $LN13@DumpSymbol
 $LN12@DumpSymbol:
 
-; 975  :         else
-; 976  :             type = "Data Label";
+; 976  :         else
+; 977  :             type = "Data Label";
 
-	lea	rax, OFFSET FLAT:$SG11465
+	lea	rax, OFFSET FLAT:$SG11468
 	mov	QWORD PTR type$[rsp], rax
 $LN13@DumpSymbol:
 $LN11@DumpSymbol:
 $LN9@DumpSymbol:
 
-; 977  :         break;
+; 978  :         break;
 
 	jmp	$LN2@DumpSymbol
 $LN15@DumpSymbol:
 
-; 978  :     case SYM_EXTERNAL:
-; 979  :         if ( sym->isproc )
+; 979  :     case SYM_EXTERNAL:
+; 980  :         if ( sym->isproc )
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+41]
@@ -611,14 +618,14 @@ $LN15@DumpSymbol:
 	test	eax, eax
 	je	SHORT $LN16@DumpSymbol
 
-; 980  :             type = "Proto";
+; 981  :             type = "Proto";
 
-	lea	rax, OFFSET FLAT:$SG11469
+	lea	rax, OFFSET FLAT:$SG11472
 	mov	QWORD PTR type$[rsp], rax
 	jmp	$LN17@DumpSymbol
 $LN16@DumpSymbol:
 
-; 981  :         else if ( sym->iscomm )
+; 982  :         else if ( sym->iscomm )
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+47]
@@ -628,27 +635,27 @@ $LN16@DumpSymbol:
 	test	eax, eax
 	je	SHORT $LN18@DumpSymbol
 
-; 982  :             type = "Communal";
+; 983  :             type = "Communal";
 
-	lea	rax, OFFSET FLAT:$SG11472
+	lea	rax, OFFSET FLAT:$SG11475
 	mov	QWORD PTR type$[rsp], rax
 	jmp	SHORT $LN19@DumpSymbol
 $LN18@DumpSymbol:
 
-; 983  :         else if ( sym->mem_type == MT_EMPTY )
+; 984  :         else if ( sym->mem_type == MT_EMPTY )
 
 	mov	rax, QWORD PTR sym$[rsp]
 	cmp	DWORD PTR [rax+36], 192			; 000000c0H
 	jne	SHORT $LN20@DumpSymbol
 
-; 984  :             type = "Number (ext)";
+; 985  :             type = "Number (ext)";
 
-	lea	rax, OFFSET FLAT:$SG11475
+	lea	rax, OFFSET FLAT:$SG11478
 	mov	QWORD PTR type$[rsp], rax
 	jmp	SHORT $LN21@DumpSymbol
 $LN20@DumpSymbol:
 
-; 985  :         else if ( sym->mem_type == MT_NEAR || sym->mem_type == MT_FAR )
+; 986  :         else if ( sym->mem_type == MT_NEAR || sym->mem_type == MT_FAR )
 
 	mov	rax, QWORD PTR sym$[rsp]
 	cmp	DWORD PTR [rax+36], 129			; 00000081H
@@ -658,74 +665,74 @@ $LN20@DumpSymbol:
 	jne	SHORT $LN22@DumpSymbol
 $LN24@DumpSymbol:
 
-; 986  :             type = "Code (ext)";
+; 987  :             type = "Code (ext)";
 
-	lea	rax, OFFSET FLAT:$SG11479
+	lea	rax, OFFSET FLAT:$SG11482
 	mov	QWORD PTR type$[rsp], rax
 	jmp	SHORT $LN23@DumpSymbol
 $LN22@DumpSymbol:
 
-; 987  :         else
-; 988  :             type = "Data (ext)";
+; 988  :         else
+; 989  :             type = "Data (ext)";
 
-	lea	rax, OFFSET FLAT:$SG11480
+	lea	rax, OFFSET FLAT:$SG11483
 	mov	QWORD PTR type$[rsp], rax
 $LN23@DumpSymbol:
 $LN21@DumpSymbol:
 $LN19@DumpSymbol:
 $LN17@DumpSymbol:
 
-; 989  :         break;
+; 990  :         break;
 
 	jmp	$LN2@DumpSymbol
 $LN25@DumpSymbol:
 
-; 990  :     case SYM_SEG:
-; 991  :         type = "Segment";
+; 991  :     case SYM_SEG:
+; 992  :         type = "Segment";
 
-	lea	rax, OFFSET FLAT:$SG11482
+	lea	rax, OFFSET FLAT:$SG11485
 	mov	QWORD PTR type$[rsp], rax
 
-; 992  :         break;
+; 993  :         break;
 
 	jmp	$LN2@DumpSymbol
 $LN26@DumpSymbol:
 
-; 993  :     case SYM_GRP:
-; 994  :         type = "Group";
+; 994  :     case SYM_GRP:
+; 995  :         type = "Group";
 
-	lea	rax, OFFSET FLAT:$SG11484
+	lea	rax, OFFSET FLAT:$SG11487
 	mov	QWORD PTR type$[rsp], rax
 
-; 995  :         break;
+; 996  :         break;
 
 	jmp	$LN2@DumpSymbol
 $LN27@DumpSymbol:
 
-; 996  :     case SYM_STACK: /* should never be found in global table */
-; 997  :         type = "Stack Var";
+; 997  :     case SYM_STACK: /* should never be found in global table */
+; 998  :         type = "Stack Var";
 
-	lea	rax, OFFSET FLAT:$SG11486
+	lea	rax, OFFSET FLAT:$SG11489
 	mov	QWORD PTR type$[rsp], rax
 
-; 998  :         break;
+; 999  :         break;
 
 	jmp	$LN2@DumpSymbol
 $LN28@DumpSymbol:
 
-; 999  :     case SYM_STRUCT_FIELD: /* record bitfields are in global namespace! */
-; 1000 :         type = "Struct Field";
+; 1000 :     case SYM_STRUCT_FIELD: /* record bitfields are in global namespace! */
+; 1001 :         type = "Struct Field";
 
-	lea	rax, OFFSET FLAT:$SG11488
+	lea	rax, OFFSET FLAT:$SG11491
 	mov	QWORD PTR type$[rsp], rax
 
-; 1001 :         break;
+; 1002 :         break;
 
 	jmp	$LN2@DumpSymbol
 $LN29@DumpSymbol:
 
-; 1002 :     case SYM_TYPE:
-; 1003 :         switch ( sym->typekind ) {
+; 1003 :     case SYM_TYPE:
+; 1004 :         switch ( sym->typekind ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+66]
@@ -741,92 +748,92 @@ $LN29@DumpSymbol:
 	jmp	SHORT $LN34@DumpSymbol
 $LN30@DumpSymbol:
 
-; 1004 :         case TYPE_STRUCT:  type = "Structure"; break;
+; 1005 :         case TYPE_STRUCT:  type = "Structure"; break;
 
-	lea	rax, OFFSET FLAT:$SG11491
+	lea	rax, OFFSET FLAT:$SG11494
 	mov	QWORD PTR type$[rsp], rax
 	jmp	SHORT $LN4@DumpSymbol
 $LN31@DumpSymbol:
 
-; 1005 :         case TYPE_UNION:   type = "Union";     break;
+; 1006 :         case TYPE_UNION:   type = "Union";     break;
 
-	lea	rax, OFFSET FLAT:$SG11493
+	lea	rax, OFFSET FLAT:$SG11496
 	mov	QWORD PTR type$[rsp], rax
 	jmp	SHORT $LN4@DumpSymbol
 $LN32@DumpSymbol:
 
-; 1006 :         case TYPE_TYPEDEF: type = "Typedef";   break;
+; 1007 :         case TYPE_TYPEDEF: type = "Typedef";   break;
 
-	lea	rax, OFFSET FLAT:$SG11495
+	lea	rax, OFFSET FLAT:$SG11498
 	mov	QWORD PTR type$[rsp], rax
 	jmp	SHORT $LN4@DumpSymbol
 $LN33@DumpSymbol:
 
-; 1007 :         case TYPE_RECORD:  type = "Record";    break;
+; 1008 :         case TYPE_RECORD:  type = "Record";    break;
 
-	lea	rax, OFFSET FLAT:$SG11497
+	lea	rax, OFFSET FLAT:$SG11500
 	mov	QWORD PTR type$[rsp], rax
 	jmp	SHORT $LN4@DumpSymbol
 $LN34@DumpSymbol:
 
-; 1008 :         default:           type = "Undef Type";break;
+; 1009 :         default:           type = "Undef Type";break;
 
-	lea	rax, OFFSET FLAT:$SG11499
+	lea	rax, OFFSET FLAT:$SG11502
 	mov	QWORD PTR type$[rsp], rax
 $LN4@DumpSymbol:
 
-; 1009 :         }
-; 1010 :         break;
+; 1010 :         }
+; 1011 :         break;
 
 	jmp	SHORT $LN2@DumpSymbol
 $LN35@DumpSymbol:
 
-; 1011 :     case SYM_ALIAS:
-; 1012 :         type = "Alias";
+; 1012 :     case SYM_ALIAS:
+; 1013 :         type = "Alias";
 
-	lea	rax, OFFSET FLAT:$SG11501
+	lea	rax, OFFSET FLAT:$SG11504
 	mov	QWORD PTR type$[rsp], rax
 
-; 1013 :         break;
+; 1014 :         break;
 
 	jmp	SHORT $LN2@DumpSymbol
 $LN36@DumpSymbol:
 
-; 1014 :     case SYM_MACRO:
-; 1015 :         type = "Macro";
+; 1015 :     case SYM_MACRO:
+; 1016 :         type = "Macro";
 
-	lea	rax, OFFSET FLAT:$SG11503
+	lea	rax, OFFSET FLAT:$SG11506
 	mov	QWORD PTR type$[rsp], rax
 
-; 1016 :         break;
+; 1017 :         break;
 
 	jmp	SHORT $LN2@DumpSymbol
 $LN37@DumpSymbol:
 
-; 1017 :     case SYM_TMACRO:
-; 1018 :         type = "Text";
+; 1018 :     case SYM_TMACRO:
+; 1019 :         type = "Text";
 
-	lea	rax, OFFSET FLAT:$SG11505
+	lea	rax, OFFSET FLAT:$SG11508
 	mov	QWORD PTR type$[rsp], rax
 
-; 1019 :         break;
+; 1020 :         break;
 
 	jmp	SHORT $LN2@DumpSymbol
 $LN38@DumpSymbol:
 
-; 1020 :     //case SYM_CLASS_LNAME: /* never stored in global or local table */
-; 1021 :     //    type = "CLASS";
-; 1022 :     //    break;
-; 1023 :     default:
-; 1024 :         type = "Unknown";
+; 1021 :     //case SYM_CLASS_LNAME: /* never stored in global or local table */
+; 1022 :     //    type = "CLASS";
+; 1023 :     //    break;
+; 1024 :     default:
+; 1025 :         type = "Unknown";
 
-	lea	rax, OFFSET FLAT:$SG11507
+	lea	rax, OFFSET FLAT:$SG11510
 	mov	QWORD PTR type$[rsp], rax
 $LN2@DumpSymbol:
 
-; 1025 :         break;
-; 1026 :     }
-; 1027 :     printf( "%-12s  %16" I64_SPEC "X %02X %8p %c %8p %s\n", type, value, sym->mem_type, (void*)&(dir->e), sym->ispublic ? 'X' : ' ', (void*)sym->name, (char*)sym->name );
+; 1026 :         break;
+; 1027 :     }
+; 1028 :     printf( "%-12s  %16" I64_SPEC "X %02X %8p %c %8p %s\n", type, value, sym->mem_type, (void*)&(dir->e), sym->ispublic ? 'X' : ' ', (void*)sym->name, (char*)sym->name );
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+40]
@@ -855,10 +862,10 @@ $LN41@DumpSymbol:
 	mov	r9d, DWORD PTR [rax+36]
 	mov	r8, QWORD PTR value$[rsp]
 	mov	rdx, QWORD PTR type$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11508
+	lea	rcx, OFFSET FLAT:$SG11511
 	call	printf
 
-; 1028 : }
+; 1029 : }
 
 	add	rsp, 120				; 00000078H
 	ret	0
@@ -900,54 +907,54 @@ tv443 = 128
 sym$ = 160
 SymSimd	PROC
 
-; 769  : {
+; 770  : {
 
 $LN61:
 	mov	QWORD PTR [rsp+8], rcx
 	sub	rsp, 152				; 00000098H
 
-; 770  : 	int memberCount = 0;
+; 771  : 	int memberCount = 0;
 
 	mov	DWORD PTR memberCount$[rsp], 0
 
-; 771  : 	int vtotal = 0;
+; 772  : 	int vtotal = 0;
 
 	mov	DWORD PTR vtotal$[rsp], 0
 
-; 772  : 	int msize = 0;
+; 773  : 	int msize = 0;
 
 	mov	DWORD PTR msize$[rsp], 0
 
-; 773  : 	enum memtype ctype;
-; 774  : 	enum memtype htype;
-; 775  : 	int c0;
-; 776  : 	int c1;
-; 777  : 	int c2;
-; 778  :     struct sfield *pMember = sym->e.structinfo->head;
+; 774  : 	enum memtype ctype;
+; 775  : 	enum memtype htype;
+; 776  : 	int c0;
+; 777  : 	int c1;
+; 778  : 	int c2;
+; 779  :     struct sfield *pMember = sym->e.structinfo->head;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	rax, QWORD PTR [rax]
 	mov	QWORD PTR pMember$[rsp], rax
 
-; 779  : 	uint_8 member1Valid = 0;
+; 780  : 	uint_8 member1Valid = 0;
 
 	mov	BYTE PTR member1Valid$[rsp], 0
 
-; 780  : 	uint_8 member2Valid = 0;
+; 781  : 	uint_8 member2Valid = 0;
 
 	mov	BYTE PTR member2Valid$[rsp], 0
 
-; 781  : 	uint_8 member3Valid = 0;
+; 782  : 	uint_8 member3Valid = 0;
 
 	mov	BYTE PTR member3Valid$[rsp], 0
 
-; 782  : 	uint_8 member4Valid = 0;
+; 783  : 	uint_8 member4Valid = 0;
 
 	mov	BYTE PTR member4Valid$[rsp], 0
 
-; 783  : 
-; 784  :   if (pMember == NULL && sym->sym.typekind != TYPE_UNION) return;
+; 784  : 
+; 785  :   if (pMember == NULL && sym->sym.typekind != TYPE_UNION) return;
 
 	cmp	QWORD PTR pMember$[rsp], 0
 	jne	SHORT $LN4@SymSimd
@@ -958,50 +965,50 @@ $LN61:
 	jmp	$LN1@SymSimd
 $LN4@SymSimd:
 
-; 785  :   memberCount = 0;
+; 786  :   memberCount = 0;
 
 	mov	DWORD PTR memberCount$[rsp], 0
 
-; 786  :   sym->e.structinfo->isHomogenous = 1;
+; 787  :   sym->e.structinfo->isHomogenous = 1;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	BYTE PTR [rax+20], 1
 
-; 787  : 
-; 788  :   vtotal = sym->sym.total_size;
+; 788  : 
+; 789  :   vtotal = sym->sym.total_size;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	eax, DWORD PTR [rax+56]
 	mov	DWORD PTR vtotal$[rsp], eax
 
-; 789  :   msize = pMember->sym.total_size;
+; 790  :   msize = pMember->sym.total_size;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	mov	eax, DWORD PTR [rax+56]
 	mov	DWORD PTR msize$[rsp], eax
 
-; 790  :   ctype = pMember->sym.mem_type;
+; 791  :   ctype = pMember->sym.mem_type;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	mov	eax, DWORD PTR [rax+36]
 	mov	DWORD PTR ctype$[rsp], eax
 
-; 791  :   htype = pMember->sym.mem_type;
+; 792  :   htype = pMember->sym.mem_type;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	mov	eax, DWORD PTR [rax+36]
 	mov	DWORD PTR htype$[rsp], eax
 $LN2@SymSimd:
 
-; 792  : 
-; 793  :   while (pMember)
+; 793  : 
+; 794  :   while (pMember)
 
 	cmp	QWORD PTR pMember$[rsp], 0
 	je	SHORT $LN3@SymSimd
 
-; 794  :   {
-; 795  :     if (pMember->sym.total_size != msize && pMember->sym.mem_type != ctype && sym->e.structinfo->isHomogenous == 1)
+; 795  :   {
+; 796  :     if (pMember->sym.total_size != msize && pMember->sym.mem_type != ctype && sym->e.structinfo->isHomogenous == 1)
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	mov	ecx, DWORD PTR msize$[rsp]
@@ -1017,42 +1024,42 @@ $LN2@SymSimd:
 	cmp	eax, 1
 	jne	SHORT $LN5@SymSimd
 
-; 796  :     {
-; 797  :       sym->e.structinfo->isHomogenous = 0;
+; 797  :     {
+; 798  :       sym->e.structinfo->isHomogenous = 0;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	BYTE PTR [rax+20], 0
 $LN5@SymSimd:
 
-; 798  :     }
-; 799  :     pMember = pMember->next;
+; 799  :     }
+; 800  :     pMember = pMember->next;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	QWORD PTR pMember$[rsp], rax
 
-; 800  :     memberCount = memberCount + 1;
+; 801  :     memberCount = memberCount + 1;
 
 	mov	eax, DWORD PTR memberCount$[rsp]
 	inc	eax
 	mov	DWORD PTR memberCount$[rsp], eax
 
-; 801  :   }
+; 802  :   }
 
 	jmp	SHORT $LN2@SymSimd
 $LN3@SymSimd:
 
-; 802  : 
 ; 803  : 
-; 804  :   sym->e.structinfo->memberCount = memberCount;
+; 804  : 
+; 805  :   sym->e.structinfo->memberCount = memberCount;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	ecx, DWORD PTR memberCount$[rsp]
 	mov	DWORD PTR [rax+24], ecx
 
-; 805  :   if (vtotal == 0x20 && sym->e.structinfo->isHomogenous == 1 && ((sym->sym.typekind == TYPE_UNION) || 
+; 806  :   if (vtotal == 0x20 && sym->e.structinfo->isHomogenous == 1 && ((sym->sym.typekind == TYPE_UNION) || 
 
 	cmp	DWORD PTR vtotal$[rsp], 32		; 00000020H
 	jne	$LN6@SymSimd
@@ -1096,8 +1103,8 @@ $LN54@SymSimd:
 $LN9@SymSimd:
 $LN8@SymSimd:
 
-; 806  :     (htype == MT_REAL4 || htype == MT_REAL8 || htype == MT_BYTE || htype == MT_WORD | htype == MT_DWORD || htype == MT_QWORD)))  
-; 807  :     sym->e.structinfo->stype = MM256;
+; 807  :     (htype == MT_REAL4 || htype == MT_REAL8 || htype == MT_BYTE || htype == MT_WORD | htype == MT_DWORD || htype == MT_QWORD)))  
+; 808  :     sym->e.structinfo->stype = MM256;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
@@ -1105,7 +1112,7 @@ $LN8@SymSimd:
 	jmp	$LN7@SymSimd
 $LN6@SymSimd:
 
-; 808  :   else if (vtotal == 0x10 && sym->e.structinfo->isHomogenous == 1 && ((sym->sym.typekind == TYPE_UNION) ||
+; 809  :   else if (vtotal == 0x10 && sym->e.structinfo->isHomogenous == 1 && ((sym->sym.typekind == TYPE_UNION) ||
 
 	cmp	DWORD PTR vtotal$[rsp], 16
 	jne	$LN10@SymSimd
@@ -1149,8 +1156,8 @@ $LN58@SymSimd:
 $LN12@SymSimd:
 $LN11@SymSimd:
 
-; 809  :     (htype == MT_REAL4 || htype == MT_REAL8 || htype == MT_BYTE || htype == MT_WORD | htype == MT_DWORD || htype == MT_QWORD)))
-; 810  :     sym->e.structinfo->stype = MM128;
+; 810  :     (htype == MT_REAL4 || htype == MT_REAL8 || htype == MT_BYTE || htype == MT_WORD | htype == MT_DWORD || htype == MT_QWORD)))
+; 811  :     sym->e.structinfo->stype = MM128;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
@@ -1158,14 +1165,14 @@ $LN11@SymSimd:
 $LN10@SymSimd:
 $LN7@SymSimd:
 
-; 811  : #if EVEXSUPP
-; 812  :   else if (vtotal == 0x40 && sym->e.structinfo->isHomogenous == 1 && ((sym->sym.typekind == TYPE_UNION) ||
-; 813  :     (htype == MT_REAL4 || htype == MT_REAL8 || htype == MT_BYTE || htype == MT_WORD | htype == MT_DWORD || htype == MT_QWORD)))
-; 814  :     sym->e.structinfo->stype = MM512;
-; 815  : #endif
-; 816  : 
-; 817  :   // Ensure unions of multiple MM128 or MM256 types default to a 4/8 member float arrangement.
-; 818  :   if (sym->sym.typekind == TYPE_UNION && sym->e.structinfo->isHomogenous == 1)
+; 812  : #if EVEXSUPP
+; 813  :   else if (vtotal == 0x40 && sym->e.structinfo->isHomogenous == 1 && ((sym->sym.typekind == TYPE_UNION) ||
+; 814  :     (htype == MT_REAL4 || htype == MT_REAL8 || htype == MT_BYTE || htype == MT_WORD | htype == MT_DWORD || htype == MT_QWORD)))
+; 815  :     sym->e.structinfo->stype = MM512;
+; 816  : #endif
+; 817  : 
+; 818  :   // Ensure unions of multiple MM128 or MM256 types default to a 4/8 member float arrangement.
+; 819  :   if (sym->sym.typekind == TYPE_UNION && sym->e.structinfo->isHomogenous == 1)
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+66]
@@ -1177,19 +1184,19 @@ $LN7@SymSimd:
 	cmp	eax, 1
 	jne	SHORT $LN13@SymSimd
 
-; 819  :   {
-; 820  : 	  if (sym->e.structinfo->stype == MM128) {
+; 820  :   {
+; 821  : 	  if (sym->e.structinfo->stype == MM128) {
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	cmp	DWORD PTR [rax+16], 1
 	jne	SHORT $LN14@SymSimd
 
-; 821  : 		  memberCount = 4;
+; 822  : 		  memberCount = 4;
 
 	mov	DWORD PTR memberCount$[rsp], 4
 
-; 822  : 		  sym->e.structinfo->memberCount = memberCount;
+; 823  : 		  sym->e.structinfo->memberCount = memberCount;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
@@ -1197,19 +1204,19 @@ $LN7@SymSimd:
 	mov	DWORD PTR [rax+24], ecx
 $LN14@SymSimd:
 
-; 823  : 	  }
-; 824  : 	  if (sym->e.structinfo->stype == MM256) {
+; 824  : 	  }
+; 825  : 	  if (sym->e.structinfo->stype == MM256) {
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	cmp	DWORD PTR [rax+16], 2
 	jne	SHORT $LN15@SymSimd
 
-; 825  : 		  memberCount = 8;
+; 826  : 		  memberCount = 8;
 
 	mov	DWORD PTR memberCount$[rsp], 8
 
-; 826  : 		  sym->e.structinfo->memberCount = memberCount;
+; 827  : 		  sym->e.structinfo->memberCount = memberCount;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
@@ -1218,16 +1225,16 @@ $LN14@SymSimd:
 $LN15@SymSimd:
 $LN13@SymSimd:
 
-; 827  : 	  }
-; 828  :   }
-; 829  : 
-; 830  :        sym->e.structinfo->isHFA = 0;
+; 828  : 	  }
+; 829  :   }
+; 830  : 
+; 831  :        sym->e.structinfo->isHFA = 0;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	BYTE PTR [rax+22], 0
 
-; 831  :        if ((memberCount >= 1 && memberCount <= 4) && (htype == MT_REAL4 || htype == MT_REAL8) && sym->e.structinfo->isHomogenous == 1)
+; 832  :        if ((memberCount >= 1 && memberCount <= 4) && (htype == MT_REAL4 || htype == MT_REAL8) && sym->e.structinfo->isHomogenous == 1)
 
 	cmp	DWORD PTR memberCount$[rsp], 1
 	jl	SHORT $LN16@SymSimd
@@ -1244,82 +1251,82 @@ $LN17@SymSimd:
 	cmp	eax, 1
 	jne	SHORT $LN16@SymSimd
 
-; 832  :        {
-; 833  :               sym->e.structinfo->isHFA = 1;
+; 833  :        {
+; 834  :               sym->e.structinfo->isHFA = 1;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	BYTE PTR [rax+22], 1
 
-; 834  : 			  sym->e.structinfo->stype = NOVEC;
+; 835  : 			  sym->e.structinfo->stype = NOVEC;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	DWORD PTR [rax+16], 0
 $LN16@SymSimd:
 
-; 835  :        }
-; 836  : 
-; 837  : 	   // Due to vectorcall convention, __m128 which is technically also an HFA (4 floats) must be marked as nonHFA.
-; 838  : 	   // And consequently any structure with name __m128/__m256/__m512 must be marked as non-HFA. (This is a bit ugly, but it's the only way to ensure the types are correctly handled by invoke/proc).
-; 839  : 
-; 840  : 	   c0 = strncmp(sym->sym.name, "__m128", 6);
+; 836  :        }
+; 837  : 
+; 838  : 	   // Due to vectorcall convention, __m128 which is technically also an HFA (4 floats) must be marked as nonHFA.
+; 839  : 	   // And consequently any structure with name __m128/__m256/__m512 must be marked as non-HFA. (This is a bit ugly, but it's the only way to ensure the types are correctly handled by invoke/proc).
+; 840  : 
+; 841  : 	   c0 = strncmp(sym->sym.name, "__m128", 6);
 
 	mov	r8d, 6
-	lea	rdx, OFFSET FLAT:$SG11397
+	lea	rdx, OFFSET FLAT:$SG11400
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rcx, QWORD PTR [rax+8]
 	call	strncmp
 	mov	DWORD PTR c0$[rsp], eax
 
-; 841  : 	   c1 = strncmp(sym->sym.name, "__m256", 6);
+; 842  : 	   c1 = strncmp(sym->sym.name, "__m256", 6);
 
 	mov	r8d, 6
-	lea	rdx, OFFSET FLAT:$SG11398
+	lea	rdx, OFFSET FLAT:$SG11401
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rcx, QWORD PTR [rax+8]
 	call	strncmp
 	mov	DWORD PTR c1$[rsp], eax
 
-; 842  : #if EVEXSUPP
-; 843  : 	   c2 = strncmp(sym->sym.name, "__m512", 6);
-; 844  : #endif
-; 845  : 	   if (c0 == 0)
+; 843  : #if EVEXSUPP
+; 844  : 	   c2 = strncmp(sym->sym.name, "__m512", 6);
+; 845  : #endif
+; 846  : 	   if (c0 == 0)
 
 	cmp	DWORD PTR c0$[rsp], 0
 	jne	SHORT $LN18@SymSimd
 
-; 846  : 	   {
-; 847  : 		   sym->e.structinfo->isHFA = 0;
+; 847  : 	   {
+; 848  : 		   sym->e.structinfo->isHFA = 0;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	BYTE PTR [rax+22], 0
 
-; 848  : 		   sym->e.structinfo->stype = MM128;
+; 849  : 		   sym->e.structinfo->stype = MM128;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	DWORD PTR [rax+16], 1
 
-; 849  : 	   }
+; 850  : 	   }
 
 	jmp	SHORT $LN19@SymSimd
 $LN18@SymSimd:
 
-; 850  : 	   else if (c1 == 0)
+; 851  : 	   else if (c1 == 0)
 
 	cmp	DWORD PTR c1$[rsp], 0
 	jne	SHORT $LN20@SymSimd
 
-; 851  : 	   {
-; 852  : 		   sym->e.structinfo->isHFA = 0;
+; 852  : 	   {
+; 853  : 		   sym->e.structinfo->isHFA = 0;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	BYTE PTR [rax+22], 0
 
-; 853  : 		   sym->e.structinfo->stype = MM256;
+; 854  : 		   sym->e.structinfo->stype = MM256;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
@@ -1327,22 +1334,22 @@ $LN18@SymSimd:
 $LN20@SymSimd:
 $LN19@SymSimd:
 
-; 854  : 	   }
-; 855  : #if EVEXSUPP
-; 856  : 	   else if (c2 == 0)
-; 857  : 	   {
-; 858  : 		   sym->e.structinfo->isHFA = 0;
-; 859  : 		   sym->e.structinfo->stype = MM512;
-; 860  : 	   }
-; 861  : #endif
-; 862  : 
-; 863  : 	   sym->e.structinfo->isHVA = 0;
+; 855  : 	   }
+; 856  : #if EVEXSUPP
+; 857  : 	   else if (c2 == 0)
+; 858  : 	   {
+; 859  : 		   sym->e.structinfo->isHFA = 0;
+; 860  : 		   sym->e.structinfo->stype = MM512;
+; 861  : 	   }
+; 862  : #endif
+; 863  : 
+; 864  : 	   sym->e.structinfo->isHVA = 0;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	BYTE PTR [rax+21], 0
 
-; 864  : 	   if (memberCount == 4 && sym->e.structinfo->isHomogenous == 1 && htype == MT_TYPE && sym->sym.typekind != TYPE_UNION)
+; 865  : 	   if (memberCount == 4 && sym->e.structinfo->isHomogenous == 1 && htype == MT_TYPE && sym->sym.typekind != TYPE_UNION)
 
 	cmp	DWORD PTR memberCount$[rsp], 4
 	jne	$LN21@SymSimd
@@ -1358,31 +1365,31 @@ $LN19@SymSimd:
 	cmp	eax, 2
 	je	$LN21@SymSimd
 
-; 865  : 	   {
-; 866  : 		   pMember = sym->e.structinfo->head;
+; 866  : 	   {
+; 867  : 		   pMember = sym->e.structinfo->head;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	rax, QWORD PTR [rax]
 	mov	QWORD PTR pMember$[rsp], rax
 
-; 867  : 		   member1Valid = 0;
+; 868  : 		   member1Valid = 0;
 
 	mov	BYTE PTR member1Valid$[rsp], 0
 
-; 868  : 		   member2Valid = 0;
+; 869  : 		   member2Valid = 0;
 
 	mov	BYTE PTR member2Valid$[rsp], 0
 
-; 869  : 		   member3Valid = 0;
+; 870  : 		   member3Valid = 0;
 
 	mov	BYTE PTR member3Valid$[rsp], 0
 
-; 870  : 		   member4Valid = 0;
+; 871  : 		   member4Valid = 0;
 
 	mov	BYTE PTR member4Valid$[rsp], 0
 
-; 871  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member1Valid = 1;
+; 872  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member1Valid = 1;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	cmp	QWORD PTR [rax+80], 0
@@ -1395,13 +1402,13 @@ $LN19@SymSimd:
 	mov	BYTE PTR member1Valid$[rsp], 1
 $LN23@SymSimd:
 
-; 872  : 		   pMember = pMember->next;
+; 873  : 		   pMember = pMember->next;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	QWORD PTR pMember$[rsp], rax
 
-; 873  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member2Valid = 1;
+; 874  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member2Valid = 1;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	cmp	QWORD PTR [rax+80], 0
@@ -1414,13 +1421,13 @@ $LN23@SymSimd:
 	mov	BYTE PTR member2Valid$[rsp], 1
 $LN24@SymSimd:
 
-; 874  : 		   pMember = pMember->next;
+; 875  : 		   pMember = pMember->next;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	QWORD PTR pMember$[rsp], rax
 
-; 875  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member3Valid = 1;
+; 876  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member3Valid = 1;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	cmp	QWORD PTR [rax+80], 0
@@ -1433,13 +1440,13 @@ $LN24@SymSimd:
 	mov	BYTE PTR member3Valid$[rsp], 1
 $LN25@SymSimd:
 
-; 876  : 		   pMember = pMember->next;
+; 877  : 		   pMember = pMember->next;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	QWORD PTR pMember$[rsp], rax
 
-; 877  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member4Valid = 1;
+; 878  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member4Valid = 1;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	cmp	QWORD PTR [rax+80], 0
@@ -1452,15 +1459,15 @@ $LN25@SymSimd:
 	mov	BYTE PTR member4Valid$[rsp], 1
 $LN26@SymSimd:
 
-; 878  : 
-; 879  : 		   pMember = sym->e.structinfo->head;
+; 879  : 
+; 880  : 		   pMember = sym->e.structinfo->head;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	rax, QWORD PTR [rax]
 	mov	QWORD PTR pMember$[rsp], rax
 
-; 880  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member1Valid = 1;
+; 881  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member1Valid = 1;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	cmp	QWORD PTR [rax+80], 0
@@ -1473,13 +1480,13 @@ $LN26@SymSimd:
 	mov	BYTE PTR member1Valid$[rsp], 1
 $LN27@SymSimd:
 
-; 881  : 		   pMember = pMember->next;
+; 882  : 		   pMember = pMember->next;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	QWORD PTR pMember$[rsp], rax
 
-; 882  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member2Valid = 1;
+; 883  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member2Valid = 1;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	cmp	QWORD PTR [rax+80], 0
@@ -1492,13 +1499,13 @@ $LN27@SymSimd:
 	mov	BYTE PTR member2Valid$[rsp], 1
 $LN28@SymSimd:
 
-; 883  : 		   pMember = pMember->next;
+; 884  : 		   pMember = pMember->next;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	QWORD PTR pMember$[rsp], rax
 
-; 884  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member3Valid = 1;
+; 885  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member3Valid = 1;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	cmp	QWORD PTR [rax+80], 0
@@ -1511,13 +1518,13 @@ $LN28@SymSimd:
 	mov	BYTE PTR member3Valid$[rsp], 1
 $LN29@SymSimd:
 
-; 885  : 		   pMember = pMember->next;
+; 886  : 		   pMember = pMember->next;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	QWORD PTR pMember$[rsp], rax
 
-; 886  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member4Valid = 1;
+; 887  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member4Valid = 1;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	cmp	QWORD PTR [rax+80], 0
@@ -1530,8 +1537,8 @@ $LN29@SymSimd:
 	mov	BYTE PTR member4Valid$[rsp], 1
 $LN30@SymSimd:
 
-; 887  : 
-; 888  : 		   if (member1Valid == 1 && member2Valid == 1 && member3Valid == 1 && member4Valid == 1)
+; 888  : 
+; 889  : 		   if (member1Valid == 1 && member2Valid == 1 && member3Valid == 1 && member4Valid == 1)
 
 	movzx	eax, BYTE PTR member1Valid$[rsp]
 	cmp	eax, 1
@@ -1546,21 +1553,21 @@ $LN30@SymSimd:
 	cmp	eax, 1
 	jne	SHORT $LN31@SymSimd
 
-; 889  : 		   {
-; 890  : 			   sym->e.structinfo->isHVA = 1;
+; 890  : 		   {
+; 891  : 			   sym->e.structinfo->isHVA = 1;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	BYTE PTR [rax+21], 1
 $LN31@SymSimd:
 
-; 891  : 		   }
-; 892  : 	   }
+; 892  : 		   }
+; 893  : 	   }
 
 	jmp	$LN22@SymSimd
 $LN21@SymSimd:
 
-; 893  : 	   else if (memberCount == 3 && sym->e.structinfo->isHomogenous == 1 && htype == MT_TYPE && sym->sym.typekind != TYPE_UNION)
+; 894  : 	   else if (memberCount == 3 && sym->e.structinfo->isHomogenous == 1 && htype == MT_TYPE && sym->sym.typekind != TYPE_UNION)
 
 	cmp	DWORD PTR memberCount$[rsp], 3
 	jne	$LN32@SymSimd
@@ -1576,27 +1583,27 @@ $LN21@SymSimd:
 	cmp	eax, 2
 	je	$LN32@SymSimd
 
-; 894  : 	   {
-; 895  : 		   pMember = sym->e.structinfo->head;
+; 895  : 	   {
+; 896  : 		   pMember = sym->e.structinfo->head;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	rax, QWORD PTR [rax]
 	mov	QWORD PTR pMember$[rsp], rax
 
-; 896  : 		   member1Valid = 0;
+; 897  : 		   member1Valid = 0;
 
 	mov	BYTE PTR member1Valid$[rsp], 0
 
-; 897  : 		   member2Valid = 0;
+; 898  : 		   member2Valid = 0;
 
 	mov	BYTE PTR member2Valid$[rsp], 0
 
-; 898  : 		   member3Valid = 0;
+; 899  : 		   member3Valid = 0;
 
 	mov	BYTE PTR member3Valid$[rsp], 0
 
-; 899  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member1Valid = 1;
+; 900  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member1Valid = 1;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	cmp	QWORD PTR [rax+80], 0
@@ -1609,13 +1616,13 @@ $LN21@SymSimd:
 	mov	BYTE PTR member1Valid$[rsp], 1
 $LN34@SymSimd:
 
-; 900  : 		   pMember = pMember->next;
+; 901  : 		   pMember = pMember->next;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	QWORD PTR pMember$[rsp], rax
 
-; 901  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member2Valid = 1;
+; 902  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member2Valid = 1;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	cmp	QWORD PTR [rax+80], 0
@@ -1628,13 +1635,13 @@ $LN34@SymSimd:
 	mov	BYTE PTR member2Valid$[rsp], 1
 $LN35@SymSimd:
 
-; 902  : 		   pMember = pMember->next;
+; 903  : 		   pMember = pMember->next;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	QWORD PTR pMember$[rsp], rax
 
-; 903  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member3Valid = 1;
+; 904  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member3Valid = 1;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	cmp	QWORD PTR [rax+80], 0
@@ -1647,15 +1654,15 @@ $LN35@SymSimd:
 	mov	BYTE PTR member3Valid$[rsp], 1
 $LN36@SymSimd:
 
-; 904  : 
-; 905  : 		   pMember = sym->e.structinfo->head;
+; 905  : 
+; 906  : 		   pMember = sym->e.structinfo->head;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	rax, QWORD PTR [rax]
 	mov	QWORD PTR pMember$[rsp], rax
 
-; 906  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member1Valid = 1;
+; 907  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member1Valid = 1;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	cmp	QWORD PTR [rax+80], 0
@@ -1668,13 +1675,13 @@ $LN36@SymSimd:
 	mov	BYTE PTR member1Valid$[rsp], 1
 $LN37@SymSimd:
 
-; 907  : 		   pMember = pMember->next;
+; 908  : 		   pMember = pMember->next;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	QWORD PTR pMember$[rsp], rax
 
-; 908  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member2Valid = 1;
+; 909  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member2Valid = 1;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	cmp	QWORD PTR [rax+80], 0
@@ -1687,13 +1694,13 @@ $LN37@SymSimd:
 	mov	BYTE PTR member2Valid$[rsp], 1
 $LN38@SymSimd:
 
-; 909  : 		   pMember = pMember->next;
+; 910  : 		   pMember = pMember->next;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	QWORD PTR pMember$[rsp], rax
 
-; 910  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member3Valid = 1;
+; 911  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member3Valid = 1;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	cmp	QWORD PTR [rax+80], 0
@@ -1706,8 +1713,8 @@ $LN38@SymSimd:
 	mov	BYTE PTR member3Valid$[rsp], 1
 $LN39@SymSimd:
 
-; 911  : 
-; 912  : 		   if (member1Valid == 1 && member2Valid == 1 && member3Valid == 1)
+; 912  : 
+; 913  : 		   if (member1Valid == 1 && member2Valid == 1 && member3Valid == 1)
 
 	movzx	eax, BYTE PTR member1Valid$[rsp]
 	cmp	eax, 1
@@ -1719,21 +1726,21 @@ $LN39@SymSimd:
 	cmp	eax, 1
 	jne	SHORT $LN40@SymSimd
 
-; 913  : 		   {
-; 914  : 			   sym->e.structinfo->isHVA = 1;
+; 914  : 		   {
+; 915  : 			   sym->e.structinfo->isHVA = 1;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	BYTE PTR [rax+21], 1
 $LN40@SymSimd:
 
-; 915  : 		   }
-; 916  : 	   }
+; 916  : 		   }
+; 917  : 	   }
 
 	jmp	$LN33@SymSimd
 $LN32@SymSimd:
 
-; 917  : 	   else if (memberCount == 2 && sym->e.structinfo->isHomogenous == 1 && htype == MT_TYPE && sym->sym.typekind != TYPE_UNION)
+; 918  : 	   else if (memberCount == 2 && sym->e.structinfo->isHomogenous == 1 && htype == MT_TYPE && sym->sym.typekind != TYPE_UNION)
 
 	cmp	DWORD PTR memberCount$[rsp], 2
 	jne	$LN41@SymSimd
@@ -1749,23 +1756,23 @@ $LN32@SymSimd:
 	cmp	eax, 2
 	je	$LN41@SymSimd
 
-; 918  : 	   {
-; 919  : 		   pMember = sym->e.structinfo->head;
+; 919  : 	   {
+; 920  : 		   pMember = sym->e.structinfo->head;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	rax, QWORD PTR [rax]
 	mov	QWORD PTR pMember$[rsp], rax
 
-; 920  : 		   member1Valid = 0;
+; 921  : 		   member1Valid = 0;
 
 	mov	BYTE PTR member1Valid$[rsp], 0
 
-; 921  : 		   member2Valid = 0;
+; 922  : 		   member2Valid = 0;
 
 	mov	BYTE PTR member2Valid$[rsp], 0
 
-; 922  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member1Valid = 1;
+; 923  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member1Valid = 1;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	cmp	QWORD PTR [rax+80], 0
@@ -1778,13 +1785,13 @@ $LN32@SymSimd:
 	mov	BYTE PTR member1Valid$[rsp], 1
 $LN43@SymSimd:
 
-; 923  : 		   pMember = pMember->next;
+; 924  : 		   pMember = pMember->next;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	QWORD PTR pMember$[rsp], rax
 
-; 924  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member2Valid = 1;
+; 925  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member2Valid = 1;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	cmp	QWORD PTR [rax+80], 0
@@ -1797,15 +1804,15 @@ $LN43@SymSimd:
 	mov	BYTE PTR member2Valid$[rsp], 1
 $LN44@SymSimd:
 
-; 925  : 
-; 926  : 		   pMember = sym->e.structinfo->head;
+; 926  : 
+; 927  : 		   pMember = sym->e.structinfo->head;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	rax, QWORD PTR [rax]
 	mov	QWORD PTR pMember$[rsp], rax
 
-; 927  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member1Valid = 1;
+; 928  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member1Valid = 1;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	cmp	QWORD PTR [rax+80], 0
@@ -1818,13 +1825,13 @@ $LN44@SymSimd:
 	mov	BYTE PTR member1Valid$[rsp], 1
 $LN45@SymSimd:
 
-; 928  : 		   pMember = pMember->next;
+; 929  : 		   pMember = pMember->next;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	QWORD PTR pMember$[rsp], rax
 
-; 929  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member2Valid = 1;
+; 930  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member2Valid = 1;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	cmp	QWORD PTR [rax+80], 0
@@ -1837,8 +1844,8 @@ $LN45@SymSimd:
 	mov	BYTE PTR member2Valid$[rsp], 1
 $LN46@SymSimd:
 
-; 930  : 
-; 931  : 		   if (member1Valid == 1 && member2Valid == 1)
+; 931  : 
+; 932  : 		   if (member1Valid == 1 && member2Valid == 1)
 
 	movzx	eax, BYTE PTR member1Valid$[rsp]
 	cmp	eax, 1
@@ -1847,21 +1854,21 @@ $LN46@SymSimd:
 	cmp	eax, 1
 	jne	SHORT $LN47@SymSimd
 
-; 932  : 		   {
-; 933  : 			   sym->e.structinfo->isHVA = 1;
+; 933  : 		   {
+; 934  : 			   sym->e.structinfo->isHVA = 1;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	BYTE PTR [rax+21], 1
 $LN47@SymSimd:
 
-; 934  : 		   }
-; 935  : 	   }
+; 935  : 		   }
+; 936  : 	   }
 
 	jmp	$LN42@SymSimd
 $LN41@SymSimd:
 
-; 936  : 	   else if (memberCount == 1 && sym->e.structinfo->isHomogenous == 1 && htype == MT_TYPE && sym->sym.typekind != TYPE_UNION)
+; 937  : 	   else if (memberCount == 1 && sym->e.structinfo->isHomogenous == 1 && htype == MT_TYPE && sym->sym.typekind != TYPE_UNION)
 
 	cmp	DWORD PTR memberCount$[rsp], 1
 	jne	$LN48@SymSimd
@@ -1877,19 +1884,19 @@ $LN41@SymSimd:
 	cmp	eax, 2
 	je	SHORT $LN48@SymSimd
 
-; 937  : 	   {
-; 938  : 		   pMember = sym->e.structinfo->head;
+; 938  : 	   {
+; 939  : 		   pMember = sym->e.structinfo->head;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	rax, QWORD PTR [rax]
 	mov	QWORD PTR pMember$[rsp], rax
 
-; 939  : 		   member1Valid = 0;
+; 940  : 		   member1Valid = 0;
 
 	mov	BYTE PTR member1Valid$[rsp], 0
 
-; 940  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member1Valid = 1;
+; 941  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM128) member1Valid = 1;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	cmp	QWORD PTR [rax+80], 0
@@ -1902,7 +1909,7 @@ $LN41@SymSimd:
 	mov	BYTE PTR member1Valid$[rsp], 1
 $LN49@SymSimd:
 
-; 941  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member1Valid = 1;
+; 942  : 		   if (pMember->sym.ttype != NULL && pMember->sym.ttype->e.structinfo->stype == MM256) member1Valid = 1;
 
 	mov	rax, QWORD PTR pMember$[rsp]
 	cmp	QWORD PTR [rax+80], 0
@@ -1915,14 +1922,14 @@ $LN49@SymSimd:
 	mov	BYTE PTR member1Valid$[rsp], 1
 $LN50@SymSimd:
 
-; 942  : 		   if (member1Valid == 1)
+; 943  : 		   if (member1Valid == 1)
 
 	movzx	eax, BYTE PTR member1Valid$[rsp]
 	cmp	eax, 1
 	jne	SHORT $LN51@SymSimd
 
-; 943  : 		   {
-; 944  : 			   sym->e.structinfo->isHVA = 1;
+; 944  : 		   {
+; 945  : 			   sym->e.structinfo->isHVA = 1;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
@@ -1933,10 +1940,10 @@ $LN42@SymSimd:
 $LN33@SymSimd:
 $LN22@SymSimd:
 
-; 945  : 		   }
-; 946  : 	   }
-; 947  : 		#ifdef DEBUG_OUT	   
-; 948  : 			printf("Symbol VectorCall Settings: %s isHomogenous:%u isHFA:%u isHVA:%u MMType:%u memberCount:%u\n", sym->sym.name, sym->e.structinfo->isHomogenous, sym->e.structinfo->isHFA, sym->e.structinfo->isHVA, sym->e.structinfo->stype, sym->e.structinfo->memberCount);
+; 946  : 		   }
+; 947  : 	   }
+; 948  : 		#ifdef DEBUG_OUT	   
+; 949  : 			printf("Symbol VectorCall Settings: %s isHomogenous:%u isHFA:%u isHVA:%u MMType:%u memberCount:%u\n", sym->sym.name, sym->e.structinfo->isHomogenous, sym->e.structinfo->isHFA, sym->e.structinfo->isHVA, sym->e.structinfo->stype, sym->e.structinfo->memberCount);
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
@@ -1962,13 +1969,13 @@ $LN22@SymSimd:
 	mov	r8d, eax
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11433
+	lea	rcx, OFFSET FLAT:$SG11436
 	call	printf
 $LN1@SymSimd:
 
-; 949  : 		#endif
-; 950  : 
-; 951  : }
+; 950  : 		#endif
+; 951  : 
+; 952  : }
 
 	add	rsp, 152				; 00000098H
 	ret	0
@@ -1988,65 +1995,65 @@ max$ = 76
 sym$ = 80
 DumpSymbols PROC
 
-; 1032 : {
+; 1033 : {
 
 	sub	rsp, 104				; 00000068H
 
-; 1033 :     struct asym         *sym;
-; 1034 :     unsigned            i;
-; 1035 :     unsigned            count = 0;
+; 1034 :     struct asym         *sym;
+; 1035 :     unsigned            i;
+; 1036 :     unsigned            count = 0;
 
 	mov	DWORD PTR count$[rsp], 0
 
-; 1036 :     unsigned            max = 0;
+; 1037 :     unsigned            max = 0;
 
 	mov	DWORD PTR max$[rsp], 0
 
-; 1037 :     unsigned            num0 = 0;
+; 1038 :     unsigned            num0 = 0;
 
 	mov	DWORD PTR num0$[rsp], 0
 
-; 1038 :     unsigned            num1 = 0;
+; 1039 :     unsigned            num1 = 0;
 
 	mov	DWORD PTR num1$[rsp], 0
 
-; 1039 :     unsigned            num5 = 0;
+; 1040 :     unsigned            num5 = 0;
 
 	mov	DWORD PTR num5$[rsp], 0
 
-; 1040 :     unsigned            num10 = 0;
+; 1041 :     unsigned            num10 = 0;
 
 	mov	DWORD PTR num10$[rsp], 0
 
-; 1041 :     unsigned            curr = 0;
+; 1042 :     unsigned            curr = 0;
 
 	mov	DWORD PTR curr$[rsp], 0
 
-; 1042 : 
-; 1043 :     DebugMsg(("DumpSymbols enter\n"));
+; 1043 : 
+; 1044 :     DebugMsg(("DumpSymbols enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11526
+	lea	rcx, OFFSET FLAT:$SG11529
 	call	DoDebugMsg
 
-; 1044 :     if ( Options.dump_symbols ) {
+; 1045 :     if ( Options.dump_symbols ) {
 
 	movzx	eax, BYTE PTR Options+26
 	test	eax, eax
 	je	SHORT $LN8@DumpSymbol
 
-; 1045 :         printf( "   # Addr     Type                     Value MT    Ext   P  pName   Name\n" );
+; 1046 :         printf( "   # Addr     Type                     Value MT    Ext   P  pName   Name\n" );
 
-	lea	rcx, OFFSET FLAT:$SG11528
+	lea	rcx, OFFSET FLAT:$SG11531
 	call	printf
 
-; 1046 :         printf( "--------------------------------------------------------------------------------\n" );
+; 1047 :         printf( "--------------------------------------------------------------------------------\n" );
 
-	lea	rcx, OFFSET FLAT:$SG11529
+	lea	rcx, OFFSET FLAT:$SG11532
 	call	printf
 $LN8@DumpSymbol:
 
-; 1047 :     }
-; 1048 :     for( i = 0; i < GHASH_TABLE_SIZE; i++ ) {
+; 1048 :     }
+; 1049 :     for( i = 0; i < GHASH_TABLE_SIZE; i++ ) {
 
 	mov	DWORD PTR i$[rsp], 0
 	jmp	SHORT $LN4@DumpSymbol
@@ -2058,7 +2065,7 @@ $LN4@DumpSymbol:
 	cmp	DWORD PTR i$[rsp], 8009			; 00001f49H
 	jae	$LN3@DumpSymbol
 
-; 1049 :         for( sym = gsym_table[i], curr = 0; sym; sym = sym->nextitem ) {
+; 1050 :         for( sym = gsym_table[i], curr = 0; sym; sym = sym->nextitem ) {
 
 	mov	eax, DWORD PTR i$[rsp]
 	lea	rcx, OFFSET FLAT:gsym_table
@@ -2074,38 +2081,38 @@ $LN7@DumpSymbol:
 	cmp	QWORD PTR sym$[rsp], 0
 	je	SHORT $LN6@DumpSymbol
 
-; 1050 :             curr++;
+; 1051 :             curr++;
 
 	mov	eax, DWORD PTR curr$[rsp]
 	inc	eax
 	mov	DWORD PTR curr$[rsp], eax
 
-; 1051 :             if ( Options.dump_symbols ) {
+; 1052 :             if ( Options.dump_symbols ) {
 
 	movzx	eax, BYTE PTR Options+26
 	test	eax, eax
 	je	SHORT $LN9@DumpSymbol
 
-; 1052 :                 printf("%4u %8p ", i, sym );
+; 1053 :                 printf("%4u %8p ", i, sym );
 
 	mov	r8, QWORD PTR sym$[rsp]
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11531
+	lea	rcx, OFFSET FLAT:$SG11534
 	call	printf
 
-; 1053 :                 DumpSymbol( sym );
+; 1054 :                 DumpSymbol( sym );
 
 	mov	rcx, QWORD PTR sym$[rsp]
 	call	DumpSymbol
 $LN9@DumpSymbol:
 
-; 1054 :             }
-; 1055 :         }
+; 1055 :             }
+; 1056 :         }
 
 	jmp	SHORT $LN5@DumpSymbol
 $LN6@DumpSymbol:
 
-; 1056 :         count += curr;
+; 1057 :         count += curr;
 
 	mov	eax, DWORD PTR curr$[rsp]
 	mov	ecx, DWORD PTR count$[rsp]
@@ -2113,12 +2120,12 @@ $LN6@DumpSymbol:
 	mov	eax, ecx
 	mov	DWORD PTR count$[rsp], eax
 
-; 1057 :         if ( curr == 0 )
+; 1058 :         if ( curr == 0 )
 
 	cmp	DWORD PTR curr$[rsp], 0
 	jne	SHORT $LN10@DumpSymbol
 
-; 1058 :             num0++;
+; 1059 :             num0++;
 
 	mov	eax, DWORD PTR num0$[rsp]
 	inc	eax
@@ -2126,12 +2133,12 @@ $LN6@DumpSymbol:
 	jmp	SHORT $LN11@DumpSymbol
 $LN10@DumpSymbol:
 
-; 1059 :         else if ( curr == 1 )
+; 1060 :         else if ( curr == 1 )
 
 	cmp	DWORD PTR curr$[rsp], 1
 	jne	SHORT $LN12@DumpSymbol
 
-; 1060 :             num1++;
+; 1061 :             num1++;
 
 	mov	eax, DWORD PTR num1$[rsp]
 	inc	eax
@@ -2139,12 +2146,12 @@ $LN10@DumpSymbol:
 	jmp	SHORT $LN13@DumpSymbol
 $LN12@DumpSymbol:
 
-; 1061 :         else if ( curr <= 5 )
+; 1062 :         else if ( curr <= 5 )
 
 	cmp	DWORD PTR curr$[rsp], 5
 	ja	SHORT $LN14@DumpSymbol
 
-; 1062 :             num5++;
+; 1063 :             num5++;
 
 	mov	eax, DWORD PTR num5$[rsp]
 	inc	eax
@@ -2152,12 +2159,12 @@ $LN12@DumpSymbol:
 	jmp	SHORT $LN15@DumpSymbol
 $LN14@DumpSymbol:
 
-; 1063 :         else if ( curr <= 10 )
+; 1064 :         else if ( curr <= 10 )
 
 	cmp	DWORD PTR curr$[rsp], 10
 	ja	SHORT $LN16@DumpSymbol
 
-; 1064 :             num10++;
+; 1065 :             num10++;
 
 	mov	eax, DWORD PTR num10$[rsp]
 	inc	eax
@@ -2167,37 +2174,37 @@ $LN15@DumpSymbol:
 $LN13@DumpSymbol:
 $LN11@DumpSymbol:
 
-; 1065 :         if ( max < curr )
+; 1066 :         if ( max < curr )
 
 	mov	eax, DWORD PTR curr$[rsp]
 	cmp	DWORD PTR max$[rsp], eax
 	jae	SHORT $LN17@DumpSymbol
 
-; 1066 :             max = curr;
+; 1067 :             max = curr;
 
 	mov	eax, DWORD PTR curr$[rsp]
 	mov	DWORD PTR max$[rsp], eax
 $LN17@DumpSymbol:
 
-; 1067 :     }
+; 1068 :     }
 
 	jmp	$LN2@DumpSymbol
 $LN3@DumpSymbol:
 
-; 1068 :     if ( Options.quiet == FALSE ) {
+; 1069 :     if ( Options.quiet == FALSE ) {
 
 	movzx	eax, BYTE PTR Options
 	test	eax, eax
 	jne	SHORT $LN18@DumpSymbol
 
-; 1069 :         printf( "%u items in symbol table, expected %u\n", count, SymCount );
+; 1070 :         printf( "%u items in symbol table, expected %u\n", count, SymCount );
 
 	mov	r8d, DWORD PTR SymCount
 	mov	edx, DWORD PTR count$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11541
+	lea	rcx, OFFSET FLAT:$SG11544
 	call	printf
 
-; 1070 :         printf( "max items in a line=%u, lines with 0/1/<=5/<=10 items=%u/%u/%u/%u, \n", max, num0, num1, num5, num10 );
+; 1071 :         printf( "max items in a line=%u, lines with 0/1/<=5/<=10 items=%u/%u/%u/%u, \n", max, num0, num1, num5, num10 );
 
 	mov	eax, DWORD PTR num10$[rsp]
 	mov	DWORD PTR [rsp+40], eax
@@ -2206,12 +2213,12 @@ $LN3@DumpSymbol:
 	mov	r9d, DWORD PTR num1$[rsp]
 	mov	r8d, DWORD PTR num0$[rsp]
 	mov	edx, DWORD PTR max$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11542
+	lea	rcx, OFFSET FLAT:$SG11545
 	call	printf
 $LN18@DumpSymbol:
 
-; 1071 :     }
-; 1072 : }
+; 1072 :     }
+; 1073 : }
 
 	add	rsp, 104				; 00000068H
 	ret	0
@@ -2224,22 +2231,22 @@ tv71 = 32
 sym$ = 64
 free_ext PROC
 
-; 396  : {
+; 397  : {
 
 	mov	QWORD PTR [rsp+8], rcx
 	sub	rsp, 56					; 00000038H
 
-; 397  :     DebugMsg(("free_ext: item=%p name=%s state=%u\n", sym, sym->name, sym->state ));
+; 398  :     DebugMsg(("free_ext: item=%p name=%s state=%u\n", sym, sym->name, sym->state ));
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r9d, DWORD PTR [rax+32]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	rdx, QWORD PTR sym$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11199
+	lea	rcx, OFFSET FLAT:$SG11202
 	call	DoDebugMsg
 
-; 398  :     switch( sym->state ) {
+; 399  :     switch( sym->state ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	eax, DWORD PTR [rax+32]
@@ -2256,8 +2263,8 @@ free_ext PROC
 	jmp	rax
 $LN4@free_ext:
 
-; 399  :     case SYM_INTERNAL:
-; 400  :         if ( sym->isproc )
+; 400  :     case SYM_INTERNAL:
+; 401  :         if ( sym->isproc )
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+41]
@@ -2267,19 +2274,19 @@ $LN4@free_ext:
 	test	eax, eax
 	je	SHORT $LN5@free_ext
 
-; 401  :             DeleteProc( (struct dsym *)sym );
+; 402  :             DeleteProc( (struct dsym *)sym );
 
 	mov	rcx, QWORD PTR sym$[rsp]
 	call	DeleteProc
 $LN5@free_ext:
 
-; 402  :         break;
+; 403  :         break;
 
 	jmp	$LN2@free_ext
 $LN6@free_ext:
 
-; 403  :     case SYM_EXTERNAL:
-; 404  :         if ( sym->isproc )
+; 404  :     case SYM_EXTERNAL:
+; 405  :         if ( sym->isproc )
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+41]
@@ -2289,22 +2296,22 @@ $LN6@free_ext:
 	test	eax, eax
 	je	SHORT $LN7@free_ext
 
-; 405  :             DeleteProc( (struct dsym *)sym );
+; 406  :             DeleteProc( (struct dsym *)sym );
 
 	mov	rcx, QWORD PTR sym$[rsp]
 	call	DeleteProc
 $LN7@free_ext:
 
-; 406  :         sym->first_size = 0;
+; 407  :         sym->first_size = 0;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	DWORD PTR [rax+44], 0
 
-; 407  :         /* The altname field may contain a symbol (if weak == FALSE).
-; 408  :          * However, this is an independant item and must not be released here
-; 409  :          */
-; 410  : #ifdef DEBUG_OUT /* to be removed, this can't happen anymore. */
-; 411  :         if ( sym->mem_type == MT_TYPE && *sym->type->name == NULLC ) {
+; 408  :         /* The altname field may contain a symbol (if weak == FALSE).
+; 409  :          * However, this is an independant item and must not be released here
+; 410  :          */
+; 411  : #ifdef DEBUG_OUT /* to be removed, this can't happen anymore. */
+; 412  :         if ( sym->mem_type == MT_TYPE && *sym->type->name == NULLC ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
 	cmp	DWORD PTR [rax+36], 196			; 000000c4H
@@ -2316,29 +2323,29 @@ $LN7@free_ext:
 	test	eax, eax
 	jne	SHORT $LN8@free_ext
 
-; 412  :             DebugMsg(( "free_ext: external with private type: %s\n", sym->name ));
+; 413  :             DebugMsg(( "free_ext: external with private type: %s\n", sym->name ));
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11205
+	lea	rcx, OFFSET FLAT:$SG11208
 	call	DoDebugMsg
 
-; 413  :             SymFree( sym->type );
+; 414  :             SymFree( sym->type );
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rcx, QWORD PTR [rax+80]
 	call	SymFree
 $LN8@free_ext:
 
-; 414  :         }
-; 415  : #endif
-; 416  :         break;
+; 415  :         }
+; 416  : #endif
+; 417  :         break;
 
 	jmp	$LN2@free_ext
 $LN9@free_ext:
 
-; 417  :     case SYM_SEG:
-; 418  :         if ( ((struct dsym *)sym)->e.seginfo->internal )
+; 418  :     case SYM_SEG:
+; 419  :         if ( ((struct dsym *)sym)->e.seginfo->internal )
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+96]
@@ -2347,49 +2354,49 @@ $LN9@free_ext:
 	and	al, 1
 	movzx	eax, al
 
-; 419  :             LclFree( ((struct dsym *)sym)->e.seginfo->CodeBuffer );
-; 420  :         LclFree( ((struct dsym *)sym)->e.seginfo );
-; 421  :         break;
+; 420  :             LclFree( ((struct dsym *)sym)->e.seginfo->CodeBuffer );
+; 421  :         LclFree( ((struct dsym *)sym)->e.seginfo );
+; 422  :         break;
 
 	jmp	SHORT $LN2@free_ext
 $LN11@free_ext:
 
-; 422  :     case SYM_GRP:
-; 423  :         DeleteGroup( (struct dsym *)sym );
+; 423  :     case SYM_GRP:
+; 424  :         DeleteGroup( (struct dsym *)sym );
 
 	mov	rcx, QWORD PTR sym$[rsp]
 	call	DeleteGroup
 
-; 424  :         break;
+; 425  :         break;
 
 	jmp	SHORT $LN2@free_ext
 $LN12@free_ext:
 
-; 425  :     case SYM_TYPE:
-; 426  :         DeleteType( (struct dsym *)sym );
+; 426  :     case SYM_TYPE:
+; 427  :         DeleteType( (struct dsym *)sym );
 
 	mov	rcx, QWORD PTR sym$[rsp]
 	call	DeleteType
 
-; 427  :         break;
+; 428  :         break;
 
 	jmp	SHORT $LN2@free_ext
 $LN13@free_ext:
 
-; 428  :     case SYM_MACRO:
-; 429  :         ReleaseMacroData( (struct dsym *)sym );
+; 429  :     case SYM_MACRO:
+; 430  :         ReleaseMacroData( (struct dsym *)sym );
 
 	mov	rcx, QWORD PTR sym$[rsp]
 	call	ReleaseMacroData
 
-; 430  :         LclFree( ((struct dsym *)sym)->e.macroinfo );
-; 431  :         break;
+; 431  :         LclFree( ((struct dsym *)sym)->e.macroinfo );
+; 432  :         break;
 
 	jmp	SHORT $LN2@free_ext
 $LN14@free_ext:
 
-; 432  :     case SYM_TMACRO:
-; 433  :         if ( sym->predefined == FALSE )
+; 433  :     case SYM_TMACRO:
+; 434  :         if ( sym->predefined == FALSE )
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+40]
@@ -2397,16 +2404,16 @@ $LN14@free_ext:
 	and	al, 1
 	movzx	eax, al
 
-; 434  :             LclFree( sym->string_ptr );
-; 435  :         break;
+; 435  :             LclFree( sym->string_ptr );
+; 436  :         break;
 
 	jmp	SHORT $LN2@free_ext
 $LN16@free_ext:
 
-; 436  : #ifdef DEBUG_OUT 
-; 437  :     case SYM_STACK:
-; 438  :         /* to be removed, this can't happen anymore. */
-; 439  :         if ( sym->mem_type == MT_TYPE && *sym->type->name == NULLC ) { 
+; 437  : #ifdef DEBUG_OUT 
+; 438  :     case SYM_STACK:
+; 439  :         /* to be removed, this can't happen anymore. */
+; 440  :         if ( sym->mem_type == MT_TYPE && *sym->type->name == NULLC ) { 
 
 	mov	rax, QWORD PTR sym$[rsp]
 	cmp	DWORD PTR [rax+36], 196			; 000000c4H
@@ -2418,15 +2425,15 @@ $LN16@free_ext:
 	test	eax, eax
 	jne	SHORT $LN17@free_ext
 
-; 440  :             DebugMsg(( "free_ext: case SYM_STACK, sym=%s with private type\n", sym->name ));
+; 441  :             DebugMsg(( "free_ext: case SYM_STACK, sym=%s with private type\n", sym->name ));
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11215
+	lea	rcx, OFFSET FLAT:$SG11218
 	call	DoDebugMsg
 
-; 441  :             /* symbol has a "private" type */
-; 442  :             SymFree( sym->type );
+; 442  :             /* symbol has a "private" type */
+; 443  :             SymFree( sym->type );
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rcx, QWORD PTR [rax+80]
@@ -2434,11 +2441,11 @@ $LN16@free_ext:
 $LN17@free_ext:
 $LN2@free_ext:
 
-; 443  :         }
-; 444  :         break;
-; 445  : #endif
-; 446  :     }
-; 447  : }
+; 444  :         }
+; 445  :         break;
+; 446  : #endif
+; 447  :     }
+; 448  : }
 
 	add	rsp, 56					; 00000038H
 	ret	0
@@ -2464,23 +2471,23 @@ g$ = 4
 s$ = 32
 hashpjw	PROC
 
-; 149  : {
+; 150  : {
 
 	mov	QWORD PTR [rsp+8], rcx
 	sub	rsp, 24
 
-; 150  :     unsigned h;
-; 151  :     unsigned g;
-; 152  : 
-; 153  : #if HASH_MAGNITUDE==12
-; 154  :     for( h = 0; *s; ++s ) {
-; 155  :         h = (h << 4) + (*s | ' ');
-; 156  :         g = h & ~0x0fff;
-; 157  :         h ^= g;
-; 158  :         h ^= g >> 12;
-; 159  :     }
-; 160  : #else
-; 161  :     for( h = 0; *s; ++s ) {
+; 151  :     unsigned h;
+; 152  :     unsigned g;
+; 153  : 
+; 154  : #if HASH_MAGNITUDE==12
+; 155  :     for( h = 0; *s; ++s ) {
+; 156  :         h = (h << 4) + (*s | ' ');
+; 157  :         g = h & ~0x0fff;
+; 158  :         h ^= g;
+; 159  :         h ^= g >> 12;
+; 160  :     }
+; 161  : #else
+; 162  :     for( h = 0; *s; ++s ) {
 
 	mov	DWORD PTR h$[rsp], 0
 	jmp	SHORT $LN4@hashpjw
@@ -2494,7 +2501,7 @@ $LN4@hashpjw:
 	test	eax, eax
 	je	SHORT $LN3@hashpjw
 
-; 162  :         h = (h << 5) + (*s | ' ');
+; 163  :         h = (h << 5) + (*s | ' ');
 
 	mov	eax, DWORD PTR h$[rsp]
 	shl	eax, 5
@@ -2504,13 +2511,13 @@ $LN4@hashpjw:
 	add	eax, ecx
 	mov	DWORD PTR h$[rsp], eax
 
-; 163  :         g = h & ~0x7fff;
+; 164  :         g = h & ~0x7fff;
 
 	mov	eax, DWORD PTR h$[rsp]
 	and	eax, -32768				; ffff8000H
 	mov	DWORD PTR g$[rsp], eax
 
-; 164  :         h ^= g;
+; 165  :         h ^= g;
 
 	mov	eax, DWORD PTR g$[rsp]
 	mov	ecx, DWORD PTR h$[rsp]
@@ -2518,7 +2525,7 @@ $LN4@hashpjw:
 	mov	eax, ecx
 	mov	DWORD PTR h$[rsp], eax
 
-; 165  :         h ^= g >> 15;
+; 166  :         h ^= g >> 15;
 
 	mov	eax, DWORD PTR g$[rsp]
 	shr	eax, 15
@@ -2527,17 +2534,17 @@ $LN4@hashpjw:
 	mov	eax, ecx
 	mov	DWORD PTR h$[rsp], eax
 
-; 166  :     }
+; 167  :     }
 
 	jmp	SHORT $LN2@hashpjw
 $LN3@hashpjw:
 
-; 167  : #endif
-; 168  :     return( h );
+; 168  : #endif
+; 169  :     return( h );
 
 	mov	eax, DWORD PTR h$[rsp]
 
-; 169  : }
+; 170  : }
 
 	add	rsp, 24
 	ret	0
@@ -2551,22 +2558,22 @@ l$ = 8
 proc$ = 32
 SymGetLocal PROC
 
-; 191  : {
+; 192  : {
 
 $LN7:
 	mov	QWORD PTR [rsp+8], rcx
 	sub	rsp, 24
 
-; 192  :     int i;
-; 193  :     struct dsym  **l = &((struct dsym *)proc)->e.procinfo->labellist;
+; 193  :     int i;
+; 194  :     struct dsym  **l = &((struct dsym *)proc)->e.procinfo->labellist;
 
 	mov	rax, QWORD PTR proc$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	add	rax, 24
 	mov	QWORD PTR l$[rsp], rax
 
-; 194  : 
-; 195  :     for ( i = 0; i < LHASH_TABLE_SIZE; i++ ) {
+; 195  : 
+; 196  :     for ( i = 0; i < LHASH_TABLE_SIZE; i++ ) {
 
 	mov	DWORD PTR i$[rsp], 0
 	jmp	SHORT $LN4@SymGetLoca
@@ -2578,14 +2585,14 @@ $LN4@SymGetLoca:
 	cmp	DWORD PTR i$[rsp], 127			; 0000007fH
 	jge	SHORT $LN3@SymGetLoca
 
-; 196  :         if ( lsym_table[i] ) {
+; 197  :         if ( lsym_table[i] ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	lea	rcx, OFFSET FLAT:lsym_table
 	cmp	QWORD PTR [rcx+rax*8], 0
 	je	SHORT $LN5@SymGetLoca
 
-; 197  :             *l = (struct dsym *)lsym_table[i];
+; 198  :             *l = (struct dsym *)lsym_table[i];
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	lea	rcx, OFFSET FLAT:lsym_table
@@ -2593,7 +2600,7 @@ $LN4@SymGetLoca:
 	mov	rax, QWORD PTR [rcx+rax*8]
 	mov	QWORD PTR [rdx], rax
 
-; 198  :             l = &(*l)->e.nextll;
+; 199  :             l = &(*l)->e.nextll;
 
 	mov	rax, QWORD PTR l$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -2601,20 +2608,20 @@ $LN4@SymGetLoca:
 	mov	QWORD PTR l$[rsp], rax
 $LN5@SymGetLoca:
 
-; 199  :         }
-; 200  :     }
+; 200  :         }
+; 201  :     }
 
 	jmp	SHORT $LN2@SymGetLoca
 $LN3@SymGetLoca:
 
-; 201  :     *l = NULL;
+; 202  :     *l = NULL;
 
 	mov	rax, QWORD PTR l$[rsp]
 	mov	QWORD PTR [rax], 0
 
-; 202  : 
-; 203  :     return;
-; 204  : }
+; 203  : 
+; 204  :     return;
+; 205  : }
 
 	add	rsp, 24
 	ret	0
@@ -2628,20 +2635,20 @@ l$ = 40
 proc$ = 64
 SymSetLocal PROC
 
-; 214  : {
+; 215  : {
 
 $LN6:
 	mov	QWORD PTR [rsp+8], rcx
 	sub	rsp, 56					; 00000038H
 
-; 215  :     int i;
-; 216  :     struct dsym *l;
-; 217  : 
-; 218  :     SymClearLocal();
+; 216  :     int i;
+; 217  :     struct dsym *l;
+; 218  : 
+; 219  :     SymClearLocal();
 
 	call	SymClearLocal
 
-; 219  :     for ( l = ((struct dsym *)proc)->e.procinfo->labellist; l; l = l->e.nextll ) {
+; 220  :     for ( l = ((struct dsym *)proc)->e.procinfo->labellist; l; l = l->e.nextll ) {
 
 	mov	rax, QWORD PTR proc$[rsp]
 	mov	rax, QWORD PTR [rax+96]
@@ -2656,16 +2663,16 @@ $LN4@SymSetLoca:
 	cmp	QWORD PTR l$[rsp], 0
 	je	SHORT $LN3@SymSetLoca
 
-; 220  :         DebugMsg1(("SymSetLocal(%s): label=%s\n", proc->name, l->sym.name ));
+; 221  :         DebugMsg1(("SymSetLocal(%s): label=%s\n", proc->name, l->sym.name ));
 
 	mov	rax, QWORD PTR l$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	rax, QWORD PTR proc$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11120
+	lea	rcx, OFFSET FLAT:$SG11123
 	call	DoDebugMsg1
 
-; 221  :         i = hashpjw( l->sym.name ) % LHASH_TABLE_SIZE;
+; 222  :         i = hashpjw( l->sym.name ) % LHASH_TABLE_SIZE;
 
 	mov	rax, QWORD PTR l$[rsp]
 	mov	rcx, QWORD PTR [rax+8]
@@ -2676,20 +2683,20 @@ $LN4@SymSetLoca:
 	mov	eax, edx
 	mov	DWORD PTR i$[rsp], eax
 
-; 222  :         lsym_table[i] = &l->sym;
+; 223  :         lsym_table[i] = &l->sym;
 
 	mov	rax, QWORD PTR l$[rsp]
 	movsxd	rcx, DWORD PTR i$[rsp]
 	lea	rdx, OFFSET FLAT:lsym_table
 	mov	QWORD PTR [rdx+rcx*8], rax
 
-; 223  :     }
+; 224  :     }
 
 	jmp	SHORT $LN2@SymSetLoca
 $LN3@SymSetLoca:
 
-; 224  :     return;
-; 225  : }
+; 225  :     return;
+; 226  : }
 
 	add	rsp, 56					; 00000038H
 	ret	0
@@ -2700,20 +2707,20 @@ _TEXT	ENDS
 _TEXT	SEGMENT
 SymClearLocal PROC
 
-; 182  : {
+; 183  : {
 
 $LN3:
 	sub	rsp, 40					; 00000028H
 
-; 183  :     memset( &lsym_table, 0, sizeof( lsym_table ) );
+; 184  :     memset( &lsym_table, 0, sizeof( lsym_table ) );
 
 	mov	r8d, 1016				; 000003f8H
 	xor	edx, edx
 	lea	rcx, OFFSET FLAT:lsym_table
 	call	memset
 
-; 184  :     return;
-; 185  : }
+; 185  :     return;
+; 186  : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
@@ -2725,12 +2732,12 @@ _TEXT	SEGMENT
 tv66 = 0
 SymSetCmpFunc PROC
 
-; 173  : {
+; 174  : {
 
 $LN5:
 	sub	rsp, 24
 
-; 174  :     SymCmpFunc = ( ModuleInfo.case_sensitive == TRUE ? memcmp : (StrCmpFunc)_memicmp );
+; 175  :     SymCmpFunc = ( ModuleInfo.case_sensitive == TRUE ? memcmp : (StrCmpFunc)_memicmp );
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	and	eax, 1
@@ -2746,8 +2753,8 @@ $LN4@SymSetCmpF:
 	mov	rax, QWORD PTR tv66[rsp]
 	mov	QWORD PTR SymCmpFunc, rax
 
-; 175  :     return;
-; 176  : }
+; 176  :     return;
+; 177  : }
 
 	add	rsp, 24
 	ret	0
@@ -2758,11 +2765,11 @@ _TEXT	ENDS
 _TEXT	SEGMENT
 SymGetCount PROC
 
-; 726  :     return( SymCount );
+; 727  :     return( SymCount );
 
 	mov	eax, DWORD PTR SymCount
 
-; 727  : }
+; 728  : }
 
 	ret	0
 SymGetCount ENDP
@@ -2774,22 +2781,22 @@ sym$ = 8
 pi$ = 16
 SymEnum	PROC
 
-; 752  : {
+; 753  : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
 
-; 753  :     if ( sym == NULL ) {
+; 754  :     if ( sym == NULL ) {
 
 	cmp	QWORD PTR sym$[rsp], 0
 	jne	SHORT $LN4@SymEnum
 
-; 754  :         *pi = 0;
+; 755  :         *pi = 0;
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	DWORD PTR [rax], 0
 
-; 755  :         sym = gsym_table[*pi];
+; 756  :         sym = gsym_table[*pi];
 
 	mov	rax, QWORD PTR pi$[rsp]
 	movsxd	rax, DWORD PTR [rax]
@@ -2797,12 +2804,12 @@ SymEnum	PROC
 	mov	rax, QWORD PTR [rcx+rax*8]
 	mov	QWORD PTR sym$[rsp], rax
 
-; 756  :     } else {
+; 757  :     } else {
 
 	jmp	SHORT $LN5@SymEnum
 $LN4@SymEnum:
 
-; 757  :         sym = sym->nextitem;
+; 758  :         sym = sym->nextitem;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -2810,10 +2817,10 @@ $LN4@SymEnum:
 $LN5@SymEnum:
 $LN2@SymEnum:
 
-; 758  :     }
-; 759  : 
-; 760  :     /* v2.10: changed from for() to while() */
-; 761  :     while( sym == NULL && *pi < GHASH_TABLE_SIZE - 1 )
+; 759  :     }
+; 760  : 
+; 761  :     /* v2.10: changed from for() to while() */
+; 762  :     while( sym == NULL && *pi < GHASH_TABLE_SIZE - 1 )
 
 	cmp	QWORD PTR sym$[rsp], 0
 	jne	SHORT $LN3@SymEnum
@@ -2821,7 +2828,7 @@ $LN2@SymEnum:
 	cmp	DWORD PTR [rax], 8008			; 00001f48H
 	jge	SHORT $LN3@SymEnum
 
-; 762  :         sym = gsym_table[++(*pi)];
+; 763  :         sym = gsym_table[++(*pi)];
 
 	mov	rax, QWORD PTR pi$[rsp]
 	mov	eax, DWORD PTR [rax]
@@ -2836,13 +2843,13 @@ $LN2@SymEnum:
 	jmp	SHORT $LN2@SymEnum
 $LN3@SymEnum:
 
-; 763  : 
-; 764  :     //printf("sym=%X, i=%u\n", sym, *pi );
-; 765  :     return( sym );
+; 764  : 
+; 765  :     //printf("sym=%X, i=%u\n", sym, *pi );
+; 766  :     return( sym );
 
 	mov	rax, QWORD PTR sym$[rsp]
 
-; 766  : }
+; 767  : }
 
 	ret	0
 SymEnum	ENDP
@@ -2856,17 +2863,17 @@ sym$ = 8
 syms$ = 32
 SymGetAll PROC
 
-; 733  : {
+; 734  : {
 
 $LN9:
 	mov	QWORD PTR [rsp+8], rcx
 	sub	rsp, 24
 
-; 734  :     struct asym         *sym;
-; 735  :     unsigned            i, j;
-; 736  : 
-; 737  :     /* copy symbols to table */
-; 738  :     for( i = j = 0; i < GHASH_TABLE_SIZE; i++ ) {
+; 735  :     struct asym         *sym;
+; 736  :     unsigned            i, j;
+; 737  : 
+; 738  :     /* copy symbols to table */
+; 739  :     for( i = j = 0; i < GHASH_TABLE_SIZE; i++ ) {
 
 	mov	DWORD PTR j$[rsp], 0
 	mov	eax, DWORD PTR j$[rsp]
@@ -2880,7 +2887,7 @@ $LN4@SymGetAll:
 	cmp	DWORD PTR i$[rsp], 8009			; 00001f49H
 	jae	SHORT $LN3@SymGetAll
 
-; 739  :         for( sym = gsym_table[i]; sym; sym = sym->nextitem ) {
+; 740  :         for( sym = gsym_table[i]; sym; sym = sym->nextitem ) {
 
 	mov	eax, DWORD PTR i$[rsp]
 	lea	rcx, OFFSET FLAT:gsym_table
@@ -2895,7 +2902,7 @@ $LN7@SymGetAll:
 	cmp	QWORD PTR sym$[rsp], 0
 	je	SHORT $LN6@SymGetAll
 
-; 740  :             syms[j++] = sym;
+; 741  :             syms[j++] = sym;
 
 	mov	eax, DWORD PTR j$[rsp]
 	mov	rcx, QWORD PTR syms$[rsp]
@@ -2905,18 +2912,18 @@ $LN7@SymGetAll:
 	inc	eax
 	mov	DWORD PTR j$[rsp], eax
 
-; 741  :         }
+; 742  :         }
 
 	jmp	SHORT $LN5@SymGetAll
 $LN6@SymGetAll:
 
-; 742  :     }
+; 743  :     }
 
 	jmp	SHORT $LN2@SymGetAll
 $LN3@SymGetAll:
 
-; 743  :     return;
-; 744  : }
+; 744  :     return;
+; 745  : }
 
 	add	rsp, 24
 	ret	0
@@ -2929,15 +2936,15 @@ i$ = 32
 sym$ = 40
 SymMakeAllSymbolsPublic PROC
 
-; 559  : {
+; 560  : {
 
 $LN10:
 	sub	rsp, 56					; 00000038H
 
-; 560  :     int i;
-; 561  :     struct asym  *sym;
-; 562  : 
-; 563  :     for( i = 0; i < GHASH_TABLE_SIZE; i++ ) {
+; 561  :     int i;
+; 562  :     struct asym  *sym;
+; 563  : 
+; 564  :     for( i = 0; i < GHASH_TABLE_SIZE; i++ ) {
 
 	mov	DWORD PTR i$[rsp], 0
 	jmp	SHORT $LN4@SymMakeAll
@@ -2949,7 +2956,7 @@ $LN4@SymMakeAll:
 	cmp	DWORD PTR i$[rsp], 8009			; 00001f49H
 	jge	$LN3@SymMakeAll
 
-; 564  :         for( sym = gsym_table[i]; sym; sym = sym->nextitem ) {
+; 565  :         for( sym = gsym_table[i]; sym; sym = sym->nextitem ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	lea	rcx, OFFSET FLAT:gsym_table
@@ -2964,14 +2971,14 @@ $LN7@SymMakeAll:
 	cmp	QWORD PTR sym$[rsp], 0
 	je	$LN6@SymMakeAll
 
-; 565  :             if ( sym->state == SYM_INTERNAL &&
-; 566  :                 /* v2.07: MT_ABS is obsolete */
-; 567  :                 //sym->mem_type != MT_ABS &&  /* no EQU or '=' constants */
-; 568  :                 sym->isequate == FALSE &&     /* no EQU or '=' constants */
-; 569  :                 sym->predefined == FALSE && /* no predefined symbols ($) */
-; 570  :                 sym->included == FALSE && /* v2.09: symbol already added to public queue? */
-; 571  :                 //sym->scoped == FALSE && /* v2.09: no procs that are marked as "private" */
-; 572  :                 sym->name[1] != '&' && /* v2.10: no @@ code labels */
+; 566  :             if ( sym->state == SYM_INTERNAL &&
+; 567  :                 /* v2.07: MT_ABS is obsolete */
+; 568  :                 //sym->mem_type != MT_ABS &&  /* no EQU or '=' constants */
+; 569  :                 sym->isequate == FALSE &&     /* no EQU or '=' constants */
+; 570  :                 sym->predefined == FALSE && /* no predefined symbols ($) */
+; 571  :                 sym->included == FALSE && /* v2.09: symbol already added to public queue? */
+; 572  :                 //sym->scoped == FALSE && /* v2.09: no procs that are marked as "private" */
+; 573  :                 sym->name[1] != '&' && /* v2.10: no @@ code labels */
 
 	mov	rax, QWORD PTR sym$[rsp]
 	cmp	DWORD PTR [rax+32], 1
@@ -3012,8 +3019,8 @@ $LN7@SymMakeAll:
 	test	eax, eax
 	jne	SHORT $LN8@SymMakeAll
 
-; 573  :                 sym->ispublic == FALSE ) {
-; 574  :                 sym->ispublic = TRUE;
+; 574  :                 sym->ispublic == FALSE ) {
+; 575  :                 sym->ispublic = TRUE;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+40]
@@ -3021,24 +3028,24 @@ $LN7@SymMakeAll:
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	BYTE PTR [rcx+40], al
 
-; 575  :                 AddPublicData( sym );
+; 576  :                 AddPublicData( sym );
 
 	mov	rcx, QWORD PTR sym$[rsp]
 	call	AddPublicData
 $LN8@SymMakeAll:
 
-; 576  :             }
-; 577  :         }
+; 577  :             }
+; 578  :         }
 
 	jmp	$LN5@SymMakeAll
 $LN6@SymMakeAll:
 
-; 578  :     }
+; 579  :     }
 
 	jmp	$LN2@SymMakeAll
 $LN3@SymMakeAll:
 
-; 579  : }
+; 580  : }
 
 	add	rsp, 56					; 00000038H
 	ret	0
@@ -3052,48 +3059,48 @@ sym$1 = 8
 pass$ = 32
 SymPassInit PROC
 
-; 689  : {
+; 690  : {
 
 $LN12:
 	mov	DWORD PTR [rsp+8], ecx
 	sub	rsp, 24
 
-; 690  :     unsigned            i;
-; 691  : 
-; 692  :     if ( pass == PASS_1 )
+; 691  :     unsigned            i;
+; 692  : 
+; 693  :     if ( pass == PASS_1 )
 
 	cmp	DWORD PTR pass$[rsp], 0
 	jne	SHORT $LN8@SymPassIni
 
-; 693  :         return;
+; 694  :         return;
 
 	jmp	SHORT $LN1@SymPassIni
 $LN8@SymPassIni:
 
-; 694  : 
-; 695  : #if FASTPASS
-; 696  :     /* No need to reset the "defined" flag if FASTPASS is on.
-; 697  :      * Because then the source lines will come from the line store,
-; 698  :      * where inactive conditional lines are NOT contained.
-; 699  :      */
-; 700  :     if ( UseSavedState )
+; 695  : 
+; 696  : #if FASTPASS
+; 697  :     /* No need to reset the "defined" flag if FASTPASS is on.
+; 698  :      * Because then the source lines will come from the line store,
+; 699  :      * where inactive conditional lines are NOT contained.
+; 700  :      */
+; 701  :     if ( UseSavedState )
 
 	movzx	eax, BYTE PTR UseSavedState
 	test	eax, eax
 	je	SHORT $LN9@SymPassIni
 
-; 701  :         return;
+; 702  :         return;
 
 	jmp	SHORT $LN1@SymPassIni
 $LN9@SymPassIni:
 
-; 702  : #endif
-; 703  :     /* mark as "undefined":
-; 704  :      * - SYM_INTERNAL - internals
-; 705  :      * - SYM_MACRO - macros
-; 706  :      * - SYM_TMACRO - text macros
-; 707  :      */
-; 708  :     for( i = 0; i < GHASH_TABLE_SIZE; i++ ) {
+; 703  : #endif
+; 704  :     /* mark as "undefined":
+; 705  :      * - SYM_INTERNAL - internals
+; 706  :      * - SYM_MACRO - macros
+; 707  :      * - SYM_TMACRO - text macros
+; 708  :      */
+; 709  :     for( i = 0; i < GHASH_TABLE_SIZE; i++ ) {
 
 	mov	DWORD PTR i$[rsp], 0
 	jmp	SHORT $LN4@SymPassIni
@@ -3105,8 +3112,8 @@ $LN4@SymPassIni:
 	cmp	DWORD PTR i$[rsp], 8009			; 00001f49H
 	jae	SHORT $LN3@SymPassIni
 
-; 709  :         struct asym *sym;
-; 710  :         for( sym = gsym_table[i]; sym; sym = sym->nextitem ) {
+; 710  :         struct asym *sym;
+; 711  :         for( sym = gsym_table[i]; sym; sym = sym->nextitem ) {
 
 	mov	eax, DWORD PTR i$[rsp]
 	lea	rcx, OFFSET FLAT:gsym_table
@@ -3121,7 +3128,7 @@ $LN7@SymPassIni:
 	cmp	QWORD PTR sym$1[rsp], 0
 	je	SHORT $LN6@SymPassIni
 
-; 711  :             if ( sym->predefined == FALSE ) {
+; 712  :             if ( sym->predefined == FALSE ) {
 
 	mov	rax, QWORD PTR sym$1[rsp]
 	movzx	eax, BYTE PTR [rax+40]
@@ -3131,11 +3138,11 @@ $LN7@SymPassIni:
 	test	eax, eax
 	jne	SHORT $LN10@SymPassIni
 
-; 712  :                 /* v2.04: all symbol's "defined" flag is now reset. */
-; 713  :                 // if ( sym->state == SYM_TMACRO ||
-; 714  :                 //    sym->state == SYM_MACRO  ||
-; 715  :                 //    sym->state == SYM_INTERNAL ) {
-; 716  :                     sym->isdefined = FALSE;
+; 713  :                 /* v2.04: all symbol's "defined" flag is now reset. */
+; 714  :                 // if ( sym->state == SYM_TMACRO ||
+; 715  :                 //    sym->state == SYM_MACRO  ||
+; 716  :                 //    sym->state == SYM_INTERNAL ) {
+; 717  :                     sym->isdefined = FALSE;
 
 	mov	rax, QWORD PTR sym$1[rsp]
 	movzx	eax, BYTE PTR [rax+40]
@@ -3144,20 +3151,20 @@ $LN7@SymPassIni:
 	mov	BYTE PTR [rcx+40], al
 $LN10@SymPassIni:
 
-; 717  :                 //}
-; 718  :             }
-; 719  :         }
+; 718  :                 //}
+; 719  :             }
+; 720  :         }
 
 	jmp	SHORT $LN5@SymPassIni
 $LN6@SymPassIni:
 
-; 720  :     }
+; 721  :     }
 
 	jmp	SHORT $LN2@SymPassIni
 $LN3@SymPassIni:
 $LN1@SymPassIni:
 
-; 721  : }
+; 722  : }
 
 	add	rsp, 24
 	ret	0
@@ -3173,23 +3180,23 @@ sym$2 = 48
 next$3 = 56
 SymFini	PROC
 
-; 587  : {
+; 588  : {
 
 $LN19:
 	sub	rsp, 72					; 00000048H
 
-; 588  : #if FASTMEM==0 || defined( DEBUG_OUT )
-; 589  :     unsigned i;
-; 590  : #endif
-; 591  : 
-; 592  : #ifdef DEBUG_OUT
-; 593  :     if ( Options.dump_symbols_hash ) {
+; 589  : #if FASTMEM==0 || defined( DEBUG_OUT )
+; 590  :     unsigned i;
+; 591  : #endif
+; 592  : 
+; 593  : #ifdef DEBUG_OUT
+; 594  :     if ( Options.dump_symbols_hash ) {
 
 	movzx	eax, BYTE PTR Options+27
 	test	eax, eax
 	je	$LN14@SymFini
 
-; 594  :         for( i = 0; i < GHASH_TABLE_SIZE; i++ ) {
+; 595  :         for( i = 0; i < GHASH_TABLE_SIZE; i++ ) {
 
 	mov	DWORD PTR i$[rsp], 0
 	jmp	SHORT $LN4@SymFini
@@ -3201,25 +3208,25 @@ $LN4@SymFini:
 	cmp	DWORD PTR i$[rsp], 8009			; 00001f49H
 	jae	SHORT $LN3@SymFini
 
-; 595  :             struct asym  *sym = gsym_table[i];
+; 596  :             struct asym  *sym = gsym_table[i];
 
 	mov	eax, DWORD PTR i$[rsp]
 	lea	rcx, OFFSET FLAT:gsym_table
 	mov	rax, QWORD PTR [rcx+rax*8]
 	mov	QWORD PTR sym$1[rsp], rax
 
-; 596  :             if ( sym ) {
+; 597  :             if ( sym ) {
 
 	cmp	QWORD PTR sym$1[rsp], 0
 	je	SHORT $LN15@SymFini
 
-; 597  :                 printf("%4u ", i );
+; 598  :                 printf("%4u ", i );
 
 	mov	edx, DWORD PTR i$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11280
+	lea	rcx, OFFSET FLAT:$SG11283
 	call	printf
 
-; 598  :                 for( ; sym; sym = sym->nextitem ) {
+; 599  :                 for( ; sym; sym = sym->nextitem ) {
 
 	jmp	SHORT $LN7@SymFini
 $LN5@SymFini:
@@ -3230,41 +3237,41 @@ $LN7@SymFini:
 	cmp	QWORD PTR sym$1[rsp], 0
 	je	SHORT $LN6@SymFini
 
-; 599  :                     printf("%-16s ", sym->name );
+; 600  :                     printf("%-16s ", sym->name );
 
 	mov	rax, QWORD PTR sym$1[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11281
+	lea	rcx, OFFSET FLAT:$SG11284
 	call	printf
 
-; 600  :                 }
+; 601  :                 }
 
 	jmp	SHORT $LN5@SymFini
 $LN6@SymFini:
 
-; 601  :                 printf("\n" );
+; 602  :                 printf("\n" );
 
-	lea	rcx, OFFSET FLAT:$SG11282
+	lea	rcx, OFFSET FLAT:$SG11285
 	call	printf
 $LN15@SymFini:
 
-; 602  :             }
-; 603  :         }
+; 603  :             }
+; 604  :         }
 
 	jmp	SHORT $LN2@SymFini
 $LN3@SymFini:
 $LN14@SymFini:
 
-; 604  :     }
-; 605  :     DumpSymbols();
+; 605  :     }
+; 606  :     DumpSymbols();
 
 	call	DumpSymbols
 
-; 606  : #endif
-; 607  : 
-; 608  : #if FASTMEM==0 || defined( DEBUG_OUT )
-; 609  :     /* free the symbol table */
-; 610  :     for( i = 0; i < GHASH_TABLE_SIZE; i++ ) {
+; 607  : #endif
+; 608  : 
+; 609  : #if FASTMEM==0 || defined( DEBUG_OUT )
+; 610  :     /* free the symbol table */
+; 611  :     for( i = 0; i < GHASH_TABLE_SIZE; i++ ) {
 
 	mov	DWORD PTR i$[rsp], 0
 	jmp	SHORT $LN10@SymFini
@@ -3276,9 +3283,9 @@ $LN10@SymFini:
 	cmp	DWORD PTR i$[rsp], 8009			; 00001f49H
 	jae	SHORT $LN9@SymFini
 
-; 611  :         struct asym  *sym;
-; 612  :         struct asym  *next;
-; 613  :         for( sym = gsym_table[i]; sym; ) {
+; 612  :         struct asym  *sym;
+; 613  :         struct asym  *next;
+; 614  :         for( sym = gsym_table[i]; sym; ) {
 
 	mov	eax, DWORD PTR i$[rsp]
 	lea	rcx, OFFSET FLAT:gsym_table
@@ -3288,54 +3295,54 @@ $LN11@SymFini:
 	cmp	QWORD PTR sym$2[rsp], 0
 	je	SHORT $LN12@SymFini
 
-; 614  :             next = sym->nextitem;
+; 615  :             next = sym->nextitem;
 
 	mov	rax, QWORD PTR sym$2[rsp]
 	mov	rax, QWORD PTR [rax]
 	mov	QWORD PTR next$3[rsp], rax
 
-; 615  :             SymFree( sym );
+; 616  :             SymFree( sym );
 
 	mov	rcx, QWORD PTR sym$2[rsp]
 	call	SymFree
 
-; 616  :             SymCount--;
+; 617  :             SymCount--;
 
 	mov	eax, DWORD PTR SymCount
 	dec	eax
 	mov	DWORD PTR SymCount, eax
 
-; 617  :             sym = next;
+; 618  :             sym = next;
 
 	mov	rax, QWORD PTR next$3[rsp]
 	mov	QWORD PTR sym$2[rsp], rax
 
-; 618  :         }
+; 619  :         }
 
 	jmp	SHORT $LN11@SymFini
 $LN12@SymFini:
 
-; 619  :     }
+; 620  :     }
 
 	jmp	SHORT $LN8@SymFini
 $LN9@SymFini:
 
-; 620  :     /**/myassert( SymCount == 0 );
+; 621  :     /**/myassert( SymCount == 0 );
 
 	cmp	DWORD PTR SymCount, 0
 	jne	SHORT $LN17@SymFini
 	mov	DWORD PTR tv93[rsp], 0
 	jmp	SHORT $LN18@SymFini
 $LN17@SymFini:
-	mov	edx, 620				; 0000026cH
-	lea	rcx, OFFSET FLAT:$SG11283
+	mov	edx, 621				; 0000026dH
+	lea	rcx, OFFSET FLAT:$SG11286
 	call	InternalError
 	mov	DWORD PTR tv93[rsp], eax
 $LN18@SymFini:
 
-; 621  : #endif
-; 622  : 
-; 623  : }
+; 622  : #endif
+; 623  : 
+; 624  : }
 
 	add	rsp, 72					; 00000048H
 	ret	0
@@ -3350,57 +3357,57 @@ now$ = 64
 time_of_day$ = 72
 SymInit	PROC
 
-; 629  : {
+; 630  : {
 
 $LN11:
 	sub	rsp, 88					; 00000058H
 
-; 630  :     struct asym *sym;
-; 631  :     int i;
-; 632  :     time_t    time_of_day;
-; 633  :     struct tm *now;
-; 634  : 
-; 635  :     DebugMsg(("SymInit() enter\n"));
+; 631  :     struct asym *sym;
+; 632  :     int i;
+; 633  :     time_t    time_of_day;
+; 634  :     struct tm *now;
+; 635  : 
+; 636  :     DebugMsg(("SymInit() enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11298
+	lea	rcx, OFFSET FLAT:$SG11301
 	call	DoDebugMsg
 
-; 636  :     SymCount = 0;
+; 637  :     SymCount = 0;
 
 	mov	DWORD PTR SymCount, 0
 
-; 637  : 
-; 638  :     /* v2.11: ensure CurrProc is NULL - might be a problem if multiple files are assembled */
-; 639  :     CurrProc = NULL;
+; 638  : 
+; 639  :     /* v2.11: ensure CurrProc is NULL - might be a problem if multiple files are assembled */
+; 640  :     CurrProc = NULL;
 
 	mov	QWORD PTR CurrProc, 0
 
-; 640  : 
-; 641  :     memset( gsym_table, 0, sizeof(gsym_table) );
+; 641  : 
+; 642  :     memset( gsym_table, 0, sizeof(gsym_table) );
 
 	mov	r8d, 64072				; 0000fa48H
 	xor	edx, edx
 	lea	rcx, OFFSET FLAT:gsym_table
 	call	memset
 
-; 642  : 
-; 643  :     time_of_day = time( NULL );
+; 643  : 
+; 644  :     time_of_day = time( NULL );
 
 	xor	ecx, ecx
 	call	time
 	mov	QWORD PTR time_of_day$[rsp], rax
 
-; 644  :     now = localtime( &time_of_day );
+; 645  :     now = localtime( &time_of_day );
 
 	lea	rcx, QWORD PTR time_of_day$[rsp]
 	call	localtime
 	mov	QWORD PTR now$[rsp], rax
 
-; 645  : #if USESTRFTIME
-; 646  :     strftime( szDate, 9, szDateFmt, now );
-; 647  :     strftime( szTime, 9, szTimeFmt, now );
-; 648  : #else
-; 649  :     sprintf( szDate, "%02u/%02u/%02u", now->tm_mon + 1, now->tm_mday, now->tm_year % 100 );
+; 646  : #if USESTRFTIME
+; 647  :     strftime( szDate, 9, szDateFmt, now );
+; 648  :     strftime( szTime, 9, szTimeFmt, now );
+; 649  : #else
+; 650  :     sprintf( szDate, "%02u/%02u/%02u", now->tm_mon + 1, now->tm_mday, now->tm_year % 100 );
 
 	mov	rax, QWORD PTR now$[rsp]
 	mov	eax, DWORD PTR [rax+20]
@@ -3415,11 +3422,11 @@ $LN11:
 	mov	rax, QWORD PTR now$[rsp]
 	mov	r9d, DWORD PTR [rax+12]
 	mov	r8d, ecx
-	lea	rdx, OFFSET FLAT:$SG11299
+	lea	rdx, OFFSET FLAT:$SG11302
 	lea	rcx, OFFSET FLAT:szDate
 	call	sprintf
 
-; 650  :     sprintf( szTime, "%02u:%02u:%02u", now->tm_hour, now->tm_min, now->tm_sec );
+; 651  :     sprintf( szTime, "%02u:%02u:%02u", now->tm_hour, now->tm_min, now->tm_sec );
 
 	mov	rax, QWORD PTR now$[rsp]
 	mov	eax, DWORD PTR [rax]
@@ -3428,13 +3435,13 @@ $LN11:
 	mov	r9d, DWORD PTR [rax+4]
 	mov	rax, QWORD PTR now$[rsp]
 	mov	r8d, DWORD PTR [rax+8]
-	lea	rdx, OFFSET FLAT:$SG11300
+	lea	rdx, OFFSET FLAT:$SG11303
 	lea	rcx, OFFSET FLAT:szTime
 	call	sprintf
 
-; 651  : #endif
-; 652  : 
-; 653  :     for( i = 0; i < sizeof(tmtab) / sizeof(tmtab[0]); i++ ) {
+; 652  : #endif
+; 653  : 
+; 654  :     for( i = 0; i < sizeof(tmtab) / sizeof(tmtab[0]); i++ ) {
 
 	mov	DWORD PTR i$[rsp], 0
 	jmp	SHORT $LN4@SymInit
@@ -3447,7 +3454,7 @@ $LN4@SymInit:
 	cmp	rax, 6
 	jae	$LN3@SymInit
 
-; 654  :         sym = SymCreate( tmtab[i].name );
+; 655  :         sym = SymCreate( tmtab[i].name );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 24
@@ -3456,12 +3463,12 @@ $LN4@SymInit:
 	call	SymCreate
 	mov	QWORD PTR sym$[rsp], rax
 
-; 655  :         sym->state = SYM_TMACRO;
+; 656  :         sym->state = SYM_TMACRO;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	DWORD PTR [rax+32], 10
 
-; 656  :         sym->isdefined = TRUE;
+; 657  :         sym->isdefined = TRUE;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+40]
@@ -3469,7 +3476,7 @@ $LN4@SymInit:
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	BYTE PTR [rcx+40], al
 
-; 657  :         sym->predefined = TRUE;
+; 658  :         sym->predefined = TRUE;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+40]
@@ -3477,7 +3484,7 @@ $LN4@SymInit:
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	BYTE PTR [rcx+40], al
 
-; 658  :         sym->string_ptr = tmtab[i].value;
+; 659  :         sym->string_ptr = tmtab[i].value;
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 24
@@ -3486,7 +3493,7 @@ $LN4@SymInit:
 	mov	rax, QWORD PTR [rcx+rax+8]
 	mov	QWORD PTR [rdx+16], rax
 
-; 659  :         if ( tmtab[i].store )
+; 660  :         if ( tmtab[i].store )
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 24
@@ -3494,7 +3501,7 @@ $LN4@SymInit:
 	cmp	QWORD PTR [rcx+rax+16], 0
 	je	SHORT $LN8@SymInit
 
-; 660  :             *tmtab[i].store = sym;
+; 661  :             *tmtab[i].store = sym;
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 24
@@ -3504,13 +3511,13 @@ $LN4@SymInit:
 	mov	QWORD PTR [rax], rcx
 $LN8@SymInit:
 
-; 661  :     }
+; 662  :     }
 
 	jmp	$LN2@SymInit
 $LN3@SymInit:
 
-; 662  : 
-; 663  :     for( i = 0; i < sizeof(eqtab) / sizeof(eqtab[0]); i++ ) {
+; 663  : 
+; 664  :     for( i = 0; i < sizeof(eqtab) / sizeof(eqtab[0]); i++ ) {
 
 	mov	DWORD PTR i$[rsp], 0
 	jmp	SHORT $LN7@SymInit
@@ -3520,10 +3527,10 @@ $LN5@SymInit:
 	mov	DWORD PTR i$[rsp], eax
 $LN7@SymInit:
 	movsxd	rax, DWORD PTR i$[rsp]
-	cmp	rax, 5
+	cmp	rax, 6
 	jae	$LN6@SymInit
 
-; 664  :         sym = SymCreate( eqtab[i].name );
+; 665  :         sym = SymCreate( eqtab[i].name );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -3532,14 +3539,14 @@ $LN7@SymInit:
 	call	SymCreate
 	mov	QWORD PTR sym$[rsp], rax
 
-; 665  :         sym->state = SYM_INTERNAL;
+; 666  :         sym->state = SYM_INTERNAL;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	DWORD PTR [rax+32], 1
 
-; 666  :         /* v2.07: MT_ABS is obsolete */
-; 667  :         //sym->mem_type = MT_ABS;
-; 668  :         sym->isdefined = TRUE;
+; 667  :         /* v2.07: MT_ABS is obsolete */
+; 668  :         //sym->mem_type = MT_ABS;
+; 669  :         sym->isdefined = TRUE;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+40]
@@ -3547,7 +3554,7 @@ $LN7@SymInit:
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	BYTE PTR [rcx+40], al
 
-; 669  :         sym->predefined = TRUE;
+; 670  :         sym->predefined = TRUE;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+40]
@@ -3555,7 +3562,7 @@ $LN7@SymInit:
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	BYTE PTR [rcx+40], al
 
-; 670  :         sym->offset = eqtab[i].value;
+; 671  :         sym->offset = eqtab[i].value;
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -3564,7 +3571,7 @@ $LN7@SymInit:
 	mov	eax, DWORD PTR [rcx+rax+8]
 	mov	DWORD PTR [rdx+16], eax
 
-; 671  :         sym->sfunc_ptr = eqtab[i].sfunc_ptr;
+; 672  :         sym->sfunc_ptr = eqtab[i].sfunc_ptr;
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -3573,8 +3580,8 @@ $LN7@SymInit:
 	mov	rax, QWORD PTR [rcx+rax+16]
 	mov	QWORD PTR [rdx+64], rax
 
-; 672  :         //sym->variable = TRUE; /* if fixup must be created */
-; 673  :         if ( eqtab[i].store )
+; 673  :         //sym->variable = TRUE; /* if fixup must be created */
+; 674  :         if ( eqtab[i].store )
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -3582,7 +3589,7 @@ $LN7@SymInit:
 	cmp	QWORD PTR [rcx+rax+24], 0
 	je	SHORT $LN9@SymInit
 
-; 674  :             *eqtab[i].store = sym;
+; 675  :             *eqtab[i].store = sym;
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -3592,12 +3599,12 @@ $LN7@SymInit:
 	mov	QWORD PTR [rax], rcx
 $LN9@SymInit:
 
-; 675  :     }
+; 676  :     }
 
 	jmp	$LN5@SymInit
 $LN6@SymInit:
 
-; 676  :     sym->list   = FALSE; /* @WordSize should not be listed */
+; 677  :     sym->list   = FALSE; /* @WordSize should not be listed */
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+41]
@@ -3605,8 +3612,8 @@ $LN6@SymInit:
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	BYTE PTR [rcx+41], al
 
-; 677  :     /* $ is an address (usually). Also, don't add it to the list */
-; 678  :     symPC->variable = TRUE;
+; 678  :     /* $ is an address (usually). Also, don't add it to the list */
+; 679  :     symPC->variable = TRUE;
 
 	mov	rax, QWORD PTR symPC
 	movzx	eax, BYTE PTR [rax+40]
@@ -3614,7 +3621,7 @@ $LN6@SymInit:
 	mov	rcx, QWORD PTR symPC
 	mov	BYTE PTR [rcx+40], al
 
-; 679  :     symPC->list     = FALSE;
+; 680  :     symPC->list     = FALSE;
 
 	mov	rax, QWORD PTR symPC
 	movzx	eax, BYTE PTR [rax+41]
@@ -3622,7 +3629,7 @@ $LN6@SymInit:
 	mov	rcx, QWORD PTR symPC
 	mov	BYTE PTR [rcx+41], al
 
-; 680  :     LineCur->list   = FALSE;
+; 681  :     LineCur->list   = FALSE;
 
 	mov	rax, QWORD PTR LineCur
 	movzx	eax, BYTE PTR [rax+41]
@@ -3630,15 +3637,15 @@ $LN6@SymInit:
 	mov	rcx, QWORD PTR LineCur
 	mov	BYTE PTR [rcx+41], al
 
-; 681  : 
-; 682  :     DebugMsg(("SymInit() exit\n"));
+; 682  : 
+; 683  :     DebugMsg(("SymInit() exit\n"));
 
-	lea	rcx, OFFSET FLAT:$SG11303
+	lea	rcx, OFFSET FLAT:$SG11306
 	call	DoDebugMsg
 
-; 683  :     return;
-; 684  : 
-; 685  : }
+; 684  :     return;
+; 685  : 
+; 686  : }
 
 	add	rsp, 88					; 00000058H
 	ret	0
@@ -3652,34 +3659,34 @@ i$ = 52
 name$ = 80
 SymFindDeclare PROC
 
-; 299  : {
+; 300  : {
 
 $LN12:
 	mov	QWORD PTR [rsp+8], rcx
 	sub	rsp, 72					; 00000048H
 
-; 300  : 	int i;
-; 301  : 	int len;
-; 302  : 
-; 303  : 	len = strlen(name);
+; 301  : 	int i;
+; 302  : 	int len;
+; 303  : 
+; 304  : 	len = strlen(name);
 
 	mov	rcx, QWORD PTR name$[rsp]
 	call	strlen
 	mov	DWORD PTR len$[rsp], eax
 
-; 304  : 	i = hashpjw(name);
+; 305  : 	i = hashpjw(name);
 
 	mov	rcx, QWORD PTR name$[rsp]
 	call	hashpjw
 	mov	DWORD PTR i$[rsp], eax
 
-; 305  : 
-; 306  : 	if (CurrProc) {
+; 306  : 
+; 307  : 	if (CurrProc) {
 
 	cmp	QWORD PTR CurrProc, 0
 	je	$LN8@SymFindDec
 
-; 307  : 		for (lsym = &lsym_table[i % LHASH_TABLE_SIZE]; *lsym; lsym = &((*lsym)->nextitem)) {
+; 308  : 		for (lsym = &lsym_table[i % LHASH_TABLE_SIZE]; *lsym; lsym = &((*lsym)->nextitem)) {
 
 	mov	eax, DWORD PTR i$[rsp]
 	cdq
@@ -3700,7 +3707,7 @@ $LN4@SymFindDec:
 	cmp	QWORD PTR [rax], 0
 	je	$LN3@SymFindDec
 
-; 308  : 			if (len == (*lsym)->name_size && SYMCMP(name, (*lsym)->name, len) == 0) {
+; 309  : 			if (len == (*lsym)->name_size && SYMCMP(name, (*lsym)->name, len) == 0) {
 
 	mov	rax, QWORD PTR lsym
 	mov	rax, QWORD PTR [rax]
@@ -3717,7 +3724,7 @@ $LN4@SymFindDec:
 	test	eax, eax
 	jne	SHORT $LN9@SymFindDec
 
-; 309  : 				DebugMsg1(("SymFind(%s): found in local table, state=%u, local=%u\n", name, (*lsym)->state, (*lsym)->scoped));
+; 310  : 				DebugMsg1(("SymFind(%s): found in local table, state=%u, local=%u\n", name, (*lsym)->state, (*lsym)->scoped));
 
 	mov	rax, QWORD PTR lsym
 	mov	rax, QWORD PTR [rax]
@@ -3730,26 +3737,26 @@ $LN4@SymFindDec:
 	mov	r9d, eax
 	mov	r8d, DWORD PTR [rcx+32]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11163
+	lea	rcx, OFFSET FLAT:$SG11166
 	call	DoDebugMsg1
 
-; 310  : 				return(*lsym);
+; 311  : 				return(*lsym);
 
 	mov	rax, QWORD PTR lsym
 	mov	rax, QWORD PTR [rax]
 	jmp	$LN1@SymFindDec
 $LN9@SymFindDec:
 
-; 311  : 			}
-; 312  : 		}
+; 312  : 			}
+; 313  : 		}
 
 	jmp	$LN2@SymFindDec
 $LN3@SymFindDec:
 $LN8@SymFindDec:
 
-; 313  : 	}
-; 314  : 
-; 315  : 	for (gsym = &gsym_table[i % GHASH_TABLE_SIZE]; *gsym; gsym = &((*gsym)->nextitem)) {
+; 314  : 	}
+; 315  : 
+; 316  : 	for (gsym = &gsym_table[i % GHASH_TABLE_SIZE]; *gsym; gsym = &((*gsym)->nextitem)) {
 
 	mov	eax, DWORD PTR i$[rsp]
 	cdq
@@ -3770,7 +3777,7 @@ $LN7@SymFindDec:
 	cmp	QWORD PTR [rax], 0
 	je	$LN6@SymFindDec
 
-; 316  : 		if (len == (*gsym)->name_size && SYMCMP(name, (*gsym)->name, len) == 0) {
+; 317  : 		if (len == (*gsym)->name_size && SYMCMP(name, (*gsym)->name, len) == 0) {
 
 	mov	rax, QWORD PTR gsym
 	mov	rax, QWORD PTR [rax]
@@ -3787,7 +3794,7 @@ $LN7@SymFindDec:
 	test	eax, eax
 	jne	SHORT $LN10@SymFindDec
 
-; 317  : 			DebugMsg1(("SymFind(%s): found, state=%u memtype=%X lang=%u\n", name, (*gsym)->state, (*gsym)->mem_type, (*gsym)->langtype));
+; 318  : 			DebugMsg1(("SymFind(%s): found, state=%u memtype=%X lang=%u\n", name, (*gsym)->state, (*gsym)->mem_type, (*gsym)->langtype));
 
 	mov	rax, QWORD PTR gsym
 	mov	rax, QWORD PTR [rax]
@@ -3800,29 +3807,29 @@ $LN7@SymFindDec:
 	mov	r9d, DWORD PTR [rcx+36]
 	mov	r8d, DWORD PTR [rdx+32]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11165
+	lea	rcx, OFFSET FLAT:$SG11168
 	call	DoDebugMsg1
 
-; 318  : 			return(*gsym);
+; 319  : 			return(*gsym);
 
 	mov	rax, QWORD PTR gsym
 	mov	rax, QWORD PTR [rax]
 	jmp	SHORT $LN1@SymFindDec
 $LN10@SymFindDec:
 
-; 319  : 		}
-; 320  : 	}
+; 320  : 		}
+; 321  : 	}
 
 	jmp	$LN5@SymFindDec
 $LN6@SymFindDec:
 
-; 321  : 
-; 322  : 	return(NULL);
+; 322  : 
+; 323  : 	return(NULL);
 
 	xor	eax, eax
 $LN1@SymFindDec:
 
-; 323  : }
+; 324  : }
 
 	add	rsp, 72					; 00000048H
 	ret	0
@@ -3836,34 +3843,34 @@ i$ = 52
 name$ = 80
 SymFind	PROC
 
-; 263  : {
+; 264  : {
 
 $LN12:
 	mov	QWORD PTR [rsp+8], rcx
 	sub	rsp, 72					; 00000048H
 
-; 264  :     int i;
-; 265  :     int len;
-; 266  : 
-; 267  :     len = strlen( name );
+; 265  :     int i;
+; 266  :     int len;
+; 267  : 
+; 268  :     len = strlen( name );
 
 	mov	rcx, QWORD PTR name$[rsp]
 	call	strlen
 	mov	DWORD PTR len$[rsp], eax
 
-; 268  :     i = hashpjw( name );
+; 269  :     i = hashpjw( name );
 
 	mov	rcx, QWORD PTR name$[rsp]
 	call	hashpjw
 	mov	DWORD PTR i$[rsp], eax
 
-; 269  : 
-; 270  :     if ( CurrProc ) {
+; 270  : 
+; 271  :     if ( CurrProc ) {
 
 	cmp	QWORD PTR CurrProc, 0
 	je	$LN8@SymFind
 
-; 271  :         for( lsym = &lsym_table[ i % LHASH_TABLE_SIZE ]; *lsym; lsym = &((*lsym)->nextitem ) ) {
+; 272  :         for( lsym = &lsym_table[ i % LHASH_TABLE_SIZE ]; *lsym; lsym = &((*lsym)->nextitem ) ) {
 
 	mov	eax, DWORD PTR i$[rsp]
 	cdq
@@ -3884,7 +3891,7 @@ $LN4@SymFind:
 	cmp	QWORD PTR [rax], 0
 	je	$LN3@SymFind
 
-; 272  :             if ( len == (*lsym)->name_size && SYMCMP( name, (*lsym)->name, len ) == 0 ) {
+; 273  :             if ( len == (*lsym)->name_size && SYMCMP( name, (*lsym)->name, len ) == 0 ) {
 
 	mov	rax, QWORD PTR lsym
 	mov	rax, QWORD PTR [rax]
@@ -3901,7 +3908,7 @@ $LN4@SymFind:
 	test	eax, eax
 	jne	SHORT $LN9@SymFind
 
-; 273  :                 DebugMsg1(("SymFind(%s): found in local table, state=%u, local=%u\n", name, (*lsym)->state, (*lsym)->scoped ));  			
+; 274  :                 DebugMsg1(("SymFind(%s): found in local table, state=%u, local=%u\n", name, (*lsym)->state, (*lsym)->scoped ));  			
 
 	mov	rax, QWORD PTR lsym
 	mov	rax, QWORD PTR [rax]
@@ -3914,10 +3921,10 @@ $LN4@SymFind:
 	mov	r9d, eax
 	mov	r8d, DWORD PTR [rcx+32]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11146
+	lea	rcx, OFFSET FLAT:$SG11149
 	call	DoDebugMsg1
 
-; 274  : 				(*lsym)->used = TRUE;
+; 275  : 				(*lsym)->used = TRUE;
 
 	mov	rax, QWORD PTR lsym
 	mov	rax, QWORD PTR [rax]
@@ -3927,23 +3934,23 @@ $LN4@SymFind:
 	mov	rcx, QWORD PTR [rcx]
 	mov	BYTE PTR [rcx+40], al
 
-; 275  :                 return( *lsym );
+; 276  :                 return( *lsym );
 
 	mov	rax, QWORD PTR lsym
 	mov	rax, QWORD PTR [rax]
 	jmp	$LN1@SymFind
 $LN9@SymFind:
 
-; 276  :             }
-; 277  :         }
+; 277  :             }
+; 278  :         }
 
 	jmp	$LN2@SymFind
 $LN3@SymFind:
 $LN8@SymFind:
 
-; 278  :     }
-; 279  : 
-; 280  :     for( gsym = &gsym_table[ i % GHASH_TABLE_SIZE ]; *gsym; gsym = &((*gsym)->nextitem ) ) {
+; 279  :     }
+; 280  : 
+; 281  :     for( gsym = &gsym_table[ i % GHASH_TABLE_SIZE ]; *gsym; gsym = &((*gsym)->nextitem ) ) {
 
 	mov	eax, DWORD PTR i$[rsp]
 	cdq
@@ -3964,7 +3971,7 @@ $LN7@SymFind:
 	cmp	QWORD PTR [rax], 0
 	je	$LN6@SymFind
 
-; 281  :         if ( len == (*gsym)->name_size && SYMCMP( name, (*gsym)->name, len ) == 0 ) {
+; 282  :         if ( len == (*gsym)->name_size && SYMCMP( name, (*gsym)->name, len ) == 0 ) {
 
 	mov	rax, QWORD PTR gsym
 	mov	rax, QWORD PTR [rax]
@@ -3981,7 +3988,7 @@ $LN7@SymFind:
 	test	eax, eax
 	jne	SHORT $LN10@SymFind
 
-; 282  :             DebugMsg1(("SymFind(%s): found, state=%u memtype=%X lang=%u\n", name, (*gsym)->state, (*gsym)->mem_type, (*gsym)->langtype ));
+; 283  :             DebugMsg1(("SymFind(%s): found, state=%u memtype=%X lang=%u\n", name, (*gsym)->state, (*gsym)->mem_type, (*gsym)->langtype ));
 
 	mov	rax, QWORD PTR gsym
 	mov	rax, QWORD PTR [rax]
@@ -3994,29 +4001,29 @@ $LN7@SymFind:
 	mov	r9d, DWORD PTR [rcx+36]
 	mov	r8d, DWORD PTR [rdx+32]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11148
+	lea	rcx, OFFSET FLAT:$SG11151
 	call	DoDebugMsg1
 
-; 283  :             return( *gsym );
+; 284  :             return( *gsym );
 
 	mov	rax, QWORD PTR gsym
 	mov	rax, QWORD PTR [rax]
 	jmp	SHORT $LN1@SymFind
 $LN10@SymFind:
 
-; 284  :         }
-; 285  :     }
+; 285  :         }
+; 286  :     }
 
 	jmp	$LN5@SymFind
 $LN6@SymFind:
 
-; 286  : 
-; 287  :     return( NULL );
+; 287  : 
+; 288  :     return( NULL );
 
 	xor	eax, eax
 $LN1@SymFind:
 
-; 288  : }
+; 289  : }
 
 	add	rsp, 72					; 00000048H
 	ret	0
@@ -4029,33 +4036,33 @@ sym$ = 32
 name$ = 64
 SymLookupLocal PROC
 
-; 361  : {
+; 362  : {
 
 $LN6:
 	mov	QWORD PTR [rsp+8], rcx
 	sub	rsp, 56					; 00000038H
 
-; 362  :     //struct asym      **sym_ptr;
-; 363  :     struct asym      *sym;
-; 364  : 
-; 365  :     sym = SymFind( name );
+; 363  :     //struct asym      **sym_ptr;
+; 364  :     struct asym      *sym;
+; 365  : 
+; 366  :     sym = SymFind( name );
 
 	mov	rcx, QWORD PTR name$[rsp]
 	call	SymFind
 	mov	QWORD PTR sym$[rsp], rax
 
-; 366  :     if ( sym == NULL ) {
+; 367  :     if ( sym == NULL ) {
 
 	cmp	QWORD PTR sym$[rsp], 0
 	jne	SHORT $LN2@SymLookupL
 
-; 367  :         sym = SymAlloc( name );
+; 368  :         sym = SymAlloc( name );
 
 	mov	rcx, QWORD PTR name$[rsp]
 	call	SymAlloc
 	mov	QWORD PTR sym$[rsp], rax
 
-; 368  :         sym->scoped = TRUE;
+; 369  :         sym->scoped = TRUE;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+40]
@@ -4063,25 +4070,25 @@ $LN6:
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	BYTE PTR [rcx+40], al
 
-; 369  :         /* add the label to the local hash table */
-; 370  :         //sym->next = *lsym;
-; 371  :         *lsym = sym;
+; 370  :         /* add the label to the local hash table */
+; 371  :         //sym->next = *lsym;
+; 372  :         *lsym = sym;
 
 	mov	rax, QWORD PTR lsym
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	QWORD PTR [rax], rcx
 
-; 372  :         DebugMsg1(("SymLookupLocal(%s): local symbol created in %s\n", name, CurrProc->sym.name));
+; 373  :         DebugMsg1(("SymLookupLocal(%s): local symbol created in %s\n", name, CurrProc->sym.name));
 
 	mov	rax, QWORD PTR CurrProc
 	mov	r8, QWORD PTR [rax+8]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11183
+	lea	rcx, OFFSET FLAT:$SG11186
 	call	DoDebugMsg1
 	jmp	$LN3@SymLookupL
 $LN2@SymLookupL:
 
-; 373  :     } else if( sym->state == SYM_UNDEFINED && sym->scoped == FALSE ) {
+; 374  :     } else if( sym->state == SYM_UNDEFINED && sym->scoped == FALSE ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
 	cmp	DWORD PTR [rax+32], 0
@@ -4094,24 +4101,24 @@ $LN2@SymLookupL:
 	test	eax, eax
 	jne	SHORT $LN4@SymLookupL
 
-; 374  :         /* if the label was defined due to a FORWARD reference,
-; 375  :          * its scope is to be changed from global to local.
-; 376  :          */
-; 377  :         /* remove the label from the global hash table */
-; 378  :         *gsym = sym->nextitem;
+; 375  :         /* if the label was defined due to a FORWARD reference,
+; 376  :          * its scope is to be changed from global to local.
+; 377  :          */
+; 378  :         /* remove the label from the global hash table */
+; 379  :         *gsym = sym->nextitem;
 
 	mov	rax, QWORD PTR gsym
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	rcx, QWORD PTR [rcx]
 	mov	QWORD PTR [rax], rcx
 
-; 379  :         SymCount--;
+; 380  :         SymCount--;
 
 	mov	eax, DWORD PTR SymCount
 	dec	eax
 	mov	DWORD PTR SymCount, eax
 
-; 380  :         sym->scoped = TRUE;
+; 381  :         sym->scoped = TRUE;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+40]
@@ -4119,33 +4126,33 @@ $LN2@SymLookupL:
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	BYTE PTR [rcx+40], al
 
-; 381  :         /* add the label to the local hash table */
-; 382  :         //sym->next = *lsym;
-; 383  :         sym->nextitem = NULL;
+; 382  :         /* add the label to the local hash table */
+; 383  :         //sym->next = *lsym;
+; 384  :         sym->nextitem = NULL;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	QWORD PTR [rax], 0
 
-; 384  :         *lsym = sym;
+; 385  :         *lsym = sym;
 
 	mov	rax, QWORD PTR lsym
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	QWORD PTR [rax], rcx
 
-; 385  :         DebugMsg1(("SymLookupLocal(%s): label moved into %s's local namespace\n", sym->name, CurrProc->sym.name ));
+; 386  :         DebugMsg1(("SymLookupLocal(%s): label moved into %s's local namespace\n", sym->name, CurrProc->sym.name ));
 
 	mov	rax, QWORD PTR CurrProc
 	mov	r8, QWORD PTR [rax+8]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG11185
+	lea	rcx, OFFSET FLAT:$SG11188
 	call	DoDebugMsg1
 $LN4@SymLookupL:
 $LN3@SymLookupL:
 
-; 386  :     }
-; 387  : 
-; 388  :     DebugMsg1(("SymLookupLocal(%s): found, state=%u, defined=%u\n", name, sym->state, sym->isdefined));
+; 387  :     }
+; 388  : 
+; 389  :     DebugMsg1(("SymLookupLocal(%s): found, state=%u, defined=%u\n", name, sym->state, sym->isdefined));
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+40]
@@ -4156,14 +4163,14 @@ $LN3@SymLookupL:
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8d, DWORD PTR [rax+32]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11186
+	lea	rcx, OFFSET FLAT:$SG11189
 	call	DoDebugMsg1
 
-; 389  :     return( sym );
+; 390  :     return( sym );
 
 	mov	rax, QWORD PTR sym$[rsp]
 
-; 390  : }
+; 391  : }
 
 	add	rsp, 56					; 00000038H
 	ret	0
@@ -4177,32 +4184,32 @@ tv71 = 40
 name$ = 64
 SymLookup PROC
 
-; 339  : {
+; 340  : {
 
 $LN6:
 	mov	QWORD PTR [rsp+8], rcx
 	sub	rsp, 56					; 00000038H
 
-; 340  :     struct asym      *sym;
-; 341  : 
-; 342  :     sym = SymFind( name );
+; 341  :     struct asym      *sym;
+; 342  : 
+; 343  :     sym = SymFind( name );
 
 	mov	rcx, QWORD PTR name$[rsp]
 	call	SymFind
 	mov	QWORD PTR sym$[rsp], rax
 
-; 343  :     if( sym == NULL ) {
+; 344  :     if( sym == NULL ) {
 
 	cmp	QWORD PTR sym$[rsp], 0
 	jne	SHORT $LN2@SymLookup
 
-; 344  :         sym = SymAlloc( name );
+; 345  :         sym = SymAlloc( name );
 
 	mov	rcx, QWORD PTR name$[rsp]
 	call	SymAlloc
 	mov	QWORD PTR sym$[rsp], rax
 
-; 345  :         DebugMsg1(("SymLookup(%s): created new symbol, CurrProc=%s\n", name, CurrProc ? CurrProc->sym.name : "NULL" ));
+; 346  :         DebugMsg1(("SymLookup(%s): created new symbol, CurrProc=%s\n", name, CurrProc ? CurrProc->sym.name : "NULL" ));
 
 	cmp	QWORD PTR CurrProc, 0
 	je	SHORT $LN4@SymLookup
@@ -4211,31 +4218,31 @@ $LN6:
 	mov	QWORD PTR tv71[rsp], rax
 	jmp	SHORT $LN5@SymLookup
 $LN4@SymLookup:
-	lea	rax, OFFSET FLAT:$SG11172
+	lea	rax, OFFSET FLAT:$SG11175
 	mov	QWORD PTR tv71[rsp], rax
 $LN5@SymLookup:
 	mov	r8, QWORD PTR tv71[rsp]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11173
+	lea	rcx, OFFSET FLAT:$SG11176
 	call	DoDebugMsg1
 
-; 346  :         //sym->next = *gsym;
-; 347  :         *gsym = sym;
+; 347  :         //sym->next = *gsym;
+; 348  :         *gsym = sym;
 
 	mov	rax, QWORD PTR gsym
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	QWORD PTR [rax], rcx
 
-; 348  :         ++SymCount;
+; 349  :         ++SymCount;
 
 	mov	eax, DWORD PTR SymCount
 	inc	eax
 	mov	DWORD PTR SymCount, eax
 $LN2@SymLookup:
 
-; 349  :     }
-; 350  : 
-; 351  :     DebugMsg1(("SymLookup(%s): found, state=%u, defined=%u\n", name, sym->state, sym->isdefined));
+; 350  :     }
+; 351  : 
+; 352  :     DebugMsg1(("SymLookup(%s): found, state=%u, defined=%u\n", name, sym->state, sym->isdefined));
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+40]
@@ -4246,15 +4253,15 @@ $LN2@SymLookup:
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8d, DWORD PTR [rax+32]
 	mov	rdx, QWORD PTR name$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11174
+	lea	rcx, OFFSET FLAT:$SG11177
 	call	DoDebugMsg1
 
-; 352  : 
-; 353  :     return( sym );
+; 353  : 
+; 354  :     return( sym );
 
 	mov	rax, QWORD PTR sym$[rsp]
 
-; 354  : }
+; 355  : }
 
 	add	rsp, 56					; 00000038H
 	ret	0
@@ -4268,17 +4275,17 @@ sym$ = 64
 name$ = 72
 SymAddLocal PROC
 
-; 483  : {
+; 484  : {
 
 $LN4:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	QWORD PTR [rsp+8], rcx
 	sub	rsp, 56					; 00000038H
 
-; 484  :     struct asym *sym2;
-; 485  :     /* v2.10: ignore symbols with state SYM_UNDEFINED! */
-; 486  :     //if( SymFind( name ) ) {
-; 487  :     if( ( sym2 = SymFind( name ) ) && sym2->state != SYM_UNDEFINED ) {
+; 485  :     struct asym *sym2;
+; 486  :     /* v2.10: ignore symbols with state SYM_UNDEFINED! */
+; 487  :     //if( SymFind( name ) ) {
+; 488  :     if( ( sym2 = SymFind( name ) ) && sym2->state != SYM_UNDEFINED ) {
 
 	mov	rcx, QWORD PTR name$[rsp]
 	call	SymFind
@@ -4289,31 +4296,31 @@ $LN4:
 	cmp	DWORD PTR [rax+32], 0
 	je	SHORT $LN2@SymAddLoca
 
-; 488  :         /* shouldn't happen */
-; 489  :         EmitErr( SYMBOL_ALREADY_DEFINED, name );
+; 489  :         /* shouldn't happen */
+; 490  :         EmitErr( SYMBOL_ALREADY_DEFINED, name );
 
 	mov	rdx, QWORD PTR name$[rsp]
 	mov	ecx, 56					; 00000038H
 	call	EmitErr
 
-; 490  :         return( NULL );
+; 491  :         return( NULL );
 
 	xor	eax, eax
 	jmp	SHORT $LN1@SymAddLoca
 $LN2@SymAddLoca:
 
-; 491  :     }
-; 492  : #if FASTMEM==0
-; 493  :     if ( sym->name_size ) LclFree( sym->name );
-; 494  : #endif
-; 495  :     sym->name_size = strlen( name );
+; 492  :     }
+; 493  : #if FASTMEM==0
+; 494  :     if ( sym->name_size ) LclFree( sym->name );
+; 495  : #endif
+; 496  :     sym->name_size = strlen( name );
 
 	mov	rcx, QWORD PTR name$[rsp]
 	call	strlen
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	BYTE PTR [rcx+72], al
 
-; 496  :     sym->name = LclAlloc( sym->name_size + 1 );
+; 497  :     sym->name = LclAlloc( sym->name_size + 1 );
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+72]
@@ -4324,7 +4331,7 @@ $LN2@SymAddLoca:
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	QWORD PTR [rcx+8], rax
 
-; 497  :     memcpy( sym->name, name, sym->name_size + 1 );
+; 498  :     memcpy( sym->name, name, sym->name_size + 1 );
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	eax, BYTE PTR [rax+72]
@@ -4336,23 +4343,23 @@ $LN2@SymAddLoca:
 	mov	rcx, QWORD PTR [rax+8]
 	call	memcpy
 
-; 498  :     sym->nextitem = NULL;
+; 499  :     sym->nextitem = NULL;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	QWORD PTR [rax], 0
 
-; 499  :     *lsym = sym;
+; 500  :     *lsym = sym;
 
 	mov	rax, QWORD PTR lsym
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	QWORD PTR [rax], rcx
 
-; 500  :     return( sym );
+; 501  :     return( sym );
 
 	mov	rax, QWORD PTR sym$[rsp]
 $LN1@SymAddLoca:
 
-; 501  : }
+; 502  : }
 
 	add	rsp, 56					; 00000038H
 	ret	0
@@ -4364,13 +4371,13 @@ _TEXT	SEGMENT
 sym$ = 48
 SymAddGlobal PROC
 
-; 510  : {
+; 511  : {
 
 $LN4:
 	mov	QWORD PTR [rsp+8], rcx
 	sub	rsp, 40					; 00000028H
 
-; 511  :     if( SymFind( sym->name ) ) {
+; 512  :     if( SymFind( sym->name ) ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rcx, QWORD PTR [rax+8]
@@ -4378,43 +4385,43 @@ $LN4:
 	test	rax, rax
 	je	SHORT $LN2@SymAddGlob
 
-; 512  :         EmitErr( SYMBOL_ALREADY_DEFINED, sym->name );
+; 513  :         EmitErr( SYMBOL_ALREADY_DEFINED, sym->name );
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
 	mov	ecx, 56					; 00000038H
 	call	EmitErr
 
-; 513  :         return( NULL );
+; 514  :         return( NULL );
 
 	xor	eax, eax
 	jmp	SHORT $LN1@SymAddGlob
 $LN2@SymAddGlob:
 
-; 514  :     }
-; 515  :     sym->nextitem = NULL;
+; 515  :     }
+; 516  :     sym->nextitem = NULL;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	QWORD PTR [rax], 0
 
-; 516  :     *gsym = sym;
+; 517  :     *gsym = sym;
 
 	mov	rax, QWORD PTR gsym
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	QWORD PTR [rax], rcx
 
-; 517  :     SymCount++;
+; 518  :     SymCount++;
 
 	mov	eax, DWORD PTR SymCount
 	inc	eax
 	mov	DWORD PTR SymCount, eax
 
-; 518  :     return( sym );
+; 519  :     return( sym );
 
 	mov	rax, QWORD PTR sym$[rsp]
 $LN1@SymAddGlob:
 
-; 519  : }
+; 520  : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
@@ -4427,17 +4434,17 @@ sym$ = 32
 name$ = 64
 SymLCreate PROC
 
-; 543  : {
+; 544  : {
 
 $LN4:
 	mov	QWORD PTR [rsp+8], rcx
 	sub	rsp, 56					; 00000038H
 
-; 544  :     struct asym *sym;
-; 545  : 
-; 546  :     /* v2.10: ignore symbols with state SYM_UNDEFINED */
-; 547  :     //if( SymFind( name ) ) {
-; 548  :     if( ( sym = SymFindDeclare( name ) ) && sym->state != SYM_UNDEFINED ) {
+; 545  :     struct asym *sym;
+; 546  : 
+; 547  :     /* v2.10: ignore symbols with state SYM_UNDEFINED */
+; 548  :     //if( SymFind( name ) ) {
+; 549  :     if( ( sym = SymFindDeclare( name ) ) && sym->state != SYM_UNDEFINED ) {
 
 	mov	rcx, QWORD PTR name$[rsp]
 	call	SymFindDeclare
@@ -4448,37 +4455,37 @@ $LN4:
 	cmp	DWORD PTR [rax+32], 0
 	je	SHORT $LN2@SymLCreate
 
-; 549  :         EmitErr( SYMBOL_ALREADY_DEFINED, name );
+; 550  :         EmitErr( SYMBOL_ALREADY_DEFINED, name );
 
 	mov	rdx, QWORD PTR name$[rsp]
 	mov	ecx, 56					; 00000038H
 	call	EmitErr
 
-; 550  :         return( NULL );
+; 551  :         return( NULL );
 
 	xor	eax, eax
 	jmp	SHORT $LN1@SymLCreate
 $LN2@SymLCreate:
 
-; 551  :     }
-; 552  :     sym = SymAlloc( name );
+; 552  :     }
+; 553  :     sym = SymAlloc( name );
 
 	mov	rcx, QWORD PTR name$[rsp]
 	call	SymAlloc
 	mov	QWORD PTR sym$[rsp], rax
 
-; 553  :     *lsym = sym;
+; 554  :     *lsym = sym;
 
 	mov	rax, QWORD PTR lsym
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	QWORD PTR [rax], rcx
 
-; 554  :     return( sym );
+; 555  :     return( sym );
 
 	mov	rax, QWORD PTR sym$[rsp]
 $LN1@SymLCreate:
 
-; 555  : }
+; 556  : }
 
 	add	rsp, 56					; 00000038H
 	ret	0
@@ -4491,58 +4498,58 @@ sym$ = 32
 name$ = 64
 SymCreate PROC
 
-; 524  : {
+; 525  : {
 
 $LN4:
 	mov	QWORD PTR [rsp+8], rcx
 	sub	rsp, 56					; 00000038H
 
-; 525  :     struct asym *sym;
-; 526  : 
-; 527  :     if( SymFind( name ) ) {
+; 526  :     struct asym *sym;
+; 527  : 
+; 528  :     if( SymFind( name ) ) {
 
 	mov	rcx, QWORD PTR name$[rsp]
 	call	SymFind
 	test	rax, rax
 	je	SHORT $LN2@SymCreate
 
-; 528  :         EmitErr( SYMBOL_ALREADY_DEFINED, name );
+; 529  :         EmitErr( SYMBOL_ALREADY_DEFINED, name );
 
 	mov	rdx, QWORD PTR name$[rsp]
 	mov	ecx, 56					; 00000038H
 	call	EmitErr
 
-; 529  :         return( NULL );
+; 530  :         return( NULL );
 
 	xor	eax, eax
 	jmp	SHORT $LN1@SymCreate
 $LN2@SymCreate:
 
-; 530  :     }
-; 531  :     sym = SymAlloc( name );
+; 531  :     }
+; 532  :     sym = SymAlloc( name );
 
 	mov	rcx, QWORD PTR name$[rsp]
 	call	SymAlloc
 	mov	QWORD PTR sym$[rsp], rax
 
-; 532  :     *gsym = sym;
+; 533  :     *gsym = sym;
 
 	mov	rax, QWORD PTR gsym
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	QWORD PTR [rax], rcx
 
-; 533  :     SymCount++;
+; 534  :     SymCount++;
 
 	mov	eax, DWORD PTR SymCount
 	inc	eax
 	mov	DWORD PTR SymCount, eax
 
-; 534  :     return( sym );
+; 535  :     return( sym );
 
 	mov	rax, QWORD PTR sym$[rsp]
 $LN1@SymCreate:
 
-; 535  : }
+; 536  : }
 
 	add	rsp, 56					; 00000038H
 	ret	0
@@ -4554,33 +4561,33 @@ _TEXT	SEGMENT
 sym$ = 48
 SymFree	PROC
 
-; 457  : {
+; 458  : {
 
 $LN3:
 	mov	QWORD PTR [rsp+8], rcx
 	sub	rsp, 40					; 00000028H
 
-; 458  :     //DebugMsg(("SymFree: free %X, name=%s, state=%X\n", sym, sym->name, sym->state));
-; 459  :     free_ext( sym );
+; 459  :     //DebugMsg(("SymFree: free %X, name=%s, state=%X\n", sym, sym->name, sym->state));
+; 460  :     free_ext( sym );
 
 	mov	rcx, QWORD PTR sym$[rsp]
 	call	free_ext
 
-; 460  : #if FASTMEM==0
-; 461  :     if ( sym->state != SYM_EXTERNAL ) {
-; 462  :         struct fixup *fix;
-; 463  :         for( fix = sym->bp_fixup ; fix; ) {
-; 464  :             struct fixup *next = fix->nextbp;
-; 465  :             DebugMsg(("SymFree: free bp fixup %p\n", fix ));
-; 466  :             LclFree( fix );
-; 467  :             fix = next;
-; 468  :         }
-; 469  :     }
-; 470  :     if ( sym->name_size ) LclFree( sym->name );
-; 471  : #endif
-; 472  :     LclFree( sym );
-; 473  :     return;
-; 474  : }
+; 461  : #if FASTMEM==0
+; 462  :     if ( sym->state != SYM_EXTERNAL ) {
+; 463  :         struct fixup *fix;
+; 464  :         for( fix = sym->bp_fixup ; fix; ) {
+; 465  :             struct fixup *next = fix->nextbp;
+; 466  :             DebugMsg(("SymFree: free bp fixup %p\n", fix ));
+; 467  :             LclFree( fix );
+; 468  :             fix = next;
+; 469  :         }
+; 470  :     }
+; 471  :     if ( sym->name_size ) LclFree( sym->name );
+; 472  : #endif
+; 473  :     LclFree( sym );
+; 474  :     return;
+; 475  : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
@@ -4594,60 +4601,60 @@ sym$ = 40
 name$ = 64
 SymAlloc PROC
 
-; 229  : {
+; 230  : {
 
 $LN6:
 	mov	QWORD PTR [rsp+8], rcx
 	sub	rsp, 56					; 00000038H
 
-; 230  :     int len = strlen( name );
+; 231  :     int len = strlen( name );
 
 	mov	rcx, QWORD PTR name$[rsp]
 	call	strlen
 	mov	DWORD PTR len$[rsp], eax
 
-; 231  :     struct asym *sym;
-; 232  : 
-; 233  :     sym = LclAlloc( sizeof( struct dsym ) );
+; 232  :     struct asym *sym;
+; 233  : 
+; 234  :     sym = LclAlloc( sizeof( struct dsym ) );
 
 	mov	ecx, 120				; 00000078H
 	call	LclAlloc
 	mov	QWORD PTR sym$[rsp], rax
 
-; 234  :     memset( sym, 0, sizeof( struct dsym ) );
+; 235  :     memset( sym, 0, sizeof( struct dsym ) );
 
 	mov	r8d, 120				; 00000078H
 	xor	edx, edx
 	mov	rcx, QWORD PTR sym$[rsp]
 	call	memset
 
-; 235  : #if 1
-; 236  :     /* the tokenizer ensures that identifiers are within limits, so
-; 237  :      * this check probably is redundant */
-; 238  :     if( len > MAX_ID_LEN ) {
+; 236  : #if 1
+; 237  :     /* the tokenizer ensures that identifiers are within limits, so
+; 238  :      * this check probably is redundant */
+; 239  :     if( len > MAX_ID_LEN ) {
 
 	cmp	DWORD PTR len$[rsp], 247		; 000000f7H
 	jle	SHORT $LN2@SymAlloc
 
-; 239  :         EmitError( IDENTIFIER_TOO_LONG );
+; 240  :         EmitError( IDENTIFIER_TOO_LONG );
 
 	mov	ecx, 70					; 00000046H
 	call	EmitError
 
-; 240  :         len = MAX_ID_LEN;
+; 241  :         len = MAX_ID_LEN;
 
 	mov	DWORD PTR len$[rsp], 247		; 000000f7H
 $LN2@SymAlloc:
 
-; 241  :     }
-; 242  : #endif
-; 243  :     sym->name_size = len;
+; 242  :     }
+; 243  : #endif
+; 244  :     sym->name_size = len;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	ecx, BYTE PTR len$[rsp]
 	mov	BYTE PTR [rax+72], cl
 
-; 244  :     sym->list = ModuleInfo.cref;
+; 245  :     sym->list = ModuleInfo.cref;
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	shr	eax, 12
@@ -4661,17 +4668,17 @@ $LN2@SymAlloc:
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	BYTE PTR [rcx+41], al
 
-; 245  :     sym->mem_type = MT_EMPTY;
+; 246  :     sym->mem_type = MT_EMPTY;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	DWORD PTR [rax+36], 192			; 000000c0H
 
-; 246  :     if ( len ) {
+; 247  :     if ( len ) {
 
 	cmp	DWORD PTR len$[rsp], 0
 	je	SHORT $LN3@SymAlloc
 
-; 247  :         sym->name = LclAlloc( len + 1 );
+; 248  :         sym->name = LclAlloc( len + 1 );
 
 	mov	eax, DWORD PTR len$[rsp]
 	inc	eax
@@ -4681,7 +4688,7 @@ $LN2@SymAlloc:
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	QWORD PTR [rcx+8], rax
 
-; 248  :         memcpy( sym->name, name, len );
+; 249  :         memcpy( sym->name, name, len );
 
 	movsxd	rax, DWORD PTR len$[rsp]
 	mov	r8, rax
@@ -4690,30 +4697,30 @@ $LN2@SymAlloc:
 	mov	rcx, QWORD PTR [rax+8]
 	call	memcpy
 
-; 249  :         sym->name[len] = NULLC;
+; 250  :         sym->name[len] = NULLC;
 
 	movsxd	rax, DWORD PTR len$[rsp]
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	rcx, QWORD PTR [rcx+8]
 	mov	BYTE PTR [rcx+rax], 0
 
-; 250  :     } else
+; 251  :     } else
 
 	jmp	SHORT $LN4@SymAlloc
 $LN3@SymAlloc:
 
-; 251  :         sym->name = "";
+; 252  :         sym->name = "";
 
 	mov	rax, QWORD PTR sym$[rsp]
-	lea	rcx, OFFSET FLAT:$SG11131
+	lea	rcx, OFFSET FLAT:$SG11134
 	mov	QWORD PTR [rax+8], rcx
 $LN4@SymAlloc:
 
-; 252  :     return( sym );
+; 253  :     return( sym );
 
 	mov	rax, QWORD PTR sym$[rsp]
 
-; 253  : }
+; 254  : }
 
 	add	rsp, 56					; 00000038H
 	ret	0
