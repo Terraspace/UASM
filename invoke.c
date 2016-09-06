@@ -446,12 +446,32 @@ static int ms64_param( struct dsym const *proc, int index, struct dsym *param, b
                      info->vregs[index] = 1;
                 if ( reg == T_XMM0 + index )
                     DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index ));
-                else
-                    AddLineQueueX( " movq %r, %s", T_XMM0 + index, paramvalue );
+				else
+				{
+					if (param->sym.mem_type == MT_REAL4)
+						AddLineQueueX(" movd %r, %s", T_XMM0 + index, paramvalue);
+					else
+						AddLineQueueX(" movq %r, %s", T_XMM0 + index, paramvalue);
+				}
                 return( 1 );
             }
         }
-        if ( opnd->kind == EXPR_FLOAT ) {
+		else if (opnd->kind == EXPR_REG && opnd->indirect == TRUE) {
+			//if (GetValueSp(reg) & OP_XMM) {
+				if (reg == T_XMM0 + index)
+					DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
+				else
+				{
+					if(param->sym.mem_type == MT_REAL4)
+						AddLineQueueX(" movd %r, %s", T_XMM0 + index, paramvalue);
+					else
+						AddLineQueueX(" movq %r, %s", T_XMM0 + index, paramvalue);
+				}
+				return(1);
+			//}
+		}
+
+		if ( opnd->kind == EXPR_FLOAT ) {
 			if (proc->sym.langtype == LANG_VECTORCALL)
 			{
 				info->vregs[index] = 1;
@@ -470,14 +490,23 @@ static int ms64_param( struct dsym const *proc, int index, struct dsym *param, b
             }
         } 
         if ( opnd->kind == EXPR_ADDR ) {
-            *regs_used |= R0_USED;
-            info->vregs[index] = 1;
-			if(proc->sym.langtype == LANG_VECTORCALL)
+			if (proc->sym.langtype == LANG_VECTORCALL)
+			{
+				*regs_used |= R0_USED;
+				info->vregs[index] = 1;
 				info->xyzused[index] = 1; /* JPH */
-            if ( opnd->sym->mem_type == MT_REAL8)
-              AddLineQueueX("vmovsd %r,qword ptr %s", T_XMM0 + index, paramvalue);
-            else
-              AddLineQueueX("vmovss %r,dword ptr %s", T_XMM0 + index, paramvalue);
+				if (opnd->sym->mem_type == MT_REAL8)
+					AddLineQueueX("vmovsd %r,qword ptr %s", T_XMM0 + index, paramvalue);
+				else
+					AddLineQueueX("vmovss %r,dword ptr %s", T_XMM0 + index, paramvalue);
+			}
+			else
+			{
+				if (param->sym.mem_type == MT_REAL8)
+					AddLineQueueX("movq %r,qword ptr %s", T_XMM0 + index, paramvalue);
+				else if (param->sym.mem_type == MT_REAL4)
+					AddLineQueueX("movd %r,dword ptr %s", T_XMM0 + index, paramvalue);
+			}
 			return(1);
         } 
       } 
