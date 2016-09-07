@@ -21,7 +21,7 @@ $SG11682 DB	01H DUP (?)
 $SG11694 DB	01H DUP (?)
 $SG11697 DB	01H DUP (?)
 $SG11726 DB	01H DUP (?)
-$SG12827 DB	01H DUP (?)
+$SG12829 DB	01H DUP (?)
 _BSS	ENDS
 _DATA	SEGMENT
 COMM	decoflags:BYTE
@@ -38,64 +38,11 @@ COMM	CurrProc:QWORD
 COMM	sym_ReservedStack:QWORD
 _DATA	ENDS
 _BSS	SEGMENT
-$SG12228 DB	01H DUP (?)
+$SG12230 DB	01H DUP (?)
 _BSS	ENDS
-CONST	SEGMENT
-ms32_regs16 DD	09H
-	DD	0bH
-	DD	0cH
-win64_nvgpr DW	0f0e8H
-	ORG $+2
-ms32_regs32 DD	012H
-	DD	013H
-ms32_maxreg DD	03H
-	DD	02H
-watc_regs8 DD	01H
-	DD	03H
-	DD	04H
-	DD	02H
-watc_regs16 DD	09H
-	DD	0bH
-	DD	0cH
-	DD	0aH
-watc_regs32 DD	011H
-	DD	013H
-	DD	014H
-	DD	012H
-watc_regs_qw DD	09H
-	DD	0cH
-	DD	0aH
-	DD	0bH
-ms64_regs DD	074H
-	DD	075H
-	DD	07bH
-	DD	07cH
-win64_nvxmm DW	0ffc0H
-	ORG $+6
-fastcall_tab DQ	FLAT:ms32_pcheck
-	DQ	FLAT:ms32_return
-	DQ	FLAT:watc_pcheck
-	DQ	FLAT:watc_return
-	DQ	FLAT:ms64_pcheck
-	DQ	FLAT:ms64_return
-vectorcall_tab DQ FLAT:ms32_pcheck
-	DQ	FLAT:ms32_return
-	DQ	FLAT:watc_pcheck
-	DQ	FLAT:watc_return
-	DQ	FLAT:ms64_pcheck
-	DQ	FLAT:ms64_return
-stackreg DD	0dH
-	DD	015H
-	DD	077H
-	ORG $+4
-fmtstk0	DQ	FLAT:$SG11378
-	DQ	FLAT:$SG11379
-fmtstk1	DQ	FLAT:$SG11381
-	DQ	FLAT:$SG11382
-CONST	ENDS
 _DATA	SEGMENT
-$SG12345 DB	'mov [%r+%u], %r', 00H
-$SG12346 DB	'%r %r, %u', 00H
+$SG12347 DB	'mov [%r+%u], %r', 00H
+$SG12348 DB	'%r %r, %u', 00H
 	ORG $+6
 $SG11378 DB	'sub %r, %d', 00H
 	ORG $+1
@@ -106,228 +53,228 @@ $SG11425 DB	'::', 00H
 $SG11381 DB	'sub %r, %d + %s', 00H
 $SG11382 DB	'%r %d + %s', 00H
 	ORG $+1
-$SG12477 DB	'cld', 00H
-$SG12419 DB	'write_win64_default_prologue enter', 0aH, 00H
-$SG12545 DB	'%r', 00H
+$SG12479 DB	'cld', 00H
+$SG12421 DB	'write_win64_default_prologue enter', 0aH, 00H
+$SG12547 DB	'%r', 00H
 	ORG $+1
-$SG12425 DB	'write_win64_default_prologue: no frame register needed', 0aH
+$SG12427 DB	'write_win64_default_prologue: no frame register needed', 0aH
 	DB	00H
-$SG12426 DB	'push %r', 00H
-$SG12427 DB	'%r %r', 00H
+$SG12428 DB	'push %r', 00H
+$SG12429 DB	'%r %r', 00H
 	ORG $+2
-$SG12428 DB	'mov %r, %r', 00H
+$SG12430 DB	'mov %r, %r', 00H
 	ORG $+1
 $SG12037 DB	'dw', 00H
 	ORG $+1
-$SG12429 DB	'%r %r, 0', 00H
+$SG12431 DB	'%r %r, 0', 00H
 	ORG $+3
-$SG12441 DB	'%r %r', 00H
+$SG12443 DB	'%r %r', 00H
 	ORG $+2
 $SG11428 DB	'%s::%s', 00H
 	ORG $+1
 $SG12039 DB	',', 00H
 	ORG $+2
-$SG12439 DB	'push %r', 00H
-$SG12447 DB	'push %r', 00H
-$SG12449 DB	'%r %r', 00H
+$SG12441 DB	'push %r', 00H
+$SG12449 DB	'push %r', 00H
+$SG12451 DB	'%r %r', 00H
 	ORG $+2
 $SG11430 DB	'watc_pcheck(%s.%s): size=%u ptr=%u far=%u reg=%s', 0aH, 00H
 	ORG $+2
-$SG12470 DB	'dec %r', 00H
+$SG12472 DB	'dec %r', 00H
 	ORG $+1
 $SG12042 DB	'dw', 00H
 	ORG $+1
-$SG12459 DB	'write_win64_default_prologue: localsize=%u resstack=%u', 0aH
+$SG12461 DB	'write_win64_default_prologue: localsize=%u resstack=%u', 0aH
 	DB	00H
 $SG11438 DB	'%d%c', 00H
 	ORG $+3
-$SG12469 DB	'mov %r, %u', 00H
+$SG12471 DB	'mov %r, %u', 00H
 	ORG $+5
-$SG12471 DB	'mov byte ptr [%r + %r], 0', 00H
+$SG12473 DB	'mov byte ptr [%r + %r], 0', 00H
 	ORG $+6
-$SG12472 DB	'dw 0F875h', 00H
+$SG12474 DB	'dw 0F875h', 00H
 	ORG $+6
-$SG12473 DB	'push %r', 00H
-$SG12474 DB	'push %r', 00H
-$SG12475 DB	'xor %r, %r', 00H
+$SG12475 DB	'push %r', 00H
+$SG12476 DB	'push %r', 00H
+$SG12477 DB	'xor %r, %r', 00H
 	ORG $+5
-$SG12476 DB	'mov %r, %u', 00H
+$SG12478 DB	'mov %r, %u', 00H
 	ORG $+5
-$SG12478 DB	'lea %r, [%r+16]', 00H
-$SG12479 DB	'rep stosb', 00H
-	ORG $+2
-$SG12480 DB	'pop %r', 00H
-	ORG $+1
+$SG12480 DB	'lea %r, [%r+16]', 00H
 $SG11456 DB	'%d%c', 00H
 	ORG $+3
-$SG12481 DB	'pop %r', 00H
+$SG12481 DB	'rep stosb', 00H
+	ORG $+2
+$SG12482 DB	'pop %r', 00H
+	ORG $+1
+$SG12483 DB	'pop %r', 00H
 	ORG $+5
-$SG12492 DB	'vmovdqu [%r+%u+%s], %r', 00H
+$SG12494 DB	'vmovdqu [%r+%u+%s], %r', 00H
 	ORG $+1
-$SG12493 DB	'%r %r, %u+%s', 00H
+$SG12495 DB	'%r %r, %u+%s', 00H
 	ORG $+3
-$SG12495 DB	'vmovdqu [%r+%u+%s], %r', 00H
+$SG12497 DB	'vmovdqu [%r+%u+%s], %r', 00H
 	ORG $+1
-$SG12496 DB	'%r %r, %u+%s', 00H
+$SG12498 DB	'%r %r, %u+%s', 00H
 	ORG $+3
-$SG12500 DB	'vmovdqu [%r+%u], %r', 00H
+$SG12502 DB	'vmovdqu [%r+%u], %r', 00H
 	ORG $+4
-$SG12501 DB	'%r %r, %u', 00H
+$SG12503 DB	'%r %r, %u', 00H
 	ORG $+6
-$SG12503 DB	'vmovdqu [%r+%u], %r', 00H
+$SG12505 DB	'vmovdqu [%r+%u], %r', 00H
 	ORG $+4
-$SG12504 DB	'%r %r, %u', 00H
+$SG12506 DB	'%r %r, %u', 00H
 	ORG $+6
-$SG12512 DB	'lea %r,[%r + %d]', 00H
+$SG12514 DB	'lea %r,[%r + %d]', 00H
 	ORG $+7
-$SG12514 DB	'mov [%r + %d], %r', 00H
+$SG12516 DB	'mov [%r + %d], %r', 00H
 	ORG $+6
-$SG12522 DB	'mov [%r + %d], %r', 00H
+$SG12524 DB	'mov [%r + %d], %r', 00H
 	ORG $+6
-$SG12531 DB	'vmovss dword ptr [rsp+%d],%r', 00H
+$SG12533 DB	'vmovss dword ptr [rsp+%d],%r', 00H
 	ORG $+3
-$SG12534 DB	'vmovsd qword ptr [rsp+%d],%r', 00H
+$SG12536 DB	'vmovsd qword ptr [rsp+%d],%r', 00H
 	ORG $+3
-$SG12538 DB	'vmovups oword ptr [rsp+%d],%r', 00H
+$SG12540 DB	'vmovups oword ptr [rsp+%d],%r', 00H
 	ORG $+2
-$SG12539 DB	'vmovups oword ptr [rsp+%d],%r', 00H
+$SG12541 DB	'vmovups oword ptr [rsp+%d],%r', 00H
 	ORG $+2
-$SG12543 DB	'vmovups ymmword ptr [rsp+%d],%r', 00H
-$SG12544 DB	'vmovups ymmword ptr [rsp+%d],%r', 00H
+$SG12545 DB	'vmovups ymmword ptr [rsp+%d],%r', 00H
+$SG12546 DB	'vmovups ymmword ptr [rsp+%d],%r', 00H
 $SG11531 DB	'LocalDir(%u) entry', 0aH, 00H
 	ORG $+4
 $SG11536 DB	'LocalDir: item=%s', 0aH, 00H
 	ORG $+5
 $SG11540 DB	'LocalDir: SymLCreate( %s ) failed', 0aH, 00H
 	ORG $+5
-$SG12571 DB	'push %r', 00H
-$SG12572 DB	'mov %r, %r', 00H
+$SG12573 DB	'push %r', 00H
+$SG12574 DB	'mov %r, %r', 00H
 	ORG $+5
-$SG12576 DB	'push %r', 00H
-$SG12577 DB	'sub %r, %d + %s', 00H
+$SG12578 DB	'push %r', 00H
+$SG12579 DB	'sub %r, %d + %s', 00H
 $SG11555 DB	'NULL', 00H
 	ORG $+3
 $SG11556 DB	'LocalDir: memtype=%X, type=%s, size=%u*%u', 0aH, 00H
 	ORG $+5
-$SG12582 DB	'add %r, %d', 00H
+$SG12584 DB	'add %r, %d', 00H
 	ORG $+5
-$SG12583 DB	'sub %r, %d', 00H
+$SG12585 DB	'sub %r, %d', 00H
 	ORG $+5
-$SG12585 DB	'push %r', 00H
-$SG12586 DB	'mov %r, %s', 00H
+$SG12587 DB	'push %r', 00H
+$SG12588 DB	'mov %r, %s', 00H
 	ORG $+5
-$SG12587 DB	'mov %r, %r', 00H
+$SG12589 DB	'mov %r, %r', 00H
 	ORG $+5
-$SG12589 DB	'push %r', 00H
-$SG12652 DB	'SetLocalOffsets(%s): cntxmm=%u cntstd=%u start=%u align='
+$SG12591 DB	'push %r', 00H
+$SG12654 DB	'SetLocalOffsets(%s): cntxmm=%u cntstd=%u start=%u align='
 	DB	'%u localsize=%u', 0aH, 00H
 	ORG $+7
-$SG12659 DB	'SetLocalOffsets(%s): offset of %s (size=%u) set to %d', 0aH
+$SG12661 DB	'SetLocalOffsets(%s): offset of %s (size=%u) set to %d', 0aH
 	DB	00H
 	ORG $+1
-$SG12664 DB	'SetLocalOffsets(%s): localsize=%u after processing local'
+$SG12666 DB	'SetLocalOffsets(%s): localsize=%u after processing local'
 	DB	's', 0aH, 00H
 	ORG $+5
-$SG12670 DB	'SetLocalOffsets(%s): FPO, adjusting offsets', 0aH, 00H
+$SG12672 DB	'SetLocalOffsets(%s): FPO, adjusting offsets', 0aH, 00H
 	ORG $+3
-$SG12671 DB	'SetLocalOffsets(%s): FPO, offset for %s %4d -> %4d', 0aH
+$SG12673 DB	'SetLocalOffsets(%s): FPO, offset for %s %4d -> %4d', 0aH
 	DB	00H
 	ORG $+4
-$SG12672 DB	'SetLocalOffsets(%s): FPO, offset for %s %4d -> %4d', 0aH
+$SG12674 DB	'SetLocalOffsets(%s): FPO, offset for %s %4d -> %4d', 0aH
 	DB	00H
 	ORG $+4
-$SG12675 DB	'SetLocalOffsets(%s): final localsize=%u', 0aH, 00H
+$SG12677 DB	'SetLocalOffsets(%s): final localsize=%u', 0aH, 00H
 	ORG $+7
 $SG11657 DB	'ParseParams: name missing/invalid for parameter %u, i=%u'
 	DB	0aH, 00H
 	ORG $+6
-$SG12685 DB	'write_prologue(%s): default prologue', 0aH, 00H
+$SG12687 DB	'write_prologue(%s): default prologue', 0aH, 00H
 	ORG $+2
-$SG12688 DB	'write_prologue(%s): prologue is NULL', 0aH, 00H
+$SG12690 DB	'write_prologue(%s): prologue is NULL', 0aH, 00H
 	ORG $+2
-$SG12689 DB	'write_prologue(%s): userdefined prologue %s', 0aH, 00H
+$SG12691 DB	'write_prologue(%s): userdefined prologue %s', 0aH, 00H
 	ORG $+3
 $SG11672 DB	'ParseParams: %s defined already, state=%u, local=%u', 0aH
 	DB	00H
 	ORG $+3
-$SG12707 DB	'pop %r', 00H
-	ORG $+1
-$SG12710 DB	'pop %r', 00H
-	ORG $+1
 $SG11683 DB	'ParseParams: old-new memtype=%X-%X type=%X(%s)-%X(%s) fa'
 	DB	'r=%u-%u ind=%u-%u ofss=%d-%d pmt=%X-%X', 0aH, 00H
+$SG12709 DB	'pop %r', 00H
+	ORG $+1
 $SG11685 DB	'ParseParams: calling SymAddLocal(%s, %s)', 0aH, 00H
-	ORG $+6
+	ORG $+2
+$SG12712 DB	'pop %r', 00H
+	ORG $+5
 $SG11693 DB	'ParseParams: different param count', 0aH, 00H
 	ORG $+4
 $SG11699 DB	'ParseParams: SymLCreate(%s) failed', 0aH, 00H
 	ORG $+4
-$SG12738 DB	'write_win64_default_epilogue(%s): %u xmm registers to re'
+$SG12740 DB	'write_win64_default_epilogue(%s): %u xmm registers to re'
 	DB	'store', 0aH, 00H
 	ORG $+1
-$SG12744 DB	'write_win64_default_epilogue(%s): restore %s, offset=%d', 0aH
+$SG12746 DB	'write_win64_default_epilogue(%s): restore %s, offset=%d', 0aH
 	DB	00H
 	ORG $+7
 $SG11722 DB	'ParseParams: error, cntParam=%u, found %s', 0aH, 00H
 	ORG $+5
-$SG12747 DB	'vmovdqu %r, [%r + %u + %s]', 00H
+$SG12749 DB	'vmovdqu %r, [%r + %u + %s]', 00H
 	ORG $+5
-$SG12748 DB	'vmovdqu %r, [%r + %u]', 00H
-	ORG $+2
 $SG11725 DB	'ParseParams: a param is left over, cntParam=%u', 0aH, 00H
-$SG12756 DB	'add %r, %d + %s', 00H
-$SG12757 DB	'add %r, %d + %s', 00H
-$SG12758 DB	'add %r, %d', 00H
-	ORG $+5
+$SG12750 DB	'vmovdqu %r, [%r + %u]', 00H
+	ORG $+2
+$SG12758 DB	'add %r, %d + %s', 00H
+$SG12759 DB	'add %r, %d + %s', 00H
 $SG11735 DB	'ParseParams: parm=%s, ofs=%u, size=%d', 0aH, 00H
 	ORG $+1
-$SG12768 DB	'mov %r, [%r+%u]', 00H
-$SG12771 DB	'pop %r', 00H
-	ORG $+1
-$SG12781 DB	'add %r, %d + %s', 00H
-$SG12783 DB	'pop %r', 00H
-	ORG $+1
-$SG12789 DB	'leave', 00H
-	ORG $+2
-$SG12794 DB	'add %r, %d', 00H
+$SG12760 DB	'add %r, %d', 00H
 	ORG $+5
-$SG12796 DB	'mov %r, %r', 00H
+$SG12770 DB	'mov %r, [%r+%u]', 00H
+$SG12773 DB	'pop %r', 00H
 	ORG $+1
-$SG12797 DB	'pop %r', 00H
+$SG12783 DB	'add %r, %d + %s', 00H
+$SG12785 DB	'pop %r', 00H
+	ORG $+1
+$SG12791 DB	'leave', 00H
+	ORG $+2
+$SG12796 DB	'add %r, %d', 00H
+	ORG $+5
+$SG12798 DB	'mov %r, %r', 00H
+	ORG $+1
+$SG12799 DB	'pop %r', 00H
 	ORG $+5
 $SG11793 DB	'ParseProc: error, memtype changed, old-new memtype=%X-%X'
 	DB	', ofssize=%X-%X', 0aH, 00H
 	ORG $+7
 $SG11801 DB	'ParseProc: error, language changed, %u - %u', 0aH, 00H
 	ORG $+3
-$SG12828 DB	'%s, 0%XH, 0%XH, 0%XH, <<%s>>, <%s>', 00H
+$SG12830 DB	'%s, 0%XH, 0%XH, 0%XH, <<%s>>, <%s>', 00H
 	ORG $+5
-$SG12830 DB	'option epilogue:none', 0aH, 00H
-	ORG $+2
 $SG11807 DB	'PRIVATE', 00H
+$SG12832 DB	'option epilogue:none', 0aH, 00H
+	ORG $+2
 $SG11812 DB	'PUBLIC', 00H
 	ORG $+1
 $SG11814 DB	'EXPORT', 00H
 	ORG $+1
 $SG11815 DB	'ParseProc(%s): EXPORT detected', 0aH, 00H
-$SG12846 DB	'RetInstr() enter', 0aH, 00H
+$SG12848 DB	'RetInstr() enter', 0aH, 00H
 	ORG $+6
 $SG11827 DB	'FORCEFRAME', 00H
 	ORG $+5
-$SG12852 DB	'RetInstr() exit', 0aH, 00H
-	ORG $+7
-$SG12853 DB	'RetInstr() exit', 0aH, 00H
+$SG12854 DB	'RetInstr() exit', 0aH, 00H
 	ORG $+3
 $SG11830 DB	'LOADDS', 00H
-	ORG $+1
-$SG12865 DB	'%d%c', 00H
+	ORG $+5
+$SG12855 DB	'RetInstr() exit', 0aH, 00H
+	ORG $+3
+$SG12867 DB	'%d%c', 00H
 	ORG $+3
 $SG11843 DB	'USES', 00H
-	ORG $+3
-$SG12869 DB	'%d%c', 00H
 	ORG $+7
 $SG11845 DB	'ParseProc: USES found in PROTO', 0aH, 00H
-$SG12870 DB	'RetInstr() exit', 0aH, 00H
+$SG12871 DB	'%d%c', 00H
+	ORG $+3
+$SG12872 DB	'RetInstr() exit', 0aH, 00H
 	ORG $+7
 $SG11848 DB	'ParseProc: no registers for regslist', 0aH, 00H
 	ORG $+2
@@ -383,7 +330,7 @@ $SG12057 DB	'%s %r', 00H
 	ORG $+2
 $SG12083 DB	'NULL', 00H
 	ORG $+3
-$SG12104 DB	'NULL', 00H
+$SG12105 DB	'NULL', 00H
 	ORG $+3
 $SG12084 DB	'ProcFini(%s): unmatched block nesting error, proc->seg=%'
 	DB	's, CurrSeg=%s', 0aH, 00H
@@ -394,45 +341,100 @@ $SG12091 DB	'ProcFini(%s): FPO, offset for %s %8d -> %8d', 0aH, 00H
 	ORG $+3
 $SG12092 DB	'ProcFini(%s): FPO, offset for %s %8d -> %8d', 0aH, 00H
 	ORG $+3
-$SG12105 DB	'EndpDir(%s) enter, curr ofs=% X, CurrProc=%s', 0aH, 00H
+$SG12106 DB	'EndpDir(%s) enter, curr ofs=% X, CurrProc=%s', 0aH, 00H
 	ORG $+2
-$SG12130 DB	'ExcFrameDirective(%s) enter', 0aH, 00H
+$SG12111 DB	'@ProcLine', 00H
+	ORG $+6
+$SG12132 DB	'ExcFrameDirective(%s) enter', 0aH, 00H
 	ORG $+3
-$SG12149 DB	'ExcFrameDirective: UWOP_ALLOC_SMALL, size=%Xh', 0aH, 00H
+$SG12151 DB	'ExcFrameDirective: UWOP_ALLOC_SMALL, size=%Xh', 0aH, 00H
 	ORG $+1
-$SG12154 DB	'CODE', 00H
+$SG12156 DB	'CODE', 00H
 	ORG $+3
-$SG12147 DB	'ExcFrameDirective: UWOP_ALLOC_LARGE, operation info 1, s'
+$SG12149 DB	'ExcFrameDirective: UWOP_ALLOC_LARGE, operation info 1, s'
 	DB	'ize=%Xh', 0aH, 00H
 	ORG $+7
-$SG12186 DB	'ExcFrameDirective() exit, ok', 0aH, 00H
+$SG12188 DB	'ExcFrameDirective() exit, ok', 0aH, 00H
 	ORG $+2
-$SG12225 DB	'option prologue:none', 0aH, 00H
+$SG12227 DB	'option prologue:none', 0aH, 00H
 	ORG $+2
-$SG12148 DB	'ExcFrameDirective: UWOP_ALLOC_LARGE, operation info 0, s'
+$SG12150 DB	'ExcFrameDirective: UWOP_ALLOC_LARGE, operation info 0, s'
 	DB	'ize=%Xh', 0aH, 00H
 	ORG $+7
-$SG12192 DB	'ProcCheckOpen: unmatched block nesting error, CurrProc=%'
+$SG12194 DB	'ProcCheckOpen: unmatched block nesting error, CurrProc=%'
 	DB	's', 0aH, 00H
 	ORG $+5
-$SG12229 DB	' (%s, 0%XH, 0%XH, 0%XH, <<%s>>, <%s>)', 00H
+$SG12231 DB	' (%s, 0%XH, 0%XH, 0%XH, <<%s>>, <%s>)', 00H
 	ORG $+2
-$SG12230 DB	'write_userdef_prologue: macro %s returned >%s<', 0aH, 00H
-$SG12260 DB	'movsd qword ptr[%r+%u], %r', 00H
+$SG12232 DB	'write_userdef_prologue: macro %s returned >%s<', 0aH, 00H
+$SG12262 DB	'movsd qword ptr[%r+%u], %r', 00H
 	ORG $+5
-$SG12262 DB	'movss dword ptr[%r+%u], %r', 00H
+$SG12264 DB	'movss dword ptr[%r+%u], %r', 00H
 	ORG $+5
-$SG12267 DB	'mov [%r+%u], %r', 00H
-$SG12268 DB	'mov [%r+%u], %r', 00H
-$SG12273 DB	'movq [%r+%u], %r', 00H
+$SG12269 DB	'mov [%r+%u], %r', 00H
+$SG12270 DB	'mov [%r+%u], %r', 00H
+$SG12275 DB	'movq [%r+%u], %r', 00H
 	ORG $+7
-$SG12275 DB	'mov [%r+%u], %r', 00H
-$SG12276 DB	'mov [%r+%u], %r', 00H
-$SG12281 DB	'movq [%r+%u], %r', 00H
+$SG12277 DB	'mov [%r+%u], %r', 00H
+$SG12278 DB	'mov [%r+%u], %r', 00H
+$SG12283 DB	'movq [%r+%u], %r', 00H
 	ORG $+7
-$SG12282 DB	'mov [%r+%u], %r', 00H
-$SG12283 DB	'mov [%r+%u], %r', 00H
+$SG12284 DB	'mov [%r+%u], %r', 00H
+$SG12285 DB	'mov [%r+%u], %r', 00H
 _DATA	ENDS
+CONST	SEGMENT
+ms32_regs16 DD	09H
+	DD	0bH
+	DD	0cH
+win64_nvgpr DW	0f0e8H
+	ORG $+2
+ms32_regs32 DD	012H
+	DD	013H
+ms32_maxreg DD	03H
+	DD	02H
+watc_regs8 DD	01H
+	DD	03H
+	DD	04H
+	DD	02H
+watc_regs16 DD	09H
+	DD	0bH
+	DD	0cH
+	DD	0aH
+watc_regs32 DD	011H
+	DD	013H
+	DD	014H
+	DD	012H
+watc_regs_qw DD	09H
+	DD	0cH
+	DD	0aH
+	DD	0bH
+ms64_regs DD	074H
+	DD	075H
+	DD	07bH
+	DD	07cH
+win64_nvxmm DW	0ffc0H
+	ORG $+6
+fastcall_tab DQ	FLAT:ms32_pcheck
+	DQ	FLAT:ms32_return
+	DQ	FLAT:watc_pcheck
+	DQ	FLAT:watc_return
+	DQ	FLAT:ms64_pcheck
+	DQ	FLAT:ms64_return
+vectorcall_tab DQ FLAT:ms32_pcheck
+	DQ	FLAT:ms32_return
+	DQ	FLAT:watc_pcheck
+	DQ	FLAT:watc_return
+	DQ	FLAT:ms64_pcheck
+	DQ	FLAT:ms64_return
+stackreg DD	0dH
+	DD	015H
+	DD	077H
+	ORG $+4
+fmtstk0	DQ	FLAT:$SG11378
+	DQ	FLAT:$SG11379
+fmtstk1	DQ	FLAT:$SG11381
+	DQ	FLAT:$SG11382
+CONST	ENDS
 PUBLIC	__local_stdio_printf_options
 PUBLIC	_vfprintf_l
 PUBLIC	printf
@@ -644,7 +646,7 @@ $pdata$ProcFini DD imagerel ProcFini
 	DD	imagerel ProcFini+982
 	DD	imagerel $unwind$ProcFini
 $pdata$EndpDir DD imagerel $LN9
-	DD	imagerel $LN9+277
+	DD	imagerel $LN9+309
 	DD	imagerel $unwind$EndpDir
 $pdata$ExcFrameDirective DD imagerel $LN59
 	DD	imagerel $LN59+2944
@@ -808,7 +810,7 @@ flag_iret$ = 1328
 tokenarray$ = 1336
 write_userdef_epilogue PROC
 
-; 3564 : {
+; 3571 : {
 
 	mov	QWORD PTR [rsp+16], rdx
 	mov	BYTE PTR [rsp+8], cl
@@ -817,29 +819,29 @@ write_userdef_epilogue PROC
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
 
-; 3565 :     uint_16 *regs;
-; 3566 :     int i;
-; 3567 :     char *p;
-; 3568 :     bool is_exitm;
-; 3569 :     struct proc_info   *info;
-; 3570 :     int flags = CurrProc->sym.langtype; /* set bits 0-2 */
+; 3572 :     uint_16 *regs;
+; 3573 :     int i;
+; 3574 :     char *p;
+; 3575 :     bool is_exitm;
+; 3576 :     struct proc_info   *info;
+; 3577 :     int flags = CurrProc->sym.langtype; /* set bits 0-2 */
 
 	mov	rax, QWORD PTR CurrProc
 	mov	eax, DWORD PTR [rax+76]
 	mov	DWORD PTR flags$[rsp], eax
 
-; 3571 :     struct dsym *dir;
-; 3572 :     char reglst[128];
-; 3573 :     char buffer[MAX_LINE_LEN]; /* stores string for RunMacro() */
-; 3574 : 
-; 3575 :     dir = (struct dsym *)SymSearch( ModuleInfo.proc_epilogue );
+; 3578 :     struct dsym *dir;
+; 3579 :     char reglst[128];
+; 3580 :     char buffer[MAX_LINE_LEN]; /* stores string for RunMacro() */
+; 3581 : 
+; 3582 :     dir = (struct dsym *)SymSearch( ModuleInfo.proc_epilogue );
 
 	mov	rcx, QWORD PTR ModuleInfo+328
 	call	SymFind
 	mov	QWORD PTR dir$[rsp], rax
 
-; 3576 :     if (dir == NULL ||
-; 3577 :         dir->sym.state != SYM_MACRO ||
+; 3583 :     if (dir == NULL ||
+; 3584 :         dir->sym.state != SYM_MACRO ||
 
 	cmp	QWORD PTR dir$[rsp], 0
 	je	SHORT $LN6@write_user
@@ -855,8 +857,8 @@ write_userdef_epilogue PROC
 	jne	SHORT $LN5@write_user
 $LN6@write_user:
 
-; 3578 :         dir->sym.isfunc == TRUE ) {
-; 3579 :         return( EmitErr( EPILOGUE_MUST_BE_MACRO_PROC, ModuleInfo.proc_epilogue ) );
+; 3585 :         dir->sym.isfunc == TRUE ) {
+; 3586 :         return( EmitErr( EPILOGUE_MUST_BE_MACRO_PROC, ModuleInfo.proc_epilogue ) );
 
 	mov	rdx, QWORD PTR ModuleInfo+328
 	mov	ecx, 157				; 0000009dH
@@ -864,18 +866,18 @@ $LN6@write_user:
 	jmp	$LN1@write_user
 $LN5@write_user:
 
-; 3580 :     }
-; 3581 : 
-; 3582 :     info = CurrProc->e.procinfo;
+; 3587 :     }
+; 3588 : 
+; 3589 :     info = CurrProc->e.procinfo;
 
 	mov	rax, QWORD PTR CurrProc
 	mov	rax, QWORD PTR [rax+96]
 	mov	QWORD PTR info$[rsp], rax
 
-; 3583 : 
-; 3584 : #if AMD64_SUPPORT
-; 3585 :     /* to be compatible with ML64, translate FASTCALL to 0 (not 7) */
-; 3586 :     if ( CurrProc->sym.langtype == LANG_FASTCALL && ModuleInfo.fctype == FCT_WIN64 )
+; 3590 : 
+; 3591 : #if AMD64_SUPPORT
+; 3592 :     /* to be compatible with ML64, translate FASTCALL to 0 (not 7) */
+; 3593 :     if ( CurrProc->sym.langtype == LANG_FASTCALL && ModuleInfo.fctype == FCT_WIN64 )
 
 	mov	rax, QWORD PTR CurrProc
 	cmp	DWORD PTR [rax+76], 7
@@ -883,14 +885,14 @@ $LN5@write_user:
 	cmp	DWORD PTR ModuleInfo+376, 2
 	jne	SHORT $LN7@write_user
 
-; 3587 :         flags = 0;
+; 3594 :         flags = 0;
 
 	mov	DWORD PTR flags$[rsp], 0
 $LN7@write_user:
 
-; 3588 : #endif
-; 3589 :     if ( CurrProc->sym.langtype == LANG_C ||
-; 3590 :          CurrProc->sym.langtype == LANG_SYSCALL ||
+; 3595 : #endif
+; 3596 :     if ( CurrProc->sym.langtype == LANG_C ||
+; 3597 :          CurrProc->sym.langtype == LANG_SYSCALL ||
 
 	mov	rax, QWORD PTR CurrProc
 	cmp	DWORD PTR [rax+76], 1
@@ -903,16 +905,16 @@ $LN7@write_user:
 	jne	SHORT $LN8@write_user
 $LN9@write_user:
 
-; 3591 :          CurrProc->sym.langtype == LANG_FASTCALL)
-; 3592 :         flags |= 0x10;
+; 3598 :          CurrProc->sym.langtype == LANG_FASTCALL)
+; 3599 :         flags |= 0x10;
 
 	mov	eax, DWORD PTR flags$[rsp]
 	or	eax, 16
 	mov	DWORD PTR flags$[rsp], eax
 $LN8@write_user:
 
-; 3593 : 
-; 3594 :     flags |= ( CurrProc->sym.mem_type == MT_FAR ? 0x20 : 0 );
+; 3600 : 
+; 3601 :     flags |= ( CurrProc->sym.mem_type == MT_FAR ? 0x20 : 0 );
 
 	mov	rax, QWORD PTR CurrProc
 	cmp	DWORD PTR [rax+36], 130			; 00000082H
@@ -928,7 +930,7 @@ $LN15@write_user:
 	mov	eax, ecx
 	mov	DWORD PTR flags$[rsp], eax
 
-; 3595 :     flags |= ( CurrProc->sym.ispublic ? 0 : 0x40 );
+; 3602 :     flags |= ( CurrProc->sym.ispublic ? 0 : 0x40 );
 
 	mov	rax, QWORD PTR CurrProc
 	movzx	eax, BYTE PTR [rax+40]
@@ -948,8 +950,8 @@ $LN17@write_user:
 	mov	eax, ecx
 	mov	DWORD PTR flags$[rsp], eax
 
-; 3596 :     /* v2.11: set bit 7, the export flag */
-; 3597 :     flags |= ( info->isexport ? 0x80 : 0 );
+; 3603 :     /* v2.11: set bit 7, the export flag */
+; 3604 :     flags |= ( info->isexport ? 0x80 : 0 );
 
 	mov	rax, QWORD PTR info$[rsp]
 	movzx	eax, BYTE PTR [rax+128]
@@ -969,7 +971,7 @@ $LN19@write_user:
 	mov	eax, ecx
 	mov	DWORD PTR flags$[rsp], eax
 
-; 3598 :     flags |= flag_iret ? 0x100 : 0;  /* bit 8: 1 if IRET    */
+; 3605 :     flags |= flag_iret ? 0x100 : 0;  /* bit 8: 1 if IRET    */
 
 	movzx	eax, BYTE PTR flag_iret$[rsp]
 	test	eax, eax
@@ -985,26 +987,26 @@ $LN21@write_user:
 	mov	eax, ecx
 	mov	DWORD PTR flags$[rsp], eax
 
-; 3599 : 
-; 3600 :     p = reglst;
+; 3606 : 
+; 3607 :     p = reglst;
 
 	lea	rax, QWORD PTR reglst$[rsp]
 	mov	QWORD PTR p$[rsp], rax
 
-; 3601 :     if ( info->regslist ) {
+; 3608 :     if ( info->regslist ) {
 
 	mov	rax, QWORD PTR info$[rsp]
 	cmp	QWORD PTR [rax], 0
 	je	$LN10@write_user
 
-; 3602 :         int cnt = *info->regslist;
+; 3609 :         int cnt = *info->regslist;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	rax, QWORD PTR [rax]
 	movzx	eax, WORD PTR [rax]
 	mov	DWORD PTR cnt$1[rsp], eax
 
-; 3603 :         regs = info->regslist + cnt;
+; 3610 :         regs = info->regslist + cnt;
 
 	movsxd	rax, DWORD PTR cnt$1[rsp]
 	mov	rcx, QWORD PTR info$[rsp]
@@ -1012,7 +1014,7 @@ $LN21@write_user:
 	lea	rax, QWORD PTR [rcx+rax*2]
 	mov	QWORD PTR regs$[rsp], rax
 
-; 3604 :         for ( ; cnt; regs--, cnt-- ) {
+; 3611 :         for ( ; cnt; regs--, cnt-- ) {
 
 	jmp	SHORT $LN4@write_user
 $LN2@write_user:
@@ -1026,7 +1028,7 @@ $LN4@write_user:
 	cmp	DWORD PTR cnt$1[rsp], 0
 	je	SHORT $LN3@write_user
 
-; 3605 :             GetResWName( *regs, p );
+; 3612 :             GetResWName( *regs, p );
 
 	mov	rax, QWORD PTR regs$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -1034,7 +1036,7 @@ $LN4@write_user:
 	mov	ecx, eax
 	call	GetResWName
 
-; 3606 :             p += strlen( p );
+; 3613 :             p += strlen( p );
 
 	mov	rcx, QWORD PTR p$[rsp]
 	call	strlen
@@ -1043,12 +1045,12 @@ $LN4@write_user:
 	mov	rax, rcx
 	mov	QWORD PTR p$[rsp], rax
 
-; 3607 :             if ( cnt != 1 )
+; 3614 :             if ( cnt != 1 )
 
 	cmp	DWORD PTR cnt$1[rsp], 1
 	je	SHORT $LN11@write_user
 
-; 3608 :                 *p++ = ',';
+; 3615 :                 *p++ = ',';
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	BYTE PTR [rax], 44			; 0000002cH
@@ -1057,23 +1059,23 @@ $LN4@write_user:
 	mov	QWORD PTR p$[rsp], rax
 $LN11@write_user:
 
-; 3609 :         }
+; 3616 :         }
 
 	jmp	SHORT $LN2@write_user
 $LN3@write_user:
 $LN10@write_user:
 
-; 3610 :     }
-; 3611 :     *p = NULLC;
+; 3617 :     }
+; 3618 :     *p = NULLC;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	BYTE PTR [rax], 0
 
-; 3612 :     //strcat( reglst, ">" );
-; 3613 : 
-; 3614 :     /* v2.07: make the numeric arguments more Masm-compatible */
-; 3615 :     //sprintf( buffer,"%s %s, %02XH, %02XH, %02XH, <<%s>>, <%s>", ModuleInfo.proc_epilogue,
-; 3616 :     sprintf( buffer,"%s, 0%XH, 0%XH, 0%XH, <<%s>>, <%s>",
+; 3619 :     //strcat( reglst, ">" );
+; 3620 : 
+; 3621 :     /* v2.07: make the numeric arguments more Masm-compatible */
+; 3622 :     //sprintf( buffer,"%s %s, %02XH, %02XH, %02XH, <<%s>>, <%s>", ModuleInfo.proc_epilogue,
+; 3623 :     sprintf( buffer,"%s, 0%XH, 0%XH, 0%XH, <<%s>>, <%s>",
 
 	mov	rax, QWORD PTR info$[rsp]
 	cmp	QWORD PTR [rax+48], 0
@@ -1083,7 +1085,7 @@ $LN10@write_user:
 	mov	QWORD PTR tv167[rsp], rax
 	jmp	SHORT $LN23@write_user
 $LN22@write_user:
-	lea	rax, OFFSET FLAT:$SG12827
+	lea	rax, OFFSET FLAT:$SG12829
 	mov	QWORD PTR tv167[rsp], rax
 $LN23@write_user:
 	mov	rax, QWORD PTR tv167[rsp]
@@ -1099,19 +1101,19 @@ $LN23@write_user:
 	mov	r9d, DWORD PTR flags$[rsp]
 	mov	rax, QWORD PTR CurrProc
 	mov	r8, QWORD PTR [rax+8]
-	lea	rdx, OFFSET FLAT:$SG12828
+	lea	rdx, OFFSET FLAT:$SG12830
 	lea	rcx, QWORD PTR buffer$[rsp]
 	call	sprintf
 
-; 3617 :             CurrProc->sym.name, flags, info->parasize, info->localsize,
-; 3618 :             reglst, info->prologuearg ? info->prologuearg : "" );
-; 3619 :     i = Token_Count + 1;
+; 3624 :             CurrProc->sym.name, flags, info->parasize, info->localsize,
+; 3625 :             reglst, info->prologuearg ? info->prologuearg : "" );
+; 3626 :     i = Token_Count + 1;
 
 	mov	eax, DWORD PTR ModuleInfo+496
 	inc	eax
 	mov	DWORD PTR i$[rsp], eax
 
-; 3620 :     Tokenize( buffer, i, tokenarray, TOK_RESCAN );
+; 3627 :     Tokenize( buffer, i, tokenarray, TOK_RESCAN );
 
 	mov	r9d, 1
 	mov	r8, QWORD PTR tokenarray$[rsp]
@@ -1119,22 +1121,22 @@ $LN23@write_user:
 	lea	rcx, QWORD PTR buffer$[rsp]
 	call	Tokenize
 
-; 3621 : 
-; 3622 :     /* if -EP is on, emit "epilogue: none" */
-; 3623 :     if ( Options.preprocessor_stdout )
+; 3628 : 
+; 3629 :     /* if -EP is on, emit "epilogue: none" */
+; 3630 :     if ( Options.preprocessor_stdout )
 
 	movzx	eax, BYTE PTR Options+141
 	test	eax, eax
 	je	SHORT $LN12@write_user
 
-; 3624 :         printf( "option epilogue:none\n" );
+; 3631 :         printf( "option epilogue:none\n" );
 
-	lea	rcx, OFFSET FLAT:$SG12830
+	lea	rcx, OFFSET FLAT:$SG12832
 	call	printf
 $LN12@write_user:
 
-; 3625 : 
-; 3626 :     RunMacro( dir, i, tokenarray, NULL, 0, &is_exitm );
+; 3632 : 
+; 3633 :     RunMacro( dir, i, tokenarray, NULL, 0, &is_exitm );
 
 	lea	rax, QWORD PTR is_exitm$[rsp]
 	mov	QWORD PTR [rsp+40], rax
@@ -1145,18 +1147,18 @@ $LN12@write_user:
 	mov	rcx, QWORD PTR dir$[rsp]
 	call	RunMacro
 
-; 3627 :     Token_Count = i - 1;
+; 3634 :     Token_Count = i - 1;
 
 	mov	eax, DWORD PTR i$[rsp]
 	dec	eax
 	mov	DWORD PTR ModuleInfo+496, eax
 
-; 3628 :     return( NOT_ERROR );
+; 3635 :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@write_user:
 
-; 3629 : }
+; 3636 : }
 
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
@@ -1172,27 +1174,27 @@ resstack$ = 32
 info$ = 40
 write_default_epilogue PROC
 
-; 3475 : {
+; 3482 : {
 
 	sub	rsp, 56					; 00000038H
 
-; 3476 :     struct proc_info   *info;
-; 3477 : #if AMD64_SUPPORT
-; 3478 :     int resstack = 0;
+; 3483 :     struct proc_info   *info;
+; 3484 : #if AMD64_SUPPORT
+; 3485 :     int resstack = 0;
 
 	mov	DWORD PTR resstack$[rsp], 0
 
-; 3479 : #endif
-; 3480 : 
-; 3481 :     info = CurrProc->e.procinfo;
+; 3486 : #endif
+; 3487 : 
+; 3488 :     info = CurrProc->e.procinfo;
 
 	mov	rax, QWORD PTR CurrProc
 	mov	rax, QWORD PTR [rax+96]
 	mov	QWORD PTR info$[rsp], rax
 
-; 3482 : 
-; 3483 : #if AMD64_SUPPORT
-; 3484 :     if ( info->isframe ) {
+; 3489 : 
+; 3490 : #if AMD64_SUPPORT
+; 3491 :     if ( info->isframe ) {
 
 	mov	rax, QWORD PTR info$[rsp]
 	movzx	eax, BYTE PTR [rax+128]
@@ -1202,7 +1204,7 @@ write_default_epilogue PROC
 	test	eax, eax
 	je	SHORT $LN2@write_defa
 
-; 3485 :         if ( ModuleInfo.frame_auto )
+; 3492 :         if ( ModuleInfo.frame_auto )
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	shr	eax, 17
@@ -1210,19 +1212,19 @@ write_default_epilogue PROC
 	test	eax, eax
 	je	SHORT $LN3@write_defa
 
-; 3486 :             write_win64_default_epilogue( info );
+; 3493 :             write_win64_default_epilogue( info );
 
 	mov	rcx, QWORD PTR info$[rsp]
 	call	write_win64_default_epilogue
 $LN3@write_defa:
 
-; 3487 :         return;
+; 3494 :         return;
 
 	jmp	$LN1@write_defa
 $LN2@write_defa:
 
-; 3488 :     }
-; 3489 :     if ( ModuleInfo.Ofssize == USE64 && ModuleInfo.fctype == FCT_WIN64 && ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) ) {
+; 3495 :     }
+; 3496 :     if ( ModuleInfo.Ofssize == USE64 && ModuleInfo.fctype == FCT_WIN64 && ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) ) {
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	cmp	eax, 2
@@ -1234,19 +1236,19 @@ $LN2@write_defa:
 	test	eax, eax
 	je	SHORT $LN4@write_defa
 
-; 3490 :         resstack  = sym_ReservedStack->value;
+; 3497 :         resstack  = sym_ReservedStack->value;
 
 	mov	rax, QWORD PTR sym_ReservedStack
 	mov	eax, DWORD PTR [rax+16]
 	mov	DWORD PTR resstack$[rsp], eax
 
-; 3491 :         /* if no framepointer was pushed, add 8 to align stack on OWORD
-; 3492 :          * v2.12: obsolete; localsize contains correct value.
-; 3493 :          */
-; 3494 :         //if( !(info->localsize || info->stackparam || info->has_vararg || info->forceframe ))
-; 3495 :         //    AddLineQueueX( "add %r, 8 + %s", stackreg[ModuleInfo.Ofssize], sym_ReservedStack->name );
-; 3496 :         //else
-; 3497 :         AddLineQueueX( "add %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize, sym_ReservedStack->name );
+; 3498 :         /* if no framepointer was pushed, add 8 to align stack on OWORD
+; 3499 :          * v2.12: obsolete; localsize contains correct value.
+; 3500 :          */
+; 3501 :         //if( !(info->localsize || info->stackparam || info->has_vararg || info->forceframe ))
+; 3502 :         //    AddLineQueueX( "add %r, 8 + %s", stackreg[ModuleInfo.Ofssize], sym_ReservedStack->name );
+; 3503 :         //else
+; 3504 :         AddLineQueueX( "add %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize, sym_ReservedStack->name );
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	lea	rcx, OFFSET FLAT:stackreg
@@ -1255,23 +1257,23 @@ $LN2@write_defa:
 	mov	rdx, QWORD PTR info$[rsp]
 	mov	r8d, DWORD PTR [rdx+36]
 	mov	edx, DWORD PTR [rcx+rax*4]
-	lea	rcx, OFFSET FLAT:$SG12781
+	lea	rcx, OFFSET FLAT:$SG12783
 	call	AddLineQueueX
 $LN4@write_defa:
 
-; 3498 :     }
-; 3499 : #endif
-; 3500 : 
-; 3501 :     /* Pop the registers */
-; 3502 :     pop_register( CurrProc->e.procinfo->regslist );
+; 3505 :     }
+; 3506 : #endif
+; 3507 : 
+; 3508 :     /* Pop the registers */
+; 3509 :     pop_register( CurrProc->e.procinfo->regslist );
 
 	mov	rax, QWORD PTR CurrProc
 	mov	rax, QWORD PTR [rax+96]
 	mov	rcx, QWORD PTR [rax]
 	call	pop_register
 
-; 3503 : 
-; 3504 :     if ( info->loadds ) {
+; 3510 : 
+; 3511 :     if ( info->loadds ) {
 
 	mov	rax, QWORD PTR info$[rsp]
 	movzx	eax, BYTE PTR [rax+128]
@@ -1281,20 +1283,20 @@ $LN4@write_defa:
 	test	eax, eax
 	je	SHORT $LN5@write_defa
 
-; 3505 :         AddLineQueueX( "pop %r", T_DS );
+; 3512 :         AddLineQueueX( "pop %r", T_DS );
 
 	mov	edx, 28
-	lea	rcx, OFFSET FLAT:$SG12783
+	lea	rcx, OFFSET FLAT:$SG12785
 	call	AddLineQueueX
 $LN5@write_defa:
 
-; 3506 :     }
-; 3507 : 
-; 3508 :     if( ( info->locallist == NULL ) &&
-; 3509 :        info->stackparam == FALSE &&
-; 3510 :        info->has_vararg == FALSE &&
-; 3511 : #if AMD64_SUPPORT
-; 3512 :        resstack == 0 &&
+; 3513 :     }
+; 3514 : 
+; 3515 :     if( ( info->locallist == NULL ) &&
+; 3516 :        info->stackparam == FALSE &&
+; 3517 :        info->has_vararg == FALSE &&
+; 3518 : #if AMD64_SUPPORT
+; 3519 :        resstack == 0 &&
 
 	mov	rax, QWORD PTR info$[rsp]
 	cmp	QWORD PTR [rax+16], 0
@@ -1322,19 +1324,19 @@ $LN5@write_defa:
 	test	eax, eax
 	jne	SHORT $LN6@write_defa
 
-; 3513 : #endif
-; 3514 :        info->forceframe == FALSE )
-; 3515 :         return;
+; 3520 : #endif
+; 3521 :        info->forceframe == FALSE )
+; 3522 :         return;
 
 	jmp	$LN1@write_defa
 $LN6@write_defa:
 
-; 3516 : 
-; 3517 :     /* restore registers e/sp and e/bp.
-; 3518 :      * emit either "leave" or "mov e/sp,e/bp, pop e/bp".
-; 3519 :      */
-; 3520 : #if AMD64_SUPPORT
-; 3521 :     if( !(info->locallist || info->stackparam || info->has_vararg || info->forceframe ))
+; 3523 : 
+; 3524 :     /* restore registers e/sp and e/bp.
+; 3525 :      * emit either "leave" or "mov e/sp,e/bp, pop e/bp".
+; 3526 :      */
+; 3527 : #if AMD64_SUPPORT
+; 3528 :     if( !(info->locallist || info->stackparam || info->has_vararg || info->forceframe ))
 
 	mov	rax, QWORD PTR info$[rsp]
 	cmp	QWORD PTR [rax+16], 0
@@ -1360,14 +1362,14 @@ $LN6@write_defa:
 	test	eax, eax
 	jne	SHORT $LN7@write_defa
 
-; 3522 :         ;
+; 3529 :         ;
 
 	jmp	$LN8@write_defa
 $LN7@write_defa:
 
-; 3523 :     else
-; 3524 : #endif
-; 3525 :     if( info->pe_type ) {
+; 3530 :     else
+; 3531 : #endif
+; 3532 :     if( info->pe_type ) {
 
 	mov	rax, QWORD PTR info$[rsp]
 	movzx	eax, BYTE PTR [rax+128]
@@ -1377,18 +1379,18 @@ $LN7@write_defa:
 	test	eax, eax
 	je	SHORT $LN9@write_defa
 
-; 3526 :         AddLineQueue( "leave" );
+; 3533 :         AddLineQueue( "leave" );
 
-	lea	rcx, OFFSET FLAT:$SG12789
+	lea	rcx, OFFSET FLAT:$SG12791
 	call	AddLineQueue
 
-; 3527 :     } else  {
+; 3534 :     } else  {
 
 	jmp	$LN10@write_defa
 $LN9@write_defa:
 
-; 3528 : #if STACKBASESUPP
-; 3529 :         if ( info->fpo ) {
+; 3535 : #if STACKBASESUPP
+; 3536 :         if ( info->fpo ) {
 
 	mov	rax, QWORD PTR info$[rsp]
 	movzx	eax, BYTE PTR [rax+128]
@@ -1398,8 +1400,8 @@ $LN9@write_defa:
 	test	eax, eax
 	je	SHORT $LN11@write_defa
 
-; 3530 : #if AMD64_SUPPORT
-; 3531 :             if ( ModuleInfo.Ofssize == USE64 && ModuleInfo.fctype == FCT_WIN64 && ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) )
+; 3537 : #if AMD64_SUPPORT
+; 3538 :             if ( ModuleInfo.Ofssize == USE64 && ModuleInfo.fctype == FCT_WIN64 && ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) )
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	cmp	eax, 2
@@ -1411,50 +1413,50 @@ $LN9@write_defa:
 	test	eax, eax
 	je	SHORT $LN12@write_defa
 
-; 3532 :                 ;
+; 3539 :                 ;
 
 	jmp	SHORT $LN13@write_defa
 $LN12@write_defa:
 
-; 3533 :             else
-; 3534 : #endif
-; 3535 :             if ( info->localsize )
+; 3540 :             else
+; 3541 : #endif
+; 3542 :             if ( info->localsize )
 
 	mov	rax, QWORD PTR info$[rsp]
 	cmp	DWORD PTR [rax+36], 0
 	je	SHORT $LN14@write_defa
 
-; 3536 :                 AddLineQueueX( "add %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize );
+; 3543 :                 AddLineQueueX( "add %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize );
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	lea	rcx, OFFSET FLAT:stackreg
 	mov	rdx, QWORD PTR info$[rsp]
 	mov	r8d, DWORD PTR [rdx+36]
 	mov	edx, DWORD PTR [rcx+rax*4]
-	lea	rcx, OFFSET FLAT:$SG12794
+	lea	rcx, OFFSET FLAT:$SG12796
 	call	AddLineQueueX
 $LN14@write_defa:
 $LN13@write_defa:
 
-; 3537 :             return;
+; 3544 :             return;
 
 	jmp	SHORT $LN1@write_defa
 $LN11@write_defa:
 
-; 3538 :         }
-; 3539 : #endif
-; 3540 :         /*
-; 3541 :          MOV [E|R]SP, [E|R]BP
-; 3542 :          POP [E|R]BP
-; 3543 :          */
-; 3544 :         if( info->localsize != 0 ) {
+; 3545 :         }
+; 3546 : #endif
+; 3547 :         /*
+; 3548 :          MOV [E|R]SP, [E|R]BP
+; 3549 :          POP [E|R]BP
+; 3550 :          */
+; 3551 :         if( info->localsize != 0 ) {
 
 	mov	rax, QWORD PTR info$[rsp]
 	cmp	DWORD PTR [rax+36], 0
 	je	SHORT $LN15@write_defa
 
-; 3545 : #if STACKBASESUPP
-; 3546 :             AddLineQueueX( "mov %r, %r", stackreg[ModuleInfo.Ofssize], info->basereg );
+; 3552 : #if STACKBASESUPP
+; 3553 :             AddLineQueueX( "mov %r, %r", stackreg[ModuleInfo.Ofssize], info->basereg );
 
 	mov	rax, QWORD PTR info$[rsp]
 	movzx	eax, WORD PTR [rax+130]
@@ -1462,31 +1464,31 @@ $LN11@write_defa:
 	lea	rdx, OFFSET FLAT:stackreg
 	mov	r8d, eax
 	mov	edx, DWORD PTR [rdx+rcx*4]
-	lea	rcx, OFFSET FLAT:$SG12796
+	lea	rcx, OFFSET FLAT:$SG12798
 	call	AddLineQueueX
 $LN15@write_defa:
 
-; 3547 : #else
-; 3548 :             AddLineQueueX( "mov %r, %r", stackreg[ModuleInfo.Ofssize], basereg[ModuleInfo.Ofssize] );
-; 3549 : #endif
-; 3550 :         }
-; 3551 : #if STACKBASESUPP
-; 3552 :         AddLineQueueX( "pop %r", info->basereg );
+; 3554 : #else
+; 3555 :             AddLineQueueX( "mov %r, %r", stackreg[ModuleInfo.Ofssize], basereg[ModuleInfo.Ofssize] );
+; 3556 : #endif
+; 3557 :         }
+; 3558 : #if STACKBASESUPP
+; 3559 :         AddLineQueueX( "pop %r", info->basereg );
 
 	mov	rax, QWORD PTR info$[rsp]
 	movzx	eax, WORD PTR [rax+130]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG12797
+	lea	rcx, OFFSET FLAT:$SG12799
 	call	AddLineQueueX
 $LN10@write_defa:
 $LN8@write_defa:
 $LN1@write_defa:
 
-; 3553 : #else
-; 3554 :         AddLineQueueX( "pop %r", basereg[ModuleInfo.Ofssize] );
-; 3555 : #endif
-; 3556 :     }
-; 3557 : }
+; 3560 : #else
+; 3561 :         AddLineQueueX( "pop %r", basereg[ModuleInfo.Ofssize] );
+; 3562 : #endif
+; 3563 :     }
+; 3564 : }
 
 	add	rsp, 56					; 00000038H
 	ret	0
@@ -1507,33 +1509,33 @@ i$8 = 92
 info$ = 112
 write_win64_default_epilogue PROC
 
-; 3301 : {
+; 3308 : {
 
 	mov	QWORD PTR [rsp+8], rcx
 	sub	rsp, 104				; 00000068H
 
-; 3302 :   int anysize;
-; 3303 : #if STACKBASESUPP
-; 3304 :     /* v2.12: obsolete */
-; 3305 :     //if ( GetRegNo( info->basereg ) == 4 || ( info->parasize == 0 && info->locallist == NULL ) )
-; 3306 :     //    sizestd = 8;
-; 3307 : #endif
-; 3308 :     /* restore non-volatile xmm registers */
-; 3309 :     if ( info->regslist ) {
+; 3309 :   int anysize;
+; 3310 : #if STACKBASESUPP
+; 3311 :     /* v2.12: obsolete */
+; 3312 :     //if ( GetRegNo( info->basereg ) == 4 || ( info->parasize == 0 && info->locallist == NULL ) )
+; 3313 :     //    sizestd = 8;
+; 3314 : #endif
+; 3315 :     /* restore non-volatile xmm registers */
+; 3316 :     if ( info->regslist ) {
 
 	mov	rax, QWORD PTR info$[rsp]
 	cmp	QWORD PTR [rax], 0
 	je	$LN11@write_win6
 
-; 3310 :         uint_16 *regs;
-; 3311 :         int cnt;
-; 3312 :         int i;
-; 3313 :         
-; 3314 : 
-; 3315 :         /* v2.12: space for xmm saves is now included in localsize
-; 3316 :          * so first thing to do is to count the xmm regs that were saved
-; 3317 :          */
-; 3318 :         for( regs = info->regslist, cnt = *regs++, i = 0; cnt; cnt--, regs++ )
+; 3317 :         uint_16 *regs;
+; 3318 :         int cnt;
+; 3319 :         int i;
+; 3320 :         
+; 3321 : 
+; 3322 :         /* v2.12: space for xmm saves is now included in localsize
+; 3323 :          * so first thing to do is to count the xmm regs that were saved
+; 3324 :          */
+; 3325 :         for( regs = info->regslist, cnt = *regs++, i = 0; cnt; cnt--, regs++ )
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -1557,7 +1559,7 @@ $LN4@write_win6:
 	cmp	DWORD PTR cnt$3[rsp], 0
 	je	SHORT $LN3@write_win6
 
-; 3319 :                 if (( GetValueSp( *regs ) & OP_XMM )||( GetValueSp( *regs ) & OP_YMM )
+; 3326 :                 if (( GetValueSp( *regs ) & OP_XMM )||( GetValueSp( *regs ) & OP_YMM )
 
 	mov	rax, QWORD PTR regs$2[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -1577,10 +1579,10 @@ $LN4@write_win6:
 	je	SHORT $LN12@write_win6
 $LN13@write_win6:
 
-; 3320 : #if EVEXSUPP    
-; 3321 :                   || ( GetValueSp( *regs ) & OP_ZMM )
-; 3322 : #endif
-; 3323 :                 )i++;
+; 3327 : #if EVEXSUPP    
+; 3328 :                   || ( GetValueSp( *regs ) & OP_ZMM )
+; 3329 : #endif
+; 3330 :                 )i++;
 
 	mov	eax, DWORD PTR i$1[rsp]
 	inc	eax
@@ -1589,28 +1591,28 @@ $LN12@write_win6:
 	jmp	SHORT $LN2@write_win6
 $LN3@write_win6:
 
-; 3324 : 
-; 3325 :         DebugMsg1(("write_win64_default_epilogue(%s): %u xmm registers to restore\n", CurrProc->sym.name , i ));
+; 3331 : 
+; 3332 :         DebugMsg1(("write_win64_default_epilogue(%s): %u xmm registers to restore\n", CurrProc->sym.name , i ));
 
 	mov	r8d, DWORD PTR i$1[rsp]
 	mov	rax, QWORD PTR CurrProc
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12738
+	lea	rcx, OFFSET FLAT:$SG12740
 	call	DoDebugMsg1
 
-; 3326 : 
-; 3327 :         if ( i ) {
+; 3333 : 
+; 3334 :         if ( i ) {
 
 	cmp	DWORD PTR i$1[rsp], 0
 	je	$LN14@write_win6
 
-; 3328 :             if (info->locallist)
+; 3335 :             if (info->locallist)
 
 	mov	rax, QWORD PTR info$[rsp]
 	cmp	QWORD PTR [rax+16], 0
 	je	SHORT $LN15@write_win6
 
-; 3329 :               i = (info->localsize - i * XYZMMsize) & ~(16 - 1);
+; 3336 :               i = (info->localsize - i * XYZMMsize) & ~(16 - 1);
 
 	mov	eax, DWORD PTR i$1[rsp]
 	imul	eax, DWORD PTR XYZMMsize
@@ -1623,8 +1625,8 @@ $LN3@write_win6:
 	jmp	SHORT $LN16@write_win6
 $LN15@write_win6:
 
-; 3330 :             else
-; 3331 :             i = ( info->localsize) & ~(16-1);
+; 3337 :             else
+; 3338 :             i = ( info->localsize) & ~(16-1);
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+36]
@@ -1632,7 +1634,7 @@ $LN15@write_win6:
 	mov	DWORD PTR i$1[rsp], eax
 $LN16@write_win6:
 
-; 3332 :             for( regs = info->regslist, cnt = *regs++; cnt; cnt--, regs++ ) {
+; 3339 :             for( regs = info->regslist, cnt = *regs++; cnt; cnt--, regs++ ) {
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -1655,7 +1657,7 @@ $LN7@write_win6:
 	cmp	DWORD PTR cnt$3[rsp], 0
 	je	$LN6@write_win6
 
-; 3333 :                 if (( GetValueSp( *regs ) & OP_XMM )||( GetValueSp( *regs ) & OP_YMM )
+; 3340 :                 if (( GetValueSp( *regs ) & OP_XMM )||( GetValueSp( *regs ) & OP_YMM )
 
 	mov	rax, QWORD PTR regs$2[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -1675,11 +1677,11 @@ $LN7@write_win6:
 	je	$LN17@write_win6
 $LN18@write_win6:
 
-; 3334 : #if EVEXSUPP    
-; 3335 :                   || ( GetValueSp( *regs ) & OP_ZMM )
-; 3336 : #endif
-; 3337 :                 ){
-; 3338 :                     DebugMsg1(("write_win64_default_epilogue(%s): restore %s, offset=%d\n", CurrProc->sym.name , GetResWName( *regs, NULL ), i ));
+; 3341 : #if EVEXSUPP    
+; 3342 :                   || ( GetValueSp( *regs ) & OP_ZMM )
+; 3343 : #endif
+; 3344 :                 ){
+; 3345 :                     DebugMsg1(("write_win64_default_epilogue(%s): restore %s, offset=%d\n", CurrProc->sym.name , GetResWName( *regs, NULL ), i ));
 
 	mov	rax, QWORD PTR regs$2[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -1690,19 +1692,19 @@ $LN18@write_win6:
 	mov	r8, rax
 	mov	rax, QWORD PTR CurrProc
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12744
+	lea	rcx, OFFSET FLAT:$SG12746
 	call	DoDebugMsg1
 
-; 3339 :                     //AddLineQueueX( "movdqa %r, [%r+%u]", *regist, stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + sizexmm );
-; 3340 :                     /* v2.11: use @ReservedStack only if option win64:2 is set */
-; 3341 :                     if (ModuleInfo.win64_flags & W64F_AUTOSTACKSP){
+; 3346 :                     //AddLineQueueX( "movdqa %r, [%r+%u]", *regist, stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + sizexmm );
+; 3347 :                     /* v2.11: use @ReservedStack only if option win64:2 is set */
+; 3348 :                     if (ModuleInfo.win64_flags & W64F_AUTOSTACKSP){
 
 	movzx	eax, BYTE PTR ModuleInfo+413
 	and	eax, 2
 	test	eax, eax
 	je	SHORT $LN19@write_win6
 
-; 3342 :                         AddLineQueueX("vmovdqu %r, [%r + %u + %s]", *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i, sym_ReservedStack->name);
+; 3349 :                         AddLineQueueX("vmovdqu %r, [%r + %u + %s]", *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i, sym_ReservedStack->name);
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	lea	rcx, OFFSET FLAT:stackreg
@@ -1713,16 +1715,16 @@ $LN18@write_win6:
 	mov	QWORD PTR [rsp+32], r8
 	mov	r9d, DWORD PTR i$1[rsp]
 	mov	r8d, DWORD PTR [rcx+rax*4]
-	lea	rcx, OFFSET FLAT:$SG12747
+	lea	rcx, OFFSET FLAT:$SG12749
 	call	AddLineQueueX
 
-; 3343 :                     }
+; 3350 :                     }
 
 	jmp	SHORT $LN20@write_win6
 $LN19@write_win6:
 
-; 3344 :                     else{
-; 3345 :                         AddLineQueueX("vmovdqu %r, [%r + %u]", *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i );
+; 3351 :                     else{
+; 3352 :                         AddLineQueueX("vmovdqu %r, [%r + %u]", *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i );
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	lea	rcx, OFFSET FLAT:stackreg
@@ -1730,12 +1732,12 @@ $LN19@write_win6:
 	movzx	edx, WORD PTR [rdx]
 	mov	r9d, DWORD PTR i$1[rsp]
 	mov	r8d, DWORD PTR [rcx+rax*4]
-	lea	rcx, OFFSET FLAT:$SG12748
+	lea	rcx, OFFSET FLAT:$SG12750
 	call	AddLineQueueX
 $LN20@write_win6:
 
-; 3346 :                     }
-; 3347 :                     i += XYZMMsize;
+; 3353 :                     }
+; 3354 :                     i += XYZMMsize;
 
 	mov	eax, DWORD PTR XYZMMsize
 	mov	ecx, DWORD PTR i$1[rsp]
@@ -1744,18 +1746,18 @@ $LN20@write_win6:
 	mov	DWORD PTR i$1[rsp], eax
 $LN17@write_win6:
 
-; 3348 :                 }
-; 3349 :             }
+; 3355 :                 }
+; 3356 :             }
 
 	jmp	$LN5@write_win6
 $LN6@write_win6:
 $LN14@write_win6:
 $LN11@write_win6:
 
-; 3350 :         }
-; 3351 :     }
-; 3352 : 
-; 3353 :     if (ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP)){
+; 3357 :         }
+; 3358 :     }
+; 3359 : 
+; 3360 :     if (ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP)){
 
 	cmp	DWORD PTR ModuleInfo+376, 2
 	jne	$LN21@write_win6
@@ -1764,14 +1766,14 @@ $LN11@write_win6:
 	test	eax, eax
 	je	$LN21@write_win6
 
-; 3354 :       if (ModuleInfo.win64_flags & W64F_HABRAN){
+; 3361 :       if (ModuleInfo.win64_flags & W64F_HABRAN){
 
 	movzx	eax, BYTE PTR ModuleInfo+413
 	and	eax, 11
 	test	eax, eax
 	je	$LN23@write_win6
 
-; 3355 :         anysize = info->localsize + sym_ReservedStack->value + info->xmmsize;
+; 3362 :         anysize = info->localsize + sym_ReservedStack->value + info->xmmsize;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+36]
@@ -1781,7 +1783,7 @@ $LN11@write_win6:
 	add	eax, DWORD PTR [rcx+112]
 	mov	DWORD PTR anysize$[rsp], eax
 
-; 3356 :         if (info->vecused) anysize += info->vsize;
+; 3363 :         if (info->vecused) anysize += info->vsize;
 
 	mov	rax, QWORD PTR info$[rsp]
 	movzx	eax, BYTE PTR [rax+80]
@@ -1795,13 +1797,13 @@ $LN11@write_win6:
 	mov	DWORD PTR anysize$[rsp], eax
 $LN25@write_win6:
 
-; 3357 : 		if (anysize)
+; 3364 : 		if (anysize)
 
 	cmp	DWORD PTR anysize$[rsp], 0
 	je	SHORT $LN26@write_win6
 
-; 3358 : 		{
-; 3359 : 			int stackSize = info->localsize + info->vsize + info->xmmsize;
+; 3365 : 		{
+; 3366 : 			int stackSize = info->localsize + info->vsize + info->xmmsize;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+36]
@@ -1811,7 +1813,7 @@ $LN25@write_win6:
 	add	eax, DWORD PTR [rcx+112]
 	mov	DWORD PTR stackSize$6[rsp], eax
 
-; 3360 : 			if ((stackSize & 7) != 0) stackSize = (stackSize + 7)&(-8);
+; 3367 : 			if ((stackSize & 7) != 0) stackSize = (stackSize + 7)&(-8);
 
 	mov	eax, DWORD PTR stackSize$6[rsp]
 	and	eax, 7
@@ -1823,7 +1825,7 @@ $LN25@write_win6:
 	mov	DWORD PTR stackSize$6[rsp], eax
 $LN27@write_win6:
 
-; 3361 : 			AddLineQueueX("add %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL stackSize, sym_ReservedStack->name);
+; 3368 : 			AddLineQueueX("add %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL stackSize, sym_ReservedStack->name);
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	lea	rcx, OFFSET FLAT:stackreg
@@ -1831,18 +1833,18 @@ $LN27@write_win6:
 	mov	r9, QWORD PTR [rdx+8]
 	mov	r8d, DWORD PTR stackSize$6[rsp]
 	mov	edx, DWORD PTR [rcx+rax*4]
-	lea	rcx, OFFSET FLAT:$SG12756
+	lea	rcx, OFFSET FLAT:$SG12758
 	call	AddLineQueueX
 $LN26@write_win6:
 
-; 3362 : 		}
-; 3363 :       }
+; 3369 : 		}
+; 3370 :       }
 
 	jmp	SHORT $LN24@write_win6
 $LN23@write_win6:
 
-; 3364 :         else
-; 3365 :           AddLineQueueX("add %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + info->xmmsize, sym_ReservedStack->name);
+; 3371 :         else
+; 3372 :           AddLineQueueX("add %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + info->xmmsize, sym_ReservedStack->name);
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+36]
@@ -1854,71 +1856,71 @@ $LN23@write_win6:
 	mov	r9, QWORD PTR [r8+8]
 	mov	r8d, eax
 	mov	edx, DWORD PTR [rdx+rcx*4]
-	lea	rcx, OFFSET FLAT:$SG12757
+	lea	rcx, OFFSET FLAT:$SG12759
 	call	AddLineQueueX
 $LN24@write_win6:
 
-; 3366 :     }
+; 3373 :     }
 
 	jmp	SHORT $LN22@write_win6
 $LN21@write_win6:
 
-; 3367 :     else
-; 3368 :         AddLineQueueX( "add %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize);
+; 3374 :     else
+; 3375 :         AddLineQueueX( "add %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize);
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	lea	rcx, OFFSET FLAT:stackreg
 	mov	rdx, QWORD PTR info$[rsp]
 	mov	r8d, DWORD PTR [rdx+36]
 	mov	edx, DWORD PTR [rcx+rax*4]
-	lea	rcx, OFFSET FLAT:$SG12758
+	lea	rcx, OFFSET FLAT:$SG12760
 	call	AddLineQueueX
 $LN22@write_win6:
 
-; 3369 :     pop_register( CurrProc->e.procinfo->regslist );
+; 3376 :     pop_register( CurrProc->e.procinfo->regslist );
 
 	mov	rax, QWORD PTR CurrProc
 	mov	rax, QWORD PTR [rax+96]
 	mov	rcx, QWORD PTR [rax]
 	call	pop_register
 
-; 3370 : #if STACKBASESUPP
-; 3371 :     if (ModuleInfo.win64_flags & W64F_HABRAN){
+; 3377 : #if STACKBASESUPP
+; 3378 :     if (ModuleInfo.win64_flags & W64F_HABRAN){
 
 	movzx	eax, BYTE PTR ModuleInfo+413
 	and	eax, 11
 	test	eax, eax
 	je	$LN28@write_win6
 
-; 3372 :       /* restore non-volatile registers from shadow space */
-; 3373 :       if (info->regslist) {
+; 3379 :       /* restore non-volatile registers from shadow space */
+; 3380 :       if (info->regslist) {
 
 	mov	rax, QWORD PTR info$[rsp]
 	cmp	QWORD PTR [rax], 0
 	je	$LN29@write_win6
 
-; 3374 :         uint_16 *regist = info->regslist;
+; 3381 :         uint_16 *regist = info->regslist;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	rax, QWORD PTR [rax]
 	mov	QWORD PTR regist$5[rsp], rax
 
-; 3375 :         int cnt;
-; 3376 :         if (ModuleInfo.win64_flags){
+; 3382 :         int cnt;
+; 3383 :         if (ModuleInfo.win64_flags){
 
 	movzx	eax, BYTE PTR ModuleInfo+413
 	test	eax, eax
 	je	$LN30@write_win6
 
-; 3377 :           int i = 0;
+; 3384 :           int i = 0;
 
 	mov	DWORD PTR i$8[rsp], 0
 
-; 3378 :           int gprzize = 0;
+; 3385 :           int gprzize = 0;
 
 	mov	DWORD PTR gprzize$7[rsp], 0
 
-; 3379 :           for (cnt = *regist++; cnt; cnt--, regist++)
+; 3386 :           for (cnt = *regist++; cnt; cnt--, regist++)
 
 	mov	rax, QWORD PTR regist$5[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -1938,8 +1940,8 @@ $LN10@write_win6:
 	cmp	DWORD PTR cnt$4[rsp], 0
 	je	$LN9@write_win6
 
-; 3380 :           {
-; 3381 :                 if (( GetValueSp( *regist ) & OP_XMM )||( GetValueSp( *regist ) & OP_YMM )
+; 3387 :           {
+; 3388 :                 if (( GetValueSp( *regist ) & OP_XMM )||( GetValueSp( *regist ) & OP_YMM )
 
 	mov	rax, QWORD PTR regist$5[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -1959,29 +1961,29 @@ $LN10@write_win6:
 	je	SHORT $LN31@write_win6
 $LN33@write_win6:
 
-; 3382 : #if EVEXSUPP    
-; 3383 :                   || ( GetValueSp( *regist ) & OP_ZMM )
-; 3384 : #endif
-; 3385 :                 ) continue;
+; 3389 : #if EVEXSUPP    
+; 3390 :                   || ( GetValueSp( *regist ) & OP_ZMM )
+; 3391 : #endif
+; 3392 :                 ) continue;
 
 	jmp	SHORT $LN8@write_win6
 	jmp	SHORT $LN32@write_win6
 $LN31@write_win6:
 
-; 3386 :             else {
-; 3387 :               gprzize += 8;
+; 3393 :             else {
+; 3394 :               gprzize += 8;
 
 	mov	eax, DWORD PTR gprzize$7[rsp]
 	add	eax, 8
 	mov	DWORD PTR gprzize$7[rsp], eax
 
-; 3388 :               if (gprzize <= 0x20)
+; 3395 :               if (gprzize <= 0x20)
 
 	cmp	DWORD PTR gprzize$7[rsp], 32		; 00000020H
 	jg	SHORT $LN34@write_win6
 
-; 3389 :               {
-; 3390 :                 if (info->home_used[i] == 0){
+; 3396 :               {
+; 3397 :                 if (info->home_used[i] == 0){
 
 	movsxd	rax, DWORD PTR i$8[rsp]
 	mov	rcx, QWORD PTR info$[rsp]
@@ -1989,7 +1991,7 @@ $LN31@write_win6:
 	test	eax, eax
 	jne	SHORT $LN35@write_win6
 
-; 3391 :                   AddLineQueueX("mov %r, [%r+%u]", *regist, stackreg[ModuleInfo.Ofssize], NUMQUAL gprzize);
+; 3398 :                   AddLineQueueX("mov %r, [%r+%u]", *regist, stackreg[ModuleInfo.Ofssize], NUMQUAL gprzize);
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	lea	rcx, OFFSET FLAT:stackreg
@@ -1997,16 +1999,16 @@ $LN31@write_win6:
 	movzx	edx, WORD PTR [rdx]
 	mov	r9d, DWORD PTR gprzize$7[rsp]
 	mov	r8d, DWORD PTR [rcx+rax*4]
-	lea	rcx, OFFSET FLAT:$SG12768
+	lea	rcx, OFFSET FLAT:$SG12770
 	call	AddLineQueueX
 
-; 3392 :                 }
+; 3399 :                 }
 
 	jmp	SHORT $LN36@write_win6
 $LN35@write_win6:
 
-; 3393 :                 else {
-; 3394 :                   cnt++; regist--;
+; 3400 :                 else {
+; 3401 :                   cnt++; regist--;
 
 	mov	eax, DWORD PTR cnt$4[rsp]
 	inc	eax
@@ -2016,8 +2018,8 @@ $LN35@write_win6:
 	mov	QWORD PTR regist$5[rsp], rax
 $LN36@write_win6:
 
-; 3395 :                 }
-; 3396 :                 i++;
+; 3402 :                 }
+; 3403 :                 i++;
 
 	mov	eax, DWORD PTR i$8[rsp]
 	inc	eax
@@ -2025,9 +2027,9 @@ $LN36@write_win6:
 $LN34@write_win6:
 $LN32@write_win6:
 
-; 3397 :               }
-; 3398 :             }
-; 3399 :           }
+; 3404 :               }
+; 3405 :             }
+; 3406 :           }
 
 	jmp	$LN8@write_win6
 $LN9@write_win6:
@@ -2035,11 +2037,11 @@ $LN30@write_win6:
 $LN29@write_win6:
 $LN28@write_win6:
 
-; 3400 :         }
-; 3401 :       }
-; 3402 :     }
-; 3403 :     //if ( !info->fpo )
-; 3404 :     if ( GetRegNo( info->basereg ) != 4 && ( info->parasize != 0 || info->locallist != NULL ) )
+; 3407 :         }
+; 3408 :       }
+; 3409 :     }
+; 3410 :     //if ( !info->fpo )
+; 3411 :     if ( GetRegNo( info->basereg ) != 4 && ( info->parasize != 0 || info->locallist != NULL ) )
 
 	mov	rax, QWORD PTR info$[rsp]
 	movzx	eax, WORD PTR [rax+130]
@@ -2056,21 +2058,21 @@ $LN28@write_win6:
 	je	SHORT $LN37@write_win6
 $LN38@write_win6:
 
-; 3405 :         AddLineQueueX( "pop %r", info->basereg );
+; 3412 :         AddLineQueueX( "pop %r", info->basereg );
 
 	mov	rax, QWORD PTR info$[rsp]
 	movzx	eax, WORD PTR [rax+130]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG12771
+	lea	rcx, OFFSET FLAT:$SG12773
 	call	AddLineQueueX
 $LN37@write_win6:
 
-; 3406 : #else
-; 3407 :     AddLineQueueX( "pop %r", basereg[ModuleInfo.Ofssize] );
-; 3408 : #endif
-; 3409 : 
-; 3410 :     return;
-; 3411 : }
+; 3413 : #else
+; 3414 :     AddLineQueueX( "pop %r", basereg[ModuleInfo.Ofssize] );
+; 3415 : #endif
+; 3416 : 
+; 3417 :     return;
+; 3418 : }
 
 	add	rsp, 104				; 00000068H
 	ret	0
@@ -2083,44 +2085,44 @@ cnt$ = 32
 regist$ = 64
 pop_register PROC
 
-; 3258 : {
+; 3265 : {
 
 	mov	QWORD PTR [rsp+8], rcx
 	sub	rsp, 56					; 00000038H
 
-; 3259 :     int cnt;
-; 3260 :     if( regist == NULL )
+; 3266 :     int cnt;
+; 3267 :     if( regist == NULL )
 
 	cmp	QWORD PTR regist$[rsp], 0
 	jne	SHORT $LN8@pop_regist
 
-; 3261 :         return;
+; 3268 :         return;
 
 	jmp	$LN1@pop_regist
 $LN8@pop_regist:
 
-; 3262 :     cnt = *regist;
+; 3269 :     cnt = *regist;
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
 	mov	DWORD PTR cnt$[rsp], eax
 
-; 3263 :     regist += cnt;
+; 3270 :     regist += cnt;
 
 	movsxd	rax, DWORD PTR cnt$[rsp]
 	mov	rcx, QWORD PTR regist$[rsp]
 	lea	rax, QWORD PTR [rcx+rax*2]
 	mov	QWORD PTR regist$[rsp], rax
 
-; 3264 :     if (ModuleInfo.win64_flags & W64F_HABRAN)
+; 3271 :     if (ModuleInfo.win64_flags & W64F_HABRAN)
 
 	movzx	eax, BYTE PTR ModuleInfo+413
 	and	eax, 11
 	test	eax, eax
 	je	$LN9@pop_regist
 
-; 3265 :     {
-; 3266 :       for (cnt = CurrProc->e.procinfo->pushed_reg; cnt; cnt--, regist--) {
+; 3272 :     {
+; 3273 :       for (cnt = CurrProc->e.procinfo->pushed_reg; cnt; cnt--, regist--) {
 
 	mov	rax, QWORD PTR CurrProc
 	mov	rax, QWORD PTR [rax+96]
@@ -2138,8 +2140,8 @@ $LN4@pop_regist:
 	cmp	DWORD PTR cnt$[rsp], 0
 	je	SHORT $LN3@pop_regist
 
-; 3267 :         /* don't "pop" xmm registers */
-; 3268 :                 if (( GetValueSp( *regist ) & OP_XMM )||( GetValueSp( *regist ) & OP_YMM )
+; 3274 :         /* don't "pop" xmm registers */
+; 3275 :                 if (( GetValueSp( *regist ) & OP_XMM )||( GetValueSp( *regist ) & OP_YMM )
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -2159,43 +2161,43 @@ $LN4@pop_regist:
 	je	SHORT $LN11@pop_regist
 $LN12@pop_regist:
 
-; 3269 : #if EVEXSUPP    
-; 3270 :                   || ( GetValueSp( *regist ) & OP_ZMM )
-; 3271 : #endif
-; 3272 :                 )
-; 3273 : {
-; 3274 :           cnt++;
+; 3276 : #if EVEXSUPP    
+; 3277 :                   || ( GetValueSp( *regist ) & OP_ZMM )
+; 3278 : #endif
+; 3279 :                 )
+; 3280 : {
+; 3281 :           cnt++;
 
 	mov	eax, DWORD PTR cnt$[rsp]
 	inc	eax
 	mov	DWORD PTR cnt$[rsp], eax
 
-; 3275 :           continue;
+; 3282 :           continue;
 
 	jmp	SHORT $LN2@pop_regist
 $LN11@pop_regist:
 
-; 3276 :         }
-; 3277 :         AddLineQueueX("pop %r", *regist);
+; 3283 :         }
+; 3284 :         AddLineQueueX("pop %r", *regist);
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG12707
+	lea	rcx, OFFSET FLAT:$SG12709
 	call	AddLineQueueX
 
-; 3278 :       }
+; 3285 :       }
 
 	jmp	SHORT $LN2@pop_regist
 $LN3@pop_regist:
 
-; 3279 :     }
+; 3286 :     }
 
 	jmp	SHORT $LN10@pop_regist
 $LN9@pop_regist:
 
-; 3280 :     else {
-; 3281 :       for (; cnt; cnt--, regist--) {
+; 3287 :     else {
+; 3288 :       for (; cnt; cnt--, regist--) {
 
 	jmp	SHORT $LN7@pop_regist
 $LN5@pop_regist:
@@ -2209,8 +2211,8 @@ $LN7@pop_regist:
 	cmp	DWORD PTR cnt$[rsp], 0
 	je	SHORT $LN6@pop_regist
 
-; 3282 :         /* don't "pop" xmm registers */
-; 3283 :                 if (( GetValueSp( *regist ) & OP_XMM )||( GetValueSp( *regist ) & OP_YMM )
+; 3289 :         /* don't "pop" xmm registers */
+; 3290 :                 if (( GetValueSp( *regist ) & OP_XMM )||( GetValueSp( *regist ) & OP_YMM )
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -2230,32 +2232,32 @@ $LN7@pop_regist:
 	je	SHORT $LN13@pop_regist
 $LN14@pop_regist:
 
-; 3284 : #if EVEXSUPP    
-; 3285 :                   || ( GetValueSp( *regist ) & OP_ZMM )
-; 3286 : #endif
-; 3287 :                 )continue;
+; 3291 : #if EVEXSUPP    
+; 3292 :                   || ( GetValueSp( *regist ) & OP_ZMM )
+; 3293 : #endif
+; 3294 :                 )continue;
 
 	jmp	SHORT $LN5@pop_regist
 $LN13@pop_regist:
 
-; 3288 :         AddLineQueueX("pop %r", *regist);
+; 3295 :         AddLineQueueX("pop %r", *regist);
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG12710
+	lea	rcx, OFFSET FLAT:$SG12712
 	call	AddLineQueueX
 
-; 3289 :       }
+; 3296 :       }
 
 	jmp	SHORT $LN5@pop_regist
 $LN6@pop_regist:
 $LN10@pop_regist:
 $LN1@pop_regist:
 
-; 3290 :     }
-; 3291 : 
-; 3292 : }
+; 3297 :     }
+; 3298 : 
+; 3299 : }
 
 	add	rsp, 56					; 00000038H
 	ret	0
@@ -2272,30 +2274,30 @@ info$ = 48
 regist$ = 56
 write_default_prologue PROC
 
-; 2884 : {
+; 2891 : {
 
 	sub	rsp, 72					; 00000048H
 
-; 2885 :     struct proc_info    *info;
-; 2886 :     uint_16             *regist;
-; 2887 :     uint_8              oldlinenumbers;
-; 2888 :     int                 cnt;
-; 2889 : #if AMD64_SUPPORT
-; 2890 :     int                 resstack = 0;
+; 2892 :     struct proc_info    *info;
+; 2893 :     uint_16             *regist;
+; 2894 :     uint_8              oldlinenumbers;
+; 2895 :     int                 cnt;
+; 2896 : #if AMD64_SUPPORT
+; 2897 :     int                 resstack = 0;
 
 	mov	DWORD PTR resstack$[rsp], 0
 
-; 2891 : #endif
-; 2892 : 
-; 2893 :     info = CurrProc->e.procinfo;
+; 2898 : #endif
+; 2899 : 
+; 2900 :     info = CurrProc->e.procinfo;
 
 	mov	rax, QWORD PTR CurrProc
 	mov	rax, QWORD PTR [rax+96]
 	mov	QWORD PTR info$[rsp], rax
 
-; 2894 : 
-; 2895 : #if AMD64_SUPPORT
-; 2896 :     if ( info->isframe ) {
+; 2901 : 
+; 2902 : #if AMD64_SUPPORT
+; 2903 :     if ( info->isframe ) {
 
 	mov	rax, QWORD PTR info$[rsp]
 	movzx	eax, BYTE PTR [rax+128]
@@ -2305,8 +2307,8 @@ write_default_prologue PROC
 	test	eax, eax
 	je	SHORT $LN8@write_defa
 
-; 2897 :         //DebugMsg(("write_default_prologue: isframe\n"));
-; 2898 :         if ( ModuleInfo.frame_auto ) {
+; 2904 :         //DebugMsg(("write_default_prologue: isframe\n"));
+; 2905 :         if ( ModuleInfo.frame_auto ) {
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	shr	eax, 17
@@ -2314,26 +2316,26 @@ write_default_prologue PROC
 	test	eax, eax
 	je	SHORT $LN9@write_defa
 
-; 2899 :             write_win64_default_prologue( info );
+; 2906 :             write_win64_default_prologue( info );
 
 	mov	rcx, QWORD PTR info$[rsp]
 	call	write_win64_default_prologue
 
-; 2900 :             /* v2.11: line queue is now run here */
-; 2901 :             goto runqueue;
+; 2907 :             /* v2.11: line queue is now run here */
+; 2908 :             goto runqueue;
 
 	jmp	$runqueue$32
 $LN9@write_defa:
 
-; 2902 :         }
-; 2903 :         return( NOT_ERROR );
+; 2909 :         }
+; 2910 :         return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@write_defa
 $LN8@write_defa:
 
-; 2904 :     }
-; 2905 :     if ( ModuleInfo.Ofssize == USE64 && ModuleInfo.fctype == FCT_WIN64 && ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) )
+; 2911 :     }
+; 2912 :     if ( ModuleInfo.Ofssize == USE64 && ModuleInfo.fctype == FCT_WIN64 && ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) )
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	cmp	eax, 2
@@ -2345,21 +2347,21 @@ $LN8@write_defa:
 	test	eax, eax
 	je	SHORT $LN10@write_defa
 
-; 2906 :         resstack = sym_ReservedStack->value;
+; 2913 :         resstack = sym_ReservedStack->value;
 
 	mov	rax, QWORD PTR sym_ReservedStack
 	mov	eax, DWORD PTR [rax+16]
 	mov	DWORD PTR resstack$[rsp], eax
 $LN10@write_defa:
 
-; 2907 : #endif
-; 2908 :     /* default processing. if no params/locals are defined, continue */
-; 2909 :     if( info->forceframe == FALSE &&
-; 2910 :        info->localsize == 0 &&
-; 2911 :        info->stackparam == FALSE &&
-; 2912 :        info->has_vararg == FALSE &&
-; 2913 : #if AMD64_SUPPORT
-; 2914 :        resstack == 0 &&
+; 2914 : #endif
+; 2915 :     /* default processing. if no params/locals are defined, continue */
+; 2916 :     if( info->forceframe == FALSE &&
+; 2917 :        info->localsize == 0 &&
+; 2918 :        info->stackparam == FALSE &&
+; 2919 :        info->has_vararg == FALSE &&
+; 2920 : #if AMD64_SUPPORT
+; 2921 :        resstack == 0 &&
 
 	mov	rax, QWORD PTR info$[rsp]
 	movzx	eax, BYTE PTR [rax+128]
@@ -2390,29 +2392,29 @@ $LN10@write_defa:
 	cmp	QWORD PTR [rax], 0
 	jne	SHORT $LN11@write_defa
 
-; 2915 : #endif
-; 2916 :        info->regslist == NULL )
-; 2917 :         return( NOT_ERROR );
+; 2922 : #endif
+; 2923 :        info->regslist == NULL )
+; 2924 :         return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@write_defa
 $LN11@write_defa:
 
-; 2918 : 
-; 2919 :     /* v2.11: now done in write_prologue() */
-; 2920 :     //info->localsize = ROUND_UP( info->localsize, CurrWordSize );
-; 2921 :     regist = info->regslist;
+; 2925 : 
+; 2926 :     /* v2.11: now done in write_prologue() */
+; 2927 :     //info->localsize = ROUND_UP( info->localsize, CurrWordSize );
+; 2928 :     regist = info->regslist;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	rax, QWORD PTR [rax]
 	mov	QWORD PTR regist$[rsp], rax
 
-; 2922 : 
-; 2923 : #if AMD64_SUPPORT
-; 2924 :     /* initialize shadow space for register params */
-; 2925 :     if ( ModuleInfo.Ofssize == USE64 &&
-; 2926 :         CurrProc->sym.langtype == LANG_FASTCALL &&
-; 2927 :         ModuleInfo.fctype == FCT_WIN64 &&
+; 2929 : 
+; 2930 : #if AMD64_SUPPORT
+; 2931 :     /* initialize shadow space for register params */
+; 2932 :     if ( ModuleInfo.Ofssize == USE64 &&
+; 2933 :         CurrProc->sym.langtype == LANG_FASTCALL &&
+; 2934 :         ModuleInfo.fctype == FCT_WIN64 &&
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	cmp	eax, 2
@@ -2427,15 +2429,15 @@ $LN11@write_defa:
 	test	eax, eax
 	je	SHORT $LN12@write_defa
 
-; 2928 :         ( ModuleInfo.win64_flags & W64F_SAVEREGPARAMS ) )
-; 2929 :         win64_SaveRegParams( info );
+; 2935 :         ( ModuleInfo.win64_flags & W64F_SAVEREGPARAMS ) )
+; 2936 :         win64_SaveRegParams( info );
 
 	mov	rcx, QWORD PTR info$[rsp]
 	call	win64_SaveRegParams
 $LN12@write_defa:
 
-; 2930 : #endif
-; 2931 :     if( info->locallist || info->stackparam || info->has_vararg || info->forceframe ) {
+; 2937 : #endif
+; 2938 :     if( info->locallist || info->stackparam || info->has_vararg || info->forceframe ) {
 
 	mov	rax, QWORD PTR info$[rsp]
 	cmp	QWORD PTR [rax+16], 0
@@ -2462,14 +2464,14 @@ $LN12@write_defa:
 	je	SHORT $LN13@write_defa
 $LN14@write_defa:
 
-; 2932 : 
-; 2933 :         /* write 80386 prolog code
-; 2934 :          * PUSH [E|R]BP
-; 2935 :          * MOV  [E|R]BP, [E|R]SP
-; 2936 :          * SUB  [E|R]SP, localsize
-; 2937 :          */
-; 2938 : #if STACKBASESUPP
-; 2939 :         if ( !info->fpo ) {
+; 2939 : 
+; 2940 :         /* write 80386 prolog code
+; 2941 :          * PUSH [E|R]BP
+; 2942 :          * MOV  [E|R]BP, [E|R]SP
+; 2943 :          * SUB  [E|R]SP, localsize
+; 2944 :          */
+; 2945 : #if STACKBASESUPP
+; 2946 :         if ( !info->fpo ) {
 
 	mov	rax, QWORD PTR info$[rsp]
 	movzx	eax, BYTE PTR [rax+128]
@@ -2479,45 +2481,45 @@ $LN14@write_defa:
 	test	eax, eax
 	jne	SHORT $LN15@write_defa
 
-; 2940 :             AddLineQueueX( "push %r", info->basereg );
+; 2947 :             AddLineQueueX( "push %r", info->basereg );
 
 	mov	rax, QWORD PTR info$[rsp]
 	movzx	eax, WORD PTR [rax+130]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG12571
+	lea	rcx, OFFSET FLAT:$SG12573
 	call	AddLineQueueX
 
-; 2941 :             AddLineQueueX( "mov %r, %r", info->basereg, stackreg[ModuleInfo.Ofssize] );
+; 2948 :             AddLineQueueX( "mov %r, %r", info->basereg, stackreg[ModuleInfo.Ofssize] );
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	lea	rcx, OFFSET FLAT:stackreg
 	mov	rdx, QWORD PTR info$[rsp]
 	movzx	edx, WORD PTR [rdx+130]
 	mov	r8d, DWORD PTR [rcx+rax*4]
-	lea	rcx, OFFSET FLAT:$SG12572
+	lea	rcx, OFFSET FLAT:$SG12574
 	call	AddLineQueueX
 $LN15@write_defa:
 $LN13@write_defa:
 
-; 2942 :         }
-; 2943 : #else
-; 2944 :         AddLineQueueX( "push %r", basereg[ModuleInfo.Ofssize] );
-; 2945 :         AddLineQueueX( "mov %r, %r", basereg[ModuleInfo.Ofssize], stackreg[ModuleInfo.Ofssize] );
-; 2946 : #endif
-; 2947 :     }
-; 2948 : #if AMD64_SUPPORT
-; 2949 :     if( resstack ) {
+; 2949 :         }
+; 2950 : #else
+; 2951 :         AddLineQueueX( "push %r", basereg[ModuleInfo.Ofssize] );
+; 2952 :         AddLineQueueX( "mov %r, %r", basereg[ModuleInfo.Ofssize], stackreg[ModuleInfo.Ofssize] );
+; 2953 : #endif
+; 2954 :     }
+; 2955 : #if AMD64_SUPPORT
+; 2956 :     if( resstack ) {
 
 	cmp	DWORD PTR resstack$[rsp], 0
 	je	$LN16@write_defa
 
-; 2950 :         /* in this case, push the USES registers BEFORE the stack space is reserved */
-; 2951 :         if ( regist ) {
+; 2957 :         /* in this case, push the USES registers BEFORE the stack space is reserved */
+; 2958 :         if ( regist ) {
 
 	cmp	QWORD PTR regist$[rsp], 0
 	je	SHORT $LN18@write_defa
 
-; 2952 :             for( cnt = *regist++; cnt; cnt--, regist++ )
+; 2959 :             for( cnt = *regist++; cnt; cnt--, regist++ )
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -2537,29 +2539,29 @@ $LN4@write_defa:
 	cmp	DWORD PTR cnt$[rsp], 0
 	je	SHORT $LN3@write_defa
 
-; 2953 :                 AddLineQueueX( "push %r", *regist );
+; 2960 :                 AddLineQueueX( "push %r", *regist );
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG12576
+	lea	rcx, OFFSET FLAT:$SG12578
 	call	AddLineQueueX
 	jmp	SHORT $LN2@write_defa
 $LN3@write_defa:
 
-; 2954 :             regist = NULL;
+; 2961 :             regist = NULL;
 
 	mov	QWORD PTR regist$[rsp], 0
 $LN18@write_defa:
 
-; 2955 :         }
-; 2956 :         /* if no framepointer was pushed, add 8 to align stack on OWORD.
-; 2957 :          * v2.12: obsolete, localsize contains correct value in this case.
-; 2958 :          */
-; 2959 :         //if( !(info->localsize || info->stackparam || info->has_vararg || info->forceframe ))
-; 2960 :         //    AddLineQueueX( "sub %r, 8 + %s", stackreg[ModuleInfo.Ofssize], sym_ReservedStack->name );
-; 2961 :         //else
-; 2962 :         AddLineQueueX( "sub %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize, sym_ReservedStack->name );
+; 2962 :         }
+; 2963 :         /* if no framepointer was pushed, add 8 to align stack on OWORD.
+; 2964 :          * v2.12: obsolete, localsize contains correct value in this case.
+; 2965 :          */
+; 2966 :         //if( !(info->localsize || info->stackparam || info->has_vararg || info->forceframe ))
+; 2967 :         //    AddLineQueueX( "sub %r, 8 + %s", stackreg[ModuleInfo.Ofssize], sym_ReservedStack->name );
+; 2968 :         //else
+; 2969 :         AddLineQueueX( "sub %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize, sym_ReservedStack->name );
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	lea	rcx, OFFSET FLAT:stackreg
@@ -2568,26 +2570,26 @@ $LN18@write_defa:
 	mov	rdx, QWORD PTR info$[rsp]
 	mov	r8d, DWORD PTR [rdx+36]
 	mov	edx, DWORD PTR [rcx+rax*4]
-	lea	rcx, OFFSET FLAT:$SG12577
+	lea	rcx, OFFSET FLAT:$SG12579
 	call	AddLineQueueX
 
-; 2963 :     } else
+; 2970 :     } else
 
 	jmp	SHORT $LN17@write_defa
 $LN16@write_defa:
 
-; 2964 : #endif
-; 2965 :     if( info->localsize  ) {
+; 2971 : #endif
+; 2972 :     if( info->localsize  ) {
 
 	mov	rax, QWORD PTR info$[rsp]
 	cmp	DWORD PTR [rax+36], 0
 	je	SHORT $LN19@write_defa
 
-; 2966 :         /* using ADD and the 2-complement has one advantage:
-; 2967 :          * it will generate short instructions up to a size of 128.
-; 2968 :          * with SUB, short instructions work up to 127 only.
-; 2969 :          */
-; 2970 :         if ( Options.masm_compat_gencode || info->localsize == 128 )
+; 2973 :         /* using ADD and the 2-complement has one advantage:
+; 2974 :          * it will generate short instructions up to a size of 128.
+; 2975 :          * with SUB, short instructions work up to 127 only.
+; 2976 :          */
+; 2977 :         if ( Options.masm_compat_gencode || info->localsize == 128 )
 
 	movzx	eax, BYTE PTR Options+144
 	test	eax, eax
@@ -2597,35 +2599,35 @@ $LN16@write_defa:
 	jne	SHORT $LN20@write_defa
 $LN22@write_defa:
 
-; 2971 :             AddLineQueueX( "add %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize );
+; 2978 :             AddLineQueueX( "add %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize );
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	lea	rcx, OFFSET FLAT:stackreg
 	mov	rdx, QWORD PTR info$[rsp]
 	mov	r8d, DWORD PTR [rdx+36]
 	mov	edx, DWORD PTR [rcx+rax*4]
-	lea	rcx, OFFSET FLAT:$SG12582
+	lea	rcx, OFFSET FLAT:$SG12584
 	call	AddLineQueueX
 	jmp	SHORT $LN21@write_defa
 $LN20@write_defa:
 
-; 2972 :         else
-; 2973 :             AddLineQueueX( "sub %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize );
+; 2979 :         else
+; 2980 :             AddLineQueueX( "sub %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize );
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	lea	rcx, OFFSET FLAT:stackreg
 	mov	rdx, QWORD PTR info$[rsp]
 	mov	r8d, DWORD PTR [rdx+36]
 	mov	edx, DWORD PTR [rcx+rax*4]
-	lea	rcx, OFFSET FLAT:$SG12583
+	lea	rcx, OFFSET FLAT:$SG12585
 	call	AddLineQueueX
 $LN21@write_defa:
 $LN19@write_defa:
 $LN17@write_defa:
 
-; 2974 :     }
-; 2975 : 
-; 2976 :     if ( info->loadds ) {
+; 2981 :     }
+; 2982 : 
+; 2983 :     if ( info->loadds ) {
 
 	mov	rax, QWORD PTR info$[rsp]
 	movzx	eax, BYTE PTR [rax+128]
@@ -2635,20 +2637,20 @@ $LN17@write_defa:
 	test	eax, eax
 	je	SHORT $LN23@write_defa
 
-; 2977 :         AddLineQueueX( "push %r", T_DS );
+; 2984 :         AddLineQueueX( "push %r", T_DS );
 
 	mov	edx, 28
-	lea	rcx, OFFSET FLAT:$SG12585
+	lea	rcx, OFFSET FLAT:$SG12587
 	call	AddLineQueueX
 
-; 2978 :         AddLineQueueX( "mov %r, %s", T_AX, szDgroup );
+; 2985 :         AddLineQueueX( "mov %r, %s", T_AX, szDgroup );
 
 	lea	r8, OFFSET FLAT:szDgroup
 	mov	edx, 9
-	lea	rcx, OFFSET FLAT:$SG12586
+	lea	rcx, OFFSET FLAT:$SG12588
 	call	AddLineQueueX
 
-; 2979 :         AddLineQueueX( "mov %r, %r", T_DS, ModuleInfo.Ofssize ? T_EAX : T_AX );
+; 2986 :         AddLineQueueX( "mov %r, %r", T_DS, ModuleInfo.Ofssize ? T_EAX : T_AX );
 
 	movzx	eax, BYTE PTR ModuleInfo+404
 	test	eax, eax
@@ -2660,19 +2662,19 @@ $LN30@write_defa:
 $LN31@write_defa:
 	mov	r8d, DWORD PTR tv226[rsp]
 	mov	edx, 28
-	lea	rcx, OFFSET FLAT:$SG12587
+	lea	rcx, OFFSET FLAT:$SG12589
 	call	AddLineQueueX
 $LN23@write_defa:
 
-; 2980 :     }
-; 2981 : 
-; 2982 :     /* Push the GPR registers of the USES clause */
-; 2983 :     if ( regist ) {
+; 2987 :     }
+; 2988 : 
+; 2989 :     /* Push the GPR registers of the USES clause */
+; 2990 :     if ( regist ) {
 
 	cmp	QWORD PTR regist$[rsp], 0
 	je	SHORT $LN24@write_defa
 
-; 2984 :         for( cnt = *regist++; cnt; cnt--, regist++ ) {
+; 2991 :         for( cnt = *regist++; cnt; cnt--, regist++ ) {
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -2692,30 +2694,30 @@ $LN7@write_defa:
 	cmp	DWORD PTR cnt$[rsp], 0
 	je	SHORT $LN6@write_defa
 
-; 2985 :             AddLineQueueX( "push %r", *regist );
+; 2992 :             AddLineQueueX( "push %r", *regist );
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG12589
+	lea	rcx, OFFSET FLAT:$SG12591
 	call	AddLineQueueX
 
-; 2986 :         }
+; 2993 :         }
 
 	jmp	SHORT $LN5@write_defa
 $LN6@write_defa:
 $LN24@write_defa:
 $runqueue$32:
 
-; 2987 :     }
-; 2988 : 
-; 2989 : #if AMD64_SUPPORT
-; 2990 : runqueue:
-; 2991 : #endif
-; 2992 : 
-; 2993 : #if FASTPASS
-; 2994 :     /* special case: generated code runs BEFORE the line.*/
-; 2995 :     if ( ModuleInfo.list && UseSavedState )
+; 2994 :     }
+; 2995 : 
+; 2996 : #if AMD64_SUPPORT
+; 2997 : runqueue:
+; 2998 : #endif
+; 2999 : 
+; 3000 : #if FASTPASS
+; 3001 :     /* special case: generated code runs BEFORE the line.*/
+; 3002 :     if ( ModuleInfo.list && UseSavedState )
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	shr	eax, 11
@@ -2726,12 +2728,12 @@ $runqueue$32:
 	test	eax, eax
 	je	SHORT $LN25@write_defa
 
-; 2996 :         if ( Parse_Pass == PASS_1 )
+; 3003 :         if ( Parse_Pass == PASS_1 )
 
 	cmp	DWORD PTR Parse_Pass, 0
 	jne	SHORT $LN26@write_defa
 
-; 2997 :             info->prolog_list_pos = list_pos;
+; 3004 :             info->prolog_list_pos = list_pos;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	ecx, DWORD PTR list_pos
@@ -2739,8 +2741,8 @@ $runqueue$32:
 	jmp	SHORT $LN27@write_defa
 $LN26@write_defa:
 
-; 2998 :         else
-; 2999 :             list_pos = info->prolog_list_pos;
+; 3005 :         else
+; 3006 :             list_pos = info->prolog_list_pos;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+124]
@@ -2748,32 +2750,32 @@ $LN26@write_defa:
 $LN27@write_defa:
 $LN25@write_defa:
 
-; 3000 : #endif
-; 3001 :     /* line number debug info also needs special treatment
-; 3002 :      * because current line number is the first true src line
-; 3003 :      * IN the proc.
-; 3004 :      */
-; 3005 :     oldlinenumbers = Options.line_numbers;
+; 3007 : #endif
+; 3008 :     /* line number debug info also needs special treatment
+; 3009 :      * because current line number is the first true src line
+; 3010 :      * IN the proc.
+; 3011 :      */
+; 3012 :     oldlinenumbers = Options.line_numbers;
 
 	movzx	eax, BYTE PTR Options+1
 	mov	BYTE PTR oldlinenumbers$[rsp], al
 
-; 3006 :     Options.line_numbers = FALSE; /* temporarily disable line numbers */
+; 3013 :     Options.line_numbers = FALSE; /* temporarily disable line numbers */
 
 	mov	BYTE PTR Options+1, 0
 
-; 3007 :     RunLineQueue();
+; 3014 :     RunLineQueue();
 
 	call	RunLineQueue
 
-; 3008 :     Options.line_numbers = oldlinenumbers;
+; 3015 :     Options.line_numbers = oldlinenumbers;
 
 	movzx	eax, BYTE PTR oldlinenumbers$[rsp]
 	mov	BYTE PTR Options+1, al
 
-; 3009 : 
-; 3010 : #if FASTPASS
-; 3011 :     if ( ModuleInfo.list && UseSavedState && (Parse_Pass > PASS_1))
+; 3016 : 
+; 3017 : #if FASTPASS
+; 3018 :     if ( ModuleInfo.list && UseSavedState && (Parse_Pass > PASS_1))
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	shr	eax, 11
@@ -2786,21 +2788,21 @@ $LN25@write_defa:
 	cmp	DWORD PTR Parse_Pass, 0
 	jbe	SHORT $LN28@write_defa
 
-; 3012 :          LineStoreCurr->list_pos = list_pos;
+; 3019 :          LineStoreCurr->list_pos = list_pos;
 
 	mov	rax, QWORD PTR LineStoreCurr
 	mov	ecx, DWORD PTR list_pos
 	mov	DWORD PTR [rax+12], ecx
 $LN28@write_defa:
 
-; 3013 : #endif
-; 3014 : 
-; 3015 :     return( NOT_ERROR );
+; 3020 : #endif
+; 3021 : 
+; 3022 :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@write_defa:
 
-; 3016 : }
+; 3023 : }
 
 	add	rsp, 72					; 00000048H
 	ret	0
@@ -2842,7 +2844,7 @@ __$ArrayPad$ = 200
 info$ = 224
 write_win64_default_prologue PROC
 
-; 2460 : {
+; 2467 : {
 
 	mov	QWORD PTR [rsp+8], rcx
 	sub	rsp, 216				; 000000d8H
@@ -2850,40 +2852,40 @@ write_win64_default_prologue PROC
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
 
-; 2461 :     uint_16             *regist;
-; 2462 :     const char * const  *ppfmt;
-; 2463 :     struct    dsym      *param;
-; 2464 :     int                 cntxmm;
-; 2465 :     unsigned char xyused[6];  /* flags for used sse registers in vectorcall */
-; 2466 :     unsigned char       xreg;
-; 2467 :     unsigned char       xsize;
-; 2468 :     unsigned char       xmmflag = 1;
+; 2468 :     uint_16             *regist;
+; 2469 :     const char * const  *ppfmt;
+; 2470 :     struct    dsym      *param;
+; 2471 :     int                 cntxmm;
+; 2472 :     unsigned char xyused[6];  /* flags for used sse registers in vectorcall */
+; 2473 :     unsigned char       xreg;
+; 2474 :     unsigned char       xsize;
+; 2475 :     unsigned char       xmmflag = 1;
 
 	mov	BYTE PTR xmmflag$[rsp], 1
 
-; 2469 :     unsigned char       ymmflag = 0;
+; 2476 :     unsigned char       ymmflag = 0;
 
 	mov	BYTE PTR ymmflag$[rsp], 0
 
-; 2470 : #if EVEXSUPP
-; 2471 :     unsigned char       zmmflag = 0;
-; 2472 : #endif
-; 2473 :     int                 vsize = 0;
+; 2477 : #if EVEXSUPP
+; 2478 :     unsigned char       zmmflag = 0;
+; 2479 : #endif
+; 2480 :     int                 vsize = 0;
 
 	mov	DWORD PTR vsize$[rsp], 0
 
-; 2474 :     int                 vectstart = 0;
+; 2481 :     int                 vectstart = 0;
 
 	mov	DWORD PTR vectstart$[rsp], 0
 
-; 2475 :     int                 n;
-; 2476 :     int                 m;
-; 2477 :     int                 i;
-; 2478 :     int                 j;
-; 2479 :     int                 cnt;
-; 2480 :     int                 homestart;
-; 2481 :     int                 stackSize;
-; 2482 :     int                 resstack = ( ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) ? sym_ReservedStack->value : 0 );
+; 2482 :     int                 n;
+; 2483 :     int                 m;
+; 2484 :     int                 i;
+; 2485 :     int                 j;
+; 2486 :     int                 cnt;
+; 2487 :     int                 homestart;
+; 2488 :     int                 stackSize;
+; 2489 :     int                 resstack = ( ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) ? sym_ReservedStack->value : 0 );
 
 	movzx	eax, BYTE PTR ModuleInfo+413
 	and	eax, 2
@@ -2899,64 +2901,64 @@ $LN132@write_win6:
 	mov	eax, DWORD PTR tv68[rsp]
 	mov	DWORD PTR resstack$[rsp], eax
 
-; 2483 : 
-; 2484 :     DebugMsg1(("write_win64_default_prologue enter\n"));
+; 2490 : 
+; 2491 :     DebugMsg1(("write_win64_default_prologue enter\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12419
+	lea	rcx, OFFSET FLAT:$SG12421
 	call	DoDebugMsg1
 
-; 2485 :     memset(xyused, 0, 6);
+; 2492 :     memset(xyused, 0, 6);
 
 	mov	r8d, 6
 	xor	edx, edx
 	lea	rcx, QWORD PTR xyused$[rsp]
 	call	memset
 
-; 2486 :     info->vecused = 0;
+; 2493 :     info->vecused = 0;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	BYTE PTR [rax+80], 0
 
-; 2487 :     XYZMMsize = 16;
+; 2494 :     XYZMMsize = 16;
 
 	mov	DWORD PTR XYZMMsize, 16
 
-; 2488 :     if ( ModuleInfo.win64_flags & W64F_SAVEREGPARAMS )
+; 2495 :     if ( ModuleInfo.win64_flags & W64F_SAVEREGPARAMS )
 
 	movzx	eax, BYTE PTR ModuleInfo+413
 	and	eax, 1
 	test	eax, eax
 	je	SHORT $LN45@write_win6
 
-; 2489 :         win64_SaveRegParams( info );
+; 2496 :         win64_SaveRegParams( info );
 
 	mov	rcx, QWORD PTR info$[rsp]
 	call	win64_SaveRegParams
 $LN45@write_win6:
 
-; 2490 :     if (ModuleInfo.win64_flags & W64F_HABRAN) 
+; 2497 :     if (ModuleInfo.win64_flags & W64F_HABRAN) 
 
 	movzx	eax, BYTE PTR ModuleInfo+413
 	and	eax, 11
 	test	eax, eax
 	je	SHORT $LN46@write_win6
 
-; 2491 :       win64_StoreRegHome(info);
+; 2498 :       win64_StoreRegHome(info);
 
 	mov	rcx, QWORD PTR info$[rsp]
 	call	win64_StoreRegHome
 $LN46@write_win6:
 
-; 2492 :     /*
-; 2493 :      * PUSH RBP
-; 2494 :      * .PUSHREG RBP
-; 2495 :      * MOV RBP, RSP
-; 2496 :      * .SETFRAME RBP, 0
-; 2497 :      */
-; 2498 : 
-; 2499 : #if STACKBASESUPP
-; 2500 :     /* info->locallist tells whether there are local variables ( info->localsize doesn't! ) */
-; 2501 :     if ( info->fpo || ( info->parasize == 0 && info->locallist == NULL ) ) {
+; 2499 :     /*
+; 2500 :      * PUSH RBP
+; 2501 :      * .PUSHREG RBP
+; 2502 :      * MOV RBP, RSP
+; 2503 :      * .SETFRAME RBP, 0
+; 2504 :      */
+; 2505 : 
+; 2506 : #if STACKBASESUPP
+; 2507 :     /* info->locallist tells whether there are local variables ( info->localsize doesn't! ) */
+; 2508 :     if ( info->fpo || ( info->parasize == 0 && info->locallist == NULL ) ) {
 
 	mov	rax, QWORD PTR info$[rsp]
 	movzx	eax, BYTE PTR [rax+128]
@@ -2973,93 +2975,93 @@ $LN46@write_win6:
 	jne	SHORT $LN47@write_win6
 $LN49@write_win6:
 
-; 2502 :         DebugMsg1(("write_win64_default_prologue: no frame register needed\n"));
+; 2509 :         DebugMsg1(("write_win64_default_prologue: no frame register needed\n"));
 
-	lea	rcx, OFFSET FLAT:$SG12425
+	lea	rcx, OFFSET FLAT:$SG12427
 	call	DoDebugMsg1
 
-; 2503 :         //sizestd += 8; /* v2.12: obsolete */
-; 2504 :     } else {
+; 2510 :         //sizestd += 8; /* v2.12: obsolete */
+; 2511 :     } else {
 
 	jmp	$LN48@write_win6
 $LN47@write_win6:
 
-; 2505 :         AddLineQueueX( "push %r", info->basereg );
+; 2512 :         AddLineQueueX( "push %r", info->basereg );
 
 	mov	rax, QWORD PTR info$[rsp]
 	movzx	eax, WORD PTR [rax+130]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG12426
+	lea	rcx, OFFSET FLAT:$SG12428
 	call	AddLineQueueX
 
-; 2506 :         AddLineQueueX( "%r %r", T_DOT_PUSHREG, info->basereg );
+; 2513 :         AddLineQueueX( "%r %r", T_DOT_PUSHREG, info->basereg );
 
 	mov	rax, QWORD PTR info$[rsp]
 	movzx	eax, WORD PTR [rax+130]
 	mov	r8d, eax
 	mov	edx, 417				; 000001a1H
-	lea	rcx, OFFSET FLAT:$SG12427
+	lea	rcx, OFFSET FLAT:$SG12429
 	call	AddLineQueueX
 
-; 2507 :         AddLineQueueX( "mov %r, %r", info->basereg, T_RSP );
+; 2514 :         AddLineQueueX( "mov %r, %r", info->basereg, T_RSP );
 
 	mov	rax, QWORD PTR info$[rsp]
 	movzx	eax, WORD PTR [rax+130]
 	mov	r8d, 119				; 00000077H
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG12428
+	lea	rcx, OFFSET FLAT:$SG12430
 	call	AddLineQueueX
 
-; 2508 :         AddLineQueueX( "%r %r, 0", T_DOT_SETFRAME, info->basereg );
+; 2515 :         AddLineQueueX( "%r %r, 0", T_DOT_SETFRAME, info->basereg );
 
 	mov	rax, QWORD PTR info$[rsp]
 	movzx	eax, WORD PTR [rax+130]
 	mov	r8d, eax
 	mov	edx, 421				; 000001a5H
-	lea	rcx, OFFSET FLAT:$SG12429
+	lea	rcx, OFFSET FLAT:$SG12431
 	call	AddLineQueueX
 $LN48@write_win6:
 
-; 2509 :     }
-; 2510 : #else
-; 2511 :     AddLineQueueX( "push %r", basereg[USE64] );
-; 2512 :     AddLineQueueX( "%r %r", T_DOT_PUSHREG, basereg[USE64] );
-; 2513 :     AddLineQueueX( "mov %r, %r", basereg[USE64], T_RSP );
-; 2514 :     AddLineQueueX( "%r %r, 0", T_DOT_SETFRAME, basereg[USE64] );
-; 2515 : #endif
-; 2516 :     if (ModuleInfo.win64_flags & W64F_HABRAN){
+; 2516 :     }
+; 2517 : #else
+; 2518 :     AddLineQueueX( "push %r", basereg[USE64] );
+; 2519 :     AddLineQueueX( "%r %r", T_DOT_PUSHREG, basereg[USE64] );
+; 2520 :     AddLineQueueX( "mov %r, %r", basereg[USE64], T_RSP );
+; 2521 :     AddLineQueueX( "%r %r, 0", T_DOT_SETFRAME, basereg[USE64] );
+; 2522 : #endif
+; 2523 :     if (ModuleInfo.win64_flags & W64F_HABRAN){
 
 	movzx	eax, BYTE PTR ModuleInfo+413
 	and	eax, 11
 	test	eax, eax
 	je	$LN50@write_win6
 
-; 2517 :       cntxmm = 0;
+; 2524 :       cntxmm = 0;
 
 	mov	DWORD PTR cntxmm$[rsp], 0
 
-; 2518 :       if (info->regslist) {
+; 2525 :       if (info->regslist) {
 
 	mov	rax, QWORD PTR info$[rsp]
 	cmp	QWORD PTR [rax], 0
 	je	$LN52@write_win6
 
-; 2519 :         n = 0;
+; 2526 :         n = 0;
 
 	mov	DWORD PTR n$[rsp], 0
 
-; 2520 :         info->pushed_reg = 0; /*count of pushed registers */
+; 2527 :         info->pushed_reg = 0; /*count of pushed registers */
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	DWORD PTR [rax+104], 0
 
-; 2521 :         regist = info->regslist;
+; 2528 :         regist = info->regslist;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	rax, QWORD PTR [rax]
 	mov	QWORD PTR regist$[rsp], rax
 
-; 2522 :         for (cnt = *regist++; cnt; cnt--, regist++) {
+; 2529 :         for (cnt = *regist++; cnt; cnt--, regist++) {
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -3079,7 +3081,7 @@ $LN4@write_win6:
 	cmp	DWORD PTR cnt$[rsp], 0
 	je	$LN3@write_win6
 
-; 2523 :           if (GetValueSp(*regist) & OP_XMM){
+; 2530 :           if (GetValueSp(*regist) & OP_XMM){
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -3090,18 +3092,18 @@ $LN4@write_win6:
 	test	eax, eax
 	je	SHORT $LN53@write_win6
 
-; 2524 :             cntxmm += 1;
+; 2531 :             cntxmm += 1;
 
 	mov	eax, DWORD PTR cntxmm$[rsp]
 	inc	eax
 	mov	DWORD PTR cntxmm$[rsp], eax
 
-; 2525 :           }
+; 2532 :           }
 
 	jmp	$LN54@write_win6
 $LN53@write_win6:
 
-; 2526 :           else if (GetValueSp(*regist) & OP_YMM){
+; 2533 :           else if (GetValueSp(*regist) & OP_YMM){
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -3112,29 +3114,29 @@ $LN53@write_win6:
 	test	eax, eax
 	je	SHORT $LN55@write_win6
 
-; 2527 :             cntxmm += 1;
+; 2534 :             cntxmm += 1;
 
 	mov	eax, DWORD PTR cntxmm$[rsp]
 	inc	eax
 	mov	DWORD PTR cntxmm$[rsp], eax
 
-; 2528 :             ymmflag = 1;
+; 2535 :             ymmflag = 1;
 
 	mov	BYTE PTR ymmflag$[rsp], 1
 
-; 2529 :           }
+; 2536 :           }
 
 	jmp	$LN56@write_win6
 $LN55@write_win6:
 
-; 2530 : #if EVEXSUPP    
-; 2531 :           else if (GetValueSp(*regist) & OP_ZMM){
-; 2532 :             cntxmm += 1;
-; 2533 :             zmmflag = 1;
-; 2534 :           }
-; 2535 : #endif
-; 2536 :           else {
-; 2537 :             if (n < info->stored_reg) n++;
+; 2537 : #if EVEXSUPP    
+; 2538 :           else if (GetValueSp(*regist) & OP_ZMM){
+; 2539 :             cntxmm += 1;
+; 2540 :             zmmflag = 1;
+; 2541 :           }
+; 2542 : #endif
+; 2543 :           else {
+; 2544 :             if (n < info->stored_reg) n++;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+100]
@@ -3146,8 +3148,8 @@ $LN55@write_win6:
 	jmp	$LN58@write_win6
 $LN57@write_win6:
 
-; 2538 :             else{
-; 2539 :               info->pushed_reg += 1;
+; 2545 :             else{
+; 2546 :               info->pushed_reg += 1;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+104]
@@ -3155,15 +3157,15 @@ $LN57@write_win6:
 	mov	rcx, QWORD PTR info$[rsp]
 	mov	DWORD PTR [rcx+104], eax
 
-; 2540 :               AddLineQueueX("push %r", *regist);
+; 2547 :               AddLineQueueX("push %r", *regist);
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG12439
+	lea	rcx, OFFSET FLAT:$SG12441
 	call	AddLineQueueX
 
-; 2541 :               if ((1 << GetRegNo(*regist)) & win64_nvgpr) {
+; 2548 :               if ((1 << GetRegNo(*regist)) & win64_nvgpr) {
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -3180,55 +3182,55 @@ $LN57@write_win6:
 	test	eax, eax
 	je	SHORT $LN59@write_win6
 
-; 2542 :                 AddLineQueueX("%r %r", T_DOT_PUSHREG, *regist);
+; 2549 :                 AddLineQueueX("%r %r", T_DOT_PUSHREG, *regist);
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
 	mov	r8d, eax
 	mov	edx, 417				; 000001a1H
-	lea	rcx, OFFSET FLAT:$SG12441
+	lea	rcx, OFFSET FLAT:$SG12443
 	call	AddLineQueueX
 $LN59@write_win6:
 $LN58@write_win6:
 $LN56@write_win6:
 $LN54@write_win6:
 
-; 2543 :               }
-; 2544 :             }
-; 2545 :           }
-; 2546 :         } /* end for */
+; 2550 :               }
+; 2551 :             }
+; 2552 :           }
+; 2553 :         } /* end for */
 
 	jmp	$LN2@write_win6
 $LN3@write_win6:
 $LN52@write_win6:
 
-; 2547 :       }
-; 2548 :     }
+; 2554 :       }
+; 2555 :     }
 
 	jmp	$LN51@write_win6
 $LN50@write_win6:
 
-; 2549 :     else{
-; 2550 :       /* after the "push rbp", the stack is xmmword aligned */
-; 2551 :       /* Push the registers */
-; 2552 :       cntxmm = 0;
+; 2556 :     else{
+; 2557 :       /* after the "push rbp", the stack is xmmword aligned */
+; 2558 :       /* Push the registers */
+; 2559 :       cntxmm = 0;
 
 	mov	DWORD PTR cntxmm$[rsp], 0
 
-; 2553 :       if (info->regslist) {
+; 2560 :       if (info->regslist) {
 
 	mov	rax, QWORD PTR info$[rsp]
 	cmp	QWORD PTR [rax], 0
 	je	$LN60@write_win6
 
-; 2554 :         int cnt;
-; 2555 :         regist = info->regslist;
+; 2561 :         int cnt;
+; 2562 :         regist = info->regslist;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	rax, QWORD PTR [rax]
 	mov	QWORD PTR regist$[rsp], rax
 
-; 2556 :         for (cnt = *regist++; cnt; cnt--, regist++) {
+; 2563 :         for (cnt = *regist++; cnt; cnt--, regist++) {
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -3248,7 +3250,7 @@ $LN7@write_win6:
 	cmp	DWORD PTR cnt$3[rsp], 0
 	je	$LN6@write_win6
 
-; 2557 :           if (GetValueSp(*regist) & OP_XMM)
+; 2564 :           if (GetValueSp(*regist) & OP_XMM)
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -3259,7 +3261,7 @@ $LN7@write_win6:
 	test	eax, eax
 	je	SHORT $LN61@write_win6
 
-; 2558 :             cntxmm += 1;
+; 2565 :             cntxmm += 1;
 
 	mov	eax, DWORD PTR cntxmm$[rsp]
 	inc	eax
@@ -3267,7 +3269,7 @@ $LN7@write_win6:
 	jmp	$LN62@write_win6
 $LN61@write_win6:
 
-; 2559 :           else if (GetValueSp(*regist) & OP_YMM){
+; 2566 :           else if (GetValueSp(*regist) & OP_YMM){
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -3278,37 +3280,37 @@ $LN61@write_win6:
 	test	eax, eax
 	je	SHORT $LN63@write_win6
 
-; 2560 :             cntxmm += 1;
+; 2567 :             cntxmm += 1;
 
 	mov	eax, DWORD PTR cntxmm$[rsp]
 	inc	eax
 	mov	DWORD PTR cntxmm$[rsp], eax
 
-; 2561 :             ymmflag = 1;
+; 2568 :             ymmflag = 1;
 
 	mov	BYTE PTR ymmflag$[rsp], 1
 
-; 2562 :           }
+; 2569 :           }
 
 	jmp	SHORT $LN64@write_win6
 $LN63@write_win6:
 
-; 2563 : #if EVEXSUPP    
-; 2564 :           else if (GetValueSp(*regist) & OP_ZMM){
-; 2565 :             cntxmm += 1;
-; 2566 :             zmmflag = 1;
-; 2567 :           }
-; 2568 : #endif
-; 2569 :           else {
-; 2570 :             AddLineQueueX("push %r", *regist);
+; 2570 : #if EVEXSUPP    
+; 2571 :           else if (GetValueSp(*regist) & OP_ZMM){
+; 2572 :             cntxmm += 1;
+; 2573 :             zmmflag = 1;
+; 2574 :           }
+; 2575 : #endif
+; 2576 :           else {
+; 2577 :             AddLineQueueX("push %r", *regist);
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
 	mov	edx, eax
-	lea	rcx, OFFSET FLAT:$SG12447
+	lea	rcx, OFFSET FLAT:$SG12449
 	call	AddLineQueueX
 
-; 2571 :             if ((1 << GetRegNo(*regist)) & win64_nvgpr) {
+; 2578 :             if ((1 << GetRegNo(*regist)) & win64_nvgpr) {
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -3325,34 +3327,34 @@ $LN63@write_win6:
 	test	eax, eax
 	je	SHORT $LN65@write_win6
 
-; 2572 :               AddLineQueueX("%r %r", T_DOT_PUSHREG, *regist);
+; 2579 :               AddLineQueueX("%r %r", T_DOT_PUSHREG, *regist);
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
 	mov	r8d, eax
 	mov	edx, 417				; 000001a1H
-	lea	rcx, OFFSET FLAT:$SG12449
+	lea	rcx, OFFSET FLAT:$SG12451
 	call	AddLineQueueX
 $LN65@write_win6:
 $LN64@write_win6:
 $LN62@write_win6:
 
-; 2573 :             }
-; 2574 :           }
-; 2575 :         } /* end for */
+; 2580 :             }
+; 2581 :           }
+; 2582 :         } /* end for */
 
 	jmp	$LN5@write_win6
 $LN6@write_win6:
 $LN60@write_win6:
 $LN51@write_win6:
 
-; 2576 :       }
-; 2577 :     }
-; 2578 : #if EVEXSUPP   
-; 2579 :     if (zmmflag) XYZMMsize = 64;
-; 2580 :     else
-; 2581 : #endif
-; 2582 :     if (ymmflag) XYZMMsize = 32;
+; 2583 :       }
+; 2584 :     }
+; 2585 : #if EVEXSUPP   
+; 2586 :     if (zmmflag) XYZMMsize = 64;
+; 2587 :     else
+; 2588 : #endif
+; 2589 :     if (ymmflag) XYZMMsize = 32;
 
 	movzx	eax, BYTE PTR ymmflag$[rsp]
 	test	eax, eax
@@ -3361,20 +3363,20 @@ $LN51@write_win6:
 	jmp	SHORT $LN67@write_win6
 $LN66@write_win6:
 
-; 2583 :     else XYZMMsize = 16;
+; 2590 :     else XYZMMsize = 16;
 
 	mov	DWORD PTR XYZMMsize, 16
 $LN67@write_win6:
 
-; 2584 :     /* v2.11: now done in write_prologue() */
-; 2585 :     if (ModuleInfo.win64_flags & W64F_HABRAN){
+; 2591 :     /* v2.11: now done in write_prologue() */
+; 2592 :     if (ModuleInfo.win64_flags & W64F_HABRAN){
 
 	movzx	eax, BYTE PTR ModuleInfo+413
 	and	eax, 11
 	test	eax, eax
 	je	$LN68@write_win6
 
-; 2586 :       if (Parse_Pass && sym_ReservedStack->hasinvoke == 0) resstack = 0;
+; 2593 :       if (Parse_Pass && sym_ReservedStack->hasinvoke == 0) resstack = 0;
 
 	cmp	DWORD PTR Parse_Pass, 0
 	je	SHORT $LN69@write_win6
@@ -3384,7 +3386,7 @@ $LN67@write_win6:
 	mov	DWORD PTR resstack$[rsp], 0
 $LN69@write_win6:
 
-; 2587 :       if (!(info->locallist) && !(resstack)) info->localsize = 0;
+; 2594 :       if (!(info->locallist) && !(resstack)) info->localsize = 0;
 
 	mov	rax, QWORD PTR info$[rsp]
 	cmp	QWORD PTR [rax+16], 0
@@ -3395,7 +3397,7 @@ $LN69@write_win6:
 	mov	DWORD PTR [rax+36], 0
 $LN70@write_win6:
 
-; 2588 :       if ((info->localsize == 0) && (cntxmm)){
+; 2595 :       if ((info->localsize == 0) && (cntxmm)){
 
 	mov	rax, QWORD PTR info$[rsp]
 	cmp	DWORD PTR [rax+36], 0
@@ -3403,7 +3405,7 @@ $LN70@write_win6:
 	cmp	DWORD PTR cntxmm$[rsp], 0
 	je	SHORT $LN71@write_win6
 
-; 2589 :         CurrProc->e.procinfo->xmmsize = cntxmm * XYZMMsize;
+; 2596 :         CurrProc->e.procinfo->xmmsize = cntxmm * XYZMMsize;
 
 	mov	eax, DWORD PTR cntxmm$[rsp]
 	imul	eax, DWORD PTR XYZMMsize
@@ -3411,7 +3413,7 @@ $LN70@write_win6:
 	mov	rcx, QWORD PTR [rcx+96]
 	mov	DWORD PTR [rcx+112], eax
 
-; 2590 :         if ((info->pushed_reg & 1) == 0)
+; 2597 :         if ((info->pushed_reg & 1) == 0)
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+104]
@@ -3419,7 +3421,7 @@ $LN70@write_win6:
 	test	eax, eax
 	jne	SHORT $LN72@write_win6
 
-; 2591 :         info->localsize = 8;
+; 2598 :         info->localsize = 8;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	DWORD PTR [rax+36], 8
@@ -3427,9 +3429,9 @@ $LN72@write_win6:
 $LN71@write_win6:
 $LN68@write_win6:
 
-; 2592 :       }
-; 2593 :     }
-; 2594 :     if (( info->locallist + resstack) || info->vecused)  {
+; 2599 :       }
+; 2600 :     }
+; 2601 :     if (( info->locallist + resstack) || info->vecused)  {
 
 	movsxd	rax, DWORD PTR resstack$[rsp]
 	imul	rax, rax, 120				; 00000078H
@@ -3443,22 +3445,22 @@ $LN68@write_win6:
 	je	$LN73@write_win6
 $LN74@write_win6:
 
-; 2595 :         DebugMsg1(("write_win64_default_prologue: localsize=%u resstack=%u\n", info->localsize, resstack ));
+; 2602 :         DebugMsg1(("write_win64_default_prologue: localsize=%u resstack=%u\n", info->localsize, resstack ));
 
 	mov	r8d, DWORD PTR resstack$[rsp]
 	mov	rax, QWORD PTR info$[rsp]
 	mov	edx, DWORD PTR [rax+36]
-	lea	rcx, OFFSET FLAT:$SG12459
+	lea	rcx, OFFSET FLAT:$SG12461
 	call	DoDebugMsg1
 
-; 2596 :         if (ModuleInfo.win64_flags & W64F_HABRAN){
+; 2603 :         if (ModuleInfo.win64_flags & W64F_HABRAN){
 
 	movzx	eax, BYTE PTR ModuleInfo+413
 	and	eax, 11
 	test	eax, eax
 	je	$LN75@write_win6
 
-; 2597 :           if (((info->pushed_reg & 1) && (info->localsize & 0xF)) ||
+; 2604 :           if (((info->pushed_reg & 1) && (info->localsize & 0xF)) ||
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+104]
@@ -3490,8 +3492,8 @@ $LN78@write_win6:
 	jne	SHORT $LN76@write_win6
 $LN77@write_win6:
 
-; 2598 :             ((!(info->pushed_reg & 1)) && (!(info->localsize & 0xF))) && (!(info->pushed_reg & 1)) && (!(cntxmm))){
-; 2599 :             info->localsize += 8;
+; 2605 :             ((!(info->pushed_reg & 1)) && (!(info->localsize & 0xF))) && (!(info->pushed_reg & 1)) && (!(cntxmm))){
+; 2606 :             info->localsize += 8;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+36]
@@ -3499,28 +3501,28 @@ $LN77@write_win6:
 	mov	rcx, QWORD PTR info$[rsp]
 	mov	DWORD PTR [rcx+36], eax
 
-; 2600 :             if (CurrProc->sym.langtype == LANG_VECTORCALL){
+; 2607 :             if (CurrProc->sym.langtype == LANG_VECTORCALL){
 
 	mov	rax, QWORD PTR CurrProc
 	cmp	DWORD PTR [rax+76], 8
 	jne	SHORT $LN79@write_win6
 
-; 2601 :               vectstart = 0 ;
+; 2608 :               vectstart = 0 ;
 
 	mov	DWORD PTR vectstart$[rsp], 0
 $LN79@write_win6:
 $LN76@write_win6:
 $LN75@write_win6:
 
-; 2602 :             }
-; 2603 :           }
-; 2604 :         }
-; 2605 :           /*
-; 2606 :          * SUB  RSP, localsize
-; 2607 :          * .ALLOCSTACK localsize
-; 2608 :          */
-; 2609 :         
-; 2610 :         ppfmt = ( resstack ? fmtstk1 : fmtstk0 );
+; 2609 :             }
+; 2610 :           }
+; 2611 :         }
+; 2612 :           /*
+; 2613 :          * SUB  RSP, localsize
+; 2614 :          * .ALLOCSTACK localsize
+; 2615 :          */
+; 2616 :         
+; 2617 :         ppfmt = ( resstack ? fmtstk1 : fmtstk0 );
 
 	cmp	DWORD PTR resstack$[rsp], 0
 	je	SHORT $LN133@write_win6
@@ -3534,16 +3536,16 @@ $LN134@write_win6:
 	mov	rax, QWORD PTR tv288[rsp]
 	mov	QWORD PTR ppfmt$[rsp], rax
 
-; 2611 : #if STACKPROBE
-; 2612 : 		if (info->localsize + resstack > 0x1000) {
-; 2613 : 			AddLineQueueX(*(ppfmt + 2), T_RAX, NUMQUAL info->localsize, sym_ReservedStack->name);
-; 2614 : 			AddLineQueue("externdef __chkstk:PROC");
-; 2615 : 			AddLineQueue("call __chkstk");
-; 2616 : 			AddLineQueueX("mov %r, %r", T_RSP, T_RAX);
-; 2617 : 		}
-; 2618 : 		else
-; 2619 : #endif
-; 2620 : 			stackSize = info->localsize + info->vsize + info->xmmsize;
+; 2618 : #if STACKPROBE
+; 2619 : 		if (info->localsize + resstack > 0x1000) {
+; 2620 : 			AddLineQueueX(*(ppfmt + 2), T_RAX, NUMQUAL info->localsize, sym_ReservedStack->name);
+; 2621 : 			AddLineQueue("externdef __chkstk:PROC");
+; 2622 : 			AddLineQueue("call __chkstk");
+; 2623 : 			AddLineQueueX("mov %r, %r", T_RSP, T_RAX);
+; 2624 : 		}
+; 2625 : 		else
+; 2626 : #endif
+; 2627 : 			stackSize = info->localsize + info->vsize + info->xmmsize;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+36]
@@ -3553,8 +3555,8 @@ $LN134@write_win6:
 	add	eax, DWORD PTR [rcx+112]
 	mov	DWORD PTR stackSize$[rsp], eax
 
-; 2621 : 
-; 2622 : 		if ((stackSize & 7) != 0) stackSize = (stackSize + 7)&(-8);
+; 2628 : 
+; 2629 : 		if ((stackSize & 7) != 0) stackSize = (stackSize + 7)&(-8);
 
 	mov	eax, DWORD PTR stackSize$[rsp]
 	and	eax, 7
@@ -3566,7 +3568,7 @@ $LN134@write_win6:
 	mov	DWORD PTR stackSize$[rsp], eax
 $LN80@write_win6:
 
-; 2623 :             AddLineQueueX( *(ppfmt+0), T_RSP, NUMQUAL stackSize, sym_ReservedStack->name );
+; 2630 :             AddLineQueueX( *(ppfmt+0), T_RSP, NUMQUAL stackSize, sym_ReservedStack->name );
 
 	mov	rax, QWORD PTR sym_ReservedStack
 	mov	r9, QWORD PTR [rax+8]
@@ -3576,7 +3578,7 @@ $LN80@write_win6:
 	mov	rcx, QWORD PTR [rax]
 	call	AddLineQueueX
 
-; 2624 :         AddLineQueueX( *(ppfmt+1), T_DOT_ALLOCSTACK, NUMQUAL stackSize, sym_ReservedStack->name );
+; 2631 :         AddLineQueueX( *(ppfmt+1), T_DOT_ALLOCSTACK, NUMQUAL stackSize, sym_ReservedStack->name );
 
 	mov	rax, QWORD PTR sym_ReservedStack
 	mov	r9, QWORD PTR [rax+8]
@@ -3586,8 +3588,8 @@ $LN80@write_win6:
 	mov	rcx, QWORD PTR [rax+8]
 	call	AddLineQueueX
 
-; 2625 : 		    /* Handle ZEROLOCALS option */
-; 2626 : 		    if (ZEROLOCALS && info->localsize) 
+; 2632 : 		    /* Handle ZEROLOCALS option */
+; 2633 : 		    if (ZEROLOCALS && info->localsize) 
 
 	movzx	eax, BYTE PTR ZEROLOCALS
 	test	eax, eax
@@ -3596,127 +3598,127 @@ $LN80@write_win6:
 	cmp	DWORD PTR [rax+36], 0
 	je	$LN81@write_win6
 
-; 2627 : 		    {
-; 2628 : 			    if (info->localsize <= 128) 
+; 2634 : 		    {
+; 2635 : 			    if (info->localsize <= 128) 
 
 	mov	rax, QWORD PTR info$[rsp]
 	cmp	DWORD PTR [rax+36], 128			; 00000080H
 	ja	SHORT $LN82@write_win6
 
-; 2629 : 			    {
-; 2630 : 				    AddLineQueueX("mov %r, %u", T_EAX, info->localsize);
+; 2636 : 			    {
+; 2637 : 				    AddLineQueueX("mov %r, %u", T_EAX, info->localsize);
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	r8d, DWORD PTR [rax+36]
 	mov	edx, 17
-	lea	rcx, OFFSET FLAT:$SG12469
-	call	AddLineQueueX
-
-; 2631 : 				    AddLineQueueX("dec %r", T_EAX);
-
-	mov	edx, 17
-	lea	rcx, OFFSET FLAT:$SG12470
-	call	AddLineQueueX
-
-; 2632 : 				    AddLineQueueX("mov byte ptr [%r + %r], 0", T_RSP, T_RAX);
-
-	mov	r8d, 115				; 00000073H
-	mov	edx, 119				; 00000077H
 	lea	rcx, OFFSET FLAT:$SG12471
 	call	AddLineQueueX
 
-; 2633 : 				    AddLineQueueX("dw 0F875h");
+; 2638 : 				    AddLineQueueX("dec %r", T_EAX);
 
+	mov	edx, 17
 	lea	rcx, OFFSET FLAT:$SG12472
 	call	AddLineQueueX
 
-; 2634 : 			    }
+; 2639 : 				    AddLineQueueX("mov byte ptr [%r + %r], 0", T_RSP, T_RAX);
+
+	mov	r8d, 115				; 00000073H
+	mov	edx, 119				; 00000077H
+	lea	rcx, OFFSET FLAT:$SG12473
+	call	AddLineQueueX
+
+; 2640 : 				    AddLineQueueX("dw 0F875h");
+
+	lea	rcx, OFFSET FLAT:$SG12474
+	call	AddLineQueueX
+
+; 2641 : 			    }
 
 	jmp	$LN83@write_win6
 $LN82@write_win6:
 
-; 2635 : 			    else
-; 2636 : 			    {
-; 2637 : 				    AddLineQueueX("push %r", T_RDI);
+; 2642 : 			    else
+; 2643 : 			    {
+; 2644 : 				    AddLineQueueX("push %r", T_RDI);
 
 	mov	edx, 122				; 0000007aH
-	lea	rcx, OFFSET FLAT:$SG12473
-	call	AddLineQueueX
-
-; 2638 : 				    AddLineQueueX("push %r", T_RCX);
-
-	mov	edx, 116				; 00000074H
-	lea	rcx, OFFSET FLAT:$SG12474
-	call	AddLineQueueX
-
-; 2639 : 				    AddLineQueueX("xor %r, %r", T_EAX, T_EAX);
-
-	mov	r8d, 17
-	mov	edx, 17
 	lea	rcx, OFFSET FLAT:$SG12475
 	call	AddLineQueueX
 
-; 2640 : 				    AddLineQueueX("mov %r, %u", T_ECX, info->localsize);
+; 2645 : 				    AddLineQueueX("push %r", T_RCX);
+
+	mov	edx, 116				; 00000074H
+	lea	rcx, OFFSET FLAT:$SG12476
+	call	AddLineQueueX
+
+; 2646 : 				    AddLineQueueX("xor %r, %r", T_EAX, T_EAX);
+
+	mov	r8d, 17
+	mov	edx, 17
+	lea	rcx, OFFSET FLAT:$SG12477
+	call	AddLineQueueX
+
+; 2647 : 				    AddLineQueueX("mov %r, %u", T_ECX, info->localsize);
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	r8d, DWORD PTR [rax+36]
 	mov	edx, 18
-	lea	rcx, OFFSET FLAT:$SG12476
-	call	AddLineQueueX
-
-; 2641 : 				    AddLineQueueX("cld");
-
-	lea	rcx, OFFSET FLAT:$SG12477
-	call	AddLineQueueX
-
-; 2642 : 				    AddLineQueueX("lea %r, [%r+16]", T_RDI, T_RSP);
-
-	mov	r8d, 119				; 00000077H
-	mov	edx, 122				; 0000007aH
 	lea	rcx, OFFSET FLAT:$SG12478
 	call	AddLineQueueX
 
-; 2643 : 				    AddLineQueueX("rep stosb");
+; 2648 : 				    AddLineQueueX("cld");
 
 	lea	rcx, OFFSET FLAT:$SG12479
 	call	AddLineQueueX
 
-; 2644 : 				    AddLineQueueX("pop %r", T_RCX);
+; 2649 : 				    AddLineQueueX("lea %r, [%r+16]", T_RDI, T_RSP);
 
-	mov	edx, 116				; 00000074H
+	mov	r8d, 119				; 00000077H
+	mov	edx, 122				; 0000007aH
 	lea	rcx, OFFSET FLAT:$SG12480
 	call	AddLineQueueX
 
-; 2645 : 				    AddLineQueueX("pop %r", T_RDI);
+; 2650 : 				    AddLineQueueX("rep stosb");
+
+	lea	rcx, OFFSET FLAT:$SG12481
+	call	AddLineQueueX
+
+; 2651 : 				    AddLineQueueX("pop %r", T_RCX);
+
+	mov	edx, 116				; 00000074H
+	lea	rcx, OFFSET FLAT:$SG12482
+	call	AddLineQueueX
+
+; 2652 : 				    AddLineQueueX("pop %r", T_RDI);
 
 	mov	edx, 122				; 0000007aH
-	lea	rcx, OFFSET FLAT:$SG12481
+	lea	rcx, OFFSET FLAT:$SG12483
 	call	AddLineQueueX
 $LN83@write_win6:
 $LN81@write_win6:
 
-; 2646 : 			    }
-; 2647 : 		    }
-; 2648 :         /* save xmm registers */
-; 2649 :         if ( cntxmm ) {
+; 2653 : 			    }
+; 2654 : 		    }
+; 2655 :         /* save xmm registers */
+; 2656 :         if ( cntxmm ) {
 
 	cmp	DWORD PTR cntxmm$[rsp], 0
 	je	$LN84@write_win6
 
-; 2650 :             int cnt;
-; 2651 :             regist = info->regslist;
+; 2657 :             int cnt;
+; 2658 :             regist = info->regslist;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	rax, QWORD PTR [rax]
 	mov	QWORD PTR regist$[rsp], rax
 
-; 2652 :             if (info->locallist)
+; 2659 :             if (info->locallist)
 
 	mov	rax, QWORD PTR info$[rsp]
 	cmp	QWORD PTR [rax+16], 0
 	je	SHORT $LN85@write_win6
 
-; 2653 :               i = (info->localsize - cntxmm * XYZMMsize) & ~(16 - 1);
+; 2660 :               i = (info->localsize - cntxmm * XYZMMsize) & ~(16 - 1);
 
 	mov	eax, DWORD PTR cntxmm$[rsp]
 	imul	eax, DWORD PTR XYZMMsize
@@ -3729,8 +3731,8 @@ $LN81@write_win6:
 	jmp	SHORT $LN86@write_win6
 $LN85@write_win6:
 
-; 2654 :             else
-; 2655 :               i = info->localsize  & ~(16 - 1);
+; 2661 :             else
+; 2662 :               i = info->localsize  & ~(16 - 1);
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+36]
@@ -3738,8 +3740,8 @@ $LN85@write_win6:
 	mov	DWORD PTR i$[rsp], eax
 $LN86@write_win6:
 
-; 2656 : 
-; 2657 :             for( cnt = *regist++; cnt; cnt--, regist++ ) {
+; 2663 : 
+; 2664 :             for( cnt = *regist++; cnt; cnt--, regist++ ) {
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -3759,7 +3761,7 @@ $LN10@write_win6:
 	cmp	DWORD PTR cnt$4[rsp], 0
 	je	$LN9@write_win6
 
-; 2658 :                 if (( GetValueSp( *regist ) & OP_XMM )||( GetValueSp( *regist ) & OP_YMM )
+; 2665 :                 if (( GetValueSp( *regist ) & OP_XMM )||( GetValueSp( *regist ) & OP_YMM )
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -3779,16 +3781,16 @@ $LN10@write_win6:
 	je	$LN87@write_win6
 $LN88@write_win6:
 
-; 2659 : #if EVEXSUPP    
-; 2660 :                   || ( GetValueSp( *regist ) & OP_ZMM )
-; 2661 : #endif
-; 2662 :                 ){
-; 2663 :                     if ( resstack ) {
+; 2666 : #if EVEXSUPP    
+; 2667 :                   || ( GetValueSp( *regist ) & OP_ZMM )
+; 2668 : #endif
+; 2669 :                 ){
+; 2670 :                     if ( resstack ) {
 
 	cmp	DWORD PTR resstack$[rsp], 0
 	je	$LN89@write_win6
 
-; 2664 :                         if ( ( 1 << GetRegNo( *regist ) ) & win64_nvxmm )  {
+; 2671 :                         if ( ( 1 << GetRegNo( *regist ) ) & win64_nvxmm )  {
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -3805,7 +3807,7 @@ $LN88@write_win6:
 	test	eax, eax
 	je	$LN91@write_win6
 
-; 2665 :                           if (GetValueSp(*regist) & OP_XMM){
+; 2672 :                           if (GetValueSp(*regist) & OP_XMM){
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -3816,7 +3818,7 @@ $LN88@write_win6:
 	test	eax, eax
 	je	SHORT $LN92@write_win6
 
-; 2666 :                             AddLineQueueX( "vmovdqu [%r+%u+%s], %r", T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist );
+; 2673 :                             AddLineQueueX( "vmovdqu [%r+%u+%s], %r", T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist );
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -3825,10 +3827,10 @@ $LN88@write_win6:
 	mov	r9, QWORD PTR [rax+8]
 	mov	r8d, DWORD PTR i$[rsp]
 	mov	edx, 119				; 00000077H
-	lea	rcx, OFFSET FLAT:$SG12492
+	lea	rcx, OFFSET FLAT:$SG12494
 	call	AddLineQueueX
 
-; 2667 :                             AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEXMM128, *regist, NUMQUAL i, sym_ReservedStack->name);
+; 2674 :                             AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEXMM128, *regist, NUMQUAL i, sym_ReservedStack->name);
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -3838,10 +3840,10 @@ $LN88@write_win6:
 	mov	r9d, DWORD PTR i$[rsp]
 	mov	r8d, eax
 	mov	edx, 419				; 000001a3H
-	lea	rcx, OFFSET FLAT:$SG12493
+	lea	rcx, OFFSET FLAT:$SG12495
 	call	AddLineQueueX
 
-; 2668 :                             i += XYZMMsize;
+; 2675 :                             i += XYZMMsize;
 
 	mov	eax, DWORD PTR XYZMMsize
 	mov	ecx, DWORD PTR i$[rsp]
@@ -3849,12 +3851,12 @@ $LN88@write_win6:
 	mov	eax, ecx
 	mov	DWORD PTR i$[rsp], eax
 
-; 2669 :                           }
+; 2676 :                           }
 
 	jmp	$LN93@write_win6
 $LN92@write_win6:
 
-; 2670 :                           else if (GetValueSp(*regist) & OP_YMM){
+; 2677 :                           else if (GetValueSp(*regist) & OP_YMM){
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -3865,7 +3867,7 @@ $LN92@write_win6:
 	test	eax, eax
 	je	SHORT $LN94@write_win6
 
-; 2671 :                             AddLineQueueX( "vmovdqu [%r+%u+%s], %r", T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist );
+; 2678 :                             AddLineQueueX( "vmovdqu [%r+%u+%s], %r", T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist );
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -3874,10 +3876,10 @@ $LN92@write_win6:
 	mov	r9, QWORD PTR [rax+8]
 	mov	r8d, DWORD PTR i$[rsp]
 	mov	edx, 119				; 00000077H
-	lea	rcx, OFFSET FLAT:$SG12495
+	lea	rcx, OFFSET FLAT:$SG12497
 	call	AddLineQueueX
 
-; 2672 :                             AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEYMM256, *regist, NUMQUAL i, sym_ReservedStack->name);
+; 2679 :                             AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEYMM256, *regist, NUMQUAL i, sym_ReservedStack->name);
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -3887,10 +3889,10 @@ $LN92@write_win6:
 	mov	r9d, DWORD PTR i$[rsp]
 	mov	r8d, eax
 	mov	edx, 420				; 000001a4H
-	lea	rcx, OFFSET FLAT:$SG12496
+	lea	rcx, OFFSET FLAT:$SG12498
 	call	AddLineQueueX
 
-; 2673 :                             i += XYZMMsize;
+; 2680 :                             i += XYZMMsize;
 
 	mov	eax, DWORD PTR XYZMMsize
 	mov	ecx, DWORD PTR i$[rsp]
@@ -3901,21 +3903,21 @@ $LN94@write_win6:
 $LN93@write_win6:
 $LN91@write_win6:
 
-; 2674 :                           }
-; 2675 : #if EVEXSUPP    
-; 2676 :                           else (GetValueSp(*regist) & OP_ZMM){
-; 2677 :                             AddLineQueueX( "vmovdqu [%r+%u+%s], %r", T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist );
-; 2678 :                             AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEZMM512, *regist, NUMQUAL i, sym_ReservedStack->name);
-; 2679 :                             i += XYZMMsize;
-; 2680 :                           }
-; 2681 : #endif
-; 2682 :                         }
-; 2683 :                     } else {
+; 2681 :                           }
+; 2682 : #if EVEXSUPP    
+; 2683 :                           else (GetValueSp(*regist) & OP_ZMM){
+; 2684 :                             AddLineQueueX( "vmovdqu [%r+%u+%s], %r", T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist );
+; 2685 :                             AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEZMM512, *regist, NUMQUAL i, sym_ReservedStack->name);
+; 2686 :                             i += XYZMMsize;
+; 2687 :                           }
+; 2688 : #endif
+; 2689 :                         }
+; 2690 :                     } else {
 
 	jmp	$LN90@write_win6
 $LN89@write_win6:
 
-; 2684 :                         if ( ( 1 << GetRegNo( *regist ) ) & win64_nvxmm )  {
+; 2691 :                         if ( ( 1 << GetRegNo( *regist ) ) & win64_nvxmm )  {
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -3932,7 +3934,7 @@ $LN89@write_win6:
 	test	eax, eax
 	je	$LN95@write_win6
 
-; 2685 :                           if (GetValueSp(*regist) & OP_XMM){
+; 2692 :                           if (GetValueSp(*regist) & OP_XMM){
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -3943,27 +3945,27 @@ $LN89@write_win6:
 	test	eax, eax
 	je	SHORT $LN96@write_win6
 
-; 2686 :                             AddLineQueueX("vmovdqu [%r+%u], %r", T_RSP, NUMQUAL i, *regist);
+; 2693 :                             AddLineQueueX("vmovdqu [%r+%u], %r", T_RSP, NUMQUAL i, *regist);
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
 	mov	r9d, eax
 	mov	r8d, DWORD PTR i$[rsp]
 	mov	edx, 119				; 00000077H
-	lea	rcx, OFFSET FLAT:$SG12500
+	lea	rcx, OFFSET FLAT:$SG12502
 	call	AddLineQueueX
 
-; 2687 :                             AddLineQueueX("%r %r, %u", T_DOT_SAVEXMM128, *regist, NUMQUAL i);
+; 2694 :                             AddLineQueueX("%r %r, %u", T_DOT_SAVEXMM128, *regist, NUMQUAL i);
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
 	mov	r9d, DWORD PTR i$[rsp]
 	mov	r8d, eax
 	mov	edx, 419				; 000001a3H
-	lea	rcx, OFFSET FLAT:$SG12501
+	lea	rcx, OFFSET FLAT:$SG12503
 	call	AddLineQueueX
 
-; 2688 :                             i += XYZMMsize;
+; 2695 :                             i += XYZMMsize;
 
 	mov	eax, DWORD PTR XYZMMsize
 	mov	ecx, DWORD PTR i$[rsp]
@@ -3971,12 +3973,12 @@ $LN89@write_win6:
 	mov	eax, ecx
 	mov	DWORD PTR i$[rsp], eax
 
-; 2689 :                           }
+; 2696 :                           }
 
 	jmp	SHORT $LN97@write_win6
 $LN96@write_win6:
 
-; 2690 :                           else if (GetValueSp(*regist) & OP_YMM){
+; 2697 :                           else if (GetValueSp(*regist) & OP_YMM){
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -3987,27 +3989,27 @@ $LN96@write_win6:
 	test	eax, eax
 	je	SHORT $LN98@write_win6
 
-; 2691 :                             AddLineQueueX("vmovdqu [%r+%u], %r", T_RSP, NUMQUAL i, *regist);
+; 2698 :                             AddLineQueueX("vmovdqu [%r+%u], %r", T_RSP, NUMQUAL i, *regist);
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
 	mov	r9d, eax
 	mov	r8d, DWORD PTR i$[rsp]
 	mov	edx, 119				; 00000077H
-	lea	rcx, OFFSET FLAT:$SG12503
+	lea	rcx, OFFSET FLAT:$SG12505
 	call	AddLineQueueX
 
-; 2692 :                             AddLineQueueX("%r %r, %u", T_DOT_SAVEYMM256, *regist, NUMQUAL i);
+; 2699 :                             AddLineQueueX("%r %r, %u", T_DOT_SAVEYMM256, *regist, NUMQUAL i);
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
 	mov	r9d, DWORD PTR i$[rsp]
 	mov	r8d, eax
 	mov	edx, 420				; 000001a4H
-	lea	rcx, OFFSET FLAT:$SG12504
+	lea	rcx, OFFSET FLAT:$SG12506
 	call	AddLineQueueX
 
-; 2693 :                             i += XYZMMsize;
+; 2700 :                             i += XYZMMsize;
 
 	mov	eax, DWORD PTR XYZMMsize
 	mov	ecx, DWORD PTR i$[rsp]
@@ -4020,32 +4022,32 @@ $LN95@write_win6:
 $LN90@write_win6:
 $LN87@write_win6:
 
-; 2694 :                           }
-; 2695 : #if EVEXSUPP    
-; 2696 :                           else (GetValueSp(*regist) & OP_ZMM){
-; 2697 :                             AddLineQueueX( "vmovdqu [%r+%u+%s], %r", T_RSP, NUMQUAL i, *regist );
-; 2698 :                             AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEZMM512, *regist, NUMQUAL i);
-; 2699 :                             i += XYZMMsize;
-; 2700 :                           }
-; 2701 : #endif
-; 2702 :                         }
-; 2703 :                     }
-; 2704 :                 }
-; 2705 :             }
+; 2701 :                           }
+; 2702 : #if EVEXSUPP    
+; 2703 :                           else (GetValueSp(*regist) & OP_ZMM){
+; 2704 :                             AddLineQueueX( "vmovdqu [%r+%u+%s], %r", T_RSP, NUMQUAL i, *regist );
+; 2705 :                             AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEZMM512, *regist, NUMQUAL i);
+; 2706 :                             i += XYZMMsize;
+; 2707 :                           }
+; 2708 : #endif
+; 2709 :                         }
+; 2710 :                     }
+; 2711 :                 }
+; 2712 :             }
 
 	jmp	$LN8@write_win6
 $LN9@write_win6:
 $LN84@write_win6:
 
-; 2706 :         }
-; 2707 :     /* For VECTORCALL save vectors in the space provided */
-; 2708 :         if (CurrProc->sym.langtype == LANG_VECTORCALL){
+; 2713 :         }
+; 2714 :     /* For VECTORCALL save vectors in the space provided */
+; 2715 :         if (CurrProc->sym.langtype == LANG_VECTORCALL){
 
 	mov	rax, QWORD PTR CurrProc
 	cmp	DWORD PTR [rax+76], 8
 	jne	$LN99@write_win6
 
-; 2709 :           vectstart = info->localsize  + info->xmmsize & ~(16 - 1);
+; 2716 :           vectstart = info->localsize  + info->xmmsize & ~(16 - 1);
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+36]
@@ -4054,21 +4056,21 @@ $LN84@write_win6:
 	and	eax, -16				; fffffff0H
 	mov	DWORD PTR vectstart$[rsp], eax
 
-; 2710 :           if (info->vecused){
+; 2717 :           if (info->vecused){
 
 	mov	rax, QWORD PTR info$[rsp]
 	movzx	eax, BYTE PTR [rax+80]
 	test	eax, eax
 	je	$LN100@write_win6
 
-; 2711 :             if (info->vecregs){
+; 2718 :             if (info->vecregs){
 
 	mov	rax, QWORD PTR info$[rsp]
 	add	rax, 56					; 00000038H
 	test	rax, rax
 	je	$LN101@write_win6
 
-; 2712 :               for (n = 0, m = 0, xsize = 0; n < 6; n++){
+; 2719 :               for (n = 0, m = 0, xsize = 0; n < 6; n++){
 
 	mov	DWORD PTR n$[rsp], 0
 	mov	DWORD PTR m$[rsp], 0
@@ -4082,14 +4084,14 @@ $LN13@write_win6:
 	cmp	DWORD PTR n$[rsp], 6
 	jge	$LN12@write_win6
 
-; 2713 :                 xreg = info->vecregs[n];
+; 2720 :                 xreg = info->vecregs[n];
 
 	movsxd	rax, DWORD PTR n$[rsp]
 	mov	rcx, QWORD PTR info$[rsp]
 	movzx	eax, BYTE PTR [rcx+rax+56]
 	mov	BYTE PTR xreg$[rsp], al
 
-; 2714 :                 if (xreg == 1 && info->vecregsize[n] < 16)
+; 2721 :                 if (xreg == 1 && info->vecregsize[n] < 16)
 
 	movzx	eax, BYTE PTR xreg$[rsp]
 	cmp	eax, 1
@@ -4100,20 +4102,20 @@ $LN13@write_win6:
 	cmp	eax, 16
 	jge	SHORT $LN102@write_win6
 
-; 2715 :                   continue;//REAL4, FLOAT and REAL8 are stored in homespace
+; 2722 :                   continue;//REAL4, FLOAT and REAL8 are stored in homespace
 
 	jmp	SHORT $LN11@write_win6
 	jmp	$LN103@write_win6
 $LN102@write_win6:
 
-; 2716 :                 else if (xreg)
+; 2723 :                 else if (xreg)
 
 	movzx	eax, BYTE PTR xreg$[rsp]
 	test	eax, eax
 	je	$LN104@write_win6
 
-; 2717 : 				{  
-; 2718 :                   AddLineQueueX("lea %r,[%r + %d]", T_RAX,T_RSP,vectstart  + xsize );
+; 2724 : 				{  
+; 2725 :                   AddLineQueueX("lea %r,[%r + %d]", T_RAX,T_RSP,vectstart  + xsize );
 
 	movzx	eax, BYTE PTR xsize$[rsp]
 	mov	ecx, DWORD PTR vectstart$[rsp]
@@ -4122,10 +4124,10 @@ $LN102@write_win6:
 	mov	r9d, eax
 	mov	r8d, 119				; 00000077H
 	mov	edx, 115				; 00000073H
-	lea	rcx, OFFSET FLAT:$SG12512
+	lea	rcx, OFFSET FLAT:$SG12514
 	call	AddLineQueueX
 
-; 2719 :                   stackSize = info->localsize + resstack + info->vsize + info->xmmsize + 8 + info->pushed_reg * 8  + n * 8;
+; 2726 :                   stackSize = info->localsize + resstack + info->vsize + info->xmmsize + 8 + info->pushed_reg * 8  + n * 8;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+36]
@@ -4141,7 +4143,7 @@ $LN102@write_win6:
 	lea	eax, DWORD PTR [rax+rcx*8]
 	mov	DWORD PTR stackSize$[rsp], eax
 
-; 2720 :                   if ((stackSize & 7) != 0) stackSize = (stackSize + 7)&(-8);
+; 2727 :                   if ((stackSize & 7) != 0) stackSize = (stackSize + 7)&(-8);
 
 	mov	eax, DWORD PTR stackSize$[rsp]
 	and	eax, 7
@@ -4153,15 +4155,15 @@ $LN102@write_win6:
 	mov	DWORD PTR stackSize$[rsp], eax
 $LN106@write_win6:
 
-; 2721 :                   AddLineQueueX("mov [%r + %d], %r", T_RSP, stackSize, T_RAX);
+; 2728 :                   AddLineQueueX("mov [%r + %d], %r", T_RSP, stackSize, T_RAX);
 
 	mov	r9d, 115				; 00000073H
 	mov	r8d, DWORD PTR stackSize$[rsp]
 	mov	edx, 119				; 00000077H
-	lea	rcx, OFFSET FLAT:$SG12514
+	lea	rcx, OFFSET FLAT:$SG12516
 	call	AddLineQueueX
 
-; 2722 :                   xsize += info->vecregsize[n] * xreg;
+; 2729 :                   xsize += info->vecregsize[n] * xreg;
 
 	movsxd	rax, DWORD PTR n$[rsp]
 	mov	rcx, QWORD PTR info$[rsp]
@@ -4173,12 +4175,12 @@ $LN106@write_win6:
 	mov	eax, ecx
 	mov	BYTE PTR xsize$[rsp], al
 
-; 2723 :                 }
+; 2730 :                 }
 
 	jmp	$LN105@write_win6
 $LN104@write_win6:
 
-; 2724 : 				else if (info->vregs[n] != 0 && xreg == 0 && n < 4) /* JPH */
+; 2731 : 				else if (info->vregs[n] != 0 && xreg == 0 && n < 4) /* JPH */
 
 	movsxd	rax, DWORD PTR n$[rsp]
 	mov	rcx, QWORD PTR info$[rsp]
@@ -4191,18 +4193,18 @@ $LN104@write_win6:
 	cmp	DWORD PTR n$[rsp], 4
 	jge	$LN107@write_win6
 
-; 2725 : 				{
-; 2726 : 					struct dsym *pp = info->paralist;
+; 2732 : 				{
+; 2733 : 					struct dsym *pp = info->paralist;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	rax, QWORD PTR [rax+8]
 	mov	QWORD PTR pp$2[rsp], rax
 
-; 2727 : 					int j = 0;
+; 2734 : 					int j = 0;
 
 	mov	DWORD PTR j$1[rsp], 0
 
-; 2728 : 					for (j = 0; j < n; j++)
+; 2735 : 					for (j = 0; j < n; j++)
 
 	mov	DWORD PTR j$1[rsp], 0
 	jmp	SHORT $LN16@write_win6
@@ -4215,8 +4217,8 @@ $LN16@write_win6:
 	cmp	DWORD PTR j$1[rsp], eax
 	jge	SHORT $LN15@write_win6
 
-; 2729 : 					{
-; 2730 : 						if(pp) pp = pp->nextparam;
+; 2736 : 					{
+; 2737 : 						if(pp) pp = pp->nextparam;
 
 	cmp	QWORD PTR pp$2[rsp], 0
 	je	SHORT $LN108@write_win6
@@ -4225,25 +4227,25 @@ $LN16@write_win6:
 	mov	QWORD PTR pp$2[rsp], rax
 $LN108@write_win6:
 
-; 2731 : 					}
+; 2738 : 					}
 
 	jmp	SHORT $LN14@write_win6
 $LN15@write_win6:
 
-; 2732 : 					if (pp)
+; 2739 : 					if (pp)
 
 	cmp	QWORD PTR pp$2[rsp], 0
 	je	$LN109@write_win6
 
-; 2733 : 					{
-; 2734 : 							if (pp->sym.ttype)
+; 2740 : 					{
+; 2741 : 							if (pp->sym.ttype)
 
 	mov	rax, QWORD PTR pp$2[rsp]
 	cmp	QWORD PTR [rax+80], 0
 	je	$LN110@write_win6
 
-; 2735 : 							{
-; 2736 : 								if (pp->sym.ttype->e.structinfo->isHFA == 1 || pp->sym.ttype->e.structinfo->isHVA == 1 || pp->sym.ttype->e.structinfo->stype == MM128 || pp->sym.ttype->e.structinfo->stype == MM256)
+; 2742 : 							{
+; 2743 : 								if (pp->sym.ttype->e.structinfo->isHFA == 1 || pp->sym.ttype->e.structinfo->isHVA == 1 || pp->sym.ttype->e.structinfo->stype == MM128 || pp->sym.ttype->e.structinfo->stype == MM256)
 
 	mov	rax, QWORD PTR pp$2[rsp]
 	mov	rax, QWORD PTR [rax+80]
@@ -4269,8 +4271,8 @@ $LN15@write_win6:
 	jne	$LN111@write_win6
 $LN112@write_win6:
 
-; 2737 : 								{
-; 2738 : 									stackSize = info->localsize + resstack + info->vsize + info->xmmsize + 8 + info->pushed_reg * 8 + n * 8;
+; 2744 : 								{
+; 2745 : 									stackSize = info->localsize + resstack + info->vsize + info->xmmsize + 8 + info->pushed_reg * 8 + n * 8;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+36]
@@ -4286,7 +4288,7 @@ $LN112@write_win6:
 	lea	eax, DWORD PTR [rax+rcx*8]
 	mov	DWORD PTR stackSize$[rsp], eax
 
-; 2739 : 									if ((stackSize & 7) != 0) stackSize = (stackSize + 7)&(-8);
+; 2746 : 									if ((stackSize & 7) != 0) stackSize = (stackSize + 7)&(-8);
 
 	mov	eax, DWORD PTR stackSize$[rsp]
 	and	eax, 7
@@ -4298,18 +4300,18 @@ $LN112@write_win6:
 	mov	DWORD PTR stackSize$[rsp], eax
 $LN113@write_win6:
 
-; 2740 : 									AddLineQueueX("mov [%r + %d], %r", T_RSP, stackSize, ms64_regs[n]);
+; 2747 : 									AddLineQueueX("mov [%r + %d], %r", T_RSP, stackSize, ms64_regs[n]);
 
 	movsxd	rax, DWORD PTR n$[rsp]
 	lea	rcx, OFFSET FLAT:ms64_regs
 	mov	r9d, DWORD PTR [rcx+rax*4]
 	mov	r8d, DWORD PTR stackSize$[rsp]
 	mov	edx, 119				; 00000077H
-	lea	rcx, OFFSET FLAT:$SG12522
+	lea	rcx, OFFSET FLAT:$SG12524
 	call	AddLineQueueX
 
-; 2741 : 									//xsize += 8;
-; 2742 : 									xsize += info->vecregsize[n] * xreg;
+; 2748 : 									//xsize += 8;
+; 2749 : 									xsize += info->vecregsize[n] * xreg;
 
 	movsxd	rax, DWORD PTR n$[rsp]
 	mov	rcx, QWORD PTR info$[rsp]
@@ -4327,17 +4329,17 @@ $LN107@write_win6:
 $LN105@write_win6:
 $LN103@write_win6:
 
-; 2743 : 								}
-; 2744 : 							}
-; 2745 : 					}
-; 2746 : 				}
-; 2747 :               }
+; 2750 : 								}
+; 2751 : 							}
+; 2752 : 					}
+; 2753 : 				}
+; 2754 :               }
 
 	jmp	$LN11@write_win6
 $LN12@write_win6:
 
-; 2748 :               /* set available registers to zero including the ones that are greater than 1 */
-; 2749 :               for (i = 0; i < 6; i++){
+; 2755 :               /* set available registers to zero including the ones that are greater than 1 */
+; 2756 :               for (i = 0; i < 6; i++){
 
 	mov	DWORD PTR i$[rsp], 0
 	jmp	SHORT $LN19@write_win6
@@ -4349,7 +4351,7 @@ $LN19@write_win6:
 	cmp	DWORD PTR i$[rsp], 6
 	jge	$LN18@write_win6
 
-; 2750 :                 if (info->vecregs[i] == 1) xyused[i] = 1;
+; 2757 :                 if (info->vecregs[i] == 1) xyused[i] = 1;
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	mov	rcx, QWORD PTR info$[rsp]
@@ -4361,7 +4363,7 @@ $LN19@write_win6:
 	jmp	SHORT $LN115@write_win6
 $LN114@write_win6:
 
-; 2751 :                 else if ((info->vecregs[i] >= 1) && (xyused[i] != 1))
+; 2758 :                 else if ((info->vecregs[i] >= 1) && (xyused[i] != 1))
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	mov	rcx, QWORD PTR info$[rsp]
@@ -4373,7 +4375,7 @@ $LN114@write_win6:
 	cmp	eax, 1
 	je	SHORT $LN116@write_win6
 
-; 2752 :                   xyused[i] = 0;
+; 2759 :                   xyused[i] = 0;
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	mov	QWORD PTR $T5[rsp], rax
@@ -4388,12 +4390,12 @@ $LN136@write_win6:
 $LN116@write_win6:
 $LN115@write_win6:
 
-; 2753 :               }
+; 2760 :               }
 
 	jmp	$LN17@write_win6
 $LN18@write_win6:
 
-; 2754 :               for (n = 0, m = 0; n < 6; n++){
+; 2761 :               for (n = 0, m = 0; n < 6; n++){
 
 	mov	DWORD PTR n$[rsp], 0
 	mov	DWORD PTR m$[rsp], 0
@@ -4406,21 +4408,21 @@ $LN22@write_win6:
 	cmp	DWORD PTR n$[rsp], 6
 	jge	$LN21@write_win6
 
-; 2755 :                 xreg = info->vecregs[n];       // it can be 0, 1, 2 or 4 eg: 0, 4, 0, 2, 0, 0
+; 2762 :                 xreg = info->vecregs[n];       // it can be 0, 1, 2 or 4 eg: 0, 4, 0, 2, 0, 0
 
 	movsxd	rax, DWORD PTR n$[rsp]
 	mov	rcx, QWORD PTR info$[rsp]
 	movzx	eax, BYTE PTR [rcx+rax+56]
 	mov	BYTE PTR xreg$[rsp], al
 
-; 2756 :                 xsize = info->vecregsize[n];   // xmm = 16, ymm = 32 or zmm = 64
+; 2763 :                 xsize = info->vecregsize[n];   // xmm = 16, ymm = 32 or zmm = 64
 
 	movsxd	rax, DWORD PTR n$[rsp]
 	mov	rcx, QWORD PTR info$[rsp]
 	movzx	eax, BYTE PTR [rcx+rax+62]
 	mov	BYTE PTR xsize$[rsp], al
 
-; 2757 :                 m += xreg;
+; 2764 :                 m += xreg;
 
 	movzx	eax, BYTE PTR xreg$[rsp]
 	mov	ecx, DWORD PTR m$[rsp]
@@ -4428,14 +4430,14 @@ $LN22@write_win6:
 	mov	eax, ecx
 	mov	DWORD PTR m$[rsp], eax
 
-; 2758 :                 if (m > 6) break;              // max 6 AVX registers
+; 2765 :                 if (m > 6) break;              // max 6 AVX registers
 
 	cmp	DWORD PTR m$[rsp], 6
 	jle	SHORT $LN117@write_win6
 	jmp	$LN21@write_win6
 $LN117@write_win6:
 
-; 2759 :                 if (xreg == 1 && info->vecregsize[n] < 16)
+; 2766 :                 if (xreg == 1 && info->vecregsize[n] < 16)
 
 	movzx	eax, BYTE PTR xreg$[rsp]
 	cmp	eax, 1
@@ -4446,19 +4448,19 @@ $LN117@write_win6:
 	cmp	eax, 16
 	jge	SHORT $LN118@write_win6
 
-; 2760 :                   continue;                    //REAL4, FLOAT and REAL8 are stored in homespace
+; 2767 :                   continue;                    //REAL4, FLOAT and REAL8 are stored in homespace
 
 	jmp	$LN20@write_win6
 	jmp	$LN119@write_win6
 $LN118@write_win6:
 
-; 2761 :                 else if (xreg){
+; 2768 :                 else if (xreg){
 
 	movzx	eax, BYTE PTR xreg$[rsp]
 	test	eax, eax
 	je	$LN120@write_win6
 
-; 2762 :                   switch (xsize){
+; 2769 :                   switch (xsize){
 
 	movzx	eax, BYTE PTR xsize$[rsp]
 	mov	BYTE PTR tv679[rsp], al
@@ -4473,14 +4475,14 @@ $LN118@write_win6:
 	jmp	$LN23@write_win6
 $LN121@write_win6:
 
-; 2763 :                     case 4:
-; 2764 :                       //if (xreg == 2){
-; 2765 :                       //  /* this can only happen if there is 2 real4 */
-; 2766 :                       //  AddLineQueueX("vmovsd qword ptr [rsp+%d],%r", vsize + vectstart, T_XMM0 + n);
-; 2767 :                       //  vsize += 8;
-; 2768 :                       //  }
-; 2769 :                       //else{
-; 2770 :                         for (i = 0, j = 0; i < xreg; i++){
+; 2770 :                     case 4:
+; 2771 :                       //if (xreg == 2){
+; 2772 :                       //  /* this can only happen if there is 2 real4 */
+; 2773 :                       //  AddLineQueueX("vmovsd qword ptr [rsp+%d],%r", vsize + vectstart, T_XMM0 + n);
+; 2774 :                       //  vsize += 8;
+; 2775 :                       //  }
+; 2776 :                       //else{
+; 2777 :                         for (i = 0, j = 0; i < xreg; i++){
 
 	mov	DWORD PTR i$[rsp], 0
 	mov	DWORD PTR j$[rsp], 0
@@ -4495,7 +4497,7 @@ $LN27@write_win6:
 	jge	SHORT $LN26@write_win6
 $LN28@write_win6:
 
-; 2771 :                           while (xyused[j] != 0) j++;
+; 2778 :                           while (xyused[j] != 0) j++;
 
 	movsxd	rax, DWORD PTR j$[rsp]
 	movzx	eax, BYTE PTR xyused$[rsp+rax]
@@ -4507,7 +4509,7 @@ $LN28@write_win6:
 	jmp	SHORT $LN28@write_win6
 $LN29@write_win6:
 
-; 2772 :                           AddLineQueueX("vmovss dword ptr [rsp+%d],%r", vsize + vectstart, T_XMM0 + j);
+; 2779 :                           AddLineQueueX("vmovss dword ptr [rsp+%d],%r", vsize + vectstart, T_XMM0 + j);
 
 	mov	eax, DWORD PTR j$[rsp]
 	add	eax, 40					; 00000028H
@@ -4517,39 +4519,39 @@ $LN29@write_win6:
 	mov	ecx, edx
 	mov	r8d, eax
 	mov	edx, ecx
-	lea	rcx, OFFSET FLAT:$SG12531
+	lea	rcx, OFFSET FLAT:$SG12533
 	call	AddLineQueueX
 
-; 2773 :                           xyused[j] = 1;
+; 2780 :                           xyused[j] = 1;
 
 	movsxd	rax, DWORD PTR j$[rsp]
 	mov	BYTE PTR xyused$[rsp+rax], 1
 
-; 2774 :                           vsize += 4;
+; 2781 :                           vsize += 4;
 
 	mov	eax, DWORD PTR vsize$[rsp]
 	add	eax, 4
 	mov	DWORD PTR vsize$[rsp], eax
 
-; 2775 :                           }
+; 2782 :                           }
 
 	jmp	SHORT $LN25@write_win6
 $LN26@write_win6:
 
-; 2776 :                         //}
-; 2777 :                       break;
+; 2783 :                         //}
+; 2784 :                       break;
 
 	jmp	$LN23@write_win6
 $LN122@write_win6:
 
-; 2778 :                     case 8:
-; 2779 :                       if (xreg <= 3){
+; 2785 :                     case 8:
+; 2786 :                       if (xreg <= 3){
 
 	movzx	eax, BYTE PTR xreg$[rsp]
 	cmp	eax, 3
 	jg	$LN123@write_win6
 
-; 2780 :                         for (i = 0, j = 0; i < xreg; i++){
+; 2787 :                         for (i = 0, j = 0; i < xreg; i++){
 
 	mov	DWORD PTR i$[rsp], 0
 	mov	DWORD PTR j$[rsp], 0
@@ -4564,7 +4566,7 @@ $LN32@write_win6:
 	jge	SHORT $LN31@write_win6
 $LN33@write_win6:
 
-; 2781 :                           while (xyused[j] != 0) j++;
+; 2788 :                           while (xyused[j] != 0) j++;
 
 	movsxd	rax, DWORD PTR j$[rsp]
 	movzx	eax, BYTE PTR xyused$[rsp+rax]
@@ -4576,7 +4578,7 @@ $LN33@write_win6:
 	jmp	SHORT $LN33@write_win6
 $LN34@write_win6:
 
-; 2782 :                           AddLineQueueX("vmovsd qword ptr [rsp+%d],%r", vsize + vectstart, T_XMM0 + j);
+; 2789 :                           AddLineQueueX("vmovsd qword ptr [rsp+%d],%r", vsize + vectstart, T_XMM0 + j);
 
 	mov	eax, DWORD PTR j$[rsp]
 	add	eax, 40					; 00000028H
@@ -4586,48 +4588,48 @@ $LN34@write_win6:
 	mov	ecx, edx
 	mov	r8d, eax
 	mov	edx, ecx
-	lea	rcx, OFFSET FLAT:$SG12534
+	lea	rcx, OFFSET FLAT:$SG12536
 	call	AddLineQueueX
 
-; 2783 :                           xyused[j] = 1;
+; 2790 :                           xyused[j] = 1;
 
 	movsxd	rax, DWORD PTR j$[rsp]
 	mov	BYTE PTR xyused$[rsp+rax], 1
 
-; 2784 :                           vsize += 8;
+; 2791 :                           vsize += 8;
 
 	mov	eax, DWORD PTR vsize$[rsp]
 	add	eax, 8
 	mov	DWORD PTR vsize$[rsp], eax
 
-; 2785 :                           }
+; 2792 :                           }
 
 	jmp	SHORT $LN30@write_win6
 $LN31@write_win6:
 $LN123@write_win6:
 
-; 2786 :                         }
-; 2787 :                       /* this can only happen if there is 8 real8 */
-; 2788 : #if EVEXSUPP
-; 2789 :                       else {
-; 2790 :                         AddLineQueueX("vmovups ymmword ptr [rsp+%d],%r",vsize + vectstart , T_YMM0 + n);
-; 2791 :                         vsize += 64;
-; 2792 :                         xyused[n] = 1;
-; 2793 :                     }
-; 2794 : #endif
-; 2795 :                     break;
+; 2793 :                         }
+; 2794 :                       /* this can only happen if there is 8 real8 */
+; 2795 : #if EVEXSUPP
+; 2796 :                       else {
+; 2797 :                         AddLineQueueX("vmovups ymmword ptr [rsp+%d],%r",vsize + vectstart , T_YMM0 + n);
+; 2798 :                         vsize += 64;
+; 2799 :                         xyused[n] = 1;
+; 2800 :                     }
+; 2801 : #endif
+; 2802 :                     break;
 
 	jmp	$LN23@write_win6
 $LN124@write_win6:
 
-; 2796 :                   case 16:
-; 2797 :                     if (xreg == 1){
+; 2803 :                   case 16:
+; 2804 :                     if (xreg == 1){
 
 	movzx	eax, BYTE PTR xreg$[rsp]
 	cmp	eax, 1
 	jne	SHORT $LN125@write_win6
 
-; 2798 :                         AddLineQueueX("vmovups oword ptr [rsp+%d],%r",vsize + vectstart , T_XMM0 + n);
+; 2805 :                         AddLineQueueX("vmovups oword ptr [rsp+%d],%r",vsize + vectstart , T_XMM0 + n);
 
 	mov	eax, DWORD PTR n$[rsp]
 	add	eax, 40					; 00000028H
@@ -4637,27 +4639,27 @@ $LN124@write_win6:
 	mov	ecx, edx
 	mov	r8d, eax
 	mov	edx, ecx
-	lea	rcx, OFFSET FLAT:$SG12538
+	lea	rcx, OFFSET FLAT:$SG12540
 	call	AddLineQueueX
 
-; 2799 :                       xyused[n] = 1;
+; 2806 :                       xyused[n] = 1;
 
 	movsxd	rax, DWORD PTR n$[rsp]
 	mov	BYTE PTR xyused$[rsp+rax], 1
 
-; 2800 :                       vsize += 16;
+; 2807 :                       vsize += 16;
 
 	mov	eax, DWORD PTR vsize$[rsp]
 	add	eax, 16
 	mov	DWORD PTR vsize$[rsp], eax
 
-; 2801 :                     }
+; 2808 :                     }
 
 	jmp	$LN126@write_win6
 $LN125@write_win6:
 
-; 2802 :                     else{
-; 2803 :                       for (i = 0, j = 0; i < xreg; i++){
+; 2809 :                     else{
+; 2810 :                       for (i = 0, j = 0; i < xreg; i++){
 
 	mov	DWORD PTR i$[rsp], 0
 	mov	DWORD PTR j$[rsp], 0
@@ -4672,7 +4674,7 @@ $LN37@write_win6:
 	jge	SHORT $LN36@write_win6
 $LN38@write_win6:
 
-; 2804 :                         while (xyused[j] != 0) j++;
+; 2811 :                         while (xyused[j] != 0) j++;
 
 	movsxd	rax, DWORD PTR j$[rsp]
 	movzx	eax, BYTE PTR xyused$[rsp+rax]
@@ -4684,7 +4686,7 @@ $LN38@write_win6:
 	jmp	SHORT $LN38@write_win6
 $LN39@write_win6:
 
-; 2805 :                           AddLineQueueX("vmovups oword ptr [rsp+%d],%r",vsize + vectstart , T_XMM0 + j);
+; 2812 :                           AddLineQueueX("vmovups oword ptr [rsp+%d],%r",vsize + vectstart , T_XMM0 + j);
 
 	mov	eax, DWORD PTR j$[rsp]
 	add	eax, 40					; 00000028H
@@ -4694,40 +4696,40 @@ $LN39@write_win6:
 	mov	ecx, edx
 	mov	r8d, eax
 	mov	edx, ecx
-	lea	rcx, OFFSET FLAT:$SG12539
+	lea	rcx, OFFSET FLAT:$SG12541
 	call	AddLineQueueX
 
-; 2806 :                         xyused[j] = 1;
+; 2813 :                         xyused[j] = 1;
 
 	movsxd	rax, DWORD PTR j$[rsp]
 	mov	BYTE PTR xyused$[rsp+rax], 1
 
-; 2807 :                         vsize += 16;
+; 2814 :                         vsize += 16;
 
 	mov	eax, DWORD PTR vsize$[rsp]
 	add	eax, 16
 	mov	DWORD PTR vsize$[rsp], eax
 
-; 2808 :                       }
+; 2815 :                       }
 
 	jmp	SHORT $LN35@write_win6
 $LN36@write_win6:
 $LN126@write_win6:
 
-; 2809 :                     }
-; 2810 :                     break;
+; 2816 :                     }
+; 2817 :                     break;
 
 	jmp	$LN23@write_win6
 $LN127@write_win6:
 
-; 2811 :                   case 32:
-; 2812 :                     if (xreg == 1){
+; 2818 :                   case 32:
+; 2819 :                     if (xreg == 1){
 
 	movzx	eax, BYTE PTR xreg$[rsp]
 	cmp	eax, 1
 	jne	SHORT $LN128@write_win6
 
-; 2813 :                         AddLineQueueX("vmovups ymmword ptr [rsp+%d],%r",vsize + vectstart  , T_YMM0 + n);
+; 2820 :                         AddLineQueueX("vmovups ymmword ptr [rsp+%d],%r",vsize + vectstart  , T_YMM0 + n);
 
 	mov	eax, DWORD PTR n$[rsp]
 	add	eax, 56					; 00000038H
@@ -4737,27 +4739,27 @@ $LN127@write_win6:
 	mov	ecx, edx
 	mov	r8d, eax
 	mov	edx, ecx
-	lea	rcx, OFFSET FLAT:$SG12543
+	lea	rcx, OFFSET FLAT:$SG12545
 	call	AddLineQueueX
 
-; 2814 :                       xyused[n] = 1;
+; 2821 :                       xyused[n] = 1;
 
 	movsxd	rax, DWORD PTR n$[rsp]
 	mov	BYTE PTR xyused$[rsp+rax], 1
 
-; 2815 :                       vsize += 32;
+; 2822 :                       vsize += 32;
 
 	mov	eax, DWORD PTR vsize$[rsp]
 	add	eax, 32					; 00000020H
 	mov	DWORD PTR vsize$[rsp], eax
 
-; 2816 :                     }
+; 2823 :                     }
 
 	jmp	$LN129@write_win6
 $LN128@write_win6:
 
-; 2817 :                     else{
-; 2818 :                       for (i = 0, j = 0; i < xreg; i++){
+; 2824 :                     else{
+; 2825 :                       for (i = 0, j = 0; i < xreg; i++){
 
 	mov	DWORD PTR i$[rsp], 0
 	mov	DWORD PTR j$[rsp], 0
@@ -4772,7 +4774,7 @@ $LN42@write_win6:
 	jge	SHORT $LN41@write_win6
 $LN43@write_win6:
 
-; 2819 :                         while (xyused[j] != 0) j++;
+; 2826 :                         while (xyused[j] != 0) j++;
 
 	movsxd	rax, DWORD PTR j$[rsp]
 	movzx	eax, BYTE PTR xyused$[rsp+rax]
@@ -4784,7 +4786,7 @@ $LN43@write_win6:
 	jmp	SHORT $LN43@write_win6
 $LN44@write_win6:
 
-; 2820 :                           AddLineQueueX("vmovups ymmword ptr [rsp+%d],%r",vsize + vectstart , T_YMM0 + j);
+; 2827 :                           AddLineQueueX("vmovups ymmword ptr [rsp+%d],%r",vsize + vectstart , T_YMM0 + j);
 
 	mov	eax, DWORD PTR j$[rsp]
 	add	eax, 56					; 00000038H
@@ -4794,21 +4796,21 @@ $LN44@write_win6:
 	mov	ecx, edx
 	mov	r8d, eax
 	mov	edx, ecx
-	lea	rcx, OFFSET FLAT:$SG12544
+	lea	rcx, OFFSET FLAT:$SG12546
 	call	AddLineQueueX
 
-; 2821 :                         xyused[j] = 1;
+; 2828 :                         xyused[j] = 1;
 
 	movsxd	rax, DWORD PTR j$[rsp]
 	mov	BYTE PTR xyused$[rsp+rax], 1
 
-; 2822 :                         vsize += 32;
+; 2829 :                         vsize += 32;
 
 	mov	eax, DWORD PTR vsize$[rsp]
 	add	eax, 32					; 00000020H
 	mov	DWORD PTR vsize$[rsp], eax
 
-; 2823 :                       }
+; 2830 :                       }
 
 	jmp	SHORT $LN40@write_win6
 $LN41@write_win6:
@@ -4817,28 +4819,28 @@ $LN23@write_win6:
 $LN120@write_win6:
 $LN119@write_win6:
 
-; 2824 :                     }
-; 2825 :                     break;
-; 2826 : #if EVEXSUPP 
-; 2827 :                   case 64: 
-; 2828 :                     if (xreg == 1){
-; 2829 :                         AddLineQueueX("vmovups zmmword ptr [rsp+%d],%r",vsize + vectstart + xsize, T_ZMM0 + n);
-; 2830 :                       xyused[n] = 1;
-; 2831 :                       vsize += 64;
-; 2832 :                     }
-; 2833 :                     else{
-; 2834 :                       for (i=0,j=0; i < xreg; i++){
-; 2835 :                         while (xyused[j] != 0) j++;
-; 2836 :                           AddLineQueueX("vmovups zmmword ptr [rsp+%d],%r", vsize + vectstart + xsize, T_ZMM0 + j);
-; 2837 :                         xyused[j] = 1;
-; 2838 :                         vsize += 64;
-; 2839 :                       }
-; 2840 :                     }
-; 2841 :                     break;
-; 2842 : #endif
-; 2843 :                   }
-; 2844 :                 }
-; 2845 :               }
+; 2831 :                     }
+; 2832 :                     break;
+; 2833 : #if EVEXSUPP 
+; 2834 :                   case 64: 
+; 2835 :                     if (xreg == 1){
+; 2836 :                         AddLineQueueX("vmovups zmmword ptr [rsp+%d],%r",vsize + vectstart + xsize, T_ZMM0 + n);
+; 2837 :                       xyused[n] = 1;
+; 2838 :                       vsize += 64;
+; 2839 :                     }
+; 2840 :                     else{
+; 2841 :                       for (i=0,j=0; i < xreg; i++){
+; 2842 :                         while (xyused[j] != 0) j++;
+; 2843 :                           AddLineQueueX("vmovups zmmword ptr [rsp+%d],%r", vsize + vectstart + xsize, T_ZMM0 + j);
+; 2844 :                         xyused[j] = 1;
+; 2845 :                         vsize += 64;
+; 2846 :                       }
+; 2847 :                     }
+; 2848 :                     break;
+; 2849 : #endif
+; 2850 :                   }
+; 2851 :                 }
+; 2852 :               }
 
 	jmp	$LN20@write_win6
 $LN21@write_win6:
@@ -4847,21 +4849,21 @@ $LN100@write_win6:
 $LN99@write_win6:
 $LN73@write_win6:
 
-; 2846 :             }
-; 2847 :           }
-; 2848 :         }
-; 2849 :     }
-; 2850 :     AddLineQueueX( "%r", T_DOT_ENDPROLOG );
+; 2853 :             }
+; 2854 :           }
+; 2855 :         }
+; 2856 :     }
+; 2857 :     AddLineQueueX( "%r", T_DOT_ENDPROLOG );
 
 	mov	edx, 415				; 0000019fH
-	lea	rcx, OFFSET FLAT:$SG12545
+	lea	rcx, OFFSET FLAT:$SG12547
 	call	AddLineQueueX
 $LN130@write_win6:
 
-; 2851 : 
-; 2852 :     /* v2.11: linequeue is now run in write_default_prologue() */
-; 2853 :     return;
-; 2854 : }
+; 2858 : 
+; 2859 :     /* v2.11: linequeue is now run in write_default_prologue() */
+; 2860 :     return;
+; 2861 : }
 
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
@@ -4882,41 +4884,41 @@ regist$ = 56
 info$ = 80
 win64_StoreRegHome PROC
 
-; 2375 : {
+; 2382 : {
 
 	mov	QWORD PTR [rsp+8], rcx
 	sub	rsp, 72					; 00000048H
 
-; 2376 :   int			       i = 0;
+; 2383 :   int			       i = 0;
 
 	mov	DWORD PTR i$[rsp], 0
 
-; 2377 :   int			       cnt;
-; 2378 :   int            grcount = 0;
+; 2384 :   int			       cnt;
+; 2385 :   int            grcount = 0;
 
 	mov	DWORD PTR grcount$[rsp], 0
 
-; 2379 :   int			       sizestd = 0;
+; 2386 :   int			       sizestd = 0;
 
 	mov	DWORD PTR sizestd$[rsp], 0
 
-; 2380 :   int            freeshadow = 4;
+; 2387 :   int            freeshadow = 4;
 
 	mov	DWORD PTR freeshadow$[rsp], 4
 
-; 2381 :   uint_16        *regist;
-; 2382 :   info->stored_reg = 0;
+; 2388 :   uint_16        *regist;
+; 2389 :   info->stored_reg = 0;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	DWORD PTR [rax+100], 0
 
-; 2383 :   if (info->regslist) {
+; 2390 :   if (info->regslist) {
 
 	mov	rax, QWORD PTR info$[rsp]
 	cmp	QWORD PTR [rax], 0
 	je	$LN26@win64_Stor
 
-; 2384 :     for (regist = info->regslist, cnt = *regist++; cnt; cnt--, regist++, i++) {
+; 2391 :     for (regist = info->regslist, cnt = *regist++; cnt; cnt--, regist++, i++) {
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -4942,7 +4944,7 @@ $LN4@win64_Stor:
 	cmp	DWORD PTR cnt$[rsp], 0
 	je	SHORT $LN3@win64_Stor
 
-; 2385 :       if ((GetValueSp(*regist) & OP_YMM)||(GetValueSp(*regist) & OP_XMM)
+; 2392 :       if ((GetValueSp(*regist) & OP_YMM)||(GetValueSp(*regist) & OP_XMM)
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -4962,31 +4964,31 @@ $LN4@win64_Stor:
 	je	SHORT $LN27@win64_Stor
 $LN29@win64_Stor:
 
-; 2386 : #if EVEXSUPP    
-; 2387 :                   || ( GetValueSp( *regist ) & OP_ZMM )
-; 2388 : #endif
-; 2389 :         )continue;
+; 2393 : #if EVEXSUPP    
+; 2394 :                   || ( GetValueSp( *regist ) & OP_ZMM )
+; 2395 : #endif
+; 2396 :         )continue;
 
 	jmp	SHORT $LN2@win64_Stor
 	jmp	SHORT $LN28@win64_Stor
 $LN27@win64_Stor:
 
-; 2390 :       else ++grcount;                                       //find how many general registers to save
+; 2397 :       else ++grcount;                                       //find how many general registers to save
 
 	mov	eax, DWORD PTR grcount$[rsp]
 	inc	eax
 	mov	DWORD PTR grcount$[rsp], eax
 $LN28@win64_Stor:
 
-; 2391 :     }
+; 2398 :     }
 
 	jmp	SHORT $LN2@win64_Stor
 $LN3@win64_Stor:
 
-; 2392 :     //for (i = 0, freeshadow = 0; i<4; i++){                  
-; 2393 :     //  if (info->home_used[i] == 0) ++freeshadow;
-; 2394 :     //}
-; 2395 :     freeshadow -= info->home_taken;                         //find out how many free shadows
+; 2399 :     //for (i = 0, freeshadow = 0; i<4; i++){                  
+; 2400 :     //  if (info->home_used[i] == 0) ++freeshadow;
+; 2401 :     //}
+; 2402 :     freeshadow -= info->home_taken;                         //find out how many free shadows
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+108]
@@ -4995,12 +4997,12 @@ $LN3@win64_Stor:
 	mov	eax, ecx
 	mov	DWORD PTR freeshadow$[rsp], eax
 
-; 2396 :     if (freeshadow){                                        //skip if all shadow spaces are taken  
+; 2403 :     if (freeshadow){                                        //skip if all shadow spaces are taken  
 
 	cmp	DWORD PTR freeshadow$[rsp], 0
 	je	$LN30@win64_Stor
 
-; 2397 :       if (grcount == 1) memset(info->home_used, 1, 4);      //1 register only? don't store it, push it to prevent 'sub rsp,...8'
+; 2404 :       if (grcount == 1) memset(info->home_used, 1, 4);      //1 register only? don't store it, push it to prevent 'sub rsp,...8'
 
 	cmp	DWORD PTR grcount$[rsp], 1
 	jne	SHORT $LN31@win64_Stor
@@ -5013,14 +5015,14 @@ $LN3@win64_Stor:
 	jmp	$LN32@win64_Stor
 $LN31@win64_Stor:
 
-; 2398 :       else if (grcount == 2 && freeshadow >= 2){            //store only one egister, another push to prevent 'sub rsp,...8'
+; 2405 :       else if (grcount == 2 && freeshadow >= 2){            //store only one egister, another push to prevent 'sub rsp,...8'
 
 	cmp	DWORD PTR grcount$[rsp], 2
 	jne	SHORT $LN33@win64_Stor
 	cmp	DWORD PTR freeshadow$[rsp], 2
 	jl	SHORT $LN33@win64_Stor
 
-; 2399 :         for (i = 0; i<4; i++){
+; 2406 :         for (i = 0; i<4; i++){
 
 	mov	DWORD PTR i$[rsp], 0
 	jmp	SHORT $LN7@win64_Stor
@@ -5032,7 +5034,7 @@ $LN7@win64_Stor:
 	cmp	DWORD PTR i$[rsp], 4
 	jge	SHORT $LN6@win64_Stor
 
-; 2400 :           if (info->home_used[i] == 0) break;               //we need only one space   
+; 2407 :           if (info->home_used[i] == 0) break;               //we need only one space   
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	mov	rcx, QWORD PTR info$[rsp]
@@ -5042,12 +5044,12 @@ $LN7@win64_Stor:
 	jmp	SHORT $LN6@win64_Stor
 $LN35@win64_Stor:
 
-; 2401 :         }
+; 2408 :         }
 
 	jmp	SHORT $LN5@win64_Stor
 $LN6@win64_Stor:
 
-; 2402 :         for (++i; i<4; i++)                                 //the rest of free spaces render as taken
+; 2409 :         for (++i; i<4; i++)                                 //the rest of free spaces render as taken
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
@@ -5061,7 +5063,7 @@ $LN10@win64_Stor:
 	cmp	DWORD PTR i$[rsp], 4
 	jge	SHORT $LN9@win64_Stor
 
-; 2403 :           info->home_used[i] = 1;
+; 2410 :           info->home_used[i] = 1;
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	mov	rcx, QWORD PTR info$[rsp]
@@ -5069,17 +5071,17 @@ $LN10@win64_Stor:
 	jmp	SHORT $LN8@win64_Stor
 $LN9@win64_Stor:
 
-; 2404 :       }
+; 2411 :       }
 
 	jmp	$LN34@win64_Stor
 $LN33@win64_Stor:
 
-; 2405 :       else if (grcount == 3){                               //3 registers?
+; 2412 :       else if (grcount == 3){                               //3 registers?
 
 	cmp	DWORD PTR grcount$[rsp], 3
 	jne	$LN36@win64_Stor
 
-; 2406 :         if (freeshadow == 1) memset(info->home_used, 1, 4); //if only 1 free shadow, don't store it, push them
+; 2413 :         if (freeshadow == 1) memset(info->home_used, 1, 4); //if only 1 free shadow, don't store it, push them
 
 	cmp	DWORD PTR freeshadow$[rsp], 1
 	jne	SHORT $LN38@win64_Stor
@@ -5091,12 +5093,12 @@ $LN33@win64_Stor:
 	call	memset
 $LN38@win64_Stor:
 
-; 2407 :         if (freeshadow >= 3){                               //enen if there is enough space we will store only two
+; 2414 :         if (freeshadow >= 3){                               //enen if there is enough space we will store only two
 
 	cmp	DWORD PTR freeshadow$[rsp], 3
 	jl	$LN39@win64_Stor
 
-; 2408 :           for (i = 0; i<4; i++){                            //the third one we will push to keep uneven stack 
+; 2415 :           for (i = 0; i<4; i++){                            //the third one we will push to keep uneven stack 
 
 	mov	DWORD PTR i$[rsp], 0
 	jmp	SHORT $LN13@win64_Stor
@@ -5108,7 +5110,7 @@ $LN13@win64_Stor:
 	cmp	DWORD PTR i$[rsp], 4
 	jge	SHORT $LN12@win64_Stor
 
-; 2409 :             if (info->home_used[i] == 0) break;             //found first availible
+; 2416 :             if (info->home_used[i] == 0) break;             //found first availible
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	mov	rcx, QWORD PTR info$[rsp]
@@ -5118,12 +5120,12 @@ $LN13@win64_Stor:
 	jmp	SHORT $LN12@win64_Stor
 $LN40@win64_Stor:
 
-; 2410 :           }
+; 2417 :           }
 
 	jmp	SHORT $LN11@win64_Stor
 $LN12@win64_Stor:
 
-; 2411 :           for (++i; i<4; i++){
+; 2418 :           for (++i; i<4; i++){
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
@@ -5137,7 +5139,7 @@ $LN16@win64_Stor:
 	cmp	DWORD PTR i$[rsp], 4
 	jge	SHORT $LN15@win64_Stor
 
-; 2412 :             if (info->home_used[i] == 0) break;            //found second availible
+; 2419 :             if (info->home_used[i] == 0) break;            //found second availible
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	mov	rcx, QWORD PTR info$[rsp]
@@ -5147,12 +5149,12 @@ $LN16@win64_Stor:
 	jmp	SHORT $LN15@win64_Stor
 $LN41@win64_Stor:
 
-; 2413 :           }
+; 2420 :           }
 
 	jmp	SHORT $LN14@win64_Stor
 $LN15@win64_Stor:
 
-; 2414 :           for (++i; i<4; i++)
+; 2421 :           for (++i; i<4; i++)
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
@@ -5166,7 +5168,7 @@ $LN19@win64_Stor:
 	cmp	DWORD PTR i$[rsp], 4
 	jge	SHORT $LN18@win64_Stor
 
-; 2415 :             info->home_used[i] = 1;                        //render the rest of the shadow spaces as taken
+; 2422 :             info->home_used[i] = 1;                        //render the rest of the shadow spaces as taken
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	mov	rcx, QWORD PTR info$[rsp]
@@ -5175,37 +5177,37 @@ $LN19@win64_Stor:
 $LN18@win64_Stor:
 $LN39@win64_Stor:
 
-; 2416 :         }
-; 2417 :       }
+; 2423 :         }
+; 2424 :       }
 
 	jmp	$LN37@win64_Stor
 $LN36@win64_Stor:
 
-; 2418 :       else if (grcount == 4 && freeshadow == 4){          //easy case
+; 2425 :       else if (grcount == 4 && freeshadow == 4){          //easy case
 
 	cmp	DWORD PTR grcount$[rsp], 4
 	jne	SHORT $LN42@win64_Stor
 	cmp	DWORD PTR freeshadow$[rsp], 4
 	jne	SHORT $LN42@win64_Stor
 
-; 2419 :         info->home_used[3] = 1;                           //render the last shadow spaces as taken
+; 2426 :         info->home_used[3] = 1;                           //render the last shadow spaces as taken
 
 	mov	eax, 1
 	imul	rax, rax, 3
 	mov	rcx, QWORD PTR info$[rsp]
 	mov	BYTE PTR [rcx+rax+116], 1
 
-; 2420 :       }                                                   //remember the first space is 0 than 1, 2 and 3 follow 
+; 2427 :       }                                                   //remember the first space is 0 than 1, 2 and 3 follow 
 
 	jmp	SHORT $LN43@win64_Stor
 $LN42@win64_Stor:
 
-; 2421 :       else if (grcount > 4){                              //if more registars than spaces
+; 2428 :       else if (grcount > 4){                              //if more registars than spaces
 
 	cmp	DWORD PTR grcount$[rsp], 4
 	jle	SHORT $LN44@win64_Stor
 
-; 2422 :         freeshadow = grcount - freeshadow;                //find out how many we can store
+; 2429 :         freeshadow = grcount - freeshadow;                //find out how many we can store
 
 	mov	eax, DWORD PTR freeshadow$[rsp]
 	mov	ecx, DWORD PTR grcount$[rsp]
@@ -5213,14 +5215,14 @@ $LN42@win64_Stor:
 	mov	eax, ecx
 	mov	DWORD PTR freeshadow$[rsp], eax
 
-; 2423 :         if (!(freeshadow & 1)){                           //if it is even number
+; 2430 :         if (!(freeshadow & 1)){                           //if it is even number
 
 	mov	eax, DWORD PTR freeshadow$[rsp]
 	and	eax, 1
 	test	eax, eax
 	jne	SHORT $LN45@win64_Stor
 
-; 2424 :           for (i = 0; i<4; i++){                          //than we have to disable one space
+; 2431 :           for (i = 0; i<4; i++){                          //than we have to disable one space
 
 	mov	DWORD PTR i$[rsp], 0
 	jmp	SHORT $LN22@win64_Stor
@@ -5232,7 +5234,7 @@ $LN22@win64_Stor:
 	cmp	DWORD PTR i$[rsp], 4
 	jge	SHORT $LN21@win64_Stor
 
-; 2425 :             if (info->home_used[i] == 0) break;           //find the first free space 
+; 2432 :             if (info->home_used[i] == 0) break;           //find the first free space 
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	mov	rcx, QWORD PTR info$[rsp]
@@ -5242,12 +5244,12 @@ $LN22@win64_Stor:
 	jmp	SHORT $LN21@win64_Stor
 $LN46@win64_Stor:
 
-; 2426 :           }
+; 2433 :           }
 
 	jmp	SHORT $LN20@win64_Stor
 $LN21@win64_Stor:
 
-; 2427 :           info->home_used[i] = 1;                         //and render it as taken
+; 2434 :           info->home_used[i] = 1;                         //and render it as taken
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	mov	rcx, QWORD PTR info$[rsp]
@@ -5260,10 +5262,10 @@ $LN34@win64_Stor:
 $LN32@win64_Stor:
 $LN30@win64_Stor:
 
-; 2428 :         }
-; 2429 :       }
-; 2430 :     }
-; 2431 :     for (i = 0, regist = info->regslist, cnt = *regist++; cnt; cnt--, regist++, i++) {
+; 2435 :         }
+; 2436 :       }
+; 2437 :     }
+; 2438 :     for (i = 0, regist = info->regslist, cnt = *regist++; cnt; cnt--, regist++, i++) {
 
 	mov	DWORD PTR i$[rsp], 0
 	mov	rax, QWORD PTR info$[rsp]
@@ -5290,7 +5292,7 @@ $LN25@win64_Stor:
 	cmp	DWORD PTR cnt$[rsp], 0
 	je	$LN24@win64_Stor
 
-; 2432 :       if ((GetValueSp(*regist) & OP_YMM)||(GetValueSp(*regist) & OP_XMM)
+; 2439 :       if ((GetValueSp(*regist) & OP_YMM)||(GetValueSp(*regist) & OP_XMM)
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -5310,29 +5312,29 @@ $LN25@win64_Stor:
 	je	SHORT $LN47@win64_Stor
 $LN49@win64_Stor:
 
-; 2433 : #if EVEXSUPP    
-; 2434 :                   || ( GetValueSp( *regist ) & OP_ZMM )
-; 2435 : #endif
-; 2436 :         )continue;
+; 2440 : #if EVEXSUPP    
+; 2441 :                   || ( GetValueSp( *regist ) & OP_ZMM )
+; 2442 : #endif
+; 2443 :         )continue;
 
 	jmp	SHORT $LN23@win64_Stor
 	jmp	$LN48@win64_Stor
 $LN47@win64_Stor:
 
-; 2437 :       else {
-; 2438 :         sizestd += 8;
+; 2444 :       else {
+; 2445 :         sizestd += 8;
 
 	mov	eax, DWORD PTR sizestd$[rsp]
 	add	eax, 8
 	mov	DWORD PTR sizestd$[rsp], eax
 
-; 2439 :         if (i < 4)
+; 2446 :         if (i < 4)
 
 	cmp	DWORD PTR i$[rsp], 4
 	jge	$LN50@win64_Stor
 
-; 2440 :         {
-; 2441 :           if (info->home_used[i] == 0){
+; 2447 :         {
+; 2448 :           if (info->home_used[i] == 0){
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	mov	rcx, QWORD PTR info$[rsp]
@@ -5340,27 +5342,27 @@ $LN47@win64_Stor:
 	test	eax, eax
 	jne	SHORT $LN51@win64_Stor
 
-; 2442 :             AddLineQueueX("mov [%r+%u], %r", T_RSP, NUMQUAL sizestd, *regist);
+; 2449 :             AddLineQueueX("mov [%r+%u], %r", T_RSP, NUMQUAL sizestd, *regist);
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
 	mov	r9d, eax
 	mov	r8d, DWORD PTR sizestd$[rsp]
 	mov	edx, 119				; 00000077H
-	lea	rcx, OFFSET FLAT:$SG12345
+	lea	rcx, OFFSET FLAT:$SG12347
 	call	AddLineQueueX
 
-; 2443 :             AddLineQueueX("%r %r, %u", T_DOT_SAVEREG, *regist, NUMQUAL sizestd);
+; 2450 :             AddLineQueueX("%r %r, %u", T_DOT_SAVEREG, *regist, NUMQUAL sizestd);
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
 	mov	r9d, DWORD PTR sizestd$[rsp]
 	mov	r8d, eax
 	mov	edx, 418				; 000001a2H
-	lea	rcx, OFFSET FLAT:$SG12346
+	lea	rcx, OFFSET FLAT:$SG12348
 	call	AddLineQueueX
 
-; 2444 :             info->stored_reg++;
+; 2451 :             info->stored_reg++;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+100]
@@ -5368,13 +5370,13 @@ $LN47@win64_Stor:
 	mov	rcx, QWORD PTR info$[rsp]
 	mov	DWORD PTR [rcx+100], eax
 
-; 2445 :           }
+; 2452 :           }
 
 	jmp	SHORT $LN52@win64_Stor
 $LN51@win64_Stor:
 
-; 2446 :           else {
-; 2447 :             cnt++; regist--;
+; 2453 :           else {
+; 2454 :             cnt++; regist--;
 
 	mov	eax, DWORD PTR cnt$[rsp]
 	inc	eax
@@ -5386,18 +5388,18 @@ $LN52@win64_Stor:
 $LN50@win64_Stor:
 $LN48@win64_Stor:
 
-; 2448 :           }
-; 2449 :         }
-; 2450 :       }
-; 2451 :     }/* end for */
+; 2455 :           }
+; 2456 :         }
+; 2457 :       }
+; 2458 :     }/* end for */
 
 	jmp	$LN23@win64_Stor
 $LN24@win64_Stor:
 $LN26@win64_Stor:
 
-; 2452 :   }
-; 2453 :   return;
-; 2454 : }
+; 2459 :   }
+; 2460 :   return;
+; 2461 : }
 
 	add	rsp, 72					; 00000048H
 	ret	0
@@ -5412,28 +5414,28 @@ regist$1 = 48
 info$ = 80
 win64_SaveRegParams PROC
 
-; 2279 : {
+; 2286 : {
 
 	mov	QWORD PTR [rsp+8], rcx
 	sub	rsp, 72					; 00000048H
 
-; 2280 : 	int i;
-; 2281 : 	struct dsym *param;
-; 2282 : 	if (ModuleInfo.win64_flags & W64F_HABRAN) {
+; 2287 : 	int i;
+; 2288 : 	struct dsym *param;
+; 2289 : 	if (ModuleInfo.win64_flags & W64F_HABRAN) {
 
 	movzx	eax, BYTE PTR ModuleInfo+413
 	and	eax, 11
 	test	eax, eax
 	je	$LN11@win64_Save
 
-; 2283 : 		int			   cnt;
-; 2284 : 		uint_16        *regist;
-; 2285 : 		info->home_taken = 0;
+; 2290 : 		int			   cnt;
+; 2291 : 		uint_16        *regist;
+; 2292 : 		info->home_taken = 0;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	DWORD PTR [rax+108], 0
 
-; 2286 : 		memset(info->home_used, 0, 6);
+; 2293 : 		memset(info->home_used, 0, 6);
 
 	mov	rax, QWORD PTR info$[rsp]
 	add	rax, 116				; 00000074H
@@ -5442,26 +5444,26 @@ win64_SaveRegParams PROC
 	mov	rcx, rax
 	call	memset
 
-; 2287 : 		if (info->regslist)
+; 2294 : 		if (info->regslist)
 
 	mov	rax, QWORD PTR info$[rsp]
 	cmp	QWORD PTR [rax], 0
 	je	SHORT $LN13@win64_Save
 
-; 2288 : 			regist = info->regslist;
+; 2295 : 			regist = info->regslist;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	rax, QWORD PTR [rax]
 	mov	QWORD PTR regist$1[rsp], rax
 $LN13@win64_Save:
 
-; 2289 : 		if (CurrProc->sym.langtype == LANG_VECTORCALL) {
+; 2296 : 		if (CurrProc->sym.langtype == LANG_VECTORCALL) {
 
 	mov	rax, QWORD PTR CurrProc
 	cmp	DWORD PTR [rax+76], 8
 	jne	$LN14@win64_Save
 
-; 2290 : 			for (i = 0, param = info->paralist; param && (i < 6); i++) {
+; 2297 : 			for (i = 0, param = info->paralist; param && (i < 6); i++) {
 
 	mov	DWORD PTR i$[rsp], 0
 	mov	rax, QWORD PTR info$[rsp]
@@ -5478,8 +5480,8 @@ $LN4@win64_Save:
 	cmp	DWORD PTR i$[rsp], 6
 	jge	$LN3@win64_Save
 
-; 2291 : 				/* v2.05: save XMMx if type is float/double */
-; 2292 : 				if (param->sym.is_vararg == FALSE) {
+; 2298 : 				/* v2.05: save XMMx if type is float/double */
+; 2299 : 				if (param->sym.is_vararg == FALSE) {
 
 	mov	rax, QWORD PTR param$[rsp]
 	movzx	eax, BYTE PTR [rax+47]
@@ -5489,7 +5491,7 @@ $LN4@win64_Save:
 	test	eax, eax
 	jne	$LN16@win64_Save
 
-; 2293 : 					if ((param->sym.mem_type & MT_FLOAT) && param->sym.used) {  // added  && param->sym.used
+; 2300 : 					if ((param->sym.mem_type & MT_FLOAT) && param->sym.used) {  // added  && param->sym.used
 
 	mov	rax, QWORD PTR param$[rsp]
 	mov	eax, DWORD PTR [rax+36]
@@ -5503,33 +5505,13 @@ $LN4@win64_Save:
 	test	eax, eax
 	je	$LN18@win64_Save
 
-; 2294 : 						if (param->sym.mem_type == MT_REAL8)
+; 2301 : 						if (param->sym.mem_type == MT_REAL8)
 
 	mov	rax, QWORD PTR param$[rsp]
 	cmp	DWORD PTR [rax+36], 39			; 00000027H
 	jne	SHORT $LN20@win64_Save
 
-; 2295 : 							AddLineQueueX("movsd qword ptr[%r+%u], %r", T_RSP, 8 + i * 8, T_XMM0 + i);
-
-	mov	eax, DWORD PTR i$[rsp]
-	add	eax, 40					; 00000028H
-	mov	ecx, DWORD PTR i$[rsp]
-	lea	ecx, DWORD PTR [rcx*8+8]
-	mov	r9d, eax
-	mov	r8d, ecx
-	mov	edx, 119				; 00000077H
-	lea	rcx, OFFSET FLAT:$SG12260
-	call	AddLineQueueX
-	jmp	SHORT $LN21@win64_Save
-$LN20@win64_Save:
-
-; 2296 : 						else if (param->sym.mem_type == MT_REAL4)
-
-	mov	rax, QWORD PTR param$[rsp]
-	cmp	DWORD PTR [rax+36], 35			; 00000023H
-	jne	SHORT $LN22@win64_Save
-
-; 2297 : 							AddLineQueueX("movss dword ptr[%r+%u], %r", T_RSP, 8 + i * 8, T_XMM0 + i);
+; 2302 : 							AddLineQueueX("movsd qword ptr[%r+%u], %r", T_RSP, 8 + i * 8, T_XMM0 + i);
 
 	mov	eax, DWORD PTR i$[rsp]
 	add	eax, 40					; 00000028H
@@ -5540,43 +5522,29 @@ $LN20@win64_Save:
 	mov	edx, 119				; 00000077H
 	lea	rcx, OFFSET FLAT:$SG12262
 	call	AddLineQueueX
+	jmp	SHORT $LN21@win64_Save
+$LN20@win64_Save:
+
+; 2303 : 						else if (param->sym.mem_type == MT_REAL4)
+
+	mov	rax, QWORD PTR param$[rsp]
+	cmp	DWORD PTR [rax+36], 35			; 00000023H
+	jne	SHORT $LN22@win64_Save
+
+; 2304 : 							AddLineQueueX("movss dword ptr[%r+%u], %r", T_RSP, 8 + i * 8, T_XMM0 + i);
+
+	mov	eax, DWORD PTR i$[rsp]
+	add	eax, 40					; 00000028H
+	mov	ecx, DWORD PTR i$[rsp]
+	lea	ecx, DWORD PTR [rcx*8+8]
+	mov	r9d, eax
+	mov	r8d, ecx
+	mov	edx, 119				; 00000077H
+	lea	rcx, OFFSET FLAT:$SG12264
+	call	AddLineQueueX
 $LN22@win64_Save:
 $LN21@win64_Save:
 
-; 2298 : 						info->home_used[i] = 1;
-
-	movsxd	rax, DWORD PTR i$[rsp]
-	mov	rcx, QWORD PTR info$[rsp]
-	mov	BYTE PTR [rcx+rax+116], 1
-
-; 2299 : 						++info->home_taken;
-
-	mov	rax, QWORD PTR info$[rsp]
-	mov	eax, DWORD PTR [rax+108]
-	inc	eax
-	mov	rcx, QWORD PTR info$[rsp]
-	mov	DWORD PTR [rcx+108], eax
-
-; 2300 : 					}
-
-	jmp	$LN19@win64_Save
-$LN18@win64_Save:
-
-; 2301 : 					else if ((param->sym.mem_type == MT_TYPE) && param->sym.used) 
-
-	mov	rax, QWORD PTR param$[rsp]
-	cmp	DWORD PTR [rax+36], 196			; 000000c4H
-	jne	SHORT $LN23@win64_Save
-	mov	rax, QWORD PTR param$[rsp]
-	movzx	eax, BYTE PTR [rax+40]
-	and	al, 1
-	movzx	eax, al
-	test	eax, eax
-	je	SHORT $LN23@win64_Save
-
-; 2302 : 					{
-; 2303 : //						if(info->vecregs[i] == 0)
-; 2304 : 	//						AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
 ; 2305 : 						info->home_used[i] = 1;
 
 	movsxd	rax, DWORD PTR i$[rsp]
@@ -5591,19 +5559,53 @@ $LN18@win64_Save:
 	mov	rcx, QWORD PTR info$[rsp]
 	mov	DWORD PTR [rcx+108], eax
 
-; 2307 : 						info->vecused = TRUE;
+; 2307 : 					}
+
+	jmp	$LN19@win64_Save
+$LN18@win64_Save:
+
+; 2308 : 					else if ((param->sym.mem_type == MT_TYPE) && param->sym.used) 
+
+	mov	rax, QWORD PTR param$[rsp]
+	cmp	DWORD PTR [rax+36], 196			; 000000c4H
+	jne	SHORT $LN23@win64_Save
+	mov	rax, QWORD PTR param$[rsp]
+	movzx	eax, BYTE PTR [rax+40]
+	and	al, 1
+	movzx	eax, al
+	test	eax, eax
+	je	SHORT $LN23@win64_Save
+
+; 2309 : 					{
+; 2310 : //						if(info->vecregs[i] == 0)
+; 2311 : 	//						AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
+; 2312 : 						info->home_used[i] = 1;
+
+	movsxd	rax, DWORD PTR i$[rsp]
+	mov	rcx, QWORD PTR info$[rsp]
+	mov	BYTE PTR [rcx+rax+116], 1
+
+; 2313 : 						++info->home_taken;
+
+	mov	rax, QWORD PTR info$[rsp]
+	mov	eax, DWORD PTR [rax+108]
+	inc	eax
+	mov	rcx, QWORD PTR info$[rsp]
+	mov	DWORD PTR [rcx+108], eax
+
+; 2314 : 						info->vecused = TRUE;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	BYTE PTR [rax+80], 1
 
-; 2308 : 					}
+; 2315 : 					}
 
 	jmp	$LN24@win64_Save
 $LN23@win64_Save:
 
-; 2309 : 					else {
-; 2310 : 						if (((param->sym.mem_type != MT_TYPE) && param->sym.used) &&
-; 2311 : 							(param->sym.mem_type <= MT_QWORD) && param->sym.used) {   //here as well   
+; 2316 : 					else {
+; 2317 : 						if (((param->sym.mem_type != MT_TYPE) && param->sym.used) &&
+; 2318 : 							(param->sym.mem_type <= MT_QWORD) && param->sym.used) {   //here as well   
 
 	mov	rax, QWORD PTR param$[rsp]
 	cmp	DWORD PTR [rax+36], 196			; 000000c4H
@@ -5624,12 +5626,12 @@ $LN23@win64_Save:
 	test	eax, eax
 	je	SHORT $LN25@win64_Save
 
-; 2312 : 							if (i < 4) {
+; 2319 : 							if (i < 4) {
 
 	cmp	DWORD PTR i$[rsp], 4
 	jge	SHORT $LN26@win64_Save
 
-; 2313 : 								AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
+; 2320 : 								AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	lea	rcx, OFFSET FLAT:ms64_regs
@@ -5638,16 +5640,16 @@ $LN23@win64_Save:
 	mov	r9d, DWORD PTR [rcx+rax*4]
 	mov	r8d, edx
 	mov	edx, 119				; 00000077H
-	lea	rcx, OFFSET FLAT:$SG12267
+	lea	rcx, OFFSET FLAT:$SG12269
 	call	AddLineQueueX
 
-; 2314 : 								info->home_used[i] = 1;
+; 2321 : 								info->home_used[i] = 1;
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	mov	rcx, QWORD PTR info$[rsp]
 	mov	BYTE PTR [rcx+rax+116], 1
 
-; 2315 : 								++info->home_taken;
+; 2322 : 								++info->home_taken;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+108]
@@ -5659,22 +5661,22 @@ $LN25@win64_Save:
 $LN24@win64_Save:
 $LN19@win64_Save:
 
-; 2316 : 							}
-; 2317 : 						}
-; 2318 : 					}
-; 2319 : 					param = param->nextparam;
+; 2323 : 							}
+; 2324 : 						}
+; 2325 : 					}
+; 2326 : 					param = param->nextparam;
 
 	mov	rax, QWORD PTR param$[rsp]
 	mov	rax, QWORD PTR [rax+112]
 	mov	QWORD PTR param$[rsp], rax
 
-; 2320 : 				}
+; 2327 : 				}
 
 	jmp	SHORT $LN17@win64_Save
 $LN16@win64_Save:
 
-; 2321 : 				else { /* v2.09: else branch added */
-; 2322 : 					AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
+; 2328 : 				else { /* v2.09: else branch added */
+; 2329 : 					AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	lea	rcx, OFFSET FLAT:ms64_regs
@@ -5683,16 +5685,16 @@ $LN16@win64_Save:
 	mov	r9d, DWORD PTR [rcx+rax*4]
 	mov	r8d, edx
 	mov	edx, 119				; 00000077H
-	lea	rcx, OFFSET FLAT:$SG12268
+	lea	rcx, OFFSET FLAT:$SG12270
 	call	AddLineQueueX
 
-; 2323 : 					info->home_used[i] = 1;
+; 2330 : 					info->home_used[i] = 1;
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	mov	rcx, QWORD PTR info$[rsp]
 	mov	BYTE PTR [rcx+rax+116], 1
 
-; 2324 : 					++info->home_taken;
+; 2331 : 					++info->home_taken;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+108]
@@ -5701,19 +5703,19 @@ $LN16@win64_Save:
 	mov	DWORD PTR [rcx+108], eax
 $LN17@win64_Save:
 
-; 2325 : 				}
-; 2326 : 			}
+; 2332 : 				}
+; 2333 : 			}
 
 	jmp	$LN2@win64_Save
 $LN3@win64_Save:
 
-; 2327 : 		}
+; 2334 : 		}
 
 	jmp	$LN15@win64_Save
 $LN14@win64_Save:
 
-; 2328 : 		else {
-; 2329 : 			for (i = 0, param = info->paralist; param && (i < 4); i++) {
+; 2335 : 		else {
+; 2336 : 			for (i = 0, param = info->paralist; param && (i < 4); i++) {
 
 	mov	DWORD PTR i$[rsp], 0
 	mov	rax, QWORD PTR info$[rsp]
@@ -5730,8 +5732,8 @@ $LN7@win64_Save:
 	cmp	DWORD PTR i$[rsp], 4
 	jge	$LN6@win64_Save
 
-; 2330 : 				/* v2.05: save XMMx if type is float/double */
-; 2331 : 				if (param->sym.is_vararg == FALSE) {
+; 2337 : 				/* v2.05: save XMMx if type is float/double */
+; 2338 : 				if (param->sym.is_vararg == FALSE) {
 
 	mov	rax, QWORD PTR param$[rsp]
 	movzx	eax, BYTE PTR [rax+47]
@@ -5741,7 +5743,7 @@ $LN7@win64_Save:
 	test	eax, eax
 	jne	$LN27@win64_Save
 
-; 2332 : 					if ((param->sym.mem_type & MT_FLOAT) && param->sym.used) {  // added  && param->sym.used
+; 2339 : 					if ((param->sym.mem_type & MT_FLOAT) && param->sym.used) {  // added  && param->sym.used
 
 	mov	rax, QWORD PTR param$[rsp]
 	mov	eax, DWORD PTR [rax+36]
@@ -5755,7 +5757,7 @@ $LN7@win64_Save:
 	test	eax, eax
 	je	SHORT $LN29@win64_Save
 
-; 2333 : 						AddLineQueueX("movq [%r+%u], %r", T_RSP, 8 + i * 8, T_XMM0 + i);
+; 2340 : 						AddLineQueueX("movq [%r+%u], %r", T_RSP, 8 + i * 8, T_XMM0 + i);
 
 	mov	eax, DWORD PTR i$[rsp]
 	add	eax, 40					; 00000028H
@@ -5764,16 +5766,16 @@ $LN7@win64_Save:
 	mov	r9d, eax
 	mov	r8d, ecx
 	mov	edx, 119				; 00000077H
-	lea	rcx, OFFSET FLAT:$SG12273
+	lea	rcx, OFFSET FLAT:$SG12275
 	call	AddLineQueueX
 
-; 2334 : 						info->home_used[i] = 1;
+; 2341 : 						info->home_used[i] = 1;
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	mov	rcx, QWORD PTR info$[rsp]
 	mov	BYTE PTR [rcx+rax+116], 1
 
-; 2335 : 						++info->home_taken;
+; 2342 : 						++info->home_taken;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+108]
@@ -5781,13 +5783,13 @@ $LN7@win64_Save:
 	mov	rcx, QWORD PTR info$[rsp]
 	mov	DWORD PTR [rcx+108], eax
 
-; 2336 : 					}
+; 2343 : 					}
 
 	jmp	SHORT $LN30@win64_Save
 $LN29@win64_Save:
 
-; 2337 : 					else {
-; 2338 : 						if (param->sym.used) {                                    //here as well 
+; 2344 : 					else {
+; 2345 : 						if (param->sym.used) {                                    //here as well 
 
 	mov	rax, QWORD PTR param$[rsp]
 	movzx	eax, BYTE PTR [rax+40]
@@ -5796,7 +5798,7 @@ $LN29@win64_Save:
 	test	eax, eax
 	je	SHORT $LN31@win64_Save
 
-; 2339 : 							AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
+; 2346 : 							AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	lea	rcx, OFFSET FLAT:ms64_regs
@@ -5805,16 +5807,16 @@ $LN29@win64_Save:
 	mov	r9d, DWORD PTR [rcx+rax*4]
 	mov	r8d, edx
 	mov	edx, 119				; 00000077H
-	lea	rcx, OFFSET FLAT:$SG12275
+	lea	rcx, OFFSET FLAT:$SG12277
 	call	AddLineQueueX
 
-; 2340 : 							info->home_used[i] = 1;
+; 2347 : 							info->home_used[i] = 1;
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	mov	rcx, QWORD PTR info$[rsp]
 	mov	BYTE PTR [rcx+rax+116], 1
 
-; 2341 : 							++info->home_taken;
+; 2348 : 							++info->home_taken;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+108]
@@ -5824,21 +5826,21 @@ $LN29@win64_Save:
 $LN31@win64_Save:
 $LN30@win64_Save:
 
-; 2342 : 						}
-; 2343 : 					}
-; 2344 : 					param = param->nextparam;
+; 2349 : 						}
+; 2350 : 					}
+; 2351 : 					param = param->nextparam;
 
 	mov	rax, QWORD PTR param$[rsp]
 	mov	rax, QWORD PTR [rax+112]
 	mov	QWORD PTR param$[rsp], rax
 
-; 2345 : 				}
+; 2352 : 				}
 
 	jmp	SHORT $LN28@win64_Save
 $LN27@win64_Save:
 
-; 2346 : 				else { /* v2.09: else branch added */
-; 2347 : 					AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
+; 2353 : 				else { /* v2.09: else branch added */
+; 2354 : 					AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	lea	rcx, OFFSET FLAT:ms64_regs
@@ -5847,16 +5849,16 @@ $LN27@win64_Save:
 	mov	r9d, DWORD PTR [rcx+rax*4]
 	mov	r8d, edx
 	mov	edx, 119				; 00000077H
-	lea	rcx, OFFSET FLAT:$SG12276
+	lea	rcx, OFFSET FLAT:$SG12278
 	call	AddLineQueueX
 
-; 2348 : 					info->home_used[i] = 1;
+; 2355 : 					info->home_used[i] = 1;
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	mov	rcx, QWORD PTR info$[rsp]
 	mov	BYTE PTR [rcx+rax+116], 1
 
-; 2349 : 					++info->home_taken;
+; 2356 : 					++info->home_taken;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+108]
@@ -5865,21 +5867,21 @@ $LN27@win64_Save:
 	mov	DWORD PTR [rcx+108], eax
 $LN28@win64_Save:
 
-; 2350 : 				}
-; 2351 : 			}
+; 2357 : 				}
+; 2358 : 			}
 
 	jmp	$LN5@win64_Save
 $LN6@win64_Save:
 $LN15@win64_Save:
 
-; 2352 : 		}
-; 2353 : 	}
+; 2359 : 		}
+; 2360 : 	}
 
 	jmp	$LN12@win64_Save
 $LN11@win64_Save:
 
-; 2354 : 	else {
-; 2355 : 		for (i = 0, param = info->paralist; param && (i < 4); i++) {
+; 2361 : 	else {
+; 2362 : 		for (i = 0, param = info->paralist; param && (i < 4); i++) {
 
 	mov	DWORD PTR i$[rsp], 0
 	mov	rax, QWORD PTR info$[rsp]
@@ -5896,8 +5898,8 @@ $LN10@win64_Save:
 	cmp	DWORD PTR i$[rsp], 4
 	jge	$LN9@win64_Save
 
-; 2356 : 			/* v2.05: save XMMx if type is float/double */
-; 2357 : 			if (param->sym.is_vararg == FALSE) {
+; 2363 : 			/* v2.05: save XMMx if type is float/double */
+; 2364 : 			if (param->sym.is_vararg == FALSE) {
 
 	mov	rax, QWORD PTR param$[rsp]
 	movzx	eax, BYTE PTR [rax+47]
@@ -5907,7 +5909,7 @@ $LN10@win64_Save:
 	test	eax, eax
 	jne	SHORT $LN32@win64_Save
 
-; 2358 : 				if (param->sym.mem_type & MT_FLOAT)
+; 2365 : 				if (param->sym.mem_type & MT_FLOAT)
 
 	mov	rax, QWORD PTR param$[rsp]
 	mov	eax, DWORD PTR [rax+36]
@@ -5915,7 +5917,7 @@ $LN10@win64_Save:
 	test	eax, eax
 	je	SHORT $LN34@win64_Save
 
-; 2359 : 					AddLineQueueX("movq [%r+%u], %r", T_RSP, 8 + i * 8, T_XMM0 + i);
+; 2366 : 					AddLineQueueX("movq [%r+%u], %r", T_RSP, 8 + i * 8, T_XMM0 + i);
 
 	mov	eax, DWORD PTR i$[rsp]
 	add	eax, 40					; 00000028H
@@ -5924,13 +5926,13 @@ $LN10@win64_Save:
 	mov	r9d, eax
 	mov	r8d, ecx
 	mov	edx, 119				; 00000077H
-	lea	rcx, OFFSET FLAT:$SG12281
+	lea	rcx, OFFSET FLAT:$SG12283
 	call	AddLineQueueX
 	jmp	SHORT $LN35@win64_Save
 $LN34@win64_Save:
 
-; 2360 : 				else
-; 2361 : 					AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
+; 2367 : 				else
+; 2368 : 					AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	lea	rcx, OFFSET FLAT:ms64_regs
@@ -5939,23 +5941,23 @@ $LN34@win64_Save:
 	mov	r9d, DWORD PTR [rcx+rax*4]
 	mov	r8d, edx
 	mov	edx, 119				; 00000077H
-	lea	rcx, OFFSET FLAT:$SG12282
+	lea	rcx, OFFSET FLAT:$SG12284
 	call	AddLineQueueX
 $LN35@win64_Save:
 
-; 2362 : 				param = param->nextparam;
+; 2369 : 				param = param->nextparam;
 
 	mov	rax, QWORD PTR param$[rsp]
 	mov	rax, QWORD PTR [rax+112]
 	mov	QWORD PTR param$[rsp], rax
 
-; 2363 : 			}
+; 2370 : 			}
 
 	jmp	SHORT $LN33@win64_Save
 $LN32@win64_Save:
 
-; 2364 : 			else { /* v2.09: else branch added */
-; 2365 : 				AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
+; 2371 : 			else { /* v2.09: else branch added */
+; 2372 : 				AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	lea	rcx, OFFSET FLAT:ms64_regs
@@ -5964,20 +5966,20 @@ $LN32@win64_Save:
 	mov	r9d, DWORD PTR [rcx+rax*4]
 	mov	r8d, edx
 	mov	edx, 119				; 00000077H
-	lea	rcx, OFFSET FLAT:$SG12283
+	lea	rcx, OFFSET FLAT:$SG12285
 	call	AddLineQueueX
 $LN33@win64_Save:
 
-; 2366 : 			}
-; 2367 : 		}
+; 2373 : 			}
+; 2374 : 		}
 
 	jmp	$LN8@win64_Save
 $LN9@win64_Save:
 $LN12@win64_Save:
 
-; 2368 : 	}
-; 2369 : 	return;
-; 2370 : }
+; 2375 : 	}
+; 2376 : 	return;
+; 2377 : }
 
 	add	rsp, 72					; 00000048H
 	ret	0
@@ -6005,7 +6007,7 @@ __$ArrayPad$ = 1296
 tokenarray$ = 1328
 write_userdef_prologue PROC
 
-; 2187 : {
+; 2194 : {
 
 	mov	QWORD PTR [rsp+8], rcx
 	sub	rsp, 1320				; 00000528H
@@ -6013,27 +6015,27 @@ write_userdef_prologue PROC
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
 
-; 2188 :     int                 len;
-; 2189 :     int                 i;
-; 2190 :     struct proc_info    *info;
-; 2191 :     char                *p;
-; 2192 :     bool                is_exitm;
-; 2193 :     struct dsym         *dir;
-; 2194 :     //int                 align = CurrWordSize;
-; 2195 :     int                 flags = CurrProc->sym.langtype; /* set bits 0-2 */
+; 2195 :     int                 len;
+; 2196 :     int                 i;
+; 2197 :     struct proc_info    *info;
+; 2198 :     char                *p;
+; 2199 :     bool                is_exitm;
+; 2200 :     struct dsym         *dir;
+; 2201 :     //int                 align = CurrWordSize;
+; 2202 :     int                 flags = CurrProc->sym.langtype; /* set bits 0-2 */
 
 	mov	rax, QWORD PTR CurrProc
 	mov	eax, DWORD PTR [rax+76]
 	mov	DWORD PTR flags$[rsp], eax
 
-; 2196 :     uint_16             *regs;
-; 2197 :     char                reglst[128];
-; 2198 :     char                buffer[MAX_LINE_LEN];
-; 2199 : 	struct asym         *cline;
-; 2200 : 	int                 curline;
-; 2201 : 
-; 2202 : #if FASTPASS
-; 2203 :     if ( Parse_Pass > PASS_1 && UseSavedState )
+; 2203 :     uint_16             *regs;
+; 2204 :     char                reglst[128];
+; 2205 :     char                buffer[MAX_LINE_LEN];
+; 2206 : 	struct asym         *cline;
+; 2207 : 	int                 curline;
+; 2208 : 
+; 2209 : #if FASTPASS
+; 2210 :     if ( Parse_Pass > PASS_1 && UseSavedState )
 
 	cmp	DWORD PTR Parse_Pass, 0
 	jbe	SHORT $LN8@write_user
@@ -6041,25 +6043,25 @@ write_userdef_prologue PROC
 	test	eax, eax
 	je	SHORT $LN8@write_user
 
-; 2204 :         return( NOT_ERROR );
+; 2211 :         return( NOT_ERROR );
 
 	xor	eax, eax
 	jmp	$LN1@write_user
 $LN8@write_user:
 
-; 2205 : #endif
-; 2206 : 
-; 2207 :     info = CurrProc->e.procinfo;
+; 2212 : #endif
+; 2213 : 
+; 2214 :     info = CurrProc->e.procinfo;
 
 	mov	rax, QWORD PTR CurrProc
 	mov	rax, QWORD PTR [rax+96]
 	mov	QWORD PTR info$[rsp], rax
 
-; 2208 :     /* v2.11: now done in write_prologue() */
-; 2209 :     //info->localsize = ROUND_UP( info->localsize, CurrWordSize );
-; 2210 : #if AMD64_SUPPORT
-; 2211 :     /* to be compatible with ML64, translate FASTCALL to 0 (not 7) */
-; 2212 :     if ( CurrProc->sym.langtype == LANG_FASTCALL && ModuleInfo.fctype == FCT_WIN64 )
+; 2215 :     /* v2.11: now done in write_prologue() */
+; 2216 :     //info->localsize = ROUND_UP( info->localsize, CurrWordSize );
+; 2217 : #if AMD64_SUPPORT
+; 2218 :     /* to be compatible with ML64, translate FASTCALL to 0 (not 7) */
+; 2219 :     if ( CurrProc->sym.langtype == LANG_FASTCALL && ModuleInfo.fctype == FCT_WIN64 )
 
 	mov	rax, QWORD PTR CurrProc
 	cmp	DWORD PTR [rax+76], 7
@@ -6067,15 +6069,15 @@ $LN8@write_user:
 	cmp	DWORD PTR ModuleInfo+376, 2
 	jne	SHORT $LN9@write_user
 
-; 2213 :         flags = 0;
+; 2220 :         flags = 0;
 
 	mov	DWORD PTR flags$[rsp], 0
 $LN9@write_user:
 
-; 2214 : #endif
-; 2215 :     /* set bit 4 if the caller restores (E)SP */
-; 2216 :     if ( CurrProc->sym.langtype == LANG_C ||
-; 2217 :         CurrProc->sym.langtype == LANG_SYSCALL ||
+; 2221 : #endif
+; 2222 :     /* set bit 4 if the caller restores (E)SP */
+; 2223 :     if ( CurrProc->sym.langtype == LANG_C ||
+; 2224 :         CurrProc->sym.langtype == LANG_SYSCALL ||
 
 	mov	rax, QWORD PTR CurrProc
 	cmp	DWORD PTR [rax+76], 1
@@ -6088,19 +6090,19 @@ $LN9@write_user:
 	jne	SHORT $LN10@write_user
 $LN11@write_user:
 
-; 2218 :         CurrProc->sym.langtype == LANG_FASTCALL )
-; 2219 :         flags |= 0x10;
+; 2225 :         CurrProc->sym.langtype == LANG_FASTCALL )
+; 2226 :         flags |= 0x10;
 
 	mov	eax, DWORD PTR flags$[rsp]
 	or	eax, 16
 	mov	DWORD PTR flags$[rsp], eax
 $LN10@write_user:
 
-; 2220 : 
-; 2221 :     /* set bit 5 if proc is far */
-; 2222 :     /* set bit 6 if proc is private */
-; 2223 :     /* v2.11: set bit 7 if proc is export */
-; 2224 :     flags |= ( CurrProc->sym.mem_type == MT_FAR ? 0x20 : 0 );
+; 2227 : 
+; 2228 :     /* set bit 5 if proc is far */
+; 2229 :     /* set bit 6 if proc is private */
+; 2230 :     /* v2.11: set bit 7 if proc is export */
+; 2231 :     flags |= ( CurrProc->sym.mem_type == MT_FAR ? 0x20 : 0 );
 
 	mov	rax, QWORD PTR CurrProc
 	cmp	DWORD PTR [rax+36], 130			; 00000082H
@@ -6116,7 +6118,7 @@ $LN20@write_user:
 	mov	eax, ecx
 	mov	DWORD PTR flags$[rsp], eax
 
-; 2225 :     flags |= ( CurrProc->sym.ispublic ? 0 : 0x40 );
+; 2232 :     flags |= ( CurrProc->sym.ispublic ? 0 : 0x40 );
 
 	mov	rax, QWORD PTR CurrProc
 	movzx	eax, BYTE PTR [rax+40]
@@ -6136,7 +6138,7 @@ $LN22@write_user:
 	mov	eax, ecx
 	mov	DWORD PTR flags$[rsp], eax
 
-; 2226 :     flags |= ( info->isexport ? 0x80 : 0 );
+; 2233 :     flags |= ( info->isexport ? 0x80 : 0 );
 
 	mov	rax, QWORD PTR info$[rsp]
 	movzx	eax, BYTE PTR [rax+128]
@@ -6156,14 +6158,14 @@ $LN24@write_user:
 	mov	eax, ecx
 	mov	DWORD PTR flags$[rsp], eax
 
-; 2227 : 
-; 2228 :     dir = (struct dsym *)SymSearch( ModuleInfo.proc_prologue );
+; 2234 : 
+; 2235 :     dir = (struct dsym *)SymSearch( ModuleInfo.proc_prologue );
 
 	mov	rcx, QWORD PTR ModuleInfo+320
 	call	SymFind
 	mov	QWORD PTR dir$[rsp], rax
 
-; 2229 :     if ( dir == NULL || dir->sym.state != SYM_MACRO || dir->sym.isfunc != TRUE ) {
+; 2236 :     if ( dir == NULL || dir->sym.state != SYM_MACRO || dir->sym.isfunc != TRUE ) {
 
 	cmp	QWORD PTR dir$[rsp], 0
 	je	SHORT $LN13@write_user
@@ -6179,47 +6181,47 @@ $LN24@write_user:
 	je	SHORT $LN12@write_user
 $LN13@write_user:
 
-; 2230 :         return( EmitError( PROLOGUE_MUST_BE_MACRO_FUNC ) );
+; 2237 :         return( EmitError( PROLOGUE_MUST_BE_MACRO_FUNC ) );
 
 	mov	ecx, 156				; 0000009cH
 	call	EmitError
 	jmp	$LN1@write_user
 $LN12@write_user:
 
-; 2231 :     }
-; 2232 : 
-; 2233 :     /* if -EP is on, emit "prologue: none" */
-; 2234 :     if ( Options.preprocessor_stdout )
+; 2238 :     }
+; 2239 : 
+; 2240 :     /* if -EP is on, emit "prologue: none" */
+; 2241 :     if ( Options.preprocessor_stdout )
 
 	movzx	eax, BYTE PTR Options+141
 	test	eax, eax
 	je	SHORT $LN14@write_user
 
-; 2235 :         printf( "option prologue:none\n" );
+; 2242 :         printf( "option prologue:none\n" );
 
-	lea	rcx, OFFSET FLAT:$SG12225
+	lea	rcx, OFFSET FLAT:$SG12227
 	call	printf
 $LN14@write_user:
 
-; 2236 : 
-; 2237 :     p = reglst;
+; 2243 : 
+; 2244 :     p = reglst;
 
 	lea	rax, QWORD PTR reglst$[rsp]
 	mov	QWORD PTR p$[rsp], rax
 
-; 2238 :     if ( info->regslist ) {
+; 2245 :     if ( info->regslist ) {
 
 	mov	rax, QWORD PTR info$[rsp]
 	cmp	QWORD PTR [rax], 0
 	je	$LN15@write_user
 
-; 2239 :         regs = info->regslist;
+; 2246 :         regs = info->regslist;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	rax, QWORD PTR [rax]
 	mov	QWORD PTR regs$[rsp], rax
 
-; 2240 :         for ( len = *regs++; len; len--, regs++ ) {
+; 2247 :         for ( len = *regs++; len; len--, regs++ ) {
 
 	mov	rax, QWORD PTR regs$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -6239,7 +6241,7 @@ $LN4@write_user:
 	cmp	DWORD PTR len$[rsp], 0
 	je	SHORT $LN3@write_user
 
-; 2241 :             GetResWName( *regs, p );
+; 2248 :             GetResWName( *regs, p );
 
 	mov	rax, QWORD PTR regs$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -6247,7 +6249,7 @@ $LN4@write_user:
 	mov	ecx, eax
 	call	GetResWName
 
-; 2242 :             p += strlen( p );
+; 2249 :             p += strlen( p );
 
 	mov	rcx, QWORD PTR p$[rsp]
 	call	strlen
@@ -6256,12 +6258,12 @@ $LN4@write_user:
 	mov	rax, rcx
 	mov	QWORD PTR p$[rsp], rax
 
-; 2243 :             if ( len > 1 )
+; 2250 :             if ( len > 1 )
 
 	cmp	DWORD PTR len$[rsp], 1
 	jle	SHORT $LN16@write_user
 
-; 2244 :                 *p++ = ',';
+; 2251 :                 *p++ = ',';
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	BYTE PTR [rax], 44			; 0000002cH
@@ -6270,24 +6272,24 @@ $LN4@write_user:
 	mov	QWORD PTR p$[rsp], rax
 $LN16@write_user:
 
-; 2245 :         }
+; 2252 :         }
 
 	jmp	SHORT $LN2@write_user
 $LN3@write_user:
 $LN15@write_user:
 
-; 2246 :     }
-; 2247 :     *p = NULLC;
+; 2253 :     }
+; 2254 :     *p = NULLC;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	BYTE PTR [rax], 0
 
-; 2248 : 
-; 2249 :     /* v2.07: make this work with radix != 10 */
-; 2250 :     /* leave a space at pos 0 of buffer, because the buffer is used for
-; 2251 :      * both macro arguments and EXITM return value.
-; 2252 :      */
-; 2253 :     sprintf( buffer," (%s, 0%XH, 0%XH, 0%XH, <<%s>>, <%s>)",
+; 2255 : 
+; 2256 :     /* v2.07: make this work with radix != 10 */
+; 2257 :     /* leave a space at pos 0 of buffer, because the buffer is used for
+; 2258 :      * both macro arguments and EXITM return value.
+; 2259 :      */
+; 2260 :     sprintf( buffer," (%s, 0%XH, 0%XH, 0%XH, <<%s>>, <%s>)",
 
 	mov	rax, QWORD PTR info$[rsp]
 	cmp	QWORD PTR [rax+48], 0
@@ -6297,7 +6299,7 @@ $LN15@write_user:
 	mov	QWORD PTR tv164[rsp], rax
 	jmp	SHORT $LN26@write_user
 $LN25@write_user:
-	lea	rax, OFFSET FLAT:$SG12228
+	lea	rax, OFFSET FLAT:$SG12230
 	mov	QWORD PTR tv164[rsp], rax
 $LN26@write_user:
 	mov	rax, QWORD PTR tv164[rsp]
@@ -6313,19 +6315,19 @@ $LN26@write_user:
 	mov	r9d, DWORD PTR flags$[rsp]
 	mov	rax, QWORD PTR CurrProc
 	mov	r8, QWORD PTR [rax+8]
-	lea	rdx, OFFSET FLAT:$SG12229
+	lea	rdx, OFFSET FLAT:$SG12231
 	lea	rcx, QWORD PTR buffer$[rsp]
 	call	sprintf
 
-; 2254 :              CurrProc->sym.name, flags, info->parasize, info->localsize,
-; 2255 :             reglst, info->prologuearg ? info->prologuearg : "" );
-; 2256 :     i = Token_Count + 1;
+; 2261 :              CurrProc->sym.name, flags, info->parasize, info->localsize,
+; 2262 :             reglst, info->prologuearg ? info->prologuearg : "" );
+; 2263 :     i = Token_Count + 1;
 
 	mov	eax, DWORD PTR ModuleInfo+496
 	inc	eax
 	mov	DWORD PTR i$[rsp], eax
 
-; 2257 :     Token_Count = Tokenize( buffer, i, tokenarray, TOK_RESCAN );
+; 2264 :     Token_Count = Tokenize( buffer, i, tokenarray, TOK_RESCAN );
 
 	mov	r9d, 1
 	mov	r8, QWORD PTR tokenarray$[rsp]
@@ -6334,8 +6336,8 @@ $LN26@write_user:
 	call	Tokenize
 	mov	DWORD PTR ModuleInfo+496, eax
 
-; 2258 : 
-; 2259 :     RunMacro( dir, i, tokenarray, buffer, 0, &is_exitm );
+; 2265 : 
+; 2266 :     RunMacro( dir, i, tokenarray, buffer, 0, &is_exitm );
 
 	lea	rax, QWORD PTR is_exitm$[rsp]
 	mov	QWORD PTR [rsp+40], rax
@@ -6346,27 +6348,27 @@ $LN26@write_user:
 	mov	rcx, QWORD PTR dir$[rsp]
 	call	RunMacro
 
-; 2260 :     Token_Count = i - 1;
+; 2267 :     Token_Count = i - 1;
 
 	mov	eax, DWORD PTR i$[rsp]
 	dec	eax
 	mov	DWORD PTR ModuleInfo+496, eax
 
-; 2261 :     DebugMsg(("write_userdef_prologue: macro %s returned >%s<\n", ModuleInfo.proc_prologue, buffer ));
+; 2268 :     DebugMsg(("write_userdef_prologue: macro %s returned >%s<\n", ModuleInfo.proc_prologue, buffer ));
 
 	lea	r8, QWORD PTR buffer$[rsp]
 	mov	rdx, QWORD PTR ModuleInfo+320
-	lea	rcx, OFFSET FLAT:$SG12230
+	lea	rcx, OFFSET FLAT:$SG12232
 	call	DoDebugMsg
 
-; 2262 : 
-; 2263 :     if ( Parse_Pass == PASS_1 ) {
+; 2269 : 
+; 2270 :     if ( Parse_Pass == PASS_1 ) {
 
 	cmp	DWORD PTR Parse_Pass, 0
 	jne	SHORT $LN17@write_user
 
-; 2264 :         struct dsym *curr;
-; 2265 :         len = atoi( buffer ) - info->localsize;
+; 2271 :         struct dsym *curr;
+; 2272 :         len = atoi( buffer ) - info->localsize;
 
 	lea	rcx, QWORD PTR buffer$[rsp]
 	call	atoi
@@ -6374,7 +6376,7 @@ $LN26@write_user:
 	sub	eax, DWORD PTR [rcx+36]
 	mov	DWORD PTR len$[rsp], eax
 
-; 2266 :         for ( curr = info->locallist; curr; curr = curr->nextlocal ) {
+; 2273 :         for ( curr = info->locallist; curr; curr = curr->nextlocal ) {
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	rax, QWORD PTR [rax+16]
@@ -6388,7 +6390,7 @@ $LN7@write_user:
 	cmp	QWORD PTR curr$1[rsp], 0
 	je	SHORT $LN6@write_user
 
-; 2267 :             curr->sym.offset -= len;
+; 2274 :             curr->sym.offset -= len;
 
 	mov	rax, QWORD PTR curr$1[rsp]
 	mov	ecx, DWORD PTR len$[rsp]
@@ -6397,20 +6399,20 @@ $LN7@write_user:
 	mov	rcx, QWORD PTR curr$1[rsp]
 	mov	DWORD PTR [rcx+16], eax
 
-; 2268 :         }
+; 2275 :         }
 
 	jmp	SHORT $LN5@write_user
 $LN6@write_user:
 $LN17@write_user:
 
-; 2269 :     }
-; 2270 : 	
-; 2271 :     return ( NOT_ERROR );
+; 2276 :     }
+; 2277 : 	
+; 2278 :     return ( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@write_user:
 
-; 2272 : }
+; 2279 : }
 
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp
@@ -6435,38 +6437,38 @@ i$ = 208
 tokenarray$ = 216
 ExcFrameDirective PROC
 
-; 1899 : {
+; 1906 : {
 
 $LN59:
 	mov	QWORD PTR [rsp+16], rdx
 	mov	DWORD PTR [rsp+8], ecx
 	sub	rsp, 200				; 000000c8H
 
-; 1900 :     struct expr opndx;
-; 1901 :     int token;
-; 1902 :     unsigned int size;
-; 1903 :     uint_8 oldcodes = unw_info.CountOfCodes;
+; 1907 :     struct expr opndx;
+; 1908 :     int token;
+; 1909 :     unsigned int size;
+; 1910 :     uint_8 oldcodes = unw_info.CountOfCodes;
 
 	movzx	eax, BYTE PTR unw_info+2
 	mov	BYTE PTR oldcodes$[rsp], al
 
-; 1904 :     uint_8 reg;
-; 1905 :     uint_8 ofs;
-; 1906 :     UNWIND_CODE *puc;
-; 1907 : 
-; 1908 :     DebugMsg1(("ExcFrameDirective(%s) enter\n", tokenarray[i].string_ptr ));
+; 1911 :     uint_8 reg;
+; 1912 :     uint_8 ofs;
+; 1913 :     UNWIND_CODE *puc;
+; 1914 : 
+; 1915 :     DebugMsg1(("ExcFrameDirective(%s) enter\n", tokenarray[i].string_ptr ));
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rcx+rax+8]
-	lea	rcx, OFFSET FLAT:$SG12130
+	lea	rcx, OFFSET FLAT:$SG12132
 	call	DoDebugMsg1
 
-; 1909 :     /* v2.05: accept directives for windows only */
-; 1910 : 	if (Options.output_format != OFORMAT_COFF && Options.output_format != OFORMAT_ELF /* John Hankinson 2016-02-10 Added elf win64 hack */
-; 1911 : #if PE_SUPPORT
-; 1912 :         && ModuleInfo.sub_format != SFORMAT_PE
+; 1916 :     /* v2.05: accept directives for windows only */
+; 1917 : 	if (Options.output_format != OFORMAT_COFF && Options.output_format != OFORMAT_ELF /* John Hankinson 2016-02-10 Added elf win64 hack */
+; 1918 : #if PE_SUPPORT
+; 1919 :         && ModuleInfo.sub_format != SFORMAT_PE
 
 	cmp	DWORD PTR Options+160, 2
 	je	SHORT $LN6@ExcFrameDi
@@ -6475,9 +6477,9 @@ $LN59:
 	cmp	DWORD PTR ModuleInfo+372, 2
 	je	SHORT $LN6@ExcFrameDi
 
-; 1913 : #endif
-; 1914 :        ) {
-; 1915 :         return( EmitErr( NOT_SUPPORTED_WITH_CURR_FORMAT, GetResWName( tokenarray[i].tokval, NULL ) ) );
+; 1920 : #endif
+; 1921 :        ) {
+; 1922 :         return( EmitErr( NOT_SUPPORTED_WITH_CURR_FORMAT, GetResWName( tokenarray[i].tokval, NULL ) ) );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -6491,8 +6493,8 @@ $LN59:
 	jmp	$LN1@ExcFrameDi
 $LN6@ExcFrameDi:
 
-; 1916 :     }
-; 1917 :     if ( CurrProc == NULL || endprolog_found == TRUE ) {
+; 1923 :     }
+; 1924 :     if ( CurrProc == NULL || endprolog_found == TRUE ) {
 
 	cmp	QWORD PTR CurrProc, 0
 	je	SHORT $LN8@ExcFrameDi
@@ -6501,15 +6503,15 @@ $LN6@ExcFrameDi:
 	jne	SHORT $LN7@ExcFrameDi
 $LN8@ExcFrameDi:
 
-; 1918 :         return( EmitError( ENDPROLOG_FOUND_BEFORE_EH_DIRECTIVES ) );
+; 1925 :         return( EmitError( ENDPROLOG_FOUND_BEFORE_EH_DIRECTIVES ) );
 
 	mov	ecx, 255				; 000000ffH
 	call	EmitError
 	jmp	$LN1@ExcFrameDi
 $LN7@ExcFrameDi:
 
-; 1919 :     }
-; 1920 :     if ( CurrProc->e.procinfo->isframe == FALSE ) {
+; 1926 :     }
+; 1927 :     if ( CurrProc->e.procinfo->isframe == FALSE ) {
 
 	mov	rax, QWORD PTR CurrProc
 	mov	rax, QWORD PTR [rax+96]
@@ -6520,31 +6522,31 @@ $LN7@ExcFrameDi:
 	test	eax, eax
 	jne	SHORT $LN9@ExcFrameDi
 
-; 1921 :         return( EmitError( MISSING_FRAME_IN_PROC ) );
+; 1928 :         return( EmitError( MISSING_FRAME_IN_PROC ) );
 
 	mov	ecx, 256				; 00000100H
 	call	EmitError
 	jmp	$LN1@ExcFrameDi
 $LN9@ExcFrameDi:
 
-; 1922 :     }
-; 1923 : 
-; 1924 :     puc = &unw_code[unw_info.CountOfCodes];
+; 1929 :     }
+; 1930 : 
+; 1931 :     puc = &unw_code[unw_info.CountOfCodes];
 
 	movzx	eax, BYTE PTR unw_info+2
 	lea	rcx, OFFSET FLAT:unw_code
 	lea	rax, QWORD PTR [rcx+rax*2]
 	mov	QWORD PTR puc$[rsp], rax
 
-; 1925 : 
-; 1926 :     ofs = GetCurrOffset() - CurrProc->sym.offset;
+; 1932 : 
+; 1933 :     ofs = GetCurrOffset() - CurrProc->sym.offset;
 
 	call	GetCurrOffset
 	mov	rcx, QWORD PTR CurrProc
 	sub	eax, DWORD PTR [rcx+16]
 	mov	BYTE PTR ofs$[rsp], al
 
-; 1927 :     token = tokenarray[i].tokval;
+; 1934 :     token = tokenarray[i].tokval;
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -6552,18 +6554,18 @@ $LN9@ExcFrameDi:
 	mov	eax, DWORD PTR [rcx+rax+16]
 	mov	DWORD PTR token$[rsp], eax
 
-; 1928 :     i++;
+; 1935 :     i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
 	mov	DWORD PTR i$[rsp], eax
 
-; 1929 : 
-; 1930 :     /* note: since the codes will be written from "right to left",
-; 1931 :      * the opcode item has to be written last!
-; 1932 :      */
-; 1933 : 
-; 1934 :     switch ( token ) {
+; 1936 : 
+; 1937 :     /* note: since the codes will be written from "right to left",
+; 1938 :      * the opcode item has to be written last!
+; 1939 :      */
+; 1940 : 
+; 1941 :     switch ( token ) {
 
 	mov	eax, DWORD PTR token$[rsp]
 	mov	DWORD PTR tv140[rsp], eax
@@ -6579,8 +6581,8 @@ $LN9@ExcFrameDi:
 	jmp	rax
 $LN10@ExcFrameDi:
 
-; 1935 :     case T_DOT_ALLOCSTACK: /* syntax: .ALLOCSTACK size */
-; 1936 :         if ( ERROR == EvalOperand( &i, tokenarray, Token_Count, &opndx, 0 ) )
+; 1942 :     case T_DOT_ALLOCSTACK: /* syntax: .ALLOCSTACK size */
+; 1943 :         if ( ERROR == EvalOperand( &i, tokenarray, Token_Count, &opndx, 0 ) )
 
 	mov	BYTE PTR [rsp+32], 0
 	lea	r9, QWORD PTR opndx$[rsp]
@@ -6591,13 +6593,13 @@ $LN10@ExcFrameDi:
 	cmp	eax, -1
 	jne	SHORT $LN11@ExcFrameDi
 
-; 1937 :             return( ERROR );
+; 1944 :             return( ERROR );
 
 	mov	eax, -1
 	jmp	$LN1@ExcFrameDi
 $LN11@ExcFrameDi:
 
-; 1938 :         if ( opndx.kind == EXPR_ADDR && opndx.sym->state == SYM_UNDEFINED ) /* v2.11: allow forward references */
+; 1945 :         if ( opndx.kind == EXPR_ADDR && opndx.sym->state == SYM_UNDEFINED ) /* v2.11: allow forward references */
 
 	cmp	DWORD PTR opndx$[rsp+60], 1
 	jne	SHORT $LN12@ExcFrameDi
@@ -6605,17 +6607,17 @@ $LN11@ExcFrameDi:
 	cmp	DWORD PTR [rax+32], 0
 	jne	SHORT $LN12@ExcFrameDi
 
-; 1939 :              ;
+; 1946 :              ;
 
 	jmp	SHORT $LN13@ExcFrameDi
 $LN12@ExcFrameDi:
 
-; 1940 :         else if ( opndx.kind != EXPR_CONST ) {
+; 1947 :         else if ( opndx.kind != EXPR_CONST ) {
 
 	cmp	DWORD PTR opndx$[rsp+60], 0
 	je	SHORT $LN14@ExcFrameDi
 
-; 1941 :             return( EmitError( CONSTANT_EXPECTED ) );
+; 1948 :             return( EmitError( CONSTANT_EXPECTED ) );
 
 	mov	ecx, 65					; 00000041H
 	call	EmitError
@@ -6623,119 +6625,79 @@ $LN12@ExcFrameDi:
 $LN14@ExcFrameDi:
 $LN13@ExcFrameDi:
 
-; 1942 :         }
-; 1943 :         /* v2.11: check added */
-; 1944 :         if ( opndx.hvalue ) {
+; 1949 :         }
+; 1950 :         /* v2.11: check added */
+; 1951 :         if ( opndx.hvalue ) {
 
 	cmp	DWORD PTR opndx$[rsp+4], 0
 	je	SHORT $LN15@ExcFrameDi
 
-; 1945 :             return( EmitConstError( &opndx ) );
+; 1952 :             return( EmitConstError( &opndx ) );
 
 	lea	rcx, QWORD PTR opndx$[rsp]
 	call	EmitConstError
 	jmp	$LN1@ExcFrameDi
 $LN15@ExcFrameDi:
 
-; 1946 :         }
-; 1947 :         if ( opndx.uvalue == 0 ) {
+; 1953 :         }
+; 1954 :         if ( opndx.uvalue == 0 ) {
 
 	cmp	DWORD PTR opndx$[rsp], 0
 	jne	SHORT $LN16@ExcFrameDi
 
-; 1948 :             return( EmitError( NONZERO_VALUE_EXPECTED ) );
+; 1955 :             return( EmitError( NONZERO_VALUE_EXPECTED ) );
 
 	mov	ecx, 258				; 00000102H
 	call	EmitError
 	jmp	$LN1@ExcFrameDi
 $LN16@ExcFrameDi:
 
-; 1949 :         }
-; 1950 :         if ( opndx.value & 7 ) {
+; 1956 :         }
+; 1957 :         if ( opndx.value & 7 ) {
 
 	mov	eax, DWORD PTR opndx$[rsp]
 	and	eax, 7
 	test	eax, eax
 	je	SHORT $LN17@ExcFrameDi
 
-; 1951 :             return( EmitError( BAD_ALIGNMENT_FOR_OFFSET_IN_UNWIND_CODE ) );
+; 1958 :             return( EmitError( BAD_ALIGNMENT_FOR_OFFSET_IN_UNWIND_CODE ) );
 
 	mov	ecx, 257				; 00000101H
 	call	EmitError
 	jmp	$LN1@ExcFrameDi
 $LN17@ExcFrameDi:
 
-; 1952 :         }
-; 1953 :         //opndx.value -= 8; /* v2.11: subtract 8 only for UWOP_ALLOC_SMALL! */
-; 1954 :         if ( opndx.uvalue > 16*8 ) {
+; 1959 :         }
+; 1960 :         //opndx.value -= 8; /* v2.11: subtract 8 only for UWOP_ALLOC_SMALL! */
+; 1961 :         if ( opndx.uvalue > 16*8 ) {
 
 	cmp	DWORD PTR opndx$[rsp], 128		; 00000080H
 	jbe	$LN18@ExcFrameDi
 
-; 1955 :             if ( opndx.uvalue >= 65536*8 ) {
+; 1962 :             if ( opndx.uvalue >= 65536*8 ) {
 
 	cmp	DWORD PTR opndx$[rsp], 524288		; 00080000H
 	jb	SHORT $LN20@ExcFrameDi
 
-; 1956 :                 /* allocation size 512k - 4G-8 */
-; 1957 :                 /* v2.11: value is stored UNSCALED in 2 WORDs! */
-; 1958 :                 puc->FrameOffset = ( opndx.uvalue >> 16 );
+; 1963 :                 /* allocation size 512k - 4G-8 */
+; 1964 :                 /* v2.11: value is stored UNSCALED in 2 WORDs! */
+; 1965 :                 puc->FrameOffset = ( opndx.uvalue >> 16 );
 
 	mov	eax, DWORD PTR opndx$[rsp]
 	shr	eax, 16
 	mov	rcx, QWORD PTR puc$[rsp]
 	mov	WORD PTR [rcx], ax
 
-; 1959 :                 puc++;
+; 1966 :                 puc++;
 
 	mov	rax, QWORD PTR puc$[rsp]
 	add	rax, 2
 	mov	QWORD PTR puc$[rsp], rax
 
-; 1960 :                 puc->FrameOffset = opndx.uvalue & 0xFFFF;
+; 1967 :                 puc->FrameOffset = opndx.uvalue & 0xFFFF;
 
 	mov	eax, DWORD PTR opndx$[rsp]
 	and	eax, 65535				; 0000ffffH
-	mov	rcx, QWORD PTR puc$[rsp]
-	mov	WORD PTR [rcx], ax
-
-; 1961 :                 puc++;
-
-	mov	rax, QWORD PTR puc$[rsp]
-	add	rax, 2
-	mov	QWORD PTR puc$[rsp], rax
-
-; 1962 :                 unw_info.CountOfCodes += 2;
-
-	movzx	eax, BYTE PTR unw_info+2
-	add	eax, 2
-	mov	BYTE PTR unw_info+2, al
-
-; 1963 :                 puc->OpInfo = 1;
-
-	mov	rax, QWORD PTR puc$[rsp]
-	movzx	eax, BYTE PTR [rax+1]
-	and	al, 15
-	or	al, 16
-	mov	rcx, QWORD PTR puc$[rsp]
-	mov	BYTE PTR [rcx+1], al
-
-; 1964 :                 DebugMsg1(("ExcFrameDirective: UWOP_ALLOC_LARGE, operation info 1, size=%Xh\n", opndx.value ));
-
-	mov	edx, DWORD PTR opndx$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12147
-	call	DoDebugMsg1
-
-; 1965 :             } else {
-
-	jmp	SHORT $LN21@ExcFrameDi
-$LN20@ExcFrameDi:
-
-; 1966 :                 /* allocation size 128+8 - 512k-8 */
-; 1967 :                 puc->FrameOffset = ( opndx.uvalue >> 3 );
-
-	mov	eax, DWORD PTR opndx$[rsp]
-	shr	eax, 3
 	mov	rcx, QWORD PTR puc$[rsp]
 	mov	WORD PTR [rcx], ax
 
@@ -6745,13 +6707,53 @@ $LN20@ExcFrameDi:
 	add	rax, 2
 	mov	QWORD PTR puc$[rsp], rax
 
-; 1969 :                 unw_info.CountOfCodes++;
+; 1969 :                 unw_info.CountOfCodes += 2;
+
+	movzx	eax, BYTE PTR unw_info+2
+	add	eax, 2
+	mov	BYTE PTR unw_info+2, al
+
+; 1970 :                 puc->OpInfo = 1;
+
+	mov	rax, QWORD PTR puc$[rsp]
+	movzx	eax, BYTE PTR [rax+1]
+	and	al, 15
+	or	al, 16
+	mov	rcx, QWORD PTR puc$[rsp]
+	mov	BYTE PTR [rcx+1], al
+
+; 1971 :                 DebugMsg1(("ExcFrameDirective: UWOP_ALLOC_LARGE, operation info 1, size=%Xh\n", opndx.value ));
+
+	mov	edx, DWORD PTR opndx$[rsp]
+	lea	rcx, OFFSET FLAT:$SG12149
+	call	DoDebugMsg1
+
+; 1972 :             } else {
+
+	jmp	SHORT $LN21@ExcFrameDi
+$LN20@ExcFrameDi:
+
+; 1973 :                 /* allocation size 128+8 - 512k-8 */
+; 1974 :                 puc->FrameOffset = ( opndx.uvalue >> 3 );
+
+	mov	eax, DWORD PTR opndx$[rsp]
+	shr	eax, 3
+	mov	rcx, QWORD PTR puc$[rsp]
+	mov	WORD PTR [rcx], ax
+
+; 1975 :                 puc++;
+
+	mov	rax, QWORD PTR puc$[rsp]
+	add	rax, 2
+	mov	QWORD PTR puc$[rsp], rax
+
+; 1976 :                 unw_info.CountOfCodes++;
 
 	movzx	eax, BYTE PTR unw_info+2
 	inc	al
 	mov	BYTE PTR unw_info+2, al
 
-; 1970 :                 puc->OpInfo = 0;
+; 1977 :                 puc->OpInfo = 0;
 
 	mov	rax, QWORD PTR puc$[rsp]
 	movzx	eax, BYTE PTR [rax+1]
@@ -6759,15 +6761,15 @@ $LN20@ExcFrameDi:
 	mov	rcx, QWORD PTR puc$[rsp]
 	mov	BYTE PTR [rcx+1], al
 
-; 1971 :                 DebugMsg1(("ExcFrameDirective: UWOP_ALLOC_LARGE, operation info 0, size=%Xh\n", opndx.value ));
+; 1978 :                 DebugMsg1(("ExcFrameDirective: UWOP_ALLOC_LARGE, operation info 0, size=%Xh\n", opndx.value ));
 
 	mov	edx, DWORD PTR opndx$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12148
+	lea	rcx, OFFSET FLAT:$SG12150
 	call	DoDebugMsg1
 $LN21@ExcFrameDi:
 
-; 1972 :             }
-; 1973 :             puc->UnwindOp = UWOP_ALLOC_LARGE;
+; 1979 :             }
+; 1980 :             puc->UnwindOp = UWOP_ALLOC_LARGE;
 
 	mov	rax, QWORD PTR puc$[rsp]
 	movzx	eax, BYTE PTR [rax+1]
@@ -6776,13 +6778,13 @@ $LN21@ExcFrameDi:
 	mov	rcx, QWORD PTR puc$[rsp]
 	mov	BYTE PTR [rcx+1], al
 
-; 1974 :         } else {
+; 1981 :         } else {
 
 	jmp	SHORT $LN19@ExcFrameDi
 $LN18@ExcFrameDi:
 
-; 1975 :             /* allocation size 8-128 bytes */
-; 1976 :             puc->UnwindOp = UWOP_ALLOC_SMALL;
+; 1982 :             /* allocation size 8-128 bytes */
+; 1983 :             puc->UnwindOp = UWOP_ALLOC_SMALL;
 
 	mov	rax, QWORD PTR puc$[rsp]
 	movzx	eax, BYTE PTR [rax+1]
@@ -6791,9 +6793,9 @@ $LN18@ExcFrameDi:
 	mov	rcx, QWORD PTR puc$[rsp]
 	mov	BYTE PTR [rcx+1], al
 
-; 1977 :             /* v2.11: subtract 8 only for UWOP_ALLOC_SMALL! */
-; 1978 :             //puc->OpInfo = ( opndx.value >> 3 );
-; 1979 :             puc->OpInfo = ( (opndx.uvalue - 8 ) >> 3 );
+; 1984 :             /* v2.11: subtract 8 only for UWOP_ALLOC_SMALL! */
+; 1985 :             //puc->OpInfo = ( opndx.value >> 3 );
+; 1986 :             puc->OpInfo = ( (opndx.uvalue - 8 ) >> 3 );
 
 	mov	eax, DWORD PTR opndx$[rsp]
 	sub	eax, 8
@@ -6808,74 +6810,74 @@ $LN18@ExcFrameDi:
 	mov	rcx, QWORD PTR puc$[rsp]
 	mov	BYTE PTR [rcx+1], al
 
-; 1980 :             DebugMsg1(("ExcFrameDirective: UWOP_ALLOC_SMALL, size=%Xh\n", opndx.value ));
+; 1987 :             DebugMsg1(("ExcFrameDirective: UWOP_ALLOC_SMALL, size=%Xh\n", opndx.value ));
 
 	mov	edx, DWORD PTR opndx$[rsp]
-	lea	rcx, OFFSET FLAT:$SG12149
+	lea	rcx, OFFSET FLAT:$SG12151
 	call	DoDebugMsg1
 $LN19@ExcFrameDi:
 
-; 1981 :         }
-; 1982 :         puc->CodeOffset = ofs;
+; 1988 :         }
+; 1989 :         puc->CodeOffset = ofs;
 
 	mov	rax, QWORD PTR puc$[rsp]
 	movzx	ecx, BYTE PTR ofs$[rsp]
 	mov	BYTE PTR [rax], cl
 
-; 1983 :         unw_info.CountOfCodes++;
+; 1990 :         unw_info.CountOfCodes++;
 
 	movzx	eax, BYTE PTR unw_info+2
 	inc	al
 	mov	BYTE PTR unw_info+2, al
 
-; 1984 :         break;
+; 1991 :         break;
 
 	jmp	$LN2@ExcFrameDi
 $LN22@ExcFrameDi:
 
-; 1985 :     case T_DOT_ENDPROLOG: /* syntax: .ENDPROLOG */
-; 1986 :         opndx.value = GetCurrOffset() - CurrProc->sym.offset;
+; 1992 :     case T_DOT_ENDPROLOG: /* syntax: .ENDPROLOG */
+; 1993 :         opndx.value = GetCurrOffset() - CurrProc->sym.offset;
 
 	call	GetCurrOffset
 	mov	rcx, QWORD PTR CurrProc
 	sub	eax, DWORD PTR [rcx+16]
 	mov	DWORD PTR opndx$[rsp], eax
 
-; 1987 :         if ( opndx.uvalue > 255 ) {
+; 1994 :         if ( opndx.uvalue > 255 ) {
 
 	cmp	DWORD PTR opndx$[rsp], 255		; 000000ffH
 	jbe	SHORT $LN23@ExcFrameDi
 
-; 1988 :             return( EmitError( SIZE_OF_PROLOG_TOO_BIG ) );
+; 1995 :             return( EmitError( SIZE_OF_PROLOG_TOO_BIG ) );
 
 	mov	ecx, 259				; 00000103H
 	call	EmitError
 	jmp	$LN1@ExcFrameDi
 $LN23@ExcFrameDi:
 
-; 1989 :         }
-; 1990 :         unw_info.SizeOfProlog = (uint_8)opndx.uvalue;
+; 1996 :         }
+; 1997 :         unw_info.SizeOfProlog = (uint_8)opndx.uvalue;
 
 	movzx	eax, BYTE PTR opndx$[rsp]
 	mov	BYTE PTR unw_info+1, al
 
-; 1991 :         endprolog_found = TRUE;
+; 1998 :         endprolog_found = TRUE;
 
 	mov	BYTE PTR endprolog_found, 1
 
-; 1992 :         break;
+; 1999 :         break;
 
 	jmp	$LN2@ExcFrameDi
 $LN24@ExcFrameDi:
 
-; 1993 :     case T_DOT_PUSHFRAME: /* syntax: .PUSHFRAME [code] */
-; 1994 :         puc->CodeOffset = ofs;
+; 2000 :     case T_DOT_PUSHFRAME: /* syntax: .PUSHFRAME [code] */
+; 2001 :         puc->CodeOffset = ofs;
 
 	mov	rax, QWORD PTR puc$[rsp]
 	movzx	ecx, BYTE PTR ofs$[rsp]
 	mov	BYTE PTR [rax], cl
 
-; 1995 :         puc->UnwindOp = UWOP_PUSH_MACHFRAME;
+; 2002 :         puc->UnwindOp = UWOP_PUSH_MACHFRAME;
 
 	mov	rax, QWORD PTR puc$[rsp]
 	movzx	eax, BYTE PTR [rax+1]
@@ -6884,7 +6886,7 @@ $LN24@ExcFrameDi:
 	mov	rcx, QWORD PTR puc$[rsp]
 	mov	BYTE PTR [rcx+1], al
 
-; 1996 :         puc->OpInfo = 0;
+; 2003 :         puc->OpInfo = 0;
 
 	mov	rax, QWORD PTR puc$[rsp]
 	movzx	eax, BYTE PTR [rax+1]
@@ -6892,7 +6894,7 @@ $LN24@ExcFrameDi:
 	mov	rcx, QWORD PTR puc$[rsp]
 	mov	BYTE PTR [rcx+1], al
 
-; 1997 :         if ( tokenarray[i].token == T_ID && (_stricmp( tokenarray[i].string_ptr, "CODE") == 0 ) ) {
+; 2004 :         if ( tokenarray[i].token == T_ID && (_stricmp( tokenarray[i].string_ptr, "CODE") == 0 ) ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -6902,14 +6904,14 @@ $LN24@ExcFrameDi:
 	jne	SHORT $LN25@ExcFrameDi
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
-	lea	rdx, OFFSET FLAT:$SG12154
+	lea	rdx, OFFSET FLAT:$SG12156
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	mov	rcx, QWORD PTR [rcx+rax+8]
 	call	_stricmp
 	test	eax, eax
 	jne	SHORT $LN25@ExcFrameDi
 
-; 1998 :             puc->OpInfo = 1;
+; 2005 :             puc->OpInfo = 1;
 
 	mov	rax, QWORD PTR puc$[rsp]
 	movzx	eax, BYTE PTR [rax+1]
@@ -6918,27 +6920,27 @@ $LN24@ExcFrameDi:
 	mov	rcx, QWORD PTR puc$[rsp]
 	mov	BYTE PTR [rcx+1], al
 
-; 1999 :             i++;
+; 2006 :             i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
 	mov	DWORD PTR i$[rsp], eax
 $LN25@ExcFrameDi:
 
-; 2000 :         }
-; 2001 :         unw_info.CountOfCodes++;
+; 2007 :         }
+; 2008 :         unw_info.CountOfCodes++;
 
 	movzx	eax, BYTE PTR unw_info+2
 	inc	al
 	mov	BYTE PTR unw_info+2, al
 
-; 2002 :         break;
+; 2009 :         break;
 
 	jmp	$LN2@ExcFrameDi
 $LN26@ExcFrameDi:
 
-; 2003 :     case T_DOT_PUSHREG: /* syntax: .PUSHREG r64 */
-; 2004 :         if ( tokenarray[i].token != T_REG || !( GetValueSp( tokenarray[i].tokval ) & OP_R64 ) ) {
+; 2010 :     case T_DOT_PUSHREG: /* syntax: .PUSHREG r64 */
+; 2011 :         if ( tokenarray[i].token != T_REG || !( GetValueSp( tokenarray[i].tokval ) & OP_R64 ) ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -6958,7 +6960,7 @@ $LN26@ExcFrameDi:
 	jne	SHORT $LN27@ExcFrameDi
 $LN28@ExcFrameDi:
 
-; 2005 :             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
+; 2012 :             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -6969,14 +6971,14 @@ $LN28@ExcFrameDi:
 	jmp	$LN1@ExcFrameDi
 $LN27@ExcFrameDi:
 
-; 2006 :         }
-; 2007 :         puc->CodeOffset = ofs;
+; 2013 :         }
+; 2014 :         puc->CodeOffset = ofs;
 
 	mov	rax, QWORD PTR puc$[rsp]
 	movzx	ecx, BYTE PTR ofs$[rsp]
 	mov	BYTE PTR [rax], cl
 
-; 2008 :         puc->UnwindOp = UWOP_PUSH_NONVOL;
+; 2015 :         puc->UnwindOp = UWOP_PUSH_NONVOL;
 
 	mov	rax, QWORD PTR puc$[rsp]
 	movzx	eax, BYTE PTR [rax+1]
@@ -6984,7 +6986,7 @@ $LN27@ExcFrameDi:
 	mov	rcx, QWORD PTR puc$[rsp]
 	mov	BYTE PTR [rcx+1], al
 
-; 2009 :         puc->OpInfo = GetRegNo( tokenarray[i].tokval );
+; 2016 :         puc->OpInfo = GetRegNo( tokenarray[i].tokval );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -7003,31 +7005,31 @@ $LN27@ExcFrameDi:
 	mov	rcx, QWORD PTR puc$[rsp]
 	mov	BYTE PTR [rcx+1], al
 
-; 2010 :         unw_info.CountOfCodes++;
+; 2017 :         unw_info.CountOfCodes++;
 
 	movzx	eax, BYTE PTR unw_info+2
 	inc	al
 	mov	BYTE PTR unw_info+2, al
 
-; 2011 :         i++;
+; 2018 :         i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
 	mov	DWORD PTR i$[rsp], eax
 
-; 2012 :         break;
+; 2019 :         break;
 
 	jmp	$LN2@ExcFrameDi
 $LN29@ExcFrameDi:
 
-; 2013 :     case T_DOT_SAVEREG:    /* syntax: .SAVEREG r64, offset       */
-; 2014 :     case T_DOT_SAVEXMM128: /* syntax: .SAVEXMM128 xmmreg, offset */
-; 2015 :     case T_DOT_SAVEYMM256: /* syntax: .SAVEYMM256 ymmreg, offset */
-; 2016 : #if EVEXSUPP
-; 2017 :     case T_DOT_SAVEZMM512: /* syntax: .SAVEXMM512 zmmreg, offset */
-; 2018 : #endif
-; 2019 :     case T_DOT_SETFRAME:   /* syntax: .SETFRAME r64, offset      */
-; 2020 :         if ( tokenarray[i].token != T_REG ) {
+; 2020 :     case T_DOT_SAVEREG:    /* syntax: .SAVEREG r64, offset       */
+; 2021 :     case T_DOT_SAVEXMM128: /* syntax: .SAVEXMM128 xmmreg, offset */
+; 2022 :     case T_DOT_SAVEYMM256: /* syntax: .SAVEYMM256 ymmreg, offset */
+; 2023 : #if EVEXSUPP
+; 2024 :     case T_DOT_SAVEZMM512: /* syntax: .SAVEXMM512 zmmreg, offset */
+; 2025 : #endif
+; 2026 :     case T_DOT_SETFRAME:   /* syntax: .SETFRAME r64, offset      */
+; 2027 :         if ( tokenarray[i].token != T_REG ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -7036,7 +7038,7 @@ $LN29@ExcFrameDi:
 	cmp	eax, 2
 	je	SHORT $LN30@ExcFrameDi
 
-; 2021 :             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
+; 2028 :             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -7047,13 +7049,13 @@ $LN29@ExcFrameDi:
 	jmp	$LN1@ExcFrameDi
 $LN30@ExcFrameDi:
 
-; 2022 :         }
-; 2023 :         if ( token == T_DOT_SAVEXMM128 ) {
+; 2029 :         }
+; 2030 :         if ( token == T_DOT_SAVEXMM128 ) {
 
 	cmp	DWORD PTR token$[rsp], 419		; 000001a3H
 	jne	SHORT $LN31@ExcFrameDi
 
-; 2024 :             if ( !( GetValueSp( tokenarray[i].tokval ) & OP_XMM ) ) {
+; 2031 :             if ( !( GetValueSp( tokenarray[i].tokval ) & OP_XMM ) ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -7066,7 +7068,7 @@ $LN30@ExcFrameDi:
 	test	eax, eax
 	jne	SHORT $LN33@ExcFrameDi
 
-; 2025 :                 return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
+; 2032 :                 return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -7077,18 +7079,18 @@ $LN30@ExcFrameDi:
 	jmp	$LN1@ExcFrameDi
 $LN33@ExcFrameDi:
 
-; 2026 :             }
-; 2027 :         } 
+; 2033 :             }
+; 2034 :         } 
 
 	jmp	$LN32@ExcFrameDi
 $LN31@ExcFrameDi:
 
-; 2028 :         else if (token == T_DOT_SAVEYMM256) {
+; 2035 :         else if (token == T_DOT_SAVEYMM256) {
 
 	cmp	DWORD PTR token$[rsp], 420		; 000001a4H
 	jne	SHORT $LN34@ExcFrameDi
 
-; 2029 :           if (!(GetValueSp(tokenarray[i].tokval) & OP_YMM)) {
+; 2036 :           if (!(GetValueSp(tokenarray[i].tokval) & OP_YMM)) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -7101,7 +7103,7 @@ $LN31@ExcFrameDi:
 	test	eax, eax
 	jne	SHORT $LN36@ExcFrameDi
 
-; 2030 :             return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
+; 2037 :             return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -7112,21 +7114,21 @@ $LN31@ExcFrameDi:
 	jmp	$LN1@ExcFrameDi
 $LN36@ExcFrameDi:
 
-; 2031 :           }
-; 2032 :         }
+; 2038 :           }
+; 2039 :         }
 
 	jmp	SHORT $LN35@ExcFrameDi
 $LN34@ExcFrameDi:
 
-; 2033 : #if EVEXSUPP
-; 2034 :         else if (token == T_DOT_SAVEZMM512) {
-; 2035 :           if (!(GetValueSp(tokenarray[i].tokval) & OP_ZMM)) {
-; 2036 :             return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
-; 2037 :           }
-; 2038 :         }
-; 2039 : #endif
-; 2040 :         else {
-; 2041 :             if ( !( GetValueSp( tokenarray[i].tokval ) & OP_R64 ) ) {
+; 2040 : #if EVEXSUPP
+; 2041 :         else if (token == T_DOT_SAVEZMM512) {
+; 2042 :           if (!(GetValueSp(tokenarray[i].tokval) & OP_ZMM)) {
+; 2043 :             return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
+; 2044 :           }
+; 2045 :         }
+; 2046 : #endif
+; 2047 :         else {
+; 2048 :             if ( !( GetValueSp( tokenarray[i].tokval ) & OP_R64 ) ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -7139,7 +7141,7 @@ $LN34@ExcFrameDi:
 	test	eax, eax
 	jne	SHORT $LN37@ExcFrameDi
 
-; 2042 :                 return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
+; 2049 :                 return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -7152,9 +7154,9 @@ $LN37@ExcFrameDi:
 $LN35@ExcFrameDi:
 $LN32@ExcFrameDi:
 
-; 2043 :             }
-; 2044 :         }
-; 2045 :         reg = GetRegNo( tokenarray[i].tokval );
+; 2050 :             }
+; 2051 :         }
+; 2052 :         reg = GetRegNo( tokenarray[i].tokval );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -7165,8 +7167,8 @@ $LN32@ExcFrameDi:
 	movzx	eax, BYTE PTR [rcx+rax+10]
 	mov	BYTE PTR reg$[rsp], al
 
-; 2046 :         // here is the problem
-; 2047 :         if ( token == T_DOT_SAVEREG || token == T_DOT_SAVEXMM128 || token == T_DOT_SAVEYMM256
+; 2053 :         // here is the problem
+; 2054 :         if ( token == T_DOT_SAVEREG || token == T_DOT_SAVEXMM128 || token == T_DOT_SAVEYMM256
 
 	cmp	DWORD PTR token$[rsp], 418		; 000001a2H
 	je	SHORT $LN40@ExcFrameDi
@@ -7176,30 +7178,30 @@ $LN32@ExcFrameDi:
 	jne	SHORT $LN38@ExcFrameDi
 $LN40@ExcFrameDi:
 
-; 2048 : #if EVEXSUPP
-; 2049 :           || token == T_DOT_SAVEZMM512
-; 2050 : #endif   
-; 2051 :           )
-; 2052 :             size = 8;
+; 2055 : #if EVEXSUPP
+; 2056 :           || token == T_DOT_SAVEZMM512
+; 2057 : #endif   
+; 2058 :           )
+; 2059 :             size = 8;
 
 	mov	DWORD PTR size$[rsp], 8
 	jmp	SHORT $LN39@ExcFrameDi
 $LN38@ExcFrameDi:
 
-; 2053 :         else
-; 2054 :             size = 16;
+; 2060 :         else
+; 2061 :             size = 16;
 
 	mov	DWORD PTR size$[rsp], 16
 $LN39@ExcFrameDi:
 
-; 2055 : 
-; 2056 :         i++;
+; 2062 : 
+; 2063 :         i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
 	mov	DWORD PTR i$[rsp], eax
 
-; 2057 :         if ( tokenarray[i].token != T_COMMA ) {
+; 2064 :         if ( tokenarray[i].token != T_COMMA ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -7208,7 +7210,7 @@ $LN39@ExcFrameDi:
 	cmp	eax, 44					; 0000002cH
 	je	SHORT $LN41@ExcFrameDi
 
-; 2058 :             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
+; 2065 :             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -7219,14 +7221,14 @@ $LN39@ExcFrameDi:
 	jmp	$LN1@ExcFrameDi
 $LN41@ExcFrameDi:
 
-; 2059 :         }
-; 2060 :         i++;
+; 2066 :         }
+; 2067 :         i++;
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
 	mov	DWORD PTR i$[rsp], eax
 
-; 2061 :         if ( ERROR == EvalOperand( &i, tokenarray, Token_Count, &opndx, 0 ) )
+; 2068 :         if ( ERROR == EvalOperand( &i, tokenarray, Token_Count, &opndx, 0 ) )
 
 	mov	BYTE PTR [rsp+32], 0
 	lea	r9, QWORD PTR opndx$[rsp]
@@ -7237,13 +7239,13 @@ $LN41@ExcFrameDi:
 	cmp	eax, -1
 	jne	SHORT $LN42@ExcFrameDi
 
-; 2062 :             return( ERROR );
+; 2069 :             return( ERROR );
 
 	mov	eax, -1
 	jmp	$LN1@ExcFrameDi
 $LN42@ExcFrameDi:
 
-; 2063 :         if ( opndx.kind == EXPR_ADDR && opndx.sym->state == SYM_UNDEFINED ) /* v2.11: allow forward references */
+; 2070 :         if ( opndx.kind == EXPR_ADDR && opndx.sym->state == SYM_UNDEFINED ) /* v2.11: allow forward references */
 
 	cmp	DWORD PTR opndx$[rsp+60], 1
 	jne	SHORT $LN43@ExcFrameDi
@@ -7251,17 +7253,17 @@ $LN42@ExcFrameDi:
 	cmp	DWORD PTR [rax+32], 0
 	jne	SHORT $LN43@ExcFrameDi
 
-; 2064 :              ;
+; 2071 :              ;
 
 	jmp	SHORT $LN44@ExcFrameDi
 $LN43@ExcFrameDi:
 
-; 2065 :         else if ( opndx.kind != EXPR_CONST ) {
+; 2072 :         else if ( opndx.kind != EXPR_CONST ) {
 
 	cmp	DWORD PTR opndx$[rsp+60], 0
 	je	SHORT $LN45@ExcFrameDi
 
-; 2066 :             return( EmitError( CONSTANT_EXPECTED ) );
+; 2073 :             return( EmitError( CONSTANT_EXPECTED ) );
 
 	mov	ecx, 65					; 00000041H
 	call	EmitError
@@ -7269,8 +7271,8 @@ $LN43@ExcFrameDi:
 $LN45@ExcFrameDi:
 $LN44@ExcFrameDi:
 
-; 2067 :         }
-; 2068 :         if ( opndx.value & (size - 1) ) {
+; 2074 :         }
+; 2075 :         if ( opndx.value & (size - 1) ) {
 
 	mov	eax, DWORD PTR size$[rsp]
 	dec	eax
@@ -7280,15 +7282,15 @@ $LN44@ExcFrameDi:
 	test	eax, eax
 	je	SHORT $LN46@ExcFrameDi
 
-; 2069 :             return( EmitError( BAD_ALIGNMENT_FOR_OFFSET_IN_UNWIND_CODE ) );
+; 2076 :             return( EmitError( BAD_ALIGNMENT_FOR_OFFSET_IN_UNWIND_CODE ) );
 
 	mov	ecx, 257				; 00000101H
 	call	EmitError
 	jmp	$LN1@ExcFrameDi
 $LN46@ExcFrameDi:
 
-; 2070 :         }
-; 2071 :         switch ( token ) {
+; 2077 :         }
+; 2078 :         switch ( token ) {
 
 	mov	eax, DWORD PTR token$[rsp]
 	mov	DWORD PTR tv401[rsp], eax
@@ -7303,8 +7305,8 @@ $LN46@ExcFrameDi:
 	jmp	$LN4@ExcFrameDi
 $LN47@ExcFrameDi:
 
-; 2072 :         case T_DOT_SAVEREG:
-; 2073 :             puc->OpInfo = reg;
+; 2079 :         case T_DOT_SAVEREG:
+; 2080 :             puc->OpInfo = reg;
 
 	movzx	eax, BYTE PTR reg$[rsp]
 	and	al, 15
@@ -7317,62 +7319,16 @@ $LN47@ExcFrameDi:
 	mov	rcx, QWORD PTR puc$[rsp]
 	mov	BYTE PTR [rcx+1], al
 
-; 2074 :             if ( opndx.value > 65536 * size ) {
+; 2081 :             if ( opndx.value > 65536 * size ) {
 
 	imul	eax, DWORD PTR size$[rsp], 65536	; 00010000H
 	cmp	DWORD PTR opndx$[rsp], eax
 	jbe	SHORT $LN48@ExcFrameDi
 
-; 2075 :                 puc->FrameOffset = ( opndx.value >> 19 );
+; 2082 :                 puc->FrameOffset = ( opndx.value >> 19 );
 
 	mov	eax, DWORD PTR opndx$[rsp]
 	sar	eax, 19
-	mov	rcx, QWORD PTR puc$[rsp]
-	mov	WORD PTR [rcx], ax
-
-; 2076 :                 puc++;
-
-	mov	rax, QWORD PTR puc$[rsp]
-	add	rax, 2
-	mov	QWORD PTR puc$[rsp], rax
-
-; 2077 :                 puc->FrameOffset = ( opndx.value >> 3 );
-
-	mov	eax, DWORD PTR opndx$[rsp]
-	sar	eax, 3
-	mov	rcx, QWORD PTR puc$[rsp]
-	mov	WORD PTR [rcx], ax
-
-; 2078 :                 puc++;
-
-	mov	rax, QWORD PTR puc$[rsp]
-	add	rax, 2
-	mov	QWORD PTR puc$[rsp], rax
-
-; 2079 :                 puc->UnwindOp = UWOP_SAVE_NONVOL_FAR;
-
-	mov	rax, QWORD PTR puc$[rsp]
-	movzx	eax, BYTE PTR [rax+1]
-	and	al, 240					; 000000f0H
-	or	al, 5
-	mov	rcx, QWORD PTR puc$[rsp]
-	mov	BYTE PTR [rcx+1], al
-
-; 2080 :                 unw_info.CountOfCodes += 3;
-
-	movzx	eax, BYTE PTR unw_info+2
-	add	eax, 3
-	mov	BYTE PTR unw_info+2, al
-
-; 2081 :             } else {
-
-	jmp	SHORT $LN49@ExcFrameDi
-$LN48@ExcFrameDi:
-
-; 2082 :                 puc->FrameOffset = ( opndx.value >> 3 );
-
-	mov	eax, DWORD PTR opndx$[rsp]
-	sar	eax, 3
 	mov	rcx, QWORD PTR puc$[rsp]
 	mov	WORD PTR [rcx], ax
 
@@ -7382,7 +7338,53 @@ $LN48@ExcFrameDi:
 	add	rax, 2
 	mov	QWORD PTR puc$[rsp], rax
 
-; 2084 :                 puc->UnwindOp = UWOP_SAVE_NONVOL;
+; 2084 :                 puc->FrameOffset = ( opndx.value >> 3 );
+
+	mov	eax, DWORD PTR opndx$[rsp]
+	sar	eax, 3
+	mov	rcx, QWORD PTR puc$[rsp]
+	mov	WORD PTR [rcx], ax
+
+; 2085 :                 puc++;
+
+	mov	rax, QWORD PTR puc$[rsp]
+	add	rax, 2
+	mov	QWORD PTR puc$[rsp], rax
+
+; 2086 :                 puc->UnwindOp = UWOP_SAVE_NONVOL_FAR;
+
+	mov	rax, QWORD PTR puc$[rsp]
+	movzx	eax, BYTE PTR [rax+1]
+	and	al, 240					; 000000f0H
+	or	al, 5
+	mov	rcx, QWORD PTR puc$[rsp]
+	mov	BYTE PTR [rcx+1], al
+
+; 2087 :                 unw_info.CountOfCodes += 3;
+
+	movzx	eax, BYTE PTR unw_info+2
+	add	eax, 3
+	mov	BYTE PTR unw_info+2, al
+
+; 2088 :             } else {
+
+	jmp	SHORT $LN49@ExcFrameDi
+$LN48@ExcFrameDi:
+
+; 2089 :                 puc->FrameOffset = ( opndx.value >> 3 );
+
+	mov	eax, DWORD PTR opndx$[rsp]
+	sar	eax, 3
+	mov	rcx, QWORD PTR puc$[rsp]
+	mov	WORD PTR [rcx], ax
+
+; 2090 :                 puc++;
+
+	mov	rax, QWORD PTR puc$[rsp]
+	add	rax, 2
+	mov	QWORD PTR puc$[rsp], rax
+
+; 2091 :                 puc->UnwindOp = UWOP_SAVE_NONVOL;
 
 	mov	rax, QWORD PTR puc$[rsp]
 	movzx	eax, BYTE PTR [rax+1]
@@ -7391,21 +7393,21 @@ $LN48@ExcFrameDi:
 	mov	rcx, QWORD PTR puc$[rsp]
 	mov	BYTE PTR [rcx+1], al
 
-; 2085 :                 unw_info.CountOfCodes += 2;
+; 2092 :                 unw_info.CountOfCodes += 2;
 
 	movzx	eax, BYTE PTR unw_info+2
 	add	eax, 2
 	mov	BYTE PTR unw_info+2, al
 $LN49@ExcFrameDi:
 
-; 2086 :             }
-; 2087 :             puc->CodeOffset = ofs;
+; 2093 :             }
+; 2094 :             puc->CodeOffset = ofs;
 
 	mov	rax, QWORD PTR puc$[rsp]
 	movzx	ecx, BYTE PTR ofs$[rsp]
 	mov	BYTE PTR [rax], cl
 
-; 2088 :             puc->OpInfo = reg;
+; 2095 :             puc->OpInfo = reg;
 
 	movzx	eax, BYTE PTR reg$[rsp]
 	and	al, 15
@@ -7418,69 +7420,23 @@ $LN49@ExcFrameDi:
 	mov	rcx, QWORD PTR puc$[rsp]
 	mov	BYTE PTR [rcx+1], al
 
-; 2089 :             break;
+; 2096 :             break;
 
 	jmp	$LN4@ExcFrameDi
 $LN50@ExcFrameDi:
 
-; 2090 :         case T_DOT_SAVEXMM128:
-; 2091 :         case T_DOT_SAVEYMM256:
-; 2092 :             if ( opndx.value > 65536 * size ) {
+; 2097 :         case T_DOT_SAVEXMM128:
+; 2098 :         case T_DOT_SAVEYMM256:
+; 2099 :             if ( opndx.value > 65536 * size ) {
 
 	imul	eax, DWORD PTR size$[rsp], 65536	; 00010000H
 	cmp	DWORD PTR opndx$[rsp], eax
 	jbe	SHORT $LN51@ExcFrameDi
 
-; 2093 :                 puc->FrameOffset = ( opndx.value >> 20 );
+; 2100 :                 puc->FrameOffset = ( opndx.value >> 20 );
 
 	mov	eax, DWORD PTR opndx$[rsp]
 	sar	eax, 20
-	mov	rcx, QWORD PTR puc$[rsp]
-	mov	WORD PTR [rcx], ax
-
-; 2094 :                 puc++;
-
-	mov	rax, QWORD PTR puc$[rsp]
-	add	rax, 2
-	mov	QWORD PTR puc$[rsp], rax
-
-; 2095 :                 puc->FrameOffset = ( opndx.value >> 4 );
-
-	mov	eax, DWORD PTR opndx$[rsp]
-	sar	eax, 4
-	mov	rcx, QWORD PTR puc$[rsp]
-	mov	WORD PTR [rcx], ax
-
-; 2096 :                 puc++;
-
-	mov	rax, QWORD PTR puc$[rsp]
-	add	rax, 2
-	mov	QWORD PTR puc$[rsp], rax
-
-; 2097 :                 puc->UnwindOp = UWOP_SAVE_XMM128_FAR;
-
-	mov	rax, QWORD PTR puc$[rsp]
-	movzx	eax, BYTE PTR [rax+1]
-	and	al, 240					; 000000f0H
-	or	al, 9
-	mov	rcx, QWORD PTR puc$[rsp]
-	mov	BYTE PTR [rcx+1], al
-
-; 2098 :                 unw_info.CountOfCodes += 3;
-
-	movzx	eax, BYTE PTR unw_info+2
-	add	eax, 3
-	mov	BYTE PTR unw_info+2, al
-
-; 2099 :             } else {
-
-	jmp	SHORT $LN52@ExcFrameDi
-$LN51@ExcFrameDi:
-
-; 2100 :                 puc->FrameOffset = ( opndx.value >> 4 );
-
-	mov	eax, DWORD PTR opndx$[rsp]
-	sar	eax, 4
 	mov	rcx, QWORD PTR puc$[rsp]
 	mov	WORD PTR [rcx], ax
 
@@ -7490,7 +7446,53 @@ $LN51@ExcFrameDi:
 	add	rax, 2
 	mov	QWORD PTR puc$[rsp], rax
 
-; 2102 :                 puc->UnwindOp = UWOP_SAVE_XMM128;
+; 2102 :                 puc->FrameOffset = ( opndx.value >> 4 );
+
+	mov	eax, DWORD PTR opndx$[rsp]
+	sar	eax, 4
+	mov	rcx, QWORD PTR puc$[rsp]
+	mov	WORD PTR [rcx], ax
+
+; 2103 :                 puc++;
+
+	mov	rax, QWORD PTR puc$[rsp]
+	add	rax, 2
+	mov	QWORD PTR puc$[rsp], rax
+
+; 2104 :                 puc->UnwindOp = UWOP_SAVE_XMM128_FAR;
+
+	mov	rax, QWORD PTR puc$[rsp]
+	movzx	eax, BYTE PTR [rax+1]
+	and	al, 240					; 000000f0H
+	or	al, 9
+	mov	rcx, QWORD PTR puc$[rsp]
+	mov	BYTE PTR [rcx+1], al
+
+; 2105 :                 unw_info.CountOfCodes += 3;
+
+	movzx	eax, BYTE PTR unw_info+2
+	add	eax, 3
+	mov	BYTE PTR unw_info+2, al
+
+; 2106 :             } else {
+
+	jmp	SHORT $LN52@ExcFrameDi
+$LN51@ExcFrameDi:
+
+; 2107 :                 puc->FrameOffset = ( opndx.value >> 4 );
+
+	mov	eax, DWORD PTR opndx$[rsp]
+	sar	eax, 4
+	mov	rcx, QWORD PTR puc$[rsp]
+	mov	WORD PTR [rcx], ax
+
+; 2108 :                 puc++;
+
+	mov	rax, QWORD PTR puc$[rsp]
+	add	rax, 2
+	mov	QWORD PTR puc$[rsp], rax
+
+; 2109 :                 puc->UnwindOp = UWOP_SAVE_XMM128;
 
 	mov	rax, QWORD PTR puc$[rsp]
 	movzx	eax, BYTE PTR [rax+1]
@@ -7499,21 +7501,21 @@ $LN51@ExcFrameDi:
 	mov	rcx, QWORD PTR puc$[rsp]
 	mov	BYTE PTR [rcx+1], al
 
-; 2103 :                 unw_info.CountOfCodes += 2;
+; 2110 :                 unw_info.CountOfCodes += 2;
 
 	movzx	eax, BYTE PTR unw_info+2
 	add	eax, 2
 	mov	BYTE PTR unw_info+2, al
 $LN52@ExcFrameDi:
 
-; 2104 :             }
-; 2105 :             puc->CodeOffset = ofs;
+; 2111 :             }
+; 2112 :             puc->CodeOffset = ofs;
 
 	mov	rax, QWORD PTR puc$[rsp]
 	movzx	ecx, BYTE PTR ofs$[rsp]
 	mov	BYTE PTR [rax], cl
 
-; 2106 :             puc->OpInfo = reg;
+; 2113 :             puc->OpInfo = reg;
 
 	movzx	eax, BYTE PTR reg$[rsp]
 	and	al, 15
@@ -7526,63 +7528,63 @@ $LN52@ExcFrameDi:
 	mov	rcx, QWORD PTR puc$[rsp]
 	mov	BYTE PTR [rcx+1], al
 
-; 2107 :             break;
+; 2114 :             break;
 
 	jmp	$LN4@ExcFrameDi
 $LN53@ExcFrameDi:
 
-; 2108 :         //case T_DOT_SAVEYMM256:
-; 2109 :         //    if ( opndx.value > 65536 * size ) {
-; 2110 :         //        puc->FrameOffset = ( opndx.value >> 20 );
-; 2111 :         //        puc++;
-; 2112 :         //        puc->FrameOffset = ( opndx.value >> 4 );
-; 2113 :         //        puc++;
-; 2114 :         //        puc->UnwindOp = UWOP_SAVE_YMM256_FAR;
-; 2115 :         //        unw_info.CountOfCodes += 3;
-; 2116 :         //    } else {
-; 2117 :         //        puc->FrameOffset = ( opndx.value >> 4 );
+; 2115 :         //case T_DOT_SAVEYMM256:
+; 2116 :         //    if ( opndx.value > 65536 * size ) {
+; 2117 :         //        puc->FrameOffset = ( opndx.value >> 20 );
 ; 2118 :         //        puc++;
-; 2119 :         //        puc->UnwindOp = UWOP_SAVE_YMM256;
-; 2120 :         //        unw_info.CountOfCodes += 2;
-; 2121 :         //    }
-; 2122 :         //    puc->CodeOffset = ofs;
-; 2123 :         //    puc->OpInfo = reg;
-; 2124 :         //    break;
-; 2125 : #if EVEXSUPP
-; 2126 :         case T_DOT_SAVEZMM512:
-; 2127 :             if ( opndx.value > 65536 * size ) {
-; 2128 :                 puc->FrameOffset = ( opndx.value >> 20 );
-; 2129 :                 puc++;
-; 2130 :                 puc->FrameOffset = ( opndx.value >> 4 );
-; 2131 :                 puc++;
-; 2132 :                 puc->UnwindOp = UWOP_SAVE_ZMM512_FAR;
-; 2133 :                 unw_info.CountOfCodes += 3;
-; 2134 :             } else {
-; 2135 :                 puc->FrameOffset = ( opndx.value >> 4 );
+; 2119 :         //        puc->FrameOffset = ( opndx.value >> 4 );
+; 2120 :         //        puc++;
+; 2121 :         //        puc->UnwindOp = UWOP_SAVE_YMM256_FAR;
+; 2122 :         //        unw_info.CountOfCodes += 3;
+; 2123 :         //    } else {
+; 2124 :         //        puc->FrameOffset = ( opndx.value >> 4 );
+; 2125 :         //        puc++;
+; 2126 :         //        puc->UnwindOp = UWOP_SAVE_YMM256;
+; 2127 :         //        unw_info.CountOfCodes += 2;
+; 2128 :         //    }
+; 2129 :         //    puc->CodeOffset = ofs;
+; 2130 :         //    puc->OpInfo = reg;
+; 2131 :         //    break;
+; 2132 : #if EVEXSUPP
+; 2133 :         case T_DOT_SAVEZMM512:
+; 2134 :             if ( opndx.value > 65536 * size ) {
+; 2135 :                 puc->FrameOffset = ( opndx.value >> 20 );
 ; 2136 :                 puc++;
-; 2137 :                 puc->UnwindOp = UWOP_SAVE_ZMM512;
-; 2138 :                 unw_info.CountOfCodes += 2;
-; 2139 :             }
-; 2140 :             puc->CodeOffset = ofs;
-; 2141 :             puc->OpInfo = reg;
-; 2142 :             break;
-; 2143 : #endif
-; 2144 : 
-; 2145 :         case T_DOT_SETFRAME:
-; 2146 :             if ( opndx.uvalue > 240 ) {
+; 2137 :                 puc->FrameOffset = ( opndx.value >> 4 );
+; 2138 :                 puc++;
+; 2139 :                 puc->UnwindOp = UWOP_SAVE_ZMM512_FAR;
+; 2140 :                 unw_info.CountOfCodes += 3;
+; 2141 :             } else {
+; 2142 :                 puc->FrameOffset = ( opndx.value >> 4 );
+; 2143 :                 puc++;
+; 2144 :                 puc->UnwindOp = UWOP_SAVE_ZMM512;
+; 2145 :                 unw_info.CountOfCodes += 2;
+; 2146 :             }
+; 2147 :             puc->CodeOffset = ofs;
+; 2148 :             puc->OpInfo = reg;
+; 2149 :             break;
+; 2150 : #endif
+; 2151 : 
+; 2152 :         case T_DOT_SETFRAME:
+; 2153 :             if ( opndx.uvalue > 240 ) {
 
 	cmp	DWORD PTR opndx$[rsp], 240		; 000000f0H
 	jbe	SHORT $LN54@ExcFrameDi
 
-; 2147 :                 return( EmitConstError( &opndx ) );
+; 2154 :                 return( EmitConstError( &opndx ) );
 
 	lea	rcx, QWORD PTR opndx$[rsp]
 	call	EmitConstError
 	jmp	$LN1@ExcFrameDi
 $LN54@ExcFrameDi:
 
-; 2148 :             }
-; 2149 :             unw_info.FrameRegister = reg;
+; 2155 :             }
+; 2156 :             unw_info.FrameRegister = reg;
 
 	movzx	eax, BYTE PTR reg$[rsp]
 	and	al, 15
@@ -7592,7 +7594,7 @@ $LN54@ExcFrameDi:
 	movzx	eax, cl
 	mov	BYTE PTR unw_info+3, al
 
-; 2150 :             unw_info.FrameOffset = ( opndx.uvalue >> 4 );
+; 2157 :             unw_info.FrameOffset = ( opndx.uvalue >> 4 );
 
 	mov	eax, DWORD PTR opndx$[rsp]
 	shr	eax, 4
@@ -7604,13 +7606,13 @@ $LN54@ExcFrameDi:
 	movzx	eax, cl
 	mov	BYTE PTR unw_info+3, al
 
-; 2151 :             puc->CodeOffset = ofs;
+; 2158 :             puc->CodeOffset = ofs;
 
 	mov	rax, QWORD PTR puc$[rsp]
 	movzx	ecx, BYTE PTR ofs$[rsp]
 	mov	BYTE PTR [rax], cl
 
-; 2152 :             puc->UnwindOp = UWOP_SET_FPREG;
+; 2159 :             puc->UnwindOp = UWOP_SET_FPREG;
 
 	mov	rax, QWORD PTR puc$[rsp]
 	movzx	eax, BYTE PTR [rax+1]
@@ -7619,8 +7621,8 @@ $LN54@ExcFrameDi:
 	mov	rcx, QWORD PTR puc$[rsp]
 	mov	BYTE PTR [rcx+1], al
 
-; 2153 :             //puc->OpInfo = ( opndx.uvalue >> 4 );
-; 2154 :             puc->OpInfo = reg;
+; 2160 :             //puc->OpInfo = ( opndx.uvalue >> 4 );
+; 2161 :             puc->OpInfo = reg;
 
 	movzx	eax, BYTE PTR reg$[rsp]
 	and	al, 15
@@ -7633,7 +7635,7 @@ $LN54@ExcFrameDi:
 	mov	rcx, QWORD PTR puc$[rsp]
 	mov	BYTE PTR [rcx+1], al
 
-; 2155 :             unw_info.CountOfCodes++;
+; 2162 :             unw_info.CountOfCodes++;
 
 	movzx	eax, BYTE PTR unw_info+2
 	inc	al
@@ -7641,11 +7643,11 @@ $LN54@ExcFrameDi:
 $LN4@ExcFrameDi:
 $LN2@ExcFrameDi:
 
-; 2156 :             break;
-; 2157 :         }
-; 2158 :         break;
-; 2159 :     }
-; 2160 :     if ( tokenarray[i].token != T_FINAL ) {
+; 2163 :             break;
+; 2164 :         }
+; 2165 :         break;
+; 2166 :     }
+; 2167 :     if ( tokenarray[i].token != T_FINAL ) {
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -7654,7 +7656,7 @@ $LN2@ExcFrameDi:
 	test	eax, eax
 	je	SHORT $LN55@ExcFrameDi
 
-; 2161 :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
+; 2168 :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -7665,34 +7667,34 @@ $LN2@ExcFrameDi:
 	jmp	SHORT $LN1@ExcFrameDi
 $LN55@ExcFrameDi:
 
-; 2162 :     }
-; 2163 :     /* v2.11: check if the table of codes has been exceeded */
-; 2164 :     if ( oldcodes > unw_info.CountOfCodes ) {
+; 2169 :     }
+; 2170 :     /* v2.11: check if the table of codes has been exceeded */
+; 2171 :     if ( oldcodes > unw_info.CountOfCodes ) {
 
 	movzx	eax, BYTE PTR oldcodes$[rsp]
 	movzx	ecx, BYTE PTR unw_info+2
 	cmp	eax, ecx
 	jle	SHORT $LN56@ExcFrameDi
 
-; 2165 :         return( EmitErr( TOO_MANY_UNWIND_CODES_IN_FRAME_PROC ) );
+; 2172 :         return( EmitErr( TOO_MANY_UNWIND_CODES_IN_FRAME_PROC ) );
 
 	mov	ecx, 210				; 000000d2H
 	call	EmitErr
 	jmp	SHORT $LN1@ExcFrameDi
 $LN56@ExcFrameDi:
 
-; 2166 :     }
-; 2167 :     DebugMsg1(("ExcFrameDirective() exit, ok\n" ));
+; 2173 :     }
+; 2174 :     DebugMsg1(("ExcFrameDirective() exit, ok\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG12186
+	lea	rcx, OFFSET FLAT:$SG12188
 	call	DoDebugMsg1
 
-; 2168 :     return( NOT_ERROR );
+; 2175 :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@ExcFrameDi:
 
-; 2169 : }
+; 2176 : }
 
 	add	rsp, 200				; 000000c8H
 	ret	0
@@ -7712,6 +7714,7 @@ _TEXT	ENDS
 ; File d:\hjwasm\hjwasm2.13.1s\hjwasm2.13.1s\proc.c
 _TEXT	SEGMENT
 tv66 = 32
+procline$ = 40
 i$ = 64
 tokenarray$ = 72
 EndpDir	PROC
@@ -7723,7 +7726,9 @@ $LN9:
 	mov	DWORD PTR [rsp+8], ecx
 	sub	rsp, 56					; 00000038H
 
-; 1871 :     DebugMsg1(("EndpDir(%s) enter, curr ofs=% " I32_SPEC "X, CurrProc=%s\n", tokenarray[0].string_ptr, GetCurrOffset(), CurrProc ? CurrProc->sym.name : "NULL" ));
+; 1871 : 	struct asym*        procline;
+; 1872 : 
+; 1873 : 	DebugMsg1(("EndpDir(%s) enter, curr ofs=% " I32_SPEC "X, CurrProc=%s\n", tokenarray[0].string_ptr, GetCurrOffset(), CurrProc ? CurrProc->sym.name : "NULL" ));
 
 	cmp	QWORD PTR CurrProc, 0
 	je	SHORT $LN7@EndpDir
@@ -7732,7 +7737,7 @@ $LN9:
 	mov	QWORD PTR tv66[rsp], rax
 	jmp	SHORT $LN8@EndpDir
 $LN7@EndpDir:
-	lea	rax, OFFSET FLAT:$SG12104
+	lea	rax, OFFSET FLAT:$SG12105
 	mov	QWORD PTR tv66[rsp], rax
 $LN8@EndpDir:
 	call	GetCurrOffset
@@ -7742,10 +7747,10 @@ $LN8@EndpDir:
 	mov	r8d, eax
 	mov	rax, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rax+rcx+8]
-	lea	rcx, OFFSET FLAT:$SG12105
+	lea	rcx, OFFSET FLAT:$SG12106
 	call	DoDebugMsg1
 
-; 1872 :     if( i != 1 || tokenarray[2].token != T_FINAL ) {
+; 1874 :     if( i != 1 || tokenarray[2].token != T_FINAL ) {
 
 	cmp	DWORD PTR i$[rsp], 1
 	jne	SHORT $LN3@EndpDir
@@ -7757,7 +7762,7 @@ $LN8@EndpDir:
 	je	SHORT $LN2@EndpDir
 $LN3@EndpDir:
 
-; 1873 :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
+; 1875 :         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -7765,12 +7770,12 @@ $LN3@EndpDir:
 	mov	rdx, QWORD PTR [rcx+rax+24]
 	mov	ecx, 209				; 000000d1H
 	call	EmitErr
-	jmp	SHORT $LN1@EndpDir
+	jmp	$LN1@EndpDir
 $LN2@EndpDir:
 
-; 1874 :     }
-; 1875 :     /* v2.10: "+ 1" added to CurrProc->sym.name_size */
-; 1876 :     if( CurrProc &&
+; 1876 :     }
+; 1877 :     /* v2.10: "+ 1" added to CurrProc->sym.name_size */
+; 1878 :     if( CurrProc &&
 
 	cmp	QWORD PTR CurrProc, 0
 	je	SHORT $LN4@EndpDir
@@ -7789,18 +7794,32 @@ $LN2@EndpDir:
 	test	eax, eax
 	jne	SHORT $LN4@EndpDir
 
-; 1877 :        ( SymCmpFunc(CurrProc->sym.name, tokenarray[0].string_ptr, CurrProc->sym.name_size + 1 ) == 0 ) ) {
-; 1878 :         ProcFini( CurrProc );
+; 1879 :        ( SymCmpFunc(CurrProc->sym.name, tokenarray[0].string_ptr, CurrProc->sym.name_size + 1 ) == 0 ) ) {
+; 1880 :      
+; 1881 : 		/* Reset the current source code line relating to the PROC */
+; 1882 : 		procline = SymFind("@ProcLine");
+
+	lea	rcx, OFFSET FLAT:$SG12111
+	call	SymFind
+	mov	QWORD PTR procline$[rsp], rax
+
+; 1883 : 		procline->value = 0;
+
+	mov	rax, QWORD PTR procline$[rsp]
+	mov	DWORD PTR [rax+16], 0
+
+; 1884 : 
+; 1885 : 		ProcFini( CurrProc );
 
 	mov	rcx, QWORD PTR CurrProc
 	call	ProcFini
 
-; 1879 :     } else {
+; 1886 :     } else {
 
 	jmp	SHORT $LN5@EndpDir
 $LN4@EndpDir:
 
-; 1880 :         return( EmitErr( UNMATCHED_BLOCK_NESTING, tokenarray[0].string_ptr ) );
+; 1887 :         return( EmitErr( UNMATCHED_BLOCK_NESTING, tokenarray[0].string_ptr ) );
 
 	mov	eax, 32					; 00000020H
 	imul	rax, rax, 0
@@ -7811,13 +7830,13 @@ $LN4@EndpDir:
 	jmp	SHORT $LN1@EndpDir
 $LN5@EndpDir:
 
-; 1881 :     }
-; 1882 :     return( NOT_ERROR );
+; 1888 :     }
+; 1889 :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@EndpDir:
 
-; 1883 : }
+; 1890 : }
 
 	add	rsp, 56					; 00000038H
 	ret	0
@@ -8264,62 +8283,62 @@ n$6 = 140
 info$ = 160
 SetLocalOffsets PROC
 
-; 3031 : {
+; 3038 : {
 
 	mov	QWORD PTR [rsp+8], rcx
 	sub	rsp, 152				; 00000098H
 
-; 3032 :     struct dsym *curr;
-; 3033 : #if AMD64_SUPPORT || STACKBASESUPP
-; 3034 :     int         cntxmm = 0;
+; 3039 :     struct dsym *curr;
+; 3040 : #if AMD64_SUPPORT || STACKBASESUPP
+; 3041 :     int         cntxmm = 0;
 
 	mov	DWORD PTR cntxmm$[rsp], 0
 
-; 3035 :     int         cntstd = 0;
+; 3042 :     int         cntstd = 0;
 
 	mov	DWORD PTR cntstd$[rsp], 0
 
-; 3036 :     int         start = 0;
+; 3043 :     int         start = 0;
 
 	mov	DWORD PTR start$[rsp], 0
 
-; 3037 :     uint_16             *regist;
-; 3038 :     int                 cnt;
-; 3039 : 
-; 3040 : #endif
-; 3041 : #if AMD64_SUPPORT
-; 3042 :     unsigned char       xmmflag = 1;
+; 3044 :     uint_16             *regist;
+; 3045 :     int                 cnt;
+; 3046 : 
+; 3047 : #endif
+; 3048 : #if AMD64_SUPPORT
+; 3049 :     unsigned char       xmmflag = 1;
 
 	mov	BYTE PTR xmmflag$[rsp], 1
 
-; 3043 :     unsigned char       ymmflag = 0;
+; 3050 :     unsigned char       ymmflag = 0;
 
 	mov	BYTE PTR ymmflag$[rsp], 0
 
-; 3044 :     int         rspalign = FALSE;
+; 3051 :     int         rspalign = FALSE;
 
 	mov	DWORD PTR rspalign$[rsp], 0
 
-; 3045 : #endif
-; 3046 :     int         align = CurrWordSize;
+; 3052 : #endif
+; 3053 :     int         align = CurrWordSize;
 
 	movzx	eax, BYTE PTR ModuleInfo+406
 	mov	DWORD PTR align$[rsp], eax
 
-; 3047 : #if EVEXSUPP
-; 3048 :     unsigned char       zmmflag = 0;
-; 3049 : #endif
-; 3050 :     //if ( Parse_Pass != PASS_1 ) /* everything is done in pass 1 */
-; 3051 :     //    return;
-; 3052 : 
-; 3053 : #if AMD64_SUPPORT
-; 3054 :     regist = info->regslist;
+; 3054 : #if EVEXSUPP
+; 3055 :     unsigned char       zmmflag = 0;
+; 3056 : #endif
+; 3057 :     //if ( Parse_Pass != PASS_1 ) /* everything is done in pass 1 */
+; 3058 :     //    return;
+; 3059 : 
+; 3060 : #if AMD64_SUPPORT
+; 3061 :     regist = info->regslist;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	rax, QWORD PTR [rax]
 	mov	QWORD PTR regist$[rsp], rax
 
-; 3055 :     if ( info->isframe || ( ModuleInfo.fctype == FCT_WIN64 && ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) ) ) {
+; 3062 :     if ( info->isframe || ( ModuleInfo.fctype == FCT_WIN64 && ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) ) ) {
 
 	mov	rax, QWORD PTR info$[rsp]
 	movzx	eax, BYTE PTR [rax+128]
@@ -8336,38 +8355,38 @@ SetLocalOffsets PROC
 	je	SHORT $LN17@SetLocalOf
 $LN18@SetLocalOf:
 
-; 3056 :         rspalign = TRUE;
+; 3063 :         rspalign = TRUE;
 
 	mov	DWORD PTR rspalign$[rsp], 1
 
-; 3057 :         if ( ModuleInfo.win64_flags & W64F_STACKALIGN16 )
+; 3064 :         if ( ModuleInfo.win64_flags & W64F_STACKALIGN16 )
 
 	movzx	eax, BYTE PTR ModuleInfo+413
 	and	eax, 4
 	test	eax, eax
 	je	SHORT $LN19@SetLocalOf
 
-; 3058 :             align = 16;
+; 3065 :             align = 16;
 
 	mov	DWORD PTR align$[rsp], 16
 $LN19@SetLocalOf:
 $LN17@SetLocalOf:
 
-; 3059 :     }
-; 3060 : #endif
-; 3061 : #if AMD64_SUPPORT || STACKBASESUPP
-; 3062 :     /* in 64-bit, if the FRAME attribute is set, the space for the registers
-; 3063 :      * saved by the USES clause is located ABOVE the local variables!
-; 3064 :      * v2.09: if stack space is to be reserved for INVOKE ( option WIN64:2 ),
-; 3065 :      * the registers are also saved ABOVE the local variables.
-; 3066 :      */
-; 3067 :     if (info->regslist){
+; 3066 :     }
+; 3067 : #endif
+; 3068 : #if AMD64_SUPPORT || STACKBASESUPP
+; 3069 :     /* in 64-bit, if the FRAME attribute is set, the space for the registers
+; 3070 :      * saved by the USES clause is located ABOVE the local variables!
+; 3071 :      * v2.09: if stack space is to be reserved for INVOKE ( option WIN64:2 ),
+; 3072 :      * the registers are also saved ABOVE the local variables.
+; 3073 :      */
+; 3074 :     if (info->regslist){
 
 	mov	rax, QWORD PTR info$[rsp]
 	cmp	QWORD PTR [rax], 0
 	je	$LN20@SetLocalOf
 
-; 3068 :       for (cnt = *regist++; cnt; cnt--, regist++) {
+; 3075 :       for (cnt = *regist++; cnt; cnt--, regist++) {
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -8387,7 +8406,7 @@ $LN4@SetLocalOf:
 	cmp	DWORD PTR cnt$[rsp], 0
 	je	SHORT $LN3@SetLocalOf
 
-; 3069 :         if (GetValueSp(*regist) & OP_XMM)
+; 3076 :         if (GetValueSp(*regist) & OP_XMM)
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -8398,13 +8417,13 @@ $LN4@SetLocalOf:
 	test	eax, eax
 	je	SHORT $LN21@SetLocalOf
 
-; 3070 :           xmmflag = 1;
+; 3077 :           xmmflag = 1;
 
 	mov	BYTE PTR xmmflag$[rsp], 1
 	jmp	SHORT $LN22@SetLocalOf
 $LN21@SetLocalOf:
 
-; 3071 :         else if (GetValueSp(*regist) & OP_YMM){
+; 3078 :         else if (GetValueSp(*regist) & OP_YMM){
 
 	mov	rax, QWORD PTR regist$[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -8415,26 +8434,26 @@ $LN21@SetLocalOf:
 	test	eax, eax
 	je	SHORT $LN23@SetLocalOf
 
-; 3072 :           ymmflag = 1;
+; 3079 :           ymmflag = 1;
 
 	mov	BYTE PTR ymmflag$[rsp], 1
 $LN23@SetLocalOf:
 $LN22@SetLocalOf:
 
-; 3073 :         }
-; 3074 : #if EVEXSUPP    
-; 3075 :         else if (GetValueSp(*regist) & OP_ZMM){
-; 3076 :           zmmflag = 1;
-; 3077 :         }
-; 3078 : #endif
-; 3079 :       }
+; 3080 :         }
+; 3081 : #if EVEXSUPP    
+; 3082 :         else if (GetValueSp(*regist) & OP_ZMM){
+; 3083 :           zmmflag = 1;
+; 3084 :         }
+; 3085 : #endif
+; 3086 :       }
 
 	jmp	SHORT $LN2@SetLocalOf
 $LN3@SetLocalOf:
 $LN20@SetLocalOf:
 
-; 3080 :     }
-; 3081 :     if (ymmflag) XYZMMsize = 32;
+; 3087 :     }
+; 3088 :     if (ymmflag) XYZMMsize = 32;
 
 	movzx	eax, BYTE PTR ymmflag$[rsp]
 	test	eax, eax
@@ -8443,18 +8462,18 @@ $LN20@SetLocalOf:
 	jmp	SHORT $LN25@SetLocalOf
 $LN24@SetLocalOf:
 
-; 3082 :     else XYZMMsize = 16;
+; 3089 :     else XYZMMsize = 16;
 
 	mov	DWORD PTR XYZMMsize, 16
 $LN25@SetLocalOf:
 
-; 3083 : 
-; 3084 :     if (
-; 3085 : #if STACKBASESUPP
-; 3086 :         info->fpo
-; 3087 : #endif
-; 3088 : #if AMD64_SUPPORT
-; 3089 :         || rspalign
+; 3090 : 
+; 3091 :     if (
+; 3092 : #if STACKBASESUPP
+; 3093 :         info->fpo
+; 3094 : #endif
+; 3095 : #if AMD64_SUPPORT
+; 3096 :         || rspalign
 
 	mov	rax, QWORD PTR info$[rsp]
 	movzx	eax, BYTE PTR [rax+128]
@@ -8467,20 +8486,20 @@ $LN25@SetLocalOf:
 	je	$LN26@SetLocalOf
 $LN27@SetLocalOf:
 
-; 3090 : #endif
-; 3091 :        ) {
-; 3092 :         /* count registers to be saved ABOVE local variables.
-; 3093 :          * v2.06: the list may contain xmm registers, which have size 16!
-; 3094 :          */
-; 3095 :         if ( info->regslist ) {
+; 3097 : #endif
+; 3098 :        ) {
+; 3099 :         /* count registers to be saved ABOVE local variables.
+; 3100 :          * v2.06: the list may contain xmm registers, which have size 16!
+; 3101 :          */
+; 3102 :         if ( info->regslist ) {
 
 	mov	rax, QWORD PTR info$[rsp]
 	cmp	QWORD PTR [rax], 0
 	je	$LN28@SetLocalOf
 
-; 3096 :             int         cnt;
-; 3097 :             uint_16     *regs;
-; 3098 :             for( regs = info->regslist, cnt = *regs++; cnt; cnt--, regs++ )
+; 3103 :             int         cnt;
+; 3104 :             uint_16     *regs;
+; 3105 :             for( regs = info->regslist, cnt = *regs++; cnt; cnt--, regs++ )
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	rax, QWORD PTR [rax]
@@ -8503,7 +8522,7 @@ $LN7@SetLocalOf:
 	cmp	DWORD PTR cnt$2[rsp], 0
 	je	SHORT $LN6@SetLocalOf
 
-; 3099 :                 if (( GetValueSp( *regs ) & OP_XMM )||( GetValueSp( *regs ) & OP_YMM )
+; 3106 :                 if (( GetValueSp( *regs ) & OP_XMM )||( GetValueSp( *regs ) & OP_YMM )
 
 	mov	rax, QWORD PTR regs$5[rsp]
 	movzx	eax, WORD PTR [rax]
@@ -8523,10 +8542,10 @@ $LN7@SetLocalOf:
 	je	SHORT $LN29@SetLocalOf
 $LN31@SetLocalOf:
 
-; 3100 : #if EVEXSUPP    
-; 3101 :                   || ( GetValueSp( *regs ) & OP_ZMM )
-; 3102 : #endif
-; 3103 :                 )cntxmm++;
+; 3107 : #if EVEXSUPP    
+; 3108 :                   || ( GetValueSp( *regs ) & OP_ZMM )
+; 3109 : #endif
+; 3110 :                 )cntxmm++;
 
 	mov	eax, DWORD PTR cntxmm$[rsp]
 	inc	eax
@@ -8534,8 +8553,8 @@ $LN31@SetLocalOf:
 	jmp	SHORT $LN30@SetLocalOf
 $LN29@SetLocalOf:
 
-; 3104 :                 else
-; 3105 :                   cntstd++;
+; 3111 :                 else
+; 3112 :                   cntstd++;
 
 	mov	eax, DWORD PTR cntstd$[rsp]
 	inc	eax
@@ -8545,9 +8564,9 @@ $LN30@SetLocalOf:
 $LN6@SetLocalOf:
 $LN28@SetLocalOf:
 
-; 3106 :         }        
-; 3107 :         /* in case there's no frame register, adjust start offset. */
-; 3108 :         if ( info->parasize == 0 && info->locallist == NULL  )
+; 3113 :         }        
+; 3114 :         /* in case there's no frame register, adjust start offset. */
+; 3115 :         if ( info->parasize == 0 && info->locallist == NULL  )
 
 	mov	rax, QWORD PTR info$[rsp]
 	cmp	DWORD PTR [rax+32], 0
@@ -8556,13 +8575,13 @@ $LN28@SetLocalOf:
 	cmp	QWORD PTR [rax+16], 0
 	jne	SHORT $LN32@SetLocalOf
 
-; 3109 :             start = CurrWordSize;
+; 3116 :             start = CurrWordSize;
 
 	movzx	eax, BYTE PTR ModuleInfo+406
 	mov	DWORD PTR start$[rsp], eax
 $LN32@SetLocalOf:
 
-; 3110 :         if (info->fpo && !(ModuleInfo.win64_flags & W64F_HABRAN)) start = CurrWordSize;
+; 3117 :         if (info->fpo && !(ModuleInfo.win64_flags & W64F_HABRAN)) start = CurrWordSize;
 
 	mov	rax, QWORD PTR info$[rsp]
 	movzx	eax, BYTE PTR [rax+128]
@@ -8579,29 +8598,29 @@ $LN32@SetLocalOf:
 	mov	DWORD PTR start$[rsp], eax
 $LN33@SetLocalOf:
 
-; 3111 : #if AMD64_SUPPORT
-; 3112 :         if (ModuleInfo.win64_flags & W64F_HABRAN){
+; 3118 : #if AMD64_SUPPORT
+; 3119 :         if (ModuleInfo.win64_flags & W64F_HABRAN){
 
 	movzx	eax, BYTE PTR ModuleInfo+413
 	and	eax, 11
 	test	eax, eax
 	je	SHORT $LN34@SetLocalOf
 
-; 3113 :          // info->localsize += start;
-; 3114 :           cntstd = info->pushed_reg;
+; 3120 :          // info->localsize += start;
+; 3121 :           cntstd = info->pushed_reg;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+104]
 	mov	DWORD PTR cntstd$[rsp], eax
 
-; 3115 :           if (rspalign && cntxmm) {
+; 3122 :           if (rspalign && cntxmm) {
 
 	cmp	DWORD PTR rspalign$[rsp], 0
 	je	SHORT $LN36@SetLocalOf
 	cmp	DWORD PTR cntxmm$[rsp], 0
 	je	SHORT $LN36@SetLocalOf
 
-; 3116 :               if (!(cntstd & 1)) info->localsize += 8;
+; 3123 :               if (!(cntstd & 1)) info->localsize += 8;
 
 	mov	eax, DWORD PTR cntstd$[rsp]
 	and	eax, 1
@@ -8614,7 +8633,7 @@ $LN33@SetLocalOf:
 	mov	DWORD PTR [rcx+36], eax
 $LN37@SetLocalOf:
 
-; 3117 :               info->localsize += XYZMMsize * cntxmm;
+; 3124 :               info->localsize += XYZMMsize * cntxmm;
 
 	mov	eax, DWORD PTR XYZMMsize
 	imul	eax, DWORD PTR cntxmm$[rsp]
@@ -8624,20 +8643,20 @@ $LN37@SetLocalOf:
 	mov	DWORD PTR [rcx+36], eax
 $LN36@SetLocalOf:
 
-; 3118 :               }
-; 3119 :            }
+; 3125 :               }
+; 3126 :            }
 
 	jmp	SHORT $LN35@SetLocalOf
 $LN34@SetLocalOf:
 
-; 3120 :         else 
-; 3121 :         {
-; 3122 :           if (rspalign) {
+; 3127 :         else 
+; 3128 :         {
+; 3129 :           if (rspalign) {
 
 	cmp	DWORD PTR rspalign$[rsp], 0
 	je	SHORT $LN38@SetLocalOf
 
-; 3123 :             info->localsize = start + cntstd * CurrWordSize;
+; 3130 :             info->localsize = start + cntstd * CurrWordSize;
 
 	movzx	eax, BYTE PTR ModuleInfo+406
 	mov	ecx, DWORD PTR cntstd$[rsp]
@@ -8649,12 +8668,12 @@ $LN34@SetLocalOf:
 	mov	rcx, QWORD PTR info$[rsp]
 	mov	DWORD PTR [rcx+36], eax
 
-; 3124 :             if (cntxmm) {
+; 3131 :             if (cntxmm) {
 
 	cmp	DWORD PTR cntxmm$[rsp], 0
 	je	SHORT $LN39@SetLocalOf
 
-; 3125 :               info->localsize += XYZMMsize * cntxmm;
+; 3132 :               info->localsize += XYZMMsize * cntxmm;
 
 	mov	eax, DWORD PTR XYZMMsize
 	imul	eax, DWORD PTR cntxmm$[rsp]
@@ -8663,7 +8682,7 @@ $LN34@SetLocalOf:
 	mov	rcx, QWORD PTR info$[rsp]
 	mov	DWORD PTR [rcx+36], eax
 
-; 3126 :               info->localsize = ROUND_UP(info->localsize, 16);
+; 3133 :               info->localsize = ROUND_UP(info->localsize, 16);
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+36]
@@ -8675,11 +8694,11 @@ $LN39@SetLocalOf:
 $LN38@SetLocalOf:
 $LN35@SetLocalOf:
 
-; 3127 :             }
-; 3128 :           }
-; 3129 :         }
-; 3130 : #endif
-; 3131 :         DebugMsg1(("SetLocalOffsets(%s): cntxmm=%u cntstd=%u start=%u align=%u localsize=%u\n", CurrProc->sym.name, cntxmm, cntstd, start, align, info->localsize ));
+; 3134 :             }
+; 3135 :           }
+; 3136 :         }
+; 3137 : #endif
+; 3138 :         DebugMsg1(("SetLocalOffsets(%s): cntxmm=%u cntstd=%u start=%u align=%u localsize=%u\n", CurrProc->sym.name, cntxmm, cntstd, start, align, info->localsize ));
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+36]
@@ -8692,15 +8711,15 @@ $LN35@SetLocalOf:
 	mov	r8d, DWORD PTR cntxmm$[rsp]
 	mov	rax, QWORD PTR CurrProc
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12652
+	lea	rcx, OFFSET FLAT:$SG12654
 	call	DoDebugMsg1
 $LN26@SetLocalOf:
 
-; 3132 :     }
-; 3133 : #endif
-; 3134 : 
-; 3135 :     /* scan the locals list and set member sym.offset */
-; 3136 :     for( curr = info->locallist; curr; curr = curr->nextlocal ) {
+; 3139 :     }
+; 3140 : #endif
+; 3141 : 
+; 3142 :     /* scan the locals list and set member sym.offset */
+; 3143 :     for( curr = info->locallist; curr; curr = curr->nextlocal ) {
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	rax, QWORD PTR [rax+16]
@@ -8714,7 +8733,7 @@ $LN10@SetLocalOf:
 	cmp	QWORD PTR curr$[rsp], 0
 	je	$LN9@SetLocalOf
 
-; 3137 :         uint_32 itemsize = ( curr->sym.total_size == 0 ? 0 : curr->sym.total_size / curr->sym.total_length );
+; 3144 :         uint_32 itemsize = ( curr->sym.total_size == 0 ? 0 : curr->sym.total_size / curr->sym.total_length );
 
 	mov	rax, QWORD PTR curr$[rsp]
 	cmp	DWORD PTR [rax+56], 0
@@ -8732,18 +8751,18 @@ $LN59@SetLocalOf:
 	mov	eax, DWORD PTR tv219[rsp]
 	mov	DWORD PTR itemsize$1[rsp], eax
 
-; 3138 :         if (ModuleInfo.win64_flags & W64F_HABRAN){
+; 3145 :         if (ModuleInfo.win64_flags & W64F_HABRAN){
 
 	movzx	eax, BYTE PTR ModuleInfo+413
 	and	eax, 11
 	test	eax, eax
 	je	SHORT $LN40@SetLocalOf
 
-; 3139 :           int n = 0;
+; 3146 :           int n = 0;
 
 	mov	DWORD PTR n$6[rsp], 0
 
-; 3140 :           if (curr->sym.isarray) n = curr->sym.total_size & 0x7;
+; 3147 :           if (curr->sym.isarray) n = curr->sym.total_size & 0x7;
 
 	mov	rax, QWORD PTR curr$[rsp]
 	movzx	eax, BYTE PTR [rax+41]
@@ -8758,7 +8777,7 @@ $LN59@SetLocalOf:
 	mov	DWORD PTR n$6[rsp], eax
 $LN41@SetLocalOf:
 
-; 3141 :           curr->sym.offset = info->localsize + n; //that works
+; 3148 :           curr->sym.offset = info->localsize + n; //that works
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+36]
@@ -8767,8 +8786,8 @@ $LN41@SetLocalOf:
 	mov	DWORD PTR [rcx+16], eax
 $LN40@SetLocalOf:
 
-; 3142 :         }
-; 3143 :         info->localsize += curr->sym.total_size;
+; 3149 :         }
+; 3150 :         info->localsize += curr->sym.total_size;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+36]
@@ -8777,13 +8796,13 @@ $LN40@SetLocalOf:
 	mov	rcx, QWORD PTR info$[rsp]
 	mov	DWORD PTR [rcx+36], eax
 
-; 3144 :         if ( itemsize > align )
+; 3151 :         if ( itemsize > align )
 
 	mov	eax, DWORD PTR align$[rsp]
 	cmp	DWORD PTR itemsize$1[rsp], eax
 	jbe	SHORT $LN42@SetLocalOf
 
-; 3145 :             info->localsize = ROUND_UP( info->localsize, align );
+; 3152 :             info->localsize = ROUND_UP( info->localsize, align );
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+36]
@@ -8798,12 +8817,12 @@ $LN40@SetLocalOf:
 	jmp	SHORT $LN43@SetLocalOf
 $LN42@SetLocalOf:
 
-; 3146 :         else if ( itemsize ) /* v2.04: skip if size == 0 */
+; 3153 :         else if ( itemsize ) /* v2.04: skip if size == 0 */
 
 	cmp	DWORD PTR itemsize$1[rsp], 0
 	je	SHORT $LN44@SetLocalOf
 
-; 3147 :             info->localsize = ROUND_UP( info->localsize, itemsize );
+; 3154 :             info->localsize = ROUND_UP( info->localsize, itemsize );
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+36]
@@ -8818,14 +8837,14 @@ $LN42@SetLocalOf:
 $LN44@SetLocalOf:
 $LN43@SetLocalOf:
 
-; 3148 :         if (!(ModuleInfo.win64_flags & W64F_HABRAN))
+; 3155 :         if (!(ModuleInfo.win64_flags & W64F_HABRAN))
 
 	movzx	eax, BYTE PTR ModuleInfo+413
 	and	eax, 11
 	test	eax, eax
 	jne	SHORT $LN45@SetLocalOf
 
-; 3149 :         curr->sym.offset = - info->localsize;
+; 3156 :         curr->sym.offset = - info->localsize;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+36]
@@ -8834,7 +8853,7 @@ $LN43@SetLocalOf:
 	mov	DWORD PTR [rcx+16], eax
 $LN45@SetLocalOf:
 
-; 3150 :         DebugMsg1(("SetLocalOffsets(%s): offset of %s (size=%u) set to %d\n", CurrProc->sym.name, curr->sym.name, curr->sym.total_size, curr->sym.offset));
+; 3157 :         DebugMsg1(("SetLocalOffsets(%s): offset of %s (size=%u) set to %d\n", CurrProc->sym.name, curr->sym.name, curr->sym.total_size, curr->sym.offset));
 
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	eax, DWORD PTR [rax+16]
@@ -8845,24 +8864,24 @@ $LN45@SetLocalOf:
 	mov	r8, QWORD PTR [rax+8]
 	mov	rax, QWORD PTR CurrProc
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12659
+	lea	rcx, OFFSET FLAT:$SG12661
 	call	DoDebugMsg1
 
-; 3151 :     }
+; 3158 :     }
 
 	jmp	$LN8@SetLocalOf
 $LN9@SetLocalOf:
 
-; 3152 : 
-; 3153 :     /* v2.11: localsize must be rounded before offset adjustment if fpo */
-; 3154 :     if (!(ModuleInfo.win64_flags & W64F_HABRAN))
+; 3159 : 
+; 3160 :     /* v2.11: localsize must be rounded before offset adjustment if fpo */
+; 3161 :     if (!(ModuleInfo.win64_flags & W64F_HABRAN))
 
 	movzx	eax, BYTE PTR ModuleInfo+413
 	and	eax, 11
 	test	eax, eax
 	jne	SHORT $LN46@SetLocalOf
 
-; 3155 :     info->localsize = ROUND_UP( info->localsize, CurrWordSize );
+; 3162 :     info->localsize = ROUND_UP( info->localsize, CurrWordSize );
 
 	movzx	eax, BYTE PTR ModuleInfo+406
 	mov	rcx, QWORD PTR info$[rsp]
@@ -8876,14 +8895,14 @@ $LN9@SetLocalOf:
 	mov	DWORD PTR [rcx+36], eax
 $LN46@SetLocalOf:
 
-; 3156 : #if AMD64_SUPPORT
-; 3157 :     /* RSP 16-byte alignment? */
-; 3158 :     if ( rspalign ) {
+; 3163 : #if AMD64_SUPPORT
+; 3164 :     /* RSP 16-byte alignment? */
+; 3165 :     if ( rspalign ) {
 
 	cmp	DWORD PTR rspalign$[rsp], 0
 	je	SHORT $LN47@SetLocalOf
 
-; 3159 :       if (ModuleInfo.win64_flags & W64F_HABRAN)info->localsize = ROUND_UP(info->localsize, 8);
+; 3166 :       if (ModuleInfo.win64_flags & W64F_HABRAN)info->localsize = ROUND_UP(info->localsize, 8);
 
 	movzx	eax, BYTE PTR ModuleInfo+413
 	and	eax, 11
@@ -8898,7 +8917,7 @@ $LN46@SetLocalOf:
 	jmp	SHORT $LN49@SetLocalOf
 $LN48@SetLocalOf:
 
-; 3160 :       else  info->localsize = ROUND_UP( info->localsize, 16 );
+; 3167 :       else  info->localsize = ROUND_UP( info->localsize, 16 );
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+36]
@@ -8909,26 +8928,26 @@ $LN48@SetLocalOf:
 $LN49@SetLocalOf:
 $LN47@SetLocalOf:
 
-; 3161 :     }
-; 3162 : #endif
-; 3163 : 
-; 3164 :     DebugMsg1(("SetLocalOffsets(%s): localsize=%u after processing locals\n", CurrProc->sym.name, info->localsize ));
+; 3168 :     }
+; 3169 : #endif
+; 3170 : 
+; 3171 :     DebugMsg1(("SetLocalOffsets(%s): localsize=%u after processing locals\n", CurrProc->sym.name, info->localsize ));
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	r8d, DWORD PTR [rax+36]
 	mov	rax, QWORD PTR CurrProc
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12664
+	lea	rcx, OFFSET FLAT:$SG12666
 	call	DoDebugMsg1
 
-; 3165 : 
-; 3166 : #if STACKBASESUPP
-; 3167 :     /* v2.11: recalculate offsets for params and locals if there's no frame pointer.
-; 3168 :      * Problem in 64-bit: option win64:2 triggers the "stack space reservation" feature -
-; 3169 :      * but the final value of this space is known at the procedure's END only.
-; 3170 :      * Hence in this case the values calculated below are "preliminary".
-; 3171 :      */
-; 3172 :     if (info->fpo) {
+; 3172 : 
+; 3173 : #if STACKBASESUPP
+; 3174 :     /* v2.11: recalculate offsets for params and locals if there's no frame pointer.
+; 3175 :      * Problem in 64-bit: option win64:2 triggers the "stack space reservation" feature -
+; 3176 :      * but the final value of this space is known at the procedure's END only.
+; 3177 :      * Hence in this case the values calculated below are "preliminary".
+; 3178 :      */
+; 3179 :     if (info->fpo) {
 
 	mov	rax, QWORD PTR info$[rsp]
 	movzx	eax, BYTE PTR [rax+128]
@@ -8938,28 +8957,28 @@ $LN47@SetLocalOf:
 	test	eax, eax
 	je	$LN50@SetLocalOf
 
-; 3173 :       unsigned localadj;
-; 3174 :       unsigned paramadj;
-; 3175 : #if AMD64_SUPPORT
-; 3176 :       if (rspalign) {
+; 3180 :       unsigned localadj;
+; 3181 :       unsigned paramadj;
+; 3182 : #if AMD64_SUPPORT
+; 3183 :       if (rspalign) {
 
 	cmp	DWORD PTR rspalign$[rsp], 0
 	je	SHORT $LN51@SetLocalOf
 
-; 3177 :         localadj = info->localsize;
+; 3184 :         localadj = info->localsize;
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	eax, DWORD PTR [rax+36]
 	mov	DWORD PTR localadj$3[rsp], eax
 
-; 3178 :         if (!(ModuleInfo.win64_flags & W64F_HABRAN))
+; 3185 :         if (!(ModuleInfo.win64_flags & W64F_HABRAN))
 
 	movzx	eax, BYTE PTR ModuleInfo+413
 	and	eax, 11
 	test	eax, eax
 	jne	SHORT $LN53@SetLocalOf
 
-; 3179 :           paramadj = info->localsize - CurrWordSize - start;
+; 3186 :           paramadj = info->localsize - CurrWordSize - start;
 
 	movzx	eax, BYTE PTR ModuleInfo+406
 	mov	rcx, QWORD PTR info$[rsp]
@@ -8970,15 +8989,15 @@ $LN47@SetLocalOf:
 	mov	DWORD PTR paramadj$4[rsp], eax
 $LN53@SetLocalOf:
 
-; 3180 :       }
+; 3187 :       }
 
 	jmp	SHORT $LN52@SetLocalOf
 $LN51@SetLocalOf:
 
-; 3181 :       else 
-; 3182 :       {
-; 3183 : #endif
-; 3184 :         localadj = info->localsize + cntstd * CurrWordSize;
+; 3188 :       else 
+; 3189 :       {
+; 3190 : #endif
+; 3191 :         localadj = info->localsize + cntstd * CurrWordSize;
 
 	movzx	eax, BYTE PTR ModuleInfo+406
 	mov	ecx, DWORD PTR cntstd$[rsp]
@@ -8988,7 +9007,7 @@ $LN51@SetLocalOf:
 	add	eax, DWORD PTR [rcx+36]
 	mov	DWORD PTR localadj$3[rsp], eax
 
-; 3185 :         paramadj = info->localsize + cntstd * CurrWordSize - CurrWordSize;
+; 3192 :         paramadj = info->localsize + cntstd * CurrWordSize - CurrWordSize;
 
 	movzx	eax, BYTE PTR ModuleInfo+406
 	mov	ecx, DWORD PTR cntstd$[rsp]
@@ -9003,25 +9022,25 @@ $LN51@SetLocalOf:
 	mov	DWORD PTR paramadj$4[rsp], eax
 $LN52@SetLocalOf:
 
-; 3186 : #if AMD64_SUPPORT
-; 3187 :       }
-; 3188 : #endif
-; 3189 :       if (!(ModuleInfo.win64_flags & W64F_HABRAN)){
+; 3193 : #if AMD64_SUPPORT
+; 3194 :       }
+; 3195 : #endif
+; 3196 :       if (!(ModuleInfo.win64_flags & W64F_HABRAN)){
 
 	movzx	eax, BYTE PTR ModuleInfo+413
 	and	eax, 11
 	test	eax, eax
 	jne	$LN54@SetLocalOf
 
-; 3190 :         DebugMsg1(("SetLocalOffsets(%s): FPO, adjusting offsets\n", CurrProc->sym.name));
+; 3197 :         DebugMsg1(("SetLocalOffsets(%s): FPO, adjusting offsets\n", CurrProc->sym.name));
 
 	mov	rax, QWORD PTR CurrProc
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12670
+	lea	rcx, OFFSET FLAT:$SG12672
 	call	DoDebugMsg1
 
-; 3191 :         /* subtract CurrWordSize value for params, since no space is required to save the frame pointer value */
-; 3192 :         for (curr = info->locallist; curr; curr = curr->nextlocal) {
+; 3198 :         /* subtract CurrWordSize value for params, since no space is required to save the frame pointer value */
+; 3199 :         for (curr = info->locallist; curr; curr = curr->nextlocal) {
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	rax, QWORD PTR [rax+16]
@@ -9035,7 +9054,7 @@ $LN13@SetLocalOf:
 	cmp	QWORD PTR curr$[rsp], 0
 	je	SHORT $LN12@SetLocalOf
 
-; 3193 :           DebugMsg1(("SetLocalOffsets(%s): FPO, offset for %s %4d -> %4d\n", CurrProc->sym.name, curr->sym.name, curr->sym.offset, curr->sym.offset + localadj));
+; 3200 :           DebugMsg1(("SetLocalOffsets(%s): FPO, offset for %s %4d -> %4d\n", CurrProc->sym.name, curr->sym.name, curr->sym.offset, curr->sym.offset + localadj));
 
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	eax, DWORD PTR [rax+16]
@@ -9047,10 +9066,10 @@ $LN13@SetLocalOf:
 	mov	r8, QWORD PTR [rax+8]
 	mov	rax, QWORD PTR CurrProc
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12671
+	lea	rcx, OFFSET FLAT:$SG12673
 	call	DoDebugMsg1
 
-; 3194 :           curr->sym.offset += localadj;
+; 3201 :           curr->sym.offset += localadj;
 
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	eax, DWORD PTR [rax+16]
@@ -9058,12 +9077,12 @@ $LN13@SetLocalOf:
 	mov	rcx, QWORD PTR curr$[rsp]
 	mov	DWORD PTR [rcx+16], eax
 
-; 3195 :         }
+; 3202 :         }
 
 	jmp	SHORT $LN11@SetLocalOf
 $LN12@SetLocalOf:
 
-; 3196 :         for (curr = info->paralist; curr; curr = curr->nextparam) {
+; 3203 :         for (curr = info->paralist; curr; curr = curr->nextparam) {
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	rax, QWORD PTR [rax+8]
@@ -9077,7 +9096,7 @@ $LN16@SetLocalOf:
 	cmp	QWORD PTR curr$[rsp], 0
 	je	SHORT $LN15@SetLocalOf
 
-; 3197 :           DebugMsg1(("SetLocalOffsets(%s): FPO, offset for %s %4d -> %4d\n", CurrProc->sym.name, curr->sym.name, curr->sym.offset, curr->sym.offset + paramadj));
+; 3204 :           DebugMsg1(("SetLocalOffsets(%s): FPO, offset for %s %4d -> %4d\n", CurrProc->sym.name, curr->sym.name, curr->sym.offset, curr->sym.offset + paramadj));
 
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	eax, DWORD PTR [rax+16]
@@ -9089,10 +9108,10 @@ $LN16@SetLocalOf:
 	mov	r8, QWORD PTR [rax+8]
 	mov	rax, QWORD PTR CurrProc
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12672
+	lea	rcx, OFFSET FLAT:$SG12674
 	call	DoDebugMsg1
 
-; 3198 :           curr->sym.offset += paramadj;
+; 3205 :           curr->sym.offset += paramadj;
 
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	eax, DWORD PTR [rax+16]
@@ -9100,34 +9119,34 @@ $LN16@SetLocalOf:
 	mov	rcx, QWORD PTR curr$[rsp]
 	mov	DWORD PTR [rcx+16], eax
 
-; 3199 :         }
+; 3206 :         }
 
 	jmp	SHORT $LN14@SetLocalOf
 $LN15@SetLocalOf:
 $LN54@SetLocalOf:
 $LN50@SetLocalOf:
 
-; 3200 :       }
-; 3201 :     }
-; 3202 : #endif
-; 3203 : 
-; 3204 : #if AMD64_SUPPORT
-; 3205 :     /* v2.12: if the space used for register saves has been added to localsize,
-; 3206 :      * the part that covers "pushed" GPRs has to be subtracted now, before prologue code is generated.
-; 3207 :      */
-; 3208 :     if (!(ModuleInfo.win64_flags & W64F_HABRAN)){
+; 3207 :       }
+; 3208 :     }
+; 3209 : #endif
+; 3210 : 
+; 3211 : #if AMD64_SUPPORT
+; 3212 :     /* v2.12: if the space used for register saves has been added to localsize,
+; 3213 :      * the part that covers "pushed" GPRs has to be subtracted now, before prologue code is generated.
+; 3214 :      */
+; 3215 :     if (!(ModuleInfo.win64_flags & W64F_HABRAN)){
 
 	movzx	eax, BYTE PTR ModuleInfo+413
 	and	eax, 11
 	test	eax, eax
 	jne	SHORT $LN55@SetLocalOf
 
-; 3209 :       if (rspalign) {
+; 3216 :       if (rspalign) {
 
 	cmp	DWORD PTR rspalign$[rsp], 0
 	je	SHORT $LN56@SetLocalOf
 
-; 3210 :         info->localsize -= cntstd * 8 + start;
+; 3217 :         info->localsize -= cntstd * 8 + start;
 
 	mov	eax, DWORD PTR start$[rsp]
 	mov	ecx, DWORD PTR cntstd$[rsp]
@@ -9139,21 +9158,21 @@ $LN50@SetLocalOf:
 	mov	rcx, QWORD PTR info$[rsp]
 	mov	DWORD PTR [rcx+36], eax
 
-; 3211 :         DebugMsg1(("SetLocalOffsets(%s): final localsize=%u\n", CurrProc->sym.name, info->localsize));
+; 3218 :         DebugMsg1(("SetLocalOffsets(%s): final localsize=%u\n", CurrProc->sym.name, info->localsize));
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	r8d, DWORD PTR [rax+36]
 	mov	rax, QWORD PTR CurrProc
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12675
+	lea	rcx, OFFSET FLAT:$SG12677
 	call	DoDebugMsg1
 $LN56@SetLocalOf:
 $LN55@SetLocalOf:
 
-; 3212 :       }
-; 3213 :     }
-; 3214 : #endif
-; 3215 : }
+; 3219 :       }
+; 3220 :     }
+; 3221 : #endif
+; 3222 : }
 
 	add	rsp, 152				; 00000098H
 	ret	0
@@ -14037,42 +14056,42 @@ _TEXT	ENDS
 _TEXT	SEGMENT
 ProcCheckOpen PROC
 
-; 2177 : {
+; 2184 : {
 
 $LN5:
 	sub	rsp, 40					; 00000028H
 $LN2@ProcCheckO:
 
-; 2178 :     while( CurrProc != NULL ) {
+; 2185 :     while( CurrProc != NULL ) {
 
 	cmp	QWORD PTR CurrProc, 0
 	je	SHORT $LN3@ProcCheckO
 
-; 2179 :         DebugMsg1(("ProcCheckOpen: unmatched block nesting error, CurrProc=%s\n", CurrProc->sym.name ));
+; 2186 :         DebugMsg1(("ProcCheckOpen: unmatched block nesting error, CurrProc=%s\n", CurrProc->sym.name ));
 
 	mov	rax, QWORD PTR CurrProc
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12192
+	lea	rcx, OFFSET FLAT:$SG12194
 	call	DoDebugMsg1
 
-; 2180 :         EmitErr( UNMATCHED_BLOCK_NESTING, CurrProc->sym.name );
+; 2187 :         EmitErr( UNMATCHED_BLOCK_NESTING, CurrProc->sym.name );
 
 	mov	rax, QWORD PTR CurrProc
 	mov	rdx, QWORD PTR [rax+8]
 	mov	ecx, 142				; 0000008eH
 	call	EmitErr
 
-; 2181 :         ProcFini( CurrProc );
+; 2188 :         ProcFini( CurrProc );
 
 	mov	rcx, QWORD PTR CurrProc
 	call	ProcFini
 
-; 2182 :     }
+; 2189 :     }
 
 	jmp	SHORT $LN2@ProcCheckO
 $LN3@ProcCheckO:
 
-; 2183 : }
+; 2190 : }
 
 	add	rsp, 40					; 00000028H
 	ret	0
@@ -14084,38 +14103,38 @@ _TEXT	SEGMENT
 tv66 = 0
 ProcInit PROC
 
-; 3737 : {
+; 3744 : {
 
 $LN5:
 	sub	rsp, 24
 
-; 3738 :     ProcStack = NULL;
+; 3745 :     ProcStack = NULL;
 
 	mov	QWORD PTR ProcStack, 0
 
-; 3739 :     CurrProc  = NULL;
+; 3746 :     CurrProc  = NULL;
 
 	mov	QWORD PTR CurrProc, 0
 
-; 3740 :     procidx = 1;
+; 3747 :     procidx = 1;
 
 	mov	DWORD PTR procidx, 1
 
-; 3741 :     ProcStatus = 0;
+; 3748 :     ProcStatus = 0;
 
 	mov	DWORD PTR ProcStatus, 0
 
-; 3742 :     /* v2.09: reset prolog and epilog mode */
-; 3743 :     ModuleInfo.prologuemode = PEM_DEFAULT;
+; 3749 :     /* v2.09: reset prolog and epilog mode */
+; 3750 :     ModuleInfo.prologuemode = PEM_DEFAULT;
 
 	mov	BYTE PTR ModuleInfo+424, 0
 
-; 3744 :     ModuleInfo.epiloguemode = PEM_DEFAULT;
+; 3751 :     ModuleInfo.epiloguemode = PEM_DEFAULT;
 
 	mov	BYTE PTR ModuleInfo+425, 0
 
-; 3745 :     /* v2.06: no forward references in INVOKE if -Zne is set */
-; 3746 :     ModuleInfo.invoke_exprparm = ( Options.strict_masm_compat ? EXPF_NOUNDEF : 0 );
+; 3752 :     /* v2.06: no forward references in INVOKE if -Zne is set */
+; 3753 :     ModuleInfo.invoke_exprparm = ( Options.strict_masm_compat ? EXPF_NOUNDEF : 0 );
 
 	movzx	eax, BYTE PTR Options+143
 	test	eax, eax
@@ -14128,38 +14147,38 @@ $LN4@ProcInit:
 	movzx	eax, BYTE PTR tv66[rsp]
 	mov	BYTE PTR ModuleInfo+426, al
 
-; 3747 : #if STACKBASESUPP
-; 3748 :     ModuleInfo.basereg[USE16] = T_BP;
+; 3754 : #if STACKBASESUPP
+; 3755 :     ModuleInfo.basereg[USE16] = T_BP;
 
 	mov	eax, 4
 	imul	rax, rax, 0
 	lea	rcx, OFFSET FLAT:ModuleInfo+500
 	mov	DWORD PTR [rcx+rax], 14
 
-; 3749 :     ModuleInfo.basereg[USE32] = T_EBP;
+; 3756 :     ModuleInfo.basereg[USE32] = T_EBP;
 
 	mov	eax, 4
 	imul	rax, rax, 1
 	lea	rcx, OFFSET FLAT:ModuleInfo+500
 	mov	DWORD PTR [rcx+rax], 22
 
-; 3750 : #if AMD64_SUPPORT
-; 3751 :     ModuleInfo.basereg[USE64] = T_RBP;
+; 3757 : #if AMD64_SUPPORT
+; 3758 :     ModuleInfo.basereg[USE64] = T_RBP;
 
 	mov	eax, 4
 	imul	rax, rax, 2
 	lea	rcx, OFFSET FLAT:ModuleInfo+500
 	mov	DWORD PTR [rcx+rax], 120		; 00000078H
 
-; 3752 : #endif
-; 3753 : #endif
-; 3754 : #if AMD64_SUPPORT
-; 3755 :     unw_segs_defined = 0;
+; 3759 : #endif
+; 3760 : #endif
+; 3761 : #if AMD64_SUPPORT
+; 3762 :     unw_segs_defined = 0;
 
 	mov	BYTE PTR unw_segs_defined, 0
 
-; 3756 : #endif
-; 3757 : }
+; 3763 : #endif
+; 3764 : }
 
 	add	rsp, 24
 	ret	0
@@ -14172,22 +14191,22 @@ tv74 = 32
 tokenarray$ = 64
 write_prologue PROC
 
-; 3219 : {
+; 3226 : {
 
 $LN12:
 	mov	QWORD PTR [rsp+8], rcx
 	sub	rsp, 56					; 00000038H
 
-; 3220 :     /* reset @ProcStatus flag */
-; 3221 :     ProcStatus &= ~PRST_PROLOGUE_NOT_DONE;
+; 3227 :     /* reset @ProcStatus flag */
+; 3228 :     ProcStatus &= ~PRST_PROLOGUE_NOT_DONE;
 
 	mov	eax, DWORD PTR ProcStatus
 	btr	eax, 7
 	mov	DWORD PTR ProcStatus, eax
 
-; 3222 : 
-; 3223 : #if AMD64_SUPPORT
-; 3224 :     if ( ModuleInfo.fctype == FCT_WIN64 && ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) ) {
+; 3229 : 
+; 3230 : #if AMD64_SUPPORT
+; 3231 :     if ( ModuleInfo.fctype == FCT_WIN64 && ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) ) {
 
 	cmp	DWORD PTR ModuleInfo+376, 2
 	jne	SHORT $LN2@write_prol
@@ -14196,8 +14215,8 @@ $LN12:
 	test	eax, eax
 	je	SHORT $LN2@write_prol
 
-; 3225 :         /* in pass one init reserved stack with 4*8 to force stack frame creation */
-; 3226 :         sym_ReservedStack->value = ( Parse_Pass == PASS_1 ? 4 * sizeof( uint_64 ) : CurrProc->e.procinfo->ReservedStack );
+; 3232 :         /* in pass one init reserved stack with 4*8 to force stack frame creation */
+; 3233 :         sym_ReservedStack->value = ( Parse_Pass == PASS_1 ? 4 * sizeof( uint_64 ) : CurrProc->e.procinfo->ReservedStack );
 
 	cmp	DWORD PTR Parse_Pass, 0
 	jne	SHORT $LN10@write_prol
@@ -14213,7 +14232,7 @@ $LN11@write_prol:
 	mov	ecx, DWORD PTR tv74[rsp]
 	mov	DWORD PTR [rax+16], ecx
 
-; 3227 :         if (Parse_Pass == PASS_1) sym_ReservedStack->hasinvoke = 0;
+; 3234 :         if (Parse_Pass == PASS_1) sym_ReservedStack->hasinvoke = 0;
 
 	cmp	DWORD PTR Parse_Pass, 0
 	jne	SHORT $LN3@write_prol
@@ -14222,94 +14241,94 @@ $LN11@write_prol:
 $LN3@write_prol:
 $LN2@write_prol:
 
-; 3228 :     }
-; 3229 : #endif
-; 3230 :     if ( Parse_Pass == PASS_1 ) {
+; 3235 :     }
+; 3236 : #endif
+; 3237 :     if ( Parse_Pass == PASS_1 ) {
 
 	cmp	DWORD PTR Parse_Pass, 0
 	jne	SHORT $LN4@write_prol
 
-; 3231 :         /* v2.12: calculation of offsets of local variables is done delayed now */
-; 3232 :         SetLocalOffsets( CurrProc->e.procinfo );
+; 3238 :         /* v2.12: calculation of offsets of local variables is done delayed now */
+; 3239 :         SetLocalOffsets( CurrProc->e.procinfo );
 
 	mov	rax, QWORD PTR CurrProc
 	mov	rcx, QWORD PTR [rax+96]
 	call	SetLocalOffsets
 $LN4@write_prol:
 
-; 3233 :     }
-; 3234 :     ProcStatus |= PRST_INSIDE_PROLOGUE;
+; 3240 :     }
+; 3241 :     ProcStatus |= PRST_INSIDE_PROLOGUE;
 
 	mov	eax, DWORD PTR ProcStatus
 	or	eax, 1
 	mov	DWORD PTR ProcStatus, eax
 
-; 3235 :     /* there are 3 cases:
-; 3236 :      * option prologue:NONE           proc_prologue == NULL
-; 3237 :      * option prologue:default        *proc_prologue == NULLC
-; 3238 :      * option prologue:usermacro      *proc_prologue != NULLC
-; 3239 :      */
-; 3240 :     if ( ModuleInfo.prologuemode == PEM_DEFAULT ) {
+; 3242 :     /* there are 3 cases:
+; 3243 :      * option prologue:NONE           proc_prologue == NULL
+; 3244 :      * option prologue:default        *proc_prologue == NULLC
+; 3245 :      * option prologue:usermacro      *proc_prologue != NULLC
+; 3246 :      */
+; 3247 :     if ( ModuleInfo.prologuemode == PEM_DEFAULT ) {
 
 	movzx	eax, BYTE PTR ModuleInfo+424
 	test	eax, eax
 	jne	SHORT $LN5@write_prol
 
-; 3241 :         DebugMsg1(("write_prologue(%s): default prologue\n", CurrProc->sym.name ));
+; 3248 :         DebugMsg1(("write_prologue(%s): default prologue\n", CurrProc->sym.name ));
 
 	mov	rax, QWORD PTR CurrProc
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12685
+	lea	rcx, OFFSET FLAT:$SG12687
 	call	DoDebugMsg1
 
-; 3242 :         write_default_prologue();
+; 3249 :         write_default_prologue();
 
 	call	write_default_prologue
 	jmp	SHORT $LN6@write_prol
 $LN5@write_prol:
 
-; 3243 :     } else if ( ModuleInfo.prologuemode == PEM_NONE ) {
+; 3250 :     } else if ( ModuleInfo.prologuemode == PEM_NONE ) {
 
 	movzx	eax, BYTE PTR ModuleInfo+424
 	cmp	eax, 2
 	jne	SHORT $LN7@write_prol
 
-; 3244 :         DebugMsg1(("write_prologue(%s): prologue is NULL\n", CurrProc->sym.name  ));
+; 3251 :         DebugMsg1(("write_prologue(%s): prologue is NULL\n", CurrProc->sym.name  ));
 
 	mov	rax, QWORD PTR CurrProc
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12688
+	lea	rcx, OFFSET FLAT:$SG12690
 	call	DoDebugMsg1
 
-; 3245 :     } else {
+; 3252 :     } else {
 
 	jmp	SHORT $LN8@write_prol
 $LN7@write_prol:
 
-; 3246 :         DebugMsg1(("write_prologue(%s): userdefined prologue %s\n", CurrProc->sym.name , ModuleInfo.proc_prologue ));
+; 3253 :         DebugMsg1(("write_prologue(%s): userdefined prologue %s\n", CurrProc->sym.name , ModuleInfo.proc_prologue ));
 
 	mov	r8, QWORD PTR ModuleInfo+320
 	mov	rax, QWORD PTR CurrProc
 	mov	rdx, QWORD PTR [rax+8]
-	lea	rcx, OFFSET FLAT:$SG12689
+	lea	rcx, OFFSET FLAT:$SG12691
 	call	DoDebugMsg1
 
-; 3247 :         write_userdef_prologue( tokenarray );
+; 3254 :         write_userdef_prologue( tokenarray );
 
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	call	write_userdef_prologue
 $LN8@write_prol:
 $LN6@write_prol:
 
-; 3248 :     }
-; 3249 :     ProcStatus &= ~PRST_INSIDE_PROLOGUE;
+; 3255 :     }
+; 3256 :     ProcStatus &= ~PRST_INSIDE_PROLOGUE;
 
 	mov	eax, DWORD PTR ProcStatus
 	and	eax, -2
 	mov	DWORD PTR ProcStatus, eax
 
-; 3250 :     /* v2.10: for debug info, calculate prologue size */
-; 3251 :     CurrProc->e.procinfo->size_prolog = GetCurrOffset() - CurrProc->sym.offset;
+; 3257 :     /* v2.10: for debug info, calculate prologue size */
+; 3258 :     CurrProc->e.procinfo->size_prolog = GetCurrOffset() - CurrProc->sym.offset;
 
 	call	GetCurrOffset
 	mov	rcx, QWORD PTR CurrProc
@@ -14318,8 +14337,8 @@ $LN6@write_prol:
 	mov	rcx, QWORD PTR [rcx+96]
 	mov	BYTE PTR [rcx+129], al
 
-; 3252 :     return;
-; 3253 : }
+; 3259 :     return;
+; 3260 : }
 
 	add	rsp, 56					; 00000038H
 	ret	0
@@ -14343,7 +14362,7 @@ tokenarray$ = 1160
 count$ = 1168
 RetInstr PROC
 
-; 3637 : {
+; 3644 : {
 
 $LN28:
 	mov	DWORD PTR [rsp+24], r8d
@@ -14354,25 +14373,25 @@ $LN28:
 	xor	rax, rsp
 	mov	QWORD PTR __$ArrayPad$[rsp], rax
 
-; 3638 :     struct proc_info   *info;
-; 3639 :     bool        is_iret = FALSE;
+; 3645 :     struct proc_info   *info;
+; 3646 :     bool        is_iret = FALSE;
 
 	mov	BYTE PTR is_iret$[rsp], 0
 
-; 3640 :     char        *p;
-; 3641 : #ifdef DEBUG_OUT
-; 3642 :     ret_code    rc;
-; 3643 : #endif
-; 3644 :     char        buffer[MAX_LINE_LEN]; /* stores modified RETN/RETF/IRET instruction */
-; 3645 : 
-; 3646 :     DebugMsg1(( "RetInstr() enter\n" ));
+; 3647 :     char        *p;
+; 3648 : #ifdef DEBUG_OUT
+; 3649 :     ret_code    rc;
+; 3650 : #endif
+; 3651 :     char        buffer[MAX_LINE_LEN]; /* stores modified RETN/RETF/IRET instruction */
+; 3652 : 
+; 3653 :     DebugMsg1(( "RetInstr() enter\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG12846
+	lea	rcx, OFFSET FLAT:$SG12848
 	call	DoDebugMsg1
 
-; 3647 : 
-; 3648 : #if AMD64_SUPPORT
-; 3649 :     if( tokenarray[i].tokval == T_IRET || tokenarray[i].tokval == T_IRETD || tokenarray[i].tokval == T_IRETQ )
+; 3654 : 
+; 3655 : #if AMD64_SUPPORT
+; 3656 :     if( tokenarray[i].tokval == T_IRET || tokenarray[i].tokval == T_IRETD || tokenarray[i].tokval == T_IRETQ )
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -14391,50 +14410,50 @@ $LN28:
 	jne	SHORT $LN4@RetInstr
 $LN5@RetInstr:
 
-; 3650 : #else
-; 3651 :     if( tokenarray[i].tokval == T_IRET || tokenarray[i].tokval == T_IRETD )
-; 3652 : #endif
-; 3653 :         is_iret = TRUE;
+; 3657 : #else
+; 3658 :     if( tokenarray[i].tokval == T_IRET || tokenarray[i].tokval == T_IRETD )
+; 3659 : #endif
+; 3660 :         is_iret = TRUE;
 
 	mov	BYTE PTR is_iret$[rsp], 1
 $LN4@RetInstr:
 
-; 3654 : 
-; 3655 :     if ( ModuleInfo.epiloguemode == PEM_MACRO ) {
+; 3661 : 
+; 3662 :     if ( ModuleInfo.epiloguemode == PEM_MACRO ) {
 
 	movzx	eax, BYTE PTR ModuleInfo+425
 	cmp	eax, 1
 	jne	SHORT $LN6@RetInstr
 
-; 3656 : #if FASTPASS
-; 3657 :         /* don't run userdefined epilogue macro if pass > 1 */
-; 3658 :         if ( UseSavedState ) {
+; 3663 : #if FASTPASS
+; 3664 :         /* don't run userdefined epilogue macro if pass > 1 */
+; 3665 :         if ( UseSavedState ) {
 
 	movzx	eax, BYTE PTR UseSavedState
 	test	eax, eax
 	je	SHORT $LN7@RetInstr
 
-; 3659 :             if ( Parse_Pass > PASS_1 ) {
+; 3666 :             if ( Parse_Pass > PASS_1 ) {
 
 	cmp	DWORD PTR Parse_Pass, 0
 	jbe	SHORT $LN8@RetInstr
 
-; 3660 :                 DebugMsg(( "RetInstr() exit\n" ));
+; 3667 :                 DebugMsg(( "RetInstr() exit\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG12852
+	lea	rcx, OFFSET FLAT:$SG12854
 	call	DoDebugMsg
 
-; 3661 :                 //return( NOT_ERROR );
-; 3662 :                 return( ParseLine( tokenarray ) );
+; 3668 :                 //return( NOT_ERROR );
+; 3669 :                 return( ParseLine( tokenarray ) );
 
 	mov	rcx, QWORD PTR tokenarray$[rsp]
 	call	ParseLine
 	jmp	$LN1@RetInstr
 $LN8@RetInstr:
 
-; 3663 :             }
-; 3664 :             /* handle the current line as if it is REPLACED by the macro content */
-; 3665 :             *(LineStoreCurr->line) = ';';
+; 3670 :             }
+; 3671 :             /* handle the current line as if it is REPLACED by the macro content */
+; 3672 :             *(LineStoreCurr->line) = ';';
 
 	mov	eax, 1
 	imul	rax, rax, 0
@@ -14442,33 +14461,33 @@ $LN8@RetInstr:
 	mov	BYTE PTR [rcx+rax+16], 59		; 0000003bH
 $LN7@RetInstr:
 
-; 3666 :         }
-; 3667 : #endif
-; 3668 : #ifdef DEBUG_OUT
-; 3669 :         rc = write_userdef_epilogue( is_iret, tokenarray );
+; 3673 :         }
+; 3674 : #endif
+; 3675 : #ifdef DEBUG_OUT
+; 3676 :         rc = write_userdef_epilogue( is_iret, tokenarray );
 
 	mov	rdx, QWORD PTR tokenarray$[rsp]
 	movzx	ecx, BYTE PTR is_iret$[rsp]
 	call	write_userdef_epilogue
 	mov	DWORD PTR rc$[rsp], eax
 
-; 3670 :         DebugMsg(( "RetInstr() exit\n" ));
+; 3677 :         DebugMsg(( "RetInstr() exit\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG12853
+	lea	rcx, OFFSET FLAT:$SG12855
 	call	DoDebugMsg
 
-; 3671 :         return( rc );
+; 3678 :         return( rc );
 
 	mov	eax, DWORD PTR rc$[rsp]
 	jmp	$LN1@RetInstr
 $LN6@RetInstr:
 
-; 3672 : #else
-; 3673 :         return( write_userdef_epilogue( is_iret, tokenarray ) );
-; 3674 : #endif
-; 3675 :     }
-; 3676 : 
-; 3677 :     if ( ModuleInfo.list ) {
+; 3679 : #else
+; 3680 :         return( write_userdef_epilogue( is_iret, tokenarray ) );
+; 3681 : #endif
+; 3682 :     }
+; 3683 : 
+; 3684 :     if ( ModuleInfo.list ) {
 
 	mov	eax, DWORD PTR ModuleInfo+408
 	shr	eax, 11
@@ -14476,7 +14495,7 @@ $LN6@RetInstr:
 	test	eax, eax
 	je	SHORT $LN9@RetInstr
 
-; 3678 :         LstWrite( LSTTYPE_DIRECTIVE, GetCurrOffset(), NULL );
+; 3685 :         LstWrite( LSTTYPE_DIRECTIVE, GetCurrOffset(), NULL );
 
 	call	GetCurrOffset
 	xor	r8d, r8d
@@ -14485,9 +14504,9 @@ $LN6@RetInstr:
 	call	LstWrite
 $LN9@RetInstr:
 
-; 3679 :     }
-; 3680 : 
-; 3681 :     strcpy( buffer, tokenarray[i].string_ptr );
+; 3686 :     }
+; 3687 : 
+; 3688 :     strcpy( buffer, tokenarray[i].string_ptr );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -14496,40 +14515,40 @@ $LN9@RetInstr:
 	lea	rcx, QWORD PTR buffer$[rsp]
 	call	strcpy
 
-; 3682 :     p = buffer + strlen( buffer );
+; 3689 :     p = buffer + strlen( buffer );
 
 	lea	rcx, QWORD PTR buffer$[rsp]
 	call	strlen
 	lea	rax, QWORD PTR buffer$[rsp+rax]
 	mov	QWORD PTR p$[rsp], rax
 
-; 3683 : 
-; 3684 :     write_default_epilogue();
+; 3690 : 
+; 3691 :     write_default_epilogue();
 
 	call	write_default_epilogue
 
-; 3685 : 
-; 3686 :     info = CurrProc->e.procinfo;
+; 3692 : 
+; 3693 :     info = CurrProc->e.procinfo;
 
 	mov	rax, QWORD PTR CurrProc
 	mov	rax, QWORD PTR [rax+96]
 	mov	QWORD PTR info$[rsp], rax
 
-; 3687 : 
-; 3688 :     /* skip this part for IRET */
-; 3689 :     if( is_iret == FALSE ) {
+; 3694 : 
+; 3695 :     /* skip this part for IRET */
+; 3696 :     if( is_iret == FALSE ) {
 
 	movzx	eax, BYTE PTR is_iret$[rsp]
 	test	eax, eax
 	jne	SHORT $LN10@RetInstr
 
-; 3690 :         if ( CurrProc->sym.mem_type == MT_FAR )
+; 3697 :         if ( CurrProc->sym.mem_type == MT_FAR )
 
 	mov	rax, QWORD PTR CurrProc
 	cmp	DWORD PTR [rax+36], 130			; 00000082H
 	jne	SHORT $LN11@RetInstr
 
-; 3691 :             *p++ = 'f';   /* ret -> retf */
+; 3698 :             *p++ = 'f';   /* ret -> retf */
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	BYTE PTR [rax], 102			; 00000066H
@@ -14539,8 +14558,8 @@ $LN9@RetInstr:
 	jmp	SHORT $LN12@RetInstr
 $LN11@RetInstr:
 
-; 3692 :         else
-; 3693 :             *p++ = 'n';     /* ret -> retn */
+; 3699 :         else
+; 3700 :             *p++ = 'n';     /* ret -> retn */
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	BYTE PTR [rax], 110			; 0000006eH
@@ -14550,14 +14569,14 @@ $LN11@RetInstr:
 $LN12@RetInstr:
 $LN10@RetInstr:
 
-; 3694 :     }
-; 3695 :     i++; /* skip directive */
+; 3701 :     }
+; 3702 :     i++; /* skip directive */
 
 	mov	eax, DWORD PTR i$[rsp]
 	inc	eax
 	mov	DWORD PTR i$[rsp], eax
 
-; 3696 :     if ( info->parasize || ( count != i ) )
+; 3703 :     if ( info->parasize || ( count != i ) )
 
 	mov	rax, QWORD PTR info$[rsp]
 	cmp	DWORD PTR [rax+32], 0
@@ -14567,7 +14586,7 @@ $LN10@RetInstr:
 	je	SHORT $LN13@RetInstr
 $LN14@RetInstr:
 
-; 3697 :         *p++ = ' ';
+; 3704 :         *p++ = ' ';
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	BYTE PTR [rax], 32			; 00000020H
@@ -14576,13 +14595,13 @@ $LN14@RetInstr:
 	mov	QWORD PTR p$[rsp], rax
 $LN13@RetInstr:
 
-; 3698 :     *p = NULLC;
+; 3705 :     *p = NULLC;
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	BYTE PTR [rax], 0
 
-; 3699 :     /* RET without argument? Then calculate the value */
-; 3700 :     if( is_iret == FALSE && count == i ) {
+; 3706 :     /* RET without argument? Then calculate the value */
+; 3707 :     if( is_iret == FALSE && count == i ) {
 
 	movzx	eax, BYTE PTR is_iret$[rsp]
 	test	eax, eax
@@ -14591,13 +14610,13 @@ $LN13@RetInstr:
 	cmp	DWORD PTR count$[rsp], eax
 	jne	$LN15@RetInstr
 
-; 3701 :         if ( ModuleInfo.epiloguemode != PEM_NONE ) {
+; 3708 :         if ( ModuleInfo.epiloguemode != PEM_NONE ) {
 
 	movzx	eax, BYTE PTR ModuleInfo+425
 	cmp	eax, 2
 	je	$LN17@RetInstr
 
-; 3702 :             switch( CurrProc->sym.langtype ) {
+; 3709 :             switch( CurrProc->sym.langtype ) {
 
 	mov	rax, QWORD PTR CurrProc
 	mov	eax, DWORD PTR [rax+76]
@@ -14613,16 +14632,16 @@ $LN13@RetInstr:
 	jmp	$LN2@RetInstr
 $LN18@RetInstr:
 
-; 3703 :             case LANG_BASIC:
-; 3704 :             case LANG_FORTRAN:
-; 3705 :             case LANG_PASCAL:
-; 3706 :                 if( info->parasize != 0 ) {
+; 3710 :             case LANG_BASIC:
+; 3711 :             case LANG_FORTRAN:
+; 3712 :             case LANG_PASCAL:
+; 3713 :                 if( info->parasize != 0 ) {
 
 	mov	rax, QWORD PTR info$[rsp]
 	cmp	DWORD PTR [rax+32], 0
 	je	SHORT $LN19@RetInstr
 
-; 3707 :                     sprintf( p, "%d%c", info->parasize, ModuleInfo.radix != 10 ? 't' : NULLC );
+; 3714 :                     sprintf( p, "%d%c", info->parasize, ModuleInfo.radix != 10 ? 't' : NULLC );
 
 	movzx	eax, BYTE PTR ModuleInfo+396
 	cmp	eax, 10
@@ -14635,19 +14654,19 @@ $LN25@RetInstr:
 	mov	r9d, DWORD PTR tv167[rsp]
 	mov	rax, QWORD PTR info$[rsp]
 	mov	r8d, DWORD PTR [rax+32]
-	lea	rdx, OFFSET FLAT:$SG12865
+	lea	rdx, OFFSET FLAT:$SG12867
 	mov	rcx, QWORD PTR p$[rsp]
 	call	sprintf
 $LN19@RetInstr:
 
-; 3708 :                 }
-; 3709 :                 break;
+; 3715 :                 }
+; 3716 :                 break;
 
 	jmp	$LN2@RetInstr
 $LN20@RetInstr:
 
-; 3710 :             case LANG_FASTCALL:
-; 3711 :                 fastcall_tab[ModuleInfo.fctype].handlereturn( CurrProc, buffer );
+; 3717 :             case LANG_FASTCALL:
+; 3718 :                 fastcall_tab[ModuleInfo.fctype].handlereturn( CurrProc, buffer );
 
 	movsxd	rax, DWORD PTR ModuleInfo+376
 	imul	rax, rax, 16
@@ -14658,13 +14677,13 @@ $LN20@RetInstr:
 	mov	r8, QWORD PTR tv204[rsp]
 	call	QWORD PTR [r8+rax+8]
 
-; 3712 :                 break;
+; 3719 :                 break;
 
 	jmp	SHORT $LN2@RetInstr
 $LN21@RetInstr:
 
-; 3713 :             case LANG_STDCALL:
-; 3714 :                 if( !info->has_vararg && info->parasize != 0 ) {
+; 3720 :             case LANG_STDCALL:
+; 3721 :                 if( !info->has_vararg && info->parasize != 0 ) {
 
 	mov	rax, QWORD PTR info$[rsp]
 	movzx	eax, BYTE PTR [rax+128]
@@ -14676,7 +14695,7 @@ $LN21@RetInstr:
 	cmp	DWORD PTR [rax+32], 0
 	je	SHORT $LN22@RetInstr
 
-; 3715 :                     sprintf( p, "%d%c", info->parasize, ModuleInfo.radix != 10 ? 't' : NULLC  );
+; 3722 :                     sprintf( p, "%d%c", info->parasize, ModuleInfo.radix != 10 ? 't' : NULLC  );
 
 	movzx	eax, BYTE PTR ModuleInfo+396
 	cmp	eax, 10
@@ -14689,25 +14708,25 @@ $LN27@RetInstr:
 	mov	r9d, DWORD PTR tv187[rsp]
 	mov	rax, QWORD PTR info$[rsp]
 	mov	r8d, DWORD PTR [rax+32]
-	lea	rdx, OFFSET FLAT:$SG12869
+	lea	rdx, OFFSET FLAT:$SG12871
 	mov	rcx, QWORD PTR p$[rsp]
 	call	sprintf
 $LN22@RetInstr:
 $LN2@RetInstr:
 $LN17@RetInstr:
 
-; 3716 :                 }
-; 3717 :                 break;
-; 3718 :             }
-; 3719 :         }
-; 3720 :     } else {
+; 3723 :                 }
+; 3724 :                 break;
+; 3725 :             }
+; 3726 :         }
+; 3727 :     } else {
 
 	jmp	SHORT $LN16@RetInstr
 $LN15@RetInstr:
 
-; 3721 :         /* v2.04: changed. Now works for both RET nn and IRETx */
-; 3722 :         /* v2.06: changed. Now works even if RET has ben "renamed" */
-; 3723 :         strcpy( p, tokenarray[i].tokpos );
+; 3728 :         /* v2.04: changed. Now works for both RET nn and IRETx */
+; 3729 :         /* v2.06: changed. Now works even if RET has ben "renamed" */
+; 3730 :         strcpy( p, tokenarray[i].tokpos );
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
@@ -14717,29 +14736,29 @@ $LN15@RetInstr:
 	call	strcpy
 $LN16@RetInstr:
 
-; 3724 :     }
-; 3725 :     AddLineQueue( buffer );
+; 3731 :     }
+; 3732 :     AddLineQueue( buffer );
 
 	lea	rcx, QWORD PTR buffer$[rsp]
 	call	AddLineQueue
 
-; 3726 :     RunLineQueue();
+; 3733 :     RunLineQueue();
 
 	call	RunLineQueue
 
-; 3727 : 
-; 3728 :     DebugMsg1(( "RetInstr() exit\n" ));
+; 3734 : 
+; 3735 :     DebugMsg1(( "RetInstr() exit\n" ));
 
-	lea	rcx, OFFSET FLAT:$SG12870
+	lea	rcx, OFFSET FLAT:$SG12872
 	call	DoDebugMsg1
 
-; 3729 : 
-; 3730 :     return( NOT_ERROR );
+; 3736 : 
+; 3737 :     return( NOT_ERROR );
 
 	xor	eax, eax
 $LN1@RetInstr:
 
-; 3731 : }
+; 3738 : }
 
 	mov	rcx, QWORD PTR __$ArrayPad$[rsp]
 	xor	rcx, rsp

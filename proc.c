@@ -1868,14 +1868,21 @@ static void ProcFini( struct dsym *proc )
 ret_code EndpDir( int i, struct asm_tok tokenarray[] )
 /****************************************************/
 {
-    DebugMsg1(("EndpDir(%s) enter, curr ofs=% " I32_SPEC "X, CurrProc=%s\n", tokenarray[0].string_ptr, GetCurrOffset(), CurrProc ? CurrProc->sym.name : "NULL" ));
+	struct asym*        procline;
+
+	DebugMsg1(("EndpDir(%s) enter, curr ofs=% " I32_SPEC "X, CurrProc=%s\n", tokenarray[0].string_ptr, GetCurrOffset(), CurrProc ? CurrProc->sym.name : "NULL" ));
     if( i != 1 || tokenarray[2].token != T_FINAL ) {
         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
     }
     /* v2.10: "+ 1" added to CurrProc->sym.name_size */
     if( CurrProc &&
        ( SymCmpFunc(CurrProc->sym.name, tokenarray[0].string_ptr, CurrProc->sym.name_size + 1 ) == 0 ) ) {
-        ProcFini( CurrProc );
+     
+		/* Reset the current source code line relating to the PROC */
+		procline = SymFind("@ProcLine");
+		procline->value = 0;
+
+		ProcFini( CurrProc );
     } else {
         return( EmitErr( UNMATCHED_BLOCK_NESTING, tokenarray[0].string_ptr ) );
     }
