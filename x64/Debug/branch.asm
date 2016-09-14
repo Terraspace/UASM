@@ -267,20 +267,20 @@ $LN133@process_br:
 	je	$LN17@process_br
 	mov	rax, QWORD PTR opndx$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	cmp	QWORD PTR [rax+24], 0
+	cmp	QWORD PTR [rax+32], 0
 	je	$LN17@process_br
 
 ; 161  :             if ( SegOverride != opndx->sym->segment &&  SegOverride != ((struct dsym *)opndx->sym->segment)->e.seginfo->group ) {
 
 	mov	rax, QWORD PTR opndx$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	mov	rax, QWORD PTR [rax+24]
+	mov	rax, QWORD PTR [rax+32]
 	cmp	QWORD PTR SegOverride, rax
 	je	SHORT $LN18@process_br
 	mov	rax, QWORD PTR opndx$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	mov	rax, QWORD PTR [rax+24]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+32]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax]
 	cmp	QWORD PTR SegOverride, rax
 	je	SHORT $LN18@process_br
@@ -313,7 +313,7 @@ $LN18@process_br:
 	cmp	QWORD PTR SegOverride, rax
 	je	SHORT $LN19@process_br
 	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax]
 	cmp	QWORD PTR SegOverride, rax
 	je	SHORT $LN19@process_br
@@ -402,10 +402,10 @@ $LN20@process_br:
 ; 195  :     DebugMsg1(("process_branch(%" I32_SPEC "X, %s): opnd.explicit=%u/memtype=%X/Ofssize=%u CI.memtype=%X sym.state=%u/mem_type=%Xh/ofs=%" I32_SPEC "X/seg=%s\n",
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	QWORD PTR [rax+24], 0
+	cmp	QWORD PTR [rax+32], 0
 	je	SHORT $LN136@process_br
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rax, QWORD PTR [rax+24]
+	mov	rax, QWORD PTR [rax+32]
 	mov	rax, QWORD PTR [rax+8]
 	mov	QWORD PTR tv179[rsp], rax
 	jmp	SHORT $LN137@process_br
@@ -428,10 +428,10 @@ $LN137@process_br:
 	mov	ecx, DWORD PTR [rcx+16]
 	mov	DWORD PTR [rsp+72], ecx
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	ecx, DWORD PTR [rcx+36]
+	mov	ecx, DWORD PTR [rcx+44]
 	mov	DWORD PTR [rsp+64], ecx
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	ecx, DWORD PTR [rcx+32]
+	mov	ecx, DWORD PTR [rcx+40]
 	mov	DWORD PTR [rsp+56], ecx
 	mov	rcx, QWORD PTR CodeInfo$[rsp]
 	mov	ecx, DWORD PTR [rcx+28]
@@ -455,7 +455,7 @@ $LN137@process_br:
 ; 199  :     state = sym->state;
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	eax, DWORD PTR [rax+32]
+	mov	eax, DWORD PTR [rax+40]
 	mov	DWORD PTR state$[rsp], eax
 
 ; 200  :     addr = GetCurrOffset(); /* for SYM_UNDEFINED, will force distance to SHORT */
@@ -473,7 +473,7 @@ $LN137@process_br:
 	cmp	DWORD PTR state$[rsp], 2
 	jne	SHORT $LN21@process_br
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+47]
+	movzx	eax, BYTE PTR [rax+55]
 	shr	al, 3
 	and	al, 1
 	movzx	eax, al
@@ -513,7 +513,7 @@ $LN24@process_br:
 	cmp	DWORD PTR state$[rsp], 1
 	jne	SHORT $LN25@process_br
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+46]
+	movzx	eax, BYTE PTR [rax+54]
 	mov	ecx, DWORD PTR Parse_Pass
 	and	ecx, 255				; 000000ffH
 	cmp	eax, ecx
@@ -540,7 +540,7 @@ $LN26@process_br:
 ; 223  :         symseg = GetSegm( sym );
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rax, QWORD PTR [rax+24]
+	mov	rax, QWORD PTR [rax+32]
 	mov	QWORD PTR symseg$[rsp], rax
 
 ; 224  :         if( symseg == NULL || ( CurrSeg != symseg ) ) {
@@ -566,7 +566,7 @@ $LN28@process_br:
 	cmp	QWORD PTR symseg$[rsp], 0
 	je	SHORT $LN31@process_br
 	mov	rax, QWORD PTR symseg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+104]
 	movzx	ecx, BYTE PTR ModuleInfo+404
 	cmp	eax, ecx
@@ -588,13 +588,13 @@ $LN29@process_br:
 ; 237  :                 if ( symseg->e.seginfo->group != NULL &&
 
 	mov	rax, QWORD PTR symseg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	QWORD PTR [rax], 0
 	je	SHORT $LN33@process_br
 	mov	rax, QWORD PTR symseg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR ModuleInfo+432
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	rcx, QWORD PTR [rcx]
 	cmp	QWORD PTR [rax], rcx
 	jne	SHORT $LN33@process_br
@@ -651,7 +651,7 @@ $LN22@process_br:
 ; 251  :         DebugMsg(("process_branch(%s): error, unexpected symbol state=%u\n", sym->name, sym->state ));
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	r8d, DWORD PTR [rax+32]
+	mov	r8d, DWORD PTR [rax+40]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
 	lea	rcx, OFFSET FLAT:$SG10800
@@ -734,7 +734,7 @@ $LN41@process_br:
 	cmp	DWORD PTR [rax+28], 192			; 000000c0H
 	jne	SHORT $LN42@process_br
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+36], 130			; 00000082H
+	cmp	DWORD PTR [rax+44], 130			; 00000082H
 	je	SHORT $LN43@process_br
 	cmp	QWORD PTR SegOverride, 0
 	je	SHORT $LN42@process_br
@@ -1281,7 +1281,7 @@ $LN37@process_br:
 	cmp	DWORD PTR [rax+28], 192			; 000000c0H
 	jne	$LN67@process_br
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+36], 130			; 00000082H
+	cmp	DWORD PTR [rax+44], 130			; 00000082H
 	je	SHORT $LN68@process_br
 	cmp	QWORD PTR SegOverride, 0
 	je	$LN67@process_br
@@ -1291,7 +1291,7 @@ $LN68@process_br:
 ; 399  :         symseg = GetSegm( sym );
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rax, QWORD PTR [rax+24]
+	mov	rax, QWORD PTR [rax+32]
 	mov	QWORD PTR symseg$[rsp], rax
 
 ; 400  :         if ( symseg == CurrSeg ||
@@ -1302,13 +1302,13 @@ $LN68@process_br:
 	cmp	QWORD PTR symseg$[rsp], 0
 	je	SHORT $LN69@process_br
 	mov	rax, QWORD PTR symseg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	QWORD PTR [rax], 0
 	je	SHORT $LN69@process_br
 	mov	rax, QWORD PTR symseg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR ModuleInfo+432
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	rcx, QWORD PTR [rcx]
 	cmp	QWORD PTR [rax], rcx
 	jne	SHORT $LN69@process_br
@@ -1318,9 +1318,9 @@ $LN70@process_br:
 ; 402  :             DebugMsg1(("process_branch: FAR call optimization applied!, seg=%X, CurrSeg=%X, grps=%X/%X\n", symseg, CurrSeg, symseg->e.seginfo->group, CurrSeg->e.seginfo->group ));
 
 	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR symseg$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	rax, QWORD PTR [rax]
 	mov	QWORD PTR [rsp+32], rax
 	mov	r9, QWORD PTR [rcx]

@@ -350,7 +350,7 @@ $LN8@LabelDirec:
 	cmp	QWORD PTR opnd$1[rsp+80], 0
 	je	SHORT $LN10@LabelDirec
 	mov	rax, QWORD PTR opnd$1[rsp+80]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	jne	SHORT $LN10@LabelDirec
 
 ; 253  :                 opnd.value = 1;
@@ -438,7 +438,7 @@ $LN13@LabelDirec:
 
 	mov	r9d, DWORD PTR ti$[rsp]
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	r8d, DWORD PTR [rax+36]
+	mov	r8d, DWORD PTR [rax+44]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
 	lea	rcx, OFFSET FLAT:$SG10756
@@ -451,14 +451,14 @@ $LN13@LabelDirec:
 ; 276  :         if ( sym->isdata == FALSE && ( sym->mem_type & MT_SPECIAL_MASK ) != MT_ADDRESS )
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+41]
+	movzx	eax, BYTE PTR [rax+49]
 	shr	al, 2
 	and	al, 1
 	movzx	eax, al
 	test	eax, eax
 	jne	SHORT $LN15@LabelDirec
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	eax, DWORD PTR [rax+36]
+	mov	eax, DWORD PTR [rax+44]
 	and	eax, 192				; 000000c0H
 	cmp	eax, 128				; 00000080H
 	je	SHORT $LN15@LabelDirec
@@ -474,21 +474,21 @@ $LN13@LabelDirec:
 	mov	eax, DWORD PTR ti$[rsp]
 	imul	eax, DWORD PTR length$[rsp]
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	DWORD PTR [rcx+56], eax
+	mov	DWORD PTR [rcx+64], eax
 
 ; 280  :                 sym->total_length = length;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	ecx, DWORD PTR length$[rsp]
-	mov	DWORD PTR [rax+64], ecx
+	mov	DWORD PTR [rax+72], ecx
 
 ; 281  :                 sym->isarray = TRUE;
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+41]
+	movzx	eax, BYTE PTR [rax+49]
 	or	al, 2
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	BYTE PTR [rcx+41], al
+	mov	BYTE PTR [rcx+49], al
 
 ; 282  :             } else
 
@@ -501,12 +501,12 @@ $LN16@LabelDirec:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	ecx, DWORD PTR ti$[rsp]
-	mov	DWORD PTR [rax+56], ecx
+	mov	DWORD PTR [rax+64], ecx
 
 ; 286  :                 sym->total_length = 1;
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	DWORD PTR [rax+64], 1
+	mov	DWORD PTR [rax+72], 1
 $LN17@LabelDirec:
 $LN15@LabelDirec:
 
@@ -696,10 +696,10 @@ $LN29@CreateLabe:
 ; 112  :         if( sym->state == SYM_EXTERNAL && sym->weak == TRUE ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 2
+	cmp	DWORD PTR [rax+40], 2
 	jne	$LN8@CreateLabe
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+47]
+	movzx	eax, BYTE PTR [rax+55]
 	shr	al, 3
 	and	al, 1
 	movzx	eax, al
@@ -712,7 +712,7 @@ $LN29@CreateLabe:
 ; 116  :             if ( sym->isproc || ( bLocal && CurrProc ) ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+41]
+	movzx	eax, BYTE PTR [rax+49]
 	shr	al, 3
 	and	al, 1
 	movzx	eax, al
@@ -749,11 +749,11 @@ $LN10@CreateLabe:
 ; 122  :             if ( sym->mem_type != MT_EMPTY &&
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+36], 192			; 000000c0H
+	cmp	DWORD PTR [rax+44], 192			; 000000c0H
 	je	SHORT $LN12@CreateLabe
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	ecx, DWORD PTR mem_type$[rsp]
-	cmp	DWORD PTR [rax+36], ecx
+	cmp	DWORD PTR [rax+44], ecx
 	je	SHORT $LN12@CreateLabe
 
 ; 123  :                  sym->mem_type != mem_type ) {
@@ -761,7 +761,7 @@ $LN10@CreateLabe:
 
 	mov	r9d, DWORD PTR mem_type$[rsp]
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	r8d, DWORD PTR [rax+36]
+	mov	r8d, DWORD PTR [rax+44]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
 	lea	rcx, OFFSET FLAT:$SG10711
@@ -785,7 +785,7 @@ $LN8@CreateLabe:
 ; 128  :         } else if( sym->state == SYM_UNDEFINED ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	jne	SHORT $LN13@CreateLabe
 
 ; 129  :             sym_remove_table( &SymTables[TAB_UNDEF], (struct dsym *)sym );
@@ -802,7 +802,7 @@ $LN8@CreateLabe:
 ; 130  :             sym->state = SYM_INTERNAL;
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	DWORD PTR [rax+32], 1
+	mov	DWORD PTR [rax+40], 1
 
 ; 131  :         } else {
 
@@ -813,11 +813,11 @@ $LN13@CreateLabe:
 ; 133  :             if ( sym->state == SYM_INTERNAL && sym->mem_type == mem_type )
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 1
+	cmp	DWORD PTR [rax+40], 1
 	jne	SHORT $LN15@CreateLabe
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	ecx, DWORD PTR mem_type$[rsp]
-	cmp	DWORD PTR [rax+36], ecx
+	cmp	DWORD PTR [rax+44], ecx
 	jne	SHORT $LN15@CreateLabe
 
 ; 134  :                 /* fixme: if label has exactly the same value ( segment+offset ),
@@ -852,15 +852,15 @@ $LN9@CreateLabe:
 ; 144  :         ((struct dsym *)sym)->next = (struct dsym *)CurrSeg->e.seginfo->label_list;
 
 	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+32]
-	mov	QWORD PTR [rcx+104], rax
+	mov	QWORD PTR [rcx+112], rax
 
 ; 145  :         CurrSeg->e.seginfo->label_list = sym;
 
 	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	QWORD PTR [rax+32], rcx
 
@@ -869,14 +869,14 @@ $LN9@CreateLabe:
 ; 148  :         if ( sym->langtype == LANG_NONE )
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+76], 0
+	cmp	DWORD PTR [rax+84], 0
 	jne	SHORT $LN17@CreateLabe
 
 ; 149  :             sym->langtype = ModuleInfo.langtype;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	ecx, DWORD PTR ModuleInfo+364
-	mov	DWORD PTR [rax+76], ecx
+	mov	DWORD PTR [rax+84], ecx
 $LN17@CreateLabe:
 
 ; 150  : 
@@ -889,7 +889,7 @@ $LN17@CreateLabe:
 ; 153  :             DebugMsg1(("CreateLabel(%s): memtype MT_PROC detected, sym.isproc=%u\n", sym->name, sym->isproc ));
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+41]
+	movzx	eax, BYTE PTR [rax+49]
 	shr	al, 3
 	and	al, 1
 	movzx	eax, al
@@ -902,7 +902,7 @@ $LN17@CreateLabe:
 ; 154  :             if ( sym->isproc == FALSE ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+41]
+	movzx	eax, BYTE PTR [rax+49]
 	shr	al, 3
 	and	al, 1
 	movzx	eax, al
@@ -929,7 +929,7 @@ $LN19@CreateLabe:
 
 	mov	rax, QWORD PTR ti$[rsp]
 	mov	rax, QWORD PTR [rax+8]
-	mov	eax, DWORD PTR [rax+36]
+	mov	eax, DWORD PTR [rax+44]
 	mov	DWORD PTR mem_type$[rsp], eax
 
 ; 159  :             ti->symtype = NULL;
@@ -944,7 +944,7 @@ $LN18@CreateLabe:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	ecx, DWORD PTR mem_type$[rsp]
-	mov	DWORD PTR [rax+36], ecx
+	mov	DWORD PTR [rax+44], ecx
 
 ; 163  :         if ( ti ) {
 
@@ -961,7 +961,7 @@ $LN18@CreateLabe:
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rcx, QWORD PTR ti$[rsp]
 	mov	rcx, QWORD PTR [rcx+8]
-	mov	QWORD PTR [rax+80], rcx
+	mov	QWORD PTR [rax+88], rcx
 	jmp	SHORT $LN22@CreateLabe
 $LN21@CreateLabe:
 
@@ -971,14 +971,14 @@ $LN21@CreateLabe:
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rcx, QWORD PTR ti$[rsp]
 	movzx	ecx, BYTE PTR [rcx+22]
-	mov	BYTE PTR [rax+44], cl
+	mov	BYTE PTR [rax+52], cl
 
 ; 168  :                 sym->is_ptr = ti->is_ptr;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rcx, QWORD PTR ti$[rsp]
 	movzx	ecx, BYTE PTR [rcx+20]
-	mov	BYTE PTR [rax+45], cl
+	mov	BYTE PTR [rax+53], cl
 
 ; 169  :                 sym->isfar = ti->is_far;
 
@@ -987,26 +987,26 @@ $LN21@CreateLabe:
 	and	al, 1
 	shl	al, 4
 	mov	rcx, QWORD PTR sym$[rsp]
-	movzx	ecx, BYTE PTR [rcx+47]
+	movzx	ecx, BYTE PTR [rcx+55]
 	and	cl, 239					; 000000efH
 	or	cl, al
 	movzx	eax, cl
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	BYTE PTR [rcx+47], al
+	mov	BYTE PTR [rcx+55], al
 
 ; 170  :                 sym->target_type = ti->symtype;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rcx, QWORD PTR ti$[rsp]
 	mov	rcx, QWORD PTR [rcx+8]
-	mov	QWORD PTR [rax+48], rcx
+	mov	QWORD PTR [rax+56], rcx
 
 ; 171  :                 sym->ptr_memtype = ti->ptr_memtype;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rcx, QWORD PTR ti$[rsp]
 	movzx	ecx, BYTE PTR [rcx+24]
-	mov	BYTE PTR [rax+46], cl
+	mov	BYTE PTR [rax+54], cl
 $LN22@CreateLabe:
 $LN20@CreateLabe:
 
@@ -1030,10 +1030,10 @@ $LN7@CreateLabe:
 ; 179  :     sym->isdefined = TRUE;
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	or	al, 2
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	BYTE PTR [rcx+40], al
+	mov	BYTE PTR [rcx+48], al
 
 ; 180  :     /* v2.05: the label may be "data" - due to the way struct initialization
 ; 181  :      * is handled. Then fields first_size and first_length must not be
@@ -1042,7 +1042,7 @@ $LN7@CreateLabe:
 ; 184  :     if ( sym->isdata == FALSE )
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+41]
+	movzx	eax, BYTE PTR [rax+49]
 	shr	al, 2
 	and	al, 1
 	movzx	eax, al
@@ -1053,7 +1053,7 @@ $LN7@CreateLabe:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	movzx	ecx, BYTE PTR Parse_Pass
-	mov	BYTE PTR [rax+46], cl
+	mov	BYTE PTR [rax+54], cl
 $LN23@CreateLabe:
 
 ; 186  :     SetSymSegOfs( sym );

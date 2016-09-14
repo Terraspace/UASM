@@ -139,7 +139,7 @@ StdcallMangler PROC
 	test	eax, eax
 	jne	SHORT $LN2@StdcallMan
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+41]
+	movzx	eax, BYTE PTR [rax+49]
 	shr	al, 3
 	and	al, 1
 	movzx	eax, al
@@ -149,7 +149,7 @@ StdcallMangler PROC
 ; 107  :         return( sprintf( buffer, "_%s@%d", sym->name, dir->e.procinfo->parasize ) );
 
 	mov	rax, QWORD PTR dir$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	r9d, DWORD PTR [rax+32]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8, QWORD PTR [rax+8]
@@ -201,7 +201,7 @@ UScoreMangler PROC
 ; 94   :     memcpy( buffer+1, sym->name, sym->name_size + 1 );
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+72]
+	movzx	eax, BYTE PTR [rax+80]
 	inc	eax
 	cdqe
 	mov	rcx, QWORD PTR buffer$[rsp]
@@ -214,7 +214,7 @@ UScoreMangler PROC
 ; 95   :     return( sym->name_size + 1 );
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+72]
+	movzx	eax, BYTE PTR [rax+80]
 	inc	eax
 
 ; 96   : }
@@ -239,7 +239,7 @@ UCaseMangler PROC
 ; 83   :     memcpy( buffer, sym->name, sym->name_size + 1 );
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+72]
+	movzx	eax, BYTE PTR [rax+80]
 	inc	eax
 	cdqe
 	mov	r8, rax
@@ -256,7 +256,7 @@ UCaseMangler PROC
 ; 85   :     return( sym->name_size );
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+72]
+	movzx	eax, BYTE PTR [rax+80]
 
 ; 86   : }
 
@@ -280,7 +280,7 @@ VoidMangler PROC
 ; 74   :     memcpy( buffer, sym->name, sym->name_size + 1 );
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+72]
+	movzx	eax, BYTE PTR [rax+80]
 	inc	eax
 	cdqe
 	mov	r8, rax
@@ -292,7 +292,7 @@ VoidMangler PROC
 ; 75   :     return( sym->name_size );
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+72]
+	movzx	eax, BYTE PTR [rax+80]
 
 ; 76   : }
 
@@ -316,7 +316,7 @@ ms64_decorate PROC
 ; 176  :     memcpy( buffer, sym->name, sym->name_size + 1 );
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+72]
+	movzx	eax, BYTE PTR [rax+80]
 	inc	eax
 	cdqe
 	mov	r8, rax
@@ -328,7 +328,7 @@ ms64_decorate PROC
 ; 177  :     return( sym->name_size );
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+72]
+	movzx	eax, BYTE PTR [rax+80]
 
 ; 178  : }
 
@@ -361,7 +361,7 @@ ow_decorate PROC
 ; 141  :     if( sym->isproc ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+41]
+	movzx	eax, BYTE PTR [rax+49]
 	shr	al, 3
 	and	al, 1
 	movzx	eax, al
@@ -382,7 +382,7 @@ $LN4@ow_decorat:
 ; 144  :         switch( sym->mem_type ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	eax, DWORD PTR [rax+36]
+	mov	eax, DWORD PTR [rax+44]
 	mov	DWORD PTR tv71[rsp], eax
 	cmp	DWORD PTR tv71[rsp], 129		; 00000081H
 	jl	SHORT $LN7@ow_decorat
@@ -444,7 +444,7 @@ $LN8@ow_decorat:
 ; 159  :     memcpy( name, sym->name, sym->name_size + 1 );
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+72]
+	movzx	eax, BYTE PTR [rax+80]
 	inc	eax
 	cdqe
 	mov	r8, rax
@@ -456,7 +456,7 @@ $LN8@ow_decorat:
 ; 160  :     name += sym->name_size;
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+72]
+	movzx	eax, BYTE PTR [rax+80]
 	mov	rcx, QWORD PTR name$[rsp]
 	add	rcx, rax
 	mov	rax, rcx
@@ -513,7 +513,7 @@ ms32_decorate PROC
 ; 118  :     return ( sprintf( buffer, "@%s@%u", sym->name, ((struct dsym *)sym)->e.procinfo->parasize ) );
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	r9d, DWORD PTR [rax+32]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8, QWORD PTR [rax+8]
@@ -554,7 +554,7 @@ SetMangler PROC
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	ecx, DWORD PTR langtype$[rsp]
-	mov	DWORD PTR [rax+76], ecx
+	mov	DWORD PTR [rax+84], ecx
 $LN2@SetMangler:
 
 ; 262  : 
@@ -596,7 +596,7 @@ $LN16:
 ; 215  :     switch( sym->langtype ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+84]
 	mov	DWORD PTR tv65[rsp], eax
 	mov	eax, DWORD PTR tv65[rsp]
 	dec	eax

@@ -628,7 +628,7 @@ bin_check_external PROC
 	jmp	SHORT $LN4@bin_check_
 $LN2@bin_check_:
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+104]
+	mov	rax, QWORD PTR [rax+112]
 	mov	QWORD PTR curr$[rsp], rax
 $LN4@bin_check_:
 	cmp	QWORD PTR curr$[rsp], 0
@@ -637,14 +637,14 @@ $LN4@bin_check_:
 ; 1823 :         if( curr->sym.weak == FALSE || curr->sym.used == TRUE ) {
 
 	mov	rax, QWORD PTR curr$[rsp]
-	movzx	eax, BYTE PTR [rax+47]
+	movzx	eax, BYTE PTR [rax+55]
 	shr	al, 3
 	and	al, 1
 	movzx	eax, al
 	test	eax, eax
 	je	SHORT $LN6@bin_check_
 	mov	rax, QWORD PTR curr$[rsp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	and	al, 1
 	movzx	eax, al
 	cmp	eax, 1
@@ -654,7 +654,7 @@ $LN6@bin_check_:
 ; 1824 :             DebugMsg(("CheckExternal: error, %s weak=%u\n", curr->sym.name, curr->sym.weak ));
 
 	mov	rax, QWORD PTR curr$[rsp]
-	movzx	eax, BYTE PTR [rax+47]
+	movzx	eax, BYTE PTR [rax+55]
 	shr	al, 3
 	and	al, 1
 	movzx	eax, al
@@ -777,7 +777,7 @@ bin_write_module PROC
 	jmp	SHORT $LN4@bin_write_
 $LN2@bin_write_:
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+104]
+	mov	rax, QWORD PTR [rax+112]
 	mov	QWORD PTR curr$[rbp], rax
 $LN4@bin_write_:
 	cmp	QWORD PTR curr$[rbp], 0
@@ -788,14 +788,14 @@ $LN4@bin_write_:
 ; 1535 :         curr->e.seginfo->start_offset = 0;
 
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	DWORD PTR [rax+12], 0
 
 ; 1536 :         /* set STACK segment type */
 ; 1537 :         if ( curr->e.seginfo->combine == COMB_STACK )
 
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+108]
 	and	al, 7
 	movzx	eax, al
@@ -805,7 +805,7 @@ $LN4@bin_write_:
 ; 1538 :             curr->e.seginfo->segtype = SEGTYPE_STACK;
 
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	DWORD PTR [rax+72], 4
 $LN30@bin_write_:
 
@@ -984,7 +984,7 @@ $LN9@bin_write_:
 	jmp	SHORT $LN12@bin_write_
 $LN10@bin_write_:
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+104]
+	mov	rax, QWORD PTR [rax+112]
 	mov	QWORD PTR curr$[rbp], rax
 $LN12@bin_write_:
 	cmp	QWORD PTR curr$[rbp], 0
@@ -993,7 +993,7 @@ $LN12@bin_write_:
 ; 1578 :                 if ( curr->e.seginfo->segtype != dosseg_order[i] )
 
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movsxd	rcx, DWORD PTR i$[rbp]
 	lea	rdx, OFFSET FLAT:dosseg_order
 	mov	ecx, DWORD PTR [rdx+rcx*4]
@@ -1014,16 +1014,16 @@ $LN39@bin_write_:
 ; 1581 :                 DebugMsg(("bin_write_module: section %s, start ofs=%" I32_SPEC "Xh, size=%" I32_SPEC "Xh, file ofs=%" I32_SPEC "Xh\n",
 
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR curr$[rbp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	rdx, QWORD PTR curr$[rbp]
 	mov	ecx, DWORD PTR [rcx+8]
-	mov	edx, DWORD PTR [rdx+56]
+	mov	edx, DWORD PTR [rdx+64]
 	sub	edx, ecx
 	mov	ecx, edx
 	mov	rdx, QWORD PTR curr$[rbp]
-	mov	rdx, QWORD PTR [rdx+96]
+	mov	rdx, QWORD PTR [rdx+104]
 	mov	eax, DWORD PTR [rax+56]
 	mov	DWORD PTR [rsp+32], eax
 	mov	r9d, ecx
@@ -1083,7 +1083,7 @@ $LN40@bin_write_:
 	jmp	SHORT $LN15@bin_write_
 $LN13@bin_write_:
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+104]
+	mov	rax, QWORD PTR [rax+112]
 	mov	QWORD PTR curr$[rbp], rax
 $LN15@bin_write_:
 	cmp	QWORD PTR curr$[rbp], 0
@@ -1099,11 +1099,11 @@ $LN15@bin_write_:
 ; 1595 :             DebugMsg(("bin_write_module(%s): start ofs=%" I32_SPEC "Xh, size=%" I32_SPEC "Xh, file ofs=%" I32_SPEC "Xh, grp=%s\n",
 
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	QWORD PTR [rax], 0
 	je	SHORT $LN77@bin_write_
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax]
 	mov	rax, QWORD PTR [rax+8]
 	mov	QWORD PTR tv209[rbp], rax
@@ -1113,16 +1113,16 @@ $LN77@bin_write_:
 	mov	QWORD PTR tv209[rbp], rax
 $LN78@bin_write_:
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR curr$[rbp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	rdx, QWORD PTR curr$[rbp]
 	mov	ecx, DWORD PTR [rcx+8]
-	mov	edx, DWORD PTR [rdx+56]
+	mov	edx, DWORD PTR [rdx+64]
 	sub	edx, ecx
 	mov	ecx, edx
 	mov	rdx, QWORD PTR curr$[rbp]
-	mov	rdx, QWORD PTR [rdx+96]
+	mov	rdx, QWORD PTR [rdx+104]
 	mov	rdi, QWORD PTR tv209[rbp]
 	mov	QWORD PTR [rsp+40], rdi
 	mov	eax, DWORD PTR [rax+56]
@@ -1160,7 +1160,7 @@ $LN35@bin_write_:
 	jmp	SHORT $LN18@bin_write_
 $LN16@bin_write_:
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+104]
+	mov	rax, QWORD PTR [rax+112]
 	mov	QWORD PTR curr$[rbp], rax
 $LN18@bin_write_:
 	cmp	QWORD PTR curr$[rbp], 0
@@ -1181,7 +1181,7 @@ $LN18@bin_write_:
 	cmp	QWORD PTR stack$[rbp], 0
 	jne	SHORT $LN41@bin_write_
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+108]
 	and	al, 7
 	movzx	eax, al
@@ -1235,7 +1235,7 @@ $LN42@bin_write_:
 	je	SHORT $LN46@bin_write_
 	mov	rax, QWORD PTR modinfo$[rbp]
 	mov	rax, QWORD PTR [rax+208]
-	mov	rax, QWORD PTR [rax+24]
+	mov	rax, QWORD PTR [rax+32]
 	cmp	QWORD PTR cp$[rbp+16], rax
 	je	SHORT $LN45@bin_write_
 $LN46@bin_write_:
@@ -1419,21 +1419,21 @@ $LN49@bin_write_:
 ; 1653 :             uint_32 addr = stack->e.seginfo->start_offset;
 
 	mov	rax, QWORD PTR stack$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	eax, DWORD PTR [rax+12]
 	mov	DWORD PTR addr$1[rbp], eax
 
 ; 1654 :             if ( stack->e.seginfo->group )
 
 	mov	rax, QWORD PTR stack$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	QWORD PTR [rax], 0
 	je	SHORT $LN52@bin_write_
 
 ; 1655 :                 addr += stack->e.seginfo->group->offset;
 
 	mov	rax, QWORD PTR stack$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax]
 	mov	eax, DWORD PTR [rax+16]
 	mov	ecx, DWORD PTR addr$1[rbp]
@@ -1445,7 +1445,7 @@ $LN52@bin_write_:
 ; 1656 :             DebugMsg(("bin_write_module: MZ, stack=%" I32_SPEC "Xh ofs=%" I32_SPEC "Xh\n", addr, stack->sym.max_offset ));
 
 	mov	rax, QWORD PTR stack$[rbp]
-	mov	r8d, DWORD PTR [rax+56]
+	mov	r8d, DWORD PTR [rax+64]
 	mov	edx, DWORD PTR addr$1[rbp]
 	lea	rcx, OFFSET FLAT:$SG12471
 	call	DoDebugMsg
@@ -1472,7 +1472,7 @@ $LN84@bin_write_:
 
 	mov	rax, QWORD PTR pMZ$[rbp]
 	mov	rcx, QWORD PTR stack$[rbp]
-	movzx	ecx, WORD PTR [rcx+56]
+	movzx	ecx, WORD PTR [rcx+64]
 	mov	WORD PTR [rax+16], cx
 
 ; 1660 :         } else {
@@ -1508,17 +1508,17 @@ $LN51@bin_write_:
 
 	mov	rax, QWORD PTR modinfo$[rbp]
 	mov	rax, QWORD PTR [rax+208]
-	mov	rax, QWORD PTR [rax+24]
+	mov	rax, QWORD PTR [rax+32]
 	mov	QWORD PTR curr$[rbp], rax
 
 ; 1670 :             DebugMsg(("bin_write_module, start_label: offs=%" I32_SPEC "Xh, seg.offs=%" I32_SPEC "Xh, group.offs=%" I32_SPEC "Xh\n",
 
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	QWORD PTR [rax], 0
 	je	SHORT $LN85@bin_write_
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax]
 	mov	eax, DWORD PTR [rax+16]
 	mov	DWORD PTR tv335[rbp], eax
@@ -1527,7 +1527,7 @@ $LN85@bin_write_:
 	mov	DWORD PTR tv335[rbp], 0
 $LN86@bin_write_:
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR modinfo$[rbp]
 	mov	rcx, QWORD PTR [rcx+208]
 	mov	r9d, DWORD PTR tv335[rbp]
@@ -1540,14 +1540,14 @@ $LN86@bin_write_:
 ; 1672 :             if ( curr->e.seginfo->group ) {
 
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	QWORD PTR [rax], 0
 	je	SHORT $LN55@bin_write_
 
 ; 1673 :                 addr = curr->e.seginfo->group->offset;
 
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax]
 	mov	eax, DWORD PTR [rax+16]
 	mov	DWORD PTR addr$2[rbp], eax
@@ -1557,7 +1557,7 @@ $LN86@bin_write_:
 	mov	eax, DWORD PTR addr$2[rbp]
 	and	eax, 15
 	mov	rcx, QWORD PTR curr$[rbp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	add	eax, DWORD PTR [rcx+12]
 	mov	rcx, QWORD PTR modinfo$[rbp]
 	mov	rcx, QWORD PTR [rcx+208]
@@ -1580,7 +1580,7 @@ $LN55@bin_write_:
 ; 1677 :                 addr = curr->e.seginfo->start_offset;
 
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	eax, DWORD PTR [rax+12]
 	mov	DWORD PTR addr$2[rbp], eax
 
@@ -1776,7 +1776,7 @@ $LN58@bin_write_:
 	jmp	SHORT $LN23@bin_write_
 $LN21@bin_write_:
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+104]
+	mov	rax, QWORD PTR [rax+112]
 	mov	QWORD PTR curr$[rbp], rax
 $LN23@bin_write_:
 	cmp	QWORD PTR curr$[rbp], 0
@@ -1785,19 +1785,19 @@ $LN23@bin_write_:
 ; 1720 :         DebugMsg(("bin_write_module(%s): type=%u written=%" I32_SPEC "X max=%" I32_SPEC "X start=%" I32_SPEC "X fileofs=%" I32_SPEC "X\n",
 
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR curr$[rbp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	rdx, QWORD PTR curr$[rbp]
-	mov	rdx, QWORD PTR [rdx+96]
+	mov	rdx, QWORD PTR [rdx+104]
 	mov	rdi, QWORD PTR curr$[rbp]
-	mov	rdi, QWORD PTR [rdi+96]
+	mov	rdi, QWORD PTR [rdi+104]
 	mov	eax, DWORD PTR [rax+56]
 	mov	DWORD PTR [rsp+48], eax
 	mov	eax, DWORD PTR [rcx+8]
 	mov	DWORD PTR [rsp+40], eax
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	eax, DWORD PTR [rax+56]
+	mov	eax, DWORD PTR [rax+64]
 	mov	DWORD PTR [rsp+32], eax
 	mov	r9d, DWORD PTR [rdx+24]
 	mov	r8d, DWORD PTR [rdi+72]
@@ -1830,7 +1830,7 @@ $LN22@bin_write_:
 	jmp	SHORT $LN26@bin_write_
 $LN24@bin_write_:
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+104]
+	mov	rax, QWORD PTR [rax+112]
 	mov	QWORD PTR curr$[rbp], rax
 $LN26@bin_write_:
 	cmp	QWORD PTR curr$[rbp], 0
@@ -1839,7 +1839,7 @@ $LN26@bin_write_:
 ; 1731 :         if ( curr->e.seginfo->segtype == SEGTYPE_ABS ) {
 
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	DWORD PTR [rax+72], 5
 	jne	SHORT $LN60@bin_write_
 
@@ -1862,11 +1862,11 @@ $LN60@bin_write_:
 	cmp	DWORD PTR ModuleInfo+372, 2
 	jne	SHORT $LN61@bin_write_
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	DWORD PTR [rax+72], 3
 	je	SHORT $LN63@bin_write_
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+107]
 	shr	al, 1
 	and	al, 1
@@ -1888,10 +1888,10 @@ $LN61@bin_write_:
 ; 1742 :             size = curr->sym.max_offset - curr->e.seginfo->start_loc;
 
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR curr$[rbp]
 	mov	eax, DWORD PTR [rax+8]
-	mov	ecx, DWORD PTR [rcx+56]
+	mov	ecx, DWORD PTR [rcx+64]
 	sub	ecx, eax
 	mov	eax, ecx
 	mov	DWORD PTR size$[rbp], eax
@@ -1907,7 +1907,7 @@ $LN62@bin_write_:
 	jmp	SHORT $LN88@bin_write_
 $LN87@bin_write_:
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	eax, DWORD PTR [rax+56]
+	mov	eax, DWORD PTR [rax+64]
 	mov	DWORD PTR tv469[rbp], eax
 $LN88@bin_write_:
 	mov	eax, DWORD PTR tv469[rbp]
@@ -1918,7 +1918,7 @@ $LN88@bin_write_:
 ; 1747 :         if ( curr->e.seginfo->bytes_written == 0 ) {
 
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	DWORD PTR [rax+24], 0
 	jne	SHORT $LN64@bin_write_
 
@@ -1926,12 +1926,12 @@ $LN88@bin_write_:
 ; 1749 :             for ( dir = curr->next; dir; dir = dir->next )
 
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+104]
+	mov	rax, QWORD PTR [rax+112]
 	mov	QWORD PTR dir$3[rbp], rax
 	jmp	SHORT $LN29@bin_write_
 $LN27@bin_write_:
 	mov	rax, QWORD PTR dir$3[rbp]
-	mov	rax, QWORD PTR [rax+104]
+	mov	rax, QWORD PTR [rax+112]
 	mov	QWORD PTR dir$3[rbp], rax
 $LN29@bin_write_:
 	cmp	QWORD PTR dir$3[rbp], 0
@@ -1940,7 +1940,7 @@ $LN29@bin_write_:
 ; 1750 :                 if ( dir->e.seginfo->bytes_written )
 
 	mov	rax, QWORD PTR dir$3[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	DWORD PTR [rax+24], 0
 	je	SHORT $LN65@bin_write_
 
@@ -1984,21 +1984,21 @@ $LN64@bin_write_:
 	cmp	DWORD PTR first$[rbp], 0
 	je	SHORT $LN89@bin_write_
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR curr$[rbp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	eax, DWORD PTR [rax+12]
 	add	eax, DWORD PTR [rcx+8]
 	mov	DWORD PTR tv495[rbp], eax
 	jmp	SHORT $LN90@bin_write_
 $LN89@bin_write_:
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	eax, DWORD PTR [rax+12]
 	mov	DWORD PTR tv495[rbp], eax
 $LN90@bin_write_:
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	ecx, DWORD PTR sizemem$[rbp]
 	mov	DWORD PTR [rsp+40], ecx
 	mov	ecx, DWORD PTR size$[rbp]
@@ -2020,18 +2020,18 @@ $LN90@bin_write_:
 	cmp	DWORD PTR size$[rbp], 0
 	je	$LN67@bin_write_
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	QWORD PTR [rax+16], 0
 	je	$LN67@bin_write_
 
 ; 1767 :             DebugMsg(("bin_write_module(%s): write %" I32_SPEC "Xh bytes at offset %" I32_SPEC "Xh, initialized bytes=%" I32_SPEC "u, buffer=%p\n",
 
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR curr$[rbp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	rdx, QWORD PTR curr$[rbp]
-	mov	rdx, QWORD PTR [rdx+96]
+	mov	rdx, QWORD PTR [rdx+104]
 	mov	rax, QWORD PTR [rax+16]
 	mov	QWORD PTR [rsp+40], rax
 	mov	eax, DWORD PTR [rcx+24]
@@ -2047,7 +2047,7 @@ $LN90@bin_write_:
 ; 1769 :             fseek( CurrFile[OBJ], curr->e.seginfo->fileoffset, SEEK_SET );
 
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	ecx, 8
 	imul	rcx, rcx, 1
 	lea	rdx, OFFSET FLAT:ModuleInfo+96
@@ -2069,7 +2069,7 @@ $LN90@bin_write_:
 	lea	rcx, OFFSET FLAT:ModuleInfo+96
 	mov	edx, DWORD PTR size$[rbp]
 	mov	rdi, QWORD PTR curr$[rbp]
-	mov	rdi, QWORD PTR [rdi+96]
+	mov	rdi, QWORD PTR [rdi+104]
 	mov	r9, QWORD PTR [rcx+rax]
 	mov	r8d, edx
 	mov	edx, 1
@@ -2444,7 +2444,7 @@ pe_set_values PROC
 
 	mov	rax, QWORD PTR ModuleInfo+440
 	mov	rcx, QWORD PTR mzhdr$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	QWORD PTR [rcx], rax
 
 ; 1264 : #if AMD64_SUPPORT
@@ -2457,7 +2457,7 @@ pe_set_values PROC
 ; 1266 :         ph64 = ( struct IMAGE_PE_HEADER64 *)pehdr->e.seginfo->CodeBuffer;
 
 	mov	rax, QWORD PTR pehdr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax+16]
 	mov	QWORD PTR ph64$[rsp], rax
 
@@ -2476,7 +2476,7 @@ $LN14@pe_set_val:
 ; 1270 :         ph32 = ( struct IMAGE_PE_HEADER32 *)pehdr->e.seginfo->CodeBuffer;
 
 	mov	rax, QWORD PTR pehdr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax+16]
 	mov	QWORD PTR ph32$[rsp], rax
 
@@ -2521,53 +2521,53 @@ $LN15@pe_set_val:
 
 	mov	rax, QWORD PTR ModuleInfo+440
 	mov	rcx, QWORD PTR reloc$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	QWORD PTR [rcx], rax
 
 ; 1280 :             reloc->e.seginfo->combine = COMB_ADDOFF;  /* PUBLIC */
 
 	mov	rax, QWORD PTR reloc$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+108]
 	and	al, 248					; 000000f8H
 	or	al, 2
 	mov	rcx, QWORD PTR reloc$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	BYTE PTR [rcx+108], al
 
 ; 1281 :             reloc->e.seginfo->segtype = SEGTYPE_RELOC;
 
 	mov	rax, QWORD PTR reloc$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	DWORD PTR [rax+72], 8
 
 ; 1282 :             reloc->e.seginfo->characteristics = ((IMAGE_SCN_MEM_DISCARDABLE | IMAGE_SCN_MEM_READ) >> 24 );
 
 	mov	rax, QWORD PTR reloc$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	BYTE PTR [rax+105], 66			; 00000042H
 
 ; 1283 :             /* make sure the section isn't empty ( true size will be calculated later ) */
 ; 1284 :             reloc->sym.max_offset = sizeof( struct IMAGE_BASE_RELOCATION );
 
 	mov	rax, QWORD PTR reloc$[rsp]
-	mov	DWORD PTR [rax+56], 8
+	mov	DWORD PTR [rax+64], 8
 
 ; 1285 :             reloc->e.seginfo->bytes_written = reloc->sym.max_offset;
 
 	mov	rax, QWORD PTR reloc$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR reloc$[rsp]
-	mov	ecx, DWORD PTR [rcx+56]
+	mov	ecx, DWORD PTR [rcx+64]
 	mov	DWORD PTR [rax+24], ecx
 
 ; 1286 :             /* clear the additionally allocated entry in object table */
 ; 1287 :             memset( objtab->e.seginfo->CodeBuffer + objtab->sym.max_offset, 0, sizeof( struct IMAGE_SECTION_HEADER ) );
 
 	mov	rax, QWORD PTR objtab$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR objtab$[rsp]
-	movsxd	rcx, DWORD PTR [rcx+56]
+	movsxd	rcx, DWORD PTR [rcx+64]
 	add	rcx, QWORD PTR [rax+16]
 	mov	rax, rcx
 	mov	r8d, 40					; 00000028H
@@ -2578,10 +2578,10 @@ $LN15@pe_set_val:
 ; 1288 :             objtab->sym.max_offset += sizeof( struct IMAGE_SECTION_HEADER );
 
 	mov	rax, QWORD PTR objtab$[rsp]
-	movsxd	rax, DWORD PTR [rax+56]
+	movsxd	rax, DWORD PTR [rax+64]
 	add	rax, 40					; 00000028H
 	mov	rcx, QWORD PTR objtab$[rsp]
-	mov	DWORD PTR [rcx+56], eax
+	mov	DWORD PTR [rcx+64], eax
 $LN17@pe_set_val:
 $LN16@pe_set_val:
 
@@ -2621,7 +2621,7 @@ $LN4@pe_set_val:
 	jmp	SHORT $LN7@pe_set_val
 $LN5@pe_set_val:
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+104]
+	mov	rax, QWORD PTR [rax+112]
 	mov	QWORD PTR curr$[rsp], rax
 $LN7@pe_set_val:
 	cmp	QWORD PTR curr$[rsp], 0
@@ -2630,7 +2630,7 @@ $LN7@pe_set_val:
 ; 1297 :             if ( curr->e.seginfo->segtype == flat_order[i] ) {
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movsxd	rcx, DWORD PTR i$[rsp]
 	lea	rdx, OFFSET FLAT:flat_order
 	mov	ecx, DWORD PTR [rdx+rcx*4]
@@ -2640,7 +2640,7 @@ $LN7@pe_set_val:
 ; 1298 :                 curr->e.seginfo->lname_idx = i;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	ecx, DWORD PTR i$[rsp]
 	mov	DWORD PTR [rax+76], ecx
 $LN18@pe_set_val:
@@ -2711,7 +2711,7 @@ $LN55@pe_set_val:
 	jmp	SHORT $LN10@pe_set_val
 $LN8@pe_set_val:
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+104]
+	mov	rax, QWORD PTR [rax+112]
 	mov	QWORD PTR curr$[rsp], rax
 $LN10@pe_set_val:
 	cmp	QWORD PTR curr$[rsp], 0
@@ -2720,11 +2720,11 @@ $LN10@pe_set_val:
 ; 1310 :         if ( curr->e.seginfo->lname_idx == SEGTYPE_ERROR || curr->e.seginfo->lname_idx != i ) {
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	DWORD PTR [rax+76], 10
 	je	SHORT $LN21@pe_set_val
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	ecx, DWORD PTR i$[rsp]
 	cmp	DWORD PTR [rax+76], ecx
 	je	SHORT $LN19@pe_set_val
@@ -2733,7 +2733,7 @@ $LN21@pe_set_val:
 ; 1311 :             i = curr->e.seginfo->lname_idx;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	eax, DWORD PTR [rax+76]
 	mov	DWORD PTR i$[rsp], eax
 
@@ -2764,7 +2764,7 @@ $LN19@pe_set_val:
 ; 1315 :             uint_32 align = 1 << curr->e.seginfo->alignment;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+106]
 	mov	ecx, 1
 	mov	DWORD PTR tv702[rsp], ecx
@@ -2802,16 +2802,16 @@ $LN20@pe_set_val:
 ; 1320 :         DebugMsg(("pe_set_values: section %s, start ofs=%" I32_SPEC "Xh, size=%" I32_SPEC "Xh, file ofs=%" I32_SPEC "Xh\n",
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR curr$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	rdx, QWORD PTR curr$[rsp]
 	mov	ecx, DWORD PTR [rcx+8]
-	mov	edx, DWORD PTR [rdx+56]
+	mov	edx, DWORD PTR [rdx+64]
 	sub	edx, ecx
 	mov	ecx, edx
 	mov	rdx, QWORD PTR curr$[rsp]
-	mov	rdx, QWORD PTR [rdx+96]
+	mov	rdx, QWORD PTR [rdx+104]
 	mov	eax, DWORD PTR [rax+56]
 	mov	DWORD PTR [rsp+32], eax
 	mov	r9d, ecx
@@ -2841,10 +2841,10 @@ $LN9@pe_set_val:
 ; 1326 :         cp->rva = reloc->e.seginfo->start_offset + reloc->sym.max_offset;
 
 	mov	rax, QWORD PTR reloc$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	eax, DWORD PTR [rax+12]
 	mov	rcx, QWORD PTR reloc$[rsp]
-	add	eax, DWORD PTR [rcx+56]
+	add	eax, DWORD PTR [rcx+64]
 	mov	rcx, QWORD PTR cp$[rsp]
 	mov	DWORD PTR [rcx+28], eax
 $LN22@pe_set_val:
@@ -2862,15 +2862,15 @@ $LN22@pe_set_val:
 ; 1332 :     if ( mzhdr->sym.max_offset >= 0x40 )
 
 	mov	rax, QWORD PTR mzhdr$[rsp]
-	cmp	DWORD PTR [rax+56], 64			; 00000040H
+	cmp	DWORD PTR [rax+64], 64			; 00000040H
 	jl	SHORT $LN23@pe_set_val
 
 ; 1333 :         ((struct IMAGE_DOS_HEADER *)mzhdr->e.seginfo->CodeBuffer)->e_lfanew = pehdr->e.seginfo->fileoffset;
 
 	mov	rax, QWORD PTR pehdr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR mzhdr$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	rcx, QWORD PTR [rcx+16]
 	mov	eax, DWORD PTR [rax+56]
 	mov	DWORD PTR [rcx+60], eax
@@ -2881,7 +2881,7 @@ $LN23@pe_set_val:
 ; 1336 :     fh = &((struct IMAGE_PE_HEADER32 *)pehdr->e.seginfo->CodeBuffer)->FileHeader;
 
 	mov	rax, QWORD PTR pehdr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax+16]
 	add	rax, 4
 	mov	QWORD PTR fh$[rsp], rax
@@ -2889,7 +2889,7 @@ $LN23@pe_set_val:
 ; 1337 :     fh->NumberOfSections = objtab->sym.max_offset / sizeof( struct IMAGE_SECTION_HEADER );
 
 	mov	rax, QWORD PTR objtab$[rsp]
-	movsxd	rax, DWORD PTR [rax+56]
+	movsxd	rax, DWORD PTR [rax+64]
 	xor	edx, edx
 	mov	ecx, 40					; 00000028H
 	div	rcx
@@ -2922,7 +2922,7 @@ $LN57@pe_set_val:
 ; 1344 :     section = (struct IMAGE_SECTION_HEADER *)objtab->e.seginfo->CodeBuffer;
 
 	mov	rax, QWORD PTR objtab$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax+16]
 	mov	QWORD PTR section$[rsp], rax
 
@@ -2937,7 +2937,7 @@ $LN57@pe_set_val:
 	jmp	SHORT $LN13@pe_set_val
 $LN11@pe_set_val:
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+104]
+	mov	rax, QWORD PTR [rax+112]
 	mov	QWORD PTR curr$[rsp], rax
 $LN13@pe_set_val:
 	cmp	QWORD PTR curr$[rsp], 0
@@ -2946,7 +2946,7 @@ $LN13@pe_set_val:
 ; 1346 :         if ( curr->e.seginfo->segtype == SEGTYPE_HDR )
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	DWORD PTR [rax+72], 6
 	jne	SHORT $LN24@pe_set_val
 
@@ -2958,7 +2958,7 @@ $LN24@pe_set_val:
 ; 1348 :         if ( curr->sym.max_offset == 0 ) /* ignore empty sections */
 
 	mov	rax, QWORD PTR curr$[rsp]
-	cmp	DWORD PTR [rax+56], 0
+	cmp	DWORD PTR [rax+64], 0
 	jne	SHORT $LN25@pe_set_val
 
 ; 1349 :             continue;
@@ -2969,7 +2969,7 @@ $LN25@pe_set_val:
 ; 1350 :         if ( curr->e.seginfo->lname_idx != i ) {
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	ecx, DWORD PTR i$[rsp]
 	cmp	DWORD PTR [rax+76], ecx
 	je	$LN26@pe_set_val
@@ -2977,18 +2977,18 @@ $LN25@pe_set_val:
 ; 1351 :             i = curr->e.seginfo->lname_idx;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	eax, DWORD PTR [rax+76]
 	mov	DWORD PTR i$[rsp], eax
 
 ; 1352 :             secname = ( curr->e.seginfo->aliasname ? curr->e.seginfo->aliasname : ConvertSectionName( &curr->sym, NULL, buffer ) );
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	QWORD PTR [rax+96], 0
 	je	SHORT $LN58@pe_set_val
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax+96]
 	mov	QWORD PTR tv293[rsp], rax
 	jmp	SHORT $LN59@pe_set_val
@@ -3014,14 +3014,14 @@ $LN59@pe_set_val:
 ; 1354 :             if ( curr->e.seginfo->segtype != SEGTYPE_BSS )
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	DWORD PTR [rax+72], 3
 	je	SHORT $LN27@pe_set_val
 
 ; 1355 :                 section->PointerToRawData = curr->e.seginfo->fileoffset;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR section$[rsp]
 	mov	eax, DWORD PTR [rax+56]
 	mov	DWORD PTR [rcx+20], eax
@@ -3030,7 +3030,7 @@ $LN27@pe_set_val:
 ; 1356 :             section->VirtualAddress = curr->e.seginfo->start_offset;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR section$[rsp]
 	mov	eax, DWORD PTR [rax+12]
 	mov	DWORD PTR [rcx+12], eax
@@ -3044,7 +3044,7 @@ $LN27@pe_set_val:
 ; 1359 :                 sizehdr = curr->e.seginfo->fileoffset;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	eax, DWORD PTR [rax+56]
 	mov	DWORD PTR sizehdr$[rsp], eax
 $LN28@pe_set_val:
@@ -3065,7 +3065,7 @@ $LN26@pe_set_val:
 ; 1362 :         if ( curr->e.seginfo->segtype != SEGTYPE_BSS ) {
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	DWORD PTR [rax+72], 3
 	je	SHORT $LN29@pe_set_val
 
@@ -3074,7 +3074,7 @@ $LN26@pe_set_val:
 	mov	rax, QWORD PTR section$[rsp]
 	mov	eax, DWORD PTR [rax+16]
 	mov	rcx, QWORD PTR curr$[rsp]
-	add	eax, DWORD PTR [rcx+56]
+	add	eax, DWORD PTR [rcx+64]
 	mov	rcx, QWORD PTR section$[rsp]
 	mov	DWORD PTR [rcx+16], eax
 $LN29@pe_set_val:
@@ -3086,13 +3086,13 @@ $LN29@pe_set_val:
 ; 1368 :         section->Misc.VirtualSize = curr->sym.max_offset + ( curr->e.seginfo->start_offset - section->VirtualAddress );
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR section$[rsp]
 	mov	ecx, DWORD PTR [rcx+12]
 	mov	eax, DWORD PTR [rax+12]
 	sub	eax, ecx
 	mov	rcx, QWORD PTR curr$[rsp]
-	add	eax, DWORD PTR [rcx+56]
+	add	eax, DWORD PTR [rcx+64]
 	mov	rcx, QWORD PTR section$[rsp]
 	mov	DWORD PTR [rcx+8], eax
 
@@ -3100,11 +3100,11 @@ $LN29@pe_set_val:
 ; 1370 :         if ( curr->next == NULL || curr->next->e.seginfo->lname_idx != i ) {
 
 	mov	rax, QWORD PTR curr$[rsp]
-	cmp	QWORD PTR [rax+104], 0
+	cmp	QWORD PTR [rax+112], 0
 	je	SHORT $LN31@pe_set_val
 	mov	rax, QWORD PTR curr$[rsp]
+	mov	rax, QWORD PTR [rax+112]
 	mov	rax, QWORD PTR [rax+104]
-	mov	rax, QWORD PTR [rax+96]
 	mov	ecx, DWORD PTR i$[rsp]
 	cmp	DWORD PTR [rax+76], ecx
 	je	$LN30@pe_set_val
@@ -3202,11 +3202,11 @@ $LN30@pe_set_val:
 ; 1386 :         if ( curr->next && curr->next->e.seginfo->lname_idx != i ) {
 
 	mov	rax, QWORD PTR curr$[rsp]
-	cmp	QWORD PTR [rax+104], 0
+	cmp	QWORD PTR [rax+112], 0
 	je	SHORT $LN36@pe_set_val
 	mov	rax, QWORD PTR curr$[rsp]
+	mov	rax, QWORD PTR [rax+112]
 	mov	rax, QWORD PTR [rax+104]
-	mov	rax, QWORD PTR [rax+96]
 	mov	ecx, DWORD PTR i$[rsp]
 	cmp	DWORD PTR [rax+76], ecx
 	je	SHORT $LN36@pe_set_val
@@ -3259,8 +3259,8 @@ $LN12@pe_set_val:
 ; 1397 :             ph64->OptionalHeader.AddressOfEntryPoint = ((struct dsym *)ModuleInfo.g.start_label->segment)->e.seginfo->start_offset + ModuleInfo.g.start_label->offset;
 
 	mov	rax, QWORD PTR ModuleInfo+208
-	mov	rax, QWORD PTR [rax+24]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+32]
+	mov	rax, QWORD PTR [rax+104]
 	mov	eax, DWORD PTR [rax+12]
 	mov	rcx, QWORD PTR ModuleInfo+208
 	add	eax, DWORD PTR [rcx+16]
@@ -3274,8 +3274,8 @@ $LN39@pe_set_val:
 ; 1400 :             ph32->OptionalHeader.AddressOfEntryPoint = ((struct dsym *)ModuleInfo.g.start_label->segment)->e.seginfo->start_offset + ModuleInfo.g.start_label->offset;
 
 	mov	rax, QWORD PTR ModuleInfo+208
-	mov	rax, QWORD PTR [rax+24]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+32]
+	mov	rax, QWORD PTR [rax+104]
 	mov	eax, DWORD PTR [rax+12]
 	mov	rcx, QWORD PTR ModuleInfo+208
 	add	eax, DWORD PTR [rcx+16]
@@ -3440,7 +3440,7 @@ $LN42@pe_set_val:
 ; 1436 :         datadir[IMAGE_DIRECTORY_ENTRY_EXPORT].VirtualAddress = curr->e.seginfo->start_offset;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	ecx, 8
 	imul	rcx, rcx, 0
 	mov	rdx, QWORD PTR datadir$[rsp]
@@ -3453,7 +3453,7 @@ $LN42@pe_set_val:
 	imul	rax, rax, 0
 	mov	rcx, QWORD PTR datadir$[rsp]
 	mov	rdx, QWORD PTR curr$[rsp]
-	mov	edx, DWORD PTR [rdx+56]
+	mov	edx, DWORD PTR [rdx+64]
 	mov	DWORD PTR [rcx+rax+4], edx
 $LN43@pe_set_val:
 
@@ -3486,19 +3486,19 @@ $LN43@pe_set_val:
 ; 1447 :         size = idata_null->e.seginfo->start_offset + idata_null->sym.max_offset - curr->e.seginfo->start_offset;
 
 	mov	rax, QWORD PTR idata_null$3[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	eax, DWORD PTR [rax+12]
 	mov	rcx, QWORD PTR idata_null$3[rsp]
-	add	eax, DWORD PTR [rcx+56]
+	add	eax, DWORD PTR [rcx+64]
 	mov	rcx, QWORD PTR curr$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	sub	eax, DWORD PTR [rcx+12]
 	mov	DWORD PTR size$2[rsp], eax
 
 ; 1448 :         datadir[IMAGE_DIRECTORY_ENTRY_IMPORT].VirtualAddress = curr->e.seginfo->start_offset;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	ecx, 8
 	imul	rcx, rcx, 1
 	mov	rdx, QWORD PTR datadir$[rsp]
@@ -3516,7 +3516,7 @@ $LN43@pe_set_val:
 ; 1450 :         datadir[IMAGE_DIRECTORY_ENTRY_IAT].VirtualAddress = idata_iat->e.seginfo->start_offset;
 
 	mov	rax, QWORD PTR idata_iat$4[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	ecx, 8
 	imul	rcx, rcx, 12
 	mov	rdx, QWORD PTR datadir$[rsp]
@@ -3529,7 +3529,7 @@ $LN43@pe_set_val:
 	imul	rax, rax, 12
 	mov	rcx, QWORD PTR datadir$[rsp]
 	mov	rdx, QWORD PTR idata_iat$4[rsp]
-	mov	edx, DWORD PTR [rdx+56]
+	mov	edx, DWORD PTR [rdx+64]
 	mov	DWORD PTR [rcx+rax+4], edx
 $LN44@pe_set_val:
 
@@ -3547,7 +3547,7 @@ $LN44@pe_set_val:
 ; 1456 :         datadir[IMAGE_DIRECTORY_ENTRY_RESOURCE].VirtualAddress = curr->e.seginfo->start_offset;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	ecx, 8
 	imul	rcx, rcx, 2
 	mov	rdx, QWORD PTR datadir$[rsp]
@@ -3560,7 +3560,7 @@ $LN44@pe_set_val:
 	imul	rax, rax, 2
 	mov	rcx, QWORD PTR datadir$[rsp]
 	mov	rdx, QWORD PTR curr$[rsp]
-	mov	edx, DWORD PTR [rdx+56]
+	mov	edx, DWORD PTR [rdx+64]
 	mov	DWORD PTR [rcx+rax+4], edx
 $LN45@pe_set_val:
 
@@ -3578,7 +3578,7 @@ $LN45@pe_set_val:
 ; 1462 :         datadir[IMAGE_DIRECTORY_ENTRY_BASERELOC].VirtualAddress = curr->e.seginfo->start_offset;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	ecx, 8
 	imul	rcx, rcx, 5
 	mov	rdx, QWORD PTR datadir$[rsp]
@@ -3591,7 +3591,7 @@ $LN45@pe_set_val:
 	imul	rax, rax, 5
 	mov	rcx, QWORD PTR datadir$[rsp]
 	mov	rdx, QWORD PTR curr$[rsp]
-	mov	edx, DWORD PTR [rdx+56]
+	mov	edx, DWORD PTR [rdx+64]
 	mov	DWORD PTR [rcx+rax+4], edx
 $LN46@pe_set_val:
 
@@ -3611,7 +3611,7 @@ $LN46@pe_set_val:
 ; 1470 :         datadir[IMAGE_DIRECTORY_ENTRY_TLS].VirtualAddress = curr->e.seginfo->start_offset;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	ecx, 8
 	imul	rcx, rcx, 9
 	mov	rdx, QWORD PTR datadir$[rsp]
@@ -3624,7 +3624,7 @@ $LN46@pe_set_val:
 	imul	rax, rax, 9
 	mov	rcx, QWORD PTR datadir$[rsp]
 	mov	rdx, QWORD PTR curr$[rsp]
-	mov	edx, DWORD PTR [rdx+56]
+	mov	edx, DWORD PTR [rdx+64]
 	mov	DWORD PTR [rcx+rax+4], edx
 $LN47@pe_set_val:
 
@@ -3648,7 +3648,7 @@ $LN47@pe_set_val:
 ; 1477 :             datadir[IMAGE_DIRECTORY_ENTRY_EXCEPTION].VirtualAddress = curr->e.seginfo->start_offset;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	ecx, 8
 	imul	rcx, rcx, 3
 	mov	rdx, QWORD PTR datadir$[rsp]
@@ -3661,7 +3661,7 @@ $LN47@pe_set_val:
 	imul	rax, rax, 3
 	mov	rcx, QWORD PTR datadir$[rsp]
 	mov	rdx, QWORD PTR curr$[rsp]
-	mov	edx, DWORD PTR [rdx+56]
+	mov	edx, DWORD PTR [rdx+64]
 	mov	DWORD PTR [rcx+rax+4], edx
 $LN50@pe_set_val:
 
@@ -3772,7 +3772,7 @@ pe_set_base_relocs PROC
 	jmp	SHORT $LN4@pe_set_bas
 $LN2@pe_set_bas:
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+104]
+	mov	rax, QWORD PTR [rax+112]
 	mov	QWORD PTR curr$[rsp], rax
 $LN4@pe_set_bas:
 	cmp	QWORD PTR curr$[rsp], 0
@@ -3781,7 +3781,7 @@ $LN4@pe_set_bas:
 ; 1138 :         if ( curr->e.seginfo->segtype == SEGTYPE_HDR )
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	DWORD PTR [rax+72], 6
 	jne	SHORT $LN18@pe_set_bas
 
@@ -3793,7 +3793,7 @@ $LN18@pe_set_bas:
 ; 1140 :         for ( fixup = curr->e.seginfo->FixupList.head; fixup; fixup = fixup->nextrlc ) {
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax+40]
 	mov	QWORD PTR fixup$[rsp], rax
 	jmp	SHORT $LN7@pe_set_bas
@@ -3825,7 +3825,7 @@ $LN19@pe_set_bas:
 ; 1147 :                 currloc = curr->e.seginfo->start_offset + ( fixup->locofs & 0xFFFFF000 );
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR fixup$[rsp]
 	mov	ecx, DWORD PTR [rcx+20]
 	and	ecx, -4096				; fffff000H
@@ -3904,23 +3904,23 @@ $LN3@pe_set_bas:
 	shl	rcx, 1
 	lea	rax, QWORD PTR [rcx+rax*8]
 	mov	rcx, QWORD PTR reloc$[rsp]
-	mov	DWORD PTR [rcx+56], eax
+	mov	DWORD PTR [rcx+64], eax
 
 ; 1172 :     reloc->e.seginfo->CodeBuffer = LclAlloc( reloc->sym.max_offset );
 
 	mov	rax, QWORD PTR reloc$[rsp]
-	movsxd	rax, DWORD PTR [rax+56]
+	movsxd	rax, DWORD PTR [rax+64]
 	mov	rcx, rax
 	call	LclAlloc
 	mov	rcx, QWORD PTR reloc$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	QWORD PTR [rcx+16], rax
 
 ; 1173 : 
 ; 1174 :     baserel = (struct IMAGE_BASE_RELOCATION *)reloc->e.seginfo->CodeBuffer;
 
 	mov	rax, QWORD PTR reloc$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax+16]
 	mov	QWORD PTR baserel$[rsp], rax
 
@@ -3946,7 +3946,7 @@ $LN3@pe_set_bas:
 	jmp	SHORT $LN12@pe_set_bas
 $LN10@pe_set_bas:
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+104]
+	mov	rax, QWORD PTR [rax+112]
 	mov	QWORD PTR curr$[rsp], rax
 $LN12@pe_set_bas:
 	cmp	QWORD PTR curr$[rsp], 0
@@ -3955,7 +3955,7 @@ $LN12@pe_set_bas:
 ; 1179 :         if ( curr->e.seginfo->segtype == SEGTYPE_HDR )
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	DWORD PTR [rax+72], 6
 	jne	SHORT $LN23@pe_set_bas
 
@@ -3967,7 +3967,7 @@ $LN23@pe_set_bas:
 ; 1181 :         for ( fixup = curr->e.seginfo->FixupList.head; fixup; fixup = fixup->nextrlc ) {
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax+40]
 	mov	QWORD PTR fixup$[rsp], rax
 	jmp	SHORT $LN15@pe_set_bas
@@ -4027,7 +4027,7 @@ $LN16@pe_set_bas:
 ; 1191 :                 currloc = curr->e.seginfo->start_offset + ( fixup->locofs & 0xFFFFF000 );
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR fixup$[rsp]
 	mov	ecx, DWORD PTR [rcx+20]
 	and	ecx, -4096				; fffff000H
@@ -4164,7 +4164,7 @@ pe_get_characteristics PROC
 ; 1097 :     if ( seg->e.seginfo->segtype == SEGTYPE_CODE ) {
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	DWORD PTR [rax+72], 1
 	jne	SHORT $LN2@pe_get_cha
 
@@ -4179,7 +4179,7 @@ $LN2@pe_get_cha:
 ; 1099 :     } else if ( seg->e.seginfo->segtype == SEGTYPE_BSS ) {
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	DWORD PTR [rax+72], 3
 	jne	SHORT $LN4@pe_get_cha
 
@@ -4196,14 +4196,14 @@ $LN4@pe_get_cha:
 ; 1103 :     } else if ( seg->e.seginfo->combine == COMB_STACK && seg->e.seginfo->bytes_written == 0 ) {
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+108]
 	and	al, 7
 	movzx	eax, al
 	cmp	eax, 5
 	jne	SHORT $LN6@pe_get_cha
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	DWORD PTR [rax+24], 0
 	jne	SHORT $LN6@pe_get_cha
 
@@ -4220,7 +4220,7 @@ $LN6@pe_get_cha:
 ; 1107 :     } else if ( seg->e.seginfo->readonly ) {
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+107]
 	and	al, 1
 	movzx	eax, al
@@ -4238,11 +4238,11 @@ $LN8@pe_get_cha:
 ; 1109 :     } else if ( seg->e.seginfo->clsym && strcmp( seg->e.seginfo->clsym->name, "CONST" ) == 0 ) {
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	QWORD PTR [rax+80], 0
 	je	SHORT $LN10@pe_get_cha
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax+80]
 	lea	rdx, OFFSET FLAT:$SG12202
 	mov	rcx, QWORD PTR [rax+8]
@@ -4277,7 +4277,7 @@ $LN3@pe_get_cha:
 ; 1115 :     if ( seg->e.seginfo->characteristics ) {
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+105]
 	test	eax, eax
 	je	SHORT $LN12@pe_get_cha
@@ -4291,7 +4291,7 @@ $LN3@pe_get_cha:
 ; 1117 :         result |= (uint_32)(seg->e.seginfo->characteristics & 0xFE) << 24;
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+105]
 	and	eax, 254				; 000000feH
 	shl	eax, 24
@@ -4555,7 +4555,7 @@ $LN16@pe_emit_im:
 	jmp	SHORT $LN7@pe_emit_im
 $LN5@pe_emit_im:
 	mov	rax, QWORD PTR curr$1[rsp]
-	mov	rax, QWORD PTR [rax+104]
+	mov	rax, QWORD PTR [rax+112]
 	mov	QWORD PTR curr$1[rsp], rax
 $LN7@pe_emit_im:
 	cmp	QWORD PTR curr$1[rsp], 0
@@ -4564,7 +4564,7 @@ $LN7@pe_emit_im:
 ; 1026 :                 if ( curr->sym.iat_used && curr->sym.dll == p ) {
 
 	mov	rax, QWORD PTR curr$1[rsp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 3
 	and	al, 1
 	movzx	eax, al
@@ -4572,7 +4572,7 @@ $LN7@pe_emit_im:
 	je	SHORT $LN17@pe_emit_im
 	mov	rax, QWORD PTR curr$1[rsp]
 	mov	rcx, QWORD PTR p$[rsp]
-	cmp	QWORD PTR [rax+56], rcx
+	cmp	QWORD PTR [rax+64], rcx
 	jne	SHORT $LN17@pe_emit_im
 
 ; 1027 :                     AddLineQueueX( "@LPPROC %r @%s_name", T_IMAGEREL, curr->sym.name );
@@ -4635,7 +4635,7 @@ $LN6@pe_emit_im:
 	jmp	SHORT $LN10@pe_emit_im
 $LN8@pe_emit_im:
 	mov	rax, QWORD PTR curr$1[rsp]
-	mov	rax, QWORD PTR [rax+104]
+	mov	rax, QWORD PTR [rax+112]
 	mov	QWORD PTR curr$1[rsp], rax
 $LN10@pe_emit_im:
 	cmp	QWORD PTR curr$1[rsp], 0
@@ -4644,7 +4644,7 @@ $LN10@pe_emit_im:
 ; 1039 :                 if ( curr->sym.iat_used && curr->sym.dll == p ) {
 
 	mov	rax, QWORD PTR curr$1[rsp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 3
 	and	al, 1
 	movzx	eax, al
@@ -4652,7 +4652,7 @@ $LN10@pe_emit_im:
 	je	SHORT $LN18@pe_emit_im
 	mov	rax, QWORD PTR curr$1[rsp]
 	mov	rcx, QWORD PTR p$[rsp]
-	cmp	QWORD PTR [rax+56], rcx
+	cmp	QWORD PTR [rax+64], rcx
 	jne	SHORT $LN18@pe_emit_im
 
 ; 1040 :                     Mangle( &curr->sym, StringBufferEnd );
@@ -4715,7 +4715,7 @@ $LN9@pe_emit_im:
 	jmp	SHORT $LN13@pe_emit_im
 $LN11@pe_emit_im:
 	mov	rax, QWORD PTR curr$1[rsp]
-	mov	rax, QWORD PTR [rax+104]
+	mov	rax, QWORD PTR [rax+112]
 	mov	QWORD PTR curr$1[rsp], rax
 $LN13@pe_emit_im:
 	cmp	QWORD PTR curr$1[rsp], 0
@@ -4724,7 +4724,7 @@ $LN13@pe_emit_im:
 ; 1051 :                 if ( curr->sym.iat_used && curr->sym.dll == p ) {
 
 	mov	rax, QWORD PTR curr$1[rsp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 3
 	and	al, 1
 	movzx	eax, al
@@ -4732,7 +4732,7 @@ $LN13@pe_emit_im:
 	je	SHORT $LN19@pe_emit_im
 	mov	rax, QWORD PTR curr$1[rsp]
 	mov	rcx, QWORD PTR p$[rsp]
-	cmp	QWORD PTR [rax+56], rcx
+	cmp	QWORD PTR [rax+64], rcx
 	jne	SHORT $LN19@pe_emit_im
 
 ; 1052 :                     AddLineQueueX( "@%s_name dw 0", curr->sym.name );
@@ -4925,7 +4925,7 @@ pe_emit_export_data PROC
 	jmp	SHORT $LN4@pe_emit_ex
 $LN2@pe_emit_ex:
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+112]
+	mov	rax, QWORD PTR [rax+120]
 	mov	QWORD PTR curr$[rbp], rax
 $LN4@pe_emit_ex:
 	cmp	QWORD PTR curr$[rbp], 0
@@ -4934,7 +4934,7 @@ $LN4@pe_emit_ex:
 ; 911  :         if( curr->e.procinfo->isexport )
 
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+128]
 	shr	al, 2
 	and	al, 1
@@ -5048,7 +5048,7 @@ $LN33@pe_emit_ex:
 	jmp	SHORT $LN7@pe_emit_ex
 $LN5@pe_emit_ex:
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+112]
+	mov	rax, QWORD PTR [rax+120]
 	mov	QWORD PTR curr$[rbp], rax
 $LN7@pe_emit_ex:
 	cmp	QWORD PTR curr$[rbp], 0
@@ -5057,7 +5057,7 @@ $LN7@pe_emit_ex:
 ; 933  :             if( curr->e.procinfo->isexport ) {
 
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+128]
 	shr	al, 2
 	and	al, 1
@@ -5125,7 +5125,7 @@ $LN6@pe_emit_ex:
 	jmp	SHORT $LN10@pe_emit_ex
 $LN8@pe_emit_ex:
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+112]
+	mov	rax, QWORD PTR [rax+120]
 	mov	QWORD PTR curr$[rbp], rax
 $LN10@pe_emit_ex:
 	cmp	QWORD PTR curr$[rbp], 0
@@ -5134,7 +5134,7 @@ $LN10@pe_emit_ex:
 ; 947  :             if( curr->e.procinfo->isexport )
 
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+128]
 	shr	al, 2
 	and	al, 1
@@ -5298,7 +5298,7 @@ $LN18@pe_emit_ex:
 	jmp	SHORT $LN22@pe_emit_ex
 $LN20@pe_emit_ex:
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+112]
+	mov	rax, QWORD PTR [rax+120]
 	mov	QWORD PTR curr$[rbp], rax
 $LN22@pe_emit_ex:
 	cmp	QWORD PTR curr$[rbp], 0
@@ -5307,7 +5307,7 @@ $LN22@pe_emit_ex:
 ; 969  :             if( curr->e.procinfo->isexport ) {
 
 	mov	rax, QWORD PTR curr$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+128]
 	shr	al, 2
 	and	al, 1
@@ -5461,18 +5461,18 @@ pe_create_section_table PROC
 
 	mov	rax, QWORD PTR ModuleInfo+440
 	mov	rcx, QWORD PTR objtab$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	QWORD PTR [rcx], rax
 
 ; 818  :             objtab->e.seginfo->combine = COMB_ADDOFF;  /* PUBLIC */
 
 	mov	rax, QWORD PTR objtab$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+108]
 	and	al, 248					; 000000f8H
 	or	al, 2
 	mov	rcx, QWORD PTR objtab$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	BYTE PTR [rcx+108], al
 $LN12@pe_create_:
 
@@ -5480,7 +5480,7 @@ $LN12@pe_create_:
 ; 820  :         objtab->e.seginfo->segtype = SEGTYPE_HDR;
 
 	mov	rax, QWORD PTR objtab$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	DWORD PTR [rax+72], 6
 
 ; 821  : 
@@ -5511,7 +5511,7 @@ $LN13@pe_create_:
 	jmp	SHORT $LN4@pe_create_
 $LN2@pe_create_:
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+104]
+	mov	rax, QWORD PTR [rax+112]
 	mov	QWORD PTR curr$[rsp], rax
 $LN4@pe_create_:
 	cmp	QWORD PTR curr$[rsp], 0
@@ -5520,27 +5520,27 @@ $LN4@pe_create_:
 ; 832  :             curr->e.seginfo->lname_idx = SEGTYPE_ERROR; /* use the highest index possible */
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	DWORD PTR [rax+76], 10
 
 ; 833  :             if ( curr->e.seginfo->segtype == SEGTYPE_DATA ) {
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	DWORD PTR [rax+72], 2
 	jne	$LN14@pe_create_
 
 ; 834  :                 if ( curr->e.seginfo->readonly || curr->e.seginfo->characteristics == CHAR_READONLY )
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+107]
 	and	al, 1
 	movzx	eax, al
 	test	eax, eax
 	jne	SHORT $LN18@pe_create_
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+105]
 	cmp	eax, 64					; 00000040H
 	jne	SHORT $LN16@pe_create_
@@ -5549,7 +5549,7 @@ $LN18@pe_create_:
 ; 835  :                     curr->e.seginfo->segtype = SEGTYPE_CDATA;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	DWORD PTR [rax+72], 7
 	jmp	SHORT $LN17@pe_create_
 $LN16@pe_create_:
@@ -5557,11 +5557,11 @@ $LN16@pe_create_:
 ; 836  :                 else if ( curr->e.seginfo->clsym && strcmp( curr->e.seginfo->clsym->name, "CONST" ) == 0 )
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	QWORD PTR [rax+80], 0
 	je	SHORT $LN19@pe_create_
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax+80]
 	lea	rdx, OFFSET FLAT:$SG12035
 	mov	rcx, QWORD PTR [rax+8]
@@ -5572,7 +5572,7 @@ $LN16@pe_create_:
 ; 837  :                     curr->e.seginfo->segtype = SEGTYPE_CDATA;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	DWORD PTR [rax+72], 7
 $LN19@pe_create_:
 $LN17@pe_create_:
@@ -5582,7 +5582,7 @@ $LN17@pe_create_:
 	jmp	$LN15@pe_create_
 $LN14@pe_create_:
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	DWORD PTR [rax+72], 0
 	jne	SHORT $LN20@pe_create_
 
@@ -5611,7 +5611,7 @@ $LN23@pe_create_:
 ; 841  :                     curr->e.seginfo->segtype = SEGTYPE_RSRC;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	DWORD PTR [rax+72], 9
 	jmp	SHORT $LN22@pe_create_
 $LN21@pe_create_:
@@ -5628,7 +5628,7 @@ $LN21@pe_create_:
 ; 843  :                     curr->e.seginfo->segtype = SEGTYPE_RELOC;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	DWORD PTR [rax+72], 8
 $LN24@pe_create_:
 $LN22@pe_create_:
@@ -5675,7 +5675,7 @@ $LN7@pe_create_:
 	jmp	SHORT $LN10@pe_create_
 $LN8@pe_create_:
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+104]
+	mov	rax, QWORD PTR [rax+112]
 	mov	QWORD PTR curr$[rsp], rax
 $LN10@pe_create_:
 	cmp	QWORD PTR curr$[rsp], 0
@@ -5684,9 +5684,9 @@ $LN10@pe_create_:
 ; 851  :                 DebugMsg(("pe_create_section_table: section %s, type=%u, size=%X\n", curr->sym.name, curr->e.seginfo->segtype, curr->sym.max_offset ));
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR curr$[rsp]
-	mov	r9d, DWORD PTR [rcx+56]
+	mov	r9d, DWORD PTR [rcx+64]
 	mov	r8d, DWORD PTR [rax+72]
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
@@ -5696,7 +5696,7 @@ $LN10@pe_create_:
 ; 852  :                 if ( curr->e.seginfo->segtype != flat_order[i] )
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movsxd	rcx, DWORD PTR i$[rsp]
 	lea	rdx, OFFSET FLAT:flat_order
 	mov	ecx, DWORD PTR [rdx+rcx*4]
@@ -5711,13 +5711,13 @@ $LN25@pe_create_:
 ; 854  :                 if ( curr->sym.max_offset ) {
 
 	mov	rax, QWORD PTR curr$[rsp]
-	cmp	DWORD PTR [rax+56], 0
+	cmp	DWORD PTR [rax+64], 0
 	je	SHORT $LN26@pe_create_
 
 ; 855  :                     DebugMsg(("pe_create_section_table: %s, type=%u is object %u\n", curr->sym.name, curr->e.seginfo->segtype, objs ));
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	r9d, DWORD PTR objs$[rsp]
 	mov	r8d, DWORD PTR [rax+72]
 	mov	rax, QWORD PTR curr$[rsp]
@@ -5763,18 +5763,18 @@ $LN6@pe_create_:
 	movsxd	rax, DWORD PTR objs$[rsp]
 	imul	rax, rax, 40				; 00000028H
 	mov	rcx, QWORD PTR objtab$[rsp]
-	mov	DWORD PTR [rcx+56], eax
+	mov	DWORD PTR [rcx+64], eax
 
 ; 864  :             /* alloc space for 1 more section (.reloc) */
 ; 865  :             objtab->e.seginfo->CodeBuffer = LclAlloc( objtab->sym.max_offset + sizeof(struct IMAGE_SECTION_HEADER) );
 
 	mov	rax, QWORD PTR objtab$[rsp]
-	movsxd	rax, DWORD PTR [rax+56]
+	movsxd	rax, DWORD PTR [rax+64]
 	add	rax, 40					; 00000028H
 	mov	rcx, rax
 	call	LclAlloc
 	mov	rcx, QWORD PTR objtab$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	QWORD PTR [rcx+16], rax
 $LN27@pe_create_:
 $LN11@pe_create_:
@@ -5825,7 +5825,7 @@ $LN2@set_file_f:
 ; 735  :     pe = (struct IMAGE_PE_HEADER32 *)pehdr->e.seginfo->CodeBuffer;
 
 	mov	rax, QWORD PTR pehdr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax+16]
 	mov	QWORD PTR pe$[rsp], rax
 
@@ -5979,13 +5979,13 @@ $LN3@pe_create_:
 	cmp	QWORD PTR sym$[rsp], 0
 	je	SHORT $LN7@pe_create_
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 3
+	cmp	DWORD PTR [rax+40], 3
 	jne	SHORT $LN7@pe_create_
 
 ; 720  :            (( struct dsym *)sym)->e.seginfo->segtype = SEGTYPE_HDR;
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	DWORD PTR [rax+72], 6
 $LN7@pe_create_:
 $LN6@pe_create_:
@@ -6039,7 +6039,7 @@ DoFixup	PROC
 ; 450  :     if ( curr->e.seginfo->segtype == SEGTYPE_ABS )
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	DWORD PTR [rax+72], 5
 	jne	SHORT $LN12@DoFixup
 
@@ -6053,7 +6053,7 @@ $LN12@DoFixup:
 ; 453  :     DebugMsg(("DoFixup(%s) enter, segment start ofs=%" I32_SPEC "Xh\n", curr->sym.name, curr->e.seginfo->start_offset ));
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	r8d, DWORD PTR [rax+12]
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
@@ -6063,7 +6063,7 @@ $LN12@DoFixup:
 ; 454  :     for ( fixup = curr->e.seginfo->FixupList.head; fixup; fixup = fixup->nextrlc ) {
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax+40]
 	mov	QWORD PTR fixup$[rsp], rax
 	jmp	SHORT $LN4@DoFixup
@@ -6078,9 +6078,9 @@ $LN4@DoFixup:
 ; 455  :         codeptr.db = curr->e.seginfo->CodeBuffer +
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR curr$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	rdx, QWORD PTR fixup$[rsp]
 	mov	ecx, DWORD PTR [rcx+8]
 	mov	edx, DWORD PTR [rdx+20]
@@ -6101,11 +6101,11 @@ $LN4@DoFixup:
 	je	$LN13@DoFixup
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	rax, QWORD PTR [rax+56]
-	cmp	QWORD PTR [rax+24], 0
+	cmp	QWORD PTR [rax+32], 0
 	jne	SHORT $LN15@DoFixup
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	rax, QWORD PTR [rax+56]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 6
 	and	al, 1
 	movzx	eax, al
@@ -6119,7 +6119,7 @@ $LN15@DoFixup:
 
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	rax, QWORD PTR [rax+56]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 6
 	and	al, 1
 	movzx	eax, al
@@ -6167,7 +6167,7 @@ $LN16@DoFixup:
 
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	rax, QWORD PTR [rax+56]
-	mov	rax, QWORD PTR [rax+24]
+	mov	rax, QWORD PTR [rax+32]
 	mov	QWORD PTR seg$[rsp], rax
 
 ; 469  :                 offset = fixup->sym->offset;
@@ -6207,7 +6207,7 @@ $LN18@DoFixup:
 	mov	eax, DWORD PTR [rax+16]
 	add	eax, DWORD PTR offset$[rsp]
 	mov	rcx, QWORD PTR seg$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	add	eax, DWORD PTR [rcx+12]
 	mov	rcx, QWORD PTR cp$[rsp]
 	sub	eax, DWORD PTR [rcx+24]
@@ -6216,7 +6216,7 @@ $LN18@DoFixup:
 ; 479  :                 DebugMsg(("DoFixup(%s): IMGREL, loc=%" I32_SPEC "X value=%" I32_SPEC "X seg.start=%" I32_SPEC "X imagestart=%" I32_SPEC "X\n",
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR cp$[rsp]
 	mov	ecx, DWORD PTR [rcx+24]
 	mov	DWORD PTR [rsp+40], ecx
@@ -6243,7 +6243,7 @@ $LN19@DoFixup:
 	mov	eax, DWORD PTR [rax+16]
 	add	eax, DWORD PTR offset$[rsp]
 	mov	rcx, QWORD PTR seg$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	sub	eax, DWORD PTR [rcx+8]
 	mov	DWORD PTR value$[rsp], eax
 
@@ -6280,7 +6280,7 @@ $LN19@DoFixup:
 	jmp	SHORT $LN9@DoFixup
 $LN7@DoFixup:
 	mov	rax, QWORD PTR segfirst$1[rsp]
-	mov	rax, QWORD PTR [rax+104]
+	mov	rax, QWORD PTR [rax+112]
 	mov	QWORD PTR segfirst$1[rsp], rax
 $LN9@DoFixup:
 	cmp	QWORD PTR segfirst$1[rsp], 0
@@ -6289,7 +6289,7 @@ $LN9@DoFixup:
 ; 491  :                         if ( segfirst->sym.name_size == namlen &&
 
 	mov	rax, QWORD PTR segfirst$1[rsp]
-	movzx	eax, BYTE PTR [rax+72]
+	movzx	eax, BYTE PTR [rax+80]
 	cmp	eax, DWORD PTR namlen$2[rsp]
 	jne	SHORT $LN21@DoFixup
 	movsxd	rax, DWORD PTR namlen$2[rsp]
@@ -6309,17 +6309,17 @@ $LN9@DoFixup:
 	mov	eax, DWORD PTR [rax+16]
 	add	eax, DWORD PTR offset$[rsp]
 	mov	rcx, QWORD PTR seg$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	add	eax, DWORD PTR [rcx+12]
 	mov	rcx, QWORD PTR segfirst$1[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	sub	eax, DWORD PTR [rcx+12]
 	mov	DWORD PTR value$[rsp], eax
 
 ; 494  :                             DebugMsg(("DoFixup(%s): SECREL, primary seg=%s, start_offset=%" I32_SPEC "X\n",
 
 	mov	rax, QWORD PTR segfirst$1[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	r9d, DWORD PTR [rax+12]
 	mov	rax, QWORD PTR segfirst$1[rsp]
 	mov	r8, QWORD PTR [rax+8]
@@ -6365,7 +6365,7 @@ $LN22@DoFixup:
 ; 507  :                 value = seg->e.seginfo->start_offset + fixup->offset + offset;
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	eax, DWORD PTR [rax+12]
 	mov	rcx, QWORD PTR fixup$[rsp]
 	add	eax, DWORD PTR [rcx+16]
@@ -6375,7 +6375,7 @@ $LN22@DoFixup:
 ; 508  :                 DebugMsg(("DoFixup(%s): RELOFFx, loc=%" I32_SPEC "X, sym=%s, [start_offset=%" I32_SPEC "Xh, fixup->offset=%" I32_SPEC "Xh, fixup->sym->offset=%" I32_SPEC "Xh\n",
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR fixup$[rsp]
 	mov	rcx, QWORD PTR [rcx+56]
 	mov	edx, DWORD PTR offset$[rsp]
@@ -6405,7 +6405,7 @@ $LN23@DoFixup:
 ; 514  :                 if ( seg->e.seginfo->group && fixup->frame_type != FRAME_SEG ) {
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	QWORD PTR [rax], 0
 	je	$LN24@DoFixup
 	mov	rax, QWORD PTR fixup$[rsp]
@@ -6416,12 +6416,12 @@ $LN23@DoFixup:
 ; 515  :                     value = (seg->e.seginfo->group->offset & 0xF) + seg->e.seginfo->start_offset + fixup->offset + offset;
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax]
 	mov	eax, DWORD PTR [rax+16]
 	and	eax, 15
 	mov	rcx, QWORD PTR seg$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	add	eax, DWORD PTR [rcx+12]
 	mov	rcx, QWORD PTR fixup$[rsp]
 	add	eax, DWORD PTR [rcx+16]
@@ -6438,7 +6438,7 @@ $LN23@DoFixup:
 ; 519  :                         if ( curr->e.seginfo->Ofssize == USE64 )
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+104]
 	cmp	eax, 2
 	jne	SHORT $LN27@DoFixup
@@ -6472,7 +6472,7 @@ $LN24@DoFixup:
 ; 526  :                     value = (seg->e.seginfo->start_offset & 0xF) + fixup->offset + offset;
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	eax, DWORD PTR [rax+12]
 	and	eax, 15
 	mov	rcx, QWORD PTR fixup$[rsp]
@@ -6485,7 +6485,7 @@ $LN25@DoFixup:
 ; 528  :                 DebugMsg(("DoFixup(%s): loc=%04" I32_SPEC "X, sym=%s, target->start_offset=%" I32_SPEC "Xh, fixup->offset=%" I32_SPEC "Xh, fixup->sym->offset=%" I32_SPEC "Xh\n",
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR fixup$[rsp]
 	mov	rcx, QWORD PTR [rcx+56]
 	mov	edx, DWORD PTR offset$[rsp]
@@ -6583,7 +6583,7 @@ $LN28@DoFixup:
 ; 546  :             *codeptr.db += (value - (fixup->locofs + curr->e.seginfo->start_offset) - 1) & 0xff;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR fixup$[rsp]
 	mov	ecx, DWORD PTR [rcx+20]
 	add	ecx, DWORD PTR [rax+12]
@@ -6624,7 +6624,7 @@ $LN29@DoFixup:
 ; 552  :             *codeptr.dw += (value - (fixup->locofs + curr->e.seginfo->start_offset) - 2) & 0xffff;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR fixup$[rsp]
 	mov	ecx, DWORD PTR [rcx+20]
 	add	ecx, DWORD PTR [rax+12]
@@ -6665,7 +6665,7 @@ $LN30@DoFixup:
 ; 558  :             if ( curr->e.seginfo->Ofssize == USE64 ) {
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+104]
 	cmp	eax, 2
 	jne	SHORT $LN31@DoFixup
@@ -6688,7 +6688,7 @@ $LN31@DoFixup:
 ; 564  :             *codeptr.dd += (value - (fixup->locofs + curr->e.seginfo->start_offset) - 4);
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR fixup$[rsp]
 	mov	ecx, DWORD PTR [rcx+20]
 	add	ecx, DWORD PTR [rax+12]
@@ -6857,7 +6857,7 @@ $LN37@DoFixup:
 	cmp	DWORD PTR ModuleInfo+372, 2
 	jne	SHORT $LN38@DoFixup
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+104]
 	cmp	eax, 2
 	jne	SHORT $LN38@DoFixup
@@ -6935,11 +6935,11 @@ $LN41@DoFixup:
 	je	SHORT $LN42@DoFixup
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	rax, QWORD PTR [rax+56]
-	cmp	DWORD PTR [rax+32], 3
+	cmp	DWORD PTR [rax+40], 3
 	jne	SHORT $LN42@DoFixup
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	rax, QWORD PTR [rax+56]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	DWORD PTR [rax+72], 5
 	jne	SHORT $LN42@DoFixup
 
@@ -6948,7 +6948,7 @@ $LN41@DoFixup:
 
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	rax, QWORD PTR [rax+56]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR codeptr$[rsp]
 	movzx	eax, WORD PTR [rax+88]
 	mov	WORD PTR [rcx], ax
@@ -6981,7 +6981,7 @@ $LN42@DoFixup:
 
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	rax, QWORD PTR [rax+56]
-	cmp	DWORD PTR [rax+32], 4
+	cmp	DWORD PTR [rax+40], 4
 	jne	SHORT $LN44@DoFixup
 
 ; 614  :                     seg = (struct dsym *)fixup->sym;
@@ -7012,7 +7012,7 @@ $LN44@DoFixup:
 
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	rax, QWORD PTR [rax+56]
-	cmp	DWORD PTR [rax+32], 3
+	cmp	DWORD PTR [rax+40], 3
 	jne	SHORT $LN46@DoFixup
 
 ; 618  :                     /* v2.04: added */
@@ -7025,11 +7025,11 @@ $LN44@DoFixup:
 ; 620  :                     *codeptr.dw = ( seg->e.seginfo->start_offset + ( seg->e.seginfo->group ? seg->e.seginfo->group->offset : 0 ) ) >> 4;
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	QWORD PTR [rax], 0
 	je	SHORT $LN66@DoFixup
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax]
 	mov	eax, DWORD PTR [rax+16]
 	mov	DWORD PTR tv480[rsp], eax
@@ -7038,7 +7038,7 @@ $LN66@DoFixup:
 	mov	DWORD PTR tv480[rsp], 0
 $LN67@DoFixup:
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	eax, DWORD PTR [rax+12]
 	add	eax, DWORD PTR tv480[rsp]
 	shr	eax, 4
@@ -7048,7 +7048,7 @@ $LN67@DoFixup:
 ; 621  :                     DebugMsg(("SEGMENT symbol, start_offset=%" I32_SPEC "Xh\n", seg->e.seginfo->start_offset ));
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	edx, DWORD PTR [rax+12]
 	lea	rcx, OFFSET FLAT:$SG11913
 	call	DoDebugMsg
@@ -7068,7 +7068,7 @@ $LN46@DoFixup:
 ; 626  :                     *codeptr.dw = seg->e.seginfo->group->offset >> 4;
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax]
 	mov	eax, DWORD PTR [rax+16]
 	sar	eax, 4
@@ -7078,7 +7078,7 @@ $LN46@DoFixup:
 ; 627  :                     DebugMsg(("group.offset=%" I32_SPEC "Xh\n", seg->e.seginfo->group->offset ));
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax]
 	mov	edx, DWORD PTR [rax+16]
 	lea	rcx, OFFSET FLAT:$SG11916
@@ -7092,7 +7092,7 @@ $LN48@DoFixup:
 ; 629  :                     *codeptr.dw = seg->e.seginfo->start_offset >> 4;
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	eax, DWORD PTR [rax+12]
 	shr	eax, 4
 	mov	rcx, QWORD PTR codeptr$[rsp]
@@ -7101,7 +7101,7 @@ $LN48@DoFixup:
 ; 630  :                     DebugMsg(("segment.offset=%" I32_SPEC "Xh\n", seg->e.seginfo->start_offset ));
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	edx, DWORD PTR [rax+12]
 	lea	rcx, OFFSET FLAT:$SG11917
 	call	DoDebugMsg
@@ -7126,7 +7126,7 @@ $LN50@DoFixup:
 	cmp	QWORD PTR seg$[rsp], 0
 	je	SHORT $LN51@DoFixup
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	DWORD PTR [rax+72], 5
 	jne	SHORT $LN51@DoFixup
 
@@ -7146,7 +7146,7 @@ $LN50@DoFixup:
 ; 641  :                 *codeptr.dw = seg->e.seginfo->abs_frame;
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR codeptr$[rsp]
 	movzx	eax, WORD PTR [rax+88]
 	mov	WORD PTR [rcx], ax
@@ -7167,7 +7167,7 @@ $LN51@DoFixup:
 ; 647  :                 DebugMsg(("DoFixup(%s, %04" I32_SPEC "X): FIX_PTR16, seg->start=%Xh\n", curr->sym.name, fixup->locofs, seg->e.seginfo->start_offset ));
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	r9d, DWORD PTR [rax+12]
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	r8d, DWORD PTR [rax+20]
@@ -7202,7 +7202,7 @@ $LN51@DoFixup:
 ; 654  :                     *codeptr.dw = seg->e.seginfo->group->offset >> 4;
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax]
 	mov	eax, DWORD PTR [rax+16]
 	sar	eax, 4
@@ -7219,11 +7219,11 @@ $LN53@DoFixup:
 ; 658  :                     *codeptr.dw = ( seg->e.seginfo->start_offset + ( seg->e.seginfo->group ? seg->e.seginfo->group->offset : 0 ) ) >> 4;
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	QWORD PTR [rax], 0
 	je	SHORT $LN68@DoFixup
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax]
 	mov	eax, DWORD PTR [rax+16]
 	mov	DWORD PTR tv546[rsp], eax
@@ -7232,7 +7232,7 @@ $LN68@DoFixup:
 	mov	DWORD PTR tv546[rsp], 0
 $LN69@DoFixup:
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	eax, DWORD PTR [rax+12]
 	add	eax, DWORD PTR tv546[rsp]
 	shr	eax, 4
@@ -7257,7 +7257,7 @@ $LN55@DoFixup:
 	cmp	QWORD PTR seg$[rsp], 0
 	je	SHORT $LN56@DoFixup
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	DWORD PTR [rax+72], 5
 	jne	SHORT $LN56@DoFixup
 
@@ -7276,7 +7276,7 @@ $LN55@DoFixup:
 ; 669  :                 *codeptr.dw = seg->e.seginfo->abs_frame;
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR codeptr$[rsp]
 	movzx	eax, WORD PTR [rax+88]
 	mov	WORD PTR [rcx], ax
@@ -7328,7 +7328,7 @@ $LN56@DoFixup:
 ; 682  :                     *codeptr.dw = seg->e.seginfo->group->offset >> 4;
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax]
 	mov	eax, DWORD PTR [rax+16]
 	sar	eax, 4
@@ -7345,11 +7345,11 @@ $LN58@DoFixup:
 ; 686  :                     *codeptr.dw = ( seg->e.seginfo->start_offset + ( seg->e.seginfo->group ? seg->e.seginfo->group->offset : 0 ) ) >> 4;
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	QWORD PTR [rax], 0
 	je	SHORT $LN70@DoFixup
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax]
 	mov	eax, DWORD PTR [rax+16]
 	mov	DWORD PTR tv580[rsp], eax
@@ -7358,7 +7358,7 @@ $LN70@DoFixup:
 	mov	DWORD PTR tv580[rsp], 0
 $LN71@DoFixup:
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	eax, DWORD PTR [rax+12]
 	add	eax, DWORD PTR tv580[rsp]
 	shr	eax, 4
@@ -7475,7 +7475,7 @@ GetImageSize PROC
 	jmp	SHORT $LN4@GetImageSi
 $LN2@GetImageSi:
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+104]
+	mov	rax, QWORD PTR [rax+112]
 	mov	QWORD PTR curr$[rsp], rax
 $LN4@GetImageSi:
 	cmp	QWORD PTR curr$[rsp], 0
@@ -7485,11 +7485,11 @@ $LN4@GetImageSi:
 ; 396  :         if ( curr->e.seginfo->segtype == SEGTYPE_ABS || curr->e.seginfo->info )
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	DWORD PTR [rax+72], 5
 	je	SHORT $LN9@GetImageSi
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+107]
 	shr	al, 1
 	and	al, 1
@@ -7512,7 +7512,7 @@ $LN8@GetImageSi:
 ; 399  :             if ( curr->e.seginfo->bytes_written == 0 ) {
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	DWORD PTR [rax+24], 0
 	jne	SHORT $LN11@GetImageSi
 
@@ -7520,12 +7520,12 @@ $LN8@GetImageSi:
 ; 401  :                 for ( dir = curr->next; dir; dir = dir->next )
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+104]
+	mov	rax, QWORD PTR [rax+112]
 	mov	QWORD PTR dir$2[rsp], rax
 	jmp	SHORT $LN7@GetImageSi
 $LN5@GetImageSi:
 	mov	rax, QWORD PTR dir$2[rsp]
-	mov	rax, QWORD PTR [rax+104]
+	mov	rax, QWORD PTR [rax+112]
 	mov	QWORD PTR dir$2[rsp], rax
 $LN7@GetImageSi:
 	cmp	QWORD PTR dir$2[rsp], 0
@@ -7534,7 +7534,7 @@ $LN7@GetImageSi:
 ; 402  :                     if ( dir->e.seginfo->bytes_written )
 
 	mov	rax, QWORD PTR dir$2[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	DWORD PTR [rax+24], 0
 	je	SHORT $LN12@GetImageSi
 
@@ -7562,12 +7562,12 @@ $LN10@GetImageSi:
 ; 408  :         tmp = curr->e.seginfo->fileoffset + (curr->sym.max_offset - curr->e.seginfo->start_loc );
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR curr$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	rdx, QWORD PTR curr$[rsp]
 	mov	ecx, DWORD PTR [rcx+8]
-	mov	edx, DWORD PTR [rdx+56]
+	mov	edx, DWORD PTR [rdx+64]
 	sub	edx, ecx
 	mov	ecx, edx
 	add	ecx, DWORD PTR [rax+56]
@@ -7583,7 +7583,7 @@ $LN10@GetImageSi:
 ; 410  :             vsize += curr->e.seginfo->start_loc;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	eax, DWORD PTR [rax+8]
 	mov	ecx, DWORD PTR vsize$[rsp]
 	add	ecx, eax
@@ -7609,13 +7609,13 @@ $LN15@GetImageSi:
 ; 413  :         DebugMsg(("GetImageSize(%s): fileofs=%" I32_SPEC "Xh, max_offs=%" I32_SPEC "Xh start=%" I32_SPEC "Xh\n",
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR curr$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	eax, DWORD PTR [rax+8]
 	mov	DWORD PTR [rsp+32], eax
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	r9d, DWORD PTR [rax+56]
+	mov	r9d, DWORD PTR [rax+64]
 	mov	r8d, DWORD PTR [rcx+56]
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
@@ -7707,7 +7707,7 @@ GetSegRelocs PROC
 	jmp	SHORT $LN4@GetSegRelo
 $LN2@GetSegRelo:
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+104]
+	mov	rax, QWORD PTR [rax+112]
 	mov	QWORD PTR curr$[rsp], rax
 $LN4@GetSegRelo:
 	cmp	QWORD PTR curr$[rsp], 0
@@ -7716,7 +7716,7 @@ $LN4@GetSegRelo:
 ; 334  :         if ( curr->e.seginfo->segtype == SEGTYPE_ABS )
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	DWORD PTR [rax+72], 5
 	jne	SHORT $LN12@GetSegRelo
 
@@ -7728,7 +7728,7 @@ $LN12@GetSegRelo:
 ; 336  :         for ( fixup = curr->e.seginfo->FixupList.head; fixup; fixup = fixup->nextrlc ) {
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax+40]
 	mov	QWORD PTR fixup$[rsp], rax
 	jmp	SHORT $LN7@GetSegRelo
@@ -7763,12 +7763,12 @@ $LN13@GetSegRelo:
 	je	SHORT $LN14@GetSegRelo
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	rax, QWORD PTR [rax+56]
-	cmp	QWORD PTR [rax+24], 0
+	cmp	QWORD PTR [rax+32], 0
 	je	SHORT $LN14@GetSegRelo
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	rax, QWORD PTR [rax+56]
-	mov	rax, QWORD PTR [rax+24]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+32]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	DWORD PTR [rax+72], 5
 	jne	SHORT $LN14@GetSegRelo
 
@@ -7801,7 +7801,7 @@ $LN14@GetSegRelo:
 ; 348  :                     loc = fixup->locofs + ( curr->e.seginfo->start_offset & 0xf );
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	eax, DWORD PTR [rax+12]
 	and	eax, 15
 	mov	rcx, QWORD PTR fixup$[rsp]
@@ -7811,7 +7811,7 @@ $LN14@GetSegRelo:
 ; 349  :                     valueseg = curr->e.seginfo->start_offset >> 4;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	eax, DWORD PTR [rax+12]
 	shr	eax, 4
 	mov	WORD PTR valueseg$[rsp], ax
@@ -7819,14 +7819,14 @@ $LN14@GetSegRelo:
 ; 350  :                     if ( curr->e.seginfo->group ) {
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	QWORD PTR [rax], 0
 	je	SHORT $LN16@GetSegRelo
 
 ; 351  :                         loc += curr->e.seginfo->group->offset & 0xf;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax]
 	mov	eax, DWORD PTR [rax+16]
 	and	eax, 15
@@ -7838,7 +7838,7 @@ $LN14@GetSegRelo:
 ; 352  :                         valueseg += curr->e.seginfo->group->offset >> 4;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax]
 	mov	eax, DWORD PTR [rax+16]
 	sar	eax, 4
@@ -7911,11 +7911,11 @@ $LN11@GetSegRelo:
 ; 366  :                     DebugMsg(("GetSegRelocs: locofs=%" I32_SPEC "X fileofs=%" I32_SPEC "X segofs=%" I32_SPEC "X grpofs=%" I32_SPEC "X, fixup value: %X %X\n",
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	QWORD PTR [rax], 0
 	je	SHORT $LN21@GetSegRelo
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax]
 	mov	eax, DWORD PTR [rax+16]
 	mov	DWORD PTR tv172[rsp], eax
@@ -7926,9 +7926,9 @@ $LN22@GetSegRelo:
 	movzx	eax, WORD PTR valueseg$[rsp]
 	movzx	ecx, WORD PTR valueofs$[rsp]
 	mov	rdx, QWORD PTR curr$[rsp]
-	mov	rdx, QWORD PTR [rdx+96]
+	mov	rdx, QWORD PTR [rdx+104]
 	mov	r8, QWORD PTR curr$[rsp]
-	mov	r8, QWORD PTR [r8+96]
+	mov	r8, QWORD PTR [r8+104]
 	mov	DWORD PTR [rsp+48], eax
 	mov	DWORD PTR [rsp+40], ecx
 	mov	eax, DWORD PTR tv172[rsp]
@@ -8017,24 +8017,24 @@ CalcOffset PROC
 ; 215  :     if ( curr->e.seginfo->segtype == SEGTYPE_ABS ) {
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	DWORD PTR [rax+72], 5
 	jne	SHORT $LN2@CalcOffset
 
 ; 216  :         curr->e.seginfo->start_offset = curr->e.seginfo->abs_frame << 4;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, WORD PTR [rax+88]
 	shl	eax, 4
 	mov	rcx, QWORD PTR curr$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	DWORD PTR [rcx+12], eax
 
 ; 217  :         DebugMsg(("CalcOffset(%s): abs seg, offset=%" I32_SPEC "Xh\n",
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	r8d, DWORD PTR [rax+12]
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
@@ -8051,7 +8051,7 @@ $LN2@CalcOffset:
 ; 220  :     } else if ( curr->e.seginfo->info )
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+107]
 	shr	al, 1
 	and	al, 1
@@ -8069,7 +8069,7 @@ $LN3@CalcOffset:
 ; 223  :     grp = (struct dsym *)curr->e.seginfo->group;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax]
 	mov	QWORD PTR grp$[rsp], rax
 
@@ -8078,7 +8078,7 @@ $LN3@CalcOffset:
 	mov	rax, QWORD PTR cp$[rsp]
 	movzx	eax, BYTE PTR [rax+1]
 	mov	rcx, QWORD PTR curr$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	movzx	ecx, BYTE PTR [rcx+106]
 	cmp	eax, ecx
 	jle	SHORT $LN5@CalcOffset
@@ -8100,7 +8100,7 @@ $LN5@CalcOffset:
 ; 227  :         align = 1 << curr->e.seginfo->alignment;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+106]
 	mov	ecx, 1
 	mov	DWORD PTR tv301[rsp], ecx
@@ -8181,7 +8181,7 @@ $LN9@CalcOffset:
 ; 241  :             if ( grp->sym.total_size == 0 ) {
 
 	mov	rax, QWORD PTR grp$[rsp]
-	cmp	DWORD PTR [rax+56], 0
+	cmp	DWORD PTR [rax+64], 0
 	jne	SHORT $LN11@CalcOffset
 
 ; 242  :                 grp->sym.offset = cp->fileoffset - cp->sizehdr;
@@ -8206,7 +8206,7 @@ $LN11@CalcOffset:
 ; 245  :                 offset = grp->sym.total_size + alignbytes;
 
 	mov	rax, QWORD PTR grp$[rsp]
-	mov	eax, DWORD PTR [rax+56]
+	mov	eax, DWORD PTR [rax+64]
 	add	eax, DWORD PTR alignbytes$[rsp]
 	mov	DWORD PTR offset$[rsp], eax
 $LN12@CalcOffset:
@@ -8270,7 +8270,7 @@ $LN15@CalcOffset:
 ; 263  :             curr->e.seginfo->start_loc = 0;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	DWORD PTR [rax+8], 0
 $LN14@CalcOffset:
 $LN13@CalcOffset:
@@ -8280,7 +8280,7 @@ $LN13@CalcOffset:
 ; 266  :     curr->e.seginfo->fileoffset = cp->fileoffset;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR cp$[rsp]
 	mov	ecx, DWORD PTR [rcx+4]
 	mov	DWORD PTR [rax+56], ecx
@@ -8288,7 +8288,7 @@ $LN13@CalcOffset:
 ; 267  :     curr->e.seginfo->start_offset = offset;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	ecx, DWORD PTR offset$[rsp]
 	mov	DWORD PTR [rax+12], ecx
 
@@ -8302,10 +8302,10 @@ $LN13@CalcOffset:
 ; 271  :         cp->fileoffset += curr->sym.max_offset - curr->e.seginfo->start_loc;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR curr$[rsp]
 	mov	eax, DWORD PTR [rax+8]
-	mov	ecx, DWORD PTR [rcx+56]
+	mov	ecx, DWORD PTR [rcx+64]
 	sub	ecx, eax
 	mov	eax, ecx
 	mov	rcx, QWORD PTR cp$[rsp]
@@ -8323,7 +8323,7 @@ $LN13@CalcOffset:
 ; 273  :             cp->imagestart = curr->e.seginfo->start_loc;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR cp$[rsp]
 	mov	eax, DWORD PTR [rax+8]
 	mov	DWORD PTR [rcx+24], eax
@@ -8363,10 +8363,10 @@ $LN16@CalcOffset:
 ; 285  :         cp->rva += curr->sym.max_offset - curr->e.seginfo->start_loc;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR curr$[rsp]
 	mov	eax, DWORD PTR [rax+8]
-	mov	ecx, DWORD PTR [rcx+56]
+	mov	ecx, DWORD PTR [rcx+64]
 	sub	ecx, eax
 	mov	eax, ecx
 	mov	rcx, QWORD PTR cp$[rsp]
@@ -8377,7 +8377,7 @@ $LN16@CalcOffset:
 ; 286  :         if ( curr->e.seginfo->segtype == SEGTYPE_BSS )
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	DWORD PTR [rax+72], 3
 	jne	SHORT $LN20@CalcOffset
 
@@ -8391,10 +8391,10 @@ $LN20@CalcOffset:
 ; 290  :         cp->fileoffset += curr->sym.max_offset - curr->e.seginfo->start_loc;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR curr$[rsp]
 	mov	eax, DWORD PTR [rax+8]
-	mov	ecx, DWORD PTR [rcx+56]
+	mov	ecx, DWORD PTR [rcx+64]
 	sub	ecx, eax
 	mov	eax, ecx
 	mov	rcx, QWORD PTR cp$[rsp]
@@ -8410,7 +8410,7 @@ $LN17@CalcOffset:
 ; 294  :     offset += curr->sym.max_offset;
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	eax, DWORD PTR [rax+56]
+	mov	eax, DWORD PTR [rax+64]
 	mov	ecx, DWORD PTR offset$[rsp]
 	add	ecx, eax
 	mov	eax, ecx
@@ -8426,16 +8426,16 @@ $LN17@CalcOffset:
 
 	mov	rax, QWORD PTR grp$[rsp]
 	mov	ecx, DWORD PTR offset$[rsp]
-	mov	DWORD PTR [rax+56], ecx
+	mov	DWORD PTR [rax+64], ecx
 
 ; 298  :         /* v2.07: for 16-bit groups, ensure that it fits in 64 kB */
 ; 299  :         if ( grp->sym.total_size > 0x10000 && grp->sym.Ofssize == USE16 ) {
 
 	mov	rax, QWORD PTR grp$[rsp]
-	cmp	DWORD PTR [rax+56], 65536		; 00010000H
+	cmp	DWORD PTR [rax+64], 65536		; 00010000H
 	jbe	SHORT $LN23@CalcOffset
 	mov	rax, QWORD PTR grp$[rsp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	test	eax, eax
 	jne	SHORT $LN23@CalcOffset
 
@@ -8455,9 +8455,9 @@ $LN22@CalcOffset:
 ; 304  :     DebugMsg(("CalcOffset(%s) exit: seg.fileofs=%" I32_SPEC "Xh, seg.start_offset=%" I32_SPEC "Xh, endofs=%" I32_SPEC "Xh fileofs=%" I32_SPEC "Xh rva=%" I32_SPEC "Xh\n",
 
 	mov	rax, QWORD PTR curr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR curr$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	rdx, QWORD PTR cp$[rsp]
 	mov	edx, DWORD PTR [rdx+28]
 	mov	DWORD PTR [rsp+48], edx
@@ -8594,40 +8594,40 @@ $LN5@pe_create_:
 
 	mov	rax, QWORD PTR ModuleInfo+440
 	mov	rcx, QWORD PTR pehdr$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	QWORD PTR [rcx], rax
 
 ; 772  :             pehdr->e.seginfo->combine = COMB_ADDOFF;  /* PUBLIC */
 
 	mov	rax, QWORD PTR pehdr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+108]
 	and	al, 248					; 000000f8H
 	or	al, 2
 	mov	rcx, QWORD PTR pehdr$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	BYTE PTR [rcx+108], al
 
 ; 773  :             pehdr->e.seginfo->characteristics = (IMAGE_SCN_MEM_READ >> 24);
 
 	mov	rax, QWORD PTR pehdr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	BYTE PTR [rax+105], 64			; 00000040H
 
 ; 774  :             pehdr->e.seginfo->readonly = 1;
 
 	mov	rax, QWORD PTR pehdr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+107]
 	or	al, 1
 	mov	rcx, QWORD PTR pehdr$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	BYTE PTR [rcx+107], al
 
 ; 775  :             pehdr->e.seginfo->bytes_written = size; /* ensure that ORG won't set start_loc (assemble.c, SetCurrOffset) */
 
 	mov	rax, QWORD PTR pehdr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	ecx, DWORD PTR size$[rsp]
 	mov	DWORD PTR [rax+24], ecx
 
@@ -8635,7 +8635,7 @@ $LN5@pe_create_:
 
 	mov	rax, QWORD PTR pehdr$[rsp]
 	mov	ecx, DWORD PTR size$[rsp]
-	mov	DWORD PTR [rax+56], ecx
+	mov	DWORD PTR [rax+64], ecx
 
 ; 777  :         } else {
 
@@ -8646,30 +8646,30 @@ $LN6@pe_create_:
 
 	mov	rax, QWORD PTR pehdr$[rsp]
 	mov	ecx, DWORD PTR size$[rsp]
-	cmp	DWORD PTR [rax+56], ecx
+	cmp	DWORD PTR [rax+64], ecx
 	jge	SHORT $LN8@pe_create_
 
 ; 779  :                 pehdr->sym.max_offset = size;
 
 	mov	rax, QWORD PTR pehdr$[rsp]
 	mov	ecx, DWORD PTR size$[rsp]
-	mov	DWORD PTR [rax+56], ecx
+	mov	DWORD PTR [rax+64], ecx
 $LN8@pe_create_:
 
 ; 780  :             pehdr->e.seginfo->internal = TRUE;
 
 	mov	rax, QWORD PTR pehdr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+107]
 	or	al, 16
 	mov	rcx, QWORD PTR pehdr$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	BYTE PTR [rcx+107], al
 
 ; 781  :             pehdr->e.seginfo->start_loc = 0;
 
 	mov	rax, QWORD PTR pehdr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	DWORD PTR [rax+8], 0
 $LN7@pe_create_:
 
@@ -8677,7 +8677,7 @@ $LN7@pe_create_:
 ; 783  :         pehdr->e.seginfo->segtype = SEGTYPE_HDR;
 
 	mov	rax, QWORD PTR pehdr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	DWORD PTR [rax+72], 6
 
 ; 784  :         pehdr->e.seginfo->CodeBuffer = LclAlloc( size );
@@ -8686,14 +8686,14 @@ $LN7@pe_create_:
 	mov	rcx, rax
 	call	LclAlloc
 	mov	rcx, QWORD PTR pehdr$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	QWORD PTR [rcx+16], rax
 
 ; 785  :         memcpy( pehdr->e.seginfo->CodeBuffer, p, size );
 
 	movsxd	rax, DWORD PTR size$[rsp]
 	mov	rcx, QWORD PTR pehdr$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	r8, rax
 	mov	rdx, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR [rcx+16]
@@ -8705,7 +8705,7 @@ $LN7@pe_create_:
 ; 789  :         time((time_t *)(pehdr->e.seginfo->CodeBuffer+offsetof( struct IMAGE_PE_HEADER32, FileHeader.TimeDateStamp )));
 
 	mov	rax, QWORD PTR pehdr$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax+16]
 	add	rax, 8
 	mov	rcx, rax
@@ -8745,16 +8745,16 @@ $LN12@pe_create_:
 ; 794  :             sym->predefined = TRUE;
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	or	al, 32					; 00000020H
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	BYTE PTR [rcx+40], al
+	mov	BYTE PTR [rcx+48], al
 
 ; 795  :             sym->sfunc_ptr = (internal_func)&set_file_flags;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	lea	rcx, OFFSET FLAT:set_file_flags
-	mov	QWORD PTR [rax+64], rcx
+	mov	QWORD PTR [rax+72], rcx
 $LN9@pe_create_:
 $LN2@pe_create_:
 

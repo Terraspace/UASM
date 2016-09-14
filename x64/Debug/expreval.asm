@@ -1497,7 +1497,7 @@ $LN49@evaluate:
 	je	SHORT $LN26@evaluate
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	jne	SHORT $LN26@evaluate
 
 ; 3308 :                         fnEmitErr( SYMBOL_NOT_DEFINED, opnd1->sym->name );
@@ -2241,7 +2241,7 @@ $LN7@PrepareOp:
 	je	SHORT $LN9@PrepareOp
 	mov	rax, QWORD PTR old$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	jne	SHORT $LN9@PrepareOp
 
 ; 3195 :             DebugMsg1(("PrepareOp: forward ref to %s, type will be NULL\n", old->sym->name ));
@@ -3306,7 +3306,7 @@ $LN148@calculate:
 	je	SHORT $LN52@calculate
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	jne	SHORT $LN52@calculate
 
 ; 2794 :                     CreateTypeSymbol( opnd1->sym, NULL, TRUE );
@@ -4519,14 +4519,14 @@ $LN112@calculate:
 	je	$LN113@calculate
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+88]
-	cmp	DWORD PTR [rax+32], 7
+	cmp	DWORD PTR [rax+40], 7
 	je	SHORT $LN113@calculate
 
 ; 3047 :                 if ( opnd2->mbr->mem_type == MT_BITS ) { /* bitfield? */
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+88]
-	cmp	DWORD PTR [rax+36], 193			; 000000c1H
+	cmp	DWORD PTR [rax+44], 193			; 000000c1H
 	jne	SHORT $LN115@calculate
 
 ; 3048 :                     if ( ( temp & AT_BF ) == 0 ) {
@@ -5229,21 +5229,21 @@ $LN14@cmp_types:
 ; 2528 :         opnd1->value64 = ( ( type1->is_ptr == type2->is_ptr &&
 
 	mov	rax, QWORD PTR type1$[rsp]
-	movzx	eax, BYTE PTR [rax+45]
+	movzx	eax, BYTE PTR [rax+53]
 	mov	rcx, QWORD PTR type2$[rsp]
-	movzx	ecx, BYTE PTR [rcx+45]
+	movzx	ecx, BYTE PTR [rcx+53]
 	cmp	eax, ecx
 	jne	SHORT $LN15@cmp_types
 	mov	rax, QWORD PTR type1$[rsp]
-	movzx	eax, BYTE PTR [rax+46]
+	movzx	eax, BYTE PTR [rax+54]
 	mov	rcx, QWORD PTR type2$[rsp]
-	movzx	ecx, BYTE PTR [rcx+46]
+	movzx	ecx, BYTE PTR [rcx+54]
 	cmp	eax, ecx
 	jne	SHORT $LN15@cmp_types
 	mov	rax, QWORD PTR type1$[rsp]
 	mov	rcx, QWORD PTR type2$[rsp]
-	mov	rcx, QWORD PTR [rcx+48]
-	cmp	QWORD PTR [rax+48], rcx
+	mov	rcx, QWORD PTR [rcx+56]
+	cmp	QWORD PTR [rax+56], rcx
 	jne	SHORT $LN15@cmp_types
 	mov	eax, DWORD PTR trueval$[rsp]
 	mov	DWORD PTR tv143[rsp], eax
@@ -5262,19 +5262,19 @@ $LN16@cmp_types:
 ; 2531 :         DebugMsg1(("cmp_types: MT_PTR-MT_PTR is_ptr=%u-%u ptr_memtype=%X-%X target_type=%X-%X\n",
 
 	mov	rax, QWORD PTR type2$[rsp]
-	movzx	eax, BYTE PTR [rax+46]
+	movzx	eax, BYTE PTR [rax+54]
 	mov	rcx, QWORD PTR type1$[rsp]
-	movzx	ecx, BYTE PTR [rcx+46]
+	movzx	ecx, BYTE PTR [rcx+54]
 	mov	rdx, QWORD PTR type2$[rsp]
-	movzx	edx, BYTE PTR [rdx+45]
+	movzx	edx, BYTE PTR [rdx+53]
 	mov	r8, QWORD PTR type1$[rsp]
-	movzx	r8d, BYTE PTR [r8+45]
+	movzx	r8d, BYTE PTR [r8+53]
 	mov	DWORD PTR tv159[rsp], r8d
 	mov	r9, QWORD PTR type2$[rsp]
-	mov	r9, QWORD PTR [r9+48]
+	mov	r9, QWORD PTR [r9+56]
 	mov	QWORD PTR [rsp+48], r9
 	mov	r9, QWORD PTR type1$[rsp]
-	mov	r9, QWORD PTR [r9+48]
+	mov	r9, QWORD PTR [r9+56]
 	mov	QWORD PTR [rsp+40], r9
 	mov	DWORD PTR [rsp+32], eax
 	mov	r9d, ecx
@@ -5315,12 +5315,12 @@ $LN2@cmp_types:
 	je	SHORT $LN4@cmp_types
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax+96]
-	movzx	eax, BYTE PTR [rax+66]
+	movzx	eax, BYTE PTR [rax+74]
 	cmp	eax, 3
 	jne	SHORT $LN4@cmp_types
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax+96]
-	movzx	eax, BYTE PTR [rax+45]
+	movzx	eax, BYTE PTR [rax+53]
 	test	eax, eax
 	jne	SHORT $LN4@cmp_types
 
@@ -5337,12 +5337,12 @@ $LN4@cmp_types:
 	je	SHORT $LN5@cmp_types
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+96]
-	movzx	eax, BYTE PTR [rax+66]
+	movzx	eax, BYTE PTR [rax+74]
 	cmp	eax, 3
 	jne	SHORT $LN5@cmp_types
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+96]
-	movzx	eax, BYTE PTR [rax+45]
+	movzx	eax, BYTE PTR [rax+53]
 	test	eax, eax
 	jne	SHORT $LN5@cmp_types
 
@@ -5494,7 +5494,7 @@ CheckAssume PROC
 	je	$LN3@CheckAssum
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rax, QWORD PTR [rax+96]
-	cmp	DWORD PTR [rax+36], 195			; 000000c3H
+	cmp	DWORD PTR [rax+44], 195			; 000000c3H
 	jne	SHORT $LN3@CheckAssum
 
 ; 2443 :             DebugMsg1(( "CheckAssume(%s, MT_PTR type=>%s< )\n", opnd->type->name ));
@@ -5509,7 +5509,7 @@ CheckAssume PROC
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rax, QWORD PTR [rax+96]
-	movzx	eax, BYTE PTR [rax+45]
+	movzx	eax, BYTE PTR [rax+53]
 	cmp	eax, 1
 	jne	SHORT $LN4@CheckAssum
 
@@ -5517,7 +5517,7 @@ CheckAssume PROC
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rax, QWORD PTR [rax+96]
-	movzx	eax, BYTE PTR [rax+46]
+	movzx	eax, BYTE PTR [rax+54]
 	mov	rcx, QWORD PTR opnd$[rsp]
 	mov	DWORD PTR [rcx+64], eax
 
@@ -5526,7 +5526,7 @@ CheckAssume PROC
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	rcx, QWORD PTR opnd$[rsp]
-	mov	rax, QWORD PTR [rax+48]
+	mov	rax, QWORD PTR [rax+56]
 	mov	QWORD PTR [rcx+96], rax
 
 ; 2447 :                 return; /* ignore assumes in this case */
@@ -5599,10 +5599,10 @@ $LN6@CheckAssum:
 ; 2469 :         DebugMsg1(( "CheckAssume(%s, type=>%s<, mbr=>%s<): assume=%s [memtype=%X isptr=%u type=%s target_type=%s ptr_memt=%X]\n",
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	QWORD PTR [rax+48], 0
+	cmp	QWORD PTR [rax+56], 0
 	je	SHORT $LN15@CheckAssum
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rax, QWORD PTR [rax+48]
+	mov	rax, QWORD PTR [rax+56]
 	mov	rax, QWORD PTR [rax+8]
 	mov	QWORD PTR tv145[rsp], rax
 	jmp	SHORT $LN16@CheckAssum
@@ -5611,10 +5611,10 @@ $LN15@CheckAssum:
 	mov	QWORD PTR tv145[rsp], rax
 $LN16@CheckAssum:
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	QWORD PTR [rax+80], 0
+	cmp	QWORD PTR [rax+88], 0
 	je	SHORT $LN17@CheckAssum
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rax, QWORD PTR [rax+80]
+	mov	rax, QWORD PTR [rax+88]
 	mov	rax, QWORD PTR [rax+8]
 	mov	QWORD PTR tv151[rsp], rax
 	jmp	SHORT $LN18@CheckAssum
@@ -5661,10 +5661,10 @@ $LN23@CheckAssum:
 	mov	DWORD PTR tv180[rsp], eax
 $LN24@CheckAssum:
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+46]
+	movzx	eax, BYTE PTR [rax+54]
 	mov	DWORD PTR tv139[rsp], eax
 	mov	rcx, QWORD PTR sym$[rsp]
-	movzx	ecx, BYTE PTR [rcx+45]
+	movzx	ecx, BYTE PTR [rcx+53]
 	mov	DWORD PTR tv154[rsp], ecx
 	xor	edx, edx
 	mov	ecx, DWORD PTR tv180[rsp]
@@ -5678,7 +5678,7 @@ $LN24@CheckAssum:
 	mov	ecx, DWORD PTR tv154[rsp]
 	mov	DWORD PTR [rsp+48], ecx
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	ecx, DWORD PTR [rcx+36]
+	mov	ecx, DWORD PTR [rcx+44]
 	mov	DWORD PTR [rsp+40], ecx
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	rcx, QWORD PTR [rcx+8]
@@ -5708,14 +5708,14 @@ $LN8@CheckAssum:
 ; 2485 :         if ( sym->mem_type == MT_TYPE )
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+36], 196			; 000000c4H
+	cmp	DWORD PTR [rax+44], 196			; 000000c4H
 	jne	SHORT $LN9@CheckAssum
 
 ; 2486 :             opnd->type = sym->type;
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	rcx, QWORD PTR [rcx+80]
+	mov	rcx, QWORD PTR [rcx+88]
 	mov	QWORD PTR [rax+96], rcx
 	jmp	SHORT $LN10@CheckAssum
 $LN9@CheckAssum:
@@ -5723,7 +5723,7 @@ $LN9@CheckAssum:
 ; 2487 :         else if ( sym->is_ptr == 1 ) { /* v2.10: only dereference if indirection is 1 */
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+45]
+	movzx	eax, BYTE PTR [rax+53]
 	cmp	eax, 1
 	jne	SHORT $LN11@CheckAssum
 
@@ -5731,21 +5731,21 @@ $LN9@CheckAssum:
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	rcx, QWORD PTR [rcx+48]
+	mov	rcx, QWORD PTR [rcx+56]
 	mov	QWORD PTR [rax+96], rcx
 
 ; 2489 :             if ( sym->target_type )
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	QWORD PTR [rax+48], 0
+	cmp	QWORD PTR [rax+56], 0
 	je	SHORT $LN12@CheckAssum
 
 ; 2490 :                 opnd->mem_type = sym->target_type->mem_type;
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rax, QWORD PTR [rax+48]
+	mov	rax, QWORD PTR [rax+56]
 	mov	rcx, QWORD PTR opnd$[rsp]
-	mov	eax, DWORD PTR [rax+36]
+	mov	eax, DWORD PTR [rax+44]
 	mov	DWORD PTR [rcx+64], eax
 	jmp	SHORT $LN13@CheckAssum
 $LN12@CheckAssum:
@@ -5754,7 +5754,7 @@ $LN12@CheckAssum:
 ; 2492 :                 opnd->mem_type = sym->ptr_memtype;
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+46]
+	movzx	eax, BYTE PTR [rax+54]
 	mov	rcx, QWORD PTR opnd$[rsp]
 	mov	DWORD PTR [rcx+64], eax
 $LN13@CheckAssum:
@@ -6466,10 +6466,10 @@ $LN11@colon_op:
 ; 2349 :         if( sym->state == SYM_GRP || sym->state == SYM_SEG ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 4
+	cmp	DWORD PTR [rax+40], 4
 	je	SHORT $LN22@colon_op
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 3
+	cmp	DWORD PTR [rax+40], 3
 	jne	$LN20@colon_op
 $LN22@colon_op:
 
@@ -6565,7 +6565,7 @@ $LN20@colon_op:
 	cmp	DWORD PTR Parse_Pass, 0
 	ja	SHORT $LN25@colon_op
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	je	SHORT $LN24@colon_op
 $LN25@colon_op:
 
@@ -6807,7 +6807,7 @@ $LN4@dot_op:
 	je	$LN5@dot_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	jne	$LN5@dot_op
 	cmp	DWORD PTR Parse_Pass, 0
 	jne	$LN5@dot_op
@@ -6966,11 +6966,11 @@ $LN10@dot_op:
 	je	SHORT $LN12@dot_op
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	je	SHORT $LN12@dot_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	je	SHORT $LN12@dot_op
 
 ; 2103 :                 opnd2->sym->state != SYM_UNDEFINED ) {
@@ -7161,7 +7161,7 @@ $LN19@dot_op:
 	je	SHORT $LN20@dot_op
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax+88]
-	cmp	DWORD PTR [rax+32], 7
+	cmp	DWORD PTR [rax+40], 7
 	jne	SHORT $LN20@dot_op
 
 ; 2136 :             opnd1->llvalue = opnd1->mbr->offset;
@@ -7363,7 +7363,7 @@ $LN26@dot_op:
 	je	SHORT $LN27@dot_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+88]
-	cmp	DWORD PTR [rax+32], 7
+	cmp	DWORD PTR [rax+40], 7
 	jne	SHORT $LN27@dot_op
 
 ; 2168 :             opnd2->llvalue = opnd2->mbr->offset;
@@ -7813,7 +7813,7 @@ $LN2@minus_op:
 	je	SHORT $LN3@minus_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	jne	SHORT $LN3@minus_op
 
 ; 1907 :         opnd2->sym->state == SYM_UNDEFINED /* && !no_error_msg */ )
@@ -8048,11 +8048,11 @@ $LN14@minus_op:
 ; 1955 :                      opnd1->sym->state == SYM_EXTERNAL) &&
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 2
+	cmp	DWORD PTR [rax+40], 2
 	je	SHORT $LN18@minus_op
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	cmp	DWORD PTR [rax+32], 2
+	cmp	DWORD PTR [rax+40], 2
 	jne	SHORT $LN17@minus_op
 $LN18@minus_op:
 	mov	rax, QWORD PTR opnd1$[rsp]
@@ -8083,17 +8083,17 @@ $LN17@minus_op:
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax+80]
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	rax, QWORD PTR [rax+24]
-	cmp	QWORD PTR [rcx+24], rax
+	mov	rax, QWORD PTR [rax+32]
+	cmp	QWORD PTR [rcx+32], rax
 	je	SHORT $LN19@minus_op
 
 ; 1962 :                     DebugMsg(("minus_op error, sym.segm=%X opnd1->sym.segm=%X\n", sym->segment, opnd1->sym->segment ));
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	mov	r8, QWORD PTR [rax+24]
+	mov	r8, QWORD PTR [rax+32]
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rdx, QWORD PTR [rax+24]
+	mov	rdx, QWORD PTR [rax+32]
 	lea	rcx, OFFSET FLAT:$SG11867
 	call	DoDebugMsg
 
@@ -8122,11 +8122,11 @@ $LN16@minus_op:
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	je	SHORT $LN22@minus_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	jne	SHORT $LN20@minus_op
 $LN22@minus_op:
 
@@ -8147,7 +8147,7 @@ $LN22@minus_op:
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	je	SHORT $LN23@minus_op
 
 ; 1984 :                     opnd1->sym = opnd2->sym;
@@ -8680,11 +8680,11 @@ $LN12@plus_op:
 	je	SHORT $LN14@plus_op
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	je	SHORT $LN14@plus_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	je	SHORT $LN14@plus_op
 
 ; 1817 :                 opnd2->sym->state != SYM_UNDEFINED ) {
@@ -9066,7 +9066,7 @@ wimask_op PROC
 ; 1704 :         if (sym->typekind != TYPE_RECORD ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+66]
+	movzx	eax, BYTE PTR [rax+74]
 	cmp	eax, 4
 	je	SHORT $LN10@wimask_op
 
@@ -9158,7 +9158,7 @@ $LN4@wimask_op:
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	eax, DWORD PTR [rax+16]
 	mov	rcx, QWORD PTR sym$[rsp]
-	add	eax, DWORD PTR [rcx+56]
+	add	eax, DWORD PTR [rcx+64]
 	cmp	DWORD PTR i$1[rsp], eax
 	jae	SHORT $LN3@wimask_op
 
@@ -9212,13 +9212,13 @@ $LN13@wimask_op:
 ; 1737 :             for ( fl = dir->e.structinfo->head; fl; fl = fl->next )
 
 	mov	rax, QWORD PTR dir$3[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax]
 	mov	QWORD PTR fl$2[rsp], rax
 	jmp	SHORT $LN7@wimask_op
 $LN5@wimask_op:
 	mov	rax, QWORD PTR fl$2[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	QWORD PTR fl$2[rsp], rax
 $LN7@wimask_op:
 	cmp	QWORD PTR fl$2[rsp], 0
@@ -9229,7 +9229,7 @@ $LN7@wimask_op:
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	eax, DWORD PTR [rax]
 	mov	rcx, QWORD PTR fl$2[rsp]
-	add	eax, DWORD PTR [rcx+56]
+	add	eax, DWORD PTR [rcx+64]
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	DWORD PTR [rcx], eax
 	jmp	SHORT $LN5@wimask_op
@@ -9244,7 +9244,7 @@ $LN17@wimask_op:
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	ecx, DWORD PTR [rcx+56]
+	mov	ecx, DWORD PTR [rcx+64]
 	mov	DWORD PTR [rax], ecx
 $LN18@wimask_op:
 $LN14@wimask_op:
@@ -9346,15 +9346,15 @@ $LN4@this_op:
 ; 1673 :         thissym->state = SYM_INTERNAL;
 
 	mov	rax, QWORD PTR thissym
-	mov	DWORD PTR [rax+32], 1
+	mov	DWORD PTR [rax+40], 1
 
 ; 1674 :         thissym->isdefined = TRUE;
 
 	mov	rax, QWORD PTR thissym
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	or	al, 2
 	mov	rcx, QWORD PTR thissym
-	mov	BYTE PTR [rcx+40], al
+	mov	BYTE PTR [rcx+48], al
 $LN5@this_op:
 
 ; 1675 :     }
@@ -9394,7 +9394,7 @@ $LN10@this_op:
 	mov	rax, QWORD PTR thissym
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR [rcx+96]
-	mov	QWORD PTR [rax+80], rcx
+	mov	QWORD PTR [rax+88], rcx
 
 ; 1685 :     if ( opnd2->type ) {
 
@@ -9405,7 +9405,7 @@ $LN10@this_op:
 ; 1686 :         thissym->mem_type = MT_TYPE;
 
 	mov	rax, QWORD PTR thissym
-	mov	DWORD PTR [rax+36], 196			; 000000c4H
+	mov	DWORD PTR [rax+44], 196			; 000000c4H
 
 ; 1687 :     } else
 
@@ -9417,7 +9417,7 @@ $LN6@this_op:
 	mov	rax, QWORD PTR thissym
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	ecx, DWORD PTR [rcx+64]
-	mov	DWORD PTR [rax+36], ecx
+	mov	DWORD PTR [rax+44], ecx
 $LN7@this_op:
 
 ; 1689 : 
@@ -9436,7 +9436,7 @@ $LN7@this_op:
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR thissym
-	mov	ecx, DWORD PTR [rcx+36]
+	mov	ecx, DWORD PTR [rcx+44]
 	mov	DWORD PTR [rax+64], ecx
 
 ; 1693 :     return( NOT_ERROR );
@@ -10024,7 +10024,7 @@ $LN2@offset_op:
 	cmp	QWORD PTR sym$[rsp], 0
 	je	SHORT $LN6@offset_op
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 4
+	cmp	DWORD PTR [rax+40], 4
 	je	SHORT $LN5@offset_op
 $LN6@offset_op:
 	mov	rax, QWORD PTR opnd2$[rsp]
@@ -10149,7 +10149,7 @@ seg_op	PROC
 	je	SHORT $LN3@seg_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	cmp	DWORD PTR [rax+32], 5
+	cmp	DWORD PTR [rax+40], 5
 	je	SHORT $LN3@seg_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+72]
@@ -10375,7 +10375,7 @@ $LN2@opattr_op:
 	je	SHORT $LN4@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	cmp	DWORD PTR [rax+32], 5
+	cmp	DWORD PTR [rax+40], 5
 	je	SHORT $LN4@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+64]
@@ -10406,7 +10406,7 @@ $LN4@opattr_op:
 	je	SHORT $LN5@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	mov	eax, DWORD PTR [rax+36]
+	mov	eax, DWORD PTR [rax+44]
 	and	eax, 192				; 000000c0H
 	cmp	eax, 128				; 00000080H
 	jne	SHORT $LN5@opattr_op
@@ -10430,7 +10430,7 @@ $LN5@opattr_op:
 	je	SHORT $LN6@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	cmp	DWORD PTR [rax+36], 196			; 000000c4H
+	cmp	DWORD PTR [rax+44], 196			; 000000c4H
 	je	SHORT $LN7@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+64]
@@ -10442,7 +10442,7 @@ $LN5@opattr_op:
 	jne	SHORT $LN6@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	mov	eax, DWORD PTR [rax+36]
+	mov	eax, DWORD PTR [rax+44]
 	and	eax, 128				; 00000080H
 	test	eax, eax
 	jne	SHORT $LN6@opattr_op
@@ -10543,11 +10543,11 @@ $LN14@opattr_op:
 $LN13@opattr_op:
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	cmp	DWORD PTR [rax+32], 1
+	cmp	DWORD PTR [rax+40], 1
 	je	SHORT $LN15@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	cmp	DWORD PTR [rax+32], 2
+	cmp	DWORD PTR [rax+40], 2
 	jne	SHORT $LN11@opattr_op
 $LN15@opattr_op:
 $LN12@opattr_op:
@@ -10613,11 +10613,11 @@ $LN17@opattr_op:
 	je	SHORT $LN19@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	cmp	DWORD PTR [rax+32], 1
+	cmp	DWORD PTR [rax+40], 1
 	je	SHORT $LN19@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	cmp	DWORD PTR [rax+32], 2
+	cmp	DWORD PTR [rax+40], 2
 	jne	SHORT $LN16@opattr_op
 $LN19@opattr_op:
 
@@ -10691,7 +10691,7 @@ $LN21@opattr_op:
 	je	SHORT $LN24@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 1
 	and	al, 1
 	movzx	eax, al
@@ -10717,7 +10717,7 @@ $LN22@opattr_op:
 	je	SHORT $LN27@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	cmp	DWORD PTR [rax+32], 5
+	cmp	DWORD PTR [rax+40], 5
 	je	SHORT $LN26@opattr_op
 $LN27@opattr_op:
 	mov	rax, QWORD PTR opnd2$[rsp]
@@ -10760,7 +10760,7 @@ $LN25@opattr_op:
 	je	SHORT $LN28@opattr_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	cmp	DWORD PTR [rax+32], 2
+	cmp	DWORD PTR [rax+40], 2
 	jne	SHORT $LN28@opattr_op
 
 ; 1456 :         opnd1->value |= OPATTR_EXTRNREF;
@@ -10793,7 +10793,7 @@ $LN28@opattr_op:
 
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	mov	eax, DWORD PTR [rax+76]
+	mov	eax, DWORD PTR [rax+84]
 	shl	eax, 8
 	mov	rcx, QWORD PTR opnd1$[rsp]
 	mov	ecx, DWORD PTR [rcx]
@@ -11067,7 +11067,7 @@ $LN5@type_op:
 	je	SHORT $LN16@type_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+96]
-	movzx	eax, BYTE PTR [rax+66]
+	movzx	eax, BYTE PTR [rax+74]
 	cmp	eax, 4
 	jne	SHORT $LN16@type_op
 
@@ -11076,7 +11076,7 @@ $LN5@type_op:
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	rcx, QWORD PTR opnd2$[rsp]
-	mov	eax, DWORD PTR [rax+56]
+	mov	eax, DWORD PTR [rax+64]
 	mov	DWORD PTR [rcx], eax
 $LN16@type_op:
 
@@ -11168,7 +11168,7 @@ $LN14@type_op:
 ; 1268 :                 DebugMsg1(("type_op: assume type=%X [name=>%s< memtype=%X]\n", sym, sym->name, sym->mem_type ));
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	r9d, DWORD PTR [rax+36]
+	mov	r9d, DWORD PTR [rax+44]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r8, QWORD PTR [rax+8]
 	mov	rdx, QWORD PTR sym$[rsp]
@@ -11185,14 +11185,14 @@ $LN14@type_op:
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	ecx, DWORD PTR [rcx+36]
+	mov	ecx, DWORD PTR [rcx+44]
 	mov	DWORD PTR [rax+64], ecx
 
 ; 1271 :                 opnd1->value = sym->total_size;
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	ecx, DWORD PTR [rcx+56]
+	mov	ecx, DWORD PTR [rcx+64]
 	mov	DWORD PTR [rax], ecx
 
 ; 1272 :             } else {
@@ -11299,7 +11299,7 @@ $LN25@type_op:
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+56]
+	mov	eax, DWORD PTR [rax+64]
 	mov	DWORD PTR [rcx], eax
 
 ; 1293 :                     opnd1->mem_type = opnd2->type->mem_type;
@@ -11307,7 +11307,7 @@ $LN25@type_op:
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+36]
+	mov	eax, DWORD PTR [rax+44]
 	mov	DWORD PTR [rcx+64], eax
 $LN27@type_op:
 $LN26@type_op:
@@ -11352,7 +11352,7 @@ $LN15@type_op:
 	jmp	$LN13@type_op
 $LN12@type_op:
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	jne	SHORT $LN28@type_op
 
 ; 1306 :         opnd1->kind = EXPR_ADDR;
@@ -11383,7 +11383,7 @@ $LN28@type_op:
 ; 1313 :     } else if( sym->mem_type == MT_TYPE && opnd2->explicit == FALSE ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+36], 196			; 000000c4H
+	cmp	DWORD PTR [rax+44], 196			; 000000c4H
 	jne	SHORT $LN30@type_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	eax, DWORD PTR [rax+72]
@@ -11395,9 +11395,9 @@ $LN28@type_op:
 ; 1314 :         opnd1->value = sym->type->total_size;
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rax, QWORD PTR [rax+80]
+	mov	rax, QWORD PTR [rax+88]
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+56]
+	mov	eax, DWORD PTR [rax+64]
 	mov	DWORD PTR [rcx], eax
 
 ; 1315 :         opnd1->is_type = TRUE; /* v2.03: added */
@@ -11412,16 +11412,16 @@ $LN28@type_op:
 ; 1317 :         opnd1->mem_type = sym->type->mem_type; /* v2.09 */
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rax, QWORD PTR [rax+80]
+	mov	rax, QWORD PTR [rax+88]
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+36]
+	mov	eax, DWORD PTR [rax+44]
 	mov	DWORD PTR [rcx+64], eax
 
 ; 1318 :         opnd1->type = sym->type; /* v2.09 */
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	rcx, QWORD PTR [rcx+80]
+	mov	rcx, QWORD PTR [rcx+88]
 	mov	QWORD PTR [rax+96], rcx
 
 ; 1319 :         //printf( "sym=%s MT_TYPE type=%s type->memt=%X\n", sym->name, sym->type->name, sym->type->mem_type );
@@ -11483,7 +11483,7 @@ $LN32@type_op:
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+56]
+	mov	eax, DWORD PTR [rax+64]
 	mov	DWORD PTR [rcx], eax
 	jmp	$LN34@type_op
 $LN33@type_op:
@@ -11491,7 +11491,7 @@ $LN33@type_op:
 ; 1331 :         } else if ( sym->mem_type == MT_PTR ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+36], 195			; 000000c3H
+	cmp	DWORD PTR [rax+44], 195			; 000000c3H
 	jne	SHORT $LN35@type_op
 
 ; 1332 :             //printf( "sym=%s MT_PTR target_memt=%X target=%s\n", sym->name, sym->ptr_memtype, sym->target_type ? sym->target_type->name : "NULL" );
@@ -11505,7 +11505,7 @@ $LN33@type_op:
 ; 1334 :             opnd1->value = SizeFromMemtype( sym->isfar ? MT_FAR : MT_NEAR, sym->Ofssize, NULL );
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+47]
+	movzx	eax, BYTE PTR [rax+55]
 	shr	al, 4
 	and	al, 1
 	movzx	eax, al
@@ -11517,7 +11517,7 @@ $LN46@type_op:
 	mov	DWORD PTR tv307[rsp], 129		; 00000081H
 $LN47@type_op:
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	xor	r8d, r8d
 	mov	edx, eax
 	mov	ecx, DWORD PTR tv307[rsp]
@@ -11530,7 +11530,7 @@ $LN35@type_op:
 ; 1335 :         } else if( sym->mem_type == MT_NEAR ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+36], 129			; 00000081H
+	cmp	DWORD PTR [rax+44], 129			; 00000081H
 	jne	SHORT $LN37@type_op
 
 ; 1336 :             /* v2.09: also handle 64-bit */
@@ -11553,7 +11553,7 @@ $LN37@type_op:
 ; 1339 :         } else if( sym->mem_type == MT_FAR ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+36], 130			; 00000082H
+	cmp	DWORD PTR [rax+44], 130			; 00000082H
 	jne	SHORT $LN39@type_op
 
 ; 1340 :             opnd1->value = GetSymOfssize( sym ) ? LS_FAR32 : LS_FAR16;
@@ -11581,7 +11581,7 @@ $LN39@type_op:
 	mov	rcx, QWORD PTR sym$[rsp]
 	call	GetSymOfssize
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	r8, QWORD PTR [rcx+80]
+	mov	r8, QWORD PTR [rcx+88]
 	mov	edx, eax
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	ecx, DWORD PTR [rax+64]
@@ -11717,10 +11717,10 @@ $LN51@sizlen_op:
 ; 1078 :         if ( sym->state == SYM_STRUCT_FIELD || sym->state == SYM_STACK )
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 6
+	cmp	DWORD PTR [rax+40], 6
 	je	SHORT $LN7@sizlen_op
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 5
+	cmp	DWORD PTR [rax+40], 5
 	jne	SHORT $LN5@sizlen_op
 $LN7@sizlen_op:
 
@@ -11732,7 +11732,7 @@ $LN5@sizlen_op:
 ; 1080 :         else if ( sym->state == SYM_UNDEFINED ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	jne	SHORT $LN8@sizlen_op
 
 ; 1081 :             /* v2.10: forward references should have attributes EXPR_ADDR + sym.state=SYM_UNDEFINED */
@@ -11759,20 +11759,20 @@ $LN8@sizlen_op:
 ; 1089 :                  sym->mem_type != MT_FAR &&
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 2
+	cmp	DWORD PTR [rax+40], 2
 	je	SHORT $LN12@sizlen_op
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 1
+	cmp	DWORD PTR [rax+40], 1
 	jne	SHORT $LN10@sizlen_op
 $LN12@sizlen_op:
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+36], 192			; 000000c0H
+	cmp	DWORD PTR [rax+44], 192			; 000000c0H
 	je	SHORT $LN10@sizlen_op
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+36], 130			; 00000082H
+	cmp	DWORD PTR [rax+44], 130			; 00000082H
 	je	SHORT $LN10@sizlen_op
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+36], 129			; 00000081H
+	cmp	DWORD PTR [rax+44], 129			; 00000081H
 	je	SHORT $LN10@sizlen_op
 
 ; 1090 :                  sym->mem_type != MT_NEAR )
@@ -11784,10 +11784,10 @@ $LN10@sizlen_op:
 ; 1092 :         else if ( sym->state == SYM_GRP || sym->state == SYM_SEG ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 4
+	cmp	DWORD PTR [rax+40], 4
 	je	SHORT $LN15@sizlen_op
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 3
+	cmp	DWORD PTR [rax+40], 3
 	jne	SHORT $LN13@sizlen_op
 $LN15@sizlen_op:
 
@@ -11852,14 +11852,14 @@ $LN19@sizlen_op:
 ; 1108 :         opnd1->value = sym->isdata ? sym->first_length : 1;
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+41]
+	movzx	eax, BYTE PTR [rax+49]
 	shr	al, 2
 	and	al, 1
 	movzx	eax, al
 	test	eax, eax
 	je	SHORT $LN52@sizlen_op
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	eax, DWORD PTR [rax+48]
+	mov	eax, DWORD PTR [rax+56]
 	mov	DWORD PTR tv149[rsp], eax
 	jmp	SHORT $LN53@sizlen_op
 $LN52@sizlen_op:
@@ -11888,7 +11888,7 @@ $LN20@sizlen_op:
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+88]
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+64]
+	mov	eax, DWORD PTR [rax+72]
 	mov	DWORD PTR [rcx], eax
 	jmp	SHORT $LN22@sizlen_op
 $LN21@sizlen_op:
@@ -11900,10 +11900,10 @@ $LN21@sizlen_op:
 ; 1119 :         } else if ( sym->state == SYM_EXTERNAL && sym->iscomm == FALSE ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 2
+	cmp	DWORD PTR [rax+40], 2
 	jne	SHORT $LN23@sizlen_op
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+47]
+	movzx	eax, BYTE PTR [rax+55]
 	shr	al, 2
 	and	al, 1
 	movzx	eax, al
@@ -11925,7 +11925,7 @@ $LN23@sizlen_op:
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	ecx, DWORD PTR [rcx+64]
+	mov	ecx, DWORD PTR [rcx+72]
 	mov	DWORD PTR [rax], ecx
 $LN24@sizlen_op:
 $LN22@sizlen_op:
@@ -11976,7 +11976,7 @@ $LN29@sizlen_op:
 	jmp	$LN27@sizlen_op
 $LN26@sizlen_op:
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+41]
+	movzx	eax, BYTE PTR [rax+49]
 	shr	al, 2
 	and	al, 1
 	movzx	eax, al
@@ -11987,7 +11987,7 @@ $LN26@sizlen_op:
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	ecx, DWORD PTR [rcx+44]
+	mov	ecx, DWORD PTR [rcx+52]
 	mov	DWORD PTR [rax], ecx
 	jmp	$LN31@sizlen_op
 $LN30@sizlen_op:
@@ -11999,7 +11999,7 @@ $LN30@sizlen_op:
 ; 1140 :         } else if( sym->state == SYM_STACK ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 5
+	cmp	DWORD PTR [rax+40], 5
 	jne	SHORT $LN32@sizlen_op
 
 ; 1141 :             opnd1->value = GetSizeValue( sym );
@@ -12014,7 +12014,7 @@ $LN32@sizlen_op:
 ; 1142 :         } else if( sym->mem_type == MT_NEAR ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+36], 129			; 00000081H
+	cmp	DWORD PTR [rax+44], 129			; 00000081H
 	jne	SHORT $LN34@sizlen_op
 
 ; 1143 :             /* v2.09: also handle 64-bit */
@@ -12037,7 +12037,7 @@ $LN34@sizlen_op:
 ; 1146 :         } else if( sym->mem_type == MT_FAR ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+36], 130			; 00000082H
+	cmp	DWORD PTR [rax+44], 130			; 00000082H
 	jne	SHORT $LN36@sizlen_op
 
 ; 1147 :             opnd1->value = GetSymOfssize( sym ) ? LS_FAR32 : LS_FAR16;
@@ -12078,7 +12078,7 @@ $LN27@sizlen_op:
 	cmp	QWORD PTR sym$[rsp], 0
 	je	SHORT $LN56@sizlen_op
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	eax, DWORD PTR [rax+44]
+	mov	eax, DWORD PTR [rax+52]
 	mov	DWORD PTR tv205[rsp], eax
 	jmp	SHORT $LN57@sizlen_op
 $LN56@sizlen_op:
@@ -12116,9 +12116,9 @@ $LN38@sizlen_op:
 ; 1156 :             DebugMsg1(("sizlen_op(sizeof): symbol %s, state=%u, size=%u\n", sym->name, sym->state, sym->total_size ));
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	r9d, DWORD PTR [rax+56]
+	mov	r9d, DWORD PTR [rax+64]
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	r8d, DWORD PTR [rax+32]
+	mov	r8d, DWORD PTR [rax+40]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
 	lea	rcx, OFFSET FLAT:$SG11446
@@ -12181,7 +12181,7 @@ $LN40@sizlen_op:
 	je	SHORT $LN45@sizlen_op
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+96]
-	movzx	eax, BYTE PTR [rax+66]
+	movzx	eax, BYTE PTR [rax+74]
 	cmp	eax, 4
 	jne	SHORT $LN45@sizlen_op
 
@@ -12190,7 +12190,7 @@ $LN40@sizlen_op:
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+96]
 	mov	rcx, QWORD PTR opnd1$[rsp]
-	mov	eax, DWORD PTR [rax+56]
+	mov	eax, DWORD PTR [rax+64]
 	mov	DWORD PTR [rcx], eax
 	jmp	SHORT $LN46@sizlen_op
 $LN45@sizlen_op:
@@ -12210,10 +12210,10 @@ $LN46@sizlen_op:
 	jmp	SHORT $LN44@sizlen_op
 $LN43@sizlen_op:
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 2
+	cmp	DWORD PTR [rax+40], 2
 	jne	SHORT $LN47@sizlen_op
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+47]
+	movzx	eax, BYTE PTR [rax+55]
 	shr	al, 2
 	and	al, 1
 	movzx	eax, al
@@ -12239,7 +12239,7 @@ $LN47@sizlen_op:
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	ecx, DWORD PTR [rcx+56]
+	mov	ecx, DWORD PTR [rcx+64]
 	mov	DWORD PTR [rax], ecx
 $LN48@sizlen_op:
 $LN44@sizlen_op:
@@ -12373,13 +12373,13 @@ GetSizeValue PROC
 ; 1028 :     if ( sym->mem_type == MT_PTR )
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+36], 195			; 000000c3H
+	cmp	DWORD PTR [rax+44], 195			; 000000c3H
 	jne	SHORT $LN2@GetSizeVal
 
 ; 1029 :         return( SizeFromMemtype( sym->isfar ? MT_FAR : MT_NEAR, sym->Ofssize, sym->type ) );
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+47]
+	movzx	eax, BYTE PTR [rax+55]
 	shr	al, 4
 	and	al, 1
 	movzx	eax, al
@@ -12391,9 +12391,9 @@ $LN4@GetSizeVal:
 	mov	DWORD PTR tv77[rsp], 129		; 00000081H
 $LN5@GetSizeVal:
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	r8, QWORD PTR [rcx+80]
+	mov	r8, QWORD PTR [rcx+88]
 	mov	edx, eax
 	mov	ecx, DWORD PTR tv77[rsp]
 	call	SizeFromMemtype
@@ -12403,12 +12403,12 @@ $LN2@GetSizeVal:
 ; 1030 :     return( SizeFromMemtype( sym->mem_type, sym->Ofssize, sym->type ) );
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	r8, QWORD PTR [rcx+80]
+	mov	r8, QWORD PTR [rcx+88]
 	mov	edx, eax
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	ecx, DWORD PTR [rax+36]
+	mov	ecx, DWORD PTR [rax+44]
 	call	SizeFromMemtype
 $LN1@GetSizeVal:
 
@@ -12486,7 +12486,7 @@ fix_struct_value PROC
 	je	SHORT $LN2@fix_struct
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rax, QWORD PTR [rax+88]
-	cmp	DWORD PTR [rax+32], 7
+	cmp	DWORD PTR [rax+40], 7
 	jne	SHORT $LN2@fix_struct
 
 ; 1010 :         opnd->value += opnd->mbr->total_size;
@@ -12495,7 +12495,7 @@ fix_struct_value PROC
 	mov	rax, QWORD PTR [rax+88]
 	mov	rcx, QWORD PTR opnd$[rsp]
 	mov	ecx, DWORD PTR [rcx]
-	add	ecx, DWORD PTR [rax+56]
+	add	ecx, DWORD PTR [rax+64]
 	mov	eax, ecx
 	mov	rcx, QWORD PTR opnd$[rsp]
 	mov	DWORD PTR [rcx], eax
@@ -12593,7 +12593,7 @@ MakeConst2 PROC
 
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	cmp	DWORD PTR [rax+32], 2
+	cmp	DWORD PTR [rax+40], 2
 	jne	SHORT $LN2@MakeConst2
 
 ; 977  :         return( fnEmitErr( INVALID_USE_OF_EXTERNAL_SYMBOL, opnd1->sym->name ) );
@@ -12618,21 +12618,21 @@ $LN2@MakeConst2:
 	mov	rax, QWORD PTR [rax+80]
 	mov	rcx, QWORD PTR opnd2$[rsp]
 	mov	rcx, QWORD PTR [rcx+80]
-	mov	rcx, QWORD PTR [rcx+24]
-	cmp	QWORD PTR [rax+24], rcx
+	mov	rcx, QWORD PTR [rcx+32]
+	cmp	QWORD PTR [rax+32], rcx
 	je	SHORT $LN6@MakeConst2
 	mov	rax, QWORD PTR opnd1$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	je	SHORT $LN6@MakeConst2
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	jne	SHORT $LN5@MakeConst2
 $LN6@MakeConst2:
 	mov	rax, QWORD PTR opnd2$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	cmp	DWORD PTR [rax+32], 2
+	cmp	DWORD PTR [rax+40], 2
 	jne	SHORT $LN4@MakeConst2
 $LN5@MakeConst2:
 
@@ -12743,7 +12743,7 @@ $LN5@MakeConst:
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	jne	SHORT $LN9@MakeConst
 	mov	rax, QWORD PTR opnd$[rsp]
 	cmp	DWORD PTR [rax+56], -2
@@ -12751,11 +12751,11 @@ $LN5@MakeConst:
 $LN9@MakeConst:
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	cmp	DWORD PTR [rax+32], 2
+	cmp	DWORD PTR [rax+40], 2
 	jne	SHORT $LN6@MakeConst
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rax, QWORD PTR [rax+80]
-	movzx	eax, BYTE PTR [rax+47]
+	movzx	eax, BYTE PTR [rax+55]
 	shr	al, 3
 	and	al, 1
 	movzx	eax, al
@@ -12805,7 +12805,7 @@ $LN4@MakeConst:
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rax, QWORD PTR [rax+88]
-	cmp	DWORD PTR [rax+32], 6
+	cmp	DWORD PTR [rax+40], 6
 	jne	SHORT $LN11@MakeConst
 
 ; 945  : #if 0 /* v2.09: mbr can only be SYM_STRUCT_FIELD or SYM_UNDEFINED (if nullmbr) */
@@ -14020,7 +14020,7 @@ $LN142@get_operan:
 ; 501  :                     if ( sym->state == SYM_TYPE ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 7
+	cmp	DWORD PTR [rax+40], 7
 	jne	SHORT $LN60@get_operan
 
 ; 502  :                         /*
@@ -14049,7 +14049,7 @@ $LN142@get_operan:
 	je	SHORT $LN65@get_operan
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rax, QWORD PTR [rax+96]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 1
 	and	al, 1
 	movzx	eax, al
@@ -14087,13 +14087,13 @@ $LN60@get_operan:
 	test	eax, eax
 	je	SHORT $LN66@get_operan
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 6
+	cmp	DWORD PTR [rax+40], 6
 	je	SHORT $LN68@get_operan
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 2
+	cmp	DWORD PTR [rax+40], 2
 	je	SHORT $LN68@get_operan
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 1
+	cmp	DWORD PTR [rax+40], 1
 	jne	SHORT $LN66@get_operan
 $LN68@get_operan:
 
@@ -14223,21 +14223,21 @@ $LN57@get_operan:
 	cmp	QWORD PTR sym$[rsp], 0
 	je	SHORT $LN77@get_operan
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	je	SHORT $LN77@get_operan
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 7
+	cmp	DWORD PTR [rax+40], 7
 	jne	SHORT $LN78@get_operan
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+66]
+	movzx	eax, BYTE PTR [rax+74]
 	test	eax, eax
 	je	SHORT $LN77@get_operan
 $LN78@get_operan:
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 9
+	cmp	DWORD PTR [rax+40], 9
 	je	SHORT $LN77@get_operan
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 10
+	cmp	DWORD PTR [rax+40], 10
 	jne	$LN75@get_operan
 $LN77@get_operan:
 
@@ -14285,10 +14285,10 @@ $LN79@get_operan:
 	cmp	QWORD PTR sym$[rsp], 0
 	je	SHORT $LN80@get_operan
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 9
+	cmp	DWORD PTR [rax+40], 9
 	je	SHORT $LN81@get_operan
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 10
+	cmp	DWORD PTR [rax+40], 10
 	jne	SHORT $LN80@get_operan
 $LN81@get_operan:
 
@@ -14356,7 +14356,7 @@ $LN80@get_operan:
 ; 602  :                         sym->state = SYM_UNDEFINED;
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	DWORD PTR [rax+32], 0
+	mov	DWORD PTR [rax+40], 0
 
 ; 603  :                         sym_add_table( &SymTables[TAB_UNDEF], (struct dsym *)sym ); /* add UNDEFINED */
 
@@ -14395,7 +14395,7 @@ $LN85@get_operan:
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rax, QWORD PTR [rax+96]
-	movzx	eax, BYTE PTR [rax+66]
+	movzx	eax, BYTE PTR [rax+74]
 	test	eax, eax
 	je	$LN87@get_operan
 
@@ -14407,7 +14407,7 @@ $LN85@get_operan:
 	je	SHORT $LN145@get_operan
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rax, QWORD PTR [rax+96]
-	movzx	eax, BYTE PTR [rax+66]
+	movzx	eax, BYTE PTR [rax+74]
 	mov	DWORD PTR tv605[rsp], eax
 	jmp	SHORT $LN146@get_operan
 $LN145@get_operan:
@@ -14598,7 +14598,7 @@ $LN75@get_operan:
 ; 640  :         } else if ( sym->state == SYM_ALIAS ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 8
+	cmp	DWORD PTR [rax+40], 8
 	jne	SHORT $LN94@get_operan
 
 ; 641  :             /* ALIAS symbols are not really useable in expressions.
@@ -14618,18 +14618,18 @@ $LN76@get_operan:
 ; 648  :         sym->used = TRUE;
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	or	al, 1
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	BYTE PTR [rcx+40], al
+	mov	BYTE PTR [rcx+48], al
 
 ; 649  :         DebugMsg1(("get_operand(%s): sym->state=%u type=>%s< ofs=%X memtype=%Xh total_size=%u defined=%u\n",
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	QWORD PTR [rax+80], 0
+	cmp	QWORD PTR [rax+88], 0
 	je	SHORT $LN153@get_operan
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rax, QWORD PTR [rax+80]
+	mov	rax, QWORD PTR [rax+88]
 	mov	rax, QWORD PTR [rax+8]
 	mov	QWORD PTR tv716[rsp], rax
 	jmp	SHORT $LN154@get_operan
@@ -14638,7 +14638,7 @@ $LN153@get_operan:
 	mov	QWORD PTR tv716[rsp], rax
 $LN154@get_operan:
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 1
 	and	al, 1
 	movzx	eax, al
@@ -14646,17 +14646,17 @@ $LN154@get_operan:
 	imul	rcx, rcx, 32				; 00000020H
 	mov	DWORD PTR [rsp+56], eax
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	eax, DWORD PTR [rax+56]
+	mov	eax, DWORD PTR [rax+64]
 	mov	DWORD PTR [rsp+48], eax
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	eax, DWORD PTR [rax+36]
+	mov	eax, DWORD PTR [rax+44]
 	mov	DWORD PTR [rsp+40], eax
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	eax, DWORD PTR [rax+16]
 	mov	DWORD PTR [rsp+32], eax
 	mov	r9, QWORD PTR tv716[rsp]
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	r8d, DWORD PTR [rax+32]
+	mov	r8d, DWORD PTR [rax+40]
 	mov	rax, QWORD PTR tokenarray$[rsp]
 	mov	rdx, QWORD PTR [rax+rcx+8]
 	lea	rcx, OFFSET FLAT:$SG11224
@@ -14666,7 +14666,7 @@ $LN154@get_operan:
 ; 651  :         switch ( sym->state ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	eax, DWORD PTR [rax+32]
+	mov	eax, DWORD PTR [rax+40]
 	mov	DWORD PTR tv727[rsp], eax
 	cmp	DWORD PTR tv727[rsp], 6
 	je	$LN103@get_operan
@@ -14680,11 +14680,11 @@ $LN95@get_operan:
 ; 654  :             if ( sym->typekind != TYPE_TYPEDEF && ((struct dsym *)sym)->e.structinfo->isOpen ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+66]
+	movzx	eax, BYTE PTR [rax+74]
 	cmp	eax, 3
 	je	SHORT $LN96@get_operan
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+29]
 	shr	al, 1
 	and	al, 1
@@ -14718,11 +14718,11 @@ $LN9@get_operan:
 ; 660  :             for ( ; sym->type; sym = sym->type );
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rax, QWORD PTR [rax+80]
+	mov	rax, QWORD PTR [rax+88]
 	mov	QWORD PTR sym$[rsp], rax
 $LN11@get_operan:
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	QWORD PTR [rax+80], 0
+	cmp	QWORD PTR [rax+88], 0
 	je	SHORT $LN10@get_operan
 	jmp	SHORT $LN9@get_operan
 $LN10@get_operan:
@@ -14736,7 +14736,7 @@ $LN10@get_operan:
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	ecx, DWORD PTR [rcx+36]
+	mov	ecx, DWORD PTR [rcx+44]
 	mov	DWORD PTR [rax+64], ecx
 
 ; 663  :             opnd->is_type = TRUE;
@@ -14756,7 +14756,7 @@ $LN10@get_operan:
 ; 665  :             DebugMsg1(("get_operand(%s): symbol.typekind=%u (STRUCT/UNION/TYPEDEF/RECORD)\n", sym->name, sym->typekind ));
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+66]
+	movzx	eax, BYTE PTR [rax+74]
 	mov	r8d, eax
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
@@ -14770,7 +14770,7 @@ $LN10@get_operan:
 ; 670  :             if ( sym->typekind == TYPE_RECORD ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+66]
+	movzx	eax, BYTE PTR [rax+74]
 	cmp	eax, 4
 	jne	SHORT $LN97@get_operan
 
@@ -14790,7 +14790,7 @@ $LN97@get_operan:
 ; 676  :             } else if ( ( sym->mem_type & MT_SPECIAL_MASK ) == MT_ADDRESS ) { /* v2.09: added */
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	eax, DWORD PTR [rax+36]
+	mov	eax, DWORD PTR [rax+44]
 	and	eax, 192				; 000000c0H
 	cmp	eax, 128				; 00000080H
 	jne	SHORT $LN99@get_operan
@@ -14798,21 +14798,21 @@ $LN97@get_operan:
 ; 677  :                 if ( sym->mem_type == MT_PROC ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+36], 128			; 00000080H
+	cmp	DWORD PTR [rax+44], 128			; 00000080H
 	jne	SHORT $LN101@get_operan
 
 ; 678  :                     opnd->value = sym->total_size;
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	ecx, DWORD PTR [rcx+56]
+	mov	ecx, DWORD PTR [rcx+64]
 	mov	DWORD PTR [rax], ecx
 
 ; 679  :                     opnd->Ofssize = sym->Ofssize;
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rcx, QWORD PTR sym$[rsp]
-	movzx	ecx, BYTE PTR [rcx+44]
+	movzx	ecx, BYTE PTR [rcx+52]
 	mov	BYTE PTR [rax+69], cl
 
 ; 680  :                 } else
@@ -14823,10 +14823,10 @@ $LN101@get_operan:
 ; 681  :                     opnd->value = GetTypeSize( sym->mem_type, sym->Ofssize );
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	mov	edx, eax
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	ecx, DWORD PTR [rax+36]
+	mov	ecx, DWORD PTR [rax+44]
 	call	GetTypeSize
 	mov	rcx, QWORD PTR opnd$[rsp]
 	mov	DWORD PTR [rcx], eax
@@ -14841,7 +14841,7 @@ $LN99@get_operan:
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	ecx, DWORD PTR [rcx+56]
+	mov	ecx, DWORD PTR [rcx+64]
 	mov	DWORD PTR [rax], ecx
 $LN100@get_operan:
 $LN98@get_operan:
@@ -14890,11 +14890,11 @@ $LN12@get_operan:
 ; 694  :             for ( ; sym->type; sym = sym->type );
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rax, QWORD PTR [rax+80]
+	mov	rax, QWORD PTR [rax+88]
 	mov	QWORD PTR sym$[rsp], rax
 $LN14@get_operan:
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	QWORD PTR [rax+80], 0
+	cmp	QWORD PTR [rax+88], 0
 	je	SHORT $LN13@get_operan
 	jmp	SHORT $LN12@get_operan
 $LN13@get_operan:
@@ -14903,7 +14903,7 @@ $LN13@get_operan:
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	ecx, DWORD PTR [rcx+36]
+	mov	ecx, DWORD PTR [rcx+44]
 	mov	DWORD PTR [rax+64], ecx
 
 ; 696  :             /*
@@ -14914,10 +14914,10 @@ $LN13@get_operan:
 ; 701  :             opnd->type = ( sym->state == SYM_TYPE && sym->typekind != TYPE_TYPEDEF ) ? sym : NULL;
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 7
+	cmp	DWORD PTR [rax+40], 7
 	jne	SHORT $LN155@get_operan
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+66]
+	movzx	eax, BYTE PTR [rax+74]
 	cmp	eax, 3
 	je	SHORT $LN155@get_operan
 	mov	rax, QWORD PTR sym$[rsp]
@@ -14965,14 +14965,14 @@ $LN104@get_operan:
 ; 707  :             if ( sym->predefined && sym->sfunc_ptr )
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 5
 	and	al, 1
 	movzx	eax, al
 	test	eax, eax
 	je	SHORT $LN105@get_operan
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	QWORD PTR [rax+64], 0
+	cmp	QWORD PTR [rax+72], 0
 	je	SHORT $LN105@get_operan
 
 ; 708  :                 sym->sfunc_ptr( sym, NULL );
@@ -14980,17 +14980,17 @@ $LN104@get_operan:
 	xor	edx, edx
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR sym$[rsp]
-	call	QWORD PTR [rax+64]
+	call	QWORD PTR [rax+72]
 $LN105@get_operan:
 
 ; 709  :             //if( opnd->sym->mem_type == MT_ABS ) {
 ; 710  :             if( sym->state == SYM_INTERNAL && sym->segment == NULL ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 1
+	cmp	DWORD PTR [rax+40], 1
 	jne	$LN106@get_operan
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	QWORD PTR [rax+24], 0
+	cmp	QWORD PTR [rax+32], 0
 	jne	SHORT $LN106@get_operan
 
 ; 711  :                 opnd->kind = EXPR_CONST;
@@ -15009,7 +15009,7 @@ $LN105@get_operan:
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	ecx, DWORD PTR [rcx+56]
+	mov	ecx, DWORD PTR [rcx+64]
 	mov	DWORD PTR [rax+4], ecx
 
 ; 714  :                 DebugMsg1(("get_operand(%s): equate hval=%Xh, lval=%Xh\n", sym->name, opnd->hvalue, opnd->uvalue ));
@@ -15027,7 +15027,7 @@ $LN105@get_operan:
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	ecx, DWORD PTR [rcx+36]
+	mov	ecx, DWORD PTR [rcx+44]
 	mov	DWORD PTR [rax+64], ecx
 
 ; 716  :                 /* don't set the symbol reference, it isn't a label */
@@ -15039,13 +15039,13 @@ $LN106@get_operan:
 ; 718  :                       sym->mem_type == MT_EMPTY &&
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 2
+	cmp	DWORD PTR [rax+40], 2
 	jne	SHORT $LN108@get_operan
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+36], 192			; 000000c0H
+	cmp	DWORD PTR [rax+44], 192			; 000000c0H
 	jne	SHORT $LN108@get_operan
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+47]
+	movzx	eax, BYTE PTR [rax+55]
 	shr	al, 2
 	and	al, 1
 	movzx	eax, al
@@ -15091,11 +15091,11 @@ $LN108@get_operan:
 ; 730  :                 if( sym->type && sym->type->mem_type != MT_EMPTY ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	QWORD PTR [rax+80], 0
+	cmp	QWORD PTR [rax+88], 0
 	je	SHORT $LN110@get_operan
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rax, QWORD PTR [rax+80]
-	cmp	DWORD PTR [rax+36], 192			; 000000c0H
+	mov	rax, QWORD PTR [rax+88]
+	cmp	DWORD PTR [rax+44], 192			; 000000c0H
 	je	SHORT $LN110@get_operan
 
 ; 731  :                     /* skip "alias" types */
@@ -15105,9 +15105,9 @@ $LN108@get_operan:
 ; 735  :                     opnd->mem_type = sym->type->mem_type;
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rax, QWORD PTR [rax+80]
+	mov	rax, QWORD PTR [rax+88]
 	mov	rcx, QWORD PTR opnd$[rsp]
-	mov	eax, DWORD PTR [rax+36]
+	mov	eax, DWORD PTR [rax+44]
 	mov	DWORD PTR [rcx+64], eax
 
 ; 736  :                 } else {
@@ -15119,7 +15119,7 @@ $LN110@get_operan:
 
 	mov	rax, QWORD PTR opnd$[rsp]
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	ecx, DWORD PTR [rcx+36]
+	mov	ecx, DWORD PTR [rcx+44]
 	mov	DWORD PTR [rax+64], ecx
 $LN111@get_operan:
 
@@ -15129,7 +15129,7 @@ $LN111@get_operan:
 ; 741  :                 if ( sym->state == SYM_STACK ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 5
+	cmp	DWORD PTR [rax+40], 5
 	jne	$LN112@get_operan
 
 ; 742  : #if STACKBASESUPP
@@ -15147,7 +15147,7 @@ $LN111@get_operan:
 	test	eax, eax
 	je	$LN113@get_operan
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+41]
+	movzx	eax, BYTE PTR [rax+49]
 	shr	al, 7
 	and	al, 1
 	movzx	eax, al
@@ -15157,7 +15157,7 @@ $LN111@get_operan:
 ; 745  :                       int cnt = CurrProc->e.procinfo->pushed_reg;
 
 	mov	rax, QWORD PTR CurrProc
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	eax, DWORD PTR [rax+104]
 	mov	DWORD PTR cnt$1[rsp], eax
 
@@ -15170,13 +15170,13 @@ $LN111@get_operan:
 ; 747  :                       cnt += sym->offset + CurrProc->e.procinfo->localsize + CurrProc->e.procinfo->xmmsize; //pointing to RSP
 
 	mov	rax, QWORD PTR CurrProc
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR sym$[rsp]
 	mov	ecx, DWORD PTR [rcx+16]
 	add	ecx, DWORD PTR [rax+36]
 	mov	eax, ecx
 	mov	rcx, QWORD PTR CurrProc
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	add	eax, DWORD PTR [rcx+112]
 	mov	ecx, DWORD PTR cnt$1[rsp]
 	add	ecx, eax
@@ -15186,13 +15186,13 @@ $LN111@get_operan:
 ; 748  :                       if (CurrProc->sym.langtype == LANG_VECTORCALL)
 
 	mov	rax, QWORD PTR CurrProc
-	cmp	DWORD PTR [rax+76], 8
+	cmp	DWORD PTR [rax+84], 8
 	jne	SHORT $LN114@get_operan
 
 ; 749  :                         cnt += CurrProc->e.procinfo->vsize ;     //pointing abowe RSP to the shadow space off RCX RDX R8 R9                      
 
 	mov	rax, QWORD PTR CurrProc
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	eax, DWORD PTR [rax+44]
 	mov	ecx, DWORD PTR cnt$1[rsp]
 	add	ecx, eax
@@ -15253,7 +15253,7 @@ $LN113@get_operan:
 ; 762  :                     tokenarray[i].tokval = CurrProc->e.procinfo->basereg;
 
 	mov	rax, QWORD PTR CurrProc
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movsxd	rcx, DWORD PTR i$[rsp]
 	imul	rcx, rcx, 32				; 00000020H
 	movzx	eax, WORD PTR [rax+130]
@@ -15293,11 +15293,11 @@ $LN15@get_operan:
 ; 772  :                 for ( ; sym->type; sym = sym->type );
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rax, QWORD PTR [rax+80]
+	mov	rax, QWORD PTR [rax+88]
 	mov	QWORD PTR sym$[rsp], rax
 $LN17@get_operan:
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	QWORD PTR [rax+80], 0
+	cmp	QWORD PTR [rax+88], 0
 	je	SHORT $LN16@get_operan
 	jmp	SHORT $LN15@get_operan
 $LN16@get_operan:
@@ -15305,10 +15305,10 @@ $LN16@get_operan:
 ; 773  :                 opnd->type = ( sym->state == SYM_TYPE && sym->typekind != TYPE_TYPEDEF ) ? sym : NULL;
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 7
+	cmp	DWORD PTR [rax+40], 7
 	jne	SHORT $LN159@get_operan
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+66]
+	movzx	eax, BYTE PTR [rax+74]
 	cmp	eax, 3
 	je	SHORT $LN159@get_operan
 	mov	rax, QWORD PTR sym$[rsp]
@@ -16015,13 +16015,13 @@ GetRecordMask PROC
 ; 292  :     for ( fl = record->e.structinfo->head; fl; fl = fl->next ) {
 
 	mov	rax, QWORD PTR record$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax]
 	mov	QWORD PTR fl$[rsp], rax
 	jmp	SHORT $LN4@GetRecordM
 $LN2@GetRecordM:
 	mov	rax, QWORD PTR fl$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	QWORD PTR fl$[rsp], rax
 $LN4@GetRecordM:
 	cmp	QWORD PTR fl$[rsp], 0
@@ -16046,7 +16046,7 @@ $LN7@GetRecordM:
 	mov	rax, QWORD PTR sym$1[rsp]
 	mov	eax, DWORD PTR [rax+16]
 	mov	rcx, QWORD PTR sym$1[rsp]
-	add	eax, DWORD PTR [rcx+56]
+	add	eax, DWORD PTR [rcx+64]
 	cmp	DWORD PTR i$[rsp], eax
 	jae	SHORT $LN6@GetRecordM
 

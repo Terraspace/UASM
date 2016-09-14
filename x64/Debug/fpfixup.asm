@@ -208,7 +208,7 @@ $LN4@AddFloatin:
 	je	SHORT $LN14@AddFloatin
 	movsxd	rax, DWORD PTR i$[rsp]
 	mov	rax, QWORD PTR sym$[rsp+rax*8]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	jne	SHORT $LN13@AddFloatin
 $LN14@AddFloatin:
 
@@ -228,7 +228,7 @@ $LN14@AddFloatin:
 
 	movsxd	rax, DWORD PTR i$[rsp]
 	mov	rax, QWORD PTR sym$[rsp+rax*8]
-	mov	DWORD PTR [rax+76], 0
+	mov	DWORD PTR [rax+84], 0
 $LN13@AddFloatin:
 $LN12@AddFloatin:
 
@@ -262,9 +262,9 @@ $LN15@AddFloatin:
 	cmp	DWORD PTR Options+160, 1
 	jne	SHORT $LN16@AddFloatin
 	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR ModuleInfo+432
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	ecx, DWORD PTR [rcx+8]
 	mov	eax, DWORD PTR [rax+12]
 	sub	eax, ecx

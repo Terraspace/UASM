@@ -283,7 +283,7 @@ $LN3@check_oper:
 	mov	rcx, QWORD PTR CodeInfo$[rsp]
 	mov	rax, QWORD PTR [rcx+rax+48]
 	mov	rax, QWORD PTR [rax+56]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	je	$LN9@check_oper
 $LN10@check_oper:
 
@@ -1206,7 +1206,7 @@ $LN46@match_phas:
 	mov	rcx, QWORD PTR CodeInfo$[rsp]
 	mov	rax, QWORD PTR [rcx+rax+48]
 	mov	rax, QWORD PTR [rax+56]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	je	SHORT $LN48@match_phas
 
 ; 1768 :                 break;

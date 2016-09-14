@@ -706,7 +706,7 @@ $LN9@print_sour:
 	mov	rax, QWORD PTR curr$[rsp]
 	mov	rax, QWORD PTR [rax+16]
 	mov	rax, QWORD PTR [rax+32]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	ecx, DWORD PTR [rax+28]
 	call	GetFName
 	mov	rcx, QWORD PTR [rax]

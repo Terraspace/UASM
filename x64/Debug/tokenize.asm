@@ -2018,10 +2018,10 @@ $LN12@get_specia:
 	cmp	QWORD PTR sym$1[rsp], 0
 	je	SHORT $LN14@get_specia
 	mov	rax, QWORD PTR sym$1[rsp]
-	cmp	DWORD PTR [rax+32], 9
+	cmp	DWORD PTR [rax+40], 9
 	jne	SHORT $LN14@get_specia
 	mov	rax, QWORD PTR sym$1[rsp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	shr	al, 1
 	and	al, 1
 	movzx	eax, al
@@ -4707,10 +4707,10 @@ $LN11@IsMultiLin:
 	cmp	QWORD PTR sym$[rsp], 0
 	je	SHORT $LN5@IsMultiLin
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 9
+	cmp	DWORD PTR [rax+40], 9
 	jne	SHORT $LN5@IsMultiLin
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	shr	al, 3
 	and	al, 1
 	movzx	eax, al

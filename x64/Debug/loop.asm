@@ -810,7 +810,7 @@ $LN2@LoopDirect:
 
 ; 166  :     memset( &tmpmacro, 0, sizeof(tmpmacro) );
 
-	mov	r8d, 120				; 00000078H
+	mov	r8d, 128				; 00000080H
 	xor	edx, edx
 	lea	rcx, QWORD PTR tmpmacro$[rbp]
 	call	memset
@@ -823,7 +823,7 @@ $LN2@LoopDirect:
 ; 168  :     tmpmacro.e.macroinfo = &macinfo;
 
 	lea	rax, QWORD PTR macinfo$[rbp]
-	mov	QWORD PTR tmpmacro$[rbp+96], rax
+	mov	QWORD PTR tmpmacro$[rbp+104], rax
 
 ; 169  :     memset( &macinfo, 0, sizeof(macinfo) );
 
@@ -886,10 +886,10 @@ $LN45@LoopDirect:
 ; 191  :     macro->sym.isfunc = FALSE;
 
 	mov	rax, QWORD PTR macro$[rbp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	and	al, 253					; 000000fdH
 	mov	rcx, QWORD PTR macro$[rbp]
-	mov	BYTE PTR [rcx+44], al
+	mov	BYTE PTR [rcx+52], al
 
 ; 192  : 
 ; 193  :     /* now run the just created macro in a loop */
@@ -1453,10 +1453,10 @@ $LN60@LoopDirect:
 ; 284  :         macro->sym.mac_vararg = FALSE;
 
 	mov	rax, QWORD PTR macro$[rbp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	and	al, 254					; 000000feH
 	mov	rcx, QWORD PTR macro$[rbp]
-	mov	BYTE PTR [rcx+44], al
+	mov	BYTE PTR [rcx+52], al
 
 ; 285  :         /* v2.09: flag MF_IGNARGS introduced. This allows RunMacro() to
 ; 286  :          * parse the full argument and trigger macro expansion if necessary.

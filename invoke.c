@@ -212,10 +212,11 @@ static int ms64_fcstart( struct dsym const *proc, int numparams, int start, stru
         for ( numparams = 0; tokenarray[start].token != T_FINAL; start++ )
         if (tokenarray[start].token == T_COMMA) {
           numparams++;
-          sym_ReservedStack->hasinvoke = 1;  //added by habran
+
         }
     }
-    DebugMsg1(("ms64_fcstart(%s, numparams=%u) vararg=%u\n", proc->sym.name, numparams, proc->e.procinfo->has_vararg ));
+	sym_ReservedStack->hasinvoke = 1;  //added by habran
+	DebugMsg1(("ms64_fcstart(%s, numparams=%u) vararg=%u\n", proc->sym.name, numparams, proc->e.procinfo->has_vararg ));
     if ( numparams < 4 )
         numparams = 4;
     else if ( numparams & 1 )
@@ -292,6 +293,7 @@ static int ms64_param( struct dsym const *proc, int index, struct dsym *param, b
             psize = SizeFromMemtype( opnd->mem_type, USE64, opnd->type );
         if ( psize < 4 )
             psize = 4;
+
     } else
         psize = SizeFromMemtype( param->sym.mem_type, USE64, param->sym.type );
 
@@ -991,8 +993,15 @@ vcall:
 		  else if (opnd->mem_type != MT_EMPTY) {
 			  size = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
 		  }
-		  else if (opnd->kind == EXPR_ADDR && opnd->sym->state == SYM_UNDEFINED) {
+		  else if (opnd->kind == EXPR_ADDR && opnd->sym != NULL && opnd->sym->state == SYM_UNDEFINED) {
 			  DebugMsg1(("ms64_param(%s, param=%u): forward ref=%s, assumed size=%u\n", proc->sym.name, index, opnd->sym->name, psize));
+			  size = psize;
+		  }
+		  else if (opnd->kind == EXPR_ADDR && opnd->sym == NULL) {
+			  size = psize;
+		  }
+		  else if (opnd->kind == EXPR_REG && opnd->indirect == TRUE)
+		  {
 			  size = psize;
 		  }
 		  else

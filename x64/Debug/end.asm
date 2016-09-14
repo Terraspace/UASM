@@ -410,13 +410,13 @@ $LN2@EndDirecti:
 ; 224  :         while ( CurrStruct->next )
 
 	mov	rax, QWORD PTR CurrStruct
-	cmp	QWORD PTR [rax+104], 0
+	cmp	QWORD PTR [rax+112], 0
 	je	SHORT $LN3@EndDirecti
 
 ; 225  :             CurrStruct = CurrStruct->next;
 
 	mov	rax, QWORD PTR CurrStruct
-	mov	rax, QWORD PTR [rax+104]
+	mov	rax, QWORD PTR [rax+112]
 	mov	QWORD PTR CurrStruct, rax
 	jmp	SHORT $LN2@EndDirecti
 $LN3@EndDirecti:
@@ -459,10 +459,10 @@ $LN11@EndDirecti:
 	cmp	QWORD PTR opndx$[rsp+80], 0
 	je	$LN9@EndDirecti
 	mov	rax, QWORD PTR opndx$[rsp+80]
-	cmp	DWORD PTR [rax+32], 1
+	cmp	DWORD PTR [rax+40], 1
 	je	SHORT $LN12@EndDirecti
 	mov	rax, QWORD PTR opndx$[rsp+80]
-	cmp	DWORD PTR [rax+32], 2
+	cmp	DWORD PTR [rax+40], 2
 	jne	$LN9@EndDirecti
 $LN12@EndDirecti:
 
@@ -549,10 +549,10 @@ $LN13@EndDirecti:
 ; 259  :             if ( opndx.sym->state != SYM_EXTERNAL && opndx.sym->ispublic == FALSE ) {
 
 	mov	rax, QWORD PTR opndx$[rsp+80]
-	cmp	DWORD PTR [rax+32], 2
+	cmp	DWORD PTR [rax+40], 2
 	je	SHORT $LN15@EndDirecti
 	mov	rax, QWORD PTR opndx$[rsp+80]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 7
 	and	al, 1
 	movzx	eax, al
@@ -562,10 +562,10 @@ $LN13@EndDirecti:
 ; 260  :                 opndx.sym->ispublic = TRUE;
 
 	mov	rax, QWORD PTR opndx$[rsp+80]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	or	al, 128					; 00000080H
 	mov	rcx, QWORD PTR opndx$[rsp+80]
-	mov	BYTE PTR [rcx+40], al
+	mov	BYTE PTR [rcx+48], al
 
 ; 261  :                 AddPublicData( opndx.sym );
 
@@ -627,16 +627,16 @@ $LN20@EndDirecti:
 ; 271  :         } else if ( opndx.sym->state != SYM_INTERNAL && opndx.sym->state != SYM_EXTERNAL ) {
 
 	mov	rax, QWORD PTR opndx$[rsp+80]
-	cmp	DWORD PTR [rax+32], 1
+	cmp	DWORD PTR [rax+40], 1
 	je	SHORT $LN22@EndDirecti
 	mov	rax, QWORD PTR opndx$[rsp+80]
-	cmp	DWORD PTR [rax+32], 2
+	cmp	DWORD PTR [rax+40], 2
 	je	SHORT $LN22@EndDirecti
 
 ; 272  :             DebugMsg(("EndDirective: start address invalid, sym->state=%X\n", opndx.sym->state ));
 
 	mov	rax, QWORD PTR opndx$[rsp+80]
-	mov	edx, DWORD PTR [rax+32]
+	mov	edx, DWORD PTR [rax+40]
 	lea	rcx, OFFSET FLAT:$SG11168
 	call	DoDebugMsg
 

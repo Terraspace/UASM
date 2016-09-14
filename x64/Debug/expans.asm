@@ -494,7 +494,7 @@ $LN12@ExpandToke:
 ; 1175 :                 if ( sym->state == SYM_MACRO ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 9
+	cmp	DWORD PTR [rax+40], 9
 	jne	$LN14@ExpandToke
 
 ; 1176 :                     tmp = i; /* save index of macro name */
@@ -505,7 +505,7 @@ $LN12@ExpandToke:
 ; 1177 :                     if ( sym->isfunc == TRUE ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	shr	al, 1
 	and	al, 1
 	movzx	eax, al
@@ -819,7 +819,7 @@ $LN31@ExpandToke:
 	cmp	DWORD PTR i$[rsp], 1
 	jne	SHORT $LN28@ExpandToke
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	shr	al, 2
 	and	al, 1
 	movzx	eax, al
@@ -963,7 +963,7 @@ $LN14@ExpandToke:
 ; 1280 :                 } else if( sym->state == SYM_TMACRO ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 10
+	cmp	DWORD PTR [rax+40], 10
 	jne	$LN35@ExpandToke
 
 ; 1281 : 
@@ -1961,17 +1961,17 @@ $LN6@ExpandTMac:
 	cmp	QWORD PTR sym$[rsp], 0
 	je	$LN9@ExpandTMac
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 9
+	cmp	DWORD PTR [rax+40], 9
 	jne	$LN9@ExpandTMac
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 1
 	and	al, 1
 	movzx	eax, al
 	cmp	eax, 1
 	jne	$LN9@ExpandTMac
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	shr	al, 1
 	and	al, 1
 	movzx	eax, al
@@ -2082,10 +2082,10 @@ $LN9@ExpandTMac:
 	cmp	QWORD PTR sym$[rsp], 0
 	je	$LN12@ExpandTMac
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 10
+	cmp	DWORD PTR [rax+40], 10
 	jne	$LN12@ExpandTMac
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 1
 	and	al, 1
 	movzx	eax, al
@@ -2174,7 +2174,7 @@ $LN13@ExpandTMac:
 	movsxd	rax, DWORD PTR i$[rsp]
 	imul	rax, rax, 32				; 00000020H
 	mov	rcx, QWORD PTR sym$[rsp]
-	movzx	ecx, BYTE PTR [rcx+72]
+	movzx	ecx, BYTE PTR [rcx+80]
 	mov	rdx, QWORD PTR tokenarray$[rsp]
 	add	rcx, QWORD PTR [rdx+rax+24]
 	mov	rax, rcx
@@ -2804,7 +2804,7 @@ $LN34@ExpandLine:
 	cmp	QWORD PTR sym$[rsp], 0
 	je	SHORT $LN35@ExpandLine
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 9
+	cmp	DWORD PTR [rax+40], 9
 	je	SHORT $LN35@ExpandLine
 
 ; 1502 :                     rc = ExpandToken( string, &count, tokenarray, 1, FALSE, FALSE );
@@ -3568,17 +3568,17 @@ $LN9@ExpandText:
 	cmp	QWORD PTR sym$[rsp], 0
 	je	SHORT $LN19@ExpandText
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 10
+	cmp	DWORD PTR [rax+40], 10
 	je	SHORT $LN20@ExpandText
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 9
+	cmp	DWORD PTR [rax+40], 9
 	jne	SHORT $LN19@ExpandText
 $LN20@ExpandText:
 
 ; 883  :                     DebugMsg1(( "ExpandText: symbol found: %s, %s, defined=%u, *pDst-1=%c\n", sym->name, sym->state == SYM_TMACRO ? "SYM_TMACRO" : "SYM_MACRO", sym->isdefined, *(pDst-1) ));
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 10
+	cmp	DWORD PTR [rax+40], 10
 	jne	SHORT $LN57@ExpandText
 	lea	rax, OFFSET FLAT:$SG11353
 	mov	QWORD PTR tv160[rsp], rax
@@ -3590,7 +3590,7 @@ $LN58@ExpandText:
 	mov	rax, QWORD PTR pDst$[rsp]
 	movsx	eax, BYTE PTR [rax-1]
 	mov	rcx, QWORD PTR sym$[rsp]
-	movzx	ecx, BYTE PTR [rcx+40]
+	movzx	ecx, BYTE PTR [rcx+48]
 	shr	cl, 1
 	and	cl, 1
 	movzx	ecx, cl
@@ -3610,7 +3610,7 @@ $LN19@ExpandText:
 	cmp	QWORD PTR sym$[rsp], 0
 	je	$LN21@ExpandText
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 1
 	and	al, 1
 	movzx	eax, al
@@ -3620,7 +3620,7 @@ $LN19@ExpandText:
 ; 887  :                     if ( sym->state == SYM_TMACRO ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 10
+	cmp	DWORD PTR [rax+40], 10
 	jne	$LN22@ExpandText
 
 ; 888  :                         /* v2.08: no expansion inside quoted strings without & */
@@ -3752,10 +3752,10 @@ $LN22@ExpandText:
 ; 907  :                     } else if ( sym->state == SYM_MACRO && sym->isfunc == TRUE ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 9
+	cmp	DWORD PTR [rax+40], 9
 	jne	$LN30@ExpandText
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	shr	al, 1
 	and	al, 1
 	movzx	eax, al
@@ -4096,7 +4096,7 @@ $LN30@ExpandText:
 ; 957  :                     } else if ( sym->state == SYM_MACRO ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 9
+	cmp	DWORD PTR [rax+40], 9
 	jne	SHORT $LN44@ExpandText
 
 ; 958  :                         macro_proc = TRUE;
@@ -4440,7 +4440,7 @@ $LN40@RunMacro:
 ; 187  :     info = macro->e.macroinfo;
 
 	mov	rax, QWORD PTR macro$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	QWORD PTR info$[rbp], rax
 
 ; 188  : #ifdef DEBUG_OUT
@@ -4463,7 +4463,7 @@ $LN40@RunMacro:
 ; 195  :     if ( macro->sym.isfunc ) {
 
 	mov	rax, QWORD PTR macro$[rbp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	shr	al, 1
 	and	al, 1
 	movzx	eax, al
@@ -4506,7 +4506,7 @@ $LN41@RunMacro:
 ; 204  :     if ( macro->sym.purged ) {
 
 	mov	rax, QWORD PTR macro$[rbp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	shr	al, 4
 	and	al, 1
 	movzx	eax, al
@@ -4600,7 +4600,7 @@ $LN43@RunMacro:
 ; 217  :     DebugMsg1(( "RunMacro(%s): params=>%s< parmcnt=%u vararg=%u\n", macro->sym.name, tokenarray[idx].tokpos, info->parmcnt, macro->sym.mac_vararg ));
 
 	mov	rax, QWORD PTR macro$[rbp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	and	al, 1
 	movzx	eax, al
 	mov	rcx, QWORD PTR info$[rbp]
@@ -4673,7 +4673,7 @@ $LN49@RunMacro:
 ; 234  :     if ( macro->sym.label ) {
 
 	mov	rax, QWORD PTR macro$[rbp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	shr	al, 2
 	and	al, 1
 	movzx	eax, al
@@ -4831,7 +4831,7 @@ $LN53@RunMacro:
 	cmp	eax, 44					; 0000002cH
 	jne	$LN54@RunMacro
 	mov	rax, QWORD PTR macro$[rbp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	and	al, 1
 	movzx	eax, al
 	test	eax, eax
@@ -5146,20 +5146,20 @@ $LN12@RunMacro:
 	cmp	QWORD PTR sym$[rbp], 0
 	je	SHORT $LN69@RunMacro
 	mov	rax, QWORD PTR sym$[rbp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 1
 	and	al, 1
 	movzx	eax, al
 	test	eax, eax
 	je	SHORT $LN69@RunMacro
 	mov	rax, QWORD PTR sym$[rbp]
-	cmp	DWORD PTR [rax+32], 10
+	cmp	DWORD PTR [rax+40], 10
 	je	SHORT $LN70@RunMacro
 	mov	rax, QWORD PTR sym$[rbp]
-	cmp	DWORD PTR [rax+32], 9
+	cmp	DWORD PTR [rax+40], 9
 	jne	SHORT $LN69@RunMacro
 	mov	rax, QWORD PTR sym$[rbp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	shr	al, 1
 	and	al, 1
 	movzx	eax, al
@@ -6105,17 +6105,17 @@ $LN100@RunMacro:
 ; 472  :                                 sym->isfunc == TRUE && tokenarray[idx+1].token == T_OP_BRACKET ) {
 
 	mov	rax, QWORD PTR sym$[rbp]
-	cmp	DWORD PTR [rax+32], 9
+	cmp	DWORD PTR [rax+40], 9
 	jne	$LN104@RunMacro
 	mov	rax, QWORD PTR sym$[rbp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 1
 	and	al, 1
 	movzx	eax, al
 	cmp	eax, 1
 	jne	$LN104@RunMacro
 	mov	rax, QWORD PTR sym$[rbp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	shr	al, 1
 	and	al, 1
 	movzx	eax, al
@@ -6259,17 +6259,17 @@ $LN104@RunMacro:
 ; 490  :                             } else if ( sym->state == SYM_TMACRO && sym->isdefined == TRUE &&
 
 	mov	rax, QWORD PTR sym$[rbp]
-	cmp	DWORD PTR [rax+32], 10
+	cmp	DWORD PTR [rax+40], 10
 	jne	$LN108@RunMacro
 	mov	rax, QWORD PTR sym$[rbp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 1
 	and	al, 1
 	movzx	eax, al
 	cmp	eax, 1
 	jne	$LN108@RunMacro
 	mov	rax, QWORD PTR macro$[rbp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 5
 	and	al, 1
 	movzx	eax, al
@@ -6340,7 +6340,7 @@ $LN104@RunMacro:
 	movsxd	rcx, DWORD PTR idx$[rbp]
 	imul	rcx, rcx, 32				; 00000020H
 	mov	rdx, QWORD PTR sym$[rbp]
-	movzx	edx, BYTE PTR [rdx+72]
+	movzx	edx, BYTE PTR [rdx+80]
 	mov	r8, QWORD PTR tokenarray$[rbp]
 	mov	rcx, QWORD PTR [r8+rcx+24]
 	add	rcx, rdx
@@ -6355,7 +6355,7 @@ $LN104@RunMacro:
 	movsxd	rcx, DWORD PTR idx$[rbp]
 	imul	rcx, rcx, 32				; 00000020H
 	mov	rdx, QWORD PTR sym$[rbp]
-	movzx	edx, BYTE PTR [rdx+72]
+	movzx	edx, BYTE PTR [rdx+80]
 	mov	r8, QWORD PTR tokenarray$[rbp]
 	add	rdx, QWORD PTR [r8+rcx+24]
 	mov	rcx, rdx
@@ -6641,7 +6641,7 @@ $LN9@RunMacro:
 ; 542  :             if (  macro->sym.mac_vararg && ( parmidx == info->parmcnt - 1 ) ) {
 
 	mov	rax, QWORD PTR macro$[rbp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	and	al, 1
 	movzx	eax, al
 	test	eax, eax
@@ -6679,7 +6679,7 @@ $LN116@RunMacro:
 ; 546  :                 currparm = ( macro->sym.predefined ? GetAlignedPointer( currparm, ptr - currparm ) : ptr );
 
 	mov	rax, QWORD PTR macro$[rbp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 5
 	and	al, 1
 	movzx	eax, al
@@ -6723,7 +6723,7 @@ $LN180@RunMacro:
 ; 551  :                     if ( macro->sym.isfunc == FALSE || tokenarray[idx].token != parm_end_delim ) {
 
 	mov	rax, QWORD PTR macro$[rbp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	shr	al, 1
 	and	al, 1
 	movzx	eax, al
@@ -6746,7 +6746,7 @@ $LN119@RunMacro:
 ; 553  :                         if ( !macro->sym.predefined ) {
 
 	mov	rax, QWORD PTR macro$[rbp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 5
 	and	al, 1
 	movzx	eax, al
@@ -7008,7 +7008,7 @@ $LN124@RunMacro:
 ; 601  :     if ( macro->sym.predefined == TRUE && macro->sym.func_ptr != NULL ) {
 
 	mov	rax, QWORD PTR macro$[rbp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 5
 	and	al, 1
 	movzx	eax, al
@@ -7123,7 +7123,7 @@ $LN130@RunMacro:
 ; 646  :         if ( macro->sym.isfunc == FALSE && *macro->sym.name )
 
 	mov	rax, QWORD PTR macro$[rbp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	shr	al, 1
 	and	al, 1
 	movzx	eax, al

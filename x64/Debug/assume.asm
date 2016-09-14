@@ -676,7 +676,7 @@ $LN58@AssumeDire:
 	movsxd	rax, DWORD PTR j$[rsp]
 	lea	rcx, OFFSET FLAT:stdsym
 	mov	rax, QWORD PTR [rcx+rax*8]
-	mov	BYTE PTR [rax+66], 3
+	mov	BYTE PTR [rax+74], 3
 $LN30@AssumeDire:
 
 ; 382  :             }
@@ -687,7 +687,7 @@ $LN30@AssumeDire:
 	lea	rcx, OFFSET FLAT:stdsym
 	mov	rax, QWORD PTR [rcx+rax*8]
 	mov	ecx, DWORD PTR ti$[rsp]
-	mov	DWORD PTR [rax+56], ecx
+	mov	DWORD PTR [rax+64], ecx
 
 ; 385  :             stdsym[j]->mem_type   = ti.mem_type;
 
@@ -695,7 +695,7 @@ $LN30@AssumeDire:
 	lea	rcx, OFFSET FLAT:stdsym
 	mov	rax, QWORD PTR [rcx+rax*8]
 	mov	ecx, DWORD PTR ti$[rsp+16]
-	mov	DWORD PTR [rax+36], ecx
+	mov	DWORD PTR [rax+44], ecx
 
 ; 386  :             stdsym[j]->is_ptr     = ti.is_ptr;
 
@@ -703,7 +703,7 @@ $LN30@AssumeDire:
 	lea	rcx, OFFSET FLAT:stdsym
 	mov	rax, QWORD PTR [rcx+rax*8]
 	movzx	ecx, BYTE PTR ti$[rsp+20]
-	mov	BYTE PTR [rax+45], cl
+	mov	BYTE PTR [rax+53], cl
 
 ; 387  :             stdsym[j]->isfar      = ti.is_far;
 
@@ -713,13 +713,13 @@ $LN30@AssumeDire:
 	movzx	ecx, BYTE PTR ti$[rsp+21]
 	and	cl, 1
 	shl	cl, 4
-	movzx	eax, BYTE PTR [rax+47]
+	movzx	eax, BYTE PTR [rax+55]
 	and	al, 239					; 000000efH
 	or	al, cl
 	movsxd	rcx, DWORD PTR j$[rsp]
 	lea	rdx, OFFSET FLAT:stdsym
 	mov	rcx, QWORD PTR [rdx+rcx*8]
-	mov	BYTE PTR [rcx+47], al
+	mov	BYTE PTR [rcx+55], al
 
 ; 388  :             stdsym[j]->Ofssize    = ti.Ofssize;
 
@@ -727,7 +727,7 @@ $LN30@AssumeDire:
 	lea	rcx, OFFSET FLAT:stdsym
 	mov	rax, QWORD PTR [rcx+rax*8]
 	movzx	ecx, BYTE PTR ti$[rsp+22]
-	mov	BYTE PTR [rax+44], cl
+	mov	BYTE PTR [rax+52], cl
 
 ; 389  :             stdsym[j]->ptr_memtype = ti.ptr_memtype; /* added v2.05 rc13 */
 
@@ -735,7 +735,7 @@ $LN30@AssumeDire:
 	lea	rcx, OFFSET FLAT:stdsym
 	mov	rax, QWORD PTR [rcx+rax*8]
 	movzx	ecx, BYTE PTR ti$[rsp+24]
-	mov	BYTE PTR [rax+46], cl
+	mov	BYTE PTR [rax+54], cl
 
 ; 390  :             if ( ti.mem_type == MT_TYPE )
 
@@ -748,7 +748,7 @@ $LN30@AssumeDire:
 	lea	rcx, OFFSET FLAT:stdsym
 	mov	rax, QWORD PTR [rcx+rax*8]
 	mov	rcx, QWORD PTR ti$[rsp+8]
-	mov	QWORD PTR [rax+80], rcx
+	mov	QWORD PTR [rax+88], rcx
 	jmp	SHORT $LN32@AssumeDire
 $LN31@AssumeDire:
 
@@ -759,7 +759,7 @@ $LN31@AssumeDire:
 	lea	rcx, OFFSET FLAT:stdsym
 	mov	rax, QWORD PTR [rcx+rax*8]
 	mov	rcx, QWORD PTR ti$[rsp+8]
-	mov	QWORD PTR [rax+48], rcx
+	mov	QWORD PTR [rax+56], rcx
 $LN32@AssumeDire:
 
 ; 394  : 
@@ -832,7 +832,7 @@ $LN35@AssumeDire:
 ; 407  :                 } else if ( opnd.sym->state == SYM_UNDEFINED ) {
 
 	mov	rax, QWORD PTR opnd$1[rsp+80]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	jne	SHORT $LN38@AssumeDire
 
 ; 408  :                     /* ensure that directive is rerun in pass 2
@@ -859,10 +859,10 @@ $LN38@AssumeDire:
 ; 413  :                 } else if ( ( opnd.sym->state == SYM_SEG || opnd.sym->state == SYM_GRP ) && opnd.instr == EMPTY ) {
 
 	mov	rax, QWORD PTR opnd$1[rsp+80]
-	cmp	DWORD PTR [rax+32], 3
+	cmp	DWORD PTR [rax+40], 3
 	je	SHORT $LN44@AssumeDire
 	mov	rax, QWORD PTR opnd$1[rsp+80]
-	cmp	DWORD PTR [rax+32], 4
+	cmp	DWORD PTR [rax+40], 4
 	jne	SHORT $LN42@AssumeDire
 $LN44@AssumeDire:
 	cmp	DWORD PTR opnd$1[rsp+56], -2
@@ -885,7 +885,7 @@ $LN42@AssumeDire:
 
 	mov	rax, QWORD PTR info$[rsp]
 	mov	rcx, QWORD PTR opnd$1[rsp+80]
-	mov	rcx, QWORD PTR [rcx+24]
+	mov	rcx, QWORD PTR [rcx+32]
 	mov	QWORD PTR [rax], rcx
 
 ; 417  :                 } else {
@@ -1125,7 +1125,7 @@ $LN4@GetStdAssu:
 	lea	rcx, OFFSET FLAT:StdAssumeTable
 	mov	rax, QWORD PTR [rcx+rax]
 	mov	rcx, QWORD PTR ti$[rsp]
-	mov	rax, QWORD PTR [rax+80]
+	mov	rax, QWORD PTR [rax+88]
 	mov	QWORD PTR [rcx], rax
 
 ; 134  :             ti->target_type = StdAssumeTable[i].symbol->target_type;
@@ -1135,7 +1135,7 @@ $LN4@GetStdAssu:
 	lea	rcx, OFFSET FLAT:StdAssumeTable
 	mov	rax, QWORD PTR [rcx+rax]
 	mov	rcx, QWORD PTR ti$[rsp]
-	mov	rax, QWORD PTR [rax+48]
+	mov	rax, QWORD PTR [rax+56]
 	mov	QWORD PTR [rcx+8], rax
 
 ; 135  :             ti->mem_type    = StdAssumeTable[i].symbol->mem_type;
@@ -1145,7 +1145,7 @@ $LN4@GetStdAssu:
 	lea	rcx, OFFSET FLAT:StdAssumeTable
 	mov	rax, QWORD PTR [rcx+rax]
 	mov	rcx, QWORD PTR ti$[rsp]
-	mov	eax, DWORD PTR [rax+36]
+	mov	eax, DWORD PTR [rax+44]
 	mov	DWORD PTR [rcx+16], eax
 
 ; 136  :             ti->ptr_memtype = StdAssumeTable[i].symbol->ptr_memtype;
@@ -1155,7 +1155,7 @@ $LN4@GetStdAssu:
 	lea	rcx, OFFSET FLAT:StdAssumeTable
 	mov	rax, QWORD PTR [rcx+rax]
 	mov	rcx, QWORD PTR ti$[rsp]
-	movzx	eax, BYTE PTR [rax+46]
+	movzx	eax, BYTE PTR [rax+54]
 	mov	BYTE PTR [rcx+20], al
 
 ; 137  :             ti->is_ptr      = StdAssumeTable[i].symbol->is_ptr;
@@ -1165,7 +1165,7 @@ $LN4@GetStdAssu:
 	lea	rcx, OFFSET FLAT:StdAssumeTable
 	mov	rax, QWORD PTR [rcx+rax]
 	mov	rcx, QWORD PTR ti$[rsp]
-	movzx	eax, BYTE PTR [rax+45]
+	movzx	eax, BYTE PTR [rax+53]
 	mov	BYTE PTR [rcx+21], al
 $LN5@GetStdAssu:
 
@@ -1241,7 +1241,7 @@ $LN4@SetStdAssu:
 	mov	rax, QWORD PTR [rcx+rax]
 	mov	rcx, QWORD PTR ti$[rsp]
 	mov	rcx, QWORD PTR [rcx]
-	mov	QWORD PTR [rax+80], rcx
+	mov	QWORD PTR [rax+88], rcx
 
 ; 117  :             StdAssumeTable[i].symbol->target_type = ti->target_type;
 
@@ -1251,7 +1251,7 @@ $LN4@SetStdAssu:
 	mov	rax, QWORD PTR [rcx+rax]
 	mov	rcx, QWORD PTR ti$[rsp]
 	mov	rcx, QWORD PTR [rcx+8]
-	mov	QWORD PTR [rax+48], rcx
+	mov	QWORD PTR [rax+56], rcx
 
 ; 118  :             StdAssumeTable[i].symbol->mem_type    = ti->mem_type;
 
@@ -1261,7 +1261,7 @@ $LN4@SetStdAssu:
 	mov	rax, QWORD PTR [rcx+rax]
 	mov	rcx, QWORD PTR ti$[rsp]
 	mov	ecx, DWORD PTR [rcx+16]
-	mov	DWORD PTR [rax+36], ecx
+	mov	DWORD PTR [rax+44], ecx
 
 ; 119  :             StdAssumeTable[i].symbol->ptr_memtype = ti->ptr_memtype;
 
@@ -1271,7 +1271,7 @@ $LN4@SetStdAssu:
 	mov	rax, QWORD PTR [rcx+rax]
 	mov	rcx, QWORD PTR ti$[rsp]
 	movzx	ecx, BYTE PTR [rcx+20]
-	mov	BYTE PTR [rax+46], cl
+	mov	BYTE PTR [rax+54], cl
 
 ; 120  :             StdAssumeTable[i].symbol->is_ptr      = ti->is_ptr;
 
@@ -1281,7 +1281,7 @@ $LN4@SetStdAssu:
 	mov	rax, QWORD PTR [rcx+rax]
 	mov	rcx, QWORD PTR ti$[rsp]
 	movzx	ecx, BYTE PTR [rcx+21]
-	mov	BYTE PTR [rax+45], cl
+	mov	BYTE PTR [rax+53], cl
 $LN5@SetStdAssu:
 
 ; 121  :         }
@@ -1585,7 +1585,7 @@ GetStdAssume PROC
 	imul	rax, rax, 16
 	lea	rcx, OFFSET FLAT:StdAssumeTable
 	mov	rax, QWORD PTR [rcx+rax]
-	cmp	DWORD PTR [rax+36], 196			; 000000c4H
+	cmp	DWORD PTR [rax+44], 196			; 000000c4H
 	jne	SHORT $LN3@GetStdAssu
 
 ; 260  :             return( StdAssumeTable[reg].symbol->type );
@@ -1594,7 +1594,7 @@ GetStdAssume PROC
 	imul	rax, rax, 16
 	lea	rcx, OFFSET FLAT:StdAssumeTable
 	mov	rax, QWORD PTR [rcx+rax]
-	mov	rax, QWORD PTR [rax+80]
+	mov	rax, QWORD PTR [rax+88]
 	jmp	SHORT $LN1@GetStdAssu
 	jmp	SHORT $LN4@GetStdAssu
 $LN3@GetStdAssu:
@@ -1606,7 +1606,7 @@ $LN3@GetStdAssu:
 	imul	rax, rax, 16
 	lea	rcx, OFFSET FLAT:StdAssumeTable
 	mov	rax, QWORD PTR [rcx+rax]
-	mov	rax, QWORD PTR [rax+48]
+	mov	rax, QWORD PTR [rax+56]
 	jmp	SHORT $LN1@GetStdAssu
 $LN4@GetStdAssu:
 $LN2@GetStdAssu:
@@ -1725,7 +1725,7 @@ $LN3@GetAssume:
 ; 537  :     } else if ( sym->state == SYM_STACK ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 5
+	cmp	DWORD PTR [rax+40], 5
 	jne	SHORT $LN5@GetAssume
 
 ; 538  :         /* stack symbols don't have a segment part.
@@ -1747,7 +1747,7 @@ $LN5@GetAssume:
 	mov	r8b, 1
 	mov	edx, DWORD PTR def$[rsp]
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rcx, QWORD PTR [rax+24]
+	mov	rcx, QWORD PTR [rax+32]
 	call	search_assume
 	mov	DWORD PTR reg$[rsp], eax
 $LN6@GetAssume:
@@ -1764,10 +1764,10 @@ $LN4@GetAssume:
 	cmp	QWORD PTR sym$[rsp], 0
 	je	SHORT $LN8@GetAssume
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 2
+	cmp	DWORD PTR [rax+40], 2
 	jne	SHORT $LN8@GetAssume
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	QWORD PTR [rax+24], 0
+	cmp	QWORD PTR [rax+32], 0
 	jne	SHORT $LN8@GetAssume
 
 ; 549  :             reg = def;

@@ -246,7 +246,7 @@ $LN14@ErrorDirec:
 	cmp	QWORD PTR opndx$[rsp+80], 0
 	je	SHORT $LN16@ErrorDirec
 	mov	rax, QWORD PTR opndx$[rsp+80]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	jne	SHORT $LN16@ErrorDirec
 
 ; 476  :             ;//opndx.value += opndx.sym->offset;
@@ -489,10 +489,10 @@ $LN27@ErrorDirec:
 	cmp	QWORD PTR sym$[rsp], 0
 	je	$LN28@ErrorDirec
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 7
+	cmp	DWORD PTR [rax+40], 7
 	je	SHORT $LN30@ErrorDirec
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	QWORD PTR [rax+80], 0
+	cmp	QWORD PTR [rax+88], 0
 	je	$LN28@ErrorDirec
 $LN30@ErrorDirec:
 
@@ -520,13 +520,13 @@ $LN9@ErrorDirec:
 ; 535  :                 if ( sym->state != SYM_TYPE )
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 7
+	cmp	DWORD PTR [rax+40], 7
 	je	SHORT $LN31@ErrorDirec
 
 ; 536  :                     sym = sym->type;
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rax, QWORD PTR [rax+80]
+	mov	rax, QWORD PTR [rax+88]
 	mov	QWORD PTR sym$[rsp], rax
 $LN31@ErrorDirec:
 
@@ -661,7 +661,7 @@ $LN29@ErrorDirec:
 	cmp	QWORD PTR sym$[rsp], 0
 	je	SHORT $LN36@ErrorDirec
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	jne	SHORT $LN36@ErrorDirec
 
 ; 552  :             sym = NULL;
@@ -2149,10 +2149,10 @@ $LN52@CondAsmDir:
 	cmp	QWORD PTR sym$1[rsp], 0
 	je	$LN56@CondAsmDir
 	mov	rax, QWORD PTR sym$1[rsp]
-	cmp	DWORD PTR [rax+32], 7
+	cmp	DWORD PTR [rax+40], 7
 	je	SHORT $LN58@CondAsmDir
 	mov	rax, QWORD PTR sym$1[rsp]
-	cmp	QWORD PTR [rax+80], 0
+	cmp	QWORD PTR [rax+88], 0
 	je	$LN56@CondAsmDir
 $LN58@CondAsmDir:
 
@@ -2174,13 +2174,13 @@ $LN8@CondAsmDir:
 ; 375  :                     if ( sym->state != SYM_TYPE )
 
 	mov	rax, QWORD PTR sym$1[rsp]
-	cmp	DWORD PTR [rax+32], 7
+	cmp	DWORD PTR [rax+40], 7
 	je	SHORT $LN59@CondAsmDir
 
 ; 376  :                         sym = sym->type;
 
 	mov	rax, QWORD PTR sym$1[rsp]
-	mov	rax, QWORD PTR [rax+80]
+	mov	rax, QWORD PTR [rax+88]
 	mov	QWORD PTR sym$1[rsp], rax
 $LN59@CondAsmDir:
 
@@ -2275,7 +2275,7 @@ $LN54@CondAsmDir:
 	cmp	QWORD PTR ModuleInfo+440, 0
 	je	SHORT $LN99@CondAsmDir
 	mov	rax, QWORD PTR ModuleInfo+440
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 1
 	and	al, 1
 	movzx	eax, al
@@ -2673,13 +2673,13 @@ check_defd PROC
 ; 184  :             DebugMsg1(("check_defd(%s): state=%u defined=%u\n", name, sym->state, sym->isdefined ));
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 1
 	and	al, 1
 	movzx	eax, al
 	mov	r9d, eax
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	r8d, DWORD PTR [rax+32]
+	mov	r8d, DWORD PTR [rax+40]
 	mov	rdx, QWORD PTR name$[rsp]
 	lea	rcx, OFFSET FLAT:$SG11061
 	call	DoDebugMsg1
@@ -2689,7 +2689,7 @@ check_defd PROC
 ; 187  :             return( sym->isdefined );
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 1
 	and	al, 1
 	jmp	SHORT $LN1@check_defd

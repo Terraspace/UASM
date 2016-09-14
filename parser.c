@@ -3167,17 +3167,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 			break;
 
 		/* inject xmmword ptr to relevant sse instructions */
-		if (Options.masm_compat_gencode && tokenarray[i].token == T_COMMA && (CodeInfo.token == T_SUBPD) ||
-			(CodeInfo.token == T_SUBPS) || 
-			(CodeInfo.token == T_ADDPS) ||  
-			(CodeInfo.token == T_ADDPD) || 
-			(CodeInfo.token == T_MULPD) ||
-			(CodeInfo.token == T_MULPS) ||
-			(CodeInfo.token == T_ANDPD) ||
-			(CodeInfo.token == T_ANDPS) ||
-			(CodeInfo.token == T_MOVAPD) ||
-			(CodeInfo.token == T_MOVAPS) || 
-			(CodeInfo.token == T_MOVUPS))
+		if (Options.masm_compat_gencode && tokenarray[i].token == T_COMMA && (CodeInfo.token == T_SUBPD) ||(CodeInfo.token == T_SUBPS) || (CodeInfo.token == T_ADDPS) ||  (CodeInfo.token == T_ADDPD) || (CodeInfo.token == T_MULPD) || (CodeInfo.token == T_MULPS) || (CodeInfo.token == T_ANDPD) || (CodeInfo.token == T_ANDPS) || (CodeInfo.token == T_MOVAPD) || (CodeInfo.token == T_MOVAPS) || (CodeInfo.token == T_MOVUPS))
 		{
 
 			xmmOver0.tokpos = tokenarray[i].tokpos;
@@ -3197,9 +3187,10 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 			tokenarray[i + 2] = xmmOver1;
 			ModuleInfo.token_count += 2;
 		}
+	skipxmmsub:
+		i++;
 
-		skipxmmsub:
-      i++;
+
     }
 
     DebugMsg1(("ParseLine(%s): calling EvalOperand, i=%u\n", instr, i));

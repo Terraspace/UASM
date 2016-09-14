@@ -1373,7 +1373,7 @@ $LN8@AliasDirec:
 	cmp	QWORD PTR sym$[rsp], 0
 	je	SHORT $LN10@AliasDirec
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	jne	$LN9@AliasDirec
 $LN10@AliasDirec:
 
@@ -1399,7 +1399,7 @@ $LN10@AliasDirec:
 ; 346  :             sym2->state = SYM_UNDEFINED;
 
 	mov	rax, QWORD PTR sym2$1[rsp]
-	mov	DWORD PTR [rax+32], 0
+	mov	DWORD PTR [rax+40], 0
 
 ; 347  :             sym_add_table( &SymTables[TAB_UNDEF], (struct dsym *)sym2 );
 
@@ -1420,13 +1420,13 @@ $LN11@AliasDirec:
 ; 349  :                    sym2->state != SYM_INTERNAL &&
 
 	mov	rax, QWORD PTR sym2$1[rsp]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	je	SHORT $LN13@AliasDirec
 	mov	rax, QWORD PTR sym2$1[rsp]
-	cmp	DWORD PTR [rax+32], 1
+	cmp	DWORD PTR [rax+40], 1
 	je	SHORT $LN13@AliasDirec
 	mov	rax, QWORD PTR sym2$1[rsp]
-	cmp	DWORD PTR [rax+32], 2
+	cmp	DWORD PTR [rax+40], 2
 	je	SHORT $LN13@AliasDirec
 
 ; 350  :                    sym2->state != SYM_EXTERNAL ) {
@@ -1473,7 +1473,7 @@ $LN15@AliasDirec:
 ; 358  :         sym->state = SYM_ALIAS;
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	DWORD PTR [rax+32], 8
+	mov	DWORD PTR [rax+40], 8
 
 ; 359  :         sym->substitute = sym2;
 
@@ -1486,8 +1486,8 @@ $LN15@AliasDirec:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rcx, QWORD PTR sym2$1[rsp]
-	mov	ecx, DWORD PTR [rcx+76]
-	mov	DWORD PTR [rax+76], ecx
+	mov	ecx, DWORD PTR [rcx+84]
+	mov	DWORD PTR [rax+84], ecx
 
 ; 362  :         sym_add_table( &SymTables[TAB_ALIAS], (struct dsym *)sym ); /* add ALIAS */
 
@@ -1510,7 +1510,7 @@ $LN9@AliasDirec:
 ; 365  :     if ( sym->state != SYM_ALIAS || ( strcmp( sym->substitute->name, subst ) != 0 )) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 8
+	cmp	DWORD PTR [rax+40], 8
 	jne	SHORT $LN17@AliasDirec
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+16]
@@ -1560,7 +1560,7 @@ $LN20@AliasDirec:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+16]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	jne	SHORT $LN21@AliasDirec
 
 ; 379  :                 return( EmitErr( SYMBOL_NOT_DEFINED, subst ) );
@@ -1576,15 +1576,15 @@ $LN21@AliasDirec:
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+16]
-	cmp	DWORD PTR [rax+32], 2
+	cmp	DWORD PTR [rax+40], 2
 	je	SHORT $LN23@AliasDirec
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+16]
-	cmp	DWORD PTR [rax+32], 1
+	cmp	DWORD PTR [rax+40], 1
 	jne	SHORT $LN24@AliasDirec
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rax, QWORD PTR [rax+16]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 7
 	and	al, 1
 	movzx	eax, al

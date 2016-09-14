@@ -3231,7 +3231,11 @@ void write_prologue( struct asm_tok tokenarray[] )
     if ( ModuleInfo.fctype == FCT_WIN64 && ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) ) {
         /* in pass one init reserved stack with 4*8 to force stack frame creation */
         sym_ReservedStack->value = ( Parse_Pass == PASS_1 ? 4 * sizeof( uint_64 ) : CurrProc->e.procinfo->ReservedStack );
-        if (Parse_Pass == PASS_1) sym_ReservedStack->hasinvoke = 0;
+		if (Parse_Pass == PASS_1)
+		{
+			sym_ReservedStack->value = 0;
+			sym_ReservedStack->hasinvoke = 0;
+		}
     }
 #endif
     if ( Parse_Pass == PASS_1 ) {

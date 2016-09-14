@@ -270,7 +270,7 @@ $LN9@AlignDirec:
 ; 217  :                 align_value = CurrStruct->e.structinfo->alignment;
 
 	mov	rax, QWORD PTR CurrStruct
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+28]
 	mov	DWORD PTR opndx$[rsp], eax
 	jmp	SHORT $LN15@AlignDirec
@@ -397,7 +397,7 @@ $LN22@AlignDirec:
 	cmp	DWORD PTR Parse_Pass, 0
 	jne	SHORT $LN24@AlignDirec
 	mov	rax, QWORD PTR ModuleInfo+440
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 1
 	and	al, 1
 	movzx	eax, al
@@ -430,19 +430,19 @@ $LN23@AlignDirec:
 	cmp	QWORD PTR ModuleInfo+432, 0
 	je	SHORT $LN25@AlignDirec
 	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	QWORD PTR [rax+40], 0
 	je	SHORT $LN25@AlignDirec
 
 ; 252  :         CurrSeg->e.seginfo->FixupList.head->orgoccured = TRUE;
 
 	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax+40]
 	movzx	eax, BYTE PTR [rax+33]
 	or	al, 2
 	mov	rcx, QWORD PTR ModuleInfo+432
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	rcx, QWORD PTR [rcx+40]
 	mov	BYTE PTR [rcx+33], al
 $LN25@AlignDirec:
@@ -544,7 +544,7 @@ fill_in_objfile_space PROC
 ; 143  :     if( CurrSeg->e.seginfo->written == FALSE ) {
 
 	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+107]
 	shr	al, 5
 	and	al, 1
@@ -567,7 +567,7 @@ $LN13@fill_in_ob:
 ; 147  :     } else if( CurrSeg->e.seginfo->segtype != SEGTYPE_CODE ) {
 
 	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	DWORD PTR [rax+72], 1
 	je	SHORT $LN15@fill_in_ob
 
@@ -869,19 +869,19 @@ $LN8@OrgDirecti:
 	cmp	DWORD PTR Parse_Pass, 0
 	jne	SHORT $LN11@OrgDirecti
 	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	QWORD PTR [rax+40], 0
 	je	SHORT $LN11@OrgDirecti
 
 ; 120  :             CurrSeg->e.seginfo->FixupList.head->orgoccured = TRUE;
 
 	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax+40]
 	movzx	eax, BYTE PTR [rax+33]
 	or	al, 2
 	mov	rcx, QWORD PTR ModuleInfo+432
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	rcx, QWORD PTR [rcx+40]
 	mov	BYTE PTR [rcx+33], al
 $LN11@OrgDirecti:

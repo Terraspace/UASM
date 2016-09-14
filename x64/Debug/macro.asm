@@ -373,7 +373,7 @@ $LN6@PurgeDirec:
 ; 748  :         if ( sym->state != SYM_MACRO ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 9
+	cmp	DWORD PTR [rax+40], 9
 	je	SHORT $LN7@PurgeDirec
 
 ; 749  :             return( EmitErr( EXPECTED, "macro name" ) );
@@ -403,18 +403,18 @@ $LN7@PurgeDirec:
 ; 762  :         sym->variable = TRUE;
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	or	al, 64					; 00000040H
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	BYTE PTR [rcx+40], al
+	mov	BYTE PTR [rcx+48], al
 
 ; 763  :         sym->purged = TRUE;
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	or	al, 16
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	BYTE PTR [rcx+44], al
+	mov	BYTE PTR [rcx+52], al
 
 ; 764  : #endif
 ; 765  :         i++;
@@ -544,13 +544,13 @@ $LN2@MacroDir:
 ; 686  :     } else if( macro->sym.state != SYM_MACRO ) {
 
 	mov	rax, QWORD PTR macro$[rsp]
-	cmp	DWORD PTR [rax+32], 9
+	cmp	DWORD PTR [rax+40], 9
 	je	SHORT $LN4@MacroDir
 
 ; 687  :         if ( macro->sym.state != SYM_UNDEFINED ) {
 
 	mov	rax, QWORD PTR macro$[rsp]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	je	SHORT $LN5@MacroDir
 
 ; 688  :             return( EmitErr( SYMBOL_REDEFINITION, name ) );
@@ -582,21 +582,21 @@ $LN5@MacroDir:
 ; 697  :         macro->sym.state = SYM_MACRO;
 
 	mov	rax, QWORD PTR macro$[rsp]
-	mov	DWORD PTR [rax+32], 9
+	mov	DWORD PTR [rax+40], 9
 
 ; 698  :         macro->e.macroinfo = LclAlloc( sizeof( struct macro_info ) );
 
 	mov	ecx, 32					; 00000020H
 	call	LclAlloc
 	mov	rcx, QWORD PTR macro$[rsp]
-	mov	QWORD PTR [rcx+96], rax
+	mov	QWORD PTR [rcx+104], rax
 
 ; 699  :         memset( macro->e.macroinfo, 0, sizeof( struct macro_info ) );
 
 	mov	r8d, 32					; 00000020H
 	xor	edx, edx
 	mov	rax, QWORD PTR macro$[rsp]
-	mov	rcx, QWORD PTR [rax+96]
+	mov	rcx, QWORD PTR [rax+104]
 	call	memset
 $LN4@MacroDir:
 $LN3@MacroDir:
@@ -606,7 +606,7 @@ $LN3@MacroDir:
 
 	call	get_curr_srcfile
 	mov	rcx, QWORD PTR macro$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	DWORD PTR [rcx+28], eax
 
 ; 702  : 
@@ -615,7 +615,7 @@ $LN3@MacroDir:
 	cmp	DWORD PTR Parse_Pass, 0
 	je	SHORT $LN8@MacroDir
 	mov	rax, QWORD PTR macro$[rsp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 6
 	and	al, 1
 	movzx	eax, al
@@ -627,7 +627,7 @@ $LN8@MacroDir:
 ; 705  :         if ( macro->e.macroinfo->data != NULL ) {
 
 	mov	rax, QWORD PTR macro$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	QWORD PTR [rax+16], 0
 	je	SHORT $LN9@MacroDir
 
@@ -651,18 +651,18 @@ $LN8@MacroDir:
 ; 714  :             macro->sym.isfunc = FALSE;
 
 	mov	rax, QWORD PTR macro$[rsp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	and	al, 253					; 000000fdH
 	mov	rcx, QWORD PTR macro$[rsp]
-	mov	BYTE PTR [rcx+44], al
+	mov	BYTE PTR [rcx+52], al
 
 ; 715  :             macro->sym.variable = TRUE;
 
 	mov	rax, QWORD PTR macro$[rsp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	or	al, 64					; 00000040H
 	mov	rcx, QWORD PTR macro$[rsp]
-	mov	BYTE PTR [rcx+40], al
+	mov	BYTE PTR [rcx+48], al
 $LN9@MacroDir:
 
 ; 716  :         }
@@ -1669,18 +1669,18 @@ $LN4:
 ; 816  :         macro->sym.isdefined = TRUE;
 
 	mov	rax, QWORD PTR macro$[rsp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	or	al, 2
 	mov	rcx, QWORD PTR macro$[rsp]
-	mov	BYTE PTR [rcx+40], al
+	mov	BYTE PTR [rcx+48], al
 
 ; 817  :         macro->sym.predefined = TRUE;
 
 	mov	rax, QWORD PTR macro$[rsp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	or	al, 32					; 00000020H
 	mov	rcx, QWORD PTR macro$[rsp]
-	mov	BYTE PTR [rcx+40], al
+	mov	BYTE PTR [rcx+48], al
 
 ; 818  :         macro->sym.func_ptr = EnvironFunc;
 
@@ -1691,15 +1691,15 @@ $LN4:
 ; 819  :         macro->sym.isfunc = TRUE;
 
 	mov	rax, QWORD PTR macro$[rsp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	or	al, 2
 	mov	rcx, QWORD PTR macro$[rsp]
-	mov	BYTE PTR [rcx+44], al
+	mov	BYTE PTR [rcx+52], al
 
 ; 820  :         macro->e.macroinfo->parmcnt = 1;
 
 	mov	rax, QWORD PTR macro$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	ecx, 1
 	mov	WORD PTR [rax], cx
 
@@ -1708,25 +1708,25 @@ $LN4:
 	mov	ecx, 16
 	call	LclAlloc
 	mov	rcx, QWORD PTR macro$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	QWORD PTR [rcx+8], rax
 
 ; 822  :         macro->e.macroinfo->parmlist->deflt = NULL;
 
 	mov	rax, QWORD PTR macro$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax+8]
 	mov	QWORD PTR [rax], 0
 
 ; 823  :         macro->e.macroinfo->parmlist->required = TRUE;
 
 	mov	rax, QWORD PTR macro$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax+8]
 	movzx	eax, BYTE PTR [rax+8]
 	or	al, 1
 	mov	rcx, QWORD PTR macro$[rsp]
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	rcx, QWORD PTR [rcx+8]
 	mov	BYTE PTR [rcx+8], al
 $LN2@MacroInit:
@@ -1827,7 +1827,7 @@ $LN106:
 ; 305  :     info = macro->e.macroinfo;
 
 	mov	rax, QWORD PTR macro$[rbp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	QWORD PTR info$[rbp], rax
 
 ; 306  : 
@@ -2218,10 +2218,10 @@ $LN45@StoreMacro:
 ; 362  :                     macro->sym.mac_vararg = TRUE;
 
 	mov	rax, QWORD PTR macro$[rbp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	or	al, 1
 	mov	rcx, QWORD PTR macro$[rbp]
-	mov	BYTE PTR [rcx+44], al
+	mov	BYTE PTR [rcx+52], al
 
 ; 363  :                     if ( tokenarray[i+1].token != T_FINAL ) {
 
@@ -2297,10 +2297,10 @@ $LN52@StoreMacro:
 ; 377  :                     macro->sym.label = TRUE;
 
 	mov	rax, QWORD PTR macro$[rbp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	or	al, 4
 	mov	rcx, QWORD PTR macro$[rbp]
-	mov	BYTE PTR [rcx+44], al
+	mov	BYTE PTR [rcx+52], al
 
 ; 378  :                     i++;
 
@@ -2327,18 +2327,18 @@ $LN50@StoreMacro:
 ; 383  :                     macro->sym.mac_vararg = TRUE;
 
 	mov	rax, QWORD PTR macro$[rbp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	or	al, 1
 	mov	rcx, QWORD PTR macro$[rbp]
-	mov	BYTE PTR [rcx+44], al
+	mov	BYTE PTR [rcx+52], al
 
 ; 384  :                     macro->sym.mac_multiline = TRUE;
 
 	mov	rax, QWORD PTR macro$[rbp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	or	al, 8
 	mov	rcx, QWORD PTR macro$[rbp]
-	mov	BYTE PTR [rcx+44], al
+	mov	BYTE PTR [rcx+52], al
 
 ; 385  :                     if ( tokenarray[i+1].token != T_FINAL ) {
 
@@ -3184,10 +3184,10 @@ $LN25@StoreMacro:
 ; 540  :                         macro->sym.isfunc = TRUE;
 
 	mov	rax, QWORD PTR macro$[rbp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	or	al, 2
 	mov	rcx, QWORD PTR macro$[rbp]
-	mov	BYTE PTR [rcx+44], al
+	mov	BYTE PTR [rcx+52], al
 $LN86@StoreMacro:
 $LN85@StoreMacro:
 
@@ -3510,23 +3510,23 @@ $LN9@StoreMacro:
 ; 596  :     macro->sym.isdefined = TRUE;
 
 	mov	rax, QWORD PTR macro$[rbp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	or	al, 2
 	mov	rcx, QWORD PTR macro$[rbp]
-	mov	BYTE PTR [rcx+40], al
+	mov	BYTE PTR [rcx+48], al
 
 ; 597  :     macro->sym.purged = FALSE;
 
 	mov	rax, QWORD PTR macro$[rbp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	and	al, 239					; 000000efH
 	mov	rcx, QWORD PTR macro$[rbp]
-	mov	BYTE PTR [rcx+44], al
+	mov	BYTE PTR [rcx+52], al
 
 ; 598  :     DebugMsg1(("StoreMacro(%s): exit, no error, isfunc=%u\n", macro->sym.name, macro->sym.isfunc));
 
 	mov	rax, QWORD PTR macro$[rbp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	shr	al, 1
 	and	al, 1
 	movzx	eax, al
@@ -3835,7 +3835,7 @@ $LN2@ReleaseMac:
 	mov	DWORD PTR i$[rsp], eax
 $LN4@ReleaseMac:
 	mov	rax, QWORD PTR macro$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, WORD PTR [rax]
 	cmp	DWORD PTR i$[rsp], eax
 	jge	SHORT $LN3@ReleaseMac
@@ -3856,14 +3856,14 @@ $LN3@ReleaseMac:
 ; 646  :     macro->e.macroinfo->parmcnt = 0;
 
 	mov	rax, QWORD PTR macro$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	xor	ecx, ecx
 	mov	WORD PTR [rax], cx
 
 ; 647  :     macro->e.macroinfo->localcnt = 0;
 
 	mov	rax, QWORD PTR macro$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	xor	ecx, ecx
 	mov	WORD PTR [rax+2], cx
 
@@ -3871,7 +3871,7 @@ $LN3@ReleaseMac:
 ; 649  :     if( macro->e.macroinfo->parmlist ) {
 
 	mov	rax, QWORD PTR macro$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	QWORD PTR [rax+8], 0
 	je	SHORT $LN8@ReleaseMac
 
@@ -3879,7 +3879,7 @@ $LN3@ReleaseMac:
 ; 651  :         macro->e.macroinfo->parmlist = NULL;
 
 	mov	rax, QWORD PTR macro$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	QWORD PTR [rax+8], 0
 $LN8@ReleaseMac:
 
@@ -3889,7 +3889,7 @@ $LN8@ReleaseMac:
 ; 655  :     for( datacurr = macro->e.macroinfo->data ;datacurr; ) {
 
 	mov	rax, QWORD PTR macro$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax+16]
 	mov	QWORD PTR datacurr$[rsp], rax
 $LN5@ReleaseMac:
@@ -3916,22 +3916,22 @@ $LN6@ReleaseMac:
 ; 660  :     macro->e.macroinfo->data = NULL;
 
 	mov	rax, QWORD PTR macro$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	QWORD PTR [rax+16], 0
 
 ; 661  :     macro->e.macroinfo->srcfile = 0;
 
 	mov	rax, QWORD PTR macro$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	DWORD PTR [rax+28], 0
 
 ; 662  :     macro->sym.mac_vararg = FALSE;
 
 	mov	rax, QWORD PTR macro$[rsp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	and	al, 254					; 000000feH
 	mov	rcx, QWORD PTR macro$[rsp]
-	mov	BYTE PTR [rcx+44], al
+	mov	BYTE PTR [rcx+52], al
 
 ; 663  :     /* v2.07: the macro type should not change if a macro is
 ; 664  :      * PURGEd.
@@ -3969,70 +3969,70 @@ $LN4:
 ; 609  :         macro->sym.state = SYM_MACRO;
 
 	mov	rax, QWORD PTR macro$[rsp]
-	mov	DWORD PTR [rax+32], 9
+	mov	DWORD PTR [rax+40], 9
 
 ; 610  :         macro->e.macroinfo = LclAlloc( sizeof( struct macro_info ) );
 
 	mov	ecx, 32					; 00000020H
 	call	LclAlloc
 	mov	rcx, QWORD PTR macro$[rsp]
-	mov	QWORD PTR [rcx+96], rax
+	mov	QWORD PTR [rcx+104], rax
 
 ; 611  :         macro->e.macroinfo->parmcnt  = 0;
 
 	mov	rax, QWORD PTR macro$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	xor	ecx, ecx
 	mov	WORD PTR [rax], cx
 
 ; 612  :         macro->e.macroinfo->localcnt = 0;
 
 	mov	rax, QWORD PTR macro$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	xor	ecx, ecx
 	mov	WORD PTR [rax+2], cx
 
 ; 613  :         macro->e.macroinfo->parmlist = NULL;
 
 	mov	rax, QWORD PTR macro$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	QWORD PTR [rax+8], 0
 
 ; 614  :         macro->e.macroinfo->data     = NULL;
 
 	mov	rax, QWORD PTR macro$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	QWORD PTR [rax+16], 0
 
 ; 615  : #ifdef DEBUG_OUT
 ; 616  :         macro->e.macroinfo->count = 0;
 
 	mov	rax, QWORD PTR macro$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	DWORD PTR [rax+24], 0
 
 ; 617  : #endif
 ; 618  :         macro->e.macroinfo->srcfile  = 0;
 
 	mov	rax, QWORD PTR macro$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	DWORD PTR [rax+28], 0
 
 ; 619  :         macro->sym.mac_vararg = FALSE;
 
 	mov	rax, QWORD PTR macro$[rsp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	and	al, 254					; 000000feH
 	mov	rcx, QWORD PTR macro$[rsp]
-	mov	BYTE PTR [rcx+44], al
+	mov	BYTE PTR [rcx+52], al
 
 ; 620  :         macro->sym.isfunc = FALSE;
 
 	mov	rax, QWORD PTR macro$[rsp]
-	movzx	eax, BYTE PTR [rax+44]
+	movzx	eax, BYTE PTR [rax+52]
 	and	al, 253					; 000000fdH
 	mov	rcx, QWORD PTR macro$[rsp]
-	mov	BYTE PTR [rcx+44], al
+	mov	BYTE PTR [rcx+52], al
 $LN2@CreateMacr:
 
 ; 621  :     }

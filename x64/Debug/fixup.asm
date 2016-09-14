@@ -301,7 +301,7 @@ $LN7@store_fixu:
 	je	SHORT $LN15@store_fixu
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	rax, QWORD PTR [rax+56]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 6
 	and	al, 1
 	movzx	eax, al
@@ -337,7 +337,7 @@ $LN7@store_fixu:
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	rax, QWORD PTR [rax+56]
 	mov	rcx, QWORD PTR fixup$[rsp]
-	mov	rax, QWORD PTR [rax+24]
+	mov	rax, QWORD PTR [rax+32]
 	mov	QWORD PTR [rcx+40], rax
 $LN15@store_fixu:
 $LN5@store_fixu:
@@ -353,18 +353,18 @@ $LN5@store_fixu:
 ; 293  :     if( seg->e.seginfo->FixupList.head == NULL ) {
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	cmp	QWORD PTR [rax+40], 0
 	jne	SHORT $LN16@store_fixu
 
 ; 294  :         seg->e.seginfo->FixupList.tail = seg->e.seginfo->FixupList.head = fixup;
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR fixup$[rsp]
 	mov	QWORD PTR [rax+40], rcx
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR fixup$[rsp]
 	mov	QWORD PTR [rax+48], rcx
 
@@ -376,7 +376,7 @@ $LN16@store_fixu:
 ; 296  :         seg->e.seginfo->FixupList.tail->nextrlc = fixup;
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax+48]
 	mov	rcx, QWORD PTR fixup$[rsp]
 	mov	QWORD PTR [rax+8], rcx
@@ -384,7 +384,7 @@ $LN16@store_fixu:
 ; 297  :         seg->e.seginfo->FixupList.tail = fixup;
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR fixup$[rsp]
 	mov	QWORD PTR [rax+48], rcx
 $LN17@store_fixu:
@@ -433,7 +433,7 @@ $LN11:
 ; 126  :             if ( fixup == dir->e.seginfo->FixupList.head ) {
 
 	mov	rax, QWORD PTR dir$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax+40]
 	cmp	QWORD PTR fixup$[rsp], rax
 	jne	SHORT $LN7@FreeFixup
@@ -441,7 +441,7 @@ $LN11:
 ; 127  :                 dir->e.seginfo->FixupList.head = fixup->nextrlc;
 
 	mov	rax, QWORD PTR dir$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR fixup$[rsp]
 	mov	rcx, QWORD PTR [rcx+8]
 	mov	QWORD PTR [rax+40], rcx
@@ -454,7 +454,7 @@ $LN7@FreeFixup:
 ; 129  :                 for ( fixup2 = dir->e.seginfo->FixupList.head; fixup2; fixup2 = fixup2->nextrlc ) {
 
 	mov	rax, QWORD PTR dir$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax+40]
 	mov	QWORD PTR fixup2$[rsp], rax
 	jmp	SHORT $LN4@FreeFixup
@@ -530,7 +530,7 @@ $LN15:
 ; 154  :         switch ( sym->state ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	eax, DWORD PTR [rax+32]
+	mov	eax, DWORD PTR [rax+40]
 	mov	DWORD PTR tv66[rsp], eax
 	cmp	DWORD PTR tv66[rsp], 5
 	ja	$LN12@SetFixupFr
@@ -546,7 +546,7 @@ $LN5@SetFixupFr:
 ; 157  :             if( sym->segment != NULL ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	QWORD PTR [rax+24], 0
+	cmp	QWORD PTR [rax+32], 0
 	je	SHORT $LN6@SetFixupFr
 
 ; 158  :                 if( ign_grp == FALSE && ( grp = (struct dsym *)GetGroup( sym ) ) ) {
@@ -567,7 +567,7 @@ $LN5@SetFixupFr:
 ; 160  :                     Frame_Datum = grp->e.grpinfo->grp_idx;
 
 	mov	rax, QWORD PTR grp$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, WORD PTR [rax+8]
 	mov	WORD PTR Frame_Datum, ax
 
@@ -583,7 +583,7 @@ $LN7@SetFixupFr:
 ; 163  :                     Frame_Datum = GetSegIdx( sym->segment );
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rcx, QWORD PTR [rax+24]
+	mov	rcx, QWORD PTR [rax+32]
 	call	GetSegIdx
 	mov	WORD PTR Frame_Datum, ax
 $LN8@SetFixupFr:
@@ -604,7 +604,7 @@ $LN9@SetFixupFr:
 ; 169  :             Frame_Datum = GetSegIdx( sym->segment );
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rcx, QWORD PTR [rax+24]
+	mov	rcx, QWORD PTR [rax+32]
 	call	GetSegIdx
 	mov	WORD PTR Frame_Datum, ax
 
@@ -621,7 +621,7 @@ $LN10@SetFixupFr:
 ; 173  :             Frame_Datum = ((struct dsym *)sym)->e.grpinfo->grp_idx;
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, WORD PTR [rax+8]
 	mov	WORD PTR Frame_Datum, ax
 
@@ -642,7 +642,7 @@ $LN12@SetFixupFr:
 ; 180  :             DebugMsg(("SetFixupFrame(%s): unexpected state=%u\n", sym->name, sym->state ));
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	r8d, DWORD PTR [rax+32]
+	mov	r8d, DWORD PTR [rax+40]
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rax+8]
 	lea	rcx, OFFSET FLAT:$SG10625
@@ -732,14 +732,14 @@ $LN10:
 
 	mov	rax, QWORD PTR fixup$[rsp]
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	rcx, QWORD PTR [rcx+88]
+	mov	rcx, QWORD PTR [rcx+96]
 	mov	QWORD PTR [rax], rcx
 
 ; 82   :             sym->bp_fixup = fixup;
 
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	rcx, QWORD PTR fixup$[rsp]
-	mov	QWORD PTR [rax+88], rcx
+	mov	QWORD PTR [rax+96], rcx
 $LN4@CreateFixu:
 $LN3@CreateFixu:
 
@@ -765,7 +765,7 @@ $LN3@CreateFixu:
 ; 93   :             fixup->nextrlc = CurrSeg->e.seginfo->FixupList.head;
 
 	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR fixup$[rsp]
 	mov	rax, QWORD PTR [rax+40]
 	mov	QWORD PTR [rcx+8], rax
@@ -773,7 +773,7 @@ $LN3@CreateFixu:
 ; 94   :             CurrSeg->e.seginfo->FixupList.head = fixup;
 
 	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR fixup$[rsp]
 	mov	QWORD PTR [rax+40], rcx
 $LN6@CreateFixu:

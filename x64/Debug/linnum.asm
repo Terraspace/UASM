@@ -164,7 +164,7 @@ AddLinnumData PROC
 ; 45   :         q = (struct qdesc *)CurrSeg->e.seginfo->LinnumQueue;
 
 	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax+56]
 	mov	QWORD PTR q$[rsp], rax
 
@@ -182,7 +182,7 @@ AddLinnumData PROC
 ; 48   :             CurrSeg->e.seginfo->LinnumQueue = q;
 
 	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR q$[rsp]
 	mov	QWORD PTR [rax+56], rcx
 
@@ -429,14 +429,14 @@ $LN4:
 ; 248  :         dmyproc->total_size =
 
 	mov	rax, QWORD PTR dmyproc
-	mov	rax, QWORD PTR [rax+24]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+32]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR dmyproc
 	mov	ecx, DWORD PTR [rcx+16]
 	mov	eax, DWORD PTR [rax+12]
 	sub	eax, ecx
 	mov	rcx, QWORD PTR dmyproc
-	mov	DWORD PTR [rcx+56], eax
+	mov	DWORD PTR [rcx+64], eax
 
 ; 249  :             ((struct dsym *)dmyproc->segment)->e.seginfo->current_loc -
 ; 250  :             dmyproc->offset;
@@ -522,13 +522,13 @@ $LN33:
 	cmp	QWORD PTR dmyproc, 0
 	je	SHORT $LN3@AddLinnumD
 	mov	rax, QWORD PTR dmyproc
-	mov	rax, QWORD PTR [rax+64]
+	mov	rax, QWORD PTR [rax+72]
 	movzx	eax, WORD PTR [rax+14]
 	cmp	eax, DWORD PTR srcfile$[rsp]
 	jne	SHORT $LN3@AddLinnumD
 	mov	rax, QWORD PTR dmyproc
 	mov	rcx, QWORD PTR ModuleInfo+432
-	cmp	QWORD PTR [rax+24], rcx
+	cmp	QWORD PTR [rax+32], rcx
 	je	$LN2@AddLinnumD
 $LN3@AddLinnumD:
 
@@ -544,7 +544,7 @@ $LN3@AddLinnumD:
 ; 103  :             /**/myassert( dmyproc->segment );
 
 	mov	rax, QWORD PTR dmyproc
-	cmp	QWORD PTR [rax+24], 0
+	cmp	QWORD PTR [rax+32], 0
 	je	SHORT $LN21@AddLinnumD
 	mov	DWORD PTR tv79[rsp], 0
 	jmp	SHORT $LN22@AddLinnumD
@@ -558,14 +558,14 @@ $LN22@AddLinnumD:
 ; 104  :             dmyproc->total_size =
 
 	mov	rax, QWORD PTR dmyproc
-	mov	rax, QWORD PTR [rax+24]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+32]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR dmyproc
 	mov	ecx, DWORD PTR [rcx+16]
 	mov	eax, DWORD PTR [rax+12]
 	sub	eax, ecx
 	mov	rcx, QWORD PTR dmyproc
-	mov	DWORD PTR [rcx+56], eax
+	mov	DWORD PTR [rcx+64], eax
 $LN4@AddLinnumD:
 
 ; 105  :                 ((struct dsym *)dmyproc->segment)->e.seginfo->current_loc -
@@ -628,18 +628,18 @@ $LN24@AddLinnumD:
 ; 116  :             dmyproc->isproc = TRUE; /* flag is usually set inside ParseProc() */
 
 	mov	rax, QWORD PTR dmyproc
-	movzx	eax, BYTE PTR [rax+41]
+	movzx	eax, BYTE PTR [rax+49]
 	or	al, 8
 	mov	rcx, QWORD PTR dmyproc
-	mov	BYTE PTR [rcx+41], al
+	mov	BYTE PTR [rcx+49], al
 
 ; 117  :             dmyproc->included = TRUE;
 
 	mov	rax, QWORD PTR dmyproc
-	movzx	eax, BYTE PTR [rax+41]
+	movzx	eax, BYTE PTR [rax+49]
 	or	al, 64					; 00000040H
 	mov	rcx, QWORD PTR dmyproc
-	mov	BYTE PTR [rcx+41], al
+	mov	BYTE PTR [rcx+49], al
 
 ; 118  :             AddPublicData( dmyproc );
 
@@ -664,7 +664,7 @@ $LN6@AddLinnumD:
 ; 124  :         if ( dmyproc->isproc == TRUE ) {
 
 	mov	rax, QWORD PTR dmyproc
-	movzx	eax, BYTE PTR [rax+41]
+	movzx	eax, BYTE PTR [rax+49]
 	shr	al, 3
 	and	al, 1
 	movzx	eax, al
@@ -680,13 +680,13 @@ $LN6@AddLinnumD:
 
 	mov	rax, QWORD PTR dmyproc
 	movzx	ecx, BYTE PTR ModuleInfo+404
-	mov	BYTE PTR [rax+44], cl
+	mov	BYTE PTR [rax+52], cl
 
 ; 127  :             dmyproc->langtype = ModuleInfo.langtype;
 
 	mov	rax, QWORD PTR dmyproc
 	mov	ecx, DWORD PTR ModuleInfo+364
-	mov	DWORD PTR [rax+76], ecx
+	mov	DWORD PTR [rax+84], ecx
 
 ; 128  :             if ( write_to_file == TRUE ) {
 
@@ -859,7 +859,7 @@ $LN26@AddLinnumD:
 	cmp	QWORD PTR CurrProc, 0
 	je	SHORT $LN14@AddLinnumD
 	mov	rax, QWORD PTR CurrProc
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 7
 	and	al, 1
 	movzx	eax, al
@@ -869,10 +869,10 @@ $LN26@AddLinnumD:
 ; 160  :             CurrProc->sym.included = TRUE;
 
 	mov	rax, QWORD PTR CurrProc
-	movzx	eax, BYTE PTR [rax+41]
+	movzx	eax, BYTE PTR [rax+49]
 	or	al, 64					; 00000040H
 	mov	rcx, QWORD PTR CurrProc
-	mov	BYTE PTR [rcx+41], al
+	mov	BYTE PTR [rcx+49], al
 
 ; 161  :             AddPublicData( (struct asym *)CurrProc );
 
@@ -934,7 +934,7 @@ $LN28@AddLinnumD:
 ; 170  :             /**/myassert( dmyproc->segment );
 
 	mov	rax, QWORD PTR dmyproc
-	cmp	QWORD PTR [rax+24], 0
+	cmp	QWORD PTR [rax+32], 0
 	je	SHORT $LN29@AddLinnumD
 	mov	DWORD PTR tv243[rsp], 0
 	jmp	SHORT $LN30@AddLinnumD
@@ -948,14 +948,14 @@ $LN30@AddLinnumD:
 ; 171  :             dmyproc->total_size =
 
 	mov	rax, QWORD PTR dmyproc
-	mov	rax, QWORD PTR [rax+24]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+32]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR dmyproc
 	mov	ecx, DWORD PTR [rcx+16]
 	mov	eax, DWORD PTR [rax+12]
 	sub	eax, ecx
 	mov	rcx, QWORD PTR dmyproc
-	mov	DWORD PTR [rcx+56], eax
+	mov	DWORD PTR [rcx+64], eax
 
 ; 172  :                 ((struct dsym *)dmyproc->segment)->e.seginfo->current_loc -
 ; 173  :                 dmyproc->offset;
@@ -971,7 +971,7 @@ $LN15@AddLinnumD:
 	cmp	QWORD PTR CurrProc, 0
 	je	$LN16@AddLinnumD
 	mov	rax, QWORD PTR CurrProc
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+129]
 	test	eax, eax
 	je	SHORT $LN16@AddLinnumD
@@ -1071,7 +1071,7 @@ $LN17@AddLinnumD:
 ; 202  :     if ( CurrSeg->e.seginfo->linnum_init == FALSE ) {
 
 	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+107]
 	shr	al, 6
 	and	al, 1
@@ -1082,17 +1082,17 @@ $LN17@AddLinnumD:
 ; 203  :         CurrSeg->e.seginfo->linnum_init = TRUE;
 
 	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+107]
 	or	al, 64					; 00000040H
 	mov	rcx, QWORD PTR ModuleInfo+432
-	mov	rcx, QWORD PTR [rcx+96]
+	mov	rcx, QWORD PTR [rcx+104]
 	mov	BYTE PTR [rcx+107], al
 
 ; 204  :         if ( TypeFromClassName( CurrSeg, CurrSeg->e.seginfo->clsym ) != SEGTYPE_CODE ) {
 
 	mov	rax, QWORD PTR ModuleInfo+432
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rdx, QWORD PTR [rax+80]
 	mov	rcx, QWORD PTR ModuleInfo+432
 	call	TypeFromClassName

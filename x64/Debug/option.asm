@@ -791,16 +791,16 @@ $LN3@SetStackBa:
 ; 869  :         ModuleInfo.g.StackBase->predefined = TRUE;
 
 	mov	rax, QWORD PTR ModuleInfo+272
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	or	al, 32					; 00000020H
 	mov	rcx, QWORD PTR ModuleInfo+272
-	mov	BYTE PTR [rcx+40], al
+	mov	BYTE PTR [rcx+48], al
 
 ; 870  :         ModuleInfo.g.StackBase->sfunc_ptr = UpdateStackBase;
 
 	mov	rax, QWORD PTR ModuleInfo+272
 	lea	rcx, OFFSET FLAT:UpdateStackBase
-	mov	QWORD PTR [rax+64], rcx
+	mov	QWORD PTR [rax+72], rcx
 
 ; 871  :         ModuleInfo.g.ProcStatus = CreateVariable( "@ProcStatus", 0 );
 
@@ -812,16 +812,16 @@ $LN3@SetStackBa:
 ; 872  :         ModuleInfo.g.ProcStatus->predefined = TRUE;
 
 	mov	rax, QWORD PTR ModuleInfo+280
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	or	al, 32					; 00000020H
 	mov	rcx, QWORD PTR ModuleInfo+280
-	mov	BYTE PTR [rcx+40], al
+	mov	BYTE PTR [rcx+48], al
 
 ; 873  :         ModuleInfo.g.ProcStatus->sfunc_ptr = UpdateProcStatus;
 
 	mov	rax, QWORD PTR ModuleInfo+280
 	lea	rcx, OFFSET FLAT:UpdateProcStatus
-	mov	QWORD PTR [rax+64], rcx
+	mov	QWORD PTR [rax+72], rcx
 $LN4@SetStackBa:
 
 ; 874  :     }

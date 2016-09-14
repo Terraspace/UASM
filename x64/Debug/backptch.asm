@@ -175,7 +175,7 @@ $LN55@DoPatch:
 ; 76   :     seg = GetSegm( sym );
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rax, QWORD PTR [rax+24]
+	mov	rax, QWORD PTR [rax+32]
 	mov	QWORD PTR seg$[rsp], rax
 
 ; 77   :     if( seg == NULL || fixup->def_seg != seg ) {
@@ -238,7 +238,7 @@ $LN22@DoPatch:
 ; 89   :         if( sym->mem_type == MT_FAR && fixup->option == OPTJ_CALL ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+36], 130			; 00000082H
+	cmp	DWORD PTR [rax+44], 130			; 00000082H
 	jne	SHORT $LN25@DoPatch
 	mov	rax, QWORD PTR fixup$[rsp]
 	cmp	DWORD PTR [rax+28], 4
@@ -517,7 +517,7 @@ $LN40@DoPatch:
 ; 156  :                     if( seg->e.seginfo->Ofssize )
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+104]
 	test	eax, eax
 	je	SHORT $LN41@DoPatch
@@ -547,7 +547,7 @@ $LN41@DoPatch:
 ; 164  :                         for ( fixup2 = seg->e.seginfo->FixupList.head; fixup2; fixup2 = fixup2->nextrlc ) {
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax+40]
 	mov	QWORD PTR fixup2$[rsp], rax
 	jmp	SHORT $LN12@DoPatch
@@ -609,13 +609,13 @@ $LN42@DoPatch:
 ; 179  :                     for ( sym2 = seg->e.seginfo->label_list; sym2; sym2 = (struct asym *)((struct dsym *)sym2)->next ) {
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax+32]
 	mov	QWORD PTR sym2$[rsp], rax
 	jmp	SHORT $LN15@DoPatch
 $LN13@DoPatch:
 	mov	rax, QWORD PTR sym2$[rsp]
-	mov	rax, QWORD PTR [rax+104]
+	mov	rax, QWORD PTR [rax+112]
 	mov	QWORD PTR sym2$[rsp], rax
 $LN15@DoPatch:
 	cmp	QWORD PTR sym2$[rsp], 0
@@ -682,7 +682,7 @@ $LN14@DoPatch:
 ; 196  :                     for ( fixup2 = seg->e.seginfo->FixupList.head; fixup2; fixup2 = fixup2->nextrlc ) {
 
 	mov	rax, QWORD PTR seg$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rax, QWORD PTR [rax+40]
 	mov	QWORD PTR fixup2$[rsp], rax
 	jmp	SHORT $LN18@DoPatch
@@ -880,10 +880,10 @@ $LN9:
 ; 256  :     DebugMsg1(("BackPatch(%s): location=%s:%X, bp_fixup=%p\n", sym->name, sym->segment ? sym->segment->name : "!NULL!", sym->offset, sym->bp_fixup ));
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	QWORD PTR [rax+24], 0
+	cmp	QWORD PTR [rax+32], 0
 	je	SHORT $LN7@BackPatch
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rax, QWORD PTR [rax+24]
+	mov	rax, QWORD PTR [rax+32]
 	mov	rax, QWORD PTR [rax+8]
 	mov	QWORD PTR tv73[rsp], rax
 	jmp	SHORT $LN8@BackPatch
@@ -892,7 +892,7 @@ $LN7@BackPatch:
 	mov	QWORD PTR tv73[rsp], rax
 $LN8@BackPatch:
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rax, QWORD PTR [rax+88]
+	mov	rax, QWORD PTR [rax+96]
 	mov	QWORD PTR [rsp+32], rax
 	mov	rax, QWORD PTR sym$[rsp]
 	mov	r9d, DWORD PTR [rax+16]
@@ -906,7 +906,7 @@ $LN8@BackPatch:
 ; 258  :     for( fixup = sym->bp_fixup; fixup; fixup = next ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rax, QWORD PTR [rax+88]
+	mov	rax, QWORD PTR [rax+96]
 	mov	QWORD PTR fixup$[rsp], rax
 	jmp	SHORT $LN4@BackPatch
 $LN2@BackPatch:
@@ -941,7 +941,7 @@ $LN3@BackPatch:
 ; 267  :     sym->bp_fixup = NULL;
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	QWORD PTR [rax+88], 0
+	mov	QWORD PTR [rax+96], 0
 
 ; 268  : #ifdef DEBUG_OUT
 ; 269  :     if ( oldofs != sym->offset )

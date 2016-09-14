@@ -213,10 +213,10 @@ $LN5:
 ; 145  :     sym->issaved = TRUE; /* don't try to save this symbol (anymore) */
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+41]
+	movzx	eax, BYTE PTR [rax+49]
 	or	al, 16
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	BYTE PTR [rcx+41], al
+	mov	BYTE PTR [rcx+49], al
 
 ; 146  :     p = LclAlloc( sizeof( struct equ_item ) );
 
@@ -246,20 +246,20 @@ $LN5:
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	ecx, DWORD PTR [rcx+56]
+	mov	ecx, DWORD PTR [rcx+64]
 	mov	DWORD PTR [rax+20], ecx
 
 ; 151  :     p->mem_type  = sym->mem_type;  /* v2.07: added */
 
 	mov	rax, QWORD PTR p$[rsp]
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	ecx, DWORD PTR [rcx+36]
+	mov	ecx, DWORD PTR [rcx+44]
 	mov	DWORD PTR [rax+24], ecx
 
 ; 152  :     p->isdefined = sym->isdefined;
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 1
 	and	al, 1
 	mov	rcx, QWORD PTR p$[rsp]
@@ -370,7 +370,7 @@ $LN4@RestoreSta:
 	mov	rax, QWORD PTR [rax+8]
 	mov	rcx, QWORD PTR curr$1[rsp]
 	mov	ecx, DWORD PTR [rcx+20]
-	mov	DWORD PTR [rax+56], ecx
+	mov	DWORD PTR [rax+64], ecx
 
 ; 175  :                 curr->sym->mem_type  = curr->mem_type; /* v2.07: added */
 
@@ -378,7 +378,7 @@ $LN4@RestoreSta:
 	mov	rax, QWORD PTR [rax+8]
 	mov	rcx, QWORD PTR curr$1[rsp]
 	mov	ecx, DWORD PTR [rcx+24]
-	mov	DWORD PTR [rax+36], ecx
+	mov	DWORD PTR [rax+44], ecx
 
 ; 176  :                 curr->sym->isdefined = curr->isdefined;
 
@@ -388,12 +388,12 @@ $LN4@RestoreSta:
 	movzx	ecx, BYTE PTR [rcx+28]
 	and	cl, 1
 	shl	cl, 1
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	and	al, 253					; 000000fdH
 	or	al, cl
 	mov	rcx, QWORD PTR curr$1[rsp]
 	mov	rcx, QWORD PTR [rcx+8]
-	mov	BYTE PTR [rcx+40], al
+	mov	BYTE PTR [rcx+48], al
 
 ; 177  :             //}
 ; 178  :         }

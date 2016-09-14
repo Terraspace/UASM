@@ -141,7 +141,7 @@ omf_fill_logref PROC
 	cmp	QWORD PTR sym$[rsp], 0
 	je	SHORT $LN28@omf_fill_l
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	eax, DWORD PTR [rax+32]
+	mov	eax, DWORD PTR [rax+40]
 	mov	DWORD PTR tv69[rsp], eax
 	jmp	SHORT $LN29@omf_fill_l
 $LN28@omf_fill_l:
@@ -222,7 +222,7 @@ $LN2@omf_fill_l:
 ; 259  :     } else if( sym->state == SYM_UNDEFINED ) { /* shouldn't happen */
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	jne	SHORT $LN5@omf_fill_l
 
 ; 260  : 
@@ -249,7 +249,7 @@ $LN5@omf_fill_l:
 ; 265  :     } else if( sym->state == SYM_GRP ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 4
+	cmp	DWORD PTR [rax+40], 4
 	jne	SHORT $LN7@omf_fill_l
 
 ; 266  : 
@@ -266,7 +266,7 @@ $LN5@omf_fill_l:
 ; 269  :         lr->target_datum = ((struct dsym *)sym)->e.grpinfo->grp_idx;
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR lr$[rsp]
 	movzx	eax, WORD PTR [rax+8]
 	mov	WORD PTR [rcx+6], ax
@@ -319,7 +319,7 @@ $LN7@omf_fill_l:
 ; 278  :     } else if( sym->state == SYM_SEG ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 3
+	cmp	DWORD PTR [rax+40], 3
 	jne	SHORT $LN11@omf_fill_l
 
 ; 279  : 
@@ -399,7 +399,7 @@ $LN11@omf_fill_l:
 ; 296  :         if( sym->state == SYM_EXTERNAL ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 2
+	cmp	DWORD PTR [rax+40], 2
 	jne	SHORT $LN15@omf_fill_l
 
 ; 297  :             DebugMsg1(("omf_fill_logref: sym->state is SYM_EXTERNAL, fixup->frame_type/datum=%u/%u\n",
@@ -423,7 +423,7 @@ $LN11@omf_fill_l:
 
 	mov	rax, QWORD PTR lr$[rsp]
 	mov	rcx, QWORD PTR sym$[rsp]
-	movzx	ecx, WORD PTR [rcx+88]
+	movzx	ecx, WORD PTR [rcx+96]
 	mov	WORD PTR [rax+6], cx
 
 ; 301  : 
@@ -457,7 +457,7 @@ $LN15@omf_fill_l:
 ; 308  :             /**/myassert( sym->state == SYM_INTERNAL );
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 1
+	cmp	DWORD PTR [rax+40], 1
 	jne	SHORT $LN32@omf_fill_l
 	mov	DWORD PTR tv191[rsp], 0
 	jmp	SHORT $LN33@omf_fill_l
@@ -471,10 +471,10 @@ $LN33@omf_fill_l:
 ; 309  :             DebugMsg1(("omf_fill_logref: sym->state is SYM_INTERNAL, sym->segment=%s, fixup->frame/datum=%u/%u\n",
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	QWORD PTR [rax+24], 0
+	cmp	QWORD PTR [rax+32], 0
 	je	SHORT $LN34@omf_fill_l
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rax, QWORD PTR [rax+24]
+	mov	rax, QWORD PTR [rax+32]
 	mov	rax, QWORD PTR [rax+8]
 	mov	QWORD PTR tv202[rsp], rax
 	jmp	SHORT $LN35@omf_fill_l
@@ -497,7 +497,7 @@ $LN35@omf_fill_l:
 ; 312  :             if ( sym->variable ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 6
 	and	al, 1
 	movzx	eax, al
@@ -531,7 +531,7 @@ $LN18@omf_fill_l:
 ; 315  :             } else if ( sym->segment == NULL ) { /* shouldn't happen */
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	QWORD PTR [rax+24], 0
+	cmp	QWORD PTR [rax+32], 0
 	jne	SHORT $LN20@omf_fill_l
 
 ; 316  :                 EmitErr( SEGMENT_MISSING_FOR_FIXUP, sym->name );
@@ -552,8 +552,8 @@ $LN20@omf_fill_l:
 ; 319  :             } else if ( ( (struct dsym *)sym->segment)->e.seginfo->comdat_selection ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rax, QWORD PTR [rax+24]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+32]
+	mov	rax, QWORD PTR [rax+104]
 	movzx	eax, BYTE PTR [rax+108]
 	shr	al, 3
 	and	al, 7
@@ -569,8 +569,8 @@ $LN20@omf_fill_l:
 ; 321  :                 lr->target_datum = ((struct dsym *)sym->segment)->e.seginfo->seg_idx;
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rax, QWORD PTR [rax+24]
-	mov	rax, QWORD PTR [rax+96]
+	mov	rax, QWORD PTR [rax+32]
+	mov	rax, QWORD PTR [rax+104]
 	mov	rcx, QWORD PTR lr$[rsp]
 	movzx	eax, WORD PTR [rax+68]
 	mov	WORD PTR [rcx+6], ax
@@ -599,7 +599,7 @@ $LN22@omf_fill_l:
 ; 327  :                 lr->target_datum = GetSegIdx( sym->segment );
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rcx, QWORD PTR [rax+24]
+	mov	rcx, QWORD PTR [rax+32]
 	call	GetSegIdx
 	mov	rcx, QWORD PTR lr$[rsp]
 	mov	WORD PTR [rcx+6], ax
@@ -1118,7 +1118,7 @@ $LN12:
 ; 206  :     if( sym->state == SYM_EXTERNAL ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 2
+	cmp	DWORD PTR [rax+40], 2
 	jne	$LN2@OmfFixGenF
 
 ; 207  :         DebugMsg(("omf_write_modend(%p): fixup->frame_type/datum=%u/%u, EXTERNAL sym=%s\n",
@@ -1145,7 +1145,7 @@ $LN12:
 ; 211  :         lr.target_datum = sym->ext_idx1;
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, WORD PTR [rax+88]
+	movzx	eax, WORD PTR [rax+96]
 	mov	WORD PTR lr$[rsp+6], ax
 
 ; 212  : 
@@ -1177,10 +1177,10 @@ $LN2@OmfFixGenF:
 ; 218  :         DebugMsg(("OmfFixGenFixModend(%p): fixup->frame_type/datum=%u/%u sym->name=%s state=%X segm=%s\n",
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	QWORD PTR [rax+24], 0
+	cmp	QWORD PTR [rax+32], 0
 	je	SHORT $LN8@OmfFixGenF
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rax, QWORD PTR [rax+24]
+	mov	rax, QWORD PTR [rax+32]
 	mov	rax, QWORD PTR [rax+8]
 	mov	QWORD PTR tv94[rsp], rax
 	jmp	SHORT $LN9@OmfFixGenF
@@ -1195,7 +1195,7 @@ $LN9@OmfFixGenF:
 	mov	rdx, QWORD PTR tv94[rsp]
 	mov	QWORD PTR [rsp+48], rdx
 	mov	rdx, QWORD PTR sym$[rsp]
-	mov	edx, DWORD PTR [rdx+32]
+	mov	edx, DWORD PTR [rdx+40]
 	mov	DWORD PTR [rsp+40], edx
 	mov	rdx, QWORD PTR sym$[rsp]
 	mov	rdx, QWORD PTR [rdx+8]
@@ -1210,7 +1210,7 @@ $LN9@OmfFixGenF:
 ; 220  :         /**/myassert( sym->state == SYM_INTERNAL );
 
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 1
+	cmp	DWORD PTR [rax+40], 1
 	jne	SHORT $LN10@OmfFixGenF
 	mov	DWORD PTR tv145[rsp], 0
 	jmp	SHORT $LN11@OmfFixGenF
@@ -1229,7 +1229,7 @@ $LN11@OmfFixGenF:
 ; 223  :         lr.target_datum = GetSegIdx( sym->segment );
 
 	mov	rax, QWORD PTR sym$[rsp]
-	mov	rcx, QWORD PTR [rax+24]
+	mov	rcx, QWORD PTR [rax+32]
 	call	GetSegIdx
 	mov	WORD PTR lr$[rsp+6], ax
 $LN3@OmfFixGenF:

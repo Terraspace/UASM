@@ -918,10 +918,10 @@ $LN13@SetSimSeg:
 	cmp	QWORD PTR sym$[rsp], 0
 	je	SHORT $LN16@SetSimSeg
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 3
+	cmp	DWORD PTR [rax+40], 3
 	jne	SHORT $LN16@SetSimSeg
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 1
 	and	al, 1
 	movzx	eax, al
@@ -986,10 +986,10 @@ $LN11@SetSimSeg:
 	cmp	QWORD PTR sym$[rsp], 0
 	je	SHORT $LN18@SetSimSeg
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 3
+	cmp	DWORD PTR [rax+40], 3
 	jne	SHORT $LN18@SetSimSeg
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	shr	al, 1
 	and	al, 1
 	movzx	eax, al

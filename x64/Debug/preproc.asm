@@ -394,7 +394,7 @@ $LN18@Preprocess:
 ; 158  :                 if ( sym->state != SYM_TMACRO ) {
 
 	mov	rax, QWORD PTR sym$1[rsp]
-	cmp	DWORD PTR [rax+32], 10
+	cmp	DWORD PTR [rax+40], 10
 	je	SHORT $LN20@Preprocess
 
 ; 159  : #if FASTPASS
@@ -439,7 +439,7 @@ $LN20@Preprocess:
 ; 167  :                     LstWrite( sym->state == SYM_INTERNAL ? LSTTYPE_EQUATE : LSTTYPE_TMACRO, 0, sym );
 
 	mov	rax, QWORD PTR sym$1[rsp]
-	cmp	DWORD PTR [rax+32], 1
+	cmp	DWORD PTR [rax+40], 1
 	jne	SHORT $LN32@Preprocess
 	mov	DWORD PTR tv211[rsp], 2
 	jmp	SHORT $LN33@Preprocess

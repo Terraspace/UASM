@@ -147,7 +147,7 @@ $LN9@SafeSEHDir:
 	cmp	QWORD PTR sym$[rsp], 0
 	je	SHORT $LN12@SafeSEHDir
 	mov	rax, QWORD PTR sym$[rsp]
-	cmp	DWORD PTR [rax+32], 0
+	cmp	DWORD PTR [rax+40], 0
 	jne	SHORT $LN10@SafeSEHDir
 $LN12@SafeSEHDir:
 
@@ -175,7 +175,7 @@ $LN10@SafeSEHDir:
 ; 53   :     } else if ( sym->isproc == FALSE ) {
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+41]
+	movzx	eax, BYTE PTR [rax+49]
 	shr	al, 3
 	and	al, 1
 	movzx	eax, al
@@ -261,10 +261,10 @@ $LN17@SafeSEHDir:
 ; 67   :             sym->used = TRUE; /* make sure an external reference will become strong */
 
 	mov	rax, QWORD PTR sym$[rsp]
-	movzx	eax, BYTE PTR [rax+40]
+	movzx	eax, BYTE PTR [rax+48]
 	or	al, 1
 	mov	rcx, QWORD PTR sym$[rsp]
-	mov	BYTE PTR [rcx+40], al
+	mov	BYTE PTR [rcx+48], al
 
 ; 68   : #if 0 /* v2.11: use QAddItem() */
 ; 69   :             node = LclAlloc( sizeof( struct qnode ) );
