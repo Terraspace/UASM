@@ -1006,11 +1006,11 @@ static ret_code ParseParams( struct dsym *proc, int i, struct asm_tok tokenarray
 			{
 				tmp = 4 - paracount;
 			}
-			if(proc->e.procinfo->regslist && *(proc->e.procinfo->regslist) > tmp)
+			if (proc->e.procinfo->regslist && *(proc->e.procinfo->regslist) > tmp)
 				offset -= (((int)*(proc->e.procinfo->regslist) - tmp) * CurrWordSize);
 		}
 		else if (proc->e.procinfo->basereg == T_RBP)
-			offset = ((2 + (proc->sym.mem_type == MT_FAR ? 1 : 0)) * CurrWordSize) + CurrWordSize; 
+			offset = ((2 + (proc->sym.mem_type == MT_FAR ? 1 : 0)) * CurrWordSize);
 		else
 			offset = ((2 + (proc->sym.mem_type == MT_FAR ? 1 : 0)) * CurrWordSize);
 
@@ -2691,7 +2691,7 @@ static void write_win64_default_prologue( struct proc_info *info )
 			/* Force proc parameters down by 8 if we use the sub rsp. */
 			if (info->NoSub == 0)
 			{
-				if (info->basereg == T_RBP && (ModuleInfo.win64_flags && W64F_AUTOSTACKSP != 0) && (ModuleInfo.win64_flags & W64F_SAVEREGPARAMS != 0))
+				if (info->basereg == T_RBP && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP) && (ModuleInfo.win64_flags & W64F_SAVEREGPARAMS))
 				{
 					paranode = info->paralist;
 					while (paranode != NULL)
