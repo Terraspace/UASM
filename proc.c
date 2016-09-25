@@ -645,6 +645,8 @@ static ret_code ParseParams( struct dsym *proc, int i, struct asm_tok tokenarray
     struct dsym     *paranode;
     struct dsym     *paracurr;
     int             curr;
+	int             paracount = 0;
+	int             tmp = 0;
 
     /*
      * find "first" parameter ( that is, the first to be pushed in INVOKE ).
@@ -976,13 +978,36 @@ static ret_code ParseParams( struct dsym *proc, int i, struct asm_tok tokenarray
 		if (proc->e.procinfo->fpo || (proc->e.procinfo->parasize == 0 && proc->e.procinfo->locallist == NULL) && proc->e.procinfo->basereg == T_RSP)
 			offset = ((2 + (proc->sym.mem_type == MT_FAR ? 1 : 0)) * CurrWordSize);
 		// Compensate for the stack-frame setup of RBP including the push rbp, which moves the parameters out by 8.
-		else if (proc->e.procinfo->basereg == T_RBP && (ModuleInfo.win64_flags && W64F_AUTOSTACKSP != 0) && (ModuleInfo.win64_flags & W64F_SAVEREGPARAMS != 0))
+		else if (proc->e.procinfo->basereg == T_RBP && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP) && (ModuleInfo.win64_flags & W64F_SAVEREGPARAMS))
 		{
 			offset = ((2 + (proc->sym.mem_type == MT_FAR ? 1 : 0)) * CurrWordSize);
 			if( (proc->e.procinfo->locallist != 0) || !(proc->e.procinfo->localsize) )
 			{
 				offset += 8;
 			}
+		}
+		else if (proc->e.procinfo->basereg == T_RBP && !(ModuleInfo.win64_flags & W64F_AUTOSTACKSP) && (ModuleInfo.win64_flags & W64F_SAVEREGPARAMS))
+		{
+			// USES will push registers, so reduce offset by number of pushes.
+			offset = ((2 + (proc->sym.mem_type == MT_FAR ? 1 : 0)) * CurrWordSize);
+			if ((proc->e.procinfo->locallist != 0) || !(proc->e.procinfo->localsize))
+			{
+				offset += 8;
+			}
+			paranode = proc->e.procinfo->paralist;
+			while (paranode != NULL)
+			{
+				paracount++;
+				paranode = paranode->nextparam;
+			}
+			// 4 parameters can go to homespace.. so pushes-(4-paracount)
+			tmp = 0;
+			if (paracount <= 4)
+			{
+				tmp = 4 - paracount;
+			}
+			if(proc->e.procinfo->regslist && *(proc->e.procinfo->regslist) > tmp)
+				offset -= (((int)*(proc->e.procinfo->regslist) - tmp) * CurrWordSize);
 		}
 		else if (proc->e.procinfo->basereg == T_RBP)
 			offset = ((2 + (proc->sym.mem_type == MT_FAR ? 1 : 0)) * CurrWordSize) + CurrWordSize; 
