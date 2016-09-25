@@ -356,6 +356,7 @@ static ret_code get_operand( struct expr *opnd, int *idx, struct asm_tok tokenar
     int         i = *idx;
     int         j;
     char        labelbuff[16];/* for anonymous labels */
+	int         cnt;
 
     DebugMsg1(("%u get_operand(idx=%u >%s<) enter [memtype=%Xh]\n", evallvl, i, tokenarray[i].tokpos, opnd->mem_type ));
     switch( tokenarray[i].token ) {
@@ -740,9 +741,10 @@ static ret_code get_operand( struct expr *opnd, int *idx, struct asm_tok tokenar
                  must be stored in the <value> field */
                 if ( sym->state == SYM_STACK ) {
 #if STACKBASESUPP
-                  opnd->llvalue = sym->offset;// +StackAdj;
+                  
                     if ((ModuleInfo.win64_flags & W64F_HABRAN) && sym->isparam){
-                      int cnt = CurrProc->e.procinfo->pushed_reg;
+                      opnd->llvalue = sym->offset;// +StackAdj;
+                      cnt = CurrProc->e.procinfo->pushed_reg;
                       cnt = cnt * 8;
                       cnt += sym->offset + CurrProc->e.procinfo->localsize + CurrProc->e.procinfo->xmmsize; //pointing to RSP
                       if (CurrProc->sym.langtype == LANG_VECTORCALL)
@@ -752,6 +754,8 @@ static ret_code get_operand( struct expr *opnd, int *idx, struct asm_tok tokenar
                         if ((cnt & 7) != 0) cnt = (cnt + 7)&(-8);
                       opnd->llvalue = cnt;
                     }
+                    else 
+                      opnd->llvalue = sym->offset + StackAdj;
 #else
                     opnd->llvalue = sym->offset;
 #endif

@@ -29,6 +29,8 @@ extern struct asym          *sym_Interface;
 #endif
 
 #define OPTFUNC( name ) static ret_code OPTQUAL name( int *pi, struct asm_tok tokenarray[] )
+extern void UpdateStackBase( struct asym *, void * );
+extern void UpdateProcStatus( struct asym *, void * );
 
 /* OPTION directive helper functions */
 
@@ -667,103 +669,138 @@ OPTFUNC(SetSwitchStile)
   else if (0 == _stricmp(tokenarray[i].string_ptr, "ASMSTYLE")) {
     ModuleInfo.switch_style = 0;
     i++;
-  }
+    }
   *pi = i;
   return(NOT_ERROR);
 }
 
 #if ELF_SUPPORT
-OPTFUNC( SetElf )
+OPTFUNC(SetElf)
 /***************/
-{
-    int i = *pi;
-    struct expr opndx;
+  {
+  int i = *pi;
+  struct expr opndx;
 
-    if ( EvalOperand( &i, tokenarray, Token_Count, &opndx, 0 ) == ERROR )
-        return( ERROR );
-    if ( opndx.kind == EXPR_CONST ) {
-        if ( opndx.llvalue > 0xFF ) {
-            return( EmitConstError( &opndx ) );
-        }
-        if ( Options.output_format == OFORMAT_ELF )
-            ModuleInfo.elf_osabi = opndx.value;
-    } else {
-        return( EmitError( CONSTANT_EXPECTED ) );
+  if (EvalOperand(&i, tokenarray, Token_Count, &opndx, 0) == ERROR)
+    return(ERROR);
+  if (opndx.kind == EXPR_CONST) {
+    if (opndx.llvalue > 0xFF) {
+      return(EmitConstError(&opndx));
+      }
+    if (Options.output_format == OFORMAT_ELF)
+      ModuleInfo.elf_osabi = opndx.value;
     }
-    *pi = i;
-    return( NOT_ERROR );
-}
+  else {
+    return(EmitError(CONSTANT_EXPECTED));
+    }
+  *pi = i;
+  return(NOT_ERROR);
+  }
 #endif
 
 #if RENAMEKEY
 
 /* OPTION RENAMEKEYWORD: <keyword>,new_name */
 
-OPTFUNC( SetRenameKey )
+OPTFUNC(SetRenameKey)
 /*********************/
-{
-    int i = *pi;
-    //struct ReservedWord *resw;
-    unsigned index;
-    char *oldname;
+  {
+  int i = *pi;
+  //struct ReservedWord *resw;
+  unsigned index;
+  char *oldname;
 
 #if 0 /* v2.11: allow temporary renaming of keywords */
-    /* do nothing if pass > 1 */
-    if( Parse_Pass != PASS_1 ) {
-        SkipOption( pi, tokenarray );
-        return( NOT_ERROR );
+  /* do nothing if pass > 1 */
+  if( Parse_Pass != PASS_1 ) {
+    SkipOption( pi, tokenarray );
+    return( NOT_ERROR );
     }
 #endif
-    if ( tokenarray[i].token != T_STRING || tokenarray[i].string_delim != '<' )  {
-        return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
+  if (tokenarray[i].token != T_STRING || tokenarray[i].string_delim != '<')  {
+    return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
     }
-    oldname = tokenarray[i].string_ptr;
-    i++;
-    /* v2.06: syntax changed */
-    //if ( tokenarray[i].token != T_COMMA ) {
-    if ( tokenarray[i].token != T_DIRECTIVE || tokenarray[i].dirtype != DRT_EQUALSGN ) {
-        //EmitError( EXPECTING_COMMA );
-        return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
+  oldname = tokenarray[i].string_ptr;
+  i++;
+  /* v2.06: syntax changed */
+  //if ( tokenarray[i].token != T_COMMA ) {
+  if (tokenarray[i].token != T_DIRECTIVE || tokenarray[i].dirtype != DRT_EQUALSGN) {
+    //EmitError( EXPECTING_COMMA );
+    return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
     }
-    i++;
-    if ( tokenarray[i].token != T_ID )  {
-        return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
+  i++;
+  if (tokenarray[i].token != T_ID)  {
+    return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
     }
 
-    /* todo: if MAX_ID_LEN can be > 255, then check size,
-     * since a reserved word's size must be <= 255 */
-    index = FindResWord( oldname, strlen( oldname ) );
-    if ( index == 0 ) {
-        return( EmitError( RESERVED_WORD_EXPECTED ) );
+  /* todo: if MAX_ID_LEN can be > 255, then check size,
+   * since a reserved word's size must be <= 255 */
+  index = FindResWord(oldname, strlen(oldname));
+  if (index == 0) {
+    return(EmitError(RESERVED_WORD_EXPECTED));
     }
-    RenameKeyword( index, tokenarray[i].string_ptr, strlen( tokenarray[i].string_ptr ) );
-    i++;
-    *pi = i;
-    return( NOT_ERROR );
-}
+  RenameKeyword(index, tokenarray[i].string_ptr, strlen(tokenarray[i].string_ptr));
+  i++;
+  *pi = i;
+  return(NOT_ERROR);
+  }
 #endif
 
 #if AMD64_SUPPORT
-OPTFUNC( SetWin64 )
+OPTFUNC(SetWin64)
 /*****************/
-{
-    int i = *pi;
-    struct expr opndx;
+  {
+  int i = *pi;
+  struct expr opndx;
 
-    /* if -win64 isn't set, skip the option */
-    /* v2.09: skip option if Ofssize != USE64 */
-    if ( ModuleInfo.defOfssize != USE64 ) {
-        SkipOption( pi, tokenarray );
-        return( NOT_ERROR);
+  /* if -win64 isn't set, skip the option */
+  /* v2.09: skip option if Ofssize != USE64 */
+  if (ModuleInfo.defOfssize != USE64) {
+    SkipOption(pi, tokenarray);
+    return(NOT_ERROR);
     }
-
-    if ( EvalOperand( &i, tokenarray, Token_Count, &opndx, 0 ) == ERROR )
-        return( ERROR );
-    if ( opndx.kind == EXPR_CONST ) {
-        if ( opndx.llvalue & ( ~W64F_ALL ) ) {
-            return( EmitConstError( &opndx ) );
+  if (EvalOperand(&i, tokenarray, Token_Count, &opndx, 0) == ERROR)
+      return(ERROR);
+  if (opndx.kind == EXPR_CONST) {
+    if (opndx.llvalue & (~W64F_ALL)) {
+      return(EmitConstError(&opndx));
+      }
+    ModuleInfo.win64_flags = opndx.value;
+    /* OPTION win64:11 can work only with OPTION STACKBASE:RSP */
+    if (opndx.llvalue & W64F_SMART) {  
+        /* In this case STACKBASESUPP must be set */
+        #ifndef STACKBASESUPP
+        #define STACKBASESUPP 1       /* support OPTION STACKBASE              */
+        #endif
+      /* ensure that W64F_SAVEREGPARAMS and W64F_AUTOSTACKSP options are also set*/
+      opndx.llvalue |= 3;
+        /* ensure tahat basereg is RSP */
+      if (ModuleInfo.basereg[ModuleInfo.Ofssize] != T_RSP){
+        ModuleInfo.basereg[ModuleInfo.Ofssize] = T_RSP;
+        if (!ModuleInfo.g.StackBase) {
+          ModuleInfo.g.StackBase = CreateVariable("@StackBase", 0);
+          ModuleInfo.g.StackBase->predefined = TRUE;
+          ModuleInfo.g.StackBase->sfunc_ptr = UpdateStackBase;
+          ModuleInfo.g.ProcStatus = CreateVariable("@ProcStatus", 0);
+          ModuleInfo.g.ProcStatus->predefined = TRUE;
+          ModuleInfo.g.ProcStatus->sfunc_ptr = UpdateProcStatus;
+          }
         }
-        ModuleInfo.win64_flags = opndx.value;
+      }
+	if (opndx.llvalue == 3)
+	{
+		if (ModuleInfo.basereg[ModuleInfo.Ofssize] != T_RSP) {
+			ModuleInfo.basereg[ModuleInfo.Ofssize] = T_RSP;
+			if (!ModuleInfo.g.StackBase) {
+				ModuleInfo.g.StackBase = CreateVariable("@StackBase", 0);
+				ModuleInfo.g.StackBase->predefined = TRUE;
+				ModuleInfo.g.StackBase->sfunc_ptr = UpdateStackBase;
+				ModuleInfo.g.ProcStatus = CreateVariable("@ProcStatus", 0);
+				ModuleInfo.g.ProcStatus->predefined = TRUE;
+				ModuleInfo.g.ProcStatus->sfunc_ptr = UpdateProcStatus;
+			}
+		}
+	}
     } else {
         return( EmitError( CONSTANT_EXPECTED ) );
     }
@@ -849,8 +886,6 @@ OPTFUNC( SetCodeView )
 
 #if STACKBASESUPP
 
-extern void UpdateStackBase( struct asym *, void * );
-extern void UpdateProcStatus( struct asym *, void * );
 
 OPTFUNC( SetStackBase )
 /*********************/

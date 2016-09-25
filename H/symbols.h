@@ -404,6 +404,7 @@ struct proc_info {
 #if STACKBASESUPP
     uint_16             basereg;        /* PROC: v2.11: stack base register */
 #endif
+	uint_8              NoSub;
 };
 
 /* macro parameter */

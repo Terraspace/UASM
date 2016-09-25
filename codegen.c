@@ -172,6 +172,7 @@ static void output_opc(struct code_info *CodeInfo)
   int              rn;
   unsigned char    c;
   int_8            comprdsp = 0;
+  uint_8 lbyte = 0;
 
   DebugMsg1(("output_opc enter, ins.opc/rm=%X/%X, byte1_info=%X CodeInfo->rm=%X opsiz=%u\n", ins->opcode, ins->rm_byte, ins->byte1_info, CodeInfo->rm_byte, CodeInfo->prefix.opsiz));
   /*
@@ -229,7 +230,6 @@ static void output_opc(struct code_info *CodeInfo)
     /* v2.04: no error is returned */
     AddFloatingPointEmulationFixup(CodeInfo);
   }
-
   /*
    * Output instruction prefix LOCK, REP or REP[N]E|Z
    */
@@ -375,7 +375,7 @@ static void output_opc(struct code_info *CodeInfo)
   }
 #if AVXSUPP
   if (ResWordTable[CodeInfo->token].flags & RWF_VEX) {
-    uint_8 lbyte = 0;
+   
     if (CodeInfo->evex_flag){
       lbyte |= 0x4;              //bite 3 must be set in P2 WVVVV1PP 
     }
@@ -443,10 +443,21 @@ static void output_opc(struct code_info *CodeInfo)
                 if ( ins->byte1_info >= F_0F )
                     byte1 |= 0x01;
             }
-              byte1 |= ((CodeInfo->prefix.rex & REX_B) ? 0 : 0x20);/*  REX_B regno 0-7 <-> 8-15 of ModR/M or SIB base */
-              byte1 |= ((CodeInfo->prefix.rex & REX_X) ? 0 : 0x40);/*  REX_X regno 0-7 <-> 8-15 of SIB index */
-              byte1 |= ((CodeInfo->prefix.rex & REX_R) ? 0 : 0x80);/*  REX_R regno 0-7 <-> 8-15 of ModR/M REG */
-              //this still needs to be checked
+
+			/* 3 byte VEX form needs the REX.B swapped IFF the first register would have set REX.B and second operand not */
+			if ( (CodeInfo->reg3 == 0 || CodeInfo->reg3 == 255) && CodeInfo->reg1 >= 8 && CodeInfo->reg2 < 8 && ( (CodeInfo->r1type == 32 && CodeInfo->r2type == 32) || (CodeInfo->r1type == 128 && CodeInfo->r2type == 128) ) )
+			{
+				byte1 |= ((CodeInfo->prefix.rex & REX_B) ? 0x20 : 0);/*  REX_B regno 0-7 <-> 8-15 of ModR/M or SIB base */
+				byte1 |= ((CodeInfo->prefix.rex & REX_X) ? 0 : 0x40);/*  REX_X regno 0-7 <-> 8-15 of SIB index */
+				byte1 |= ((CodeInfo->prefix.rex & REX_R) ? 0 : 0x80);/*  REX_R regno 0-7 <-> 8-15 of ModR/M REG */
+			}
+			else
+			{
+				byte1 |= ((CodeInfo->prefix.rex & REX_B) ? 0 : 0x20);/*  REX_B regno 0-7 <-> 8-15 of ModR/M or SIB base */
+				byte1 |= ((CodeInfo->prefix.rex & REX_X) ? 0 : 0x40);/*  REX_X regno 0-7 <-> 8-15 of SIB index */
+				byte1 |= ((CodeInfo->prefix.rex & REX_R) ? 0 : 0x80);/*  REX_R regno 0-7 <-> 8-15 of ModR/M REG */
+			}
+		   //this still needs to be checked
               if ((CodeInfo->evex_flag)&& (CodeInfo->reg2 <= 15))byte1 |= EVEX_P0R1MASK;
             /* second byte is RXBm mmmm of 3 byte  VEX prefix */    /*  REX_W wide 32 <-> 64 */
                if ((CodeInfo->evex_flag) && (CodeInfo->token != T_VEXTRACTPS)){ 
@@ -875,8 +886,14 @@ static void output_opc(struct code_info *CodeInfo)
             }
             else{
               OutputCodeByte(0xC5);
-              if (CodeInfo->opnd[OPND1].type == OP_YMM || CodeInfo->opnd[OPND2].type == OP_YMM || CodeInfo->token == T_VZEROALL) /* VZEROALL is 256 bits VZEROUPPER is 128 bits */
-                 lbyte |= 0x04;  /* set L: Vector Length */
+			  if (CodeInfo->opnd[OPND1].type == OP_YMM || CodeInfo->opnd[OPND2].type == OP_YMM || CodeInfo->token == T_VZEROALL)
+			  {
+				  /* VZEROALL is 256 bits VZEROUPPER is 128 bits */
+				  if (CodeInfo->mem_type == MT_ZMMWORD)
+					  EmitError(INVALID_INSTRUCTION_OPERANDS);
+				  else
+					lbyte |= 0x04;  /* set L: Vector Length */
+			  }
               else
                 lbyte &= ~0x04;
               CodeInfo->tuple = 0;
@@ -1013,7 +1030,10 @@ static void output_opc(struct code_info *CodeInfo)
                     if ((CodeInfo->opnd[OPND3].data32h > 0x20)||(CodeInfo->opnd[OPND3].data32h > ~0x20)) 
                       CodeInfo->tuple = TRUE;  
                   }
-                  else EmitError(INVALID_OPERAND_SIZE);
+				  else
+				  {
+					  EmitError(INVALID_OPERAND_SIZE);
+				  }
                 }
                 else if (CodeInfo->r2type == OP_XMM){
                   if ((CodeInfo->mem_type == MT_OWORD || CodeInfo->mem_type == MT_EMPTY)){
@@ -1077,12 +1097,24 @@ static void output_opc(struct code_info *CodeInfo)
                   CodeInfo->tuple = TRUE;
                   CodeInfo->evex_p2 |= decoflags;
                   if (CodeInfo->token == T_VCVTDQ2PD || CodeInfo->token == T_VCVTPS2PD ||
+                    CodeInfo->token == T_VMOVDQA || CodeInfo->token == T_VMOVDQU ||
                     CodeInfo->token == T_VCVTUDQ2PD){       
                      CodeInfo->evex_p2 &= ~EVEX_P2LMASK;
                      CodeInfo->evex_p2 &= ~EVEX_P2L1MASK;
-                    if (CodeInfo->r1type == OP_YMM)CodeInfo->evex_p2 |= EVEX_P2LMASK;
-                    else if (CodeInfo->r1type == OP_ZMM)CodeInfo->evex_p2 |= EVEX_P2L1MASK;
-                  }
+					 if (CodeInfo->r1type == OP_YMM) {
+						 if (CodeInfo->mem_type == MT_ZMMWORD)
+							 EmitError(INVALID_OPERAND_SIZE);
+						 CodeInfo->evex_p2 |= EVEX_P2LMASK;
+					 }
+					 else if (CodeInfo->r1type == OP_ZMM) {
+						 if ((CodeInfo->mem_type == MT_ZMMWORD) || (CodeInfo->mem_type == MT_EMPTY) ||
+							 (CodeInfo->mem_type == MT_DWORD) || (CodeInfo->mem_type == MT_QWORD))
+							 CodeInfo->evex_p2 |= EVEX_P2L1MASK;
+						 else
+							 EmitError(INVALID_OPERAND_SIZE);
+
+					 }
+				  }
                   OutputCodeByte(CodeInfo->evex_p2);
                 }
             }
@@ -1093,7 +1125,8 @@ static void output_opc(struct code_info *CodeInfo)
 #if AMD64_SUPPORT
     /* the REX prefix must be located after the other prefixes */
     if( CodeInfo->prefix.rex != 0 ) {
-        if ( CodeInfo->Ofssize != USE64 ) {
+        if ( CodeInfo->Ofssize != USE64 ) 
+		{
             EmitError( INVALID_OPERAND_SIZE );
         }
         OutputCodeByte( CodeInfo->prefix.rex | 0x40 );

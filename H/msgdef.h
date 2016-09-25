@@ -32,7 +32,7 @@ pick(MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS, "mismatch in the number of
 pick(Z_DECORATOR_EXPECTED, "z decorator expected")
 pick(K_REGISTER_EXPECTED, "K register expected")
 pick(EMBEDDED_ROUNDING_IS_AVAILABLE_ONLY_WITH_REG_REG_OP, "Embedded rounding is available only with reg-reg op")
-pick(UNAUTHORISED_USE_OF_EVEX_REGISTERS, "Unauthorised use of AVX512 register")
+pick(UNAUTHORISED_USE_OF_EVEX_REGISTERS, "Use of zmm register not allowed")
 pick (msg_unused11,                                        "" )
 
 #if COMDATSUPP

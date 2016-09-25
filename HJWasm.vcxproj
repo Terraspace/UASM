@@ -250,6 +250,7 @@
       <StructMemberAlignment>8Bytes</StructMemberAlignment>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

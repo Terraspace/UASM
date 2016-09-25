@@ -1301,7 +1301,7 @@ static int PushInvokeParam( int i, struct asm_tok tokenarray[], struct dsym *pro
     struct expr opnd;
     char fullparam[MAX_LINE_LEN];
     char buffer[MAX_LINE_LEN];
-    int reg;
+    int reg = 0;
     DebugMsg1(("PushInvokeParam(%s, param=%s:%u, i=%u ) enter\n", proc->sym.name, curr ? curr->sym.name : "NULL", reqParam, i ));
    //__debugbreak();
     for ( currParm = 0; currParm <= reqParam; ) {
