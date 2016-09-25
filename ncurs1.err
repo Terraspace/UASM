@@ -1,0 +1,10 @@
+d:\hjwasm\samples\ncurs1.asm(66) : Error A2145: INVOKE argument type mismatch: argument 1
+d:\hjwasm\samples\ncurs1.asm(70) : Error A2145: INVOKE argument type mismatch: argument 3
+d:\hjwasm\samples\ncurs1.asm(71) : Error A2145: INVOKE argument type mismatch: argument 1
+d:\hjwasm\samples\ncurs1.asm(71) : Error A2059: Operand 2 too big
+d:\hjwasm\samples\ncurs1.asm(73) : Error A2145: INVOKE argument type mismatch: argument 1
+d:\hjwasm\samples\ncurs1.asm(77) : Error A2145: INVOKE argument type mismatch: argument 1
+d:\hjwasm\samples\ncurs1.asm(81) : Error A2145: INVOKE argument type mismatch: argument 1
+d:\hjwasm\samples\ncurs1.asm(85) : Error A2145: INVOKE argument type mismatch: argument 1
+d:\hjwasm\samples\ncurs1.asm(89) : Error A2145: INVOKE argument type mismatch: argument 1
+d:\hjwasm\samples\ncurs1.asm(93) : Error A2145: INVOKE argument type mismatch: argument 1

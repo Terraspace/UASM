@@ -215,7 +215,8 @@ static int ms64_fcstart( struct dsym const *proc, int numparams, int start, stru
 
         }
     }
-	sym_ReservedStack->hasinvoke = 1;  //added by habran
+	if(sym_ReservedStack)
+		sym_ReservedStack->hasinvoke = 1;  //added by habran
 	DebugMsg1(("ms64_fcstart(%s, numparams=%u) vararg=%u\n", proc->sym.name, numparams, proc->e.procinfo->has_vararg ));
     if ( numparams < 4 )
         numparams = 4;

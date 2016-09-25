@@ -1150,10 +1150,10 @@ ret_code ParseProc( struct dsym *proc, int i, struct asm_tok tokenarray[], bool 
     GetLangType( &i, tokenarray, &langtype ); /* optionally overwrite the value */
     
 	/* John Hankinson: 2016-02-10 Allows Linux64 to utilise Win64 ABI */
-	#if AMD64_SUPPORT
-	if (Options.output_format == OFORMAT_ELF)
-		langtype = LANG_FASTCALL;
-	#endif
+	//#if AMD64_SUPPORT
+	//if (Options.output_format == OFORMAT_ELF)
+	//	langtype = LANG_FASTCALL;
+	//#endif
 
 	/* has language changed? */
     if ( proc->sym.langtype != LANG_NONE && proc->sym.langtype != langtype ) {
@@ -1163,12 +1163,12 @@ ret_code ParseProc( struct dsym *proc, int i, struct asm_tok tokenarray[], bool 
         proc->sym.langtype = langtype;
 
 	/* John Hankinson: 2016-02-10 Allows Linux64 to utilise Win64 ABI */
-	#if AMD64_SUPPORT
-	if (proc->sym.langtype == LANG_NONE && Options.output_format == OFORMAT_ELF)
-	{
-		proc->sym.langtype = LANG_FASTCALL;
-	}
-	#endif
+	//#if AMD64_SUPPORT
+	//if (proc->sym.langtype == LANG_NONE && Options.output_format == OFORMAT_ELF)
+	//{
+	//	proc->sym.langtype = LANG_FASTCALL;
+	//}
+	//#endif
 
     /* 3. attribute is <visibility> */
     /* note that reserved word PUBLIC is a directive! */
@@ -1876,7 +1876,8 @@ static void ProcFini( struct dsym *proc )
         SymSetLocal( (struct asym *)CurrProc );  /* restore local symbol table */
 
     ProcStatus = 0; /* in case there was an empty PROC/ENDP pair */
-	sym_ReservedStack->value = 0;
+	if(sym_ReservedStack)
+		sym_ReservedStack->value = 0;
 }
 
 /* ENDP directive */
