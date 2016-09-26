@@ -445,7 +445,7 @@ static void output_opc(struct code_info *CodeInfo)
             }
 
 			/* 3 byte VEX form needs the REX.B swapped IFF the first register would have set REX.B and second operand not */
-			if ( CodeInfo->token != T_VPTEST && (CodeInfo->reg3 == 0 || CodeInfo->reg3 == 255) && CodeInfo->reg1 >= 8 && CodeInfo->reg2 < 8 && ( (CodeInfo->r1type == 32 && CodeInfo->r2type == 32) || (CodeInfo->r1type == 128 && CodeInfo->r2type == 128) ) )
+			if ( (CodeInfo->token != T_VPTEST) && (CodeInfo->opnd[OPND2].type==OP_I8) && (CodeInfo->reg3 == 0 || CodeInfo->reg3 == 255) && CodeInfo->reg1 >= 8 && CodeInfo->reg2 < 8 && ( (CodeInfo->r1type == 32 && CodeInfo->r2type == 32) || (CodeInfo->r1type == 128 && CodeInfo->r2type == 128) ) )
 			{
 				byte1 |= ((CodeInfo->prefix.rex & REX_B) ? 0x20 : 0);/*  REX_B regno 0-7 <-> 8-15 of ModR/M or SIB base */
 				byte1 |= ((CodeInfo->prefix.rex & REX_X) ? 0 : 0x40);/*  REX_X regno 0-7 <-> 8-15 of SIB index */
