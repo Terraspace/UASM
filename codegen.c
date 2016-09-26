@@ -417,7 +417,7 @@ static void output_opc(struct code_info *CodeInfo)
             if (CodeInfo->evex_flag) 
               OutputCodeByte( 0x62 ); //AVX512 EVEX first byte
             else{
-              OutputCodeByte(0xC4);
+              //OutputCodeByte(0xC4);
               if (CodeInfo->opnd[OPND1].type == OP_YMM || CodeInfo->opnd[OPND2].type == OP_YMM)
                  lbyte |= 0x04;
               else
@@ -445,7 +445,7 @@ static void output_opc(struct code_info *CodeInfo)
             }
 
 			/* 3 byte VEX form needs the REX.B swapped IFF the first register would have set REX.B and second operand not */
-			if ( (CodeInfo->reg3 == 0 || CodeInfo->reg3 == 255) && CodeInfo->reg1 >= 8 && CodeInfo->reg2 < 8 && ( (CodeInfo->r1type == 32 && CodeInfo->r2type == 32) || (CodeInfo->r1type == 128 && CodeInfo->r2type == 128) ) )
+			if ( CodeInfo->token != T_VPTEST && (CodeInfo->reg3 == 0 || CodeInfo->reg3 == 255) && CodeInfo->reg1 >= 8 && CodeInfo->reg2 < 8 && ( (CodeInfo->r1type == 32 && CodeInfo->r2type == 32) || (CodeInfo->r1type == 128 && CodeInfo->r2type == 128) ) )
 			{
 				byte1 |= ((CodeInfo->prefix.rex & REX_B) ? 0x20 : 0);/*  REX_B regno 0-7 <-> 8-15 of ModR/M or SIB base */
 				byte1 |= ((CodeInfo->prefix.rex & REX_X) ? 0 : 0x40);/*  REX_X regno 0-7 <-> 8-15 of SIB index */
@@ -582,7 +582,15 @@ static void output_opc(struct code_info *CodeInfo)
                 if (CodeInfo->token == T_VCVTDQ2PD)
                 CodeInfo->evex_p2 &= ~EVEX_P2L1MASK;
               }
-              OutputCodeByte( byte1 );
+			  
+			  /* This optimises a C4 E1 3byte vex into a C5 2 byte vex form */
+			  if(byte1 == 0xe1 && CodeInfo->token == T_VPSRLQ)
+				OutputCodeByte(0xC5);
+			  else
+			  {
+				  OutputCodeByte(0xC4);
+				  OutputCodeByte(byte1);
+			  }
               //ovde treba proveriti sada je 91 a treba biti D1
               if (CodeInfo->opnd[OPND2].type == OP_I8){
                 //__debugbreak();
