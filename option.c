@@ -765,7 +765,7 @@ OPTFUNC(SetWin64)
     if (opndx.llvalue & (~W64F_ALL)) {
       return(EmitConstError(&opndx));
       }
-    ModuleInfo.win64_flags = opndx.value;
+   
     /* OPTION win64:11 can work only with OPTION STACKBASE:RSP */
     if (opndx.llvalue & W64F_SMART) {  
         /* In this case STACKBASESUPP must be set */
@@ -774,7 +774,7 @@ OPTFUNC(SetWin64)
         #endif
       /* ensure that W64F_SAVEREGPARAMS and W64F_AUTOSTACKSP options are also set*/
       opndx.llvalue |= 3;
-        /* ensure tahat basereg is RSP */
+        /* ensure that basereg is RSP */
       if (ModuleInfo.basereg[ModuleInfo.Ofssize] != T_RSP){
         ModuleInfo.basereg[ModuleInfo.Ofssize] = T_RSP;
         if (!ModuleInfo.g.StackBase) {
@@ -787,8 +787,17 @@ OPTFUNC(SetWin64)
           }
         }
       }
+	/* Force option 1 and 2 to == 3 with frame auto */
+	if (opndx.llvalue == 1 || opndx.llvalue == 2)
+	{
+		ModuleInfo.frame_auto = 1;
+		opndx.llvalue = 3;
+	}
 	if (opndx.llvalue == 3)
 	{
+		#ifndef STACKBASESUPP
+			#define STACKBASESUPP 1       /* support OPTION STACKBASE              */
+		#endif
 		if (ModuleInfo.basereg[ModuleInfo.Ofssize] != T_RSP) {
 			ModuleInfo.basereg[ModuleInfo.Ofssize] = T_RSP;
 			if (!ModuleInfo.g.StackBase) {
@@ -804,6 +813,7 @@ OPTFUNC(SetWin64)
     } else {
         return( EmitError( CONSTANT_EXPECTED ) );
     }
+  ModuleInfo.win64_flags = opndx.llvalue;
     *pi = i;
     return( NOT_ERROR );
 }

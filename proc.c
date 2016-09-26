@@ -2555,7 +2555,7 @@ static void write_win64_default_prologue( struct proc_info *info )
 		
 		// If we're using RBP as the base/frame register and no frame was required, we need to sub RSP,8 to ensure the
 		// stack pointer remains aligned 16.
-		if (info->basereg != T_RSP && ModuleInfo.win64_flags != 0)
+		if (info->basereg != T_RSP && ModuleInfo.win64_flags != 0 && info->pushed_reg>0 && info->pushed_reg%2==0)
 		{
 			AddLineQueueX("sub %r, %u", T_RSP, CurrWordSize);
 		}
@@ -3453,18 +3453,20 @@ static void write_win64_default_epilogue( struct proc_info *info )
     else if (info->localsize > 0)
         AddLineQueueX( "add %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize);
 
+	pop_register(CurrProc->e.procinfo->regslist); //make sure we pop before correcting RSP.
+
 	/* 
 	If we are using RBP as the base frame register but no frame was created
 	(IE: there was no push rbp, then we did a sub rsp,8 so we need to reverse it.
 	*/
 	if (info->fpo || (info->parasize == 0 && info->locallist == NULL)) {
-		if (info->basereg != T_RSP && ModuleInfo.win64_flags != 0)
+		if (info->basereg != T_RSP && ModuleInfo.win64_flags != 0 && info->pushed_reg>0 && info->pushed_reg % 2 == 0)
 		{
 			AddLineQueueX("add %r, %u", T_RSP, CurrWordSize);
 		}
 	}
 
-    pop_register( CurrProc->e.procinfo->regslist );
+
 #if STACKBASESUPP
     if (ModuleInfo.win64_flags & W64F_HABRAN){
       /* restore non-volatile registers from shadow space */
