@@ -960,10 +960,13 @@ static void output_opc(struct code_info *CodeInfo)
                 if ((CodeInfo->token == T_VMOVHPS) || (CodeInfo->token == T_VMOVLPS))
                   lbyte &= ~EVEX_P1WMASK;
               }
-             if ((CodeInfo->token == T_VPSLLQ)||(CodeInfo->token == T_VPSRLQ)||
-               (CodeInfo->token == T_VPSRAQ)|| (CodeInfo->token == T_VPROLQ)||
-               (CodeInfo->token == T_VPRORQ))
-               lbyte |= EVEX_P1WMASK;
+			  if ((CodeInfo->token == T_VPSLLQ) || (CodeInfo->token == T_VPSRLQ) ||
+				  (CodeInfo->token == T_VPSRAQ) || (CodeInfo->token == T_VPROLQ) ||
+				  (CodeInfo->token == T_VPRORQ))
+			  {
+				  if (CodeInfo->opnd[OPND1].type == OP_ZMM || CodeInfo->opnd[OPND2].type == OP_ZMM)
+					lbyte |= EVEX_P1WMASK;
+			  }
             //if first byte is VEX 0xC5 then there is two byte folowing 
             if ((CodeInfo->token == T_KUNPCKBW)||(CodeInfo->token == T_KUNPCKWD)||(CodeInfo->token == T_KUNPCKDQ))
                   lbyte |=  0x04; 

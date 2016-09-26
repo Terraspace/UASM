@@ -349,16 +349,16 @@ avxins (PSHUFLW  ,vpshuflw  ,    P_AVX, VX_LL|VX_NND )   /* -, ns! */
 avxins (PSIGNB   ,vpsignb   ,    P_AVX, VX_L )        /* -, s */
 avxins (PSIGNW   ,vpsignw   ,    P_AVX, VX_L )        /* -, s */
 avxins (PSIGND   ,vpsignd   ,    P_AVX, VX_L )        /* -, s */
-avxins (PSLLDQ   ,vpslldq   ,    P_AVX, VX_LL|VX_L|VX_L|VX_DST )   /* -, d */
-avxins (PSRLDQ   ,vpsrldq   ,    P_AVX, VX_LL|VX_L|VX_L|VX_DST )   /* -, d */
-avxins (PSLLW    ,vpsllw    ,    P_AVX, VX_LL|VX_L|VX_L|VX_DST )   /* -, d/s */
-avxins (PSLLD    ,vpslld    ,    P_AVX, VX_LL|VX_L|VX_L|VX_DST )   /* -, d/s */
-avxins (PSLLQ    ,vpsllq    ,    P_AVX, VX_LL|VX_L|VX_L|VX_DST )   /* -, d/s */
-avxins (PSRAW    ,vpsraw    ,    P_AVX, VX_LL|VX_L|VX_L|VX_DST )   /* -, d/s */
-avxins (PSRAD    ,vpsrad    ,    P_AVX, VX_LL|VX_L|VX_L|VX_DST )   /* -, d/s */
-avxins (PSRLW    ,vpsrlw    ,    P_AVX, VX_LL|VX_L|VX_L|VX_DST )   /* -, d/s */
-avxins (PSRLD    ,vpsrld    ,    P_AVX, VX_LL|VX_L|VX_L|VX_DST )   /* -, d/s */
-avxins (PSRLQ    ,vpsrlq    ,    P_AVX, VX_LL|VX_L|VX_L|VX_DST )   /* -, d/s */
+avxins(PSLLDQ, vpslldq, P_AVX, VX_LL | VX_L | VX_DST | VX_HALF)   /* -, d */
+avxins(PSRLDQ, vpsrldq, P_AVX, VX_LL | VX_L | VX_DST | VX_HALF)   /* -, d */
+avxins(PSLLW, vpsllw, P_AVX, VX_LL | VX_L | VX_DST | VX_HALF)   /* -, d/s */
+avxins(PSLLD, vpslld, P_AVX, VX_LL | VX_L | VX_DST | VX_HALF)   /* -, d/s */
+avxins(PSLLQ, vpsllq, P_AVX, VX_LL | VX_L | VX_DST | VX_HALF)   /* -, d/s */
+avxins(PSRAW, vpsraw, P_AVX, VX_LL | VX_L | VX_DST | VX_HALF)   /* -, d/s */
+avxins(PSRAD, vpsrad, P_AVX, VX_LL | VX_L | VX_DST | VX_HALF)   /* -, d/s */
+avxins(PSRLW, vpsrlw, P_AVX, VX_LL | VX_L | VX_DST | VX_HALF)   /* -, d/s */
+avxins(PSRLD, vpsrld, P_AVX, VX_LL | VX_L | VX_DST | VX_HALF)   /* -, d/s */
+avxins(PSRLQ, vpsrlq, P_AVX, VX_LL | VX_L | VX_DST | VX_HALF)   /* -, d/s */
 /* */
 avxins (PTEST    ,vptest    ,    P_AVX, VX_LL|VX_L|VX_NND ) /* L, ns */
 avxins (PSUBB    ,vpsubb    ,    P_AVX, VX_LL|VX_L )        /* -, s */
