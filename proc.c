@@ -2550,19 +2550,17 @@ static void write_win64_default_prologue( struct proc_info *info )
      */
 
 #if STACKBASESUPP
-    /* info->locallist tells whether there are local variables ( info->localsize doesn't! ) */
+	 /* info->locallist tells whether there are local variables ( info->localsize doesn't! ) */
     if ( info->fpo || ( info->parasize == 0 && info->locallist == NULL ) ) {
         DebugMsg1(("write_win64_default_prologue: no frame register needed\n"));
         //sizestd += 8; /* v2.12: obsolete */
-		
 		// If we're using RBP as the base/frame register and no frame was required, we need to sub RSP,8 to ensure the
 		// stack pointer remains aligned 16.
-		if (info->basereg != T_RSP && ModuleInfo.win64_flags != 0 && info->pushed_reg>0 && info->pushed_reg%2==0)
+		if (info->basereg != T_RSP && !(ModuleInfo.win64_flags & W64F_SMART) && ((info->pushed_reg>0 && info->pushed_reg % 2 == 0) || info->pushed_reg==0))
 		{
 			AddLineQueueX("sub %r, %u", T_RSP, CurrWordSize);
 		}
-
-    } 
+	} 
 	else 
 	{
         AddLineQueueX( "push %r", info->basereg );
@@ -2655,8 +2653,8 @@ static void write_win64_default_prologue( struct proc_info *info )
       }
     }
 	else {
-		//if ((info->locallist == 0) && (info->localsize)) {
-			//AddLineQueueX("sub %r, %u", T_RSP, info->localsize);
+	//	if ((info->locallist == 0) && (info->localsize)) {
+		//	AddLineQueueX("sub %r, %u", T_RSP, info->localsize);
 		//}
 	}
     if ( ( info->locallist + resstack) || info->vecused )  {
@@ -3602,7 +3600,7 @@ static void write_win64_default_epilogue( struct proc_info *info )
 	(IE: there was no push rbp, then we did a sub rsp,8 so we need to reverse it.
 	*/
 	if (info->fpo || (info->parasize == 0 && info->locallist == NULL)) {
-		if (info->basereg != T_RSP && ModuleInfo.win64_flags != 0 && info->pushed_reg>0 && info->pushed_reg % 2 == 0)
+		if (info->basereg != T_RSP && !(ModuleInfo.win64_flags & W64F_SMART) && ((info->pushed_reg>0 && info->pushed_reg % 2 == 0) || info->pushed_reg == 0))
 		{
 			AddLineQueueX("add %r, %u", T_RSP, CurrWordSize);
 		}
