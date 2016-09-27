@@ -2655,15 +2655,16 @@ static void write_win64_default_prologue( struct proc_info *info )
       }
     }
 	else {
-		if ((info->locallist == 0) && (info->localsize)) {
-			AddLineQueueX("sub %r, %u", T_RSP, info->localsize);
-		}
+		//if ((info->locallist == 0) && (info->localsize)) {
+			//AddLineQueueX("sub %r, %u", T_RSP, info->localsize);
+		//}
 	}
     if ( ( info->locallist + resstack) || info->vecused )  {
         DebugMsg1(("write_win64_default_prologue: localsize=%u resstack=%u\n", info->localsize, resstack ));
         if (ModuleInfo.win64_flags & W64F_SMART){
           if (((info->pushed_reg & 1) && (info->localsize & 0xF)) ||
-            ((!(info->pushed_reg & 1)) && (!(info->localsize & 0xF))) && (!(info->pushed_reg & 1)) && (!(cntxmm))){
+            ((!(info->pushed_reg & 1)) && (!(info->localsize & 0xF))) && (!(info->pushed_reg & 1)) && (!(cntxmm)))
+		  {
             info->localsize += 8;
             if (CurrProc->sym.langtype == LANG_VECTORCALL){
               vectstart = 0;
@@ -2687,6 +2688,7 @@ static void write_win64_default_prologue( struct proc_info *info )
 #endif
 			stackSize = info->localsize + info->vsize + info->xmmsize;
 			if ((stackSize & 7) != 0) stackSize = (stackSize + 7)&(-8);
+
 			AddLineQueueX(*(ppfmt + 0), T_RSP, NUMQUAL stackSize, sym_ReservedStack->name);
 			AddLineQueueX(*(ppfmt + 1), T_DOT_ALLOCSTACK, NUMQUAL stackSize, sym_ReservedStack->name);
 			
@@ -3265,7 +3267,7 @@ static void SetLocalOffsets( struct proc_info *info )
     //if ( Parse_Pass != PASS_1 ) /* everything is done in pass 1 */
     //    return;
 
-	if (ModuleInfo.win64_flags != W64F_SMART)
+	if (!(ModuleInfo.win64_flags & W64F_SMART))
 	{
 		SetLocalOffsetsJwasm(info);
 		return;
@@ -3331,7 +3333,7 @@ static void SetLocalOffsets( struct proc_info *info )
         if (info->fpo && !(ModuleInfo.win64_flags & W64F_SMART)) start = CurrWordSize;
 #if AMD64_SUPPORT
         if (ModuleInfo.win64_flags & W64F_SMART){
-         // info->localsize += start;
+          //info->localsize += start; //TOREMOVE?
           cntstd = info->pushed_reg;
           if (rspalign && cntxmm) {
               if (!(cntstd & 1)) info->localsize += 8;
