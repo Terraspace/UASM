@@ -929,8 +929,8 @@ static void cv_write_symbol( struct dbgcv *cv, struct asym *sym )
                         cv->ps_rr32->offset = lcl->sym.offset ;
                         cv->ps_rr32->type = lcl->sym.ext_idx1;
 #if AMD64_SUPPORT
-                        //if W64F_HABRAN recalculate parameters pozitions
-                        if (ModuleInfo.win64_flags & W64F_HABRAN){
+                        //if W64F_HABRAN recalculate parameters positions
+                        if (ModuleInfo.win64_flags & W64F_SMART){
                           if (lcl->sym.isparam){
                             int cnt = proc->e.procinfo->pushed_reg;
                             cnt = cnt * 8;

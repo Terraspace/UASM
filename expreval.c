@@ -742,7 +742,7 @@ static ret_code get_operand( struct expr *opnd, int *idx, struct asm_tok tokenar
                 if ( sym->state == SYM_STACK ) {
 #if STACKBASESUPP
                   
-                    if ((ModuleInfo.win64_flags & W64F_HABRAN) && sym->isparam){
+                    if ((ModuleInfo.win64_flags & W64F_SMART) && sym->isparam){
                       opnd->llvalue = sym->offset;// +StackAdj;
                       cnt = CurrProc->e.procinfo->pushed_reg;
                       cnt = cnt * 8;

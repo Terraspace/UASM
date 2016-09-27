@@ -504,7 +504,7 @@ ret_code LocalDir( int i, struct asm_tok tokenarray[] )
             DebugMsg(("LocalDir: SymLCreate( %s ) failed\n", name ));
             return( ERROR );
         }
-        if (ModuleInfo.win64_flags & W64F_HABRAN) local->sym.isparam = FALSE; //clear isparam var, added  by habran
+        if (ModuleInfo.win64_flags & W64F_SMART) local->sym.isparam = FALSE; //clear isparam var, added  by habran
         local->sym.state = SYM_STACK;
         local->sym.isdefined = TRUE;
         local->sym.total_length = 1; /* v2.04: added */
@@ -980,16 +980,16 @@ static ret_code ParseParams( struct dsym *proc, int i, struct asm_tok tokenarray
 		// Compensate for the stack-frame setup of RBP including the push rbp, which moves the parameters out by 8.
 		else if (proc->e.procinfo->basereg == T_RBP && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP) && (ModuleInfo.win64_flags & W64F_SAVEREGPARAMS))
 		{
-			offset = ((2 + (proc->sym.mem_type == MT_FAR ? 1 : 0)) * CurrWordSize);
-			if( (proc->e.procinfo->locallist != 0) || !(proc->e.procinfo->localsize) )
-			{
-				offset += 8;
-			}
+			offset = ((3 + (proc->sym.mem_type == MT_FAR ? 1 : 0)) * CurrWordSize);
+			//if( (proc->e.procinfo->locallist != 0) || !(proc->e.procinfo->localsize) )
+			//{
+				//offset += 8;
+			//}
 		}
 		else if (proc->e.procinfo->basereg == T_RBP && !(ModuleInfo.win64_flags & W64F_AUTOSTACKSP) && (ModuleInfo.win64_flags & W64F_SAVEREGPARAMS))
 		{
 			// USES will push registers, so reduce offset by number of pushes.
-			offset = ((2 + (proc->sym.mem_type == MT_FAR ? 1 : 0)) * CurrWordSize);
+			/*offset = ((2 + (proc->sym.mem_type == MT_FAR ? 1 : 0)) * CurrWordSize);
 			if ((proc->e.procinfo->locallist != 0) || !(proc->e.procinfo->localsize))
 			{
 				offset += 8;
@@ -1007,7 +1007,8 @@ static ret_code ParseParams( struct dsym *proc, int i, struct asm_tok tokenarray
 				tmp = 4 - paracount;
 			}
 			if (proc->e.procinfo->regslist && *(proc->e.procinfo->regslist) > tmp)
-				offset -= (((int)*(proc->e.procinfo->regslist) - tmp) * CurrWordSize);
+				offset -= (((int)*(proc->e.procinfo->regslist) - tmp) * CurrWordSize);*/
+			offset = ((2 + (proc->sym.mem_type == MT_FAR ? 1 : 0)) * CurrWordSize);
 		}
 		else if (proc->e.procinfo->basereg == T_RBP)
 			offset = ((2 + (proc->sym.mem_type == MT_FAR ? 1 : 0)) * CurrWordSize);
@@ -1028,7 +1029,7 @@ static ret_code ParseParams( struct dsym *proc, int i, struct asm_tok tokenarray
                 offset += ROUND_UP(paranode->sym.total_size, CurrWordSize);
                 /* set isparam var for W64F_HABRAN */
 				if (ModuleInfo.win64_flags & W64F_SMART) paranode->sym.isparam = TRUE;
-                if (ModuleInfo.win64_flags & W64F_HABRAN) paranode->sym.isparam = TRUE;
+                //if (ModuleInfo.win64_flags & W64F_HABRAN) paranode->sym.isparam = TRUE;
               }
           }
         } else
@@ -2329,7 +2330,7 @@ static void win64_SaveRegParams(struct proc_info *info)
 {
 	int i;
 	struct dsym *param;
-	if (ModuleInfo.win64_flags & W64F_HABRAN) {
+	if (ModuleInfo.win64_flags & W64F_SMART) {
 		int			   cnt;
 		uint_16        *regist;
 		info->home_taken = 0;
@@ -2538,7 +2539,7 @@ static void write_win64_default_prologue( struct proc_info *info )
     XYZMMsize = 16;
     if ( ModuleInfo.win64_flags & W64F_SAVEREGPARAMS )
         win64_SaveRegParams( info );
-    if (ModuleInfo.win64_flags & W64F_HABRAN) 
+    if (ModuleInfo.win64_flags & W64F_SMART) 
       win64_StoreRegHome(info);
 
 	/*
@@ -2575,7 +2576,7 @@ static void write_win64_default_prologue( struct proc_info *info )
     AddLineQueueX( "mov %r, %r", basereg[USE64], T_RSP );
     AddLineQueueX( "%r %r, 0", T_DOT_SETFRAME, basereg[USE64] );
 #endif
-    if (ModuleInfo.win64_flags & W64F_HABRAN){
+    if (ModuleInfo.win64_flags & W64F_SMART){
       cntxmm = 0;
       if (info->regslist) {
         n = 0;
@@ -2644,7 +2645,7 @@ static void write_win64_default_prologue( struct proc_info *info )
     if (ymmflag) XYZMMsize = 32;
     else XYZMMsize = 16;
     /* v2.11: now done in write_prologue() */
-	if (ModuleInfo.win64_flags & W64F_HABRAN){
+	if (ModuleInfo.win64_flags & W64F_SMART){
       if (Parse_Pass && sym_ReservedStack->hasinvoke == 0) resstack = 0;
       if (!(info->locallist) && !(resstack)) info->localsize = 0;
       if ((info->localsize == 0) && (cntxmm)){
@@ -2660,12 +2661,12 @@ static void write_win64_default_prologue( struct proc_info *info )
 	}
     if ( ( info->locallist + resstack) || info->vecused )  {
         DebugMsg1(("write_win64_default_prologue: localsize=%u resstack=%u\n", info->localsize, resstack ));
-        if (ModuleInfo.win64_flags & W64F_HABRAN){
+        if (ModuleInfo.win64_flags & W64F_SMART){
           if (((info->pushed_reg & 1) && (info->localsize & 0xF)) ||
             ((!(info->pushed_reg & 1)) && (!(info->localsize & 0xF))) && (!(info->pushed_reg & 1)) && (!(cntxmm))){
             info->localsize += 8;
             if (CurrProc->sym.langtype == LANG_VECTORCALL){
-              vectstart = 0 ;
+              vectstart = 0;
             }
           }
         }
@@ -3264,7 +3265,7 @@ static void SetLocalOffsets( struct proc_info *info )
     //if ( Parse_Pass != PASS_1 ) /* everything is done in pass 1 */
     //    return;
 
-	if (ModuleInfo.win64_flags != W64F_HABRAN)
+	if (ModuleInfo.win64_flags != W64F_SMART)
 	{
 		SetLocalOffsetsJwasm(info);
 		return;
@@ -3327,9 +3328,9 @@ static void SetLocalOffsets( struct proc_info *info )
         /* in case there's no frame register, adjust start offset. */
         if ( info->parasize == 0 && info->locallist == NULL  )
             start = CurrWordSize;
-        if (info->fpo && !(ModuleInfo.win64_flags & W64F_HABRAN)) start = CurrWordSize;
+        if (info->fpo && !(ModuleInfo.win64_flags & W64F_SMART)) start = CurrWordSize;
 #if AMD64_SUPPORT
-        if (ModuleInfo.win64_flags & W64F_HABRAN){
+        if (ModuleInfo.win64_flags & W64F_SMART){
          // info->localsize += start;
           cntstd = info->pushed_reg;
           if (rspalign && cntxmm) {
@@ -3355,7 +3356,7 @@ static void SetLocalOffsets( struct proc_info *info )
     /* scan the locals list and set member sym.offset */
     for( curr = info->locallist; curr; curr = curr->nextlocal ) {
         uint_32 itemsize = ( curr->sym.total_size == 0 ? 0 : curr->sym.total_size / curr->sym.total_length );
-        if (ModuleInfo.win64_flags & W64F_HABRAN){
+        if (ModuleInfo.win64_flags & W64F_SMART){
           int n = 0;
           if (curr->sym.isarray) n = curr->sym.total_size & 0x7;
           curr->sym.offset = info->localsize + n; //that works
@@ -3365,18 +3366,18 @@ static void SetLocalOffsets( struct proc_info *info )
             info->localsize = ROUND_UP( info->localsize, align );
         else if ( itemsize ) /* v2.04: skip if size == 0 */
             info->localsize = ROUND_UP( info->localsize, itemsize );
-        if (!(ModuleInfo.win64_flags & W64F_HABRAN))
+        if (!(ModuleInfo.win64_flags & W64F_SMART))
         curr->sym.offset = - info->localsize;
         DebugMsg1(("SetLocalOffsets(%s): offset of %s (size=%u) set to %d\n", CurrProc->sym.name, curr->sym.name, curr->sym.total_size, curr->sym.offset));
     }
 
     /* v2.11: localsize must be rounded before offset adjustment if fpo */
-    if (!(ModuleInfo.win64_flags & W64F_HABRAN))
+    if (!(ModuleInfo.win64_flags & W64F_SMART))
     info->localsize = ROUND_UP( info->localsize, CurrWordSize );
 #if AMD64_SUPPORT
     /* RSP 16-byte alignment? */
     if ( rspalign ) {
-      if (ModuleInfo.win64_flags & W64F_HABRAN)info->localsize = ROUND_UP(info->localsize, 8);
+      if (ModuleInfo.win64_flags & W64F_SMART)info->localsize = ROUND_UP(info->localsize, 8);
       else  info->localsize = ROUND_UP( info->localsize, 16 );
     }
 #endif
@@ -3395,7 +3396,7 @@ static void SetLocalOffsets( struct proc_info *info )
 #if AMD64_SUPPORT
       if (rspalign) {
         localadj = info->localsize;
-        if (!(ModuleInfo.win64_flags & W64F_HABRAN))
+        if (!(ModuleInfo.win64_flags & W64F_SMART))
           paramadj = info->localsize - CurrWordSize - start;
       }
       else 
@@ -3406,7 +3407,7 @@ static void SetLocalOffsets( struct proc_info *info )
 #if AMD64_SUPPORT
       }
 #endif
-      if (!(ModuleInfo.win64_flags & W64F_HABRAN)){
+      if (!(ModuleInfo.win64_flags & W64F_SMART)){
         DebugMsg1(("SetLocalOffsets(%s): FPO, adjusting offsets\n", CurrProc->sym.name));
         /* subtract CurrWordSize value for params, since no space is required to save the frame pointer value */
         for (curr = info->locallist; curr; curr = curr->nextlocal) {
@@ -3425,7 +3426,7 @@ static void SetLocalOffsets( struct proc_info *info )
     /* v2.12: if the space used for register saves has been added to localsize,
      * the part that covers "pushed" GPRs has to be subtracted now, before prologue code is generated.
      */
-    if (!(ModuleInfo.win64_flags & W64F_HABRAN)){
+    if (!(ModuleInfo.win64_flags & W64F_SMART)){
       if (rspalign) {
         info->localsize -= cntstd * 8 + start;
         DebugMsg1(("SetLocalOffsets(%s): final localsize=%u\n", CurrProc->sym.name, info->localsize));
@@ -3486,7 +3487,7 @@ static void pop_register( uint_16 *regist )
         return;
     cnt = *regist;
     regist += cnt;
-    if (ModuleInfo.win64_flags & W64F_HABRAN)
+    if (ModuleInfo.win64_flags & W64F_SMART)
     {
       for (cnt = CurrProc->e.procinfo->pushed_reg; cnt; cnt--, regist--) {
         /* don't "pop" xmm registers */
@@ -3576,7 +3577,7 @@ static void write_win64_default_epilogue( struct proc_info *info )
     }
 
     if (ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP)){
-      if (ModuleInfo.win64_flags & W64F_HABRAN){
+      if (ModuleInfo.win64_flags & W64F_SMART){
         anysize = info->localsize + sym_ReservedStack->value + info->xmmsize;
         if (info->vecused) anysize += info->vsize;
 		if (anysize)
@@ -3607,7 +3608,7 @@ static void write_win64_default_epilogue( struct proc_info *info )
 
 
 #if STACKBASESUPP
-    if (ModuleInfo.win64_flags & W64F_HABRAN){
+    if (ModuleInfo.win64_flags & W64F_SMART){
       /* restore non-volatile registers from shadow space */
       if (info->regslist) {
         uint_16 *regist = info->regslist;
