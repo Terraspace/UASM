@@ -3577,7 +3577,7 @@ static void write_win64_default_epilogue( struct proc_info *info )
     }
 
     if (ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP)){
-      if (ModuleInfo.win64_flags & W64F_SMART){
+      //if (ModuleInfo.win64_flags & W64F_SMART){
         anysize = info->localsize + sym_ReservedStack->value + info->xmmsize;
         if (info->vecused) anysize += info->vsize;
 		if (anysize)
@@ -3586,9 +3586,9 @@ static void write_win64_default_epilogue( struct proc_info *info )
 			if ((stackSize & 7) != 0) stackSize = (stackSize + 7)&(-8);
 			AddLineQueueX("add %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL stackSize, sym_ReservedStack->name);
 		}
-      }
-        else if (info->localsize + info->xmmsize > 0)
-          AddLineQueueX("add %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + info->xmmsize, sym_ReservedStack->name);
+      //}
+        //else if (info->localsize + info->xmmsize > 0)
+          //AddLineQueueX("add %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + info->xmmsize, sym_ReservedStack->name);
     }
     else if (info->localsize > 0)
         AddLineQueueX( "add %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize);
