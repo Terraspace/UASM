@@ -792,9 +792,10 @@ OPTFUNC(SetWin64)
 	{
 		ModuleInfo.frame_auto = 1;
 		opndx.llvalue = 3;
-	}
+	}*/
 	if (opndx.llvalue == 3)
 	{
+		opndx.llvalue = 11;
 		if (ModuleInfo.basereg[ModuleInfo.Ofssize] != T_RSP) {
 			ModuleInfo.basereg[ModuleInfo.Ofssize] = T_RSP;
 			if (!ModuleInfo.g.StackBase) {
@@ -806,7 +807,7 @@ OPTFUNC(SetWin64)
 				ModuleInfo.g.ProcStatus->sfunc_ptr = UpdateProcStatus;
 			}
 		}
-	}*/
+	}
     } else {
         return( EmitError( CONSTANT_EXPECTED ) );
     }
