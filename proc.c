@@ -1825,6 +1825,7 @@ static void WriteSEHData( struct dsym *proc )
 #endif
 
 static void SetLocalOffsets( struct proc_info *info );
+static void SetLocalOffsetsJwasm( struct proc_info *info );
 
 /* close a PROC
  */
@@ -3107,6 +3108,138 @@ runqueue:
  * will also work only in those cases!
  */
 
+static void SetLocalOffsetsJwasm(struct proc_info *info)
+/***************************************************/
+{
+	struct dsym *curr;
+#if AMD64_SUPPORT || STACKBASESUPP
+	int         cntxmm = 0;
+	int         cntstd = 0;
+	int         start = 0;
+#endif
+#if AMD64_SUPPORT
+	int         rspalign = FALSE;
+#endif
+	int         align = CurrWordSize;
+
+#if AMD64_SUPPORT
+	if (info->isframe || (ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP))) {
+		rspalign = TRUE;
+		if (ModuleInfo.win64_flags & W64F_STACKALIGN16)
+			align = 16;
+	}
+#endif
+#if AMD64_SUPPORT || STACKBASESUPP
+	/* in 64-bit, if the FRAME attribute is set, the space for the registers
+	* saved by the USES clause is located ABOVE the local variables!
+	* v2.09: if stack space is to be reserved for INVOKE ( option WIN64:2 ),
+	* the registers are also saved ABOVE the local variables.
+	*/
+	if (
+#if STACKBASESUPP
+		info->fpo
+#endif
+#if AMD64_SUPPORT
+		|| rspalign
+#endif
+		) {
+		/* count registers to be saved ABOVE local variables.
+		* v2.06: the list may contain xmm registers, which have size 16!
+		*/
+		if (info->regslist) {
+			int         cnt;
+			uint_16     *regs;
+			for (regs = info->regslist, cnt = *regs++; cnt; cnt--, regs++)
+				if (GetValueSp(*regs) & OP_XMM)
+					cntxmm++;
+				else
+					cntstd++;
+		}
+		/* in case there's no frame register, adjust start offset. */
+		if ((info->fpo || (info->parasize == 0 && info->locallist == NULL)))
+			start = CurrWordSize;
+#if AMD64_SUPPORT
+		if (rspalign) {
+			info->localsize = start + cntstd * CurrWordSize;
+			if (cntxmm) {
+				info->localsize += 16 * cntxmm;
+				info->localsize = ROUND_UP(info->localsize, 16);
+			}
+		}
+#endif
+		DebugMsg1(("SetLocalOffsets(%s): cntxmm=%u cntstd=%u start=%u align=%u localsize=%u\n", CurrProc->sym.name, cntxmm, cntstd, start, align, info->localsize));
+	}
+#endif
+
+	/* scan the locals list and set member sym.offset */
+	for (curr = info->locallist; curr; curr = curr->nextlocal) {
+		uint_32 itemsize = (curr->sym.total_size == 0 ? 0 : curr->sym.total_size / curr->sym.total_length);
+		info->localsize += curr->sym.total_size;
+		if (itemsize > align)
+			info->localsize = ROUND_UP(info->localsize, align);
+		else if (itemsize) /* v2.04: skip if size == 0 */
+			info->localsize = ROUND_UP(info->localsize, itemsize);
+		curr->sym.offset = -info->localsize;
+		DebugMsg1(("SetLocalOffsets(%s): offset of %s (size=%u) set to %d\n", CurrProc->sym.name, curr->sym.name, curr->sym.total_size, curr->sym.offset));
+	}
+
+	/* v2.11: localsize must be rounded before offset adjustment if fpo */
+	info->localsize = ROUND_UP(info->localsize, CurrWordSize);
+#if AMD64_SUPPORT
+	/* RSP 16-byte alignment? */
+	if (rspalign) {
+		info->localsize = ROUND_UP(info->localsize, 16);
+	}
+#endif
+
+	DebugMsg1(("SetLocalOffsets(%s): localsize=%u after processing locals\n", CurrProc->sym.name, info->localsize));
+
+#if STACKBASESUPP
+	/* v2.11: recalculate offsets for params and locals if there's no frame pointer.
+	* Problem in 64-bit: option win64:2 triggers the "stack space reservation" feature -
+	* but the final value of this space is known at the procedure's END only.
+	* Hence in this case the values calculated below are "preliminary".
+	*/
+	if (info->fpo) {
+		unsigned localadj;
+		unsigned paramadj;
+#if AMD64_SUPPORT
+		if (rspalign) {
+			localadj = info->localsize;
+			paramadj = info->localsize - CurrWordSize - start;
+		}
+		else {
+#endif
+			localadj = info->localsize + cntstd * CurrWordSize;
+			paramadj = info->localsize + cntstd * CurrWordSize - CurrWordSize;
+#if AMD64_SUPPORT
+		}
+#endif
+		DebugMsg1(("SetLocalOffsets(%s): FPO, adjusting offsets\n", CurrProc->sym.name));
+		/* subtract CurrWordSize value for params, since no space is required to save the frame pointer value */
+		for (curr = info->locallist; curr; curr = curr->nextlocal) {
+			DebugMsg1(("SetLocalOffsets(%s): FPO, offset for %s %4d -> %4d\n", CurrProc->sym.name, curr->sym.name, curr->sym.offset, curr->sym.offset + localadj));
+			curr->sym.offset += localadj;
+		}
+		for (curr = info->paralist; curr; curr = curr->nextparam) {
+			DebugMsg1(("SetLocalOffsets(%s): FPO, offset for %s %4d -> %4d\n", CurrProc->sym.name, curr->sym.name, curr->sym.offset, curr->sym.offset + paramadj));
+			curr->sym.offset += paramadj;
+		}
+	}
+#endif
+
+#if AMD64_SUPPORT
+	/* v2.12: if the space used for register saves has been added to localsize,
+	* the part that covers "pushed" GPRs has to be subtracted now, before prologue code is generated.
+	*/
+	if (rspalign) {
+		info->localsize -= cntstd * 8 + start;
+		DebugMsg1(("SetLocalOffsets(%s): final localsize=%u\n", CurrProc->sym.name, info->localsize));
+	}
+#endif
+}
+
+
 static void SetLocalOffsets( struct proc_info *info )
 /***************************************************/
 {
@@ -3130,6 +3263,12 @@ static void SetLocalOffsets( struct proc_info *info )
 #endif
     //if ( Parse_Pass != PASS_1 ) /* everything is done in pass 1 */
     //    return;
+
+	if (ModuleInfo.win64_flags != W64F_HABRAN)
+	{
+		SetLocalOffsetsJwasm(info);
+		return;
+	}
 
 #if AMD64_SUPPORT
     regist = info->regslist;

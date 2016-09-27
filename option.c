@@ -788,16 +788,13 @@ OPTFUNC(SetWin64)
         }
       }
 	/* Force option 1 and 2 to == 3 with frame auto */
-	if (opndx.llvalue == 1 || opndx.llvalue == 2)
+/*	if (opndx.llvalue == 1 || opndx.llvalue == 2)
 	{
 		ModuleInfo.frame_auto = 1;
 		opndx.llvalue = 3;
 	}
 	if (opndx.llvalue == 3)
 	{
-		#ifndef STACKBASESUPP
-			#define STACKBASESUPP 1       /* support OPTION STACKBASE              */
-		#endif
 		if (ModuleInfo.basereg[ModuleInfo.Ofssize] != T_RSP) {
 			ModuleInfo.basereg[ModuleInfo.Ofssize] = T_RSP;
 			if (!ModuleInfo.g.StackBase) {
@@ -809,7 +806,7 @@ OPTFUNC(SetWin64)
 				ModuleInfo.g.ProcStatus->sfunc_ptr = UpdateProcStatus;
 			}
 		}
-	}
+	}*/
     } else {
         return( EmitError( CONSTANT_EXPECTED ) );
     }

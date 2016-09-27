@@ -734,6 +734,11 @@ static void output_opc(struct code_info *CodeInfo)
               if (CodeInfo->r2type == OP_YMM)
                 lbyte |= 0x04;
             }
+			if (CodeInfo->token == T_VPMOVMSKB)
+			{
+				if(ins->byte1_info == F_0F)
+					lbyte |= 0x01;
+			}
             CodeInfo->evex_p1 = lbyte;
             OutputCodeByte( lbyte );
             if (CodeInfo->evex_flag  ){
