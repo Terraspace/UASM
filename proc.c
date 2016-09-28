@@ -2532,6 +2532,7 @@ static void write_win64_default_prologue( struct proc_info *info )
     int                 stackSize;
     int                 resstack = ( ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) ? sym_ReservedStack->value : 0 );
 	struct dsym     *paranode;
+	int pushed = 0;
 
     DebugMsg1(("write_win64_default_prologue enter\n"));
     memset(xyused, 0, 6);
@@ -2551,15 +2552,19 @@ static void write_win64_default_prologue( struct proc_info *info )
 
 #if STACKBASESUPP
 	 /* info->locallist tells whether there are local variables ( info->localsize doesn't! ) */
+	if (info->regslist != 0)
+		pushed = *(info->regslist);
+
     if ( info->fpo || ( info->parasize == 0 && info->locallist == NULL ) ) {
         DebugMsg1(("write_win64_default_prologue: no frame register needed\n"));
         //sizestd += 8; /* v2.12: obsolete */
 		// If we're using RBP as the base/frame register and no frame was required, we need to sub RSP,8 to ensure the
 		// stack pointer remains aligned 16.
-		if (info->basereg != T_RSP && (ModuleInfo.win64_flags == 0) && ((info->pushed_reg>0 && info->pushed_reg % 2 == 0) || info->pushed_reg==0))
-		{
-			AddLineQueueX("sub %r, %u", T_RSP, CurrWordSize);
-		}
+		//if ( info->basereg != T_RSP && ( ( pushed>0 && (pushed & 1) == 1 ) || pushed==0 ) )
+		//{
+		//	AddLineQueueX("sub %r, %u", T_RSP, CurrWordSize);
+		//	pushed = 100;
+		//}
 	} 
 	else 
 	{
@@ -2574,11 +2579,12 @@ static void write_win64_default_prologue( struct proc_info *info )
     AddLineQueueX( "mov %r, %r", basereg[USE64], T_RSP );
     AddLineQueueX( "%r %r, 0", T_DOT_SETFRAME, basereg[USE64] );
 #endif
-    if (ModuleInfo.win64_flags & W64F_SMART){
+	info->pushed_reg = 0; /*count of pushed registers */
+	if (ModuleInfo.win64_flags & W64F_SMART)
+	{
       cntxmm = 0;
       if (info->regslist) {
         n = 0;
-        info->pushed_reg = 0; /*count of pushed registers */
         regist = info->regslist;
         for (cnt = *regist++; cnt; cnt--, regist++) {
           if (GetValueSp(*regist) & OP_XMM){
@@ -2628,6 +2634,7 @@ static void write_win64_default_prologue( struct proc_info *info )
           }
 #endif
           else {
+			info->pushed_reg += 1;
             AddLineQueueX("push %r", *regist);
             if ((1 << GetRegNo(*regist)) & win64_nvgpr) {
               AddLineQueueX("%r %r", T_DOT_PUSHREG, *regist);
@@ -2653,9 +2660,10 @@ static void write_win64_default_prologue( struct proc_info *info )
       }
     }
 	else {
-	//	if ((info->locallist == 0) && (info->localsize)) {
-		//	AddLineQueueX("sub %r, %u", T_RSP, info->localsize);
-		//}
+		if (pushed != 100 && (info->locallist == 0) && (info->localsize)) 
+		{
+			AddLineQueueX("sub %r, %u", T_RSP, info->localsize);
+		}
 	}
     if ( ( info->locallist + resstack) || info->vecused )  {
         DebugMsg1(("write_win64_default_prologue: localsize=%u resstack=%u\n", info->localsize, resstack ));
@@ -3600,7 +3608,7 @@ static void write_win64_default_epilogue( struct proc_info *info )
 	(IE: there was no push rbp, then we did a sub rsp,8 so we need to reverse it.
 	*/
 	if (info->fpo || (info->parasize == 0 && info->locallist == NULL)) {
-		if (info->basereg != T_RSP && (ModuleInfo.win64_flags == 0) && ((info->pushed_reg>0 && info->pushed_reg % 2 == 0) || info->pushed_reg == 0))
+		if (info->basereg != T_RSP && ((info->pushed_reg>0 && info->pushed_reg % 2 == 0) || info->pushed_reg == 0))
 		{
 			AddLineQueueX("add %r, %u", T_RSP, CurrWordSize);
 		}

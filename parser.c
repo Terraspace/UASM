@@ -3135,6 +3135,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
       /* v2.08: this code must run even if PRST_INSIDE_EPILOGUE is set */
       if (tokenarray[i].tokval == T_RET && CurrProc->sym.mem_type == MT_FAR)
         tokenarray[i].tokval = T_RETF;
+
     }
   }
 
