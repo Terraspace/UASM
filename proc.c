@@ -2533,7 +2533,7 @@ static void write_win64_default_prologue( struct proc_info *info )
     int                 resstack = ( ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) ? sym_ReservedStack->value : 0 );
 	struct dsym     *paranode;
 	int pushed = 0;
-
+	
     DebugMsg1(("write_win64_default_prologue enter\n"));
     memset(xyused, 0, 6);
     info->vecused = 0;
@@ -3607,12 +3607,12 @@ static void write_win64_default_epilogue( struct proc_info *info )
 	If we are using RBP as the base frame register but no frame was created
 	(IE: there was no push rbp, then we did a sub rsp,8 so we need to reverse it.
 	*/
-	if (info->fpo || (info->parasize == 0 && info->locallist == NULL)) {
-		if (info->basereg != T_RSP && ((info->pushed_reg>0 && info->pushed_reg % 2 == 0) || info->pushed_reg == 0))
-		{
-			AddLineQueueX("add %r, %u", T_RSP, CurrWordSize);
-		}
-	}
+	//if (info->fpo || (info->parasize == 0 && info->locallist == NULL)) {
+		//if (info->basereg != T_RSP && ((info->pushed_reg>0 && info->pushed_reg % 2 == 0) || info->pushed_reg == 0))
+		//{
+			//AddLineQueueX("add %r, %u", T_RSP, CurrWordSize);
+		//}
+	//}
 
 
 #if STACKBASESUPP
