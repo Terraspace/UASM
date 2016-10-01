@@ -3059,7 +3059,7 @@ static ret_code write_default_prologue( void )
          * with SUB, short instructions work up to 127 only.
          */
         if ( Options.masm_compat_gencode || info->localsize == 128 )
-            AddLineQueueX( "add %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize );
+            AddLineQueueX( "add %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL ~(info->localsize) );
         else
             AddLineQueueX( "sub %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize );
     }

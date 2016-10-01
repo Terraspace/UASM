@@ -271,8 +271,8 @@ avxins (PADDSW  , vpaddsw  ,     P_AVX, VX_L )        /* -, s */
 avxins (PADDUSB , vpaddusb ,     P_AVX, VX_L )        /* -, s */
 avxins (PADDUSW , vpaddusw ,     P_AVX, VX_L )        /* -, s */
 avxins (PALIGNR , vpalignr ,     P_AVX, VX_L )        /* -, s */
-avxins (PAND    , vpand    ,     P_AVX, VX_LL|VX_L )        /* -, s */
-avxins (PANDN   , vpandn   ,     P_AVX, VX_LL|VX_L )        /* -, s */
+avxins (PAND    , vpand    ,     P_AVX, VX_L )        /* -, s */
+avxins (PANDN   , vpandn   ,     P_AVX, VX_L )        /* -, s */
 avxins (PAVGB   , vpavgb   ,     P_AVX, VX_L )        /* -, s */
 avxins (PAVGW   , vpavgw   ,     P_AVX, VX_L )        /* -, s */
 avxins (PBLENDW , vpblendw ,     P_AVX, VX_L )        /* -, s */
@@ -320,19 +320,19 @@ avxins (PMINSD   ,vpminsd   ,    P_AVX, VX_LL|VX_L )        /* -, s */
 avxins (PMINUB   ,vpminub   ,    P_AVX, VX_LL|VX_L )        /* -, s */
 avxins (PMINUW   ,vpminuw   ,    P_AVX, VX_LL|VX_L )        /* -, s */
 avxins (PMINUD   ,vpminud   ,    P_AVX, VX_LL|VX_L )        /* -, s */
-avxins (PMOVMSKB ,vpmovmskb ,    P_AVX, VX_LL|VX_NND )   /* -, ns */
-avxins (PMOVSXBW ,vpmovsxbw ,    P_AVX, VX_LL|VX_NND )   /* -, ns */
-avxins (PMOVSXBD ,vpmovsxbd ,    P_AVX, VX_LL|VX_NND )   /* -, ns */
-avxins (PMOVSXBQ ,vpmovsxbq ,    P_AVX, VX_LL|VX_NND )   /* -, ns */
-avxins (PMOVSXWD ,vpmovsxwd ,    P_AVX, VX_LL|VX_NND )   /* -, ns */
-avxins (PMOVSXWQ ,vpmovsxwq ,    P_AVX, VX_LL|VX_NND )   /* -, ns */
-avxins (PMOVSXDQ ,vpmovsxdq ,    P_AVX, VX_LL|VX_NND )   /* -, ns */
-avxins (PMOVZXBW ,vpmovzxbw ,    P_AVX, VX_LL|VX_NND )   /* -, ns */
-avxins (PMOVZXBD ,vpmovzxbd ,    P_AVX, VX_LL|VX_NND )   /* -, ns */
-avxins (PMOVZXBQ ,vpmovzxbq ,    P_AVX, VX_LL|VX_NND )   /* -, ns */
-avxins (PMOVZXWD ,vpmovzxwd ,    P_AVX, VX_LL|VX_NND )   /* -, ns */
-avxins (PMOVZXWQ ,vpmovzxwq ,    P_AVX, VX_LL|VX_NND )   /* -, ns */
-avxins (PMOVZXDQ ,vpmovzxdq ,    P_AVX, VX_LL|VX_NND )   /* -, ns */
+avxins (PMOVMSKB ,vpmovmskb ,    P_AVX, VX_L|VX_NND )   /* -, ns */
+avxins (PMOVSXBW ,vpmovsxbw ,    P_AVX, VX_L|VX_NND )   /* -, ns */
+avxins (PMOVSXBD ,vpmovsxbd ,    P_AVX, VX_L|VX_NND )   /* -, ns */
+avxins (PMOVSXBQ ,vpmovsxbq ,    P_AVX, VX_L|VX_NND )   /* -, ns */
+avxins (PMOVSXWD ,vpmovsxwd ,    P_AVX, VX_L|VX_NND )   /* -, ns */
+avxins (PMOVSXWQ ,vpmovsxwq ,    P_AVX, VX_L|VX_NND )   /* -, ns */
+avxins (PMOVSXDQ ,vpmovsxdq ,    P_AVX, VX_L|VX_NND )   /* -, ns */
+avxins (PMOVZXBW ,vpmovzxbw ,    P_AVX, VX_L|VX_NND )   /* -, ns */
+avxins (PMOVZXBD ,vpmovzxbd ,    P_AVX, VX_L|VX_NND )   /* -, ns */
+avxins (PMOVZXBQ ,vpmovzxbq ,    P_AVX, VX_L|VX_NND )   /* -, ns */
+avxins (PMOVZXWD ,vpmovzxwd ,    P_AVX, VX_L|VX_NND )   /* -, ns */
+avxins (PMOVZXWQ ,vpmovzxwq ,    P_AVX, VX_L|VX_NND )   /* -, ns */
+avxins (PMOVZXDQ ,vpmovzxdq ,    P_AVX, VX_L|VX_NND )   /* -, ns */
 avxins (PMULHUW  ,vpmulhuw  ,    P_AVX, VX_L )        /* -, s */
 avxins (PMULHRSW ,vpmulhrsw ,    P_AVX, VX_L )        /* -, s */
 avxins (PMULHW   ,vpmulhw   ,    P_AVX, VX_L )        /* -, s */

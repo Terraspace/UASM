@@ -1,0 +1,123 @@
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(12) : Error A2106: Cannot open file: "ECExterns.inc" [ENOENT]
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(16) : Error A2106: Cannot open file: "ECResFile.inc" [ENOENT]
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(17) : Error A2106: Cannot open file: "ECJWasm32.asm" [ENOENT]
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(28) : Error A2102: Symbol not defined : ECApplication
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(29) : Error A2102: Symbol not defined : ECErrorStruct
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(128) : Error A2209: Syntax error: App
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(129) : Error A2209: Syntax error: Error
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(131) : Error A2209: Syntax error: ECicc
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(142) : Error A2159: INVOKE requires prototype for procedure
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(144) : Error A2159: INVOKE requires prototype for procedure
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(149) : Error A2159: INVOKE requires prototype for procedure
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(152) : Error A2159: INVOKE requires prototype for procedure
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(157) : Error A2159: INVOKE requires prototype for procedure
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(159) : Error A2159: INVOKE requires prototype for procedure
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(179) : Error A2102: Symbol not defined : MSG
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(198) : Error A2159: INVOKE requires prototype for procedure
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(204) : Error A2159: INVOKE requires prototype for procedure
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(4) : Error A2102: Symbol not defined : MAX_PATH
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(4): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(5) : Error A2102: Symbol not defined : MAX_PATH
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(5): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(26) : Error A2106: Cannot open file: "ECProtos.inc" [ENOENT]
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(26): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(28) : Error A2102: Symbol not defined : HWND
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(28): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(28) : Warning A4187: Line number information for segment without class 'CODE': _DATA
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(28): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(33) : Error A2183: Use of register assumed to ERROR
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(33): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(35) : Error A2183: Use of register assumed to ERROR
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(35): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(40) : Error A2159: INVOKE requires prototype for procedure
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(40): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(41) : Error A2183: Use of register assumed to ERROR
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(41): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(42) : Error A2183: Use of register assumed to ERROR
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(42): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(44) : Error A2159: INVOKE requires prototype for procedure
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(44): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(45) : Error A2183: Use of register assumed to ERROR
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(45): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(46) : Error A2159: INVOKE requires prototype for procedure
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(46): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(48) : Error A2159: INVOKE requires prototype for procedure
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(48): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(51) : Error A2183: Use of register assumed to ERROR
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(51): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(52) : Error A2183: Use of register assumed to ERROR
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(52): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(56) : Error A2183: Use of register assumed to ERROR
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(56): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(56) : Error A2183: Use of register assumed to ERROR
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(56): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(61) : Error A2102: Symbol not defined : HWND
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(61): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(69) : Error A2102: Symbol not defined : HWND
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(69): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(75) : Error A2159: INVOKE requires prototype for procedure
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(75): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(76) : Error A2209: Syntax error: Return
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(76): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(77) : Error A2183: Use of register assumed to ERROR
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(77): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(83) : Error A2102: Symbol not defined : RECT
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(83): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(85) : Error A2159: INVOKE requires prototype for procedure
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(85): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(87) : Error A2159: INVOKE requires prototype for procedure
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(87): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(89) : Error A2159: INVOKE requires prototype for procedure
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(89): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(91) : Error A2159: INVOKE requires prototype for procedure
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(91): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(92) : Error A2159: INVOKE requires prototype for procedure
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(92): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(93) : Error A2159: INVOKE requires prototype for procedure
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(93): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(95) : Error A2159: INVOKE requires prototype for procedure
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(95): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(99) : Error A2159: INVOKE requires prototype for procedure
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(99): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(100) : Error A2159: INVOKE requires prototype for procedure
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(100): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(101) : Error A2159: INVOKE requires prototype for procedure
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(101): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(102) : Error A2159: INVOKE requires prototype for procedure
+ d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(102): Included by
+  d:\easycode\examples\jwasm\x86\ecclock\debug\Window1(209): Main line code
+d:\easycode\examples\jwasm\x86\ecclock\debug\Window1.asm(102) : Fatal error A1113: Too many errors
