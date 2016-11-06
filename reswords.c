@@ -633,7 +633,8 @@ VX_LL|VX_L,             /* VPRORVD      */
 VX_LL|VX_L,             /* VPRORD       */
 VX_LL|VX_L,             /* VPRORVQ      */
 VX_LL|VX_L,             /* VPRORQ       */
-VX_LL|VX_L |VX_HALF,    /* VPSRAQ       */
+/* VPSRAQ removed from here for easyer handling, HJWasm 2.16 */
+//VX_LL|VX_L|VX_DST|VX_HALF,    /* VPSRAQ       */
 VX_LL|VX_L,             /* VPSRAVD     */
 VX_LL|VX_L,             /* VPSRAVQ     */
 VX_LL|VX_L,             /* VPSRAVW     */

@@ -185,11 +185,11 @@
 
 /* HJWasm version info */
 #ifdef _WIN64
-#define _HJWASM_VERSION_STR_ "2.15r2"
+#define _HJWASM_VERSION_STR_ "2.16"
 #else
-#define _HJWASM_VERSION_STR_ "2.15r2"
+#define _HJWASM_VERSION_STR_ "2.16"
 #endif
-#define _HJWASM_VERSION_INT_ 215
+#define _HJWASM_VERSION_INT_ 216
 #define _HJWASM_VERSION_SUFFIX_ "pre"
 #define _HJWASM_VERSION_ _HJWASM_VERSION_STR_ //_HJWASM_VERSION_SUFFIX_
 
@@ -540,7 +540,7 @@ enum win64_flag_values {
     W64F_AUTOSTACKSP   = 0x02, /* 1=calculate required stack space for arguments of INVOKE */
     W64F_STACKALIGN16  = 0x04, /* 1=stack variables are 16-byte aligned; added in v2.12 */
     W64F_SMART         = 0x08, /* 1=takes care of everything */
-   // W64F_HABRAN = W64F_SAVEREGPARAMS | W64F_AUTOSTACKSP | W64F_SMART,
+    W64F_HABRAN = W64F_SAVEREGPARAMS | W64F_AUTOSTACKSP | W64F_SMART,
     W64F_ALL = W64F_SAVEREGPARAMS | W64F_AUTOSTACKSP | W64F_STACKALIGN16 | W64F_SMART, /* all valid flags */
 };
 

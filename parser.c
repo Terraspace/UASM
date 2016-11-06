@@ -237,9 +237,14 @@ int SizeFromRegister( int registertoken )
 int SizeFromMemtype( enum memtype mem_type, int Ofssize, struct asym *type )
 /**************************************************************************/
 {
-    if ( ( mem_type & MT_SPECIAL) == 0 )
-        return ( (mem_type & MT_SIZE_MASK) + 1 );
-
+if ((mem_type & MT_SPECIAL) == 0){
+#if AVXSUPP
+  if (mem_type == MT_ZMMWORD )
+    return (0x40);
+  else
+#endif
+  return ((mem_type & MT_SIZE_MASK) + 1);
+  }
     if ( Ofssize == USE_EMPTY )
         Ofssize = ModuleInfo.Ofssize;
 
@@ -276,10 +281,23 @@ ret_code MemtypeFromSize( int size, enum memtype *ptype )
     for ( i = T_BYTE; SpecialTable[i].type == RWT_STYPE; i++ ) {
         if( ( SpecialTable[i].bytval & MT_SPECIAL ) == 0 ) {
             /* the size is encoded 0-based in field mem_type */
-            if( ( ( SpecialTable[i].bytval & MT_SIZE_MASK) + 1 ) == size ) {
-                *ptype = SpecialTable[i].bytval;
-                return( NOT_ERROR );
+#if AVXSUPP
+          if (SpecialTable[i].bytval == MT_ZMMWORD){
+            if (((SpecialTable[i].bytval & 0x3f) + 1) == size) {
+              *ptype = SpecialTable[i].bytval;
+              return(NOT_ERROR);
+              }
             }
+            else{
+#endif
+              if (((SpecialTable[i].bytval & MT_SIZE_MASK) + 1) == size) {
+                *ptype = SpecialTable[i].bytval;
+                return(NOT_ERROR);
+                }
+#if AVXSUPP
+              }
+#endif
+
         }
     }
     return( ERROR );
@@ -627,6 +645,9 @@ static ret_code set_rm_sib( struct code_info *CodeInfo, unsigned CurrOpnd, char 
         seg_override( CodeInfo, base, sym, FALSE );
     } else if( ( index != EMPTY ) && ( base == EMPTY ) ) {
         idx_reg = GetRegNo( index );
+#if AVXSUPP
+        CodeInfo->indextype = GetValueSp( index );
+#endif
 #if AMD64_SUPPORT
         bit3_idx = idx_reg >> 3;
         idx_reg &= BIT_012;
@@ -900,10 +921,14 @@ static ret_code idata_nofixup( struct code_info *CodeInfo, unsigned CurrOpnd, co
      * actually, it should only be set if immediate is second operand
      * ( and first operand is a memory ref with a size > 1 )
      */
-    if ( CurrOpnd == OPND2 )
-        if ( !(CodeInfo->mem_type & MT_SPECIAL) && ( CodeInfo->mem_type & MT_SIZE_MASK ) )
+    if (CurrOpnd == OPND2){
+#if AVXSUPP
+        if ( CodeInfo->mem_type == MT_ZMMWORD ) CodeInfo->iswide = 1;
+        else 
+#endif
+          if ( !(CodeInfo->mem_type & MT_SPECIAL) && ( CodeInfo->mem_type & MT_SIZE_MASK ) )
             CodeInfo->iswide = 1;
-
+         }
     CodeInfo->opnd[CurrOpnd].type = op_type;
     DebugMsg1(("idata_nofixup exit, op_type=%" I32_SPEC "X\n", op_type ));
     return( NOT_ERROR );
@@ -1546,25 +1571,31 @@ static ret_code memory_operand( struct code_info *CodeInfo, unsigned CurrOpnd, s
     }
 
     if ( ( CodeInfo->mem_type & MT_SPECIAL) == 0 ) {
-        switch ( CodeInfo->mem_type & MT_SIZE_MASK ) {
-            /* size is encoded 0-based */
-        case  0:  CodeInfo->opnd[CurrOpnd].type = OP_M08;  break;
-        case  1:  CodeInfo->opnd[CurrOpnd].type = OP_M16;  break;
-        case  3:  CodeInfo->opnd[CurrOpnd].type = OP_M32;  break;
-        case  5:  CodeInfo->opnd[CurrOpnd].type = OP_M48;  break;
-        case  7:  CodeInfo->opnd[CurrOpnd].type = OP_M64;  break;
-        case  9:  CodeInfo->opnd[CurrOpnd].type = OP_M80;  break;
-        case 15:  CodeInfo->opnd[CurrOpnd].type = OP_M128; break;
 #if AVXSUPP
-        case 31:  CodeInfo->opnd[CurrOpnd].type = OP_M256; break;
-        case 63:  CodeInfo->opnd[CurrOpnd].type = OP_M512; break;
+        if ((CodeInfo->mem_type & 0x3f) == MT_YMMWORD)
+          CodeInfo->opnd[CurrOpnd].type = OP_M256;
+        else if ((CodeInfo->mem_type & 0x3f) == MT_ZMMWORD)
+          CodeInfo->opnd[CurrOpnd].type = OP_M512;
+        else {
 #endif
+          switch (CodeInfo->mem_type & MT_SIZE_MASK) {
+            /* size is encoded 0-based */
+            case  MT_BYTE:    CodeInfo->opnd[CurrOpnd].type = OP_M08;  break;
+            case  MT_WORD:    CodeInfo->opnd[CurrOpnd].type = OP_M16;  break;
+            case  MT_DWORD:   CodeInfo->opnd[CurrOpnd].type = OP_M32;  break;
+            case  MT_FWORD:   CodeInfo->opnd[CurrOpnd].type = OP_M48;  break;
+            case  MT_QWORD:   CodeInfo->opnd[CurrOpnd].type = OP_M64;  break;
+            case  MT_TBYTE:   CodeInfo->opnd[CurrOpnd].type = OP_M80;  break;
+            case  MT_OWORD:   CodeInfo->opnd[CurrOpnd].type = OP_M128; break;
 #ifdef DEBUG_OUT
-        default:
-            DebugMsg1(("memory_operand: unexpected mem_type=%X\n", CodeInfo->mem_type ));
-            /**/myassert( 0 );
+            default:
+              DebugMsg1(("memory_operand: unexpected mem_type=%X\n", CodeInfo->mem_type));
+              /**/myassert(0);
 #endif
-        }
+            }
+#if AVXSUPP
+          }
+#endif
 #if 0 /* v2.06: the wide flag isn't set for memory operands currently, */
         if ( CodeInfo->opnd_type[CurrOpnd] & ( OP_M16 | OP_M32 | OP_M64 ) )
             CodeInfo->iswide = 1;
@@ -1644,7 +1675,7 @@ static ret_code memory_operand( struct code_info *CodeInfo, unsigned CurrOpnd, s
         /* v2.10: register swapping has been moved to expreval.c, index_connect().
          * what has remained here is the check if R/ESP is used as index reg.
          */
-		if ((GetRegNo(index) == 4)
+		if ((GetRegNo(index) == 4)&& GetValueSp( index )< OP_XMM //Fixed error  CANNOT_BE_USED_AS_INDEX_REGISTER, HJWasm 2.16
 #if 0
 			&& (GetResWName(index, NULL) <= T_RBP)
 #endif
@@ -3135,7 +3166,6 @@ ret_code ParseLine(struct asm_tok tokenarray[])
       /* v2.08: this code must run even if PRST_INSIDE_EPILOGUE is set */
       if (tokenarray[i].tokval == T_RET && CurrProc->sym.mem_type == MT_FAR)
         tokenarray[i].tokval = T_RETF;
-
     }
   }
 
@@ -3256,7 +3286,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
      */
     if (CodeInfo.token >= VEX_START &&
       CurrOpnd == OPND2 &&
-      (CodeInfo.opnd[OPND1].type & (OP_R32 | OP_R64 | OP_K | OP_XMM | OP_YMM | OP_ZMM | OP_M | OP_M64 | OP_M256 | OP_M512))) {
+      (CodeInfo.opnd[OPND1].type & (OP_XMM | OP_YMM | OP_M | OP_M256 | OP_R32 | OP_R64 | OP_K | OP_ZMM | OP_M64 |  OP_M512))) {
       CodeInfo.indexreg = 0xFF;
       CodeInfo.basereg = 0xFF;
 	  CodeInfo.r1type = 10000000;

@@ -186,8 +186,15 @@ OpCls( YMM,      XMM_M32,    NONE  )  //AVX2,habran
 OpCls( YMM,      M128,       NONE  )
 OpCls( YMM,      XMM_M128,   NONE  )  //AVX2,habran
 OpCls( YMM,      XMM_M64,    NONE  )  //AVX2,habran
+OpCls(ZMM_M32, NONE,     NONE )
+OpCls(ZMM_M64, NONE,     NONE )
+OpCls(YMM_M32, NONE,     NONE )
+//OpCls( ZMM,      XMM_M128,   NONE  )  //AVX2,habran
+//OpCls( ZMM,      YMM_M256,   NONE  )  //AVX2,habran
 OpCls( XMM_M128,I8_U,  NONE)
 OpCls( YMM,      YMM_M256,   NONE  )
+OpCls( XMM,      XMM_M32,    XMM )
+OpCls( XMM,      XMM_M64,    XMM )
 #endif
 OpCls( M16,      XMM,        I8_U  )
 OpCls( M32,      XMM,        I8_U  )

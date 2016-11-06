@@ -472,7 +472,7 @@ static void log_macro( const struct asym *sym )
 static const char *SimpleTypeString( enum memtype mem_type )
 /**********************************************************/
 {
-    int size = ( mem_type & MT_SIZE_MASK ) + 1;
+    int size = ( mem_type & 0x3f ) + 1;
     switch ( size ) {
     case 1: return( strings[LS_BYTE] );
     case 2: return( strings[LS_WORD] );
@@ -481,6 +481,10 @@ static const char *SimpleTypeString( enum memtype mem_type )
     case 8: return( strings[LS_QWORD] );
     case 10:return( strings[LS_TBYTE] );
     case 16:return( strings[LS_OWORD] );
+#if AVXSUPP
+    case 32:  return( strings[LS_YMMWORD] );
+    case 64:  return( strings[LS_ZMMWORD] );
+#endif
     }
     return( "" );
 }

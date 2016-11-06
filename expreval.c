@@ -259,20 +259,27 @@ static bool is_unary_op( enum tok_type tt )
  * NEAR, FAR and PROC are handled slightly differently:
  * the HIBYTE is set to 0xFF, and PROC depends on the memory model
  */
-static unsigned int GetTypeSize( enum memtype mem_type, int Ofssize )
+static unsigned int GetTypeSize(enum memtype mem_type, int Ofssize)
 /*******************************************************************/
 {
-    if ( (mem_type & MT_SPECIAL) == 0 )
-        return( ( mem_type & MT_SIZE_MASK ) + 1 );
-    if ( Ofssize == USE_EMPTY )
-        Ofssize = ModuleInfo.Ofssize;
-    switch ( mem_type ) {
-    case MT_NEAR: return ( 0xFF00 | ( 2 << Ofssize ) ) ;
-    case MT_FAR:  return ( ( Ofssize == USE16 ) ? LS_FAR16 : 0xFF00 | ( ( 2 << Ofssize ) + 2 ) );
-    }
-    /* shouldn't happen */
-    return( 0 );
+	if ((mem_type & MT_SPECIAL) == 0) {
+#if AVXSUPP
+		if (mem_type == MT_ZMMWORD)
+			return (0x40);
+		else
+#endif
+			return((mem_type & MT_SIZE_MASK) + 1);
+	}
+	if (Ofssize == USE_EMPTY)
+		Ofssize = ModuleInfo.Ofssize;
+	switch (mem_type) {
+	case MT_NEAR: return (0xFF00 | (2 << Ofssize));
+	case MT_FAR:  return ((Ofssize == USE16) ? LS_FAR16 : 0xFF00 | ((2 << Ofssize) + 2));
+	}
+	/* shouldn't happen */
+	return(0);
 }
+
 
 #if AMD64_SUPPORT
 static uint_64 GetRecordMask( struct dsym *record )
@@ -742,7 +749,7 @@ static ret_code get_operand( struct expr *opnd, int *idx, struct asm_tok tokenar
                 if ( sym->state == SYM_STACK ) {
 #if STACKBASESUPP
                   
-                    if ((ModuleInfo.win64_flags & W64F_SMART) && sym->isparam){
+                    if ((ModuleInfo.win64_flags & W64F_HABRAN) && sym->isparam){
                       opnd->llvalue = sym->offset;// +StackAdj;
                       cnt = CurrProc->e.procinfo->pushed_reg;
                       cnt = cnt * 8;
