@@ -678,7 +678,8 @@ static ret_code ParseParams( struct dsym *proc, int i, struct asm_tok tokenarray
             else
                 name = "";
         } else {
-            /* PROC needs a parameter name, PROTO accepts <void> also */
+            
+			/* PROC needs a parameter name, PROTO accepts <void> also */
             DebugMsg(("ParseParams: name missing/invalid for parameter %u, i=%u\n", cntParam+1, i));
             return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
         }

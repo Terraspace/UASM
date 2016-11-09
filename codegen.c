@@ -315,7 +315,7 @@ static void output_opc(struct code_info *CodeInfo)
 		if (decoflags == 0 && CodeInfo->r1type != OP_K)
         CodeInfo->evex_flag = 0;
 	}
-  	if (CodeInfo->token >= T_VPORD && CodeInfo->token <= T_VPSRLVQ){
+  	if (CodeInfo->token >= T_VPORD && CodeInfo->token <= T_PSRLDQ){
 		if (decoflags == 0 && CodeInfo->r1type != OP_K)
         CodeInfo->evex_flag = 0;
 	}
@@ -393,6 +393,8 @@ static void output_opc(struct code_info *CodeInfo)
 #endif
     OutputCodeByte(OPSIZ);
   }
+  //if(CodeInfo->token == T_VPSRLQ)
+  //  __debugbreak();
   /*
    * Output segment prefix
    */
@@ -453,8 +455,11 @@ static void output_opc(struct code_info *CodeInfo)
       else CodeInfo->evex_flag = 0;
       }
     }
-             //if (CodeInfo->token == T_VMOVDQA)
-             //  __debugbreak();
+    /* VCVTTSS2SI can only be used with XMM registers, HJWasm 2.16 */
+    if (CodeInfo->token == T_VCVTTSS2SI){
+      if (CodeInfo->r2type == OP_YMM || CodeInfo->r2type == OP_ZMM )
+        EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
+      }
     /* Check size of added missing instructions VRCP28SD, VRCP28SS, VRCP28PD, VRCP28PS 
      VRSQRT28PD, VRSQRT28PS, VRSQRT28SD, VRSQRT28SS, VEXP2PD, VEXP2PS HJWasm 2.16  */
     switch (CodeInfo->token){
@@ -568,9 +573,20 @@ static void output_opc(struct code_info *CodeInfo)
             if (CodeInfo->evex_flag) 
               OutputCodeByte( 0x62 ); //AVX512 EVEX first byte
             else{
-              /* VPMOVMSKB can be only 0xC5, HJWasm 2.16 */
-              if (CodeInfo->token == T_VPMOVMSKB)
+              /* These instructions if, not 0x62, can be only 0xC5, HJWasm 2.16 */
+				if (CodeInfo->token == T_VPMOVMSKB) {
+					if (ins->byte1_info == F_0F && (CodeInfo->prefix.rex & REX_B == 0) &&
+						(CodeInfo->prefix.rex & REX_X == 0) && (CodeInfo->prefix.rex & REX_W == 8))
+						goto outC5;    // go handle 0xC5 instruction
+					CodeInfo->prefix.rex &= ~REX_W; // clear the W bit.
+					if (CodeInfo->reg3 > 7) lbyte |= 1;
+				}
+
+              if (CodeInfo->token >= T_VPSLLDQ && CodeInfo->token <= T_VPSRLQ){
+                if (CodeInfo->reg1 > 7)
                 goto outC5;    // go handle 0xC5 instruction
+                OutputCodeByte(0xC4);
+                }
               else
               OutputCodeByte(0xC4);
               if (CodeInfo->opnd[OPND1].type == OP_YMM || CodeInfo->opnd[OPND2].type == OP_YMM)
@@ -1323,7 +1339,7 @@ static void output_opc(struct code_info *CodeInfo)
                 if ((CodeInfo->token == T_VMOVHPS) || (CodeInfo->token == T_VMOVLPS))
                   lbyte &= ~EVEX_P1WMASK;
               }
-             if ((CodeInfo->token == T_VPSLLQ)||(CodeInfo->token == T_VPSRLQ)||
+             if ((CodeInfo->token == T_VPSLLDQ)||(CodeInfo->token == T_VPSRLDQ)||
                (CodeInfo->token == T_VPSRAQ)|| (CodeInfo->token == T_VPROLQ)||
                (CodeInfo->token == T_VPRORQ))
                lbyte |= EVEX_P1WMASK;
@@ -1583,8 +1599,8 @@ static void output_opc(struct code_info *CodeInfo)
                    CodeInfo->token == T_VMOVDQA32 || CodeInfo->token == T_VMOVDQU32 ||
                    CodeInfo->token == T_VMOVDQA64 || CodeInfo->token == T_VMOVDQU64){
                  if (CodeInfo->opnd[OPND1].type & OP_M_ANY){
-				 if (CodeInfo->mem_type == MT_EMPTY);
-                 if (CodeInfo->opnd[OPND1].type == OP_M128 &&  CodeInfo->opnd[OPND2].type & OP_XMM);
+                 if (CodeInfo->mem_type == MT_EMPTY);
+                 else if (CodeInfo->opnd[OPND1].type == OP_M128 &&  CodeInfo->opnd[OPND2].type & OP_XMM);
                  else if (CodeInfo->opnd[OPND1].type == OP_M256 &&  CodeInfo->opnd[OPND2].type == OP_YMM);
                  else if (CodeInfo->opnd[OPND1].type == OP_M512 &&  CodeInfo->opnd[OPND2].type == OP_ZMM);
                  else 
