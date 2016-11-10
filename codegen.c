@@ -329,13 +329,17 @@ static void output_opc(struct code_info *CodeInfo)
 
   if ((CodeInfo->pinstr->prefix & 0xF00) == IZSZ)
 	  CodeInfo->evex_flag = TRUE;
-  if (!evex){
+
+  if (!evex) {
 	  CodeInfo->evex_flag = FALSE;
-      if ((CodeInfo->reg1 > 15 && CodeInfo->reg1 < 32)  || (CodeInfo->reg2 > 15 && CodeInfo->reg2 < 32) ||
-          (CodeInfo->reg3 > 15 && CodeInfo->reg3 < 32)|| 
-        CodeInfo->r1type == OP_ZMM || CodeInfo->r2type == OP_ZMM )
-        EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
-    }
+	  if (ResWordTable[CodeInfo->token].flags & RWF_VEX) {
+		  if ((CodeInfo->reg1 > 15 && CodeInfo->reg1 < 32) ||
+			  (CodeInfo->reg2 > 15 && CodeInfo->reg2 < 32) ||
+			  (CodeInfo->reg3 > 15 && CodeInfo->reg3 < 32) ||
+			  CodeInfo->r1type == OP_ZMM || CodeInfo->r2type == OP_ZMM)
+			  EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
+	  }
+  }
 
   if (CodeInfo->evex_flag == TRUE) {
     //__debugbreak();
