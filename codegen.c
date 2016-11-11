@@ -332,6 +332,7 @@ static void output_opc(struct code_info *CodeInfo)
 
   if (!evex) {
 	  CodeInfo->evex_flag = FALSE;
+<<<<<<< HEAD
 	  if (ResWordTable[CodeInfo->token].flags & RWF_VEX) {
 		  if ((CodeInfo->reg1 > 15 && CodeInfo->reg1 < 32) ||
 			  (CodeInfo->reg2 > 15 && CodeInfo->reg2 < 32) ||
@@ -340,9 +341,18 @@ static void output_opc(struct code_info *CodeInfo)
 			  EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
 	  }
   }
+=======
+    if (ResWordTable[CodeInfo->token].flags & RWF_VEX) {
+      if ((CodeInfo->reg1 > 15 && CodeInfo->reg1 < 32) || 
+          (CodeInfo->reg2 > 15 && CodeInfo->reg2 < 32) ||
+          (CodeInfo->reg3 > 15 && CodeInfo->reg3 < 32) ||
+          CodeInfo->r1type == OP_ZMM || CodeInfo->r2type == OP_ZMM)
+          EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
+      }
+    }
+>>>>>>> v2.16
 
   if (CodeInfo->evex_flag == TRUE) {
-    //__debugbreak();
 	  if (!(vex_flags[CodeInfo->token - VEX_START] & VX_LL))
 		  EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
   }
@@ -578,18 +588,17 @@ static void output_opc(struct code_info *CodeInfo)
               OutputCodeByte( 0x62 ); //AVX512 EVEX first byte
             else{
               /* These instructions if, not 0x62, can be only 0xC5, HJWasm 2.16 */
-				if (CodeInfo->token == T_VPMOVMSKB) {
-					if (ins->byte1_info == F_0F && (CodeInfo->prefix.rex & REX_B == 0) &&
-						(CodeInfo->prefix.rex & REX_X == 0) && (CodeInfo->prefix.rex & REX_W == 8))
-						goto outC5;    // go handle 0xC5 instruction
-					CodeInfo->prefix.rex &= ~REX_W; // clear the W bit.
-					if (CodeInfo->reg3 > 7) lbyte |= 1;
-				}
-
-              if (CodeInfo->token >= T_VPSLLDQ && CodeInfo->token <= T_VPSRLQ){
-                if (CodeInfo->reg1 > 7)
-                goto outC5;    // go handle 0xC5 instruction
-                OutputCodeByte(0xC4);
+                if (CodeInfo->token == T_VPMOVMSKB){
+                  if(ins->byte1_info == F_0F && (CodeInfo->prefix.rex & REX_B == 0)&& 
+                     (CodeInfo->prefix.rex & REX_X == 0) && (CodeInfo->prefix.rex & REX_W == 8))
+                        goto outC5;    // go handle 0xC5 instruction
+                  CodeInfo->prefix.rex &= ~REX_W; // clear the W bit.
+                  if(CodeInfo->reg3 > 7) lbyte |= 1;
+                }              
+                if (CodeInfo->token >= T_VPSLLDQ && CodeInfo->token <= T_VPSRLQ){
+                  if (CodeInfo->reg1 > 7)
+                  goto outC5;    // go handle 0xC5 instruction
+                  OutputCodeByte(0xC4);
                 }
               else
               OutputCodeByte(0xC4);
