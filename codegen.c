@@ -1278,7 +1278,7 @@ static void output_opc(struct code_info *CodeInfo)
               OutputCodeByte( CodeInfo->evex_p0 );
             }
             else{
-              outC5:
+            outC5:
               OutputCodeByte(0xC5);
               if (CodeInfo->opnd[OPND1].type == OP_YMM || CodeInfo->opnd[OPND2].type == OP_YMM || CodeInfo->token == T_VZEROALL) /* VZEROALL is 256 bits VZEROUPPER is 128 bits */
                  lbyte |= 0x04;  /* set L: Vector Length */
@@ -1353,8 +1353,8 @@ static void output_opc(struct code_info *CodeInfo)
              //   }
              //  }
             //if first byte is VEX 0xC5 then there is two byte folowing 
-            if ((CodeInfo->token == T_KUNPCKBW)||(CodeInfo->token == T_KUNPCKWD)||(CodeInfo->token == T_KUNPCKDQ))
-                  lbyte |=  0x04; 
+            /* set L: Vector Length for all instructions between KADDB and  KUNPCKDQ  HJWasm 2.16 */
+            if ((CodeInfo->token >= T_KADDB)&&(CodeInfo->token <= T_KUNPCKDQ)) lbyte |= 0x04;  
             /* That is where is fixed problem with the VEX registers size, HJWasm 2.16 */
           if (CodeInfo->token == T_VPMOVMSKB){
                lbyte |= EVEX_P1WMASK;    // 2 byte vex_p1 R must be set
