@@ -395,7 +395,7 @@ static void output_opc(struct code_info *CodeInfo)
 #endif
     OutputCodeByte(OPSIZ);
   }
-  //if(CodeInfo->token == T_VPSRLQ)
+  //if(CodeInfo->token == T_VADDPD)
   //  __debugbreak();
   /*
    * Output segment prefix
@@ -1211,8 +1211,12 @@ static void output_opc(struct code_info *CodeInfo)
                   CodeInfo->evex_p0 |= 0x01;
                 }
               }
-              CodeInfo->evex_p0 |= EVEX_P0XMASK;
-              CodeInfo->evex_p0 |= EVEX_P0BMASK;
+              if (CodeInfo->reg3 != 0xff){
+                if (CodeInfo->reg3 <= 7) CodeInfo->evex_p0 |= EVEX_P0XMASK;
+                } else if (CodeInfo->reg2 != 0xff){
+                 if (CodeInfo->reg2 <= 7) CodeInfo->evex_p0 |= EVEX_P0XMASK;
+               }
+               CodeInfo->evex_p0 |= EVEX_P0BMASK;
                if ((CodeInfo->token >= T_VMOVLHPS)&&(CodeInfo->token <= T_VMOVLPS)||         
                  (CodeInfo->token == T_VMOVNTDQ)||                                           
                (CodeInfo->token == T_VMOVUPD)||(CodeInfo->token == T_VMOVAPD)||              
