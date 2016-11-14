@@ -584,7 +584,8 @@ static void output_opc(struct code_info *CodeInfo)
                   if(CodeInfo->reg3 > 7) lbyte |= 1;
                 }              
                 if (CodeInfo->token >= T_VPSLLDQ && CodeInfo->token <= T_VPSRLQ){
-                  if ((CodeInfo->reg1 > 7) && ((CodeInfo->opnd[OPND2].type & OP_M_ANY ) == 0))
+                  if ((CodeInfo->reg1 > 7) && ((CodeInfo->opnd[OPND2].type & OP_M_ANY ) == 0)&&
+                      (CodeInfo->opnd[OPND2].type != OP_I8 ))
                   goto outC5;    // go handle 0xC5 instruction
                   OutputCodeByte(0xC4);
                 }
