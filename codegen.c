@@ -395,7 +395,7 @@ static void output_opc(struct code_info *CodeInfo)
 #endif
     OutputCodeByte(OPSIZ);
   }
-  //if(CodeInfo->token == T_VADDPD)
+  //if(CodeInfo->token == T_VPSRLQ)
   //  __debugbreak();
   /*
    * Output segment prefix
@@ -584,7 +584,7 @@ static void output_opc(struct code_info *CodeInfo)
                   if(CodeInfo->reg3 > 7) lbyte |= 1;
                 }              
                 if (CodeInfo->token >= T_VPSLLDQ && CodeInfo->token <= T_VPSRLQ){
-                  if (CodeInfo->reg1 > 7)
+                  if ((CodeInfo->reg1 > 7) && ((CodeInfo->opnd[OPND2].type & OP_M_ANY ) == 0))
                   goto outC5;    // go handle 0xC5 instruction
                   OutputCodeByte(0xC4);
                 }
@@ -596,8 +596,10 @@ static void output_opc(struct code_info *CodeInfo)
                 lbyte &= ~0x04;
               CodeInfo->tuple = 0;
               /* This fixes AVX  REX_W wide 32 <-> 64 instructions third byte bit W*/
-              lbyte &= ~EVEX_P1WMASK;        //make sure it is not set if not 64 bit
-              lbyte |= ((CodeInfo->pinstr->prefix) >> 8 & 0x80); // set only W bit if 64 bit
+              if (CodeInfo->token >= T_VADDPD && CodeInfo->token <= T_VMOVAPS)
+                lbyte &= ~EVEX_P1WMASK;        //make sure it is not set if WIG
+              else
+                lbyte |= ((CodeInfo->pinstr->prefix) >> 8 & 0x80); // set only W bit if 64 bit
             }
             switch ( ins->byte1_info ) {                     
             case F_0F38:                                     
@@ -651,8 +653,8 @@ static void output_opc(struct code_info *CodeInfo)
                      rn -= 15;
                      byte1 &= ~EVEX_P0XMASK;
                    }
-                   if (rn <= 7)byte1 |= EVEX_P0BMASK;
-                   else byte1 &= ~EVEX_P0BMASK;
+                   //if (rn > 7)byte1 |= EVEX_P0BMASK;
+                   //else byte1 &= ~EVEX_P0BMASK;
                  }
                }
             if (CodeInfo->token >= T_VPSCATTERDD && CodeInfo->token <= T_VSCATTERQPD){
