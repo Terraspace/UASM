@@ -395,7 +395,7 @@ static void output_opc(struct code_info *CodeInfo)
 #endif
     OutputCodeByte(OPSIZ);
   }
-  //if(CodeInfo->token == T_VPSRLQ)
+  //if(CodeInfo->token == T_VBROADCASTSD)
   //  __debugbreak();
   /*
    * Output segment prefix
@@ -444,10 +444,13 @@ static void output_opc(struct code_info *CodeInfo)
   if (CodeInfo->token >= T_VBROADCASTSS && CodeInfo->token <= T_VPBROADCASTMW2D)
     {
 		if (decoflags == 0 && CodeInfo->r1type != OP_K){
-      if (CodeInfo->reg1 > 15)
-        EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
-        else CodeInfo->evex_flag = 0;
+      if (CodeInfo->reg1 <= 15 && CodeInfo->r1type != OP_ZMM)
+        CodeInfo->evex_flag = 0;
+      else{
+        CodeInfo->evex_flag = 1;
+        lbyte |= 4;
         }
+      }
     }
     if (CodeInfo->token >= T_VPGATHERDD && CodeInfo->token <= T_VGATHERQPS)
     {
@@ -584,8 +587,7 @@ static void output_opc(struct code_info *CodeInfo)
                   if(CodeInfo->reg3 > 7) lbyte |= 1;
                 }              
                 if (CodeInfo->token >= T_VPSLLDQ && CodeInfo->token <= T_VPSRLQ){
-                  if ((CodeInfo->reg1 > 7) && ((CodeInfo->opnd[OPND2].type & OP_M_ANY ) == 0)&&
-                      (CodeInfo->opnd[OPND2].type != OP_I8 ))
+                  if ((CodeInfo->reg2 <= 7) && ((CodeInfo->opnd[OPND2].type & OP_M_ANY ) == 0))
                   goto outC5;    // go handle 0xC5 instruction
                   OutputCodeByte(0xC4);
                 }
@@ -654,8 +656,10 @@ static void output_opc(struct code_info *CodeInfo)
                      rn -= 15;
                      byte1 &= ~EVEX_P0XMASK;
                    }
-                   //if (rn > 7)byte1 |= EVEX_P0BMASK;
-                   //else byte1 &= ~EVEX_P0BMASK;
+                   if (CodeInfo->token >= T_VFMADD132PD && CodeInfo->token <= T_VFNMSUB231SS);
+                   else if (rn < 7)byte1 |= EVEX_P0BMASK;
+                   else byte1 &= ~EVEX_P0BMASK;
+                   
                  }
                }
             if (CodeInfo->token >= T_VPSCATTERDD && CodeInfo->token <= T_VSCATTERQPD){
@@ -1511,7 +1515,7 @@ static void output_opc(struct code_info *CodeInfo)
                     CodeInfo->evex_p2 &= ~EVEX_P2L1MASK;
                 if (CodeInfo->evex_flag){
                   if (CodeInfo->vexregop){
-                    if (CodeInfo->reg2 <= 15) CodeInfo->evex_p2 |= EVEX_P2VMASK;
+                    if (CodeInfo->vexregop <= 16) CodeInfo->evex_p2 |= EVEX_P2VMASK;
                     else CodeInfo->evex_p2 &= ~EVEX_P2VMASK;
                   }
                   else CodeInfo->evex_p2 |= EVEX_P2VMASK;
