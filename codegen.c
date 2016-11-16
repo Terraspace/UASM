@@ -1934,7 +1934,7 @@ static void output_data(const struct code_info *CodeInfo, enum operand_type dete
       }
     }
         /* if the TypleType is present output only 1 byte for the multiplier */
-        if (CodeInfo->tuple){
+        if ((CodeInfo->tuple) && (CodeInfo->opnd[OPND2].type != OP_I8)) {
           OutputByte(CodeInfo->opnd[index].data32l);
         }
         else
