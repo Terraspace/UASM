@@ -961,6 +961,7 @@ static void output_opc(struct code_info *CodeInfo)
 			case T_VPSLLDQ:
 			case T_VPMULUDQ:
 			case T_VPERMILPD:
+			case T_VPADDQ:
 				if (CodeInfo->evex_flag == 0) lbyte &= ~EVEX_P1WMASK;
 			}
 			
