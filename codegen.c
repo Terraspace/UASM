@@ -953,7 +953,9 @@ static void output_opc(struct code_info *CodeInfo)
 			else if (CodeInfo->token == T_VPSLLQ && CodeInfo->evex_flag == 0) lbyte &= ~EVEX_P1WMASK;
 			else if (CodeInfo->token == T_VPSRLDQ && CodeInfo->evex_flag == 0) lbyte &= ~EVEX_P1WMASK;
 			else if (CodeInfo->token == T_VPSLLDQ && CodeInfo->evex_flag == 0) lbyte &= ~EVEX_P1WMASK;
-
+			else if (CodeInfo->token == T_VPMULUDQ && CodeInfo->evex_flag == 0) lbyte &= ~EVEX_P1WMASK;
+			else if (CodeInfo->token == T_VPERMILPD && CodeInfo->evex_flag == 0) lbyte &= ~EVEX_P1WMASK;
+			
             CodeInfo->evex_p1 = lbyte;
             OutputCodeByte( lbyte );
             //VGATHERPF0DPS
@@ -1382,7 +1384,7 @@ static void output_opc(struct code_info *CodeInfo)
                  lbyte &= ~0x03;                     // clear vex_p1 PP 
                  lbyte |=  0x01;                     // set vex_p1 01: 66
             }
-            if (CodeInfo->token == T_VCVTPS2PD) lbyte &= ~EVEX_P1WMASK;
+           // if (CodeInfo->token == T_VCVTPS2PD) lbyte &= ~EVEX_P1WMASK;
             CodeInfo->evex_p1 = lbyte;
             OutputCodeByte( lbyte );
             if (CodeInfo->evex_flag) {
