@@ -442,8 +442,8 @@ static void output_opc(struct code_info *CodeInfo)
 
   /* If there is no decoflags then it is AVX2 instruction with 3 parameters, HJWasm 2.15 */
   if (CodeInfo->token >= T_VBROADCASTSS && CodeInfo->token <= T_VPBROADCASTMW2D)
-    {
-		if (decoflags == 0 && CodeInfo->r1type != OP_K){
+      {
+    if (decoflags == 0 && CodeInfo->r1type != OP_K){
       if (CodeInfo->reg1 <= 15 && CodeInfo->r1type != OP_ZMM)
         CodeInfo->evex_flag = 0;
       else{
@@ -948,6 +948,12 @@ static void output_opc(struct code_info *CodeInfo)
                CodeInfo->token == T_VCVTPS2PH || CodeInfo->token == T_VCVTPH2PS ||
               (CodeInfo->token >= T_VPMOVQW && CodeInfo->token <= T_VPMOVUSDW))
               lbyte &= ~EVEX_P1WMASK;
+            if (CodeInfo->token == T_VPCMPEQQ && CodeInfo->evex_flag == 0) lbyte &= ~EVEX_P1WMASK; 
+			else if (CodeInfo->token == T_VPSRLQ && CodeInfo->evex_flag == 0) lbyte &= ~EVEX_P1WMASK;
+			else if (CodeInfo->token == T_VPSLLQ && CodeInfo->evex_flag == 0) lbyte &= ~EVEX_P1WMASK;
+			else if (CodeInfo->token == T_VPSRLDQ && CodeInfo->evex_flag == 0) lbyte &= ~EVEX_P1WMASK;
+			else if (CodeInfo->token == T_VPSLLDQ && CodeInfo->evex_flag == 0) lbyte &= ~EVEX_P1WMASK;
+
             CodeInfo->evex_p1 = lbyte;
             OutputCodeByte( lbyte );
             //VGATHERPF0DPS
@@ -1934,7 +1940,7 @@ static void output_data(const struct code_info *CodeInfo, enum operand_type dete
       }
     }
         /* if the TypleType is present output only 1 byte for the multiplier */
-        if ((CodeInfo->tuple) && (CodeInfo->opnd[OPND2].type != OP_I8)) {
+        if ((CodeInfo->tuple)&&(CodeInfo->opnd[OPND2].type != OP_I8)) {
           OutputByte(CodeInfo->opnd[index].data32l);
         }
         else
