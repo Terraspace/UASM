@@ -1834,6 +1834,13 @@ static void output_data(const struct code_info *CodeInfo, enum operand_type dete
  */
 {
   int       size = 0;
+
+  /* John: Fixed specially typed INS/OUTS instructions where the operands MUST be ignored, they're purely for documentation purposes */
+  if (CodeInfo->token == T_INS && CodeInfo->opnd[OPND1].type != OP_NONE)
+	  return;
+  if (CodeInfo->token == T_OUTS && CodeInfo->opnd[OPND2].type != OP_NONE)
+	  return;
+
 #if AVXSUPP
     if (CodeInfo->token >= VEX_START){
       if ((CodeInfo->token == T_ANDN) || (CodeInfo->token == T_MULX) ||
