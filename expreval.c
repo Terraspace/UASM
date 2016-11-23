@@ -3270,7 +3270,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 			tok = tokenarray[(*i) - 1];
 		}
 		if (labelsym != NULL || 
-			(labelsym == NULL && tok.token != T_ID && tok.token != T_CL_SQ_BRACKET) ||
+			(labelsym == NULL && tok.token != T_ID && tok.token != T_CL_SQ_BRACKET && tok.token != T_CL_BRACKET) ||
 			(labelsym != NULL && labelsym->label))
 		{
 			(*i)++;
