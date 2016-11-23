@@ -1284,7 +1284,7 @@ ret_code ParseProc( struct dsym *proc, int i, struct asm_tok tokenarray[], bool 
         tokenarray[i].token == T_RES_ID &&
         tokenarray[i].tokval == T_FRAME ) {
 		/* v2.05: don't accept FRAME for ELF  - 2016-02-10 John Hankinson allowed ELF64 to use FRAME/Win64 ABI */
-		if (Options.output_format != OFORMAT_COFF && Options.output_format != OFORMAT_ELF
+		if (Options.output_format != OFORMAT_COFF && Options.output_format != OFORMAT_ELF && Options.output_format != OFORMAT_BIN
 #if PE_SUPPORT
             && ModuleInfo.sub_format != SFORMAT_PE
 #endif
@@ -1743,8 +1743,8 @@ static void WriteSEHData( struct dsym *proc )
     char segnamebuff[12];
     char buffer[128];
 
-	/* 2016-02-10 John Hankinson - Don't bother writing SEH data for ELF64 Win64 ABI hack */
-	if (Options.output_format == OFORMAT_ELF)
+	/* 2016-02-10 John Hankinson - Don't bother writing SEH data for ELF64 Win64 ABI hack or hjwasm flat mode */
+	if (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_BIN)
 	return;
 
     if ( endprolog_found == FALSE ) {

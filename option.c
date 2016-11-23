@@ -927,6 +927,34 @@ OPTFUNC( Unsupported )
     return( EmitErr( NOT_SUPPORTED, tokenarray[(*pi)-2].tokpos ) );
 }
 
+OPTFUNC(SetFlat)
+{
+	const char  *textvalue;
+
+	int i = *pi;
+
+	ModuleInfo.offsettype = OT_FLAT;
+	Options.output_format = OFORMAT_BIN;
+	SetCPU(P_64p);
+	ModuleInfo.model = MODEL_FLAT;
+	ModuleInfo.fctype = FCT_WIN64;
+	ModuleInfo.defOfssize = USE16;
+	ModuleInfo.flat = TRUE;
+	ModuleInfo.win64_flags = 11;
+	ModuleInfo.basereg[ModuleInfo.Ofssize] = T_RSP;
+	if (!ModuleInfo.g.StackBase) {
+		ModuleInfo.g.StackBase = CreateVariable("@StackBase", 0);
+		ModuleInfo.g.StackBase->predefined = TRUE;
+		ModuleInfo.g.StackBase->sfunc_ptr = UpdateStackBase;
+		ModuleInfo.g.ProcStatus = CreateVariable("@ProcStatus", 0);
+		ModuleInfo.g.ProcStatus->predefined = TRUE;
+		ModuleInfo.g.ProcStatus->sfunc_ptr = UpdateProcStatus;
+	}
+	i++;
+	*pi = i;
+	return(NOT_ERROR);
+}
+
 struct asm_option {
     const char *name;
     ret_code OPTQUAL (*func)(int *, struct asm_tok[] );
@@ -1002,6 +1030,7 @@ static const struct asm_option optiontab[] = {
 	{ "ZEROLOCALS",   SetZeroLocals  }, /* ZEROLOCALS: <value> 1 or 0 */
 #endif
   { "SWITCHSTYLE",      SetSwitchStile }, /* SWITCH_STYLE: <CSWITCH> or <ASMSWITCH> */
+  { "FLAT",             SetFlat }
 };
 
 #define TABITEMS sizeof( optiontab) / sizeof( optiontab[0] )

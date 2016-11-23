@@ -20,6 +20,8 @@
 #include "listing.h"
 #include "msgtext.h"
 #include "tokenize.h"
+#include "proc.h"
+#include "cpumodel.h"
 
 #include "myassert.h"
 
@@ -42,7 +44,11 @@ static const char * const SegmCombine[ SIM_LAST ] = {
 char *SimGetSegName( enum sim_seg segno )
 /***************************************/
 {
-    return( SegmNames[segno] );
+	char* segn;
+	segn = SegmNames[segno];
+	if (segn == NULL && ModuleInfo.flat == TRUE)
+		segn = "_flat";
+    return( segn );
 }
 
 const char *GetCodeClass( void )
@@ -125,6 +131,7 @@ static void SetSimSeg( enum sim_seg segm, const char *name )
     pFmt = "%s %r %s %s %s '%s'";
     if ( name == NULL ) {
         name = SegmNames[segm];
+		if (name == NULL) name = "_flat";
         if ( ModuleInfo.simseg_init & ( 1 << segm ) )
             pFmt = "%s %r";
         else {
@@ -156,7 +163,24 @@ static void SetSimSeg( enum sim_seg segm, const char *name )
         if ( sym && sym->state == SYM_SEG && sym->isdefined == TRUE )
             pFmt = "%s %r";
     }
-    AddLineQueueX( pFmt, name, T_SEGMENT, pAlign, pUse, SegmCombine[segm], pClass );
+
+	if (ModuleInfo.flat)
+	{
+		pUse = "USE64";
+		AddLineQueueX(pFmt, name, T_SEGMENT, pAlign, pUse, SegmCombine[segm], pClass);
+		AddLineQueueX("assume cs:_flat, ds:_flat, es:_flat, ss:_flat, gs:_flat");
+		sym_CodeSize = CreateVariable("@CodeSize", 0);
+		sym_CodeSize->predefined = TRUE;
+		sym_DataSize = CreateVariable("@DataSize", 0);
+		sym_DataSize->predefined = TRUE;
+		sym_ReservedStack = CreateVariable("@ReservedStack", 0);
+		sym_ReservedStack->predefined = TRUE;
+	}
+	else
+	{
+		AddLineQueueX(pFmt, name, T_SEGMENT, pAlign, pUse, SegmCombine[segm], pClass);
+	}
+	
     return;
 }
 

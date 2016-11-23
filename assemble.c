@@ -789,7 +789,8 @@ static void PassOneChecks( void )
     HllCheckOpen();
     CondCheckOpen();
 
-    if( ModuleInfo.EndDirFound == FALSE )
+	/* Don't require END directive for bin output */
+    if( ModuleInfo.EndDirFound == FALSE  && Options.output_format != OFORMAT_BIN)
         EmitError( END_DIRECTIVE_REQUIRED );
 
 #ifdef DEBUG_OUT

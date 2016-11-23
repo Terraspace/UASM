@@ -3240,6 +3240,8 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
     ret_code rc = NOT_ERROR;
     unsigned char c;
     char *p;
+	char clabel[100];
+
     DebugMsg1(("%u evaluate(i=%d, end=%d, flags=%X) enter [opnd1: kind=%d type=%s]\n",
                ++evallvl, *i, end, flags, opnd1->kind, opnd1->type ? opnd1->type->name : "NULL" ));
 
@@ -3252,10 +3254,20 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
      * v2.10: 'flags' argument contains "inside []" information.
      */
 
-    /*
-     * First token may be either an unary operator or an operand
-     */
-    if ( opnd1->kind == EXPR_EMPTY &&  !is_unary_op( tokenarray[*i].token ) ) {
+
+	if (tokenarray[*i].token == T_DOT && tokenarray[(*i) + 1].token == T_ID)
+	{
+		// check that T_ID is a label
+		
+		(*i)++;
+		strcpy(&clabel, tokenarray[(*i)].string_ptr);
+		sprintf(tokenarray[(*i)].string_ptr, "%s%s", ".", &clabel);
+
+	}
+	/*
+	* First token may be either an unary operator or an operand
+	*/
+	if ( opnd1->kind == EXPR_EMPTY &&  !is_unary_op( tokenarray[*i].token ) ) {
         rc = get_operand( opnd1, i, tokenarray, flags );
     }
     /* now handle operators. */

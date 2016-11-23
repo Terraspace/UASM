@@ -1213,7 +1213,7 @@ ret_code SegmentDir( int i, struct asm_tok tokenarray[] )
             /* characteristics are restricted to COFF/ELF/BIN-PE */
             if ( Options.output_format == OFORMAT_OMF
 #if PE_SUPPORT
-                || ( Options.output_format == OFORMAT_BIN && ModuleInfo.sub_format != SFORMAT_PE )
+                || ( ModuleInfo.flat == FALSE && Options.output_format == OFORMAT_BIN && ModuleInfo.sub_format != SFORMAT_PE )
 #endif
                ) {
                 EmitErr( NOT_SUPPORTED_WITH_CURR_FORMAT, tokenarray[i].string_ptr );

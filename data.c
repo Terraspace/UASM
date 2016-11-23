@@ -425,6 +425,7 @@ static void output_float( const struct expr *opnd, unsigned size )
      */
     //char buffer[12];
     char buffer[32];
+	char tstr[32];
 
     if ( opnd->mem_type != MT_EMPTY ) {
         int i;
@@ -435,7 +436,13 @@ static void output_float( const struct expr *opnd, unsigned size )
         else {
             atofloat( buffer, opnd->float_tok->string_ptr, i , opnd->negative, opnd->float_tok->floattype );
         }
-    } else {
+    } 
+	else if (opnd->kind == EXPR_FLOATI)
+	{
+		snprintf(tstr, sizeof(tstr), "%f", opnd->fvalue);
+		atofloat( buffer, tstr, size, opnd->negative, 0 );
+	}
+	else {
         atofloat( buffer, opnd->float_tok->string_ptr, size, opnd->negative, opnd->float_tok->floattype );
     }
     OutputDataBytes( buffer, size );
@@ -674,7 +681,15 @@ next_item:  /* <--- continue scan if a comma has been detected */
         break;
     case EXPR_CONST:
         if ( is_float ) {
-            return( EmitError( MUST_USE_FLOAT_INITIALIZER ) );
+			opndx.fvalue = (float)opndx.value;
+			opndx.kind = EXPR_FLOATI;
+			opndx.negative = (opndx.fvalue < 0) ? 1 : 0;
+			if (opndx.negative)
+				opndx.fvalue *= -1;
+			output_float( &opndx, no_of_bytes); /* Coerce const integer value to float in data definitions */
+			total++;
+			break;
+            //return( EmitError( MUST_USE_FLOAT_INITIALIZER ) );
         }
 
         /* a string returned by the evaluator (enclosed in quotes!)? */

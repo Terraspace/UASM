@@ -41,6 +41,7 @@ enum exprtype {
     EXPR_ADDR,          /* e.g. "foo", "seg foo" and "offset foo", also indirect mem ops */
     EXPR_REG,           /* register */
     EXPR_FLOAT,         /* v2.05: float */
+	EXPR_FLOATI,        /* v2.17 float delcared as integer for data directives */
     EXPR_DECORATOR     /* {sae},{rn-sae},{rd-sae},{ru-sae} or {rz-sae} */
    // EXPR_DECOBROAD,     /* EVEX broad desorator */
 };

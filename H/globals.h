@@ -835,6 +835,7 @@ struct module_info {
     unsigned            basereg[3];      /* stack base register (16-, 32-, 64-bit */
 #endif
     char                name[FILENAME_MAX];/* name of module */
+	bool                flat;
 };
 
 #if AVXSUPP

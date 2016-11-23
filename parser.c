@@ -2917,6 +2917,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
   struct asym         *sym;
   uint_32             oldofs;
   enum special_token regtok;
+  char              clabel[100];
 #ifdef DEBUG_OUT
   char                *instr;
 #endif
@@ -2958,6 +2959,38 @@ ret_code ParseLine(struct asm_tok tokenarray[])
       return(NOT_ERROR);
     }
   }
+  /* John: added support for code labels starting with a period v2.17 */
+  if ((tokenarray[0].token == T_DOT && tokenarray[1].token == T_ID && (tokenarray[2].token == T_COLON || tokenarray[2].token == T_DBL_COLON))) {
+	  i = 3;
+
+	  sprintf(&clabel, "%s%s", tokenarray[0].string_ptr, tokenarray[1].string_ptr);
+
+	  DebugMsg1(("ParseLine T_COLON, code label=%s\n", clabel));
+	  if (ProcStatus & PRST_PROLOGUE_NOT_DONE) write_prologue(tokenarray);
+
+	  /* create a global or local code label */
+	  if (CreateLabel(clabel, MT_NEAR, NULL,
+		  (ModuleInfo.scoped && CurrProc && tokenarray[2].token != T_DBL_COLON)) == NULL) {
+		  DebugMsg(("ParseLine, CreateLabel(%s) failed, exit\n", clabel));
+		  return(ERROR);
+	  }
+	  if (tokenarray[i].token == T_FINAL) {
+		  /* v2.06: this is a bit too late. Should be done BEFORE
+		  * CreateLabel, because of '@@'. There's a flag supposed to
+		  * be used for this handling, LOF_STORED in line_flags.
+		  * It's only a problem if a '@@:' is the first line
+		  * in the code section.
+		  * v2.10: is no longer an issue because the label counter has
+		  * been moved to module_vars (see global.h).
+		  */
+		  FStoreLine(0);
+		  if (CurrFile[LST]) {
+			  LstWrite(LSTTYPE_LABEL, 0, NULL);
+		  }
+		  return(NOT_ERROR);
+	  }
+  }
+
   /* handle directives and (anonymous) data items */
   if (tokenarray[i].token != T_INSTRUCTION) {
     /* a code label before a data item is only accepted in Masm5 compat mode */
