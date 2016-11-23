@@ -2535,6 +2535,12 @@ static void write_win64_default_prologue( struct proc_info *info )
 	struct dsym     *paranode;
 	int pushed = 0;
 	
+	if (Parse_Pass == PASS_1)
+	{
+		info->vsize = 0;
+		info->xmmsize = 0;
+	}
+
     DebugMsg1(("write_win64_default_prologue enter\n"));
     memset(xyused, 0, 6);
     info->vecused = 0;

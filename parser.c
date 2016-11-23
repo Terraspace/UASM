@@ -2917,7 +2917,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
   struct asym         *sym;
   uint_32             oldofs;
   enum special_token regtok;
-  char              clabel[100];
+  
 #ifdef DEBUG_OUT
   char                *instr;
 #endif
@@ -2927,6 +2927,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 #else
   struct expr         opndx[MAX_OPND];
 #endif
+  char *pnlbl;
 
   DebugMsg1(("ParseLine enter, Token_Count=%u, ofs=%Xh\n",
     Token_Count, GetCurrOffset()));
@@ -2961,17 +2962,18 @@ ret_code ParseLine(struct asm_tok tokenarray[])
   }
   /* John: added support for code labels starting with a period v2.17 */
   if ((tokenarray[0].token == T_DOT && tokenarray[1].token == T_ID && (tokenarray[2].token == T_COLON || tokenarray[2].token == T_DBL_COLON))) {
-	  i = 3;
+	 i = 3;
+	  
+	  pnlbl = malloc(strlen(tokenarray[1].string_ptr) + 2);
+	  sprintf(pnlbl, "%s%s", ".", tokenarray[1].string_ptr);
 
-	  sprintf(&clabel, "%s%s", tokenarray[0].string_ptr, tokenarray[1].string_ptr);
-
-	  DebugMsg1(("ParseLine T_COLON, code label=%s\n", clabel));
+	  DebugMsg1(("ParseLine T_COLON, code label=%s\n", pnlbl));
 	  if (ProcStatus & PRST_PROLOGUE_NOT_DONE) write_prologue(tokenarray);
 
 	  /* create a global or local code label */
-	  if (CreateLabel(&clabel, MT_NEAR, NULL,
+	  if (CreateLabel(pnlbl, MT_NEAR, NULL,
 		  (ModuleInfo.scoped && CurrProc && tokenarray[2].token != T_DBL_COLON)) == NULL) {
-		  DebugMsg(("ParseLine, CreateLabel(%s) failed, exit\n", &clabel));
+		  DebugMsg(("ParseLine, CreateLabel(%s) failed, exit\n", pnlbl));
 		  return(ERROR);
 	  }
 	  if (tokenarray[i].token == T_FINAL) {

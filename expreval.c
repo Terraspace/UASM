@@ -3257,7 +3257,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
      * v2.10: 'flags' argument contains "inside []" information.
      */
 
-
+	/* Allow .labelname to be used as an operand */
 	if (tokenarray[*i].token == T_DOT && tokenarray[(*i) + 1].token == T_ID)
 	{
 		// check that T_ID is a label
