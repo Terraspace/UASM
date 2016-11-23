@@ -1959,7 +1959,7 @@ ret_code ExcFrameDirective( int i, struct asm_tok tokenarray[] )
 
     DebugMsg1(("ExcFrameDirective(%s) enter\n", tokenarray[i].string_ptr ));
     /* v2.05: accept directives for windows only */
-	if (Options.output_format != OFORMAT_COFF && Options.output_format != OFORMAT_ELF /* John Hankinson 2016-02-10 Added elf win64 hack */
+	if (Options.output_format != OFORMAT_COFF && Options.output_format != OFORMAT_ELF && Options.output_format != OFORMAT_BIN /* John Hankinson 2016-02-10 Added elf win64 hack */
 #if PE_SUPPORT
         && ModuleInfo.sub_format != SFORMAT_PE
 #endif

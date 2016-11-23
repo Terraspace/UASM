@@ -941,6 +941,10 @@ OPTFUNC(SetFlat)
 	ModuleInfo.defOfssize = USE16;
 	ModuleInfo.flat = TRUE;
 	ModuleInfo.win64_flags = 11;
+	#ifndef STACKBASESUPP
+		#define STACKBASESUPP 1       /* support OPTION STACKBASE              */
+	#endif
+	ModuleInfo.frame_auto = 1;
 	ModuleInfo.basereg[ModuleInfo.Ofssize] = T_RSP;
 	if (!ModuleInfo.g.StackBase) {
 		ModuleInfo.g.StackBase = CreateVariable("@StackBase", 0);
