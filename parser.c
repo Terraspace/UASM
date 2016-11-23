@@ -2969,9 +2969,9 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 	  if (ProcStatus & PRST_PROLOGUE_NOT_DONE) write_prologue(tokenarray);
 
 	  /* create a global or local code label */
-	  if (CreateLabel(clabel, MT_NEAR, NULL,
+	  if (CreateLabel(&clabel, MT_NEAR, NULL,
 		  (ModuleInfo.scoped && CurrProc && tokenarray[2].token != T_DBL_COLON)) == NULL) {
-		  DebugMsg(("ParseLine, CreateLabel(%s) failed, exit\n", clabel));
+		  DebugMsg(("ParseLine, CreateLabel(%s) failed, exit\n", &clabel));
 		  return(ERROR);
 	  }
 	  if (tokenarray[i].token == T_FINAL) {

@@ -1,0 +1,171 @@
+d:\pointy\misc/easystart.inc(55) : Error A2106: Cannot open file: "glaze\gesture.inc" [ENOENT]
+ d:\pointy\misc/easystart.inc(55): Included by
+  d:\pointy\svo3.asm(2): Main line code
+d:\pointy\misc/easystart.inc(56) : Error A2106: Cannot open file: "glaze\zbuffer.inc" [ENOENT]
+ d:\pointy\misc/easystart.inc(56): Included by
+  d:\pointy\svo3.asm(2): Main line code
+d:\pointy\misc/easystart.inc(57) : Error A2106: Cannot open file: "drawing.asm" [ENOENT]
+ d:\pointy\misc/easystart.inc(57): Included by
+  d:\pointy\svo3.asm(2): Main line code
+d:\pointy\misc/easystart.inc(58) : Error A2106: Cannot open file: "hdr.asm" [ENOENT]
+ d:\pointy\misc/easystart.inc(58): Included by
+  d:\pointy\svo3.asm(2): Main line code
+d:\pointy\misc/easystart.inc(59) : Error A2106: Cannot open file: "glaze\surface.inc" [ENOENT]
+ d:\pointy\misc/easystart.inc(59): Included by
+  d:\pointy\svo3.asm(2): Main line code
+d:\pointy\misc/easystart.inc(60) : Error A2106: Cannot open file: "glaze\drawing.asm" [ENOENT]
+ d:\pointy\misc/easystart.inc(60): Included by
+  d:\pointy\svo3.asm(2): Main line code
+d:\pointy\misc/easystart.inc(61) : Error A2106: Cannot open file: "glaze\window.inc" [ENOENT]
+ d:\pointy\misc/easystart.inc(61): Included by
+  d:\pointy\svo3.asm(2): Main line code
+d:\pointy\imageLoader.asm(112) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\imageLoader.asm(112): Included by
+  d:\pointy\svo3.asm(8): Main line code
+d:\pointy\imageLoader.asm(115) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\imageLoader.asm(115): Included by
+  d:\pointy\svo3.asm(8): Main line code
+d:\pointy\imageLoader.asm(135) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\imageLoader.asm(135): Included by
+  d:\pointy\svo3.asm(8): Main line code
+d:\pointy\imageLoader.asm(186) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\imageLoader.asm(186): Included by
+  d:\pointy\svo3.asm(8): Main line code
+d:\pointy\imageLoader.asm(189) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\imageLoader.asm(189): Included by
+  d:\pointy\svo3.asm(8): Main line code
+d:\pointy\imageLoader.asm(210) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\imageLoader.asm(210): Included by
+  d:\pointy\svo3.asm(8): Main line code
+d:\pointy\scene2.asm(51) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\scene2.asm(51): Included by
+  d:\pointy\svo3.asm(20): Main line code
+d:\pointy\scene2.asm(350) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\scene2.asm(350): Included by
+  d:\pointy\svo3.asm(20): Main line code
+d:\pointy\scene2.asm(372) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\scene2.asm(372): Included by
+  d:\pointy\svo3.asm(20): Main line code
+d:\pointy\scene2.asm(416) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\scene2.asm(416): Included by
+  d:\pointy\svo3.asm(20): Main line code
+d:\pointy\scene2.asm(428) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\scene2.asm(428): Included by
+  d:\pointy\svo3.asm(20): Main line code
+d:\pointy\scene2.asm(431) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\scene2.asm(431): Included by
+  d:\pointy\svo3.asm(20): Main line code
+d:\pointy\scene3.asm(263) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\scene3.asm(263): Included by
+  d:\pointy\svo3.asm(21): Main line code
+d:\pointy\scene3.asm(332) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\scene3.asm(332): Included by
+  d:\pointy\svo3.asm(21): Main line code
+d:\pointy\scene3.asm(386) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\scene3.asm(386): Included by
+  d:\pointy\svo3.asm(21): Main line code
+d:\pointy\scene3.asm(391) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\scene3.asm(391): Included by
+  d:\pointy\svo3.asm(21): Main line code
+d:\pointy\scene3.asm(397) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\scene3.asm(397): Included by
+  d:\pointy\svo3.asm(21): Main line code
+d:\pointy\scene3.asm(398) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\scene3.asm(398): Included by
+  d:\pointy\svo3.asm(21): Main line code
+d:\pointy\scene3.asm(589) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\scene3.asm(589): Included by
+  d:\pointy\svo3.asm(21): Main line code
+d:\pointy\scene3.asm(639) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\scene3.asm(639): Included by
+  d:\pointy\svo3.asm(21): Main line code
+d:\pointy\scene3.asm(669) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\scene3.asm(669): Included by
+  d:\pointy\svo3.asm(21): Main line code
+d:\pointy\scene3.asm(737) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\scene3.asm(737): Included by
+  d:\pointy\svo3.asm(21): Main line code
+d:\pointy\scene3.asm(815) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\scene3.asm(815): Included by
+  d:\pointy\svo3.asm(21): Main line code
+d:\pointy\scene5.asm(189) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\scene5.asm(189): Included by
+  d:\pointy\svo3.asm(23): Main line code
+d:\pointy\scene5.asm(313) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\scene5.asm(313): Included by
+  d:\pointy\svo3.asm(23): Main line code
+d:\pointy\scene5.asm(316) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\scene5.asm(316): Included by
+  d:\pointy\svo3.asm(23): Main line code
+d:\pointy\scene5.asm(321) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\scene5.asm(321): Included by
+  d:\pointy\svo3.asm(23): Main line code
+d:\pointy\sky.asm(292) : Error A2209: Syntax error: ARGB_TO_FLOAT2
+ d:\pointy\sky.asm(292): Included by
+  d:\pointy\scene6.asm(2): Included by
+   d:\pointy\svo3.asm(24): Main line code
+d:\pointy\sky.asm(298) : Error A2209: Syntax error: ARGB_TO_FLOAT2
+ d:\pointy\sky.asm(298): Included by
+  d:\pointy\scene6.asm(2): Included by
+   d:\pointy\svo3.asm(24): Main line code
+d:\pointy\sky.asm(313) : Error A2209: Syntax error: FLOAT_TO_ARGB
+ d:\pointy\sky.asm(313): Included by
+  d:\pointy\scene6.asm(2): Included by
+   d:\pointy\svo3.asm(24): Main line code
+d:\pointy\sky.asm(383) : Error A2209: Syntax error: ARGB_TO_FLOAT2
+ d:\pointy\sky.asm(383): Included by
+  d:\pointy\scene6.asm(2): Included by
+   d:\pointy\svo3.asm(24): Main line code
+d:\pointy\sky.asm(385) : Error A2209: Syntax error: ARGB_TO_FLOAT2
+ d:\pointy\sky.asm(385): Included by
+  d:\pointy\scene6.asm(2): Included by
+   d:\pointy\svo3.asm(24): Main line code
+d:\pointy\sky.asm(391) : Error A2209: Syntax error: FLOAT_TO_ARGB
+ d:\pointy\sky.asm(391): Included by
+  d:\pointy\scene6.asm(2): Included by
+   d:\pointy\svo3.asm(24): Main line code
+d:\pointy\sky.asm(421) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\sky.asm(421): Included by
+  d:\pointy\scene6.asm(2): Included by
+   d:\pointy\svo3.asm(24): Main line code
+d:\pointy\sky.asm(423) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\sky.asm(423): Included by
+  d:\pointy\scene6.asm(2): Included by
+   d:\pointy\svo3.asm(24): Main line code
+d:\pointy\sky.asm(450) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\sky.asm(450): Included by
+  d:\pointy\scene6.asm(2): Included by
+   d:\pointy\svo3.asm(24): Main line code
+d:\pointy\sky.asm(451) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\sky.asm(451): Included by
+  d:\pointy\scene6.asm(2): Included by
+   d:\pointy\svo3.asm(24): Main line code
+d:\pointy\sky.asm(452) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\sky.asm(452): Included by
+  d:\pointy\scene6.asm(2): Included by
+   d:\pointy\svo3.asm(24): Main line code
+d:\pointy\sky.asm(546) : Error A2209: Syntax error: ARGB_TO_FLOAT2
+ d:\pointy\sky.asm(546): Included by
+  d:\pointy\scene6.asm(2): Included by
+   d:\pointy\svo3.asm(24): Main line code
+d:\pointy\sky.asm(549) : Error A2209: Syntax error: FLOAT_TO_ARGB
+ d:\pointy\sky.asm(549): Included by
+  d:\pointy\scene6.asm(2): Included by
+   d:\pointy\svo3.asm(24): Main line code
+d:\pointy\sky.asm(708) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\sky.asm(708): Included by
+  d:\pointy\scene6.asm(2): Included by
+   d:\pointy\svo3.asm(24): Main line code
+d:\pointy\sky.asm(709) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\sky.asm(709): Included by
+  d:\pointy\scene6.asm(2): Included by
+   d:\pointy\svo3.asm(24): Main line code
+d:\pointy\sky.asm(711) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\sky.asm(711): Included by
+  d:\pointy\scene6.asm(2): Included by
+   d:\pointy\svo3.asm(24): Main line code
+d:\pointy\sky.asm(712) : Error A2159: INVOKE requires prototype for procedure
+ d:\pointy\sky.asm(712): Included by
+  d:\pointy\scene6.asm(2): Included by
+   d:\pointy\svo3.asm(24): Main line code
+d:\pointy\sky.asm(712) : Fatal error A1113: Too many errors
