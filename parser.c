@@ -2932,6 +2932,32 @@ ret_code ParseLine(struct asm_tok tokenarray[])
   DebugMsg1(("ParseLine enter, Token_Count=%u, ofs=%Xh\n",
     Token_Count, GetCurrOffset()));
   i = 0;
+  
+  if (tokenarray[0].token == T_ID && (strncmp(tokenarray[0].string_ptr, "use16", 5) == 0 || strncmp(tokenarray[0].string_ptr, "USE16", 5) == 0))
+  {
+	  ModuleInfo.Ofssize = USE16;
+	  ModuleInfo.wordsize = 2;
+	  ModuleInfo.defOfssize = 16;
+	  if(ModuleInfo.currseg) ModuleInfo.currseg->e.seginfo->Ofssize = USE16;
+	  return(NOT_ERROR);
+  }
+  else if (tokenarray[0].token == T_ID && (strncmp(tokenarray[0].string_ptr, "use32", 5) == 0 || strncmp(tokenarray[0].string_ptr, "USE32", 5) == 0))
+  {
+	  ModuleInfo.Ofssize = USE32;
+	  ModuleInfo.wordsize = 4;
+	  ModuleInfo.defOfssize = 32;
+	  if (ModuleInfo.currseg) ModuleInfo.currseg->e.seginfo->Ofssize = USE32;
+	  return(NOT_ERROR);
+  }
+  else if (tokenarray[0].token == T_ID && (strncmp(tokenarray[0].string_ptr, "use64", 5) == 0 || strncmp(tokenarray[0].string_ptr, "USE64", 5) == 0))
+  {
+	  ModuleInfo.Ofssize = USE64;
+	  ModuleInfo.wordsize = 8;
+	  ModuleInfo.defOfssize = 64;
+	  if (ModuleInfo.currseg) ModuleInfo.currseg->e.seginfo->Ofssize = USE64;
+	  return(NOT_ERROR);
+  }
+
   /* Does line start with a code label? */
   if (tokenarray[0].token == T_ID && (tokenarray[1].token == T_COLON || tokenarray[1].token == T_DBL_COLON)) {
     i = 2;
