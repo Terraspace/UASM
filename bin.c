@@ -51,6 +51,8 @@
 #include "pespec.h"
 #endif
 
+#include "orgfixup.h"
+
 extern void SortSegments( int );
 
 #if MZ_SUPPORT
@@ -1526,6 +1528,9 @@ static ret_code bin_write_module( struct module_info *modinfo )
     uint_8  *hdrbuf;
 #endif
     struct calc_param cp = { TRUE, 0 };
+	uint_32 origsize;
+	uint_32 writesize;
+	uint_8 *codeptr;
 
     DebugMsg(("bin_write_module: enter\n" ));
 
@@ -1763,16 +1768,35 @@ static ret_code bin_write_module( struct module_info *modinfo )
         LstPrintf( szSegLine, curr->sym.name, curr->e.seginfo->fileoffset, first ? curr->e.seginfo->start_offset + curr->e.seginfo->start_loc : curr->e.seginfo->start_offset, size, sizemem );
         LstNL();
 #endif
-        if ( size != 0 && curr->e.seginfo->CodeBuffer ) {
-            DebugMsg(("bin_write_module(%s): write %" I32_SPEC "Xh bytes at offset %" I32_SPEC "Xh, initialized bytes=%" I32_SPEC "u, buffer=%p\n",
-                      curr->sym.name, size, curr->e.seginfo->fileoffset, curr->e.seginfo->bytes_written, curr->e.seginfo->CodeBuffer ));
-            fseek( CurrFile[OBJ], curr->e.seginfo->fileoffset, SEEK_SET );
+		if (size != 0 && curr->e.seginfo->CodeBuffer) {
+			DebugMsg(("bin_write_module(%s): write %" I32_SPEC "Xh bytes at offset %" I32_SPEC "Xh, initialized bytes=%" I32_SPEC "u, buffer=%p\n",
+				curr->sym.name, size, curr->e.seginfo->fileoffset, curr->e.seginfo->bytes_written, curr->e.seginfo->CodeBuffer));
+			fseek(CurrFile[OBJ], curr->e.seginfo->fileoffset, SEEK_SET);
 #ifdef __I86__
-            if ( hfwrite( curr->e.seginfo->CodeBuffer, 1, size, CurrFile[OBJ] ) != size )
-                WriteError();
+			if (hfwrite(curr->e.seginfo->CodeBuffer, 1, size, CurrFile[OBJ]) != size)
+				WriteError();
 #else
-            if ( fwrite( curr->e.seginfo->CodeBuffer, 1, size, CurrFile[OBJ] ) != size )
-                WriteError();
+			if (ModuleInfo.flat)
+			{
+				/* For flat type we have to write out one byte at a time and verify it against the org fixup list */
+				origsize = size;
+				codeptr = curr->e.seginfo->CodeBuffer;
+				while (codeptr < (curr->e.seginfo->CodeBuffer+size))
+				{
+					if (!InOrgRange(codeptr - curr->e.seginfo->CodeBuffer))
+					{
+						writesize = fwrite(codeptr, 1, 1, CurrFile[OBJ]);
+						if (writesize != 1)
+							WriteError();
+					}
+					codeptr++;
+				}
+			}
+			else
+			{
+				if (fwrite(curr->e.seginfo->CodeBuffer, 1, size, CurrFile[OBJ]) != size)
+					WriteError();
+			}
 #endif
         }
 #ifdef DEBUG_OUT

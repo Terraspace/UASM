@@ -37,6 +37,9 @@
 #include "linnum.h"
 #include "cpumodel.h"
 #include "lqueue.h"
+
+#include "orgfixup.h"
+
 #if DLLIMPORT
 #include "mangle.h"
 #endif
@@ -1468,6 +1471,8 @@ int EXPQUAL AssembleModule( const char *source )
 
     for( Parse_Pass = PASS_1; ; Parse_Pass++ ) {
 
+		ResetOrgFixup();
+
         DebugMsg(( "*************\npass %u\n*************\n", Parse_Pass + 1 ));
         OnePass();
 
@@ -1572,6 +1577,7 @@ int EXPQUAL AssembleModule( const char *source )
 done:
 #endif
     AssembleFini();
+	ResetOrgFixup();
     DebugMsg(("AssembleModule exit\n"));
     return( ModuleInfo.g.error_count == 0 );
 }

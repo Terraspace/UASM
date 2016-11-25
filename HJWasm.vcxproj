@@ -62,6 +62,7 @@
     <ClCompile Include="omffixup.c" />
     <ClCompile Include="omfint.c" />
     <ClCompile Include="option.c" />
+    <ClCompile Include="orgfixup.c" />
     <ClCompile Include="parser.c" />
     <ClCompile Include="posndir.c" />
     <ClCompile Include="preproc.c" />
@@ -132,6 +133,7 @@
     <ClInclude Include="H\omfspec.h" />
     <ClInclude Include="H\operands.h" />
     <ClInclude Include="H\opndcls.h" />
+    <ClInclude Include="H\orgfixup.h" />
     <ClInclude Include="H\parser.h" />
     <ClInclude Include="H\pespec.h" />
     <ClInclude Include="H\posndir.h" />

@@ -38,6 +38,7 @@
 #include "fastpass.h"
 #include "fixup.h"
 #include "input.h"
+#include "orgfixup.h"
 
 #include "myassert.h"
 
@@ -119,10 +120,22 @@ ret_code OrgDirective( int i, struct asm_tok tokenarray[] )
         if ( Parse_Pass == PASS_1 && CurrSeg->e.seginfo->FixupList.head )
             CurrSeg->e.seginfo->FixupList.head->orgoccured = TRUE;
 
-        if ( opndx.kind == EXPR_CONST )
-            return( SetCurrOffset( CurrSeg, opndx.value, FALSE, FALSE ) );
-        else if ( opndx.kind == EXPR_ADDR && opndx.indirect == FALSE )
-            return( SetCurrOffset( CurrSeg, opndx.sym->offset + opndx.value, FALSE, FALSE ) );
+		if (opndx.kind == EXPR_CONST)
+		{
+			if (opndx.value > CurrSeg->e.seginfo->current_loc)
+			{
+				AddOrgFixup(CurrSeg->e.seginfo->current_loc, opndx.value);
+			}
+			return(SetCurrOffset(CurrSeg, opndx.value, FALSE, FALSE));
+		}
+		else if (opndx.kind == EXPR_ADDR && opndx.indirect == FALSE)
+		{
+			if (opndx.value > CurrSeg->e.seginfo->current_loc)
+			{
+				AddOrgFixup(CurrSeg->e.seginfo->current_loc, opndx.sym->offset + opndx.value);
+			}
+			return(SetCurrOffset(CurrSeg, opndx.sym->offset + opndx.value, FALSE, FALSE));
+		}
     }
     return( EmitError( ORG_NEEDS_A_CONSTANT_OR_LOCAL_OFFSET ) );
 }
