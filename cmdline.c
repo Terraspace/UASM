@@ -117,6 +117,7 @@ struct global_options Options = {
     /* no_export_decoration  */     FALSE,
     /* entry_decorated       */     FALSE,
     /* write_listing         */     FALSE,
+	/* write_listing         */     FALSE,
     /* write_impdef          */     FALSE,
     /* case_sensitive        */     FALSE,
     /* convert_uppercase     */     FALSE,
@@ -408,6 +409,7 @@ static void OPTQUAL Set_EP( void ) { Options.preprocessor_stdout = TRUE; Set_q()
 static void OPTQUAL Set_Fd( void ) { get_fname( OPTN_LNKDEF_FN, GetAFileName() ); Options.write_impdef = TRUE;}
 #endif
 static void OPTQUAL Set_Fw( void ) { get_fname( OPTN_ERR_FN, GetAFileName() ); }
+static void OPTQUAL Set_Fs( void ) { get_fname( OPTN_SYM_FN, GetAFileName() ); Options.dumpSymbols = TRUE; }
 static void OPTQUAL Set_Fl( void ) { get_fname( OPTN_LST_FN, GetAFileName() ); Options.write_listing = TRUE;}
 static void OPTQUAL Set_Fo( void ) { get_fname( OPTN_OBJ_FN, GetAFileName() ); }
 
@@ -561,6 +563,7 @@ static struct cmdloption const cmdl_options[] = {
     { "Fd=@",   0,        Set_Fd },
 #endif
     { "Fi=^@",  0,        Set_Fi },
+	{ "Fs=@",   0,        Set_Fs },
     { "Fl=@",   0,        Set_Fl },
     { "Fo=^@",  0,        Set_Fo },
     { "FPi87",  FPO_NO_EMULATION, Set_FPx },

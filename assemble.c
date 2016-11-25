@@ -1549,6 +1549,9 @@ int EXPQUAL AssembleModule( const char *source )
     if ( ( Parse_Pass > PASS_1 ) && write_to_file )
         WriteModule( &ModuleInfo );
 
+	if (Options.dumpSymbols)
+		WriteSymbols();
+
     if ( ModuleInfo.pCodeBuff ) {
         LclFree( ModuleInfo.pCodeBuff );
     }

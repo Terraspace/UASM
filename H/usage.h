@@ -19,6 +19,7 @@
 "-Fd[=<file_name>]\0"  "Write import definition file\0"
 #endif
 "-Fi<file_name>\0"  "Force <file_name> to be included\0"
+"-Fs[=<file_name>]\0" "Write symbolic debug info\0"
 "-Fl[=<file_name>]\0" "Write listing file\0"
 "-Fo<file_name>\0"  "Set object file name\0"
 "-Fw<file_name>\0"  "Set errors file name\0"

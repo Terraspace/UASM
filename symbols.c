@@ -950,6 +950,52 @@ void SymSimd(struct dsym *sym)
 		#endif
 
 }
+
+void WriteSymbols()
+{
+	char *pName;
+	uint_32 count = 0;
+	int symbolIdx = 0;
+	struct asym *sym;
+	struct asym cSym;
+	int i;
+	FILE *ld;
+	int n = 0;
+
+	if (Options.dumpSymbols)
+	{
+		pName = Options.names[4];
+		ld = fopen(pName, "w");
+		sym = NULL;
+		fseek(ld, 4, SEEK_SET);
+		while (sym = SymEnum(sym, &i)) 
+		{
+			if ((sym->state == SYM_INTERNAL && sym->offset==0) || sym->state == SYM_MACRO || sym->state == SYM_TMACRO || sym->state == SYM_GRP) continue;
+			if (sym->state == SYM_TYPE && sym->typekind != TYPE_TYPEDEF && sym->cvtyperef == 0) 
+			{
+
+			}
+			if (sym->state == SYM_SEG)
+				fwrite("S", 1, 1, ld);
+			else if (sym->state == SYM_TYPE)
+				fwrite("T", 1, 1, ld);
+			else if (sym->isproc)
+				fwrite("P", 1, 1, ld);
+			else
+				fwrite("L", 1, 1, ld);
+			fwrite(&(sym->offset), 4, 1, ld);
+			fwrite(&(sym->total_size), 4, 1, ld);
+			fwrite(&(sym->mem_type), 4, 1, ld);
+			fwrite(sym->name, 1, strlen(sym->name), ld);
+			fwrite(&n, 1, 1, ld);
+			count++;
+		}
+		fseek(ld, 0, SEEK_SET);
+		fwrite(&count, 4, 1, ld);
+		fclose(ld);
+	}
+}
+
 #ifdef DEBUG_OUT
 
 static void DumpSymbol( struct asym *sym )

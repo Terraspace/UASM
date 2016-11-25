@@ -477,6 +477,7 @@ enum opt_names {
     OPTN_OBJ_FN,              /* -Fo option */
     OPTN_LST_FN,              /* -Fl option */
     OPTN_ERR_FN,              /* -Fr option */
+	OPTN_SYM_FN,              /* -Fs option */
 #if DLLIMPORT
     OPTN_LNKDEF_FN,           /* -Fd option */
 #endif
@@ -618,6 +619,7 @@ struct global_options {
     bool        no_export_decoration;    /* -zze option */
     bool        entry_decorated;         /* -zzs option  */
     bool        write_listing;           /* -Fl option  */
+	bool        dumpSymbols;             /* -Fs option  */
     bool        write_impdef;            /* -Fd option  */
     bool        case_sensitive;          /* -C<p|x|u> options */
     bool        convert_uppercase;       /* -C<p|x|u> options */
