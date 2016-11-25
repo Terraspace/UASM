@@ -603,8 +603,9 @@ static void output_opc(struct code_info *CodeInfo)
                 lbyte &= ~0x04;
               CodeInfo->tuple = 0;
               /* This fixes AVX  REX_W wide 32 <-> 64 instructions third byte bit W*/
-              if (CodeInfo->token >= T_VADDPD && CodeInfo->token <= T_VMOVAPS)
-                lbyte &= ~EVEX_P1WMASK;        //make sure it is not set if WIG
+			  if ((CodeInfo->token >= T_VADDPD && CodeInfo->token <= T_VMOVAPS) ||
+				  (CodeInfo->token == T_VMOVD))
+				  lbyte &= ~EVEX_P1WMASK;        //make sure it is not set if WIG
               else
                 lbyte |= ((CodeInfo->pinstr->prefix) >> 8 & 0x80); // set only W bit if 64 bit
             }
