@@ -2935,26 +2935,98 @@ ret_code ParseLine(struct asm_tok tokenarray[])
   
   if (tokenarray[0].token == T_ID && (strncmp(tokenarray[0].string_ptr, "use16", 5) == 0 || strncmp(tokenarray[0].string_ptr, "USE16", 5) == 0))
   {
+	  ModuleInfo.frame_auto = 0;
+	  ModuleInfo.win64_flags = 0;
+	  ModuleInfo.offsettype = OT_GROUP;
 	  ModuleInfo.Ofssize = USE16;
 	  ModuleInfo.wordsize = 2;
-	  ModuleInfo.defOfssize = 16;
-	  if(ModuleInfo.currseg) ModuleInfo.currseg->e.seginfo->Ofssize = USE16;
+	  ModuleInfo.defOfssize = USE16;
+	  ModuleInfo.basereg[ModuleInfo.Ofssize] = T_SP;
+	  if (ModuleInfo.currseg)
+	  {
+		  ModuleInfo.currseg->e.seginfo->Ofssize = USE16;
+		  ModuleInfo.currseg->e.seginfo->segtype = SEGTYPE_CODE;
+		  ModuleInfo.currseg->sym.segment->Ofssize = USE16;
+	  }
+	  if (CurrSeg)
+	  {
+		  CurrSeg->e.seginfo->Ofssize = USE16;
+		  CurrSeg->e.seginfo->segtype = SEGTYPE_CODE;
+		  CurrSeg->sym.segment->Ofssize = USE16;
+		  CurrSeg->sym.Ofssize = USE16;
+	  }
+	  sym = SymSearch("_flat");
+	  if (sym)
+	  {
+		  sym->isdefined = TRUE;
+		  UpdateCurrSegVars();
+		  SetOfssize();
+	  }
+	  FStoreLine(1);
 	  return(NOT_ERROR);
   }
   else if (tokenarray[0].token == T_ID && (strncmp(tokenarray[0].string_ptr, "use32", 5) == 0 || strncmp(tokenarray[0].string_ptr, "USE32", 5) == 0))
   {
+	  ModuleInfo.frame_auto = 0;
+	  ModuleInfo.win64_flags = 0;
+	  ModuleInfo.offsettype = OT_GROUP;
 	  ModuleInfo.Ofssize = USE32;
 	  ModuleInfo.wordsize = 4;
-	  ModuleInfo.defOfssize = 32;
-	  if (ModuleInfo.currseg) ModuleInfo.currseg->e.seginfo->Ofssize = USE32;
+	  ModuleInfo.defOfssize = USE32;
+	  ModuleInfo.basereg[ModuleInfo.Ofssize] = T_ESP;
+	  if (ModuleInfo.currseg)
+	  {
+		  ModuleInfo.currseg->e.seginfo->Ofssize = USE32;
+		  ModuleInfo.currseg->e.seginfo->segtype = SEGTYPE_CODE;
+		  ModuleInfo.currseg->sym.segment->Ofssize = USE32;
+	  }
+	  if (CurrSeg)
+	  {
+		  CurrSeg->e.seginfo->Ofssize = USE32;
+		  CurrSeg->e.seginfo->segtype = SEGTYPE_CODE;
+		  CurrSeg->sym.segment->Ofssize = USE32;
+		  CurrSeg->sym.Ofssize = USE32;
+	  }
+	  sym = SymSearch("_flat");
+	  if (sym)
+	  {
+		  sym->isdefined = TRUE;
+		  UpdateCurrSegVars();
+		  SetOfssize();
+	  }
+	  FStoreLine(1);
 	  return(NOT_ERROR);
   }
   else if (tokenarray[0].token == T_ID && (strncmp(tokenarray[0].string_ptr, "use64", 5) == 0 || strncmp(tokenarray[0].string_ptr, "USE64", 5) == 0))
   {
+	  ModuleInfo.frame_auto = 1;
+	  ModuleInfo.win64_flags = 11;
+	  ModuleInfo.offsettype = OT_FLAT;
 	  ModuleInfo.Ofssize = USE64;
 	  ModuleInfo.wordsize = 8;
-	  ModuleInfo.defOfssize = 64;
-	  if (ModuleInfo.currseg) ModuleInfo.currseg->e.seginfo->Ofssize = USE64;
+	  ModuleInfo.defOfssize = USE64;
+	  ModuleInfo.basereg[ModuleInfo.Ofssize] = T_RSP;
+	  if (ModuleInfo.currseg)
+	  {
+		  ModuleInfo.currseg->e.seginfo->Ofssize = USE64;
+		  ModuleInfo.currseg->e.seginfo->segtype = SEGTYPE_CODE;
+		  ModuleInfo.currseg->sym.segment->Ofssize = USE64;
+	  }
+	  if (CurrSeg)
+	  {
+		  CurrSeg->e.seginfo->Ofssize = USE64;
+		  CurrSeg->e.seginfo->segtype = SEGTYPE_CODE;
+		  CurrSeg->sym.segment->Ofssize = USE64;
+		  CurrSeg->sym.Ofssize = USE64;
+	  }
+	  sym = SymSearch("_flat");
+	  if (sym)
+	  {
+		  sym->isdefined = TRUE;
+		  UpdateCurrSegVars();
+		  SetOfssize();
+	  }
+	  FStoreLine(1);
 	  return(NOT_ERROR);
   }
 

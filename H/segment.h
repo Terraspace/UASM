@@ -73,4 +73,6 @@ extern ret_code         ModelSimSegmInit( int type );
 extern void             ModelSimSegmExit( void );
 extern void             SetModelDefaultSegNames( void );
 
+extern void             UpdateCurrSegVars(void);
+
 #endif

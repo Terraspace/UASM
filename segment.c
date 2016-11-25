@@ -214,7 +214,7 @@ static void FreeLnameQueue( void )
  * Also updates values of text macro @CurSeg.
  */
 
-static void UpdateCurrSegVars( void )
+void UpdateCurrSegVars( void )
 /***********************************/
 {
     struct assume_info *info;

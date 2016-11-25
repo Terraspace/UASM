@@ -933,7 +933,7 @@ OPTFUNC(SetFlat)
 
 	int i = *pi;
 
-	ModuleInfo.offsettype = OT_FLAT;
+	ModuleInfo.offsettype = OT_FLAT; 
 	Options.output_format = OFORMAT_BIN;
 	ModuleInfo.curr_cpu = P_64p | P_AVX | P_CPU_MASK;
 	SetCPU(P_64p);

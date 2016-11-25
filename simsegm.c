@@ -167,14 +167,19 @@ static void SetSimSeg( enum sim_seg segm, const char *name )
 	if (ModuleInfo.flat)
 	{
 		pUse = "USE64";
-		AddLineQueueX(pFmt, name, T_SEGMENT, pAlign, pUse, SegmCombine[segm], pClass);
-		AddLineQueueX("assume cs:_flat, ds:_flat, es:_flat, ss:_flat, gs:_flat");
-		sym_CodeSize = CreateVariable("@CodeSize", 0);
-		sym_CodeSize->predefined = TRUE;
-		sym_DataSize = CreateVariable("@DataSize", 0);
-		sym_DataSize->predefined = TRUE;
-		sym_ReservedStack = CreateVariable("@ReservedStack", 0);
-		sym_ReservedStack->predefined = TRUE;
+		pFmt = "%s %r %s %s %s '%s'";
+		AddLineQueueX(pFmt, "_flat", T_SEGMENT, "BYTE", "USE16", "PUBLIC", "CODE");
+		AddLineQueueX("assume cs:_flat, ds:_flat, es:_flat, ss:_flat, fs:_flat, gs:_flat");
+		if (Parse_Pass == PASS_1)
+		{
+			sym_CodeSize = CreateVariable("@CodeSize", 0);
+			sym_CodeSize->predefined = TRUE;
+			sym_DataSize = CreateVariable("@DataSize", 0);
+			sym_DataSize->predefined = TRUE;
+			sym_ReservedStack = CreateVariable("@ReservedStack", 0);
+			sym_ReservedStack->predefined = TRUE;
+		}
+		FStoreLine(0);
 	}
 	else
 	{

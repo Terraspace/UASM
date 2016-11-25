@@ -1015,7 +1015,7 @@ insn(PSRAD, 2,                  OpCls( XMM,      I8_U,     NONE ), F_660F, 0,  n
 insn(PSRAD, 3,                  OpCls( XMM,      XMM_M128, NONE ), F_660F, 1,  no_WDS, 0xE2,     0x00,       P_686|P_SSE2,DSIZE|T128)
 /* PSRAQ moved here for easyer handling, HJWasm 2.16 */
 //EVEX.NDD.128.66.0F.W1 72 /4 ib FVI VPSRAQ xmm1 {k1}{z}, xmm2/m128/m64bcst, imm8
-ins(PSRAQ, psraq,               OpCls( XMM,      I8_U,     NONE ), F_660F, 0,  no_WDS, 0x72,     0x20,       P_686|P_AVX,W1|QSIZE|FV)
+ins(PSRAQ, psraq,               OpCls( XMM,      I8_U,     NONE ), F_660F, 0,  no_WDS, 0x72,     0x20,       P_686|P_AVX,W1|IZSZ|QSIZE|FV)
 insn(PSRAQ, 1,                  OpCls( XMM,      XMM_M128, NONE ), F_660F, 1,  no_WDS, 0xE2,     0x00,       P_686|P_AVX,W1|QSIZE|T128)
 
 ins (PSRLW, psrlw,              OpCls( MMX,      MMX_M64,  NONE ), F_0F,   1,  no_WDS, 0xD1,     0x00,       P_586|P_MMX, QSIZE)
