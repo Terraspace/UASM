@@ -311,7 +311,7 @@ static void output_opc(struct code_info *CodeInfo)
       if ((CodeInfo->token >= T_VSHUFF32X4) && (CodeInfo->token <= T_VSHUFI64X2) &&
       ((CodeInfo->opnd[OPND1].type & OP_XMM) || (CodeInfo->opnd[OPND2].type & OP_XMM)))
       EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS); //Only YMM and ZMM alowed    
-
+	  
 	/* John: removed once kn and decorator flag masks were determined not to be required as k0 is implicit */
 	  /*if ((CodeInfo->token >= T_VBROADCASTF128) && (CodeInfo->token <= T_VPBROADCASTQ)) {
 		if (decoflags == 0 && CodeInfo->r1type != OP_K)
@@ -443,6 +443,8 @@ static void output_opc(struct code_info *CodeInfo)
       lbyte |= EVEX_P1VVVV;
       CodeInfo->evex_p2 |= EVEX_P2VMASK;
     }
+
+
 
   /* If there is no decoflags then it is AVX2 instruction with 3 parameters, HJWasm 2.15 */
   if (CodeInfo->token >= T_VBROADCASTSS && CodeInfo->token <= T_VPBROADCASTMW2D)
@@ -603,7 +605,8 @@ static void output_opc(struct code_info *CodeInfo)
                 lbyte &= ~0x04;
               CodeInfo->tuple = 0;
               /* This fixes AVX  REX_W wide 32 <-> 64 instructions third byte bit W*/
-              if (CodeInfo->token >= T_VADDPD && CodeInfo->token <= T_VMOVAPS)
+              if ((CodeInfo->token >= T_VADDPD && CodeInfo->token <= T_VMOVAPS) ||
+				  (CodeInfo->token == T_VMOVD))
                 lbyte &= ~EVEX_P1WMASK;        //make sure it is not set if WIG
               else
                 lbyte |= ((CodeInfo->pinstr->prefix) >> 8 & 0x80); // set only W bit if 64 bit
