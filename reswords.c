@@ -759,7 +759,7 @@ VX_LL|VX_L,             /* VCVTTPD2UQQ */
 VX_LL|VX_L,             /* VCVTTPS2UDQ */
 VX_LL|VX_L,             /* VCVTTPS2UQQ */
 VX_LL|VX_L|VX_NND,             /* VCVTTSD2USI */
-VX_LL|VX_L,             /* VCVTTSS2USI */
+VX_LL|VX_L|VX_NND,             /* VCVTTSS2USI */
 VX_LL|VX_L,             /* VPERMI2B    */ 
 VX_LL|VX_L,             /* VPERMI2W    */ 
 VX_LL|VX_L,             /* VPERMI2D    */ 
