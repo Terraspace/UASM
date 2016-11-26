@@ -1,5 +1,6 @@
 proj_obj = \
 $(OUTD)/apiemu.o   \
+$(OUTD)/orgfixup.o \
 $(OUTD)/assemble.o \
 $(OUTD)/assume.o   \
 $(OUTD)/atofloat.o \
