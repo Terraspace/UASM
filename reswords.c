@@ -365,8 +365,8 @@ VX_LL|VX_L | VX_HALF,     /* VBROADCASTF32x4 */
 VX_LL|VX_L | VX_HALF,     /* VBROADCASTF64x2 */      
 VX_LL|VX_L | VX_HALF,     /* VBROADCASTF32x8 */      
 VX_LL|VX_L | VX_HALF,     /* VBROADCASTF64x4 */  
-VX_LL|VX_L | VX_HALF,     /* VPBROADCASTMB2Q */
-VX_LL|VX_L | VX_HALF,     /* VPBROADCASTMW2D */
+VX_LL|VX_L | VX_HALF | VX_NND,     /* VPBROADCASTMB2Q */
+VX_LL|VX_L | VX_HALF | VX_NND,     /* VPBROADCASTMW2D */
 VX_LL|VX_L,               /* VBLENDVPD       */
 VX_LL|VX_L,               /* VBLENDVPS       */
 
@@ -739,7 +739,7 @@ VX_LL|VX_L,             /* VPERMT2Q    */
 VX_LL|VX_L,             /* VPERMT2PS   */
 VX_LL|VX_L,             /* VPERMT2PD   */
 VX_LL,                  /* VCVTSD2USI  */ 
-VX_LL,                  /* VCVTSS2USI  */ 
+VX_LL|VX_NND,            /* VCVTSS2USI  */ 
 VX_LL,                  /* VCVTUSI2SD  */ 
 VX_LL,                  /* VCVTUSI2SS  */ 
 VX_LL|VX_L,             /* VSCALEFPD   */
@@ -758,7 +758,7 @@ VX_LL|VX_L,             /* VCVTTPD2UDQ */
 VX_LL|VX_L,             /* VCVTTPD2UQQ */
 VX_LL|VX_L,             /* VCVTTPS2UDQ */
 VX_LL|VX_L,             /* VCVTTPS2UQQ */
-VX_LL|VX_L,             /* VCVTTSD2USI */
+VX_LL|VX_L|VX_NND,             /* VCVTTSD2USI */
 VX_LL|VX_L,             /* VCVTTSS2USI */
 VX_LL|VX_L,             /* VPERMI2B    */ 
 VX_LL|VX_L,             /* VPERMI2W    */ 
