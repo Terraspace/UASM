@@ -326,7 +326,7 @@ avxins (PMINSD   ,vpminsd   ,    P_AVX, VX_LL|VX_L )        /* -, s */
 avxins (PMINUB   ,vpminub   ,    P_AVX, VX_LL|VX_L )        /* -, s */
 avxins (PMINUW   ,vpminuw   ,    P_AVX, VX_LL|VX_L )        /* -, s */
 avxins (PMINUD   ,vpminud   ,    P_AVX, VX_LL|VX_L )        /* -, s */
-avxins (PMOVMSKB ,vpmovmskb ,    P_AVX, VX_L|VX_HALF)   /* -, ns */
+avxins (PMOVMSKB ,vpmovmskb ,    P_AVX, VX_L|VX_NND|VX_HALF)   /* -, ns */
 avxins (PMOVSXBW ,vpmovsxbw ,    P_AVX, VX_LL|VX_L|VX_NND|VX_HALF)   /* -, ns */
 avxins (PMOVSXBD ,vpmovsxbd ,    P_AVX, VX_LL|VX_L|VX_NND|VX_HALF)   /* -, ns */
 avxins (PMOVSXBQ ,vpmovsxbq ,    P_AVX, VX_LL|VX_L|VX_NND|VX_HALF)   /* -, ns */

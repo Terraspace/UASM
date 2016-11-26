@@ -595,10 +595,27 @@ static void output_opc(struct code_info *CodeInfo)
                 if (CodeInfo->token >= T_VPSLLDQ && CodeInfo->token <= T_VPSRLQ){
                   if ((CodeInfo->reg2 <= 7) && ((CodeInfo->opnd[OPND2].type & OP_M_ANY ) == 0))
                   goto outC5;    // go handle 0xC5 instruction
+
+					/* John: Validate 3 operand vex form */
+				  if (CodeInfo->opnd[OPND3].type == OP_NONE && CodeInfo->vexregop == 0 &&
+					  (vex_flags[CodeInfo->token - VEX_START] & VX_NND) == 0 &&
+					  (vex_flags[CodeInfo->token - VEX_START] & VX_NMEM) == 0)
+				  {
+					  EmitError(INVALID_INSTRUCTION_OPERANDS);
+				  }
                   OutputCodeByte(0xC4);
                 }
-              else
-              OutputCodeByte(0xC4);
+				else
+				{
+					/* John: Validate 3 operand vex form */
+					if (CodeInfo->opnd[OPND3].type == OP_NONE && CodeInfo->vexregop == 0 && 
+						(vex_flags[CodeInfo->token - VEX_START] & VX_NND)==0 && 
+						(vex_flags[CodeInfo->token - VEX_START] & VX_NMEM)==0)
+					{
+						EmitError(INVALID_INSTRUCTION_OPERANDS);
+					}
+					OutputCodeByte(0xC4);
+				}
               if (CodeInfo->opnd[OPND1].type == OP_YMM || CodeInfo->opnd[OPND2].type == OP_YMM)
                  lbyte |= 0x04;
               else
@@ -1312,6 +1329,15 @@ static void output_opc(struct code_info *CodeInfo)
 			}
 			else {
 			outC5:
+				
+				/* John: Validate 3 operand vex form */
+				if (CodeInfo->opnd[OPND3].type == OP_NONE && CodeInfo->vexregop == 0 &&
+					(vex_flags[CodeInfo->token - VEX_START] & VX_NND) == 0 &&
+					(vex_flags[CodeInfo->token - VEX_START] & VX_NMEM) == 0)
+				{
+					EmitError(INVALID_INSTRUCTION_OPERANDS);
+				}
+
 				OutputCodeByte(0xC5);
 				if (CodeInfo->opnd[OPND1].type == OP_YMM || CodeInfo->opnd[OPND2].type == OP_YMM || CodeInfo->token == T_VZEROALL) /* VZEROALL is 256 bits VZEROUPPER is 128 bits */
 					lbyte |= 0x04;  /* set L: Vector Length */
