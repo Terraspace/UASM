@@ -301,7 +301,7 @@ avxins (PCLMULQDQ,vpclmulqdq ,   P_AVX, VX_L )        /* -, s */
 avxins (AESDECLAST,vaesdeclast , P_AVX, VX_L )        /* -, s */
 avxins (AESENC,vaesenc ,         P_AVX, VX_L )        /* -, s */
 avxins (AESENCLAST,vaesenclast,  P_AVX, VX_L )        /* -, s */
-avxins (AESIMC,  vaesimc,        P_AVX, VX_L )        /* -, s */
+avxins (AESIMC,  vaesimc,        P_AVX, VX_L|VX_NND )        /* -, s */
 avxins (AESKEYGENASSIST,vaeskeygenassist, P_AVX, VX_NND )        /* -, s */
 
 #endif
