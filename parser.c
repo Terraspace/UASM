@@ -3250,6 +3250,8 @@ ret_code ParseLine(struct asm_tok tokenarray[])
   CodeInfo.tuple = 0;
   CodeInfo.vexconst = 0;
   CodeInfo.evex_flag = FALSE;  /* if TRUE will output 0x62 */
+  CodeInfo.reg1 = 0;
+  CodeInfo.reg2 = 0;
   CodeInfo.reg3 = 0xff;          /* if not reg3 make it negative  */
   CodeInfo.basereg = 0xff;
   CodeInfo.indexreg = 0xff;
@@ -3420,9 +3422,9 @@ ret_code ParseLine(struct asm_tok tokenarray[])
      */
     if (CodeInfo.token >= VEX_START &&
       CurrOpnd == OPND2 &&
-      (CodeInfo.opnd[OPND1].type & (OP_XMM | OP_YMM | OP_M | OP_M256 | OP_R32 | OP_R64 | OP_K | OP_ZMM | OP_M64 |  OP_M512))) {
-      CodeInfo.indexreg = 0x0;
-      CodeInfo.basereg = 0x0;
+      (CodeInfo.opnd[OPND1].type & (OP_XMM | OP_YMM | OP_M | OP_M256 | OP_R32 | OP_R64 | OP_K | OP_ZMM | OP_M64 | OP_M512))) {
+      //CodeInfo.indexreg = 0xff;
+      //CodeInfo.basereg = 0xff;
 	    CodeInfo.r1type = 10000000;
 	    CodeInfo.r2type = 10000000;
       if (CodeInfo.token == T_VMOVSD || CodeInfo.token == T_VMOVSS){
