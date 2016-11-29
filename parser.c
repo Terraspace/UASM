@@ -3243,6 +3243,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
   CodeInfo.Ofssize = ModuleInfo.Ofssize;
   CodeInfo.opc_or = 0;
   CodeInfo.basetype = 0;
+  CodeInfo.indextype = 0;
 #if AVXSUPP
   CodeInfo.evex_sae = 0;
   CodeInfo.vexregop = 0;
@@ -3420,10 +3421,10 @@ ret_code ParseLine(struct asm_tok tokenarray[])
     if (CodeInfo.token >= VEX_START &&
       CurrOpnd == OPND2 &&
       (CodeInfo.opnd[OPND1].type & (OP_XMM | OP_YMM | OP_M | OP_M256 | OP_R32 | OP_R64 | OP_K | OP_ZMM | OP_M64 |  OP_M512))) {
-      CodeInfo.indexreg = 0xFF;
-      CodeInfo.basereg = 0xFF;
-	  CodeInfo.r1type = 10000000;
-	  CodeInfo.r2type = 10000000;
+      CodeInfo.indexreg = 0x0;
+      CodeInfo.basereg = 0x0;
+	    CodeInfo.r1type = 10000000;
+	    CodeInfo.r2type = 10000000;
       if (CodeInfo.token == T_VMOVSD || CodeInfo.token == T_VMOVSS){
           if (opndx[1].kind == EXPR_CONST)
           return(EmitErr(INVALID_INSTRUCTION_OPERANDS));       }
