@@ -365,8 +365,41 @@ static ret_code get_operand( struct expr *opnd, int *idx, struct asm_tok tokenar
     char        labelbuff[16];/* for anonymous labels */
 	int         cnt;
 
+	char clabel[100];
+	struct asym *labelsym;
+	struct asym *labelsym2;
+	struct asm_tok tok;
+
     DebugMsg1(("%u get_operand(idx=%u >%s<) enter [memtype=%Xh]\n", evallvl, i, tokenarray[i].tokpos, opnd->mem_type ));
     switch( tokenarray[i].token ) {
+	case T_DOT:
+		/* Allow .labelname to be used as an operand */
+		if ((tokenarray[*idx].token == T_DOT && tokenarray[(*idx) + 1].token == T_ID))
+		{
+			// check that T_ID is a label
+			sprintf(&clabel, "%s%s", ".", tokenarray[(*idx) + 1].string_ptr);
+			labelsym = SymFind(&clabel);
+			labelsym2 = SymFind(tokenarray[(*idx) + 1].string_ptr);
+
+			if ((*idx) > 0)
+			{
+				tok = tokenarray[(*idx) - 1];
+			}
+			if (labelsym != NULL ||
+				(labelsym == NULL && tok.token != T_ID && tok.token != T_CL_SQ_BRACKET && tok.token != T_CL_BRACKET) ||
+				(labelsym != NULL && labelsym->label))
+			{
+				(*idx)++;
+				strcpy(&clabel, tokenarray[(*idx)].string_ptr);
+				sprintf(tokenarray[(*idx)].string_ptr, "%s%s", ".", &clabel);
+			}
+			else if (labelsym == NULL && labelsym2 == NULL)
+			{
+
+			}
+			i++;
+			goto isNowID;
+		}
     case T_NUM:
         DebugMsg1(("%u get_operand: T_NUM, %s, base=%u, len=%u\n", evallvl, tokenarray[i].string_ptr, tokenarray[i].numbase, tokenarray[i].itemlen ));
         opnd->kind = EXPR_CONST;
@@ -490,6 +523,7 @@ static ret_code get_operand( struct expr *opnd, int *idx, struct asm_tok tokenar
         }
         break;
     case T_ID:
+		isNowID:
         tmp = tokenarray[i].string_ptr;
         //if ( opnd->type ) { /* v2.11 */
         if ( opnd->is_dot ) {
@@ -3234,7 +3268,7 @@ static void OperErr( int i, struct asm_tok tokenarray[] )
 
 #define IsCurrToken( tok )  ( tokenarray[*i].token == tok )
 
-static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[], const int end, const uint_8 flags )
+static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[], int end, const uint_8 flags )
 /********************************************************************************************************************/
 {
     ret_code rc = NOT_ERROR;
@@ -3258,7 +3292,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
      */
 
 	/* Allow .labelname to be used as an operand */
-	if (tokenarray[*i].token == T_DOT && tokenarray[(*i) + 1].token == T_ID)
+	if ( (tokenarray[*i].token == T_DOT && tokenarray[(*i) + 1].token == T_ID) )
 	{
 		// check that T_ID is a label
 		sprintf(&clabel, "%s%s", ".", tokenarray[(*i) + 1].string_ptr);
@@ -3280,8 +3314,38 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 		else if (labelsym == NULL && labelsym2 == NULL)
 		{
 			
+		} 
+	}
+	if ((tokenarray[*i].tokval == T_SHORT || tokenarray[*i].tokval == T_OFFSET) && tokenarray[(*i) + 1].token == T_DOT && tokenarray[(*i) + 2].token == T_ID)
+	{
+		// check that T_ID is a label
+		sprintf(&clabel, "%s%s", ".", tokenarray[(*i) + 2].string_ptr);
+		labelsym = SymFind(&clabel);
+		labelsym2 = SymFind(tokenarray[(*i) + 2].string_ptr);
+
+		if ((*i) > 0)
+		{
+			tok = tokenarray[(*i) - 1];
+		}
+		if (labelsym != NULL ||
+			(labelsym == NULL && tok.token != T_ID && tok.token != T_CL_SQ_BRACKET && tok.token != T_CL_BRACKET) ||
+			(labelsym != NULL && labelsym->label))
+		{
+			//(*i)++;
+			strcpy(&clabel, tokenarray[(*i)+2].string_ptr);
+			sprintf(tokenarray[(*i)+2].string_ptr, "%s%s", ".", &clabel);
+			tokenarray[(*i) + 1].string_ptr = tokenarray[(*i) + 2].string_ptr;
+			tokenarray[(*i) + 1].token = T_ID;
+			tokenarray[(*i) + 2].token = T_FINAL;
+			end--;
+		}
+		else if (labelsym == NULL && labelsym2 == NULL)
+		{
+
 		}
 	}
+	
+
 	/*
 	* First token may be either an unary operator or an operand
 	*/

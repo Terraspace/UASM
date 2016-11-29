@@ -399,7 +399,7 @@ static void output_opc(struct code_info *CodeInfo)
 #endif
     OutputCodeByte(OPSIZ);
   }
-  //if(CodeInfo->token == T_VPANDN)
+  //if(CodeInfo->token == T_VMOVDQA32)
   //  __debugbreak();
   /*
    * Output segment prefix
@@ -1303,8 +1303,8 @@ static void output_opc(struct code_info *CodeInfo)
 						if ((CodeInfo->reg2 <= 7) || (CodeInfo->reg2 >= 16 && CodeInfo->reg2 <= 23))
 							CodeInfo->evex_p0 |= EVEX_P0RMASK;
 						else CodeInfo->evex_p0 &= ~EVEX_P0RMASK;
-						if (CodeInfo->reg1 > 0x07)
-							CodeInfo->evex_p0 &= ~EVEX_P0R1MASK;
+						if (CodeInfo->reg2 <= 15)
+							CodeInfo->evex_p0 |= EVEX_P0R1MASK;
 						else CodeInfo->evex_p0 &= ~EVEX_P0R1MASK;
 						if (CodeInfo->opnd[OPND2].type & OP_YMM) CodeInfo->evex_p2 |= EVEX_P2LMASK;
 						if (CodeInfo->opnd[OPND2].type & OP_ZMM) CodeInfo->evex_p2 |= EVEX_P2L1MASK;
