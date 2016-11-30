@@ -1272,9 +1272,11 @@ static void output_opc(struct code_info *CodeInfo)
         }
 				else if (CodeInfo->reg3 != 0xff) {
 					if (CodeInfo->reg3 <= 7) CodeInfo->evex_p0 |= EVEX_P0XMASK;
+					if (CodeInfo->reg3 <= 15) CodeInfo->evex_p0 |= EVEX_P0BMASK;   
 				}
 				else if (CodeInfo->reg2 != 0xff) {
 					if (CodeInfo->reg2 <= 7) CodeInfo->evex_p0 |= EVEX_P0XMASK;
+					if (CodeInfo->reg2 <= 15) CodeInfo->evex_p0 |= EVEX_P0BMASK;
 				}
           if (CodeInfo->basereg != 0xFF){
             if (CodeInfo->basereg <= 7)   
