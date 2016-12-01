@@ -330,6 +330,12 @@ static void output_opc(struct code_info *CodeInfo)
 	        CodeInfo->evex_flag = 0;
 
 	}*/
+	  
+	  /* Prevent mis-use of VCVTPD2PS when xmm and ymm are swapped */
+		  if (CodeInfo->token == T_VCVTPD2PS && (
+			  (CodeInfo->opnd[OPND1].type == OP_YMM && CodeInfo->opnd[OPND2].type == OP_XMM) ||
+			  (CodeInfo->opnd[OPND1].type == OP_YMM && CodeInfo->opnd[OPND2].type == OP_M128)) )
+			  EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
 
   if ((CodeInfo->pinstr->prefix & 0xF00) == IZSZ)
 	  CodeInfo->evex_flag = TRUE;
@@ -399,7 +405,7 @@ static void output_opc(struct code_info *CodeInfo)
 #endif
     OutputCodeByte(OPSIZ);
   }
-  //if(CodeInfo->token == T_VMOVDQA32)
+  //if(CodeInfo->token == T_VPSLLDQ)
   //  __debugbreak();
   /*
    * Output segment prefix
@@ -1270,21 +1276,24 @@ static void output_opc(struct code_info *CodeInfo)
               CodeInfo->evex_p0 &= ~EVEX_P0BMASK;
           }
         }
-				else if (CodeInfo->reg3 != 0xff) {
-					if (CodeInfo->reg3 <= 7) CodeInfo->evex_p0 |= EVEX_P0XMASK;
-					if (CodeInfo->reg3 <= 15) CodeInfo->evex_p0 |= EVEX_P0BMASK;   
+        /* if it is EVEX and VX_NND not present then it must 3 registers */
+				else if ((vex_flags[CodeInfo->token - VEX_START] & VX_NND) == 0){
+          CodeInfo->evex_p0 &= ~0x20;    // clear REX_B
+          if (CodeInfo->reg3 <= 7) CodeInfo->evex_p0 |= EVEX_P0XMASK;
+          CodeInfo->evex_p0 |= ((CodeInfo->prefix.rex & REX_B) ? 0 : 0x20);/*  REX_B regno 0-7 <-> 8-15 of ModR/M or SIB base */
 				}
-				else if (CodeInfo->reg2 != 0xff) {
+				else { 
+          /* only 2 registers */
+          CodeInfo->evex_p0 &= ~0x20;  // clear REX_B
 					if (CodeInfo->reg2 <= 7) CodeInfo->evex_p0 |= EVEX_P0XMASK;
-					if (CodeInfo->reg2 <= 15) CodeInfo->evex_p0 |= EVEX_P0BMASK;
+          CodeInfo->evex_p0 |= ((CodeInfo->prefix.rex & REX_B) ? 0 : 0x20);/*  REX_B regno 0-7 <-> 8-15 of ModR/M or SIB base */
 				}
           if (CodeInfo->basereg != 0xFF){
             if (CodeInfo->basereg <= 7)   
               CodeInfo->evex_p0 |= EVEX_P0BMASK;
             else
               CodeInfo->evex_p0 &= ~EVEX_P0BMASK;
-          }
-				//CodeInfo->evex_p0 |= EVEX_P0BMASK;
+            }
 				if ((CodeInfo->token >= T_VMOVLHPS) && (CodeInfo->token <= T_VMOVLPS) ||
 					(CodeInfo->token == T_VMOVNTDQ) ||
 					(CodeInfo->token == T_VMOVUPD) || (CodeInfo->token == T_VMOVAPD) ||
@@ -1295,7 +1304,8 @@ static void output_opc(struct code_info *CodeInfo)
 						if ((CodeInfo->reg1 <= 7) || (CodeInfo->reg1 >= 16 && CodeInfo->reg1 <= 23))
 							CodeInfo->evex_p0 |= EVEX_P0RMASK;
 						else CodeInfo->evex_p0 &= ~EVEX_P0RMASK;
-						if (CodeInfo->reg1 <= 15) CodeInfo->evex_p0 |= EVEX_P0R1MASK;
+						if (CodeInfo->reg1 <= 15) 
+              CodeInfo->evex_p0 |= EVEX_P0R1MASK;
 						else CodeInfo->evex_p0 &= ~EVEX_P0R1MASK;
 						if (CodeInfo->opnd[OPND1].type & OP_YMM) CodeInfo->evex_p2 |= EVEX_P2LMASK;
 						if (CodeInfo->opnd[OPND1].type & OP_ZMM) CodeInfo->evex_p2 |= EVEX_P2L1MASK;
@@ -1333,7 +1343,9 @@ static void output_opc(struct code_info *CodeInfo)
 						if ((CodeInfo->reg1 <= 7) || (CodeInfo->reg1 >= 16 && CodeInfo->reg1 <= 23))
 							CodeInfo->evex_p0 |= EVEX_P0RMASK;
 						else CodeInfo->evex_p0 &= ~EVEX_P0RMASK;
-					}
+          CodeInfo->evex_p0 &= ~0x20;  // clear REX_B
+          CodeInfo->evex_p0 |= ((CodeInfo->prefix.rex & REX_B) ? 0 : 0x20);/*  REX_B regno 0-7 <-> 8-15 of ModR/M or SIB base */
+            }
 				}
 				if ((CodeInfo->token == T_VMOVNTPD) || (CodeInfo->token == T_VMOVNTPS)) {
 					if (CodeInfo->reg2 <= 15) CodeInfo->evex_p0 |= EVEX_P0R1MASK;
@@ -1421,8 +1433,9 @@ static void output_opc(struct code_info *CodeInfo)
 				if ((CodeInfo->token == T_VMOVHPS) || (CodeInfo->token == T_VMOVLPS))
 					lbyte &= ~EVEX_P1WMASK;
 			}
-			if ((CodeInfo->token == T_VPSLLDQ) || (CodeInfo->token == T_VPSRLDQ) ||
-				(CodeInfo->token == T_VPSRAQ) || (CodeInfo->token == T_VPROLQ) ||
+			if(CodeInfo->token == T_VPSLLDQ || CodeInfo->token == T_VPSRLDQ)
+        lbyte &= ~EVEX_P1WMASK;
+			if ((CodeInfo->token == T_VPSRAQ) || (CodeInfo->token == T_VPROLQ) ||
 				(CodeInfo->token == T_VPRORQ))
 				lbyte |= EVEX_P1WMASK;
 			//if (CodeInfo->token == T_VPROLD){
