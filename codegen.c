@@ -330,12 +330,6 @@ static void output_opc(struct code_info *CodeInfo)
 	        CodeInfo->evex_flag = 0;
 
 	}*/
-	  
-	  /* Prevent mis-use of VCVTPD2PS when xmm and ymm are swapped */
-		  if (CodeInfo->token == T_VCVTPD2PS && (
-			  (CodeInfo->opnd[OPND1].type == OP_YMM && CodeInfo->opnd[OPND2].type == OP_XMM) ||
-			  (CodeInfo->opnd[OPND1].type == OP_YMM && CodeInfo->opnd[OPND2].type == OP_M128)) )
-			  EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
 
   if ((CodeInfo->pinstr->prefix & 0xF00) == IZSZ)
 	  CodeInfo->evex_flag = TRUE;
@@ -405,7 +399,7 @@ static void output_opc(struct code_info *CodeInfo)
 #endif
     OutputCodeByte(OPSIZ);
   }
-  //if(CodeInfo->token == T_VPSLLDQ)
+  //if(CodeInfo->token == T_VCVTPD2PS)
   //  __debugbreak();
   /*
    * Output segment prefix
@@ -1235,6 +1229,11 @@ static void output_opc(struct code_info *CodeInfo)
 		else {
 			lbyte |= ((CodeInfo->prefix.rex & REX_R) ? 0 : EVEX_P1WMASK);
 			/* first byte is 0xC5  in 2 byte version  */
+      if (CodeInfo->token == T_VCVTPD2PS || CodeInfo->token == T_VCVTPS2PD){
+          if (CodeInfo->opnd[OPND2].type == OP_M512)CodeInfo->evex_flag = 1;
+          lbyte |= 4;
+          CodeInfo->evex_p2 |= EVEX_P2L1MASK;
+        }
 			if (CodeInfo->evex_flag) {
 				OutputCodeByte(0x62);
 				if ((CodeInfo->opnd[OPND1].type & OP_M_ANY) || (CodeInfo->opnd[OPND2].type & OP_M_ANY) ||
@@ -1459,82 +1458,91 @@ static void output_opc(struct code_info *CodeInfo)
 				lbyte &= ~0x03;                     // clear vex_p1 PP 
 				lbyte |= 0x01;                     // set vex_p1 01: 66
 			}
-
-			if (CodeInfo->token == T_VCVTPS2PD)
-			{
-				lbyte &= ~EVEX_P1WMASK;
-				if (CodeInfo->evex_flag)
-					CodeInfo->evex_p1 |= 0xf0;
-				else
-					lbyte |= 0xf0;
-			}	
-
-            CodeInfo->evex_p1 = lbyte;
-            OutputCodeByte( lbyte );
-            if (CodeInfo->evex_flag) {
-              if (broadflags >= 0x10 && broadflags <= 0x47){ 
-               // __debugbreak();
-                CodeInfo->evex_p2 |= 0x10;
-                if (CodeInfo->vexregop){                 
-                  if (CodeInfo->reg2 <= 15) CodeInfo->evex_p2 |= EVEX_P2VMASK;
-                  else CodeInfo->evex_p2 &= ~EVEX_P2VMASK;
-                }
-                else CodeInfo->evex_p2 |= EVEX_P2VMASK;
-                if (CodeInfo->r2type == OP_XMM && (broadflags & ~EVEX_P2AAAMASK) == 0x10){   //{1to2}
-                   if ((CodeInfo->mem_type != MT_QWORD) && (CodeInfo->mem_type != MT_EMPTY))
-                     EmitError( INVALID_OPERAND_SIZE );
-                   if ((CodeInfo->pinstr->prefix & 0xE0) == QSIZE)
-                     CodeInfo->mem_type = MT_QWORD;
-                   else
-                     EmitError( MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS );
-                }
-                else if (CodeInfo->r2type == OP_XMM && (broadflags & ~EVEX_P2AAAMASK) == 0x20){ //{1to4} 
-                   if ((CodeInfo->mem_type != MT_DWORD) && (CodeInfo->mem_type != MT_EMPTY))
-                     EmitError( INVALID_OPERAND_SIZE );
-                   if ((CodeInfo->pinstr->prefix & 0xE0) == DSIZE)
-                     CodeInfo->mem_type = MT_DWORD;
-                   else
-                     EmitError( MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS );
-                }
-                else if (CodeInfo->r2type == OP_YMM && (broadflags & ~EVEX_P2AAAMASK) == 0x20){ //{1to4}
-                   if ((CodeInfo->mem_type != MT_QWORD) && (CodeInfo->mem_type != MT_EMPTY))
-                     EmitError( INVALID_OPERAND_SIZE );
-                   if ((CodeInfo->pinstr->prefix & 0xE0) == QSIZE){
-                     CodeInfo->mem_type = MT_QWORD;
-                     CodeInfo->evex_p2 |= 0x20;
-                   }
-                   else 
-                     EmitError( MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS );
-                }
-                else if (CodeInfo->r2type == OP_YMM && (broadflags & ~EVEX_P2AAAMASK) == 0x30){ //{1to8}
-                  if ((CodeInfo->mem_type != MT_DWORD) && (CodeInfo->mem_type != MT_EMPTY) &&
-                      (CodeInfo->mem_type != MT_OWORD)){
-                    EmitError(INVALID_OPERAND_SIZE);
-                    }
-                   if ((CodeInfo->pinstr->prefix & 0xE0) == DSIZE){
-                     CodeInfo->mem_type = MT_DWORD;
-                     CodeInfo->evex_p2 |= 0x20;
-                   }
-                   else 
-                     EmitError( MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS );
-                }
-                else if ( CodeInfo->r2type == OP_ZMM && (broadflags & ~EVEX_P2AAAMASK) == 0x30){ //{1to8}
-                   if ((CodeInfo->pinstr->prefix & 0xE0) == QSIZE){
-                     CodeInfo->mem_type = MT_QWORD;
-                     CodeInfo->evex_p2 |= 0x40;
-                   }
-                   else 
-                     EmitError( MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS );
-                }
-                else if (CodeInfo->r2type == OP_ZMM && (broadflags & ~EVEX_P2AAAMASK) == 0x40){ //{1to16}
-                   if ((CodeInfo->pinstr->prefix & 0xE0) == DSIZE){
-                     CodeInfo->mem_type = MT_DWORD;
-                     CodeInfo->evex_p2 |= 0x40;
-                   }
-                   else 
-                     EmitError(MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS);
-                }
+			if (CodeInfo->token == T_VCVTPS2PD || CodeInfo->token == T_VCVTPD2PS)
+			{				
+        if (CodeInfo->evex_flag){
+          /* EVEX VCVTPS2PD must be W0*/
+          if (CodeInfo->token == T_VCVTPS2PD) CodeInfo->evex_p1 &= ~EVEX_P1WMASK;
+          /* EVEX VCVTPD2PS must be W1 */
+          else CodeInfo->evex_p1 |= EVEX_P1WMASK;
+					CodeInfo->evex_p1 |= 0xf0;    // EVEX.vvvv is reserved and must be 1111b
+          }
+        else{
+          /* AVX are both WIG */
+          lbyte &= ~EVEX_P1WMASK;
+          lbyte |= 0xf0;               // VEX.vvvv is reserved and must be 1111b
+          if ((CodeInfo->opnd[OPND1].type == OP_YMM)&& (CodeInfo->opnd[OPND2].type != OP_XMM) )
+            EmitError(INVALID_INSTRUCTION_OPERANDS);
+          if (CodeInfo->opnd[OPND2].type == OP_M256)
+            lbyte |= 0x4;              // L bit
+          }
+			  }	
+          CodeInfo->evex_p1 = lbyte;
+          OutputCodeByte( lbyte );
+          if (CodeInfo->evex_flag) {
+            if (broadflags >= 0x10 && broadflags <= 0x47){ 
+              // __debugbreak();
+              CodeInfo->evex_p2 |= 0x10;
+              if (CodeInfo->vexregop){                 
+                if (CodeInfo->reg2 <= 15) CodeInfo->evex_p2 |= EVEX_P2VMASK;
+                else CodeInfo->evex_p2 &= ~EVEX_P2VMASK;
               }
+              else CodeInfo->evex_p2 |= EVEX_P2VMASK;
+              if (CodeInfo->r2type == OP_XMM && (broadflags & ~EVEX_P2AAAMASK) == 0x10){   //{1to2}
+                  if ((CodeInfo->mem_type != MT_QWORD) && (CodeInfo->mem_type != MT_EMPTY))
+                    EmitError( INVALID_OPERAND_SIZE );
+                  if ((CodeInfo->pinstr->prefix & 0xE0) == QSIZE)
+                    CodeInfo->mem_type = MT_QWORD;
+                  else
+                    EmitError( MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS );
+              }
+              else if (CodeInfo->r2type == OP_XMM && (broadflags & ~EVEX_P2AAAMASK) == 0x20){ //{1to4} 
+                  if ((CodeInfo->mem_type != MT_DWORD) && (CodeInfo->mem_type != MT_EMPTY))
+                    EmitError( INVALID_OPERAND_SIZE );
+                  if ((CodeInfo->pinstr->prefix & 0xE0) == DSIZE)
+                    CodeInfo->mem_type = MT_DWORD;
+                  else
+                    EmitError( MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS );
+              }
+              else if (CodeInfo->r2type == OP_YMM && (broadflags & ~EVEX_P2AAAMASK) == 0x20){ //{1to4}
+                  if ((CodeInfo->mem_type != MT_QWORD) && (CodeInfo->mem_type != MT_EMPTY))
+                    EmitError( INVALID_OPERAND_SIZE );
+                  if ((CodeInfo->pinstr->prefix & 0xE0) == QSIZE){
+                    CodeInfo->mem_type = MT_QWORD;
+                    CodeInfo->evex_p2 |= 0x20;
+                  }
+                  else 
+                    EmitError( MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS );
+              }
+              else if (CodeInfo->r2type == OP_YMM && (broadflags & ~EVEX_P2AAAMASK) == 0x30){ //{1to8}
+                if ((CodeInfo->mem_type != MT_DWORD) && (CodeInfo->mem_type != MT_EMPTY) &&
+                    (CodeInfo->mem_type != MT_OWORD)){
+                  EmitError(INVALID_OPERAND_SIZE);
+                  }
+                  if ((CodeInfo->pinstr->prefix & 0xE0) == DSIZE){
+                    CodeInfo->mem_type = MT_DWORD;
+                    CodeInfo->evex_p2 |= 0x20;
+                  }
+                  else 
+                    EmitError( MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS );
+              }
+              else if ( CodeInfo->r2type == OP_ZMM && (broadflags & ~EVEX_P2AAAMASK) == 0x30){ //{1to8}
+                  if ((CodeInfo->pinstr->prefix & 0xE0) == QSIZE){
+                    CodeInfo->mem_type = MT_QWORD;
+                    CodeInfo->evex_p2 |= 0x40;
+                  }
+                  else 
+                    EmitError( MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS );
+              }
+              else if (CodeInfo->r2type == OP_ZMM && (broadflags & ~EVEX_P2AAAMASK) == 0x40){ //{1to16}
+                  if ((CodeInfo->pinstr->prefix & 0xE0) == DSIZE){
+                    CodeInfo->mem_type = MT_DWORD;
+                    CodeInfo->evex_p2 |= 0x40;
+                  }
+                  else 
+                    EmitError(MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS);
+              }
+            }
               else{   //check all for size
                 if (CodeInfo->r2type == OP_YMM){              
                   if (CodeInfo->mem_type == MT_YMMWORD || (CodeInfo->mem_type == MT_EMPTY)){
