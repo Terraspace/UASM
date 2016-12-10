@@ -1458,25 +1458,39 @@ static void output_opc(struct code_info *CodeInfo)
 				lbyte &= ~0x03;                     // clear vex_p1 PP 
 				lbyte |= 0x01;                     // set vex_p1 01: 66
 			}
-			if (CodeInfo->token == T_VCVTPS2PD || CodeInfo->token == T_VCVTPD2PS)
+			if (CodeInfo->token == T_VCVTPS2PD)
 			{				
         if (CodeInfo->evex_flag){
           /* EVEX VCVTPS2PD must be W0*/
-          if (CodeInfo->token == T_VCVTPS2PD) CodeInfo->evex_p1 &= ~EVEX_P1WMASK;
-          /* EVEX VCVTPD2PS must be W1 */
-          else CodeInfo->evex_p1 |= EVEX_P1WMASK;
+          CodeInfo->evex_p1 &= ~EVEX_P1WMASK;
 					CodeInfo->evex_p1 |= 0xf0;    // EVEX.vvvv is reserved and must be 1111b
           }
         else{
           /* AVX are both WIG */
           lbyte &= ~EVEX_P1WMASK;
           lbyte |= 0xf0;               // VEX.vvvv is reserved and must be 1111b
-          if ((CodeInfo->opnd[OPND1].type == OP_YMM)&& (CodeInfo->opnd[OPND2].type != OP_XMM) )
+          if ((CodeInfo->opnd[OPND2].type == OP_XMM)|| (CodeInfo->opnd[OPND2].type == OP_M64) );
+            else EmitError(INVALID_INSTRUCTION_OPERANDS);
+          }
+			  }
+			if (CodeInfo->token == T_VCVTPD2PS)
+			{				
+        if (CodeInfo->evex_flag){
+          /* EVEX VCVTPD2PS must be W1 */
+          CodeInfo->evex_p1 |= EVEX_P1WMASK;
+					CodeInfo->evex_p1 |= 0xf0;    // EVEX.vvvv is reserved and must be 1111b
+          }
+        else{
+          /* AVX are both WIG */
+          lbyte &= ~EVEX_P1WMASK;
+          lbyte |= 0xf0;               // VEX.vvvv is reserved and must be 1111b
+          if (CodeInfo->opnd[OPND1].type != OP_XMM) 
             EmitError(INVALID_INSTRUCTION_OPERANDS);
           if (CodeInfo->opnd[OPND2].type == OP_M256)
             lbyte |= 0x4;              // L bit
           }
 			  }	
+
           CodeInfo->evex_p1 = lbyte;
           OutputCodeByte( lbyte );
           if (CodeInfo->evex_flag) {
