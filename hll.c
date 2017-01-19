@@ -546,7 +546,7 @@ static ret_code GetSimpleExpression(struct hll_item *hll, int *i, struct asm_tok
     return(EmitError(REAL_OR_BCD_NUMBER_NOT_ALLOWED)); /* v2.10: added */
   }
 
-  if (op == COP_NONE) {
+  if (op == COP_NONE){
     switch (op1.kind) {
     case EXPR_REG:
       if (op1.indirect == FALSE) {
@@ -619,11 +619,16 @@ static ret_code GetSimpleExpression(struct hll_item *hll, int *i, struct asm_tok
       op1.kind == EXPR_REG && op1.indirect == FALSE &&
       op2.kind == EXPR_CONST && op2.value64 == 0) {
       p = RenderInstr(buffer, "or", op1_pos, op1_end, op1_pos, op1_end, tokenarray);
+      }
+    /* HJWasm 2.18 optimisation: generate 'test EAX,EAX' instead of 'cmp EAX,0'. */
+    else if ((op == COP_EQ || op == COP_NE) &&
+      op1.kind == EXPR_REG && op1.indirect == FALSE &&
+      op2.kind == EXPR_CONST && op2.value64 == 0) {
+      p = RenderInstr(buffer, "test", op1_pos, op1_end, op1_pos, op1_end, tokenarray);
     }
-    else {
+    else {  
       p = RenderInstr(buffer, "cmp", op1_pos, op1_end, op2_pos, op2_end, tokenarray);
     }
-
     instr = ((IS_SIGNED(op1.mem_type) || IS_SIGNED(op2.mem_type)) ? signed_cjmptype[op - COP_EQ] : unsigned_cjmptype[op - COP_EQ]);
     hllop->lastjmp = p;
     RenderJcc(p, instr, neg_cjmptype[op - COP_EQ] ? is_true : !is_true, label);
@@ -632,6 +637,7 @@ static ret_code GetSimpleExpression(struct hll_item *hll, int *i, struct asm_tok
     DebugMsg(("GetSimpleExpression: unexpected operator %s\n", tokenarray[op1_pos].tokpos));
     return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
   }
+  exitle:
   return(NOT_ERROR);
 }
 
@@ -724,9 +730,9 @@ static ret_code GetAndExpression(struct hll_item *hll, int *i, struct asm_tok to
 {
   char *ptr = buffer;
   uint_32 truelabel = 0;
-  //char buff[16];
-  //char *nlabel;
-  //char *olabel;
+  char buff[16];
+  int nlabel;
+  int olabel;
 
   DebugMsg1(("%u GetAndExpression(>%.32s< buf=>%s<) enter\n", evallvl, tokenarray[*i].tokpos, buffer));
 
@@ -745,15 +751,22 @@ static ret_code GetAndExpression(struct hll_item *hll, int *i, struct asm_tok to
         if (truelabel == 0)     /* step 2 */
           truelabel = GetHllLabel();
 
-        if (*p && strlen(p) < 11) {/* v2.11: there might be a 0 at lastjmp */
+        if (*p ) {/* v2.11: there might be a 0 at lastjmp */
           p += 4;               /* skip 'jcc ' or 'jmp ' */
           GetLabelStr(truelabel, p);
           strcat(p, EOLSTR);
         }
-
-        DebugMsg1(("%u GetAndExpression: jmp inverted >%s<\n", evallvl, hllop->lastjmp));
-        ReplaceLabel(buffer, GetLabel(hll, ilabel), truelabel);
-        hllop->lastjmp = NULL;
+        /* HJWasm 2.18  fixed WHILE with &&  */
+        if (hllop->lasttruelabel)
+          ReplaceLabel(buffer,hllop->lasttruelabel, truelabel);
+          nlabel = GetHllLabel();
+          olabel = GetLabel(hll, ilabel);
+          GetLabelStr(olabel, buff);
+          strcat(ptr, buff);
+          strcat(ptr, LABELQUAL EOLSTR);
+          DebugMsg1(("%u GetAndExpression: label added >%s<\n", evallvl, ptr));
+          ReplaceLabel(buffer, olabel, nlabel);
+          hllop->lastjmp = NULL;
       }
     }
     ptr += strlen(ptr);
@@ -791,6 +804,7 @@ static ret_code GetExpression(struct hll_item *hll, int *i, struct asm_tok token
     DebugMsg1(("%u GetExpression exit, error\n", evallvl--));
     return(ERROR);
   }
+ // __debugbreak();
   while (COP_OR == GetCOp(&tokenarray[*i])) {
 
     uint_32 nlabel;
@@ -818,7 +832,7 @@ static ret_code GetExpression(struct hll_item *hll, int *i, struct asm_tok token
         InvertJump(p);           /* step 1 */
         if (truelabel == 0)      /* step 2 */
           truelabel = GetHllLabel();
-        if (*p) { /* v2.11: there might be a 0 at lastjmp */
+        if (*p ) { /* v2.11: there might be a 0 at lastjmp */
           p += 4;                /* skip 'jcc ' or 'jmp ' */
           GetLabelStr(truelabel, p);
           strcat(p, EOLSTR);
@@ -1549,6 +1563,8 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
       hll->cmd = HLL_WHILE;
       hll->condlines = NULL;
       if (tokenarray[i].token != T_FINAL) {
+        /* Here we need second test label if && is in second breckets*/
+       // __debugbreak();
         rc = EvaluateHllExpression(hll, &i, tokenarray, LSTART, TRUE, buffer);
         if (rc == NOT_ERROR) {
           int size;

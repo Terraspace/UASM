@@ -2701,7 +2701,6 @@ static void write_win64_default_prologue( struct proc_info *info )
 #endif
 			stackSize = info->localsize + info->vsize + info->xmmsize;
 			if ((stackSize & 7) != 0) stackSize = (stackSize + 7)&(-8);
-
 			AddLineQueueX(*(ppfmt + 0), T_RSP, NUMQUAL stackSize, sym_ReservedStack->name);
 			AddLineQueueX(*(ppfmt + 1), T_DOT_ALLOCSTACK, NUMQUAL stackSize, sym_ReservedStack->name);
 			
@@ -3066,7 +3065,7 @@ static ret_code write_default_prologue( void )
          * with SUB, short instructions work up to 127 only.
          */
         if ( Options.masm_compat_gencode || info->localsize == 128 )
-            AddLineQueueX( "add %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL ~(info->localsize) );
+            AddLineQueueX( "add %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL - info->localsize );
         else
             AddLineQueueX( "sub %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize );
     }

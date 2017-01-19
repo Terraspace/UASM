@@ -55,7 +55,7 @@ enum reg_used_flags {
     ROW_DX_USED   = 0x10, /* watc: register contents of DL/DX/EDX is destroyed */
     ROW_BX_USED   = 0x20, /* watc: register contents of BL/BX/EBX is destroyed */
     ROW_CX_USED   = 0x40, /* watc: register contents of CL/CX/ECX is destroyed */
-#define ROW_START 3 /* watc: irst param start at bit 3 */
+#define ROW_START 3 /* watc: first param start at bit 3 */
 #endif
 };
 extern void myatoi128( const char *, uint_64[], int, int );
@@ -280,7 +280,7 @@ static int ms64_param( struct dsym const *proc, int index, struct dsym *param, b
     struct dsym *t = NULL; /* used for vectorcall array member size */
     bool destroyed = FALSE;
     struct asym *sym;
-
+    //__debugbreak();
     DebugMsg1(("ms64_param(%s, index=%u, param.memtype=%Xh, addr=%u) enter\n", proc->sym.name, index, param->sym.mem_type, addr ));
     /* v2.11: default size is 32-bit, not 64-bit */
     if ( param->sym.is_vararg ) {
@@ -1024,9 +1024,8 @@ vcall:
 		  /* optimization if the register holds the value already */
 		  if (opnd->kind == EXPR_REG && opnd->indirect == FALSE) {
 			  if (GetValueSp(reg) & OP_R) {
-				  if (ms64_regs[index + base] == reg) {
+				  if (ms64_regs[index+base] == reg) {
 					  DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
-
 					  return(1);
 				  }
 				  i = GetRegNo(reg);
@@ -1046,9 +1045,11 @@ vcall:
 				  else
 					  AddLineQueueX(" mov %r, %s", ms64_regs[index + 2 * 4], paramvalue);
 			  }
-			  else
-				  AddLineQueueX(" mov%sx %r, %s", IS_SIGNED(opnd->mem_type) ? "s" : "z", ms64_regs[index + base], paramvalue);
+        else
+          AddLineQueueX(" mov%sx %r, %s", IS_SIGNED(opnd->mem_type) ? "s" : "z", ms64_regs[index + base], paramvalue);
 		  else {
+        *regs_used |= ( 1 << ( index + RPAR_START ) );
+        DebugMsg1(("ms64_param(%s, param=%u): size=%u flags=%X\n", proc->sym.name, index, size, *regs_used));
 			  /* v2.12 added by habran : if parametar  is zero use 'xor reg,reg' instead of 'mov reg,0' */
 			  if ((!strcasecmp(paramvalue, "0") || (!strcasecmp(paramvalue, "NULL")) || (!strcasecmp(paramvalue, "FALSE")))) {
 				  if (ms64_regs[index + base] > T_R9D) index -= 4;
@@ -1074,7 +1075,7 @@ vcall:
 		  *regs_used |= (1 << (index + RPAR_START - 1));
 		  DebugMsg1(("ms64_param(%s, param=%u): size=%u flags=%X\n", proc->sym.name, index, size, *regs_used));
 	  }
-    }
+ }
 vcalldone:
     return( 1 );
 }
