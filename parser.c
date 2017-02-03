@@ -2917,7 +2917,9 @@ ret_code ParseLine(struct asm_tok tokenarray[])
   struct asym         *sym;
   uint_32             oldofs;
   enum special_token regtok;
-  
+  int                c0;
+  int                c1;
+
 #ifdef DEBUG_OUT
   char                *instr;
 #endif
@@ -3035,6 +3037,15 @@ ret_code ParseLine(struct asm_tok tokenarray[])
     i = 2;
     DebugMsg1(("ParseLine T_COLON, code label=%s\n", tokenarray[0].string_ptr));
     if (ProcStatus & PRST_PROLOGUE_NOT_DONE) write_prologue(tokenarray);
+
+	/* If we're in the .data or .data? section force code style label to create <name> LABEL BYTE */
+	c0 = strncmp(ModuleInfo.currseg->sym.name, "_DATA", 5);
+	c1 = strncmp(ModuleInfo.currseg->sym.name, "_BSS", 4);
+	if (c0 == 0 || c1 == 0)
+	{
+		AddLineQueueX("%s %s", tokenarray[0].string_ptr, "LABEL BYTE");
+		return(NOT_ERROR);
+	}
 
     /* create a global or local code label */
     if (CreateLabel(tokenarray[0].string_ptr, MT_NEAR, NULL,

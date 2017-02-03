@@ -3878,6 +3878,7 @@ static ret_code write_userdef_epilogue( bool flag_iret, struct asm_tok tokenarra
         printf( "option epilogue:none\n" );
 
     RunMacro( dir, i, tokenarray, NULL, 0, &is_exitm );
+
     Token_Count = i - 1;
     return( NOT_ERROR );
 }

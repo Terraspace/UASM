@@ -849,7 +849,7 @@ insn(MOVD, 2,                   OpCls( RMGT16,   XMM,      NONE ), F_660F, 0,  n
 insn(MOVD, 3,                   OpCls( RMGT16,   MMX,      NONE ), F_0F,   0,  no_WDS, 0x7E,     0x00,       P_586|P_MMX, QSIZE)
 #endif
 ins (MOVQ, movq,                OpCls( MMX,      MMX_M64,  NONE ), F_0F,   1,  no_WDS, 0x6F,     0x00,       P_586|P_MMX, QSIZE)
-insn(MOVQ, 1,                   OpCls( XMM,      XMM_M64,  NONE ), F_F30F, 1,  no_WDS, 0x7E,     0x00,       P_686|P_SSE2,W1|QSIZE|T1S)
+insn(MOVQ, 1,                   OpCls( XMM,      XMM_M64,  NONE ), F_F30F, 1,  no_WDS, 0x7F,     0x00,       P_686|P_SSE2,W1|QSIZE|T1S)
 #if INTELMOVQ
 insn(MOVQ, 2,                   OpCls( R64_M64,  MMX,      NONE ), F_0F,   0,  no_WDS, 0x7F,     0x00,       P_586|P_MMX, QSIZE)
 insn(MOVQ, 3,                   OpCls( R64_M64,  XMM,      NONE ), F_660F, 0,  no_WDS, 0xD6,     0x00,       P_686|P_SSE2,W1|QSIZE|T1S)
@@ -857,7 +857,7 @@ insn(MOVQ, 3,                   OpCls( R64_M64,  XMM,      NONE ), F_660F, 0,  n
 insn(MOVQ, 2,                   OpCls( M64,      XMM,      NONE ), F_660F, 0,  no_WDS, 0xD6,     0x00,       P_686|P_SSE2,W1|QSIZE|T1S)
 insn(MOVQ, 3,                   OpCls( RMGT16,   XMM,      NONE ), F_660F, 0,  no_WDS, 0x7E,     0x00,       P_686|P_SSE2,W1|QSIZE|T1S)
 insn(MOVQ, 4,                   OpCls( XMM,      RMGT16,   NONE ), F_660F, 1,  no_WDS, 0x6E,     0x00,       P_686|P_SSE2,W1|QSIZE|T1S)
-insn(MOVQ, 5,                   OpCls( RMGT16,   MMX,      NONE ), F_0F,   0,  no_WDS, 0x7E,     0x00,       P_586|P_MMX, QSIZE)
+insn(MOVQ, 5,                   OpCls( RMGT16,   MMX,      NONE ), F_0F,   0,  no_WDS, 0x7F,     0x00,       P_586|P_MMX, QSIZE)
 insn(MOVQ, 6,                   OpCls( M64,      MMX,      NONE ), F_0F,   0,  no_WDS, 0x7F,     0x00,       P_586|P_MMX, QSIZE)
 #endif
 
@@ -944,10 +944,9 @@ ins (PCMPGTW, pcmpgtw,          OpCls( MMX,      MMX_M64,  NONE ), F_0F,   1,  n
 insn(PCMPGTW, 1,                OpCls( XMM,      XMM_M128, NONE ), F_660F, 1,  no_WDS, 0x65,     0x00,       P_686|P_SSE2,WSIZE|FVM)
 ins (PCMPGTD, pcmpgtd,          OpCls( MMX,      MMX_M64,  NONE ), F_0F,   1,  no_WDS, 0x66,     0x00,       P_586|P_MMX, W1|QSIZE|FV)
 insn(PCMPGTD, 1,                OpCls( XMM,      XMM_M128, NONE ), F_660F, 1,  no_WDS, 0x66,     0x00,       P_686|P_SSE2,DSIZE|FV)
-ins (PEXTRW, pextrw,            OpCls( RGT16,    XMM,      I8_U ), F_660F, 1,  no_WDS, 0xC5,     0x00,       P_686|P_SSE2,WSIZE|T1S)
-//ins(PEXTRW, 1,                 OpCls( RGT16,    XMM,      I8_U ), F_660F, 1,  no_WDS, 0xC5,     0x00,       P_686|P_SSE1,DSIZE|T1S)
+ins (PEXTRW, pextrw,            OpCls( RGT16,    MMX,      I8_U ), F_0F,   1,  no_WDS, 0xC5,     0x00,       P_686|P_SSE2,WSIZE|T1S)
+insn(PEXTRW, 1,                 OpCls( RGT16,    XMM,      I8_U ), F_660F, 1,  no_WDS, 0xC5,     0x00,       P_686|P_SSE1,DSIZE|T1S)
 #if SSE4SUPP /* SSE 4.1 */
-insn(PEXTRW, 1,                 OpCls( M16,      XMM,      I8_U ), F_660F3A, 0,no_WDS, 0x15,     0x00,       P_686|P_SSE4,DSIZE|T1S)
 ins (PEXTRQ, pextrq,            OpCls( R64_M64,  XMM,      I8_U ), F_660F3A, 0,no_WDS, 0x16,     0x00,       P_686|P_SSE4,W1|QSIZE|T1S)
 #endif
 /* v2.06: define it like PINSRB/PINSRD */

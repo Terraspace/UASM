@@ -682,7 +682,7 @@ static void output_opc(struct code_info *CodeInfo)
                      byte1 &= ~EVEX_P0XMASK;
                    }
                    if (CodeInfo->token >= T_VFMADD132PD && CodeInfo->token <= T_VFNMSUB231SS);
-                   else if (rn < 7)byte1 |= EVEX_P0BMASK;
+                   else if (rn <= 7)byte1 |= EVEX_P0BMASK;
                    else byte1 &= ~EVEX_P0BMASK;
                    
                  }
@@ -1243,7 +1243,8 @@ static void output_opc(struct code_info *CodeInfo)
 				if ((CodeInfo->opnd[OPND2].type == OP_M64) || (CodeInfo->opnd[OPND1].type == OP_M64))
 					lbyte |= EVEX_P1WMASK;
 				if ((CodeInfo->opnd[OPND2].type == OP_R32) || (CodeInfo->opnd[OPND2].type == OP_EAX) ||
-					(CodeInfo->opnd[OPND1].type == OP_R32) || (CodeInfo->opnd[OPND1].type == OP_EAX)) {
+					(CodeInfo->opnd[OPND1].type == OP_R32) || (CodeInfo->opnd[OPND1].type == OP_EAX) ||
+					(CodeInfo->token == T_VMOVD)) {
 					lbyte &= ~EVEX_P1WMASK;
 				}
 				switch (ins->byte1_info) {
