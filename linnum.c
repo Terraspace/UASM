@@ -204,21 +204,10 @@ void QueueDeleteLinnum( struct qdesc *queue )
     struct line_num_info    *next;
 
     if ( queue == NULL )
-        return;
+	   return;
     curr = queue->head;
     for( ; curr ; curr = next ) {
-      if (ModuleInfo.Ofssize == USE32) {
-          if (((uint_32) curr > 0x00FFFFFF) || ((uint_32)curr < 0x07FFFF))
-            break;
-      }
-#if AMD64_SUPPORT
-      else {
-        if (((uint_64)curr > 0x00007FFFFFFFFFFF)|| ((uint_64)curr < 0x00007FFFFFFFF))
-          break;
-      }
-#endif
-        next = curr->next;
-        LclFree( curr );
+	    next = curr->next;
     }
     return;
 }
