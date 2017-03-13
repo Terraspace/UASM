@@ -117,7 +117,7 @@ ins (name, namelc,              OpCls( RGT8, I8,    NONE  ), 0,      0,  no_WDS,
 insn(name, 1,                   OpCls( R,    R_MS,  NONE  ), 0,      1,  0,      code+2,   0x00,       P_86,        0) \
 insn(name, 3,                   OpCls( A,    I,     NONE  ), 0,      0,  no_RM,  code+4,   0x00,       P_86,        0) \
 insn(name, 4,                   OpCls( R,    I,     NONE  ), 0,      0,  0,      0x80,     code,       P_86,        0) \
-insn(name, 6,                   OpCls( MGT8, I8,    NONE  ), 0,      0,  no_WDS, 0x83,     code,       P_86,        lock) \
+insn(name, 6,                   OpCls( MGT8, I8,    NONE  ), 0,      0,  no_WDS, 0x80,     code,       P_86,        lock) \
 insn(name, 7,                   OpCls( MS,   R,     NONE  ), 0,      0,  0,      code,     0x00,       P_86,        lock) \
 insn(name, 8,                   OpCls( MS,   I,     NONE  ), 0,      0,  0,      0x80,     code,       P_86,        lock)
 

@@ -2657,7 +2657,7 @@ static void write_win64_default_prologue( struct proc_info *info )
     if (ymmflag) XYZMMsize = 32;
     else XYZMMsize = 16;
     /* v2.11: now done in write_prologue() */
-	if (ModuleInfo.win64_flags & W64F_SMART){
+	if (ModuleInfo.win64_flags & W64F_HABRAN){
       if (Parse_Pass && sym_ReservedStack->hasinvoke == 0) resstack = 0;
       if (!(info->locallist) && !(resstack)) info->localsize = 0;
       if ((info->localsize == 0) && (cntxmm)){
