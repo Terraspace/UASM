@@ -117,7 +117,7 @@ ins (name, namelc,              OpCls( RGT8, I8,    NONE  ), 0,      0,  no_WDS,
 insn(name, 1,                   OpCls( R,    R_MS,  NONE  ), 0,      1,  0,      code+2,   0x00,       P_86,        0) \
 insn(name, 3,                   OpCls( A,    I,     NONE  ), 0,      0,  no_RM,  code+4,   0x00,       P_86,        0) \
 insn(name, 4,                   OpCls( R,    I,     NONE  ), 0,      0,  0,      0x80,     code,       P_86,        0) \
-insn(name, 6,                   OpCls( MGT8, I8,    NONE  ), 0,      0,  no_WDS, 0x80,     code,       P_86,        lock) \
+insn(name, 6,                   OpCls( MGT8, I8,    NONE  ), 0,      0,  no_WDS, 0x83,     code,       P_86,        lock) \
 insn(name, 7,                   OpCls( MS,   R,     NONE  ), 0,      0,  0,      code,     0x00,       P_86,        lock) \
 insn(name, 8,                   OpCls( MS,   I,     NONE  ), 0,      0,  0,      0x80,     code,       P_86,        lock)
 
@@ -849,7 +849,7 @@ insn(MOVD, 2,                   OpCls( RMGT16,   XMM,      NONE ), F_660F, 0,  n
 insn(MOVD, 3,                   OpCls( RMGT16,   MMX,      NONE ), F_0F,   0,  no_WDS, 0x7E,     0x00,       P_586|P_MMX, QSIZE)
 #endif
 ins (MOVQ, movq,                OpCls( MMX,      MMX_M64,  NONE ), F_0F,   1,  no_WDS, 0x6F,     0x00,       P_586|P_MMX, QSIZE)
-insn(MOVQ, 1,                   OpCls( XMM,      XMM_M64,  NONE ), F_F30F, 1,  no_WDS, 0x7F,     0x00,       P_686|P_SSE2,W1|QSIZE|T1S)
+insn(MOVQ, 1,                   OpCls( XMM,      XMM_M64,  NONE ), F_F30F, 1,  no_WDS, 0x7E,     0x00,       P_686|P_SSE2,W1|QSIZE|T1S)
 #if INTELMOVQ
 insn(MOVQ, 2,                   OpCls( R64_M64,  MMX,      NONE ), F_0F,   0,  no_WDS, 0x7F,     0x00,       P_586|P_MMX, QSIZE)
 insn(MOVQ, 3,                   OpCls( R64_M64,  XMM,      NONE ), F_660F, 0,  no_WDS, 0xD6,     0x00,       P_686|P_SSE2,W1|QSIZE|T1S)

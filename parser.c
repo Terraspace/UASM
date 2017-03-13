@@ -2831,6 +2831,7 @@ static ret_code check_size( struct code_info *CodeInfo, const struct expr opndx[
                     } else {
                          CodeInfo->mem_type = MT_BYTE;
                          CodeInfo->opnd[OPND2].type = OP_I8;
+						 CodeInfo->opnd[OPND1].type = OP_M08;
                          p = "BYTE";
                     }
                     if( opndx[OPND2].explicit == FALSE ) {
