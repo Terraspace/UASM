@@ -2709,7 +2709,7 @@ static void write_win64_default_prologue( struct proc_info *info )
 		
 			AddLineQueueX(*(ppfmt + 0), T_RSP, NUMQUAL stackSize, sym_ReservedStack->name);
 			AddLineQueueX(*(ppfmt + 1), T_DOT_ALLOCSTACK, NUMQUAL stackSize, sym_ReservedStack->name);
-			
+
 			/* Force proc parameters down by 8 if we use the sub rsp. */
 			if (info->NoSub == 0)
 			{
@@ -3177,8 +3177,8 @@ static void SetLocalOffsetsJwasm(struct proc_info *info)
 					cntstd++;
 		}
 		/* in case there's no frame register, adjust start offset. */
-		if ((info->fpo || (info->parasize == 0 && info->locallist == NULL)))
-			start = CurrWordSize;
+		//if ((info->fpo || (info->parasize == 0 && info->locallist == NULL)))
+			//start = CurrWordSize;
 #if AMD64_SUPPORT
 		if (rspalign) {
 			info->localsize = start + cntstd * CurrWordSize;
