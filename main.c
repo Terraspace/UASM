@@ -92,6 +92,9 @@ int main(int argc, char **argv)
 	if (pEnv == NULL)
 		pEnv = "";
 	argv[0] = pEnv;
+	
+	/* Set the default module architecture to AVX */
+	MODULEARCH = ARCH_AVX;
 
 #ifndef DEBUG_OUT
 	signal(SIGSEGV, genfailure);

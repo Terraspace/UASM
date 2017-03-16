@@ -107,6 +107,14 @@
 #define ELF_SUPPORT  1 /* support ELF output format              */
 #endif
 
+/* architecture switches */
+#ifndef ARCH_SSE
+#define ARCH_SSE 0
+#endif
+#ifndef ARCH_AVX
+#define ARCH_AVX 1
+#endif
+
 /* instruction set switches */
 #define K3DSUPP      1 /* support K3D instruction set            */
 #define SSE3SUPP     1 /* support SSE3 instruction set           */
@@ -185,11 +193,11 @@
 
 /* HJWasm version info */
 #ifdef _WIN64
-#define _HJWASM_VERSION_STR_ "2.20"
+#define _HJWASM_VERSION_STR_ "2.21"
 #else
-#define _HJWASM_VERSION_STR_ "2.20"
+#define _HJWASM_VERSION_STR_ "2.21"
 #endif
-#define _HJWASM_VERSION_INT_ 220
+#define _HJWASM_VERSION_INT_ 221
 #define _HJWASM_VERSION_SUFFIX_ "pre"
 #define _HJWASM_VERSION_ _HJWASM_VERSION_STR_ //_HJWASM_VERSION_SUFFIX_
 
@@ -772,6 +780,8 @@ struct module_info {
     unsigned char       defOfssize;      /* default segment offset size (16,32 [,64]-bit) */
     unsigned char       wordsize;        /* current word size (2,4,8) */
     unsigned char       inside_comment;  /* v2.10: moved from tokenize.c */
+	
+	unsigned			arch : 1;		 /* option arch:{avx/sse} 1=AVX(default architecture), 0=SSE for generated code */
 
     unsigned            case_sensitive:1;     /* option casemap */
     unsigned            convert_uppercase:1;  /* option casemap */
@@ -847,6 +857,8 @@ struct module_info {
 	unsigned char       ZEROLOCALS;         /* zero local variables  */
 #endif
 
+	unsigned char		MODULEARCH;			/* MODULE Architecutre <avx or sse> */
+
 #define CurrSource      ModuleInfo.currsource
 #define Token_Count     ModuleInfo.token_count
 #define StringBufferEnd ModuleInfo.stringbufferend
@@ -862,6 +874,16 @@ struct format_options {
 };
 
 /* global variables */
+
+/* global strings for arch:sse/avx instructions to use */
+extern char *MOVE_ALIGNED_FLOAT;
+extern char *MOVE_ALIGNED_INT;
+extern char *MOVE_UNALIGNED_FLOAT;
+extern char *MOVE_UNALIGNED_INT;
+extern char *MOVE_SINGLE;
+extern char *MOVE_DOUBLE;
+extern char *MOVE_SIMD_DWORD;
+extern char *MOVE_SIMD_QWORD;
 
 extern struct global_options Options;
 extern struct module_info    ModuleInfo;

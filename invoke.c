@@ -452,9 +452,9 @@ static int ms64_param( struct dsym const *proc, int index, struct dsym *param, b
 				else
 				{
 					if (param->sym.mem_type == MT_REAL4)
-						AddLineQueueX(" movd %r, %s", T_XMM0 + index, paramvalue);
+						AddLineQueueX(" %s %r, %s", MOVE_SIMD_DWORD, T_XMM0 + index, paramvalue);
 					else
-						AddLineQueueX(" movq %r, %s", T_XMM0 + index, paramvalue);
+						AddLineQueueX(" %s %r, %s", MOVE_SIMD_QWORD, T_XMM0 + index, paramvalue);
 				}
                 return( 1 );
             }
@@ -466,9 +466,9 @@ static int ms64_param( struct dsym const *proc, int index, struct dsym *param, b
 				else
 				{
 					if(param->sym.mem_type == MT_REAL4)
-						AddLineQueueX(" movd %r, %s", T_XMM0 + index, paramvalue);
+						AddLineQueueX(" %s %r, %s", MOVE_SIMD_DWORD, T_XMM0 + index, paramvalue);
 					else
-						AddLineQueueX(" movq %r, %s", T_XMM0 + index, paramvalue);
+						AddLineQueueX(" %s %r, %s", MOVE_SIMD_QWORD, T_XMM0 + index, paramvalue);
 				}
 				return(1);
 			//}
@@ -484,11 +484,11 @@ static int ms64_param( struct dsym const *proc, int index, struct dsym *param, b
             if ( param->sym.mem_type == MT_REAL4 ) {
                 
                 AddLineQueueX( "mov %r, %s", T_EAX, paramvalue );
-                AddLineQueueX( "vmovd %r, %r", T_XMM0 + index, T_EAX );
+                AddLineQueueX( "%s %r, %r", MOVE_SIMD_DWORD, T_XMM0 + index, T_EAX );
 				return(1);
             } else {
                 AddLineQueueX( "mov %r, %r ptr %s", T_RAX, T_REAL8, paramvalue );
-                AddLineQueueX( "vmovq %r, %r", T_XMM0 + index, T_RAX );
+                AddLineQueueX( "%s %r, %r", MOVE_SIMD_QWORD, T_XMM0 + index, T_RAX );
 				return(1);
             }
         } 
@@ -499,16 +499,16 @@ static int ms64_param( struct dsym const *proc, int index, struct dsym *param, b
 				info->vregs[index] = 1;
 				info->xyzused[index] = 1; /* JPH */
 				if (opnd->sym->mem_type == MT_REAL8)
-					AddLineQueueX("vmovsd %r,qword ptr %s", T_XMM0 + index, paramvalue);
+					AddLineQueueX("%s %r,qword ptr %s", MOVE_DOUBLE, T_XMM0 + index, paramvalue);
 				else
-					AddLineQueueX("vmovss %r,dword ptr %s", T_XMM0 + index, paramvalue);
+					AddLineQueueX("%s %r,dword ptr %s", MOVE_SINGLE, T_XMM0 + index, paramvalue);
 			}
 			else
 			{
 				if (param->sym.mem_type == MT_REAL8)
-					AddLineQueueX("movq %r,qword ptr %s", T_XMM0 + index, paramvalue);
+					AddLineQueueX("%s %r,qword ptr %s", MOVE_SIMD_QWORD, T_XMM0 + index, paramvalue);
 				else if (param->sym.mem_type == MT_REAL4)
-					AddLineQueueX("movd %r,dword ptr %s", T_XMM0 + index, paramvalue);
+					AddLineQueueX("%s %r,dword ptr %s", MOVE_SIMD_DWORD, T_XMM0 + index, paramvalue);
 			}
 			return(1);
         } 
@@ -548,7 +548,7 @@ vcall:
 					  info->vsize += membersize;                  //vsize contains total size 
 					  info->vecregsize[vecidx] = membersize;      //size of data tu be put in register
 					  info->xyzused[vecidx] = 1;                  //mark that the placeholder for register is used
-					  AddLineQueueX("vmovss %r,dword ptr [%s+%d]", T_XMM0 + vecidx, paramvalue, j* membersize);
+					  AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE, T_XMM0 + vecidx, paramvalue, j* membersize);
 					  tCount--;
 					  j++;
 				  }
@@ -589,7 +589,7 @@ vcall:
 						  info->vsize += membersize;                      //vsize contains total size 
 						  info->vecregsize[vecidx] = membersize;      //size of data tu be put in register
 						  info->xyzused[vecidx] = 1;                  //mark that the placeholder for register is used
-						  AddLineQueueX("vmovsd %r,qword ptr [%s+%d]", T_XMM0 + vecidx, paramvalue, j * membersize);
+						  AddLineQueueX("%s %r,qword ptr [%s+%d]", MOVE_DOUBLE, T_XMM0 + vecidx, paramvalue, j * membersize);
 						  tCount--;
 						  j++;
 					  }
@@ -608,7 +608,7 @@ vcall:
 						  info->vsize += membersize;                  //vsize contains total size 
 						  info->vecregsize[vecidx] = membersize;      //size of data tu be put in register
 						  info->xyzused[vecidx] = 1;                  //mark that the placeholder for register is used
-						  AddLineQueueX("vmovss %r,dword ptr [%s+%d]", T_XMM0 + vecidx, paramvalue, j * membersize);
+						  AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE, T_XMM0 + vecidx, paramvalue, j * membersize);
 						  tCount--;
 						  j++;
 					  }
@@ -647,7 +647,7 @@ vcall:
 					  info->vsize += membersize;                  //vsize contains total size 
 					  info->vecregsize[vecidx] = membersize;      //size of data tu be put in register
 					  info->xyzused[vecidx] = 1;                  //mark that the placeholder for register is used
-					  AddLineQueueX("vmovss %r,dword ptr [%s+%d]", T_XMM0 + vecidx, paramvalue, j * membersize);
+					  AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE, T_XMM0 + vecidx, paramvalue, j * membersize);
 					  tCount--;
 					  j++;
 				  }
@@ -686,7 +686,7 @@ vcall:
 					  info->vsize += membersize;                      //vsize contains total size 
 					  info->vecregsize[vecidx] = membersize;      //size of data tu be put in register
 					  info->xyzused[vecidx] = 1;                  //mark that the placeholder for register is used
-					  AddLineQueueX("vmovsd %r,qword ptr [%s+%d]", T_XMM0 + vecidx, paramvalue, j * membersize);
+					  AddLineQueueX("%s %r,qword ptr [%s+%d]", MOVE_DOUBLE, T_XMM0 + vecidx, paramvalue, j * membersize);
 					  tCount--;
 					  j++;
 				  }
@@ -725,7 +725,7 @@ vcall:
 					  info->vsize += membersize;                      //vsize contains total size 
 					  info->vecregsize[vecidx] = membersize;      //size of data tu be put in register
 					  info->xyzused[vecidx] = 1;                  //mark that the placeholder for register is used
-					  AddLineQueueX("vmovsd %r,qword ptr [%s+%d]", T_XMM0 + vecidx, paramvalue, j * 8);
+					  AddLineQueueX("%s %r,qword ptr [%s+%d]", MOVE_DOUBLE, T_XMM0 + vecidx, paramvalue, j * 8);
 					  tCount--;
 					  j++;
 				  }
@@ -760,7 +760,7 @@ vcall:
 								  if (reg == T_XMM0 + index)
 									  DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
 								  else
-									  AddLineQueueX("vmovaps %r,oword ptr %s", T_XMM0 + index, paramvalue);
+									  AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
 								  return(1);
 							  }
 						  }
@@ -844,31 +844,31 @@ vcall:
 						  case 4:                             /* it could be 3 or more REAL4 */
 							  for (i = 0, j = 0; i < membersize; i++) {
 								  while (info->xyzused[j] != 0) j++;
-								  if (i == 0) AddLineQueueX("vmovss %r,dword ptr %s", T_XMM0 + j, paramvalue);
-								  else      AddLineQueueX("vmovss %r,dword ptr [%s+%d]", T_XMM0 + j, paramvalue, i * 4);
+								  if (i == 0) AddLineQueueX("%s %r,dword ptr %s", MOVE_SINGLE, T_XMM0 + j, paramvalue);
+								  else      AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE, T_XMM0 + j, paramvalue, i * 4);
 								  info->xyzused[j] = 1;
 							  }
 							  break;
 						  case 8:
 							  for (i = 0, j = 0; i < memberCount; i++) {
 								  while (info->xyzused[j] != 0) j++;
-								  if (i == 0) AddLineQueueX("vmovsd %r,oword ptr %s", T_XMM0 + j, paramvalue);
-								  else      AddLineQueueX("vmovsd %r,oword ptr [%s+%d]", T_XMM0 + j, paramvalue, i * 8);
+								  if (i == 0) AddLineQueueX("%s %r,oword ptr %s", MOVE_DOUBLE, T_XMM0 + j, paramvalue);
+								  else      AddLineQueueX("%s %r,oword ptr [%s+%d]", MOVE_DOUBLE, T_XMM0 + j, paramvalue, i * 8);
 								  info->xyzused[j] = 1;
 							  }
 							  break;
 						  case 16:
 							  if ((vcallpass == 0) && t->e.structinfo->stype == MM128)
 							  {
-								  AddLineQueueX("vmovaps %r,oword ptr %s", T_XMM0 + index, paramvalue);
+								  AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
 								  info->xyzused[index] = 1;
 							  }
 							  else if ((vcallpass == 1) && (t->e.structinfo->isHFA || t->e.structinfo->isHVA))
 							  {
 								  for (i = 0, j = 0; i < memberCount; i++) {
 									  while (info->xyzused[j] != 0) j++;
-									  if (i == 0) AddLineQueueX("vmovaps %r,oword ptr %s", T_XMM0 + j, paramvalue);
-									  else      AddLineQueueX("vmovaps %r,oword ptr [%s+%d]", T_XMM0 + j, paramvalue, i * 16);
+									  if (i == 0) AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + j, paramvalue);
+									  else      AddLineQueueX("%s %r,oword ptr [%s+%d]", MOVE_ALIGNED_FLOAT, T_XMM0 + j, paramvalue, i * 16);
 									  info->xyzused[j] = 1;
 								  }
 							  }
@@ -909,7 +909,7 @@ vcall:
 					  switch (psize) {
 					  case 4:
 						  if (opnd->kind == EXPR_FLOAT) {
-							  AddLineQueueX("vmovss %r,dword ptr %s", T_XMM0 + index, paramvalue);
+							  AddLineQueueX("%s %r,dword ptr %s", MOVE_SINGLE, T_XMM0 + index, paramvalue);
 							  info->vregs[index] = 1;
 						  }
 						  else
@@ -917,7 +917,7 @@ vcall:
 						  break;
 					  case 8:
 						  if (opnd->kind == EXPR_FLOAT) {
-							  AddLineQueueX("vmovsd %r,qword ptr %s", T_XMM0 + index, paramvalue);
+							  AddLineQueueX("%s %r,qword ptr %s", MOVE_DOUBLE, T_XMM0 + index, paramvalue);
 							  info->vregs[index] = 1;
 						  }
 						  else
@@ -929,11 +929,11 @@ vcall:
 								  if (reg == T_XMM0 + index)
 									  DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
 								  else
-									  AddLineQueueX("vmovaps %r,oword ptr %s", T_XMM0 + index, paramvalue);
+									  AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
 							  }
 						  }
 						  else
-							  AddLineQueueX("vmovaps %r,oword ptr %s", T_XMM0 + index, paramvalue);
+							  AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
 						  info->vregs[index] = 1;
 						  break;
 					  case 32:

@@ -35,7 +35,7 @@ extern void UpdateProcStatus( struct asym *, void * );
 /* OPTION directive helper functions */
 
 /* Set EVEX encoding */
-OPTFUNC(SetEvex)
+OPTFUNC( SetEvex )
 {
 	int i = *pi;
 	struct expr opndx;
@@ -76,7 +76,7 @@ OPTFUNC(SetEvex)
 //}
 
 /* Set ZEROLOCALS  */
-OPTFUNC(SetZeroLocals)
+OPTFUNC( SetZeroLocals )
 {
 	int i = *pi;
 	struct expr opndx;
@@ -94,6 +94,48 @@ OPTFUNC(SetZeroLocals)
 	}
 	*pi = i;
 	return(NOT_ERROR);
+}
+
+/* OPTION ARCH:SSE/AVX */
+OPTFUNC( SetArch )
+{
+	int i = *pi;
+	if (tokenarray[i].token == T_ID) {
+		if (0 == _stricmp(tokenarray[i].string_ptr, "SSE")) {
+			MODULEARCH = ARCH_SSE;
+			ModuleInfo.arch = ARCH_SSE;
+			strcpy(MOVE_ALIGNED_FLOAT, "movaps");
+			strcpy(MOVE_ALIGNED_INT, "movdqa");
+			strcpy(MOVE_UNALIGNED_FLOAT, "movups");
+			strcpy(MOVE_UNALIGNED_INT, "movdqu");
+			strcpy(MOVE_SINGLE, "movss");
+			strcpy(MOVE_DOUBLE, "movsd");
+			strcpy(MOVE_SIMD_DWORD, "movd");
+			strcpy(MOVE_SIMD_QWORD, "movq");
+		}
+		else if (0 == _stricmp(tokenarray[i].string_ptr, "AVX")) {
+			MODULEARCH = ARCH_AVX;
+			ModuleInfo.arch = ARCH_AVX;
+			strcpy(MOVE_ALIGNED_FLOAT, "vmovaps");
+			strcpy(MOVE_ALIGNED_INT, "vmovdqa");
+			strcpy(MOVE_UNALIGNED_FLOAT, "vmovups");
+			strcpy(MOVE_UNALIGNED_INT, "vmovdqu");
+			strcpy(MOVE_SINGLE, "vmovss");
+			strcpy(MOVE_DOUBLE, "vmovsd");
+			strcpy(MOVE_SIMD_DWORD, "vmovd");
+			strcpy(MOVE_SIMD_QWORD, "vmovq");
+		}
+		else {
+			return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
+		}
+		DebugMsg1(("SetArch(%s) ok\n", tokenarray[i].string_ptr));
+		i++;
+	}
+	else {
+		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
+	}
+	*pi = i;
+	return( NOT_ERROR );
 }
 
 /* OPTION DOTNAME */
@@ -1035,7 +1077,8 @@ static const struct asm_option optiontab[] = {
 	{ "ZEROLOCALS",   SetZeroLocals  }, /* ZEROLOCALS: <value> 1 or 0 */
 #endif
   { "SWITCHSTYLE",      SetSwitchStile }, /* SWITCH_STYLE: <CSWITCH> or <ASMSWITCH> */
-  { "FLAT",             SetFlat }
+  { "FLAT",             SetFlat },		/* FLAT generated FASM style flat code */
+  { "ARCH",             SetArch }       /* ARCH: SSE or AVX */
 };
 
 #define TABITEMS sizeof( optiontab) / sizeof( optiontab[0] )

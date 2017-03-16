@@ -106,6 +106,17 @@ struct qdesc            LinnumQueue;    /* queue of line_num_info items */
 
 bool write_to_file;     /* write object module */
 
+						/* ARCH SSE/AVX specific instructions */
+
+char *MOVE_ALIGNED_FLOAT = "vmovaps";
+char *MOVE_ALIGNED_INT = "vmovdqa";
+char *MOVE_UNALIGNED_FLOAT = "vmovups";
+char *MOVE_UNALIGNED_INT = "vmovdqu";
+char *MOVE_SINGLE = "vmovss";
+char *MOVE_DOUBLE = "vmovsd";
+char *MOVE_SIMD_DWORD = "vmovd";
+char *MOVE_SIMD_QWORD = "vmovq";
+
 #if 0
 /* for OW, it would be good to remove the CharUpperA() emulation
  * implemented in apiemu.c. Unfortunately, OW isn't happy with
@@ -1447,6 +1458,10 @@ int EXPQUAL AssembleModule( const char *source )
     DebugMsg(("AssembleModule(\"%s\") enter\n", source ));
 
     memset( &ModuleInfo, 0, sizeof(ModuleInfo) );
+
+	/* set architecture */
+	ModuleInfo.arch = MODULEARCH;
+
     DebugCmd( ModuleInfo.cref = TRUE ); /* enable debug displays */
 
 #if 1 //def __SW_BD
