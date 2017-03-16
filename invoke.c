@@ -452,9 +452,9 @@ static int ms64_param( struct dsym const *proc, int index, struct dsym *param, b
 				else
 				{
 					if (param->sym.mem_type == MT_REAL4)
-						AddLineQueueX(" %s %r, %s", MOVE_SIMD_DWORD, T_XMM0 + index, paramvalue);
+						AddLineQueueX(" %s %r, %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
 					else
-						AddLineQueueX(" %s %r, %s", MOVE_SIMD_QWORD, T_XMM0 + index, paramvalue);
+						AddLineQueueX(" %s %r, %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
 				}
                 return( 1 );
             }

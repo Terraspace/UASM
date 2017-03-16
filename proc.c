@@ -2591,7 +2591,7 @@ static void write_win64_default_prologue( struct proc_info *info )
     AddLineQueueX( "%r %r, 0", T_DOT_SETFRAME, basereg[USE64] );
 	info->pushed_reg += 1;
 #endif
-	info->pushed_reg = 0; /*count of pushed registers */
+	//info->pushed_reg = 0; /*count of pushed registers */
 	if (ModuleInfo.win64_flags & W64F_SMART)
 	{
       cntxmm = 0;
