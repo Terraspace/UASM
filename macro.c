@@ -599,7 +599,7 @@ ret_code StoreMacro( struct dsym *macro, int i, struct asm_tok tokenarray[], boo
     return( NOT_ERROR );
 }
 
-
+/* Used to compile built-in macros */
 ret_code StoreAutoMacro(struct dsym *macro, int i, struct asm_tok tokenarray[], bool store_data, char *macCode[])
 /********************************************************************************************/
 {

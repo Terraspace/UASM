@@ -40,6 +40,8 @@
 
 #include "orgfixup.h"
 
+#include "macrolib.h"
+
 #if DLLIMPORT
 #include "mangle.h"
 #endif
@@ -1054,12 +1056,7 @@ static int OnePass( void )
 	/* Process our built-in macro library to make it available to the rest of the source */
 	if (Parse_Pass == PASS_1)
 	{	
-		char *macDef = "_C macro Text:VARARG";
-		char *macCode[] = { "local szText", ".data", "szText db Text,0", ".code", "exitm <szText>", "endm", NULL };
-		struct dsym *mac = CreateMacro("_C");
-		Tokenize(macDef, 0, ModuleInfo.tokenarray, 0);
-		ModuleInfo.token_count = 5;
-		StoreAutoMacro(mac, 2, ModuleInfo.tokenarray, TRUE, macCode);
+		CompileMacros();
 	}
 
 #if FASTPASS
