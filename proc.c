@@ -403,11 +403,9 @@ void *peekitem( void *stk, int level )
 /************************************/
 {
     struct qnode  *node = (struct qnode *)stk;
-
     for ( ; node && level; level-- ) {
         node = node->next;
     }
-
     if ( node )
         return( node->elt );
     else
@@ -753,7 +751,6 @@ static ret_code ParseParams( struct dsym *proc, int i, struct asm_tok tokenarray
 #if 0 /* was active till v2.04 */
             int newsize = ti.size;
             int oldsize;
-
             /* check size only (so UINT <-> DWORD wont cause an error) */
             if ( paracurr->sym.type )
                 oldsize = paracurr->sym.total_size;
@@ -2752,11 +2749,11 @@ static void write_win64_default_prologue( struct proc_info *info )
         if ( cntxmm ) {
             int cnt;
             regist = info->regslist;
-            if (info->locallist)
-              i = (info->localsize - cntxmm * XYZMMsize) & ~(16 - 1);
-            else
-              i = info->localsize  & ~(16 - 1);
-
+            //if (info->locallist)
+            //  i = (info->localsize - cntxmm * XYZMMsize) & ~(16 - 1);
+            //else
+            //  i = info->localsize  & ~(16 - 1);
+            i = 0;       //firs location is right at the [rsp] which is aligned to 16  ; HJWasm 2.21
             for( cnt = *regist++; cnt; cnt--, regist++ ) {
                 if (( GetValueSp( *regist ) & OP_XMM )||( GetValueSp( *regist ) & OP_YMM )
 #if EVEXSUPP    
@@ -2766,7 +2763,7 @@ static void write_win64_default_prologue( struct proc_info *info )
                     if ( resstack ) {
                         if ( ( 1 << GetRegNo( *regist ) ) & win64_nvxmm )  {
                           if (GetValueSp(*regist) & OP_XMM){
-                            AddLineQueueX( "%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist );
+                            AddLineQueueX( "%s [%r+%u+%s], %r", MOVE_ALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist );
                             AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEXMM128, *regist, NUMQUAL i, sym_ReservedStack->name);
                             i += XYZMMsize;
                           }
@@ -2786,7 +2783,7 @@ static void write_win64_default_prologue( struct proc_info *info )
                     } else {
                         if ( ( 1 << GetRegNo( *regist ) ) & win64_nvxmm )  {
                           if (GetValueSp(*regist) & OP_XMM){
-                            AddLineQueueX("%s [%r+%u], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, *regist);
+                            AddLineQueueX("%s [%r+%u], %r", MOVE_ALIGNED_INT, T_RSP, NUMQUAL i, *regist);
                             AddLineQueueX("%r %r, %u", T_DOT_SAVEXMM128, *regist, NUMQUAL i);
                             i += XYZMMsize;
                           }
@@ -2962,7 +2959,6 @@ static void write_win64_default_prologue( struct proc_info *info )
  * and *before* any real instruction
  */
 /* prolog code timings
-
                                                   best result
                size  86  286  386  486  P     86  286  386  486  P
  push bp       2     11  3    2    1    1
@@ -2970,15 +2966,12 @@ static void write_win64_default_prologue( struct proc_info *info )
  sub sp,immed  4     4   3    2    1    1
               -----------------------------
                8     17  8    6    3    3     x   x    x    x    x
-
  push ebp      2     -   -    2    1    1
  mov ebp,esp   2     -   -    2    1    1
  sub esp,immed 6     -   -    2    1    1
               -----------------------------
                10    -   -    6    3    3              x    x    x
-
  enter imm,0   4     -   11   10   14   11
-
  write prolog code
 */
 
@@ -3385,9 +3378,14 @@ static void SetLocalOffsets( struct proc_info *info )
         if ( itemsize > align )
             info->localsize = ROUND_UP( info->localsize, align );
         else if ( itemsize ) /* v2.04: skip if size == 0 */
-            info->localsize = ROUND_UP( info->localsize, itemsize );
-        if (!(ModuleInfo.win64_flags & W64F_SMART))
-        curr->sym.offset = - info->localsize;
+           info->localsize = ROUND_UP( info->localsize, itemsize );
+        /* HJWasm 2.21 fix 16 nyte alignment */
+        if (ModuleInfo.win64_flags & W64F_SMART){
+           if (!(cntstd & 1) && cntxmm )
+           curr->sym.offset -= 8;   //here is the fix
+          }
+        else
+           curr->sym.offset = - info->localsize;
         DebugMsg1(("SetLocalOffsets(%s): offset of %s (size=%u) set to %d\n", CurrProc->sym.name, curr->sym.name, curr->sym.total_size, curr->sym.offset));
     }
 
@@ -3573,10 +3571,11 @@ static void write_win64_default_epilogue( struct proc_info *info )
         DebugMsg1(("write_win64_default_epilogue(%s): %u xmm registers to restore\n", CurrProc->sym.name , i ));
 
         if ( i ) {
-            if (info->locallist)
-              i = (info->localsize - i * XYZMMsize) & ~(16 - 1);
-            else
-            i = ( info->localsize) & ~(16-1);
+            //if (info->locallist)
+            //  i = (info->localsize - i * XYZMMsize) & ~(16 - 1);
+            //else
+            //i = ( info->localsize) & ~(16-1);
+            i = 0;       //firs location is right at the [rsp] which is aligned to 16 ; HJWasm 2.21
             for( regs = info->regslist, cnt = *regs++; cnt; cnt--, regs++ ) {
                 if (( GetValueSp( *regs ) & OP_XMM )||( GetValueSp( *regs ) & OP_YMM )
 #if EVEXSUPP    
@@ -3589,16 +3588,16 @@ static void write_win64_default_epilogue( struct proc_info *info )
                     if (ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
 					{
 						if(GetValueSp(*regs) & OP_XMM)
-							AddLineQueueX("%s %r, [%r + %u + %s]", MOVE_UNALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i, sym_ReservedStack->name);
+							AddLineQueueX("%s %r, [%r + %u + %s]", MOVE_ALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i, sym_ReservedStack->name);
 						else
-							AddLineQueueX("%s %r, [%r + %u + %s]", MOVE_UNALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i, sym_ReservedStack->name);
+							AddLineQueueX("%s %r, [%r + %u + %s]", MOVE_ALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i, sym_ReservedStack->name);
                     }
                     else
 					{
 						if (GetValueSp(*regs) & OP_XMM)
-							AddLineQueueX("%s %r, [%r + %u]", MOVE_UNALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i );
+							AddLineQueueX("%s %r, [%r + %u]", MOVE_ALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i );
 						else
-							AddLineQueueX("%s %r, [%r + %u]", MOVE_UNALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i);
+							AddLineQueueX("%s %r, [%r + %u]", MOVE_ALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i);
                     }
                     i += XYZMMsize;
                 }
@@ -3685,7 +3684,6 @@ static void write_win64_default_epilogue( struct proc_info *info )
 
 /* write default epilogue code
  * if a RET/IRET instruction has been found inside a PROC.
-
  * epilog code timings
  *
  *                                                  best result
