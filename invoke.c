@@ -1277,6 +1277,29 @@ static void SkipTypecast( char *fullparam, int i, struct asm_tok tokenarray[] )
     }
 }
 
+/* Check if a parameter (via it's string ptr) is a raw ascii string */
+static int ParamIsString(char *pStr) {
+	char c;
+	char *pS = pStr;
+
+	c = *pS;
+	if (c != '"') return(FALSE);
+	pS++;
+
+	while (TRUE)
+	{
+		c = *pS;
+		if (c == 0)
+		{
+			c = *(pS - 1);
+			if (c != '"') return(FALSE);
+			break;
+		}
+		pS++;
+	}
+	return(TRUE);
+}
+
 /*
  * push one parameter of a procedure called with INVOKE onto the stack
  * - i       : index of the start of the parameter list
@@ -1303,6 +1326,8 @@ static int PushInvokeParam( int i, struct asm_tok tokenarray[], struct dsym *pro
     struct expr opnd;
     char fullparam[MAX_LINE_LEN];
     char buffer[MAX_LINE_LEN];
+	char stringparam[MAX_LINE_LEN];
+	bool isString = FALSE;
     int reg = 0;
     DebugMsg1(("PushInvokeParam(%s, param=%s:%u, i=%u ) enter\n", proc->sym.name, curr ? curr->sym.name : "NULL", reqParam, i ));
    //__debugbreak();
@@ -1314,6 +1339,11 @@ static int PushInvokeParam( int i, struct asm_tok tokenarray[], struct dsym *pro
         if ( tokenarray[i].token == T_COMMA ) {
             currParm++;
         }
+		else if (ParamIsString(tokenarray[i].string_ptr))
+		{
+			// invoke parameter is a raw ascii string, substitute in the _C builtin macro.
+			sprintf(stringparam, "%s%s%s", "_C(", tokenarray[i].string_ptr, ")");
+		}
         i++;
     }
     /* if curr is NULL this call is just a parameter check */
@@ -1341,8 +1371,21 @@ static int PushInvokeParam( int i, struct asm_tok tokenarray[], struct dsym *pro
 
     /* copy the parameter tokens to fullparam */
     for ( j = i; tokenarray[j].token != T_COMMA && tokenarray[j].token != T_FINAL; j++ );
-    memcpy( fullparam, tokenarray[i].tokpos, tokenarray[j].tokpos - tokenarray[i].tokpos );
-    fullparam[tokenarray[j].tokpos - tokenarray[i].tokpos] = NULLC;
+	if (ParamIsString(tokenarray[i].string_ptr))
+	{
+		memcpy(fullparam, stringparam, (tokenarray[j].tokpos - tokenarray[i].tokpos)+4 );
+		fullparam[(tokenarray[j].tokpos - tokenarray[i].tokpos)+4] = NULLC;
+		addr = TRUE;
+		psize = 2 << curr->sym.Ofssize;
+		if (curr->sym.isfar)
+			psize += 2;
+	}
+	else
+	{
+		memcpy(fullparam, tokenarray[i].tokpos, tokenarray[j].tokpos - tokenarray[i].tokpos);
+		fullparam[tokenarray[j].tokpos - tokenarray[i].tokpos] = NULLC;
+	}
+    
 
     j = i;
     /* v2.11: GetSymOfssize() doesn't work for state SYM_TYPE */

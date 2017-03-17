@@ -57,6 +57,9 @@ extern void     ReleaseMacroData( struct dsym * );
 extern void     fill_placeholders( char *, const char *, unsigned, unsigned, char * * );
 extern void     SkipCurrentQueue( struct asm_tok[] );
 extern ret_code StoreMacro( struct dsym *, int, struct asm_tok[], bool );  /* store macro content */
+
+extern ret_code StoreAutoMacro(struct dsym *, int, struct asm_tok[], bool, char *macCode[]);  /* store macro content */
+
 extern ret_code MacroInit( int );
 #ifdef DEBUG_OUT
 extern void     MacroFini( void );

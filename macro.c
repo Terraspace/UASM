@@ -599,6 +599,339 @@ ret_code StoreMacro( struct dsym *macro, int i, struct asm_tok tokenarray[], boo
     return( NOT_ERROR );
 }
 
+
+ret_code StoreAutoMacro(struct dsym *macro, int i, struct asm_tok tokenarray[], bool store_data, char *macCode[])
+/********************************************************************************************/
+{
+	struct macro_info   *info;
+	char                *src;
+	char                *token;
+	int                 mindex;
+	struct mparm_list   *paranode;
+	struct srcline      **nextline;
+#ifdef DEBUG_OUT
+	int lineno = 0;
+#endif
+	unsigned            nesting_depth = 0;
+	bool                locals_done;
+	struct line_status  ls;
+	struct asm_tok      tok[2];
+	struct mname_list   mnames[MAX_PLACEHOLDERS]; /* there are max 255 placeholders */
+	char                buffer[MAX_LINE_LEN];
+	int					macLine = 0;
+
+	DebugMsg1(("StoreMacro(%s, i=%u, store_data=%u) enter, params=>%s<\n", macro->sym.name, i, store_data, tokenarray[i].tokpos));
+	info = macro->e.macroinfo;
+
+	if (store_data) {
+		int j;
+
+		if (i < Token_Count) {
+			for (j = i, info->parmcnt = 1; j < Token_Count; j++)
+				if (tokenarray[j].token == T_COMMA)
+					info->parmcnt++;
+			info->parmlist = LclAlloc(info->parmcnt * sizeof(struct mparm_list));
+		}
+		else {
+			info->parmcnt = 0;
+			info->parmlist = NULL;
+		}
+
+		for (paranode = info->parmlist, mindex = 0; i < Token_Count; paranode++) {
+
+			token = tokenarray[i].string_ptr;
+			/* Masm accepts reserved words and instructions as parameter
+			* names! So just check that the token is a valid id.
+			*/
+			if (!is_valid_id_first_char(*token) || tokenarray[i].token == T_STRING) {
+				EmitErr(SYNTAX_ERROR_EX, token);
+				break;
+			}
+			else if (tokenarray[i].token != T_ID)
+				EmitWarn(4, PARAM_IS_RESERVED_WORD, tokenarray[i].string_ptr);
+
+			paranode->deflt = NULL;
+			paranode->required = FALSE;
+
+			/* first get the parm. name */
+			j = strlen(token);
+			mnames[mindex].label = token;
+			mnames[mindex].len = j;
+			mindex++;
+			mnames[mindex].label = NULL; /* init next entry */
+			i++;
+
+			/* now see if it has a default value or is required */
+			if (tokenarray[i].token == T_COLON) {
+				i++;
+				if (tokenarray[i].token == T_DIRECTIVE && tokenarray[i].dirtype == DRT_EQUALSGN) {
+					i++;
+					/* allowed syntax is parm:=<literal> */
+					if (tokenarray[i].token != T_STRING || tokenarray[i].string_delim != '<') {
+						EmitError(LITERAL_EXPECTED_AFTER_EQ);
+						break; // return( ERROR );
+					}
+					paranode->deflt = LclAlloc(tokenarray[i].stringlen + 1);
+					memcpy(paranode->deflt, tokenarray[i].string_ptr, tokenarray[i].stringlen + 1);
+					i++;
+				}
+				else if (_stricmp(tokenarray[i].string_ptr, "REQ") == 0) {
+					/* required parameter */
+					paranode->required = TRUE;
+					i++;
+				}
+				else if (tokenarray[i].token == T_RES_ID && tokenarray[i].tokval == T_VARARG) {
+					/* more parameters can follow */
+					macro->sym.mac_vararg = TRUE;
+					if (tokenarray[i + 1].token != T_FINAL) {
+						EmitError(VARARG_PARAMETER_MUST_BE_LAST);
+						break;
+					}
+					i++;
+#if MACROLABEL
+				}
+				else if (tokenarray[i].token == T_DIRECTIVE &&
+					tokenarray[i].tokval == T_LABEL &&
+					Options.strict_masm_compat == FALSE) { /* parm:LABEL? */
+														   /* LABEL attribute for first param only! */
+					if (paranode != info->parmlist) {
+						EmitError(LABEL_PARAMETER_MUST_BE_FIRST);
+						break;
+					}
+					macro->sym.label = TRUE;
+					i++;
+#endif
+#if VARARGML
+				}
+				else if (_stricmp(tokenarray[i].string_ptr, "VARARGML") == 0) {
+					/* more parameters can follow, multi lines possible */
+					macro->sym.mac_vararg = TRUE;
+					macro->sym.mac_multiline = TRUE;
+					if (tokenarray[i + 1].token != T_FINAL) {
+						EmitError(VARARG_PARAMETER_MUST_BE_LAST);
+						break;
+					}
+					i++;
+#endif
+				}
+				else {
+					EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr);
+					break;
+				}
+			}
+			DebugMsg1(("StoreMacro(%s): param=>%s< found\n", macro->sym.name, mnames[mindex].label));
+			if (i < Token_Count && tokenarray[i].token != T_COMMA) {
+				EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos);
+				break; // return( ERROR );
+			}
+			/* go past comma */
+			i++;
+
+		} /* end for() */
+		DebugMsg1(("StoreMacro(%s): macro parameters done\n", macro->sym.name));
+	}
+
+	locals_done = FALSE;
+	nextline = &info->data;
+
+	/* now read in the lines of the macro, and store them if store_data is TRUE */
+	for (; ; ) {
+		char *ptr;
+
+		src = macCode[macLine++];
+		if (src == NULL) {
+			/* v2.11: fatal error if source ends without an ENDM found */
+			//EmitError( UNMATCHED_MACRO_NESTING );
+			//ModuleInfo.EndDirFound = TRUE; /* avoid error "END not found" */
+			//return( ERROR );
+			Fatal(UNMATCHED_MACRO_NESTING);
+		}
+
+		/* add the macro line to the listing file */
+		/* v2.09: don't make listing depend on store_data */
+		//if ( ModuleInfo.list && store_data ) {
+		if (ModuleInfo.list) {
+			ModuleInfo.line_flags &= ~LOF_LISTED;
+			LstWrite(LSTTYPE_MACROLINE, 0, buffer);
+		}
+		ls.input = src;
+		ls.start = src;
+		ls.index = 0;
+	continue_scan:
+		while (isspace(*ls.input)) ls.input++;
+
+		/* skip empty lines! */
+		if (*ls.input == NULLC || *ls.input == ';') {
+#if STORE_EMPTY_LINES
+			if (store_data) {
+				*nextline = LclAlloc(sizeof(struct srcline));
+				(*nextline)->next = NULL;
+				(*nextline)->ph_count = 0;
+				(*nextline)->line[0] = NULLC;
+				nextline = &(*nextline)->next;
+			}
+#endif
+			continue;
+		}
+
+		/* get first token */
+		ls.output = StringBufferEnd;
+		//ls.last_token = T_FINAL;
+		ls.flags = TOK_DEFAULT;
+		ls.flags2 = 0;
+		tok[0].token = T_FINAL;
+		if (GetToken(&tok[0], &ls) == ERROR)
+			return(ERROR);
+
+		/* v2.05: GetTextLine() doesn't concat lines anymore.
+		* So if a backslash is found in the current source line,
+		* tokenize it to get possible concatenated lines.
+		*/
+		if (strchr(ls.input, '\\')) {
+			ptr = ls.input;
+			while (*ls.input && *ls.input != ';') {
+				ls.flags3 = 0;
+				GetToken(&tok[1], &ls);
+				/* v2.09: don't query store_data */
+				//if ( ( ls.flags3 & TF3_ISCONCAT ) && ModuleInfo.list && store_data ) {
+				if ((ls.flags3 & TF3_ISCONCAT) && ModuleInfo.list) {
+					ModuleInfo.line_flags &= ~LOF_LISTED;
+					LstWrite(LSTTYPE_MACROLINE, 0, ls.input);
+				}
+				while (isspace(*ls.input)) ls.input++;
+			}
+			ls.input = ptr;
+		}
+		if (tok[0].token == T_FINAL) {/* did GetToken() return EMPTY? */
+			DebugMsg1(("StoreMacro(%s): no token\n", macro->sym.name));
+			goto continue_scan;
+		}
+		/* handle LOCAL directive(s) */
+		if (locals_done == FALSE && tok[0].token == T_DIRECTIVE && tok[0].tokval == T_LOCAL) {
+			if (!store_data)
+				continue;
+			for (;; ) {
+				int size;
+				while (isspace(*ls.input)) ls.input++;
+				if (*ls.input == NULLC || *ls.input == ';') /* 0 locals are ok */
+					break;
+				ls.output = StringBufferEnd;
+				GetToken(&tok[0], &ls);
+				if (!is_valid_id_first_char(*StringBufferEnd)) {
+					EmitErr(SYNTAX_ERROR_EX, StringBufferEnd);
+					break;
+				}
+				else if (tok[0].token != T_ID)
+					EmitWarn(4, PARAM_IS_RESERVED_WORD, StringBufferEnd);
+
+				if (mindex == (MAX_PLACEHOLDERS - 1)) {
+					EmitError(TOO_MANY_MACRO_PLACEHOLDERS);
+					break;
+				}
+				size = strlen(StringBufferEnd);
+				mnames[mindex].label = myalloca(size);
+				memcpy(mnames[mindex].label, StringBufferEnd, size);
+				mnames[mindex].len = size;
+				mindex++;
+				mnames[mindex].label = NULL; /* mark end of placeholder array */
+				info->localcnt++;
+				DebugMsg1(("StoreMacro(%s, %u): local=>%s< added, rest=%s\n", macro->sym.name, nesting_depth, mnames[mindex].label, ls.input));
+				while (isspace(*ls.input)) ls.input++;
+				if (*ls.input == ',') {
+					ls.input++;
+				}
+				else if (is_valid_id_first_char(*ls.input)) {
+					EmitErr(SYNTAX_ERROR_EX, ls.input);
+					break;
+				}
+			}
+			continue;
+		}
+		locals_done = TRUE;
+
+		/* handle macro labels, EXITM, ENDM and macro loop directives.
+		* this must be done always, even if store_data is false,
+		* to find the matching ENDM that terminates the macro.
+		*/
+		if (tok[0].token == T_COLON) { /* macro label? */
+									   /* skip leading spaces for macro labels! In RunMacro(),
+									   * the label search routine expects no spaces before ':'.
+									   */
+			src = ls.input - 1;
+		}
+		else if (tok[0].token == T_DIRECTIVE) {
+			if (tok[0].tokval == T_EXITM) {
+				DebugMsg1(("StoreMacro(%s): exitm found, lvl=%u, >%s<\n", macro->sym.name, nesting_depth, ls.input));
+				if (nesting_depth == 0) {
+					ptr = ls.input;
+					while (isspace(*ptr)) ptr++;
+					if (*ptr && *ptr != ';')
+						macro->sym.isfunc = TRUE;
+					//macro->sym.runsync = TRUE;
+				}
+			}
+			else if (tok[0].tokval == T_ENDM) {
+				DebugMsg1(("StoreMacro(%s): endm found, lvl=%u\n", macro->sym.name, nesting_depth));
+				if (nesting_depth) {
+					nesting_depth--;
+				}
+				else {
+					break; /* exit the for() loop */
+				}
+			}
+			else if (tok[0].dirtype == DRT_LOOPDIR) {
+				nesting_depth++; /* FOR[C], IRP[C], REP[EA]T, WHILE */
+			}
+		}
+		else if (tok[0].token != T_INSTRUCTION || *ls.input == '&') {
+			/* Skip any token != directive or instruction (and no '&' attached)
+			* might be text macro ids, macro function calls,
+			* code labels, ...
+			*/
+			for (;;) {
+				char oldc;
+				tok[0].token = T_FINAL;
+				while (isspace(*ls.input)) ls.input++;
+				if (*ls.input == NULLC || *ls.input == ';')
+					break;
+				oldc = *(ls.input - 1);
+				if (GetToken(&tok[0], &ls) == ERROR)
+					break;
+				if ((tok[0].token == T_INSTRUCTION || tok[0].token == T_DIRECTIVE) &&
+					oldc != '&' && *ls.input != '&')
+					break;
+			}
+			if (tok[0].token == T_DIRECTIVE) {
+				/* MACRO or loop directive? */
+				if (tok[0].tokval == T_MACRO || tok[0].dirtype == DRT_LOOPDIR)
+					nesting_depth++;
+			}
+		}
+
+		/* store the line, but first check for placeholders!
+		* this is to be improved. store_placeholders() is too
+		* primitive. It's necessary to use the tokenizer.
+		*/
+		if (store_data) {
+			int j;
+			uint_8 phs = 0;
+			if (mindex)
+				phs = store_placeholders(src, mnames);
+			j = strlen(src);
+			*nextline = LclAlloc(sizeof(struct srcline) + j);
+			(*nextline)->next = NULL;
+			(*nextline)->ph_count = phs;
+			memcpy((*nextline)->line, src, j + 1);
+			nextline = &(*nextline)->next;
+			DebugMsg1(("StoreMacro(%s, %u): cnt=%u, %u. line >%s<\n", macro->sym.name, nesting_depth, phs, ++lineno, RenderMacroLine(src)));
+		}
+	} /* end for */
+	macro->sym.isdefined = TRUE;
+	macro->sym.purged = FALSE;
+	DebugMsg1(("StoreMacro(%s): exit, no error, isfunc=%u\n", macro->sym.name, macro->sym.isfunc));
+	return(NOT_ERROR);
+}
+
 /* create a macro symbol */
 
 struct dsym *CreateMacro( const char *name )

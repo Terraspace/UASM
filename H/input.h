@@ -67,6 +67,8 @@ extern uint_32  GetLineNumber( void );
 extern const char *GetFNamePart( const char *fname );
 extern char     *GetExtPart( const char *fname );
 
+extern struct src_item *PushSrcItem(char type, void *pv);
+
 extern FILE     *SearchFile( const char *path, bool );
 extern char     *GetTextLine( char *buffer );
 extern void     PushMacro( struct macro_instance * );

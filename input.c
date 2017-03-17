@@ -411,7 +411,7 @@ void AddFileSeq( unsigned file )
 /* push a new item onto the source stack.
  * type: SIT_FILE or SIT_MACRO
  */
-static struct src_item *PushSrcItem( char type, void *pv )
+ struct src_item *PushSrcItem( char type, void *pv )
 /********************************************************/
 {
     struct src_item   *curr;

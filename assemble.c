@@ -1013,6 +1013,7 @@ static void PassOneChecks( void )
 static int OnePass( void )
 /************************/
 {
+	struct src_item *fl;
 
     InputPassInit();
     ModulePassInit();
@@ -1045,9 +1046,22 @@ static int OnePass( void )
         }
     }
 #endif
-    /* the functions above might have written something to the line queue */
+
+	/* the functions above might have written something to the line queue */
     if ( is_linequeue_populated() )
         RunLineQueue();
+
+	/* Process our built-in macro library to make it available to the rest of the source */
+	if (Parse_Pass == PASS_1)
+	{	
+		char *macDef = "_C macro Text:VARARG";
+		char *macCode[] = { "local szText", ".data", "szText db Text,0", ".code", "exitm <szText>", "endm", NULL };
+		struct dsym *mac = CreateMacro("_C");
+		Tokenize(macDef, 0, ModuleInfo.tokenarray, 0);
+		ModuleInfo.token_count = 5;
+		StoreAutoMacro(mac, 2, ModuleInfo.tokenarray, TRUE, macCode);
+	}
+
 #if FASTPASS
     StoreState = FALSE;
     if ( Parse_Pass > PASS_1 && UseSavedState == TRUE ) {
