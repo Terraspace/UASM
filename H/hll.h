@@ -14,4 +14,5 @@ extern void HllFini( void );
 #endif
 extern void HllCheckOpen( void );
 
+extern uint_32 GetHllLabel(void);
 #endif

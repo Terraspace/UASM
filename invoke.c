@@ -22,11 +22,18 @@
 #include "segment.h"
 #include "listing.h"
 #include "myassert.h"
+#include "label.h"
+#include "hll.h"
+
 #if DLLIMPORT
 #include "mangle.h"
 #include "extern.h"
 #endif
 #include "proc.h"
+
+uint_32 literalCnt = 0;
+
+extern bool write_to_file;
 
 extern int_64           maxintvalues[];
 extern int_64           minintvalues[];
@@ -1329,8 +1336,19 @@ static int PushInvokeParam( int i, struct asm_tok tokenarray[], struct dsym *pro
 	char stringparam[32][MAX_LINE_LEN];
 	bool isString[32];
 	int reg = 0;
+	
+	struct asym *lbl;
+	struct dsym *curseg;
+	struct dsym *prev;
+	struct dsym *currs;
+	size_t slen;
+	uint_32 pos;
+	char *pSrc;
+	char *pDest;
+	char *labelstr = "__literal";
+	char buf[32];
 
-    DebugMsg1(("PushInvokeParam(%s, param=%s:%u, i=%u ) enter\n", proc->sym.name, curr ? curr->sym.name : "NULL", reqParam, i ));
+	DebugMsg1(("PushInvokeParam(%s, param=%s:%u, i=%u ) enter\n", proc->sym.name, curr ? curr->sym.name : "NULL", reqParam, i ));
    //__debugbreak();
     for ( currParm = 0; currParm <= reqParam; ) {
 		isString[i] = FALSE;
@@ -1343,15 +1361,141 @@ static int PushInvokeParam( int i, struct asm_tok tokenarray[], struct dsym *pro
         }
 		else if (ParamIsString(tokenarray[i].string_ptr))
 		{
-			// invoke parameter is a raw ascii string, substitute in the _C builtin macro.
-			sprintf(stringparam[i], "%s%s%s", "@CSTR(", tokenarray[i].string_ptr, ")");
+
+			// Preserve current Segment.
+			curseg = ModuleInfo.currseg;
+			// Find Data Segment.
+			prev = NULL;
+			currs = NULL;
+			for (currs = SymTables[TAB_SEG].head; currs && currs->next; prev = currs, currs = currs->next)
+			{
+				if (strcmp(currs->sym.name, "_DATA") == 0)
+					break;
+			}
+			// Set CurrSeg
+			CurrSeg = currs;
+			// Transfer raw String Data.
+			slen = strlen(tokenarray[i].string_ptr);
+			pos = currs->e.seginfo->current_loc;
+			pSrc = tokenarray[i].string_ptr;
+			pDest = (char*)currs->e.seginfo->CodeBuffer;
+			
+			sprintf(buf, "%s%d", labelstr, literalCnt);
+
+			if (pDest != 0 && write_to_file == TRUE)
+			{
+				literalCnt++;
+				pDest += pos;
+
+				lbl = SymLookup(buf);
+				lbl->value = pos;
+				lbl->offset = pos;
+				lbl->isdefined = TRUE;
+				lbl->mem_type = MT_BYTE;
+				lbl->state = SYM_INTERNAL;
+				lbl->segment = currs;
+				lbl->first_size = 2;
+				lbl->Ofssize = 2;
+				lbl->isfunc = 1;
+				lbl->total_length = 1;
+				lbl->total_size = 1;
+				lbl->max_offset = 1;
+				lbl->debuginfo = 1;
+				lbl->sfunc_ptr = 1;
+				lbl->langtype = LANG_FASTCALL;
+				lbl->cvtyperef = 1;
+
+				for (j = 0; j < slen; j++)
+				{
+					*pDest++ = *pSrc++;
+				}
+				*pDest++ = 0;
+
+			}
+
+			currs->e.seginfo->current_loc += (slen + 1);
+			currs->e.seginfo->bytes_written += (slen + 1);
+			currs->e.seginfo->written = TRUE;
+			if (currs->e.seginfo->current_loc > currs->sym.max_offset)
+				currs->sym.max_offset = currs->e.seginfo->current_loc;
+
+			/* invoke parameter is a raw ascii string, 
+			   substitute in the our new label pointing to this raw string in .data segment. */
+			sprintf( stringparam[i], "%s", buf );
 			isString[i] = TRUE;
+
+			// Restore current Sement.
+			CurrSeg = curseg;
 		}
 		else if (strcmp(tokenarray[i].string_ptr,"L") == 0 && ParamIsString(tokenarray[i + 1].string_ptr))
 		{
-			// invoke parameter is a raw ascii string prefixed with L, substitute in the _W builtin macro.
-			sprintf(stringparam[i], "%s%s%s", "@WSTR(", tokenarray[i + 1].string_ptr, ")");
-			isString[i] = TRUE; 
+
+			// Preserve current Segment.
+			curseg = ModuleInfo.currseg;
+			// Find Data Segment.
+			prev = NULL;
+			currs = NULL;
+			for (currs = SymTables[TAB_SEG].head; currs && currs->next; prev = currs, currs = currs->next)
+			{
+				if (strcmp(currs->sym.name, "_DATA") == 0)
+					break;
+			}
+			// Set CurrSeg
+			CurrSeg = currs;
+			// Transfer raw String Data.
+			slen = strlen(tokenarray[i+1].string_ptr);
+			pos = currs->e.seginfo->current_loc;
+			pSrc = tokenarray[i+1].string_ptr;
+			pDest = (char*)currs->e.seginfo->CodeBuffer;
+
+			sprintf(buf, "%s%d", labelstr, literalCnt);
+
+			if (pDest != 0 && write_to_file == TRUE)
+			{
+				literalCnt++;
+				pDest += pos;
+
+				lbl = SymLookup(buf);
+				lbl->value = pos;
+				lbl->offset = pos;
+				lbl->isdefined = TRUE;
+				lbl->mem_type = MT_BYTE;
+				lbl->state = SYM_INTERNAL;
+				lbl->segment = currs;
+				lbl->first_size = 2;
+				lbl->Ofssize = 2;
+				lbl->isfunc = 1;
+				lbl->total_length = 1;
+				lbl->total_size = 1;
+				lbl->max_offset = 1;
+				lbl->debuginfo = 1;
+				lbl->sfunc_ptr = 1;
+				lbl->langtype = LANG_FASTCALL;
+				lbl->cvtyperef = 1;
+
+				for (j = 0; j < slen; j++)
+				{
+					*pDest++ = *pSrc++;
+					*pDest++ = 0;
+				}
+				*pDest++ = 0;
+				*pDest++ = 0;
+
+			}
+			
+			currs->e.seginfo->current_loc += (slen * 2 + 2);
+			currs->e.seginfo->bytes_written += (slen * 2 + 2);
+			currs->e.seginfo->written = TRUE;
+			if (currs->e.seginfo->current_loc > currs->sym.max_offset)
+				currs->sym.max_offset = currs->e.seginfo->current_loc;
+
+			/* invoke parameter is a raw ascii string,
+			substitute in the our new label pointing to this raw string in .data segment. */
+			sprintf(stringparam[i], "%s", buf);
+			isString[i] = TRUE;
+
+			// Restore current Sement.
+			CurrSeg = curseg;
 
 			for (j = i; j < Token_Count-1; j++)
 			{

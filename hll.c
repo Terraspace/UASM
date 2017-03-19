@@ -174,7 +174,7 @@ static unsigned cntCond;   /* # of allocated 'condlines'-buffer in .WHILE-blocks
 static unsigned cntCondBytes; /* total size of allocated 'condlines'-buffers */
 #endif
 
-static uint_32 GetHllLabel(void)
+ uint_32 GetHllLabel(void)
 /********************************/
 {
   return (++ModuleInfo.hll_label);

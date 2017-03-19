@@ -885,6 +885,9 @@ extern char *MOVE_DOUBLE;
 extern char *MOVE_SIMD_DWORD;
 extern char *MOVE_SIMD_QWORD;
 
+/* track total auto-generated literal string count */
+extern uint_32 literalCnt;
+
 extern struct global_options Options;
 extern struct module_info    ModuleInfo;
 extern unsigned int          Parse_Pass;    /* assembly pass */
