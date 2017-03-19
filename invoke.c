@@ -1326,13 +1326,15 @@ static int PushInvokeParam( int i, struct asm_tok tokenarray[], struct dsym *pro
     struct expr opnd;
     char fullparam[MAX_LINE_LEN];
     char buffer[MAX_LINE_LEN];
-	char stringparam[MAX_LINE_LEN];
-	bool isString = FALSE;
-    int reg = 0;
+	char stringparam[32][MAX_LINE_LEN];
+	bool isString[32];
+	int reg = 0;
+
     DebugMsg1(("PushInvokeParam(%s, param=%s:%u, i=%u ) enter\n", proc->sym.name, curr ? curr->sym.name : "NULL", reqParam, i ));
    //__debugbreak();
     for ( currParm = 0; currParm <= reqParam; ) {
-        if ( tokenarray[i].token == T_FINAL ) { /* this is no real error! */
+		isString[i] = FALSE;
+		if ( tokenarray[i].token == T_FINAL ) { /* this is no real error! */
             DebugMsg1(("PushInvokeParam(%s): T_FINAL token, i=%u\n", proc->sym.name, i));
             return( ERROR );
         }
@@ -1342,7 +1344,21 @@ static int PushInvokeParam( int i, struct asm_tok tokenarray[], struct dsym *pro
 		else if (ParamIsString(tokenarray[i].string_ptr))
 		{
 			// invoke parameter is a raw ascii string, substitute in the _C builtin macro.
-			sprintf(stringparam, "%s%s%s", "_C(", tokenarray[i].string_ptr, ")");
+			sprintf(stringparam[i], "%s%s%s", "@CSTR(", tokenarray[i].string_ptr, ")");
+			isString[i] = TRUE;
+		}
+		else if (strcmp(tokenarray[i].string_ptr,"L") == 0 && ParamIsString(tokenarray[i + 1].string_ptr))
+		{
+			// invoke parameter is a raw ascii string prefixed with L, substitute in the _W builtin macro.
+			sprintf(stringparam[i], "%s%s%s", "@WSTR(", tokenarray[i + 1].string_ptr, ")");
+			isString[i] = TRUE; 
+
+			for (j = i; j < Token_Count-1; j++)
+			{
+				tokenarray[j] = tokenarray[j + 1];
+			}
+			Token_Count--;
+
 		}
         i++;
     }
@@ -1371,10 +1387,9 @@ static int PushInvokeParam( int i, struct asm_tok tokenarray[], struct dsym *pro
 
     /* copy the parameter tokens to fullparam */
     for ( j = i; tokenarray[j].token != T_COMMA && tokenarray[j].token != T_FINAL; j++ );
-	if (ParamIsString(tokenarray[i].string_ptr))
+	if (isString[i])
 	{
-		memcpy(fullparam, stringparam, (tokenarray[j].tokpos - tokenarray[i].tokpos)+4 );
-		fullparam[(tokenarray[j].tokpos - tokenarray[i].tokpos)+4] = NULLC;
+		memcpy(fullparam, stringparam[i], strlen(stringparam[i])+1 );
 		addr = TRUE;
 		psize = 2 << curr->sym.Ofssize;
 		if (curr->sym.isfar)

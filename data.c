@@ -60,6 +60,7 @@ extern const char szNull[];
 static ret_code data_item( int *, struct asm_tok[], struct asym *, uint_32, const struct asym *, uint_32, bool inside_struct, bool, bool, int );
 
 #define OutputDataBytes( x, y ) OutputBytes( x, y, NULL )
+#define OutputInterleavedDataBytes( x, y ) OutputInterleavedBytes( x, y, NULL );
 
 /* initialize an array inside a structure
  * if there are no brackets, the next comma, '>' or '}' will terminate
@@ -717,7 +718,7 @@ next_item:  /* <--- continue scan if a comma has been detected */
             /* a string is only regarded as an array if item size is 1 */
             /* else it is regarded as ONE item */
             if( no_of_bytes != 1 ) {
-                if( string_len > no_of_bytes ) {
+                if( string_len > no_of_bytes && sym->mem_type != MT_WORD ) {
                     return( EmitError( INITIALIZER_OUT_OF_RANGE ) );
                 }
             }
@@ -738,9 +739,18 @@ next_item:  /* <--- continue scan if a comma has been detected */
             if( !inside_struct ) {
                 /* anything bigger than a byte must be stored in little-endian
                  * format -- LSB first */
-                if ( string_len > 1 && no_of_bytes > 1 )
-                    pchar = little_endian( (const char *)pchar, string_len );
-                OutputDataBytes( pchar, string_len );
+				if (string_len > 1 && no_of_bytes > 1 && sym->mem_type == MT_WORD)
+				{
+					OutputInterleavedDataBytes(pchar, string_len);
+				}
+				else
+				{
+					if (string_len > 1 && no_of_bytes > 1)
+					{
+						pchar = little_endian((const char *)pchar, string_len);
+					}
+					OutputDataBytes(pchar, string_len);
+				}
                 if ( no_of_bytes > string_len )
                     FillDataBytes( 0, no_of_bytes - string_len );
             }

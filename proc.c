@@ -3288,8 +3288,8 @@ static void SetLocalOffsets( struct proc_info *info )
     regist = info->regslist;
     if ( info->isframe || ( ModuleInfo.fctype == FCT_WIN64 && ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) ) ) {
         rspalign = TRUE;
-        if ( ModuleInfo.win64_flags & W64F_STACKALIGN16 )
-            align = 16;
+//        if ( ModuleInfo.win64_flags & W64F_STACKALIGN16 )
+  //          align = 16;
     }
 #endif
 #if AMD64_SUPPORT || STACKBASESUPP

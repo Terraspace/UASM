@@ -347,6 +347,50 @@ void OutputBytes( const unsigned char *pbytes, int len, struct fixup *fixup )
         CurrSeg->sym.max_offset = CurrSeg->e.seginfo->current_loc;
 }
 
+/* Used to output a string to current segment in wide-char format with interleaved zeros */
+void OutputInterleavedBytes(const unsigned char *pbytes, int len, struct fixup *fixup)
+{
+	int i = 0;
+	char *pOut = NULL;
+
+	if (write_to_file == TRUE) {
+		uint_32 idx = CurrSeg->e.seginfo->current_loc - CurrSeg->e.seginfo->start_loc;
+#if 0 /* def DEBUG_OUT */
+		if (CurrSeg->e.seginfo->current_loc < CurrSeg->e.seginfo->start_loc)
+			_asm int 3;
+#endif
+		/**/myassert(CurrSeg->e.seginfo->current_loc >= CurrSeg->e.seginfo->start_loc);
+		if (Options.output_format == OFORMAT_OMF && ((idx + len) > MAX_LEDATA_THRESHOLD)) {
+			omf_FlushCurrSeg();
+			idx = CurrSeg->e.seginfo->current_loc - CurrSeg->e.seginfo->start_loc;
+		}
+		if (fixup)
+			store_fixup(fixup, CurrSeg, (int_32 *)pbytes);
+		pOut = &CurrSeg->e.seginfo->CodeBuffer[idx];
+		for (i = 0; i < len*2; i++)
+		{
+			if (i % 2 == 1)
+				*pOut++ = 0;
+			else
+				*pOut++ = *pbytes++;
+		}
+	}
+#if 1
+	/* check this in pass 1 only */
+	else if (CurrSeg->e.seginfo->current_loc < CurrSeg->e.seginfo->start_loc) {
+		DebugMsg(("OutputBytes: segment start loc changed from %" I32_SPEC "Xh to %" I32_SPEC "Xh\n",
+			CurrSeg->e.seginfo->start_loc,
+			CurrSeg->e.seginfo->current_loc));
+		CurrSeg->e.seginfo->start_loc = CurrSeg->e.seginfo->current_loc;
+	}
+#endif
+	CurrSeg->e.seginfo->current_loc += len*2;
+	CurrSeg->e.seginfo->bytes_written += len*2;
+	CurrSeg->e.seginfo->written = TRUE;
+	if (CurrSeg->e.seginfo->current_loc > CurrSeg->sym.max_offset)
+		CurrSeg->sym.max_offset = CurrSeg->e.seginfo->current_loc;
+}
+
 /* set current offset in a segment (usually CurrSeg) without to write anything */
 
 ret_code SetCurrOffset( struct dsym *seg, uint_32 value, bool relative, bool select_data )
