@@ -1333,8 +1333,8 @@ static int PushInvokeParam( int i, struct asm_tok tokenarray[], struct dsym *pro
     struct expr opnd;
     char fullparam[MAX_LINE_LEN];
     char buffer[MAX_LINE_LEN];
-	char stringparam[32][MAX_LINE_LEN];
-	bool isString[32];
+	char stringparam[256][MAX_LINE_LEN];
+	bool isString[256];
 	int reg = 0;
 	
 	struct asym *lbl;
