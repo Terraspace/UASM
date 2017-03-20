@@ -1167,6 +1167,17 @@ ret_code data_dir( int i, struct asm_tok tokenarray[], struct asym *type_sym )
     int                 idx;
     char                *name;
 
+	struct dsym *symtype = ((struct dsym *)type_sym);
+	struct sfield   *f;
+	struct sfield   *f2;
+	struct sfield   *fPrev;
+	struct sfield   *fnext;
+	struct sfield   *f2next;
+	bool foundSubType = FALSE;
+	uint_32 subid = 0;
+	uint_32 subcnt = 0;
+	uint_32 k = 0;
+
     DebugMsg1(("data_dir( i=%u, type=%s ) enter\n", i, type_sym ? type_sym->name : "NULL" ));
 
     /* v2.05: the previous test in parser.c wasn't fool-proved */
@@ -1374,10 +1385,56 @@ ret_code data_dir( int i, struct asm_tok tokenarray[], struct asym *type_sym )
     }
 
     i++;
+
+	/* Enhanced HJWASM 2.22+ Union initialize */
+	if (tokenarray[i].token == T_DOT && type_sym->state == SYM_TYPE)
+	{
+		i++; // skip dot.
+		// Check sub type.
+		symtype = ((struct dsym *)type_sym);
+		foundSubType = FALSE;
+		subid = 0;
+		subcnt = 0;
+		k = 0;
+		for (f = symtype->e.structinfo->head; f != NULL; f = f->next) 
+		{
+			if (strcmp(tokenarray[i].string_ptr, f->sym.name) == 0)
+			{
+				f2 = f;
+				foundSubType = TRUE;
+				subid = subcnt;
+				fPrev = symtype->e.structinfo->head;
+			}
+			subcnt++;
+		}
+		if (!foundSubType)
+		{
+			EmitErr(INVALID_DATA_INITIALIZER, sym->name);
+			return;
+		}
+		else
+		{
+			// sort the union subtypes so the one we want is first (in accordance with what is allowed for initialisation)
+			if (f2 == symtype->e.structinfo->head)
+			{
+				// Do nothing as the required sub type is the first one.
+			}
+			else
+			{
+				symtype->e.structinfo->head = f2;
+			}
+			
+		}
+		i++; /* skip subtype identifier */
+	}
+
     if ( data_item( &i, tokenarray, sym, no_of_bytes, type_sym, 1, CurrStruct != NULL, is_float, TRUE, Token_Count ) == ERROR ) {
         DebugMsg(("data_dir: error in data_item()\n"));
         return( ERROR );
     }
+
+	if (foundSubType)
+		symtype->e.structinfo->head = fPrev;
 
     if ( tokenarray[i].token != T_FINAL ) {
         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );

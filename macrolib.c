@@ -51,6 +51,10 @@ void CompileMacros( void )
 	char *macCode3[] = { "local vname", ".data","align 8", "vname REAL8 value", ".code", "exitm <vname>", "endm", NULL };
 	struct dsym *mac3 = CreateMacro("@FP8");
 
+	char *macDef4 = "@FP10 macro value:REQ";
+	char *macCode4[] = { "local vname", ".data","align 8", "vname REAL10 value", ".code", "exitm <vname>", "endm", NULL };
+	struct dsym *mac4 = CreateMacro("@FP10");
+
 	/* ASCIIZ String Inline MACRO */
 	ModuleInfo.token_count = Tokenize(macDef, 0, ModuleInfo.tokenarray, 0);
 	StoreAutoMacro(mac, 2, ModuleInfo.tokenarray, TRUE, macCode);
@@ -62,7 +66,11 @@ void CompileMacros( void )
 	/* FP4 and FP8 */
 	ModuleInfo.token_count = Tokenize(macDef1, 0, ModuleInfo.tokenarray, 0);
 	StoreAutoMacro(mac1, 2, ModuleInfo.tokenarray, TRUE, macCode1);
-
+	//-----
 	ModuleInfo.token_count = Tokenize(macDef3, 0, ModuleInfo.tokenarray, 0);
 	StoreAutoMacro(mac3, 2, ModuleInfo.tokenarray, TRUE, macCode3);
+	//-----
+	ModuleInfo.token_count = Tokenize(macDef4, 0, ModuleInfo.tokenarray, 0);
+	StoreAutoMacro(mac4, 2, ModuleInfo.tokenarray, TRUE, macCode4);
+
 }
