@@ -1307,6 +1307,30 @@ static int ParamIsString(char *pStr) {
 	return(TRUE);
 }
 
+static unsigned int hashpjw(const char *s)
+/******************************************/
+{
+	unsigned h;
+	unsigned g;
+
+#if HASH_MAGNITUDE==12
+	for (h = 0; *s; ++s) {
+		h = (h << 4) + (*s | ' ');
+		g = h & ~0x0fff;
+		h ^= g;
+		h ^= g >> 12;
+	}
+#else
+	for (h = 0; *s; ++s) {
+		h = (h << 5) + (*s | ' ');
+		g = h & ~0x7fff;
+		h ^= g;
+		h ^= g >> 15;
+	}
+#endif
+	return(h);
+}
+
 /*
  * push one parameter of a procedure called with INVOKE onto the stack
  * - i       : index of the start of the parameter list
@@ -1345,7 +1369,7 @@ static int PushInvokeParam( int i, struct asm_tok tokenarray[], struct dsym *pro
 	uint_32 pos;
 	char *pSrc;
 	char *pDest;
-	char *labelstr = "__literal";
+	char *labelstr = "__ls";
 	char buf[32];
 
 	DebugMsg1(("PushInvokeParam(%s, param=%s:%u, i=%u ) enter\n", proc->sym.name, curr ? curr->sym.name : "NULL", reqParam, i ));
@@ -1380,20 +1404,35 @@ static int PushInvokeParam( int i, struct asm_tok tokenarray[], struct dsym *pro
 			pSrc = tokenarray[i].string_ptr;
 			pDest = (char*)currs->e.seginfo->CodeBuffer;
 			
-			sprintf(buf, "%s%d", labelstr, literalCnt);
+			sprintf(buf, "%s%d", labelstr, hashpjw( tokenarray[i].string_ptr ));
 
 			if (pDest != 0 && write_to_file == TRUE)
 			{
-				literalCnt++;
-				pDest += pos;
+				/* Does this literal already exist? */
+				lbl = SymFind( buf );
+				if (lbl == NULL || lbl->state == SYM_UNDEFINED)
+				{
+					lbl = SymLookup(buf);
+					literalCnt++;
+					pDest += pos;
+					lbl->value = pos;
+					lbl->offset = pos;
+				}
+				else
+				{
+					pDest += lbl->offset;
+				}
 
-				lbl = SymLookup(buf);
-				lbl->value = pos;
-				lbl->offset = pos;
+				for (j = 0; j < slen; j++)
+				{
+					*pDest++ = *pSrc++;
+				}
+				*pDest++ = 0;
+
+				lbl->segment = currs;
 				lbl->isdefined = TRUE;
 				lbl->mem_type = MT_BYTE;
 				lbl->state = SYM_INTERNAL;
-				lbl->segment = currs;
 				lbl->first_size = 2;
 				lbl->Ofssize = 2;
 				lbl->isfunc = 1;
@@ -1404,15 +1443,9 @@ static int PushInvokeParam( int i, struct asm_tok tokenarray[], struct dsym *pro
 				lbl->sfunc_ptr = 1;
 				lbl->langtype = LANG_FASTCALL;
 				lbl->cvtyperef = 1;
-
-				for (j = 0; j < slen; j++)
-				{
-					*pDest++ = *pSrc++;
-				}
-				*pDest++ = 0;
-
+	
 			}
-
+			
 			currs->e.seginfo->current_loc += (slen + 1);
 			currs->e.seginfo->bytes_written += (slen + 1);
 			currs->e.seginfo->written = TRUE;
@@ -1448,20 +1481,38 @@ static int PushInvokeParam( int i, struct asm_tok tokenarray[], struct dsym *pro
 			pSrc = tokenarray[i+1].string_ptr;
 			pDest = (char*)currs->e.seginfo->CodeBuffer;
 
-			sprintf(buf, "%s%d", labelstr, literalCnt);
+			sprintf(buf, "%s%d", labelstr, hashpjw(tokenarray[i].string_ptr));
 
 			if (pDest != 0 && write_to_file == TRUE)
 			{
-				literalCnt++;
-				pDest += pos;
 
-				lbl = SymLookup(buf);
-				lbl->value = pos;
-				lbl->offset = pos;
+				/* Does this literal already exist? */
+				lbl = SymFind(buf);
+				if (lbl == NULL || lbl->state == SYM_UNDEFINED)
+				{
+					lbl = SymLookup(buf);
+					literalCnt++;
+					pDest += pos;
+					lbl->value = pos;
+					lbl->offset = pos;
+				}
+				else
+				{
+					pDest += lbl->offset;
+				}
+
+				for (j = 0; j < slen; j++)
+				{
+					*pDest++ = *pSrc++;
+					*pDest++ = 0;
+				}
+				*pDest++ = 0;
+				*pDest++ = 0;
+
+				lbl->segment = currs;
 				lbl->isdefined = TRUE;
 				lbl->mem_type = MT_BYTE;
 				lbl->state = SYM_INTERNAL;
-				lbl->segment = currs;
 				lbl->first_size = 2;
 				lbl->Ofssize = 2;
 				lbl->isfunc = 1;
@@ -1472,15 +1523,6 @@ static int PushInvokeParam( int i, struct asm_tok tokenarray[], struct dsym *pro
 				lbl->sfunc_ptr = 1;
 				lbl->langtype = LANG_FASTCALL;
 				lbl->cvtyperef = 1;
-
-				for (j = 0; j < slen; j++)
-				{
-					*pDest++ = *pSrc++;
-					*pDest++ = 0;
-				}
-				*pDest++ = 0;
-				*pDest++ = 0;
-
 			}
 			
 			currs->e.seginfo->current_loc += (slen * 2 + 2);

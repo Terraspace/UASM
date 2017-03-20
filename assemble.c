@@ -307,6 +307,41 @@ void FillDataBytes( unsigned char byte, int len )
         OutputByte( byte );
 }
 
+void OutputSegmentBytes(struct dsym* segg, const unsigned char *pbytes, int len, struct fixup *fixup)
+/***************************************************************************/
+{
+	if (write_to_file == TRUE) {
+		uint_32 idx = segg->e.seginfo->current_loc - segg->e.seginfo->start_loc;
+#if 0 /* def DEBUG_OUT */
+		if (CurrSeg->e.seginfo->current_loc < CurrSeg->e.seginfo->start_loc)
+			_asm int 3;
+#endif
+		/**/myassert(segg->e.seginfo->current_loc >= segg->e.seginfo->start_loc);
+		if (Options.output_format == OFORMAT_OMF && ((idx + len) > MAX_LEDATA_THRESHOLD)) {
+			omf_FlushCurrSeg();
+			idx = segg->e.seginfo->current_loc - segg->e.seginfo->start_loc;
+		}
+		if (fixup)
+			store_fixup(fixup, segg, (int_32 *)pbytes);
+		//DebugMsg(("OutputBytes: buff=%p, idx=%" I32_SPEC "X, byte=%X\n", CurrSeg->e.seginfo->CodeBuffer, idx, *pbytes ));
+		memcpy(&segg->e.seginfo->CodeBuffer[idx], pbytes, len);
+	}
+#if 1
+	/* check this in pass 1 only */
+	else if (segg->e.seginfo->current_loc < segg->e.seginfo->start_loc) {
+		DebugMsg(("OutputBytes: segment start loc changed from %" I32_SPEC "Xh to %" I32_SPEC "Xh\n",
+			segg->e.seginfo->start_loc,
+			segg->e.seginfo->current_loc));
+		segg->e.seginfo->start_loc = segg->e.seginfo->current_loc;
+	}
+#endif
+	segg->e.seginfo->current_loc += len;
+	segg->e.seginfo->bytes_written += len;
+	segg->e.seginfo->written = TRUE;
+	if (segg->e.seginfo->current_loc > segg->sym.max_offset)
+		segg->sym.max_offset = segg->e.seginfo->current_loc;
+}
+
 /*
  * this function is to output (small, <= 8) amounts of bytes which must
  * not be separated ( for omf, because of fixups )
