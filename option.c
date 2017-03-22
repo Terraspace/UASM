@@ -12,9 +12,12 @@
 
 #include "globals.h"
 #include "memalloc.h"
+#include "macrolib.h"
 #include "parser.h"
 #include "reswords.h"
 #include "expreval.h"
+#include "tokenize.h"
+
 #if STACKBASESUPP
 #include "equate.h"
 #endif
@@ -100,6 +103,8 @@ OPTFUNC( SetZeroLocals )
 OPTFUNC( SetArch )
 {
 	int i = *pi;
+	struct asym *archSym = SymFind("@Arch");
+
 	if (tokenarray[i].token == T_ID) {
 		if (0 == _stricmp(tokenarray[i].string_ptr, "SSE")) {
 			MODULEARCH = ARCH_SSE;
@@ -112,6 +117,7 @@ OPTFUNC( SetArch )
 			strcpy(MOVE_DOUBLE, "movsd");
 			strcpy(MOVE_SIMD_DWORD, "movd");
 			strcpy(MOVE_SIMD_QWORD, "movq");
+			archSym->value = ARCH_SSE;
 		}
 		else if (0 == _stricmp(tokenarray[i].string_ptr, "AVX")) {
 			MODULEARCH = ARCH_AVX;
@@ -124,6 +130,7 @@ OPTFUNC( SetArch )
 			strcpy(MOVE_DOUBLE, "vmovsd");
 			strcpy(MOVE_SIMD_DWORD, "vmovd");
 			strcpy(MOVE_SIMD_QWORD, "vmovq");
+			archSym->value = ARCH_AVX;
 		}
 		else {
 			return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
@@ -135,6 +142,9 @@ OPTFUNC( SetArch )
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 	}
 	*pi = i;
+
+	
+
 	return( NOT_ERROR );
 }
 
@@ -1131,6 +1141,7 @@ ret_code OptionDirective( int i, struct asm_tok tokenarray[] )
         DebugMsg(( "option syntax error: >%s<\n", tokenarray[i].tokpos ));
         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
     }
+
     return( NOT_ERROR );
 }
 

@@ -600,7 +600,7 @@ ret_code StoreMacro( struct dsym *macro, int i, struct asm_tok tokenarray[], boo
 }
 
 /* Used to compile built-in macros */
-ret_code StoreAutoMacro(struct dsym *macro, int i, struct asm_tok tokenarray[], bool store_data, char *macCode[])
+ret_code StoreAutoMacro(struct dsym *macro, int i, struct asm_tok tokenarray[], bool store_data, char *macCode[], int macLine, int macLen)
 /********************************************************************************************/
 {
 	struct macro_info   *info;
@@ -618,9 +618,10 @@ ret_code StoreAutoMacro(struct dsym *macro, int i, struct asm_tok tokenarray[], 
 	struct asm_tok      tok[2];
 	struct mname_list   mnames[MAX_PLACEHOLDERS]; /* there are max 255 placeholders */
 	char                buffer[MAX_LINE_LEN];
-	int					macLine = 0;
+	int					macCurLine = macLine;
+	int					macCnt = macLen;
 
-	DebugMsg1(("StoreMacro(%s, i=%u, store_data=%u) enter, params=>%s<\n", macro->sym.name, i, store_data, tokenarray[i].tokpos));
+	DebugMsg1(("StoreAutoMacro(%s, i=%u, store_data=%u) enter, params=>%s<\n", macro->sym.name, i, store_data, tokenarray[i].tokpos));
 	info = macro->e.macroinfo;
 
 	if (store_data) {
@@ -735,10 +736,10 @@ ret_code StoreAutoMacro(struct dsym *macro, int i, struct asm_tok tokenarray[], 
 	nextline = &info->data;
 
 	/* now read in the lines of the macro, and store them if store_data is TRUE */
-	for (; ; ) {
+	while (macCnt-- >= 0) {
 		char *ptr;
 
-		src = macCode[macLine++];
+		src = macCode[macCurLine++];
 		if (src == NULL) {
 			/* v2.11: fatal error if source ends without an ENDM found */
 			//EmitError( UNMATCHED_MACRO_NESTING );
@@ -933,7 +934,6 @@ ret_code StoreAutoMacro(struct dsym *macro, int i, struct asm_tok tokenarray[], 
 }
 
 /* create a macro symbol */
-
 struct dsym *CreateMacro( const char *name )
 /******************************************/
 {
@@ -956,7 +956,6 @@ struct dsym *CreateMacro( const char *name )
 }
 
 /* clear macro data */
-
 void ReleaseMacroData( struct dsym *macro )
 /*****************************************/
 {

@@ -27,50 +27,63 @@
 #include "linnum.h"
 #include "cpumodel.h"
 #include "lqueue.h"
-
 #include "orgfixup.h"
-
 #include "macrolib.h"
 
-/* Compile a library of built-in macros */
-void CompileMacros( void )
+#define MACRO_COUNT 10
+
+/* MACRO names */
+char *macName[] = {
+	"@CSTR", "@WSTR", "FP4", "FP8", "FP10", "LOADSS", "LOADSD", "LOADPS", "MEMALIGN", "RV"
+};
+
+/* MACRO definitions */
+char *macDef[] = {
+	"@CSTR macro Text:VARARG",
+	"@WSTR macro Text:VARARG",
+	"FP4 macro value:REQ",
+	"FP8 macro value:REQ",
+	"FP10 macro value:REQ",
+	"LOADSS MACRO reg, val",
+	"LOADSD MACRO reg, val",
+	"LOADPS MACRO reg, val",
+	"MEMALIGN MACRO reg, number",
+	"RV MACRO FuncName:REQ, args:VARARG"
+};
+
+/* 
+Create the built-in macro library 
+This is called once initially as the macros always exist
+*/
+void InitAutoMacros(void)
 {
-	char *macDef = "@CSTR macro Text:VARARG";
-	char *macCode[] = { "local szText", ".data", "szText db Text,0", ".code", "exitm <szText>", "endm", NULL };
-	struct dsym *mac = CreateMacro("@CSTR");
+	struct dsym *mac;
+	uint_32 i = 0;
+	uint_32 j = 0;
+	uint_32 k = 0;
+	uint_32 start_pos = 0;
+	char  *macCodePtr[MACRO_COUNT];
 
-	char *macDef2 = "@WSTR macro Text:VARARG";
-	char *macCode2[] = { "local szText", ".data", "szText dw Text,0", ".code", "exitm <szText>", "endm", NULL };
-	struct dsym *mac2 = CreateMacro("@WSTR");
+	uint_32 macroLen[] = { 6, 6, 7, 7, 7, 8, 8, 10, 3, 7 };
+	char *macCode[] = {
+		"local szText", ".data", "szText db Text,0", ".code", "exitm <szText>", "endm", NULL,
+		"local szText", ".data", "szText dw Text,0", ".code", "exitm <szText>", "endm", NULL,
+		"local vname", ".data", "align 4", "vname REAL4 value", ".code", "exitm <vname>", "endm", NULL,
+		"local vname", ".data", "align 8", "vname REAL8 value", ".code", "exitm <vname>", "endm", NULL,
+		"local vname", ".data", "align 8", "vname REAL10 value", ".code", "exitm <vname>", "endm", NULL,
+		"IF @Arch EQ 0", "mov eax, val", "movd reg, eax", "ELSE", "mov eax, val", "vmovd reg, eax", "ENDIF", "ENDM", NULL,
+		"IF @Arch EQ 0", "mov rax, val", "movq reg, rax", "ELSE", "mov rax, val", "vmovq reg, rax", "ENDIF", "ENDM", NULL,
+		"IF @Arch EQ 0", "mov eax, val", "movd reg, eax", "pshufd reg, 0", "ELSE", "mov eax, val", "vmovd reg, eax", "vpshufd reg, 0", "ENDIF", "ENDM", NULL,
+		"add reg, number - 1", "and reg, -number", "ENDM", NULL,
+		"arg equ <invoke FuncName>", "FOR var, <args>", "arg CATSTR arg, <, expand_prefix(reparg(var))>", "ENDM", "arg", "EXITM <rax>", "ENDM", NULL
+	};
 
-	char *macDef1 = "@FP4 macro value:REQ";
-	char *macCode1[] = { "local vname", ".data","align 4", "vname REAL4 value", ".code", "exitm <vname>", "endm", NULL };
-	struct dsym *mac1 = CreateMacro("@FP4");
-
-	char *macDef3 = "@FP8 macro value:REQ";
-	char *macCode3[] = { "local vname", ".data","align 8", "vname REAL8 value", ".code", "exitm <vname>", "endm", NULL };
-	struct dsym *mac3 = CreateMacro("@FP8");
-
-	char *macDef4 = "@FP10 macro value:REQ";
-	char *macCode4[] = { "local vname", ".data","align 8", "vname REAL10 value", ".code", "exitm <vname>", "endm", NULL };
-	struct dsym *mac4 = CreateMacro("@FP10");
-
-	/* ASCIIZ String Inline MACRO */
-	ModuleInfo.token_count = Tokenize(macDef, 0, ModuleInfo.tokenarray, 0);
-	StoreAutoMacro(mac, 2, ModuleInfo.tokenarray, TRUE, macCode);
-
-	/* Unicode String Inline MACRO */
-	ModuleInfo.token_count = Tokenize(macDef2, 0, ModuleInfo.tokenarray, 0);
-	StoreAutoMacro(mac2, 2, ModuleInfo.tokenarray, TRUE, macCode2);
-	
-	/* FP4 and FP8 */
-	ModuleInfo.token_count = Tokenize(macDef1, 0, ModuleInfo.tokenarray, 0);
-	StoreAutoMacro(mac1, 2, ModuleInfo.tokenarray, TRUE, macCode1);
-	//-----
-	ModuleInfo.token_count = Tokenize(macDef3, 0, ModuleInfo.tokenarray, 0);
-	StoreAutoMacro(mac3, 2, ModuleInfo.tokenarray, TRUE, macCode3);
-	//-----
-	ModuleInfo.token_count = Tokenize(macDef4, 0, ModuleInfo.tokenarray, 0);
-	StoreAutoMacro(mac4, 2, ModuleInfo.tokenarray, TRUE, macCode4);
-
+	/* Compile Macros */
+	for (i = 0; i < MACRO_COUNT; i++)
+	{
+		mac = CreateMacro(macName[i]);
+		ModuleInfo.token_count = Tokenize(macDef[i], 0, ModuleInfo.tokenarray, 0);
+		StoreAutoMacro(mac, 2, ModuleInfo.tokenarray, TRUE, macCode, start_pos, macroLen[i]);
+		start_pos += macroLen[i] + 1;
+	}
 }

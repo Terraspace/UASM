@@ -1134,9 +1134,7 @@ static int OnePass( void )
 
 	/* Process our built-in macro library to make it available to the rest of the source */
 	if (Parse_Pass == PASS_1)
-	{	
-		CompileMacros();
-	}
+		InitAutoMacros();
 
 #if FASTPASS
     StoreState = FALSE;

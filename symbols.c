@@ -142,6 +142,7 @@ static const struct eqitem eqtab[] = {
     { "$",         0,                   UpdateCurPC, &symPC },
     { "@Line",     0,                   UpdateLineNumber, &LineCur },
 	{ "@ProcLine", 0,                   NULL, NULL },
+	{ "@Arch",     ARCH_AVX,            NULL, NULL },
     { "@WordSize", 0,                   UpdateWordSize, NULL }, /* must be last (see SymInit()) */
 };
 
@@ -448,7 +449,7 @@ static void free_ext( struct asym *sym )
 }
 
 /* free a symbol.
- * the symbol is no unlinked from hash tables chains,
+ * the symbol is not unlinked from hash tables chains,
  * hence it is assumed that this is either not needed
  * or done by the caller.
  */
