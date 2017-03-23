@@ -267,6 +267,8 @@ ret_code IncBinDirective( int i, struct asm_tok tokenarray[] )
 		sz = ftell( file ) - fileoffset; // sz = total data size to load into segment/section.
 		fseek( file, 0L, SEEK_SET );
 		pBinData = (unsigned char*)malloc(sz);
+		if ( fileoffset )
+			fseek( file, fileoffset, SEEK_SET );  /* fixme: use fseek64() */
 		result = fread(pBinData, sz, 1, file);
 		OutputBinBytes(pBinData, sz);
 
