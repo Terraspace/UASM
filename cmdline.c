@@ -144,6 +144,7 @@ struct global_options Options = {
     /* cpu                   */     P_86,
     /* fastcall type         */     FCT_MSC,
     /* syntax check only     */     FALSE,
+	/* No Macro Lib          */     FALSE,
 #if MANGLERSUPP
     /* naming_convention*/          NC_DO_NOTHING,
 #endif
@@ -398,6 +399,11 @@ static void OPTQUAL Set_AVX(void)
 	strcpy(MOVE_SIMD_QWORD, "vmovq");
 }
 
+static void OPTQUAL Set_NOMLIB(void)
+{
+	Options.nomlib = TRUE;
+}
+
 static void OPTQUAL Set_Zd( void ) { Options.line_numbers = TRUE; }
 static void OPTQUAL Set_Zi( void )
 {
@@ -561,6 +567,7 @@ static struct cmdloption const cmdl_options[] = {
     { "Cx",     0,        Set_Cx },
 	{ "archSSE",0,        Set_SSE },
 	{ "archAVX",0,        Set_AVX },
+	{ "nomlib", 0,        Set_NOMLIB },
 #ifdef DEBUG_OUT
     { "ce",     0,        Set_ce },
 #endif

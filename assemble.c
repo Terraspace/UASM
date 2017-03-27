@@ -1133,7 +1133,7 @@ static int OnePass( void )
         RunLineQueue();
 
 	/* Process our built-in macro library to make it available to the rest of the source */
-	if (Parse_Pass == PASS_1)
+	if (Parse_Pass == PASS_1 && Options.nomlib == FALSE)
 		InitAutoMacros();
 
 #if FASTPASS

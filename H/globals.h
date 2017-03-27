@@ -193,11 +193,11 @@
 
 /* HJWasm version info */
 #ifdef _WIN64
-#define _HJWASM_VERSION_STR_ "2.22"
+#define _HJWASM_VERSION_STR_ "2.23"
 #else
-#define _HJWASM_VERSION_STR_ "2.22"
+#define _HJWASM_VERSION_STR_ "2.23"
 #endif
-#define _HJWASM_VERSION_INT_ 222
+#define _HJWASM_VERSION_INT_ 223
 #define _HJWASM_VERSION_SUFFIX_ "pre"
 #define _HJWASM_VERSION_ _HJWASM_VERSION_STR_ //_HJWASM_VERSION_SUFFIX_
 
@@ -652,6 +652,7 @@ struct global_options {
     enum cpu_info cpu;                   /* -0|1|2|3|4|5|6 & -fp{0|2|3|5|6|c} option */
     enum fastcall_type fctype;           /* -zf0 & -zf1 option */
     bool        syntax_check_only;       /* -Zs option */
+	bool		nomlib;					 /* -nomlib option */
 #if MANGLERSUPP
     enum naming_types naming_convention; /* OW naming peculiarities */
 #endif
