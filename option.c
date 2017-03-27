@@ -952,7 +952,7 @@ OPTFUNC( SetStackBase )
 {
     int i = *pi;
 
-    if ( tokenarray[i].token != T_REG || tokenarray[i].tokval != T_RSP ) {
+    if ( tokenarray[i].token != T_REG && (tokenarray[i].tokval != T_RSP || tokenarray[i].tokval != T_ESP || tokenarray[i].tokval != T_RBP)) {
         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
     }
     if ( !( GetSflagsSp( tokenarray[i].tokval ) & SFR_IREG ) ) {

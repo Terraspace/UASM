@@ -1859,9 +1859,15 @@ static int PushInvokeParam( int i, struct asm_tok tokenarray[], struct dsym *pro
                         AddLineQueueX( " push word ptr %s+%u", fullparam, NUMQUAL asize-2 );
                         asize -= 2;
                     } else {
-                        AddLineQueueX( " push %r ptr %s+%u", dw, fullparam, NUMQUAL asize-pushsize );
-                        asize -= pushsize;
-                    }
+                        
+						/* v2.23 if stack base is ESP */
+						if (CurrProc && ModuleInfo.basereg[ModuleInfo.Ofssize] == T_ESP)
+							AddLineQueueX(" push %r ptr %s+%u", dw, fullparam, NUMQUAL pushsize);
+						else
+							AddLineQueueX(" push %r ptr %s+%u", dw, fullparam, NUMQUAL asize - pushsize);
+						asize -= pushsize;
+
+					}
                 }
                 //return( NOT_ERROR );
 
@@ -2444,15 +2450,56 @@ ret_code InvokeDirective( int i, struct asm_tok tokenarray[] )
         sym->langtype == LANG_C ||
         ( sym->langtype == LANG_FASTCALL && porder ) || 
         (sym->langtype == LANG_VECTORCALL  && porder) ||
-        sym->langtype == LANG_SYSCALL ) {
-        for ( ; curr ; curr = curr->nextparam ) {
+        sym->langtype == LANG_SYSCALL ) 
+	{
+		
+		/* v2.23 if stack base is ESP */
+		int	total = 0;
+		int	offset;
+		struct	dsym *p;
+
+        for ( ; curr ; curr = curr->nextparam ) 
+		{
             numParam--;
-            if ( PushInvokeParam( i, tokenarray, proc, curr, numParam, &r0flags ) == ERROR ) {
+            if ( PushInvokeParam( i, tokenarray, proc, curr, numParam, &r0flags ) == ERROR ) 
+			{
                 DebugMsg(("InvokeDir: PushInvokeParam(curr=%u, i=%u, numParam=%u) failed\n", curr, i, numParam));
                 EmitErr( TOO_FEW_ARGUMENTS_TO_INVOKE, sym->name );
             }
-        }
-    } else {
+
+			if (CurrProc && ModuleInfo.basereg[ModuleInfo.Ofssize] == T_ESP) 
+			{
+				/* The symbol offset is reset after the loop.
+				* To have any effect the push-lines needs to
+				* be processed here for each argument.
+				*/
+				RunLineQueue();
+
+				/* set push size to DWORD/QWORD */
+				offset = curr->sym.total_size;
+				if (offset < 4)
+					offset = 4;
+				if (offset > 4)
+					offset = 8;
+				total += offset;
+
+				/* Update arguments in the current proc if any */
+				for (p = CurrProc->e.procinfo->paralist; p; p = p->nextparam)
+					if (p->sym.state != SYM_TMACRO)
+						p->sym.offset += offset;
+			}
+		}
+		if (total) 
+		{
+			for (p = CurrProc->e.procinfo->paralist; p; p = p->nextparam) 
+			{
+				if (p->sym.state != SYM_TMACRO)
+					p->sym.offset -= total;
+			}
+		}
+    } 
+	else 
+	{
         for ( numParam = 0 ; curr && curr->sym.is_vararg == FALSE; curr = curr->nextparam, numParam++ ) {
             if ( PushInvokeParam( i, tokenarray, proc, curr, numParam, &r0flags ) == ERROR ) {
                 DebugMsg(("InvokeDir: PushInvokeParam(curr=%u, i=%u, numParam=%u) failed\n", curr, i, numParam));
