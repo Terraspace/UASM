@@ -845,7 +845,7 @@ OPTFUNC(SetWin64)
 		ModuleInfo.frame_auto = 1;
 		opndx.llvalue = 3;
 	}*/
-	if (opndx.llvalue == 3)
+	if (opndx.llvalue == 3 && ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RSP)
 	{
 		opndx.llvalue = 11;
 		if (ModuleInfo.basereg[ModuleInfo.Ofssize] != T_RSP) {

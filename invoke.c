@@ -1408,7 +1408,7 @@ static int PushInvokeParam( int i, struct asm_tok tokenarray[], struct dsym *pro
 
 			if (pDest != 0 && write_to_file == TRUE)
 			{
-				/* Does this literal already exist? */
+				// Does this literal already exist? 
 				lbl = SymFind( buf );
 				if (lbl == NULL || lbl->state == SYM_UNDEFINED)
 				{
@@ -1441,9 +1441,9 @@ static int PushInvokeParam( int i, struct asm_tok tokenarray[], struct dsym *pro
 				lbl->max_offset = 1;
 				lbl->debuginfo = 1;
 				lbl->sfunc_ptr = 1;
-				lbl->langtype = LANG_FASTCALL;
+				lbl->langtype = LANG_NONE;
 				lbl->cvtyperef = 1;
-	
+				lbl->ispublic = 0;
 			}
 			
 			currs->e.seginfo->current_loc += (slen + 1);
@@ -1452,8 +1452,7 @@ static int PushInvokeParam( int i, struct asm_tok tokenarray[], struct dsym *pro
 			if (currs->e.seginfo->current_loc > currs->sym.max_offset)
 				currs->sym.max_offset = currs->e.seginfo->current_loc;
 
-			/* invoke parameter is a raw ascii string, 
-			   substitute in the our new label pointing to this raw string in .data segment. */
+			// invoke parameter is a raw ascii string, substitute in the our new label pointing to this raw string in .data segment. 
 			sprintf( stringparam[i], "%s", buf );
 			isString[i] = TRUE;
 
@@ -1486,7 +1485,7 @@ static int PushInvokeParam( int i, struct asm_tok tokenarray[], struct dsym *pro
 			if (pDest != 0 && write_to_file == TRUE)
 			{
 
-				/* Does this literal already exist? */
+				// Does this literal already exist? 
 				lbl = SymFind(buf);
 				if (lbl == NULL || lbl->state == SYM_UNDEFINED)
 				{
@@ -1515,14 +1514,15 @@ static int PushInvokeParam( int i, struct asm_tok tokenarray[], struct dsym *pro
 				lbl->state = SYM_INTERNAL;
 				lbl->first_size = 2;
 				lbl->Ofssize = 2;
-				lbl->isfunc = 1;
 				lbl->total_length = 1;
 				lbl->total_size = 1;
 				lbl->max_offset = 1;
 				lbl->debuginfo = 1;
 				lbl->sfunc_ptr = 1;
-				lbl->langtype = LANG_FASTCALL;
+				lbl->langtype = LANG_NONE;
 				lbl->cvtyperef = 1;
+				lbl->ispublic = 0;
+				lbl->isfunc = 1;
 			}
 			
 			currs->e.seginfo->current_loc += (slen * 2 + 2);
@@ -1531,8 +1531,7 @@ static int PushInvokeParam( int i, struct asm_tok tokenarray[], struct dsym *pro
 			if (currs->e.seginfo->current_loc > currs->sym.max_offset)
 				currs->sym.max_offset = currs->e.seginfo->current_loc;
 
-			/* invoke parameter is a raw ascii string,
-			substitute in the our new label pointing to this raw string in .data segment. */
+			// invoke parameter is a raw ascii string, substitute in the our new label pointing to this raw string in .data segment.
 			sprintf(stringparam[i], "%s", buf);
 			isString[i] = TRUE;
 

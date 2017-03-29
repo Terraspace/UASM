@@ -137,6 +137,8 @@ static  int ms64_pcheck( struct dsym *, struct dsym *, int * );
 static void ms64_return( struct dsym *, char * );
 #endif
 
+static bool check_proc_fpo(struct proc_info *);
+
 /* table of fastcall types.
  * must match order of enum fastcall_type!
  * also see table in mangle.c!
@@ -645,6 +647,7 @@ static ret_code ParseParams( struct dsym *proc, int i, struct asm_tok tokenarray
     int             curr;
 	int             paracount = 0;
 	int             tmp = 0;
+	uint_16         cnt = 0;
 
     /*
      * find "first" parameter ( that is, the first to be pushed in INVOKE ).
@@ -979,10 +982,10 @@ static ret_code ParseParams( struct dsym *proc, int i, struct asm_tok tokenarray
 		else if (proc->e.procinfo->basereg == T_RBP && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP) && (ModuleInfo.win64_flags & W64F_SAVEREGPARAMS))
 		{
 			offset = ((2 + (proc->sym.mem_type == MT_FAR ? 1 : 0)) * CurrWordSize);
-			//if( (proc->e.procinfo->locallist != 0) || !(proc->e.procinfo->localsize) )
-			//{
-				//offset += 8;
-			//}
+			if( (proc->e.procinfo->locallist != 0) || !(proc->e.procinfo->localsize) )
+			{
+				offset += 8;
+			}
 		}
 		else if (proc->e.procinfo->basereg == T_RBP && !(ModuleInfo.win64_flags & W64F_AUTOSTACKSP) && (ModuleInfo.win64_flags & W64F_SAVEREGPARAMS))
 		{
@@ -1012,6 +1015,16 @@ static ret_code ParseParams( struct dsym *proc, int i, struct asm_tok tokenarray
 			offset = ((2 + (proc->sym.mem_type == MT_FAR ? 1 : 0)) * CurrWordSize);
 		else
 			offset = ((2 + (proc->sym.mem_type == MT_FAR ? 1 : 0)) * CurrWordSize);
+
+		/* USES pushes offsets out in this case, reverse it */
+		if (proc->e.procinfo->regslist)
+		{
+			cnt = *(proc->e.procinfo->regslist);
+			if (proc->e.procinfo->basereg == T_RBP && cnt > 0)
+			{
+				offset -= (int)cnt * 8;
+			}
+		}
 
         /* now calculate the [E|R]BP offsets */
 
@@ -2501,70 +2514,68 @@ static void win64_StoreRegHome(struct proc_info *info)
   }
   return;
 }
-/* win64 default prologue when PROC FRAME and
- * OPTION FRAME:AUTO is set */
-
-static void write_win64_default_prologue( struct proc_info *info )
+/* win64 default prologue when PROC FRAME and  OPTION FRAME:AUTO is set */
+static void write_win64_default_prologue(struct proc_info *info)
 /****************************************************************/
 {
-    uint_16             *regist;
-    const char * const  *ppfmt;
-    struct    dsym      *param;
-    int                 cntxmm;
-    unsigned char xyused[6];  /* flags for used sse registers in vectorcall */
-    unsigned char       xreg;
-    unsigned char       xsize;
-    unsigned char       xmmflag = 1;
-    unsigned char       ymmflag = 0;
+	uint_16             *regist;
+	const char * const  *ppfmt;
+	struct    dsym      *param;
+	int                 cntxmm;
+	unsigned char xyused[6];  /* flags for used sse registers in vectorcall */
+	unsigned char       xreg;
+	unsigned char       xsize;
+	unsigned char       xmmflag = 1;
+	unsigned char       ymmflag = 0;
 #if EVEXSUPP
-    unsigned char       zmmflag = 0;
+	unsigned char       zmmflag = 0;
 #endif
-    int                 vsize = 0;
-    int                 vectstart = 0;
-    int                 n;
-    int                 m;
-    int                 i;
-    int                 j;
-    int                 cnt;
-    int                 homestart;
-    int                 stackSize;
-    int                 resstack = ( ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) ? sym_ReservedStack->value : 0 );
+	int                 vsize = 0;
+	int                 vectstart = 0;
+	int                 n;
+	int                 m;
+	int                 i;
+	int                 j;
+	int                 cnt;
+	int                 homestart;
+	int                 stackSize;
+	int                 resstack = ((ModuleInfo.win64_flags & W64F_AUTOSTACKSP) ? sym_ReservedStack->value : 0);
 	struct dsym     *paranode;
 	int pushed = 0;
-	
+
 	if (Parse_Pass == PASS_1)
 	{
 		info->vsize = 0;
 		info->xmmsize = 0;
 	}
 
-    DebugMsg1(("write_win64_default_prologue enter\n"));
-    memset(xyused, 0, 6);
-    info->vecused = 0;
-    XYZMMsize = 16;
-    if ( ModuleInfo.win64_flags & W64F_SAVEREGPARAMS )
-        win64_SaveRegParams( info );
-    if (ModuleInfo.win64_flags & W64F_SMART) 
-      win64_StoreRegHome(info);
+	DebugMsg1(("write_win64_default_prologue enter\n"));
+	memset(xyused, 0, 6);
+	info->vecused = 0;
+	XYZMMsize = 16;
+	if (ModuleInfo.win64_flags & W64F_SAVEREGPARAMS)
+		win64_SaveRegParams(info);
+	if (ModuleInfo.win64_flags & W64F_SMART)
+		win64_StoreRegHome(info);
 
 	/*
-     * PUSH RBP
-     * .PUSHREG RBP
-     * MOV RBP, RSP
-     * .SETFRAME RBP, 0
-     */
+	 * PUSH RBP
+	 * .PUSHREG RBP
+	 * MOV RBP, RSP
+	 * .SETFRAME RBP, 0
+	 */
 
 #if STACKBASESUPP
-	 
+
 	info->pushed_reg = 0; /*count of pushed registers */
 
 	 /* info->locallist tells whether there are local variables ( info->localsize doesn't! ) */
 	if (info->regslist != 0)
 		pushed = *(info->regslist);
 
-    if ( info->fpo || ( info->parasize == 0 && info->locallist == NULL ) ) {
-        DebugMsg1(("write_win64_default_prologue: no frame register needed\n"));
-        //sizestd += 8; /* v2.12: obsolete */
+	if (info->fpo || (info->parasize == 0 && info->locallist == NULL)) {
+		DebugMsg1(("write_win64_default_prologue: no frame register needed\n"));
+		//sizestd += 8; /* v2.12: obsolete */
 		// If we're using RBP as the base/frame register and no frame was required, we need to sub RSP,8 to ensure the
 		// stack pointer remains aligned 16.
 		//if ( info->basereg != T_RSP && ( ( pushed>0 && (pushed & 1) == 1 ) || pushed==0 ) )
@@ -2572,21 +2583,27 @@ static void write_win64_default_prologue( struct proc_info *info )
 		//	AddLineQueueX("sub %r, %u", T_RSP, CurrWordSize);
 		//	pushed = 100;
 		//}
-	} 
-	else 
+	}
+	else
 	{
-        AddLineQueueX( "push %r", info->basereg );
-        AddLineQueueX( "%r %r", T_DOT_PUSHREG, info->basereg );
-        AddLineQueueX( "mov %r, %r", info->basereg, T_RSP );
-        AddLineQueueX( "%r %r, 0", T_DOT_SETFRAME, info->basereg );
-		info->pushed_reg += 1;
-    }
+		if (!check_proc_fpo(info))
+		{
+			AddLineQueueX("push %r", info->basereg);
+			AddLineQueueX("%r %r", T_DOT_PUSHREG, info->basereg);
+			AddLineQueueX("mov %r, %r", info->basereg, T_RSP);
+			AddLineQueueX("%r %r, 0", T_DOT_SETFRAME, info->basereg);
+			info->pushed_reg += 1;
+		}
+	}
 #else
-    AddLineQueueX( "push %r", basereg[USE64] );
-    AddLineQueueX( "%r %r", T_DOT_PUSHREG, basereg[USE64] );
-    AddLineQueueX( "mov %r, %r", basereg[USE64], T_RSP );
-    AddLineQueueX( "%r %r, 0", T_DOT_SETFRAME, basereg[USE64] );
-	info->pushed_reg += 1;
+	if (!check_proc_fpo(info))
+	{
+		AddLineQueueX("push %r", basereg[USE64]);
+		AddLineQueueX("%r %r", T_DOT_PUSHREG, basereg[USE64]);
+		AddLineQueueX("mov %r, %r", basereg[USE64], T_RSP);
+		AddLineQueueX("%r %r, 0", T_DOT_SETFRAME, basereg[USE64]);
+		info->pushed_reg += 1;
+	}
 #endif
 	//info->pushed_reg = 0; /*count of pushed registers */
 	if (ModuleInfo.win64_flags & W64F_SMART)
@@ -3537,9 +3554,31 @@ static void pop_register( uint_16 *regist )
 
 #if AMD64_SUPPORT
 
-/* Win64 default epilogue if PROC FRAME and OPTION FRAME:AUTO is set
- */
+/* Check to see if a proc can have FPO enabled */
+static bool check_proc_fpo(struct proc_info *info)
+{
+	struct dsym *paracurr;
+	int usedParams = 0;
+	int usedLocals = 0;
 
+	for (paracurr = info->paralist; paracurr; paracurr = paracurr->nextparam)
+	{
+		if (paracurr->sym.used)
+			usedParams++;
+	}
+	for (paracurr = info->locallist; paracurr; paracurr = paracurr->nextlocal)
+	{
+		if (paracurr->sym.used)
+			usedLocals++;
+	}
+
+	if (usedLocals > 0 || usedParams > 0 || Parse_Pass == PASS_1)
+		return FALSE;
+
+	return TRUE;
+}
+
+/* Win64 default epilogue if PROC FRAME and OPTION FRAME:AUTO is set */
 static void write_win64_default_epilogue( struct proc_info *info )
 /****************************************************************/
 {
@@ -3672,10 +3711,11 @@ static void write_win64_default_epilogue( struct proc_info *info )
       }
     }
     //if ( !info->fpo )
-    if ( GetRegNo( info->basereg ) != 4 && ( info->parasize != 0 || info->locallist != NULL ) )
+    if (!check_proc_fpo(info) && GetRegNo( info->basereg ) != 4 && ( info->parasize != 0 || info->locallist != NULL ) )
         AddLineQueueX( "pop %r", info->basereg );
 #else
-    AddLineQueueX( "pop %r", basereg[ModuleInfo.Ofssize] );
+    if (!check_proc_fpo( info ))
+		AddLineQueueX( "pop %r", basereg[ModuleInfo.Ofssize] );
 #endif
 
     return;

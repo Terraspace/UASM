@@ -211,7 +211,7 @@
 #define NULLC  '\0'
 //#define NULLS  ""
 
-#define is_valid_id_char( ch )  ( isalnum(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' )
+#define is_valid_id_char( ch )  ( isalnum(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' || ((unsigned char)ch > 127 && (unsigned char)ch <= 255)  )
 #define is_valid_id_first_char( ch )  ( isalpha(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' || (ch == '.' && ModuleInfo.dotname == TRUE ))
 
 /* function return values */

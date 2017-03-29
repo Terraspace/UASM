@@ -3040,12 +3040,15 @@ ret_code ParseLine(struct asm_tok tokenarray[])
     if (ProcStatus & PRST_PROLOGUE_NOT_DONE) write_prologue(tokenarray);
 
 	/* If we're in the .data or .data? section force code style label to create <name> LABEL BYTE */
-	c0 = strncmp(ModuleInfo.currseg->sym.name, "_DATA", 5);
-	c1 = strncmp(ModuleInfo.currseg->sym.name, "_BSS", 4);
-	if (c0 == 0 || c1 == 0)
+	if (ModuleInfo.currseg)
 	{
-		AddLineQueueX("%s %s", tokenarray[0].string_ptr, "LABEL BYTE");
-		return(NOT_ERROR);
+		c0 = strncmp(ModuleInfo.currseg->sym.name, "_DATA", 5);
+		c1 = strncmp(ModuleInfo.currseg->sym.name, "_BSS", 4);
+		if (c0 == 0 || c1 == 0)
+		{
+			AddLineQueueX("%s %s", tokenarray[0].string_ptr, "LABEL BYTE");
+			return(NOT_ERROR);
+		}
 	}
 
     /* create a global or local code label */
