@@ -1409,8 +1409,8 @@ ret_code data_dir( int i, struct asm_tok tokenarray[], struct asym *type_sym )
 		}
 		if (!foundSubType)
 		{
-			EmitErr(INVALID_DATA_INITIALIZER, sym->name);
-			return;
+            return( EmitErr(INVALID_DATA_INITIALIZER, sym->name) );
+			
 		}
 		else
 		{

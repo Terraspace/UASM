@@ -37,10 +37,8 @@
 #include "linnum.h"
 #include "cpumodel.h"
 #include "lqueue.h"
-
-#include "orgfixup.h"
-
 #include "macrolib.h"
+#include "orgfixup.h"
 
 #if DLLIMPORT
 #include "mangle.h"

@@ -35,6 +35,7 @@ $(OUTD)/listing.o  \
 $(OUTD)/loop.o     \
 $(OUTD)/lqueue.o   \
 $(OUTD)/macro.o    \
+$(OUTD)/macrolib.o \
 $(OUTD)/mangle.o   \
 $(OUTD)/memalloc.o \
 $(OUTD)/msgtext.o  \

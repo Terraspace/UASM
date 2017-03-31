@@ -3,5 +3,6 @@
 #define _MACROLIB_H_
 
 void CompileMacros();
+void InitAutoMacros();
 
 #endif
