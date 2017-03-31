@@ -819,38 +819,22 @@ OPTFUNC(SetWin64)
       }
    
     /* OPTION win64:11 can work only with OPTION STACKBASE:RSP */
-    if (opndx.llvalue & W64F_SMART) {  
+    if (opndx.llvalue & W64F_SMART || opndx.llvalue > 7) 
+	{  
         /* In this case STACKBASESUPP must be set */
         #ifndef STACKBASESUPP
         #define STACKBASESUPP 1       /* support OPTION STACKBASE              */
         #endif
-      /* ensure that W64F_SAVEREGPARAMS and W64F_AUTOSTACKSP options are also set*/
-      opndx.llvalue |= 3;
-        /* ensure that basereg is RSP */
-      if (ModuleInfo.basereg[ModuleInfo.Ofssize] != T_RSP){
-        ModuleInfo.basereg[ModuleInfo.Ofssize] = T_RSP;
-        if (!ModuleInfo.g.StackBase) {
-          ModuleInfo.g.StackBase = CreateVariable("@StackBase", 0);
-          ModuleInfo.g.StackBase->predefined = TRUE;
-          ModuleInfo.g.StackBase->sfunc_ptr = UpdateStackBase;
-          ModuleInfo.g.ProcStatus = CreateVariable("@ProcStatus", 0);
-          ModuleInfo.g.ProcStatus->predefined = TRUE;
-          ModuleInfo.g.ProcStatus->sfunc_ptr = UpdateProcStatus;
-          }
-        }
-      }
-	/* Force option 1 and 2 to == 3 with frame auto */
-/*	if (opndx.llvalue == 1 || opndx.llvalue == 2)
-	{
-		ModuleInfo.frame_auto = 1;
-		opndx.llvalue = 3;
-	}*/
-	if (opndx.llvalue == 3 && ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RSP)
-	{
-		opndx.llvalue = 11;
-		if (ModuleInfo.basereg[ModuleInfo.Ofssize] != T_RSP) {
+		/* ensure that W64F_SAVEREGPARAMS and W64F_AUTOSTACKSP options are also set */
+		opndx.llvalue = 11;        /* Any value over 7 will be forced to 11 and implies stackbase RSP */
+		ModuleInfo.frame_auto = 1; /* frame auto must also be implied for all stackbase rsp options */
+      
+		/* ensure that basereg is RSP */
+		if (ModuleInfo.basereg[ModuleInfo.Ofssize] != T_RSP)
+		{
 			ModuleInfo.basereg[ModuleInfo.Ofssize] = T_RSP;
-			if (!ModuleInfo.g.StackBase) {
+			if (!ModuleInfo.g.StackBase) 
+			{
 				ModuleInfo.g.StackBase = CreateVariable("@StackBase", 0);
 				ModuleInfo.g.StackBase->predefined = TRUE;
 				ModuleInfo.g.StackBase->sfunc_ptr = UpdateStackBase;
@@ -860,9 +844,11 @@ OPTFUNC(SetWin64)
 			}
 		}
 	}
-    } else {
-        return( EmitError( CONSTANT_EXPECTED ) );
-    }
+  } 
+  else 
+  {
+	return( EmitError( CONSTANT_EXPECTED ) );
+  }
   ModuleInfo.win64_flags = opndx.llvalue;
     *pi = i;
     return( NOT_ERROR );
@@ -959,14 +945,30 @@ OPTFUNC( SetStackBase )
         return( EmitError( MUST_BE_INDEX_OR_BASE_REGISTER ) );
     }
     ModuleInfo.basereg[ModuleInfo.Ofssize] = tokenarray[i].tokval;
-    if ( !ModuleInfo.g.StackBase ) {
-        ModuleInfo.g.StackBase = CreateVariable( "@StackBase", 0 );
-        ModuleInfo.g.StackBase->predefined = TRUE;
-        ModuleInfo.g.StackBase->sfunc_ptr = UpdateStackBase;
-        ModuleInfo.g.ProcStatus = CreateVariable( "@ProcStatus", 0 );
-        ModuleInfo.g.ProcStatus->predefined = TRUE;
-        ModuleInfo.g.ProcStatus->sfunc_ptr = UpdateProcStatus;
-    }
+    
+	/* Setup everything for stackbase RSP based stack */
+	if (ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RSP)
+	{
+		ModuleInfo.win64_flags = 11; /* Force win64:11 for any use of stackbase:rsp */
+		ModuleInfo.frame_auto = 1; /* frame auto must also be implied for all stackbase rsp options */
+
+		if (!ModuleInfo.g.StackBase)
+		{
+			ModuleInfo.g.StackBase = CreateVariable("@StackBase", 0);
+			ModuleInfo.g.StackBase->predefined = TRUE;
+			ModuleInfo.g.StackBase->sfunc_ptr = UpdateStackBase;
+			ModuleInfo.g.ProcStatus = CreateVariable("@ProcStatus", 0);
+			ModuleInfo.g.ProcStatus->predefined = TRUE;
+			ModuleInfo.g.ProcStatus->sfunc_ptr = UpdateProcStatus;
+		}
+	}
+	/* For RBP stackbase frame_auto should be implied too */
+	else if (ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RBP)
+	{
+		ModuleInfo.frame_auto = 1; /* frame auto must also be implied for all stackbase rsp options */
+		if (ModuleInfo.win64_flags > 7) ModuleInfo.win64_flags = 7; /* implicit selection of RBP as the stackbase will force win64 value back down to 7 if > */
+	}
+
     i++;
     *pi = i;
     return( NOT_ERROR );
