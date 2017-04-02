@@ -826,7 +826,8 @@ OPTFUNC(SetWin64)
         #define STACKBASESUPP 1       /* support OPTION STACKBASE              */
         #endif
 		/* ensure that W64F_SAVEREGPARAMS and W64F_AUTOSTACKSP options are also set */
-		opndx.llvalue = 11;        /* Any value over 7 will be forced to 11 and implies stackbase RSP */
+		if(opndx.llvalue != 15)
+			opndx.llvalue = 11;        /* All values will be forced to 11 (except 15) and implies stackbase RSP */
 		ModuleInfo.frame_auto = 1; /* frame auto must also be implied for all stackbase rsp options */
       
 		/* ensure that basereg is RSP */
@@ -949,7 +950,8 @@ OPTFUNC( SetStackBase )
 	/* Setup everything for stackbase RSP based stack */
 	if (ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RSP)
 	{
-		ModuleInfo.win64_flags = 11; /* Force win64:11 for any use of stackbase:rsp */
+		if(ModuleInfo.win64_flags < 11)
+			ModuleInfo.win64_flags = 11; /* Force win64:11 for any use of stackbase:rsp if win64 wasn't already set > 11 (IE: 15) */
 		ModuleInfo.frame_auto = 1; /* frame auto must also be implied for all stackbase rsp options */
 
 		if (!ModuleInfo.g.StackBase)
