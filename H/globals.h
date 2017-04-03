@@ -121,6 +121,11 @@
 #ifndef AMD64_SUPPORT
 #define AMD64_SUPPORT 1 /* 1=support 64bit */
 #endif
+
+#ifndef SYSV_SUPPORT		
+#define SYSV_SUPPORT 1 /* 1=support 64bit */		
+#endif
+
 #ifndef VMXSUPP
 #define VMXSUPP      1 /* support VMX extensions                 */
 #endif
@@ -283,6 +288,8 @@ enum lang_type {
     LANG_BASIC      = 6,
     LANG_FASTCALL   = 7,
     LANG_VECTORCALL = 8,
+	LANG_SYSVCALL   = 9,
+	LANG_DELPHICALL = 10
 };
 
 /* Memory model type.

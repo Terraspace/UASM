@@ -124,6 +124,7 @@
     <ClInclude Include="H\lqueue.h" />
     <ClInclude Include="H\ltext.h" />
     <ClInclude Include="H\macro.h" />
+    <ClInclude Include="H\macrolib.h" />
     <ClInclude Include="H\mangle.h" />
     <ClInclude Include="H\memalloc.h" />
     <ClInclude Include="H\msgdef.h" />
@@ -155,7 +156,6 @@
     <ClInclude Include="H\usage.h" />
     <ClInclude Include="H\win32.h" />
     <ClInclude Include="H\win64seh.h" />
-    <ClInclude Include="macrolib.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals" />
   <PropertyGroup Label="Globals">

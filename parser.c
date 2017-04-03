@@ -168,21 +168,23 @@ ret_code GetLangType( int *i, struct asm_tok tokenarray[], enum lang_type *plang
     if( tokenarray[*i].token == T_RES_ID ) {
 #if 1 /* v2.03: simplified */
         if ( tokenarray[(*i)].tokval >= T_C &&
-            tokenarray[(*i)].tokval <= T_VECTORCALL ) { /* 2.15 implemented the VECTORCALL */
+            tokenarray[(*i)].tokval <= T_DELPHICALL ) { /* 2.15 implemented the VECTORCALL */
             *plang = tokenarray[(*i)].bytval;
             (*i)++;
             return( NOT_ERROR );
         }
 #else
         switch( tokenarray[(*i)].tokval ) {
-        case T_C:        *plang = LANG_C;          break;
-        case T_SYSCALL:  *plang = LANG_SYSCALL;    break;
-        case T_STDCALL:  *plang = LANG_STDCALL;    break;
-        case T_PASCAL:   *plang = LANG_PASCAL;     break;
-        case T_FORTRAN:  *plang = LANG_FORTRAN;    break;
-        case T_BASIC:    *plang = LANG_BASIC;      break;
-        case T_FASTCALL: *plang = LANG_FASTCALL;   break;
-        case T_FASTCALL: *plang = LANG_VECTORCALL; break;
+        case T_C:         *plang = LANG_C;          break;
+        case T_SYSCALL:   *plang = LANG_SYSCALL;    break;
+        case T_STDCALL:   *plang = LANG_STDCALL;    break;
+        case T_PASCAL:    *plang = LANG_PASCAL;     break;
+        case T_FORTRAN:   *plang = LANG_FORTRAN;    break;
+        case T_BASIC:     *plang = LANG_BASIC;      break;
+        case T_FASTCALL:  *plang = LANG_FASTCALL;   break;
+        case T_VECTORCALL:*plang = LANG_VECTORCALL; break;
+        case T_SYSVCALL:  *plang = LANG_SYSVCALL;   break;
+        case T_DELPHICALL *plang = LANG_DELPHICALL; break;
         default:
             return( ERROR );
         }

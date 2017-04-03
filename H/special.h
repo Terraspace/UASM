@@ -373,4 +373,7 @@ res(BASIC, basic, RWT_RES_ID, 0, LANG_BASIC, 0, P_86, 0)
 res(FASTCALL, fastcall, RWT_RES_ID, 0, LANG_FASTCALL, 0, P_64, 0)
 /* 2.15 implemented the VECTORCALL */
 res(VECTORCALL, vectorcall, RWT_RES_ID, 0, LANG_VECTORCALL, 0, P_64, 0)
+/* 2.24 system v and delphi 32 */
+res(SYSVCALL, sysvcall, RWT_RES_ID, 0, LANG_SYSVCALL, 0, P_64, 0)
+res(DELPHICALL, delphicall, RWT_RES_ID, 0, LANG_DELPHICALL, 0, P_86, 0)
 
