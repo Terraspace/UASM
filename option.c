@@ -375,7 +375,7 @@ OPTFUNC( SetNoKeyword )
     return( NOT_ERROR );
 }
 
-/* OPTION LANGUAGE:{C|PASCAL|BASIC|FORTRAN|SYSCALL|STDCALL|FASTCALL} */
+/* OPTION LANGUAGE:{C|PASCAL|BASIC|FORTRAN|SYSCALL|STDCALL|FASTCALL|VECTORCALL|SYSVCALL|DELPHICALL} */
 
 OPTFUNC( SetLanguage )
 /********************/
@@ -964,11 +964,12 @@ OPTFUNC( SetStackBase )
 			ModuleInfo.g.ProcStatus->sfunc_ptr = UpdateProcStatus;
 		}
 	}
-	/* For RBP stackbase frame_auto should be implied too */
+	/* For RBP stackbase frame_auto should be implied too, max mode = 7, ensure autostacksp */
 	else if (ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RBP)
 	{
 		ModuleInfo.frame_auto = 1; /* frame auto must also be implied for all stackbase rsp options */
 		if (ModuleInfo.win64_flags > 7) ModuleInfo.win64_flags = 7; /* implicit selection of RBP as the stackbase will force win64 value back down to 7 if > */
+		ModuleInfo.win64_flags |= W64F_AUTOSTACKSP;
 	}
 
     i++;
