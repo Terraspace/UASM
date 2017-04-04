@@ -864,7 +864,7 @@ continue_scan:
 #endif
     do {
         *dst++ = *src++;
-    } while ( is_valid_id_char( *src ) );
+    } while ( fast_is_valid_id_char( *src ) );
 #if CONCATID
     /* v2.05: in case there's a backslash right behind
      * the ID, check if a line concatenation is to occur.
@@ -875,7 +875,7 @@ continue_scan:
     if ( *src == '\\' ) {
         if ( ConcatLine( src, src - p->input, dst, p ) != EMPTY ) {
             p->concat = TRUE;
-            if ( is_valid_id_char( *src ) )
+            if (fast_is_valid_id_char( *src ) )
                 goto continue_scan;
         }
     }
@@ -887,7 +887,7 @@ continue_scan:
      */
     if ( *src == '.' && ModuleInfo.dotname &&
         ( *(p->output) == '.' || *(p->output) == '_' ) &&
-        ( is_valid_id_char(*(src+1)) || *(src+1) == '.' ) )
+        (fast_is_valid_id_char(*(src+1)) || *(src+1) == '.' ) )
         goto continue_scan;
 #endif
     /* v2.04: check added */
@@ -1045,9 +1045,9 @@ ret_code GetToken( struct asm_tok token[], struct line_status *p )
         return( get_id( token, p ) );
     } else if( *p->input == '.' &&
 #if DOTNAMEX /* allow dots within identifiers */
-              ( is_valid_id_char(*(p->input+1)) || *(p->input+1) == '.' ) &&
+              (fast_is_valid_id_char(*(p->input+1)) || *(p->input+1) == '.' ) &&
 #else
-              is_valid_id_char(*(p->input+1)) &&
+		fast_is_valid_id_char(*(p->input+1)) &&
 #endif
               /* v2.11: member last_token has been removed */
               //( p->last_token != T_REG &&  p->last_token != T_CL_BRACKET && p->last_token != T_CL_SQ_BRACKET && p->last_token != T_ID ) ) {

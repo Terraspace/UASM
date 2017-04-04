@@ -32,6 +32,8 @@
 #ifndef _GLOBALS_H_INCLUDED
 #define _GLOBALS_H_INCLUDED
 
+#define _CRT_DISABLE_PERFCRIT_LOCKS
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -216,6 +218,7 @@
 #define NULLC  '\0'
 //#define NULLS  ""
 
+#define fast_is_valid_id_char( ch )  ( isalnum(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' )
 #define is_valid_id_char( ch )  ( isalnum(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' || ((unsigned char)ch > 127 && (unsigned char)ch <= 255)  )
 #define is_valid_id_first_char( ch )  ( isalpha(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' || (ch == '.' && ModuleInfo.dotname == TRUE ))
 

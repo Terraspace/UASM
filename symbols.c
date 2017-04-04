@@ -151,6 +151,7 @@ static unsigned int hashpjw( const char *s )
 {
     unsigned h;
     unsigned g;
+	char c = 1;
 
 #if HASH_MAGNITUDE==12
     for( h = 0; *s; ++s ) {
@@ -160,8 +161,10 @@ static unsigned int hashpjw( const char *s )
         h ^= g >> 12;
     }
 #else
-    for( h = 0; *s; ++s ) {
-        h = (h << 5) + (*s | ' ');
+    for( h = 0; c ; ++s ) 
+	{
+		c = *s;		
+        h = (h << 5) + (c | ' ');
         g = h & ~0x7fff;
         h ^= g;
         h ^= g >> 15;

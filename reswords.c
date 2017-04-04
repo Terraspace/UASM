@@ -954,17 +954,24 @@ static bool  b64bit = FALSE; /* resw tables in 64bit mode? */
 static unsigned get_hash(const char *s, unsigned char size)
 /***********************************************************/
 {
-  uint_32 h;
+  uint_64 fnv_basis = 14695981039346656037;
+  uint_64 register fnv_prime = 1099511628211;
+  /*uint_32 h;
   uint_32 g;
 
   for (h = 0; size; size--) {
-    /* ( h & ~0x0fff ) == 0 is always true here */
     h = (h << 3) + (*s++ | ' ');
     g = h & ~0x1fff;
     h ^= g;
     h ^= g >> 13;
+  }*/
+
+  uint_64 h;
+  for (h = fnv_basis; size; size--) {
+	  h ^= (*s++ | ' ');
+	  h *= fnv_prime;
   }
-  return(h % HASH_TABITEMS);
+  return( (h >> 32) % HASH_TABITEMS);
 }
 
 unsigned FindResWord(const char *name, unsigned char size)
