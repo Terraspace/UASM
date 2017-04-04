@@ -1178,26 +1178,12 @@ ret_code ParseProc( struct dsym *proc, int i, struct asm_tok tokenarray[], bool 
     //langtype = ModuleInfo.langtype; /* set the default value */
     GetLangType( &i, tokenarray, &langtype ); /* optionally overwrite the value */
     
-	/* John Hankinson: 2016-02-10 Allows Linux64 to utilise Win64 ABI */
-	//#if AMD64_SUPPORT
-	//if (Options.output_format == OFORMAT_ELF)
-	//	langtype = LANG_FASTCALL;
-	//#endif
-
 	/* has language changed? */
     if ( proc->sym.langtype != LANG_NONE && proc->sym.langtype != langtype ) {
         DebugMsg(("ParseProc: error, language changed, %u - %u\n", proc->sym.langtype, langtype ));
         EmitError( PROC_AND_PROTO_CALLING_CONV_CONFLICT );
     } else
         proc->sym.langtype = langtype;
-
-	/* John Hankinson: 2016-02-10 Allows Linux64 to utilise Win64 ABI */
-	//#if AMD64_SUPPORT
-	//if (proc->sym.langtype == LANG_NONE && Options.output_format == OFORMAT_ELF)
-	//{
-	//	proc->sym.langtype = LANG_FASTCALL;
-	//}
-	//#endif
 
     /* 3. attribute is <visibility> */
     /* note that reserved word PUBLIC is a directive! */
@@ -1741,7 +1727,6 @@ ret_code CopyPrototype( struct dsym *proc, struct dsym *src )
 #if AMD64_SUPPORT
 
 /* for FRAME procs, write .pdata and .xdata SEH unwind information */
-
 static void WriteSEHData( struct dsym *proc )
 /*******************************************/
 {
@@ -1756,7 +1741,7 @@ static void WriteSEHData( struct dsym *proc )
 
 	/* 2016-02-10 John Hankinson - Don't bother writing SEH data for ELF64 Win64 ABI hack or hjwasm flat mode */
 	if (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_BIN)
-	return;
+		return;
 
     if ( endprolog_found == FALSE ) {
         EmitErr( MISSING_ENDPROLOG, proc->sym.name );
@@ -1840,9 +1825,7 @@ static void WriteSEHData( struct dsym *proc )
 static void SetLocalOffsets_RSP( struct proc_info *info );
 static void SetLocalOffsets_RBP( struct proc_info *info );
 
-/* close a PROC
- */
-
+/* close a PROC */
 static void ProcFini( struct dsym *proc )
 /***************************************/
 {
@@ -1924,7 +1907,6 @@ static void ProcFini( struct dsym *proc )
 }
 
 /* ENDP directive */
-
 ret_code EndpDir( int i, struct asm_tok tokenarray[] )
 /****************************************************/
 {
@@ -2340,8 +2322,8 @@ static ret_code write_userdef_prologue( struct asm_tok tokenarray[] )
 }
 
 #if AMD64_SUPPORT
-/* OPTION SYSV:1 - save up to 6 register parameters for SYSV SysVcall
-* static const enum special_token sysV64_regs[] = { T_RDI, T_RSI, T_RDX, T_RCX, T_R8, T_R9 }; */
+
+/* OPTION SYSV:1 - save up to 6 register parameters for SYSV SysVcall */
 static void sysv_SaveRegParams_RBP(struct proc_info *info)
 /*******************************************************/
 {
@@ -2544,7 +2526,6 @@ static void win64_StoreRegHome(struct proc_info *info)
   }
   return;
 }
-#if AMD64_SUPPORT
 
 /* OPTION WIN64:1 - save up to 4 register parameters for WIN64 fastcall */
 static void win64_SaveRegParams_RBP( struct proc_info *info )
@@ -2802,8 +2783,6 @@ static void write_sysv_default_prologue_RBP(struct proc_info *info)
 	return;
 }
 
-#endif
-
 /* win64 default prologue when PROC FRAME and  OPTION FRAME:AUTO is set */
 static void write_win64_default_prologue_RSP(struct proc_info *info)
 /****************************************************************/
@@ -2843,11 +2822,12 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 	memset(xyused, 0, 6);
 	info->vecused = 0;
 	XYZMMsize = 16;
+
 	if (ModuleInfo.win64_flags & W64F_SAVEREGPARAMS)
 		win64_SaveRegParams_RSP(info);
+	
 	if (ModuleInfo.win64_flags & W64F_SMART)
 		win64_StoreRegHome(info);
-
 
 #if STACKBASESUPP
 
@@ -2941,7 +2921,7 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 #endif
 			stackSize = info->localsize + info->vsize + info->xmmsize;
 			if ((stackSize & 7) != 0) stackSize = (stackSize + 7)&(-8);
-		
+
 			AddLineQueueX(*(ppfmt + 0), T_RSP, NUMQUAL stackSize, sym_ReservedStack->name);
 			AddLineQueueX(*(ppfmt + 1), T_DOT_ALLOCSTACK, NUMQUAL stackSize, sym_ReservedStack->name);
 
@@ -2981,7 +2961,7 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 #endif
                 ){
                     if ( resstack ) {
-                        if ( ( 1 << GetRegNo( *regist ) ) & win64_nvxmm )  {
+                        //if ( ( 1 << GetRegNo( *regist ) ) & win64_nvxmm )  {
                           if (GetValueSp(*regist) & OP_XMM){
                             AddLineQueueX( "%s [%r+%u+%s], %r", MOVE_ALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist );
                             AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEXMM128, *regist, NUMQUAL i, sym_ReservedStack->name);
@@ -2999,9 +2979,9 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
                             i += XYZMMsize;
                           }
 #endif
-                        }
+                       // }
                     } else {
-                        if ( ( 1 << GetRegNo( *regist ) ) & win64_nvxmm )  {
+                       // if ( ( 1 << GetRegNo( *regist ) ) & win64_nvxmm )  {
                           if (GetValueSp(*regist) & OP_XMM){
                             AddLineQueueX("%s [%r+%u], %r", MOVE_ALIGNED_INT, T_RSP, NUMQUAL i, *regist);
                             AddLineQueueX("%r %r, %u", T_DOT_SAVEXMM128, *regist, NUMQUAL i);
@@ -3019,7 +2999,7 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
                             i += XYZMMsize;
                           }
 #endif
-                        }
+                       // }
                     }
                 }
             }
@@ -3172,6 +3152,7 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
     /* v2.11: linequeue is now run in write_default_prologue() */
     return;
 }
+
 #endif
 
 /* write PROC prologue
@@ -3350,9 +3331,7 @@ runqueue:
  * - FRAME procedures ( if OPTION FRAME:AUTO is set )
  * - non-frame procedures if option win64:2 is set
  * this means that option win64:4 ( 16-byte stack variable alignment )
- * will also work only in those cases!
- */
-
+ * will also work only in those cases! */
 static void SetLocalOffsets_RBP(struct proc_info *info)
 /***************************************************/
 {
@@ -3484,7 +3463,6 @@ static void SetLocalOffsets_RBP(struct proc_info *info)
 #endif
 }
 
-
 /* Here we set locals offset only for OPTION WIN64_SMART */
 static void SetLocalOffsets_RSP(struct proc_info *info)
 /***************************************************/
@@ -3601,7 +3579,6 @@ static void SetLocalOffsets_RSP(struct proc_info *info)
 		}
 	}
 }
-
 
 void write_prologue( struct asm_tok tokenarray[] )
 /************************************************/
@@ -3844,8 +3821,9 @@ static void write_sysv_default_epilogue_RBP(struct proc_info *info)
 static void write_win64_default_epilogue_RSP( struct proc_info *info )
 /****************************************************************/
 {
-  int anysize;
-  int stackSize;
+  int  anysize;
+  int  stackSize;
+  int  resstack = ((ModuleInfo.win64_flags & W64F_AUTOSTACKSP) ? sym_ReservedStack->value : 0);
 
 #if STACKBASESUPP
     /* v2.12: obsolete */
@@ -3860,8 +3838,7 @@ static void write_win64_default_epilogue_RSP( struct proc_info *info )
         
 
         /* v2.12: space for xmm saves is now included in localsize
-         * so first thing to do is to count the xmm regs that were saved
-         */
+         * so first thing to do is to count the xmm regs that were saved */
         for( regs = info->regslist, cnt = *regs++, i = 0; cnt; cnt--, regs++ )
                 if (( GetValueSp( *regs ) & OP_XMM )||( GetValueSp( *regs ) & OP_YMM )
 #if EVEXSUPP    
@@ -3872,10 +3849,6 @@ static void write_win64_default_epilogue_RSP( struct proc_info *info )
         DebugMsg1(("write_win64_default_epilogue_RSP(%s): %u xmm registers to restore\n", CurrProc->sym.name , i ));
 
         if ( i ) {
-            //if (info->locallist)
-            //  i = (info->localsize - i * XYZMMsize) & ~(16 - 1);
-            //else
-            //i = ( info->localsize) & ~(16-1);
             i = 0;       //firs location is right at the [rsp] which is aligned to 16 ; HJWasm 2.21
             for( regs = info->regslist, cnt = *regs++; cnt; cnt--, regs++ ) {
                 if (( GetValueSp( *regs ) & OP_XMM )||( GetValueSp( *regs ) & OP_YMM )
@@ -3884,22 +3857,17 @@ static void write_win64_default_epilogue_RSP( struct proc_info *info )
 #endif
                 ){
                     DebugMsg1(("write_win64_default_epilogue_RSP(%s): restore %s, offset=%d\n", CurrProc->sym.name , GetResWName( *regs, NULL ), i ));
-                    //AddLineQueueX( "movdqa %r, [%r+%u]", *regist, stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + sizexmm );
                     /* v2.11: use @ReservedStack only if option win64:2 is set */
-                    if (ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
-					{
-						if(GetValueSp(*regs) & OP_XMM)
-							AddLineQueueX("%s %r, [%r + %u + %s]", MOVE_ALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i, sym_ReservedStack->name);
-						else
-							AddLineQueueX("%s %r, [%r + %u + %s]", MOVE_ALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i, sym_ReservedStack->name);
-                    }
-                    else
+					if (resstack)
 					{
 						if (GetValueSp(*regs) & OP_XMM)
-							AddLineQueueX("%s %r, [%r + %u]", MOVE_ALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i );
-						else
+							AddLineQueueX("%s %r, [%r + %u + %s]", MOVE_ALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i, sym_ReservedStack->name);
+					}
+					else
+					{
+						if (GetValueSp(*regs) & OP_XMM)
 							AddLineQueueX("%s %r, [%r + %u]", MOVE_ALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i);
-                    }
+					}
                     i += XYZMMsize;
                 }
             }
@@ -3907,7 +3875,6 @@ static void write_win64_default_epilogue_RSP( struct proc_info *info )
     }
 
     if (ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP)){
-      //if (ModuleInfo.win64_flags & W64F_SMART){
         anysize = info->localsize + sym_ReservedStack->value + info->xmmsize;
         if (info->vecused) anysize += info->vsize;
 		if (anysize)
@@ -3916,9 +3883,6 @@ static void write_win64_default_epilogue_RSP( struct proc_info *info )
 			if ((stackSize & 7) != 0) stackSize = (stackSize + 7)&(-8);
 			AddLineQueueX("add %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL stackSize, sym_ReservedStack->name);
 		}
-      //}
-        //else if (info->localsize + info->xmmsize > 0)
-          //AddLineQueueX("add %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + info->xmmsize, sym_ReservedStack->name);
     }
 	else if (info->localsize > 0)
 	{
