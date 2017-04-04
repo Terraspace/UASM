@@ -3646,6 +3646,9 @@ static void SetLocalOffsets_RSP(struct proc_info *info)
 		if (ModuleInfo.win64_flags & W64F_STACKALIGN16 && curr->sym.total_size > CurrWordSize)
 			info->localsize = ROUND_UP(info->localsize, 16);
 
+		if (ModuleInfo.win64_flags & W64F_STACKALIGN16 && curr->sym.total_size >= 32)
+			info->localsize = ROUND_UP(info->localsize, 32);
+
 		curr->sym.offset = info->localsize; // +n; //that works
 		info->localsize += curr->sym.total_size;
 		if (itemsize > align)
@@ -3793,7 +3796,6 @@ static void check_proc_fpo(struct proc_info *info)
 
 	return;
 }
-#if AMD64_SUPPORT
 
 /* Win64 default epilogue if PROC FRAME and OPTION FRAME:AUTO is set for RBP stackbase */
 static void write_win64_default_epilogue_RBP( struct proc_info *info )
@@ -3856,7 +3858,68 @@ static void write_win64_default_epilogue_RBP( struct proc_info *info )
 #endif
     return;
 }
+
+/* SYSTEM V default epilogue if PROC FRAME and OPTION FRAME:AUTO is set for RBP stackbase */
+static void write_sysv_default_epilogue_RBP(struct proc_info *info)
+/****************************************************************/
+{
+
+	int  stackadj = 0;
+
+#if STACKBASESUPP
+	if (info->fpo)
+	{
+		DebugMsg1(("write_win64_default_epilogue_RBP: no frame register was used\n"));
+	}
 #endif
+
+	stackadj = ((info->fpo) ? 1 : 0) * 8;
+
+	/* restore non-volatile xmm registers */
+	if (info->regslist) {
+		uint_16 *regs;
+		int cnt;
+		int i;
+
+		/* v2.12: space for xmm saves is now included in localsize
+		* so first thing to do is to count the xmm regs that were saved
+		*/
+		for (regs = info->regslist, cnt = *regs++, i = 0; cnt; cnt--, regs++)
+			if (GetValueSp(*regs) & OP_XMM)
+				i++;
+
+		DebugMsg1(("write_win64_default_epilogue(%s): %u xmm registers to restore\n", CurrProc->sym.name, i));
+
+		if (i) {
+			i = (info->localsize - i * 16) & ~(16 - 1);
+			for (regs = info->regslist, cnt = *regs++; cnt; cnt--, regs++) {
+				if (GetValueSp(*regs) & OP_XMM) {
+					DebugMsg1(("write_win64_default_epilogue(%s): restore %s, offset=%d\n", CurrProc->sym.name, GetResWName(*regs, NULL), i));
+					/* v2.11: use @ReservedStack only if option win64:2 is set */
+					if (ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
+						AddLineQueueX("%s %r, [%r + %u + %s]", MOVE_ALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i, sym_ReservedStack->name);
+					else
+						AddLineQueueX("%s %r, [%r + %u]", MOVE_ALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i);
+					i += 16;
+				}
+			}
+		}
+
+	}
+
+	if (ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP) && (info->localsize + sym_ReservedStack->value) > 0)
+		AddLineQueueX("add %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
+	else if (info->localsize > 0)
+		AddLineQueueX("add %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + stackadj);
+	pop_register(CurrProc->e.procinfo->regslist);
+#if STACKBASESUPP
+	if (!info->fpo && GetRegNo(info->basereg) != 4 && (info->parasize != 0 || info->locallist != NULL))
+		AddLineQueueX("pop %r", info->basereg);
+#else
+	AddLineQueueX("pop %r", basereg[ModuleInfo.Ofssize]);
+#endif
+	return;
+}
 
 /* Win64 default epilogue if PROC FRAME and OPTION FRAME:AUTO is set for stackbase RSP */
 static void write_win64_default_epilogue_RSP( struct proc_info *info )
@@ -3999,6 +4062,7 @@ static void write_win64_default_epilogue_RSP( struct proc_info *info )
 
     return;
 }
+
 #endif
 
 /* write default epilogue code
@@ -4068,25 +4132,25 @@ static void write_default_epilogue( void )
 #endif
 
     info = CurrProc->e.procinfo;
+
 #if AMD64_SUPPORT
-    if ( info->isframe ) {
-      if (ModuleInfo.frame_auto){
-         if (ModuleInfo.basereg[USE64] == T_RSP)
-           write_win64_default_epilogue_RSP( info );
-         else
-           write_win64_default_epilogue_RBP( info );
-        }
+    if ( info->isframe ) 
+	{
+      if (ModuleInfo.frame_auto)
+	  {
+         if ( ModuleInfo.basereg[USE64] == T_RSP && CurrProc->sym.langtype == LANG_FASTCALL )
+			write_win64_default_epilogue_RSP( info );
+         else if ( ModuleInfo.basereg[USE64] == T_RBP && CurrProc->sym.langtype == LANG_FASTCALL )
+			write_win64_default_epilogue_RBP( info );
+		 else if ( ModuleInfo.basereg[USE64] == T_RBP && CurrProc->sym.langtype == LANG_SYSVCALL )
+			 write_sysv_default_epilogue_RBP( info );
+	  }
       return;
     }
-    if ( ModuleInfo.Ofssize == USE64 && ModuleInfo.fctype == FCT_WIN64 && ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) ) {
-        resstack  = sym_ReservedStack->value;
-        /* if no framepointer was pushed, add 8 to align stack on OWORD
-         * v2.12: obsolete; localsize contains correct value.
-         */
-        //if( !(info->localsize || info->stackparam || info->has_vararg || info->forceframe ))
-        //    AddLineQueueX( "add %r, 8 + %s", stackreg[ModuleInfo.Ofssize], sym_ReservedStack->name );
-        //else
-        if(resstack)
+    if ( ModuleInfo.Ofssize == USE64 && ModuleInfo.fctype == FCT_WIN64 && ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) ) 
+	{
+		resstack  = sym_ReservedStack->value;
+        if( resstack )
 			AddLineQueueX( "add %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize, sym_ReservedStack->name );
     }
 #endif
@@ -4094,13 +4158,10 @@ static void write_default_epilogue( void )
     /* Pop the registers */
     pop_register( CurrProc->e.procinfo->regslist );
 
-    if ( info->loadds ) {
+    if ( info->loadds )
         AddLineQueueX( "pop %r", T_DS );
-    }
 
-    if( ( info->locallist == NULL ) &&
-       info->stackparam == FALSE &&
-       info->has_vararg == FALSE &&
+    if( ( info->locallist == NULL ) && info->stackparam == FALSE && info->has_vararg == FALSE &&
 #if AMD64_SUPPORT
        resstack == 0 &&
 #endif
@@ -4111,7 +4172,7 @@ static void write_default_epilogue( void )
      * emit either "leave" or "mov e/sp,e/bp, pop e/bp".
      */
 #if AMD64_SUPPORT
-    if( !(info->locallist || info->stackparam || info->has_vararg || info->forceframe ))
+    if( !(info->locallist || info->stackparam || info->has_vararg || info->forceframe ) )
         ;
     else
 #endif
