@@ -3535,19 +3535,17 @@ static void SetLocalOffsets_RSP(struct proc_info *info)
 	for (curr = info->locallist; curr; curr = curr->nextlocal) 
 	{
 		uint_32 itemsize = (curr->sym.total_size == 0 ? 0 : curr->sym.total_size / curr->sym.total_length);
-		//int n = 0;
-		//if (curr->sym.isarray) n = curr->sym.total_size &0x7;
 		
-		info->localsize = ROUND_UP(info->localsize, CurrWordSize);
+		int n = 0;
+		if (curr->sym.isarray) n = curr->sym.total_size &0x7;
+		
+		info->localsize = ROUND_UP(info->localsize, itemsize);
 
 		if (ModuleInfo.win64_flags & W64F_STACKALIGN16 && curr->sym.total_size > CurrWordSize)
 			info->localsize = ROUND_UP(info->localsize, 16);
 
-		if (ModuleInfo.win64_flags & W64F_STACKALIGN16 && curr->sym.total_size >= 32)
-			info->localsize = ROUND_UP(info->localsize, 32);
-
 		curr->sym.offset = info->localsize; 
-		info->localsize += curr->sym.total_size;
+		info->localsize += curr->sym.total_size + n;
 		if (itemsize > align)
 			info->localsize = ROUND_UP(info->localsize, align);
 		else if (itemsize) /* v2.04: skip if size == 0 */
