@@ -30,11 +30,11 @@
 #include "orgfixup.h"
 #include "macrolib.h"
 
-#define MACRO_COUNT 41
+#define MACRO_COUNT 42
 
 /* MACRO names */
 char *macName[] = {
-	"@CSTR", "@WSTR", "FP4", "FP8", "FP10", "LOADSS", "LOADSD", "LOADPS", "MEMALIGN", "RV", "REPARG", "EXPAND_PREFIX", "$ARRAY", "$DELETEARRAY", "INTERFACE", "ENDINTERFACE", "CVIRTUAL", "CLASS", "ENDCLASS", "CMETHOD", "METHOD", "STATICMETHOD", "ENDMETHOD", "$DECLARE", "$STATICREF", "$ACQUIRE", "$RELEASE", "$NEW", "$RBXNEW", "$ITEM", "$ITEMR", "$INVOKE", "$I", "$STATIC", "$DELETE", "$VINVOKE", "$V", "$VD", "$VW", "$VB", "$VF"
+	"@CSTR", "@WSTR", "FP4", "FP8", "FP10", "LOADSS", "LOADSD", "LOADPS", "MEMALIGN", "RV", "REPARG", "EXPAND_PREFIX", "$ARRAY", "$DELETEARRAY", "INTERFACE", "ENDINTERFACE", "CVIRTUAL", "CLASS", "ENDCLASS", "CMETHOD", "METHOD", "STATICMETHOD", "ENDMETHOD", "$DECLARE", "$STATICREF", "$ACQUIRE", "$RELEASE", "$NEW", "$RBXNEW", "$ITEM", "$ITEMR", "$INVOKE", "$I", "$STATIC", "$DELETE", "$VINVOKE", "$V", "$VD", "$VW", "$VB", "$VF", "CSTATIC"
 };
 
 /* MACRO definitions */
@@ -79,7 +79,8 @@ char *macDef[] = {
 	"$VD MACRO pInterface : REQ, Interface : REQ, Function : REQ, args : VARARG",
 	"$VW MACRO pInterface : REQ, Interface : REQ, Function : REQ, args : VARARG",
 	"$VB MACRO pInterface : REQ, Interface : REQ, Function : REQ, args : VARARG",
-	"$VF MACRO pInterface : REQ, Interface : REQ, Function : REQ, args : VARARG"
+	"$VF MACRO pInterface : REQ, Interface : REQ, Function : REQ, args : VARARG",
+	"CSTATIC MACRO method : REQ"
 };
 
 /* 
@@ -95,7 +96,7 @@ void InitAutoMacros(void)
 	uint_32 start_pos = 0;
 	char  *macCodePtr[MACRO_COUNT];
 
-	uint_32 macroLen[] = { 6, 6, 7, 7, 7, 8, 8, 10, 3, 7, 11, 19, 10, 2, 7, 2, 10, 11, 19, 5, 35, 35, 8, 5, 2, 3, 3, 27, 28, 2, 2, 11, 8, 8, 5, 22, 23, 23, 23, 23, 23 }; // Count of individual lines of macro-body code.
+	uint_32 macroLen[] = { 6, 6, 7, 7, 7, 8, 8, 10, 3, 7, 11, 19, 10, 2, 7, 2, 10, 11, 19, 5, 35, 35, 8, 5, 2, 3, 3, 27, 28, 2, 2, 11, 8, 8, 5, 22, 23, 23, 23, 23, 23, 5 }; // Count of individual lines of macro-body code.
 	char *macCode[] = {
 		"local szText", ".data", "szText db Text,0", ".code", "exitm <szText>", "endm", NULL,
 		"local szText", ".data", "szText dw Text,0", ".code", "exitm <szText>", "endm", NULL,
@@ -137,7 +138,8 @@ void InitAutoMacros(void)
 		"InterfacePtr TEXTEQU <_>", "InterfacePtr CATSTR InterfacePtr, <&Interface>, <_>, <&Function>, <Pto>", "IF(OPATTR(pInterface)) AND 00010000b", "IFNB <args>", "invoke(InterfacePtr PTR[&pInterface].&Interface.&Function), pInterface, &args", "ELSE", "invoke(InterfacePtr PTR[&pInterface].&Interface.&Function), pInterface", "ENDIF", "ELSE", "mov rax, pInterface", "IFNB <args>", "FOR arg, <args>", "IFIDNI <&arg>, <rax>", ".ERR <rax is not allowed as a Method parameter with indirect object label>", "ENDIF", "ENDM", "invoke(InterfacePtr PTR[rax].&Interface.&Function), pInterface, &args", "ELSE", "invoke(InterfacePtr PTR[rax].&Interface.&Function), pInterface", "ENDIF", "ENDIF", "exitm<eax>", "ENDM", NULL,
 		"InterfacePtr TEXTEQU <_>", "InterfacePtr CATSTR InterfacePtr, <&Interface>, <_>, <&Function>, <Pto>", "IF(OPATTR(pInterface)) AND 00010000b", "IFNB <args>", "invoke(InterfacePtr PTR[&pInterface].&Interface.&Function), pInterface, &args", "ELSE", "invoke(InterfacePtr PTR[&pInterface].&Interface.&Function), pInterface", "ENDIF", "ELSE", "mov rax, pInterface", "IFNB <args>", "FOR arg, <args>", "IFIDNI <&arg>, <rax>", ".ERR <rax is not allowed as a Method parameter with indirect object label>", "ENDIF", "ENDM", "invoke(InterfacePtr PTR[rax].&Interface.&Function), pInterface, &args", "ELSE", "invoke(InterfacePtr PTR[rax].&Interface.&Function), pInterface", "ENDIF", "ENDIF", "exitm<ax>", "ENDM", NULL,
 		"InterfacePtr TEXTEQU <_>", "InterfacePtr CATSTR InterfacePtr, <&Interface>, <_>, <&Function>, <Pto>", "IF(OPATTR(pInterface)) AND 00010000b", "IFNB <args>", "invoke(InterfacePtr PTR[&pInterface].&Interface.&Function), pInterface, &args", "ELSE", "invoke(InterfacePtr PTR[&pInterface].&Interface.&Function), pInterface", "ENDIF", "ELSE", "mov rax, pInterface", "IFNB <args>", "FOR arg, <args>", "IFIDNI <&arg>, <rax>", ".ERR <rax is not allowed as a Method parameter with indirect object label>", "ENDIF", "ENDM", "invoke(InterfacePtr PTR[rax].&Interface.&Function), pInterface, &args", "ELSE", "invoke(InterfacePtr PTR[rax].&Interface.&Function), pInterface", "ENDIF", "ENDIF", "exitm<al>", "ENDM", NULL,
-		"InterfacePtr TEXTEQU <_>", "InterfacePtr CATSTR InterfacePtr, <&Interface>, <_>, <&Function>, <Pto>", "IF(OPATTR(pInterface)) AND 00010000b", "IFNB <args>", "invoke(InterfacePtr PTR[&pInterface].&Interface.&Function), pInterface, &args", "ELSE", "invoke(InterfacePtr PTR[&pInterface].&Interface.&Function), pInterface", "ENDIF", "ELSE", "mov rax, pInterface", "IFNB <args>", "FOR arg, <args>", "IFIDNI <&arg>, <rax>", ".ERR <rax is not allowed as a Method parameter with indirect object label>", "ENDIF", "ENDM", "invoke(InterfacePtr PTR[rax].&Interface.&Function), pInterface, &args", "ELSE", "invoke(InterfacePtr PTR[rax].&Interface.&Function), pInterface", "ENDIF", "ENDIF", "exitm<xmm0>", "ENDM", NULL
+		"InterfacePtr TEXTEQU <_>", "InterfacePtr CATSTR InterfacePtr, <&Interface>, <_>, <&Function>, <Pto>", "IF(OPATTR(pInterface)) AND 00010000b", "IFNB <args>", "invoke(InterfacePtr PTR[&pInterface].&Interface.&Function), pInterface, &args", "ELSE", "invoke(InterfacePtr PTR[&pInterface].&Interface.&Function), pInterface", "ENDIF", "ELSE", "mov rax, pInterface", "IFNB <args>", "FOR arg, <args>", "IFIDNI <&arg>, <rax>", ".ERR <rax is not allowed as a Method parameter with indirect object label>", "ENDIF", "ENDM", "invoke(InterfacePtr PTR[rax].&Interface.&Function), pInterface, &args", "ELSE", "invoke(InterfacePtr PTR[rax].&Interface.&Function), pInterface", "ENDIF", "ENDIF", "exitm<xmm0>", "ENDM", NULL,
+		"LOCAL sz1, sz2", "sz2 CATSTR <_>, curClass, <_&method>, <Pto>", "% sz1 typedef PTR &sz2", "% method sz1 offset _&curClass&_&method&", "ENDM", NULL
 	};	
 
 	/* Compile Macros */
