@@ -751,7 +751,7 @@ next_item:  /* <--- continue scan if a comma has been detected */
             if( !inside_struct ) {
                 /* anything bigger than a byte must be stored in little-endian
                  * format -- LSB first */
-				if (string_len > 1 && no_of_bytes > 1 && sym->mem_type == MT_WORD)
+				if (string_len > 1 && no_of_bytes > 1 && sym && sym->mem_type == MT_WORD)
 				{
 					OutputInterleavedDataBytes(pchar, string_len);
 				}

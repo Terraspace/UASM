@@ -99,6 +99,34 @@ OPTFUNC( SetZeroLocals )
 	return(NOT_ERROR);
 }
 
+/* OPTION REDZONE:YES/NO */
+OPTFUNC( SetRedZone )
+{
+	int i = *pi;
+	if (tokenarray[i].token == T_ID) 
+	{
+		if (0 == _stricmp(tokenarray[i].string_ptr, "YES"))
+		{
+			ModuleInfo.redzone = 1;
+		}
+		else if (0 == _stricmp(tokenarray[i].string_ptr, "NO"))
+		{
+			ModuleInfo.redzone = 0;
+		}
+		else 
+		{
+			return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
+		}
+		DebugMsg1(("SetRedZone(%s) ok\n", tokenarray[i].string_ptr));
+		i++;
+	}
+	else 
+	{
+		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
+	}
+	*pi = i;
+}
+
 /* OPTION ARCH:SSE/AVX */
 OPTFUNC( SetArch )
 {
@@ -1093,7 +1121,8 @@ static const struct asm_option optiontab[] = {
 #endif
   { "SWITCHSTYLE",      SetSwitchStile }, /* SWITCH_STYLE: <CSWITCH> or <ASMSWITCH> */
   { "FLAT",             SetFlat },		/* FLAT generated FASM style flat code */
-  { "ARCH",             SetArch }       /* ARCH: SSE or AVX */
+  { "ARCH",             SetArch },      /* ARCH: SSE or AVX */
+  { "REDZONE",          SetRedZone }    /* REDZONE: YES or NO */
 };
 
 #define TABITEMS sizeof( optiontab) / sizeof( optiontab[0] )

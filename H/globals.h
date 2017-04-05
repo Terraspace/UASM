@@ -200,11 +200,11 @@
 
 /* HJWasm version info */
 #ifdef _WIN64
-#define _HJWASM_VERSION_STR_ "2.24"
+#define _HJWASM_VERSION_STR_ "2.25"
 #else
-#define _HJWASM_VERSION_STR_ "2.24"
+#define _HJWASM_VERSION_STR_ "2.25"
 #endif
-#define _HJWASM_VERSION_INT_ 224
+#define _HJWASM_VERSION_INT_ 225
 #define _HJWASM_VERSION_SUFFIX_ "pre"
 #define _HJWASM_VERSION_ _HJWASM_VERSION_STR_ //_HJWASM_VERSION_SUFFIX_
 
@@ -793,6 +793,7 @@ struct module_info {
     unsigned char       inside_comment;  /* v2.10: moved from tokenize.c */
 	
 	unsigned			arch : 1;		 /* option arch:{avx/sse} 1=AVX(default architecture), 0=SSE for generated code */
+	unsigned            redzone : 1;     /* option redzone:{yes/no} 1=use, 0=dont use redzone */
 
     unsigned            case_sensitive:1;     /* option casemap */
     unsigned            convert_uppercase:1;  /* option casemap */

@@ -2748,8 +2748,16 @@ static void write_sysv_default_prologue_RBP(struct proc_info *info)
 		}
 		else
 #endif
+		
+		if (ModuleInfo.redzone == 1 && (info->localsize + resstack < 128) && resstack == 0)
+		{
+			/* No Sub RSP, use RedZone optimisation */
+		}
+		else
+		{
 			AddLineQueueX(*(ppfmt + 0), T_RSP, NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
-		AddLineQueueX(*(ppfmt + 1), T_DOT_ALLOCSTACK, NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
+			AddLineQueueX(*(ppfmt + 1), T_DOT_ALLOCSTACK, NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
+		}
 
 		/* save xmm registers */
 		if (cntxmm) {
@@ -2950,59 +2958,64 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 		    }
 
         /* save xmm registers */
-        if ( cntxmm ) {
-            int cnt;
-            regist = info->regslist;
-            i = 0;       //firs location is right at the [rsp+32] which is aligned to 16  ; HJWasm 2.21
-            for( cnt = *regist++; cnt; cnt--, regist++ ) {
-                if (( GetValueSp( *regist ) & OP_XMM )||( GetValueSp( *regist ) & OP_YMM )
+			if (cntxmm) {
+				int cnt;
+				regist = info->regslist;
+				i = 0;       //firs location is right at the [rsp+32] which is aligned to 16  ; HJWasm 2.21
+				if(regist)
+				{
+				for (cnt = *regist++; cnt; cnt--, regist++)
+				{
+					if ((GetValueSp(*regist) & OP_XMM) || (GetValueSp(*regist) & OP_YMM)
 #if EVEXSUPP    
-                  || ( GetValueSp( *regist ) & OP_ZMM )
+						|| (GetValueSp(*regist) & OP_ZMM)
 #endif
-                ){
-                    if ( resstack ) {
-                        //if ( ( 1 << GetRegNo( *regist ) ) & win64_nvxmm )  {
-                          if (GetValueSp(*regist) & OP_XMM){
-                            AddLineQueueX( "%s [%r+%u+%s], %r", MOVE_ALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist );
-                            AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEXMM128, *regist, NUMQUAL i, sym_ReservedStack->name);
-                            i += XYZMMsize;
-                          }
-                          else if (GetValueSp(*regist) & OP_YMM){
-                            AddLineQueueX( "%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist );
-                            AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEYMM256, *regist, NUMQUAL i, sym_ReservedStack->name);
-                            i += XYZMMsize;
-                          }
+						){
+						if (resstack) {
+							//if ( ( 1 << GetRegNo( *regist ) ) & win64_nvxmm )  {
+							if (GetValueSp(*regist) & OP_XMM) {
+								AddLineQueueX("%s [%r+%u+%s], %r", MOVE_ALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
+								AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEXMM128, *regist, NUMQUAL i, sym_ReservedStack->name);
+								i += XYZMMsize;
+							}
+							else if (GetValueSp(*regist) & OP_YMM) {
+								AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
+								AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEYMM256, *regist, NUMQUAL i, sym_ReservedStack->name);
+								i += XYZMMsize;
+							}
 #if EVEXSUPP    
-                          else (GetValueSp(*regist) & OP_ZMM){
-                            AddLineQueueX( "%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist );
-                            AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEZMM512, *regist, NUMQUAL i, sym_ReservedStack->name);
-                            i += XYZMMsize;
-                          }
+							else (GetValueSp(*regist) & OP_ZMM) {
+								AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
+								AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEZMM512, *regist, NUMQUAL i, sym_ReservedStack->name);
+								i += XYZMMsize;
+							}
 #endif
-                       // }
-                    } else {
-                       // if ( ( 1 << GetRegNo( *regist ) ) & win64_nvxmm )  {
-                          if (GetValueSp(*regist) & OP_XMM){
-                            AddLineQueueX("%s [%r+%u], %r", MOVE_ALIGNED_INT, T_RSP, NUMQUAL i, *regist);
-                            AddLineQueueX("%r %r, %u", T_DOT_SAVEXMM128, *regist, NUMQUAL i);
-                            i += XYZMMsize;
-                          }
-                          else if (GetValueSp(*regist) & OP_YMM){
-                            AddLineQueueX("%s [%r+%u], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, *regist);
-                            AddLineQueueX("%r %r, %u", T_DOT_SAVEYMM256, *regist, NUMQUAL i);
-                            i += XYZMMsize;
-                          }
+							// }
+						}
+						else {
+							// if ( ( 1 << GetRegNo( *regist ) ) & win64_nvxmm )  {
+							if (GetValueSp(*regist) & OP_XMM) {
+								AddLineQueueX("%s [%r+%u], %r", MOVE_ALIGNED_INT, T_RSP, NUMQUAL i, *regist);
+								AddLineQueueX("%r %r, %u", T_DOT_SAVEXMM128, *regist, NUMQUAL i);
+								i += XYZMMsize;
+							}
+							else if (GetValueSp(*regist) & OP_YMM) {
+								AddLineQueueX("%s [%r+%u], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, *regist);
+								AddLineQueueX("%r %r, %u", T_DOT_SAVEYMM256, *regist, NUMQUAL i);
+								i += XYZMMsize;
+							}
 #if EVEXSUPP    
-                          else (GetValueSp(*regist) & OP_ZMM){
-                            AddLineQueueX( "%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, *regist );
-                            AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEZMM512, *regist, NUMQUAL i);
-                            i += XYZMMsize;
-                          }
+							else (GetValueSp(*regist) & OP_ZMM) {
+								AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, *regist);
+								AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEZMM512, *regist, NUMQUAL i);
+								i += XYZMMsize;
+							}
 #endif
-                       // }
-                    }
-                }
-            }
+							// }
+						}
+					}
+				}
+			}
         }
     /* For VECTORCALL save vectors in the space provided */
         if (CurrProc->sym.langtype == LANG_VECTORCALL){
@@ -3550,10 +3563,12 @@ static void SetLocalOffsets_RSP(struct proc_info *info)
 			info->localsize = ROUND_UP(info->localsize, align);
 		else if (itemsize) /* v2.04: skip if size == 0 */
 			info->localsize = ROUND_UP(info->localsize, itemsize);
-		/* HJWasm 2.21 fix 16 nyte alignment */
-//		if (!(cntstd & 1) && cntxmm) curr->sym.offset -= 8;   //here is the fix
+
 		DebugMsg1(("SetLocalOffsets_RSP(%s): offset of %s (size=%u) set to %d\n", CurrProc->sym.name, curr->sym.name, curr->sym.total_size, curr->sym.offset));
 	}
+	
+	if (!(cntstd & 1) && ((info->localsize & 15) == 0)) info->localsize += 8;
+
 	/* v2.11: localsize must be rounded before offset adjustment if fpo */
 	/* RSP 16-byte alignment? */
 	if (rspalign)
@@ -3801,10 +3816,17 @@ static void write_sysv_default_epilogue_RBP(struct proc_info *info)
 
 	}
 
-	if (ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP) && (info->localsize + sym_ReservedStack->value) > 0)
-		AddLineQueueX("add %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
-	else if (info->localsize > 0)
-		AddLineQueueX("add %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + stackadj);
+	if (ModuleInfo.redzone == 1 && (info->localsize + sym_ReservedStack->value < 128) && sym_ReservedStack->value == 0)
+	{
+		/* No Sub RSP, use RedZone optimisation */
+	}
+	else
+	{
+		if (ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP) && (info->localsize + sym_ReservedStack->value) > 0)
+			AddLineQueueX("add %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
+		else if (info->localsize > 0)
+			AddLineQueueX("add %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + stackadj);
+	}
 	pop_register(CurrProc->e.procinfo->regslist);
 #if STACKBASESUPP
 	if (!info->fpo && GetRegNo(info->basereg) != 4 && (info->parasize != 0 || info->locallist != NULL))

@@ -149,7 +149,7 @@ static const struct eqitem eqtab[] = {
 static unsigned int hashpjw( const char *s )
 /******************************************/
 {
-    unsigned h;
+/*    unsigned h;
     unsigned g;
 	char c = 1;
 
@@ -170,7 +170,15 @@ static unsigned int hashpjw( const char *s )
         h ^= g >> 15;
     }
 #endif
-    return( h );
+    return( h );*/
+	uint_64 fnv_basis = 14695981039346656037;
+	uint_64 register fnv_prime = 1099511628211;
+	uint_64 h;
+	for (h = fnv_basis; *s; ++s) {
+		h ^= (*s | ' ');
+		h *= fnv_prime;
+	}
+	return((((h >> 16) ^ h) & 0xffff));
 }
 
 void SymSetCmpFunc( void )

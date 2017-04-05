@@ -491,6 +491,10 @@ static void OPTQUAL Set_ofmt( void )
 {
     Options.output_format = OptValue & 0xff;
     Options.sub_format = OptValue >> 8;
+	if (Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_64BIT)
+	{
+		Options.langtype = LANG_SYSVCALL;
+	}
 }
 
 static void OPTQUAL Set_zcm( void ) { Options.no_cdecl_decoration = FALSE; }

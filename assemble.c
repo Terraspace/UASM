@@ -1130,8 +1130,8 @@ static int OnePass( void )
     if ( is_linequeue_populated() )
         RunLineQueue();
 
-	/* Process our built-in macro library to make it available to the rest of the source */
-	if (Parse_Pass == PASS_1 && Options.nomlib == FALSE)
+	/* Process our built-in macro library to make it available to the rest of the source (x64 only) */
+	if (Parse_Pass == PASS_1 && Options.nomlib == FALSE && ModuleInfo.defOfssize == USE64)
 		InitAutoMacros();
 
 #if FASTPASS
