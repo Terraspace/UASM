@@ -634,7 +634,8 @@ FILE *SearchFile( const char *path, bool queue )
                     if ( file = fopen( fullpath, "rb" ) ) {
                         DebugMsg1(("SearchFile(): file found, fopen(%s)=%X\n", fullpath, file ));
                         path = fullpath;
-						setvbuf( file, NULL, _IOFBF, 4096*4 );
+						if(file) 
+							setvbuf( file, NULL, _IOFBF, 4096*4 );
                     }
 #ifdef DEBUG_OUT
                     else
@@ -648,7 +649,8 @@ FILE *SearchFile( const char *path, bool queue )
     if ( file == NULL ) {
         fullpath[0] = NULLC;
         file = fopen( path, "rb" );
-		setvbuf(file, NULL, _IOFBF, 4096*4 );
+		if(file)
+			setvbuf(file, NULL, _IOFBF, 4096*4 );
         DebugMsg1(("SearchFile(): fopen(%s)=%X\n", path, file ));
 
         /* if the file isn't found yet and include paths have been set,
