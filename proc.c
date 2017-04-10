@@ -2600,7 +2600,7 @@ static void write_win64_default_prologue_RBP( struct proc_info *info )
         int cnt;
         regist = info->regslist;
         for( cnt = *regist++; cnt; cnt--, regist++ ) {
-            if ( GetValueSp( *regist ) & OP_XMM ) {
+            if ( GetValueSp( *regist ) & OP_XMM || GetValueSp(*regist) & OP_YMM ) {
                 cntxmm += 1;
             } else {
 				cntstd++;
@@ -2642,7 +2642,9 @@ static void write_win64_default_prologue_RBP( struct proc_info *info )
             regist = info->regslist;
             i = ( info->localsize - cntxmm * 16 ) & ~(16-1);
             for( cnt = *regist++; cnt; cnt--, regist++ ) {
-                if ( GetValueSp( *regist ) & OP_XMM ) {
+
+                if ( GetValueSp( *regist ) & OP_XMM ) 
+				{
                     if ( resstack ) {
                         AddLineQueueX( "%s [%r+%u+%s], %r", MOVE_ALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist );
                         if ( ( 1 << GetRegNo( *regist ) ) & win64_nvxmm )  {
@@ -2656,7 +2658,24 @@ static void write_win64_default_prologue_RBP( struct proc_info *info )
                     }
                     i += 16;
                 }
-            }
+				else if (GetValueSp(*regist) & OP_YMM) 
+				{
+					if (resstack) {
+						AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
+						if ((1 << GetRegNo(*regist)) & win64_nvxmm) {
+							AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEYMM256, *regist, NUMQUAL i, sym_ReservedStack->name);
+						}
+					}
+					else {
+						AddLineQueueX("%s [%r+%u], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, *regist);
+						if ((1 << GetRegNo(*regist)) & win64_nvxmm) {
+							AddLineQueueX("%r %r, %u", T_DOT_SAVEYMM256, *regist, NUMQUAL i);
+						}
+					}
+					i += 32;
+				}
+
+			}
         }
 
     }
@@ -3552,7 +3571,8 @@ static void SetLocalOffsets_RSP(struct proc_info *info)
 		int n = 0;
 		if (curr->sym.isarray) n = curr->sym.total_size &0x7;
 		
-		info->localsize = ROUND_UP(info->localsize, itemsize);
+		if(itemsize < 16)
+			info->localsize = ROUND_UP(info->localsize, itemsize);
 
 		if (ModuleInfo.win64_flags & W64F_STACKALIGN16 && curr->sym.total_size > CurrWordSize)
 			info->localsize = ROUND_UP(info->localsize, 16);

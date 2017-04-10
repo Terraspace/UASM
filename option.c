@@ -873,6 +873,11 @@ OPTFUNC(SetWin64)
 			}
 		}
 	}
+	else
+	{
+		ModuleInfo.frame_auto = 1; /* frame auto must also be implied for all stackbase rsp options */
+		ModuleInfo.win64_flags |= W64F_AUTOSTACKSP;
+	}
   } 
   else 
   {
