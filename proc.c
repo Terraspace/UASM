@@ -2503,11 +2503,14 @@ static void win64_StoreRegHome(struct proc_info *info)
       }
     }
     for (i = 0, regist = info->regslist, cnt = *regist++; cnt; cnt--, regist++, i++) {
-      if ((GetValueSp(*regist) & OP_YMM)||(GetValueSp(*regist) & OP_XMM)
+		if ((GetValueSp(*regist) & OP_YMM) || (GetValueSp(*regist) & OP_XMM)
 #if EVEXSUPP    
-                  || ( GetValueSp( *regist ) & OP_ZMM )
+			|| (GetValueSp(*regist) & OP_ZMM)
 #endif
-        )continue;
+			) {
+			i--;
+			continue;
+		}
       else {
         sizestd += 8;
         if (i < 4)
@@ -2858,442 +2861,378 @@ static void write_sysv_default_prologue_RBP(struct proc_info *info)
 }
 
 /* win64 default prologue when PROC FRAME and  OPTION FRAME:AUTO is set */
-static void write_win64_default_prologue_RSP( struct proc_info *info )
+static void write_win64_default_prologue_RSP(struct proc_info *info)
 /****************************************************************/
 {
-    uint_16             *regist;
-    const char * const  *ppfmt;
-    struct    dsym      *param;
-    int                 cntxmm;
-    unsigned char xyused[6];  /* flags for used sse registers in vectorcall */
-    unsigned char       xreg;
-    unsigned char       xsize;
-    unsigned char       xmmflag = 1;
-    unsigned char       ymmflag = 0;
+	uint_16             *regist;
+	const char * const  *ppfmt;
+	struct    dsym      *param;
+	int                 cntxmm;
+	unsigned char xyused[6];  /* flags for used sse registers in vectorcall */
+	unsigned char       xreg;
+	unsigned char       xsize;
+	unsigned char       xmmflag = 1;
+	unsigned char       ymmflag = 0;
 #if EVEXSUPP
-    unsigned char       zmmflag = 0;
+	unsigned char       zmmflag = 0;
 #endif
-    int                 vsize = 0;
-    int                 vectstart = 0;
-    int                 n;
-    int                 m;
-    int                 i;
-    int                 j;
-    int                 cnt;
-    int                 homestart;
-    int                 stackSize;
-    int                 resstack = ( ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) ? sym_ReservedStack->value : 0 );
+	int                 vsize = 0;
+	int                 vectstart = 0;
+	int                 n;
+	int                 m;
+	int                 i;
+	int                 j;
+	int                 cnt;
+	int                 homestart;
+	int                 stackSize;
+	int                 resstack = ((ModuleInfo.win64_flags & W64F_AUTOSTACKSP) ? sym_ReservedStack->value : 0);
 	struct dsym     *paranode;
 	int pushed = 0;
-	
-    DebugMsg1(("write_win64_default_prologue enter\n"));
-    memset(xyused, 0, 6);
-    info->vecused = 0;
-    XYZMMsize = 16;
-    if ( ModuleInfo.win64_flags & W64F_SAVEREGPARAMS )
-        win64_SaveRegParams_RSP( info );
-    if (ModuleInfo.win64_flags & W64F_SMART) 
-      win64_StoreRegHome(info);
 
-	/*
-     * PUSH RBP
-     * .PUSHREG RBP
-     * MOV RBP, RSP
-     * .SETFRAME RBP, 0
-     */
+	if (Parse_Pass == PASS_1)
+	{
+		info->vsize = 0;
+		info->xmmsize = 0;
+	}
+
+	DebugMsg1(("write_win64_default_prologue_RSP enter\n"));
+	memset(xyused, 0, 6);
+	info->vecused = 0;
+	XYZMMsize = 16;
+
+	if (ModuleInfo.win64_flags & W64F_SAVEREGPARAMS)
+		win64_SaveRegParams_RSP(info);
+
+	if (ModuleInfo.win64_flags & W64F_SMART)
+		win64_StoreRegHome(info);
 
 #if STACKBASESUPP
-	 /* info->locallist tells whether there are local variables ( info->localsize doesn't! ) */
+
+	info->pushed_reg = 0; /*count of pushed registers */
 	if (info->regslist != 0)
 		pushed = *(info->regslist);
 
-    if ( info->fpo || ( info->parasize == 0 && info->locallist == NULL ) ) {
-        DebugMsg1(("write_win64_default_prologue: no frame register needed\n"));
-        //sizestd += 8; /* v2.12: obsolete */
-		// If we're using RBP as the base/frame register and no frame was required, we need to sub RSP,8 to ensure the
-		// stack pointer remains aligned 16.
-		//if ( info->basereg != T_RSP && ( ( pushed>0 && (pushed & 1) == 1 ) || pushed==0 ) )
-		//{
-		//	AddLineQueueX("sub %r, %u", T_RSP, CurrWordSize);
-		//	pushed = 100;
-		//}
-	} 
-	else 
-	{
-        AddLineQueueX( "push %r", info->basereg );
-        AddLineQueueX( "%r %r", T_DOT_PUSHREG, info->basereg );
-        AddLineQueueX( "mov %r, %r", info->basereg, T_RSP );
-        AddLineQueueX( "%r %r, 0", T_DOT_SETFRAME, info->basereg );
-    }
-#else
-    AddLineQueueX( "push %r", basereg[USE64] );
-    AddLineQueueX( "%r %r", T_DOT_PUSHREG, basereg[USE64] );
-    AddLineQueueX( "mov %r, %r", basereg[USE64], T_RSP );
-    AddLineQueueX( "%r %r, 0", T_DOT_SETFRAME, basereg[USE64] );
 #endif
-	info->pushed_reg = 0; /*count of pushed registers */
+
 	if (ModuleInfo.win64_flags & W64F_SMART)
 	{
-      cntxmm = 0;
-      if (info->regslist) {
-        n = 0;
-        regist = info->regslist;
-        for (cnt = *regist++; cnt; cnt--, regist++) {
-          if (GetValueSp(*regist) & OP_XMM){
-            cntxmm += 1;
-          }
-          else if (GetValueSp(*regist) & OP_YMM){
-            cntxmm += 1;
-            ymmflag = 1;
-          }
+		cntxmm = 0;
+		if (info->regslist) {
+			n = 0;
+			regist = info->regslist;
+			for (cnt = *regist++; cnt; cnt--, regist++) {
+				if (GetValueSp(*regist) & OP_XMM) {
+					cntxmm += 1;
+				}
+				else if (GetValueSp(*regist) & OP_YMM) {
+					cntxmm += 1;
+					ymmflag = 1;
+				}
 #if EVEXSUPP    
-          else if (GetValueSp(*regist) & OP_ZMM){
-            cntxmm += 1;
-            zmmflag = 1;
-          }
+				else if (GetValueSp(*regist) & OP_ZMM) {
+					cntxmm += 1;
+					zmmflag = 1;
+				}
 #endif
-          else {
-            if (n < info->stored_reg) n++;
-            else{
-              info->pushed_reg += 1;
-              AddLineQueueX("push %r", *regist);
-              if ((1 << GetRegNo(*regist)) & win64_nvgpr) {
-                AddLineQueueX("%r %r", T_DOT_PUSHREG, *regist);
-              }
-            }
-          }
-        } /* end for */
-      }
-    }
-    else{
-      /* after the "push rbp", the stack is xmmword aligned */
-      /* Push the registers */
-      cntxmm = 0;
-      if (info->regslist) {
-        int cnt;
-        regist = info->regslist;
-        for (cnt = *regist++; cnt; cnt--, regist++) {
-          if (GetValueSp(*regist) & OP_XMM)
-            cntxmm += 1;
-          else if (GetValueSp(*regist) & OP_YMM){
-            cntxmm += 1;
-            ymmflag = 1;
-          }
-#if EVEXSUPP    
-          else if (GetValueSp(*regist) & OP_ZMM){
-            cntxmm += 1;
-            zmmflag = 1;
-          }
-#endif
-          else {
-			info->pushed_reg += 1;
-            AddLineQueueX("push %r", *regist);
-            if ((1 << GetRegNo(*regist)) & win64_nvgpr) {
-              AddLineQueueX("%r %r", T_DOT_PUSHREG, *regist);
-            }
-          }
-        } /* end for */
-      }
-    }
-#if EVEXSUPP   
-    if (zmmflag) XYZMMsize = 64;
-    else
-#endif
-    if (ymmflag) XYZMMsize = 32;
-    else XYZMMsize = 16;
-    /* v2.11: now done in write_prologue() */
-	if (ModuleInfo.win64_flags & W64F_SMART){
-      if (Parse_Pass && sym_ReservedStack->hasinvoke == 0) resstack = 0;
-      if (!(info->locallist) && !(resstack)) info->localsize = 0;
-      if ((info->localsize == 0) && (cntxmm)){
-        CurrProc->e.procinfo->xmmsize = cntxmm * XYZMMsize;
-        if ((info->pushed_reg & 1) == 0)
-        info->localsize = 8;
-      }
-    }
-	else {
-		if (pushed != 100 && (info->locallist == 0) && (info->localsize)) 
-		{
-			AddLineQueueX("sub %r, %u", T_RSP, info->localsize);
+				else {
+					if (n < info->stored_reg) n++;
+					else {
+						info->pushed_reg += 1;
+						AddLineQueueX("push %r", *regist);
+						if ((1 << GetRegNo(*regist)) & win64_nvgpr) {
+							AddLineQueueX("%r %r", T_DOT_PUSHREG, *regist);
+						}
+					}
+				}
+			} /* end for */
 		}
 	}
-    if ( ( info->locallist + resstack) || info->vecused )  {
-        DebugMsg1(("write_win64_default_prologue: localsize=%u resstack=%u\n", info->localsize, resstack ));
-        if (ModuleInfo.win64_flags & W64F_SMART){
-          if (((info->pushed_reg & 1) && (info->localsize & 0xF)) ||
-            ((!(info->pushed_reg & 1)) && (!(info->localsize & 0xF))) && (!(info->pushed_reg & 1)) && (!(cntxmm)))
-		  {
-            info->localsize += 8;
-            if (CurrProc->sym.langtype == LANG_VECTORCALL){
-              vectstart = 0;
-            }
-          }
-        }
-          /*
-         * SUB  RSP, localsize
-         * .ALLOCSTACK localsize
-         */
-        
-        ppfmt = ( resstack ? fmtstk1 : fmtstk0 );
-#if STACKPROBE
-		if (info->localsize + resstack > 0x1000) {
-			AddLineQueueX(*(ppfmt + 2), T_RAX, NUMQUAL info->localsize, sym_ReservedStack->name);
-			AddLineQueue("externdef __chkstk:PROC");
-			AddLineQueue("call __chkstk");
-			AddLineQueueX("mov %r, %r", T_RSP, T_RAX);
-		}
-		else
+
+#if EVEXSUPP   
+	if (zmmflag) XYZMMsize = 64;
+	else
 #endif
-			stackSize = info->localsize + info->vsize + info->xmmsize;
+
+		if (ymmflag) XYZMMsize = 32;
+		else XYZMMsize = 16;
+
+		/* v2.11: now done in write_prologue() */
+		if (ModuleInfo.win64_flags & W64F_HABRAN)
+		{
+			if (Parse_Pass && sym_ReservedStack->hasinvoke == 0) resstack = 0;
+			if (!(info->locallist) && !(resstack)) info->localsize = 0;
+			if ((info->localsize == 0) && (cntxmm))
+			{
+				CurrProc->e.procinfo->xmmsize = cntxmm * XYZMMsize;
+				if ((info->pushed_reg & 1) == 0)
+					info->localsize = 8;
+			}
+		}
+
+		if ((info->locallist + resstack) || info->vecused || CurrProc->e.procinfo->xmmsize) {
+			DebugMsg1(("write_win64_default_prologue_RSP: localsize=%u resstack=%u\n", info->localsize, resstack));
+			if (ModuleInfo.win64_flags & W64F_HABRAN) {
+				if (((info->pushed_reg & 1) && (info->localsize & 0xF)) ||
+					((!(info->pushed_reg & 1)) && (!(info->localsize & 0xF))) && (!(info->pushed_reg & 1)) && (!(cntxmm)))
+				{
+					info->localsize += 8;
+					if (CurrProc->sym.langtype == LANG_VECTORCALL) {
+						vectstart = 0;
+					}
+				}
+			}
+			/*
+			* SUB  RSP, localsize
+			* .ALLOCSTACK localsize
+			*/
+
+			ppfmt = (resstack ? fmtstk1 : fmtstk0);
+#if STACKPROBE
+			if (info->localsize + resstack > 0x1000) {
+				AddLineQueueX(*(ppfmt + 2), T_RAX, NUMQUAL info->localsize, sym_ReservedStack->name);
+				AddLineQueue("externdef __chkstk:PROC");
+				AddLineQueue("call __chkstk");
+				AddLineQueueX("mov %r, %r", T_RSP, T_RAX);
+			}
+			else
+#endif
+				stackSize = info->localsize + info->vsize + info->xmmsize;
 			if ((stackSize & 7) != 0) stackSize = (stackSize + 7)&(-8);
 
 			AddLineQueueX(*(ppfmt + 0), T_RSP, NUMQUAL stackSize, sym_ReservedStack->name);
 			AddLineQueueX(*(ppfmt + 1), T_DOT_ALLOCSTACK, NUMQUAL stackSize, sym_ReservedStack->name);
-			
-			/* Force proc parameters down by 8 if we use the sub rsp. */
-			if (info->NoSub == 0)
+
+			/* Handle ZEROLOCALS option */
+			if (ZEROLOCALS && info->localsize)
 			{
-				if (info->basereg == T_RBP && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP) && (ModuleInfo.win64_flags & W64F_SAVEREGPARAMS))
+				if (info->localsize <= 128)
 				{
-					paranode = info->paralist;
-					while (paranode != NULL)
-					{
-						paranode->sym.offset -= 8;
-						paranode = paranode->nextparam;
-					}
-					info->NoSub = 1;
+					AddLineQueueX("mov %r, %u", T_EAX, info->localsize);
+					AddLineQueueX("dec %r", T_EAX);
+					AddLineQueueX("mov byte ptr [%r + %r], 0", T_RSP, T_RAX);
+					AddLineQueueX("dw 0F875h");
+				}
+				else
+				{
+					AddLineQueueX("push %r", T_RDI);
+					AddLineQueueX("push %r", T_RCX);
+					AddLineQueueX("xor %r, %r", T_EAX, T_EAX);
+					AddLineQueueX("mov %r, %u", T_ECX, info->localsize);
+					AddLineQueueX("cld");
+					AddLineQueueX("lea %r, [%r+16]", T_RDI, T_RSP);
+					AddLineQueueX("rep stosb");
+					AddLineQueueX("pop %r", T_RCX);
+					AddLineQueueX("pop %r", T_RDI);
 				}
 			}
 
-		    /* Handle ZEROLOCALS option */
-		    if (ZEROLOCALS && info->localsize) 
-		    {
-			    if (info->localsize <= 128) 
-			    {
-				    AddLineQueueX("mov %r, %u", T_EAX, info->localsize);
-				    AddLineQueueX("dec %r", T_EAX);
-				    AddLineQueueX("mov byte ptr [%r + %r], 0", T_RSP, T_RAX);
-				    AddLineQueueX("dw 0F875h");
-			    }
-			    else
-			    {
-				    AddLineQueueX("push %r", T_RDI);
-				    AddLineQueueX("push %r", T_RCX);
-				    AddLineQueueX("xor %r, %r", T_EAX, T_EAX);
-				    AddLineQueueX("mov %r, %u", T_ECX, info->localsize);
-				    AddLineQueueX("cld");
-				    AddLineQueueX("lea %r, [%r+16]", T_RDI, T_RSP);
-				    AddLineQueueX("rep stosb");
-				    AddLineQueueX("pop %r", T_RCX);
-				    AddLineQueueX("pop %r", T_RDI);
-			    }
-		    }
-        /* save xmm registers */
-        if ( cntxmm ) {
-            int cnt;
-            regist = info->regslist;
-            if (info->locallist)
-              i = (info->localsize - cntxmm * XYZMMsize) & ~(16 - 1);
-            else
-              i = info->localsize  & ~(16 - 1);
-
-            for( cnt = *regist++; cnt; cnt--, regist++ ) {
-                if (( GetValueSp( *regist ) & OP_XMM )||( GetValueSp( *regist ) & OP_YMM )
-#if EVEXSUPP    
-                  || ( GetValueSp( *regist ) & OP_ZMM )
-#endif
-                ){
-                    if ( resstack ) {
-                        if ( ( 1 << GetRegNo( *regist ) ) & win64_nvxmm )  {
-                          if (GetValueSp(*regist) & OP_XMM){
-								            AddLineQueueX("%s [%r+%u+%s], %r", MOVE_ALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
-                            AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEXMM128, *regist, NUMQUAL i, sym_ReservedStack->name);
-                            i += XYZMMsize;
-                          }
-                          else if (GetValueSp(*regist) & OP_YMM){
-								            AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
-                            AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEYMM256, *regist, NUMQUAL i, sym_ReservedStack->name);
-                            i += XYZMMsize;
-                          }
-#if EVEXSUPP    
-                          else (GetValueSp(*regist) & OP_ZMM){
-								            AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
-                            AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEZMM512, *regist, NUMQUAL i, sym_ReservedStack->name);
-                            i += XYZMMsize;
-                          }
-#endif
-                        }
-                    } else {
-                        if ( ( 1 << GetRegNo( *regist ) ) & win64_nvxmm )  {
-                          if (GetValueSp(*regist) & OP_XMM){
-								            AddLineQueueX("%s [%r+%u], %r", MOVE_ALIGNED_INT, T_RSP, NUMQUAL i, *regist);
-                            AddLineQueueX("%r %r, %u", T_DOT_SAVEXMM128, *regist, NUMQUAL i);
-                            i += XYZMMsize;
-                          }
-                          else if (GetValueSp(*regist) & OP_YMM){
-								            AddLineQueueX("%s [%r+%u], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, *regist);
-                            AddLineQueueX("%r %r, %u", T_DOT_SAVEYMM256, *regist, NUMQUAL i);
-                            i += XYZMMsize;
-                          }
-#if EVEXSUPP    
-                          else (GetValueSp(*regist) & OP_ZMM){
-								            AddLineQueueX("%s [%r+%u], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, *regist);
-                            AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEZMM512, *regist, NUMQUAL i);
-                            i += XYZMMsize;
-                          }
-#endif
-                        }
-                    }
-                }
-            }
-        }
-    /* For VECTORCALL save vectors in the space provided */
-        if (CurrProc->sym.langtype == LANG_VECTORCALL){
-          vectstart = info->localsize  + info->xmmsize & ~(16 - 1);
-          if (info->vecused){
-            if (info->vecregs){
-              for (n = 0, m = 0, xsize = 0; n < 6; n++){
-                xreg = info->vecregs[n];
-                if (xreg == 1 && info->vecregsize[n] < 16)
-                  continue;//REAL4, FLOAT and REAL8 are stored in homespace
-                else if (xreg)
-				{  
-                  AddLineQueueX("lea %r,[%r + %d]", T_RAX,T_RSP,vectstart  + xsize );
-                  stackSize = info->localsize + resstack + info->vsize + info->xmmsize + 8 + info->pushed_reg * 8  + n * 8;
-                  if ((stackSize & 7) != 0) stackSize = (stackSize + 7)&(-8);
-                  AddLineQueueX("mov [%r + %d], %r", T_RSP, stackSize, T_RAX);
-                  xsize += info->vecregsize[n] * xreg;
-                }
-				else if (info->vregs[n] != 0 && xreg == 0 && n < 4) /* JPH */
+			/* save xmm registers */
+			if (cntxmm) {
+				int cnt;
+				regist = info->regslist;
+				i = 0;       //firs location is right at the [rsp+32] which is aligned to 16  ; HJWasm 2.21
+				if (regist)
 				{
-					struct dsym *pp = info->paralist;
-					int j = 0;
-					for (j = 0; j < n; j++)
+					for (cnt = *regist++; cnt; cnt--, regist++)
 					{
-						if(pp) pp = pp->nextparam;
+						if ((GetValueSp(*regist) & OP_XMM) || (GetValueSp(*regist) & OP_YMM)
+#if EVEXSUPP    
+							|| (GetValueSp(*regist) & OP_ZMM)
+#endif
+							) {
+							if (resstack) {
+								//if ( ( 1 << GetRegNo( *regist ) ) & win64_nvxmm )  {
+								if (GetValueSp(*regist) & OP_XMM) {
+									AddLineQueueX("%s [%r+%u+%s], %r", MOVE_ALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
+									AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEXMM128, *regist, NUMQUAL i, sym_ReservedStack->name);
+									i += XYZMMsize;
 					}
-					if (pp)
-					{
-							if (pp->sym.ttype)
-							{
-								if (pp->sym.ttype->e.structinfo->isHFA == 1 || pp->sym.ttype->e.structinfo->isHVA == 1 || pp->sym.ttype->e.structinfo->stype == MM128 || pp->sym.ttype->e.structinfo->stype == MM256)
-								{
-									stackSize = info->localsize + resstack + info->vsize + info->xmmsize + 8 + info->pushed_reg * 8 + n * 8;
-									if ((stackSize & 7) != 0) stackSize = (stackSize + 7)&(-8);
-									AddLineQueueX("mov [%r + %d], %r", T_RSP, stackSize, ms64_regs[n]);
-									//xsize += 8;
-									xsize += info->vecregsize[n] * xreg;
+								else if (GetValueSp(*regist) & OP_YMM) {
+									AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
+									AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEYMM256, *regist, NUMQUAL i, sym_ReservedStack->name);
+									i += XYZMMsize;
 								}
+#if EVEXSUPP    
+								else (GetValueSp(*regist) & OP_ZMM) {
+									AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
+									AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEZMM512, *regist, NUMQUAL i, sym_ReservedStack->name);
+									i += XYZMMsize;
+								}
+#endif
+								// }
+				}
+							else {
+								// if ( ( 1 << GetRegNo( *regist ) ) & win64_nvxmm )  {
+								if (GetValueSp(*regist) & OP_XMM) {
+									AddLineQueueX("%s [%r+%u], %r", MOVE_ALIGNED_INT, T_RSP, NUMQUAL i, *regist);
+									AddLineQueueX("%r %r, %u", T_DOT_SAVEXMM128, *regist, NUMQUAL i);
+									i += XYZMMsize;
+								}
+								else if (GetValueSp(*regist) & OP_YMM) {
+									AddLineQueueX("%s [%r+%u], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, *regist);
+									AddLineQueueX("%r %r, %u", T_DOT_SAVEYMM256, *regist, NUMQUAL i);
+									i += XYZMMsize;
+								}
+#if EVEXSUPP    
+								else (GetValueSp(*regist) & OP_ZMM) {
+									AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, *regist);
+									AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEZMM512, *regist, NUMQUAL i);
+									i += XYZMMsize;
+								}
+#endif
+								// }
 							}
+			}
+		}
+}
+		}
+			/* For VECTORCALL save vectors in the space provided */
+			if (CurrProc->sym.langtype == LANG_VECTORCALL) {
+				vectstart = info->localsize + info->xmmsize & ~(16 - 1);
+				if (info->vecused) {
+					if (info->vecregs) {
+						for (n = 0, m = 0, xsize = 0; n < 6; n++) {
+							xreg = info->vecregs[n];
+							if (xreg == 1 && info->vecregsize[n] < 16)
+								continue;//REAL4, FLOAT and REAL8 are stored in homespace
+							else if (xreg)
+							{
+								AddLineQueueX("lea %r,[%r + %d]", T_RAX, T_RSP, vectstart + xsize);
+								stackSize = info->localsize + resstack + info->vsize + info->xmmsize + 8 + info->pushed_reg * 8 + n * 8;
+								if ((stackSize & 7) != 0) stackSize = (stackSize + 7)&(-8);
+								AddLineQueueX("mov [%r + %d], %r", T_RSP, stackSize, T_RAX);
+								xsize += info->vecregsize[n] * xreg;
+							}
+							else if (info->vregs[n] != 0 && xreg == 0 && n < 4) /* JPH */
+							{
+								struct dsym *pp = info->paralist;
+								int j = 0;
+								for (j = 0; j < n; j++)
+								{
+									if (pp) pp = pp->nextparam;
+								}
+								if (pp)
+								{
+									if (pp->sym.ttype)
+									{
+										if (pp->sym.ttype->e.structinfo->isHFA == 1 || pp->sym.ttype->e.structinfo->isHVA == 1 || pp->sym.ttype->e.structinfo->stype == MM128 || pp->sym.ttype->e.structinfo->stype == MM256)
+										{
+											stackSize = info->localsize + resstack + info->vsize + info->xmmsize + 8 + info->pushed_reg * 8 + n * 8;
+											if ((stackSize & 7) != 0) stackSize = (stackSize + 7)&(-8);
+											AddLineQueueX("mov [%r + %d], %r", T_RSP, stackSize, ms64_regs[n]);
+											//xsize += 8;
+											xsize += info->vecregsize[n] * xreg;
+										}
+									}
+										}
+									}
+								}
+						/* set available registers to zero including the ones that are greater than 1 */
+						for (i = 0; i < 6; i++) {
+							if (info->vecregs[i] == 1) xyused[i] = 1;
+							else if ((info->vecregs[i] >= 1) && (xyused[i] != 1))
+								xyused[i] = 0;
+						}
+						for (n = 0, m = 0; n < 6; n++) {
+							xreg = info->vecregs[n];       // it can be 0, 1, 2 or 4 eg: 0, 4, 0, 2, 0, 0
+							xsize = info->vecregsize[n];   // xmm = 16, ymm = 32 or zmm = 64
+							m += xreg;
+							if (m > 6) break;              // max 6 AVX registers
+							if (xreg == 1 && info->vecregsize[n] < 16)
+								continue;                    //REAL4, FLOAT and REAL8 are stored in homespace
+							else if (xreg) {
+								switch (xsize) {
+								case 4:
+									//if (xreg == 2){
+									//  /* this can only happen if there is 2 real4 */
+									//  AddLineQueueX("vmovsd qword ptr [rsp+%d],%r", vsize + vectstart, T_XMM0 + n);
+									//  vsize += 8;
+									//  }
+									//else{
+									for (i = 0, j = 0; i < xreg; i++) {
+										while (xyused[j] != 0) j++;
+										AddLineQueueX("%s dword ptr [rsp+%d],%r", MOVE_SINGLE, vsize + vectstart, T_XMM0 + j);
+										xyused[j] = 1;
+										vsize += 4;
+									}
+									//}
+									break;
+								case 8:
+									if (xreg <= 3) {
+										for (i = 0, j = 0; i < xreg; i++) {
+											while (xyused[j] != 0) j++;
+											AddLineQueueX("%s qword ptr [rsp+%d],%r", MOVE_DOUBLE, vsize + vectstart, T_XMM0 + j);
+											xyused[j] = 1;
+											vsize += 8;
+										}
+									}
+									/* this can only happen if there is 8 real8 */
+#if EVEXSUPP
+									else {
+										AddLineQueueX("vmovups ymmword ptr [rsp+%d],%r", vsize + vectstart, T_YMM0 + n);
+										vsize += 64;
+										xyused[n] = 1;
+									}
+#endif
+									break;
+								case 16:
+									if (xreg == 1) {
+										AddLineQueueX("%s oword ptr [rsp+%d],%r", MOVE_UNALIGNED_FLOAT, vsize + vectstart, T_XMM0 + n);
+										xyused[n] = 1;
+										vsize += 16;
+									}
+									else {
+										for (i = 0, j = 0; i < xreg; i++) {
+											while (xyused[j] != 0) j++;
+											AddLineQueueX("%s oword ptr [rsp+%d],%r", MOVE_UNALIGNED_FLOAT, vsize + vectstart, T_XMM0 + j);
+											xyused[j] = 1;
+											vsize += 16;
+										}
+									}
+									break;
+								case 32:
+									if (xreg == 1) {
+										AddLineQueueX("vmovups ymmword ptr [rsp+%d],%r", vsize + vectstart, T_YMM0 + n);
+										xyused[n] = 1;
+										vsize += 32;
+									}
+									else {
+										for (i = 0, j = 0; i < xreg; i++) {
+											while (xyused[j] != 0) j++;
+											AddLineQueueX("vmovups ymmword ptr [rsp+%d],%r", vsize + vectstart, T_YMM0 + j);
+											xyused[j] = 1;
+											vsize += 32;
+										}
+									}
+									break;
+#if EVEXSUPP 
+								case 64:
+									if (xreg == 1) {
+										AddLineQueueX("vmovups zmmword ptr [rsp+%d],%r", vsize + vectstart + xsize, T_ZMM0 + n);
+										xyused[n] = 1;
+										vsize += 64;
+									}
+									else {
+										for (i = 0, j = 0; i < xreg; i++) {
+											while (xyused[j] != 0) j++;
+											AddLineQueueX("vmovups zmmword ptr [rsp+%d],%r", vsize + vectstart + xsize, T_ZMM0 + j);
+											xyused[j] = 1;
+											vsize += 64;
+										}
+									}
+									break;
+#endif
+						}
+							}
+							}
+						}
 					}
 				}
-              }
-              /* set available registers to zero including the ones that are greater than 1 */
-              for (i = 0; i < 6; i++){
-                if (info->vecregs[i] == 1) xyused[i] = 1;
-                else if ((info->vecregs[i] >= 1) && (xyused[i] != 1))
-                  xyused[i] = 0;
-              }
-              for (n = 0, m = 0; n < 6; n++){
-                xreg = info->vecregs[n];       // it can be 0, 1, 2 or 4 eg: 0, 4, 0, 2, 0, 0
-                xsize = info->vecregsize[n];   // xmm = 16, ymm = 32 or zmm = 64
-                m += xreg;
-                if (m > 6) break;              // max 6 AVX registers
-                if (xreg == 1 && info->vecregsize[n] < 16)
-                  continue;                    //REAL4, FLOAT and REAL8 are stored in homespace
-                else if (xreg){
-                  switch (xsize){
-                    case 4:
-                      //if (xreg == 2){
-                      //  /* this can only happen if there is 2 real4 */
-                      //  AddLineQueueX("vmovsd qword ptr [rsp+%d],%r", vsize + vectstart, T_XMM0 + n);
-                      //  vsize += 8;
-                      //  }
-                      //else{
-                        for (i = 0, j = 0; i < xreg; i++){
-                          while (xyused[j] != 0) j++;
-                          AddLineQueueX("vmovss dword ptr [rsp+%d],%r", vsize + vectstart, T_XMM0 + j);
-                          xyused[j] = 1;
-                          vsize += 4;
-                          }
-                        //}
-                      break;
-                    case 8:
-                      if (xreg <= 3){
-                        for (i = 0, j = 0; i < xreg; i++){
-                          while (xyused[j] != 0) j++;
-                          AddLineQueueX("vmovsd qword ptr [rsp+%d],%r", vsize + vectstart, T_XMM0 + j);
-                          xyused[j] = 1;
-                          vsize += 8;
-                          }
-                        }
-                      /* this can only happen if there is 8 real8 */
-#if EVEXSUPP
-                      else {
-                        AddLineQueueX("vmovups ymmword ptr [rsp+%d],%r",vsize + vectstart , T_YMM0 + n);
-                        vsize += 64;
-                        xyused[n] = 1;
-                    }
-#endif
-                    break;
-                  case 16:
-                    if (xreg == 1){
-                        AddLineQueueX("vmovups oword ptr [rsp+%d],%r",vsize + vectstart , T_XMM0 + n);
-                      xyused[n] = 1;
-                      vsize += 16;
-                    }
-                    else{
-                      for (i = 0, j = 0; i < xreg; i++){
-                        while (xyused[j] != 0) j++;
-                          AddLineQueueX("vmovups oword ptr [rsp+%d],%r",vsize + vectstart , T_XMM0 + j);
-                        xyused[j] = 1;
-                        vsize += 16;
-                      }
-                    }
-                    break;
-                  case 32:
-                    if (xreg == 1){
-                        AddLineQueueX("vmovups ymmword ptr [rsp+%d],%r",vsize + vectstart  , T_YMM0 + n);
-                      xyused[n] = 1;
-                      vsize += 32;
-                    }
-                    else{
-                      for (i = 0, j = 0; i < xreg; i++){
-                        while (xyused[j] != 0) j++;
-                          AddLineQueueX("vmovups ymmword ptr [rsp+%d],%r",vsize + vectstart , T_YMM0 + j);
-                        xyused[j] = 1;
-                        vsize += 32;
-                      }
-                    }
-                    break;
-#if EVEXSUPP 
-                  case 64: 
-                    if (xreg == 1){
-                        AddLineQueueX("vmovups zmmword ptr [rsp+%d],%r",vsize + vectstart + xsize, T_ZMM0 + n);
-                      xyused[n] = 1;
-                      vsize += 64;
-                    }
-                    else{
-                      for (i=0,j=0; i < xreg; i++){
-                        while (xyused[j] != 0) j++;
-                          AddLineQueueX("vmovups zmmword ptr [rsp+%d],%r", vsize + vectstart + xsize, T_ZMM0 + j);
-                        xyused[j] = 1;
-                        vsize += 64;
-                      }
-                    }
-                    break;
-#endif
-                  }
-                }
-              }
-            }
-          }
-        }
-    }
-    AddLineQueueX( "%r", T_DOT_ENDPROLOG );
+			}
+		AddLineQueueX("%r", T_DOT_ENDPROLOG);
 
-    /* v2.11: linequeue is now run in write_default_prologue() */
-    return;
+		/* v2.11: linequeue is now run in write_default_prologue() */
+		return;
 }
 
 #endif
