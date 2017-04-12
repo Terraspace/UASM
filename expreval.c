@@ -495,7 +495,8 @@ static ret_code get_operand( struct expr *opnd, int *idx, struct asm_tok tokenar
                 return( fnEmitErr( INSTRUCTION_OR_REGISTER_NOT_ACCEPTED_IN_CURRENT_CPU_MODE ) );
         }
 
-        if( flags & EXPF_IN_SQBR ) {
+        if( flags & EXPF_IN_SQBR && (i == 0 || tokenarray[i - 1].tokval != T_TYPE) ) 
+		{
             /* a valid index register? */
             if ( GetSflagsSp( j ) & SFR_IREG ) {
                 opnd->indirect = TRUE;

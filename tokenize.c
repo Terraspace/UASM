@@ -515,7 +515,8 @@ static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
     int  index;
 
     symbol = *p->input;
-    switch( symbol ) {
+	buf->tokval = 0;
+	switch( symbol ) {
     case ':' : /* T_COLON binary operator (0x3A) */
         p->input++;
         if ( *p->input == ':' ) {
