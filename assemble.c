@@ -1131,8 +1131,12 @@ static int OnePass( void )
         RunLineQueue();
 
 	/* Process our built-in macro library to make it available to the rest of the source (x64 only) */
-	if (Parse_Pass == PASS_1 && Options.nomlib == FALSE && ModuleInfo.defOfssize == USE64)
+	if (Parse_Pass == PASS_1 && Options.nomlib == FALSE && ModuleInfo.defOfssize == USE64) {
+		unsigned  alist = ModuleInfo.list;
+		ModuleInfo.list = 0;
 		InitAutoMacros();
+		ModuleInfo.list = alist;
+	}
 
 #if FASTPASS
     StoreState = FALSE;

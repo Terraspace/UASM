@@ -200,11 +200,11 @@
 
 /* HJWasm version info */
 #ifdef _WIN64
-#define _HJWASM_VERSION_STR_ "2.26"
+#define _HJWASM_VERSION_STR_ "2.27"
 #else
-#define _HJWASM_VERSION_STR_ "2.26"
+#define _HJWASM_VERSION_STR_ "2.27"
 #endif
-#define _HJWASM_VERSION_INT_ 226
+#define _HJWASM_VERSION_INT_ 227
 #define _HJWASM_VERSION_SUFFIX_ "pre"
 #define _HJWASM_VERSION_ _HJWASM_VERSION_STR_ //_HJWASM_VERSION_SUFFIX_
 

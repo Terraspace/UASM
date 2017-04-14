@@ -1074,7 +1074,10 @@ vcall:
 					}
 					else
 					{
-						AddLineQueueX(" lea %r, %s", ms64_regs[index + 2 * 4 + (psize > 4 ? 4 : 0)], paramvalue);
+						if (proc->sym.langtype == LANG_SYSVCALL)
+							AddLineQueueX(" lea %r, %s", sysV64_regs[index + 2 * 6 + (psize > 6 ? 6 : 0)], paramvalue);
+						else
+							AddLineQueueX(" lea %r, %s", ms64_regs[index + 2 * 4 + (psize > 4 ? 4 : 0)], paramvalue);
 					}
 				}
 			}
