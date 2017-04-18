@@ -544,7 +544,7 @@ OPTFUNC( SetOffset )
     return( NOT_ERROR );
 }
 
-/* OPTION PROC:PRIVATE | PUBLIC | EXPORT */
+/* OPTION PROC:PRIVATE | PUBLIC | EXPORT | DEFAULT | NONE */
 
 OPTFUNC( SetProc )
 /****************/
@@ -562,6 +562,45 @@ OPTFUNC( SetProc )
             ModuleInfo.procs_export = TRUE;
             i++;
         }
+		else if (0 == _stricmp(tokenarray[i].string_ptr, "DEFAULT")) {
+			ModuleInfo.prologuemode = PEM_DEFAULT;
+			ModuleInfo.epiloguemode = PEM_DEFAULT;
+			i++;
+		}
+		else if (0 == _stricmp(tokenarray[i].string_ptr, "NONE")) {
+			ModuleInfo.prologuemode = PEM_NONE;
+			ModuleInfo.epiloguemode = PEM_NONE;
+			i++;
+		}
+		else
+		{
+			/* Setup prologue macro */
+			if (ModuleInfo.proc_prologue) 
+			{
+				LclFree(ModuleInfo.proc_prologue);
+				ModuleInfo.proc_prologue = NULL;
+			}
+			ModuleInfo.prologuemode = PEM_MACRO;
+			ModuleInfo.proc_prologue = LclAlloc(strlen(tokenarray[i].string_ptr) + 1);
+			strcpy(ModuleInfo.proc_prologue, tokenarray[i].string_ptr);
+			i++;
+
+			/* Setup epilogue macro */
+			if (tokenarray[i].token == T_COMMA)
+			{
+				i++;
+				if (ModuleInfo.proc_epilogue) 
+				{
+					LclFree(ModuleInfo.proc_epilogue);
+					ModuleInfo.proc_epilogue = NULL;
+				}
+				ModuleInfo.epiloguemode = PEM_MACRO;
+				ModuleInfo.proc_epilogue = LclAlloc(strlen(tokenarray[i].string_ptr) + 1);
+				strcpy(ModuleInfo.proc_epilogue, tokenarray[i].string_ptr);
+				i++;
+			}
+
+		}
         break;
     case T_DIRECTIVE: /* word PUBLIC is a directive */
         if ( tokenarray[i].tokval == T_PUBLIC ) {

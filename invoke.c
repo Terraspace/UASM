@@ -51,22 +51,22 @@ enum reg_used_flags {
     R0_X_CLEARED  = 0x04, /* 16bit: register R0 (=AX) has been set to 0 */
     R2_USED       = 0x08, /* contents of DX is destroyed ( via CWD ); cpu < 80386 only */
 #if AMD64_SUPPORT
-	#if SYSV_SUPPORT		
-		RDI_USED = 0x08, /* win64: register contents of CL/CX/ECX/RCX is destroyed */
-		RSI_USED = 0x10, /* win64: register contents of DL/DX/EDX/RDX is destroyed */
-		RCX_USED = 0x20, /* win64: register contents of CL/CX/ECX/RCX is destroyed */
-		RDX_USED = 0x40, /* win64: register contents of DL/DX/EDX/RDX is destroyed */
-		R8_USED = 0x80, /* win64: register contents of R8B/R8W/R8D/R8 is destroyed */
-		R9_USED = 0x100,/* win64: register contents of R9B/R9W/R9D/R9 is destroyed */
-	#define RPAR_START 6 /* Win64: RCX first param start at bit 6 */		
-	#else
 		RCX_USED      = 0x08, /* win64: register contents of CL/CX/ECX/RCX is destroyed */
 		RDX_USED      = 0x10, /* win64: register contents of DL/DX/EDX/RDX is destroyed */
 		R8_USED       = 0x20, /* win64: register contents of R8B/R8W/R8D/R8 is destroyed */
 		R9_USED       = 0x40, /* win64: register contents of R9B/R9W/R9D/R9 is destroyed */
 	#define RPAR_START 3 /* Win64: RCX first param start at bit 3 */
-	#endif
 #endif
+	#if SYSV_SUPPORT		
+		SV_RDI_USED = 0x08,  /* sysv: register contents of CL/CX/ECX/RCX  is destroyed */
+		SV_RSI_USED = 0x10,  /* sysv: register contents of DL/DX/EDX/RDX  is destroyed */
+		SV_RCX_USED = 0x20,  /* sysv: register contents of CL/CX/ECX/RCX  is destroyed */
+		SV_RDX_USED = 0x40,  /* sysv: register contents of DL/DX/EDX/RDX  is destroyed */
+		SV_R8_USED  = 0x80,  /* sysv: register contents of R8B/R8W/R8D/R8 is destroyed */
+		SV_R9_USED  = 0x100, /* sysv: register contents of R9B/R9W/R9D/R9 is destroyed */
+	#define SYSVR_START 3  /* sysv: RDI first param start at bit 6 */		
+#endif
+
 #if OWFC_SUPPORT
     ROW_AX_USED   = 0x08, /* watc: register contents of AL/AX/EAX is destroyed */
     ROW_DX_USED   = 0x10, /* watc: register contents of DL/DX/EDX is destroyed */
@@ -364,17 +364,19 @@ static int ms64_param(struct dsym const *proc, int index, struct dsym *param, bo
 
 		if (opnd->base_reg != NULL) {
 			reg = opnd->base_reg->tokval;
-			if (GetValueSp(reg) & OP_R) {
-				i = GetRegNo(reg);
-				if (REGPAR_SYSV & (1 << i)) {
-					base = GetParmIndex(i);
-					if (*regs_used & (1 << (base + RPAR_START)))
-						destroyed = TRUE;
-				}
-				else if ((*regs_used & R0_USED) && ((GetValueSp(reg) & OP_A) || reg == T_AH)) {
-					destroyed = TRUE;
-				}
-			}
+      if (index >= 6){
+        if (GetValueSp(reg) & OP_R) {
+          i = GetRegNo(reg);
+          if (REGPAR_SYSV & (1 << i)) {
+            base = GetParmIndex(i);
+            if (*regs_used & (1 << (base + SYSVR_START)))
+              destroyed = TRUE;
+            }
+          else if ((*regs_used & R0_USED) && ((GetValueSp(reg) & OP_A) || reg == T_AH)) {
+            destroyed = TRUE;
+            }
+          }
+        }
 		}
 		if (opnd->idx_reg != NULL) {
 			reg2 = opnd->idx_reg->tokval;
@@ -382,7 +384,7 @@ static int ms64_param(struct dsym const *proc, int index, struct dsym *param, bo
 				i = GetRegNo(reg2);
 				if (REGPAR_SYSV & (1 << i)) {
 					base = GetParmIndex(i);
-					if (*regs_used & (1 << (base + RPAR_START)))
+					if (*regs_used & (1 << (base + SYSVR_START)))
 						destroyed = TRUE;
 				}
 				else if ((*regs_used & R0_USED) && ((GetValueSp(reg2) & OP_A) || reg2 == T_AH)) {
@@ -1133,22 +1135,38 @@ vcall:
 
 			/* optimization if the register holds the value already */
 			if (opnd->kind == EXPR_REG && opnd->indirect == FALSE) {
-				if (GetValueSp(reg) & OP_R) {
-					if (ms64_regs[index + base] == reg) {
-						DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
-						return(1);
-					}
-					i = GetRegNo(reg);
-					if (REGPAR_WIN64 & (1 << i)) {
-						i = GetParmIndex(i);
-						if (*regs_used & (1 << (i + RPAR_START)))
-							EmitErr(REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
-					}
-				}
+        if (proc->sym.langtype == LANG_SYSVCALL){
+          if (GetValueSp(reg) & OP_R) {
+            if (sysV64_regs[index + base] == reg) {
+              DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
+              return(1);
+              }
+            i = GetRegNo(reg);
+            if (REGPAR_SYSV & (1 << i)) {
+              i = GetParmIndex(i);
+              if (*regs_used & (1 << (i + SYSVR_START)))
+                EmitErr(REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
+              }
+            }
+          }
+        else{
+          if (GetValueSp(reg) & OP_R) {
+            if (ms64_regs[index + base] == reg) {
+              DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
+              return(1);
+              }
+            i = GetRegNo(reg);
+            if (REGPAR_WIN64 & (1 << i)) {
+              i = GetParmIndex(i);
+              if (*regs_used & (1 << (i + RPAR_START)))
+                EmitErr(REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
+              }
+            }
+          }
 			}
 
 			/* v2.11: allow argument extension */
-			if (size < psize)
+      if (size < psize){
 				if (size == 4) {
 					if (IS_SIGNED(opnd->mem_type))
 						AddLineQueueX(" movsxd %r, %s", ms64_regs[index + base], paramvalue);
@@ -1157,14 +1175,28 @@ vcall:
 				}
 				else
 					AddLineQueueX(" mov%sx %r, %s", IS_SIGNED(opnd->mem_type) ? "s" : "z", ms64_regs[index + base], paramvalue);
-			else {
-				*regs_used |= (1 << (index + RPAR_START));
-				DebugMsg1(("ms64_param(%s, param=%u): size=%u flags=%X\n", proc->sym.name, index, size, *regs_used));
+			}else {
+        if (proc->sym.langtype == LANG_SYSVCALL){
+          *regs_used |= (1 << (index + SYSVR_START));
+          DebugMsg1(("sysV64_param(%s, param=%u): size=%u flags=%X\n", proc->sym.name, index, size, *regs_used));
+          }
+        else{
+          *regs_used |= (1 << (index + RPAR_START));
+          DebugMsg1(("ms64_param(%s, param=%u): size=%u flags=%X\n", proc->sym.name, index, size, *regs_used));
+          }
 				/* v2.12 added by habran : if parametar  is zero use 'xor reg,reg' instead of 'mov reg,0' */
 				if ((!strcasecmp(paramvalue, "0") || (!strcasecmp(paramvalue, "NULL")) || (!strcasecmp(paramvalue, "FALSE")))) {
-					if (ms64_regs[index + base] > T_R9D) index -= 4;
-					AddLineQueueX(" xor %r, %r", ms64_regs[index + base], ms64_regs[index + base]);
-					return(1);
+          if (proc->sym.langtype == LANG_SYSVCALL) {
+            if (sysV64_regs[index + base] > T_R9D) index -= 6;
+            AddLineQueueX(" xor %r, %r", sysV64_regs[index + base], sysV64_regs[index + base]);
+             return(1);
+            }
+          else{
+            if (ms64_regs[index + base] > T_R9D) index -= 4;
+            AddLineQueueX(" xor %r, %r", ms64_regs[index + base], ms64_regs[index + base]);
+             return(1);
+            }
+         
 				}
 				else
 				{
@@ -1198,8 +1230,14 @@ vcall:
 					}
 				}
 			}
-			*regs_used |= (1 << (index + RPAR_START - 1));
-			DebugMsg1(("ms64_param(%s, param=%u): size=%u flags=%X\n", proc->sym.name, index, size, *regs_used));
+      if (proc->sym.langtype == LANG_SYSVCALL){
+        *regs_used |= (1 << (index + SYSVR_START - 1));
+        DebugMsg1(("sysV64_param(%s, param=%u): size=%u flags=%X\n", proc->sym.name, index, size, *regs_used));
+        }
+      else{
+        *regs_used |= (1 << (index + RPAR_START - 1));
+        DebugMsg1(("ms64_param(%s, param=%u): size=%u flags=%X\n", proc->sym.name, index, size, *regs_used));
+        }
 		}
 	}
 vcalldone:
