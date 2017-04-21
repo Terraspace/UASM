@@ -96,8 +96,8 @@ struct asym *sym_ReservedStack; /* max stack space required by INVOKE */
 //static const enum special_token ms32_regs16[] = { T_CX, T_DX };
 static const enum special_token ms32_regs16[] = { T_AX, T_DX, T_BX };
 static const enum special_token ms32_regs32[] = { T_ECX,T_EDX };
-static const enum special_token delphi_regs16[] = { T_AX, T_CX, T_DX };
-static const enum special_token delphi_regs32[] = {T_EAX, T_ECX,T_EDX };
+static const enum special_token delphi_regs16[] = { T_AX,T_DX , T_CX, };
+static const enum special_token delphi_regs32[] = {T_EAX, T_EDX, T_ECX, };
 /* v2.07: added */
 static const int ms32_maxreg[] = {
     sizeof( ms32_regs16) / sizeof(ms32_regs16[0] ),
