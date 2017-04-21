@@ -150,6 +150,9 @@ void AddLinnumDataRef( unsigned srcfile, uint_32 line_num )
         /* curr->sym = (struct asym *)CurrProc; */
         curr->sym = ( CurrProc ? (struct asym *)CurrProc : dmyproc );
         curr->line_number = GetLineNumber();
+        /* if there is no prologue, 2 lines get skipped, this corrects line_number; v2.28 */
+        if (CurrProc->e.procinfo->size_prolog == 0 && Parse_Pass)
+          curr->line_number -= 3; // this is bit hackish but works
         curr->file        = srcfile;
         /* set the function's size! */
         if ( dmyproc ) {

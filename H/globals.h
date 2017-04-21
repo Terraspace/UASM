@@ -128,6 +128,10 @@
 #define SYSV_SUPPORT 1 /* 1=support 64bit */		
 #endif
 
+#ifndef DELPHI_SUPPORT		
+#define DELPHI_SUPPORT 1 /* 1=support 64bit */		
+#endif
+
 #ifndef VMXSUPP
 #define VMXSUPP      1 /* support VMX extensions                 */
 #endif
@@ -467,7 +471,12 @@ enum fastcall_type {
 #if AMD64_SUPPORT
     FCT_WIN64       /* Win64 fastcall convention (rcx, rdx, r8, r9) */
 #endif
+
 };
+enum delphi_type {
+    FCT_DELPHI       /* delphi fastcall convention (eax, edx, ecx ) */
+};
+
 
 enum stdcall_decoration {
     STDCALL_FULL,

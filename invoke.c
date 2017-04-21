@@ -97,6 +97,11 @@ struct sysvcall_conv {
 	void(*invokeend)  (struct dsym const *, int, int);
 	int(*handleparam)(struct dsym const *, int, struct dsym *, bool, struct expr *, char *, uint_8 *);
 };
+struct delphicall_conv {
+	int(*invokestart)(struct dsym const *, int, int, struct asm_tok[], int *);
+	void(*invokeend)  (struct dsym const *, int, int);
+	int(*handleparam)(struct dsym const *, int, struct dsym *, bool, struct expr *, char *, uint_8 *);
+};
 
 static  int ms32_fcstart( struct dsym const *, int, int, struct asm_tok[], int * );
 static void ms32_fcend  ( struct dsym const *, int, int );
@@ -118,6 +123,13 @@ static  int ms64_param  ( struct dsym const *, int, struct dsym *, bool, struct 
 	static void ms64_fcend  ( struct dsym const *, int, int );
 	static  int ms64_param  ( struct dsym const *, int, struct dsym *, bool, struct expr *, char *, uint_8 * );
 	#define REGPAR_SYSV 0x03C6 /* regs 6, 7, 1, 2, 8 and 9 */		
+#endif
+  /* added for delphi in v2.28 */
+#if DELPHI_SUPPORT		
+	static  int delphi32_fcstart( struct dsym const *, int, int, struct asm_tok[], int * );
+	static void delphi32_fcend  ( struct dsym const *, int, int );
+	static  int delphi32_param  ( struct dsym const *, int, struct dsym *, bool, struct expr *, char *, uint_8 * );
+	#define REGPAR_DELPHI 0x03 /* regs 0, 2, 1  */		
 #endif
 
 static const struct fastcall_conv fastcall_tab[] = {
@@ -148,6 +160,17 @@ static const struct sysvcall_conv sysvcall_tab[] = {
 	{ ms64_fcstart, ms64_fcend , ms64_param } /* FCT_WIN64 */
 #endif		
 };
+  /* added for delphi in v2.28 */
+static const struct delphicall_conv delphicall_tab[] = {
+	{ delphi32_fcstart, delphi32_fcend , delphi32_param }, /* FCT_MSC */
+#if OWFC_SUPPORT		
+	{ watc_fcstart, watc_fcend , watc_param }, /* FCT_WATCOMC */
+#endif		
+#if AMD64_SUPPORT		
+	{ ms64_fcstart, ms64_fcend , ms64_param } /* FCT_WIN64 */
+#endif		
+};
+
 
 static const enum special_token regax[] = { T_AX, T_EAX,
 #if AMD64_SUPPORT
@@ -164,6 +187,15 @@ static const enum special_token ms16_regs[] = {
 static const enum special_token ms32_regs[] = {
     T_ECX, T_EDX
 };
+  /* added for delphi in v2.28 */
+static const enum special_token delphi16_regs[] = {
+    T_AX, T_DX, T_CX
+};
+  /* added for delphi in v2.28 */
+static const enum special_token delphi32_regs[] = {
+   T_EAX,T_EDX, T_ECX  
+};
+
 
 #if AMD64_SUPPORT
 static const enum special_token ms64_regs[] = {
@@ -250,6 +282,84 @@ static int ms32_param( struct dsym const *proc, int index, struct dsym *param, b
         *r0used |= R0_USED;
     return( 1 );
 }
+  /* added for delphi in v2.28 */
+static int delphi32_fcstart( struct dsym const *proc, int numparams, int start, struct asm_tok tokenarray[], int *value )
+/*******************************************************************************************************************/
+{
+    return( 0 );
+}
+  /* added for delphi in v2.28 */
+static void delphi32_fcend( struct dsym const *proc, int numparams, int value )
+/*************************************************************************/
+{
+    /* nothing to do */
+    return;
+}
+  /* added for delphi in v2.28 */
+static int delphi32_param( struct dsym const *proc, int index, struct dsym *param, bool addr, struct expr *opnd, char *paramvalue, uint_8 *r0used )
+/*********************************************************************************************************************************************/
+{
+    enum special_token const *pst;
+
+    DebugMsg1(("delphi_param(proc=%s, ofs=%u, index=%u, param=%s) fcscratch=%u\n", proc->sym.name, proc->sym.Ofssize, index, param->sym.name, fcscratch ));
+    if ( param->sym.state != SYM_TMACRO )
+        return( 0 );
+    if ( GetSymOfssize( &proc->sym ) == USE16 ) {
+        pst = delphi16_regs + fcscratch;
+        fcscratch++;
+    } else {
+        pst = delphi32_regs + fcscratch;
+        fcscratch++;
+    }
+    if ( addr )
+        AddLineQueueX( " lea %r, %s", *pst, paramvalue );
+    else {
+        enum special_token reg = *pst;
+        int size;
+        /*  adjust register if size of operand won't require the full register v2.28 */
+        if ( ( opnd->kind != EXPR_CONST ) &&
+            ( size = SizeFromMemtype( param->sym.mem_type, USE_EMPTY, param->sym.type ) ) < SizeFromRegister( *pst ) ) {
+            if (( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_386 ) {
+                AddLineQueueX( " %s %r, %s", ( param->sym.mem_type & MT_SIGNED ) ? "movsx" : "movzx", reg, paramvalue );
+            } else {
+                /* this is currently always UNSIGNED */
+                AddLineQueueX( " mov %r, %s", T_AL + GetRegNo( reg ), paramvalue );
+                AddLineQueueX( " mov %r, 0", T_AH + GetRegNo( reg ) );
+            }
+        } else {
+            /*  if register is in correct order do nothing  v2.28  */
+            if ( opnd->kind == EXPR_REG && opnd->indirect == 0 && opnd->base_reg ) {
+              if (opnd->base_reg->tokval == reg){
+                  return(1);
+                }
+                /* check for overwritten registers v2.28 */
+              else{
+                  switch (index){
+                    case 0:
+                      if (opnd->base_reg->tokval == T_ECX || opnd->base_reg->tokval == T_EDX){
+                        if (Parse_Pass == PASS_1) EmitWarn(2, REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
+                        }
+                      break;
+                    case 1:
+                      if (opnd->base_reg->tokval == T_EAX || opnd->base_reg->tokval == T_ECX){
+                        if (Parse_Pass == PASS_1) EmitWarn(2, REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
+                        }
+                      break;
+                    case 2:
+                      if (opnd->base_reg->tokval == T_EAX || opnd->base_reg->tokval == T_EDX){
+                        if (Parse_Pass == PASS_1) EmitWarn(2, REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
+                        }
+                    }
+                }
+            }
+            AddLineQueueX( " mov %r, %s", reg, paramvalue );
+        }
+    }
+    if ( *pst == T_AX )
+        *r0used |= R0_USED;
+    return( 1 );
+}
+
 
 #if AMD64_SUPPORT
 static int ms64_fcstart(struct dsym const *proc, int numparams, int start, struct asm_tok tokenarray[], int *value)
@@ -1962,6 +2072,10 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 			if (fastcall_tab[ModuleInfo.fctype].handleparam(proc, reqParam, curr, addr, &opnd, fullparam, r0flags))
 				return(NOT_ERROR);
 		}
+		if (proc->sym.langtype == LANG_DELPHICALL) {
+			if (delphicall_tab[ModuleInfo.fctype].handleparam(proc, reqParam, curr, addr, &opnd, fullparam, r0flags))
+				return(NOT_ERROR);
+		}
 		if (proc->sym.langtype == LANG_SYSVCALL) {
 			if (sysvcall_tab[ModuleInfo.fctype].handleparam(proc, reqParam, curr, addr, &opnd, fullparam, r0flags))
 				return(NOT_ERROR);
@@ -2007,7 +2121,6 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 							|| opnd.idx_reg->tokval == T_RAX
 #endif
 							)))) {
-				EmitErr(REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
 				*r0flags = 0;
 			}
 
@@ -2524,7 +2637,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	/* if there is more than just an ID item describing the invoke target,
 	use the expression evaluator to get it
 	*/
-
+  //__debugbreak();
 	if (tokenarray[i].token != T_ID || (tokenarray[i + 1].token != T_COMMA && tokenarray[i + 1].token != T_FINAL)) {
 		//if ( tokenarray[i+1].token != T_COMMA && tokenarray[i+1].token != T_FINAL ) {
 		if (ERROR == EvalOperand(&i, tokenarray, Token_Count, &opnd, 0))
@@ -2649,6 +2762,10 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 		fcscratch = 0;
 		porder = sysvcall_tab[ModuleInfo.fctype].invokestart(proc, numParam, i, tokenarray, &value);
 	}
+	else if (proc->sym.langtype == LANG_DELPHICALL) {
+		fcscratch = 0;
+		porder = delphicall_tab[ModuleInfo.fctype].invokestart(proc, numParam, i, tokenarray, &value);
+	}
 
 	/* -----------------------------------------------------------------------------------------------
 	HANDLE PARAMETERS (FIRST PASS)
@@ -2687,7 +2804,8 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 		(sym->langtype == LANG_FASTCALL && porder) ||
 		(sym->langtype == LANG_VECTORCALL  && porder) ||
 		(sym->langtype == LANG_SYSVCALL && porder) ||
-		sym->langtype == LANG_SYSVCALL && porder)
+		(sym->langtype == LANG_SYSVCALL && porder) ||
+    (sym->langtype == LANG_DELPHICALL && porder))
 	{
 
 		/* v2.23 if stack base is ESP */
@@ -2737,13 +2855,14 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	}
 	else
 	{
-		for (numParam = 0; curr && curr->sym.is_vararg == FALSE; curr = curr->nextparam, numParam++) {
-			if (PushInvokeParam(i, tokenarray, proc, curr, numParam, &r0flags) == ERROR) {
-				DebugMsg(("InvokeDir: PushInvokeParam(curr=%u, i=%u, numParam=%u) failed\n", curr, i, numParam));
-				EmitErr(TOO_FEW_ARGUMENTS_TO_INVOKE, sym->name);
-			}
-		}
-	}
+    for (numParam = 0; curr && curr->sym.is_vararg == FALSE; curr = curr->nextparam, numParam++) {
+      if (PushInvokeParam(i, tokenarray, proc, curr, numParam, &r0flags) == ERROR) {
+        DebugMsg(("InvokeDir: PushInvokeParam(curr=%u, i=%u, numParam=%u) failed\n", curr, i, numParam));
+        EmitErr(TOO_FEW_ARGUMENTS_TO_INVOKE, sym->name);
+        }
+      }
+    }
+	
 
 	/* -----------------------------------------------------------------------------------------------
 	HANDLE PARAMETERS (SECOND PASS FOR VECTORCALL)

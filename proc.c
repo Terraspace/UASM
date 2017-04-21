@@ -96,11 +96,18 @@ struct asym *sym_ReservedStack; /* max stack space required by INVOKE */
 //static const enum special_token ms32_regs16[] = { T_CX, T_DX };
 static const enum special_token ms32_regs16[] = { T_AX, T_DX, T_BX };
 static const enum special_token ms32_regs32[] = { T_ECX,T_EDX };
+static const enum special_token delphi_regs16[] = { T_AX, T_CX, T_DX };
+static const enum special_token delphi_regs32[] = {T_EAX, T_ECX,T_EDX };
 /* v2.07: added */
 static const int ms32_maxreg[] = {
     sizeof( ms32_regs16) / sizeof(ms32_regs16[0] ),
     sizeof( ms32_regs32) / sizeof(ms32_regs32[0] ),
 };
+static const int delphi_maxreg[] = {
+    sizeof( delphi_regs16) / sizeof(delphi_regs16[0] ),
+    sizeof( delphi_regs32) / sizeof(delphi_regs32[0] ),
+};
+
 #if OWFC_SUPPORT
 static const enum special_token watc_regs8[] = {T_AL, T_DL, T_BL, T_CL };
 static const enum special_token watc_regs16[] = {T_AX, T_DX, T_BX, T_CX };
@@ -133,6 +140,12 @@ struct sysvcall_conv {
 	void(*handlereturn)(struct dsym *, char *buffer);
 };
 
+struct delphicall_conv {
+	int(*paramcheck)(struct dsym *, struct dsym *, int *);
+	void(*handlereturn)(struct dsym *, char *buffer);
+};
+
+
 static  int ms32_pcheck( struct dsym *, struct dsym *, int * );
 static void ms32_return( struct dsym *, char * );
 #if OWFC_SUPPORT
@@ -142,6 +155,10 @@ static void watc_return( struct dsym *, char * );
 #if AMD64_SUPPORT
 static  int ms64_pcheck( struct dsym *, struct dsym *, int * );
 static void ms64_return( struct dsym *, char * );
+#endif
+#if DELPHI_SUPPORT
+static  int delphi_pcheck( struct dsym *, struct dsym *, int * );
+static void delphi_return( struct dsym *, char * );
 #endif
 
 static void check_proc_fpo(struct proc_info *);
@@ -179,6 +196,15 @@ static const struct sysvcall_conv sysvcall_tab[] = {
 #if AMD64_SUPPORT		
 	{ ms64_pcheck, ms64_return }   /* FCT_WIN64 */
 #endif		
+};
+static const struct delphicall_conv delphicall_tab[] = {
+    { delphi_pcheck, delphi_return },  /* FCT_MSC */
+#if OWFC_SUPPORT
+    { watc_pcheck, watc_return },  /* FCT_WATCOMC */
+#endif
+#if AMD64_SUPPORT
+    { ms64_pcheck, ms64_return }   /* FCT_WIN64 */
+#endif
 };
 
 const enum special_token stackreg[] = { T_SP, T_ESP,
@@ -357,6 +383,30 @@ static void ms32_return( struct dsym *proc, char *buffer )
     //    sprintf( buffer + strlen( buffer ), "%d%c", proc->e.procinfo->parasize - (2 * CurrWordSize), ModuleInfo.radix != 10 ? 't' : NULLC );
     if( proc->e.procinfo->parasize > ( ms32_maxreg[ModuleInfo.Ofssize] * CurrWordSize ) )
         sprintf( buffer + strlen( buffer ), "%d%c", proc->e.procinfo->parasize - ( ms32_maxreg[ModuleInfo.Ofssize] * CurrWordSize), ModuleInfo.radix != 10 ? 't' : NULLC );
+    return;
+}
+static int delphi_pcheck( struct dsym *proc, struct dsym *paranode, int *used )
+/***************************************************************************/
+{
+    char regname[32];
+    int size = SizeFromMemtype( paranode->sym.mem_type, paranode->sym.Ofssize, paranode->sym.type );
+    /* v228: 16-bit has 3 register params (AX,CX,DX) */   
+    if ( size > CurrWordSize || *used >= delphi_maxreg[ModuleInfo.Ofssize] )
+        return( 0 );
+    paranode->sym.state = SYM_TMACRO;
+    /* v2.28: for codeview debug info, store the register index in the symbol */
+    paranode->sym.regist[0] = ModuleInfo.Ofssize ? delphi_regs32[*used] : delphi_regs16[*used];
+    GetResWName( ModuleInfo.Ofssize ? delphi_regs32[*used] : delphi_regs16[*used], regname );
+    paranode->sym.string_ptr = LclAlloc( strlen( regname ) + 1 );
+    strcpy( paranode->sym.string_ptr, regname );
+    (*used)++;
+    return( 1 );
+}
+static void delphi_return( struct dsym *proc, char *buffer )
+/********************************************************/
+{
+    if( proc->e.procinfo->parasize > ( delphi_maxreg[ModuleInfo.Ofssize] * CurrWordSize ) )
+        sprintf( buffer + strlen( buffer ), "%d%c", proc->e.procinfo->parasize - ( delphi_maxreg[ModuleInfo.Ofssize] * CurrWordSize), ModuleInfo.radix != 10 ? 't' : NULLC );
     return;
 }
 
@@ -672,6 +722,7 @@ static ret_code ParseParams( struct dsym *proc, int i, struct asm_tok tokenarray
      */
     if (proc->sym.langtype == LANG_C ||
         proc->sym.langtype == LANG_SYSCALL ||
+        proc->sym.langtype == LANG_DELPHICALL ||
 #if AMD64_SUPPORT
         ( proc->sym.langtype == LANG_FASTCALL && ModuleInfo.Ofssize != USE64 ) ||
         ( proc->sym.langtype == LANG_VECTORCALL && ModuleInfo.Ofssize != USE64 ) ||
@@ -680,6 +731,7 @@ static ret_code ParseParams( struct dsym *proc, int i, struct asm_tok tokenarray
         proc->sym.langtype == LANG_FASTCALL ||
         proc->sym.langtype == LANG_VECTORCALL ||
 		proc->sym.langtype == LANG_SYSVCALL ||
+    proc->sym.langtype == LANG_DELPHICALL ||
 #endif
         proc->sym.langtype == LANG_STDCALL)
         for ( paracurr = proc->e.procinfo->paralist; paracurr && paracurr->nextparam; paracurr = paracurr->nextparam );
@@ -841,10 +893,12 @@ static ret_code ParseParams( struct dsym *proc, int i, struct asm_tok tokenarray
             /* set paracurr to next parameter */
             if ( proc->sym.langtype == LANG_C ||
                 proc->sym.langtype == LANG_SYSCALL ||
+                proc->sym.langtype == LANG_DELPHICALL ||
 #if AMD64_SUPPORT
                 ( proc->sym.langtype == LANG_FASTCALL && ti.Ofssize != USE64 ) ||
                 ( proc->sym.langtype == LANG_VECTORCALL && ti.Ofssize != USE64 ) ||
 				( proc->sym.langtype == LANG_SYSVCALL && ti.Ofssize != USE64 ) ||
+        (proc->sym.langtype == LANG_DELPHICALL && ti.Ofssize != USE64 )||
 #else
                 proc->sym.langtype == LANG_FASTCALL ||
 #endif
@@ -909,9 +963,13 @@ static ret_code ParseParams( struct dsym *proc, int i, struct asm_tok tokenarray
             else if ( proc->sym.langtype == LANG_VECTORCALL &&
                 vectorcall_tab[ModuleInfo.fctype].paramcheck( proc, paranode, &fcint ) ) {
             } 
-			else if (proc->sym.langtype == LANG_SYSVCALL &&
-				sysvcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint)) {
-			}
+			      else if (proc->sym.langtype == LANG_SYSVCALL &&
+				      sysvcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint)) {
+			      }
+			      else if (proc->sym.langtype == LANG_DELPHICALL &&
+				      delphicall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint)) {
+			      }
+
             else {
                 paranode->sym.state = SYM_STACK;
             }
@@ -955,7 +1013,8 @@ static ret_code ParseParams( struct dsym *proc, int i, struct asm_tok tokenarray
                 break;
             case LANG_FASTCALL:
             case LANG_VECTORCALL:
-			case LANG_SYSVCALL:
+			      case LANG_SYSVCALL:
+            case LANG_DELPHICALL:
 #if AMD64_SUPPORT
                 if ( ti.Ofssize == USE64 )
                     goto left_to_right;
@@ -963,6 +1022,10 @@ static ret_code ParseParams( struct dsym *proc, int i, struct asm_tok tokenarray
                 /* v2.07: MS fastcall 16-bit is PASCAL! */
                 if ( ti.Ofssize == USE16 && ModuleInfo.fctype == FCT_MSC )
                     goto left_to_right;
+                else if ( ti.Ofssize == USE16 && ModuleInfo.fctype == FCT_DELPHI ) 
+                  goto left_to_right;
+                else if ( ti.Ofssize == USE32 && ModuleInfo.fctype == FCT_DELPHI ) 
+                  goto left_to_right;
             default:
                 paranode->nextparam = proc->e.procinfo->paralist;
                 proc->e.procinfo->paralist = paranode;

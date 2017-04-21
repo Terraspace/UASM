@@ -34,7 +34,7 @@
 
 /* MACRO names */
 char *macName[] = {
-	"@CSTR", "@WSTR", "FP4", "FP8", "FP10", "LOADSS", "LOADSD", "LOADPS", "MEMALIGN", "RV", "REPARG", "EXPAND_PREFIX", "$ARRAY", "$DELETEARRAY", "OINTERFACE", "ENDOINTERFACE", "CVIRTUAL", "CLASS", "ENDCLASS", "CMETHOD", "METHOD", "STATICMETHOD", "ENDMETHOD", "$DECLARE", "$STATICREF", "$ACQUIRE", "$RELEASE", "$NEW", "$RBXNEW", "$ITEM", "$ITEMR", "$INVOKE", "$I", "$STATIC", "$DELETE", "$VINVOKE", "$V", "$VD", "$VW", "$VB", "$VF", "CSTATIC", "LOADMSS", "LOADMSD"
+	"@CSTR", "@WSTR", "FP4", "FP8", "FP10", "LOADSS", "LOADSD", "LOADPS", "MEMALIGN", "RV", "REPARG", "EXPAND_PREFIX", "_ARRAY", "_DELETEARRAY", "OINTERFACE", "ENDOINTERFACE", "CVIRTUAL", "CLASS", "ENDCLASS", "CMETHOD", "METHOD", "STATICMETHOD", "ENDMETHOD", "_DECLARE", "_STATICREF", "_ACQUIRE", "_RELEASE", "_NEW", "_RBXNEW", "_ITEM", "_ITEMR", "_INVOKE", "_I", "_STATIC", "_DELETE", "_VINVOKE", "_V", "_VD", "_VW", "_VB", "_VF", "CSTATIC", "LOADMSS", "LOADMSD"
 };
 
 /* MACRO definitions */
@@ -51,8 +51,8 @@ char *macDef[] = {
 	"RV MACRO FuncName:REQ, args:VARARG",
 	"REPARG MACRO arg",
 	"EXPAND_PREFIX MACRO txtitm",
-	"$ARRAY MACRO arrType:REQ,sizeArr:REQ",
-	"$DELETEARRAY MACRO arrPtr:REQ",
+	"_ARRAY MACRO arrType:REQ,sizeArr:REQ",
+	"_DELETEARRAY MACRO arrPtr:REQ",
 	"OINTERFACE MACRO CName : REQ",
 	"ENDOINTERFACE MACRO",
 	"CVIRTUAL MACRO method : REQ, protoDef : VARARG",
@@ -62,27 +62,27 @@ char *macDef[] = {
 	"METHOD MACRO className : REQ, method : REQ, args : VARARG",
 	"STATICMETHOD MACRO className : REQ, method : REQ, args : VARARG",
 	"ENDMETHOD MACRO",
-	"$DECLARE MACRO varName : REQ, typeName : VARARG",
-	"$STATICREF MACRO reg : REQ",
-	"$ACQUIRE MACRO objPtr",
-	"$RELEASE MACRO objPtr",
-	"$NEW MACRO className : REQ, ctorArgs : VARARG",
-	"$RBXNEW MACRO className : REQ, ctorArgs : VARARG",
-	"$ITEM MACRO objPtr : REQ, idx : REQ",
-	"$ITEMR MACRO objPtr : REQ, idx : REQ",
-	"$INVOKE MACRO className : REQ, method : REQ, objPtr : REQ, args : VARARG",
-	"$I MACRO className : REQ, method : REQ, objPtr : REQ, args : VARARG",
-	"$STATIC MACRO className : REQ, method : REQ, args : VARARG",
-	"$DELETE MACRO objPtr : REQ",
-	"$VINVOKE MACRO pInterface : REQ, Interface : REQ, Function : REQ, args : VARARG",
-	"$V MACRO pInterface : REQ, Interface : REQ, Function : REQ, args : VARARG",
-	"$VD MACRO pInterface : REQ, Interface : REQ, Function : REQ, args : VARARG",
-	"$VW MACRO pInterface : REQ, Interface : REQ, Function : REQ, args : VARARG",
-	"$VB MACRO pInterface : REQ, Interface : REQ, Function : REQ, args : VARARG",
-	"$VF MACRO pInterface : REQ, Interface : REQ, Function : REQ, args : VARARG",
+	"_DECLARE MACRO varName : REQ, typeName : VARARG",
+	"_STATICREF MACRO reg : REQ",
+	"_ACQUIRE MACRO objPtr",
+	"_RELEASE MACRO objPtr",
+	"_NEW MACRO className : REQ, ctorArgs : VARARG",
+	"_RBXNEW MACRO className : REQ, ctorArgs : VARARG",
+	"_ITEM MACRO objPtr : REQ, idx : REQ",
+	"_ITEMR MACRO objPtr : REQ, idx : REQ",
+	"_INVOKE MACRO className : REQ, method : REQ, objPtr : REQ, args : VARARG",
+	"_I MACRO className : REQ, method : REQ, objPtr : REQ, args : VARARG",
+	"_STATIC MACRO className : REQ, method : REQ, args : VARARG",
+	"_DELETE MACRO objPtr : REQ",
+	"_VINVOKE MACRO pInterface : REQ, Interface : REQ, Function : REQ, args : VARARG",
+	"_V MACRO pInterface : REQ, Interface : REQ, Function : REQ, args : VARARG",
+	"_VD MACRO pInterface : REQ, Interface : REQ, Function : REQ, args : VARARG",
+	"_VW MACRO pInterface : REQ, Interface : REQ, Function : REQ, args : VARARG",
+	"_VB MACRO pInterface : REQ, Interface : REQ, Function : REQ, args : VARARG",
+	"_VF MACRO pInterface : REQ, Interface : REQ, Function : REQ, args : VARARG",
 	"CSTATIC MACRO method : REQ",
-  "LOADMSS MACRO reg, value",
-  "LOADMSD MACRO reg, value"
+    "LOADMSS MACRO reg, value",
+    "LOADMSD MACRO reg, value"
 };
 
 /* 
@@ -142,8 +142,8 @@ void InitAutoMacros(void)
 		"InterfacePtr TEXTEQU <_>", "InterfacePtr CATSTR InterfacePtr, <&Interface>, <_>, <&Function>, <Pto>", "IF(OPATTR(pInterface)) AND 00010000b", "IFNB <args>", "invoke(InterfacePtr PTR[&pInterface].&Interface.&Function), pInterface, &args", "ELSE", "invoke(InterfacePtr PTR[&pInterface].&Interface.&Function), pInterface", "ENDIF", "ELSE", "mov rax, pInterface", "IFNB <args>", "FOR arg, <args>", "IFIDNI <&arg>, <rax>", ".ERR <rax is not allowed as a Method parameter with indirect object label>", "ENDIF", "ENDM", "invoke(InterfacePtr PTR[rax].&Interface.&Function), pInterface, &args", "ELSE", "invoke(InterfacePtr PTR[rax].&Interface.&Function), pInterface", "ENDIF", "ENDIF", "exitm<al>", "ENDM", NULL,
 		"InterfacePtr TEXTEQU <_>", "InterfacePtr CATSTR InterfacePtr, <&Interface>, <_>, <&Function>, <Pto>", "IF(OPATTR(pInterface)) AND 00010000b", "IFNB <args>", "invoke(InterfacePtr PTR[&pInterface].&Interface.&Function), pInterface, &args", "ELSE", "invoke(InterfacePtr PTR[&pInterface].&Interface.&Function), pInterface", "ENDIF", "ELSE", "mov rax, pInterface", "IFNB <args>", "FOR arg, <args>", "IFIDNI <&arg>, <rax>", ".ERR <rax is not allowed as a Method parameter with indirect object label>", "ENDIF", "ENDM", "invoke(InterfacePtr PTR[rax].&Interface.&Function), pInterface, &args", "ELSE", "invoke(InterfacePtr PTR[rax].&Interface.&Function), pInterface", "ENDIF", "ENDIF", "exitm<xmm0>", "ENDM", NULL,
 		"LOCAL sz1, sz2", "sz2 CATSTR <_>, curClass, <_&method>, <Pto>", "% sz1 typedef PTR &sz2", "% method sz1 offset _&curClass&_&method&", "ENDM", NULL,
- 	  ".data", "align 4", "vname dd value", ".code", "IF @Arch EQ 0", "movss reg, vname", "ELSE", "vmovss reg, vname", "ENDIF", "ENDM", NULL,
-    ".data", "align 8", "bname dq value", ".code", "IF @Arch EQ 0", "movsd reg, bname", "ELSE", "vmovsd reg, bname", "ENDIF", "ENDM", NULL	
+ 	    ".data", "align 4", "vname dd value", ".code", "IF @Arch EQ 0", "movss reg, vname", "ELSE", "vmovss reg, vname", "ENDIF", "ENDM", NULL,
+        ".data", "align 8", "bname dq value", ".code", "IF @Arch EQ 0", "movsd reg, bname", "ELSE", "vmovsd reg, bname", "ENDIF", "ENDM", NULL	
     };	
 
 	/* Compile Macros */
