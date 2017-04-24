@@ -40,6 +40,7 @@
 "-o\0"              "Allow C form of octal constants\0"
 #endif
 "-q, -nologo\0"     "Don't display version and copyright information\0"
+"-less\0"           "Reduce console output information (be less verbose)\0"
 "-Sa\0"             "Maximize source listing\0"
 #if COFF_SUPPORT
 "-safeseh\0"        "Assert all exception handlers are declared\0"

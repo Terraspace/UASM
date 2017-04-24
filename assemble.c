@@ -1667,13 +1667,31 @@ int EXPQUAL AssembleModule( const char *source )
 
     endtime = clock(); /* is in ms already */
 
-    sprintf( CurrSource, MsgGetEx( MSG_ASSEMBLY_RESULTS ),
-             GetFName( ModuleInfo.srcfile )->fname,
-             GetLineNumber(),
-             Parse_Pass + 1,
-             endtime - starttime,
-             ModuleInfo.g.warning_count,
-             ModuleInfo.g.error_count);
+	if (Options.lessoutput)
+	{
+		if (ModuleInfo.g.warning_count == 0 && ModuleInfo.g.error_count == 0)
+		{
+			sprintf(CurrSource, MsgGetEx(MSG_ASSEMBLY_RESULTS_QUIETER),
+				GetFNamePart(GetFName(ModuleInfo.srcfile)->fname));
+		}
+		else
+		{
+			sprintf(CurrSource, MsgGetEx(MSG_ASSEMBLY_RESULTS_QUIET),
+				GetFNamePart(GetFName(ModuleInfo.srcfile)->fname),
+				ModuleInfo.g.warning_count,
+				ModuleInfo.g.error_count);
+		}
+	}
+	else
+	{
+		sprintf(CurrSource, MsgGetEx(MSG_ASSEMBLY_RESULTS),
+			GetFName(ModuleInfo.srcfile)->fname,
+			GetLineNumber(),
+			Parse_Pass + 1,
+			endtime - starttime,
+			ModuleInfo.g.warning_count,
+			ModuleInfo.g.error_count);
+	}
 	if (Options.quiet == FALSE)
 	{
 		printf("%s\n", CurrSource);
@@ -1686,7 +1704,19 @@ int EXPQUAL AssembleModule( const char *source )
 #if 1 //def __SW_BD
 done:
 #endif
-    AssembleFini();
+    
+	if (Options.lessoutput && Options.quiet == FALSE)
+	{
+		sprintf(CurrSource, MsgGetEx(MSG_ASSEMBLY_FINAL),
+			Parse_Pass + 1,
+			endtime - starttime,
+			ModuleInfo.g.warning_count,
+			ModuleInfo.g.error_count);
+		printf("%s\n", CurrSource);
+		fflush(stdout); /* Force flush of each modules assembly progress */
+	}
+
+	AssembleFini();
 	ResetOrgFixup();
     DebugMsg(("AssembleModule exit\n"));
     return( ModuleInfo.g.error_count == 0 );

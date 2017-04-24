@@ -672,6 +672,7 @@ struct global_options {
     enum fastcall_type fctype;           /* -zf0 & -zf1 option */
     bool        syntax_check_only;       /* -Zs option */
 	bool		nomlib;					 /* -nomlib option */
+	bool        lessoutput;              /* -less option */
 #if MANGLERSUPP
     enum naming_types naming_convention; /* OW naming peculiarities */
 #endif

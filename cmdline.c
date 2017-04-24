@@ -145,6 +145,7 @@ struct global_options Options = {
     /* fastcall type         */     FCT_MSC,
     /* syntax check only     */     FALSE,
 	/* No Macro Lib          */     FALSE,
+	/* Less Output           */     FALSE,
 #if MANGLERSUPP
     /* naming_convention*/          NC_DO_NOTHING,
 #endif
@@ -404,6 +405,11 @@ static void OPTQUAL Set_NOMLIB(void)
 	Options.nomlib = TRUE;
 }
 
+static void OPTQUAL Set_LessOutput(void)
+{
+	Options.lessoutput = TRUE;
+}
+
 static void OPTQUAL Set_Zd( void ) { Options.line_numbers = TRUE; }
 static void OPTQUAL Set_Zi( void )
 {
@@ -572,6 +578,7 @@ static struct cmdloption const cmdl_options[] = {
 	{ "archSSE",0,        Set_SSE },
 	{ "archAVX",0,        Set_AVX },
 	{ "nomlib", 0,        Set_NOMLIB },
+	{ "less",   0,        Set_LessOutput },
 #ifdef DEBUG_OUT
     { "ce",     0,        Set_ce },
 #endif
