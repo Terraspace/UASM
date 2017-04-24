@@ -1340,14 +1340,14 @@ vcall:
 					}
 				}
 			}
-      if (proc->sym.langtype == LANG_SYSVCALL){
+     /* if (proc->sym.langtype == LANG_SYSVCALL){
         *regs_used |= (1 << (index + SYSVR_START - 1));
         DebugMsg1(("sysV64_param(%s, param=%u): size=%u flags=%X\n", proc->sym.name, index, size, *regs_used));
         }
       else{
         *regs_used |= (1 << (index + RPAR_START - 1));
         DebugMsg1(("ms64_param(%s, param=%u): size=%u flags=%X\n", proc->sym.name, index, size, *regs_used));
-        }
+        }*/
 		}
 	}
 vcalldone:
@@ -2803,7 +2803,6 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 		sym->langtype == LANG_C ||
 		(sym->langtype == LANG_FASTCALL && porder) ||
 		(sym->langtype == LANG_VECTORCALL  && porder) ||
-		(sym->langtype == LANG_SYSVCALL && porder) ||
 		(sym->langtype == LANG_SYSVCALL && porder) ||
     (sym->langtype == LANG_DELPHICALL && porder))
 	{

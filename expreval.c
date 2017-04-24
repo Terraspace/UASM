@@ -3004,20 +3004,18 @@ static ret_code calculate( struct expr *opnd1, struct expr *opnd2, const struct 
              * there is a problem with some compilers if shift
              * count is >= 64. So in this case the result is zeroed manually
              */
-#if 0
-            if ( opnd1->hvalue == -1 ) {
-                opnd1->hvalue = 0;
-                opnd1->hlvalue = 0;
-            }
-#endif
-            /* v2.04: check for shift count < 0 */
-            if ( opnd2->value < 0 )
-                fnEmitErr( COUNT_MUST_BE_POSITIVE_OR_ZERO );
-            else if ( opnd2->value >= ( 8 * sizeof( opnd1->llvalue ) ) )
-                opnd1->llvalue = 0;
-            else
-                opnd1->llvalue = opnd1->llvalue >> opnd2->value;
-            break;
+	            if ( opnd2->value < 0 )
+		             fnEmitErr( COUNT_MUST_BE_POSITIVE_OR_ZERO );
+	            else if ( opnd2->value >= ( 8 * sizeof( opnd1->llvalue ) ) )
+		             opnd1->llvalue = 0;
+	            else {
+                /* Nidud fix v2.28*/
+		            if ( opnd1->value == -1 && ModuleInfo.Ofssize == USE32 )
+		              opnd1->llvalue = (unsigned long)opnd1->llvalue >> opnd2->value;
+		           else
+		             opnd1->llvalue = opnd1->llvalue >> opnd2->value;
+	            }
+	            break;
         case T_AND:
             opnd1->llvalue &= opnd2->llvalue;
             break;

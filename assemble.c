@@ -1674,9 +1674,11 @@ int EXPQUAL AssembleModule( const char *source )
              endtime - starttime,
              ModuleInfo.g.warning_count,
              ModuleInfo.g.error_count);
-    if ( Options.quiet == FALSE )
-        printf( "%s\n", CurrSource );
-
+	if (Options.quiet == FALSE)
+	{
+		printf("%s\n", CurrSource);
+		fflush(stdout); /* Force flush of each modules assembly progress */
+	}
     if ( CurrFile[LST] ) {
         LstPrintf( CurrSource );
         LstNL();
