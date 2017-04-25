@@ -1705,17 +1705,6 @@ int EXPQUAL AssembleModule( const char *source )
 done:
 #endif
     
-	if (Options.lessoutput && Options.quiet == FALSE)
-	{
-		sprintf(CurrSource, MsgGetEx(MSG_ASSEMBLY_FINAL),
-			Parse_Pass + 1,
-			endtime - starttime,
-			ModuleInfo.g.warning_count,
-			ModuleInfo.g.error_count);
-		printf("%s\n", CurrSource);
-		fflush(stdout); /* Force flush of each modules assembly progress */
-	}
-
 	AssembleFini();
 	ResetOrgFixup();
     DebugMsg(("AssembleModule exit\n"));

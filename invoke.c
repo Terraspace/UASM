@@ -57,14 +57,14 @@ enum reg_used_flags {
 		R9_USED       = 0x40, /* win64: register contents of R9B/R9W/R9D/R9 is destroyed */
 	#define RPAR_START 3 /* Win64: RCX first param start at bit 3 */
 #endif
-	#if SYSV_SUPPORT		
-		SV_RDI_USED = 0x08,  /* sysv: register contents of CL/CX/ECX/RCX  is destroyed */
-		SV_RSI_USED = 0x10,  /* sysv: register contents of DL/DX/EDX/RDX  is destroyed */
-		SV_RCX_USED = 0x20,  /* sysv: register contents of CL/CX/ECX/RCX  is destroyed */
-		SV_RDX_USED = 0x40,  /* sysv: register contents of DL/DX/EDX/RDX  is destroyed */
-		SV_R8_USED  = 0x80,  /* sysv: register contents of R8B/R8W/R8D/R8 is destroyed */
-		SV_R9_USED  = 0x100, /* sysv: register contents of R9B/R9W/R9D/R9 is destroyed */
-	#define SYSVR_START 3  /* sysv: RDI first param start at bit 6 */		
+#if SYSV_SUPPORT        
+	SV_RDI_USED = 0x02,  /* sysv: register contents of CL/CX/ECX/RCX  is destroyed */
+	SV_RSI_USED = 0x04,  /* sysv: register contents of DL/DX/EDX/RDX  is destroyed */
+	SV_RDX_USED = 0x08,  /* sysv: register contents of DL/DX/EDX/RDX  is destroyed */
+	SV_RCX_USED = 0x10,  /* sysv: register contents of CL/CX/ECX/RCX  is destroyed */
+	SV_R8_USED = 0x20,  /* sysv: register contents of R8B/R8W/R8D/R8 is destroyed */
+	SV_R9_USED = 0x40, /* sysv: register contents of R9B/R9W/R9D/R9 is destroyed */
+	#define SYSVR_START 1  /* sysv: RDI first param start at bit 6 */        
 #endif
 
 #if OWFC_SUPPORT
@@ -414,7 +414,17 @@ static void ms64_fcend(struct dsym const *proc, int numparams, int value)
 * 8 -> 2 (r8)
 * 9 -> 3 (r9)
 */
-#define GetParmIndex( x)  ( ( (x) >= 8 ) ? (x) - 6 : (x) - 1 )
+#define GetParmIndex( x )  ( ( (x) >= 8 ) ? (x) - 6 : (x) - 1 )
+
+/* macro to convert register number to param number:
+* 7 -> 0 (rDI)
+* 6 -> 1 (rSI)
+* 2 -> 2 (rDX)
+* 1 -> 3 (rCX)
+  8 -> 4 (r8)
+  9 -> 5 (r9)
+*/
+//#define GetParmIndexSYSV( x )  ( x )
 
 /*
 * parameter for Win64 FASTCALL.
@@ -474,11 +484,36 @@ static int ms64_param(struct dsym const *proc, int index, struct dsym *param, bo
 
 		if (opnd->base_reg != NULL) {
 			reg = opnd->base_reg->tokval;
-      if (index >= 6){
+      //if (index >= 6){
         if (GetValueSp(reg) & OP_R) {
-          i = GetRegNo(reg);
+          
+    	  i = GetRegNo(reg);
+
           if (REGPAR_SYSV & (1 << i)) {
-            base = GetParmIndex(i);
+            
+			  //base = GetParmIndex(i);
+			  switch (i)
+			  {
+			  case 7:
+				  base = 0;
+				  break;
+			  case 6:
+				  base = 1;
+				  break;
+			  case 2:
+				  base = 2;
+				  break;
+			  case 1:
+				  base = 3;
+				  break;
+			  case 8:
+				  base = 4;
+				  break;
+			  case 9:
+				  base = 5;
+				  break;
+			  }
+
             if (*regs_used & (1 << (base + SYSVR_START)))
               destroyed = TRUE;
             }
@@ -486,7 +521,7 @@ static int ms64_param(struct dsym const *proc, int index, struct dsym *param, bo
             destroyed = TRUE;
             }
           }
-        }
+       // }
 		}
 		if (opnd->idx_reg != NULL) {
 			reg2 = opnd->idx_reg->tokval;
@@ -1249,6 +1284,7 @@ vcall:
           if (GetValueSp(reg) & OP_R) {
             if (sysV64_regs[index + base] == reg) {
               DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
+			  //*regs_used |= (1 << (index + SYSVR_START));
               return(1);
               }
             i = GetRegNo(reg);
