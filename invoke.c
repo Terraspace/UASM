@@ -489,9 +489,8 @@ static int ms64_param(struct dsym const *proc, int index, struct dsym *param, bo
           
     	  i = GetRegNo(reg);
 
-          if (REGPAR_SYSV & (1 << i)) {
-            
-			  //base = GetParmIndex(i);
+          if (REGPAR_SYSV & (1 << i)) 
+		  {
 			  switch (i)
 			  {
 			  case 7:
@@ -527,8 +526,30 @@ static int ms64_param(struct dsym const *proc, int index, struct dsym *param, bo
 			reg2 = opnd->idx_reg->tokval;
 			if (GetValueSp(reg2) & OP_R) {
 				i = GetRegNo(reg2);
-				if (REGPAR_SYSV & (1 << i)) {
-					base = GetParmIndex(i);
+				if (REGPAR_SYSV & (1 << i)) 
+				{
+					switch (i)
+					{
+					case 7:
+						base = 0;
+						break;
+					case 6:
+						base = 1;
+						break;
+					case 2:
+						base = 2;
+						break;
+					case 1:
+						base = 3;
+						break;
+					case 8:
+						base = 4;
+						break;
+					case 9:
+						base = 5;
+						break;
+					}
+
 					if (*regs_used & (1 << (base + SYSVR_START)))
 						destroyed = TRUE;
 				}
@@ -1280,16 +1301,39 @@ vcall:
 
 			/* optimization if the register holds the value already */
 			if (opnd->kind == EXPR_REG && opnd->indirect == FALSE) {
-        if (proc->sym.langtype == LANG_SYSVCALL){
-          if (GetValueSp(reg) & OP_R) {
-            if (sysV64_regs[index + base] == reg) {
+        if (proc->sym.langtype == LANG_SYSVCALL)
+		{
+          if (GetValueSp(reg) & OP_R) 
+		  {
+            if (sysV64_regs[index + base] == reg) 
+			{
               DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
 			  //*regs_used |= (1 << (index + SYSVR_START));
               return(1);
               }
             i = GetRegNo(reg);
             if (REGPAR_SYSV & (1 << i)) {
-              i = GetParmIndex(i);
+				switch (i)
+				{
+				case 7:
+					i = 0;
+					break;
+				case 6:
+					i = 1;
+					break;
+				case 2:
+					i = 2;
+					break;
+				case 1:
+					i = 3;
+					break;
+				case 8:
+					i = 4;
+					break;
+				case 9:
+					i = 5;
+					break;
+				}
               if (*regs_used & (1 << (i + SYSVR_START)))
                 EmitErr(REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
               }
