@@ -700,6 +700,7 @@ static struct cmdloption const cmdl_options[] = {
 #if OWFC_SUPPORT
     { "zf0",    FCT_MSC,     Set_zf },
     { "zf1",    FCT_WATCOMC, Set_zf },
+	{ "zf2",    FCT_DELPHI,  Set_zf },
 #endif
     { "zlc",    optofs( no_comment_data_in_code_records ), Set_True },
     { "zld",    optofs( no_opt_farcall ),       Set_True },

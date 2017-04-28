@@ -58,8 +58,9 @@
 "-Zd\0"             "Add line number debug info (OMF & COFF only)\0"
 "-Zf\0"             "Make all symbols public\0"
 #if OWFC_SUPPORT
-"-zf<0|1>\0"        "Set FASTCALL type: 0=MS VC style (default),\0"
-"\0"                "1=OW register calling convention\0"
+"-zf<0|1|2>\0"      "Set FASTCALL type: 0=MS VC style (default),\0"
+"\0"                "1=OW register calling convention,\0"
+"\0"				"2=Borland register convention\0"
 #endif
 "-Zg\0"             "Generated code is to exactly match Masm's one\0"
 "-Zi[0|1|2|3]\0"    "Add symbolic debug info (OMF & COFF): 0=globals\0"

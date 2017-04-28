@@ -755,16 +755,18 @@ static void ModulePassInit( void )
         ModuleInfo.langtype = Options.langtype;
         ModuleInfo.fctype = Options.fctype;
 
-		#if AMD64_SUPPORT
-		if (Options.output_format == OFORMAT_ELF)
+		//#if AMD64_SUPPORT
+		/*if (Options.output_format == OFORMAT_ELF)
 		{
 			ModuleInfo.fctype = FCT_WIN64;
 			Options.fctype = FCT_WIN64;
-		}
-		#endif /* John Hankinson 2016-02-10 force elf64 to use win64 abi */
+		}*/
+		//#endif /* John Hankinson 2016-02-10 force elf64 to use win64 abi */
 
 #if AMD64_SUPPORT
-        if ( ModuleInfo.sub_format == SFORMAT_64BIT ) {
+        if ( ModuleInfo.sub_format == SFORMAT_64BIT ) 
+		{
+
             /* v2.06: force cpu to be at least P_64, without side effect to Options.cpu */
             if ( ( cpu &  P_CPU_MASK ) < P_64 ) /* enforce cpu to be 64-bit */
                 cpu = P_64;
@@ -774,6 +776,9 @@ static void ModulePassInit( void )
             model = MODEL_FLAT;
             if ( ModuleInfo.langtype == LANG_NONE && Options.output_format == OFORMAT_COFF )
                 ModuleInfo.langtype = LANG_FASTCALL;
+			if (ModuleInfo.langtype == LANG_NONE && Options.output_format == OFORMAT_ELF)
+				ModuleInfo.langtype = LANG_SYSVCALL;
+
         } else
 #endif
             /* if model FLAT is to be set, ensure that cpu is compat. */

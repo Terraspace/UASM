@@ -100,10 +100,10 @@ void InitAutoMacros(void)
 	uint_32 start_pos = 0;
 	char  *macCodePtr[MACRO_COUNT];
 
-	uint_32 macroLen[] = { 2, 1, 6, 6, 7, 7, 7, 8, 8, 10, 3, 7, 11, 19, 10, 2, 7, 2, 10, 11, 19, 5, 35, 35, 8, 5, 2, 3, 3, 27, 28, 2, 2, 11, 8, 8, 4, 22, 23, 23, 23, 23, 23, 5, 10, 10 }; // Count of individual lines of macro-body code.
+	uint_32 macroLen[] = { 3, 2, 6, 6, 7, 7, 7, 8, 8, 10, 3, 7, 11, 19, 10, 2, 7, 2, 10, 11, 19, 5, 35, 35, 8, 5, 2, 3, 3, 27, 28, 2, 2, 11, 8, 8, 4, 22, 23, 23, 23, 23, 23, 5, 10, 10 }; // Count of individual lines of macro-body code.
 	char *macCode[] = {
-		"INVOKE HeapAlloc,RV(GetProcessHeap),0,aSize", "MEMALIGN rax, 16", NULL,
-		"INVOKE HeapFree,RV(GetProcessHeap),0,memPtr", NULL,
+		"INVOKE HeapAlloc,RV(GetProcessHeap),0,aSize", "MEMALIGN rax, 16", "endm", NULL,
+		"INVOKE HeapFree,RV(GetProcessHeap),0,memPtr", "endm", NULL,
 		"local szText", ".data", "szText db Text,0", ".code", "exitm <szText>", "endm", NULL,
 		"local szText", ".data", "szText dw Text,0", ".code", "exitm <szText>", "endm", NULL,
 		"local vname", ".data", "align 4", "vname REAL4 value", ".code", "exitm <vname>", "endm", NULL,

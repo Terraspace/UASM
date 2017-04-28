@@ -58,8 +58,8 @@ enum reg_used_flags {
 	#define RPAR_START 3 /* Win64: RCX first param start at bit 3 */
 #endif
 #if SYSV_SUPPORT        
-	SV_RDI_USED = 0x02,  /* sysv: register contents of CL/CX/ECX/RCX  is destroyed */
-	SV_RSI_USED = 0x04,  /* sysv: register contents of DL/DX/EDX/RDX  is destroyed */
+	SV_RDI_USED = 0x02,  /* sysv: register contents of DI/EDI/RDI  is destroyed */
+	SV_RSI_USED = 0x04,  /* sysv: register contents of SI/ESI/RSI  is destroyed */
 	SV_RDX_USED = 0x08,  /* sysv: register contents of DL/DX/EDX/RDX  is destroyed */
 	SV_RCX_USED = 0x10,  /* sysv: register contents of CL/CX/ECX/RCX  is destroyed */
 	SV_R8_USED = 0x20,  /* sysv: register contents of R8B/R8W/R8D/R8 is destroyed */
@@ -76,12 +76,10 @@ enum reg_used_flags {
 #endif
 };
 
-
-
 extern void myatoi128( const char *, uint_64[], int, int );
-static int size_vararg; /* size of :VARARG arguments */
-static int fcscratch;  /* exclusively to be used by FASTCALL helper functions */
-static int vcallpass = 0; /* static global to determine which vectorcall pass we're in */
+static int size_vararg;    /* size of :VARARG arguments */
+static int fcscratch = 0;  /* exclusively to be used by FASTCALL helper functions */
+static int vcallpass = 0;  /* static global to determine which vectorcall pass we're in */
 
 struct fastcall_conv {
     int  (* invokestart)( struct dsym const *, int, int, struct asm_tok[], int * );
@@ -96,14 +94,15 @@ struct vectorcall_conv {
 };
 
 struct sysvcall_conv {
-	int(*invokestart)(struct dsym const *, int, int, struct asm_tok[], int *);
-	void(*invokeend)  (struct dsym const *, int, int);
-	int(*handleparam)(struct dsym const *, int, struct dsym *, bool, struct expr *, char *, uint_8 *);
+	int  (* invokestart)( struct dsym const *, int, int, struct asm_tok[], int *);
+	void (* invokeend)  ( struct dsym const *, int, int);
+	int  (* handleparam)( struct dsym const *, int, struct dsym *, bool, struct expr *, char *, uint_8 *);
 };
+
 struct delphicall_conv {
-	int(*invokestart)(struct dsym const *, int, int, struct asm_tok[], int *);
-	void(*invokeend)  (struct dsym const *, int, int);
-	int(*handleparam)(struct dsym const *, int, struct dsym *, bool, struct expr *, char *, uint_8 *);
+	int  (* invokestart)( struct dsym const *, int, int, struct asm_tok[], int *);
+	void (* invokeend)  ( struct dsym const *, int, int);
+	int  (* handleparam)( struct dsym const *, int, struct dsym *, bool, struct expr *, char *, uint_8 *);
 };
 
 static  int ms32_fcstart( struct dsym const *, int, int, struct asm_tok[], int * );
@@ -127,7 +126,8 @@ static  int ms64_param  ( struct dsym const *, int, struct dsym *, bool, struct 
 	static  int ms64_param  ( struct dsym const *, int, struct dsym *, bool, struct expr *, char *, uint_8 * );
 	#define REGPAR_SYSV 0x03C6 /* regs 6, 7, 1, 2, 8 and 9 */		
 #endif
-  /* added for delphi in v2.28 */
+
+/* added for delphi in v2.28 */
 #if DELPHI_SUPPORT		
 	static  int delphi32_fcstart( struct dsym const *, int, int, struct asm_tok[], int * );
 	static void delphi32_fcend  ( struct dsym const *, int, int );
@@ -144,6 +144,7 @@ static const struct fastcall_conv fastcall_tab[] = {
  { ms64_fcstart, ms64_fcend , ms64_param } /* FCT_WIN64 */
 #endif
 };
+
 static const struct vectorcall_conv vectorcall_tab[] = {
  { ms32_fcstart, ms32_fcend , ms32_param }, /* FCT_MSC */
 #if OWFC_SUPPORT
@@ -163,7 +164,8 @@ static const struct sysvcall_conv sysvcall_tab[] = {
 	{ ms64_fcstart, ms64_fcend , ms64_param } /* FCT_WIN64 */
 #endif		
 };
-  /* added for delphi in v2.28 */
+
+/* added for delphi in v2.28 */
 static const struct delphicall_conv delphicall_tab[] = {
 	{ delphi32_fcstart, delphi32_fcend , delphi32_param }, /* FCT_MSC */
 #if OWFC_SUPPORT		
@@ -190,10 +192,9 @@ static const enum special_token ms16_regs[] = {
 static const enum special_token ms32_regs[] = {
     T_ECX, T_EDX
 };
-  /* added for delphi in v2.28 */
-  /* added for delphi in v2.28 */
+/* added for delphi in v2.28 */
 static const enum special_token delphi32_regs[] = {
-   T_EAX,T_EDX, T_ECX  
+   T_EAX, T_EDX, T_ECX  
 };
 
 
@@ -282,71 +283,84 @@ static int ms32_param( struct dsym const *proc, int index, struct dsym *param, b
         *r0used |= R0_USED;
     return( 1 );
 }
-  /* added for delphi in v2.28 */
+
+/* added for delphi in v2.28 */
 static int delphi32_fcstart( struct dsym const *proc, int numparams, int start, struct asm_tok tokenarray[], int *value )
 /*******************************************************************************************************************/
 {
-    return( 0 );
+    return( 1 );
 }
-  /* added for delphi in v2.28 */
+
+/* added for delphi in v2.28 */
 static void delphi32_fcend( struct dsym const *proc, int numparams, int value )
 /*************************************************************************/
 {
     /* nothing to do */
     return;
 }
-  /* added for delphi in v2.28 */
+
+/* added for delphi in v2.28 */
 static int delphi32_param( struct dsym const *proc, int index, struct dsym *param, bool addr, struct expr *opnd, char *paramvalue, uint_8 *r0used )
 /*********************************************************************************************************************************************/
 {
     enum special_token const *pst;
+    struct proc_info *info;
 	enum special_token reg;
-	struct proc_info *info;
     info = proc->e.procinfo;
     DebugMsg1(("delphi_param(proc=%s, ofs=%u, index=%u, param=%s) fcscratch=%u\n", proc->sym.name, proc->sym.Ofssize, index, param->sym.name, fcscratch ));
     if ( param->sym.state != SYM_TMACRO )
         return( 0 );
     pst = delphi32_regs + fcscratch;
-	reg = *pst;
+    reg = *pst;
+
+	printf(" agr ");
 
     info->delregsused[fcscratch] = reg;
     /* v2.29: optimization */
-    if ((_stricmp(paramvalue, "eax") == 0) && fcscratch == 0){
+    if ((_stricmp(paramvalue, "EAX") == 0) && fcscratch == 0){
       fcscratch++;
       return (1);
       }
-    else if ((_stricmp(paramvalue, "edx") == 0) && fcscratch == 1){
+    else if ((_stricmp(paramvalue, "EDX") == 0) && fcscratch == 1){
       fcscratch++;
       return (1);
       }
-    else if ((_stricmp(paramvalue, "ecx") == 0) && fcscratch == 2){
+    else if ((_stricmp(paramvalue, "ECX") == 0) && fcscratch == 2){
       fcscratch++;
       return (1);
       }
-
-     if (Parse_Pass){
-        switch (fcscratch){
+    if ( opnd->kind == EXPR_REG && opnd->indirect == 0 && opnd->base_reg ) {
+      if (opnd->base_reg->tokval == reg){
+        fcscratch++;
+        return(1);
+        }
+     }
+	 
+     if (Parse_Pass)
+	 {
+        switch (fcscratch)
+		{
           case 0:
-            if ((_stricmp(paramvalue, "edx") == 0) && info->delregsused[1] ||
-                (_stricmp(paramvalue, "ecx") == 0) && info->delregsused[2])
+            if ((_stricmp(paramvalue, "EDX") == 0) && info->delregsused[1] ||
+                (_stricmp(paramvalue, "ECX") == 0) && info->delregsused[2])
                 EmitWarn(2, REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
             break;
           case 1:
-            if ((_stricmp(paramvalue, "eax") == 0) && info->delregsused[0] ||
-                (_stricmp(paramvalue, "ecx") == 0) && info->delregsused[2])
+            if ((_stricmp(paramvalue, "EAX") == 0) && info->delregsused[0] ||
+                (_stricmp(paramvalue, "ECX") == 0) && info->delregsused[2])
                 EmitWarn(2, REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
             break;
           case 2:
-            if ((_stricmp(paramvalue, "eax") == 0) && info->delregsused[0] ||
-                (_stricmp(paramvalue, "edx") == 0) && info->delregsused[1])
+            if ((_stricmp(paramvalue, "EAX") == 0) && info->delregsused[0] ||
+                (_stricmp(paramvalue, "EDX") == 0) && info->delregsused[1])
                 EmitWarn(2, REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
           }
       }              
-     AddLineQueueX( " mov %r, %s", reg, paramvalue );
+    
+	AddLineQueueX( " mov %r, %s", reg, paramvalue );
     fcscratch++;
     return( 1 );
 }
-
 
 #if AMD64_SUPPORT
 static int ms64_fcstart(struct dsym const *proc, int numparams, int start, struct asm_tok tokenarray[], int *value)
@@ -1652,26 +1666,6 @@ static int ParamIsString(char *pStr) {
 static unsigned int hashpjw(const char *s)
 /******************************************/
 {
-/*	unsigned h;
-	unsigned g;
-
-#if HASH_MAGNITUDE==12
-	for (h = 0; *s; ++s) {
-		h = (h << 4) + (*s | ' ');
-		g = h & ~0x0fff;
-		h ^= g;
-		h ^= g >> 12;
-	}
-#else
-	for (h = 0; *s; ++s) {
-		h = (h << 5) + (*s | ' ');
-		g = h & ~0x7fff;
-		h ^= g;
-		h ^= g >> 15;
-	}
-#endif
-	return(h);*/
-
 	uint_64 fnv_basis = 14695981039346656037;
 	uint_64 register fnv_prime = 1099511628211;
 	uint_64 h;
@@ -1944,12 +1938,14 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 	//fptrsize = 2 + ( 2 << GetSymOfssize( &proc->sym ) );
 	Ofssize = (proc->sym.state == SYM_TYPE ? proc->sym.seg_ofssize : GetSymOfssize(&proc->sym));
 	fptrsize = 2 + (2 << Ofssize);
-  		if (proc->sym.langtype == LANG_DELPHICALL) {
-			if (delphicall_tab[ModuleInfo.fctype].handleparam(proc, reqParam, curr, addr, &opnd, fullparam, r0flags))
-				return(NOT_ERROR);
-		}
+  	//if (proc->sym.langtype == LANG_DELPHICALL) 
+	//{
+	printf("bob");
+		if ( delphicall_tab[ModuleInfo.fctype].handleparam(proc, reqParam, curr, addr, &opnd, fullparam, r0flags) )
+			return(NOT_ERROR);
+	//}
 
-	if (addr) {
+	if ( addr ) {
 		/* v2.06: don't handle forward refs if -Zne is set */
 		//if ( EvalOperand( &j, Token_Count, &opnd, 0 ) == ERROR )
 		if (EvalOperand(&j, tokenarray, Token_Count, &opnd, ModuleInfo.invoke_exprparm) == ERROR)
@@ -3069,6 +3065,9 @@ else if (sym->langtype == LANG_VECTORCALL) {
 }
 else if (sym->langtype == LANG_SYSVCALL) {
 	sysvcall_tab[ModuleInfo.fctype].invokeend(proc, numParam, value);
+}
+else if (sym->langtype == LANG_DELPHICALL) {
+	delphicall_tab[ModuleInfo.fctype].invokeend(proc, numParam, value);
 }
 
 LstWrite(LSTTYPE_DIRECTIVE, GetCurrOffset(), NULL);
