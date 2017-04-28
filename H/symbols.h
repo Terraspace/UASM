@@ -371,6 +371,7 @@ struct proc_info {
     unsigned char       vecregsize[6];
     unsigned char       vregs[6];
     unsigned char       xyzused[6];
+    unsigned char       delregsused[3]; /* added for delphi used registers v.29 */
     unsigned char       vecused;
 #if AMD64_SUPPORT
     struct asym         *exc_handler;   /* PROC: exc handler set by FRAME */

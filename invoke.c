@@ -75,6 +75,9 @@ enum reg_used_flags {
 #define ROW_START 3 /* watc: first param start at bit 3 */
 #endif
 };
+
+
+
 extern void myatoi128( const char *, uint_64[], int, int );
 static int size_vararg; /* size of :VARARG arguments */
 static int fcscratch;  /* exclusively to be used by FASTCALL helper functions */
@@ -188,9 +191,6 @@ static const enum special_token ms32_regs[] = {
     T_ECX, T_EDX
 };
   /* added for delphi in v2.28 */
-static const enum special_token delphi16_regs[] = {
-    T_AX, T_DX, T_CX
-};
   /* added for delphi in v2.28 */
 static const enum special_token delphi32_regs[] = {
    T_EAX,T_EDX, T_ECX  
@@ -300,63 +300,50 @@ static int delphi32_param( struct dsym const *proc, int index, struct dsym *para
 /*********************************************************************************************************************************************/
 {
     enum special_token const *pst;
-
+	enum special_token reg;
+	struct proc_info *info;
+    info = proc->e.procinfo;
     DebugMsg1(("delphi_param(proc=%s, ofs=%u, index=%u, param=%s) fcscratch=%u\n", proc->sym.name, proc->sym.Ofssize, index, param->sym.name, fcscratch ));
     if ( param->sym.state != SYM_TMACRO )
         return( 0 );
-    if ( GetSymOfssize( &proc->sym ) == USE16 ) {
-        pst = delphi16_regs + fcscratch;
-        fcscratch++;
-    } else {
-        pst = delphi32_regs + fcscratch;
-        fcscratch++;
-    }
-    if ( addr )
-        AddLineQueueX( " lea %r, %s", *pst, paramvalue );
-    else {
-        enum special_token reg = *pst;
-        int size;
-        /*  adjust register if size of operand won't require the full register v2.28 */
-        if ( ( opnd->kind != EXPR_CONST ) &&
-            ( size = SizeFromMemtype( param->sym.mem_type, USE_EMPTY, param->sym.type ) ) < SizeFromRegister( *pst ) ) {
-            if (( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_386 ) {
-                AddLineQueueX( " %s %r, %s", ( param->sym.mem_type & MT_SIGNED ) ? "movsx" : "movzx", reg, paramvalue );
-            } else {
-                /* this is currently always UNSIGNED */
-                AddLineQueueX( " mov %r, %s", T_AL + GetRegNo( reg ), paramvalue );
-                AddLineQueueX( " mov %r, 0", T_AH + GetRegNo( reg ) );
-            }
-        } else {
-            /*  if register is in correct order do nothing  v2.28  */
-            if ( opnd->kind == EXPR_REG && opnd->indirect == 0 && opnd->base_reg ) {
-              if (opnd->base_reg->tokval == reg){
-                  return(1);
-                }
-                /* check for overwritten registers v2.28 */
-              else{
-                  switch (index){
-                    case 0:
-                      if (opnd->base_reg->tokval == T_ECX || opnd->base_reg->tokval == T_EDX){
-                        if (Parse_Pass == PASS_1) EmitWarn(2, REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
-                        }
-                      break;
-                    case 1:
-                      if (opnd->base_reg->tokval == T_EAX || opnd->base_reg->tokval == T_ECX){
-                        if (Parse_Pass == PASS_1) EmitWarn(2, REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
-                        }
-                      break;
-                    case 2:
-                      if (opnd->base_reg->tokval == T_EAX || opnd->base_reg->tokval == T_EDX){
-                        if (Parse_Pass == PASS_1) EmitWarn(2, REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
-                        }
-                    }
-                }
-            }
-            AddLineQueueX( " mov %r, %s", reg, paramvalue );
-        }
-    }
-    if ( *pst == T_AX )
-        *r0used |= R0_USED;
+    pst = delphi32_regs + fcscratch;
+	reg = *pst;
+
+    info->delregsused[fcscratch] = reg;
+    /* v2.29: optimization */
+    if ((_stricmp(paramvalue, "eax") == 0) && fcscratch == 0){
+      fcscratch++;
+      return (1);
+      }
+    else if ((_stricmp(paramvalue, "edx") == 0) && fcscratch == 1){
+      fcscratch++;
+      return (1);
+      }
+    else if ((_stricmp(paramvalue, "ecx") == 0) && fcscratch == 2){
+      fcscratch++;
+      return (1);
+      }
+
+     if (Parse_Pass){
+        switch (fcscratch){
+          case 0:
+            if ((_stricmp(paramvalue, "edx") == 0) && info->delregsused[1] ||
+                (_stricmp(paramvalue, "ecx") == 0) && info->delregsused[2])
+                EmitWarn(2, REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
+            break;
+          case 1:
+            if ((_stricmp(paramvalue, "eax") == 0) && info->delregsused[0] ||
+                (_stricmp(paramvalue, "ecx") == 0) && info->delregsused[2])
+                EmitWarn(2, REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
+            break;
+          case 2:
+            if ((_stricmp(paramvalue, "eax") == 0) && info->delregsused[0] ||
+                (_stricmp(paramvalue, "edx") == 0) && info->delregsused[1])
+                EmitWarn(2, REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
+          }
+      }              
+     AddLineQueueX( " mov %r, %s", reg, paramvalue );
+    fcscratch++;
     return( 1 );
 }
 
@@ -1957,6 +1944,10 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 	//fptrsize = 2 + ( 2 << GetSymOfssize( &proc->sym ) );
 	Ofssize = (proc->sym.state == SYM_TYPE ? proc->sym.seg_ofssize : GetSymOfssize(&proc->sym));
 	fptrsize = 2 + (2 << Ofssize);
+  		if (proc->sym.langtype == LANG_DELPHICALL) {
+			if (delphicall_tab[ModuleInfo.fctype].handleparam(proc, reqParam, curr, addr, &opnd, fullparam, r0flags))
+				return(NOT_ERROR);
+		}
 
 	if (addr) {
 		/* v2.06: don't handle forward refs if -Zne is set */
@@ -1997,10 +1988,24 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				else
 					GetResWName(T_DS, buffer);
 				AddLineQueueX(" push %s", buffer);
-			}
-			AddLineQueueX(" lea %r, %s", regax[ModuleInfo.Ofssize], fullparam);
-			*r0flags |= R0_USED;
-			AddLineQueueX(" push %r", regax[ModuleInfo.Ofssize]);
+        }
+      /* this is a fix for ADDR in DELPHI v2.29*/
+      if (proc->sym.langtype == LANG_DELPHICALL){
+        if (fcscratch == 0){
+           AddLineQueueX(" lea %r, %s", T_EAX, fullparam);
+           AddLineQueueX(" push %r", T_EAX);
+          }
+        else{
+          AddLineQueueX(" push %r", T_EAX);
+          AddLineQueueX(" lea %r, %s", regax[ModuleInfo.Ofssize], fullparam);
+          AddLineQueueX("xchg	 eax,[esp]");
+          }
+        }
+      else{
+        AddLineQueueX(" lea %r, %s", regax[ModuleInfo.Ofssize], fullparam);
+        *r0flags |= R0_USED;
+        AddLineQueueX(" push %r", regax[ModuleInfo.Ofssize]);
+        }
 		}
 		else {
 		push_address:
@@ -2152,10 +2157,10 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 			if (fastcall_tab[ModuleInfo.fctype].handleparam(proc, reqParam, curr, addr, &opnd, fullparam, r0flags))
 				return(NOT_ERROR);
 		}
-		if (proc->sym.langtype == LANG_DELPHICALL) {
-			if (delphicall_tab[ModuleInfo.fctype].handleparam(proc, reqParam, curr, addr, &opnd, fullparam, r0flags))
-				return(NOT_ERROR);
-		}
+		//if (proc->sym.langtype == LANG_DELPHICALL) {
+		//	if (delphicall_tab[ModuleInfo.fctype].handleparam(proc, reqParam, curr, addr, &opnd, fullparam, r0flags))
+		//		return(NOT_ERROR);
+		//}
 		if (proc->sym.langtype == LANG_SYSVCALL) {
 			if (sysvcall_tab[ModuleInfo.fctype].handleparam(proc, reqParam, curr, addr, &opnd, fullparam, r0flags))
 				return(NOT_ERROR);
@@ -2816,6 +2821,9 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 							   /* clear sse register flags every pass*/
 	memset(info->xyzused, 0, 6);
 	memset(info->vecregsize, 0, 6);
+  /* added for delphi used registers v2.29 */
+  if (Parse_Pass == PASS_1)
+  memset(info->delregsused,0,3);
 	info->vsize = 0;
 	//memset(regsize, 0, 6);
 
