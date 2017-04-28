@@ -288,7 +288,7 @@ static int ms32_param( struct dsym const *proc, int index, struct dsym *param, b
 static int delphi32_fcstart( struct dsym const *proc, int numparams, int start, struct asm_tok tokenarray[], int *value )
 /*******************************************************************************************************************/
 {
-    return( 1 );
+    return( 0 );
 }
 
 /* added for delphi in v2.28 */
@@ -307,13 +307,14 @@ static int delphi32_param( struct dsym const *proc, int index, struct dsym *para
     struct proc_info *info;
 	enum special_token reg;
     info = proc->e.procinfo;
+
     DebugMsg1(("delphi_param(proc=%s, ofs=%u, index=%u, param=%s) fcscratch=%u\n", proc->sym.name, proc->sym.Ofssize, index, param->sym.name, fcscratch ));
-    if ( param->sym.state != SYM_TMACRO )
+  
+	if ( param->sym.state != SYM_TMACRO && ( ( param->sym.state == SYM_STACK && !addr ) || fcscratch > 2 ) )
         return( 0 );
+
     pst = delphi32_regs + fcscratch;
     reg = *pst;
-
-	printf(" agr ");
 
     info->delregsused[fcscratch] = reg;
     /* v2.29: optimization */
@@ -335,7 +336,7 @@ static int delphi32_param( struct dsym const *proc, int index, struct dsym *para
         return(1);
         }
      }
-	 
+
      if (Parse_Pass)
 	 {
         switch (fcscratch)
@@ -357,7 +358,11 @@ static int delphi32_param( struct dsym const *proc, int index, struct dsym *para
           }
       }              
     
-	AddLineQueueX( " mov %r, %s", reg, paramvalue );
+	 if (param->sym.state == SYM_TMACRO)
+		 AddLineQueueX(" mov %r, %s", reg, paramvalue);
+	 else if (addr)
+		 AddLineQueueX(" lea %r, %s", reg, paramvalue);
+
     fcscratch++;
     return( 1 );
 }
@@ -1938,12 +1943,11 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 	//fptrsize = 2 + ( 2 << GetSymOfssize( &proc->sym ) );
 	Ofssize = (proc->sym.state == SYM_TYPE ? proc->sym.seg_ofssize : GetSymOfssize(&proc->sym));
 	fptrsize = 2 + (2 << Ofssize);
-  	//if (proc->sym.langtype == LANG_DELPHICALL) 
-	//{
-	printf("bob");
+  	if (proc->sym.langtype == LANG_DELPHICALL) 
+	{
 		if ( delphicall_tab[ModuleInfo.fctype].handleparam(proc, reqParam, curr, addr, &opnd, fullparam, r0flags) )
 			return(NOT_ERROR);
-	//}
+	}
 
 	if ( addr ) {
 		/* v2.06: don't handle forward refs if -Zne is set */
@@ -1985,23 +1989,28 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 					GetResWName(T_DS, buffer);
 				AddLineQueueX(" push %s", buffer);
         }
-      /* this is a fix for ADDR in DELPHI v2.29*/
-      if (proc->sym.langtype == LANG_DELPHICALL){
-        if (fcscratch == 0){
+      /* this is a fix for ADDR in DELPHI v2.29 */
+      if (proc->sym.langtype == LANG_DELPHICALL)
+	  {
+        if (fcscratch == 0)
+		{
            AddLineQueueX(" lea %r, %s", T_EAX, fullparam);
            AddLineQueueX(" push %r", T_EAX);
-          }
-        else{
+        }
+        else
+		{
           AddLineQueueX(" push %r", T_EAX);
           AddLineQueueX(" lea %r, %s", regax[ModuleInfo.Ofssize], fullparam);
           AddLineQueueX("xchg	 eax,[esp]");
-          }
         }
-      else{
+      }
+      else
+	  {
         AddLineQueueX(" lea %r, %s", regax[ModuleInfo.Ofssize], fullparam);
         *r0flags |= R0_USED;
         AddLineQueueX(" push %r", regax[ModuleInfo.Ofssize]);
-        }
+      }
+
 		}
 		else {
 		push_address:

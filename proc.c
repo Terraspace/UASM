@@ -96,14 +96,17 @@ struct asym *sym_ReservedStack; /* max stack space required by INVOKE */
 //static const enum special_token ms32_regs16[] = { T_CX, T_DX };
 static const enum special_token ms32_regs16[] = { T_AX, T_DX, T_BX };
 static const enum special_token ms32_regs32[] = { T_ECX,T_EDX };
-static const enum special_token delphi_regs32[] = {T_EAX, T_EDX, T_ECX, };
+static const enum special_token delphi_regs32[] = { T_EAX, T_EDX, T_ECX, };
+
 /* v2.07: added */
 static const int ms32_maxreg[] = {
     sizeof( ms32_regs16) / sizeof(ms32_regs16[0] ),
     sizeof( ms32_regs32) / sizeof(ms32_regs32[0] ),
 };
+
 static const int delphi_maxreg[] = {
-    sizeof( delphi_regs32) / sizeof(delphi_regs32[0] ),
+	sizeof(delphi_regs32) / sizeof(delphi_regs32[0] ),
+    sizeof(delphi_regs32) / sizeof(delphi_regs32[0] ),
 };
 
 #if OWFC_SUPPORT
@@ -195,6 +198,7 @@ static const struct sysvcall_conv sysvcall_tab[] = {
 	{ ms64_pcheck, ms64_return }   /* FCT_WIN64 */
 #endif		
 };
+
 static const struct delphicall_conv delphicall_tab[] = {
     { delphi_pcheck, delphi_return },  /* FCT_MSC */
 #if OWFC_SUPPORT
@@ -383,20 +387,22 @@ static void ms32_return( struct dsym *proc, char *buffer )
         sprintf( buffer + strlen( buffer ), "%d%c", proc->e.procinfo->parasize - ( ms32_maxreg[ModuleInfo.Ofssize] * CurrWordSize), ModuleInfo.radix != 10 ? 't' : NULLC );
     return;
 }
+
 /* v2.29: delphi uses 3 register params (EAX,EDX,ECX) */
 static int delphi_pcheck( struct dsym *proc, struct dsym *paranode, int *used )
 /***************************************************************************/
 {
     char regname[32];
     int size = SizeFromMemtype( paranode->sym.mem_type, paranode->sym.Ofssize, paranode->sym.type );
-      
-    if (paranode->sym.mem_type == MT_REAL4 || paranode->sym.mem_type == MT_PTR) {
-      return (0);
-      }
 
+    if (paranode->sym.mem_type == MT_REAL4 || paranode->sym.mem_type == MT_PTR) 
+      return (0);
+	
     if ( size > CurrWordSize || *used >= delphi_maxreg[ModuleInfo.Ofssize] )
         return( 0 );
-    paranode->sym.state = SYM_TMACRO;
+
+	paranode->sym.state = SYM_TMACRO;
+
     /* v2.29: for codeview debug info, store the register index in the symbol */
     GetResWName( delphi_regs32[*used], regname );
     paranode->sym.string_ptr = LclAlloc( strlen( regname ) + 1 );
@@ -404,6 +410,7 @@ static int delphi_pcheck( struct dsym *proc, struct dsym *paranode, int *used )
     (*used)++;
     return( 1 );
 }
+
 static void delphi_return( struct dsym *proc, char *buffer )
 /********************************************************/
 {
@@ -956,20 +963,20 @@ static ret_code ParseParams( struct dsym *proc, int i, struct asm_tok tokenarray
             paranode->sym.is_ptr  = ti.is_ptr;
             paranode->sym.ptr_memtype = ti.ptr_memtype;
             paranode->sym.is_vararg = is_vararg;
-            if ( proc->sym.langtype == LANG_FASTCALL &&
-                fastcall_tab[ModuleInfo.fctype].paramcheck( proc, paranode, &fcint ) ) {
+            if ( proc->sym.langtype == LANG_FASTCALL && fastcall_tab[ModuleInfo.fctype].paramcheck( proc, paranode, &fcint ) ) 
+			{
             }
-            else if ( proc->sym.langtype == LANG_VECTORCALL &&
-                vectorcall_tab[ModuleInfo.fctype].paramcheck( proc, paranode, &fcint ) ) {
+            else if ( proc->sym.langtype == LANG_VECTORCALL && vectorcall_tab[ModuleInfo.fctype].paramcheck( proc, paranode, &fcint ) ) 
+			{
             } 
-			      else if (proc->sym.langtype == LANG_SYSVCALL &&
-				      sysvcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint)) {
-			      }
-			      else if (proc->sym.langtype == LANG_DELPHICALL &&
-				      delphicall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint)) {
-			      }
-
-            else {
+			else if ( proc->sym.langtype == LANG_SYSVCALL && sysvcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint) ) 
+			{
+			}
+			else if ( proc->sym.langtype == LANG_DELPHICALL && delphicall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint) ) 
+			{
+			}
+            else 
+			{
                 paranode->sym.state = SYM_STACK;
             }
 
