@@ -168,7 +168,7 @@ ret_code GetLangType( int *i, struct asm_tok tokenarray[], enum lang_type *plang
     if( tokenarray[*i].token == T_RES_ID ) {
 #if 1 /* v2.03: simplified */
         if ( tokenarray[(*i)].tokval >= T_C &&
-            tokenarray[(*i)].tokval <= T_DELPHICALL ) { /* 2.15 implemented the VECTORCALL */
+            tokenarray[(*i)].tokval <= T_BORLAND ) { /* 2.15 implemented the VECTORCALL */
             *plang = tokenarray[(*i)].bytval;
             (*i)++;
             return( NOT_ERROR );
@@ -184,7 +184,7 @@ ret_code GetLangType( int *i, struct asm_tok tokenarray[], enum lang_type *plang
         case T_FASTCALL:  *plang = LANG_FASTCALL;   break;
         case T_VECTORCALL:*plang = LANG_VECTORCALL; break;
         case T_SYSVCALL:  *plang = LANG_SYSVCALL;   break;
-        case T_DELPHICALL *plang = LANG_DELPHICALL; break;
+        case T_BORLAND    *plang = LANG_DELPHICALL; break;
         default:
             return( ERROR );
         }

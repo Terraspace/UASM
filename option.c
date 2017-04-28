@@ -125,6 +125,7 @@ OPTFUNC( SetRedZone )
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 	}
 	*pi = i;
+	return(NOT_ERROR);
 }
 
 /* OPTION ARCH:SSE/AVX */
@@ -170,9 +171,6 @@ OPTFUNC( SetArch )
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 	}
 	*pi = i;
-
-	
-
 	return( NOT_ERROR );
 }
 
@@ -403,7 +401,7 @@ OPTFUNC( SetNoKeyword )
     return( NOT_ERROR );
 }
 
-/* OPTION LANGUAGE:{C|PASCAL|BASIC|FORTRAN|SYSCALL|STDCALL|FASTCALL|VECTORCALL|SYSVCALL|DELPHICALL} */
+/* OPTION LANGUAGE:{C|PASCAL|BASIC|FORTRAN|SYSCALL|STDCALL|FASTCALL|VECTORCALL|SYSVCALL|BORLAND} */
 
 OPTFUNC( SetLanguage )
 /********************/
