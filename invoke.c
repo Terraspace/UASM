@@ -358,7 +358,7 @@ static int delphi32_param( struct dsym const *proc, int index, struct dsym *para
           }
       }              
     
-	 if (param->sym.state == SYM_TMACRO)
+	 if (param->sym.state == SYM_TMACRO && !addr)
 		 AddLineQueueX(" mov %r, %s", reg, paramvalue);
 	 else if (addr)
 		 AddLineQueueX(" lea %r, %s", reg, paramvalue);
@@ -1992,17 +1992,9 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
       /* this is a fix for ADDR in DELPHI v2.29 */
       if (proc->sym.langtype == LANG_DELPHICALL)
 	  {
-        if (fcscratch == 0)
-		{
-           AddLineQueueX(" lea %r, %s", T_EAX, fullparam);
-           AddLineQueueX(" push %r", T_EAX);
-        }
-        else
-		{
-          AddLineQueueX(" push %r", T_EAX);
-          AddLineQueueX(" lea %r, %s", regax[ModuleInfo.Ofssize], fullparam);
-          AddLineQueueX("xchg	 eax,[esp]");
-        }
+          AddLineQueueX("push %r", T_EAX);
+          AddLineQueueX("lea %r, %s", regax[ModuleInfo.Ofssize], fullparam);
+          AddLineQueueX("xchg eax,[esp]");
       }
       else
 	  {

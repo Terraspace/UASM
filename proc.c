@@ -395,7 +395,7 @@ static int delphi_pcheck( struct dsym *proc, struct dsym *paranode, int *used )
     char regname[32];
     int size = SizeFromMemtype( paranode->sym.mem_type, paranode->sym.Ofssize, paranode->sym.type );
 
-    if (paranode->sym.mem_type == MT_REAL4 || paranode->sym.mem_type == MT_PTR) 
+    if (paranode->sym.mem_type == MT_REAL4 || paranode->sym.mem_type == MT_REAL8)
       return (0);
 	
     if ( size > CurrWordSize || *used >= delphi_maxreg[ModuleInfo.Ofssize] )
@@ -733,6 +733,7 @@ static ret_code ParseParams( struct dsym *proc, int i, struct asm_tok tokenarray
     char            *name;
     struct asym     *sym;
     int             cntParam;
+	int             paramCount;
     int             offset = 0;
     //int             rcnt = 0;
     int             fcint = 0;
@@ -1124,17 +1125,41 @@ static ret_code ParseParams( struct dsym *proc, int i, struct asm_tok tokenarray
           }
         } else
 #endif
-        for ( ; cntParam; cntParam-- ) {
-            for ( curr = 1, paranode = proc->e.procinfo->paralist; curr < cntParam;paranode = paranode->nextparam, curr++ );
-            DebugMsg1(("ParseParams: parm=%s, ofs=%u, size=%d\n", paranode->sym.name, offset, paranode->sym.total_size));
-            if ( paranode->sym.state == SYM_TMACRO ) /* register param? */
-                ;
-            else {
-                paranode->sym.offset = offset;
-                proc->e.procinfo->stackparam = TRUE;
-                offset += ROUND_UP( paranode->sym.total_size, CurrWordSize );
-            }
-        }
+			if (proc->sym.langtype == LANG_DELPHICALL)
+			{
+				paramCount = cntParam;
+				paranode = proc->e.procinfo->paralist;
+				for (cntParam = 0; cntParam < paramCount; cntParam++)
+				{
+					// for (curr = 1, paranode = proc->e.procinfo->paralist; curr < cntParam; paranode = paranode->nextparam, curr++);
+					DebugMsg1(("ParseParams: parm=%s, ofs=%u, size=%d\n", paranode->sym.name, offset, paranode->sym.total_size));
+					if (paranode->sym.state == SYM_TMACRO) /* register param? */
+						;
+					else
+					{
+						paranode->sym.offset = offset;
+						proc->e.procinfo->stackparam = TRUE;
+						offset += ROUND_UP(paranode->sym.total_size, CurrWordSize);
+					}
+					paranode = paranode->nextparam;
+				}
+			}
+			else
+			{
+				for (; cntParam; cntParam--)
+				{
+					for (curr = 1, paranode = proc->e.procinfo->paralist; curr < cntParam; paranode = paranode->nextparam, curr++);
+					DebugMsg1(("ParseParams: parm=%s, ofs=%u, size=%d\n", paranode->sym.name, offset, paranode->sym.total_size));
+					if (paranode->sym.state == SYM_TMACRO) /* register param? */
+						;
+					else
+					{
+						paranode->sym.offset = offset;
+						proc->e.procinfo->stackparam = TRUE;
+						offset += ROUND_UP(paranode->sym.total_size, CurrWordSize);
+					}
+				}
+			}
     }
     return ( NOT_ERROR );
 }
