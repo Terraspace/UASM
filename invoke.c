@@ -310,9 +310,10 @@ static int delphi32_param( struct dsym const *proc, int index, struct dsym *para
 
     DebugMsg1(("delphi_param(proc=%s, ofs=%u, index=%u, param=%s) fcscratch=%u\n", proc->sym.name, proc->sym.Ofssize, index, param->sym.name, fcscratch ));
   
-	if ( param->sym.state != SYM_TMACRO && ( ( param->sym.state == SYM_STACK && !addr ) || fcscratch > 2 ) )
-        return( 0 );
-
+	if (param->sym.state != SYM_TMACRO && ((param->sym.state == SYM_STACK && !addr) || fcscratch > 2))
+	{
+		return(0);
+	}
     pst = delphi32_regs + fcscratch;
     reg = *pst;
 
@@ -2154,10 +2155,6 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 			if (fastcall_tab[ModuleInfo.fctype].handleparam(proc, reqParam, curr, addr, &opnd, fullparam, r0flags))
 				return(NOT_ERROR);
 		}
-		//if (proc->sym.langtype == LANG_DELPHICALL) {
-		//	if (delphicall_tab[ModuleInfo.fctype].handleparam(proc, reqParam, curr, addr, &opnd, fullparam, r0flags))
-		//		return(NOT_ERROR);
-		//}
 		if (proc->sym.langtype == LANG_SYSVCALL) {
 			if (sysvcall_tab[ModuleInfo.fctype].handleparam(proc, reqParam, curr, addr, &opnd, fullparam, r0flags))
 				return(NOT_ERROR);
