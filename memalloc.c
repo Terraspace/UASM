@@ -240,7 +240,7 @@ void *MemAlloc( size_t size )
     if( ptr == NULL ) {
         Fatal( OUT_OF_MEMORY );
     }
-    //memset( ptr, 0xff, size );
+    memset( ptr, 0x0, size );
     return( ptr );
 }
 
