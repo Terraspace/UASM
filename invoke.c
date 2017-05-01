@@ -1727,7 +1727,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 	//__debugbreak();
 	for (currParm = 0; currParm <= reqParam; ) {
 		isString[i] = FALSE;
-		if (tokenarray[i].token == T_FINAL) { /* this is no real error! */
+		if (tokenarray[i].token == T_FINAL ) { /* this is no real error! */
 			DebugMsg1(("PushInvokeParam(%s): T_FINAL token, i=%u\n", proc->sym.name, i));
 			return(ERROR);
 		}
@@ -2717,7 +2717,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	use the expression evaluator to get it
 	*/
   //__debugbreak();
-	if (tokenarray[i].token != T_ID || (tokenarray[i + 1].token != T_COMMA && tokenarray[i + 1].token != T_FINAL)) {
+	if (tokenarray[i].token != T_ID || (tokenarray[i + 1].token != T_COMMA && tokenarray[i + 1].token != T_FINAL && tokenarray[i + 1].token != T_OP_BRACKET)) {
 		//if ( tokenarray[i+1].token != T_COMMA && tokenarray[i+1].token != T_FINAL ) {
 		if (ERROR == EvalOperand(&i, tokenarray, Token_Count, &opnd, 0))
 			return(ERROR);
@@ -2763,7 +2763,6 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	if (sym == NULL) {
 		/* v2.04: msg changed */
 		return(EmitErr(INVOKE_REQUIRES_PROTOTYPE));
-		//return( EmitErr( SYMBOL_NOT_DEFINED, name ) );
 	}
 	if (sym->isproc)  /* the most simple case: symbol is a PROC */
 		;

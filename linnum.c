@@ -112,7 +112,7 @@ void AddLinnumDataRef( unsigned srcfile, uint_32 line_num )
             dmyproc->Ofssize = ModuleInfo.Ofssize;
             dmyproc->langtype = ModuleInfo.langtype;
             if ( write_to_file == TRUE ) {
-                curr = LclAlloc( sizeof( struct line_num_info ) );
+				curr = (struct line_num_info *)LclAlloc(sizeof(struct line_num_info));
                 curr->sym = dmyproc;
                 curr->line_number = GetLineNumber();
                 curr->file = srcfile;
@@ -133,27 +133,24 @@ void AddLinnumDataRef( unsigned srcfile, uint_32 line_num )
     }
     DebugMsg1(("AddLinnumDataRef(src=%u.%u): currofs=%Xh, CurrProc=%s, GeneratedCode=%u\n", srcfile, line_num, GetCurrOffset(), CurrProc ? CurrProc->sym.name : "NULL", ModuleInfo.GeneratedCode ));
 
-    curr = LclAlloc( sizeof( struct line_num_info ) );
+    curr = (struct line_num_info *)LclAlloc(sizeof(struct line_num_info));
     curr->number = line_num;
 #if COFF_SUPPORT
     if ( line_num == 0 ) { /* happens for COFF only */
-        /* changed v2.03 (CurrProc might have been NULL) */
-        /* if ( Options.output_format == OFORMAT_COFF && CurrProc->sym.public == FALSE ) { */
-        /* v2.09: avoid duplicates, check for pass 1 */
-        //if ( Options.output_format == OFORMAT_COFF && CurrProc && CurrProc->sym.public == FALSE ) {
         if ( Parse_Pass == PASS_1 &&
             Options.output_format == OFORMAT_COFF && CurrProc && CurrProc->sym.ispublic == FALSE ) {
             CurrProc->sym.included = TRUE;
             AddPublicData( (struct asym *)CurrProc );
         }
         /* changed v2.03 */
-        /* curr->sym = (struct asym *)CurrProc; */
         curr->sym = ( CurrProc ? (struct asym *)CurrProc : dmyproc );
         curr->line_number = GetLineNumber();
-        /* if there is no prologue, 2 lines get skipped, this corrects line_number; v2.28 */
+
+		/* if there is no prologue, 2 lines get skipped, this corrects line_number; v2.28 */
         if (CurrProc->e.procinfo->size_prolog == 0 && Parse_Pass)
           curr->line_number -= 3; // this is bit hackish but works
-        curr->file        = srcfile;
+        
+		curr->file = srcfile;
         /* set the function's size! */
         if ( dmyproc ) {
             /**/myassert( dmyproc->segment );
@@ -211,6 +208,7 @@ void QueueDeleteLinnum( struct qdesc *queue )
     curr = queue->head;
     for( ; curr ; curr = next ) {
 	    next = curr->next;
+		LclFree(curr);
     }
     return;
 }

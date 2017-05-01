@@ -212,6 +212,9 @@ void *LclAlloc( size_t size )
         Fatal( OUT_OF_MEMORY );
     }
 #endif
+	
+	memset(ptr, 0, size);
+
     return( ptr );
 }
 
