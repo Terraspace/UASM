@@ -415,7 +415,7 @@ static int delphi_pcheck( struct dsym *proc, struct dsym *paranode, int *used )
     /* v2.29: for codeview debug info, store the register index in the symbol */
     GetResWName( delphi_regs32[*used], regname );
 
-	if (paranode->sym.mem_type == MT_WORD)
+	if (paranode->sym.mem_type == MT_WORD || paranode->sym.mem_type == MT_SWORD)
 	{
 		if (_stricmp(regname, "EAX") == 0)
 			strcpy(regname, "ax");
@@ -424,7 +424,7 @@ static int delphi_pcheck( struct dsym *proc, struct dsym *paranode, int *used )
 		else if (_stricmp(regname, "ECX") == 0)
 			strcpy(regname, "cx");
 	}
-	else if (paranode->sym.mem_type == MT_BYTE)
+	else if (paranode->sym.mem_type == MT_BYTE || paranode->sym.mem_type == MT_SBYTE)
 	{
 		if (_stricmp(regname, "EAX") == 0)
 			strcpy(regname, "al");

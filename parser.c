@@ -2922,6 +2922,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
   enum special_token regtok;
   int                c0;
   int                c1;
+  unsigned           flags;
 
 #ifdef DEBUG_OUT
   char                *instr;
@@ -3516,8 +3517,13 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 				}
 			}
 
-          else if (CodeInfo.token < T_VGETMANTPD || CodeInfo.token > T_VGETMANTPS ) {
-            unsigned flags = GetValueSp(opndx[CurrOpnd].base_reg->tokval);
+          else if (CodeInfo.token < T_VGETMANTPD || CodeInfo.token > T_VGETMANTPS ) 
+		  {
+			  if (opndx[CurrOpnd].base_reg == NULL)
+				  return(EmitErr(INVALID_INSTRUCTION_OPERANDS));
+            
+			  flags = GetValueSp(opndx[CurrOpnd].base_reg->tokval);
+
             //CodeInfo.rtype = GetValueSp(opndx[CurrOpnd].base_reg->tokval);
             DebugMsg1(("ParseLine(%s,%u): opnd2 is avx reg (%s), flags=%X ci.type[0]=%X numops=%u\n",
               instr, CurrOpnd, opndx[CurrOpnd].base_reg->string_ptr, flags, CodeInfo.opnd[OPND1].type, j));

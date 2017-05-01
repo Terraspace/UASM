@@ -98,7 +98,7 @@ void InitAutoMacros(void)
 	uint_32 j = 0;
 	uint_32 k = 0;
 	uint_32 start_pos = 0;
-	char  *macCodePtr[MACRO_COUNT];
+	char  *srcLines[128]; // NB: 128 is the max number of lines of macro code per macro.
 
 	uint_32 macroLen[] = { 3, 2, 6, 6, 7, 7, 7, 8, 8, 10, 3, 7, 11, 19, 10, 2, 7, 2, 10, 11, 19, 5, 35, 35, 8, 5, 2, 3, 3, 27, 28, 2, 2, 11, 8, 8, 4, 22, 23, 23, 23, 23, 23, 5, 10, 10 }; // Count of individual lines of macro-body code.
 	char *macCode[] = {
@@ -153,9 +153,19 @@ void InitAutoMacros(void)
 	/* Compile Macros */
 	for (i = 0; i < MACRO_COUNT; i++)
 	{
+		for (j = 0; j < macroLen[i]; j++)
+		{
+			srcLines[j] = (char *)malloc(MAX_LINE_LEN);
+			strcpy(srcLines[j], macCode[(start_pos + j)]);
+		}
 		mac = CreateMacro(macName[i]);
 		ModuleInfo.token_count = Tokenize(macDef[i], 0, ModuleInfo.tokenarray, 0);
-		StoreAutoMacro(mac, 2, ModuleInfo.tokenarray, TRUE, macCode, start_pos, macroLen[i]);
+		StoreAutoMacro(mac, 2, ModuleInfo.tokenarray, TRUE, srcLines, 0, macroLen[i]); // macCode, start_pos, macroLen[i]);
 		start_pos += macroLen[i] + 1;
+		for (j = 0; j < macroLen[i]; j++)
+		{
+			free(srcLines[j]);
+		}
+
 	}
 }

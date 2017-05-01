@@ -143,6 +143,7 @@ static const struct eqitem eqtab[] = {
     { "@Line",     0,                   UpdateLineNumber, &LineCur },
 	{ "@ProcLine", 0,                   NULL, NULL },
 	{ "@Arch",     ARCH_AVX,            NULL, NULL },
+	{ "@Platform", 0,                   NULL, NULL },
     { "@WordSize", 0,                   UpdateWordSize, NULL }, /* must be last (see SymInit()) */
 };
 

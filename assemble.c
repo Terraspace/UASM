@@ -1098,6 +1098,7 @@ static int OnePass( void )
 /************************/
 {
 	struct src_item *fl;
+	struct asym*    platform;
 
     InputPassInit();
     ModulePassInit();
@@ -1134,6 +1135,19 @@ static int OnePass( void )
 	/* the functions above might have written something to the line queue */
     if ( is_linequeue_populated() )
         RunLineQueue();
+
+	/* Set platform type */
+	platform = SymFind("@Platform");
+	if ( Options.output_format == OFORMAT_COFF && Options.sub_format == SFORMAT_NONE )
+		platform->value = 0;
+	else if( Options.output_format == OFORMAT_COFF && Options.sub_format == SFORMAT_64BIT )
+		platform->value = 1;
+	else if (Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_NONE )
+		platform->value = 2;
+	else if (Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_64BIT )
+		platform->value = 3;
+	//else if (Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_64BIT) TODO with OSX-Macho
+		//platform->value = 3;
 
 	/* Process our built-in macro library to make it available to the rest of the source (x64 only) */
 	if (Parse_Pass == PASS_1 && Options.nomlib == FALSE && ModuleInfo.defOfssize == USE64) {
