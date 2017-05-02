@@ -218,7 +218,7 @@ void *LclAlloc( size_t size )
     }
 #endif
 
-#if DEBUG
+#ifdef _DEBUG
 	memset(ptr, 0, size);
 #endif
 
@@ -247,7 +247,7 @@ void *MemAlloc( size_t size )
     if( ptr == NULL ) {
         Fatal( OUT_OF_MEMORY );
     }
-#if DEBUG
+#ifdef _DEBUG
     memset( ptr, 0x0, size );
 #endif
     return( ptr );
