@@ -12,7 +12,7 @@ inc_dirs  = -IH
 #cflags stuff
 
 ifeq ($(DEBUG),0)
-extra_c_flags = -DNDEBUG -O2
+extra_c_flags = -DNDEBUG -O2 -ansi -funsigned-char -fwritable-strings
 OUTD=GccUnixR
 else
 extra_c_flags = -DDEBUG_OUT -g
