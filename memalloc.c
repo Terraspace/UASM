@@ -106,6 +106,11 @@ struct mmap {
 static struct mmap mymmap = { 0, 0, 3, 0x22, -1, 0 };
 #endif
 
+/* Allow clang on Linux to build */
+#ifndef MAP_ANON
+	#define MAP_ANON 0x20
+#endif
+
 #ifndef __UNIX__
  #if defined(__OS2__)
   #define BLKALLOC( p, size ) DosAllocMem( (void**)&p, size, PAG_COMMIT|PAG_READ|PAG_WRITE )

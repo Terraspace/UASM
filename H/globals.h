@@ -41,6 +41,8 @@
 
 #if defined(__UNIX__) || defined(__CYGWIN__) || defined(__DJGPP__) /* avoid for MinGW! */
 
+#include <strings.h>
+
 #define _stricmp strcasecmp
 #ifndef __WATCOMC__
 #define _memicmp strncasecmp
