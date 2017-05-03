@@ -2923,6 +2923,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
   int                c0;
   int                c1;
   unsigned           flags;
+  char               *pnlbl;
 
 #ifdef DEBUG_OUT
   char                *instr;
@@ -2930,11 +2931,14 @@ ret_code ParseLine(struct asm_tok tokenarray[])
   struct code_info    CodeInfo;
 #if AVXSUPP
   struct expr         opndx[MAX_OPND + 1];
+  memset(&opndx, 0, sizeof(opndx));
 #else
   struct expr         opndx[MAX_OPND];
+  memset(&opndx, 0, sizeof(opndx));
 #endif
-  char *pnlbl;
 
+  memset(&CodeInfo, 0, sizeof(CodeInfo));
+  
   DebugMsg1(("ParseLine enter, Token_Count=%u, ofs=%Xh\n",
     Token_Count, GetCurrOffset()));
   i = 0;
