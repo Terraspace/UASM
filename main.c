@@ -105,6 +105,9 @@ int main(int argc, char **argv)
 #else
 	signal(SIGTERM, genfailure);
 #endif
+
+	memset(&finfo, 0, sizeof(finfo));
+
 	/* ParseCmdLine() returns NULL if no source file name has been found (anymore) */
 	while (ParseCmdline((const char **)argv, &numArgs)) {
 		numFiles++;

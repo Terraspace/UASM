@@ -371,6 +371,22 @@ static int ms32_pcheck( struct dsym *proc, struct dsym *paranode, int *used )
     /* v2.10: for codeview debug info, store the register index in the symbol */
     paranode->sym.regist[0] = ModuleInfo.Ofssize ? ms32_regs32[*used] : ms32_regs16[*used];
     GetResWName( ModuleInfo.Ofssize ? ms32_regs32[*used] : ms32_regs16[*used], regname );
+
+	if (paranode->sym.mem_type == MT_WORD || paranode->sym.mem_type == MT_SWORD)
+	{
+		if (_stricmp(regname, "ECX") == 0)
+			strcpy(regname, "cx");
+		else if (_stricmp(regname, "EDX") == 0)
+			strcpy(regname, "dx");
+	}
+	else if (paranode->sym.mem_type == MT_BYTE || paranode->sym.mem_type == MT_SBYTE)
+	{
+		if (_stricmp(regname, "ECX") == 0)
+			strcpy(regname, "cl");
+		else if (_stricmp(regname, "EDX") == 0)
+			strcpy(regname, "dl");
+	}
+
     paranode->sym.string_ptr = LclAlloc( strlen( regname ) + 1 );
     strcpy( paranode->sym.string_ptr, regname );
     (*used)++;
@@ -1058,7 +1074,7 @@ static ret_code ParseParams( struct dsym *proc, int i, struct asm_tok tokenarray
                 /* v2.07: MS fastcall 16-bit is PASCAL! */
                 if ( ti.Ofssize == USE16 && ModuleInfo.fctype == FCT_MSC )
                     goto left_to_right;
-                else if ( ti.Ofssize == USE32 && ModuleInfo.fctype == FCT_DELPHI ) 
+                else if ( ti.Ofssize == USE32 && ModuleInfo.fctype == FCT_DELPHI && proc->sym.langtype == LANG_DELPHICALL ) 
                   goto left_to_right;
             default:
                 paranode->nextparam = proc->e.procinfo->paralist;
