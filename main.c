@@ -106,13 +106,16 @@ int main(int argc, char **argv)
 	signal(SIGTERM, genfailure);
 #endif
 
+#if WILDCARDS
 	memset(&finfo, 0, sizeof(finfo));
+#endif
 
-	/* ParseCmdLine() returns NULL if no source file name has been found (anymore) */
+		/* ParseCmdLine() returns NULL if no source file name has been found (anymore) */
 	while (ParseCmdline((const char **)argv, &numArgs)) {
 		numFiles++;
 		write_logo();
 #if WILDCARDS
+
 		if ((fh = _findfirst(Options.names[ASM], &finfo)) == -1) {
 			DebugMsg(("main: _findfirst(%s) failed\n", Options.names[ASM]));
 			EmitErr(CANNOT_OPEN_FILE, Options.names[ASM], ErrnoStr());
