@@ -147,19 +147,27 @@ struct delphicall_conv {
 };
 
 
-static  int ms32_pcheck( struct dsym *, struct dsym *, int * );
-static void ms32_return( struct dsym *, char * );
+	static  int ms32_pcheck( struct dsym *, struct dsym *, int * );
+	static void ms32_return( struct dsym *, char * );
+
 #if OWFC_SUPPORT
-static  int watc_pcheck( struct dsym *, struct dsym *, int * );
-static void watc_return( struct dsym *, char * );
+	static  int watc_pcheck( struct dsym *, struct dsym *, int * );
+	static void watc_return( struct dsym *, char * );
 #endif
+
 #if AMD64_SUPPORT
-static  int ms64_pcheck( struct dsym *, struct dsym *, int * );
-static void ms64_return( struct dsym *, char * );
+	static  int ms64_pcheck( struct dsym *, struct dsym *, int * );
+	static void ms64_return( struct dsym *, char * );
 #endif
+
+#if SYSV_SUPPORT
+	static  int sysv_pcheck( struct dsym *, struct dsym *, int * );
+	static void sysv_return( struct dsym *, char * );
+#endif
+
 #if DELPHI_SUPPORT
-static  int delphi_pcheck( struct dsym *, struct dsym *, int * );
-static void delphi_return( struct dsym *, char * );
+	static  int delphi_pcheck( struct dsym *, struct dsym *, int * );
+	static void delphi_return( struct dsym *, char * );
 #endif
 
 static void check_proc_fpo(struct proc_info *);
@@ -195,7 +203,7 @@ static const struct sysvcall_conv sysvcall_tab[] = {
 	{ watc_pcheck, watc_return },  /* FCT_WATCOMC */
 #endif		
 #if AMD64_SUPPORT		
-	{ ms64_pcheck, ms64_return }   /* FCT_WIN64 */
+	{ sysv_pcheck, sysv_return }   /* FCT_WIN64 / SYSTEMV */
 #endif		
 };
 
@@ -356,7 +364,6 @@ static void watc_return( struct dsym *proc, char *buffer )
  * The 16-bit ABI uses registers AX, DX and BX - additional registers
  * are pushed in PASCAL order (i.o.w.: left to right).
  */
-
 static int ms32_pcheck( struct dsym *proc, struct dsym *paranode, int *used )
 /***************************************************************************/
 {
@@ -476,7 +483,6 @@ static void delphi_return( struct dsym *proc, char *buffer )
  * [esp+16] for param 2,... The parameter names refer to those stack
  * locations, not to the register names.
  */
-
 static int ms64_pcheck( struct dsym *proc, struct dsym *paranode, int *used )
 /***************************************************************************/
 {
@@ -494,6 +500,31 @@ static void ms64_return( struct dsym *proc, char *buffer )
     /* nothing to do, the caller cleans the stack */
     return;
 }
+
+#endif
+
+#if SYSV_SUPPORT
+
+/* the SYSTEMV 64 ABI is strict: the six parameters are passed in registers. 
+*/
+static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used)
+/***************************************************************************/
+{
+	/* since the parameter names refer the stack-backup locations,
+	* there's nothing to do here!
+	* That is, if a parameter's size is > 8, it has to be changed
+	* to a pointer. This is to be done yet.
+	*/
+	return(0);
+}
+
+static void sysv_return(struct dsym *proc, char *buffer)
+/********************************************************/
+{
+	/* nothing to do, the caller cleans the stack */
+	return;
+}
+
 #endif
 
 static void pushitem( void *stk, void *elmt )
