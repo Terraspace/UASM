@@ -372,7 +372,7 @@ static int ms32_pcheck( struct dsym *proc, struct dsym *paranode, int *used )
 
     /* v2.07: 16-bit has 3 register params (AX,DX,BX) */
     //if ( size > CurrWordSize || *used >= 2 )
-    if ( size > CurrWordSize || *used >= ms32_maxreg[ModuleInfo.Ofssize] )
+    if ( size > CurrWordSize || *used >= ms32_maxreg[ModuleInfo.Ofssize] || paranode->sym.mem_type == MT_REAL4 || paranode->sym.mem_type == MT_REAL8 )
         return( 0 );
     paranode->sym.state = SYM_TMACRO;
     /* v2.10: for codeview debug info, store the register index in the symbol */
