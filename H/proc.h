@@ -33,8 +33,9 @@
 #define _PROC_H_
 
 extern struct dsym     *CurrProc;      /* current procedure */
+
 #if AMD64_SUPPORT
-extern struct asym     *sym_ReservedStack;  /* max stack space required by INVOKE */
+	extern struct asym     *sym_ReservedStack;  /* max stack space required by INVOKE */
 #endif
 
 /* v2.11: proc status flags */
@@ -46,9 +47,6 @@ enum proc_status {
 };
 
 /*---------------------------------------------------------------------------*/
-
-//extern void             pushitem( void *, void * );
-//extern void             *popitem( void * );
 
 extern ret_code         ParseProc( struct dsym *, int, struct asm_tok[], bool, enum lang_type );
 extern struct asym      *CreateProc( struct asym *, const char *, enum sym_state );

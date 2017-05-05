@@ -1301,18 +1301,13 @@ vcalldone:
 static int sysv_fcstart(struct dsym const *proc, int numparams, int start, struct asm_tok tokenarray[], int *value)
 /*******************************************************************************************************************/
 {
-	int j;
 	if (proc->e.procinfo->has_vararg) 
 	{
 		for (numparams = 0; tokenarray[start].token != T_FINAL; start++)
 			if (tokenarray[start].token == T_COMMA) 
 				numparams++;
 	}
-
 	DebugMsg1(("sysv_fcstart(%s, numparams=%u) vararg=%u\n", proc->sym.name, numparams, proc->e.procinfo->has_vararg));
-	j = 6;
-
-	/* since SYSTEM V calls doesn't push, it's a better/faster strategy to handle the arguments from left to right. */
 	return(0);
 }
 
@@ -1336,12 +1331,12 @@ static void sysv_fcend(struct dsym const *proc, int numparams, int value)
 //#define GetParmIndexSYSV( x )  ( x )
 
 /*
-* parameter for Win64 FASTCALL.
-* the first 4 parameters are held in registers: rcx, rdx, r8, r9 for non-float arguments,
-* xmm0, xmm1, xmm2, xmm3 for float arguments. If parameter size is > 8, the address of
-* the argument is used instead of the value.
+* parameter for SYSTEMV.
+* the first 6 parameters are held in registers: rdi,rsi,rdx,rcx,r8,r9 for non-float arguments,
+* xmm0->xmm7 for float arguments or vector. If parameter size is > 8, the address of
+* the argument is used instead of the value, unless it's _m128/_m256 then it uses a vector register.
+* structure members are inspected one by one and sloted into available registers where possible else on stack.
 */
-
 static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bool addr, struct expr *opnd, char *paramvalue, uint_8 *regs_used)
 /************************************************************************************************************************************************/
 {
@@ -1364,7 +1359,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 	struct dsym *t = NULL; /* used for vectorcall array member size */
 	bool destroyed = FALSE;
 	struct asym *sym;
-	// __debugbreak();
+
 	DebugMsg1(("sysv_param(%s, index=%u, param.memtype=%Xh, addr=%u) enter\n", proc->sym.name, index, param->sym.mem_type, addr));
 	/* v2.11: default size is 32-bit, not 64-bit */
 	if (param->sym.is_vararg) {
@@ -3209,12 +3204,12 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	* This if() must match the one in proc.c, ParseParams().
 	*/
 
-	if (sym->langtype == LANG_STDCALL ||
-		sym->langtype == LANG_C ||
-		(sym->langtype == LANG_FASTCALL && porder) ||
+	if ( sym->langtype == LANG_STDCALL                ||
+		 sym->langtype == LANG_C                      ||
+		(sym->langtype == LANG_FASTCALL && porder)    ||
 		(sym->langtype == LANG_VECTORCALL  && porder) ||
-		(sym->langtype == LANG_SYSVCALL) ||
-    (sym->langtype == LANG_DELPHICALL && porder))
+		(sym->langtype == LANG_SYSVCALL && porder)    ||
+        (sym->langtype == LANG_DELPHICALL && porder) )
 	{
 
 		/* v2.23 if stack base is ESP */
@@ -3264,12 +3259,14 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	}
 	else
 	{
-    for (numParam = 0; curr && curr->sym.is_vararg == FALSE; curr = curr->nextparam, numParam++) {
-      if (PushInvokeParam(i, tokenarray, proc, curr, numParam, &r0flags) == ERROR) {
-        DebugMsg(("InvokeDir: PushInvokeParam(curr=%u, i=%u, numParam=%u) failed\n", curr, i, numParam));
-        EmitErr(TOO_FEW_ARGUMENTS_TO_INVOKE, sym->name);
-        }
-      }
+		for (numParam = 0; curr && curr->sym.is_vararg == FALSE; curr = curr->nextparam, numParam++) 
+		{
+			if (PushInvokeParam(i, tokenarray, proc, curr, numParam, &r0flags) == ERROR) 
+			{
+				DebugMsg(("InvokeDir: PushInvokeParam(curr=%u, i=%u, numParam=%u) failed\n", curr, i, numParam));
+				EmitErr(TOO_FEW_ARGUMENTS_TO_INVOKE, sym->name);
+			}
+		}
     }
 	
 
