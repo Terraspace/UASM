@@ -1308,7 +1308,7 @@ static int sysv_fcstart(struct dsym const *proc, int numparams, int start, struc
 				numparams++;
 	}
 	DebugMsg1(("sysv_fcstart(%s, numparams=%u) vararg=%u\n", proc->sym.name, numparams, proc->e.procinfo->has_vararg));
-	return(0);
+	return(1);	// Return 0=left_to_right, 1=right_to_left
 }
 
 static void sysv_fcend(struct dsym const *proc, int numparams, int value)
@@ -3033,6 +3033,8 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	struct dsym    *curr;
 	struct expr    opnd;
 	//char           buffer[MAX_LINE_LEN];
+	int            paracount;
+	int			   pcount;
 
 	DebugMsg1(("InvokeDir(%s) enter\n", tokenarray[i].tokpos));
 	i++; /* skip INVOKE directive */
@@ -3207,7 +3209,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	if ( sym->langtype == LANG_STDCALL                ||
 		 sym->langtype == LANG_C                      ||
 		(sym->langtype == LANG_FASTCALL && porder)    ||
-		(sym->langtype == LANG_VECTORCALL  && porder) ||
+		(sym->langtype == LANG_VECTORCALL && porder)  ||
 		(sym->langtype == LANG_SYSVCALL && porder)    ||
         (sym->langtype == LANG_DELPHICALL && porder) )
 	{
@@ -3259,14 +3261,14 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	}
 	else
 	{
-		for (numParam = 0; curr && curr->sym.is_vararg == FALSE; curr = curr->nextparam, numParam++) 
+		for (numParam = 0; curr && curr->sym.is_vararg == FALSE; curr = curr->nextparam, numParam++)
 		{
-			if (PushInvokeParam(i, tokenarray, proc, curr, numParam, &r0flags) == ERROR) 
+			if (PushInvokeParam(i, tokenarray, proc, curr, numParam, &r0flags) == ERROR)
 			{
 				DebugMsg(("InvokeDir: PushInvokeParam(curr=%u, i=%u, numParam=%u) failed\n", curr, i, numParam));
 				EmitErr(TOO_FEW_ARGUMENTS_TO_INVOKE, sym->name);
 			}
-		}
+		}	
     }
 	
 

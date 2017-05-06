@@ -117,10 +117,14 @@ static const enum special_token watc_regs_qw[] = {T_AX, T_BX, T_CX, T_DX };
 #if AMD64_SUPPORT
 
 static const enum special_token ms64_regs[] = {T_RCX, T_RDX, T_R8, T_R9 };
-static const enum special_token sysV64_regs[] = { T_RDI, T_RSI, T_RDX, T_RCX, T_R8, T_R9 };
-static const enum special_token sysV64_regs32[] = { T_EDI, T_ESI, T_EDX, T_ECX, T_R8D, T_R9D };
-static const enum special_token sysV64_regs16[] = { T_DI, T_SI, T_DX, T_CX, T_R8W, T_R9W };
-static const enum special_token sysV64_regs8[]  = { T_DIL, T_SIL, T_DL, T_CL, T_R8B, T_R9B };
+
+static const enum special_token sysV64_regs[]    = { T_RDI, T_RSI, T_RDX, T_RCX, T_R8, T_R9 };
+static const enum special_token sysV64_regs32[]  = { T_EDI, T_ESI, T_EDX, T_ECX, T_R8D, T_R9D };
+static const enum special_token sysV64_regs16[]  = { T_DI, T_SI, T_DX, T_CX, T_R8W, T_R9W };
+static const enum special_token sysV64_regs8[]   = { T_DIL, T_SIL, T_DL, T_CL, T_R8B, T_R9B };
+static const enum special_token sysV64_regsXMM[] = { T_XMM0, T_XMM1, T_XMM2, T_XMM3, T_XMM4, T_XMM5, T_XMM6, T_XMM7 };
+static const enum special_token sysV64_regsYMM[] = { T_YMM0, T_YMM1, T_YMM2, T_YMM3, T_YMM4, T_YMM5, T_YMM6, T_YMM7 };
+static const enum special_token sysV64_regsZMM[] = { T_ZMM0, T_ZMM1, T_ZMM2, T_ZMM3, T_ZMM4, T_ZMM5, T_ZMM6, T_ZMM7 };
 
 /* win64 non-volatile GPRs: T_RBX, T_RBP, T_RSI, T_RDI, T_R12, T_R13, T_R14, T_R15 */
 static const uint_16 win64_nvgpr = 0xF0E8;
@@ -147,7 +151,7 @@ struct vectorcall_conv {
 };
 
 struct sysvcall_conv {
-	int(*paramcheck)(struct dsym *, struct dsym *, int *);
+	int(*paramcheck)(struct dsym *, struct dsym *, int *, int *);
 	void(*handlereturn)(struct dsym *, char *buffer);
 };
 
@@ -171,7 +175,7 @@ struct delphicall_conv {
 #endif
 
 #if SYSV_SUPPORT
-	static  int sysv_pcheck( struct dsym *, struct dsym *, int * );
+	static  int sysv_pcheck( struct dsym *, struct dsym *, int * , int * );
 	static void sysv_return( struct dsym *, char * );
 #endif
 
@@ -518,55 +522,6 @@ static void ms64_return( struct dsym *proc, char *buffer )
 
 #endif
 
-#if SYSV_SUPPORT
-
-/* the SYSTEMV 64 ABI is strict: the six parameters are passed in registers. 
-*/
-static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used)
-/***************************************************************************/
-{
-	char regname[32];
-	int size = SizeFromMemtype(paranode->sym.mem_type, paranode->sym.Ofssize, paranode->sym.type);
-	int stack_size = size;
-
-
-	if (size > CurrWordSize || *used >= 6)
-		return(0);
-	paranode->sym.state = SYM_TMACRO;
-
-	/* v2.29: for codeview debug info, store the register index in the symbol */
-	switch (size)
-	{
-		case 8:
-			GetResWName(sysV64_regs[*used], regname);
-			break;
-		case 4:
-			GetResWName(sysV64_regs32[*used], regname);
-			break;
-		case 2:
-			GetResWName(sysV64_regs16[*used], regname);
-			break;
-		case 1:
-			GetResWName(sysV64_regs8[*used], regname);
-			break;
-	}
-
-	paranode->sym.string_ptr = LclAlloc(strlen(regname) + 1);
-	strcpy(paranode->sym.string_ptr, regname);
-	(*used)++;
-	return(1);
-}
-
-static void sysv_return(struct dsym *proc, char *buffer)
-/********************************************************/
-{
-	if (proc->e.procinfo->parasize > (sysv_maxreg[ModuleInfo.Ofssize] * CurrWordSize))
-		sprintf(buffer + strlen(buffer), "%d%c", proc->e.procinfo->parasize - (sysv_maxreg[ModuleInfo.Ofssize] * CurrWordSize), ModuleInfo.radix != 10 ? 't' : NULLC);
-	return;
-}
-
-#endif
-
 static void pushitem( void *stk, void *elmt )
 /*******************************************/
 {
@@ -830,17 +785,17 @@ static ret_code ParseParams( struct dsym *proc, int i, struct asm_tok tokenarray
     int             cntParam;
 	int             paramCount;
     int             offset = 0;
-    //int             rcnt = 0;
     int             fcint = 0;
+	int             vecint = 0;
     struct qualified_type ti;
     bool            is_vararg;
     bool            init_done;
     struct dsym     *paranode;
     struct dsym     *paracurr;
     int             curr;
-	  int             paracount = 0;
-	  int             tmp = 0;
-	  uint_16         cnt = 0;
+	int             paracount = 0;
+	int             tmp = 0;
+	uint_16         cnt = 0;
 
     /*
      * find "first" parameter ( that is, the first to be pushed in INVOKE ).
@@ -1085,7 +1040,7 @@ static ret_code ParseParams( struct dsym *proc, int i, struct asm_tok tokenarray
             else if ( proc->sym.langtype == LANG_VECTORCALL && vectorcall_tab[ModuleInfo.fctype].paramcheck( proc, paranode, &fcint ) ) 
 			{
             } 
-			else if ( proc->sym.langtype == LANG_SYSVCALL && sysvcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint) ) 
+			else if ( proc->sym.langtype == LANG_SYSVCALL && sysvcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint) ) 
 			{
 			}
 			else if ( proc->sym.langtype == LANG_DELPHICALL && delphicall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint) ) 
@@ -1133,11 +1088,16 @@ static ret_code ParseParams( struct dsym *proc, int i, struct asm_tok tokenarray
                     paracurr = NULL;
                 }
                 break;
-            case LANG_FASTCALL:
+#if AMD64_SUPPORT
+			case LANG_SYSVCALL:
+				paranode->nextparam = proc->e.procinfo->paralist;
+				proc->e.procinfo->paralist = paranode;
+				break;
+#endif
+			case LANG_FASTCALL:
             case LANG_VECTORCALL:
             case LANG_DELPHICALL:
 #if AMD64_SUPPORT
-			case LANG_SYSVCALL:
 				if ( ti.Ofssize == USE64 )
                     goto left_to_right;
 #endif
@@ -3480,6 +3440,95 @@ static void write_win64_default_epilogue_RSP(struct proc_info *info)
 #endif
 
 #if SYSV_SUPPORT
+
+/* the SYSTEMV 64 ABI is strict: the six parameters are passed in registers. */
+static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int *vecused)
+/***************************************************************************/
+{
+	char regname[32];
+	int size = SizeFromMemtype(paranode->sym.mem_type, paranode->sym.Ofssize, paranode->sym.type);
+	int stack_size = size;
+
+	//===============================================================================================================
+	// Handle Vector -> SIMD Parameter Types
+	//===============================================================================================================
+	// Parameter is either XMM, float, double or __M128
+	if ( (paranode->sym.mem_type == MT_REAL4) || (paranode->sym.mem_type == MT_REAL8) || (paranode->sym.mem_type == MT_TYPE && _stricmp(paranode->sym.type->name, "__m128") == 0) || paranode->sym.mem_type == MT_OWORD)
+	{
+		if (*vecused >= 8)
+			return(0);
+		paranode->sym.state = SYM_TMACRO;
+		GetResWName(sysV64_regsXMM[*vecused], regname);
+		paranode->sym.string_ptr = LclAlloc(strlen(regname) + 1);
+		strcpy(paranode->sym.string_ptr, regname);
+		(*vecused)++;
+		return(1);
+	}
+	// Parameter is either YMM or __m256
+	if ((paranode->sym.mem_type == MT_TYPE && _stricmp(paranode->sym.type->name, "__m256") == 0) || paranode->sym.mem_type == MT_YMMWORD)
+	{
+		if (*vecused >= 8)
+			return(0);
+		paranode->sym.state = SYM_TMACRO;
+		GetResWName(sysV64_regsYMM[*vecused], regname);
+		paranode->sym.string_ptr = LclAlloc(strlen(regname) + 1);
+		strcpy(paranode->sym.string_ptr, regname);
+		(*vecused)++;
+		return(1);
+	}
+#if EVEXSUPP
+	// Parameter is either ZMM or __m512
+	if ((paranode->sym.mem_type == MT_TYPE && _stricmp(paranode->sym.type->name, "__m512") == 0) || paranode->sym.mem_type == MT_ZMMWORD)
+	{
+		if (*vecused >= 8)
+			return(0);
+		paranode->sym.state = SYM_TMACRO;
+		GetResWName(sysV64_regsZMM[*vecused], regname);
+		paranode->sym.string_ptr = LclAlloc(strlen(regname) + 1);
+		strcpy(paranode->sym.string_ptr, regname);
+		(*vecused)++;
+		return(1);
+	}
+#endif
+
+	//===============================================================================================================
+	// HANDLE Integer -> GPR Parameter Types
+	//===============================================================================================================
+	if (size > CurrWordSize || *used >= 6)
+		return(0);
+	
+	paranode->sym.state = SYM_TMACRO;
+
+	/* v2.29: for codeview debug info, store the register index in the symbol */
+	switch (size)
+	{
+	case 8:
+		GetResWName(sysV64_regs[*used], regname);
+		break;
+	case 4:
+		GetResWName(sysV64_regs32[*used], regname);
+		break;
+	case 2:
+		GetResWName(sysV64_regs16[*used], regname);
+		break;
+	case 1:
+		GetResWName(sysV64_regs8[*used], regname);
+		break;
+	}
+
+	paranode->sym.string_ptr = LclAlloc(strlen(regname) + 1);
+	strcpy(paranode->sym.string_ptr, regname);
+	(*used)++;
+	return(1);
+}
+
+static void sysv_return(struct dsym *proc, char *buffer)
+/********************************************************/
+{
+	if (proc->e.procinfo->parasize > (sysv_maxreg[ModuleInfo.Ofssize] * CurrWordSize))
+		sprintf(buffer + strlen(buffer), "%d%c", proc->e.procinfo->parasize - (sysv_maxreg[ModuleInfo.Ofssize] * CurrWordSize), ModuleInfo.radix != 10 ? 't' : NULLC);
+	return;
+}
 
 /* OPTION SYSV:1 - save up to 6 register parameters for SYSV SysVcall */
 static void sysv_SaveRegParams_RBP(struct proc_info *info)
