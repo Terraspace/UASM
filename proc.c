@@ -4243,11 +4243,6 @@ static void pop_register( uint_16 *regist )
 
 }
 
-#if AMD64_SUPPORT
-
-
-#endif
-
 /* write default epilogue code
  * if a RET/IRET instruction has been found inside a PROC.
  * epilog code timings
