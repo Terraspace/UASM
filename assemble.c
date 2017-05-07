@@ -425,7 +425,6 @@ void OutputInterleavedBytes(const unsigned char *pbytes, int len, struct fixup *
 }
 
 /* set current offset in a segment (usually CurrSeg) without to write anything */
-
 ret_code SetCurrOffset( struct dsym *seg, uint_32 value, bool relative, bool select_data )
 /****************************************************************************************/
 {
@@ -473,7 +472,6 @@ ret_code SetCurrOffset( struct dsym *seg, uint_32 value, bool relative, bool sel
 }
 
 /* write object module */
-
 static ret_code WriteModule( struct module_info *modinfo )
 /********************************************************/
 {
@@ -755,13 +753,13 @@ static void ModulePassInit( void )
         ModuleInfo.langtype = Options.langtype;
         ModuleInfo.fctype = Options.fctype;
 
-		//#if AMD64_SUPPORT
-		/*if (Options.output_format == OFORMAT_ELF)
+		#if AMD64_SUPPORT
+		if (Options.output_format == OFORMAT_ELF)
 		{
 			ModuleInfo.fctype = FCT_WIN64;
-			Options.fctype = FCT_WIN64;
-		}*/
-		//#endif /* John Hankinson 2016-02-10 force elf64 to use win64 abi */
+			Options.fctype = FCT_WIN64; /* SYSV proc/invoke tables use the same ordinal as FCT_WIN64 so set it now, instead of FCT_MSC */
+		}
+		#endif 
 
 #if AMD64_SUPPORT
         if ( ModuleInfo.sub_format == SFORMAT_64BIT ) 

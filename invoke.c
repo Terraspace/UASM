@@ -123,6 +123,7 @@ struct delphicall_conv {
 #endif
 
 #if SYSV_SUPPORT		
+	static  int sysv_reg(unsigned int);
 	static  int sysv_fcstart( struct dsym const *, int, int, struct asm_tok[], int * );
 	static void sysv_fcend  ( struct dsym const *, int, int );
 	static  int sysv_param  ( struct dsym const *, int, struct dsym *, bool, struct expr *, char *, uint_8 * );
@@ -1330,6 +1331,35 @@ static void sysv_fcend(struct dsym const *proc, int numparams, int value)
 */
 //#define GetParmIndexSYSV( x )  ( x )
 
+static int sysv_reg( unsigned int reg )
+{
+	int i;
+	int base;
+	i = GetRegNo(reg);
+	switch (i)
+	{
+	case 7:
+		base = 0;
+		break;
+	case 6:
+		base = 1;
+		break;
+	case 2:
+		base = 2;
+		break;
+	case 1:
+		base = 3;
+		break;
+	case 8:
+		base = 4;
+		break;
+	case 9:
+		base = 5;
+		break;
+	}
+	return(base);
+}
+
 /*
 * parameter for SYSTEMV.
 * the first 6 parameters are held in registers: rdi,rsi,rdx,rcx,r8,r9 for non-float arguments,
@@ -1340,6 +1370,12 @@ static void sysv_fcend(struct dsym const *proc, int numparams, int value)
 static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bool addr, struct expr *opnd, char *paramvalue, uint_8 *regs_used)
 /************************************************************************************************************************************************/
 {
+	// TODO: 
+	//       vararg
+	//       stack mode
+	//       align 16
+	//       warn about MT_TYPE
+
 	uint_32 size;
 	uint_32 psize;
 	char name[256];
@@ -1352,33 +1388,30 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 	int tCount = 0;
 	int freevecregs = 0;
 	int vecidx = -1;
-	int membersize = 0;     /* used for vectorcall array */
+	int membersize = 0;      /* used for vectorcall array */
 	int memberCount = 0;     /* used for vectorcall array */
 	int base;
 	struct proc_info *info = proc->e.procinfo;
 	struct dsym *t = NULL; /* used for vectorcall array member size */
 	bool destroyed = FALSE;
 	struct asym *sym;
+	struct dsym *curr = NULL;
+	int paracount = 0;
 
 	DebugMsg1(("sysv_param(%s, index=%u, param.memtype=%Xh, addr=%u) enter\n", proc->sym.name, index, param->sym.mem_type, addr));
-	/* v2.11: default size is 32-bit, not 64-bit */
-	if (param->sym.is_vararg) {
-		psize = 0;
 
-		if (addr || opnd->instr == T_OFFSET)
-			psize = 8;
-		else if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
-			psize = SizeFromRegister(opnd->base_reg->tokval);
-		else if (opnd->mem_type != MT_EMPTY)
-			psize = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
-		if (psize < 4)
-			psize = 4;
-
+	/* Get parameter count, as we're working backwards we can use this to find the right index number */
+	/* ******************************************************************************************************************** */
+	curr = info->paralist;
+	paracount = 0;
+	while (curr)
+	{
+		curr = curr->nextparam;
+		paracount++;
 	}
-	else
-		psize = SizeFromMemtype(param->sym.mem_type, USE64, param->sym.type);
 
-	/* check for register overwrites; v2.11: moved out the if( index >= 4 ) block */
+	/* Check for over-written registers */
+	/* ******************************************************************************************************************** */
 	if (opnd->base_reg != NULL) {
 		reg = opnd->base_reg->tokval;
 		if (GetValueSp(reg) & OP_R)
@@ -1452,12 +1485,363 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 			}
 		}
 	}
-
 	if (destroyed)
 	{
 		EmitErr(REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
 		*regs_used = 0;
 	}
+
+	/* If we have a string_ptr in param->sym then we know that ParseParams has allocated a 
+	   register for this argument and string_ptr holds the register name */
+	/* ******************************************************************************************************************** */
+	if ( param->sym.string_ptr )
+	{
+		/* REAL4(float) Type Parameter */
+		/* ******************************************************************************************************************** */
+		if (param->sym.mem_type == MT_REAL4)
+		{
+			if (opnd->kind == EXPR_FLOAT)
+			{
+				*regs_used |= R0_USED;
+				AddLineQueueX("mov %r, %s", T_EAX, paramvalue);
+				AddLineQueueX("%s %s, %r", MOVE_SIMD_DWORD, param->sym.string_ptr, T_EAX);
+				return(1);
+			}
+			if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+			{
+				reg = opnd->base_reg->tokval;
+				if (GetValueSp(reg) & OP_XMM)
+				{
+					if ( _stricmp(param->sym.string_ptr, paramvalue) == 0 )
+						DebugMsg(("sysv_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
+					else
+						AddLineQueueX("%s %s, %s", MOVE_ALIGNED_FLOAT, param->sym.string_ptr, paramvalue);
+					return(1);
+				}
+				else
+				{
+					EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, paracount + 1 - index );
+					return(1);
+				}
+			}
+			if (opnd->kind == EXPR_REG && opnd->indirect == TRUE) 
+			{
+				if (_stricmp(param->sym.string_ptr, paramvalue) == 0)
+					DebugMsg(("sysv_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
+				else
+					AddLineQueueX("%s %s, %s", MOVE_SINGLE, param->sym.string_ptr, paramvalue);
+				return(1);
+			}
+			if (opnd->kind == EXPR_ADDR)
+			{
+				AddLineQueueX("%s %s,dword ptr %s", MOVE_SINGLE, param->sym.string_ptr, paramvalue);
+				return(1);
+			}
+		}
+
+		/* REAL8(double) Type Parameter */
+		/* ******************************************************************************************************************** */
+		if (param->sym.mem_type == MT_REAL8)
+		{
+			if (opnd->kind == EXPR_FLOAT)
+			{
+				*regs_used |= R0_USED;
+				AddLineQueueX("mov %r, %r ptr %s", T_RAX, T_REAL8, paramvalue);
+				AddLineQueueX("%s %s, %r", MOVE_SIMD_QWORD, param->sym.string_ptr, T_RAX);
+				return(1);
+			}
+			if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+			{
+				reg = opnd->base_reg->tokval;
+				if (GetValueSp(reg) & OP_XMM)
+				{
+					if (_stricmp(param->sym.string_ptr, paramvalue) == 0)
+						DebugMsg(("sysv_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
+					else
+						AddLineQueueX("%s %s, %s", MOVE_ALIGNED_FLOAT, param->sym.string_ptr, paramvalue);
+					return(1);
+				}
+				else
+				{
+					EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, paracount + 1 - index );
+					return(1);
+				}
+			}
+			if (opnd->kind == EXPR_REG && opnd->indirect == TRUE)
+			{
+				if (_stricmp(param->sym.string_ptr, paramvalue) == 0)
+					DebugMsg(("sysv_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
+				else
+					AddLineQueueX("%s %s, %s", MOVE_DOUBLE, param->sym.string_ptr, paramvalue);
+				return(1);
+			}
+			if (opnd->kind == EXPR_ADDR)
+			{
+				AddLineQueueX("%s %s,dword ptr %s", MOVE_DOUBLE, param->sym.string_ptr, paramvalue);
+				return(1);
+			}
+		}
+
+		/* XMM or __M128 Type Parameter */
+		/* ******************************************************************************************************************** */
+		if ( param->sym.mem_type == MT_OWORD || (param->sym.mem_type == MT_TYPE && _stricmp(param->sym.type->name, "__m128") == 0) )
+		{
+			
+			psize = 0;
+			if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+				psize = SizeFromRegister(opnd->base_reg->tokval);
+			else if (opnd->mem_type != MT_EMPTY)
+				psize = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
+
+			/* Direct register to register vector */
+			if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+			{
+				reg = opnd->base_reg->tokval;
+				if (GetValueSp(reg) & OP_XMM)
+				{
+					if (_stricmp(param->sym.string_ptr, paramvalue) == 0)
+						DebugMsg(("sysv_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
+					else
+						AddLineQueueX("%s %s, %s", MOVE_ALIGNED_INT, param->sym.string_ptr, paramvalue);
+				}
+				else
+				{
+					EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, paracount + 1 - index);
+					return(1);
+				}
+				return(1);
+			}
+			/* Vector register load from indirect register ie: [rax] etc */
+			if (opnd->kind == EXPR_REG && opnd->indirect == TRUE)
+			{
+				AddLineQueueX("%s %s, xmmword ptr %s", MOVE_ALIGNED_INT, param->sym.string_ptr, paramvalue);
+				return(1);
+			}
+			/* Operand is a memory address (IE: symbol name) or memory address expression like [rbp+rax] etc */
+			if (opnd->kind == EXPR_ADDR && !addr)
+			{
+				if (psize == param->sym.total_size || opnd->mem_type == MT_EMPTY)
+					AddLineQueueX("%s %s, xmmword ptr %s", MOVE_ALIGNED_INT, param->sym.string_ptr, paramvalue);
+				else
+					EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, paracount + 1 - index);
+				return(1);
+			}
+			/* Invalid argument type */
+			EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, paracount + 1 - index);
+			return(1);
+		}
+
+		/* YMM or __M256 Type Parameter */
+		/* ******************************************************************************************************************** */
+		if ( param->sym.mem_type == MT_YMMWORD || (param->sym.mem_type == MT_TYPE && _stricmp(param->sym.type->name, "__m256") == 0) )
+		{
+			psize = 0;
+			if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+				psize = SizeFromRegister(opnd->base_reg->tokval);
+			else if (opnd->mem_type != MT_EMPTY)
+				psize = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
+
+			/* Direct register to register vector */
+			if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+			{
+				reg = opnd->base_reg->tokval;
+				if (GetValueSp(reg) & OP_YMM)
+				{
+					if (_stricmp(param->sym.string_ptr, paramvalue) == 0)
+						DebugMsg(("sysv_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
+					else
+						AddLineQueueX("%s %s, %s", MOVE_ALIGNED_INT, param->sym.string_ptr, paramvalue);
+				}
+				else
+				{
+					EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, paracount + 1 - index);
+					return(1);
+				}
+				return(1);
+			}
+			/* Vector register load from indirect register ie: [rax] etc */
+			if (opnd->kind == EXPR_REG && opnd->indirect == TRUE)
+			{
+				AddLineQueueX("%s %s, ymmword ptr %s", MOVE_UNALIGNED_INT, param->sym.string_ptr, paramvalue);
+				return(1);
+			}
+			/* Operand is a memory address (IE: symbol name) or memory address expression like [rbp+rax] etc */
+			if (opnd->kind == EXPR_ADDR && !addr)
+			{
+				if (psize == param->sym.total_size || opnd->mem_type == MT_EMPTY)
+					AddLineQueueX("%s %s, ymmword ptr %s", MOVE_UNALIGNED_INT, param->sym.string_ptr, paramvalue);
+				else
+					EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, paracount + 1 - index);
+				return(1);
+			}
+			/* Invalid argument type */
+			EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, paracount + 1 - index);
+			return(1);
+		}
+
+		/* ZMM or __M512 Type Parameter */
+		/* ******************************************************************************************************************** */
+		#if EVEXSUPP
+		if ( param->sym.mem_type == MT_ZMMWORD || (param->sym.mem_type == MT_TYPE && _stricmp(param->sym.type->name, "__m512") == 0) )
+		{
+			psize = 0;
+			if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+				psize = SizeFromRegister(opnd->base_reg->tokval);
+			else if (opnd->mem_type != MT_EMPTY)
+				psize = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
+
+			/* Direct register to register vector */
+			if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+			{
+				reg = opnd->base_reg->tokval;
+				if (GetValueSp(reg) & OP_ZMM)
+				{
+					if (_stricmp(param->sym.string_ptr, paramvalue) == 0)
+						DebugMsg(("sysv_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
+					else
+						AddLineQueueX("%s %s, %s", MOVE_ALIGNED_INT, param->sym.string_ptr, paramvalue);
+				}
+				else
+				{
+					EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, paracount + 1 - index);
+					return(1);
+				}
+				return(1);
+			}
+			/* Vector register load from indirect register ie: [rax] etc */
+			if (opnd->kind == EXPR_REG && opnd->indirect == TRUE)
+			{
+				AddLineQueueX("%s %s, zmmword ptr %s", MOVE_UNALIGNED_INT, param->sym.string_ptr, paramvalue);
+				return(1);
+			}
+			/* Operand is a memory address (IE: symbol name) or memory address expression like [rbp+rax] etc */
+			if (opnd->kind == EXPR_ADDR && !addr)
+			{
+				if (psize == param->sym.total_size || opnd->mem_type == MT_EMPTY)
+					AddLineQueueX("%s %s, zmmword ptr %s", MOVE_UNALIGNED_INT, param->sym.string_ptr, paramvalue);
+				else
+					EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, paracount + 1 - index);
+				return(1);
+			}
+			/* Invalid argument type */
+			EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, paracount + 1 - index);
+			return(1);
+		}
+		#endif
+
+		/* Parameter is (BYTE,WORD,DWORD,QWORD,PTR) signed or unsigned */
+		/* ******************************************************************************************************************** */
+		if (param->sym.mem_type == MT_BYTE || param->sym.mem_type == MT_WORD || param->sym.mem_type == MT_DWORD || param->sym.mem_type == MT_QWORD ||
+			param->sym.mem_type == MT_SBYTE || param->sym.mem_type == MT_SWORD || param->sym.mem_type == MT_SDWORD || param->sym.mem_type == MT_SQWORD || param->sym.mem_type == MT_PTR)
+		{
+
+			/* If the parameter is PTR type, ensure the operand size == 8 */
+			psize = 0;
+			if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+				psize = SizeFromRegister(opnd->base_reg->tokval);
+			else if (opnd->mem_type != MT_EMPTY)
+				psize = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
+			if (addr)
+				psize = 8;
+			if (param->sym.mem_type == MT_PTR && psize != 8)
+			{
+				EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, paracount + 1 - index );
+				return(1);
+			}
+
+			/* Operand is CONST/immediate value */
+			if (opnd->kind == EXPR_CONST)
+			{
+				if ((!strcasecmp(paramvalue, "0") || (!strcasecmp(paramvalue, "NULL")) || (!strcasecmp(paramvalue, "FALSE"))))
+					AddLineQueueX("xor %s, %s", param->sym.string_ptr, param->sym.string_ptr);
+				else
+					AddLineQueueX("mov %s, %s", param->sym.string_ptr, paramvalue);
+				
+				/* Mark register as written */
+				reg = sysv_reg(param->sym.tokval);
+				*regs_used |= (1 << (reg + SYSVR_START));
+
+				return(1);
+			}
+			/* Operand is register direct */
+			if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+			{
+				reg = opnd->base_reg->tokval;
+				if (GetValueSp(reg) & OP_R)
+				{
+					if (_stricmp(param->sym.string_ptr, paramvalue) == 0)
+						DebugMsg(("sysv_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
+					else
+						AddLineQueueX("mov %s, %s", param->sym.string_ptr, paramvalue);
+
+					/* Mark register as written */
+					reg = sysv_reg(param->sym.tokval);
+					*regs_used |= (1 << (reg + SYSVR_START));
+
+					return(1);
+				}
+				else
+				{
+					EmitErr( INVOKE_ARGUMENT_TYPE_MISMATCH, paracount + 1 - index );
+					return(1);
+				}
+			}
+			/* Operand is register indirect */
+			if (opnd->kind == EXPR_REG && opnd->indirect == TRUE)
+			{ 
+				AddLineQueueX("mov %s, %s", param->sym.string_ptr, paramvalue);
+
+				/* Mark register as written */
+				reg = sysv_reg(param->sym.tokval);
+				*regs_used |= (1 << (reg + SYSVR_START));
+
+				return(1);
+			}
+			/* Operand is a memory address (IE: symbol name) or memory address expression like [rbp+rax] etc */
+			if (opnd->kind == EXPR_ADDR && !addr)
+			{
+				if (psize == param->sym.total_size || opnd->mem_type == MT_EMPTY)
+					AddLineQueueX("mov %s, %s", param->sym.string_ptr, paramvalue);
+				else
+					EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, paracount + 1 - index );
+
+				/* Mark register as written */
+				reg = sysv_reg(param->sym.tokval);
+				*regs_used |= (1 << (reg + SYSVR_START));
+
+				return(1);
+			}
+			/* Operand's Address is to be taken */
+			if (addr || psize > 8)
+			{
+				if (psize >= 4)
+					AddLineQueueX("lea %s, %s", param->sym.string_ptr, paramvalue);
+				else
+					EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, paracount + 1 - index );
+
+				/* Mark register as written */
+				reg = sysv_reg(param->sym.tokval);
+				*regs_used |= (1 << (reg + SYSVR_START));
+
+				return(1);
+			}
+		}
+		
+		/* Unsupported argument type */
+		EmitErr(INVOKE_ARGUMENT_NOT_SUPPORTED, paracount + 1 - index);
+
+	}
+	/* If we have no string_ptr(NULL), then the we know the argument must go on the stack. */
+	else
+	{
+
+	}
+
+	return(1);
+
+
+
+
 
 	if (index >= 6)
 	{
@@ -1572,197 +1956,6 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 		}
 
 	}
-	else if (param->sym.mem_type == MT_REAL4 ||
-		param->sym.mem_type == MT_REAL8) {
-		/* v2.04: check if argument is the correct XMM register already */
-		if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
-		{
-			if (GetValueSp(reg) & OP_XMM)
-			{
-				if (reg == T_XMM0 + index)
-					DebugMsg(("sysv_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
-				else
-				{
-					if (param->sym.mem_type == MT_REAL4)
-						AddLineQueueX(" %s %r, %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
-					else
-						AddLineQueueX(" %s %r, %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
-				}
-				return(1);
-			}
-		}
-		else if (opnd->kind == EXPR_REG && opnd->indirect == TRUE) {
-			if (reg == T_XMM0 + index)
-				DebugMsg(("sysv_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
-			else
-			{
-				if (param->sym.mem_type == MT_REAL4)
-					AddLineQueueX(" %s %r, %s", MOVE_SIMD_DWORD, T_XMM0 + index, paramvalue);
-				else
-					AddLineQueueX(" %s %r, %s", MOVE_SIMD_QWORD, T_XMM0 + index, paramvalue);
-			}
-			return(1);
-		}
-
-		if (opnd->kind == EXPR_FLOAT)
-		{
-			*regs_used |= R0_USED;
-			if (param->sym.mem_type == MT_REAL4) {
-
-				AddLineQueueX("mov %r, %s", T_EAX, paramvalue);
-				AddLineQueueX("%s %r, %r", MOVE_SIMD_DWORD, T_XMM0 + index, T_EAX);
-				return(1);
-			}
-			else {
-				AddLineQueueX("mov %r, %r ptr %s", T_RAX, T_REAL8, paramvalue);
-				AddLineQueueX("%s %r, %r", MOVE_SIMD_QWORD, T_XMM0 + index, T_RAX);
-				return(1);
-			}
-		}
-		if (opnd->kind == EXPR_ADDR)
-		{
-			if (param->sym.mem_type == MT_REAL8)
-				AddLineQueueX("%s %r,qword ptr %s", MOVE_SIMD_QWORD, T_XMM0 + index, paramvalue);
-			else if (param->sym.mem_type == MT_REAL4)
-				AddLineQueueX("%s %r,dword ptr %s", MOVE_SIMD_DWORD, T_XMM0 + index, paramvalue);
-			return(1);
-		}
-	}
-
-	if (addr || psize > 8) { /* psize > 8 should happen only for vectorcall which doesn't apply to sysv */
-		if (psize >= 4)
-		{
-			AddLineQueueX(" lea %r, %s", sysV64_regs[index + 2 * 6 + (psize > 6 ? 6 : 0)], paramvalue);
-		}
-		else
-			EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
-		return(1);
-	}
-
-	/* register argument? */
-	if (opnd->kind == EXPR_REG && opnd->indirect == FALSE) {
-		reg = opnd->base_reg->tokval;
-		size = SizeFromRegister(reg);
-	}
-	else if (opnd->kind == EXPR_CONST || opnd->kind == EXPR_FLOAT) {
-		size = psize;
-	}
-	else if (opnd->mem_type != MT_EMPTY) {
-		size = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
-	}
-	else if (opnd->kind == EXPR_ADDR && opnd->sym != NULL && opnd->sym->state == SYM_UNDEFINED) {
-		DebugMsg1(("sysv_param(%s, param=%u): forward ref=%s, assumed size=%u\n", proc->sym.name, index, opnd->sym->name, psize));
-		size = psize;
-	}
-	else if (opnd->kind == EXPR_ADDR && opnd->sym == NULL) {
-		size = psize;
-	}
-	else if (opnd->kind == EXPR_REG && opnd->indirect == TRUE)
-	{
-		size = psize;
-	}
-	else
-		size = (opnd->instr == T_OFFSET ? 8 : 4);
-
-	/* v2.11: allow argument extension, so long as the target isn't a pointer */
-	//if ( size != psize && param->sym.is_vararg == FALSE ) {
-	if (size > psize || (size < psize && param->sym.mem_type == MT_PTR))
-	{
-		DebugMsg(("sysv_param(%s, param=%u): type error size.p/a=%u/%u flags=%X\n", proc->sym.name, index, psize, size, *regs_used));
-		EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
-	}
-
-	/* v2.11: use parameter size to allow argument extension */
-	j = 6;
-	switch (psize)
-	{
-	case 1: base = 0 * j; break;
-	case 2: base = 1 * j; break;
-	case 4: base = 2 * j; break;
-	default:base = 3 * j; break;
-	}
-
-	/* optimization if the register holds the value already */
-	if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
-	{
-		if (GetValueSp(reg) & OP_R)
-		{
-			if (sysV64_regs[index + base] == reg)
-			{
-				DebugMsg(("sysv_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
-				return(1);
-			}
-			i = GetRegNo(reg);
-			if (REGPAR_SYSV & (1 << i)) {
-				switch (i)
-				{
-				case 7:
-					i = 0;
-					break;
-				case 6:
-					i = 1;
-					break;
-				case 2:
-					i = 2;
-					break;
-				case 1:
-					i = 3;
-					break;
-				case 8:
-					i = 4;
-					break;
-				case 9:
-					i = 5;
-					break;
-				}
-				if (*regs_used & (1 << (i + SYSVR_START)))
-					EmitErr(REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
-			}
-		}
-	}
-
-	/* v2.11: allow argument extension */
-	if (size < psize)
-	{
-		if (size == 4)
-		{
-			if (IS_SIGNED(opnd->mem_type))
-				AddLineQueueX(" movsxd %r, %s", sysV64_regs[index + base], paramvalue);
-			else
-				AddLineQueueX(" mov %r, %s", sysV64_regs[index + 2 * 4], paramvalue);
-		}
-		else
-			AddLineQueueX(" mov%sx %r, %s", IS_SIGNED(opnd->mem_type) ? "s" : "z", sysV64_regs[index + base], paramvalue);
-	}
-	else
-	{
-		*regs_used |= (1 << (index + SYSVR_START));
-		DebugMsg1(("sysV64_param(%s, param=%u): size=%u flags=%X\n", proc->sym.name, index, size, *regs_used));
-
-		/* v2.12 added by habran : if parametar  is zero use 'xor reg,reg' instead of 'mov reg,0' */
-		if ((!strcasecmp(paramvalue, "0") || (!strcasecmp(paramvalue, "NULL")) || (!strcasecmp(paramvalue, "FALSE"))))
-		{
-			if (sysV64_regs[index + base] > T_R9D) index -= 6;
-			AddLineQueueX(" xor %r, %r", sysV64_regs[index + base], sysV64_regs[index + base]);
-			return(1);
-		}
-		else
-		{
-			if (index > 5)
-			{
-				switch (psize) {
-				case 1:   i = T_BYTE; break;
-				case 2:   i = T_WORD; break;
-				case 4:   i = T_DWORD; break;
-				default:  i = T_QWORD; break;
-				}
-				AddLineQueueX(" push %s", paramvalue);
-			}
-			else
-				AddLineQueueX(" mov %r, %s", sysV64_regs[index + base], paramvalue);
-		}
-	}
-	//}
 
 	return(1);
 }

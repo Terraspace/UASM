@@ -124,7 +124,9 @@ static const enum special_token sysV64_regs16[]  = { T_DI, T_SI, T_DX, T_CX, T_R
 static const enum special_token sysV64_regs8[]   = { T_DIL, T_SIL, T_DL, T_CL, T_R8B, T_R9B };
 static const enum special_token sysV64_regsXMM[] = { T_XMM0, T_XMM1, T_XMM2, T_XMM3, T_XMM4, T_XMM5, T_XMM6, T_XMM7 };
 static const enum special_token sysV64_regsYMM[] = { T_YMM0, T_YMM1, T_YMM2, T_YMM3, T_YMM4, T_YMM5, T_YMM6, T_YMM7 };
+#if EVEXSUPP
 static const enum special_token sysV64_regsZMM[] = { T_ZMM0, T_ZMM1, T_ZMM2, T_ZMM3, T_ZMM4, T_ZMM5, T_ZMM6, T_ZMM7 };
+#endif
 
 /* win64 non-volatile GPRs: T_RBX, T_RBP, T_RSI, T_RDI, T_R12, T_R13, T_R14, T_R15 */
 static const uint_16 win64_nvgpr = 0xF0E8;
@@ -3448,6 +3450,8 @@ static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int 
 	char regname[32];
 	int size = SizeFromMemtype(paranode->sym.mem_type, paranode->sym.Ofssize, paranode->sym.type);
 	int stack_size = size;
+	
+	paranode->sym.string_ptr = NULL; // Ensure it's null first.
 
 	//===============================================================================================================
 	// Handle Vector -> SIMD Parameter Types
@@ -3456,9 +3460,14 @@ static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int 
 	if ( (paranode->sym.mem_type == MT_REAL4) || (paranode->sym.mem_type == MT_REAL8) || (paranode->sym.mem_type == MT_TYPE && _stricmp(paranode->sym.type->name, "__m128") == 0) || paranode->sym.mem_type == MT_OWORD)
 	{
 		if (*vecused >= 8)
+		{
+			paranode->sym.string_ptr = NULL;
 			return(0);
+		}
 		paranode->sym.state = SYM_TMACRO;
 		GetResWName(sysV64_regsXMM[*vecused], regname);
+		paranode->sym.tokval = sysV64_regsXMM[*vecused]; /* Store register tokval so invoke can use it */
+		paranode->sym.total_size = 0;
 		paranode->sym.string_ptr = LclAlloc(strlen(regname) + 1);
 		strcpy(paranode->sym.string_ptr, regname);
 		(*vecused)++;
@@ -3468,9 +3477,14 @@ static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int 
 	if ((paranode->sym.mem_type == MT_TYPE && _stricmp(paranode->sym.type->name, "__m256") == 0) || paranode->sym.mem_type == MT_YMMWORD)
 	{
 		if (*vecused >= 8)
+		{
+			paranode->sym.string_ptr = NULL;
 			return(0);
+		}
 		paranode->sym.state = SYM_TMACRO;
 		GetResWName(sysV64_regsYMM[*vecused], regname);
+		paranode->sym.tokval = sysV64_regsYMM[*vecused]; /* Store register tokval so invoke can use it */
+		paranode->sym.total_size = 0;
 		paranode->sym.string_ptr = LclAlloc(strlen(regname) + 1);
 		strcpy(paranode->sym.string_ptr, regname);
 		(*vecused)++;
@@ -3481,9 +3495,14 @@ static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int 
 	if ((paranode->sym.mem_type == MT_TYPE && _stricmp(paranode->sym.type->name, "__m512") == 0) || paranode->sym.mem_type == MT_ZMMWORD)
 	{
 		if (*vecused >= 8)
+		{
+			paranode->sym.string_ptr = NULL;
 			return(0);
+		}
 		paranode->sym.state = SYM_TMACRO;
 		GetResWName(sysV64_regsZMM[*vecused], regname);
+		paranode->sym.tokval = sysV64_regsZMM[*vecused]; /* Store register tokval so invoke can use it */
+		paranode->sym.total_size = 0;
 		paranode->sym.string_ptr = LclAlloc(strlen(regname) + 1);
 		strcpy(paranode->sym.string_ptr, regname);
 		(*vecused)++;
@@ -3495,8 +3514,10 @@ static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int 
 	// HANDLE Integer -> GPR Parameter Types
 	//===============================================================================================================
 	if (size > CurrWordSize || *used >= 6)
+	{
+		paranode->sym.string_ptr = NULL;
 		return(0);
-	
+	}
 	paranode->sym.state = SYM_TMACRO;
 
 	/* v2.29: for codeview debug info, store the register index in the symbol */
@@ -3504,15 +3525,23 @@ static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int 
 	{
 	case 8:
 		GetResWName(sysV64_regs[*used], regname);
+		paranode->sym.total_size = 8;
+		paranode->sym.tokval = sysV64_regs[*used];   /* Store register tokval so invoke can use it */
 		break;
 	case 4:
 		GetResWName(sysV64_regs32[*used], regname);
+		paranode->sym.total_size = 4;
+		paranode->sym.tokval = sysV64_regs32[*used]; /* Store register tokval so invoke can use it */
 		break;
 	case 2:
 		GetResWName(sysV64_regs16[*used], regname);
+		paranode->sym.total_size = 2;
+		paranode->sym.tokval = sysV64_regs16[*used]; /* Store register tokval so invoke can use it */
 		break;
 	case 1:
 		GetResWName(sysV64_regs8[*used], regname);
+		paranode->sym.total_size = 1;
+		paranode->sym.tokval = sysV64_regs8[*used];  /* Store register tokval so invoke can use it */
 		break;
 	}
 
