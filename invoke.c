@@ -1374,7 +1374,6 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 	//       vararg
 	//       stack mode
 	//       align 16
-	//       warn about MT_TYPE
 
 	uint_32 size;
 	uint_32 psize;

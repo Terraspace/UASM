@@ -3510,6 +3510,13 @@ static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int 
 	}
 #endif
 
+	if (paranode->sym.mem_type == MT_TYPE)
+	{
+		/* Unsupported argument type */
+		EmitErr(INVOKE_ARGUMENT_NOT_SUPPORTED);
+		return(0);
+	}
+
 	//===============================================================================================================
 	// HANDLE Integer -> GPR Parameter Types
 	//===============================================================================================================

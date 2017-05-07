@@ -172,7 +172,7 @@ pick( UNMATCHED_BLOCK_NESTING,       "Unmatched block nesting: %s" )
 pick( SYMBOL_REDEFINITION,           "Symbol redefinition: %s" )
 pick( TEXT_ITEM_REQUIRED,            "Text item required" )
 pick( INVOKE_ARGUMENT_TYPE_MISMATCH, "INVOKE argument type mismatch: argument %u" )
-pick( INVOKE_ARGUMENT_NOT_SUPPORTED, "INVOKE argument type not supported: argument %u")
+pick( INVOKE_ARGUMENT_NOT_SUPPORTED, "SYSTEMV parameter TYPE not supported")
 pick( TOO_FEW_ARGUMENTS_TO_INVOKE,   "Too few arguments to INVOKE: %s" )
 pick( VARARG_PARAMETER_MUST_BE_LAST, "VARARG parameter must be last" )
 #if MACROLABEL
