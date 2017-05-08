@@ -1335,28 +1335,42 @@ static int sysv_reg( unsigned int reg )
 {
 	int i;
 	int base;
-	i = GetRegNo(reg);
-	switch (i)
+
+	if (GetValueSp(reg) & OP_XMM || GetValueSp(reg) & OP_YMM 
+#if EVEXSUPP
+		|| GetValueSp(reg) & OP_ZMM
+#endif
+		)
 	{
-	case 7:
-		base = 0;
-		break;
-	case 6:
-		base = 1;
-		break;
-	case 2:
-		base = 2;
-		break;
-	case 1:
-		base = 3;
-		break;
-	case 8:
-		base = 4;
-		break;
-	case 9:
-		base = 5;
-		break;
+		i = GetRegNo(reg);
+		base = i;
 	}
+	else
+	{
+		i = GetRegNo(reg);
+		switch (i)
+		{
+		case 7:
+			base = 0;
+			break;
+		case 6:
+			base = 1;
+			break;
+		case 2:
+			base = 2;
+			break;
+		case 1:
+			base = 3;
+			break;
+		case 8:
+			base = 4;
+			break;
+		case 9:
+			base = 5;
+			break;
+		}
+	}
+
 	return(base);
 }
 
@@ -1385,13 +1399,8 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 	int i;
 	int j = 0;
 	int tCount = 0;
-	int freevecregs = 0;
-	int vecidx = -1;
-	int membersize = 0;      /* used for vectorcall array */
-	int memberCount = 0;     /* used for vectorcall array */
 	int base;
 	struct proc_info *info = proc->e.procinfo;
-	struct dsym *t = NULL; /* used for vectorcall array member size */
 	bool destroyed = FALSE;
 	struct asym *sym;
 	struct dsym *curr = NULL;
@@ -1409,37 +1418,28 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 		paracount++;
 	}
 
-	/* Check for over-written registers */
+	/* Check for over-written vector registers for non vararg parameters */
 	/* ******************************************************************************************************************** */
-	if (opnd->base_reg != NULL) {
+	if (opnd->base_reg != NULL && !param->sym.is_vararg) 
+	{
+		reg = opnd->base_reg->tokval;
+		if (GetValueSp(reg) & OP_XMM || GetValueSp(reg) & OP_YMM || GetValueSp(reg) & OP_ZMM)
+		{
+			i = sysv_reg(reg);
+			if (info->vecused & (1 << i))
+				destroyed = TRUE;
+		}
+	}
+
+	/* Check for over-written GPR registers */
+	/* ******************************************************************************************************************** */
+	if (opnd->base_reg != NULL && !param->sym.is_vararg) {
 		reg = opnd->base_reg->tokval;
 		if (GetValueSp(reg) & OP_R)
 		{
-			i = GetRegNo(reg);
 			if (REGPAR_SYSV & (1 << i))
 			{
-				switch (i)
-				{
-				case 7:
-					base = 0;
-					break;
-				case 6:
-					base = 1;
-					break;
-				case 2:
-					base = 2;
-					break;
-				case 1:
-					base = 3;
-					break;
-				case 8:
-					base = 4;
-					break;
-				case 9:
-					base = 5;
-					break;
-				}
-
+				base = sysv_reg(reg);
 				if (*regs_used & (1 << (base + SYSVR_START)))
 					destroyed = TRUE;
 			}
@@ -1448,34 +1448,13 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 			}
 		}
 	}
-	if (opnd->idx_reg != NULL) {
+	if (opnd->idx_reg != NULL && !param->sym.is_vararg) {
 		reg2 = opnd->idx_reg->tokval;
 		if (GetValueSp(reg2) & OP_R) {
 			i = GetRegNo(reg2);
 			if (REGPAR_SYSV & (1 << i))
 			{
-				switch (i)
-				{
-				case 7:
-					base = 0;
-					break;
-				case 6:
-					base = 1;
-					break;
-				case 2:
-					base = 2;
-					break;
-				case 1:
-					base = 3;
-					break;
-				case 8:
-					base = 4;
-					break;
-				case 9:
-					base = 5;
-					break;
-				}
-
+				base = sysv_reg(reg);
 				if (*regs_used & (1 << (base + SYSVR_START)))
 					destroyed = TRUE;
 			}
@@ -1490,6 +1469,13 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 		*regs_used = 0;
 	}
 
+	/* Handle situation when parsing multiple operands through a single VARARG parameter */
+	/* ******************************************************************************************************************** */
+	if (param->sym.is_vararg)
+	{
+		return(1);
+	}
+
 	/* If we have a string_ptr in param->sym then we know that ParseParams has allocated a 
 	   register for this argument and string_ptr holds the register name */
 	/* ******************************************************************************************************************** */
@@ -1499,6 +1485,10 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 		/* ******************************************************************************************************************** */
 		if (param->sym.mem_type == MT_REAL4)
 		{
+			/* Mark destination vector register as used */
+			reg = param->sym.tokval;
+			info->vecused |= (1 << sysv_reg(reg));
+
 			if (opnd->kind == EXPR_FLOAT)
 			{
 				*regs_used |= R0_USED;
@@ -1542,6 +1532,11 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 		/* ******************************************************************************************************************** */
 		if (param->sym.mem_type == MT_REAL8)
 		{
+
+			/* Mark destination vector register as used */
+			reg = param->sym.tokval;
+			info->vecused |= (1 << sysv_reg(reg));
+
 			if (opnd->kind == EXPR_FLOAT)
 			{
 				*regs_used |= R0_USED;
@@ -1585,7 +1580,11 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 		/* ******************************************************************************************************************** */
 		if ( param->sym.mem_type == MT_OWORD || (param->sym.mem_type == MT_TYPE && _stricmp(param->sym.type->name, "__m128") == 0) )
 		{
-			
+
+			/* Mark destination vector register as used */
+			reg = param->sym.tokval;
+			info->vecused |= (1 << sysv_reg(reg));
+
 			psize = 0;
 			if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
 				psize = SizeFromRegister(opnd->base_reg->tokval);
@@ -1634,6 +1633,11 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 		/* ******************************************************************************************************************** */
 		if ( param->sym.mem_type == MT_YMMWORD || (param->sym.mem_type == MT_TYPE && _stricmp(param->sym.type->name, "__m256") == 0) )
 		{
+
+			/* Mark destination vector register as used */
+			reg = param->sym.tokval;
+			info->vecused |= (1 << sysv_reg(reg));
+
 			psize = 0;
 			if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
 				psize = SizeFromRegister(opnd->base_reg->tokval);
@@ -1683,6 +1687,11 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 		#if EVEXSUPP
 		if ( param->sym.mem_type == MT_ZMMWORD || (param->sym.mem_type == MT_TYPE && _stricmp(param->sym.type->name, "__m512") == 0) )
 		{
+
+			/* Mark destination vector register as used */
+			reg = param->sym.tokval;
+			info->vecused |= (1 << sysv_reg(reg));
+
 			psize = 0;
 			if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
 				psize = SizeFromRegister(opnd->base_reg->tokval);
@@ -3327,6 +3336,11 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	}
 	proc = (struct dsym *)sym;
 	info = proc->e.procinfo;
+
+	// For SYSV calls, we use vecused to track used xmm registers for overwrite so reset it each pass.
+	if( proc->sym.langtype == LANG_SYSVCALL)
+		info->vecused = 0;
+
 	/* if (Parse_Pass == PASS_1) */
 	memset(info->vregs, 0, 6); /* reset vregs EVERY pass */
 							   /* clear sse register flags every pass*/
