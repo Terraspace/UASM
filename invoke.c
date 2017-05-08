@@ -1442,14 +1442,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 {
 	uint_32 size;
 	uint_32 psize;
-	char name[256];
-	char buff[256];
-	uint_64 fvalue[2];
 	int reg;
-	int reg2;
-	int i;
-	int j = 0;
-	int tCount = 0;
 	int base;
 	struct proc_info *info = proc->e.procinfo;
 	struct asym *sym;
