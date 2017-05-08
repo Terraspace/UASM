@@ -1491,8 +1491,8 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 	if (opnd->kind == EXPR_FLOAT)
 	{
 		psize = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
-		if (psize == 0) psize = 4;
-		reg = sysv_GetNextVEC(info, 16);
+		if (psize == 0) psize = 4;		 // If no size specified, assume float.
+		reg = sysv_GetNextVEC(info, 16); // float or double will always go to xmm, so request size = 16.
 		if (reg != -1)
 		{
 			if ( (!strcasecmp(paramvalue, "0.0")) || (!strcasecmp(paramvalue, "0")) )
