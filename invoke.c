@@ -1451,8 +1451,10 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 	// TODO: count up vectorregs used to store into rax before call.
 
 	DebugMsg1(("sysv_vararg_param(%s, index=%u, param.memtype=%Xh, addr=%u) enter\n", proc->sym.name, index, param->sym.mem_type, addr));
+
 	/* VARARG parameters have no typing information, so we have to imply the type purely from the operand in invoke */
-	
+	psize = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
+
 	/* ******************************************************************************************************************** */
 	/* CONST */
 	/* ******************************************************************************************************************** */
