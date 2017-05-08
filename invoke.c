@@ -1546,6 +1546,8 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		return(1);
 	}
 
+	/* Operands address is to be taken with ADDR operator / LEA */
+	/* ******************************************************************************************************************** */
 	if (addr || psize > 8)
 	{
 		// TODO
