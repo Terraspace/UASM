@@ -311,7 +311,6 @@ static void output_opc(struct code_info *CodeInfo)
       if ((CodeInfo->token >= T_VSHUFF32X4) && (CodeInfo->token <= T_VSHUFI64X2) &&
       ((CodeInfo->opnd[OPND1].type & OP_XMM) || (CodeInfo->opnd[OPND2].type & OP_XMM)))
       EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS); //Only YMM and ZMM alowed    
-	  
 	/* John: removed once kn and decorator flag masks were determined not to be required as k0 is implicit */
 	  /*if ((CodeInfo->token >= T_VBROADCASTF128) && (CodeInfo->token <= T_VPBROADCASTQ)) {
 		if (decoflags == 0 && CodeInfo->r1type != OP_K)
@@ -2496,10 +2495,18 @@ ret_code codegen( struct code_info *CodeInfo, uint_32 oldofs )
             opnd1 = OP_IGE16;
         }
     }
-
 #if AVXSUPP 
-    //if (CodeInfo->token == T_VPTESTMD)
-    //  __debugbreak();
+    /* If VMOVSS or VMOVSD, AVX instructions should have 3 operands if registers used, fix for v2.31 */
+    if (CodeInfo->token == T_VMOVSS || CodeInfo->token == T_VMOVSD){
+        if (CodeInfo->reg3 == 0xff){
+          if (CodeInfo->pinstr->opcode == 0x10 || CodeInfo->pinstr->opcode == 0xa5){
+            if ((CodeInfo->opnd[OPND2].type & OP_MGT16 ) == 0){
+              EmitErr(INVALID_INSTRUCTION_OPERANDS);
+              return(ERROR);
+              }
+            }
+        }
+      }
 	if (CodeInfo->token >= VEX_START) {
 		if (vex_flags[CodeInfo->token - VEX_START] & VX_L) {
 			if (opnd1 & (OP_K | OP_ZMM | OP_YMM | OP_M256 | OP_M512)) {

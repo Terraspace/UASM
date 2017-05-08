@@ -1090,16 +1090,17 @@ static ret_code ParseParams( struct dsym *proc, int i, struct asm_tok tokenarray
                     paracurr = NULL;
                 }
                 break;
-#if AMD64_SUPPORT
-			case LANG_SYSVCALL:
-				paranode->nextparam = proc->e.procinfo->paralist;
-				proc->e.procinfo->paralist = paranode;
-				break;
-#endif
+//#if AMD64_SUPPORT
+			//case LANG_SYSVCALL:
+				//paranode->nextparam = proc->e.procinfo->paralist;
+				// proc->e.procinfo->paralist = paranode;
+				//break;
+				// #endif
 			case LANG_FASTCALL:
             case LANG_VECTORCALL:
             case LANG_DELPHICALL:
 #if AMD64_SUPPORT
+			case LANG_SYSVCALL:
 				if ( ti.Ofssize == USE64 )
                     goto left_to_right;
 #endif
@@ -3471,6 +3472,7 @@ static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int 
 		paranode->sym.string_ptr = LclAlloc(strlen(regname) + 1);
 		strcpy(paranode->sym.string_ptr, regname);
 		(*vecused)++;
+		proc->e.procinfo->firstVEC = *vecused;
 		return(1);
 	}
 	// Parameter is either YMM or __m256
@@ -3488,6 +3490,7 @@ static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int 
 		paranode->sym.string_ptr = LclAlloc(strlen(regname) + 1);
 		strcpy(paranode->sym.string_ptr, regname);
 		(*vecused)++;
+		proc->e.procinfo->firstVEC = *vecused;
 		return(1);
 	}
 #if EVEXSUPP
@@ -3506,6 +3509,7 @@ static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int 
 		paranode->sym.string_ptr = LclAlloc(strlen(regname) + 1);
 		strcpy(paranode->sym.string_ptr, regname);
 		(*vecused)++;
+		proc->e.procinfo->firstVEC = *vecused;
 		return(1);
 	}
 #endif
@@ -3520,7 +3524,7 @@ static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int 
 	//===============================================================================================================
 	// HANDLE Integer -> GPR Parameter Types
 	//===============================================================================================================
-	if (size > CurrWordSize || *used >= 6)
+	if ( size > CurrWordSize || *used >= 6 || paranode->sym.is_vararg )
 	{
 		paranode->sym.string_ptr = NULL;
 		return(0);
@@ -3555,6 +3559,7 @@ static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int 
 	paranode->sym.string_ptr = LclAlloc(strlen(regname) + 1);
 	strcpy(paranode->sym.string_ptr, regname);
 	(*used)++;
+	proc->e.procinfo->firstGPR = *used;
 	return(1);
 }
 
@@ -3744,7 +3749,7 @@ static void write_sysv_default_epilogue_RBP(struct proc_info *info)
 	/* No Sub RSP, use RedZone optimisation */
 	if (ModuleInfo.redzone == 1 && (info->localsize + resstack < 128) && resstack == 0)
 		;
-	else
+	else if ( info->localsize + stackadj > 0 )
 		AddLineQueueX("add %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + stackadj);
 
 	pop_register(CurrProc->e.procinfo->regslist);
