@@ -1509,9 +1509,8 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 				}
 			}
 
-			/* Mark temporary eax register as written */
+			/* Mark temporary eax and vector register as written */
 			*regs_used |= (1 << 6);
-			/* Mark destination vector register as used */
 			info->vecused |= (1 << sysv_reg(reg));
 
 		}
