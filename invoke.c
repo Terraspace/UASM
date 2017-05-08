@@ -1452,7 +1452,8 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 
 	DebugMsg1(("sysv_vararg_param(%s, index=%u, param.memtype=%Xh, addr=%u) enter\n", proc->sym.name, index, param->sym.mem_type, addr));
 	/* VARARG parameters have no typing information, so we have to imply the type purely from the operand in invoke */
-
+	
+	/* ******************************************************************************************************************** */
 	/* CONST */
 	/* ******************************************************************************************************************** */
 	if (opnd->kind == EXPR_CONST)
@@ -1478,7 +1479,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		}
 		return(1);
 	}
-
+	/* ******************************************************************************************************************** */
 	/* FLOAT */
 	/* ******************************************************************************************************************** */
 	if (opnd->kind == EXPR_FLOAT)
@@ -1521,7 +1522,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		}
 		return(1);
 	}
-
+	/* ******************************************************************************************************************** */
 	/* DIRECT REGISTER */
 	/* ******************************************************************************************************************** */
 	if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
@@ -1529,7 +1530,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		// TODO
 		return(1);
 	}
-
+	/* ******************************************************************************************************************** */
 	/* REGISTER INDIRECT ie: [rax] or [rsi] */
 	/* ******************************************************************************************************************** */
 	if (opnd->kind == EXPR_REG && opnd->indirect == TRUE)
@@ -1537,7 +1538,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		// TODO
 		return(1);
 	}
-	
+	/* ******************************************************************************************************************** */
 	/* Operand is a memory address (IE: symbol name) or memory address expression like [rbp+rax] etc */
 	/* ******************************************************************************************************************** */
 	if (opnd->kind == EXPR_ADDR && !addr)
@@ -1545,7 +1546,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		// TODO
 		return(1);
 	}
-
+	/* ******************************************************************************************************************** */
 	/* Operands address is to be taken with ADDR operator / LEA */
 	/* ******************************************************************************************************************** */
 	if (addr || psize > 8)
