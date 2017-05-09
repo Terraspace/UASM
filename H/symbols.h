@@ -376,6 +376,8 @@ struct proc_info {
     unsigned char       vecused;
 	unsigned char       firstGPR;		/* Added for systemv call vararg to track the first available registers that can be used */
 	unsigned char       firstVEC;
+	unsigned char       vararg_vecs;	/* Count of vector registers used in vararg */
+
 #if AMD64_SUPPORT
     struct asym         *exc_handler;   /* PROC: exc handler set by FRAME */
     int                 ReservedStack;  /* PROC: win64: additional reserved stack */

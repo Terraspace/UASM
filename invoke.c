@@ -1444,12 +1444,11 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 	uint_32 psize;
 	int reg;
 	int base;
+	int regsize;
 	struct proc_info *info = proc->e.procinfo;
 	struct asym *sym;
 	struct dsym *curr = NULL;
 	
-	// TODO: count up vectorregs used to store into rax before call.
-
 	DebugMsg1(("sysv_vararg_param(%s, index=%u, param.memtype=%Xh, addr=%u) enter\n", proc->sym.name, index, param->sym.mem_type, addr));
 
 	/* VARARG parameters have no typing information, so we have to imply the type purely from the operand in invoke */
@@ -1494,9 +1493,9 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 			if ( (!strcasecmp(paramvalue, "0.0")) || (!strcasecmp(paramvalue, "0")) )
 			{
 				if(ModuleInfo.arch == ARCH_AVX)
-					AddLineQueueX("vorps %r, %r, %r", reg, reg, reg);
+					AddLineQueueX("vxorps %r, %r, %r", reg, reg, reg);
 				else
-					AddLineQueueX("orps %r, %r", reg, reg);
+					AddLineQueueX("xorps %r, %r", reg, reg);
 			}
 			else
 			{
@@ -1516,6 +1515,8 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 			*regs_used |= (1 << 6);
 			info->vecused |= (1 << sysv_reg(reg));
 
+			/* Increment count of vectors used in vararg call */
+			info->vararg_vecs++;
 		}
 		/* No free Vector Register, value goes to stack */
 		else
@@ -1529,7 +1530,42 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 	/* ******************************************************************************************************************** */
 	if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
 	{
-		// TODO
+		// Firstly we need to determine if it's a GPR or vector register and it's size.
+		reg = opnd->base_reg->tokval;
+		regsize = SizeFromRegister(reg);
+		if (GetValueSp(reg) & OP_R)
+			reg = sysv_GetNextGPR(info, regsize);
+		else if (GetValueSp(reg) & OP_XMM)
+			reg = sysv_GetNextVEC(info, 16);
+		else if (GetValueSp(reg) & OP_YMM)
+			reg = sysv_GetNextVEC(info, 32);
+		#if EVEXSUPP
+		else if (GetValueSp(reg) & OP_ZMM)
+			reg = sysv_GetNextVEC(info, 64);
+		#endif
+
+		if (reg != -1)
+		{
+			if (GetValueSp(opnd->base_reg->tokval) & OP_R)
+			{
+				AddLineQueueX("mov %r, %s", reg, paramvalue);
+				/* Mark register as written */
+				*regs_used |= (1 << sysv_reg(reg));
+			}
+			else
+			{
+				AddLineQueueX("%s %r, %s", MOVE_ALIGNED_INT, reg, paramvalue);
+				/* Mark vector register as written */
+				info->vecused |= (1 << sysv_reg(reg));
+				/* Increment count of vectors used in vararg call */
+				info->vararg_vecs++;
+			}
+		}
+		/* No free GPR/Vector Register, value goes to stack */
+		else
+		{
+			// TODO
+		}
 		return(1);
 	}
 	/* ******************************************************************************************************************** */
@@ -1537,23 +1573,132 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 	/* ******************************************************************************************************************** */
 	if (opnd->kind == EXPR_REG && opnd->indirect == TRUE)
 	{
-		// TODO
+		psize = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
+		if (psize == 0) psize = 8;			// If no size specified, assume qword.
+		reg = sysv_GetNextGPR(info, psize);
+		if (reg != -1)
+		{
+			AddLineQueueX("mov %r, %s", reg, paramvalue);
+			/* Mark register as written */
+			*regs_used |= (1 << sysv_reg(reg));
+		}
+		/* No free GPR Register, value goes to stack */
+		else
+		{
+			// TODO
+		}
 		return(1);
 	}
 	/* ******************************************************************************************************************** */
 	/* Operand is a memory address (IE: symbol name) or memory address expression like [rbp+rax] etc */
 	/* ******************************************************************************************************************** */
-	if (opnd->kind == EXPR_ADDR && !addr)
+	if (opnd->kind == EXPR_ADDR && !addr && ((opnd->sym->type && 
+		_stricmp(opnd->sym->type->name, "__m128") != 0 &&
+		_stricmp(opnd->sym->type->name, "__m256") != 0 &&
+		_stricmp(opnd->sym->type->name, "__m512") != 0) || !opnd->sym->type) )
 	{
-		// TODO
+		psize = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
+		if (psize == 0) psize = 8;			// If no size specified, assume qword.
+		reg = sysv_GetNextGPR(info, psize);
+		if (reg != -1)
+		{
+			AddLineQueueX("mov %r, %s", reg, paramvalue);
+			/* Mark register as written */
+			*regs_used |= (1 << sysv_reg(reg));
+		}
+		/* No free GPR Register, value goes to stack */
+		else
+		{
+			// TODO
+		}
 		return(1);
 	}
+	/* ******************************************************************************************************************** */
+	/* Operand is a valid XMM sized vector type (register already handled above) */
+	/* ******************************************************************************************************************** */
+	if ( (opnd->sym->mem_type == MT_TYPE || opnd->kind == EXPR_ADDR) && opnd->sym->type && _stricmp(opnd->sym->type->name, "__m128") == 0 )
+	{
+		reg = sysv_GetNextVEC(info, 16);
+		if (reg != -1)
+		{
+			AddLineQueueX("%s %r, xmmword ptr %s", MOVE_ALIGNED_INT, reg, paramvalue);
+			/* Mark vector register as written */
+			info->vecused |= (1 << sysv_reg(reg));
+			/* Increment count of vectors used in vararg call */
+			info->vararg_vecs++;
+		}
+		/* No free Vector Register, value goes to stack */
+		else
+		{
+			// TODO
+		}
+		return(1);
+	}
+	/* ******************************************************************************************************************** */
+	/* Operand is a valid YMM sized vector type (register already handled above) */
+	/* ******************************************************************************************************************** */
+	if ((opnd->sym->mem_type == MT_TYPE || opnd->kind == EXPR_ADDR) && opnd->sym->type && _stricmp(opnd->sym->type->name, "__m256") == 0)
+	{
+		reg = sysv_GetNextVEC(info, 32);
+		if (reg != -1)
+		{
+			AddLineQueueX("%s %r, ymmword ptr %s", MOVE_ALIGNED_INT, reg, paramvalue);
+			/* Mark vector register as written */
+			info->vecused |= (1 << sysv_reg(reg));
+			/* Increment count of vectors used in vararg call */
+			info->vararg_vecs++;
+		}
+		/* No free Vector Register, value goes to stack */
+		else
+		{
+			// TODO
+		}
+		return(1);
+	}
+	/* ******************************************************************************************************************** */
+	/* Operand is a valid ZMM sized vector type (register already handled above) */
+	/* ******************************************************************************************************************** */
+	#if EVEXSUPP
+	if ((opnd->sym->mem_type == MT_TYPE || opnd->kind == EXPR_ADDR) && opnd->sym->type && _stricmp(opnd->sym->type->name, "__m512") == 0)
+	{
+		reg = sysv_GetNextVEC(info, 64);
+		if (reg != -1)
+		{
+			AddLineQueueX("%s %r, zmmword ptr %s", MOVE_ALIGNED_INT, reg, paramvalue);
+			/* Mark vector register as written */
+			info->vecused |= (1 << sysv_reg(reg));
+			/* Increment count of vectors used in vararg call */
+			info->vararg_vecs++;
+		}
+		/* No free Vector Register, value goes to stack */
+		else
+		{
+			// TODO
+		}
+		return(1);
+	}
+	#endif
 	/* ******************************************************************************************************************** */
 	/* Operands address is to be taken with ADDR operator / LEA */
 	/* ******************************************************************************************************************** */
 	if (addr || psize > 8)
 	{
-		// TODO
+		reg = sysv_GetNextGPR(info, 8); // All addresses are QWORD sized.
+		if (reg != -1)
+		{
+			if (psize >= 4)
+				AddLineQueueX("lea %r, %s", reg, paramvalue);
+			else
+				EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
+
+			/* Mark register as written */
+			*regs_used |= (1 << reg);
+		}
+		/* No free GPR Register, value goes to stack */
+		else
+		{
+			// TODO
+		}
 		return(1);
 	}
 
@@ -3521,6 +3666,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	{
 		unsigned char sGPR = proc->e.procinfo->firstGPR;
 		unsigned char sVEC = proc->e.procinfo->firstVEC;
+		proc->e.procinfo->vararg_vecs = 0;
 		for (numParam = 0; curr && (curr->sym.is_vararg == FALSE); curr = curr->nextparam, numParam++)
 		{
 			if (PushInvokeParam(i, tokenarray, proc, curr, numParam, &r0flags) == ERROR)
@@ -3535,6 +3681,10 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 			int j = numParam;
 			for (; j <  (Token_Count - i) / 2; j++)
 				PushInvokeParam(i, tokenarray, proc, curr, j, &r0flags);
+
+			// SYSTEMV Varargs requires a count of vector registers used in vararg in rax.
+			if (proc->e.procinfo->vararg_vecs > 0)
+				AddLineQueueX("mov eax,%u", proc->e.procinfo->vararg_vecs);		
 		}
 
 		/* Restore starting first free gpr and vec */
