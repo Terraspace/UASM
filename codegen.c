@@ -2496,6 +2496,7 @@ ret_code codegen( struct code_info *CodeInfo, uint_32 oldofs )
         }
     }
 #if AVXSUPP 
+
     /* If VMOVSS or VMOVSD, AVX instructions should have 3 operands if registers used, fix for v2.31 */
     if (CodeInfo->token == T_VMOVSS || CodeInfo->token == T_VMOVSD){
         if (CodeInfo->reg3 == 0xff){
