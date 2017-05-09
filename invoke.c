@@ -1476,7 +1476,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		/* No free GPR, value goes to stack */
 		else
 		{
-			//TODO
+			sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
 		}
 		return(1);
 	}
@@ -1521,7 +1521,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		/* No free Vector Register, value goes to stack */
 		else
 		{
-			//TODO
+			sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
 		}
 		return(1);
 	}
@@ -3532,6 +3532,9 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	if (proc->sym.langtype == LANG_SYSVCALL)
 	{
 		info->vecused = 0;
+		for (j = 0; j < 64; j++)
+			*(info->stackOps[j]) = NULLC;
+		info->stackOpCount = 0;
 	}
 
 	/* if (Parse_Pass == PASS_1) */
@@ -3685,6 +3688,12 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 			// SYSTEMV Varargs requires a count of vector registers used in vararg in rax.
 			if (proc->e.procinfo->vararg_vecs > 0)
 				AddLineQueueX("mov eax,%u", proc->e.procinfo->vararg_vecs);		
+		}
+
+		/* Reverse Write out all Stack based operations */
+		for (j = proc->e.procinfo->stackOpCount; j >= 0; j--)
+		{
+			AddLineQueueX(proc->e.procinfo->stackOps[j]);
 		}
 
 		/* Restore starting first free gpr and vec */
