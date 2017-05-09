@@ -167,6 +167,82 @@ void AddLineQueueX( const char *fmt, ... )
     return;
 }
 
+void BuildCodeLine(char *buffer, const char *fmt, ...)
+/****************************************/
+{
+	va_list args;
+	char *d;
+	int i;
+	int_32 l;
+	int_64 q;
+	const char *s;
+	const char *p;
+	//char buffer[MAX_LINE_LEN];
+
+	//DebugMsg(("AddlineQueueX(%s) enter\n", fmt ));
+	va_start(args, fmt);
+	for (s = fmt, d = buffer; *s; s++) {
+		if (*s == '%') {
+			s++;
+			switch (*s) {
+			case 'r':
+				i = va_arg(args, int);
+				GetResWName(i, d);
+				/* v2.06: the name is already copied */
+				//memcpy( d, ResWordTable[i].name, ResWordTable[i].len );
+				d += ResWordTable[i].len;
+				break;
+			case 's':
+				p = va_arg(args, char *);
+				i = strlen(p);
+				memcpy(d, p, i);
+				d += i;
+				*d = NULLC;
+				break;
+#if AMD64_SUPPORT
+			case 'q':
+				q = va_arg(args, int_64);
+				myqtoa(q, d, 10, q < 0, FALSE);
+				d += strlen(d);
+				/* v2.07: add a 't' suffix if radix is != 10 */
+				if (ModuleInfo.radix != 10)
+					*d++ = 't';
+				break;
+#endif
+			case 'd':
+			case 'u':
+			case 'x':
+#ifdef __I86__ /* v2.08: use long only if size(int) is 16-bit */
+				l = va_arg(args, long);
+#else
+				l = va_arg(args, int);
+#endif
+				if (*s == 'x') {
+					myltoa(l, d, 16, FALSE, FALSE);
+					d += strlen(d);
+				}
+				else {
+					myltoa(l, d, 10, l < 0, FALSE);
+					d += strlen(d);
+					/* v2.07: add a 't' suffix if radix is != 10 */
+					if (ModuleInfo.radix != 10)
+						*d++ = 't';
+				}
+				break;
+			default:
+				*d++ = *s;
+			}
+		}
+		else
+			*d++ = *s;
+	}
+	*d = NULLC;
+	va_end(args);
+	//DebugMsg(("AddlineQueueX() done\n" ));
+	//AddLineQueue(buffer);
+	return;
+}
+
 /*
  * RunLineQueue() is called whenever generated code is to be assembled. It
  * - saves current input status

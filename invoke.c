@@ -1386,6 +1386,117 @@ static int sysv_reg( unsigned int reg )
 	return(base);
 }
 
+/* Return a 64bit register equivalent to the supplied */
+static int sysv_regTo64(unsigned int reg)
+{
+	unsigned int resultReg = T_RAX;
+	if (GetValueSp(reg) & OP_XMM || GetValueSp(reg) & OP_YMM
+#if EVEXSUPP
+		|| GetValueSp(reg) & OP_ZMM
+#endif
+		)
+	{
+		return(reg);
+	}
+	else
+	{
+		switch (reg)
+		{
+			case T_AL:
+			case T_AH:
+			case T_AX:
+			case T_EAX:
+			case T_RAX:
+				resultReg = T_RAX;
+				break;
+			case T_BL:
+			case T_BH:
+			case T_BX:
+			case T_EBX:
+			case T_RBX:
+				resultReg = T_RBX;
+				break;
+			case T_CL:
+			case T_CH:
+			case T_CX:
+			case T_ECX:
+			case T_RCX:
+				resultReg = T_RCX;
+				break;
+			case T_DL:
+			case T_DH:
+			case T_DX:
+			case T_EDX:
+			case T_RDX:
+				resultReg = T_RDX;
+				break;
+			case T_SIL:
+			case T_SI:
+			case T_ESI:
+			case T_RSI:
+				resultReg = T_RSI;
+				break;
+			case T_DIL:
+			case T_DI:
+			case T_EDI:
+			case T_RDI:
+				resultReg = T_RDI;
+				break;
+			case T_BP:
+			case T_EBP:
+			case T_RBP:
+				resultReg = T_RBP;
+				break;
+			case T_SP:
+			case T_ESP:
+			case T_RSP:
+				resultReg = T_RSP;
+				break;
+			case T_R8B:
+			case T_R8D:
+			case T_R8:
+				resultReg = T_R8;
+				break;
+			case T_R9B:
+			case T_R9D:
+			case T_R9:
+				resultReg = T_R9;
+				break;
+			case T_R10B:
+			case T_R10D:
+			case T_R10:
+				resultReg = T_R10;
+				break;
+			case T_R11B:
+			case T_R11D:
+			case T_R11:
+				resultReg = T_R11;
+				break;
+			case T_R12B:
+			case T_R12D:
+			case T_R12:
+				resultReg = T_R12;
+				break;
+			case T_R13B:
+			case T_R13D:
+			case T_R13:
+				resultReg = T_R13;
+				break;
+			case T_R14B:
+			case T_R14D:
+			case T_R14:
+				resultReg = T_R14;
+				break;
+			case T_R15B:
+			case T_R15D:
+			case T_R15:
+				resultReg = T_R15;
+				break;
+		}
+		return(resultReg);
+	}
+}
+
 /* Return the first free GPR register useable in a SystemV invoke/call */
 static int sysv_GetNextGPR(struct proc_info *info, int size)
 {
@@ -1477,6 +1588,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		else
 		{
 			sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
+			info->stackOfs += 8;
 		}
 		return(1);
 	}
@@ -1522,6 +1634,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		else
 		{
 			sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
+			info->stackOfs += 8;
 		}
 		return(1);
 	}
@@ -1564,7 +1677,50 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		/* No free GPR/Vector Register, value goes to stack */
 		else
 		{
-			// TODO
+			reg = opnd->base_reg->tokval;
+			if (GetValueSp(reg) & OP_R)
+			{
+				if (regsize == 8)
+				{
+					sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
+				}
+				else if (regsize == 4)
+				{
+					sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsxd %r, %s", sysv_regTo64(reg), paramvalue);
+				}
+				else if (regsize == 2)
+				{
+					sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx %r, %s", sysv_regTo64(reg), paramvalue);
+				}
+				else if (regsize == 1)
+				{
+					sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx %r, %s", sysv_regTo64(reg), paramvalue);
+				}	
+				info->stackOfs += 8;
+			}
+			else if (GetValueSp(reg) & OP_XMM)
+			{
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r], %s", MOVE_ALIGNED_INT, T_RSP, paramvalue);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 16", T_RSP);
+				info->stackOfs += 16;
+			}
+			else if (GetValueSp(reg) & OP_YMM)
+			{
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r], %s", MOVE_UNALIGNED_INT, T_RSP, paramvalue);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 32", T_RSP);
+				info->stackOfs += 32;
+			}
+			#if EVEXSUPP
+			else if (GetValueSp(reg) & OP_ZMM)
+			{
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r], %s", MOVE_UNALIGNED_INT, T_RSP, paramvalue);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 64", T_RSP);
+				info->stackOfs += 64;
+			}
+			#endif
 		}
 		return(1);
 	}
@@ -1585,8 +1741,34 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		/* No free GPR Register, value goes to stack */
 		else
 		{
-			// TODO
+			if (psize == 8)
+			{
+				sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
+				info->stackOfs += 8;
+			}
+			else if (psize == 4)
+			{
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "push rax");
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "movsxd rax, eax");
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov eax, %s", paramvalue);
+				info->stackOfs += 8;
+			}
+			else if (psize == 2)
+			{
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "push rax");
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, ax");
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov ax, %s", paramvalue);
+				info->stackOfs += 8;
+			}
+			else if (psize == 1)
+			{
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "push rax");
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, al");
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov al, %s", paramvalue);
+				info->stackOfs += 8;
+			}
 		}
+		
 		return(1);
 	}
 	/* ******************************************************************************************************************** */
@@ -1609,7 +1791,32 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		/* No free GPR Register, value goes to stack */
 		else
 		{
-			// TODO
+			if (psize == 8)
+			{
+				sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
+				info->stackOfs += 8;
+			}
+			else if (psize == 4)
+			{
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "push rax");
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "movsxd rax, eax");
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov eax, %s", paramvalue);
+				info->stackOfs += 8;
+			}
+			else if (psize == 2)
+			{
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "push rax");
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, ax");
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov ax, %s", paramvalue);
+				info->stackOfs += 8;
+			}
+			else if (psize == 1)
+			{
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "push rax");
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, al");
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov al, %s", paramvalue);
+				info->stackOfs += 8;
+			}
 		}
 		return(1);
 	}
@@ -1630,7 +1837,10 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		/* No free Vector Register, value goes to stack */
 		else
 		{
-			// TODO
+			BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r], xmm8", MOVE_ALIGNED_INT, T_RSP);
+			BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 16", T_RSP);
+			BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmm8, xmmword ptr %s", MOVE_ALIGNED_INT, paramvalue);
+			info->stackOfs += 16;
 		}
 		return(1);
 	}
@@ -1651,7 +1861,10 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		/* No free Vector Register, value goes to stack */
 		else
 		{
-			// TODO
+			BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r], ymm8", MOVE_UNALIGNED_INT, T_RSP);
+			BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 32", T_RSP);
+			BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymm8, ymmword ptr %s", MOVE_UNALIGNED_INT, paramvalue);
+			info->stackOfs += 32;
 		}
 		return(1);
 	}
@@ -1673,7 +1886,10 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		/* No free Vector Register, value goes to stack */
 		else
 		{
-			// TODO
+			BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r], zmm8", MOVE_UNALIGNED_INT, T_RSP);
+			BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 64", T_RSP);
+			BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmm8, zmmword ptr %s", MOVE_UNALIGNED_INT, paramvalue);
+			info->stackOfs += 64;
 		}
 		return(1);
 	}
@@ -1697,7 +1913,9 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		/* No free GPR Register, value goes to stack */
 		else
 		{
-			// TODO
+			BuildCodeLine(info->stackOps[info->stackOpCount++], "push rax", paramvalue);
+			BuildCodeLine(info->stackOps[info->stackOpCount++], "lea rax, %s", paramvalue);
+			info->stackOfs += 8;
 		}
 		return(1);
 	}
@@ -2067,7 +2285,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 			}
 
 			/* Operand is CONST/immediate value */
-			if (opnd->kind == EXPR_CONST)
+			if (opnd->kind == EXPR_CONST && !addr) // Use !addr to ensure string literals go to the addr part.
 			{
 				if ((!strcasecmp(paramvalue, "0") || (!strcasecmp(paramvalue, "NULL")) || (!strcasecmp(paramvalue, "FALSE"))))
 					AddLineQueueX("xor %s, %s", param->sym.string_ptr, param->sym.string_ptr);
@@ -2152,7 +2370,27 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 	/* ******************************************************************************************************************** */
 	else
 	{
-		// TODO
+		if (param->sym.mem_type == MT_REAL4)
+		{
+		}
+		if (param->sym.mem_type == MT_REAL8)
+		{
+		}
+		if (param->sym.mem_type == MT_OWORD || (param->sym.mem_type == MT_TYPE && _stricmp(param->sym.type->name, "__m128") == 0))
+		{
+		}
+		if (param->sym.mem_type == MT_YMMWORD || (param->sym.mem_type == MT_TYPE && _stricmp(param->sym.type->name, "__m256") == 0))
+		{
+		}
+		#if EVEXSUPP
+		if (param->sym.mem_type == MT_OWORD || (param->sym.mem_type == MT_TYPE && _stricmp(param->sym.type->name, "__m512") == 0))
+		{
+		}
+		#endif
+		if (param->sym.mem_type == MT_BYTE || param->sym.mem_type == MT_WORD || param->sym.mem_type == MT_DWORD || param->sym.mem_type == MT_QWORD ||
+			param->sym.mem_type == MT_SBYTE || param->sym.mem_type == MT_SWORD || param->sym.mem_type == MT_SDWORD || param->sym.mem_type == MT_SQWORD || param->sym.mem_type == MT_PTR)
+		{
+		}
 	}
 
 	return(1);
@@ -3528,13 +3766,15 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	proc = (struct dsym *)sym;
 	info = proc->e.procinfo;
 
-	// For SYSV calls, we use vecused to track used xmm registers for overwrite so reset it each pass.
+	// Reset SYSTEMV pass values.
 	if (proc->sym.langtype == LANG_SYSVCALL)
 	{
+		// For SYSV calls, we use vecused to track used xmm registers for overwrite so reset it each pass.
 		info->vecused = 0;
 		for (j = 0; j < 64; j++)
 			*(info->stackOps[j]) = NULLC;
 		info->stackOpCount = 0;
+		info->stackOfs = 0;
 	}
 
 	/* if (Parse_Pass == PASS_1) */
@@ -3684,16 +3924,19 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 			int j = numParam;
 			for (; j <  (Token_Count - i) / 2; j++)
 				PushInvokeParam(i, tokenarray, proc, curr, j, &r0flags);
-
-			// SYSTEMV Varargs requires a count of vector registers used in vararg in rax.
-			if (proc->e.procinfo->vararg_vecs > 0)
-				AddLineQueueX("mov eax,%u", proc->e.procinfo->vararg_vecs);		
 		}
 
 		/* Reverse Write out all Stack based operations */
-		for (j = proc->e.procinfo->stackOpCount; j >= 0; j--)
+		if (proc->sym.langtype == LANG_SYSVCALL)
 		{
-			AddLineQueueX(proc->e.procinfo->stackOps[j]);
+			for (j = proc->e.procinfo->stackOpCount; j >= 0; j--)
+			{
+				AddLineQueueX(proc->e.procinfo->stackOps[j]);
+			}
+
+			// SYSTEMV Varargs requires a count of vector registers used in vararg in rax.
+			if (proc->e.procinfo->vararg_vecs > 0)
+				AddLineQueueX("mov eax,%u", proc->e.procinfo->vararg_vecs);
 		}
 
 		/* Restore starting first free gpr and vec */

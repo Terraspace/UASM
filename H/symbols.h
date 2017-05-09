@@ -379,6 +379,7 @@ struct proc_info {
 	unsigned char       vararg_vecs;	/* Count of vector registers used in vararg */
 	char                stackOps[64][MAX_LINE_LEN];
 	unsigned            stackOpCount;
+	unsigned            stackOfs;
 
 #if AMD64_SUPPORT
     struct asym         *exc_handler;   /* PROC: exc handler set by FRAME */
