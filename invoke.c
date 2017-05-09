@@ -1442,11 +1442,13 @@ static int sysv_regTo64(unsigned int reg)
 			case T_RDI:
 				resultReg = T_RDI;
 				break;
+			case T_BPL:
 			case T_BP:
 			case T_EBP:
 			case T_RBP:
 				resultReg = T_RBP;
 				break;
+			case T_SPL:
 			case T_SP:
 			case T_ESP:
 			case T_RSP:
