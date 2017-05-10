@@ -230,7 +230,22 @@ static void output_opc(struct code_info *CodeInfo)
     /* v2.04: no error is returned */
     AddFloatingPointEmulationFixup(CodeInfo);
   }
-  /*
+#if AVXSUPP
+      /* If VMOVSS or VMOVSD, AVX instructions should have 3 operands if registers used, fix for v2.31 */
+    if (CodeInfo->token == T_VMOVSS || CodeInfo->token == T_VMOVSD){
+      if (CodeInfo->reg3 == 0xff){
+        if (CodeInfo->pinstr->opcode == 0x10 && (CodeInfo->opnd[OPND2].type & OP_M))
+          ;/* that is good, there is no third operand for memory instruction */
+        else if (CodeInfo->pinstr->opcode == 0x11 && (CodeInfo->opnd[OPND1].type & OP_M) )
+            ;/* that is good, there is no third operand for memory instruction */
+        else {
+            EmitErr(INVALID_INSTRUCTION_OPERANDS);
+            return(ERROR);
+           }
+        }
+      }
+#endif
+   /*
    * Output instruction prefix LOCK, REP or REP[N]E|Z
    */
   if (CodeInfo->prefix.ins != EMPTY && (CodeInfo->token < T_VPGATHERDD || CodeInfo->token > T_VGATHERQPS)) {
@@ -2496,18 +2511,6 @@ ret_code codegen( struct code_info *CodeInfo, uint_32 oldofs )
         }
     }
 #if AVXSUPP 
-
-    /* If VMOVSS or VMOVSD, AVX instructions should have 3 operands if registers used, fix for v2.31 */
-    if (CodeInfo->token == T_VMOVSS || CodeInfo->token == T_VMOVSD){
-        if (CodeInfo->reg3 == 0xff){
-          if (CodeInfo->pinstr->opcode == 0x10 || CodeInfo->pinstr->opcode == 0xa5){
-            if ((CodeInfo->opnd[OPND2].type & OP_MGT16 ) == 0){
-              EmitErr(INVALID_INSTRUCTION_OPERANDS);
-              return(ERROR);
-              }
-            }
-        }
-      }
 	if (CodeInfo->token >= VEX_START) {
 		if (vex_flags[CodeInfo->token - VEX_START] & VX_L) {
 			if (opnd1 & (OP_K | OP_ZMM | OP_YMM | OP_M256 | OP_M512)) {

@@ -1589,7 +1589,14 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		/* No free GPR, value goes to stack */
 		else
 		{
-			sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
+			if ( (opnd->value64 > LONG_MAX || opnd->value64 < LONG_MIN) ) 
+			{
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov %r ptr [%r+4], %r ( %s )", T_DWORD, T_RSP, T_HIGH32, paramvalue);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov %r ptr [%r], %r ( %s )", T_DWORD, T_RSP, T_LOW32, paramvalue);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub rsp,8");
+			}
+			else
+				sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
 			info->stackOfs += 8;
 		}
 		return(1);
@@ -1994,6 +2001,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 	int j = 0;
 	int tCount = 0;
 	int base;
+	int regsize;
 	struct proc_info *info = proc->e.procinfo;
 	bool destroyed = FALSE;
 	struct asym *sym;
@@ -2003,41 +2011,35 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 
 	/* Check for over-written vector registers */
 	/* ******************************************************************************************************************** */
-	if (opnd->base_reg != NULL && !param->sym.is_vararg) 
+	if (opnd->base_reg != NULL) 
 	{
 		reg = opnd->base_reg->tokval;
 		if (GetValueSp(reg) & OP_XMM || GetValueSp(reg) & OP_YMM || GetValueSp(reg) & OP_ZMM)
 		{
 			i = sysv_reg(reg);
-			if (info->vecused & (1 << i))
+			if (i <= 7 && info->vecused & (1 << i))
 				destroyed = TRUE;
 		}
 	}
 
 	/* Check for over-written GPR registers */
 	/* ******************************************************************************************************************** */
-	if (opnd->base_reg != NULL && !param->sym.is_vararg) {
-		reg = opnd->base_reg->tokval;
+	if (opnd->base_reg != NULL) {
+		reg = sysv_regTo64(opnd->base_reg->tokval); // Convert ALL input register to their 64bit equivalent to pickup overwrites when using partial registers.
 		if (GetValueSp(reg) & OP_R)
 		{
 			base = sysv_reg(reg);
-			if (*regs_used & (1 << base))
+			if (base <= 6 && *regs_used & (1 << base))
 				destroyed = TRUE;
 		}
 	}
-	if (opnd->idx_reg != NULL && !param->sym.is_vararg) {
-		reg2 = opnd->idx_reg->tokval;
-		if (GetValueSp(reg2) & OP_R) {
-			i = GetRegNo(reg2);
-			if (REGPAR_SYSV & (1 << i))
-			{
-				base = sysv_reg(reg);
-				if (*regs_used & (1 << base))
-					destroyed = TRUE;
-			}
-			else if ((*regs_used & R0_USED) && ((GetValueSp(reg2) & OP_A) || reg2 == T_AH)) {
+	if (opnd->idx_reg != NULL) {
+		reg2 = sysv_regTo64(opnd->idx_reg->tokval);
+		if (GetValueSp(reg2) & OP_R) 
+		{
+			base = sysv_reg(reg);
+			if (base <= 6 && *regs_used & (1 << base))
 				destroyed = TRUE;
-			}
 		}
 	}
 	if (destroyed)
@@ -2070,6 +2072,13 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 			{
 				*regs_used |= (1 << 6);
 				AddLineQueueX("mov %r, %s", T_EAX, paramvalue);
+				AddLineQueueX("%s %s, %r", MOVE_SIMD_DWORD, param->sym.string_ptr, T_EAX);
+				return(1);
+			}
+			if (opnd->kind == EXPR_CONST)
+			{
+				*regs_used |= (1 << 6);
+				AddLineQueueX("mov %r, %s.0", T_EAX, paramvalue);
 				AddLineQueueX("%s %s, %r", MOVE_SIMD_DWORD, param->sym.string_ptr, T_EAX);
 				return(1);
 			}
@@ -2118,6 +2127,13 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 			{
 				*regs_used |= (1<<6);
 				AddLineQueueX("mov %r, %r ptr %s", T_RAX, T_REAL8, paramvalue);
+				AddLineQueueX("%s %s, %r", MOVE_SIMD_QWORD, param->sym.string_ptr, T_RAX);
+				return(1);
+			}
+			if (opnd->kind == EXPR_CONST)
+			{
+				*regs_used |= (1 << 6);
+				AddLineQueueX("mov %r, %r ptr %s.0", T_RAX, T_REAL8, paramvalue);
 				AddLineQueueX("%s %s, %r", MOVE_SIMD_QWORD, param->sym.string_ptr, T_RAX);
 				return(1);
 			}
@@ -2420,27 +2436,470 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 	/* ******************************************************************************************************************** */
 	else
 	{
+		/* REAL4/float argument */
+		/* ******************************************************************************************************************** */
 		if (param->sym.mem_type == MT_REAL4)
 		{
+			psize = 0;
+			psize = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
+			if (psize == 0) psize = 4;
+
+			if (opnd->kind == EXPR_FLOAT)
+			{
+				*regs_used |= (1 << 6);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "push %r", T_RAX);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov %r, %s", T_EAX, paramvalue);
+				info->stackOfs += 8;
+				return(1);
+			}
+			if (opnd->kind == EXPR_CONST)
+			{
+				*regs_used |= (1 << 6);
+				AddLineQueueX("mov %r, %s.0", T_EAX, paramvalue);
+				AddLineQueueX("%s %s, %r", MOVE_SIMD_DWORD, param->sym.string_ptr, T_EAX);
+				return(1);
+			}
+			if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+			{
+				reg = opnd->base_reg->tokval;
+				if (GetValueSp(reg) & OP_XMM)
+				{
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s [%r], %s", MOVE_SINGLE, T_RSP, paramvalue);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
+					info->stackOfs += 8;
+					return(1);
+				}
+				else
+				{
+					EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
+					return(1);
+				}
+			}
+			if (opnd->kind == EXPR_REG && opnd->indirect == TRUE)
+			{
+				*regs_used |= (1 << 6);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov [%r], eax", T_RSP);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov eax, dword ptr %s", paramvalue);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
+				info->stackOfs += 8;
+				return(1);
+			}
+			if (opnd->kind == EXPR_ADDR)
+			{
+				if (psize == 4)
+				{
+					*regs_used |= (1 << 6);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov [%r], eax", T_RSP);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov eax, dword ptr %s", paramvalue);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
+					info->stackOfs += 8;
+					return(1);
+				}
+				else
+				{
+					EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
+					return(1);
+				}
+			}
+			return(1);
 		}
+		/* REAL8/double argument */
+		/* ******************************************************************************************************************** */
 		if (param->sym.mem_type == MT_REAL8)
 		{
+			psize = 0;
+			psize = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
+			if (psize == 0) psize = 8;
+
+			if (opnd->kind == EXPR_FLOAT)
+			{
+				*regs_used |= (1 << 6);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "push %r", T_RAX);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov %r, %r ptr %s", T_RAX, T_REAL8, paramvalue);
+				info->stackOfs += 8;
+				return(1);
+			}
+			if (opnd->kind == EXPR_CONST)
+			{
+				*regs_used |= (1 << 6);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "push %r", T_RAX);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov %r, %r ptr %s.0", T_RAX, T_REAL8, paramvalue);
+				info->stackOfs += 8;
+				return(1);
+			}
+			if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+			{
+				reg = opnd->base_reg->tokval;
+				if (GetValueSp(reg) & OP_XMM)
+				{
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s [%r], %s", MOVE_DOUBLE, T_RSP, paramvalue);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
+					info->stackOfs += 8;
+					return(1);
+				}
+				else
+				{
+					EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
+					return(1);
+				}
+			}
+			if (opnd->kind == EXPR_REG && opnd->indirect == TRUE)
+			{
+				*regs_used |= (1 << 6);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov [%r], rax", T_RSP);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov rax, qword ptr %s", paramvalue);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
+				info->stackOfs += 8;
+				return(1);
+			}
+			if (opnd->kind == EXPR_ADDR)
+			{
+				if (psize == 8)
+				{
+					*regs_used |= (1 << 6);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov [%r], rax", T_RSP);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov rax, qword ptr %s", paramvalue);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 8", T_RSP);
+					info->stackOfs += 8;
+					return(1);
+				}
+				else
+				{
+					EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
+					return(1);
+				}
+			}
+			return(1);
 		}
+		/* XMMWORD or __M128 type */
+		/* ******************************************************************************************************************** */
 		if (param->sym.mem_type == MT_OWORD || (param->sym.mem_type == MT_TYPE && _stricmp(param->sym.type->name, "__m128") == 0))
 		{
+			if (opnd->kind == EXPR_REG)
+			{
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r], %s", MOVE_ALIGNED_INT, T_RSP, paramvalue);
+				if (info->stackOfs % 16 != 0)
+				{
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 24", T_RSP);
+					info->stackOfs += 24;
+				}
+				else
+				{
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 16", T_RSP);
+					info->stackOfs += 16;
+				}
+			}
+			else
+			{
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r], xmm8", MOVE_ALIGNED_INT, T_RSP);
+				if (info->stackOfs % 16 != 0)
+				{
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 24", T_RSP);
+					info->stackOfs += 24;
+				}
+				else
+				{
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 16", T_RSP);
+					info->stackOfs += 16;
+				}
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmm8, xmmword ptr %s", MOVE_ALIGNED_INT, paramvalue);
+			}
+			return(1);
 		}
+
+		/* YMMWORD or __M256 type */
+		/* ******************************************************************************************************************** */
 		if (param->sym.mem_type == MT_YMMWORD || (param->sym.mem_type == MT_TYPE && _stricmp(param->sym.type->name, "__m256") == 0))
 		{
+			if (opnd->kind == EXPR_REG)
+			{
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r], %s", MOVE_UNALIGNED_INT, T_RSP, paramvalue);
+				if (info->stackOfs % 16 != 0)
+				{
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 40", T_RSP);
+					info->stackOfs += 40;
+				}
+				else
+				{
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 32", T_RSP);
+					info->stackOfs += 32;
+				}
+			}
+			else
+			{
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r], ymm8", MOVE_UNALIGNED_INT, T_RSP);
+				if (info->stackOfs % 16 != 0)
+				{
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 40", T_RSP);
+					info->stackOfs += 40;
+				}
+				else
+				{
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 32", T_RSP);
+					info->stackOfs += 32;
+				}
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymm8, ymmword ptr %s", MOVE_UNALIGNED_INT, paramvalue);
+			}
+			return(1);
 		}
+		
+		/* ZMMWORD or __M512 type */
+		/* ******************************************************************************************************************** */
 		#if EVEXSUPP
 		if (param->sym.mem_type == MT_OWORD || (param->sym.mem_type == MT_TYPE && _stricmp(param->sym.type->name, "__m512") == 0))
 		{
+			if (opnd->kind == EXPR_REG)
+			{
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r], %s", MOVE_UNALIGNED_INT, T_RSP, paramvalue);
+				if (info->stackOfs % 16 != 0)
+				{
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 72", T_RSP);
+					info->stackOfs += 72;
+				}
+				else
+				{
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 64", T_RSP);
+					info->stackOfs += 64;
+				}
+			}
+			else
+			{
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r], zmm8", MOVE_UNALIGNED_INT, T_RSP);
+				if (info->stackOfs % 16 != 0)
+				{
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 72", T_RSP);
+					info->stackOfs += 72;
+				}
+				else
+				{
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 64", T_RSP);
+					info->stackOfs += 64;
+				}
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmm8, zmmword ptr %s", MOVE_UNALIGNED_INT, paramvalue);
+			}
+			return(1);
 		}
 		#endif
+
+		/* Integer type argument (byte/word/dword/qword) signed or unsigned */
+		/* ******************************************************************************************************************** */
 		if (param->sym.mem_type == MT_BYTE || param->sym.mem_type == MT_WORD || param->sym.mem_type == MT_DWORD || param->sym.mem_type == MT_QWORD ||
 			param->sym.mem_type == MT_SBYTE || param->sym.mem_type == MT_SWORD || param->sym.mem_type == MT_SDWORD || param->sym.mem_type == MT_SQWORD || param->sym.mem_type == MT_PTR)
 		{
+			psize = 0;
+			if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+				psize = SizeFromRegister(opnd->base_reg->tokval);
+			else if (opnd->mem_type != MT_EMPTY)
+				psize = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
+			if (addr)
+				psize = 8;
+			if (param->sym.mem_type == MT_PTR && psize != 8)
+			{
+				EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
+				return(1);
+			}
+
+			/* Operand is CONST/immediate value */
+			if (opnd->kind == EXPR_CONST && !addr) // Use !addr to ensure string literals go to the addr part.
+			{
+				/* We can't push a 64bit immediate, so split it into 2 dwords */
+				if ((opnd->value64 > LONG_MAX || opnd->value64 < LONG_MIN))
+				{
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov %r ptr [%r+4], %r ( %s )", T_DWORD, T_RSP, T_HIGH32, paramvalue);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov %r ptr [%r], %r ( %s )", T_DWORD, T_RSP, T_LOW32, paramvalue);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub rsp,8");
+				}
+				else
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
+				info->stackOfs += 8;
+				return(1);
+			}
+
+			/* Operand is register direct */
+			if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+			{
+				// Firstly we need to determine if it's a GPR or vector register and it's size.
+				reg = opnd->base_reg->tokval;
+				regsize = SizeFromRegister(reg);
+				if (GetValueSp(reg) & OP_R)
+					reg = sysv_GetNextGPR(info, regsize);
+				else if (GetValueSp(reg) & OP_XMM)
+					reg = sysv_GetNextVEC(info, 16);
+				else if (GetValueSp(reg) & OP_YMM)
+					reg = sysv_GetNextVEC(info, 32);
+				#if EVEXSUPP
+				else if (GetValueSp(reg) & OP_ZMM)
+					reg = sysv_GetNextVEC(info, 64);
+				#endif
+
+				reg = opnd->base_reg->tokval;
+				if (GetValueSp(reg) & OP_R)
+				{
+					if (regsize == 8)
+					{
+						sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
+					}
+					else if (regsize == 4)
+					{
+						sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
+						BuildCodeLine(info->stackOps[info->stackOpCount++], "movsxd %r, %s", sysv_regTo64(reg), paramvalue);
+					}
+					else if (regsize == 2)
+					{
+						sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
+						BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx %r, %s", sysv_regTo64(reg), paramvalue);
+					}
+					else if (regsize == 1)
+					{
+						sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
+						BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx %r, %s", sysv_regTo64(reg), paramvalue);
+					}
+					info->stackOfs += 8;
+				}
+				else if (GetValueSp(reg) & OP_XMM)
+				{
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r], %s", MOVE_ALIGNED_INT, T_RSP, paramvalue);
+					if (info->stackOfs % 16 != 0)
+					{
+						BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 24", T_RSP);
+						info->stackOfs += 24;
+					}
+					else
+					{
+						BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 16", T_RSP);
+						info->stackOfs += 16;
+					}
+				}
+				else if (GetValueSp(reg) & OP_YMM)
+				{
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r], %s", MOVE_UNALIGNED_INT, T_RSP, paramvalue);
+					if (info->stackOfs % 16 != 0)
+					{
+						BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 40", T_RSP);
+						info->stackOfs += 40;
+					}
+					else
+					{
+						BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 32", T_RSP);
+						info->stackOfs += 32;
+					}
+				}
+				#if EVEXSUPP
+				else if (GetValueSp(reg) & OP_ZMM)
+				{
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r], %s", MOVE_UNALIGNED_INT, T_RSP, paramvalue);
+					if (info->stackOfs % 16 != 0)
+					{
+						BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 72", T_RSP);
+						info->stackOfs += 72;
+					}
+					else
+					{
+						BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 64", T_RSP);
+						info->stackOfs += 64;
+					}
+				}
+				#endif
+				else
+				{
+					EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
+					return(1);
+				}
+				return(1);
+			}
+
+			/* Operand is register indirect */
+			if (opnd->kind == EXPR_REG && opnd->indirect == TRUE)
+			{
+				psize = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
+				if (psize == 0) psize = SizeFromMemtype(param->sym.mem_type, USE64, opnd->type); // If no size specifed, assume parameter defines the size.
+				
+				// Specified memory type size of parameter differs from operand size.
+				if (psize != SizeFromMemtype(param->sym.mem_type, USE64, opnd->type))
+				{
+					EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
+					return(1);
+				}
+
+				if (psize == 8)
+				{
+					sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
+					info->stackOfs += 8;
+				}
+				else if (psize == 4)
+				{
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "push rax");
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsxd rax, eax");
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov eax, %s", paramvalue);
+					info->stackOfs += 8;
+				}
+				else if (psize == 2)
+				{
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "push rax");
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, ax");
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov ax, %s", paramvalue);
+					info->stackOfs += 8;
+				}
+				else if (psize == 1)
+				{
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "push rax");
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, al");
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov al, %s", paramvalue);
+					info->stackOfs += 8;
+				}
+				return(1);
+			}
+
+			/* Operand is a memory address (IE: symbol name) or memory address expression like [rbp+rax] etc */
+			if (opnd->kind == EXPR_ADDR && !addr && ((opnd->sym->type &&
+				_stricmp(opnd->sym->type->name, "__m128") != 0 &&
+				_stricmp(opnd->sym->type->name, "__m256") != 0 &&
+				_stricmp(opnd->sym->type->name, "__m512") != 0) || !opnd->sym->type))
+			{
+				psize = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
+				if (psize == 0) psize = 8;			// If no size specified, assume qword.
+				if (psize == 8)
+				{
+					sprintf(info->stackOps[info->stackOpCount++], "push %s", paramvalue);
+					info->stackOfs += 8;
+				}
+				else if (psize == 4)
+				{
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "push rax");
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsxd rax, eax");
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov eax, %s", paramvalue);
+					info->stackOfs += 8;
+				}
+				else if (psize == 2)
+				{
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "push rax");
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, ax");
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov ax, %s", paramvalue);
+					info->stackOfs += 8;
+				}
+				else if (psize == 1)
+				{
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "push rax");
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "movsx rax, al");
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov al, %s", paramvalue);
+					info->stackOfs += 8;
+				}
+				return(1);
+			}
+
+			if (addr || psize > 8)
+			{
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "push %r", T_RAX);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "lea %r, %s", T_RAX, paramvalue);
+				info->stackOfs += 8;
+
+				/* Mark temp register rax as written */
+				*regs_used |= (1 << 6);
+
+				return(1);
+			}
 		}
+
 	}
 
 	return(1);
