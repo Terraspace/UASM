@@ -1342,8 +1342,8 @@ static void sysv_fcend(struct dsym const *proc, int numparams, int value)
 /*************************************************************************/
 {
 	/* use <value>, which has been set by sysv_fcstart() */
-	if (value > 0)
-		AddLineQueueX(" add %r, %d", T_RSP, value);
+	if ( (value + proc->e.procinfo->stackOfs) > 0 )
+		AddLineQueueX( "add %r, %d", T_RSP, NUMQUAL value + proc->e.procinfo->stackOfs );
 
 	/* 
 	If the given operands that go to stack push out the alignment at point of call, 
