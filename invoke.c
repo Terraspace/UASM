@@ -1887,17 +1887,12 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		/* No free Vector Register, value goes to stack */
 		else
 		{
-			BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r+%u], xmm8", MOVE_ALIGNED_INT, T_RSP, NUMQUAL info->stackAdj);
 			if (info->stackOfs % 16 != 0)
-			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 24", T_RSP);
-				info->stackOfs += 24;
-			}
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r+%u], xmm8", MOVE_ALIGNED_INT, T_RSP, NUMQUAL info->stackAdj);
 			else
-			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 16", T_RSP);
-				info->stackOfs += 16;
-			}
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r], xmm8", MOVE_ALIGNED_INT, T_RSP);
+			BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 16", T_RSP);
+			info->stackOfs += 16;
 			BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmm8, xmmword ptr %s", MOVE_ALIGNED_INT, paramvalue);
 		}
 		return(1);
@@ -1919,17 +1914,12 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		/* No free Vector Register, value goes to stack */
 		else
 		{
-			BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r+%u], ymm8", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL info->stackAdj);
 			if (info->stackOfs % 16 != 0)
-			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 40", T_RSP);
-				info->stackOfs += 40;
-			}
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r+%u], ymm8", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL info->stackAdj);
 			else
-			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 32", T_RSP);
-				info->stackOfs += 32;
-			}
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r], ymm8", MOVE_UNALIGNED_INT, T_RSP);
+			BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 32", T_RSP);
+			info->stackOfs += 32;
 			BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymm8, ymmword ptr %s", MOVE_UNALIGNED_INT, paramvalue);
 		}
 		return(1);
@@ -1952,17 +1942,12 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		/* No free Vector Register, value goes to stack */
 		else
 		{
-			BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r+%u], zmm8", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL info->stackAdj);
 			if (info->stackOfs % 16 != 0)
-			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 72", T_RSP);
-				info->stackOfs += 72;
-			}
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r+%u], zmm8", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL info->stackAdj);
 			else
-			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 64", T_RSP);
-				info->stackOfs += 64;
-			}
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r], zmm8", MOVE_UNALIGNED_INT, T_RSP);
+			BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 64", T_RSP);
+			info->stackOfs += 64;
 			BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmm8, zmmword ptr %s", MOVE_UNALIGNED_INT, paramvalue);
 		}
 		return(1);
@@ -2595,13 +2580,19 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 		{
 			if (opnd->kind == EXPR_REG)
 			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r+%u], %s", MOVE_ALIGNED_INT, T_RSP, NUMQUAL info->stackAdj, paramvalue);
+				if (info->stackOfs % 16 != 0)
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r+%u], %s", MOVE_ALIGNED_INT, T_RSP, NUMQUAL info->stackAdj, paramvalue);
+				else
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r], %s", MOVE_ALIGNED_INT, T_RSP, paramvalue);
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 16", T_RSP);
 				info->stackOfs += 16;
 			}
 			else
 			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r+%u], xmm8", MOVE_ALIGNED_INT, T_RSP, NUMQUAL info->stackAdj);
+				if (info->stackOfs % 16 != 0)
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r+%u], xmm8", MOVE_ALIGNED_INT, T_RSP, NUMQUAL info->stackAdj);
+				else
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmmword ptr [%r], xmm8", MOVE_ALIGNED_INT, T_RSP);
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 16", T_RSP);
 				info->stackOfs += 16;
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s xmm8, xmmword ptr %s", MOVE_ALIGNED_INT, paramvalue);
@@ -2615,13 +2606,19 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 		{
 			if (opnd->kind == EXPR_REG)
 			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r+%u], %s", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL info->stackAdj, paramvalue);
+				if (info->stackOfs % 16 != 0)
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r+%u], %s", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL info->stackAdj, paramvalue);
+				else
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r], %s", MOVE_UNALIGNED_INT, T_RSP, paramvalue);
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 32", T_RSP);
 				info->stackOfs += 32;
 			}
 			else
 			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r+%u], ymm8", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL info->stackAdj);
+				if (info->stackOfs % 16 != 0)
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r+%u], ymm8", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL info->stackAdj);
+				else
+
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 32", T_RSP);
 				info->stackOfs += 32;
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymm8, ymmword ptr %s", MOVE_UNALIGNED_INT, paramvalue);
@@ -2636,7 +2633,10 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 		{
 			if (opnd->kind == EXPR_REG)
 			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r+%u], %s", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL info->stackAdj, paramvalue);
+				if (info->stackOfs % 16 != 0)
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r+%u], %s", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL info->stackAdj, paramvalue);
+				else
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r], %s", MOVE_UNALIGNED_INT, T_RSP, paramvalue);
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 64", T_RSP);
 				info->stackOfs += 64;
 			}
