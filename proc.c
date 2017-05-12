@@ -3647,7 +3647,7 @@ static void write_sysv_default_prologue_RBP(struct proc_info *info)
 	/* Ensure RSP is aligned 16 */
 	gprOdd = (info->pushed_reg & 1);
 	if (stackadj == 0 && gprOdd) stackadj += 8;
-	else if (stackadj == 8 && !gprOdd) stackadj += 8;
+	else if (stackadj == 8 && !gprOdd && info->pushed_reg>0) stackadj -= 8;
 
 	/* Allocate space for local variables */
 	if (info->localsize)
@@ -3660,7 +3660,12 @@ static void write_sysv_default_prologue_RBP(struct proc_info *info)
 			// localsize includes the saved xmms, restack valid and a multiple of 16 or 0.
 			AddLineQueueX( "sub %r, %d", T_RSP, NUMQUAL (info->localsize + stackadj + resstack) );  
 	}
-		
+	/* No locals, still account for stackadj */
+	else if (stackadj > 0)
+	{
+		AddLineQueueX("sub %r, %d", T_RSP, NUMQUAL(stackadj + resstack));
+	}
+
 	/* save USED vector registers */
 	if (cntxmm) 
 	{

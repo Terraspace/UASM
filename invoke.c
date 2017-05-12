@@ -1589,7 +1589,6 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 	/* ******************************************************************************************************************** */
 	if (opnd->kind == EXPR_CONST && !addr) /* ignore when addr set to allow literal strings to go to the right handler */
 	{
-		psize = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
 		if (psize == 0) psize = 8;
 		reg = sysv_GetNextGPR( info, psize );
 		if (reg != -1)
@@ -1623,7 +1622,6 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 	/* ******************************************************************************************************************** */
 	if (opnd->kind == EXPR_FLOAT)
 	{
-		psize = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
 		if (psize == 0) psize = 4;		 // If no size specified, assume float.
 		reg = sysv_GetNextVEC(info, 16); // float or double will always go to xmm, so request size = 16.
 		if (reg != -1)
@@ -1779,7 +1777,6 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 	/* ******************************************************************************************************************** */
 	if (opnd->kind == EXPR_REG && opnd->indirect == TRUE)
 	{
-		psize = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
 		if (psize == 0) psize = 8;			// If no size specified, assume qword.
 		reg = sysv_GetNextGPR(info, psize);
 		if (reg != -1)
@@ -1829,7 +1826,6 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		_stricmp(opnd->sym->type->name, "__m256") != 0 &&
 		_stricmp(opnd->sym->type->name, "__m512") != 0) || !opnd->sym->type) )
 	{
-		psize = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
 		if (psize == 0) psize = 8;			// If no size specified, assume qword.
 		reg = sysv_GetNextGPR(info, psize);
 		if (reg != -1)
