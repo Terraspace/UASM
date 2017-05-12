@@ -240,7 +240,6 @@ static void output_opc(struct code_info *CodeInfo)
             ;/* that is good, there is no third operand for memory instruction */
         else {
             EmitErr(INVALID_INSTRUCTION_OPERANDS);
-            return(ERROR);
            }
         }
       }
