@@ -1298,6 +1298,16 @@ ins (RDSEED, rdseed,            OpCls( R,        NONE,     NONE ), F_0F,     0, 
 ins (LZCNT, lzcnt,              OpCls( RGT8,     RGT8_MS,  NONE ), F_F30F,   1,  no_WDS ,0xBD,     0x00,       P_686|P_SSE4, 0)
 ins (TZCNT, tzcnt,              OpCls( RGT8,     RGT8_MS,  NONE ), F_F30F,   1,  no_WDS ,0xBC,     0x00,       P_686|P_SSE4, 0)
 ins(INVPCID, invpcid,           OpCls( RGT8,     MS,       NONE ), F_660F38, 1,  no_WDS, 0x82,     0x00,       P_686|P_SSE4, 0)
+ins(BNDMK, bndmk,               OpCls( BND,      MS,       NONE ), F_F30F,   1,  no_WDS, 0x1B,     0x00,       P_686|P_SSE4, 0)
+ins(BNDCL, bndcl,               OpCls( BND,      R_MS,     NONE ), F_F30F,   1,  no_WDS, 0x1A,     0x00,       P_686|P_SSE4, 0)
+ins(BNDCU, bndcu,               OpCls( BND,      R_MS,     NONE ), F_F20F,   1,  no_WDS, 0x1A,     0x00,       P_686|P_SSE4, 0)
+ins(BNDCN, bndcn,               OpCls( BND,      R_MS,     NONE ), F_F20F,   1,  no_WDS, 0x1B,     0x00,       P_686|P_SSE4, 0)
+ins(BNDMOV, bndmov,             OpCls( BND,      BND_MS,   NONE ), F_660F,   1,  no_WDS, 0x1A,     0x00,       P_686|P_SSE4, 0)
+insn(BNDMOV, 1,                 OpCls( BND,      BND_M128, NONE ), F_660F,   1,  no_WDS, 0x1A,     0x00,       P_686|P_SSE4, 0)
+insn(BNDMOV, 2,                 OpCls( BND_MS,   BND,      NONE ), F_660F,   0,  no_WDS, 0x1B,     0x00,       P_686|P_SSE4, 0)
+insn(BNDMOV, 3,                 OpCls( BND_M128, BND,      NONE ), F_660F,   0,  no_WDS, 0x1B,     0x00,       P_686|P_SSE4, 0)
+ins(BNDLDX, bndldx,             OpCls( BND,      MS,       NONE ), F_0F,     1,  no_WDS, 0x1A,     0x00,       P_686|P_SSE4, 0)
+ins(BNDSTX, bndstx,             OpCls( MS,       BND,      NONE ), F_0F,     0,  no_WDS, 0x1B,     0x00,       P_686|P_SSE4, 0)
 
 #if 0
 /* SSE4A (AMD only). */
@@ -2001,6 +2011,4 @@ insn(KMOVW,      1,       OpCls(K,       M16,     NONE),     F_0F,        1,    
 insn(KMOVW,      2,       OpCls(M16,       K,     NONE),     F_0F,        0,         0,     0x91,      0x00,      P_686|P_AVX, 0)
 insn(KMOVW,      3,       OpCls(K,       R32,     NONE),     F_0F,        1,         0,     0x92,      0x00,      P_686|P_AVX, 0)
 insn(KMOVW,      4,       OpCls(R32,       K,     NONE),     F_0F,        1,         0,     0x93,      0x00,      P_686|P_AVX, 0)
-
-
 #endif

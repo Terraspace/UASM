@@ -48,6 +48,7 @@ enum operand_type {
 #if AMD64_SUPPORT
     OP_R64      = 0x00000008,
 #endif
+    OP_BND      = 0x00000009,
     OP_MMX      = 0x00000010,  /* MMx register */
     OP_XMM      = 0x00000020,  /* XMMx register */
 #if AVXSUPP

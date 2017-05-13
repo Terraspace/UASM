@@ -82,6 +82,8 @@ enum operand_sets {
   //OP_YMM_M64 = (OP_YMM | OP_M64),
   //OP_ZMM_M64 = (OP_ZMM | OP_M64),
   OP_XMM_M128 = (OP_XMM | OP_M128),
+  OP_BND_MS   = (OP_BND | OP_MS),
+  OP_BND_M128 = (OP_BND | OP_M128),
 #if MASM_SSE_MEMX
   /* extended Masm syntax: sometimes Masm accepts 2 mem types
   * for the memory operand, although the mem access will always
@@ -875,7 +877,7 @@ VX_LL|VX_L,      /* VPMULTISHIFTQB */
 		 VX_NND,      /* KMOVD    */
 		 VX_NND,      /* KMOVQ    */
 		 VX_NND,      /* KMOVW    */
-
+//         VX_NND,      /* BNDMK   */
 #define avxins( tok, string, cpu, flgs ) flgs,
 #include "instravx.h"
 #undef avxins
