@@ -3211,7 +3211,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				for (j = 0; j < slen; j++)
 				{
 					c1 = *pSrc++;
-					c2 = *(pSrc+1);
+					c2 = *(pSrc);
 					if (c1 == '\\' && c2 == 'n')
 					{
 						if (Options.output_format == OFORMAT_COFF)
@@ -3224,6 +3224,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 							*pDest++ = 10;
 							finallen--;
 						}
+						pSrc++;
 					}
 					else
 						*pDest++ = c1;
