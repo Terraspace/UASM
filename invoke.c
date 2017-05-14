@@ -3152,6 +3152,9 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 	char *pDest;
 	char *labelstr = "__ls";
 	char buf[32];
+	char c1;
+	char c2;
+	size_t finallen;
 
 	DebugMsg1(("PushInvokeParam(%s, param=%s:%u, i=%u ) enter\n", proc->sym.name, curr ? curr->sym.name : "NULL", reqParam, i));
 	//__debugbreak();
@@ -3204,9 +3207,26 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 					pDest += lbl->offset;
 				}
 
+				finallen = slen;
 				for (j = 0; j < slen; j++)
 				{
-					*pDest++ = *pSrc++;
+					c1 = *pSrc++;
+					c2 = *(pSrc+1);
+					if (c1 == '\\' && c2 == 'n')
+					{
+						if (Options.output_format == OFORMAT_COFF)
+						{
+							*pDest++ = 13;
+							*pDest++ = 10;
+						}
+						else
+						{
+							*pDest++ = 10;
+							finallen--;
+						}
+					}
+					else
+						*pDest++ = c1;
 				}
 				*pDest++ = 0;
 
@@ -3227,8 +3247,8 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				lbl->ispublic = 0;
 			}
 
-			currs->e.seginfo->current_loc += (slen + 1);
-			currs->e.seginfo->bytes_written += (slen + 1);
+			currs->e.seginfo->current_loc += (finallen + 1);
+			currs->e.seginfo->bytes_written += (finallen + 1);
 			currs->e.seginfo->written = TRUE;
 			if (currs->e.seginfo->current_loc > currs->sym.max_offset)
 				currs->sym.max_offset = currs->e.seginfo->current_loc;

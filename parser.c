@@ -2438,6 +2438,7 @@ static ret_code check_size( struct code_info *CodeInfo, const struct expr opndx[
         case 4:
             break;
         default:
+            
             EmitErr( OPERANDS_MUST_BE_THE_SAME_SIZE, OperandSize( op1, CodeInfo ), ModuleInfo.Ofssize ? 4 : 2);
             rc = ERROR;
         }
@@ -2800,8 +2801,46 @@ static ret_code check_size( struct code_info *CodeInfo, const struct expr opndx[
                 (CodeInfo->token == T_VCVTTSD2USI)||(CodeInfo->token == T_VCVTTSS2USI))
                 CodeInfo->evex_flag = TRUE;
               else{
-                EmitErr(OPERANDS_MUST_BE_THE_SAME_SIZE, op1_size, op2_size);
-                rc = ERROR;
+                if (CodeInfo->token >= T_BNDMK && CodeInfo->token <= T_BNDSTX){
+                  //__debugbreak();
+                  switch (CodeInfo->token){
+                    case T_BNDMK:
+                    case T_BNDCL:
+                    case T_BNDCU:
+                    case T_BNDCN:
+                                if (CodeInfo->mem_type == MT_DWORD || CodeInfo->mem_type == MT_QWORD ||
+                                    CodeInfo->mem_type ==  MT_EMPTY)
+                                  ;
+                                else{
+                                   EmitErr(OPERANDS_MUST_BE_THE_SAME_SIZE, op1_size, op2_size);
+                                   rc = ERROR;
+                                  }
+                                break;
+                    case T_BNDMOV:
+                                if (CodeInfo->mem_type == MT_DWORD || CodeInfo->mem_type == MT_QWORD ||
+                                    CodeInfo->mem_type == MT_OWORD || CodeInfo->mem_type ==  MT_EMPTY)
+                                  ;
+                                else{
+                                   EmitErr(OPERANDS_MUST_BE_THE_SAME_SIZE, op1_size, op2_size);
+                                   rc = ERROR;
+                                  }
+                                break;
+                    case T_BNDLDX:
+                    case T_BNDSTX:
+                                if (CodeInfo->mem_type == MT_DWORD || CodeInfo->mem_type == MT_QWORD ||
+                                    CodeInfo->mem_type ==  MT_EMPTY)
+                                  ;
+                                else{
+                                   EmitErr(OPERANDS_MUST_BE_THE_SAME_SIZE, op1_size, op2_size);
+                                   rc = ERROR;
+                                  }
+                                break;
+                    }
+                  }
+                else{
+                 EmitErr(OPERANDS_MUST_BE_THE_SAME_SIZE, op1_size, op2_size);
+                 rc = ERROR;
+                  }
               }
             }
             /* size == 0 is assumed to mean "undefined", but there
