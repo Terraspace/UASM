@@ -3571,30 +3571,6 @@ static void sysv_return(struct dsym *proc, char *buffer)
 	return;
 }
 
-/* OPTION SYSV:1 - save up to 6 register parameters for SYSV SysVcall */
-static void sysv_SaveRegParams_RBP(struct proc_info *info)
-/*******************************************************/
-{
-	int i;
-	struct dsym *param;
-	if (CurrProc->sym.langtype == LANG_SYSVCALL) {
-		for (i = 0, param = info->paralist; param && (i < 6); i++) {
-			/* v2.05: save XMMx if type is float/double */
-			if (param->sym.is_vararg == FALSE) {
-				if (param->sym.mem_type & MT_FLOAT && param->sym.used)
-					AddLineQueueX("%s [%r+%u], %r", MOVE_SIMD_QWORD, T_RSP, 8 + i * 8, T_XMM0 + i);
-				else if (param->sym.used)
-					AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, sysV64_regs[i]);
-				param = param->nextparam;
-			}
-			else { /* v2.09: else branch added */
-				AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, sysV64_regs[i]);
-			}
-		}
-	}
-	return;
-}
-
 /* sysv default prologue when PROC FRAME and OPTION FRAME:AUTO is set */
 static void write_sysv_default_prologue_RBP(struct proc_info *info)
 /****************************************************************/
@@ -3648,6 +3624,9 @@ static void write_sysv_default_prologue_RBP(struct proc_info *info)
 	gprOdd = (info->pushed_reg & 1);
 	if (stackadj == 0 && gprOdd) stackadj += 8;
 	else if (stackadj == 8 && !gprOdd && info->pushed_reg>0) stackadj -= 8;
+
+	if (info->localsize == 8 && stackadj == 8)
+		stackadj = 0;
 
 	/* Allocate space for local variables */
 	if (info->localsize)
@@ -3846,9 +3825,6 @@ static ret_code write_default_prologue( void )
 			win64_SaveRegParams_RSP( info );
 		else if (CurrProc->sym.langtype == LANG_FASTCALL && ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RBP)
 			win64_SaveRegParams_RBP( info );
-		/* initialize shadow space for register params */
-		//else if (CurrProc->sym.langtype == LANG_SYSVCALL)
-			//sysv_SaveRegParams_RBP( info );
 	}
 #endif
     if( info->locallist || info->stackparam || info->has_vararg || info->forceframe ) {
@@ -4003,9 +3979,11 @@ static void SetLocalOffsets_RBP(struct proc_info *info)
 		if ((info->fpo || (info->parasize == 0 && info->locallist == NULL)))
 			start = 0;
 #if AMD64_SUPPORT
-        if ( rspalign ) {
-            info->localsize = start + (cntstd * CurrWordSize);
-            if ( cntxmm ) {
+        if ( rspalign ) 
+		{
+			info->localsize = start + (cntstd * CurrWordSize);
+			if ( cntxmm ) 
+			{
                 info->localsize += 16 * cntxmm;
                 info->localsize = ROUND_UP( info->localsize, 16 );
             }
