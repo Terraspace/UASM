@@ -96,6 +96,12 @@ res(K5, k5, RWT_REG, OP_K,    5,      0,    P_AVX, 8)
 res(K6, k6, RWT_REG, OP_K,    6,      0,    P_AVX, 8)
 res(K7, k7, RWT_REG, OP_K,    7,      0,    P_AVX, 8)
 
+res(BND0, bnd0, RWT_REG, OP_BND,    0,      0,    P_686, 8)
+res(BND1, bnd1, RWT_REG, OP_BND,    1,      0,    P_686, 8)
+res(BND2, bnd2, RWT_REG, OP_BND,    2,      0,    P_686, 8)
+res(BND3, bnd3, RWT_REG, OP_BND,    3,      0,    P_686, 8)
+
+
 res(YMM0, ymm0, RWT_REG, OP_YMM, 0, 0, P_AVX, 32)
 res(YMM1, ymm1, RWT_REG, OP_YMM, 1, 0, P_AVX, 32)
 res(YMM2, ymm2, RWT_REG, OP_YMM, 2, 0, P_AVX, 32)

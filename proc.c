@@ -3566,8 +3566,6 @@ static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int 
 static void sysv_return(struct dsym *proc, char *buffer)
 /********************************************************/
 {
-	if (proc->e.procinfo->parasize > (sysv_maxreg[ModuleInfo.Ofssize] * CurrWordSize))
-		sprintf(buffer + strlen(buffer), "%d%c", proc->e.procinfo->parasize - (sysv_maxreg[ModuleInfo.Ofssize] * CurrWordSize), ModuleInfo.radix != 10 ? 't' : NULLC);
 	return;
 }
 

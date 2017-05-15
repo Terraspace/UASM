@@ -2685,6 +2685,19 @@ static ret_code check_size( struct code_info *CodeInfo, const struct expr opndx[
         else
             CodeInfo->prefix.opsiz = CodeInfo->Ofssize ? FALSE : TRUE;
         break;
+        /* size for BND instructions can not be less then DWORD v2.31 */
+     case T_BNDMK:
+     case T_BNDCL:
+     case T_BNDCU:
+     case T_BNDCN:
+     case T_BNDMOV:
+     case T_BNDLDX:
+     case T_BNDSTX:
+         if (CodeInfo->mem_type == MT_BYTE || CodeInfo->mem_type == MT_WORD ){
+           EmitError( INVALID_OPERAND_SIZE );
+           rc = ERROR;
+           }
+           break;
 #endif
     case T_MOVD:
 #if 0
