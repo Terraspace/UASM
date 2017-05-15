@@ -232,7 +232,7 @@ ret_code SimplifiedSegDir( int i, struct asm_tok tokenarray[] )
         }
     } else {
         /* Masm accepts a name argument for .CODE and .FARDATA[?] only.
-         * HJWasm also accepts this for .DATA[?] and .CONST unless
+         * Hasm also accepts this for .DATA[?] and .CONST unless
          * option -Zne is set.
          */
         if( tokenarray[i].token == T_ID &&

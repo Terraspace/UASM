@@ -31,7 +31,7 @@ enum context_type {
     CONT_RADIX     = 0x02,
     CONT_LISTING   = 0x04,
     CONT_CPU       = 0x08,
-    CONT_ALIGNMENT = 0x10, /* new for v2.0, specific for HJWasm */
+    CONT_ALIGNMENT = 0x10, /* new for v2.0, specific for Hasm */
     CONT_ALL       = CONT_ASSUMES | CONT_RADIX | CONT_LISTING | CONT_CPU,
 };
 
@@ -50,7 +50,7 @@ static const char * const contextnames[] = {
 #endif
 
 /* Masm has a max context nesting level of 10.
- * HJWasm has no restriction currently.
+ * Hasm has no restriction currently.
  */
 
 struct assumes_context {

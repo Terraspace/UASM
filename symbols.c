@@ -137,7 +137,8 @@ struct eqitem {
 
 /* table of predefined numeric equates */
 static const struct eqitem eqtab[] = {
-    { "__HJWASM__", _HJWASM_VERSION_INT_, NULL, NULL },
+    { "__HJWASM__", _HASM_VERSION_INT_, NULL, NULL },
+	{ "__HASM__", _HASM_VERSION_INT_, NULL, NULL },
 	{ "__JWASM__", 212, NULL, NULL },
     { "$",         0,                   UpdateCurPC, &symPC },
     { "@Line",     0,                   UpdateLineNumber, &LineCur },

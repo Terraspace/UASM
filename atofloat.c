@@ -88,7 +88,7 @@ void atofloat( void *out, const char *inp, unsigned size, bool negative, uint_8 
             break;
         default:
             /* sizes != 4,8 or 10 aren't accepted.
-             * Masm ignores silently, HJWasm also unless -W4 is set.
+             * Masm ignores silently, Hasm also unless -W4 is set.
              */
             if ( Parse_Pass == PASS_1 )
                 EmitWarn( 4, FP_INITIALIZER_IGNORED );

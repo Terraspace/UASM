@@ -1052,7 +1052,7 @@ next_item:  /* <--- continue scan if a comma has been detected */
                 /* Masm generates
                  * off32 if curr segment is 32bit
                  * ptr16 if curr segment is 16bit
-                 * HJWasm additionally accepts a FAR32 PTR override
+                 * Hasm additionally accepts a FAR32 PTR override
                  * and generates a ptr32 fixup then */
                 if ( opndx.explicit == TRUE && opndx.mem_type == MT_FAR && opndx.Ofssize == USE32 )
                     fixup_type = FIX_PTR32;
@@ -1398,7 +1398,7 @@ ret_code data_dir( int i, struct asm_tok tokenarray[], struct asym *type_sym )
 
     i++;
 
-	/* Enhanced HJWASM 2.22+ Union initialize */
+	/* Enhanced Hasm 2.22+ Union initialize */
 	if (tokenarray[i].token == T_DOT && type_sym->state == SYM_TYPE)
 	{
 		i++; // skip dot.

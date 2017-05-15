@@ -37,7 +37,7 @@
  * EXTERN X:ABS
  * X EQU 0
  *
- * is rejected! MASM_EXTCOND=1 will copy this behavior for HJWasm.
+ * is rejected! MASM_EXTCOND=1 will copy this behavior for Hasm.
  */
 #define MASM_EXTCOND 1  /* 1 is Masm compatible */
 
@@ -46,7 +46,7 @@ static const char szCOMM[] = "COMM";
 #if MANGLERSUPP
 
 /* The "mangler" has been inherited from Wasm.
- * By default it's not active in HJWasm (see MANGLERSUPP in globals.h)
+ * By default it's not active in Hasm (see MANGLERSUPP in globals.h)
  * It allows some fine tuning of the external's name in the object module,
  * but is relevant for mixing with OW code only.
  * Syntax:

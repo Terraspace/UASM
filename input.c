@@ -43,7 +43,7 @@
 
 /* FILESEQ: if 1, stores a linked list of source files, ordered
  * by usage. Masm stores such a list in the COFF symbol table
- * when -Zd/-Zi is set. It isn't necessary, however, and HJWasm's
+ * when -Zd/-Zi is set. It isn't necessary, however, and Hasm's
  * COFF code currently will ignore the list.
  */
 

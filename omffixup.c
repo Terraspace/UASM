@@ -95,7 +95,7 @@ static uint_8 *putFrameDatum( uint_8 *p, uint_8 method, uint_16 datum )
 static uint_8 *putTargetDatum( uint_8 *p, uint_8 method, uint_16 datum )
 /**********************************************************************/
 {
-#if 0 /* v2.12: HJWasm won't use TARGE_ABSxx; also, it's not defined for FIXUP sub-records */
+#if 0 /* v2.12: Hasm won't use TARGE_ABSxx; also, it's not defined for FIXUP sub-records */
     if( ( method & 0x03 ) == TARGET_ABSWD ) {
         return( put16( p, datum ) );
     }

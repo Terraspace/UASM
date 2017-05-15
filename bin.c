@@ -184,7 +184,7 @@ static const struct IMAGE_PE_HEADER64 pe64def = {
 #endif
 
 #ifdef __I86__
-/* "huge" fwrite() for HJWasmr.exe */
+/* "huge" fwrite() for Hasmr.exe */
 uint_32 hfwrite( uint_8 huge *pBuffer, int size, uint_32 count, FILE *file )
 /**************************************************************************/
 {

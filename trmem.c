@@ -758,7 +758,7 @@ _trmem_who  _trmem_whoami( void )
 _trmem_hdl  hTrmem;
 FILE        *FileTrmem;  /* file handle we'll write() to */
 
-#define TRMEM_LOGFN "~hjwasm.trk"
+#define TRMEM_LOGFN "~Hasm.trk"
 
 static void memLine( FILE *fh, const char *buf, unsigned size )
 /*************************************************************/
