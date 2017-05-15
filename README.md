@@ -1,4 +1,4 @@
-![alt tag](http://www.terraspace.co.uk/gfx/hjwasm.png)
+![alt tag](http://www.terraspace.co.uk/gfx/hasm.png)
 
 ---
 
