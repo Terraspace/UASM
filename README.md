@@ -1,4 +1,6 @@
+<p align="center">
 ![alt tag](http://www.terraspace.co.uk/gfx/hasm.png)
+</p>
 
 ---
 
