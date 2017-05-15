@@ -1,7 +1,7 @@
 
 /* this is Public Domain.
  fastpass.h defines structures and externals which are needed by the
- "fast pass" feature. This feature speeds HJWasm's assembly significantly
+ "fast pass" feature. This feature speeds Hasm's assembly significantly
  if huge header files containing declarations and definitions are used
  (as it is the case with Win32Inc and Masm32), since the header files are
  then scanned in pass one only.

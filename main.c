@@ -88,7 +88,7 @@ int main(int argc, char **argv)
 	tm_Init();
 #endif
 
-	pEnv = getenv("HJWASM");
+	pEnv = getenv("HASM");
 	if (pEnv == NULL)
 		pEnv = "";
 	argv[0] = pEnv;

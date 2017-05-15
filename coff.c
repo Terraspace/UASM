@@ -29,7 +29,7 @@
 
 #define HELPSYMS     0 /* use helper symbols for assembly time symbol refs */
 #define MANGLE_BYTES 8 /* extra size required for name decoration */
-/* v2.04: to make HJWasm always add static (=private) procs to the symbol table
+/* v2.04: to make Hasm always add static (=private) procs to the symbol table
  * set STATIC_PROCS to 1. Normally those procs are only added if line
  * number/symbolic debugging information is generated.
  */

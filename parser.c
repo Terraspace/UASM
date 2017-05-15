@@ -883,9 +883,9 @@ static ret_code idata_nofixup( struct code_info *CodeInfo, unsigned CurrOpnd, co
         //else if ( value <= SHRT_MAX && value >= SHRT_MIN )
         /* v2.04: range FFFF0000-FFFF7FFF is also acceptable for 16-bit */
         //else if ( value <= USHRT_MAX && value >= SHRT_MIN )
-        /* v2.04b: HJWASMR needs a 1L */
+        /* v2.04b: HasmR needs a 1L */
         //else if( value <= USHRT_MAX && value >= - (USHRT_MAX+1) )
-        /* v2.07: HJWASMR needs 0L before the - op */
+        /* v2.07: HasmR needs 0L before the - op */
         //else if( value <= USHRT_MAX && value >= - USHRT_MAX )
         else if( value <= USHRT_MAX && value >= 0L - USHRT_MAX )
             op_type = OP_I16;
@@ -1607,7 +1607,7 @@ static ret_code memory_operand( struct code_info *CodeInfo, unsigned CurrOpnd, s
         switch ( CodeInfo->token ) {
         case T_INC:
         case T_DEC:
-            /* hjwasm v1.94-v2.04 accepted unsized operand for INC/DEC */
+            /* Hasm v1.94-v2.04 accepted unsized operand for INC/DEC */
             if ( opndx->sym == NULL ) {
                 return( EmitError( INSTRUCTION_OPERAND_MUST_HAVE_SIZE ) );
             }
@@ -1677,7 +1677,7 @@ static ret_code memory_operand( struct code_info *CodeInfo, unsigned CurrOpnd, s
         /* v2.10: register swapping has been moved to expreval.c, index_connect().
          * what has remained here is the check if R/ESP is used as index reg.
          */
-		if ((GetRegNo(index) == 4)&& GetValueSp( index )< OP_XMM //Fixed error  CANNOT_BE_USED_AS_INDEX_REGISTER, HJWasm 2.16
+		if ((GetRegNo(index) == 4)&& GetValueSp( index )< OP_XMM //Fixed error  CANNOT_BE_USED_AS_INDEX_REGISTER, Hasm 2.16
 #if 0
 			&& (GetResWName(index, NULL) <= T_RBP)
 #endif
@@ -1844,7 +1844,7 @@ static ret_code process_address( struct code_info *CodeInfo, unsigned CurrOpnd, 
                    CodeInfo->prefix.adrsiz ));
         /* if displacement doesn't fit in 32-bits:
          * Masm (both ML and ML64) just truncates.
-         * HJWasm throws an error in 64bit mode and
+         * Hasm throws an error in 64bit mode and
          * warns (level 3) in the other modes.
          * todo: this check should also be done for direct addressing!
          */
@@ -2789,11 +2789,11 @@ static ret_code check_size( struct code_info *CodeInfo, const struct expr opndx[
         }
 #endif
 #if 0
-        /* v2.03: this "if" made HJWasm accept any 32-bit constant
+        /* v2.03: this "if" made Hasm accept any 32-bit constant
          *        for 16-bit destinations, which is Masm compatibel,
          *      "mov ax, 12345h"
          * the test is a bit too liberal here, IMO, because
-         * it makes HJWasm accept "mov ax, near32 ptr var",
+         * it makes Hasm accept "mov ax, near32 ptr var",
          * which is rejected by Masm.
          */
         if( ( op1_size == 2 ) && ( op2 == OP_I32 )

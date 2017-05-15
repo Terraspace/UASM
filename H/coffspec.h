@@ -1,5 +1,5 @@
 
-/* the MS COFF declarations, as far as it's relevant for HJWasm.
+/* the MS COFF declarations, as far as it's relevant for Hasm.
  * The full declarations can be found in MS PSDK, WinNT.h.
  */
 

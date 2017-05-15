@@ -362,7 +362,7 @@ avxins(PSLLD, vpslld, P_AVX, VX_LL | VX_L | VX_DST | VX_HALF)   /* -, d/s */
 avxins(PSLLQ, vpsllq, P_AVX, VX_LL | VX_L | VX_DST | VX_HALF)   /* -, d/s */
 avxins(PSRAW, vpsraw, P_AVX, VX_LL | VX_L | VX_DST | VX_HALF)   /* -, d/s */
 avxins(PSRAD, vpsrad, P_AVX, VX_LL | VX_L | VX_DST | VX_HALF)   /* -, d/s */
-/* PSRAQ moved here for easyer handling, HJWasm 2.16 */
+/* PSRAQ moved here for easyer handling, Hasm 2.16 */
 avxins(PSRAQ, vpsraq, P_AVX, VX_LL | VX_L | VX_DST | VX_HALF)   /* -, d/s */
 avxins(PSRLW, vpsrlw, P_AVX, VX_LL | VX_L | VX_DST | VX_HALF)   /* -, d/s */
 avxins(PSRLD, vpsrld, P_AVX, VX_LL | VX_L | VX_DST | VX_HALF)   /* -, d/s */

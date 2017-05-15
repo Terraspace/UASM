@@ -20,7 +20,7 @@
 /*
  If Win32 resource strings are to be used, the
  makefiles must contain a call of the resource compiler!
- Resource file is H/HJWasm.rc.
+ Resource file is H/Hasm.rc.
  */
 
 #include "win32.h"
@@ -63,7 +63,7 @@ static const char * const msgtexts[] = {
 const char szCVCompiler[] = { "Microsoft (R) Macro Assembler Version 6.15.8803" };
 //const char szCVCompiler[] = { "Microsoft (R) Macro Assembler Version 8.00.50727" };
 #else
-const char szCVCompiler[] = { "HJWasm v" _HJWASM_VERSION_STR_ };
+const char szCVCompiler[] = { "Hasm v" _HASM_VERSION_STR_ };
 #endif
 
 static const char *MsgGet( int msgid, char *buffer )

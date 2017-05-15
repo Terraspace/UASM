@@ -24,7 +24,7 @@
 *
 *  ========================================================================
 *
-* Description:  HJWasm globals and limits.
+* Description:  Hasm globals and limits.
 *
 ****************************************************************************/
 
@@ -204,15 +204,15 @@
 #include "errmsg.h"  /* must be located AFTER #defines lines */
 #include "queue.h"
 
-/* HJWasm version info */
+/* Hasm version info */
 #ifdef _WIN64
-#define _HJWASM_VERSION_STR_ "2.31"
+#define _HASM_VERSION_STR_ "2.31"
 #else
-#define _HJWASM_VERSION_STR_ "2.31"
+#define _HASM_VERSION_STR_ "2.31"
 #endif
-#define _HJWASM_VERSION_INT_ 231
-#define _HJWASM_VERSION_SUFFIX_ "pre"
-#define _HJWASM_VERSION_ _HJWASM_VERSION_STR_ //_HJWASM_VERSION_SUFFIX_
+#define _HASM_VERSION_INT_ 231
+#define _HASM_VERSION_SUFFIX_ "pre"
+#define _HASM_VERSION_ _HASM_VERSION_STR_ //_HASM_VERSION_SUFFIX_
 
 #if defined(_WIN32) || defined(_WIN64) 
 #define snprintf _snprintf 

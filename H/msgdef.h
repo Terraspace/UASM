@@ -6,10 +6,10 @@
  * v2.06: Japanese texts removed.
  * v2.07: listing texts moved to ltext.h
  */
-pick( MSG_USAGE,              "usage: HJWasm [ options ] filelist [@env_var]\n" "Run \"HJWasm -?\" or \"HJWasm -h\" for more info\n" )
+pick( MSG_USAGE,              "usage: Hasm [ options ] filelist [@env_var]\n" "Run \"Hasm -?\" or \"Hasm -h\" for more info\n" )
 pick( MSG_ASSEMBLY_RESULTS,   "%s: %lu lines, %u passes, %u ms, %u warnings, %u errors" )
-pick( MSG_HJWASM,              "HJWasm v" _HJWASM_VERSION_ ", " __DATE__ )
-pick( MSG_HJWASM2,             "Masm-compatible assembler.\n" "Portions Copyright (c) 1992-2002 Sybase, Inc. All Rights Reserved.\n" "Source code is available under the Sybase Open Watcom Public License.\n" )
+pick( MSG_HASM,               "Hasm v" _HASM_VERSION_ ", " __DATE__ )
+pick( MSG_HASM2,              "Masm-compatible assembler.\n" "Portions Copyright (c) 1992-2002 Sybase, Inc. All Rights Reserved.\n" "Source code is available under the Sybase Open Watcom Public License.\n" )
 pick( MSG_ERROR_PREFIX,       "Error" )
 pick( MSG_WARNING_PREFIX,     "Warning" )
 pick( MSG_FATAL_PREFIX,       "Fatal error" )
@@ -24,8 +24,8 @@ pick( TXT_CHARACTERISTICS,    "characteristics" )
 pick( TXT_ALIASNAME,          "alias" ) /* v2.10: added */
 
 /* error/warning message text constants */
-pick(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS, "invalid combination of opcode and operands")/*HJWasm v2.13: added */
-pick(DECORATOR_OR_BRACE_EXPECTED, "decorator or brace expected")               /*HJWasm v2.13: added */
+pick(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS, "invalid combination of opcode and operands")/*Hasm v2.13: added */
+pick(DECORATOR_OR_BRACE_EXPECTED, "decorator or brace expected")               /*Hasm v2.13: added */
 pick(WRONG_MASK_REGISTER_NUBER, "wrong mask register number")
 pick(TO_MANY_DECORATORS, "to many decorators")
 pick(MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS, "mismatch in the number of broadcasting elements")

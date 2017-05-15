@@ -66,7 +66,7 @@ enum segdef_align_values {
 
 /*
  *  INTEL Segment Combination Attributes - C field
- *  HJWasm uses COMB_INVALID, COMB_ADDOFF, COMB_STACK & COMB_COMMON
+ *  Hasm uses COMB_INVALID, COMB_ADDOFF, COMB_STACK & COMB_COMMON
  */
 
 enum combine_attributes {
@@ -108,7 +108,7 @@ enum frame_methods {
 /*
  *  INTEL Target Specifiers
  *  TARGET_ABS[WD] is supported for THREAD sub-records only, according to TIS OMF docs;
- *  Since HJWasm won't write THREAD sub-records, those methods are invalid.
+ *  Since Hasm won't write THREAD sub-records, those methods are invalid.
  */
 enum target_methods {
     TARGET_SEGWD        = 0,        /* segment index with displacement  */
@@ -253,7 +253,7 @@ enum {
     CMT_TNL = 0x40,   /* no list bit */
 };
 /*
- * Comment classes. HJWasm uses:
+ * Comment classes. Hasm uses:
  * - CMT_DOSSEG           : dosseg directive
  * - CMT_DEFAULT_LIBRARY  : includelib directive
  * - CMT_OMF_EXT          : PROC's EXPORT attribute
@@ -308,7 +308,7 @@ enum omf_ext_subtype {
 
 /*
  *  Linker directives ( CMT_LINKER_DIRECTIVE - mostly WLINK directives )
- *  HJWasm uses LDIR_OPT_FAR_CALLS only
+ *  Hasm uses LDIR_OPT_FAR_CALLS only
  */
 enum linker_directives {
     LDIR_SOURCE_LANGUAGE= 'D',  /* dbg maj/min and source language      */

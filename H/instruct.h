@@ -109,7 +109,7 @@ insx(LOOPNEW,loopnew,           OpCls( I8,   NONE,  NONE  ), F_16A,  0,  no_RM, 
 insx(LOOPNZW,loopnzw,           OpCls( I8,   NONE,  NONE  ), F_16A,  0,  no_RM,  0xE0,     0x00,       P_86,        0, RWF_IA32)
 
 /* arith instructions. Masm v6 encodes operand types R,R differently
- * (direction bit is NOT set). HJWasm does like Masm v8+.
+ * (direction bit is NOT set). Hasm does like Masm v8+.
  */
 
 #define ari( name, namelc, code, lock )      \
@@ -240,7 +240,7 @@ insn(RETW, 1,                   OpCls( NONE,     NONE,       NONE ), F_16,   0, 
 
 /* protected-mode instructions */
 /* some (i.e. SMSW) also work with 32bit register as first operand, but Masm won't accept.
- * to make HJWasm accept, change OP_R16 to OP_RGT8
+ * to make Hasm accept, change OP_R16 to OP_RGT8
  */
 
 ins (ARPL, arpl,                OpCls( R16_M16,  R16,      NONE ), 0,       0,  no_WDS, 0x63,     0x00,       P_286,       0)
@@ -1012,7 +1012,7 @@ ins (PSRAD, psrad,              OpCls( MMX,      MMX_M64,  NONE ), F_0F,   1,  n
 insn(PSRAD, 1,                  OpCls( MMX,      I8_U,     NONE ), F_0F,   0,  no_WDS, 0x72,     0x20,       P_586|P_MMX, QSIZE)
 insn(PSRAD, 2,                  OpCls( XMM,      I8_U,     NONE ), F_660F, 0,  no_WDS, 0x72,     0x20,       P_686|P_SSE2,DSIZE|FV)
 insn(PSRAD, 3,                  OpCls( XMM,      XMM_M128, NONE ), F_660F, 1,  no_WDS, 0xE2,     0x00,       P_686|P_SSE2,DSIZE|T128)
-/* PSRAQ moved here for easyer handling, HJWasm 2.16 */
+/* PSRAQ moved here for easyer handling, Hasm 2.16 */
 //EVEX.NDD.128.66.0F.W1 72 /4 ib FVI VPSRAQ xmm1 {k1}{z}, xmm2/m128/m64bcst, imm8
 ins(PSRAQ, psraq,               OpCls( XMM,      I8_U,     NONE ), F_660F, 0,  no_WDS, 0x72,     0x20,       P_686|P_AVX,W1|IZSZ|QSIZE|FV)
 insn(PSRAQ, 1,                  OpCls( XMM,      XMM_M128, NONE ), F_660F, 1,  no_WDS, 0xE2,     0x00,       P_686|P_AVX,W1|QSIZE|T128)
@@ -1311,7 +1311,7 @@ ins(BNDSTX, bndstx,             OpCls( MS,       BND,      NONE ), F_0F,     0, 
 
 #if 0
 /* SSE4A (AMD only). */
-/* disabled because INSERTQ needs 4 arguments, which HJWasm cannot support currently */
+/* disabled because INSERTQ needs 4 arguments, which Hasm cannot support currently */
 ins (EXTRQ, extrq,              OpCls( XMM,      I8_U,     I8_U ), F_660F, 0,  no_WDS ,0x78,     0x00,       P_686|P_SSE4, 0)
 ins (INSERTQ, insertq,          OpCls( XMM,      XMM,      I8_U ), F_F20F, 0,  no_WDS ,0x78,     0x00,       P_686|P_SSE4, 0)
 ins (LZCNT, lzcnt,              OpCls( RGT8,     RGT8_MS,  NONE ), F_F30F, 1,  no_WDS ,0xBD,     0x00,       P_686|P_SSE4, 0)
@@ -1740,7 +1740,7 @@ insx(VPRORD,  vprord,       OpCls( XMM,      I8_U,      NONE ), F_660F,   0,  no
 insx(VPRORVD, vprorvd,      OpCls( XMM,      XMM_M128,  NONE ), F_660F38, 1,  no_WDS,0x14,     0x00,     P_686|P_AVX,IZSZ|DSIZE|FV,RWF_EVEX|RWF_VEX)
 insx(VPRORQ,  vprorq,       OpCls( XMM,      I8_U,      NONE ), F_660F,   0,  no_WDS,0x72,     0x01,     P_686|P_AVX,W1|IZSZ|QSIZE|FV,RWF_EVEX|RWF_VEX)
 insx(VPRORVQ, vprorvq,      OpCls( XMM,      XMM_M128,  NONE ), F_660F38, 1,  no_WDS,0x14,     0x00,     P_686|P_AVX,W1|IZSZ|QSIZE|FV,RWF_EVEX|RWF_VEX)
-/* moved to line 1016 for easyer handling HJWasm 2.16 */
+/* moved to line 1016 for easyer handling Hasm 2.16 */
 //insx(VPSRAQ, vpsraq,        OpCls( XMM,      I8_U,      NONE ), F_660F,   0,  no_WDS,0x72,     0x20,     P_686|P_AVX,W1|QSIZE|FV,RWF_EVEX|RWF_VEX|VX_DST)
 //insn(VPSRAQ, 1,             OpCls( XMM,      XMM_M128,  NONE ), F_660F,   1,  no_WDS,0xE2,     0x00,     P_686|P_AVX,W1|QSIZE|T128)
 insx(VPSRAVD, vpsravd,      OpCls( XMM,      XMM_M128,  NONE ), F_660F38, 1,  no_WDS,0x46,     0x00,     P_686|P_AVX,DSIZE|FV,RWF_EVEX|RWF_VEX)

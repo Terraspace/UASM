@@ -1268,7 +1268,7 @@ void LstInit( void )
     list_pos = 0;
     if( Options.write_listing ) {
         int namelen;
-        buffer = MsgGetEx( MSG_HJWASM );
+        buffer = MsgGetEx( MSG_HASM );
         list_pos = strlen( buffer );
         fwrite( buffer, 1, list_pos, CurrFile[LST] );
         LstNL();
