@@ -26,7 +26,6 @@
     <ClCompile Include="backptch.c" />
     <ClCompile Include="bin.c" />
     <ClCompile Include="branch.c" />
-    <ClCompile Include="checkBOM.c" />
     <ClCompile Include="cmdline.c" />
     <ClCompile Include="codegen.c" />
     <ClCompile Include="coff.c" />
