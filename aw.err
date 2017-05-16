@@ -1,0 +1,63 @@
+d:\pointy\aw.asm(68) : Error A2210: Syntax error: INTERFACE
+d:\pointy\aw.asm(69) : Error A2102: Symbol not defined : curClass
+ CVIRTUAL(5)[aw.asm]: Macro called from
+  d:\pointy\aw.asm(69): Main line code
+d:\pointy\aw.asm(70) : Error A2210: Syntax error: ENDINTERFACE
+d:\pointy\aw.asm(82) : Error A2137: Conflicting parameter definition: 
+ STATICMETHOD(38)[aw.asm]: Macro called from
+  d:\pointy\aw.asm(82): Main line code
+d:\pointy\aw.asm(83) : Error A2274: Constant value too large: 6120737461746963206D6574686F64h
+d:\pointy\aw.asm(92) : Error A2137: Conflicting parameter definition: arg
+ METHOD(38)[aw.asm]: Macro called from
+  d:\pointy\aw.asm(92): Main line code
+d:\pointy\aw.asm(92) : Error A2039: Expecting comma: thisPtr:psrMyObject
+ METHOD(38)[aw.asm]: Macro called from
+  d:\pointy\aw.asm(92): Main line code
+d:\pointy\person.asm(5) : Error A2137: Conflicting parameter definition: age
+ METHOD(38)[aw.asm]: Macro called from
+  d:\pointy\person.asm(5): Included by
+   d:\pointy\aw.asm(99): Main line code
+d:\pointy\person.asm(5) : Error A2039: Expecting comma: thisPtr:psrPerson
+ METHOD(38)[aw.asm]: Macro called from
+  d:\pointy\person.asm(5): Included by
+   d:\pointy\aw.asm(99): Main line code
+d:\pointy\person.asm(17) : Error A2048: Operands must be the same size: 1 - 8
+ d:\pointy\person.asm(17): Included by
+  d:\pointy\aw.asm(99): Main line code
+d:\pointy\person.asm(47) : Error A2137: Conflicting parameter definition: pNameStr
+ METHOD(38)[aw.asm]: Macro called from
+  d:\pointy\person.asm(47): Included by
+   d:\pointy\aw.asm(99): Main line code
+d:\pointy\person.asm(47) : Error A2039: Expecting comma: thisPtr:psrPerson
+ METHOD(38)[aw.asm]: Macro called from
+  d:\pointy\person.asm(47): Included by
+   d:\pointy\aw.asm(99): Main line code
+d:\pointy\person.asm(68) : Error A2137: Conflicting parameter definition: 
+ STATICMETHOD(38)[aw.asm]: Macro called from
+  d:\pointy\person.asm(68): Included by
+   d:\pointy\aw.asm(99): Main line code
+d:\pointy\aw.asm(237) : Error A2210: Syntax error: $DECLARE
+d:\pointy\aw.asm(249) : Error A2228: Missing right parenthesis in expression
+d:\pointy\aw.asm(249) : Error A2102: Symbol not defined : $RBXNEW
+d:\pointy\aw.asm(250) : Error A2210: Syntax error: $DELETE
+d:\pointy\aw.asm(251) : Error A2228: Missing right parenthesis in expression
+d:\pointy\aw.asm(251) : Error A2102: Symbol not defined : $NEW
+d:\pointy\aw.asm(252) : Error A2210: Syntax error: $DELETE
+d:\pointy\aw.asm(274) : Error A2210: Syntax error: $VINVOKE
+d:\pointy\aw.asm(276) : Error A2228: Missing right parenthesis in expression
+d:\pointy\aw.asm(276) : Error A2102: Symbol not defined : $ARRAY
+d:\pointy\aw.asm(277) : Error A2210: Syntax error: $DELETEARRAY
+d:\pointy\aw.asm(279) : Error A2228: Missing right parenthesis in expression
+d:\pointy\aw.asm(279) : Error A2102: Symbol not defined : $ARRAY
+d:\pointy\aw.asm(281) : Error A2228: Missing right parenthesis in expression
+d:\pointy\aw.asm(281) : Error A2102: Symbol not defined : $STATIC
+d:\pointy\aw.asm(299) : Error A2274: Constant value too large: 7468697320697320616E206173636969h
+d:\pointy\aw.asm(305) : Error A2274: Constant value too large: 79617920737472696E67206C69746572h
+d:\pointy\aw.asm(307) : Error A2274: Constant value too large: 7468697320697320616E206173636969h
+d:\pointy\aw.asm(308) : Error A2151: Missing operator in expression
+d:\pointy\aw.asm(308) : Error A2147: Too few arguments to INVOKE: newproc3
+d:\pointy\aw.asm(310) : Error A2151: Missing operator in expression
+d:\pointy\aw.asm(310) : Error A2147: Too few arguments to INVOKE: MessageBoxW
+d:\pointy\aw.asm(311) : Error A2274: Constant value too large: 79617920737472696E67206C69746572h
+d:\pointy\aw.asm(312) : Error A2274: Constant value too large: 79617920737472696E67206C69746572h
+d:\pointy\aw.asm(313) : Error A2274: Constant value too large: 79617920737472696E67206C69746572h

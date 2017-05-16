@@ -122,11 +122,11 @@ struct asym {
     /* v2.11: name changed from 'next' to 'nextitem' */
     struct asym     *nextitem;     /* next symbol in hash line */
     char            *name;         /* symbol name */
-	char           *string_ptr;    /* used by SYM_TMACRO */
 	union {
         int_32         offset;     /* used by SYM_INTERNAL (labels), SYM_TYPE, SYM_STACK, v2.11: SYM_SEG */
         int_32         value;      /* used by SYM_INTERNAL (equates) */
         uint_32        uvalue;     /* v2.01: equates (they are 33-bit!) */
+		char            *string_ptr;    /* used by SYM_TMACRO */
         struct asym    *substitute;/* v2.04b: used by SYM_ALIAS */
         /* func_ptr: used by SYM_MACRO if predefined==1 */
         ret_code (* func_ptr)( struct macro_instance *, char *, struct asm_tok * );
@@ -137,15 +137,12 @@ struct asym {
     };
 	unsigned int    tokval;			/* Used to track a PROC parameter symbol that has an assigned register */
 	uint_32         hasinvoke;      /* if there is no invoke no need to reserve a shadow space */
-    struct asym     *segment;      /* used by SYM_INTERNAL, SYM_EXTERNAL */
+	struct asym     *segment;       /* used by SYM_INTERNAL, SYM_EXTERNAL */
     enum sym_state  state;
     enum memtype    mem_type;
     unsigned char   used:1,       /* symbol has been referenced */
-    
                     isdefined:1,  /* symbol is "defined" in this pass */
                     scoped:1,     /* symbol is local label or SYM_STACK */
-                    /* v2.07: removed */
-                    //isglobal:1,   /* symbol has been added to the globals queue */
 #if DLLIMPORT
                     iat_used:1,   /* v2.07: IAT entry of symbol used (SYM_EXTERNAL + isproc==1 only) */
 #endif
@@ -160,12 +157,8 @@ struct asym {
 #if FASTPASS
                     issaved:1,    /* assembly-time variables only: symbol has been saved */
 #endif
-//#if FASTMEM==0 /* v2.09: obsolete */
-//                    isstatic:1,   /* symbol stored in static memory */
-//#endif
                     fwdref:1,     /* symbol was forward referenced */
                     included:1,   /* COFF: static symbol added to public queue. ELF:symbol added to symbol table (SYM_INTERNAL) */
-                   /* additional var for W64F_HABRAN */
                     isparam:1;    /* symbol is local parametar above rsp */
     union {
         /* for SYM_INTERNAL (data labels, memtype != NEAR|FAR), SYM_STRUCT_FIELD */
@@ -242,7 +235,7 @@ struct asym {
              * since the addition of field max_mbr_size.
              */
             uint_16        cvtyperef;
-            uint_8         typekind;
+            uint_16         typekind;
         };
     };
 #if (MAX_ID_LEN <= 255)
@@ -250,19 +243,12 @@ struct asym {
 #else
     uint_16         name_size;
 #endif
-    enum lang_type  langtype;
-#ifdef DEBUG_OUT
-    union {
-        struct asym *type;        /* set if memtype is MT_TYPE */
-        struct dsym *ttype;       /* for easier debugging */
-    };
-#else
-    union {
-        struct asym *type;        /* set if memtype is MT_TYPE */
-        struct dsym *ttype;       /* for easier debugging */
-    };
-#endif
-    union {
+    uint_16  langtype; //enum lang_type
+	union {
+		struct asym *type;        /* set if memtype is MT_TYPE */
+		struct dsym *ttype;       /* for easier debugging */
+	};
+	union {
         /* SYM_INTERNAL, SYM_UNDEFINED, SYM_EXTERNAL: backpatching fixup */
         struct fixup *bp_fixup;
         /* for SYM_EXTERNAL */

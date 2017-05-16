@@ -293,7 +293,7 @@ struct asym *SymFind( const char *name )
     }
 
     for( gsym = &gsym_table[ i % GHASH_TABLE_SIZE ]; *gsym; gsym = &((*gsym)->nextitem ) ) {
-        if ( len == (*gsym)->name_size && SYMCMP( name, (*gsym)->name, len ) == 0 ) {
+        if ( (*gsym)->name && len == (*gsym)->name_size && SYMCMP( name, (*gsym)->name, len ) == 0 ) {
             DebugMsg1(("SymFind(%s): found, state=%u memtype=%X lang=%u\n", name, (*gsym)->state, (*gsym)->mem_type, (*gsym)->langtype ));
             return( *gsym );
         }
