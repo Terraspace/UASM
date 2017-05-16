@@ -1041,6 +1041,16 @@ OPTFUNC( SetStackBase )
 		if (ModuleInfo.win64_flags > 7) ModuleInfo.win64_flags = 7; /* implicit selection of RBP as the stackbase will force win64 value back down to 7 if > */
 		ModuleInfo.win64_flags |= W64F_AUTOSTACKSP;
 	}
+	
+	else if (ModuleInfo.basereg[ModuleInfo.Ofssize] == T_ESP)
+	{
+		ModuleInfo.g.StackBase = CreateVariable("@StackBase", 0);
+		ModuleInfo.g.StackBase->predefined = TRUE;
+		ModuleInfo.g.StackBase->sfunc_ptr = UpdateStackBase;
+		ModuleInfo.g.ProcStatus = CreateVariable("@ProcStatus", 0);
+		ModuleInfo.g.ProcStatus->predefined = TRUE;
+		ModuleInfo.g.ProcStatus->sfunc_ptr = UpdateProcStatus;
+	}
 
     i++;
     *pi = i;

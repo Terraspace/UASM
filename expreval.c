@@ -3297,7 +3297,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
      */
 
 	/* Allow .labelname to be used as an operand */
-	if ( (tokenarray[*i].token == T_DOT && tokenarray[(*i) + 1].token == T_ID) )
+	if ( (tokenarray[*i].token == T_DOT && tokenarray[(*i) + 1].token == T_ID) && opnd1->kind != EXPR_REG )
 	{
 		// check that T_ID is a label
 		sprintf(&clabel, "%s%s", ".", tokenarray[(*i) + 1].string_ptr);
