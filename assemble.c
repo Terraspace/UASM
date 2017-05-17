@@ -1571,9 +1571,26 @@ int EXPQUAL AssembleModule( const char *source )
     int           endtime;
     struct dsym   *seg;
 
+	struct module_info tempInfo;
+	memset(&tempInfo, 0, sizeof(tempInfo));
+
     DebugMsg(("AssembleModule(\"%s\") enter\n", source ));
 
-//    memset( &ModuleInfo, 0, sizeof(ModuleInfo) );
+	tempInfo.frame_auto   = ModuleInfo.frame_auto;
+	tempInfo.fctype       = ModuleInfo.fctype;
+	tempInfo.langtype     = ModuleInfo.langtype;
+	tempInfo.sub_format   = ModuleInfo.sub_format;
+	tempInfo.win64_flags  = ModuleInfo.win64_flags;
+	tempInfo.switch_style = ModuleInfo.switch_style;
+
+    memset( &ModuleInfo, 0, sizeof(ModuleInfo) );
+
+	ModuleInfo.frame_auto = tempInfo.frame_auto;
+	ModuleInfo.fctype = tempInfo.fctype;
+	ModuleInfo.langtype = tempInfo.langtype;
+	ModuleInfo.sub_format = tempInfo.sub_format;
+	ModuleInfo.win64_flags = tempInfo.win64_flags;
+	ModuleInfo.switch_style = tempInfo.switch_style;
 
 	/* set architecture */
 	ModuleInfo.arch = MODULEARCH;
