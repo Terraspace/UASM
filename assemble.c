@@ -1573,7 +1573,7 @@ int EXPQUAL AssembleModule( const char *source )
 
     DebugMsg(("AssembleModule(\"%s\") enter\n", source ));
 
-    memset( &ModuleInfo, 0, sizeof(ModuleInfo) );
+//    memset( &ModuleInfo, 0, sizeof(ModuleInfo) );
 
 	/* set architecture */
 	ModuleInfo.arch = MODULEARCH;

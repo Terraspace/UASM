@@ -1954,6 +1954,8 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 	/* ******************************************************************************************************************** */
 	if (addr || psize > 8)
 	{
+		if (psize < 8)
+			psize = 8;
 		reg = sysv_GetNextGPR(info, 8); // All addresses are QWORD sized.
 		if (reg != -1)
 		{

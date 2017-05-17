@@ -500,6 +500,7 @@ static void OPTQUAL Set_ofmt( void )
 	if (Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_64BIT)
 	{
 		Options.langtype = LANG_SYSVCALL;
+		ModuleInfo.frame_auto = 1;
 	}
 }
 
