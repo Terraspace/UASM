@@ -119,21 +119,17 @@ struct debug_info {
 };
 
 struct asym {
-    /* v2.11: name changed from 'next' to 'nextitem' */
-    struct asym     *nextitem;     /* next symbol in hash line */
-    char            *name;         /* symbol name */
+    struct asym     *nextitem;       /* next symbol in hash line */
+    char            *name;           /* symbol name */
 	union {
-        int_32         offset;     /* used by SYM_INTERNAL (labels), SYM_TYPE, SYM_STACK, v2.11: SYM_SEG */
-        int_32         value;      /* used by SYM_INTERNAL (equates) */
-        uint_32        uvalue;     /* v2.01: equates (they are 33-bit!) */
-		char            *string_ptr;    /* used by SYM_TMACRO */
-        struct asym    *substitute;/* v2.04b: used by SYM_ALIAS */
-        /* func_ptr: used by SYM_MACRO if predefined==1 */
+        int_32         offset;       /* used by SYM_INTERNAL (labels), SYM_TYPE, SYM_STACK, v2.11: SYM_SEG */
+        int_32         value;        /* used by SYM_INTERNAL (equates) */
+        uint_32        uvalue;       /* v2.01: equates (they are 33-bit!) */
+		char           *string_ptr;  /* used by SYM_TMACRO */
+        struct asym    *substitute;  /* v2.04b: used by SYM_ALIAS */
+                                     /* func_ptr: used by SYM_MACRO if predefined==1 */
         ret_code (* func_ptr)( struct macro_instance *, char *, struct asm_tok * );
-        //int_32         max_offset; /* used by SYM_SEG; v2.11 field moved */
-        int_32         class_lname_idx;/* used by SYM_CLASS_LNAME */
-        /* additional var for W64F_HABRAN */
-
+        int_32         class_lname_idx; /* used by SYM_CLASS_LNAME */
     };
 	unsigned int    tokval;			/* Used to track a PROC parameter symbol that has an assigned register */
 	uint_32         hasinvoke;      /* if there is no invoke no need to reserve a shadow space */
@@ -245,10 +241,6 @@ struct asym {
 #endif
     uint_16  langtype; //enum lang_type
 	union {
-		struct asym *type;        /* set if memtype is MT_TYPE */
-		struct dsym *ttype;       /* for easier debugging */
-	};
-	union {
         /* SYM_INTERNAL, SYM_UNDEFINED, SYM_EXTERNAL: backpatching fixup */
         struct fixup *bp_fixup;
         /* for SYM_EXTERNAL */
@@ -259,6 +251,10 @@ struct asym {
             uint_16  ext_idx2;    /* omf: (external definition) index for weak external */
         };
     };
+	union {
+		struct asym *type;        /* set if memtype is MT_TYPE */
+		struct dsym *ttype;       /* for easier debugging */
+	};
 };
 
 /*---------------------------------------------------------------------------*/
@@ -542,14 +538,10 @@ struct dsym {
         /* v2.11: removed; member is in use for SYM_EXTERNAL */
         //struct dsym *nextext;
     };
-        //unsigned char vecregs[6];
-        //unsigned char vecregsize[6];
-        //int           vsize;
 };
 
 extern  struct asym     *SymAlloc( const char * );
 extern  void            SymFree( struct asym * );
-
 extern  struct asym     *SymCreate( const char * );
 extern  struct asym     *SymLCreate( const char * );
 extern  struct asym     *SymAddGlobal( struct asym * );

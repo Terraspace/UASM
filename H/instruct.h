@@ -947,6 +947,7 @@ insn(PCMPGTD, 1,                OpCls( XMM,      XMM_M128, NONE ), F_660F, 1,  n
 ins (PEXTRW, pextrw,            OpCls( RGT16,    MMX,      I8_U ), F_0F,   1,  no_WDS, 0xC5,     0x00,       P_686|P_SSE2,WSIZE|T1S)
 insn(PEXTRW, 1,                 OpCls( RGT16,    XMM,      I8_U ), F_660F, 1,  no_WDS, 0xC5,     0x00,       P_686|P_SSE1,DSIZE|T1S)
 #if SSE4SUPP /* SSE 4.1 */
+insn(PEXTRW, 2,                 OpCls( M16,      XMM,      I8_U ), F_660F3A, 0,no_WDS, 0x15,     0x00,       P_686|P_SSE4,WSIZE|T1S)
 ins (PEXTRQ, pextrq,            OpCls( R64_M64,  XMM,      I8_U ), F_660F3A, 0,no_WDS, 0x16,     0x00,       P_686|P_SSE4,W1|QSIZE|T1S)
 #endif
 /* v2.06: define it like PINSRB/PINSRD */

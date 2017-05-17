@@ -412,8 +412,9 @@ static void output_opc(struct code_info *CodeInfo)
 #endif
     OutputCodeByte(OPSIZ);
   }
-  //if(CodeInfo->token == T_VCVTPD2PS)
-  //  __debugbreak();
+    //    if(CodeInfo->token == T_VCVTPS2PD)
+    //__debugbreak();
+
   /*
    * Output segment prefix
    */
@@ -1382,6 +1383,9 @@ static void output_opc(struct code_info *CodeInfo)
 					(vex_flags[CodeInfo->token - VEX_START] & VX_NND) == 0 &&
 					(vex_flags[CodeInfo->token - VEX_START] & VX_NMEM) == 0)
 				{
+                  if(CodeInfo->opnd[OPND1].type & OP_M_ANY || CodeInfo->opnd[OPND2].type & OP_M_ANY )
+                   ;
+                  else
 					EmitError(INVALID_INSTRUCTION_OPERANDS);
 				}
 
@@ -1483,7 +1487,8 @@ static void output_opc(struct code_info *CodeInfo)
           /* AVX are both WIG */
           lbyte &= ~EVEX_P1WMASK;
           lbyte |= 0xf0;               // VEX.vvvv is reserved and must be 1111b
-          if ((CodeInfo->opnd[OPND2].type == OP_XMM)|| (CodeInfo->opnd[OPND2].type == OP_M64) );
+          if ((CodeInfo->opnd[OPND2].type == OP_XMM)|| (CodeInfo->opnd[OPND2].type & OP_M_ANY))
+              ;
             else EmitError(INVALID_INSTRUCTION_OPERANDS);
           }
 			  }
