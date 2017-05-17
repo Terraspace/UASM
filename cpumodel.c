@@ -34,6 +34,7 @@
 
 #include "cpumodel.h"
 
+
 #define DOT_XMMARG 0 /* 1=optional argument for .XMM directive */
 
 extern const char szDgroup[];
@@ -66,8 +67,8 @@ static const struct typeinfo ModelAttrValue[] = {
     { OPSYS_OS2,      INIT_OS         },
 };
 
-//static struct asym *sym_CodeSize  ; /* numeric. requires model */
-//static struct asym *sym_DataSize  ; /* numeric. requires model */
+static struct asym *sym_CodeSize  ; /* numeric. requires model */
+static struct asym *sym_DataSize  ; /* numeric. requires model */
 static struct asym *sym_Model     ; /* numeric. requires model */
 struct asym *sym_Interface ; /* numeric. requires model */
 struct asym *sym_Cpu       ; /* numeric. This is ALWAYS set */

@@ -4243,8 +4243,13 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 			}
 
 			// SYSTEMV Varargs requires a count of vector registers used in vararg in rax.
-			if (proc->e.procinfo->vararg_vecs > 0)
-				AddLineQueueX("mov eax,%u", proc->e.procinfo->vararg_vecs);
+			if (proc->e.procinfo->has_vararg)
+			{
+				if (proc->e.procinfo->vararg_vecs > 0)
+					AddLineQueueX("mov eax,%u", proc->e.procinfo->vararg_vecs);
+				else
+					AddLineQueueX("xor eax,eax");
+			}
 		}
 
 		/* Restore starting first free gpr and vec */

@@ -206,11 +206,11 @@
 
 /* Hasm version info */
 #ifdef _WIN64
-#define _HASM_VERSION_STR_ "2.32"
+#define _HASM_VERSION_STR_ "2.33"
 #else
-#define _HASM_VERSION_STR_ "2.32"
+#define _HASM_VERSION_STR_ "2.33"
 #endif
-#define _HASM_VERSION_INT_ 232
+#define _HASM_VERSION_INT_ 233
 #define _HASM_VERSION_SUFFIX_ "pre"
 #define _HASM_VERSION_ _HASM_VERSION_STR_ //_HASM_VERSION_SUFFIX_
 

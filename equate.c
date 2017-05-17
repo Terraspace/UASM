@@ -286,7 +286,6 @@ struct asym *CreateVariable(const char *name, int value)
 	if (sym == NULL) {
 		sym = SymCreate(name);
 #if FASTPASS
-		//sym->issaved = FALSE;
 		sym->issaved = StoreState; /* v2.10 */
 #endif
 	}
@@ -298,12 +297,14 @@ struct asym *CreateVariable(const char *name, int value)
 		sym->issaved = StoreState; /* v2.10 */
 #endif
 	}
-	else {
-		sym->value3264 = 0;  //fixed by HSE on qWord indication
-		if (sym->isequate == FALSE) {
+	else 
+	{
+		if (sym->isequate == FALSE) 
+		{
 			EmitErr(SYMBOL_REDEFINITION, name);
 			return(NULL);
 		}
+		sym->value3264 = 0;  //fixed by HSE on qWord indication
 #if FASTPASS
 		/*
 		* v2.09: don't save variable when it is defined the first time
@@ -318,7 +319,6 @@ struct asym *CreateVariable(const char *name, int value)
 	}
 	sym->isdefined = TRUE;
 	sym->state = SYM_INTERNAL;
-	//sym->mem_type = MT_ABS;
 	sym->variable = TRUE;
 	sym->value = value;
 	sym->isequate = TRUE;
