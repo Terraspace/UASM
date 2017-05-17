@@ -1642,7 +1642,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 				}
 				else if (psize == 8)
 				{
-					AddLineQueueX("mov %r, %s", T_RAX, paramvalue);
+					AddLineQueueX("mov %r, %r ptr %s", T_RAX, T_REAL8, opnd->float_tok->string_ptr);
 					AddLineQueueX("%s %r, %r", MOVE_SIMD_QWORD, reg, T_RAX);
 				}
 			}
