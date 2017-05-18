@@ -841,7 +841,7 @@ static ret_code idata_nofixup( struct code_info *CodeInfo, unsigned CurrOpnd, co
         CodeInfo->token == T_MOV &&
         CurrOpnd == OPND2 &&
         ( CodeInfo->opnd[OPND1].type & OP_R64 ) &&
-        ( opndx->value64 > LONG_MAX || opndx->value64 < LONG_MIN ||
+        ( opndx->value64 > H_LONG_MAX || opndx->value64 < H_LONG_MIN ||
          (opndx->explicit && ( opndx->mem_type == MT_QWORD || opndx->mem_type == MT_SQWORD ) ) ) ) {
         // CodeInfo->iswide = 1; /* has been set by first operand already */
         CodeInfo->opnd[CurrOpnd].type = OP_I64;
@@ -1137,7 +1137,7 @@ ret_code idata_fixup( struct code_info *CodeInfo, unsigned CurrOpnd, struct expr
 #if AMD64_SUPPORT
     case 8:
         /* v2.05: do only assume size 8 if the constant won't fit in 4 bytes. */
-        if ( opndx->value64 > LONG_MAX || opndx->value64 < LONG_MIN ||
+        if ( opndx->value64 > H_LONG_MAX || opndx->value64 < H_LONG_MIN ||
             (opndx->explicit && ( opndx->mem_type & MT_SIZE_MASK ) == 7 ) ) {
             CodeInfo->opnd[CurrOpnd].type = OP_I64;
             CodeInfo->opnd[CurrOpnd].data32h = opndx->hvalue;
