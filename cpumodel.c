@@ -214,6 +214,9 @@ static void SetModel( void )
     AddPredefinedText( "@fardata", ( ModuleInfo.model == MODEL_FLAT ? "FLAT" : SimGetSegName( SIM_FARDATA ) ) );
     AddPredefinedText( "@fardata?", ( ModuleInfo.model == MODEL_FLAT ? "FLAT" : SimGetSegName( SIM_FARDATA_UN ) ) );
 #endif
+	
+	/* Default this to null so it can be checked for */
+	sym_ReservedStack = NULL;
 
     /* Set @Model and @Interface */
 

@@ -1684,7 +1684,7 @@ ret_code ProcDir( int i, struct asm_tok tokenarray[] )
 
     sym = SymSearch( name );
 
-    if( Parse_Pass == PASS_1 || (Parse_Pass > PASS_1 && sym == NULL) ) {
+    if( Parse_Pass == PASS_1 ) { //|| (Parse_Pass > PASS_1 && sym == NULL) ) {
 
         oldpubstate = sym ? sym->ispublic : FALSE;
         if( sym == NULL || sym->state == SYM_UNDEFINED ) {

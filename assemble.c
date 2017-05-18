@@ -1331,7 +1331,6 @@ static void open_files( void )
     DebugMsg(("open_files() enter\n" ));
 
     //memset( CurrFile, 0, sizeof( CurrFile ) );
-    /* CurrFile[ASM] = fopen( CurrFName[ASM], "r" ); */
     CurrFile[ASM] = fopen( CurrFName[ASM], "rb" );
     if( CurrFile[ASM] == NULL ) {
         DebugMsg(("open_files(): cannot open source file, fopen(\"%s\") failed\n", CurrFName[ASM] ));

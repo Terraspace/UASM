@@ -3847,7 +3847,7 @@ void ProcessFile( struct asm_tok tokenarray[] )
 	xmmOver1.idarg = T_PTR;
 	xmmOver1.itemlen = T_PTR;
 	xmmOver1.lastidx = T_PTR;
-
+	
     while ( ModuleInfo.EndDirFound == FALSE && GetTextLine( CurrSource ) ) {
         if ( PreprocessLine( CurrSource, tokenarray ) ) {
             ParseLine( tokenarray );

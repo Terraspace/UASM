@@ -552,7 +552,7 @@ static int ms64_param(struct dsym const *proc, int index, struct dsym *param, bo
 			(opnd->kind == EXPR_ADDR && opnd->indirect == FALSE && opnd->mem_type == MT_EMPTY && opnd->instr != T_OFFSET)) {
 			/* v2.06: support 64-bit constants for params > 4 */
 			if (psize == 8 &&
-				(opnd->value64 > LONG_MAX || opnd->value64 < LONG_MIN)) {
+				(opnd->value64 > H_LONG_MAX || opnd->value64 < H_LONG_MIN)) {
 				AddLineQueueX(" mov %r ptr [%r+%u], %r ( %s )", T_DWORD, T_RSP, NUMQUAL index * 8, T_LOW32, paramvalue);
 				AddLineQueueX(" mov %r ptr [%r+%u], %r ( %s )", T_DWORD, T_RSP, NUMQUAL index * 8 + 4, T_HIGH32, paramvalue);
 				return(1);
@@ -1605,7 +1605,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		/* No free GPR, value goes to stack */
 		else
 		{
-			if ( (opnd->value64 > LONG_MAX || opnd->value64 < LONG_MIN) ) 
+			if ( (opnd->value64 > H_LONG_MAX || opnd->value64 < H_LONG_MIN) ) 
 			{
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov %r ptr [%r+4], %r ( %s )", T_DWORD, T_RSP, T_HIGH32, paramvalue);
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "mov %r ptr [%r], %r ( %s )", T_DWORD, T_RSP, T_LOW32, paramvalue);
@@ -2671,7 +2671,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 			if (opnd->kind == EXPR_CONST && !addr) // Use !addr to ensure string literals go to the addr part.
 			{
 				/* We can't push a 64bit immediate, so split it into 2 dwords */
-				if ((opnd->value64 > LONG_MAX || opnd->value64 < LONG_MIN))
+				if ((opnd->value64 > H_LONG_MAX || opnd->value64 < H_LONG_MIN))
 				{
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov %r ptr [%r+4], %r ( %s )", T_DWORD, T_RSP, T_HIGH32, paramvalue);
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "mov %r ptr [%r], %r ( %s )", T_DWORD, T_RSP, T_LOW32, paramvalue);
