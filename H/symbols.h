@@ -121,11 +121,11 @@ struct debug_info {
 struct asym {
     struct asym     *nextitem;       /* next symbol in hash line */
     char            *name;           /* symbol name */
+	char           *string_ptr;  /* used by SYM_TMACRO */
 	union {
         int_32         offset;       /* used by SYM_INTERNAL (labels), SYM_TYPE, SYM_STACK, v2.11: SYM_SEG */
         int_32         value;        /* used by SYM_INTERNAL (equates) */
         uint_32        uvalue;       /* v2.01: equates (they are 33-bit!) */
-		char           *string_ptr;  /* used by SYM_TMACRO */
         struct asym    *substitute;  /* v2.04b: used by SYM_ALIAS */
                                      /* func_ptr: used by SYM_MACRO if predefined==1 */
         ret_code (* func_ptr)( struct macro_instance *, char *, struct asm_tok * );
