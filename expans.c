@@ -47,7 +47,7 @@ static const char __digits[16] = {"0123456789ABCDEF"};
 static ret_code ExpandTMacro( char * const, struct asm_tok tokenarray[], int equmode, int level );
 
 /* C ltoa() isn't fully compatible since hex digits are lower case.
- * for Hasm, it's ensured that 2 <= radix <= 16.
+ * for Uasm, it's ensured that 2 <= radix <= 16.
  */
 char *myltoa( uint_32 value, char *buffer, unsigned radix, bool sign, bool addzero )
 /**********************************************************************************/
@@ -76,7 +76,7 @@ char *myltoa( uint_32 value, char *buffer, unsigned radix, bool sign, bool addze
     return( buffer );
 }
 /* C ltoa() isn't fully compatible since hex digits are lower case.
-* for Hasm, it's ensured that 2 <= radix <= 16.
+* for Uasm, it's ensured that 2 <= radix <= 16.
 */
 #if AMD64_SUPPORT
 char *myqtoa(uint_64 value, char *buffer, unsigned radix, bool sign, bool addzero)

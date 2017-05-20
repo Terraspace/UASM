@@ -59,7 +59,7 @@ enum sym_state {
 /* v2.07: MT_ABS (0xC2) removed */
 
 enum memtype {
-  /* 0x1F changed to 0x3F to cover ZMM registers, Hasm 2.16 */
+  /* 0x1F changed to 0x3F to cover ZMM registers, Uasm 2.16 */
     MT_SIZE_MASK = 0x1F, /* if MT_SPECIAL==0 then bits 0-4 = size - 1 */
     MT_FLOAT  = 0x20, /* bit 5=1 */
     MT_SIGNED = 0x40, /* bit 6=1 */

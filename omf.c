@@ -1170,7 +1170,7 @@ static unsigned put_comdef_number( uint_8 *buffer, uint_32 value )
  * v2.09: external index is now set inside this function.
  * important: the size of the communal variables must be known.
  * If the size is the difference of two code labels, it might
- * change in subsequent passes. Both Masm and Hasm won't adjust
+ * change in subsequent passes. Both Masm and Uasm won't adjust
  * the size then!
  */
 
@@ -1419,7 +1419,7 @@ static ret_code omf_write_pubdef( void )
              * E2 equ -32768
              * PUBLIC E1, E2
              * will store both equates with value 8000h in the 16-bit PUBDEF record!!!
-             * Hasm behaves differently, resulting in negative values to be stored as 32-bit.
+             * Uasm behaves differently, resulting in negative values to be stored as 32-bit.
              */
 #if 1
             is32 = ( sym->offset > 0xffffUL ? 1 : 0 );

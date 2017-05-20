@@ -27,7 +27,7 @@
 #endif
 
 #if 0 // def __I86__
-/* optionally, for HasmR, use a void based pointer for the name field.
+/* optionally, for UasmR, use a void based pointer for the name field.
 * However, this requires to deactivate the RENAMEKEYWORD option!
 */
 #define GetPtr( x, y ) seg:>x->y

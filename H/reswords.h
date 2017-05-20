@@ -51,7 +51,7 @@ struct ReservedWord {
     uint_16 next;     /* index next entry (used for hash table) */
     uint_8 len;       /* length of reserved word, i.e. 'AX' = 2 */
     uint_8 flags;     /* see enum reservedword_flags */
-#if 0 /* __I86__ ( may be activated for HasmR, see reswords.c) */
+#if 0 /* __I86__ ( may be activated for UasmR, see reswords.c) */
     const char __based( void ) *name;
 #else
     const char *name;        /* reserved word (char[]) */

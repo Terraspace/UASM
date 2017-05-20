@@ -854,7 +854,7 @@ static ret_code ParseParams( struct dsym *proc, int i, struct asm_tok tokenarray
         /* read colon. It's optional for PROC.
          * Masm also allows a missing colon for PROTO - if there's
          * just one parameter. Probably a Masm bug.
-         * Hasm always require a colon for PROTO.
+         * Uasm always require a colon for PROTO.
          */
         if( tokenarray[i].token != T_COLON ) {
             if ( IsPROC == FALSE ) {
@@ -1660,7 +1660,7 @@ ret_code ProcDir( int i, struct asm_tok tokenarray[] )
 
     if( CurrProc != NULL ) {
 
-        /* this is not needed for Hasm, but Masm will reject nested
+        /* this is not needed for Uasm, but Masm will reject nested
          * procs if there are params, locals or used registers.
          */
         if ( CurrProc->e.procinfo->paralist ||
@@ -1710,7 +1710,7 @@ ret_code ProcDir( int i, struct asm_tok tokenarray[] )
         } else {
             /* Masm won't reject a redefinition if "certain" parameters
              * won't change. However, in a lot of cases one gets "internal assembler error".
-             * Hence this "feature" isn't active in Hasm.
+             * Hence this "feature" isn't active in Uasm.
              */
             //} else if ( sym->state != SYM_INTERNAL || sym->isproc != TRUE ||
             //           sym->offset != GetCurrOffset() || sym->segment != &CurrSeg->sym ) {
@@ -1993,7 +1993,7 @@ static void WriteSEHData(struct dsym *proc)
 	char segnamebuff[12];
 	char buffer[128];
 
-	/* 2016-02-10 John Hankinson - Don't bother writing SEH data for ELF64 Win64 ABI hack or Hasm flat mode */
+	/* 2016-02-10 John Hankinson - Don't bother writing SEH data for ELF64 Win64 ABI hack or Uasm flat mode */
 	if (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_BIN)
 		return;
 
@@ -2771,7 +2771,7 @@ static void write_win64_default_prologue_RBP( struct proc_info *info )
 			if (cntxmm) {
 				regist = info->regslist;
         /* firs location must be multiplied by 16 and subtracted 
-        *  from info->localsize and aligned to 16  ; Hasm 2.26 */
+        *  from info->localsize and aligned to 16  ; Uasm 2.26 */
 				i = ( info->localsize - cntxmm * 16 ) & ~(16-1);  
 				if(regist) {
 				  for (cnt = *regist++; cnt; cnt--, regist++){
@@ -2994,7 +2994,7 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 			if (cntxmm) {
 				int cnt;
 				regist = info->regslist;
-				i = 0;       //firs location is right at the [rsp+32] which is aligned to 16  ; Hasm 2.21
+				i = 0;       //firs location is right at the [rsp+32] which is aligned to 16  ; Uasm 2.21
 				if (regist)
 				{
 					for (cnt = *regist++; cnt; cnt--, regist++)
@@ -3340,7 +3340,7 @@ static void write_win64_default_epilogue_RSP(struct proc_info *info)
 		DebugMsg1(("write_win64_default_epilogue_RSP(%s): %u xmm registers to restore\n", CurrProc->sym.name, i));
 
 		if (i) {
-			i = 0;       //firs location is right at the [rsp] which is aligned to 16 ; Hasm 2.21
+			i = 0;       //firs location is right at the [rsp] which is aligned to 16 ; Uasm 2.21
 			for (regs = info->regslist, cnt = *regs++; cnt; cnt--, regs++) {
 				if ((GetValueSp(*regs) & OP_XMM) || (GetValueSp(*regs) & OP_YMM)
 #if EVEXSUPP    

@@ -1,6 +1,6 @@
 /*
  * this file contains prototypes of the Win32 functions which are
- * called directly by Hasm (in memalloc.c if FASTMEM=1).
+ * called directly by Uasm (in memalloc.c if FASTMEM=1).
  */
 
 //#if defined(__WATCOMC__) || defined(__PCC__) || defined(__OCC__)

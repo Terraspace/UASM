@@ -248,7 +248,7 @@ static int FFQUAL writeSegdef( struct outbuff *out, const struct omf_rec *objr )
     }
 #endif
     /* set BIG bit. should also be done for 32-bit segments
-     * if their size is exactly 4 GB. Currently Hasm won't
+     * if their size is exactly 4 GB. Currently Uasm won't
      * support segments with size 4 GB.
      */
     if( is32 == 0 && objr->d.segdef.seg_length == 0x10000 ) {

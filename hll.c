@@ -162,7 +162,7 @@ static const char unsigned_cjmptype[] = { 'z', 'z', 'a', 'b', 'b', 'a' };
 static const char signed_cjmptype[] = { 'z', 'z', 'g', 'l', 'l', 'g' };
 static const char neg_cjmptype[] = { 0, 1, 0, 0, 1, 1 };
 
-/* in Masm, there's a nesting level limit of 20. In Hasm, there's
+/* in Masm, there's a nesting level limit of 20. In Uasm, there's
 * currently no limit.
 */
 
@@ -620,7 +620,7 @@ static ret_code GetSimpleExpression(struct hll_item *hll, int *i, struct asm_tok
       op2.kind == EXPR_CONST && op2.value64 == 0) {
       p = RenderInstr(buffer, "or", op1_pos, op1_end, op1_pos, op1_end, tokenarray);
       }
-    /* Hasm 2.18 optimisation: generate 'test EAX,EAX' instead of 'cmp EAX,0'. */
+    /* Uasm 2.18 optimisation: generate 'test EAX,EAX' instead of 'cmp EAX,0'. */
     else if ((op == COP_EQ || op == COP_NE) &&
       op1.kind == EXPR_REG && op1.indirect == FALSE &&
       op2.kind == EXPR_CONST && op2.value64 == 0) {
@@ -756,7 +756,7 @@ static ret_code GetAndExpression(struct hll_item *hll, int *i, struct asm_tok to
           GetLabelStr(truelabel, p);
           strcat(p, EOLSTR);
         }
-        /* Hasm 2.18  fixed WHILE with &&  */
+        /* Uasm 2.18  fixed WHILE with &&  */
         if (hllop->lasttruelabel)
           ReplaceLabel(buffer,hllop->lasttruelabel, truelabel);
           nlabel = GetHllLabel();

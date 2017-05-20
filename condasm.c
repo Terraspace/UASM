@@ -24,7 +24,7 @@
 *
 *  ========================================================================
 *
-* Description:  Hasm conditional processing routines. Handles directives
+* Description:  Uasm conditional processing routines. Handles directives
 *               [ELSE]IF[E], ELSE, ENDIF
 *               [ELSE]IFB, [ELSE]IFNB
 *               [ELSE]IFDEF, [ELSE]IFNDEF

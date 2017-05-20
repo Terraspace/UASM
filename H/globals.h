@@ -24,7 +24,7 @@
 *
 *  ========================================================================
 *
-* Description:  Hasm globals and limits.
+* Description:  Uasm globals and limits.
 *
 ****************************************************************************/
 
@@ -204,15 +204,15 @@
 #include "errmsg.h"  /* must be located AFTER #defines lines */
 #include "queue.h"
 
-/* Hasm version info */
+/* Uasm version info */
 #ifdef _WIN64
-#define _HASM_VERSION_STR_ "2.33"
+#define _UASM_VERSION_STR_ "2.33"
 #else
-#define _HASM_VERSION_STR_ "2.33"
+#define _UASM_VERSION_STR_ "2.33"
 #endif
-#define _HASM_VERSION_INT_ 233
-#define _HASM_VERSION_SUFFIX_ "pre"
-#define _HASM_VERSION_ _HASM_VERSION_STR_ //_HASM_VERSION_SUFFIX_
+#define _UASM_VERSION_INT_ 233
+#define _UASM_VERSION_SUFFIX_ "pre"
+#define _UASM_VERSION_ _UASM_VERSION_STR_ //_UASM_VERSION_SUFFIX_
 
 #if defined(_WIN32) || defined(_WIN64) 
 #define snprintf _snprintf 

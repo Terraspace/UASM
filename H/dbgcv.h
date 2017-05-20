@@ -1,6 +1,6 @@
 /****************************************************************************
 *
-*  This code is Public Domain. It's new for Hasm.
+*  This code is Public Domain. It's new for Uasm.
 *
 *  ========================================================================
 *
@@ -136,22 +136,22 @@ enum cv_attr_mprop {
 
 enum cv4_leaf_indices {
     CV4_LF_MODIFIER  = 0x0001,
-    CV4_LF_POINTER   = 0x0002,  /* emitted by Hasm */
-    CV4_LF_ARRAY     = 0x0003,  /* emitted by Hasm */
+    CV4_LF_POINTER   = 0x0002,  /* emitted by Uasm */
+    CV4_LF_ARRAY     = 0x0003,  /* emitted by Uasm */
     CV4_LF_CLASS     = 0x0004,
-    CV4_LF_STRUCTURE = 0x0005,  /* emitted by Hasm */
-    CV4_LF_UNION     = 0x0006,  /* emitted by Hasm */
+    CV4_LF_STRUCTURE = 0x0005,  /* emitted by Uasm */
+    CV4_LF_UNION     = 0x0006,  /* emitted by Uasm */
     CV4_LF_ENUM      = 0x0007,
-    CV4_LF_PROCEDURE = 0x0008,  /* not yet emitted by Hasm */
+    CV4_LF_PROCEDURE = 0x0008,  /* not yet emitted by Uasm */
     //CV4_LF_MFUNCTION = 0x0009,
     //CV4_LF_VTSHAPE   = 0x000A,
     //CV4_LF_BARRAY    = 0x000D,
 
-    CV4_LF_ARGLIST   = 0x0201,  /* not yet emitted by Hasm */
-    CV4_LF_FIELDLIST = 0x0204,  /* emitted by Hasm */
-    CV4_LF_BITFIELD  = 0x0206,  /* emitted by Hasm */
+    CV4_LF_ARGLIST   = 0x0201,  /* not yet emitted by Uasm */
+    CV4_LF_FIELDLIST = 0x0204,  /* emitted by Uasm */
+    CV4_LF_BITFIELD  = 0x0206,  /* emitted by Uasm */
 
-    CV4_LF_MEMBER    = 0x0406,  /* emitted by Hasm */
+    CV4_LF_MEMBER    = 0x0406,  /* emitted by Uasm */
 };
 
 enum cv5_leaf_indices {
@@ -179,7 +179,7 @@ enum cv8_leaf_indices {
 
 enum cv_leaf_indices {
     LF_MODIFIER  = 0x0001,
-    LF_LABEL     = 0x000E,  /* emitted by Hasm */
+    LF_LABEL     = 0x000E,  /* emitted by Uasm */
 #if CV_SIGNATURE==CV4_SIGNATURE
     LF_POINTER   = CV4_LF_POINTER,
     LF_ARRAY     = CV4_LF_ARRAY,

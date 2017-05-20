@@ -185,7 +185,7 @@ static int get_precedence( const struct asm_tok *item )
      *   INVOKE directive.
 
      * However, what's wrong in both tables is the precedence of
-     * the dot operator: Actually for both Hasm and Wasm the dot precedence
+     * the dot operator: Actually for both Uasm and Wasm the dot precedence
      * is 2 and LENGTH, SIZE, ... have precedence 3 instead.
 
      * Precedence of operator TYPE was 5 in original Wasm source. It has
@@ -2505,8 +2505,8 @@ static void CheckAssume( struct expr *opnd )
      * However, the base reg is supposed to have a higher priority.
      * This wasn't fully clear, because in Masm 6, if no register has
      * a scaling factor, the second one becomes base - something that
-     * Hasm didn't do, unless -Zg was set.
-     * Since v2.10, Hasm behaves like Masm v6+: base and index registers
+     * Uasm didn't do, unless -Zg was set.
+     * Since v2.10, Uasm behaves like Masm v6+: base and index registers
      * are swapped, and assume for base has higher priority than assume for
      * index.
      */
@@ -2669,7 +2669,7 @@ static ret_code calculate( struct expr *opnd1, struct expr *opnd2, const struct 
             break;
         }
 
-        /* v2.03: make Hasm reject syntax variants
+        /* v2.03: make Uasm reject syntax variants
          * "mov eax, DWORD [EBX]"
          * "mov eax, DWORD [var_name]"
          * variants still valid:
@@ -2704,7 +2704,7 @@ static ret_code calculate( struct expr *opnd1, struct expr *opnd2, const struct 
             opnd1->type = opnd2->type;
             break;
         }
-        /* v2.03: make Hasm reject syntax variants
+        /* v2.03: make Uasm reject syntax variants
          * "mov eax, DWORD (<label>)"
          */
         if ( opnd1->is_type == TRUE && opnd2->kind == EXPR_ADDR ) {
@@ -2988,7 +2988,7 @@ static ret_code calculate( struct expr *opnd1, struct expr *opnd2, const struct 
             /* v2.01: result is 64-bit only if mode is USE64 */
             /* v2.06: for -Zm only. This is not entirely correct,
              * since Masm v6x also does 32-bit shifts, but since v2.06
-             * Hasm intends to behave like Masm v8+.
+             * Uasm intends to behave like Masm v8+.
              * Might be better to implement OPTION EXPR16|32|64.
              */
             //if ( ModuleInfo.Ofssize <= USE32 ) {

@@ -301,7 +301,7 @@ ret_code process_branch( struct code_info *CodeInfo, unsigned CurrOpnd, const st
                     if( CodeInfo->token == T_CALL ) {
                         return( EmitError( CANNOT_USE_SHORT_WITH_CALL ) );
                     }
-                    /* v1.96: since Hasm's backpatch strategy is to move from
+                    /* v1.96: since Uasm's backpatch strategy is to move from
                      * "smallest" to "largest" distance, an "out of range"
                      * error can be detected at any time.
                      */

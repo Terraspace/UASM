@@ -1,5 +1,5 @@
 
-/* the MS COFF declarations, as far as it's relevant for Hasm.
+/* the MS COFF declarations, as far as it's relevant for Uasm.
  * The full declarations can be found in MS PSDK, WinNT.h.
  */
 

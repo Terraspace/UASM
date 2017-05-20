@@ -392,7 +392,7 @@ static void output_opc(struct code_info *CodeInfo)
    * These bytes are NOT compatible with FP emulation fixups,
    * which expect that the FWAIT/NOP first "prefix" byte is followed
    * by either a segment prefix or the opcode byte.
-   * Neither Masm nor Hasm emit a warning, though.
+   * Neither Masm nor Uasm emit a warning, though.
    */
   if (CodeInfo->prefix.adrsiz == TRUE && (CodeInfo->token < T_VPGATHERDD || CodeInfo->token > T_VSCATTERQPD)&&
       CodeInfo->token != T_VCVTPH2PS && CodeInfo->token != T_VCVTPS2PD) {
@@ -460,7 +460,7 @@ static void output_opc(struct code_info *CodeInfo)
 
 
 
-  /* If there is no decoflags then it is AVX2 instruction with 3 parameters, Hasm 2.15 */
+  /* If there is no decoflags then it is AVX2 instruction with 3 parameters, Uasm 2.15 */
   if (CodeInfo->token >= T_VBROADCASTSS && CodeInfo->token <= T_VPBROADCASTMW2D)
       {
     if (decoflags == 0 && CodeInfo->r1type != OP_K){
@@ -480,13 +480,13 @@ static void output_opc(struct code_info *CodeInfo)
       else CodeInfo->evex_flag = 0;
       }
     }
-    /* VCVTTSS2SI can only be used with XMM registers, Hasm 2.16 */
+    /* VCVTTSS2SI can only be used with XMM registers, Uasm 2.16 */
     if (CodeInfo->token == T_VCVTTSS2SI){
       if (CodeInfo->r2type == OP_YMM || CodeInfo->r2type == OP_ZMM )
         EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
       }
     /* Check size of added missing instructions VRCP28SD, VRCP28SS, VRCP28PD, VRCP28PS 
-     VRSQRT28PD, VRSQRT28PS, VRSQRT28SD, VRSQRT28SS, VEXP2PD, VEXP2PS Hasm 2.16  */
+     VRSQRT28PD, VRSQRT28PS, VRSQRT28SD, VRSQRT28SS, VEXP2PD, VEXP2PS Uasm 2.16  */
     switch (CodeInfo->token){
       case   T_VRCP28SD:
       case T_VRSQRT28SD:
@@ -532,7 +532,7 @@ static void output_opc(struct code_info *CodeInfo)
           break;
         else goto error;
       }
-  /* Validate use of proper GPR size for VPINSRB, VPINSRW, VPINSRD, VPINSRQ, VPEXTRB, VPEXTRW, VPEXTRD, VPEXTRQ, Hasm 2.16 
+  /* Validate use of proper GPR size for VPINSRB, VPINSRW, VPINSRD, VPINSRQ, VPEXTRB, VPEXTRW, VPEXTRD, VPEXTRQ, Uasm 2.16 
    * MT_EMPTY is OK because instructions mnemonics are teling the size
    */
   switch (CodeInfo->token){
@@ -598,7 +598,7 @@ static void output_opc(struct code_info *CodeInfo)
             if (CodeInfo->evex_flag) 
               OutputCodeByte( 0x62 ); //AVX512 EVEX first byte
             else{
-              /* These instructions if, not 0x62, can be only 0xC5, Hasm 2.16 */
+              /* These instructions if, not 0x62, can be only 0xC5, Uasm 2.16 */
                 if (CodeInfo->token == T_VPMOVMSKB){
                   if(ins->byte1_info == F_0F && (CodeInfo->prefix.rex & REX_B == 0)&& 
                      (CodeInfo->prefix.rex & REX_X == 0) && (CodeInfo->prefix.rex & REX_W == 8))
@@ -816,7 +816,7 @@ static void output_opc(struct code_info *CodeInfo)
               (CodeInfo->token == T_KSHIFTRW) || (CodeInfo->token == T_KSHIFTRQ)){
               lbyte |= 0x80;
             }
-            //Hasm13.1 VPGATHERDD, VPGATHERQD, VPGATHERDQ, VPGATHERQQ
+            //Uasm13.1 VPGATHERDD, VPGATHERQD, VPGATHERDQ, VPGATHERQQ
             if (CodeInfo->token >= T_VPGATHERDD && CodeInfo->token <= T_VGATHERQPS){
               if ((CodeInfo->opnd[OPND3].type != CodeInfo->opnd[OPND1].type)&& 
                 (CodeInfo->evex_flag == 0))
@@ -938,7 +938,7 @@ static void output_opc(struct code_info *CodeInfo)
               if (CodeInfo->r2type == OP_YMM)
                 lbyte |= 0x04;
             }
-          /* This prevents misuse of data size,   Hasm 2.16  */
+          /* This prevents misuse of data size,   Uasm 2.16  */
           switch (CodeInfo->token){
             case T_VPMOVSXBW:
             case T_VPMOVSXWD:
@@ -1007,7 +1007,7 @@ static void output_opc(struct code_info *CodeInfo)
             //VGATHERPF0QPD
             if (CodeInfo->evex_flag  ){
               CodeInfo->evex_p2 |= decoflags;
-              /*Hasm 2.16 fixed error, replaed '&' with '==' */
+              /*Uasm 2.16 fixed error, replaed '&' with '==' */
             if ((CodeInfo->r1type  == OP_ZMM)|| (CodeInfo->r2type == OP_ZMM))
               CodeInfo->evex_p2 |= EVEX_P2L1MASK;
             else if ((CodeInfo->r1type == OP_YMM) || (CodeInfo->r2type == OP_YMM)) 
@@ -1045,7 +1045,7 @@ static void output_opc(struct code_info *CodeInfo)
                     else EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
                   }
                 }
-                /* Check for proper data and index size, Hasm 2.16 */
+                /* Check for proper data and index size, Uasm 2.16 */
                 switch (CodeInfo->token){
                   /*  xmmword,ymmword,zmmword  xmm1 {k1}, vm32x ; ymm1 {k1}, vm32x ; zmm1 {k1}, vm32y   */
                   case T_VPGATHERDQ:
@@ -1162,7 +1162,7 @@ static void output_opc(struct code_info *CodeInfo)
                  error1:
                    EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
                   }
-                /* This is a fix in Hasm 2.16 */
+                /* This is a fix in Uasm 2.16 */
                 if (CodeInfo->token >= T_VPSCATTERDD && CodeInfo->token <= T_VSCATTERQPD){
                     CodeInfo->tuple = TRUE;
                 }
@@ -1192,7 +1192,7 @@ static void output_opc(struct code_info *CodeInfo)
                     else CodeInfo->evex_p2 &= ~EVEX_P2VMASK;
                   }
                   //__debugbreak();
-                  /* Fixed index size in CodeInfo->evex_p2 ~EVEX_P2VMASK, Hasm 2.16 */
+                  /* Fixed index size in CodeInfo->evex_p2 ~EVEX_P2VMASK, Uasm 2.16 */
                   else if (CodeInfo->opnd[OPND2].type == OP_M && CodeInfo->indexreg > 15) 
                     CodeInfo->evex_p2 &= ~EVEX_P2VMASK;
                   else CodeInfo->evex_p2 |= EVEX_P2VMASK;
@@ -1205,7 +1205,7 @@ static void output_opc(struct code_info *CodeInfo)
               if ((CodeInfo->token >= T_VPSLLW) && (CodeInfo->token <= T_VPSRLQ) ||
                   (CodeInfo->token >= T_VPSLLVD) && (CodeInfo->token <= T_VPSRLVW)||
                   (CodeInfo->token >= T_VPSLLVD && CodeInfo->token <= T_VPSRLVW)){ 
-                if (CodeInfo->reg1 <= 15)           //Hasm 2.16 fixed EVEX_P2VMASK
+                if (CodeInfo->reg1 <= 15)           //Uasm 2.16 fixed EVEX_P2VMASK
                   CodeInfo->evex_p2 |= EVEX_P2VMASK;
                 }
             switch (CodeInfo->token){ 
@@ -1336,7 +1336,7 @@ static void output_opc(struct code_info *CodeInfo)
 						if (CodeInfo->opnd[OPND2].type & OP_ZMM) CodeInfo->evex_p2 |= EVEX_P2L1MASK;
 					}
 				}
-				else {  // this is a fix for VMOVSS when first operand is RIP memory, Hasm 2.16
+				else {  // this is a fix for VMOVSS when first operand is RIP memory, Uasm 2.16
 					if (CodeInfo->opnd[OPND1].type & OP_M_ANY) {
 						if (CodeInfo->reg2 <= 15) CodeInfo->evex_p0 |= EVEX_P0R1MASK;
 						else CodeInfo->evex_p0 &= ~EVEX_P0R1MASK;
@@ -1464,9 +1464,9 @@ static void output_opc(struct code_info *CodeInfo)
 			//   }
 			//  }
 		   //if first byte is VEX 0xC5 then there is two byte folowing 
-		   /* set L: Vector Length for all instructions between KADDB and  KUNPCKDQ  Hasm 2.16 */
+		   /* set L: Vector Length for all instructions between KADDB and  KUNPCKDQ  Uasm 2.16 */
 			if ((CodeInfo->token >= T_KADDB) && (CodeInfo->token <= T_KUNPCKDQ)) lbyte |= 0x04;
-			/* That is where is fixed problem with the VEX registers size, Hasm 2.16 */
+			/* That is where is fixed problem with the VEX registers size, Uasm 2.16 */
 			if (CodeInfo->token == T_VPMOVMSKB) {
 				lbyte |= EVEX_P1WMASK;    // 2 byte vex_p1 R must be set
 				if (CodeInfo->opnd[OPND1].type == OP_YMM)
@@ -1915,7 +1915,7 @@ static void output_opc(struct code_info *CodeInfo)
               tmp &= ~0x38;
               tmp |= 0x08;
             }
-        /* ModR/M.mod (bit 7:6) = 0 specifies the scale factor [Scaled Vector Register] + Disp32, Hasm 2.16 */
+        /* ModR/M.mod (bit 7:6) = 0 specifies the scale factor [Scaled Vector Register] + Disp32, Uasm 2.16 */
         if ((CodeInfo->basetype == 0xfe) && ((CodeInfo->indextype == OP_XMM) ||
           (CodeInfo->indextype == OP_YMM) || (CodeInfo->indextype == OP_ZMM))){ 
           if (CodeInfo->basereg != 0xff)

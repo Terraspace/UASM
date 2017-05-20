@@ -114,7 +114,7 @@ static char *IncludeLibrary( const char *name )
      * includelib <kernel32.lib>
      * includelib <KERNEL32.LIB>
      * then 2 defaultlib entries are added. If this is to be changed for
-     * Hasm, activate the _stricmp() below.
+     * Uasm, activate the _stricmp() below.
      */
     for ( q = ModuleInfo.g.LibQueue.head; q ; q = q->next ) {
         //if ( _stricmp( dir->sym.name, name) == 0)

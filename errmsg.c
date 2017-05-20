@@ -139,7 +139,7 @@ int write_logo( void )
 {
     if( banner_printed == FALSE ) {
         banner_printed = TRUE;
-        printf( "%s, %s\n", MsgGetEx( MSG_HASM ), MsgGetEx( MSG_HASM2 ) );
+        printf( "%s, %s\n", MsgGetEx( MSG_UASM ), MsgGetEx( MSG_UASM2 ) );
         return( 4 ); /* return number of lines printed */
     }
     return( 0 );
