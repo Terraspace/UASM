@@ -7,16 +7,16 @@
 /*   tok   (suffix)             op1-3                          byte1_info opnd_dir rm_info opcode    rm_byte     cpu      prefix */
 
 #if AMD64_SUPPORT
-ins (CALL, call,                OpCls( I32,     NONE,     NONE ), 0,       0,  no_RM,  0xE8,     0x00,       P_64,        0)
-insn(CALL, 1,                   OpCls( R64_M64, NONE,     NONE ), 0,       0,  no_WDS, 0xFF,     0x10,       P_64,        0)
+ins (CALL, call,                OpCls( I32,     NONE,     NONE ), 0,       0,  no_RM,  0xE8,     0x00,       P_64,        AP_BND)
+insn(CALL, 1,                   OpCls( R64_M64, NONE,     NONE ), 0,       0,  no_WDS, 0xFF,     0x10,       P_64,        AP_BND)
 //insn(CALL, 2,                   OpCls( M64,     NONE,     NONE ), 0,       0,  no_WDS, 0xFF,     0x10,       P_64,        0)
 /* FAR call */
 insm(CALL, 3,                   OpCls( M32,     NONE,     NONE ), F_16,    0,  no_WDS, 0xFF,     0x18,       P_64,        0)
 insn(CALL, 4,                   OpCls( M48,     NONE,     NONE ), 0,       0,  no_WDS, 0xFF,     0x18,       P_64,        0)
 insn(CALL, 5,                   OpCls( M80,     NONE,     NONE ), F_48,    0,  no_WDS, 0xFF,     0x18,       P_64,        0)
-ins (JMP, jmp,                  OpCls( I8,      NONE,     NONE ), 0,       0,  no_RM,  0xEB,     0x00,       P_86,        0)
-insn(JMP, 1,                    OpCls( I32,     NONE,     NONE ), 0,       0,  no_RM,  0xE9,     0x00,       P_64,        0)
-insn(JMP, 2,                    OpCls( R64_M64, NONE,     NONE ), 0,       0,  no_WDS, 0xFF,     0x20,       P_64,        0)
+ins (JMP, jmp,                  OpCls( I8,      NONE,     NONE ), 0,       0,  no_RM,  0xEB,     0x00,       P_86,        AP_BND)
+insn(JMP, 1,                    OpCls( I32,     NONE,     NONE ), 0,       0,  no_RM,  0xE9,     0x00,       P_64,        AP_BND)
+insn(JMP, 2,                    OpCls( R64_M64, NONE,     NONE ), 0,       0,  no_WDS, 0xFF,     0x20,       P_64,        AP_BND)
 //insn(JMP, 3,                    OpCls( M64,     NONE,     NONE ), 0,       0,  no_WDS, 0xFF,     0x20,       P_64,        0)
 /* FAR jmp */
 insm(JMP, 4,                    OpCls( M32,     NONE,     NONE ), F_16,    0,  no_WDS, 0xFF,     0x28,       P_64,        0)

@@ -53,7 +53,7 @@ extern struct asym      *CreateProc( struct asym *, const char *, enum sym_state
 extern void             DeleteProc( struct dsym * );
 
 extern ret_code         CopyPrototype( struct dsym *, struct dsym * );
-extern ret_code         RetInstr( int, struct asm_tok[], int );   /* handle RET/IRET within procedures */
+extern ret_code         RetInstr( int, struct asm_tok[], int , bool );   /* handle RET/IRET within procedures */
 extern void             write_prologue( struct asm_tok[] );
 extern void             ProcInit( void );
 

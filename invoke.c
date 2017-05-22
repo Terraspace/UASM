@@ -4328,8 +4328,19 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 		EmitWarn(2, REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
 #endif
 	p = StringBufferEnd;
-	strcpy(p, " call ");
-	p += 6;
+	
+	/* Generate BND (Intel MPX) call */
+	if (Options.bnd)
+	{
+		strcpy(p, " bnd call ");
+		p += 10;
+	}
+	else
+	{
+		strcpy(p, " call ");
+		p += 6;
+	}
+
 	/* v2.09: 'uselabel' obsolete */
 	//if ( uselabel ) {
 	//    DebugMsg1(("InvokeDir: opnd.label_tok is used: %s\n", opnd.label_tok->string_ptr ));

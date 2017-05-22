@@ -206,11 +206,11 @@
 
 /* Uasm version info */
 #ifdef _WIN64
-#define _UASM_VERSION_STR_ "2.33"
+#define _UASM_VERSION_STR_ "2.34"
 #else
-#define _UASM_VERSION_STR_ "2.33"
+#define _UASM_VERSION_STR_ "2.34"
 #endif
-#define _UASM_VERSION_INT_ 233
+#define _UASM_VERSION_INT_ 234
 #define _UASM_VERSION_SUFFIX_ "pre"
 #define _UASM_VERSION_ _UASM_VERSION_STR_ //_UASM_VERSION_SUFFIX_
 
@@ -675,6 +675,7 @@ struct global_options {
     bool        syntax_check_only;       /* -Zs option */
 	bool		nomlib;					 /* -nomlib option */
 	bool        lessoutput;              /* -less option */
+	bool        bnd;                     /* -mpx or option bnd */
 #if MANGLERSUPP
     enum naming_types naming_convention; /* OW naming peculiarities */
 #endif

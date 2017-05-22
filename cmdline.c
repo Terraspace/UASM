@@ -146,6 +146,7 @@ struct global_options Options = {
     /* syntax check only     */     FALSE,
 	/* No Macro Lib          */     FALSE,
 	/* Less Output           */     FALSE,
+	/* MPX / BND             */     FALSE,
 #if MANGLERSUPP
     /* naming_convention*/          NC_DO_NOTHING,
 #endif

@@ -110,7 +110,8 @@ enum allowed_prefix {
     AP_REP      = 0x02,
     AP_REPxx    = 0x03,
     AP_FWAIT    = 0x04,
-    AP_NO_FWAIT = 0x05
+    AP_NO_FWAIT = 0x05,
+	AP_BND      = 0x06
 };
 
 /* values for field type in special_item.

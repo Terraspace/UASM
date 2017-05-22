@@ -27,32 +27,32 @@
 
 /*   tok   (suffix)             op1-3                      b1_inf op_dir rm_inf opcode   rm_byte       cpu      prefix */
 
-ins (CALL, call,                OpCls( I16,  NONE,  NONE  ), 0,      0,  no_RM,  0xE8,     0x00,       P_86,        0)
-insn(CALL, 1,                   OpCls( I32,  NONE,  NONE  ), 0,      0,  no_RM,  0xE8,     0x00,       P_386,       0)
-insn(CALL, 2,                   OpCls( RGT8, NONE,  NONE  ), 0,      0,  no_WDS, 0xFF,     0x10,       P_86,        0)
-insn(CALL, 3,                   OpCls( M32,  NONE,  NONE  ), F_32,   0,  no_WDS, 0xFF,     0x10,       P_386,       0)
-insn(CALL, 4,                   OpCls( M16,  NONE,  NONE  ), F_16,   0,  no_WDS, 0xFF,     0x10,       P_86,        0)
+ins (CALL, call,                OpCls( I16,  NONE,  NONE  ), 0,      0,  no_RM,  0xE8,     0x00,       P_86,        AP_BND)
+insn(CALL, 1,                   OpCls( I32,  NONE,  NONE  ), 0,      0,  no_RM,  0xE8,     0x00,       P_386,       AP_BND)
+insn(CALL, 2,                   OpCls( RGT8, NONE,  NONE  ), 0,      0,  no_WDS, 0xFF,     0x10,       P_86,        AP_BND)
+insn(CALL, 3,                   OpCls( M32,  NONE,  NONE  ), F_32,   0,  no_WDS, 0xFF,     0x10,       P_386,       AP_BND)
+insn(CALL, 4,                   OpCls( M16,  NONE,  NONE  ), F_16,   0,  no_WDS, 0xFF,     0x10,       P_86,        AP_BND)
 /* start entries for FAR call */
-insm(CALL, 6,                   OpCls( I32,  NONE,  NONE  ), F_16,   0,  no_RM,  0x9A,     0x00,       P_86,        0)
-insn(CALL, 7,                   OpCls( I48,  NONE,  NONE  ), F_32,   0,  no_RM,  0x9A,     0x00,       P_386,       0)
-insn(CALL, 8,                   OpCls( M32,  NONE,  NONE  ), F_16,   0,  no_WDS, 0xFF,     0x18,       P_86,        0)
-insn(CALL, 9,                   OpCls( M48,  NONE,  NONE  ), F_32,   0,  no_WDS, 0xFF,     0x18,       P_386,       0)
-ins (JMP, jmp,                  OpCls( I8,   NONE,  NONE  ), 0,      0,  no_RM,  0xEB,     0x00,       P_86,        0)
-insn(JMP, 1,                    OpCls( I16,  NONE,  NONE  ), 0,      0,  no_RM,  0xE9,     0x00,       P_86,        0)
-insn(JMP, 2,                    OpCls( I32,  NONE,  NONE  ), 0,      0,  no_RM,  0xE9,     0x00,       P_386,       0)
-insn(JMP, 3,                    OpCls( RGT8, NONE,  NONE  ), 0,      0,  no_WDS, 0xFF,     0x20,       P_86,        0)
-insn(JMP, 4,                    OpCls( M32,  NONE,  NONE  ), F_32,   0,  no_WDS, 0xFF,     0x20,       P_386,       0)
-insn(JMP, 5,                    OpCls( M16,  NONE,  NONE  ), F_16,   0,  no_WDS, 0xFF,     0x20,       P_86,        0)
+insm(CALL, 6,                   OpCls( I32,  NONE,  NONE  ), F_16,   0,  no_RM,  0x9A,     0x00,       P_86,        AP_BND)
+insn(CALL, 7,                   OpCls( I48,  NONE,  NONE  ), F_32,   0,  no_RM,  0x9A,     0x00,       P_386,       AP_BND)
+insn(CALL, 8,                   OpCls( M32,  NONE,  NONE  ), F_16,   0,  no_WDS, 0xFF,     0x18,       P_86,        AP_BND)
+insn(CALL, 9,                   OpCls( M48,  NONE,  NONE  ), F_32,   0,  no_WDS, 0xFF,     0x18,       P_386,       AP_BND)
+ins (JMP, jmp,                  OpCls( I8,   NONE,  NONE  ), 0,      0,  no_RM,  0xEB,     0x00,       P_86,        AP_BND)
+insn(JMP, 1,                    OpCls( I16,  NONE,  NONE  ), 0,      0,  no_RM,  0xE9,     0x00,       P_86,        AP_BND)
+insn(JMP, 2,                    OpCls( I32,  NONE,  NONE  ), 0,      0,  no_RM,  0xE9,     0x00,       P_386,       AP_BND)
+insn(JMP, 3,                    OpCls( RGT8, NONE,  NONE  ), 0,      0,  no_WDS, 0xFF,     0x20,       P_86,        AP_BND)
+insn(JMP, 4,                    OpCls( M32,  NONE,  NONE  ), F_32,   0,  no_WDS, 0xFF,     0x20,       P_386,       AP_BND)
+insn(JMP, 5,                    OpCls( M16,  NONE,  NONE  ), F_16,   0,  no_WDS, 0xFF,     0x20,       P_86,        AP_BND)
 /* entries for FAR jmp */
-insm(JMP, 7,                    OpCls( I32,  NONE,  NONE  ), F_16,   0,  no_RM,  0xEA,     0x00,       P_86,        0)
-insn(JMP, 8,                    OpCls( I48,  NONE,  NONE  ), F_32,   0,  no_RM,  0xEA,     0x00,       P_386,       0)
-insn(JMP, 9,                    OpCls( M32,  NONE,  NONE  ), F_16,   0,  no_WDS, 0xFF,     0x28,       P_86,        0)
-insn(JMP, 10,                   OpCls( M48,  NONE,  NONE  ), F_32,   0,  no_WDS, 0xFF,     0x28,       P_386,       0)
+insm(JMP, 7,                    OpCls( I32,  NONE,  NONE  ), F_16,   0,  no_RM,  0xEA,     0x00,       P_86,        AP_BND)
+insn(JMP, 8,                    OpCls( I48,  NONE,  NONE  ), F_32,   0,  no_RM,  0xEA,     0x00,       P_386,       AP_BND)
+insn(JMP, 9,                    OpCls( M32,  NONE,  NONE  ), F_16,   0,  no_WDS, 0xFF,     0x28,       P_86,        AP_BND)
+insn(JMP, 10,                   OpCls( M48,  NONE,  NONE  ), F_32,   0,  no_WDS, 0xFF,     0x28,       P_386,       AP_BND)
 
 // for conditional jumps, the SHORT version must always be first!
 #define jcc( cond, code, condlc )      \
-ins (J##cond, j##condlc,        OpCls( I8,   NONE,  NONE  ), 0,      0,  no_RM, 0x70+code, 0x00,       P_86,        0) \
-insn(J##cond, 1,                OpCls( I,    NONE,  NONE  ), F_0F,   0,  no_RM, 0x80+code, 0x00,       P_386,       0)
+ins (J##cond, j##condlc,        OpCls( I8,   NONE,  NONE  ), 0,      0,  no_RM, 0x70+code, 0x00,       P_86,        AP_BND) \
+insn(J##cond, 1,                OpCls( I,    NONE,  NONE  ), F_0F,   0,  no_RM, 0x80+code, 0x00,       P_386,       AP_BND)
 
 jcc( A,   0x7,   a )
 jcc( AE,  0x3,  ae )
@@ -87,10 +87,10 @@ jcc( Z,   0x4,   z )
 
 #undef jcc
 
-insx(JCXZ,   jcxz,              OpCls( I8,   NONE,  NONE  ), F_16A,  0,  no_RM,  0xE3,     0x00,       P_86,        0, RWF_IA32)
+insx(JCXZ,   jcxz,              OpCls( I8,   NONE,  NONE  ), F_16A,  0,  no_RM,  0xE3,     0x00,       P_86,        0, RWF_IA32 | AP_BND)
 ins (JECXZ,  jecxz,             OpCls( I8,   NONE,  NONE  ), F_32A,  0,  no_RM,  0xE3,     0x00,       P_386,       0)
 #if AMD64_SUPPORT
-insx(JRCXZ,  jrcxz,             OpCls( I8,   NONE,  NONE  ), 0,      0,  no_RM,  0xE3,     0x00,       P_64,        0, RWF_X64)
+insx(JRCXZ,  jrcxz,             OpCls( I8,   NONE,  NONE  ), 0,      0,  no_RM,  0xE3,     0x00,       P_64,        0, RWF_X64 | AP_BND)
 #endif
 ins (LOOP,   loop,              OpCls( I8,   NONE,  NONE  ), 0,      0,  no_RM,  0xE2,     0x00,       P_86,        0)
 ins (LOOPE,  loope,             OpCls( I8,   NONE,  NONE  ), 0,      0,  no_RM,  0xE1,     0x00,       P_86,        0)
@@ -286,6 +286,7 @@ ins (LOCK,  lock,               OpCls( NONE,     NONE,       NONE ), 0,      0, 
 ins (REP,   rep,                OpCls( NONE,     NONE,       NONE ), 0,      0,  no_RM,  0xF3,     0,          P_86,        AP_REP)
 ins (REPE,  repe,               OpCls( NONE,     NONE,       NONE ), 0,      0,  no_RM,  0xF3,     0,          P_86,        AP_REPxx)
 ins (REPNE, repne,              OpCls( NONE,     NONE,       NONE ), 0,      0,  no_RM,  0xF2,     0,          P_86,        AP_REPxx)
+ins (BND,   bnd,                OpCls( NONE,     NONE,       NONE ), 0,      0,  no_RM,  0xF2,     0,          P_686,       AP_BND)
 ins (REPNZ, repnz,              OpCls( NONE,     NONE,       NONE ), 0,      0,  no_RM,  0xF2,     0,          P_86,        AP_REPxx)
 ins (REPZ,  repz,               OpCls( NONE,     NONE,       NONE ), 0,      0,  no_RM,  0xF3,     0,          P_86,        AP_REPxx)
 
@@ -426,10 +427,10 @@ ins (RDMSR, rdmsr,              OpCls( NONE,     NONE,       NONE ), F_0F,   0, 
 ins (RDPMC, rdpmc,              OpCls( NONE,     NONE,       NONE ), F_0F,   0,  no_RM,  0x33,     0x00,       P_586,       0)
 ins (RDTSC, rdtsc,              OpCls( NONE,     NONE,       NONE ), F_0F,   0,  no_RM,  0x31,     0x00,       P_586,       0)
 ins (RDTSCP, rdtscp,            OpCls( NONE,     NONE,       NONE ), F_0F,   0,  no_WDS, 0x01,     0xF9,       P_686,       0)
-ins (RET,  ret,                 OpCls( I16,      NONE,       NONE ), 0,      0,  no_RM,  0xC2,     0x00,       P_86,        0)
-insn(RET,  1,                   OpCls( NONE,     NONE,       NONE ), 0,      0,  no_RM,  0xC3,     0x00,       P_86,        0)
-ins (RETN, retn,                OpCls( I16,      NONE,       NONE ), 0,      0,  no_RM,  0xC2,     0x00,       P_86,        0)
-insn(RETN, 1,                   OpCls( NONE,     NONE,       NONE ), 0,      0,  no_RM,  0xC3,     0x00,       P_86,        0)
+ins (RET,  ret,                 OpCls( I16,      NONE,       NONE ), 0,      0,  no_RM,  0xC2,     0x00,       P_86,        AP_BND)
+insn(RET,  1,                   OpCls( NONE,     NONE,       NONE ), 0,      0,  no_RM,  0xC3,     0x00,       P_86,        AP_BND)
+ins (RETN, retn,                OpCls( I16,      NONE,       NONE ), 0,      0,  no_RM,  0xC2,     0x00,       P_86,        AP_BND)
+insn(RETN, 1,                   OpCls( NONE,     NONE,       NONE ), 0,      0,  no_RM,  0xC3,     0x00,       P_86,        AP_BND)
 ins (RETF, retf,                OpCls( I16,      NONE,       NONE ), 0,      0,  no_RM,  0xCA,     0x00,       P_86,        0)
 insn(RETF, 1,                   OpCls( NONE,     NONE,       NONE ), 0,      0,  no_RM,  0xCB,     0x00,       P_86,        0)
 ins (RSM, rsm,                  OpCls( NONE,     NONE,       NONE ), F_0F,   0,  no_RM,  0xAA,     0x00,       P_586,       0)

@@ -2976,6 +2976,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
   int                c1;
   unsigned           flags;
   char               *pnlbl;
+  bool               hasBnd = FALSE;
 
 #ifdef DEBUG_OUT
   char                *instr;
@@ -3345,14 +3346,24 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 
   /* instruction prefix?
    * T_LOCK, T_REP, T_REPE, T_REPNE, T_REPNZ, T_REPZ */
-  if (tokenarray[i].tokval >= T_LOCK && tokenarray[i].tokval <= T_REPZ) {
-    CodeInfo.prefix.ins = tokenarray[i].tokval;
+  if (tokenarray[i].tokval >= T_LOCK && tokenarray[i].tokval <= T_REPZ) 
+  {
+    
+	CodeInfo.prefix.ins = tokenarray[i].tokval;
     i++;
-    /* prefix has to be followed by an instruction */
+    
+	/* prefix has to be followed by an instruction */
     if (tokenarray[i].token != T_INSTRUCTION) {
       DebugMsg(("ParseLine: unexpected token %u after prefix, exit, error\n", tokenarray[i].token));
       return(EmitError(PREFIX_MUST_BE_FOLLOWED_BY_AN_INSTRUCTION));
     }
+	
+	/* If BND prefix, set hasBnd and check it's valid instrunction */
+	if (tokenarray[i - 1].tokval == T_BND)
+	{
+		hasBnd = TRUE;
+	}
+
     DebugMsg1(("ParseLine: %s\n", tokenarray[i].tokpos));
   };
 
@@ -3368,7 +3379,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
         /* v2.07: special handling for RET/IRET */
         FStoreLine((ModuleInfo.CurrComment && ModuleInfo.list_generated_code) ? 1 : 0);
         ProcStatus |= PRST_INSIDE_EPILOGUE;
-        temp = RetInstr(i, tokenarray, Token_Count);
+        temp = RetInstr(i, tokenarray, Token_Count, hasBnd);
         ProcStatus &= ~PRST_INSIDE_EPILOGUE;
         return(temp);
       }
