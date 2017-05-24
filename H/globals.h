@@ -70,6 +70,9 @@
 #define MAX_STRING_LEN          MAX_LINE_LEN - 32 /* must be < MAX_LINE_LEN */
 #define MAX_ID_LEN              247  /* must be < MAX_LINE_LEN */
 #define MAX_STRUCT_ALIGN        32
+
+#define MAX_SEGMENT_ALIGN       4096 /* maximum alignment/packing setting for segments */
+
 /* v2.06: obsolete */
 //#define MAX_RESW_LEN            31 /* max length of a reserved word */
 
@@ -676,6 +679,7 @@ struct global_options {
 	bool		nomlib;					 /* -nomlib option */
 	bool        lessoutput;              /* -less option */
 	bool        bnd;                     /* -mpx or option bnd */
+	uint_16     seg_align;               /* -Sp(n) set segment packing or alignment */
 #if MANGLERSUPP
     enum naming_types naming_convention; /* OW naming peculiarities */
 #endif

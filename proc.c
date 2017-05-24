@@ -4489,7 +4489,7 @@ static ret_code write_userdef_epilogue( bool flag_iret, struct asm_tok tokenarra
  * count = number of tokens in buffer (=Token_Count)
  * it's ensured already that ModuleInfo.proc_epilogue isn't NULL.
  */
-ret_code RetInstr( int i, struct asm_tok tokenarray[], int count, bool hasBnd )
+ret_code RetInstr( int i, struct asm_tok tokenarray[], int count )
 /****************************************************************/
 {
     struct proc_info   *info;
@@ -4535,8 +4535,8 @@ ret_code RetInstr( int i, struct asm_tok tokenarray[], int count, bool hasBnd )
         LstWrite( LSTTYPE_DIRECTIVE, GetCurrOffset(), NULL );
     }
 
-	/* If hasBnd, copy prefix */
-	if (hasBnd)
+	/* If the ret instruction had bnd, add prefix */
+	if (tokenarray[0].tokval == T_BND)
 	{
 		strcpy(buffer, "bnd ");
 		strcpy(buffer+4, tokenarray[i].string_ptr);

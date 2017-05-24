@@ -104,19 +104,30 @@ static void SetSimSeg( enum sim_seg segm, const char *name )
     char *pAlign = "WORD";
     char *pAlignSt = "PARA";
     char *pUse = "";
+	char align[16];
     struct asym *sym;
     const char *pFmt;
     const char *pClass;
+
+	/* v2.34 /Sp[n] Set segment alignment */
+	if (Options.seg_align != 4) 
+	{
+		sprintf(align, "ALIGN(%d)", (1 << Options.seg_align));
+		pAlignSt = align;
+	}
 
     if ( ModuleInfo.defOfssize > USE16 ) {
         if ( ModuleInfo.model == MODEL_FLAT )
             pUse = "FLAT";
         else
             pUse = "USE32";
-        if (( ModuleInfo.curr_cpu & P_CPU_MASK ) <= P_386 )
-            pAlign = "DWORD";
-        else
-            pAlign = "PARA";
+
+		if (Options.seg_align != 4)
+			pAlign = align;
+		else if ((ModuleInfo.curr_cpu & P_CPU_MASK) <= P_386)
+			pAlign = "DWORD";
+		else
+			pAlign = "PARA";
         pAlignSt = pAlign;
     }
 

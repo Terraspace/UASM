@@ -147,6 +147,7 @@ struct global_options Options = {
 	/* No Macro Lib          */     FALSE,
 	/* Less Output           */     FALSE,
 	/* MPX / BND             */     FALSE,
+	/* segment alignment     */     4,
 #if MANGLERSUPP
     /* naming_convention*/          NC_DO_NOTHING,
 #endif
@@ -436,6 +437,19 @@ static void OPTQUAL Set_Zp( void )
     return;
 }
 
+static void OPTQUAL Set_Sp(void)
+/********************************/
+{
+	uint_8 power;
+	for (power = 0; (1 << power) <= MAX_SEGMENT_ALIGN; power++)
+		if ((1 << power) == OptValue) {
+			Options.seg_align = power;
+			return;
+		}
+	EmitWarn(1, INVALID_CMDLINE_VALUE, "Sp");
+	return;
+}
+
 static void OPTQUAL Set_D( void )  { queue_item( OPTQ_MACRO,    GetAFileName() ); }
 static void OPTQUAL Set_Fi( void ) { queue_item( OPTQ_FINCLUDE, GetAFileName() ); }
 static void OPTQUAL Set_I( void )  { queue_item( OPTQ_INCPATH,  GetAFileName() ); }
@@ -697,6 +711,7 @@ static struct cmdloption const cmdl_options[] = {
     { "Zm",     optofs( masm51_compat ),      Set_True },
     { "Zne",    optofs( strict_masm_compat ), Set_True },
     { "Zp=#",   0,        Set_Zp },
+	{ "Sp=#",   4,        Set_Sp },
     { "zcm",    0,        Set_zcm },
     { "zcw",    optofs( no_cdecl_decoration ), Set_True },
 #if OWFC_SUPPORT

@@ -2976,7 +2976,6 @@ ret_code ParseLine(struct asm_tok tokenarray[])
   int                c1;
   unsigned           flags;
   char               *pnlbl;
-  bool               hasBnd = FALSE;
 
 #ifdef DEBUG_OUT
   char                *instr;
@@ -3358,12 +3357,6 @@ ret_code ParseLine(struct asm_tok tokenarray[])
       return(EmitError(PREFIX_MUST_BE_FOLLOWED_BY_AN_INSTRUCTION));
     }
 	
-	/* If BND prefix, set hasBnd and check it's valid instrunction */
-	if (tokenarray[i - 1].tokval == T_BND)
-	{
-		hasBnd = TRUE;
-	}
-
     DebugMsg1(("ParseLine: %s\n", tokenarray[i].tokpos));
   };
 
@@ -3379,7 +3372,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
         /* v2.07: special handling for RET/IRET */
         FStoreLine((ModuleInfo.CurrComment && ModuleInfo.list_generated_code) ? 1 : 0);
         ProcStatus |= PRST_INSIDE_EPILOGUE;
-        temp = RetInstr(i, tokenarray, Token_Count, hasBnd);
+        temp = RetInstr(i, tokenarray, Token_Count);
         ProcStatus &= ~PRST_INSIDE_EPILOGUE;
         return(temp);
       }

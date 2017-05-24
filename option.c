@@ -100,7 +100,7 @@ OPTFUNC( SetZeroLocals )
 }
 
 /* 
-	OPTION BND:NO/OFF 
+	OPTION BND:ON/OFF 
 	-> Switch automatic MPX bnd generation on/off.
 */
 OPTFUNC(SetBnd)
