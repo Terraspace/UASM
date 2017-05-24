@@ -3356,8 +3356,8 @@ ret_code ParseLine(struct asm_tok tokenarray[])
       DebugMsg(("ParseLine: unexpected token %u after prefix, exit, error\n", tokenarray[i].token));
       return(EmitError(PREFIX_MUST_BE_FOLLOWED_BY_AN_INSTRUCTION));
     }
-	
-    DebugMsg1(("ParseLine: %s\n", tokenarray[i].tokpos));
+
+	DebugMsg1(("ParseLine: %s\n", tokenarray[i].tokpos));
   };
 
   if (CurrProc) {

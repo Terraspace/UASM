@@ -4536,7 +4536,7 @@ ret_code RetInstr( int i, struct asm_tok tokenarray[], int count )
     }
 
 	/* If the ret instruction had bnd, add prefix */
-	if (tokenarray[0].tokval == T_BND)
+	if ( tokenarray[0].tokval == T_BND )
 	{
 		strcpy(buffer, "bnd ");
 		strcpy(buffer+4, tokenarray[i].string_ptr);

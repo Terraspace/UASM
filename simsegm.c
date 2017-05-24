@@ -128,7 +128,7 @@ static void SetSimSeg( enum sim_seg segm, const char *name )
 			pAlign = "DWORD";
 		else
 			pAlign = "PARA";
-        pAlignSt = pAlign;
+		pAlignSt = pAlign;
     }
 
     if ( segm == SIM_CODE )

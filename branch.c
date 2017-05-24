@@ -287,6 +287,10 @@ ret_code process_branch( struct code_info *CodeInfo, unsigned CurrOpnd, const st
                 ( CodeInfo->Ofssize != USE32 && InstrTable[opidx].byte1_info == F_32A ))
                 addr--; /* 1 extra byte for ADRSIZ (0x67) */
 
+			/* UASM v2.34 : When calculating the displace for a branch/call, if the bnd prefix was used we need to shift it out by a further byte */
+			if (CodeInfo->prefix.ins == T_BND)
+				addr--;
+
             /* v2.02: removed */
             //if( CodeInfo->token == T_CALL && CodeInfo->mem_type == MT_EMPTY ) {
             //    CodeInfo->mem_type = MT_NEAR;
