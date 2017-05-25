@@ -1229,6 +1229,8 @@ ret_code ParseProc( struct dsym *proc, int i, struct asm_tok tokenarray[], bool 
 #if FASTPASS
     bool            oldpublic = proc->sym.ispublic;
 #endif
+	enum returntype ret_type;
+	bool defRet = FALSE;
 
     /* set some default values */
 
@@ -1331,6 +1333,82 @@ ret_code ParseProc( struct dsym *proc, int i, struct asm_tok tokenarray[], bool 
         EmitError( PROC_AND_PROTO_CALLING_CONV_CONFLICT );
     } else
         proc->sym.langtype = langtype;
+
+	
+	/* Handle return type if present */
+	if (proc->e.procinfo->ret_type == 0xff)
+	{
+		if (ModuleInfo.Ofssize == USE16)
+			proc->e.procinfo->ret_type = RT_WORD;
+		if (ModuleInfo.Ofssize == USE32)
+			proc->e.procinfo->ret_type = RT_DWORD;
+		if (ModuleInfo.Ofssize == USE64)
+			proc->e.procinfo->ret_type = RT_QWORD;
+		defRet = TRUE;
+	}
+
+	if (tokenarray[i].token == T_STYPE || (tokenarray[i].token == T_BINARY_OPERATOR && tokenarray[i].tokval == T_PTR) )
+	{
+		switch (tokenarray[i].tokval)
+		{
+		case T_PTR:
+			ret_type = RT_PTR;
+			break;
+		case T_REAL4:
+			ret_type = RT_REAL4;
+			break;
+		case T_REAL8:
+			ret_type = RT_REAL8;
+			break;
+		case T_BYTE:
+			ret_type = RT_BYTE;
+			break;
+		case T_WORD:
+			ret_type = RT_WORD;
+			break;
+		case T_DWORD:
+			ret_type = RT_DWORD;
+			break;
+		case T_QWORD:
+			ret_type = RT_QWORD;
+			break;
+		case T_SBYTE:
+			ret_type = RT_SBYTE;
+			break;
+		case T_SWORD:
+			ret_type = RT_SWORD;
+			break;
+		case T_SDWORD:
+			ret_type = RT_SDWORD;
+			break;
+		case T_SQWORD:
+			ret_type = RT_SQWORD;
+			break;
+		case T_XMMWORD:
+			ret_type = RT_XMM;
+			break;
+		case T_YMMWORD:
+			ret_type = RT_YMM;
+			break;
+		#if EVEXSUPP
+		case T_ZMMWORD:
+			ret_type = RT_ZMM;
+			break;
+		#endif
+		default:
+			ret_type = RT_NONE;
+			break;
+		}
+		
+		i++;
+	}
+	
+	if (proc->e.procinfo->ret_type != 0xff && !defRet)
+	{
+		if(ret_type != proc->e.procinfo->ret_type)
+			EmitError(PROC_AND_PROTO_CALLING_CONV_CONFLICT);
+	}
+	proc->e.procinfo->ret_type = ret_type;
 
     /* 3. attribute is <visibility> */
     /* note that reserved word PUBLIC is a directive! */
@@ -1563,6 +1641,7 @@ struct asym *CreateProc( struct asym *sym, const char *name, enum sym_state stat
         info->localsize = 0;
         info->prologuearg = NULL;
         info->flags = 0;
+		info->ret_type = 0xff;
         switch ( sym->state ) {
         case SYM_INTERNAL:
             /* v2.04: don't use sym_add_table() and thus

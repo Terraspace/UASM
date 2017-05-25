@@ -95,6 +95,27 @@ enum memtype {
 
 #define IS_SIGNED(x)  (((x) & MT_SPECIAL_MASK) == MT_SIGNED)
 
+/* UASM 2.34 added return type from proc enum */
+enum returntype {
+	RT_SIGNED = 0x40,
+	RT_FLOAT = 0x20,
+	RT_BYTE = 0,
+	RT_SBYTE = RT_BYTE | RT_SIGNED,
+	RT_WORD = 1,
+	RT_SWORD = RT_WORD | RT_SIGNED,
+	RT_DWORD = 2,
+	RT_SDWORD = RT_DWORD | RT_SIGNED,
+	RT_QWORD = 3,
+	RT_SQWORD = RT_QWORD | RT_SIGNED,
+	RT_REAL4 = RT_DWORD | RT_FLOAT,
+	RT_REAL8 = RT_QWORD | RT_FLOAT,
+	RT_XMM = 6,
+	RT_YMM = 7,
+	RT_ZMM = 8,
+	RT_PTR = 0xc3,
+	RT_NONE = 0x100
+};
+
 /* symbols can be
  * - "labels" (data or code, internal, external, stack)
  *   mem_type is MT_BYTE..MT_OWORD, MT_NEAR, MT_FAR, MT_PTR
@@ -356,6 +377,9 @@ struct proc_info {
     unsigned char       xyzused[6];
     unsigned char       delregsused[3]; /* added for delphi used registers v.29 */
     unsigned char       vecused;
+	
+	enum returntype     ret_type;		/* return type from proc */
+
 #if SYSV_SUPPORT
 	unsigned char       firstGPR;		/* Added for systemv call vararg to track the first available registers that can be used */
 	unsigned char       firstVEC;

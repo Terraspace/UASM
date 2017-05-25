@@ -3973,6 +3973,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	//char           buffer[MAX_LINE_LEN];
 	int            paracount;
 	int			   pcount;
+	struct asym    *lastret;
 
 	DebugMsg1(("InvokeDir(%s) enter\n", tokenarray[i].tokpos));
 	i++; /* skip INVOKE directive */
@@ -4073,6 +4074,10 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	}
 	proc = (struct dsym *)sym;
 	info = proc->e.procinfo;
+
+	/* UASM 2.34 : Track Last Return Value type from the proc that is being invoked */
+	lastret = SymFind("@LastReturnType");
+	lastret->value = info->ret_type;
 
 	// Reset SYSTEMV pass values.
 	if (proc->sym.langtype == LANG_SYSVCALL)

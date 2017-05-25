@@ -3262,7 +3262,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
       return(temp);
     case T_STYPE:
       DebugMsg1(("ParseLine: T_STYPE >%s<\n", tokenarray[i].string_ptr));
-      return(data_dir(i, tokenarray, NULL));
+	  return(data_dir(i, tokenarray, NULL));
     case T_ID:
       DebugMsg1(("ParseLine: T_ID >%s<\n", tokenarray[i].string_ptr));
       if (sym = IsType(tokenarray[i].string_ptr)) {

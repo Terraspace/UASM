@@ -48,6 +48,7 @@
 "-Sf\0"             "Generate first pass listing\0"
 "-Sg\0"             "Display generated code in listing\0"
 "-Sn\0"             "Suppress symbol-table listing\0"
+"-Sp[n]\0"          "Set segment alignment, n=<1|2|4|8|16|32 ...>\0"
 "-Sx\0"             "List false conditionals\0"
 "-w\0"              "Same as /W0 /WX\0"
 "-W<number>\0"      "Set warning level number (default=2, max=4)\0"
