@@ -1402,7 +1402,11 @@ ret_code ParseProc( struct dsym *proc, int i, struct asm_tok tokenarray[], bool 
 		
 		i++;
 	}
-	
+	else
+	{
+		ret_type = proc->e.procinfo->ret_type; /* wasn't specified on proc, assume settings from proto */
+	}
+
 	if (proc->e.procinfo->ret_type != 0xff && !defRet)
 	{
 		if(ret_type != proc->e.procinfo->ret_type)

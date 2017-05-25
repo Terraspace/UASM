@@ -30,11 +30,11 @@
 #include "orgfixup.h"
 #include "macrolib.h"
 
-#define MACRO_COUNT 46
+#define MACRO_COUNT 47
 
 /* MACRO names */
 char *macName[] = {
-	"MEMALLOC", "MEMFREE", "CSTR", "WSTR", "FP4", "FP8", "FP10", "LOADSS", "LOADSD", "LOADPS", "MEMALIGN", "RV", "REPARG", "EXPAND_PREFIX", "_ARRAY", "_DELETEARRAY", "OINTERFACE", "ENDOINTERFACE", "CVIRTUAL", "CLASS", "ENDCLASS", "CMETHOD", "METHOD", "STATICMETHOD", "ENDMETHOD", "_DECLARE", "_STATICREF", "_ACQUIRE", "_RELEASE", "_NEW", "_RBXNEW", "_ITEM", "_ITEMR", "_INVOKE", "_I", "_STATIC", "_DELETE", "_VINVOKE", "_V", "_VD", "_VW", "_VB", "_VF", "CSTATIC", "LOADMSS", "LOADMSD"
+	"MEMALLOC", "MEMFREE", "CSTR", "WSTR", "FP4", "FP8", "FP10", "LOADSS", "LOADSD", "LOADPS", "MEMALIGN", "RV", "REPARG", "EXPAND_PREFIX", "_ARRAY", "_DELETEARRAY", "OINTERFACE", "ENDOINTERFACE", "CVIRTUAL", "CLASS", "ENDCLASS", "CMETHOD", "METHOD", "STATICMETHOD", "ENDMETHOD", "_DECLARE", "_STATICREF", "_ACQUIRE", "_RELEASE", "_NEW", "_RBXNEW", "_ITEM", "_ITEMR", "_INVOKE", "_I", "_STATIC", "_DELETE", "_VINVOKE", "_V", "_VD", "_VW", "_VB", "_VF", "CSTATIC", "LOADMSS", "LOADMSD", "uinvoke"
 };
 
 /* MACRO definitions */
@@ -84,7 +84,8 @@ char *macDef[] = {
 	"_VF MACRO pInterface : REQ, Interface : REQ, Function : REQ, args : VARARG",
 	"CSTATIC MACRO method : REQ",
     "LOADMSS MACRO reg, value",
-    "LOADMSD MACRO reg, value"
+    "LOADMSD MACRO reg, value",
+	"uinvoke MACRO func:REQ, args:VARARG"
 };
 
 /* 
@@ -100,7 +101,7 @@ void InitAutoMacros(void)
 	uint_32 start_pos = 0;
 	char  *srcLines[128]; // NB: 128 is the max number of lines of macro code per macro.
 
-	uint_32 macroLen[] = { 7, 6, 6, 6, 7, 7, 7, 8, 8, 10, 3, 7, 11, 19, 10, 2, 7, 2, 10, 11, 19, 5, 39, 39, 12, 5, 2, 3, 3, 26, 27, 2, 2, 11, 8, 8, 9, 22, 23, 23, 23, 23, 23, 5, 10, 10 }; // Count of individual lines of macro-body code.
+	uint_32 macroLen[] = { 7, 6, 6, 6, 7, 7, 7, 8, 8, 10, 3, 7, 11, 19, 10, 2, 7, 2, 10, 11, 19, 5, 39, 39, 12, 5, 2, 3, 3, 26, 27, 2, 2, 11, 8, 8, 9, 22, 23, 23, 23, 23, 23, 5, 10, 10, 35 }; // Count of individual lines of macro-body code.
 	char *macCode[] = {
 		"IF @Platform EQ 1", "INVOKE HeapAlloc,RV(GetProcessHeap),0,aSize", "ELSE", "INVOKE malloc,aSize", "ENDIF", "MEMALIGN rax, 16", "endm", NULL,
 		"IF @Platform EQ 1", "INVOKE HeapFree,RV(GetProcessHeap),0,memPtr", "ELSE", "INVOKE free,memPtr", "ENDIF", "endm", NULL,
@@ -147,7 +148,8 @@ void InitAutoMacros(void)
 		"InterfacePtr TEXTEQU <_>", "InterfacePtr CATSTR InterfacePtr, <&Interface>, <_>, <&Function>, <Pto>", "IF(OPATTR(pInterface)) AND 00010000b", "IFNB <args>", "invoke(InterfacePtr PTR[&pInterface].&Interface.&Function), pInterface, &args", "ELSE", "invoke(InterfacePtr PTR[&pInterface].&Interface.&Function), pInterface", "ENDIF", "ELSE", "mov rax, pInterface", "IFNB <args>", "FOR arg, <args>", "IFIDNI <&arg>, <rax>", ".ERR <rax is not allowed as a Method parameter with indirect object label>", "ENDIF", "ENDM", "invoke(InterfacePtr PTR[rax].&Interface.&Function), pInterface, &args", "ELSE", "invoke(InterfacePtr PTR[rax].&Interface.&Function), pInterface", "ENDIF", "ENDIF", "exitm<xmm0>", "ENDM", NULL,
 		"LOCAL sz1, sz2", "sz2 CATSTR <_>, curClass, <_&method>, <Pto>", "% sz1 typedef PTR &sz2", "% method sz1 offset _&curClass&_&method&", "ENDM", NULL,
  	    ".data", "align 4", "vname dd value", ".code", "IF @Arch EQ 0", "movss reg, vname", "ELSE", "vmovss reg, vname", "ENDIF", "ENDM", NULL,
-        ".data", "align 8", "bname dq value", ".code", "IF @Arch EQ 0", "movsd reg, bname", "ELSE", "vmovsd reg, bname", "ENDIF", "ENDM", NULL	
+        ".data", "align 8", "bname dq value", ".code", "IF @Arch EQ 0", "movsd reg, bname", "ELSE", "vmovsd reg, bname", "ENDIF", "ENDM", NULL,
+		"IFB <args>", "invoke func", "ELSE", "invoke func, args", "ENDIF", "IF @LastReturnType EQ 0", "EXITM <al>", "ELSEIF @LastReturnType EQ 0x40", "EXITM <al>", "ELSEIF @LastReturnType EQ 1", "EXITM <ax>", "ELSEIF @LastReturnType EQ 0x41", "EXITM <ax>", "ELSEIF @LastReturnType EQ 2", "EXITM <eax>", "ELSEIF @LastReturnType EQ 0x42", "EXITM <eax>", "ELSEIF @LastReturnType EQ 3", "EXITM <rax>", "ELSEIF @LastReturnType EQ 0x43", "EXITM <rax>", "ELSEIF @LastReturnType EQ 0xc3", "EXITM <rax>", "ELSEIF @LastReturnType EQ 6", "EXITM <xmm0>", "ELSEIF @LastReturnType EQ 7", "EXITM <ymm0>", "ELSEIF @LastReturnType EQ 8", "EXITM <zmm0>", "ELSEIF @LastReturnType EQ 0x22", "EXITM <xmm0>", "ELSEIF @LastReturnType EQ 0x23", "EXITM <xmm0>", "ENDIF", "ENDM", NULL
     };	
 
 	/* Compile Macros */
@@ -160,7 +162,7 @@ void InitAutoMacros(void)
 		}
 		mac = CreateMacro(macName[i]);
 		ModuleInfo.token_count = Tokenize(macDef[i], 0, ModuleInfo.tokenarray, 0);
-		StoreAutoMacro(mac, 2, ModuleInfo.tokenarray, TRUE, srcLines, 0, macroLen[i]); // macCode, start_pos, macroLen[i]);
+		StoreAutoMacro(mac, 2, ModuleInfo.tokenarray, TRUE, srcLines, 0, macroLen[i]);
 		start_pos += macroLen[i] + 1;
 		for (j = 0; j < macroLen[i]; j++)
 		{
