@@ -121,7 +121,7 @@ void InitAutoMacros(void)
 		"local vname", ".data", "align 8", "vname REAL8 value", ".code", "exitm <vname>", "endm", NULL,
 		"local vname", ".data", "align 8", "vname REAL10 value", ".code", "exitm <vname>", "endm", NULL,
 		"IF @Arch EQ 0", "mov eax, val", "movd reg, eax", "ELSE", "mov eax, val", "vmovd reg, eax", "ENDIF", "ENDM", NULL,
-		"IF @Arch EQ 0", "mov rax, val", "movq reg, rax", "ELSE", "mov rax, val", "vmovq reg, rax", "ENDIF", "ENDM", NULL,
+		"IF @Arch EQ 0", "mov rax, real8 ptr val", "movq reg, rax", "ELSE", "mov rax, real8 ptr val", "vmovq reg, rax", "ENDIF", "ENDM", NULL,
 		"IF @Arch EQ 0", "mov eax, val", "movd reg, eax", "pshufd reg, 0", "ELSE", "mov eax, val", "vmovd reg, eax", "vpshufd reg, 0", "ENDIF", "ENDM", NULL,
 		"add reg, number - 1", "and reg, -number", "ENDM", NULL,
 		"arg equ <invoke FuncName>", "FOR var, <args>", "arg CATSTR arg, <, EXPAND_PREFIX(REPARG(var))>", "ENDM", "arg", "EXITM <rax>", "ENDM", NULL,
