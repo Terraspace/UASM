@@ -404,7 +404,7 @@ static char *RenderSimdInstr(char *dst, const char *instr, int start1, int end1,
 }
 
 /* render a Simd instruction using a temporary float immediate macro FP4/FP8 */
-static char *RenderSimdInstrTM(char *dst, const char *instr, int start1, int end1, int start2, int end2, struct asm_tok tokenarray[], enum c_bop op)
+static char *RenderSimdInstrTM(char *dst, const char *instr, int start1, int end1, int start2, int end2, struct asm_tok tokenarray[], enum c_bop op, bool isDouble)
 /*******************************************************************************************************************************/
 {
 	int i;
@@ -426,7 +426,10 @@ static char *RenderSimdInstrTM(char *dst, const char *instr, int start1, int end
 		*dst++ = ' ';
 		*dst++ = 'F';
 		*dst++ = 'P';
-		*dst++ = '4';
+		if(isDouble)
+			*dst++ = '8';
+		else
+			*dst++ = '4';
 		*dst++ = '(';
 		i = tokenarray[end2].tokpos - tokenarray[start2].tokpos;
 		memcpy(dst, tokenarray[start2].tokpos, i);
@@ -709,27 +712,57 @@ static ret_code GetSimpleExpression(struct hll_item *hll, int *i, struct asm_tok
 	else if (op1.kind == EXPR_REG && op1.indirect == FALSE && SizeFromRegister(op1.base_reg->tokval) == 16 && 
 		     op2.kind == EXPR_REG && op2.indirect == FALSE && SizeFromRegister(op2.base_reg->tokval) == 16)
 	{
-		if (ModuleInfo.arch == ARCH_SSE)
-			p = RenderSimdInstr(buffer, "ucomiss", op1_pos, op1_end, op2_pos, op2_end, tokenarray, op);
+		if (op1.mem_type == MT_REAL8 || op2.mem_type == MT_REAL8)
+		{
+			if (ModuleInfo.arch == ARCH_SSE)
+				p = RenderSimdInstr(buffer, "ucomisd", op1_pos, op1_end, op2_pos, op2_end, tokenarray, op);
+			else
+				p = RenderSimdInstr(buffer, "vucomisd", op1_pos, op1_end, op2_pos, op2_end, tokenarray, op);
+		}
 		else
-			p = RenderSimdInstr(buffer, "vucomiss", op1_pos, op1_end, op2_pos, op2_end, tokenarray, op);
+		{
+			if (ModuleInfo.arch == ARCH_SSE)
+				p = RenderSimdInstr(buffer, "ucomiss", op1_pos, op1_end, op2_pos, op2_end, tokenarray, op);
+			else
+				p = RenderSimdInstr(buffer, "vucomiss", op1_pos, op1_end, op2_pos, op2_end, tokenarray, op);
+		}
 	}
 	/* reg OP [reg]      reg OP [expr]           reg OP variable */
 	else if (op1.kind == EXPR_REG && op1.indirect == FALSE && SizeFromRegister(op1.base_reg->tokval) == 16 &&
 	   	     ((op2.kind == EXPR_REG && op2.indirect == TRUE) || op2.kind == EXPR_ADDR) )
 	{
-		if (ModuleInfo.arch == ARCH_SSE)
-			p = RenderSimdInstr(buffer, "ucomiss", op1_pos, op1_end, op2_pos, op2_end, tokenarray, op);
+		if (op1.mem_type == MT_REAL8 || op2.mem_type == MT_REAL8)
+		{
+			if (ModuleInfo.arch == ARCH_SSE)
+				p = RenderSimdInstr(buffer, "ucomisd", op1_pos, op1_end, op2_pos, op2_end, tokenarray, op);
+			else
+				p = RenderSimdInstr(buffer, "vucomisd", op1_pos, op1_end, op2_pos, op2_end, tokenarray, op);
+		}
 		else
-			p = RenderSimdInstr(buffer, "vucomiss", op1_pos, op1_end, op2_pos, op2_end, tokenarray, op);
+		{
+			if (ModuleInfo.arch == ARCH_SSE)
+				p = RenderSimdInstr(buffer, "ucomiss", op1_pos, op1_end, op2_pos, op2_end, tokenarray, op);
+			else
+				p = RenderSimdInstr(buffer, "vucomiss", op1_pos, op1_end, op2_pos, op2_end, tokenarray, op);
+		}
 	}
 	/* reg OP float_imm */
 	else if (op1.kind == EXPR_REG && op1.indirect == FALSE && SizeFromRegister(op1.base_reg->tokval) == 16 && (op2.kind == EXPR_CONST || op2.kind == EXPR_FLOAT) )
 	{
-		if (ModuleInfo.arch == ARCH_SSE)
-			p = RenderSimdInstrTM(buffer, "ucomiss", op1_pos, op1_end, op2_pos, op2_end, tokenarray, op);
+		if (op1.mem_type == MT_REAL8 || op2.mem_type == MT_REAL8)
+		{
+			if (ModuleInfo.arch == ARCH_SSE)
+				p = RenderSimdInstrTM(buffer, "ucomisd", op1_pos, op1_end, op2_pos, op2_end, tokenarray, op, TRUE);
+			else
+				p = RenderSimdInstrTM(buffer, "vucomisd", op1_pos, op1_end, op2_pos, op2_end, tokenarray, op, TRUE);
+		}
 		else
-			p = RenderSimdInstrTM(buffer, "vucomiss", op1_pos, op1_end, op2_pos, op2_end, tokenarray, op);
+		{
+			if (ModuleInfo.arch == ARCH_SSE)
+				p = RenderSimdInstrTM(buffer, "ucomiss", op1_pos, op1_end, op2_pos, op2_end, tokenarray, op, FALSE);
+			else
+				p = RenderSimdInstrTM(buffer, "vucomiss", op1_pos, op1_end, op2_pos, op2_end, tokenarray, op, FALSE);
+		}
 	}
 
     else {  

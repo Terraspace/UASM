@@ -2872,7 +2872,12 @@ static ret_code calculate( struct expr *opnd1, struct expr *opnd2, const struct 
                         DebugMsg(("calculate(PTR): segment register size (=2/4) doesn't match type size (=%u)\n", opnd1->value ));
                         return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
                     }
-                } else if ( opnd1->value != SizeFromRegister( temp ) ) {
+				}
+				else if (opnd1->mem_type == MT_REAL8 && SizeFromRegister(temp) == 16) {
+					opnd2->mem_type == opnd1->mem_type;
+					DebugMsg(("calculate(PTR): DOUBLE conversion of XMM register; %u != %u\n", SizeFromRegister(temp), opnd1->value));
+				}
+				else if ( opnd1->value != SizeFromRegister( temp ) ) {
                     DebugMsg(("calculate(PTR): register size doesn't match type size; %u != %u\n", SizeFromRegister( temp ), opnd1->value ));
                     return( fnEmitErr( INVALID_USE_OF_REGISTER ) );
                 }
