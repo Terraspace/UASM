@@ -168,6 +168,13 @@ void InitAutoMacros(void)
 		{
 			free(srcLines[j]);
 		}
-
 	}
+
+	/* Create case alternative names */
+	if (ModuleInfo.case_sensitive && !ModuleInfo.convert_uppercase)
+	{
+		AddLineQueue("uinvoke EQU UINVOKE");
+		AddLineQueue("Uinvoke EQU UINVOKE");
+	}
+
 }

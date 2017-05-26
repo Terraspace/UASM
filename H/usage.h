@@ -1,4 +1,4 @@
-"   Uasm [options] asm-file [options] [asm-file] ... [@env_var]\n\n\0"
+"   UASM [options] asm-file [options] [asm-file] ... [@env_var]\n\n\0"
 "options:\0"
 #if AMD64_SUPPORT
 "-<0|1|..|10>[p]\0" "Set CPU: 0=8086 (default), 1=80186, 2=80286, 3=80386,\0"

@@ -6,9 +6,9 @@
  * v2.06: Japanese texts removed.
  * v2.07: listing texts moved to ltext.h
  */
-pick( MSG_USAGE,              "usage: Uasm [ options ] filelist [@env_var]\n" "Run \"Uasm -?\" or \"Uasm -h\" for more info\n" )
+pick( MSG_USAGE,              "usage: UASM [ options ] filelist [@env_var]\n" "Run \"Uasm -?\" or \"Uasm -h\" for more info\n" )
 pick( MSG_ASSEMBLY_RESULTS,   "%s: %lu lines, %u passes, %u ms, %u warnings, %u errors" )
-pick( MSG_UASM,               "Uasm v" _UASM_VERSION_ ", " __DATE__ )
+pick( MSG_UASM,               "UASM v" _UASM_VERSION_ ", " __DATE__ )
 pick( MSG_UASM2,              "Masm-compatible assembler.\n" "Portions Copyright (c) 1992-2002 Sybase, Inc. All Rights Reserved.\n" "Source code is available under the Sybase Open Watcom Public License.\n" )
 pick( MSG_ERROR_PREFIX,       "Error" )
 pick( MSG_WARNING_PREFIX,     "Warning" )
