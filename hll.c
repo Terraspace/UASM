@@ -368,6 +368,81 @@ static char *RenderInstr(char *dst, const char *instr, int start1, int end1, int
   return(dst);
 }
 
+/* render a Simd instruction */
+static char *RenderSimdInstr(char *dst, const char *instr, int start1, int end1, int start2, int end2, struct asm_tok tokenarray[], enum c_bop op)
+/*******************************************************************************************************************************/
+{
+	int i;
+#ifdef DEBUG_OUT
+	char *old = dst;
+#endif
+	i = strlen(instr);
+	/* copy the instruction */
+	memcpy(dst, instr, i);
+	dst += i;
+	/* copy the first operand's tokens */
+	*dst++ = ' ';
+	i = tokenarray[end1].tokpos - tokenarray[start1].tokpos;
+	memcpy(dst, tokenarray[start1].tokpos, i);
+	dst += i;
+	if (start2 != EMPTY) {
+		*dst++ = ',';
+		/* copy the second operand's tokens */
+		*dst++ = ' ';
+		i = tokenarray[end2].tokpos - tokenarray[start2].tokpos;
+		memcpy(dst, tokenarray[start2].tokpos, i);
+		dst += i;
+	}
+	else if (end2 != EMPTY) {
+		dst += sprintf(dst, ", %d", end2);
+	}
+	
+	*dst++ = EOLCHAR;
+	*dst = NULLC;
+	DebugMsg1(("%u RenderInstr(%s)=>%s<\n", evallvl, instr, old));
+	return(dst);
+}
+
+/* render a Simd instruction using a temporary float immediate macro FP4/FP8 */
+static char *RenderSimdInstrTM(char *dst, const char *instr, int start1, int end1, int start2, int end2, struct asm_tok tokenarray[], enum c_bop op)
+/*******************************************************************************************************************************/
+{
+	int i;
+#ifdef DEBUG_OUT
+	char *old = dst;
+#endif
+	i = strlen(instr);
+	/* copy the instruction */
+	memcpy(dst, instr, i);
+	dst += i;
+	/* copy the first operand's tokens */
+	*dst++ = ' ';
+	i = tokenarray[end1].tokpos - tokenarray[start1].tokpos;
+	memcpy(dst, tokenarray[start1].tokpos, i);
+	dst += i;
+	if (start2 != EMPTY) {
+		*dst++ = ',';
+		/* copy the second operand's tokens */
+		*dst++ = ' ';
+		*dst++ = 'F';
+		*dst++ = 'P';
+		*dst++ = '4';
+		*dst++ = '(';
+		i = tokenarray[end2].tokpos - tokenarray[start2].tokpos;
+		memcpy(dst, tokenarray[start2].tokpos, i);
+		dst += i;
+		*dst++ = ')';
+	}
+	else if (end2 != EMPTY) {
+		dst += sprintf(dst, ", %d", end2);
+	}
+
+	*dst++ = EOLCHAR;
+	*dst = NULLC;
+	DebugMsg1(("%u RenderInstr(%s)=>%s<\n", evallvl, instr, old));
+	return(dst);
+}
+
 static char *GetLabelStr(int_32 label, char *buff)
 /**************************************************/
 {
@@ -596,7 +671,7 @@ static ret_code GetSimpleExpression(struct hll_item *hll, int *i, struct asm_tok
     return(ERROR);
   }
   DebugMsg1(("%u GetSimpleExpression: EvalOperand 2 ok, type=%X, i=%u [%s]\n", evallvl, op2.type, *i, tokenarray[*i].tokpos));
-  if (op2.kind != EXPR_CONST && op2.kind != EXPR_ADDR && op2.kind != EXPR_REG) {
+  if (op2.kind != EXPR_CONST && op2.kind != EXPR_ADDR && op2.kind != EXPR_REG && op2.kind != EXPR_FLOAT) {  /* UASM 2.35 Added EXPR_FLOAT */
     DebugMsg(("GetSimpleExpression: syntax error, op2.kind=%u\n", op2.kind));
     return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
   }
@@ -626,6 +701,37 @@ static ret_code GetSimpleExpression(struct hll_item *hll, int *i, struct asm_tok
       op2.kind == EXPR_CONST && op2.value64 == 0) {
       p = RenderInstr(buffer, "test", op1_pos, op1_end, op1_pos, op1_end, tokenarray);
     }
+
+	/* ------------------------------------------------------------------------------------------------------------ */
+	/* UASM 2.35 support for floating point expression with SIMD registers                                          */
+	/* ------------------------------------------------------------------------------------------------------------ */
+	/* reg OP reg */
+	else if (op1.kind == EXPR_REG && op1.indirect == FALSE && SizeFromRegister(op1.base_reg->tokval) == 16 && 
+		     op2.kind == EXPR_REG && op2.indirect == FALSE && SizeFromRegister(op2.base_reg->tokval) == 16)
+	{
+		if (ModuleInfo.arch == ARCH_SSE)
+			p = RenderSimdInstr(buffer, "ucomiss", op1_pos, op1_end, op2_pos, op2_end, tokenarray, op);
+		else
+			p = RenderSimdInstr(buffer, "vucomiss", op1_pos, op1_end, op2_pos, op2_end, tokenarray, op);
+	}
+	/* reg OP [reg]      reg OP [expr]           reg OP variable */
+	else if (op1.kind == EXPR_REG && op1.indirect == FALSE && SizeFromRegister(op1.base_reg->tokval) == 16 &&
+	   	     ((op2.kind == EXPR_REG && op2.indirect == TRUE) || op2.kind == EXPR_ADDR) )
+	{
+		if (ModuleInfo.arch == ARCH_SSE)
+			p = RenderSimdInstr(buffer, "ucomiss", op1_pos, op1_end, op2_pos, op2_end, tokenarray, op);
+		else
+			p = RenderSimdInstr(buffer, "vucomiss", op1_pos, op1_end, op2_pos, op2_end, tokenarray, op);
+	}
+	/* reg OP float_imm */
+	else if (op1.kind == EXPR_REG && op1.indirect == FALSE && SizeFromRegister(op1.base_reg->tokval) == 16 && (op2.kind == EXPR_CONST || op2.kind == EXPR_FLOAT) )
+	{
+		if (ModuleInfo.arch == ARCH_SSE)
+			p = RenderSimdInstrTM(buffer, "ucomiss", op1_pos, op1_end, op2_pos, op2_end, tokenarray, op);
+		else
+			p = RenderSimdInstrTM(buffer, "vucomiss", op1_pos, op1_end, op2_pos, op2_end, tokenarray, op);
+	}
+
     else {  
       p = RenderInstr(buffer, "cmp", op1_pos, op1_end, op2_pos, op2_end, tokenarray);
     }

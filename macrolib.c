@@ -88,6 +88,16 @@ char *macDef[] = {
 	"UINVOKE MACRO func:REQ, args:VARARG"
 };
 
+void CreateMacroLibCases(void)
+{
+	/* Create case alternative names for macrolib functions */
+	if (ModuleInfo.case_sensitive && !ModuleInfo.convert_uppercase)
+	{
+		AddLineQueue("uinvoke EQU UINVOKE");
+		AddLineQueue("Uinvoke EQU UINVOKE");
+	}
+}
+
 /* 
 Create the built-in macro library 
 This is called once initially as the macros always exist
@@ -170,11 +180,6 @@ void InitAutoMacros(void)
 		}
 	}
 
-	/* Create case alternative names */
-	if (ModuleInfo.case_sensitive && !ModuleInfo.convert_uppercase)
-	{
-		AddLineQueue("uinvoke EQU UINVOKE");
-		AddLineQueue("Uinvoke EQU UINVOKE");
-	}
+
 
 }

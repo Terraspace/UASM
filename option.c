@@ -245,6 +245,12 @@ OPTFUNC( SetCaseMap )
         DebugMsg1(("SetCaseMap(%s) ok\n", tokenarray[i].string_ptr ));
         i++;
         SymSetCmpFunc();
+
+		if (Options.nomlib == FALSE && ModuleInfo.defOfssize == USE64) 
+		{
+			CreateMacroLibCases();
+		}
+
     } else {
         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
     }
