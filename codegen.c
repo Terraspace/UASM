@@ -369,6 +369,15 @@ static void output_opc(struct code_info *CodeInfo)
   //     // __debugbreak();
   //      EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
   //  }
+    if (CodeInfo->token == T_VCMPSD || CodeInfo->token == T_VCMPSS){
+      if (CodeInfo->r1type > OP_XMM || CodeInfo->r2type > OP_XMM)
+          EmitError(INVALID_OPERAND_SIZE);
+    }
+    if ((CodeInfo->token >= T_VCMPEQSD && CodeInfo->token <= T_VCMPTRUE_USSD)||
+      (CodeInfo->token >= T_VCMPEQSS && CodeInfo->token <= T_VCMPTRUE_USSS)){
+      if (CodeInfo->r1type > OP_XMM || CodeInfo->r2type > OP_XMM)
+          EmitError(INVALID_OPERAND_SIZE);
+  }
 
   if (!(ResWordTable[CodeInfo->token].flags & RWF_VEX)) {
 #endif
@@ -1590,16 +1599,16 @@ static void output_opc(struct code_info *CodeInfo)
                     }
                 }
                 else if (CodeInfo->r2type == OP_XMM){
-                  if ((CodeInfo->mem_type == MT_OWORD || CodeInfo->mem_type == MT_EMPTY)){
+                  if ((CodeInfo->mem_type == MT_OWORD && CodeInfo->mem_type == MT_EMPTY)){
                     if ((CodeInfo->opnd[OPND3].data32h > 0x10)||(CodeInfo->opnd[OPND3].data32h > ~0x10))
                       CodeInfo->tuple = TRUE;
                   }
-                  else if ((CodeInfo->token >= T_VCMPEQSD || CodeInfo->token <= T_VCMPTRUE_USSD) &&
+                  else if ((CodeInfo->token >= T_VCMPEQSD && CodeInfo->token <= T_VCMPTRUE_USSD) &&
                     (CodeInfo->mem_type == MT_QWORD)){
                       if ((CodeInfo->opnd[OPND3].data32h > 8)||(CodeInfo->opnd[OPND3].data32h > ~8))
                       CodeInfo->tuple = TRUE;
                   }
-                  else if ((CodeInfo->token >= T_VCMPEQSS || CodeInfo->token <= T_VCMPTRUE_USSS) &&
+                  else if ((CodeInfo->token >= T_VCMPEQSS && CodeInfo->token <= T_VCMPTRUE_USSS) &&
                     (CodeInfo->mem_type == MT_DWORD)){
                       if ((CodeInfo->opnd[OPND3].data32h > 4)||(CodeInfo->opnd[OPND3].data32h > ~4))
                       CodeInfo->tuple = TRUE;

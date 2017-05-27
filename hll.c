@@ -709,8 +709,8 @@ static ret_code GetSimpleExpression(struct hll_item *hll, int *i, struct asm_tok
 	/* UASM 2.35 support for floating point expression with SIMD registers                                          */
 	/* ------------------------------------------------------------------------------------------------------------ */
 	/* reg OP reg */
-	else if (op1.kind == EXPR_REG && op1.indirect == FALSE && SizeFromRegister(op1.base_reg->tokval) == 16 && 
-		     op2.kind == EXPR_REG && op2.indirect == FALSE && SizeFromRegister(op2.base_reg->tokval) == 16)
+	else if (op1.kind == EXPR_REG && op1.indirect == FALSE && (GetValueSp(op1.base_reg->tokval) & OP_XMM) && // SizeFromRegister(op1.base_reg->tokval) == 16 &&
+		     op2.kind == EXPR_REG && op2.indirect == FALSE && (GetValueSp(op1.base_reg->tokval) & OP_XMM)) //SizeFromRegister(op2.base_reg->tokval) == 16)
 	{
 		if (op1.mem_type == MT_REAL8 || op2.mem_type == MT_REAL8)
 		{
