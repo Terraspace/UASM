@@ -3080,9 +3080,19 @@ static void SkipTypecast(char *fullparam, int i, struct asm_tok tokenarray[])
 }
 
 /* Check if a parameter (via it's string ptr) is a raw ascii string */
-static int ParamIsString(char *pStr) {
+static int ParamIsString(char *pStr, int param, struct dsym* proc) {
 	char c;
 	char *pS = pStr;
+	int i = 0;
+
+	struct dsym* p = proc->e.procinfo->paralist;
+
+	for (i = 0; i < param-1; i++)
+	{
+		p = p->nextparam;
+	}
+	if (p->sym.mem_type != MT_PTR)
+		return(FALSE);
 
 	c = *pS;
 	if (c != '"') return(FALSE);
@@ -3140,24 +3150,24 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 	struct expr opnd;
 	char fullparam[MAX_LINE_LEN];
 	char buffer[MAX_LINE_LEN];
-	//char stringparam[256][MAX_LINE_LEN];
-	//bool isString[256];
+	char stringparam[256][MAX_LINE_LEN];
+	bool isString[256];
 	int reg = 0;
 
-	//struct asym *lbl;
-	//struct dsym *curseg;
-	//struct dsym *prev;
-	//struct dsym *currs;
-	//size_t slen;
-	//uint_32 pos;
-	//char *pSrc;
-	//char *pDest;
-	//char *labelstr = "__ls";
-	//char buf[32];
-	//char c1;
-	//char c2;
-	//size_t finallen;
-	//bool isWide = FALSE;
+	struct asym *lbl;
+	struct dsym *curseg;
+	struct dsym *prev;
+	struct dsym *currs;
+	size_t slen;
+	uint_32 pos;
+	char *pSrc;
+	char *pDest;
+	char *labelstr = "__ls";
+	char buf[32];
+	char c1;
+	char c2;
+	size_t finallen;
+	bool isWide = FALSE;
 
 	DebugMsg1(("PushInvokeParam(%s, param=%s:%u, i=%u ) enter\n", proc->sym.name, curr ? curr->sym.name : "NULL", reqParam, i));
 	//__debugbreak();
@@ -3169,6 +3179,186 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 		}
 		if (tokenarray[i].token == T_COMMA) {
 			currParm++;
+		}
+		else if (ParamIsString(tokenarray[i].string_ptr, currParm, proc))
+		{
+
+			// Preserve current Segment.
+			curseg = ModuleInfo.currseg;
+			// Find Data Segment.
+			prev = NULL;
+			currs = NULL;
+			for (currs = SymTables[TAB_SEG].head; currs && currs->next; prev = currs, currs = currs->next)
+			{
+				if (strcmp(currs->sym.name, "_DATA") == 0)
+					break;
+			}
+			// Set CurrSeg
+			CurrSeg = currs;
+			// Transfer raw String Data.
+			slen = strlen(tokenarray[i].string_ptr) - 2;
+			pos = currs->e.seginfo->current_loc;
+			pSrc = (tokenarray[i].string_ptr) + 1;
+			pDest = (char*)currs->e.seginfo->CodeBuffer;
+
+			sprintf(buf, "%s%d", labelstr, hashpjw(tokenarray[i].string_ptr));
+
+			if (pDest != 0 && write_to_file == TRUE)
+			{
+				// Does this literal already exist? 
+				lbl = SymFind(buf);
+				if (lbl == NULL || lbl->state == SYM_UNDEFINED)
+				{
+					lbl = SymLookup(buf);
+					literalCnt++;
+					pDest += pos;
+					lbl->value = pos;
+					lbl->offset = pos;
+				}
+				else
+				{
+					pDest += lbl->offset;
+				}
+
+				finallen = slen;
+				for (j = 0; j < slen; j++)
+				{
+					c1 = *pSrc++;
+					c2 = *(pSrc);
+					if (c1 == '\\' && c2 == 'n')
+					{
+						if (Options.output_format == OFORMAT_COFF)
+						{
+							*pDest++ = 13;
+							*pDest++ = 10;
+						}
+						else
+						{
+							*pDest++ = 10;
+							finallen--;
+						}
+						pSrc++;
+					}
+					else
+						*pDest++ = c1;
+				}
+				*pDest++ = 0;
+
+				lbl->segment = currs;
+				lbl->isdefined = TRUE;
+				lbl->mem_type = MT_BYTE;
+				lbl->state = SYM_INTERNAL;
+				lbl->first_size = 2;
+				lbl->Ofssize = 2;
+				lbl->isfunc = 1;
+				lbl->total_length = 1;
+				lbl->total_size = 1;
+				lbl->max_offset = 1;
+				lbl->debuginfo = 1;
+				lbl->sfunc_ptr = 1;
+				lbl->langtype = LANG_NONE;
+				lbl->cvtyperef = 1;
+				lbl->ispublic = 0;
+			}
+
+			currs->e.seginfo->current_loc += (finallen + 1);
+			currs->e.seginfo->bytes_written += (finallen + 1);
+			currs->e.seginfo->written = TRUE;
+			if (currs->e.seginfo->current_loc > currs->sym.max_offset)
+				currs->sym.max_offset = currs->e.seginfo->current_loc;
+
+			// invoke parameter is a raw ascii string, substitute in the our new label pointing to this raw string in .data segment. 
+			sprintf(stringparam[i], "%s", buf);
+			isString[i] = TRUE;
+
+			// Restore current Sement.
+			CurrSeg = curseg;
+		}
+		else if (strcmp(tokenarray[i].string_ptr, "L") == 0 && ParamIsString(tokenarray[i + 1].string_ptr, currParm, proc))
+		{
+
+			// Preserve current Segment.
+			curseg = ModuleInfo.currseg;
+			// Find Data Segment.
+			prev = NULL;
+			currs = NULL;
+			for (currs = SymTables[TAB_SEG].head; currs && currs->next; prev = currs, currs = currs->next)
+			{
+				if (strcmp(currs->sym.name, "_DATA") == 0)
+					break;
+			}
+			// Set CurrSeg
+			CurrSeg = currs;
+			// Transfer raw String Data.
+			slen = strlen(tokenarray[i + 1].string_ptr) - 2;
+			pos = currs->e.seginfo->current_loc;
+			pSrc = (tokenarray[i + 1].string_ptr) + 1;
+			pDest = (char*)currs->e.seginfo->CodeBuffer;
+
+			sprintf(buf, "%s%d", labelstr, hashpjw(tokenarray[i].string_ptr));
+
+			if (pDest != 0 && write_to_file == TRUE)
+			{
+
+				// Does this literal already exist? 
+				lbl = SymFind(buf);
+				if (lbl == NULL || lbl->state == SYM_UNDEFINED)
+				{
+					lbl = SymLookup(buf);
+					literalCnt++;
+					pDest += pos;
+					lbl->value = pos;
+					lbl->offset = pos;
+				}
+				else
+				{
+					pDest += lbl->offset;
+				}
+
+				for (j = 0; j < slen; j++)
+				{
+					*pDest++ = *pSrc++;
+					*pDest++ = 0;
+				}
+				*pDest++ = 0;
+				*pDest++ = 0;
+
+				lbl->segment = currs;
+				lbl->isdefined = TRUE;
+				lbl->mem_type = MT_BYTE;
+				lbl->state = SYM_INTERNAL;
+				lbl->first_size = 2;
+				lbl->Ofssize = 2;
+				lbl->total_length = 1;
+				lbl->total_size = 1;
+				lbl->max_offset = 1;
+				lbl->debuginfo = 1;
+				lbl->sfunc_ptr = 1;
+				lbl->langtype = LANG_NONE;
+				lbl->cvtyperef = 1;
+				lbl->ispublic = 0;
+				lbl->isfunc = 1;
+			}
+
+			currs->e.seginfo->current_loc += (slen * 2 + 2);
+			currs->e.seginfo->bytes_written += (slen * 2 + 2);
+			currs->e.seginfo->written = TRUE;
+			if (currs->e.seginfo->current_loc > currs->sym.max_offset)
+				currs->sym.max_offset = currs->e.seginfo->current_loc;
+
+			// invoke parameter is a raw ascii string, substitute in the our new label pointing to this raw string in .data segment.
+			sprintf(stringparam[i], "%s", buf);
+			isString[i] = TRUE;
+
+			// Restore current Sement.
+			CurrSeg = curseg;
+
+			for (j = i; j < Token_Count - 1; j++)
+			{
+				tokenarray[j] = tokenarray[j + 1];
+			}
+			Token_Count--;
+
 		}
 		i++;
 	}
@@ -3199,10 +3389,22 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 
 	/* copy the parameter tokens to fullparam */
 	for (j = i; tokenarray[j].token != T_COMMA && tokenarray[j].token != T_FINAL; j++);
-	memcpy(fullparam, tokenarray[i].tokpos, tokenarray[j].tokpos - tokenarray[i].tokpos);
-	fullparam[tokenarray[j].tokpos - tokenarray[i].tokpos] = NULLC;
-	
+	if (isString[i])
+	{
+		memcpy(fullparam, stringparam[i], strlen(stringparam[i]) + 1);
+		addr = TRUE;
+		psize = 2 << curr->sym.Ofssize;
+		if (curr->sym.isfar)
+			psize += 2;
+	}
+	else
+	{
+		memcpy(fullparam, tokenarray[i].tokpos, tokenarray[j].tokpos - tokenarray[i].tokpos);
+		fullparam[tokenarray[j].tokpos - tokenarray[i].tokpos] = NULLC;
+	}
+
 	j = i;
+
 	/* v2.11: GetSymOfssize() doesn't work for state SYM_TYPE */
 	//fptrsize = 2 + ( 2 << GetSymOfssize( &proc->sym ) );
 	Ofssize = (proc->sym.state == SYM_TYPE ? proc->sym.seg_ofssize : GetSymOfssize(&proc->sym));
