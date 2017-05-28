@@ -3086,8 +3086,10 @@ static int ParamIsString(char *pStr, int param, struct dsym* proc) {
 	char c;
 	char *pS = pStr;
 	int i = 0;
-
 	struct dsym* p = proc->e.procinfo->paralist;
+
+	if (!Options.literal_strings)
+		return(FALSE);
 
 	for (i = 0; i < param-1; i++)
 	{
