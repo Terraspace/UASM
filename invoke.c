@@ -3079,7 +3079,9 @@ static void SkipTypecast(char *fullparam, int i, struct asm_tok tokenarray[])
 	}
 }
 
-/* Check if a parameter (via it's string ptr) is a raw ascii string */
+/* Check if a parameter (via it's string ptr) is a raw ascii string, 
+if we're in a vararg, just being a raw string is sufficient, 
+for normal parameters it must be qualified as PTR */
 static int ParamIsString(char *pStr, int param, struct dsym* proc) {
 	char c;
 	char *pS = pStr;
@@ -3091,7 +3093,7 @@ static int ParamIsString(char *pStr, int param, struct dsym* proc) {
 	{
 		p = p->nextparam;
 	}
-	if (p->sym.mem_type != MT_PTR)
+	if (p->sym.mem_type != MT_PTR && p->sym.is_vararg)
 		return(FALSE);
 
 	c = *pS;
@@ -3167,12 +3169,12 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 	char c1;
 	char c2;
 	size_t finallen;
-	bool isWide = FALSE;
 
 	DebugMsg1(("PushInvokeParam(%s, param=%s:%u, i=%u ) enter\n", proc->sym.name, curr ? curr->sym.name : "NULL", reqParam, i));
 	//__debugbreak();
 	for (currParm = 0; currParm <= reqParam; ) 
 	{
+		isString[i] = FALSE;
 		if (tokenarray[i].token == T_FINAL ) { /* this is no real error! */
 			DebugMsg1(("PushInvokeParam(%s): T_FINAL token, i=%u\n", proc->sym.name, i));
 			return(ERROR);

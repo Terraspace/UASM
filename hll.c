@@ -749,7 +749,8 @@ static ret_code GetSimpleExpression(struct hll_item *hll, int *i, struct asm_tok
 	/* reg OP float_imm */
 	else if (op1.kind == EXPR_REG && op1.indirect == FALSE && SizeFromRegister(op1.base_reg->tokval) == 16 && (op2.kind == EXPR_CONST || op2.kind == EXPR_FLOAT) )
 	{
-		if (op1.mem_type == MT_REAL8 || op2.mem_type == MT_REAL8)
+		return(EmitError(SYNTAX_ERROR_IN_CONTROL_FLOW_DIRECTIVE));
+		/*if (op1.mem_type == MT_REAL8 || op2.mem_type == MT_REAL8)
 		{
 			if (ModuleInfo.arch == ARCH_SSE)
 				p = RenderSimdInstrTM(buffer, "ucomisd", op1_pos, op1_end, op2_pos, op2_end, tokenarray, op, TRUE);
@@ -762,7 +763,7 @@ static ret_code GetSimpleExpression(struct hll_item *hll, int *i, struct asm_tok
 				p = RenderSimdInstrTM(buffer, "ucomiss", op1_pos, op1_end, op2_pos, op2_end, tokenarray, op, FALSE);
 			else
 				p = RenderSimdInstrTM(buffer, "vucomiss", op1_pos, op1_end, op2_pos, op2_end, tokenarray, op, FALSE);
-		}
+		}*/
 	}
 
     else {  

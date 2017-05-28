@@ -103,6 +103,11 @@ void CreateMacroLibCases(void)
 		AddLineQueue("asdouble EQU ASDOUBLE");
 		AddLineQueue("r4p EQU R4P");
 		AddLineQueue("r8p EQU R8P");
+		AddLineQueue("cstr EQU CSTR");
+		AddLineQueue("CStr EQU CSTR");
+		AddLineQueue("wstr EQU WSTR");
+		AddLineQueue("WStr EQU WSTR");
+		AddLineQueue("memalign EQU MEMALIGN");
 	}
 }
 
@@ -130,7 +135,7 @@ void InitAutoMacros(void)
 		"local vname", ".data", "align 8", "vname REAL10 value", ".code", "exitm <vname>", "endm", NULL,
 		"IF @Arch EQ 0", "mov eax, val", "movd reg, eax", "ELSE", "mov eax, val", "vmovd reg, eax", "ENDIF", "ENDM", NULL,
 		"IF @Arch EQ 0", "mov rax, real8 ptr val", "movq reg, rax", "ELSE", "mov rax, real8 ptr val", "vmovq reg, rax", "ENDIF", "ENDM", NULL,
-		"IF @Arch EQ 0", "mov eax, val", "movd reg, eax", "pshufd reg, 0", "ELSE", "mov eax, val", "vmovd reg, eax", "vpshufd reg, 0", "ENDIF", "ENDM", NULL,
+		"IF @Arch EQ 0", "mov eax, val", "movd reg, eax", "pshufd reg, 0", "ELSE", "mov eax, val", "vmovd reg, eax", "vpshufd reg, reg, 0", "ENDIF", "ENDM", NULL,
 		"add reg, number - 1", "and reg, -number", "ENDM", NULL,
 		"arg equ <invoke FuncName>", "FOR var, <args>", "arg CATSTR arg, <, EXPAND_PREFIX(REPARG(var))>", "ENDM", "arg", "EXITM <rax>", "ENDM", NULL,
 		"LOCAL nustr", "quot SUBSTR <arg>, 1, 1", "IFIDN quot, <\">", ".data", "nustr db arg, 0", ".code", "EXITM <ADDR nustr>", "ELSE", "EXITM <ADDR arg>", "ENDIF", "ENDM", NULL,
