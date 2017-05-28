@@ -680,6 +680,7 @@ struct global_options {
 	bool        lessoutput;              /* -less option */
 	bool        bnd;                     /* -mpx or option bnd */
 	uint_16     seg_align;               /* -Sp(n) set segment packing or alignment */
+	bool        literal_strings;         /* Allow use of literal strings in invoke */
 #if MANGLERSUPP
     enum naming_types naming_convention; /* OW naming peculiarities */
 #endif
