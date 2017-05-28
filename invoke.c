@@ -3095,7 +3095,7 @@ static int ParamIsString(char *pStr, int param, struct dsym* proc) {
 	{
 		p = p->nextparam;
 	}
-	if (p->sym.mem_type != MT_PTR && p->sym.is_vararg)
+	if (p->sym.mem_type != MT_PTR)
 		return(FALSE);
 
 	c = *pS;

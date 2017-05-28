@@ -2767,9 +2767,9 @@ static void write_win64_default_prologue_RBP( struct proc_info *info )
     int                 i;
     int                 cnt;
     int                 cntxmm;
-	  int                 cntstd = 0;
+	int                 cntstd = 0;
     int                 resstack = ( ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) ? sym_ReservedStack->value : 0 );
-	  int                 stackadj;
+	int                 stackadj;
 
 
     DebugMsg1(("write_win64_default_prologue_RBP enter\n"));

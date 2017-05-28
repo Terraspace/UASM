@@ -509,6 +509,9 @@ static void OPTQUAL Set_W( void )
         EmitWarn( 1, INVALID_CMDLINE_VALUE, "W" );
 }
 
+extern void UpdateStackBase(struct asym *, void *);
+extern void UpdateProcStatus(struct asym *, void *);
+
 static void OPTQUAL Set_ofmt( void )
 /**********************************/
 {
@@ -518,6 +521,21 @@ static void OPTQUAL Set_ofmt( void )
 	{
 		Options.langtype = LANG_SYSVCALL;
 		ModuleInfo.frame_auto = 1;
+	}
+
+	if (Options.output_format == OFORMAT_COFF && Options.sub_format == SFORMAT_64BIT)
+	{
+		ModuleInfo.frame_auto = 1; /* frame auto must also be implied for all stackbase rsp options */
+		ModuleInfo.win64_flags = 7;
+		if (!ModuleInfo.g.StackBase)
+		{
+			ModuleInfo.g.StackBase = CreateVariable("@StackBase", 0);
+			ModuleInfo.g.StackBase->predefined = TRUE;
+			ModuleInfo.g.StackBase->sfunc_ptr = UpdateStackBase;
+			ModuleInfo.g.ProcStatus = CreateVariable("@ProcStatus", 0);
+			ModuleInfo.g.ProcStatus->predefined = TRUE;
+			ModuleInfo.g.ProcStatus->sfunc_ptr = UpdateProcStatus;
+		}
 	}
 }
 
