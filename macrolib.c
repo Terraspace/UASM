@@ -128,8 +128,8 @@ void InitAutoMacros(void)
 	char *macCode[] = {
 		"IF @Platform EQ 1", "INVOKE HeapAlloc,RV(GetProcessHeap),0,aSize", "ELSE", "INVOKE malloc,aSize", "ENDIF", "MEMALIGN rax, 16", "endm", NULL,
 		"IF @Platform EQ 1", "INVOKE HeapFree,RV(GetProcessHeap),0,memPtr", "ELSE", "INVOKE free,memPtr", "ENDIF", "endm", NULL,
-		"local szText", ".data", "szText db Text,0", ".code", "exitm <ADDR szText>", "endm", NULL,
-		"local szText", ".data", "szText dw Text,0", ".code", "exitm <ADDR szText>", "endm", NULL,
+		"local szText", ".data", "szText db Text,0", ".code", "exitm <offset szText>", "endm", NULL,
+		"local szText", ".data", "szText dw Text,0", ".code", "exitm <offset szText>", "endm", NULL,
 		"local vname", ".data", "align 4", "vname REAL4 value", ".code", "exitm <vname>", "endm", NULL,
 		"local vname", ".data", "align 8", "vname REAL8 value", ".code", "exitm <vname>", "endm", NULL,
 		"local vname", ".data", "align 8", "vname REAL10 value", ".code", "exitm <vname>", "endm", NULL,

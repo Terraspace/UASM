@@ -2771,6 +2771,7 @@ static void write_win64_default_prologue_RBP( struct proc_info *info )
     int                 resstack = ( ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) ? sym_ReservedStack->value : 0 );
 	int                 stackadj;
 
+	info->pushed_reg = 0;
 
     DebugMsg1(("write_win64_default_prologue_RBP enter\n"));
 	  check_proc_fpo(info);
@@ -3668,6 +3669,8 @@ static void write_sysv_default_prologue_RBP(struct proc_info *info)
 
 	DebugMsg1(("write_sysv_default_prologue_RBP enter\n"));
 	
+	info->pushed_reg = 0;
+
 	/* Only setup a stack-frame for RBP if there are locals or parameters */
 	stackadj = 8;
 	if (!info->fpo && GetRegNo(info->basereg) != 4 && (info->parasize != 0 || info->locallist != NULL))
