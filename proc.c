@@ -3305,8 +3305,8 @@ static void check_proc_fpo(struct proc_info *info)
 	int usedParams = 0;
 	int usedLocals = 0;
 
-	/* Without Win64 settings at all we do not use FPO */
-	if (ModuleInfo.win64_flags == 0 && ModuleInfo.frame_auto == 0)
+	/* Without Win64 settings at all we do not use FPO, and for RSP based stack frames */
+	if ( (ModuleInfo.win64_flags == 0 && ModuleInfo.frame_auto == 0 && info->isframe == 0) || ModuleInfo.basereg[USE64] == T_RSP )
 	{
 		info->fpo = FALSE;
 		return;
@@ -3897,9 +3897,9 @@ static ret_code write_default_prologue( void )
     info = CurrProc->e.procinfo;
 
 #if AMD64_SUPPORT
-    if ( info->isframe ) {
-        if ( ModuleInfo.frame_auto ) 
-		{
+    if ( info->isframe || ModuleInfo.frame_auto ) {
+        //if ( ModuleInfo.frame_auto ) 
+		//{
 			if (ModuleInfo.basereg[USE64] == T_RSP)
 				write_win64_default_prologue_RSP( info );
 			else if ( (ModuleInfo.basereg[USE64] == T_RBP) && CurrProc->sym.langtype == LANG_FASTCALL )
@@ -3908,7 +3908,7 @@ static ret_code write_default_prologue( void )
 				write_sysv_default_prologue_RBP( info );
             /* v2.11: line queue is now run here */
             goto runqueue;
-        }
+        //}
         return( NOT_ERROR );
     }
     if ( ModuleInfo.Ofssize == USE64 && ModuleInfo.fctype == FCT_WIN64 && ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) )
@@ -4309,6 +4309,11 @@ void write_prologue( struct asm_tok tokenarray[] )
 {
     /* reset @ProcStatus flag */
     ProcStatus &= ~PRST_PROLOGUE_NOT_DONE;
+	
+	if(Parse_Pass == PASS_1)
+		CurrProc->e.procinfo->fpo = FALSE;
+	if(ModuleInfo.basereg[USE64] == T_RSP)
+		CurrProc->e.procinfo->fpo = TRUE;
 
 #if AMD64_SUPPORT
     if ( ModuleInfo.fctype == FCT_WIN64 && ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) ) {
@@ -4324,10 +4329,14 @@ void write_prologue( struct asm_tok tokenarray[] )
 #endif
    // if (Parse_Pass == PASS_1) {
       /* v2.12: calculation of offsets of local variables is done delayed now */
-      if (ModuleInfo.basereg[USE64] == T_RSP)
-        SetLocalOffsets_RSP(CurrProc->e.procinfo);
-	  else
-		  SetLocalOffsets_RBP(CurrProc->e.procinfo);
+	if (ModuleInfo.basereg[USE64] == T_RSP)
+	{
+		if(Parse_Pass == PASS_1)
+			SetLocalOffsets_RSP(CurrProc->e.procinfo);
+	}
+	else
+		SetLocalOffsets_RBP(CurrProc->e.procinfo);
+
      // }
          ProcStatus |= PRST_INSIDE_PROLOGUE;
         /* there are 3 cases:
@@ -4458,17 +4467,17 @@ static void write_default_epilogue( void )
     info = CurrProc->e.procinfo;
 
 #if AMD64_SUPPORT
-    if ( info->isframe ) 
+    if ( info->isframe || ModuleInfo.frame_auto ) 
 	{
-      if (ModuleInfo.frame_auto)
-	  {
+    //  if (ModuleInfo.frame_auto)
+	  //{
          if ( ModuleInfo.basereg[USE64] == T_RSP && CurrProc->sym.langtype == LANG_FASTCALL )
 			write_win64_default_epilogue_RSP( info );
          else if ( ModuleInfo.basereg[USE64] == T_RBP && CurrProc->sym.langtype == LANG_FASTCALL )
 			write_win64_default_epilogue_RBP( info );
 		 else if ( ModuleInfo.basereg[USE64] == T_RBP && CurrProc->sym.langtype == LANG_SYSVCALL )
 			 write_sysv_default_epilogue_RBP( info );
-	  }
+	  //}
       return;
     }
     if ( ModuleInfo.Ofssize == USE64 && ModuleInfo.fctype == FCT_WIN64 && ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) ) 
