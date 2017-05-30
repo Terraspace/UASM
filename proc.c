@@ -3305,6 +3305,13 @@ static void check_proc_fpo(struct proc_info *info)
 	int usedParams = 0;
 	int usedLocals = 0;
 
+	/* Without Win64 settings at all we do not use FPO */
+	if (ModuleInfo.win64_flags == 0 && ModuleInfo.frame_auto == 0)
+	{
+		info->fpo = FALSE;
+		return;
+	}
+
 	for (paracurr = info->paralist; paracurr; paracurr = paracurr->nextparam)
 	{
 		if (paracurr->sym.used)
@@ -3922,6 +3929,8 @@ static ret_code write_default_prologue( void )
     //info->localsize = ROUND_UP( info->localsize, CurrWordSize );
     regist = info->regslist;
 
+	check_proc_fpo(info);
+
 #if AMD64_SUPPORT
     /* initialize shadow space for register params */
 	if (ModuleInfo.Ofssize == USE64 && ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_SAVEREGPARAMS)) 
@@ -4487,11 +4496,11 @@ static void write_default_epilogue( void )
      * emit either "leave" or "mov e/sp,e/bp, pop e/bp".
      */
 #if AMD64_SUPPORT
-    if( !(info->locallist || info->stackparam || info->has_vararg || info->forceframe ) )
+    if( !(info->locallist || info->stackparam || info->has_vararg || info->forceframe) )
         ;
     else
 #endif
-    if( info->pe_type ) {
+    if( info->pe_type && !info->fpo ) {
         AddLineQueue( "leave" );
     } else  {
 #if STACKBASESUPP
