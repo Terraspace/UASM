@@ -3770,7 +3770,7 @@ static void write_sysv_default_prologue_RBP(struct proc_info *info)
 
 	
 	/* Allocate space for local variables */
-	if ((info->localsize + resstack) > 0 || info->fpo || stackadj > 0) {
+	if ((info->localsize + resstack) > 0 || info->fpo || stackadj > 0) 
 	{
 		DebugMsg1(("write_sysv_default_prologue_RBP: localsize=%u\n", info->localsize));
 		/* SUB  RSP, localsize */
