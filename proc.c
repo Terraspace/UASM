@@ -3770,7 +3770,7 @@ static void write_sysv_default_prologue_RBP(struct proc_info *info)
 
 	
 	/* Allocate space for local variables */
-	if ((info->localsize + resstack) > 0 || info->fpo || stackadj > 0) 
+	if ((info->localsize + resstack + stackadj) > 0) 
 	{
 		DebugMsg1(("write_sysv_default_prologue_RBP: localsize=%u\n", info->localsize));
 		/* SUB  RSP, localsize */
@@ -3820,11 +3820,23 @@ static void write_sysv_default_epilogue_RBP(struct proc_info *info)
 /****************************************************************/
 {
 	int  resstack = ((ModuleInfo.win64_flags & W64F_AUTOSTACKSP) ? sym_ReservedStack->value : 0);
-	int  stackadj = 8;
+	
+	int  stackadj = 0;
 
-	/* If we used an RBP stackframe, the default stack position would be aligned 16 */
-	if (!info->fpo && GetRegNo(info->basereg) != 4 && (info->parasize != 0 || info->locallist != NULL))
-		stackadj = 0;
+	if (info->fpo)
+	{
+		if (info->pushed_reg % 2 == 0)
+			stackadj = 8;
+		else
+			stackadj = 0;
+	}
+	else
+	{
+		if (info->pushed_reg % 2 == 0)
+			stackadj = 0;
+		else
+			stackadj = 8;
+	}
 
 	/* Restore USED vector registers */
 	if (info->regslist)
