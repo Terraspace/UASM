@@ -3712,12 +3712,12 @@ static void write_sysv_default_prologue_RBP(struct proc_info *info)
 	info->pushed_reg = 0;
 
 	/* Only setup a stack-frame for RBP if there are locals or parameters */
-	stackadj = 8;
+	//stackadj = 8;
 	if (!info->fpo && GetRegNo(info->basereg) != 4 && (info->parasize != 0 || info->locallist != NULL))
 	{
 		AddLineQueueX("push %r", info->basereg);
 		AddLineQueueX("mov %r, %r", info->basereg, T_RSP);
-		stackadj = 0;
+		//stackadj = 0;
 	}
 	/* after the "push rbp", the stack is xmmword aligned (except if we didn't push rbp) */
 
@@ -3746,15 +3746,31 @@ static void write_sysv_default_prologue_RBP(struct proc_info *info)
 	}
 
 	/* Ensure RSP is aligned 16 */
-	gprOdd = (info->pushed_reg & 1);
+/*	gprOdd = (info->pushed_reg & 1);
 	if (stackadj == 0 && gprOdd) stackadj += 8;
 	else if (stackadj == 8 && !gprOdd && info->pushed_reg>0) stackadj -= 8;
-
 	if (info->localsize == 8 && stackadj == 8)
 		stackadj = 0;
+		*/
 
+	if (info->fpo)
+	{
+		if (info->pushed_reg % 2 == 0)
+			stackadj = 8;
+		else
+			stackadj = 0;
+	}
+	else
+	{
+		if (info->pushed_reg % 2 == 0)
+			stackadj = 0;
+		else
+			stackadj = 8;
+	}
+
+	
 	/* Allocate space for local variables */
-	if (info->localsize)
+	if ((info->localsize + resstack) > 0 || info->fpo || stackadj > 0) {
 	{
 		DebugMsg1(("write_sysv_default_prologue_RBP: localsize=%u\n", info->localsize));
 		/* SUB  RSP, localsize */
