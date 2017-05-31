@@ -2181,7 +2181,7 @@ ret_code ExcFrameDirective( int i, struct asm_tok tokenarray[] )
 
     DebugMsg1(("ExcFrameDirective(%s) enter\n", tokenarray[i].string_ptr ));
     /* v2.05: accept directives for windows only */
-	if (Options.output_format != OFORMAT_COFF && Options.output_format != OFORMAT_ELF && Options.output_format != OFORMAT_BIN /* John Hankinson 2016-02-10 Added elf win64 hack */
+	if (Options.output_format != OFORMAT_COFF && Options.output_format != OFORMAT_ELF && Options.output_format != OFORMAT_BIN 
 #if PE_SUPPORT
         && ModuleInfo.sub_format != SFORMAT_PE
 #endif
@@ -2778,6 +2778,7 @@ static void write_win64_default_prologue_RBP( struct proc_info *info )
 
     if ( ModuleInfo.win64_flags & W64F_SAVEREGPARAMS )
 		win64_SaveRegParams_RBP( info );
+
     /*
      * PUSH RBP
      * .PUSHREG RBP
@@ -2789,10 +2790,10 @@ static void write_win64_default_prologue_RBP( struct proc_info *info )
         DebugMsg1(("write_win64_default_prologue_RBP: no frame register needed\n"));
     } else {
         AddLineQueueX( "push %r", info->basereg );
-		if (info->isframe || ModuleInfo.frame_auto) 
+		if (info->isframe && ModuleInfo.frame_auto)
 			AddLineQueueX( "%r %r", T_DOT_PUSHREG, info->basereg );
         AddLineQueueX( "mov %r, %r", info->basereg, T_RSP );
-		if (info->isframe || ModuleInfo.frame_auto)
+		if (info->isframe && ModuleInfo.frame_auto)
 			AddLineQueueX( "%r %r, 0", T_DOT_SETFRAME, info->basereg );
     }
 #else
@@ -2825,7 +2826,7 @@ static void write_win64_default_prologue_RBP( struct proc_info *info )
               info->pushed_reg += 1;
               AddLineQueueX("push %r", *regist);
               if ((1 << GetRegNo(*regist)) & win64_nvgpr) {
-				if (info->isframe || ModuleInfo.frame_auto)
+				if (info->isframe && ModuleInfo.frame_auto)
 					AddLineQueueX("%r %r", T_DOT_PUSHREG, *regist);
               }
           }
@@ -2852,8 +2853,6 @@ static void write_win64_default_prologue_RBP( struct proc_info *info )
 
         DebugMsg1(("write_win64_default_prologue_RBP: localsize=%u resstack=%u\n", info->localsize, resstack ));
 
-		
-
         /*
          * SUB  RSP, localsize
          * .ALLOCSTACK localsize
@@ -2871,7 +2870,7 @@ static void write_win64_default_prologue_RBP( struct proc_info *info )
 		if (info->localsize + stackadj + resstack > 0)
 		{
 			AddLineQueueX(*(ppfmt + 0), T_RSP, NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
-			if (info->isframe || ModuleInfo.frame_auto)
+			if (info->isframe && ModuleInfo.frame_auto)
 				AddLineQueueX(*(ppfmt + 1), T_DOT_ALLOCSTACK, NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
 		}
 
@@ -2886,20 +2885,20 @@ static void write_win64_default_prologue_RBP( struct proc_info *info )
 						if (resstack) {                         //sym_ReservedStack has value
 							if (GetValueSp(*regist) & OP_XMM) {
 								AddLineQueueX("%s [%r+%u+%s], %r", MOVE_ALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
-								if (info->isframe || ModuleInfo.frame_auto)
+								if (info->isframe && ModuleInfo.frame_auto)
 								AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEXMM128, *regist, NUMQUAL i, sym_ReservedStack->name);
 								i += 16;
 							}
 							else if (GetValueSp(*regist) & OP_YMM) {
 								AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
-								if (info->isframe || ModuleInfo.frame_auto)
+								if (info->isframe && ModuleInfo.frame_auto)
 								AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEYMM256, *regist, NUMQUAL i, sym_ReservedStack->name);
 								i += 32;
 							}
 #if EVEXSUPP    
 							else (GetValueSp(*regist) & OP_ZMM) {
 								AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
-								if (info->isframe || ModuleInfo.frame_auto)
+								if (info->isframe && ModuleInfo.frame_auto)
 								AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEZMM512, *regist, NUMQUAL i, sym_ReservedStack->name);
 								i += 64;
 							}
@@ -2908,20 +2907,20 @@ static void write_win64_default_prologue_RBP( struct proc_info *info )
 						else {                                   // sym_ReservedStack has no value
 							if (GetValueSp(*regist) & OP_XMM) {
 								AddLineQueueX("%s [%r+%u], %r", MOVE_ALIGNED_INT, T_RSP, NUMQUAL i, *regist);
-								if (info->isframe || ModuleInfo.frame_auto)
+								if (info->isframe && ModuleInfo.frame_auto)
 								AddLineQueueX("%r %r, %u", T_DOT_SAVEXMM128, *regist, NUMQUAL i);
 								i += 16;
 							}
 							else if (GetValueSp(*regist) & OP_YMM) {
 								AddLineQueueX("%s [%r+%u], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, *regist);
-								if (info->isframe || ModuleInfo.frame_auto)
+								if (info->isframe && ModuleInfo.frame_auto)
 								AddLineQueueX("%r %r, %u", T_DOT_SAVEYMM256, *regist, NUMQUAL i);
 								i += 32;
 							}
 #if EVEXSUPP    
 							else (GetValueSp(*regist) & OP_ZMM) {
 								AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, *regist);
-								if (info->isframe || ModuleInfo.frame_auto)
+								if (info->isframe && ModuleInfo.frame_auto)
 								AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEZMM512, *regist, NUMQUAL i);
 								i += 64;
 							}
@@ -2931,7 +2930,7 @@ static void write_win64_default_prologue_RBP( struct proc_info *info )
 				}
 			}
    }
-	if (info->isframe || ModuleInfo.frame_auto)
+	if (info->isframe && ModuleInfo.frame_auto)
 		AddLineQueueX( "%r", T_DOT_ENDPROLOG );
     return;
 }
@@ -3767,7 +3766,6 @@ static void write_sysv_default_prologue_RBP(struct proc_info *info)
 		else
 			stackadj = 8;
 	}
-
 	
 	/* Allocate space for local variables */
 	if ((info->localsize + resstack + stackadj) > 0) 
@@ -3938,22 +3936,21 @@ static ret_code write_default_prologue( void )
     info = CurrProc->e.procinfo;
 
 #if AMD64_SUPPORT
-    //if ( info->isframe || ModuleInfo.frame_auto ) {
-        //if ( ModuleInfo.frame_auto ) 
-		//{
-			if (ModuleInfo.basereg[USE64] == T_RSP)
-				write_win64_default_prologue_RSP( info );
-			else if ( (ModuleInfo.basereg[USE64] == T_RBP) && CurrProc->sym.langtype == LANG_FASTCALL )
-				write_win64_default_prologue_RBP(info);
-			else if ( (ModuleInfo.basereg[USE64] == T_RBP) && CurrProc->sym.langtype == LANG_SYSVCALL )
-				write_sysv_default_prologue_RBP( info );
-            /* v2.11: line queue is now run here */
-            goto runqueue;
-        //}
+	if (ModuleInfo.Ofssize == USE64 && ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP))
+		resstack = sym_ReservedStack->value;
+
+	if ( ModuleInfo.Ofssize == USE64 ) 
+	{
+		if (ModuleInfo.basereg[USE64] == T_RSP)
+			write_win64_default_prologue_RSP( info );
+		else if ( (ModuleInfo.basereg[USE64] == T_RBP) && CurrProc->sym.langtype == LANG_FASTCALL )
+			write_win64_default_prologue_RBP(info);
+		else if ( (ModuleInfo.basereg[USE64] == T_RBP) && CurrProc->sym.langtype == LANG_SYSVCALL )
+			write_sysv_default_prologue_RBP( info );
+        /* v2.11: line queue is now run here */
+        goto runqueue;
         return( NOT_ERROR );
-    //}
-    if ( ModuleInfo.Ofssize == USE64 && ModuleInfo.fctype == FCT_WIN64 && ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) )
-        resstack = sym_ReservedStack->value;
+    }
 #endif
     /* default processing. if no params/locals are defined, continue */
     if( info->forceframe == FALSE &&
@@ -4503,19 +4500,16 @@ static void write_default_epilogue( void )
     info = CurrProc->e.procinfo;
 
 #if AMD64_SUPPORT
-    //if ( info->isframe || ModuleInfo.frame_auto ) 
-	//{
-    //  if (ModuleInfo.frame_auto)
-	  //{
-         if ( ModuleInfo.basereg[USE64] == T_RSP && CurrProc->sym.langtype == LANG_FASTCALL )
+	if (ModuleInfo.Ofssize == USE64) 
+	{
+		if ( ModuleInfo.basereg[USE64] == T_RSP && CurrProc->sym.langtype == LANG_FASTCALL )
 			write_win64_default_epilogue_RSP( info );
-         else if ( ModuleInfo.basereg[USE64] == T_RBP && CurrProc->sym.langtype == LANG_FASTCALL )
+		else if ( ModuleInfo.basereg[USE64] == T_RBP && CurrProc->sym.langtype == LANG_FASTCALL )
 			write_win64_default_epilogue_RBP( info );
-		 else if ( ModuleInfo.basereg[USE64] == T_RBP && CurrProc->sym.langtype == LANG_SYSVCALL )
-			 write_sysv_default_epilogue_RBP( info );
-	  //}
-      return;
-    //}
+		else if ( ModuleInfo.basereg[USE64] == T_RBP && CurrProc->sym.langtype == LANG_SYSVCALL )
+			write_sysv_default_epilogue_RBP( info );
+		return;
+    }
     if ( ModuleInfo.Ofssize == USE64 && ModuleInfo.fctype == FCT_WIN64 && ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) ) 
 	{
 		resstack  = sym_ReservedStack->value;
