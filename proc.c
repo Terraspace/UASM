@@ -2759,81 +2759,69 @@ static void win64_SaveRegParams_RBP( struct proc_info *info )
 }
 
 /* win64 default prologue when PROC FRAME and OPTION FRAME:AUTO is set */
-static void write_win64_default_prologue_RBP( struct proc_info *info )
+static void write_win64_default_prologue_RBP(struct proc_info *info)
 /****************************************************************/
 {
-    uint_16             *regist;
-    const char * const  *ppfmt;
-    int                 i;
-    int                 cnt;
-    int                 cntxmm;
+	uint_16             *regist;
+	const char * const  *ppfmt;
+	int                 i;
+	int                 cnt;
+	int                 cntxmm;
 	int                 cntstd = 0;
-    int                 resstack = ( ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) ? sym_ReservedStack->value : 0 );
+	int                 resstack = ((ModuleInfo.win64_flags & W64F_AUTOSTACKSP) ? sym_ReservedStack->value : 0);
 	int                 stackadj;
 
 	info->pushed_reg = 0;
 
-    DebugMsg1(("write_win64_default_prologue_RBP enter\n"));
+	DebugMsg1(("write_win64_default_prologue_RBP enter\n"));
 	check_proc_fpo(info);
 
-    if ( ModuleInfo.win64_flags & W64F_SAVEREGPARAMS )
-		win64_SaveRegParams_RBP( info );
+	if (ModuleInfo.win64_flags & W64F_SAVEREGPARAMS)
+		win64_SaveRegParams_RBP(info);
 
-    /*
-     * PUSH RBP
-     * .PUSHREG RBP
-     * MOV RBP, RSP
-     * .SETFRAME RBP, 0
-     */
-#if STACKBASESUPP
-    if ( info->fpo ) {
-        DebugMsg1(("write_win64_default_prologue_RBP: no frame register needed\n"));
-    } else {
-        AddLineQueueX( "push %r", info->basereg );
+	if (info->fpo) 
+		DebugMsg1(("write_win64_default_prologue_RBP: no frame register needed\n"));
+	else 
+	{
+		AddLineQueueX("push %r", info->basereg);
 		if (info->isframe && ModuleInfo.frame_auto)
-			AddLineQueueX( "%r %r", T_DOT_PUSHREG, info->basereg );
-        AddLineQueueX( "mov %r, %r", info->basereg, T_RSP );
+			AddLineQueueX("%r %r", T_DOT_PUSHREG, info->basereg);
+		AddLineQueueX("mov %r, %r", info->basereg, T_RSP);
 		if (info->isframe && ModuleInfo.frame_auto)
-			AddLineQueueX( "%r %r, 0", T_DOT_SETFRAME, info->basereg );
-    }
-#else
-    AddLineQueueX( "push %r", basereg[USE64] );
-    AddLineQueueX( "%r %r", T_DOT_PUSHREG, basereg[USE64] );
-    AddLineQueueX( "mov %r, %r", basereg[USE64], T_RSP );
-    AddLineQueueX( "%r %r, 0", T_DOT_SETFRAME, basereg[USE64] );
-#endif
+			AddLineQueueX("%r %r, 0", T_DOT_SETFRAME, info->basereg);
+	}
+    /* after the "push rbp", the stack is xmmword aligned (except if FPO was on) */
 
-    /* after the "push rbp", the stack is xmmword aligned (except if we didn't push rbp) */
+    /* Push the GPR registers */
+	cntxmm = 0;
+    if (info->regslist) 
+	{
+		regist = info->regslist;
+        for (cnt = *regist++; cnt; cnt--, regist++) 
+		{
+			/* AVX registers will be multiplied with their correct size; 2.26 */
+			if (GetValueSp(*regist) & OP_XMM)
+				cntxmm += 1;                         // 1 * 16
+			else if (GetValueSp(*regist) & OP_YMM)
+	            cntxmm += 2;                         // 2 * 16
+			#if EVEXSUPP    
+			else if (GetValueSp(*regist) & OP_ZMM)
+	            cntxmm += 4;                         // 4 * 16
+			#endif
+			else 
+			{
+				info->pushed_reg += 1;
+				AddLineQueueX("push %r", *regist);
+				if ((1 << GetRegNo(*regist)) & win64_nvgpr) 
+				{
+					if (info->isframe && ModuleInfo.frame_auto)
+						AddLineQueueX("%r %r", T_DOT_PUSHREG, *regist);
+				}
+			}
+		}
+	}
 
-    /* Push the registers */
-      cntxmm = 0;
-      if (info->regslist) {
-        regist = info->regslist;
-        for (cnt = *regist++; cnt; cnt--, regist++) {
-          /* AVX registers will be multiplied with their correct size; 2.26 */
-          if (GetValueSp(*regist) & OP_XMM){
-            cntxmm += 1;                         // 1 * 16
-          }
-          else if (GetValueSp(*regist) & OP_YMM){
-            cntxmm += 2;                         // 2 * 16
-          }
-#if EVEXSUPP    
-          else if (GetValueSp(*regist) & OP_ZMM){
-            cntxmm += 4;                         // 4 * 16
-          }
-#endif
-          else {
-              info->pushed_reg += 1;
-              AddLineQueueX("push %r", *regist);
-              if ((1 << GetRegNo(*regist)) & win64_nvgpr) {
-				if (info->isframe && ModuleInfo.frame_auto)
-					AddLineQueueX("%r %r", T_DOT_PUSHREG, *regist);
-              }
-          }
-        } /* end for */
-      }
-    /* alloc space for local variables */
-
+    /* Allocate space for local variables */
 	if (info->fpo)
 	{
 		if (info->pushed_reg % 2 == 0)
@@ -2848,88 +2836,79 @@ static void write_win64_default_prologue_RBP( struct proc_info *info )
 		else
 			stackadj = 8;
 	}
+    /* UASM2.35 fix for functions without ModuleInfo.frame_auto */
+    if (!ModuleInfo.frame_auto)
+		stackadj = 0;
+    /* UASM2.35 fix for functions without ModuleInfo.frame_auto */
+  if ( info->isframe && ModuleInfo.frame_auto ){
+    
+	if ( (info->localsize + resstack +  stackadj) > 0 ) 
+	{
+        /* SUB  RSP, localsize
+         * .ALLOCSTACK localsize */
+        ppfmt = (resstack ? fmtstk1 : fmtstk0);
+		AddLineQueueX(*(ppfmt + 0), T_RSP, NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
+		if (info->isframe && ModuleInfo.frame_auto)
+			AddLineQueueX(*(ppfmt + 1), T_DOT_ALLOCSTACK, NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
 
-    if( (info->localsize + resstack) > 0 || info->fpo || stackadj > 0 ) {
-
-        DebugMsg1(("write_win64_default_prologue_RBP: localsize=%u resstack=%u\n", info->localsize, resstack ));
-
-        /*
-         * SUB  RSP, localsize
-         * .ALLOCSTACK localsize
-         */
-        ppfmt = ( resstack ? fmtstk1 : fmtstk0 );
-#if STACKPROBE
-        if ( info->localsize + resstack > 0x1000 ) {
-            AddLineQueueX( *(ppfmt+2), T_RAX, NUMQUAL info->localsize + stackadj, sym_ReservedStack->name );
-            AddLineQueue(  "externdef __chkstk:PROC" );
-            AddLineQueue(  "call __chkstk" );
-            AddLineQueueX( "mov %r, %r", T_RSP, T_RAX );
-        } else
-#endif
-
-		if (info->localsize + stackadj + resstack > 0)
-		{
-			AddLineQueueX(*(ppfmt + 0), T_RSP, NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
-			if (info->isframe && ModuleInfo.frame_auto)
-				AddLineQueueX(*(ppfmt + 1), T_DOT_ALLOCSTACK, NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
-		}
-
-        /* save xmm registers */
-			if (cntxmm) {
-				regist = info->regslist;
-        /* firs location must be multiplied by 16 and subtracted 
-        *  from info->localsize and aligned to 16  ; Uasm 2.26 */
-				i = ( info->localsize - cntxmm * 16 ) & ~(16-1);  
-				if(regist) {
-				  for (cnt = *regist++; cnt; cnt--, regist++){
-						if (resstack) {                         //sym_ReservedStack has value
-							if (GetValueSp(*regist) & OP_XMM) {
-								AddLineQueueX("%s [%r+%u+%s], %r", MOVE_ALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
-								if (info->isframe && ModuleInfo.frame_auto)
-								AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEXMM128, *regist, NUMQUAL i, sym_ReservedStack->name);
-								i += 16;
-							}
-							else if (GetValueSp(*regist) & OP_YMM) {
-								AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
-								if (info->isframe && ModuleInfo.frame_auto)
-								AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEYMM256, *regist, NUMQUAL i, sym_ReservedStack->name);
-								i += 32;
-							}
+          /* save xmm registers */
+          if (cntxmm) {
+            regist = info->regslist;
+            /* firs location must be multiplied by 16 and subtracted
+            *  from info->localsize and aligned to 16  ; Uasm 2.26 */
+            i = (info->localsize - cntxmm * 16) & ~(16 - 1);
+            if (regist) {
+              for (cnt = *regist++; cnt; cnt--, regist++){
+                if (resstack) {                         //sym_ReservedStack has value
+                  if (GetValueSp(*regist) & OP_XMM) {
+                    AddLineQueueX("%s [%r+%u+%s], %r", MOVE_ALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
+                    if (info->isframe && ModuleInfo.frame_auto)
+                      AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEXMM128, *regist, NUMQUAL i, sym_ReservedStack->name);
+                    i += 16;
+                    }
+                  else if (GetValueSp(*regist) & OP_YMM) {
+                    AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
+                    if (info->isframe && ModuleInfo.frame_auto)
+                      AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEYMM256, *regist, NUMQUAL i, sym_ReservedStack->name);
+                    i += 32;
+                    }
 #if EVEXSUPP    
-							else (GetValueSp(*regist) & OP_ZMM) {
-								AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
-								if (info->isframe && ModuleInfo.frame_auto)
-								AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEZMM512, *regist, NUMQUAL i, sym_ReservedStack->name);
-								i += 64;
-							}
+                  else (GetValueSp(*regist) & OP_ZMM) {
+                    AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
+                    if (info->isframe && ModuleInfo.frame_auto)
+                      AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEZMM512, *regist, NUMQUAL i, sym_ReservedStack->name);
+                    i += 64;
+                    }
 #endif
-						}
-						else {                                   // sym_ReservedStack has no value
-							if (GetValueSp(*regist) & OP_XMM) {
-								AddLineQueueX("%s [%r+%u], %r", MOVE_ALIGNED_INT, T_RSP, NUMQUAL i, *regist);
-								if (info->isframe && ModuleInfo.frame_auto)
-								AddLineQueueX("%r %r, %u", T_DOT_SAVEXMM128, *regist, NUMQUAL i);
-								i += 16;
-							}
-							else if (GetValueSp(*regist) & OP_YMM) {
-								AddLineQueueX("%s [%r+%u], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, *regist);
-								if (info->isframe && ModuleInfo.frame_auto)
-								AddLineQueueX("%r %r, %u", T_DOT_SAVEYMM256, *regist, NUMQUAL i);
-								i += 32;
-							}
+                  }
+                else {                                   // sym_ReservedStack has no value
+                  if (GetValueSp(*regist) & OP_XMM) {
+                    AddLineQueueX("%s [%r+%u], %r", MOVE_ALIGNED_INT, T_RSP, NUMQUAL i, *regist);
+                    if (info->isframe && ModuleInfo.frame_auto)
+                      AddLineQueueX("%r %r, %u", T_DOT_SAVEXMM128, *regist, NUMQUAL i);
+                    i += 16;
+                    }
+                  else if (GetValueSp(*regist) & OP_YMM) {
+                    AddLineQueueX("%s [%r+%u], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, *regist);
+                    if (info->isframe && ModuleInfo.frame_auto)
+                      AddLineQueueX("%r %r, %u", T_DOT_SAVEYMM256, *regist, NUMQUAL i);
+                    i += 32;
+                    }
 #if EVEXSUPP    
-							else (GetValueSp(*regist) & OP_ZMM) {
-								AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, *regist);
-								if (info->isframe && ModuleInfo.frame_auto)
-								AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEZMM512, *regist, NUMQUAL i);
-								i += 64;
-							}
+                  else (GetValueSp(*regist) & OP_ZMM) {
+                    AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, *regist);
+                    if (info->isframe && ModuleInfo.frame_auto)
+                      AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEZMM512, *regist, NUMQUAL i);
+                    i += 64;
+                    }
 #endif
-					  }
-					}
-				}
-			}
-   }
+                  }
+                }
+              }
+            }
+        }
+      }
+	
 	if (info->isframe && ModuleInfo.frame_auto)
 		AddLineQueueX( "%r", T_DOT_ENDPROLOG );
     return;
@@ -3317,7 +3296,6 @@ static void check_proc_fpo(struct proc_info *info)
 	int usedParams = 0;
 	int usedLocals = 0;
 
-	
 	if ( ModuleInfo.basereg[USE64] == T_RSP )
 	{
 		info->fpo = TRUE;
@@ -3335,6 +3313,24 @@ static void check_proc_fpo(struct proc_info *info)
 			usedLocals++;
 	}
 
+	if (ModuleInfo.frame_auto && usedLocals == 0 && usedParams == 0)
+	{
+		info->fpo = TRUE;
+		return;
+	}
+	if (!ModuleInfo.frame_auto)
+	{
+		info->fpo = TRUE;
+		return;
+	}
+
+	if (info->locallist || info->stackparam || info->has_vararg || info->forceframe)
+	{
+		info->fpo = FALSE;
+		return;
+	}
+
+
 	if (usedLocals > 0 || usedParams > 0 || Parse_Pass == PASS_1)
 		info->fpo = FALSE;
 	else
@@ -3346,88 +3342,105 @@ static void check_proc_fpo(struct proc_info *info)
 /* Win64 default epilogue if PROC FRAME and OPTION FRAME:AUTO is set for RBP stackbase */
 static void write_win64_default_epilogue_RBP(struct proc_info *info)
 /****************************************************************/
-{
-	int  stackadj = 0;
+  {
+  int  stackadj = 0;
 
-	if (info->fpo)
-	{
-		if (info->pushed_reg % 2 == 0)
-			stackadj = 8;
-		else
-			stackadj = 0;
-	}
-	else
-	{
-		if (info->pushed_reg % 2 == 0)
-			stackadj = 0;
-		else
-			stackadj = 8;
-	}
-
-	/* restore non-volatile xmm registers */
-	if (info->regslist) {
-		uint_16 *regs;
-		int cnt;
-		int i;
-		//int total = info->localsize + stackadj + sym_ReservedStack->name;
-		/* v2.12: space for xmm saves is now included in localsize
-		* so first thing to do is to count the xmm regs that were saved
-		*/
-		for (regs = info->regslist, cnt = *regs++, i = 0; cnt; cnt--, regs++)
-			if (GetValueSp(*regs) & OP_XMM)
-				i++;
-			else if (GetValueSp(*regs) & OP_YMM)
-				i += 2;
-			#if EVEXSUPP
-			else if (GetValueSp(*regs) & OP_ZMM)
-				i += 4;
-			#endif
-
-			if (i) {
-				i = (info->localsize - i * 16) & ~(16 - 1);
-				for (regs = info->regslist, cnt = *regs++; cnt; cnt--, regs++) {
-					if (GetValueSp(*regs) & OP_XMM) {
-						DebugMsg1(("write_win64_default_epilogue(%s): restore %s, offset=%d\n", CurrProc->sym.name, GetResWName(*regs, NULL), i));
-						if (ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
-							AddLineQueueX("%s %r, [%r + %u + %s]", MOVE_ALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i, sym_ReservedStack->name);
-						else
-							AddLineQueueX("%s %r, [%r + %u]", MOVE_ALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i);
-						i += 16;
-					}
-					if (GetValueSp(*regs) & OP_YMM) {
-						DebugMsg1(("write_win64_default_epilogue(%s): restore %s, offset=%d\n", CurrProc->sym.name, GetResWName(*regs, NULL), i));
-						if (ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
-							AddLineQueueX("%s %r, [%r + %u + %s]", MOVE_UNALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i, sym_ReservedStack->name);
-						else
-							AddLineQueueX("%s %r, [%r + %u]", MOVE_UNALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i);
-						i += 32;
-					}
-					#if EVEXSUPP
-					if (GetValueSp(*regs) & OP_ZMM) {
-						DebugMsg1(("write_win64_default_epilogue(%s): restore %s, offset=%d\n", CurrProc->sym.name, GetResWName(*regs, NULL), i));
-						if (ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
-							AddLineQueueX("%s %r, [%r + %u + %s]", MOVE_UNALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i, sym_ReservedStack->name);
-						else
-							AddLineQueueX("%s %r, [%r + %u]", MOVE_UNALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i);
-						i += 64;
-					}
-					#endif
-				}
-			}
-	}
-
-	if (ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP) && (info->localsize + sym_ReservedStack->value) > 0)
-		AddLineQueueX("add %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
-	else if (info->localsize > 0 || stackadj > 0)
-		AddLineQueueX("add %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + stackadj);
-
-	pop_register(CurrProc->e.procinfo->regslist);
-#if STACKBASESUPP
-	if (!info->fpo && GetRegNo(info->basereg) != 4 && (info->parasize != 0 || info->locallist != NULL))
-		AddLineQueueX("pop %r", info->basereg);
-#else
-	AddLineQueueX("pop %r", basereg[ModuleInfo.Ofssize]);
+  if (info->fpo)
+    {
+    if (info->pushed_reg % 2 == 0)
+      stackadj = 8;
+    else
+      stackadj = 0;
+    }
+  else
+    {
+    if (info->pushed_reg % 2 == 0)
+      stackadj = 0;
+    else
+      stackadj = 8;
+    }
+  /* UASM2.35 fix for functions without ModuleInfo.frame_auto */
+  if (!ModuleInfo.frame_auto) stackadj = 0;
+  /* restore non-volatile xmm registers */
+  if (info->regslist) {
+    uint_16 *regs;
+    int cnt;
+    int i;
+    //int total = info->localsize + stackadj + sym_ReservedStack->name;
+    /* v2.12: space for xmm saves is now included in localsize
+    * so first thing to do is to count the xmm regs that were saved
+    */
+    for (regs = info->regslist, cnt = *regs++, i = 0; cnt; cnt--, regs++)
+      if (GetValueSp(*regs) & OP_XMM)
+        i++;
+      else if (GetValueSp(*regs) & OP_YMM)
+        i += 2;
+#if EVEXSUPP
+      else if (GetValueSp(*regs) & OP_ZMM)
+        i += 4;
 #endif
+
+      if (i) {
+        i = (info->localsize - i * 16) & ~(16 - 1);
+        for (regs = info->regslist, cnt = *regs++; cnt; cnt--, regs++) {
+          if (GetValueSp(*regs) & OP_XMM) {
+            DebugMsg1(("write_win64_default_epilogue(%s): restore %s, offset=%d\n", CurrProc->sym.name, GetResWName(*regs, NULL), i));
+            if (ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
+              AddLineQueueX("%s %r, [%r + %u + %s]", MOVE_ALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i, sym_ReservedStack->name);
+            else
+              AddLineQueueX("%s %r, [%r + %u]", MOVE_ALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i);
+            i += 16;
+            }
+          if (GetValueSp(*regs) & OP_YMM) {
+            DebugMsg1(("write_win64_default_epilogue(%s): restore %s, offset=%d\n", CurrProc->sym.name, GetResWName(*regs, NULL), i));
+            if (ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
+              AddLineQueueX("%s %r, [%r + %u + %s]", MOVE_UNALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i, sym_ReservedStack->name);
+            else
+              AddLineQueueX("%s %r, [%r + %u]", MOVE_UNALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i);
+            i += 32;
+            }
+#if EVEXSUPP
+          if (GetValueSp(*regs) & OP_ZMM) {
+            DebugMsg1(("write_win64_default_epilogue(%s): restore %s, offset=%d\n", CurrProc->sym.name, GetResWName(*regs, NULL), i));
+            if (ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
+              AddLineQueueX("%s %r, [%r + %u + %s]", MOVE_UNALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i, sym_ReservedStack->name);
+            else
+              AddLineQueueX("%s %r, [%r + %u]", MOVE_UNALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i);
+            i += 64;
+            }
+#endif
+          }
+        }
+    }
+    
+ 
+	/* UASM2.35 fix for functions without ModuleInfo.frame_auto */
+	if ((info->locallist || info->stackparam || info->has_vararg || info->forceframe) || (info->isframe && ModuleInfo.frame_auto)) 
+	{
+	  if ((info->isframe && ModuleInfo.frame_auto))
+	  {
+		  if (ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP) && (info->localsize + sym_ReservedStack->value) > 0)
+			  AddLineQueueX("add %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
+		  else if (info->localsize > 0 || stackadj > 0)
+			  AddLineQueueX("add %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + stackadj);
+	  }
+	  else if (info->pe_type && !info->fpo)
+	  {
+		  AddLineQueueX("leave");
+	  }
+
+      pop_register(CurrProc->e.procinfo->regslist);
+
+	  if ((info->isframe && ModuleInfo.frame_auto))
+	  {
+#if STACKBASESUPP
+		  if (!info->fpo && GetRegNo(info->basereg) != 4 && (info->parasize != 0 || info->locallist != NULL))
+			  AddLineQueueX("pop %r", info->basereg);
+#else
+		  AddLineQueueX("pop %r", basereg[ModuleInfo.Ofssize]);
+#endif
+	  }
+      }
 	return;
 }
 
@@ -4088,6 +4101,7 @@ static void SetLocalOffsets_RBP(struct proc_info *info)
     int         rspalign = FALSE;
 #endif
     int         align = CurrWordSize;
+	unsigned int presize = 0;
 #if AMD64_SUPPORT
     //if ( info->isframe || ( ModuleInfo.fctype == FCT_WIN64 && ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) ) ) {
         rspalign = TRUE;
@@ -4171,6 +4185,9 @@ static void SetLocalOffsets_RBP(struct proc_info *info)
 
     /* v2.11: localsize must be rounded before offset adjustment if fpo */
     info->localsize = ROUND_UP( info->localsize, CurrWordSize );
+	
+	presize = info->localsize;
+	info->localsize = ROUND_UP(info->localsize, align);
 
     DebugMsg1(("SetLocalOffsets_RBP(%s): localsize=%u after processing locals\n", CurrProc->sym.name, info->localsize ));
 
@@ -4212,8 +4229,9 @@ static void SetLocalOffsets_RBP(struct proc_info *info)
      * the part that covers "pushed" GPRs has to be subtracted now, before prologue code is generated.
      */
     if ( rspalign ) {
+		info->localsize = presize;
 		info->localsize -= cntstd * 8;
-		info->localsize = ROUND_UP(info->localsize, 16);
+		info->localsize = ROUND_UP(info->localsize, align );
         DebugMsg1(("SetLocalOffsets_RBP(%s): final localsize=%u\n", CurrProc->sym.name, info->localsize ));
     }
 #endif
