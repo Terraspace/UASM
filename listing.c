@@ -139,7 +139,7 @@ struct lstleft {
 void LstWrite( enum lsttype type, uint_32 oldofs, void *value )
 /*************************************************************/
 {
-    uint_32 newofs;
+    uint_32 newofs = 0;
     struct asym *sym = value;
     int     len;
     int     len2;
@@ -189,7 +189,8 @@ void LstWrite( enum lsttype type, uint_32 oldofs, void *value )
 #endif
 
     ll.next = NULL;
-    memset( ll.buffer, ' ', sizeof( ll.buffer ) );
+	if(ll.buffer)
+		memset( ll.buffer, ' ', sizeof( ll.buffer ) );
     srcfile = get_curr_srcfile();
 
     switch ( type ) {
@@ -232,8 +233,7 @@ void LstWrite( enum lsttype type, uint_32 oldofs, void *value )
 
         /* OMF hold just a small buffer for one LEDATA record */
         /* if it has been flushed, use LastCodeBufSize */
-        idx = (CurrSeg->e.seginfo->current_loc - CurrSeg->e.seginfo->start_loc)
-            - (newofs - oldofs);
+        idx = (CurrSeg->e.seginfo->current_loc - CurrSeg->e.seginfo->start_loc) - (newofs - oldofs);
         if ( Options.output_format == OFORMAT_OMF ) {
             /* v2.11: additional check to make the hack more robust [ test case:  db 800000h dup (0) ] */
             if ( ( idx+LastCodeBufSize ) < 0 )
@@ -472,7 +472,7 @@ static void log_macro( const struct asym *sym )
 static const char *SimpleTypeString( enum memtype mem_type )
 /**********************************************************/
 {
-    int size = ( mem_type & 0x3f ) + 1;
+    int size = ( mem_type &  0x3f ) + 1; 
     switch ( size ) {
     case 1: return( strings[LS_BYTE] );
     case 2: return( strings[LS_WORD] );
@@ -968,7 +968,8 @@ static void log_symbol( const struct asym *sym )
             LstPrintf( "%-10s ", StringBufferEnd );
         } else if ( sym->state == SYM_EXTERNAL && sym->iscomm == TRUE ) {
             LstPrintf( "%-10s ", strings[LS_COMM] );
-        } else
+        } 
+		else
             LstPrintf( "%-10s ", GetMemtypeString( sym, NULL ) );
 
         /* print value */
@@ -1063,7 +1064,7 @@ void LstWriteCRef( void )
     fseek( CurrFile[LST], 0, SEEK_END );
 
     SymCount = SymGetCount();
-    syms = MemAlloc( SymCount * sizeof( struct asym * ) );
+    syms = (struct asym **)MemAlloc( SymCount * sizeof( struct asym * ) );
     SymGetAll( syms );
 
     DebugMsg(("LstWriteCRef: calling qsort\n"));

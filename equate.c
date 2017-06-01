@@ -135,13 +135,11 @@ static struct asym *CreateAssemblyTimeVariable( struct asm_tok tokenarray[] )
 
     /* v2.08: for plain numbers ALWAYS avoid to call evaluator */
     if ( tokenarray[2].token == T_NUM &&
-        //tokenarray[3].token == T_FINAL &&
-        //tokenarray[2].itemlen <= 8 ) {
-        tokenarray[3].token == T_FINAL ) {
-        //opnd.llvalue = tokenarray[2].value64;
-        //opnd.llvalue = *(uint_64 *)(tokenarray[2].string_ptr - sizeof(uint_64) );
+         tokenarray[3].token == T_FINAL ) {
+
         myatoi128( tokenarray[i].string_ptr, &opnd.llvalue, tokenarray[i].numbase, tokenarray[i].itemlen );
-    check_number:
+
+	check_number:
         opnd.kind = EXPR_CONST;
         opnd.mem_type = MT_EMPTY; /* v2.07: added */
         /* v2.08: check added. the number must be 32-bit */
@@ -390,7 +388,8 @@ struct asym *CreateConstant( struct asm_tok tokenarray[] )
         /* value is a plain number. it will be accepted only if it fits into 32-bits.
          * Else a text macro is created.
          */
-        myatoi128( tokenarray[2].string_ptr, &opnd.llvalue, tokenarray[2].numbase, tokenarray[2].itemlen );
+		 myatoi128( tokenarray[2].string_ptr, &opnd.llvalue, tokenarray[2].numbase, tokenarray[2].itemlen );
+
     check_single_number:
         opnd.instr = EMPTY;
         opnd.kind = EXPR_CONST;
