@@ -421,7 +421,7 @@ static void output_opc(struct code_info *CodeInfo)
 #endif
     OutputCodeByte(OPSIZ);
   }
-    //    if(CodeInfo->token == T_VCVTPS2PD)
+    // if(CodeInfo->token == T_VMOVQ)
     //__debugbreak();
 
   /*
@@ -466,7 +466,11 @@ static void output_opc(struct code_info *CodeInfo)
       lbyte |= EVEX_P1VVVV;
       CodeInfo->evex_p2 |= EVEX_P2VMASK;
     }
-
+    if (CodeInfo->token == T_VMOVQ){
+      if (CodeInfo->opnd[OPND1].type == OP_XMM && CodeInfo->opnd[OPND2].type == OP_R64)
+        lbyte &= 0xFD;
+        lbyte |= 1;
+      }
 
 
   /* If there is no decoflags then it is AVX2 instruction with 3 parameters, Uasm 2.15 */
@@ -1766,6 +1770,11 @@ static void output_opc(struct code_info *CodeInfo)
                    EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
                    }
                 }
+                if (CodeInfo->token == T_VMOVQ){
+                   if (CodeInfo->opnd[OPND1].type == OP_XMM && CodeInfo->opnd[OPND2].type == OP_R64)
+                    OutputCodeByte(0x6e);
+                  }
+                else
                OutputCodeByte(ins->opcode | CodeInfo->iswide | CodeInfo->opc_or);
              }
         }
