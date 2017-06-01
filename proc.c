@@ -3948,10 +3948,9 @@ static void write_sysv_default_epilogue_RBP(struct proc_info *info)
 */
 
 /* Write out generic prologue for 386, esp, watc, borland */
-static ret_code write_generic_prologue( void )
+static ret_code write_generic_prologue( struct proc_info *info )
 /********************************************/
 {
-	struct proc_info    *info;
 	uint_16             *regist;
 	uint_8              oldlinenumbers;
 	int                 cnt;
