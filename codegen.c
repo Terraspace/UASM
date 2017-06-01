@@ -645,7 +645,7 @@ static void output_opc(struct code_info *CodeInfo)
               CodeInfo->tuple = 0;
               /* This fixes AVX  REX_W wide 32 <-> 64 instructions third byte bit W*/
               if ((CodeInfo->token >= T_VADDPD && CodeInfo->token <= T_VMOVAPS) ||
-				  (CodeInfo->token == T_VMOVD)||(CodeInfo->token == T_VPANDN)||
+				  (CodeInfo->token == T_VMOVD)|| (CodeInfo->token == T_VMOVQ) ||(CodeInfo->token == T_VPANDN)||
           (CodeInfo->token == T_VPAND))
                 lbyte &= ~EVEX_P1WMASK;        //make sure it is not set if WIG
               else
@@ -820,6 +820,14 @@ static void output_opc(struct code_info *CodeInfo)
               }
             else
             lbyte |= ( ( CodeInfo->prefix.rex & REX_W ) ? 0x80 : 0 );
+
+			  /* UASM 2.35 Fix vmovq encoding */
+			  if (CodeInfo->token == T_VMOVQ && CodeInfo->opnd[OPND1].type == OP_XMM && CodeInfo->opnd[OPND2].type == OP_R64)
+			  {
+				  lbyte &= 0xfd;
+				  lbyte |= 1;
+			  }
+
             /* KSHIFTLW KSHIFTLQ KSHIFTRW KSHIFTRQ */
             if ((CodeInfo->token == T_KSHIFTLW) || (CodeInfo->token == T_KSHIFTLQ)||
               (CodeInfo->token == T_KSHIFTRW) || (CodeInfo->token == T_KSHIFTRQ)){
@@ -1766,7 +1774,11 @@ static void output_opc(struct code_info *CodeInfo)
                    EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
                    }
                 }
-               OutputCodeByte(ins->opcode | CodeInfo->iswide | CodeInfo->opc_or);
+               /* UASM 2.35 fix vmovq encoding for xmm, r64 */
+			   if(CodeInfo->token == T_VMOVQ && CodeInfo->opnd[OPND1].type == OP_XMM && CodeInfo->opnd[OPND2].type == OP_R64)
+				   OutputCodeByte(ins->opcode-0x10 | CodeInfo->iswide | CodeInfo->opc_or);
+			   else
+					OutputCodeByte(ins->opcode | CodeInfo->iswide | CodeInfo->opc_or);
              }
         }
 
