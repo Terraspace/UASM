@@ -3494,6 +3494,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 
 
   /* UASM 2.36 SIMD aligned check */
+  /* ********************************************************* */
   if (opndx[0].kind == EXPR_REG && (GetValueSp(opndx[0].base_reg->tokval) == OP_XMM || GetValueSp(opndx[0].base_reg->tokval) == OP_YMM))
   {
 	  if (GetValueSp(opndx[0].base_reg->tokval) == OP_XMM)
@@ -3511,6 +3512,23 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 		  }
 	  }
   }
+  else if (opndx[0].kind == EXPR_ADDR && opndx[0].sym)
+  {
+	  if (opndx[1].kind == EXPR_REG && (GetValueSp(opndx[1].base_reg->tokval) == OP_XMM || GetValueSp(opndx[1].base_reg->tokval) == OP_YMM))
+	  {
+		  if (GetValueSp(opndx[1].base_reg->tokval) == OP_XMM)
+			  alignCheck = 16;
+		  else if (GetValueSp(opndx[1].base_reg->tokval) == OP_YMM)
+			  alignCheck = 32;
+		  if (CodeInfo.token == T_MOVAPS || CodeInfo.token == T_VMOVAPS || CodeInfo.token == T_MOVDQA ||
+			  CodeInfo.token == T_VMOVDQA || CodeInfo.token == T_MOVAPD || CodeInfo.token == T_VMOVAPD)
+		  {
+			  if (opndx[0].sym->offset % alignCheck != 0)
+				  EmitWarn(2, UNALIGNED_SIMD_USE);
+		  }
+	  }
+  }
+
   
 for (CurrOpnd = 0; CurrOpnd < j && CurrOpnd < MAX_OPND; CurrOpnd++) {
 
