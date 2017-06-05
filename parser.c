@@ -3604,18 +3604,18 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 			  if (alignCheck == 16)
 			  {
 				  opndx[1].mem_type = MT_OWORD;
-				  opndx[1].sym->mem_type = MT_OWORD;
+				 // opndx[1].sym->mem_type = MT_OWORD;
 			  }
 			  else if (alignCheck == 32)
 			  {
 				  opndx[1].mem_type = MT_YMMWORD;
-				  opndx[1].sym->mem_type = MT_YMMWORD;
+				 // opndx[1].sym->mem_type = MT_YMMWORD;
 			  }
 #if EVEXSUPP
 			  else
 			  {
 				  opndx[1].mem_type = MT_ZMMWORD;
-				  opndx[1].sym->mem_type = MT_ZMMWORD;
+				  //opndx[1].sym->mem_type = MT_ZMMWORD;
 			  }
 #endif
 		  }
@@ -3635,18 +3635,18 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 			  if (alignCheck == 16)
 			  {
 				  opndx[2].mem_type = MT_OWORD;
-				  opndx[2].sym->mem_type = MT_OWORD;
+				 // opndx[2].sym->mem_type = MT_OWORD;
 			  }
 			  else if (alignCheck == 32)
 			  {
 				  opndx[2].mem_type = MT_YMMWORD;
-				  opndx[2].sym->mem_type = MT_YMMWORD;
+				 // opndx[2].sym->mem_type = MT_YMMWORD;
 			  }
 #if EVEXSUPP
 			  else
 			  {
 				  opndx[1].mem_type = MT_ZMMWORD;
-				  opndx[1].sym->mem_type = MT_ZMMWORD;
+				 // opndx[1].sym->mem_type = MT_ZMMWORD;
 			  }
 #endif
 		  }
