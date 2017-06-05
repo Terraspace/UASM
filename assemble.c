@@ -1156,10 +1156,14 @@ static int OnePass( void )
 		//platform->value = 3;
 
 	/* Process our built-in macro library to make it available to the rest of the source (x64 only) */
-	if (Parse_Pass == PASS_1 && Options.nomlib == FALSE && ModuleInfo.defOfssize == USE64) {
+	if (Parse_Pass == PASS_1 && Options.nomlib == FALSE) 
+	{
 		unsigned  alist = ModuleInfo.list;
 		ModuleInfo.list = 0;
-		InitAutoMacros();
+		if (ModuleInfo.defOfssize == USE64)
+			InitAutoMacros64();
+		else if (ModuleInfo.defOfssize == USE32)
+			InitAutoMacros32();
 		ModuleInfo.list = alist;
 	}
 

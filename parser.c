@@ -3501,6 +3501,10 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 		  alignCheck = 16;
 	  else if (GetValueSp(opndx[0].base_reg->tokval) == OP_YMM)
 		  alignCheck = 32;
+#if EVEXSUPP
+	  else if (GetValueSp(opndx[0].base_reg->tokval) == OP_ZMM)
+		  alignCheck = 64;
+#endif
 
 	  if (opndx[1].kind == EXPR_ADDR && opndx[1].sym)
 	  {
@@ -3513,17 +3517,24 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 				  opndx[1].mem_type = MT_OWORD;
 				  opndx[1].sym->mem_type = MT_OWORD;
 			  }
-			  else
+			  else if (alignCheck == 32)
 			  {
 				  opndx[1].mem_type = MT_YMMWORD;
 				  opndx[1].sym->mem_type = MT_YMMWORD;
 			  }
+#if EVEXSUPP
+			  else
+			  {
+				  opndx[1].mem_type = MT_ZMMWORD;
+				  opndx[1].sym->mem_type = MT_ZMMWORD;
+			  }
+#endif
 		  }
 
 		  if (CodeInfo.token == T_MOVAPS || CodeInfo.token == T_VMOVAPS || CodeInfo.token == T_MOVDQA || 
 			  CodeInfo.token == T_VMOVDQA || CodeInfo.token == T_MOVAPD || CodeInfo.token == T_VMOVAPD)
 		  {
-			  if (opndx[1].sym->offset % alignCheck != 0)
+			  if (opndx[1].sym->state != SYM_STACK && (opndx[1].sym->offset % alignCheck != 0))
 				  EmitWarn(2, UNALIGNED_SIMD_USE);
 		  }
 	  }
@@ -3537,11 +3548,18 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 				  opndx[2].mem_type = MT_OWORD;
 				  opndx[2].sym->mem_type = MT_OWORD;
 			  }
-			  else
+			  else if (alignCheck == 32)
 			  {
 				  opndx[2].mem_type = MT_YMMWORD;
 				  opndx[2].sym->mem_type = MT_YMMWORD;
 			  }
+#if EVEXSUPP
+			  else
+			  {
+				  opndx[1].mem_type = MT_ZMMWORD;
+				  opndx[1].sym->mem_type = MT_ZMMWORD;
+			  }
+#endif
 		  }
 	  }
   }
@@ -3553,10 +3571,14 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 			  alignCheck = 16;
 		  else if (GetValueSp(opndx[1].base_reg->tokval) == OP_YMM)
 			  alignCheck = 32;
+#if EVEXSUPP
+		  else if (GetValueSp(opndx[1].base_reg->tokval) == OP_ZMM)
+			  alignCheck = 64;
+#endif
 		  if (CodeInfo.token == T_MOVAPS || CodeInfo.token == T_VMOVAPS || CodeInfo.token == T_MOVDQA ||
 			  CodeInfo.token == T_VMOVDQA || CodeInfo.token == T_MOVAPD || CodeInfo.token == T_VMOVAPD)
 		  {
-			  if (opndx[0].sym->offset % alignCheck != 0)
+			  if (opndx[0].sym->state != SYM_STACK && (opndx[0].sym->offset % alignCheck != 0))
 				  EmitWarn(2, UNALIGNED_SIMD_USE);
 		  }
 	  }

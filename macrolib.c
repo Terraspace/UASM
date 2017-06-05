@@ -30,15 +30,19 @@
 #include "orgfixup.h"
 #include "macrolib.h"
 
-#define MACRO_COUNT 51
+#define MACRO_COUNT64 51
+#define MACRO_COUNT32 20
 
 /* MACRO names */
-char *macName[] = {
+char *macName64[] = {
 	"MEMALLOC", "MEMFREE", "CSTR", "WSTR", "FP4", "FP8", "FP10", "LOADSS", "LOADSD", "LOADPS", "MEMALIGN", "RV", "REPARG", "EXPAND_PREFIX", "_ARRAY", "_DELETEARRAY", "OINTERFACE", "ENDOINTERFACE", "CVIRTUAL", "CLASS", "ENDCLASS", "CMETHOD", "METHOD", "STATICMETHOD", "ENDMETHOD", "_DECLARE", "_STATICREF", "_ACQUIRE", "_RELEASE", "_NEW", "_RBXNEW", "_ITEM", "_ITEMR", "_INVOKE", "_I", "_STATIC", "_DELETE", "_VINVOKE", "_V", "_VD", "_VW", "_VB", "_VF", "CSTATIC", "LOADMSS", "LOADMSD", "UINVOKE", "ASFLOAT", "ASDOUBLE", "R4P", "R8P"
+};
+char *macName32[] = {
+	"MEMALLOC", "MEMFREE", "CSTR", "WSTR", "FP4", "FP8", "FP10", "LOADSS", "LOADPS", "MEMALIGN", "RV", "REPARG", "EXPAND_PREFIX", "LOADMSS", "LOADMSD", "UINVOKE", "ASFLOAT", "ASDOUBLE", "R4P", "R8P"
 };
 
 /* MACRO definitions */
-char *macDef[] = {
+char *macDef64[] = {
 	"MEMALLOC macro aSize:REQ",
 	"MEMFREE macro memPtr:REQ",
 	"CSTR macro Text:VARARG",
@@ -91,6 +95,28 @@ char *macDef[] = {
 	"R4P MACRO reg:REQ",
 	"R8P MACRO reg:REQ"
 };
+char *macDef32[] = {
+	"MEMALLOC macro aSize:REQ",
+	"MEMFREE macro memPtr:REQ",
+	"CSTR macro Text:VARARG",
+	"WSTR macro Text:VARARG",
+	"FP4 macro value:REQ",
+	"FP8 macro value:REQ",
+	"FP10 macro value:REQ",
+	"LOADSS MACRO reg, val",
+	"LOADPS MACRO reg, val",
+	"MEMALIGN MACRO reg, number",
+	"RV MACRO FuncName:REQ, args:VARARG",
+	"REPARG MACRO arg",
+	"EXPAND_PREFIX MACRO txtitm",
+	"LOADMSS MACRO reg, value",
+	"LOADMSD MACRO reg, value",
+	"UINVOKE MACRO func:REQ, args:VARARG",
+	"ASFLOAT MACRO reg:REQ",
+	"ASDOUBLE MACRO reg:REQ",
+	"R4P MACRO reg:REQ",
+	"R8P MACRO reg:REQ"
+};
 
 void CreateMacroLibCases(void)
 {
@@ -112,10 +138,10 @@ void CreateMacroLibCases(void)
 }
 
 /* 
-Create the built-in macro library 
+Create the built-in 64bit macro library 
 This is called once initially as the macros always exist
 */
-void InitAutoMacros(void)
+void InitAutoMacros64(void)
 {
 	struct dsym *mac;
 	uint_32 i = 0;
@@ -180,23 +206,63 @@ void InitAutoMacros(void)
     };	
 
 	/* Compile Macros */
-	for (i = 0; i < MACRO_COUNT; i++)
+	for (i = 0; i < MACRO_COUNT64; i++)
 	{
 		for (j = 0; j < macroLen[i]; j++)
 		{
 			srcLines[j] = (char *)malloc(MAX_LINE_LEN);
 			strcpy(srcLines[j], macCode[(start_pos + j)]);
 		}
-		mac = CreateMacro(macName[i]);
-		ModuleInfo.token_count = Tokenize(macDef[i], 0, ModuleInfo.tokenarray, 0);
+		mac = CreateMacro(macName64[i]);
+		ModuleInfo.token_count = Tokenize(macDef64[i], 0, ModuleInfo.tokenarray, 0);
 		StoreAutoMacro(mac, 2, ModuleInfo.tokenarray, TRUE, srcLines, 0, macroLen[i]);
 		start_pos += macroLen[i] + 1;
+	}
+}
+void InitAutoMacros32(void)
+{
+	struct dsym *mac;
+	uint_32 i = 0;
+	uint_32 j = 0;
+	uint_32 k = 0;
+	uint_32 start_pos = 0;
+	char  *srcLines[128]; // NB: 128 is the max number of lines of macro code per macro.
+
+	uint_32 macroLen[] = { 7, 6, 6, 6, 7, 7, 7, 8, 10, 3, 7, 11, 19, 10, 10, 35, 1, 1, 1, 1 }; // Count of individual lines of macro-body code.
+	char *macCode[] = {
+		"IF @Platform EQ 1", "INVOKE HeapAlloc,RV(GetProcessHeap),0,aSize", "ELSE", "INVOKE malloc,aSize", "ENDIF", "MEMALIGN rax, 16", "endm", NULL,
+		"IF @Platform EQ 1", "INVOKE HeapFree,RV(GetProcessHeap),0,memPtr", "ELSE", "INVOKE free,memPtr", "ENDIF", "endm", NULL,
+		"local szText", ".data", "szText db Text,0", ".code", "exitm <offset szText>", "endm", NULL,
+		"local szText", ".data", "szText dw Text,0", ".code", "exitm <offset szText>", "endm", NULL,
+		"local vname", ".data", "align 4", "vname REAL4 value", ".code", "exitm <vname>", "endm", NULL,
+		"local vname", ".data", "align 8", "vname REAL8 value", ".code", "exitm <vname>", "endm", NULL,
+		"local vname", ".data", "align 8", "vname REAL10 value", ".code", "exitm <vname>", "endm", NULL,
+		"IF @Arch EQ 0", "mov eax, val", "movd reg, eax", "ELSE", "mov eax, val", "vmovd reg, eax", "ENDIF", "ENDM", NULL,
+		"IF @Arch EQ 0", "mov eax, val", "movd reg, eax", "pshufd reg, 0", "ELSE", "mov eax, val", "vmovd reg, eax", "vpshufd reg, reg, 0", "ENDIF", "ENDM", NULL,
+		"add reg, number - 1", "and reg, -number", "ENDM", NULL,
+		"arg equ <invoke FuncName>", "FOR var, <args>", "arg CATSTR arg, <, EXPAND_PREFIX(REPARG(var))>", "ENDM", "arg", "EXITM <rax>", "ENDM", NULL,
+		"LOCAL nustr", "quot SUBSTR <arg>, 1, 1", "IFIDN quot, <\">", ".data", "nustr db arg, 0", ".code", "EXITM <ADDR nustr>", "ELSE", "EXITM <ADDR arg>", "ENDIF", "ENDM", NULL,
+		"LOCAL prefix1, wrd, nu, varname", "prefix1 SUBSTR <txtitm>, 1, 1", "IFIDN prefix1, <&>", "nu SUBSTR <txtitm>, 2", "wrd CATSTR <ADDR >, nu", "EXITM <wrd>", "ENDIF", "IFIDN prefix1, <*>", "nu SUBSTR <txtitm>, 2", ".data ?", "varname dq ?", ".code", "mov rax, nu", "mov rax,[rax]", "mov varname, rax", "EXITM <varname>", "ENDIF", "EXITM <txtitm>", "ENDM", NULL,
+		".data", "align 4", "vname dd value", ".code", "IF @Arch EQ 0", "movss reg, vname", "ELSE", "vmovss reg, vname", "ENDIF", "ENDM", NULL,
+		".data", "align 8", "bname dq value", ".code", "IF @Arch EQ 0", "movsd reg, bname", "ELSE", "vmovsd reg, bname", "ENDIF", "ENDM", NULL,
+		"IFB <args>", "invoke func", "ELSE", "invoke func, args", "ENDIF", "IF @LastReturnType EQ 0", "EXITM <al>", "ELSEIF @LastReturnType EQ 0x40", "EXITM <al>", "ELSEIF @LastReturnType EQ 1", "EXITM <ax>", "ELSEIF @LastReturnType EQ 0x41", "EXITM <ax>", "ELSEIF @LastReturnType EQ 2", "EXITM <eax>", "ELSEIF @LastReturnType EQ 0x42", "EXITM <eax>", "ELSEIF @LastReturnType EQ 3", "EXITM <rax>", "ELSEIF @LastReturnType EQ 0x43", "EXITM <rax>", "ELSEIF @LastReturnType EQ 0xc3", "EXITM <rax>", "ELSEIF @LastReturnType EQ 6", "EXITM <xmm0>", "ELSEIF @LastReturnType EQ 7", "EXITM <ymm0>", "ELSEIF @LastReturnType EQ 8", "EXITM <zmm0>", "ELSEIF @LastReturnType EQ 0x22", "EXITM <xmm0>", "ELSEIF @LastReturnType EQ 0x23", "EXITM <xmm0>", "ENDIF", "ENDM", NULL,
+		"EXITM <REAL4 PTR reg> ", NULL,
+		"EXITM <REAL8 PTR reg> ", NULL,
+		"EXITM <REAL4 PTR reg> ", NULL,
+		"EXITM <REAL8 PTR reg> ", NULL
+	};
+
+	/* Compile Macros */
+	for (i = 0; i < MACRO_COUNT32; i++)
+	{
 		for (j = 0; j < macroLen[i]; j++)
 		{
-			//free(srcLines[j]);
+			srcLines[j] = (char *)malloc(MAX_LINE_LEN);
+			strcpy(srcLines[j], macCode[(start_pos + j)]);
 		}
+		mac = CreateMacro(macName32[i]);
+		ModuleInfo.token_count = Tokenize(macDef32[i], 0, ModuleInfo.tokenarray, 0);
+		StoreAutoMacro(mac, 2, ModuleInfo.tokenarray, TRUE, srcLines, 0, macroLen[i]);
+		start_pos += macroLen[i] + 1;
 	}
-
-
-
 }
