@@ -3504,11 +3504,44 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 
 	  if (opndx[1].kind == EXPR_ADDR && opndx[1].sym)
 	  {
+
+		  /* Check the symbol size, if it's compatible force xmmword/ymmword type */
+		  if (opndx[1].sym->total_size == alignCheck)
+		  {
+			  if (alignCheck == 16)
+			  {
+				  opndx[1].mem_type = MT_OWORD;
+				  opndx[1].sym->mem_type = MT_OWORD;
+			  }
+			  else
+			  {
+				  opndx[1].mem_type = MT_YMMWORD;
+				  opndx[1].sym->mem_type = MT_YMMWORD;
+			  }
+		  }
+
 		  if (CodeInfo.token == T_MOVAPS || CodeInfo.token == T_VMOVAPS || CodeInfo.token == T_MOVDQA || 
 			  CodeInfo.token == T_VMOVDQA || CodeInfo.token == T_MOVAPD || CodeInfo.token == T_VMOVAPD)
 		  {
 			  if (opndx[1].sym->offset % alignCheck != 0)
 				  EmitWarn(2, UNALIGNED_SIMD_USE);
+		  }
+	  }
+	  else if (opndx[2].kind == EXPR_ADDR && opndx[2].sym)
+	  {
+		  /* Check the symbol size, if it's compatible force xmmword/ymmword type */
+		  if (opndx[2].sym->total_size == alignCheck)
+		  {
+			  if (alignCheck == 16)
+			  {
+				  opndx[2].mem_type = MT_OWORD;
+				  opndx[2].sym->mem_type = MT_OWORD;
+			  }
+			  else
+			  {
+				  opndx[2].mem_type = MT_YMMWORD;
+				  opndx[2].sym->mem_type = MT_YMMWORD;
+			  }
 		  }
 	  }
   }
