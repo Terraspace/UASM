@@ -2976,6 +2976,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
   int                c1;
   unsigned           flags;
   char               *pnlbl;
+  int                 alignCheck = 16;
 
 #ifdef DEBUG_OUT
   char                *instr;
@@ -3412,7 +3413,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 			break;
 
 		/* inject xmmword ptr to relevant sse instructions */
-		if (Options.masm_compat_gencode && tokenarray[i].token == T_COMMA && (CodeInfo.token == T_SUBPD) ||(CodeInfo.token == T_SUBPS) || (CodeInfo.token == T_ADDPS) ||  (CodeInfo.token == T_ADDPD) || (CodeInfo.token == T_MULPD) || (CodeInfo.token == T_MULPS) || (CodeInfo.token == T_ANDPD) || (CodeInfo.token == T_ANDPS) || (CodeInfo.token == T_MOVAPD) || (CodeInfo.token == T_MOVAPS) || (CodeInfo.token == T_MOVUPS))
+		/*if (Options.masm_compat_gencode && tokenarray[i].token == T_COMMA && (CodeInfo.token == T_SUBPD) ||(CodeInfo.token == T_SUBPS) || (CodeInfo.token == T_ADDPS) ||  (CodeInfo.token == T_ADDPD) || (CodeInfo.token == T_MULPD) || (CodeInfo.token == T_MULPS) || (CodeInfo.token == T_ANDPD) || (CodeInfo.token == T_ANDPS) || (CodeInfo.token == T_MOVAPD) || (CodeInfo.token == T_MOVAPS) || (CodeInfo.token == T_MOVUPS))
 		{
 
 			xmmOver0.tokpos = tokenarray[i].tokpos;
@@ -3432,7 +3433,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 			tokenarray[i + 2] = xmmOver1;
 			ModuleInfo.token_count += 2;
 		}
-	skipxmmsub:
+	skipxmmsub:*/
 		i++;
 
 
@@ -3484,11 +3485,34 @@ ret_code ParseLine(struct asm_tok tokenarray[])
       return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
     }
   }
-  if (tokenarray[i].token != T_FINAL) {
+
+  if (tokenarray[i].token != T_FINAL) 
+  {
     DebugMsg(("ParseLine(%s): too many operands (%s) \n", instr, tokenarray[i].tokpos));
     return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
   }
-  for (CurrOpnd = 0; CurrOpnd < j && CurrOpnd < MAX_OPND; CurrOpnd++) {
+
+
+  /* UASM 2.36 SIMD aligned check */
+  if (opndx[0].kind == EXPR_REG && (GetValueSp(opndx[0].base_reg->tokval) == OP_XMM || GetValueSp(opndx[0].base_reg->tokval) == OP_YMM))
+  {
+	  if (GetValueSp(opndx[0].base_reg->tokval) == OP_XMM)
+		  alignCheck = 16;
+	  else if (GetValueSp(opndx[0].base_reg->tokval) == OP_YMM)
+		  alignCheck = 32;
+
+	  if (opndx[1].kind == EXPR_ADDR && opndx[1].sym)
+	  {
+		  if (CodeInfo.token == T_MOVAPS || CodeInfo.token == T_VMOVAPS || CodeInfo.token == T_MOVDQA || 
+			  CodeInfo.token == T_VMOVDQA || CodeInfo.token == T_MOVAPD || CodeInfo.token == T_VMOVAPD)
+		  {
+			  if (opndx[1].sym->offset % alignCheck != 0)
+				  EmitWarn(2, UNALIGNED_SIMD_USE);
+		  }
+	  }
+  }
+  
+for (CurrOpnd = 0; CurrOpnd < j && CurrOpnd < MAX_OPND; CurrOpnd++) {
 
     Frame_Type = FRAME_NONE;
     SegOverride = NULL; /* segreg prefix is stored in RegOverride */

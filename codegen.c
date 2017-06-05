@@ -2535,6 +2535,7 @@ ret_code codegen( struct code_info *CodeInfo, uint_32 oldofs )
             opnd1 = OP_IGE16;
         }
     }
+
 #if AVXSUPP 
 	if (CodeInfo->token >= VEX_START) {
 		if (vex_flags[CodeInfo->token - VEX_START] & VX_L) {

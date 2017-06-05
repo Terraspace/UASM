@@ -361,6 +361,7 @@ pick( EXPORT_MUST_BE_FAR,                "EXPORT must be FAR: %s" )
 
 /* john hankinson: moved this one here to maintain err numbers with regression tests */
 pick( UNAUTHORISED_USE_OF_EVEX_ENCODING, "EVEX encoding not enabled. Use option evex directive?" )
+pick( UNALIGNED_SIMD_USE, "Unaligned SIMD access")
 pick( MSG_ASSEMBLY_RESULTS_QUIET, "%s: %u warnings, %u errors" )
 pick( MSG_ASSEMBLY_RESULTS_QUIETER, "%s: ok" )
 pick( MSG_ASSEMBLY_FINAL, "%u passes, %u ms, %u warnings, %u errors" )
