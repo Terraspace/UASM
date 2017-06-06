@@ -3225,7 +3225,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				}
 
 				finallen = slen;
-				for (j = 0; j < slen; j++)
+				for (j = 0; j < slen-1; j++)
 				{
 					c1 = *pSrc++;
 					c2 = *(pSrc);
