@@ -4367,6 +4367,16 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 			/* move to first non-vararg parameter, if any */
 			for (curr = info->paralist; curr && curr->sym.is_vararg == TRUE; curr = curr->nextparam);
 		}
+		else if (proc->sym.langtype == LANG_SYSVCALL && info->has_vararg)
+		{
+			numParam = 0;
+			for (curr = info->paralist, numParam = 0; curr && (curr->sym.is_vararg == FALSE); curr = curr->nextparam, numParam++);
+			if (PushInvokeParam(i, tokenarray, proc, NULL, numParam, &r0flags) != ERROR) {
+				//DebugMsg(("InvokeDir: superfluous argument, i=%u\n", i));
+				//return(EmitErr(TOO_MANY_ARGUMENTS_TO_INVOKE));
+			}
+			curr = info->paralist;
+		}
 	}
 
 	/* the parameters are usually stored in "push" order.
@@ -4431,6 +4441,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 		unsigned char sGPR = proc->e.procinfo->firstGPR;
 		unsigned char sVEC = proc->e.procinfo->firstVEC;
 		proc->e.procinfo->vararg_vecs = 0;
+
 		for (numParam = 0; curr && (curr->sym.is_vararg == FALSE); curr = curr->nextparam, numParam++)
 		{
 			if (PushInvokeParam(i, tokenarray, proc, curr, numParam, &r0flags) == ERROR)
