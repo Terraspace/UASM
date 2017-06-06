@@ -3584,7 +3584,11 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 
   /* UASM 2.36 SIMD aligned check */
   /* ********************************************************* */
-  if (opndx[0].kind == EXPR_REG && (GetValueSp(opndx[0].base_reg->tokval) == OP_XMM || GetValueSp(opndx[0].base_reg->tokval) == OP_YMM))
+  if (opndx[0].kind == EXPR_REG && (GetValueSp(opndx[0].base_reg->tokval) == OP_XMM || GetValueSp(opndx[0].base_reg->tokval) == OP_YMM
+#if EVEXSUPP
+	  || GetValueSp(opndx[0].base_reg->tokval) == OP_ZMM
+#endif
+	  ))
   {
 	  if (GetValueSp(opndx[0].base_reg->tokval) == OP_XMM)
 		  alignCheck = 16;
@@ -3648,7 +3652,11 @@ ret_code ParseLine(struct asm_tok tokenarray[])
   }
   else if (opndx[0].kind == EXPR_ADDR && opndx[0].sym)
   {
-	  if (opndx[1].kind == EXPR_REG && (GetValueSp(opndx[1].base_reg->tokval) == OP_XMM || GetValueSp(opndx[1].base_reg->tokval) == OP_YMM))
+	  if (opndx[0].kind == EXPR_REG && (GetValueSp(opndx[0].base_reg->tokval) == OP_XMM || GetValueSp(opndx[0].base_reg->tokval) == OP_YMM
+#if EVEXSUPP
+		  || GetValueSp(opndx[0].base_reg->tokval) == OP_ZMM
+#endif
+		  ))
 	  {
 		  if (GetValueSp(opndx[1].base_reg->tokval) == OP_XMM)
 			  alignCheck = 16;

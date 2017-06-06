@@ -2342,7 +2342,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				psize = SizeFromRegister(opnd->base_reg->tokval);
 			else if (opnd->mem_type != MT_EMPTY)
 				psize = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
-			if (addr)
+			if (addr || opnd->instr == T_OFFSET)
 				psize = 8;
 			if (param->sym.mem_type == MT_PTR && psize != 8)
 			{
