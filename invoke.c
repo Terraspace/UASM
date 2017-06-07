@@ -2046,7 +2046,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 	{
 		EmitErr(REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
 		*regs_used = 0;
-		return;
+		return(ERROR);
 	}
 
 	/* Handle situation when parsing multiple operands through a single VARARG parameter */
@@ -3595,7 +3595,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				if (opnd.kind == EXPR_ADDR &&
 					opnd.indirect == FALSE &&
 					opnd.sym &&
-					(int)(opnd.instr) == EMPTY &&
+					opnd.instr == EMPTY &&
 					(opnd.mem_type == MT_NEAR || opnd.mem_type == MT_FAR))
 					goto push_address;
 				if (opnd.Ofssize == USE_EMPTY)
