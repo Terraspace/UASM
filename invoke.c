@@ -3595,7 +3595,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				if (opnd.kind == EXPR_ADDR &&
 					opnd.indirect == FALSE &&
 					opnd.sym &&
-					opnd.instr == EMPTY &&
+					(int)(opnd.instr) == EMPTY &&
 					(opnd.mem_type == MT_NEAR || opnd.mem_type == MT_FAR))
 					goto push_address;
 				if (opnd.Ofssize == USE_EMPTY)
