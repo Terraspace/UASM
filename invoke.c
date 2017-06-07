@@ -4319,7 +4319,8 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 
 	/* get the number of parameters */
 	for (curr = info->paralist, numParam = 0; curr; curr = curr->nextparam, numParam++)
-		;
+	{
+	}
 	DebugMsg1(("InvokeDir: numparams=%u\n", numParam));
 
 	if (proc->sym.langtype == LANG_FASTCALL) {
@@ -4372,7 +4373,9 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 		else if (proc->sym.langtype == LANG_SYSVCALL && info->has_vararg)
 		{
 			numParam = 0;
-			for (curr = info->paralist, numParam = 0; curr && (curr->sym.is_vararg == FALSE); curr = curr->nextparam, numParam++);
+			for (curr = info->paralist, numParam = 0; curr && (curr->sym.is_vararg == FALSE); curr = curr->nextparam, numParam++)
+			{
+			}
 			if (PushInvokeParam(i, tokenarray, proc, NULL, numParam, &r0flags) != ERROR) {
 				//DebugMsg(("InvokeDir: superfluous argument, i=%u\n", i));
 				//return(EmitErr(TOO_MANY_ARGUMENTS_TO_INVOKE));
