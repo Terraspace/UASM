@@ -1359,7 +1359,7 @@ static void sysv_fcend(struct dsym const *proc, int numparams, int value)
 static int sysv_reg( unsigned int reg )
 {
 	int i;
-	int base;
+	int base = -1;
 
 	if (GetValueSp(reg) & OP_XMM || GetValueSp(reg) & OP_YMM 
 #if EVEXSUPP
@@ -2423,7 +2423,8 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 
 				/* Mark register as written */
 				reg = sysv_reg(param->sym.tokval);
-				*regs_used |= (1 << reg);
+				if(reg != -1)
+					*regs_used |= (1 << reg);
 
 				return(1);
 			}
@@ -4401,8 +4402,6 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 		int	offset;
 		struct	dsym *p;
 		
-		r0flags = 0;
-
 		for (; curr; curr = curr->nextparam)
 		{
 			numParam--;
