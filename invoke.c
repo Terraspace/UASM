@@ -2044,8 +2044,6 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 	}
 	if (destroyed)
 	{
-		printf("breg: %d", opnd->base_reg->tokval);
-		printf("ireg: %d", opnd->idx_reg->tokval);
 		EmitErr(REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
 		*regs_used = 0;
 		return(ERROR);
@@ -4402,6 +4400,8 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 		int	total = 0;
 		int	offset;
 		struct	dsym *p;
+		
+		r0flags = 0;
 
 		for (; curr; curr = curr->nextparam)
 		{
