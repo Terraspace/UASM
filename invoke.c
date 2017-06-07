@@ -4318,7 +4318,8 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 #endif
 
 	/* get the number of parameters */
-	for (curr = info->paralist, numParam = 0; curr; curr = curr->nextparam, numParam++);
+	for (curr = info->paralist, numParam = 0; curr; curr = curr->nextparam, numParam++)
+		;
 	DebugMsg1(("InvokeDir: numparams=%u\n", numParam));
 
 	if (proc->sym.langtype == LANG_FASTCALL) {
