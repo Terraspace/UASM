@@ -2046,6 +2046,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 	{
 		EmitErr(REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
 		*regs_used = 0;
+		return;
 	}
 
 	/* Handle situation when parsing multiple operands through a single VARARG parameter */
