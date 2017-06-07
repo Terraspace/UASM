@@ -2044,8 +2044,8 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 	}
 	if (destroyed)
 	{
-		printf("breg: %r", opnd->base_reg->tokval);
-		printf("ireg: %r", opnd->idx_reg->tokval);
+		printf("breg: %d", opnd->base_reg->tokval);
+		printf("ireg: %d", opnd->idx_reg->tokval);
 		EmitErr(REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
 		*regs_used = 0;
 		return(ERROR);
