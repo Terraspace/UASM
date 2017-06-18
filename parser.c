@@ -305,121 +305,6 @@ ret_code MemtypeFromSize( int size, enum memtype *ptype )
     return( ERROR );
 }
 
-static bool IsScalarSimdInstr();
-
-static bool IsScalarSimdInstr(enum instr_token instr)
-{
-	bool result = FALSE;
-	switch (instr)
-	{
-	case T_ADDSS:
-	case T_ADDSD:
-	case T_CMPSD:
-	case T_CMPSS:
-	case T_COMISD:
-	case T_COMISS:
-	case T_CVTSD2SI:
-	case T_CVTSD2SS:
-	case T_CVTSI2SD:
-	case T_CVTSI2SS:
-	case T_CVTSS2SD:
-	case T_CVTSS2SI:
-	case T_CVTTSD2SI:
-	case T_CVTTSS2SI:
-	case T_DIVSD:
-	case T_DIVSS:
-	case T_INSERTPS:
-	case T_MAXSD:
-	case T_MAXSS:
-	case T_MINSD:
-	case T_MINSS:
-	case T_MOVD:
-	case T_MOVQ:
-	case T_MOVDDUP:
-	case T_MOVHPD:
-	case T_MOVHPS:
-	case T_MOVLPD:
-	case T_MOVLPS:
-	case T_MOVSD:
-	case T_MOVSS:
-	case T_MULSD:
-	case T_MULSS:
-	case T_RCPSS:
-	case T_ROUNDSS:
-	case T_ROUNDSD:
-	case T_RSQRTSS:
-	case T_SQRTSS:
-	case T_SQRTSD:
-	case T_SUBSS:
-	case T_SUBSD:
-	case T_UCOMISS:
-	case T_UCOMISD:
-	case T_PEXTRB:
-	case T_PEXTRD:
-	case T_PEXTRQ:
-	case T_VPEXTRB:
-	case T_VPEXTRD:
-	case T_VPEXTRQ:
-	case T_PEXTRW:
-	case T_VPEXTRW:
-	case T_PINSRB:
-	case T_PINSRD:
-	case T_PINSRQ:
-	case T_VPINSRB:
-	case T_VPINSRD:
-	case T_VPINSRQ:
-	case T_PINSRW:
-	case T_VPINSRW:
-	case T_VADDSS:
-	case T_VADDSD:
-	case T_VCMPSD:
-	case T_VCMPSS:
-	case T_VCOMISD:
-	case T_VCOMISS:
-	case T_VCVTSD2SI:
-	case T_VCVTSD2SS:
-	case T_VCVTSI2SD:
-	case T_VCVTSI2SS:
-	case T_VCVTSS2SD:
-	case T_VCVTSS2SI:
-	case T_VCVTTSD2SI:
-	case T_VCVTTSS2SI:
-	case T_VDIVSD:
-	case T_VDIVSS:
-	case T_VINSERTPS:
-	case T_VMAXSD:
-	case T_VMAXSS:
-	case T_VMINSD:
-	case T_VMINSS:
-	case T_VMOVD:
-	case T_VMOVQ:
-	case T_VMOVDDUP:
-	case T_VMOVHPD:
-	case T_VMOVHPS:
-	case T_VMOVLPD:
-	case T_VMOVLPS:
-	case T_VMOVSD:
-	case T_VMOVSS:
-	case T_VMULSD:
-	case T_VMULSS:
-	case T_VRCPSS:
-	case T_VROUNDSS:
-	case T_VROUNDSD:
-	case T_VRSQRTSS:
-	case T_VSQRTSS:
-	case T_VSQRTSD:
-	case T_VSUBSS:
-	case T_VSUBSD:
-	case T_VUCOMISS:
-	case T_VUCOMISD:
-		result = TRUE;
-		break;
-	default:
-		break;
-	}
-	return(result);
-}
-
 int OperandSize( enum operand_type opnd, const struct code_info *CodeInfo )
 /*************************************************************************/
 {
@@ -920,53 +805,65 @@ ret_code segm_override( const struct expr *opndx, struct code_info *CodeInfo )
  *   CodeInfo->prefix.opsiz
  *   CodeInfo->iswide
  */
-static ret_code idata_nofixup( struct code_info *CodeInfo, unsigned CurrOpnd, const struct expr *opndx )
+static ret_code idata_nofixup(struct code_info *CodeInfo, unsigned CurrOpnd, const struct expr *opndx)
 /******************************************************************************************************/
-{
-    enum operand_type op_type;
-    int_32      value;
-    int         size;
+  {
+  enum operand_type op_type;
+  int_32      value;
+  int         size;
 
-    DebugMsg1(("idata_nofixup( CurrOpnd=%u ) enter [opnd kind=%u mem_type=%Xh value=%" I64_SPEC "X]\n", CurrOpnd, opndx->kind, opndx->mem_type, opndx->value64));
-
-    /* jmp/call/jxx/loop/jcxz/jecxz? */
-    if( IS_ANY_BRANCH( CodeInfo->token ) ) {
-        return( process_branch( CodeInfo, CurrOpnd, opndx ) );
+  DebugMsg1(("idata_nofixup( CurrOpnd=%u ) enter [opnd kind=%u mem_type=%Xh value=%" I64_SPEC "X]\n", CurrOpnd, opndx->kind, opndx->mem_type, opndx->value64));
+  /* jmp/call/jxx/loop/jcxz/jecxz? */
+  if (IS_ANY_BRANCH(CodeInfo->token)) {
+    return(process_branch(CodeInfo, CurrOpnd, opndx));
     }
-    value = opndx->value;
-    CodeInfo->opnd[CurrOpnd].data32l = value;
+  value = opndx->value;
+  CodeInfo->opnd[CurrOpnd].data32l = value;
 
 #if AMD64_SUPPORT
-    /* 64bit immediates are restricted to MOV <reg>,<imm64>
-     */
-    if ( opndx->hlvalue != 0 ) { /* magnitude > 64 bits? */
-        DebugMsg1(("idata_nofixup: error, hlvalue=%" I64_SPEC "X\n", opndx->hlvalue ));
-        return( EmitConstError( opndx ) );
+  /* 64bit immediates are restricted to MOV <reg>,<imm64>
+   */
+  if (opndx->hlvalue != 0) { /* magnitude > 64 bits? */
+    DebugMsg1(("idata_nofixup: error, hlvalue=%" I64_SPEC "X\n", opndx->hlvalue));
+    return(EmitConstError(opndx));
     }
-    /* v2.03: handle QWORD type coercion here as well!
-     * This change also reveals an old problem in the expression evaluator:
-     * the mem_type field is set whenever a (simple) type token is found.
-     * It should be set ONLY when the type is used in conjuction with the
-     * PTR operator!
-     * current workaround: query the 'explicit' flag.
-     */
-    //if ( opndx->value64 <= minintvalues[0] || opndx->value64 > maxintvalues[0] ) {
-    /* use long format of MOV for 64-bit if value won't fit in a signed DWORD */
-    if ( CodeInfo->Ofssize == USE64 &&
-        CodeInfo->token == T_MOV &&
-        CurrOpnd == OPND2 &&
-        ( CodeInfo->opnd[OPND1].type & OP_R64 ) &&
-        ( opndx->value64 > H_LONG_MAX || opndx->value64 < H_LONG_MIN ||
-         (opndx->explicit && ( opndx->mem_type == MT_QWORD || opndx->mem_type == MT_SQWORD ) ) ) ) {
-        // CodeInfo->iswide = 1; /* has been set by first operand already */
-        CodeInfo->opnd[CurrOpnd].type = OP_I64;
-        CodeInfo->opnd[CurrOpnd].data32h = opndx->hvalue;
-        return( NOT_ERROR );
+  /* v2.03: handle QWORD type coercion here as well!
+   * This change also reveals an old problem in the expression evaluator:
+   * the mem_type field is set whenever a (simple) type token is found.
+   * It should be set ONLY when the type is used in conjuction with the
+   * PTR operator!
+   * current workaround: query the 'explicit' flag.
+   */
+  //if ( opndx->value64 <= minintvalues[0] || opndx->value64 > maxintvalues[0] ) {
+  /* use long format of MOV for 64-bit if value won't fit in a signed DWORD */
+  if (CodeInfo->Ofssize == USE64 &&
+      CodeInfo->token == T_MOV &&
+      CurrOpnd == OPND2 &&
+      (CodeInfo->opnd[OPND1].type & OP_R64) &&
+      (opndx->value64 > H_LONG_MAX || opndx->value64 < H_LONG_MIN ||
+      (opndx->explicit && (opndx->mem_type == MT_QWORD || opndx->mem_type == MT_SQWORD)))) {
+     /* if constant ptr use OP_IP64   v2.37 */
+    if (opndx->isptr) CodeInfo->opnd[CurrOpnd].type = OP_IP64;
+    else CodeInfo->opnd[CurrOpnd].type = OP_I64;
+    CodeInfo->opnd[CurrOpnd].data32h = opndx->hvalue;
+    return(NOT_ERROR);
     }
-    //if ( opndx->value64 <= minintvalues[0] || opndx->value64 > maxintvalues[0] ) {
-    //    DebugMsg1(("idata_nofixup: error, hvalue=%Xh\n", opndx->hvalue ));
-    //    return( EmitConstError( opndx ) );
-    //}
+  else   if (CodeInfo->Ofssize == USE64 &&
+             CodeInfo->token == T_MOV &&
+             CurrOpnd == OPND1 &&
+             (CodeInfo->opnd[OPND2].type & OP_R64) &&
+             (opndx->value64 > H_LONG_MAX || opndx->value64 < H_LONG_MIN ||
+             (opndx->explicit && (opndx->mem_type == MT_QWORD || opndx->mem_type == MT_SQWORD)))) {
+    /* if constant ptr use OP_IP64   v2.37 */
+    if (opndx->isptr) CodeInfo->opnd[CurrOpnd].type = OP_IP64;
+    else CodeInfo->opnd[CurrOpnd].type = OP_I64;
+    CodeInfo->opnd[CurrOpnd].data32h = opndx->hvalue;
+    return(NOT_ERROR);
+    }
+  //if ( opndx->value64 <= minintvalues[0] || opndx->value64 > maxintvalues[0] ) {
+  //    DebugMsg1(("idata_nofixup: error, hvalue=%Xh\n", opndx->hvalue ));
+  //    return( EmitConstError( opndx ) );
+  //}
 #endif
 
     /* v2.06: code simplified.
@@ -975,7 +872,27 @@ static ret_code idata_nofixup( struct code_info *CodeInfo, unsigned CurrOpnd, co
      * probably because of the instructions which accept both
      * signed and unsigned arguments (ADD, CMP, ... ).
      */
-
+   if (opndx->isptr){
+     if (CodeInfo->Ofssize == USE64 && CodeInfo->token == T_MOV){
+      if (opndx->value64 > H_LONG_MAX || opndx->value64 < H_LONG_MIN ||
+             (opndx->explicit && (opndx->mem_type == MT_QWORD || opndx->mem_type == MT_SQWORD))){
+        CodeInfo->opnd[CurrOpnd].type = OP_IP64;
+        CodeInfo->opnd[CurrOpnd].data32h = opndx->hvalue;
+        return(NOT_ERROR);
+        }
+      else{
+        CodeInfo->opnd[CurrOpnd].type = OP_IP32;
+        return(NOT_ERROR);
+        }
+      }
+     if (CodeInfo->token == T_INC || CodeInfo->token == T_DEC){
+       if  (opndx->value64 > H_LONG_MAX || opndx->value64 < H_LONG_MIN)
+           return( EmitError( INVALID_INSTRUCTION_OPERANDS ) );
+          CodeInfo->mem_type = opndx->mem_type;
+          CodeInfo->opnd[CurrOpnd].type = OP_IP32;
+       return(NOT_ERROR);
+       }
+    }
     if ( opndx->explicit ) {
         /* size coercion for immediate value */
         CodeInfo->const_size_fixed = TRUE;
@@ -987,6 +904,7 @@ static ret_code idata_nofixup( struct code_info *CodeInfo, unsigned CurrOpnd, co
         case 1: op_type = OP_I8;  break;
         case 2: op_type = OP_I16; break;
         case 4: op_type = OP_I32; break;
+        case 8: op_type = OP_IP32; break;
         default:
             DebugMsg1(("idata_nofixup: invalid size %d for immediate operand\n", size ));
             return( EmitError( INVALID_INSTRUCTION_OPERANDS ) );
@@ -1002,9 +920,13 @@ static ret_code idata_nofixup( struct code_info *CodeInfo, unsigned CurrOpnd, co
         //else if( value <= USHRT_MAX && value >= - (USHRT_MAX+1) )
         /* v2.07: UasmR needs 0L before the - op */
         //else if( value <= USHRT_MAX && value >= - USHRT_MAX )
+
         else if( value <= USHRT_MAX && value >= 0L - USHRT_MAX )
             op_type = OP_I16;
         else {
+          if (opndx->isptr)
+            op_type = OP_IP32;
+          else
             op_type = OP_I32;
         }
     }
@@ -2489,6 +2411,12 @@ static ret_code check_size( struct code_info *CodeInfo, const struct expr opndx[
     ret_code    rc = NOT_ERROR;
     int         op1_size;
     int         op2_size;
+    if (CodeInfo->token == T_MOV){
+      //__debugbreak();
+      if (op1 == OP_I64) {
+          CodeInfo->opnd[OPND1].data64 = opndx->value64;
+        }     
+      }
     //int         op_size = 0;
     DebugMsg1(("check_size enter, optype1=%" I32_SPEC "X, optype2=%" I32_SPEC "X\n", op1, op2 ));
     if (CodeInfo->token >= T_KADDB && CodeInfo->token <= T_KUNPCKDQ){
@@ -2503,7 +2431,6 @@ static ret_code check_size( struct code_info *CodeInfo, const struct expr opndx[
       op2_size = CodeInfo->pinstr->prefix;
       goto def_check;
     }
-
     switch( CodeInfo->token ) {
     case T_IN:
         if( op2 == OP_DX ) {
@@ -2537,6 +2464,16 @@ static ret_code check_size( struct code_info *CodeInfo, const struct expr opndx[
             }
         }
         break;
+    case T_ADD:
+    case T_SUB:
+      if (opndx->isptr){
+        if (opndx->hvalue)
+          EmitErr( MAGNITUDE_TOO_LARGE_FOR_SPECIFIED_SIZE );
+        if (CodeInfo->opnd[OPND1].type == OP_IP32 || CodeInfo->opnd[OPND1].type == OP_I32) 
+          CodeInfo->opnd[OPND1].type = OP_IP32;
+        else CodeInfo->opnd[OPND2].type = OP_IP32;
+        }
+      break;
     case T_LEA:
 #if 0
         /* first op must be 16/32 register, but this condition is checked
@@ -2966,8 +2903,45 @@ static ret_code check_size( struct code_info *CodeInfo, const struct expr opndx[
                     }
                   }
                 else{
-                 EmitErr(OPERANDS_MUST_BE_THE_SAME_SIZE, op1_size, op2_size);
-                 rc = ERROR;
+                  //__debugbreak();
+                  /* this is a fix for IP-addressing, preventing to report size error, v2.37*/
+                  /*=================================================================================*/
+                  if ((CodeInfo->token == T_MOV) && (CodeInfo->opnd[OPND1].type == OP_IP64 || CodeInfo->opnd[OPND2].type == OP_IP64))
+                    ;
+                    //{
+                    //if (CodeInfo->opnd[OPND1].type == OP_IP64 && (CodeInfo->opnd[OPND2].type == OP_EAX ||
+                    //    CodeInfo->opnd[OPND2].type == OP_AX || CodeInfo->opnd[OPND2].type == OP_AL ||
+                    //    CodeInfo->opnd[OPND2].type == OP_R32 || CodeInfo->opnd[OPND2].type == OP_R16 ||
+                    //    CodeInfo->opnd[OPND2].type == OP_R8))
+                    //    ;
+                    //else if (CodeInfo->opnd[OPND2].type == OP_IP64 && (CodeInfo->opnd[OPND1].type == OP_EAX ||
+                    //    CodeInfo->opnd[OPND1].type == OP_AX || CodeInfo->opnd[OPND1].type == OP_AL ||
+                    //    CodeInfo->opnd[OPND1].type == OP_R32 || CodeInfo->opnd[OPND1].type == OP_R16 ||
+                    //    CodeInfo->opnd[OPND1].type == OP_R8))
+                    //    ;
+                    //}
+                  else if ((CodeInfo->token == T_MOV) && (CodeInfo->opnd[OPND1].type == OP_IP32 || CodeInfo->opnd[OPND2].type == OP_IP32))
+                    ;//{
+                    //if (CodeInfo->opnd[OPND1].type == OP_IP32 && (CodeInfo->opnd[OPND2].type == OP_EAX ||
+                    //  CodeInfo->opnd[OPND2].type == OP_AX || CodeInfo->opnd[OPND2].type == OP_AL ||
+                    //  CodeInfo->opnd[OPND2].type == OP_R32 || CodeInfo->opnd[OPND2].type == OP_R16 ||
+                    //  CodeInfo->opnd[OPND2].type == OP_R8))
+                    //  ;
+                    //else if (CodeInfo->opnd[OPND2].type == OP_IP32 && (CodeInfo->opnd[OPND1].type == OP_EAX ||
+                    //  CodeInfo->opnd[OPND1].type == OP_AX || CodeInfo->opnd[OPND1].type == OP_AL ||
+                    //  CodeInfo->opnd[OPND1].type == OP_R32 || CodeInfo->opnd[OPND1].type == OP_R16 ||
+                    //  CodeInfo->opnd[OPND1].type == OP_R8))
+                    //  ;
+                    //}
+                  else if ((CodeInfo->token == T_ADD || CodeInfo->token == T_SUB)  && opndx->isptr){
+                    ;//if (CodeInfo->opnd[OPND1].type == OP_I32) CodeInfo->opnd[OPND1].type = OP_IP32;
+                    //else if (CodeInfo->opnd[OPND2].type == OP_I32) CodeInfo->opnd[OPND2].type = OP_IP32;
+                    }
+                  /*=================================================================================*/
+                  else{
+                     EmitErr(OPERANDS_MUST_BE_THE_SAME_SIZE, op1_size, op2_size);
+                     rc = ERROR;
+                    }
                   }
               }
             }
@@ -3207,7 +3181,8 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 	  FStoreLine(1);
 	  return(NOT_ERROR);
   }
-
+  //if (tokenarray[0].tokval == T_MOV)
+  //  __debugbreak();
   /* Does line start with a code label? */
   if (tokenarray[0].token == T_ID && (tokenarray[1].token == T_COLON || tokenarray[1].token == T_DBL_COLON)) {
     i = 2;
@@ -3523,9 +3498,35 @@ ret_code ParseLine(struct asm_tok tokenarray[])
   for (j = 0; j < sizeof(opndx) / sizeof(opndx[0]) && tokenarray[i].token != T_FINAL; j++) {
     if (j) 
 	{
+		
 		if (tokenarray[i].token != T_COMMA)
 			break;
+
+		/* inject xmmword ptr to relevant sse instructions */
+		/*if (Options.masm_compat_gencode && tokenarray[i].token == T_COMMA && (CodeInfo.token == T_SUBPD) ||(CodeInfo.token == T_SUBPS) || (CodeInfo.token == T_ADDPS) ||  (CodeInfo.token == T_ADDPD) || (CodeInfo.token == T_MULPD) || (CodeInfo.token == T_MULPS) || (CodeInfo.token == T_ANDPD) || (CodeInfo.token == T_ANDPS) || (CodeInfo.token == T_MOVAPD) || (CodeInfo.token == T_MOVAPS) || (CodeInfo.token == T_MOVUPS))
+		{
+
+			xmmOver0.tokpos = tokenarray[i].tokpos;
+			xmmOver1.tokpos = tokenarray[i].tokpos;
+			k = 0;
+			n = ModuleInfo.token_count+1;
+			for (k = 0; k < n-1; k++)
+			{
+				if (tokenarray[k].tokval == T_XMMWORD && tokenarray[k + 1].tokval == T_PTR)
+					goto skipxmmsub;
+			}
+			for (k = n-1; k >= i+1; k--)
+			{
+				tokenarray[k+2] = tokenarray[k];
+			}
+			tokenarray[i + 1] = xmmOver0;
+			tokenarray[i + 2] = xmmOver1;
+			ModuleInfo.token_count += 2;
+		}
+	skipxmmsub:*/
 		i++;
+
+
     }
 
     DebugMsg1(("ParseLine(%s): calling EvalOperand, i=%u\n", instr, i));
@@ -3583,119 +3584,24 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 
 
   /* UASM 2.36 SIMD aligned check */
-  /* ********************************************************* */
-  if (opndx[0].kind == EXPR_REG && (GetValueSp(opndx[0].base_reg->tokval) == OP_XMM || GetValueSp(opndx[0].base_reg->tokval) == OP_YMM
-#if EVEXSUPP
-	  || GetValueSp(opndx[0].base_reg->tokval) == OP_ZMM
-#endif
-	  ))
+  if (opndx[0].kind == EXPR_REG && (GetValueSp(opndx[0].base_reg->tokval) == OP_XMM || GetValueSp(opndx[0].base_reg->tokval) == OP_YMM))
   {
 	  if (GetValueSp(opndx[0].base_reg->tokval) == OP_XMM)
 		  alignCheck = 16;
 	  else if (GetValueSp(opndx[0].base_reg->tokval) == OP_YMM)
 		  alignCheck = 32;
-#if EVEXSUPP
-	  else if (GetValueSp(opndx[0].base_reg->tokval) == OP_ZMM)
-		  alignCheck = 64;
-#endif
 
 	  if (opndx[1].kind == EXPR_ADDR && opndx[1].sym)
 	  {
-
-		  /* Check the symbol size, if it's compatible force xmmword/ymmword type */
-		  if (opndx[1].sym->total_size == alignCheck && !IsScalarSimdInstr(CodeInfo.token) )
-		  {
-			  if (alignCheck == 16)
-			  {
-				  opndx[1].mem_type = MT_OWORD;
-			  }
-			  else if (alignCheck == 32)
-			  {
-				  opndx[1].mem_type = MT_YMMWORD;
-			  }
-#if EVEXSUPP
-			  else
-			  {
-				  opndx[1].mem_type = MT_ZMMWORD;
-			  }
-#endif
-		  }
-
 		  if (CodeInfo.token == T_MOVAPS || CodeInfo.token == T_VMOVAPS || CodeInfo.token == T_MOVDQA || 
-			  CodeInfo.token == T_VMOVDQA || CodeInfo.token == T_MOVAPD || CodeInfo.token == T_VMOVAPD || CodeInfo.token == T_MOVNTDQA || CodeInfo.token == T_VMOVNTDQA)
+			  CodeInfo.token == T_VMOVDQA || CodeInfo.token == T_MOVAPD || CodeInfo.token == T_VMOVAPD)
 		  {
-			  if (opndx[1].sym->state != SYM_STACK && (opndx[1].sym->offset % alignCheck != 0) && Parse_Pass == PASS_2)
-				  EmitWarn(2, UNALIGNED_SIMD_USE);
-		  }
-	  }
-	  else if (opndx[2].kind == EXPR_ADDR && opndx[2].sym)
-	  {
-		  /* Check the symbol size, if it's compatible force xmmword/ymmword type */
-		  if (opndx[2].sym->total_size == alignCheck && !IsScalarSimdInstr(CodeInfo.token))
-		  {
-			  if (alignCheck == 16)
-			  {
-				  opndx[2].mem_type = MT_OWORD;
-			  }
-			  else if (alignCheck == 32)
-			  {
-				  opndx[2].mem_type = MT_YMMWORD;
-			  }
-#if EVEXSUPP
-			  else
-			  {
-				  opndx[2].mem_type = MT_ZMMWORD;
-			  }
-#endif
-		  }
-	  }
-  }
-  else if (opndx[0].kind == EXPR_ADDR && opndx[0].sym)
-  {
-	  if (opndx[1].kind == EXPR_REG && (GetValueSp(opndx[1].base_reg->tokval) == OP_XMM || GetValueSp(opndx[1].base_reg->tokval) == OP_YMM
-#if EVEXSUPP
-		  || GetValueSp(opndx[1].base_reg->tokval) == OP_ZMM
-#endif
-		  ))
-	  {
-		  if (GetValueSp(opndx[1].base_reg->tokval) == OP_XMM)
-			  alignCheck = 16;
-		  else if (GetValueSp(opndx[1].base_reg->tokval) == OP_YMM)
-			  alignCheck = 32;
-#if EVEXSUPP
-		  else if (GetValueSp(opndx[1].base_reg->tokval) == OP_ZMM)
-			  alignCheck = 64;
-#endif
-		  
-		  /* Check the symbol size, if it's compatible force xmmword/ymmword type */
-		  if (opndx[0].sym->total_size == alignCheck && !IsScalarSimdInstr(CodeInfo.token))
-		  {
-			  if (alignCheck == 16)
-			  {
-				  opndx[0].mem_type = MT_OWORD;
-			  }
-			  else if (alignCheck == 32)
-			  {
-				  opndx[0].mem_type = MT_YMMWORD;
-			  }
-#if EVEXSUPP
-			  else
-			  {
-				  opndx[0].mem_type = MT_ZMMWORD;
-			  }
-#endif
-		  }
-
-		  if (CodeInfo.token == T_MOVAPS || CodeInfo.token == T_VMOVAPS || CodeInfo.token == T_MOVDQA ||
-			  CodeInfo.token == T_VMOVDQA || CodeInfo.token == T_MOVAPD || CodeInfo.token == T_VMOVAPD || CodeInfo.token == T_MOVNTDQA || CodeInfo.token == T_VMOVNTDQA)
-		  {
-			  if (opndx[0].sym->state != SYM_STACK && (opndx[0].sym->offset % alignCheck != 0) && Parse_Pass == PASS_2)
+			  if (opndx[1].sym->offset % alignCheck != 0)
 				  EmitWarn(2, UNALIGNED_SIMD_USE);
 		  }
 	  }
   }
-
-  
+ 
 for (CurrOpnd = 0; CurrOpnd < j && CurrOpnd < MAX_OPND; CurrOpnd++) {
 
     Frame_Type = FRAME_NONE;
@@ -4016,6 +3922,10 @@ for (CurrOpnd = 0; CurrOpnd < j && CurrOpnd < MAX_OPND; CurrOpnd++) {
     }
 #endif
   }
+  if (opndx->isptr){
+    if (CodeInfo.opnd[OPND1].type == OP_I32) CodeInfo.opnd[OPND1].type = OP_IP32;
+    if (CodeInfo.opnd[OPND2].type == OP_IP32) CodeInfo.opnd[OPND2].type = OP_IP32;
+    }
   /* now call the code generator */
   temp = codegen( &CodeInfo, oldofs );
   /* now reset EVEX maskflags for the next line */

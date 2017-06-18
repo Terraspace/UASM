@@ -91,8 +91,10 @@ enum operand_type {
     OP_I8       = 0x00020000,
     OP_I16      = 0x00040000,
     OP_I32      = 0x00080000,
+    OP_IP32     = 0x00080001,
 #if AMD64_SUPPORT
     OP_I64      = 0x00100000,
+    OP_IP64     = 0x00200001,   /* for IP addreassing v2.37 */
 #endif
     OP_I48      = 0x00200000, /* used for immediate FAR call/jmp */
 

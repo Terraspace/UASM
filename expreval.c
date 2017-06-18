@@ -2623,7 +2623,6 @@ static ret_code calculate( struct expr *opnd1, struct expr *opnd2, const struct 
     int_32              temp;
     struct asym         *sym;
     char                *name;
-
     /* avoid to use the <string> member once it's part of an expression!
      * the <value> member is the one to be used then.
      * test case: db "a"+80h
@@ -2664,7 +2663,12 @@ static ret_code calculate( struct expr *opnd1, struct expr *opnd2, const struct 
             DebugMsg1(("%u calculate(%s): single item\n", evallvl, oper->string_ptr ));
             TokenAssign( opnd1, opnd2 );
             opnd1->type = opnd2->type;
-            if ( opnd1->is_type && opnd1->kind == EXPR_CONST )
+            opnd1->isptr = FALSE;
+            if (opnd1->kind == EXPR_CONST) 
+              opnd1->isptr = TRUE;
+            else if (opnd2->kind == EXPR_CONST) 
+              opnd2->isptr = TRUE;
+            else if ( opnd1->is_type && opnd1->kind == EXPR_CONST )
                 opnd1->is_type = 0;
             break;
         }

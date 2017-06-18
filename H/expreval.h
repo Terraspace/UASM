@@ -108,10 +108,9 @@ struct expr {
     enum memtype    mem_type;       /* memory type if expr is a memory ref. */
     uint_8          scale;          /* EXPR_ADDR: scaling factor 1, 2, 4, or 8 - 386 code only */
     uint_8          Ofssize;        /* 16,32,64 bit if MT_NEAR, MT_FAR */
+    uint_8          isptr;          /* for constant ptr */
 #if AVXSUPP
     uint_8          saeflags;        /* evex: {sae},{rn-sae},{rd-sae},{ru-sae} or {rz-sae}  */
-//    uint_8          kzflags;        /* evex: {k1}{z}, or {k1} */
-  //  uint_8          broadflags;      /* evex: {1to2}, {1to4},{1to8},{1to16}  */
 #endif
     union {
         uint_8      flags1;

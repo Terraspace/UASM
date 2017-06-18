@@ -172,6 +172,7 @@ static void output_opc(struct code_info *CodeInfo)
   uint_8           fpfix = FALSE;
   int              rn;
   unsigned char    c;
+  unsigned char    uopcode;
   int_8            comprdsp = 0;
 
   DebugMsg1(("output_opc enter, ins.opc/rm=%X/%X, byte1_info=%X CodeInfo->rm=%X opsiz=%u\n", ins->opcode, ins->rm_byte, ins->byte1_info, CodeInfo->rm_byte, CodeInfo->prefix.opsiz));
@@ -405,7 +406,10 @@ static void output_opc(struct code_info *CodeInfo)
    */
   if (CodeInfo->prefix.adrsiz == TRUE && (CodeInfo->token < T_VPGATHERDD || CodeInfo->token > T_VSCATTERQPD)&&
       CodeInfo->token != T_VCVTPH2PS && CodeInfo->token != T_VCVTPS2PD) {
-    OutputCodeByte(ADRSIZ);
+    if (CodeInfo->basereg == 0x10) /* RIP used for relative addressing v2.36 */
+       ;/* don't output 0x67 */
+    else
+      OutputCodeByte(ADRSIZ);
 #ifdef DEBUG_OUT
     if (fpfix)
       DebugMsg(("output_opc: ERROR: FP emulation byte sequence destroyed by 32-bit address prefix!\n"));
@@ -421,7 +425,7 @@ static void output_opc(struct code_info *CodeInfo)
 #endif
     OutputCodeByte(OPSIZ);
   }
-    // if(CodeInfo->token == T_VMOVQ)
+    // if(CodeInfo->token == T_ADD)
     //__debugbreak();
 
   /*
@@ -1722,7 +1726,115 @@ static void output_opc(struct code_info *CodeInfo)
 #if AVXSUPP
     }
 #endif
-
+    /* this is an implementation of IP-addressing v2.37 */
+    /*=====================================================================================*/
+    uopcode = ins->opcode;
+    if ((uopcode == 0xA3 || uopcode == 0xA2) && (CodeInfo->opnd[OPND1].type == OP_IP32)){
+      if (uopcode == 0xA3) OutputCodeByte(0x89);
+      else OutputCodeByte(0x88);
+      tmp = CodeInfo->reg2;
+      tmp = tmp << 3;
+      tmp &= NOT_BIT_67;
+      tmp |= 4;
+      OutputCodeByte(tmp);
+      OutputCodeByte(0x25);
+      return;
+      }
+    if ((uopcode == 0xB8 || uopcode == 0xB0 || uopcode == 0xA1) && (CodeInfo->opnd[OPND2].type == OP_IP32)){
+      if (uopcode == 0xB8 || uopcode == 0xA1) OutputCodeByte(0x8B);   //48 8B 04 25 0D 10 C2 00
+      else OutputCodeByte(0x8A);
+      tmp = CodeInfo->reg1;
+      tmp = tmp << 3;
+      tmp &= NOT_BIT_67;
+      tmp |= 4;
+      OutputCodeByte(tmp);
+      OutputCodeByte(0x25);
+      return;
+      }
+    if ((CodeInfo->token == T_ADD) && (CodeInfo->opnd[OPND1].type == OP_IP32)){
+      uopcode -= 0x01;           // RAX = 0x02
+      if ((CodeInfo->opnd[OPND2].type & 0x0F) == 1 || (CodeInfo->opnd[OPND2].type & 0x0F) == 1)
+        uopcode -= 0x01; 
+      OutputCodeByte(uopcode);
+      tmp = CodeInfo->reg2;
+      tmp = tmp << 3;
+      tmp &= NOT_BIT_67;
+      tmp |= 4;
+      OutputCodeByte(tmp);
+      OutputCodeByte(0x25);
+      return;
+      }
+    if ((CodeInfo->token == T_ADD) && (CodeInfo->opnd[OPND2].type == OP_IP32)){
+      uopcode = 0x03;           // RAX = 0x02
+      if ((CodeInfo->opnd[OPND1].type & 0x0F) == 1 || (CodeInfo->opnd[OPND1].type & 0x0F) == 1)
+        uopcode -= 0x01; 
+      OutputCodeByte(uopcode);
+      tmp = CodeInfo->reg1;
+      tmp = tmp << 3;
+      tmp &= NOT_BIT_67;
+      tmp |= 4;
+      OutputCodeByte(tmp);
+      OutputCodeByte(0x25);
+      return;
+      }
+    if ((CodeInfo->token == T_SUB) && (CodeInfo->opnd[OPND1].type == OP_IP32)){
+      uopcode = 0x29;           // RAX = 0x02
+      if ((CodeInfo->opnd[OPND2].type & 0x0F) == 1 || (CodeInfo->opnd[OPND2].type & 0x0F) == 1)
+        uopcode -= 0x01; 
+      OutputCodeByte(uopcode);
+      tmp = CodeInfo->reg2;
+      tmp = tmp << 3;
+      tmp &= NOT_BIT_67;
+      tmp |= 4;
+      OutputCodeByte(tmp);
+      OutputCodeByte(0x25);
+      return;
+      }
+    if ((CodeInfo->token == T_SUB) && (CodeInfo->opnd[OPND2].type == OP_IP32)){
+      uopcode = 0x2B;           // RAX = 0x02
+      if ((CodeInfo->opnd[OPND1].type & 0x0F) == 1 || (CodeInfo->opnd[OPND1].type & 0x0F) == 1)
+        uopcode -= 0x01; 
+      OutputCodeByte(uopcode);
+      tmp = CodeInfo->reg1;
+      tmp = tmp << 3;
+      tmp &= NOT_BIT_67;
+      tmp |= 4;
+      OutputCodeByte(tmp);
+      OutputCodeByte(0x25);
+      return;
+      }
+    if ((CodeInfo->token == T_INC || CodeInfo->token == T_DEC) && (CodeInfo->opnd[OPND1].type == OP_IP32)){
+      uopcode = 0xFF;
+      if (CodeInfo->mem_type == MT_EMPTY){
+         DebugMsg1(("memory_operand, INC/DEC: CodeInfo->memtype=empty, instruction operand must have size\n" ));
+         EmitError( INSTRUCTION_OPERAND_MUST_HAVE_SIZE ) ;
+         return;
+        }
+      else if (CodeInfo->mem_type == MT_QWORD)
+        OutputCodeByte(0x48);
+      else if (CodeInfo->mem_type == MT_WORD)
+        OutputCodeByte(0x66);
+      else if (CodeInfo->mem_type == MT_BYTE)
+        --uopcode;
+      OutputCodeByte(uopcode);
+      if (CodeInfo->token == T_DEC)
+        tmp = 0x0C;
+      else
+       tmp = 4;
+      OutputCodeByte(tmp);
+      OutputCodeByte(0x25);
+      return;
+      }
+    /* for 64 bit IP-addresses only RAX register aloud to use otherwise report an error  */
+    if ((uopcode == 0xA3 || uopcode == 0xA2) && (CodeInfo->opnd[OPND1].type == OP_IP64)){
+        if (CodeInfo->reg2 & 0x0F)
+           EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
+      }
+    if ((uopcode == 0xA1 || uopcode == 0xA0) && (CodeInfo->opnd[OPND2].type == OP_IP64)){
+        if (CodeInfo->reg1 & 0x0F)
+           EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
+      }
+    /* ======================================================================================================*/
     switch( ins->rm_info) {
     case R_in_OP:
         OutputCodeByte( ins->opcode | ( CodeInfo->rm_byte & NOT_BIT_67 ) );
@@ -1776,9 +1888,9 @@ static void output_opc(struct code_info *CodeInfo)
                 }
                /* UASM 2.35 fix vmovq encoding for xmm, r64 */
 			   if(CodeInfo->token == T_VMOVQ && CodeInfo->opnd[OPND1].type == OP_XMM && CodeInfo->opnd[OPND2].type == OP_R64)
-				   OutputCodeByte(ins->opcode-0x10 | CodeInfo->iswide | CodeInfo->opc_or);
-			   else
-					OutputCodeByte(ins->opcode | CodeInfo->iswide | CodeInfo->opc_or);
+				   OutputCodeByte(uopcode-0x10 | CodeInfo->iswide | CodeInfo->opc_or);
+               else
+					OutputCodeByte( uopcode | CodeInfo->iswide | CodeInfo->opc_or);
              }
         }
 
@@ -1942,6 +2054,14 @@ static void output_opc(struct code_info *CodeInfo)
           if (CodeInfo->basereg != 0xff)
           tmp &= ~0xC0; // we need the scale field to be 00 for VSIB without base register EG: [XMM4+1*8]
         }
+        if  (uopcode == 0xA0 || uopcode == 0xA1 || uopcode == 0xA2 || uopcode == 0xA3)
+             //CodeInfo->opnd[OPND1].type == OP_IP32 || CodeInfo->opnd[OPND2].type == OP_IP32)
+             ;
+        else if (uopcode == 0x8B || uopcode == 0x89 || uopcode == 0x88 || uopcode == 0x8A ){
+          tmp = 0x04;
+          OutputCodeByte(tmp);
+         }
+        else
           OutputCodeByte( tmp );
         if( ( CodeInfo->Ofssize == USE16 && CodeInfo->prefix.adrsiz == 0 ) ||
            ( CodeInfo->Ofssize == USE32 && CodeInfo->prefix.adrsiz == 1 ) )
@@ -1951,8 +2071,7 @@ static void output_opc(struct code_info *CodeInfo)
         case 0x04: /* mod = 00, r/m = 100, s-i-b is present */
         case 0x44: /* mod = 01, r/m = 100, s-i-b is present */
         case 0x84: /* mod = 10, r/m = 100, s-i-b is present */
-            /* emit SIB byte; bits 7-6 = Scale, bits 5-3 = Index, bits 2-0 = Base */
-          OutputCodeByte( CodeInfo->sib );
+        OutputCodeByte( CodeInfo->sib );
         }
     }
     return;
@@ -2014,20 +2133,29 @@ static void output_data(const struct code_info *CodeInfo, enum operand_type dete
 #endif
 
     /* determine size */
-
-    if( determinant & OP_I8 ) {
-        size = 1;
-    } else if( determinant & OP_I16 ) {
-        size = 2;
-    } else if( determinant & OP_I32 ) {
+    if (CodeInfo->token == T_INC || CodeInfo->token == T_DEC ) determinant = OP_I32;
+    //if (CodeInfo->token == T_MOV){
+    //  if (determinant == OP_I32 )      //&& (CodeInfo->opnd[OPND2].type == OP_R64 || CodeInfo->opnd[OPND2].type == OP_RAX)
+    //  determinant = OP_I64;
+    //  }
+     // __debugbreak();
+    if( determinant == OP_IP64 )
+      size = 8;
+     else if( determinant & OP_IP32 ) 
         size = 4;
-    } else if( determinant & OP_I48 ) {
+    else if( determinant & OP_I8 ) 
+        size = 1;
+     else if( determinant & OP_I16 ) 
+        size = 2;
+     else if( determinant & OP_I32 ) 
+        size = 4;
+     else if( determinant & OP_I48 ) 
         size = 6;
 #if AMD64_SUPPORT
-    } else if( determinant & OP_I64 ) {
+     else if( determinant & OP_I64 ) 
         size = 8;
 #endif
-    } else if( determinant & OP_M_ANY ) {
+     else if( determinant & OP_M_ANY ) {
         /* switch on the mode ( the leftmost 2 bits ) */
         switch( CodeInfo->rm_byte & BIT_67 ) {
         case MOD_01:  /* 8-bit displacement */
@@ -2279,10 +2407,15 @@ static ret_code match_phase_3( struct code_info *CodeInfo, enum operand_type opn
         else if ( CodeInfo->opnd[OPND1].type == OP_M ) {
             if ( opnd2 & OP_YMM || opnd2 & OP_ZMM)
                 opnd2 |= OP_XMM;
-        }
-#endif
+        }                       
+#endif                          
     }
 #endif
+    /* force data to M128 to avoid using XMMWORD PTR, v2.36 */
+    if (CodeInfo->token == T_ADDPS || CodeInfo->token == T_MULPS || CodeInfo->token == T_MOVAPS){
+       if ( opnd2 < OP_M128)
+            opnd2 |= OP_M128;
+      }
     do  {
         tbl_op2 = opnd_clstab[CodeInfo->pinstr->opclsidx].opnd_type[OPND2];
         DebugMsg1(("match_phase_3: instr table op2=%" I32_SPEC "X\n", tbl_op2 ));
@@ -2422,6 +2555,12 @@ static ret_code match_phase_3( struct code_info *CodeInfo, enum operand_type opn
             }
             break;
         default:
+            //if (opnd2 == OP_I64 && tbl_op2 == OP_IP64){
+            //  __debugbreak();
+            //    CodeInfo->pinstr++;
+            //    goto output;
+            //    //tbl_op2 = opnd_clstab[CodeInfo->pinstr->opclsidx].opnd_type[OPND2];
+            //  }
             /* v2.06: condition made more restrictive */
             if (CodeInfo->token < T_VBROADCASTSS)(CodeInfo->evex_flag = 0);
             //if( ( opnd2 & tbl_op2 ) || (CodeInfo->mem_type == MT_EMPTY && (opnd2 & OP_M_ANY) && (tbl_op2 & OP_M_ANY) )) {
@@ -2429,6 +2568,7 @@ static ret_code match_phase_3( struct code_info *CodeInfo, enum operand_type opn
                 if( check_3rd_operand( CodeInfo ) == ERROR )
                     break;
                 DebugMsg1(("match_phase_3: matched opnd2\n" ));
+    output:
                 output_opc( CodeInfo );
                 if ( opnd1 & (OP_I_ANY | OP_M_ANY ) )
                     output_data( CodeInfo, opnd1, OPND1 );
@@ -2520,13 +2660,17 @@ ret_code codegen( struct code_info *CodeInfo, uint_32 oldofs )
 {
     ret_code           retcode = ERROR;
     enum operand_type  opnd1;
+    enum operand_type  opnd2;
     enum operand_type  tbl_op1;
+    enum operand_type  tbl_op2;
     /* privileged instructions ok? */
+
     if( ( CodeInfo->pinstr->cpu & P_PM ) > ( ModuleInfo.curr_cpu & P_PM ) ) {
         EmitError( INSTRUCTION_OR_REGISTER_NOT_ACCEPTED_IN_CURRENT_CPU_MODE );
         return( ERROR );
     }
     opnd1 = CodeInfo->opnd[OPND1].type;
+
     /* if first operand is immediate data, set compatible flags */
     if( opnd1 & OP_I ) {
         if( opnd1 == OP_I8 ) {
@@ -2535,6 +2679,8 @@ ret_code codegen( struct code_info *CodeInfo, uint_32 oldofs )
             opnd1 = OP_IGE16;
         }
     }
+ //   if (CodeInfo->token == T_ADD)
+//      __debugbreak();
 
 #if AVXSUPP 
 	if (CodeInfo->token >= VEX_START) {
@@ -2575,7 +2721,17 @@ ret_code codegen( struct code_info *CodeInfo, uint_32 oldofs )
     /* scan the instruction table for a matching first operand */
     do  {
         tbl_op1 = opnd_clstab[CodeInfo->pinstr->opclsidx].opnd_type[OPND1];
-
+        //tbl_op2 = opnd_clstab[CodeInfo->pinstr->opclsidx].opnd_type[OPND2];
+        //if (opnd1 == OP_IP32 ){
+        //  if (opnd2 == tbl_op2){
+        //    retcode = check_operand_2( CodeInfo, tbl_op2 );
+        //    if( retcode == NOT_ERROR) {
+        //        if ( CurrFile[LST] )
+        //            LstWrite( LSTTYPE_CODE, oldofs, NULL );
+        //        return( NOT_ERROR );
+        //    }
+        //  }
+          //__debugbreak();
         //DebugMsg1(("codegen: table.op1=%X\n", tbl_op1 ));
         /* v2.06: simplified */
         if ( tbl_op1 == OP_NONE && opnd1 == OP_NONE ) {
@@ -2587,6 +2743,7 @@ ret_code codegen( struct code_info *CodeInfo, uint_32 oldofs )
             /* for immediate operands, the idata type has sometimes
              * to be modified in opnd_type[OPND1], to make output_data()
              * emit the correct number of bytes. */
+
             switch( tbl_op1 ) {
             case OP_I32: /* CALL, JMP, PUSHD */
             case OP_I16: /* CALL, JMP, RETx, ENTER, PUSHW */
@@ -2614,7 +2771,6 @@ ret_code codegen( struct code_info *CodeInfo, uint_32 oldofs )
         }
         CodeInfo->pinstr++;
     } while ( CodeInfo->pinstr->first == FALSE );
-
     DebugMsg(("codegen: no matching format found\n"));
     EmitError( INVALID_INSTRUCTION_OPERANDS );
     return( ERROR );

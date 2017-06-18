@@ -111,6 +111,15 @@ insx(LOOPNZW,loopnzw,           OpCls( I8,   NONE,  NONE  ), F_16A,  0,  no_RM, 
 /* arith instructions. Masm v6 encodes operand types R,R differently
  * (direction bit is NOT set). Uasm does like Masm v8+.
  */
+ //48 01 04 25 0D 10 C2 00 add  [0C2100Dh],rax  
+ //01 04 25 0D 10 C2 00    add  [0C2100Dh],eax  
+ //66 01 04 25 0D 10 C2 00 add  [0C2100Dh],ax  
+ //00 04 25 0D 10 C2 00    add  [0C2100Dh],al  
+ //48 29 04 25 0D 10 C2 00 sub  [0C2100Dh],rax  
+ //29 04 25 0D 10 C2 00    sub  [0C2100Dh],eax  
+ //66 29 04 25 0D 10 C2 00 sub  [0C2100Dh],ax  
+ //28 04 25 0D 10 C2 00    sub  [0C2100Dh],al  
+
 
 #define ari( name, namelc, code, lock )      \
 ins (name, namelc,              OpCls( RGT8, I8,    NONE  ), 0,      0,  no_WDS, 0x83,     code,       P_86,        0) \
@@ -325,10 +334,12 @@ ins (INC, inc,                  OpCls( RGT8,     NONE,       NONE ), 0,      0, 
 insn(INC, 1,                    OpCls( R,        NONE,       NONE ), 0,      0,  0,      0xFE,     0x00,       P_86,        0)
 insn(INC, 2,                    OpCls( M08,      NONE,       NONE ), 0,      0,  0,      0xFE,     0x00,       P_86,        AP_LOCK)
 insn(INC, 3,                    OpCls( MGT8,     NONE,       NONE ), 0,      0,  0,      0xFF,     0x00,       P_86,        AP_LOCK)
+insn(INC, 4,                    OpCls( IP32,     NONE,       NONE ), 0,      0,  0,      0xFF,     0x04,       P_86,        AP_LOCK)
 ins (DEC, dec,                  OpCls( RGT8,     NONE,       NONE ), 0,      0,  R_in_OP,0x48,     0x00,       P_86,        0)
 insn(DEC, 1,                    OpCls( R,        NONE,       NONE ), 0,      0,  0,      0xFE,     0x08,       P_86,        0)
 insn(DEC, 2,                    OpCls( M08,      NONE,       NONE ), 0,      0,  0,      0xFE,     0x08,       P_86,        AP_LOCK)
 insn(DEC, 3,                    OpCls( MGT8,     NONE,       NONE ), 0,      0,  0,      0xFF,     0x08,       P_86,        AP_LOCK)
+insn(DEC, 4,                    OpCls( IP32,     NONE,       NONE ), 0,      0,  0,      0xFE,     0x0C,       P_86,        AP_LOCK)
 
 /* PUSH/POP (16- and 32-bit only) */
 
@@ -350,22 +361,38 @@ ins (POPF,  popf,               OpCls( NONE,     NONE,       NONE ), F_16,  0,  
 /* MOV */
 
 ins (MOV, mov,                  OpCls( A,        MS,         NONE ), 0,      1,  no_RM,  0xA0,     0x00,       P_86,        0)
-insn(MOV, 1,                    OpCls( R,        R_MS,       NONE ), 0,      1,  0,      0x8A,     0x00,       P_86,        0)
+insn(MOV, 1,                    OpCls( MS,       A,          NONE ), 0,      0,  no_RM,  0xA2,     0x00,       P_86,        0)
 insn(MOV, 2,                    OpCls( R8,       I,          NONE ), 0,      0,  R_in_OP,0xB0,     0x00,       P_86,        0)
 insn(MOV, 3,                    OpCls( R16_R32,  I,          NONE ), 0,      0,  R_in_OP,0xB8,     0x00,       P_86,        0)
 #if AMD64_SUPPORT
-insn(MOV, 4,                    OpCls( R64,      I,          NONE ), 0,      0,  0,      0xC6,     0x00,       P_64,        0)
-insn(MOV, 5,                    OpCls( R64,      I64,        NONE ), 0,      0,  R_in_OP,0xB8,     0x00,       P_64,        0)
+insn(MOV, 4,                    OpCls( R64,      IP64,       NONE ), 0,      0,  R_in_OP,0xA1,     0x00,       P_64,        0)
+insn(MOV, 5,                    OpCls( IP64,     R64,        NONE ), 0,      0,  R_in_OP,0xA3,     0x00,       P_64,        0)
+insn(MOV, 6,                    OpCls( R64,      I,          NONE ), 0,      0,  0,      0xC6,     0x00,       P_64,        0)
+insn(MOV, 7,                    OpCls( R64,      I64,        NONE ), 0,      0,  R_in_OP,0xB8,     0x00,       P_64,        0)
 #endif
-insn(MOV, 6,                    OpCls( RGT8,     SR,         NONE ), 0,      0,  no_WDS, 0x8C,     0xC0,       P_86,        0)
-insn(MOV, 7,                    OpCls( SR,       RGT8,       NONE ), 0,      1,  no_WDS, 0x8E,     0xC0,       P_86,        0)
-insn(MOV, 8,                    OpCls( SR,       MS,         NONE ), 0,      1,  no_WDS, 0x8E,     0x00,       P_86,        0)
-insn(MOV, 9,                    OpCls( MS,       A,          NONE ), 0,      0,  no_RM,  0xA2,     0x00,       P_86,        0)
-insn(MOV, 10,                   OpCls( MS,       R,          NONE ), 0,      0,  0,      0x88,     0x00,       P_86,        0)
-insn(MOV, 11,                   OpCls( MS,       I,          NONE ), 0,      0,  0,      0xC6,     0x00,       P_86,        0)
-insn(MOV, 12,                   OpCls( MS,       SR,         NONE ), 0,      0,  no_WDS, 0x8C,     0x00,       P_86,        0)
-insn(MOV, 13,                   OpCls( RGT16,    RSPEC,      NONE ), F_0FNO66,0, no_WDS, 0x20,     0xC0,       P_386,       0)
-insn(MOV, 14,                   OpCls( RSPEC,    RGT16,      NONE ), F_0FNO66,1, no_WDS, 0x22,     0xC0,       P_386,       0)
+insn(MOV, 8,                    OpCls( IP64,     R32,        NONE ), 0,      0,  R_in_OP,0xA3,     0x00,       P_86,        0)
+insn(MOV, 9,                    OpCls( IP64,     R16,        NONE ), 0,      0,  R_in_OP,0xA3,     0x00,       P_86,        0)
+insn(MOV, 10,                   OpCls( IP64,     R8,         NONE ), 0,      0,  R_in_OP,0xA2,     0x00,       P_86,        0)
+insn(MOV, 11,                   OpCls( IP32,     R64,        NONE ), 0,      1,  0,      0x89,     0x04,       P_86,        0)
+insn(MOV, 12,                   OpCls( IP32,     R32,        NONE ), 0,      1,  0,      0x89,     0x04,       P_86,        0)
+insn(MOV, 13,                   OpCls( IP32,     R16,        NONE ), 0,      1,  0,      0x89,     0x04,       P_86,        0)
+insn(MOV, 14,                   OpCls( IP32,     R8,         NONE ), 0,      1,  0,      0x88,     0x04,       P_86,        0)
+insn(MOV, 15,                   OpCls( R32,      IP64,       NONE ), 0,      1,  0,      0xA1,     0x04,       P_86,        0)
+insn(MOV, 16,                   OpCls( R16,      IP64,       NONE ), 0,      1,  0,      0xA1,     0x04,       P_86,        0)
+insn(MOV, 17,                   OpCls( R8,       IP64,       NONE ), 0,      1,  0,      0xA0,     0x04,       P_86,        0)
+insn(MOV, 18,                   OpCls( R32,      IP32,       NONE ), 0,      1,  0,      0x8B,     0x04,       P_86,        0)
+insn(MOV, 19,                   OpCls( R16,      IP32,       NONE ), 0,      1,  0,      0x8B,     0x04,       P_86,        0)
+insn(MOV, 20,                   OpCls( R8,       IP32,       NONE ), 0,      1,  0,      0x8A,     0x04,       P_86,        0)
+insn(MOV, 21,                   OpCls( RGT8,     SR,         NONE ), 0,      0,  no_WDS, 0x8C,     0xC0,       P_86,        0)
+insn(MOV, 22,                   OpCls( SR,       RGT8,       NONE ), 0,      1,  no_WDS, 0x8E,     0xC0,       P_86,        0)
+insn(MOV, 23,                   OpCls( SR,       MS,         NONE ), 0,      1,  no_WDS, 0x8E,     0x00,       P_86,        0)
+insn(MOV, 24,                   OpCls( R,        R_MS,       NONE ), 0,      1,  0,      0x8A,     0x00,       P_86,        0)
+insn(MOV, 25,                   OpCls( MS,       R,          NONE ), 0,      0,  0,      0x88,     0x00,       P_86,        0)
+insn(MOV, 26,                   OpCls( MS,       I,          NONE ), 0,      0,  0,      0xC6,     0x00,       P_86,        0)
+insn(MOV, 27,                   OpCls( MS,       SR,         NONE ), 0,      0,  no_WDS, 0x8C,     0x00,       P_86,        0)
+insn(MOV, 28,                   OpCls( RGT16,    RSPEC,      NONE ), F_0FNO66,0, no_WDS, 0x20,     0xC0,       P_386,       0)
+insn(MOV, 29,                   OpCls( RSPEC,    RGT16,      NONE ), F_0FNO66,1, no_WDS, 0x22,     0xC0,       P_386,       0)
+
 
 /* rest */
 
