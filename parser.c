@@ -305,6 +305,121 @@ ret_code MemtypeFromSize( int size, enum memtype *ptype )
     return( ERROR );
 }
 
+static bool IsScalarSimdInstr();
+
+static bool IsScalarSimdInstr(enum instr_token instr)
+{
+	bool result = FALSE;
+	switch (instr)
+	{
+	case T_ADDSS:
+	case T_ADDSD:
+	case T_CMPSD:
+	case T_CMPSS:
+	case T_COMISD:
+	case T_COMISS:
+	case T_CVTSD2SI:
+	case T_CVTSD2SS:
+	case T_CVTSI2SD:
+	case T_CVTSI2SS:
+	case T_CVTSS2SD:
+	case T_CVTSS2SI:
+	case T_CVTTSD2SI:
+	case T_CVTTSS2SI:
+	case T_DIVSD:
+	case T_DIVSS:
+	case T_INSERTPS:
+	case T_MAXSD:
+	case T_MAXSS:
+	case T_MINSD:
+	case T_MINSS:
+	case T_MOVD:
+	case T_MOVQ:
+	case T_MOVDDUP:
+	case T_MOVHPD:
+	case T_MOVHPS:
+	case T_MOVLPD:
+	case T_MOVLPS:
+	case T_MOVSD:
+	case T_MOVSS:
+	case T_MULSD:
+	case T_MULSS:
+	case T_RCPSS:
+	case T_ROUNDSS:
+	case T_ROUNDSD:
+	case T_RSQRTSS:
+	case T_SQRTSS:
+	case T_SQRTSD:
+	case T_SUBSS:
+	case T_SUBSD:
+	case T_UCOMISS:
+	case T_UCOMISD:
+	case T_PEXTRB:
+	case T_PEXTRD:
+	case T_PEXTRQ:
+	case T_VPEXTRB:
+	case T_VPEXTRD:
+	case T_VPEXTRQ:
+	case T_PEXTRW:
+	case T_VPEXTRW:
+	case T_PINSRB:
+	case T_PINSRD:
+	case T_PINSRQ:
+	case T_VPINSRB:
+	case T_VPINSRD:
+	case T_VPINSRQ:
+	case T_PINSRW:
+	case T_VPINSRW:
+	case T_VADDSS:
+	case T_VADDSD:
+	case T_VCMPSD:
+	case T_VCMPSS:
+	case T_VCOMISD:
+	case T_VCOMISS:
+	case T_VCVTSD2SI:
+	case T_VCVTSD2SS:
+	case T_VCVTSI2SD:
+	case T_VCVTSI2SS:
+	case T_VCVTSS2SD:
+	case T_VCVTSS2SI:
+	case T_VCVTTSD2SI:
+	case T_VCVTTSS2SI:
+	case T_VDIVSD:
+	case T_VDIVSS:
+	case T_VINSERTPS:
+	case T_VMAXSD:
+	case T_VMAXSS:
+	case T_VMINSD:
+	case T_VMINSS:
+	case T_VMOVD:
+	case T_VMOVQ:
+	case T_VMOVDDUP:
+	case T_VMOVHPD:
+	case T_VMOVHPS:
+	case T_VMOVLPD:
+	case T_VMOVLPS:
+	case T_VMOVSD:
+	case T_VMOVSS:
+	case T_VMULSD:
+	case T_VMULSS:
+	case T_VRCPSS:
+	case T_VROUNDSS:
+	case T_VROUNDSD:
+	case T_VRSQRTSS:
+	case T_VSQRTSS:
+	case T_VSQRTSD:
+	case T_VSUBSS:
+	case T_VSUBSD:
+	case T_VUCOMISS:
+	case T_VUCOMISD:
+		result = TRUE;
+		break;
+	default:
+		break;
+	}
+	return(result);
+}
+
 int OperandSize( enum operand_type opnd, const struct code_info *CodeInfo )
 /*************************************************************************/
 {
