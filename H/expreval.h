@@ -129,6 +129,7 @@ struct expr {
     };
     struct asym     *sym;   /* label used */
     struct asym     *mbr;   /* struct member */
+	bool isptr;
     struct asym     *type;  /* for DOT operator. Must be last (see TokenAssign)! */
 };
 

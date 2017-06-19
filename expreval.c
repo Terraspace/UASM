@@ -105,6 +105,7 @@ static void init_expr( struct expr *opnd )
     opnd->sym      = NULL;
     opnd->mbr      = NULL;
     opnd->type     = NULL;
+	opnd->isptr = FALSE;
 }
 
 static void TokenAssign( struct expr *opnd1, const struct expr *opnd2 )
@@ -2664,6 +2665,11 @@ static ret_code calculate( struct expr *opnd1, struct expr *opnd2, const struct 
             DebugMsg1(("%u calculate(%s): single item\n", evallvl, oper->string_ptr ));
             TokenAssign( opnd1, opnd2 );
             opnd1->type = opnd2->type;
+			opnd1->isptr = FALSE;
+			if (opnd1->kind == EXPR_CONST)
+				opnd1->isptr = TRUE;
+			else if (opnd2->kind == EXPR_CONST)
+				opnd2->isptr = TRUE;
             if ( opnd1->is_type && opnd1->kind == EXPR_CONST )
                 opnd1->is_type = 0;
             break;

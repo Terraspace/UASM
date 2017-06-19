@@ -83,6 +83,7 @@ static enum assume_segreg  LastRegOverride;/* needed for CMPS */
 
 struct asm_tok      xmmOver0;        /* xmmword override tokens for -Zg switch (masm compatibility) */
 struct asm_tok      xmmOver1;
+struct asm_tok      dsOver;
 
 /* linked lists of:     index
  *--------------------------------
@@ -2006,7 +2007,12 @@ static ret_code process_address( struct code_info *CodeInfo, unsigned CurrOpnd, 
                 return( memory_operand( CodeInfo, CurrOpnd, opndx, FALSE ) );
             else
                 return( memory_operand( CodeInfo, CurrOpnd, opndx, TRUE ) );
-        } else {
+        } 
+		else if (opndx->isptr)
+		{
+
+		}
+		else {
             return( idata_nofixup( CodeInfo, CurrOpnd, opndx ) );
         }
     } else if( ( opndx->sym->state == SYM_UNDEFINED ) && !opndx->explicit ) {
@@ -3091,7 +3097,9 @@ ret_code ParseLine(struct asm_tok tokenarray[])
   int                c1;
   unsigned           flags;
   char               *pnlbl;
-  int                 alignCheck = 16;
+  int                alignCheck = 16;
+  int                infSize = 0;
+  int                oldi = 0;
 
 #ifdef DEBUG_OUT
   char                *instr;
@@ -3438,6 +3446,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
   CodeInfo.evex_sae = 0;
   CodeInfo.vexregop = 0;
   CodeInfo.tuple = 0;
+  CodeInfo.isptr = FALSE;
   CodeInfo.vexconst = 0;
   CodeInfo.evex_flag = FALSE;  /* if TRUE will output 0x62 */
   CodeInfo.reg1 = 0;
@@ -3518,9 +3527,32 @@ ret_code ParseLine(struct asm_tok tokenarray[])
   if (ModuleInfo.CommentDataInCode)
     omf_OutSelect(FALSE);
 
+  /* UASM 2.37: Calculate an inferred memory size if any operand is a register, this can be used when no memory size info is available */
+  /* ********************************************************************************************************************************* */
+  oldi = i;
+  for (j = 0; j < sizeof(opndx) / sizeof(opndx[0]) && tokenarray[i].token != T_FINAL; j++) 
+  {
+	  if (j)
+	  {
+		  if (tokenarray[i].token != T_COMMA)
+			  break;
+		  i++;
+	  }
+	  if (EvalOperand(&i, tokenarray, Token_Count, &opndx[j], 0) == ERROR)
+		  return(ERROR);
+	
+	  if (opndx[j].kind == EXPR_REG)
+	  {
+		  infSize = SizeFromRegister(opndx[j].base_reg->tokval);
+		  break;
+	  }
+  }
+  i = oldi;
+
   /* get the instruction's arguments.
    * This loop accepts up to 4 arguments if AVXSUPP is on */
   for (j = 0; j < sizeof(opndx) / sizeof(opndx[0]) && tokenarray[i].token != T_FINAL; j++) {
+
     if (j) 
 	{
 		if (tokenarray[i].token != T_COMMA)
@@ -3529,11 +3561,46 @@ ret_code ParseLine(struct asm_tok tokenarray[])
     }
 
     DebugMsg1(("ParseLine(%s): calling EvalOperand, i=%u\n", instr, i));
-/*    if (CodeInfo.token == T_SUBPD) __debugbreak();*/
     if (EvalOperand(&i, tokenarray, Token_Count, &opndx[j], 0) == ERROR) {
       DebugMsg(("ParseLine(%s): EvalOperand() failed\n", instr));
       return(ERROR);
     }
+
+	/* UASM 2.37: For immediate indirect memory addresses, allow DS override assumption in 32 and 64bit, and apply memory size info */
+	/* ********************************************************************************************************************************* */
+	if (opndx[j].kind == EXPR_CONST && opndx[j].isptr)
+	{
+		CodeInfo.isptr = TRUE;
+		if (opndx[j].mem_type == MT_EMPTY)
+		{
+			switch (infSize)
+			{
+			case 1:
+				opndx[j].mem_type = MT_BYTE;
+				break;
+			case 2:
+				opndx[j].mem_type = MT_WORD;
+				break;
+			case 4:
+				opndx[j].mem_type = MT_DWORD;
+				break;
+			case 8:
+				opndx[j].mem_type = MT_QWORD;
+				break;
+			case 16:
+				opndx[j].mem_type = MT_OWORD;
+				break;
+			case 32:
+				opndx[j].mem_type = MT_YMMWORD;
+				break;
+			}
+			
+		}
+		opndx[j].kind = EXPR_ADDR;
+		if(ModuleInfo.Ofssize != USE64)
+			opndx[j].override = &dsOver;
+
+	}
 
     if (j == 2 && (opndx[j].kind == EXPR_REG)){
       regtok = opndx[OPND3].base_reg->tokval;
@@ -4059,7 +4126,23 @@ void ProcessFile( struct asm_tok tokenarray[] )
 	xmmOver1.idarg = T_PTR;
 	xmmOver1.itemlen = T_PTR;
 	xmmOver1.lastidx = T_PTR;
-	
+
+	dsOver.token = 2;
+	dsOver.dirtype = 3;
+	dsOver.bytval = 3;
+	dsOver.precedence = 3;
+	dsOver.string_delim = 3;
+	dsOver.floattype = 3;
+	dsOver.numbase = 3;
+	dsOver.specval = 3;
+	dsOver.string_ptr = "ds";
+	dsOver.tokval = 0x0000001c;
+	dsOver.stringlen = 0x0000001c;
+	dsOver.idarg = 0x0000001c;
+	dsOver.itemlen = 0x0000001c;
+	dsOver.lastidx = 0x0000001c;
+
+
     while ( ModuleInfo.EndDirFound == FALSE && GetTextLine( CurrSource ) ) {
         if ( PreprocessLine( CurrSource, tokenarray ) ) {
             ParseLine( tokenarray );

@@ -364,6 +364,7 @@ struct code_info {
     unsigned char   evex_p1;
     unsigned char   evex_p2;
              bool   tuple;     /* For EVEX Compressed Disp8*N Encoding */
+			 bool   isptr;
     unsigned char   evex_sae;  /* EVEX Static Rounding Mode */
 #endif
     union {

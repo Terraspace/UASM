@@ -2458,6 +2458,14 @@ static ret_code check_operand_2( struct code_info *CodeInfo, enum operand_type o
  * possible return codes: ERROR (=nothing found), NOT_ERROR (=done)
  */
 {
+	/* UASM 2.37: force 64bit immediate indirect addressing conversion */
+	if ((CodeInfo->opnd[OPND2].type == OP_R64 || CodeInfo->opnd[OPND2].type == OP_R32 || CodeInfo->opnd[OPND2].type == OP_R16 || CodeInfo->opnd[OPND2].type == OP_R8) && 
+		CodeInfo->token == T_MOV && CodeInfo->isptr)
+	{
+		CodeInfo->opnd[OPND2].type = OP_A;
+	}
+
+
     if( CodeInfo->opnd[OPND2].type == OP_NONE ) {
       if (opnd_clstab[CodeInfo->pinstr->opclsidx].opnd_type[OPND2] != OP_NONE){
         if (CodeInfo->token == T_VGETEXPPD || CodeInfo->token == T_VGETEXPPS)
@@ -2572,6 +2580,15 @@ ret_code codegen( struct code_info *CodeInfo, uint_32 oldofs )
                CodeInfo->rm_byte, CodeInfo->sib,
                CodeInfo->prefix.rex, CodeInfo->prefix.opsiz ));
 #endif
+	
+	/* UASM 2.37: force immediate indirect addressing conversion */
+	if ((CodeInfo->opnd[OPND1].type == OP_R64 || CodeInfo->opnd[OPND1].type == OP_R32 || CodeInfo->opnd[OPND1].type == OP_R16 || CodeInfo->opnd[OPND1].type == OP_R8) &&
+		CodeInfo->token == T_MOV && CodeInfo->isptr)
+	{
+		CodeInfo->opnd[OPND1].type = OP_A;
+		opnd1 = OP_A;
+	}
+
     /* scan the instruction table for a matching first operand */
     do  {
         tbl_op1 = opnd_clstab[CodeInfo->pinstr->opclsidx].opnd_type[OPND1];
