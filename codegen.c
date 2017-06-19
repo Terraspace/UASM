@@ -2054,19 +2054,15 @@ static void output_opc(struct code_info *CodeInfo)
           if (CodeInfo->basereg != 0xff)
           tmp &= ~0xC0; // we need the scale field to be 00 for VSIB without base register EG: [XMM4+1*8]
         }
-        if  (uopcode == 0xA0 || uopcode == 0xA1 || uopcode == 0xA2 || uopcode == 0xA3)
-             //CodeInfo->opnd[OPND1].type == OP_IP32 || CodeInfo->opnd[OPND2].type == OP_IP32)
-             ;
-        else if (uopcode == 0x8B || uopcode == 0x89 || uopcode == 0x88 || uopcode == 0x8A ){
-          tmp = 0x04;
-          OutputCodeByte(tmp);
-         }
-        else
-          OutputCodeByte( tmp );
+        if (CodeInfo->opnd[OPND1].type == OP_IP32 || CodeInfo->opnd[OPND2].type == OP_IP32 ||
+            CodeInfo->opnd[OPND1].type == OP_IP64 || CodeInfo->opnd[OPND2].type == OP_IP64) {
+            if (uopcode == 0x8B || uopcode == 0x89 || uopcode == 0x88 || uopcode == 0x8A)
+            tmp = 0x04;
+          }
+        OutputCodeByte( tmp );
         if( ( CodeInfo->Ofssize == USE16 && CodeInfo->prefix.adrsiz == 0 ) ||
            ( CodeInfo->Ofssize == USE32 && CodeInfo->prefix.adrsiz == 1 ) )
             return; /* no SIB for 16bit */
-
         switch ( tmp & NOT_BIT_345 ) {
         case 0x04: /* mod = 00, r/m = 100, s-i-b is present */
         case 0x44: /* mod = 01, r/m = 100, s-i-b is present */
