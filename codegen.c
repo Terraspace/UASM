@@ -1942,7 +1942,12 @@ static void output_opc(struct code_info *CodeInfo)
           if (CodeInfo->basereg != 0xff)
           tmp &= ~0xC0; // we need the scale field to be 00 for VSIB without base register EG: [XMM4+1*8]
         }
+
+		if (CodeInfo->isptr)
+			tmp &= 0xfe;
+
           OutputCodeByte( tmp );
+
         if( ( CodeInfo->Ofssize == USE16 && CodeInfo->prefix.adrsiz == 0 ) ||
            ( CodeInfo->Ofssize == USE32 && CodeInfo->prefix.adrsiz == 1 ) )
             return; /* no SIB for 16bit */
@@ -1952,7 +1957,11 @@ static void output_opc(struct code_info *CodeInfo)
         case 0x44: /* mod = 01, r/m = 100, s-i-b is present */
         case 0x84: /* mod = 10, r/m = 100, s-i-b is present */
             /* emit SIB byte; bits 7-6 = Scale, bits 5-3 = Index, bits 2-0 = Base */
-          OutputCodeByte( CodeInfo->sib );
+			if (CodeInfo->isptr)
+				OutputCodeByte(0x25);
+			else
+				OutputCodeByte( CodeInfo->sib );
+
         }
     }
     return;
@@ -2042,8 +2051,10 @@ static void output_data(const struct code_info *CodeInfo, enum operand_type dete
             } else {
 #if AMD64_SUPPORT
                 /* v2.11: special case, 64-bit direct memory addressing, opcodes 0xA0 - 0xA3 */
-                if( CodeInfo->Ofssize == USE64 && ( CodeInfo->pinstr->opcode & 0xFC ) == 0xA0 && CodeInfo->pinstr->byte1_info == 0 )
-                    size = 8;
+				if (CodeInfo->Ofssize == USE64 && (CodeInfo->pinstr->opcode & 0xFC) == 0xA0 && CodeInfo->pinstr->byte1_info == 0)
+				{
+					size = 8;
+				}
                 else
 #endif
                 switch( CodeInfo->rm_byte & BIT_012 ) {
@@ -2091,9 +2102,11 @@ static void output_data(const struct code_info *CodeInfo, enum operand_type dete
             /* don't exit! */
           }
         if (write_to_file) {
-          CodeInfo->opnd[index].InsFixup->locofs = GetCurrOffset();
-          OutputBytes((unsigned char *)&CodeInfo->opnd[index].data32l,
-            size, CodeInfo->opnd[index].InsFixup);
+  			CodeInfo->opnd[index].InsFixup->locofs = GetCurrOffset();
+			if(CodeInfo->isptr)
+				OutputBytes((unsigned char *)&CodeInfo->opnd[index].data32l, size, NULL);
+			else
+				OutputBytes((unsigned char *)&CodeInfo->opnd[index].data32l, size, CodeInfo->opnd[index].InsFixup);
           return;
         }
       }
@@ -2393,7 +2406,7 @@ static ret_code match_phase_3( struct code_info *CodeInfo, enum operand_type opn
 
             /* v2.11: skip externals - but don't skip undefines; forward8.asm */
             //if ( CodeInfo->opnd[OPND2].InsFixup != NULL ) /* external? then skip */
-            if ( CodeInfo->opnd[OPND2].InsFixup != NULL && CodeInfo->opnd[OPND2].InsFixup->sym->state != SYM_UNDEFINED ) /* external? then skip */
+            if ( CodeInfo->opnd[OPND2].InsFixup != NULL && CodeInfo->opnd[OPND2].InsFixup->sym && CodeInfo->opnd[OPND2].InsFixup->sym->state != SYM_UNDEFINED ) /* external? then skip */
                 break;
 
             if ( CodeInfo->const_size_fixed == FALSE )
@@ -2459,8 +2472,7 @@ static ret_code check_operand_2( struct code_info *CodeInfo, enum operand_type o
  */
 {
 	/* UASM 2.37: force 64bit immediate indirect addressing conversion */
-	if ((CodeInfo->opnd[OPND2].type == OP_R64 || CodeInfo->opnd[OPND2].type == OP_R32 || CodeInfo->opnd[OPND2].type == OP_R16 || CodeInfo->opnd[OPND2].type == OP_R8) && 
-		CodeInfo->token == T_MOV && CodeInfo->isptr)
+	if (( (CodeInfo->token == T_MOV && CodeInfo->opnd[OPND2].type == OP_R64) || CodeInfo->opnd[OPND2].type == OP_R32 || CodeInfo->opnd[OPND2].type == OP_R16 || CodeInfo->opnd[OPND2].type == OP_R8) && CodeInfo->isptr && CodeInfo->opnd[OPND2].data32h > 0)
 	{
 		CodeInfo->opnd[OPND2].type = OP_A;
 	}
@@ -2582,8 +2594,7 @@ ret_code codegen( struct code_info *CodeInfo, uint_32 oldofs )
 #endif
 	
 	/* UASM 2.37: force immediate indirect addressing conversion */
-	if ((CodeInfo->opnd[OPND1].type == OP_R64 || CodeInfo->opnd[OPND1].type == OP_R32 || CodeInfo->opnd[OPND1].type == OP_R16 || CodeInfo->opnd[OPND1].type == OP_R8) &&
-		CodeInfo->token == T_MOV && CodeInfo->isptr)
+	if (( (CodeInfo->token == T_MOV && CodeInfo->opnd[OPND1].type == OP_R64) || CodeInfo->opnd[OPND1].type == OP_R32 || CodeInfo->opnd[OPND1].type == OP_R16 || CodeInfo->opnd[OPND1].type == OP_R8) && CodeInfo->isptr && CodeInfo->opnd[OPND1].data32h > 0)
 	{
 		CodeInfo->opnd[OPND1].type = OP_A;
 		opnd1 = OP_A;
