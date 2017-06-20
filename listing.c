@@ -269,7 +269,7 @@ void LstWrite( enum lsttype type, uint_32 oldofs, void *value )
             sprintf( &ll.buffer[idx+2], "%-" PREFFMTSTR I64_SPEC "X", (uint_64)sym->value + ( (uint_64)sym->value3264 << 32 ) );
         else
             sprintf( &ll.buffer[idx+2], "%-" PREFFMTSTR I32_SPEC "X", sym->value );
-        ll.buffer[28] = ' ';
+        ll.buffer[idx+22] = ' ';
         break;
     case LSTTYPE_TMACRO:
         ll.buffer[1] = '=';
