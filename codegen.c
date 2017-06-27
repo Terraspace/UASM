@@ -405,7 +405,12 @@ static void output_opc(struct code_info *CodeInfo)
    */
   if (CodeInfo->prefix.adrsiz == TRUE && (CodeInfo->token < T_VPGATHERDD || CodeInfo->token > T_VSCATTERQPD)&&
       CodeInfo->token != T_VCVTPH2PS && CodeInfo->token != T_VCVTPS2PD) {
-    OutputCodeByte(ADRSIZ);
+
+	  if (CodeInfo->basereg == 0x10) /* RIP used for relative addressing v2.36 */
+		  ;/* don't output 0x67 */
+	  else
+		  OutputCodeByte(ADRSIZ);
+    
 #ifdef DEBUG_OUT
     if (fpfix)
       DebugMsg(("output_opc: ERROR: FP emulation byte sequence destroyed by 32-bit address prefix!\n"));

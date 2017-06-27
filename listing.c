@@ -142,6 +142,7 @@ void LstWrite( enum lsttype type, uint_32 oldofs, void *value )
     uint_32 newofs = 0;
     struct asym *sym = value;
     int     len;
+	int     i;
     int     len2;
     int     idx;
     int     srcfile;
@@ -269,7 +270,7 @@ void LstWrite( enum lsttype type, uint_32 oldofs, void *value )
             sprintf( &ll.buffer[idx+2], "%-" PREFFMTSTR I64_SPEC "X", (uint_64)sym->value + ( (uint_64)sym->value3264 << 32 ) );
         else
             sprintf( &ll.buffer[idx+2], "%-" PREFFMTSTR I32_SPEC "X", sym->value );
-        ll.buffer[idx+22] = ' ';
+        //ll.buffer[28] = ' ';
         break;
     case LSTTYPE_TMACRO:
         ll.buffer[1] = '=';
@@ -296,12 +297,12 @@ void LstWrite( enum lsttype type, uint_32 oldofs, void *value )
         /* no break */
     case LSTTYPE_STRUCT:
         sprintf( ll.buffer, "%08" I32_SPEC "X", oldofs );
-        ll.buffer[8] = ' ';
+       // ll.buffer[8] = ' ';
         break;
     case LSTTYPE_DIRECTIVE:
         if ( CurrSeg || value ) {
             sprintf( ll.buffer, "%08" I32_SPEC "X", oldofs );
-            ll.buffer[8] = ' ';
+            //ll.buffer[8] = ' ';
         }
         break;
     default: /* LSTTYPE_MACRO */
@@ -338,7 +339,13 @@ void LstWrite( enum lsttype type, uint_32 oldofs, void *value )
 #endif
     }
 #endif
-    fwrite( ll.buffer, 1, idx, CurrFile[LST] );
+	
+	for (i = 32; i > 0; --i) {
+		if (ll.buffer[i] == 0)
+			ll.buffer[i] = ' ';
+	}
+
+	fwrite( ll.buffer, 1, idx, CurrFile[LST] );
 
     len = strlen( pSrcline );
     len2 = ( ModuleInfo.CurrComment ? strlen( ModuleInfo.CurrComment ) : 0 );

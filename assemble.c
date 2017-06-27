@@ -1340,7 +1340,7 @@ static void open_files( void )
         DebugMsg(("open_files(): cannot open source file, fopen(\"%s\") failed\n", CurrFName[ASM] ));
         Fatal( CANNOT_OPEN_FILE, CurrFName[ASM], ErrnoStr() );
     }
-	CheckBOM(CurrFile[ASM]);
+	//CheckBOM(CurrFile[ASM]);
 
     /* open OBJ file */
     if ( Options.syntax_check_only == FALSE ) {
@@ -1684,7 +1684,7 @@ int EXPQUAL AssembleModule( const char *source )
         /* set file position of ASM and LST files for next pass */
 
         rewind( CurrFile[ASM] );
-		CheckBOM( CurrFile[ASM] );
+		//CheckBOM( CurrFile[ASM] );
 
         if ( write_to_file && Options.output_format == OFORMAT_OMF )
             omf_set_filepos();

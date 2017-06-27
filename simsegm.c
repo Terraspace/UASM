@@ -22,7 +22,7 @@
 #include "tokenize.h"
 #include "proc.h"
 #include "cpumodel.h"
-
+#include "equate.h"
 #include "myassert.h"
 
 #define DEFAULT_STACK_SIZE      1024
