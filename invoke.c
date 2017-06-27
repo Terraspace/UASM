@@ -593,6 +593,17 @@ static int ms64_param(struct dsym const *proc, int index, struct dsym *param, bo
 			if (opnd->kind == EXPR_REG && opnd->indirect == FALSE) 
 			{
 				size = SizeFromRegister(reg);
+				if (size == 0x10 && param->sym.mem_type == MT_REAL4)
+				{
+					AddLineQueueX(" %s %r ptr [%r+%u], %s", MOVE_SINGLE, T_DWORD, T_RSP, NUMQUAL index*8, paramvalue);
+					return(1);
+				}
+				if (size == 0x10 && param->sym.mem_type == MT_REAL8)
+				{
+					AddLineQueueX(" %s %r ptr [%r+%u], %s", MOVE_DOUBLE, T_QWORD, T_RSP, NUMQUAL index * 8, paramvalue);
+					return(1);
+				}
+
 				if (size == psize)
 					i = reg;
 				else {
