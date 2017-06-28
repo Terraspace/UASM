@@ -4671,7 +4671,7 @@ static void write_default_epilogue( void )
 
 	if (ModuleInfo.Ofssize == USE64)
 	{
-		if (ModuleInfo.basereg[USE64] == T_RSP && CurrProc->sym.langtype == LANG_FASTCALL)
+		if (ModuleInfo.basereg[USE64] == T_RSP && (CurrProc->sym.langtype == LANG_FASTCALL || CurrProc->sym.langtype == LANG_VECTORCALL))
 			write_win64_default_epilogue_RSP(info);
 		else if (ModuleInfo.basereg[USE64] == T_RBP && CurrProc->sym.langtype == LANG_FASTCALL)
 			write_win64_default_epilogue_RBP(info);

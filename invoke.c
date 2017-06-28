@@ -4402,6 +4402,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 
 	if ( sym->langtype == LANG_STDCALL                ||
 		 sym->langtype == LANG_C                      ||
+		 sym->langtype == LANG_SYSCALL                ||
 		(sym->langtype == LANG_FASTCALL && porder)    ||
 		(sym->langtype == LANG_VECTORCALL && porder)  ||
 		(sym->langtype == LANG_SYSVCALL && porder)    ||

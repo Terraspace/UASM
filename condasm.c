@@ -398,8 +398,12 @@ ret_code CondAsmDirective( int i, struct asm_tok tokenarray[] )
             i++;
         }
         if ( tokenarray[i].token != T_FINAL ) {
-            EmitWarn( 2, IFDEF_EXPECTS_SYMBOL_ARGUMENT, tokenarray[i-1].tokpos );
-            while ( tokenarray[i].token != T_FINAL ) i++;
+          if (Options.strict_masm_compat  == TRUE)  /* Zne */
+            goto escape;
+          else{
+               EmitWarn( 2, IFDEF_EXPECTS_SYMBOL_ARGUMENT, tokenarray[i-1].tokpos );
+               while ( tokenarray[i].token != T_FINAL )  i++;
+            }
         }
         if ( directive == T_IFNDEF || directive == T_ELSEIFNDEF )
             NextIfState = ( ( NextIfState == BLOCK_ACTIVE ) ? BLOCK_INACTIVE : BLOCK_ACTIVE );
@@ -412,7 +416,7 @@ ret_code CondAsmDirective( int i, struct asm_tok tokenarray[] )
     if ( tokenarray[i].token != T_FINAL ) {
         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
     }
-
+escape:
     CurrIfState = NextIfState;
 
     DebugMsg1(("CondAsmDirective(%s) exit, state=%s, lvl=%u, falselvl=%u\n",
