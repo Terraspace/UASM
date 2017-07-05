@@ -299,6 +299,7 @@ avxins (PEXTRQ   ,vpextrq   ,    P_AVX, VX_LL|VX_L|VX_NND )   /* -, ns! */
 avxins (PINSRQ   ,vpinsrq   ,    P_AVX, VX_LL )        /* -, s */
 avxins (PCLMULQDQ,vpclmulqdq ,   P_AVX, VX_L )        /* -, s */
 avxins (AESDECLAST,vaesdeclast , P_AVX, VX_L )        /* -, s */
+avxins (AESDEC,vaesdec ,         P_AVX, VX_L )        /* -, s */
 avxins (AESENC,vaesenc ,         P_AVX, VX_L )        /* -, s */
 avxins (AESENCLAST,vaesenclast,  P_AVX, VX_L )        /* -, s */
 avxins (AESIMC,  vaesimc,        P_AVX, VX_L|VX_NND )        /* -, s */

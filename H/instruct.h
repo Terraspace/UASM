@@ -318,6 +318,7 @@ ins (CLI, cli,                  OpCls( NONE,     NONE,       NONE ), 0,      0, 
 ins (STI, sti,                  OpCls( NONE,     NONE,       NONE ), 0,      0,  no_RM,  0xFB,     0x00,       P_86,        0)
 ins (CLD, cld,                  OpCls( NONE,     NONE,       NONE ), 0,      0,  no_RM,  0xFC,     0x00,       P_86,        0)
 ins (STD, std,                  OpCls( NONE,     NONE,       NONE ), 0,      0,  no_RM,  0xFD,     0x00,       P_86,        0)
+ins (CLAC, clac,                OpCls( NONE,     NONE,       NONE ), F_0F,   0,  no_RM,  0xCA,     0x00,       P_686,       0)
 
 /* INC/DEC. (hack for 64-bit in reswords.c!) */
 
@@ -725,6 +726,7 @@ ins (FYL2XP1, fyl2xp1,          OpCls( NONE,     NONE,       NONE ), 0,      0, 
 
 ins (EMMS, emms,                OpCls( NONE,     NONE,       NONE ), F_0F,   0,  no_RM,  0x77,     0x00,       P_586|P_MMX, 0)
 ins (CLFLUSH, clflush,          OpCls( M_ANY,    NONE,       NONE ), F_0F,   0,  no_WDS, 0xAE,     0x38,       P_686|P_SSE2,0)
+ins (CLFLUSHOPT, clflushopt,    OpCls( M_ANY,    NONE,       NONE ), F_660F, 0,  no_WDS, 0xAE,     0x38,       P_686|P_SSE2,0)
 ins (LDMXCSR, ldmxcsr,          OpCls( M32,      NONE,       NONE ), F_0F,   0,  no_WDS, 0xAE,     0x10,       P_686|P_SSE1,0)
 ins (STMXCSR, stmxcsr,          OpCls( M32,      NONE,       NONE ), F_0F,   0,  no_WDS, 0xAE,     0x18,       P_686|P_SSE1,0)
 ins (LFENCE, lfence,            OpCls( NONE,     NONE,       NONE ), F_0F,   0,  no_WDS, 0xAE,     0xE8,       P_686|P_SSE2,0)
@@ -1167,10 +1169,13 @@ ins (PSIGNW, psignw,            OpCls( MMX,      MMX_M64,  NONE ), F_0F38,  1,  
 insn(PSIGNW, 1,                 OpCls( XMM,      XMM_M128, NONE ), F_660F38,1,  no_WDS, 0x09,     0x00,       P_686|P_SSSE3, 0)
 ins(PCLMULQDQ, pclmulqdq,       OpCls( XMM,      XMM_M128, I8_U ), F_660F3A,1,  no_WDS, 0x44,     0x00,       P_686|P_SSSE3, 0)
 ins(AESDECLAST, aesdeclast,     OpCls( XMM,      XMM_M128, NONE ), F_660F38,1,  no_WDS, 0xDF,     0x00,       P_686|P_SSSE3, 0)
+ins(AESDEC, aesdec,             OpCls( XMM,      XMM_M128, NONE ), F_660F38,1,  no_WDS, 0xDE,     0x00,       P_686|P_SSSE3, 0)
 ins(AESENC, aesenc,             OpCls( XMM,      XMM_M128, NONE ), F_660F38,1,  no_WDS, 0xDC,     0x00,       P_686|P_SSSE3, 0)
 ins(AESENCLAST, aesenclast,     OpCls( XMM,      XMM_M128, NONE ), F_660F38,1,  no_WDS, 0xDD,     0x00,       P_686|P_SSSE3, 0)
 ins(AESIMC, aesimc,             OpCls( XMM,      XMM_M128, NONE ), F_660F38,1,  no_WDS, 0xDB,     0x00,       P_686|P_SSSE3, 0)
 ins(AESKEYGENASSIST,aeskeygenassist,OpCls( XMM,  XMM_M128, I8_U ), F_660F3A,1,  no_WDS, 0xDF,     0x00,       P_686|P_SSSE3, 0)
+ins (ADCX,    adcx,             OpCls( R32,      R32_M32,    NONE ), F_660F38,1, no_WDS, 0xF6,     0x00,     P_686|P_SSSE3,0)
+insn(ADCX,    1,                OpCls( R64,      R64_M64,    NONE ), F_660F38,1, no_WDS,      0xF6,     0x00,     P_686|P_SSSE3,0)
 
 //66 0F 3A DF /r ib AESKEYGENASSIST xmm1, xmm2/m128, imm8
 //VEX.128.66.0F3A.WIG DF /r ib VAESKEYGENASSIST xmm1, xmm2/m128, imm8
@@ -1311,7 +1316,13 @@ insn(BNDMOV, 2,                 OpCls( BND_MS,   BND,      NONE ), F_660F,   0, 
 insn(BNDMOV, 3,                 OpCls( BND_M128, BND,      NONE ), F_660F,   0,  no_WDS, 0x1B,     0x00,       P_686|P_SSE4, 0)
 ins(BNDLDX, bndldx,             OpCls( BND,      MS,       NONE ), F_0F,     1,  no_WDS, 0x1A,     0x00,       P_686|P_SSE4, 0)
 ins(BNDSTX, bndstx,             OpCls( MS,       BND,      NONE ), F_0F,     0,  no_WDS, 0x1B,     0x00,       P_686|P_SSE4, 0)
-
+ins(RDPID, rdpid,               OpCls( R32,      NONE,     NONE ), F_F30F,   0,  0,      0xC7,     0x00,       P_686       , 0)
+insn(RDPID, 1,                  OpCls( R64,      NONE,     NONE ), F_F30F,   0,  0,      0xC7,     0x00,       P_686       , 0)
+ins(ADOX,   adox,               OpCls( R32,      R32,      NONE ), F_F30F,   1,  0,      0x38,     0x00,       P_686       , 0)
+insn(ADOX,  1,                  OpCls( R64,      R64,      NONE ), F_F30F,   1,  0,      0x38,     0x00,       P_64        , 0)
+insn(ADOX,  2,                  OpCls( R32,      M32,      NONE ), F_F30F,   1,  0,      0x38,     0x00,       P_686       , 0)
+insn(ADOX,  3,                  OpCls( R64,      M64,      NONE ), F_F30F,   1,  0,      0x38,     0x00,       P_64        , 0)
+insn(ADOX,  4,                  OpCls( R32,      M64,      NONE ), F_F30F,   1,  0,      0x38,     0x00,       P_64        , 0)
 #if 0
 /* SSE4A (AMD only). */
 /* disabled because INSERTQ needs 4 arguments, which Uasm cannot support currently */
@@ -1342,9 +1353,8 @@ ins (VMREAD,  vmread,           OpCls( R32_M32,  R32,        NONE ), F_0F,   0, 
 ins (VMWRITE, vmwrite,          OpCls( R32,      R32_M32,    NONE ), F_0F,   1,  no_WDS, 0x79,     0x00,     P_686p,0)
 ins (INVEPT,  invept,           OpCls( RGT16,    M128,       NONE ), F_660F38,1, no_WDS, 0x80,     0x00,     P_686p,0)
 ins (INVVPID, invvpid,          OpCls( RGT16,    M128,       NONE ), F_660F38,1, no_WDS, 0x81,     0x00,     P_686p,0)
-//FUTURE
 //ins (ADCX,    adcx,             OpCls( R32,      R32_M32,    NONE ), F_660F38,1, no_WDS, 0xF6,     0x00,     P_686p,0)
-//insn(ADCX,   adcx,             OpCls( R64,      R64_M64,    NONE ), F_660F38,1, 0,      0xF6,     0x00,     P_686p,0)
+//insn(ADCX,    1,                OpCls( R64,      R64_M64,    NONE ), F_660F38,1, 0,      0xF6,     0x00,     P_686p,0)
 #endif
 #if SVMSUPP
 /* v2.09: added, but inactive */

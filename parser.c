@@ -628,7 +628,7 @@ void set_frame2( const struct asym *sym )
     SetFixupFrame( SegOverride ? SegOverride : sym, TRUE );
 }
 
-static ret_code set_rm_sib( struct code_info *CodeInfo, unsigned CurrOpnd, char ss, int index, int base, const struct asym *sym )
+static ret_code set_rm_sib(struct code_info *CodeInfo, unsigned CurrOpnd, char ss, int index, int base, const struct asym *sym)
 /*******************************************************************************************************************************/
 /*
  * encode ModRM and SIB byte for memory addressing.
@@ -638,40 +638,53 @@ static ret_code set_rm_sib( struct code_info *CodeInfo, unsigned CurrOpnd, char 
  *    base = base register (T_EBP, ... )
  *     sym = symbol (direct addressing, displacement)
  * out: CodeInfo->rm_byte, CodeInfo->sib, CodeInfo->prefix.rex
-*/
-{
-    int                 temp;
-    unsigned char       mod_field;
-    unsigned char       rm_field;
-    unsigned char       base_reg;
-    unsigned char       idx_reg;
+ */
+  {
+  int                 temp;
+  unsigned char       mod_field;
+  unsigned char       rm_field;
+  unsigned char       base_reg;
+  unsigned char       idx_reg;
 #if AMD64_SUPPORT
-    unsigned char       bit3_base;
-    unsigned char       bit3_idx;
-    unsigned char       rex;
+  unsigned char       bit3_base;
+  unsigned char       bit3_idx;
+  unsigned char       rex;
 #endif
+ // __debugbreak();
+  DebugMsg1(("set_rm_sib(scale=%u, index=%d, base=%d, sym=%s) enter [CI.adrsiz=%u]\n", 1 << (ss >> 6), index, base, sym ? sym->name : "NULL", CodeInfo->prefix.adrsiz));
 
-    DebugMsg1(("set_rm_sib(scale=%u, index=%d, base=%d, sym=%s) enter [CI.adrsiz=%u]\n", 1 << (ss >> 6), index, base, sym ? sym->name : "NULL", CodeInfo->prefix.adrsiz ));
-
-    /* clear mod */
-    rm_field = 0;
-    CodeInfo->basetype = base;
+  /* clear mod */
+  rm_field = 0;
+  CodeInfo->basetype = base;
 #if AMD64_SUPPORT
-    bit3_base = 0;
-    bit3_idx = 0;
-    rex = 0;
+  bit3_base = 0;
+  bit3_idx = 0;
+  rex = 0;
 #endif
-    if( CodeInfo->opnd[CurrOpnd].InsFixup != NULL ) { /* symbolic displacement given? */
-        mod_field = MOD_10;
-    } else if((CodeInfo->opnd[CurrOpnd].data32l == 0) ||( base == T_RIP)) { /* no displacement (or 0) */
-        mod_field = MOD_00;
-    } else if( ( CodeInfo->opnd[CurrOpnd].data32l > SCHAR_MAX )
-       || ( CodeInfo->opnd[CurrOpnd].data32l < SCHAR_MIN ) ) {
-        mod_field = MOD_10; /* full size displacement */
-    } else {
-        mod_field = MOD_01; /* byte size displacement */
+  if (CodeInfo->opnd[CurrOpnd].InsFixup != NULL) { /* symbolic displacement given? */
+    mod_field = MOD_10;
     }
-
+  else if ((CodeInfo->opnd[CurrOpnd].data32l == 0) || (base == T_RIP)) { /* no displacement (or 0) */
+    mod_field = MOD_00;
+    }
+  else if ((CodeInfo->opnd[CurrOpnd].data32l > SCHAR_MAX)
+           || (CodeInfo->opnd[CurrOpnd].data32l < SCHAR_MIN)) {
+    mod_field = MOD_10; /* full size displacement */
+    }
+  else {
+    mod_field = MOD_01; /* byte size displacement */
+    }
+  temp = GetValueSp( base );
+  if (temp == OP_XMM || temp == OP_YMM || temp == OP_ZMM){ 
+ //   __debugbreak();
+  temp = index;
+  index = base;
+  base = temp;
+  temp = CodeInfo->indexreg;
+  CodeInfo->indexreg = CodeInfo->basereg;
+  if (temp == 0xff)
+  CodeInfo->basereg = 0x10;
+  }
     if( ( index == EMPTY ) && ( base == EMPTY ) ) {
         /* direct memory.
          * clear the rightmost 3 bits
@@ -795,6 +808,7 @@ static ret_code set_rm_sib( struct code_info *CodeInfo, unsigned CurrOpnd, char 
 #endif
         if ( ( GetSflagsSp( base ) & GetSflagsSp( index ) & SFR_SIZMSK ) == 0 ) {
 #if AVXSUPP
+          
            CodeInfo->indextype = GetValueSp( index );
            if (CodeInfo->indextype == OP_XMM || CodeInfo->indextype == OP_YMM || CodeInfo->indextype == OP_ZMM){
              ;
@@ -1574,6 +1588,7 @@ static ret_code memory_operand( struct code_info *CodeInfo, unsigned CurrOpnd, s
     char                ss = SCALE_FACTOR_1;
     int                 index;
     int                 base;
+    int                 temp;
     int                 j;
     struct asym         *sym;
     uint_8              Ofssize;
@@ -1736,13 +1751,29 @@ static ret_code memory_operand( struct code_info *CodeInfo, unsigned CurrOpnd, s
             break;
         }
     }
-
     base = ( opndx->base_reg ? opndx->base_reg->tokval : EMPTY );
     index = ( opndx->idx_reg ? opndx->idx_reg->tokval : EMPTY );
-    CodeInfo->indexreg = GetRegNo( index );
-    CodeInfo->basereg = GetRegNo( base );
+    /* swap registers if base is AVX register, v2.38*/
+    if (GetValueSp(base) == OP_XMM || GetValueSp(base) == OP_YMM 
+#if EVEXSUPP
+        || GetValueSp(base) == OP_ZMM
+#endif
+        ){
+//      __debugbreak();
+      temp = base;
+      base = index;
+      index = temp;
+      }
+    /*----------------------------------------------*/
+      
+      if (index != EMPTY) CodeInfo->indexreg = GetRegNo(index);
+      if (base != EMPTY)  CodeInfo->basereg = GetRegNo(base);
     /* use base + index from here - don't use opndx-> base_reg/idx_reg! */
-
+      if (index != EMPTY && base == EMPTY){
+        base = 0x87;     /* VEX index with omitted base EG: [+ymm1] */
+        CodeInfo->basereg = GetRegNo(base);
+        CodeInfo->indexreg = GetRegNo(index);
+        }
 #if 0 /* v2.10: moved to expreval.c */
     if ( sym && sym->state == SYM_STACK ) {
         if( base != EMPTY ) {
@@ -3454,6 +3485,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
   CodeInfo.reg3 = 0xff;          /* if not reg3 make it negative  */
   CodeInfo.basereg = 0xff;
   CodeInfo.indexreg = 0xff;
+  CodeInfo.zreg = 0;
   if (tokenarray[0].tokval >= T_KADDB && tokenarray[0].tokval <= T_KMOVW){
     CodeInfo.evex_flag = FALSE;
   }
@@ -3467,6 +3499,8 @@ ret_code ParseLine(struct asm_tok tokenarray[])
   }
 #endif
   CodeInfo.flags = 0;
+    //if (tokenarray[i].tokval == T_VSCATTERDPD) 
+    //__debugbreak();
 
   /* instruction prefix?
    * T_LOCK, T_REP, T_REPE, T_REPNE, T_REPNZ, T_REPZ */
@@ -3656,14 +3690,16 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 	  || GetValueSp(opndx[0].base_reg->tokval) == OP_ZMM
 #endif
 	  ))
-  {
-	  if (GetValueSp(opndx[0].base_reg->tokval) == OP_XMM)
-		  alignCheck = 16;
-	  else if (GetValueSp(opndx[0].base_reg->tokval) == OP_YMM)
-		  alignCheck = 32;
+    {
+    if (GetValueSp(opndx[0].base_reg->tokval) == OP_XMM)
+      alignCheck = 16;
+    else if (GetValueSp(opndx[0].base_reg->tokval) == OP_YMM)
+      alignCheck = 32;
 #if EVEXSUPP
-	  else if (GetValueSp(opndx[0].base_reg->tokval) == OP_ZMM)
-		  alignCheck = 64;
+    else if (GetValueSp(opndx[0].base_reg->tokval) == OP_ZMM){
+      CodeInfo.zreg = 1;
+      alignCheck = 64;
+    }
 #endif
 
 	  if (opndx[1].kind == EXPR_ADDR && opndx[1].sym)
@@ -3724,14 +3760,16 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 		  || GetValueSp(opndx[1].base_reg->tokval) == OP_ZMM
 #endif
 		  ))
-	  {
-		  if (GetValueSp(opndx[1].base_reg->tokval) == OP_XMM)
-			  alignCheck = 16;
-		  else if (GetValueSp(opndx[1].base_reg->tokval) == OP_YMM)
-			  alignCheck = 32;
+        {
+        if (GetValueSp(opndx[1].base_reg->tokval) == OP_XMM)
+          alignCheck = 16;
+        else if (GetValueSp(opndx[1].base_reg->tokval) == OP_YMM)
+          alignCheck = 32;
 #if EVEXSUPP
-		  else if (GetValueSp(opndx[1].base_reg->tokval) == OP_ZMM)
-			  alignCheck = 64;
+        else if (GetValueSp(opndx[1].base_reg->tokval) == OP_ZMM){
+          CodeInfo.zreg = 1;
+          alignCheck = 64;
+        }
 #endif
 		  
 		  /* Check the symbol size, if it's compatible force xmmword/ymmword type */
@@ -3789,7 +3827,10 @@ for (CurrOpnd = 0; CurrOpnd < j && CurrOpnd < MAX_OPND; CurrOpnd++) {
       if (opndx[OPND1].idx_reg) CodeInfo.indexreg = opndx[OPND1].idx_reg->bytval;
       if (CodeInfo.reg1 > 15) CodeInfo.evex_flag = TRUE;
       CodeInfo.r1type = GetValueSp(opndx[OPND1].base_reg->tokval);
-      if (CodeInfo.r1type == OP_ZMM)CodeInfo.evex_flag = TRUE;
+      if (CodeInfo.r1type == OP_ZMM){
+        CodeInfo.zreg = 1;
+        CodeInfo.evex_flag = TRUE;
+        }
       }
       if (opndx[OPND2].kind == EXPR_REG){
         regtok = opndx[OPND2].base_reg->tokval;
@@ -3797,7 +3838,10 @@ for (CurrOpnd = 0; CurrOpnd < j && CurrOpnd < MAX_OPND; CurrOpnd++) {
       if (opndx[OPND2].idx_reg) CodeInfo.indexreg = opndx[OPND2].idx_reg->bytval;
       if (CodeInfo.reg2 > 15) CodeInfo.evex_flag = TRUE;
        CodeInfo.r2type = GetValueSp(opndx[OPND2].base_reg->tokval);
-       if (CodeInfo.r2type == OP_ZMM)CodeInfo.evex_flag = TRUE;
+       if (CodeInfo.r2type == OP_ZMM){
+         CodeInfo.zreg = 1;
+         CodeInfo.evex_flag = TRUE;
+         }
        }
       if (((CodeInfo.token == T_ANDN)||(CodeInfo.token == T_MULX)||
         (CodeInfo.token == T_PEXT)||(CodeInfo.token == T_PDEP)) &&
@@ -3941,7 +3985,6 @@ for (CurrOpnd = 0; CurrOpnd < j && CurrOpnd < MAX_OPND; CurrOpnd++) {
       break;
     }
    } /* end for */
-
 #if AVXSUPP
 	 /* 4 arguments are valid vor AVX only */
    if (CurrOpnd != j) {

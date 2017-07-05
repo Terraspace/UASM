@@ -212,7 +212,7 @@ struct opnd_class {
 //};
 /* Nidud sugestion for struct instr_item  */
 struct instr_item {
-    unsigned char	opclsidx;	        /* v2.06: index for opnd_clstab */
+    unsigned short	opclsidx;	      /* v2.06: index for opnd_clstab */
     unsigned char	byte1_info;	      /* flags for 1st byte */
 #if 1
     unsigned short	allowed_prefix; /* allowed prefix */
@@ -363,6 +363,7 @@ struct code_info {
     unsigned char   evex_p0;
     unsigned char   evex_p1;
     unsigned char   evex_p2;
+    unsigned char   zreg;
              bool   tuple;     /* For EVEX Compressed Disp8*N Encoding */
 			 bool   isptr;
     unsigned char   evex_sae;  /* EVEX Static Rounding Mode */
