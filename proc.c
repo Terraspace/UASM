@@ -2857,9 +2857,6 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
 			stackadj = 8;
 	}
     
-	/* UASM2.35 fix for functions without ModuleInfo.frame_auto */
-  //  if (!ModuleInfo.frame_auto)
-     // stackadj = 0;
 
     /* UASM2.35 fix for functions without ModuleInfo.frame_auto */
   if ( (info->locallist || info->stackparam || info->has_vararg || info->forceframe) || (info->isframe && ModuleInfo.frame_auto) ){
@@ -2944,7 +2941,13 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
               }
             }
         }
-      }
+    }
+	else if (stackadj > 0)
+	{
+		AddLineQueueX("sub %r, %d", T_RSP, NUMQUAL stackadj);
+		if (info->isframe && ModuleInfo.frame_auto)
+			AddLineQueueX("%r %d", T_DOT_ALLOCSTACK, NUMQUAL stackadj);
+	}
 	if (info->isframe && ModuleInfo.frame_auto)
 		AddLineQueueX( "%r", T_DOT_ENDPROLOG );
     return;

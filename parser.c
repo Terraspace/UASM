@@ -674,16 +674,18 @@ static ret_code set_rm_sib(struct code_info *CodeInfo, unsigned CurrOpnd, char s
   else {
     mod_field = MOD_01; /* byte size displacement */
     }
-  temp = GetValueSp( base );
-  if (temp == OP_XMM || temp == OP_YMM || temp == OP_ZMM){ 
- //   __debugbreak();
-  temp = index;
-  index = base;
-  base = temp;
-  temp = CodeInfo->indexreg;
-  CodeInfo->indexreg = CodeInfo->basereg;
-  if (temp == 0xff)
-  CodeInfo->basereg = 0x10;
+  /* In the case of suppressed base register it has to be awapped with index v2.38 */
+  temp = GetValueSp( base );                                 /* get value from SpecialTable */
+  if (temp == OP_XMM || temp == OP_YMM || temp == OP_ZMM){   /* base can be only GP register*/
+    temp = index;                                            /* swap index with base */
+    index = base;
+    base = temp;
+    temp = CodeInfo->indexreg;                                 /* register numbers need to be swapped as well*/
+    CodeInfo->indexreg = CodeInfo->basereg;
+    if (temp == 0xff)                                          /* if base is empty  */
+    CodeInfo->basereg = 0x10;                                /* use RIP relative addressing RIP reg number is 0x10 */
+  else                                                       /* temp contains register number from index */
+    CodeInfo->basereg = temp;                                /* use reg number from index */
   }
     if( ( index == EMPTY ) && ( base == EMPTY ) ) {
         /* direct memory.
@@ -1759,7 +1761,6 @@ static ret_code memory_operand( struct code_info *CodeInfo, unsigned CurrOpnd, s
         || GetValueSp(base) == OP_ZMM
 #endif
         ){
-//      __debugbreak();
       temp = base;
       base = index;
       index = temp;

@@ -441,7 +441,7 @@ static void output_opc(struct code_info *CodeInfo)
     CodeInfo->prefix.rex = (tmp & 0xFA) | ((tmp & REX_R) >> 2) | ((tmp & REX_B) << 2);
 #endif
   }
-      //   if (CodeInfo->token == T_VPGATHERDD)
+      //   if (CodeInfo->token == T_KMOVW)
       //__debugbreak();
 
 #if AVXSUPP
@@ -1793,6 +1793,9 @@ static void output_opc(struct code_info *CodeInfo)
                  else
                  EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
                  /* find the proper opcode for the command movw KREG,GP_REG */
+                 /* it could be AL, AX, EAX or RAX, make them GP reg v2.38*/
+                 type1 &= ~0x200;    /* clear bit 2 in that case */
+                 type2 &= ~0x200;
                  for (cnt = 0; cnt < 5; cnt++,p++){
                    if ((opnd_clstab[p->opclsidx].opnd_type[OPND1] == type1) && 
                      (opnd_clstab[p->opclsidx].opnd_type[OPND2] == type2))
