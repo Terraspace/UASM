@@ -1756,11 +1756,7 @@ static ret_code memory_operand( struct code_info *CodeInfo, unsigned CurrOpnd, s
     base = ( opndx->base_reg ? opndx->base_reg->tokval : EMPTY );
     index = ( opndx->idx_reg ? opndx->idx_reg->tokval : EMPTY );
     /* swap registers if base is AVX register, v2.38*/
-    if (GetValueSp(base) == OP_XMM || GetValueSp(base) == OP_YMM 
-#if EVEXSUPP
-        || GetValueSp(base) == OP_ZMM
-#endif
-        ){
+    if (GetValueSp(base) == OP_XMM || GetValueSp(base) == OP_YMM || GetValueSp(base) == OP_ZMM){
       temp = base;
       base = index;
       index = temp;
@@ -3686,23 +3682,16 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 
   /* UASM 2.36 SIMD aligned check */
   /* ********************************************************* */
-  if (opndx[0].kind == EXPR_REG && (GetValueSp(opndx[0].base_reg->tokval) == OP_XMM || GetValueSp(opndx[0].base_reg->tokval) == OP_YMM
-#if EVEXSUPP
-	  || GetValueSp(opndx[0].base_reg->tokval) == OP_ZMM
-#endif
-	  ))
-    {
+  if (opndx[0].kind == EXPR_REG && (GetValueSp(opndx[0].base_reg->tokval) == OP_XMM || 
+      GetValueSp(opndx[0].base_reg->tokval) == OP_YMM|| GetValueSp(opndx[0].base_reg->tokval) == OP_ZMM)){
     if (GetValueSp(opndx[0].base_reg->tokval) == OP_XMM)
       alignCheck = 16;
     else if (GetValueSp(opndx[0].base_reg->tokval) == OP_YMM)
       alignCheck = 32;
-#if EVEXSUPP
     else if (GetValueSp(opndx[0].base_reg->tokval) == OP_ZMM){
       CodeInfo.zreg = 1;
       alignCheck = 64;
     }
-#endif
-
 	  if (opndx[1].kind == EXPR_ADDR && opndx[1].sym)
 	  {
 
@@ -3717,12 +3706,10 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 			  {
 				  opndx[1].mem_type = MT_YMMWORD;
 			  }
-#if EVEXSUPP
 			  else
 			  {
 				  opndx[1].mem_type = MT_ZMMWORD;
 			  }
-#endif
 		  }
 
 		  if (CodeInfo.token == T_MOVAPS || CodeInfo.token == T_VMOVAPS || CodeInfo.token == T_MOVDQA || 
@@ -3745,34 +3732,25 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 			  {
 				  opndx[2].mem_type = MT_YMMWORD;
 			  }
-#if EVEXSUPP
 			  else
 			  {
 				  opndx[2].mem_type = MT_ZMMWORD;
 			  }
-#endif
 		  }
 	  }
   }
   else if (opndx[0].kind == EXPR_ADDR && opndx[0].sym)
   {
-	  if (opndx[1].kind == EXPR_REG && (GetValueSp(opndx[1].base_reg->tokval) == OP_XMM || GetValueSp(opndx[1].base_reg->tokval) == OP_YMM
-#if EVEXSUPP
-		  || GetValueSp(opndx[1].base_reg->tokval) == OP_ZMM
-#endif
-		  ))
-        {
+	  if (opndx[1].kind == EXPR_REG && (GetValueSp(opndx[1].base_reg->tokval) == OP_XMM ||
+         GetValueSp(opndx[1].base_reg->tokval) == OP_YMM|| GetValueSp(opndx[1].base_reg->tokval) == OP_ZMM)){
         if (GetValueSp(opndx[1].base_reg->tokval) == OP_XMM)
           alignCheck = 16;
         else if (GetValueSp(opndx[1].base_reg->tokval) == OP_YMM)
           alignCheck = 32;
-#if EVEXSUPP
         else if (GetValueSp(opndx[1].base_reg->tokval) == OP_ZMM){
           CodeInfo.zreg = 1;
           alignCheck = 64;
-        }
-#endif
-		  
+        }		  
 		  /* Check the symbol size, if it's compatible force xmmword/ymmword type */
 		  if (opndx[0].sym->total_size == alignCheck && !IsScalarSimdInstr(CodeInfo.token))
 		  {
@@ -3784,12 +3762,10 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 			  {
 				  opndx[0].mem_type = MT_YMMWORD;
 			  }
-#if EVEXSUPP
 			  else
 			  {
 				  opndx[0].mem_type = MT_ZMMWORD;
 			  }
-#endif
 		  }
 
 		  if (CodeInfo.token == T_MOVAPS || CodeInfo.token == T_VMOVAPS || CodeInfo.token == T_MOVDQA ||

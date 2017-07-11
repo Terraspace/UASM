@@ -459,6 +459,8 @@ VX_LL|VX_L,               /* VPANDD       */
 VX_LL|VX_L,               /* VPANDQ       */
 VX_LL|VX_L,               /* VPANDND      */
 VX_LL|VX_L,               /* VPANDNQ      */
+VX_LL|VX_L,               /* VPBLENDMB    */
+VX_LL|VX_L,               /* VPBLENDMW    */
 VX_LL|VX_L,               /* VPBLENDMD    */
 VX_LL|VX_L,               /* VPBLENDMQ    */
 

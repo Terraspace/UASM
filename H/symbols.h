@@ -487,9 +487,7 @@ enum struct_simd
        NOVEC,
        MM128,
        MM256,
-#if EVEXSUPP
        MM512
-#endif
 }; 
 struct struct_info {
     struct sfield       *head; /* STRUCT/UNION/RECORD: start of field list */

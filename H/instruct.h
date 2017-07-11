@@ -1546,6 +1546,8 @@ insx(VPANDD, vpandd,                 OpCls( XMM,   XMM_M128, NONE ), F_660F,  1,
 insx(VPANDQ, vpandq,                 OpCls( XMM,   XMM_M128, NONE ), F_660F,  1,  no_WDS,0xDB, 0x00,     P_686|P_AVX ,W1|IZSZ|QSIZE|FV,RWF_VEX )
 insx(VPANDND, vpandnd,               OpCls( XMM,   XMM_M128, NONE ), F_660F,  1,  no_WDS,0xDF, 0x00,     P_686|P_AVX ,IZSZ|DSIZE|FV,RWF_VEX )
 insx(VPANDNQ, vpandnq,               OpCls( XMM,   XMM_M128, NONE ), F_660F,  1,  no_WDS,0xDF, 0x00,     P_686|P_AVX ,W1|IZSZ|QSIZE|FV,RWF_VEX )
+insx(VPBLENDMB, vpblendmb,           OpCls( XMM,   XMM_M128, NONE ), F_660F38,1,  no_WDS,0x66, 0x00,     P_686|P_AVX ,IZSZ|BSIZE|FV,RWF_VEX )
+insx(VPBLENDMW, vpblendmw,           OpCls( XMM,   XMM_M128, NONE ), F_660F38,1,  no_WDS,0x66, 0x00,     P_686|P_AVX ,W1|IZSZ|WSIZE|FV,RWF_VEX )
 insx(VPBLENDMD, vpblendmd,           OpCls( XMM,   XMM_M128, NONE ), F_660F38,1,  no_WDS,0x64, 0x00,     P_686|P_AVX ,IZSZ|DSIZE|FV,RWF_VEX )
 insx(VPBLENDMQ, vpblendmq,           OpCls( XMM,   XMM_M128, NONE ), F_660F38,1,  no_WDS,0x64, 0x00,     P_686|P_AVX ,W1|IZSZ|QSIZE|FV,RWF_VEX )
 insx(VFMADD132PD, vfmadd132pd,       OpCls( XMM,   XMM_M128, NONE ), F_660F38,1,  no_WDS,0x98, 0x00,     P_686|P_AVX ,W1|QSIZE|FV ,RWF_VEX )

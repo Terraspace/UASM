@@ -219,8 +219,6 @@ res(DOT_SAVEREG,    .savereg,    0,        DRT_EXCFRAME, RWF_X64,  P_64, 0)
 res(DOT_SAVEXMM128, .savexmm128, 0,        DRT_EXCFRAME, RWF_X64,  P_64, 0)
 #if AVXSUPP
 res(DOT_SAVEYMM256, .saveymm256, 0,        DRT_EXCFRAME, RWF_X64,  P_64, 0)
-#endif
-#if EVEXSUPP
 res(DOT_SAVEZMM512, .savezmm512, 0,        DRT_EXCFRAME, RWF_X64,  P_64, 0)
 #endif
 res(DOT_SETFRAME,   .setframe,   0,        DRT_EXCFRAME, RWF_X64,  P_64, 0)

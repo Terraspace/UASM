@@ -221,11 +221,9 @@ static const enum special_token sysV64_regsXMM[] = {
 static const enum special_token sysV64_regsYMM[] = {
 	T_YMM0, T_YMM1, T_YMM2, T_YMM3, T_YMM4, T_YMM5, T_YMM6, T_YMM7
 };
-#if EVEXSUPP
 static const enum special_token sysV64_regsZMM[] = {
 	T_ZMM0, T_ZMM1, T_ZMM2, T_ZMM3, T_ZMM4, T_ZMM5, T_ZMM6, T_ZMM7
 };
-#endif
 #endif
 
 /* segment register names, order must match ASSUME_ enum */
@@ -1006,7 +1004,6 @@ vcall:
 								}
 							}
 						}
-#if EVEXSUPP
 						else if (t->e.structinfo->stype == MM512 && vcallpass == 0) {
 							if (opnd->kind == EXPR_REG && opnd->indirect == FALSE) {
 								if (GetValueSp(reg) & OP_YMM) {
@@ -1023,16 +1020,12 @@ vcall:
 								}
 							}
 						}
-#endif                
-
 						if (t->e.structinfo->stype == MM128)
 							membersize = 16;
 						else if (t->e.structinfo->stype == MM256)
 							membersize = 32;
-#if EVEXSUPP
 						else if (t->e.structinfo->stype == MM512)
 							membersize = 64;
-#endif            
 						memberCount = t->e.structinfo->memberCount;
 						if (t->e.structinfo->isHVA) {
 							if (memberCount)
@@ -1114,7 +1107,6 @@ vcall:
 									}
 								}
 								break;
-#if EVEXSUPP 
 							case 64:
 								if ((vcallpass == 1) && (t->e.structinfo->isHFA || t->e.structinfo->isHVA))
 								{
@@ -1126,7 +1118,6 @@ vcall:
 									}
 								}
 								break;
-#endif 
 							}
 						}
 					}
@@ -1165,12 +1156,10 @@ vcall:
 							info->vregs[index] = 1;
 							AddLineQueueX("vmovups %r,oword ptr %s", T_YMM0 + index, paramvalue);
 							break;
-#if EVEXSUPP 
-						case 32:
+						case 64:
 							info->vregs[index] = 1;
 							AddLineQueueX("vmovups %r,zmmword ptr %s", T_ZMM0 + index, paramvalue);
 							break;
-#endif
 						}
 					}
 				}
@@ -1372,11 +1361,7 @@ static int sysv_reg( unsigned int reg )
 	int i;
 	int base = -1;
 
-	if (GetValueSp(reg) & OP_XMM || GetValueSp(reg) & OP_YMM 
-#if EVEXSUPP
-		|| GetValueSp(reg) & OP_ZMM
-#endif
-		)
+	if (GetValueSp(reg) & OP_XMM || GetValueSp(reg) & OP_YMM || GetValueSp(reg) & OP_ZMM)
 	{
 		i = GetRegNo(reg);
 		base = i;
@@ -1418,11 +1403,7 @@ static int sysv_reg( unsigned int reg )
 static int sysv_regTo64(unsigned int reg)
 {
 	unsigned int resultReg = T_RAX;
-	if (GetValueSp(reg) & OP_XMM || GetValueSp(reg) & OP_YMM
-#if EVEXSUPP
-		|| GetValueSp(reg) & OP_ZMM
-#endif
-		)
+	if (GetValueSp(reg) & OP_XMM || GetValueSp(reg) & OP_YMM || GetValueSp(reg) & OP_ZMM)
 	{
 		return(reg);
 	}
@@ -1565,10 +1546,8 @@ static int sysv_GetNextVEC(struct proc_info *info, int size)
 		return(sysV64_regsXMM[info->firstVEC++]);
 	if (size == 32)
 		return(sysV64_regsYMM[info->firstVEC++]);
-	#if EVEXSUPP
 	if (size == 64)
 		return(sysV64_regsZMM[info->firstVEC++]);
-	#endif
 }
 
 /*
@@ -1687,11 +1666,8 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 			reg = sysv_GetNextVEC(info, 16);
 		else if (GetValueSp(reg) & OP_YMM)
 			reg = sysv_GetNextVEC(info, 32);
-		#if EVEXSUPP
 		else if (GetValueSp(reg) & OP_ZMM)
 			reg = sysv_GetNextVEC(info, 64);
-		#endif
-
 		if (reg != -1)
 		{
 			if (GetValueSp(opnd->base_reg->tokval) & OP_R)
@@ -1764,7 +1740,6 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 					info->stackOfs += 32;
 				}
 			}
-			#if EVEXSUPP
 			else if (GetValueSp(reg) & OP_ZMM)
 			{
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r], %s", MOVE_UNALIGNED_INT, T_RSP, paramvalue);
@@ -1779,7 +1754,6 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 					info->stackOfs += 64;
 				}
 			}
-			#endif
 		}
 		return(1);
 	}
@@ -1934,7 +1908,6 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 	/* ******************************************************************************************************************** */
 	/* Operand is a valid ZMM sized vector type (register already handled above) */
 	/* ******************************************************************************************************************** */
-	#if EVEXSUPP
 	if ((opnd->sym->mem_type == MT_TYPE || opnd->kind == EXPR_ADDR) && opnd->sym->type && _stricmp(opnd->sym->type->name, "__m512") == 0)
 	{
 		reg = sysv_GetNextVEC(info, 64);
@@ -1959,7 +1932,6 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		}
 		return(1);
 	}
-	#endif
 	/* ******************************************************************************************************************** */
 	/* Operands address is to be taken with ADDR operator / LEA */
 	/* ******************************************************************************************************************** */
@@ -2289,7 +2261,6 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 
 		/* ZMM or __M512 Type Parameter */
 		/* ******************************************************************************************************************** */
-		#if EVEXSUPP
 		if ( param->sym.mem_type == MT_ZMMWORD || (param->sym.mem_type == MT_TYPE && _stricmp(param->sym.type->name, "__m512") == 0) )
 		{
 
@@ -2340,8 +2311,6 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 			EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
 			return(1);
 		}
-		#endif
-
 		/* Parameter is (BYTE,WORD,DWORD,QWORD,PTR) signed or unsigned */
 		/* ******************************************************************************************************************** */
 		if (param->sym.mem_type == MT_BYTE || param->sym.mem_type == MT_WORD || param->sym.mem_type == MT_DWORD || param->sym.mem_type == MT_QWORD ||
@@ -2639,7 +2608,6 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 		
 		/* ZMMWORD or __M512 type */
 		/* ******************************************************************************************************************** */
-		#if EVEXSUPP
 		if (param->sym.mem_type == MT_OWORD || (param->sym.mem_type == MT_TYPE && _stricmp(param->sym.type->name, "__m512") == 0))
 		{
 			if (opnd->kind == EXPR_REG)
@@ -2660,8 +2628,6 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 			}
 			return(1);
 		}
-		#endif
-
 		/* Integer type argument (byte/word/dword/qword) signed or unsigned */
 		/* ******************************************************************************************************************** */
 		if (param->sym.mem_type == MT_BYTE || param->sym.mem_type == MT_WORD || param->sym.mem_type == MT_DWORD || param->sym.mem_type == MT_QWORD ||
@@ -2708,11 +2674,8 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 					reg = sysv_GetNextVEC(info, 16);
 				else if (GetValueSp(reg) & OP_YMM)
 					reg = sysv_GetNextVEC(info, 32);
-				#if EVEXSUPP
 				else if (GetValueSp(reg) & OP_ZMM)
 					reg = sysv_GetNextVEC(info, 64);
-				#endif
-
 				reg = opnd->base_reg->tokval;
 				if (GetValueSp(reg) & OP_R)
 				{
@@ -2765,7 +2728,6 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 						info->stackOfs += 32;
 					}
 				}
-				#if EVEXSUPP
 				else if (GetValueSp(reg) & OP_ZMM)
 				{
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r], %s", MOVE_UNALIGNED_INT, T_RSP, paramvalue);
@@ -2780,7 +2742,6 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 						info->stackOfs += 64;
 					}
 				}
-				#endif
 				else
 				{
 					EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
@@ -3643,11 +3604,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 		}
 		else if (proc->sym.langtype == LANG_VECTORCALL) {
 			if (opnd.kind == EXPR_REG && reqParam > 5) {
-				if ((GetValueSp(reg) & OP_XMM) || (GetValueSp(reg) & OP_YMM)
-#if EVEXSUPP
-					|| (GetValueSp(reg) & OP_ZMM)
-#endif
-					)
+				if ((GetValueSp(reg) & OP_XMM) || (GetValueSp(reg) & OP_YMM) || (GetValueSp(reg) & OP_ZMM))
 					EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam);
 			}
 			else if (vectorcall_tab[ModuleInfo.fctype].handleparam(proc, reqParam, curr, addr, &opnd, fullparam, r0flags))

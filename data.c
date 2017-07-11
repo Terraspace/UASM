@@ -717,10 +717,18 @@ next_item:  /* <--- continue scan if a comma has been detected */
             }
             /* a string is only regarded as an array if item size is 1 */
             /* else it is regarded as ONE item */
-            if( no_of_bytes != 1 ) {
-                if( string_len > no_of_bytes && sym->mem_type != MT_WORD ) {
-                    return( EmitError( INITIALIZER_OUT_OF_RANGE ) );
-                }
+            if( no_of_bytes != 1 ) 
+			{
+				if (Options.masm51_compat || Options.strict_masm_compat)
+				{
+					if (string_len > no_of_bytes)
+						return(EmitError(INITIALIZER_OUT_OF_RANGE));
+				}
+				else
+				{
+					if (string_len > no_of_bytes && sym->mem_type != MT_WORD)
+						return(EmitError(INITIALIZER_OUT_OF_RANGE));
+				}
             }
 
             if( sym && Parse_Pass == PASS_1 && string_len > 0 ) {
@@ -748,23 +756,36 @@ next_item:  /* <--- continue scan if a comma has been detected */
 				}
             }
 
-            if( !inside_struct ) {
-                /* anything bigger than a byte must be stored in little-endian
-                 * format -- LSB first */
-				if (string_len > 1 && no_of_bytes > 1 && sym && sym->mem_type == MT_WORD)
+            if( !inside_struct ) 
+			{
+                /* anything bigger than a byte must be stored in little-endian format -- LSB first */
+				if (Options.masm51_compat || Options.strict_masm_compat)
 				{
-					OutputInterleavedDataBytes(pchar, string_len);
+					if (string_len > 1 && no_of_bytes > 1)
+						pchar = little_endian( (const char *)pchar, string_len );
+					OutputDataBytes( pchar, string_len );
+					if ( no_of_bytes > string_len )
+						FillDataBytes(0, no_of_bytes - string_len);
 				}
 				else
 				{
-					if (string_len > 1 && no_of_bytes > 1)
+					if (string_len > 1 && no_of_bytes > 1 && sym && sym->mem_type == MT_WORD)
 					{
-						pchar = little_endian((const char *)pchar, string_len);
+						OutputInterleavedDataBytes(pchar, string_len);
 					}
-					OutputDataBytes(pchar, string_len);
+					else
+					{
+						if (string_len > 1 && no_of_bytes > 1)
+						{
+							pchar = little_endian((const char *)pchar, string_len);
+						}
+						OutputDataBytes(pchar, string_len);
+					}
+					if (no_of_bytes > string_len)
+						FillDataBytes(0, no_of_bytes - string_len);
 				}
-                if ( no_of_bytes > string_len )
-                    FillDataBytes( 0, no_of_bytes - string_len );
+
+				
             }
         } else {
             /* it's NOT a string */

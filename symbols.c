@@ -824,11 +824,9 @@ void SymSimd(struct dsym *sym)
   else if (vtotal == 0x10 && sym->e.structinfo->isHomogenous == 1 && ((sym->sym.typekind == TYPE_UNION) ||
     (htype == MT_REAL4 || htype == MT_REAL8 || htype == MT_BYTE || htype == MT_WORD | htype == MT_DWORD || htype == MT_QWORD)))
     sym->e.structinfo->stype = MM128;
-#if EVEXSUPP
   else if (vtotal == 0x40 && sym->e.structinfo->isHomogenous == 1 && ((sym->sym.typekind == TYPE_UNION) ||
     (htype == MT_REAL4 || htype == MT_REAL8 || htype == MT_BYTE || htype == MT_WORD | htype == MT_DWORD || htype == MT_QWORD)))
     sym->e.structinfo->stype = MM512;
-#endif
 
   // Ensure unions of multiple MM128 or MM256 types default to a 4/8 member float arrangement.
   if (sym->sym.typekind == TYPE_UNION && sym->e.structinfo->isHomogenous == 1)
@@ -855,9 +853,7 @@ void SymSimd(struct dsym *sym)
 
 	   c0 = strncmp(sym->sym.name, "__m128", 6);
 	   c1 = strncmp(sym->sym.name, "__m256", 6);
-#if EVEXSUPP
 	   c2 = strncmp(sym->sym.name, "__m512", 6);
-#endif
 	   if (c0 == 0)
 	   {
 		   sym->e.structinfo->isHFA = 0;
@@ -868,13 +864,11 @@ void SymSimd(struct dsym *sym)
 		   sym->e.structinfo->isHFA = 0;
 		   sym->e.structinfo->stype = MM256;
 	   }
-#if EVEXSUPP
 	   else if (c2 == 0)
 	   {
 		   sym->e.structinfo->isHFA = 0;
 		   sym->e.structinfo->stype = MM512;
 	   }
-#endif
 
 	   sym->e.structinfo->isHVA = 0;
 	   if (memberCount == 4 && sym->e.structinfo->isHomogenous == 1 && htype == MT_TYPE && sym->sym.typekind != TYPE_UNION)

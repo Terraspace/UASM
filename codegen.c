@@ -441,7 +441,7 @@ static void output_opc(struct code_info *CodeInfo)
     CodeInfo->prefix.rex = (tmp & 0xFA) | ((tmp & REX_R) >> 2) | ((tmp & REX_B) << 2);
 #endif
   }
-      //   if (CodeInfo->token == T_KMOVW)
+      //   if (CodeInfo->token == T_KMOVQ)
       //__debugbreak();
 
 #if AVXSUPP
@@ -737,19 +737,20 @@ static void output_opc(struct code_info *CodeInfo)
                      byte1 |= EVEX_P0RMASK;
                    else
                      byte1 &= ~EVEX_P0RMASK;
-                   if (CodeInfo->reg3 != 0xff)     
+                   if (CodeInfo->reg3 != 0xff) {
                      rn = CodeInfo->reg3;
+                     }
                    else if (CodeInfo->basereg != 0xff)
                      rn = CodeInfo->basereg;
                    else rn = CodeInfo->reg2;
                    if (rn > 15){
                      rn -= 15;
                      byte1 &= ~EVEX_P0XMASK;
-                   }
-                   if (CodeInfo->token >= T_VFMADD132PD && CodeInfo->token <= T_VFNMSUB231SS);
+                     }
+                   /* if third register is a mask register and not memory opperand than don't touch EVEX_P0BMASK v2.38 */
+                   if (CodeInfo->reg3 != 0xff && CodeInfo->basereg == 0xff);
                    else if (rn <= 7)byte1 |= EVEX_P0BMASK;
                    else byte1 &= ~EVEX_P0BMASK;
-                   
                  }
                }
             if (CodeInfo->token >= T_VPSCATTERDD && CodeInfo->token <= T_VSCATTERQPD){
@@ -847,6 +848,9 @@ static void output_opc(struct code_info *CodeInfo)
                 } 
               OutputCodeByte( byte1 );
               if (CodeInfo->opnd[OPND2].type == OP_I8){
+                /* prevent immediate data for KMOV instruction v2.38 */
+                if (CodeInfo->token >= T_KMOVB && CodeInfo->token <= T_KMOVQ)
+                  EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
                 if ((CodeInfo->token >= T_VPSLLW) && (CodeInfo->token <= T_VPSRLQ) ||
                   (CodeInfo->token >= T_VPSLLVD) && (CodeInfo->token <= T_VPSRLVW)) {
                   c = CodeInfo->reg1;
@@ -910,15 +914,40 @@ static void output_opc(struct code_info *CodeInfo)
             else if ((CodeInfo->token >= T_KNOTB) && (CodeInfo->token <= T_KORTESTQ)) {
               /*  1 1111 0pp */
               /*  R vvvv Lpp */
-              lbyte = 0xF8;
+              if (CodeInfo->reg2 <= 7)
+                 lbyte |= 0x80;
               if (ins->byte1_info == F_660F) lbyte |= 0x01;
             }
             else if ((CodeInfo->token >= T_KMOVB) && (CodeInfo->token <= T_KMOVW)) {
               /*  1 1111 0pp */
               /*  R vvvv Lpp */
-              lbyte = 0xF8;
-              if (ins->byte1_info == F_660F) lbyte |= 0x01;
-              else  lbyte |= 0x3;
+              if ((CodeInfo->token == T_KMOVD || CodeInfo->token == T_KMOVQ))
+                lbyte |= 0x80;                                  /* W bit has to be set for KMOVD and KMOVQ v2.38*/
+              if (ins->byte1_info == F_660F) lbyte |= 0x01;     /* set PP to 01 for 66.0F */
+              else if (ins->byte1_info == F_0F) lbyte &= ~0x03; /* set PP t0 00 for 0F */
+              else  lbyte |= 0x3;                               /* set PP to 11 for F2.0F */
+              if (CodeInfo->token == T_KMOVB || CodeInfo->token == T_KMOVW || CodeInfo->token == T_KMOVD){
+                switch (CodeInfo->opnd[OPND2].type){
+                  case OP_R64:
+                  case OP_RAX:
+                  case OP_AX:
+                  case OP_R16:
+                  case OP_R8:
+                  case OP_AL:
+                  EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
+                  }
+              }
+              if (CodeInfo->token == T_KMOVQ){
+                switch (CodeInfo->opnd[OPND2].type){
+                  case OP_R32:
+                  case OP_EAX:
+                  case OP_AX:
+                  case OP_R16:
+                  case OP_R8:
+                  case OP_AL:
+                  EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
+                 }
+              }
             }
             if (CodeInfo->token < T_VCVTDQ2PD && CodeInfo->token > T_VCVTTSS2SI){
               if (CodeInfo->reg2 > 15)lbyte |= EVEX_P1WMASK;
@@ -1484,13 +1513,15 @@ static void output_opc(struct code_info *CodeInfo)
 			else if ((CodeInfo->token >= T_KNOTB) && (CodeInfo->token <= T_KORTESTQ)) {
 				/*  1 1111 0pp */
 				/*  R vvvv Lpp */
-				lbyte = 0xF8;
+              if (CodeInfo->reg1 <= 0x07)
+				lbyte |= 0x80;
 				if (ins->byte1_info == F_660F) lbyte |= 0x01;
 			}
 			else if ((CodeInfo->token >= T_KMOVB) && (CodeInfo->token <= T_KMOVW)) {
 				/*  1 1111 0pp */
 				/*  R vvvv Lpp */
-				lbyte = 0xF8;
+              if (CodeInfo->reg1 <= 0x07)
+				lbyte |= 0x80;
 				if (ins->byte1_info == F_660F) lbyte |= 0x01;
 				else if (ins->byte1_info == F_F20F) lbyte |= 0x3;
 			}  //WVVVV1PP

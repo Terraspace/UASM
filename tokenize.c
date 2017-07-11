@@ -594,6 +594,8 @@ static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
           else
             get_broads( p ) ;   // broadcast decorators
         }
+        else if (c == '+') p->input++;
+
 #endif
         break;
     case '=' : /* (0x3D) */
