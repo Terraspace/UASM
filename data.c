@@ -719,7 +719,7 @@ next_item:  /* <--- continue scan if a comma has been detected */
             /* else it is regarded as ONE item */
             if( no_of_bytes != 1 ) 
 			{
-				if (Options.masm51_compat || Options.strict_masm_compat)
+				if (Options.masm51_compat || Options.strict_masm_compat || !Options.literal_strings)
 				{
 					if (string_len > no_of_bytes)
 						return(EmitError(INITIALIZER_OUT_OF_RANGE));
@@ -759,7 +759,7 @@ next_item:  /* <--- continue scan if a comma has been detected */
             if( !inside_struct ) 
 			{
                 /* anything bigger than a byte must be stored in little-endian format -- LSB first */
-				if (Options.masm51_compat || Options.strict_masm_compat)
+				if (Options.masm51_compat || Options.strict_masm_compat || !Options.literal_strings)
 				{
 					if (string_len > 1 && no_of_bytes > 1)
 						pchar = little_endian( (const char *)pchar, string_len );
