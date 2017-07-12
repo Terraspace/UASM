@@ -511,6 +511,7 @@ static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
 {
     char    symbol;
     char    c;
+    char    a=0;
     int     i;
     int  index;
 
@@ -573,6 +574,7 @@ static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
         buf->string_ptr = (char *)&stokstr1[symbol - '('];
         break;
     case '[' : /* T_OP_SQ_BRACKET operator - needs a matching ']' (0x5B) */
+      a = '[';
     case ']' : /* T_CL_SQ_BRACKET (0x5D) */
         p->input++;
 #if AVXSUPP
@@ -594,8 +596,8 @@ static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
           else
             get_broads( p ) ;   // broadcast decorators
         }
-        else if (c == '+') p->input++;
-
+        /* skip '+' if RIP is suppressed and index only used EG: [+xmm] v2.38 */
+        else if (c == '+' && a == '[') p->input++;
 #endif
         break;
     case '=' : /* (0x3D) */

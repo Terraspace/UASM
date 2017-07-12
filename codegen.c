@@ -441,7 +441,7 @@ static void output_opc(struct code_info *CodeInfo)
     CodeInfo->prefix.rex = (tmp & 0xFA) | ((tmp & REX_R) >> 2) | ((tmp & REX_B) << 2);
 #endif
   }
-      //   if (CodeInfo->token == T_KMOVQ)
+      //   if (CodeInfo->token == T_VMOVDQA64)
       //__debugbreak();
 
 #if AVXSUPP
@@ -849,7 +849,7 @@ static void output_opc(struct code_info *CodeInfo)
               OutputCodeByte( byte1 );
               if (CodeInfo->opnd[OPND2].type == OP_I8){
                 /* prevent immediate data for KMOV instruction v2.38 */
-                if (CodeInfo->token >= T_KMOVB && CodeInfo->token <= T_KMOVQ)
+                if (CodeInfo->token >= T_KMOVB && CodeInfo->token <= T_KMOVW)
                   EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
                 if ((CodeInfo->token >= T_VPSLLW) && (CodeInfo->token <= T_VPSRLQ) ||
                   (CodeInfo->token >= T_VPSLLVD) && (CodeInfo->token <= T_VPSRLVW)) {
@@ -919,6 +919,7 @@ static void output_opc(struct code_info *CodeInfo)
               if (ins->byte1_info == F_660F) lbyte |= 0x01;
             }
             else if ((CodeInfo->token >= T_KMOVB) && (CodeInfo->token <= T_KMOVW)) {
+
               /*  1 1111 0pp */
               /*  R vvvv Lpp */
               if ((CodeInfo->token == T_KMOVD || CodeInfo->token == T_KMOVQ))
@@ -934,6 +935,10 @@ static void output_opc(struct code_info *CodeInfo)
                   case OP_R16:
                   case OP_R8:
                   case OP_AL:
+                  case OP_I8:
+                  case OP_I16:
+                  case OP_I32:
+                  case OP_I64:
                   EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
                   }
               }
@@ -945,6 +950,10 @@ static void output_opc(struct code_info *CodeInfo)
                   case OP_R16:
                   case OP_R8:
                   case OP_AL:
+                  case OP_I8:
+                  case OP_I16:
+                  case OP_I32:
+                  case OP_I64:
                   EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
                  }
               }
@@ -1254,20 +1263,21 @@ static void output_opc(struct code_info *CodeInfo)
                       CodeInfo->evex_p2 |= EVEX_P2L1MASK;
                       }
                   }
-                if (CodeInfo->evex_flag){
-                  //__debugbreak();
-                  if (CodeInfo->token >= T_VPSLLVD && CodeInfo->token <= T_VPSRLVW);
-                  else if (CodeInfo->token >= T_VPSLLW && CodeInfo->token <= T_VPSRLDQ);
-                  else if (CodeInfo->token >= T_VPSLLDQ && CodeInfo->token <= T_VPSRLQ);
-                  else if (CodeInfo->vexregop){
-                    if (CodeInfo->reg2 <= 15) CodeInfo->evex_p2 |= EVEX_P2VMASK;
-                    else CodeInfo->evex_p2 &= ~EVEX_P2VMASK;
-                  }
-                  //__debugbreak();
-                  /* Fixed index size in CodeInfo->evex_p2 ~EVEX_P2VMASK, Uasm 2.16 */
-                  else if ((CodeInfo->opnd[OPND2].type == OP_M || CodeInfo->opnd[OPND1].type == OP_M) && CodeInfo->indexreg <= 15) 
-                    CodeInfo->evex_p2 |= EVEX_P2VMASK;
-                  else CodeInfo->evex_p2 &= ~EVEX_P2VMASK;
+                  if (CodeInfo->evex_flag){
+                    //__debugbreak();
+                    if (CodeInfo->token >= T_VPSLLVD && CodeInfo->token <= T_VPSRLVW);
+                    else if (CodeInfo->token >= T_VPSLLW && CodeInfo->token <= T_VPSRLDQ);
+                    else if (CodeInfo->token >= T_VPSLLDQ && CodeInfo->token <= T_VPSRLQ);
+                    else if (CodeInfo->vexregop){
+                      if (CodeInfo->reg2 <= 15) CodeInfo->evex_p2 |= EVEX_P2VMASK;
+                      else CodeInfo->evex_p2 &= ~EVEX_P2VMASK;
+                      }
+                    //__debugbreak();
+                    /* Fixed index size in CodeInfo->evex_p2 ~EVEX_P2VMASK, Uasm 2.16 */
+                    else if ((CodeInfo->opnd[OPND2].type == OP_M || CodeInfo->opnd[OPND1].type == OP_M) && CodeInfo->indexreg != 0xFF) {
+                      if (CodeInfo->indexreg ) CodeInfo->evex_p2 |= EVEX_P2VMASK;   
+                      else CodeInfo->evex_p2 &= ~EVEX_P2VMASK;
+                    }
               if ((CodeInfo->token == T_VRNDSCALEPD) || (CodeInfo->token == T_VRNDSCALEPS)||
                    (CodeInfo->token ==  T_VCVTPS2PH))
                     CodeInfo->evex_p2 |= EVEX_P2VMASK;
@@ -1518,6 +1528,20 @@ static void output_opc(struct code_info *CodeInfo)
 				if (ins->byte1_info == F_660F) lbyte |= 0x01;
 			}
 			else if ((CodeInfo->token >= T_KMOVB) && (CodeInfo->token <= T_KMOVW)) {
+              /* prevent immediate data for KMOV instruction v2.38 */
+                switch (CodeInfo->opnd[OPND2].type){
+                  case OP_R64:
+                  case OP_RAX:
+                  case OP_AX:
+                  case OP_R16:
+                  case OP_R8:
+                  case OP_AL:
+                  case OP_I8:
+                  case OP_I16:
+                  case OP_I32:
+                  case OP_I64:
+                  EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
+                 }
 				/*  1 1111 0pp */
 				/*  R vvvv Lpp */
               if (CodeInfo->reg1 <= 0x07)
@@ -1844,15 +1868,23 @@ static void output_opc(struct code_info *CodeInfo)
                if (CodeInfo->token == T_VMOVDQA || CodeInfo->token == T_VMOVDQU ||
                    CodeInfo->token == T_VMOVDQA32 || CodeInfo->token == T_VMOVDQU32 ||
                    CodeInfo->token == T_VMOVDQA64 || CodeInfo->token == T_VMOVDQU64){
-                 if (CodeInfo->opnd[OPND1].type & OP_M_ANY){
+                 if (CodeInfo->opnd[OPND1].type & OP_M_ANY || CodeInfo->opnd[OPND2].type & OP_M_ANY){
+                   if (CodeInfo->indexreg == 0xFF){
+                     CodeInfo->rm_byte &= ~MOD_11;
+                     CodeInfo->rm_byte |= MOD_10;
+                     CodeInfo->tuple = 0;
+                     }
+                   }
+                else if (CodeInfo->opnd[OPND1].type & OP_M_ANY){
                  if (CodeInfo->mem_type == MT_EMPTY);
                  else if (CodeInfo->opnd[OPND1].type == OP_M128 &&  CodeInfo->opnd[OPND2].type & OP_XMM);
                  else if (CodeInfo->opnd[OPND1].type == OP_M256 &&  CodeInfo->opnd[OPND2].type == OP_YMM);
                  else if (CodeInfo->opnd[OPND1].type == OP_M512 &&  CodeInfo->opnd[OPND2].type == OP_ZMM);
                  else 
                    EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
-                   }
-                }
+                 }
+                 
+              }
                /* UASM 2.35 fix vmovq encoding for xmm, r64 */
 			   if(CodeInfo->token == T_VMOVQ && CodeInfo->opnd[OPND1].type == OP_XMM && CodeInfo->opnd[OPND2].type == OP_R64)
 				   OutputCodeByte(ins->opcode-0x10 | CodeInfo->iswide | CodeInfo->opc_or);
