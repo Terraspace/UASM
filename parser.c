@@ -2199,9 +2199,10 @@ static ret_code process_register( struct code_info *CodeInfo, unsigned CurrOpnd,
 	if (CodeInfo->opnd[CurrOpnd].type == OP_XMM || CodeInfo->opnd[CurrOpnd].type == OP_YMM)
 	{
 		if (!evex && regno > 15)
-		{ 
 			return(EmitError(UNAUTHORISED_USE_OF_EVEX_REGISTERS));
-		}
+        /* this fixes suppressed Kn mask register if evex on v2.38 */
+        else if (evex && regno > 15)
+          CodeInfo->evex_flag = TRUE;
 	}
 	if (CodeInfo->opnd[CurrOpnd].type == OP_ZMM) {
 		if (evex)

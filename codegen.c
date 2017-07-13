@@ -441,7 +441,7 @@ static void output_opc(struct code_info *CodeInfo)
     CodeInfo->prefix.rex = (tmp & 0xFA) | ((tmp & REX_R) >> 2) | ((tmp & REX_B) << 2);
 #endif
   }
-      //   if (CodeInfo->token == T_VMOVDQA64)
+      //   if (CodeInfo->token == T_VSUBSD)
       //__debugbreak();
 
 #if AVXSUPP
@@ -1275,7 +1275,7 @@ static void output_opc(struct code_info *CodeInfo)
                     //__debugbreak();
                     /* Fixed index size in CodeInfo->evex_p2 ~EVEX_P2VMASK, Uasm 2.16 */
                     else if ((CodeInfo->opnd[OPND2].type == OP_M || CodeInfo->opnd[OPND1].type == OP_M) && CodeInfo->indexreg != 0xFF) {
-                      if (CodeInfo->indexreg ) CodeInfo->evex_p2 |= EVEX_P2VMASK;   
+                      if (CodeInfo->indexreg != 0xFF && CodeInfo->indexreg <= 15 ) CodeInfo->evex_p2 |= EVEX_P2VMASK;   
                       else CodeInfo->evex_p2 &= ~EVEX_P2VMASK;
                     }
               if ((CodeInfo->token == T_VRNDSCALEPD) || (CodeInfo->token == T_VRNDSCALEPS)||
