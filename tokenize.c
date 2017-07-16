@@ -129,116 +129,122 @@ void get_broads(struct line_status *p) {
 		EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
 
 	if (_memicmp(p->input, "1to2", 4) == 0) {
-		broadflags = 0x10;
-		p->input += 4;
+		broadflags = 0x10;           /*  ZLLBVAAA  */
+		p->input += 4;               /*  00010000  */
 	}
 	else if (_memicmp(p->input, "1to4", 4) == 0){
-      broadflags = 0x20;
-      p->input += 4;
+      broadflags = 0x20;             /*  ZLLBVAAA  */
+      p->input += 4;                 /*  00100000  */
     }
     else if (_memicmp(p->input, "1to8", 4) == 0){
-      broadflags = 0x30;
-      p->input += 4;
+      broadflags = 0x30;             /*  ZLLBVAAA  */
+      p->input += 4;                 /*  00110000  */
     }
     else if (_memicmp(p->input, "1to16", 5) == 0){
-      broadflags = 0x40;
-      p->input += 5;
+      broadflags = 0x40;             /*  ZLLBVAAA  */
+      p->input += 5;                 /*  01000000  */
     }
     else
       EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
+    while ( isspace( *p->input )) p->input++;
     if (*p->input++ != '}')
       EmitError(DECORATOR_OR_BRACE_EXPECTED);
 
   }
 
-/* EVEX Mask decorators are handled here: {k1){z}*/
+/* EVEX Mask decorators are handled here: {k1) or {k1){z} or {z}{k1) or {z} */
 void get_decos(struct line_status *p) {
-			/************************************************/
-			unsigned char c;
-			if (!evex)
-				EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
-			c = (*p->input | 0x20);
-			p->input++;
-			/* if first decorator is the z  */
-			if (c == 'z'){
-            decoflags |= 0x80; 
-            p->input++;
-            c = *p->input;
-            if (c != '}'){
-              EmitError(DECORATOR_OR_BRACE_EXPECTED);
-              return;
-            }
-            p->input++;
-            while ( isspace( *p->input )) p->input++;
-            c = *p->input;
-            if (c != '{'){
-              EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
-              return;
-            }
-            p->input++;
-            c = (*p->input | 0x20);
-            if (c != 'k'){
-                EmitError(DECORATOR_OR_BRACE_EXPECTED);
-                return;
-            }else{
-              p->input++;
-              c = *p->input;
-              if (c > '7' || c < '1'){
-                EmitError(WRONG_MASK_REGISTER_NUBER);
-                return;
-              }
-              decoflags |= (c & 0x7);
-              p->input++;
-              c = *p->input;
-              if (c != '}'){
-                EmitError(DECORATOR_OR_BRACE_EXPECTED);
-                return;
-              }
-              p->input++;
-            }
-          }
-          /* if first decorator is the mask register */
-          else if (c == 'k'){
-          c = *p->input;
-          if (c > '7' || c < '1'){
-            EmitError(WRONG_MASK_REGISTER_NUBER);
-            return;
-          }
-          decoflags |= (c & 0x7);
-          p->input++;
-          c = *p->input;
-          if (c != '}'){
-            EmitError(DECORATOR_OR_BRACE_EXPECTED);
-            return;
-          }
-          p->input++;
-          /* check if there is more decorators */
-          while ( isspace( *p->input )) p->input++;
-          c = *p->input;
-          if (c == '{'){
-            p->input++;
-            c = (*p->input | 0x20);
-            if (c == 'z'){
-              decoflags |= 0x80;
-              p->input++;
-              c = *p->input;
-              if (c != '}'){
-                EmitError(DECORATOR_OR_BRACE_EXPECTED);
-                return;
-              }
-              p->input++;
-            }
-            else {
-              EmitError(TO_MANY_DECORATORS);
-              return;
-            }
-          }
-        }
-        else {
-          EmitError(TO_MANY_DECORATORS);
-          return;
-        }
-      }
+	/************************************************/
+	unsigned char c;
+	if (!evex)
+		EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
+     while ( isspace( *p->input )) p->input++;
+	c = (*p->input | 0x20);
+	p->input++;
+	/* if first decorator is {z}  */
+    if (c == 'z'){               /*  ZLLBVAAA  */
+      decoflags |= 0x80;         /*  10000000  */
+      while ( isspace( *p->input )) p->input++;
+     c = *p->input;
+     if (c != '}'){
+       EmitError(DECORATOR_OR_BRACE_EXPECTED);
+       return;
+     }
+     p->input++;
+     while ( isspace( *p->input )) p->input++;
+     c = *p->input;
+     if (c != '{'){
+       return;
+     }
+     p->input++;
+     while ( isspace( *p->input )) p->input++;
+     c = (*p->input | 0x20);
+     if (c != 'k'){
+         EmitError(DECORATOR_OR_BRACE_EXPECTED);
+         return;
+     }else{
+       p->input++;
+       c = *p->input;
+       if (c > '7' || c < '1'){
+         EmitError(WRONG_MASK_REGISTER_NUBER);
+         return;
+       }
+       decoflags |= (c & 0x7);
+       p->input++;
+       while ( isspace( *p->input )) p->input++;
+       c = *p->input;
+       if (c != '}'){
+         EmitError(DECORATOR_OR_BRACE_EXPECTED);
+         return;
+       }
+       p->input++;
+     }
+   }
+   /* if first decorator is the mask register */
+   else if (c == 'k'){
+   c = *p->input;
+   if (c > '7' || c < '1'){
+     EmitError(WRONG_MASK_REGISTER_NUBER);
+     return;
+   }
+   decoflags |= (c & 0x7);
+   p->input++;
+   while ( isspace( *p->input )) p->input++;
+   c = *p->input;
+   if (c != '}'){
+     EmitError(DECORATOR_OR_BRACE_EXPECTED);
+     return;
+   }
+   p->input++;
+   /* check if there is more decorators */
+   while ( isspace( *p->input )) p->input++;
+   c = *p->input;
+   if (c == '{'){
+     p->input++;
+     while ( isspace( *p->input )) p->input++;
+     c = (*p->input | 0x20);
+     if (c == 'z'){
+       decoflags |= 0x80;
+       p->input++;
+       while ( isspace( *p->input )) p->input++;
+       c = *p->input;
+       if (c != '}'){
+         EmitError(DECORATOR_OR_BRACE_EXPECTED);
+         return;
+       }
+       p->input++;
+     }
+     else {
+       EmitError(TO_MANY_DECORATORS);
+       return;
+     }
+   }
+ }
+    else {
+    EmitError(TO_MANY_DECORATORS);
+    return;
+    }
+}
 
 static ret_code get_float( struct asm_tok *buf, struct line_status *p )
 /*********************************************************************/
@@ -591,6 +597,7 @@ static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
         if (c == '{')
         {
           p->input++;
+           while ( isspace( *p->input )) p->input++;
           if ((*p->input | 0x20) == 'k' || (*p->input | 0x20) == 'z')
             get_decos( p ) ;    // mask decorators
           else

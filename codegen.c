@@ -214,6 +214,8 @@ static void output_opc(struct code_info *CodeInfo)
       EmitError(INSTRUCTION_OR_REGISTER_NOT_ACCEPTED_IN_CURRENT_CPU_MODE);
     //return( ERROR );
   }
+      //     if (CodeInfo->token == T_RDPID)
+      //__debugbreak();
 
   /*
    * Output FP fixup if required
@@ -441,7 +443,7 @@ static void output_opc(struct code_info *CodeInfo)
     CodeInfo->prefix.rex = (tmp & 0xFA) | ((tmp & REX_R) >> 2) | ((tmp & REX_B) << 2);
 #endif
   }
-      //   if (CodeInfo->token == T_VSUBSD)
+      //   if (CodeInfo->token == T_VSCATTERQPD)
       //__debugbreak();
 
 #if AVXSUPP
@@ -1795,7 +1797,6 @@ static void output_opc(struct code_info *CodeInfo)
         if ( CodeInfo->Ofssize != USE64 ) {
             EmitError( INVALID_OPERAND_SIZE );
         }
-        if (CodeInfo->token != T_RDPID)
         OutputCodeByte( CodeInfo->prefix.rex | 0x40 );
     }
 #endif
