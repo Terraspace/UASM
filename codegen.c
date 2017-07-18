@@ -214,7 +214,7 @@ static void output_opc(struct code_info *CodeInfo)
       EmitError(INSTRUCTION_OR_REGISTER_NOT_ACCEPTED_IN_CURRENT_CPU_MODE);
     //return( ERROR );
   }
-      //     if (CodeInfo->token == T_RDPID)
+      //     if (CodeInfo->token == T_VSUBPS)
       //__debugbreak();
 
   /*
@@ -1462,6 +1462,8 @@ static void output_opc(struct code_info *CodeInfo)
 						(CodeInfo->opnd[OPND1].type == OP_ZMM) || (CodeInfo->opnd[OPND2].type == OP_ZMM))
 						EmitError(INVALID_INSTRUCTION_OPERANDS);
 				}
+                if (CodeInfo->basereg == 0x10)        /* for RIP relative addressing it is actually 0x05 for base displacement */
+                  CodeInfo->evex_p0 |= EVEX_P0BMASK;  /* so EVEX_P0BMASK is has to be set, v2.38 */
 				OutputCodeByte(CodeInfo->evex_p0);
 			}
 			else {
@@ -1924,6 +1926,7 @@ static void output_opc(struct code_info *CodeInfo)
             }
         if (CodeInfo->basetype == T_RIP){
           tmp &= ~MOD_10;
+          CodeInfo->tuple = 0;   /* for a RIP relative addressing tuple can not be used */
          }
         /* use only if TypleType is present  */
         if (CodeInfo->tuple){

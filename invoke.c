@@ -3293,13 +3293,25 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 					pDest += lbl->offset;
 				}
 
-				for (j = 0; j < slen; j++)
-				{
-					*pDest++ = *pSrc++;
+				if ((*pSrc) <= 0x7F) {
+					for (j = 0; j < slen; j++)
+					{
+						*pDest++ = *pSrc++;
+						*pDest++ = 0;
+					}
 					*pDest++ = 0;
+					*pDest++ = 0;
+					currs->e.seginfo->current_loc += (slen * 2 + 2);
+					currs->e.seginfo->bytes_written += (slen * 2 + 2);
 				}
-				*pDest++ = 0;
-				*pDest++ = 0;
+				else {
+					for (j = 0; j < slen; j++)
+					{
+						*pDest++ = *pSrc++;
+					}
+					currs->e.seginfo->current_loc += (slen);
+					currs->e.seginfo->bytes_written += (slen);
+				}
 
 				lbl->segment = currs;
 				lbl->isdefined = TRUE;
@@ -3318,8 +3330,6 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				lbl->isfunc = 1;
 			}
 
-			currs->e.seginfo->current_loc += (slen * 2 + 2);
-			currs->e.seginfo->bytes_written += (slen * 2 + 2);
 			currs->e.seginfo->written = TRUE;
 			if (currs->e.seginfo->current_loc > currs->sym.max_offset)
 				currs->sym.max_offset = currs->e.seginfo->current_loc;

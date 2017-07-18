@@ -482,6 +482,7 @@ static ret_code data_item( int *start_pos, struct asm_tok tokenarray[], struct a
     int                 string_len;
     uint_32             total = 0;
     bool                initwarn = FALSE;
+    bool                half = FALSE;
     //unsigned int        count;
     uint_8              *pchar;
     char                tmp;
@@ -700,7 +701,6 @@ next_item:  /* <--- continue scan if a comma has been detected */
                        opndx.quoted_string->string_ptr, inside_struct, no_of_bytes, GetCurrOffset()));
             pchar = (uint_8 *)opndx.quoted_string->string_ptr + 1;
             string_len = opndx.quoted_string->stringlen; /* this is the length without quotes */
-
             /* v2.07: check for empty string for ALL types */
             if ( string_len == 0 ) {
                 if ( inside_struct ) {
@@ -726,9 +726,15 @@ next_item:  /* <--- continue scan if a comma has been detected */
 				}
 				else
 				{
-					if (string_len > no_of_bytes && sym->mem_type != MT_WORD)
+                if (string_len > no_of_bytes && sym->mem_type != MT_WORD)
 						return(EmitError(INITIALIZER_OUT_OF_RANGE));
-				}
+                /* if characters are not single byte, 2 bytes are used for 1 size v2.38 */
+                else if (*pchar > 0x7F){
+                    opndx.quoted_string->stringlen /= 2;
+                    sym->mem_type = MT_BYTE;      /* each byte must be stored without zeros between */
+                    half = TRUE;                  /* total has to be devided by 2 for the length */
+                  }
+			   }
             }
 
             if( sym && Parse_Pass == PASS_1 && string_len > 0 ) {
@@ -1143,8 +1149,13 @@ item_done:
     } /* end for */
 
     if( sym && Parse_Pass == PASS_1 ) {
-        sym->total_length += total;
-        sym->total_size += total * no_of_bytes;
+      /* if characters are not UTF8 2 bytes are used for 1 size v2.38 */
+      if (half && total >= 2){
+        if (total & 0x1) total++; /* that is for trailing 0 which is uneven */
+         sym->total_length = total/2;
+     } else
+       sym->total_length += total; /* we need to know a proper length of characters */
+     sym->total_size += total * no_of_bytes; /* total_size is needed for proper storing the data  */
     }
 
     *start_pos = i;

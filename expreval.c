@@ -2873,7 +2873,7 @@ static ret_code calculate( struct expr *opnd1, struct expr *opnd2, const struct 
 				}
 
 				else if ( (opnd1->mem_type == MT_REAL8 || opnd1->mem_type == MT_REAL4) && (GetValueSp(temp) & OP_XMM) ) {
-					opnd2->mem_type == opnd1->mem_type;
+					opnd2->mem_type = opnd1->mem_type;
 					DebugMsg(("calculate(PTR): FLOAT/DOUBLE conversion of XMM register; %u != %u\n", SizeFromRegister(temp), opnd1->value));
 				}
 				else if ( opnd1->value != SizeFromRegister( temp ) ) {
