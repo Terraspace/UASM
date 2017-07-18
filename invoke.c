@@ -3309,8 +3309,10 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 					{
 						*pDest++ = *pSrc++;
 					}
-					currs->e.seginfo->current_loc += (slen);
-					currs->e.seginfo->bytes_written += (slen);
+					*pDest++ = 0;
+					*pDest++ = 0;
+					currs->e.seginfo->current_loc += (slen + 2);
+					currs->e.seginfo->bytes_written += (slen + 2);
 				}
 
 				lbl->segment = currs;
