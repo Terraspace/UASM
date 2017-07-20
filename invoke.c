@@ -3308,13 +3308,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 					currs->e.seginfo->bytes_written += (slen * 2 + 2);
 				}
 				else {                 
-                  j = UTF8toUTF16(pSrc, slen, NULL,(unsigned short)*pDest, slen);
-					//for (j = 0; j < slen; j++)
-					//{
-					//	*pDest++ = *pSrc++;
-					//}
-					*pDest++ = 0;
-					*pDest++ = 0;
+					j = UTF8toUTF16(pSrc, slen, NULL,(uint_8*)pDest, slen);
 					currs->e.seginfo->current_loc += (slen + 2);
 					currs->e.seginfo->bytes_written += (slen + 2);
 				}
