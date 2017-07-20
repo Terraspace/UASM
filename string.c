@@ -21,7 +21,6 @@
 ****************************************************************************/
 
 #include <ctype.h>
-
 #include "globals.h"
 #include "memalloc.h"
 #include "parser.h"
@@ -42,11 +41,141 @@ static uint_32 instrcnt;
 static uint_32 equcnt;
 #endif
 
+typedef unsigned __int64 UINT_PTR, *PUINT_PTR;
+#define MAXUINT_PTR  (~((UINT_PTR)0))
+
 /* generic parameter names. In case the parameter name is
  * displayed in an error message ("required parameter %s missing")
  * v2.05: obsolete
  */
 //static const char * parmnames[] = {"p1","p2","p3"};
+ //nWideCount=UTF8toUTF16((const unsigned char *)lpMultiByteStr, cbMultiByte, NULL, lpWideCharStr, cchWideChar);
+UINT_PTR UTF8toUTF16(const unsigned char *pSource, UINT_PTR nSourceLen, UINT_PTR *nSourceDone, unsigned short *szTarget, UINT_PTR nTargetMax);
+/********************************************************************
+ *
+ *  UTF8toUTF16
+ *
+ *Converts UTF-8 string to UTF-16 string.
+ *
+ * [in] const unsigned char *pSource  UTF-8 string.
+ * [in] UINT_PTR nSourceLen           UTF-8 string length in bytes.
+ * [out] UINT_PTR *nSourceDone        Number of processed bytes in UTF-8 string. Can be NULL.
+ * [out] unsigned short *szTarget     Output buffer, if NULL required buffer size returned in characters.
+ * [in] UINT_PTR nTargetMax           Size of the output buffer in characters.
+ *
+ *Returns: number of characters copied to szTarget buffer.
+ ********************************************************************/
+
+UINT_PTR UTF8toUTF16(const unsigned char *pSource, UINT_PTR nSourceLen, UINT_PTR *nSourceDone, unsigned short *szTarget, UINT_PTR nTargetMax)
+{
+  static const unsigned int lpOffsetsFromUTF8[6]={0x00000000, 0x00003080, 0x000E2080, 0x03C82080, 0xFA082080, 0x82082080};
+  const unsigned char *pSrc=pSource;
+  const unsigned char *pSrcEnd=pSource + nSourceLen;
+  const unsigned char *pSrcDone=pSource;
+  unsigned short *pDst;
+  unsigned short *pDstEnd;
+  unsigned long nChar;
+  unsigned int nTrailing;
+
+  if (!szTarget && !nTargetMax)
+  {
+    pDst=NULL;
+    pDstEnd=(unsigned short *)MAXUINT_PTR;
+  }
+  else
+  {
+    pDst=szTarget;
+    pDstEnd=szTarget + nTargetMax;
+  }
+
+  while (pSrc < pSrcEnd && pDst < pDstEnd)
+  {
+    if (*pSrc < 0x80)
+    {
+      nTrailing=0;
+    }
+    else if (*pSrc < 0xC0)
+    {
+      //Trailing byte in leading position
+      pSrcDone=++pSrc;
+      continue;
+    }
+    else if (*pSrc < 0xE0)
+    {
+      if (pSrc + 1 >= pSrcEnd) break;
+      nTrailing=1;
+    }
+    else if (*pSrc < 0xF0)
+    {
+      if (pSrc + 2 >= pSrcEnd) break;
+      nTrailing=2;
+    }
+    else if (*pSrc < 0xF8)
+    {
+      if (pSrc + 3 >= pSrcEnd) break;
+      nTrailing=3;
+    }
+    else
+    {
+      //No chance for this in UTF-16
+      pSrcDone=++pSrc;
+      continue;
+    }
+
+    //Get unicode char
+    nChar=0;
+
+    switch (nTrailing)
+    {
+      case 3:
+      {
+        nChar+=*pSrc++;
+        nChar=nChar << 6;
+      }
+      case 2:
+      {
+        nChar+=*pSrc++;
+        nChar=nChar << 6;
+      }
+      case 1:
+      {
+        nChar+=*pSrc++;
+        nChar=nChar << 6;
+      }
+      case 0:
+      {
+        nChar+=*pSrc++;
+      }
+    }
+    nChar-=lpOffsetsFromUTF8[nTrailing];
+
+    //Write unicode char
+    if (nChar <= 0xFFFF)
+    {
+      if (szTarget)
+        *pDst++=(unsigned short)nChar;
+      else
+        pDst+=1;
+    }
+    else
+    {
+      //Surrogate pair
+      if (pDst + 1 >= pDstEnd) break;
+      nChar-=0x10000;
+
+      if (szTarget)
+      {
+        *pDst++=(unsigned short)((nChar >> 10) + 0xD800);
+        *pDst++=(unsigned short)((nChar & 0x3ff) + 0xDC00);
+      }
+      else pDst+=2;
+    }
+    pSrcDone=pSrc;
+  }
+  if (nSourceDone)
+    *nSourceDone=pSrcDone - pSource;
+  return (pDst - szTarget);
+}
 
 int TextItemError( struct asm_tok *item )
 /***************************************/

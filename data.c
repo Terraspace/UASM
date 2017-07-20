@@ -32,7 +32,6 @@
 ****************************************************************************/
 
 #include <ctype.h>
-
 #include "globals.h"
 #include "memalloc.h"
 #include "parser.h"
@@ -49,18 +48,17 @@
 #include "atofloat.h"
 #include "myassert.h"
 
-//#ifndef min
-//#define min(x,y) (((x) < (y)) ? (x) : (y))
-//#endif
+typedef unsigned __int64 UINT_PTR, *PUINT_PTR;
 
 extern ret_code segm_override( const struct expr *, struct code_info * );
 extern struct asym *SegOverride;
 extern const char szNull[];
-
+extern UINT_PTR UTF8toUTF16(const unsigned char *pSource, UINT_PTR nSourceLen, UINT_PTR *nSourceDone, unsigned short *szTarget, UINT_PTR nTargetMax);
 static ret_code data_item( int *, struct asm_tok[], struct asym *, uint_32, const struct asym *, uint_32, bool inside_struct, bool, bool, int );
 
 #define OutputDataBytes( x, y ) OutputBytes( x, y, NULL )
 #define OutputInterleavedDataBytes( x, y ) OutputInterleavedBytes( x, y, NULL );
+
 
 /* initialize an array inside a structure
  * if there are no brackets, the next comma, '>' or '}' will terminate
@@ -479,6 +477,7 @@ static ret_code data_item( int *start_pos, struct asm_tok tokenarray[], struct a
 /***************************************************************************************************************************************************************************************************************/
 {
     int                 i;
+    int                 j;
     int                 string_len;
     uint_32             total = 0;
     bool                initwarn = FALSE;
@@ -489,7 +488,7 @@ static ret_code data_item( int *start_pos, struct asm_tok tokenarray[], struct a
     enum fixup_types    fixup_type;
     struct fixup        *fixup;
     struct expr         opndx;
-
+    uint_16 buff[256];
     DebugMsg1(("data_item( idx=%u [%s], label=%s, no_of_bytes=%" I32_SPEC "u, type=%s, dup=%" I32_SPEC "Xh, inside_struct=%u, is_float=%u ) enter\n",
                *start_pos, tokenarray[*start_pos].tokpos, sym ? sym->name : "NULL",
                no_of_bytes, type_sym ? type_sym->name : "NULL",
@@ -730,7 +729,8 @@ next_item:  /* <--- continue scan if a comma has been detected */
 						return(EmitError(INITIALIZER_OUT_OF_RANGE));
                 /* if characters are not single byte, 2 bytes are used for 1 size v2.38 */
                 else if (*pchar > 0x7F){
-                    opndx.quoted_string->stringlen /= 2;
+                  j = UTF8toUTF16(pchar, opndx.quoted_string->stringlen, NULL, pchar, opndx.quoted_string->stringlen);
+                    opndx.quoted_string->stringlen = j;
                     sym->mem_type = MT_BYTE;      /* each byte must be stored without zeros between */
                     half = TRUE;                  /* total has to be devided by 2 for the length */
                   }
@@ -783,6 +783,7 @@ next_item:  /* <--- continue scan if a comma has been detected */
 					{
 						if (string_len > 1 && no_of_bytes > 1)
 						{
+                          if (!half)   /* no need for little_endian, already converted, v2.38 */
 							pchar = little_endian((const char *)pchar, string_len);
 						}
 						OutputDataBytes(pchar, string_len);

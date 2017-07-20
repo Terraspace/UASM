@@ -10,7 +10,6 @@
 
 #include <ctype.h>
 #include <limits.h>
-
 #include "globals.h"
 #include "memalloc.h"
 #include "parser.h"
@@ -31,6 +30,8 @@
 #endif
 #include "proc.h"
 
+typedef unsigned __int64 UINT_PTR, *PUINT_PTR;
+
 uint_32 literalCnt = 0;
 
 extern bool write_to_file;
@@ -39,6 +40,8 @@ extern int_64           maxintvalues[];
 extern int_64           minintvalues[];
 extern enum special_token stackreg[];
 extern struct dsym *CurrStruct;
+extern UINT_PTR UTF8toUTF16(const unsigned char *pSource, UINT_PTR nSourceLen, UINT_PTR *nSourceDone, unsigned short *szTarget, UINT_PTR nTargetMax);
+
 #ifdef __I86__
 #define NUMQUAL (long)
 #else
@@ -3069,7 +3072,7 @@ static int ParamIsString(char *pStr, int param, struct dsym* proc) {
 	{
 		p = p->nextparam;
 	}
-	if (p->sym.mem_type != MT_PTR)
+	if (p && p->sym.mem_type != MT_PTR)
 		return(FALSE);
 
 	c = *pS;
@@ -3293,7 +3296,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 					pDest += lbl->offset;
 				}
 
-				if ((*pSrc) <= 0x7F) {
+				if ((unsigned char)(*pSrc) <= 0x7F) {
 					for (j = 0; j < slen; j++)
 					{
 						*pDest++ = *pSrc++;
@@ -3304,11 +3307,12 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 					currs->e.seginfo->current_loc += (slen * 2 + 2);
 					currs->e.seginfo->bytes_written += (slen * 2 + 2);
 				}
-				else {
-					for (j = 0; j < slen; j++)
-					{
-						*pDest++ = *pSrc++;
-					}
+				else {                 
+                  j = UTF8toUTF16(pSrc, slen, NULL,(unsigned short)*pDest, slen);
+					//for (j = 0; j < slen; j++)
+					//{
+					//	*pDest++ = *pSrc++;
+					//}
 					*pDest++ = 0;
 					*pDest++ = 0;
 					currs->e.seginfo->current_loc += (slen + 2);
