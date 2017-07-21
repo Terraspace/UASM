@@ -61,11 +61,11 @@ typedef unsigned __int64 ULONG_PTR, *PULONG_PTR;
  * v2.05: obsolete
  */
 //static const char * parmnames[] = {"p1","p2","p3"};
- //nWideCount=UTF8toUTF16((const unsigned char *)lpMultiByteStr, cbMultiByte, NULL, lpWideCharStr, cchWideChar);
-UINT_PTR UTF8toUTF16(const unsigned char *pSource, UINT_PTR nSourceLen, UINT_PTR *nSourceDone, unsigned short *szTarget, UINT_PTR nTargetMax);
+ //nWideCount=UTF8toWideChar((const unsigned char *)lpMultiByteStr, cbMultiByte, NULL, lpWideCharStr, cchWideChar);
+UINT_PTR UTF8toWideChar(const unsigned char *pSource, UINT_PTR nSourceLen, UINT_PTR *nSourceDone, unsigned short *szTarget, UINT_PTR nTargetMax);
 /********************************************************************
  *
- *  UTF8toUTF16
+ *  UTF8toWideChar
  *
  *Converts UTF-8 string to UTF-16 string.
  *
@@ -78,7 +78,7 @@ UINT_PTR UTF8toUTF16(const unsigned char *pSource, UINT_PTR nSourceLen, UINT_PTR
  *Returns: number of characters copied to szTarget buffer.
  ********************************************************************/
 
-UINT_PTR UTF8toUTF16(const unsigned char *pSource, UINT_PTR nSourceLen, UINT_PTR *nSourceDone, unsigned short *szTarget, UINT_PTR nTargetMax)
+UINT_PTR UTF8toWideChar(const unsigned char *pSource, UINT_PTR nSourceLen, UINT_PTR *nSourceDone, unsigned short *szTarget, UINT_PTR nTargetMax)
 {
   static const unsigned int lpOffsetsFromUTF8[6]={0x00000000, 0x00003080, 0x000E2080, 0x03C82080, 0xFA082080, 0x82082080};
   const unsigned char *pSrc=pSource;

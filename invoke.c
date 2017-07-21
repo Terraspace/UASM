@@ -52,7 +52,7 @@ extern int_64           maxintvalues[];
 extern int_64           minintvalues[];
 extern enum special_token stackreg[];
 extern struct dsym *CurrStruct;
-extern UINT_PTR UTF8toUTF16(const unsigned char *pSource, UINT_PTR nSourceLen, UINT_PTR *nSourceDone, unsigned short *szTarget, UINT_PTR nTargetMax);
+extern UINT_PTR UTF8toWideChar(const unsigned char *pSource, UINT_PTR nSourceLen, UINT_PTR *nSourceDone, unsigned short *szTarget, UINT_PTR nTargetMax);
 
 #ifdef __I86__
 #define NUMQUAL (long)
@@ -3320,7 +3320,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 					currs->e.seginfo->bytes_written += (slen * 2 + 2);
 				}
 				else {                 
-					j = UTF8toUTF16(pSrc, slen, NULL,(uint_8*)pDest, slen);
+					j = UTF8toWideChar(pSrc, slen, NULL,(uint_8*)pDest, slen);
 					currs->e.seginfo->current_loc += (slen + 2);
 					currs->e.seginfo->bytes_written += (slen + 2);
 				}

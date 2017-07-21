@@ -65,7 +65,7 @@ typedef unsigned __int64 ULONG_PTR, *PULONG_PTR;
 extern ret_code segm_override( const struct expr *, struct code_info * );
 extern struct asym *SegOverride;
 extern const char szNull[];
-extern UINT_PTR UTF8toUTF16(const unsigned char *pSource, UINT_PTR nSourceLen, UINT_PTR *nSourceDone, unsigned short *szTarget, UINT_PTR nTargetMax);
+extern UINT_PTR UTF8toWideChar(const unsigned char *pSource, UINT_PTR nSourceLen, UINT_PTR *nSourceDone, unsigned short *szTarget, UINT_PTR nTargetMax);
 static ret_code data_item( int *, struct asm_tok[], struct asym *, uint_32, const struct asym *, uint_32, bool inside_struct, bool, bool, int );
 
 #define OutputDataBytes( x, y ) OutputBytes( x, y, NULL )
@@ -741,7 +741,7 @@ next_item:  /* <--- continue scan if a comma has been detected */
 						return(EmitError(INITIALIZER_OUT_OF_RANGE));
                 /* if characters are not single byte, 2 bytes are used for 1 size v2.38 */
                 else if (*pchar > 0x7F){
-                  j = UTF8toUTF16(pchar, opndx.quoted_string->stringlen, NULL, pchar, opndx.quoted_string->stringlen);
+                  j = UTF8toWideChar(pchar, opndx.quoted_string->stringlen, NULL, pchar, opndx.quoted_string->stringlen);
                     opndx.quoted_string->stringlen = j;
                     sym->mem_type = MT_BYTE;      /* each byte must be stored without zeros between */
                     half = TRUE;                  /* total has to be devided by 2 for the length */
