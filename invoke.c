@@ -30,7 +30,19 @@
 #endif
 #include "proc.h"
 
-typedef unsigned __int64 UINT_PTR, *PUINT_PTR;
+#if defined(_WIN32)
+	typedef _W64 int INT_PTR, *PINT_PTR;
+	typedef _W64 unsigned int UINT_PTR, *PUINT_PTR;
+	typedef _W64 long LONG_PTR, *PLONG_PTR;
+	typedef _W64 unsigned long ULONG_PTR, *PULONG_PTR;
+	#define __int3264   __int32
+#else
+	typedef __int64 INT_PTR, *PINT_PTR;
+	typedef unsigned __int64 UINT_PTR, *PUINT_PTR;
+	typedef __int64 LONG_PTR, *PLONG_PTR;
+	typedef unsigned __int64 ULONG_PTR, *PULONG_PTR;
+	#define __int3264   __int64
+#endif
 
 uint_32 literalCnt = 0;
 
@@ -3257,7 +3269,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 		}
 		else if (strcmp(tokenarray[i].string_ptr, "L") == 0 && ParamIsString(tokenarray[i + 1].string_ptr, currParm, proc))
 		{
-
+			cs16:
 			// Preserve current Segment.
 			curseg = ModuleInfo.currseg;
 			// Find Data Segment.
@@ -3276,7 +3288,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 			pSrc = (tokenarray[i + 1].string_ptr) + 1;
 			pDest = (char*)currs->e.seginfo->CodeBuffer;
 
-			sprintf(buf, "%s%d", labelstr, hashpjw(tokenarray[i].string_ptr));
+			sprintf(buf, "%s%d", labelstr, hashpjw(pSrc));
 
 			if (pDest != 0 && write_to_file == TRUE)
 			{
@@ -3335,17 +3347,18 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				currs->sym.max_offset = currs->e.seginfo->current_loc;
 
 			// invoke parameter is a raw ascii string, substitute in the our new label pointing to this raw string in .data segment.
-			sprintf(stringparam[i], "%s", buf);
-			isString[i] = TRUE;
+			sprintf(stringparam[i+1], "%s", buf);
+			isString[i+1] = TRUE;
 
 			// Restore current Sement.
 			CurrSeg = curseg;
 
-			for (j = i; j < Token_Count - 1; j++)
+		/*	for (j = i; j < Token_Count - 1; j++)
 			{
 				tokenarray[j] = tokenarray[j + 1];
 			}
-			Token_Count--;
+			Token_Count--;*/
+			i++;
 
 		}
 		i++;
@@ -3368,6 +3381,11 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 		psize = SizeFromMemtype(curr->sym.mem_type, curr->sym.Ofssize, curr->sym.type);
 	DebugMsg1(("PushInvokeParam(%s,%u): is_ptr=%u, pmtype=%Xh, psize=%u\n", proc->sym.name, reqParam, curr->is_ptr, curr->sym.mem_type, psize));
 #endif
+
+	if (_stricmp(tokenarray[i].string_ptr, "L") == 0)
+	{
+		i++;
+	}
 
 	/* ADDR: the argument's address is to be pushed? */
 	if (tokenarray[i].token == T_RES_ID && tokenarray[i].tokval == T_ADDR) {
