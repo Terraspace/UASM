@@ -3147,7 +3147,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 	bool isString[256];
 	int reg = 0;
 
-	struct asym *lbl;
+	struct asym *lbl = NULL;
 	struct dsym *curseg;
 	struct dsym *prev;
 	struct dsym *currs;
@@ -3253,9 +3253,11 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				lbl->cvtyperef = 1;
 				lbl->ispublic = 0;
 			}
-
-			currs->e.seginfo->current_loc += (finallen + 1);
-			currs->e.seginfo->bytes_written += (finallen + 1);
+			if (lbl != NULL && currs->e.seginfo->current_loc == lbl->offset)
+			{
+				currs->e.seginfo->current_loc += (finallen + 1);
+				currs->e.seginfo->bytes_written += (finallen + 1);
+			}
 			currs->e.seginfo->written = TRUE;
 			if (currs->e.seginfo->current_loc > currs->sym.max_offset)
 				currs->sym.max_offset = currs->e.seginfo->current_loc;
@@ -3269,7 +3271,6 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 		}
 		else if (strcmp(tokenarray[i].string_ptr, "L") == 0 && ParamIsString(tokenarray[i + 1].string_ptr, currParm, proc))
 		{
-			cs16:
 			// Preserve current Segment.
 			curseg = ModuleInfo.currseg;
 			// Find Data Segment.
@@ -3307,24 +3308,13 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				{
 					pDest += lbl->offset;
 				}
-
-				if ((unsigned char)(*pSrc) <= 0x7F) {
-					for (j = 0; j < slen; j++)
-					{
-						*pDest++ = *pSrc++;
-						*pDest++ = 0;
-					}
-					*pDest++ = 0;
-					*pDest++ = 0;
-					currs->e.seginfo->current_loc += (slen * 2 + 2);
-					currs->e.seginfo->bytes_written += (slen * 2 + 2);
+				j = UTF8toWideChar(pSrc, slen, NULL,(unsigned short*)pDest, slen);
+                /* j contains a proper number of wide chars, it can be different than slen, v2.38 */
+				if (lbl != NULL && currs->e.seginfo->current_loc == lbl->offset)
+				{
+					currs->e.seginfo->current_loc += (j * 2 + 2);    /* real size is double in bytes + 2 for 2 zeros */
+					currs->e.seginfo->bytes_written += (j * 2 + 2);  /* here as well */
 				}
-				else {                 
-					j = UTF8toWideChar(pSrc, slen, NULL,(uint_8*)pDest, slen);
-					currs->e.seginfo->current_loc += (slen + 2);
-					currs->e.seginfo->bytes_written += (slen + 2);
-				}
-
 				lbl->segment = currs;
 				lbl->isdefined = TRUE;
 				lbl->mem_type = MT_BYTE;

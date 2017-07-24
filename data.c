@@ -495,7 +495,7 @@ static ret_code data_item( int *start_pos, struct asm_tok tokenarray[], struct a
     bool                initwarn = FALSE;
     bool                half = FALSE;
     //unsigned int        count;
-    uint_8              *pchar;
+    uint_8              *pchar,*p;
     char                tmp;
     enum fixup_types    fixup_type;
     struct fixup        *fixup;
@@ -740,11 +740,21 @@ next_item:  /* <--- continue scan if a comma has been detected */
                 if (string_len > no_of_bytes && sym->mem_type != MT_WORD)
 						return(EmitError(INITIALIZER_OUT_OF_RANGE));
                 /* if characters are not single byte, 2 bytes are used for 1 size v2.38 */
-                else if (*pchar > 0x7F){
-                  j = UTF8toWideChar(pchar, opndx.quoted_string->stringlen, NULL, pchar, opndx.quoted_string->stringlen);
+                 p = pchar;
+                 half = FALSE; 
+                  for (j = 0; j < string_len; j++,p++){
+                    if ((unsigned char)*p > 0x7F){
+                       half = TRUE; 
+                       break;
+                      }
+                  }
+                 if (half){
+                   memset( &buff, 0, string_len * 2 );
+                  j = UTF8toWideChar(pchar, string_len, NULL,(unsigned short *) &buff, string_len);
                     opndx.quoted_string->stringlen = j;
+                    string_len = j;
                     sym->mem_type = MT_BYTE;      /* each byte must be stored without zeros between */
-                    half = TRUE;                  /* total has to be devided by 2 for the length */
+                                     /* total has to be devided by 2 for the length */
                   }
 			   }
             }
@@ -793,12 +803,15 @@ next_item:  /* <--- continue scan if a comma has been detected */
 					}
 					else
 					{
-						if (string_len > 1 && no_of_bytes > 1)
+					  if (string_len > 1 && no_of_bytes > 1)
 						{
-                          if (!half)   /* no need for little_endian, already converted, v2.38 */
-							pchar = little_endian((const char *)pchar, string_len);
+                        if (half)   /* no need for little_endian, already converted, v2.38 */
+                          OutputDataBytes((uint_8*)&buff, j * 2);
 						}
-						OutputDataBytes(pchar, string_len);
+                        else {
+                          pchar = little_endian((const char *)pchar, string_len);
+						  OutputDataBytes(pchar, string_len);
+                       }
 					}
 					if (no_of_bytes > string_len)
 						FillDataBytes(0, no_of_bytes - string_len);
@@ -1162,12 +1175,7 @@ item_done:
     } /* end for */
 
     if( sym && Parse_Pass == PASS_1 ) {
-      /* if characters are not UTF8 2 bytes are used for 1 size v2.38 */
-      if (half && total >= 2){
-        if (total & 0x1) total++; /* that is for trailing 0 which is uneven */
-         sym->total_length = total/2;
-     } else
-       sym->total_length += total; /* we need to know a proper length of characters */
+     sym->total_length += total; /* we need to know a proper length of characters */
      sym->total_size += total * no_of_bytes; /* total_size is needed for proper storing the data  */
     }
 

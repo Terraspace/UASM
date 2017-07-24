@@ -201,18 +201,19 @@ void QueueDeleteLinnum( struct qdesc *queue )
 /*******************************************/
 {
     struct line_num_info    *curr;
-    struct line_num_info    *next;
+    struct line_num_info    *next = NULL;   /* init next with zero, fix v2.38 */
 
     if ( queue == NULL )
-	   return;
+       return;
     curr = queue->head;
     for( ; curr ; curr = next ) {
-	    next = curr->next;
-		LclFree(curr);
+      if (next){                            /* prevent breaking on zero, fix 2.38 */
+        next = curr->next;
+        LclFree(curr);
+        }
     }
     return;
 }
-
 /* if -Zd is set and there is trailing code not inside
  * a function, set the dummy function's length now.
  */
