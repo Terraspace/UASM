@@ -24,6 +24,8 @@
 #include "label.h"
 #include "hll.h"
 
+#include "segment.h"
+
 #if DLLIMPORT
 #include "mangle.h"
 #include "extern.h"
@@ -43,8 +45,6 @@
 	typedef unsigned __int64 ULONG_PTR, *PULONG_PTR;
 	#define __int3264   __int64
 #endif
-
-uint_32 literalCnt = 0;
 
 extern bool write_to_file;
 
@@ -3143,7 +3143,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 	struct expr opnd;
 	char fullparam[MAX_LINE_LEN];
 	char buffer[MAX_LINE_LEN];
-	char stringparam[256][MAX_LINE_LEN];
+	char stringparam[256][32];
 	bool isString[256];
 	int reg = 0;
 
@@ -3160,6 +3160,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 	char c1;
 	char c2;
 	size_t finallen;
+	uint_16 buff[256];
 
 	DebugMsg1(("PushInvokeParam(%s, param=%s:%u, i=%u ) enter\n", proc->sym.name, curr ? curr->sym.name : "NULL", reqParam, i));
 	//__debugbreak();
@@ -3188,79 +3189,52 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 			}
 			// Set CurrSeg
 			CurrSeg = currs;
+
 			// Transfer raw String Data.
 			slen = strlen(tokenarray[i].string_ptr) - 2;
-			pos = currs->e.seginfo->current_loc;
 			pSrc = (tokenarray[i].string_ptr) + 1;
-			pDest = (char*)currs->e.seginfo->CodeBuffer;
 
 			sprintf(buf, "%s%d", labelstr, hashpjw(tokenarray[i].string_ptr));
 
-			if (pDest != 0 && write_to_file == TRUE)
+			lbl = SymLookup(buf);
+			SetSymSegOfs(lbl);
+			memset(&buff, 0, 256);
+			pDest = &buff;
+			finallen = slen;
+			for (j = 0; j < finallen; j++)
 			{
-				// Does this literal already exist? 
-				lbl = SymFind(buf);
-				if (lbl == NULL || lbl->state == SYM_UNDEFINED)
+				c1 = *pSrc++;
+				c2 = *(pSrc);
+				if (c1 == '\\' && c2 == 'n')
 				{
-					lbl = SymLookup(buf);
-					literalCnt++;
-					pDest += pos;
-					lbl->value = pos;
-					lbl->offset = pos;
-				}
-				else
-				{
-					pDest += lbl->offset;
-				}
-
-				finallen = slen;
-				for (j = 0; j < finallen; j++)
-				{
-					c1 = *pSrc++;
-					c2 = *(pSrc);
-					if (c1 == '\\' && c2 == 'n')
+					if (Options.output_format == OFORMAT_COFF)
 					{
-						if (Options.output_format == OFORMAT_COFF)
-						{
-							*pDest++ = 13;
-							*pDest++ = 10;
-						}
-						else
-						{
-							*pDest++ = 10;
-							finallen--;
-						}
-						pSrc++;
+						*pDest++ = 13;
+						*pDest++ = 10;
 					}
 					else
-						*pDest++ = c1;
+					{
+						*pDest++ = 10;
+						finallen--;
+					}
+					pSrc++;
 				}
-				*pDest++ = 0;
-
-				lbl->segment = currs;
-				lbl->isdefined = TRUE;
-				lbl->mem_type = MT_BYTE;
-				lbl->state = SYM_INTERNAL;
-				lbl->first_size = 2;
-				lbl->Ofssize = 2;
-				lbl->isfunc = 1;
-				lbl->total_length = 1;
-				lbl->total_size = 1;
-				lbl->max_offset = 1;
-				lbl->debuginfo = 1;
-				lbl->sfunc_ptr = 1;
-				lbl->langtype = LANG_NONE;
-				lbl->cvtyperef = 1;
-				lbl->ispublic = 0;
+				else
+					*pDest++ = c1;
 			}
-			if (lbl != NULL && currs->e.seginfo->current_loc == lbl->offset)
-			{
-				currs->e.seginfo->current_loc += (finallen + 1);
-				currs->e.seginfo->bytes_written += (finallen + 1);
-			}
-			currs->e.seginfo->written = TRUE;
-			if (currs->e.seginfo->current_loc > currs->sym.max_offset)
-				currs->sym.max_offset = currs->e.seginfo->current_loc;
+			*pDest++ = 0;
+			OutputBytes((unsigned char *)&buff, finallen+1, NULL);
+			lbl->isdefined = TRUE;
+			lbl->isarray = TRUE;
+			lbl->mem_type = MT_BYTE;
+			lbl->state = SYM_INTERNAL;
+			lbl->first_size = 2;
+			lbl->first_length = 1;
+			lbl->total_length = finallen;
+			lbl->total_size = finallen;
+			lbl->max_offset = finallen + lbl->offset;
+			lbl->debuginfo = FALSE;
+			lbl->ispublic = 0;
 
 			// invoke parameter is a raw ascii string, substitute in the our new label pointing to this raw string in .data segment. 
 			sprintf(stringparam[i], "%s", buf);
@@ -3268,6 +3242,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 
 			// Restore current Sement.
 			CurrSeg = curseg;
+
 		}
 		else if (strcmp(tokenarray[i].string_ptr, "L") == 0 && ParamIsString(tokenarray[i + 1].string_ptr, currParm, proc))
 		{
@@ -3281,60 +3256,30 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				if (strcmp(currs->sym.name, "_DATA") == 0)
 					break;
 			}
+
 			// Set CurrSeg
 			CurrSeg = currs;
-			// Transfer raw String Data.
+
 			slen = strlen(tokenarray[i + 1].string_ptr) - 2;
-			pos = currs->e.seginfo->current_loc;
 			pSrc = (tokenarray[i + 1].string_ptr) + 1;
-			pDest = (char*)currs->e.seginfo->CodeBuffer;
-
 			sprintf(buf, "%s%d", labelstr, hashpjw(pSrc));
-
-			if (pDest != 0 && write_to_file == TRUE)
-			{
-
-				// Does this literal already exist? 
-				lbl = SymFind(buf);
-				if (lbl == NULL || lbl->state == SYM_UNDEFINED)
-				{
-					lbl = SymLookup(buf);
-					literalCnt++;
-					pDest += pos;
-					lbl->value = pos;
-					lbl->offset = pos;
-				}
-				else
-				{
-					pDest += lbl->offset;
-				}
-				j = UTF8toWideChar(pSrc, slen, NULL,(unsigned short*)pDest, slen);
-                /* j contains a proper number of wide chars, it can be different than slen, v2.38 */
-				if (lbl != NULL && currs->e.seginfo->current_loc == lbl->offset)
-				{
-					currs->e.seginfo->current_loc += (j * 2 + 2);    /* real size is double in bytes + 2 for 2 zeros */
-					currs->e.seginfo->bytes_written += (j * 2 + 2);  /* here as well */
-				}
-				lbl->segment = currs;
-				lbl->isdefined = TRUE;
-				lbl->mem_type = MT_BYTE;
-				lbl->state = SYM_INTERNAL;
-				lbl->first_size = 2;
-				lbl->Ofssize = 2;
-				lbl->total_length = 1;
-				lbl->total_size = 1;
-				lbl->max_offset = 1;
-				lbl->debuginfo = 1;
-				lbl->sfunc_ptr = 1;
-				lbl->langtype = LANG_NONE;
-				lbl->cvtyperef = 1;
-				lbl->ispublic = 0;
-				lbl->isfunc = 1;
-			}
-
-			currs->e.seginfo->written = TRUE;
-			if (currs->e.seginfo->current_loc > currs->sym.max_offset)
-				currs->sym.max_offset = currs->e.seginfo->current_loc;
+			lbl = SymLookup(buf);
+			memset(&buff, 0, 256);
+			j = UTF8toWideChar(pSrc, slen, NULL, (unsigned short *)&buff, slen);
+            /* j contains a proper number of wide chars, it can be different than slen, v2.38 */
+			SetSymSegOfs(lbl);
+			OutputBytes((unsigned char *)&buff, (j*2)+2, NULL);
+			lbl->isdefined = TRUE;
+			lbl->isarray   = TRUE;
+			lbl->mem_type  = MT_BYTE;
+			lbl->state = SYM_INTERNAL;
+			lbl->first_size   = 2;
+			lbl->first_length = 1;
+			lbl->total_length = j;
+			lbl->total_size = j;
+			lbl->max_offset = j + lbl->offset;
+			lbl->debuginfo = FALSE;
+			lbl->ispublic = 0;
 
 			// invoke parameter is a raw ascii string, substitute in the our new label pointing to this raw string in .data segment.
 			sprintf(stringparam[i+1], "%s", buf);
@@ -3342,14 +3287,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 
 			// Restore current Sement.
 			CurrSeg = curseg;
-
-		/*	for (j = i; j < Token_Count - 1; j++)
-			{
-				tokenarray[j] = tokenarray[j + 1];
-			}
-			Token_Count--;*/
 			i++;
-
 		}
 		i++;
 	}

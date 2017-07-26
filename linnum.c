@@ -38,7 +38,7 @@ static uint_32        lastLineNumber;
 static void AddLinnumData( struct line_num_info *data )
 /*****************************************************/
 {
-    struct qdesc *q;
+    struct qdesc *q = NULL;
 #if COFF_SUPPORT
     if ( Options.output_format == OFORMAT_COFF ) {
         q = (struct qdesc *)CurrSeg->e.seginfo->LinnumQueue;
@@ -52,12 +52,15 @@ static void AddLinnumData( struct line_num_info *data )
         q = &LinnumQueue;
 
     data->next = NULL;
-    if ( q->head == NULL)
-        q->head = q->tail = data;
-    else {
-        ((struct line_num_info *)q->tail)->next = data;
-        q->tail = data;
-    }
+	if (q != NULL)
+	{
+		if (q->head == NULL)
+			q->head = q->tail = data;
+		else {
+			((struct line_num_info *)q->tail)->next = data;
+			q->tail = data;
+		}
+	}
 }
 
 /* store a reference for the current line at the current address

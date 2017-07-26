@@ -53,6 +53,8 @@ extern ret_code         SegmentModuleExit( void );
 extern void             DeleteGroup( struct dsym * );
 //extern char             *GetLname( int );
 //extern void             FreeLnameQueue( void );
+extern void             push_seg(struct dsym *);
+extern void             pop_seg(void);
 
 /* simplified segment functions */
 

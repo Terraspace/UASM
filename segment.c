@@ -244,7 +244,7 @@ void UpdateCurrSegVars( void )
     return;
 }
 
-static void push_seg( struct dsym *seg )
+void push_seg( struct dsym *seg )
 /**************************************/
 /* Push a segment into the current segment stack */
 {
@@ -260,7 +260,7 @@ static void push_seg( struct dsym *seg )
     return;
 }
 
-static void pop_seg( void )
+void pop_seg( void )
 /*************************/
 /* Pop a segment out of the current segment stack */
 {
