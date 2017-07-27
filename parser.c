@@ -810,7 +810,6 @@ static ret_code set_rm_sib(struct code_info *CodeInfo, unsigned CurrOpnd, char s
 #endif
         if ( ( GetSflagsSp( base ) & GetSflagsSp( index ) & SFR_SIZMSK ) == 0 ) {
 #if AVXSUPP
-          
            CodeInfo->indextype = GetValueSp( index );
            if (CodeInfo->indextype == OP_XMM || CodeInfo->indextype == OP_YMM || CodeInfo->indextype == OP_ZMM){
              ;
@@ -1591,6 +1590,7 @@ static ret_code memory_operand( struct code_info *CodeInfo, unsigned CurrOpnd, s
     int                 index;
     int                 base;
     int                 temp;
+    bool                swapped = FALSE;
     int                 j;
     struct asym         *sym;
     uint_8              Ofssize;
@@ -1760,13 +1760,14 @@ static ret_code memory_operand( struct code_info *CodeInfo, unsigned CurrOpnd, s
       temp = base;
       base = index;
       index = temp;
+      swapped = TRUE; /* this flag is on only for AVX regisres v2.38 */
       }
     /*----------------------------------------------*/
       
       if (index != EMPTY) CodeInfo->indexreg = GetRegNo(index);
       if (base != EMPTY)  CodeInfo->basereg = GetRegNo(base);
     /* use base + index from here - don't use opndx-> base_reg/idx_reg! */
-      if (index != EMPTY && base == EMPTY){
+      if (index != EMPTY && base == EMPTY && swapped){
         base = 0x87;     /* VEX index with omitted base EG: [+ymm1] */
         CodeInfo->basereg = GetRegNo(base);
         CodeInfo->indexreg = GetRegNo(index);
