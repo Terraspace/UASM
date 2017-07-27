@@ -420,32 +420,36 @@ static ret_code get_operand( struct expr *opnd, int *idx, struct asm_tok tokenar
 			* to all 4 other decorators
 			* which will be subtracted in codegen.c
 			*/
-          /* optimized and alowed white space after '{' and before '}', v2.38 */
-          if (tokenarray[i].string_delim == '{') {
-                p = tokenarray[i].string_ptr;
-                while (isspace(*p)) p++;           /* skip white spaces*/
-                if (memcmp(p, "rn-sae", 6) == 0) {
-                opnd->kind = EXPR_DECORATOR;
-                opnd->saeflags = 0x20;
-                }
-                else if (memcmp(p, "rd-sae", 6) == 0) {
-                  opnd->kind = EXPR_DECORATOR;
-                  opnd->saeflags = 0x40;
-                  }
-                else if (memcmp(p, "ru-sae", 6) == 0) {
-                  opnd->kind = EXPR_DECORATOR;
-                  opnd->saeflags = 0x60;
-                  }
-                else if (memcmp(p, "rz-sae", 6) == 0) {
-                  opnd->kind = EXPR_DECORATOR;
-                  opnd->saeflags = 0x80;
-                  }
-                else if (memcmp(p, "sae", 3) == 0){
-                  opnd->kind = EXPR_DECORATOR;
-                  opnd->saeflags = 0x10;
-                  }
-                if (!evex) EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
-                break;
+			/* optimized and alowed white space after '{' and before '}', v2.38 */
+			if (tokenarray[i].string_delim == '{' && evex) {
+				p = tokenarray[i].string_ptr;
+				while (isspace(*p)) p++;           /* skip white spaces*/
+				if (memcmp(p, "rn-sae", 6) == 0) {
+					opnd->kind = EXPR_DECORATOR;
+					opnd->saeflags = 0x20;
+					break;
+				}
+				else if (memcmp(p, "rd-sae", 6) == 0) {
+					opnd->kind = EXPR_DECORATOR;
+					opnd->saeflags = 0x40;
+					break;
+				}
+				else if (memcmp(p, "ru-sae", 6) == 0) {
+					opnd->kind = EXPR_DECORATOR;
+					opnd->saeflags = 0x60;
+					break;
+				}
+				else if (memcmp(p, "rz-sae", 6) == 0) {
+					opnd->kind = EXPR_DECORATOR;
+					opnd->saeflags = 0x80;
+					break;
+				}
+				else if (memcmp(p, "sae", 3) == 0) {
+					opnd->kind = EXPR_DECORATOR;
+					opnd->saeflags = 0x10;
+					break;
+				}
+				//EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
 			}
 			else if (opnd->is_opattr) /* OPATTR operator accepts anything! */
 				break;
