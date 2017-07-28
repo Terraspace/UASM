@@ -3310,7 +3310,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 	DebugMsg1(("PushInvokeParam(%s,%u): is_ptr=%u, pmtype=%Xh, psize=%u\n", proc->sym.name, reqParam, curr->is_ptr, curr->sym.mem_type, psize));
 #endif
 
-	if (_stricmp(tokenarray[i].string_ptr, "L") == 0)
+	if (_stricmp(tokenarray[i].string_ptr, "L") == 0 && (*(tokenarray[i+1].string_ptr) == '"') )
 	{
 		i++;
 	}
