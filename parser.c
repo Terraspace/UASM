@@ -953,12 +953,13 @@ static ret_code idata_nofixup( struct code_info *CodeInfo, unsigned CurrOpnd, co
     CodeInfo->opnd[CurrOpnd].data32l = value;
 
 #if AMD64_SUPPORT
-    /* 64bit immediates are restricted to MOV <reg>,<imm64>
-     */
-    if ( opndx->hlvalue != 0 ) { /* magnitude > 64 bits? */
-        DebugMsg1(("idata_nofixup: error, hlvalue=%" I64_SPEC "X\n", opndx->hlvalue ));
-        return( EmitConstError( opndx ) );
-    }
+	/* 64bit immediates are restricted to MOV <reg>,<imm64>
+	*/
+	if (opndx->llvalue > 0xFFFFFFFF && CodeInfo->token != T_MOV) { /* magnitude > 64 bits? */
+		DebugMsg1(("idata_nofixup: error, hlvalue=%" I64_SPEC "X\n", opndx->hlvalue));
+		return(EmitConstError(opndx));
+	}
+
     /* v2.03: handle QWORD type coercion here as well!
      * This change also reveals an old problem in the expression evaluator:
      * the mem_type field is set whenever a (simple) type token is found.
