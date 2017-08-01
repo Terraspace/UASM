@@ -955,7 +955,8 @@ static ret_code idata_nofixup( struct code_info *CodeInfo, unsigned CurrOpnd, co
 #if AMD64_SUPPORT
 	/* 64bit immediates are restricted to MOV <reg>,<imm64>
 	*/
-	if (opndx->llvalue > 0xFFFFFFFF && CodeInfo->token != T_MOV) { /* magnitude > 64 bits? */
+	if ( (opndx->value64 > 2147483647 || opndx->value64 < -2147483647) && CodeInfo->token != T_MOV) { /* magnitude > 64 bits? */
+	//if (opndx->value64 > 0xFFFFFFFF && CodeInfo->token != T_MOV) { /* magnitude > 64 bits? */
 		DebugMsg1(("idata_nofixup: error, hlvalue=%" I64_SPEC "X\n", opndx->hlvalue));
 		return(EmitConstError(opndx));
 	}

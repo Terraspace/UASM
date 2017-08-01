@@ -33,10 +33,12 @@
 #define MACRO_COUNT64 51
 #define MACRO_COUNT32 20
 
+
 /* MACRO names */
 char *macName64[] = {
 	"MEMALLOC", "MEMFREE", "CSTR", "WSTR", "FP4", "FP8", "FP10", "LOADSS", "LOADSD", "LOADPS", "MEMALIGN", "RV", "REPARG", "EXPAND_PREFIX", "_ARRAY", "_DELETEARRAY", "OINTERFACE", "ENDOINTERFACE", "CVIRTUAL", "CLASS", "ENDCLASS", "CMETHOD", "METHOD", "STATICMETHOD", "ENDMETHOD", "_DECLARE", "_STATICREF", "_ACQUIRE", "_RELEASE", "_NEW", "_RBXNEW", "_ITEM", "_ITEMR", "_INVOKE", "_I", "_STATIC", "_DELETE", "_VINVOKE", "_V", "_VD", "_VW", "_VB", "_VF", "CSTATIC", "LOADMSS", "LOADMSD", "UINVOKE", "ASFLOAT", "ASDOUBLE", "R4P", "R8P"
 };
+
 char *macName32[] = {
 	"MEMALLOC", "MEMFREE", "CSTR", "WSTR", "FP4", "FP8", "FP10", "LOADSS", "LOADPS", "MEMALIGN", "RV", "REPARG", "EXPAND_PREFIX", "LOADMSS", "LOADMSD", "UINVOKE", "ASFLOAT", "ASDOUBLE", "R4P", "R8P"
 };
@@ -95,6 +97,7 @@ char *macDef64[] = {
 	"R4P MACRO reg:REQ",
 	"R8P MACRO reg:REQ"
 };
+
 char *macDef32[] = {
 	"MEMALLOC macro aSize:REQ",
 	"MEMFREE macro memPtr:REQ",
@@ -219,6 +222,7 @@ void InitAutoMacros64(void)
 		start_pos += macroLen[i] + 1;
 	}
 }
+
 void InitAutoMacros32(void)
 {
 	struct dsym *mac;
@@ -230,8 +234,8 @@ void InitAutoMacros32(void)
 
 	uint_32 macroLen[] = { 7, 6, 6, 6, 7, 7, 7, 8, 10, 3, 7, 11, 19, 10, 10, 35, 1, 1, 1, 1 }; // Count of individual lines of macro-body code.
 	char *macCode[] = {
-		"IF @Platform EQ 1", "INVOKE HeapAlloc,RV(GetProcessHeap),0,aSize", "ELSE", "INVOKE malloc,aSize", "ENDIF", "MEMALIGN rax, 16", "endm", NULL,
-		"IF @Platform EQ 1", "INVOKE HeapFree,RV(GetProcessHeap),0,memPtr", "ELSE", "INVOKE free,memPtr", "ENDIF", "endm", NULL,
+		"IF @Platform EQ 0", "INVOKE HeapAlloc,RV(GetProcessHeap),0,aSize", "ELSE", "INVOKE malloc,aSize", "ENDIF", "MEMALIGN eax, 16", "endm", NULL,
+		"IF @Platform EQ 0", "INVOKE HeapFree,RV(GetProcessHeap),0,memPtr", "ELSE", "INVOKE free,memPtr", "ENDIF", "endm", NULL,
 		"local szText", ".data", "szText db Text,0", ".code", "exitm <offset szText>", "endm", NULL,
 		"local szText", ".data", "szText dw Text,0", ".code", "exitm <offset szText>", "endm", NULL,
 		"local vname", ".data", "align 4", "vname REAL4 value", ".code", "exitm <vname>", "endm", NULL,
