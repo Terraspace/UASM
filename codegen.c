@@ -870,13 +870,14 @@ static void output_opc(struct code_info *CodeInfo)
             lbyte |= ( ( CodeInfo->prefix.rex & REX_W ) ? 0x80 : 0 );
 
 			  /* UASM 2.35 Fix vmovq encoding */
-			  if (CodeInfo->token == T_VMOVQ && CodeInfo->opnd[OPND1].type == OP_XMM && CodeInfo->opnd[OPND2].type == OP_R64)
-			  {
-				  lbyte &= 0xfd;
-				  lbyte |= 1;
+			  if (CodeInfo->token == T_VMOVQ && CodeInfo->opnd[OPND1].type == OP_XMM) {
+				  if (CodeInfo->opnd[OPND2].type == OP_R64 || CodeInfo->opnd[OPND2].type == OP_RAX)
+				  {
+					  lbyte &= 0xfd;
+					  lbyte |= 1;
+				  }
 			  }
-
-            /* KSHIFTLW KSHIFTLQ KSHIFTRW KSHIFTRQ */
+			  /* KSHIFTLW KSHIFTLQ KSHIFTRW KSHIFTRQ */
             if ((CodeInfo->token == T_KSHIFTLW) || (CodeInfo->token == T_KSHIFTLQ)||
               (CodeInfo->token == T_KSHIFTRW) || (CodeInfo->token == T_KSHIFTRQ)){
               lbyte |= 0x80;
@@ -1888,19 +1889,20 @@ static void output_opc(struct code_info *CodeInfo)
                  }
                  
               }
-               /* UASM 2.35 fix vmovq encoding for xmm, r64 */
-			   if(CodeInfo->token == T_VMOVQ && CodeInfo->opnd[OPND1].type == OP_XMM && CodeInfo->opnd[OPND2].type == OP_R64)
-				   OutputCodeByte(ins->opcode-0x10 | CodeInfo->iswide | CodeInfo->opc_or);
-               if (CodeInfo->token == T_ADOX){
+			   /* UASM 2.35 fix vmovq encoding for xmm, r64 */
+			   if (CodeInfo->token == T_VMOVQ && CodeInfo->opnd[OPND1].type == OP_XMM) {
+				   if (CodeInfo->opnd[OPND2].type == OP_R64 || CodeInfo->opnd[OPND2].type == OP_RAX)
+					   OutputCodeByte(ins->opcode - 0x10 | CodeInfo->iswide | CodeInfo->opc_or);
+			   }
+			   else if (CodeInfo->token == T_ADOX) {
 				   OutputCodeByte(ins->opcode);
-                   OutputCodeByte(0xF6);
-                 }
-               else
-					OutputCodeByte(ins->opcode | CodeInfo->iswide | CodeInfo->opc_or);
-             }
-        }
-
-        /* emit ModRM byte; bits 7-6 = Mod, bits 5-3 = Reg, bits 2-0 = R/M */
+				   OutputCodeByte(0xF6);
+			   }
+			   else
+				   OutputCodeByte(ins->opcode | CodeInfo->iswide | CodeInfo->opc_or);
+			 }
+		   }
+		   /* emit ModRM byte; bits 7-6 = Mod, bits 5-3 = Reg, bits 2-0 = R/M */
            if ((CodeInfo->token == T_VRNDSCALEPD) || (CodeInfo->token == T_VRNDSCALEPS))CodeInfo->tuple = TRUE;
             if ((CodeInfo->token >= T_KADDB) && (CodeInfo->token <= T_KUNPCKDQ)) {       //here pay atention
               c = CodeInfo->reg1;
