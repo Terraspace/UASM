@@ -5,6 +5,7 @@
 res( CONDDIR,   CondAsmDirective ) /* conditional assembly directive (IF, ELSE, ...) */
 res( LOOPDIR,   LoopDirective )    /* loop directive (FOR, REPEAT, WHILE, ...) */
 res( PURGE,     PurgeDirective )   /* PURGE directive */
+res( UNDEF,     UndefDirective )   /* PURGE directive */
 res( INCLUDE,   IncludeDirective ) /* INCLUDE directive */
 res( MACRO,     MacroDir )         /* MACRO directive */
 res( CATSTR,    CatStrDir )        /* TEXTEQU + CATSTR directives */

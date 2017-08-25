@@ -3084,7 +3084,7 @@ static int ParamIsString(char *pStr, int param, struct dsym* proc) {
 	{
 		p = p->nextparam;
 	}
-	if (p && p->sym.mem_type != MT_PTR)
+	if (p && p->sym.mem_type != MT_PTR && !p->sym.is_vararg)
 		return(FALSE);
 
 	c = *pS;
@@ -3201,7 +3201,8 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 			memset(&buff, 0, 256);
 			pDest = &buff;
 			finallen = slen;
-			for (j = 0; j < finallen; j++)
+			//for (j = 0; j < finallen; j++)
+			while( *pSrc != '"')
 			{
 				c1 = *pSrc++;
 				c2 = *(pSrc);

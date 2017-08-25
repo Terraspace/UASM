@@ -803,15 +803,17 @@ next_item:  /* <--- continue scan if a comma has been detected */
 					}
 					else
 					{
-					  if (string_len > 1 && no_of_bytes > 1)
+						if (string_len > 1 && no_of_bytes > 1)
 						{
-                        if (half)   /* no need for little_endian, already converted, v2.38 */
-                          OutputDataBytes((uint_8*)&buff, j * 2);
+							if (half)   /* no need for little_endian, already converted, v2.38 */
+								OutputDataBytes((uint_8*)&buff, j * 2);
 						}
-                        else {
-                          pchar = little_endian((const char *)pchar, string_len);
-						  OutputDataBytes(pchar, string_len);
-                       }
+                        else 
+						{
+							if(no_of_bytes > 1)
+								pchar = little_endian((const char *)pchar, string_len);
+							OutputDataBytes(pchar, string_len);
+                        }
 					}
 					if (no_of_bytes > string_len)
 						FillDataBytes(0, no_of_bytes - string_len);
