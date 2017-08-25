@@ -443,7 +443,7 @@ static void output_opc(struct code_info *CodeInfo)
     CodeInfo->prefix.rex = (tmp & 0xFA) | ((tmp & REX_R) >> 2) | ((tmp & REX_B) << 2);
 #endif
   }
-      //   if (CodeInfo->token == T_VSCATTERQPD)
+      //   if (CodeInfo->token == T_VMOVQ)
       //__debugbreak();
 
 #if AVXSUPP
@@ -1893,6 +1893,8 @@ static void output_opc(struct code_info *CodeInfo)
 			   if (CodeInfo->token == T_VMOVQ && CodeInfo->opnd[OPND1].type == OP_XMM) {
 				   if (CodeInfo->opnd[OPND2].type == OP_R64 || CodeInfo->opnd[OPND2].type == OP_RAX)
 					   OutputCodeByte(ins->opcode - 0x10 | CodeInfo->iswide | CodeInfo->opc_or);
+                   else if (CodeInfo->opnd[OPND2].type == OP_M)
+                     OutputCodeByte(ins->opcode | CodeInfo->iswide | CodeInfo->opc_or);
 			   }
 			   else if (CodeInfo->token == T_ADOX) {
 				   OutputCodeByte(ins->opcode);
