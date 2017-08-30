@@ -443,7 +443,7 @@ static void output_opc(struct code_info *CodeInfo)
     CodeInfo->prefix.rex = (tmp & 0xFA) | ((tmp & REX_R) >> 2) | ((tmp & REX_B) << 2);
 #endif
   }
-      //   if (CodeInfo->token == T_VMOVQ)
+      //   if (CodeInfo->token == T_VMOVD)
       //__debugbreak();
 
 #if AVXSUPP
@@ -1889,11 +1889,16 @@ static void output_opc(struct code_info *CodeInfo)
                  }
                  
               }
+               /* prevent producing incorrect code for VMOVD, v2.39 */
+               if (CodeInfo->token == T_VMOVD){
+                   if (CodeInfo->opnd[OPND1].type == OP_XMM && CodeInfo->opnd[OPND2].type == OP_XMM) 
+                     EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
+               }
 			   /* UASM 2.35 fix vmovq encoding for xmm, r64 */
 			   if (CodeInfo->token == T_VMOVQ && CodeInfo->opnd[OPND1].type == OP_XMM) {
 				   if (CodeInfo->opnd[OPND2].type == OP_R64 || CodeInfo->opnd[OPND2].type == OP_RAX)
 					   OutputCodeByte(ins->opcode - 0x10 | CodeInfo->iswide | CodeInfo->opc_or);
-                   else if (CodeInfo->opnd[OPND2].type == OP_M)
+                   else if (CodeInfo->opnd[OPND2].type & OP_M_ANY || CodeInfo->opnd[OPND2].type == OP_XMM)
                      OutputCodeByte(ins->opcode | CodeInfo->iswide | CodeInfo->opc_or);
 			   }
 			   else if (CodeInfo->token == T_ADOX) {
