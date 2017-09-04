@@ -106,16 +106,15 @@ struct qdesc            LinnumQueue;    /* queue of line_num_info items */
 
 bool write_to_file;     /* write object module */
 
-						/* ARCH SSE/AVX specific instructions */
-
-char *MOVE_ALIGNED_FLOAT = "vmovaps";
-char *MOVE_ALIGNED_INT = "vmovdqa";
-char *MOVE_UNALIGNED_FLOAT = "vmovups";
-char *MOVE_UNALIGNED_INT = "vmovdqu";
-char *MOVE_SINGLE = "vmovss";
-char *MOVE_DOUBLE = "vmovsd";
-char *MOVE_SIMD_DWORD = "vmovd";
-char *MOVE_SIMD_QWORD = "vmovq";
+/* ARCH SSE/AVX specific instructions */
+char *MOVE_ALIGNED_FLOAT = "movaps";
+char *MOVE_ALIGNED_INT = "movdqa";
+char *MOVE_UNALIGNED_FLOAT = "movups";
+char *MOVE_UNALIGNED_INT = "movdqu";
+char *MOVE_SINGLE = "movss";
+char *MOVE_DOUBLE = "movsd";
+char *MOVE_SIMD_DWORD = "movd";
+char *MOVE_SIMD_QWORD = "movq";
 
 #if 0
 /* for OW, it would be good to remove the CharUpperA() emulation

@@ -26,7 +26,7 @@
 #include "macro.h"
 #include "fastpass.h"
 #include "listing.h"
-
+#include "equate.h"
 /* a placeholder consists of escape char (0x0a) + index (1 byte).
  if this is to change, function fill_placeholders() must
  be adjusted!
@@ -1105,6 +1105,7 @@ ret_code PurgeDirective( int i, struct asm_tok tokenarray[] )
 
     return( NOT_ERROR );
 }
+/* Implemented UNDEF directive v2.38 */
 ret_code UndefDirective( int i, struct asm_tok tokenarray[] )
 /***********************************************************/
 {
@@ -1131,6 +1132,35 @@ ret_code UndefDirective( int i, struct asm_tok tokenarray[] )
 
     return( NOT_ERROR );
 }
+/* Implemented DEFINE directive v2.40 */
+ret_code DefineDirective( int i, struct asm_tok tokenarray[] )
+/***********************************************************/
+{
+    struct asym *sym;
+    char buff[256];
+    char *p = buff;
+    
+    strcpy(tokenarray[0].string_ptr,tokenarray[1].tokpos);
+    strcpy(p,tokenarray[1].tokpos);
+    strcat(p, " EQU 1\0");
+    strcpy(tokenarray[0].tokpos,buff);
+    Token_Count = Tokenize(tokenarray[0].tokpos, 0, tokenarray, 0);
+  if ( sym = CreateConstant( tokenarray ) ) {
+      if ( sym->state != SYM_TMACRO ) {
+#if FASTPASS
+          if ( StoreState ) FStoreLine( 0 );
+#endif
+          if ( Options.preprocessor_stdout == TRUE )
+              WritePreprocessedLine( CurrSource );
+          }
+          /* v2.03: LstWrite() must be called AFTER StoreLine()! */
+          if ( ModuleInfo.list == TRUE ) {
+              LstWrite( sym->state == SYM_INTERNAL ? LSTTYPE_EQUATE : LSTTYPE_TMACRO, 0, sym );
+          }
+      }
+      return( NOT_ERROR );
+}
+
 /* internal @Environ macro function */
 /* v2.08: ensured no buffer overflow if environment variable is larger than MAX_LINE_LEN */
 

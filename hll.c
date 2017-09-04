@@ -1785,7 +1785,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
   int                 dcnt = 0;
   int                 dsize;
   uint_16             lbl;
-
+  uint_32             swsize;
   char buff[16];
   char buffer[MAX_LINE_LEN * 2];
   char unum[16];
@@ -1802,7 +1802,10 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
   /* v2.06: move the item to the free stack */
   hll->next = HllFree;
   HllFree = hll;
-
+  if (ModuleInfo.switch_size)
+      swsize = ModuleInfo.switch_size;
+  else
+    swsize = 0x4000;
   switch (cmd) {
     case T_DOT_ENDIF:
       if (hll->cmd != HLL_IF) {
@@ -1851,7 +1854,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
               hll->cflag = 6;                   /* we need only jump table */
             else if (hll->delta < 256)
               hll->cflag = 4;                   /* we need both jump table and count table byte size */
-            else if (hll->delta < 0x4000)       /* size limited to 0x4000  */
+            else if (hll->delta < swsize)       /* size limited to 0x4000  */
               hll->cflag = 7;                   /* we need both jump table and count table word size */
             else
               hll->cflag = 5;                   /* we will use a binary tree */
@@ -1863,7 +1866,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
                 hll->cflag = 6;
               else if (hll->delta64 < 256)
                 hll->cflag = 4;
-              else if (hll->delta64 < 0x4000)     /* size limited to 0x4000  */
+              else if (hll->delta64 < swsize)     /* size limited to 0x4000  */
                 hll->cflag = 7;
               else
                 hll->cflag = 5;

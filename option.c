@@ -854,6 +854,27 @@ OPTFUNC(SetSwitchStile)
   *pi = i;
   return(NOT_ERROR);
 }
+/* Set SWITCHSIZE */
+OPTFUNC(SetSwitchSize)
+/*****************/
+{
+	int i = *pi;
+	struct expr opndx;
+
+	if (EvalOperand(&i, tokenarray, Token_Count, &opndx, 0) == ERROR)
+		return(ERROR);
+	if (opndx.kind == EXPR_CONST) {
+		if (opndx.llvalue > 0x8000) {
+			return(EmitConstError(&opndx));
+		}
+		ModuleInfo.switch_size = opndx.llvalue;
+	}
+	else {
+		return(EmitError(CONSTANT_EXPECTED));
+	}
+	*pi = i;
+	return(NOT_ERROR);
+}
 
 #if ELF_SUPPORT
 OPTFUNC(SetElf)
@@ -1236,6 +1257,7 @@ static const struct asm_option optiontab[] = {
 	{ "ZEROLOCALS",   SetZeroLocals  }, /* ZEROLOCALS: <value> 1 or 0 */
 #endif
   { "SWITCHSTYLE",      SetSwitchStile }, /* SWITCH_STYLE: <CSWITCH> or <ASMSWITCH> */
+  { "SWITCHSIZE",       SetSwitchSize }, /* SWITCH_STYLE: <CSWITCH> or <ASMSWITCH> */
   { "FLAT",             SetFlat },		/* FLAT generated FASM style flat code */
   { "ARCH",             SetArch },      /* ARCH: SSE or AVX */
   { "REDZONE",          SetRedZone },   /* REDZONE: YES or NO */

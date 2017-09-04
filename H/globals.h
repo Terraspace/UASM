@@ -842,6 +842,7 @@ struct module_info {
 #if ELF_SUPPORT
         uint_8          elf_osabi;       /* for ELF */
 #endif
+        uint_32         switch_size;
 #if AMD64_SUPPORT
         uint_8          win64_flags;     /* for WIN64 + PE(32+) */
 #endif
