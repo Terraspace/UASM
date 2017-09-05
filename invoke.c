@@ -3208,16 +3208,14 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				c2 = *(pSrc);
 				if (c1 == '\\' && c2 == 'n')
 				{
-					if (Options.output_format == OFORMAT_COFF)
-					{
-						*pDest++ = 13;
-						*pDest++ = 10;
-					}
-					else
-					{
-						*pDest++ = 10;
-						finallen--;
-					}
+					*pDest++ = 10;
+					finallen--;
+					pSrc++;
+				}
+				else if (c1 == '\\' && c2 == 'r')
+				{
+					*pDest++ = 13;
+					finallen--;
 					pSrc++;
 				}
 				else
