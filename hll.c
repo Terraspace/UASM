@@ -1780,10 +1780,10 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
   int                 cmd = tokenarray[i].tokval;
   int                 j, n;
   int                 temp;
-  int                 acnt = 0;
-  int                 bcnt = 0;
-  int                 dcnt = 0;
-  int                 dsize;
+  int                 acnt  = 0;
+  int                 bcnt  = 0;
+  int                 dcnt  = 0;
+  int                 dsize = 0;
   uint_16             lbl;
   uint_32             swsize;
   char buff[16];
@@ -1889,7 +1889,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
               strcat(buffer, " dq ");                /* now we have ready start point for the array: @C0006 dq */
             dcnt = 0;                              /* set the counter to zero to count how many elements in one line */
             for (j = 0; j < hll->casecnt; j++,dcnt++) {
-              if (dcnt >= 20){                     /* if more than 20 labels in the line add a new row */
+              if (dcnt >= 75){                     /* if more than 20 labels in the line add a new row */
                 AddLineQueue(buffer);              /* @C0006 dd @C000C, @C000D, @C000E, @C000F, @C0010...*/
                 memset(buffer, 0, sizeof(buffer)); /* clear the buffer */
                 if (ModuleInfo.Ofssize == USE32)
@@ -1910,8 +1910,10 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
                 GetLabelStr(hll->labels[LDEF], buff);
               else
                 GetLabelStr(hll->labels[LEXIT], buff);
-              strcat(buffer, ", ");
-              strcat(buffer, buff);
+                if (dcnt && dcnt < 75){
+                  strcat(buffer, ", ");
+                  strcat(buffer, buff);
+                }
               AddLineQueue(buffer);                  /* write line with the last array */
           } 
           /* here is created data for calculating jumps  */
@@ -1923,7 +1925,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
             n = 0;
             dcnt = 0; 
             for (j = 0; j < hll->casecnt; j++,dcnt++) {
-              if (dcnt >= 50){                     /* if more than 20 labels in the line add a new row */
+              if (dcnt >= 75){                     /* if more than 20 labels in the line add a new row */
                 if (buffer[4] == ',') buffer[4] = ' ';
                 AddLineQueue(buffer);              /* @C0008 db 1, 2, 3, 4, 5...*/
                 memset(buffer, 0, sizeof(buffer)); /* clear the buffer */
@@ -1944,7 +1946,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
                 strcat(buffer, unum);
                 n++;
                 dcnt++;
-                if (dcnt >= 50){                     /* if more than 20 labels in the line add a new row */
+                if (dcnt >= 75){                     /* if more than 20 labels in the line add a new row */
                   if (buffer[4] == ',') buffer[4] = ' ';
                   AddLineQueue(buffer);              /* @C0008 db 1, 2, 3, 4, 5...*/
                   memset(buffer, 0, sizeof(buffer)); /* clear the buffer */
@@ -1973,7 +1975,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
             if (ModuleInfo.Ofssize == USE32){
               strcat(buffer, " dd ");
               for (j = 0; j < hll->casecnt; j++,dcnt++){
-                if (dcnt >= 20){                     /* if more than 20 labels in the line add a new row */
+                if (dcnt >= 75){                     /* if more than 20 labels in the line add a new row */
                   if (buffer[4] == ',') buffer[4] = ' ';
                   AddLineQueue(buffer);              /* @C0008 db 1, 2, 3, 4, 5...*/
                   memset(buffer, 0, sizeof(buffer)); /* clear the buffer */
@@ -1994,7 +1996,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
             else if (ModuleInfo.Ofssize == USE64){
               strcat(buffer, " dq ");
               for (j = 0; j < hll->casecnt; j++,dcnt++){
-                if (dcnt >= 20){                     /* if more than 20 labels in the line add a new row */
+                if (dcnt >= 75){                     /* if more than 20 labels in the line add a new row */
                   if (buffer[4] == ',') buffer[4] = ' ';
                   AddLineQueue(buffer);              /* @C0008 db 1, 2, 3, 4, 5...*/
                   memset(buffer, 0, sizeof(buffer)); /* clear the buffer */
@@ -2028,7 +2030,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
             n = 0;
             dcnt = 0; 
             for (j = 0; j < hll->casecnt; j++,dcnt++) {
-              if (dcnt >= 50){                     /* if more than 20 labels in the line add a new row */
+              if (dcnt >= 75){                     /* if more than 20 labels in the line add a new row */
                 if (buffer[4] == ',') buffer[4] = ' ';
                 AddLineQueue(buffer);              /* @C0008 db 1, 2, 3, 4, 5...*/
                 memset(buffer, 0, sizeof(buffer)); /* clear the buffer */
@@ -2049,7 +2051,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
                 strcat(buffer, unum);
                 n++;
                 dcnt++;
-                if (dcnt >= 50){                     /* if more than 20 labels in the line add a new row */
+                if (dcnt >= 75){                     /* if more than 20 labels in the line add a new row */
                   if (buffer[4] == ',') buffer[4] = ' ';
                   AddLineQueue(buffer);              /* @C0008 db 1, 2, 3, 4, 5...*/
                   memset(buffer, 0, sizeof(buffer)); /* clear the buffer */
@@ -2080,28 +2082,55 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
             dcnt = 0;
             if (ModuleInfo.Ofssize == USE32){
               strcat(buffer, " dd ");
-              for (j = 0, n = 0; j < hll->casecnt; j++, dcnt++) {
-                /* if more than 20 labels add a new row */
-                if (dcnt >= 20){
+              for (j = 0, n = 0; j < hll->casecnt; j++) {
+                /* if more than 75 labels add a new row */
+                if (dcnt >= 75){
+                    if (buffer[4] == ',')buffer[4] = ' ';
+                    else if (buffer[10] == ',')buffer[10] = ' ';
                   AddLineQueue(buffer);
                   memset(buffer, 0, sizeof(buffer));
                   strcpy(buffer, " dd ");
                   dcnt = 0;
                   }
-                temp = hll->pcases[j] - hll->mincase;
-                while (n < temp) {
+                  if (hll->csize == 4){
+                    temp = hll->pcases[j] - hll->mincase;/* temp contains case EG: .case 4, n contains  */
+                    }
                   if (hll->flags & HLLF_DEFAULTOCCURED)
                     GetLabelStr(hll->labels[LDEF], buff);
                   else
                     GetLabelStr(hll->labels[LEXIT], buff);
-                  if (dcnt) strcat(buffer, ", ");
-                  strcat(buffer, buff);
-                  n++;
+                  while (n < temp) {
+                    if (dcnt < 75){
+                      strcat(buffer, ", ");
+                      strcat(buffer, buff);
+                      dcnt++;
+                      }
+                    else{
+                      strcat(buffer, ", ");
+                      strcat(buffer, buff);
+                      if (buffer[4] == ',')buffer[4] = ' ';
+                      else if (buffer[10] == ',')buffer[10] = ' ';
+                      AddLineQueue(buffer);
+                      memset(buffer, 0, sizeof(buffer));
+                      strcpy(buffer, " dd ");
+                      dcnt = 0;
+                      }
                   dcnt++;
+                  n++;
                   }
                 GetLabelStr(hll->plabels[j], buff);
-                if (dcnt) strcat(buffer, ", ");
-                strcat(buffer, buff);
+                    if (dcnt < 75){
+                      strcat(buffer, ", ");
+                      strcat(buffer, buff);
+                      }
+                    else{
+                      if (buffer[4] == ',')buffer[4] = ' ';
+                      else if (buffer[10] == ',')buffer[10] = ' ';
+                      AddLineQueue(buffer);
+                      memset(buffer, 0, sizeof(buffer));
+                      strcpy(buffer, " dd ");
+                      dcnt = 0;
+                      }
                 n++;
                 dcnt++;
                 }
@@ -2109,51 +2138,105 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
                 GetLabelStr(hll->labels[LDEF], buff);
               else
                 GetLabelStr(hll->labels[LEXIT], buff);
-              if (dcnt) strcat(buffer, ", ");
-              strcat(buffer, buff);
-              AddLineQueue(buffer);
-              AddLineQueue(".code");
+                    if (dcnt < 75){
+                      strcat(buffer, ", ");
+                      strcat(buffer, buff);
+                      }
+                    else{
+                      strcat(buffer, ", ");
+                      strcat(buffer, buff);
+                      if (buffer[4] == ',')buffer[4] = ' ';
+                      else if (buffer[10] == ',')buffer[10] = ' ';
+                      AddLineQueue(buffer);
+                      memset(buffer, 0, sizeof(buffer));
+                      strcpy(buffer, " dd ");
+                      dcnt = 0;
+                      }
+                if (buffer[4] == ',')buffer[4] = ' ';
+                else if (buffer[10] == ',')buffer[10] = ' ';
+                AddLineQueue(buffer);
+                AddLineQueue(".code");
               }
 #if AMD64_SUPPORT
               else if (ModuleInfo.Ofssize == USE64){
                 strcat(buffer, " dq ");
-                for (j = 0, n = 0; j < hll->casecnt; j++, dcnt++) {
+                for (j = 0, n = 0; j < hll->casecnt; j++) {
                   /* if more than 20 labels add a new row */
-                  if (dcnt >= 20){
+                  if (dcnt >= 75){
+                    if (buffer[4] == ',')buffer[4] = ' ';
+                    else if (buffer[10] == ',')buffer[10] = ' ';
                     AddLineQueue(buffer);
                     memset(buffer, 0, sizeof(buffer));
                     strcpy(buffer, " dq ");
                     dcnt = 0;
                     }
-                if (hll->csize == 4)
-                  temp = hll->pcases[j] - hll->mincase;/* temp contains case EG: .case 4, n contains  */
+                  if (hll->csize == 4){
+                    temp = hll->pcases[j] - hll->mincase;/* temp contains case EG: .case 4, n contains  */
+                    }
 #if AMD64_SUPPORT
-                else if (hll->csize == 8)
-                  temp = hll->pcases64[j] - hll->mincase64;/* temp contains case EG: .case 4, n contains  */
+                  else if (hll->csize == 8){
+                    temp = hll->pcases64[j] - hll->mincase64;/* temp contains case EG: .case 4, n contains  */
+                    }
 #endif
+                  if (hll->flags & HLLF_DEFAULTOCCURED)
+                    GetLabelStr(hll->labels[LDEF], buff);
+                  else
+                    GetLabelStr(hll->labels[LEXIT], buff);
                   while (n < temp) {
-                    if (hll->flags & HLLF_DEFAULTOCCURED)
-                      GetLabelStr(hll->labels[LDEF], buff);
-                    else
-                      GetLabelStr(hll->labels[LEXIT], buff);
-                    if (dcnt) strcat(buffer, ", ");
-                    strcat(buffer, buff);
-                    n++;
+                    if (dcnt <= 75){
+                      strcat(buffer, ", ");
+                      strcat(buffer, buff);
+                      dcnt++;
+                      }
+                    else{
+                      strcat(buffer, ", ");
+                      strcat(buffer, buff);
+                      if (buffer[4] == ',')buffer[4] = ' ';
+                      else if (buffer[10] == ',')buffer[10] = ' ';
+                      AddLineQueue(buffer);
+                      memset(buffer, 0, sizeof(buffer));
+                      strcpy(buffer, " dq ");
+                      dcnt = 0;
+                      }
                     dcnt++;
+                    n++;
                     }
                   GetLabelStr(hll->plabels[j], buff);
-                  if (dcnt) strcat(buffer, ", ");
-                  strcat(buffer, buff);
+                    if (dcnt <= 75){
+                      strcat(buffer, ", ");
+                      strcat(buffer, buff);
+                      }
+                    else{
+                      if (buffer[4] == ',')buffer[4] = ' ';
+                      else if (buffer[10] == ',')buffer[10] = ' ';
+                      AddLineQueue(buffer);
+                      memset(buffer, 0, sizeof(buffer));
+                      strcpy(buffer, " dq ");
+                      dcnt = 0;
+                      }
                   n++;
                   dcnt++;
                   }
-
                 if (hll->flags & HLLF_DEFAULTOCCURED)
                   GetLabelStr(hll->labels[LDEF], buff);
                 else
                   GetLabelStr(hll->labels[LEXIT], buff);
-                if (dcnt) strcat(buffer, ", ");
-                strcat(buffer, buff);
+                    if (dcnt <= 75){
+                      strcat(buffer, ", ");
+                      strcat(buffer, buff);
+                      }
+                    else{
+                      strcat(buffer, ", ");
+                      strcat(buffer, buff);
+                      if (buffer[4] == ',')buffer[4] = ' ';
+                      else if (buffer[10] == ',')buffer[10] = ' ';
+                      AddLineQueue(buffer);
+                      memset(buffer, 0, sizeof(buffer));
+                      strcpy(buffer, " dq ");
+                      dcnt = 0;
+                      }
+                if (buffer[4] == ',')buffer[4] = ' ';
+                else if (buffer[10] == ',')buffer[10] = ' ';
                 AddLineQueue(buffer);
                 AddLineQueue(".code");
              }
@@ -2172,10 +2255,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
           }
 #if AMD64_SUPPORT
         else if (hll->csize == 8) {
-          AddLineQueueX("push rdx");
-          AddLineQueueX("mov rdx, %q", hll->pcases64[0]);
-          AddLineQueueX("cmp rax, rdx");
-          AddLineQueueX("pop rdx");
+          AddLineQueueX("cmp rax, %q", hll->pcases64[0]);
           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[0], buff));
           if (hll->flags & HLLF_DEFAULTOCCURED)
             AddLineQueueX("jmp  %s", GetLabelStr(hll->labels[LDEF], buff));
@@ -2197,15 +2277,9 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
           }
 #if AMD64_SUPPORT
         else if (hll->csize == 8) {
-          AddLineQueueX("push rdx");
-          AddLineQueueX("mov rdx, %q", hll->pcases64[0]);
-          AddLineQueueX("cmp rax, rdx");
-          AddLineQueueX("pop rdx");
+          AddLineQueueX("cmp  rax,%q", hll->pcases64[0]);
           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[0], buff));
-          AddLineQueueX("push rdx");
-          AddLineQueueX("mov rdx, %q", hll->pcases64[1]);
-          AddLineQueueX("cmp rax, rdx");
-          AddLineQueueX("pop rdx");
+          AddLineQueueX("cmp  rax,%q", hll->pcases64[1]);
           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[1], buff));
           if (hll->flags & HLLF_DEFAULTOCCURED)
             AddLineQueueX("jmp  %s", GetLabelStr(hll->labels[LDEF], buff));
@@ -2229,20 +2303,11 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
           }
 #if AMD64_SUPPORT
         else if (hll->csize == 8) {
-          AddLineQueueX("push rdx");
-          AddLineQueueX("mov rdx, %q", hll->pcases64[0]);
-          AddLineQueueX("cmp rax, rdx");
-          AddLineQueueX("pop rdx");
+          AddLineQueueX("cmp  rax,%q", hll->pcases64[0]);
           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[0], buff));
-          AddLineQueueX("push rdx");
-          AddLineQueueX("mov rdx, %q", hll->pcases64[1]);
-          AddLineQueueX("cmp rax, rdx");
-          AddLineQueueX("pop rdx");
+          AddLineQueueX("cmp  rax,%q", hll->pcases64[1]);
           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[1], buff));
-          AddLineQueueX("push rdx");
-          AddLineQueueX("mov rdx, %q", hll->pcases64[2]);
-          AddLineQueueX("cmp rax, rdx");
-          AddLineQueueX("pop rdx");
+          AddLineQueueX("cmp  rax,%q", hll->pcases64[2]);
           AddLineQueueX("je  %s", GetLabelStr(hll->plabels[2], buff));
           if (hll->flags & HLLF_DEFAULTOCCURED)
             AddLineQueueX("jmp  %s", GetLabelStr(hll->labels[LDEF], buff));
@@ -2380,6 +2445,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
 #endif
         if (ModuleInfo.Ofssize == USE32) {
           if (Parse_Pass ){
+            if (hll->mincase)
             AddLineQueueX("sub eax,%d", hll->mincase);
             GetLabelStr(hll->labels[LDATA1], buff);
             AddLineQueueX("jmp   dword ptr[%s+eax*4]",buff);
@@ -2387,14 +2453,17 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
         }
 #if AMD64_SUPPORT
         else if (ModuleInfo.Ofssize == USE64) {
-          if (hll->csize == 4)
+          if (hll->csize == 4){
+            if (hll->mincase)
             AddLineQueueX("sub   eax,%d", hll->mincase);
+            }
           else{
+            if (hll->mincase64)
             AddLineQueueX("sub rax,%q", hll->mincase64);
           }
           if (Parse_Pass ){
             AddLineQueueX("lea   r10,%s", GetLabelStr(hll->labels[LDATA1], buff));
-            AddLineQueue("jmp   qword ptr[rax+r10*8]");
+            AddLineQueue("jmp   qword ptr[r10+rax*8]");
             }
         }
 #endif
@@ -2806,41 +2875,27 @@ ret_code HllExitDir(int i, struct asm_tok tokenarray[])
       }
       if (hll->csize == 4) {
         if (!hll->maxalloccasen) {
-          hll->pcases = LclAlloc(hll->csize * 50);
-          hll->plabels = LclAlloc(sizeof(uint_16) * 50);
+          hll->pcases = malloc(hll->csize * 50);
+          hll->plabels = malloc(sizeof(uint_16) * 50);
           hll->maxalloccasen = 50;
         }
         if (hll->casecnt >= hll->maxalloccasen) {
           hll->maxalloccasen += 50;
-          newcp = LclAlloc(hll->csize * hll->maxalloccasen);
-          memcpy(newcp, hll->pcases, hll->casecnt * hll->csize);
-          LclFree(hll->pcases);
-          hll->pcases = newcp;
-
-          newlp = LclAlloc(sizeof(uint_16) * hll->maxalloccasen);
-          memcpy(newlp, hll->plabels, hll->casecnt * sizeof(uint_16));
-          LclFree(hll->plabels);
-          hll->plabels = newlp;
+          hll->pcases = realloc(hll->pcases,hll->csize * hll->maxalloccasen);          
+          hll->plabels = realloc(hll->plabels,sizeof(uint_16) * hll->maxalloccasen);
         }
       }
 #if AMD64_SUPPORT
       else {
         if (!hll->maxalloccasen) {
-          hll->pcases64 = LclAlloc(hll->csize * 50);
-          hll->plabels = LclAlloc(sizeof(uint_16) * 50);
+          hll->pcases64 = malloc(hll->csize * 50);
+          hll->plabels = malloc(sizeof(uint_16) * 50);
           hll->maxalloccasen = 50;
         }
         if (hll->casecnt >= hll->maxalloccasen) {
           hll->maxalloccasen += 50;
-          newcp64 = LclAlloc(hll->csize * hll->maxalloccasen);
-          memcpy(newcp64, hll->pcases64, hll->casecnt * hll->csize);
-          LclFree(hll->pcases64);
-          hll->pcases64 = newcp64;
-
-          newlp = LclAlloc(sizeof(uint_16) * hll->maxalloccasen);
-          memcpy(newlp, hll->plabels, hll->casecnt * sizeof(uint_16));
-          LclFree(hll->plabels);
-          hll->plabels = newlp;
+          hll->pcases64 = realloc(hll->pcases64,hll->csize * hll->maxalloccasen);
+          hll->plabels = realloc(hll->plabels,sizeof(uint_16) * hll->maxalloccasen);
         }
       }
 #endif

@@ -87,10 +87,10 @@ jcc( Z,   0x4,   z )
 
 #undef jcc
 
-insx(JCXZ,   jcxz,              OpCls( I8,   NONE,  NONE  ), F_16A,  0,  no_RM,  0xE3,     0x00,       P_86,        0, RWF_IA32 | AP_BND)
+insx(JCXZ,   jcxz,              OpCls( I8,   NONE,  NONE  ), F_16A,  0,  no_RM,  0xE3,     0x00,       P_86,        0, RWF_IA32)
 ins (JECXZ,  jecxz,             OpCls( I8,   NONE,  NONE  ), F_32A,  0,  no_RM,  0xE3,     0x00,       P_386,       0)
 #if AMD64_SUPPORT
-insx(JRCXZ,  jrcxz,             OpCls( I8,   NONE,  NONE  ), 0,      0,  no_RM,  0xE3,     0x00,       P_64,        0, RWF_X64 | AP_BND)
+insx(JRCXZ,  jrcxz,             OpCls( I8,   NONE,  NONE  ), 0,      0,  no_RM,  0xE3,     0x00,       P_64,        0, RWF_X64)
 #endif
 ins (LOOP,   loop,              OpCls( I8,   NONE,  NONE  ), 0,      0,  no_RM,  0xE2,     0x00,       P_86,        0)
 ins (LOOPE,  loope,             OpCls( I8,   NONE,  NONE  ), 0,      0,  no_RM,  0xE1,     0x00,       P_86,        0)
