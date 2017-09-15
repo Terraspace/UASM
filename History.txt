@@ -1,7 +1,261 @@
+-------------------------------------
+Roadmap:
+-------------------------------------
 
-   Changelog
+2.41 
 
-   __/__/2014, v2.12:
+Allow PROC definitions to overload based on parameters.
+Add –macho64 output format support.
+
+-------------------------------------
+Changelog:
+-------------------------------------
+
+2.40	
+
+Switch fixes for negative cases and optimisations.
+Removed BND prefix from JCXZ instruction group to fix encoding issues in 16/32bit.
+Fixed literal string bug in 32bit mode.
+Cleaned up manual and moved history/roadmap to history.txt
+
+2.39	I
+
+mproved string literal handling and fixed a bug where it wouldn’t work in vararg parameters.
+Added DEFINE/UNDEF built-in commands.
+Optimised SWITCH generated code, moved jump tables to data sections to avoid affecting code sections/code caching and line number to offset references.
+Added OPTION SWITCHSIZE
+Changed architecture default from AVX to SSE for improved default compatibility.
+
+2.38	
+
+Fixed more listing issues with binary zeroes.
+Improved UTF bom check performance by moving to ProcessFile (Nidud)
+Fixed an encoding issue with LEA and RIP.
+Fixed IFNDEF macro generation bug.
+Fixed SYSCALL, FASTCALL64 and VECTORCALL parameter order and type checking bugs.
+Added new instructions: ADOX, VAESDEC, ADCX, CLAC, RDPID, CLFLUSHOPT
+Fixed an index register encoding bug and improved checking for valid forms of vscatter and vgather.
+
+2.37	
+
+Fixed listing bug causing a binary zero in output text.
+Added support for implicit sizing and DS segment overrides for 32bit code generation.
+Added support for new 64bit absolute immediate addressing modes.
+
+2.36	
+
+Added automatic alignment check for all SIMD instructions which are not scalar.
+Improved simd type coercion by testing variables (global/local) on size rather than type. This simplifies code and reduces the need to use type ptr when working with DWORD, BYTE or other data types.
+Fixed a bug with literal string support handling \n escape.
+Improved handling of PTR and VARARG for SystemV calls.
+
+2.35	
+
+Fixed some register combination warnings for VCMPSD, VCMPEQSD and VCMPSS.
+Added RP4/RP8 macros and case-sensitive conversion to macro library.
+Added support for floating point comparison expression.
+Add string literal support back into invoke.
+
+2.34	
+
+Added –Sp command line switch to allow user specified segment alignment.
+Added further Intel MPX extension support, including BND prefix support.
+Added support to define return types on PROC/PROTO which enables the use of the new UINVOKE macro library function.
+
+2.33	
+
+Fixed a number of regression issues, including several VEX encoded instructions which were not correct.
+Fixed ebx.STRUCT style addressing.
+Fixed SYSV support to allow ADDR in VARARGS.
+Fixed a potential crash when running multiple input files.
+
+2.32	
+
+Added initial UTF8 BOM Check
+Rolled-back literal string support in favour of using existing CSTR/WSTR macros to ensure no legacy invoke calls are broken. Literal string support will be moved to a new invocation syntax.
+
+2.31	
+
+Fixed 32bit MS FASTCALL issue.
+Fixed encoding bug with VMOVQ.
+Fixed VMOVSS/VMOVSD allowing 2 register form, when 3 registers are required for all-register mode and added error message for it.
+Updated VECTORCALL, FASTCALL x64 to support 3 register VMOVSS/VMOVSD form if archAVX on.
+Optimised and improved FASTCALL handlers and completely redeveloped SYSTEMV calling convention implementation.
+Fixed a potential memory corruption bug in the symbol table.
+Added support for Intel MPX extensions, bnd0-3 registers and new instructions.
+Added custom USES to OO Library method definitions as well as providing a replaceable set of memory allocation macros to allow for OO use on OSX/Linux.
+
+2.30	
+
+Fixed a nested path bug present from JWASM which caused strange assembly errors when working a nested path location.
+Fixed MS Fastcall to support types other than DWORD and prevent incorrect warnings about incompatible types or redefinitions.
+Improved Linux 64bit package and compilation to use clang as per OSX so both builds are compatible.
+
+2.29	
+
+Finalized Delphi (Borland Register calling convention) and updated language type specifier to BORLAND.
+Fixed some register overwrite issues with SystemV invoke.
+Added two new Macro Library functions, MEMALLOC <size> and MEMFREE <ptr>
+Added new built-in variable @Platform <0,1,2,3,4,5> which indicates the current output type of WIN32, WIN64, ELF32, ELF64, OSX to support cross-platform development.
+Fixed a potential general failure crash with some evex encodings when no base-register present.
+Fixed 32bit crash caused by Macro Library modifying read only string data.
+
+2.28	
+
+Optimise SYSTEMV Invoke code generation.
+Fixed register overwrite warnings for SYSTEMV invoke.
+Fix long standing JWasm issue with source debugging information leaving out PROC source-lines when a procedure has no prologue.
+Add OPTION PROC:NONE, OPTION PROC:DEFAULT to simplify switching on/off procedure prologue/epilogue.
+OPTION PROC can also set prologue/epilogue simultaneously with:
+OPTION PROC:PrologueMacro,EpilogueMacro
+Change macro library OO functions names to use _ instead of $.
+Added DELPHI language type for Borland 32bit fast-calling convention.
+(experimental, pending further updates)
+Fix SHR for macro expression evaluation (Fix supplied by Nidud).
+Fix VARARG Register overwritten warning.
+Added progressive assembly reporting, console updates per source file.
+Added new command line option –less to reduce console output information.
+
+2.27	
+
+Fixed the use of ADDR in invoke for SYSTEM V calls.
+Disable generation of listing while processing built-in macro library.
+Rename OO INTERFACE function in built-in macro library to OINTERFACE and ENDINTEFACE to ENDOINTERFACE to prevent conflicts with SDK headers.
+
+2.26	
+
+Added support for USES ymm registers to stackbase:RBP 64bit mode.
+Reduced stack usage for stackbase:RSP with win64:15 mode
+Configured 64bit assembly to assume stackbase:rbp if nothing specified.
+
+2.25	
+
+Continued improvement of align 16 in prologue, while reducing stack wastage.
+Implemented OPTION REDZONE for SystemV ABI
+Internal optimisation to character validation and hashing functions to yield 5% assembly time improvement.
+Extend macrolib functionality and limit to 64bit.
+Implement OO language extension framework.
+
+2.24	
+
+Fixed literal strings including “ “.
+Fixed stackbase:rsp overwriting locals in some cases.
+Ensure stackbase:rbp works for modes with bit 1 set.
+Add support for SYSTEMV ABI.
+
+2.23	
+
+Support for STACKBASE:ESP has been fixed 
+(Big thanks to MASM32 forum member Nidud)
+Command line switch –nomlib added to disable internal Macro Library
+OSX Build supplied
+Fixed INCBIN related offset bug
+Fixed COFF 32bit name mangling bug
+Code paths for 64bit RSP and RBP stackbase have been completely separated, refactored and optimised.
+Simplification of code generation options
+
+2.22	
+
+Added support for inline string literals in INVOKE include L”” wide character strings.
+Added support for allocating wide strings in data with dw.
+Automatic integer to float promotion for data declarations and struct members.
+Added new union initialisation syntax.
+Added built-in macro library that precompiles and adjusts to suit currently selected architecture setting (SSE/AVX).
+Fixed STACKBASE:ESP parameter positions.
+Fixed STACKBASE:RSP + WIN64:11 16byte alignment.
+Fixed STACKBASE:RSP parameter positions.
+
+2.21	
+
+Fixed RBP prologue and epilogue for win64:6 and 7 modes.
+Added support to INVOKE allowing XMM register parameters for FLOAT type arguments (real4 and real8).
+Fixed stack and local align to 16 issues.
+Added OPTION ARCH:<SSE|AVX> and command line 
+switches –archSSE –archAVX to change code-generation to favour SSE or AVX instructions (this is particularly relevant to invoke and prologue/epilogue generation).
+
+2.20	
+
+Fixed opcode byte 83 to be 80 when assembler needs to assume BYTE type.
+Cleaned up linnum memory allocation from switch additions.
+Fixed option win64:6
+
+2.19	
+
+Fixed corruption of structures and first proc with offset 0 bug when dumping symbols to file.
+More AVX, AVX512 and MMX instruction encoding fixes.
+Fixed line number debugging information corruption due to compiler check for memory address allocation.
+Fixed the use of label in data section which was causing an erroneous error of “USE OF REGISTER ASSUMED TO ERROR”.
+Investigated custom epilogue macro expanding on a line with a label causes backwards jumps not to evaluate distance correctly. This is not being fixed but is noted, always put RET on its own line without a label when using a custom epilogue macro.
+
+2.18	
+
+Fixed '&&' in hll (.while, .if, .for, .repeat), added additional label 
+Fixed wrong locals alignment in 32 bit
+Fixed error reporting for overwritten registers
+Changed cmp reg,0 to test reg,reg for HLL generation
+
+2.17	
+
+AVX 3 operand warnings for missing operands.
+Support for integer values to REAL4, REAL8, REAL10 and thus FP4/8/10 macros and structures. Ideal for vectors and structure initialisation like <0, 0, 0, 1> with REAL4 typing.
+Simplified symbolic debug data output via new –Fs command switch (with included file format guide)
+Option flat added which enables a lower-level assembly (like fasm) and removes the need for end directive
+-	Adds support for USE16, USE32, USE64 to switch code-generation bit mode.
+-	Maintains all UASM 64bit HLL features like PROC, FRAME, INVOKE, .FOR, .SWITCH, VECTORCALL etc.
+-	See new example flat.asm
+Fixup ORG directive generation which incorrectly pads the code buffer with 0’s instead of simply applying the address change
+Add support for .labelName style labels (like nasm/fasm support)
+
+2.16	
+
+Complete re-working of AVX2 and AVX512 code generation to ensure that encodings are separated.
+Complete implementation of all missing AVX2 and AVX512 instructions.
+Added extensive checking to prevent misuse of register and memory operands with AVX, AVX2 and AVX512 instructions especially where mask and decorator flags are required.
+All AVX512 code now tested against Intel SDE emulation libraries.
+
+2.15 r2	
+
+Fixed AVX2 encoding bugs.
+Fixed EVEX type coercion and added automatic conversion of vmovdqa to vmovdqa32/64.
+Fixed legacy jwasm issue of “ADD RSP,0” in epilogue.
+Fixed a number of format compatibility options for WIN64 between UASM and JWASM for WIN64:1, no WIN64, WIN64:3. Unified the stack handling between WIN64:3 and RSP and have dropped any support for WIN64:2
+
+2.15	
+
+Allowed xmm, ymm and zmm registers to be saved at the same time with USES.
+Fixed problem with the reserved stack size
+Implemented VECTORCALL (R-VECTORCALL)
+Implemented SSE compatibility with ML64 (automatic xmmword type promotion with switch –Zg)
+Fixed the bug with MOVSS
+Fixed EIP/RIP encoding bug
+Added @ProcLine built-in equate which matches MASM/ML’s @Line value during user-defined prologue execution.
+
+2.14	
+
+Added .switch support
+Fixed 0x c style tokenization bug with immediate values
+Fixed some bugs pertaining to stack prologue generation in 64bit.
+
+2.13	
+
+First official release of Uasm, changes reflect enhancements to JWasm.
+New instructions added: RDRAND, RDSEED, F16C(VCVTPH2PS, VCVTPS2PH), MOVQ and VMOVQ to supplement MOVD and bring instructions in line with Intel and AMD reference guides.
+Removed warnings relating to alignment by 32 (as this is a requirement for AVX vectors), leads to clean builds.
+Additional unsigned flag comparison predicates added for HLL syntax (ABOVE, BELOW)
+Added support for AVX512F, ZMM registers and EVEX encoding.
+RIP register support.
+.FOR high level macro support and enhancements.
+VEX encoded general purpose instructions added.
+Support for more optimised stack and invoke usage as well as stack alignment and RSP stack base.
+Fixed bug requiring the use of xmmword ptr and ymmword ptr.
+Added OPTION EVEX to enable encoding of evex instructions and support for AVX512 registers.
+Added OPTION ZEROLOCALS to clear all PROC local values to 0 on entry.
+Fixed .WHILE loop issues present in JWASM.
+Added VGATHERDPD, VGATHERQPD, VGATHERDPS, VGATHERQPS, VPGATHERDD, VPGATHERQD, VPGATHERDQ, VPGATHERQQ,VCMPxxPD, VCMPxxPS, VCMPxxSD, VCMPxxPD, VCMPxxSS.
+
+Transition to Github, project taken over and renamed to UASM.
+
+   01/01/2014, v2.12:
 
    Bugfixes:
    -  COMM directive: there was no check that numeric arguments 'size' or 

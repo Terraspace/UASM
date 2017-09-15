@@ -30,6 +30,7 @@
 #include "lqueue.h"
 #include "myassert.h"
 #include "trmem.h"
+#include "fastpass.h"
 
 int Tokenize(char *, unsigned int, struct asm_tok[], unsigned int);
 void myatoi128(const char *src, uint_64 dst[], int base, int size);
@@ -106,13 +107,14 @@ struct hll_item {
   int                 mincase;
   int                 delta;
   int                 maxalloccasen;
+  int                 multicase;
   int                 *pcases;
   uint_16             *plabels;
   uint_16             savedlab;
   bool                breakoccured;   /* condision  */
 #if AMD64_SUPPORT
-  uint_64              maxcase64;
-  uint_64              mincase64;
+  int_64              maxcase64;
+  int_64              mincase64;
   uint_64              delta64;
   uint_64              *pcases64;
 #endif
@@ -1877,7 +1879,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
       if (hll->cflag > 3) {
           lbl = 0;
           /* reuse this routine for these 3 kind of cases */
-          if (hll->cflag == 4 || hll->cflag == 5 || hll->cflag == 7){
+          if (hll->cflag == 4 || hll->cflag == 7){
             AddLineQueue(" .data");                /* create a jump table in data section, not to polute the source code */
             AddLineQueueX("ALIGN %d", dsize);
             memset(buffer, 0, sizeof(buffer));     /* clear the buffer */
@@ -1968,6 +1970,42 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
             AddLineQueue(".code");                 /* continue with code section */
           }
           if (hll->cflag == 5) {
+            AddLineQueue(" .data");                /* create a jump table in data section, not to polute the source code */
+            AddLineQueueX("ALIGN %d", dsize);
+            memset(buffer, 0, sizeof(buffer));     /* clear the buffer */
+            GetLabelStr(hll->labels[LDATA1], buff);/* this is the name ofthe jump table */
+            strcpy(buffer, buff);                  /* store the jump table label at the beggining of array */
+            if (ModuleInfo.Ofssize == USE32)
+              strcat(buffer, " dd ");                /* now we have ready start point for the array: @C0006 dd */
+            else
+              strcat(buffer, " dq ");                /* now we have ready start point for the array: @C0006 dq */
+            dcnt = 0;                              /* set the counter to zero to count how many elements in one line */
+            for (j = 0; j < hll->casecnt; j++,dcnt++) {
+              if (dcnt >= 75){                     /* if more than 20 labels in the line add a new row */
+                AddLineQueue(buffer);              /* @C0006 dd @C000C, @C000D, @C000E, @C000F, @C0010...*/
+                memset(buffer, 0, sizeof(buffer)); /* clear the buffer */
+                if (ModuleInfo.Ofssize == USE32)
+                  strcat(buffer, " dd ");                /* now we have ready start point for the array: @C0006 dd */
+                else
+                  strcat(buffer, " dq ");                /* now we have ready start point for the array: @C0006 dq */
+                dcnt = -1;                          /* reset data caunter */
+                }
+              else {        
+                GetLabelStr(hll->plabels[j], buff);
+                if (dcnt) strcat(buffer, ", ");    /* we need comma before next element, but not first one */
+                strcat(buffer, buff);              /* add the address in the array */
+                }
+              }
+              if (hll->flags & HLLF_DEFAULTOCCURED)
+                GetLabelStr(hll->labels[LDEF], buff);
+              else
+                GetLabelStr(hll->labels[LEXIT], buff);
+                if (dcnt && dcnt < 75){
+                  strcat(buffer, ", ");
+                  strcat(buffer, buff);
+                }
+              AddLineQueue(buffer);                  /* write line with the last array */
+             /* labels are done, now write cases */
             memset(buffer, 0, sizeof(buffer));
             GetLabelStr(hll->labels[LDATA2], buff);
             strcpy(buffer, buff);
@@ -1975,7 +2013,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
             if (ModuleInfo.Ofssize == USE32){
               strcat(buffer, " dd ");
               for (j = 0; j < hll->casecnt; j++,dcnt++){
-                if (dcnt >= 75){                     /* if more than 20 labels in the line add a new row */
+                if (dcnt >= 75){                     /* if more than 75 labels in the line add a new row */
                   if (buffer[4] == ',') buffer[4] = ' ';
                   AddLineQueue(buffer);              /* @C0008 db 1, 2, 3, 4, 5...*/
                   memset(buffer, 0, sizeof(buffer)); /* clear the buffer */
@@ -2327,14 +2365,14 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
           AddLineQueueX("cmp eax,%d", hll->mincase);
           AddLineQueueX("jl  %s", buff);
           AddLineQueueX("cmp eax,%d", hll->maxcase);
-          AddLineQueueX("ja  %s", buff);
+          AddLineQueueX("jg  %s", buff);
           }
 #if AMD64_SUPPORT
         else if (hll->csize == 8) {
           AddLineQueueX("cmp rax, %q", hll->mincase64);
           AddLineQueueX("jl  %s", buff);
           AddLineQueueX("cmp rax, %q", hll->maxcase64);
-          AddLineQueueX("ja  %s", buff);
+          AddLineQueueX("jg  %s", buff);
           }
 #endif
         if (ModuleInfo.Ofssize == USE32) {
@@ -2379,14 +2417,14 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
           AddLineQueueX("cmp eax,%d", hll->mincase);
           AddLineQueueX("jl  %s", buff);
           AddLineQueueX("cmp eax,%d", hll->maxcase);
-          AddLineQueueX("ja  %s", buff);
+          AddLineQueueX("jg  %s", buff);
           }
 #if AMD64_SUPPORT
         else if (hll->csize == 8) {
           AddLineQueueX("cmp rax, %q", hll->mincase64);
           AddLineQueueX("jl  %s", buff);
           AddLineQueueX("cmp rax, %q", hll->maxcase64);
-          AddLineQueueX("ja  %s", buff);
+          AddLineQueueX("jg  %s", buff);
           }
 #endif
         if (ModuleInfo.Ofssize == USE32) {
@@ -2433,14 +2471,14 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
           AddLineQueueX("cmp eax,%d", hll->mincase);
           AddLineQueueX("jl  %s", buff);
           AddLineQueueX("cmp eax,%d", hll->maxcase);
-          AddLineQueueX("ja  %s", buff);
+          AddLineQueueX("jg  %s", buff);
         }
 #if AMD64_SUPPORT
         else if (hll->csize == 8) {
           AddLineQueueX("cmp rax, %q", hll->mincase64);
           AddLineQueueX("jl  %s", buff);
           AddLineQueueX("cmp rax, %q", hll->maxcase64);
-          AddLineQueueX("ja  %s", buff);
+          AddLineQueueX("jg  %s", buff);
           }
 #endif
         if (ModuleInfo.Ofssize == USE32) {
@@ -2528,8 +2566,6 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
       if (hll->cflag == 5) {
         if (ModuleInfo.Ofssize == USE32) {
           AddLineQueueX("lea     eax,[ecx + ebx]");//int eax = (ecx + ebx) / 2;
-          AddLineQueueX("cdq");
-          AddLineQueueX("sub     eax,edx");
           AddLineQueueX("sar     eax,1");
           AddLineQueueX("cmp     [edi+eax*4],esi");
           AddLineQueueX("je  %s", GetLabelStr(hll->labels[LJUMP], buff));//got it, jump to the case
@@ -2542,8 +2578,6 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
           if (hll->csize == 4) {
             AddLineQueueX("lea     eax,[rcx + rbx]");//int eax = (ecx + ebx) / 2;
             AddLineQueueX("cdq");
-            AddLineQueueX("sub     eax,edx");
-            AddLineQueueX("sar     rax,1");
             AddLineQueueX("cmp     [rdi+rax*8],esi");
             AddLineQueueX("je  %s", GetLabelStr(hll->labels[LJUMP], buff));//got it, jump to the case
             AddLineQueueX("jge %s", GetLabelStr(hll->labels[LSKIP], buff));//else if (hll->pcases[mid] < hll->casecnt)
@@ -2553,8 +2587,6 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
           else {
             AddLineQueueX("lea     rax,[rcx + rbx]");//int eax = (ecx + ebx) / 2;
             AddLineQueueX("cdq");
-            AddLineQueueX("sub     rax,rdx");
-            AddLineQueueX("sar     rax,1");
             AddLineQueueX("cmp     [rdi+rax*8],rsi");
             AddLineQueueX("je  %s", GetLabelStr(hll->labels[LJUMP], buff));//got it, jump to the case
             AddLineQueueX("jge %s", GetLabelStr(hll->labels[LSKIP], buff));//else if (hll->pcases[mid] < hll->casecnt)
@@ -2649,14 +2681,15 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
       }
     }
     if (hll->csize == 4) {
-      LclFree(hll->pcases);
+      free(hll->pcases);
     }
 #if AMD64_SUPPORT
     else if (ModuleInfo.Ofssize == USE64) 
-      LclFree(hll->pcases64);
+      free(hll->pcases64);
 #endif
-    LclFree(hll->plabels);
+    free(hll->plabels);
     break;
+    /* end SWITCH */
   case T_DOT_ENDFOR:
     if (hll->cmd != HLL_FOR) {
       DebugMsg(("HllEndDir: no .FOR on the hll stack\n"));
@@ -2790,6 +2823,7 @@ ret_code HllExitDir(int i, struct asm_tok tokenarray[])
   int                 idx;
   int                 cmd = tokenarray[i].tokval;
   int                 *newcp;
+  bool                nomulcase;
   uint_16             *newlp;
   char buff[16];
   char                *p;
@@ -2802,7 +2836,6 @@ ret_code HllExitDir(int i, struct asm_tok tokenarray[])
   DebugMsg1(("HllExitDir(%s) enter\n", tokenarray[i].string_ptr));
 
   hll = HllStack;
-
   if (hll == NULL) {
     DebugMsg(("HllExitDir stack error\n"));
     return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
@@ -2813,13 +2846,32 @@ ret_code HllExitDir(int i, struct asm_tok tokenarray[])
       DebugMsg(("HllExitDir stack error\n"));
       return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
     }
+    /* assembler style SWITCH doesn't need the .brake in the source so we have to simulate it */
     if (ModuleInfo.switch_style == ASMSWITCH) {
-      if (hll->casecnt) {
-        if (hll->labels[LEXIT] == 0)
-          hll->labels[LEXIT] = GetHllLabel();
-        AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LEXIT], buff));
-        hll->breakoccured = TRUE;
-      }
+      if (hll->casecnt) { 
+        nomulcase = TRUE;
+        /* we have to know in advance if there is more multi cases */
+        if (LineStoreCurr != NULL && LineStoreCurr->next != NULL){     /* struct LineStoreCurr contains current source*/
+          p = LineStoreCurr->next->line;
+            while ( isspace( *p )) p++;
+          nomulcase = _memicmp(p, ".case", 5); /* test next line if it is */
+          }
+        if (nomulcase){                                                /* it was the last case in the row  */
+          if (hll->multicase > 1){                                     /* if there was more then 1 case    */
+            hll->multicase = 0;                                        /* reset hll->multicase for next occation */
+              hll->breakoccured = TRUE;                                /* set the flag but don't exit before code get executed */
+            }
+          else{                                                        /* there is end of the case's code */
+            if (hll->labels[LEXIT] == 0)  hll->labels[LEXIT] = GetHllLabel(); /* moved here to get only 1 test for speed*/
+            AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LEXIT], buff)); /* set the .brake */
+            hll->breakoccured = TRUE;                                  /* set the flag */
+            }
+        }
+        else{                                               
+          hll->multicase++;                                            /* increase counter */
+          hll->breakoccured = FALSE;                                   /* no .brake needed yet */
+          }
+        }
     }
     if (hll->labels[LDEF] == 0)
       hll->labels[LDEF] = GetHllLabel();
@@ -2828,22 +2880,42 @@ ret_code HllExitDir(int i, struct asm_tok tokenarray[])
     i++;
     break;
   case T_DOT_CASE:
+    if (Parse_Pass)
     if (hll->cmd != HLL_SWITCH) {
       DebugMsg(("HllExitDir stack error\n"));
       return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
     }
+    /* assembler style SWITCH doesn't need the .brake in the source so we have to simulate it */
     if (ModuleInfo.switch_style == ASMSWITCH) {
-      if (hll->casecnt) {
-        if (hll->labels[LEXIT] == 0)
-          hll->labels[LEXIT] = GetHllLabel();
-        AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LEXIT], buff));
-        hll->breakoccured = TRUE;
-      }
+      if (hll->casecnt) {        
+        /* we have to know in advance if there is more multi cases */
+        nomulcase = TRUE;
+        if (LineStoreCurr != NULL && LineStoreCurr->next != NULL){     /* struct LineStoreCurr contains current source*/
+          p = LineStoreCurr->next->line;
+            while ( isspace( *p )) p++;
+          nomulcase = _memicmp(p, ".case", 5); /* test next line if it is */
+          }
+        if (nomulcase){                                                /* it was the last case in the row  */
+          if (hll->multicase > 1){                                     /* if there was more then 1 case    */
+            hll->multicase = 0;                                        /* reset hll->multicase for next occation */
+              hll->breakoccured = TRUE;                                /* set the flag but don't exit before code get executed */
+            }
+          else{                                                        /* there is end of the case's code */
+            if (hll->labels[LEXIT] == 0)  hll->labels[LEXIT] = GetHllLabel(); /* moved here to get only 1 test for speed*/
+            AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LEXIT], buff)); /* set the .brake */
+            hll->breakoccured = TRUE;                                  /* set the flag */
+            }
+        }
+        else{                                               
+          hll->multicase++;                                            /* increase counter */
+          hll->breakoccured = FALSE;                                   /* no .brake needed yet */
+          }
+        }
     }
     for (;;) {
       if (hll->breakoccured) {
         hll->labels[LTEST] = GetHllLabel();
-        hll->breakoccured = FALSE;  // if .break did not occure label will not be increased
+        hll->breakoccured = 0;  // if .break did not occure label will not be increased
         AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LTEST], buff));
         hll->savedlab = hex2dec(buff + 2);
       }
