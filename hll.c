@@ -1891,7 +1891,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
               strcat(buffer, " dq ");                /* now we have ready start point for the array: @C0006 dq */
             dcnt = 0;                              /* set the counter to zero to count how many elements in one line */
             for (j = 0; j < hll->casecnt; j++,dcnt++) {
-              if (dcnt >= 75){                     /* if more than 20 labels in the line add a new row */
+              if (dcnt >= 15){                     /* if more than 15 labels in the line add a new row */
                 AddLineQueue(buffer);              /* @C0006 dd @C000C, @C000D, @C000E, @C000F, @C0010...*/
                 memset(buffer, 0, sizeof(buffer)); /* clear the buffer */
                 if (ModuleInfo.Ofssize == USE32)
@@ -1912,11 +1912,11 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
                 GetLabelStr(hll->labels[LDEF], buff);
               else
                 GetLabelStr(hll->labels[LEXIT], buff);
-                if (dcnt && dcnt < 75){
-                  strcat(buffer, ", ");
-                  strcat(buffer, buff);
-                }
-              AddLineQueue(buffer);                  /* write line with the last array */
+              if (dcnt && dcnt < 15){
+                strcat(buffer, ", ");
+                strcat(buffer, buff);
+              }
+              if (buffer[4] > 0) AddLineQueue(buffer); /* write line with the last array */
           } 
           /* here is created data for calculating jumps  */
           if (hll->cflag == 4 ) { 
@@ -1927,7 +1927,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
             n = 0;
             dcnt = 0; 
             for (j = 0; j < hll->casecnt; j++,dcnt++) {
-              if (dcnt >= 75){                     /* if more than 20 labels in the line add a new row */
+              if (dcnt >= 30){                     /* if more than 20 labels in the line add a new row */
                 if (buffer[4] == ',') buffer[4] = ' ';
                 AddLineQueue(buffer);              /* @C0008 db 1, 2, 3, 4, 5...*/
                 memset(buffer, 0, sizeof(buffer)); /* clear the buffer */
@@ -1948,7 +1948,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
                 strcat(buffer, unum);
                 n++;
                 dcnt++;
-                if (dcnt >= 75){                     /* if more than 20 labels in the line add a new row */
+                if (dcnt >= 30){                     /* if more than 20 labels in the line add a new row */
                   if (buffer[4] == ',') buffer[4] = ' ';
                   AddLineQueue(buffer);              /* @C0008 db 1, 2, 3, 4, 5...*/
                   memset(buffer, 0, sizeof(buffer)); /* clear the buffer */
@@ -1966,7 +1966,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
                 bcnt++;
               }
             if (buffer[4] == ',') buffer[4] = ' ';
-            AddLineQueue(buffer);                  /* @C0008 db 0,1,2,5,5,3,5,5,5,5,5,5,5,5,4 */
+            if (buffer[4] > 0) AddLineQueue(buffer);/* @C0008 db 0,1,2,5,5,3,5,5,5,5,5,5,5,5,4 */
             AddLineQueue(".code");                 /* continue with code section */
           }
           if (hll->cflag == 5) {
@@ -1981,7 +1981,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
               strcat(buffer, " dq ");                /* now we have ready start point for the array: @C0006 dq */
             dcnt = 0;                              /* set the counter to zero to count how many elements in one line */
             for (j = 0; j < hll->casecnt; j++) {
-              if (dcnt >= 75){                     /* if more than 20 labels in the line add a new row */
+              if (dcnt >= 15){                     /* if more than 20 labels in the line add a new row */
                 AddLineQueue(buffer);              /* @C0006 dd @C000C, @C000D, @C000E, @C000F, @C0010...*/
                 memset(buffer, 0, sizeof(buffer)); /* clear the buffer */
                 if (ModuleInfo.Ofssize == USE32)
@@ -2001,11 +2001,13 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
                 GetLabelStr(hll->labels[LDEF], buff);
               else
                 GetLabelStr(hll->labels[LEXIT], buff);
-                if (dcnt && dcnt <= 75){
+                if (dcnt && dcnt <= 15){
                   strcat(buffer, ", ");
                   strcat(buffer, buff);
                 }
-              AddLineQueue(buffer);                  /* write line with the last array */
+             if (buffer[4] == ',')buffer[4] = ' ';
+             else if (buffer[10] == ',')buffer[10] = ' ';
+             if (buffer[4] > 0) AddLineQueue(buffer);                  /* write line with the last array */
              /* labels are done, now write cases */
             memset(buffer, 0, sizeof(buffer));
             GetLabelStr(hll->labels[LDATA2], buff);
@@ -2014,7 +2016,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
             if (ModuleInfo.Ofssize == USE32 || hll->csize == 4){
               strcat(buffer, " dd ");
               for (j = 0; j < hll->casecnt; j++,dcnt++){
-                if (dcnt >= 75){                     /* if more than 75 labels in the line add a new row */
+                if (dcnt >= 30){                     /* if more than 35 cases in the line add a new row */
                   if (buffer[4] == ',') buffer[4] = ' ';
                   AddLineQueue(buffer);              /* @C0008 db 1, 2, 3, 4, 5...*/
                   memset(buffer, 0, sizeof(buffer)); /* clear the buffer */
@@ -2028,14 +2030,14 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
                   strcat(buffer, unum);
               }
               if (buffer[4] == ',') buffer[4] = ' ';
-              AddLineQueue(buffer);
+              if (buffer[4] > 0) AddLineQueue(buffer);
               AddLineQueue(".code");
               }
 #if AMD64_SUPPORT
             else if (ModuleInfo.Ofssize == USE64 && hll->csize == 8){
                 strcat(buffer, " dq ");
               for (j = 0; j < hll->casecnt; j++,dcnt++){
-                if (dcnt >= 75){                     /* if more than 20 labels in the line add a new row */
+                if (dcnt >= 35){                     /* if more than 20 labels in the line add a new row */
                   if (buffer[4] == ',') buffer[4] = ' ';
                   AddLineQueue(buffer);              /* @C0008 db 1, 2, 3, 4, 5...*/
                   memset(buffer, 0, sizeof(buffer)); /* clear the buffer */
@@ -2047,7 +2049,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
                   strcat(buffer, unum);
               }
               if (buffer[4] == ',') buffer[4] = ' ';
-              AddLineQueue(buffer);
+              if (buffer[4] > 0) AddLineQueue(buffer);
               AddLineQueue(".code");
               }
           }
@@ -2063,12 +2065,13 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
             n = 0;
             dcnt = 0; 
             for (j = 0; j < hll->casecnt; j++,dcnt++) {
-              if (dcnt >= 75){                     /* if more than 20 labels in the line add a new row */
+              if (dcnt >= 20){                     /* if more than 20 labels in the line add a new row */
                 if (buffer[4] == ',') buffer[4] = ' ';
-                AddLineQueue(buffer);              /* @C0008 db 1, 2, 3, 4, 5...*/
+                else if (buffer[10] == ',') buffer[10] = ' ';
+                AddLineQueue(buffer);/* @C0008 db 1, 2, 3, 4, 5...*/
                 memset(buffer, 0, sizeof(buffer)); /* clear the buffer */
                 strcpy(buffer, " dw ");            /* now start with db 11, 12, 13, @C0014, @C0015...*/
-                dcnt = 0;                          /* reset data caunter */
+                dcnt = -1;                          /* reset data caunter */
                 }
               if (hll->csize == 4)
                 temp = hll->pcases[j] - hll->mincase;/* temp contains case EG: .case 4, n contains  */
@@ -2084,8 +2087,9 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
                 strcat(buffer, unum);
                 n++;
                 dcnt++;
-                if (dcnt >= 75){                     /* if more than 20 labels in the line add a new row */
+                if (dcnt >= 20){                     /* if more than 20 labels in the line add a new row */
                   if (buffer[4] == ',') buffer[4] = ' ';
+                  else if (buffer[10] == ',') buffer[10] = ' ';
                   AddLineQueue(buffer);              /* @C0008 db 1, 2, 3, 4, 5...*/
                   memset(buffer, 0, sizeof(buffer)); /* clear the buffer */
                   strcpy(buffer, " dw ");            /* now start with db 11, 12, 13, @C0014, @C0015...*/
@@ -2103,8 +2107,8 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
               }
             if (buffer[4] == ',') buffer[4] = ' ';
             strcat(buffer, unum);
-            AddLineQueue(buffer);                  /* @C0008 db 0,1,2,5,5,3,5,5,5,5,5,5,5,5,4 */
-            AddLineQueue(".code");                 /* continue with code section */
+            if (buffer[4] > 0) AddLineQueue(buffer);/* @C0008 db 0,1,2,5,5,3,5,5,5,5,5,5,5,5,4 */
+            AddLineQueue(".code");                  /* continue with code section */
           }
           else if (hll->cflag == 6) {
             AddLineQueue(" .data");
@@ -2116,8 +2120,8 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
             if (ModuleInfo.Ofssize == USE32){
               strcat(buffer, " dd ");
               for (j = 0, n = 0; j < hll->casecnt; j++) {
-                /* if more than 75 labels add a new row */
-                if (dcnt >= 75){
+                /* if more than 35 labels add a new row */
+                if (dcnt >= 15){
                     if (buffer[4] == ',')buffer[4] = ' ';
                     else if (buffer[10] == ',')buffer[10] = ' ';
                   AddLineQueue(buffer);
@@ -2133,10 +2137,9 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
                   else
                     GetLabelStr(hll->labels[LEXIT], buff);
                   while (n < temp) {
-                    if (dcnt < 75){
+                    if (dcnt < 15){
                       strcat(buffer, ", ");
                       strcat(buffer, buff);
-                      dcnt++;
                       }
                     else{
                       strcat(buffer, ", ");
@@ -2152,7 +2155,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
                   n++;
                   }
                 GetLabelStr(hll->plabels[j], buff);
-                    if (dcnt < 75){
+                    if (dcnt < 15){
                       strcat(buffer, ", ");
                       strcat(buffer, buff);
                       }
@@ -2171,7 +2174,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
                 GetLabelStr(hll->labels[LDEF], buff);
               else
                 GetLabelStr(hll->labels[LEXIT], buff);
-                    if (dcnt < 75){
+                    if (dcnt < 15){
                       strcat(buffer, ", ");
                       strcat(buffer, buff);
                       }
@@ -2187,7 +2190,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
                       }
                 if (buffer[4] == ',')buffer[4] = ' ';
                 else if (buffer[10] == ',')buffer[10] = ' ';
-                AddLineQueue(buffer);
+                if (buffer[4] > 0) AddLineQueue(buffer);
                 AddLineQueue(".code");
               }
 #if AMD64_SUPPORT
@@ -2195,7 +2198,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
                 strcat(buffer, " dq ");
                 for (j = 0, n = 0; j < hll->casecnt; j++) {
                   /* if more than 20 labels add a new row */
-                  if (dcnt >= 75){
+                  if (dcnt >= 15){
                     if (buffer[4] == ',')buffer[4] = ' ';
                     else if (buffer[10] == ',')buffer[10] = ' ';
                     AddLineQueue(buffer);
@@ -2216,10 +2219,9 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
                   else
                     GetLabelStr(hll->labels[LEXIT], buff);
                   while (n < temp) {
-                    if (dcnt <= 75){
+                    if (dcnt <= 15){
                       strcat(buffer, ", ");
                       strcat(buffer, buff);
-                      dcnt++;
                       }
                     else{
                       strcat(buffer, ", ");
@@ -2235,7 +2237,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
                     n++;
                     }
                   GetLabelStr(hll->plabels[j], buff);
-                    if (dcnt <= 75){
+                    if (dcnt <= 15){
                       strcat(buffer, ", ");
                       strcat(buffer, buff);
                       }
@@ -2254,7 +2256,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
                   GetLabelStr(hll->labels[LDEF], buff);
                 else
                   GetLabelStr(hll->labels[LEXIT], buff);
-                    if (dcnt <= 75){
+                    if (dcnt <= 15){
                       strcat(buffer, ", ");
                       strcat(buffer, buff);
                       }
@@ -2270,7 +2272,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
                       }
                 if (buffer[4] == ',')buffer[4] = ' ';
                 else if (buffer[10] == ',')buffer[10] = ' ';
-                AddLineQueue(buffer);
+                if (buffer[4] > 0) AddLineQueue(buffer);
                 AddLineQueue(".code");
              }
 #endif
@@ -2437,7 +2439,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
             GetLabelStr(hll->labels[LDATA2], buff);
             AddLineQueueX("lea   r10,%s", buff);
             if (hll->mincase)
-            AddLineQueueX("sub   eax,%u", hll->mincase);
+              AddLineQueueX("sub   eax,%d", hll->mincase);
             AddLineQueue("movzx r10,word ptr[r10+rax*2]");
             GetLabelStr(hll->labels[LDATA1], buff);
             AddLineQueueX("lea   rax,%s", buff);
@@ -2447,7 +2449,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
             GetLabelStr(hll->labels[LDATA2], buff);
             AddLineQueueX("lea   r10,%s", buff);
             if (hll->mincase64)
-            AddLineQueueX("sub   rax,%u", hll->mincase64);
+            AddLineQueueX("sub   rax,%q", hll->mincase64);
             AddLineQueue("movzx r10,word ptr[r10+rax*2]");
             GetLabelStr(hll->labels[LDATA1], buff);
             AddLineQueueX("lea   rax,%s", buff);
@@ -2532,7 +2534,6 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
 #if AMD64_SUPPORT
         else if (ModuleInfo.Ofssize == USE64) {
           AddLineQueueX("push	rax");
-          AddLineQueueX("push	rdx");
           AddLineQueueX("push	rcx");
           AddLineQueueX("push	rbx");
           AddLineQueueX("push	rsi");
@@ -2575,8 +2576,6 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
         else if (ModuleInfo.Ofssize == USE64) {
           if (hll->csize == 4) {
             AddLineQueueX("lea     eax,[rcx + rbx]");//int eax = (ecx + ebx) / 2;
-            AddLineQueueX("cdq");
-            AddLineQueueX("sub     rax,rdx");
             AddLineQueueX("sar     rax,1");
             AddLineQueueX("cmp     [rdi+rax*4],esi");
             AddLineQueueX("je  %s", GetLabelStr(hll->labels[LJUMP], buff));//got it, jump to the case
@@ -2586,8 +2585,6 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
           }
           else {
             AddLineQueueX("lea     rax,[rcx + rbx]");//int eax = (ecx + ebx) / 2;
-            AddLineQueueX("cdq");
-            AddLineQueueX("sub     rax,rdx");
             AddLineQueueX("sar     rax,1");
             AddLineQueueX("cmp     [rdi+rax*8],rsi");
             AddLineQueueX("je  %s", GetLabelStr(hll->labels[LJUMP], buff));//got it, jump to the case
@@ -2620,9 +2617,9 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
           AddLineQueueX("pop	rbx");
           AddLineQueueX("pop	rcx");
           GetLabelStr(hll->labels[LDATA1], buff);       
-          AddLineQueueX("lea   rdx,%s", buff);
-          AddLineQueueX("mov   rax, qword ptr[rdx+rax*8]");
-          AddLineQueueX("pop   rdx");
+          AddLineQueueX("lea   rcx,%s", buff);
+          AddLineQueueX("mov   rax, qword ptr[rcx+rax*8]");
+          AddLineQueueX("pop   rcx");
           AddLineQueueX("xchg	 rax,[rsp]");
           AddLineQueueX("retn");
         }
@@ -2672,7 +2669,6 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
           AddLineQueueX("pop	rsi");
           AddLineQueueX("pop	rbx");
           AddLineQueueX("pop	rcx");
-          AddLineQueueX("pop	rdx");
           AddLineQueueX("pop	rax");
           if (hll->flags & HLLF_DEFAULTOCCURED)
             AddLineQueueX("jmp  %s", GetLabelStr(hll->labels[LDEF], buff));
@@ -2848,32 +2844,13 @@ ret_code HllExitDir(int i, struct asm_tok tokenarray[])
       DebugMsg(("HllExitDir stack error\n"));
       return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
     }
-    /* assembler style SWITCH doesn't need the .brake in the source so we have to simulate it */
     if (ModuleInfo.switch_style == ASMSWITCH) {
-      if (hll->casecnt) { 
-        nomulcase = TRUE;
-        /* we have to know in advance if there is more multi cases */
-        if (LineStoreCurr != NULL && LineStoreCurr->next != NULL){     /* struct LineStoreCurr contains current source*/
-          p = LineStoreCurr->next->line;
-            while ( isspace( *p )) p++;
-          nomulcase = _memicmp(p, ".case", 5); /* test next line if it is */
-          }
-        if (nomulcase){                                                /* it was the last case in the row  */
-          if (hll->multicase > 1){                                     /* if there was more then 1 case    */
-            hll->multicase = 0;                                        /* reset hll->multicase for next occation */
-              hll->breakoccured = TRUE;                                /* set the flag but don't exit before code get executed */
-            }
-          else{                                                        /* there is end of the case's code */
-            if (hll->labels[LEXIT] == 0)  hll->labels[LEXIT] = GetHllLabel(); /* moved here to get only 1 test for speed*/
-            AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LEXIT], buff)); /* set the .brake */
-            hll->breakoccured = TRUE;                                  /* set the flag */
-            }
-        }
-        else{                                               
-          hll->multicase++;                                            /* increase counter */
-          hll->breakoccured = FALSE;                                   /* no .brake needed yet */
-          }
-        }
+      if (hll->casecnt) {
+        if (hll->labels[LEXIT] == 0)
+          hll->labels[LEXIT] = GetHllLabel();
+        AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LEXIT], buff));
+        hll->breakoccured = TRUE;
+      }
     }
     if (hll->labels[LDEF] == 0)
       hll->labels[LDEF] = GetHllLabel();
@@ -2882,16 +2859,17 @@ ret_code HllExitDir(int i, struct asm_tok tokenarray[])
     i++;
     break;
   case T_DOT_CASE:
-    if (Parse_Pass)
     if (hll->cmd != HLL_SWITCH) {
       DebugMsg(("HllExitDir stack error\n"));
       return(EmitError(DIRECTIVE_MUST_BE_IN_CONTROL_BLOCK));
     }
     /* assembler style SWITCH doesn't need the .brake in the source so we have to simulate it */
-    if (ModuleInfo.switch_style == ASMSWITCH) {
+    if (ModuleInfo.switch_style == ASMSWITCH) {   
+     //  __debugbreak();
       if (hll->casecnt) {        
-        /* we have to know in advance if there is more multi cases */
-        nomulcase = TRUE;
+         nomulcase = TRUE;
+         hll->breakoccured = TRUE;
+       /* we have to know in advance if there is more multi cases */
         if (LineStoreCurr != NULL && LineStoreCurr->next != NULL){     /* struct LineStoreCurr contains current source*/
           p = LineStoreCurr->next->line;
             while ( isspace( *p )) p++;
@@ -2908,9 +2886,15 @@ ret_code HllExitDir(int i, struct asm_tok tokenarray[])
             hll->breakoccured = TRUE;                                  /* set the flag */
             }
         }
-        else{                                               
-          hll->multicase++;                                            /* increase counter */
-          hll->breakoccured = FALSE;                                   /* no .brake needed yet */
+        else{                                                          /* it is a multi case */
+          if (hll->multicase == 0) {                                    /* we need a first label for multi cases */
+            if (hll->labels[LEXIT] == 0)  hll->labels[LEXIT] = GetHllLabel(); /* moved here to get only 1 test for speed*/
+            AddLineQueueX("jmp %s", GetLabelStr(hll->labels[LEXIT], buff)); /* set the .brake */
+            hll->breakoccured = TRUE;                                  /* set the flag */
+            }
+          else
+            hll->breakoccured = FALSE;                                 /* no .brake needed yet */
+            hll->multicase++;                                          /* increase counter */
           }
         }
     }
