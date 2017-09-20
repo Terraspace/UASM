@@ -41,20 +41,35 @@ static uint_32 instrcnt;
 static uint_32 equcnt;
 #endif
 
-#include <inttypes.h>
-
-#if defined(_WIN32)
-typedef _W64 int INT_PTR, *PINT_PTR;
-typedef _W64 unsigned int UINT_PTR, *PUINT_PTR;
-typedef _W64 long LONG_PTR, *PLONG_PTR;
-typedef _W64 unsigned long ULONG_PTR, *PULONG_PTR;
-#define __int3264   __int32
+#if defined(WINDOWSDDK)
+	#if defined(_WIN32)
+	typedef _W64 int INT_PTR, *PINT_PTR;
+	typedef _W64 unsigned int UINT_PTR, *PUINT_PTR;
+	typedef _W64 long LONG_PTR, *PLONG_PTR;
+	typedef _W64 unsigned long ULONG_PTR, *PULONG_PTR;
+	#define __int3264   __int32
+	#else
+	typedef __int64 INT_PTR, *PINT_PTR;
+	typedef unsigned __int64 UINT_PTR, *PUINT_PTR;
+	typedef __int64 LONG_PTR, *PLONG_PTR;
+	typedef unsigned __int64 ULONG_PTR, *PULONG_PTR;
+	#define __int3264   __int64
+	#endif
 #else
-typedef int64_t INT_PTR, *PINT_PTR;
-typedef uint64_t UINT_PTR, *PUINT_PTR;
-typedef int64_t LONG_PTR, *PLONG_PTR;
-typedef uint64_t ULONG_PTR, *PULONG_PTR;
-#define __int3264   int64_t
+	#include <inttypes.h>
+	#if defined(_WIN32)
+	typedef _W64 int INT_PTR, *PINT_PTR;
+	typedef _W64 unsigned int UINT_PTR, *PUINT_PTR;
+	typedef _W64 long LONG_PTR, *PLONG_PTR;
+	typedef _W64 unsigned long ULONG_PTR, *PULONG_PTR;
+	#define __int3264   __int32
+	#else
+	typedef int64_t INT_PTR, *PINT_PTR;
+	typedef uint64_t UINT_PTR, *PUINT_PTR;
+	typedef int64_t LONG_PTR, *PLONG_PTR;
+	typedef uint64_t ULONG_PTR, *PULONG_PTR;
+	#define __int3264   int64_t
+	#endif
 #endif
 
 #define MAXUINT_PTR  (~((UINT_PTR)0))
