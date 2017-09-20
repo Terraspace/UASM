@@ -1460,7 +1460,7 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
     hll = LclAlloc(sizeof(struct hll_item));
     DebugCmd(cntAlloc++);
   }
-
+  //ModuleInfo.list   = Options.write_listing;
   /* structure for .IF .ELSE .ENDIF
   *    cond jump to LTEST-label
   *    ...
@@ -1603,7 +1603,7 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
     hll->cmd = HLL_FOR;
     //copy string to the buffer and get read of spaces
     p = tokenarray[i].tokpos;
-    for (b = 0; *p; p++)
+    for (b = 0,j=0; *p; p++)
     {
       if ((*p == ' ') || (*p == '\t')) {
         //if there is QWORD PTR, DWORD PTR, WORD PTR, BYTE PTR, OFFSET or ADDR leave a space between
@@ -1614,11 +1614,16 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
         }
       }
       else {
+        if (*p == T_COLON)  /* check if there are 2 ':', v2.40 */
+          j++;
         forbuff[b] = *p;
         b++;
       }
     }
     forbuff[b] = NULLC;
+    if (j != 2)           /* if there are no 2 ':' present, v2.40 */
+        return( EmitError( COLON_EXPECTED ));
+
     if (0 == _memicmp(forbuff, "(::)", 4)) {
       hll->cmcnt = 0;
     }
@@ -1759,7 +1764,7 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
     HllFree = hll->next;
   hll->next = HllStack;
   HllStack = hll;
-
+  
   if (ModuleInfo.list)
     LstWrite(LSTTYPE_DIRECTIVE, GetCurrOffset(), NULL);
 
@@ -1891,7 +1896,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
               strcat(buffer, " dq ");                /* now we have ready start point for the array: @C0006 dq */
             dcnt = 0;                              /* set the counter to zero to count how many elements in one line */
             for (j = 0; j < hll->casecnt; j++,dcnt++) {
-              if (dcnt >= 15){                     /* if more than 15 labels in the line add a new row */
+              if (dcnt >= 25){                     /* if more than 15 labels in the line add a new row */
                 AddLineQueue(buffer);              /* @C0006 dd @C000C, @C000D, @C000E, @C000F, @C0010...*/
                 memset(buffer, 0, sizeof(buffer)); /* clear the buffer */
                 if (ModuleInfo.Ofssize == USE32)
@@ -1907,14 +1912,6 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
                 acnt++;
                 }
               lbl = hll->plabels[j];               /* remember the last written address */
-              }
-              if (hll->flags & HLLF_DEFAULTOCCURED)
-                GetLabelStr(hll->labels[LDEF], buff);
-              else
-                GetLabelStr(hll->labels[LEXIT], buff);
-              if (dcnt && dcnt < 15){
-                strcat(buffer, ", ");
-                strcat(buffer, buff);
               }
               if (buffer[4] > 0) AddLineQueue(buffer); /* write line with the last array */
           } 
@@ -2065,7 +2062,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
             n = 0;
             dcnt = 0; 
             for (j = 0; j < hll->casecnt; j++,dcnt++) {
-              if (dcnt >= 20){                     /* if more than 20 labels in the line add a new row */
+              if (dcnt >= 35){                     /* if more than 20 labels in the line add a new row */
                 if (buffer[4] == ',') buffer[4] = ' ';
                 else if (buffer[10] == ',') buffer[10] = ' ';
                 AddLineQueue(buffer);/* @C0008 db 1, 2, 3, 4, 5...*/
@@ -2087,7 +2084,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
                 strcat(buffer, unum);
                 n++;
                 dcnt++;
-                if (dcnt >= 20){                     /* if more than 20 labels in the line add a new row */
+                if (dcnt >= 35){                     /* if more than 20 labels in the line add a new row */
                   if (buffer[4] == ',') buffer[4] = ' ';
                   else if (buffer[10] == ',') buffer[10] = ' ';
                   AddLineQueue(buffer);              /* @C0008 db 1, 2, 3, 4, 5...*/
@@ -2107,7 +2104,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
               }
             if (buffer[4] == ',') buffer[4] = ' ';
             strcat(buffer, unum);
-            if (buffer[4] > 0) AddLineQueue(buffer);/* @C0008 db 0,1,2,5,5,3,5,5,5,5,5,5,5,5,4 */
+            if (buffer[4] > 0) AddLineQueue(buffer);/* @C0008 dw 0,1,2,5,5,3,5,5,5,5,5,5,5,5,4 */
             AddLineQueue(".code");                  /* continue with code section */
           }
           else if (hll->cflag == 6) {
@@ -2791,9 +2788,12 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
     EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos);
     rc = ERROR;
   }
-  if (ModuleInfo.list)
-    LstWrite(LSTTYPE_DIRECTIVE, GetCurrOffset(), NULL);
+  if (cmd == T_DOT_ENDSWITCH && Parse_Pass > PASS_1)
+    ModuleInfo.list   = 0;
 
+    if (ModuleInfo.list)
+      LstWrite(LSTTYPE_DIRECTIVE, GetCurrOffset(), NULL);
+    
   /* v2.11: always run line-queue if it's not empty. */
   if (is_linequeue_populated())
     RunLineQueue();

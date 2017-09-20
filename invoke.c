@@ -3221,6 +3221,12 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 					finallen--;
 					pSrc++;
 				}
+				else if (c1 == '\\' && c2 == 't')
+				{
+					*pDest++ = 9;
+					finallen--;
+					pSrc++;
+				}
 				else
 					*pDest++ = c1;
 			}
