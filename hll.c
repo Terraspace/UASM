@@ -1149,7 +1149,7 @@ static ret_code CheckCXZLines(char *p)
         for (p--, i = (int)strlen(p); i >= 0; i--) {
           *(p + addchars + i) = *(p + i);
         }
-        strcpy_s(p,strlen(px), px);
+        strcpy(p,strlen(px), px);
       }
 #if 0 /* handle ".untilcxz 1" like masm does */
       else if (*p == ' ' && *(p + 1) == EOLCHAR && lines == 0) {
