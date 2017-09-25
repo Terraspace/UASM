@@ -148,7 +148,7 @@ void InitAutoMacros64(void)
 	struct dsym *mac;
 	uint_32 i = 0;
 	uint_32 j = 0;
-	uint_32 k = 0;
+	//uint_32 k = 0;
 	uint_32 start_pos = 0;
 	char  *srcLines[128]; // NB: 128 is the max number of lines of macro code per macro.
 
@@ -226,7 +226,7 @@ void InitAutoMacros32(void)
 	struct dsym *mac;
 	uint_32 i = 0;
 	uint_32 j = 0;
-	uint_32 k = 0;
+	//uint_32 k = 0;
 	uint_32 start_pos = 0;
 	char  *srcLines[128]; // NB: 128 is the max number of lines of macro code per macro.
 

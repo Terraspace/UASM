@@ -3116,8 +3116,8 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 {
   int                 i;
   int                 j;
-  int                 k = 0;
-  int                 n = 0;
+  //int                 k = 0;
+  //int                 n = 0;
   unsigned            dirflags;
   unsigned            CurrOpnd;
   ret_code            temp;

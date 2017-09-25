@@ -583,7 +583,7 @@ extern  void            SymGetAll( struct asym ** );
 extern  struct asym     *SymEnum( struct asym *, int * );
 extern  uint_32         SymGetCount( void );
 
-extern  void            WriteSymbols();
+extern  void            WriteSymbols( void );
 
 #if defined(__WATCOMC__)
 typedef int (__watcall * StrCmpFunc)(const void *, const void *, size_t);

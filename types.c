@@ -83,7 +83,7 @@ struct asym *CreateTypeSymbol( struct asym *sym, const char *name, bool global )
 struct asym *SearchNameInStruct( const struct asym *tstruct, const char *name, uint_32 *poffset, int level )
 /**********************************************************************************************************/
 {
-    int len = strlen( name );
+    int len = (int)strlen( name );
     struct sfield *fl = ((struct dsym *)tstruct)->e.structinfo->head;
     struct asym *sym = NULL;
 
@@ -342,7 +342,7 @@ ret_code StructDirective( int i, struct asm_tok tokenarray[] )
     sym->offset = 0;
     sym->typekind = typekind;
     dir = (struct dsym *)sym;
-    dir->e.structinfo->alignment = alignment;
+    dir->e.structinfo->alignment = (uint_8)alignment;
     dir->e.structinfo->isOpen = TRUE;
     if ( CurrStruct )
         dir->e.structinfo->isInline = TRUE;

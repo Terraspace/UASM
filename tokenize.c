@@ -518,8 +518,8 @@ static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
     char    symbol;
     char    c;
     char    a=0;
-    int     i;
-    int  index;
+    //int     i;
+    //int  index;
 
     symbol = *p->input;
 	buf->tokval = 0;

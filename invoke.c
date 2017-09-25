@@ -486,9 +486,9 @@ static int ms64_param(struct dsym const *proc, int index, struct dsym *param, bo
 {
 	uint_32 size;
 	uint_32 psize;
-	char name[256];
-	char buff[256];
-	uint_64 fvalue[2];
+	//char name[256];
+	//char buff[256];
+	//uint_64 fvalue[2];
 	int reg;
 	int reg2;
 	int i;
@@ -502,7 +502,7 @@ static int ms64_param(struct dsym const *proc, int index, struct dsym *param, bo
 	struct proc_info *info = proc->e.procinfo;
 	struct dsym *t = NULL; /* used for vectorcall array member size */
 	bool destroyed = FALSE;
-	struct asym *sym;
+	//struct asym *sym;
 
 	DebugMsg1(("ms64_param(%s, index=%u, param.memtype=%Xh, addr=%u) enter\n", proc->sym.name, index, param->sym.mem_type, addr));
 
@@ -1572,7 +1572,7 @@ static int sysv_GetNextGPR(struct proc_info *info, int size)
 /* Return the first free Vector register useable in a SystemV invoke/call */
 static int sysv_GetNextVEC(struct proc_info *info, int size)
 {
-	int base = 0;
+	//int base = 0;
 	if (info->firstVEC >= 8)
 		return(-1);
 	if(size == 16)
@@ -1593,14 +1593,14 @@ static int sysv_GetNextVEC(struct proc_info *info, int size)
 static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *param, bool addr, struct expr *opnd, char *paramvalue, uint_8 *regs_used)
 /************************************************************************************************************************************************/
 {
-	uint_32 size;
+	//uint_32 size;
 	uint_32 psize;
 	int reg;
-	int base;
+	//int base;
 	int regsize;
 	struct proc_info *info = proc->e.procinfo;
-	struct asym *sym;
-	struct dsym *curr = NULL;
+	//struct asym *sym;
+	//struct dsym *curr = NULL;
 	
 	DebugMsg1(("sysv_vararg_param(%s, index=%u, param.memtype=%Xh, addr=%u) enter\n", proc->sym.name, index, param->sym.mem_type, addr));
 
@@ -2006,22 +2006,22 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bool addr, struct expr *opnd, char *paramvalue, uint_8 *regs_used)
 /************************************************************************************************************************************************/
 {
-	uint_32 size;
+	//uint_32 size;
 	uint_32 psize;
-	char name[256];
-	char buff[256];
-	uint_64 fvalue[2];
+	//char name[256];
+	//char buff[256];
+	//uint_64 fvalue[2];
 	int reg;
 	int reg2;
 	int i;
-	int j = 0;
-	int tCount = 0;
+	//int j = 0;
+	//int tCount = 0;
 	int base;
 	int regsize;
 	struct proc_info *info = proc->e.procinfo;
 	bool destroyed = FALSE;
-	struct asym *sym;
-	struct dsym *curr = NULL;
+	//struct asym *sym;
+	//struct dsym *curr = NULL;
 
 	DebugMsg1(("sysv_param(%s, index=%u, param.memtype=%Xh, addr=%u) enter\n", proc->sym.name, index, param->sym.mem_type, addr));
 
@@ -3170,7 +3170,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 	struct dsym *prev;
 	struct dsym *currs;
 	size_t slen;
-	uint_32 pos;
+	//uint_32 pos;
 	char *pSrc;
 	char *pDest;
 	char *labelstr = "__ls";
@@ -4126,8 +4126,8 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	struct dsym    *curr;
 	struct expr    opnd;
 	//char           buffer[MAX_LINE_LEN];
-	int            paracount;
-	int			   pcount;
+	//int            paracount;
+	//int			   pcount;
 	struct asym    *lastret;
 
 	DebugMsg1(("InvokeDir(%s) enter\n", tokenarray[i].tokpos));

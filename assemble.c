@@ -1102,7 +1102,7 @@ static void PassOneChecks( void )
 static int OnePass( void )
 /************************/
 {
-	struct src_item *fl;
+	//struct src_item *fl;
 	struct asym*    platform;
 
     InputPassInit();

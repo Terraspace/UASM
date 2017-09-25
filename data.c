@@ -1255,8 +1255,8 @@ ret_code data_dir( int i, struct asm_tok tokenarray[], struct asym *type_sym )
 	struct sfield   *f;
 	struct sfield   *f2;
 	struct sfield   *fPrev;
-	struct sfield   *fnext;
-	struct sfield   *f2next;
+	//struct sfield   *fnext;
+	//struct sfield   *f2next;
 	bool foundSubType = FALSE;
 	uint_32 subid = 0;
 	uint_32 subcnt = 0;

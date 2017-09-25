@@ -783,7 +783,7 @@ static ret_code ParseParams( struct dsym *proc, int i, struct asm_tok tokenarray
     char            *name;
     struct asym     *sym;
     int             cntParam;
-	int             paramCount;
+	//int             paramCount;
     int             offset = 0;
     int             fcint = 0;
 	int             vecint = 0;
@@ -793,9 +793,9 @@ static ret_code ParseParams( struct dsym *proc, int i, struct asm_tok tokenarray
     struct dsym     *paranode;
     struct dsym     *paracurr;
     int             curr;
-	int             paracount = 0;
-	int             tmp = 0;
-	uint_16         cnt = 0;
+	//int             paracount = 0;
+	//int             tmp = 0;
+	//uint_16         cnt = 0;
 
     /*
      * find "first" parameter ( that is, the first to be pushed in INVOKE ).
@@ -2457,8 +2457,8 @@ static ret_code write_userdef_prologue( struct asm_tok tokenarray[] )
     uint_16             *regs;
     char                reglst[128];
     char                buffer[MAX_LINE_LEN];
-	struct asym         *cline;
-	int                 curline;
+	//struct asym         *cline;
+	//int                 curline;
 
 #if FASTPASS
     if ( Parse_Pass > PASS_1 && UseSavedState )
@@ -2542,7 +2542,7 @@ static void win64_SaveRegParams_RSP(struct proc_info *info)
 	int i;
 	struct dsym *param;
 	if (ModuleInfo.win64_flags & W64F_SMART) {
-		int			   cnt;
+		//int			   cnt;
 		uint_16        *regist;
 		info->home_taken = 0;
 		memset(info->home_used, 0, 6);
@@ -2746,7 +2746,7 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
   int                 i;
   int                 cnt;
   int                 cntxmm;
-  int                 cntstd = 0;
+  //int                 cntstd = 0;
   int                 resstack = ((ModuleInfo.win64_flags & W64F_AUTOSTACKSP) ? sym_ReservedStack->value : 0);
   int                 stackadj;
 
@@ -2932,12 +2932,12 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 {
 	uint_16             *regist;
 	const char * const  *ppfmt;
-	struct    dsym      *param;
+	//struct    dsym      *param;
 	int                 cntxmm;
 	unsigned char xyused[6];  /* flags for used sse registers in vectorcall */
 	unsigned char       xreg;
 	unsigned char       xsize;
-	unsigned char       xmmflag = 1;
+	//unsigned char       xmmflag = 1;
 	unsigned char       ymmflag = 0;
 	unsigned char       zmmflag = 0;
 	int                 vsize = 0;
@@ -2947,10 +2947,10 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 	int                 i;
 	int                 j;
 	int                 cnt;
-	int                 homestart;
+	//int                 homestart;
 	int                 stackSize;
 	int                 resstack = ((ModuleInfo.win64_flags & W64F_AUTOSTACKSP) ? sym_ReservedStack->value : 0);
-	struct dsym     *paranode;
+	//struct dsym     *paranode;
 	int pushed = 0;
 
 	if (Parse_Pass == PASS_1)
@@ -3539,7 +3539,7 @@ static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int 
 {
 	char regname[32];
 	int size = SizeFromMemtype(paranode->sym.mem_type, paranode->sym.Ofssize, paranode->sym.type);
-	int stack_size = size;
+	//int stack_size = size;
 	
 	paranode->sym.string_ptr = NULL; // Ensure it's null first.
 
@@ -3660,12 +3660,12 @@ static void write_sysv_default_prologue_RBP(struct proc_info *info)
 /****************************************************************/
 {
 	uint_16             *regist;
-	const char * const  *ppfmt;
+	//const char * const  *ppfmt;
 	int                 i = 0;
 	int                 cnt;
 	int                 cntxmm;
 	int                 stackadj;
-	int                 gprOdd;
+	//int                 gprOdd;
 	int                 resstack = ((ModuleInfo.win64_flags & W64F_AUTOSTACKSP) ? sym_ReservedStack->value : 0);
 
 	DebugMsg1(("write_sysv_default_prologue_RBP enter\n"));
@@ -3881,7 +3881,7 @@ static ret_code write_generic_prologue( struct proc_info *info )
 /********************************************/
 {
 	uint_16             *regist;
-	uint_8              oldlinenumbers;
+	//uint_8              oldlinenumbers;
 	int                 cnt;
 	int                 resstack = 0;
 
@@ -3959,9 +3959,9 @@ static ret_code write_default_prologue( void )
 /********************************************/
 {
     struct proc_info    *info;
-    uint_16             *regist;
+    //uint_16             *regist;
     uint_8              oldlinenumbers;
-    int                 cnt;
+    //int                 cnt;
     int                 resstack = 0;
 
     info = CurrProc->e.procinfo;
@@ -4176,7 +4176,7 @@ static void SetLocalOffsets_RSP(struct proc_info *info)
 	unsigned			paramadj;
 	int                 rspalign = FALSE;
 	int                 align = CurrWordSize;
-	int                 acc = 0;
+	//int                 acc = 0;
 	unsigned char       zmmflag = 0;
 	regist = info->regslist;
 	rspalign = TRUE;
@@ -4578,7 +4578,7 @@ static void write_default_epilogue( void )
 /****************************************/
 {
     struct proc_info   *info;
-    int resstack = 0;
+    //int resstack = 0;
 
     info = CurrProc->e.procinfo;
 

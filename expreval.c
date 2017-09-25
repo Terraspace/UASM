@@ -3285,8 +3285,8 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 /********************************************************************************************************************/
 {
     ret_code rc = NOT_ERROR;
-    unsigned char c;
-    char *p;
+    //unsigned char c;
+    //char *p;
 	char clabel[100];
 	struct asym *labelsym;
 	struct asym *labelsym2;

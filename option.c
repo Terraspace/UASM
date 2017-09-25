@@ -1151,7 +1151,7 @@ OPTFUNC( Unsupported )
 
 OPTFUNC(SetFlat)
 {
-	const char  *textvalue;
+	//const char  *textvalue;
 
 	int i = *pi;
 

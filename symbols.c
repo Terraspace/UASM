@@ -964,9 +964,9 @@ void WriteSymbols()
 {
 	char *pName;
 	uint_32 count = 0;
-	int symbolIdx = 0;
+	//int symbolIdx = 0;
 	struct asym *sym;
-	struct asym cSym;
+	//struct asym cSym;
 	int i;
 	FILE *ld;
 	int n = 0;
