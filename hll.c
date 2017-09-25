@@ -1115,58 +1115,59 @@ static ret_code EvaluateHllExpression(struct hll_item *hll, int *i, struct asm_t
 static ret_code CheckCXZLines(char *p)
 /**************************************/
 {
-  int lines = 0;
-  int i;
-  int addchars;
-  char *px;
-  bool NL = TRUE;
+	int lines = 0;
+	int i;
+	int addchars;
+	char *px;
+	bool NL = TRUE;
 
-  DebugMsg1(("CheckCXZLines enter, p=>%s<\n", p));
-  /* syntax ".untilcxz 1" has a problem: there's no "jmp" generated at all.
-  * if this syntax is to be supported, activate the #if below.
-  */
-  for (; *p; p++) {
-    if (*p == EOLCHAR) {
-      NL = TRUE;
-      lines++;
-    }
-    else if (NL) {
-      NL = FALSE;
-      if (*p == 'j') {
-        p++;
-        /* v2.06: rewritten */
-        if (*p == 'm' && lines == 0) {
-          addchars = 2; /* make room for 2 chars, to replace "jmp" by "loope" */
-          px = "loope";
-        }
-        else if (lines == 1 && (*p == 'z' || (*p == 'n' && *(p + 1) == 'z'))) {
-          addchars = 3; /* make room for 3 chars, to replace "jz"/"jnz" by "loopz"/"loopnz" */
-          px = "loop";
-        }
-        else
-          return(ERROR); /* anything else is "too complex" */
-                         //replace_instr:
-        for (p--, i = (int)strlen(p); i >= 0; i--) {
-          *(p + addchars + i) = *(p + i);
-        }
-        strcpy(p,strlen(px), px);
-      }
+	DebugMsg1(("CheckCXZLines enter, p=>%s<\n", p));
+	/* syntax ".untilcxz 1" has a problem: there's no "jmp" generated at all.
+	* if this syntax is to be supported, activate the #if below.
+	*/
+	for (; *p; p++) {
+		if (*p == EOLCHAR) {
+			NL = TRUE;
+			lines++;
+		}
+		else if (NL) {
+			NL = FALSE;
+			if (*p == 'j') {
+				p++;
+				/* v2.06: rewritten */
+				if (*p == 'm' && lines == 0) {
+					addchars = 2; /* make room for 2 chars, to replace "jmp" by "loope" */
+					px = "loope";
+				}
+				else if (lines == 1 && (*p == 'z' || (*p == 'n' && *(p + 1) == 'z'))) {
+					addchars = 3; /* make room for 3 chars, to replace "jz"/"jnz" by "loopz"/"loopnz" */
+					px = "loop";
+				}
+				else
+					return(ERROR); /* anything else is "too complex" */
+								   //replace_instr:
+				for (p--, i = strlen(p); i >= 0; i--) {
+					*(p + addchars + i) = *(p + i);
+				}
+				memcpy(p, px, strlen(px));
+			}
 #if 0 /* handle ".untilcxz 1" like masm does */
-      else if (*p == ' ' && *(p + 1) == EOLCHAR && lines == 0) {
-        p++;
-        GetLabelStr(hll->labels[LSTART], p);
-        strcat(p, EOLSTR);
-        addchars = 5;
-        px = "loope";
-        goto replace_instr;
-      }
+			else if (*p == ' ' && *(p + 1) == EOLCHAR && lines == 0) {
+				p++;
+				GetLabelStr(hll->labels[LSTART], p);
+				strcat(p, EOLSTR);
+				addchars = 5;
+				px = "loope";
+				goto replace_instr;
+			}
 #endif
-    }
-  }
-  if (lines > 2)
-    return(ERROR);
-  return(NOT_ERROR);
+		}
+	}
+	if (lines > 2)
+		return(ERROR);
+	return(NOT_ERROR);
 }
+
 static const char *reax[] = { "ax", "eax", "rax" };
 static const char *redx[] = { "dx", "edx", "rdx" };
 static const char *recx[] = { "cx", "ecx", "rcx" };
