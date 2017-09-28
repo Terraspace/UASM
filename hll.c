@@ -33,6 +33,38 @@
 #include "fastpass.h"
 #include "atofloat.h"
 
+#if defined(WINDOWSDDK)
+#if defined(_WIN32)
+typedef _W64 int INT_PTR, *PINT_PTR;
+typedef _W64 unsigned int UINT_PTR, *PUINT_PTR;
+typedef _W64 long LONG_PTR, *PLONG_PTR;
+typedef _W64 unsigned long ULONG_PTR, *PULONG_PTR;
+#define __int3264   __int32
+#else
+typedef __int64 INT_PTR, *PINT_PTR;
+typedef unsigned __int64 UINT_PTR, *PUINT_PTR;
+typedef __int64 LONG_PTR, *PLONG_PTR;
+typedef unsigned __int64 ULONG_PTR, *PULONG_PTR;
+#define __int3264   __int64
+#endif
+#else
+#include <inttypes.h>
+#if defined(_WIN32)
+typedef _W64 int INT_PTR, *PINT_PTR;
+typedef _W64 unsigned int UINT_PTR, *PUINT_PTR;
+typedef _W64 long LONG_PTR, *PLONG_PTR;
+typedef _W64 unsigned long ULONG_PTR, *PULONG_PTR;
+#define __int3264   __int32
+#else
+typedef int64_t INT_PTR, *PINT_PTR;
+typedef uint64_t UINT_PTR, *PUINT_PTR;
+typedef int64_t LONG_PTR, *PLONG_PTR;
+typedef uint64_t ULONG_PTR, *PULONG_PTR;
+#define __int3264   int64_t
+typedef int64_t __int64;
+#endif
+#endif
+
 int Tokenize(char *, unsigned int, struct asm_tok[], unsigned int);
 void myatoi128(const char *src, uint_64 dst[], int base, int size);
 #define LABELSIZE 8
@@ -97,7 +129,7 @@ struct hll_item {
   char                *counterlines; /* pointer to allocated memory for counters */
   uint_32             cmcnt;         /* comma counter  */
   enum hll_cmd        cmd;           /* start cmd (IF, WHILE, REPEAT) */
-  bool                cond;          /* condision  */
+  bool                cond;          /* condition  */
   enum hll_flags      flags;         /* v2.08: added */
 /* All of bellow vars are related to the SWITCH block */
   int_32              casecnt;       /* case counter  */
@@ -111,7 +143,7 @@ struct hll_item {
   int                 *pcases;
   uint_16             *plabels;
   uint_16             savedlab;
-  bool                breakoccured;   /* condision  */
+  bool                breakoccured;   /* condition  */
 #if AMD64_SUPPORT
   int_64              maxcase64;
   int_64              mincase64;
@@ -1115,58 +1147,59 @@ static ret_code EvaluateHllExpression(struct hll_item *hll, int *i, struct asm_t
 static ret_code CheckCXZLines(char *p)
 /**************************************/
 {
-  int lines = 0;
-  int i;
-  int addchars;
-  char *px;
-  bool NL = TRUE;
+	int lines = 0;
+	int i;
+	int addchars;
+	char *px;
+	bool NL = TRUE;
 
-  DebugMsg1(("CheckCXZLines enter, p=>%s<\n", p));
-  /* syntax ".untilcxz 1" has a problem: there's no "jmp" generated at all.
-  * if this syntax is to be supported, activate the #if below.
-  */
-  for (; *p; p++) {
-    if (*p == EOLCHAR) {
-      NL = TRUE;
-      lines++;
-    }
-    else if (NL) {
-      NL = FALSE;
-      if (*p == 'j') {
-        p++;
-        /* v2.06: rewritten */
-        if (*p == 'm' && lines == 0) {
-          addchars = 2; /* make room for 2 chars, to replace "jmp" by "loope" */
-          px = "loope";
-        }
-        else if (lines == 1 && (*p == 'z' || (*p == 'n' && *(p + 1) == 'z'))) {
-          addchars = 3; /* make room for 3 chars, to replace "jz"/"jnz" by "loopz"/"loopnz" */
-          px = "loop";
-        }
-        else
-          return(ERROR); /* anything else is "too complex" */
-                         //replace_instr:
-        for (p--, i = (int)strlen(p); i >= 0; i--) {
-          *(p + addchars + i) = *(p + i);
-        }
-        strcpy_s(p,strlen(px), px);
-      }
+	DebugMsg1(("CheckCXZLines enter, p=>%s<\n", p));
+	/* syntax ".untilcxz 1" has a problem: there's no "jmp" generated at all.
+	* if this syntax is to be supported, activate the #if below.
+	*/
+	for (; *p; p++) {
+		if (*p == EOLCHAR) {
+			NL = TRUE;
+			lines++;
+		}
+		else if (NL) {
+			NL = FALSE;
+			if (*p == 'j') {
+				p++;
+				/* v2.06: rewritten */
+				if (*p == 'm' && lines == 0) {
+					addchars = 2; /* make room for 2 chars, to replace "jmp" by "loope" */
+					px = "loope";
+				}
+				else if (lines == 1 && (*p == 'z' || (*p == 'n' && *(p + 1) == 'z'))) {
+					addchars = 3; /* make room for 3 chars, to replace "jz"/"jnz" by "loopz"/"loopnz" */
+					px = "loop";
+				}
+				else
+					return(ERROR); /* anything else is "too complex" */
+								   //replace_instr:
+				for (p--, i = strlen(p); i >= 0; i--) {
+					*(p + addchars + i) = *(p + i);
+				}
+				memcpy(p, px, strlen(px));
+			}
 #if 0 /* handle ".untilcxz 1" like masm does */
-      else if (*p == ' ' && *(p + 1) == EOLCHAR && lines == 0) {
-        p++;
-        GetLabelStr(hll->labels[LSTART], p);
-        strcat(p, EOLSTR);
-        addchars = 5;
-        px = "loope";
-        goto replace_instr;
-      }
+			else if (*p == ' ' && *(p + 1) == EOLCHAR && lines == 0) {
+				p++;
+				GetLabelStr(hll->labels[LSTART], p);
+				strcat(p, EOLSTR);
+				addchars = 5;
+				px = "loope";
+				goto replace_instr;
+			}
 #endif
-    }
-  }
-  if (lines > 2)
-    return(ERROR);
-  return(NOT_ERROR);
+		}
+	}
+	if (lines > 2)
+		return(ERROR);
+	return(NOT_ERROR);
 }
+
 static const char *reax[] = { "ax", "eax", "rax" };
 static const char *redx[] = { "dx", "edx", "rdx" };
 static const char *recx[] = { "cx", "ecx", "rcx" };
@@ -1549,7 +1582,7 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
       case EXPR_REG:
         t = opndx.base_reg;
         if (ModuleInfo.Ofssize == USE32) {
-          if (t->tokval <= T_BX)   // AL, CL, DL, BL, AH, CH, DH, BH, AX, CX, DX, BX
+          if (t->tokval <= T_DI)   // AL, CL, DL, BL, AH, CH, DH, BH, AX, CX, DX, BX
             AddLineQueueX(" movzx eax, %s", tokenarray[i].tokpos);
           else {
             if (t->tokval != T_EAX) //skip it, no need to write MOV EAX,EAX
@@ -1557,16 +1590,18 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
           }
         }
 #if AMD64_SUPPORT
-        else if (ModuleInfo.Ofssize == USE64)            //USE64
+        else             //USE64
         {
-          if (t->tokval <= T_BX) // AL, CL, DL, BL, AH, CH, DH, BH, AX, CX, DX, BX
-            AddLineQueueX(" movzx eax, %s", tokenarray[i].tokpos);
-          else if (t->tokval <= T_EDI && t->tokval != T_EAX)  //ECX,EDX,EBX,ESP,EBP,ESI,EDI
-            AddLineQueueX(" mov eax, %s", tokenarray[i].tokpos);
-          else {
-            if (t->tokval != T_RAX) //skip it, no need to write MOV RAX,RAX
-              AddLineQueueX(" mov rax, %s", tokenarray[i].tokpos);
-            hll->csize = 8;
+        if (t->tokval != T_EAX){ //skip it, no need to write MOV EAX,EAX
+            if (t->tokval <= T_DI) // AL, CL, DL, BL, AH, CH, DH, BH, AX, CX, DX, BX
+              AddLineQueueX(" movzx eax, %s", tokenarray[i].tokpos);
+            else if (t->tokval <= T_EDI) //EAX,ECX,EDX,EBX,ESP,EBP,ESI,EDI
+              AddLineQueueX(" mov eax, %s", tokenarray[i].tokpos);
+            else {
+              if (t->tokval != T_RAX) //skip it, no need to write MOV RAX,RAX
+                AddLineQueueX(" mov rax, %s", tokenarray[i].tokpos);
+              hll->csize = 8;
+            }
           }
         }               //end USE64
 #endif
@@ -2622,7 +2657,6 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
           AddLineQueueX("pop	rdi");
           AddLineQueueX("pop	rsi");
           AddLineQueueX("pop	rbx");
-          AddLineQueueX("pop	rcx");
           GetLabelStr(hll->labels[LDATA1], buff);       
           AddLineQueueX("lea   rcx,%s", buff);
           AddLineQueueX("mov   rax, qword ptr[rcx+rax*8]");

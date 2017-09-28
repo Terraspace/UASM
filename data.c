@@ -76,6 +76,7 @@
 	typedef int64_t LONG_PTR, *PLONG_PTR;
 	typedef uint64_t ULONG_PTR, *PULONG_PTR;
 	#define __int3264   int64_t
+	typedef int64_t __int64;
 	#endif
 #endif
 
