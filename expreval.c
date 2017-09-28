@@ -67,7 +67,7 @@ extern uint_32          StackAdj;
 #ifdef DEBUG_OUT
 static int evallvl = 0;
 #endif
-
+extern uint_32          GetCurrOffset( void );
 /* the following static variables should be moved to ModuleInfo. */
 static struct asym *thissym; /* helper symbol for THIS operator */
 static struct asym *nullstruct; /* used for T_DOT if second op is a forward ref */
@@ -106,6 +106,150 @@ static void init_expr( struct expr *opnd )
     opnd->mbr      = NULL;
     opnd->type     = NULL;
 	opnd->isptr = FALSE;
+}
+static ret_code  InitRecordVar(struct expr *opnd1, int index, struct asm_tok tokenarray[], const struct dsym *symtype, struct asym *embedded )
+/****************************************************************************************************************************/
+{
+    char            *ptr;
+    struct sfield   *f;
+    int_32          nextofs;
+    int             i;
+    int             old_tokencount = Token_Count;
+    char            *old_stringbufferend = StringBufferEnd;
+    int             lvl;
+#if AMD64_SUPPORT
+    uint_64         dwRecInit;
+#else
+    uint_32         dwRecInit;
+#endif
+    bool            is_record_set;
+    struct expr     opndx;
+    char            buffer[MAX_LINE_LEN];
+
+    /**/myassert( symtype->sym.state == SYM_TYPE && symtype->sym.typekind != TYPE_TYPEDEF );
+    if ( tokenarray[index].token == T_STRING ) {
+        /* v2.08: no special handling of {}-literals anymore */
+        if ( tokenarray[index].string_delim != '<' &&
+            tokenarray[index].string_delim != '{' ) {
+            return( EmitError( MISSING_ANGLE_BRACKET_OR_BRACE_IN_LITERAL ) );
+        }
+        i = Token_Count + 1;
+        //strcpy( line, tokenarray[index].string_ptr );
+        Token_Count = Tokenize( tokenarray[index].string_ptr, i, tokenarray, TOK_RESCAN );
+        /* once Token_Count has been modified, don't exit without
+         * restoring this value!
+         */
+        index++;
+
+    } else if ( embedded &&
+                ( tokenarray[index].token == T_COMMA ||
+                 tokenarray[index].token == T_FINAL)) {
+        i = Token_Count;
+    } else {
+        return( EmitErr( INITIALIZER_MUST_BE_A_STRING_OR_SINGLE_ITEM, embedded ? embedded->name : "" ) );
+    }
+    if ( symtype->sym.typekind == TYPE_RECORD ) {
+        dwRecInit = 0;
+        is_record_set = FALSE;
+    }
+
+    /* scan the STRUCT/UNION/RECORD's members */
+    for( f = symtype->e.structinfo->head; f != NULL; f = f->next ) {
+
+        DebugMsg1(("InitRecordVar(%s) field=%s ofs=%" I32_SPEC "u total_size=%" I32_SPEC "u total_len=%" I32_SPEC "u value=>%s< >%s<\n",
+                  symtype->sym.name,
+                  f->sym.name,
+                  f->sym.offset,
+                  f->sym.total_size,
+                  f->sym.total_length,
+                  //f->initializer ? f->initializer : "NULL",
+                  f->ivalue, tokenarray[i].tokpos ));
+
+        /* is it a RECORD field? */
+        if ( f->sym.mem_type == MT_BITS ) {
+            if ( tokenarray[i].token == T_COMMA || tokenarray[i].token == T_FINAL ) {
+                if ( f->ivalue[0] ) {
+                    int j = Token_Count + 1;
+                    int max_item = Tokenize( f->ivalue, j, tokenarray, TOK_RESCAN );
+                    EvalOperand( &j, tokenarray, max_item, &opndx, 0 );
+                    is_record_set = TRUE;
+                } else {
+                    opndx.value = 0;
+                    opndx.kind = EXPR_CONST;
+                    opndx.quoted_string = NULL;
+                }
+            } else {
+                EvalOperand( &i, tokenarray, Token_Count, &opndx, 0 );
+                is_record_set = TRUE;
+            }
+            if ( opndx.kind != EXPR_CONST || opndx.quoted_string != NULL )
+                EmitError( CONSTANT_EXPECTED );
+
+            /* fixme: max bits in 64-bit is 64 - see MAXRECBITS! */
+            if ( f->sym.total_size < 32 ) {
+                uint_32 dwMax = (1 << f->sym.total_size);
+                if ( opndx.value >= dwMax )
+                    EmitErr( INITIALIZER_MAGNITUDE_TOO_LARGE, f->sym.name );
+            }
+#if AMD64_SUPPORT
+            dwRecInit |= opndx.llvalue << f->sym.offset;
+#else
+            dwRecInit |= opndx.value << f->sym.offset;
+#endif
+        } 
+        else if ( f->sym.total_size == f->sym.total_length &&
+                   tokenarray[i].token == T_STRING &&
+                   tokenarray[i].stringlen > 1 &&
+                   ( tokenarray[i].string_delim == '"' ||
+                    tokenarray[i].string_delim == '\'' ) ) {
+            /* v2.07: it's a byte type, but no array, string initializer must have true length 1 */
+            EmitError( STRING_OR_TEXT_LITERAL_TOO_LONG );
+            i++;
+        } 
+        /* Add padding bytes if necessary (never inside RECORDS!).
+         * f->next == NULL : it's the last field of the struct/union/record
+         */
+        if ( symtype->sym.typekind != TYPE_RECORD ) {
+            if ( f->next == NULL || symtype->sym.typekind == TYPE_UNION )
+                nextofs = symtype->sym.total_size;
+            else
+                nextofs = f->next->sym.offset;
+
+            if ( f->sym.offset + f->sym.total_size < nextofs ) {
+                DebugMsg1(("InitStructuredVar: padding, field=%s ofs=%" I32_SPEC "X total=%" I32_SPEC "X nextofs=%" I32_SPEC "X\n",
+                          f->sym.name, f->sym.offset, f->sym.total_size, nextofs ));
+                SetCurrOffset( CurrSeg, nextofs - (f->sym.offset + f->sym.total_size), TRUE, TRUE );
+            }
+        }
+        /* for a union, just the first field is initialized */
+        if ( symtype->sym.typekind == TYPE_UNION )
+            break;
+
+        if ( f->next != NULL ) {
+
+            if ( tokenarray[i].token != T_FINAL )
+                if ( tokenarray[i].token == T_COMMA )
+                    i++;
+                else {
+                    EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos );
+                    while ( tokenarray[i].token != T_FINAL && tokenarray[i].token != T_COMMA )
+                        i++;
+                }
+        }
+    }  /* end for */
+//    __debugbreak();
+    strcpy( buffer,tokenarray->tokpos);
+    ptr = buffer;
+    while (*ptr != ',')ptr++;
+    ptr++;
+	sprintf( ptr,"%#x",dwRecInit);
+    sprintf( tokenarray->string_ptr,"%d",dwRecInit);
+    strcpy(tokenarray->tokpos, buffer);
+    Token_Count = Tokenize( tokenarray[0].tokpos, 0, tokenarray, 0 );
+    i=Token_Count;
+	opnd1->value = dwRecInit;
+    DebugMsg1(("InitRecordVar(%s) exit, current ofs=%" I32_SPEC "X\n", symtype->sym.name, GetCurrOffset() ));
+    return( NOT_ERROR );
 }
 
 static void TokenAssign( struct expr *opnd1, const struct expr *opnd2 )
@@ -3295,6 +3439,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 	struct asym *labelsym;
 	struct asym *labelsym2;
 	struct asm_tok tok;
+    struct dsym *recordsym;
 
     DebugMsg1(("%u evaluate(i=%d, end=%d, flags=%X) enter [opnd1: kind=%d type=%s]\n",
                ++evallvl, *i, end, flags, opnd1->kind, opnd1->type ? opnd1->type->name : "NULL" ));
@@ -3378,7 +3523,6 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
         curr_operator = *i;
         DebugMsg1(("%u evaluate loop, operator=>%s< opnd1->sym=%X, type=%s\n",
                    evallvl, tokenarray[curr_operator].string_ptr, opnd1->sym, (opnd1->type ? opnd1->type->name : "NULL") ));
-
         if ( opnd1->kind != EXPR_EMPTY ) {
             /* check operator behind operand. Must be binary or open bracket */
             if ( tokenarray[curr_operator].token == '+' || tokenarray[curr_operator].token == '-' )
@@ -3387,9 +3531,21 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
                 DebugMsg(("%u evaluate: unexpected token at idx=%u, token=%X >%s<\n", evallvl, curr_operator, tokenarray[curr_operator].token, tokenarray[curr_operator].tokpos ));
                 rc = ERROR;
                 //if ( !opnd2.is_opattr )  /* v2.11: opnd2 was accessed before initialization */
-                
-                if ( !opnd1->is_opattr )
-                    OperErr( curr_operator, tokenarray );
+                if (!opnd1->is_opattr){
+                  if (opnd1->type != NULL)
+                  recordsym = SymSearch(opnd1->type->name);
+                   // __debugbreak();
+                  /* if it is a RECORD don't throw an error but decorate it with an actual value v2.41*/
+                    if (recordsym && recordsym->sym.typekind == TYPE_RECORD)
+					{
+						if ( InitRecordVar( opnd1, curr_operator, tokenarray, recordsym, NULL ) != ERROR )
+							rc = NOT_ERROR;
+						i = Token_Count;
+						return( rc );
+                    }
+                    else
+						OperErr( curr_operator, tokenarray );
+                  }
                 break;
             }
         }
