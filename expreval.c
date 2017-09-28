@@ -107,6 +107,11 @@ static void init_expr( struct expr *opnd )
     opnd->type     = NULL;
 	opnd->isptr = FALSE;
 }
+/*   InitRecordVar is used for inline initiolise RECORD to be compatibile with masm, v2.41 
+*    now it can be used as :
+*    mov     al, COLOR<1, 7, 0, 1>         ;1 111 0 001 = F1
+*    mov     cobalt.rc, COLOR<1, 7, 0, 1>  ;1 111 0 001 = F1
+*/
 static ret_code  InitRecordVar(struct expr *opnd1, int index, struct asm_tok tokenarray[], const struct dsym *symtype, struct asym *embedded )
 /****************************************************************************************************************************/
 {
@@ -237,16 +242,13 @@ static ret_code  InitRecordVar(struct expr *opnd1, int index, struct asm_tok tok
                 }
         }
     }  /* end for */
-//    __debugbreak();
     strcpy( buffer,tokenarray->tokpos);
     ptr = buffer;
     while (*ptr != ',')ptr++;
     ptr++;
 	sprintf( ptr,"%#x",dwRecInit);
-    sprintf( tokenarray->string_ptr,"%d",dwRecInit);
     strcpy(tokenarray->tokpos, buffer);
-    Token_Count = Tokenize( tokenarray[0].tokpos, 0, tokenarray, 0 );
-    i=Token_Count;
+    Token_Count = Tokenize( tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT );
 	opnd1->value = dwRecInit;
     DebugMsg1(("InitRecordVar(%s) exit, current ofs=%" I32_SPEC "X\n", symtype->sym.name, GetCurrOffset() ));
     return( NOT_ERROR );
@@ -3534,13 +3536,11 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
                 if (!opnd1->is_opattr){
                   if (opnd1->type != NULL)
                   recordsym = SymSearch(opnd1->type->name);
-                   // __debugbreak();
                   /* if it is a RECORD don't throw an error but decorate it with an actual value v2.41*/
                     if (recordsym && recordsym->sym.typekind == TYPE_RECORD)
 					{
 						if ( InitRecordVar( opnd1, curr_operator, tokenarray, recordsym, NULL ) != ERROR )
 							rc = NOT_ERROR;
-						i = Token_Count;
 						return( rc );
                     }
                     else
