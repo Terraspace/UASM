@@ -44,6 +44,11 @@
 #include "atofloat.h"
 #include "myassert.h"
 
+#if defined(WINDOWSDDK)
+#else
+	#include <inttypes.h>
+#endif
+
 #define ALIAS_IN_EXPR 1 /* allow alias names in expression */
 
 #define UNARY_PLUSMINUS 0
@@ -234,8 +239,14 @@ static ret_code  InitRecordVar(struct expr *opnd1, int index, struct asm_tok tok
     ptr = buffer;
     while (*ptr != ',')ptr++;
     ptr++;
+	
+#if defined(WINDOWSDDK)
 	sprintf( ptr,"%#llx",dwRecInit);
-    strcpy(tokenarray->tokpos, buffer);
+#else
+	sprintf( ptr,"0x%" PRIx64, dwRecInit);
+#endif
+
+	strcpy(tokenarray->tokpos, buffer);
     Token_Count = Tokenize( tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT );
 #if AMD64_SUPPORT
             opnd1->llvalue = dwRecInit;
