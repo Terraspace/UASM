@@ -3542,7 +3542,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
                   /* if it is a RECORD don't throw an error but decorate it with an actual value v2.41*/
                     if (recordsym && recordsym->sym.typekind == TYPE_RECORD)
 					{
-						if ( InitRecordVar( opnd1, curr_operator, tokenarray, recordsym, NULL ) != ERROR )
+						if ( InitRecordVar( opnd1, curr_operator, tokenarray, recordsym ) != ERROR )
                           if (tokenarray[1].token == T_REG) {
                             p=tokenarray->tokpos + 3;
                             while (isspace(*p))p++;
