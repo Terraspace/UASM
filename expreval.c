@@ -107,21 +107,18 @@ static void init_expr( struct expr *opnd )
     opnd->type     = NULL;
 	opnd->isptr = FALSE;
 }
-/*   InitRecordVar is used for inline initiolise RECORD to be compatibile with masm, v2.41 
+/*   InitRecordVar is used for inline initialise RECORD to be compatibile with masm, v2.41 
 *    now it can be used as :
 *    mov     al, COLOR<1, 7, 0, 1>         ;1 111 0 001 = F1
 *    mov     cobalt.rc, COLOR<1, 7, 0, 1>  ;1 111 0 001 = F1
 */
-static ret_code  InitRecordVar(struct expr *opnd1, int index, struct asm_tok tokenarray[], const struct dsym *symtype, struct asym *embedded )
+static ret_code  InitRecordVar(struct expr *opnd1, int index, struct asm_tok tokenarray[], const struct dsym *symtype )
 /****************************************************************************************************************************/
 {
     char            *ptr;
     struct sfield   *f;
     int_32          nextofs;
     int             i;
-    int             old_tokencount = Token_Count;
-    char            *old_stringbufferend = StringBufferEnd;
-    int             lvl;
 #if AMD64_SUPPORT
     uint_64         dwRecInit;
 #else
@@ -133,32 +130,24 @@ static ret_code  InitRecordVar(struct expr *opnd1, int index, struct asm_tok tok
 
     /**/myassert( symtype->sym.state == SYM_TYPE && symtype->sym.typekind != TYPE_TYPEDEF );
     if ( tokenarray[index].token == T_STRING ) {
-        /* v2.08: no special handling of {}-literals anymore */
         if ( tokenarray[index].string_delim != '<' &&
             tokenarray[index].string_delim != '{' ) {
             return( EmitError( MISSING_ANGLE_BRACKET_OR_BRACE_IN_LITERAL ) );
         }
         i = Token_Count + 1;
-        //strcpy( line, tokenarray[index].string_ptr );
         Token_Count = Tokenize( tokenarray[index].string_ptr, i, tokenarray, TOK_RESCAN );
         /* once Token_Count has been modified, don't exit without
          * restoring this value!
          */
         index++;
 
-    } else if ( embedded &&
-                ( tokenarray[index].token == T_COMMA ||
-                 tokenarray[index].token == T_FINAL)) {
-        i = Token_Count;
-    } else {
-        return( EmitErr( INITIALIZER_MUST_BE_A_STRING_OR_SINGLE_ITEM, embedded ? embedded->name : "" ) );
-    }
+    } 
     if ( symtype->sym.typekind == TYPE_RECORD ) {
         dwRecInit = 0;
         is_record_set = FALSE;
     }
 
-    /* scan the STRUCT/UNION/RECORD's members */
+    /* scan the RECORD's members */
     for( f = symtype->e.structinfo->head; f != NULL; f = f->next ) {
 
         DebugMsg1(("InitRecordVar(%s) field=%s ofs=%" I32_SPEC "u total_size=%" I32_SPEC "u total_len=%" I32_SPEC "u value=>%s< >%s<\n",
@@ -167,7 +156,6 @@ static ret_code  InitRecordVar(struct expr *opnd1, int index, struct asm_tok tok
                   f->sym.offset,
                   f->sym.total_size,
                   f->sym.total_length,
-                  //f->initializer ? f->initializer : "NULL",
                   f->ivalue, tokenarray[i].tokpos ));
 
         /* is it a RECORD field? */
@@ -221,7 +209,7 @@ static ret_code  InitRecordVar(struct expr *opnd1, int index, struct asm_tok tok
                 nextofs = f->next->sym.offset;
 
             if ( f->sym.offset + f->sym.total_size < nextofs ) {
-                DebugMsg1(("InitStructuredVar: padding, field=%s ofs=%" I32_SPEC "X total=%" I32_SPEC "X nextofs=%" I32_SPEC "X\n",
+                DebugMsg1(("InitRecordVar: padding, field=%s ofs=%" I32_SPEC "X total=%" I32_SPEC "X nextofs=%" I32_SPEC "X\n",
                           f->sym.name, f->sym.offset, f->sym.total_size, nextofs ));
                 SetCurrOffset( CurrSeg, nextofs - (f->sym.offset + f->sym.total_size), TRUE, TRUE );
             }
@@ -246,10 +234,14 @@ static ret_code  InitRecordVar(struct expr *opnd1, int index, struct asm_tok tok
     ptr = buffer;
     while (*ptr != ',')ptr++;
     ptr++;
-	sprintf( ptr,"%#x",dwRecInit);
+	sprintf( ptr,"%#llx",dwRecInit);
     strcpy(tokenarray->tokpos, buffer);
     Token_Count = Tokenize( tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT );
-	opnd1->value = dwRecInit;
+#if AMD64_SUPPORT
+            opnd1->llvalue = dwRecInit;
+#else
+            opnd1->value = dwRecInit;
+#endif
     DebugMsg1(("InitRecordVar(%s) exit, current ofs=%" I32_SPEC "X\n", symtype->sym.name, GetCurrOffset() ));
     return( NOT_ERROR );
 }
@@ -3436,7 +3428,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 {
     ret_code rc = NOT_ERROR;
     //unsigned char c;
-    //char *p;
+    char *p;
 	char clabel[100];
 	struct asym *labelsym;
 	struct asym *labelsym2;
@@ -3521,7 +3513,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 
         int curr_operator;
         struct expr opnd2;
-
+        struct expr opnd3;
         curr_operator = *i;
         DebugMsg1(("%u evaluate loop, operator=>%s< opnd1->sym=%X, type=%s\n",
                    evallvl, tokenarray[curr_operator].string_ptr, opnd1->sym, (opnd1->type ? opnd1->type->name : "NULL") ));
@@ -3540,7 +3532,17 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
                     if (recordsym && recordsym->sym.typekind == TYPE_RECORD)
 					{
 						if ( InitRecordVar( opnd1, curr_operator, tokenarray, recordsym, NULL ) != ERROR )
+                          if (tokenarray[1].token == T_REG) {
+                            p=tokenarray->tokpos + 3;
+                            while (isspace(*p))p++;
+                            if (*p == 'r' || *p == 'R')
 							rc = NOT_ERROR;
+                            else goto testsize;
+                        }else 
+testsize:                 if (opnd1->llvalue > 0xffffffff){
+                          rc = ERROR;
+                          EmitErr(INITIALIZER_OUT_OF_RANGE);
+                          }
 						return( rc );
                     }
                     else
