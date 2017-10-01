@@ -46,9 +46,9 @@
 #include "lqueue.h"
 
 #if defined(WINDOWSDDK)
-	#define PRIx64       "llx"
+#define PRIx64       "llx"
 #else
-	#include <inttypes.h>
+#include <inttypes.h>
 #endif
 
 #define ALIAS_IN_EXPR 1 /* allow alias names in expression */
@@ -252,7 +252,6 @@ all:
         ptr = buffer;
         while (*ptr != ',')ptr++;
         ptr++;
-        //sprintf( ptr,"%#llx",dwRecInit);
 		sprintf(ptr, "0x%" PRIx64, dwRecInit);
         strcpy(tokenarray->tokpos, buffer);
         Token_Count = Tokenize( tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT );
@@ -276,7 +275,6 @@ all:
       ParseLine( tokenarray );
       strcpy(buffer, "mov rax,  ");
       ptr = buffer+10;
-      //sprintf( ptr,"%#llx",dwRecInit);
 	  sprintf(ptr, "0x%" PRIx64, dwRecInit);
       strcpy(tokenarray->tokpos, buffer);
       Token_Count = Tokenize( tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT );
@@ -3571,7 +3569,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
                   /* if it is a RECORD don't throw an error but decorate it with an actual value v2.41*/
                     if (recordsym && recordsym->sym.typekind == TYPE_RECORD)
 					{
-						if ( InitRecordVar( opnd1, curr_operator, tokenarray, recordsym, NULL ) != ERROR )
+						if ( InitRecordVar( opnd1, curr_operator, tokenarray, recordsym ) != ERROR )
                           rc = NOT_ERROR;
 							return( rc );
                     }
