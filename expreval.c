@@ -43,8 +43,10 @@
 #include "label.h"
 #include "atofloat.h"
 #include "myassert.h"
+#include "lqueue.h"
 
 #if defined(WINDOWSDDK)
+	#define PRIx64       "llx"
 #else
 	#include <inttypes.h>
 #endif
@@ -132,7 +134,7 @@ static ret_code  InitRecordVar(struct expr *opnd1, int index, struct asm_tok tok
     bool            is_record_set;
     struct expr     opndx;
     char            buffer[MAX_LINE_LEN];
-
+    
     /**/myassert( symtype->sym.state == SYM_TYPE && symtype->sym.typekind != TYPE_TYPEDEF );
     if ( tokenarray[index].token == T_STRING ) {
         if ( tokenarray[index].string_delim != '<' &&
@@ -235,24 +237,51 @@ static ret_code  InitRecordVar(struct expr *opnd1, int index, struct asm_tok tok
                 }
         }
     }  /* end for */
-    strcpy( buffer,tokenarray->tokpos);
-    ptr = buffer;
-    while (*ptr != ',')ptr++;
-    ptr++;
-	
-#if defined(WINDOWSDDK)
-	sprintf( ptr,"%#llx",dwRecInit);
-#else
-	sprintf( ptr,"0x%" PRIx64, dwRecInit);
-#endif
 
-	strcpy(tokenarray->tokpos, buffer);
-    Token_Count = Tokenize( tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT );
+    if (tokenarray[1].token == T_REG) {
+      ptr=tokenarray->tokpos + 4;
+      while (isspace(*ptr))ptr++;
+      if (*ptr == 'r' || *ptr == 'R')
+        goto all;
+      else if (opnd1->llvalue < 0x100000000)
+        goto all;
+      else
+      EmitErr(INITIALIZER_OUT_OF_RANGE);
+all:
+        strcpy( buffer,tokenarray->tokpos);
+        ptr = buffer;
+        while (*ptr != ',')ptr++;
+        ptr++;
+        //sprintf( ptr,"%#llx",dwRecInit);
+		sprintf(ptr, "0x%" PRIx64, dwRecInit);
+        strcpy(tokenarray->tokpos, buffer);
+        Token_Count = Tokenize( tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT );
 #if AMD64_SUPPORT
             opnd1->llvalue = dwRecInit;
 #else
             opnd1->value = dwRecInit;
 #endif
+            goto exit;
+  }
+    else if (opnd1->llvalue < 0x100000000) 
+      goto all;
+    else {
+      strcpy( buffer,tokenarray->tokpos);
+      ptr = buffer;
+      while (*ptr != ',')ptr++;
+      ptr++;
+      strcpy(ptr, " rax");
+      strcpy(tokenarray->tokpos, buffer);
+      Token_Count = Tokenize( tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT );
+      ParseLine( tokenarray );
+      strcpy(buffer, "mov rax,  ");
+      ptr = buffer+10;
+      //sprintf( ptr,"%#llx",dwRecInit);
+	  sprintf(ptr, "0x%" PRIx64, dwRecInit);
+      strcpy(tokenarray->tokpos, buffer);
+      Token_Count = Tokenize( tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT );
+   }
+exit:
     DebugMsg1(("InitRecordVar(%s) exit, current ofs=%" I32_SPEC "X\n", symtype->sym.name, GetCurrOffset() ));
     return( NOT_ERROR );
 }
@@ -3445,7 +3474,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 	struct asym *labelsym2;
 	struct asm_tok tok;
     struct dsym *recordsym;
-
+    
     DebugMsg1(("%u evaluate(i=%d, end=%d, flags=%X) enter [opnd1: kind=%d type=%s]\n",
                ++evallvl, *i, end, flags, opnd1->kind, opnd1->type ? opnd1->type->name : "NULL" ));
 
@@ -3542,19 +3571,9 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
                   /* if it is a RECORD don't throw an error but decorate it with an actual value v2.41*/
                     if (recordsym && recordsym->sym.typekind == TYPE_RECORD)
 					{
-						if ( InitRecordVar( opnd1, curr_operator, tokenarray, recordsym ) != ERROR )
-                          if (tokenarray[1].token == T_REG) {
-                            p=tokenarray->tokpos + 3;
-                            while (isspace(*p))p++;
-                            if (*p == 'r' || *p == 'R')
-							rc = NOT_ERROR;
-                            else goto testsize;
-                        }else 
-testsize:                 if (opnd1->llvalue > 0xffffffff){
-                          rc = ERROR;
-                          EmitErr(INITIALIZER_OUT_OF_RANGE);
-                          }
-						return( rc );
+						if ( InitRecordVar( opnd1, curr_operator, tokenarray, recordsym, NULL ) != ERROR )
+                          rc = NOT_ERROR;
+							return( rc );
                     }
                     else
 						OperErr( curr_operator, tokenarray );
