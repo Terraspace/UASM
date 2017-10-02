@@ -122,7 +122,7 @@ static void init_expr( struct expr *opnd )
 static ret_code  InitRecordVar(struct expr *opnd1, int index, struct asm_tok tokenarray[], const struct dsym *symtype )
 /****************************************************************************************************************************/
 {
-    char            *ptr;
+    char            *ptr, *ptr2, *ptr3;
     struct sfield   *f;
     int_32          nextofs;
     int             i;
@@ -134,6 +134,7 @@ static ret_code  InitRecordVar(struct expr *opnd1, int index, struct asm_tok tok
     bool            is_record_set;
     struct expr     opndx;
     char            buffer[MAX_LINE_LEN];
+    char            buffer1[MAX_LINE_LEN];
     
     /**/myassert( symtype->sym.state == SYM_TYPE && symtype->sym.typekind != TYPE_TYPEDEF );
     if ( tokenarray[index].token == T_STRING ) {
@@ -237,7 +238,7 @@ static ret_code  InitRecordVar(struct expr *opnd1, int index, struct asm_tok tok
                 }
         }
     }  /* end for */
-
+    opnd1->llvalue = dwRecInit;
     if (tokenarray[1].token == T_REG) {
       ptr=tokenarray->tokpos + 4;
       while (isspace(*ptr))ptr++;
@@ -255,34 +256,27 @@ all:
 		sprintf(ptr, "0x%" PRIx64, dwRecInit);
         strcpy(tokenarray->tokpos, buffer);
         Token_Count = Tokenize( tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT );
-#if AMD64_SUPPORT
-            opnd1->llvalue = dwRecInit;
-#else
-            opnd1->value = dwRecInit;
-#endif
-            goto exit;
+        goto exit;
   }
     else if (opnd1->llvalue < 0x100000000) 
       goto all;
-    else {
-      strcpy( buffer,tokenarray->tokpos);
-      ptr = buffer;
-      while (*ptr != ',')ptr++;
-      ptr++;
-      strcpy(ptr, " rax");
-      strcpy(tokenarray->tokpos, buffer);
-      Token_Count = Tokenize( tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT );
-      ParseLine( tokenarray );
-      strcpy(buffer, "mov rax,  ");
-      ptr = buffer+10;
-	  sprintf(ptr, "0x%" PRIx64, dwRecInit);
-      strcpy(tokenarray->tokpos, buffer);
-      Token_Count = Tokenize( tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT );
-   }
+    else 
+	{
+		strcpy(buffer, tokenarray->tokpos);
+		ptr = buffer;
+		while (*ptr != ',') ptr++;
+		ptr++;
+		sprintf(ptr, "0x%" PRIx64, dwRecInit);
+		strcpy(tokenarray->tokpos, buffer);
+		Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
+	}
 exit:
     DebugMsg1(("InitRecordVar(%s) exit, current ofs=%" I32_SPEC "X\n", symtype->sym.name, GetCurrOffset() ));
     return( NOT_ERROR );
 }
+    //push   253
+    //push   254
+    //movq  xmm1, [esp]
 
 static void TokenAssign( struct expr *opnd1, const struct expr *opnd2 )
 /*********************************************************************/

@@ -54,6 +54,13 @@
 #include "extern.h"
 #include "atofloat.h"
 
+
+#if defined(WINDOWSDDK)
+#define PRIx64       "llx"
+#else
+#include <inttypes.h>
+#endif
+
 #define ADDRSIZE( s, x ) ( ( ( x ) ^ ( s ) ) ? TRUE : FALSE )
 #define IS_ADDR32( s )  ( s->Ofssize ? ( s->prefix.adrsiz == FALSE ) : ( s->prefix.adrsiz == TRUE ))
 
@@ -3116,8 +3123,6 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 {
   int                 i;
   int                 j;
-  //int                 k = 0;
-  //int                 n = 0;
   unsigned            dirflags;
   unsigned            CurrOpnd;
   ret_code            temp;
@@ -3131,6 +3136,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
   int                alignCheck = 16;
   int                infSize = 0;
   int                oldi = 0;
+  struct dsym       *recsym = 0;
 
 #ifdef DEBUG_OUT
   char                *instr;
@@ -3319,6 +3325,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 		  return(NOT_ERROR);
 	  }
   }
+
 
   /* handle directives and (anonymous) data items */
   if (tokenarray[i].token != T_INSTRUCTION) {
@@ -4174,6 +4181,7 @@ void ProcessFile( struct asm_tok tokenarray[] )
 			strcpy(CurrSource, &CurrSource[3]);
 		do
 		{
+
 			if (PreprocessLine(CurrSource, tokenarray))
 			{
 				ParseLine(tokenarray);

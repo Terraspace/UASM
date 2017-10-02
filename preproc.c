@@ -21,6 +21,8 @@
 #include "input.h"
 #include "fastpass.h"
 #include "listing.h"
+#include "proc.h"
+#include "expreval.h"
 
 #define REMOVECOMENT 0 /* 1=remove comments from source       */
 
@@ -63,6 +65,33 @@ ret_code WriteCodeLabel( char *line, struct asm_tok tokenarray[] )
     return( NOT_ERROR );
 }
 
+/*
+	Perform evaluation of any items required before pre-processing (ie: substitution or macro expansion).
+	-> Evaluation of inline RECORD items to allow them to be handled by invoke/macros etc.
+*/
+int EvaluatePreprocessItems( struct asm_tok tokenarray[] )
+{
+	int i;
+	struct dsym *recsym;
+	struct expr opndx[1];
+
+	memset(&opndx, 0, sizeof(opndx));
+
+	/* pre parse inline records UASM v2.41 */
+	for (i = 0;i < Token_Count; i++)
+	{
+		recsym = SymSearch(tokenarray[i].string_ptr);
+		if (recsym && recsym->sym.typekind == TYPE_RECORD && CurrProc)
+		{
+
+			if (EvalOperand(&i, tokenarray, Token_Count, &opndx[0], 0) == ERROR)
+			{
+				return(EmitErr(INVALID_INSTRUCTION_OPERANDS));
+			}
+		}
+	}
+}
+
 /* PreprocessLine() is the "preprocessor".
  * 1. the line is tokenized with Tokenize(), Token_Count set
  * 2. (text) macros are expanded by ExpandLine()
@@ -72,7 +101,7 @@ int PreprocessLine( char *line, struct asm_tok tokenarray[] )
 /***********************************************************/
 {
     int i;
-
+	
     /* v2.11: GetTextLine() removed - this is now done in ProcessFile() */
 
     /* v2.08: moved here from GetTextLine() */
@@ -103,6 +132,8 @@ int PreprocessLine( char *line, struct asm_tok tokenarray[] )
     if ( Options.skip_preprocessor )
         return( Token_Count );
 #endif
+
+	EvaluatePreprocessItems( tokenarray );
 
     /* CurrIfState != BLOCK_ACTIVE && Token_Count == 1 | 3 may happen
      * if a conditional assembly directive has been detected by Tokenize().

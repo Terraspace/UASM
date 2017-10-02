@@ -224,11 +224,11 @@ static ret_code InitStructuredVar( int index, struct asm_tok tokenarray[], const
     int             old_tokencount = Token_Count;
     char            *old_stringbufferend = StringBufferEnd;
     int             lvl;
-#if AMD64_SUPPORT
+//#if AMD64_SUPPORT
     uint_64         dwRecInit;
-#else
-    uint_32         dwRecInit;
-#endif
+//#else
+ //   uint_32         dwRecInit;
+//#endif
     bool            is_record_set;
     struct expr     opndx;
     //char            line[MAX_LINE_LEN];
@@ -302,11 +302,11 @@ static ret_code InitStructuredVar( int index, struct asm_tok tokenarray[], const
                 if ( opndx.value >= dwMax )
                     EmitErr( INITIALIZER_MAGNITUDE_TOO_LARGE, f->sym.name );
             }
-#if AMD64_SUPPORT
+//#if AMD64_SUPPORT
             dwRecInit |= opndx.llvalue << f->sym.offset;
-#else
-            dwRecInit |= opndx.value << f->sym.offset;
-#endif
+//#else
+//            dwRecInit |= opndx.value << f->sym.offset;
+//#endif
 
         //} else if ( f->init_dir == NULL ) {  /* embedded struct? */
         } else if ( f->ivalue[0] == NULLC ) {  /* embedded struct? */
