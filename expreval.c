@@ -3558,17 +3558,19 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
                 rc = ERROR;
                 //if ( !opnd2.is_opattr )  /* v2.11: opnd2 was accessed before initialization */
                 if (!opnd1->is_opattr){
-                  if (opnd1->type != NULL)
-                  recordsym = SymSearch(opnd1->type->name);
-                  /* if it is a RECORD don't throw an error but decorate it with an actual value v2.41*/
-                    if (recordsym && recordsym->sym.typekind == TYPE_RECORD)
+					if (opnd1->type != NULL)
 					{
-						if ( InitRecordVar( opnd1, curr_operator, tokenarray, recordsym ) != ERROR )
-                          rc = NOT_ERROR;
-							return( rc );
-                    }
-                    else
-						OperErr( curr_operator, tokenarray );
+						recordsym = SymSearch(opnd1->type->name);
+						/* if it is a RECORD don't throw an error but decorate it with an actual value v2.41*/
+						if (recordsym && recordsym->sym.typekind == TYPE_RECORD)
+						{
+							if (InitRecordVar(opnd1, curr_operator, tokenarray, recordsym) != ERROR)
+								rc = NOT_ERROR;
+							return(rc);
+						}
+						else
+							OperErr(curr_operator, tokenarray);
+					}
                   }
                 break;
             }
