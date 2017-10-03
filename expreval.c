@@ -119,7 +119,7 @@ static void init_expr( struct expr *opnd )
 *    mov     al, COLOR<1, 7, 0, 1>         ;1 111 0 001 = F1
 *    mov     cobalt.rc, COLOR<1, 7, 0, 1>  ;1 111 0 001 = F1
 */
-static ret_code  InitRecordVar(struct expr *opnd1, int index, struct asm_tok tokenarray[], const struct dsym *symtype )
+static ret_code  InitRecordVar( struct expr *opnd1, int index, struct asm_tok tokenarray[], const struct dsym *symtype )
 /****************************************************************************************************************************/
 {
     char            *ptr, *ptr2, *ptr3;
@@ -135,7 +135,10 @@ static ret_code  InitRecordVar(struct expr *opnd1, int index, struct asm_tok tok
     struct expr     opndx;
     char            buffer[MAX_LINE_LEN];
     char            buffer1[MAX_LINE_LEN];
-    
+	int             tok_start = index - 1;
+	int             len;
+	char            *oldptr;
+
     /**/myassert( symtype->sym.state == SYM_TYPE && symtype->sym.typekind != TYPE_TYPEDEF );
     if ( tokenarray[index].token == T_STRING ) {
         if ( tokenarray[index].string_delim != '<' &&
@@ -249,12 +252,24 @@ static ret_code  InitRecordVar(struct expr *opnd1, int index, struct asm_tok tok
       else
       EmitErr(INITIALIZER_OUT_OF_RANGE);
 all:
-        strcpy( buffer,tokenarray->tokpos);
-        ptr = buffer;
-        while (*ptr != ',')ptr++;
-        ptr++;
+        strcpy(buffer,tokenarray->tokpos);
+		ptr = strstr(buffer, tokenarray[tok_start].string_ptr);
+		oldptr = ptr;
+		len = 0;
+		while (*ptr != '>')
+		{
+			ptr++;
+			len++;
+		}
+		ptr = tokenarray->tokpos + (oldptr - buffer);
+		for (i = 0; i <= len; i++)
+			*ptr++ = 0x20;
+		ptr = buffer;
 		sprintf(ptr, "0x%" PRIx64, dwRecInit);
-        strcpy(tokenarray->tokpos, buffer);
+		oldptr = tokenarray->tokpos + (oldptr - buffer);
+		len = strlen(buffer);
+		for (i = 0; i < len; i++)
+			*oldptr++ = *ptr++;
         Token_Count = Tokenize( tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT );
         goto exit;
   }
@@ -262,13 +277,14 @@ all:
       goto all;
     else 
 	{
-		strcpy(buffer, tokenarray->tokpos);
+		goto all;
+/*		strcpy(buffer, tokenarray->tokpos);
 		ptr = buffer;
 		while (*ptr != ',') ptr++;
 		ptr++;
 		sprintf(ptr, "0x%" PRIx64, dwRecInit);
 		strcpy(tokenarray->tokpos, buffer);
-		Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
+		Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);*/
 	}
 exit:
     DebugMsg1(("InitRecordVar(%s) exit, current ofs=%" I32_SPEC "X\n", symtype->sym.name, GetCurrOffset() ));
@@ -3459,7 +3475,6 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 /********************************************************************************************************************/
 {
     ret_code rc = NOT_ERROR;
-    //unsigned char c;
     char *p;
 	char clabel[100];
 	struct asym *labelsym;
