@@ -132,7 +132,7 @@ static ret_code SetDefaultOfssize( int size )
  * Win64 only:
  * - @ReservedStack (numeric)
  */
-static void SetModel( void )
+void SetModel( void )
 /**************************/
 {
     int         value;
@@ -165,13 +165,16 @@ static void SetModel( void )
     } else
         ModuleInfo.offsettype = OT_GROUP;
 
-    ModelSimSegmInit( ModuleInfo.model ); /* create segments in first pass */
-    ModelAssumeInit();
+	if (Options.output_format != OFORMAT_BIN)
+	{
+		ModelSimSegmInit(ModuleInfo.model); /* create segments in first pass */
+		ModelAssumeInit();
 
-    if ( ModuleInfo.list )
-        LstWriteSrcLine();
+		if (ModuleInfo.list)
+			LstWriteSrcLine();
 
-    RunLineQueue();
+		RunLineQueue();
+	}
 
     if ( Parse_Pass != PASS_1 )
         return;

@@ -32,6 +32,7 @@
 ****************************************************************************/
 
 #include <ctype.h>
+#include <intrin.h>
 #include "globals.h"
 #include "memalloc.h"
 #include "parser.h"
@@ -89,6 +90,26 @@ static ret_code data_item( int *, struct asm_tok[], struct asym *, uint_32, cons
 #define OutputDataBytes( x, y ) OutputBytes( x, y, NULL )
 #define OutputInterleavedDataBytes( x, y ) OutputInterleavedBytes( x, y, NULL );
 
+/* This function shifts left 128 for the RECORD */
+ void ShiftLeft (uint_64 *dstHi, uint_64 *dstLo,uint_64 num, int pos)
+  {
+  uint_64 orHi = 0;
+  uint_64 orLo = num;
+  
+    if (pos >=  0x40){
+     orHi = orLo; 
+     orLo = 0;
+     pos = pos - 0x40;
+     orHi = orHi << pos;
+    } 
+    else {
+      orLo = orLo << pos;
+      num = num >> ~pos;
+      orHi |= num;
+    } 
+    *dstHi |= orHi;
+    *dstLo |= orLo;
+  }
 
 /* initialize an array inside a structure
  * if there are no brackets, the next comma, '>' or '}' will terminate
@@ -224,8 +245,12 @@ static ret_code InitStructuredVar( int index, struct asm_tok tokenarray[], const
     int             old_tokencount = Token_Count;
     char            *old_stringbufferend = StringBufferEnd;
     int             lvl;
-//#if AMD64_SUPPORT
+    uint_64         dst128Hi;
+    uint_64         dst128Lo;
+    uint_64         dwRecIHi;
+    uint_64         dwRecILo;
     uint_64         dwRecInit;
+    
 //#else
  //   uint_32         dwRecInit;
 //#endif
@@ -261,9 +286,11 @@ static ret_code InitStructuredVar( int index, struct asm_tok tokenarray[], const
     }
     if ( symtype->sym.typekind == TYPE_RECORD ) {
         dwRecInit = 0;
+        dst128Hi = 0; /* clear Hi 64 bit for the 128 bit RECORD */
+        dst128Lo = 0; /* clear Lo 64 bit for the 128 bit RECORD */
         is_record_set = FALSE;
     }
-
+    //__debugbreak();
     /* scan the STRUCT/UNION/RECORD's members */
     for( f = symtype->e.structinfo->head; f != NULL; f = f->next ) {
 
@@ -302,11 +329,15 @@ static ret_code InitStructuredVar( int index, struct asm_tok tokenarray[], const
                 if ( opndx.value >= dwMax )
                     EmitErr( INITIALIZER_MAGNITUDE_TOO_LARGE, f->sym.name );
             }
-//#if AMD64_SUPPORT
-            dwRecInit |= opndx.llvalue << f->sym.offset;
-//#else
-//            dwRecInit |= opndx.value << f->sym.offset;
-//#endif
+            if (symtype->sym.mem_type == MT_OWORD){
+                dwRecIHi = 0;  /* clear Hi 64 bit for the 128 bit RECORD */
+                dwRecILo = 0;  /* clear Lo 64 bit for the 128 bit RECORD */
+                ShiftLeft(&dwRecIHi,&dwRecILo,opndx.llvalue,f->sym.offset);
+                dst128Hi |= dwRecIHi; /* OR Hi 64 bit for the 128 bit RECORD */
+                dst128Lo |= dwRecILo; /* clear Lo 64 bit for the 128 bit RECORD */
+              }
+            else
+               dwRecInit |= opndx.llvalue << f->sym.offset;
 
         //} else if ( f->init_dir == NULL ) {  /* embedded struct? */
         } else if ( f->ivalue[0] == NULLC ) {  /* embedded struct? */
@@ -404,11 +435,19 @@ static ret_code InitStructuredVar( int index, struct asm_tok tokenarray[], const
         case MT_WORD: no_of_bytes = 2; break;
 #if AMD64_SUPPORT
         case MT_QWORD: no_of_bytes = 8; break;
+        case MT_OWORD: no_of_bytes = 16; break;
 #endif
         default: no_of_bytes = 4;
         }
-        if ( is_record_set )
-            OutputDataBytes( (uint_8 *)&dwRecInit, no_of_bytes );
+        if (is_record_set){
+          if (symtype->sym.mem_type == MT_OWORD){
+            /* output 128 bit data for RECORD */
+            OutputDataBytes((uint_8 *)&dst128Lo, no_of_bytes / 2);
+            OutputDataBytes((uint_8 *)&dst128Hi, no_of_bytes / 2);
+            }
+          else
+              OutputDataBytes((uint_8 *)&dwRecInit, no_of_bytes);
+          }
         else
             SetCurrOffset( CurrSeg, no_of_bytes, TRUE, TRUE );
     }

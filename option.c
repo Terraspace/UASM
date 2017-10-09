@@ -22,6 +22,8 @@
 #include "equate.h"
 #endif
 
+#include "cpumodel.h"
+
 /* prototypes */
 extern struct asym          *sym_Interface;
 
@@ -998,6 +1000,7 @@ OPTFUNC(SetWin64)
 	else
 	{
 		ModuleInfo.frame_auto = 1; /* frame auto must also be implied for all stackbase rsp options */
+		ModuleInfo.win64_flags = opndx.llvalue;
 		ModuleInfo.win64_flags |= W64F_AUTOSTACKSP;
 	}
   } 
@@ -1005,7 +1008,27 @@ OPTFUNC(SetWin64)
   {
 	return( EmitError( CONSTANT_EXPECTED ) );
   }
+  
   ModuleInfo.win64_flags = opndx.llvalue;
+
+  if (Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_64BIT)
+  {
+	  Options.langtype = LANG_SYSVCALL;
+	  ModuleInfo.langtype = LANG_SYSVCALL;
+  }
+  else
+  {
+	  Options.langtype = LANG_FASTCALL;
+	  ModuleInfo.langtype = LANG_FASTCALL;
+	  ModuleInfo.fctype = FCT_WIN64;
+  }
+
+  if (ModuleInfo.model == MODEL_NONE)
+  {
+	  ModuleInfo.model = MODEL_FLAT;
+	  SetModel();
+  }
+
     *pi = i;
     return( NOT_ERROR );
 }

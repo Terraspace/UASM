@@ -32,7 +32,7 @@
 //#if AMD64_SUPPORT
 //#define MAXRECBITS ( ModuleInfo.Ofssize == USE64 ? 64 : 32 )
 //#else
-#define MAXRECBITS 64
+#define MAXRECBITS 128
 //#endif
 
 struct dsym *CurrStruct;
@@ -1274,17 +1274,18 @@ ret_code RecordDirective( int i, struct asm_tok tokenarray[] )
     /* now calc size in bytes and set the bit positions */
 
     if ( cntBits > 16 ) {
-//#if AMD64_SUPPORT
+        if ( cntBits > 64 ) {
+            newr->sym.total_size = 128 ;
+            newr->sym.mem_type = MT_OWORD;
+        } else 
+
         if ( cntBits > 32 ) {
             newr->sym.total_size = sizeof( uint_64 );
             newr->sym.mem_type = MT_QWORD;
         } else {
-//#endif
             newr->sym.total_size = sizeof( uint_32 );
             newr->sym.mem_type = MT_DWORD;
-//#if AMD64_SUPPORT
         }
-//#endif
     } else if ( cntBits > 8 ) {
         newr->sym.total_size = sizeof( uint_16 );
         newr->sym.mem_type = MT_WORD;

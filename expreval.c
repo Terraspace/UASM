@@ -75,6 +75,7 @@ extern uint_32          StackAdj;
 static int evallvl = 0;
 #endif
 extern uint_32          GetCurrOffset( void );
+extern void ShiftLeft (uint_64 *dstHi, uint_64 *dstLo,uint_64 num, int pos);
 /* the following static variables should be moved to ModuleInfo. */
 static struct asym *thissym; /* helper symbol for THIS operator */
 static struct asym *nullstruct; /* used for T_DOT if second op is a forward ref */
@@ -127,6 +128,10 @@ static ret_code  InitRecordVar( struct expr *opnd1, int index, struct asm_tok to
     int_32          nextofs;
     int             i;
 #if AMD64_SUPPORT
+    uint_64         dst128Hi;
+    uint_64         dst128Lo;
+    uint_64         dwRecIHi;
+    uint_64         dwRecILo;
     uint_64         dwRecInit;
 #else
     uint_32         dwRecInit;
@@ -155,6 +160,8 @@ static ret_code  InitRecordVar( struct expr *opnd1, int index, struct asm_tok to
     } 
     if ( symtype->sym.typekind == TYPE_RECORD ) {
         dwRecInit = 0;
+        dst128Hi = 0; /* clear Hi 64 bit for the 128 bit RECORD */
+        dst128Lo = 0; /* clear Lo 64 bit for the 128 bit RECORD */
         is_record_set = FALSE;
     }
 
@@ -196,7 +203,15 @@ static ret_code  InitRecordVar( struct expr *opnd1, int index, struct asm_tok to
                     EmitErr( INITIALIZER_MAGNITUDE_TOO_LARGE, f->sym.name );
             }
 #if AMD64_SUPPORT
-            dwRecInit |= opndx.llvalue << f->sym.offset;
+            if (symtype->sym.mem_type == MT_OWORD){
+                dwRecIHi = 0;  /* clear Hi 64 bit for the 128 bit RECORD */
+                dwRecILo = 0;  /* clear Lo 64 bit for the 128 bit RECORD */
+                ShiftLeft(&dwRecIHi,&dwRecILo,opndx.llvalue,f->sym.offset);
+                dst128Hi |= dwRecIHi; /* OR Hi 64 bit for the 128 bit RECORD */
+                dst128Lo |= dwRecILo; /* clear Lo 64 bit for the 128 bit RECORD */
+              }
+            else
+               dwRecInit |= opndx.llvalue << f->sym.offset;
 #else
             dwRecInit |= opndx.value << f->sym.offset;
 #endif
@@ -252,27 +267,99 @@ static ret_code  InitRecordVar( struct expr *opnd1, int index, struct asm_tok to
       else
       EmitErr(INITIALIZER_OUT_OF_RANGE);
 all:
-        strcpy(buffer,tokenarray->tokpos);
-		ptr = strstr(buffer, tokenarray[tok_start].string_ptr);
-		oldptr = ptr;
-		len = 0;
-		while (*ptr != '>')
-		{
-			ptr++;
-			len++;
-		}
-		ptr = tokenarray->tokpos + (oldptr - buffer);
-		for (i = 0; i <= len; i++)
-			*ptr++ = 0x20;
-		ptr = buffer;
-		sprintf(ptr, "0x%" PRIx64, dwRecInit);
-		oldptr = tokenarray->tokpos + (oldptr - buffer);
-		len = strlen(buffer);
-		for (i = 0; i < len; i++)
-			*oldptr++ = *ptr++;
-        Token_Count = Tokenize( tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT );
+      /* mov dword ptr rubi.rc, LOW32(dst128Lo) 
+      *  mov dword ptr rubi.rc+4 ,HIGH32(dst128Lo)
+      *  mov dword ptr rubi.rc+8 , LOW32(dst128Hi)
+      *  mov dword ptr rubi.rc+8+4,HIGH32(dst128Hi) */
+     if (0 == strcmpi(tokenarray->string_ptr, "mov128")){
+         /* first DWORD */
+          strcpy( buffer,tokenarray->tokpos+6);
+          ptr = buffer;
+          while (*ptr != ',')ptr++;
+          *ptr = '\0';
+          strcpy(buffer1, "mov dword ptr  " );
+          ptr = buffer1+14;
+          strcpy(ptr, buffer);                  /* mov dword ptr rubi.rc */
+          ptr += strlen(buffer);
+          strcpy(ptr, ", LOW32(");              /* mov dword ptr rubi.rc, LOW32( */
+          ptr += 8;
+          sprintf(ptr, "0x%" PRIx64, dst128Lo); /* mov dword ptr rubi.rc, LOW32(dst128Lo */
+          while (*ptr)ptr++;
+          *ptr = ')';
+          ptr++;
+          *ptr = '\0';
+          strcpy(tokenarray->tokpos, buffer1);
+          Token_Count = Tokenize( tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT );
+          ParseLine(tokenarray);
+          /* second DWORD */
+          strcpy(buffer1, "mov dword ptr  " );
+          ptr = buffer1+14;
+          strcpy(ptr, buffer);                  /* mov dword ptr rubi.rc */
+          ptr += strlen(buffer);
+          strcpy(ptr, "+4 ,HIGH32(");          /* mov dword ptr rubi.rc, HIGH32( */
+          ptr += 11;
+          sprintf(ptr, "0x%" PRIx64, dst128Lo); /* mov dword ptr rubi.rc, LOW32(dst128Lo */
+          while (*ptr)ptr++;
+          *ptr = ')';
+          ptr++;
+          *ptr = '\0';
+          strcpy(tokenarray->tokpos, buffer1);
+          Token_Count = Tokenize( tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT );
+          ParseLine(tokenarray);
+          /* third DWORD */
+          strcpy(buffer1, "mov dword ptr  " );
+          ptr = buffer1+14;
+          strcpy(ptr, buffer);                  /* mov dword ptr rubi.rc */
+          ptr += strlen(buffer);
+          strcpy(ptr, "+8, LOW32(");          /* mov dword ptr rubi.rc, LOW32( */
+          ptr += 10;
+          sprintf(ptr, "0x%" PRIx64, dst128Hi); /* mov dword ptr rubi.rc, LOW32(dst128Hi */
+          while (*ptr)ptr++;
+          *ptr = ')';
+          ptr++;
+          *ptr = '\0';
+          strcpy(tokenarray->tokpos, buffer1);
+          Token_Count = Tokenize( tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT );
+          ParseLine(tokenarray);
+          /* forth DWORD */
+          strcpy(buffer1, "mov dword ptr  " );
+          ptr = buffer1+14;
+          strcpy(ptr, buffer);                  /* mov dword ptr rubi.rc */
+          ptr += strlen(buffer);
+          strcpy(ptr, "+8+4, HIGH32(");          /* mov dword ptr rubi.rc, HIGH32( */
+          ptr += 13;
+          sprintf(ptr, "0x%" PRIx64, dst128Hi); /* mov dword ptr rubi.rc, LOW32(dst128Lo */
+          while (*ptr)ptr++;
+          *ptr = ')';
+          ptr++;
+          *ptr = '\0';
+          strcpy(tokenarray->tokpos, buffer1);
+          Token_Count = Tokenize( tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT );
         goto exit;
-  }
+       }
+     else{
+       strcpy(buffer, tokenarray->tokpos);
+       ptr = strstr(buffer, tokenarray[tok_start].string_ptr);
+       oldptr = ptr;
+       len = 0;
+       while (*ptr != '>')
+         {
+         ptr++;
+         len++;
+         }
+       ptr = tokenarray->tokpos + (oldptr - buffer);
+       for (i = 0; i <= len; i++)
+         *ptr++ = 0x20;
+       ptr = buffer;
+       sprintf(ptr, "0x%" PRIx64, dwRecInit);
+       oldptr = tokenarray->tokpos + (oldptr - buffer);
+       len = strlen(buffer);
+       for (i = 0; i < len; i++)
+         *oldptr++ = *ptr++;
+       Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
+       goto exit;
+       }
+    }
     else if (opnd1->llvalue < 0x100000000) 
       goto all;
     else 
@@ -1731,6 +1818,35 @@ static ret_code seg_op( int oper, struct expr *opnd1, struct expr *opnd2, struct
         opnd1->value = 0;    /* v2.07: added ( SEG <member> ) */
     opnd1->mem_type = MT_EMPTY; /* v2.04a */
     return( NOT_ERROR );
+}
+
+/*
+ handles FRAMEOFS operator.
+*/
+static ret_code frameofs_op( int oper, struct expr *opnd1, struct expr *opnd2, struct asym *sym, char *name )
+{
+	if ((sym && sym->state == SYM_GRP) || opnd2->instr == T_SEG) {
+		return(invalid_operand(opnd2, GetResWName(oper, NULL), name));
+	}
+
+	/* if operand is a constant value, error */
+	if (opnd2->kind == EXPR_CONST) {
+		return(invalid_operand(opnd2, GetResWName(oper, NULL), name));
+	}
+
+	/* offset operator accepts types, but returns always 0 */
+	if (opnd2->is_type)
+		opnd2->value = 0;
+
+	TokenAssign(opnd1, opnd2);
+	opnd1->instr = oper;
+	opnd1->base_reg = NULL;
+	opnd1->override = NULL;
+	opnd1->idx_reg = NULL;
+	opnd1->mem_type = MT_EMPTY;
+	opnd1->kind = EXPR_CONST;
+
+	return(NOT_ERROR);
 }
 
 /* handles offset operators:

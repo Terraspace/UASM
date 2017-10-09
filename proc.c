@@ -1322,7 +1322,7 @@ ret_code ParseProc( struct dsym *proc, int i, struct asm_tok tokenarray[], bool 
      * EXTERN[DEF] <langtype> <name> PROTO ...
      * ( see CreateProto() in extern.c )
      */
-    //langtype = ModuleInfo.langtype; /* set the default value */
+    langtype = ModuleInfo.langtype; /* set the default value */
     GetLangType( &i, tokenarray, &langtype ); /* optionally overwrite the value */
     
 	/* has language changed? */
