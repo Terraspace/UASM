@@ -4390,6 +4390,16 @@ void write_prologue( struct asm_tok tokenarray[] )
 		}
     }
 
+	/* UASM 2.42 - Any proc with no prologue will have no stack frame, so set fpo and force use of esp/rsp */
+	if (ModuleInfo.prologuemode == PEM_NONE)
+	{
+		CurrProc->e.procinfo->fpo = TRUE;
+		if (ModuleInfo.Ofssize == USE64)
+			CurrProc->e.procinfo->basereg = T_RSP;
+		else
+			CurrProc->e.procinfo->basereg = T_ESP;
+	}
+
 	if (ModuleInfo.Ofssize == USE64)
 	{
 		if (ModuleInfo.basereg[USE64] == T_RSP)

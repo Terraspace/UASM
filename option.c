@@ -537,11 +537,16 @@ OPTFUNC( SetPrologue )
         LclFree( ModuleInfo.proc_prologue );
         ModuleInfo.proc_prologue = NULL;
     }
-    if ( 0 == _stricmp( tokenarray[i].string_ptr, "NONE" ) ) {
+    if ( 0 == _stricmp( tokenarray[i].string_ptr, "NONE" ) ) 
+	{
         ModuleInfo.prologuemode = PEM_NONE;
-    } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "PROLOGUEDEF" ) ) {
+    } 
+	else if ( 0 == _stricmp( tokenarray[i].string_ptr, "PROLOGUEDEF" ) ) 
+	{
         ModuleInfo.prologuemode = PEM_DEFAULT;
-    } else {
+    } 
+	else 
+	{
         ModuleInfo.prologuemode = PEM_MACRO;
         ModuleInfo.proc_prologue = LclAlloc( strlen( tokenarray[i].string_ptr ) + 1);
         strcpy( ModuleInfo.proc_prologue, tokenarray[i].string_ptr );

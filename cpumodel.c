@@ -382,7 +382,9 @@ ret_code SetCPU( enum cpu_info newcpu )
     DebugMsg1(("SetCPU(%X) enter\n", newcpu ));
     if ( newcpu == P_86 || ( newcpu & P_CPU_MASK ) ) {
         /* reset CPU and EXT bits */
-        ModuleInfo.curr_cpu &= ~( P_CPU_MASK | P_EXT_MASK | P_PM );
+        //ModuleInfo.curr_cpu &= ~( P_CPU_MASK | P_EXT_MASK | P_PM );
+		// UASM 2.42 don't reset ext bits, to allow .xmm to preceed cpu type.
+		ModuleInfo.curr_cpu &= ~(P_CPU_MASK | P_PM);
 
         /* set CPU bits */
         ModuleInfo.curr_cpu |= newcpu & ( P_CPU_MASK | P_PM );

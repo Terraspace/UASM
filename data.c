@@ -32,7 +32,6 @@
 ****************************************************************************/
 
 #include <ctype.h>
-#include <intrin.h>
 #include "globals.h"
 #include "memalloc.h"
 #include "parser.h"

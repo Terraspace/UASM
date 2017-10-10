@@ -30,21 +30,26 @@
 #include "orgfixup.h"
 #include "macrolib.h"
 
-#define MACRO_COUNT64 53
+#define MACRO_COUNT64 58
 #define MACRO_COUNT32 22
 
-/* MACRO names */
+/* MACRO names  */
 char *macName64[] = {
-  "MOV64", "MOV128", "MEMALLOC", "MEMFREE", "CSTR", "WSTR", "FP4", "FP8", "FP10", "LOADSS", "LOADSD", "LOADPS", "MEMALIGN", "RV", "REPARG", "EXPAND_PREFIX", "_ARRAY", "_DELETEARRAY", "OINTERFACE", "ENDOINTERFACE", "CVIRTUAL", "CLASS", "ENDCLASS", "CMETHOD", "METHOD", "STATICMETHOD", "ENDMETHOD", "_DECLARE", "_STATICREF", "_ACQUIRE", "_RELEASE", "_NEW", "_RBXNEW", "_ITEM", "_ITEMR", "_INVOKE", "_I", "_STATIC", "_DELETE", "_VINVOKE", "_V", "_VD", "_VW", "_VB", "_VF", "CSTATIC", "LOADMSS", "LOADMSD", "UINVOKE", "ASFLOAT", "ASDOUBLE", "R4P", "R8P"
+  "MOV64", "MOV128", "MOVXMMR128","SLXMMR","SHIFTLEFT128","SRXMMR","SHIFTRIGHT128","MEMALLOC", "MEMFREE", "CSTR", "WSTR", "FP4", "FP8", "FP10", "LOADSS", "LOADSD", "LOADPS", "MEMALIGN", "RV", "REPARG", "EXPAND_PREFIX", "_ARRAY", "_DELETEARRAY", "OINTERFACE", "ENDOINTERFACE", "CVIRTUAL", "CLASS", "ENDCLASS", "CMETHOD", "METHOD", "STATICMETHOD", "ENDMETHOD", "_DECLARE", "_STATICREF", "_ACQUIRE", "_RELEASE", "_NEW", "_RBXNEW", "_ITEM", "_ITEMR", "_INVOKE", "_I", "_STATIC", "_DELETE", "_VINVOKE", "_V", "_VD", "_VW", "_VB", "_VF", "CSTATIC", "LOADMSS", "LOADMSD", "UINVOKE", "ASFLOAT", "ASDOUBLE", "R4P", "R8P"
 };
 char *macName32[] = {
-  "MOV64", "MOV128", "MEMALLOC", "MEMFREE", "CSTR", "WSTR", "FP4", "FP8", "FP10", "LOADSS", "LOADPS", "MEMALIGN", "RV", "REPARG", "EXPAND_PREFIX", "LOADMSS", "LOADMSD", "UINVOKE", "ASFLOAT", "ASDOUBLE", "R4P", "R8P"
+  "MOV64","MOV128","MEMALLOC","MEMFREE","CSTR","WSTR","FP4","FP8","FP10","LOADSS","LOADPS","MEMALIGN", "RV", "REPARG", "EXPAND_PREFIX", "LOADMSS", "LOADMSD", "UINVOKE", "ASFLOAT", "ASDOUBLE", "R4P", "R8P"
 };
 
 /* MACRO definitions */
 char *macDef64[] = {
 	"MOV64 MACRO dst:REQ, imm:REQ",
     "MOV128 MACRO dst:REQ, immLo:REQ,immHi:REQ",
+    "MOVXMMR128 MACRO dst:REQ, immLo:REQ,immHi:REQ", 
+    "SLXMMR MACRO xmm128:REQ,cnt:REQ",  
+    "SHIFTLEFT128 MACRO mmr:REQ,cnt:REQ",  
+    "SRXMMR MACRO xmm128:REQ,cnt:REQ",
+    "SHIFTRIGHT128 MACRO mmr:REQ,cnt:REQ",
 	"MEMALLOC macro aSize:REQ",
 	"MEMFREE macro memPtr:REQ",
 	"CSTR macro Text:VARARG",
@@ -142,6 +147,12 @@ void CreateMacroLibCases(void)
 		AddLineQueue("Define EQU DEFINE");
 		AddLineQueue("mov64 EQU MOV64");
         AddLineQueue("mov128 EQU MOV128");
+        AddLineQueue("movxmmr128 EQU MOVXMMR128");
+        AddLineQueue("slxmmr EQU SLXMMR");
+        AddLineQueue("shiftleft128 EQU SHIFTLEFT128");
+        AddLineQueue("srxmmr EQU SRXMMR");
+        AddLineQueue("shiftright128 EQU SHIFTRIGHT128");
+
 	}
 }
 
@@ -156,12 +167,17 @@ void InitAutoMacros64(void)
 	uint_32 j = 0;
 	//uint_32 k = 0;
 	uint_32 start_pos = 0;
-	char  *srcLines[128]; // NB: 128 is the max number of lines of macro code per macro.
+	char  *srcLines[128]; // NB: 128 is the max number of lines of macro code per macro.  37, 33, 37, 33,
 
-	uint_32 macroLen[] = { 3, 3, 7, 6, 6, 6, 7, 7, 7, 8, 8, 10, 3, 7, 11, 19, 10, 2, 7, 2, 10, 11, 19, 5, 39, 39, 12, 5, 2, 3, 3, 26, 27, 2, 2, 11, 8, 8, 9, 22, 23, 23, 23, 23, 23, 5, 10, 10, 35, 1, 1, 1, 1 }; // Count of individual lines of macro-body code.
+	uint_32 macroLen[] = { 3, 3, 8, 37, 33, 37, 33, 7, 6, 6, 6, 7, 7, 7, 8, 8, 10, 3, 7, 11, 19, 10, 2, 7, 2, 10, 11, 19, 5, 39, 39, 12, 5, 2, 3, 3, 26, 27, 2, 2, 11, 8, 8, 9, 22, 23, 23, 23, 23, 23, 5, 10, 10, 35, 1, 1, 1, 1 }; // Count of individual lines of macro-body code.
 	char *macCode[] = {
 		"mov dword ptr dst, LOW32(imm)", "mov dword ptr dst + 4, HIGH32(imm)", "ENDM", NULL,
-        "MOV64 dst, immLo", "MOV64 dst + 8, immHi", "ENDM", NULL,
+        "MOV64 dst, immHi", "MOV64 dst + 8, immLo", "ENDM", NULL,
+        "LOCAL savexmm",".data?","savexmm OWORD ?",".code","MOV64 savexmm, immHi","MOV64 savexmm + 8, immLo","vmovups dst,savexmm","ENDM", NULL,
+        "LOCAL mmr","LOCAL saverax","LOCAL savercx","LOCAL saversi",".data?","saverax QWORD ?","savercx QWORD ?","saversi QWORD ?","mmr OWORD ?",".code","mov saverax,rax","mov savercx,rcx","mov saversi,rsi","mov ecx, cnt","and ecx,7fh","vmovups mmr, xmm128","lea  rsi,mmr",".if (cl >=  0x40)","mov rax, qword ptr[rsi+8]","mov qword ptr[rsi],rax","sub ecx, 64","shr qword ptr[rsi], cl ","xor eax,eax","mov qword ptr[rsi+8],rax",".else ","mov rax,qword ptr[rsi+8]","shr qword ptr[rsi],cl","shr qword ptr[rsi+8],cl","neg cl","shl rax, cl","or qword ptr[rsi],rax",".endif ","mov rax,saverax","mov rcx,savercx","mov rsi,saversi","vmovups xmm128,mmr ","ENDM", NULL,
+        "LOCAL saverax","LOCAL savercx","LOCAL saversi",".data?","saverax QWORD ?","savercx QWORD ?","saversi QWORD ?",".code","mov saverax,rax","mov savercx,rcx","mov saversi,rsi","mov  rsi,mmr","mov ecx, cnt","and ecx,7fh",".if (cl >=  0x40)","mov rax, qword ptr[rsi+8]","mov qword ptr[rsi],rax","sub ecx, 64","shr qword ptr[rsi], cl ","xor eax,eax","mov qword ptr[rsi+8],rax",".else ","mov rax,qword ptr[rsi+8]","shr qword ptr[rsi],cl","shr qword ptr[rsi+8],cl","neg cl","shl rax, cl","or qword ptr[rsi],rax",".endif ","mov rax,saverax","mov rcx,savercx","mov rcx,saversi","ENDM", NULL,
+        "LOCAL mmr","LOCAL saverax","LOCAL savercx","LOCAL saversi",".data?","saverax QWORD ?","savercx QWORD ?","saversi QWORD ?","mmr OWORD ?",".code","mov saverax,rax","mov savercx,rcx","mov saversi,rsi","mov ecx, cnt","and ecx,7fh","vmovups mmr, xmm128","lea  rsi,mmr",".if (cl >=  0x40)","mov rax, qword ptr[rsi]","mov qword ptr[rsi+8],rax","sub ecx, 64","shl qword ptr[rsi+8], cl","xor eax,eax","mov qword ptr[rsi],rax",".else ","mov rax,qword ptr[rsi]","shl qword ptr[rsi],cl","shl qword ptr[rsi+8],cl","neg cl","shr rax, cl","or qword ptr[rsi+8],rax",".endif ","mov rax,saverax","mov rcx,savercx","mov rsi,saversi","vmovups xmm128,mmr ","ENDM",NULL,
+        "LOCAL saverax","LOCAL savercx","LOCAL saversi",".data?","saverax QWORD ?","savercx QWORD ?","saversi QWORD ?",".code","mov saverax,rax","mov savercx,rcx","mov saversi,rsi","mov  rsi,mmr","mov ecx, cnt","and ecx,7fh",".if (cl >=  0x40)","mov rax, qword ptr[rsi]","mov qword ptr[rsi+8],rax","sub ecx, 64","shl qword ptr[rsi+8], cl ","xor eax,eax","mov qword ptr[rsi],rax",".else ","mov rax,qword ptr[rsi]","shl qword ptr[rsi],cl","shl qword ptr[rsi+8],cl","neg cl","shr rax, cl","or qword ptr[rsi+8],rax",".endif ","mov rax,saverax","mov rcx,savercx","mov rsi,saversi","ENDM",NULL,
 		"IF @Platform EQ 1", "INVOKE HeapAlloc,RV(GetProcessHeap),0,aSize", "ELSE", "INVOKE malloc,aSize", "ENDIF", "MEMALIGN rax, 16", "endm", NULL,
 		"IF @Platform EQ 1", "INVOKE HeapFree,RV(GetProcessHeap),0,memPtr", "ELSE", "INVOKE free,memPtr", "ENDIF", "endm", NULL,
 		"local szText", ".data", "szText db Text,0", ".code", "exitm <offset szText>", "endm", NULL,
@@ -242,8 +258,8 @@ void InitAutoMacros32(void)
 	uint_32 macroLen[] = { 3, 3, 7, 6, 6, 6, 7, 7, 7, 8, 10, 3, 7, 11, 19, 10, 10, 35, 1, 1, 1, 1 }; // Count of individual lines of macro-body code.
 	char *macCode[] = {
 		"mov dword ptr dst, LOW32(imm)", "mov dword ptr dst + 4, HIGH32(imm)", "ENDM", NULL,
-        "MOV64 dst, immLo", "MOV64 dst + 8, immHi", "ENDM", NULL,
-		"IF @Platform EQ 1", "INVOKE HeapAlloc,RV(GetProcessHeap),0,aSize", "ELSE", "INVOKE malloc,aSize", "ENDIF", "MEMALIGN rax, 16", "endm", NULL,
+        "MOV64 dst, immHi", "MOV64 dst + 8, immLo", "ENDM", NULL,
+		"IF @Platform EQ 1", "INVOKE HeapAlloc,RV(GetProcessHeap),0,aSize", "ELSE", "INVOKE malloc,aSize", "ENDIF", "MEMALIGN eax, 16", "endm", NULL,
 		"IF @Platform EQ 1", "INVOKE HeapFree,RV(GetProcessHeap),0,memPtr", "ELSE", "INVOKE free,memPtr", "ENDIF", "endm", NULL,
 		"local szText", ".data", "szText db Text,0", ".code", "exitm <offset szText>", "endm", NULL,
 		"local szText", ".data", "szText dw Text,0", ".code", "exitm <offset szText>", "endm", NULL,

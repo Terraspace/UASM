@@ -1043,6 +1043,16 @@ ret_code TypedefDirective( int i, struct asm_tok tokenarray[] )
     ti.ptr_memtype = MT_EMPTY;
     ti.symtype = NULL;
     ti.Ofssize = ModuleInfo.Ofssize;
+	
+	// Force USE32 default offset size. Uasm 2.42 
+	// This can happen if the typedef occurs before any cpu mode/model is set.
+	if (ti.Ofssize == 0 && Options.output_format != OFORMAT_OMF)
+	{
+		if (Options.sub_format == SFORMAT_64BIT)
+			ti.Ofssize = USE64;
+		else
+			ti.Ofssize = USE32;
+	}
 
     /* "empty" type is ok for TYPEDEF */
     if ( tokenarray[i].token == T_FINAL || tokenarray[i].token == T_COMMA )
