@@ -3688,7 +3688,8 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
                 DebugMsg(("%u evaluate: unexpected token at idx=%u, token=%X >%s<\n", evallvl, curr_operator, tokenarray[curr_operator].token, tokenarray[curr_operator].tokpos ));
                 rc = ERROR;
                 //if ( !opnd2.is_opattr )  /* v2.11: opnd2 was accessed before initialization */
-                if (!opnd1->is_opattr){
+                if (!opnd1->is_opattr)
+				{
 					if (opnd1->type != NULL)
 					{
 						recordsym = SymSearch(opnd1->type->name);
@@ -3702,7 +3703,9 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 						else
 							OperErr(curr_operator, tokenarray);
 					}
-                  }
+					else
+						OperErr(curr_operator, tokenarray);
+                }
                 break;
             }
         }
