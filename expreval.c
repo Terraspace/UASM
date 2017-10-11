@@ -271,7 +271,7 @@ all:
       *  mov dword ptr rubi.rc+4 ,HIGH32(dst128Lo)
       *  mov dword ptr rubi.rc+8 , LOW32(dst128Hi)
       *  mov dword ptr rubi.rc+8+4,HIGH32(dst128Hi) */
-     if (0 == strcmpi(tokenarray->string_ptr, "mov128")){
+     if (0 == _stricmp(tokenarray->string_ptr, "mov128")){
          /* first DWORD */
           strcpy( buffer,tokenarray->tokpos+6);
           ptr = buffer;
