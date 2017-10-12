@@ -3100,6 +3100,8 @@ static int ParamIsString(char *pStr, int param, struct dsym* proc) {
 
 	for (i = 0; i < param-1; i++)
 	{
+		if (p->nextparam == NULL)
+			break;
 		p = p->nextparam;
 	}
 	if (p && p->sym.mem_type != MT_PTR && !p->sym.is_vararg)
