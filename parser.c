@@ -719,11 +719,13 @@ static ret_code set_rm_sib(struct code_info *CodeInfo, unsigned CurrOpnd, char s
         } else {
             rm_field = RM_D32; /* D32=101b */
 #if AMD64_SUPPORT
-            /* v2.03: the non-RIP encoding for 64bit uses a redundant SIB mode (base=none, index=none) */
-            /* v2.11: always use 64-bit non-RIP addressing if no fixup has been created. */
-            //if ( CodeInfo->Ofssize == USE64 && CodeInfo->prefix.RegOverride != EMPTY && SegOverride != &ModuleInfo.flat_grp->sym ) {
-            if ( CodeInfo->Ofssize == USE64 && CodeInfo->opnd[CurrOpnd].InsFixup == NULL ) {
-                DebugMsg1(( "set_rm_sib: 64-bit, no fixup, data64=%" I64_SPEC "X\n", CodeInfo->opnd[CurrOpnd].data64 ));
+             /* v2.03: the non-RIP encoding for 64bit uses a redundant SIB
+             * mode (base=none, index=none) */
+             /* v2.11: always use 64-bit non-RIP addressing if no fixup has been created. */ 
+            /* reverted back on fonolite's requeast,  v2.42 */
+            if ( CodeInfo->Ofssize == USE64 && CodeInfo->prefix.RegOverride != EMPTY &&
+                SegOverride != &ModuleInfo.flat_grp->sym ) {
+                DebugMsg1(( "set_rm_sib: 64-bit non-RIP direct addressing: SegOverride=%X, flat=%X\n", SegOverride, ModuleInfo.flat_grp ));
                 rm_field = RM_SIB;
                 CodeInfo->sib = 0x25; /* IIIBBB, base=101b, index=100b */
             }
