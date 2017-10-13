@@ -3288,7 +3288,12 @@ static void check_proc_fpo(struct proc_info *info)
 	int usedParams = 0;
 	int usedLocals = 0;
 
-	
+	if (info->forceframe == TRUE)
+	{
+		info->fpo = FALSE;
+		return;
+	}
+
 	if ( ModuleInfo.basereg[USE64] == T_RSP )
 	{
 		info->fpo = TRUE;
@@ -4371,6 +4376,9 @@ static void SetLocalOffsets(struct proc_info *info)
 void write_prologue( struct asm_tok tokenarray[] )
 /************************************************/
 {
+	struct dsym *curr;
+	int		align = CurrWordSize;
+
     /* reset @ProcStatus flag */
     ProcStatus &= ~PRST_PROLOGUE_NOT_DONE;
 	
@@ -4391,13 +4399,21 @@ void write_prologue( struct asm_tok tokenarray[] )
     }
 
 	/* UASM 2.42 - Any proc with no prologue will have no stack frame, so set fpo and force use of esp/rsp */
-	if (ModuleInfo.prologuemode == PEM_NONE)
+	if (ModuleInfo.prologuemode == PEM_NONE && CurrProc->e.procinfo->forceframe == FALSE)
 	{
 		CurrProc->e.procinfo->fpo = TRUE;
+
 		if (ModuleInfo.Ofssize == USE64)
 			CurrProc->e.procinfo->basereg = T_RSP;
 		else
 			CurrProc->e.procinfo->basereg = T_ESP;
+
+		if (ModuleInfo.Ofssize == USE64 && CurrProc->e.procinfo->localsize > 0)
+			AddLineQueueX("sub rsp,%d", CurrProc->e.procinfo->localsize);
+		else if (CurrProc->e.procinfo->localsize > 0)
+			AddLineQueueX("sub esp,%d", CurrProc->e.procinfo->localsize);
+		
+		RunLineQueue();
 	}
 
 	if (ModuleInfo.Ofssize == USE64)
@@ -4746,11 +4762,23 @@ ret_code RetInstr( int i, struct asm_tok tokenarray[], int count )
 
     info = CurrProc->e.procinfo;
 
+	/* UASM 2.42 - Any proc with no prologue will have no stack frame, so set fpo and force use of esp/rsp */
+	if (ModuleInfo.epiloguemode == PEM_NONE && CurrProc->e.procinfo->forceframe == FALSE)
+	{
+		if (ModuleInfo.Ofssize == USE64 && CurrProc->e.procinfo->localsize > 0)
+			AddLineQueueX("add rsp,%d", CurrProc->e.procinfo->localsize);
+		else if (CurrProc->e.procinfo->localsize > 0)
+			AddLineQueueX("add esp,%d", CurrProc->e.procinfo->localsize);
+
+		RunLineQueue();
+		//return;
+	}
+
     /* skip this part for IRET */
     if( is_iret == FALSE ) {
         if ( CurrProc->sym.mem_type == MT_FAR )
             *p++ = 'f';   /* ret -> retf */
-        else
+        else if ((*(p-1)) != 'n')
             *p++ = 'n';     /* ret -> retn */
     }
     i++; /* skip directive */

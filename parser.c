@@ -3530,13 +3530,14 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 
   if (CurrProc) {
     switch (tokenarray[i].tokval) {
+	case T_RETN:
     case T_RET:
     case T_IRET:  /* IRET is always 16-bit; OTOH, IRETW doesn't exist */
     case T_IRETD:
 #if AMD64_SUPPORT
     case T_IRETQ:
 #endif
-      if (!(ProcStatus & PRST_INSIDE_EPILOGUE) && ModuleInfo.epiloguemode != PEM_NONE) {
+      if (!(ProcStatus & PRST_INSIDE_EPILOGUE)) { //&& ModuleInfo.epiloguemode != PEM_NONE) {
         /* v2.07: special handling for RET/IRET */
         FStoreLine((ModuleInfo.CurrComment && ModuleInfo.list_generated_code) ? 1 : 0);
         ProcStatus |= PRST_INSIDE_EPILOGUE;
