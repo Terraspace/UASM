@@ -140,10 +140,10 @@ enum op1_flags {
  * EVEX.mm   Compressed legacy escape P[1: 0] Identical to low two bits of VEX.mmmmm
  * EVEX.pp   Compressed legacy prefix P[9 : 8] Identical to VEX.pp
  * EVEX.RXB  Next-8 register specifier modifier P[7 : 5] Combine with ModR/M.reg, ModR/M.rm (base, index/vidx)
- * EVEXR’    High-16 register specifier modifier P[4] Combine with EVEX.R and ModR/M.reg
+ * EVEXR     High-16 register specifier modifier P[4] Combine with EVEX.R and ModR/M.reg
  * EVEXX     High-16 register specifier modifier P[6] Combine with EVEX.B and ModR/M.rm, when SIB/VSIB absent
  * EVEX.vvvv NDS register specifier P[14 : 11] Same as VEX.vvvv
- * EVEXV’    High-16 NDS/VIDX register specifier P[19] Combine with EVEX.vvvv or when VSIB present
+ * EVEXV     High-16 NDS/VIDX register specifier P[19] Combine with EVEX.vvvv or when VSIB present
  * EVEX.aaa  Embedded opmask register specifier P[18 : 16]
  * EVEX.W    Osize promotion/Opcode extension P[15]
  * EVEX.b    Broadcast/RC/SAE Context P[20]

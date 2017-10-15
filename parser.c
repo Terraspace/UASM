@@ -719,19 +719,18 @@ static ret_code set_rm_sib(struct code_info *CodeInfo, unsigned CurrOpnd, char s
         } else {
             rm_field = RM_D32; /* D32=101b */
 #if AMD64_SUPPORT
-             /* v2.03: the non-RIP encoding for 64bit uses a redundant SIB
-             * mode (base=none, index=none) */
-             /* v2.11: always use 64-bit non-RIP addressing if no fixup has been created. */ 
-            /* reverted back on fonolite's requeast,  v2.42 */
-            if ( CodeInfo->Ofssize == USE64 && CodeInfo->prefix.RegOverride != EMPTY &&
-                SegOverride != &ModuleInfo.flat_grp->sym ) {
-                DebugMsg1(( "set_rm_sib: 64-bit non-RIP direct addressing: SegOverride=%X, flat=%X\n", SegOverride, ModuleInfo.flat_grp ));
-                rm_field = RM_SIB;
-                CodeInfo->sib = 0x25; /* IIIBBB, base=101b, index=100b */
+	    if ( CodeInfo->Ofssize == USE64 ) {
+		   if ( CodeInfo->opnd[CurrOpnd].InsFixup == NULL ) {				
+		      rm_field = RM_SIB;    /* 64-bit non-RIP direct addressing */
+		      CodeInfo->sib = 0x25; /* IIIBBB, base=101b, index=100b */		
+		  } else if ( CodeInfo->opnd[CurrOpnd].InsFixup->type == FIX_OFF32 ) {
+		      /* added v2.42 */
+		      CodeInfo->opnd[CurrOpnd].InsFixup->type = FIX_RELOFF32;
             }
+	    }
 #endif
-        }
-        DebugMsg1(("set_rm_sib, direct, CodeInfo->prefix.adrsiz=%u\n", CodeInfo->prefix.adrsiz ));
+      }
+      DebugMsg1(("set_rm_sib, direct, CodeInfo->prefix.adrsiz=%u\n", CodeInfo->prefix.adrsiz ));
     } else if( ( index == EMPTY ) && ( base != EMPTY ) ) {
         /* for SI, DI and BX: default is DS:[],
          * DS: segment override is not needed
@@ -3530,14 +3529,13 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 
   if (CurrProc) {
     switch (tokenarray[i].tokval) {
-	case T_RETN:
     case T_RET:
     case T_IRET:  /* IRET is always 16-bit; OTOH, IRETW doesn't exist */
     case T_IRETD:
 #if AMD64_SUPPORT
     case T_IRETQ:
 #endif
-      if (!(ProcStatus & PRST_INSIDE_EPILOGUE)) { //&& ModuleInfo.epiloguemode != PEM_NONE) {
+      if (!(ProcStatus & PRST_INSIDE_EPILOGUE) && ModuleInfo.epiloguemode != PEM_NONE) {
         /* v2.07: special handling for RET/IRET */
         FStoreLine((ModuleInfo.CurrComment && ModuleInfo.list_generated_code) ? 1 : 0);
         ProcStatus |= PRST_INSIDE_EPILOGUE;

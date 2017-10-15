@@ -626,7 +626,7 @@ static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
          * operator - it will cause a 'operator expected' error msg later.
          * the tokens are stored as one- or two-byte sized "strings".
          */
-      if ( ( p->flags2 & DF_CEXPR ) && strchr( "=!<>&|¦", symbol ) ) {     //habran added '¦'
+      if ( ( p->flags2 & DF_CEXPR ) && strchr( "=!<>&|", symbol ) ) {  
             *(p->output)++ = symbol;
             p->input++;
             buf->stringlen = 1;
