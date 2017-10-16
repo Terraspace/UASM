@@ -2973,7 +2973,7 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
 		if (info->isframe && ModuleInfo.frame_auto)
 			AddLineQueueX("%r %d", T_DOT_ALLOCSTACK, NUMQUAL stackadj);
 	}
-	if (info->isframe && ModuleInfo.frame_auto)
+	if (info->isframe)// && ModuleInfo.frame_auto)
 		AddLineQueueX("%r", T_DOT_ENDPROLOG);
 	return;
 }
@@ -4459,21 +4459,12 @@ void write_prologue(struct asm_tok tokenarray[])
 		}
 	}
 
-	/* UASM 2.42 - Any proc with no prologue will have no stack frame, so set fpo and force use of esp/rsp if option stackbase:xSP is set. */
-	if (ModuleInfo.prologuemode == PEM_NONE && CurrProc->e.procinfo->forceframe == FALSE && (CurrProc->e.procinfo->basereg == T_ESP || CurrProc->e.procinfo->basereg == T_RSP))
+	/* UASM 2.42 - Any proc with no prologue will have no stack frame, so set fpo and force use of esp if option stackbase:xSP is set. */
+	if (ModuleInfo.prologuemode == PEM_NONE && CurrProc->e.procinfo->forceframe == FALSE && (CurrProc->e.procinfo->basereg == T_ESP))
 	{
 		CurrProc->e.procinfo->fpo = TRUE;
-
-		if (ModuleInfo.Ofssize == USE64)
-			CurrProc->e.procinfo->basereg = T_RSP;
-		else
-			CurrProc->e.procinfo->basereg = T_ESP;
-
-		if (ModuleInfo.Ofssize == USE64 && CurrProc->e.procinfo->localsize > 0)
-			AddLineQueueX("sub rsp,%d", CurrProc->e.procinfo->localsize);
-		else if (CurrProc->e.procinfo->localsize > 0)
+		if (CurrProc->e.procinfo->localsize > 0)
 			AddLineQueueX("sub esp,%d", CurrProc->e.procinfo->localsize);
-
 		RunLineQueue();
 	}
 
