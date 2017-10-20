@@ -93,6 +93,7 @@
     <ClInclude Include="H\codegen.h" />
     <ClInclude Include="H\coff.h" />
     <ClInclude Include="H\coffspec.h" />
+    <ClInclude Include="H\Colors.h" />
     <ClInclude Include="H\condasm.h" />
     <ClInclude Include="H\context.h" />
     <ClInclude Include="H\cpumodel.h" />

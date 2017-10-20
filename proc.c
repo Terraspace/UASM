@@ -2821,7 +2821,7 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
 	}
 	else {
 		/* UASM2.35 fix for functions without ModuleInfo.frame_auto */
-		if ((info->locallist || info->stackparam || info->has_vararg || info->forceframe) || (info->isframe && ModuleInfo.frame_auto)) {
+		if ( ((info->locallist || info->stackparam || info->has_vararg || info->forceframe) || (info->isframe && ModuleInfo.frame_auto)) && ModuleInfo.frame_auto && info->isframe) {
 			AddLineQueueX("push %r", info->basereg);
 			if (info->isframe && ModuleInfo.frame_auto)
 				AddLineQueueX("%r %r", T_DOT_PUSHREG, info->basereg);
@@ -2973,7 +2973,7 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
 		if (info->isframe && ModuleInfo.frame_auto)
 			AddLineQueueX("%r %d", T_DOT_ALLOCSTACK, NUMQUAL stackadj);
 	}
-	if (info->isframe)// && ModuleInfo.frame_auto)
+	if (info->isframe && ModuleInfo.frame_auto)
 		AddLineQueueX("%r", T_DOT_ENDPROLOG);
 	return;
 }
@@ -3443,7 +3443,7 @@ static void write_win64_default_epilogue_RBP(struct proc_info *info)
 		}
 	}
 	/* UASM2.35 fix for functions without ModuleInfo.frame_auto */
-	if ((info->locallist || info->stackparam || info->has_vararg || info->forceframe) || info->fpo || (info->isframe && ModuleInfo.frame_auto))
+	if (((info->locallist || info->stackparam || info->has_vararg || info->forceframe) || info->fpo || (info->isframe && ModuleInfo.frame_auto)) && info->isframe && ModuleInfo.frame_auto)
 	{
 		if (ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP) && (info->localsize + sym_ReservedStack->value) > 0)
 			AddLineQueueX("add %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);

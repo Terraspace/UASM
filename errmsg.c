@@ -42,6 +42,11 @@
 #include "listing.h"
 #include "segment.h"
 
+#include "Colors.h"
+#ifdef _WIN32
+#include <Windows.h>
+#endif
+
 extern void             print_source_nesting_structure( void );
 extern jmp_buf          jmpenv;
 
@@ -137,9 +142,27 @@ void DoDebugMsg1( const char *format, ... )
 int write_logo( void )
 /********************/
 {
+	#ifdef _WIN32
+		CONSOLE_SCREEN_BUFFER_INFO screenBufferInfo;
+		HANDLE hConsole;
+		memset(&screenBufferInfo, 0, sizeof(screenBufferInfo));
+	#endif
+
     if( banner_printed == FALSE ) {
         banner_printed = TRUE;
+		
+		#ifdef _WIN32
+			hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+			GetConsoleScreenBufferInfo(hConsole, &screenBufferInfo);
+			SetConsoleTextAttribute(hConsole, 3);
+		#endif	
+
         printf( "%s, %s\n", MsgGetEx( MSG_UASM ), MsgGetEx( MSG_UASM2 ) );
+
+		#ifdef _WIN32
+			SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
+		#endif	
+
         return( 4 ); /* return number of lines printed */
     }
     return( 0 );
