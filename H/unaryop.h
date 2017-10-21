@@ -6,6 +6,9 @@ res( HIGHWORD,     highword_op)
 #if LOHI32
 res( LOW32,        low32_op)
 res( FRAMEOFS,     frameofs_op)
+res( ARGIDX,       argidx_op)
+res( ARGSIZE,      argsize_op)
+res( ARGTYPE,      argtype_op)
 res( HIGH32,       high32_op)
 #endif
 res( OFFSET,       offset_op)

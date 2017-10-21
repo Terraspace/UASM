@@ -113,6 +113,9 @@
 #ifndef ELF_SUPPORT
 #define ELF_SUPPORT  1 /* support ELF output format              */
 #endif
+#ifndef MACHO_SUPPORT
+#define MACHO_SUPPORT  1 /* support MACHO64 output format              */
+#endif
 
 /* architecture switches */
 #ifndef ARCH_SSE
@@ -258,6 +261,9 @@ enum oformat {
 #endif
 #if ELF_SUPPORT
     OFORMAT_ELF, /* used by -elf and elf64 */
+#endif
+#if MACHO_SUPPORT
+	OFORMAT_MACHO, /* used by -macho64 */
 #endif
 };
 

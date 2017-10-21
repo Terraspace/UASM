@@ -74,6 +74,7 @@ extern uint_32          StackAdj;
 #ifdef DEBUG_OUT
 static int evallvl = 0;
 #endif
+int glabel;
 extern uint_32          GetCurrOffset( void );
 extern void ShiftLeft (uint_64 *dstHi, uint_64 *dstLo,uint_64 num, int pos);
 /* the following static variables should be moved to ModuleInfo. */
@@ -127,6 +128,8 @@ static ret_code  InitRecordVar( struct expr *opnd1, int index, struct asm_tok to
     struct sfield   *f;
     int_32          nextofs;
     int             i;
+    int             nlabel;
+    struct asym    *sym = NULL;
 #if AMD64_SUPPORT
     uint_64         dst128Hi;
     uint_64         dst128Lo;
@@ -140,9 +143,10 @@ static ret_code  InitRecordVar( struct expr *opnd1, int index, struct asm_tok to
     struct expr     opndx;
     char            buffer[MAX_LINE_LEN];
     char            buffer1[MAX_LINE_LEN];
-	int             tok_start = index - 1;
-	int             len;
-	char            *oldptr;
+    char            buff[16];
+	  int             tok_start = index - 1;
+	  int             len;
+	  char            *oldptr;
 
     /**/myassert( symtype->sym.state == SYM_TYPE && symtype->sym.typekind != TYPE_TYPEDEF );
     if ( tokenarray[index].token == T_STRING ) {
@@ -271,9 +275,102 @@ all:
       *  mov dword ptr rubi.rc+4 ,HIGH32(dst128Lo)
       *  mov dword ptr rubi.rc+8 , LOW32(dst128Hi)
       *  mov dword ptr rubi.rc+8+4,HIGH32(dst128Hi) */
-     if (0 == _stricmp(tokenarray->string_ptr, "mov128")){
-         /* first DWORD */
-          strcpy( buffer,tokenarray->tokpos+6);
+
+      if (0 == _stricmp(tokenarray->string_ptr, "movxmmr128")){
+          strcpy( buffer,tokenarray->tokpos+10);
+          ptr = buffer;
+          while (*ptr != ',')ptr++;
+          *ptr = '\0';
+          ptr++;
+          /* if not created global variable GTEMP create it   */
+           if ( glabel == 0){
+             glabel = TRUE;                  /* set the flag TRUE */
+            strcpy(buffer1, ".data");
+            strcpy(tokenarray->tokpos, buffer1);
+            Token_Count = Tokenize( tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT );
+            ParseLine(tokenarray);          
+            sprintf(buff, "GTEMP");
+            strcpy(buffer1,buff);
+            strcat(buffer1,ptr);
+            strcpy(tokenarray->tokpos, buffer1);
+            Token_Count = Tokenize( tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT );
+            ParseLine(tokenarray);
+            strcpy(buffer1, ".code");
+            strcpy(tokenarray->tokpos, buffer1);
+            Token_Count = Tokenize( tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT );
+            ParseLine(tokenarray);
+          }
+           else{ /* global variable GTEMP exist, reuse it   */
+             strcpy(buffer1, "mov dword ptr  ");
+             ptr = buffer1 + 14;
+             strcpy(ptr, "GTEMP");                  /* mov dword ptr rubi.rc */
+             ptr += 5;
+             strcpy(ptr, ", LOW32(");              /* mov dword ptr rubi.rc, LOW32( */
+             ptr += 8;
+             sprintf(ptr, "0x%" PRIx64, dst128Lo); /* mov dword ptr rubi.rc, LOW32(dst128Lo */
+             while (*ptr)ptr++;
+             *ptr = ')';
+             ptr++;
+             *ptr = '\0';
+             strcpy(tokenarray->tokpos, buffer1);
+             Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
+             ParseLine(tokenarray);
+             /* second DWORD */
+             strcpy(buffer1, "mov dword ptr  ");
+             ptr = buffer1 + 14;
+             strcpy(ptr, "GTEMP");                  /* mov dword ptr rubi.rc */
+             ptr += 5;
+             strcpy(ptr, "+4 ,HIGH32(");          /* mov dword ptr rubi.rc, HIGH32( */
+             ptr += 11;
+             sprintf(ptr, "0x%" PRIx64, dst128Lo); /* mov dword ptr rubi.rc, LOW32(dst128Lo */
+             while (*ptr)ptr++;
+             *ptr = ')';
+             ptr++;
+             *ptr = '\0';
+             strcpy(tokenarray->tokpos, buffer1);
+             Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
+             ParseLine(tokenarray);
+             /* third DWORD */
+             strcpy(buffer1, "mov dword ptr  ");
+             ptr = buffer1 + 14;
+             strcpy(ptr, "GTEMP");                  /* mov dword ptr rubi.rc */
+             ptr += 5;
+             strcpy(ptr, "+8, LOW32(");          /* mov dword ptr rubi.rc, LOW32( */
+             ptr += 10;
+             sprintf(ptr, "0x%" PRIx64, dst128Hi); /* mov dword ptr rubi.rc, LOW32(dst128Hi */
+             while (*ptr)ptr++;
+             *ptr = ')';
+             ptr++;
+             *ptr = '\0';
+             strcpy(tokenarray->tokpos, buffer1);
+             Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
+             ParseLine(tokenarray);
+             /* forth DWORD */
+             strcpy(buffer1, "mov dword ptr  ");
+             ptr = buffer1 + 14;
+             strcpy(ptr, "GTEMP");                  /* mov dword ptr rubi.rc */
+             ptr += 5;
+             strcpy(ptr, "+8+4, HIGH32(");          /* mov dword ptr rubi.rc, HIGH32( */
+             ptr += 13;
+             sprintf(ptr, "0x%" PRIx64, dst128Hi); /* mov dword ptr rubi.rc, LOW32(dst128Lo */
+             while (*ptr)ptr++;
+             *ptr = ')';
+             ptr++;
+             *ptr = '\0';
+             strcpy(tokenarray->tokpos, buffer1);
+             Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
+             ParseLine(tokenarray);
+         }
+         /* now write new line with "movups xmm1, GTEMP"   */
+          strcpy(buffer1, MOVE_UNALIGNED_FLOAT);
+          strcat(buffer1,buffer);
+          strcat(buffer1," , ");
+          strcat(buffer1,"GTEMP");
+          strcpy(tokenarray->tokpos, buffer1);
+          Token_Count = Tokenize( tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT );
+          goto exit;
+       }else if (0 == _stricmp(tokenarray->string_ptr, "mov128")){
+         strcpy( buffer,tokenarray->tokpos+6);
           ptr = buffer;
           while (*ptr != ',')ptr++;
           *ptr = '\0';
@@ -1837,6 +1934,184 @@ static ret_code frameofs_op( int oper, struct expr *opnd1, struct expr *opnd2, s
 	/* offset operator accepts types, but returns always 0 */
 	if (opnd2->is_type)
 		opnd2->value = 0;
+
+	TokenAssign(opnd1, opnd2);
+	opnd1->instr = oper;
+	opnd1->base_reg = NULL;
+	opnd1->override = NULL;
+	opnd1->idx_reg = NULL;
+	opnd1->mem_type = MT_EMPTY;
+	opnd1->kind = EXPR_CONST;
+
+	return(NOT_ERROR);
+}
+
+/*
+handles ARGIDX operator.
+*/
+static ret_code argidx_op(int oper, struct expr *opnd1, struct expr *opnd2, struct asym *sym, char *name)
+{
+	int argNo = 1;
+	bool argFound = FALSE;
+	struct dsym* param = NULL;
+
+	if (CurrProc == NULL)
+	{
+		EmitErr(ARGIDX_NOT_IN_PROC);
+		return(invalid_operand(opnd2, GetResWName(oper, NULL), name));
+	}
+
+	if ((sym && sym->state == SYM_GRP) || opnd2->instr == T_SEG) {
+		return(invalid_operand(opnd2, GetResWName(oper, NULL), name));
+	}
+
+	/* if operand is a constant value, error */
+	if (opnd2->kind == EXPR_CONST) {
+		return(invalid_operand(opnd2, GetResWName(oper, NULL), name));
+	}
+
+	/* argidx operator accepts types, but returns always 0 */
+	if (opnd2->is_type)
+		opnd2->value = 0;
+
+	/* Scan current proc parameters to find a match */
+	param = CurrProc->e.procinfo->paralist;
+	while (param)
+	{
+		if (strcmp(opnd2->sym->name, param->sym.name) == 0)
+		{
+			argFound = TRUE;
+			break;
+		}
+		argNo++;
+		param = param->nextparam;
+	}
+
+	/* If parameter not found, return 0 */
+	if (!argFound)
+		opnd2->value = 0;
+
+	opnd2->value = argNo;
+
+	TokenAssign(opnd1, opnd2);
+	opnd1->instr = oper;
+	opnd1->base_reg = NULL;
+	opnd1->override = NULL;
+	opnd1->idx_reg = NULL;
+	opnd1->mem_type = MT_EMPTY;
+	opnd1->kind = EXPR_CONST;
+
+	return(NOT_ERROR);
+}
+
+/*
+handles ARGSIZE operator.
+*/
+static ret_code argsize_op(int oper, struct expr *opnd1, struct expr *opnd2, struct asym *sym, char *name)
+{
+	int argNo = 1;
+	bool argFound = FALSE;
+	struct dsym* param = NULL;
+
+	if (CurrProc == NULL)
+	{
+		EmitErr(ARGSIZE_NOT_IN_PROC);
+		return(invalid_operand(opnd2, GetResWName(oper, NULL), name));
+	}
+
+	if ((sym && sym->state == SYM_GRP) || opnd2->instr == T_SEG) {
+		return(invalid_operand(opnd2, GetResWName(oper, NULL), name));
+	}
+
+	/* if operand is a constant value, error */
+	if (opnd2->kind == EXPR_CONST) {
+		return(invalid_operand(opnd2, GetResWName(oper, NULL), name));
+	}
+
+	/* argidx operator accepts types, but returns always 0 */
+	if (opnd2->is_type)
+		opnd2->value = 0;
+
+	/* Scan current proc parameters to find a match */
+	param = CurrProc->e.procinfo->paralist;
+	while (param)
+	{
+		if (strcmp(opnd2->sym->name, param->sym.name) == 0)
+		{
+			argFound = TRUE;
+			break;
+		}
+		argNo++;
+		param = param->nextparam;
+	}
+
+	/* If parameter not found, return 0 */
+	if (!argFound)
+		opnd2->value = 0;
+	else
+	{
+		opnd2->value = param->sym.total_size;
+	}
+
+	TokenAssign(opnd1, opnd2);
+	opnd1->instr = oper;
+	opnd1->base_reg = NULL;
+	opnd1->override = NULL;
+	opnd1->idx_reg = NULL;
+	opnd1->mem_type = MT_EMPTY;
+	opnd1->kind = EXPR_CONST;
+
+	return(NOT_ERROR);
+}
+
+/*
+handles ARGTYPE operator.
+*/
+static ret_code argtype_op(int oper, struct expr *opnd1, struct expr *opnd2, struct asym *sym, char *name)
+{
+	int argNo = 1;
+	bool argFound = FALSE;
+	struct dsym* param = NULL;
+
+	if (CurrProc == NULL)
+	{
+		EmitErr(ARGTYPE_NOT_IN_PROC);
+		return(invalid_operand(opnd2, GetResWName(oper, NULL), name));
+	}
+
+	if ((sym && sym->state == SYM_GRP) || opnd2->instr == T_SEG) {
+		return(invalid_operand(opnd2, GetResWName(oper, NULL), name));
+	}
+
+	/* if operand is a constant value, error */
+	if (opnd2->kind == EXPR_CONST) {
+		return(invalid_operand(opnd2, GetResWName(oper, NULL), name));
+	}
+
+	/* argidx operator accepts types, but returns always 0 */
+	if (opnd2->is_type)
+		opnd2->value = 0;
+
+	/* Scan current proc parameters to find a match */
+	param = CurrProc->e.procinfo->paralist;
+	while (param)
+	{
+		if (strcmp(opnd2->sym->name, param->sym.name) == 0)
+		{
+			argFound = TRUE;
+			break;
+		}
+		argNo++;
+		param = param->nextparam;
+	}
+
+	/* If parameter not found, return 0 */
+	if (!argFound)
+		opnd2->value = 0;
+	else
+	{
+		opnd2->value = param->sym.mem_type;
+	}
 
 	TokenAssign(opnd1, opnd2);
 	opnd1->instr = oper;

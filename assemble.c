@@ -77,12 +77,17 @@ jmp_buf jmpenv;
 #define ERR_EXT "err"
 #define BIN_EXT "BIN"
 #define EXE_EXT "EXE"
-
+extern int glabel;
 extern int_32           LastCodeBufSize;
 extern char             *DefaultDir[NUM_FILE_TYPES];
 extern const char       *ModelToken[];
 #if FASTMEM==0
 extern void             FreeLibQueue();
+#endif
+
+#include "Colors.h"
+#ifdef _WIN32
+#include <Windows.h>
 #endif
 
 /* parameters for output formats. order must match enum oformat */
@@ -1151,8 +1156,8 @@ static int OnePass( void )
 		platform->value = 2;
 	else if (Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_64BIT )
 		platform->value = 3;
-	//else if (Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_64BIT) TODO with OSX-Macho
-		//platform->value = 3;
+	else if (Options.output_format == OFORMAT_MACHO && Options.sub_format == SFORMAT_64BIT )
+		platform->value = 4;
 
 	/* Process our built-in macro library to make it available to the rest of the source */
 	if (Parse_Pass == PASS_1 && Options.nomlib == FALSE) 
@@ -1299,7 +1304,7 @@ static void ModuleInit( void )
 
     memset( SymTables, 0, sizeof( SymTables[0] ) * TAB_LAST );
     ModuleInfo.fmtopt->init( &ModuleInfo );
-
+    glabel = 0;
     return;
 }
 
@@ -1576,6 +1581,14 @@ int EXPQUAL AssembleModule( const char *source )
 	struct module_info tempInfo;
 	memset(&tempInfo, 0, sizeof(tempInfo));
 
+#ifdef _WIN32
+	CONSOLE_SCREEN_BUFFER_INFO screenBufferInfo;
+	HANDLE hConsole;
+	memset(&screenBufferInfo, 0, sizeof(screenBufferInfo));
+	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	GetConsoleScreenBufferInfo(hConsole, &screenBufferInfo);
+#endif
+
     DebugMsg(("AssembleModule(\"%s\") enter\n", source ));
 
 	tempInfo.frame_auto   = ModuleInfo.frame_auto;
@@ -1719,14 +1732,44 @@ int EXPQUAL AssembleModule( const char *source )
 		if (ModuleInfo.g.warning_count == 0 && ModuleInfo.g.error_count == 0)
 		{
 			sprintf(CurrSource, MsgGetEx(MSG_ASSEMBLY_RESULTS_QUIETER),
-				GetFNamePart(GetFName(ModuleInfo.srcfile)->fname));
+				GetFNamePart(GetFName(ModuleInfo.srcfile)->fname)); // write normal string for listing.
+			
+			// console output.
+			#ifdef _WIN32
+				SetConsoleTextAttribute(hConsole, WIN_LTWHITE);
+				printf( "%s", GetFNamePart(GetFName(ModuleInfo.srcfile)->fname));
+				SetConsoleTextAttribute(hConsole, WIN_LTGREEN);
+				printf(": ok\n");
+				SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
+			#else
+				printf("%s", GetFNamePart(GetFName(ModuleInfo.srcfile)->fname)) );
+				printf(": ok\n");
+			#endif
 		}
 		else
 		{
 			sprintf(CurrSource, MsgGetEx(MSG_ASSEMBLY_RESULTS_QUIET),
 				GetFNamePart(GetFName(ModuleInfo.srcfile)->fname),
 				ModuleInfo.g.warning_count,
-				ModuleInfo.g.error_count);
+				ModuleInfo.g.error_count); // write normal string for listing.
+
+			// console output.
+			#ifdef _WIN32
+				SetConsoleTextAttribute(hConsole, WIN_LTWHITE);
+				printf("%s : ", GetFNamePart(GetFName(ModuleInfo.srcfile)->fname));
+				SetConsoleTextAttribute(hConsole, WIN_YELLOW);
+				printf("%u warnings", ModuleInfo.g.warning_count);
+				SetConsoleTextAttribute(hConsole, WIN_LTWHITE);
+				printf(", ");
+				SetConsoleTextAttribute(hConsole, WIN_LTRED);
+				printf("%u errors\n", ModuleInfo.g.error_count);
+				SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
+			#else
+				printf("%s : ", GetFNamePart(GetFName(ModuleInfo.srcfile)->fname));
+				printf("%u warnings", ModuleInfo.g.warning_count);
+				printf(", ");
+				printf("%u errors", ModuleInfo.g.error_count);
+			#endif
 		}
 	}
 	else
@@ -1737,11 +1780,41 @@ int EXPQUAL AssembleModule( const char *source )
 			Parse_Pass + 1,
 			endtime - starttime,
 			ModuleInfo.g.warning_count,
-			ModuleInfo.g.error_count);
+			ModuleInfo.g.error_count); // write normal string for listing.
+
+		// console output. "%s: %lu lines, %u passes, %u ms, %u warnings, %u errors"
+		#ifdef _WIN32
+				SetConsoleTextAttribute(hConsole, WIN_LTWHITE);
+				printf("%s: %lu lines, ", GetFNamePart(GetFName(ModuleInfo.srcfile)->fname), GetLineNumber());
+				SetConsoleTextAttribute(hConsole, WIN_LTGREEN);
+				printf("%u passes", Parse_Pass + 1);
+				SetConsoleTextAttribute(hConsole, WIN_LTWHITE);
+				printf(", ");
+				SetConsoleTextAttribute(hConsole, WIN_CYAN);
+				printf("%u ms", ModuleInfo.g.error_count);
+				SetConsoleTextAttribute(hConsole, WIN_LTWHITE);
+				printf(", ");
+				SetConsoleTextAttribute(hConsole, WIN_YELLOW);
+				printf("%u warnings", ModuleInfo.g.warning_count);
+				SetConsoleTextAttribute(hConsole, WIN_LTWHITE);
+				printf(", ");
+				SetConsoleTextAttribute(hConsole, WIN_LTRED);
+				printf("%u errors\n", ModuleInfo.g.error_count);
+				SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
+		#else
+			printf("%s: %lu lines, ", GetFNamePart(GetFName(ModuleInfo.srcfile)->fname), GetLineNumber());
+			printf("%u passes", Parse_Pass + 1);
+			printf(", ");
+			printf("%u ms", ModuleInfo.g.error_count);
+			printf(", ");
+			printf("%u warnings", ModuleInfo.g.warning_count);
+			printf(", ");
+			printf("%u errors\n", ModuleInfo.g.error_count);
+		#endif
 	}
 	if (Options.quiet == FALSE)
 	{
-		printf("%s\n", CurrSource);
+		//printf("%s\n", CurrSource);
 		fflush(stdout); /* Force flush of each modules assembly progress */
 	}
     if ( CurrFile[LST] ) {

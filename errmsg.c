@@ -59,6 +59,9 @@ static const char usage[] = {
 #include "usage.h"
 };
 
+static const char usage2[] = {
+#include "usage2.h"
+};
 
 #ifdef DEBUG_OUT
 
@@ -146,21 +149,24 @@ int write_logo( void )
 		CONSOLE_SCREEN_BUFFER_INFO screenBufferInfo;
 		HANDLE hConsole;
 		memset(&screenBufferInfo, 0, sizeof(screenBufferInfo));
+		hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+		GetConsoleScreenBufferInfo(hConsole, &screenBufferInfo);
 	#endif
 
     if( banner_printed == FALSE ) {
         banner_printed = TRUE;
 		
 		#ifdef _WIN32
-			hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-			GetConsoleScreenBufferInfo(hConsole, &screenBufferInfo);
-			SetConsoleTextAttribute(hConsole, 3);
-		#endif	
+			SetConsoleTextAttribute(hConsole, WIN_LTGREEN);
+			printf("%s", MsgGetEx(MSG_UASM));
 
-        printf( "%s, %s\n", MsgGetEx( MSG_UASM ), MsgGetEx( MSG_UASM2 ) );
+			SetConsoleTextAttribute(hConsole, WIN_CYAN);
+			printf("%s\n", MsgGetEx(MSG_UASM2));
 
-		#ifdef _WIN32
 			SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
+		#else
+			printf("\x1B[32m%s", MsgGetEx(MSG_UASM));
+			printf("\x1B[36m%s\n", MsgGetEx(MSG_UASM2));
 		#endif	
 
         return( 4 ); /* return number of lines printed */
@@ -171,13 +177,41 @@ int write_logo( void )
 void PrintUsage( void )
 /*********************/
 {
-    const char *p;
-    write_logo();
-    for ( p = usage; *p != '\n'; ) {
+	#ifdef _WIN32
+		CONSOLE_SCREEN_BUFFER_INFO screenBufferInfo;
+		HANDLE hConsole;
+		memset(&screenBufferInfo, 0, sizeof(screenBufferInfo));
+		hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+		GetConsoleScreenBufferInfo(hConsole, &screenBufferInfo);
+	#endif
+    
+	const char *p;
+    
+	write_logo();
+	
+	#ifdef _WIN32
+	SetConsoleTextAttribute(hConsole, WIN_LTYELLOW);
+	#endif
+
+	for (p = usage2; *p != '\n'; ) {
+		const char *p2 = p + strlen(p) + 1;
+		printf("%-20s %s\n", p, p2);
+		p = p2 + strlen(p2) + 1;
+	}
+	
+	#ifdef _WIN32
+	SetConsoleTextAttribute(hConsole, WIN_WHITE);
+	#endif
+
+	for ( p = usage; *p != '\n'; ) {
         const char *p2 = p + strlen( p ) + 1;
         printf("%-20s %s\n", p, p2 );
         p = p2 + strlen( p2 ) + 1;
     }
+
+	#ifdef _WIN32
+	SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
+	#endif
 }
 
 static void PutMsg( FILE *fp, int severity, int msgnum, va_list args )
@@ -187,6 +221,14 @@ static void PutMsg( FILE *fp, int severity, int msgnum, va_list args )
     const char      *type;
     const char      *pMsg;
     char            buffer[MAX_LINE_LEN+128];
+
+	#ifdef _WIN32
+		CONSOLE_SCREEN_BUFFER_INFO screenBufferInfo;
+		HANDLE hConsole;
+		memset(&screenBufferInfo, 0, sizeof(screenBufferInfo));
+		hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+		GetConsoleScreenBufferInfo(hConsole, &screenBufferInfo);
+	#endif
 
     if( fp != NULL ) {
 
@@ -203,10 +245,20 @@ static void PutMsg( FILE *fp, int severity, int msgnum, va_list args )
         if ( type )
             i = sprintf( buffer, "%s A%4u: ", type, severity * 1000 + msgnum );
         i += vsprintf( buffer+i, pMsg, args );
-        //buffer[i] = NULLC;
+
+		#ifdef _WIN32
+			if (severity == 4)
+				SetConsoleTextAttribute(hConsole, WIN_YELLOW);
+			else if (severity == 2)
+				SetConsoleTextAttribute(hConsole, WIN_LTRED);
+		#endif
 
         fwrite( buffer, 1, i, fp );
         fwrite( "\n", 1, 1, fp );
+		
+		#ifdef _WIN32
+			SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
+		#endif	
 
         /* if in Pass 1, add the error msg to the listing */
         if ( CurrFile[LST] &&

@@ -22,4 +22,20 @@
 #define BOLD(x) "\x1B[1m" x RST
 #define UNDL(x) "\x1B[4m" x RST
 
+#define WIN_BLUE 1
+#define WIN_GREEN 2
+#define WIN_CYAN 3
+#define WIN_RED 4
+#define WIN_PINK 5
+#define WIN_YELLOW 6
+#define WIN_WHITE 7
+#define WIN_GREY 8
+#define WIN_LTBLUE 9
+#define WIN_LTGREEN 10
+#define WIN_LTCYAN 11
+#define WIN_LTRED 12
+#define WIN_LTPINK 13
+#define WIN_LTYELLOW 14
+#define WIN_LTWHITE 15
+
 #endif  /* _COLORS_ */

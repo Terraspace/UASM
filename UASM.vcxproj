@@ -155,6 +155,7 @@
     <ClInclude Include="H\types.h" />
     <ClInclude Include="H\unaryop.h" />
     <ClInclude Include="H\usage.h" />
+    <ClInclude Include="H\usage2.h" />
     <ClInclude Include="H\win32.h" />
     <ClInclude Include="H\win64seh.h" />
     <ClInclude Include="resource.h" />
