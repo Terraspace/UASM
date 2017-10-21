@@ -1742,7 +1742,7 @@ int EXPQUAL AssembleModule( const char *source )
 				printf(": ok\n");
 				SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
 			#else
-				printf("%s", GetFNamePart(GetFName(ModuleInfo.srcfile)->fname)) );
+				printf("%s", GetFNamePart(GetFName(ModuleInfo.srcfile)->fname));
 				printf(": ok\n");
 			#endif
 		}
