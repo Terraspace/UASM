@@ -165,8 +165,8 @@ int write_logo( void )
 
 			SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
 		#else
-			printf("\x1B[32m%s \x1B[0m", MsgGetEx(MSG_UASM));
-			printf("\x1B[36m%s \x1B[0m\n", MsgGetEx(MSG_UASM2));
+			printf(FGRN("%s"), MsgGetEx(MSG_UASM));
+			printf(FCYN("%s\n"), MsgGetEx(MSG_UASM2));
 		#endif	
 
         return( 4 ); /* return number of lines printed */
@@ -190,27 +190,35 @@ void PrintUsage( void )
 	write_logo();
 	
 	#ifdef _WIN32
-	SetConsoleTextAttribute(hConsole, WIN_LTYELLOW);
+		SetConsoleTextAttribute(hConsole, WIN_LTYELLOW);
+		for (p = usage2; *p != '\n'; ) {
+			const char *p2 = p + strlen(p) + 1;
+			printf("%-20s %s\n", p, p2);
+			p = p2 + strlen(p2) + 1;
+		}
+	#else	
+		for (p = usage2; *p != '\n'; ) {
+			const char *p2 = p + strlen(p) + 1;
+			printf(FYEL("%-20s %s\n"), p, p2);
+			p = p2 + strlen(p2) + 1;
+		}
 	#endif
 
-	for (p = usage2; *p != '\n'; ) {
-		const char *p2 = p + strlen(p) + 1;
-		printf("%-20s %s\n", p, p2);
-		p = p2 + strlen(p2) + 1;
-	}
 	
 	#ifdef _WIN32
-	SetConsoleTextAttribute(hConsole, WIN_WHITE);
-	#endif
-
-	for ( p = usage; *p != '\n'; ) {
-        const char *p2 = p + strlen( p ) + 1;
-        printf("%-20s %s\n", p, p2 );
-        p = p2 + strlen( p2 ) + 1;
-    }
-
-	#ifdef _WIN32
-	SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
+		SetConsoleTextAttribute(hConsole, WIN_WHITE);
+		for (p = usage; *p != '\n'; ) {
+			const char *p2 = p + strlen(p) + 1;
+			printf("%-20s %s\n", p, p2);
+			p = p2 + strlen(p2) + 1;
+		}
+		SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
+	#else
+		for (p = usage; *p != '\n'; ) {
+			const char *p2 = p + strlen(p) + 1;
+			printf(FWHT("%-20s %s\n"), p, p2);
+			p = p2 + strlen(p2) + 1;
+		}
 	#endif
 }
 
@@ -251,14 +259,18 @@ static void PutMsg( FILE *fp, int severity, int msgnum, va_list args )
 				SetConsoleTextAttribute(hConsole, WIN_YELLOW);
 			else if (severity == 2)
 				SetConsoleTextAttribute(hConsole, WIN_LTRED);
+			fwrite(buffer, 1, i, fp);
+			fwrite("\n", 1, 1, fp);
+			SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
+		#else	
+			if (severity == 4)
+				fwrite(KYEL, 1, 1, fp);
+			else if (severity == 2)
+				fwrite(KRED, 1, 1, fp);
+			fwrite(buffer, 1, i, fp);
+			fwrite(FWHT("\n"), 1, 1, fp);
 		#endif
 
-        fwrite( buffer, 1, i, fp );
-        fwrite( "\n", 1, 1, fp );
-		
-		#ifdef _WIN32
-			SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
-		#endif	
 
         /* if in Pass 1, add the error msg to the listing */
         if ( CurrFile[LST] &&

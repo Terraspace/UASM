@@ -1742,8 +1742,8 @@ int EXPQUAL AssembleModule( const char *source )
 				printf(": ok\n");
 				SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
 			#else
-				printf("%s", GetFNamePart(GetFName(ModuleInfo.srcfile)->fname));
-				printf(": ok\n");
+				printf(FWHT("%s"), GetFNamePart(GetFName(ModuleInfo.srcfile)->fname));
+				printf(FGRN(": ok\n"));
 			#endif
 		}
 		else
@@ -1765,10 +1765,10 @@ int EXPQUAL AssembleModule( const char *source )
 				printf("%u errors\n", ModuleInfo.g.error_count);
 				SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
 			#else
-				printf("%s : ", GetFNamePart(GetFName(ModuleInfo.srcfile)->fname));
-				printf("%u warnings", ModuleInfo.g.warning_count);
+				printf(FWHT("%s : "), GetFNamePart(GetFName(ModuleInfo.srcfile)->fname));
+				printf(FYEL("%u warnings"), ModuleInfo.g.warning_count);
 				printf(", ");
-				printf("%u errors", ModuleInfo.g.error_count);
+				printf(FRED("%u errors"), ModuleInfo.g.error_count);
 			#endif
 		}
 	}
@@ -1802,14 +1802,14 @@ int EXPQUAL AssembleModule( const char *source )
 				printf("%u errors\n", ModuleInfo.g.error_count);
 				SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
 		#else
-			printf("%s: %lu lines, ", GetFNamePart(GetFName(ModuleInfo.srcfile)->fname), GetLineNumber());
-			printf("%u passes", Parse_Pass + 1);
+			printf(FWHT("%s: %lu lines, "), GetFNamePart(GetFName(ModuleInfo.srcfile)->fname), GetLineNumber());
+			printf(FGRN("%u passes"), Parse_Pass + 1);
 			printf(", ");
-			printf("%u ms", ModuleInfo.g.error_count);
+			printf(FCYN("%u ms"), ModuleInfo.g.error_count);
 			printf(", ");
-			printf("%u warnings", ModuleInfo.g.warning_count);
+			printf(FYEL("%u warnings"), ModuleInfo.g.warning_count);
 			printf(", ");
-			printf("%u errors\n", ModuleInfo.g.error_count);
+			printf(FRED("%u errors\n"), ModuleInfo.g.error_count);
 		#endif
 	}
 	if (Options.quiet == FALSE)
