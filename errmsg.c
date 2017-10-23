@@ -165,8 +165,8 @@ int write_logo( void )
 
 			SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
 		#else
-			printf("\x1B[32m%s", MsgGetEx(MSG_UASM));
-			printf("\x1B[36m%s\n", MsgGetEx(MSG_UASM2));
+			printf(FGRN(MsgGetEx(MSG_UASM)));
+			printf(FCYN(MsgGetEx(MSG_UASM2)));
 		#endif	
 
         return( 4 ); /* return number of lines printed */
