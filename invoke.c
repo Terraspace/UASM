@@ -1836,10 +1836,10 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 	/* ******************************************************************************************************************** */
 	/* Operand is a memory address (IE: symbol name) or memory address expression like [rbp+rax] etc */
 	/* ******************************************************************************************************************** */
-	if (opnd->kind == EXPR_ADDR && !addr && (opnd->sym && ((opnd->sym->type && 
+	if (opnd->kind == EXPR_ADDR && !addr && ((opnd->sym && ((opnd->sym->type && 
 		_stricmp(opnd->sym->type->name, "__m128") != 0 &&
 		_stricmp(opnd->sym->type->name, "__m256") != 0 &&
-		_stricmp(opnd->sym->type->name, "__m512") != 0) || !opnd->sym->type)) )
+		_stricmp(opnd->sym->type->name, "__m512") != 0) || !opnd->sym->type)) || !opnd->sym) )
 	{
 		if (psize == 0) psize = 8;			// If no size specified, assume qword.
 		reg = sysv_GetNextGPR(info, psize);
