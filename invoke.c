@@ -3095,7 +3095,7 @@ static int ParamIsString(char *pStr, int param, struct dsym* proc) {
 	if (!Options.literal_strings)
 		return(FALSE);
 
-	for (i = 0; i < param-1; i++)
+	for (i = 0; i < param; i++)
 	{
 		if (p->nextparam == NULL)
 			break;

@@ -1791,7 +1791,7 @@ int EXPQUAL AssembleModule( const char *source )
 				SetConsoleTextAttribute(hConsole, WIN_LTWHITE);
 				printf(", ");
 				SetConsoleTextAttribute(hConsole, WIN_CYAN);
-				printf("%u ms", ModuleInfo.g.error_count);
+				printf("%u ms", endtime - starttime);
 				SetConsoleTextAttribute(hConsole, WIN_LTWHITE);
 				printf(", ");
 				SetConsoleTextAttribute(hConsole, WIN_YELLOW);
@@ -1805,7 +1805,7 @@ int EXPQUAL AssembleModule( const char *source )
 			printf(FWHT("%s: %lu lines, "), GetFNamePart(GetFName(ModuleInfo.srcfile)->fname), GetLineNumber());
 			printf(FGRN("%u passes"), Parse_Pass + 1);
 			printf(", ");
-			printf(FCYN("%u ms"), ModuleInfo.g.error_count);
+			printf(FCYN("%u ms"), endtime - starttime);
 			printf(", ");
 			printf(FYEL("%u warnings"), ModuleInfo.g.warning_count);
 			printf(", ");
