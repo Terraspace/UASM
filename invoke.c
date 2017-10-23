@@ -486,9 +486,6 @@ static int ms64_param(struct dsym const *proc, int index, struct dsym *param, bo
 {
 	uint_32 size;
 	uint_32 psize;
-	//char name[256];
-	//char buff[256];
-	//uint_64 fvalue[2];
 	int reg;
 	int reg2;
 	int i;
@@ -502,7 +499,6 @@ static int ms64_param(struct dsym const *proc, int index, struct dsym *param, bo
 	struct proc_info *info = proc->e.procinfo;
 	struct dsym *t = NULL; /* used for vectorcall array member size */
 	bool destroyed = FALSE;
-	//struct asym *sym;
 
 	DebugMsg1(("ms64_param(%s, index=%u, param.memtype=%Xh, addr=%u) enter\n", proc->sym.name, index, param->sym.mem_type, addr));
 
@@ -1219,6 +1215,7 @@ vcall:
 					}
 					else
 					{
+						*regs_used |= (1 << (index + RPAR_START)); /* Flag the appropriate GP register as used now for the reference */
 						AddLineQueueX(" lea %r, %s", ms64_regs[index + 2 * 4 + (psize > 4 ? 4 : 0)], paramvalue);
 					}
 				}
@@ -4409,8 +4406,8 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 		/* Handle VARARG operands AFTER normal ones for SYSTEMV */
 		if (proc->sym.langtype == LANG_SYSVCALL && proc->e.procinfo->has_vararg)
 		{
-			int j = numParam;
-			for (; j <  (Token_Count - i) / 2; j++)
+			int j = (Token_Count - i) / 2;//numParam;
+			for (; j > numParam  ; j--)
 				PushInvokeParam(i, tokenarray, proc, curr, j, &r0flags);
 		}
 
