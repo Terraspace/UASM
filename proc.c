@@ -2819,16 +2819,17 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
 	if (info->fpo) {
 		DebugMsg1(("write_win64_default_prologue_RBP: no frame register needed\n"));
 	}
-	else {
+	else if ( (!info->fpo && ModuleInfo.frame_auto) || !info->isframe ) {
 		/* UASM2.35 fix for functions without ModuleInfo.frame_auto */
-		if ( ((info->locallist || info->stackparam || info->has_vararg || info->forceframe) || (info->isframe && ModuleInfo.frame_auto)) && ModuleInfo.frame_auto && info->isframe) {
+		//if( info->forceframe || info->stackparam || info->has_vararg || !info->fpo) {
+		//if ( ((info->locallist || info->stackparam || info->has_vararg || info->forceframe) || (info->isframe && ModuleInfo.frame_auto)) && ModuleInfo.frame_auto && info->isframe) {
 			AddLineQueueX("push %r", info->basereg);
 			if (info->isframe && ModuleInfo.frame_auto)
 				AddLineQueueX("%r %r", T_DOT_PUSHREG, info->basereg);
 			AddLineQueueX("mov %r, %r", info->basereg, T_RSP);
 			if (info->isframe && ModuleInfo.frame_auto)
 				AddLineQueueX("%r %r, 0", T_DOT_SETFRAME, info->basereg);
-		}
+		//}
 	}
 #else
 	if (info->isframe && ModuleInfo.frame_auto) {
@@ -2887,8 +2888,9 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
 
 
 	/* UASM2.35 fix for functions without ModuleInfo.frame_auto */
-	if (((info->locallist || info->stackparam || info->has_vararg || info->forceframe) || (info->isframe && ModuleInfo.frame_auto)) && info->isframe && ModuleInfo.frame_auto) {
-		if ((info->localsize + resstack) > 0 || info->fpo || stackadj > 0) {
+	if(!info->fpo || info->stackparam || info->has_vararg) {
+	//if (((info->locallist || info->stackparam || info->has_vararg || info->forceframe) || (info->isframe && ModuleInfo.frame_auto)) && info->isframe && ModuleInfo.frame_auto) {
+		//if ((info->localsize + resstack) > 0 || info->fpo || stackadj > 0) {
 
 			DebugMsg1(("write_win64_default_prologue_RBP: localsize=%u resstack=%u\n", info->localsize, resstack));
 
@@ -2965,9 +2967,9 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
 					}
 				}
 			}
-		}
+		//}
 	}
-	else if (stackadj > 0 && (info->isframe && ModuleInfo.frame_auto))
+	else if (stackadj > 0 && ModuleInfo.frame_auto) // && (info->isframe && ModuleInfo.frame_auto))
 	{
 		AddLineQueueX("sub %r, %d", T_RSP, NUMQUAL stackadj);
 		if (info->isframe && ModuleInfo.frame_auto)
@@ -3340,7 +3342,7 @@ static void check_proc_fpo(struct proc_info *info)
 	int usedParams = 0;
 	int usedLocals = 0;
 
-	if (info->forceframe == TRUE)
+	if (info->forceframe == TRUE || info->isframe)
 	{
 		info->fpo = FALSE;
 		return;
@@ -3443,7 +3445,7 @@ static void write_win64_default_epilogue_RBP(struct proc_info *info)
 		}
 	}
 	/* UASM2.35 fix for functions without ModuleInfo.frame_auto */
-	if (((info->locallist || info->stackparam || info->has_vararg || info->forceframe) || info->fpo || (info->isframe && ModuleInfo.frame_auto)) && info->isframe && ModuleInfo.frame_auto)
+	if (!info->fpo || info->forceframe) //(((info->locallist || info->stackparam || info->has_vararg || info->forceframe) || info->fpo || (info->isframe && ModuleInfo.frame_auto)) && info->isframe && ModuleInfo.frame_auto)
 	{
 		if (ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP) && (info->localsize + sym_ReservedStack->value) > 0)
 			AddLineQueueX("add %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
@@ -3460,7 +3462,7 @@ static void write_win64_default_epilogue_RBP(struct proc_info *info)
 		AddLineQueueX("pop %r", basereg[ModuleInfo.Ofssize]);
 #endif
 	}
-	else if (stackadj > 0 && ModuleInfo.frame_auto && info->isframe)
+	else if (stackadj > 0) // && ModuleInfo.frame_auto && info->isframe)
 	{
 		AddLineQueueX("add %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL stackadj);
 	}

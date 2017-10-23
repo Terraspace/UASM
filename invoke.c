@@ -3154,6 +3154,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 	int asize;
 	int pushsize;
 	int j;
+	int previ;
 	int fptrsize;
 	char Ofssize;
 	bool addr = FALSE; /* ADDR operator found */
@@ -3181,7 +3182,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 
 	DebugMsg1(("PushInvokeParam(%s, param=%s:%u, i=%u ) enter\n", proc->sym.name, curr ? curr->sym.name : "NULL", reqParam, i));
 
-	j = i;
+	previ = i;
 	i++;
 	for (currParm = 0; currParm <= reqParam; )
 	{
@@ -3316,7 +3317,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 		}
 		i++;
 	}
-	i = j;
+	i = previ;
 
 	for (currParm = 0; currParm <= reqParam; ) 
 	{
