@@ -1884,7 +1884,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 	/* ******************************************************************************************************************** */
 	/* Operand is a valid XMM sized vector type (register already handled above) */
 	/* ******************************************************************************************************************** */
-	if ( (opnd->sym->mem_type == MT_TYPE || opnd->kind == EXPR_ADDR) && opnd->sym->type && _stricmp(opnd->sym->type->name, "__m128") == 0 )
+	if ( opnd->sym && (opnd->sym->mem_type == MT_TYPE || opnd->kind == EXPR_ADDR) && opnd->sym->type && _stricmp(opnd->sym->type->name, "__m128") == 0 )
 	{
 		reg = sysv_GetNextVEC(info, 16);
 		if (reg != -1)
@@ -1911,7 +1911,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 	/* ******************************************************************************************************************** */
 	/* Operand is a valid YMM sized vector type (register already handled above) */
 	/* ******************************************************************************************************************** */
-	if ((opnd->sym->mem_type == MT_TYPE || opnd->kind == EXPR_ADDR) && opnd->sym->type && _stricmp(opnd->sym->type->name, "__m256") == 0)
+	if ( opnd->sym && (opnd->sym->mem_type == MT_TYPE || opnd->kind == EXPR_ADDR) && opnd->sym->type && _stricmp(opnd->sym->type->name, "__m256") == 0)
 	{
 		reg = sysv_GetNextVEC(info, 32);
 		if (reg != -1)
@@ -1938,7 +1938,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 	/* ******************************************************************************************************************** */
 	/* Operand is a valid ZMM sized vector type (register already handled above) */
 	/* ******************************************************************************************************************** */
-	if ((opnd->sym->mem_type == MT_TYPE || opnd->kind == EXPR_ADDR) && opnd->sym->type && _stricmp(opnd->sym->type->name, "__m512") == 0)
+	if ( opnd->sym && (opnd->sym->mem_type == MT_TYPE || opnd->kind == EXPR_ADDR) && opnd->sym->type && _stricmp(opnd->sym->type->name, "__m512") == 0)
 	{
 		reg = sysv_GetNextVEC(info, 64);
 		if (reg != -1)
@@ -3180,14 +3180,11 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 	uint_16 buff[256];
 
 	DebugMsg1(("PushInvokeParam(%s, param=%s:%u, i=%u ) enter\n", proc->sym.name, curr ? curr->sym.name : "NULL", reqParam, i));
-	//__debugbreak();
-	for (currParm = 0; currParm <= reqParam; ) 
+
+	j = i;
+	i++;
+	for (currParm = 0; currParm <= reqParam; )
 	{
-		isString[i] = FALSE;
-		if (tokenarray[i].token == T_FINAL ) { /* this is no real error! */
-			DebugMsg1(("PushInvokeParam(%s): T_FINAL token, i=%u\n", proc->sym.name, i));
-			return(ERROR);
-		}
 		if (tokenarray[i].token == T_COMMA) {
 			currParm++;
 		}
@@ -3219,7 +3216,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 			pDest = &buff;
 			finallen = slen;
 			//for (j = 0; j < finallen; j++)
-			while( *pSrc != '"')
+			while (*pSrc != '"')
 			{
 				c1 = *pSrc++;
 				c2 = *(pSrc);
@@ -3245,7 +3242,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 					*pDest++ = c1;
 			}
 			*pDest++ = 0;
-			OutputBytes((unsigned char *)&buff, finallen+1, NULL);
+			OutputBytes((unsigned char *)&buff, finallen + 1, NULL);
 			lbl->isdefined = TRUE;
 			lbl->isarray = TRUE;
 			lbl->mem_type = MT_BYTE;
@@ -3259,12 +3256,11 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 			lbl->ispublic = 0;
 
 			// invoke parameter is a raw ascii string, substitute in the our new label pointing to this raw string in .data segment. 
-			sprintf(stringparam[i], "%s", buf);
-			isString[i] = TRUE;
+			sprintf(stringparam[currParm], "%s", buf);
+			isString[currParm] = TRUE;
 
 			// Restore current Sement.
 			CurrSeg = curseg;
-
 		}
 		else if (strcmp(tokenarray[i].string_ptr, "L") == 0 && ParamIsString(tokenarray[i + 1].string_ptr, currParm, proc))
 		{
@@ -3288,14 +3284,14 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 			lbl = SymLookup(buf);
 			memset(&buff, 0, 256);
 			j = UTF8toWideChar(pSrc, slen, NULL, (unsigned short *)&buff, slen);
-            /* j contains a proper number of wide chars, it can be different than slen, v2.38 */
+			/* j contains a proper number of wide chars, it can be different than slen, v2.38 */
 			SetSymSegOfs(lbl);
-			OutputBytes((unsigned char *)&buff, (j*2)+2, NULL);
+			OutputBytes((unsigned char *)&buff, (j * 2) + 2, NULL);
 			lbl->isdefined = TRUE;
-			lbl->isarray   = TRUE;
-			lbl->mem_type  = MT_BYTE;
+			lbl->isarray = TRUE;
+			lbl->mem_type = MT_BYTE;
 			lbl->state = SYM_INTERNAL;
-			lbl->first_size   = 2;
+			lbl->first_size = 2;
 			lbl->first_length = 1;
 			lbl->total_length = j;
 			lbl->total_size = j;
@@ -3304,12 +3300,29 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 			lbl->ispublic = 0;
 
 			// invoke parameter is a raw ascii string, substitute in the our new label pointing to this raw string in .data segment.
-			sprintf(stringparam[i+1], "%s", buf);
-			isString[i+1] = TRUE;
+			sprintf(stringparam[currParm], "%s", buf);
+			isString[currParm] = TRUE;
 
 			// Restore current Sement.
 			CurrSeg = curseg;
 			i++;
+		}
+		else
+		{
+			isString[currParm] = FALSE;
+		}
+		i++;
+	}
+	i = j;
+
+	for (currParm = 0; currParm <= reqParam; ) 
+	{
+		if (tokenarray[i].token == T_FINAL ) { /* this is no real error! */
+			DebugMsg1(("PushInvokeParam(%s): T_FINAL token, i=%u\n", proc->sym.name, i));
+			return(ERROR);
+		}
+		if (tokenarray[i].token == T_COMMA) {
+			currParm++;
 		}
 		i++;
 	}
@@ -3345,9 +3358,9 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 
 	/* copy the parameter tokens to fullparam */
 	for (j = i; tokenarray[j].token != T_COMMA && tokenarray[j].token != T_FINAL; j++);
-	if (isString[i])
+	if (isString[reqParam])
 	{
-		memcpy(fullparam, stringparam[i], strlen(stringparam[i]) + 1);
+		memcpy(fullparam, stringparam[reqParam], strlen(stringparam[reqParam]) + 1);
 		addr = TRUE;
 		psize = 2 << curr->sym.Ofssize;
 		if (curr->sym.isfar)
@@ -4394,7 +4407,6 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 		unsigned char sGPR = proc->e.procinfo->firstGPR;
 		unsigned char sVEC = proc->e.procinfo->firstVEC;
 		proc->e.procinfo->vararg_vecs = 0;
-
 		for (numParam = 0; curr && (curr->sym.is_vararg == FALSE); curr = curr->nextparam, numParam++)
 		{
 			if (PushInvokeParam(i, tokenarray, proc, curr, numParam, &r0flags) == ERROR)
@@ -4406,8 +4418,8 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 		/* Handle VARARG operands AFTER normal ones for SYSTEMV */
 		if (proc->sym.langtype == LANG_SYSVCALL && proc->e.procinfo->has_vararg)
 		{
-			int j = (Token_Count - i) / 2;//numParam;
-			for (; j > numParam  ; j--)
+			int j = numParam;
+			for (; j < ((Token_Count - i) / 2); j++)
 				PushInvokeParam(i, tokenarray, proc, curr, j, &r0flags);
 		}
 
