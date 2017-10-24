@@ -37,6 +37,7 @@
 #define NOT_BIT_012     0xF8
 #define NOT_BIT_345     0xC7 /* mask to filter Mod- and R/M-bits for ModRM-byte */
 #define NOT_BIT_67      0x3F
+#define NOT_BIT_6       0xBF
 
 #define MOD_00          0x00
 #define MOD_01          0x40
