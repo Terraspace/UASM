@@ -2797,9 +2797,8 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
 	int                 i;
 	int                 cnt;
 	int                 cntxmm;
-	//int                 cntstd = 0;
 	int                 resstack = ((ModuleInfo.win64_flags & W64F_AUTOSTACKSP) ? sym_ReservedStack->value : 0);
-	int                 stackadj;
+	int                 stackadj = 0;
 
 	info->pushed_reg = 0;
 
@@ -2869,23 +2868,26 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
 			}
 		} /* end for */
 	}
-	/* alloc space for local variables */
+	
+	/* adjust stack to be 16byte aligned if required */
 
-	if (info->fpo)
+	if (ModuleInfo.win64_flags & W64F_STACKALIGN16 || ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
 	{
-		if (info->pushed_reg % 2 == 0)
-			stackadj = 8;
+		if (info->fpo)
+		{
+			if (info->pushed_reg % 2 == 0)
+				stackadj = 8;
+			else
+				stackadj = 0;
+		}
 		else
-			stackadj = 0;
+		{
+			if (info->pushed_reg % 2 == 0)
+				stackadj = 0;
+			else
+				stackadj = 8;
+		}
 	}
-	else
-	{
-		if (info->pushed_reg % 2 == 0)
-			stackadj = 0;
-		else
-			stackadj = 8;
-	}
-
 
 	/* UASM2.35 fix for functions without ModuleInfo.frame_auto */
 	if(!info->fpo || info->stackparam || info->has_vararg) {
@@ -3341,7 +3343,17 @@ static void check_proc_fpo(struct proc_info *info)
 	struct dsym *paracurr;
 	int usedParams = 0;
 	int usedLocals = 0;
-
+/*
+	if (ModuleInfo.frame_auto && info->isframe)
+	{
+		info->fpo = FALSE;
+		return;
+	}
+	if (!info->isframe)
+	{
+		info->fpo = FALSE;
+		return;
+	}*/
 	if (info->forceframe == TRUE || info->isframe)
 	{
 		info->fpo = FALSE;
@@ -3379,19 +3391,22 @@ static void write_win64_default_epilogue_RBP(struct proc_info *info)
 {
 	int  stackadj = 0;
 
-	if (info->fpo)
+	if (ModuleInfo.win64_flags & W64F_STACKALIGN16 || ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
 	{
-		if (info->pushed_reg % 2 == 0)
-			stackadj = 8;
+		if (info->fpo)
+		{
+			if (info->pushed_reg % 2 == 0)
+				stackadj = 8;
+			else
+				stackadj = 0;
+		}
 		else
-			stackadj = 0;
-	}
-	else
-	{
-		if (info->pushed_reg % 2 == 0)
-			stackadj = 0;
-		else
-			stackadj = 8;
+		{
+			if (info->pushed_reg % 2 == 0)
+				stackadj = 0;
+			else
+				stackadj = 8;
+		}
 	}
 
 	/* UASM2.35 fix for functions without ModuleInfo.frame_auto */
