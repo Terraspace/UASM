@@ -2818,7 +2818,7 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
 	if (info->fpo) {
 		DebugMsg1(("write_win64_default_prologue_RBP: no frame register needed\n"));
 	}
-	else if ( (!info->fpo && ModuleInfo.frame_auto) || !info->isframe ) {
+	else if ( !info->fpo || info->forceframe || !info->isframe ) {
 		/* UASM2.35 fix for functions without ModuleInfo.frame_auto */
 		//if( info->forceframe || info->stackparam || info->has_vararg || !info->fpo) {
 		//if ( ((info->locallist || info->stackparam || info->has_vararg || info->forceframe) || (info->isframe && ModuleInfo.frame_auto)) && ModuleInfo.frame_auto && info->isframe) {
@@ -2871,7 +2871,7 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
 	
 	/* adjust stack to be 16byte aligned if required */
 
-	if (ModuleInfo.win64_flags & W64F_STACKALIGN16 || ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
+	if (ModuleInfo.win64_flags & W64F_STACKALIGN16 || ModuleInfo.win64_flags & W64F_AUTOSTACKSP || ModuleInfo.frame_auto)
 	{
 		if (info->fpo)
 		{
@@ -3343,7 +3343,12 @@ static void check_proc_fpo(struct proc_info *info)
 	struct dsym *paracurr;
 	int usedParams = 0;
 	int usedLocals = 0;
-/*
+
+	if (!ModuleInfo.frame_auto && info->isframe)
+	{
+		info->fpo = TRUE;
+		return;
+	}
 	if (ModuleInfo.frame_auto && info->isframe)
 	{
 		info->fpo = FALSE;
@@ -3353,7 +3358,7 @@ static void check_proc_fpo(struct proc_info *info)
 	{
 		info->fpo = FALSE;
 		return;
-	}*/
+	}
 	if (info->forceframe == TRUE || info->isframe)
 	{
 		info->fpo = FALSE;
@@ -3391,7 +3396,7 @@ static void write_win64_default_epilogue_RBP(struct proc_info *info)
 {
 	int  stackadj = 0;
 
-	if (ModuleInfo.win64_flags & W64F_STACKALIGN16 || ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
+	if (ModuleInfo.win64_flags & W64F_STACKALIGN16 || ModuleInfo.win64_flags & W64F_AUTOSTACKSP || ModuleInfo.frame_auto)
 	{
 		if (info->fpo)
 		{
@@ -3460,7 +3465,7 @@ static void write_win64_default_epilogue_RBP(struct proc_info *info)
 		}
 	}
 	/* UASM2.35 fix for functions without ModuleInfo.frame_auto */
-	if (!info->fpo || info->forceframe) //(((info->locallist || info->stackparam || info->has_vararg || info->forceframe) || info->fpo || (info->isframe && ModuleInfo.frame_auto)) && info->isframe && ModuleInfo.frame_auto)
+	if (!info->fpo || info->forceframe || !info->isframe) //(((info->locallist || info->stackparam || info->has_vararg || info->forceframe) || info->fpo || (info->isframe && ModuleInfo.frame_auto)) && info->isframe && ModuleInfo.frame_auto)
 	{
 		if (ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP) && (info->localsize + sym_ReservedStack->value) > 0)
 			AddLineQueueX("add %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
@@ -3469,7 +3474,8 @@ static void write_win64_default_epilogue_RBP(struct proc_info *info)
 
 		pop_register(CurrProc->e.procinfo->regslist);
 #if STACKBASESUPP
-		if (!info->fpo && GetRegNo(info->basereg) != 4 && (info->parasize != 0 || info->locallist != NULL)) {
+		if ((!info->fpo && ModuleInfo.frame_auto) || !info->isframe) {
+		//if (!info->fpo && GetRegNo(info->basereg) != 4 && (info->parasize != 0 || info->locallist != NULL)) {
 			AddLineQueueX("pop %r", info->basereg);
 		}
 			
@@ -4108,15 +4114,14 @@ static void SetLocalOffsets_RBP(struct proc_info *info)
 	int         start = 0;
 #endif
 #if AMD64_SUPPORT
-	int         rspalign = FALSE;
+	int         rspalign = TRUE;
 #endif
 	int         align = CurrWordSize;
 #if AMD64_SUPPORT
-	//if ( info->isframe || ( ModuleInfo.fctype == FCT_WIN64 && ( ModuleInfo.win64_flags & W64F_AUTOSTACKSP ) ) ) {
-	rspalign = TRUE;
-	if (ModuleInfo.win64_flags & W64F_STACKALIGN16)
+	if (ModuleInfo.win64_flags & W64F_STACKALIGN16 || ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
+	{
 		align = 16;
-	//}
+	}
 #endif
 
 	check_proc_fpo(info);
@@ -4493,7 +4498,10 @@ void write_prologue(struct asm_tok tokenarray[])
 				SetLocalOffsets_RSP(CurrProc->e.procinfo);
 		}
 		else
+		{
+			CurrProc->e.procinfo->localsize = 0;
 			SetLocalOffsets_RBP(CurrProc->e.procinfo); /* We need this to run over multiple passes to ensure FPO is handled */
+		}
 	}
 	else
 	{

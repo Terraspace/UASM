@@ -2083,7 +2083,18 @@ static void output_opc(struct code_info *CodeInfo)
             tmp |= CodeInfo->reg1;
           }
 
-          OutputCodeByte( tmp );
+		/* UASM 2.43 - Use signed byte displacement form optimisation */
+		if (CodeInfo->token == T_VMOVDQA || CodeInfo->token == T_VMOVDQU) 
+		{
+			if ((CodeInfo->opnd[OPND2].type & OP_M_ANY) && (CodeInfo->opnd[OPND2].data32l >= -128) && (CodeInfo->opnd[OPND2].data32l < 128) ||
+				(CodeInfo->opnd[OPND1].type & OP_M_ANY) && (CodeInfo->opnd[OPND1].data32l >= -128) && (CodeInfo->opnd[OPND1].data32l < 128))
+			{
+				tmp &= NOT_BIT_67;
+				tmp |= MOD_01;
+			}
+		}
+
+        OutputCodeByte( tmp );
 
         if( ( CodeInfo->Ofssize == USE16 && CodeInfo->prefix.adrsiz == 0 ) ||
            ( CodeInfo->Ofssize == USE32 && CodeInfo->prefix.adrsiz == 1 ) )
@@ -2248,12 +2259,24 @@ static void output_data(const struct code_info *CodeInfo, enum operand_type dete
         }
       }
     }
-        /* if the TypleType is present output only 1 byte for the multiplier */
+        /* if the TupleType is present output only 1 byte for the multiplier */
         if ((CodeInfo->tuple)&&(CodeInfo->opnd[OPND2].type != OP_I8)) {
           OutputByte(CodeInfo->opnd[index].data32l);
         }
-        else
-          OutputBytes( (unsigned char *)&CodeInfo->opnd[index].data32l, size, NULL );
+		else
+		{
+			/* UASM 2.43 in the event of optimised signed byte displacement, only output single low byte */
+			if (CodeInfo->token == T_VMOVDQA || CodeInfo->token == T_VMOVDQU)
+			{
+				if ( (CodeInfo->opnd[OPND2].type & OP_M_ANY) && (CodeInfo->opnd[OPND2].data32l >= -128) && (CodeInfo->opnd[OPND2].data32l < 128) ||
+					 (CodeInfo->opnd[OPND1].type & OP_M_ANY) && (CodeInfo->opnd[OPND1].data32l >= -128) && (CodeInfo->opnd[OPND1].data32l < 128) )			
+					OutputBytes((unsigned char *)&CodeInfo->opnd[index].data32l, 1, NULL);
+				else
+					OutputBytes((unsigned char *)&CodeInfo->opnd[index].data32l, size, NULL);
+			}
+			else
+				OutputBytes((unsigned char *)&CodeInfo->opnd[index].data32l, size, NULL);
+		}
        
     return;
 }
