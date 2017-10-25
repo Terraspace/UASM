@@ -2092,7 +2092,6 @@ static void output_opc(struct code_info *CodeInfo)
 				tmp |= MOD_01;
 				if (CodeInfo->opnd[OPND2].data32l == 0)
 					tmp &= NOT_BIT_6;
-				OutputCodeByte(tmp);
 			}
 			else if((CodeInfo->opnd[OPND1].type & OP_M_ANY) && (CodeInfo->opnd[OPND1].data32l >= -128) && (CodeInfo->opnd[OPND1].data32l < 128))
 			{
@@ -2100,15 +2099,9 @@ static void output_opc(struct code_info *CodeInfo)
 				tmp |= MOD_01;
 				if (CodeInfo->opnd[OPND1].data32l == 0)
 					tmp &= NOT_BIT_6;
-				OutputCodeByte(tmp);
-			}
-			else
-			{
-				OutputCodeByte(tmp);
 			}
 		}
-		else
-			OutputCodeByte( tmp );
+		OutputCodeByte( tmp );
 
         if( ( CodeInfo->Ofssize == USE16 && CodeInfo->prefix.adrsiz == 0 ) ||
            ( CodeInfo->Ofssize == USE32 && CodeInfo->prefix.adrsiz == 1 ) )
