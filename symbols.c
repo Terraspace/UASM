@@ -303,6 +303,31 @@ struct asym *SymFind( const char *name )
     return( NULL );
 }
 
+struct asym *SymFindLocal(const char *name)
+	/**************************************/
+	/* find a symbol in the local symbol table,
+	* return ptr to next free entry in local table if not found.
+	*/
+{
+	int i;
+	int len;
+
+	len = strlen(name);
+	i = hashpjw(name);
+
+	if (CurrProc) {
+		for (lsym = &lsym_table[i % LHASH_TABLE_SIZE]; *lsym; lsym = &((*lsym)->nextitem)) {
+			if (len == (*lsym)->name_size && SYMCMP(name, (*lsym)->name, len) == 0) {
+				DebugMsg1(("SymFindLocal(%s): found in local table, state=%u, local=%u\n", name, (*lsym)->state, (*lsym)->scoped));
+				(*lsym)->used = TRUE;
+				return(*lsym);
+			}
+		}
+	}
+
+	return(NULL);
+}
+
 /* Version to be used during declaration of a LOCAL to avoid it being marked as used */
 struct asym *SymFindDeclare(const char *name)
 	/**************************************/

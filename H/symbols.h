@@ -572,6 +572,7 @@ extern  struct asym     *SymLookup( const char * );
 extern  struct asym     *SymLookupLocal( const char * );
 
 extern  struct asym     *SymFind( const char *name );
+extern  struct asym     *SymFindLocal( const char *name );
 extern  struct asym     *SymFindDeclare( const char *name );
 #define SymSearch(x) SymFind(x)
 

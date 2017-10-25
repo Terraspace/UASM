@@ -30,7 +30,7 @@
 #include "orgfixup.h"
 #include "macrolib.h"
 
-#define MACRO_COUNT64 58
+#define MACRO_COUNT64 59
 #define MACRO_COUNT32 27
 
 /* MACRO names  */
@@ -101,6 +101,7 @@ char *macDef64[] = {
 	"ASDOUBLE MACRO reg:REQ",
 	"R4P MACRO reg:REQ",
 	"R8P MACRO reg:REQ",
+	"SYSV_PARAM MACRO pName:REQ, pType:REQ",
 };
 char *macDef32[] = {
 	"MOV64 MACRO dst:REQ, imm:REQ",
@@ -174,7 +175,7 @@ void InitAutoMacros64(void)
 	uint_32 start_pos = 0;
 	char  *srcLines[128]; // NB: 128 is the max number of lines of macro code per macro.  37, 33, 37, 33,
 
-	uint_32 macroLen[] = { 3, 3, 8, 37, 33, 37, 33, 7, 6, 10, 6, 7, 7, 7, 8, 8, 10, 3, 7, 11, 19, 10, 2, 7, 2, 10, 11, 19, 5, 39, 39, 12, 5, 2, 3, 3, 26, 27, 2, 2, 11, 8, 8, 9, 22, 23, 23, 23, 23, 23, 5, 10, 10, 35, 1, 1, 1, 1 }; // Count of individual lines of macro-body code.
+	uint_32 macroLen[] = { 3, 3, 8, 37, 33, 37, 33, 7, 6, 10, 6, 7, 7, 7, 8, 8, 10, 3, 7, 11, 19, 10, 2, 7, 2, 10, 11, 19, 5, 39, 39, 12, 5, 2, 3, 3, 26, 27, 2, 2, 11, 8, 8, 9, 22, 23, 23, 23, 23, 23, 5, 10, 10, 35, 1, 1, 1, 1, 17 }; // Count of individual lines of macro-body code.
 	char *macCode[] = {
 		"mov dword ptr dst, LOW32(imm)", "mov dword ptr dst + 4, HIGH32(imm)", "ENDM", NULL,
         "MOV64 dst, immHi", "MOV64 dst + 8, immLo", "ENDM", NULL,
@@ -234,6 +235,7 @@ void InitAutoMacros64(void)
 		"EXITM <REAL8 PTR reg> ", NULL,
 		"EXITM <REAL4 PTR reg> ", NULL,
 		"EXITM <REAL8 PTR reg> ", NULL,
+		"namelen SIZESTR <&pName&>", "typelen SIZESTR <&pType&>", "unname TEXTEQU @CATSTR(<_>,@SUBSTR(<&pName&>,3,namelen - 3))", "typename TEXTEQU @SUBSTR(<&pType&>,2,typelen - 3)", "IF(OPATTR(@SUBSTR(<&pName&>,3,namelen - 3))) EQ 48", "% LOCAL unname : typename", "%    IF TYPE &typename& EQ REAL4", "movss unname,@SUBSTR(<&pName&>,3,namelen - 3)", "% ELSEIF TYPE &typename& EQ REAL8", "movsd unname,@SUBSTR(<&pName&>,3,namelen - 3)", "ELSE", "mov unname,@SUBSTR(<&pName&>,3,namelen - 3)", "ENDIF", "ELSE", "% unname EQU @SUBSTR(<&pName&>,3,namelen - 3)", "ENDIF", "ENDM", NULL
     };	
 
 	/* Compile Macros */

@@ -1965,8 +1965,11 @@ static ret_code argidx_op(int oper, struct expr *opnd1, struct expr *opnd2, stru
 		return(invalid_operand(opnd2, GetResWName(oper, NULL), name));
 	}
 
-	/* if operand is a constant value, error */
+	/* if operand is a constant value or register, error */
 	if (opnd2->kind == EXPR_CONST) {
+		return(invalid_operand(opnd2, GetResWName(oper, NULL), name));
+	}
+	if (opnd2->kind == EXPR_REG) {
 		return(invalid_operand(opnd2, GetResWName(oper, NULL), name));
 	}
 
@@ -2027,6 +2030,9 @@ static ret_code argsize_op(int oper, struct expr *opnd1, struct expr *opnd2, str
 	if (opnd2->kind == EXPR_CONST) {
 		return(invalid_operand(opnd2, GetResWName(oper, NULL), name));
 	}
+	if (opnd2->kind == EXPR_REG) {
+		return(invalid_operand(opnd2, GetResWName(oper, NULL), name));
+	}
 
 	/* argidx operator accepts types, but returns always 0 */
 	if (opnd2->is_type)
@@ -2085,6 +2091,9 @@ static ret_code argtype_op(int oper, struct expr *opnd1, struct expr *opnd2, str
 
 	/* if operand is a constant value, error */
 	if (opnd2->kind == EXPR_CONST) {
+		return(invalid_operand(opnd2, GetResWName(oper, NULL), name));
+	}
+	if (opnd2->kind == EXPR_REG) {
 		return(invalid_operand(opnd2, GetResWName(oper, NULL), name));
 	}
 

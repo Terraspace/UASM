@@ -609,9 +609,14 @@ ret_code LocalDir(int i, struct asm_tok tokenarray[])
 
 	DebugMsg1(("LocalDir(%u) entry\n", i));
 
-	if (!(ProcStatus & PRST_PROLOGUE_NOT_DONE) || CurrProc == NULL) {
+	/* UASM 2.43 - There is no reason to not let LOCALS be declared later in the proc */
+	/*if (!(ProcStatus & PRST_PROLOGUE_NOT_DONE) || CurrProc == NULL) {
+		return(EmitError(PROC_MACRO_MUST_PRECEDE_LOCAL));
+	}*/
+	if (CurrProc == NULL) {
 		return(EmitError(PROC_MACRO_MUST_PRECEDE_LOCAL));
 	}
+
 	info = CurrProc->e.procinfo;
 #if STACKBASESUPP
 	/* ensure the fpo bit is set - it's too late to set it in write_prologue().
@@ -792,7 +797,6 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 	char            *name;
 	struct asym     *sym;
 	int             cntParam;
-	//int             paramCount;
 	int             offset = 0;
 	int             fcint = 0;
 	int             vecint = 0;
@@ -802,9 +806,6 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 	struct dsym     *paranode;
 	struct dsym     *paracurr;
 	int             curr;
-	//int             paracount = 0;
-	//int             tmp = 0;
-	//uint_16         cnt = 0;
 
 	/*
 	* find "first" parameter ( that is, the first to be pushed in INVOKE ).
@@ -812,15 +813,9 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 	if (proc->sym.langtype == LANG_C ||
 		proc->sym.langtype == LANG_SYSCALL ||
 		proc->sym.langtype == LANG_DELPHICALL ||
-#if AMD64_SUPPORT
 		(proc->sym.langtype == LANG_FASTCALL && ModuleInfo.Ofssize != USE64) ||
 		(proc->sym.langtype == LANG_VECTORCALL && ModuleInfo.Ofssize != USE64) ||
 		(proc->sym.langtype == LANG_SYSVCALL && ModuleInfo.Ofssize != USE64) ||
-#else
-		proc->sym.langtype == LANG_FASTCALL ||
-		proc->sym.langtype == LANG_VECTORCALL ||
-		proc->sym.langtype == LANG_SYSVCALL ||
-#endif
 		proc->sym.langtype == LANG_STDCALL)
 		for (paracurr = proc->e.procinfo->paralist; paracurr && paracurr->nextparam; paracurr = paracurr->nextparam);
 	else
@@ -907,40 +902,13 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 		}
 
 		/* check if parameter name is defined already */
-		if ((IsPROC) && (sym = SymSearch(name)) && sym->state != SYM_UNDEFINED) {
+		if ((IsPROC) && (sym = SymFindLocal(name)) && sym->state != SYM_UNDEFINED) { /* UASM 2.43 replaced SymSearch to prevent symbol redefinition warning on proc params */
 			DebugMsg(("ParseParams: %s defined already, state=%u, local=%u\n", sym->name, sym->state, sym->scoped));
 			return(EmitErr(SYMBOL_REDEFINITION, name));
 		}
 
 		/* redefinition? */
 		if (paracurr) {
-#if 0 /* was active till v2.04 */
-			int newsize = ti.size;
-			int oldsize;
-			/* check size only (so UINT <-> DWORD wont cause an error) */
-			if (paracurr->sym.type)
-				oldsize = paracurr->sym.total_size;
-			else if (paracurr->sym.mem_type == MT_EMPTY)
-				oldsize = 0;
-			else if (paracurr->sym.mem_type == MT_PTR)
-				oldsize = SizeFromMemtype(paracurr->sym.isfar ? MT_FAR : MT_NEAR, paracurr->sym.Ofssize, NULL);
-			else
-				oldsize = SizeFromMemtype(paracurr->sym.mem_type, paracurr->sym.Ofssize, paracurr->sym.type);
-			if (oldsize != newsize) {
-				DebugMsg(("ParseParams: old memtype=%u, new memtype=%u\n", paracurr->sym.mem_type, ti.mem_type));
-				EmitErr(CONFLICTING_PARAMETER_DEFINITION, name);
-				//return( ERROR );
-			}
-			/* the parameter type used in PROC has highest priority! */
-			if (IsPROC) {
-				if (ti.symtype) {
-					paracurr->sym.type = ti.symtype;
-					paracurr->sym.mem_type = MT_TYPE;
-				}
-				else
-					paracurr->sym.mem_type = ti.mem_type;
-			}
-#else
 			struct asym *to;
 			struct asym *tn;
 			char oo;
@@ -974,9 +942,8 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 					paracurr->sym.Ofssize, ti.Ofssize,
 					paracurr->sym.ptr_memtype, ti.ptr_memtype));
 				EmitErr(CONFLICTING_PARAMETER_DEFINITION, name);
-				//return( ERROR );
 			}
-#endif
+
 			if (IsPROC) {
 				DebugMsg1(("ParseParams: calling SymAddLocal(%s, %s)\n", paracurr->sym.name, name));
 				/* it has been checked already that the name isn't found - SymAddLocal() shouldn't fail */
@@ -986,13 +953,9 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 			if (proc->sym.langtype == LANG_C ||
 				proc->sym.langtype == LANG_SYSCALL ||
 				proc->sym.langtype == LANG_DELPHICALL ||
-#if AMD64_SUPPORT
 				(proc->sym.langtype == LANG_FASTCALL && ti.Ofssize != USE64) ||
 				(proc->sym.langtype == LANG_VECTORCALL && ti.Ofssize != USE64) ||
 				(proc->sym.langtype == LANG_SYSVCALL && ti.Ofssize != USE64) ||
-#else
-				proc->sym.langtype == LANG_FASTCALL ||
-#endif
 				proc->sym.langtype == LANG_STDCALL) {
 				struct dsym *l;
 				for (l = proc->e.procinfo->paralist;
@@ -1002,8 +965,6 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 			}
 			else
 				paracurr = paracurr->nextparam;
-
-			//} else if ( proc->e.procinfo->init_done == TRUE ) {
 		}
 		else if (init_done == TRUE) {
 			/* second definition has more parameters than first */
@@ -4577,7 +4538,7 @@ static void SetLocalOffsets_RBP_WIN0(struct proc_info *info)
 	*/
 	if (rspalign) {
 		info->localsize -= cntstd * 8;
-		info->localsize = ROUND_UP(info->localsize, 16);
+		info->localsize = ROUND_UP(info->localsize, align);
 		DebugMsg1(("SetLocalOffsets_RBP(%s): final localsize=%u\n", CurrProc->sym.name, info->localsize));
 	}
 

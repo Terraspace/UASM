@@ -1783,34 +1783,37 @@ int EXPQUAL AssembleModule( const char *source )
 			ModuleInfo.g.error_count); // write normal string for listing.
 
 		// console output. "%s: %lu lines, %u passes, %u ms, %u warnings, %u errors"
-		#ifdef _WIN32
-				SetConsoleTextAttribute(hConsole, WIN_LTWHITE);
-				printf("%s: %lu lines, ", GetFNamePart(GetFName(ModuleInfo.srcfile)->fname), GetLineNumber());
-				SetConsoleTextAttribute(hConsole, WIN_LTGREEN);
-				printf("%u passes", Parse_Pass + 1);
-				SetConsoleTextAttribute(hConsole, WIN_LTWHITE);
-				printf(", ");
-				SetConsoleTextAttribute(hConsole, WIN_CYAN);
-				printf("%u ms", endtime - starttime);
-				SetConsoleTextAttribute(hConsole, WIN_LTWHITE);
-				printf(", ");
-				SetConsoleTextAttribute(hConsole, WIN_YELLOW);
-				printf("%u warnings", ModuleInfo.g.warning_count);
-				SetConsoleTextAttribute(hConsole, WIN_LTWHITE);
-				printf(", ");
-				SetConsoleTextAttribute(hConsole, WIN_LTRED);
-				printf("%u errors\n", ModuleInfo.g.error_count);
-				SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
-		#else
-			printf(FWHT("%s: %lu lines, "), GetFNamePart(GetFName(ModuleInfo.srcfile)->fname), GetLineNumber());
-			printf(FGRN("%u passes"), Parse_Pass + 1);
-			printf(", ");
-			printf(FCYN("%u ms"), endtime - starttime);
-			printf(", ");
-			printf(FYEL("%u warnings"), ModuleInfo.g.warning_count);
-			printf(", ");
-			printf(FRED("%u errors\n"), ModuleInfo.g.error_count);
-		#endif
+		if (Options.quiet == FALSE)
+		{
+			#ifdef _WIN32
+						SetConsoleTextAttribute(hConsole, WIN_LTWHITE);
+						printf("%s: %lu lines, ", GetFNamePart(GetFName(ModuleInfo.srcfile)->fname), GetLineNumber());
+						SetConsoleTextAttribute(hConsole, WIN_LTGREEN);
+						printf("%u passes", Parse_Pass + 1);
+						SetConsoleTextAttribute(hConsole, WIN_LTWHITE);
+						printf(", ");
+						SetConsoleTextAttribute(hConsole, WIN_CYAN);
+						printf("%u ms", endtime - starttime);
+						SetConsoleTextAttribute(hConsole, WIN_LTWHITE);
+						printf(", ");
+						SetConsoleTextAttribute(hConsole, WIN_YELLOW);
+						printf("%u warnings", ModuleInfo.g.warning_count);
+						SetConsoleTextAttribute(hConsole, WIN_LTWHITE);
+						printf(", ");
+						SetConsoleTextAttribute(hConsole, WIN_LTRED);
+						printf("%u errors\n", ModuleInfo.g.error_count);
+						SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
+			#else
+						printf(FWHT("%s: %lu lines, "), GetFNamePart(GetFName(ModuleInfo.srcfile)->fname), GetLineNumber());
+						printf(FGRN("%u passes"), Parse_Pass + 1);
+						printf(", ");
+						printf(FCYN("%u ms"), endtime - starttime);
+						printf(", ");
+						printf(FYEL("%u warnings"), ModuleInfo.g.warning_count);
+						printf(", ");
+						printf(FRED("%u errors\n"), ModuleInfo.g.error_count);
+ 			#endif
+		}
 	}
 	if (Options.quiet == FALSE)
 	{
