@@ -244,7 +244,7 @@ static void PutMsg( FILE *fp, int severity, int msgnum, va_list args )
             fwrite( buffer, 1, j, fp );
         }
         pMsg = MsgGetEx( msgnum );
-        switch (severity ) {
+        switch ( severity ) {
         case 1:  type = MsgGetEx( MSG_FATAL_PREFIX );   break;
         case 2:  type = MsgGetEx( MSG_ERROR_PREFIX );   break;
         case 4:  type = MsgGetEx( MSG_WARNING_PREFIX ); break;
@@ -264,11 +264,13 @@ static void PutMsg( FILE *fp, int severity, int msgnum, va_list args )
 			SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
 		#else	
 			if (severity == 4)
-				fwrite(KYEL, 1, 1, fp);
+				printf(KYEL);
 			else if (severity == 2)
-				fwrite(KRED, 1, 1, fp);
+				printf(KRED);
 			fwrite(buffer, 1, i, fp);
-			fwrite(FWHT("\n"), 1, 1, fp);
+			fwrite("\n", 1, 1, fp);
+			printf(RST)
+			fflush();
 		#endif
 
 
