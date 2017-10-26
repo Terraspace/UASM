@@ -3170,12 +3170,10 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 {
 	uint_16             *regist;
 	const char * const  *ppfmt;
-	//struct    dsym      *param;
 	int                 cntxmm;
 	unsigned char xyused[6];  /* flags for used sse registers in vectorcall */
 	unsigned char       xreg;
 	unsigned char       xsize;
-	//unsigned char       xmmflag = 1;
 	unsigned char       ymmflag = 0;
 	unsigned char       zmmflag = 0;
 	int                 vsize = 0;
@@ -3185,10 +3183,8 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 	int                 i;
 	int                 j;
 	int                 cnt;
-	//int                 homestart;
 	int                 stackSize;
 	int                 resstack = ((ModuleInfo.win64_flags & W64F_AUTOSTACKSP) ? sym_ReservedStack->value : 0);
-	//struct dsym     *paranode;
 	int pushed = 0;
 
 	if (Parse_Pass == PASS_1)
@@ -3539,6 +3535,12 @@ static void check_proc_fpo(struct proc_info *info)
 			usedLocals++;
 	}
 
+	if (ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RSP || ModuleInfo.basereg[ModuleInfo.Ofssize] == T_ESP)
+	{
+		info->fpo = TRUE;
+		return;
+	}
+
 	if (!ModuleInfo.frame_auto && info->isframe)
 	{
 		info->fpo = TRUE;
@@ -3559,14 +3561,6 @@ static void check_proc_fpo(struct proc_info *info)
 		info->fpo = FALSE;
 		return;
 	}
-
-	if (ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RSP || ModuleInfo.basereg[ModuleInfo.Ofssize] == T_ESP)
-	{
-		info->fpo = TRUE;
-		return;
-	}
-
-
 
 	if (usedLocals > 0 || usedParams > 0 || Parse_Pass == PASS_1)
 		info->fpo = FALSE;
