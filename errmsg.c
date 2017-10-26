@@ -269,7 +269,7 @@ static void PutMsg( FILE *fp, int severity, int msgnum, va_list args )
 				printf(KYEL);
 			else if (severity == 2)
 				printf(KRED);
-			fflush();
+			fflush(NULL);
 			fwrite(buffer, 1, i, fp);
 			fwrite("\n", 1, 1, fp);
 			printf(RST);
