@@ -600,8 +600,6 @@ ret_code LocalDir(int i, struct asm_tok tokenarray[])
 	struct dsym *local;
 	struct dsym *curr;
 	struct proc_info *info;
-	//int         size;
-	//int         idx;
 	struct qualified_type ti;
 
 	if (Parse_Pass != PASS_1) /* everything is done in pass 1 */
@@ -609,11 +607,7 @@ ret_code LocalDir(int i, struct asm_tok tokenarray[])
 
 	DebugMsg1(("LocalDir(%u) entry\n", i));
 
-	/* UASM 2.43 - There is no reason to not let LOCALS be declared later in the proc */
-	/*if (!(ProcStatus & PRST_PROLOGUE_NOT_DONE) || CurrProc == NULL) {
-		return(EmitError(PROC_MACRO_MUST_PRECEDE_LOCAL));
-	}*/
-	if (CurrProc == NULL) {
+	if (!(ProcStatus & PRST_PROLOGUE_NOT_DONE) || CurrProc == NULL) {
 		return(EmitError(PROC_MACRO_MUST_PRECEDE_LOCAL));
 	}
 
@@ -4539,6 +4533,8 @@ static void SetLocalOffsets_RBP_WIN0(struct proc_info *info)
 	if (rspalign) {
 		info->localsize -= cntstd * 8;
 		info->localsize = ROUND_UP(info->localsize, align);
+		if(info->isframe && ModuleInfo.frame_auto)
+			info->localsize = ROUND_UP(info->localsize, 16);
 		DebugMsg1(("SetLocalOffsets_RBP(%s): final localsize=%u\n", CurrProc->sym.name, info->localsize));
 	}
 

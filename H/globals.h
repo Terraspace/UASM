@@ -66,7 +66,7 @@
 #endif
 
 #define MAX_LINE_LEN            1024  /* no restriction for this number */
-#define MAX_TOKEN  MAX_LINE_LEN / 4  /* max tokens in one line */
+#define MAX_TOKEN  MAX_LINE_LEN - 32  /* max tokens in one line */
 #define MAX_STRING_LEN          MAX_LINE_LEN - 32 /* must be < MAX_LINE_LEN */
 #define MAX_ID_LEN              247  /* must be < MAX_LINE_LEN */
 #define MAX_STRUCT_ALIGN        32
@@ -114,7 +114,7 @@
 #define ELF_SUPPORT  1 /* support ELF output format              */
 #endif
 #ifndef MACHO_SUPPORT
-#define MACHO_SUPPORT  1 /* support MACHO64 output format              */
+#define MACHO_SUPPORT  1 /* support MACHO output format              */
 #endif
 
 /* architecture switches */
@@ -263,7 +263,7 @@ enum oformat {
     OFORMAT_ELF, /* used by -elf and elf64 */
 #endif
 #if MACHO_SUPPORT
-	OFORMAT_MACHO, /* used by -macho64 */
+	OFORMAT_MAC, /* used by -macho64 */
 #endif
 };
 

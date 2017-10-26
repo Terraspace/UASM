@@ -2003,22 +2003,14 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bool addr, struct expr *opnd, char *paramvalue, uint_8 *regs_used)
 /************************************************************************************************************************************************/
 {
-	//uint_32 size;
 	uint_32 psize;
-	//char name[256];
-	//char buff[256];
-	//uint_64 fvalue[2];
 	int reg;
 	int reg2;
 	int i;
-	//int j = 0;
-	//int tCount = 0;
 	int base;
 	int regsize;
 	struct proc_info *info = proc->e.procinfo;
 	bool destroyed = FALSE;
-	//struct asym *sym;
-	//struct dsym *curr = NULL;
 
 	DebugMsg1(("sysv_param(%s, index=%u, param.memtype=%Xh, addr=%u) enter\n", proc->sym.name, index, param->sym.mem_type, addr));
 
@@ -2260,7 +2252,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 					if (_stricmp(param->sym.string_ptr, paramvalue) == 0)
 						DebugMsg(("sysv_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
 					else
-						AddLineQueueX("%s %s, %s", MOVE_ALIGNED_INT, param->sym.string_ptr, paramvalue);
+						AddLineQueueX("vmovdqa %s, %s", param->sym.string_ptr, paramvalue);
 				}
 				else
 				{
@@ -2272,14 +2264,14 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 			/* Vector register load from indirect register ie: [rax] etc */
 			if (opnd->kind == EXPR_REG && opnd->indirect == TRUE)
 			{
-				AddLineQueueX("%s %s, ymmword ptr %s", MOVE_UNALIGNED_INT, param->sym.string_ptr, paramvalue);
+				AddLineQueueX("vmovdqu %s, ymmword ptr %s", param->sym.string_ptr, paramvalue);
 				return(1);
 			}
 			/* Operand is a memory address (IE: symbol name) or memory address expression like [rbp+rax] etc */
 			if (opnd->kind == EXPR_ADDR && !addr)
 			{
 				if (psize == param->sym.total_size || opnd->mem_type == MT_EMPTY)
-					AddLineQueueX("%s %s, ymmword ptr %s", MOVE_UNALIGNED_INT, param->sym.string_ptr, paramvalue);
+					AddLineQueueX("vmovdqu %s, ymmword ptr %s", param->sym.string_ptr, paramvalue);
 				else
 					EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
 				return(1);

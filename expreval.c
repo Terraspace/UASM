@@ -116,6 +116,112 @@ static void init_expr( struct expr *opnd )
     opnd->type     = NULL;
 	opnd->isptr = FALSE;
 }
+static ret_code  GetMask128(struct expr *opnd1, int index, struct asm_tok tokenarray[])
+  {
+    uint_64         dst128Hi = opnd1->hlvalue;
+    uint_64         dst128Lo = opnd1->llvalue;
+    char            buffer[MAX_LINE_LEN];
+    char            buffer1[MAX_LINE_LEN];
+    char            buff[16];
+    char            *ptr;
+    /* if it is NOT MASK, invert values */
+    if (index == 4 && 0 == _memicmp(tokenarray[3].string_ptr, "NOT", 3)){
+      dst128Hi = ~dst128Hi;
+      dst128Lo = ~dst128Lo;
+      }
+    strcpy( buffer,tokenarray->tokpos);
+    /* if GTEMP is not created yet do it now */
+    if ( glabel == 0){
+      glabel = TRUE;                  /* set the flag TRUE */
+     strcpy(buffer1, ".data");
+     strcpy(tokenarray->tokpos, buffer1);
+     Token_Count = Tokenize( tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT );
+     ParseLine(tokenarray);          
+     sprintf(buffer1, "GTEMP OWORD ", "0x%" PRIx64, dst128Hi);
+     sprintf(buff, "0x%" PRIx64, dst128Lo);
+     ptr = buff+2;
+     strcat(buffer1,ptr);
+     strcpy(tokenarray->tokpos, buffer1);
+     Token_Count = Tokenize( tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT );
+     ParseLine(tokenarray);
+     strcpy(buffer1, ".code");
+     strcpy(tokenarray->tokpos, buffer1);
+     Token_Count = Tokenize( tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT );
+     ParseLine(tokenarray);
+   }
+    else{ /* global variable GTEMP exist, reuse it   */
+      strcpy(buffer1, "mov dword ptr  ");
+      ptr = buffer1 + 14;
+      strcpy(ptr, "GTEMP");                  /* mov dword ptr rubi.rc */
+      ptr += 5;
+      strcpy(ptr, ", LOW32(");              /* mov dword ptr rubi.rc, LOW32( */
+      ptr += 8;
+      sprintf(ptr, "0x%" PRIx64, dst128Lo); /* mov dword ptr rubi.rc, LOW32(dst128Lo */
+      while (*ptr)ptr++;
+      *ptr = ')';
+      ptr++;
+      *ptr = '\0';
+      strcpy(tokenarray->tokpos, buffer1);
+      Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
+      ParseLine(tokenarray);
+      /* second DWORD */
+      strcpy(buffer1, "mov dword ptr  ");
+      ptr = buffer1 + 14;
+      strcpy(ptr, "GTEMP");                  /* mov dword ptr rubi.rc */
+      ptr += 5;
+      strcpy(ptr, "+4 ,HIGH32(");          /* mov dword ptr rubi.rc, HIGH32( */
+      ptr += 11;
+      sprintf(ptr, "0x%" PRIx64, dst128Lo); /* mov dword ptr rubi.rc, LOW32(dst128Lo */
+      while (*ptr)ptr++;
+      *ptr = ')';
+      ptr++;
+      *ptr = '\0';
+      strcpy(tokenarray->tokpos, buffer1);
+      Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
+      ParseLine(tokenarray);
+      /* third DWORD */
+      strcpy(buffer1, "mov dword ptr  ");
+      ptr = buffer1 + 14;
+      strcpy(ptr, "GTEMP");                  /* mov dword ptr rubi.rc */
+      ptr += 5;
+      strcpy(ptr, "+8, LOW32(");          /* mov dword ptr rubi.rc, LOW32( */
+      ptr += 10;
+      sprintf(ptr, "0x%" PRIx64, dst128Hi); /* mov dword ptr rubi.rc, LOW32(dst128Hi */
+      while (*ptr)ptr++;
+      *ptr = ')';
+      ptr++;
+      *ptr = '\0';
+      strcpy(tokenarray->tokpos, buffer1);
+      Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
+      ParseLine(tokenarray);
+      /* forth DWORD */
+      strcpy(buffer1, "mov dword ptr  ");
+      ptr = buffer1 + 14;
+      strcpy(ptr, "GTEMP");                  /* mov dword ptr rubi.rc */
+      ptr += 5;
+      strcpy(ptr, "+8+4, HIGH32(");          /* mov dword ptr rubi.rc, HIGH32( */
+      ptr += 13;
+      sprintf(ptr, "0x%" PRIx64, dst128Hi); /* mov dword ptr rubi.rc, LOW32(dst128Lo */
+      while (*ptr)ptr++;
+      *ptr = ')';
+      ptr++;
+      *ptr = '\0';
+      strcpy(tokenarray->tokpos, buffer1);
+      Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
+      ParseLine(tokenarray);
+  }
+   ptr = tokenarray->tokpos;
+   while (*ptr != '\0')*(ptr++) = '\0';
+   ptr = buffer;
+   while (*ptr != ',')ptr++;
+   ptr++;
+   *ptr = '\0';
+   strcat(ptr, "GTEMP");
+   strcpy(tokenarray->tokpos, buffer);
+   Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
+   tokenarray[Token_Count+1].token = T_FINAL;
+   return( NOT_ERROR );
+  }
 /*   InitRecordVar is used for inline initialise RECORD to be compatibile with masm, v2.41 
 *    now it can be used as :
 *    mov     al, COLOR<1, 7, 0, 1>         ;1 111 0 001 = F1
@@ -2337,6 +2443,10 @@ static ret_code this_op( int oper, struct expr *opnd1, struct expr *opnd2, struc
 static ret_code wimask_op( int oper, struct expr *opnd1, struct expr *opnd2, struct asym *sym, char *name )
 /*********************************************************************************************************/
 {
+    uint_64         dwRecIHi;
+    uint_64         dwRecILo;
+    uint_64         n = 1;
+
     /* additional check needed if operand is a type */
     if ( opnd2->is_type ) {
         sym = opnd2->type;
@@ -2358,16 +2468,26 @@ static ret_code wimask_op( int oper, struct expr *opnd1, struct expr *opnd2, str
             opnd1->value = GetRecordMask( (struct dsym *)sym );
 #endif
         } else { /* get mask of the bitfield */
-            for ( i = sym->offset ;i < sym->offset + sym->total_size; i++ )
-#if AMD64_SUPPORT
+          if (0 == _memicmp(ModuleInfo.tokenarray[1].string_ptr, "xmm", 3)){
+            dwRecIHi = 0;  /* clear Hi 64 bit for the 128 bit RECORD */
+            dwRecILo = 0;  /* clear Lo 64 bit for the 128 bit RECORD */
+            for (i = sym->offset; i < sym->offset + sym->total_size; i++){
+              ShiftLeft(&dwRecIHi, &dwRecILo, n, i);
+              opnd1->hlvalue |= dwRecIHi; /* OR Hi 64 bit for the 128 bit RECORD */
+              opnd1->llvalue |= dwRecILo; /* clear Lo 64 bit for the 128 bit RECORD */
+              }
+            }
+          else
+              for ( i = sym->offset ;i < sym->offset + sym->total_size; i++ )
+//#if AMD64_SUPPORT
 #if defined(LLONG_MAX) || defined(__GNUC__) || defined(__TINYC__)
                 opnd1->llvalue |= 1ULL << i;
 #else
                 opnd1->llvalue |= 1i64 << i;
 #endif
-#else
-                opnd1->value |= 1 << i;
-#endif
+//#else
+//                opnd1->value |= 1 << i;
+//#endif
         }
     } else {
         if ( opnd2->is_type ) { /* get width of the RECORD? */
@@ -4078,9 +4198,8 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
         }
         if( rc != ERROR )
             rc = calculate( opnd1, &opnd2, &tokenarray[curr_operator] );
-
         if( flags & EXPF_ONEOPND ) /* stop after one operand? */
-            break;
+           break;
     }
 
 #ifdef DEBUG_OUT
