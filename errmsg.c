@@ -42,6 +42,8 @@
 #include "listing.h"
 #include "segment.h"
 
+#include <stdio.h>
+
 #include "Colors.h"
 #ifdef _WIN32
 #include <Windows.h>
@@ -267,9 +269,10 @@ static void PutMsg( FILE *fp, int severity, int msgnum, va_list args )
 				printf(KYEL);
 			else if (severity == 2)
 				printf(KRED);
+			fflush();
 			fwrite(buffer, 1, i, fp);
 			fwrite("\n", 1, 1, fp);
-			printf(RST)
+			printf(RST);
 			fflush();
 		#endif
 
