@@ -273,7 +273,7 @@ static void PutMsg( FILE *fp, int severity, int msgnum, va_list args )
 			fwrite(buffer, 1, i, fp);
 			fwrite("\n", 1, 1, fp);
 			printf(RST);
-			fflush();
+			fflush(NULL);
 		#endif
 
 
