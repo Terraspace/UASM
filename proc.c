@@ -2832,17 +2832,25 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
 	{
 		if (info->fpo)
 		{
-			if (info->pushed_reg % 2 == 0)
+			if (info->pushed_reg % 2 == 0 && info->localsize % 16 == 0)
 				stackadj = 8;
-			else
+			else if (info->pushed_reg % 2 == 0 && info->localsize % 16 != 0)
 				stackadj = 0;
+			else if (info->pushed_reg % 2 != 0 && info->localsize % 16 == 0)
+				stackadj = 0;
+			else if (info->pushed_reg % 2 != 0 && info->localsize % 16 != 0)
+				stackadj = 8;
 		}
 		else
 		{
-			if (info->pushed_reg % 2 == 0)
+			if (info->pushed_reg % 2 == 0 && info->localsize % 16 == 0)
 				stackadj = 0;
-			else
+			else if (info->pushed_reg % 2 == 0 && info->localsize % 16 != 0)
 				stackadj = 8;
+			else if (info->pushed_reg % 2 != 0 && info->localsize % 16 == 0)
+				stackadj = 8;
+			else if (info->pushed_reg % 2 != 0 && info->localsize % 16 != 0)
+				stackadj = 0;
 		}
 	}
 
@@ -2984,8 +2992,8 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 
 #endif
 
-	if (ModuleInfo.win64_flags & W64F_SMART)
-	{
+	//if (ModuleInfo.win64_flags & W64F_SMART)
+	//{
 		cntxmm = 0;
 		if (info->regslist) {
 			n = 0;
@@ -3014,7 +3022,7 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 				}
 			} /* end for */
 		}
-	}
+	//}
 
 	if (zmmflag) XYZMMsize = 64;
 	else
@@ -3281,6 +3289,12 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 				}
 			}
 		}
+		else if (info->localsize > 0)
+		{
+			stackSize = info->localsize;
+			AddLineQueueX("sub %r, %d", stackreg[ModuleInfo.Ofssize], stackSize);
+		}
+
 		AddLineQueueX("%r", T_DOT_ENDPROLOG);
 
 		/* v2.11: linequeue is now run in write_default_prologue() */
@@ -3354,17 +3368,25 @@ static void write_win64_default_epilogue_RBP(struct proc_info *info)
 	{
 		if (info->fpo)
 		{
-			if (info->pushed_reg % 2 == 0)
+			if (info->pushed_reg % 2 == 0 && info->localsize % 16 == 0)
 				stackadj = 8;
-			else
+			else if (info->pushed_reg % 2 == 0 && info->localsize % 16 != 0)
 				stackadj = 0;
+			else if (info->pushed_reg % 2 != 0 && info->localsize % 16 == 0)
+				stackadj = 0;
+			else if (info->pushed_reg % 2 != 0 && info->localsize % 16 != 0)
+				stackadj = 8;
 		}
 		else
 		{
-			if (info->pushed_reg % 2 == 0)
+			if (info->pushed_reg % 2 == 0 && info->localsize % 16 == 0)
 				stackadj = 0;
-			else
+			else if (info->pushed_reg % 2 == 0 && info->localsize % 16 != 0)
 				stackadj = 8;
+			else if (info->pushed_reg % 2 != 0 && info->localsize % 16 == 0)
+				stackadj = 8;
+			else if (info->pushed_reg % 2 != 0 && info->localsize % 16 != 0)
+				stackadj = 0;
 		}
 	}
 
@@ -4130,12 +4152,14 @@ static void SetLocalOffsets_RBP(struct proc_info *info)
 		if (itemsize > align) {
 			if (itemsize == 32)
 				info->localsize = ROUND_UP(info->localsize, 32);
+			else if (itemsize == 16)
+				info->localsize = ROUND_UP(info->localsize, 16);
 			else
 				info->localsize = ROUND_UP(info->localsize, align);
 		}
 		else if (itemsize) /* v2.04: skip if size == 0 */
 			info->localsize = ROUND_UP(info->localsize, itemsize);
-		curr->sym.offset = -info->localsize;
+		curr->sym.offset = -info->localsize;//(cntstd*CurrWordSize) + (info->localsize));
 		DebugMsg1(("SetLocalOffsets_RBP(%s): offset of %s (size=%u) set to %d\n", CurrProc->sym.name, curr->sym.name, curr->sym.total_size, curr->sym.offset));
 	}
 
@@ -4185,8 +4209,8 @@ static void SetLocalOffsets_RBP(struct proc_info *info)
 	if (rspalign) {
 		info->localsize -= cntstd * 8;
 		info->localsize = ROUND_UP(info->localsize, align);
-		if (info->isframe && ModuleInfo.frame_auto)
-			info->localsize = ROUND_UP(info->localsize, 16);
+//		if (info->isframe && ModuleInfo.frame_auto && info->localsize < 32 && info->localsize % 16 != 0)
+	//		info->localsize = ROUND_UP(info->localsize, 16);
 		DebugMsg1(("SetLocalOffsets_RBP(%s): final localsize=%u\n", CurrProc->sym.name, info->localsize));
 	}
 #endif

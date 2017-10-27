@@ -1133,10 +1133,10 @@ OPTFUNC( SetStackBase )
 	/* Setup everything for stackbase RSP based stack */
 	if (ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RSP)
 	{
-		if(ModuleInfo.win64_flags < 11)
-			ModuleInfo.win64_flags = 11; /* Force win64:11 for any use of stackbase:rsp if win64 wasn't already set > 11 (IE: 15) */
-		ModuleInfo.frame_auto = 1; /* frame auto must also be implied for all stackbase rsp options */
-
+		//if(ModuleInfo.win64_flags < 11)
+			//ModuleInfo.win64_flags = 11; /* Force win64:11 for any use of stackbase:rsp if win64 wasn't already set > 11 (IE: 15) */
+		//ModuleInfo.frame_auto = 1; /* frame auto must also be implied for all stackbase rsp options */
+		
 		if (!ModuleInfo.g.StackBase)
 		{
 			ModuleInfo.g.StackBase = CreateVariable("@StackBase", 0);
@@ -1150,9 +1150,9 @@ OPTFUNC( SetStackBase )
 	/* For RBP stackbase frame_auto should be implied too, max mode = 7, ensure autostacksp */
 	else if (ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RBP)
 	{
-		ModuleInfo.frame_auto = 1; /* frame auto must also be implied for all stackbase rsp options */
+		//ModuleInfo.frame_auto = 1; /* frame auto must also be implied for all stackbase rsp options */
 		if (ModuleInfo.win64_flags > 7) ModuleInfo.win64_flags = 7; /* implicit selection of RBP as the stackbase will force win64 value back down to 7 if > */
-		ModuleInfo.win64_flags |= W64F_AUTOSTACKSP;
+		//ModuleInfo.win64_flags |= W64F_AUTOSTACKSP;
 	}
 	
 	else if (ModuleInfo.basereg[ModuleInfo.Ofssize] == T_ESP)
