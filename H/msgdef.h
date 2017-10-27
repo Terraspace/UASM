@@ -369,4 +369,5 @@ pick( AVX_REQUIRES_THREE_REGISTERS,   "AVX requires 3 registers for this instruc
 pick( AVX_INDEX_REGISTERS_NOT_ALLOWED_HERE, "AVX registers not allowed for this instruction" )
 pick( ARGIDX_NOT_IN_PROC, "ARGIDX operator can only be used inside a PROC" )
 pick( ARGSIZE_NOT_IN_PROC, "ARGSIZE operator can only be used inside a PROC" )
-pick( ARGTYPE_NOT_IN_PROC, "ARGTYPE operator can only be used inside a PROC")
+pick( ARGTYPE_NOT_IN_PROC, "ARGTYPE operator can only be used inside a PROC" )
+pick( PROC_USES_XMM, "USES SIMD register(s) only permitted on FRAME procedures" )
