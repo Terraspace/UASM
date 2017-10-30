@@ -158,6 +158,7 @@
     <ClInclude Include="H\usage2.h" />
     <ClInclude Include="H\win32.h" />
     <ClInclude Include="H\win64seh.h" />
+    <ClInclude Include="H\winconsole.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>

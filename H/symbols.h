@@ -393,7 +393,6 @@ struct proc_info {
 #if AMD64_SUPPORT
     struct asym         *exc_handler;   /* PROC: exc handler set by FRAME */
     int                 ReservedStack;  /* PROC: win64: additional reserved stack */
-    /* additional vars for W64F_HABRAN */
     int                 stored_reg;     /* number of stored general registers in home spaces */
     int					        pushed_reg;		  /* number of pushed registers */
     int                 home_taken;     /* number of taken spaces in a home space */
@@ -407,7 +406,6 @@ struct proc_info {
             unsigned char  has_vararg:1;/* last param is VARARG */
             unsigned char  pe_type:1;   /* PROC: prolog-epilog type, 1=use LEAVE */
             unsigned char  isexport:1;  /* PROC: EXPORT attribute set */
-            //unsigned char  init_done:1; /* has ParseProc() been called? v2.11: obsolete */
             unsigned char  forceframe:1;/* PROC: FORCEFRAME prologuearg? */
             unsigned char  loadds:1;    /* PROC: LOADDS prologuearg? */
             unsigned char  stackparam:1;/* PROC: 1=stack params exists ( not just register params ) */
@@ -424,6 +422,7 @@ struct proc_info {
     uint_16             basereg;        /* PROC: v2.11: stack base register */
 #endif
 	uint_8              NoSub;
+	int                frameofs;		/* Optimise 1byte displace to access locals from RBP by using a frame offset */
 };
 
 /* macro parameter */

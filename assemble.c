@@ -87,7 +87,7 @@ extern void             FreeLibQueue();
 
 #include "Colors.h"
 #ifdef _WIN32
-#include <Windows.h>
+#include "winconsole.h"
 #endif
 
 /* parameters for output formats. order must match enum oformat */

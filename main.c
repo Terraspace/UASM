@@ -121,16 +121,10 @@ int main(int argc, char **argv)
 			EmitErr(CANNOT_OPEN_FILE, Options.names[ASM], ErrnoStr());
 			break;
 		}
-		/* v2.12: _splitpath()/_makepath() removed */
-		//_splitpath( Options.names[ASM], drv, dir, NULL, NULL );
-		//DebugMsg(("main: _splitpath(%s): drv=\"%s\" dir=\"%s\"\n", Options.names[ASM], drv, dir ));
 		pfn = GetFNamePart(Options.names[ASM]);
 		dirsize = pfn - Options.names[ASM];
 		memcpy(fname, Options.names[ASM], dirsize);
 			do {
-				/* v2.12: _splitpath()/_makepath() removed */
-				//_makepath( fname, drv, dir, finfo.name, NULL );
-				//DebugMsg(("main: _makepath(\"%s\", \"%s\", \"%s\")=\"%s\"\n", drv, dir, finfo.name, fname ));
 				strcpy(&fname[dirsize], finfo.name);
 				DebugMsg(("main: fname=%s\n", fname));
 				rc = AssembleModule(fname);  /* assemble 1 module */

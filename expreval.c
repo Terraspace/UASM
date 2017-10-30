@@ -1280,7 +1280,7 @@ static ret_code get_operand( struct expr *opnd, int *idx, struct asm_tok tokenar
                       opnd->llvalue = cnt;
                     }
                     else 
-                      opnd->llvalue = sym->offset + StackAdj;
+                      opnd->llvalue = (int_64)(sym->offset + (int)StackAdj);
 #else
                     opnd->llvalue = sym->offset;
 #endif

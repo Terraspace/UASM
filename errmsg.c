@@ -46,7 +46,7 @@
 
 #include "Colors.h"
 #ifdef _WIN32
-#include <Windows.h>
+#include "winconsole.h"
 #endif
 
 extern void             print_source_nesting_structure( void );

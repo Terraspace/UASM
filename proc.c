@@ -264,6 +264,13 @@ static const char * const fmtstk1[] = {
 	"mov %r, %d + %s",
 #endif
 };
+
+static const char * const fmtstk2[] = {
+	"lea %r, [%r + %d]",
+};
+static const char * const fmtstk3[] = {
+	"lea %r, [%r + %d + %s]",
+};
 #endif
 
 #define ROUND_UP( i, r ) (((i)+((r)-1)) & ~((r)-1))
@@ -2541,7 +2548,9 @@ static ret_code write_userdef_prologue(struct asm_tok tokenarray[])
 
 #if AMD64_SUPPORT
 
+/* ========================================================================================================= */
 /* OPTION WIN64:1 - save up to 4 register parameters for WIN64 fastcall */
+/* ========================================================================================================= */
 static void win64_SaveRegParams_RSP(struct proc_info *info)
 /*******************************************************/
 {
@@ -2637,7 +2646,9 @@ static void win64_SaveRegParams_RSP(struct proc_info *info)
 	return;
 }
 
-/* added for W64F_HABRAN */
+/* ========================================================================================================= */
+/* WIN64 Store USED registers into free shadow spaces                                                        */
+/* ========================================================================================================= */
 static void win64_StoreRegHome(struct proc_info *info)
 /*******************************************************/
 {
@@ -2717,42 +2728,87 @@ static void win64_StoreRegHome(struct proc_info *info)
 	return;
 }
 
-/* OPTION WIN64:1 - save up to 4 register parameters for WIN64 fastcall */
+/* ========================================================================================================= */
+/* WIN64 Return a correctly sized sub register from a 64bit fastcall parameter register                      */
+/* ========================================================================================================= */
+static enum special_token GetWin64SubReg(enum special_token srcReg,int type)
+{
+	if (type == 0)
+	{
+		if (srcReg == T_RCX)
+			return(T_CL);
+		if (srcReg == T_RDX)
+			return(T_DL);
+		if (srcReg == T_R8)
+			return(T_R8B);
+		if (srcReg == T_R9)
+			return(T_R9B);
+	}
+	else if (type == 1)
+	{
+		if (srcReg == T_RCX)
+			return(T_CX);
+		if (srcReg == T_RDX)
+			return(T_DX);
+		if (srcReg == T_R8)
+			return(T_R8W);
+		if (srcReg == T_R9)
+			return(T_R9W);
+	}
+	else if (type == 2)
+	{
+		if (srcReg == T_RCX)
+			return(T_ECX);
+		if (srcReg == T_RDX)
+			return(T_EDX);
+		if (srcReg == T_R8)
+			return(T_R8D);
+		if (srcReg == T_R9)
+			return(T_R9D);
+	}
+	return(srcReg);
+}
+
+/* ========================================================================================================= */
+/* OPTION WIN64:1 - save up to 4 register parameters for WIN64 fastcall                                      */
+/* ========================================================================================================= */
 static void win64_SaveRegParams_RBP(struct proc_info *info)
 /*******************************************************/
 {
 	int i;
 	struct dsym *param;
-
 	for (i = 0, param = info->paralist; param && (i < 4); i++)
 	{
 		/* v2.05: save XMMx if type is float/double */
 		if (param->sym.is_vararg == FALSE)
 		{
-			if (param->sym.mem_type & MT_FLOAT && param->sym.used)
-				AddLineQueueX("%s [%r+%u], %r", MOVE_SIMD_QWORD, T_RSP, 8 + i * 8, T_XMM0 + i);
+			if (param->sym.mem_type & MT_FLOAT && param->sym.total_size == 4 && param->sym.used)
+				AddLineQueueX("%s [%r+%u], %r", MOVE_SINGLE, T_RSP, 8 + i * 8, T_XMM0 + i);
+			else if (param->sym.mem_type & MT_FLOAT && param->sym.total_size == 8 && param->sym.used)
+				AddLineQueueX("%s [%r+%u], %r", MOVE_DOUBLE, T_RSP, 8 + i * 8, T_XMM0 + i);
 			else if (param->sym.used)
-				AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
+			{
+				if (param->sym.mem_type == MT_BYTE || param->sym.mem_type == MT_SBYTE)
+					AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, GetWin64SubReg(ms64_regs[i], 0) );
+				else if (param->sym.mem_type == MT_WORD || param->sym.mem_type == MT_SWORD)
+					AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, GetWin64SubReg(ms64_regs[i], 1) );
+				else if(param->sym.mem_type == MT_DWORD || param->sym.mem_type == MT_SDWORD)
+					AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, GetWin64SubReg(ms64_regs[i], 2) );
+				else
+					AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i] );
+			}
 			param = param->nextparam;
 		}
-		else { /* v2.09: else branch added */
+		else 
+		{ 
 			AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
 		}
-
 	}
 	return;
 }
 
 /* ========================================================================================================= */
-/* win64 default prologue when PROC FRAME and OPTION FRAME:AUTO is set */
-/*
-This version creates the UASM RBP prologue:
-push rbp
-mov rbp,rsp
-push GPR0
-push GPR1 ...
-sub rsp,N
-*/
+/* win64 default prologue when PROC FRAME and OPTION FRAME:AUTO is set                                       */
 /* ========================================================================================================= */
 static void write_win64_default_prologue_RBP(struct proc_info *info)
 /****************************************************************/
@@ -2776,21 +2832,19 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
 	/*
 	* PUSH RBP
 	* .PUSHREG RBP
-	* MOV RBP, RSP
-	* .SETFRAME RBP, 0
 	*/
-	if (info->fpo) 
+	if ((info->isframe && ModuleInfo.frame_auto) || !info->isframe)
 	{
-		DebugMsg1(("write_win64_default_prologue_RBP: no frame register needed\n"));
-	}
-	else if ( !info->fpo || info->forceframe ) 
-	{
+		if (info->fpo)
+		{
+			DebugMsg1(("write_win64_default_prologue_RBP: no frame register needed\n"));
+		}
+		else if (!info->fpo || info->forceframe)
+		{
 			AddLineQueueX("push %r", info->basereg);
 			if (info->isframe && ModuleInfo.frame_auto)
 				AddLineQueueX("%r %r", T_DOT_PUSHREG, info->basereg);
-			AddLineQueueX("mov %r, %r", info->basereg, T_RSP);
-			if (info->isframe && ModuleInfo.frame_auto)
-				AddLineQueueX("%r %r, 0", T_DOT_SETFRAME, info->basereg);
+		}
 	}
 
 	/* Push the registers */
@@ -2854,35 +2908,38 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
 		}
 	}
 
-	if(!info->fpo || info->stackparam || info->has_vararg || ModuleInfo.win64_flags & W64F_STACKALIGN16 || ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
+	if ((info->isframe && ModuleInfo.frame_auto) || !info->isframe)
 	{
+		if (!info->fpo || info->stackparam || info->has_vararg || ModuleInfo.win64_flags & W64F_STACKALIGN16 || ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
+		{
 			DebugMsg1(("write_win64_default_prologue_RBP: localsize=%u resstack=%u\n", info->localsize, resstack));
 			/*
 			* SUB  RSP, localsize
 			* .ALLOCSTACK localsize
 			*/
 			ppfmt = (resstack ? fmtstk1 : fmtstk0);
-#if STACKPROBE
-			if (info->localsize + resstack > 0x1000) {
+			#if STACKPROBE
+			if (info->localsize + stackadj + resstack > 0x1000) {
 				AddLineQueueX(*(ppfmt + 2), T_RAX, NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
 				AddLineQueue("externdef __chkstk:PROC");
 				AddLineQueue("call __chkstk");
 				AddLineQueueX("mov %r, %r", T_RSP, T_RAX);
 			}
 			else
-#endif
+			#endif
 			if (info->localsize + stackadj + resstack > 0)
 			{
 				AddLineQueueX(*(ppfmt + 0), T_RSP, NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
 				if (info->isframe && ModuleInfo.frame_auto)
 					AddLineQueueX(*(ppfmt + 1), T_DOT_ALLOCSTACK, NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
 			}
-	}
-	else if (stackadj + info->localsize > 0 && ModuleInfo.frame_auto)
-	{
-		AddLineQueueX("sub %r, %d", T_RSP, NUMQUAL stackadj + info->localsize);
-		if (info->isframe && ModuleInfo.frame_auto)
-			AddLineQueueX("%r %d", T_DOT_ALLOCSTACK, NUMQUAL stackadj + info->localsize);
+		}
+		else if (stackadj + info->localsize > 0 && ModuleInfo.frame_auto)
+		{
+			AddLineQueueX("sub %r, %d", T_RSP, NUMQUAL stackadj + info->localsize);
+			if (info->isframe && ModuleInfo.frame_auto)
+				AddLineQueueX("%r %d", T_DOT_ALLOCSTACK, NUMQUAL stackadj + info->localsize);
+		}
 	}
 
 	/* save xmm registers */
@@ -2937,13 +2994,35 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
 		}
 	}
 
-	if (info->isframe && ModuleInfo.frame_auto)
-		AddLineQueueX("%r", T_DOT_ENDPROLOG);
+	/*
+	* MOV RBP, RSP
+	* .SETFRAME RBP, 0
+	*/
+	if ((info->isframe && ModuleInfo.frame_auto) || !info->isframe)
+	{
+		if (info->fpo)
+		{
+			DebugMsg1(("write_win64_default_prologue_RBP: no frame register needed\n"));
+		}
+		else if (!info->fpo || info->forceframe)
+		{
+			if (info->frameofs != 0)
+				AddLineQueueX("lea %r, [%r + %d]", info->basereg, T_RSP, info->frameofs);
+			else
+				AddLineQueueX("mov %r, %r", info->basereg, T_RSP);
+
+			if (info->isframe && ModuleInfo.frame_auto)
+				AddLineQueueX("%r %r, 0", T_DOT_SETFRAME, info->basereg);
+		}
+
+		if (info->isframe && ModuleInfo.frame_auto)
+			AddLineQueueX("%r", T_DOT_ENDPROLOG);
+	}
 	return;
 }
 
 /* ========================================================================================================= */
-/* win64 default prologue when PROC FRAME and  OPTION FRAME:AUTO is set */
+/* win64 default prologue when PROC FRAME and  OPTION FRAME:AUTO is set                                      */
 /* ========================================================================================================= */
 static void write_win64_default_prologue_RSP(struct proc_info *info)
 /****************************************************************/
@@ -3302,7 +3381,7 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 }
 
 /* ========================================================================================================= */
-/* Check to see if a proc can have FPO enabled */
+/* Check to see if a proc can have FPO enabled                                                               */
 /* ========================================================================================================= */
 static void check_proc_fpo(struct proc_info *info)
 {
@@ -3356,42 +3435,43 @@ static void check_proc_fpo(struct proc_info *info)
 }
 
 /* ========================================================================================================= */
-/* Win64 default epilogue if PROC FRAME and OPTION FRAME:AUTO is set for RBP stackbase */
-/* UASM WIN64:N version */
+/* Win64 default epilogue if PROC FRAME and OPTION FRAME:AUTO is set for RBP stackbase                       */
+/* UASM WIN64:N version																						 */
 /* ========================================================================================================= */
 static void write_win64_default_epilogue_RBP(struct proc_info *info)
 /****************************************************************/
 {
+	int  resstack = ((ModuleInfo.win64_flags & W64F_AUTOSTACKSP) ? sym_ReservedStack->value : 0);
 	int  stackadj = 0;
+	const char * const  *ppfmt;
+	uint_16 restoreReg;
 
-	if (ModuleInfo.win64_flags & W64F_STACKALIGN16 || ModuleInfo.win64_flags & W64F_AUTOSTACKSP || ModuleInfo.frame_auto)
+	if (info->fpo)
 	{
-		if (info->fpo)
-		{
-			if (info->pushed_reg % 2 == 0 && info->localsize % 16 == 0)
-				stackadj = 8;
-			else if (info->pushed_reg % 2 == 0 && info->localsize % 16 != 0)
-				stackadj = 0;
-			else if (info->pushed_reg % 2 != 0 && info->localsize % 16 == 0)
-				stackadj = 0;
-			else if (info->pushed_reg % 2 != 0 && info->localsize % 16 != 0)
-				stackadj = 8;
-		}
-		else
-		{
-			if (info->pushed_reg % 2 == 0 && info->localsize % 16 == 0)
-				stackadj = 0;
-			else if (info->pushed_reg % 2 == 0 && info->localsize % 16 != 0)
-				stackadj = 8;
-			else if (info->pushed_reg % 2 != 0 && info->localsize % 16 == 0)
-				stackadj = 8;
-			else if (info->pushed_reg % 2 != 0 && info->localsize % 16 != 0)
-				stackadj = 0;
-		}
+		if (info->pushed_reg % 2 == 0 && info->localsize % 16 == 0)
+			stackadj = 8;
+		else if (info->pushed_reg % 2 == 0 && info->localsize % 16 != 0)
+			stackadj = 0;
+		else if (info->pushed_reg % 2 != 0 && info->localsize % 16 == 0)
+			stackadj = 0;
+		else if (info->pushed_reg % 2 != 0 && info->localsize % 16 != 0)
+			stackadj = 8;
+	}
+	else
+	{
+		if (info->pushed_reg % 2 == 0 && info->localsize % 16 == 0)
+			stackadj = 0;
+		else if (info->pushed_reg % 2 == 0 && info->localsize % 16 != 0)
+			stackadj = 8;
+		else if (info->pushed_reg % 2 != 0 && info->localsize % 16 == 0)
+			stackadj = 8;
+		else if (info->pushed_reg % 2 != 0 && info->localsize % 16 != 0)
+			stackadj = 0;
 	}
 
 	/* restore non-volatile xmm registers */
-	if (info->regslist) {
+	if (info->regslist) 
+	{
 		uint_16 *regs;
 		int cnt;
 		int i;
@@ -3407,57 +3487,80 @@ static void write_win64_default_epilogue_RBP(struct proc_info *info)
 			else if (GetValueSp(*regs) & OP_ZMM)
 				i += 4;
 
-		if (i) {
+		if (i) 
+		{
+			
 			i = (info->localsize - i * 16) & ~(16 - 1);
+			if (info->fpo)
+				restoreReg = stackreg[ModuleInfo.Ofssize];
+			else
+				restoreReg = info->basereg;
+			
 			for (regs = info->regslist, cnt = *regs++; cnt; cnt--, regs++) {
 				if (GetValueSp(*regs) & OP_XMM) {
 					DebugMsg1(("write_win64_default_epilogue(%s): restore %s, offset=%d\n", CurrProc->sym.name, GetResWName(*regs, NULL), i));
 					if (ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
-						AddLineQueueX("%s %r, [%r + %u + %s]", MOVE_ALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i, sym_ReservedStack->name);
+						AddLineQueueX("%s %r, [%r + %d + %s]", MOVE_ALIGNED_INT, *regs, restoreReg, NUMQUAL i - info->frameofs, sym_ReservedStack->name);
 					else
-						AddLineQueueX("%s %r, [%r + %u]", MOVE_ALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i);
+						AddLineQueueX("%s %r, [%r + %d]", MOVE_ALIGNED_INT, *regs, restoreReg, NUMQUAL i - info->frameofs);
 					i += 16;
 				}
 				if (GetValueSp(*regs) & OP_YMM) {
 					DebugMsg1(("write_win64_default_epilogue(%s): restore %s, offset=%d\n", CurrProc->sym.name, GetResWName(*regs, NULL), i));
 					if (ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
-						AddLineQueueX("%s %r, [%r + %u + %s]", MOVE_UNALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i, sym_ReservedStack->name);
+						AddLineQueueX("%s %r, [%r + %d + %s]", MOVE_UNALIGNED_INT, *regs, restoreReg, NUMQUAL i - info->frameofs, sym_ReservedStack->name);
 					else
-						AddLineQueueX("%s %r, [%r + %u]", MOVE_UNALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i);
+						AddLineQueueX("%s %r, [%r + %d]", MOVE_UNALIGNED_INT, *regs, restoreReg, NUMQUAL i - info->frameofs);
 					i += 32;
 				}
 				if (GetValueSp(*regs) & OP_ZMM) {
 					DebugMsg1(("write_win64_default_epilogue(%s): restore %s, offset=%d\n", CurrProc->sym.name, GetResWName(*regs, NULL), i));
 					if (ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
-						AddLineQueueX("%s %r, [%r + %u + %s]", MOVE_UNALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i, sym_ReservedStack->name);
+						AddLineQueueX("%s %r, [%r + %d + %s]", MOVE_UNALIGNED_INT, *regs, restoreReg, NUMQUAL i - info->frameofs, sym_ReservedStack->name);
 					else
-						AddLineQueueX("%s %r, [%r + %u]", MOVE_UNALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i);
+						AddLineQueueX("%s %r, [%r + %d]", MOVE_UNALIGNED_INT, *regs, restoreReg, NUMQUAL i - info->frameofs);
 					i += 64;
 				}
 			}
 		}
 	}
 
-	if (!info->fpo || info->forceframe || stackadj > 0 || info->localsize > 0 || ModuleInfo.win64_flags & W64F_STACKALIGN16 || ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
+	/*
+	* RESTORE RSP from RBP
+	*/
+	if ( (info->isframe && ModuleInfo.frame_auto) || !info->isframe )
 	{
-		if (ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP) && (info->localsize + sym_ReservedStack->value) > 0)
-			AddLineQueueX("add %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
-		else if (info->localsize > 0 || stackadj > 0)
-			AddLineQueueX("add %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + stackadj);
-	}
+		if (!info->fpo || info->stackparam || info->has_vararg || ModuleInfo.win64_flags & W64F_STACKALIGN16 || ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
+		{
+			if (!info->fpo)
+			{
+				ppfmt = (resstack ? fmtstk3 : fmtstk2);
+				if (info->localsize + stackadj + resstack > 0)
+					AddLineQueueX(*(ppfmt + 0), T_RSP, info->basereg, NUMQUAL stackadj + info->localsize - info->frameofs, sym_ReservedStack->name);
+			}
+			else
+			{
+				AddLineQueueX("add %r, %d + %s", T_RSP, NUMQUAL stackadj + info->localsize, sym_ReservedStack->name);
+			}
+		}
+		else if (stackadj + info->localsize > 0 && ModuleInfo.frame_auto)
+		{
+			if (!info->fpo)
+				AddLineQueueX("lea %r, [%r + %d]", T_RSP, info->basereg, NUMQUAL stackadj + info->localsize - info->frameofs);
+			else
+				AddLineQueueX("add %r, %d", T_RSP, NUMQUAL stackadj + info->localsize);
+		}
 
-	pop_register(CurrProc->e.procinfo->regslist);
+		pop_register(CurrProc->e.procinfo->regslist);
 	
-	if (!info->fpo || info->forceframe || stackadj>0 || info->localsize>0)
-	{
-		if ( !info->fpo )
-			AddLineQueueX("pop %r", info->basereg);		
+		if (!info->fpo)
+			AddLineQueueX("pop %r", info->basereg);
 	}
 	return;
 }
 
 /* ========================================================================================================= */
-/* Win64 default epilogue if PROC FRAME and OPTION FRAME:AUTO is set for stackbase RSP */
+/* Win64 default epilogue if PROC FRAME and OPTION FRAME:AUTO is set for stackbase RSP						 */
 /* ========================================================================================================= */
 static void write_win64_default_epilogue_RSP(struct proc_info *info)
 /****************************************************************/
@@ -3579,6 +3682,252 @@ static void write_win64_default_epilogue_RSP(struct proc_info *info)
 	return;
 }
 
+/* ========================================================================================================= */
+/* Win64 Calculate offsets of local variables and parameters from RBP    									 */
+/*
+----------------|
+.				|
+param 1			|
+param 0			|
+----------------|
+return addr		|
+----------------|
+rbp				|
+----------------|
+gpr 0			|
+gpr 1			|
+.				|
+----------------|---------
+pad0?			| sub rsp,N
+----------------|
+xmm 0			|
+xmm 1			|
+.				|
+----------------|
+local 0			|
+local 1			|
+.				|
+----------------|
+shadow space    |
+----------------|---------
+				| mov rbp,rsp
+----------------|
+*/
+/* ========================================================================================================= */
+static void SetLocalOffsets_RBP(struct proc_info *info)
+{
+	struct dsym *curr     = NULL;
+	int         cntxmm    = 0;
+	int         cntstd    = 0;
+	int         start     = 0;
+	int         rspalign  = TRUE;
+	int         align     = CurrWordSize;
+	int         cnt       = 0;
+	uint_16     *regs     = NULL;
+	int         stackAdj  = 0;
+	int         paramBase = 0;
+	int         curOfs    = 0;
+	int         resstack  = ((ModuleInfo.win64_flags & W64F_AUTOSTACKSP) ? sym_ReservedStack->value : 0);
+
+	/* Check if the procedure requires 16byte alignment of all locals */
+	if (ModuleInfo.win64_flags & W64F_STACKALIGN16)
+		align = 16;
+
+	/* Check if the procedure can have FPO */
+	check_proc_fpo(info);
+
+	/* Count USED registers (gpr, xmm, ymm, zmm) */
+	if (info->regslist)
+	{
+		for (regs = info->regslist, cnt = *regs++; cnt; cnt--, regs++)
+		{
+			if (GetValueSp(*regs) & OP_XMM)
+				cntxmm++;
+			else if (GetValueSp(*regs) & OP_YMM)
+				cntxmm += 2;
+			else if (GetValueSp(*regs) & OP_ZMM)
+				cntxmm += 4;
+			else
+				cntstd++;
+		}
+	}
+
+	/* XMM registes are not pushed, so they require local space */
+	info->localsize = (16 * cntxmm);
+
+	/* Calculate total space required for locals */
+	for (curr = info->locallist; curr; curr = curr->nextlocal) 
+	{
+		uint_32 itemsize = (curr->sym.total_size == 0 ? 0 : curr->sym.total_size / curr->sym.total_length);
+		itemsize = ROUND_UP(itemsize, align);
+		info->localsize += itemsize;
+	}
+	if (!info->fpo)
+		info->frameofs = (info->localsize >> 1) + resstack; /* Center the stack frame for optimised 1 byte displacements */
+	else
+		info->frameofs = 0;
+
+	/* adjust stack to be 16byte aligned if required */
+	/* or at least account for odd pushed gprs */
+	if (info->fpo)
+	{
+		if (info->pushed_reg % 2 == 0 && info->localsize % 16 == 0)
+			stackAdj = 8;
+		else if (info->pushed_reg % 2 == 0 && info->localsize % 16 != 0)
+			stackAdj = 0;
+		else if (info->pushed_reg % 2 != 0 && info->localsize % 16 == 0)
+			stackAdj = 0;
+		else if (info->pushed_reg % 2 != 0 && info->localsize % 16 != 0)
+			stackAdj = 8;
+	}
+	else
+	{
+		if (info->pushed_reg % 2 == 0 && info->localsize % 16 == 0)
+			stackAdj = 0;
+		else if (info->pushed_reg % 2 == 0 && info->localsize % 16 != 0)
+			stackAdj = 8;
+		else if (info->pushed_reg % 2 != 0 && info->localsize % 16 == 0)
+			stackAdj = 8;
+		else if (info->pushed_reg % 2 != 0 && info->localsize % 16 != 0)
+			stackAdj = 0;
+	}
+
+	/* Now set local offsets */
+	curOfs = info->localsize + resstack - (16 * cntxmm) - info->frameofs;
+	for (curr = info->locallist; curr; curr = curr->nextlocal)
+	{
+		int itemsize = (curr->sym.total_size == 0 ? 0 : curr->sym.total_size / curr->sym.total_length);
+		itemsize = ROUND_UP(itemsize, align);
+		curr->sym.offset = curOfs - itemsize;
+		curOfs -= itemsize;
+	}
+
+	/* Set parameter positions based on stack layout */
+	if (info->fpo)
+	{
+		paramBase = (CurrWordSize * cntstd) + 8 + info->localsize + stackAdj + resstack - info->frameofs;
+		for (curr = info->paralist; curr; curr = curr->nextparam)
+			curr->sym.offset = paramBase + ((cnt++)*CurrWordSize);
+	}
+	else
+	{
+		paramBase = (CurrWordSize * cntstd) + 16 + info->localsize + stackAdj + resstack - info->frameofs;
+		for (curr = info->paralist; curr; curr = curr->nextparam)
+			curr->sym.offset = paramBase + ((cnt++)*CurrWordSize);
+	}
+}
+
+/* ========================================================================================================= */
+/* Win64 Calculate offsets of local variables and parameters from RSP    									 */
+/* ========================================================================================================= */
+static void SetLocalOffsets_RSP(struct proc_info *info)
+{
+	struct              dsym *curr;
+	int                 cntxmm = 0;
+	int                 cntstd = 0;
+	int                 start = 0;
+	uint_16             *regist;
+	int                 cnt;
+	unsigned char       xmmflag = 1;
+	unsigned char       ymmflag = 0;
+	unsigned			localadj;
+	unsigned			paramadj;
+	int                 rspalign = FALSE;
+	int                 align = CurrWordSize;
+	unsigned char       zmmflag = 0;
+	regist = info->regslist;
+	rspalign = TRUE;
+	/* in 64-bit, if the FRAME attribute is set, the space for the registers
+	* saved by the USES clause is located ABOVE the local variables!
+	* v2.09: if stack space is to be reserved for INVOKE ( option WIN64:2 ),
+	* the registers are also saved ABOVE the local variables.
+	*/
+	if (info->regslist) {
+		for (cnt = *regist++; cnt; cnt--, regist++) {
+			if (GetValueSp(*regist) & OP_XMM)
+				xmmflag = 1;
+			else if (GetValueSp(*regist) & OP_YMM)
+				ymmflag = 1;
+			else if (GetValueSp(*regist) & OP_ZMM)
+				zmmflag = 1;
+		}
+	}
+	if (ymmflag) XYZMMsize = 32;
+	else XYZMMsize = 16;
+
+	if (info->fpo || rspalign) {
+		/* count registers to be saved ABOVE local variables.
+		* v2.06: the list may contain xmm registers, which have size 16!
+		*/
+		if (info->regslist) {
+			int         cnt;
+			uint_16     *regs;
+			for (regs = info->regslist, cnt = *regs++; cnt; cnt--, regs++)
+				if ((GetValueSp(*regs) & OP_XMM) || (GetValueSp(*regs) & OP_YMM) || (GetValueSp(*regs) & OP_ZMM))
+					cntxmm++;
+				else
+					cntstd++;
+		}
+		/* in case there's no frame register, adjust start offset. */
+		if (info->parasize == 0 && info->locallist == NULL)
+			start = CurrWordSize;
+		cntstd = info->pushed_reg;
+		if (rspalign && cntxmm) {
+			if (!(cntstd & 1)) info->localsize += 8;
+			info->localsize += XYZMMsize * cntxmm;
+		}
+		DebugMsg1(("SetLocalOffsets_RSP(%s): cntxmm=%u cntstd=%u start=%u align=%u localsize=%u\n", CurrProc->sym.name, cntxmm, cntstd, start, align, info->localsize));
+	}
+	/* scan the locals list and set member sym.offset */
+	for (curr = info->locallist; curr; curr = curr->nextlocal)
+	{
+		uint_32 itemsize = (curr->sym.total_size == 0 ? 0 : curr->sym.total_size / curr->sym.total_length);
+
+		int n = 0;
+		if (curr->sym.isarray) n = curr->sym.total_size & 0x7;
+
+		if (itemsize < 16)
+			info->localsize = ROUND_UP(info->localsize, itemsize);
+
+		if (ModuleInfo.win64_flags & W64F_STACKALIGN16 && curr->sym.total_size > CurrWordSize)
+			info->localsize = ROUND_UP(info->localsize, 16);
+
+		curr->sym.offset = info->localsize;
+		info->localsize += curr->sym.total_size + n;
+		if (itemsize > align)
+			info->localsize = ROUND_UP(info->localsize, align);
+		else if (itemsize) /* v2.04: skip if size == 0 */
+			info->localsize = ROUND_UP(info->localsize, itemsize);
+
+		DebugMsg1(("SetLocalOffsets_RSP(%s): offset of %s (size=%u) set to %d\n", CurrProc->sym.name, curr->sym.name, curr->sym.total_size, curr->sym.offset));
+	}
+
+	if (!(cntstd & 1) && ((info->localsize & 15) == 0)) info->localsize += 8;
+
+	/* v2.11: localsize must be rounded before offset adjustment if fpo */
+	/* RSP 16-byte alignment? */
+	if (rspalign)
+		info->localsize = ROUND_UP(info->localsize, 8);
+	DebugMsg1(("SetLocalOffsets_RSP(%s): localsize=%u after processing locals\n", CurrProc->sym.name, info->localsize));
+
+	/* v2.11: recalculate offsets for params and locals if there's no frame pointer.
+	* Problem in 64-bit: option win64:2 triggers the "stack space reservation" feature -
+	* but the final value of this space is known at the procedure's END only.
+	* Hence in this case the values calculated below are "preliminary".
+	*/
+	if (info->fpo) {
+		if (rspalign) {
+			localadj = info->localsize;
+			paramadj = info->localsize - CurrWordSize - start;
+		}
+		else
+		{
+			localadj = info->localsize + cntstd * CurrWordSize;
+			paramadj = info->localsize + cntstd * CurrWordSize - CurrWordSize;
+		}
+	}
+}
+
 #endif
 
 #if SYSV_SUPPORT
@@ -3591,14 +3940,13 @@ static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int 
 {
 	char regname[32];
 	int size = SizeFromMemtype(paranode->sym.mem_type, paranode->sym.Ofssize, paranode->sym.type);
-	//int stack_size = size;
 
 	paranode->sym.string_ptr = NULL; // Ensure it's null first.
 
-									 //===============================================================================================================
-									 // Handle Vector -> SIMD Parameter Types
-									 //===============================================================================================================
-									 // Parameter is either XMM, float, double or __M128
+	//===============================================================================================================
+	// Handle Vector -> SIMD Parameter Types
+	//===============================================================================================================
+	// Parameter is either XMM, float, double or __M128
 	if ((paranode->sym.mem_type == MT_REAL4) || (paranode->sym.mem_type == MT_REAL8) || (paranode->sym.mem_type == MT_TYPE && _stricmp(paranode->sym.type->name, "__m128") == 0) || paranode->sym.mem_type == MT_OWORD)
 	{
 		if (*vecused >= 8)
@@ -3714,12 +4062,10 @@ static void write_sysv_default_prologue_RBP(struct proc_info *info)
 /****************************************************************/
 {
 	uint_16             *regist;
-	//const char * const  *ppfmt;
 	int                 i = 0;
 	int                 cnt;
 	int                 cntxmm;
 	int                 stackadj;
-	//int                 gprOdd;
 	int                 resstack = ((ModuleInfo.win64_flags & W64F_AUTOSTACKSP) ? sym_ReservedStack->value : 0);
 
 	DebugMsg1(("write_sysv_default_prologue_RBP enter\n"));
@@ -3908,6 +4254,143 @@ static void write_sysv_default_epilogue_RBP(struct proc_info *info)
 	return;
 }
 
+/* ========================================================================================================= */
+/* SYSTEM V default stack frame offsets for RBP based frame */
+/* ========================================================================================================= */
+static void SetLocalOffsets_RBP_SYSV(struct proc_info *info)
+{
+	struct dsym *curr;
+#if AMD64_SUPPORT || STACKBASESUPP
+	int         cntxmm = 0;
+	int         cntstd = 0;
+	int         start = 0;
+#endif
+#if AMD64_SUPPORT
+	int         rspalign = TRUE;
+#endif
+	int         align = CurrWordSize;
+#if AMD64_SUPPORT
+	if (ModuleInfo.win64_flags & W64F_STACKALIGN16 || ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
+	{
+		align = 16;
+	}
+#endif
+
+	check_proc_fpo(info);
+
+#if AMD64_SUPPORT || STACKBASESUPP
+	/* in 64-bit, if the FRAME attribute is set, the space for the registers
+	* saved by the USES clause is located ABOVE the local variables!
+	* v2.09: if stack space is to be reserved for INVOKE ( option WIN64:2 ),
+	* the registers are also saved ABOVE the local variables.
+	*/
+	if (info->fpo || rspalign) {
+		/* count registers to be saved ABOVE local variables.
+		* v2.06: the list may contain xmm registers, which have size 16!
+		*/
+		if (info->regslist) {
+			int         cnt;
+			uint_16     *regs;
+			for (regs = info->regslist, cnt = *regs++; cnt; cnt--, regs++)
+				if (GetValueSp(*regs) & OP_XMM)
+					cntxmm++;
+				else if (GetValueSp(*regs) & OP_YMM)
+					cntxmm += 2;
+				else if (GetValueSp(*regs) & OP_YMM)
+					cntxmm += 4;
+				else
+					cntstd++;
+		}
+		/* in case there's no frame register, adjust start offset. */
+		if ((info->fpo || (info->parasize == 0 && info->locallist == NULL)))
+			start = 0;
+#if AMD64_SUPPORT
+		if (rspalign)
+		{
+			info->localsize = start + (cntstd * CurrWordSize);
+
+			if (cntxmm)
+			{
+				info->localsize += 16 * cntxmm;
+				//info->localsize = ROUND_UP(info->localsize, 16);
+			}
+		}
+#endif
+		DebugMsg1(("SetLocalOffsets_RBP(%s): cntxmm=%u cntstd=%u start=%u align=%u localsize=%u\n", CurrProc->sym.name, cntxmm, cntstd, start, align, info->localsize));
+	}
+#endif
+
+	/* scan the locals list and set member sym.offset */
+	for (curr = info->locallist; curr; curr = curr->nextlocal) {
+		uint_32 itemsize = (curr->sym.total_size == 0 ? 0 : curr->sym.total_size / curr->sym.total_length);
+		info->localsize += curr->sym.total_size;
+		if (itemsize > align) {
+			if (itemsize == 32)
+				info->localsize = ROUND_UP(info->localsize, 32);
+			else if (itemsize == 16)
+				info->localsize = ROUND_UP(info->localsize, 16);
+			else
+				info->localsize = ROUND_UP(info->localsize, align);
+		}
+		else if (itemsize) /* v2.04: skip if size == 0 */
+			info->localsize = ROUND_UP(info->localsize, itemsize);
+		curr->sym.offset = -info->localsize;//(cntstd*CurrWordSize) + (info->localsize));
+		DebugMsg1(("SetLocalOffsets_RBP(%s): offset of %s (size=%u) set to %d\n", CurrProc->sym.name, curr->sym.name, curr->sym.total_size, curr->sym.offset));
+	}
+
+	/* v2.11: localsize must be rounded before offset adjustment if fpo */
+	info->localsize = ROUND_UP(info->localsize, CurrWordSize);
+
+	DebugMsg1(("SetLocalOffsets_RBP(%s): localsize=%u after processing locals\n", CurrProc->sym.name, info->localsize));
+
+#if STACKBASESUPP
+	/* v2.11: recalculate offsets for params and locals if there's no frame pointer.
+	* Problem in 64-bit: option win64:2 triggers the "stack space reservation" feature -
+	* but the final value of this space is known at the procedure's END only.
+	* Hence in this case the values calculated below are "preliminary".
+	*/
+	if (info->fpo) {
+		unsigned localadj;
+		unsigned paramadj;
+#if AMD64_SUPPORT
+		if (rspalign) {
+			localadj = (info->localsize + 8);
+			paramadj = (info->localsize + 8) - CurrWordSize - start;
+		}
+		else {
+#endif
+			localadj = (info->localsize + 8) + cntstd * CurrWordSize;
+			paramadj = (info->localsize + 8) + cntstd * CurrWordSize - CurrWordSize;
+#if AMD64_SUPPORT
+		}
+#endif
+		DebugMsg1(("SetLocalOffsets_RBP(%s): FPO, adjusting offsets\n", CurrProc->sym.name));
+		/* subtract CurrWordSize value for params, since no space is required to save the frame pointer value */
+		for (curr = info->locallist; curr; curr = curr->nextlocal) {
+			DebugMsg1(("SetLocalOffsets_RBP(%s): FPO, offset for %s %4d -> %4d\n", CurrProc->sym.name, curr->sym.name, curr->sym.offset, curr->sym.offset + localadj));
+			curr->sym.offset += localadj;
+		}
+		for (curr = info->paralist; curr; curr = curr->nextparam) {
+			DebugMsg1(("SetLocalOffsets_RBP(%s): FPO, offset for %s %4d -> %4d\n", CurrProc->sym.name, curr->sym.name, curr->sym.offset, curr->sym.offset + paramadj));
+			curr->sym.offset += paramadj;
+		}
+	}
+#endif
+
+#if AMD64_SUPPORT
+	/* v2.12: if the space used for register saves has been added to localsize,
+	* the part that covers "pushed" GPRs has to be subtracted now, before prologue code is generated.
+	*/
+	if (rspalign) {
+		info->localsize -= cntstd * 8;
+		info->localsize = ROUND_UP(info->localsize, align);
+		//		if (info->isframe && ModuleInfo.frame_auto && info->localsize < 32 && info->localsize % 16 != 0)
+		//		info->localsize = ROUND_UP(info->localsize, 16);
+		DebugMsg1(("SetLocalOffsets_RBP(%s): final localsize=%u\n", CurrProc->sym.name, info->localsize));
+	}
+#endif
+}
+
 #endif
 
 
@@ -4015,9 +4498,7 @@ static ret_code write_default_prologue(void)
 /********************************************/
 {
 	struct proc_info    *info;
-	//uint_16             *regist;
 	uint_8              oldlinenumbers;
-	//int                 cnt;
 	int                 resstack = 0;
 
 	info = CurrProc->e.procinfo;
@@ -4029,11 +4510,8 @@ static ret_code write_default_prologue(void)
 	{
 		if (ModuleInfo.basereg[USE64] == T_RSP)
 			write_win64_default_prologue_RSP(info);
-
 		else if ((ModuleInfo.basereg[USE64] == T_RBP) && CurrProc->sym.langtype == LANG_FASTCALL)
-		{
 			write_win64_default_prologue_RBP(info);
-		}
 		else if ((ModuleInfo.basereg[USE64] == T_RBP) && CurrProc->sym.langtype == LANG_SYSVCALL)
 			write_sysv_default_prologue_RBP(info);
 
@@ -4068,263 +4546,6 @@ runqueue:
 		LineStoreCurr->list_pos = list_pos;
 
 	return(NOT_ERROR);
-}
-
-/* ========================================================================================================= */
-/* v2.12: calculate offsets of local variables; this is now
-* done here after ALL locals have been defined.
-* will set value of member 'localsize'.
-* Notes:
-* 64-bit: 16-byte RSP alignment works for
-* - FRAME procedures ( if OPTION FRAME:AUTO is set )
-* - non-frame procedures if option win64:2 is set
-* this means that option win64:4 ( 16-byte stack variable alignment )
-* will also work only in those cases! */
-/* ========================================================================================================= */
-static void SetLocalOffsets_RBP(struct proc_info *info)
-/***************************************************/
-{
-	struct dsym *curr;
-#if AMD64_SUPPORT || STACKBASESUPP
-	int         cntxmm = 0;
-	int         cntstd = 0;
-	int         start = 0;
-#endif
-#if AMD64_SUPPORT
-	int         rspalign = TRUE;
-#endif
-	int         align = CurrWordSize;
-#if AMD64_SUPPORT
-	if (ModuleInfo.win64_flags & W64F_STACKALIGN16 || ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
-	{
-		align = 16;
-	}
-#endif
-
-	check_proc_fpo(info);
-
-#if AMD64_SUPPORT || STACKBASESUPP
-	/* in 64-bit, if the FRAME attribute is set, the space for the registers
-	* saved by the USES clause is located ABOVE the local variables!
-	* v2.09: if stack space is to be reserved for INVOKE ( option WIN64:2 ),
-	* the registers are also saved ABOVE the local variables.
-	*/
-	if ( info->fpo || rspalign ) {
-		/* count registers to be saved ABOVE local variables.
-		* v2.06: the list may contain xmm registers, which have size 16!
-		*/
-		if (info->regslist) {
-			int         cnt;
-			uint_16     *regs;
-			for (regs = info->regslist, cnt = *regs++; cnt; cnt--, regs++)
-				if (GetValueSp(*regs) & OP_XMM)
-					cntxmm++;
-				else if (GetValueSp(*regs) & OP_YMM)
-					cntxmm += 2;
-				else if (GetValueSp(*regs) & OP_YMM)
-					cntxmm += 4;
-				else
-					cntstd++;
-		}
-		/* in case there's no frame register, adjust start offset. */
-		if ((info->fpo || (info->parasize == 0 && info->locallist == NULL)))
-			start = 0;
-#if AMD64_SUPPORT
-		if (rspalign)
-		{
-			info->localsize = start + (cntstd * CurrWordSize);
-
-			if (cntxmm)
-			{
-				info->localsize += 16 * cntxmm;
-				//info->localsize = ROUND_UP(info->localsize, 16);
-			}
-		}
-#endif
-		DebugMsg1(("SetLocalOffsets_RBP(%s): cntxmm=%u cntstd=%u start=%u align=%u localsize=%u\n", CurrProc->sym.name, cntxmm, cntstd, start, align, info->localsize));
-	}
-#endif
-
-	/* scan the locals list and set member sym.offset */
-	for (curr = info->locallist; curr; curr = curr->nextlocal) {
-		uint_32 itemsize = (curr->sym.total_size == 0 ? 0 : curr->sym.total_size / curr->sym.total_length);
-		info->localsize += curr->sym.total_size;
-		if (itemsize > align) {
-			if (itemsize == 32)
-				info->localsize = ROUND_UP(info->localsize, 32);
-			else if (itemsize == 16)
-				info->localsize = ROUND_UP(info->localsize, 16);
-			else
-				info->localsize = ROUND_UP(info->localsize, align);
-		}
-		else if (itemsize) /* v2.04: skip if size == 0 */
-			info->localsize = ROUND_UP(info->localsize, itemsize);
-		curr->sym.offset = -info->localsize;//(cntstd*CurrWordSize) + (info->localsize));
-		DebugMsg1(("SetLocalOffsets_RBP(%s): offset of %s (size=%u) set to %d\n", CurrProc->sym.name, curr->sym.name, curr->sym.total_size, curr->sym.offset));
-	}
-
-	/* v2.11: localsize must be rounded before offset adjustment if fpo */
-	info->localsize = ROUND_UP(info->localsize, CurrWordSize);
-
-	DebugMsg1(("SetLocalOffsets_RBP(%s): localsize=%u after processing locals\n", CurrProc->sym.name, info->localsize));
-
-#if STACKBASESUPP
-	/* v2.11: recalculate offsets for params and locals if there's no frame pointer.
-	* Problem in 64-bit: option win64:2 triggers the "stack space reservation" feature -
-	* but the final value of this space is known at the procedure's END only.
-	* Hence in this case the values calculated below are "preliminary".
-	*/
-	if (info->fpo) {
-		unsigned localadj;
-		unsigned paramadj;
-#if AMD64_SUPPORT
-		if (rspalign) {
-			localadj = (info->localsize + 8);
-			paramadj = (info->localsize + 8) - CurrWordSize - start;
-		}
-		else {
-#endif
-			localadj = (info->localsize + 8) + cntstd * CurrWordSize;
-			paramadj = (info->localsize + 8) + cntstd * CurrWordSize - CurrWordSize;
-#if AMD64_SUPPORT
-		}
-#endif
-		DebugMsg1(("SetLocalOffsets_RBP(%s): FPO, adjusting offsets\n", CurrProc->sym.name));
-		/* subtract CurrWordSize value for params, since no space is required to save the frame pointer value */
-		for (curr = info->locallist; curr; curr = curr->nextlocal) {
-			DebugMsg1(("SetLocalOffsets_RBP(%s): FPO, offset for %s %4d -> %4d\n", CurrProc->sym.name, curr->sym.name, curr->sym.offset, curr->sym.offset + localadj));
-			curr->sym.offset += localadj;
-		}
-		for (curr = info->paralist; curr; curr = curr->nextparam) {
-			DebugMsg1(("SetLocalOffsets_RBP(%s): FPO, offset for %s %4d -> %4d\n", CurrProc->sym.name, curr->sym.name, curr->sym.offset, curr->sym.offset + paramadj));
-			curr->sym.offset += paramadj;
-		}
-	}
-#endif
-
-#if AMD64_SUPPORT
-	/* v2.12: if the space used for register saves has been added to localsize,
-	* the part that covers "pushed" GPRs has to be subtracted now, before prologue code is generated.
-	*/
-	if (rspalign) {
-		info->localsize -= cntstd * 8;
-		info->localsize = ROUND_UP(info->localsize, align);
-//		if (info->isframe && ModuleInfo.frame_auto && info->localsize < 32 && info->localsize % 16 != 0)
-	//		info->localsize = ROUND_UP(info->localsize, 16);
-		DebugMsg1(("SetLocalOffsets_RBP(%s): final localsize=%u\n", CurrProc->sym.name, info->localsize));
-	}
-#endif
-}
-
-/* Here we set locals offset only for OPTION WIN64_SMART */
-static void SetLocalOffsets_RSP(struct proc_info *info)
-/***************************************************/
-{
-	struct              dsym *curr;
-	int                 cntxmm = 0;
-	int                 cntstd = 0;
-	int                 start = 0;
-	uint_16             *regist;
-	int                 cnt;
-	unsigned char       xmmflag = 1;
-	unsigned char       ymmflag = 0;
-	unsigned			localadj;
-	unsigned			paramadj;
-	int                 rspalign = FALSE;
-	int                 align = CurrWordSize;
-	//int                 acc = 0;
-	unsigned char       zmmflag = 0;
-	regist = info->regslist;
-	rspalign = TRUE;
-	/* in 64-bit, if the FRAME attribute is set, the space for the registers
-	* saved by the USES clause is located ABOVE the local variables!
-	* v2.09: if stack space is to be reserved for INVOKE ( option WIN64:2 ),
-	* the registers are also saved ABOVE the local variables.
-	*/
-	if (info->regslist) {
-		for (cnt = *regist++; cnt; cnt--, regist++) {
-			if (GetValueSp(*regist) & OP_XMM)
-				xmmflag = 1;
-			else if (GetValueSp(*regist) & OP_YMM)
-				ymmflag = 1;
-			else if (GetValueSp(*regist) & OP_ZMM)
-				zmmflag = 1;
-		}
-	}
-	if (ymmflag) XYZMMsize = 32;
-	else XYZMMsize = 16;
-
-	if (info->fpo || rspalign) {
-		/* count registers to be saved ABOVE local variables.
-		* v2.06: the list may contain xmm registers, which have size 16!
-		*/
-		if (info->regslist) {
-			int         cnt;
-			uint_16     *regs;
-			for (regs = info->regslist, cnt = *regs++; cnt; cnt--, regs++)
-				if ((GetValueSp(*regs) & OP_XMM) || (GetValueSp(*regs) & OP_YMM) || (GetValueSp(*regs) & OP_ZMM))
-					cntxmm++;
-				else
-					cntstd++;
-		}
-		/* in case there's no frame register, adjust start offset. */
-		if (info->parasize == 0 && info->locallist == NULL)
-			start = CurrWordSize;
-		cntstd = info->pushed_reg;
-		if (rspalign && cntxmm) {
-			if (!(cntstd & 1)) info->localsize += 8;
-			info->localsize += XYZMMsize * cntxmm;
-		}
-		DebugMsg1(("SetLocalOffsets_RSP(%s): cntxmm=%u cntstd=%u start=%u align=%u localsize=%u\n", CurrProc->sym.name, cntxmm, cntstd, start, align, info->localsize));
-	}
-	/* scan the locals list and set member sym.offset */
-	for (curr = info->locallist; curr; curr = curr->nextlocal)
-	{
-		uint_32 itemsize = (curr->sym.total_size == 0 ? 0 : curr->sym.total_size / curr->sym.total_length);
-
-		int n = 0;
-		if (curr->sym.isarray) n = curr->sym.total_size & 0x7;
-
-		if (itemsize < 16)
-			info->localsize = ROUND_UP(info->localsize, itemsize);
-
-		if (ModuleInfo.win64_flags & W64F_STACKALIGN16 && curr->sym.total_size > CurrWordSize)
-			info->localsize = ROUND_UP(info->localsize, 16);
-
-		curr->sym.offset = info->localsize;
-		info->localsize += curr->sym.total_size + n;
-		if (itemsize > align)
-			info->localsize = ROUND_UP(info->localsize, align);
-		else if (itemsize) /* v2.04: skip if size == 0 */
-			info->localsize = ROUND_UP(info->localsize, itemsize);
-
-		DebugMsg1(("SetLocalOffsets_RSP(%s): offset of %s (size=%u) set to %d\n", CurrProc->sym.name, curr->sym.name, curr->sym.total_size, curr->sym.offset));
-	}
-
-	if (!(cntstd & 1) && ((info->localsize & 15) == 0)) info->localsize += 8;
-
-	/* v2.11: localsize must be rounded before offset adjustment if fpo */
-	/* RSP 16-byte alignment? */
-	if (rspalign)
-		info->localsize = ROUND_UP(info->localsize, 8);
-	DebugMsg1(("SetLocalOffsets_RSP(%s): localsize=%u after processing locals\n", CurrProc->sym.name, info->localsize));
-
-	/* v2.11: recalculate offsets for params and locals if there's no frame pointer.
-	* Problem in 64-bit: option win64:2 triggers the "stack space reservation" feature -
-	* but the final value of this space is known at the procedure's END only.
-	* Hence in this case the values calculated below are "preliminary".
-	*/
-	if (info->fpo) {
-		if (rspalign) {
-			localadj = info->localsize;
-			paramadj = info->localsize - CurrWordSize - start;
-		}
-		else
-		{
-			localadj = info->localsize + cntstd * CurrWordSize;
-			paramadj = info->localsize + cntstd * CurrWordSize - CurrWordSize;
-		}
-	}
 }
 
 /* Set Local offsets for 32bit procedures */
@@ -4476,7 +4697,9 @@ void write_prologue(struct asm_tok tokenarray[])
 			/* We need this to run over multiple passes to ensure FPO is handled */
 			CurrProc->e.procinfo->localsize = 0;
 			if (Options.output_format == OFORMAT_COFF || Options.output_format == OFORMAT_BIN)
-				SetLocalOffsets_RBP(CurrProc->e.procinfo); /* UASM compatible Local offsets for win64 options */
+				SetLocalOffsets_RBP(CurrProc->e.procinfo); 
+			else if (Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_64BIT)
+				SetLocalOffsets_RBP_SYSV(CurrProc->e.procinfo);
 			else
 				SetLocalOffsets_RBP(CurrProc->e.procinfo);
 		}
