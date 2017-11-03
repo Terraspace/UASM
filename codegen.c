@@ -2612,7 +2612,8 @@ static ret_code match_phase_3( struct code_info *CodeInfo, enum operand_type opn
             /* v2.06: condition made more restrictive */
             if (CodeInfo->token < T_VBROADCASTSS)(CodeInfo->evex_flag = 0);
             //if( ( opnd2 & tbl_op2 ) || (CodeInfo->mem_type == MT_EMPTY && (opnd2 & OP_M_ANY) && (tbl_op2 & OP_M_ANY) )) {
-              if ((opnd2 & tbl_op2) || ((CodeInfo->evex_flag)&&(CodeInfo->token < T_VPBROADCASTB) || (CodeInfo->token > T_VPBROADCASTQ))) {     // 
+              if ((opnd2 & tbl_op2) || (CodeInfo->mem_type == MT_EMPTY && opnd2 == OP_I8 && CodeInfo->opnd[OPND1].type == OP_XMM) ||
+                  ((CodeInfo->evex_flag)&&(CodeInfo->token < T_VPBROADCASTB) && (CodeInfo->token > T_VPBROADCASTQ))) {     // 
                 if( check_3rd_operand( CodeInfo ) == ERROR )
                     break;
                 DebugMsg1(("match_phase_3: matched opnd2\n" ));

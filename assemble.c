@@ -77,7 +77,8 @@ jmp_buf jmpenv;
 #define ERR_EXT "err"
 #define BIN_EXT "BIN"
 #define EXE_EXT "EXE"
-extern int glabel;
+extern int gtemp;
+extern int gmask;
 extern int_32           LastCodeBufSize;
 extern char             *DefaultDir[NUM_FILE_TYPES];
 extern const char       *ModelToken[];
@@ -1304,7 +1305,8 @@ static void ModuleInit( void )
 
     memset( SymTables, 0, sizeof( SymTables[0] ) * TAB_LAST );
     ModuleInfo.fmtopt->init( &ModuleInfo );
-    glabel = 0;
+    gtemp = 0;
+    gmask = 0;
     return;
 }
 
