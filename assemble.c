@@ -53,6 +53,9 @@
 #if BIN_SUPPORT
 #include "bin.h"
 #endif
+#if MACHO_SUPPORT
+#include "macho64.h"
+#endif
 
 #if 1 //def __SW_BD
 #include <setjmp.h>
@@ -102,6 +105,9 @@ static const struct format_options formatoptions[] = {
 #endif
 #if ELF_SUPPORT
     { elf_init,  ELF32_DISALLOWED,  "ELF"  },
+#endif
+#if MACHO_SUPPORT
+	{ macho_init,  MACHO32_DISALLOWED,  "MACHO" },
 #endif
 };
 

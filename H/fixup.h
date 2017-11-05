@@ -61,17 +61,26 @@ enum fixup_types {
 #define BIN_DISALLOWED 0x0000
 #endif
 #define OMF_DISALLOWED 0x0000
+
 #if COFF_SUPPORT
 /* exclude RELOFF8, OFF8, PTR16, PTR32, HIBYTE */
 #define COFF32_DISALLOWED 0x0E12
 /* exclude RELOFF8, OFF8, PTR16, PTR32, HIBYTE */
 #define COFF64_DISALLOWED 0x0E12
 #endif
+
 #if ELF_SUPPORT
 /* exclude SEG, PTR16, PTR32, HIBYTE */
 #define ELF32_DISALLOWED  0x0F00
 /* exclude SEG, PTR16, PTR32, HIBYTE */
 #define ELF64_DISALLOWED  0x0F00
+#endif
+
+#if MACHO_SUPPORT
+/* exclude SEG, PTR16, PTR32, HIBYTE */
+#define MACHO32_DISALLOWED  0x0F00
+/* exclude SEG, PTR16, PTR32, HIBYTE */
+#define MACHO64_DISALLOWED  0x0F00
 #endif
 
 /* fixups are also used for backpatching of forward references in pass one.

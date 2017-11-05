@@ -1276,7 +1276,6 @@ static ret_code elf_write_data( struct module_info *modinfo, struct elfmod *em )
 static ret_code elf_write_module( struct module_info *modinfo )
 /*************************************************************/
 {
-    //struct dsym  *dir;
     struct elfmod em;
 
     DebugMsg(("elf_write_module: enter\n"));

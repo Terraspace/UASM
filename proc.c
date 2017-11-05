@@ -1502,7 +1502,7 @@ ret_code ParseProc(struct dsym *proc, int i, struct asm_tok tokenarray[], bool I
 		tokenarray[i].token == T_RES_ID &&
 		tokenarray[i].tokval == T_FRAME) {
 		/* v2.05: don't accept FRAME for ELF  - 2016-02-10 John Hankinson allowed ELF64 to use FRAME/Win64 ABI */
-		if (Options.output_format != OFORMAT_COFF && Options.output_format != OFORMAT_ELF && Options.output_format != OFORMAT_BIN
+		if (Options.output_format != OFORMAT_COFF && Options.output_format != OFORMAT_ELF && Options.output_format != OFORMAT_BIN && Options.output_format != OFORMAT_MAC
 #if PE_SUPPORT
 			&& ModuleInfo.sub_format != SFORMAT_PE
 #endif
@@ -2185,8 +2185,8 @@ ret_code ExcFrameDirective(int i, struct asm_tok tokenarray[])
 	UNWIND_CODE *puc;
 
 	DebugMsg1(("ExcFrameDirective(%s) enter\n", tokenarray[i].string_ptr));
-	/* v2.05: accept directives for windows only */
-	if (Options.output_format != OFORMAT_COFF && Options.output_format != OFORMAT_ELF && Options.output_format != OFORMAT_BIN
+	/* v2.05: accept directives for windows only (UASM 2.45 allows these with other formats like elf/mac/bin even though they'll be ignored) */
+	if (Options.output_format != OFORMAT_COFF && Options.output_format != OFORMAT_ELF && Options.output_format != OFORMAT_BIN && Options.output_format != OFORMAT_MAC
 #if PE_SUPPORT
 		&& ModuleInfo.sub_format != SFORMAT_PE
 #endif
@@ -2821,10 +2821,10 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
 	int                 stackadj = 0;
 	int                 subAmt = 0;
 
-	info->pushed_reg = 0;
-
 	DebugMsg1(("write_win64_default_prologue_RBP enter\n"));
 	check_proc_fpo(info);
+	
+	info->pushed_reg = 0;
 
 	if (ModuleInfo.win64_flags & W64F_SAVEREGPARAMS)
 		win64_SaveRegParams_RBP(info);
@@ -3395,14 +3395,20 @@ static void check_proc_fpo(struct proc_info *info)
 	int usedLocals = 0;
 
 	for (paracurr = info->paralist; paracurr; paracurr = paracurr->nextparam)
-	{
-		//if (paracurr->sym.used)
 			usedParams++;
-	}
 	for (paracurr = info->locallist; paracurr; paracurr = paracurr->nextlocal)
-	{
-		//if (paracurr->sym.used)
 			usedLocals++;
+
+	if (info->pushed_reg > 0)
+	{
+		info->fpo = FALSE;
+		return;
+	}
+
+	if (info->exc_handler && ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RBP)
+	{
+		info->fpo = FALSE;
+		return;
 	}
 
 	if (ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RSP || ModuleInfo.basereg[ModuleInfo.Ofssize] == T_ESP)
@@ -3545,6 +3551,8 @@ static void write_win64_default_epilogue_RBP(struct proc_info *info)
 				ppfmt = (resstack ? fmtstk3 : fmtstk2);
 				if (info->localsize + stackadj + resstack > 0)
 					AddLineQueueX(*(ppfmt + 0), T_RSP, info->basereg, NUMQUAL stackadj + info->localsize - info->frameofs, sym_ReservedStack->name);
+				else
+					AddLineQueueX("mov %r, %r", T_RSP, info->basereg);
 			}
 			else
 			{

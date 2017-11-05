@@ -1871,9 +1871,9 @@ static void output_opc(struct code_info *CodeInfo)
              else{
                if (CodeInfo->token == T_VMOVDQA || CodeInfo->token == T_VMOVDQU ||
                    CodeInfo->token == T_VMOVDQA32 || CodeInfo->token == T_VMOVDQU32 ||
-                   CodeInfo->token == T_VMOVDQA64 || CodeInfo->token == T_VMOVDQU64){
+                   CodeInfo->token == T_VMOVDQA64 || CodeInfo->token == T_VMOVDQU64){                 
                  if (CodeInfo->opnd[OPND1].type & OP_M_ANY || CodeInfo->opnd[OPND2].type & OP_M_ANY){
-                   if (CodeInfo->indexreg == 0xFF){
+                   if (CodeInfo->indexreg == 0xFF && CodeInfo->basetype != 0xFE ){  // fix for RIP displacement v2.44
                      CodeInfo->rm_byte &= ~MOD_11;
                      CodeInfo->rm_byte |= MOD_10;
                      CodeInfo->tuple = 0;
@@ -2086,7 +2086,8 @@ static void output_opc(struct code_info *CodeInfo)
 		/* UASM 2.43 - Use signed byte displacement form optimisation and remove 0 displacement */
 		if (CodeInfo->token == T_VMOVDQA || CodeInfo->token == T_VMOVDQU) 
 		{
-			if ((CodeInfo->opnd[OPND2].type & OP_M_ANY) && (CodeInfo->opnd[OPND2].data32l >= -128) && (CodeInfo->opnd[OPND2].data32l < 128))
+			if ((CodeInfo->opnd[OPND2].type & OP_M_ANY) && (CodeInfo->opnd[OPND2].data32l >= -128) && 
+          (CodeInfo->opnd[OPND2].data32l < 128) && (CodeInfo->basereg != 0xff))    // fix for RIP displacement v2.44
 			{
 				tmp &= NOT_BIT_67;
 				tmp |= MOD_01;
@@ -2611,9 +2612,9 @@ static ret_code match_phase_3( struct code_info *CodeInfo, enum operand_type opn
         default:
             /* v2.06: condition made more restrictive */
             if (CodeInfo->token < T_VBROADCASTSS)(CodeInfo->evex_flag = 0);
-            //if( ( opnd2 & tbl_op2 ) || (CodeInfo->mem_type == MT_EMPTY && (opnd2 & OP_M_ANY) && (tbl_op2 & OP_M_ANY) )) {
+            //if( ( opnd2 & tbl_op2 ) || (CodeInfo->mem_type == MT_EMPTY && (opnd2 & OP_M_ANY) || (tbl_op2 & OP_M_ANY) )) {
               if ((opnd2 & tbl_op2) || (CodeInfo->mem_type == MT_EMPTY && opnd2 == OP_I8 && CodeInfo->opnd[OPND1].type == OP_XMM) ||
-                  ((CodeInfo->evex_flag)&&(CodeInfo->token < T_VPBROADCASTB) && (CodeInfo->token > T_VPBROADCASTQ))) {     // 
+                  ((CodeInfo->evex_flag)&&(CodeInfo->token < T_VPBROADCASTB) || (CodeInfo->token > T_VPBROADCASTQ))) {     // 
                 if( check_3rd_operand( CodeInfo ) == ERROR )
                     break;
                 DebugMsg1(("match_phase_3: matched opnd2\n" ));

@@ -212,11 +212,11 @@
 
 /* Uasm version info */
 #ifdef _WIN64
-#define _UASM_VERSION_STR_ "2.44"
+#define _UASM_VERSION_STR_ "2.45"
 #else
-#define _UASM_VERSION_STR_ "2.44"
+#define _UASM_VERSION_STR_ "2.45"
 #endif
-#define _UASM_VERSION_INT_ 244
+#define _UASM_VERSION_INT_ 245
 #define _UASM_VERSION_SUFFIX_ "pre"
 #define _UASM_VERSION_ _UASM_VERSION_STR_ //_UASM_VERSION_SUFFIX_
 
@@ -851,6 +851,9 @@ struct module_info {
         uint_32         switch_size;
 #if AMD64_SUPPORT
         uint_8          win64_flags;     /* for WIN64 + PE(32+) */
+#endif
+#if MACHO_SUPPORT
+		uint_8			osx_osabi;		/* for OSX Macho */
 #endif
         };
 #endif

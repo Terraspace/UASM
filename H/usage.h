@@ -9,8 +9,8 @@
 #endif
 "-c\0"              "Assemble without linking (always set)\0"
 "-C<p|u|x>\0"       "Set OPTION CASEMAP: p=NONE, u=ALL, x=NOTPUBLIC (default)\0"
-"-archSSE\0"		"Set OPTION ARCH: SSE = Use SSE in generated code\0"
-"-archAVX\0"		"Set OPTION ARCH: AVX = Use AVX in generated code (default)\0"
+"-archSSE\0"		"Set OPTION ARCH: SSE = Use SSE in generated code (default)\0"
+"-archAVX\0"		"Set OPTION ARCH: AVX = Use AVX in generated code\0"
 "-nomlib\0"         "Disable internal Macro Library\0"
 "-D<name>[=text]\0" "Define text macro\0"
 "-e<number>\0"      "Set error limit number (default=50)\0"
@@ -107,6 +107,9 @@
 #endif
 #if AMD64_SUPPORT
 "-win64\0"          "64-bit COFF object file\0"
+#endif
+#if MACHO_SUPPORT
+"-macho64\0"        "64-bit Mach-O object file\0"
 #endif
 #ifdef DEBUG_OUT
 "Debug options:\0\0"

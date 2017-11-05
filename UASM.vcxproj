@@ -53,6 +53,7 @@
     <ClCompile Include="listing.c" />
     <ClCompile Include="loop.c" />
     <ClCompile Include="lqueue.c" />
+    <ClCompile Include="macho64.c" />
     <ClCompile Include="macro.c" />
     <ClCompile Include="macrolib.c" />
     <ClCompile Include="main.c" />
@@ -124,6 +125,8 @@
     <ClInclude Include="H\listing.h" />
     <ClInclude Include="H\lqueue.h" />
     <ClInclude Include="H\ltext.h" />
+    <ClInclude Include="H\macho64.h" />
+    <ClInclude Include="H\macho64spec.h" />
     <ClInclude Include="H\macro.h" />
     <ClInclude Include="H\macrolib.h" />
     <ClInclude Include="H\mangle.h" />

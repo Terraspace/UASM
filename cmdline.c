@@ -522,6 +522,11 @@ static void OPTQUAL Set_ofmt( void )
 		Options.langtype = LANG_SYSVCALL;
 		ModuleInfo.frame_auto = 1;
 	}
+	if (Options.output_format == OFORMAT_MAC && Options.sub_format == SFORMAT_64BIT)
+	{
+		Options.langtype = LANG_SYSVCALL;
+		ModuleInfo.frame_auto = 1;
+	}
 }
 
 static void OPTQUAL Set_zcm( void ) { Options.no_cdecl_decoration = FALSE; }
@@ -624,6 +629,9 @@ static struct cmdloption const cmdl_options[] = {
     { "elf64",  OFORMAT_ELF | (SFORMAT_64BIT << 8), Set_ofmt },
 #endif
     { "elf",    OFORMAT_ELF | (SFORMAT_NONE << 8), Set_ofmt },
+#endif
+#if MACHO_SUPPORT
+	{ "macho64",  OFORMAT_MAC | (SFORMAT_64BIT << 8), Set_ofmt },
 #endif
     { "EP",     0,        Set_EP },
     { "eq",     optofs( no_error_disp ),        Set_True },
