@@ -34,6 +34,7 @@ $(OUTD)/linnum.o   \
 $(OUTD)/listing.o  \
 $(OUTD)/loop.o     \
 $(OUTD)/lqueue.o   \
+$(OUTD)/macho64.o  \
 $(OUTD)/macro.o    \
 $(OUTD)/macrolib.o \
 $(OUTD)/mangle.o   \

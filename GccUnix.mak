@@ -1,7 +1,7 @@
 
 # This makefile creates the HJWasm Elf binary for Linux/FreeBSD.
 
-TARGET1=hjwasm
+TARGET1=uasm
 
 ifndef DEBUG
 DEBUG=0
