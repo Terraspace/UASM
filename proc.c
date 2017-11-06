@@ -903,7 +903,7 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 		}
 
 		/* check if parameter name is defined already */
-		if ((IsPROC) && (sym = SymFindLocal(name)) && sym->state != SYM_UNDEFINED) { /* UASM 2.43 replaced SymSearch to prevent symbol redefinition warning on proc params */
+		if ((IsPROC) && (sym = SymSearch(name)) && sym->state != SYM_UNDEFINED) { 
 			DebugMsg(("ParseParams: %s defined already, state=%u, local=%u\n", sym->name, sym->state, sym->scoped));
 			return(EmitErr(SYMBOL_REDEFINITION, name));
 		}
@@ -1156,9 +1156,10 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 						paranode->sym.offset = offset;
 						proc->e.procinfo->stackparam = TRUE;
 						offset += ROUND_UP(paranode->sym.total_size, CurrWordSize);
-						/* set isparam var for W64F_HABRAN */
-						if (ModuleInfo.win64_flags & W64F_SMART) paranode->sym.isparam = TRUE;
-						//if (ModuleInfo.win64_flags & W64F_HABRAN) paranode->sym.isparam = TRUE;
+						/* set isparam var for W64F_SMART */
+						//if (ModuleInfo.win64_flags & W64F_SMART) 
+						if(ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RSP)
+							paranode->sym.isparam = TRUE;
 					}
 			}
 		}
@@ -3776,19 +3777,18 @@ static void SetLocalOffsets_RBP(struct proc_info *info)
 	{
 		uint_32 itemsize = (curr->sym.total_size == 0 ? 0 : curr->sym.total_size / curr->sym.total_length);
 		itemsize = ROUND_UP(itemsize, align);
+		if (curr->sym.total_size > align)
+			itemsize = ROUND_UP(curr->sym.total_size, align);
 		info->localsize += itemsize;
 	}
 
 	info->frameofs = 0;
-	//if ((ModuleInfo.win64_flags & W64F_AUTOSTACKSP) || (ModuleInfo.win64_flags & W64F_STACKALIGN16))
-	//{
-		if (!info->fpo)
-		{
-			info->frameofs = (info->localsize >> 1) + resstack; /* Center the stack frame for optimised 1 byte displacements */
-			info->frameofs = ROUND_UP(info->frameofs, 16);
-			if (info->frameofs > 128) info->frameofs = 128;
-		}
-	//}
+	if (!info->fpo)
+	{
+		info->frameofs = (info->localsize >> 1) + resstack; /* Center the stack frame for optimised 1 byte displacements */
+		info->frameofs = ROUND_UP(info->frameofs, 16);
+		if (info->frameofs > 128) info->frameofs = 128;
+	}
 
 	/* adjust stack to be 16byte aligned if required */
 	/* or at least account for odd pushed gprs */
@@ -3821,6 +3821,8 @@ static void SetLocalOffsets_RBP(struct proc_info *info)
 	{
 		int itemsize = (curr->sym.total_size == 0 ? 0 : curr->sym.total_size / curr->sym.total_length);
 		itemsize = ROUND_UP(itemsize, align);
+		if (curr->sym.total_size > align)
+			itemsize = ROUND_UP(curr->sym.total_size, align);
 		curr->sym.offset = curOfs - itemsize;
 		curOfs -= itemsize;
 	}

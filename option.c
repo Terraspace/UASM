@@ -975,6 +975,12 @@ OPTFUNC(SetWin64)
       return(EmitConstError(&opndx));
       }
    
+	//if (opndx.llvalue <= 7 && opndx.llvalue > 0 && ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RSP)
+	//{
+		//opndx.llvalue = 11;        /* All values will be forced to 11 (except 15) and implies stackbase RSP */
+		//ModuleInfo.frame_auto = 1; /* frame auto must also be implied for all stackbase rsp options */
+	//}
+
     /* OPTION win64:11 can work only with OPTION STACKBASE:RSP */
     if (opndx.llvalue & W64F_SMART || opndx.llvalue > 7) 
 	{  
@@ -1133,7 +1139,7 @@ OPTFUNC( SetStackBase )
 	/* Setup everything for stackbase RSP based stack */
 	if (ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RSP)
 	{
-		//if(ModuleInfo.win64_flags < 11)
+		//if(ModuleInfo.win64_flags < 11 && ModuleInfo.win64_flags > 0)
 			//ModuleInfo.win64_flags = 11; /* Force win64:11 for any use of stackbase:rsp if win64 wasn't already set > 11 (IE: 15) */
 		//ModuleInfo.frame_auto = 1; /* frame auto must also be implied for all stackbase rsp options */
 		

@@ -17,6 +17,15 @@
 
 #define ROUND_UP( i, r ) (((i)+((r)-1)) & ~((r)-1))
 
+/* String table entry */
+struct strentry
+{
+	char *pstr;
+	struct strentry *next;
+	struct asym *sym;
+	int idx;
+};
+
 struct macho_section_entry
 {
 	struct section_64 section;
@@ -34,6 +43,9 @@ struct macho_module
 	struct macho_section_entry *sections;
 	struct symtab_command *pSymTblCmd;
 	struct dysymtab_command *pdySymTblCmd;
+	struct strentry *strings;
+	int symCount;
+	int dySymCount;
 };
 
 /* ========================================================================================== 
@@ -108,15 +120,57 @@ struct dysymtab_command * macho_build_dysymtbl_cmd()
 	return(pCmd);
 }
 
-void macho_build_string_tbl()
+/* ==========================================================================================
+Add an entry to the string table.
+========================================================================================== */
+static void macho_add_string(struct strentry *pstr, struct macho_module *mm)
 {
+	struct strentry *pCurrStr = mm->strings;
+	int lastIdx = 1;
+	if (pCurrStr == NULL)
+	{
+		pstr->idx = 1;
+		mm->strings = pstr;
+	}
+	else
+	{
+		while (pCurrStr->next != NULL)
+		{
+			pCurrStr = pCurrStr->next;
+			lastIdx = pCurrStr->idx;
+		}
+		pstr->idx = lastIdx + 1;
+		pCurrStr->next = pstr;
+	}
+	return;
+}
+
+/* ==========================================================================================
+Create linked list of symbol names (string table)
+-> This can be later scanned to determine symbol index (1 based).
+========================================================================================== */
+int macho_build_string_tbl(struct symtab_command *pSymCmd, struct macho_module *mm)
+{
+	int tblSize = 0;
 	int i = 0;
 	struct asym *sym = NULL;
+	struct strentry *pstr = NULL;
 
 	while (sym = SymEnum(sym, &i))
 	{
-
+		if ( ((sym->state == SYM_EXTERNAL && sym->used) || sym->ispublic || sym->segment) 
+			&& (sym->state != SYM_MACRO && sym->state != SYM_SEG && sym->state != SYM_TMACRO))
+		{
+			tblSize += strlen(sym->name) + 1;
+			pstr = malloc(sizeof(struct strentry));
+			memset(pstr, 0, sizeof(struct strentry));
+			pstr->pstr = sym->name;
+			pstr->sym = sym;
+			macho_add_string(pstr, mm);
+			mm->symCount++;
+		}
 	}
+	return(tblSize);
 }
 
 /* ==========================================================================================
@@ -165,12 +219,14 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 	int cnt = 0;
 	struct dsym *curr;
 	struct macho_section_entry *currSec;
+	struct strentry *currStr;
 	int fileofs = sizeof(struct mach_header_64);
 	uint64_t currAddr = 0; /* the first section starts in the 1 segment at vmaddr == 0 */
 	struct segment_command_64 *pCmd = NULL;
 	struct symtab_command *pSymCmd = NULL;
 	struct dysymtab_command *pdySymCmd = NULL;
 	int sectionDataSize = 0;
+	int stringTableSize = 0;
 
 	/* Setup the load segment command */
 	pCmd = macho_build_seg_cmd( fileofs );
@@ -261,6 +317,15 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 		sectionDataSize += currSec->size;
 	}
 
+	/* Build the string table data */
+	stringTableSize = macho_build_string_tbl(pSymCmd,&mm);
+
+	/* Set symbol table sizes and offsets */
+	pSymCmd->nsyms = mm.symCount;
+	pSymCmd->symoff = fileofs + sectionDataSize;
+	pSymCmd->strsize = stringTableSize;
+	pSymCmd->stroff = fileofs + sectionDataSize + (sizeof(struct nlist_64)*pSymCmd->nsyms);
+
 	/* Write out the macho header */
 	if (fwrite(&mm.header, 1, sizeof(mm.header), CurrFile[OBJ]) != sizeof(mm.header))
 		WriteError();
@@ -290,10 +355,21 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 	}
 
 	/* Write out symbol table entries */
+	for (currStr = mm.strings;currStr;currStr = currStr->next)
+	{
+
+	}
+
 	/* Write out relocation command */
 	/* Write out nlist64 entries */
-	/* Write out string table */
 
+	/* Write out string table */
+	for (currStr = mm.strings;currStr;currStr = currStr->next)
+	{
+		int len = strlen(currStr->pstr) + 1;
+		if (fwrite(currStr->pstr, 1, len, CurrFile[OBJ]) != len)
+			WriteError();
+	}
 }
 
 static ret_code macho_write_module( struct module_info *modinfo )
