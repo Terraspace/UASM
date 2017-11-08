@@ -2261,5 +2261,7 @@ enum reloc_type_x86_64
 	X86_64_RELOC_TLV,		// for thread local variables
 };
 
+struct relocation_info { int32_t r_address; uint32_t r_symbolnum : 24, r_pcrel : 1, r_length : 2, r_extern : 1, r_type : 4; };
+
 #endif /* End of MACHO64SPEC_H */
 

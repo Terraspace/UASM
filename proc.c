@@ -3775,12 +3775,21 @@ static void SetLocalOffsets_RBP(struct proc_info *info)
 	/* Calculate total space required for locals */
 	for (curr = info->locallist; curr; curr = curr->nextlocal) 
 	{
-		uint_32 itemsize = (curr->sym.total_size == 0 ? 0 : curr->sym.total_size / curr->sym.total_length);
-		itemsize = ROUND_UP(itemsize, align);
-		if (curr->sym.total_size > align)
-			itemsize = ROUND_UP(curr->sym.total_size, align);
-		info->localsize += itemsize;
+		uint_32 totalsize = curr->sym.total_size;
+		if (totalsize >= 16)
+			totalsize = ROUND_UP(totalsize, 16);
+		else if (totalsize >= 8 && totalsize < 16)
+			totalsize = ROUND_UP(totalsize, 8);
+		else if (totalsize >= 4 && totalsize < 8)
+			totalsize = ROUND_UP(totalsize, 4);
+		//uint_32 itemsize = (curr->sym.total_size == 0 ? 0 : curr->sym.total_size / curr->sym.total_length);
+		//itemsize = ROUND_UP(itemsize, align);
+		//if (curr->sym.total_size > align)
+//			itemsize = ROUND_UP(curr->sym.total_size, align);
+		//info->localsize += itemsize;
+		info->localsize += totalsize;
 	}
+	info->localsize = ROUND_UP(info->localsize, 16);
 
 	info->frameofs = 0;
 	if (!info->fpo)
@@ -3817,7 +3826,7 @@ static void SetLocalOffsets_RBP(struct proc_info *info)
 
 	/* Now set local offsets */
 	curOfs = info->localsize + resstack - (16 * cntxmm) - info->frameofs;
-	for (curr = info->locallist; curr; curr = curr->nextlocal)
+	/*for (curr = info->locallist; curr; curr = curr->nextlocal)
 	{
 		int itemsize = (curr->sym.total_size == 0 ? 0 : curr->sym.total_size / curr->sym.total_length);
 		itemsize = ROUND_UP(itemsize, align);
@@ -3825,6 +3834,46 @@ static void SetLocalOffsets_RBP(struct proc_info *info)
 			itemsize = ROUND_UP(curr->sym.total_size, align);
 		curr->sym.offset = curOfs - itemsize;
 		curOfs -= itemsize;
+	}*/
+
+	for (curr = info->locallist; curr; curr = curr->nextlocal)
+	{
+		uint_32 totalsize = curr->sym.total_size;
+		if (totalsize >= 16)
+		{
+			totalsize = ROUND_UP(totalsize, 16);
+			curr->sym.offset = curOfs - totalsize;
+			curOfs -= totalsize;
+		}
+	}
+	for (curr = info->locallist; curr; curr = curr->nextlocal)
+	{
+		uint_32 totalsize = curr->sym.total_size;
+		if (totalsize >= 8 && totalsize < 16)
+		{
+			totalsize = ROUND_UP(totalsize, 8);
+			curr->sym.offset = curOfs - totalsize;
+			curOfs -= totalsize;
+		}
+	}
+	for (curr = info->locallist; curr; curr = curr->nextlocal)
+	{
+		uint_32 totalsize = curr->sym.total_size;
+		if (totalsize >= 4 && totalsize < 8)
+		{
+			totalsize = ROUND_UP(totalsize, 4);
+			curr->sym.offset = curOfs - totalsize;
+			curOfs -= totalsize;
+		}
+	}
+	for (curr = info->locallist; curr; curr = curr->nextlocal)
+	{
+		uint_32 totalsize = curr->sym.total_size;
+		if (totalsize < 4)
+		{
+			curr->sym.offset = curOfs - totalsize;
+			curOfs -= totalsize;
+		}
 	}
 
 	/* Set parameter positions based on stack layout */
