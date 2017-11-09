@@ -84,7 +84,14 @@ int macho_section_count()
 	struct dsym *curr;
 	for (curr = SymTables[TAB_SEG].head; curr; curr = curr->next)
 	{
-		cnt++;
+		if (strcmp(curr->sym.name, "_BSS") == 0)
+			cnt++;
+		else if (strcmp(curr->sym.name, "CONST") == 0)
+			cnt++;
+		else if (strcmp(curr->sym.name, "_TEXT") == 0)
+			cnt++;
+		else if (strcmp(curr->sym.name, "_DATA") == 0)
+			cnt++;
 	}
 	return(cnt);
 }
@@ -482,6 +489,7 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 			currSec->idx = secIdx++;
 			fileofs += sizeof(struct section_64);
 			pCmd->vmsize += currSec->size;
+
 		}
 	}
 	/* At this point only the section offsets (file) need to still be set 
