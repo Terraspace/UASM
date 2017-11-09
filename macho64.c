@@ -406,6 +406,8 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 	ver.cmdsize = sizeof(struct version_min_command);
 	ver.version = 0x000a0a00; // 10.10
 	ver.sdk = 0;
+	mm.header.ncmds++;
+	mm.header.sizeofcmds += sizeof(struct version_min_command);
 	fileofs += sizeof(struct version_min_command);
 
 	/* For every internal segment, create a section */
