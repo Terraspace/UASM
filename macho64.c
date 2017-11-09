@@ -359,6 +359,8 @@ static int GetRelocationCount(struct macho_module *mm, int baseOfs)
 				curr->relocCount = GetSegFixups(seg);
 				curr->section.nreloc = curr->relocCount;
 				curr->section.reloff = curr->relocOfs;
+				if (curr->section.nreloc == 0)
+					curr->section.reloff = 0;
 				break;
 			}
 		}
@@ -404,7 +406,7 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 	/* Setup the min version structure */
 	ver.cmd = LC_VERSION_MIN_MACOSX;
 	ver.cmdsize = sizeof(struct version_min_command);
-	ver.version = 0x000a0a00; // 10.10
+	ver.version = 0x000a0c00; // 10.12
 	ver.sdk = 0;
 	mm.header.ncmds++;
 	mm.header.sizeofcmds += sizeof(struct version_min_command);
