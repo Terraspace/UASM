@@ -589,9 +589,13 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 						reloc.r_symbolnum = currSec->idx;
 						reloc.r_pcrel = 1;
 					}
-					if (currFixup->type == FIX_RELOFF32 && currFixup->addbytes == 4)
+					if (currFixup->type == FIX_RELOFF32 && currFixup->addbytes == 4 && currFixup->option == OPTJ_NONE)
 					{
-						machotype = X86_64_RELOC_SIGNED;
+						machotype = X86_64_RELOC_GOT_LOAD;
+					}
+					else if (currFixup->type == FIX_RELOFF32 && currFixup->option == OPTJ_EXPLICIT)
+					{
+						machotype = X86_64_RELOC_BRANCH;
 					}
 					else
 					{
