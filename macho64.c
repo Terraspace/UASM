@@ -436,7 +436,7 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 	pCmd->fileoff = mm.sections->section.offset; // Set segment command file offset = first section offset.
 
 	/* Build the string table data */
-	stringTableSize = macho_build_string_tbl(pSymCmd,&mm);
+	stringTableSize = macho_build_string_tbl(pSymCmd,&mm) + 1; /* add one for the "" string entry */
 
 	/* Update number of symbols being written to object file */
 	pSymCmd->nsyms = mm.symCount;
@@ -545,28 +545,27 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 						reloc.r_symbolnum = currSec->idx;
 						reloc.r_pcrel = 1;
 					}
-					switch (currFixup->type) 
+					if (currFixup->type == FIX_RELOFF32 && currFixup->addbytes == 4)
 					{
-						case FIX_RELOFF32:	   machotype = X86_64_RELOC_SIGNED;    break;
-						case FIX_OFF64:        machotype = X86_64_RELOC_UNSIGNED;  break;
-						case FIX_OFF32_IMGREL: machotype = X86_64_RELOC_SIGNED;    break;
-						case FIX_OFF32:        machotype = X86_64_RELOC_SIGNED;    break;
-						case FIX_OFF16:        machotype = X86_64_RELOC_SIGNED;    break;
-						case FIX_RELOFF16:     machotype = X86_64_RELOC_SIGNED;    break;
-						case FIX_OFF8:         machotype = X86_64_RELOC_SIGNED;    break;
-						case FIX_RELOFF8:      machotype = X86_64_RELOC_SIGNED;    break;
-						default:			   machotype = X86_64_RELOC_SIGNED;	   break;
+						machotype = X86_64_RELOC_SIGNED;
 					}
+					else
+					{
+						machotype = X86_64_RELOC_SIGNED;
+					}
+	
 					reloc.r_type = machotype;
-					switch (currFixup->sym->total_size)
+					switch (currFixup->addbytes)
 					{
 						case 8:
 							reloc.r_length = 3;
 							break;
 						case 4:
 							reloc.r_length = 2;
+							break;
 						case 2:
 							reloc.r_length = 1;
+							break;
 						default:
 							reloc.r_length = 0;
 					}
