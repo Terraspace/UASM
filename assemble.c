@@ -795,6 +795,8 @@ static void ModulePassInit( void )
                 ModuleInfo.langtype = LANG_FASTCALL;
 			if (ModuleInfo.langtype == LANG_NONE && Options.output_format == OFORMAT_ELF)
 				ModuleInfo.langtype = LANG_SYSVCALL;
+			if (ModuleInfo.langtype == LANG_NONE && Options.output_format == OFORMAT_MAC)
+				ModuleInfo.langtype = LANG_SYSVCALL;
 
         } else
 #endif

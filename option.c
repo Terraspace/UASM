@@ -1022,7 +1022,7 @@ OPTFUNC(SetWin64)
   
   ModuleInfo.win64_flags = opndx.llvalue;
 
-  if (Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_64BIT)
+  if ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)
   {
 	  Options.langtype = LANG_SYSVCALL;
 	  ModuleInfo.langtype = LANG_SYSVCALL;

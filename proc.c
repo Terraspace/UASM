@@ -2081,8 +2081,8 @@ static void WriteSEHData(struct dsym *proc)
 	char segnamebuff[12];
 	char buffer[128];
 
-	/* 2016-02-10 John Hankinson - Don't bother writing SEH data for ELF64 or Uasm flat mode even if it was generated */
-	if (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_BIN)
+	/* 2016-02-10 John Hankinson - Don't bother writing SEH data for ELF64, MACHO64 or Uasm flat mode even if it was generated */
+	if (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_BIN || Options.output_format == OFORMAT_MAC)
 		return;
 
 	if (endprolog_found == FALSE) {
@@ -4773,7 +4773,7 @@ void write_prologue(struct asm_tok tokenarray[])
 			CurrProc->e.procinfo->localsize = 0;
 			if ((Options.output_format == OFORMAT_COFF || Options.output_format == OFORMAT_BIN) && CurrProc->e.procinfo->isframe)
 				SetLocalOffsets_RBP(CurrProc->e.procinfo); 
-			else if (Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_64BIT)
+			else if ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)
 				SetLocalOffsets_RBP_SYSV(CurrProc->e.procinfo);
 			else
 				SetLocalOffsets(CurrProc->e.procinfo);
