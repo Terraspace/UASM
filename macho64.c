@@ -61,9 +61,14 @@ struct macho_module
 	struct symtab_command *pSymTblCmd;
 	struct dysymtab_command *pdySymTblCmd;
 	struct strentry *strings;
-	int symCount;
-	int dySymCount;
 	int relocCount;
+	int sectAlign;
+	int symIdx;
+	int extSymIdx;
+	int undefSymIdx;
+	int symCount;
+	int extSymCount;
+	int undefSymCount;
 };
 
 static int padbyte[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -180,24 +185,73 @@ int macho_build_string_tbl(struct symtab_command *pSymCmd, struct macho_module *
 	int i = 0;
 	struct asym *sym = NULL;
 	struct strentry *pstr = NULL;
+	int totalSymCount = 0;
 
+	/* Normal local symbols */
 	while (sym = SymEnum(sym, &i))
 	{
-		if ( ((sym->state == SYM_EXTERNAL && sym->used) || sym->ispublic || sym->segment) 
-			&& (sym->state != SYM_MACRO && sym->state != SYM_SEG && sym->state != SYM_TMACRO))
+		if (sym->state != SYM_MACRO && sym->state != SYM_SEG && sym->state != SYM_TMACRO && sym->predefined == 0 && sym->state != SYM_GRP && sym->isequate == 0)
+		{ 
+			if (sym->state != SYM_EXTERNAL && !sym->ispublic)
+			{
+				tblSize += strlen(sym->name) + 1;
+				pstr = malloc(sizeof(struct strentry));
+				memset(pstr, 0, sizeof(struct strentry));
+				pstr->pstr = sym->name;
+				pstr->sym = sym;
+				macho_add_string(pstr, mm);
+				mm->symCount++;
+				totalSymCount++;
+			}
+		}
+	}
+	mm->extSymIdx = totalSymCount;
+
+	/* External public symbols */
+	while (sym = SymEnum(sym, &i))
+	{
+		if (sym->state != SYM_MACRO && sym->state != SYM_SEG && sym->state != SYM_TMACRO && sym->predefined == 0 && sym->state != SYM_GRP && sym->isequate == 0)
 		{
-			tblSize += strlen(sym->name) + 1;
-			pstr = malloc(sizeof(struct strentry));
-			memset(pstr, 0, sizeof(struct strentry));
-			pstr->pstr = sym->name;
-			pstr->sym = sym;
-			macho_add_string(pstr, mm);
-			mm->symCount++;
+			if (sym->ispublic)
+			{
+				tblSize += strlen(sym->name) + 1;
+				pstr = malloc(sizeof(struct strentry));
+				memset(pstr, 0, sizeof(struct strentry));
+				pstr->pstr = sym->name;
+				pstr->sym = sym;
+				macho_add_string(pstr, mm);
+				mm->extSymCount++;
+				totalSymCount++;
+			}
+		}
+	}
+	mm->undefSymIdx = totalSymCount;
+
+	/* Undefined symbols */
+	while (sym = SymEnum(sym, &i))
+	{
+		if (sym->state != SYM_MACRO && sym->state != SYM_SEG && sym->state != SYM_TMACRO && sym->predefined == 0 && sym->state != SYM_GRP && sym->isequate == 0)
+		{
+			if (sym->state == SYM_EXTERNAL && sym->used)
+			{
+				tblSize += strlen(sym->name) + 1;
+				pstr = malloc(sizeof(struct strentry));
+				memset(pstr, 0, sizeof(struct strentry));
+				pstr->pstr = sym->name;
+				pstr->sym = sym;
+				macho_add_string(pstr, mm);
+				mm->undefSymCount++;
+				totalSymCount++;
+			}
 		}
 	}
 	return(tblSize);
 }
 
+/* ==========================================================================================
+Return the 1-based index of a symbol table entry, based on it's name
+NB: symbol table indices in other structures are 0 based.
+========================================================================================== */
 static int GetSymbolIndex(const char *pName, struct macho_module *mm)
 {
 	struct strentry *currStr = mm->strings;
@@ -225,7 +279,7 @@ struct section_64 * macho_build_section( const char *secName, const char *segNam
 	pSec->srcName = srcName;
 	strcpy(pSec->section.sectname, secName);
 	strcpy(pSec->section.segname, segName);
-	pSec->section.align = 4; // 2^4 = 16 byte alignment.
+	pSec->section.align = 0; // 2^0 = 1 byte alignment.
 	pSec->section.flags = flags;
 
 	/* addr, size, offset, reloff, nreloc still need to be completed */
@@ -335,6 +389,10 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 	struct relocation_info reloc;
 	struct fixup *currFixup;
 	uint_8 machotype;
+	struct version_min_command ver;
+
+	/* Set section alignment in bytes */
+	mm.sectAlign = 1;
 
 	/* Setup the load segment command */
 	pCmd = macho_build_seg_cmd( fileofs );
@@ -342,6 +400,13 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 	mm.header.ncmds++;
 	mm.header.sizeofcmds += sizeof(struct segment_command_64);
 	fileofs += sizeof(struct segment_command_64);
+
+	/* Setup the min version structure */
+	ver.cmd = LC_VERSION_MIN_MACOSX;
+	ver.cmdsize = sizeof(struct version_min_command);
+	ver.version = 0x000a0a00; // 10.10
+	ver.sdk = 0;
+	fileofs += sizeof(struct version_min_command);
 
 	/* For every internal segment, create a section */
 	for (curr = SymTables[TAB_SEG].head; curr; curr = curr->next)
@@ -351,12 +416,12 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 			currSec = macho_build_section("__text", "__TEXT", S_REGULAR, curr->sym.name);
 			macho_add_section(currSec, &mm);
 			currSec->data = curr->e.seginfo->CodeBuffer;
-			currSec->size = ROUND_UP(curr->e.seginfo->bytes_written,16);
+			currSec->size = ROUND_UP(curr->e.seginfo->bytes_written,mm.sectAlign);
 			currSec->dif = currSec->size - curr->e.seginfo->bytes_written;
 			currSec->section.size = currSec->size;
 			currSec->section.addr = currAddr;
 			currAddr += currSec->size;
-			currAddr = ROUND_UP(currAddr, 16); /* Keep vmaddr aligned to 16bytes after each section */
+			currAddr = ROUND_UP(currAddr, mm.sectAlign); 
 			pCmd->filesize += currSec->size;
 			currSec->idx = secIdx++;
 			currSec->section.flags |= (S_ATTR_SOME_INSTRUCTIONS | S_ATTR_PURE_INSTRUCTIONS);
@@ -367,12 +432,12 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 			currSec = macho_build_section("__data", "__DATA", S_REGULAR, curr->sym.name);
 			macho_add_section(currSec, &mm);
 			currSec->data = curr->e.seginfo->CodeBuffer;
-			currSec->size = ROUND_UP(curr->e.seginfo->bytes_written,16);
+			currSec->size = ROUND_UP(curr->e.seginfo->bytes_written, mm.sectAlign);
 			currSec->dif = currSec->size - curr->e.seginfo->bytes_written;
 			currSec->section.size = currSec->size;
 			currSec->section.addr = currAddr;
 			currAddr += currSec->size;
-			currAddr = ROUND_UP(currAddr, 16);
+			currAddr = ROUND_UP(currAddr, mm.sectAlign);
 			pCmd->filesize += currSec->size;
 			currSec->idx = secIdx++;
 		}
@@ -382,12 +447,12 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 			currSec = macho_build_section("_rdata", "__DATA", S_REGULAR, curr->sym.name);
 			macho_add_section(currSec, &mm);
 			currSec->data = curr->e.seginfo->CodeBuffer;
-			currSec->size = ROUND_UP(curr->e.seginfo->bytes_written,16);
+			currSec->size = ROUND_UP(curr->e.seginfo->bytes_written, mm.sectAlign);
 			currSec->dif = currSec->size - curr->e.seginfo->bytes_written;
 			currSec->section.size = currSec->size;
 			currSec->section.addr = currAddr;
 			currAddr += currSec->size;
-			currAddr = ROUND_UP(currAddr, 16);
+			currAddr = ROUND_UP(currAddr, mm.sectAlign);
 			pCmd->filesize += currSec->size;
 			currSec->idx = secIdx++;
 		}
@@ -397,11 +462,11 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 			currSec = macho_build_section("__bss", "__DATA", S_ZEROFILL, curr->sym.name);
 			macho_add_section(currSec, &mm);
 			currSec->data = curr->e.seginfo->CodeBuffer;
-			currSec->size = ROUND_UP(curr->e.seginfo->bytes_written,16);
+			currSec->size = ROUND_UP(curr->e.seginfo->bytes_written, mm.sectAlign);
 			currSec->dif = currSec->size - curr->e.seginfo->bytes_written;
 			currSec->section.size = currSec->size;
 			currSec->section.addr = currAddr;
-			currAddr = ROUND_UP(currAddr, 16);
+			currAddr = ROUND_UP(currAddr, mm.sectAlign);
 			currAddr += currSec->size;
 			currSec->idx = secIdx++;
 		}
@@ -442,18 +507,20 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 	pSymCmd->nsyms = mm.symCount;
 
 	/* Build relocation data and get size */
-	mm.relocCount = GetRelocationCount(&mm, fileofs + sectionDataSize + (sizeof(struct nlist_64)*pSymCmd->nsyms));
+	mm.relocCount = GetRelocationCount(&mm, fileofs + sectionDataSize);
 	relocDataSize = mm.relocCount * sizeof(struct relocation_info);
 
 	/* Set dsym relocation data offset and size */
 	pdySymCmd->nlocalsym = mm.symCount;
-	pdySymCmd->ilocalsym = 0;
-	pdySymCmd->nlocrel = 0;
-	pdySymCmd->locreloff = 0;//fileofs + sectionDataSize + (sizeof(struct nlist_64)*pSymCmd->nsyms);
+	pdySymCmd->ilocalsym = 0; /* normal local symbols always start at index 0 */
+	pdySymCmd->nextdefsym = mm.extSymCount;
+	pdySymCmd->iextdefsym = mm.extSymIdx;
+	pdySymCmd->nundefsym = mm.undefSymCount;
+	pdySymCmd->iundefsym = mm.undefSymIdx;
 
 	/* Set symbol table sizes and offsets */
-	pSymCmd->nsyms = mm.symCount;
-	pSymCmd->symoff = fileofs + sectionDataSize;
+	pSymCmd->nsyms = mm.symCount + mm.extSymCount + mm.undefSymCount;
+	pSymCmd->symoff = fileofs + sectionDataSize + relocDataSize;
 	pSymCmd->strsize = stringTableSize;
 	pSymCmd->stroff = fileofs + sectionDataSize + (sizeof(struct nlist_64)*pSymCmd->nsyms) + relocDataSize;
 
@@ -472,6 +539,10 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 			WriteError();
 	}
 
+	/* Write out OSX min version command */
+	if (fwrite(&ver, 1, sizeof(struct version_min_command), CurrFile[OBJ]) != sizeof(struct version_min_command))
+		WriteError();
+
 	/* Write out symbol table commands */
 	if (fwrite(pSymCmd, 1, sizeof(struct symtab_command), CurrFile[OBJ]) != sizeof(struct symtab_command))
 		WriteError();
@@ -487,38 +558,6 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 		{
 			fwrite(&padbyte, 1, currSec->dif, CurrFile[OBJ]);
 		}
-	}
-
-	/* Write out symbol table entries */
-	for (currStr = mm.strings;currStr;currStr = currStr->next)
-	{
-		memset(&symEntry, 0, sizeof(struct nlist_64));
-		if (currStr->sym->state == SYM_EXTERNAL)
-		{
-			symEntry.n_sect = NO_SECT;
-			symEntry.n_type = N_UNDF | N_EXT;
-			symEntry.n_value = currStr->sym->total_size;
-			symEntry.n_un.n_strx = currStr->offset;
-		}
-		else
-		{
-			symEntry.n_sect = GetSectionIdx(currStr->sym->segment,&mm);
-			if(currStr->sym->ispublic)
-				symEntry.n_type = N_SECT | N_EXT;
-			else
-				symEntry.n_type = N_SECT;
-			symEntry.n_value = (uint64_t)currStr->sym->offset;
-			symEntry.n_un.n_strx = currStr->offset;
-		}
-
-		//symEntry.n_desc = REFERENCE_FLAG_DEFINED;
-		if (currStr->sym->weak)
-			symEntry.n_desc |= N_WEAK_DEF;
-
-		if (fwrite(&symEntry, 1, sizeof(struct nlist_64), CurrFile[OBJ]) != sizeof(struct nlist_64))
-			WriteError();
-
-		fileofs += sizeof(struct nlist_64);
 	}
 
 	/* Write out relocation entries */
@@ -576,6 +615,38 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 				break;
 			}
 		}
+	}
+
+	/* Write out symbol table entries */
+	for (currStr = mm.strings;currStr;currStr = currStr->next)
+	{
+		memset(&symEntry, 0, sizeof(struct nlist_64));
+		if (currStr->sym->state == SYM_EXTERNAL)
+		{
+			symEntry.n_sect = NO_SECT;
+			symEntry.n_type = N_UNDF | N_EXT;
+			symEntry.n_value = currStr->sym->total_size;
+			symEntry.n_un.n_strx = currStr->offset;
+		}
+		else
+		{
+			symEntry.n_sect = GetSectionIdx(currStr->sym->segment, &mm);
+			if (currStr->sym->ispublic)
+				symEntry.n_type = N_SECT | N_EXT;
+			else
+				symEntry.n_type = N_SECT;
+			symEntry.n_value = (uint64_t)currStr->sym->offset;
+			symEntry.n_un.n_strx = currStr->offset;
+		}
+
+		symEntry.n_desc = 0;
+		if (currStr->sym->weak)
+			symEntry.n_desc |= N_WEAK_DEF;
+
+		if (fwrite(&symEntry, 1, sizeof(struct nlist_64), CurrFile[OBJ]) != sizeof(struct nlist_64))
+			WriteError();
+
+		fileofs += sizeof(struct nlist_64);
 	}
 
 	/* Write out string table */
