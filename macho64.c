@@ -536,7 +536,7 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 					if (currFixup->sym)
 					{
 						reloc.r_extern = 1;
-						reloc.r_symbolnum = GetSymbolIndex(currFixup->sym->name, &mm);
+						reloc.r_symbolnum = GetSymbolIndex(currFixup->sym->name, &mm) - 1;
 						reloc.r_pcrel = 1;
 					}
 					else
