@@ -593,7 +593,7 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 					{
 						machotype = X86_64_RELOC_SIGNED;
 					}
-					else if (currFixup->type == FIX_RELOFF32 && currFixup->option == OPTJ_EXPLICIT)
+					else if (currFixup->type == FIX_RELOFF32 && (currFixup->option == OPTJ_EXPLICIT || currFixup->option == OPTJ_CALL || currFixup->option == OPTJ_JXX))
 					{
 						machotype = X86_64_RELOC_BRANCH;
 					}
