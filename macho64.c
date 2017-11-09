@@ -430,6 +430,8 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 			pCmd->filesize += currSec->size;
 			currSec->idx = secIdx++;
 			currSec->section.flags |= (S_ATTR_SOME_INSTRUCTIONS | S_ATTR_PURE_INSTRUCTIONS);
+			fileofs += sizeof(struct section_64);
+			pCmd->vmsize += currSec->size;
 		}
 		
 		else if (strcmp(curr->sym.name, "_DATA") == 0)
@@ -445,6 +447,8 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 			currAddr = ROUND_UP(currAddr, mm.sectAlign);
 			pCmd->filesize += currSec->size;
 			currSec->idx = secIdx++;
+			fileofs += sizeof(struct section_64);
+			pCmd->vmsize += currSec->size;
 		}
 
 		else if (strcmp(curr->sym.name, "CONST") == 0)
@@ -460,6 +464,8 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 			currAddr = ROUND_UP(currAddr, mm.sectAlign);
 			pCmd->filesize += currSec->size;
 			currSec->idx = secIdx++;
+			fileofs += sizeof(struct section_64);
+			pCmd->vmsize += currSec->size;
 		}
 
 		else if (strcmp(curr->sym.name, "_BSS") == 0)
@@ -474,9 +480,9 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 			currAddr = ROUND_UP(currAddr, mm.sectAlign);
 			currAddr += currSec->size;
 			currSec->idx = secIdx++;
+			fileofs += sizeof(struct section_64);
+			pCmd->vmsize += currSec->size;
 		}
-		fileofs += sizeof(struct section_64);
-		pCmd->vmsize += currSec->size;
 	}
 	/* At this point only the section offsets (file) need to still be set 
 	-> Once we have the size of the remaining commands. */
