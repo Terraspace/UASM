@@ -197,6 +197,7 @@ int macho_build_string_tbl(struct symtab_command *pSymCmd, struct macho_module *
 	/* Normal local symbols */
 	while (sym = SymEnum(sym, &i))
 	{
+		if (strcmp(sym->name, "$xdatasym") == 0) continue;
 		if (sym->state != SYM_MACRO && sym->state != SYM_SEG && sym->state != SYM_TMACRO && sym->predefined == 0 && sym->state != SYM_GRP && sym->isequate == 0)
 		{ 
 			if (sym->state != SYM_EXTERNAL && !sym->ispublic)
@@ -644,6 +645,7 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 	for (currStr = mm.strings;currStr;currStr = currStr->next)
 	{
 		memset(&symEntry, 0, sizeof(struct nlist_64));
+
 		if (currStr->sym->state == SYM_EXTERNAL)
 		{
 			symEntry.n_sect = NO_SECT;
