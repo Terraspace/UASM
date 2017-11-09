@@ -392,6 +392,7 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 	struct fixup *currFixup;
 	uint_8 machotype;
 	struct version_min_command ver;
+	int ofsAdj = 0;
 
 	/* Set section alignment in bytes */
 	mm.sectAlign = 1;
@@ -640,6 +641,13 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 			else
 				symEntry.n_type = N_SECT;
 			symEntry.n_value = (uint64_t)currStr->sym->offset;
+			
+			/* The offset is relative to the start of the segment, so we must add any previous sections total sizes */
+			ofsAdj = 0;
+			for (currSec = mm.sections;currSec->idx < symEntry.n_sect;currSec = currSec->next)
+				ofsAdj += currSec->size;
+			symEntry.n_value += ofsAdj;
+
 			symEntry.n_un.n_strx = currStr->offset;
 		}
 
