@@ -453,25 +453,38 @@ static void output_opc(struct code_info *CodeInfo)
         else
           EmitErr( AVX_INDEX_REGISTERS_NOT_ALLOWED_HERE );
         }
-  /* This is a fix for the memory type, v2.38 
-   -----------------------------------------------------------------*/
-  if (CodeInfo->evex_flag == TRUE) {
-    switch (ins->opcode){
-      case 0x58:
-      case 0x5E:
-      case 0x5F:
-      case 0x5D:
-      case 0x59:
-      case 0x51:
-      case 0x5C:
-        if (CodeInfo->opnd[OPND2].type & OP_M_ANY){     
-          CodeInfo->prefix.rex |= EVEX_P0XMASK;  /* set X in RXB */
-          CodeInfo->rm_byte &= ~MOD_11;          /* clear MOD    */
-          CodeInfo->rm_byte |= MOD_10;           /* set disp32   */
-          }
-      }
-    }
-  /* ---------------------------------------------------------------*/
+  
+	  /* This is a fix for the memory type, v2.45
+		----------------------------------------- */
+	if (CodeInfo->evex_flag == TRUE) 
+	{
+		switch (ins->opcode)
+		{
+			case 0x58:
+			case 0x5E:
+			case 0x5F:
+			case 0x5D:
+			case 0x59:
+			case 0x51:
+			case 0x5C:
+				if (CodeInfo->opnd[OPND2].type & OP_M_ANY)
+				{     
+					CodeInfo->prefix.rex |= EVEX_P0XMASK;  /* set X in RXB */
+					CodeInfo->rm_byte &= ~MOD_11;          /* clear MOD    */
+					CodeInfo->rm_byte |= MOD_10;           /* set disp32   */
+				}
+		}
+		if (CodeInfo->opnd[OPND2].type != CodeInfo->opnd[OPND1].type && CodeInfo->token != T_POP) 
+		{
+			if ((CodeInfo->opnd[OPND1].type & OP_M_ANY) || (CodeInfo->opnd[OPND2].type & OP_M_ANY))
+				;
+			else
+				EmitError(INVALID_OPERAND_SIZE);
+		}
+	}
+	/* ---------------------------------------------------------------*/
+
+
   if (ResWordTable[CodeInfo->token].flags & RWF_VEX) {
     uint_8 lbyte = 0;
     if (CodeInfo->evex_flag){
@@ -2102,6 +2115,16 @@ static void output_opc(struct code_info *CodeInfo)
 					tmp &= NOT_BIT_6;
 			}
 		}
+
+		/* UASM 2.45 prevent evex instructions trying to use 1byte displacement */
+		if (CodeInfo->evex_flag && (CodeInfo->opnd[OPND1].type & OP_M_ANY))
+		{
+			CodeInfo->rm_byte &= 0x3f;
+			CodeInfo->rm_byte |= 0x80;
+			tmp &= 0x3f;
+			tmp |= 0x80;
+		}
+
 		OutputCodeByte( tmp );
 
         if( ( CodeInfo->Ofssize == USE16 && CodeInfo->prefix.adrsiz == 0 ) ||
@@ -2193,6 +2216,7 @@ static void output_data(const struct code_info *CodeInfo, enum operand_type dete
         size = 8;
 #endif
     } else if( determinant & OP_M_ANY ) {
+
         /* switch on the mode ( the leftmost 2 bits ) */
         switch( CodeInfo->rm_byte & BIT_67 ) {
         case MOD_01:  /* 8-bit displacement */
