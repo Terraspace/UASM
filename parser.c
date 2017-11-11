@@ -4113,12 +4113,19 @@ for (CurrOpnd = 0; CurrOpnd < j && CurrOpnd < MAX_OPND; CurrOpnd++) {
         if (CodeInfo.opnd[OPND1].type & OP_RSPEC || CodeInfo.opnd[OPND2].type & OP_RSPEC)
           CodeInfo.prefix.rex &= 0x7;
         break;
+      case  T_POR:
+      case T_VPOR:
+        if (gmaskflag)
+          goto nopor;
+        break;
       }
     }
 #endif
   }
   /* now call the code generator */
   temp = codegen( &CodeInfo, oldofs );
+nopor:
+  gmaskflag = FALSE;
   /* now reset EVEX maskflags for the next line */
   if (CodeInfo.token >= VEX_START){
     decoflags = 0;

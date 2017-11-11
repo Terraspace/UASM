@@ -80,15 +80,12 @@ jmp_buf jmpenv;
 #define ERR_EXT "err"
 #define BIN_EXT "BIN"
 #define EXE_EXT "EXE"
-extern int gtemp;
-extern int gmask;
 extern int_32           LastCodeBufSize;
 extern char             *DefaultDir[NUM_FILE_TYPES];
 extern const char       *ModelToken[];
 #if FASTMEM==0
 extern void             FreeLibQueue();
 #endif
-
 #include "Colors.h"
 #ifdef _WIN32
 #include "winconsole.h"
@@ -1313,8 +1310,7 @@ static void ModuleInit( void )
 
     memset( SymTables, 0, sizeof( SymTables[0] ) * TAB_LAST );
     ModuleInfo.fmtopt->init( &ModuleInfo );
-    gtemp = 0;
-    gmask = 0;
+    gmaskflag = 0;
     return;
 }
 

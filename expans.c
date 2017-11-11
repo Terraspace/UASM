@@ -106,6 +106,22 @@ char *myqtoa(uint_64 value, char *buffer, unsigned radix, bool sign, bool addzer
   return(buffer);
 }
 #endif
+
+/* this is implemented for printing 16 numeric chars  for the MASK 128 bit v2.44 */
+char *num2hex64(uint_64 value, char *buffer)
+/**********************************************************************************/
+{
+  char   *p;
+#ifdef DEBUG_OUT
+  uint_64 saved_value = value;
+#endif
+  memset(buffer,0x30,16);
+  for (p = buffer+16, *p = NULLC; value; value = value / 16)
+    *(--p) = __digits[value % 16];
+    DebugMsg1(("num2hex64( value=%" I64_SPEC "Xh, out=%s, radix=%u)\n", saved_value, buffer, 16));
+   return(buffer);
+}
+
 /* get value of a literal, skip literal-character operators(!) */
 /* returns no of characters copied into buffer (without terminating 00) */
 /* v2.09: obsolete, the text is stored without '!' operators now */

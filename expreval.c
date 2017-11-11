@@ -45,6 +45,7 @@
 #include "myassert.h"
 #include "lqueue.h"
 #include "data.h"
+#include "symbols.h"
 
 #if defined(WINDOWSDDK)
 #define PRIx64       "llx"
@@ -71,12 +72,10 @@ extern enum special_token basereg[];
 #else
 extern uint_32          StackAdj;
 #endif
-
+bool gmaskflag;
 #ifdef DEBUG_OUT
 static int evallvl = 0;
 #endif
-int gtemp;
-int gmask;
 extern uint_32          GetCurrOffset( void );
 extern void ShiftLeft (uint_64 *dstHi, uint_64 *dstLo,uint_64 num, int pos);
 //extern ret_code data_item( int *, struct asm_tok[], struct asym *, uint_32, const struct asym *, uint_32, bool inside_struct, bool, bool, int );
@@ -121,66 +120,179 @@ static void init_expr( struct expr *opnd )
 	opnd->isptr = FALSE;
 }
 /* Implemented GETMASK128 directive v2.44 */
+//static ret_code  GetMask128(struct expr *opnd1, int index, struct asm_tok tokenarray[])
+//  {
+//    uint_64         dst128Hi = opnd1->hlvalue;
+//    uint_64         dst128Lo = opnd1->llvalue;
+//	struct asym *lbl = NULL;
+//	struct dsym *curseg;
+//	struct dsym *prev;
+//	struct dsym *currs;
+//    char            buffer[MAX_LINE_LEN];
+//    char            buffer1[MAX_LINE_LEN];
+//    char            buff[18];
+//    char            *ptr;
+//    /* if it is NOT MASK, invert values */
+//    //__debugbreak();
+//    if (index == 3 && 0 == _memicmp(tokenarray[3].string_ptr, "NOT", 3)){     
+//      dst128Hi = ~dst128Hi;
+//      dst128Lo = ~dst128Lo;
+//      }
+//
+//      curseg = ModuleInfo.currseg;
+//      prev = NULL;
+//      currs = NULL;
+//      for (currs = SymTables[TAB_SEG].head; currs && currs->next; prev = currs, currs = currs->next)
+//        {
+//        if (strcmp(currs->sym.name, "_DATA") == 0)
+//          break;
+//        }
+//      // Set CurrSeg  
+//      CurrSeg = currs;
+//      lbl = SymLookup("OMASK");
+//      SetSymSegOfs(lbl);
+//      OutputBytes((uint_8 *)&dst128Lo, 8, NULL);
+//      OutputBytes((uint_8 *)&dst128Hi, 8, NULL);
+//      lbl->isdefined = TRUE;
+//      lbl->isarray = TRUE;
+//      lbl->mem_type = MT_OWORD;
+//      lbl->state = SYM_INTERNAL;
+//      lbl->first_size = 16;
+//      lbl->first_length = 1;
+//      lbl->total_length = 1;
+//      lbl->total_size = 16;
+//      lbl->max_offset = 16 + lbl->offset;
+//      lbl->debuginfo = FALSE;
+//      lbl->ispublic = 0;      
+//      // Restore current Sement.
+//      CurrSeg = curseg;
+//      strcpy( buffer,tokenarray->tokpos);
+//      ptr = tokenarray->tokpos;
+//      while (*ptr != '\0')*(ptr++) = '\0';
+//      ptr = buffer;
+//      while (*ptr != ',')ptr++;
+//      ptr++;
+//      *ptr = '\0';
+//      strcat(ptr, "OMASK");
+//      strcpy(tokenarray->tokpos, buffer);
+//      Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
+//      tokenarray[Token_Count+1].token = T_FINAL;
+//      DebugMsg1(("GetMask128(%s) exit, current ofs=%" I32_SPEC "X\n",  GetCurrOffset() ));
+//      return( NOT_ERROR );      
+//  }
 static ret_code  GetMask128(struct expr *opnd1, int index, struct asm_tok tokenarray[])
   {
     uint_64         dst128Hi = opnd1->hlvalue;
     uint_64         dst128Lo = opnd1->llvalue;
-	struct asym *lbl = NULL;
-	struct dsym *curseg;
-	struct dsym *prev;
-	struct dsym *currs;
+	  struct          asym *lbl = NULL;
     char            buffer[MAX_LINE_LEN];
     char            buffer1[MAX_LINE_LEN];
     char            buff[18];
     char            *ptr;
-    /* if it is NOT MASK, invert values */
-    //__debugbreak();
-    if (index == 3 && 0 == _memicmp(tokenarray[3].string_ptr, "NOT", 3)){     
-      dst128Hi = ~dst128Hi;
-      dst128Lo = ~dst128Lo;
-      }
+    int             i= Token_Count; /* i must remain the start index */
 
-      curseg = ModuleInfo.currseg;
-      prev = NULL;
-      currs = NULL;
-      for (currs = SymTables[TAB_SEG].head; currs && currs->next; prev = currs, currs = currs->next)
-        {
-        if (strcmp(currs->sym.name, "_DATA") == 0)
-          break;
+
+      strcpy( buffer,tokenarray->tokpos); 
+    /* if GTEMP is not created yet do it now */
+    if (Parse_Pass == PASS_1){
+      lbl = SymSearch("GMASK");
+      if (lbl == NULL){
+        strcpy(buffer1, ".data");
+        strcpy(tokenarray->tokpos, buffer1);
+        Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
+        ParseLine(tokenarray);
+        strcpy(buffer1, "GMASK OWORD 0x");
+        num2hex64(dst128Hi, buff);
+        strcat(buffer1, buff);
+        num2hex64(dst128Lo, buff);
+        strcat(buffer1, buff);
+        strcpy(tokenarray->tokpos, buffer1);
+        Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
+        ParseLine(tokenarray);
+        strcpy(buffer1, ".code");
+        strcpy(tokenarray->tokpos, buffer1);
+        Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
+        ParseLine(tokenarray);
+        ptr = tokenarray->tokpos;
+        while (*ptr != '\0')*(ptr++) = '\0';
+        ptr = buffer;
+        while (*ptr != ',')ptr++;
+        ptr++;
+        *ptr = '\0';
+        strcat(ptr, "GMASK");
+        AddLineQueue(buffer);
+        strcpy(tokenarray->tokpos, buffer);
+        Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
+        tokenarray[Token_Count+1].token = T_FINAL;
+        ParseLine(tokenarray);
         }
-      // Set CurrSeg  
-      CurrSeg = currs;
-      lbl = SymLookup("OMASK");
-      SetSymSegOfs(lbl);
-      OutputBytes((uint_8 *)&dst128Lo, 8, NULL);
-      OutputBytes((uint_8 *)&dst128Hi, 8, NULL);
-      lbl->isdefined = TRUE;
-      lbl->isarray = TRUE;
-      lbl->mem_type = MT_OWORD;
-      lbl->state = SYM_INTERNAL;
-      lbl->first_size = 16;
-      lbl->first_length = 1;
-      lbl->total_length = 1;
-      lbl->total_size = 16;
-      lbl->max_offset = 16 + lbl->offset;
-      lbl->debuginfo = FALSE;
-      lbl->ispublic = 0;      
-      // Restore current Sement.
-      CurrSeg = curseg;
-      strcpy( buffer,tokenarray->tokpos);
-      ptr = tokenarray->tokpos;
-      while (*ptr != '\0')*(ptr++) = '\0';
-      ptr = buffer;
-      while (*ptr != ',')ptr++;
-      ptr++;
-      *ptr = '\0';
-      strcat(ptr, "OMASK");
-      strcpy(tokenarray->tokpos, buffer);
-      Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
-      tokenarray[Token_Count+1].token = T_FINAL;
-      DebugMsg1(("GetMask128(%s) exit, current ofs=%" I32_SPEC "X\n",  GetCurrOffset() ));
-      return( NOT_ERROR );      
+      else{ /* global variable GMASK exist, reuse it   */
+        num2hex64(dst128Lo, buff);
+        strcpy(buffer1, "mov dword ptr  ");
+        ptr = buffer1 + 14;
+        strcpy(ptr, "GMASK");                  /* mov dword ptr rubi.rc */
+        ptr += 5;
+        strcpy(ptr, ", LOW32(0x");              /* mov dword ptr rubi.rc, LOW32( */
+        ptr += 10;
+        strcat(ptr, buff); /* mov dword ptr rubi.rc, LOW32(dst128Lo */
+        strcat(ptr, ")");
+        strcpy(tokenarray->tokpos, buffer1);
+        Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
+        ParseLine(tokenarray);
+        /* second DWORD */
+        ptr = buffer1 + 19;
+        strcpy(ptr, "+4 ,HIGH32(0x");          /* mov dword ptr rubi.rc, HIGH32( */
+        ptr += 13;
+        strcat(ptr, buff); /* mov dword ptr rubi.rc, LOW32(dst128Lo */
+        strcat(ptr, ")");
+        strcpy(tokenarray->tokpos, buffer1);
+        Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
+        ParseLine(tokenarray);
+        /* third DWORD */
+        num2hex64(dst128Hi, buff);
+        ptr = buffer1 + 19;
+        strcpy(ptr, "+8, LOW32(0x");          /* mov dword ptr rubi.rc, LOW32( */
+        ptr += 12;
+        strcat(ptr, buff); /* mov dword ptr rubi.rc, LOW32(dst128Lo */
+        strcat(ptr, ")");
+        strcpy(tokenarray->tokpos, buffer1);
+        Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
+        ParseLine(tokenarray);
+        /* forth DWORD */
+        ptr = buffer1 + 19;
+        strcpy(ptr, "+8+4, HIGH32(0x");          /* mov dword ptr rubi.rc, HIGH32( */
+        ptr += 15;
+        strcat(ptr, buff); /* mov dword ptr rubi.rc, LOW32(dst128Lo */
+        strcat(ptr, ")");
+        strcpy(tokenarray->tokpos, buffer1);
+        Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
+        ParseLine(tokenarray);
+        ptr = tokenarray->tokpos;
+        while (*ptr != '\0')*(ptr++) = '\0';
+        ptr = buffer;
+        while (*ptr != ',')ptr++;
+        ptr++;
+        *ptr = '\0';
+        strcat(ptr, "GMASK");
+        strcpy(tokenarray->tokpos, buffer);
+        Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
+        tokenarray[Token_Count+1].token = T_FINAL;
+        ParseLine(tokenarray);
+        } 
+      }   
+    //strcpy(buffer1, "nop");
+    strcpy(tokenarray->tokpos, "por ");
+    strcat(tokenarray->tokpos,tokenarray[1].string_ptr);
+    strcat(tokenarray->tokpos,", ");
+    strcat(tokenarray->tokpos,tokenarray[1].string_ptr);
+    //strcpy(tokenarray->tokpos, buffer1);
+    Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
+    tokenarray[Token_Count+1].token = T_FINAL;
+    gmaskflag = TRUE;
+    DebugMsg1(("GetMask128(%s) exit, current ofs=%" I32_SPEC "X\n",  GetCurrOffset() ));
+    return( NOT_ERROR );      
   }
+
 /*   InitRecordVar is used for inline initialise RECORD to be compatibile with masm, v2.41 
 *    now it can be used as :
 *    mov     al, COLOR<1, 7, 0, 1>         ;1 111 0 001 = F1
@@ -195,6 +307,7 @@ static ret_code  InitRecordVar( struct expr *opnd1, int index, struct asm_tok to
     int             i;
     int             nlabel;
     struct asym    *sym = NULL;
+    struct          asym *lbl = NULL;
 #if AMD64_SUPPORT
     uint_64         dst128Hi;
     uint_64         dst128Lo;
@@ -348,8 +461,8 @@ all:
           *ptr = '\0';
           ptr++;
           /* if not created global variable GTEMP create it   */
-           if ( gtemp == 0){
-             gtemp = TRUE;                  /* set the flag TRUE */
+            lbl = SymSearch("GTEMP");
+            if (lbl == NULL){
             strcpy(buffer1, ".data");
             strcpy(tokenarray->tokpos, buffer1);
             Token_Count = Tokenize( tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT );
@@ -2422,9 +2535,9 @@ static ret_code wimask_op( int oper, struct expr *opnd1, struct expr *opnd2, str
         int i;
         opnd1->value = 0;
         if ( opnd2->is_type ) { /* get mask of the RECORD? */
-          if (0 == _memicmp(ModuleInfo.tokenarray[1].string_ptr, "xmm", 3)||
-              0 == _memicmp(ModuleInfo.tokenarray[1].string_ptr, "GETMASK128", 10)){
+          if (0 == _memicmp(ModuleInfo.tokenarray[1].string_ptr, "xmm", 3)){
             record = (struct dsym *)sym;
+            gmaskflag = FALSE;
             for (fl = record->e.structinfo->head; fl; fl = fl->next) {
               struct asym *rsym = &fl->sym;
               dwRecIHi = 0;  /* clear Hi 64 bit for the 128 bit RECORD */
@@ -2439,6 +2552,7 @@ static ret_code wimask_op( int oper, struct expr *opnd1, struct expr *opnd2, str
             opnd1->llvalue = GetRecordMask( (struct dsym *)sym );
         } else { /* get mask of the bitfield */
           if (0 == _memicmp(ModuleInfo.tokenarray[1].string_ptr, "xmm", 3)){
+            gmaskflag = FALSE;
             dwRecIHi = 0;  /* clear Hi 64 bit for the 128 bit RECORD */
             dwRecILo = 0;  /* clear Lo 64 bit for the 128 bit RECORD */
             for (i = sym->offset; i < sym->offset + sym->total_size; i++){
@@ -4169,11 +4283,9 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
         if (rc != ERROR){
             rc = calculate( opnd1, &opnd2, &tokenarray[curr_operator] );
           }
-        /* here we get the mask 128   */
-          if (0 == _memicmp(tokenarray[3].string_ptr, "MASK", 4) ||
-              (0 == _memicmp(tokenarray[4].string_ptr, "MASK", 4))){
-            if (0 == _memicmp(tokenarray[1].string_ptr, "xmm", 3)||
-               0 == _memicmp(tokenarray[1].string_ptr, "GETMASK128", 10) ){
+        /* here we get the mask 128 v2.45  */
+          if (0 == _memicmp(tokenarray[3].string_ptr, "MASK", 4)){
+            if (0 == _memicmp(tokenarray[1].string_ptr, "xmm", 3)){
               if (GetMask128(opnd1, 3, tokenarray) != ERROR)
                 rc = NOT_ERROR;
                 opnd2.kind = EXPR_ADDR;

@@ -937,7 +937,7 @@ extern unsigned int          Parse_Pass;    /* assembly pass */
 //extern unsigned int          GeneratedCode;  /* v2.10: moved to struct module_info */
 extern uint_8                MacroLevel;    /* macro nesting level */
 extern bool                  write_to_file; /* 1=write the object module */
-
+extern bool                  gmaskflag;
 /* Information about source, object, listing and error files */
 //extern FILE                  *CurrFile[];   /* ASM, ERR, OBJ and LST */
 //extern char                  *CurrFName[];  /* ASM, ERR, OBJ and LST */
@@ -962,6 +962,7 @@ extern void             SetMasm510( bool );
 extern void             close_files( void );
 extern char             *myltoa( uint_32 value, char *buffer, unsigned radix, bool sign, bool addzero );
 extern char             *myqtoa(uint_64 value, char *buffer, unsigned radix, bool sign, bool addzero);
+extern char             *num2hex64(uint_64 value, char *buffer);
 #if COFF_SUPPORT || PE_SUPPORT
 extern char             *ConvertSectionName( const struct asym *, enum seg_type *pst, char *buffer );
 #endif
