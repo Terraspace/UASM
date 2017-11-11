@@ -4125,7 +4125,6 @@ for (CurrOpnd = 0; CurrOpnd < j && CurrOpnd < MAX_OPND; CurrOpnd++) {
   /* now call the code generator */
   temp = codegen( &CodeInfo, oldofs );
 nopor:
-  gmaskflag = FALSE;
   /* now reset EVEX maskflags for the next line */
   if (CodeInfo.token >= VEX_START){
     decoflags = 0;
