@@ -7,6 +7,7 @@
 * Description:  MACHO64 output routines
 * https://lowlevelbits.org/parsing-mach-o-files/
 * https://github.com/aidansteele/osx-abi-macho-file-format-reference
+* https://www.reinterpretcast.com/hello-world-mach-o
 *
 ****************************************************************************/
 

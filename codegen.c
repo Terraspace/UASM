@@ -471,10 +471,11 @@ static void output_opc(struct code_info *CodeInfo)
 				   CodeInfo->rm_byte |= MOD_10;           /* set disp32   */
 			   }
 		   }
-		   else if (CodeInfo->opnd[OPND2].type != CodeInfo->opnd[OPND1].type && CodeInfo->token != T_POP)
+		   if (CodeInfo->opnd[OPND2].type != CodeInfo->opnd[OPND1].type)
 		   {
-			   if ((CodeInfo->opnd[OPND1].type & OP_M_ANY) || (CodeInfo->opnd[OPND2].type & OP_M_ANY))
-				   ;
+			   if ((CodeInfo->opnd[OPND1].type & OP_M_ANY) || (CodeInfo->opnd[OPND2].type & OP_M_ANY) ||
+				   (CodeInfo->opnd[OPND2].type == OP_NONE))
+				   ; /* test apply only for registers */
 			   else
 				   EmitError(INVALID_OPERAND_SIZE);
 		   }
