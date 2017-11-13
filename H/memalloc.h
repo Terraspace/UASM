@@ -46,7 +46,7 @@ extern void MemFree( void *ptr );
 
 #elif defined(__GNUC__) || defined(__TINYC__)
 
-	//#define alloca(x)  __builtin_alloca(x)
+	#define alloca(x)  __builtin_alloca(x)
 
 #define myalloca  alloca
 #ifndef __FreeBSD__  /* added v2.08 */
