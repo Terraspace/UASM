@@ -1,0 +1,52 @@
+..\src\avx512.asm(760) : Error A2071: Invalid operand size for instruction
+..\src\avx512.asm(761) : Error A2071: Invalid operand size for instruction
+..\src\avx512.asm(767) : Error A2071: Invalid operand size for instruction
+..\src\avx512.asm(768) : Error A2071: Invalid operand size for instruction
+..\src\avx512.asm(809) : Error A2071: Invalid operand size for instruction
+..\src\avx512.asm(810) : Error A2071: Invalid operand size for instruction
+..\src\avx512.asm(811) : Error A2071: Invalid operand size for instruction
+..\src\avx512.asm(812) : Error A2071: Invalid operand size for instruction
+..\src\avx512.asm(813) : Error A2071: Invalid operand size for instruction
+..\src\avx512.asm(814) : Error A2071: Invalid operand size for instruction
+..\src\avx512.asm(815) : Error A2071: Invalid operand size for instruction
+..\src\avx512.asm(816) : Error A2071: Invalid operand size for instruction
+..\src\avx512.asm(817) : Error A2071: Invalid operand size for instruction
+..\src\avx512.asm(818) : Error A2071: Invalid operand size for instruction
+..\src\avx512.asm(819) : Error A2071: Invalid operand size for instruction
+..\src\avx512.asm(820) : Error A2071: Invalid operand size for instruction
+..\src\avx512.asm(821) : Error A2071: Invalid operand size for instruction
+..\src\avx512.asm(822) : Error A2071: Invalid operand size for instruction
+..\src\avx512.asm(823) : Error A2071: Invalid operand size for instruction
+..\src\avx512.asm(824) : Error A2071: Invalid operand size for instruction
+..\src\avx512.asm(825) : Error A2071: Invalid operand size for instruction
+..\src\avx512.asm(826) : Error A2071: Invalid operand size for instruction
+..\src\avx512.asm(827) : Error A2071: Invalid operand size for instruction
+..\src\avx512.asm(828) : Error A2071: Invalid operand size for instruction
+..\src\avx512.asm(1412) : Error A2014: invalid combination of opcode and operands
+..\src\avx512.asm(1413) : Error A2014: invalid combination of opcode and operands
+..\src\avx512.asm(1414) : Error A2014: invalid combination of opcode and operands
+..\src\avx512.asm(1415) : Error A2014: invalid combination of opcode and operands
+..\src\avx512.asm(1423) : Error A2014: invalid combination of opcode and operands
+..\src\avx512.asm(1424) : Error A2014: invalid combination of opcode and operands
+..\src\avx512.asm(1425) : Error A2014: invalid combination of opcode and operands
+..\src\avx512.asm(1426) : Error A2014: invalid combination of opcode and operands
+..\src\avx512.asm(1427) : Error A2014: invalid combination of opcode and operands
+..\src\avx512.asm(1428) : Error A2014: invalid combination of opcode and operands
+..\src\avx512.asm(1434) : Error A2014: invalid combination of opcode and operands
+..\src\avx512.asm(1435) : Error A2014: invalid combination of opcode and operands
+..\src\avx512.asm(1436) : Error A2014: invalid combination of opcode and operands
+..\src\avx512.asm(1437) : Error A2014: invalid combination of opcode and operands
+..\src\avx512.asm(1438) : Error A2014: invalid combination of opcode and operands
+..\src\avx512.asm(1439) : Error A2014: invalid combination of opcode and operands
+..\src\avx512.asm(1473) : Error A2014: invalid combination of opcode and operands
+..\src\avx512.asm(1474) : Error A2014: invalid combination of opcode and operands
+..\src\avx512.asm(1475) : Error A2014: invalid combination of opcode and operands
+..\src\avx512.asm(1476) : Error A2014: invalid combination of opcode and operands
+..\src\avx512.asm(1477) : Error A2014: invalid combination of opcode and operands
+..\src\avx512.asm(1478) : Error A2014: invalid combination of opcode and operands
+..\src\avx512.asm(1566) : Error A2014: invalid combination of opcode and operands
+..\src\avx512.asm(1567) : Error A2014: invalid combination of opcode and operands
+..\src\avx512.asm(1763) : Error A2014: invalid combination of opcode and operands
+..\src\avx512.asm(1764) : Error A2014: invalid combination of opcode and operands
+..\src\avx512.asm(1765) : Error A2014: invalid combination of opcode and operands
+..\src\avx512.asm(1765) : Fatal error A1113: Too many errors

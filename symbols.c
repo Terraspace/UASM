@@ -149,31 +149,11 @@ static const struct eqitem eqtab[] = {
     { "@WordSize", 0,                   UpdateWordSize, NULL }, /* must be last (see SymInit()) */
 };
 
+static bool structLookup = FALSE;
+
 static unsigned int hashpjw( const char *s )
 /******************************************/
 {
-/*    unsigned h;
-    unsigned g;
-	char c = 1;
-
-#if HASH_MAGNITUDE==12
-    for( h = 0; *s; ++s ) {
-        h = (h << 4) + (*s | ' ');
-        g = h & ~0x0fff;
-        h ^= g;
-        h ^= g >> 12;
-    }
-#else
-    for( h = 0; c ; ++s ) 
-	{
-		c = *s;		
-        h = (h << 5) + (c | ' ');
-        g = h & ~0x7fff;
-        h ^= g;
-        h ^= g >> 15;
-    }
-#endif
-    return( h );*/
 	uint_64 fnv_basis = 14695981039346656037;
 	uint_64 register fnv_prime = 1099511628211;
 	uint_64 h;
@@ -268,39 +248,50 @@ struct asym *SymAlloc( const char *name )
     return( sym );
 }
 
-struct asym *SymFind( const char *name )
-/**************************************/
-/* find a symbol in the local/global symbol table,
- * return ptr to next free entry in global table if not found.
- * Note: lsym must be global, thus if the symbol isn't
- * found and is to be added to the local table, there's no
- * second scan necessary.
- */
+struct asym *SymFind(const char *name)
+	/**************************************/
+	/* find a symbol in the local/global symbol table,
+	* return ptr to next free entry in global table if not found.
+	* Note: lsym must be global, thus if the symbol isn't
+	* found and is to be added to the local table, there's no
+	* second scan necessary.
+	*/
 {
-    int i;
-    int len;
+	int i;
+	int len;
 
-    len = strlen( name );
-    i = hashpjw( name );
+	len = strlen(name);
+	i = hashpjw(name);
 
-    if ( CurrProc ) {
-        for( lsym = &lsym_table[ i % LHASH_TABLE_SIZE ]; *lsym; lsym = &((*lsym)->nextitem ) ) {
-            if ( len == (*lsym)->name_size && SYMCMP( name, (*lsym)->name, len ) == 0 ) {
-                DebugMsg1(("SymFind(%s): found in local table, state=%u, local=%u\n", name, (*lsym)->state, (*lsym)->scoped ));  			
-				(*lsym)->used = TRUE;
-                return( *lsym );
-            }
-        }
-    }
+	if (CurrProc) {
+		for (lsym = &lsym_table[i % LHASH_TABLE_SIZE]; *lsym; lsym = &((*lsym)->nextitem)) {
+			if (len == (*lsym)->name_size && SYMCMP(name, (*lsym)->name, len) == 0)
+			{
+				if ((*lsym)->ttype && (*lsym)->ttype->e.structinfo)
+					structLookup = TRUE;
+				else
+				{
+					if (!structLookup)
+						(*lsym)->used = TRUE;
+					structLookup = FALSE;
+				}
+				return(*lsym);
+			}
+		}
+	}
 
-    for( gsym = &gsym_table[ i % GHASH_TABLE_SIZE ]; *gsym; gsym = &((*gsym)->nextitem ) ) {
-        if ( (*gsym)->name && len == (*gsym)->name_size && SYMCMP( name, (*gsym)->name, len ) == 0 ) {
-            DebugMsg1(("SymFind(%s): found, state=%u memtype=%X lang=%u\n", name, (*gsym)->state, (*gsym)->mem_type, (*gsym)->langtype ));
-            return( *gsym );
-        }
-    }
+	for (gsym = &gsym_table[i % GHASH_TABLE_SIZE]; *gsym; gsym = &((*gsym)->nextitem)) {
+		if ((*gsym)->name && len == (*gsym)->name_size && SYMCMP(name, (*gsym)->name, len) == 0)
+		{
+			if ((*gsym)->ttype && (*gsym)->ttype->e.structinfo)
+				structLookup = TRUE;
+			else
+				structLookup = FALSE;
+			return(*gsym);
+		}
+	}
 
-    return( NULL );
+	return(NULL);
 }
 
 struct asym *SymFindLocal(const char *name)

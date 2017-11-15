@@ -66,10 +66,10 @@ ret_code WriteCodeLabel( char *line, struct asm_tok tokenarray[] )
 }
 
 /*
-	Perform evaluation of any items required before pre-processing (ie: substitution or macro expansion).
-	-> Evaluation of inline RECORD items to allow them to be handled by invoke/macros etc.
+Perform evaluation of any items required before pre-processing (ie: substitution or macro expansion).
+-> Evaluation of inline RECORD items to allow them to be handled by invoke/macros etc.
 */
-int EvaluatePreprocessItems( struct asm_tok tokenarray[] )
+int EvaluatePreprocessItems(struct asm_tok tokenarray[])
 {
 	int i;
 	struct dsym *recsym;
@@ -78,15 +78,23 @@ int EvaluatePreprocessItems( struct asm_tok tokenarray[] )
 	memset(&opndx, 0, sizeof(opndx));
 
 	/* pre parse inline records UASM v2.41 */
-	for (i = 0;i < Token_Count; i++)
+	if (CurrProc)
 	{
-		recsym = SymSearch(tokenarray[i].string_ptr);
-		if (recsym && recsym->sym.typekind == TYPE_RECORD && CurrProc)
+		for (i = 0;i < Token_Count; i++)
 		{
-
-			if (EvalOperand(&i, tokenarray, Token_Count, &opndx[0], 0) == ERROR)
+			/* only a token of type ID could possibly be an inline record */
+			if (tokenarray[i].token == T_ID)
 			{
-				return(EmitErr(INVALID_INSTRUCTION_OPERANDS));
+				recsym = SymSearch(tokenarray[i].string_ptr);
+				if (recsym && recsym->sym.typekind == TYPE_RECORD)
+				{
+					if (EvalOperand(&i, tokenarray, Token_Count, &opndx[0], 0) == ERROR)
+					{
+						return(EmitErr(INVALID_INSTRUCTION_OPERANDS));
+					}
+				}
+				if (recsym)
+					recsym->sym.used = FALSE;
 			}
 		}
 	}
