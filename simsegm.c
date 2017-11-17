@@ -142,7 +142,7 @@ static void SetSimSeg( enum sim_seg segm, const char *name )
     pFmt = "%s %r %s %s %s '%s'";
     if ( name == NULL ) {
         name = SegmNames[segm];
-		if (name == NULL) name = "_flat";
+		if (name == NULL && ModuleInfo.flat) name = "_flat";
         if ( ModuleInfo.simseg_init & ( 1 << segm ) )
             pFmt = "%s %r";
         else {

@@ -68,8 +68,6 @@ extern char           *end_stringbuf;
 
 extern char    *token_stringbuf;  /* start token string buffer */
 extern char    *commentbuffer;
-    //unsigned char       decoflags;          /* EVEX  sets up decorator flags in P2: z, aaa   */     
-    //unsigned char       broadflags;         /* EVEX  sets up decorator flags in P2: b        */ 
 
 /* v2.08: moved to struct line_status */
 //static uint_8 g_flags; /* directive flags for current line */

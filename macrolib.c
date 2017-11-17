@@ -30,12 +30,12 @@
 #include "orgfixup.h"
 #include "macrolib.h"
 
-#define MACRO_COUNT64 61
+#define MACRO_COUNT64 62
 #define MACRO_COUNT32 29
 
 /* MACRO names  */
 char *macName64[] = {
-  "NOTMASK128", "GETMASK128", "REGS15STORAGE", "MOV64", "MOV128", "MOVXMMR128","SLXMMR","SHIFTLEFT128","SRXMMR","SHIFTRIGHT128","MEMALLOC", "MEMFREE", "CSTR", "WSTR", "FP4", "FP8", "FP10", "LOADSS", "LOADSD", "LOADPS", "MEMALIGN", "RV", "REPARG", "EXPAND_PREFIX", "_ARRAY", "_DELETEARRAY", "OINTERFACE", "ENDOINTERFACE", "CVIRTUAL", "CLASS", "ENDCLASS", "CMETHOD", "METHOD", "STATICMETHOD", "ENDMETHOD", "_DECLARE", "_STATICREF", "_ACQUIRE", "_RELEASE", "_NEW", "_RBXNEW", "_ITEM", "_ITEMR", "_INVOKE", "_I", "_STATIC", "_DELETE", "_VINVOKE", "_V", "_VD", "_VW", "_VB", "_VF", "CSTATIC", "LOADMSS", "LOADMSD", "UINVOKE", "ASFLOAT", "ASDOUBLE", "R4P", "R8P", "SYSV_PARAM"
+  "NOTMASK128", "GETMASK128", "REGS15STORAGE", "MOV64", "MOV128", "MOVXMMR128","SLXMMR","SHIFTLEFT128","SRXMMR","SHIFTRIGHT128","MEMALLOC", "MEMFREE", "CSTR", "WSTR", "FP4", "FP8", "FP10", "LOADSS", "LOADSD", "LOADPS", "MEMALIGN", "RV", "REPARG", "EXPAND_PREFIX", "_ARRAY", "_DELETEARRAY", "OINTERFACE", "ENDOINTERFACE", "CVIRTUAL", "CLASS", "ENDCLASS", "CMETHOD", "METHOD", "STATICMETHOD", "ENDMETHOD", "_DECLARE", "_STATICREF", "_ACQUIRE", "_RELEASE", "_NEW", "_RBXNEW", "_ITEM", "_ITEMR", "_INVOKE", "_I", "_STATIC", "_DELETE", "_VINVOKE", "_V", "_VD", "_VW", "_VB", "_VF", "CSTATIC", "LOADMSS", "LOADMSD", "UINVOKE", "ASFLOAT", "ASDOUBLE", "R4P", "R8P", "arginvoke"
 };
 char *macName32[] = {
  "NOTMASK128", "GETMASK128", "MOV64", "MOV128", "MOVXMMR128","SLXMMR","SHIFTLEFT128","SRXMMR","SHIFTRIGHT128","MEMALLOC","MEMFREE","CSTR","WSTR","FP4","FP8","FP10","LOADSS","LOADPS","MEMALIGN", "RV", "REPARG", "EXPAND_PREFIX", "LOADMSS", "LOADMSD", "UINVOKE", "ASFLOAT", "ASDOUBLE", "R4P", "R8P"
@@ -43,16 +43,16 @@ char *macName32[] = {
 
 /* MACRO definitions */
 char *macDef64[] = {
-  "NOTMASK128 MACRO reg:REQ, field:REQ",
-  "GETMASK128 MACRO reg:REQ, field:REQ",
+	"NOTMASK128 MACRO reg:REQ, field:REQ",
+	"GETMASK128 MACRO reg:REQ, field:REQ",
 	"REGS15STORAGE MACRO",
 	"MOV64 MACRO dst:REQ, imm:REQ",
-  "MOV128 MACRO dst:REQ, immLo:REQ,immHi:REQ",
-  "MOVXMMR128 MACRO dst:REQ, immLo:REQ,immHi:REQ", 
-  "SLXMMR MACRO xmm128:REQ,cnt:REQ",  
-  "SHIFTLEFT128 MACRO mmr:REQ,cnt:REQ",  
-  "SRXMMR MACRO xmm128:REQ,cnt:REQ",
-  "SHIFTRIGHT128 MACRO mmr:REQ,cnt:REQ",
+	"MOV128 MACRO dst:REQ, immLo:REQ,immHi:REQ",
+	"MOVXMMR128 MACRO dst:REQ, immLo:REQ,immHi:REQ", 
+	"SLXMMR MACRO xmm128:REQ,cnt:REQ",  
+	 "SHIFTLEFT128 MACRO mmr:REQ,cnt:REQ",  
+	"SRXMMR MACRO xmm128:REQ,cnt:REQ",
+	"SHIFTRIGHT128 MACRO mmr:REQ,cnt:REQ",
 	"MEMALLOC macro aSize:REQ",
 	"MEMFREE macro memPtr:REQ",
 	"CSTR macro Text:VARARG",
@@ -97,24 +97,25 @@ char *macDef64[] = {
 	"_VB MACRO pInterface : REQ, Interface : REQ, Function : REQ, args : VARARG",
 	"_VF MACRO pInterface : REQ, Interface : REQ, Function : REQ, args : VARARG",
 	"CSTATIC MACRO method : REQ",
-  "LOADMSS MACRO reg, value",
-  "LOADMSD MACRO reg, value",
+	"LOADMSS MACRO reg, value",
+	"LOADMSD MACRO reg, value",
 	"UINVOKE MACRO func:REQ, args:VARARG",
 	"ASFLOAT MACRO reg:REQ",
 	"ASDOUBLE MACRO reg:REQ",
 	"R4P MACRO reg:REQ",
 	"R8P MACRO reg:REQ",
+	"arginvoke MACRO argNo:REQ, invCnt:REQ, func:REQ, args:VARARG",
 };
 char *macDef32[] = {
-  "NOTMASK128 MACRO reg:REQ, field:REQ",
-  "GETMASK128 MACRO reg:REQ, field:REQ",
+	"NOTMASK128 MACRO reg:REQ, field:REQ",
+	"GETMASK128 MACRO reg:REQ, field:REQ",
 	"MOV64 MACRO dst:REQ, imm:REQ",
-  "MOV128 MACRO dst:REQ, immLo:REQ,immHi:REQ",
-  "MOVXMMR128 MACRO dst:REQ, immLo:REQ,immHi:REQ", 
-  "SLXMMR MACRO xmm128:REQ,cnt:REQ",  
-  "SHIFTLEFT128 MACRO mmr:REQ,cnt:REQ",  
-  "SRXMMR MACRO xmm128:REQ,cnt:REQ",
-  "SHIFTRIGHT128 MACRO mmr:REQ,cnt:REQ",
+	"MOV128 MACRO dst:REQ, immLo:REQ,immHi:REQ",
+	"MOVXMMR128 MACRO dst:REQ, immLo:REQ,immHi:REQ", 
+	"SLXMMR MACRO xmm128:REQ,cnt:REQ",  
+	"SHIFTLEFT128 MACRO mmr:REQ,cnt:REQ",  
+	"SRXMMR MACRO xmm128:REQ,cnt:REQ",
+	"SHIFTRIGHT128 MACRO mmr:REQ,cnt:REQ",
 	"MEMALLOC macro aSize:REQ",
 	"MEMFREE macro memPtr:REQ",
 	"CSTR macro Text:VARARG",
@@ -156,15 +157,14 @@ void CreateMacroLibCases(void)
 		AddLineQueue("define EQU DEFINE");
 		AddLineQueue("Define EQU DEFINE");
 		AddLineQueue("mov64 EQU MOV64");
-    AddLineQueue("mov128 EQU MOV128");
-    AddLineQueue("movxmmr128 EQU MOVXMMR128");
-    AddLineQueue("slxmmr EQU SLXMMR");
-    AddLineQueue("shiftleft128 EQU SHIFTLEFT128");
-    AddLineQueue("srxmmr EQU SRXMMR");
-    AddLineQueue("shiftright128 EQU SHIFTRIGHT128");
-    AddLineQueue("notmask128 EQU NOTMASK128");
-    AddLineQueue("getmask128 EQU GETMASK128");
-
+		AddLineQueue("mov128 EQU MOV128");
+		AddLineQueue("movxmmr128 EQU MOVXMMR128");
+		AddLineQueue("slxmmr EQU SLXMMR");
+		AddLineQueue("shiftleft128 EQU SHIFTLEFT128");
+		AddLineQueue("srxmmr EQU SRXMMR");
+		AddLineQueue("shiftright128 EQU SHIFTRIGHT128");
+		AddLineQueue("notmask128 EQU NOTMASK128");
+		AddLineQueue("getmask128 EQU GETMASK128");
 	}
 }
 
@@ -179,20 +179,20 @@ void InitAutoMacros64(void)
 	uint_32 j = 0;
 	//uint_32 k = 0;
 	uint_32 start_pos = 0;
-	char  *srcLines[128]; // NB: 128 is the max number of lines of macro code per macro.  37, 33, 37, 33,
+	char  *srcLines[256]; // NB: 128 is the max number of lines of macro code per macro.  37, 33, 37, 33,
 
-	uint_32 macroLen[] = {17, 11, 29, 3, 3, 8, 37, 33, 37, 33, 7, 6, 10, 6, 7, 7, 7, 8, 8, 10, 3, 7, 11, 19, 10, 2, 7, 2, 10, 11, 19, 5, 39, 39, 12, 5, 2, 3, 3, 26, 27, 2, 2, 11, 8, 8, 9, 22, 23, 23, 23, 23, 23, 5, 10, 10, 35, 1, 1, 1, 1 }; // Count of individual lines of macro-body code.
+	uint_32 macroLen[] = {17, 11, 29, 3, 3, 8, 37, 33, 37, 33, 7, 6, 10, 6, 7, 7, 7, 8, 8, 10, 3, 7, 11, 19, 10, 2, 7, 2, 10, 11, 19, 5, 39, 39, 12, 5, 2, 3, 3, 26, 27, 2, 2, 11, 8, 8, 9, 22, 23, 23, 23, 23, 23, 5, 10, 10, 37, 1, 1, 1, 1, 188 }; // Count of individual lines of macro-body code.
 	char *macCode[] = {
-    "IFNDEF GMASK",".data","GMASK OWORD 0","ENDIF","IFNDEF NOTMASK",".data","NOTMASK OWORD -1","ENDIF",".code","IF @Arch EQ 1","movups reg, MASK field","pxor reg, NOTMASK","ELSE","vmovups reg, MASK field","vpxor reg, reg, NOTMASK","ENDIF","ENDM",NULL,
-    "IFNDEF GMASK",".data","GMASK OWORD 0","ENDIF",".code","IF @Arch EQ 1","movups reg, MASK field","ELSE","vmovups reg, MASK field","ENDIF","ENDM",NULL,
+		"IFNDEF GMASK",".data","GMASK OWORD 0","ENDIF","IFNDEF NOTMASK",".data","NOTMASK OWORD -1","ENDIF",".code","IF @Arch EQ 1","movups reg, MASK field","pxor reg, NOTMASK","ELSE","vmovups reg, MASK field","vpxor reg, reg, NOTMASK","ENDIF","ENDM",NULL,
+		"IFNDEF GMASK",".data","GMASK OWORD 0","ENDIF",".code","IF @Arch EQ 1","movups reg, MASK field","ELSE","vmovups reg, MASK field","ENDIF","ENDM",NULL,
 		"IFNDEF RRAX",".data?", " RRAX dq ?", " RRCX dq ?", " RRDX dq ?", " RRBX dq ?", " RRDI dq ?", " RRSI dq ?", " RRBP dq ?", " RRSP dq ?", " RR8  dq ?", " RR9  dq ?", " RR10 dq ?", " RR11 dq ?", " RR12 dq ?", " RR13 dq ?", " RR14 dq ?", " RR15 dq ?", " RXMM0 OWORD ?", " RXMM1 OWORD ?", " RXMM2 OWORD ?", " RXMM3 OWORD ?", " RXMM4 OWORD ?", " RXMM5 OWORD ?", " RXMM6 OWORD ?", " RXMM7 OWORD ?", "ENDIF", " .code", "ENDM", NULL,
 		"mov dword ptr dst, LOW32(imm)", "mov dword ptr dst + 4, HIGH32(imm)", "ENDM", NULL,
-    "MOV64 dst, immHi", "MOV64 dst + 8, immLo", "ENDM", NULL,
-    "LOCAL savexmm",".data?","savexmm OWORD ?",".code","MOV64 savexmm, immHi","MOV64 savexmm + 8, immLo","vmovups dst,savexmm","ENDM", NULL,
-    "LOCAL mmr","LOCAL saverax","LOCAL savercx","LOCAL saversi",".data?","saverax QWORD ?","savercx QWORD ?","saversi QWORD ?","mmr OWORD ?",".code","mov saverax,rax","mov savercx,rcx","mov saversi,rsi","mov ecx, cnt","and ecx,7fh","vmovups mmr, xmm128","lea  rsi,mmr",".if (cl >=  0x40)","mov rax, qword ptr[rsi+8]","mov qword ptr[rsi],rax","sub ecx, 64","shr qword ptr[rsi], cl ","xor eax,eax","mov qword ptr[rsi+8],rax",".else ","mov rax,qword ptr[rsi+8]","shr qword ptr[rsi],cl","shr qword ptr[rsi+8],cl","neg cl","shl rax, cl","or qword ptr[rsi],rax",".endif ","mov rax,saverax","mov rcx,savercx","mov rsi,saversi","vmovups xmm128,mmr ","ENDM", NULL,
-    "LOCAL saverax","LOCAL savercx","LOCAL saversi",".data?","saverax QWORD ?","savercx QWORD ?","saversi QWORD ?",".code","mov saverax,rax","mov savercx,rcx","mov saversi,rsi","mov  rsi,mmr","mov ecx, cnt","and ecx,7fh",".if (cl >=  0x40)","mov rax, qword ptr[rsi+8]","mov qword ptr[rsi],rax","sub ecx, 64","shr qword ptr[rsi], cl ","xor eax,eax","mov qword ptr[rsi+8],rax",".else ","mov rax,qword ptr[rsi+8]","shr qword ptr[rsi],cl","shr qword ptr[rsi+8],cl","neg cl","shl rax, cl","or qword ptr[rsi],rax",".endif ","mov rax,saverax","mov rcx,savercx","mov rcx,saversi","ENDM", NULL,
-    "LOCAL mmr","LOCAL saverax","LOCAL savercx","LOCAL saversi",".data?","saverax QWORD ?","savercx QWORD ?","saversi QWORD ?","mmr OWORD ?",".code","mov saverax,rax","mov savercx,rcx","mov saversi,rsi","mov ecx, cnt","and ecx,7fh","vmovups mmr, xmm128","lea  rsi,mmr",".if (cl >=  0x40)","mov rax, qword ptr[rsi]","mov qword ptr[rsi+8],rax","sub ecx, 64","shl qword ptr[rsi+8], cl","xor eax,eax","mov qword ptr[rsi],rax",".else ","mov rax,qword ptr[rsi]","shl qword ptr[rsi],cl","shl qword ptr[rsi+8],cl","neg cl","shr rax, cl","or qword ptr[rsi+8],rax",".endif ","mov rax,saverax","mov rcx,savercx","mov rsi,saversi","vmovups xmm128,mmr ","ENDM",NULL,
-    "LOCAL saverax","LOCAL savercx","LOCAL saversi",".data?","saverax QWORD ?","savercx QWORD ?","saversi QWORD ?",".code","mov saverax,rax","mov savercx,rcx","mov saversi,rsi","mov  rsi,mmr","mov ecx, cnt","and ecx,7fh",".if (cl >=  0x40)","mov rax, qword ptr[rsi]","mov qword ptr[rsi+8],rax","sub ecx, 64","shl qword ptr[rsi+8], cl ","xor eax,eax","mov qword ptr[rsi],rax",".else ","mov rax,qword ptr[rsi]","shl qword ptr[rsi],cl","shl qword ptr[rsi+8],cl","neg cl","shr rax, cl","or qword ptr[rsi+8],rax",".endif ","mov rax,saverax","mov rcx,savercx","mov rsi,saversi","ENDM",NULL,
+		"MOV64 dst, immHi", "MOV64 dst + 8, immLo", "ENDM", NULL,
+		"LOCAL savexmm",".data?","savexmm OWORD ?",".code","MOV64 savexmm, immHi","MOV64 savexmm + 8, immLo","vmovups dst,savexmm","ENDM", NULL,
+		"LOCAL mmr","LOCAL saverax","LOCAL savercx","LOCAL saversi",".data?","saverax QWORD ?","savercx QWORD ?","saversi QWORD ?","mmr OWORD ?",".code","mov saverax,rax","mov savercx,rcx","mov saversi,rsi","mov ecx, cnt","and ecx,7fh","vmovups mmr, xmm128","lea  rsi,mmr",".if (cl >=  0x40)","mov rax, qword ptr[rsi+8]","mov qword ptr[rsi],rax","sub ecx, 64","shr qword ptr[rsi], cl ","xor eax,eax","mov qword ptr[rsi+8],rax",".else ","mov rax,qword ptr[rsi+8]","shr qword ptr[rsi],cl","shr qword ptr[rsi+8],cl","neg cl","shl rax, cl","or qword ptr[rsi],rax",".endif ","mov rax,saverax","mov rcx,savercx","mov rsi,saversi","vmovups xmm128,mmr ","ENDM", NULL,
+		"LOCAL saverax","LOCAL savercx","LOCAL saversi",".data?","saverax QWORD ?","savercx QWORD ?","saversi QWORD ?",".code","mov saverax,rax","mov savercx,rcx","mov saversi,rsi","mov  rsi,mmr","mov ecx, cnt","and ecx,7fh",".if (cl >=  0x40)","mov rax, qword ptr[rsi+8]","mov qword ptr[rsi],rax","sub ecx, 64","shr qword ptr[rsi], cl ","xor eax,eax","mov qword ptr[rsi+8],rax",".else ","mov rax,qword ptr[rsi+8]","shr qword ptr[rsi],cl","shr qword ptr[rsi+8],cl","neg cl","shl rax, cl","or qword ptr[rsi],rax",".endif ","mov rax,saverax","mov rcx,savercx","mov rcx,saversi","ENDM", NULL,
+		"LOCAL mmr","LOCAL saverax","LOCAL savercx","LOCAL saversi",".data?","saverax QWORD ?","savercx QWORD ?","saversi QWORD ?","mmr OWORD ?",".code","mov saverax,rax","mov savercx,rcx","mov saversi,rsi","mov ecx, cnt","and ecx,7fh","vmovups mmr, xmm128","lea  rsi,mmr",".if (cl >=  0x40)","mov rax, qword ptr[rsi]","mov qword ptr[rsi+8],rax","sub ecx, 64","shl qword ptr[rsi+8], cl","xor eax,eax","mov qword ptr[rsi],rax",".else ","mov rax,qword ptr[rsi]","shl qword ptr[rsi],cl","shl qword ptr[rsi+8],cl","neg cl","shr rax, cl","or qword ptr[rsi+8],rax",".endif ","mov rax,saverax","mov rcx,savercx","mov rsi,saversi","vmovups xmm128,mmr ","ENDM",NULL,
+		"LOCAL saverax","LOCAL savercx","LOCAL saversi",".data?","saverax QWORD ?","savercx QWORD ?","saversi QWORD ?",".code","mov saverax,rax","mov savercx,rcx","mov saversi,rsi","mov  rsi,mmr","mov ecx, cnt","and ecx,7fh",".if (cl >=  0x40)","mov rax, qword ptr[rsi]","mov qword ptr[rsi+8],rax","sub ecx, 64","shl qword ptr[rsi+8], cl ","xor eax,eax","mov qword ptr[rsi],rax",".else ","mov rax,qword ptr[rsi]","shl qword ptr[rsi],cl","shl qword ptr[rsi+8],cl","neg cl","shr rax, cl","or qword ptr[rsi+8],rax",".endif ","mov rax,saverax","mov rcx,savercx","mov rsi,saversi","ENDM",NULL,
 		"IF @Platform EQ 1", "INVOKE HeapAlloc,RV(GetProcessHeap),0,aSize", "ELSE", "INVOKE malloc,aSize", "ENDIF", "MEMALIGN rax, 16", "endm", NULL,
 		"IF @Platform EQ 1", "INVOKE HeapFree,RV(GetProcessHeap),0,memPtr", "ELSE", "INVOKE free,memPtr", "ENDIF", "endm", NULL,
 		"local szText", ".data", "szText db Text,0", ".code", "IF @Platform EQ 1", "exitm <offset szText>", "ELSE", "exitm <addr szText>", "ENDIF", "endm", NULL,
@@ -237,13 +237,14 @@ void InitAutoMacros64(void)
 		"InterfacePtr TEXTEQU <_>", "InterfacePtr CATSTR InterfacePtr, <&Interface>, <_>, <&Function>, <Pto>", "IF(OPATTR(pInterface)) AND 00010000b", "IFNB <args>", "invoke(InterfacePtr PTR[&pInterface].&Interface.&Function), pInterface, &args", "ELSE", "invoke(InterfacePtr PTR[&pInterface].&Interface.&Function), pInterface", "ENDIF", "ELSE", "mov rax, pInterface", "IFNB <args>", "FOR arg, <args>", "IFIDNI <&arg>, <rax>", ".ERR <rax is not allowed as a Method parameter with indirect object label>", "ENDIF", "ENDM", "invoke(InterfacePtr PTR[rax].&Interface.&Function), pInterface, &args", "ELSE", "invoke(InterfacePtr PTR[rax].&Interface.&Function), pInterface", "ENDIF", "ENDIF", "exitm<al>", "ENDM", NULL,
 		"InterfacePtr TEXTEQU <_>", "InterfacePtr CATSTR InterfacePtr, <&Interface>, <_>, <&Function>, <Pto>", "IF(OPATTR(pInterface)) AND 00010000b", "IFNB <args>", "invoke(InterfacePtr PTR[&pInterface].&Interface.&Function), pInterface, &args", "ELSE", "invoke(InterfacePtr PTR[&pInterface].&Interface.&Function), pInterface", "ENDIF", "ELSE", "mov rax, pInterface", "IFNB <args>", "FOR arg, <args>", "IFIDNI <&arg>, <rax>", ".ERR <rax is not allowed as a Method parameter with indirect object label>", "ENDIF", "ENDM", "invoke(InterfacePtr PTR[rax].&Interface.&Function), pInterface, &args", "ELSE", "invoke(InterfacePtr PTR[rax].&Interface.&Function), pInterface", "ENDIF", "ENDIF", "exitm<xmm0>", "ENDM", NULL,
 		"LOCAL sz1, sz2", "sz2 CATSTR <_>, curClass, <_&method>, <Pto>", "% sz1 typedef PTR &sz2", "% method sz1 offset _&curClass&_&method&", "ENDM", NULL,
- 	  ".data", "align 4", "vname dd value", ".code", "IF @Arch EQ 0", "movss reg, vname", "ELSE", "vmovss reg, vname", "ENDIF", "ENDM", NULL,
-    ".data", "align 8", "bname dq value", ".code", "IF @Arch EQ 0", "movsd reg, bname", "ELSE", "vmovsd reg, bname", "ENDIF", "ENDM", NULL,
-		"IFB <args>", "invoke func", "ELSE", "invoke func, args", "ENDIF", "IF @LastReturnType EQ 0", "EXITM <al>", "ELSEIF @LastReturnType EQ 0x40", "EXITM <al>", "ELSEIF @LastReturnType EQ 1", "EXITM <ax>", "ELSEIF @LastReturnType EQ 0x41", "EXITM <ax>", "ELSEIF @LastReturnType EQ 2", "EXITM <eax>", "ELSEIF @LastReturnType EQ 0x42", "EXITM <eax>", "ELSEIF @LastReturnType EQ 3", "EXITM <rax>", "ELSEIF @LastReturnType EQ 0x43", "EXITM <rax>", "ELSEIF @LastReturnType EQ 0xc3", "EXITM <rax>", "ELSEIF @LastReturnType EQ 6", "EXITM <xmm0>", "ELSEIF @LastReturnType EQ 7", "EXITM <ymm0>", "ELSEIF @LastReturnType EQ 8", "EXITM <zmm0>", "ELSEIF @LastReturnType EQ 0x22", "EXITM <xmm0>", "ELSEIF @LastReturnType EQ 0x23", "EXITM <xmm0>", "ENDIF", "ENDM", NULL,
+ 		".data", "align 4", "vname dd value", ".code", "IF @Arch EQ 0", "movss reg, vname", "ELSE", "vmovss reg, vname", "ENDIF", "ENDM", NULL,
+		".data", "align 8", "bname dq value", ".code", "IF @Arch EQ 0", "movsd reg, bname", "ELSE", "vmovsd reg, bname", "ENDIF", "ENDM", NULL,
+		"IFB <args>", "invoke func", "ELSE", "invoke func, args", "ENDIF", "IF @LastReturnType EQ 0", "EXITM <al>", "ELSEIF @LastReturnType EQ 0x40", "EXITM <al>", "ELSEIF @LastReturnType EQ 1", "EXITM <ax>", "ELSEIF @LastReturnType EQ 0x41", "EXITM <ax>", "ELSEIF @LastReturnType EQ 2", "EXITM <eax>", "ELSEIF @LastReturnType EQ 0x42", "EXITM <eax>", "ELSEIF @LastReturnType EQ 3", "EXITM <rax>", "ELSEIF @LastReturnType EQ 0x43", "EXITM <rax>", "ELSEIF @LastReturnType EQ 0xc3", "EXITM <rax>", "ELSEIF @LastReturnType EQ 6", "EXITM <xmm0>", "ELSEIF @LastReturnType EQ 7", "EXITM <ymm0>", "ELSEIF @LastReturnType EQ 8", "EXITM <zmm0>", "ELSEIF @LastReturnType EQ 0x22", "EXITM <xmm0>", "ELSEIF @LastReturnType EQ 0x23", "EXITM <xmm0>", "ELSE", "EXITM <eax>", "ENDIF", "ENDM", NULL,
 		"EXITM <REAL4 PTR reg> ", NULL,
 		"EXITM <REAL8 PTR reg> ", NULL,
 		"EXITM <REAL4 PTR reg> ", NULL,
 		"EXITM <REAL8 PTR reg> ", NULL,
+		"LOCAL dstSize, stackPos","REGS15STORAGE","IFB <args>","invoke func","ELSE","IF invCnt EQ 2","mov RRCX,rcx","ELSEIF invCnt EQ 3","mov RRCX,rcx","mov RRDX,rdx","ELSEIF invCnt EQ 4","mov RRCX,rcx","mov RRDX,rdx","mov RR8,r8","ELSEIF invCnt GE 5","mov RRCX,rcx","mov RRDX,rdx","mov RR8,r8","mov RR9,r9","ENDIF","invoke func, args","IF invCnt EQ 2","mov rcx,RRCX","ELSEIF invCnt EQ 3","mov rcx,RRCX","mov rdx,RRDX","ELSEIF invCnt EQ 4","mov rcx,RRCX","mov rdx,RRDX","mov r8,RR8","ELSEIF invCnt GE 5","mov rcx,RRCX","mov rdx,RRDX","mov r8,RR8","mov r9,RR9","ENDIF","ENDIF","IF @LastReturnType EQ 0","dstSize = 1","ELSEIF @LastReturnType EQ 0x40","dstSize = 1","ELSEIF @LastReturnType EQ 1","dstSize = 2","ELSEIF @LastReturnType EQ 0x41","dstSize = 2","ELSEIF @LastReturnType EQ 2","dstSize = 4","ELSEIF @LastReturnType EQ 0x42","dstSize = 4","ELSEIF @LastReturnType EQ 3","dstSize = 8","ELSEIF @LastReturnType EQ 0x43","dstSize = 8","ELSEIF @LastReturnType EQ 0xc3","dstSize = 8","ELSEIF @LastReturnType EQ 6","dstSize = 16","ELSEIF @LastReturnType EQ 7","dstSize = 32","ELSEIF @LastReturnType EQ 8","dstSize = 64","ELSEIF @LastReturnType EQ 0x22","dstSize = 16","ELSEIF @LastReturnType EQ 0x23","dstSize = 16","ELSE","dstSize = 4","ENDIF","IF argNo EQ 1","IF dstSize EQ 1","mov cl,al","EXITM<cl>","ELSEIF dstSize EQ 2","mov cx,ax","EXITM<cx>","ELSEIF dstSize EQ 4","mov ecx,eax","EXITM<ecx>","ELSEIF dstSize EQ 8","mov rcx,rax","EXITM<rcx>","ELSEIF dstSize EQ 16","EXITM<xmm0>","ELSEIF dstSize EQ 32","EXITM<ymm0>","ELSEIF dstSize EQ 64","EXITM<zmm0>","ENDIF","ELSEIF argNo EQ 2","IF dstSize EQ 1","mov dl,al","EXITM<dl>","ELSEIF dstSize EQ 2","mov dx,ax","EXITM<dx>","ELSEIF dstSize EQ 4","mov edx,eax","EXITM<edx>","ELSEIF dstSize EQ 8","mov rdx,rax","EXITM<rdx>","ELSEIF dstSize EQ 16","IF @Arch EQ 0","movdqa xmm1,xmm0","ELSE","vmovdqa xmm1,xmm0","ENDIF","EXITM<xmm1>","ELSEIF dstSize EQ 32","vmovdqa ymm1,ymm0","EXITM<ymm1>","ELSEIF dstSize EQ 64","vmovdqa zmm1,zmm0","EXITM<zmm1>","ENDIF","ELSEIF argNo EQ 3","IF dstSize EQ 1","mov r8b,al","EXITM<r8b>","ELSEIF dstSize EQ 2","mov r8w,ax","EXITM<r8w>","ELSEIF dstSize EQ 4","mov r8d,eax","EXITM<r8d>","ELSEIF dstSize EQ 8","mov r8,rax","EXITM<r8>","ELSEIF dstSize EQ 16","IF @Arch EQ 0","movdqa xmm2,xmm0","ELSE","vmovdqa xmm2,xmm0","ENDIF","EXITM<xmm2>","ELSEIF dstSize EQ 32","vmovdqa ymm2,ymm0","EXITM<ymm2>","ELSEIF dstSize EQ 64","vmovdqa zmm2,zmm0","EXITM<zmm2>","ENDIF","ELSEIF argNo EQ 4","IF dstSize EQ 1","mov r9b,al","EXITM<r9b>","ELSEIF dstSize EQ 2","mov r9w,ax","EXITM<r9w>","ELSEIF dstSize EQ 4","mov r9d,eax","EXITM<r9d>","ELSEIF dstSize EQ 8","mov r9,rax","EXITM<r9>","ELSEIF dstSize EQ 16","IF @Arch EQ 0","movdqa xmm3,xmm0","ELSE","vmovdqa xmm3,xmm0","ENDIF","EXITM<xmm3>","ELSEIF dstSize EQ 32","vmovdqa ymm3,ymm0","EXITM<ymm3>","ELSEIF dstSize EQ 64","vmovdqa zmm3,zmm0","EXITM<zmm3>","ENDIF","ELSE","IF dstSize EQ 1","mov [rsp+0x20+((argNo-5)*8)],al","ELSEIF dstSize EQ 2","mov [rsp+0x20+((argNo-5)*8)],ax","ELSEIF dstSize EQ 4","mov [rsp+0x20+((argNo-5)*8)],eax","ELSEIF dstSize EQ 8","mov [rsp+0x20+((argNo-5)*8)],rax","ELSEIF (dstSize EQ 16) OR (dstSize EQ 32) OR (dstSize EQ 64)","IF @Arch EQ 0","movsd [rsp+0x20+((argNo-5)*8)],xmm0","ELSE","vmovsd [rsp+0x20+((argNo-5)*8)],xmm0","ENDIF","ENDIF","EXITM<[rsp+0x20+((argNo-5)*8)]>","ENDIF","ENDM",NULL,
     };	
 
 	/* Compile Macros */

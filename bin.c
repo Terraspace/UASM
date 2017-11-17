@@ -227,16 +227,15 @@ static void CalcOffset( struct dsym *curr, struct calc_param *cp )
         align = 1 << cp->alignment;
     else
         align = 1 << curr->e.seginfo->alignment;
-    //alignbytes = ((offset + (align - 1)) & (-align)) - offset;
     alignbytes = ((cp->fileoffset + (align - 1)) & (-align)) - cp->fileoffset;
     cp->fileoffset += alignbytes;
 
     if ( grp == NULL ) {
-        offset = cp->fileoffset - cp->sizehdr;  // + alignbytes;
+        offset = cp->fileoffset - cp->sizehdr;
         DebugMsg(("CalcOffset(%s): fileofs=%" I32_SPEC "Xh, ofs=%" I32_SPEC "Xh\n", curr->sym.name, cp->fileoffset, offset ));
     } else {
 #if PE_SUPPORT
-        if ( ModuleInfo.sub_format == SFORMAT_PE )
+        if ( ModuleInfo.sub_format == SFORMAT_PE || ModuleInfo.sub_format == SFORMAT_64BIT )
             offset = cp->rva;
         else
 #endif
@@ -260,8 +259,7 @@ static void CalcOffset( struct dsym *curr, struct calc_param *cp )
          * - segment is in a group and
          * - group isn't FLAT or segment's name contains '$'
          */
-        if ( grp && ( grp != ModuleInfo.flat_grp ||
-                     strchr( curr->sym.name, '$' ) ) )
+        if ( grp && ( grp != ModuleInfo.flat_grp || strchr( curr->sym.name, '$' ) ) )
             curr->e.seginfo->start_loc = 0;
     }
 
@@ -302,13 +300,6 @@ static void CalcOffset( struct dsym *curr, struct calc_param *cp )
             EmitWarn( 2, GROUP_EXCEEDS_64K, grp->sym.name );
         }
     }
-#if PE_SUPPORT
-    DebugMsg(("CalcOffset(%s) exit: seg.fileofs=%" I32_SPEC "Xh, seg.start_offset=%" I32_SPEC "Xh, endofs=%" I32_SPEC "Xh fileofs=%" I32_SPEC "Xh rva=%" I32_SPEC "Xh\n",
-              curr->sym.name, curr->e.seginfo->fileoffset, curr->e.seginfo->start_offset, offset, cp->fileoffset, cp->rva ));
-#else
-    DebugMsg(("CalcOffset(%s) exit: seg.fileofs=%" I32_SPEC "Xh, seg.start_offset=%" I32_SPEC "Xh, endofs=%" I32_SPEC "Xh fileofs=%" I32_SPEC "Xh\n",
-              curr->sym.name, curr->e.seginfo->fileoffset, curr->e.seginfo->start_offset, offset, cp->fileoffset ));
-#endif
 
     cp->first = FALSE;
     return;
@@ -516,7 +507,7 @@ static ret_code DoFixup( struct dsym *curr, struct calc_param *cp )
                 if ( seg->e.seginfo->group && fixup->frame_type != FRAME_SEG ) {
                     value = (seg->e.seginfo->group->offset & 0xF) + seg->e.seginfo->start_offset + fixup->offset + offset;
 #if PE_SUPPORT
-                    if ( ModuleInfo.sub_format == SFORMAT_PE ) {
+                    if ( ModuleInfo.sub_format == SFORMAT_PE || ModuleInfo.sub_format == SFORMAT_64BIT ) {
 #if AMD64_SUPPORT
                         if ( curr->e.seginfo->Ofssize == USE64 )
                             value64 = value + cp->imagebase64;
@@ -1516,7 +1507,6 @@ static ret_code bin_write_module( struct module_info *modinfo )
     struct dsym *curr;
     uint_32 size;
     uint_32 sizetotal;
-    //const enum seg_type *segtype;
     int i;
     int first;
     uint_32 sizeheap;
@@ -1605,9 +1595,6 @@ static ret_code bin_write_module( struct module_info *modinfo )
 
     /* handle relocs */
     for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
-        /* v2.04: scan ALL fixups! */
-        //if ( DoFixup( curr ) == ERROR )
-        //    return( ERROR );
         DoFixup( curr, &cp );
 #if MZ_SUPPORT
         if ( stack == NULL &&
@@ -1738,7 +1725,7 @@ static ret_code bin_write_module( struct module_info *modinfo )
             continue;
         }
 #if PE_SUPPORT
-        if ( ModuleInfo.sub_format == SFORMAT_PE &&
+        if ( ( ModuleInfo.sub_format == SFORMAT_PE || ModuleInfo.sub_format == SFORMAT_64BIT ) &&
             ( curr->e.seginfo->segtype == SEGTYPE_BSS || curr->e.seginfo->info ) )
             size = 0;
         else
@@ -1764,7 +1751,6 @@ static ret_code bin_write_module( struct module_info *modinfo )
         /* v2.05: changed
          * print name, fileoffset, objoffset, filesize, memsize
          */
-        //LstPrintf( szSegLine, curr->sym.name, curr->e.seginfo->fileoffset, curr->e.seginfo->start_offset + curr->e.seginfo->start_loc, size, sizemem );
         LstPrintf( szSegLine, curr->sym.name, curr->e.seginfo->fileoffset, first ? curr->e.seginfo->start_offset + curr->e.seginfo->start_loc : curr->e.seginfo->start_offset, size, sizemem );
         LstNL();
 #endif
@@ -1805,7 +1791,7 @@ static ret_code bin_write_module( struct module_info *modinfo )
         first = FALSE;
     }
 #if PE_SUPPORT && RAWSIZE_ROUND
-    if ( modinfo->sub_format == SFORMAT_PE ) {
+    if ( modinfo->sub_format == SFORMAT_PE || ModuleInfo.sub_format == SFORMAT_64BIT ) {
         size = ftell( CurrFile[OBJ] );
         if ( size & ( cp.rawpagesize - 1 ) ) {
             char *tmp;
@@ -1825,7 +1811,7 @@ static ret_code bin_write_module( struct module_info *modinfo )
     else
 #endif
 #if PE_SUPPORT
-    if ( modinfo->sub_format == SFORMAT_PE )
+    if ( modinfo->sub_format == SFORMAT_PE || ModuleInfo.sub_format == SFORMAT_64BIT )
         sizeheap = cp.rva;
     else
 #endif

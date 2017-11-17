@@ -65,11 +65,268 @@ ret_code WriteCodeLabel( char *line, struct asm_tok tokenarray[] )
     return( NOT_ERROR );
 }
 
+/* Verify a matched pair of function call brackets, assuming initial opening bracket position
+   and return the closing bracket position or -1.
+*/
+int VerifyBrackets(struct asm_tok tokenarray[], int openIdx, bool inParam)
+{
+	int len;
+	int i = openIdx;
+	int opCnt = 0;
+	if (tokenarray[i].token != T_OP_BRACKET)
+	{
+		EmitErr(MISSING_LEFT_PARENTHESIS_IN_EXPRESSION);
+		return(-1);
+	}
+
+	if (!inParam)
+	{
+		for (i = 0;i < openIdx;i++)
+		{
+			if (tokenarray[i].token == T_OP_BRACKET || tokenarray[i].token == '(')
+				opCnt++;
+		}
+	}
+
+	if (tokenarray[i + 1].token == T_CL_BRACKET)
+		return(i + 1);
+
+	for (i = Token_Count-1;i > openIdx; i--)
+	{
+		if (tokenarray[i].token == T_CL_BRACKET && opCnt == 0)
+			return(i);
+		else if (tokenarray[i].token == T_CL_BRACKET)
+			opCnt--;
+	}
+
+	EmitErr(MISSING_RIGHT_PARENTHESIS_IN_EXPRESSION);
+	return(-1);
+}
+
+/* We only allow a single level of nested calls */
+static void VerifyNesting(char *line, bool exprBracket)
+{
+	int depth = 0;
+	int maxdepth = (exprBracket) ? 3 : 2;
+	char *p = line;
+	while (*p)
+	{
+		if (*p == '(')
+			depth++;
+		if (*p == ')')
+			depth--;
+		if (depth > maxdepth)
+		{
+			EmitErr(MAX_C_NESTING);
+			return;
+		}
+		p++;
+	}
+}
+
+static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam, int argIdx, bool inExpr)
+{
+	int i, j;
+	struct dsym *sym;
+	char newline[MAX_LINE_LEN];
+	strcpy(&newline, line);
+	int clIdx, opIdx;
+	int tokenCount;
+	struct asm_tok *tokenarray2;
+	char *p = &newline;
+	char idxStack[] = { 0, 0, 0, 0 };
+	int stackPt = -1;
+	char idxline[MAX_LINE_LEN];
+	char invCnt = 1;
+	bool hasExprBracket = FALSE;
+
+	memset(&idxline, 0, MAX_LINE_LEN);
+
+	for (i = 0;i < Token_Count;i++)
+	{
+		if (tokenarray[i].token == T_ID)
+		{
+			sym = SymSearch(tokenarray[i].string_ptr);
+			if(sym && sym->sym.isproc && tokenarray[i+1].tokval != T_PROC && tokenarray[i+1].tokval != T_PROTO && 
+				tokenarray[i+1].tokval != T_ENDP && tokenarray[i+1].tokval != T_EQU && tokenarray[i+1].token != T_COMMA) 
+			{ 
+				/* HLL c-style calls can only exist inside code sections */
+				if (CurrSeg && strcmp(CurrSeg->sym.name, "_TEXT") == 0)
+				{
+		
+					/* Scan backwards to check if we're in an HLL expression */
+					if (i > 0)
+					{
+						for (j = i - 1;j >= 0;j--)
+						{
+							if (tokenarray[j].token == T_DIRECTIVE && (tokenarray[j].dirtype == DRT_HLLSTART || tokenarray[j].dirtype == DRT_HLLEND))
+							{
+								inExpr = TRUE;
+								if (tokenarray[j + 1].token == T_OP_BRACKET || tokenarray[j + 1].tokval == '(')
+									hasExprBracket = TRUE;
+								else
+									hasExprBracket = FALSE;
+								break;
+							}
+							else if ((tokenarray[j].token == T_DIRECTIVE && tokenarray[j].dirtype == DRT_INVOKE) ||
+								strcmp(tokenarray[j].string_ptr, "arginvoke") == 0)
+							{
+								inParam = TRUE;
+								break;
+							}
+						}
+					}
+
+					/* If we've identifed a Proc Name, there are several more cases where it must not be expanded */
+					if (i > 0 && (tokenarray[i - 1].token == T_COLON || tokenarray[i - 1].tokval == T_EQU || (tokenarray[i - 1].token == T_COMMA && !inParam) ||
+						tokenarray[i - 1].tokval == T_INVOKE || tokenarray[i - 1].token == T_INSTRUCTION || tokenarray[i - 1].tokval == T_ADDR ||
+						tokenarray[i - 1].tokval == T_OFFSET || tokenarray[i - 1].tokval == T_PTR || tokenarray[i - 1].tokval == T_END || 
+						strcmp(tokenarray[i - 1].string_ptr,"arginvoke") == 0)) continue;
+					
+					/* Verify c-style procedure call has matching brackets */
+					opIdx = i + 1;
+					clIdx = VerifyBrackets(tokenarray, opIdx, inParam);
+					if (clIdx == -1)
+						return;
+
+					if (!inParam && !inExpr)
+					{
+						/* Shift all the tokens up to remove the close bracket and make space for invoke */
+						for (j = clIdx; j > i; j--)
+							tokenarray[j] = tokenarray[j - 1];
+
+						if (clIdx > opIdx + 1)
+						{
+							tokenarray[clIdx + 1].token = T_FINAL;
+							tokenarray[opIdx + 1].string_ptr = ",";
+							tokenarray[opIdx + 1].token = T_COMMA;
+						}
+						/* Proc with no params */
+						else
+						{
+							tokenarray[opIdx + 1].string_ptr = "";
+							tokenarray[opIdx + 1].token = T_FINAL;
+						}
+						tokenarray[i].token = T_DIRECTIVE;
+						tokenarray[i].tokval = T_INVOKE;
+						tokenarray[i].dirtype = DRT_INVOKE;
+						tokenarray[i].string_ptr = "invoke";
+					}
+					else
+					{
+						/* Shift all the tokens up to remove the close bracket and make space for invoke */
+						for (j = Token_Count; j > i; j--)
+							tokenarray[j] = tokenarray[j - 1];
+
+						/* Shift all the tokens up to add new open bracket */
+						for (j = Token_Count+1; j > i; j--)
+							tokenarray[j] = tokenarray[j - 1];
+
+						Token_Count+=2;
+						tokenarray[Token_Count].string_ptr = "";
+						tokenarray[Token_Count].token = T_FINAL;
+						if (clIdx > opIdx + 1)
+						{
+							tokenarray[opIdx + 2].string_ptr = ",";
+							tokenarray[opIdx + 2].token = T_COMMA;
+						}
+						else
+						{
+							tokenarray[opIdx + 2].string_ptr = " ";
+						}
+						tokenarray[i].token = T_ID;
+						tokenarray[i].tokval = 0;
+						tokenarray[i].dirtype = 0;
+						if (inExpr && !inParam)
+						{
+							tokenarray[i].string_ptr = "uinvoke";
+							tokenarray[i + 1].string_ptr = "(";
+							tokenarray[i + 1].token = '(';
+						}
+						else if (inParam)
+						{
+							tokenarray[i].string_ptr = "arginvoke(%%,%%,";
+							tokenarray[i + 1].string_ptr = ""; 
+							tokenarray[i + 1].token = 0; 
+						}
+					}
+					
+					i += 2;
+					
+					/* Rebuild string */
+					for (j = 0;j <= Token_Count; j++)
+					{
+						strcpy(p, tokenarray[j].string_ptr);
+						tokenarray[j].tokpos = p;
+						p += strlen(tokenarray[j].string_ptr);
+						if (j == 0 || tokenarray[j].tokval == T_ADDR || tokenarray[j].tokval == T_OFFSET)
+						{
+							strcpy(p, " ");
+							p++;
+						}
+					}
+
+					/* Reset string pointer*/
+					p = &newline;
+				}
+			}
+		}
+	}
+
+	/* Scan string and insert argument numbers */
+	// MyProc(MyProc3(), 20)	 MyProc(10, MyProc4())
+	// invoke MyProc,arginvoke(0,MyProc3),20
+	// invoke MyProc,10,arginvoke(0,MyProc4)
+	//find invoke, increment stackPt and set argno 1... for every comma not in () increment argno
+	//find uinvoke or arginvoke increment stackPt and set argno 1... for every comma after opIdx and before closeIdx and not in () increment argno... at closeIdx decrement StackPt
+	//at each step write argno to idxline string
+	//finally replace place-holder with idxline value
+	p = &newline;
+	p = strstr(p, "invoke"); // even if the line only contains uinvoke, such as in an HLL expression this will still find it.
+	if (p != NULL)
+	{
+		bool inBrackets = FALSE;
+		j = (p - &newline);
+		stackPt++;
+		idxStack[stackPt] = 0;
+		while (*p)
+		{
+			idxline[j++] = idxStack[stackPt];
+			if (*p == '(')
+				inBrackets = TRUE;
+			if (*p == ')')
+				inBrackets = FALSE;
+			if (!inBrackets && *p == ',')
+				idxStack[stackPt]++;
+			p++;
+		}
+	}
+	p = &newline;
+	p = strstr(p, "arginvoke(");
+	j = (p - &newline);
+	while (p)
+	{
+		*(p + 10) = (char)(((idxline[j] & 0xf0) >> 4) + 48);
+		*(p + 11) = (char)(((idxline[j] & 0x0f)) + 48);
+		*(p + 13) = (char)(((invCnt & 0xf0) >> 4) + 48);
+		*(p + 14) = (char)(((invCnt & 0x0f)) + 48);
+		p = strstr(p + 1, "arginvoke(");
+		invCnt++;
+		j = (p - &newline);
+	}
+
+	/* Ensure max nesting depth isn't exceeded */
+	VerifyNesting(&newline, hasExprBracket);
+
+	/* Transfer new source line back for token rescan */
+	strcpy(line, &newline);
+}
+
 /*
 Perform evaluation of any items required before pre-processing (ie: substitution or macro expansion).
 -> Evaluation of inline RECORD items to allow them to be handled by invoke/macros etc.
 */
-int EvaluatePreprocessItems(struct asm_tok tokenarray[])
+void EvaluatePreprocessItems(char *line, struct asm_tok tokenarray[])
 {
 	int i;
 	struct dsym *recsym;
@@ -77,25 +334,23 @@ int EvaluatePreprocessItems(struct asm_tok tokenarray[])
 
 	memset(&opndx, 0, sizeof(opndx));
 
-	/* pre parse inline records UASM v2.41 */
-	if (CurrProc)
+	/* pre parse inline records and c-style procedure calls UASM v2.46 */
+	for (i = 0;i < Token_Count; i++)
 	{
-		for (i = 0;i < Token_Count; i++)
+		/* only a token of type ID could possibly be an inline record */
+		if (tokenarray[i].token == T_ID)
 		{
-			/* only a token of type ID could possibly be an inline record */
-			if (tokenarray[i].token == T_ID)
+			recsym = SymSearch(tokenarray[i].string_ptr);
+			if (recsym && recsym->sym.typekind == TYPE_RECORD && CurrProc)
 			{
-				recsym = SymSearch(tokenarray[i].string_ptr);
-				if (recsym && recsym->sym.typekind == TYPE_RECORD)
+				if (EvalOperand(&i, tokenarray, Token_Count, &opndx[0], 0) == ERROR)
 				{
-					if (EvalOperand(&i, tokenarray, Token_Count, &opndx[0], 0) == ERROR)
-					{
-						return(EmitErr(INVALID_INSTRUCTION_OPERANDS));
-					}
+					EmitErr(INVALID_INSTRUCTION_OPERANDS);
+					return(FALSE);
 				}
-				if (recsym)
-					recsym->sym.used = FALSE;
 			}
+			if (recsym)
+				recsym->sym.used = FALSE;
 		}
 	}
 }
@@ -109,14 +364,9 @@ int PreprocessLine( char *line, struct asm_tok tokenarray[] )
 /***********************************************************/
 {
     int i;
-	
-    /* v2.11: GetTextLine() removed - this is now done in ProcessFile() */
 
-    /* v2.08: moved here from GetTextLine() */
-    ModuleInfo.CurrComment = NULL;
-    /* v2.06: moved here from Tokenize() */
+	ModuleInfo.CurrComment = NULL;
     ModuleInfo.line_flags = 0;
-    /* Token_Count is the number of tokens scanned */
     Token_Count = Tokenize( line, 0, tokenarray, TOK_DEFAULT );
 
 #ifdef DEBUG_OUT
@@ -141,12 +391,16 @@ int PreprocessLine( char *line, struct asm_tok tokenarray[] )
         return( Token_Count );
 #endif
 
-	EvaluatePreprocessItems( tokenarray );
+	ExpandHllCalls( line, tokenarray, FALSE, 0, FALSE );
+	Token_Count = Tokenize( line, 0, tokenarray, TOK_RESCAN );
+
+	EvaluatePreprocessItems( line, tokenarray );
 
     /* CurrIfState != BLOCK_ACTIVE && Token_Count == 1 | 3 may happen
      * if a conditional assembly directive has been detected by Tokenize().
      * However, it's important NOT to expand then */
-    if ( CurrIfState == BLOCK_ACTIVE ) {
+    if ( CurrIfState == BLOCK_ACTIVE ) 
+	{
         if ( ( tokenarray[Token_Count].bytval & TF3_EXPANSION ? ExpandText( line, tokenarray, TRUE ) : ExpandLine( line, tokenarray ) ) < NOT_ERROR )
             return( 0 );
     }
@@ -164,11 +418,11 @@ int PreprocessLine( char *line, struct asm_tok tokenarray[] )
      * INCLUDE
      * since v2.05, error directives are no longer handled here!
      */
-    if ( tokenarray[i].token == T_DIRECTIVE &&
-        tokenarray[i].dirtype <= DRT_INCLUDE ) {
-
+    if ( tokenarray[i].token == T_DIRECTIVE && tokenarray[i].dirtype <= DRT_INCLUDE ) 
+	{
         /* if i != 0, then a code label is located before the directive */
-        if ( i > 1 ) {
+        if ( i > 1 ) 
+		{
             if ( ERROR == WriteCodeLabel( line, tokenarray ) )
                 return( 0 );
         }
@@ -177,8 +431,8 @@ int PreprocessLine( char *line, struct asm_tok tokenarray[] )
     }
 
     /* handle preprocessor directives which need a label */
-
-    if ( tokenarray[0].token == T_ID && tokenarray[1].token == T_DIRECTIVE ) {
+    if ( tokenarray[0].token == T_ID && tokenarray[1].token == T_DIRECTIVE ) 
+	{
         struct asym *sym;
         switch ( tokenarray[1].dirtype ) {
         case DRT_EQU:

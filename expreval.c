@@ -150,16 +150,27 @@ static void init_expr( struct expr *opnd )
 //      // Set CurrSeg  
 //      CurrSeg = currs;
 //      lbl = SymLookup("OMASK");
-//      SetSymSegOfs(lbl);
-//      OutputBytes((uint_8 *)&dst128Lo, 8, NULL);
-//      OutputBytes((uint_8 *)&dst128Hi, 8, NULL);
+//	  if (Parse_Pass == PASS_1)
+//	  {
+//		  if(lbl->offset == 0) SetSymSegOfs(lbl);
+//		  OutputBytes((unsigned char *)&dst128Lo, 8, NULL);
+//		  OutputBytes((unsigned char *)&dst128Hi, 8, NULL);
+//	  }
+//	  else
+//	  {
+//		  uint_32 curpos = CurrSeg->e.seginfo->current_loc;
+//		  CurrSeg->e.seginfo->current_loc = lbl->offset;
+//		  OutputBytes((unsigned char *)&dst128Lo, 8, NULL);
+//		  OutputBytes((unsigned char *)&dst128Hi, 8, NULL);
+//		  CurrSeg->e.seginfo->current_loc = curpos;
+//	  }
 //      lbl->isdefined = TRUE;
 //      lbl->isarray = TRUE;
 //      lbl->mem_type = MT_OWORD;
 //      lbl->state = SYM_INTERNAL;
 //      lbl->first_size = 16;
 //      lbl->first_length = 1;
-//      lbl->total_length = 1;
+//      lbl->total_length = 16;
 //      lbl->total_size = 16;
 //      lbl->max_offset = 16 + lbl->offset;
 //      lbl->debuginfo = FALSE;

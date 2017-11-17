@@ -1813,7 +1813,7 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
 }
 
 /*
-* .ENDIF, .ENDW, .ENDFOR .UNTIL and .UNTILCXZ .ENDSWITCH directives.
+* .ENDIF, .ENDW, .ENDFOR .UNTIL and .UNTILCXZ .ENDSWITCH, .ENDSW, .ENDF directives.
 * These directives end a .IF, .WHILE or .REPEAT .SWITCH block.
 */
 ret_code HllEndDir(int i, struct asm_tok tokenarray[])
@@ -1867,7 +1867,8 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
         AddLineQueueX("%s" LABELQUAL, GetLabelStr(hll->labels[LTEST], buff));
         }
       break;
-      /* revriten for v2.39 */
+	case T_DOT_ENDSW:
+      /* rewriten for v2.39 */
     case T_DOT_ENDSWITCH:
       if (hll->cmd != HLL_SWITCH) {
         DebugMsg(("HllExitDir stack error\n"));
@@ -2729,6 +2730,7 @@ ret_code HllEndDir(int i, struct asm_tok tokenarray[])
     free(hll->plabels);
     break;
     /* end SWITCH */
+  case T_DOT_ENDF:
   case T_DOT_ENDFOR:
     if (hll->cmd != HLL_FOR) {
       DebugMsg(("HllEndDir: no .FOR on the hll stack\n"));

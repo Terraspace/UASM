@@ -123,17 +123,13 @@ ret_code OrgDirective( int i, struct asm_tok tokenarray[] )
 		if (opndx.kind == EXPR_CONST)
 		{
 			if ( (opndx.value > CurrSeg->e.seginfo->current_loc) && (CurrSeg->e.seginfo->current_loc > CurrSeg->e.seginfo->start_loc) )
-			{
-				AddOrgFixup(CurrSeg->e.seginfo->current_loc, opndx.value);
-			}
+				AddOrgFixup(CurrSeg->e.seginfo->current_loc, opndx.value);		
 			return(SetCurrOffset(CurrSeg, opndx.value, FALSE, FALSE));
 		}
 		else if (opndx.kind == EXPR_ADDR && opndx.indirect == FALSE)
 		{
 			if ( (opndx.value > CurrSeg->e.seginfo->current_loc) && (CurrSeg->e.seginfo->current_loc > CurrSeg->e.seginfo->start_loc) )
-			{
 				AddOrgFixup(CurrSeg->e.seginfo->current_loc, opndx.sym->offset + opndx.value);
-			}
 			return(SetCurrOffset(CurrSeg, opndx.sym->offset + opndx.value, FALSE, FALSE));
 		}
     }

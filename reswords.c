@@ -761,7 +761,7 @@ VX_LL|VX_L,             /* VRNDSCALESS */
 VX_LL|VX_L,             /* VCVTTPD2UDQ */
 VX_LL|VX_L,             /* VCVTTPD2UQQ */
 VX_LL|VX_L,             /* VCVTTPS2UDQ */
-VX_LL|VX_L,             /* VCVTTPS2UQQ */
+VX_LL|VX_L|VX_HALF,             /* VCVTTPS2UQQ */
 VX_LL|VX_L|VX_NND,             /* VCVTTSD2USI */
 VX_LL|VX_L|VX_NND,             /* VCVTTSS2USI */
 VX_LL|VX_L,             /* VPERMI2B    */ 
@@ -960,16 +960,6 @@ static unsigned get_hash(const char *s, unsigned char size)
 {
   uint_64 fnv_basis = 14695981039346656037;
   uint_64 register fnv_prime = 1099511628211;
-  /*uint_32 h;
-  uint_32 g;
-
-  for (h = 0; size; size--) {
-    h = (h << 3) + (*s++ | ' ');
-    g = h & ~0x1fff;
-    h ^= g;
-    h ^= g >> 13;
-  }*/
-
   uint_64 h;
   for (h = fnv_basis; size; size--) {
 	  h ^= (*s++ | ' ');

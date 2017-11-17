@@ -165,8 +165,8 @@ void SetModel( void )
     } else
         ModuleInfo.offsettype = OT_GROUP;
 
-	if (Options.output_format != OFORMAT_BIN)
-	{
+	//if (Options.output_format != OFORMAT_BIN)
+	//{
 		ModelSimSegmInit(ModuleInfo.model); /* create segments in first pass */
 		ModelAssumeInit();
 
@@ -174,7 +174,7 @@ void SetModel( void )
 			LstWriteSrcLine();
 
 		RunLineQueue();
-	}
+	//}
 
     if ( Parse_Pass != PASS_1 )
         return;
