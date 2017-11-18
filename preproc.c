@@ -317,7 +317,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 		}
 		p = &newline;
 		p = strstr(p, "arginvoke(");
-		j = (p - &newline);
+		j = (int)(p - &newline);
 		while (p)
 		{
 			*(p + 10) = (char)(((idxline[j] & 0xf0) >> 4) + 48);
@@ -326,7 +326,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 			*(p + 14) = (char)(((invCnt & 0x0f)) + 48);
 			p = strstr(p + 1, "arginvoke(");
 			invCnt++;
-			j = (p - &newline);
+			j = (int)(p - &newline);
 		}
 
 		/* Ensure max nesting depth isn't exceeded */
