@@ -259,7 +259,7 @@ WinMain proc FRAME hInst:HINSTANCE, hPrevInst:HINSTANCE, CmdLine:LPSTR, CmdShow:
  ;por xmm5, MASK blow
  vmovups xmm5, MASK blow
  pxor xmm2,myoword
- lea rax,OMASK
+; lea rax,OMASK
  vmovups xmm1, MASK MYREC128
 
  pxor xmm3,xmm2

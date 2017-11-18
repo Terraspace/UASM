@@ -19,6 +19,8 @@ MyProc6 PROTO byte :byte
 MyProc7 PROTO dword :byte, :word, :dword, :qword, :real4, :qword
 MyProc8 PROTO byte
 MyProc9 PROTO real4 :byte, :word, :dword, :qword, :real4, :qword
+MyProc10 PROTO dword :REAL4, :QWORD
+MyProc11 PROTO real4
 
 .data
 
@@ -50,6 +52,9 @@ start:
 	MyProc(10, MyProc4())	
 	MyProc(MyProc3(), MyProc4())
 	MyProc(MyProc3(), MyProc2("stringy"))
+
+	MyProc10(MyProc11(), MyProc2("stringy"))
+
 	MyProc7( 10, 20, myVar, myVar2, 2.0, 30 )
 
 	MyProc( MyProc( MyProc3(), 10 ), 20)	
@@ -119,5 +124,15 @@ MyProc9 PROC real4 FRAME aVar:byte, bVar:word, cVar:dword, dVar:qword, eVar:real
    LOADSS xmm0,2.5
    ret
 MyProc9 ENDP
+
+MyProc10 PROC FRAME aVar:REAL4, bVar:QWORD
+   xor rax,rax
+   ret
+MyProc10 ENDP
+
+MyProc11 PROC real4 FRAME 
+   LOADSS xmm0,3.0
+   ret
+MyProc11 ENDP
 
 end start

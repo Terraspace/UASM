@@ -165,8 +165,9 @@ void SetModel( void )
     } else
         ModuleInfo.offsettype = OT_GROUP;
 
-	//if (Options.output_format != OFORMAT_BIN)
-	//{
+	//Removed to prevent data being first segment for dos/com/tiny model sample.
+	if (Options.output_format != OFORMAT_BIN || ModuleInfo.model == MODEL_TINY || ModuleInfo.flat)
+	{
 		ModelSimSegmInit(ModuleInfo.model); /* create segments in first pass */
 		ModelAssumeInit();
 
@@ -174,7 +175,7 @@ void SetModel( void )
 			LstWriteSrcLine();
 
 		RunLineQueue();
-	//}
+	}
 
     if ( Parse_Pass != PASS_1 )
         return;
@@ -227,10 +228,8 @@ void SetModel( void )
     sym_Interface = AddPredefinedConstant( "@Interface", ModuleInfo.langtype );
 
 #if AMD64_SUPPORT
-    if ( (ModuleInfo.defOfssize == USE64 && ModuleInfo.fctype == FCT_WIN64) ||
-		 (ModuleInfo.defOfssize == USE64 && Options.output_format == OFORMAT_ELF)) {
+    if (ModuleInfo.defOfssize == USE64) 
         sym_ReservedStack = AddPredefinedConstant( "@ReservedStack", 0 );
-    }
 #endif
 #if PE_SUPPORT
     if ( ModuleInfo.sub_format == SFORMAT_PE )

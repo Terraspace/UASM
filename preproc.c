@@ -108,6 +108,15 @@ static void VerifyNesting(char *line, bool exprBracket)
 {
 	int depth = 0;
 	int maxdepth = (exprBracket) ? 3 : 2;
+	
+	// Reduce allowed nesting for system-v calls as arginvoke doesn't support it yet.
+	if ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)
+		maxdepth = (exprBracket) ? 2 : 1;
+	
+	// Same for 32bit code for now..
+	if (Options.sub_format != SFORMAT_64BIT)
+		maxdepth = (exprBracket) ? 2 : 1;
+
 	char *p = line;
 	while (*p)
 	{
@@ -129,7 +138,6 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 	int i, j;
 	struct dsym *sym;
 	char newline[MAX_LINE_LEN];
-	strcpy(&newline, line);
 	int clIdx, opIdx;
 	int tokenCount;
 	struct asm_tok *tokenarray2;
@@ -139,7 +147,9 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 	char idxline[MAX_LINE_LEN];
 	char invCnt = 1;
 	bool hasExprBracket = FALSE;
+	bool expandedCall = FALSE;
 
+	strcpy(&newline, line);
 	memset(&idxline, 0, MAX_LINE_LEN);
 
 	for (i = 0;i < Token_Count;i++)
@@ -188,6 +198,8 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 					clIdx = VerifyBrackets(tokenarray, opIdx, inParam);
 					if (clIdx == -1)
 						return;
+					
+					expandedCall = TRUE;
 
 					if (!inParam && !inExpr)
 					{
@@ -281,42 +293,45 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 	//find uinvoke or arginvoke increment stackPt and set argno 1... for every comma after opIdx and before closeIdx and not in () increment argno... at closeIdx decrement StackPt
 	//at each step write argno to idxline string
 	//finally replace place-holder with idxline value
-	p = &newline;
-	p = strstr(p, "invoke"); // even if the line only contains uinvoke, such as in an HLL expression this will still find it.
-	if (p != NULL)
+	if (expandedCall)
 	{
-		bool inBrackets = FALSE;
-		j = (p - &newline);
-		stackPt++;
-		idxStack[stackPt] = 0;
-		while (*p)
+		p = &newline;
+		p = strstr(p, "invoke"); // even if the line only contains uinvoke, such as in an HLL expression this will still find it.
+		if (p != NULL)
 		{
-			idxline[j++] = idxStack[stackPt];
-			if (*p == '(')
-				inBrackets = TRUE;
-			if (*p == ')')
-				inBrackets = FALSE;
-			if (!inBrackets && *p == ',')
-				idxStack[stackPt]++;
-			p++;
+			bool inBrackets = FALSE;
+			j = (p - &newline);
+			stackPt++;
+			idxStack[stackPt] = 0;
+			while (*p)
+			{
+				idxline[j++] = idxStack[stackPt];
+				if (*p == '(')
+					inBrackets = TRUE;
+				if (*p == ')')
+					inBrackets = FALSE;
+				if (!inBrackets && *p == ',')
+					idxStack[stackPt]++;
+				p++;
+			}
 		}
-	}
-	p = &newline;
-	p = strstr(p, "arginvoke(");
-	j = (p - &newline);
-	while (p)
-	{
-		*(p + 10) = (char)(((idxline[j] & 0xf0) >> 4) + 48);
-		*(p + 11) = (char)(((idxline[j] & 0x0f)) + 48);
-		*(p + 13) = (char)(((invCnt & 0xf0) >> 4) + 48);
-		*(p + 14) = (char)(((invCnt & 0x0f)) + 48);
-		p = strstr(p + 1, "arginvoke(");
-		invCnt++;
+		p = &newline;
+		p = strstr(p, "arginvoke(");
 		j = (p - &newline);
-	}
+		while (p)
+		{
+			*(p + 10) = (char)(((idxline[j] & 0xf0) >> 4) + 48);
+			*(p + 11) = (char)(((idxline[j] & 0x0f)) + 48);
+			*(p + 13) = (char)(((invCnt & 0xf0) >> 4) + 48);
+			*(p + 14) = (char)(((invCnt & 0x0f)) + 48);
+			p = strstr(p + 1, "arginvoke(");
+			invCnt++;
+			j = (p - &newline);
+		}
 
-	/* Ensure max nesting depth isn't exceeded */
-	VerifyNesting(&newline, hasExprBracket);
+		/* Ensure max nesting depth isn't exceeded */
+		VerifyNesting(&newline, hasExprBracket);
+	}
 
 	/* Transfer new source line back for token rescan */
 	strcpy(line, &newline);
@@ -364,6 +379,7 @@ int PreprocessLine( char *line, struct asm_tok tokenarray[] )
 /***********************************************************/
 {
     int i;
+	char cline[MAX_LINE_LEN];
 
 	ModuleInfo.CurrComment = NULL;
     ModuleInfo.line_flags = 0;
@@ -391,9 +407,13 @@ int PreprocessLine( char *line, struct asm_tok tokenarray[] )
         return( Token_Count );
 #endif
 
-	ExpandHllCalls( line, tokenarray, FALSE, 0, FALSE );
-	Token_Count = Tokenize( line, 0, tokenarray, TOK_RESCAN );
-
+	strcpy(&cline, line);
+	ExpandHllCalls(&cline, tokenarray, FALSE, 0, FALSE);
+	if (strcmp(&cline, line) != 0)
+	{
+		strcpy(line, &cline);
+		Token_Count = Tokenize(line, 0, tokenarray, TOK_RESCAN);
+	}
 	EvaluatePreprocessItems( line, tokenarray );
 
     /* CurrIfState != BLOCK_ACTIVE && Token_Count == 1 | 3 may happen

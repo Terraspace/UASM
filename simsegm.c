@@ -153,7 +153,7 @@ static void SetSimSeg( enum sim_seg segm, const char *name )
              * of the simplified segment directives have highest priority.
              */
             if ( Parse_Pass == PASS_1 ) {
-                sym = SymSearch( name );
+				sym = SymSearch( name );
                 /* v2.12: check 'isdefined' member instead of 'lname_idx' */
                 //if ( sym && sym->state == SYM_SEG && ((struct dsym *)sym)->e.seginfo->lname_idx != 0 )
                 if ( sym && sym->state == SYM_SEG && sym->isdefined == TRUE )

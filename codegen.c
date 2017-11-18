@@ -453,34 +453,29 @@ static void output_opc(struct code_info *CodeInfo)
         else
           EmitErr( AVX_INDEX_REGISTERS_NOT_ALLOWED_HERE );
         }
-  /* This is a fix for the memory type and register size v2.45 
-   -----------------------------------------------------------------*/
-    switch (ins->opcode){
-      case 0x58:           /* ADDPD,  ADDPS  */
-      case 0x5E:           /* DIVPD,  DIVPS  */
-      case 0x5F:           /* MAXPD,  MAXPS  */
-      case 0x5D:           /* MINPD,  MINPS  */
-      case 0x59:           /* MULPD,  MULPS  */
-      case 0x51:           /* SQRTPD, SQRTPS */
-      case 0x5C:           /* SUBPD,  SUBPS  */
-        if (CodeInfo->evex_flag == TRUE) {
-          if (CodeInfo->opnd[OPND2].type & OP_M_ANY){
-            CodeInfo->prefix.rex |= EVEX_P0XMASK;  /* set X in RXB */
-            if (CodeInfo->opnd[OPND2].data32l){
-              CodeInfo->rm_byte &= ~MOD_11;          /* clear MOD    */
-              CodeInfo->rm_byte |= MOD_10;           /* set disp32   */
-              }
-            }
-          }
-      if (CodeInfo->opnd[OPND2].type !=  CodeInfo->opnd[OPND1].type){
-          if ((CodeInfo->opnd[OPND1].type & OP_M_ANY) || (CodeInfo->opnd[OPND2].type & OP_M_ANY)||
-            (CodeInfo->token == T_VPBROADCASTQ)||(CodeInfo->token == T_VPBROADCASTD) || (CodeInfo->token == T_VBROADCASTI32x2) || (CodeInfo->token == T_POP) )
-            ;
-          else
-            EmitError(INVALID_OPERAND_SIZE);
-        }
-    }
-  /* ---------------------------------------------------------------*/
+	   
+	   /* This is a fix for the memory type and register size v2.46
+	   -----------------------------------------------------------------*/
+	   if ((CodeInfo->token >= T_ADDPD && CodeInfo->token <= T_SUBPS) ||
+		   (CodeInfo->token >= T_VADDPD && CodeInfo->token <= T_VSUBPS)) {
+		   if (CodeInfo->evex_flag == TRUE) {
+			   if (CodeInfo->opnd[OPND2].type & OP_M_ANY) {
+				   CodeInfo->prefix.rex |= EVEX_P0XMASK;  /* set X in RXB */
+				   if (CodeInfo->opnd[OPND2].data32l) {
+					   CodeInfo->rm_byte &= ~MOD_11;          /* clear MOD    */
+					   CodeInfo->rm_byte |= MOD_10;           /* set disp32   */
+				   }
+			   }
+		   }
+		   if (CodeInfo->opnd[OPND2].type != CodeInfo->opnd[OPND1].type) {
+			   if (CodeInfo->opnd[OPND1].type & OP_M_ANY || CodeInfo->opnd[OPND2].type & OP_M_ANY)
+				   ;
+			   else
+				   EmitError(INVALID_OPERAND_SIZE);
+		   }
+	   }
+	   /* ---------------------------------------------------------------*/
+
   if (ResWordTable[CodeInfo->token].flags & RWF_VEX) {
     uint_8 lbyte = 0;
     if (CodeInfo->evex_flag){
