@@ -182,6 +182,20 @@ static void CheckBOM(FILE *f)
 		rewind(f);
 }
 
+extern void RewindToWin64() 
+{
+
+	if (!(Options.output_format == OFORMAT_BIN && Options.sub_format == SFORMAT_NONE))
+	{
+		if (Options.output_format != OFORMAT_BIN)
+			Options.output_format = OFORMAT_COFF;
+		else
+			Options.langtype = LANG_FASTCALL;
+		Options.sub_format = SFORMAT_64BIT;
+
+	}
+}
+
 /*
  * translate section names (COFF+PE):
  * _TEXT -> .text
@@ -360,7 +374,6 @@ void OutputSegmentBytes(struct dsym* segg, const unsigned char *pbytes, int len,
  * this function is to output (small, <= 8) amounts of bytes which must
  * not be separated ( for omf, because of fixups )
  */
-
 void OutputBytes( const unsigned char *pbytes, int len, struct fixup *fixup )
 /***************************************************************************/
 {
@@ -763,7 +776,6 @@ static void ModulePassInit( void )
 #if FASTPASS
     /* v2.03: don't generate the code if fastpass is active */
     /* v2.08: query UseSavedState instead of StoreState */
-    //if ( StoreState == FALSE ) {
     if ( UseSavedState == FALSE ) {
 #endif
         ModuleInfo.langtype = Options.langtype;
@@ -788,7 +800,7 @@ static void ModulePassInit( void )
              * there's no other model than FLAT possible.
              */
             model = MODEL_FLAT;
-            if ( ModuleInfo.langtype == LANG_NONE && Options.output_format == OFORMAT_COFF )
+            if (ModuleInfo.langtype == LANG_NONE && Options.output_format == OFORMAT_COFF)
                 ModuleInfo.langtype = LANG_FASTCALL;
 			if (ModuleInfo.langtype == LANG_NONE && Options.output_format == OFORMAT_ELF)
 				ModuleInfo.langtype = LANG_SYSVCALL;
@@ -812,24 +824,23 @@ static void ModulePassInit( void )
 
     SetMasm510( Options.masm51_compat );
     ModuleInfo.defOfssize = USE16;
-    ModuleInfo.ljmp     = TRUE;
+    ModuleInfo.ljmp       = TRUE;
 
-    ModuleInfo.list   = Options.write_listing;
-    ModuleInfo.cref   = TRUE;
-    ModuleInfo.listif = Options.listif;
+    ModuleInfo.list                = Options.write_listing;
+    ModuleInfo.cref                = TRUE;
+    ModuleInfo.listif              = Options.listif;
     ModuleInfo.list_generated_code = Options.list_generated_code;
-    ModuleInfo.list_macro = Options.list_macro;
+    ModuleInfo.list_macro          = Options.list_macro;
 
-    ModuleInfo.case_sensitive = Options.case_sensitive;
+    ModuleInfo.case_sensitive    = Options.case_sensitive;
     ModuleInfo.convert_uppercase = Options.convert_uppercase;
     SymSetCmpFunc();
 
-    ModuleInfo.segorder = SEGORDER_SEQ;
-    ModuleInfo.radix = 10;
+    ModuleInfo.segorder   = SEGORDER_SEQ;
+    ModuleInfo.radix      = 10;
     ModuleInfo.fieldalign = Options.fieldalign;
-#if PROCALIGN
     ModuleInfo.procalign = 0;
-#endif
+
 #if DLLIMPORT
     /* if OPTION DLLIMPORT was used, reset all iat_used flags */
     if ( ModuleInfo.g.DllQueue )
@@ -899,7 +910,6 @@ static void PassOneChecks( void )
      * v2.10: now done for PROCs as well, since procedures
      * must be closed BEFORE segments are to be closed.
      */
-    //ProcCheckOpen();
     HllCheckOpen();
     CondCheckOpen();
 
@@ -1113,7 +1123,7 @@ static void PassOneChecks( void )
 static int OnePass( void )
 /************************/
 {
-	//struct src_item *fl;
+
 	struct asym*    platform;
 
     InputPassInit();
@@ -1130,10 +1140,9 @@ static int OnePass( void )
     CmdlParamsInit( Parse_Pass );
 
     ModuleInfo.EndDirFound = FALSE;
-    ModuleInfo.PhaseError = FALSE;
-    //Modend = FALSE;
-    /* LineNumber = 0; */
-    LinnumInit();
+    ModuleInfo.PhaseError  = FALSE;
+
+	LinnumInit();
 
 #ifdef DEBUG_OUT
     if ( Parse_Pass > PASS_1 ) {
@@ -1252,7 +1261,6 @@ static void get_os_include( void )
 static void get_module_name( void )
 /*********************************/
 {
-    //char dummy[_MAX_EXT];
     char        *p;
 
     /* v2.08: prefer name given by -nm option */
@@ -1293,21 +1301,17 @@ static void ModuleInit( void )
 {
     ModuleInfo.sub_format = Options.sub_format;
     ModuleInfo.fmtopt = &formatoptions[Options.output_format];
-    ModuleInfo.CommentDataInCode = (Options.output_format == OFORMAT_OMF &&
-                         Options.no_comment_data_in_code_records == FALSE);
+    ModuleInfo.CommentDataInCode = (Options.output_format == OFORMAT_OMF && Options.no_comment_data_in_code_records == FALSE);
     ModuleInfo.g.error_count = 0;
     ModuleInfo.g.warning_count = 0;
     ModuleInfo.model = MODEL_NONE;
     /* ModuleInfo.distance = STACK_NONE; */
     ModuleInfo.ostype = OPSYS_DOS;
     ModuleInfo.emulator = (Options.floating_point == FPO_EMULATION);
-    //ModuleInfo.flatgrp_idx = 0;
 
     get_module_name(); /* set ModuleInfo.name */
 
     /* v2.06: ST_PROC has been removed */
-    //SimpleType[ST_PROC].mem_type = MT_NEAR;
-
     memset( SymTables, 0, sizeof( SymTables[0] ) * TAB_LAST );
     ModuleInfo.fmtopt->init( &ModuleInfo );
     gmaskflag = 0;
@@ -1318,19 +1322,14 @@ static void ReswTableInit( void )
 /*******************************/
 {
     ResWordsInit();
-    if ( Options.output_format == OFORMAT_OMF ) {
-        /* DebugMsg(("InitAsm: disable IMAGEREL+SECTIONREL\n")); */
+    if ( Options.output_format == OFORMAT_OMF ) 
+	{
         /* for OMF, IMAGEREL and SECTIONREL are disabled */
-#if IMAGERELSUPP
         DisableKeyword( T_IMAGEREL );
-#endif
-#if SECTIONRELSUPP
         DisableKeyword( T_SECTIONREL );
-#endif
     }
-
-    if ( Options.strict_masm_compat == TRUE ) {
-        DebugMsg(("ReswTableInit: disable INCBIN + FASTCALL keywords\n"));
+    if ( Options.strict_masm_compat == TRUE ) 
+	{
         DisableKeyword( T_INCBIN );
         DisableKeyword( T_FASTCALL );
     }
@@ -1501,20 +1500,13 @@ static void SetFilenames( const char *name )
 static void AssembleInit( const char *source )
 /********************************************/
 {
-    DebugMsg(("AssembleInit(\"%s\") enter\n", source ));
-
     MemInit();
-    //start_label   = NULL;
-    //start_displ   = 0;
-    write_to_file = FALSE;
-    //GeneratedCode = 0;
+    write_to_file    = FALSE;
     LinnumQueue.head = NULL;
 
     SetFilenames( source );
 
-#if FASTPASS
     FastpassInit();
-#endif
     open_files();
 #if BUILD_TARGET
     get_os_include();
@@ -1522,13 +1514,11 @@ static void AssembleInit( const char *source )
     ReswTableInit();
     SymInit();
     InputInit();
-
     ModuleInit();
     CondInit();
     ExprEvalInit();
     LstInit();
 
-    DebugMsg(("AssembleInit() exit\n"));
     return;
 }
 
@@ -1606,11 +1596,11 @@ int EXPQUAL AssembleModule( const char *source )
 
     memset( &ModuleInfo, 0, sizeof(ModuleInfo) );
 
-	ModuleInfo.frame_auto = tempInfo.frame_auto;
-	ModuleInfo.fctype = tempInfo.fctype;
-	ModuleInfo.langtype = tempInfo.langtype;
-	ModuleInfo.sub_format = tempInfo.sub_format;
-	ModuleInfo.win64_flags = tempInfo.win64_flags;
+	ModuleInfo.frame_auto   = tempInfo.frame_auto;
+	ModuleInfo.fctype       = tempInfo.fctype;
+	ModuleInfo.langtype     = tempInfo.langtype;
+	ModuleInfo.sub_format   = tempInfo.sub_format;
+	ModuleInfo.win64_flags  = tempInfo.win64_flags;
 	ModuleInfo.switch_style = tempInfo.switch_style;
 
 	/* set architecture */
@@ -1655,7 +1645,6 @@ int EXPQUAL AssembleModule( const char *source )
             /* v2.04: use <max_offset> instead of <bytes_written>
              * (the latter is not always reliable due to backpatching).
              */
-            //curr_written += seg->e.seginfo->bytes_written;
             curr_written += seg->sym.max_offset;
             DebugMsg(("AssembleModule(%u): segm=%-8s start=%8" I32_SPEC "X max_ofs=%8" I32_SPEC "X written=%" I32_SPEC "X\n",
                       Parse_Pass + 1, seg->sym.name, seg->e.seginfo->start_loc, seg->sym.max_offset,
@@ -1700,9 +1689,7 @@ int EXPQUAL AssembleModule( const char *source )
         }
 
         /* set file position of ASM and LST files for next pass */
-
         rewind( CurrFile[ASM] );
-		//CheckBOM( CurrFile[ASM] );
 
         if ( write_to_file && Options.output_format == OFORMAT_OMF )
             omf_set_filepos();
@@ -1823,7 +1810,6 @@ int EXPQUAL AssembleModule( const char *source )
 	}
 	if (Options.quiet == FALSE)
 	{
-		//printf("%s\n", CurrSource);
 		fflush(stdout); /* Force flush of each modules assembly progress */
 	}
     if ( CurrFile[LST] ) {

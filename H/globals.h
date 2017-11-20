@@ -476,13 +476,8 @@ enum segofssize {
  */
 enum fastcall_type {
     FCT_MSC,        /* MS 16-/32-bit fastcall (ax,dx,cx / ecx,edx) */
-#if OWFC_SUPPORT
     FCT_WATCOMC,    /* OW register calling convention (eax, ebx, ecx, edx) */
-#endif
-#if AMD64_SUPPORT
     FCT_WIN64       /* Win64 fastcall convention (rcx, rdx, r8, r9) */
-#endif
-
 };
 enum delphi_type {
     FCT_DELPHI       /* delphi fastcall convention (eax, edx, ecx ) */
@@ -963,8 +958,7 @@ extern void             close_files( void );
 extern char             *myltoa( uint_32 value, char *buffer, unsigned radix, bool sign, bool addzero );
 extern char             *myqtoa(uint_64 value, char *buffer, unsigned radix, bool sign, bool addzero);
 extern char             *num2hex64(uint_64 value, char *buffer);
-#if COFF_SUPPORT || PE_SUPPORT
 extern char             *ConvertSectionName( const struct asym *, enum seg_type *pst, char *buffer );
-#endif
+extern void             RewindToWin64(void);
 
 #endif

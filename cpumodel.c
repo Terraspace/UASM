@@ -137,7 +137,6 @@ void SetModel( void )
 {
     int         value;
     const char  *textvalue;
-    //struct asym     *sym;
 
     DebugMsg1(("SetModel() enter (model=%u)\n", ModuleInfo.model ));
     /* if model is set, it disables OT_SEGMENT of -Zm switch */
@@ -165,17 +164,13 @@ void SetModel( void )
     } else
         ModuleInfo.offsettype = OT_GROUP;
 
-	//Removed to prevent data being first segment for dos/com/tiny model sample.
-	if (Options.output_format != OFORMAT_BIN || ModuleInfo.model == MODEL_TINY || ModuleInfo.flat)
-	{
-		ModelSimSegmInit(ModuleInfo.model); /* create segments in first pass */
-		ModelAssumeInit();
+	ModelSimSegmInit(ModuleInfo.model); /* create segments in first pass */
+	ModelAssumeInit();
 
-		if (ModuleInfo.list)
-			LstWriteSrcLine();
+	if (ModuleInfo.list)
+		LstWriteSrcLine();
 
-		RunLineQueue();
-	}
+	RunLineQueue();
 
     if ( Parse_Pass != PASS_1 )
         return;
@@ -183,12 +178,10 @@ void SetModel( void )
     /* Set @CodeSize */
     if ( SIZE_CODEPTR & ( 1 << ModuleInfo.model ) ) {
         value = 1;
-        /* v2.06: SimpleType[] is obsolete */
-        //SimpleType[ST_PROC].mem_type = MT_FAR;
     } else {
         value = 0;
-        // SimpleType[ST_PROC].mem_type = MT_NEAR; /* this is default */
     }
+
     sym_CodeSize = AddPredefinedConstant( "@CodeSize", value );
     AddPredefinedText( "@code", SimGetSegName( SIM_CODE ) );
 
@@ -214,16 +207,10 @@ void SetModel( void )
         textvalue = "STACK";
     AddPredefinedText( "@stack", textvalue );
 
-#if 0
-    AddPredefinedText( "@fardata", ( ModuleInfo.model == MODEL_FLAT ? "FLAT" : SimGetSegName( SIM_FARDATA ) ) );
-    AddPredefinedText( "@fardata?", ( ModuleInfo.model == MODEL_FLAT ? "FLAT" : SimGetSegName( SIM_FARDATA_UN ) ) );
-#endif
-	
 	/* Default this to null so it can be checked for */
 	sym_ReservedStack = NULL;
 
     /* Set @Model and @Interface */
-
     sym_Model     = AddPredefinedConstant( "@Model", ModuleInfo.model );
     sym_Interface = AddPredefinedConstant( "@Interface", ModuleInfo.langtype );
 
@@ -231,8 +218,10 @@ void SetModel( void )
     if (ModuleInfo.defOfssize == USE64) 
         sym_ReservedStack = AddPredefinedConstant( "@ReservedStack", 0 );
 #endif
+
 #if PE_SUPPORT
-    if ( ModuleInfo.sub_format == SFORMAT_PE )
+    if ( ModuleInfo.sub_format == SFORMAT_PE || 
+		(ModuleInfo.sub_format == SFORMAT_64BIT && Options.output_format == OFORMAT_BIN) )
         pe_create_PE_header();
 #endif
 
@@ -270,7 +259,6 @@ ret_code ModelDirective( int i, struct asm_tok tokenarray[] )
      * this may have caused errors because contents of the ModuleInfo
      * structure was saved before the .MODEL directive.
      */
-    //if( Parse_Pass != PASS_1 ) {
     if( Parse_Pass != PASS_1 && ModuleInfo.model != MODEL_NONE ) {
         /* just set the model with SetModel() if pass is != 1.
          * This won't set the language ( which can be modified by
@@ -289,7 +277,6 @@ ret_code ModelDirective( int i, struct asm_tok tokenarray[] )
     index = FindToken( tokenarray[i].string_ptr, ModelToken, sizeof( ModelToken )/sizeof( ModelToken[0] ) );
     if( index >= 0 ) {
         if( ModuleInfo.model != MODEL_NONE ) {
-            //if ( Parse_Pass == PASS_1 ) /* not needed, this code runs in pass one only */
             EmitWarn( 2, MODEL_DECLARED_ALREADY );
         }
         model = index + 1; /* model is one-base ( 0 is MODEL_NONE ) */
@@ -347,8 +334,6 @@ ret_code ModelDirective( int i, struct asm_tok tokenarray[] )
             case OFORMAT_ELF:  ModuleInfo.fmtopt = &elf64_fmtopt;  break;
             };
 #endif
-        /* v2.11: define FLAT symbol is to early here, because defOfssize isn't set yet */
-        //DefineFlatGroup();
     }
 
     ModuleInfo.model = model;
@@ -381,8 +366,6 @@ ret_code SetCPU( enum cpu_info newcpu )
     DebugMsg1(("SetCPU(%X) enter\n", newcpu ));
     if ( newcpu == P_86 || ( newcpu & P_CPU_MASK ) ) {
         /* reset CPU and EXT bits */
-        //ModuleInfo.curr_cpu &= ~( P_CPU_MASK | P_EXT_MASK | P_PM );
-		// UASM 2.42 don't reset ext bits, to allow .xmm to preceed cpu type.
 		ModuleInfo.curr_cpu &= ~(P_CPU_MASK | P_PM);
 
         /* set CPU bits */
@@ -424,8 +407,6 @@ ret_code SetCPU( enum cpu_info newcpu )
     case P_386: ModuleInfo.cpu = M_8086 | M_186 | M_286 | M_386; break;
     case P_486: ModuleInfo.cpu = M_8086 | M_186 | M_286 | M_386 | M_486; break;
     case P_586: ModuleInfo.cpu = M_8086 | M_186 | M_286 | M_386 | M_486 | M_586; break;
-    /* Masm's .686 directive doesn't set the Pentium flag! A bug? */
-    //case P_686: ModuleInfo.cpu = M_8086 | M_186 | M_286 | M_386 | M_486 | M_586 | M_686; break;
 #if AMD64_SUPPORT
     case P_64:
 #endif
@@ -444,7 +425,6 @@ ret_code SetCPU( enum cpu_info newcpu )
 
     DebugMsg1(("SetCPU: ModuleInfo.curr_cpu=%X, @Cpu=%X\n", ModuleInfo.curr_cpu, ModuleInfo.cpu ));
 
-    //MakeCPUConstant( newcpu );
     if ( ModuleInfo.model == MODEL_NONE )
 #if AMD64_SUPPORT
         if ( ( ModuleInfo.curr_cpu & P_CPU_MASK) >= P_64 ) {
@@ -455,11 +435,18 @@ ret_code SetCPU( enum cpu_info newcpu )
 
     /* Set @Cpu */
     /* differs from Codeinfo cpu setting */
-
     sym_Cpu = CreateVariable( "@Cpu", ModuleInfo.cpu );
 
     return( NOT_ERROR );
 }
+
+#ifdef __I86__
+#define OPTQUAL __near
+#else
+#define OPTQUAL
+#endif
+
+extern ret_code OPTQUAL SetWin64(int *, struct asm_tok[]);
 
 /* handles
  .8086,
@@ -472,9 +459,32 @@ ret_code CpuDirective( int i, struct asm_tok tokenarray[] )
 /*********************************************************/
 {
     enum cpu_info newcpu;
+	int x;
 
-    //newcpu = comp_opt( tokenarray[i].tokval );
-    newcpu = GetSflagsSp( tokenarray[i].tokval );
+	if (tokenarray[i].tokval == T_DOT_WIN64) {
+
+		if (!UseSavedState && Options.sub_format != SFORMAT_64BIT)
+			RewindToWin64();
+
+		if (tokenarray[i + 1].token == T_COLON) {
+			x = i + 2;
+			SetWin64(&x, tokenarray);
+		}
+		return(NOT_ERROR);
+	}
+
+	if (tokenarray[i].tokval == T_DOT_AMD64)
+		newcpu = GetSflagsSp(T_DOT_X64);
+	else
+		newcpu = GetSflagsSp(tokenarray[i].tokval);
+
+	if (tokenarray[i].tokval == T_DOT_X64 ||
+		tokenarray[i].tokval == T_DOT_AMD64) {
+		if (tokenarray[i + 1].token == T_COLON) {
+			x = i + 2;
+			SetWin64(&x, tokenarray);
+		}
+	}
 
 #if DOT_XMMARG
     .if ( tokenarray[i].tokval == T_DOT_XMM && tokenarray[i+1].token != T_FINAL ) {

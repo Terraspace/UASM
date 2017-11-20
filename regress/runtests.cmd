@@ -7,12 +7,12 @@ echo .
 echo .
 
 SET ASMX=%1
-if (%1)==() SET ASMX=..\..\x64\release\uasm64.exe
+if (%1)==() SET ASMX=..\..\x64\release\uasm.exe
 SET FCMP=..\fcmp.exe
 
 if not exist result md result
 cd result
-del *.*
+del /Q *.*
 
 for %%f in (..\src\plain_bin\*.asm) do call :cmpbin %%f
 for %%f in (..\src\pe64_bin\*.asm) do call :cmppebin %%f
@@ -35,7 +35,7 @@ echo ****************************************************************
 echo .
 echo .
 %ASMX% -q -bin %1
-%FCMP% %~n1.bin ..\exp\%~n1.exp
+%FCMP% %~n1.bin ..\exp\%~n1.bin
 if errorlevel 1 goto end
 del %~n1.bin
 goto end
@@ -47,7 +47,7 @@ echo ****************************************************************
 echo .
 echo .
 %ASMX% -q -bin -Fo %~n1.exe %1
-%FCMP% %~n1.exe ..\exp\%~n1.exp
+%FCMP% %~n1.exe ..\exp\%~n1.exe
 if errorlevel 1 goto end
 del %~n1.exe
 goto end
@@ -59,7 +59,7 @@ echo ****************************************************************
 echo .
 echo .
 %ASMX% -c -q -win64 -Zp8 %1
-%FCMP% /O16 %~n1.obj ..\exp\%~n1.exp
+%FCMP% /O16 %~n1.obj ..\exp\%~n1.obj
 if errorlevel 1 goto end
 del %~n1.obj
 goto end

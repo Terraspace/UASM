@@ -325,6 +325,12 @@
       <HeapReserveSize>2000000</HeapReserveSize>
       <HeapCommitSize>1800000</HeapCommitSize>
     </Link>
+    <PostBuildEvent>
+      <Command>regress\runtests.cmd</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Regression Test</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

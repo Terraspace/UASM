@@ -1,0 +1,17 @@
+
+; ASMC v2.14 HIGHWORD -- QWORD: HIGHWORD 80000000h
+; ASMC v2.20 HIGHWORD -- QWORD: HIGHWORD (-1 SHL 32)
+
+	.486
+	.model flat
+	.code
+
+	mov	eax,HIGHWORD 80000000h
+	mov	eax,HIGHWORD (-1 SHL 32)
+
+	end
+
+Generated code:
+
+	MOV	EAX,00008000h
+	MOV	EAX,00000000h

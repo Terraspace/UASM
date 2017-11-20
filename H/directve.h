@@ -41,6 +41,8 @@ res(DOT_XMM,  .xmm,         0,      DRT_CPU,  0,   P_686, P_MMX|P_SSEALL )
 #if AMD64_SUPPORT
 res(DOT_X64,  .x64,         0,      DRT_CPU,  0,   P_86,  P_64  )
 res(DOT_X64P, .x64p,        0,      DRT_CPU,  0,   P_86,  P_64p )
+res(DOT_AMD64, .amd64,      0,      DRT_CPU,  0,   P_86,  P_64 )
+res(DOT_WIN64, .win64,      0,      DRT_CPU,  0,   P_86,  P_64 )
 #endif
 
 res(DOT_8087, .8087,        0,      DRT_CPU,  0,   P_86,  P_87   )

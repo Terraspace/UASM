@@ -17,11 +17,8 @@
 #include "reswords.h"
 #include "expreval.h"
 #include "tokenize.h"
-
-#if STACKBASESUPP
+#include "proc.h"
 #include "equate.h"
-#endif
-
 #include "cpumodel.h"
 
 /* prototypes */
@@ -33,9 +30,18 @@ extern struct asym          *sym_Interface;
 #define OPTQUAL
 #endif
 
-#define OPTFUNC( name ) static ret_code OPTQUAL name( int *pi, struct asm_tok tokenarray[] )
+#define OPTFUNC( name ) extern ret_code OPTQUAL name( int *pi, struct asm_tok tokenarray[] )
 extern void UpdateStackBase( struct asym *, void * );
 extern void UpdateProcStatus( struct asym *, void * );
+
+static struct asym *AddPredefinedConstant(const char *name, int value)
+/**********************************************************************/
+{
+	struct asym *sym = CreateVariable(name, value);
+	if (sym)
+		sym->predefined = TRUE;
+	return(sym);
+}
 
 /* OPTION directive helper functions */
 
@@ -548,7 +554,7 @@ OPTFUNC( SetPrologue )
 	else 
 	{
         ModuleInfo.prologuemode = PEM_MACRO;
-        ModuleInfo.proc_prologue = LclAlloc( strlen( tokenarray[i].string_ptr ) + 1);
+        ModuleInfo.proc_prologue = (char *)LclAlloc( strlen( tokenarray[i].string_ptr ) + 1);
         strcpy( ModuleInfo.proc_prologue, tokenarray[i].string_ptr );
     }
 
@@ -581,7 +587,7 @@ OPTFUNC( SetEpilogue )
         ModuleInfo.epiloguemode = PEM_DEFAULT;
     } else {
         ModuleInfo.epiloguemode = PEM_MACRO;
-        ModuleInfo.proc_epilogue = LclAlloc( strlen( tokenarray[i].string_ptr ) + 1);
+        ModuleInfo.proc_epilogue = (char *)LclAlloc( strlen( tokenarray[i].string_ptr ) + 1);
         strcpy( ModuleInfo.proc_epilogue, tokenarray[i].string_ptr );
     }
 
@@ -650,7 +656,7 @@ OPTFUNC( SetProc )
 				ModuleInfo.proc_prologue = NULL;
 			}
 			ModuleInfo.prologuemode = PEM_MACRO;
-			ModuleInfo.proc_prologue = LclAlloc(strlen(tokenarray[i].string_ptr) + 1);
+			ModuleInfo.proc_prologue = (char *)LclAlloc(strlen(tokenarray[i].string_ptr) + 1);
 			strcpy(ModuleInfo.proc_prologue, tokenarray[i].string_ptr);
 			i++;
 
@@ -664,7 +670,7 @@ OPTFUNC( SetProc )
 					ModuleInfo.proc_epilogue = NULL;
 				}
 				ModuleInfo.epiloguemode = PEM_MACRO;
-				ModuleInfo.proc_epilogue = LclAlloc(strlen(tokenarray[i].string_ptr) + 1);
+				ModuleInfo.proc_epilogue = (char *)LclAlloc(strlen(tokenarray[i].string_ptr) + 1);
 				strcpy(ModuleInfo.proc_epilogue, tokenarray[i].string_ptr);
 				i++;
 			}
@@ -974,12 +980,7 @@ OPTFUNC(SetWin64)
     if (opndx.llvalue & (~W64F_ALL)) {
       return(EmitConstError(&opndx));
       }
-   
-	//if (opndx.llvalue <= 7 && opndx.llvalue > 0 && ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RSP)
-	//{
-		//opndx.llvalue = 11;        /* All values will be forced to 11 (except 15) and implies stackbase RSP */
-		//ModuleInfo.frame_auto = 1; /* frame auto must also be implied for all stackbase rsp options */
-	//}
+
 
     /* OPTION win64:11 can work only with OPTION STACKBASE:RSP */
     if (opndx.llvalue & W64F_SMART || opndx.llvalue > 7) 
@@ -1026,18 +1027,25 @@ OPTFUNC(SetWin64)
   {
 	  Options.langtype = LANG_SYSVCALL;
 	  ModuleInfo.langtype = LANG_SYSVCALL;
+	  ModuleInfo.fctype = FCT_WIN64; /* sys proc/invoke tables use same ordinal as FCTWIN64 */
   }
-  else
+
+  if (sym_ReservedStack == NULL && ModuleInfo.defOfssize == USE64)
+	  sym_ReservedStack = AddPredefinedConstant("@ReservedStack", 0);
+
+  /*else
   {
 	  Options.langtype = LANG_FASTCALL;
 	  ModuleInfo.langtype = LANG_FASTCALL;
 	  ModuleInfo.fctype = FCT_WIN64;
-  }
+  }*/
 
   if (ModuleInfo.model == MODEL_NONE)
   {
 	  ModuleInfo.model = MODEL_FLAT;
-	  SetModel();
+	  Options.langtype = LANG_FASTCALL;
+	  ModuleInfo.langtype = LANG_FASTCALL;
+	  ModuleInfo.fctype = FCT_WIN64;
   }
 
     *pi = i;
@@ -1061,7 +1069,7 @@ static struct dll_desc *IncludeDll( const char *name )
         if ( _stricmp( (*q)->name, name ) == 0 )
             return( *q );
     }
-    node = LclAlloc( sizeof( struct dll_desc ) + strlen( name ) );
+    node = (struct dll_desc *)LclAlloc( sizeof( struct dll_desc ) + strlen( name ) );
     node->next = NULL;
     node->cnt = 0;
     strcpy( node->name, name );
@@ -1139,10 +1147,6 @@ OPTFUNC( SetStackBase )
 	/* Setup everything for stackbase RSP based stack */
 	if (ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RSP)
 	{
-		//if(ModuleInfo.win64_flags < 11 && ModuleInfo.win64_flags > 0)
-			//ModuleInfo.win64_flags = 11; /* Force win64:11 for any use of stackbase:rsp if win64 wasn't already set > 11 (IE: 15) */
-		//ModuleInfo.frame_auto = 1; /* frame auto must also be implied for all stackbase rsp options */
-		
 		if (!ModuleInfo.g.StackBase)
 		{
 			ModuleInfo.g.StackBase = CreateVariable("@StackBase", 0);
@@ -1153,13 +1157,8 @@ OPTFUNC( SetStackBase )
 			ModuleInfo.g.ProcStatus->sfunc_ptr = UpdateProcStatus;
 		}
 	}
-	/* For RBP stackbase frame_auto should be implied too, max mode = 7, ensure autostacksp */
 	else if (ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RBP)
-	{
-		//ModuleInfo.frame_auto = 1; /* frame auto must also be implied for all stackbase rsp options */
 		if (ModuleInfo.win64_flags > 7) ModuleInfo.win64_flags = 7; /* implicit selection of RBP as the stackbase will force win64 value back down to 7 if > */
-		//ModuleInfo.win64_flags |= W64F_AUTOSTACKSP;
-	}
 	
 	else if (ModuleInfo.basereg[ModuleInfo.Ofssize] == T_ESP)
 	{

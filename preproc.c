@@ -191,6 +191,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 					if (i > 0 && (tokenarray[i - 1].token == T_COLON || tokenarray[i - 1].tokval == T_EQU || (tokenarray[i - 1].token == T_COMMA && !inParam) ||
 						tokenarray[i - 1].tokval == T_INVOKE || tokenarray[i - 1].token == T_INSTRUCTION || tokenarray[i - 1].tokval == T_ADDR ||
 						tokenarray[i - 1].tokval == T_OFFSET || tokenarray[i - 1].tokval == T_PTR || tokenarray[i - 1].tokval == T_END || 
+						(tokenarray[i - 1].token == T_DIRECTIVE && tokenarray[i - 1].dirtype == DRT_DATADIR) ||
 						strcmp(tokenarray[i - 1].string_ptr,"arginvoke") == 0)) continue;
 					
 					/* Verify c-style procedure call has matching brackets */
@@ -300,7 +301,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 		if (p != NULL)
 		{
 			bool inBrackets = FALSE;
-			j = (p - &newline);
+			j = (int)(p - (char *)&newline);
 			stackPt++;
 			idxStack[stackPt] = 0;
 			while (*p)
@@ -317,7 +318,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 		}
 		p = &newline;
 		p = strstr(p, "arginvoke(");
-		j = (int)(p - &newline);
+		j = (int)(p - (char *)&newline);
 		while (p)
 		{
 			*(p + 10) = (char)(((idxline[j] & 0xf0) >> 4) + 48);
@@ -326,7 +327,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 			*(p + 14) = (char)(((invCnt & 0x0f)) + 48);
 			p = strstr(p + 1, "arginvoke(");
 			invCnt++;
-			j = (int)(p - &newline);
+			j = (int)(p - (char *)&newline);
 		}
 
 		/* Ensure max nesting depth isn't exceeded */

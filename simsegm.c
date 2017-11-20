@@ -68,13 +68,8 @@ static void AddToDgroup( enum sim_seg segm, const char *name )
 {
     /* no DGROUP for FLAT or COFF/ELF */
     if( ModuleInfo.model == MODEL_FLAT
-#if COFF_SUPPORT
        || Options.output_format == OFORMAT_COFF
-#endif
-#if ELF_SUPPORT
-       || Options.output_format == OFORMAT_ELF
-#endif
-      )
+       || Options.output_format == OFORMAT_ELF)
         return;
 
     if( name == NULL )
@@ -154,8 +149,6 @@ static void SetSimSeg( enum sim_seg segm, const char *name )
              */
             if ( Parse_Pass == PASS_1 ) {
 				sym = SymSearch( name );
-                /* v2.12: check 'isdefined' member instead of 'lname_idx' */
-                //if ( sym && sym->state == SYM_SEG && ((struct dsym *)sym)->e.seginfo->lname_idx != 0 )
                 if ( sym && sym->state == SYM_SEG && sym->isdefined == TRUE )
                     ModuleInfo.simseg_defd |= ( 1 << segm );
             }
@@ -169,8 +162,6 @@ static void SetSimSeg( enum sim_seg segm, const char *name )
          * check for segment's lname index is needed.
          * v2.12: check 'isdefined' member instead of 'lname_idx'
          */
-        //if ( sym && sym->state == SYM_SEG )
-        //if ( sym && sym->state == SYM_SEG && ((struct dsym *)sym)->e.seginfo->lname_idx != 0 )
         if ( sym && sym->state == SYM_SEG && sym->isdefined == TRUE )
             pFmt = "%s %r";
     }
@@ -221,12 +212,13 @@ ret_code SimplifiedSegDir( int i, struct asm_tok tokenarray[] )
 
     DebugMsg1(("SimplifiedSegDir(%s) enter\n", tokenarray[i].string_ptr ));
 
-    LstWrite( LSTTYPE_DIRECTIVE, 0, NULL );
-
     if( ModuleInfo.model == MODEL_NONE ) {
-        EmitError( MODEL_IS_NOT_DECLARED );
+
+		RewindToWin64();
         return( ERROR );
     }
+	
+	LstWrite(LSTTYPE_DIRECTIVE, 0, NULL);
 
     //type = tokenarray[i].value;
     type = GetSflagsSp( tokenarray[i].tokval );
@@ -317,7 +309,6 @@ ret_code SimplifiedSegDir( int i, struct asm_tok tokenarray[] )
 
     RunLineQueue();
 
-    DebugMsg1(("SimplifiedSegDir exit\n"));
     return( NOT_ERROR );
 }
 
@@ -334,12 +325,12 @@ void SetModelDefaultSegNames( void )
 
     /* option -nt set? */
     if( Options.names[OPTN_TEXT_SEG] ) {
-        SegmNames[SIM_CODE] = LclAlloc( strlen( Options.names[OPTN_TEXT_SEG] ) + 1 );
+        SegmNames[SIM_CODE] = (char *)LclAlloc( strlen( Options.names[OPTN_TEXT_SEG] ) + 1 );
         strcpy( SegmNames[SIM_CODE], Options.names[OPTN_TEXT_SEG] );
     } else {
         if ( SIZE_CODEPTR & ( 1 << ModuleInfo.model ) ) {
             /* for some models, the code segment contains the module name */
-            SegmNames[SIM_CODE] = LclAlloc( strlen( SegmNamesDef[SIM_CODE] ) + strlen( ModuleInfo.name ) + 1 );
+            SegmNames[SIM_CODE] = (char *)LclAlloc( strlen( SegmNamesDef[SIM_CODE] ) + strlen( ModuleInfo.name ) + 1 );
             strcpy( SegmNames[SIM_CODE], ModuleInfo.name );
             strcat( SegmNames[SIM_CODE], SegmNamesDef[SIM_CODE] );
         }
@@ -347,7 +338,7 @@ void SetModelDefaultSegNames( void )
 
     /* option -nd set? */
     if ( Options.names[OPTN_DATA_SEG] ) {
-        SegmNames[SIM_DATA] = LclAlloc( strlen( Options.names[OPTN_DATA_SEG] ) + 1 );
+        SegmNames[SIM_DATA] = (char *)LclAlloc( strlen( Options.names[OPTN_DATA_SEG] ) + 1 );
         strcpy( SegmNames[SIM_DATA], Options.names[OPTN_DATA_SEG] );
     }
     return;
@@ -365,32 +356,27 @@ ret_code ModelSimSegmInit( int model )
 
     ModuleInfo.simseg_init = 0; /* v2.09: reset init flags */
     /* v2.09: execute always, to make a proper listing if fastpass is off */
-    //if ( Parse_Pass == PASS_1 ) {
-        DebugMsg1(("ModelSimSegmInit() enter, pass one\n" ));
-        /* create default code segment (_TEXT) */
-        SetSimSeg( SIM_CODE, NULL );
-        EndSimSeg( SIM_CODE );
 
-        /* create default data segment (_DATA) */
-        SetSimSeg( SIM_DATA, NULL ) ;
-        EndSimSeg( SIM_DATA );
+	/* create default code segment (_TEXT) */
+    SetSimSeg( SIM_CODE, NULL );
+    EndSimSeg( SIM_CODE );
 
-        /* create DGROUP for BIN/OMF if model isn't FLAT */
-        if( model != MODEL_FLAT &&
-           ( Options.output_format == OFORMAT_OMF
-#if BIN_SUPPORT
-            || Options.output_format == OFORMAT_BIN
-#endif
-           )) {
-            strcpy( buffer, "%s %r %s" );
-            if( model == MODEL_TINY ) {
-                strcat( buffer, ", %s" );
-                AddLineQueueX( buffer, szDgroup, T_GROUP, SegmNames[SIM_CODE], SegmNames[SIM_DATA] );
-            } else
-                AddLineQueueX( buffer, szDgroup, T_GROUP, SegmNames[SIM_DATA] );
-        }
-        DebugMsg1(("ModelSimSegmInit() exit\n" ));
-    //}
+    /* create default data segment (_DATA) */
+    SetSimSeg( SIM_DATA, NULL ) ;
+    EndSimSeg( SIM_DATA );
+
+    /* create DGROUP for BIN/OMF if model isn't FLAT */
+    if( model != MODEL_FLAT &&
+        ( Options.output_format == OFORMAT_OMF
+        || Options.output_format == OFORMAT_BIN)) {
+        strcpy( buffer, "%s %r %s" );
+        if( model == MODEL_TINY ) {
+            strcat( buffer, ", %s" );
+            AddLineQueueX( buffer, szDgroup, T_GROUP, SegmNames[SIM_CODE], SegmNames[SIM_DATA] );
+        } else
+            AddLineQueueX( buffer, szDgroup, T_GROUP, SegmNames[SIM_DATA] );
+    }
+
     return( NOT_ERROR );
 }
 
