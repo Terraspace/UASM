@@ -819,7 +819,7 @@ ins (CVTSS2SI, cvtss2si,        OpCls( RGT16,    XMM_M32,  NONE ), F_F30F, 1,  n
 ins (CVTPI2PD, cvtpi2pd,        OpCls( XMM,      MMX_M64,  NONE ), F_660F, 1,  no_WDS, 0x2A,     0x00,       P_686|P_SSE2,QSIZE)
 ins (CVTPI2PS, cvtpi2ps,        OpCls( XMM,      MMX_M64,  NONE ), F_0F,   1,  no_WDS, 0x2A,     0x00,       P_686|P_SSE1,DSIZE)
 ins (CVTSI2SD, cvtsi2sd,        OpCls( XMM,      RMGT16,   NONE ), F_F20F, 1,  no_WDS, 0x2A,     0x00,       P_686|P_SSE2,W1|QSIZE|T1S)
-ins (CVTSI2SS, cvtsi2ss,        OpCls( XMM,      RMGT16,   NONE ), F_F30F, 1,  no_WDS, 0x2A,     0x00,       P_686|P_SSE1,DSIZE)
+ins (CVTSI2SS, cvtsi2ss,        OpCls( XMM,      RMGT16,   NONE ), F_F30F, 1,  no_WDS, 0x2A,     0x00,       P_686|P_SSE1,DSIZE|T1S)
 ins (CVTTPD2PI, cvttpd2pi,      OpCls( MMX,      XMM_M128, NONE ), F_660F, 1,  no_WDS, 0x2C,     0x00,       P_686|P_SSE2,QSIZE)
 ins (CVTTPS2PI, cvttps2pi,      OpCls( MMX,      XMM_M64,  NONE ), F_0F,   1,  no_WDS, 0x2C,     0x00,       P_686|P_SSE1,DSIZE)
 ins (CVTTSD2SI, cvttsd2si,      OpCls( RGT16,    XMM_M64,  NONE ), F_F20F, 1,  no_WDS, 0x2C,     0x00,       P_686|P_SSE2,W1|QSIZE|T1S)
@@ -842,25 +842,25 @@ ins (MASKMOVDQU, maskmovdqu,    OpCls( XMM,      XMM,      NONE ), F_660F, 1,  n
 ins (MASKMOVQ, maskmovq,        OpCls( MMX,      MMX,      NONE ), F_0F,   1,  no_WDS, 0xF7,     0x00,       P_686|P_SSE1,DSIZE)
 
 /* Masm (ML64) uses MOVD if a 64-bit register is src/dst. Intel docs prefer MOVQ */
-ins (MOVD, movd,                OpCls( MMX,      RMGT16,   NONE ), F_0F,   1,  no_WDS, 0x6E,     0x00,       P_586|P_MMX, QSIZE)
-insn(MOVD, 1,                   OpCls( XMM,      RMGT16,   NONE ), F_660F, 1,  no_WDS, 0x6E,     0x00,       P_686|P_SSE2,W1|QSIZE|T1S)
+ins (MOVD, movd,                OpCls( MMX,      RMGT16,   NONE ), F_0F,   1,  no_WDS, 0x6E,     0x00,       P_586|P_MMX, DSIZE)
+insn(MOVD, 1,                   OpCls( XMM,      RMGT16,   NONE ), F_660F, 1,  no_WDS, 0x6E,     0x00,       P_686|P_SSE2,DSIZE|T1S)
 #if INTELMOVQ
-insn(MOVD, 2,                   OpCls( R32_M32,  MMX,      NONE ), F_0F,   0,  no_WDS, 0x7E,     0x00,       P_586|P_MMX, QSIZE)
-insn(MOVD, 3,                   OpCls( R32_M32,  XMM,      NONE ), F_660F, 0,  no_WDS, 0x7E,     0x00,       P_686|P_SSE2,W1|QSIZE|T1S)
+insn(MOVD, 2,                   OpCls( R32_M32,  MMX,      NONE ), F_0F,   0,  no_WDS, 0x7E,     0x00,       P_586|P_MMX, DSIZE)
+insn(MOVD, 3,                   OpCls( R32_M32,  XMM,      NONE ), F_660F, 0,  no_WDS, 0x7E,     0x00,       P_686|P_SSE2,DSIZE|T1S)
 #else
-insn(MOVD, 2,                   OpCls( RMGT16,   XMM,      NONE ), F_660F, 0,  no_WDS, 0x7E,     0x00,       P_686|P_SSE2,W1|QSIZE|T1S)
-insn(MOVD, 3,                   OpCls( RMGT16,   MMX,      NONE ), F_0F,   0,  no_WDS, 0x7E,     0x00,       P_586|P_MMX, QSIZE)
-#endif                          
-ins (MOVQ, movq,                OpCls( XMM,      XMM_M64,  NONE ), F_F30F, 1,  no_WDS, 0x7E,     0x00,       P_686|P_SSE2,W1|QSIZE|T1S)
+insn(MOVD, 2,                   OpCls( RMGT16,   XMM,      NONE ), F_660F, 0,  no_WDS, 0x7E,     0x00,       P_686|P_SSE2,DSIZE|T1S)
+insn(MOVD, 3,                   OpCls( RMGT16,   MMX,      NONE ), F_0F,   0,  no_WDS, 0x7E,     0x00,       P_586|P_MMX, DSIZE)
+#endif 
+ins(MOVQ, movq,                 OpCls( MMX,      MMX_M64,  NONE ), F_0F,   1,  no_WDS, 0x6F,     0x00,       P_586|P_MMX, QSIZE)
 insn(MOVQ, 1,                   OpCls( XMM,      RMGT16,   NONE ), F_660F, 1,  no_WDS, 0x6E,     0x00,       P_686|P_SSE2,W1|QSIZE|T1S)
 #if INTELMOVQ
 insn(MOVQ, 2,                   OpCls( R64_M64,  MMX,      NONE ), F_0F,   0,  no_WDS, 0x7F,     0x00,       P_586|P_MMX, QSIZE)
 insn(MOVQ, 3,                   OpCls( R64_M64,  XMM,      NONE ), F_660F, 0,  no_WDS, 0xD6,     0x00,       P_686|P_SSE2,W1|QSIZE|T1S)
-#else
-insn(MOVQ, 2,                   OpCls( M64,      XMM,      NONE ), F_660F, 0,  no_WDS, 0xD6,     0x00,       P_686|P_SSE2,W1|QSIZE|T1S)
-insn(MOVQ, 3,                   OpCls( RMGT16,   XMM,      NONE ), F_660F, 0,  no_WDS, 0x7E,     0x00,       P_686|P_SSE2,W1|QSIZE|T1S)
+#else   
+insn(MOVQ, 2,                   OpCls( RMGT16,   XMM,      NONE ), F_660F, 0,  no_WDS, 0x7E,     0x00,       P_686|P_SSE2,W1|QSIZE|T1S)
+insn(MOVQ, 3,                   OpCls( M64,      XMM,      NONE ), F_660F, 0,  no_WDS, 0xD6,     0x00,       P_686|P_SSE2,W1|QSIZE|T1S)
 insn(MOVQ, 4,                   OpCls( MMX,      MMX_M64,  NONE ), F_0F,   1,  no_WDS, 0x6F,     0x00,       P_586|P_MMX, QSIZE)
-insn(MOVQ, 5,                   OpCls( RMGT16,   MMX,      NONE ), F_0F,   0,  no_WDS, 0x7F,     0x00,       P_586|P_MMX, QSIZE)
+insn(MOVQ, 5,                   OpCls( XMM,      XMM_M64,  NONE ), F_F30F, 1,  no_WDS, 0x7E,     0x00,       P_686|P_SSE2,W1|QSIZE|T1S)
 insn(MOVQ, 6,                   OpCls( M64,      MMX,      NONE ), F_0F,   0,  no_WDS, 0x7F,     0x00,       P_586|P_MMX, QSIZE)
 #endif
 
@@ -908,7 +908,7 @@ insn(PACKSSDW, 1,               OpCls( XMM,      XMM_M128, NONE ), F_660F, 1,  n
 ins (PACKSSWB, packsswb,        OpCls( MMX,      MMX_M64,  NONE ), F_0F,   1,  no_WDS, 0x63,     0x00,       P_586|P_MMX, DSIZE)
 insn(PACKSSWB, 1,               OpCls( XMM,      XMM_M128, NONE ), F_660F, 1,  no_WDS, 0x63,     0x00,       P_686|P_SSE2,DSIZE|FVM)
 ins (PACKUSWB, packuswb,        OpCls( MMX,      MMX_M64,  NONE ), F_0F,   1,  no_WDS, 0x67,     0x00,       P_586|P_MMX, QSIZE)
-insn(PACKUSWB, 1,               OpCls( XMM,      XMM_M128, NONE ), F_660F, 1,  no_WDS, 0x67,     0x00,       P_686|P_SSE2,W1|QSIZE|FVM)
+insn(PACKUSWB, 1,               OpCls( XMM,      XMM_M128, NONE ), F_660F, 1,  no_WDS, 0x67,     0x00,       P_686|P_SSE2,WSIZE|FVM)
 ins (PADDB, paddb,              OpCls( MMX,    MMX_M64_08, NONE ), F_0F,   1,  no_WDS, 0xFC,     0x00,       P_586|P_MMX, QSIZE)
 insn(PADDB, 1,                  OpCls( XMM,    XMM_M128_08,NONE ), F_660F, 1,  no_WDS, 0xFC,     0x00,       P_686|P_SSE2,BSIZE|FVM)
 ins (PADDW, paddw,              OpCls( MMX,    MMX_M64_16, NONE ), F_0F,   1,  no_WDS, 0xFD,     0x00,       P_586|P_MMX, QSIZE)
@@ -920,21 +920,21 @@ insn(PADDD, 1,                  OpCls( XMM,    XMM_M128_32,NONE ), F_660F, 1,  n
 ins (PADDQ, paddq,              OpCls( MMX,    MMX_M64,    NONE ), F_0F,   1,  no_WDS, 0xD4,     0x00,       P_686|P_SSE2,W1|QSIZE|FV)
 insn(PADDQ, 1,                  OpCls( XMM,    XMM_M128_64,NONE ), F_660F, 1,  no_WDS, 0xD4,     0x00,       P_686|P_SSE2,W1|QSIZE|FV)
 ins (PADDSB, paddsb,            OpCls( MMX,    MMX_M64_08, NONE ), F_0F,   1,  no_WDS, 0xEC,     0x00,       P_586|P_MMX, QSIZE)
-insn(PADDSB, 1,                 OpCls( XMM,    XMM_M128_08,NONE ), F_660F, 1,  no_WDS, 0xEC,     0x00,       P_686|P_SSE2,W1|QSIZE|FVM)
+insn(PADDSB, 1,                 OpCls( XMM,    XMM_M128_08,NONE ), F_660F, 1,  no_WDS, 0xEC,     0x00,       P_686|P_SSE2,BSIZE|FVM)
 ins (PADDSW, paddsw,            OpCls( MMX,    MMX_M64_16, NONE ), F_0F,   1,  no_WDS, 0xED,     0x00,       P_586|P_MMX, QSIZE)
-insn(PADDSW, 1,                 OpCls( XMM,    XMM_M128_16,NONE ), F_660F, 1,  no_WDS, 0xED,     0x00,       P_686|P_SSE2,W1|QSIZE|FVM)
+insn(PADDSW, 1,                 OpCls( XMM,    XMM_M128_16,NONE ), F_660F, 1,  no_WDS, 0xED,     0x00,       P_686|P_SSE2,WSIZE|FVM)
 ins (PADDUSB, paddusb,          OpCls( MMX,    MMX_M64_08, NONE ), F_0F,   1,  no_WDS, 0xDC,     0x00,       P_586|P_MMX, QSIZE)
-insn(PADDUSB, 1,                OpCls( XMM,    XMM_M128_08,NONE ), F_660F, 1,  no_WDS, 0xDC,     0x00,       P_686|P_SSE2,W1|QSIZE|FVM)
+insn(PADDUSB, 1,                OpCls( XMM,    XMM_M128_08,NONE ), F_660F, 1,  no_WDS, 0xDC,     0x00,       P_686|P_SSE2,BSIZE|FVM)
 ins (PADDUSW, paddusw,          OpCls( MMX,    MMX_M64_16, NONE ), F_0F,   1,  no_WDS, 0xDD,     0x00,       P_586|P_MMX, QSIZE)
-insn(PADDUSW, 1,                OpCls( XMM,    XMM_M128_16,NONE ), F_660F, 1,  no_WDS, 0xDD,     0x00,       P_686|P_SSE2,QSIZE|FVM)
+insn(PADDUSW, 1,                OpCls( XMM,    XMM_M128_16,NONE ), F_660F, 1,  no_WDS, 0xDD,     0x00,       P_686|P_SSE2,WSIZE|FVM)
 ins (PAND, pand,                OpCls( MMX,      MMX_M64,  NONE ), F_0F,   1,  no_WDS, 0xDB,     0x00,       P_586|P_MMX, QSIZE)
 insn(PAND, 1,                   OpCls( XMM,      XMM_M128, NONE ), F_660F, 1,  no_WDS, 0xDB,     0x00,       P_686|P_SSE2,QSIZE|FV)
 ins (PANDN, pandn,              OpCls( MMX,      MMX_M64,  NONE ), F_0F,   1,  no_WDS, 0xDF,     0x00,       P_586|P_MMX, QSIZE)
 insn(PANDN, 1,                  OpCls( XMM,      XMM_M128, NONE ), F_660F, 1,  no_WDS, 0xDF,     0x00,       P_686|P_SSE2,W1|QSIZE|FV)
 ins (PAVGB, pavgb,              OpCls( MMX,      MMX_M64,  NONE ), F_0F,   1,  no_WDS, 0xE0,     0x00,       P_686|P_SSE1,DSIZE|FVM)
-insn(PAVGB, 1,                  OpCls( XMM,      XMM_M128, NONE ), F_660F, 1,  no_WDS, 0xE0,     0x00,       P_686|P_SSE2,W1|QSIZE|FVM)
+insn(PAVGB, 1,                  OpCls( XMM,      XMM_M128, NONE ), F_660F, 1,  no_WDS, 0xE0,     0x00,       P_686|P_SSE2,BSIZE|FVM)
 ins (PAVGW, pavgw,              OpCls( MMX,      MMX_M64,  NONE ), F_0F,   1,  no_WDS, 0xE3,     0x00,       P_686|P_SSE1,DSIZE|FVM)
-insn(PAVGW, 1,                  OpCls( XMM,      XMM_M128, NONE ), F_660F, 1,  no_WDS, 0xE3,     0x00,       P_686|P_SSE2,W1|QSIZE|FVM)
+insn(PAVGW, 1,                  OpCls( XMM,      XMM_M128, NONE ), F_660F, 1,  no_WDS, 0xE3,     0x00,       P_686|P_SSE2,WSIZE|FVM)
 ins (PCMPEQB, pcmpeqb,          OpCls( MMX,      MMX_M64,  NONE ), F_0F,   1,  no_WDS, 0x74,     0x00,       P_586|P_MMX, QSIZE)
 insn(PCMPEQB, 1,                OpCls( XMM,      XMM_M128, NONE ), F_660F, 1,  no_WDS, 0x74,     0x00,       P_686|P_SSE2,BSIZE|FVM)
 ins (PCMPEQW, pcmpeqw,          OpCls( MMX,      MMX_M64,  NONE ), F_0F,   1,  no_WDS, 0x75,     0x00,       P_586|P_MMX, QSIZE)
@@ -948,7 +948,7 @@ insn(PCMPGTW, 1,                OpCls( XMM,      XMM_M128, NONE ), F_660F, 1,  n
 ins (PCMPGTD, pcmpgtd,          OpCls( MMX,      MMX_M64,  NONE ), F_0F,   1,  no_WDS, 0x66,     0x00,       P_586|P_MMX, W1|QSIZE|FV)
 insn(PCMPGTD, 1,                OpCls( XMM,      XMM_M128, NONE ), F_660F, 1,  no_WDS, 0x66,     0x00,       P_686|P_SSE2,DSIZE|FV)
 ins (PEXTRW, pextrw,            OpCls( RGT16,    MMX,      I8_U ), F_0F,   1,  no_WDS, 0xC5,     0x00,       P_686|P_SSE2,WSIZE|T1S)
-insn(PEXTRW, 1,                 OpCls( RGT16,    XMM,      I8_U ), F_660F, 1,  no_WDS, 0xC5,     0x00,       P_686|P_SSE1,DSIZE|T1S)
+insn(PEXTRW, 1,                 OpCls( RGT16,    XMM,      I8_U ), F_660F, 1,  no_WDS, 0xC5,     0x00,       P_686|P_SSE1,WSIZE|T1S)
 #if SSE4SUPP /* SSE 4.1 */
 insn(PEXTRW, 2,                 OpCls( M16,      XMM,      I8_U ), F_660F3A, 0,no_WDS, 0x15,     0x00,       P_686|P_SSE4,WSIZE|T1S)
 ins (PEXTRQ, pextrq,            OpCls( R64_M64,  XMM,      I8_U ), F_660F3A, 0,no_WDS, 0x16,     0x00,       P_686|P_SSE4,W1|QSIZE|T1S)
@@ -1247,7 +1247,7 @@ ins (PACKUSDW, packusdw,        OpCls( XMM,      XMM_M128, NONE ), F_660F38, 1, 
 ins (PBLENDVB, pblendvb,        OpCls( XMM,      XMM_M128, XMM0 ), F_660F38, 1,  no_WDS, 0x10,     0x00,       P_686|P_SSE4, 0)//NOT AVX512
 ins (PBLENDW, pblendw,          OpCls( XMM,      XMM_M128, I8_U ), F_660F3A, 1,  no_WDS, 0x0E,     0x00,       P_686|P_SSE4, 0)//NOT AVX512
 ins (PCMPEQQ, pcmpeqq,          OpCls( XMM,      XMM_M128, NONE ), F_660F38, 1,  no_WDS, 0x29,     0x00,       P_686|P_SSE4, W1|QSIZE|FV)
-ins (PEXTRB, pextrb,            OpCls( RGT16_M08,XMM,      I8_U ), F_660F3A, 0,  no_WDS, 0x14,     0x00,       P_686|P_SSE4, DSIZE|T1S)
+ins (PEXTRB, pextrb,            OpCls( RGT16_M08,XMM,      I8_U ), F_660F3A, 0,  no_WDS, 0x14,     0x00,       P_686|P_SSE4, BSIZE|T1S)
 ins (PEXTRD, pextrd,            OpCls( R32_M32,  XMM,      I8_U ), F_660F3A, 0,  no_WDS, 0x16,     0x00,       P_686|P_SSE4, DSIZE|T1S)
 ins (PHMINPOSUW, phminposuw,    OpCls( XMM,      XMM_M128, NONE ), F_660F38, 1,  no_WDS, 0x41,     0x00,       P_686|P_SSE4, 0)//NOT AVX512
 ins (PINSRB, pinsrb,            OpCls( XMM,      R32_M08,  I8_U ), F_660F3A, 1,  no_WDS, 0x20,     0x00,       P_686|P_SSE4, BSIZE|T1S)

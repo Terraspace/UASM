@@ -1163,7 +1163,9 @@ static int OnePass( void )
 
 	/* Set platform type */
 	platform = SymFind("@Platform");
-	if ( Options.output_format == OFORMAT_COFF && Options.sub_format == SFORMAT_NONE )
+	if ( Options.output_format == OFORMAT_BIN && Options.sub_format == SFORMAT_NONE )
+		platform->value = 1;
+	else if ( Options.output_format == OFORMAT_COFF && Options.sub_format == SFORMAT_NONE )
 		platform->value = 0;
 	else if( Options.output_format == OFORMAT_COFF && Options.sub_format == SFORMAT_64BIT )
 		platform->value = 1;
