@@ -506,7 +506,10 @@ static int ms64_param(struct dsym const *proc, int index, struct dsym *param, bo
 	if (param->sym.is_vararg) 
 	{
 		psize = 0;
-		if (addr || opnd->instr == T_OFFSET)
+		/* v2.46 support automatic promotion of 64bit immediates in vararg invoke */
+		if (opnd->kind == EXPR_CONST && (opnd->llvalue > INT_MAX || opnd->llvalue < INT_MIN))
+			psize = 8;
+		else if (addr || opnd->instr == T_OFFSET)
 			psize = 8;
 		else if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
 			psize = SizeFromRegister(opnd->base_reg->tokval);

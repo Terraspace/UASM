@@ -6,6 +6,8 @@ echo ****************************************************************
 echo .
 echo .
 
+cd regress
+
 SET ASMX=%1
 if (%1)==() SET ASMX=..\..\x64\release\uasm.exe
 SET FCMP=..\fcmp.exe
