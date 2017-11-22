@@ -148,6 +148,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 	char invCnt = 1;
 	bool hasExprBracket = FALSE;
 	bool expandedCall = FALSE;
+	char uCnt = 0;
 
 	strcpy(&newline, line);
 	memset(&idxline, 0, MAX_LINE_LEN);
@@ -158,13 +159,13 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 		{
 			sym = SymSearch(tokenarray[i].string_ptr);
 			if(sym && sym->sym.isproc && tokenarray[i+1].tokval != T_PROC && tokenarray[i+1].tokval != T_PROTO && 
-				tokenarray[i+1].tokval != T_ENDP && tokenarray[i+1].tokval != T_EQU && tokenarray[i+1].token != T_COMMA && tokenarray[i+1].token == T_OP_BRACKET) 
+				tokenarray[i+1].tokval != T_ENDP && tokenarray[i+1].tokval != T_EQU && tokenarray[i+1].token == T_OP_BRACKET) 
 			{ 
 				/* HLL c-style calls can only exist inside code sections */
 				if (CurrSeg && strcmp(CurrSeg->sym.name, "_TEXT") == 0)
 				{
 		
-					/* Scan backwards to check if we're in an HLL expression */
+					/* Scan backwards to check if we're in an HLL expression or call parameter */
 					if (i > 0)
 					{
 						for (j = i - 1;j >= 0;j--)
@@ -179,7 +180,8 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 								break;
 							}
 							else if ((tokenarray[j].token == T_DIRECTIVE && tokenarray[j].dirtype == DRT_INVOKE) ||
-								strcmp(tokenarray[j].string_ptr, "arginvoke") == 0)
+								strcmp(tokenarray[j].string_ptr, "arginvoke") == 0 ||
+								strcmp(tokenarray[j].string_ptr, "uinvoke") == 0)
 							{
 								inParam = TRUE;
 								break;
@@ -188,12 +190,29 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 					}
 
 					/* If we've identifed a Proc Name, there are several more cases where it must not be expanded */
-					if (i > 0 && (tokenarray[i - 1].token == T_COLON || tokenarray[i - 1].tokval == T_EQU || (tokenarray[i - 1].token == T_COMMA && !inParam) ||
+					if (i > 0 && (tokenarray[i - 1].token == T_COLON || tokenarray[i - 1].tokval == T_EQU ||  //(tokenarray[i - 1].token == T_COMMA && !inParam) ||
 						tokenarray[i - 1].tokval == T_INVOKE || tokenarray[i - 1].token == T_INSTRUCTION || tokenarray[i - 1].tokval == T_ADDR ||
 						tokenarray[i - 1].tokval == T_OFFSET || tokenarray[i - 1].tokval == T_PTR || tokenarray[i - 1].tokval == T_END || 
 						(tokenarray[i - 1].token == T_DIRECTIVE && tokenarray[i - 1].dirtype == DRT_DATADIR) || tokenarray[i - 1].token == T_UNARY_OPERATOR ||  tokenarray[i - 1].tokval == T_PROC ||
 						strcmp(tokenarray[i - 1].string_ptr,"arginvoke") == 0 || strcmp(tokenarray[i - 1].string_ptr, "@what") == 0)) continue;
 					
+					// Allow expansion in an instruction.
+					if (tokenarray[i - 1].token == T_COMMA)
+						inExpr = TRUE;
+					
+					// Allow expansion in a memory address [].
+					if (i > 0)
+					{
+						for (j = i - 1;j >= 0;j--)
+						{
+							if (tokenarray[j].token == T_OP_SQ_BRACKET)
+							{
+								inExpr = TRUE;
+								break;
+							}
+						}
+					}
+
 					/* Verify c-style procedure call has matching brackets */
 					opIdx = i + 1;
 					clIdx = VerifyBrackets(tokenarray, opIdx, inParam);
@@ -255,6 +274,11 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 							tokenarray[i].string_ptr = "uinvoke";
 							tokenarray[i + 1].string_ptr = "(";
 							tokenarray[i + 1].token = '(';
+							uCnt++; // Increment count of uinvokes, as we only allow 1 per expression.
+							if (uCnt > 1)
+							{
+								EmitErr(MAX_C_CALLS);
+							}
 						}
 						else if (inParam)
 						{
@@ -321,6 +345,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 		j = (int)(p - (char *)&newline);
 		while (p)
 		{
+			if (idxline[j] == 0) idxline[j] = 1;
 			*(p + 10) = (char)(((idxline[j] & 0xf0) >> 4) + 48);
 			*(p + 11) = (char)(((idxline[j] & 0x0f)) + 48);
 			*(p + 13) = (char)(((invCnt & 0xf0) >> 4) + 48);

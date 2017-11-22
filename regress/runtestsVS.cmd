@@ -20,6 +20,7 @@ for %%f in (..\src\plain_bin\*.asm) do call :cmpbin %%f
 for %%f in (..\src\pe64_bin\*.asm) do call :cmppebin %%f
 for %%f in (..\src\win64\*.asm) do call :cmpwin64 %%f
 for %%f in (..\src\flat\*.asm) do call :cmpflat %%f
+for %%f in (..\src\coff\*.asm) do call :cmpcoff %%f
 
 cd ..
 echo .
@@ -77,6 +78,18 @@ echo .
 %FCMP% %~n1.bin ..\exp\flat\%~n1.bin
 if errorlevel 1 goto end
 del %~n1.bin
+goto end
+
+:cmpcoff
+echo ****************************************************************
+ECHO %1
+echo ****************************************************************
+echo .
+echo .
+%ASMX% -q -coff %1
+%FCMP% /O16 %~n1.obj ..\exp\coff\%~n1.obj
+if errorlevel 1 goto end
+del %~n1.obj
 goto end
 
 :end

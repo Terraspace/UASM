@@ -1,5 +1,5 @@
 ;
-; v2.21 allow function call expansion after comma
+; 2.46 allow function call expansion after comma
 ;
 	.486
 	.model	flat, stdcall
@@ -7,7 +7,7 @@
 	d1 dd ?
 	.code
 
-foo	proc a
+foo	proc a:dword
 	ret
 foo	endp
 

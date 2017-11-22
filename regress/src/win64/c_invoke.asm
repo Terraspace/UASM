@@ -21,6 +21,7 @@ MyProc8 PROTO byte
 MyProc9 PROTO real4 :byte, :word, :dword, :qword, :real4, :qword
 MyProc10 PROTO dword :REAL4, :QWORD
 MyProc11 PROTO real4
+MyProc12 PROTO qword
 
 .data
 
@@ -30,6 +31,22 @@ myVar2 dq 21
 .code
 
 start:
+
+	; This case should generate an error of MAX CALLS allowed.
+	;.if( MyProc(10,20) == MyProc3() )
+   	;   xor eax,eax
+	;.endif
+
+	.if ( MyProc6( MyProc8() ) == 7 )
+	   xor eax,eax
+	.endif
+
+	mov eax,MyProc(10, 20)
+	lea rsi,myVar
+	mov eax,[rsi + MyProc12()]
+	mov myVar,MyProc(11,12)
+	mov myVar2,MyProc12()
+	vmovaps xmm1,MyProc5(1.0)
 
 	MyProc3()
 	MyProc(10,20)
@@ -134,5 +151,10 @@ MyProc11 PROC real4 FRAME
    LOADSS xmm0,3.0
    ret
 MyProc11 ENDP
+
+MyProc12 PROC qword FRAME 
+   xor rax,rax
+   ret
+MyProc12 ENDP
 
 end start
