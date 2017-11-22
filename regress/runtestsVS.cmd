@@ -38,7 +38,7 @@ echo ****************************************************************
 echo .
 echo .
 %ASMX% -q -bin %1
-%FCMP% %~n1.bin ..\exp\%~n1.bin
+%FCMP% %~n1.bin ..\exp\plain_bin\%~n1.bin
 if errorlevel 1 goto end
 del %~n1.bin
 goto end
@@ -50,7 +50,7 @@ echo ****************************************************************
 echo .
 echo .
 %ASMX% -q -bin -Fo %~n1.exe %1
-%FCMP% %~n1.exe ..\exp\%~n1.exe
+%FCMP% %~n1.exe ..\exp\pe64_bin\%~n1.exe
 if errorlevel 1 goto end
 del %~n1.exe
 goto end
@@ -62,7 +62,7 @@ echo ****************************************************************
 echo .
 echo .
 %ASMX% -c -q -win64 -Zp8 %1
-%FCMP% /O16 %~n1.obj ..\exp\%~n1.obj
+%FCMP% /O16 %~n1.obj ..\exp\win64\%~n1.obj
 if errorlevel 1 goto end
 del %~n1.obj
 goto end
@@ -74,7 +74,7 @@ echo ****************************************************************
 echo .
 echo .
 %ASMX% -q -bin %1
-%FCMP% %~n1.bin ..\exp\%~n1.bin
+%FCMP% %~n1.bin ..\exp\flat\%~n1.bin
 if errorlevel 1 goto end
 del %~n1.bin
 goto end

@@ -1050,7 +1050,7 @@ ret_code TypedefDirective( int i, struct asm_tok tokenarray[] )
 	{
 		if (Options.sub_format == SFORMAT_64BIT)
 			ti.Ofssize = USE64;
-		else
+		else if (Options.output_format == OFORMAT_COFF)
 			ti.Ofssize = USE32;
 	}
 

@@ -119,78 +119,7 @@ static void init_expr( struct expr *opnd )
     opnd->type     = NULL;
 	opnd->isptr = FALSE;
 }
-/* Implemented GETMASK128 directive v2.44 */
-//static ret_code  GetMask128(struct expr *opnd1, int index, struct asm_tok tokenarray[])
-//  {
-//    uint_64         dst128Hi = opnd1->hlvalue;
-//    uint_64         dst128Lo = opnd1->llvalue;
-//	struct asym *lbl = NULL;
-//	struct dsym *curseg;
-//	struct dsym *prev;
-//	struct dsym *currs;
-//    char            buffer[MAX_LINE_LEN];
-//    char            buffer1[MAX_LINE_LEN];
-//    char            buff[18];
-//    char            *ptr;
-//    /* if it is NOT MASK, invert values */
-//    //__debugbreak();
-//    if (index == 3 && 0 == _memicmp(tokenarray[3].string_ptr, "NOT", 3)){     
-//      dst128Hi = ~dst128Hi;
-//      dst128Lo = ~dst128Lo;
-//      }
-//
-//      curseg = ModuleInfo.currseg;
-//      prev = NULL;
-//      currs = NULL;
-//      for (currs = SymTables[TAB_SEG].head; currs && currs->next; prev = currs, currs = currs->next)
-//        {
-//        if (strcmp(currs->sym.name, "_DATA") == 0)
-//          break;
-//        }
-//      // Set CurrSeg  
-//      CurrSeg = currs;
-//      lbl = SymLookup("OMASK");
-//	  if (Parse_Pass == PASS_1)
-//	  {
-//		  if(lbl->offset == 0) SetSymSegOfs(lbl);
-//		  OutputBytes((unsigned char *)&dst128Lo, 8, NULL);
-//		  OutputBytes((unsigned char *)&dst128Hi, 8, NULL);
-//	  }
-//	  else
-//	  {
-//		  uint_32 curpos = CurrSeg->e.seginfo->current_loc;
-//		  CurrSeg->e.seginfo->current_loc = lbl->offset;
-//		  OutputBytes((unsigned char *)&dst128Lo, 8, NULL);
-//		  OutputBytes((unsigned char *)&dst128Hi, 8, NULL);
-//		  CurrSeg->e.seginfo->current_loc = curpos;
-//	  }
-//      lbl->isdefined = TRUE;
-//      lbl->isarray = TRUE;
-//      lbl->mem_type = MT_OWORD;
-//      lbl->state = SYM_INTERNAL;
-//      lbl->first_size = 16;
-//      lbl->first_length = 1;
-//      lbl->total_length = 16;
-//      lbl->total_size = 16;
-//      lbl->max_offset = 16 + lbl->offset;
-//      lbl->debuginfo = FALSE;
-//      lbl->ispublic = 0;      
-//      // Restore current Sement.
-//      CurrSeg = curseg;
-//      strcpy( buffer,tokenarray->tokpos);
-//      ptr = tokenarray->tokpos;
-//      while (*ptr != '\0')*(ptr++) = '\0';
-//      ptr = buffer;
-//      while (*ptr != ',')ptr++;
-//      ptr++;
-//      *ptr = '\0';
-//      strcat(ptr, "OMASK");
-//      strcpy(tokenarray->tokpos, buffer);
-//      Token_Count = Tokenize(tokenarray->tokpos, 0, tokenarray, TOK_DEFAULT);
-//      tokenarray[Token_Count+1].token = T_FINAL;
-//      DebugMsg1(("GetMask128(%s) exit, current ofs=%" I32_SPEC "X\n",  GetCurrOffset() ));
-//      return( NOT_ERROR );      
-//  }
+
 static ret_code  GetMask128(struct expr *opnd1, int index, struct asm_tok tokenarray[])
   {
     uint_64         dst128Hi = opnd1->hlvalue;
