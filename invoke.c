@@ -1593,14 +1593,10 @@ static int sysv_GetNextVEC(struct proc_info *info, int size)
 static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *param, bool addr, struct expr *opnd, char *paramvalue, uint_8 *regs_used)
 /************************************************************************************************************************************************/
 {
-	//uint_32 size;
 	uint_32 psize;
 	int reg;
-	//int base;
 	int regsize;
 	struct proc_info *info = proc->e.procinfo;
-	//struct asym *sym;
-	//struct dsym *curr = NULL;
 	
 	DebugMsg1(("sysv_vararg_param(%s, index=%u, param.memtype=%Xh, addr=%u) enter\n", proc->sym.name, index, param->sym.mem_type, addr));
 

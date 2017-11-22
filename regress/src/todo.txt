@@ -1,0 +1,12 @@
+.for16
+.for32
+.for64
+.switch32
+.switch64
+vectorcall
+macho64
+linux64
+crossplatform
+macrolib
+string literals
+wide character strings

@@ -5,16 +5,3 @@
 
 00001CDB  62437D0817E87B            vextractps r8,xmm29,0x7b
 line 1150
-
-
-line 3091 :00005016  62F17DA97BCA              vcvtps2qq ymm1{k1}{z},xmm2
-
-
-[9:28] 
-
-should be : 62 f1 7d *89* 7b ca       
-vcvtps2qq xmm1{k1}{z},xmm2
-
-
-which we have:
-00000000  62F17D897BCA              vcvtps2qq xmm1{k1}{z},xmm2
