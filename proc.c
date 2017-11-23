@@ -3201,12 +3201,12 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 									i += 16;// XYZMMsize;
 								}
 								else if (GetValueSp(*regist) & OP_YMM) {
-									AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
+									AddLineQueueX("vmovdqu [%r+%u+%s], %r", T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
 									AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEYMM256, *regist, NUMQUAL i, sym_ReservedStack->name);
 									i += 32;// XYZMMsize;
 								}
 								else if (GetValueSp(*regist) & OP_ZMM) {
-									AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
+									AddLineQueueX("vmovdqu [%r+%u+%s], %r", T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
 									AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEZMM512, *regist, NUMQUAL i, sym_ReservedStack->name);
 									i += 64;// XYZMMsize;
 								}
@@ -3220,12 +3220,12 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 									i += 16;// XYZMMsize;
 								}
 								else if (GetValueSp(*regist) & OP_YMM) {
-									AddLineQueueX("%s [%r+%u], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, *regist);
+									AddLineQueueX("vmovdqu [%r+%u], %r", T_RSP, NUMQUAL i, *regist);
 									AddLineQueueX("%r %r, %u", T_DOT_SAVEYMM256, *regist, NUMQUAL i);
 									i += 32;// XYZMMsize;
 								}
 								else if (GetValueSp(*regist) & OP_ZMM) {
-									AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, *regist);
+									AddLineQueueX("vmovdqu [%r+%u+%s], %r", T_RSP, NUMQUAL i, *regist);
 									AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEZMM512, *regist, NUMQUAL i);
 									i += 64;// XYZMMsize;
 								}
@@ -3619,7 +3619,7 @@ static void write_win64_default_epilogue_RSP(struct proc_info *info)
 						}
 						else if (GetValueSp(*regs) & OP_YMM)
 						{
-							AddLineQueueX("%s %r, [%r + %u + %s]", MOVE_UNALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i, sym_ReservedStack->name);
+							AddLineQueueX("vmovdqu %r, [%r + %u + %s]", *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i, sym_ReservedStack->name);
 							i += 32;
 						}
 					}
@@ -3632,7 +3632,7 @@ static void write_win64_default_epilogue_RSP(struct proc_info *info)
 						}
 						if (GetValueSp(*regs) & OP_YMM)
 						{
-							AddLineQueueX("%s %r, [%r + %u]", MOVE_UNALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i);
+							AddLineQueueX("vmovdqu %r, [%r + %u]", *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i);
 							i += 32;
 						}
 					}

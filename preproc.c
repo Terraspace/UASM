@@ -433,12 +433,15 @@ int PreprocessLine( char *line, struct asm_tok tokenarray[] )
         return( Token_Count );
 #endif
 
-	strcpy(&cline, line);
-	ExpandHllCalls(&cline, tokenarray, FALSE, 0, FALSE);
-	if (strcmp(&cline, line) != 0)
+	if (!Options.nomlib)
 	{
-		strcpy(line, &cline);
-		Token_Count = Tokenize(line, 0, tokenarray, TOK_RESCAN);
+		strcpy(&cline, line);
+		ExpandHllCalls(&cline, tokenarray, FALSE, 0, FALSE);
+		if (strcmp(&cline, line) != 0)
+		{
+			strcpy(line, &cline);
+			Token_Count = Tokenize(line, 0, tokenarray, TOK_RESCAN);
+		}
 	}
 	EvaluatePreprocessItems( line, tokenarray );
 

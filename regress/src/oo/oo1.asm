@@ -1,9 +1,9 @@
 
-; OO Testcase
+; OO Testcase 2
 
 ; Build with:
 ;..\uasm64 -win64 -c -Zp8 -Zi -Zd -Zf oo1.asm
-;d:\vs2015\vc\bin\link /subsystem:console /machine:x64 /debug /Libpath:"%WINSDK%\v7.1\Lib\x64" oo1.obj
+;d:\vs2015\vc\bin\link /subsystem:console /machine:x64 /debug /Libpath:"%WINSDK%\v7.1\Lib\x64" oo2.obj
 
 .X64
 OPTION CASEMAP:NONE
@@ -40,6 +40,8 @@ ENDOINTERFACE
 CLASS Person
 	CMETHOD PrintName
 	CMETHOD SetName
+	CMETHOD Calc
+	CMETHOD Calc2
 	CSTATIC IsHuman
 	pName   dq 0
 	age     db 0
@@ -54,7 +56,7 @@ pPerson TYPEDEF PTR Person
 ; Constructor
 ; Can take optional arguments.
 ;---------------------------------------------------------------------------------------------------------------
-METHOD Person, Init, <USES rbx r10>, age:BYTE, consoleHandle:QWORD, ptrName:QWORD
+METHOD Person, Init, <>, <USES rbx r10>, age:BYTE, consoleHandle:QWORD, ptrName:QWORD
 	
 	LOCAL isAlive:DWORD
 	; Internally the METHOD forms a traditional procedure, so anything that you can do in a PROC you can do in a method.
@@ -91,7 +93,7 @@ ENDMETHOD
 ; Destructor
 ; Takes no arguments.
 ;---------------------------------------------------------------------------------------------------------------
-METHOD Person, Destroy, <>
+METHOD Person, Destroy, <>, <>
 	mov [rcx].age,0
 	ret
 ENDMETHOD
@@ -99,7 +101,7 @@ ENDMETHOD
 ;---------------------------------------------------------------------------------------------------------------
 ; Print the persons name to the console.
 ;---------------------------------------------------------------------------------------------------------------
-METHOD Person, PrintName, <USES rbx>
+METHOD Person, PrintName, <>, <USES rbx>
 	
 	LOCAL bWritten:DWORD
 	
@@ -118,7 +120,7 @@ ENDMETHOD
 ;---------------------------------------------------------------------------------------------------------------
 ; Set person name.
 ;---------------------------------------------------------------------------------------------------------------
-METHOD Person, SetName, <USES rbx>, pNameStr:QWORD
+METHOD Person, SetName, <>, <USES rbx>, pNameStr:QWORD
 
 	mov rax,pNameStr
 	mov [rcx].pName,rax
@@ -127,9 +129,32 @@ METHOD Person, SetName, <USES rbx>, pNameStr:QWORD
 ENDMETHOD
 
 ;---------------------------------------------------------------------------------------------------------------
+; Perform a float calculation, return a dword.
+;---------------------------------------------------------------------------------------------------------------
+METHOD Person, Calc, <real4>, <USES rbx>, aValue:REAL4
+
+	vmovss xmm0,aValue
+	vaddss xmm0,xmm0,FP4(1.0)
+
+	ret
+ENDMETHOD
+
+;---------------------------------------------------------------------------------------------------------------
+; Perform a calculation on 2 vectors via vectorcall abi.
+;---------------------------------------------------------------------------------------------------------------
+option stackbase:rsp
+option win64:11
+VECMETHOD Person, Calc2, <>, <USES rbx>, aVec:XMMWORD, bVec:XMMWORD
+
+	ret
+ENDMETHOD
+option stackbase:rbp
+option win64:7
+
+;---------------------------------------------------------------------------------------------------------------
 ; Static method to check if a person is a human.
 ;---------------------------------------------------------------------------------------------------------------
-STATICMETHOD Person, IsHuman, <USES rbx>, somebody:PTR Person
+STATICMETHOD Person, IsHuman, <>, <USES rbx>, somebody:PTR Person
 
 	mov rax,somebody
 	mov al,(Person PTR [rax]).human
@@ -152,9 +177,8 @@ ENDIF
 	
 .CODE
 
-; All default procedures are now FRAME based (so there is no need to specify FRAME).
 ; -> Using a FRAME PROC as the entry point for both Console and Windows applications is advised to ensure correct stack startup.
-MainCRTStartup PROC 
+MainCRTStartup PROC FRAME
 	LOCAL person2:PTR Person	; A local variable to hold a reference to a Person type. (Note you can also use _DECLARE if the Object name includes <>).
 	
 	invoke GetStdHandle,STD_OUTPUT_HANDLE
@@ -169,6 +193,14 @@ MainCRTStartup PROC
     _INVOKE Person, SetName, person1, CSTR("Michael Smith ")
     _INVOKE Person, PrintName, person1		
     
+    _INVOKE Person, Calc, person1, 1.0
+    _INVOKE Person, Calc2, person2, xmm4, xmm5	; Vectorcall based method.
+
+    ; Use return type information.
+    .if( _I(Person, Calc, person1, 1.0) == FP4(2.0) )
+        xor eax,eax
+    .endif
+
     mov rax, _STATIC(Person, IsHuman, person1)	; Default return type from $STATIC is 64bit integer.
     
     ; Delete the objects.

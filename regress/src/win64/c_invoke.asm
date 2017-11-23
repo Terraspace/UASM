@@ -91,7 +91,7 @@ start:
 
 	invoke ExitProcess,0
 
-MyProc PROC dword FRAME aVar:DWORD, bVar:QWORD
+MyProc PROC dword aVar:DWORD, bVar:QWORD
    movsxd rax,aVar
    add rax,bVar
    ret
