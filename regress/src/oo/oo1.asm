@@ -9,6 +9,8 @@
 OPTION CASEMAP:NONE
 OPTION WIN64:7				; 11/15 for RSP and 1-7 for RBP.
 OPTION STACKBASE:RBP		; RSP or RBP are supported options for the stackbase.
+OPTION LITERALS:ON
+;OPTION VTABLE:ON			; [ON/OFF] dictates whether c-style method invocations use the vtable (slower but method pointers can be modified) or the (faster but fixed) direct invocation.
 
   	.nolist
     .nocref
@@ -56,7 +58,7 @@ pPerson TYPEDEF PTR Person
 ; Constructor
 ; Can take optional arguments.
 ;---------------------------------------------------------------------------------------------------------------
-METHOD Person, Init, <>, <USES rbx r10>, age:BYTE, consoleHandle:QWORD, ptrName:QWORD
+METHOD Person, Init, <>, <USES rbx r10>, age:BYTE, consoleHandle:QWORD, ptrName:PTR
 	
 	LOCAL isAlive:DWORD
 	; Internally the METHOD forms a traditional procedure, so anything that you can do in a PROC you can do in a method.
@@ -142,7 +144,7 @@ ENDMETHOD
 ;---------------------------------------------------------------------------------------------------------------
 ; Perform a calculation on 2 vectors via vectorcall abi.
 ;---------------------------------------------------------------------------------------------------------------
-option stackbase:rsp
+option stackbase:rsp	; vectorcall currently only supports rsp stackbases.
 option win64:11
 VECMETHOD Person, Calc2, <>, <USES rbx>, aVec:XMMWORD, bVec:XMMWORD
 
@@ -179,14 +181,16 @@ ENDIF
 
 ; -> Using a FRAME PROC as the entry point for both Console and Windows applications is advised to ensure correct stack startup.
 MainCRTStartup PROC FRAME
-	LOCAL person2:PTR Person	; A local variable to hold a reference to a Person type. (Note you can also use _DECLARE if the Object name includes <>).
-	
-	invoke GetStdHandle,STD_OUTPUT_HANDLE
+    
+    LOCAL person2:PTR Person	
+    ; A local variable to hold a reference to a Person type. (Note you can also use _DECLARE if the Object name includes <>).
+    
+    invoke GetStdHandle,STD_OUTPUT_HANDLE
     mov hOutput,rax
     
     ; Create two Person instances.
     mov person1, _NEW(Person, 30, hOutput, CSTR("Jane Doe "))
-    mov person2, _NEW(Person, 40, hOutput, CSTR("Peter Smith "))
+    mov person2, _NEW(Person, 40, hOutput, "Peter Smith ")      ; Use string literals.
     
     _INVOKE Person, PrintName, person1		; Direct call (Type, Method, arguments)
     _VINVOKE person2, Person, PrintName		; Vtable call (instance, Type, Method)   
@@ -194,21 +198,51 @@ MainCRTStartup PROC FRAME
     _INVOKE Person, PrintName, person1		
     
     _INVOKE Person, Calc, person1, 1.0
+    _VINVOKE person2, Person, Calc, 1.0
     _INVOKE Person, Calc2, person2, xmm4, xmm5	; Vectorcall based method.
 
     ; Use return type information.
-    .if( _I(Person, Calc, person1, 1.0) == FP4(2.0) )
+    .if( _V(person1, Person, Calc, 1.0) == FP4(2.0) )
         xor eax,eax
     .endif
 
-    mov rax, _STATIC(Person, IsHuman, person1)	; Default return type from $STATIC is 64bit integer.
-    
+    mov rax, _STATIC(Person, IsHuman, person1)	; Default return type from _STATIC is 64bit integer.
+
+    ; Method invocation via register pointer.    
+    lea rsi, person1
+    _INVOKE Person, Calc, [rsi], 1.0
+    _VINVOKE [rsi], Person, Calc, 1.0
+    .if( _V([rsi], Person, Calc, 1.0) == FP4(2.0) )
+        xor eax,eax
+    .endif
+
+	; Method invocation using c-style calls.
+albl:  person1->Calc(1.0)
+	person2->Calc(2.0)
+    .if( person1->Calc(1.0) == FP4(2.0) )
+        xor eax,eax
+    .endif
+		
+	; Using a register as an object pointer with c-style calls requires the type to specified after the pointer.
+	; The register must be doubley-indirect, in that it points to the pointer to the object, which allows for rapid iteration through lists of object pointers.
+	lea rsi,person1
+	[rsi].Person->Calc(1.0)
+    .if( [rsi].Person->Calc(1.0) == FP4(2.0) )
+        xor eax,eax
+    .endif
+	xor rax,rax
+	lea rsi,person2
+	[rsi+rax].Person->Calc(1.0)
+	xor rax,rax
+    .if( [rsi+rax].Person->Calc(1.0) == FP4(2.0) )
+        xor eax,eax
+    .endif
+
     ; Delete the objects.
     _DELETE(person1)
     _DELETE(person2)
 
-
-	ret
+    ret
 MainCRTStartup ENDP
 
 END MainCRTStartup

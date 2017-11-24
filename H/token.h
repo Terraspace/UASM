@@ -52,6 +52,7 @@ enum tok_type {
     T_FLOAT,             /* B */
     T_BAD_NUM,           /* C */
     T_DBL_COLON,         /* D */
+	T_POINTER,           /* E */
 
     T_OP_BRACKET    = '(',
     T_OP_SQ_BRACKET = '[',
@@ -73,7 +74,6 @@ struct asm_tok {
     union {
         unsigned char dirtype;    /* T_DIRECTIVE: type */
         unsigned char bytval;     /* T_STYPE: memtype */
-        /* unsigned char regno; *//* T_REG: register number */
         unsigned char precedence; /* T_UNARY_OPERATOR/T_BINARY_OPERATOR */
         char string_delim;        /* T_STRING: string delimiter */
         char floattype;           /* T_FLOAT: 0 or 'r' */

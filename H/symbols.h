@@ -276,6 +276,7 @@ struct asym {
 		struct asym *type;        /* set if memtype is MT_TYPE */
 		struct dsym *ttype;       /* for easier debugging */
 	};
+	bool isClass;
 };
 
 /*---------------------------------------------------------------------------*/

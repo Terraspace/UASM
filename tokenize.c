@@ -516,8 +516,6 @@ static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
     char    symbol;
     char    c;
     char    a=0;
-    //int     i;
-    //int  index;
 
     symbol = *p->input;
 	buf->tokval = 0;
@@ -533,6 +531,18 @@ static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
             buf->string_ptr = ":";
         }
         break;
+	case '-': /* T_MINUS binary operator (0x3A) */
+		p->input++;
+		if (*p->input == '>') {
+			p->input++;
+			buf->token = T_POINTER;
+			buf->string_ptr = "->";
+		}
+		else {
+			p->input--;
+			goto minuslbl; // Handle a - binary operator the normal way.
+		}
+		break;
     case '%' : /* T_PERCENT (0x25) */
 #if PERCENT_OUT
         /* %OUT directive? */
@@ -567,10 +577,11 @@ static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
     case '*' : /* 0x2A: binary operator */
     case '+' : /* 0x2B: unary|binary operator */
     case ',' : /* 0x2C: T_COMMA */
-    case '-' : /* 0x2D: unary|binary operator */
+    //case '-' : /* 0x2D: unary|binary operator */
     case '.' : /* 0x2E: T_DOT binary operator */
     case '/' : /* 0x2F: binary operator */
-        /* all of these are themselves a token */
+        minuslbl:
+		/* all of these are themselves a token */
         p->input++;
         buf->token = symbol;
         buf->specval = 0; /* initialize, in case the token needs extra data */
@@ -859,7 +870,6 @@ static ret_code get_id_in_backquotes( struct asm_tok *buf, struct line_status *p
 #endif
 
 /* get an ID. will always return NOT_ERROR. */
-
 static ret_code get_id( struct asm_tok *buf, struct line_status *p )
 /******************************************************************/
 {
@@ -1103,18 +1113,17 @@ int Tokenize( char *line, unsigned int start, struct asm_tok tokenarray[], unsig
     p.input = line;
     p.start = line;
     p.index = start;
-    //p.last_token = T_FINAL; /* v2.11: last_token is obsolete */
     p.flags = flags;
     p.flags2 = 0;
     p.flags3 = 0;
-    if ( p.index == 0 ) {
+    if ( p.index == 0 ) 
+	{
 #ifdef DEBUG_OUT
         cnttok0++;
 #endif
-        /* v2.06: these flags are now initialized on a higher level */
-        //ModuleInfo.line_flags = 0;
         p.output = token_stringbuf;
-        if( ModuleInfo.inside_comment ) {
+        if( ModuleInfo.inside_comment ) 
+		{
             DebugMsg1(("COMMENT active, delim is >%c<, line is >%s<\n", ModuleInfo.inside_comment, line));
             if( strchr( line, ModuleInfo.inside_comment ) != NULL ) {
                 DebugMsg1(("COMMENT mode exited\n"));
@@ -1122,14 +1131,9 @@ int Tokenize( char *line, unsigned int start, struct asm_tok tokenarray[], unsig
             }
             goto skipline;
         }
-        /* v2.08: expansion operator % at pos 0 is handled differently.
-         */
-        //while( isspace( *p.input )) p.input++;
-        //if ( *p.input == '%' ) {
-        //    *p.input++ = ' ';
-        //    expansion = TRUE;
-        //}
-    } else {
+    } 
+	else 
+	{
 #ifdef DEBUG_OUT
         cnttok1++;
 #endif

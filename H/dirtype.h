@@ -34,6 +34,7 @@ res( SIZESTR,   SizeStrDir )
 res( EXCFRAME,  ExcFrameDirective )
 #endif
 res( STRUCT,    StructDirective )
+res( CSTRUCT,   CStructDirective )
 res( TYPEDEF,   TypedefDirective )
 res( RECORD,    RecordDirective )
 res( COMM,      CommDirective )

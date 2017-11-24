@@ -4119,7 +4119,6 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	struct asym    *sym;
 	struct dsym    *proc;
 	char           *p;
-	//char         *param;
 	int            numParam;
 	int            value;
 	int            size;
@@ -4128,50 +4127,32 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	int            porder;
 	int            j;
 	uint_8         r0flags = 0;
-	//bool           uselabel = FALSE;
 	struct proc_info *info;
 	struct dsym    *curr;
 	struct expr    opnd;
-	//char           buffer[MAX_LINE_LEN];
-	//int            paracount;
-	//int			   pcount;
 	struct asym    *lastret;
 
-	DebugMsg1(("InvokeDir(%s) enter\n", tokenarray[i].tokpos));
 	i++; /* skip INVOKE directive */
 	namepos = i;
-	/* if there is more than just an ID item describing the invoke target,
-	use the expression evaluator to get it
-	*/
-  //__debugbreak();
-	if (tokenarray[i].token != T_ID || (tokenarray[i + 1].token != T_COMMA && tokenarray[i + 1].token != T_FINAL && tokenarray[i + 1].token != T_OP_BRACKET)) {
-		//if ( tokenarray[i+1].token != T_COMMA && tokenarray[i+1].token != T_FINAL ) {
+
+	/* if there is more than just an ID item describing the invoke target, use the expression evaluator to get it */
+	if (tokenarray[i].token != T_ID || (tokenarray[i + 1].token != T_COMMA && tokenarray[i + 1].token != T_FINAL && tokenarray[i + 1].token != T_OP_BRACKET)) 
+	{
 		if (ERROR == EvalOperand(&i, tokenarray, Token_Count, &opnd, 0))
 			return(ERROR);
-		DebugMsg1(("InvokeDir: target is expression, kind=%u sym=%s mbr=%s type=%s memtype=%X ofssize=%u\n",
-			opnd.kind,
-			opnd.sym ? opnd.sym->name : "NULL",
-			opnd.mbr ? opnd.mbr->name : "NULL",
-			opnd.type ? opnd.type->name : "NULL",
-			opnd.mem_type, opnd.Ofssize));
-#if 1
+
 		/* a typecast with PTR? Since v1.95, this has highest priority */
-		//if (opnd.explicit == TRUE && opnd.type != NULL && opnd.type->state == SYM_TYPE ) {
-		/* v1.96: removed opnd.explicit!!! */
-		/* fixme: if opnd.type is set, opnd.type MUST have state SYM_TYPE */
-		if (opnd.type != NULL && opnd.type->state == SYM_TYPE) {
+		if (opnd.type != NULL && opnd.type->state == SYM_TYPE) 
+		{
 			sym = opnd.type;
-			DebugMsg1(("InvokeDirective: opnd.type=>%s< mem_type=%Xh\n", sym->name, sym->mem_type));
 			proc = (struct dsym *)sym;
-			//if ( opnd.label_tok != NULL ) /* v2.09: uselabel obsolete */
-			//    uselabel = TRUE;
 			if (sym->mem_type == MT_PROC) /* added for v1.95 */
 				goto isfnproto;
 			if (sym->mem_type == MT_PTR)  /* v2.09: mem_type must be MT_PTR */
 				goto isfnptr;
 		}
-#endif
-		if (opnd.kind == EXPR_REG) {
+		if (opnd.kind == EXPR_REG) 
+		{
 			if (GetValueSp(opnd.base_reg->tokval) & OP_RGT8)
 				sym = GetStdAssume(GetRegNo(opnd.base_reg->tokval));
 			else
@@ -4179,61 +4160,49 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 		}
 		else
 			sym = (opnd.mbr ? opnd.mbr : opnd.sym);
-
 	}
-	else {
+	else 
+	{
 		opnd.base_reg = NULL;
 		sym = SymSearch(tokenarray[i].string_ptr);
 		i++;
 	}
 
-	if (sym == NULL) {
-		/* v2.04: msg changed */
+	if (sym == NULL)
 		return(EmitErr(INVOKE_REQUIRES_PROTOTYPE));
-	}
+	
 	if (sym->isproc)  /* the most simple case: symbol is a PROC */
 		;
 	else if (sym->mem_type == MT_PTR && sym->target_type && sym->target_type->isproc)
 		sym = sym->target_type;
-	else if (sym->mem_type == MT_PTR && sym->target_type && sym->target_type->mem_type == MT_PROC) {
+	else if (sym->mem_type == MT_PTR && sym->target_type && sym->target_type->mem_type == MT_PROC) 
+	{
 		proc = (struct dsym *)sym->target_type;
 		goto isfnproto;
 	}
-	else if ((sym->mem_type == MT_TYPE) && (sym->type->mem_type == MT_PTR || sym->type->mem_type == MT_PROC)) {
+	else if ((sym->mem_type == MT_TYPE) && (sym->type->mem_type == MT_PTR || sym->type->mem_type == MT_PROC)) 
+	{
 		/* second case: symbol is a (function?) pointer */
 		proc = (struct dsym *)sym->type;
 		if (proc->sym.mem_type != MT_PROC)
 			goto isfnptr;
 	isfnproto:
 		/* pointer target must be a PROTO typedef */
-		if (proc->sym.mem_type != MT_PROC) {
-			DebugMsg(("InvokeDir: error proc.name=>%s< .mem_type=%Xh\n", proc->sym.name, proc->sym.mem_type));
-			DebugMsg(("InvokeDir: error sym.name=%s\n", sym ? sym->name : ""));
+		if (proc->sym.mem_type != MT_PROC) 
+		{
 			return(EmitErr(INVOKE_REQUIRES_PROTOTYPE));
 		}
 	isfnptr:
 		/* get the pointer target */
 		sym = proc->sym.target_type;
-		DebugMsg1(("InvokeDir: proc=%s target_type=>%s<\n", proc->sym.name, sym ? sym->name : "NULL"));
-		if (sym == NULL) {
+		if (sym == NULL)
 			return(EmitErr(INVOKE_REQUIRES_PROTOTYPE));
-		}
 	}
-	else {
-		DebugMsg(("InvokeDir: error, sym=%s state=%u memtype=%Xh [type=%s memtype=%Xh]\n",
-			sym->name, sym->state, sym->mem_type,
-			sym->type ? sym->type->name : "NULL",
-			sym->type ? sym->type->mem_type : 0));
-#ifdef DEBUG_OUT
-		if (sym->mem_type == MT_PTR || sym->mem_type == MT_PROC)
-			DebugMsg(("InvokeDir: error, target_type=%s [memtype=%X pmemtype=%X ieasyesproc=%u])\n",
-				sym->target_type->name,
-				sym->target_type->mem_type,
-				sym->target_type->ptr_memtype,
-				sym->target_type->isproc));
-#endif
+	else 
+	{
 		return(EmitErr(INVOKE_REQUIRES_PROTOTYPE));
 	}
+
 	proc = (struct dsym *)sym;
 	info = proc->e.procinfo;
 
@@ -4259,41 +4228,26 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 							   /* clear sse register flags every pass*/
 	memset(info->xyzused, 0, 6);
 	memset(info->vecregsize, 0, 6);
-  /* added for delphi used registers v2.29 */
-  if (Parse_Pass == PASS_1)
-  memset(info->delregsused,0,3);
-	info->vsize = 0;
-	//memset(regsize, 0, 6);
+	/* added for delphi used registers v2.29 */
+	if (Parse_Pass == PASS_1)
+		memset(info->delregsused, 0, 3);
 
-#if 0 /* v2.05: can't happen anymore */
-	/* does FASTCALL variant support INVOKE? */
-	if (proc->sym.langtype == LANG_FASTCALL && fastcall_tab[ModuleInfo.fctype].invokestart == NULL) {
-		return(EmitError(FASTCALL_VARIANT_NOT_SUPPORTED));
-	}
-#endif
+	info->vsize = 0;
 
 	/* get the number of parameters */
 	for (curr = info->paralist, numParam = 0; curr; curr = curr->nextparam, numParam++)
 	{
 	}
-	DebugMsg1(("InvokeDir: numparams=%u\n", numParam));
 
-	if (proc->sym.langtype == LANG_FASTCALL) {
-		fcscratch = 0;
+	fcscratch = 0;
+	if (proc->sym.langtype == LANG_FASTCALL) 
 		porder = fastcall_tab[ModuleInfo.fctype].invokestart(proc, numParam, i, tokenarray, &value);
-	}
-	else if (proc->sym.langtype == LANG_VECTORCALL) {
-		fcscratch = 0;
+	else if (proc->sym.langtype == LANG_VECTORCALL) 
 		porder = vectorcall_tab[ModuleInfo.fctype].invokestart(proc, numParam, i, tokenarray, &value);
-	}
-	else if (proc->sym.langtype == LANG_SYSVCALL) {
-		fcscratch = 0;
+	else if (proc->sym.langtype == LANG_SYSVCALL) 
 		porder = sysvcall_tab[ModuleInfo.fctype].invokestart(proc, numParam, i, tokenarray, &value);
-	}
-	else if (proc->sym.langtype == LANG_DELPHICALL) {
-		fcscratch = 0;
+	else if (proc->sym.langtype == LANG_DELPHICALL) 
 		porder = delphicall_tab[ModuleInfo.fctype].invokestart(proc, numParam, i, tokenarray, &value);
-	}
 
 	/* -----------------------------------------------------------------------------------------------
 	HANDLE PARAMETERS (FIRST PASS)

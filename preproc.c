@@ -133,6 +133,196 @@ static void VerifyNesting(char *line, bool exprBracket)
 	}
 }
 
+static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
+{
+	int i, j;
+	struct dsym *sym;
+	struct asym *type;
+	char newline[MAX_LINE_LEN];
+	char preline[MAX_LINE_LEN];
+	char addrStr[MAX_LINE_LEN];
+	char *pSrc;
+	char *pDst;
+	int len;
+	bool inParam = FALSE;
+	bool inExpr = FALSE;
+	bool hasExprBracket = FALSE;
+	bool foundType = FALSE;
+	bool ptrInvocation = FALSE;
+	bool gotOpen = FALSE;
+	bool gotClose = FALSE;
+
+	/* HLL c-style obj calls can only exist inside code sections */
+	if (CurrSeg && strcmp(CurrSeg->sym.name, "_TEXT") != 0)
+		return;
+
+	memset(&newline, 0, MAX_LINE_LEN);
+	memset(&addrStr, 0, MAX_LINE_LEN);
+	strcpy(&newline, line);
+	strcpy(&preline, line);
+	
+	for (i = 0;i < Token_Count;i++)
+	{
+		foundType = FALSE;
+		ptrInvocation = FALSE;
+		gotOpen = FALSE;
+		gotClose = FALSE;
+		if (tokenarray[i].token == T_ID)
+		{
+			sym = SymSearch(tokenarray[i].string_ptr);
+			if ( sym && 
+				sym->sym.target_type &&
+				sym->sym.target_type > 0x1000 &&
+				sym->sym.target_type->isClass )
+			{
+				// Found pointer operator.
+				if (i < Token_Count - 4 && tokenarray[i + 1].token == T_POINTER && tokenarray[i + 3].token == T_OP_BRACKET)
+				{
+					foundType = TRUE;
+					type = sym->sym.target_type;
+				}
+			}
+			else if (sym &&
+				sym->sym.type &&
+				sym->sym.type->target_type &&
+				sym->sym.type->target_type > 0x1000 &&
+				sym->sym.type->target_type->isClass)
+			{
+				// Found pointer operator.
+				if (i < Token_Count - 4 && tokenarray[i + 1].token == T_POINTER && tokenarray[i + 3].token == T_OP_BRACKET)
+				{
+					foundType = TRUE;
+					type = sym->sym.type->target_type;
+				}
+			}
+			else if (sym && sym->sym.isClass && tokenarray[i-1].token == T_DOT && tokenarray[i-2].token == T_CL_SQ_BRACKET)
+			{
+				for (j = i + 1;j < Token_Count;j++)
+				{
+					if (tokenarray[j].token == T_OP_BRACKET)
+						gotOpen = TRUE;
+					if (tokenarray[j].token == T_CL_BRACKET)
+						gotClose = TRUE;
+					if (gotOpen && gotClose)
+						break;
+				}
+				if (gotOpen && gotClose)
+				{
+					foundType = TRUE;
+					type = sym;
+					ptrInvocation = TRUE;
+				}
+			}
+
+			if (foundType)
+			{
+				/* Scan backwards to check if we're in an HLL expression or call parameter */
+				if (i > 0)
+				{
+					for (j = i - 1;j >= 0;j--)
+					{
+						if (tokenarray[j].token == T_DIRECTIVE && (tokenarray[j].dirtype == DRT_HLLSTART || tokenarray[j].dirtype == DRT_HLLEND))
+						{
+							inExpr = TRUE;
+							if (tokenarray[j + 1].token == T_OP_BRACKET || tokenarray[j + 1].tokval == '(')
+								hasExprBracket = TRUE;
+							else
+								hasExprBracket = FALSE;
+							break;
+						}
+						else if ((tokenarray[j].token == T_DIRECTIVE && tokenarray[j].dirtype == DRT_INVOKE) ||
+							strcmp(tokenarray[j].string_ptr, "arginvoke") == 0 ||
+							strcmp(tokenarray[j].string_ptr, "uinvoke") == 0)
+						{
+							inParam = TRUE;
+							break;
+						}
+					}
+				}
+
+				pSrc = tokenarray[0].tokpos;
+				if (!ptrInvocation)
+					j = tokenarray[i].tokpos - pSrc;
+				else
+				{
+					for (j = i;j >= 0;j--)
+					{
+						if (tokenarray[j].token == T_OP_SQ_BRACKET)
+							break;
+					}
+					j = tokenarray[j].tokpos - pSrc;
+				}
+				pDst = &preline;
+				while (j-- > 0)
+					*pDst++ = *pSrc++;
+				*pDst = 0;
+				if (!inParam && !inExpr)
+				{
+					if (ptrInvocation)
+					{
+						pDst = tokenarray[i - 2].tokpos;
+						pSrc = tokenarray[i - 2].tokpos - 1;
+						while (pSrc > tokenarray[0].tokpos)
+						{
+							if (*pSrc == '[')
+								break;
+							pSrc--;
+						}
+						len = pDst - pSrc;
+						pDst = &addrStr;
+						for (;len >= 0;len--)
+							*pDst++ = *pSrc++;
+						sprintf(newline, "%s _VINVOKE %s,%s,%s,", preline, addrStr, type->name, tokenarray[i + 2].string_ptr);
+					}
+					else
+						sprintf(newline, "%s _VINVOKE %s,%s,%s,", preline, sym->sym.name, type->name, tokenarray[i + 2].string_ptr);
+					pSrc = tokenarray[i + 3].tokpos + 1;
+					len = strlen(newline);
+					pDst = &(newline[len]);
+					while (*pSrc != 0 && *pSrc != ')')
+						*pDst++ = *pSrc++;
+				}
+				else
+				{
+					if (ptrInvocation)
+					{
+						pDst = tokenarray[i - 2].tokpos;
+						pSrc = tokenarray[i - 2].tokpos - 1;
+						while (pSrc > tokenarray[0].tokpos)
+						{
+							if (*pSrc == '[')
+								break;
+							pSrc--;
+						}
+						len = pDst - pSrc;
+						pDst = &addrStr;
+						for (;len >= 0;len--)
+							*pDst++ = *pSrc++;
+						sprintf(newline, "%s _V(%s,%s,%s,", preline, addrStr, type->name, tokenarray[i + 2].string_ptr);
+					}
+					else
+						sprintf(newline, "%s _V(%s,%s,%s,", preline, sym->sym.name, type->name, tokenarray[i + 2].string_ptr);
+					pSrc = tokenarray[i + 3].tokpos + 1;
+					len = strlen(newline);
+					pDst = &(newline[len]);
+					if (!ptrInvocation)
+					{
+						while (*pSrc != 0)
+							*pDst++ = *pSrc++;
+					}
+					else
+					{
+						while (*pSrc != 0 && *pSrc != ')')
+							*pDst++ = *pSrc++;
+					}
+				}
+			}
+		}
+	}
+
+	strcpy(line, &newline);
+}
+
 static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam, int argIdx, bool inExpr)
 {
 	int i, j;
@@ -181,6 +371,10 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 							}
 							else if ((tokenarray[j].token == T_DIRECTIVE && tokenarray[j].dirtype == DRT_INVOKE) ||
 								strcmp(tokenarray[j].string_ptr, "arginvoke") == 0 ||
+								strcmp(tokenarray[j].string_ptr, "_INVOKE") == 0 ||
+								strcmp(tokenarray[j].string_ptr, "_I") == 0 ||
+								strcmp(tokenarray[j].string_ptr, "_VINVOKE") == 0 ||
+								strcmp(tokenarray[j].string_ptr, "_V") == 0 ||
 								strcmp(tokenarray[j].string_ptr, "uinvoke") == 0)
 							{
 								inParam = TRUE;
@@ -435,6 +629,13 @@ int PreprocessLine( char *line, struct asm_tok tokenarray[] )
 
 	if (!Options.nomlib)
 	{
+		strcpy(&cline, line);
+		ExpandObjCalls(&cline, tokenarray, FALSE, 0, FALSE);
+		if (strcmp(&cline, line) != 0)
+		{
+			strcpy(line, &cline);
+			Token_Count = Tokenize(line, 0, tokenarray, TOK_RESCAN);
+		}
 		strcpy(&cline, line);
 		ExpandHllCalls(&cline, tokenarray, FALSE, 0, FALSE);
 		if (strcmp(&cline, line) != 0)

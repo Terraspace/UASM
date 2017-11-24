@@ -970,7 +970,7 @@ void SymSimd(struct dsym *sym)
 			   sym->e.structinfo->isHVA = 1;
 		   }
 	   }
-		#ifdef DEBUG_OUT	   
+		#if 0
 			printf("Symbol VectorCall Settings: %s isHomogenous:%u isHFA:%u isHVA:%u MMType:%u memberCount:%u\n", sym->sym.name, sym->e.structinfo->isHomogenous, sym->e.structinfo->isHFA, sym->e.structinfo->isHVA, sym->e.structinfo->stype, sym->e.structinfo->memberCount);
 		#endif
 
