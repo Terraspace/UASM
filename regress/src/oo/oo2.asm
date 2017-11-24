@@ -10,7 +10,7 @@ OPTION CASEMAP:NONE
 OPTION WIN64:7				; 11/15 for RSP and 1-7 for RBP.
 OPTION STACKBASE:RBP		; RSP or RBP are supported options for the stackbase.
 OPTION LITERALS:ON
-OPTION VTABLE:ON			; [ON/OFF] dictates whether c-style method invocations use the vtable (slower but method pointers can be modified) or the (faster but fixed) direct invocation.
+OPTION VTABLE:OFF			; [ON/OFF] dictates whether c-style method invocations use the vtable (slower but method pointers can be modified) or the (faster but fixed) direct invocation.
 
   	.nolist
     .nocref

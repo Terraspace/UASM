@@ -215,7 +215,6 @@ OPTFUNC( SetArch )
 }
 
 /* OPTION Literals:ON | OFF(default) */
-
 OPTFUNC(SetLiterals)
 /*******************/
 {
@@ -231,6 +230,31 @@ OPTFUNC(SetLiterals)
 			return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 		}
 		DebugMsg1(("SetLiterals(%s) ok\n", tokenarray[i].string_ptr));
+		i++;
+	}
+	else {
+		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
+	}
+	*pi = i;
+	return(NOT_ERROR);
+}
+
+/* OPTION VTable:ON | OFF(default) */
+OPTFUNC(SetVTable)
+/*******************/
+{
+	int i = *pi;
+	if (tokenarray[i].token == T_ID) {
+		if (0 == _stricmp(tokenarray[i].string_ptr, "ON")) {
+			Options.vtable = TRUE;
+		}
+		else if (0 == _stricmp(tokenarray[i].string_ptr, "OFF")) {
+			Options.vtable = FALSE;
+		}
+		else {
+			return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
+		}
+		DebugMsg1(("SetVTable(%s) ok\n", tokenarray[i].string_ptr));
 		i++;
 	}
 	else {
@@ -1291,13 +1315,14 @@ static const struct asm_option optiontab[] = {
 	{ "EVEX",         SetEvex        }, /* EVEX: <value> 1 or 0 */
 	{ "ZEROLOCALS",   SetZeroLocals  }, /* ZEROLOCALS: <value> 1 or 0 */
 #endif
-  { "SWITCHSTYLE",      SetSwitchStile }, /* SWITCH_STYLE: <CSWITCH> or <ASMSWITCH> */
+  { "SWITCHSTYLE",      SetSwitchStile },/* SWITCH_STYLE: <CSWITCH> or <ASMSWITCH> */
   { "SWITCHSIZE",       SetSwitchSize }, /* SWITCH_STYLE: <CSWITCH> or <ASMSWITCH> */
-  { "FLAT",             SetFlat },		/* FLAT generated FASM style flat code */
-  { "ARCH",             SetArch },      /* ARCH: SSE or AVX */
-  { "REDZONE",          SetRedZone },   /* REDZONE: YES or NO */
-  { "BND",              SetBnd },       /* BND:ON or OFF */
-  { "LITERALS",         SetLiterals }   /* LITERALS:ON or OFF */
+  { "FLAT",             SetFlat },		 /* FLAT generated FASM style flat code */
+  { "ARCH",             SetArch },       /* ARCH: SSE or AVX */
+  { "REDZONE",          SetRedZone },    /* REDZONE: YES or NO */
+  { "BND",              SetBnd },        /* BND:ON or OFF */
+  { "LITERALS",         SetLiterals },   /* LITERALS:ON or OFF */
+  { "VTABLE",           SetVTable }      /* VTABLE:ON or OFF */
 };
 
 #define TABITEMS sizeof( optiontab) / sizeof( optiontab[0] )

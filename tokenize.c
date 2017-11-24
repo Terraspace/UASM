@@ -531,7 +531,7 @@ static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
             buf->string_ptr = ":";
         }
         break;
-	case '-': /* T_MINUS binary operator (0x3A) */
+	case '-': 
 		p->input++;
 		if (*p->input == '>') {
 			p->input++;

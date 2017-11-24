@@ -137,6 +137,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 {
 	int i, j;
 	struct dsym *sym;
+	struct dsym *tsym;
 	struct asym *type;
 	char newline[MAX_LINE_LEN];
 	char preline[MAX_LINE_LEN];
@@ -151,6 +152,9 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 	bool ptrInvocation = FALSE;
 	bool gotOpen = FALSE;
 	bool gotClose = FALSE;
+	bool didReplace = FALSE;
+	bool inProc = FALSE;
+	int vCnt = 0;
 
 	/* HLL c-style obj calls can only exist inside code sections */
 	if (CurrSeg && strcmp(CurrSeg->sym.name, "_TEXT") != 0)
@@ -216,11 +220,23 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 
 			if (foundType)
 			{
+
+				len = strlen(line);
+				for (j = len - 1; j >= 0; j--)
+				{
+					if (line[j] == 0x09 || line[j] == ' ')
+						line[j] = 0;
+					else
+						break;
+				}
+
+				didReplace = TRUE;
 				/* Scan backwards to check if we're in an HLL expression or call parameter */
 				if (i > 0)
 				{
 					for (j = i - 1;j >= 0;j--)
 					{
+						tsym = SymSearch(tokenarray[j].string_ptr);
 						if (tokenarray[j].token == T_DIRECTIVE && (tokenarray[j].dirtype == DRT_HLLSTART || tokenarray[j].dirtype == DRT_HLLEND))
 						{
 							inExpr = TRUE;
@@ -232,9 +248,19 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 						}
 						else if ((tokenarray[j].token == T_DIRECTIVE && tokenarray[j].dirtype == DRT_INVOKE) ||
 							strcmp(tokenarray[j].string_ptr, "arginvoke") == 0 ||
+							strcmp(tokenarray[j].string_ptr, "_VINVOKE") == 0 ||
+							strcmp(tokenarray[j].string_ptr, "_V") == 0 ||
+							strcmp(tokenarray[j].string_ptr, "_INVOKE") == 0 ||
+							strcmp(tokenarray[j].string_ptr, "_I") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "uinvoke") == 0)
 						{
 							inParam = TRUE;
+							break;
+						}
+						else if (tokenarray[j].token == T_ID && tsym && tsym->sym.isproc)
+						{
+							inParam = TRUE;
+							inProc = TRUE;
 							break;
 						}
 					}
@@ -272,15 +298,25 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 						pDst = &addrStr;
 						for (;len >= 0;len--)
 							*pDst++ = *pSrc++;
-						sprintf(newline, "%s _VINVOKE %s,%s,%s,", preline, addrStr, type->name, tokenarray[i + 2].string_ptr);
+						if(Options.vtable)
+							sprintf(newline, "%s _VINVOKE %s,%s,%s,", preline, addrStr, type->name, tokenarray[i + 2].string_ptr);
+						else
+							sprintf(newline, "%s _INVOKE %s,%s,%s,", preline, type->name, tokenarray[i + 2].string_ptr, addrStr);
 					}
 					else
-						sprintf(newline, "%s _VINVOKE %s,%s,%s,", preline, sym->sym.name, type->name, tokenarray[i + 2].string_ptr);
+					{
+						if(Options.vtable)
+							sprintf(newline, "%s _VINVOKE %s,%s,%s,", preline, sym->sym.name, type->name, tokenarray[i + 2].string_ptr);
+						else
+							sprintf(newline, "%s _INVOKE %s,%s,%s,", preline, type->name, tokenarray[i + 2].string_ptr, sym->sym.name);
+					}
 					pSrc = tokenarray[i + 3].tokpos + 1;
 					len = strlen(newline);
 					pDst = &(newline[len]);
-					while (*pSrc != 0 && *pSrc != ')')
+					len = strlen(line) - 2;
+					while (pSrc < (tokenarray[0].tokpos + len) ) 
 						*pDst++ = *pSrc++;
+
 				}
 				else
 				{
@@ -298,29 +334,53 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 						pDst = &addrStr;
 						for (;len >= 0;len--)
 							*pDst++ = *pSrc++;
-						sprintf(newline, "%s _V(%s,%s,%s,", preline, addrStr, type->name, tokenarray[i + 2].string_ptr);
+						if(Options.vtable)
+							sprintf(newline, "%s _V(%s,%s,%s,", preline, addrStr, type->name, tokenarray[i + 2].string_ptr);
+						else
+							sprintf(newline, "%s _I(%s,%s,%s,", preline, type->name, tokenarray[i + 2].string_ptr, addrStr);
+						vCnt++;
+						if (vCnt > 1)
+							EmitErr(MAX_METHOD_NEST);
 					}
 					else
-						sprintf(newline, "%s _V(%s,%s,%s,", preline, sym->sym.name, type->name, tokenarray[i + 2].string_ptr);
+					{
+						if(Options.vtable)
+							sprintf(newline, "%s _V(%s,%s,%s,", preline, sym->sym.name, type->name, tokenarray[i + 2].string_ptr);
+						else
+							sprintf(newline, "%s _I(%s,%s,%s,", preline, type->name, tokenarray[i + 2].string_ptr, sym->sym.name);
+						vCnt++;
+						if (vCnt > 1)
+							EmitErr(MAX_METHOD_NEST);
+					}
 					pSrc = tokenarray[i + 3].tokpos + 1;
 					len = strlen(newline);
 					pDst = &(newline[len]);
+					len = strlen(line) - 1;
 					if (!ptrInvocation)
 					{
-						while (*pSrc != 0)
+						while (pSrc < tokenarray[0].tokpos + len)
 							*pDst++ = *pSrc++;
 					}
 					else
 					{
-						while (*pSrc != 0 && *pSrc != ')')
+						while (pSrc < tokenarray[0].tokpos + len)
 							*pDst++ = *pSrc++;
 					}
 				}
 			}
 		}
+		if (didReplace)
+		{
+			strcpy(line, &newline);
+			Token_Count = Tokenize(line, 0, tokenarray, TOK_RESCAN);
+			i = 0;
+			strcpy(&preline, line);
+			memset(&newline, 0, MAX_LINE_LEN);
+			didReplace = FALSE;
+		}
 	}
 
-	strcpy(line, &newline);
+	//strcpy(line, &newline);
 }
 
 static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam, int argIdx, bool inExpr)
@@ -636,7 +696,7 @@ int PreprocessLine( char *line, struct asm_tok tokenarray[] )
 			strcpy(line, &cline);
 			Token_Count = Tokenize(line, 0, tokenarray, TOK_RESCAN);
 		}
-		strcpy(&cline, line);
+		//strcpy(&cline, line);
 		ExpandHllCalls(&cline, tokenarray, FALSE, 0, FALSE);
 		if (strcmp(&cline, line) != 0)
 		{

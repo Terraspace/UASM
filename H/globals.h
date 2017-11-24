@@ -682,6 +682,7 @@ struct global_options {
 	bool        bnd;                     /* -mpx or option bnd */
 	uint_16     seg_align;               /* -Sp(n) set segment packing or alignment */
 	bool        literal_strings;         /* Allow use of literal strings in invoke and wide data dw declarations */
+	bool        vtable;                  /* Use vtable based method invocation */
 #if MANGLERSUPP
     enum naming_types naming_convention; /* OW naming peculiarities */
 #endif

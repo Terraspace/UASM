@@ -375,3 +375,4 @@ pick( PROC_USES_XMM, "USES SIMD register(s) only permitted on FRAME procedures" 
 pick( MACHO_NOT_64, "Output format -macho64 is only compatible with a 64bit module" )
 pick( MAX_C_NESTING, "Maximum nested call depth for C-Style calls exceeded" )
 pick( MAX_C_CALLS, "Only one HLL call is allowed per expression" )
+pick( MAX_METHOD_NEST, "Only one method invocation is allowed per expression" )

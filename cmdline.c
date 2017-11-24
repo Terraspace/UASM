@@ -149,6 +149,7 @@ struct global_options Options = {
 	/* MPX / BND             */     FALSE,
 	/* segment alignment     */     4,
 	/* literal_strings       */     FALSE,
+	/* vtable                */     TRUE,
 
 #if MANGLERSUPP
     /* naming_convention*/          NC_DO_NOTHING,
