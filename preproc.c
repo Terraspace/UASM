@@ -172,7 +172,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 			sym = SymSearch(tokenarray[i].string_ptr);
 			if ( sym && 
 				sym->sym.target_type &&
-				sym->sym.target_type > 0x1000 &&
+				sym->sym.target_type > 0x200000 &&
 				sym->sym.target_type->isClass )
 			{
 				// Found pointer operator.
@@ -185,7 +185,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 			else if (sym &&
 				sym->sym.type &&
 				sym->sym.type->target_type &&
-				sym->sym.type->target_type > 0x1000 &&
+				sym->sym.type->target_type > 0x200000 &&
 				sym->sym.type->target_type->isClass)
 			{
 				// Found pointer operator.
