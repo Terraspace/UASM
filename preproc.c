@@ -630,7 +630,7 @@ int PreprocessLine( char *line, struct asm_tok tokenarray[] )
 	if (!Options.nomlib)
 	{
 		strcpy(&cline, line);
-		ExpandObjCalls(&cline, tokenarray, FALSE, 0, FALSE);
+		ExpandObjCalls(&cline, tokenarray);
 		if (strcmp(&cline, line) != 0)
 		{
 			strcpy(line, &cline);
