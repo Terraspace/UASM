@@ -294,6 +294,54 @@ struct asym *SymFind(const char *name)
 	return(NULL);
 }
 
+struct asym *SymCheck(const char *name)
+	/**************************************/
+	/* find a symbol in the local/global symbol table,
+	* return NULL if not found.
+	* Note: lsym must be global, thus if the symbol isn't
+	* found and is to be added to the local table, there's no
+	* second scan necessary.
+	*/
+{
+	int i;
+	int len;
+	struct asym **clsym = lsym;
+	struct asym **cgsym = gsym;
+
+	len = strlen(name);
+	i = hashpjw(name);
+
+	if (CurrProc) {
+		for (clsym = &lsym_table[i % LHASH_TABLE_SIZE]; *clsym; clsym = &((*clsym)->nextitem)) {
+			if (len == (*clsym)->name_size && SYMCMP(name, (*clsym)->name, len) == 0)
+			{
+				if ((*clsym)->ttype && (*clsym)->ttype->e.structinfo)
+					structLookup = TRUE;
+				else
+				{
+					if (!structLookup)
+						(*clsym)->used = TRUE;
+					structLookup = FALSE;
+				}
+				return(*clsym);
+			}
+		}
+	}
+
+	for (cgsym = &gsym_table[i % GHASH_TABLE_SIZE]; *cgsym; cgsym = &((*cgsym)->nextitem)) {
+		if ((*cgsym)->name && len == (*cgsym)->name_size && SYMCMP(name, (*cgsym)->name, len) == 0)
+		{
+			if ((*cgsym)->ttype && (*cgsym)->ttype->e.structinfo)
+				structLookup = TRUE;
+			else
+				structLookup = FALSE;
+			return(*cgsym);
+		}
+	}
+
+	return(NULL);
+}
+
 struct asym *SymFindLocal(const char *name)
 	/**************************************/
 	/* find a symbol in the local symbol table,

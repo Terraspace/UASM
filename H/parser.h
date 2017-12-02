@@ -147,7 +147,7 @@ enum op1_flags {
  * EVEX.aaa  Embedded opmask register specifier P[18 : 16]
  * EVEX.W    Osize promotion/Opcode extension P[15]
  * EVEX.b    Broadcast/RC/SAE Context P[20]
- * EVEX.L’L  Vector length/RC P[22 : 21]
+ * EVEX.LL  Vector length/RC P[22 : 21]
  * EVEX.z    Zeroing/Merging P[23]
  */
 #define EVEX_P0RMASK    0x80 
@@ -345,6 +345,7 @@ struct code_info {
     unsigned char   sib;
     unsigned char   Ofssize;
     unsigned char   opc_or;
+    unsigned char   first_byte;        /* added for 2.46  for 0xC4 or 0xC5 */
     /* habran */
 #if AVXSUPP
     unsigned char   basetype;

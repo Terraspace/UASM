@@ -156,10 +156,6 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 	bool inProc = FALSE;
 	int vCnt = 0;
 
-	/* HLL c-style obj calls can only exist inside code sections */
-	if (CurrSeg && strcmp(CurrSeg->sym.name, "_TEXT") != 0)
-		return;
-
 	memset(&newline, 0, MAX_LINE_LEN);
 	memset(&addrStr, 0, MAX_LINE_LEN);
 	strcpy(&newline, line);
@@ -173,7 +169,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 		gotClose = FALSE;
 		if (tokenarray[i].token == T_ID)
 		{
-			sym = SymSearch(tokenarray[i].string_ptr);
+			sym = SymCheck(tokenarray[i].string_ptr);
 			if ( sym && 
 				sym->sym.target_type &&
 				sym->sym.target_type > 0x200000 &&
@@ -266,6 +262,10 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 					}
 				}
 
+				// Allow expansion in an instruction.
+				if (tokenarray[i - 1].token == T_COMMA)
+					inExpr = TRUE;
+
 				pSrc = tokenarray[0].tokpos;
 				if (!ptrInvocation)
 					j = tokenarray[i].tokpos - pSrc;
@@ -314,7 +314,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 					len = strlen(newline);
 					pDst = &(newline[len]);
 					len = strlen(line) - 2;
-					while (pSrc < (tokenarray[0].tokpos + len) ) 
+					while (pSrc < (tokenarray[0].tokpos + len))
 						*pDst++ = *pSrc++;
 
 				}
@@ -379,8 +379,6 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 			didReplace = FALSE;
 		}
 	}
-
-	//strcpy(line, &newline);
 }
 
 static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam, int argIdx, bool inExpr)
@@ -407,159 +405,155 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 	{
 		if (tokenarray[i].token == T_ID)
 		{
-			sym = SymSearch(tokenarray[i].string_ptr);
+			sym = SymCheck(tokenarray[i].string_ptr);
 			if(sym && sym->sym.isproc && tokenarray[i+1].tokval != T_PROC && tokenarray[i+1].tokval != T_PROTO && 
 				tokenarray[i+1].tokval != T_ENDP && tokenarray[i+1].tokval != T_EQU && tokenarray[i+1].token == T_OP_BRACKET) 
 			{ 
-				/* HLL c-style calls can only exist inside code sections */
-				if (CurrSeg && strcmp(CurrSeg->sym.name, "_TEXT") == 0)
-				{
 		
-					/* Scan backwards to check if we're in an HLL expression or call parameter */
-					if (i > 0)
+				/* Scan backwards to check if we're in an HLL expression or call parameter */
+				if (i > 0)
+				{
+					for (j = i - 1;j >= 0;j--)
 					{
-						for (j = i - 1;j >= 0;j--)
+						if (tokenarray[j].token == T_DIRECTIVE && (tokenarray[j].dirtype == DRT_HLLSTART || tokenarray[j].dirtype == DRT_HLLEND))
 						{
-							if (tokenarray[j].token == T_DIRECTIVE && (tokenarray[j].dirtype == DRT_HLLSTART || tokenarray[j].dirtype == DRT_HLLEND))
-							{
-								inExpr = TRUE;
-								if (tokenarray[j + 1].token == T_OP_BRACKET || tokenarray[j + 1].tokval == '(')
-									hasExprBracket = TRUE;
-								else
-									hasExprBracket = FALSE;
-								break;
-							}
-							else if ((tokenarray[j].token == T_DIRECTIVE && tokenarray[j].dirtype == DRT_INVOKE) ||
-								strcmp(tokenarray[j].string_ptr, "arginvoke") == 0 ||
-								strcmp(tokenarray[j].string_ptr, "_INVOKE") == 0 ||
-								strcmp(tokenarray[j].string_ptr, "_I") == 0 ||
-								strcmp(tokenarray[j].string_ptr, "_VINVOKE") == 0 ||
-								strcmp(tokenarray[j].string_ptr, "_V") == 0 ||
-								strcmp(tokenarray[j].string_ptr, "uinvoke") == 0)
-							{
-								inParam = TRUE;
-								break;
-							}
+							inExpr = TRUE;
+							if (tokenarray[j + 1].token == T_OP_BRACKET || tokenarray[j + 1].tokval == '(')
+								hasExprBracket = TRUE;
+							else
+								hasExprBracket = FALSE;
+							break;
+						}
+						else if ((tokenarray[j].token == T_DIRECTIVE && tokenarray[j].dirtype == DRT_INVOKE) ||
+							strcmp(tokenarray[j].string_ptr, "arginvoke") == 0 ||
+							strcmp(tokenarray[j].string_ptr, "_INVOKE") == 0 ||
+							strcmp(tokenarray[j].string_ptr, "_I") == 0 ||
+							strcmp(tokenarray[j].string_ptr, "_VINVOKE") == 0 ||
+							strcmp(tokenarray[j].string_ptr, "_V") == 0 ||
+							strcmp(tokenarray[j].string_ptr, "uinvoke") == 0)
+						{
+							inParam = TRUE;
+							break;
 						}
 					}
+				}
 
-					/* If we've identifed a Proc Name, there are several more cases where it must not be expanded */
-					if (i > 0 && (tokenarray[i - 1].token == T_COLON || tokenarray[i - 1].tokval == T_EQU ||  //(tokenarray[i - 1].token == T_COMMA && !inParam) ||
-						tokenarray[i - 1].tokval == T_INVOKE || tokenarray[i - 1].token == T_INSTRUCTION || tokenarray[i - 1].tokval == T_ADDR ||
-						tokenarray[i - 1].tokval == T_OFFSET || tokenarray[i - 1].tokval == T_PTR || tokenarray[i - 1].tokval == T_END || 
-						(tokenarray[i - 1].token == T_DIRECTIVE && tokenarray[i - 1].dirtype == DRT_DATADIR) || tokenarray[i - 1].token == T_UNARY_OPERATOR ||  tokenarray[i - 1].tokval == T_PROC ||
-						strcmp(tokenarray[i - 1].string_ptr,"arginvoke") == 0 || strcmp(tokenarray[i - 1].string_ptr, "@what") == 0)) continue;
+				/* If we've identifed a Proc Name, there are several more cases where it must not be expanded */
+				if (i > 0 && (tokenarray[i - 1].token == T_COLON || tokenarray[i - 1].tokval == T_EQU ||  //(tokenarray[i - 1].token == T_COMMA && !inParam) ||
+					tokenarray[i - 1].tokval == T_INVOKE || tokenarray[i - 1].token == T_INSTRUCTION || tokenarray[i - 1].tokval == T_ADDR ||
+					tokenarray[i - 1].tokval == T_OFFSET || tokenarray[i - 1].tokval == T_PTR || tokenarray[i - 1].tokval == T_END || 
+					(tokenarray[i - 1].token == T_DIRECTIVE && tokenarray[i - 1].dirtype == DRT_DATADIR) || tokenarray[i - 1].token == T_UNARY_OPERATOR ||  tokenarray[i - 1].tokval == T_PROC ||
+					strcmp(tokenarray[i - 1].string_ptr,"arginvoke") == 0 || strcmp(tokenarray[i - 1].string_ptr, "@what") == 0)) continue;
 					
-					// Allow expansion in an instruction.
-					if (tokenarray[i - 1].token == T_COMMA)
-						inExpr = TRUE;
+				// Allow expansion in an instruction.
+				if (tokenarray[i - 1].token == T_COMMA)
+					inExpr = TRUE;
 					
-					// Allow expansion in a memory address [].
-					if (i > 0)
+				// Allow expansion in a memory address [].
+				if (i > 0)
+				{
+					for (j = i - 1;j >= 0;j--)
 					{
-						for (j = i - 1;j >= 0;j--)
+						if (tokenarray[j].token == T_OP_SQ_BRACKET)
 						{
-							if (tokenarray[j].token == T_OP_SQ_BRACKET)
-							{
-								inExpr = TRUE;
-								break;
-							}
+							inExpr = TRUE;
+							break;
 						}
 					}
+				}
 
-					/* Verify c-style procedure call has matching brackets */
-					opIdx = i + 1;
-					clIdx = VerifyBrackets(tokenarray, opIdx, inParam);
-					if (clIdx == -1)
-						return;
+				/* Verify c-style procedure call has matching brackets */
+				opIdx = i + 1;
+				clIdx = VerifyBrackets(tokenarray, opIdx, inParam);
+				if (clIdx == -1)
+					return;
 					
-					expandedCall = TRUE;
+				expandedCall = TRUE;
 
-					if (!inParam && !inExpr)
+				if (!inParam && !inExpr)
+				{
+					/* Shift all the tokens up to remove the close bracket and make space for invoke */
+					for (j = clIdx; j > i; j--)
+						tokenarray[j] = tokenarray[j - 1];
+
+					if (clIdx > opIdx + 1)
 					{
-						/* Shift all the tokens up to remove the close bracket and make space for invoke */
-						for (j = clIdx; j > i; j--)
-							tokenarray[j] = tokenarray[j - 1];
+						tokenarray[clIdx + 1].token = T_FINAL;
+						tokenarray[opIdx + 1].string_ptr = ",";
+						tokenarray[opIdx + 1].token = T_COMMA;
+					}
+					/* Proc with no params */
+					else
+					{
+						tokenarray[opIdx + 1].string_ptr = "";
+						tokenarray[opIdx + 1].token = T_FINAL;
+					}
+					tokenarray[i].token = T_DIRECTIVE;
+					tokenarray[i].tokval = T_INVOKE;
+					tokenarray[i].dirtype = DRT_INVOKE;
+					tokenarray[i].string_ptr = "invoke";
+				}
+				else
+				{
+					/* Shift all the tokens up to remove the close bracket and make space for invoke */
+					for (j = Token_Count; j > i; j--)
+						tokenarray[j] = tokenarray[j - 1];
 
-						if (clIdx > opIdx + 1)
-						{
-							tokenarray[clIdx + 1].token = T_FINAL;
-							tokenarray[opIdx + 1].string_ptr = ",";
-							tokenarray[opIdx + 1].token = T_COMMA;
-						}
-						/* Proc with no params */
-						else
-						{
-							tokenarray[opIdx + 1].string_ptr = "";
-							tokenarray[opIdx + 1].token = T_FINAL;
-						}
-						tokenarray[i].token = T_DIRECTIVE;
-						tokenarray[i].tokval = T_INVOKE;
-						tokenarray[i].dirtype = DRT_INVOKE;
-						tokenarray[i].string_ptr = "invoke";
+					/* Shift all the tokens up to add new open bracket */
+					for (j = Token_Count+1; j > i; j--)
+						tokenarray[j] = tokenarray[j - 1];
+
+					Token_Count+=2;
+					tokenarray[Token_Count].string_ptr = "";
+					tokenarray[Token_Count].token = T_FINAL;
+					if (clIdx > opIdx + 1)
+					{
+						tokenarray[opIdx + 2].string_ptr = ",";
+						tokenarray[opIdx + 2].token = T_COMMA;
 					}
 					else
 					{
-						/* Shift all the tokens up to remove the close bracket and make space for invoke */
-						for (j = Token_Count; j > i; j--)
-							tokenarray[j] = tokenarray[j - 1];
-
-						/* Shift all the tokens up to add new open bracket */
-						for (j = Token_Count+1; j > i; j--)
-							tokenarray[j] = tokenarray[j - 1];
-
-						Token_Count+=2;
-						tokenarray[Token_Count].string_ptr = "";
-						tokenarray[Token_Count].token = T_FINAL;
-						if (clIdx > opIdx + 1)
-						{
-							tokenarray[opIdx + 2].string_ptr = ",";
-							tokenarray[opIdx + 2].token = T_COMMA;
-						}
-						else
-						{
-							tokenarray[opIdx + 2].string_ptr = " ";
-						}
-						tokenarray[i].token = T_ID;
-						tokenarray[i].tokval = 0;
-						tokenarray[i].dirtype = 0;
-						if (inExpr && !inParam)
-						{
-							tokenarray[i].string_ptr = "uinvoke";
-							tokenarray[i + 1].string_ptr = "(";
-							tokenarray[i + 1].token = '(';
-							uCnt++; // Increment count of uinvokes, as we only allow 1 per expression.
-							if (uCnt > 1)
-							{
-								EmitErr(MAX_C_CALLS);
-							}
-						}
-						else if (inParam)
-						{
-							tokenarray[i].string_ptr = "arginvoke(%%,%%,";
-							tokenarray[i + 1].string_ptr = ""; 
-							tokenarray[i + 1].token = 0; 
-						}
+						tokenarray[opIdx + 2].string_ptr = " ";
 					}
-					
-					i += 2;
-					
-					/* Rebuild string */
-					for (j = 0;j <= Token_Count; j++)
+					tokenarray[i].token = T_ID;
+					tokenarray[i].tokval = 0;
+					tokenarray[i].dirtype = 0;
+					if (inExpr && !inParam)
 					{
-						strcpy(p, tokenarray[j].string_ptr);
-						tokenarray[j].tokpos = p;
-						p += strlen(tokenarray[j].string_ptr);
-						if (j == 0 || tokenarray[j].tokval == T_ADDR || tokenarray[j].tokval == T_OFFSET)
+						tokenarray[i].string_ptr = "uinvoke";
+						tokenarray[i + 1].string_ptr = "(";
+						tokenarray[i + 1].token = '(';
+						uCnt++; // Increment count of uinvokes, as we only allow 1 per expression.
+						if (uCnt > 1)
 						{
-							strcpy(p, " ");
-							p++;
+							EmitErr(MAX_C_CALLS);
 						}
 					}
-
-					/* Reset string pointer*/
-					p = &newline;
+					else if (inParam)
+					{
+						tokenarray[i].string_ptr = "arginvoke(%%,%%,";
+						tokenarray[i + 1].string_ptr = ""; 
+						tokenarray[i + 1].token = 0; 
+					}
 				}
+					
+				i += 2;
+					
+				/* Rebuild string */
+				for (j = 0;j <= Token_Count; j++)
+				{
+					strcpy(p, tokenarray[j].string_ptr);
+					tokenarray[j].tokpos = p;
+					p += strlen(tokenarray[j].string_ptr);
+					if (j == 0 || tokenarray[j].tokval == T_ADDR || tokenarray[j].tokval == T_OFFSET)
+					{
+						strcpy(p, " ");
+						p++;
+					}
+				}
+
+				/* Reset string pointer*/
+				p = &newline;			
 			}
 		}
 	}
@@ -617,6 +611,36 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 	strcpy(line, &newline);
 }
 
+static bool PossibleCallExpansion(struct asm_tok tokenarray[])
+{
+	bool result = FALSE;
+	bool gotOp = FALSE;
+	bool gotCl = FALSE;
+	int i = 0;
+	for (i = 0;i < Token_Count;i++)
+	{
+		if (tokenarray[i].token == T_POINTER)
+		{
+			result = TRUE;
+			break;
+		}
+		if (tokenarray[i].token == T_OP_BRACKET && i > 0)
+		{
+			if (tokenarray[i - 1].token == T_ID)
+			{
+				gotOp = TRUE;
+			}
+		}
+		if (tokenarray[i].token == T_CL_BRACKET)
+			gotCl = TRUE;
+	}
+
+	if (gotOp && gotCl)
+		result = TRUE;
+
+	return(result);
+}
+
 /*
 Perform evaluation of any items required before pre-processing (ie: substitution or macro expansion).
 -> Evaluation of inline RECORD items to allow them to be handled by invoke/macros etc.
@@ -635,7 +659,7 @@ void EvaluatePreprocessItems(char *line, struct asm_tok tokenarray[])
 		/* only a token of type ID could possibly be an inline record */
 		if (tokenarray[i].token == T_ID)
 		{
-			recsym = SymSearch(tokenarray[i].string_ptr);
+			recsym = SymCheck(tokenarray[i].string_ptr);
 			if (recsym && recsym->sym.typekind == TYPE_RECORD && CurrProc)
 			{
 				if (EvalOperand(&i, tokenarray, Token_Count, &opndx[0], 0) == ERROR)
@@ -689,19 +713,22 @@ int PreprocessLine( char *line, struct asm_tok tokenarray[] )
 
 	if (!Options.nomlib)
 	{
-		strcpy(&cline, line);
-		ExpandObjCalls(&cline, tokenarray);
-		if (strcmp(&cline, line) != 0)
+		// Hll and Object style call expansion is only valid inside a code section, AND if the line contains ( ) or ->.
+		if (CurrSeg && (strcmp(CurrSeg->sym.name, "_TEXT") == 0 || strcmp(CurrSeg->sym.name, "_flat") == 0) && PossibleCallExpansion( tokenarray ))
 		{
-			strcpy(line, &cline);
-			Token_Count = Tokenize(line, 0, tokenarray, TOK_RESCAN);
-		}
-		//strcpy(&cline, line);
-		ExpandHllCalls(&cline, tokenarray, FALSE, 0, FALSE);
-		if (strcmp(&cline, line) != 0)
-		{
-			strcpy(line, &cline);
-			Token_Count = Tokenize(line, 0, tokenarray, TOK_RESCAN);
+			strcpy(&cline, line);
+			ExpandObjCalls(&cline, tokenarray);
+			if (strcmp(&cline, line) != 0)
+			{
+				strcpy(line, &cline);
+				Token_Count = Tokenize(line, 0, tokenarray, TOK_RESCAN);
+			}
+			ExpandHllCalls(&cline, tokenarray, FALSE, 0, FALSE);
+			if (strcmp(&cline, line) != 0)
+			{
+				strcpy(line, &cline);
+				Token_Count = Tokenize(line, 0, tokenarray, TOK_RESCAN);
+			}
 		}
 	}
 	EvaluatePreprocessItems( line, tokenarray );

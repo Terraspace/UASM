@@ -917,11 +917,6 @@ static void PassOneChecks( void )
     if( ModuleInfo.EndDirFound == FALSE  && Options.output_format != OFORMAT_BIN)
         EmitError( END_DIRECTIVE_REQUIRED );
 
-#ifdef DEBUG_OUT
-    for ( curr = SymTables[TAB_UNDEF].head; curr; curr = curr->next ) {
-        DebugMsg(("PassOneChecks: undefined symbol %s\n", curr->sym.name ));
-    }
-#endif
     /* v2.04: check the publics queue.
      * - only internal symbols can be public.
      * - weak external symbols are filtered ( since v2.11 )

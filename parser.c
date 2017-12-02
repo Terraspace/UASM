@@ -3165,6 +3165,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 	  ModuleInfo.Ofssize = USE16;
 	  ModuleInfo.wordsize = 2;
 	  ModuleInfo.defOfssize = USE16;
+	  ModuleInfo.sub_format = SFORMAT_NONE;
 	  ModuleInfo.basereg[ModuleInfo.Ofssize] = T_SP;
 	  if (ModuleInfo.currseg)
 	  {
@@ -3179,7 +3180,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 		  CurrSeg->sym.segment->Ofssize = USE16;
 		  CurrSeg->sym.Ofssize = USE16;
 	  }
-	  sym = SymSearch("_flat");
+	  sym = SymCheck("_flat");
 	  if (sym)
 	  {
 		  sym->isdefined = TRUE;
@@ -3197,6 +3198,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 	  ModuleInfo.Ofssize = USE32;
 	  ModuleInfo.wordsize = 4;
 	  ModuleInfo.defOfssize = USE32;
+	  ModuleInfo.sub_format = SFORMAT_NONE;
 	  ModuleInfo.basereg[ModuleInfo.Ofssize] = T_ESP;
 	  if (ModuleInfo.currseg)
 	  {
@@ -3211,7 +3213,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 		  CurrSeg->sym.segment->Ofssize = USE32;
 		  CurrSeg->sym.Ofssize = USE32;
 	  }
-	  sym = SymSearch("_flat");
+	  sym = SymCheck("_flat");
 	  if (sym)
 	  {
 		  sym->isdefined = TRUE;
@@ -3229,12 +3231,14 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 	  ModuleInfo.Ofssize = USE64;
 	  ModuleInfo.wordsize = 8;
 	  ModuleInfo.defOfssize = USE64;
+	  ModuleInfo.sub_format = SFORMAT_NONE;
 	  ModuleInfo.basereg[ModuleInfo.Ofssize] = T_RSP;
 	  if (ModuleInfo.currseg)
 	  {
 		  ModuleInfo.currseg->e.seginfo->Ofssize = USE64;
 		  ModuleInfo.currseg->e.seginfo->segtype = SEGTYPE_CODE;
 		  ModuleInfo.currseg->sym.segment->Ofssize = USE64;
+		  ModuleInfo.currseg->e.seginfo->alignment = 12;
 	  }
 	  if (CurrSeg)
 	  {
@@ -3242,8 +3246,9 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 		  CurrSeg->e.seginfo->segtype = SEGTYPE_CODE;
 		  CurrSeg->sym.segment->Ofssize = USE64;
 		  CurrSeg->sym.Ofssize = USE64;
+		  CurrSeg->e.seginfo->alignment = 12;
 	  }
-	  sym = SymSearch("_flat");
+	  sym = SymCheck("_flat");
 	  if (sym)
 	  {
 		  sym->isdefined = TRUE;
@@ -3294,39 +3299,6 @@ ret_code ParseLine(struct asm_tok tokenarray[])
       return(NOT_ERROR);
     }
   }
-  /* John: added support for code labels starting with a period v2.17 */
-  if ((tokenarray[0].token == T_DOT && tokenarray[1].token == T_ID && (tokenarray[2].token == T_COLON || tokenarray[2].token == T_DBL_COLON))) {
-	 i = 3;
-	  
-	  pnlbl = malloc(strlen(tokenarray[1].string_ptr) + 2);
-	  sprintf(pnlbl, "%s%s", ".", tokenarray[1].string_ptr);
-
-	  DebugMsg1(("ParseLine T_COLON, code label=%s\n", pnlbl));
-	  if (ProcStatus & PRST_PROLOGUE_NOT_DONE) write_prologue(tokenarray);
-
-	  /* create a global or local code label */
-	  if (CreateLabel(pnlbl, MT_NEAR, NULL,
-		  (ModuleInfo.scoped && CurrProc && tokenarray[2].token != T_DBL_COLON)) == NULL) {
-		  DebugMsg(("ParseLine, CreateLabel(%s) failed, exit\n", pnlbl));
-		  return(ERROR);
-	  }
-	  if (tokenarray[i].token == T_FINAL) {
-		  /* v2.06: this is a bit too late. Should be done BEFORE
-		  * CreateLabel, because of '@@'. There's a flag supposed to
-		  * be used for this handling, LOF_STORED in line_flags.
-		  * It's only a problem if a '@@:' is the first line
-		  * in the code section.
-		  * v2.10: is no longer an issue because the label counter has
-		  * been moved to module_vars (see global.h).
-		  */
-		  FStoreLine(0);
-		  if (CurrFile[LST]) {
-			  LstWrite(LSTTYPE_LABEL, 0, NULL);
-		  }
-		  return(NOT_ERROR);
-	  }
-  }
-
 
   /* handle directives and (anonymous) data items */
   if (tokenarray[i].token != T_INSTRUCTION) {

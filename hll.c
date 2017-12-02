@@ -1472,11 +1472,6 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
   int                  cmd = tokenarray[i].tokval;
   char buff[16];
   char buffer[MAX_LINE_LEN * 2];
-  //char codebuff[256];
-  //char param[256];
-  //char init[256];
-  //char limit[MAX_LINE_LEN];
-  //char op[4];
   char forbuff[MAX_LINE_LEN];
   char forbuffinit[MAX_LINE_LEN];
   char forbuffcond[MAX_LINE_LEN];
@@ -1820,7 +1815,6 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
 ret_code HllEndDir(int i, struct asm_tok tokenarray[])
 /******************************************************/
   {
-  //struct asym       *sym;
   struct hll_item     *hll;
   ret_code            rc = NOT_ERROR;
   int                 cmd = tokenarray[i].tokval;

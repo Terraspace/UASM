@@ -10,7 +10,7 @@ OPTION CASEMAP:NONE
 OPTION WIN64:7				; 11/15 for RSP and 1-7 for RBP.
 OPTION STACKBASE:RBP		; RSP or RBP are supported options for the stackbase.
 OPTION LITERALS:ON
-OPTION VTABLE:OFF			; [ON/OFF] dictates whether c-style method invocations use the vtable (slower but method pointers can be modified) or the (faster but fixed) direct invocation.
+OPTION VTABLE:ON			; [ON/OFF] dictates whether c-style method invocations use the vtable (slower but method pointers can be modified) or the (faster but fixed) direct invocation.
 
   	.nolist
     .nocref
@@ -258,6 +258,16 @@ albl:  person1->Calc(1.0)
 	NormalProc( person1->Calc(1.0) )		; Pass the typed result of a method call to a normal procedure.
 	person1->Calc( NormalProc(1.0) )		; Pass the typed result of a normal procedure to a method call.
 	person2->DoAdd( 1.0, NormalProc(2.0) )	
+
+	; ERROR : Only one object invocation per expression
+	.if( person1->Calc( person2->Calc(1.0) ) == FP4(1.0) )
+		xor eax,eax
+	.endif
+
+	; ERROR : Only one object invocation per expression
+	.if (person1->Calc(1.0) == person2->Calc(1.0))
+		xor eax,eax
+	.endif
 
     ; Delete the objects.
     _DELETE(person1)

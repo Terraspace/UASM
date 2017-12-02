@@ -1,0 +1,1 @@
+"C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\VC\Tools\MSVC\14.10.25017\bin\HostX86\x64\link.exe" /subsystem:windows /machine:x64 /debug /Libpath:"d:\winsdk\v7.1\Lib\x64" oo1.obj

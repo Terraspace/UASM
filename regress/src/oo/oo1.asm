@@ -34,8 +34,8 @@ IFNDEF _CLASS_PERSON_
 _CLASS_PERSON_ EQU 1
 
 OINTERFACE Entity
-	CVIRTUAL PrintName
-	CVIRTUAL SetName
+	CVIRTUAL PrintName, <>
+	CVIRTUAL SetName, <>
 ENDOINTERFACE
 
 ;---------------------------------------------------------------------------------------------------------------

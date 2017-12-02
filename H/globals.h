@@ -904,7 +904,7 @@ struct module_info {
 #define CurrWordSize    ModuleInfo.wordsize
 
 #define H_LONG_MIN    (-2147483647L - 1) // minimum (signed) long value
-#define H_LONG_MAX      2147483647L   // maximum (signed) long value
+#define H_LONG_MAX      2147483647L      // maximum (signed) long value
 
 struct format_options {
     void (*init)( struct module_info * );
