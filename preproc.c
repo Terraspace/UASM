@@ -702,7 +702,6 @@ void EvaluatePreprocessItems(char *line, struct asm_tok tokenarray[])
 				if (EvalOperand(&i, tokenarray, Token_Count, &opndx[0], 0) == ERROR)
 				{
 					EmitErr(INVALID_INSTRUCTION_OPERANDS);
-					return(FALSE);
 				}
 			}
 			if (recsym)
