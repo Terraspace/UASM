@@ -23,6 +23,8 @@ for %%f in (..\src\coffdbg\*.asm) do call :cmpcoffdbg %%f
 for %%f in (..\src\oo\*.asm) do call :cmpoo %%f
 for %%f in (..\src\ooerr\*.asm) do call :cmpooerr %%f
 for %%f in (..\src\literals\*.asm) do call :cmpliterals %%f
+for %%f in (..\src\linux64\*.asm) do call :cmplinux64 %%f
+for %%f in (..\src\macho64\*.asm) do call :cmpmacho64 %%f
 
 cd ..
 echo .
@@ -139,6 +141,31 @@ echo .
 echo .
 %ASMX% -q -win64 -Zp8 %1
 %FCMP% /O16 %~n1.obj ..\exp\literals\%~n1.obj
+if errorlevel 1 goto end
+del %~n1.obj
+goto end
+
+:cmplinux64
+echo ****************************************************************
+ECHO %1
+echo ****************************************************************
+echo .
+echo .
+%ASMX% -q -elf64 %1
+%FCMP% /O16 %~n1.obj ..\exp\linux64\%~n1.o
+if errorlevel 1 goto end
+del %~n1.obj
+goto end
+
+
+:cmpmacho64
+echo ****************************************************************
+ECHO %1
+echo ****************************************************************
+echo .
+echo .
+%ASMX% -q -macho64 %1
+%FCMP% /O16 %~n1.obj ..\exp\macho64\%~n1.o
 if errorlevel 1 goto end
 del %~n1.obj
 goto end
