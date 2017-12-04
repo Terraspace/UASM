@@ -277,6 +277,7 @@ struct asym {
 		struct dsym *ttype;       /* for easier debugging */
 	};
 	bool isClass;
+	bool isCOM;
 };
 
 /*---------------------------------------------------------------------------*/

@@ -35,6 +35,7 @@ res( EXCFRAME,  ExcFrameDirective )
 #endif
 res( STRUCT,    StructDirective )
 res( CSTRUCT,   CStructDirective )
+res( COMSTRUCT, COMStructDirective )
 res( TYPEDEF,   TypedefDirective )
 res( RECORD,    RecordDirective )
 res( COMM,      CommDirective )

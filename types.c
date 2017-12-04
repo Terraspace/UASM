@@ -577,6 +577,227 @@ ret_code CStructDirective(int i, struct asm_tok tokenarray[])
 }
 
 
+/* Handle special COMSTRUCT directive, internal only.. this is identical to STRUCT but flags the struct as isClass and isCOM */
+ret_code COMStructDirective(int i, struct asm_tok tokenarray[])
+/************************************************************/
+{
+	char *name;
+	unsigned alignment;
+	uint_32 offset;
+	uint_8 typekind = (tokenarray[i].tokval == T_UNION ? TYPE_UNION : TYPE_STRUCT);
+	struct asym *sym;
+	struct dsym *dir;
+
+	DebugMsg1(("COMStructDirective(%s) enter, i=%u, CurrStruct=%s\n", tokenarray[i].string_ptr, i, CurrStruct ? CurrStruct->sym.name : "NULL"));
+
+	/* top level structs/unions must have an identifier at pos 0.
+	* for embedded structs, the directive must be at pos 0,
+	* an identifier is optional then.
+	*/
+	if ((CurrStruct == NULL && i != 1) ||
+		(CurrStruct != NULL && i != 0)) {
+		DebugMsg(("COMStructDirective(%s): error: either currstruct or i must be 0\n", tokenarray[i].string_ptr));
+		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
+	}
+
+	alignment = (1 << ModuleInfo.fieldalign);
+
+	i++; /* go past STRUCT/UNION */
+
+	if (i == 1) { /* embedded struct? */
+				  /* scan for the optional name */
+#if ANYNAME
+				  /* the name might be a reserved word!
+				  * Masm won't allow those.
+				  */
+				  //if ( tokenarray[i].token != T_FINAL && is_valid_id_first_char(*(tokenarray[i].string_ptr) ) ) {
+#else
+		if (tokenarray[i].token == T_ID) {
+#endif
+			name = tokenarray[i].string_ptr;
+			i++;
+		}
+		else {
+			name = "";
+		}
+	}
+	else {
+		name = tokenarray[0].string_ptr;
+	}
+
+	/* get an optional alignment argument: 1,2,4,8,16 or 32 */
+	if (CurrStruct == NULL && tokenarray[i].token != T_FINAL) {
+		int power;
+		struct expr opndx;
+		/* get the optional alignment parameter.
+		* forward references aren't accepted, but EXPF_NOUNDEF isn't used here!
+		*/
+		if (EvalOperand(&i, tokenarray, Token_Count, &opndx, 0) != ERROR) {
+			/* an empty expression is accepted */
+			if (opndx.kind == EXPR_EMPTY) {
+				;
+			}
+			else if (opndx.kind != EXPR_CONST) {
+				/* v2.09: better error msg */
+				if (opndx.sym && opndx.sym->state == SYM_UNDEFINED)
+					EmitErr(SYMBOL_NOT_DEFINED, opndx.sym->name);
+				else
+					EmitError(CONSTANT_EXPECTED);
+			}
+			else if (opndx.value > MAX_STRUCT_ALIGN) {
+				EmitError(STRUCT_ALIGN_TOO_HIGH);
+			}
+			else {
+				for (power = 1; power < opndx.value; power <<= 1);
+				if (power != opndx.value) {
+					EmitErr(POWER_OF_2, opndx.value);
+				}
+				else
+					alignment = opndx.value;
+			}
+			DebugMsg1(("StructDirective(%s) alignment=%u\n", name, alignment));
+		}
+		/* there might also be the NONUNIQUE parameter */
+		if (tokenarray[i].token == T_COMMA) {
+			i++;
+			if (tokenarray[i].token == T_ID &&
+				(_stricmp(tokenarray[i].string_ptr, szNonUnique) == 0)) {
+				/* currently NONUNIQUE is ignored */
+				EmitWarn(2, TOKEN_IGNORED, szNonUnique);
+				i++;
+			}
+		}
+	}
+	if (tokenarray[i].token != T_FINAL) {
+		DebugMsg(("StructDirective(%s): error: unexpected token %u >%s<\n", tokenarray[i].token, tokenarray[i].tokpos));
+		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
+	}
+
+	/* does struct have a name? */
+	if (*name) {
+		if (CurrStruct == NULL) {
+			/* the "top-level" struct is part of the global namespace */
+			sym = SymSearch(name);
+			if (sym)
+			{
+				sym->isClass = TRUE;
+				sym->isCOM = TRUE;
+			}
+			DebugMsg1(("StructDirective: SymSearch (%s)=%X (curr struct=%X)\n", name, sym, CurrStruct));
+		}
+		else {
+			sym = SearchNameInStruct((struct asym *)CurrStruct, name, &offset, 0);
+			DebugMsg1(("StructDirective(%s): SearchNameInStruc()=%X\n", name, sym));
+		}
+	}
+	else {
+		sym = NULL;   /* anonymous struct */
+	}
+
+	if (ModuleInfo.list) {
+		if (CurrStruct)
+			LstWrite(LSTTYPE_STRUCT, CurrStruct->sym.total_size, NULL);
+		else
+			LstWrite(LSTTYPE_STRUCT, 0, NULL);
+	}
+
+	/* if pass is > 1, update struct stack + CurrStruct.offset and exit */
+	if (Parse_Pass > PASS_1) {
+		/* v2.04 changed. the previous implementation was insecure.
+		* See also change in data.c, behind CreateStructField().
+		*/
+		if (CurrStruct) {
+			sym = CurrStruct->e.structinfo->tail->sym.type;
+			/**/myassert(sym);
+			CurrStruct->e.structinfo->tail = CurrStruct->e.structinfo->tail->next;
+		}
+		/**/myassert(sym);
+		dir = (struct dsym *)sym;
+		dir->e.structinfo->tail = dir->e.structinfo->head;
+		sym->offset = 0;
+		sym->isdefined = TRUE;
+		((struct dsym *)sym)->next = CurrStruct;
+		CurrStruct = (struct dsym *)sym;
+		return(NOT_ERROR);
+	}
+
+	if (sym == NULL) {
+
+		/* embedded or global STRUCT? */
+		if (CurrStruct == NULL)
+		{
+			sym = CreateTypeSymbol(NULL, name, TRUE);
+			sym->isClass = TRUE;
+			sym->isCOM = TRUE;
+		}
+		else {
+			/* an embedded struct is split in an anonymous STRUCT type
+			* and a struct field with/without name
+			*/
+			sym = CreateTypeSymbol(NULL, name, FALSE);
+			sym->isClass = TRUE;
+			sym->isCOM = TRUE;
+			/* v2: don't create the struct field here. First the
+			* structure must be read in ( because of alignment issues
+			*/
+			// sym = CreateStructField( name_loc, -1, MT_TYPE, dir, 0 );
+
+			alignment = CurrStruct->e.structinfo->alignment;
+		}
+
+	}
+	else if (sym->state == SYM_UNDEFINED) {
+
+		/* forward reference */
+		CreateTypeSymbol(sym, NULL, CurrStruct == NULL);
+
+	}
+	else if (sym->state == SYM_TYPE && CurrStruct == NULL) {
+
+		switch (sym->typekind) {
+		case TYPE_STRUCT:
+		case TYPE_UNION:
+			/* if a struct is redefined as a union ( or vice versa )
+			* do accept the directive and just check if the redefinition
+			* is compatible (usually it isn't) */
+			redef_struct = (struct dsym *)sym;
+			sym = CreateTypeSymbol(NULL, name, FALSE);
+			break;
+		case TYPE_NONE:  /* TYPE_NONE is forward reference */
+			break;
+		default:
+			return(EmitErr(SYMBOL_REDEFINITION, sym->name));
+		}
+
+	}
+	else {
+		return(EmitErr(SYMBOL_REDEFINITION, sym->name));
+	}
+
+	sym->offset = 0;
+	sym->typekind = typekind;
+	dir = (struct dsym *)sym;
+	dir->e.structinfo->alignment = (uint_8)alignment;
+	dir->e.structinfo->isOpen = TRUE;
+	if (CurrStruct)
+		dir->e.structinfo->isInline = TRUE;
+
+	dir->next = CurrStruct;
+	CurrStruct = dir;
+
+#if 0 //def DEBUG_OUT
+	{
+		struct dsym *struc;
+		for (struc = CurrStruct; struc; struc = struc->next) {
+			DebugMsg(("StructDirective stack: %X, name=>%s<\n", struc, struc->sym.name));
+		}
+	}
+#endif
+
+	return(NOT_ERROR);
+}
+
+
 /* handle ENDS directive when a struct/union definition is active */
 ret_code EndstructDirective( int i, struct asm_tok tokenarray[] )
 /***************************************************************/

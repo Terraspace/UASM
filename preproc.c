@@ -217,11 +217,24 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 			if (foundType)
 			{
 
+				// Trim line end of spaces and tabs.
 				len = strlen(line);
 				for (j = len - 1; j >= 0; j--)
 				{
 					if (line[j] == 0x09 || line[j] == ' ')
 						line[j] = 0;
+					else
+						break;
+				}
+				len = strlen(line);
+				for (j = 0; j < len; j++)
+				{
+					if (line[j] == 0x09 || line[j] == ' ')
+					{
+						line++;
+						j--;
+						len--;
+					}
 					else
 						break;
 				}
@@ -245,7 +258,9 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 						else if ((tokenarray[j].token == T_DIRECTIVE && tokenarray[j].dirtype == DRT_INVOKE) ||
 							strcmp(tokenarray[j].string_ptr, "arginvoke") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "_VINVOKE") == 0 ||
+							strcmp(tokenarray[j].string_ptr, "_VCOMINVOKE") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "_V") == 0 ||
+							strcmp(tokenarray[j].string_ptr, "_VCOM") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "_INVOKE") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "_I") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "uinvoke") == 0)
@@ -266,6 +281,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 				if (tokenarray[i - 1].token == T_COMMA)
 					inExpr = TRUE;
 
+				// Copy the full line as written up to the occurence of the type.
 				pSrc = tokenarray[0].tokpos;
 				if (!ptrInvocation)
 					j = tokenarray[i].tokpos - pSrc;
@@ -298,22 +314,32 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 						pDst = &addrStr;
 						for (;len >= 0;len--)
 							*pDst++ = *pSrc++;
-						if(Options.vtable)
-							sprintf(newline, "%s _VINVOKE %s,%s,%s,", preline, addrStr, type->name, tokenarray[i + 2].string_ptr);
+						if (Options.vtable || type->isCOM)
+						{
+							if(type->isCOM)
+								sprintf(newline, "%s _VCOMINVOKE %s,%s,%s,", preline, addrStr, type->name, tokenarray[i + 2].string_ptr);
+							else
+								sprintf(newline, "%s _VINVOKE %s,%s,%s,", preline, addrStr, type->name, tokenarray[i + 2].string_ptr);
+						}
 						else
 							sprintf(newline, "%s _INVOKE %s,%s,%s,", preline, type->name, tokenarray[i + 2].string_ptr, addrStr);
 					}
 					else
 					{
-						if(Options.vtable)
-							sprintf(newline, "%s _VINVOKE %s,%s,%s,", preline, sym->sym.name, type->name, tokenarray[i + 2].string_ptr);
+						if (Options.vtable || type->isCOM)
+						{
+							if(type->isCOM)
+								sprintf(newline, "%s _VCOMINVOKE %s,%s,%s,", preline, sym->sym.name, type->name, tokenarray[i + 2].string_ptr);
+							else
+								sprintf(newline, "%s _VINVOKE %s,%s,%s,", preline, sym->sym.name, type->name, tokenarray[i + 2].string_ptr);
+						}
 						else
 							sprintf(newline, "%s _INVOKE %s,%s,%s,", preline, type->name, tokenarray[i + 2].string_ptr, sym->sym.name);
 					}
 					pSrc = tokenarray[i + 3].tokpos + 1;
 					len = strlen(newline);
 					pDst = &(newline[len]);
-					len = strlen(line) - 2;
+					len = strlen(line) - 1;
 					while (pSrc < (tokenarray[0].tokpos + len))
 						*pDst++ = *pSrc++;
 
@@ -334,8 +360,13 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 						pDst = &addrStr;
 						for (;len >= 0;len--)
 							*pDst++ = *pSrc++;
-						if(Options.vtable)
-							sprintf(newline, "%s _V(%s,%s,%s,", preline, addrStr, type->name, tokenarray[i + 2].string_ptr);
+						if (Options.vtable || type->isCOM)
+						{
+							if (type->isCOM)
+								sprintf(newline, "%s _VCOM(%s,%s,%s,", preline, addrStr, type->name, tokenarray[i + 2].string_ptr);
+							else
+								sprintf(newline, "%s _V(%s,%s,%s,", preline, addrStr, type->name, tokenarray[i + 2].string_ptr);
+						}
 						else
 							sprintf(newline, "%s _I(%s,%s,%s,", preline, type->name, tokenarray[i + 2].string_ptr, addrStr);
 						vCnt++;
@@ -344,8 +375,13 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 					}
 					else
 					{
-						if(Options.vtable)
-							sprintf(newline, "%s _V(%s,%s,%s,", preline, sym->sym.name, type->name, tokenarray[i + 2].string_ptr);
+						if (Options.vtable || type->isCOM)
+						{
+							if(type->isCOM)
+								sprintf(newline, "%s _VCOM(%s,%s,%s,", preline, sym->sym.name, type->name, tokenarray[i + 2].string_ptr);
+							else
+								sprintf(newline, "%s _V(%s,%s,%s,", preline, sym->sym.name, type->name, tokenarray[i + 2].string_ptr);
+						}
 						else
 							sprintf(newline, "%s _I(%s,%s,%s,", preline, type->name, tokenarray[i + 2].string_ptr, sym->sym.name);
 						vCnt++;
@@ -355,14 +391,15 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 					pSrc = tokenarray[i + 3].tokpos + 1;
 					len = strlen(newline);
 					pDst = &(newline[len]);
-					len = strlen(line) - 1;
 					if (!ptrInvocation)
 					{
+						len = strlen(line);
 						while (pSrc < tokenarray[0].tokpos + len)
 							*pDst++ = *pSrc++;
 					}
 					else
 					{
+						len = strlen(line) - 1;
 						while (pSrc < tokenarray[0].tokpos + len)
 							*pDst++ = *pSrc++;
 					}

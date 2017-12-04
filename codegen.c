@@ -1214,7 +1214,7 @@ static void output_opc(struct code_info *CodeInfo)
                 }
 
 
-          /* this is a hack v2.46 */
+          /* this is a temporary fix v2.46 */
           if (CodeInfo->token == T_VMOVQ) {
             if (CodeInfo->opnd[OPND1].type == OP_XMM && (CodeInfo->opnd[OPND2].type == OP_XMM || (CodeInfo->opnd[OPND2].type == OP_M)) ){
               lbyte &= ~0x01;   /* we need here F_F30F */
