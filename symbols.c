@@ -228,6 +228,8 @@ struct asym *SymAlloc( const char *name )
 
     sym = LclAlloc( sizeof( struct dsym ) );
     memset( sym, 0, sizeof( struct dsym ) );
+	sym->isClass = FALSE;
+	sym->isCOM = FALSE;
 #if 1
     /* the tokenizer ensures that identifiers are within limits, so
      * this check probably is redundant */
@@ -267,14 +269,14 @@ struct asym *SymFind(const char *name)
 		for (lsym = &lsym_table[i % LHASH_TABLE_SIZE]; *lsym; lsym = &((*lsym)->nextitem)) {
 			if (len == (*lsym)->name_size && SYMCMP(name, (*lsym)->name, len) == 0)
 			{
-				if ((*lsym)->ttype && (*lsym)->ttype->e.structinfo)
-					structLookup = TRUE;
-				else
-				{
-					if (!structLookup)
+				//if ((*lsym)->ttype && (*lsym)->ttype->e.structinfo)
+					//structLookup = TRUE;
+				//else
+				//{
+					//if (!structLookup)
 						(*lsym)->used = TRUE;
-					structLookup = FALSE;
-				}
+					//structLookup = FALSE;
+				//}
 				return(*lsym);
 			}
 		}
@@ -283,10 +285,10 @@ struct asym *SymFind(const char *name)
 	for (gsym = &gsym_table[i % GHASH_TABLE_SIZE]; *gsym; gsym = &((*gsym)->nextitem)) {
 		if ((*gsym)->name && len == (*gsym)->name_size && SYMCMP(name, (*gsym)->name, len) == 0)
 		{
-			if ((*gsym)->ttype && (*gsym)->ttype->e.structinfo)
-				structLookup = TRUE;
-			else
-				structLookup = FALSE;
+			//if ((*gsym)->ttype && (*gsym)->ttype->e.structinfo)
+				//structLookup = TRUE;
+			//else
+				//structLookup = FALSE;
 			return(*gsym);
 		}
 	}
@@ -305,37 +307,31 @@ struct asym *SymCheck(const char *name)
 {
 	int i;
 	int len;
-	struct asym **clsym = lsym;
-	struct asym **cgsym = gsym;
 
 	len = strlen(name);
 	i = hashpjw(name);
 
 	if (CurrProc) {
-		for (clsym = &lsym_table[i % LHASH_TABLE_SIZE]; *clsym; clsym = &((*clsym)->nextitem)) {
-			if (len == (*clsym)->name_size && SYMCMP(name, (*clsym)->name, len) == 0)
+		for (lsym = &lsym_table[i % LHASH_TABLE_SIZE]; *lsym; lsym = &((*lsym)->nextitem)) {
+			if (len == (*lsym)->name_size && SYMCMP(name, (*lsym)->name, len) == 0)
 			{
-				if ((*clsym)->ttype && (*clsym)->ttype->e.structinfo)
+				if ((*lsym)->ttype && (*lsym)->ttype->e.structinfo)
 					structLookup = TRUE;
 				else
 				{
 					if (!structLookup)
-						(*clsym)->used = TRUE;
+						(*lsym)->used = TRUE;
 					structLookup = FALSE;
 				}
-				return(*clsym);
+				return(*lsym);
 			}
 		}
 	}
 
-	for (cgsym = &gsym_table[i % GHASH_TABLE_SIZE]; *cgsym; cgsym = &((*cgsym)->nextitem)) {
-		if ((*cgsym)->name && len == (*cgsym)->name_size && SYMCMP(name, (*cgsym)->name, len) == 0)
+	for (gsym = &gsym_table[i % GHASH_TABLE_SIZE]; *gsym; gsym = &((*gsym)->nextitem)) {
+		if ((*gsym)->name && len == (*gsym)->name_size && SYMCMP(name, (*gsym)->name, len) == 0)
 		{
-			if ((*cgsym)->ttype && (*cgsym)->ttype->e.structinfo)
-				structLookup = TRUE;
-			else
-				structLookup = FALSE;
-			return(*cgsym);
+			return(*gsym);
 		}
 	}
 
@@ -413,23 +409,17 @@ struct asym *SymSearch( const char *name )
 #endif
 
 /* SymLookup() creates a global label if it isn't defined yet */
-
 struct asym *SymLookup( const char *name )
 /****************************************/
 {
-    struct asym      *sym;
-
+    struct asym *sym;
     sym = SymFind( name );
-    if( sym == NULL ) {
+    if( sym == NULL ) 
+	{
         sym = SymAlloc( name );
-        DebugMsg1(("SymLookup(%s): created new symbol, CurrProc=%s\n", name, CurrProc ? CurrProc->sym.name : "NULL" ));
-        //sym->next = *gsym;
         *gsym = sym;
         ++SymCount;
     }
-
-    DebugMsg1(("SymLookup(%s): found, state=%u, defined=%u\n", name, sym->state, sym->isdefined));
-
     return( sym );
 }
 
@@ -439,33 +429,24 @@ struct asym *SymLookup( const char *name )
 struct asym *SymLookupLocal( const char *name )
 /*********************************************/
 {
-    //struct asym      **sym_ptr;
-    struct asym      *sym;
-
+    struct asym *sym;
     sym = SymFind( name );
     if ( sym == NULL ) {
         sym = SymAlloc( name );
         sym->scoped = TRUE;
         /* add the label to the local hash table */
-        //sym->next = *lsym;
         *lsym = sym;
-        DebugMsg1(("SymLookupLocal(%s): local symbol created in %s\n", name, CurrProc->sym.name));
     } else if( sym->state == SYM_UNDEFINED && sym->scoped == FALSE ) {
         /* if the label was defined due to a FORWARD reference,
-         * its scope is to be changed from global to local.
-         */
+         * its scope is to be changed from global to local. */
         /* remove the label from the global hash table */
         *gsym = sym->nextitem;
         SymCount--;
         sym->scoped = TRUE;
         /* add the label to the local hash table */
-        //sym->next = *lsym;
         sym->nextitem = NULL;
         *lsym = sym;
-        DebugMsg1(("SymLookupLocal(%s): label moved into %s's local namespace\n", sym->name, CurrProc->sym.name ));
     }
-
-    DebugMsg1(("SymLookupLocal(%s): found, state=%u, defined=%u\n", name, sym->state, sym->isdefined));
     return( sym );
 }
 

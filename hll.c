@@ -1174,7 +1174,6 @@ static ret_code CheckCXZLines(char *p)
 				else if (lines == 1 && (*p == 'z' || (*p == 'n' && *(p + 1) == 'z'))) {
 					addchars = 3; /* make room for 3 chars, to replace "jz"/"jnz" by "loopz"/"loopnz" */
 					px = "loop";
-					;
 				}
 				else
 					return(ERROR); /* anything else is "too complex" */

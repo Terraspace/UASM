@@ -25,6 +25,7 @@ for %%f in (..\src\ooerr\*.asm) do call :cmpooerr %%f
 for %%f in (..\src\literals\*.asm) do call :cmpliterals %%f
 for %%f in (..\src\linux64\*.asm) do call :cmplinux64 %%f
 for %%f in (..\src\macho64\*.asm) do call :cmpmacho64 %%f
+for %%f in (..\src\cinvoke\*.asm) do call :cmpcinvoke %%f
 
 cd ..
 echo .
@@ -157,7 +158,6 @@ if errorlevel 1 goto end
 del %~n1.obj
 goto end
 
-
 :cmpmacho64
 echo ****************************************************************
 ECHO %1
@@ -169,5 +169,18 @@ echo .
 if errorlevel 1 goto end
 del %~n1.obj
 goto end
+
+:cmpcinvoke
+echo ****************************************************************
+ECHO %1
+echo ****************************************************************
+echo .
+echo .
+%ASMX% -q -coff %1
+%FCMP% /O16 %~n1.obj ..\exp\cinvoke\%~n1.obj
+if errorlevel 1 goto end
+del %~n1.obj
+goto end
+
 
 :end

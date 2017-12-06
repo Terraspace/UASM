@@ -220,7 +220,6 @@ ret_code SimplifiedSegDir( int i, struct asm_tok tokenarray[] )
 	
 	LstWrite(LSTTYPE_DIRECTIVE, 0, NULL);
 
-    //type = tokenarray[i].value;
     type = GetSflagsSp( tokenarray[i].tokval );
     i++; /* get past the directive token */
 
@@ -280,7 +279,6 @@ ret_code SimplifiedSegDir( int i, struct asm_tok tokenarray[] )
          * v2.05: must not be done after LstWrite() has been called!
          * Also, there are no longer bytes "emitted".
          */
-        //FStoreLine();
         SetSimSeg( SIM_STACK, NULL );
         AddLineQueueX( "ORG 0%xh", opndx.value );
         EndSimSeg( SIM_STACK );
@@ -325,12 +323,12 @@ void SetModelDefaultSegNames( void )
 
     /* option -nt set? */
     if( Options.names[OPTN_TEXT_SEG] ) {
-        SegmNames[SIM_CODE] = (char *)LclAlloc( strlen( Options.names[OPTN_TEXT_SEG] ) + 1 );
+        SegmNames[SIM_CODE] = LclAlloc( strlen( Options.names[OPTN_TEXT_SEG] ) + 1 );
         strcpy( SegmNames[SIM_CODE], Options.names[OPTN_TEXT_SEG] );
     } else {
         if ( SIZE_CODEPTR & ( 1 << ModuleInfo.model ) ) {
             /* for some models, the code segment contains the module name */
-            SegmNames[SIM_CODE] = (char *)LclAlloc( strlen( SegmNamesDef[SIM_CODE] ) + strlen( ModuleInfo.name ) + 1 );
+            SegmNames[SIM_CODE] = LclAlloc( strlen( SegmNamesDef[SIM_CODE] ) + strlen( ModuleInfo.name ) + 1 );
             strcpy( SegmNames[SIM_CODE], ModuleInfo.name );
             strcat( SegmNames[SIM_CODE], SegmNamesDef[SIM_CODE] );
         }
@@ -338,7 +336,7 @@ void SetModelDefaultSegNames( void )
 
     /* option -nd set? */
     if ( Options.names[OPTN_DATA_SEG] ) {
-        SegmNames[SIM_DATA] = (char *)LclAlloc( strlen( Options.names[OPTN_DATA_SEG] ) + 1 );
+        SegmNames[SIM_DATA] = LclAlloc( strlen( Options.names[OPTN_DATA_SEG] ) + 1 );
         strcpy( SegmNames[SIM_DATA], Options.names[OPTN_DATA_SEG] );
     }
     return;

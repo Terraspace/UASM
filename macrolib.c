@@ -31,14 +31,14 @@
 #include "macrolib.h"
 
 #define MACRO_COUNT64 68
-#define MACRO_COUNT32 29
+#define MACRO_COUNT32 30
 
 /* MACRO names  */
 char *macName64[] = {
   "NOTMASK128", "GETMASK128", "REGS15STORAGE", "MOV64", "MOV128", "MOVXMMR128","SLXMMR","SHIFTLEFT128","SRXMMR","SHIFTRIGHT128","MEMALLOC", "MEMFREE", "CSTR", "WSTR", "FP4", "FP8", "FP10", "LOADSS", "LOADSD", "LOADPS", "MEMALIGN", "RV", "REPARG", "EXPAND_PREFIX", "_ARRAY", "_DELETEARRAY", "OINTERFACE", "ENDOINTERFACE", "CVIRTUAL", "CLASS", "ENDCLASS", "CMETHOD", "METHOD", "STATICMETHOD", "VECMETHOD", "STATICVECMETHOD", "ENDMETHOD", "_DECLARE", "_STATICREF", "_ACQUIRE", "_RELEASE", "_NEW", "_RBXNEW", "_ITEM", "_ITEMR", "_INVOKE", "_I", "_STATIC", "_DELETE", "_VINVOKE", "_V", "_VD", "_VW", "_VB", "_VF", "CSTATIC", "LOADMSS", "LOADMSD", "UINVOKE", "ASFLOAT", "ASDOUBLE", "R4P", "R8P", "arginvoke", "COMINTERFACE", "ENDCOMINTERFACE", "_VCOMINVOKE", "_VCOM"
 };
 char *macName32[] = {
- "NOTMASK128", "GETMASK128", "MOV64", "MOV128", "MOVXMMR128","SLXMMR","SHIFTLEFT128","SRXMMR","SHIFTRIGHT128","MEMALLOC","MEMFREE","CSTR","WSTR","FP4","FP8","FP10","LOADSS","LOADPS","MEMALIGN", "RV", "REPARG", "EXPAND_PREFIX", "LOADMSS", "LOADMSD", "UINVOKE", "ASFLOAT", "ASDOUBLE", "R4P", "R8P"
+ "NOTMASK128", "GETMASK128", "MOV64", "MOV128", "MOVXMMR128","SLXMMR","SHIFTLEFT128","SRXMMR","SHIFTRIGHT128","MEMALLOC","MEMFREE","CSTR","WSTR","FP4","FP8","FP10","LOADSS","LOADPS","MEMALIGN", "RV", "REPARG", "EXPAND_PREFIX", "LOADMSS", "LOADMSD", "UINVOKE", "ASFLOAT", "ASDOUBLE", "R4P", "R8P", "arginvoke"
 };
 
 /* MACRO definitions */
@@ -142,6 +142,7 @@ char *macDef32[] = {
 	"ASDOUBLE MACRO reg:REQ",
 	"R4P MACRO reg:REQ",
 	"R8P MACRO reg:REQ",
+	"arginvoke MACRO argNo:REQ, invCount:REQ, func:REQ, args:VARARG",
 };
 
 void CreateMacroLibCases(void)
@@ -279,22 +280,21 @@ void InitAutoMacros32(void)
 	struct dsym *mac;
 	uint_32 i = 0;
 	uint_32 j = 0;
-	//uint_32 k = 0;
 	uint_32 start_pos = 0;
 	char  *srcLines[128]; // NB: 128 is the max number of lines of macro code per macro.
 
-	uint_32 macroLen[] = {17, 11, 3, 3, 8, 54, 46, 54, 46, 7, 6, 6, 6, 7, 7, 7, 8, 10, 3, 7, 11, 19, 10, 10, 35, 1, 1, 1, 1 }; // Count of individual lines of macro-body code.
+	uint_32 macroLen[] = {17, 11, 3, 3, 8, 54, 46, 54, 46, 7, 6, 6, 6, 7, 7, 7, 8, 10, 3, 7, 11, 19, 10, 10, 35, 1, 1, 1, 1, 7 }; // Count of individual lines of macro-body code.
 	char *macCode[] = {
-    "IFNDEF GMASK",".data","GMASK OWORD 0","ENDIF","IFNDEF NOTMASK",".data","NOTMASK OWORD -1","ENDIF",".code","IF @Arch EQ 1","movups reg, MASK field","pxor reg, NOTMASK","ELSE","vmovups reg, MASK field","vpxor reg, reg, NOTMASK","ENDIF","ENDM",NULL,
-    "IFNDEF GMASK",".data","GMASK OWORD 0","ENDIF",".code","IF @Arch EQ 1","movups reg, MASK field","ELSE","vmovups reg, MASK field","ENDIF","ENDM",NULL,
+		"IFNDEF GMASK",".data","GMASK OWORD 0","ENDIF","IFNDEF NOTMASK",".data","NOTMASK OWORD -1","ENDIF",".code","IF @Arch EQ 1","movups reg, MASK field","pxor reg, NOTMASK","ELSE","vmovups reg, MASK field","vpxor reg, reg, NOTMASK","ENDIF","ENDM",NULL,
+		"IFNDEF GMASK",".data","GMASK OWORD 0","ENDIF",".code","IF @Arch EQ 1","movups reg, MASK field","ELSE","vmovups reg, MASK field","ENDIF","ENDM",NULL,
 		"mov dword ptr dst, LOW32(imm)", "mov dword ptr dst + 4, HIGH32(imm)", "ENDM", NULL,
-    "MOV64 dst, immHi", "MOV64 dst + 8, immLo", "ENDM", NULL,
-    "LOCAL savexmm",".data?","savexmm OWORD ?",".code","MOV64 savexmm, immHi","MOV64 savexmm + 8, immLo","vmovups dst,savexmm","ENDM", NULL,
+		"MOV64 dst, immHi", "MOV64 dst + 8, immLo", "ENDM", NULL,
+		"LOCAL savexmm",".data?","savexmm OWORD ?",".code","MOV64 savexmm, immHi","MOV64 savexmm + 8, immLo","vmovups dst,savexmm","ENDM", NULL,
 		"LOCAL mmr","LOCAL savedLo","LOCAL savedxmm1","LOCAL savedxmm0",".data?","savedLo  QWORD ?","mmr OWORD ?","savedxmm1 OWORD ?","savedxmm0 OWORD ?",".code","push eax","push ecx","push esi","movups savedxmm1,xmm1","movups savedxmm0,xmm0","movups mmr,xmm0","mov ecx,cnt","and ecx,7fh","lea eax,mmr","movq xmm0,[eax+8]",".if (ecx >=  0x40)","sub ecx,64","movd xmm1,ecx","psrlq xmm0,xmm1","movq [eax],xmm0","pxor xmm0,xmm0","movq [eax+8],xmm0",".else","movq savedLo,xmm0","movd xmm1,ecx","psrlq	xmm0, xmm1","movq [eax+8],xmm0","movq xmm0,[eax]","psrlq	xmm0, xmm1","movq [eax],xmm0","neg ecx","and ecx,7fh","sub ecx,64","movd xmm1,ecx","movq xmm0,savedLo","psllq xmm0,xmm1","movq xmm1,[eax]","por xmm0,xmm1","movq [eax],xmm0",".endif ","movups xmm0,mmr","movups xmm1,savedxmm1","IFDIFI <xmm0>,<xmm128>","movups xmm0,savedxmm0","ENDIF","pop esi","pop ecx","pop eax","ENDM",NULL,
 		"LOCAL savedLo","LOCAL savedxmm1","LOCAL savedxmm0 ",".data?","savedLo QWORD ?","savedxmm1 OWORD ?","savedxmm0 OWORD ?",".code","push eax","push ecx","movups savedxmm1,xmm1","movups savedxmm0,xmm0","mov ecx,cnt","and ecx,7fh","mov eax,mmr","movq xmm0,[eax+8]",".if (ecx >=  0x40)","sub ecx,64","movd xmm1,ecx","psrlq xmm0,xmm1","movq [eax],xmm0","pxor xmm0,xmm0","movq [eax+8],xmm0",".else","movq savedLo,xmm0","movd xmm1,ecx","psrlq	xmm0, xmm1","movq [eax+8],xmm0","movq xmm0,[eax]","psrlq	xmm0, xmm1","movq [eax],xmm0","neg ecx","and ecx,7fh","sub ecx,64","movd xmm1,ecx","movq xmm0,savedLo","psllq xmm0,xmm1","movq xmm1,[eax]","por xmm0,xmm1","movq [eax],xmm0",".endif ","movups xmm1,savedxmm1","movups xmm0,savedxmm0","pop ecx","pop eax","ENDM",NULL,		
-    "LOCAL mmr","LOCAL savedLo","LOCAL savedxmm1","LOCAL savedxmm0",".data?","savedLo  QWORD ?","mmr OWORD ?","savedxmm1 OWORD ?","savedxmm0 OWORD ?",".code","push eax","push ecx","push esi","movups savedxmm1,xmm1","movups savedxmm0,xmm0","movups mmr,xmm0","mov ecx,cnt","and ecx,7fh","lea eax,mmr","movq xmm0,[eax]",".if (ecx >=  0x40)","sub ecx,64","movd xmm1,ecx","psllq xmm0,xmm1","movq [eax+8],xmm0","pxor xmm0,xmm0","movq [eax],xmm0",".else","movq savedLo,xmm0","movd xmm1,ecx","psllq	xmm0, xmm1","movq [eax],xmm0","movq xmm0,[eax+8]","psllq	xmm0, xmm1","movq [eax+8],xmm0","neg ecx","and ecx,7fh","sub ecx,64","movd xmm1,ecx","movq xmm0,savedLo","psrlq xmm0,xmm1","movq xmm1,[eax+8]","por xmm0,xmm1","movq [eax+8],xmm0",".endif ","movups xmm0,mmr","movups xmm1,savedxmm1","IFDIFI <xmm0>,<xmm128>","movups xmm0,savedxmm0","ENDIF","pop esi","pop ecx","pop eax","ENDM",NULL,        
-    "LOCAL savedHi","LOCAL savedxmm1","LOCAL savedxmm0 ",".data?","savedHi   QWORD ?","savedxmm1 OWORD ?","savedxmm0 OWORD ?",".code","push eax","push ecx","movups savedxmm1,xmm1","movups savedxmm0,xmm0","mov ecx,cnt","and ecx,7fh","mov eax,mmr","movq xmm0,[eax]",".if (ecx >=  0x40)","sub ecx,64","movd xmm1,ecx","psllq xmm0,xmm1","movq [eax+8],xmm0","pxor xmm0,xmm0","movq [eax],xmm0",".else","movq savedHi,xmm0","movd xmm1,ecx","psllq	xmm0, xmm1","movq [eax],xmm0","movq xmm0,[eax+8]","psllq	xmm0, xmm1","movq [eax+8],xmm0","neg ecx","and ecx,7fh","sub ecx,64","movd xmm1,ecx","movq xmm0,savedHi","psrlq xmm0,xmm1","movq xmm1,[eax+8]","por xmm0,xmm1","movq [eax+8],xmm0",".endif ","movups xmm1,savedxmm1","movups xmm0,savedxmm0","pop ecx","pop eax","ENDM",NULL,
-    "IF @Platform EQ 1", "INVOKE HeapAlloc,RV(GetProcessHeap),0,aSize", "ELSE", "INVOKE malloc,aSize", "ENDIF", "MEMALIGN eax, 16", "endm", NULL,
+		"LOCAL mmr","LOCAL savedLo","LOCAL savedxmm1","LOCAL savedxmm0",".data?","savedLo  QWORD ?","mmr OWORD ?","savedxmm1 OWORD ?","savedxmm0 OWORD ?",".code","push eax","push ecx","push esi","movups savedxmm1,xmm1","movups savedxmm0,xmm0","movups mmr,xmm0","mov ecx,cnt","and ecx,7fh","lea eax,mmr","movq xmm0,[eax]",".if (ecx >=  0x40)","sub ecx,64","movd xmm1,ecx","psllq xmm0,xmm1","movq [eax+8],xmm0","pxor xmm0,xmm0","movq [eax],xmm0",".else","movq savedLo,xmm0","movd xmm1,ecx","psllq	xmm0, xmm1","movq [eax],xmm0","movq xmm0,[eax+8]","psllq	xmm0, xmm1","movq [eax+8],xmm0","neg ecx","and ecx,7fh","sub ecx,64","movd xmm1,ecx","movq xmm0,savedLo","psrlq xmm0,xmm1","movq xmm1,[eax+8]","por xmm0,xmm1","movq [eax+8],xmm0",".endif ","movups xmm0,mmr","movups xmm1,savedxmm1","IFDIFI <xmm0>,<xmm128>","movups xmm0,savedxmm0","ENDIF","pop esi","pop ecx","pop eax","ENDM",NULL,        
+		"LOCAL savedHi","LOCAL savedxmm1","LOCAL savedxmm0 ",".data?","savedHi   QWORD ?","savedxmm1 OWORD ?","savedxmm0 OWORD ?",".code","push eax","push ecx","movups savedxmm1,xmm1","movups savedxmm0,xmm0","mov ecx,cnt","and ecx,7fh","mov eax,mmr","movq xmm0,[eax]",".if (ecx >=  0x40)","sub ecx,64","movd xmm1,ecx","psllq xmm0,xmm1","movq [eax+8],xmm0","pxor xmm0,xmm0","movq [eax],xmm0",".else","movq savedHi,xmm0","movd xmm1,ecx","psllq	xmm0, xmm1","movq [eax],xmm0","movq xmm0,[eax+8]","psllq	xmm0, xmm1","movq [eax+8],xmm0","neg ecx","and ecx,7fh","sub ecx,64","movd xmm1,ecx","movq xmm0,savedHi","psrlq xmm0,xmm1","movq xmm1,[eax+8]","por xmm0,xmm1","movq [eax+8],xmm0",".endif ","movups xmm1,savedxmm1","movups xmm0,savedxmm0","pop ecx","pop eax","ENDM",NULL,
+		"IF @Platform EQ 1", "INVOKE HeapAlloc,RV(GetProcessHeap),0,aSize", "ELSE", "INVOKE malloc,aSize", "ENDIF", "MEMALIGN eax, 16", "endm", NULL,
 		"IF @Platform EQ 1", "INVOKE HeapFree,RV(GetProcessHeap),0,memPtr", "ELSE", "INVOKE free,memPtr", "ENDIF", "endm", NULL,
 		"local szText", ".data", "szText db Text,0", ".code", "exitm <offset szText>", "endm", NULL,
 		"local szText", ".data", "szText dw Text,0", ".code", "exitm <offset szText>", "endm", NULL,
@@ -304,7 +304,7 @@ void InitAutoMacros32(void)
 		"IF @Arch EQ 0", "mov eax, val", "movd reg, eax", "ELSE", "mov eax, val", "vmovd reg, eax", "ENDIF", "ENDM", NULL,
 		"IF @Arch EQ 0", "mov eax, val", "movd reg, eax", "pshufd reg, 0", "ELSE", "mov eax, val", "vmovd reg, eax", "vpshufd reg, reg, 0", "ENDIF", "ENDM", NULL,
 		"add reg, number - 1", "and reg, -number", "ENDM", NULL,
-		"arg equ <invoke FuncName>", "FOR var, <args>", "arg CATSTR arg, <, EXPAND_PREFIX(REPARG(var))>", "ENDM", "arg", "EXITM <rax>", "ENDM", NULL,
+		"arg equ <invoke FuncName>", "FOR var, <args>", "arg CATSTR arg, <, EXPAND_PREFIX(REPARG(var))>", "ENDM", "arg", "EXITM <eax>", "ENDM", NULL,
 		"LOCAL nustr", "quot SUBSTR <arg>, 1, 1", "IFIDN quot, <\">", ".data", "nustr db arg, 0", ".code", "EXITM <ADDR nustr>", "ELSE", "EXITM <ADDR arg>", "ENDIF", "ENDM", NULL,
 		"LOCAL prefix1, wrd, nu, varname", "prefix1 SUBSTR <txtitm>, 1, 1", "IFIDN prefix1, <&>", "nu SUBSTR <txtitm>, 2", "wrd CATSTR <ADDR >, nu", "EXITM <wrd>", "ENDIF", "IFIDN prefix1, <*>", "nu SUBSTR <txtitm>, 2", ".data ?", "varname dq ?", ".code", "mov eax, nu", "mov eax,[eax]", "mov varname, eax", "EXITM <varname>", "ENDIF", "EXITM <txtitm>", "ENDM", NULL,
 		".data", "align 4", "vname dd value", ".code", "IF @Arch EQ 0", "movss reg, vname", "ELSE", "vmovss reg, vname", "ENDIF", "ENDM", NULL,
@@ -314,6 +314,7 @@ void InitAutoMacros32(void)
 		"EXITM <REAL8 PTR reg> ", NULL,
 		"EXITM <REAL4 PTR reg> ", NULL,
 		"EXITM <REAL8 PTR reg> ", NULL,
+		"arg equ <invoke func>", "FOR var, <args>", "arg CATSTR arg, <, EXPAND_PREFIX(REPARG(var))>", "ENDM", "arg", "EXITM <eax>", "ENDM", NULL,
 	};
 
 	/* Compile Macros */

@@ -2515,11 +2515,28 @@ static void output_opc(struct code_info *CodeInfo)
               case T_VSCATTERDPS:
               case T_VPSCATTERDD:
               case T_VPSCATTERQQ:
-              if (CodeInfo->evex_flag && CodeInfo->tuple == 0 && decoflags != 0){
-                tmp &= NOT_BIT_67;
-                tmp |= MOD_10;
-                CodeInfo->rm_byte = tmp;
-                }
+				  if (CodeInfo->evex_flag && CodeInfo->tuple == 0 && decoflags != 0)
+				  {
+					  tmp &= NOT_BIT_67;
+					  tmp |= MOD_10;
+					  CodeInfo->rm_byte = tmp;
+				  }
+				  break;
+			  case T_VMOVUPD:
+			  case T_VMOVAPD:
+			  case T_VMOVUPS:
+			  case T_VMOVAPS:
+				if (((CodeInfo->opnd[OPND1].type & OP_M_ANY) && CodeInfo->opnd[OPND1].data64 != 0) || 
+					((CodeInfo->opnd[OPND2].type & OP_M_ANY) && CodeInfo->opnd[OPND2].data64 != 0))
+				{
+					if (CodeInfo->evex_flag && CodeInfo->tuple == 0 && decoflags != 0) 
+					{
+						tmp &= NOT_BIT_67;
+						tmp |= MOD_10;
+						CodeInfo->rm_byte = tmp;
+					}
+				}
+
             }
 		    OutputCodeByte( tmp );
 
