@@ -70,24 +70,14 @@
 #define MAX_STRING_LEN          MAX_LINE_LEN - 32 /* must be < MAX_LINE_LEN */
 #define MAX_ID_LEN              247  /* must be < MAX_LINE_LEN */
 #define MAX_STRUCT_ALIGN        32
-
 #define MAX_SEGMENT_ALIGN       4096 /* maximum alignment/packing setting for segments */
-
-/* v2.06: obsolete */
-//#define MAX_RESW_LEN            31 /* max length of a reserved word */
-
 #define MAX_IF_NESTING          20 /* IFxx block nesting. Must be <=32, see condasm.c */
-//#define MAX_TEXTMACRO_NESTING   20
 #define MAX_SEG_NESTING         20 /* limit for segment nesting  */
-#ifdef __I86__
-#define MAX_MACRO_NESTING       64
-#else
 #define MAX_MACRO_NESTING       128 /* macro call nesting  */
-#endif
 #define MAX_STRUCT_NESTING      32 /* limit for "anonymous structs" only */
-
 #define MAX_LNAME              255 /* OMF lnames - length must fit in 1 byte */
 #define LNAME_NULL             0   /* OMF first entry in lnames array */
+
 /* output format switches */
 #ifndef BIN_SUPPORT
 #define BIN_SUPPORT  1 /* support BIN output format              */
@@ -226,68 +216,81 @@
 #define strcasecmp _stricmp 
 #define strncasecmp _strnicmp 
 #endif
-#define ASMSWITCH 0
-#define NULLC  '\0'
-//#define NULLS  ""
 
-#define fast_is_valid_id_char( ch )  ( isalnum(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' )
-#define is_valid_id_char( ch )  ( isalnum(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' || ((unsigned char)ch > 127 && (unsigned char)ch <= 255)  )
-#define is_valid_id_first_char( ch )  ( isalpha(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' || (ch == '.' && ModuleInfo.dotname == TRUE ))
+#define ASMSWITCH 0
+
+#define NULLC  '\0'
+
+//#define fast_is_valid_id_char( ch )  ( isalnum(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' )
+//#define is_valid_id_char( ch )  ( isalnum(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' || ((unsigned char)ch > 127 && (unsigned char)ch <= 255)  )
+//#define is_valid_id_first_char( ch )  ( isalpha(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' || (ch == '.' && ModuleInfo.dotname == TRUE ))
+#define _LUPPER		0x01	/* upper case letter */
+#define _LLOWER		0x02	/* lower case letter */
+#define _LDIGIT		0x04	/* digit[0-9] */
+#define _LSPACE		0x08	/* tab, carriage return, newline, */
+/* vertical tab or form feed */
+#define _LPUNCT		0x10	/* punctuation character */
+#define _LCONTROL	0x20	/* control character */
+#define _LABEL		0x40	/* UPPER + LOWER + '@' + '_' + '$' + '?' */
+#define _LHEX		0x80	/* hexadecimal digit */
+
+extern unsigned char _ltype[];	/* Label type array */
+
+#define islalnum(c)  (_ltype[(unsigned char)(c) + 1] & (_LDIGIT | _LUPPER | _LLOWER))
+#define islalpha(c)  (_ltype[(unsigned char)(c) + 1] & (_LUPPER | _LLOWER))
+#define islascii(c)  ((unsigned char)(c) < 128)
+#define islcntrl(c)  (_ltype[(unsigned char)(c) + 1] & _LCONTROL)
+#define isldigit(c)  (_ltype[(unsigned char)(c) + 1] & _LDIGIT)
+#define islgraph(c)  ((unsigned char)(c) >= 0x21 && (unsigned char)(c) <= 0x7e)
+#define isllower(c)  (_ltype[(unsigned char)(c) + 1] & _LLOWER)
+#define islprint(c)  ((unsigned char)(c) >= 0x20 && (unsigned char)(c) <= 0x7e)
+#define islpunct(c)  (_ltype[(unsigned char)(c) + 1] & _LPUNCT)
+#define islspace(c)  (_ltype[(unsigned char)(c) + 1] & _LSPACE)
+#define islupper(c)  (_ltype[(unsigned char)(c) + 1] & _LUPPER)
+#define islxdigit(c) (_ltype[(unsigned char)(c) + 1] & _LHEX)
+
+#define fast_is_valid_id_char( c ) (_ltype[(unsigned char)(c)+1] & (_LABEL | _LDIGIT))
+#define is_valid_id_char( c ) (_ltype[(unsigned char)(c)+1] & (_LABEL | _LDIGIT))
+#define is_valid_id_first_char( c ) \
+	((_ltype[(unsigned char)(c) + 1] & _LABEL) || ((c) == '.' && ModuleInfo.dotname))
+#define is_valid_id_start( c ) (_ltype[(unsigned char)(c) + 1] & _LABEL)
+#define is_valid_first_char( c ) ((_ltype[(unsigned char)(c) + 1] & _LABEL) || ((c) == '.' ))
 
 /* function return values */
-
-typedef enum {
- EMPTY = -2,
- ERROR = -1,
- NOT_ERROR = 0,
+typedef enum 
+{
+ EMPTY           = -2,
+ ERROR           = -1,
+ NOT_ERROR       = 0,
  STRING_EXPANDED = 1
 } ret_code;
 
-enum {
+enum 
+{
     PASS_1 = 0,
     PASS_2
 };
 
-/* enumerations */
-
 /* output formats. Order must match formatoptions[] in assemble.c */
-enum oformat {
-#if BIN_SUPPORT
+enum oformat 
+{
     OFORMAT_BIN, /* used by -bin, -mz and -pe */
-#endif
     OFORMAT_OMF,
-#if COFF_SUPPORT
     OFORMAT_COFF,/* used by -coff, -djgpp and -win64 */
-#endif
-#if ELF_SUPPORT
     OFORMAT_ELF, /* used by -elf and elf64 */
-#endif
-#if MACHO_SUPPORT
 	OFORMAT_MAC, /* used by -macho64 */
-#endif
 };
 
-enum sformat {
+enum sformat 
+{
     SFORMAT_NONE,
-#if MZ_SUPPORT
     SFORMAT_MZ,    /* MZ binary */
-#endif
-#if PE_SUPPORT
     SFORMAT_PE,    /* PE (32- or 64-bit) binary */
-#endif
-#if COFF_SUPPORT
- #if DJGPP_SUPPORT
-    SFORMAT_DJGPP, /* Djgpp variant of COFF */
- #endif
-#endif
-#if COFF_SUPPORT || ELF_SUPPORT
- #if AMD64_SUPPORT
     SFORMAT_64BIT, /* 64bit COFF or ELF */
- #endif
-#endif
 };
 
-enum fpo {
+enum fpo 
+{
     FPO_NO_EMULATION,  /* -FPi87 (default) */
     FPO_EMULATION      /* -FPi */
 };
@@ -736,9 +739,6 @@ struct module_vars {
     struct qdesc        SafeSEHQueue;    /* list of safeseh handlers */
 #endif
     struct qdesc        LibQueue;        /* includelibs */
-    /* v2.11: AltQueue is obsolete */
-    //struct symbol_queue AltQueue;        /* weak externals */
-    //struct qdesc        AltQueue;        /* weak externals */
 #if DLLIMPORT
     struct dll_desc     *DllQueue;       /* dlls of OPTION DLLIMPORT */
 #endif

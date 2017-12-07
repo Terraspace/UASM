@@ -53,6 +53,7 @@
     <ClCompile Include="listing.c" />
     <ClCompile Include="loop.c" />
     <ClCompile Include="lqueue.c" />
+    <ClCompile Include="ltype.c" />
     <ClCompile Include="macho64.c" />
     <ClCompile Include="macro.c" />
     <ClCompile Include="macrolib.c" />

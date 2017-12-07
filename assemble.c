@@ -942,6 +942,7 @@ static void PassOneChecks( void )
             break;
         }
     }
+
 #if FASTPASS
     if ( SymTables[TAB_UNDEF].head ) {
         /* to force a full second pass in case of missing symbols,
@@ -965,6 +966,7 @@ static void PassOneChecks( void )
             break;
         }
     }
+
 #if COFF_SUPPORT
     /* if there's an item in the safeseh list which is not an
      * internal proc, make a full second pass to emit a proper
@@ -979,13 +981,7 @@ static void PassOneChecks( void )
 #endif
 
     /* scan ALIASes for COFF/ELF */
-
-#if COFF_SUPPORT || ELF_SUPPORT
-    if ( Options.output_format == OFORMAT_COFF
-#if ELF_SUPPORT
-        || Options.output_format == OFORMAT_ELF
-#endif
-       ) {
+    if ( Options.output_format == OFORMAT_COFF || Options.output_format == OFORMAT_ELF ) {
         for( curr = SymTables[TAB_ALIAS].head ; curr != NULL ;curr = curr->next ) {
             struct asym *sym;
             sym = curr->sym.substitute;
@@ -1001,27 +997,24 @@ static void PassOneChecks( void )
                 sym->used = TRUE;
         }
     }
-#endif
 
 #endif /* FASTPASS */
 
     /* scan the EXTERN/EXTERNDEF items */
 
-    for( curr = SymTables[TAB_EXT].head ; curr; curr = next ) {
+    for( curr = SymTables[TAB_EXT].head ; curr; curr = next ) 
+	{
         next = curr->next;
         /* v2.01: externdefs which have been "used" become "strong" */
         if ( curr->sym.used )
             curr->sym.weak = FALSE;
         /* remove unused EXTERNDEF/PROTO items from queue. */
-        if ( curr->sym.weak == TRUE
-#if DLLIMPORT
-            && curr->sym.iat_used == FALSE
-#endif
-           ) {
+        if ( curr->sym.weak == TRUE && curr->sym.iat_used == FALSE )
+		{
             sym_remove_table( &SymTables[TAB_EXT], curr );
-#ifdef DEBUG_OUT
-            cntUnusedExt++;
-#endif
+			#ifdef DEBUG_OUT
+		        cntUnusedExt++;
+			#endif
             continue;
         }
 
@@ -1048,20 +1041,17 @@ static void PassOneChecks( void )
          * "elsewhere" ).
          */
 #if FASTPASS
-        if ( curr->sym.altname ) {
-            if ( curr->sym.altname->state == SYM_INTERNAL ) {
-#if COFF_SUPPORT || ELF_SUPPORT
+        if ( curr->sym.altname ) 
+		{
+            if ( curr->sym.altname->state == SYM_INTERNAL ) 
+			{
                 /* for COFF/ELF, the altname must be public or external */
-                if ( curr->sym.altname->ispublic == FALSE &&
-                    ( Options.output_format == OFORMAT_COFF
-#if ELF_SUPPORT
-                     || Options.output_format == OFORMAT_ELF
-#endif
-                    ) ) {
+                if ( curr->sym.altname->ispublic == FALSE && ( Options.output_format == OFORMAT_COFF || Options.output_format == OFORMAT_ELF ) ) 
+				{
                     SkipSavedState();
                 }
-#endif
-            } else if ( curr->sym.altname->state != SYM_EXTERNAL ) {
+            } else if ( curr->sym.altname->state != SYM_EXTERNAL ) 
+			{
                 /* do not use saved state, scan full source in second pass */
                 SkipSavedState();
             }
@@ -1493,7 +1483,6 @@ static void SetFilenames( const char *name )
 }
 
 /* init assembler. called once per module */
-
 static void AssembleInit( const char *source )
 /********************************************/
 {
@@ -1502,8 +1491,9 @@ static void AssembleInit( const char *source )
     LinnumQueue.head = NULL;
 
     SetFilenames( source );
-
+#if FASTPASS
     FastpassInit();
+#endif
     open_files();
 #if BUILD_TARGET
     get_os_include();

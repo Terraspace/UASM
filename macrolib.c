@@ -31,14 +31,14 @@
 #include "macrolib.h"
 
 #define MACRO_COUNT64 68
-#define MACRO_COUNT32 30
+#define MACRO_COUNT32 35
 
 /* MACRO names  */
 char *macName64[] = {
   "NOTMASK128", "GETMASK128", "REGS15STORAGE", "MOV64", "MOV128", "MOVXMMR128","SLXMMR","SHIFTLEFT128","SRXMMR","SHIFTRIGHT128","MEMALLOC", "MEMFREE", "CSTR", "WSTR", "FP4", "FP8", "FP10", "LOADSS", "LOADSD", "LOADPS", "MEMALIGN", "RV", "REPARG", "EXPAND_PREFIX", "_ARRAY", "_DELETEARRAY", "OINTERFACE", "ENDOINTERFACE", "CVIRTUAL", "CLASS", "ENDCLASS", "CMETHOD", "METHOD", "STATICMETHOD", "VECMETHOD", "STATICVECMETHOD", "ENDMETHOD", "_DECLARE", "_STATICREF", "_ACQUIRE", "_RELEASE", "_NEW", "_RBXNEW", "_ITEM", "_ITEMR", "_INVOKE", "_I", "_STATIC", "_DELETE", "_VINVOKE", "_V", "_VD", "_VW", "_VB", "_VF", "CSTATIC", "LOADMSS", "LOADMSD", "UINVOKE", "ASFLOAT", "ASDOUBLE", "R4P", "R8P", "arginvoke", "COMINTERFACE", "ENDCOMINTERFACE", "_VCOMINVOKE", "_VCOM"
 };
 char *macName32[] = {
- "NOTMASK128", "GETMASK128", "MOV64", "MOV128", "MOVXMMR128","SLXMMR","SHIFTLEFT128","SRXMMR","SHIFTRIGHT128","MEMALLOC","MEMFREE","CSTR","WSTR","FP4","FP8","FP10","LOADSS","LOADPS","MEMALIGN", "RV", "REPARG", "EXPAND_PREFIX", "LOADMSS", "LOADMSD", "UINVOKE", "ASFLOAT", "ASDOUBLE", "R4P", "R8P", "arginvoke"
+ "NOTMASK128", "GETMASK128", "MOV64", "MOV128", "MOVXMMR128","SLXMMR","SHIFTLEFT128","SRXMMR","SHIFTRIGHT128","MEMALLOC","MEMFREE","CSTR","WSTR","FP4","FP8","FP10","LOADSS","LOADPS","MEMALIGN", "RV", "REPARG", "EXPAND_PREFIX", "LOADMSS", "LOADMSD", "UINVOKE", "ASFLOAT", "ASDOUBLE", "R4P", "R8P", "arginvoke", "COMINTERFACE", "ENDCOMINTERFACE", "_VCOMINVOKE", "_VCOM", "CVIRTUAL"
 };
 
 /* MACRO definitions */
@@ -143,6 +143,11 @@ char *macDef32[] = {
 	"R4P MACRO reg:REQ",
 	"R8P MACRO reg:REQ",
 	"arginvoke MACRO argNo:REQ, invCount:REQ, func:REQ, args:VARARG",
+	"COMINTERFACE MACRO CName : REQ",
+	"ENDCOMINTERFACE MACRO",
+	"_VCOMINVOKE MACRO pInterface : REQ, Interface : REQ, Function : REQ, args : VARARG",
+	"_VCOM MACRO pInterface : REQ, Interface : REQ, Function : REQ, args : VARARG",
+	"CVIRTUAL MACRO method:REQ, retType:REQ, protoDef:VARARG",
 };
 
 void CreateMacroLibCases(void)
@@ -218,7 +223,7 @@ void InitAutoMacros64(void)
 		"MEMFREE(arrPtr)", "ENDM", NULL,
 		"curClass TEXTEQU <CName>", "@CatStr(CName, < CSTRUCT >)", "__0 dq 0", "__1 dq 0", "__2 dq 0", "__3 dq 0", "ENDM", NULL,
 		"curClass ENDS", "ENDM", NULL,
-		"LOCAL sz1, sz2", "pDef CATSTR <TYPEDEF PROTO >,<&retType&>,< thisPtr:QWORD>", "IFNB <protoDef>", "pDef CATSTR pDef, <, >, <&protoDef>", "ENDIF", "sz2 CATSTR <_>, curClass, <_&method>, <Pto>; _curClass_methodPto", "% &sz2 &pDef", "% sz1 typedef PTR &sz2", "% method sz1 0", "ENDM", NULL,
+		"LOCAL sz1, sz2", "pDef CATSTR <TYPEDEF PROTO >,<&retType&>,< thisPtr:PTR>", "IFNB <protoDef>", "pDef CATSTR pDef, <, >, <&protoDef>", "ENDIF", "sz2 CATSTR <_>, curClass, <_&method>, <Pto>; _curClass_methodPto", "% &sz2 &pDef", "% sz1 typedef PTR &sz2", "% method sz1 0", "ENDM", NULL,
 		"% __&CName&_def EQU 1", "curClass TEXTEQU <CName>", "@CatStr(CName, < CSTRUCT >)", "ctorS TEXTEQU <ctor dq offset _&CName&_Init>", "dtorS TEXTEQU <dtor dq offset _&CName&_Destroy>", "relS TEXTEQU <release dq offset _&CName&_Release>", "ctorS", "dtorS", "relS", "_refCount dq 0", "ENDM", NULL,
 		"curClass ENDS", ".code", "align 16", "rproc TEXTEQU <_&curClass&_Release PROC FRAME thisPtr : QWORD>", "% rproc", "assume rcx : ptr curClass", "dec[rcx]._refCount", "assume rcx : nothing", "ret", "rproce TEXTEQU <_&curClass&_Release ENDP>", "% rproce", ".data", "align 16", "% _stat&curClass& curClass <>", "ptrDefS TEXTEQU <psr>", "ptrDefS CATSTR ptrDefS, <&curClass&>, < TYPEDEF PTR >, <&curClass&>", "% ptrDefS", ".code", "ENDM", NULL,
 		"LOCAL sz1, sz2", "sz2 CATSTR <_>, curClass, <_&method>, <Pto>", "% sz1 typedef PTR &sz2", "% method sz1 offset _&curClass&_&method&", "ENDM", NULL,
@@ -283,7 +288,7 @@ void InitAutoMacros32(void)
 	uint_32 start_pos = 0;
 	char  *srcLines[128]; // NB: 128 is the max number of lines of macro code per macro.
 
-	uint_32 macroLen[] = {17, 11, 3, 3, 8, 54, 46, 54, 46, 7, 6, 6, 6, 7, 7, 7, 8, 10, 3, 7, 11, 19, 10, 10, 35, 1, 1, 1, 1, 37 }; // Count of individual lines of macro-body code.
+	uint_32 macroLen[] = {17, 11, 3, 3, 8, 54, 46, 54, 46, 7, 6, 6, 6, 7, 7, 7, 8, 10, 3, 7, 11, 19, 10, 10, 35, 1, 1, 1, 1, 37, 6, 2, 23, 54, 10 }; // Count of individual lines of macro-body code.
 	char *macCode[] = {
 		"IFNDEF GMASK",".data","GMASK OWORD 0","ENDIF","IFNDEF NOTMASK",".data","NOTMASK OWORD -1","ENDIF",".code","IF @Arch EQ 1","movups reg, MASK field","pxor reg, NOTMASK","ELSE","vmovups reg, MASK field","vpxor reg, reg, NOTMASK","ENDIF","ENDM",NULL,
 		"IFNDEF GMASK",".data","GMASK OWORD 0","ENDIF",".code","IF @Arch EQ 1","movups reg, MASK field","ELSE","vmovups reg, MASK field","ENDIF","ENDM",NULL,
@@ -314,7 +319,12 @@ void InitAutoMacros32(void)
 		"EXITM <REAL8 PTR reg> ", NULL,
 		"EXITM <REAL4 PTR reg> ", NULL,
 		"EXITM <REAL8 PTR reg> ", NULL,
-		"arg equ <invoke func>", "FOR var, <args>", "arg CATSTR arg, <, var>", "ENDM", "arg", "IF @LastReturnType EQ 0","EXITM<al>","ELSEIF @LastReturnType EQ 0x40","EXITM<al>","ELSEIF @LastReturnType EQ 1","EXITM<ax>","ELSEIF @LastReturnType EQ 0x41","EXITM<ax>","ELSEIF @LastReturnType EQ 2","EXITM<eax>","ELSEIF @LastReturnType EQ 0x42","EXITM<eax>","ELSEIF @LastReturnType EQ 3","EXITM<rax>","ELSEIF @LastReturnType EQ 0x43","EXITM<rax>","ELSEIF @LastReturnType EQ 0xc3","EXITM<rax>","ELSEIF @LastReturnType EQ 6","EXITM<xmm0>","ELSEIF @LastReturnType EQ 7","EXITM<ymm0>","ELSEIF @LastReturnType EQ 8","EXITM<zmm0>","ELSEIF @LastReturnType EQ 0x22","EXITM<xmm0>","ELSEIF @LastReturnType EQ 0x23","EXITM<xmm0>","ELSE","EXITM<eax>","ENDIF","ENDM",NULL
+		"arg equ <invoke func>", "FOR var, <args>", "arg CATSTR arg, <, var>", "ENDM", "arg", "IF @LastReturnType EQ 0","EXITM<al>","ELSEIF @LastReturnType EQ 0x40","EXITM<al>","ELSEIF @LastReturnType EQ 1","EXITM<ax>","ELSEIF @LastReturnType EQ 0x41","EXITM<ax>","ELSEIF @LastReturnType EQ 2","EXITM<eax>","ELSEIF @LastReturnType EQ 0x42","EXITM<eax>","ELSEIF @LastReturnType EQ 3","EXITM<rax>","ELSEIF @LastReturnType EQ 0x43","EXITM<rax>","ELSEIF @LastReturnType EQ 0xc3","EXITM<rax>","ELSEIF @LastReturnType EQ 6","EXITM<xmm0>","ELSEIF @LastReturnType EQ 7","EXITM<ymm0>","ELSEIF @LastReturnType EQ 8","EXITM<zmm0>","ELSEIF @LastReturnType EQ 0x22","EXITM<xmm0>","ELSEIF @LastReturnType EQ 0x23","EXITM<xmm0>","ELSE","EXITM<eax>","ENDIF","ENDM",NULL,
+		"curClass TEXTEQU <CName>", "@CatStr(CName, < COMSTRUCT >)", "CVIRTUAL QueryInterface, <>, :PTR", "CVIRTUAL AddRef, <>", "CVIRTUAL Release, <>", "ENDM", NULL,
+		"curClass ENDS", "ENDM", NULL,
+		"InterfacePtr TEXTEQU <_>", "InterfacePtr CATSTR InterfacePtr, <&Interface>, <_>, <&Function>, <Pto>", "IF(OPATTR(pInterface)) AND 00010000b", "IFNB <args>", "invoke(InterfacePtr PTR[&pInterface].&Interface.&Function), pInterface, &args", "ELSE", "invoke(InterfacePtr PTR[&pInterface].&Interface.&Function), pInterface", "ENDIF", "ELSE", "mov r15, pInterface", "mov eax,[eax]", "IFNB <args>", "FOR arg, <args>", "IFIDNI <&arg>, <eax>", ".ERR <eax is not allowed as a Method parameter with indirect object label>", "ENDIF", "ENDM", "invoke(InterfacePtr PTR[eax].&Interface.&Function), pInterface, &args", "ELSE", "invoke(InterfacePtr PTR[eax].&Interface.&Function), pInterface", "ENDIF", "ENDIF", "ENDM", NULL,
+		"InterfacePtr TEXTEQU <_>", "InterfacePtr CATSTR InterfacePtr, <&Interface>, <_>, <&Function>, <Pto>", "IF(OPATTR(pInterface)) AND 00010000b", "IFNB <args>", "invoke(InterfacePtr PTR[&pInterface].&Interface.&Function), pInterface, &args", "ELSE", "invoke(InterfacePtr PTR[&pInterface].&Interface.&Function), pInterface", "ENDIF", "ELSE", "mov r15, pInterface", "mov eax,[eax]", "IFNB <args>", "FOR arg, <args>", "IFIDNI <&arg>, <eax>", ".ERR <eax is not allowed as a Method parameter with indirect object label>", "ENDIF", "ENDM", "invoke(InterfacePtr PTR[eax].&Interface.&Function), pInterface, &args", "ELSE", "invoke(InterfacePtr PTR[eax].&Interface.&Function), pInterface", "ENDIF", "ENDIF", "IF @LastReturnType EQ 0", "EXITM <al>", "ELSEIF @LastReturnType EQ 0x40", "EXITM <al>", "ELSEIF @LastReturnType EQ 1", "EXITM <ax>", "ELSEIF @LastReturnType EQ 0x41", "EXITM <ax>", "ELSEIF @LastReturnType EQ 2", "EXITM <eax>", "ELSEIF @LastReturnType EQ 0x42", "EXITM <eax>", "ELSEIF @LastReturnType EQ 3", "EXITM <rax>", "ELSEIF @LastReturnType EQ 0x43", "EXITM <rax>", "ELSEIF @LastReturnType EQ 0xc3", "EXITM <rax>", "ELSEIF @LastReturnType EQ 6", "EXITM <xmm0>", "ELSEIF @LastReturnType EQ 7", "EXITM <ymm0>", "ELSEIF @LastReturnType EQ 8", "EXITM <zmm0>", "ELSEIF @LastReturnType EQ 0x22", "EXITM <xmm0>", "ELSEIF @LastReturnType EQ 0x23", "EXITM <xmm0>", "ELSE", "EXITM <eax>", "ENDIF", "ENDM", NULL,
+		"LOCAL sz1, sz2", "pDef CATSTR <TYPEDEF PROTO >,<&retType&>,< thisPtr:PTR>", "IFNB <protoDef>", "pDef CATSTR pDef, <, >, <&protoDef>", "ENDIF", "sz2 CATSTR <_>, curClass, <_&method>, <Pto>; _curClass_methodPto", "% &sz2 &pDef", "% sz1 typedef PTR &sz2", "% method sz1 0", "ENDM", NULL,
 	};
 
 	/* Compile Macros */

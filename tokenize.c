@@ -475,7 +475,7 @@ static ret_code get_string( struct asm_tok *buf, struct line_status *p )
             /* v2.08: stop also at < and % */
             //*src != NULLC && !isspace( *src ) && *src != ',' && *src != ';' && *src != ')'; ) {
             //*src && !isspace( *src ) && *src != ',' && *src != ')' && *src != '<' && *src != '%'; ) {
-            *src && !isspace( *src ) && *src != ',' && *src != ')' && *src != '%'; ) {
+            *src && !islspace( *src ) && *src != ',' && *src != ')' && *src != '%'; ) {
             if ( *src == ';' && p->flags == TOK_DEFAULT )
                 break;
             /* v2.11: handle '\' also for expanded lines */
@@ -1054,12 +1054,12 @@ continue_scan:
  * varname.abc -> . is an operator
  */
 
-#define is_valid_id_start( ch )  ( isalpha(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' )
+#define is_valid_id_start( ch )  ( islalpha(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' )
 
 ret_code GetToken( struct asm_tok token[], struct line_status *p )
 /****************************************************************/
 {
-    if( isdigit( *p->input ) ) {
+    if( isldigit( *p->input ) ) {
         return( get_number( token, p ) );
     } else if( is_valid_id_start( *p->input ) ) {
         return( get_id( token, p ) );

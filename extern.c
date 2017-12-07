@@ -161,9 +161,8 @@ static struct asym *CreateProto( int i, struct asm_tok tokenarray[], const char 
             return( sym );
         }
     }
-    /* sym->isproc is set inside ParseProc() */
-    //sym->isproc = TRUE;
 
+	/* sym->isproc is set inside ParseProc() */
     if ( Parse_Pass == PASS_1 ) {
         if ( ParseProc( dir, i, tokenarray, FALSE, langtype ) == ERROR )
             return( NULL );

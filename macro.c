@@ -190,7 +190,7 @@ static int store_placeholders( char *line, struct mname_list *mnames )
     bool substprf;  /* substitution character before ID? */
 
     for( p = line; *p != NULLC; ) {
-        if ( isdigit( *p) ) {
+        if ( isldigit(*p) ) {
             /* skip numbers (they may contain alphas)
              * this is not exactly what masm does. Masm
              * stops at the first non-digit.
@@ -558,7 +558,7 @@ ret_code StoreMacro( struct dsym *macro, int i, struct asm_tok tokenarray[], boo
             for (;;) {
                 char oldc;
                 tok[0].token = T_FINAL;
-                while ( isspace( *ls.input ) ) ls.input++;
+                while ( islspace( *ls.input ) ) ls.input++;
                 if ( *ls.input == NULLC || *ls.input == ';' )
                     break;
                 oldc = *(ls.input-1);

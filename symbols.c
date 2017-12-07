@@ -269,14 +269,14 @@ struct asym *SymFind(const char *name)
 		for (lsym = &lsym_table[i % LHASH_TABLE_SIZE]; *lsym; lsym = &((*lsym)->nextitem)) {
 			if (len == (*lsym)->name_size && SYMCMP(name, (*lsym)->name, len) == 0)
 			{
-				//if ((*lsym)->ttype && (*lsym)->ttype->e.structinfo)
-					//structLookup = TRUE;
-				//else
-				//{
-					//if (!structLookup)
+				if ((*lsym)->ttype && (*lsym)->ttype->e.structinfo)
+					structLookup = TRUE;
+				else
+				{
+					if (!structLookup)
 						(*lsym)->used = TRUE;
-					//structLookup = FALSE;
-				//}
+					structLookup = FALSE;
+				}
 				return(*lsym);
 			}
 		}
@@ -285,10 +285,11 @@ struct asym *SymFind(const char *name)
 	for (gsym = &gsym_table[i % GHASH_TABLE_SIZE]; *gsym; gsym = &((*gsym)->nextitem)) {
 		if ((*gsym)->name && len == (*gsym)->name_size && SYMCMP(name, (*gsym)->name, len) == 0)
 		{
-			//if ((*gsym)->ttype && (*gsym)->ttype->e.structinfo)
-				//structLookup = TRUE;
-			//else
-				//structLookup = FALSE;
+			if ((*gsym)->ttype && (*gsym)->ttype->e.structinfo)
+				structLookup = TRUE;
+			else
+				structLookup = FALSE;
+			//(*gsym)->used = TRUE;
 			return(*gsym);
 		}
 	}
