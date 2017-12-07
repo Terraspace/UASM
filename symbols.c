@@ -289,7 +289,6 @@ struct asym *SymFind(const char *name)
 				structLookup = TRUE;
 			else
 				structLookup = FALSE;
-			//(*gsym)->used = TRUE;
 			return(*gsym);
 		}
 	}

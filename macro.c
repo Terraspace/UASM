@@ -133,8 +133,6 @@ static char * replace_parm( const char *line, char *start, int len, struct mname
     char       *rest;
     unsigned   count;
 
-//  DebugMsg(("replace_parm(%s) enter, len=%u\n", start, len ));
-
     for( count = 1; mnames->label; count++, mnames++ ) {
         if( mnames->len == len && SymCmpFunc( start, mnames->label, len ) == 0 ) {
 
@@ -1105,6 +1103,7 @@ ret_code PurgeDirective( int i, struct asm_tok tokenarray[] )
 
     return( NOT_ERROR );
 }
+
 /* Implemented UNDEF directive v2.38 */
 ret_code UndefDirective( int i, struct asm_tok tokenarray[] )
 /***********************************************************/
@@ -1132,6 +1131,7 @@ ret_code UndefDirective( int i, struct asm_tok tokenarray[] )
 
     return( NOT_ERROR );
 }
+
 /* Implemented DEFINE directive v2.40 */
 ret_code DefineDirective( int i, struct asm_tok tokenarray[] )
 /***********************************************************/
@@ -1163,7 +1163,6 @@ ret_code DefineDirective( int i, struct asm_tok tokenarray[] )
 
 /* internal @Environ macro function */
 /* v2.08: ensured no buffer overflow if environment variable is larger than MAX_LINE_LEN */
-
 static ret_code EnvironFunc( struct macro_instance *mi, char *buffer, struct asm_tok tokenarray[] )
 /*************************************************************************************************/
 {
@@ -1211,6 +1210,7 @@ ret_code MacroInit( int pass )
     }
     return( NOT_ERROR );
 }
+
 #ifdef DEBUG_OUT
 void MacroFini( void )
 /********************/
