@@ -3161,7 +3161,6 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 	struct dsym *prev;
 	struct dsym *currs;
 	size_t slen;
-	//uint_32 pos;
 	char *pSrc;
 	char *pDest;
 	char *labelstr = "__ls";
@@ -3656,7 +3655,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 						if (ModuleInfo.Ofssize > USE16) {
 							/* v2.05: better push a 0 word? */
 							//AddLineQueueX( " pushw 0" );
-							/* ASMC v1.12: dword-aligned stack in 32bit */
+							/* JWASM/ASMC v1.12: dword-aligned stack in 32bit */
 							if (pushsize == 4)
 								size_vararg += 2;
 							/******/
@@ -3824,13 +3823,10 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 
 				/* v2.06: check if register is valid to be pushed.
 				* ST(n), MMn, XMMn, YMMn and special registers are NOT valid!
+				- Except if parameter is real4/real8 and register is XMMn (UASM 2.46)
 				*/
-				if (optype & (OP_STI | OP_MMX | OP_XMM
-#if AVXSUPP
-					| OP_YMM
-#endif
-					| OP_RSPEC)) {
-
+				if (optype & (OP_STI | OP_MMX | OP_YMM	| OP_RSPEC))  //OP_XMM |
+				{
 					return(EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, reqParam + 1));
 				}
 
@@ -3975,7 +3971,17 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 					}
 #endif
 				}
-				AddLineQueueX(" push %r", reg);
+				
+				if (optype & OP_XMM)
+				{
+					AddLineQueueX(" movd eax,%r", reg); // UASM 2.47 TODO improve this.
+					AddLineQueueX(" push eax");
+				}
+				else
+				{
+					AddLineQueueX(" push %r", reg);
+				}
+
 				/* v2.05: don't change psize if > pushsize */
 				if (psize < pushsize)
 					/* v2.04: adjust psize ( for siz_vararg update ) */

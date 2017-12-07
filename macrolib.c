@@ -283,7 +283,7 @@ void InitAutoMacros32(void)
 	uint_32 start_pos = 0;
 	char  *srcLines[128]; // NB: 128 is the max number of lines of macro code per macro.
 
-	uint_32 macroLen[] = {17, 11, 3, 3, 8, 54, 46, 54, 46, 7, 6, 6, 6, 7, 7, 7, 8, 10, 3, 7, 11, 19, 10, 10, 35, 1, 1, 1, 1, 7 }; // Count of individual lines of macro-body code.
+	uint_32 macroLen[] = {17, 11, 3, 3, 8, 54, 46, 54, 46, 7, 6, 6, 6, 7, 7, 7, 8, 10, 3, 7, 11, 19, 10, 10, 35, 1, 1, 1, 1, 37 }; // Count of individual lines of macro-body code.
 	char *macCode[] = {
 		"IFNDEF GMASK",".data","GMASK OWORD 0","ENDIF","IFNDEF NOTMASK",".data","NOTMASK OWORD -1","ENDIF",".code","IF @Arch EQ 1","movups reg, MASK field","pxor reg, NOTMASK","ELSE","vmovups reg, MASK field","vpxor reg, reg, NOTMASK","ENDIF","ENDM",NULL,
 		"IFNDEF GMASK",".data","GMASK OWORD 0","ENDIF",".code","IF @Arch EQ 1","movups reg, MASK field","ELSE","vmovups reg, MASK field","ENDIF","ENDM",NULL,
@@ -314,7 +314,7 @@ void InitAutoMacros32(void)
 		"EXITM <REAL8 PTR reg> ", NULL,
 		"EXITM <REAL4 PTR reg> ", NULL,
 		"EXITM <REAL8 PTR reg> ", NULL,
-		"arg equ <invoke func>", "FOR var, <args>", "arg CATSTR arg, <, EXPAND_PREFIX(REPARG(var))>", "ENDM", "arg", "EXITM <eax>", "ENDM", NULL,
+		"arg equ <invoke func>", "FOR var, <args>", "arg CATSTR arg, <, var>", "ENDM", "arg", "IF @LastReturnType EQ 0","EXITM<al>","ELSEIF @LastReturnType EQ 0x40","EXITM<al>","ELSEIF @LastReturnType EQ 1","EXITM<ax>","ELSEIF @LastReturnType EQ 0x41","EXITM<ax>","ELSEIF @LastReturnType EQ 2","EXITM<eax>","ELSEIF @LastReturnType EQ 0x42","EXITM<eax>","ELSEIF @LastReturnType EQ 3","EXITM<rax>","ELSEIF @LastReturnType EQ 0x43","EXITM<rax>","ELSEIF @LastReturnType EQ 0xc3","EXITM<rax>","ELSEIF @LastReturnType EQ 6","EXITM<xmm0>","ELSEIF @LastReturnType EQ 7","EXITM<ymm0>","ELSEIF @LastReturnType EQ 8","EXITM<zmm0>","ELSEIF @LastReturnType EQ 0x22","EXITM<xmm0>","ELSEIF @LastReturnType EQ 0x23","EXITM<xmm0>","ELSE","EXITM<eax>","ENDIF","ENDM",NULL
 	};
 
 	/* Compile Macros */
