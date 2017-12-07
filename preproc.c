@@ -703,9 +703,9 @@ void EvaluatePreprocessItems(char *line, struct asm_tok tokenarray[])
 				{
 					EmitErr(INVALID_INSTRUCTION_OPERANDS);
 				}
-			}
-			if (recsym)
 				recsym->sym.used = FALSE;
+			}
+
 		}
 	}
 }
