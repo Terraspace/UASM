@@ -3231,6 +3231,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 	  ModuleInfo.Ofssize = USE64;
 	  ModuleInfo.wordsize = 8;
 	  ModuleInfo.defOfssize = USE64;
+	  ModuleInfo.langtype = LANG_FASTCALL;
 	  ModuleInfo.sub_format = SFORMAT_NONE;
 	  ModuleInfo.basereg[ModuleInfo.Ofssize] = T_RSP;
 	  if (ModuleInfo.currseg)

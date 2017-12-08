@@ -686,6 +686,7 @@ struct global_options {
 	uint_16     seg_align;               /* -Sp(n) set segment packing or alignment */
 	bool        literal_strings;         /* Allow use of literal strings in invoke and wide data dw declarations */
 	bool        vtable;                  /* Use vtable based method invocation */
+	bool        hlcall;                  /* Allow High Level C style Calling and object invocation */
 #if MANGLERSUPP
     enum naming_types naming_convention; /* OW naming peculiarities */
 #endif

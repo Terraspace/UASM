@@ -747,7 +747,7 @@ int PreprocessLine( char *line, struct asm_tok tokenarray[] )
         return( Token_Count );
 #endif
 
-	if (!Options.nomlib)
+	if (!Options.nomlib && Options.hlcall)
 	{
 		// Hll and Object style call expansion is only valid inside a code section, AND if the line contains ( ) or ->.
 		if (CurrSeg && (strcmp(CurrSeg->sym.name, "_TEXT") == 0 || strcmp(CurrSeg->sym.name, "_flat") == 0) && PossibleCallExpansion( tokenarray ))

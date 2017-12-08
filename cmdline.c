@@ -150,6 +150,7 @@ struct global_options Options = {
 	/* segment alignment     */     4,
 	/* literal_strings       */     FALSE,
 	/* vtable                */     TRUE,
+	/* hlcall                */     TRUE,
 
 #if MANGLERSUPP
     /* naming_convention*/          NC_DO_NOTHING,
