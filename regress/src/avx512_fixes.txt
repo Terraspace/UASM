@@ -1,7 +1,0 @@
-
-00001CCD  62637D0817E8AB            vextractps rax,xmm29,0xab
-
-00001CD4  62637D0817E87B            vextractps rax,xmm29,0x7b
-
-00001CDB  62437D0817E87B            vextractps r8,xmm29,0x7b
-line 1150
