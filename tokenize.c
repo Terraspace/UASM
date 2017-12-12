@@ -233,13 +233,13 @@ void get_decos(struct line_status *p) {
        p->input++;
      }
      else {
-       EmitError(TO_MANY_DECORATORS);
+       EmitError(TOO_MANY_DECORATORS);
        return;
      }
    }
  }
     else {
-    EmitError(TO_MANY_DECORATORS);
+    EmitError(TOO_MANY_DECORATORS);
     return;
     }
 }
