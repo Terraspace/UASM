@@ -27,7 +27,7 @@ pick( TXT_ALIASNAME,          "alias" ) /* v2.10: added */
 pick(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS, "invalid combination of opcode and operands")/*Uasm v2.13: added */
 pick(DECORATOR_OR_BRACE_EXPECTED, "decorator or brace expected")               /*Uasm v2.13: added */
 pick(WRONG_MASK_REGISTER_NUBER, "wrong mask register number")
-pick(TO_MANY_DECORATORS, "to many decorators")
+pick(TOO_MANY_DECORATORS, "too many decorators")
 pick(MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS, "mismatch in the number of broadcasting elements")
 pick(Z_DECORATOR_EXPECTED, "z decorator expected")
 pick(K_REGISTER_EXPECTED, "K register expected")
