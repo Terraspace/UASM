@@ -418,6 +418,19 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 	}
 }
 
+static struct asym * TraverseEquate(struct asym *sym)
+{
+	struct asym *resultSym = sym;
+	if (sym)
+	{
+		while (resultSym->state == SYM_TMACRO && resultSym->string_ptr != NULL)
+		{
+			resultSym = SymLookup(resultSym->string_ptr);
+		}
+	}
+	return(resultSym);
+}
+
 static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam, int argIdx, bool inExpr)
 {
 	int i, j;
@@ -443,7 +456,10 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 		if (tokenarray[i].token == T_ID)
 		{
 			sym = SymCheck(tokenarray[i].string_ptr);
-			if(sym && sym->sym.isproc && tokenarray[i+1].tokval != T_PROC && tokenarray[i+1].tokval != T_PROTO && 
+
+			sym = TraverseEquate(sym); /* We may have an equate chain that points to a proc, as we expand here before macro substitution we need to consider this */
+
+			if(sym && (sym->sym.isproc || (sym->sym.isfunc && sym->sym.state == SYM_EXTERNAL)) && tokenarray[i+1].tokval != T_PROC && tokenarray[i+1].tokval != T_PROTO && 
 				tokenarray[i+1].tokval != T_ENDP && tokenarray[i+1].tokval != T_EQU && tokenarray[i+1].token == T_OP_BRACKET) 
 			{ 
 		

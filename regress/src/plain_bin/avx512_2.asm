@@ -23,4 +23,8 @@
     vmovups zmm2{k7}, zmm0
     vmovaps zmm2{k7}, zmm0
 
+    vmovapd zmm10,zmm17
+    ;assembles as vmovapd zmm10, zmm1 ; 0000 _ 62 71 FD 48: 28. D1
+    ; Reported by Gwoltman, 13th December 2017
+
     end

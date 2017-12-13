@@ -250,7 +250,7 @@ extern unsigned char _ltype[];	/* Label type array */
 #define islxdigit(c) (_ltype[(unsigned char)(c) + 1] & _LHEX)
 
 #define fast_is_valid_id_char( c ) (_ltype[(unsigned char)(c)+1] & (_LABEL | _LDIGIT))
-#define is_valid_id_char( c ) (_ltype[(unsigned char)(c)+1] & (_LABEL | _LDIGIT))
+#define is_valid_id_char( c ) (_ltype[(c)+1] & (_LABEL | _LDIGIT))
 #define is_valid_id_first_char( c ) \
 	((_ltype[(unsigned char)(c) + 1] & _LABEL) || ((c) == '.' && ModuleInfo.dotname))
 #define is_valid_id_start( c ) (_ltype[(unsigned char)(c) + 1] & _LABEL)

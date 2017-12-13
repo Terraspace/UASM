@@ -154,15 +154,18 @@ void get_broads(struct line_status *p) {
 void get_decos(struct line_status *p) {
 	/************************************************/
 	unsigned char c;
+  struct          asym *sym = NULL;
+  char            buff[32];
+  char           *p1 = buff;
 	if (!evex)
 		EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
      while ( isspace( *p->input )) p->input++;
 	c = (*p->input | 0x20);
+  while ( isspace( *p->input )) p->input++;
 	p->input++;
 	/* if first decorator is {z}  */
-    if (c == 'z'){               /*  ZLLBVAAA  */
-      decoflags |= 0x80;         /*  10000000  */
-      while ( isspace( *p->input )) p->input++;
+  if (c == 'z' && *p->input == '}'){               /*  ZLLBVAAA  */
+      decoflags |= 0x80;                           /*  10000000  */
      c = *p->input;
      if (c != '}'){
        EmitError(DECORATOR_OR_BRACE_EXPECTED);
@@ -177,11 +180,12 @@ void get_decos(struct line_status *p) {
      p->input++;
      while ( isspace( *p->input )) p->input++;
      c = (*p->input | 0x20);
-     if (c != 'k'){
-         EmitError(DECORATOR_OR_BRACE_EXPECTED);
-         return;
-     }else{
        p->input++;
+     if (c != 'k')
+         goto checkifvar;
+     else if (*p->input > '7' || *p->input < '1')
+         goto checkifvar;
+     else{
        c = *p->input;
        if (c > '7' || c < '1'){
          EmitError(WRONG_MASK_REGISTER_NUBER);
@@ -201,46 +205,72 @@ void get_decos(struct line_status *p) {
    /* if first decorator is the mask register */
    else if (c == 'k'){
    c = *p->input;
-   if (c > '7' || c < '1'){
-     EmitError(WRONG_MASK_REGISTER_NUBER);
-     return;
-   }
-   decoflags |= (c & 0x7);
-   p->input++;
-   while ( isspace( *p->input )) p->input++;
-   c = *p->input;
-   if (c != '}'){
-     EmitError(DECORATOR_OR_BRACE_EXPECTED);
-     return;
-   }
-   p->input++;
-   /* check if there is more decorators */
-   while ( isspace( *p->input )) p->input++;
-   c = *p->input;
-   if (c == '{'){
-     p->input++;
-     while ( isspace( *p->input )) p->input++;
-     c = (*p->input | 0x20);
-     if (c == 'z'){
-       decoflags |= 0x80;
-       p->input++;
-       while ( isspace( *p->input )) p->input++;
-       c = *p->input;
-       if (c != '}'){
-         EmitError(DECORATOR_OR_BRACE_EXPECTED);
-         return;
-       }
-       p->input++;
-     }
-     else {
-       EmitError(TOO_MANY_DECORATORS);
+     if (c > '7' || c < '1')
+           goto checkifvar;
+writenum:
+     if (c > '7' || c < '1'){
+       EmitError(WRONG_MASK_REGISTER_NUBER);
        return;
      }
+     decoflags |= (c & 0x7);
+     p->input++;
+     while ( isspace( *p->input )) p->input++;
+     c = *p->input;
+     if (c != '}'){
+       EmitError(DECORATOR_OR_BRACE_EXPECTED);
+       return;
+     }
+     p->input++;
+     /* check if there is more decorators */
+     while ( isspace( *p->input )) p->input++;
+     c = *p->input;
+     if (c == '{'){
+       p->input++;
+       while ( isspace( *p->input )) p->input++;
+       c = (*p->input | 0x20);
+       if (c == 'z'){
+         decoflags |= 0x80;
+         p->input++;
+         while ( isspace( *p->input )) p->input++;
+         c = *p->input;
+         if (c != '}'){
+           EmitError(DECORATOR_OR_BRACE_EXPECTED);
+           return;
+         }
+         p->input++;
+       }
+       else {
+         EmitError(TOO_MANY_DECORATORS);
+         return;
+       }
+     }
    }
- }
-    else {
-    EmitError(TOO_MANY_DECORATORS);
-    return;
+   /* check if equate or variable is used v2.46 */
+    else { 
+checkifvar:
+      --p->input;                  /* return to the start of string */
+      while (*p->input != '}'){    
+        *p1++ = *p->input++;       /* copy the string to the buffer (alowed 32 chars ) */
+        }
+      *p1 = '\0';                  /* make it C string */
+      sym = SymSearch(buff);       /* check if the variable is declared */
+        if (sym == NULL){
+          EmitError(TOO_MANY_DECORATORS);
+          return;
+          }
+        else {
+          p1 = sym->string_ptr;    /* sym->string_ptr contains the mask register */
+          c = *p1++ | 0x20;
+          if (c != 'k'){           /* if it is not the mask register throw an error */
+          EmitError(TOO_MANY_DECORATORS);
+          return;
+            }
+          else {                  
+            c = *p1;               /* copy the reg number */
+            --p->input;            /* ajust the pointer   */
+            goto writenum;         /* go to write it      */
+          }
+        }
     }
 }
 

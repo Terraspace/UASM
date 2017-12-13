@@ -28,6 +28,7 @@ for %%f in (..\src\macho64\*.asm) do call :cmpmacho64 %%f
 for %%f in (..\src\cinvoke\*.asm) do call :cmpcinvoke %%f
 for %%f in (..\src\mz\*.asm) do call :cmpmz %%f
 for %%f in (..\src\flat16\*.asm) do call :flat16 %%f
+for %%f in (..\src\avxerr\*.asm) do call :avxerr %%f
 
 cd ..
 echo .
@@ -206,6 +207,18 @@ echo .
 %FCMP% %~n1.bin ..\exp\flat16\%~n1.bin
 if errorlevel 1 goto end
 del %~n1.bin
+goto end
+
+:avxerr
+echo ****************************************************************
+ECHO %1
+echo ****************************************************************
+echo .
+echo .
+%ASMX% -q -bin %1
+%FCMP% %~n1.err ..\exp\avxerr\%~n1.err
+if errorlevel 1 goto end
+del %~n1.err
 goto end
 
 

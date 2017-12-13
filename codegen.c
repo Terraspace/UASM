@@ -451,7 +451,7 @@ static void output_opc(struct code_info *CodeInfo)
     CodeInfo->prefix.rex = (tmp & 0xFA) | ((tmp & REX_R) >> 2) | ((tmp & REX_B) << 2);
 #endif
   }
-    //if (CodeInfo->token == T_VPCMPEQQ)
+    //if (CodeInfo->token == T_VMOVAPD)
     //  __debugbreak();
 
 #if AVXSUPP
@@ -1589,7 +1589,9 @@ static void output_opc(struct code_info *CodeInfo)
 						if (CodeInfo->opnd[OPND2].type & OP_ZMM) CodeInfo->evex_p2 |= EVEX_P2L1MASK;
 					}
 #if AMD64_SUPPORT         /* This is a fix for memory without indexreg v2.38*/
-                          CodeInfo->evex_p0 |= EVEX_P0XMASK;  /* if 64 bit set X in RXB */
+					if ((CodeInfo->opnd[OPND2].type & OP_M_ANY) || (CodeInfo->opnd[OPND1].type & OP_M_ANY) ||
+						(CodeInfo->token == T_VCVTTPS2UDQ) || (CodeInfo->token == T_VCVTTPD2UDQ))
+						CodeInfo->evex_p0 |= EVEX_P0XMASK;  /* if 64 bit set X in RXB */
 #endif
 				}
 				else {  // this is a fix for VMOVSS when first operand is RIP memory, Uasm 2.16
@@ -3222,7 +3224,15 @@ ret_code codegen( struct code_info *CodeInfo, uint_32 oldofs )
 		CodeInfo->opnd[OPND1].type = OP_A;
 		opnd1 = OP_A;
 	}
-
+  /*  if all 3 operans are not mask registers emit an error v2.46 */
+  if ((CodeInfo->token >= T_KADDB) && (CodeInfo->token <= T_KUNPCKDQ)) {       
+    if (CodeInfo->opnd[OPND1].type == OP_K && CodeInfo->opnd[OPND2].type == OP_K && CodeInfo->opnd[OPND3].type == OP_K)
+      ;/* that is fine */
+    else {
+      EmitError(INVALID_INSTRUCTION_OPERANDS);
+      return(ERROR);
+      }
+    }
     /* scan the instruction table for a matching first operand */
     do  {
         tbl_op1 = opnd_clstab[CodeInfo->pinstr->opclsidx].opnd_type[OPND1];

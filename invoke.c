@@ -499,6 +499,7 @@ static int ms64_param(struct dsym const *proc, int index, struct dsym *param, bo
 	struct proc_info *info = proc->e.procinfo;
 	struct dsym *t = NULL; /* used for vectorcall array member size */
 	bool destroyed = FALSE;
+	struct asym *sym = NULL;
 
 	DebugMsg1(("ms64_param(%s, index=%u, param.memtype=%Xh, addr=%u) enter\n", proc->sym.name, index, param->sym.mem_type, addr));
 
@@ -1309,7 +1310,8 @@ vcall:
 				DebugMsg1(("ms64_param(%s, param=%u): size=%u flags=%X\n", proc->sym.name, index, size, *regs_used));
 			
 				/* v2.12 added by habran : if parametar  is zero use 'xor reg,reg' instead of 'mov reg,0' */
-				if ((!strcasecmp(paramvalue, "0") || (!strcasecmp(paramvalue, "NULL")) || (!strcasecmp(paramvalue, "FALSE")))) 
+				sym = SymLookup(paramvalue); /* UASM 2.46 added by John to optimize a zero valued equate */
+				if ( (sym && sym->isequate && sym->value == 0) || (!strcasecmp(paramvalue, "0") || (!strcasecmp(paramvalue, "NULL")) || (!strcasecmp(paramvalue, "FALSE") ) ) )
 				{
 					if (ms64_regs[index + base] > T_R9D) 
 						index -= 4;
