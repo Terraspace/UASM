@@ -151,12 +151,13 @@ void get_broads(struct line_status *p) {
   }
 
 /* EVEX Mask decorators are handled here: {k1) or {k1){z} or {z}{k1) or {z} */
-void get_decos(struct line_status *p) {
-	/************************************************/
+void get_decos(struct line_status *p) 
+{
 	unsigned char c;
-  struct          asym *sym = NULL;
-  char            buff[32];
-  char           *p1 = buff;
+	struct        asym *sym = NULL;
+	char          buff[32];
+	char         *p1 = buff;
+
 	if (!evex)
 		EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
      while ( isspace( *p->input )) p->input++;
@@ -908,6 +909,8 @@ static ret_code get_id( struct asm_tok *buf, struct line_status *p )
     char *dst = p->output;
     int  index;
     unsigned size;
+	int len = 0;
+	int i = 0;
 
 #if CONCATID || DOTNAMEX
 continue_scan:
@@ -1034,12 +1037,26 @@ continue_scan:
     case RWT_REG:
         buf->token = T_REG;
 #if AVXSUPP 
-        /* Intercept here '{' for EVEX mask  {k1}{z} */
-        while ( isspace( *p->input )) p->input++;
-        if (*p->input == '{'){
-          p->input++;
-          get_decos( p ) ; // mask decorators
-      }
+		if (!inMacroBody)
+		{
+			/* Intercept here '{' for EVEX mask  {k1}{z} */
+			while (isspace(*p->input)) p->input++;
+			if (*p->input == '{') {
+				p->input++;
+				get_decos(p); // mask decorators
+			}
+		}
+		else
+		{
+			while (isspace(*p->input)) p->input++;
+			if (*p->input == '{') {
+				while ((*p->input) != '}') {
+					p->input++;
+				}
+				p->input++;
+				//*buf->string_ptr = "{k0}";
+			}
+		}
 #endif        
         break;
     case RWT_DIRECTIVE:

@@ -451,7 +451,7 @@ static void output_opc(struct code_info *CodeInfo)
     CodeInfo->prefix.rex = (tmp & 0xFA) | ((tmp & REX_R) >> 2) | ((tmp & REX_B) << 2);
 #endif
   }
-    //if (CodeInfo->token == T_VMOVAPD)
+    //if (CodeInfo->token == T_VFMSUB231SD)
     //  __debugbreak();
 
 #if AVXSUPP
@@ -461,7 +461,16 @@ static void output_opc(struct code_info *CodeInfo)
         else
           EmitErr( AVX_INDEX_REGISTERS_NOT_ALLOWED_HERE );
         }
-  /* This is a fix for the memory type and register size v2.46 
+       /* ensure missuse of operand types v2.46 */
+      if (CodeInfo->token >= T_VFMADD132PD && CodeInfo->token <= T_VFNMSUB231SS){
+         if (CodeInfo->opnd[OPND1].type == CodeInfo->opnd[OPND2].type)
+           ;/* that is OK */
+         else if (CodeInfo->opnd[OPND2].type & OP_M_ANY)
+           ;/* that is OK */
+         else 
+           EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
+        }
+/* This is a fix for the memory type and register size v2.46 
    -----------------------------------------------------------------*/
      if ((CodeInfo->token >= T_ADDPD && CodeInfo->token <= T_SUBPS )||
            (CodeInfo->token >= T_VADDPD && CodeInfo->token <= T_VSUBPS )){
@@ -699,10 +708,10 @@ static void output_opc(struct code_info *CodeInfo)
               else
                 lbyte &= ~0x04;
               CodeInfo->tuple = 0;
-              /* This fixes AVX  REX_W wide 32 <-> 64 instructions third byte bit W*/
+              /* This fixes AVX  REX_W wide 32 <-> 64 instructions third byte bit W   || (CodeInfo->token == T_VMOVQ) */   
               if ((CodeInfo->token >= T_VADDPD && CodeInfo->token <= T_VMOVAPS) ||
-				  (CodeInfo->token == T_VMOVD)|| (CodeInfo->token == T_VMOVQ) ||(CodeInfo->token == T_VPANDN)||
-          (CodeInfo->token == T_VPAND))
+				  (CodeInfo->token == T_VMOVD) ||(CodeInfo->token == T_VPANDN)||
+          (CodeInfo->token == T_VMOVSD)|| (CodeInfo->token == T_VMOVSS)||(CodeInfo->token == T_VPAND))
                 lbyte &= ~EVEX_P1WMASK;        //make sure it is not set if WIG
               else
                 lbyte |= ((CodeInfo->pinstr->prefix) >> 8 & 0x80); // set only W bit if 64 bit
@@ -967,7 +976,7 @@ static void output_opc(struct code_info *CodeInfo)
 
 			  /* UASM 2.35 Fix vmovq encoding */
 			  if (CodeInfo->token == T_VMOVQ && CodeInfo->opnd[OPND1].type == OP_XMM) {
-				  if (CodeInfo->opnd[OPND2].type == OP_R64 || CodeInfo->opnd[OPND2].type == OP_RAX)
+				  if (CodeInfo->opnd[OPND2].type & OP_R64)
 				  {
 					  lbyte &= 0xfd;
 					  lbyte |= 1;
@@ -1680,7 +1689,7 @@ static void output_opc(struct code_info *CodeInfo)
             }
           }
         if (CodeInfo->token == T_VMOVQ || CodeInfo->token == T_VMOVSD || CodeInfo->token == T_VMOVSS){
-          if (CodeInfo->opnd[OPND2].type == OP_XMM)
+          if (CodeInfo->opnd[OPND2].type == OP_XMM && (CodeInfo->opnd[OPND1].type & OP_M_ANY))
           CodeInfo->evex_p0 |= EVEX_P0XMASK;
           }
         else if (CodeInfo->token == T_VMOVDQU8 || CodeInfo->token == T_VMOVDQU16 || 

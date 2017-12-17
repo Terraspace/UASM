@@ -48,6 +48,8 @@
 
 extern int  MacroLocals;
 
+extern bool inMacroBody = FALSE;
+
 /* the list of macro param + local names is hold temporarily only.
  * once the names have been replaced by placeholders,
  * the list is superfluous. What's stored permanently
@@ -413,15 +415,11 @@ ret_code StoreMacro( struct dsym *macro, int i, struct asm_tok tokenarray[], boo
         src = GetTextLine( buffer );
         if( src == NULL ) {
             /* v2.11: fatal error if source ends without an ENDM found */
-            //EmitError( UNMATCHED_MACRO_NESTING );
-            //ModuleInfo.EndDirFound = TRUE; /* avoid error "END not found" */
-            //return( ERROR );
             Fatal( UNMATCHED_MACRO_NESTING );
         }
 
         /* add the macro line to the listing file */
         /* v2.09: don't make listing depend on store_data */
-        //if ( ModuleInfo.list && store_data ) {
         if ( ModuleInfo.list ) {
             ModuleInfo.line_flags &= ~LOF_LISTED;
             LstWrite( LSTTYPE_MACROLINE, 0, buffer );
@@ -448,7 +446,6 @@ ret_code StoreMacro( struct dsym *macro, int i, struct asm_tok tokenarray[], boo
 
         /* get first token */
         ls.output = StringBufferEnd;
-        //ls.last_token = T_FINAL;
         ls.flags = TOK_DEFAULT;
         ls.flags2 = 0;
         tok[0].token = T_FINAL;
@@ -465,7 +462,6 @@ ret_code StoreMacro( struct dsym *macro, int i, struct asm_tok tokenarray[], boo
                 ls.flags3 = 0;
                 GetToken( &tok[1], &ls );
                 /* v2.09: don't query store_data */
-                //if ( ( ls.flags3 & TF3_ISCONCAT ) && ModuleInfo.list && store_data ) {
                 if ( ( ls.flags3 & TF3_ISCONCAT ) && ModuleInfo.list ) {
                     ModuleInfo.line_flags &= ~LOF_LISTED;
                     LstWrite( LSTTYPE_MACROLINE, 0, ls.input );
@@ -540,9 +536,16 @@ ret_code StoreMacro( struct dsym *macro, int i, struct asm_tok tokenarray[], boo
                 }
             } else if( tok[0].tokval == T_ENDM ) {
                 DebugMsg1(("StoreMacro(%s): endm found, lvl=%u\n", macro->sym.name, nesting_depth ));
-                if( nesting_depth ) {
+                if( nesting_depth ) 
+				{
                     nesting_depth--;
+					if (nesting_depth == 0)
+					{
+						inMacroBody = FALSE; /* flag that we're finished processing a macro UASM 2.46.6 */
+					}
+
                 } else {
+					inMacroBody = FALSE; /* flag that we're finished processing a macro UASM 2.46.6 */
                     break; /* exit the for() loop */
                 }
             } else if( tok[0].dirtype == DRT_LOOPDIR ) {
@@ -1009,6 +1012,8 @@ ret_code MacroDir( int i, struct asm_tok tokenarray[] )
 
     name = tokenarray[0].string_ptr;
     DebugMsg1(("MacroDir(%s) enter, i=%u\n", name, i ));
+
+	inMacroBody = TRUE; /* flag that we're processing a macro UASM 2.46.6 */
 
     macro = (struct dsym *)SymSearch( name );
     if( macro == NULL ) {

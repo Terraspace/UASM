@@ -44,3 +44,27 @@ ENDM
 znoconst_rounding_single_nottp zmm3, zmm4, k6
 znoconst zmm2, k1
 
+;--------------------------------------------------------
+; simplified example of passing a full reg + writemask
+;--------------------------------------------------------
+
+simplemacro2 MACRO zreg
+vsubpd zreg, zmm10, zmm11
+ENDM
+
+simplemacro1 MACRO kwritemask
+simplemacro2 zmm16 {kwritemask}
+ENDM
+
+simplemacro1 k6
+
+;As proof that passing "zmm16 {k6}" as one argument to a macro is valid,
+;consider that the following does work:
+
+simplemacro3 MACRO zreg, kwritemask
+simplemacro2 zreg {kwritemask}
+ENDM
+
+simplemacro3 zmm16, k6
+
+;The above should expand to the valid "vsubpd zmm16 {k6}, zmm10, zmm11"

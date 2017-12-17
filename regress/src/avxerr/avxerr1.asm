@@ -19,3 +19,10 @@ kandw k1, k5
 ; inc dword ptr [rax] ; 0008 _ FF. 00
 ;db 0FFH, 00H
 ; Reported by Gwoltman 13th Dec 2017
+
+
+vfmsub231sd xmm1, xmm2, zmm3
+;assembles as
+;vfmsub231sd xmm1, xmm2, xmm3 ; 0013 _ 62 F2 ED 08: BB. CB
+;It should raise an error instead.
+;Reported by Gwoltman 14th Dec 2017
