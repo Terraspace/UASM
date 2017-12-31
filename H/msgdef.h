@@ -376,3 +376,4 @@ pick( MACHO_NOT_64, "Output format -macho64 is only compatible with a 64bit modu
 pick( MAX_C_NESTING, "Maximum nested call depth for C-Style calls exceeded" )
 pick( MAX_C_CALLS, "Only one HLL call is allowed per expression" )
 pick( MAX_METHOD_NEST, "Only one method invocation is allowed per expression" )
+pick( INVALID_POINTER, "Invalid use of pointer operator" )

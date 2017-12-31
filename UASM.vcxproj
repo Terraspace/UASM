@@ -74,6 +74,7 @@
     <ClCompile Include="reswords.c" />
     <ClCompile Include="safeseh.c" />
     <ClCompile Include="segment.c" />
+    <ClCompile Include="simd.c" />
     <ClCompile Include="simsegm.c" />
     <ClCompile Include="string.c" />
     <ClCompile Include="symbols.c" />
@@ -150,6 +151,7 @@
     <ClInclude Include="H\reswords.h" />
     <ClInclude Include="H\segattr.h" />
     <ClInclude Include="H\segment.h" />
+    <ClInclude Include="H\simd.h" />
     <ClInclude Include="H\special.h" />
     <ClInclude Include="H\symbols.h" />
     <ClInclude Include="H\tbyte.h" />

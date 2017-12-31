@@ -28,6 +28,8 @@ MyProc12 PROTO qword
 myVar  dd 11
 myVar2 dq 21
 
+nameString db "Mr Bubbles",0
+
 .code
 
 start:
@@ -52,6 +54,9 @@ start:
 	MyProc(10,20)
 	MyProc(10,ADDR MyProc)
 	MyProc2("this is a literal")
+
+	; Test C-Style Address-Of operator
+	MyProc2(&nameString)
 
 	.if( MyProc(10,20) == 30 )
 	   xor eax,eax

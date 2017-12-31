@@ -36,6 +36,7 @@ _CLASS_PERSON_ EQU 1
 OINTERFACE Entity
 	CVIRTUAL PrintName, <>
 	CVIRTUAL SetName, <>
+ENDMETHODS
 ENDOINTERFACE
 
 ;---------------------------------------------------------------------------------------------------------------
@@ -48,6 +49,7 @@ CLASS Person
 	CMETHOD Calc2
 	CMETHOD DoAdd
 	CSTATIC IsHuman
+ENDMETHODS
 	pName   dq 0
 	age     db 0
 	human   db 0	

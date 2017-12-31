@@ -4157,14 +4157,12 @@ void ProcessFile( struct asm_tok tokenarray[] )
 	dsOver.itemlen = 0x0000001c;
 	dsOver.lastidx = 0x0000001c;
 
-
     if ( ModuleInfo.EndDirFound == FALSE && GetTextLine( CurrSource ) ) 
 	{
 		if (CurrSource[0] == 0xEF && CurrSource[1] == 0xBB && CurrSource[2] == 0xBF)
 			strcpy(CurrSource, &CurrSource[3]);
 		do
 		{
-
 			if (PreprocessLine(CurrSource, tokenarray))
 			{
 				ParseLine(tokenarray);

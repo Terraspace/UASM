@@ -1303,6 +1303,8 @@ vcall:
 				}
 				else
 					AddLineQueueX(" mov%sx %r, %s", IS_SIGNED(opnd->mem_type) ? "s" : "z", ms64_regs[index + base], paramvalue);
+
+				*regs_used |= (1 << (index + RPAR_START));
 			}
 			else 
 			{

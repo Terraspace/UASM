@@ -379,7 +379,6 @@ ret_code ModelSimSegmInit( int model )
 }
 
 /* called when END has been found */
-
 void ModelSimSegmExit( void )
 /***************************/
 {

@@ -23,6 +23,7 @@
 #include "listing.h"
 #include "proc.h"
 #include "expreval.h"
+#include "assume.h"
 
 #define REMOVECOMENT 0 /* 1=remove comments from source       */
 
@@ -135,117 +136,64 @@ static void VerifyNesting(char *line, bool exprBracket)
 
 static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 {
-	int i, j;
+	int i,j;
 	struct dsym *sym;
+	struct dsym *type;
 	struct dsym *tsym;
-	struct asym *type;
-	char newline[MAX_LINE_LEN];
-	char preline[MAX_LINE_LEN];
-	char addrStr[MAX_LINE_LEN];
-	char *pSrc;
-	char *pDst;
-	int len;
-	bool inParam = FALSE;
-	bool inExpr = FALSE;
-	bool hasExprBracket = FALSE;
+	struct dsym *param;
 	bool foundType = FALSE;
-	bool ptrInvocation = FALSE;
+	bool foundProc = FALSE;
+	int derefCount = 0;
+	int opIdx = 0;
+	int clIdx = 0;
+	int clSqIdx = 0;
+	int opSqIdx = 0;
+	char newline[MAX_LINE_LEN];
 	bool gotOpen = FALSE;
 	bool gotClose = FALSE;
-	bool didReplace = FALSE;
+	bool gotCloseSqr = FALSE;
+	bool gotOpenSqr = FALSE;
+	char methodName[MAX_LINE_LEN];
+	char indirectAddr[MAX_LINE_LEN];
+	char *pMethodStr = &methodName;
+	char *pStr = &newline;
+	char *pType = NULL;
+	bool inExpr = FALSE;
+	bool hasExprBracket = FALSE;
+	bool inParam = FALSE;
 	bool inProc = FALSE;
-	int vCnt = 0;
+	int firstDeRefIdx = 0;
+	int paramCount = 0;
+	char pcs[16];
+	bool didExpand = TRUE;
+	char refStr[MAX_LINE_LEN];
+	char *pRefStr = &refStr;
+	struct sfield *field = NULL;
 
-	memset(&newline, 0, MAX_LINE_LEN);
-	memset(&addrStr, 0, MAX_LINE_LEN);
 	strcpy(&newline, line);
-	strcpy(&preline, line);
-	
-	for (i = 0;i < Token_Count;i++)
+
+	// Scan through tokens, looking for pointer operators.
+	while (didExpand)
 	{
-		foundType = FALSE;
-		ptrInvocation = FALSE;
-		gotOpen = FALSE;
-		gotClose = FALSE;
-		if (tokenarray[i].token == T_ID)
+		memset(&indirectAddr, 0, MAX_LINE_LEN);
+		memset(&methodName, 0, MAX_LINE_LEN);
+		memset(&newline, 0, MAX_LINE_LEN);
+		memset(&refStr, 0, MAX_LINE_LEN);
+		pStr = &newline;
+		pRefStr = &refStr;
+		didExpand = FALSE;
+		paramCount = 0;
+		for (i = 0; i < Token_Count; i++)
 		{
-			sym = SymCheck(tokenarray[i].string_ptr);
-			if ( sym && 
-				sym->sym.target_type &&
-				sym->sym.target_type > 0x200000 &&
-				sym->sym.target_type->isClass )
-			{
-				// Found pointer operator.
-				if (i < Token_Count - 4 && tokenarray[i + 1].token == T_POINTER && tokenarray[i + 3].token == T_OP_BRACKET)
-				{
-					foundType = TRUE;
-					type = sym->sym.target_type;
-				}
-			}
-			else if (sym &&
-				sym->sym.type &&
-				sym->sym.type->target_type &&
-				sym->sym.type->target_type > 0x200000 &&
-				sym->sym.type->target_type->isClass)
-			{
-				// Found pointer operator.
-				if (i < Token_Count - 4 && tokenarray[i + 1].token == T_POINTER && tokenarray[i + 3].token == T_OP_BRACKET)
-				{
-					foundType = TRUE;
-					type = sym->sym.type->target_type;
-				}
-			}
-			else if (sym && sym->sym.isClass && tokenarray[i-1].token == T_DOT && tokenarray[i-2].token == T_CL_SQ_BRACKET)
-			{
-				for (j = i + 1;j < Token_Count;j++)
-				{
-					if (tokenarray[j].token == T_OP_BRACKET)
-						gotOpen = TRUE;
-					if (tokenarray[j].token == T_CL_BRACKET)
-						gotClose = TRUE;
-					if (gotOpen && gotClose)
-						break;
-				}
-				if (gotOpen && gotClose)
-				{
-					foundType = TRUE;
-					type = sym;
-					ptrInvocation = TRUE;
-				}
-			}
-
-			if (foundType)
+			if (tokenarray[i].token == T_POINTER)
 			{
 
-				// Trim line end of spaces and tabs.
-				len = strlen(line);
-				for (j = len - 1; j >= 0; j--)
-				{
-					if (line[j] == 0x09 || line[j] == ' ')
-						line[j] = 0;
-					else
-						break;
-				}
-				len = strlen(line);
-				for (j = 0; j < len; j++)
-				{
-					if (line[j] == 0x09 || line[j] == ' ')
-					{
-						line++;
-						j--;
-						len--;
-					}
-					else
-						break;
-				}
-
-				didReplace = TRUE;
 				/* Scan backwards to check if we're in an HLL expression or call parameter */
 				if (i > 0)
 				{
-					for (j = i - 1;j >= 0;j--)
+					for (j = i - 1; j >= 0; j--)
 					{
-						tsym = SymSearch(tokenarray[j].string_ptr);
+						tsym = SymCheck(tokenarray[j].string_ptr);
 						if (tokenarray[j].token == T_DIRECTIVE && (tokenarray[j].dirtype == DRT_HLLSTART || tokenarray[j].dirtype == DRT_HLLEND))
 						{
 							inExpr = TRUE;
@@ -257,12 +205,12 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 						}
 						else if ((tokenarray[j].token == T_DIRECTIVE && tokenarray[j].dirtype == DRT_INVOKE) ||
 							strcmp(tokenarray[j].string_ptr, "arginvoke") == 0 ||
-							strcmp(tokenarray[j].string_ptr, "_VINVOKE") == 0 ||
-							strcmp(tokenarray[j].string_ptr, "_VCOMINVOKE") == 0 ||
-							strcmp(tokenarray[j].string_ptr, "_V") == 0 ||
-							strcmp(tokenarray[j].string_ptr, "_VCOM") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "_INVOKE") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "_I") == 0 ||
+							strcmp(tokenarray[j].string_ptr, "_VINVOKE") == 0 ||
+							strcmp(tokenarray[j].string_ptr, "_V") == 0 ||
+							strcmp(tokenarray[j].string_ptr, "_DEREF") == 0 ||
+							strcmp(tokenarray[j].string_ptr, "_DEREFI") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "uinvoke") == 0)
 						{
 							inParam = TRUE;
@@ -277,145 +225,327 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 					}
 				}
 
-				// Allow expansion in an instruction.
-				if (tokenarray[i - 1].token == T_COMMA)
-					inExpr = TRUE;
-
-				// Copy the full line as written up to the occurence of the type.
-				pSrc = tokenarray[0].tokpos;
-				if (!ptrInvocation)
-					j = tokenarray[i].tokpos - pSrc;
-				else
+				if(derefCount == 0)
+					foundType = FALSE;
+				foundProc = FALSE;
+				// The item to the left of the pointer must be an ID with type or register or register indirect.
+				if (i == 0 && tokenarray[i - 1].token != T_ID && tokenarray[i - 1].token != T_REG && tokenarray[i - 1].token != T_CL_SQ_BRACKET)
 				{
-					for (j = i;j >= 0;j--)
+					EmitError(INVALID_POINTER);
+				}
+				/* Variable object reference */
+				else if (tokenarray[i - 1].token == T_ID)
+				{
+					if (derefCount == 0)
+					{
+						sym = SymCheck(tokenarray[i - 1].string_ptr);
+						if (sym && sym->sym.target_type && sym->sym.target_type > 0x200000 && sym->sym.target_type->isClass)
+						{
+							foundType = TRUE;
+							pType = tokenarray[i - 1].string_ptr;
+							type = sym->sym.target_type;
+							firstDeRefIdx = i - 2; /* pointer->item */
+						}
+						else if (sym && sym->sym.type && sym->sym.type->target_type && sym->sym.type->target_type > 0x200000 && sym->sym.type->target_type->isClass)
+						{
+							foundType = TRUE;
+							pType = tokenarray[i - 1].string_ptr;
+							type = sym->sym.type->target_type;
+							firstDeRefIdx = i - 2; /* pointer->item */
+						}
+						/* Indirect register using .TYPE */
+						else if (sym && sym->sym.isClass)
+						{
+							gotCloseSqr = TRUE;
+							gotOpenSqr = FALSE;
+							clSqIdx = i - 3;
+							// Scan back to find opening square bracket.
+							for (j = i - 1; j >= 0; j--)
+							{
+								if (tokenarray[j].token == T_OP_SQ_BRACKET)
+								{
+									opSqIdx = j;
+									gotOpenSqr = TRUE;
+									break;
+								}
+							}
+							if (!gotOpenSqr || !gotCloseSqr)
+								EmitError(INVALID_POINTER);
+							// The tokens between opSqIdx and clSqIdx make up the indirect address.
+							// -> the first register(base) must be assumed to an object pointer.
+							if (sym && sym->sym.isClass)
+							{
+								foundType = TRUE;
+								pType = &indirectAddr;
+								pType = strcpy(pType, "[") + 1;
+								for (j = opSqIdx + 1; j < clSqIdx; j++)
+								{
+									strcpy(pType, tokenarray[j].string_ptr);
+									pType += strlen(tokenarray[j].string_ptr);
+								}
+								pType = strcpy(pType, "]") + 1;
+								pType = &indirectAddr;
+								type = (struct dsym *)sym;
+								firstDeRefIdx = opSqIdx - 1; /* pointer->item */
+							}
+							else
+								EmitError(INVALID_POINTER);
+						}
+					}
+					else
+					{
+						// Ensure tokenarray[i - 1].string_ptr is a field of the current TYPE, then get it's target type.
+						bool gotField = FALSE;
+						field = type->e.structinfo->head;
+						for (; field; field = field->next)
+						{
+							if (_stricmp(field->sym.name, tokenarray[i - 1].string_ptr) == 0)
+							{
+								gotField = TRUE;
+								break;
+							}
+						}
+						if (gotField)
+						{
+							type = field->sym.target_type;
+							if (!type || type < 0x10)
+								type = field->sym.type->target_type;
+							if (!type || type < 0x10)
+								EmitError(INVALID_POINTER);
+						}
+						else
+							EmitError(INVALID_POINTER);
+
+						// Append the item to the pType.
+						strcpy(pType + strlen(pType), ".");
+						strcpy(pType + strlen(pType), tokenarray[i - 1].string_ptr);
+
+					}
+					if (!foundType)
+						EmitError(INVALID_POINTER);
+				}
+				/* Direct register object reference */
+				else if (tokenarray[i - 1].token == T_REG)
+				{
+					sym = StdAssumeTable[GetRegNo(tokenarray[i - 1].tokval)].symbol;
+					if (sym && sym->sym.target_type)
+					{
+						foundType = TRUE;
+						pType = tokenarray[i - 1].string_ptr;
+						type = sym->sym.target_type;
+						firstDeRefIdx = i - 2; /* pointer->item */
+					}
+					else
+						EmitError(INVALID_POINTER);
+				}
+				/* Indirect memory address type object reference */
+				else if (tokenarray[i - 1].token == T_CL_SQ_BRACKET)
+				{
+					gotCloseSqr = TRUE;
+					gotOpenSqr = FALSE;
+					clSqIdx = i - 1;
+					// Scan back to find opening square bracket.
+					for (j = i - 1; j >= 0; j--)
 					{
 						if (tokenarray[j].token == T_OP_SQ_BRACKET)
+						{
+							opSqIdx = j;
+							gotOpenSqr = TRUE;
 							break;
+						}
 					}
-					j = tokenarray[j].tokpos - pSrc;
-				}
-				pDst = &preline;
-				while (j-- > 0)
-					*pDst++ = *pSrc++;
-				*pDst = 0;
-				if (!inParam && !inExpr)
-				{
-					if (ptrInvocation)
+					if (!gotOpenSqr || !gotCloseSqr)
+						EmitError(INVALID_POINTER);
+					// The tokens between opSqIdx and clSqIdx make up the indirect address.
+					// -> the first register(base) must be assumed to an object pointer.
+					sym = StdAssumeTable[GetRegNo(tokenarray[opSqIdx + 1].tokval)].symbol;
+					if (sym && sym->sym.target_type)
 					{
-						pDst = tokenarray[i - 2].tokpos;
-						pSrc = tokenarray[i - 2].tokpos - 1;
-						while (pSrc > tokenarray[0].tokpos)
+						foundType = TRUE;
+						pType = &indirectAddr;
+						pType = strcpy(pType, "[") + 1;
+						for (j = opSqIdx + 1; j < clSqIdx; j++)
 						{
-							if (*pSrc == '[')
-								break;
-							pSrc--;
+							strcpy(pType, tokenarray[j].string_ptr);
+							pType += strlen(tokenarray[j].string_ptr);
 						}
-						len = pDst - pSrc;
-						pDst = &addrStr;
-						for (;len >= 0;len--)
-							*pDst++ = *pSrc++;
-						if (Options.vtable || type->isCOM)
-						{
-							if(type->isCOM)
-								sprintf(newline, "%s _VCOMINVOKE %s,%s,%s,", preline, addrStr, type->name, tokenarray[i + 2].string_ptr);
-							else
-								sprintf(newline, "%s _VINVOKE %s,%s,%s,", preline, addrStr, type->name, tokenarray[i + 2].string_ptr);
-						}
-						else
-							sprintf(newline, "%s _INVOKE %s,%s,%s,", preline, type->name, tokenarray[i + 2].string_ptr, addrStr);
+						pType = strcpy(pType, "]") + 1;
+						pType = &indirectAddr;
+						type = sym->sym.target_type;
+						firstDeRefIdx = opSqIdx-1; /* pointer->item */
 					}
 					else
-					{
-						if (Options.vtable || type->isCOM)
-						{
-							if(type->isCOM)
-								sprintf(newline, "%s _VCOMINVOKE %s,%s,%s,", preline, sym->sym.name, type->name, tokenarray[i + 2].string_ptr);
-							else
-								sprintf(newline, "%s _VINVOKE %s,%s,%s,", preline, sym->sym.name, type->name, tokenarray[i + 2].string_ptr);
-						}
-						else
-							sprintf(newline, "%s _INVOKE %s,%s,%s,", preline, type->name, tokenarray[i + 2].string_ptr, sym->sym.name);
-					}
-					pSrc = tokenarray[i + 3].tokpos + 1;
-					len = strlen(newline);
-					pDst = &(newline[len]);
-					len = strlen(line) - 1;
-					while (pSrc < (tokenarray[0].tokpos + len))
-						*pDst++ = *pSrc++;
-
+						EmitError(INVALID_POINTER);
 				}
+
+				// The right of the pointer must be an ID (either a method(proc) or another type).
+				if (tokenarray[i + 1].token != T_ID)
+					EmitError(INVALID_POINTER);
 				else
 				{
-					if (ptrInvocation)
+					pMethodStr = &methodName;
+					pMethodStr = strcpy(pMethodStr, "_") + 1;
+					strcpy(pMethodStr, type->sym.name);
+					pMethodStr += strlen(type->sym.name);
+					pMethodStr = strcpy(pMethodStr, "_") + 1;
+					strcpy(pMethodStr, tokenarray[i + 1].string_ptr);
+					pMethodStr += strlen(tokenarray[i + 1].string_ptr);
+					pMethodStr = &methodName;
+
+					sym = SymCheck(pMethodStr);
+					if (sym && sym->sym.isproc)
 					{
-						pDst = tokenarray[i - 2].tokpos;
-						pSrc = tokenarray[i - 2].tokpos - 1;
-						while (pSrc > tokenarray[0].tokpos)
+						foundProc = TRUE;
+						pMethodStr = tokenarray[i + 1].string_ptr;
+						for (param = sym->e.procinfo->paralist; param; param = param->nextparam)
 						{
-							if (*pSrc == '[')
-								break;
-							pSrc--;
+							paramCount++;
 						}
-						len = pDst - pSrc;
-						pDst = &addrStr;
-						for (;len >= 0;len--)
-							*pDst++ = *pSrc++;
-						if (Options.vtable || type->isCOM)
-						{
-							if (type->isCOM)
-								sprintf(newline, "%s _VCOM(%s,%s,%s,", preline, addrStr, type->name, tokenarray[i + 2].string_ptr);
-							else
-								sprintf(newline, "%s _V(%s,%s,%s,", preline, addrStr, type->name, tokenarray[i + 2].string_ptr);
-						}
-						else
-							sprintf(newline, "%s _I(%s,%s,%s,", preline, type->name, tokenarray[i + 2].string_ptr, addrStr);
-						vCnt++;
-						if (vCnt > 1)
-							EmitErr(MAX_METHOD_NEST);
 					}
-					else
+					else if (type && type->sym.isClass)
 					{
-						if (Options.vtable || type->isCOM)
+						foundProc = FALSE;
+						if (derefCount == 0)
 						{
-							if(type->isCOM)
-								sprintf(newline, "%s _VCOM(%s,%s,%s,", preline, sym->sym.name, type->name, tokenarray[i + 2].string_ptr);
-							else
-								sprintf(newline, "%s _V(%s,%s,%s,", preline, sym->sym.name, type->name, tokenarray[i + 2].string_ptr);
+							strcpy(pRefStr, pType);
+							pRefStr += strlen(pType);
 						}
 						else
-							sprintf(newline, "%s _I(%s,%s,%s,", preline, type->name, tokenarray[i + 2].string_ptr, sym->sym.name);
-						vCnt++;
-						if (vCnt > 1)
-							EmitErr(MAX_METHOD_NEST);
-					}
-					pSrc = tokenarray[i + 3].tokpos + 1;
-					len = strlen(newline);
-					pDst = &(newline[len]);
-					if (!ptrInvocation)
-					{
-						len = strlen(line);
-						while (pSrc < tokenarray[0].tokpos + len)
-							*pDst++ = *pSrc++;
+						{
+							pRefStr = strcpy(pRefStr, "rcx") + 3;
+						}
+						pRefStr = strcpy(pRefStr, ",") + 1;
+						strcpy(pRefStr, type->sym.name);
+						pRefStr += strlen(type->sym.name);
+						strcpy(pType, type->sym.name); // Reset pType to the type name.
+
 					}
 					else
-					{
-						len = strlen(line) - 1;
-						while (pSrc < tokenarray[0].tokpos + len)
-							*pDst++ = *pSrc++;
-					}
+						EmitError(INVALID_POINTER);
 				}
+
+				// Find the proc open/close brackets.
+				if (foundProc)
+				{
+					int openCount = 1;
+					for (j = i; j < Token_Count; j++)
+					{
+						if (tokenarray[j].token == T_OP_BRACKET || tokenarray[j].tokval == '(')
+						{
+							opIdx = j;
+							gotOpen = TRUE;
+							break;
+						}
+					}
+
+					for (j = opIdx + 1; j < Token_Count; j++)
+					{
+						if (tokenarray[j].token == T_CL_BRACKET || tokenarray[j].tokval == ')')
+							openCount--;
+
+						if (tokenarray[j].token == T_OP_BRACKET || tokenarray[j].tokval == '(')
+							openCount++;
+
+						if (openCount == 0)
+						{
+							clIdx = j;
+							gotClose = TRUE;
+							break;
+						}
+					}
+
+					if (!gotOpen)
+						EmitError(MISSING_LEFT_PARENTHESIS_IN_EXPRESSION);
+					if (!gotClose)
+						EmitError(MISSING_RIGHT_PARENTHESIS_IN_EXPRESSION);
+				}
+
+				if (foundProc)
+				{
+					for (j = 0; j <= firstDeRefIdx; j++)
+					{
+						pStr = strcpy(pStr, " ") + 1;
+						strcpy(pStr, tokenarray[j].string_ptr);
+						pStr += strlen(tokenarray[j].string_ptr);
+						pStr = strcpy(pStr, " ") + 1;
+					}
+					if (inExpr || inParam)
+						pStr = strcpy(pStr, "_DEREFI(") + 8;
+					else
+						pStr = strcpy(pStr, "_DEREF ") + 7;
+					strcpy(pStr, type->sym.name);
+					pStr += strlen(type->sym.name);
+					pStr = strcpy(pStr, ",") + 1;
+					strcpy(pStr, pMethodStr);
+					pStr += strlen(pMethodStr);
+					pStr = strcpy(pStr, ",") + 1;
+
+					sprintf(&pcs, "%d", paramCount - 1); //-1 due to thisPtr implicit
+					strcpy(pStr, &pcs);
+					pStr += strlen(&pcs);
+
+					pStr = strcpy(pStr, ",") + 1;
+					for (j = opIdx + 1; j < clIdx; j++)
+					{
+						if (*tokenarray[j].string_ptr == '&')
+							pStr = strcpy(pStr, " ADDR ") + 6;
+						else
+						{
+							strcpy(pStr, tokenarray[j].string_ptr);
+							pStr += strlen(tokenarray[j].string_ptr);
+							if (strncmp(tokenarray[j].string_ptr, "ADDR",4) == 0)
+								pStr = strcpy(pStr, " ") + 1;
+						}
+					}
+					pStr = strcpy(pStr, ",") + 1;
+					if (derefCount > 0)
+					{
+						strcpy(pStr, &refStr);
+						pStr += strlen(&refStr);
+						pStr = strcpy(pStr, ",") + 1;
+					}
+					if (derefCount == 0)
+					{
+						strcpy(pStr, pType);
+						pStr += strlen(pType);
+						pStr = strcpy(pStr, ",") + 1;
+						strcpy(pStr, type->sym.name);
+						pStr += strlen(type->sym.name);
+					}
+					else
+					{
+						pStr = strcpy(pStr, "rcx,") + 4;
+						strcpy(pStr, pType);
+						pStr += strlen(pType);
+					}
+
+					if (inExpr || inParam)
+						pStr = strcpy(pStr, ")") + 1;
+					for (j = clIdx + 1; j < Token_Count; j++)
+					{
+						pStr = strcpy(pStr, " ") + 1;
+						strcpy(pStr, tokenarray[j].string_ptr);
+						pStr += strlen(tokenarray[j].string_ptr);
+						pStr = strcpy(pStr, " ") + 1;
+					}
+
+					didExpand = TRUE;
+					break;
+				}
+
+				derefCount++;
 			}
 		}
-		if (didReplace)
+
+		/* Transfer new source line back for token rescan */
+		if (didExpand)
 		{
 			strcpy(line, &newline);
 			Token_Count = Tokenize(line, 0, tokenarray, TOK_RESCAN);
-			i = 0;
-			strcpy(&preline, line);
-			memset(&newline, 0, MAX_LINE_LEN);
-			didReplace = FALSE;
 		}
 	}
+
+
 }
 
 static struct asym * TraverseEquate(struct asym *sym)
@@ -483,6 +613,8 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 							strcmp(tokenarray[j].string_ptr, "_I") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "_VINVOKE") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "_V") == 0 ||
+							strcmp(tokenarray[j].string_ptr, "_DEREF") == 0 ||
+							strcmp(tokenarray[j].string_ptr, "_DEREFI") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "uinvoke") == 0)
 						{
 							inParam = TRUE;
@@ -522,6 +654,16 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 					return;
 					
 				expandedCall = TRUE;
+
+				/* scan all tokens between opIdx and clIdx and replace & operator with ADDR */
+				for (j = opIdx; j < clIdx; j++)
+				{
+					if (*tokenarray[j].string_ptr == '&')
+					{
+						// token identifier begins with address of operator.
+						strcpy(tokenarray[j].string_ptr, "ADDR ");
+					}
+				}
 
 				if (!inParam && !inExpr)
 				{

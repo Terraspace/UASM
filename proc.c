@@ -599,7 +599,6 @@ static struct dsym *pop_proc(void)
 * count: number of array elements, default is 1
 * type:  qualified type [simple type, structured type, ptr to simple/structured type]
 */
-
 ret_code LocalDir(int i, struct asm_tok tokenarray[])
 /*****************************************************/
 {
@@ -791,7 +790,6 @@ void UpdateProcStatus(struct asym *sym, struct expr *opnd)
 * Called in pass one only.
 * i=start parameters
 */
-
 static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[], bool IsPROC)
 /***********************************************************************************************/
 {
@@ -4334,21 +4332,12 @@ static void write_sysv_default_epilogue_RBP(struct proc_info *info)
 static void SetLocalOffsets_RBP_SYSV(struct proc_info *info)
 {
 	struct dsym *curr;
-#if AMD64_SUPPORT || STACKBASESUPP
 	int         cntxmm = 0;
 	int         cntstd = 0;
 	int         start = 0;
-#endif
-#if AMD64_SUPPORT
 	int         rspalign = TRUE;
-#endif
 	int         align = CurrWordSize;
-#if AMD64_SUPPORT
-	if (ModuleInfo.win64_flags & W64F_STACKALIGN16 || ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
-	{
-		align = 16;
-	}
-#endif
+	align = 16;
 
 	check_proc_fpo(info);
 
