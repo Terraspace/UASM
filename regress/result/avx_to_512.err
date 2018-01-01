@@ -1,0 +1,3 @@
+..\src\avx512\avx_to_512.asm(154) : Error A2183: Instruction operand must have size
+..\src\avx512\avx_to_512.asm(158) : Error A2183: Instruction operand must have size
+..\src\avx512\avx_to_512.asm(162) : Error A2183: Instruction operand must have size
