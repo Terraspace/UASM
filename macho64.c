@@ -321,12 +321,14 @@ Return MachO section index, based on original source segment name.
 static int GetSectionIdx(struct asym *seg, struct macho_module *mm)
 {
 	struct macho_section_entry *curr = NULL;
-
-	for (curr = mm->sections; curr; curr = curr->next)
+	if (seg)
 	{
-		if (strcmp(seg->name, curr->srcName) == 0)
+		for (curr = mm->sections; curr; curr = curr->next)
 		{
-			return(curr->idx);
+			if (strcmp(seg->name, curr->srcName) == 0)
+			{
+				return(curr->idx);
+			}
 		}
 	}
 	return(0);

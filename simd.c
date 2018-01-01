@@ -8,6 +8,9 @@ and their sub-types
 
 #include "simd.h"
 
+extern void     AddLineQueue(const char *line);
+extern void     AddLineQueueX(const char *fmt, ...);
+
 void AddSimdTypes()
 {
 	AddLineQueue("__m128b struct");

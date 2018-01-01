@@ -1173,6 +1173,13 @@ static int OnePass( void )
 			InitAutoMacros64();
 		ModuleInfo.list = alist;
 	}
+	if (Parse_Pass == PASS_1)
+	{
+		unsigned  alist = ModuleInfo.list;
+		ModuleInfo.list = 0;
+		AddSimdTypes();
+		ModuleInfo.list = alist;
+	}
 
 #if FASTPASS
     StoreState = FALSE;
