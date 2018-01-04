@@ -1721,6 +1721,7 @@ ret_code ProcDir(int i, struct asm_tok tokenarray[])
 	bool                is_global;
 	struct asym*        cline;
 	struct asym*        procline;
+	struct asym*        procname;
 
 	/* Store the current source code line relating to the PROC */
 	cline = SymFind("@Line");
@@ -1739,6 +1740,10 @@ ret_code ProcDir(int i, struct asm_tok tokenarray[])
 	name = tokenarray[0].string_ptr;
 
 	if (CurrProc != NULL) {
+
+		/* Set the current PROC name */
+		procname = SymFind("@ProcName");
+		procname->string_ptr = CurrProc->sym.name;
 
 		/* this is not needed for Uasm, but Masm will reject nested
 		* procs if there are params, locals or used registers.
