@@ -3087,7 +3087,7 @@ static int ParamIsString(char *pStr, int param, struct dsym* proc) {
 	int i = 0;
 	struct dsym* p = proc->e.procinfo->paralist;
 	struct asym* type = NULL;
-	enum memtype mtype;
+	enum memtype mtype = MT_EMPTY;
 
 	if (!Options.literal_strings)
 		return(FALSE);
@@ -3101,15 +3101,29 @@ static int ParamIsString(char *pStr, int param, struct dsym* proc) {
 
 	if (p)
 	{
-		if (p->sym.target_type)
+		if (p->sym.mem_type == MT_PTR)
 		{
-			type = p->sym.target_type;
-			while (type->target_type)
-				type = type->target_type;
-			mtype = type->mem_type;
+			mtype = MT_PTR;
 		}
 		else
-			mtype = p->sym.mem_type;
+		{
+			if (p->sym.target_type)
+			{
+				type = p->sym.target_type;
+				while (type->target_type && type->target_type > 0x2000)
+				{
+					type = type->target_type;
+					if (type->mem_type == MT_PTR)
+					{
+						mtype = MT_PTR;
+						break;
+					}
+				}
+				mtype = MT_EMPTY;
+			}
+			else
+				mtype = p->sym.mem_type;
+		}
 	}
 
 	if (p && mtype != MT_PTR && !p->sym.is_vararg)
