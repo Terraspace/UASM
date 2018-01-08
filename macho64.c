@@ -221,7 +221,7 @@ int macho_build_string_tbl(struct symtab_command *pSymCmd, struct macho_module *
 	{
 		if (sym->state != SYM_MACRO && sym->state != SYM_SEG && sym->state != SYM_TMACRO && sym->predefined == 0 && sym->state != SYM_GRP && sym->isequate == 0)
 		{
-			if (sym->ispublic && sym->used)
+			if (sym->ispublic)
 			{
 				tblSize += strlen(sym->name) + 1;
 				pstr = malloc(sizeof(struct strentry));
@@ -241,7 +241,7 @@ int macho_build_string_tbl(struct symtab_command *pSymCmd, struct macho_module *
 	{
 		if (sym->state != SYM_MACRO && sym->state != SYM_SEG && sym->state != SYM_TMACRO && sym->predefined == 0 && sym->state != SYM_GRP && sym->isequate == 0)
 		{
-			if (sym->state == SYM_EXTERNAL && sym->used)
+			if (sym->state == SYM_EXTERNAL)
 			{
 				tblSize += strlen(sym->name) + 1;
 				pstr = malloc(sizeof(struct strentry));
@@ -647,7 +647,7 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 	/* Write out symbol table entries */
 	for (currStr = mm.strings;currStr;currStr = currStr->next)
 	{
-		if (!currStr->sym->used)
+		if (!currStr->sym->used && !currStr->sym->ispublic)
 			continue;
 
 		memset(&symEntry, 0, sizeof(struct nlist_64));
