@@ -434,7 +434,7 @@ static int ms64_fcstart(struct dsym const *proc, int numparams, int start, struc
 			}
 	}
 	if (sym_ReservedStack)
-		sym_ReservedStack->hasinvoke = 1;  //added by habran
+		sym_ReservedStack->hasinvoke = 1;
 	DebugMsg1(("ms64_fcstart(%s, numparams=%u) vararg=%u\n", proc->sym.name, numparams, proc->e.procinfo->has_vararg));
 	j = 4;
 
@@ -4245,6 +4245,11 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 
 	proc = (struct dsym *)sym;
 	info = proc->e.procinfo;
+
+	/* UASM 2.46.7 Update Proc Leaf tracking */
+	/* If we're processing an INVOKE, then the currently open proc cannot be a leaf proc */
+	if(CurrProc)
+		CurrProc->e.procinfo->isleaf = FALSE;
 
 	/* UASM 2.34 : Track Last Return Value type from the proc that is being invoked */
 	lastret = SymFind("@LastReturnType");

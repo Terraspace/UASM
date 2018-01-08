@@ -1332,6 +1332,9 @@ ret_code ParseProc(struct dsym *proc, int i, struct asm_tok tokenarray[], bool I
 		defRet = TRUE;
 	}
 
+	/* UASM 2.46.7 set leaf tracking */
+	proc->e.procinfo->isleaf = TRUE;
+
 	if (tokenarray[i].token == T_STYPE || (tokenarray[i].token == T_BINARY_OPERATOR && tokenarray[i].tokval == T_PTR))
 	{
 		switch (tokenarray[i].tokval)
@@ -4490,15 +4493,44 @@ static ret_code write_generic_prologue(struct proc_info *info)
 	uint_16             *regist;
 	int                 cnt;
 	int                 resstack = 0;
+	int					stackadj = 0;
+
+	regist = info->regslist;
+	check_proc_fpo(info);
+
+	if (info->fpo)
+	{
+		if (info->pushed_reg % 2 == 0 && info->localsize % 16 == 0)
+			stackadj = 8;
+		else if (info->pushed_reg % 2 == 0 && info->localsize % 16 != 0)
+			stackadj = 0;
+		else if (info->pushed_reg % 2 != 0 && info->localsize % 16 == 0)
+			stackadj = 0;
+		else if (info->pushed_reg % 2 != 0 && info->localsize % 16 != 0)
+			stackadj = 8;
+	}
+	else
+	{
+		if (info->pushed_reg % 2 == 0 && info->localsize % 16 == 0)
+			stackadj = 0;
+		else if (info->pushed_reg % 2 == 0 && info->localsize % 16 != 0)
+			stackadj = 8;
+		else if (info->pushed_reg % 2 != 0 && info->localsize % 16 == 0)
+			stackadj = 8;
+		else if (info->pushed_reg % 2 != 0 && info->localsize % 16 != 0)
+			stackadj = 0;
+	}
 
 	/* default processing. if no params/locals are defined, continue */
 	if (info->forceframe == FALSE && info->localsize == 0 &&
 		info->stackparam == FALSE && info->has_vararg == FALSE &&
-		resstack == 0 && info->regslist == NULL)
+		resstack == 0 && info->regslist == NULL && !info->fpo)
 		return(NOT_ERROR);
 
-	regist = info->regslist;
-	check_proc_fpo(info);
+	if (info->fpo && stackadj > 0 && CurrProc->sym.langtype == LANG_FASTCALL && !info->isleaf)
+	{
+		AddLineQueueX("sub %r, %d", T_RSP, stackadj);
+	}
 
 	/* initialize shadow space for register params */
 	if (ModuleInfo.Ofssize == USE64 && ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_SAVEREGPARAMS))
@@ -4893,6 +4925,9 @@ static void pop_register(uint_16 *regist)
 static void write_generic_epilogue(struct proc_info *info)
 {
 	int resstack = 0;
+	int stackadj = 0;
+	
+	check_proc_fpo(info);
 
 	if (ModuleInfo.Ofssize == USE64 && ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP))
 	{
@@ -4906,6 +4941,34 @@ static void write_generic_epilogue(struct proc_info *info)
 
 	if (info->loadds)
 		AddLineQueueX("pop %r", T_DS);
+
+	if (info->fpo)
+	{
+		if (info->pushed_reg % 2 == 0 && info->localsize % 16 == 0)
+			stackadj = 8;
+		else if (info->pushed_reg % 2 == 0 && info->localsize % 16 != 0)
+			stackadj = 0;
+		else if (info->pushed_reg % 2 != 0 && info->localsize % 16 == 0)
+			stackadj = 0;
+		else if (info->pushed_reg % 2 != 0 && info->localsize % 16 != 0)
+			stackadj = 8;
+	}
+	else
+	{
+		if (info->pushed_reg % 2 == 0 && info->localsize % 16 == 0)
+			stackadj = 0;
+		else if (info->pushed_reg % 2 == 0 && info->localsize % 16 != 0)
+			stackadj = 8;
+		else if (info->pushed_reg % 2 != 0 && info->localsize % 16 == 0)
+			stackadj = 8;
+		else if (info->pushed_reg % 2 != 0 && info->localsize % 16 != 0)
+			stackadj = 0;
+	}
+
+	if (ModuleInfo.Ofssize == USE64 && stackadj > 0 && info->fpo && !info->isleaf)
+	{
+		AddLineQueueX("add %r, %d", T_RSP, stackadj);
+	}
 
 	if ((info->locallist == NULL) && info->stackparam == FALSE && info->has_vararg == FALSE && resstack == 0 && info->forceframe == FALSE)
 		return;

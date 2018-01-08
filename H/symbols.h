@@ -381,6 +381,7 @@ struct proc_info {
     unsigned char       vecused;
 	
 	enum returntype     ret_type;		/* return type from proc */
+	bool                isleaf;
 
 #if SYSV_SUPPORT
 	unsigned char       firstGPR;		/* Added for systemv call vararg to track the first available registers that can be used */
