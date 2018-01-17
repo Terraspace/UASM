@@ -936,8 +936,10 @@ _DEREF MACRO itype:REQ, proc:REQ, argCount:REQ, argsAndRefs:VARARG
     argstr TEXTEQU < >
     i = 0
     FOR dref, <argsAndRefs>
-        IF i LT argCount
-            argstr CATSTR argstr, <,>, <&dref&>
+        IF i LT argCount OR argCount EQ 0
+			IF argCount GT 0
+				argstr CATSTR argstr, <,>, <&dref&>
+			ENDIF
         ELSE
             IF (i-argCount) MOD 2 EQ 0
                 ptrstr TEXTEQU <&dref&>
@@ -957,10 +959,15 @@ _DEREF MACRO itype:REQ, proc:REQ, argCount:REQ, argsAndRefs:VARARG
     i = i + 1
     ENDM
 
-    argstr SUBSTR argstr, 3
-
+	% IF @SizeStr(<%&argstr&>) GT 3
+		argstr SUBSTR argstr, 3
+	ENDIF
+	IF argCount EQ 0
+	   argstr TEXTEQU <>
+	ENDIF
+	
     IFNB <argstr>
-        InterfacePtr TEXTEQU <_>
+	    InterfacePtr TEXTEQU <_>
         InterfacePtr CATSTR InterfacePtr, <&itype>, <_>, <&proc>, <Pto>
         IF(OPATTR(rcx)) AND 00010000b
             IFNB <argstr>
@@ -1039,8 +1046,10 @@ _DEREFI MACRO itype:REQ, proc:REQ,  argCount:REQ, argsAndRefs:VARARG
     argstr TEXTEQU < >
     i = 0
     FOR dref, <argsAndRefs>
-        IF i LT argCount
-            argstr CATSTR argstr, <,>, <&dref&>
+        IF i LT argCount OR argCount EQ 0
+			IF argCount GT 0
+				argstr CATSTR argstr, <,>, <&dref&>
+			ENDIF
         ELSE
             IF (i-argCount) MOD 2 EQ 0
                 ptrstr TEXTEQU <&dref&>
@@ -1060,8 +1069,10 @@ _DEREFI MACRO itype:REQ, proc:REQ,  argCount:REQ, argsAndRefs:VARARG
     i = i + 1
     ENDM
 
-    argstr SUBSTR argstr, 3
-
+	% IF @SizeStr(<%&argstr&>) GT 3
+		argstr SUBSTR argstr, 3
+	ENDIF
+	
     IFNB <argstr>
         InterfacePtr TEXTEQU <_>
         InterfacePtr CATSTR InterfacePtr, <&itype>, <_>, <&proc>, <Pto>
