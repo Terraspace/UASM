@@ -2823,8 +2823,45 @@ static void output_3rd_operand( struct code_info *CodeInfo )
        * changed.
        */
       //CodeInfo->data[OPND3] = opnd_clstab[CodeInfo->pinstr->opclsidx].opnd_type_3rd & ~OP3_HID;
+      switch (CodeInfo->token){
+        case T_PCLMULLQLQDQ:
+             CodeInfo->opnd[OPND3].InsFixup = NULL;
+             OutputCodeByte(0x00);
+          return;
+        case T_PCLMULHQLQDQ:
+             CodeInfo->opnd[OPND3].InsFixup = NULL;
+             OutputCodeByte(0x01);
+          return;
+        case T_PCLMULLQHQDQ:
+             CodeInfo->opnd[OPND3].InsFixup = NULL;
+             OutputCodeByte(0x10);
+          return;
+        case T_PCLMULHQHQDQ:
+             CodeInfo->opnd[OPND3].InsFixup = NULL;
+             OutputCodeByte(0x11);
+          return;
+        }
 #if AVXSUPP
       if (CodeInfo->token >= VEX_START){
+      switch (CodeInfo->token){
+        case T_VPCLMULLQLQDQ:
+             CodeInfo->opnd[OPND3].InsFixup = NULL;
+             OutputCodeByte(0x00);
+          return;
+        case T_VPCLMULHQLQDQ:
+             CodeInfo->opnd[OPND3].InsFixup = NULL;
+             OutputCodeByte(0x01);
+          return;
+        case T_VPCLMULLQHQDQ:
+             CodeInfo->opnd[OPND3].InsFixup = NULL;
+             OutputCodeByte(0x10);
+          return;
+        case T_VPCLMULHQHQDQ:
+             CodeInfo->opnd[OPND3].InsFixup = NULL;
+             OutputCodeByte(0x11);
+          return;
+        }
+
         if (CodeInfo->token >= T_VCMPEQPD && CodeInfo->token <= T_VCMPTRUE_USSS){
           CodeInfo->opnd[OPND3].InsFixup = NULL;
           OutputCodeByte((CodeInfo->token - T_VCMPEQPD) & 0x1F);

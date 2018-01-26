@@ -298,6 +298,10 @@ avxins (PINSRD   ,vpinsrd   ,    P_AVX, VX_LL|VX_L )        /* -, s */
 avxins (PEXTRQ   ,vpextrq   ,    P_AVX, VX_LL|VX_L|VX_NND )   /* -, ns! */
 avxins (PINSRQ   ,vpinsrq   ,    P_AVX, VX_LL )        /* -, s */
 avxins (PCLMULQDQ,vpclmulqdq ,   P_AVX, VX_L )        /* -, s */
+avxins (PCLMULLQLQDQ, vpclmullqlqdq,   P_AVX, VX_L )        /* -, s */
+avxins (PCLMULHQLQDQ, vpclmulhqlqdq,   P_AVX, VX_L )        /* -, s */
+avxins (PCLMULLQHQDQ, vpclmullqhqdq,   P_AVX, VX_L )        /* -, s */
+avxins (PCLMULHQHQDQ, vpclmulhqhqdq,   P_AVX, VX_L )        /* -, s */
 avxins (AESDECLAST,vaesdeclast , P_AVX, VX_L )        /* -, s */
 avxins (AESDEC,vaesdec ,         P_AVX, VX_L )        /* -, s */
 avxins (AESENC,vaesenc ,         P_AVX, VX_L )        /* -, s */
@@ -406,4 +410,3 @@ avxins (UNPCKLPD ,vunpcklpd ,    P_AVX, VX_LL|VX_L )     /* L, s */
 avxins (UNPCKLPS ,vunpcklps ,    P_AVX, VX_LL|VX_L )     /* L, s */
 #endif
 
-/*avxins (PCLMULQDQ,vpclmulqdq,    P_AVX, 0 )*/

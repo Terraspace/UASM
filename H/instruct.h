@@ -1168,27 +1168,36 @@ insn(PSIGND, 1,                 OpCls( XMM,      XMM_M128, NONE ), F_660F38,1,  
 ins (PSIGNW, psignw,            OpCls( MMX,      MMX_M64,  NONE ), F_0F38,  1,  no_WDS, 0x09,     0x00,       P_686|P_SSSE3, 0)
 insn(PSIGNW, 1,                 OpCls( XMM,      XMM_M128, NONE ), F_660F38,1,  no_WDS, 0x09,     0x00,       P_686|P_SSSE3, 0)
 ins(PCLMULQDQ, pclmulqdq,       OpCls( XMM,      XMM_M128, I8_U ), F_660F3A,1,  no_WDS, 0x44,     0x00,       P_686|P_SSSE3, 0)
+ins(PCLMULLQLQDQ, pclmullqlqdq, OpCls( XMM,      XMM_M128, HID  ), F_660F3A,1,  no_WDS, 0x44,     0x00,       P_686|P_SSSE3, 0)
+ins(PCLMULHQLQDQ, pclmulhqlqdq, OpCls( XMM,      XMM_M128, HID  ), F_660F3A,1,  no_WDS, 0x44,     0x00,       P_686|P_SSSE3, 0)
+ins(PCLMULLQHQDQ, pclmullqhqdq, OpCls( XMM,      XMM_M128, HID  ), F_660F3A,1,  no_WDS, 0x44,     0x00,       P_686|P_SSSE3, 0)
+ins(PCLMULHQHQDQ, pclmulhqhqdq, OpCls( XMM,      XMM_M128, HID  ), F_660F3A,1,  no_WDS, 0x44,     0x00,       P_686|P_SSSE3, 0)
 ins(AESDECLAST, aesdeclast,     OpCls( XMM,      XMM_M128, NONE ), F_660F38,1,  no_WDS, 0xDF,     0x00,       P_686|P_SSSE3, 0)
 ins(AESDEC, aesdec,             OpCls( XMM,      XMM_M128, NONE ), F_660F38,1,  no_WDS, 0xDE,     0x00,       P_686|P_SSSE3, 0)
 ins(AESENC, aesenc,             OpCls( XMM,      XMM_M128, NONE ), F_660F38,1,  no_WDS, 0xDC,     0x00,       P_686|P_SSSE3, 0)
 ins(AESENCLAST, aesenclast,     OpCls( XMM,      XMM_M128, NONE ), F_660F38,1,  no_WDS, 0xDD,     0x00,       P_686|P_SSSE3, 0)
 ins(AESIMC, aesimc,             OpCls( XMM,      XMM_M128, NONE ), F_660F38,1,  no_WDS, 0xDB,     0x00,       P_686|P_SSSE3, 0)
 ins(AESKEYGENASSIST,aeskeygenassist,OpCls( XMM,  XMM_M128, I8_U ), F_660F3A,1,  no_WDS, 0xDF,     0x00,       P_686|P_SSSE3, 0)
-ins (ADCX,    adcx,             OpCls( R32,      R32_M32,    NONE ), F_660F38,1, no_WDS, 0xF6,     0x00,     P_686|P_SSSE3,0)
-insn(ADCX,    1,                OpCls( R64,      R64_M64,    NONE ), F_660F38,1, no_WDS,      0xF6,     0x00,     P_686|P_SSSE3,0)
+ins (ADCX,    adcx,             OpCls( R32,      R32_M32,  NONE ), F_660F38,1,  no_WDS, 0xF6,     0x00,       P_686|P_SSSE3, 0)
+insn(ADCX,    1,                OpCls( R64,      R64_M64,  NONE ), F_660F38,1,  no_WDS, 0xF6,     0x00,       P_686|P_SSSE3, 0)
+/* SHA instructons */
+ins(SHA1RNDS4, sha1rnds4,       OpCls( XMM,      XMM_M128, I8_U ),  F_0F3A, 1,  no_WDS, 0xCC,     0x00,       P_686|P_SSSE3, 0)
+ins(SHA1NEXTE, sha1nexte,       OpCls( XMM,      XMM_M128, NONE  ), F_0F38, 1,  no_WDS, 0xC8,     0x00,       P_686|P_SSSE3, 0)
+ins(SHA1MSG1,  sha1msg1,        OpCls( XMM,      XMM_M128, NONE  ), F_0F38, 1,  no_WDS, 0xC9,     0x00,       P_686|P_SSSE3, 0)
+ins(SHA1MSG2,  sha1msg2,        OpCls( XMM,      XMM_M128, NONE  ), F_0F38, 1,  no_WDS, 0xCA,     0x00,       P_686|P_SSSE3, 0)
+ins(SHA256RNDS2, sha256rnds2,   OpCls( XMM,      XMM_M128, NONE  ), F_0F38, 1,  no_WDS, 0xCB,     0x00,       P_686|P_SSSE3, 0)
+ins(SHA256MSG1,  sha256msg1,    OpCls( XMM,      XMM_M128, NONE  ), F_0F38, 1,  no_WDS, 0xCC,     0x00,       P_686|P_SSSE3, 0)
+ins(SHA256MSG2,  sha256msg2,    OpCls( XMM,      XMM_M128, NONE  ), F_0F38, 1,  no_WDS, 0xCD,     0x00,       P_686|P_SSSE3, 0)
 
-//66 0F 3A DF /r ib AESKEYGENASSIST xmm1, xmm2/m128, imm8
-//VEX.128.66.0F3A.WIG DF /r ib VAESKEYGENASSIST xmm1, xmm2/m128, imm8
-//66 0F 38 DB /r AESIMC xmm1, xmm2/m128
-//VEX.128.66.0F38.WIG DB /r VAESIMC xmm1, xmm2/m128
-//66 0F 38 DD /r AESENCLAST xmm1, xmm2/m128
-//VEX.NDS.128.66.0F38.WIG DD /r VAESENCLAST xmm1, xmm2, xmm3/m128
-//66 0F 38 DC /r AESENC xmm1, xmm2/m128
-//VEX.NDS.128.66.0F38.WIG DC /r VAESENC xmm1, xmm2, xmm3/m128
-//66 0F 38 DF /r AESDECLAST xmm1, xmm2/m128
-//VEX.NDS.128.66.0F38.WIG DF /r VAESDECLAST xmm1, xmm2, xmm3/m128
+//SHA1RNDS4 xmm1,xmm2/m128, imm8   NP 0F 3A CC /r ib
+//SHA1NEXTE xmm1,xmm2/m128         NP 0F 38 C8 /r
+//SHA1MSG1 xmm1,xmm2/m128          NP 0F 38 C9 /r
+//SHA1MSG2 xmm1,xmm2/m128          NP 0F 38 CA /r
+//SHA256RNDS2 xmm1,xmm2/m128,<XMM0>NP 0F 38 CB /r
+//SHA256MSG1 xmm1,xmm2/m128        NP 0F 38 CC /r
+//SHA256MSG2 xmm1,xmm2/m128        NP 0F 38 CD /r
 
-//66 0F 3A 44 /r ib PCLMULQDQ xmm1, xmm2/m128, imm8
+
 #endif
 #if AMD64_SUPPORT
 /* CDQE must be first in this group, see reswords.c */
