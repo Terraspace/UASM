@@ -176,7 +176,8 @@ ENDMETHOD
 ;---------------------------------------------------------------------------------------------------------------
 STATICMETHOD Person, IsHuman, <>, <USES rbx>, somebody:PTR Person
 
-	mov rax,somebody
+	_STATICREF rax,Person ; Obtain a reference to the static class members.
+
 	mov al,(Person PTR [rax]).human
 	
 	ret
@@ -261,6 +262,10 @@ albl:  person1->Calc(1.0)
 	person1->Calc( NormalProc(1.0) )		; Pass the typed result of a normal procedure to a method call.
 	person2->DoAdd( 1.0, NormalProc(2.0) )	
 
+	;Call a static method
+	_STATIC Person, IsHuman					; Old Way...
+	Person.IsHuman()						; New way...
+	
     ; Delete the objects.
     _DELETE(person1)
     _DELETE(person2)
