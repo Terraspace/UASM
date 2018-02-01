@@ -1320,6 +1320,7 @@ ret_code ParseProc(struct dsym *proc, int i, struct asm_tok tokenarray[], bool I
 
 
 	/* Handle return type if present */
+	ret_type = 0xff;
 	if (proc->e.procinfo->ret_type == 0xff)
 	{
 		if (ModuleInfo.Ofssize == USE16)
@@ -1335,87 +1336,79 @@ ret_code ParseProc(struct dsym *proc, int i, struct asm_tok tokenarray[], bool I
 	proc->e.procinfo->isleaf = TRUE;
 
 	/* Could be a typedef/chain of typedefs terminating in a valid basic type UASM 2.46.8 */
-	if (tokenarray[i].token == T_ID && strcasecmp(tokenarray[i].string_ptr,"USES") != 0 &&
-		tokenarray[i-1].token != T_COMMA && tokenarray[i+1].token != T_COMMA &&
-		strcasecmp(tokenarray[i].string_ptr, "PRIVATE") != 0 &&
-		strcasecmp(tokenarray[i].string_ptr, "PUBLIC") != 0 &&
-		strcasecmp(tokenarray[i].string_ptr, "FASTCALL") != 0 &&
-		strcasecmp(tokenarray[i].string_ptr, "C") != 0 &&
-		strcasecmp(tokenarray[i].string_ptr, "VECTORCALL") != 0 &&
-		strcasecmp(tokenarray[i].string_ptr, "SYSTEMV") != 0 &&
-		strcasecmp(tokenarray[i].string_ptr, "BORLAND") != 0 &&
-		strcasecmp(tokenarray[i].string_ptr, "BASIC") != 0 &&
-		strcasecmp(tokenarray[i].string_ptr, "FORTRAN") != 0 &&
-		strcasecmp(tokenarray[i].string_ptr, "STDCALL") != 0 &&
-		strcasecmp(tokenarray[i].string_ptr, "SYSCALL") != 0 &&
-		strcasecmp(tokenarray[i].string_ptr, "EXPORT") != 0 &&
-	   ( (IsPROC == FALSE && tokenarray[i + 1].token != T_COLON && tokenarray[i - 1].token != T_ID) ||
-		 (IsPROC == TRUE  && tokenarray[i + 1].token != T_COLON) ) )
+	/* UASM 2.46.9 put return type in () */
+
+	if (tokenarray[i + 1].tokval == T_VOIDARG)
 	{
-		sym = SymLookup(tokenarray[i].string_ptr);
+		i += 3;
+	}
+	else if (tokenarray[i].token == T_OP_BRACKET && tokenarray[i+2].token == T_CL_BRACKET && tokenarray[i+1].token == T_ID )
+	{
+		sym = SymLookup(tokenarray[i + 1].string_ptr);
 		while (sym)
 		{
 			switch (sym->mem_type)
 			{
-				case MT_BYTE:
-					ret_type = RT_BYTE;
-					break;
-				case MT_SBYTE:
-					ret_type = RT_SBYTE;
-					break;
-				case MT_WORD:
-					ret_type = RT_WORD;
-					break;
-				case MT_SWORD:
-					ret_type = RT_SWORD;
-					break;
-				case MT_DWORD:
-					ret_type = RT_DWORD;
-					break;
-				case MT_SDWORD:
-					ret_type = RT_SDWORD;
-					break;
-				case MT_QWORD:
-					ret_type = RT_QWORD;
-					break;
-				case MT_SQWORD:
-					ret_type = RT_SQWORD;
-					break;
-				case MT_FLOAT:
-					ret_type = RT_FLOAT;
-					break;
-				case MT_OWORD:
-					ret_type = RT_XMM;
-					break;
-				case MT_PTR:
-					ret_type = RT_PTR;
-					break;
-				case MT_YMMWORD:
-					ret_type = RT_YMM;
-					break;
-				case MT_ZMMWORD:
-					ret_type = RT_ZMM;
-					break;
-				case MT_REAL4:
-					ret_type = RT_REAL4;
-					break;
-				case MT_REAL8:
-					ret_type = RT_REAL8;
-					break;
-				case MT_REAL10:
-					ret_type = RT_REAL10;
-					break;
+			case MT_BYTE:
+				ret_type = RT_BYTE;
+				break;
+			case MT_SBYTE:
+				ret_type = RT_SBYTE;
+				break;
+			case MT_WORD:
+				ret_type = RT_WORD;
+				break;
+			case MT_SWORD:
+				ret_type = RT_SWORD;
+				break;
+			case MT_DWORD:
+				ret_type = RT_DWORD;
+				break;
+			case MT_SDWORD:
+				ret_type = RT_SDWORD;
+				break;
+			case MT_QWORD:
+				ret_type = RT_QWORD;
+				break;
+			case MT_SQWORD:
+				ret_type = RT_SQWORD;
+				break;
+			case MT_FLOAT:
+				ret_type = RT_FLOAT;
+				break;
+			case MT_OWORD:
+				ret_type = RT_XMM;
+				break;
+			case MT_PTR:
+				ret_type = RT_PTR;
+				break;
+			case MT_YMMWORD:
+				ret_type = RT_YMM;
+				break;
+			case MT_ZMMWORD:
+				ret_type = RT_ZMM;
+				break;
+			case MT_REAL4:
+				ret_type = RT_REAL4;
+				break;
+			case MT_REAL8:
+				ret_type = RT_REAL8;
+				break;
+			case MT_REAL10:
+				ret_type = RT_REAL10;
+				break;
 			}
 			if (sym->target_type)
 				sym = sym->target_type;
 			else
 				break;
 		}
-		i++;
+		i+=3;
 	}
-	else if (tokenarray[i].token == T_STYPE || (tokenarray[i].token == T_BINARY_OPERATOR && tokenarray[i].tokval == T_PTR))
+	else if (tokenarray[i].token == T_OP_BRACKET && tokenarray[i + 2].token == T_CL_BRACKET && 
+		     (tokenarray[i+1].token == T_STYPE || (tokenarray[i+1].token == T_BINARY_OPERATOR && tokenarray[i+1].tokval == T_PTR)) )
 	{
-		switch (tokenarray[i].tokval)
+		switch (tokenarray[i+1].tokval)
 		{
 		case T_PTR:
 			ret_type = RT_PTR;
@@ -1464,7 +1457,7 @@ ret_code ParseProc(struct dsym *proc, int i, struct asm_tok tokenarray[], bool I
 			break;
 		}
 
-		i++;
+		i+=3;
 	}
 	else
 	{

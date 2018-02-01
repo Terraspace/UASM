@@ -386,4 +386,6 @@ res(VECTORCALL, vectorcall, RWT_RES_ID, 0, LANG_VECTORCALL, 0, P_64, 0)
 /* 2.24 system v and delphi 32 */
 res(SYSVCALL, systemv, RWT_RES_ID, 0, LANG_SYSVCALL, 0, P_64, 0)
 res(BORLAND, borland, RWT_RES_ID, 0, LANG_DELPHICALL, 0, P_86, 0)
+/* 2.46.9 support VOID return type */
+res(VOIDARG,   voidarg,    RWT_RES_ID, 0, 0, 0, P_86, 0)
 

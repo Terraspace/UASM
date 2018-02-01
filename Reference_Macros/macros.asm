@@ -936,12 +936,12 @@ _DEREF MACRO itype:REQ, proc:REQ, argCount:REQ, argsAndRefs:VARARG
     argstr TEXTEQU < >
     i = 0
     FOR dref, <argsAndRefs>
-        IF i LT argCount OR argCount EQ 0
-			IF argCount GT 0
+        IF i LT argCount+1 
+			IF i GT 0
 				argstr CATSTR argstr, <,>, <&dref&>
 			ENDIF
         ELSE
-            IF (i-argCount) MOD 2 EQ 0
+            IF (i-argCount) MOD 2 EQ 1
                 ptrstr TEXTEQU <&dref&>
             ELSE
                 typestr TEXTEQU <&dref&>
@@ -966,11 +966,11 @@ _DEREF MACRO itype:REQ, proc:REQ, argCount:REQ, argsAndRefs:VARARG
 	   argstr TEXTEQU <>
 	ENDIF
 	
-    IFNB <argstr>
+    IF argCount GT 0
 	    InterfacePtr TEXTEQU <_>
         InterfacePtr CATSTR InterfacePtr, <&itype>, <_>, <&proc>, <Pto>
         IF(OPATTR(rcx)) AND 00010000b
-            IFNB <argstr>
+            IF argCount GT 0
                 IF @Platform EQ 1
                     mov r15,[rcx]
                     % invoke(InterfacePtr PTR[r15].&itype&vtbl.&proc), rcx, &argstr
@@ -991,7 +991,7 @@ _DEREF MACRO itype:REQ, proc:REQ, argCount:REQ, argsAndRefs:VARARG
             ENDIF
         ELSE
             mov r15,[rcx]
-            IFNB <argstr>
+            IF argCount GT 0
                 FOR arg, <argstr>
                     IFIDNI <&arg>, <rcx>
                         .ERR <rcx is not allowed as a Method parameter with indirect object label>
@@ -1006,7 +1006,7 @@ _DEREF MACRO itype:REQ, proc:REQ, argCount:REQ, argsAndRefs:VARARG
         InterfacePtr TEXTEQU <_>
         InterfacePtr CATSTR InterfacePtr, <&itype>, <_>, <&proc>, <Pto>
         IF(OPATTR(rcx)) AND 00010000b
-            IFNB <argstr>
+            IF argCount GT 0
                 IF @Platform EQ 1
                     mov r15,[rcx]
                     % invoke(InterfacePtr PTR[r15].&itype&vtbl.&proc), rcx, &argstr
@@ -1027,7 +1027,7 @@ _DEREF MACRO itype:REQ, proc:REQ, argCount:REQ, argsAndRefs:VARARG
             ENDIF
         ELSE
             mov r15,[rcx]
-            IFNB <argstr>
+            IF argCount GT 0
                 FOR arg, <argstr>
                     IFIDNI <&arg>, <rcx>
                         .ERR <rcx is not allowed as a Method parameter with indirect object label>

@@ -602,6 +602,18 @@ static void output_opc(struct code_info *CodeInfo)
           break;
         else  goto error;
       }
+    switch (CodeInfo->token){
+      case   T_VCVTSS2USI:
+      case   T_VCVTSS2SI :
+      case   T_VCVTSS2SD :
+      case   T_VCVTSI2SS :
+      case   T_VCVTSI2SD :
+      case   T_VCVTSD2SS :
+      case   T_VCVTSD2USI:
+      case   T_VCVTSD2SI :
+        if (CodeInfo->r1type == OP_YMM || CodeInfo->opnd[OPND2].type == OP_YMM) 
+          goto error;
+      }
   /* Validate use of proper GPR size for VPINSRB, VPINSRW, VPINSRD, VPINSRQ, VPEXTRB, VPEXTRW, VPEXTRD, VPEXTRQ, Uasm 2.16 
    * MT_EMPTY is OK because instructions mnemonics are teling the size
    */

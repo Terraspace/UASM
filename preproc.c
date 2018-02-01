@@ -485,6 +485,14 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 					pStr += strlen(&pcs);
 
 					pStr = strcpy(pStr, ",") + 1;
+
+					if (paramCount - 1 == 0) // For no argument case, put a dummy 0 in to be filtered out by deref
+					{
+						pStr = strcpy(pStr, "0") + 1;
+					}
+					else
+						pStr = strcpy(pStr, "0,") + 2;
+
 					for (j = opIdx + 1; j < clIdx; j++)
 					{
 						if (*tokenarray[j].string_ptr == '&')
@@ -658,7 +666,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 				/* scan all tokens between opIdx and clIdx and replace & operator with ADDR */
 				for (j = opIdx; j < clIdx; j++)
 				{
-					if (*tokenarray[j].string_ptr == '&')
+					if (*(tokenarray[j].string_ptr) == '&')
 					{
 						// token identifier begins with address of operator.
 						strcpy(tokenarray[j].string_ptr, "ADDR ");

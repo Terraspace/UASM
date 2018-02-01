@@ -25,8 +25,8 @@ IFNDEF _CLASS_PERSON_
 _CLASS_PERSON_ EQU 1
 
 OINTERFACE Entity
-	CVIRTUAL PrintName, <>
-	CVIRTUAL SetName, <>
+	CVIRTUAL PrintName, <VOIDARG>
+	CVIRTUAL SetName, <VOIDARG>
 ENDMETHODS
 ENDOINTERFACE
 
@@ -51,7 +51,7 @@ pPerson TYPEDEF PTR Person
 ; Constructor
 ; Can take optional arguments.
 ;---------------------------------------------------------------------------------------------------------------
-METHOD Person, Init, <>, <USES rbx r10>, age:BYTE, ptrName:PTR
+METHOD Person, Init, <VOIDARG>, <USES rbx r10>, age:BYTE, ptrName:PTR
 	LOCAL isAlive:DWORD
 	ret
 ENDMETHOD
@@ -60,7 +60,7 @@ ENDMETHOD
 ; Destructor
 ; Takes no arguments.
 ;---------------------------------------------------------------------------------------------------------------
-METHOD Person, Destroy, <>, <>
+METHOD Person, Destroy, <VOIDARG>, <>
 	mov [rdi].age,0
 	ret
 ENDMETHOD
@@ -68,7 +68,7 @@ ENDMETHOD
 ;---------------------------------------------------------------------------------------------------------------
 ; Print the persons name to the console.
 ;---------------------------------------------------------------------------------------------------------------
-METHOD Person, PrintName, <>, <SYSTEMV USES rbx>
+METHOD Person, PrintName, <VOIDARG>, <USES rbx>
 	invoke WriteToConsole, ADDR aMsg, 15, stdout
 	ret
 ENDMETHOD
@@ -76,7 +76,7 @@ ENDMETHOD
 ;---------------------------------------------------------------------------------------------------------------
 ; Set person name.
 ;---------------------------------------------------------------------------------------------------------------
-METHOD Person, SetName, <>, <USES rbx>, pNameStr:QWORD
+METHOD Person, SetName, <VOIDARG>, <USES rbx>, pNameStr:QWORD
 	mov rax,pNameStr
 	mov [rdi].pName,rax
 	ret
@@ -85,7 +85,7 @@ ENDMETHOD
 ;---------------------------------------------------------------------------------------------------------------
 ; Static method to check if a person is a human.
 ;---------------------------------------------------------------------------------------------------------------
-STATICMETHOD Person, IsHuman, <>, <USES rbx>, somebody:PTR Person
+STATICMETHOD Person, IsHuman, <qword>, <USES rbx>, somebody:PTR Person
 	ret
 ENDMETHOD
 

@@ -15,7 +15,7 @@ includelib  c:\masm32\lib\msvcrt.lib
 
 printf      PROTO C :PTR, :VARARG
 sum         PROTO :DWORD, :DWORD
-sumAsFlt    PROTO REAL4 :DWORD, :DWORD
+sumAsFlt    PROTO (REAL4) :DWORD, :DWORD
 
 .data
 
@@ -39,7 +39,7 @@ sum PROC x:DWORD, y:DWORD
     ret
 sum ENDP
 
-sumAsFlt PROC REAL4 x:DWORD, y:DWORD
+sumAsFlt PROC (REAL4) x:DWORD, y:DWORD
 	mov eax,x
 	add eax,y
 	cvtsi2ss xmm0,eax

@@ -10,18 +10,22 @@ includelib kernel32.lib
 ExitProcess PROTO :dword
 printf      PROTO :ptr, :vararg
 
-MyProc  PROTO dword :dword, :qword
+MYTYPE TYPEDEF QWORD
+
+MyProc  PROTO (dword) :dword, :qword
 MyProc2 PROTO :PTR
-MyProc3 PROTO dword
+MyProc3 PROTO (dword)
 MyProc4 PROTO
-MyProc5 PROTO real4 :real4
-MyProc6 PROTO byte :byte
-MyProc7 PROTO dword :byte, :word, :dword, :qword, :real4, :qword
-MyProc8 PROTO byte
-MyProc9 PROTO real4 :byte, :word, :dword, :qword, :real4, :qword
-MyProc10 PROTO dword :REAL4, :QWORD
-MyProc11 PROTO real4
-MyProc12 PROTO qword
+MyProc5 PROTO (real4) :real4
+MyProc6 PROTO (byte) :byte
+MyProc7 PROTO (dword) :byte, :word, :dword, :qword, :real4, :qword
+MyProc8 PROTO (byte)
+MyProc9 PROTO (real4) :byte, :word, :dword, :qword, :real4, :qword
+MyProc10 PROTO (dword) :REAL4, :QWORD
+MyProc11 PROTO (real4)
+MyProc12 PROTO (MYTYPE)
+MyProc13 PROTO :dword, :dword
+MyProc14 PROTO (qword) :dword, :dword
 
 .data
 
@@ -96,7 +100,7 @@ start:
 
 	invoke ExitProcess,0
 
-MyProc PROC dword aVar:DWORD, bVar:QWORD
+MyProc PROC (dword) aVar:DWORD, bVar:QWORD
    movsxd rax,aVar
    add rax,bVar
    ret
@@ -109,7 +113,7 @@ MyProc2 PROC FRAME strPtr:PTR
    ret
 MyProc2 ENDP
 
-MyProc3 PROC dword FRAME 
+MyProc3 PROC (dword) FRAME 
    mov eax,10
    ret
 MyProc3 ENDP
@@ -119,30 +123,30 @@ MyProc4 PROC FRAME
    ret
 MyProc4 ENDP
 
-MyProc5 PROC real4 FRAME aVar:REAL4
+MyProc5 PROC (real4) FRAME aVar:REAL4
    mov eax,1.0
    vmovd xmm1,eax
    vaddss xmm0,xmm0,xmm1
    ret
 MyProc5 ENDP
 
-MyProc6 PROC byte FRAME aVar:BYTE
+MyProc6 PROC (byte) FRAME aVar:BYTE
    xor al,al
    add al,cl
    ret
 MyProc6 ENDP
 
-MyProc7 PROC dword FRAME aVar:byte, bVar:word, cVar:dword, dVar:qword, eVar:real4, fVar:qword
+MyProc7 PROC (dword) FRAME aVar:byte, bVar:word, cVar:dword, dVar:qword, eVar:real4, fVar:qword
    mov eax,1
    ret
 MyProc7 ENDP
 
-MyProc8 PROC byte FRAME
+MyProc8 PROC (byte) FRAME
    mov al,7
    ret
 MyProc8 ENDP
 
-MyProc9 PROC real4 FRAME aVar:byte, bVar:word, cVar:dword, dVar:qword, eVar:real4, fVar:qword
+MyProc9 PROC (real4) FRAME aVar:byte, bVar:word, cVar:dword, dVar:qword, eVar:real4, fVar:qword
    LOADSS xmm0,2.5
    ret
 MyProc9 ENDP
@@ -152,14 +156,26 @@ MyProc10 PROC FRAME aVar:REAL4, bVar:QWORD
    ret
 MyProc10 ENDP
 
-MyProc11 PROC real4 FRAME 
+MyProc11 PROC (real4) FRAME 
    LOADSS xmm0,3.0
    ret
 MyProc11 ENDP
 
-MyProc12 PROC qword FRAME 
+MyProc12 PROC (MYTYPE) FRAME 
    xor rax,rax
    ret
 MyProc12 ENDP
+
+; Default for un-typed arguments
+MyProc13 PROC FRAME aVar, bVar
+   xor rax,rax
+   ret
+MyProc13 ENDP
+
+; Default for un-typed arguments with return and no frame
+MyProc14 PROC (qword) aVar, bVar
+   xor rax,rax
+   ret
+MyProc14 ENDP
 
 end start

@@ -23,7 +23,7 @@ OPTION VTABLE:OFF		; [ON/OFF] dictates whether c-style method invocations use th
     includelib <kernel32.lib>
     includelib <user32.lib>
 
-NormalProc PROTO real4 a:real4
+NormalProc PROTO (real4) a:real4
 
 ;=====================================================================================================================================================
 ;	
@@ -34,8 +34,8 @@ IFNDEF _CLASS_PERSON_
 _CLASS_PERSON_ EQU 1
 
 OINTERFACE Entity
-	CVIRTUAL PrintName, <>
-	CVIRTUAL SetName, <>
+	CVIRTUAL PrintName, <VOIDARG>
+	CVIRTUAL SetName, <VOIDARG>
 ENDMETHODS
 ENDOINTERFACE
 
@@ -63,7 +63,7 @@ pPerson TYPEDEF PTR Person
 ; Constructor
 ; Can take optional arguments.
 ;---------------------------------------------------------------------------------------------------------------
-METHOD Person, Init, <>, <USES rbx r10>, age:BYTE, consoleHandle:QWORD, ptrName:PTR
+METHOD Person, Init, <VOIDARG>, <USES rbx r10>, age:BYTE, consoleHandle:QWORD, ptrName:PTR
 	
 	LOCAL isAlive:DWORD
 	; Internally the METHOD forms a traditional procedure, so anything that you can do in a PROC you can do in a method.
@@ -100,7 +100,7 @@ ENDMETHOD
 ; Destructor
 ; Takes no arguments.
 ;---------------------------------------------------------------------------------------------------------------
-METHOD Person, Destroy, <>, <>
+METHOD Person, Destroy, <VOIDARG>, <>
 	mov [rcx].age,0
 	ret
 ENDMETHOD
@@ -108,7 +108,7 @@ ENDMETHOD
 ;---------------------------------------------------------------------------------------------------------------
 ; Set person name.
 ;---------------------------------------------------------------------------------------------------------------
-METHOD Person, SetName, <>, <USES rbx>, pNameStr:PTR
+METHOD Person, SetName, <VOIDARG>, <USES rbx>, pNameStr:PTR
 
 	mov rax,pNameStr
 	mov [rcx].pName,rax
@@ -119,7 +119,7 @@ ENDMETHOD
 ;---------------------------------------------------------------------------------------------------------------
 ; Print the persons name to the console.
 ;---------------------------------------------------------------------------------------------------------------
-METHOD Person, PrintName, <>, <USES rbx>
+METHOD Person, PrintName, <VOIDARG>, <USES rbx>
 	
 	LOCAL bWritten:DWORD
 	
@@ -169,7 +169,7 @@ ENDMETHOD
 ;---------------------------------------------------------------------------------------------------------------
 option stackbase:rsp	; vectorcall currently only supports rsp stackbases.
 option win64:11
-VECMETHOD Person, Calc2, <>, <USES rbx>, aVec:XMMWORD, bVec:XMMWORD
+VECMETHOD Person, Calc2, <VOIDARG>, <USES rbx>, aVec:XMMWORD, bVec:XMMWORD
 
 	ret
 ENDMETHOD
@@ -192,7 +192,7 @@ ENDMETHOD
 ;---------------------------------------------------------------------------------------------------------------
 ; Static method to check if a person is a human.
 ;---------------------------------------------------------------------------------------------------------------
-STATICMETHOD Person, IsHuman, <>, <USES rbx>, somebody:PTR Person
+STATICMETHOD Person, IsHuman, <qword>, <USES rbx>, somebody:PTR Person
 
 	mov rax,somebody
 	mov al,(Person PTR [rax]).human
@@ -286,7 +286,7 @@ albl:  person1->Calc(1.0)
     ret
 MainCRTStartup ENDP
 
-NormalProc PROC real4 FRAME a:real4
+NormalProc PROC (real4) FRAME a:real4
 	LOADSS xmm0,1.0
 	ret
 NormalProc ENDP
