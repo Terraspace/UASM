@@ -209,6 +209,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 							strcmp(tokenarray[j].string_ptr, "_I") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "_VINVOKE") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "_V") == 0 ||
+							strcmp(tokenarray[j].string_ptr, "_SINVOKE") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "_DEREF") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "_DEREFI") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "uinvoke") == 0)
@@ -556,6 +557,172 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 
 }
 
+/* Expand static object type method invocations */
+static void ExpandStaticObjCalls(char *line, struct asm_tok tokenarray[])
+{
+	int i, j;
+	struct asym *sym = NULL;
+	int opIdx, clIdx;
+	int method;
+	int type;
+	char newline[MAX_LINE_LEN];
+	char *pStr;
+	int opCount = 0;
+	bool hasParams = FALSE;
+	bool inParam = FALSE;
+	bool inExpr = FALSE;
+	bool inProc = FALSE;
+	bool hasExprBracket = FALSE;
+	struct dsym *tsym = NULL;
+
+	memset(&newline, 0, MAX_LINE_LEN);
+	pStr = &newline;
+
+	for (i = 0; i < Token_Count; i++)
+	{
+		if (tokenarray[i].token == T_ID)
+		{
+			sym = SymSearch(tokenarray[i].string_ptr);
+			if (sym && sym->isClass)
+			{
+				if (tokenarray[i + 1].token == T_DOT && tokenarray[i + 2].token == T_ID && tokenarray[i + 3].token == T_OP_BRACKET)
+				{
+					
+					/* Scan backwards to check if we're in an HLL expression or call parameter */
+					if (i > 0)
+					{
+						for (j = i - 1; j >= 0; j--)
+						{
+							tsym = SymCheck(tokenarray[j].string_ptr);
+							if (tokenarray[j].token == T_DIRECTIVE && (tokenarray[j].dirtype == DRT_HLLSTART || tokenarray[j].dirtype == DRT_HLLEND))
+							{
+								inExpr = TRUE;
+								if (tokenarray[j + 1].token == T_OP_BRACKET || tokenarray[j + 1].tokval == '(')
+									hasExprBracket = TRUE;
+								else
+									hasExprBracket = FALSE;
+								break;
+							}
+							else if ((tokenarray[j].token == T_DIRECTIVE && tokenarray[j].dirtype == DRT_INVOKE) ||
+								strcmp(tokenarray[j].string_ptr, "arginvoke") == 0 ||
+								strcmp(tokenarray[j].string_ptr, "_INVOKE") == 0 ||
+								strcmp(tokenarray[j].string_ptr, "_I") == 0 ||
+								strcmp(tokenarray[j].string_ptr, "_VINVOKE") == 0 ||
+								strcmp(tokenarray[j].string_ptr, "_V") == 0 ||
+								strcmp(tokenarray[j].string_ptr, "_SINVOKE") == 0 ||
+								strcmp(tokenarray[j].string_ptr, "_DEREF") == 0 ||
+								strcmp(tokenarray[j].string_ptr, "_DEREFI") == 0 ||
+								strcmp(tokenarray[j].string_ptr, "uinvoke") == 0)
+							{
+								inParam = TRUE;
+								break;
+							}
+							else if (tokenarray[j].token == T_ID && tsym && tsym->sym.isproc)
+							{
+								inParam = TRUE;
+								inProc = TRUE;
+								break;
+							}
+						}
+					}
+					
+					// Allow expansion in an instruction.
+					if (tokenarray[i - 1].token == T_COMMA)
+						inExpr = TRUE;
+
+					// Allow expansion in a memory address [].
+					if (i > 0)
+					{
+						for (j = i - 1; j >= 0; j--)
+						{
+							if (tokenarray[j].token == T_OP_SQ_BRACKET)
+							{
+								inExpr = TRUE;
+								break;
+							}
+						}
+					}
+
+					opIdx = i + 3;
+					method = i + 2;
+					type = i;
+
+					// Find closing bracket.
+					opCount = 1;
+					for (j = opIdx + 1; j < Token_Count; j++)
+					{
+						if (tokenarray[j].token == T_OP_BRACKET)
+							opCount++;
+						else if (tokenarray[j].token == T_CL_BRACKET)
+							opCount--;
+						if (opCount == 0)
+						{
+							clIdx = j;
+							break;
+						}
+					}
+
+					// Are there parameters?
+					if (clIdx > opIdx + 1)
+						hasParams = TRUE;
+
+					// **** Build new line. ****
+					// Copy any pre-tokens
+					for (j = 0; j < i; j++)
+					{
+						pStr = strcpy(pStr, tokenarray[j].string_ptr);
+						pStr += strlen(tokenarray[j].string_ptr);
+						pStr = strcpy(pStr, " ") + 1;
+					}
+
+					if(inProc || inParam || inExpr)
+						pStr = strcpy(pStr, "_STATIC(") + 8;
+					else
+						pStr = strcpy(pStr, "_SINVOKE ") + 9;
+					strcpy(pStr, tokenarray[type].string_ptr);
+					pStr += strlen(tokenarray[type].string_ptr);
+					pStr = strcpy(pStr, ",") + 1;
+					strcpy(pStr, tokenarray[method].string_ptr);
+					pStr += strlen(tokenarray[method].string_ptr);
+					if (hasParams)
+					{
+						pStr = strcpy(pStr, ",") + 1;
+
+						for (j = opIdx + 1; j < clIdx; j++)
+						{
+							if (*tokenarray[j].string_ptr == '&')
+								pStr = strcpy(pStr, " ADDR ") + 6;
+							else
+							{
+								pStr = strcpy(pStr, tokenarray[j].string_ptr);
+								pStr += strlen(tokenarray[j].string_ptr);
+							}
+							if( j < clIdx-1 )
+								pStr = strcpy(pStr, ",") + 1;
+						}
+					}
+					if (inProc || inParam || inExpr)
+						pStr = strcpy(pStr, ")") + 1;
+
+					// If there are more tokens after the closing bracket, add them.
+					if (clIdx < Token_Count-1)
+					{
+						for (i = clIdx+1; i < Token_Count; i++)
+						{
+							pStr = strcpy(pStr, tokenarray[i].string_ptr);
+							pStr += strlen(tokenarray[i].string_ptr);
+							pStr = strcpy(pStr, " ") + 1;
+						}
+					}
+
+					strcpy(line, &newline);
+					Token_Count = Tokenize(line, 0, tokenarray, TOK_RESCAN);
+				}
+			}
+		}
+	}
+}
+
 static struct asym * TraverseEquate(struct asym *sym)
 {
 	struct asym *resultSym = sym;
@@ -620,6 +787,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 							strcmp(tokenarray[j].string_ptr, "_INVOKE") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "_I") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "_VINVOKE") == 0 ||
+							strcmp(tokenarray[j].string_ptr, "_SINVOKE") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "_V") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "_DEREF") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "_DEREFI") == 0 ||
@@ -919,6 +1087,12 @@ int PreprocessLine( char *line, struct asm_tok tokenarray[] )
 		if (CurrSeg && (strcmp(CurrSeg->sym.name, "_TEXT") == 0 || strcmp(CurrSeg->sym.name, "_flat") == 0) && PossibleCallExpansion( tokenarray ))
 		{
 			strcpy(&cline, line);
+			ExpandStaticObjCalls(&cline, tokenarray);
+			if (strcmp(&cline, line) != 0)
+			{
+				strcpy(line, &cline);
+				Token_Count = Tokenize(line, 0, tokenarray, TOK_RESCAN);
+			}
 			ExpandObjCalls(&cline, tokenarray);
 			if (strcmp(&cline, line) != 0)
 			{
@@ -933,6 +1107,7 @@ int PreprocessLine( char *line, struct asm_tok tokenarray[] )
 			}
 		}
 	}
+
 	EvaluatePreprocessItems( line, tokenarray );
 
     /* CurrIfState != BLOCK_ACTIVE && Token_Count == 1 | 3 may happen
