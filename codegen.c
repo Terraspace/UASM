@@ -451,7 +451,7 @@ static void output_opc(struct code_info *CodeInfo)
     CodeInfo->prefix.rex = (tmp & 0xFA) | ((tmp & REX_R) >> 2) | ((tmp & REX_B) << 2);
 #endif
   }
-    //if (CodeInfo->token == T_VFMSUB231SD)
+    //if (CodeInfo->token == T_VPSLLD)
     //  __debugbreak();
 
 #if AVXSUPP
@@ -690,6 +690,8 @@ static void output_opc(struct code_info *CodeInfo)
                   if(CodeInfo->reg3 > 7) lbyte |= 1;
                 }              
                 if (CodeInfo->token >= T_VPSLLDQ && CodeInfo->token <= T_VPSRLQ){
+                  if (CodeInfo->r1type < OP_XMM)     /* first operand can not be memory, v2.46.9 */
+                     EmitError(INVALID_INSTRUCTION_OPERANDS);
                   if ((CodeInfo->reg2 <= 7) && ((CodeInfo->opnd[OPND2].type & OP_M_ANY ) == 0))
                   goto outC5;    // go handle 0xC5 instruction
 
@@ -924,17 +926,19 @@ static void output_opc(struct code_info *CodeInfo)
                     ; /* skip */
                   else {
                     /* this is for reg to reg */
-                    if (CodeInfo->reg2 <= 15) byte1 |= EVEX_P0R1MASK;
-                    else byte1 &= ~EVEX_P0R1MASK;
-                    if ((CodeInfo->reg2 <= 7) || (CodeInfo->reg2 >= 16 && CodeInfo->reg2 <= 23))
-                      byte1 |= EVEX_P0RMASK;                                    /*   1000  for all      */
-                    byte1 &= ~EVEX_P0XMASK | EVEX_P0BMASK | EVEX_P0R1MASK;      /*   1000  for 24 to 31 */
-                    if (CodeInfo->reg2 <= 7)
-                      byte1 |= EVEX_P0XMASK | EVEX_P0BMASK | EVEX_P0R1MASK;     /*   1111  for 0  to 7  */
-                    else if (CodeInfo->reg2 <= 15)
-                      byte1 |= EVEX_P0XMASK | EVEX_P0R1MASK;                    /*   1101  for 8  to 15 */
-                    else if (CodeInfo->reg2 <= 23)
-                      byte1 |= EVEX_P0BMASK;                                    /*   1010  for 16 to 23 */
+                    if (CodeInfo->evex_flag){               /* don't let it happen for for 0xC4, v24.6.9 */
+                      if (CodeInfo->reg2 <= 15) byte1 |= EVEX_P0R1MASK;
+                      else byte1 &= ~EVEX_P0R1MASK;
+                      if ((CodeInfo->reg2 <= 7) || (CodeInfo->reg2 >= 16 && CodeInfo->reg2 <= 23))
+                        byte1 |= EVEX_P0RMASK;                                    /*   1000  for all      */
+                      byte1 &= ~EVEX_P0XMASK | EVEX_P0BMASK | EVEX_P0R1MASK;      /*   1000  for 24 to 31 */
+                      if (CodeInfo->reg2 <= 7)
+                        byte1 |= EVEX_P0XMASK | EVEX_P0BMASK | EVEX_P0R1MASK;     /*   1111  for 0  to 7  */
+                      else if (CodeInfo->reg2 <= 15)
+                        byte1 |= EVEX_P0XMASK | EVEX_P0R1MASK;                    /*   1101  for 8  to 15 */
+                      else if (CodeInfo->reg2 <= 23)
+                        byte1 |= EVEX_P0BMASK;                                    /*   1010  for 16 to 23 */
+                      }
                     }
                   }
                 switch (CodeInfo->token){
@@ -978,6 +982,7 @@ static void output_opc(struct code_info *CodeInfo)
                   c = ~c;
                   c &= EVEX_P1VVVV;
                   lbyte |= c;
+                  if (CodeInfo->evex_flag || CodeInfo->r2type == OP_YMM)  /* fix for reg type v2.46.9 */
                   lbyte |= 4;
                   if (ins->byte1_info == F_660F) lbyte |= 0x1;
                   CodeInfo->tuple = TRUE;
@@ -1665,7 +1670,7 @@ static void output_opc(struct code_info *CodeInfo)
 						EmitError(INVALID_INSTRUCTION_OPERANDS);
 				}
         if (CodeInfo->basereg == 0x10)        /* for RIP relative addressing it is actually 0x05 for base displacement */
-          CodeInfo->evex_p0 |= EVEX_P0BMASK;  /* so EVEX_P0BMASK is has to be set, v2.38 */
+          CodeInfo->evex_p0 |= EVEX_P0BMASK;  /* so EVEX_P0BMASK has to be set, v2.38 */
         /* fix for P0 v2.46 */
           if (CodeInfo->token >= T_VPSLLDQ && CodeInfo->token <= T_VPSRLQ){
           if (CodeInfo->opnd[OPND1].type == OP_XMM || CodeInfo->opnd[OPND1].type == OP_YMM ||
