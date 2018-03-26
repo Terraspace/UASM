@@ -53,6 +53,7 @@ $(OUTD)/queue.o    \
 $(OUTD)/reswords.o \
 $(OUTD)/safeseh.o  \
 $(OUTD)/segment.o  \
+$(OUTD)/simd.o     \
 $(OUTD)/simsegm.o  \
 $(OUTD)/string.o   \
 $(OUTD)/symbols.o  \

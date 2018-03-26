@@ -7,12 +7,16 @@ and their sub-types
 */
 
 #include "simd.h"
+#include "globals.h"
+#include "symbols.h"
 
 extern void     AddLineQueue(const char *line);
 extern void     AddLineQueueX(const char *fmt, ...);
 
 void AddSimdTypes()
 {
+	struct asym* sym = 0;
+
 	AddLineQueue("__m128b struct");
 	AddLineQueue("b0 BYTE ?");
 	AddLineQueue("b1 BYTE ?");
@@ -174,5 +178,7 @@ void AddSimdTypes()
 	AddLineQueue("d64 __m256d <>");
 	AddLineQueue("q64 __m256q <>");
 	AddLineQueue("__m256 ends");
+
+	RunLineQueue();
 
 }

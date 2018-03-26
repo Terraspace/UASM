@@ -401,7 +401,7 @@ ret_code CondAsmDirective( int i, struct asm_tok tokenarray[] )
           if (Options.strict_masm_compat  == TRUE)  /* Zne */
             goto escape;
           else{
-               EmitWarn( 2, IFDEF_EXPECTS_SYMBOL_ARGUMENT, tokenarray[i-1].tokpos );
+               EmitErr( IFDEF_EXPECTS_SYMBOL_ARGUMENT, tokenarray[i-1].tokpos );
                while ( tokenarray[i].token != T_FINAL )  i++;
             }
         }

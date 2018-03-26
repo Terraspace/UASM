@@ -341,8 +341,14 @@ struct asym *CreateConstant( struct asm_tok tokenarray[] )
 /********************************************************/
 {
     struct asym         *sym;
+	struct asym         *symA;
+	char                retok[MAX_LINE_LEN];
+	char *p2 = &retok;
+	char *pSrc;
+	struct asm_tok      tokenarray2[32];
     const char          *name = tokenarray[0].string_ptr;
     int                 i = 2;
+	int                 j;
     ret_code            rc;
     char                *p;
     bool                cmpvalue = FALSE;
@@ -352,6 +358,28 @@ struct asym *CreateConstant( struct asm_tok tokenarray[] )
     DebugMsg1(( "CreateConstant(%s) enter\n", name ));
 
     sym = SymSearch( name );
+	
+	/* UASM 2.46.10 Ensure that struct.member references are also encoded as text macros so they expand correctly in invoke */
+	symA = SymSearch(tokenarray[2].string_ptr);
+	if (symA && symA->mem_type == MT_TYPE && tokenarray[3].token == T_DOT)
+	{
+		memset(&retok, 0, MAX_LINE_LEN);
+		pSrc = tokenarray[0].tokpos;
+		while (pSrc < tokenarray[2].tokpos)
+		{
+			*(p2++) = *(pSrc++);
+		}
+		*(p2++) = '<';
+		pSrc = tokenarray[2].tokpos;
+		while (pSrc < tokenarray[Token_Count].tokpos)
+		{
+			*(p2++) = *(pSrc++);
+		}
+		*(p2++) = '>';
+
+		Tokenize(&retok, 0, tokenarray2, TOK_RESCAN);
+		return (SetTextMacro(tokenarray2, sym, name, NULL));
+	}
 
     /* if a literal follows, the equate MUST be(come) a text macro */
     if ( tokenarray[2].token == T_STRING && tokenarray[2].string_delim == '<' )

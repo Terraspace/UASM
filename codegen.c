@@ -214,7 +214,7 @@ static void output_opc(struct code_info *CodeInfo)
       EmitError(INSTRUCTION_OR_REGISTER_NOT_ACCEPTED_IN_CURRENT_CPU_MODE);
     //return( ERROR );
   }
-    //if (CodeInfo->token == T_MOVQ)
+    //if (CodeInfo->token == T_VMULSS)
     //  __debugbreak();
 
   /*
@@ -332,6 +332,45 @@ static void output_opc(struct code_info *CodeInfo)
 		if (decoflags == 0 && CodeInfo->r1type != OP_K)
         CodeInfo->evex_flag = 0;
 	}
+   /* check if NDS register is present, v2.46.11*/
+    //if (CodeInfo->evex_flag == FALSE) {
+      switch (CodeInfo->token){
+        case   T_VADDPD:
+        case   T_VADDSD:
+        case   T_VDIVPD:
+        case   T_VDIVSD:
+        case   T_VMAXPD:
+        case   T_VMAXSD:
+        case   T_VMINPD:
+        case   T_VMINSD:
+        case   T_VMULPD:
+        case   T_VMULSD:
+        case   T_VSQRTSD:
+        case   T_VSUBPD:
+        case   T_VSUBSD:
+        case   T_VADDPS:
+        case   T_VADDSS:
+        case   T_VDIVPS:
+        case   T_VDIVSS:
+        case   T_VMAXPS:
+        case   T_VMAXSS:
+        case   T_VMINPS:
+        case   T_VMINSS:
+        case   T_VMULPS:
+        case   T_VMULSS:
+        case   T_VSQRTSS:
+        case   T_VSUBPS:
+        case   T_VSUBSS:
+        case   T_VCMPPD:
+        case   T_VCMPSD:
+        case   T_VCMPPS:
+        case   T_VCMPSS:
+          if (CodeInfo->r2type == OP_XMM || CodeInfo->r2type == OP_YMM || CodeInfo->r2type == OP_ZMM)
+            break;
+            EmitError(INVALID_INSTRUCTION_OPERANDS);
+        }
+      //}
+
    /*	if (CodeInfo->token >= T_VPORD && CodeInfo->token <= T_PSRLDQ){
 		if (decoflags == 0 && CodeInfo->r1type != OP_K)
         CodeInfo->evex_flag = 0;
@@ -690,9 +729,10 @@ static void output_opc(struct code_info *CodeInfo)
                   if(CodeInfo->reg3 > 7) lbyte |= 1;
                 }              
                 if (CodeInfo->token >= T_VPSLLDQ && CodeInfo->token <= T_VPSRLQ){
-                  if (CodeInfo->r1type < OP_XMM)     /* first operand can not be memory, v2.46.9 */
+                  /* first and second operand can not be memory, v2.46.11 */
+                  if (CodeInfo->r1type < OP_XMM || CodeInfo->r2type < OP_XMM)    
                      EmitError(INVALID_INSTRUCTION_OPERANDS);
-                  if ((CodeInfo->reg2 <= 7) && ((CodeInfo->opnd[OPND2].type & OP_M_ANY ) == 0))
+                  if ((CodeInfo->reg2 <= 7)&&(CodeInfo->reg3 <= 7) && ((CodeInfo->opnd[OPND2].type & OP_M_ANY ) == 0))
                   goto outC5;    // go handle 0xC5 instruction
 
 					/* John: Validate 3 operand vex form */
@@ -2543,7 +2583,7 @@ static void output_opc(struct code_info *CodeInfo)
               case T_VSCATTERDPS:
               case T_VPSCATTERDD:
               case T_VPSCATTERQQ:
-				  if (CodeInfo->evex_flag && CodeInfo->tuple == 0 && decoflags != 0)
+				  if (CodeInfo->evex_flag && CodeInfo->tuple == 0 )/* && decoflags != 0 */
 				  {
 					  tmp &= NOT_BIT_67;
 					  tmp |= MOD_10;
@@ -2557,7 +2597,7 @@ static void output_opc(struct code_info *CodeInfo)
 				if (((CodeInfo->opnd[OPND1].type & OP_M_ANY) && CodeInfo->opnd[OPND1].data64 != 0) || 
 					((CodeInfo->opnd[OPND2].type & OP_M_ANY) && CodeInfo->opnd[OPND2].data64 != 0))
 				{
-					if (CodeInfo->evex_flag && CodeInfo->tuple == 0 && decoflags != 0) 
+					if (CodeInfo->evex_flag && CodeInfo->tuple == 0) /* && decoflags != 0 */
 					{
 						tmp &= NOT_BIT_67;
 						tmp |= MOD_10;

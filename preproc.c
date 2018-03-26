@@ -697,8 +697,8 @@ static void ExpandStaticObjCalls(char *line, struct asm_tok tokenarray[])
 								pStr = strcpy(pStr, tokenarray[j].string_ptr);
 								pStr += strlen(tokenarray[j].string_ptr);
 							}
-							if( j < clIdx-1 )
-								pStr = strcpy(pStr, ",") + 1;
+							//if( j < clIdx-1 )
+							//	pStr = strcpy(pStr, ",") + 1;
 						}
 					}
 					if (inProc || inParam || inExpr)

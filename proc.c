@@ -931,16 +931,33 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 					on != oo ||
 					ti.ptr_memtype != paracurr->sym.ptr_memtype ||
 					tn != to))) {
-				DebugMsg(("ParseParams: old-new memtype=%X-%X type=%X(%s)-%X(%s) far=%u-%u ind=%u-%u ofss=%d-%d pmt=%X-%X\n",
-					paracurr->sym.mem_type, ti.mem_type,
-					(paracurr->sym.mem_type == MT_TYPE) ? paracurr->sym.type : paracurr->sym.target_type,
-					(paracurr->sym.mem_type == MT_TYPE) ? paracurr->sym.type->name : paracurr->sym.target_type ? paracurr->sym.target_type->name : "",
-					ti.symtype, ti.symtype ? ti.symtype->name : "",
-					paracurr->sym.isfar, ti.is_far,
-					paracurr->sym.is_ptr, ti.is_ptr,
-					paracurr->sym.Ofssize, ti.Ofssize,
-					paracurr->sym.ptr_memtype, ti.ptr_memtype));
-				EmitErr(CONFLICTING_PARAMETER_DEFINITION, name);
+
+				/* UASM 2.46.10 prevent symbols that are moved to stack whose size is turned from ptr to machine word size from breaking the proto vs proc defition of a ptr type */
+				if (ti.mem_type == MT_PTR && paracurr->sym.state == SYM_STACK && 
+					(paracurr->sym.mem_type == MT_QWORD && CurrWordSize == 8) || 
+					(paracurr->sym.mem_type == MT_DWORD && CurrWordSize == 4) )
+				{
+
+				}
+				else if (paracurr->sym.mem_type == MT_PTR && paracurr->sym.state == SYM_STACK &&
+					(ti.mem_type == MT_QWORD && CurrWordSize == 8) ||
+					(ti.mem_type == MT_DWORD && CurrWordSize == 4))
+				{
+
+				}
+				else
+				{
+					DebugMsg(("ParseParams: old-new memtype=%X-%X type=%X(%s)-%X(%s) far=%u-%u ind=%u-%u ofss=%d-%d pmt=%X-%X\n",
+						paracurr->sym.mem_type, ti.mem_type,
+						(paracurr->sym.mem_type == MT_TYPE) ? paracurr->sym.type : paracurr->sym.target_type,
+						(paracurr->sym.mem_type == MT_TYPE) ? paracurr->sym.type->name : paracurr->sym.target_type ? paracurr->sym.target_type->name : "",
+						ti.symtype, ti.symtype ? ti.symtype->name : "",
+						paracurr->sym.isfar, ti.is_far,
+						paracurr->sym.is_ptr, ti.is_ptr,
+						paracurr->sym.Ofssize, ti.Ofssize,
+						paracurr->sym.ptr_memtype, ti.ptr_memtype));
+					EmitErr(CONFLICTING_PARAMETER_DEFINITION, name);
+				}
 			}
 
 			if (IsPROC) {
@@ -1349,6 +1366,18 @@ ret_code ParseProc(struct dsym *proc, int i, struct asm_tok tokenarray[], bool I
 		{
 			switch (sym->mem_type)
 			{
+			case MT_EMPTY:
+				/* UASM 2.46.10 - Could be a vectorcall type return */
+				if (sym->state == SYM_TYPE)
+				{
+					if (sym->total_size == 16)
+						ret_type = RT_XMM;
+					else if (sym->total_size == 32)
+						ret_type = RT_YMM;
+					else if (sym->total_size == 64)
+						ret_type = RT_ZMM;
+				}
+				break;
 			case MT_BYTE:
 				ret_type = RT_BYTE;
 				break;
@@ -1398,7 +1427,7 @@ ret_code ParseProc(struct dsym *proc, int i, struct asm_tok tokenarray[], bool I
 				ret_type = RT_REAL10;
 				break;
 			}
-			if (sym->target_type)
+			if (sym->target_type && sym->mem_type != MT_EMPTY)
 				sym = sym->target_type;
 			else
 				break;
