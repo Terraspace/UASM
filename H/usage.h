@@ -111,7 +111,7 @@
 #if MACHO_SUPPORT
 "-macho64\0"        "64-bit Mach-O object file\0"
 #endif
-"-pie"              "Generate Position Independant Executable (ELF64/MACHO64)\0"
+"-pie\0"            "Generate Position Independant Executable (ELF64/MACHO64)\0"
 #ifdef DEBUG_OUT
 "Debug options:\0\0"
 "-af\0"             "Display all files used in assembly process\0"
