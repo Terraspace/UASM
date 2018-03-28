@@ -151,6 +151,7 @@ struct global_options Options = {
 	/* literal_strings       */     FALSE,
 	/* vtable                */     TRUE,
 	/* hlcall                */     TRUE,
+	/* pie                   */     FALSE,
 
 #if MANGLERSUPP
     /* naming_convention*/          NC_DO_NOTHING,
@@ -750,6 +751,7 @@ static struct cmdloption const cmdl_options[] = {
 #if COFF_SUPPORT
     { "zzs",    optofs( entry_decorated ),       Set_True },
 #endif
+	{ "pie",	optofs(pie),                   Set_True },
 //    { NULL,     0,        0 }
 };
 

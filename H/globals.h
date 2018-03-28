@@ -202,11 +202,11 @@
 
 /* Uasm version info */
 #ifdef _WIN64
-#define _UASM_VERSION_STR_ "2.46"
+#define _UASM_VERSION_STR_ "2.47"
 #else
-#define _UASM_VERSION_STR_ "2.46"
+#define _UASM_VERSION_STR_ "2.47"
 #endif
-#define _UASM_VERSION_INT_ 246
+#define _UASM_VERSION_INT_ 247
 #define _UASM_VERSION_SUFFIX_ "pre"
 #define _UASM_VERSION_ _UASM_VERSION_STR_ //_UASM_VERSION_SUFFIX_
 
@@ -687,6 +687,7 @@ struct global_options {
 	bool        literal_strings;         /* Allow use of literal strings in invoke and wide data dw declarations */
 	bool        vtable;                  /* Use vtable based method invocation */
 	bool        hlcall;                  /* Allow High Level C style Calling and object invocation */
+	bool        pie;					 /* Generate Position Independant Executable (Unix) */
 #if MANGLERSUPP
     enum naming_types naming_convention; /* OW naming peculiarities */
 #endif
