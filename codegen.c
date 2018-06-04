@@ -365,9 +365,23 @@ static void output_opc(struct code_info *CodeInfo)
         case   T_VCMPSD:
         case   T_VCMPPS:
         case   T_VCMPSS:
-          if (CodeInfo->r2type == OP_XMM || CodeInfo->r2type == OP_YMM || CodeInfo->r2type == OP_ZMM)
-            break;
-            EmitError(INVALID_INSTRUCTION_OPERANDS);
+        case   T_VXORPD: 
+        case   T_VORPS: 
+        case   T_VXORPS:
+        case   T_VPSLLDQ:
+        case   T_VPSRLDQ:
+        case   T_VPSLLW:
+        case   T_VPSLLD:
+        case   T_VPSLLQ:
+        case   T_VPSRAW:
+        case   T_VPSRAD:
+        case   T_VPSRAQ:
+        case   T_VPSRLW:
+        case   T_VPSRLD:
+        case   T_VPSRLQ:
+        if (CodeInfo->r2type == OP_XMM || CodeInfo->r2type == OP_YMM || CodeInfo->r2type == OP_ZMM)
+          break;
+          EmitError(INVALID_INSTRUCTION_OPERANDS);
         }
       //}
 
@@ -490,7 +504,7 @@ static void output_opc(struct code_info *CodeInfo)
     CodeInfo->prefix.rex = (tmp & 0xFA) | ((tmp & REX_R) >> 2) | ((tmp & REX_B) << 2);
 #endif
   }
-    //if (CodeInfo->token == T_VPSLLD)
+    //if (CodeInfo->token == T_VMOVSD)
     //  __debugbreak();
 
 #if AVXSUPP
@@ -728,7 +742,8 @@ static void output_opc(struct code_info *CodeInfo)
                   //CodeInfo->prefix.rex &= ~REX_W; // clear the W bit.
                   if(CodeInfo->reg3 > 7) lbyte |= 1;
                 }              
-                if (CodeInfo->token >= T_VPSLLDQ && CodeInfo->token <= T_VPSRLQ){
+                if ((CodeInfo->token >= T_VPSLLDQ && CodeInfo->token <= T_VPSRLQ)||
+                  (CodeInfo->token == T_VXORPD || CodeInfo->token ==T_VXORPS)){
                   /* first and second operand can not be memory, v2.46.11 */
                   if (CodeInfo->r1type < OP_XMM || CodeInfo->r2type < OP_XMM)    
                      EmitError(INVALID_INSTRUCTION_OPERANDS);

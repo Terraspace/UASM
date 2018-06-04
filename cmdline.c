@@ -151,6 +151,7 @@ struct global_options Options = {
 	/* literal_strings       */     FALSE,
 	/* vtable                */     TRUE,
 	/* hlcall                */     TRUE,
+	/* pie                   */     FALSE,
 
 #if MANGLERSUPP
     /* naming_convention*/          NC_DO_NOTHING,
@@ -249,7 +250,7 @@ static void SetCpuCmdline( enum cpu_info value, const char *parm )
             if( Options.names[OPTN_DEFNAME_MANGLER] != NULL ) {
                 MemFree( Options.names[OPTN_DEFNAME_MANGLER );
             }
-            Options.names[OPTN_DEFNAME_MANGLER = MemAlloc( dest - parm + 1 );
+            Options.names[OPTN_DEFNAME_MANGLER] = MemAlloc( dest - parm + 1 );
             dest = Options.names[OPTN_DEFNAME_MANGLER];
             for( ; *parm != '"'; dest++, parm++ ) {
                 *dest = *parm;
@@ -750,6 +751,7 @@ static struct cmdloption const cmdl_options[] = {
 #if COFF_SUPPORT
     { "zzs",    optofs( entry_decorated ),       Set_True },
 #endif
+	{ "pie",	optofs(pie),                   Set_True },
 //    { NULL,     0,        0 }
 };
 

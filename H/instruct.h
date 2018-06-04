@@ -183,7 +183,7 @@ insn(MOVSB, 1,                  OpCls( M08,      M08,        NONE ), 0,      0, 
 ins (MOVSW, movsw,              OpCls( NONE,     NONE,       NONE ), F_16,   0,  no_RM,  0xA5,     0x00,       P_86,        AP_REP)
 insn(MOVSW, 1,                  OpCls( M16,      M16,        NONE ), F_16,   0,  no_RM,  0xA5,     0x00,       P_86,        AP_REP)
 ins (MOVSD, movsd,              OpCls( XMM,      XMM_M64,    NONE ), F_F20F, 1,  no_WDS, 0x10,     0x00,       P_686|P_SSE2,W1|QSIZE|T1S)
-insn(MOVSD, 1,                  OpCls( M64,      XMM,        NONE ), F_F20F, 0,  no_WDS, 0x11,     0x00,       P_686|P_SSE2,QSIZE|T1S)
+insn(MOVSD, 1,                  OpCls( M64,      XMM,        NONE ), F_F20F, 0,  no_WDS, 0x11,     0x00,       P_686|P_SSE2,W1|QSIZE|T1S)
 insn(MOVSD, 2,                  OpCls( NONE,     NONE,       NONE ), F_32,   0,  no_RM,  0xA5,     0x00,       P_386,       AP_REP)
 insn(MOVSD, 3,                  OpCls( M32,      M32,        NONE ), F_32,   0,  no_RM,  0xA5,     0x00,       P_386,       AP_REP)
 ins (OUTS,  outs,               OpCls( DX_ONLY,  MS,         NONE ), 0,      0,  no_RM,  0x6E,     0x00,       P_186,       AP_REP)

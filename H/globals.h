@@ -65,11 +65,11 @@
 
 #endif
 
-#define MAX_LINE_LEN            1024  /* no restriction for this number */
+#define MAX_LINE_LEN            25600  /* no restriction for this number */
 #define MAX_TOKEN  MAX_LINE_LEN - 32  /* max tokens in one line */
 #define MAX_STRING_LEN          MAX_LINE_LEN - 32 /* must be < MAX_LINE_LEN */
 #define MAX_ID_LEN              247  /* must be < MAX_LINE_LEN */
-#define MAX_STRUCT_ALIGN        32
+#define MAX_STRUCT_ALIGN        64
 #define MAX_SEGMENT_ALIGN       4096 /* maximum alignment/packing setting for segments */
 #define MAX_IF_NESTING          20 /* IFxx block nesting. Must be <=32, see condasm.c */
 #define MAX_SEG_NESTING         20 /* limit for segment nesting  */
@@ -134,7 +134,7 @@
 #define VMXSUPP      1 /* support VMX extensions                 */
 #endif
 #ifndef SVMSUPP
-#define SVMSUPP      0 /* support SVM (=AMD-V) extensions        */
+#define SVMSUPP      1 /* support SVM (=AMD-V) extensions        */
 #endif
 #ifndef SSSE3SUPP
 #define SSSE3SUPP    1 /* support SSSE3 instruction set          */
@@ -146,7 +146,7 @@
 #define AVXSUPP      1 /* support AVX extensions                 */
 #endif
 #ifndef EVEXSUPP
-#define EVEXSUPP      0 /* support AVX extensions                 */
+#define EVEXSUPP      1 /* support AVX extensions                 */
 #endif
 #ifndef COMDATSUPP
 #define COMDATSUPP   1 /* support COMDAT segment attribute       */
@@ -202,11 +202,11 @@
 
 /* Uasm version info */
 #ifdef _WIN64
-#define _UASM_VERSION_STR_ "2.46"
+#define _UASM_VERSION_STR_ "2.47"
 #else
-#define _UASM_VERSION_STR_ "2.46"
+#define _UASM_VERSION_STR_ "2.47"
 #endif
-#define _UASM_VERSION_INT_ 246
+#define _UASM_VERSION_INT_ 247
 #define _UASM_VERSION_SUFFIX_ "pre"
 #define _UASM_VERSION_ _UASM_VERSION_STR_ //_UASM_VERSION_SUFFIX_
 
@@ -687,6 +687,7 @@ struct global_options {
 	bool        literal_strings;         /* Allow use of literal strings in invoke and wide data dw declarations */
 	bool        vtable;                  /* Use vtable based method invocation */
 	bool        hlcall;                  /* Allow High Level C style Calling and object invocation */
+	bool        pie;					 /* Generate Position Independant Executable (Unix) */
 #if MANGLERSUPP
     enum naming_types naming_convention; /* OW naming peculiarities */
 #endif

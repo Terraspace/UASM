@@ -773,7 +773,7 @@ OPTFUNC( SetSegment )
 }
 
 #if FIELDALIGN
-/* OPTION FIELDALIGN:1|2|4|8|16|32 */
+/* OPTION FIELDALIGN:1|2|4|8|16|32|64 */
 
 OPTFUNC( SetFieldAlign )
 /**********************/
@@ -801,7 +801,7 @@ OPTFUNC( SetFieldAlign )
 #endif
 
 #if PROCALIGN
-/* OPTION PROCALIGN:1|2|4|8|16|32 */
+/* OPTION PROCALIGN:1|2|4|8|16|32|64 */
 
 OPTFUNC( SetProcAlign )
 /*********************/
