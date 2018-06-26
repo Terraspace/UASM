@@ -126,7 +126,7 @@ static int VectorcallMangler( const struct asym *sym, char *buffer )
     }
 }*/
 
-/* MS FASTCALL 32bit */
+/* MS FASTCALL || VECTORCALL 32bit */
 
 static int ms32_decorate( const struct asym *sym, char *buffer )
 /**************************************************************/
@@ -198,7 +198,7 @@ static int ow_decorate( const struct asym *sym, char *buffer )
 
 #if AMD64_SUPPORT
 
-/* MS FASTCALL 64bit */
+/* MS FASTCALL || VECTORCALL 64bit */
 
 static int ms64_decorate( const struct asym *sym, char *buffer )
 /**************************************************************/

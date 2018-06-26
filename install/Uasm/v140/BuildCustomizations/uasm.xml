@@ -108,28 +108,12 @@
       Switch="-WX" />
 
     <BoolProperty
-      Name="AddLineNumberDebugInformation"
-      Category="Object File"
-      HelpUrl="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
-      DisplayName="Add Line Number Debug Information"
-      Description="generates line number debug information for OMF and COFF output format. For other formats, this option is ignored.     (/Zd)"
-      Switch="-Zd" />
-
-    <BoolProperty
-      Name="MakeAllSymbolsPublic"
-      Category="Object File"
-      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
-      DisplayName="Make All Symbols Public"
-      Description="Makes all symbols public.     (/Zf)"
-      Switch="-Zf" />
-	  
-    <BoolProperty
       Name="GenerateDebugInformation"
       HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
       DisplayName="Generate Debug Information"
       Description="Generates Debug Information.     (/Zi)"
       Switch="-Zi" />
-	  
+
     <BoolProperty
       Name="EnableMASM51Compatibility"
       HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
@@ -146,11 +130,17 @@
 
     <BoolProperty
       Name="MASMCodeGen"
-      Category="Object File"
       HelpUrl="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
       DisplayName="Match MASM's Code Generation"
       Description="Code Generation is the same as MASM's      (/Zg)"
       Switch="-Zg" />
+
+    <BoolProperty
+      Name="MasmV8ProcVisivility"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="Enable Masm v8+ PROC visibility"
+      Description="Enable Masm v8+ PROC visibility.     (/Zv8)"
+      Switch="-Zv8" />
 
     <BoolProperty
       Name="PerformSyntaxCheckOnly"
@@ -158,7 +148,103 @@
       DisplayName="Perform Syntax Check Only"
       Description="Performs a syntax check only.     (/Zs)"
       Switch="-Zs" />
-	  
+
+    <EnumProperty
+      Name="SetCaseMap"
+      Category="Advanced"
+      HelpUrl="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="Set OPTION CASEMAP"
+      Description="Set OPTION CASEMAP: p=NONE, u=ALL, x=NOTPUBLIC (default)">
+      <EnumValue
+        Name="0"
+        DisplayName="Default CASEMAP NOTPUBLIC"
+        Switch="-Cx" />
+      <EnumValue
+        Name="1"
+        DisplayName="CASEMAP ALL"
+        Switch="-Cu" />
+      <EnumValue
+        Name="2"
+        DisplayName="CASEMAP NONE"
+        Switch="-Cp" />
+    </EnumProperty>
+
+    <EnumProperty
+      Name="SetArchModel"
+      Category="Advanced"
+      HelpUrl="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="Set OPTION ARCH"
+      Description="Set OPTION ARCH: (archSSE Use SSE in generated code (default), archAVX Use AVX in generated code)">
+      <EnumValue
+        Name="0"
+        DisplayName="Default archSSE (/archSSE)"
+        Switch="-archSSE" />
+      <EnumValue
+        Name="1"
+        DisplayName="archAVX (/archAVX)"
+        Switch="-archAVX" />
+    </EnumProperty>
+
+    <EnumProperty
+      Name="SetMemoryModel"
+      Category="Advanced"
+      HelpUrl="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="Set memory model"
+      Description="Set memory model: (Tiny, Small, Compact, Medium, Large, Huge, Flat)">
+      <EnumValue
+        Name="0"
+        DisplayName=" Default" />
+      <EnumValue
+        Name="1"
+        DisplayName="Tiny  (/mt)"
+        Switch="-mt" />
+      <EnumValue
+        Name="2"
+        DisplayName="Small  (/ms)"
+        Switch="-ms" />
+      <EnumValue
+        Name="3"
+        DisplayName="Compact  (/mc)"
+        Switch="-mc" />
+      <EnumValue
+        Name="4"
+        DisplayName="Medium (/mc)"
+        Switch="-mc" />
+      <EnumValue
+        Name="5"
+        DisplayName="Large (/ml)"
+        Switch="-ml" />
+      <EnumValue
+        Name="6"
+        DisplayName="Huge (/mh)"
+        Switch="-mh" />
+      <EnumValue
+        Name="7"
+        DisplayName="Flat (/mf)"
+        Switch="-mf" />
+    </EnumProperty>
+
+    <BoolProperty
+      Name="ReduceConsoleInfo"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="Reduce console output information"
+      Description="Reduce console output information (be less verbose).     (/less)"
+      Switch="-less" />
+
+    <BoolProperty
+      Name="NoOMFRecordsDataCode"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="No OMF records about data in code"
+      Description="No OMF records about data in code.     (/zlc)"
+      Switch="-zlc" />
+
+    <BoolProperty
+      Name="NoOMFRecordsFarCallOptimization"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="No OMF records about far call optimization"
+      Description="No OMF records about far call optimization.     (/zld)"
+      Switch="-zld" />
+
     <StringProperty
       Name="ObjectFileName"
       Category="Object File"
@@ -166,14 +252,173 @@
       DisplayName="Object File Name"
       Description="Specifies the name of the output object file.     (/Fo:[file])"
       Switch="-Fo [value]" />
+
+    <EnumProperty
+      Name="SuppressItemCOFFTable"
+      Category="Object File"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="Suppress items in COFF symbol table"
+      Description="Suppress items in COFF symbol table: f=no .file entry, p=no static procs, s=no auxiliary entries for sections">
+      <EnumValue
+        Name="0"
+        DisplayName="default" />
+      <EnumValue
+        Name="1"
+        DisplayName="No .file entry"
+        Switch="-zlf" />
+      <EnumValue
+        Name="2"
+        DisplayName="No static procs"
+        Switch="-zlp" />
+      <EnumValue
+        Name="3"
+        DisplayName="No auxiliary entries for sections"
+        Switch="-zls" />
+    </EnumProperty>
+
+    <EnumProperty
+      Name="AddSymbolicDebugInfo"
+      Category="Object File"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="Add symbolic debug info (OMF and COFF)."
+      Description="Add symbolic debug info (OMF and COFF): 0=globals, 1= +locals, 2= +types (default), 3= +constants.   (/Zi0|1|2|3)">
+      <EnumValue
+        Name="0"
+        DisplayName="+types (default)"
+        Switch="-Zi2" />
+      <EnumValue
+        Name="1"
+        DisplayName="+constants"
+        Switch="-Zi3" />
+      <EnumValue
+        Name="2"
+        DisplayName="+locals"
+        Switch="-Zi1" />
+      <EnumValue
+        Name="3"
+        DisplayName="globals"
+        Switch="-Zi0" />
+    </EnumProperty>
+
+    <EnumProperty
+      Name="STDCALLSymbolDecoration"
+      Category="Advanced"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="Set STDCALL symbol decoration"
+      Description="Set STDCALL symbol decoration: 0=No name decoration, 1=No '@size' suffix for functions, 2=Full (default), -zt0|1|2">
+      <EnumValue
+        Name="0"
+        DisplayName="Full (default)"
+        Switch="-zt2" />
+      <EnumValue
+        Name="1"
+        DisplayName="No '@size' suffix for functions"
+        Switch="-zt1" />
+      <EnumValue
+        Name="2"
+        DisplayName="No name decoration"
+        Switch="-zt0" />
+    </EnumProperty>
+
+    <EnumProperty
+      Name="VectorCALLSymbolDecoration"
+      Category="Advanced"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="Set VectorCALL symbol decoration"
+      Description="Set VectorCALL symbol decoration: 0=No name decoration, 1=No '@@size' suffix for functions, 2=Full (default), -zv0|1|2">
+      <EnumValue
+        Name="0"
+        DisplayName="Full (default)"
+        Switch="-zv2" />
+      <EnumValue
+        Name="1"
+        DisplayName="No '@@size' suffix for functions"
+        Switch="-zv1" />
+      <EnumValue
+        Name="2"
+        DisplayName="No name decoration"
+        Switch="-zv0" />
+    </EnumProperty>
+
+    <BoolProperty
+      Name="NoDecoratedName"
+      Category="Object File"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="No name decoration for exported symbols"
+      Description="No name decoration for exported symbols.     (/zze)"
+      Switch="-zze" />
+
+    <BoolProperty
+      Name="AddLineNumberDebugInformation"
+      Category="Object File"
+      HelpUrl="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="Add Line Number Debug Information"
+      Description="generates line number debug information for OMF and COFF output format. For other formats, this option is ignored.     (/Zd)"
+      Switch="-Zd" />
+
+    <BoolProperty
+      Name="MakeAllSymbolsPublic"
+      Category="Object File"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="Make All Symbols Public"
+      Description="Makes all symbols public.     (/Zf)"
+      Switch="-Zf" />
 	  
+    <BoolProperty
+      Name="StoreDecoratedNames"
+      Category="Object File"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="Store decorated name of start address (COFF only)"
+      Description="Store decorated name of start address (COFF only).     (/zzs)"
+      Switch="-zzs" />
+
+    <BoolProperty
+      Name="CNamesDecoratedPrefix"
+      Category="Advanced"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="C names are decorated with '_'."
+      Description="C names are decorated with '_' prefix (default).     (/zcm)"
+      Switch="-zcm" />
+
+    <BoolProperty
+      Name="NoNameDecorationCSymbol"
+      Category="Object File"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="No name decoration for C symbols"
+      Description="No name decoration for C symbols.     (/zcw)"
+      Switch="-zcw" />
+
     <StringListProperty
       Name="PreprocessorDefinitions"
       HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
       DisplayName="Preprocessor Definitions"
       Description="Defines a text macro with the given name.     (/D[symbol])"
       Switch="-D [value]" />
-	  
+
+    <StringProperty
+      Name="WriteImportDefenitionFile"
+      Category="Advanced"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="Write import definition file"
+      Description="Write import definition file.     (/Fd[file])"
+      Switch="-Fd [value]" />
+
+    <StringProperty
+      Name="ForceIncludeFile"
+      Category="Object File"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="Force file_name to be included"
+      Description="Force file_name to be included.     (/Fi[file])"
+      Switch="-Fi [value]" />
+
+    <StringProperty
+      Name="DebugCodeListingFile"
+      Category="Object File"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="Write symbolic debug info file"
+      Description="Generates an symbolic debug info listing file.     (/Fs[file])"
+      Switch="-Fs [value]" />
+
     <StringProperty
       Name="AssembledCodeListingFile"
       Category="Listing File"
@@ -209,52 +454,44 @@
         Switch="-win64" />
       <EnumValue
         Name="3"
+        DisplayName="PE 32/64-bit   (/pe)"
+        Switch="-pe" />
+      <EnumValue
+        Name="4"
         DisplayName="Plain binary (/bin)"
         Switch="-bin" />
       <EnumValue
-        Name="4"
+        Name="5"
         DisplayName="DOS MZ       (/mz)"
         Switch="-mz" />
       <EnumValue
-        Name="5"
+        Name="6"
         DisplayName="ELF 32-bit   (/elf)"
         Switch="-elf" />
       <EnumValue
-        Name="6"
+        Name="7"
         DisplayName="ELF 64-bit   (/elf64)"
         Switch="-elf64" />
+      <EnumValue
+        Name="8"
+        DisplayName="ELF 64-bit   (/macho64)"
+        Switch="-macho64" />
+      <EnumValue
+        Name="9"
+        DisplayName="ELF 64-bit   (/pie)"
+        Switch="-pie" />
     </EnumProperty>
 
     <EnumProperty
-      Name="PreserveIdentifierCase"
-      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
-      DisplayName="Preserve Identifier Case"
-      Description="Specifies preservation of case of user identifiers.     (/Cp, /Cu, /Cx)">
-      <EnumValue
-        Name="0"
-        DisplayName="Default" />
-      <EnumValue
-        Name="1"
-        DisplayName="Preserves Identifier Case (/Cp)"
-        Switch="-Cp" />
-      <EnumValue
-        Name="2"
-        DisplayName="Maps all identifiers to upper case. (/Cu)"
-        Switch="-Cu" />
-      <EnumValue
-        Name="3"
-        DisplayName="Preserves case in public and extern symbols. (/Cx)"
-        Switch="-Cx" />
-    </EnumProperty>
-	
-    <EnumProperty
       Name="SetFastCallType"
+      Category="Advanced"
       HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
       DisplayName="Set Fast Call Type"
       Description="Set FASTCALL type: 0=MS VC style (default), 1=OW register calling convention, 2=Borland register convention">
       <EnumValue
         Name="0"
-        DisplayName="Default MS VC style" />
+        DisplayName="Default MS VC style"
+        Switch="-zf0" />
       <EnumValue
         Name="1"
         DisplayName="Register calling convention"
@@ -287,7 +524,46 @@
         DisplayName="Warning Level 3 (/W3)"
         Switch="-W3" />
     </EnumProperty>
-	
+
+    <EnumProperty
+      Name="SegmentAlignmentBoundary"
+      Category="Advanced"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="Set segment alignment"
+      Description="Set segment alignment. The alignment can be 1, 2, 4, 8, 16, 32 or 64.     (/Sp1, /Sp2, /Sp4, /Sp8, /Sp16, /Sp32, /Sp64)">
+      <EnumValue
+        Name="0"
+        DisplayName="Default" />
+      <EnumValue
+        Name="1"
+        DisplayName="One Byte Boundary (/Sp1)"
+        Switch="-Sp1" />
+      <EnumValue
+        Name="2"
+        DisplayName="Two Byte Boundary (/Sp2)"
+        Switch="-Sp2" />
+      <EnumValue
+        Name="3"
+        DisplayName="Four Byte Boundary (/Sp4)"
+        Switch="-Sp4" />
+      <EnumValue
+        Name="4"
+        DisplayName="Eight Byte Boundary (/Sp8)"
+        Switch="-Sp8" />
+      <EnumValue
+        Name="5"
+        DisplayName="Sixteen Byte Boundary (/Sp16)"
+        Switch="-Sp16" />
+      <EnumValue
+        Name="6"
+        DisplayName="Thirty-Two Byte Boundary (/Sp32)"
+        Switch="-Sp32" />
+      <EnumValue
+        Name="7"
+        DisplayName="Sixty-Four Byte Boundary (/Sp64)"
+        Switch="-Sp64" />
+    </EnumProperty>
+
     <EnumProperty
       Name="PackAlignmentBoundary"
       Category="Advanced"
@@ -332,7 +608,7 @@
       Category="Advanced"
       HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
       DisplayName="Calling Convention"
-      Description="Selects calling convention for your application.     (/Gc, /Gd. /Gz)">
+      Description="Selects calling convention for your application.     (/Gc, /Gd, /Gz, /Gv)">
       <EnumValue
         Name="0"
         DisplayName="Default" />
@@ -350,6 +626,10 @@
         Switch="-Gz" />
       <EnumValue
         Name="4"
+        DisplayName="Use vectorcall Calling Convention (/Gv)"
+        Switch="-Gv" />
+      <EnumValue
+        Name="5"
         DisplayName="Use Pascal Calling Convention (/Gc)"
         Switch="-Gc" />
     </EnumProperty>

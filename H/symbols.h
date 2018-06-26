@@ -369,7 +369,8 @@ struct proc_info {
     struct dsym         *paralist;      /* list of parameters */
     struct dsym         *locallist;     /* PROC: list of local variables */
     struct dsym         *labellist;     /* PROC: list of local labels */
-    unsigned            parasize;       /* total no. of bytes used by parameters */
+	unsigned            parasize;       /* total no. of bytes used by parameters */
+	//unsigned            mmparasize;     /* total no. of bytes used by (x)mm and reg parameters */
     unsigned            localsize;      /* PROC: total no. of bytes used by local variables */
     unsigned            locals;
     unsigned             vsize;
