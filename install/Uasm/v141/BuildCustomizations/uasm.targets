@@ -74,6 +74,7 @@
       SuppressItemCOFFTable="%(UASM.SuppressItemCOFFTable)"
       AddSymbolicDebugInfo="%(UASM.AddSymbolicDebugInfo)"
       STDCALLSymbolDecoration="%(UASM.STDCALLSymbolDecoration)"
+      VectorCALLSymbolDecoration="%(UASM.VectorCALLSymbolDecoration)"
       NoDecoratedName="%(UASM.NoDecoratedName)"
       AddLineNumberDebugInformation="%(UASM.AddLineNumberDebugInformation)"
       MakeAllSymbolsPublic="%(UASM.MakeAllSymbolsPublic)"

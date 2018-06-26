@@ -5330,6 +5330,9 @@ ret_code RetInstr(int i, struct asm_tok tokenarray[], int count)
 					sprintf(p, "%d%c", info->parasize, ModuleInfo.radix != 10 ? 't' : NULLC);
 				}
 				break;
+			case LANG_VECTORCALL:
+				vectorcall_tab[ModuleInfo.fctype].handlereturn(CurrProc, buffer);
+				break;
 			case LANG_DELPHICALL:
 				if (info->ReservedStack > 0) {
 					sprintf(p, "%d%c", info->ReservedStack, ModuleInfo.radix != 10 ? 't' : NULLC);

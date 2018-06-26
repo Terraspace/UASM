@@ -110,12 +110,42 @@ static int StdcallMangler( const struct asym *sym, char *buffer )
     }
 }
 
+/* VectorcallMangler: add '@size' suffix to proc names */
+/*                 add '_' prefix to other symbols */
+
+/*
+static int VectorcallMangler( const struct asym *sym, char *buffer )
+/ *************************************************************** /
+{
+    const struct dsym *dir = (struct dsym *)sym;
+
+    if( Options.vectorcall_decoration == VECTORCALL_FULL && sym->isproc ) {
+        return( sprintf( buffer, "%s@@%d", sym->name, dir->e.procinfo->parasize ) );
+    } else {
+        return( UScoreMangler( sym, buffer ) );
+    }
+}*/
+
 /* MS FASTCALL 32bit */
 
 static int ms32_decorate( const struct asym *sym, char *buffer )
 /**************************************************************/
 {
-    return ( sprintf( buffer, "@%s@%u", sym->name, ((struct dsym *)sym)->e.procinfo->parasize ) );
+	const struct dsym *dir = (struct dsym *)sym;
+
+	if (Options.vectorcall_decoration == VECTORCALL_FULL && sym->isproc)
+	{
+		return(sprintf(buffer, "%s@@%d", sym->name, dir->e.procinfo->parasize));
+	}
+	else if (Options.fctype == FCT_MSC && sym->isproc)
+	{
+		return (sprintf(buffer, "@%s@%u", sym->name, ((struct dsym *)sym)->e.procinfo->parasize));
+	}
+	else
+	{
+		memcpy(buffer, sym->name, sym->name_size + 1);
+		return(sym->name_size);
+	}
 }
 
 #if OWFC_SUPPORT
@@ -173,8 +203,17 @@ static int ow_decorate( const struct asym *sym, char *buffer )
 static int ms64_decorate( const struct asym *sym, char *buffer )
 /**************************************************************/
 {
-    memcpy( buffer, sym->name, sym->name_size + 1 );
-    return( sym->name_size );
+	const struct dsym *dir = (struct dsym *)sym;
+
+	if (Options.vectorcall_decoration == VECTORCALL_FULL && sym->isproc)
+	{
+		return(sprintf(buffer, "%s@@%d", sym->name, dir->e.procinfo->parasize));
+	}
+	else
+	{
+		memcpy(buffer, sym->name, sym->name_size + 1);
+		return(sym->name_size);
+	}
 }
 #endif
 
@@ -222,13 +261,17 @@ int Mangle( struct asym *sym, char *buffer )
         break;
     case LANG_STDCALL:
         mangler = ( Options.stdcall_decoration == STDCALL_NONE ) ? VoidMangler : StdcallMangler;
-        break;
+		break;
+	/*case LANG_VECTORCALL:
+		mangler = (Options.vectorcall_decoration == VECTORCALL_NONE) ? VoidMangler : VectorcallMangler;
+		break;*/
     case LANG_PASCAL:
     case LANG_FORTRAN:
     case LANG_BASIC:
         mangler = UCaseMangler;
         break;
-    case LANG_FASTCALL:          /* registers passing parameters */
+	case LANG_FASTCALL:          /* registers passing parameters */
+	case LANG_VECTORCALL:
         mangler = fcmanglers[ModuleInfo.fctype];
         break;
     default: /* LANG_NONE */

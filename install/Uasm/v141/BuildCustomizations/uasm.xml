@@ -302,7 +302,7 @@
 
     <EnumProperty
       Name="STDCALLSymbolDecoration"
-      Category="Object File"
+      Category="Advanced"
       HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
       DisplayName="Set STDCALL symbol decoration"
       Description="Set STDCALL symbol decoration: 0=No name decoration, 1=No '@size' suffix for functions, 2=Full (default), -zt0|1|2">
@@ -318,6 +318,26 @@
         Name="2"
         DisplayName="No name decoration"
         Switch="-zt0" />
+    </EnumProperty>
+
+    <EnumProperty
+      Name="VectorCALLSymbolDecoration"
+      Category="Advanced"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="Set VectorCALL symbol decoration"
+      Description="Set VectorCALL symbol decoration: 0=No name decoration, 1=No '@@size' suffix for functions, 2=Full (default), -zv0|1|2">
+      <EnumValue
+        Name="0"
+        DisplayName="Full (default)"
+        Switch="-zv2" />
+      <EnumValue
+        Name="1"
+        DisplayName="No '@@size' suffix for functions"
+        Switch="-zv1" />
+      <EnumValue
+        Name="2"
+        DisplayName="No name decoration"
+        Switch="-zv0" />
     </EnumProperty>
 
     <BoolProperty
@@ -354,7 +374,7 @@
 
     <BoolProperty
       Name="CNamesDecoratedPrefix"
-      Category="Object File"
+      Category="Advanced"
       HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
       DisplayName="C names are decorated with '_'."
       Description="C names are decorated with '_' prefix (default).     (/zcm)"
@@ -588,7 +608,7 @@
       Category="Advanced"
       HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
       DisplayName="Calling Convention"
-      Description="Selects calling convention for your application.     (/Gc, /Gd. /Gz)">
+      Description="Selects calling convention for your application.     (/Gc, /Gd, /Gz, /Gv)">
       <EnumValue
         Name="0"
         DisplayName="Default" />
@@ -606,6 +626,10 @@
         Switch="-Gz" />
       <EnumValue
         Name="4"
+        DisplayName="Use vectorcall Calling Convention (/Gv)"
+        Switch="-Gv" />
+      <EnumValue
+        Name="5"
         DisplayName="Use Pascal Calling Convention (/Gc)"
         Switch="-Gc" />
     </EnumProperty>

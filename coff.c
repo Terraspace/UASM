@@ -754,7 +754,7 @@ static int GetStartLabel( char *buffer, bool msg )
             strcpy( buffer, temp );
         else {
             if ( ModuleInfo.g.start_label->langtype != LANG_C &&
-                ModuleInfo.g.start_label->langtype != LANG_STDCALL &&
+				ModuleInfo.g.start_label->langtype != LANG_STDCALL &&
                 ModuleInfo.g.start_label->langtype != LANG_SYSCALL ) {
                 if ( *ModuleInfo.g.start_label->name != '_' ) {
                     if ( msg && ( ModuleInfo.fctype != FCT_WIN64 ) )
