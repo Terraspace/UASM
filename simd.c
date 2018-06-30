@@ -1,6 +1,5 @@
-
-/* 
-Create the predefined SIMD data types 
+/*
+Create the predefined SIMD data types
 __m128
 __m256
 __m512
@@ -352,5 +351,4 @@ void AddSimdTypes()
 	AddLineQueue("__m512 ends");
 
 	RunLineQueue();
-
 }

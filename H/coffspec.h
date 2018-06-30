@@ -1,9 +1,8 @@
-
 /* the MS COFF declarations, as far as it's relevant for Uasm.
  * The full declarations can be found in MS PSDK, WinNT.h.
  */
 
-/* Machine values */
+ /* Machine values */
 #define IMAGE_FILE_MACHINE_I386  0x014c /* Intel 386 or later processors */
 #define IMAGE_FILE_MACHINE_AMD64 0x8664 /* AMD64 (K8)                    */
 
@@ -15,32 +14,35 @@
 #define IMAGE_FILE_LARGE_ADDRESS_AWARE       0x0020  // App can handle >2gb addresses
 #define IMAGE_FILE_32BIT_MACHINE             0x0100  // 32 bit word machine.
 
-struct IMAGE_FILE_HEADER {
-    uint_16 Machine;
-    uint_16 NumberOfSections;
-    uint_32 TimeDateStamp;
-    uint_32 PointerToSymbolTable;
-    uint_32 NumberOfSymbols;
-    uint_16 SizeOfOptionalHeader;
-    uint_16 Characteristics;
+struct IMAGE_FILE_HEADER
+{
+	uint_16 Machine;
+	uint_16 NumberOfSections;
+	uint_32 TimeDateStamp;
+	uint_32 PointerToSymbolTable;
+	uint_32 NumberOfSymbols;
+	uint_16 SizeOfOptionalHeader;
+	uint_16 Characteristics;
 };
 
 #define IMAGE_SIZEOF_SHORT_NAME 8
 
-struct IMAGE_SECTION_HEADER {
-    char Name[IMAGE_SIZEOF_SHORT_NAME];
-    union {
-        uint_32 PhysicalAddress;
-        uint_32 VirtualSize;
-    } Misc;
-    uint_32 VirtualAddress;
-    uint_32 SizeOfRawData;
-    uint_32 PointerToRawData;
-    uint_32 PointerToRelocations;
-    uint_32 PointerToLinenumbers;
-    uint_16 NumberOfRelocations;
-    uint_16 NumberOfLinenumbers;
-    uint_32 Characteristics;
+struct IMAGE_SECTION_HEADER
+{
+	char Name[IMAGE_SIZEOF_SHORT_NAME];
+	union
+	{
+		uint_32 PhysicalAddress;
+		uint_32 VirtualSize;
+	} Misc;
+	uint_32 VirtualAddress;
+	uint_32 SizeOfRawData;
+	uint_32 PointerToRawData;
+	uint_32 PointerToRelocations;
+	uint_32 PointerToLinenumbers;
+	uint_16 NumberOfRelocations;
+	uint_16 NumberOfLinenumbers;
+	uint_32 Characteristics;
 };
 
 #define IMAGE_NUMBEROF_DIRECTORY_ENTRIES 16
@@ -89,13 +91,15 @@ struct IMAGE_SECTION_HEADER {
 #define IMAGE_SCN_MEM_WRITE       0x80000000
 
 #pragma pack(push,2)
-typedef struct _IMAGE_RELOCATION {
-    union {
-        uint_32 VirtualAddress;
-        uint_32 RelocCount;
-    };
-    uint_32 SymbolTableIndex;
-    uint_16 Type;
+typedef struct _IMAGE_RELOCATION
+{
+	union
+	{
+		uint_32 VirtualAddress;
+		uint_32 RelocCount;
+	};
+	uint_32 SymbolTableIndex;
+	uint_16 Type;
 } IMAGE_RELOCATION;
 #pragma pack(pop)
 
@@ -132,24 +136,27 @@ typedef struct _IMAGE_RELOCATION {
 #define IMAGE_SIZEOF_AUX_SYMBOL 18
 
 #pragma pack(push,2)
-typedef struct _IMAGE_SYMBOL {
-    union {
-        /* v2.08 */
-        //char ShortName[8];
-        uint_8 ShortName[8];
-        struct {
-            uint_32 Short;
-            uint_32 Long;
-        } Name;
-        /* v2.07: don't use pointers in COFF structures! */
-        //unsigned char *LongName[2];
-        uint_32 LongName[2];
-    } N;
-    uint_32 Value;
-    uint_16 SectionNumber;
-    uint_16 Type;
-    uint_8  StorageClass;
-    uint_8  NumberOfAuxSymbols;
+typedef struct _IMAGE_SYMBOL
+{
+	union
+	{
+		/* v2.08 */
+		//char ShortName[8];
+		uint_8 ShortName[8];
+		struct
+		{
+			uint_32 Short;
+			uint_32 Long;
+		} Name;
+		/* v2.07: don't use pointers in COFF structures! */
+		//unsigned char *LongName[2];
+		uint_32 LongName[2];
+	} N;
+	uint_32 Value;
+	uint_16 SectionNumber;
+	uint_16 Type;
+	uint_8  StorageClass;
+	uint_8  NumberOfAuxSymbols;
 } IMAGE_SYMBOL;
 
 /* special section numbers */
@@ -226,63 +233,75 @@ typedef struct _IMAGE_SYMBOL {
 #define IMAGE_WEAK_EXTERN_SEARCH_LIBRARY    2
 #define IMAGE_WEAK_EXTERN_SEARCH_ALIAS      3
 
-typedef union _IMAGE_AUX_SYMBOL {
-    /* AUX format 2: .bf and .ef entries */
-    struct {
-        uint_32 TagIndex;
-        union {
-            struct {
-                uint_16 Linenumber;
-                uint_16 Size;
-            } LnSz;
-            uint_32 TotalSize;
-        } Misc;
-        union {
-            struct {
-                uint_32 PointerToLinenumber;
-                uint_32 PointerToNextFunction;
-            } Function;
-            struct {
-                uint_16 Dimension[4];
-            } Array;
-        } FcnAry;
-        uint_16 TvIndex;
-    } Sym;
-    /* AUX format 4: file entries */
-    struct {
-        /* v2.08 */
-        //char Name[IMAGE_SIZEOF_SYMBOL];
-        uint_8 Name[IMAGE_SIZEOF_SYMBOL];
-    } File;
-    /* AUX format 5: section entries */
-    struct {
-        uint_32 Length;
-        uint_16 NumberOfRelocations;
-        uint_16 NumberOfLinenumbers;
-        uint_32 CheckSum;
-        uint_16 Number;
-        uint_8  Selection;
-    } Section;
+typedef union _IMAGE_AUX_SYMBOL
+{
+	/* AUX format 2: .bf and .ef entries */
+	struct
+	{
+		uint_32 TagIndex;
+		union
+		{
+			struct
+			{
+				uint_16 Linenumber;
+				uint_16 Size;
+			} LnSz;
+			uint_32 TotalSize;
+		} Misc;
+		union
+		{
+			struct
+			{
+				uint_32 PointerToLinenumber;
+				uint_32 PointerToNextFunction;
+			} Function;
+			struct
+			{
+				uint_16 Dimension[4];
+			} Array;
+		} FcnAry;
+		uint_16 TvIndex;
+	} Sym;
+	/* AUX format 4: file entries */
+	struct
+	{
+		/* v2.08 */
+		//char Name[IMAGE_SIZEOF_SYMBOL];
+		uint_8 Name[IMAGE_SIZEOF_SYMBOL];
+	} File;
+	/* AUX format 5: section entries */
+	struct
+	{
+		uint_32 Length;
+		uint_16 NumberOfRelocations;
+		uint_16 NumberOfLinenumbers;
+		uint_32 CheckSum;
+		uint_16 Number;
+		uint_8  Selection;
+	} Section;
 } IMAGE_AUX_SYMBOL;
 #pragma pack(pop)
 
-typedef struct _IMAGE_COFF_SYMBOLS_HEADER {
-    uint_32 NumberOfSymbols;
-    uint_32 LvaToFirstSymbol;
-    uint_32 NumberOfLinenumbers;
-    uint_32 LvaToFirstLinenumber;
-    uint_32 RvaToFirstByteOfCode;
-    uint_32 RvaToLastByteOfCode;
-    uint_32 RvaToFirstByteOfData;
-    uint_32 RvaToLastByteOfData;
+typedef struct _IMAGE_COFF_SYMBOLS_HEADER
+{
+	uint_32 NumberOfSymbols;
+	uint_32 LvaToFirstSymbol;
+	uint_32 NumberOfLinenumbers;
+	uint_32 LvaToFirstLinenumber;
+	uint_32 RvaToFirstByteOfCode;
+	uint_32 RvaToLastByteOfCode;
+	uint_32 RvaToFirstByteOfData;
+	uint_32 RvaToLastByteOfData;
 } IMAGE_COFF_SYMBOLS_HEADER;
 
 #pragma pack(push,2)
-typedef struct _IMAGE_LINENUMBER {
-    union {
-        uint_32 SymbolTableIndex;
-        uint_32 VirtualAddress;
-    } Type;
-    uint_16 Linenumber;
+typedef struct _IMAGE_LINENUMBER
+{
+	union
+	{
+		uint_32 SymbolTableIndex;
+		uint_32 VirtualAddress;
+	} Type;
+	uint_16 Linenumber;
 } IMAGE_LINENUMBER;
 #pragma pack(pop)

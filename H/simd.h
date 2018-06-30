@@ -1,2 +1,1 @@
-
 void AddSimdTypes(void);

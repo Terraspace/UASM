@@ -29,29 +29,29 @@
 *
 ****************************************************************************/
 
-
 #ifndef QUEUE_H
 #define QUEUE_H 1
 
-struct qnode {
-    void *next;
-    union {
-        const void  *elmt;
-        struct asym *sym;
-    };
+struct qnode
+{
+	void *next;
+	union
+	{
+		const void  *elmt;
+		struct asym *sym;
+	};
 };
 
-struct qdesc {
-    void *head;
-    void *tail;
+struct qdesc
+{
+	void *head;
+	void *tail;
 };
 
 //extern void QInit( struct qdesc * );
-extern void QEnqueue( struct qdesc *, void * );
-extern void QAddItem( struct qdesc *, const void * );
+extern void QEnqueue(struct qdesc *, void *);
+extern void QAddItem(struct qdesc *, const void *);
 //extern void *QDequeue( struct qdesc * );
 //extern void QJoinQueue( struct qdesc *dest, struct qdesc *src );
 
 #endif
-
-
