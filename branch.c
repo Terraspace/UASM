@@ -34,6 +34,10 @@
 *                 (see OPTION LJMP | NOLJMP).
 ****************************************************************************/
 
+#ifdef __GNUC__
+#define _BITS_FLOATN_COMMON_H
+#endif
+
 #include <limits.h>
 
 #include "globals.h"

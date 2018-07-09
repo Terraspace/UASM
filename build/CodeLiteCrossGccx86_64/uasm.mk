@@ -2,21 +2,21 @@
 ## Auto Generated makefile by CodeLite IDE
 ## any manual changes will be erased      
 ##
-## Release
+## Debug
 ProjectName            :=uasm
-ConfigurationName      :=Release
-WorkspacePath          :=D:/Libraries/eXOAMP/UASM/build/CodeLiteMingw32
-ProjectPath            :=D:/Libraries/eXOAMP/UASM/build/CodeLiteMingw32
-IntermediateDirectory  :=./Release
+ConfigurationName      :=Debug
+WorkspacePath          :=D:/Libraries/eXOAMP/UASM/build/CodeLiteCrossGccx86_64
+ProjectPath            :=D:/Libraries/eXOAMP/UASM/build/CodeLiteCrossGccx86_64
+IntermediateDirectory  :=./Debug
 OutDir                 := $(IntermediateDirectory)
 CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=vitor
-Date                   :=30/06/2018
+Date                   :=06/07/2018
 CodeLitePath           :="C:/Program Files/CodeLite"
-LinkerName             :=D:/ExternalCompilers/msys64/mingw64/bin/g++.exe
-SharedObjectLinkerName :=D:/ExternalCompilers/msys64/mingw64/bin/g++.exe -shared -fPIC
+LinkerName             :=D:/CrossToolchain/x86_64-unknown-linux-gnu/bin/x86_64-unknown-linux-gnu-g++.exe
+SharedObjectLinkerName :=D:/CrossToolchain/x86_64-unknown-linux-gnu/bin/x86_64-unknown-linux-gnu-g++.exe -shared -fPIC
 ObjectSuffix           :=.o
 DependSuffix           :=.o.d
 PreprocessSuffix       :=.i
@@ -28,7 +28,7 @@ LibraryPathSwitch      :=-L
 PreprocessorSwitch     :=-D
 SourceSwitch           :=-c 
 OutputFile             :=$(IntermediateDirectory)/$(ProjectName)
-Preprocessors          :=$(PreprocessorSwitch)DEBUG_OUT $(PreprocessorSwitch)NDEBUG 
+Preprocessors          :=$(PreprocessorSwitch)DEBUG_OUT $(PreprocessorSwitch)__UNIX__ $(PreprocessorSwitch)__LINUX__ $(PreprocessorSwitch)_DEBUG 
 ObjectSwitch           :=-o 
 ArchiveOutputSwitch    := 
 PreprocessOnlySwitch   :=-E
@@ -38,24 +38,24 @@ MakeDirCommand         :=makedir
 RcCmpOptions           := 
 RcCompilerName         :=D:/ExternalCompilers/msys64/mingw64/bin/windres.exe
 LinkOptions            :=  
-IncludePath            := $(IncludeSwitch)D:/ExternalCompilers/msys64/mingw64/include/c++/7.3.0 $(IncludeSwitch)D:/ExternalCompilers/msys64/mingw64/include/c++/7.3.0/x86_64-w64-mingw32 $(IncludeSwitch)D:/ExternalCompilers/msys64/mingw64/include/c++/7.3.0/backward $(IncludeSwitch)D:/ExternalCompilers/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/7.3.0/include $(IncludeSwitch)D:/ExternalCompilers/msys64/mingw64/include $(IncludeSwitch)D:/ExternalCompilers/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/7.3.0/include-fixed $(IncludeSwitch)D:/ExternalCompilers/msys64/mingw64/x86_64-w64-mingw32/include  $(IncludeSwitch). $(IncludeSwitch). $(IncludeSwitch)../../H 
+IncludePath            := $(IncludeSwitch)D:/CrossToolchain/x86_64-unknown-linux-gnu/include/c++/8.1.0 $(IncludeSwitch)D:/CrossToolchain/x86_64-unknown-linux-gnu/include/c++/8.1.0/x86_64-unknown-linux-gnu $(IncludeSwitch)D:/CrossToolchain/x86_64-unknown-linux-gnu/include/c++/8.1.0/backward $(IncludeSwitch)D:/CrossToolchain/x86_64-unknown-linux-gnu/include $(IncludeSwitch)D:/CrossToolchain/x86_64-unknown-linux-gnu/lib/gcc/x86_64-unknown-linux-gnu/8.1.0/include $(IncludeSwitch)D:/CrossToolchain/x86_64-unknown-linux-gnu/lib/gcc/x86_64-unknown-linux-gnu/8.1.0/include-fixed $(IncludeSwitch)D:/CrossToolchain/x86_64-unknown-linux-gnu/lib/clang/7.0.0/include $(IncludeSwitch)D:/CrossToolchain/x86_64-unknown-linux-gnu/usr/include $(IncludeSwitch)D:/CrossToolchain/x86_64-unknown-linux-gnu/usr/include/linux $(IncludeSwitch)D:/CrossToolchain/x86_64-unknown-linux-gnu/include/clang-c $(IncludeSwitch)D:/CrossToolchain/x86_64-unknown-linux-gnu/include/llvm $(IncludeSwitch)D:/CrossToolchain/x86_64-unknown-linux-gnu/include/llvm-c  $(IncludeSwitch). $(IncludeSwitch). $(IncludeSwitch)../../H 
 IncludePCH             := 
 RcIncludePath          := 
 Libs                   := 
 ArLibs                 :=  
-LibPath                :=$(LibraryPathSwitch)D:/ExternalCompilers/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/7.3.0 $(LibraryPathSwitch)D:/ExternalCompilers/msys64/mingw64/lib $(LibraryPathSwitch)D:/ExternalCompilers/msys64/mingw64/x86_64-w64-mingw32/lib  $(LibraryPathSwitch). 
+LibPath                :=$(LibraryPathSwitch)D:/CrossToolchain/x86_64-unknown-linux-gnu/lib $(LibraryPathSwitch)D:/CrossToolchain/x86_64-unknown-linux-gnu/lib/gcc/x86_64-unknown-linux-gnu/8.1.0 $(LibraryPathSwitch)D:/CrossToolchain/x86_64-unknown-linux-gnu/usr/lib  $(LibraryPathSwitch). 
 
 ##
 ## Common variables
 ## AR, CXX, CC, AS, CXXFLAGS and CFLAGS can be overriden using an environment variables
 ##
-AR       := D:/ExternalCompilers/msys64/mingw64/bin/ar.exe rcu
-CXX      := D:/ExternalCompilers/msys64/mingw64/bin/g++.exe
-CC       := D:/ExternalCompilers/msys64/mingw64/bin/gcc.exe
-CXXFLAGS :=  -O2 -Wall $(Preprocessors)
-CFLAGS   :=  -O2 -Wall $(Preprocessors)
+AR       := D:/CrossToolchain/x86_64-unknown-linux-gnu/bin/x86_64-unknown-linux-gnu-ar.exe rcu
+CXX      := D:/CrossToolchain/x86_64-unknown-linux-gnu/bin/clang++.exe
+CC       := D:/CrossToolchain/x86_64-unknown-linux-gnu/bin/clang.exe
+CXXFLAGS :=  -g -O0 -std=c++11 -march=icelake-client -target x86_64-unknown-linux-gnu -fPIC $(Preprocessors)
+CFLAGS   :=  -g -O0 -std=c11 -march=icelake-client -target x86_64-unknown-linux-gnu -fPIC $(Preprocessors)
 ASFLAGS  := 
-AS       := D:/ExternalCompilers/msys64/mingw64/bin/as.exe
+AS       := D:/CrossToolchain/x86_64-unknown-linux-gnu/bin/x86_64-unknown-linux-gnu-as.exe
 
 
 ##
@@ -66,8 +66,8 @@ Objects0=$(IntermediateDirectory)/up_up_assemble.c$(ObjectSuffix) $(Intermediate
 	$(IntermediateDirectory)/up_up_errmsg.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_extern.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_fixup.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_fpfixup.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_hll.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_input.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_linnum.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_listing.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_loop.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_lqueue.c$(ObjectSuffix) \
 	$(IntermediateDirectory)/up_up_macho64.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_macrolib.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_mangle.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_omffixup.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_omfint.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_macro.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_posndir.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_proc.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_queue.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_reswords.c$(ObjectSuffix) \
 	$(IntermediateDirectory)/up_up_branch.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_simd.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_simsegm.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_tbyte.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_tokenize.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_main.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_trmem.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_directiv.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_parser.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_label.c$(ObjectSuffix) \
-	$(IntermediateDirectory)/up_up_omf.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_data.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_fastpass.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_expreval.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_ltype.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_apiemu.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_invoke.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_backptch.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_expans.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_safeseh.c$(ObjectSuffix) \
-	$(IntermediateDirectory)/up_up_types.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_cmdline.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_orgfixup.c$(ObjectSuffix) 
+	$(IntermediateDirectory)/up_up_omf.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_data.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_fastpass.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_expreval.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_ltype.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_apiemu.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_invoke.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_safeseh.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_types.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_expans.c$(ObjectSuffix) \
+	$(IntermediateDirectory)/up_up_backptch.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_cmdline.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_orgfixup.c$(ObjectSuffix) 
 
 Objects1=$(IntermediateDirectory)/up_up_bin.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_dbgcv.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_preproc.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_option.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_context.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_symbols.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_memalloc.c$(ObjectSuffix) \
 	$(IntermediateDirectory)/up_up_string.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_segment.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_msgtext.c$(ObjectSuffix) 
@@ -90,11 +90,11 @@ $(OutputFile): $(IntermediateDirectory)/.d $(Objects)
 	$(LinkerName) $(OutputSwitch)$(OutputFile) @$(ObjectsFileList) $(LibPath) $(Libs) $(LinkOptions)
 
 MakeIntermediateDirs:
-	@$(MakeDirCommand) "./Release"
+	@$(MakeDirCommand) "./Debug"
 
 
 $(IntermediateDirectory)/.d:
-	@$(MakeDirCommand) "./Release"
+	@$(MakeDirCommand) "./Debug"
 
 PreBuild:
 
@@ -478,22 +478,6 @@ $(IntermediateDirectory)/up_up_invoke.c$(DependSuffix): ../../invoke.c
 $(IntermediateDirectory)/up_up_invoke.c$(PreprocessSuffix): ../../invoke.c
 	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/up_up_invoke.c$(PreprocessSuffix) ../../invoke.c
 
-$(IntermediateDirectory)/up_up_backptch.c$(ObjectSuffix): ../../backptch.c $(IntermediateDirectory)/up_up_backptch.c$(DependSuffix)
-	$(CC) $(SourceSwitch) "D:/Libraries/eXOAMP/UASM/backptch.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_backptch.c$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/up_up_backptch.c$(DependSuffix): ../../backptch.c
-	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/up_up_backptch.c$(ObjectSuffix) -MF$(IntermediateDirectory)/up_up_backptch.c$(DependSuffix) -MM ../../backptch.c
-
-$(IntermediateDirectory)/up_up_backptch.c$(PreprocessSuffix): ../../backptch.c
-	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/up_up_backptch.c$(PreprocessSuffix) ../../backptch.c
-
-$(IntermediateDirectory)/up_up_expans.c$(ObjectSuffix): ../../expans.c $(IntermediateDirectory)/up_up_expans.c$(DependSuffix)
-	$(CC) $(SourceSwitch) "D:/Libraries/eXOAMP/UASM/expans.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_expans.c$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/up_up_expans.c$(DependSuffix): ../../expans.c
-	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/up_up_expans.c$(ObjectSuffix) -MF$(IntermediateDirectory)/up_up_expans.c$(DependSuffix) -MM ../../expans.c
-
-$(IntermediateDirectory)/up_up_expans.c$(PreprocessSuffix): ../../expans.c
-	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/up_up_expans.c$(PreprocessSuffix) ../../expans.c
-
 $(IntermediateDirectory)/up_up_safeseh.c$(ObjectSuffix): ../../safeseh.c $(IntermediateDirectory)/up_up_safeseh.c$(DependSuffix)
 	$(CC) $(SourceSwitch) "D:/Libraries/eXOAMP/UASM/safeseh.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_safeseh.c$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/up_up_safeseh.c$(DependSuffix): ../../safeseh.c
@@ -509,6 +493,22 @@ $(IntermediateDirectory)/up_up_types.c$(DependSuffix): ../../types.c
 
 $(IntermediateDirectory)/up_up_types.c$(PreprocessSuffix): ../../types.c
 	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/up_up_types.c$(PreprocessSuffix) ../../types.c
+
+$(IntermediateDirectory)/up_up_expans.c$(ObjectSuffix): ../../expans.c $(IntermediateDirectory)/up_up_expans.c$(DependSuffix)
+	$(CC) $(SourceSwitch) "D:/Libraries/eXOAMP/UASM/expans.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_expans.c$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/up_up_expans.c$(DependSuffix): ../../expans.c
+	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/up_up_expans.c$(ObjectSuffix) -MF$(IntermediateDirectory)/up_up_expans.c$(DependSuffix) -MM ../../expans.c
+
+$(IntermediateDirectory)/up_up_expans.c$(PreprocessSuffix): ../../expans.c
+	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/up_up_expans.c$(PreprocessSuffix) ../../expans.c
+
+$(IntermediateDirectory)/up_up_backptch.c$(ObjectSuffix): ../../backptch.c $(IntermediateDirectory)/up_up_backptch.c$(DependSuffix)
+	$(CC) $(SourceSwitch) "D:/Libraries/eXOAMP/UASM/backptch.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_backptch.c$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/up_up_backptch.c$(DependSuffix): ../../backptch.c
+	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/up_up_backptch.c$(ObjectSuffix) -MF$(IntermediateDirectory)/up_up_backptch.c$(DependSuffix) -MM ../../backptch.c
+
+$(IntermediateDirectory)/up_up_backptch.c$(PreprocessSuffix): ../../backptch.c
+	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/up_up_backptch.c$(PreprocessSuffix) ../../backptch.c
 
 $(IntermediateDirectory)/up_up_cmdline.c$(ObjectSuffix): ../../cmdline.c $(IntermediateDirectory)/up_up_cmdline.c$(DependSuffix)
 	$(CC) $(SourceSwitch) "D:/Libraries/eXOAMP/UASM/cmdline.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_cmdline.c$(ObjectSuffix) $(IncludePath)
@@ -612,6 +612,6 @@ $(IntermediateDirectory)/up_up_msgtext.c$(PreprocessSuffix): ../../msgtext.c
 ## Clean
 ##
 clean:
-	$(RM) -r ./Release/
+	$(RM) -r ./Debug/
 
 

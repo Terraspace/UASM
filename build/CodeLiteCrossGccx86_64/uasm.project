@@ -10,13 +10,13 @@
     <File Name="../../UASM.rc" ExcludeProjConfig="Release;Debug;"/>
   </VirtualDirectory>
   <VirtualDirectory Name="H">
+    <File Name="../../H/types.h"/>
     <File Name="../../H/winconsole.h"/>
     <File Name="../../H/win64seh.h"/>
     <File Name="../../H/win32.h"/>
     <File Name="../../H/usage2.h"/>
     <File Name="../../H/usage.h"/>
     <File Name="../../H/unaryop.h"/>
-    <File Name="../../H/types.h"/>
     <File Name="../../H/trmem.h"/>
     <File Name="../../H/tokenize.h"/>
     <File Name="../../H/token.h"/>
@@ -164,11 +164,13 @@
       </Linker>
       <ResourceCompiler Options=""/>
     </GlobalSettings>
-    <Configuration Name="Debug" CompilerType="MinGW 64bit ( MSYS2 64bit )" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g;-O0;-Wall" C_Options="-g;-O0;-Wall" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+    <Configuration Name="Debug" CompilerType="Cross clang GCC ( x86_64-unknown-linux-gnu )" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g;-O0;-std=c++11;-march=icelake-client;-target x86_64-unknown-linux-gnu;-fPIC" C_Options="-g;-O0;-std=c11;-march=icelake-client;-target x86_64-unknown-linux-gnu;-fPIC" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="."/>
         <IncludePath Value="../../H"/>
         <Preprocessor Value="DEBUG_OUT"/>
+        <Preprocessor Value="__UNIX__"/>
+        <Preprocessor Value="__LINUX__"/>
         <Preprocessor Value="_DEBUG"/>
       </Compiler>
       <Linker Options="" Required="yes"/>
@@ -206,11 +208,13 @@
         <SearchPaths/>
       </Completion>
     </Configuration>
-    <Configuration Name="Release" CompilerType="MinGW 64bit ( MSYS2 64bit )" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-O2;-Wall" C_Options="-O2;-Wall" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+    <Configuration Name="Release" CompilerType="Cross clang GCC ( x86_64-unknown-linux-gnu )" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-O2;-std=c++11;-march=icelake-client;-target x86_64-unknown-linux-gnu;-fPIC" C_Options="-O2;-march=icelake-client;-target x86_64-unknown-linux-gnu;-fPIC" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="."/>
         <IncludePath Value="../../H"/>
         <Preprocessor Value="DEBUG_OUT"/>
+        <Preprocessor Value="__UNIX__"/>
+        <Preprocessor Value="__LINUX__"/>
         <Preprocessor Value="NDEBUG"/>
       </Compiler>
       <Linker Options="" Required="yes"/>

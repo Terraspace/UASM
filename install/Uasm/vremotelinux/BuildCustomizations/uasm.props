@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup
+    Condition="'$(UASMBeforeTargets)' == '' and '$(UASMAfterTargets)' == '' and '$(ConfigurationType)' != 'Makefile'">
+    <UASMBeforeTargets>Midl</UASMBeforeTargets>
+    <UASMAfterTargets>CustomBuild</UASMAfterTargets>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <UASM>
+      <NoLogo>true</NoLogo>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ObjectFileName>$(IntDir)%(FileName).obj</ObjectFileName>
+      <PreserveIdentifierCase>0</PreserveIdentifierCase>
+      <WarningLevel>3</WarningLevel>
+      <PackAlignmentBoundary>0</PackAlignmentBoundary>
+      <CallingConvention>0</CallingConvention>
+      <ErrorReporting>0</ErrorReporting>
+      <CommandLineTemplate Condition="'$(Platform)' == 'Win32'">$(UASM_PATH)\$(PlatformToolset)\$(PlatformTarget)\uasm.exe -c [AllOptions] [AdditionalOptions] [Inputs]</CommandLineTemplate>
+      <CommandLineTemplate Condition="'$(Platform)' == 'X64'">$(UASM_PATH)\$(PlatformToolset)\$(PlatformTarget)\uasm.exe -c [AllOptions] [AdditionalOptions] [Inputs]</CommandLineTemplate>
+      <CommandLineTemplate Condition="'$(Platform)' != 'Win32' and '$(Platform)' != 'X64'">echo UASM not supported on this platform</CommandLineTemplate>
+      <ExecutionDescription>Assembling %(Identity)...</ExecutionDescription>
+    </UASM>
+  </ItemDefinitionGroup>
+</Project>

@@ -429,12 +429,4 @@
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="..\..\H\hjwasm.rc">
-      <Filter>Headers</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="main.cpp" />
-  </ItemGroup>
 </Project>
