@@ -28,6 +28,9 @@ GccUnixD/
 MinGW-w64R/
 MinGW-w64D/
 
+.codelite
+*.exe
+
 *.exe
 
 # Visual Studio 2015 cache/options directory
@@ -242,6 +245,7 @@ FakesAssemblies/
 
 # Visual Studio 6 build log
 *.plg
+*.tlog
 
 # Visual Studio 6 workspace options file
 *.opt
