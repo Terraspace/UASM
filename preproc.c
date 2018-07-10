@@ -45,8 +45,7 @@ ret_code WriteCodeLabel(char *line, struct asm_tok tokenarray[])
 	int oldtoken;
 	char oldchar;
 
-	if (tokenarray[0].token != T_ID)
-	{
+    if ( tokenarray[0].token != T_ID ) {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[0].string_ptr));
 	}
 	/* ensure the listing is written with the FULL source line */
@@ -1141,8 +1140,7 @@ int PreprocessLine(char *line, struct asm_tok tokenarray[])
 	if (tokenarray[0].token == T_ID && tokenarray[1].token == T_DIRECTIVE)
 	{
 		struct asym *sym;
-		switch (tokenarray[1].dirtype)
-		{
+        switch ( tokenarray[1].dirtype ) {
 			case DRT_EQU:
 				/*
 				 * EQU is a special case:
@@ -1155,10 +1153,8 @@ int PreprocessLine(char *line, struct asm_tok tokenarray[])
 				 * handle it in ANY case and if it defines a number, the line
 				 * must be stored and, if -EP is set, written to stdout.
 				 */
-				if (sym = CreateConstant(tokenarray))
-				{
-					if (sym->state != SYM_TMACRO)
-					{
+            if ( sym = CreateConstant( tokenarray ) ) {
+                if ( sym->state != SYM_TMACRO ) {
 #if FASTPASS
 						if (StoreState) FStoreLine(0);
 #endif
@@ -1166,8 +1162,7 @@ int PreprocessLine(char *line, struct asm_tok tokenarray[])
 							WritePreprocessedLine(line);
 					}
 					/* v2.03: LstWrite() must be called AFTER StoreLine()! */
-					if (ModuleInfo.list == TRUE)
-					{
+                if ( ModuleInfo.list == TRUE ) {
 						LstWrite(sym->state == SYM_INTERNAL ? LSTTYPE_EQUATE : LSTTYPE_TMACRO, 0, sym);
 					}
 				}

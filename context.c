@@ -26,8 +26,7 @@
 #define SavedContexts ModuleInfo.g.SavedContexts
 #endif
 
-enum context_type
-{
+enum context_type {
 	CONT_ASSUMES = 0x01,
 	CONT_RADIX = 0x02,
 	CONT_LISTING = 0x04,
@@ -54,15 +53,13 @@ static const char * const contextnames[] = {
  * Uasm has no restriction currently.
  */
 
-struct assumes_context
-{
+struct assumes_context {
 	struct assume_info SegAssumeTable[NUM_SEGREGS];
 	struct assume_info StdAssumeTable[NUM_STDREGS];
 	struct stdassume_typeinfo type_content[NUM_STDREGS];
 };
 
-struct listing_context
-{
+struct listing_context {
 	enum listmacro list_macro;
 	unsigned char list:1;
 	unsigned char cref:1;
@@ -70,19 +67,16 @@ struct listing_context
 	unsigned char list_generated_code:1;
 };
 
-struct cpu_context
-{
+struct cpu_context {
 	short cpu;              /* saved ModuleInfo.cpu      */
 	enum cpu_info curr_cpu; /* saved ModuleInfo.curr_cpu */
 };
 
-struct radix_context
-{
+struct radix_context {
 	uint_8 radix; /* saved ModuleInfo.radix */
 };
 
-struct alignment_context
-{
+struct alignment_context {
 	uint_8 fieldalign; /* saved ModuleInfo.fieldalign */
 	uint_8 procalign;  /* saved ModuleInfo.procalign */
 };
@@ -92,12 +86,10 @@ struct alignment_context
  * all items are equal in size, this made it possible to implement
  * a "free items" heap.
  */
-struct context
-{
+struct context {
 	struct context *next;
 	enum context_type type;
-	union
-	{
+    union {
 		struct radix_context   rc;
 		struct alignment_context alc;
 		struct listing_context lc;
@@ -123,12 +115,9 @@ ret_code ContextDirective(int i, struct asm_tok tokenarray[])
 
 	i++; /* skip CONTEXT keyword */
 
-	while (tokenarray[i].token == T_ID)
-	{
-		for (j = 0, type = -1; j < (sizeof(typetab) / sizeof(typetab[0])); j++)
-		{
-			if (_stricmp(contextnames[j], tokenarray[i].string_ptr) == 0)
-			{
+    while ( tokenarray[i].token == T_ID ) {
+        for ( j = 0, type = -1; j < ( sizeof(typetab) / sizeof(typetab[0]) ); j++ ) {
+            if ( _stricmp( contextnames[j], tokenarray[i].string_ptr ) == 0 ) {
 				type = typetab[j];
 				break;
 			}
@@ -138,27 +127,23 @@ ret_code ContextDirective(int i, struct asm_tok tokenarray[])
 			break;
 
 		/* reject ALIGNMENT if strict masm compat is on */
-		if (Options.strict_masm_compat)
-		{
+        if ( Options.strict_masm_compat ) {
 			if (type == CONT_ALIGNMENT)
 				break;
 			else
 				type &= ~CONT_ALIGNMENT; /* in case ALIGNMENT is again included in ALL */
 		}
 
-		if (directive == T_POPCONTEXT)
-		{
+        if ( directive == T_POPCONTEXT ) {
 			struct context *prev;
 			struct context *next;
 			DebugMsg(("POPCONTEXT type=%X\n", type));
 			/* for POPCONTEXT, check if appropriate items are on the stack */
-			for (prev = NULL, curr = ContextStack; curr && type; curr = next)
-			{
+            for ( prev = NULL, curr = ContextStack; curr && type; curr = next ) {
 				DebugMsg(("POPCONTEXT: found item with type=%X\n", curr->type));
 				next = curr->next;
 				/* matching item on the stack? */
-				if (!(curr->type & type))
-				{
+                if ( !( curr->type & type ) ) {
 					prev = curr;
 					continue;
 				}
@@ -173,8 +158,7 @@ ret_code ContextDirective(int i, struct asm_tok tokenarray[])
 				ContextFree = curr;
 
 				/* restore the values */
-				switch (curr->type)
-				{
+                switch ( curr->type ) {
 					case CONT_ASSUMES:
 						SetSegAssumeTable(curr->ac.SegAssumeTable);
 						SetStdAssumeTable(curr->ac.StdAssumeTable, curr->ac.type_content);
@@ -200,35 +184,27 @@ ret_code ContextDirective(int i, struct asm_tok tokenarray[])
 						ModuleInfo.curr_cpu = curr->cc.curr_cpu;
 				}
 			}
-			if (type)
-			{
+            if ( type ) {
 				DebugMsg(("POPCONTEXT error, remaining type flags=%X\n", type));
 				return(EmitErr(UNMATCHED_BLOCK_NESTING, tokenarray[start].tokpos));
 			}
-		}
-		else
-		{
+        } else {
 			DebugMsg(("PUSHCONTEXT type=%X\n", type));
-			for (j = 0; j < (sizeof(typetab) / sizeof(typetab[0])) && type; j++)
-			{
-				if (type & typetab[j])
-				{
+            for ( j = 0; j < ( sizeof(typetab) / sizeof(typetab[0] ) ) && type; j++ ) {
+                if ( type & typetab[j] ) {
 					type &= ~typetab[j];
 
-					if (ContextFree)
-					{
+                    if ( ContextFree ) {
 						curr = ContextFree;
 						ContextFree = curr->next;
-					}
-					else
+                    } else
 						curr = LclAlloc(sizeof(struct context));
 
 					curr->type = typetab[j];
 					curr->next = ContextStack;
 					ContextStack = curr;
 
-					switch (typetab[j])
-					{
+                    switch ( typetab[j] ) {
 						case CONT_ASSUMES:
 							GetSegAssumeTable(curr->ac.SegAssumeTable);
 							GetStdAssumeTable(curr->ac.StdAssumeTable, curr->ac.type_content);
@@ -261,8 +237,7 @@ ret_code ContextDirective(int i, struct asm_tok tokenarray[])
 			i++;
 	}
 
-	if (tokenarray[i].token != T_FINAL || type == -1)
-	{
+    if ( tokenarray[i].token != T_FINAL || type == -1 ) {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 	}
 
@@ -282,13 +257,11 @@ void ContextSaveState(void)
 
 	for (i = 0, src = ContextStack; src; i++, src = src->next);
 
-	if (i)
-	{
+    if ( i ) {
 		cntSavedContexts = i;
 		SavedContexts = LclAlloc(i * sizeof(struct context));
 		DebugMsg(("ContextSaveState: SavedContexts=%X\n", SavedContexts));
-		for (src = ContextStack, dst = SavedContexts; src; src = src->next, dst++)
-		{
+        for ( src = ContextStack, dst = SavedContexts ; src ; src = src->next, dst++ ) {
 			memcpy(dst, src, sizeof(struct context));
 		}
 	}
@@ -302,14 +275,11 @@ static void ContextRestoreState(void)
 	int i;
 	struct context *dst;
 
-	for (i = cntSavedContexts; i; i--)
-	{
-		if (ContextFree)
-		{
+    for ( i = cntSavedContexts ; i ; i-- ) {
+        if ( ContextFree ) {
 			dst = ContextFree;
 			ContextFree = dst->next;
-		}
-		else
+        } else
 			dst = LclAlloc(sizeof(struct context));
 		memcpy(dst, &SavedContexts[i-1], sizeof(struct context));
 		dst->next = ContextStack;
@@ -330,8 +300,7 @@ void ContextInit(int pass)
 	 */
 	 //ContextStack = NULL;
 #if FASTPASS
-	if (pass > PASS_1)
-	{
+    if ( pass > PASS_1 ) {
 		ContextRestoreState();
 	}
 #endif
@@ -345,8 +314,7 @@ void ContextFini(void)
 	/* release the items in the ContextFree heap.
 	 * there might also be some left in ContextStack...
 	 */
-	for (curr = ContextFree; curr; curr = next)
-	{
+    for ( curr = ContextFree; curr; curr = next ) {
 		next = curr->next;
 		LclFree(curr);
 	}

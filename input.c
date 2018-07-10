@@ -54,20 +54,17 @@ char   *commentbuffer;
 struct asym *FileCur; /* @FileCur symbol, created in SymInit() */
 struct asym *LineCur; /* @Line symbol, created in SymInit()    */
 
-enum src_item_type
-{
+enum src_item_type {
 	SIT_FILE,
 	SIT_MACRO,
 };
 
 /* item on src stack ( contains currently open source files & macros ) */
-struct src_item
-{
+struct src_item {
 	struct src_item     *next;
 	uint_8              type;       /* item type ( see enum src_item_type ) */
 	uint_16             srcfile;    /* index of file in ModuleInfo.g.FNames */
-	union
-	{
+    union {
 		void            *content;   /* generic */
 		FILE            *file;      /* if item is a file */
 		struct macro_instance *mi;  /* if item is a macro */
@@ -141,8 +138,7 @@ static char *GetFullPath(const char *name, char *buff, size_t max)
 		p = (char *)name;
 
 #if defined(__UNIX__)
-	if ((p[0] == '/' && p[1] == '/') && (name[0] != '/' || name[1] != '/'))
-	{
+    if( (p[0] == '/' && p[1] == '/') && (name[0] != '/' || name[1] != '/') ) {
 		/*
 		 * if the _fullpath result has a node number and
 		 * the user didn't specify one, strip the node number
@@ -174,14 +170,10 @@ char *GetExtPart(const char *fname)
 /***********************************/
 {
 	char *rc;
-	for (rc = NULL; *fname; fname++)
-	{
-		if (*fname == '.')
-		{
+    for( rc = NULL; *fname; fname++ ) {
+        if( *fname == '.' ) {
 			rc = (char *)fname;
-		}
-		else if (ISPC(*fname))
-		{
+        } else if( ISPC( *fname ) ) {
 			rc = NULL;
 		}
 	}
@@ -201,10 +193,8 @@ static unsigned AddFile(char const *fname)
 	unsigned    index;
 
 	DebugMsg1(("AddFile(%s) enter, curr index=%u\n", fname, ModuleInfo.g.cnt_fnames));
-	for (index = 0; index < ModuleInfo.g.cnt_fnames; index++)
-	{
-		if (filecmp(fname, ModuleInfo.g.FNames[index].fname) == 0)
-		{
+    for( index = 0; index < ModuleInfo.g.cnt_fnames; index++ ) {
+        if( filecmp( fname, ModuleInfo.g.FNames[index].fname ) == 0 ) {
 #ifdef DEBUG_OUT
 			if (Parse_Pass == PASS_1)
 				ModuleInfo.g.FNames[index].included++;
@@ -213,12 +203,10 @@ static unsigned AddFile(char const *fname)
 		}
 	}
 
-	if ((index % 64) == 0)
-	{
+    if ( ( index % 64 ) == 0 ) {
 		struct fname_item *newfn;
 		newfn = (struct fname_item *)MemAlloc((index + 64) * sizeof(struct fname_item));
-		if (ModuleInfo.g.FNames)
-		{
+        if ( ModuleInfo.g.FNames ) {
 			memcpy(newfn, ModuleInfo.g.FNames, index * sizeof(struct fname_item));
 			MemFree(ModuleInfo.g.FNames);
 		}
@@ -265,21 +253,18 @@ static void FreeFiles(void)
 
 #if FASTMEM==0
 	/* free the "free src_items"-heap */
-	while (SrcFree)
-	{
+    while ( SrcFree ) {
 		struct src_item *next;
 		next = SrcFree->next;
 		LclFree(SrcFree);
 		SrcFree = next;
 	};
-	for (i = 0; i < ModuleInfo.g.cnt_fnames; i++)
-	{
+    for ( i = 0; i < ModuleInfo.g.cnt_fnames; i++ ) {
 		LclFree(ModuleInfo.g.FNames[i].fname);
 		//LclFree( ModuleInfo.g.FNames[i].fullname );
 	}
 #endif
-	if (ModuleInfo.g.FNames)
-	{
+    if ( ModuleInfo.g.FNames ) {
 		MemFree(ModuleInfo.g.FNames);
 		ModuleInfo.g.FNames = NULL;
 	}
@@ -302,11 +287,9 @@ void ClearSrcStack(void)
 	DeleteLineQueue();
 
 	/* dont close the last item (which is the main src file) */
-	for (; src_stack->next; src_stack = nextfile)
-	{
+    for( ; src_stack->next ; src_stack = nextfile ) {
 		nextfile = src_stack->next;
-		if (src_stack->type == SIT_FILE)
-		{
+        if ( src_stack->type == SIT_FILE ) {
 			fclose(src_stack->file);
 		}
 		//LclFree( src_stack );
@@ -323,8 +306,7 @@ void UpdateLineNumber(struct asym *sym, void *p)
 {
 	struct src_item *curr;
 	for (curr = src_stack; curr; curr = curr->next)
-		if (curr->type == SIT_FILE)
-		{
+        if ( curr->type == SIT_FILE ) {
 			sym->value = curr->line_num;
 			break;
 		}
@@ -376,10 +358,8 @@ static char *my_fgets(char *buffer, int max, FILE *fp)
 	int         c;
 
 	c = getc(fp);
-	while (ptr < last)
-	{
-		switch (c)
-		{
+    while( ptr < last ) {
+        switch ( c ) {
 			case '\r':
 				break; /* don't store CR */
 			case '\n':
@@ -421,8 +401,7 @@ void AddFileSeq(unsigned file)
 	node->file = file;
 	if (FileSeq.head == NULL)
 		FileSeq.head = FileSeq.tail = node;
-	else
-	{
+    else {
 		((struct file_seq *)FileSeq.tail)->next = node;
 		FileSeq.tail = node;
 	}
@@ -437,12 +416,10 @@ struct src_item *PushSrcItem(char type, void *pv)
 {
 	struct src_item   *curr;
 
-	if (SrcFree)
-	{
+    if ( SrcFree ) {
 		curr = SrcFree;
 		SrcFree = curr->next;
-	}
-	else
+    } else
 		curr = LclAlloc(sizeof(struct src_item));
 	curr->next = src_stack;
 	src_stack = curr;
@@ -539,22 +516,15 @@ void print_source_nesting_structure(void)
 	if (src_stack == NULL || src_stack->next == NULL)
 		return;
 
-	for (curr = src_stack; curr->next; curr = curr->next)
-	{
-		if (curr->type == SIT_FILE)
-		{
+    for( curr = src_stack; curr->next ; curr = curr->next ) {
+        if( curr->type == SIT_FILE ) {
 			PrintNote(NOTE_INCLUDED_BY, tab, "", GetFName(curr->srcfile)->fname, curr->line_num);
 			tab++;
-		}
-		else
-		{
+        } else {
 			//char fname[_MAX_FNAME+_MAX_EXT];
-			if (*(curr->mi->macro->name) == NULLC)
-			{
+            if (*(curr->mi->macro->name) == NULLC ) {
 				PrintNote(NOTE_ITERATION_MACRO_CALLED_FROM, tab, "", "MacroLoop", curr->line_num, curr->mi->macro->value + 1);
-			}
-			else
-			{
+            } else {
 				PrintNote(NOTE_MACRO_CALLED_FROM, tab, "", curr->mi->macro->name, curr->line_num, GetFNamePart(GetFName(((struct dsym *)curr->mi->macro)->e.macroinfo->srcfile)->fname));
 			}
 			tab++;
@@ -582,16 +552,12 @@ static FILE *open_file_in_include_path(const char *name, char fullpath[])
 	namelen = strlen(name);
 
 	DebugMsg(("open_file_in_include_path(%s) enter\n", name));
-	for (; curr; curr = next)
-	{
+    for ( ; curr; curr = next ) {
 		next = strchr(curr, INC_PATH_DELIM);
-		if (next)
-		{
+        if ( next ) {
 			i = next - curr;
 			next++; /* skip path delimiter char (; or :) */
-		}
-		else
-		{
+        } else {
 			i = strlen(curr);
 		}
 
@@ -607,8 +573,7 @@ static FILE *open_file_in_include_path(const char *name, char fullpath[])
 #if !defined(__UNIX__)
 			&& fullpath[i-1] != '\\' && fullpath[i-1] != ':'
 #endif
-			)
-		{
+        ) {
 			fullpath[i] = DIR_SEPARATOR;
 			i++;
 		}
@@ -616,8 +581,7 @@ static FILE *open_file_in_include_path(const char *name, char fullpath[])
 
 		DebugMsg(("open_file_in_include_path: >%s<\n", fullpath));
 		file = fopen(fullpath, "rb");
-		if (file)
-		{
+        if( file ) {
 			break;
 		}
 	}
@@ -653,20 +617,16 @@ FILE *SearchFile(const char *path, bool queue)
 
 	isabs = ISABS(path);
 	//if ( dir[0] != '\\' && dir[0] != '/' ) {
-	if (!isabs)
-	{
-		for (fl = src_stack; fl; fl = fl->next)
-		{
-			if (fl->type == SIT_FILE)
-			{
+    if ( !isabs ) {
+        for ( fl = src_stack; fl ; fl = fl->next ) {
+            if ( fl->type == SIT_FILE ) {
 				const char  *fn2;
 				char        *src;
 				//_splitpath( GetFName( fl->srcfile )->fname, drive2, dir2, NULL, NULL );
 				//DebugMsg1(("SearchFile(): curr src=%s, split into drive=%s, dir=%s\n", GetFName( fl->srcfile)->fname, drive2, dir2 ));
 				src = GetFName(fl->srcfile)->fname;
 				fn2 = GetFNamePart(src);
-				if (fn2 != src)
-				{
+                if ( fn2 != src ) {
 					int i = fn2 - src;
 					/* v2.10: if there's a directory part, add it to the directory part of the current file.
 					 * fixme: check that both parts won't exceed FILENAME_MAX!
@@ -674,8 +634,7 @@ FILE *SearchFile(const char *path, bool queue)
 					 */
 					memcpy(fullpath, src, i);
 					strcpy(fullpath + i, path);
-					if (file = fopen(fullpath, "rb"))
-					{
+                    if ( file = fopen( fullpath, "rb" ) ) {
 						DebugMsg1(("SearchFile(): file found, fopen(%s)=%X\n", fullpath, file));
 						path = fullpath;
 						if (file)
@@ -690,8 +649,7 @@ FILE *SearchFile(const char *path, bool queue)
 			}
 		}
 	}
-	if (file == NULL)
-	{
+    if ( file == NULL ) {
 		fullpath[0] = NULLC;
 		file = fopen(path, "rb");
 		if (file)
@@ -701,10 +659,8 @@ FILE *SearchFile(const char *path, bool queue)
 		/* if the file isn't found yet and include paths have been set,
 		 * and NO absolute path is given, then search include dirs
 		 */
-		if (file == NULL && ModuleInfo.g.IncludePath != NULL && !isabs)
-		{
-			if (file = open_file_in_include_path(path, fullpath))
-			{
+        if( file == NULL && ModuleInfo.g.IncludePath != NULL && !isabs ) {
+            if ( file = open_file_in_include_path( path, fullpath ) ) {
 				DebugMsg1(("SearchFile(): open_file_in_include_path(%s)=%X [%s]\n", path, file, fullpath));
 				path = fullpath;
 			}
@@ -713,8 +669,7 @@ FILE *SearchFile(const char *path, bool queue)
 				DebugMsg1(("SearchFile(): open_file_in_include_path(%s)=NULL\n", path));
 #endif
 		}
-		if (file == NULL)
-		{
+        if( file == NULL ) {
 			EmitErr(CANNOT_OPEN_FILE, path, ErrnoStr());
 			return(NULL);
 		}
@@ -722,8 +677,7 @@ FILE *SearchFile(const char *path, bool queue)
 	/* is the file to be added to the file stack?
 	 * assembly files usually are, but binary files ( INCBIN ) aren't.
 	 */
-	if (queue)
-	{
+    if ( queue ) {
 		fl = PushSrcItem(SIT_FILE, file);
 		fl->srcfile = AddFile(path);
 		FileCur->string_ptr = GetFName(fl->srcfile)->fname;
@@ -747,10 +701,9 @@ char *GetTextLine(char *buffer)
 {
 	struct src_item *curr = src_stack;
 
-	if (curr->type == SIT_FILE)
-	{
-		if (my_fgets(buffer, MAX_LINE_LEN, curr->file))
-		{
+    if ( curr->type == SIT_FILE ) {
+
+        if( my_fgets( buffer, MAX_LINE_LEN, curr->file ) ) {
 			curr->line_num++;
 #ifdef DEBUG_OUT
 			if (Parse_Pass == PASS_1) cntlines++;
@@ -760,8 +713,7 @@ char *GetTextLine(char *buffer)
 		DebugCmd(ModuleInfo.g.FNames[curr->srcfile].lines = curr->line_num);
 		DebugMsg1(("GetTextLine: ***** EOF file %s (idx=%u) *****\n", GetFName(curr->srcfile)->fname, curr->srcfile));
 		/* don't close and remove main source file */
-		if (curr->next)
-		{
+        if ( curr->next ) {
 			fclose(curr->file);
 			src_stack = curr->next;
 			curr->next = SrcFree;
@@ -774,22 +726,16 @@ char *GetTextLine(char *buffer)
 		if (Options.line_numbers && Parse_Pass == PASS_1)
 			AddFileSeq(curr->srcfile);
 #endif
-	}
-	else
-	{
+    } else {
 		curr->mi->currline = (curr->mi->currline ? curr->mi->currline->next : curr->mi->startline);
-		if (curr->mi->currline)
-		{
+        if ( curr->mi->currline ) {
 			/* if line contains placeholders, replace them by current values */
-			if (curr->mi->currline->ph_count)
-			{
+            if ( curr->mi->currline->ph_count ) {
 				fill_placeholders(buffer,
 								  curr->mi->currline->line,
 								  curr->mi->parmcnt,
 								  curr->mi->localstart, curr->mi->parm_array);
-			}
-			else
-			{
+            } else {
 				strcpy(buffer, curr->mi->currline->line);
 			}
 			curr->line_num++;
@@ -823,13 +769,10 @@ void AddStringToIncludePath(const char *string)
 	len = strlen(string);
 	if (len == 0)
 		return;
-	if (ModuleInfo.g.IncludePath == NULL)
-	{
+    if( ModuleInfo.g.IncludePath == NULL ) {
 		ModuleInfo.g.IncludePath = MemAlloc(len + 1);
 		strcpy(ModuleInfo.g.IncludePath, string);
-	}
-	else
-	{
+    } else {
 		tmp = ModuleInfo.g.IncludePath;
 		ModuleInfo.g.IncludePath = MemAlloc(strlen(tmp) + sizeof(INC_PATH_DELIM_STR) +
 											len + 1);
@@ -889,13 +832,11 @@ struct asm_tok *PushInputStatus(struct input_status *oldstat)
 	oldstat->token_count = Token_Count;
 	oldstat->currsource = CurrSource;
 	/* if there's a comment, attach it to current source */
-	if (ModuleInfo.CurrComment)
-	{
+    if ( ModuleInfo.CurrComment ) {
 		int i = strlen(CurrSource);
 		oldstat->CurrComment = CurrSource + i;
 		strcpy(oldstat->CurrComment, ModuleInfo.CurrComment);
-	}
-	else
+    } else
 		oldstat->CurrComment = NULL;
 	oldstat->line_flags = ModuleInfo.line_flags; /* v2.08 */
 #ifdef __I86__
@@ -932,13 +873,11 @@ void PopInputStatus(struct input_status *newstat)
 	token_stringbuf = newstat->token_stringbuf;
 	Token_Count = newstat->token_count;
 	CurrSource = newstat->currsource;
-	if (newstat->CurrComment)
-	{
+    if ( newstat->CurrComment ) {
 		ModuleInfo.CurrComment = commentbuffer;
 		strcpy(ModuleInfo.CurrComment, newstat->CurrComment);
 		*newstat->CurrComment = NULLC;
-	}
-	else
+    } else
 		ModuleInfo.CurrComment = NULL;
 #ifdef __I86__
 	StringBufferEnd = newstat->stringbufferend;
@@ -1037,10 +976,8 @@ void InputFini(void)
 	/* for the main source file, lines usually isn't filled yet */
 	if (ModuleInfo.g.FNames)
 		ModuleInfo.g.FNames[ModuleInfo.srcfile].lines = src_stack->line_num;
-	for (i = 0; i < ModuleInfo.g.cnt_fnames; i++)
-	{
-		if (Options.log_all_files)
-		{
+    for( i = 0; i < ModuleInfo.g.cnt_fnames; i++ ) {
+        if ( Options.log_all_files ) {
 			if (ModuleInfo.g.FNames[i].included > 1)
 				printf("%2u: %5u *%2u %s\n", i+1, ModuleInfo.g.FNames[i].lines, ModuleInfo.g.FNames[i].included, ModuleInfo.g.FNames[i].fname);
 			else
@@ -1055,8 +992,7 @@ void InputFini(void)
 	/* free items in ModuleInfo.g.FNames ( and FreeFile, if FASTMEM==0 ) */
 	FreeFiles();
 #ifdef DEBUG_OUT
-	if (Options.quiet == FALSE)
-	{
+    if ( Options.quiet == FALSE ) {
 		printf("lines read(files)/processed in pass one: %" I32_SPEC "u / %" I32_SPEC "u\n", cntflines, cntlines);
 		printf("invokations: PreprocessLine=%" I32_SPEC "u/%" I32_SPEC "u/%" I32_SPEC "u, Tokenize=%" I32_SPEC "u/%" I32_SPEC "u\n", cntppl0, cntppl1, cntppl2, cnttok0, cnttok1);
 	}

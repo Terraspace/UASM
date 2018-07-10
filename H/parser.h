@@ -36,8 +36,7 @@
 #include "token.h"
 
 /* define tokens for SpecialTable (registers, operators, ... ) */
-enum special_token
-{
+enum special_token {
 	T_NULL,
 #define  res(token, string, type, value, bytval, flags, cpu, sflags) T_ ## token ,
 #include "special.h"
@@ -51,8 +50,7 @@ enum special_token
 
 /* define tokens for instruction table (InstrTable[] in reswords.c) */
 
-enum instr_token
-{
+enum instr_token {
 	INS_FIRST_1 = SPECIAL_LAST - 1, /* to ensure tokens are unique */
 #define  ins(token, string, opcls, byte1_info,op_dir,rm_info,opcode,rm_byte,cpu,prefix ) T_ ## token ,
 #define insx(token, string, opcls, byte1_info,op_dir,rm_info,opcode,rm_byte,cpu,prefix,flgs ) T_ ## token ,
@@ -74,14 +72,12 @@ enum instr_token
 /*---------------------------------------------------------------------------*/
 
 /* queue of symbols */
-struct symbol_queue
-{
+struct symbol_queue {
 	struct dsym *head;
 	struct dsym *tail;
 };
 
-enum queue_type
-{
+enum queue_type {
 	TAB_UNDEF = 0,
 	TAB_EXT,      /* externals (EXTERNDEF, EXTERN, COMM, PROTO ) */
 	TAB_SEG,      /* SEGMENT items */
@@ -101,16 +97,14 @@ extern struct symbol_queue SymTables[];
  010( no_WDS  ) -> has rm_byte, but w-bit, d-bit, s-bit of opcode are absent
  011( R_in_OP ) -> no rm_byte, reg field (if any) is included in opcode
  */
-enum rm_info
-{
+enum rm_info {
 	no_RM = 0x1,
 	no_WDS = 0x2,
 	R_in_OP = 0x3,
 };
 
 /* values for <allowed_prefix> (3 bits) */
-enum allowed_prefix
-{
+enum allowed_prefix {
 	// AP_NO_PREFIX= 0x00, /* value 0 means "normal" */
 	AP_LOCK = 0x01,
 	AP_REP = 0x02,
@@ -124,8 +118,7 @@ enum allowed_prefix
  * it should match order of T_REGISTER - T_RES_ID in token.h
  */
 
-enum special_type
-{
+enum special_type {
 	RWT_REG = 2,  /* same value as for T_REG */
 	RWT_DIRECTIVE,
 	RWT_UNARY_OP,
@@ -135,8 +128,7 @@ enum special_type
 };
 
 // values for sflags if register
-enum op1_flags
-{
+enum op1_flags {
 	SFR_SIZMSK = 0x1F, /* size in bits 0-4 */
 	SFR_IREG = 0x20,
 	SFR_SSBASED = 0x40, /* v2.11: added */
@@ -176,8 +168,7 @@ enum op1_flags
 #define W1            0x8000
  /* RXBR00MM,  WVVVV1PP,  ZLLBVAAA, MDREGR/M */
 #if AMD64_SUPPORT
-enum rex_bits
-{
+enum rex_bits {
 	REX_B = 1,  /* regno 0-7 <-> 8-15 of ModR/M or SIB base */
 	REX_X = 2,  /* regno 0-7 <-> 8-15 of SIB index */
 	REX_R = 4,  /* regno 0-7 <-> 8-15 of ModR/M REG */
@@ -189,8 +180,7 @@ enum rex_bits
  * index into this array is member opclsidx in instr_item.
  * v2.06: data removed from struct instr_item.
  */
-struct opnd_class
-{
+struct opnd_class {
 	enum operand_type opnd_type[2];  /* operands 1 + 2 */
 	unsigned char opnd_type_3rd;     /* operand 3 */
 };
@@ -221,8 +211,7 @@ struct opnd_class
  //    unsigned char   rm_byte;    /* mod_rm_byte */
  //};
  /* Nidud sugestion for struct instr_item  */
-struct instr_item
-{
+struct instr_item {
 	unsigned short	opclsidx;	      /* v2.06: index for opnd_clstab */
 	unsigned char	byte1_info;	      /* flags for 1st byte */
 #if 1
@@ -245,8 +234,7 @@ struct instr_item
 /* special_item is the structure used to store directives and
  * other reserved words in SpecialTable (special.h).
  */
-struct special_item
-{
+struct special_item {
 	unsigned     value;
 	unsigned     sflags;
 #ifdef __WATCOMC__
@@ -269,8 +257,7 @@ struct special_item
 #define GetCpuSp( x )    SpecialTable[x].cpu
 
 /* values for <value> if type == RWT_DIRECTIVE */
-enum directive_flags
-{
+enum directive_flags {
 	DF_CEXPR = 0x01, /* avoid '<' being used as string delimiter (.IF, ...) */
 	DF_STRPARM = 0x02, /* directive expects string param(s) (IFB, IFDIF, ...) */
 						/* enclose strings in <> in macro expansion step */
@@ -285,21 +272,17 @@ enum directive_flags
 
 /* values for <bytval> if type == RWT_DIRECTIVE */
 #define  res(token, function) DRT_ ## token ,
-enum directive_type
-{
+enum directive_type {
 #include "dirtype.h"
 };
 #undef  res
 
 #define MAX_OPND 3
 
-struct opnd_item
-{
+struct opnd_item {
 	enum operand_type type;
-	union
-	{
-		struct
-		{
+    union {
+        struct {
 			int_32    data32l;
 			int_32    data32h; /* needed for OP_I48 and OP_I64 */
 		};
@@ -308,8 +291,7 @@ struct opnd_item
 	struct fixup      *InsFixup;
 };
 /* compressed tuple types upper bits 4,3,2,1,0 of resw_strings[].prefix : tuple & 0x1F  */
-enum ttypes
-{
+enum ttypes {
 	FV = 1,
 	HV = 2,
 	FVM = 3,
@@ -328,8 +310,7 @@ enum ttypes
 	DUP = 20
 };
 /* compressed memory size bits 7,6,5 of resw_strings[].prefix: first 5 >> xSIZE and than 1 << xSIZE  */
-enum mtypes
-{
+enum mtypes {
 	BSIZE = 0x00, //  1
 	WSIZE = 0x20, //  2
 	DSIZE = 0x40, //  4
@@ -338,8 +319,7 @@ enum mtypes
 	YSIZE = 0xA0, // 32
 	ZSIZE = 0xC0  // 64
 };
-enum indextypes
-{
+enum indextypes {
 	IXSZ = 0x0000,
 	IYSZ = 0x0100,
 	IZSZ = 0x0200,
@@ -347,10 +327,8 @@ enum indextypes
 /* code_info describes the current instruction. It's the communication
  * structure between parser and code generator.
  */
-struct code_info
-{
-	struct
-	{
+struct code_info {
+    struct {
 		enum instr_token ins;          /* prefix before instruction, e.g. lock, rep, repnz */
 		enum assume_segreg RegOverride;/* segment override (0=ES,1=CS,2=SS,3=DS,...) */
 #if AMD64_SUPPORT
@@ -391,11 +369,9 @@ struct code_info
 	bool   isptr;
 	unsigned char   evex_sae;  /* EVEX Static Rounding Mode */
 #endif
-	union
-	{
+    union {
 		unsigned char flags;
-		struct
-		{
+        struct {
 			unsigned char   iswide:1;       /* 0=byte, 1=word/dword/qword */
 			unsigned char   isdirect:1;     /* 1=direct addressing mode */
 			unsigned char   isfar:1;        /* CALL/JMP far */

@@ -53,16 +53,13 @@ OPTFUNC(SetEvex)
 
 	if (EvalOperand(&i, tokenarray, Token_Count, &opndx, 0) == ERROR)
 		return(ERROR);
-	if (opndx.kind == EXPR_CONST)
-	{
-		if (opndx.llvalue > 1)
-		{
+	if (opndx.kind == EXPR_CONST) {
+		if (opndx.llvalue > 1) {
 			return(EmitConstError(&opndx));
 		}
 		evex = opndx.llvalue;
 	}
-	else
-	{
+	else {
 		return(EmitError(CONSTANT_EXPECTED));
 	}
 	*pi = i;
@@ -97,16 +94,13 @@ OPTFUNC(SetZeroLocals)
 
 	if (EvalOperand(&i, tokenarray, Token_Count, &opndx, 0) == ERROR)
 		return(ERROR);
-	if (opndx.kind == EXPR_CONST)
-	{
-		if (opndx.llvalue > 1)
-		{
+	if (opndx.kind == EXPR_CONST) {
+		if (opndx.llvalue > 1) {
 			return(EmitConstError(&opndx));
 		}
 		ZEROLOCALS = opndx.llvalue;
 	}
-	else
-	{
+	else {
 		return(EmitError(CONSTANT_EXPECTED));
 	}
 	*pi = i;
@@ -180,10 +174,8 @@ OPTFUNC(SetArch)
 	int i = *pi;
 	struct asym *archSym = SymFind("@Arch");
 
-	if (tokenarray[i].token == T_ID)
-	{
-		if (0 == _stricmp(tokenarray[i].string_ptr, "SSE"))
-		{
+	if (tokenarray[i].token == T_ID) {
+		if (0 == _stricmp(tokenarray[i].string_ptr, "SSE")) {
 			MODULEARCH = ARCH_SSE;
 			ModuleInfo.arch = ARCH_SSE;
 			strcpy(MOVE_ALIGNED_FLOAT, "movaps");
@@ -196,8 +188,7 @@ OPTFUNC(SetArch)
 			strcpy(MOVE_SIMD_QWORD, "movq");
 			archSym->value = ARCH_SSE;
 		}
-		else if (0 == _stricmp(tokenarray[i].string_ptr, "AVX"))
-		{
+		else if (0 == _stricmp(tokenarray[i].string_ptr, "AVX")) {
 			MODULEARCH = ARCH_AVX;
 			ModuleInfo.arch = ARCH_AVX;
 			strcpy(MOVE_ALIGNED_FLOAT, "vmovaps");
@@ -210,15 +201,13 @@ OPTFUNC(SetArch)
 			strcpy(MOVE_SIMD_QWORD, "vmovq");
 			archSym->value = ARCH_AVX;
 		}
-		else
-		{
+		else {
 			return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 		}
 		DebugMsg1(("SetArch(%s) ok\n", tokenarray[i].string_ptr));
 		i++;
 	}
-	else
-	{
+	else {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 	}
 	*pi = i;
@@ -230,25 +219,20 @@ OPTFUNC(SetLiterals)
 /*******************/
 {
 	int i = *pi;
-	if (tokenarray[i].token == T_ID)
-	{
-		if (0 == _stricmp(tokenarray[i].string_ptr, "ON"))
-		{
+	if (tokenarray[i].token == T_ID) {
+		if (0 == _stricmp(tokenarray[i].string_ptr, "ON")) {
 			Options.literal_strings = TRUE;
 		}
-		else if (0 == _stricmp(tokenarray[i].string_ptr, "OFF"))
-		{
+		else if (0 == _stricmp(tokenarray[i].string_ptr, "OFF")) {
 			Options.literal_strings = FALSE;
 		}
-		else
-		{
+		else {
 			return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 		}
 		DebugMsg1(("SetLiterals(%s) ok\n", tokenarray[i].string_ptr));
 		i++;
 	}
-	else
-	{
+	else {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 	}
 	*pi = i;
@@ -260,25 +244,20 @@ OPTFUNC(SetVTable)
 /*******************/
 {
 	int i = *pi;
-	if (tokenarray[i].token == T_ID)
-	{
-		if (0 == _stricmp(tokenarray[i].string_ptr, "ON"))
-		{
+	if (tokenarray[i].token == T_ID) {
+		if (0 == _stricmp(tokenarray[i].string_ptr, "ON")) {
 			Options.vtable = TRUE;
 		}
-		else if (0 == _stricmp(tokenarray[i].string_ptr, "OFF"))
-		{
+		else if (0 == _stricmp(tokenarray[i].string_ptr, "OFF")) {
 			Options.vtable = FALSE;
 		}
-		else
-		{
+		else {
 			return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 		}
 		DebugMsg1(("SetVTable(%s) ok\n", tokenarray[i].string_ptr));
 		i++;
 	}
-	else
-	{
+	else {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 	}
 	*pi = i;
@@ -290,25 +269,20 @@ OPTFUNC(SetHLCall)
 /*******************/
 {
 	int i = *pi;
-	if (tokenarray[i].token == T_ID)
-	{
-		if (0 == _stricmp(tokenarray[i].string_ptr, "ON"))
-		{
+	if (tokenarray[i].token == T_ID) {
+		if (0 == _stricmp(tokenarray[i].string_ptr, "ON")) {
 			Options.hlcall = TRUE;
 		}
-		else if (0 == _stricmp(tokenarray[i].string_ptr, "OFF"))
-		{
+		else if (0 == _stricmp(tokenarray[i].string_ptr, "OFF")) {
 			Options.hlcall = FALSE;
 		}
-		else
-		{
+		else {
 			return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 		}
 		DebugMsg1(("SetHLCall(%s) ok\n", tokenarray[i].string_ptr));
 		i++;
 	}
-	else
-	{
+	else {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 	}
 	*pi = i;
@@ -338,25 +312,17 @@ OPTFUNC(SetCaseMap)
 /*******************/
 {
 	int i = *pi;
-	if (tokenarray[i].token == T_ID)
-	{
-		if (0 == _stricmp(tokenarray[i].string_ptr, "NONE"))
-		{
+    if ( tokenarray[i].token == T_ID ) {
+        if ( 0 == _stricmp( tokenarray[i].string_ptr, "NONE" ) ) {
 			ModuleInfo.case_sensitive = TRUE;        /* -Cx */
 			ModuleInfo.convert_uppercase = FALSE;
-		}
-		else if (0 == _stricmp(tokenarray[i].string_ptr, "NOTPUBLIC"))
-		{
+        } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "NOTPUBLIC" ) ) {
 			ModuleInfo.case_sensitive = FALSE;       /* -Cp */
 			ModuleInfo.convert_uppercase = FALSE;
-		}
-		else if (0 == _stricmp(tokenarray[i].string_ptr, "ALL"))
-		{
+        } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "ALL" ) ) {
 			ModuleInfo.case_sensitive = FALSE;       /* -Cu */
 			ModuleInfo.convert_uppercase = TRUE;
-		}
-		else
-		{
+        } else {
 			return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 		}
 		DebugMsg1(("SetCaseMap(%s) ok\n", tokenarray[i].string_ptr));
@@ -367,9 +333,7 @@ OPTFUNC(SetCaseMap)
 		{
 			CreateMacroLibCases();
 		}
-	}
-	else
-	{
+    } else {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 	}
 	*pi = i;
@@ -519,25 +483,20 @@ OPTFUNC(SetNoKeyword)
 	unsigned index;
 	char *p;
 
-	if (Parse_Pass != PASS_1)
-	{
+    if( Parse_Pass != PASS_1 ) {
 		SkipOption(pi, tokenarray);
 		return(NOT_ERROR);
 	}
-	if (tokenarray[i].token != T_STRING || tokenarray[i].string_delim != '<')
-	{
+    if ( tokenarray[i].token != T_STRING || tokenarray[i].string_delim != '<' ) {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 	}
-	for (p = tokenarray[i].string_ptr; *p; )
-	{
+    for ( p = tokenarray[i].string_ptr; *p; ) {
 		while (isspace(*p)) p++;
-		if (*p)
-		{
+        if ( *p ) {
 			char *p2 = p;
 			unsigned char cnt;
 			//struct instr_item *instruct;
-			for (; *p; p++)
-			{
+            for ( ;*p; p++ ) {
 				if (isspace(*p) || *p == ',')
 					break;
 			}
@@ -548,10 +507,8 @@ OPTFUNC(SetNoKeyword)
 			index = FindResWord(p2, cnt);
 			if (index != 0)
 				DisableKeyword(index);
-			else
-			{
-				if (IsKeywordDisabled(p2, cnt))
-				{
+            else {
+                if ( IsKeywordDisabled( p2, cnt ) ) {
 					return(EmitError(RESERVED_WORD_EXPECTED));
 				}
 			}
@@ -573,10 +530,8 @@ OPTFUNC(SetLanguage)
 	//lang_type langtype;
 	//int language = ERROR;
 
-	if (tokenarray[i].token == T_RES_ID)
-	{
-		if (GetLangType(&i, tokenarray, &ModuleInfo.langtype) == NOT_ERROR)
-		{
+    if ( tokenarray[i].token == T_RES_ID ) {
+        if ( GetLangType( &i, tokenarray, &ModuleInfo.langtype ) == NOT_ERROR ) {
 			/* update @Interface assembly time variable */
 			if (ModuleInfo.model != MODEL_NONE && sym_Interface)
 				sym_Interface->value = ModuleInfo.langtype;
@@ -596,13 +551,10 @@ OPTFUNC(SetSetIF2)
 {
 	int i = *pi;
 
-	if (0 == _stricmp(tokenarray[i].string_ptr, "TRUE"))
-	{
+    if ( 0 == _stricmp( tokenarray[i].string_ptr, "TRUE" ) ) {
 		ModuleInfo.setif2 = TRUE;
 		i++;
-	}
-	else if (0 == _stricmp(tokenarray[i].string_ptr, "FALSE"))
-	{
+    } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "FALSE" ) ) {
 		ModuleInfo.setif2 = FALSE;
 		i++;
 	}
@@ -632,12 +584,10 @@ OPTFUNC(SetPrologue)
 {
 	int i = *pi;
 
-	if (tokenarray[i].token != T_ID)
-	{
+    if ( tokenarray[i].token != T_ID ) {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 	}
-	if (ModuleInfo.proc_prologue)
-	{
+    if ( ModuleInfo.proc_prologue ) {
 		LclFree(ModuleInfo.proc_prologue);
 		ModuleInfo.proc_prologue = NULL;
 	}
@@ -671,26 +621,19 @@ OPTFUNC(SetEpilogue)
 {
 	int i = *pi;
 
-	if (tokenarray[i].token != T_ID)
-	{
+    if ( tokenarray[i].token != T_ID ) {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 	}
-	if (ModuleInfo.proc_epilogue)
-	{
+    if ( ModuleInfo.proc_epilogue ) {
 		LclFree(ModuleInfo.proc_epilogue);
 		ModuleInfo.proc_epilogue = NULL;
 	}
 
-	if (0 == _stricmp(tokenarray[i].string_ptr, "NONE"))
-	{
+    if ( 0 == _stricmp( tokenarray[i].string_ptr, "NONE" ) ) {
 		ModuleInfo.epiloguemode = PEM_NONE;
-	}
-	else if (0 == _stricmp(tokenarray[i].string_ptr, "EPILOGUEDEF"))
-	{
+    } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "EPILOGUEDEF" ) ) {
 		ModuleInfo.epiloguemode = PEM_DEFAULT;
-	}
-	else
-	{
+    } else {
 		ModuleInfo.epiloguemode = PEM_MACRO;
 		ModuleInfo.proc_epilogue = (char *)LclAlloc(strlen(tokenarray[i].string_ptr) + 1);
 		strcpy(ModuleInfo.proc_epilogue, tokenarray[i].string_ptr);
@@ -710,20 +653,13 @@ OPTFUNC(SetOffset)
 {
 	int i = *pi;
 
-	if (0 == _stricmp(tokenarray[i].string_ptr, "GROUP"))
-	{
+    if ( 0 == _stricmp( tokenarray[i].string_ptr, "GROUP" ) ) {
 		ModuleInfo.offsettype = OT_GROUP;
-	}
-	else if (0 == _stricmp(tokenarray[i].string_ptr, "FLAT"))
-	{
+    } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "FLAT" ) ) {
 		ModuleInfo.offsettype = OT_FLAT;
-	}
-	else if (0 == _stricmp(tokenarray[i].string_ptr, "SEGMENT"))
-	{
+    } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "SEGMENT" ) ) {
 		ModuleInfo.offsettype = OT_SEGMENT;
-	}
-	else
-	{
+    } else {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
 	}
 	i++;
@@ -738,29 +674,23 @@ OPTFUNC(SetProc)
 {
 	int i = *pi;
 
-	switch (tokenarray[i].token)
-	{
+    switch ( tokenarray[i].token ) {
 		case T_ID:
-			if (0 == _stricmp(tokenarray[i].string_ptr, "PRIVATE"))
-			{
+        if ( 0 == _stricmp( tokenarray[i].string_ptr, "PRIVATE" ) ) {
 				ModuleInfo.procs_private = TRUE;
 				ModuleInfo.procs_export = FALSE;
 				i++;
-			}
-			else if (0 == _stricmp(tokenarray[i].string_ptr, "EXPORT"))
-			{
+        } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "EXPORT" ) ) {
 				ModuleInfo.procs_private = FALSE;
 				ModuleInfo.procs_export = TRUE;
 				i++;
 			}
-			else if (0 == _stricmp(tokenarray[i].string_ptr, "DEFAULT"))
-			{
+		else if (0 == _stricmp(tokenarray[i].string_ptr, "DEFAULT")) {
 				ModuleInfo.prologuemode = PEM_DEFAULT;
 				ModuleInfo.epiloguemode = PEM_DEFAULT;
 				i++;
 			}
-			else if (0 == _stricmp(tokenarray[i].string_ptr, "NONE"))
-			{
+		else if (0 == _stricmp(tokenarray[i].string_ptr, "NONE")) {
 				ModuleInfo.prologuemode = PEM_NONE;
 				ModuleInfo.epiloguemode = PEM_NONE;
 				i++;
@@ -795,8 +725,7 @@ OPTFUNC(SetProc)
 			}
 			break;
 		case T_DIRECTIVE: /* word PUBLIC is a directive */
-			if (tokenarray[i].tokval == T_PUBLIC)
-			{
+        if ( tokenarray[i].tokval == T_PUBLIC ) {
 				ModuleInfo.procs_private = FALSE;
 				ModuleInfo.procs_export = FALSE;
 				i++;
@@ -817,31 +746,22 @@ OPTFUNC(SetSegment)
 {
 	int i = *pi;
 
-	if (tokenarray[i].token == T_RES_ID && tokenarray[i].tokval == T_FLAT)
-	{
+    if ( tokenarray[i].token == T_RES_ID && tokenarray[i].tokval == T_FLAT ) {
 #if AMD64_SUPPORT
 		if ((ModuleInfo.curr_cpu & P_CPU_MASK) >= P_64)
 			ModuleInfo.defOfssize = USE64;
 		else
 #endif
 			ModuleInfo.defOfssize = USE32;
-	}
-	else if (tokenarray[i].token == T_ID && _stricmp(tokenarray[i].string_ptr, "USE16") == 0)
-	{
+    } else if ( tokenarray[i].token == T_ID && _stricmp( tokenarray[i].string_ptr, "USE16" ) == 0) {
 		ModuleInfo.defOfssize = USE16;
-	}
-	else if (tokenarray[i].token == T_ID && _stricmp(tokenarray[i].string_ptr, "USE32") == 0)
-	{
+    } else if ( tokenarray[i].token == T_ID && _stricmp( tokenarray[i].string_ptr, "USE32" ) == 0) {
 		ModuleInfo.defOfssize = USE32;
 #if AMD64_SUPPORT
-	}
-	else if (tokenarray[i].token == T_ID && _stricmp(tokenarray[i].string_ptr, "USE64") == 0)
-	{
+    } else if ( tokenarray[i].token == T_ID && _stricmp( tokenarray[i].string_ptr, "USE64" ) == 0) {
 		ModuleInfo.defOfssize = USE64;
 #endif
-	}
-	else
-	{
+    } else {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
 	}
 	i++;
@@ -861,17 +781,14 @@ OPTFUNC(SetFieldAlign)
 
 	if (EvalOperand(&i, tokenarray, Token_Count, &opndx, EXPF_NOUNDEF) == ERROR)
 		return(ERROR);
-	if (opndx.kind != EXPR_CONST)
-	{
+    if ( opndx.kind != EXPR_CONST ) {
 		return(EmitError(CONSTANT_EXPECTED));
 	}
-	if (opndx.uvalue > MAX_STRUCT_ALIGN)
-	{
+    if( opndx.uvalue > MAX_STRUCT_ALIGN ) {
 		return(EmitError(STRUCT_ALIGN_TOO_HIGH));
 	}
 	for (temp = 1, temp2 = 0; temp < opndx.uvalue; temp <<= 1, temp2++);
-	if (temp != opndx.uvalue)
-	{
+    if( temp != opndx.uvalue ) {
 		return(EmitErr(POWER_OF_2, opndx.value));
 	}
 	ModuleInfo.fieldalign = temp2;
@@ -892,17 +809,14 @@ OPTFUNC(SetProcAlign)
 
 	if (EvalOperand(&i, tokenarray, Token_Count, &opndx, EXPF_NOUNDEF) == ERROR)
 		return(ERROR);
-	if (opndx.kind != EXPR_CONST)
-	{
+    if ( opndx.kind != EXPR_CONST ) {
 		return(EmitError(CONSTANT_EXPECTED));
 	}
-	if (opndx.value > MAX_STRUCT_ALIGN)
-	{
+    if( opndx.value > MAX_STRUCT_ALIGN ) {
 		EmitError(STRUCT_ALIGN_TOO_HIGH);
 	}
 	for (temp = 1, temp2 = 0; temp < opndx.value; temp <<= 1, temp2++);
-	if (temp != opndx.value)
-	{
+    if( temp != opndx.value ) {
 		return(EmitErr(POWER_OF_2, opndx.value));
 	}
 	ModuleInfo.procalign = temp2;
@@ -920,8 +834,7 @@ OPTFUNC(SetMZ)
 	uint_16 *parms;
 	struct expr opndx;
 
-	for (j = 0, parms = (uint_16 *)&ModuleInfo.mz_data; j < 4; j++)
-	{
+    for ( j = 0, parms = (uint_16 *)&ModuleInfo.mz_data ; j < 4; j++ ) {
 		int k;
 		for (k = i; tokenarray[k].token != T_FINAL; k++)
 			if (tokenarray[k].token == T_COMMA ||
@@ -930,34 +843,26 @@ OPTFUNC(SetMZ)
 				break;
 		if (EvalOperand(&i, tokenarray, k, &opndx, 0) == ERROR)
 			return(ERROR);
-		if (opndx.kind == EXPR_EMPTY)
-		{
-		}
-		else if (opndx.kind == EXPR_CONST)
-		{
-			if (opndx.value64 > 0xFFFF)
-			{
+        if ( opndx.kind == EXPR_EMPTY ) {
+        } else if ( opndx.kind == EXPR_CONST ) {
+            if ( opndx.value64 > 0xFFFF ) {
 				return(EmitConstError(&opndx));
 			}
 			if (ModuleInfo.sub_format == SFORMAT_MZ)
 				*(parms + j) = opndx.value;
-		}
-		else
-		{
+        } else {
 			return(EmitError(CONSTANT_EXPECTED));
 		}
 		if (tokenarray[i].token == T_COLON)
 			i++;
-		else if (tokenarray[i].token == T_DBL_COLON)
-		{
+        else if ( tokenarray[i].token == T_DBL_COLON ) {
 			i++;
 			j++;
 		}
 	}
 
 	/* ensure data integrity of the params */
-	if (ModuleInfo.sub_format == SFORMAT_MZ)
-	{
+    if ( ModuleInfo.sub_format == SFORMAT_MZ ) {
 		if (ModuleInfo.mz_data.ofs_fixups < 0x1E)
 			ModuleInfo.mz_data.ofs_fixups = 0x1E;
 
@@ -982,13 +887,10 @@ OPTFUNC(SetFrame)
 {
 	int i = *pi;
 
-	if (0 == _stricmp(tokenarray[i].string_ptr, "AUTO"))
-	{
+    if ( 0 == _stricmp( tokenarray[i].string_ptr, "AUTO" ) ) {
 		ModuleInfo.frame_auto = 1;
 		i++;
-	}
-	else if (0 == _stricmp(tokenarray[i].string_ptr, "NOAUTO"))
-	{
+    } else if ( 0 == _stricmp( tokenarray[i].string_ptr, "NOAUTO" ) ) {
 		ModuleInfo.frame_auto = 0;
 		i++;
 	}
@@ -1001,13 +903,11 @@ OPTFUNC(SetSwitchStile)
 {
 	int i = *pi;
 
-	if (0 == _stricmp(tokenarray[i].string_ptr, "CSTYLE"))
-	{
+  if (0 == _stricmp(tokenarray[i].string_ptr, "CSTYLE")) {
 		ModuleInfo.switch_style = 1;
 		i++;
 	}
-	else if (0 == _stricmp(tokenarray[i].string_ptr, "ASMSTYLE"))
-	{
+  else if (0 == _stricmp(tokenarray[i].string_ptr, "ASMSTYLE")) {
 		ModuleInfo.switch_style = 0;
 		i++;
 	}
@@ -1023,16 +923,13 @@ OPTFUNC(SetSwitchSize)
 
 	if (EvalOperand(&i, tokenarray, Token_Count, &opndx, 0) == ERROR)
 		return(ERROR);
-	if (opndx.kind == EXPR_CONST)
-	{
-		if (opndx.llvalue > 0x8000)
-		{
+	if (opndx.kind == EXPR_CONST) {
+		if (opndx.llvalue > 0x8000) {
 			return(EmitConstError(&opndx));
 		}
 		ModuleInfo.switch_size = opndx.llvalue;
 	}
-	else
-	{
+	else {
 		return(EmitError(CONSTANT_EXPECTED));
 	}
 	*pi = i;
@@ -1048,17 +945,14 @@ OPTFUNC(SetElf)
 
 	if (EvalOperand(&i, tokenarray, Token_Count, &opndx, 0) == ERROR)
 		return(ERROR);
-	if (opndx.kind == EXPR_CONST)
-	{
-		if (opndx.llvalue > 0xFF)
-		{
+  if (opndx.kind == EXPR_CONST) {
+    if (opndx.llvalue > 0xFF) {
 			return(EmitConstError(&opndx));
 		}
 		if (Options.output_format == OFORMAT_ELF)
 			ModuleInfo.elf_osabi = opndx.value;
 	}
-	else
-	{
+  else {
 		return(EmitError(CONSTANT_EXPECTED));
 	}
 	*pi = i;
@@ -1080,36 +974,31 @@ OPTFUNC(SetRenameKey)
 
 #if 0 /* v2.11: allow temporary renaming of keywords */
 	/* do nothing if pass > 1 */
-	if (Parse_Pass != PASS_1)
-	{
+  if( Parse_Pass != PASS_1 ) {
 		SkipOption(pi, tokenarray);
 		return(NOT_ERROR);
 	}
 #endif
-	if (tokenarray[i].token != T_STRING || tokenarray[i].string_delim != '<')
-	{
+  if (tokenarray[i].token != T_STRING || tokenarray[i].string_delim != '<')  {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 	}
 	oldname = tokenarray[i].string_ptr;
 	i++;
 	/* v2.06: syntax changed */
 	//if ( tokenarray[i].token != T_COMMA ) {
-	if (tokenarray[i].token != T_DIRECTIVE || tokenarray[i].dirtype != DRT_EQUALSGN)
-	{
+  if (tokenarray[i].token != T_DIRECTIVE || tokenarray[i].dirtype != DRT_EQUALSGN) {
 		//EmitError( EXPECTING_COMMA );
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 	}
 	i++;
-	if (tokenarray[i].token != T_ID)
-	{
+  if (tokenarray[i].token != T_ID)  {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 	}
 
 	/* todo: if MAX_ID_LEN can be > 255, then check size,
 	 * since a reserved word's size must be <= 255 */
 	index = FindResWord(oldname, strlen(oldname));
-	if (index == 0)
-	{
+  if (index == 0) {
 		return(EmitError(RESERVED_WORD_EXPECTED));
 	}
 	RenameKeyword(index, tokenarray[i].string_ptr, strlen(tokenarray[i].string_ptr));
@@ -1128,17 +1017,14 @@ OPTFUNC(SetWin64)
 
 	/* if -win64 isn't set, skip the option */
 	/* v2.09: skip option if Ofssize != USE64 */
-	if (ModuleInfo.defOfssize != USE64)
-	{
+  if (ModuleInfo.defOfssize != USE64) {
 		SkipOption(pi, tokenarray);
 		return(NOT_ERROR);
 	}
 	if (EvalOperand(&i, tokenarray, Token_Count, &opndx, 0) == ERROR)
 		return(ERROR);
-	if (opndx.kind == EXPR_CONST)
-	{
-		if (opndx.llvalue & (~W64F_ALL))
-		{
+  if (opndx.kind == EXPR_CONST) {
+    if (opndx.llvalue & (~W64F_ALL)) {
 			return(EmitConstError(&opndx));
 		}
 
@@ -1225,8 +1111,7 @@ static struct dll_desc *IncludeDll(const char *name)
 	if (*name == NULLC)
 		return(NULL);
 
-	for (q = &ModuleInfo.g.DllQueue; *q; q = &(*q)->next)
-	{
+    for ( q = &ModuleInfo.g.DllQueue; *q ; q = &(*q)->next ) {
 		if (_stricmp((*q)->name, name) == 0)
 			return(*q);
 	}
@@ -1257,13 +1142,10 @@ OPTFUNC(SetDllImport)
 	//}
 
 	if (tokenarray[i].token == T_ID &&
-		(_stricmp(tokenarray[i].string_ptr, "NONE") == 0))
-	{
+        ( _stricmp( tokenarray[i].string_ptr, "NONE" ) == 0 ) ) {
 		ModuleInfo.CurrDll = NULL;
 		i++;
-	}
-	else if (tokenarray[i].token == T_STRING && tokenarray[i].string_delim == '<')
-	{
+    } else if ( tokenarray[i].token == T_STRING && tokenarray[i].string_delim == '<' ) {
 		if (Parse_Pass == PASS_1)
 			ModuleInfo.CurrDll = IncludeDll(tokenarray[i].string_ptr);
 		i++;
@@ -1282,12 +1164,9 @@ OPTFUNC(SetCodeView)
 
 	if (EvalOperand(&i, tokenarray, Token_Count, &opnd, 0) == ERROR)
 		return(ERROR);
-	if (opnd.kind == EXPR_CONST)
-	{
+    if ( opnd.kind == EXPR_CONST ) {
 		ModuleInfo.cv_opt = opnd.value;
-	}
-	else
-	{
+    } else {
 		return(EmitError(CONSTANT_EXPECTED));
 	}
 	*pi = i;
@@ -1302,12 +1181,10 @@ OPTFUNC(SetStackBase)
 {
 	int i = *pi;
 
-	if (tokenarray[i].token != T_REG && (tokenarray[i].tokval != T_RSP || tokenarray[i].tokval != T_ESP || tokenarray[i].tokval != T_RBP))
-	{
+    if ( tokenarray[i].token != T_REG && (tokenarray[i].tokval != T_RSP || tokenarray[i].tokval != T_ESP || tokenarray[i].tokval != T_RBP)) {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
 	}
-	if (!(GetSflagsSp(tokenarray[i].tokval) & SFR_IREG))
-	{
+    if ( !( GetSflagsSp( tokenarray[i].tokval ) & SFR_IREG ) ) {
 		return(EmitError(MUST_BE_INDEX_OR_BASE_REGISTER));
 	}
 	ModuleInfo.basereg[ModuleInfo.Ofssize] = tokenarray[i].tokval;
@@ -1372,8 +1249,7 @@ OPTFUNC(SetFlat)
 #endif
 	ModuleInfo.frame_auto = 1;
 	ModuleInfo.basereg[ModuleInfo.Ofssize] = T_RSP;
-	if (!ModuleInfo.g.StackBase)
-	{
+	if (!ModuleInfo.g.StackBase) {
 		ModuleInfo.g.StackBase = CreateVariable("@StackBase", 0);
 		ModuleInfo.g.StackBase->predefined = TRUE;
 		ModuleInfo.g.StackBase->sfunc_ptr = UpdateStackBase;
@@ -1386,8 +1262,7 @@ OPTFUNC(SetFlat)
 	return(NOT_ERROR);
 }
 
-struct asm_option
-{
+struct asm_option {
 	const char *name;
 	ret_code OPTQUAL(*func)(int *, struct asm_tok[]);
 };
@@ -1486,11 +1361,9 @@ ret_code OptionDirective(int i, struct asm_tok tokenarray[])
 	DebugMsg1(("OPTION directive enter, option=%s\n", tokenarray[i+1].string_ptr));
 
 	i++; /* skip OPTION directive */
-	while (tokenarray[i].token != T_FINAL)
-	{
+    while ( tokenarray[i].token != T_FINAL ) {
 		_strupr(tokenarray[i].string_ptr);
-		for (idx = 0; idx < TABITEMS; idx++)
-		{
+        for ( idx = 0; idx < TABITEMS; idx++ ) {
 			if (0 == strcmp(tokenarray[i].string_ptr, optiontab[idx].name))
 				break;
 		}
@@ -1498,22 +1371,18 @@ ret_code OptionDirective(int i, struct asm_tok tokenarray[])
 			break;
 		i++;
 		/* v2.06: check for colon separator here */
-		if (idx >= NOARGOPTS)
-		{
-			if (tokenarray[i].token != T_COLON)
-			{
+        if ( idx >= NOARGOPTS ) {
+            if ( tokenarray[i].token != T_COLON ) {
 				return(EmitError(COLON_EXPECTED));
 			}
 			i++;
 			/* there must be something after the colon */
-			if (tokenarray[i].token == T_FINAL)
-			{
+            if ( tokenarray[i].token == T_FINAL ) {
 				i -= 2; /* position back to option identifier */
 				break;
 			}
 			/* reject option if -Zne is set */
-			if (idx >= MASMOPTS && Options.strict_masm_compat)
-			{
+            if ( idx >= MASMOPTS && Options.strict_masm_compat ) {
 				i -= 2;
 				break;
 			}
@@ -1524,8 +1393,7 @@ ret_code OptionDirective(int i, struct asm_tok tokenarray[])
 			break;
 		i++;
 	}
-	if (idx >= TABITEMS  || tokenarray[i].token != T_FINAL)
-	{
+    if ( idx >= TABITEMS  || tokenarray[i].token != T_FINAL ) {
 		DebugMsg(("option syntax error: >%s<\n", tokenarray[i].tokpos));
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 	}

@@ -43,8 +43,7 @@
 
 #pragma pack( push, 1 )
 /* fields cmd, reclen and buffer must be consecutive */
-struct outbuff
-{
+struct outbuff {
 	unsigned    in_buf;   /* number of bytes in buffer  */
 	uint_8      cmd;      /* record cmd                 */
 	uint_16     reclen;   /* record length              */
@@ -98,8 +97,7 @@ static void WEndRec(struct outbuff *out)
 
 	out->reclen = out->in_buf + 1; /* add 1 for checksum byte */
 	checksum = out->cmd + (out->reclen & 0xff) + ((out->reclen) >> 8);
-	for (p = out->buffer, end = p + out->in_buf; p < end; )
-	{
+    for( p = out->buffer, end = p + out->in_buf; p < end; ) {
 		checksum += *p++;
 	}
 	checksum = -checksum;
@@ -128,8 +126,7 @@ static void PutByte(struct outbuff *out, uint_8 value)
 static void PutIndex(struct outbuff *out, uint_16 index)
 /********************************************************/
 {
-	if (index > 0x7f)
-	{
+    if( index > 0x7f ) {
 		PutByte(out, 0x80 | (index >> 8));
 	}
 	PutByte(out, index & 0xff);
@@ -161,13 +158,10 @@ static void PutMem(struct outbuff *out, const uint_8 *buf, unsigned length)
 	/* ensure that there is enough free space in the buffer,
 	 * and also 1 byte left for the chksum!
 	 */
-	if (length <= OBJ_BUFFER_SIZE - 1 - out->in_buf)
-	{
+    if( length <= OBJ_BUFFER_SIZE - 1 - out->in_buf ) {
 		memcpy(&out->buffer[out->in_buf], buf, length);
 		out->in_buf += length;
-	}
-	else
-	{
+    } else {
 		/* this "shouldn't happen". */
 		DebugMsg(("PutMem: buffer overflow error [length=%u, free=%u]\n", length, OBJ_BUFFER_SIZE - 1 - out->in_buf));
 		Fatal(INTERNAL_ERROR, __FILE__, __LINE__);
@@ -239,8 +233,7 @@ static int FFQUAL writeSegdef(struct outbuff *out, const struct omf_rec *objr)
 #if 1
 	acbp |= align << 5;
 #else
-	switch (align)
-	{
+    switch( align ) {
 		case SEGDEF_ALIGN_ABS:      acbp |= ALIGN_ABS << 5;     break;
 		case SEGDEF_ALIGN_BYTE:     acbp |= ALIGN_BYTE << 5;    break;
 		case SEGDEF_ALIGN_WORD:     acbp |= ALIGN_WORD << 5;    break;
@@ -257,8 +250,7 @@ static int FFQUAL writeSegdef(struct outbuff *out, const struct omf_rec *objr)
 	 * if their size is exactly 4 GB. Currently Uasm won't
 	 * support segments with size 4 GB.
 	 */
-	if (is32 == 0 && objr->d.segdef.seg_length == 0x10000)
-	{
+    if( is32 == 0 && objr->d.segdef.seg_length == 0x10000 ) {
 		acbp |= 0x02;
 	}
 
@@ -272,8 +264,7 @@ static int FFQUAL writeSegdef(struct outbuff *out, const struct omf_rec *objr)
 	*/
 
 	PutByte(out, acbp);
-	if (align == SEGDEF_ALIGN_ABS)
-	{
+    if( align == SEGDEF_ALIGN_ABS ) {
 		/* absolut segment has frame=word and offset=byte
 		 * it isn't fixupp physical reference
 		 * and doesn't depend on segment size (16/32bit)
@@ -281,12 +272,9 @@ static int FFQUAL writeSegdef(struct outbuff *out, const struct omf_rec *objr)
 		PutWord(out, objr->d.segdef.abs.frame);
 		PutByte(out, objr->d.segdef.abs.offset);
 	}
-	if (is32)
-	{
+    if( is32 ) {
 		PutDword(out, objr->d.segdef.seg_length);
-	}
-	else
-	{
+    } else {
 		PutWord(out, objr->d.segdef.seg_length);
 	}
 
@@ -324,12 +312,9 @@ static int FFQUAL writeLedata(struct outbuff *out, const struct omf_rec *objr)
 
 	WBegRec(out, objr->command + objr->is_32);
 	PutIndex(out, objr->d.ledata.idx);
-	if (objr->is_32)
-	{
+    if( objr->is_32 ) {
 		PutDword(out, objr->d.ledata.offset);
-	}
-	else
-	{
+    } else {
 		PutWord(out, objr->d.ledata.offset);
 	}
 	PutMem(out, objr->data, objr->length);
@@ -365,15 +350,13 @@ static int FFQUAL writeModend(struct outbuff *out, const struct omf_rec *objr)
 	 * Masm does set bit 0, but does not set bit 5!
 	 */
 	mtype = objr->d.modend.main_module ? 0x80 : 0;
-	if (objr->d.modend.start_addrs)
-	{
+    if( objr->d.modend.start_addrs ) {
 		//is_log = objr->d.modend.is_logical;
 		//mtype |= 0x40 | is_log;
 		mtype |= 0x41;
 		PutByte(out, mtype);
 		PutMem(out, objr->data, objr->length);
-	}
-	else
+    } else
 		PutByte(out, mtype);
 
 	WEndRec(out);
@@ -387,8 +370,7 @@ static void PutBase(struct outbuff *out, const struct base_info *base)
 {
 	PutIndex(out, base->grp_idx);
 	PutIndex(out, base->seg_idx);
-	if (base->grp_idx == 0 && base->seg_idx == 0)
-	{
+    if( base->grp_idx == 0 && base->seg_idx == 0 ) {
 		PutWord(out, base->frame);
 	}
 }
@@ -433,17 +415,13 @@ static int FFQUAL writeComdat(struct outbuff *out, const struct omf_rec *objr)
 	PutByte(out, objr->d.comdat.flags);
 	PutByte(out, objr->d.comdat.attributes);
 	PutByte(out, objr->d.comdat.align);
-	if (objr->is_32)
-	{
+    if( objr->is_32 ) {
 		PutDword(out, objr->d.comdat.offset);
-	}
-	else
-	{
+    } else {
 		PutWord(out, objr->d.comdat.offset);
 	}
 	PutIndex(out, objr->d.comdat.type_idx);
-	if ((objr->d.comdat.attributes & COMDAT_ALLOC_MASK) == COMDAT_EXPLICIT)
-	{
+    if( ( objr->d.comdat.attributes & COMDAT_ALLOC_MASK ) == COMDAT_EXPLICIT ) {
 		PutBase(out, &objr->d.comdat.base);
 	}
 	PutIndex(out, objr->d.comdat.public_lname_idx);
@@ -498,8 +476,7 @@ static const pobj_filter myFuncs[] = {
 #endif
 };
 
-enum omffiltfuncs
-{
+enum omffiltfuncs {
 	OFF_UNEXP,
 	OFF_MISC,
 	OFF_MISC32,

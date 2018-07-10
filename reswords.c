@@ -40,8 +40,7 @@
 static uint_16 resw_table[HASH_TABITEMS];
 
 /* define unary operand (LOW, HIGH, OFFSET, ...) type flags */
-enum unary_operand_types
-{
+enum unary_operand_types {
 #define res( value, func ) UOT_ ## value,
 #include "unaryop.h"
 #undef res
@@ -51,8 +50,7 @@ enum unary_operand_types
 * inside InstrTable[] only, they don't need to be known
 * by the parser.
 */
-enum operand_sets
-{
+enum operand_sets {
 	OP_R_MS = (OP_R | OP_MS),
 	OP_R8_M08 = (OP_R8 | OP_M08),
 	OP_RGT8_MS = (OP_RGT8 | OP_MS),
@@ -146,8 +144,7 @@ enum operand_sets
 * are stored now in their own table, opnd_clstab[], below.
 * This will allow to add a 4th operand ( AVX ) more effectively.
 */
-enum opnd_variants
-{
+enum opnd_variants {
 #define OpCls( op1, op2, op3 ) OPC_ ## op1 ## op2 ## op3,
 #include "opndcls.h"
 #undef OpCls
@@ -208,8 +205,7 @@ const struct special_item SpecialTable[] = {
 
 /* define symbolic indices for InstrTable[] */
 
-enum res_idx
-{
+enum res_idx {
 #define  ins(tok, string, opcls, byte1_info, op_dir, rm_info, opcode, rm_byte, cpu, prefix) T_ ## tok ## _I,
 #define insx(tok, string, opcls, byte1_info, op_dir, rm_info, opcode, rm_byte, cpu, prefix,flgs) T_ ## tok ## _I,
 #define insn(tok, suffix, opcls, byte1_info, op_dir, rm_info, opcode, rm_byte, cpu, prefix) T_ ## tok ## _ ## suffix,
@@ -909,8 +905,7 @@ static const enum instr_token patchtab32[] = {
   T_LOOPW         /* 2. branch instructions invalid for IA32+ */
 };
 
-struct replace_ins
-{
+struct replace_ins {
 	uint_16       tok; /* is an optable_idx[] index */
 	enum res_idx  idx32;
 	enum res_idx  idx64;
@@ -947,8 +942,7 @@ static struct qdesc renamed_keys = {NULL, NULL};
 /* global queue of "disabled" reserved words.
 * just indices of ResWordTable[] are used.
 */
-static struct
-{
+static struct {
 	uint_16 Head;
 	uint_16 Tail;
 } Removed = {0, 0};
@@ -963,8 +957,7 @@ static unsigned get_hash(const char *s, unsigned char size)
 	uint_64 fnv_basis = 14695981039346656037;
 	uint_64 register fnv_prime = 1099511628211;
 	uint_64 h;
-	for (h = fnv_basis; size; size--)
-	{
+  for (h = fnv_basis; size; size--) {
 		h ^= (*s++ | ' ');
 		h *= fnv_prime;
 	}
@@ -981,13 +974,11 @@ unsigned FindResWord(const char *name, unsigned char size)
 	__segment seg = FP_SEG(resw_strings);
 #endif
 
-	for (i = resw_table[get_hash(name, size)]; i != 0; i = inst->next)
-	{
+  for (i = resw_table[get_hash(name, size)]; i != 0; i = inst->next) {
 		inst = &ResWordTable[i];
 		/* check if the name matches the entry for this inst in AsmChars */
 		//if( name[ inst->len ] == NULLC && _strnicmp( name, inst->name, inst->len ) == 0) {
-		if (inst->len == size && _memicmp(name, GetPtr(inst, name), inst->len) == 0)
-		{
+    if (inst->len == size && _memicmp(name, GetPtr(inst, name), inst->len) == 0) {
 			return(i);
 		}
 	}
@@ -1012,13 +1003,11 @@ static void AddResWord(int token)
 
 	for (curr = resw_table[i], old = 0; curr != 0 && ResWordTable[curr].len <= ResWordTable[token].len; old = curr, curr = ResWordTable[curr].next);
 
-	if (old == 0)
-	{
+  if (old == 0) {
 		ResWordTable[token].next = resw_table[i];
 		resw_table[i] = token;
 	}
-	else
-	{
+  else {
 		ResWordTable[token].next = ResWordTable[old].next;
 		ResWordTable[old].next = token;
 	}
@@ -1040,10 +1029,8 @@ static int RemoveResWord(int token)
 
 	i = get_hash(ResWordTable[token].name, ResWordTable[token].len);
 
-	for (curr = resw_table[i], old = 0; curr != 0; old = curr, curr = ResWordTable[curr].next)
-	{
-		if (curr == token)
-		{
+  for (curr = resw_table[i], old = 0; curr != 0; old = curr, curr = ResWordTable[curr].next) {
+    if (curr == token) {
 			if (old != 0)
 				ResWordTable[old].next = ResWordTable[curr].next;
 			else
@@ -1056,8 +1043,7 @@ static int RemoveResWord(int token)
 
 #if RENAMEKEY
 
-struct rename_node
-{
+struct rename_node {
 	struct rename_node *next;
 	const char *name; /* the original name in resw_strings[] */
 	uint_16 token; /* is either enum instr_token or enum special_token */
@@ -1085,35 +1071,28 @@ void RenameKeyword(unsigned token, const char *newname, uint_8 length)
 	* the original name must be saved.
 	*/
 	if (ResWordTable[token].name >= resw_strings &&
-		ResWordTable[token].name < (resw_strings + sizeof(resw_strings)))
-	{
+    ResWordTable[token].name < (resw_strings + sizeof(resw_strings))) {
 		curr = LclAlloc(sizeof(struct rename_node));
 		curr->next = NULL;
 		curr->name = ResWordTable[token].name;
 		curr->token = token;
 		curr->length = ResWordTable[token].len;
-		if (renamed_keys.head == NULL)
-		{
+    if (renamed_keys.head == NULL) {
 			renamed_keys.head = renamed_keys.tail = curr;
 		}
-		else
-		{
+    else {
 			((struct rename_node *)renamed_keys.tail)->next = curr;
 			renamed_keys.tail = curr;
 		}
 	}
-	else
-	{
+  else {
 		LclFree((void *)ResWordTable[token].name);
 #if 1
 		/* v2.11: search the original name. if the "new" names matches
 		* the original name, restore the name pointer */
-		for (curr = renamed_keys.head, prev = NULL; curr; prev = curr)
-		{
-			if (curr->token == token)
-			{
-				if (curr->length == length && !memcmp(newname, curr->name, length))
-				{
+    for (curr = renamed_keys.head, prev = NULL; curr; prev = curr) {
+      if (curr->token == token) {
+        if (curr->length == length && !memcmp(newname, curr->name, length)) {
 					if (prev)
 						prev->next = curr->next;
 					else
@@ -1151,11 +1130,9 @@ void Set64Bit(bool newmode)
 	int token;
 	int i;
 
-	if (newmode != b64bit)
-	{
+  if (newmode != b64bit) {
 		DebugMsg1(("Set64Bit(%u): mode is to change\n", newmode));
-		if (newmode != FALSE)
-		{
+    if (newmode != FALSE) {
 			optable_idx[T_INC - SPECIAL_LAST]++;   /* skip the one-byte register INC */
 			optable_idx[T_DEC - SPECIAL_LAST]++;   /* skip the one-byte register DEC */
 												   /*
@@ -1177,13 +1154,11 @@ void Set64Bit(bool newmode)
 				for (token = patchtab32[i]; ResWordTable[token].flags & RWF_IA32; token++)
 					if (!(ResWordTable[token].flags & RWF_DISABLED))
 						RemoveResWord(token);
-			for (i = 0; i < sizeof(patchtabr) / sizeof(patchtabr[0]); i++)
-			{
+      for (i = 0; i < sizeof(patchtabr) / sizeof(patchtabr[0]); i++) {
 				optable_idx[patchtabr[i].tok] = patchtabr[i].idx64;
 			}
 		}
-		else
-		{
+    else {
 			optable_idx[T_INC - SPECIAL_LAST]--;   /* restore the one-byte register INC */
 			optable_idx[T_DEC - SPECIAL_LAST]--;   /* restore the one-byte register DEC */
 
@@ -1195,8 +1170,7 @@ void Set64Bit(bool newmode)
 				for (token = patchtab32[i]; ResWordTable[token].flags & RWF_IA32; token++)
 					if (!(ResWordTable[token].flags & RWF_DISABLED))
 						AddResWord(token);
-			for (i = 0; i < sizeof(patchtabr) / sizeof(patchtabr[0]); i++)
-			{
+      for (i = 0; i < sizeof(patchtabr) / sizeof(patchtabr[0]); i++) {
 				optable_idx[patchtabr[i].tok] = patchtabr[i].idx32;
 			}
 
@@ -1214,15 +1188,13 @@ void Set64Bit(bool newmode)
 void DisableKeyword(unsigned token)
 /***********************************/
 {
-	if (!(ResWordTable[token].flags & RWF_DISABLED))
-	{
+  if (!(ResWordTable[token].flags & RWF_DISABLED)) {
 		RemoveResWord(token);
 		ResWordTable[token].next = 0;
 		ResWordTable[token].flags |= RWF_DISABLED;
 		if (Removed.Head == 0)
 			Removed.Head = Removed.Tail = token;
-		else
-		{
+    else {
 			ResWordTable[Removed.Tail].next = token;
 			Removed.Tail = token;
 		}
@@ -1291,8 +1263,7 @@ void ResWordsInit(void)
 	* add keyword to hash table ( unless it is 64-bit only ).
 	* v2.09: start with index = 1, since index 0 is now T_NULL
 	*/
-	for (i = 1; i < sizeof(ResWordTable) / sizeof(ResWordTable[0]); i++)
-	{
+  for (i = 1; i < sizeof(ResWordTable) / sizeof(ResWordTable[0]); i++) {
 		ResWordTable[i].name = p;
 		p += ResWordTable[i].len;
 #if AMD64_SUPPORT /* don't add the words specific to x64 */
@@ -1323,8 +1294,7 @@ void ResWordsFini(void)
 	* the keyword has to removed ( and readded ) from the hash table,
 	* since its position most likely will change.
 	*/
-	for (rencurr = renamed_keys.head; rencurr; )
-	{
+  for (rencurr = renamed_keys.head; rencurr; ) {
 		struct rename_node *tmp = rencurr->next;
 		RemoveResWord(rencurr->token);
 		/* v2.06: this is the correct name to free */
@@ -1341,8 +1311,7 @@ void ResWordsFini(void)
 #endif
 
 	/* reenter disabled keywords */
-	for (i = Removed.Head; i != 0; i = next)
-	{
+  for (i = Removed.Head; i != 0; i = next) {
 		next = ResWordTable[i].next;
 		ResWordTable[i].flags &= ~RWF_DISABLED;
 #if AMD64_SUPPORT /* don't add the words specific to x64 */
@@ -1367,8 +1336,7 @@ void DumpResWords(void)
 	printf("   # keyword             value   sflags  cpu val8 type flg len\n");
 	printf("--------------------------------------------------------------\n");
 	/* start with index 1 ( index 0 is T_NULL ) */
-	for (i = 1; i < sizeof(SpecialTable) / sizeof(SpecialTable[0]); i++)
-	{
+  for (i = 1; i < sizeof(SpecialTable) / sizeof(SpecialTable[0]); i++) {
 		printf("%4u %-16s %8X %8X %4X %4X  %2X  %2X %3u\n", i, GetResWName(i, NULL),
 			   SpecialTable[i].value, SpecialTable[i].sflags,
 			   SpecialTable[i].cpu, SpecialTable[i].bytval,
@@ -1383,8 +1351,7 @@ void DumpResWords(void)
 	printf("\nInstructionTable\n");
 	printf("   # keyword          cls cpu opc rmb b1 rmi pfx fst idx flg len\n");
 	printf("----------------------------------------------------------------\n");
-	for (i = INS_FIRST_1 + 1; i < sizeof(ResWordTable) / sizeof(ResWordTable[0]); i++)
-	{
+  for (i = INS_FIRST_1 + 1; i < sizeof(ResWordTable) / sizeof(ResWordTable[0]); i++) {
 		const struct instr_item *ins = &InstrTable[IndexFromToken(i)];
 		printf("%4u %-16s %02X %4X  %02X  %02X %2u %X   %X   %u  %4u %3X %3u\n", i, GetResWName(i, NULL),
 			   ins->opclsidx,
@@ -1405,19 +1372,16 @@ void DumpInstrStats(void)
 	unsigned            curr = 0;
 	unsigned            num[8] = {0,0,0,0,0,0,0,0};
 
-	if (Options.dump_reswords_hash)
-	{
+  if (Options.dump_reswords_hash) {
 		printf("\nReserved Word Hash Table\n");
 		printf("Idx keywords\n");
 		printf("---------------------------\n");
 	}
 
-	for (i = 0; i < HASH_TABITEMS; i++)
-	{
+  for (i = 0; i < HASH_TABITEMS; i++) {
 		if (Options.dump_reswords_hash)
 			printf("%3u ", i);
-		for (inst = resw_table[i], curr = 0; inst != 0; inst = ResWordTable[inst].next)
-		{
+    for (inst = resw_table[i], curr = 0; inst != 0; inst = ResWordTable[inst].next) {
 			if (Options.dump_reswords_hash)
 				printf(" %-8s", GetResWName(inst, NULL));
 			curr++;
@@ -1432,8 +1396,7 @@ void DumpInstrStats(void)
 	}
 	if (Options.dump_reswords_hash)
 		printf("---------------------------\n");
-	if (Options.quiet == FALSE)
-	{
+  if (Options.quiet == FALSE) {
 		printf("%u items in resw table, max items/line=%u ", count, max);
 		printf("[0=%u 1=%u %u %u %u %u %u %u]\n", num[0], num[1], num[2], num[3], num[4], num[5], num[6], num[7]);
 	}

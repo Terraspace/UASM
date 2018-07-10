@@ -21,11 +21,9 @@ char *strupr(char *str)
 	unsigned char   c;
 
 	p = str;
-	while ((c = *p))
-	{
+    while( (c = *p) ) {
 		c -= 'a';
-		if (c <= 'z' - 'a')
-		{
+        if( c <= 'z' - 'a' ) {
 			c += 'A';
 			*p = c;
 		}
@@ -42,8 +40,7 @@ char *strupr(char *str)
 #ifdef __FLAT__
 #ifndef DEBUG_OUT /* OW v1.8 WDW has a problem with locally defined imports */
 
-union cu
-{
+union cu {
 	int c;
 	char *p;
 };

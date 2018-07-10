@@ -74,8 +74,7 @@ static void DoPatch(struct asym *sym, struct fixup *fixup)
 			 fixup->option,
 			 fixup->def_seg ? fixup->def_seg->sym.name : "NULL"));
 	seg = GetSegm(sym);
-	if (seg == NULL || fixup->def_seg != seg)
-	{
+    if( seg == NULL || fixup->def_seg != seg ) {
 		/* if fixup location is in another segment, backpatch is possible, but
 		 * complicated and it's a pretty rare case, so nothing's done.
 		 */
@@ -86,10 +85,8 @@ static void DoPatch(struct asym *sym, struct fixup *fixup)
 		return;
 	}
 
-	if (Parse_Pass == PASS_1)
-	{
-		if (sym->mem_type == MT_FAR && fixup->option == OPTJ_CALL)
-		{
+    if( Parse_Pass == PASS_1 ) {
+        if( sym->mem_type == MT_FAR && fixup->option == OPTJ_CALL ) {
 			/* convert near call to push cs + near call,
 			 * (only at first pass) */
 			DebugMsg(("DoPatch: Phase error! caused by far call optimization\n"));
@@ -100,20 +97,16 @@ static void DoPatch(struct asym *sym, struct fixup *fixup)
 			FreeFixup(fixup);
 			return;
 			//} else if( sym->mem_type == MT_NEAR ) {
-		}
-		else
-		{
+        } else {
 			/* forward reference, only at first pass */
-			switch (fixup->type)
-			{
+            switch( fixup->type ) {
 				case FIX_RELOFF32:
 				case FIX_RELOFF16:
 					FreeFixup(fixup);
 					DebugMsg(("DoPatch: FIX_RELOFF32/FIX_RELOFF16, return\n"));
 					return;
 				case FIX_OFF8:  /* push <forward reference> */
-					if (fixup->option == OPTJ_PUSH)
-					{
+                if ( fixup->option == OPTJ_PUSH ) {
 						size = 1;    /* size increases from 2 to 3/5 */
 						DebugMsg(("DoPatch: FIX_OFF8\n"));
 						goto patch;
@@ -122,8 +115,7 @@ static void DoPatch(struct asym *sym, struct fixup *fixup)
 		}
 	}
 	size = 0;
-	switch (fixup->type)
-	{
+    switch( fixup->type ) {
 		case FIX_RELOFF32:
 			size = 2; /* will be 4 finally */
 			/* fall through */
@@ -136,20 +128,17 @@ static void DoPatch(struct asym *sym, struct fixup *fixup)
 			// disp = fixup->offset + GetCurrOffset() - fixup->location - size;
 			disp = fixup->offset + fixup->sym->offset - fixup->locofs - size - 1;
 			max_disp = (1UL << ((size * 8)-1)) - 1;
-			if (disp > max_disp || disp < (-max_disp-1))
-			{
+        if( disp > max_disp || disp < (-max_disp-1) ) {
 			patch:
 				DebugMsg(("DoPatch(%u): Phase error, disp=%X, fixup=%s(%X), loc=%X!\n", Parse_Pass + 1, disp, fixup->sym->name, fixup->sym->offset, fixup->locofs));
 				ModuleInfo.PhaseError = TRUE;
 				/* ok, the standard case is: there's a forward jump which
 				 * was assumed to be SHORT, but it must be NEAR instead.
 				 */
-				switch (size)
-				{
+            switch( size ) {
 					case 1:
 						size = 0;
-						switch (fixup->option)
-						{
+                switch( fixup->option ) {
 							case OPTJ_EXPLICIT:
 #if 0 /* don't display the error at the destination line! */
 								DebugMsg(("DoPatch: jump out of range, disp=%d\n", disp));
@@ -171,12 +160,9 @@ static void DoPatch(struct asym *sym, struct fixup *fixup)
 								/* v2.04: if there's an ORG between src and dst, skip
 								 * the optimization!
 								 */
-								if (Parse_Pass == PASS_1)
-								{
-									for (fixup2 = seg->e.seginfo->FixupList.head; fixup2; fixup2 = fixup2->nextrlc)
-									{
-										if (fixup2->orgoccured)
-										{
+                    if ( Parse_Pass == PASS_1 ) {
+                        for ( fixup2 = seg->e.seginfo->FixupList.head; fixup2; fixup2 = fixup2->nextrlc ) {
+                            if ( fixup2->orgoccured ) {
 											DebugMsg(("DoPatch: ORG/ALIGN detected, optimization canceled\n"));
 											return;
 										}
@@ -190,8 +176,7 @@ static void DoPatch(struct asym *sym, struct fixup *fixup)
 								 * ( PROCs are NOT contained in this list because they
 								 * use the <next>-field of dsym already!)
 								 */
-								for (sym2 = seg->e.seginfo->label_list; sym2; sym2 = (struct asym *)((struct dsym *)sym2)->next)
-								{
+                    for ( sym2 = seg->e.seginfo->label_list; sym2; sym2 = (struct asym *)((struct dsym *)sym2)->next ) {
 									//if ( sym2 == sym )
 									//    continue;
 									/* v2.0: location is at least 1 byte too low, so
@@ -208,8 +193,7 @@ static void DoPatch(struct asym *sym, struct fixup *fixup)
 								 * number of passes to 2 for not too complex sources.
 								 */
 								if (Parse_Pass == PASS_1) /* v2.04: added, just to be safe */
-									for (fixup2 = seg->e.seginfo->FixupList.head; fixup2; fixup2 = fixup2->nextrlc)
-									{
+                    for ( fixup2 = seg->e.seginfo->FixupList.head; fixup2; fixup2 = fixup2->nextrlc ) {
 										if (fixup2->sym == sym)
 											continue;
 										if (fixup2->locofs <= fixup->locofs)
@@ -271,8 +255,7 @@ ret_code BackPatch(struct asym *sym)
 
 	DebugMsg1(("BackPatch(%s): location=%s:%X, bp_fixup=%p\n", sym->name, sym->segment ? sym->segment->name : "!NULL!", sym->offset, sym->bp_fixup));
 
-	for (fixup = sym->bp_fixup; fixup; fixup = next)
-	{
+    for( fixup = sym->bp_fixup; fixup; fixup = next ) {
 		next = fixup->nextbp;
 		DoPatch(sym, fixup);
 	}

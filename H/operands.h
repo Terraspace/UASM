@@ -40,8 +40,7 @@
  * in SpecialTable[] have these bits stored in a uint field (JWASMR!).
  */
 
-enum operand_type
-{
+enum operand_type {
 	OP_NONE = 0,
 	OP_R8 = 0x00000001,
 	OP_R16 = 0x00000002,
@@ -147,8 +146,7 @@ enum operand_type
 };
 
 /* since v2.06, this is a 8-bit field. Previously it was 4-bit only. */
-enum operand3_type
-{
+enum operand3_type {
 	OP3_NONE = 0, /* must be 0, identical to OP_NONE */
 	OP3_CL,
 	OP3_I8_U,     /* this is also used for signed values (IMUL) */

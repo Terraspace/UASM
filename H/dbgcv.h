@@ -33,8 +33,7 @@
 
 /* reserved primitive types (0x0000-0x0FFF) */
 
-struct cv_primitive_type
-{
+struct cv_primitive_type {
 	uint_16 size:3, /* see CV_PDS_ below */
 		reserved:1,     /* added to size in CV8? */
 		type:4,         /* see CV_PDT_ below */
@@ -51,8 +50,7 @@ typedef uint_32 cv_typeref;
 #endif
 
 /* bits 4-7 of predefined primitive types */
-enum cv_predef_type_types
-{
+enum cv_predef_type_types {
 	CV_PDT_SPECIAL = 0x00, /* CV_PDS_SPECIAL_xxx  */
 	CV_PDT_SIGNED_INTEGRAL = 0x01, /* CV_PDS_INTEGRAL_xxx */
 	CV_PDT_UNSIGNED_INTEGRAL = 0x02, /* CV_PDS_INTEGRAL_xxx */
@@ -65,8 +63,7 @@ enum cv_predef_type_types
 };
 
 /* bits 0-2 of predefined primitive types */
-enum cv_predef_type_sizes
-{
+enum cv_predef_type_sizes {
 	CV_PDS_SPECIAL_NO_TYPE = 0x00,
 	CV_PDS_SPECIAL_ABSOLUTE = 0x01,
 	CV_PDS_SPECIAL_SEGMENT = 0x02,
@@ -100,8 +97,7 @@ enum cv_predef_type_sizes
 };
 
 /* bits 8-10 of predefined primitive types */
-enum cv_predef_type_modes
-{
+enum cv_predef_type_modes {
 	CV_PDM_DIRECT = 0x00,
 	CV_PDM_NEARPTR = 0x01,
 	CV_PDM_FARPTR = 0x02,
@@ -112,8 +108,7 @@ enum cv_predef_type_modes
 	/* value 7 reserved */
 };
 
-struct cv_attribute
-{
+struct cv_attribute {
 	uint_16 access:2, /* see CV_ATTR_ACC_ below */
 		mprop:3,          /* see CV_ATTR_MPR_ below */
 		pseudo:1,
@@ -122,16 +117,14 @@ struct cv_attribute
 		reserved:8;
 };
 
-enum cv_attr_access
-{
+enum cv_attr_access {
 	CV_ATTR_ACC_NOPROTECTION = 0,
 	CV_ATTR_ACC_PRIVATE = 1,
 	CV_ATTR_ACC_PROTECTED = 2,
 	CV_ATTR_ACC_PUBLIC = 3,
 };
 
-enum cv_attr_mprop
-{
+enum cv_attr_mprop {
 	CV_ATTR_MPR_VANILLA = 0,
 	CV_ATTR_MPR_VIRTUAL = 1,
 	CV_ATTR_MPR_STATIC = 2,
@@ -141,8 +134,7 @@ enum cv_attr_mprop
 	CV_ATTR_MPR_PURE_INTRO_VIRTUAL = 6,
 };
 
-enum cv4_leaf_indices
-{
+enum cv4_leaf_indices {
 	CV4_LF_MODIFIER = 0x0001,
 	CV4_LF_POINTER = 0x0002,  /* emitted by Uasm */
 	CV4_LF_ARRAY = 0x0003,  /* emitted by Uasm */
@@ -162,8 +154,7 @@ enum cv4_leaf_indices
 	CV4_LF_MEMBER = 0x0406,  /* emitted by Uasm */
 };
 
-enum cv5_leaf_indices
-{
+enum cv5_leaf_indices {
 	CV5_LF_POINTER = 0x1002,
 	CV5_LF_ARRAY = 0x1003,
 	CV5_LF_CLASS = 0x1004,
@@ -179,16 +170,14 @@ enum cv5_leaf_indices
 	CV5_LF_MEMBER = 0x1405,
 };
 
-enum cv8_leaf_indices
-{
+enum cv8_leaf_indices {
 	CV8_LF_ARRAY = 0x1503,
 	CV8_LF_STRUCTURE = 0x1505,
 	CV8_LF_UNION = 0x1506,
 	CV8_LF_MEMBER = 0x150D,
 };
 
-enum cv_leaf_indices
-{
+enum cv_leaf_indices {
 	LF_MODIFIER = 0x0001,
 	LF_LABEL = 0x000E,  /* emitted by Uasm */
 #if CV_SIGNATURE==CV4_SIGNATURE
@@ -246,15 +235,13 @@ enum cv_leaf_indices
 	LF_PAD15 = 0xFF
 };
 
-struct cv_typerec
-{
+struct cv_typerec {
 	uint_16 size;
 	uint_16 leaf;
 };
 
 /* values in attribute bits 0-4 */
-enum cv_typerec_pointer_types
-{
+enum cv_typerec_pointer_types {
 	CV_TYPE_PTRTYPE_NEAR = 0,
 	CV_TYPE_PTRTYPE_FAR = 1,
 	CV_TYPE_PTRTYPE_HUGE = 2,
@@ -271,20 +258,17 @@ enum cv_typerec_pointer_types
 
 #pragma pack(push, 1)
 
-struct cv_typerec_pointer
-{ /* LF_POINTER v2.10: added */
+struct cv_typerec_pointer { /* LF_POINTER v2.10: added */
 	struct cv_typerec tr;
 	uint_16 attribute;
-	union
-	{
+    union {
 		struct cv_primitive_type pptype; /* predefined primitive type */
 		cv_typeref type;
 	};
 	/* variant field ( size? ) */
 };
 
-struct cv_typerec_array
-{ /* LF_ARRAY v2.10: added */
+struct cv_typerec_array { /* LF_ARRAY v2.10: added */
 	struct cv_typerec tr;
 	cv_typeref elemtype;
 	cv_typeref idxtype;
@@ -292,8 +276,7 @@ struct cv_typerec_array
 	// length-prefixed name
 };
 
-struct cv_typerec_structure
-{ /* LF_STRUCTURE */
+struct cv_typerec_structure { /* LF_STRUCTURE */
 	struct cv_typerec tr;
 	uint_16 count;
 #if CV_SIGNATURE==CV4_SIGNATURE
@@ -313,8 +296,7 @@ struct cv_typerec_structure
 
 /* property flags. some bits are for classes only */
 
-enum cv_typerec_structure_property
-{
+enum cv_typerec_structure_property {
 	CVTSP_PACKED = 0x001,  /* is packed */
 	CVTSP_CTOR = 0x002,  /* has constructors or destructors */
 	CVTSP_OVEROPS = 0x004,
@@ -326,8 +308,7 @@ enum cv_typerec_structure_property
 	CVTSP_SCOPED = 0x100,  /* scoped definition */
 };
 
-struct cv_typerec_union
-{ /* LF_UNION */
+struct cv_typerec_union { /* LF_UNION */
 	struct cv_typerec tr;
 	uint_16 count;
 #if CV_SIGNATURE==CV4_SIGNATURE
@@ -341,8 +322,7 @@ struct cv_typerec_union
 	// length-prefixed name
 };
 
-struct cv_typerec_procedure
-{ /* LF_PROCEDURE */
+struct cv_typerec_procedure { /* LF_PROCEDURE */
 	struct cv_typerec tr;
 	cv_typeref rvtype; /* type of return value */
 	uint_8 call;       /* call convention ( C, Pascal, Fastcall, Stdcall, Syscall, Thiscall ) */
@@ -351,33 +331,28 @@ struct cv_typerec_procedure
 	cv_typeref arglist;
 };
 
-struct cv_typerec_label
-{ /* LF_LABEL */
+struct cv_typerec_label { /* LF_LABEL */
 	struct cv_typerec tr;
 	uint_16 mode;  /* see below, CV_TYPE_LABEL_ */
 };
 
 /* label flags (values for mode) */
-enum cv_typerec_label_values
-{
+enum cv_typerec_label_values {
 	CV_TYPE_LABEL_NEAR = 0x00,
 	CV_TYPE_LABEL_FAR = 0x04
 };
 
-struct cv_typerec_arglist
-{ /* LF_ARGLIST */
+struct cv_typerec_arglist { /* LF_ARGLIST */
 	struct cv_typerec tr;
 	uint_16 argcount;
 	//uint_16 indices[];
 };
 
-struct cv_typerec_fieldlist
-{ /* LF_FIELDLIST */
+struct cv_typerec_fieldlist { /* LF_FIELDLIST */
 	struct cv_typerec tr;
 };
 
-struct cv_typerec_bitfield
-{ /* LF_BITFIELD */
+struct cv_typerec_bitfield { /* LF_BITFIELD */
 	struct cv_typerec tr;
 #if CV_SIGNATURE==CV4_SIGNATURE
 	uint_8 length;
@@ -390,8 +365,7 @@ struct cv_typerec_bitfield
 #endif
 };
 
-struct cv_typerec_member
-{  /* LF_MEMBER */
+struct cv_typerec_member {  /* LF_MEMBER */
 	uint_16 leaf;
 #if CV_SIGNATURE==CV4_SIGNATURE
 	cv_typeref type;
@@ -404,8 +378,7 @@ struct cv_typerec_member
 	// length-prefixed name
 };
 
-enum cv4_symbol_types
-{
+enum cv4_symbol_types {
 	CV4_S_REGISTER = 0x0002,
 	CV4_S_CONSTANT = 0x0003,
 	CV4_S_UDT = 0x0004,
@@ -426,8 +399,7 @@ enum cv4_symbol_types
  * the new types > 0x1000 have a 4 byte typeref.
  */
 
-enum cv5_symbol_types
-{
+enum cv5_symbol_types {
 	CV5_S_REGISTER = 0x1001,
 	CV5_S_CONSTANT = 0x1002,
 	CV5_S_UDT = 0x1003,
@@ -449,8 +421,7 @@ enum cv5_symbol_types
  * this types also have a 4-byte typeref AND the name is
  * in asciiz format, not 1-byte-length-prefixed.
  */
-enum cv8_symbol_types
-{
+enum cv8_symbol_types {
 	CV8_S_OBJNAME = 0x1101,  /* object filename */
 	CV8_S_BLOCK32 = 0x1103,
 	CV8_S_LABEL32 = 0x1105,
@@ -466,8 +437,7 @@ enum cv8_symbol_types
 	CV8_S_GTHREAD32 = 0x1113,
 };
 
-enum cv_symbol_types
-{
+enum cv_symbol_types {
 	S_COMPILE = 0x0001,
 #if CV_SIGNATURE==CV4_SIGNATURE
 	S_REGISTER = CV4_S_REGISTER,
@@ -520,23 +490,19 @@ enum cv_symbol_types
 	S_LABEL32 = 0x0209, /* didn't change for CV5 ( CV8 is different ) */
 };
 
-struct cv_symrec
-{
+struct cv_symrec {
 	uint_16 size;
 	uint_16 type;
 	//uint_8  data[];
 };
 
-struct cv_symrec_compile
-{ /* S_COMPILE */
+struct cv_symrec_compile { /* S_COMPILE */
 	struct cv_symrec sr;
 	uint_8 machine;  /* see below enum cv_machines */
 	uint_8 Language; /* see below enum cv_languages */
-	union
-	{
+    union {
 		uint_16 flags;
-		struct
-		{
+        struct {
 			uint_8 PCodePresent:1,
 				FloatPrecision:2,
 				Floatpackage:2,
@@ -549,8 +515,7 @@ struct cv_symrec_compile
 	// uint_8 version[];  /* length-prefixed string */
 };
 
-enum cv_machines
-{
+enum cv_machines {
 	CV_MACH_8080 = 0,  /* ??? */
 	CV_MACH_8086 = 1,  /* also 80186 */
 	CV_MACH_80286 = 2,
@@ -562,8 +527,7 @@ enum cv_machines
 	CV_MACH_AMD64 = 0xD0,
 };
 
-enum cv_languages
-{
+enum cv_languages {
 	CV_LANG_C = 0,
 	CV_LANG_CPP = 1,
 	CV_LANG_FORTRAN = 2,
@@ -573,58 +537,50 @@ enum cv_languages
 	CV_LANG_COBOL = 6
 };
 
-enum cv_ambient_model
-{
+enum cv_ambient_model {
 	CV_AMB_NEAR = 0,
 	CV_AMB_FAR = 1,
 	CV_AMB_HUGE = 2,
 };
 
-struct cv_symrec_register
-{ /* S_REGISTER */
+struct cv_symrec_register { /* S_REGISTER */
 	struct cv_symrec sr;
 	cv_typeref type;
 	uint_16 registr; /* low byte is register 1, high byte is (opt) register 2 */
 	// length-prefixed name
 };
 
-struct cv_symrec_constant
-{ /* S_CONSTANT */
+struct cv_symrec_constant { /* S_CONSTANT */
 	struct cv_symrec sr;
 	cv_typeref type;
 	uint_16 value;    /* numeric leaf */
 	// length-prefixed name
 };
 
-struct cv_symrec_udt
-{ /* S_UDT */
+struct cv_symrec_udt { /* S_UDT */
 	struct cv_symrec sr;
 	cv_typeref type;
 	// length-prefixed name
 };
 
-struct cv_symrec_endblk
-{ /* S_ENDBLK */
+struct cv_symrec_endblk { /* S_ENDBLK */
 	struct cv_symrec sr;
 };
 
-struct cv_symrec_objname
-{ /* S_OBJNAME */
+struct cv_symrec_objname { /* S_OBJNAME */
 	struct cv_symrec sr;
 	uint_32 Signature;
 	// length-prefixed name
 };
 
-struct cv_symrec_bprel16
-{ /* S_BPREL16 */
+struct cv_symrec_bprel16 { /* S_BPREL16 */
 	struct cv_symrec sr;
 	int_16 offset;
 	cv_typeref type;
 	// length-prefixed name
 };
 
-struct cv_symrec_ldata16
-{ /* S_LDATA16, S_GDATA16 */
+struct cv_symrec_ldata16 { /* S_LDATA16, S_GDATA16 */
 	struct cv_symrec sr;
 	int_16 offset;
 	uint_16 segment;
@@ -632,8 +588,7 @@ struct cv_symrec_ldata16
 	// length-prefixed name
 };
 
-struct cv_symrec_lproc16
-{ /* S_LPROC16, S_GPROC16 */
+struct cv_symrec_lproc16 { /* S_LPROC16, S_GPROC16 */
 	struct cv_symrec sr;
 	uint_32 pParent;
 	uint_32 pEnd;
@@ -648,16 +603,14 @@ struct cv_symrec_lproc16
 	// length-prefixed name
 };
 
-enum cv_proc_flags
-{
+enum cv_proc_flags {
 	CV_PROCF_FPO = 0x01,   /* no frame pointer */
 	CV_PROCF_INTERRUPT = 0x02,   /* proc is interrrupt routine */
 	CV_PROCF_FAR = 0x04,   /* proc does FAR return */
 	CV_PROCF_NEVER = 0x08,   /* proc does not return */
 };
 
-struct cv_symrec_label16
-{ /* S_LABEL16 */
+struct cv_symrec_label16 { /* S_LABEL16 */
 	struct cv_symrec sr;
 	int_16 offset;
 	uint_16 segment;
@@ -665,16 +618,14 @@ struct cv_symrec_label16
 	// length-prefixed name
 };
 
-struct cv_symrec_bprel32
-{ /* S_BPREL32 */
+struct cv_symrec_bprel32 { /* S_BPREL32 */
 	struct cv_symrec sr;
 	int_32 offset;
 	cv_typeref type;
 	// length-prefixed name
 };
 
-struct cv_symrec_ldata32
-{ /* S_LDATA32, S_GDATA32 */
+struct cv_symrec_ldata32 { /* S_LDATA32, S_GDATA32 */
 	struct cv_symrec sr;
 #if CV_SIGNATURE==CV4_SIGNATURE
 	int_32 offset;
@@ -688,8 +639,7 @@ struct cv_symrec_ldata32
 	// length-prefixed name
 };
 
-struct cv_symrec_lproc32
-{ /* S_LPROC32, S_GPROC32 */
+struct cv_symrec_lproc32 { /* S_LPROC32, S_GPROC32 */
 	struct cv_symrec sr;
 	uint_32 pParent;
 	uint_32 pEnd;
@@ -710,8 +660,7 @@ struct cv_symrec_lproc32
 	// length-prefixed name
 };
 
-enum cv_registers
-{
+enum cv_registers {
 	CV_REG_START32 = 17,  /* 17-24 are 32-bit GPRs */
 	CV_REG_ESP = CV_REG_START32+4,
 	CV_REG_EBP = CV_REG_START32+5,
@@ -723,8 +672,7 @@ enum cv_registers
 #endif
 };
 
-struct cv_symrec_regrel32
-{ /* S_REGREL32 */
+struct cv_symrec_regrel32 { /* S_REGREL32 */
 	struct cv_symrec sr;
 	int_32 offset;
 #if CV_SIGNATURE==CV4_SIGNATURE
@@ -737,8 +685,7 @@ struct cv_symrec_regrel32
 	// length-prefixed name
 };
 
-struct cv_symrec_label32
-{ /* S_LABEL32 */
+struct cv_symrec_label32 { /* S_LABEL32 */
 	struct cv_symrec sr;
 	int_32 offset;
 	uint_16 segment;
@@ -748,8 +695,7 @@ struct cv_symrec_label32
 
 #if 0
 /* CV8 declarations - not needed currently */
-enum cv8_s_sections
-{
+enum cv8_s_sections {
 	CV8_SYMBOLS = 0xF1,
 	CV8_LINNUM = 0xF2,
 	CV8_FILENAMES = 0xF3,
@@ -758,14 +704,12 @@ enum cv8_s_sections
 };
 
 /* CV8 line numbers - not supported yet */
-struct cv8_linenumber_item
-{
+struct cv8_linenumber_item {
 	uint_32 offset;
 	uint_32 line;
 };
 
-struct cv8_linenumber_header
-{
+struct cv8_linenumber_header {
 	uint_32 section_start;
 	uint_16 section_index;
 	uint_32 section_length;

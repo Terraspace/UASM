@@ -72,22 +72,19 @@
  //static char *srcname;          /* name of source module (name + extension) */
  //static bool extused;
 
-struct localname
-{
+struct localname {
 	void *next;
 	struct asym *sym;
 };
 
-enum internal_sections
-{
+enum internal_sections {
 	SHSTRTAB_IDX,
 	SYMTAB_IDX,
 	STRTAB_IDX,
 	NUM_INTSEGS
 };
 
-struct intsegparm
-{
+struct intsegparm {
 	const char *name;
 	unsigned type;
 };
@@ -99,8 +96,7 @@ static const struct intsegparm internal_segparms[] = {
 	{ ".strtab",   SHT_STRTAB },
 };
 
-struct intseg
-{
+struct intseg {
 	uint_32 size;
 	uint_32 fileoffset;
 	void *data;
@@ -109,8 +105,7 @@ struct intseg
 //static struct intseg internal_segs[NUM_INTSEGS];
 
 /* v2.12: all global variables replaced by struct elfmod */
-struct elfmod
-{
+struct elfmod {
 	uint_32 symindex;       /* entries in symbol table */
 	uint_32 start_globals;  /* start index globals in symbol table */
 	char *srcname;          /* name of source module (name + extension) */
@@ -118,8 +113,7 @@ struct elfmod
 	bool extused;           /* gnu extensions used */
 #endif
 	struct intseg internal_segs[NUM_INTSEGS];
-	union
-	{
+    union {
 		Elf32_Ehdr ehdr32;
 #if AMD64_SUPPORT
 		Elf64_Ehdr ehdr64;
@@ -128,15 +122,13 @@ struct elfmod
 };
 
 /* struct to help convert section names in COFF, ELF, PE */
-struct conv_section
-{
+struct conv_section {
 	uint_8 len;
 	uint_8 flags; /* see below */
 	const char *src;
 	const char *dst;
 };
-enum cvs_flags
-{
+enum cvs_flags {
 	CSF_GRPCHK = 1
 };
 
@@ -155,14 +147,11 @@ static char *ElfConvertSectionName(const struct asym *sym, char *buffer)
 {
 	int i;
 
-	for (i = 0; i < sizeof(cst) / sizeof(cst[0]); i++)
-	{
-		if (memcmp(sym->name, cst[i].src, cst[i].len) == 0)
-		{
+    for ( i = 0; i < sizeof( cst ) / sizeof( cst[0] ); i++ ) {
+        if ( memcmp( sym->name, cst[i].src, cst[i].len ) == 0 ) {
 			if (sym->name[cst[i].len] == NULLC)
 				return((char *)cst[i].dst);
-			else if ((cst[i].flags & CSF_GRPCHK)  && sym->name[cst[i].len] == '$')
-			{
+            else if ( ( cst[i].flags & CSF_GRPCHK )  && sym->name[cst[i].len] == '$' ) {
 				strcpy(buffer, cst[i].dst);
 				strcat(buffer, sym->name+cst[i].len);
 				return(buffer);
@@ -180,8 +169,7 @@ static int get_num_reloc_sections(void)
 	struct dsym    *curr;
 	int num = 0;
 
-	for (curr = SymTables[TAB_SEG].head; curr; curr = curr->next)
-	{
+    for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
 		if (curr->e.seginfo->FixupList.head)
 			num++;
 	}
@@ -221,8 +209,7 @@ static uint_32 set_symtab32(struct elfmod *em, uint_32 entries, struct localname
 	p32++;
 
 	/* 2. make section entries */
-	for (curr = SymTables[TAB_SEG].head; curr; curr = curr->next)
-	{
+    for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
 		//p32->st_name = ?;  /* name isn't set */
 		p32->st_info = ELF32_ST_INFO(STB_LOCAL, STT_SECTION);
 		p32->st_shndx = GetSegIdx(curr->sym.segment);
@@ -231,8 +218,7 @@ static uint_32 set_symtab32(struct elfmod *em, uint_32 entries, struct localname
 
 	/* 3. locals */
 
-	for (localscurr = localshead; localscurr; localscurr = localscurr->next)
-	{
+    for ( localscurr = localshead ; localscurr ; localscurr = localscurr->next ) {
 		len = Mangle(localscurr->sym, buffer);
 		p32->st_name = strsize;
 		curr = (struct dsym *)localscurr->sym->segment;
@@ -260,8 +246,7 @@ static uint_32 set_symtab32(struct elfmod *em, uint_32 entries, struct localname
 
 	/* 4. externals + communals (+ protos [since v2.01]) */
 
-	for (curr = SymTables[TAB_EXT].head; curr != NULL; curr = curr->next)
-	{
+    for( curr = SymTables[TAB_EXT].head ; curr != NULL ;curr = curr->next ) {
 		/* skip "weak" (=unused) externdefs */
 		if (curr->sym.iscomm == FALSE && curr->sym.weak == TRUE)
 			continue;
@@ -270,14 +255,11 @@ static uint_32 set_symtab32(struct elfmod *em, uint_32 entries, struct localname
 		p32->st_name = strsize;
 
 		/* for COMMUNALs, store their size in the Value field */
-		if (curr->sym.iscomm == TRUE)
-		{
+        if ( curr->sym.iscomm == TRUE ) {
 			p32->st_info = ELF32_ST_INFO(STB_GLOBAL, STT_COMMON);
 			p32->st_value = curr->sym.total_size;
 			p32->st_shndx = SHN_COMMON;
-		}
-		else
-		{
+        } else {
 #if OWELFIMPORT
 			p32->st_info = (IsWeak(curr->sym) ? ELF32_ST_INFO(STB_WEAK, STT_IMPORT) : ELF32_ST_INFO(STB_GLOBAL, STT_IMPORT));
 #else
@@ -295,8 +277,7 @@ static uint_32 set_symtab32(struct elfmod *em, uint_32 entries, struct localname
 
 #if ELFALIAS
 	/* 5. aliases */
-	for (curr = SymTables[TAB_ALIAS].head; curr != NULL; curr = curr->next)
-	{
+    for( curr = SymTables[TAB_ALIAS].head ; curr != NULL ;curr = curr->next ) {
 		len = Mangle(&curr->sym, buffer);
 
 		p32->st_name = strsize;
@@ -316,8 +297,7 @@ static uint_32 set_symtab32(struct elfmod *em, uint_32 entries, struct localname
 #endif
 
 	/* 6. PUBLIC entries */
-	for (q = ModuleInfo.g.PubQueue.head; q; q = q->next)
-	{
+    for ( q = ModuleInfo.g.PubQueue.head; q; q = q->next ) {
 		sym = q->sym;
 		len = Mangle(sym, buffer);
 
@@ -353,8 +333,7 @@ static uint_32 set_symtab32(struct elfmod *em, uint_32 entries, struct localname
 		p32++;
 	}
 #if ADDSTARTLABEL
-	if (ModuleInfo.g.start_label)
-	{
+    if ( ModuleInfo.g.start_label ) {
 		len = Mangle(ModuleInfo.g.start_label, buffer);
 		p32->st_name = strsize;
 		p32->st_info = ELF32_ST_INFO(STB_ENTRY, STT_FUNC);
@@ -412,8 +391,7 @@ static uint_32 set_symtab64(struct elfmod *em, uint_32 entries, struct localname
 	p64++;
 
 	/* 2. make section entries */
-	for (curr = SymTables[TAB_SEG].head; curr; curr = curr->next)
-	{
+    for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
 		//p64->st_name = ?;  /* name isn't set */
 		p64->st_info = ELF64_ST_INFO(STB_LOCAL, STT_SECTION);
 		p64->st_shndx = GetSegIdx(curr->sym.segment);
@@ -422,8 +400,7 @@ static uint_32 set_symtab64(struct elfmod *em, uint_32 entries, struct localname
 
 	/* 3. locals */
 
-	for (localscurr = localshead; localscurr; localscurr = localscurr->next)
-	{
+    for ( localscurr = localshead ; localscurr ; localscurr = localscurr->next ) {
 		len = Mangle(localscurr->sym, buffer);
 		p64->st_name = strsize;
 		curr = (struct dsym *)localscurr->sym->segment;
@@ -451,8 +428,7 @@ static uint_32 set_symtab64(struct elfmod *em, uint_32 entries, struct localname
 
 	/* 4. externals + communals ( + protos [since v2.01]) */
 
-	for (curr = SymTables[TAB_EXT].head; curr != NULL; curr = curr->next)
-	{
+    for( curr = SymTables[TAB_EXT].head ; curr != NULL ;curr = curr->next ) {
 		/* skip "weak" (=unused) externdefs */
 		if (curr->sym.iscomm == FALSE && curr->sym.weak == TRUE)
 			continue;
@@ -461,14 +437,11 @@ static uint_32 set_symtab64(struct elfmod *em, uint_32 entries, struct localname
 		p64->st_name = strsize;
 
 		/* for COMMUNALs, store their size in the Value field */
-		if (curr->sym.iscomm == TRUE)
-		{
+        if ( curr->sym.iscomm == TRUE ) {
 			p64->st_info = ELF64_ST_INFO(STB_GLOBAL, STT_COMMON);
 			p64->st_value = curr->sym.total_size;
 			p64->st_shndx = SHN_COMMON;
-		}
-		else
-		{
+        } else {
 #if OWELFIMPORT
 			p64->st_info = (IsWeak(curr->sym) ? ELF64_ST_INFO(STB_WEAK, STT_IMPORT) : ELF64_ST_INFO(STB_GLOBAL, STT_IMPORT));
 #else
@@ -487,8 +460,7 @@ static uint_32 set_symtab64(struct elfmod *em, uint_32 entries, struct localname
 #if ELFALIAS
 	/* 5. aliases */
 
-	for (curr = SymTables[TAB_ALIAS].head; curr != NULL; curr = curr->next)
-	{
+    for( curr = SymTables[TAB_ALIAS].head ; curr != NULL ;curr = curr->next ) {
 		len = Mangle(&curr->sym, buffer);
 
 		p64->st_name = strsize;
@@ -508,8 +480,7 @@ static uint_32 set_symtab64(struct elfmod *em, uint_32 entries, struct localname
 #endif
 
 	/* 6. PUBLIC entries */
-	for (q = ModuleInfo.g.PubQueue.head; q; q = q->next)
-	{
+    for ( q = ModuleInfo.g.PubQueue.head; q; q = q->next ) {
 		sym = q->sym;
 		len = Mangle(sym, buffer);
 
@@ -545,8 +516,7 @@ static uint_32 set_symtab64(struct elfmod *em, uint_32 entries, struct localname
 		p64++;
 	}
 #if ADDSTARTLABEL
-	if (ModuleInfo.g.start_label)
-	{
+    if ( ModuleInfo.g.start_label ) {
 		len = Mangle(ModuleInfo.g.start_label, buffer);
 		p64->st_name = strsize;
 		p64->st_info = ELF64_ST_INFO(STB_ENTRY, STT_FUNC);
@@ -573,8 +543,7 @@ static void set_symtab_values(struct elfmod *em)
 	//struct asym *sym;
 	struct qnode *q;
 	char *p2;
-	struct
-	{
+    struct {
 		struct localname *head;
 		struct localname *tail;
 	} locals = {NULL, NULL};
@@ -596,35 +565,26 @@ static void set_symtab_values(struct elfmod *em)
 
 	/* add local symbols to symbol table */
 
-	for (curr = SymTables[TAB_SEG].head; curr; curr = curr->next)
-	{
-		if (curr->e.seginfo->num_relocs)
-		{
+    for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
+        if ( curr->e.seginfo->num_relocs ) {
 			struct fixup *fix = curr->e.seginfo->FixupList.head;
-			for (; fix; fix = fix->nextrlc)
-			{
+            for ( ; fix; fix = fix->nextrlc ) {
 				/* if it's not EXTERNAL/PUBLIC, add symbol. */
 				/* however, if it's an assembly time variable */
 				/* use a raw section reference */
-				if (fix->sym->variable)
-				{
+                if ( fix->sym->variable ) {
 					fix->sym = fix->segment_var;
-				}
-				else if ((fix->sym->state == SYM_INTERNAL) &&
+                } else if ( ( fix->sym->state == SYM_INTERNAL ) &&
 						 fix->sym->included == FALSE &&
-						 fix->sym->ispublic == FALSE)
-				{
+                    fix->sym->ispublic == FALSE ) {
 					fix->sym->included = TRUE;
 					localscurr = LclAlloc(sizeof(struct localname));
 					localscurr->next = NULL;
 					localscurr->sym = fix->sym;
-					if (locals.tail)
-					{
+                    if (locals.tail) {
 						locals.tail->next = localscurr;
 						locals.tail = localscurr;
-					}
-					else
-					{
+                    } else {
 						locals.head = locals.tail = localscurr;
 					}
 					fix->sym->ext_idx = em->symindex++;
@@ -636,8 +596,7 @@ static void set_symtab_values(struct elfmod *em)
 	em->start_globals = em->symindex;
 
 	/* count EXTERNs and used EXTERNDEFs (and PROTOs [since v2.01]) */
-	for (curr = SymTables[TAB_EXT].head; curr != NULL; curr = curr->next)
-	{
+    for( curr = SymTables[TAB_EXT].head ; curr != NULL ;curr = curr->next ) {
 		if (curr->sym.iscomm == FALSE && curr->sym.weak == TRUE)
 			continue;
 		curr->sym.ext_idx = em->symindex++;
@@ -646,16 +605,14 @@ static void set_symtab_values(struct elfmod *em)
 
 #if ELFALIAS
 	/* count aliases */
-	for (curr = SymTables[TAB_ALIAS].head; curr != NULL; curr = curr->next)
-	{
+    for( curr = SymTables[TAB_ALIAS].head ; curr != NULL ;curr = curr->next ) {
 		curr->sym.idx = em->symindex++;
 	}
 	DebugMsg(("set_symtab_values: index after ALIASES: %u\n", em->symindex));
 #endif
 
 	/* count publics */
-	for (q = ModuleInfo.g.PubQueue.head; q; q = q->next)
-	{
+    for ( q = ModuleInfo.g.PubQueue.head; q; q = q->next ) {
 		q->sym->ext_idx = em->symindex++;
 	}
 	DebugMsg(("set_symtab_values: index after PUBLICs: %u\n", em->symindex));
@@ -687,32 +644,27 @@ static void set_symtab_values(struct elfmod *em)
 	strcpy(p2, em->srcname);
 	p2 += strlen(p2) + 1;
 
-	for (localscurr = locals.head; localscurr; localscurr = localscurr->next)
-	{
+    for ( localscurr = locals.head ; localscurr ; localscurr = localscurr->next ) {
 		p2 += Mangle(localscurr->sym, p2) + 1;
 	}
 
-	for (curr = SymTables[TAB_EXT].head; curr != NULL; curr = curr->next)
-	{
+    for( curr = SymTables[TAB_EXT].head ; curr != NULL ;curr = curr->next ) {
 		if (curr->sym.iscomm == FALSE && curr->sym.weak == TRUE)
 			continue;
 		p2 += Mangle(&curr->sym, p2) + 1;
 	}
 
 #if ELFALIAS
-	for (curr = SymTables[TAB_ALIAS].head; curr != NULL; curr = curr->next)
-	{
+    for( curr = SymTables[TAB_ALIAS].head ; curr != NULL ;curr = curr->next ) {
 		p2 += Mangle(&curr->sym, p2) + 1;
 	}
 #endif
 
-	for (q = ModuleInfo.g.PubQueue.head; q; q = q->next)
-	{
+    for ( q = ModuleInfo.g.PubQueue.head; q; q = q->next ) {
 		p2 += Mangle(q->sym, p2) + 1;
 	}
 #if ADDSTARTLABEL
-	if (ModuleInfo.g.start_label)
-	{
+    if ( ModuleInfo.g.start_label ) {
 		Mangle(ModuleInfo.g.start_label, p2);
 	}
 #endif
@@ -738,8 +690,7 @@ static void set_shstrtab_values(struct elfmod *em)
 	char buffer[MAX_ID_LEN+1];
 
 	/* get size of section names defined in the program & relocation sections ) */
-	for (curr = SymTables[TAB_SEG].head; curr; curr = curr->next)
-	{
+    for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
 		/* v2.07: ALIAS name defined? */
 		p = (curr->e.seginfo->aliasname ? curr->e.seginfo->aliasname : ElfConvertSectionName(&curr->sym, buffer));
 		size += strlen(p) + 1;
@@ -752,8 +703,7 @@ static void set_shstrtab_values(struct elfmod *em)
 #endif
 	}
 	/* get internal section name sizes */
-	for (i = 0; i < NUM_INTSEGS; i++)
-	{
+    for ( i = 0; i < NUM_INTSEGS; i++ ) {
 		size += strlen(internal_segparms[i].name) + 1;
 	}
 
@@ -766,22 +716,18 @@ static void set_shstrtab_values(struct elfmod *em)
 	*p++ = NULLC; /* NULL section name */
 
 	/* 1. names of program sections */
-	for (curr = SymTables[TAB_SEG].head; curr; curr = curr->next)
-	{
+    for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
 		strcpy(p, curr->e.seginfo->aliasname ? curr->e.seginfo->aliasname : ElfConvertSectionName(&curr->sym, buffer));
 		p += strlen(p) + 1;
 	}
 	/* 2. names of internal sections */
-	for (i = 0; i < NUM_INTSEGS; i++)
-	{
+    for ( i = 0; i < NUM_INTSEGS; i++ ) {
 		strcpy(p, internal_segparms[i].name);
 		p += strlen(p) + 1;
 	}
 	/* 3. names of "relocation" sections */
-	for (curr = SymTables[TAB_SEG].head; curr; curr = curr->next)
-	{
-		if (curr->e.seginfo->FixupList.head)
-		{
+    for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
+        if ( curr->e.seginfo->FixupList.head ) {
 #if AMD64_SUPPORT
 			strcpy(p, ((ModuleInfo.defOfssize == USE64) ? ".rela": ".rel"));
 #else
@@ -851,34 +797,23 @@ static int elf_write_section_table32(struct module_info *modinfo, struct elfmod 
 	p++; /* skip 'name' of NULL entry */
 
 	/* write the section headers defined in the module, */
-	for (curr = SymTables[TAB_SEG].head; curr; curr = curr->next)
-	{
+    for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
 		memset(&shdr32, 0, sizeof(shdr32));
 
 		shdr32.sh_name = p - (uint_8 *)em->internal_segs[SHSTRTAB_IDX].data;
 		p += strlen((char *)p) + 1;
-		if (curr->e.seginfo->info == TRUE)
-		{ /* v2.07:added; v2.12: highest priority */
+        if ( curr->e.seginfo->info == TRUE ) { /* v2.07:added; v2.12: highest priority */
 			shdr32.sh_type = SHT_NOTE;
 			shdr32.sh_flags = 0;
-		}
-		else
-		{
+        } else {
 			shdr32.sh_type = (curr->e.seginfo->segtype != SEGTYPE_BSS ? SHT_PROGBITS : SHT_NOBITS);
-			if (curr->e.seginfo->segtype == SEGTYPE_CODE)
-			{
+            if ( curr->e.seginfo->segtype == SEGTYPE_CODE ) {
 				shdr32.sh_flags = SHF_EXECINSTR | SHF_ALLOC;
-			}
-			else if (curr->e.seginfo->readonly == TRUE)
-			{
+            } else if ( curr->e.seginfo->readonly == TRUE ) {
 				shdr32.sh_flags = SHF_ALLOC;
-			}
-			else if (curr->e.seginfo->clsym && strcmp(curr->e.seginfo->clsym->name, "CONST") == 0)
-			{
+            } else if ( curr->e.seginfo->clsym && strcmp( curr->e.seginfo->clsym->name, "CONST" ) == 0 ) {
 				shdr32.sh_flags = SHF_ALLOC; /* v2.07: added */
-			}
-			else
-			{
+            } else {
 				shdr32.sh_flags = SHF_WRITE | SHF_ALLOC;
 			}
 		}
@@ -886,8 +821,7 @@ static int elf_write_section_table32(struct module_info *modinfo, struct elfmod 
 		/* todo: translate values in field <characteristics> to
 		 * elf section flags.
 		 */
-		if (curr->e.seginfo->characteristics == ???)
-		{
+        if ( curr->e.seginfo->characteristics == ??? ) {
 		}
 #endif
 		shdr32.sh_addr = 0;
@@ -911,8 +845,7 @@ static int elf_write_section_table32(struct module_info *modinfo, struct elfmod 
 		 * it didn't cause fatal damage previously, but made the
 		 * object module unnecessary large.
 		 */
-		if (shdr32.sh_type != SHT_NOBITS)
-		{
+        if ( shdr32.sh_type != SHT_NOBITS ) {
 			fileoffset += shdr32.sh_size;
 			fileoffset = (fileoffset + 0xF) & ~0xF;
 		}
@@ -924,8 +857,7 @@ static int elf_write_section_table32(struct module_info *modinfo, struct elfmod 
 	set_symtab_values(em);
 
 	/* write headers of internal sections */
-	for (i = 0; i < NUM_INTSEGS; i++)
-	{
+    for ( i = 0; i < NUM_INTSEGS; i++ ) {
 		shdr32.sh_name = p - (uint_8 *)em->internal_segs[SHSTRTAB_IDX].data;
 		p += strlen((char *)p) + 1;
 		shdr32.sh_type = internal_segparms[i].type;
@@ -934,15 +866,12 @@ static int elf_write_section_table32(struct module_info *modinfo, struct elfmod 
 		em->internal_segs[i].fileoffset = fileoffset;
 		shdr32.sh_size = em->internal_segs[i].size;
 		/* section .symtab is special */
-		if (i == SYMTAB_IDX)
-		{
+        if ( i == SYMTAB_IDX ) {
 			shdr32.sh_link = 1 + modinfo->g.num_segs + STRTAB_IDX;
 			shdr32.sh_info = em->start_globals;
 			shdr32.sh_addralign = 4;
 			shdr32.sh_entsize = sizeof(Elf32_Sym);
-		}
-		else
-		{
+        } else {
 			shdr32.sh_link = 0;
 			shdr32.sh_info = 0;
 			shdr32.sh_addralign = 1;
@@ -957,8 +886,7 @@ static int elf_write_section_table32(struct module_info *modinfo, struct elfmod 
 	}
 
 	/* write headers of reloc sections */
-	for (curr = SymTables[TAB_SEG].head; curr; curr = curr->next)
-	{
+    for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
 		if (curr->e.seginfo->FixupList.head == NULL)
 			continue;
 
@@ -1022,34 +950,23 @@ static int elf_write_section_table64(struct module_info *modinfo, struct elfmod 
 	p++; /* skip 'name' of NULL entry */
 
 	/* write the section headers defined in the module */
-	for (curr = SymTables[TAB_SEG].head; curr; curr = curr->next)
-	{
+    for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
 		memset(&shdr64, 0, sizeof(shdr64));
 
 		shdr64.sh_name = p - (uint_8 *)em->internal_segs[SHSTRTAB_IDX].data;
 		p += strlen((char *)p) + 1;
-		if (curr->e.seginfo->info == TRUE)
-		{ /* v2.07:added; v2.12: highest priority */
+        if ( curr->e.seginfo->info == TRUE ) { /* v2.07:added; v2.12: highest priority */
 			shdr64.sh_type = SHT_NOTE;
 			shdr64.sh_flags = 0;
-		}
-		else
-		{
+        } else {
 			shdr64.sh_type = (curr->e.seginfo->segtype != SEGTYPE_BSS ? SHT_PROGBITS : SHT_NOBITS);
-			if (curr->e.seginfo->segtype == SEGTYPE_CODE)
-			{
+            if ( curr->e.seginfo->segtype == SEGTYPE_CODE ) {
 				shdr64.sh_flags = SHF_EXECINSTR | SHF_ALLOC;
-			}
-			else if (curr->e.seginfo->readonly == TRUE)
-			{
+            } else if ( curr->e.seginfo->readonly == TRUE ) {
 				shdr64.sh_flags = SHF_ALLOC;
-			}
-			else if (curr->e.seginfo->clsym && strcmp(curr->e.seginfo->clsym->name, "CONST") == 0)
-			{
+            } else if ( curr->e.seginfo->clsym && strcmp( curr->e.seginfo->clsym->name, "CONST" ) == 0 ) {
 				shdr64.sh_flags = SHF_ALLOC; /* v2.07: added */
-			}
-			else
-			{
+            } else {
 				shdr64.sh_flags = SHF_WRITE | SHF_ALLOC;
 			}
 		}
@@ -1057,8 +974,7 @@ static int elf_write_section_table64(struct module_info *modinfo, struct elfmod 
 		/* todo: translate values in field <characteristics> to
 		 * elf section flags.
 		 */
-		if (curr->e.seginfo->characteristics == ???)
-		{
+        if ( curr->e.seginfo->characteristics == ??? ) {
 		}
 #endif
 		shdr64.sh_addr = 0;
@@ -1079,8 +995,7 @@ static int elf_write_section_table64(struct module_info *modinfo, struct elfmod 
 		curr->e.seginfo->num_relocs = get_relocation_count(curr);
 
 		/* v2.12: don't adjust fileoffset for SHT_NOBITS sections */
-		if (shdr64.sh_type != SHT_NOBITS)
-		{
+        if ( shdr64.sh_type != SHT_NOBITS ) {
 			fileoffset += shdr64.sh_size;
 			fileoffset = (fileoffset + 0xF) & ~0xF;
 		}
@@ -1092,8 +1007,7 @@ static int elf_write_section_table64(struct module_info *modinfo, struct elfmod 
 	set_symtab_values(em);
 
 	/* write headers of internal sections */
-	for (i = 0; i < NUM_INTSEGS; i++)
-	{
+    for ( i = 0; i < NUM_INTSEGS; i++ ) {
 		shdr64.sh_name = p - (uint_8 *)em->internal_segs[SHSTRTAB_IDX].data;
 		p += strlen((char *)p) + 1;
 		shdr64.sh_type = internal_segparms[i].type;
@@ -1102,15 +1016,12 @@ static int elf_write_section_table64(struct module_info *modinfo, struct elfmod 
 		em->internal_segs[i].fileoffset = fileoffset;
 		shdr64.sh_size = em->internal_segs[i].size;
 		/* section .symtab is special */
-		if (i == SYMTAB_IDX)
-		{
+        if ( i == SYMTAB_IDX ) {
 			shdr64.sh_link = 1 + modinfo->g.num_segs + STRTAB_IDX;
 			shdr64.sh_info = em->start_globals;
 			shdr64.sh_addralign = 4;
 			shdr64.sh_entsize = sizeof(Elf64_Sym);
-		}
-		else
-		{
+        } else {
 			shdr64.sh_link = 0;
 			shdr64.sh_info = 0;
 			shdr64.sh_addralign = 1;
@@ -1125,8 +1036,7 @@ static int elf_write_section_table64(struct module_info *modinfo, struct elfmod 
 	}
 
 	/* write headers of reloc sections */
-	for (curr = SymTables[TAB_SEG].head; curr; curr = curr->next)
-	{
+    for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
 		if (curr->e.seginfo->FixupList.head == NULL)
 			continue;
 
@@ -1170,11 +1080,9 @@ static void write_relocs32(struct elfmod *em, struct dsym *curr)
 	Elf32_Rel reloc32;
 
 	DebugMsg(("write_relocs32: enter\n"));
-	for (fixup = curr->e.seginfo->FixupList.head; fixup; fixup = fixup->nextrlc)
-	{
+    for ( fixup = curr->e.seginfo->FixupList.head; fixup; fixup = fixup->nextrlc ) {
 		reloc32.r_offset = fixup->locofs;
-		switch (fixup->type)
-		{
+        switch ( fixup->type ) {
 			case FIX_OFF32:         elftype = R_386_32;             break;
 			case FIX_RELOFF32:      elftype = R_386_PC32;           break;
 				//case FIX_???:         elftype = R_386_GOT32;          break;
@@ -1195,11 +1103,9 @@ static void write_relocs32(struct elfmod *em, struct dsym *curr)
 				DebugMsg(("write_relocs32(): unhandled reloc loc=%X type=%u idx=%u sym=%s\n",
 						 fixup->locofs, fixup->type, fixup->sym->ext_idx, fixup->sym->name));
 				elftype = R_386_NONE;
-				if (fixup->type < FIX_LAST)
-				{
+            if ( fixup->type < FIX_LAST ) {
 					EmitErr(INVALID_FIXUP_TYPE, ModuleInfo.fmtopt->formatname, fixup->type, curr->sym.name, fixup->locofs);
-				}
-				else
+            } else
 					EmitErr(UNKNOWN_FIXUP_TYPE, fixup->type, curr->sym.name, fixup->locofs);
 		}
 		/* the low 8 bits of info are type */
@@ -1224,8 +1130,7 @@ static void write_relocs64(struct dsym *curr)
 	Elf64_Rela reloc64; /* v2.05: changed to Rela */
 
 	DebugMsg(("write_relocs64: enter\n"));
-	for (fixup = curr->e.seginfo->FixupList.head; fixup; fixup = fixup->nextrlc)
-	{
+    for ( fixup = curr->e.seginfo->FixupList.head; fixup; fixup = fixup->nextrlc ) {
 		unsigned symidx = fixup->sym->ext_idx;
 		reloc64.r_offset = fixup->locofs;
 		/* v2.07: addend wasn't handled correctly.
@@ -1245,12 +1150,10 @@ static void write_relocs64(struct dsym *curr)
 		reloc64.r_addend = -fixup->addbytes;
 		DebugMsg(("write_relocs64(): reloc loc=%X type=%u idx=%u sym=%s ofs=%X addbyt=%u\n",
 				 fixup->locofs, fixup->type, fixup->sym->ext_idx, fixup->sym->name, fixup->offset, fixup->addbytes));
-		switch (fixup->type)
-		{
+        switch ( fixup->type ) {
 			case FIX_RELOFF32:
 #if 0  /* v2.07: activate if the section's index is to be used as symtab ref */
-				if (fixup->sym->segment != &curr->sym)
-				{
+            if ( fixup->sym->segment != &curr->sym ) {
 					//printf("PC-relative fixup to another section: %s\n", fixup->sym->name );
 					reloc64.r_addend += fixup->sym->offset;
 					symidx = fixup->sym->segment->ext_idx;
@@ -1289,11 +1192,9 @@ static void write_relocs64(struct dsym *curr)
 				DebugMsg(("write_relocs64(): unhandled reloc loc=%X type=%u idx=%u sym=%s\n",
 						 fixup->locofs, fixup->type, fixup->sym->ext_idx, fixup->sym->name));
 				elftype = R_X86_64_NONE;
-				if (fixup->type < FIX_LAST)
-				{
+            if ( fixup->type < FIX_LAST ) {
 					EmitErr(INVALID_FIXUP_TYPE, ModuleInfo.fmtopt->formatname, fixup->type, curr->sym.name, fixup->locofs);
-				}
-				else
+            } else
 					EmitErr(UNKNOWN_FIXUP_TYPE, fixup->type, curr->sym.name, fixup->locofs);
 		}
 		/* the low 8 bits of info are type */
@@ -1320,12 +1221,10 @@ static ret_code elf_write_data(struct module_info *modinfo, struct elfmod *em)
 
 	DebugMsg(("elf_write_data: enter\n"));
 
-	for (curr = SymTables[TAB_SEG].head; curr; curr = curr->next)
-	{
+    for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
 		size = curr->sym.max_offset - curr->e.seginfo->start_loc;
 		DebugMsg(("elf_write_data(%s): program data at ofs=%X, size=%X\n", curr->sym.name, curr->e.seginfo->fileoffset, size));
-		if (curr->e.seginfo->segtype != SEGTYPE_BSS && size != 0)
-		{
+        if ( curr->e.seginfo->segtype != SEGTYPE_BSS && size != 0 ) {
 			fseek(CurrFile[OBJ], curr->e.seginfo->fileoffset + curr->e.seginfo->start_loc, SEEK_SET);
 			/**/myassert(curr->e.seginfo->CodeBuffer);
 			if (fwrite(curr->e.seginfo->CodeBuffer, 1, size, CurrFile[OBJ]) != size)
@@ -1334,10 +1233,8 @@ static ret_code elf_write_data(struct module_info *modinfo, struct elfmod *em)
 	}
 
 	/* write internal sections */
-	for (i = 0; i < NUM_INTSEGS; i++)
-	{
-		if (em->internal_segs[i].data)
-		{
+    for ( i = 0; i < NUM_INTSEGS; i++ ) {
+        if ( em->internal_segs[i].data ) {
 			DebugMsg(("elf_write_data(%s): internal at ofs=%X, size=%X\n", internal_segparms[i].name, em->internal_segs[i].fileoffset, em->internal_segs[i].size));
 			fseek(CurrFile[OBJ], em->internal_segs[i].fileoffset, SEEK_SET);
 			if (fwrite(em->internal_segs[i].data, 1, em->internal_segs[i].size, CurrFile[OBJ]) != em->internal_segs[i].size)
@@ -1346,10 +1243,8 @@ static ret_code elf_write_data(struct module_info *modinfo, struct elfmod *em)
 	}
 
 	/* write reloc sections content */
-	for (curr = SymTables[TAB_SEG].head; curr; curr = curr->next)
-	{
-		if (curr->e.seginfo->num_relocs)
-		{
+    for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
+        if ( curr->e.seginfo->num_relocs ) {
 			DebugMsg(("elf_write_data(%s): relocs at ofs=%X, size=%X\n", curr->sym.name, curr->e.seginfo->reloc_offset, curr->e.seginfo->num_relocs * sizeof(Elf32_Rel)));
 			fseek(CurrFile[OBJ], curr->e.seginfo->reloc_offset, SEEK_SET);
 #if AMD64_SUPPORT
@@ -1361,8 +1256,7 @@ static ret_code elf_write_data(struct module_info *modinfo, struct elfmod *em)
 		}
 	}
 #if GNURELOCS
-	if (em->extused)
-	{
+    if ( em->extused ) {
 		EmitWarn(2, ELF_GNU_EXTENSIONS_USED);
 	}
 #endif
@@ -1393,8 +1287,7 @@ static ret_code elf_write_module(struct module_info *modinfo)
 	/* position at 0 ( probably unnecessary, since there were no writes yet ) */
 	fseek(CurrFile[OBJ], 0, SEEK_SET);
 
-	switch (modinfo->defOfssize)
-	{
+    switch ( modinfo->defOfssize ) {
 #if AMD64_SUPPORT
 		case USE64:
 			memcpy(&em.ehdr64.e_ident, ELF_SIGNATURE, ELF_SIGNATURE_LEN);

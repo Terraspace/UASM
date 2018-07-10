@@ -31,8 +31,7 @@
 extern uint_32 list_pos;  /* current LST file position */
 
 static struct mod_state modstate; /* struct to store assembly status */
-static struct
-{
+static struct {
 	struct line_item *head;
 	struct line_item *tail;
 } LineStore;
@@ -88,12 +87,10 @@ void StoreLine(const char *srcline, int flags, uint_32 lst_position)
 	LineStoreCurr->srcfile = get_curr_srcfile();
 	LineStoreCurr->macro_level = MacroLevel;
 	LineStoreCurr->list_pos = (lst_position ? lst_position : list_pos);
-	if (j)
-	{
+    if ( j ) {
 		memcpy(LineStoreCurr->line, srcline, i);
 		memcpy(LineStoreCurr->line + i, ModuleInfo.CurrComment, j + 1);
-	}
-	else
+    } else
 		memcpy(LineStoreCurr->line, srcline, i + 1);
 
 	DebugMsg1(("StoreLine(>%s<, lst_position=%u): cur=%X\n", LineStoreCurr->line, lst_position, LineStoreCurr));
@@ -150,13 +147,10 @@ void SaveVariableState(struct asym *sym)
 	p->hvalue = sym->value3264; /* v2.05: added */
 	p->mem_type = sym->mem_type;  /* v2.07: added */
 	p->isdefined = sym->isdefined;
-	if (modstate.Equ.tail)
-	{
+    if ( modstate.Equ.tail ) {
 		modstate.Equ.tail->next = p;
 		modstate.Equ.tail = p;
-	}
-	else
-	{
+    } else {
 		modstate.Equ.head = modstate.Equ.tail = p;
 	}
 	//    printf("state of symbol >%s< saved, value=%u, defined=%u\n", sym->name, sym->value, sym->defined);
@@ -166,12 +160,10 @@ struct line_item *RestoreState(void)
 	/************************************/
 {
 	DebugMsg1(("RestoreState enter\n"));
-	if (modstate.init)
-	{
+    if ( modstate.init ) {
 		struct equ_item *curr;
 		/* restore values of assembly time variables */
-		for (curr = modstate.Equ.head; curr; curr = curr->next)
-		{
+        for ( curr = modstate.Equ.head; curr; curr = curr->next ) {
 			DebugMsg1(("RestoreState: sym >%s<, value=%Xh (hvalue=%Xh), defined=%u\n", curr->sym->name, curr->lvalue, curr->hvalue, curr->isdefined));
 			/* v2.07: MT_ABS is obsolete */
 			//if ( curr->sym->mem_type == MT_ABS ) {
@@ -192,8 +184,7 @@ struct line_item *RestoreState(void)
 
 #if 0
 	/* v2.05: AFAICS this can't happen anymore. */
-	if (LineStore.head == NULL)
-	{
+    if ( LineStore.head == NULL ) {
 		struct line_item *endl = LclAlloc(sizeof(struct line_item) + 3);
 		endl->next = NULL;
 		endl->srcfile = 0;
@@ -216,8 +207,7 @@ void FreeLineStore(void)
 /************************/
 {
 	struct line_item *next;
-	for (LineStoreCurr = LineStore.head; LineStoreCurr; )
-	{
+    for ( LineStoreCurr = LineStore.head; LineStoreCurr; ) {
 		next = LineStoreCurr->next;
 		LclFree(LineStoreCurr);
 		LineStoreCurr = next;

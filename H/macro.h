@@ -33,8 +33,7 @@
 
 #define PLACEHOLDER_CHAR '\n' /* "escape" char for macro placeholders */
 
-enum macro_flags
-{
+enum macro_flags {
 #if MACROLABEL
 	MF_LABEL = 0x01,   /* a label exists at pos 0 */
 #endif

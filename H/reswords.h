@@ -31,8 +31,7 @@
 #ifndef _RESWORDS_H_INCLUDED
 #define _RESWORDS_H_INCLUDED
 
-enum reservedword_flags
-{
+enum reservedword_flags {
 	//RWF_SPECIAL  = 1, /* keyword is NO instruction; v2.11: obsolete */
 	RWF_DISABLED = 1, /* keyword disabled */
 	RWF_IA32 = 2, /* keyword specific to IA32 mode */
@@ -47,8 +46,7 @@ enum reservedword_flags
 
 /* structure of items in the "reserved names" table ResWordTable[] */
 
-struct ReservedWord
-{
+struct ReservedWord {
 	uint_16 next;     /* index next entry (used for hash table) */
 	uint_8 len;       /* length of reserved word, i.e. 'AX' = 2 */
 	uint_8 flags;     /* see enum reservedword_flags */

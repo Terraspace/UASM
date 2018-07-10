@@ -11,22 +11,19 @@ typedef void *HANDLE;
 typedef short SHORT;
 typedef unsigned short      WORD;
 
-typedef struct _COORD
-{
+typedef struct _COORD {
 	SHORT X;
 	SHORT Y;
 } COORD, *PCOORD;
 
-typedef struct _SMALL_RECT
-{
+typedef struct _SMALL_RECT {
 	SHORT Left;
 	SHORT Top;
 	SHORT Right;
 	SHORT Bottom;
 } SMALL_RECT, *PSMALL_RECT;
 
-typedef struct _CONSOLE_SCREEN_BUFFER_INFO
-{
+typedef struct _CONSOLE_SCREEN_BUFFER_INFO {
 	COORD dwSize;
 	COORD dwCursorPosition;
 	WORD  wAttributes;

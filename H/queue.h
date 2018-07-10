@@ -32,18 +32,15 @@
 #ifndef QUEUE_H
 #define QUEUE_H 1
 
-struct qnode
-{
+struct qnode {
 	void *next;
-	union
-	{
+    union {
 		const void  *elmt;
 		struct asym *sym;
 	};
 };
 
-struct qdesc
-{
+struct qdesc {
 	void *head;
 	void *tail;
 };

@@ -70,8 +70,7 @@ static const char szSegLine[] = {"%-24s %8" I32_SPEC "X %8" I32_SPEC "X %9" I32_
 static const char szTotal[] = {"%-42s %9" I32_SPEC "X %9" I32_SPEC "X"};
 #endif
 
-struct calc_param
-{
+struct calc_param {
 	uint_8 first;          /* 1=first call of CalcOffset() */
 	uint_8 alignment;      /* current aligment */
 	uint_32 fileoffset;    /* current file offset */
@@ -81,8 +80,7 @@ struct calc_param
 	uint_32 imagestart;    /* -bin: start offset (of first segment), else 0 */
 #if PE_SUPPORT
 	uint_32 rva;           /* -pe: current RVA */
-	union
-	{
+    union {
 		uint_32 imagebase;    /* -pe: image base */
 #if AMD64_SUPPORT
 		uint_64 imagebase64;  /* -pe: image base */
@@ -114,8 +112,7 @@ static const enum seg_type flat_order[] = {
 };
 #define SIZE_PEFLAT ( sizeof( flat_order ) / sizeof( flat_order[0] ) )
 
-enum pe_flags_values
-{
+enum pe_flags_values {
 	PEF_MZHDR = 0x01,  /* 1=create mz header */
 };
 
@@ -194,8 +191,7 @@ uint_32 hfwrite(uint_8 huge *pBuffer, int size, uint_32 count, FILE *file)
 	uint_32 written;
 	unsigned tmpsize;
 
-	for (written = 0; written < count; written += tmpsize)
-	{
+    for ( written = 0; written < count; written += tmpsize ) {
 		if (count > 0xFE00)
 			tmpsize = 0xFE00;
 		else
@@ -218,14 +214,12 @@ static void CalcOffset(struct dsym *curr, struct calc_param *cp)
 	uint_32 offset;
 	struct dsym *grp;
 
-	if (curr->e.seginfo->segtype == SEGTYPE_ABS)
-	{
+    if ( curr->e.seginfo->segtype == SEGTYPE_ABS ) {
 		curr->e.seginfo->start_offset = curr->e.seginfo->abs_frame << 4;
 		DebugMsg(("CalcOffset(%s): abs seg, offset=%" I32_SPEC "Xh\n",
 				 curr->sym.name, curr->e.seginfo->start_offset));
 		return;
-	}
-	else if (curr->e.seginfo->info)
+    } else if ( curr->e.seginfo->info )
 		return;
 
 	grp = (struct dsym *)curr->e.seginfo->group;
@@ -236,24 +230,19 @@ static void CalcOffset(struct dsym *curr, struct calc_param *cp)
 	alignbytes = ((cp->fileoffset + (align - 1)) & (-align)) - cp->fileoffset;
 	cp->fileoffset += alignbytes;
 
-	if (grp == NULL)
-	{
+    if ( grp == NULL ) {
 		offset = cp->fileoffset - cp->sizehdr;
 		DebugMsg(("CalcOffset(%s): fileofs=%" I32_SPEC "Xh, ofs=%" I32_SPEC "Xh\n", curr->sym.name, cp->fileoffset, offset));
-	}
-	else
-	{
+    } else {
 #if PE_SUPPORT
 		if (ModuleInfo.sub_format == SFORMAT_PE || ModuleInfo.sub_format == SFORMAT_64BIT)
 			offset = cp->rva;
 		else
 #endif
-			if (grp->sym.total_size == 0)
-			{
+            if ( grp->sym.total_size == 0 ) {
 				grp->sym.offset = cp->fileoffset - cp->sizehdr;
 				offset = 0;
-			}
-			else
+            } else
 				offset = grp->sym.total_size + alignbytes;
 		DebugMsg(("CalcOffset(%s): fileofs=%" I32_SPEC "Xh, alignbytes=%" I32_SPEC "u, ofs=%" I32_SPEC "Xh, group=%s, grp.ofs=%" I32_SPEC "Xh\n",
 				 curr->sym.name, cp->fileoffset, alignbytes, offset, grp->sym.name, grp->sym.offset));
@@ -264,8 +253,7 @@ static void CalcOffset(struct dsym *curr, struct calc_param *cp)
 	 * "empty" alignment sections are now added to <fileoffset>.
 	 * todo: VA in binary map is displayed wrong.
 	 */
-	if (cp->first == FALSE)
-	{
+    if ( cp->first == FALSE ) {
 		/* v2.05: do the reset more carefully.
 		 * Do reset start_loc only if
 		 * - segment is in a group and
@@ -279,21 +267,17 @@ static void CalcOffset(struct dsym *curr, struct calc_param *cp)
 	curr->e.seginfo->start_offset = offset;
 
 	//if ( cp->first && ModuleInfo.sub_format == SFORMAT_NONE ) {
-	if (ModuleInfo.sub_format == SFORMAT_NONE)
-	{
+    if ( ModuleInfo.sub_format == SFORMAT_NONE ) {
 		cp->fileoffset += curr->sym.max_offset - curr->e.seginfo->start_loc;
 		if (cp->first)
 			cp->imagestart = curr->e.seginfo->start_loc;
 		/* there's no real entry address for BIN, therefore the
 		 start label must be at the very beginning of the file */
-		if (cp->entryoffset == -1)
-		{
+        if ( cp->entryoffset == -1 ) {
 			cp->entryoffset = offset;
 			cp->entryseg = (struct asym *)curr;
 		}
-	}
-	else
-	{
+    } else {
 		/* v2.05: changed, removed */
 		//curr->e.seginfo->fileoffset += curr->e.seginfo->start_loc;
 		//fileoffset += curr->sym.max_offset;
@@ -308,13 +292,11 @@ static void CalcOffset(struct dsym *curr, struct calc_param *cp)
 
 	//offset += curr->sym.max_offset - curr->e.seginfo->start_loc;
 	offset += curr->sym.max_offset;
-	if (grp)
-	{
+    if ( grp ) {
 		//grp->sym.total_size = offset + curr->e.seginfo->start_loc;
 		grp->sym.total_size = offset;
 		/* v2.07: for 16-bit groups, ensure that it fits in 64 kB */
-		if (grp->sym.total_size > 0x10000 && grp->sym.Ofssize == USE16)
-		{
+        if ( grp->sym.total_size > 0x10000 && grp->sym.Ofssize == USE16 ) {
 			EmitWarn(2, GROUP_EXCEEDS_64K, grp->sym.name);
 		}
 	}
@@ -341,14 +323,11 @@ static int GetSegRelocs(uint_16 *pDst)
 	struct fixup *fixup;
 
 	DebugMsg(("GetSegRelocs( %p ) enter\n", pDst));
-	for (curr = SymTables[TAB_SEG].head; curr; curr = curr->next)
-	{
+    for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
 		if (curr->e.seginfo->segtype == SEGTYPE_ABS)
 			continue;
-		for (fixup = curr->e.seginfo->FixupList.head; fixup; fixup = fixup->nextrlc)
-		{
-			switch (fixup->type)
-			{
+        for ( fixup = curr->e.seginfo->FixupList.head; fixup; fixup = fixup->nextrlc ) {
+            switch ( fixup->type ) {
 				case FIX_PTR32:
 				case FIX_PTR16:
 				case FIX_SEG:
@@ -357,13 +336,11 @@ static int GetSegRelocs(uint_16 *pDst)
 						break;
 					DebugMsg(("GetSegRelocs: found seg-related fixup at %s.%" I32_SPEC "X\n", curr->sym.name, fixup->locofs));
 					count++;
-					if (pDst)
-					{
+                if ( pDst ) {
 						/* v2.04: fixed */
 						loc = fixup->locofs + (curr->e.seginfo->start_offset & 0xf);
 						valueseg = curr->e.seginfo->start_offset >> 4;
-						if (curr->e.seginfo->group)
-						{
+                    if ( curr->e.seginfo->group ) {
 							loc += curr->e.seginfo->group->offset & 0xf;
 							valueseg += curr->e.seginfo->group->offset >> 4;
 						}
@@ -373,8 +350,7 @@ static int GetSegRelocs(uint_16 *pDst)
 							loc += 4;
 
 						/* offset may be > 64 kB */
-						while (loc >= 0x10000)
-						{
+                    while ( loc >= 0x10000 ) {
 							loc -= 16;
 							valueseg++;
 						};
@@ -408,15 +384,12 @@ static uint_32 GetImageSize(bool memimage)
 	uint_32 vsize = 0;
 	uint_32 size = 0;
 
-	for (curr = SymTables[TAB_SEG].head, first = TRUE; curr; curr = curr->next)
-	{
+    for( curr = SymTables[TAB_SEG].head, first = TRUE; curr; curr = curr->next ) {
 		uint_32 tmp;
 		if (curr->e.seginfo->segtype == SEGTYPE_ABS || curr->e.seginfo->info)
 			continue;
-		if (memimage == FALSE)
-		{
-			if (curr->e.seginfo->bytes_written == 0)
-			{
+        if ( memimage == FALSE ) {
+            if ( curr->e.seginfo->bytes_written == 0 ) {
 				struct dsym *dir;
 				for (dir = curr->next; dir; dir = dir->next)
 					if (dir->e.seginfo->bytes_written)
@@ -443,8 +416,7 @@ static uint_32 GetImageSize(bool memimage)
 /* micro-linker. resolve internal fixups.
  */
 
-union genptr
-{
+union genptr {
 	uint_8  *db;
 	uint_16 *dw;
 	uint_32 *dd;
@@ -472,25 +444,20 @@ static ret_code DoFixup(struct dsym *curr, struct calc_param *cp)
 		return(NOT_ERROR);
 
 	DebugMsg(("DoFixup(%s) enter, segment start ofs=%" I32_SPEC "Xh\n", curr->sym.name, curr->e.seginfo->start_offset));
-	for (fixup = curr->e.seginfo->FixupList.head; fixup; fixup = fixup->nextrlc)
-	{
+    for ( fixup = curr->e.seginfo->FixupList.head; fixup; fixup = fixup->nextrlc ) {
 		codeptr.db = curr->e.seginfo->CodeBuffer +
 			(fixup->locofs - curr->e.seginfo->start_loc);
 
 		//if ( fixup->sym && fixup->sym->segment ) { /* v2.08: changed */
-		if (fixup->sym && (fixup->sym->segment || fixup->sym->variable))
-		{
+        if ( fixup->sym && ( fixup->sym->segment || fixup->sym->variable ) ) {
 			/* assembly time variable (also $ symbol) in reloc? */
 			/* v2.07: moved inside if-block, using new local var "offset" */
-			if (fixup->sym->variable)
-			{
+            if ( fixup->sym->variable ) {
 				seg = (struct dsym *)fixup->segment_var;
 				offset = 0;
 				DebugMsg(("DoFixup(%s, %04" I32_SPEC "X, %s): variable, fixup->segment=%Xh fixup->offset=%" I32_SPEC "Xh, fixup->sym->offset=%" I32_SPEC "Xh\n",
 						 curr->sym.name, fixup->locofs, fixup->sym->name, seg, fixup->offset, fixup->sym->offset));
-			}
-			else
-			{
+            } else {
 				seg = (struct dsym *)fixup->sym->segment;
 				offset = fixup->sym->offset;
 			}
@@ -499,8 +466,7 @@ static ret_code DoFixup(struct dsym *curr, struct calc_param *cp)
 			 * - the fixup's offset (usually the displacement )
 			 * - the segment/group offset in the image
 			 */
-			switch (fixup->type)
-			{
+            switch ( fixup->type ) {
 				case FIX_OFF32_IMGREL:
 					value = (fixup->offset + offset + seg->e.seginfo->start_offset) - cp->imagestart;
 					DebugMsg(("DoFixup(%s): IMGREL, loc=%" I32_SPEC "X value=%" I32_SPEC "X seg.start=%" I32_SPEC "X imagestart=%" I32_SPEC "X\n",
@@ -511,15 +477,12 @@ static ret_code DoFixup(struct dsym *curr, struct calc_param *cp)
 					/* check if symbol's segment name contains a '$'.
 					 * If yes, search the segment without suffix.
 					 */
-					if (tmp = strchr(seg->sym.name, '$'))
-					{
+                if ( tmp = strchr( seg->sym.name, '$' ) ) {
 						int namlen = tmp - seg->sym.name;
 						struct dsym *segfirst;
-						for (segfirst = SymTables[TAB_SEG].head; segfirst; segfirst = segfirst->next)
-						{
+                    for( segfirst = SymTables[TAB_SEG].head; segfirst; segfirst = segfirst->next ) {
 							if (segfirst->sym.name_size == namlen &&
-								(memcmp(segfirst->sym.name, seg->sym.name, namlen) == 0))
-							{
+                            ( memcmp( segfirst->sym.name, seg->sym.name, namlen ) == 0 ) ) {
 								value = (fixup->offset + offset + seg->e.seginfo->start_offset) - segfirst->e.seginfo->start_offset;
 								DebugMsg(("DoFixup(%s): SECREL, primary seg=%s, start_offset=%" I32_SPEC "X\n",
 										 curr->sym.name, segfirst->sym.name, segfirst->e.seginfo->start_offset));
@@ -541,12 +504,10 @@ static ret_code DoFixup(struct dsym *curr, struct calc_param *cp)
 				default:
 					/* v2.01: don't use group if fixup explicitely refers the segment! */
 					//if ( seg->e.seginfo->group ) {
-					if (seg->e.seginfo->group && fixup->frame_type != FRAME_SEG)
-					{
+                if ( seg->e.seginfo->group && fixup->frame_type != FRAME_SEG ) {
 						value = (seg->e.seginfo->group->offset & 0xF) + seg->e.seginfo->start_offset + fixup->offset + offset;
 #if PE_SUPPORT
-						if (ModuleInfo.sub_format == SFORMAT_PE || ModuleInfo.sub_format == SFORMAT_64BIT)
-						{
+                    if ( ModuleInfo.sub_format == SFORMAT_PE || ModuleInfo.sub_format == SFORMAT_64BIT ) {
 #if AMD64_SUPPORT
 							if (curr->e.seginfo->Ofssize == USE64)
 								value64 = value + cp->imagebase64;
@@ -554,17 +515,14 @@ static ret_code DoFixup(struct dsym *curr, struct calc_param *cp)
 							value += cp->imagebase;
 						}
 #endif
-					}
-					else
+                } else
 						value = (seg->e.seginfo->start_offset & 0xF) + fixup->offset + offset;
 
 					DebugMsg(("DoFixup(%s): loc=%04" I32_SPEC "X, sym=%s, target->start_offset=%" I32_SPEC "Xh, fixup->offset=%" I32_SPEC "Xh, fixup->sym->offset=%" I32_SPEC "Xh\n",
 							 curr->sym.name, fixup->locofs, fixup->sym->name, seg->e.seginfo->start_offset, fixup->offset, offset));
 					break;
 			}
-		}
-		else
-		{
+        } else {
 			/* v2.10: member segment_var is for assembly-time variables only */
 			//seg = (struct dsym *)fixup->segment_var;
 			seg = NULL;
@@ -573,8 +531,7 @@ static ret_code DoFixup(struct dsym *curr, struct calc_param *cp)
 			value = 0;
 		}
 
-		switch (fixup->type)
-		{
+        switch ( fixup->type ) {
 			case FIX_RELOFF8:
 				//*codeptr.db += (value - fixup->locofs + 1) & 0xff;
 				/* changed in v1.95 */
@@ -590,8 +547,7 @@ static ret_code DoFixup(struct dsym *curr, struct calc_param *cp)
 			case FIX_RELOFF32:
 #if AMD64_SUPPORT
 				/* adjust the location for EIP-related offsets if USE64 */
-				if (curr->e.seginfo->Ofssize == USE64)
-				{
+            if ( curr->e.seginfo->Ofssize == USE64 ) {
 					fixup->locofs += fixup->addbytes - 4;
 				}
 #endif
@@ -639,38 +595,29 @@ static ret_code DoFixup(struct dsym *curr, struct calc_param *cp)
 				/* absolute segments are ok */
 				if (fixup->sym &&
 					fixup->sym->state == SYM_SEG &&
-					((struct dsym *)fixup->sym)->e.seginfo->segtype == SEGTYPE_ABS)
-				{
+                ((struct dsym *)fixup->sym)->e.seginfo->segtype == SEGTYPE_ABS ) {
 					*codeptr.dw = ((struct dsym *)fixup->sym)->e.seginfo->abs_frame;
 					break;
 				}
 #if MZ_SUPPORT
-				if (ModuleInfo.sub_format == SFORMAT_MZ)
-				{
+            if ( ModuleInfo.sub_format == SFORMAT_MZ ) {
 					DebugMsg(("DoFixup(%s, %04" I32_SPEC "X): FIX_SEG frame=%u, ", curr->sym.name, fixup->locofs, fixup->frame_type));
-					if (fixup->sym->state == SYM_GRP)
-					{
+                if ( fixup->sym->state == SYM_GRP ) {
 						seg = (struct dsym *)fixup->sym;
 						*codeptr.dw = seg->sym.offset >> 4;
 						DebugMsg(("GROUP symbol, offset=%" I32_SPEC "Xh codeptr=%p\n", seg->sym.offset, codeptr));
-					}
-					else if (fixup->sym->state == SYM_SEG)
-					{
+                } else if ( fixup->sym->state == SYM_SEG ) {
 						/* v2.04: added */
 						seg = (struct dsym *)fixup->sym;
 						*codeptr.dw = (seg->e.seginfo->start_offset + (seg->e.seginfo->group ? seg->e.seginfo->group->offset : 0)) >> 4;
 						DebugMsg(("SEGMENT symbol, start_offset=%" I32_SPEC "Xh\n", seg->e.seginfo->start_offset));
 						//} else if ( seg->e.seginfo->group ) {
-					}
-					else if (fixup->frame_type == FRAME_GRP)
-					{
+                } else if ( fixup->frame_type == FRAME_GRP ) {
 						/* v2.04: changed */
 						//*codeptr.dw = (seg->e.seginfo->start_offset + seg->e.seginfo->group->offset) >> 4;
 						*codeptr.dw = seg->e.seginfo->group->offset >> 4;
 						DebugMsg(("group.offset=%" I32_SPEC "Xh\n", seg->e.seginfo->group->offset));
-					}
-					else
-					{
+                } else {
 						*codeptr.dw = seg->e.seginfo->start_offset >> 4;
 						DebugMsg(("segment.offset=%" I32_SPEC "Xh\n", seg->e.seginfo->start_offset));
 					}
@@ -680,8 +627,7 @@ static ret_code DoFixup(struct dsym *curr, struct calc_param *cp)
 			case FIX_PTR16:
 #if 1
 				/* v2.10: absolute segments are ok */
-				if (seg && seg->e.seginfo->segtype == SEGTYPE_ABS)
-				{
+            if ( seg && seg->e.seginfo->segtype == SEGTYPE_ABS ) {
 					*codeptr.dw = value & 0xffff;
 					codeptr.dw++;
 					*codeptr.dw = seg->e.seginfo->abs_frame;
@@ -689,20 +635,16 @@ static ret_code DoFixup(struct dsym *curr, struct calc_param *cp)
 				}
 #endif
 #if MZ_SUPPORT
-				if (ModuleInfo.sub_format == SFORMAT_MZ)
-				{
+            if ( ModuleInfo.sub_format == SFORMAT_MZ ) {
 					DebugMsg(("DoFixup(%s, %04" I32_SPEC "X): FIX_PTR16, seg->start=%Xh\n", curr->sym.name, fixup->locofs, seg->e.seginfo->start_offset));
 					*codeptr.dw = value & 0xffff;
 					codeptr.dw++;
 					//if ( seg->e.seginfo->group ) { /* v2.04: changed */
-					if (fixup->frame_type == FRAME_GRP)
-					{
+                if ( fixup->frame_type == FRAME_GRP ) {
 						/* v2.04: changed */
 						//*codeptr.dw = (seg->e.seginfo->start_offset + seg->e.seginfo->group->offset) >> 4;
 						*codeptr.dw = seg->e.seginfo->group->offset >> 4;
-					}
-					else
-					{
+                } else {
 						/* v2.05: changed */
 						//*codeptr.dw = seg->e.seginfo->start_offset >> 4;
 						*codeptr.dw = (seg->e.seginfo->start_offset + (seg->e.seginfo->group ? seg->e.seginfo->group->offset : 0)) >> 4;
@@ -713,8 +655,7 @@ static ret_code DoFixup(struct dsym *curr, struct calc_param *cp)
 			case FIX_PTR32:
 #if 1
 				/* v2.10: absolute segments are ok */
-				if (seg && seg->e.seginfo->segtype == SEGTYPE_ABS)
-				{
+            if ( seg && seg->e.seginfo->segtype == SEGTYPE_ABS ) {
 					*codeptr.dd = value;
 					codeptr.dd++;
 					*codeptr.dw = seg->e.seginfo->abs_frame;
@@ -722,20 +663,16 @@ static ret_code DoFixup(struct dsym *curr, struct calc_param *cp)
 				}
 #endif
 #if MZ_SUPPORT
-				if (ModuleInfo.sub_format == SFORMAT_MZ)
-				{
+            if ( ModuleInfo.sub_format == SFORMAT_MZ ) {
 					DebugMsg(("DoFixup(%s, %04" I32_SPEC "X): FIX_PTR32\n", curr->sym.name, fixup->locofs));
 					*codeptr.dd = value;
 					codeptr.dd++;
 					//if (seg->e.seginfo->group ) { /* v2.04: changed */
-					if (fixup->frame_type == FRAME_GRP)
-					{
+                if ( fixup->frame_type == FRAME_GRP ) {
 						/* v2.04: changed */
 						//*codeptr.dw = (seg->e.seginfo->start_offset + seg->e.seginfo->group->offset) >> 4;
 						*codeptr.dw = seg->e.seginfo->group->offset >> 4;
-					}
-					else
-					{
+                } else {
 						/* v2.05: changed */
 						//*codeptr.dw = seg->e.seginfo->start_offset >> 4;
 						*codeptr.dw = (seg->e.seginfo->start_offset + (seg->e.seginfo->group ? seg->e.seginfo->group->offset : 0)) >> 4;
@@ -763,8 +700,7 @@ static void pe_create_MZ_header(struct module_info *modinfo)
 	DebugMsg(("pe_create_MZ_header enter\n"));
 	if (Parse_Pass == PASS_1 && SymSearch(hdrname "1") == NULL)
 		modinfo->g.pe_flags |= PEF_MZHDR;
-	if (modinfo->g.pe_flags & PEF_MZHDR)
-	{
+    if ( modinfo->g.pe_flags & PEF_MZHDR ) {
 		DebugMsg(("pe_create_MZ_header: generate code\n"));
 		AddLineQueueX("%r DOTNAME", T_OPTION);
 		AddLineQueueX("%s1 %r USE16 %r %s", hdrname, T_SEGMENT, T_WORD, hdrattr);
@@ -806,20 +742,15 @@ void pe_create_PE_header(void)
 	void *p;
 
 	DebugMsg(("pe_create_PE_header enter\n"));
-	if (Parse_Pass == PASS_1)
-	{
-		if (ModuleInfo.model != MODEL_FLAT)
-		{
+    if ( Parse_Pass == PASS_1 ) {
+        if ( ModuleInfo.model != MODEL_FLAT ) {
 			EmitError(MODEL_MUST_BE_FLAT);
 		}
 #if AMD64_SUPPORT
-		if (ModuleInfo.defOfssize == USE64)
-		{
+        if ( ModuleInfo.defOfssize == USE64 ) {
 			size = sizeof(struct IMAGE_PE_HEADER64);
 			p = (void *)&pe64def;
-		}
-		else
-		{
+        } else {
 #endif
 			size = sizeof(struct IMAGE_PE_HEADER32);
 			p = (void *)&pe32def;
@@ -827,8 +758,7 @@ void pe_create_PE_header(void)
 		}
 #endif
 		pehdr = (struct dsym *)SymSearch(hdrname "2");
-		if (pehdr == NULL)
-		{
+        if ( pehdr == NULL ) {
 			pehdr = (struct dsym *)CreateIntSegment(hdrname "2", "HDR", 2, ModuleInfo.defOfssize, TRUE);
 			pehdr->e.seginfo->group = &ModuleInfo.flat_grp->sym;
 			pehdr->e.seginfo->combine = COMB_ADDOFF;  /* PUBLIC */
@@ -836,9 +766,7 @@ void pe_create_PE_header(void)
 			pehdr->e.seginfo->readonly = 1;
 			pehdr->e.seginfo->bytes_written = size; /* ensure that ORG won't set start_loc (assemble.c, SetCurrOffset) */
 			pehdr->sym.max_offset = size;
-		}
-		else
-		{
+        } else {
 			if (pehdr->sym.max_offset < size)
 				pehdr->sym.max_offset = size;
 			pehdr->e.seginfo->internal = TRUE;
@@ -853,8 +781,7 @@ void pe_create_PE_header(void)
 		time((time_t *)(pehdr->e.seginfo->CodeBuffer+offsetof(struct IMAGE_PE_HEADER32, FileHeader.TimeDateStamp)));
 #endif
 		sym = CreateVariable("@pe_file_flags", ((struct IMAGE_PE_HEADER32 *)p)->FileHeader.Characteristics);
-		if (sym)
-		{
+        if ( sym ) {
 			DebugMsg(("pe_create_PE_header: CreateVariable(@pe_file_flags)=%X [value=%X]\n", sym, sym ? sym->value : 0));
 			sym->predefined = TRUE;
 			sym->sfunc_ptr = (internal_func)&set_file_flags;
@@ -874,11 +801,9 @@ static void pe_create_section_table(void)
 	int objs;
 
 	DebugMsg(("pe_create_section table enter\n"));
-	if (Parse_Pass == PASS_1)
-	{
+    if ( Parse_Pass == PASS_1 ) {
 		objtab = (struct dsym *)SymSearch(hdrname "3");
-		if (!objtab)
-		{
+        if ( !objtab ) {
 			bCreated = TRUE;
 			objtab = (struct dsym *)CreateIntSegment(hdrname "3", "HDR", 2, ModuleInfo.defOfssize, TRUE);
 			objtab->e.seginfo->group = &ModuleInfo.flat_grp->sym;
@@ -895,18 +820,14 @@ static void pe_create_section_table(void)
 		 * SEGTYPE_RELOC ( for relocations )
 		 * must be set  - also, init lname_idx field
 		 */
-		for (curr = SymTables[TAB_SEG].head; curr; curr = curr->next)
-		{
+        for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
 			curr->e.seginfo->lname_idx = SEGTYPE_ERROR; /* use the highest index possible */
-			if (curr->e.seginfo->segtype == SEGTYPE_DATA)
-			{
+            if ( curr->e.seginfo->segtype == SEGTYPE_DATA ) {
 				if (curr->e.seginfo->readonly || curr->e.seginfo->characteristics == CHAR_READONLY)
 					curr->e.seginfo->segtype = SEGTYPE_CDATA;
 				else if (curr->e.seginfo->clsym && strcmp(curr->e.seginfo->clsym->name, "CONST") == 0)
 					curr->e.seginfo->segtype = SEGTYPE_CDATA;
-			}
-			else if (curr->e.seginfo->segtype == SEGTYPE_UNDEF)
-			{
+            } else if ( curr->e.seginfo->segtype == SEGTYPE_UNDEF ) {
 				if ((memcmp(curr->sym.name, ".rsrc", 5) == 0) &&
 					(*(curr->sym.name+5) == NULLC || *(curr->sym.name+5) == '$'))
 					curr->e.seginfo->segtype = SEGTYPE_RSRC;
@@ -916,24 +837,20 @@ static void pe_create_section_table(void)
 		}
 
 		/* count objects ( without header types ) */
-		for (i = 1, objs = 0; i < SIZE_PEFLAT; i++)
-		{
+        for ( i = 1, objs = 0; i < SIZE_PEFLAT; i++ ) {
 			DebugMsg(("pe_create_section_table: searching type %u\n", flat_order[i]));
-			for (curr = SymTables[TAB_SEG].head; curr; curr = curr->next)
-			{
+            for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
 				DebugMsg(("pe_create_section_table: section %s, type=%u, size=%X\n", curr->sym.name, curr->e.seginfo->segtype, curr->sym.max_offset));
 				if (curr->e.seginfo->segtype != flat_order[i])
 					continue;
-				if (curr->sym.max_offset)
-				{
+                if ( curr->sym.max_offset ) {
 					DebugMsg(("pe_create_section_table: %s, type=%u is object %u\n", curr->sym.name, curr->e.seginfo->segtype, objs));
 					objs++;
 					break;
 				}
 			}
 		}
-		if (objs)
-		{
+        if ( objs ) {
 			DebugMsg(("pe_create_section_table: items in object table: %u\n", objs));
 			objtab->sym.max_offset = sizeof(struct IMAGE_SECTION_HEADER) * objs;
 			/* alloc space for 1 more section (.reloc) */
@@ -958,8 +875,7 @@ static void pe_create_section_table(void)
  };
 */
 
-struct expitem
-{
+struct expitem {
 	char *name;
 	unsigned idx;
 };
@@ -983,13 +899,11 @@ static void pe_emit_export_data(void)
 	struct expitem *pexp;
 
 	DebugMsg(("pe_emit_export_data enter\n"));
-	for (curr = SymTables[TAB_PROC].head, cnt = 0; curr; curr = curr->nextproc)
-	{
+    for( curr = SymTables[TAB_PROC].head, cnt = 0; curr; curr = curr->nextproc ) {
 		if (curr->e.procinfo->isexport)
 			cnt++;
 	}
-	if (cnt)
-	{
+    if ( cnt ) {
 		name = ModuleInfo.name;
 		AddLineQueueX("%r DOTNAME", T_OPTION);
 		/* create .edata segment */
@@ -1007,10 +921,8 @@ static void pe_emit_export_data(void)
 		 * so we have to fill an array of exports and sort it.
 		 */
 		pitems = (struct expitem *)myalloca(cnt * sizeof(struct expitem));
-		for (curr = SymTables[TAB_PROC].head, pexp = pitems, i = 0; curr; curr = curr->nextproc)
-		{
-			if (curr->e.procinfo->isexport)
-			{
+        for( curr = SymTables[TAB_PROC].head, pexp = pitems, i = 0; curr; curr = curr->nextproc ) {
+            if( curr->e.procinfo->isexport ) {
 				pexp->name = curr->sym.name;
 				pexp->idx = i++;
 				pexp++;
@@ -1023,8 +935,7 @@ static void pe_emit_export_data(void)
 		 * but we want to emit the EAT being sorted by address.
 		 */
 		AddLineQueueX("@%s_func %r DWORD", name, T_LABEL);
-		for (curr = SymTables[TAB_PROC].head; curr; curr = curr->nextproc)
-		{
+        for( curr = SymTables[TAB_PROC].head; curr; curr = curr->nextproc ) {
 			if (curr->e.procinfo->isexport)
 				AddLineQueueX("DD %r %s", T_IMAGEREL, curr->sym.name);
 		}
@@ -1036,8 +947,7 @@ static void pe_emit_export_data(void)
 
 		/* ordinal table. each ordinal is an index into the export address table */
 		AddLineQueueX("@%s_nameord %r WORD", name, T_LABEL);
-		for (i = 0; i < cnt; i++)
-		{
+        for( i = 0; i < cnt; i++ ) {
 			AddLineQueueX("DW %u", (pitems+i)->idx);
 		}
 		/* v2.10: name+ext of dll */
@@ -1047,10 +957,8 @@ static void pe_emit_export_data(void)
 				break;
 		AddLineQueueX("@%s_name DB '%s',0", name, fname);
 
-		for (curr = SymTables[TAB_PROC].head; curr; curr = curr->nextproc)
-		{
-			if (curr->e.procinfo->isexport)
-			{
+        for( curr = SymTables[TAB_PROC].head; curr; curr = curr->nextproc ) {
+            if( curr->e.procinfo->isexport ) {
 				Mangle(&curr->sym, StringBufferEnd);
 				AddLineQueueX("@%s DB '%s',0", curr->sym.name, Options.no_export_decoration ? curr->sym.name : StringBufferEnd);
 			}
@@ -1084,14 +992,11 @@ static void pe_emit_import_data(void)
 #endif
 
 	DebugMsg(("pe_emit_import_data enter\n"));
-	for (p = ModuleInfo.g.DllQueue; p; p = p->next)
-	{
-		if (p->cnt)
-		{
+    for ( p = ModuleInfo.g.DllQueue; p; p = p->next ) {
+        if ( p->cnt ) {
 			struct dsym *curr;
 			char *pdot;
-			if (!type)
-			{
+            if ( !type ) {
 				type = 1;
 				AddLineQueueX("@LPPROC %r %r %r", T_TYPEDEF, T_PTR, T_PROC);
 				AddLineQueueX("%r DOTNAME", T_OPTION);
@@ -1109,10 +1014,8 @@ static void pe_emit_import_data(void)
 			/* emit ILT */
 			AddLineQueueX("%s" IMPILTSUF " %r %s %s", idataname, T_SEGMENT, align, idataattr);
 			AddLineQueueX("@%s_ilt label %r", p->name, ptrtype);
-			for (curr = SymTables[TAB_EXT].head; curr != NULL; curr = curr->next)
-			{
-				if (curr->sym.iat_used && curr->sym.dll == p)
-				{
+            for ( curr = SymTables[TAB_EXT].head; curr != NULL ; curr = curr->next ) {
+                if ( curr->sym.iat_used && curr->sym.dll == p ) {
 					AddLineQueueX("@LPPROC %r @%s_name", T_IMAGEREL, curr->sym.name);
 				}
 			}
@@ -1124,10 +1027,8 @@ static void pe_emit_import_data(void)
 			AddLineQueueX("%s" IMPIATSUF " %r %s %s", idataname, T_SEGMENT, align, idataattr);
 			AddLineQueueX("@%s_iat label %r", p->name, ptrtype);
 
-			for (curr = SymTables[TAB_EXT].head; curr != NULL; curr = curr->next)
-			{
-				if (curr->sym.iat_used && curr->sym.dll == p)
-				{
+            for ( curr = SymTables[TAB_EXT].head; curr != NULL ; curr = curr->next ) {
+                if ( curr->sym.iat_used && curr->sym.dll == p ) {
 					Mangle(&curr->sym, StringBufferEnd);
 					AddLineQueueX("%s%s @LPPROC %r @%s_name", ModuleInfo.g.imp_prefix, StringBufferEnd, T_IMAGEREL, curr->sym.name);
 				}
@@ -1138,31 +1039,26 @@ static void pe_emit_import_data(void)
 
 			/* emit name table */
 			AddLineQueueX("%s" IMPSTRSUF " %r %r %s", idataname, T_SEGMENT, T_WORD, idataattr);
-			for (curr = SymTables[TAB_EXT].head; curr != NULL; curr = curr->next)
-			{
-				if (curr->sym.iat_used && curr->sym.dll == p)
-				{
+            for ( curr = SymTables[TAB_EXT].head; curr != NULL ; curr = curr->next ) {
+                if ( curr->sym.iat_used && curr->sym.dll == p ) {
 					AddLineQueueX("@%s_name dw 0", curr->sym.name);
 					AddLineQueueX("db '%s',0", curr->sym.name);
 					AddLineQueue("even");
 				}
 			}
 			/* dll name table entry */
-			if (pdot)
-			{
+            if ( pdot ) {
 				*pdot = NULLC;
 				AddLineQueueX("@%s_%s_name db '%s.%s',0", p->name, pdot+1, p->name, pdot+1);
 				*pdot = '.';  /* restore '.' in dll name */
-			}
-			else
+            } else
 				AddLineQueueX("@%s_name db '%s',0", p->name, p->name);
 
 			AddLineQueue("even");
 			AddLineQueueX("%s" IMPSTRSUF " %r", idataname, T_ENDS);
 		}
 	}
-	if (is_linequeue_populated())
-	{
+    if ( is_linequeue_populated() ) {
 		/* import directory NULL entry */
 		AddLineQueueX("%s" IMPNDIRSUF " %r %r %s", idataname, T_SEGMENT, T_DWORD, idataattr);
 		AddLineQueueX("DD 0, 0, 0, 0, 0");
@@ -1175,8 +1071,7 @@ static int get_bit(int value)
 /*****************************/
 {
 	int rc = -1;
-	while (value)
-	{
+    while( value ) {
 		value = (value >> 1);
 		rc++;
 	}
@@ -1190,36 +1085,25 @@ static uint_32 pe_get_characteristics(struct dsym *seg)
 	//if ( seg->e.seginfo->alignment != MAX_SEGALIGNMENT ) /* ABS not possible */
 	//    result |= (uint_32)(seg->e.seginfo->alignment + 1) << 20;
 
-	if (seg->e.seginfo->segtype == SEGTYPE_CODE)
-	{
+    if ( seg->e.seginfo->segtype == SEGTYPE_CODE ) {
 		result |= IMAGE_SCN_CNT_CODE | IMAGE_SCN_MEM_EXECUTE | IMAGE_SCN_MEM_READ;
-	}
-	else if (seg->e.seginfo->segtype == SEGTYPE_BSS)
-	{
+    } else if ( seg->e.seginfo->segtype == SEGTYPE_BSS ) {
 		result |= IMAGE_SCN_CNT_UNINITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE;
 		/* ish.SizeOfRawData = 0; */
 		//ish.PointerToRawData = 0;
-	}
-	else if (seg->e.seginfo->combine == COMB_STACK && seg->e.seginfo->bytes_written == 0)
-	{
+    } else if ( seg->e.seginfo->combine == COMB_STACK && seg->e.seginfo->bytes_written == 0 ) {
 		result |= IMAGE_SCN_CNT_UNINITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE;
 		//ish.SizeOfRawData = 0;
 		//ish.PointerToRawData = 0;
-	}
-	else if (seg->e.seginfo->readonly)
-	{
+    } else if ( seg->e.seginfo->readonly ) {
 		result |= IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ;
-	}
-	else if (seg->e.seginfo->clsym && strcmp(seg->e.seginfo->clsym->name, "CONST") == 0)
-	{
+    } else if ( seg->e.seginfo->clsym && strcmp( seg->e.seginfo->clsym->name, "CONST" ) == 0 ) {
 		result |= IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ;
-	}
-	else
+    } else
 		result |= IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE;
 
 	/* manual characteristics set? */
-	if (seg->e.seginfo->characteristics)
-	{
+    if ( seg->e.seginfo->characteristics ) {
 		result &= 0x1FFFFFF; /* clear the IMAGE_SCN_MEM flags */
 		result |= (uint_32)(seg->e.seginfo->characteristics & 0xFE) << 24;
 	}
@@ -1241,22 +1125,18 @@ static void pe_set_base_relocs(struct dsym *reloc)
 	struct IMAGE_BASE_RELOCATION *baserel;
 	uint_16 *prel;
 
-	for (curr = SymTables[TAB_SEG].head; curr; curr = curr->next)
-	{
+    for ( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
 		if (curr->e.seginfo->segtype == SEGTYPE_HDR)
 			continue;
-		for (fixup = curr->e.seginfo->FixupList.head; fixup; fixup = fixup->nextrlc)
-		{
-			switch (fixup->type)
-			{
+        for ( fixup = curr->e.seginfo->FixupList.head; fixup; fixup = fixup->nextrlc ) {
+            switch ( fixup->type ) {
 				case FIX_OFF16:
 				case FIX_OFF32:
 #if AMD64_SUPPORT
 				case FIX_OFF64:
 #endif
 					currloc = curr->e.seginfo->start_offset + (fixup->locofs & 0xFFFFF000);
-					if (currloc != currpage)
-					{
+                if ( currloc != currpage ) {
 						currpage = currloc;
 						cnt2++;
 						if (cnt1 & 1)
@@ -1286,14 +1166,11 @@ static void pe_set_base_relocs(struct dsym *reloc)
 	prel = (uint_16 *)((uint_8 *)baserel + sizeof(struct IMAGE_BASE_RELOCATION));
 
 	baserel->VirtualAddress = -1;
-	for (curr = SymTables[TAB_SEG].head; curr; curr = curr->next)
-	{
+    for ( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
 		if (curr->e.seginfo->segtype == SEGTYPE_HDR)
 			continue;
-		for (fixup = curr->e.seginfo->FixupList.head; fixup; fixup = fixup->nextrlc)
-		{
-			switch (fixup->type)
-			{
+        for ( fixup = curr->e.seginfo->FixupList.head; fixup; fixup = fixup->nextrlc ) {
+            switch ( fixup->type ) {
 				case FIX_OFF16: ftype = IMAGE_REL_BASED_LOW; break;
 				case FIX_OFF32: ftype = IMAGE_REL_BASED_HIGHLOW; break;
 #if AMD64_SUPPORT
@@ -1301,16 +1178,12 @@ static void pe_set_base_relocs(struct dsym *reloc)
 #endif
 				default: ftype = 0;
 			}
-			if (ftype)
-			{
+            if ( ftype ) {
 				currloc = curr->e.seginfo->start_offset + (fixup->locofs & 0xFFFFF000);
-				if (currloc != baserel->VirtualAddress)
-				{
-					if (baserel->VirtualAddress != -1)
-					{
+                if ( currloc != baserel->VirtualAddress ) {
+                    if ( baserel->VirtualAddress != -1 ) {
 						/* address of relocation header must be DWORD aligned */
-						if (baserel->SizeOfBlock & 2)
-						{
+                        if ( baserel->SizeOfBlock & 2 ) {
 							*prel++ = 0;
 							baserel->SizeOfBlock += sizeof(uint_16);
 						}
@@ -1380,25 +1253,20 @@ static void pe_set_values(struct calc_param *cp)
 	/* make sure all header objects are in FLAT group */
 	mzhdr->e.seginfo->group = &ModuleInfo.flat_grp->sym;
 #if AMD64_SUPPORT
-	if (ModuleInfo.defOfssize == USE64)
-	{
+    if ( ModuleInfo.defOfssize == USE64 ) {
 		ph64 = (struct IMAGE_PE_HEADER64 *)pehdr->e.seginfo->CodeBuffer;
 		ff = ph64->FileHeader.Characteristics;
-	}
-	else
-	{
+    } else {
 #endif
 		ph32 = (struct IMAGE_PE_HEADER32 *)pehdr->e.seginfo->CodeBuffer;
 		ff = ph32->FileHeader.Characteristics;
 #if AMD64_SUPPORT
 	}
 #endif
-	if (!(ff & IMAGE_FILE_RELOCS_STRIPPED))
-	{
+    if ( !( ff & IMAGE_FILE_RELOCS_STRIPPED ) ) {
 		DebugMsg(("pe_set_values: .reloc section required\n"));
 		reloc = (struct dsym *)CreateIntSegment(".reloc", "RELOC", 2, ModuleInfo.defOfssize, TRUE);
-		if (reloc)
-		{
+        if ( reloc ) {
 			reloc->e.seginfo->group = &ModuleInfo.flat_grp->sym;
 			reloc->e.seginfo->combine = COMB_ADDOFF;  /* PUBLIC */
 			reloc->e.seginfo->segtype = SEGTYPE_RELOC;
@@ -1413,13 +1281,10 @@ static void pe_set_values(struct calc_param *cp)
 	}
 
 	/* sort: header, executable, readable, read-write segments, resources, relocs */
-	for (i = 0; i < SIZE_PEFLAT; i++)
-	{
+    for ( i = 0; i < SIZE_PEFLAT; i++ ) {
 		DebugMsg(("pe_set_values: searching segment types %Xh\n", flat_order[i]));
-		for (curr = SymTables[TAB_SEG].head; curr; curr = curr->next)
-		{
-			if (curr->e.seginfo->segtype == flat_order[i])
-			{
+        for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
+            if ( curr->e.seginfo->segtype == flat_order[i] ) {
 				curr->e.seginfo->lname_idx = i;
 			}
 		}
@@ -1430,16 +1295,12 @@ static void pe_set_values(struct calc_param *cp)
 
 	/* assign RVAs to sections */
 
-	for (curr = SymTables[TAB_SEG].head, i = -1; curr; curr = curr->next)
-	{
-		if (curr->e.seginfo->lname_idx == SEGTYPE_ERROR || curr->e.seginfo->lname_idx != i)
-		{
+    for ( curr = SymTables[TAB_SEG].head, i = -1; curr; curr = curr->next ) {
+        if ( curr->e.seginfo->lname_idx == SEGTYPE_ERROR || curr->e.seginfo->lname_idx != i ) {
 			i = curr->e.seginfo->lname_idx;
 			cp->alignment = falign;
 			cp->rva = (cp->rva + (malign - 1)) & (~(malign-1));
-		}
-		else
-		{
+        } else {
 			uint_32 align = 1 << curr->e.seginfo->alignment;
 			cp->alignment = 0;
 			cp->rva = (cp->rva + (align - 1)) & (~(align-1));
@@ -1449,8 +1310,7 @@ static void pe_set_values(struct calc_param *cp)
 				 curr->sym.name, curr->e.seginfo->start_offset, curr->sym.max_offset - curr->e.seginfo->start_loc, curr->e.seginfo->fileoffset));
 	}
 
-	if (reloc)
-	{
+    if ( reloc ) {
 		pe_set_base_relocs(reloc);
 		cp->rva = reloc->e.seginfo->start_offset + reloc->sym.max_offset;
 	}
@@ -1471,14 +1331,12 @@ static void pe_set_values(struct calc_param *cp)
 
 	/* fill object table values */
 	section = (struct IMAGE_SECTION_HEADER *)objtab->e.seginfo->CodeBuffer;
-	for (curr = SymTables[TAB_SEG].head, i = -1; curr; curr = curr->next)
-	{
+    for( curr = SymTables[TAB_SEG].head, i = -1; curr; curr = curr->next ) {
 		if (curr->e.seginfo->segtype == SEGTYPE_HDR)
 			continue;
 		if (curr->sym.max_offset == 0) /* ignore empty sections */
 			continue;
-		if (curr->e.seginfo->lname_idx != i)
-		{
+        if ( curr->e.seginfo->lname_idx != i ) {
 			i = curr->e.seginfo->lname_idx;
 			secname = (curr->e.seginfo->aliasname ? curr->e.seginfo->aliasname : ConvertSectionName(&curr->sym, NULL, buffer));
 			strncpy(section->Name, secname, sizeof(section->Name));
@@ -1490,8 +1348,7 @@ static void pe_set_values(struct calc_param *cp)
 				sizehdr = curr->e.seginfo->fileoffset;
 		}
 		section->Characteristics |= pe_get_characteristics(curr);
-		if (curr->e.seginfo->segtype != SEGTYPE_BSS)
-		{
+        if ( curr->e.seginfo->segtype != SEGTYPE_BSS ) {
 			section->SizeOfRawData += curr->sym.max_offset;
 		}
 
@@ -1499,51 +1356,43 @@ static void pe_set_values(struct calc_param *cp)
 		//section->Misc.VirtualSize += curr->sym.max_offset;
 		section->Misc.VirtualSize = curr->sym.max_offset + (curr->e.seginfo->start_offset - section->VirtualAddress);
 
-		if (curr->next == NULL || curr->next->e.seginfo->lname_idx != i)
-		{
+        if ( curr->next == NULL || curr->next->e.seginfo->lname_idx != i ) {
 #if RAWSIZE_ROUND /* AntiVir TR/Crypt.XPACK Gen */
 			section->SizeOfRawData += cp->rawpagesize - 1;
 			section->SizeOfRawData &= ~(cp->rawpagesize - 1);
 #endif
-			if (section->Characteristics & IMAGE_SCN_MEM_EXECUTE)
-			{
+            if ( section->Characteristics & IMAGE_SCN_MEM_EXECUTE ) {
 				if (codebase == 0)
 					codebase = section->VirtualAddress;
 				codesize += section->SizeOfRawData;
 			}
-			if (section->Characteristics & IMAGE_SCN_CNT_INITIALIZED_DATA)
-			{
+            if ( section->Characteristics & IMAGE_SCN_CNT_INITIALIZED_DATA ) {
 				if (database == 0)
 					database = section->VirtualAddress;
 				datasize += section->SizeOfRawData;
 			}
 		}
-		if (curr->next && curr->next->e.seginfo->lname_idx != i)
-		{
+        if ( curr->next && curr->next->e.seginfo->lname_idx != i ) {
 			DebugMsg(("pe_set_values: object %.8s, VA=%" I32_SPEC "X size=%" I32_SPEC "X phys ofs/size=%" I32_SPEC "Xh/%" I32_SPEC "Xh\n",
 					 section->Name, section->VirtualAddress, section->Misc.VirtualSize, section->PointerToRawData, section->SizeOfRawData));
 			section++;
 		}
 	}
 
-	if (ModuleInfo.g.start_label)
-	{
+    if ( ModuleInfo.g.start_label ) {
 #if AMD64_SUPPORT
 		if (ModuleInfo.defOfssize == USE64)
 			ph64->OptionalHeader.AddressOfEntryPoint = ((struct dsym *)ModuleInfo.g.start_label->segment)->e.seginfo->start_offset + ModuleInfo.g.start_label->offset;
 		else
 #endif
 			ph32->OptionalHeader.AddressOfEntryPoint = ((struct dsym *)ModuleInfo.g.start_label->segment)->e.seginfo->start_offset + ModuleInfo.g.start_label->offset;
-	}
-	else
-	{
+    } else {
 		DebugMsg(("pe_set_values: warning: not start label found\n"));
 		EmitWarn(2, NO_START_LABEL);
 	}
 
 #if AMD64_SUPPORT
-	if (ModuleInfo.defOfssize == USE64)
-	{
+    if ( ModuleInfo.defOfssize == USE64 ) {
 #if IMGSIZE_ROUND
 		/* round up the SizeOfImage field to page boundary */
 		sizeimg = (sizeimg + ph64->OptionalHeader.SectionAlignment - 1) & ~(ph64->OptionalHeader.SectionAlignment - 1);
@@ -1553,9 +1402,7 @@ static void pe_set_values(struct calc_param *cp)
 		ph64->OptionalHeader.SizeOfImage = sizeimg;
 		ph64->OptionalHeader.SizeOfHeaders = sizehdr;
 		datadir = &ph64->OptionalHeader.DataDirectory[0];
-	}
-	else
-	{
+    } else {
 #endif
 #if IMGSIZE_ROUND
 		/* round up the SizeOfImage field to page boundary */
@@ -1573,15 +1420,13 @@ static void pe_set_values(struct calc_param *cp)
 #endif
 
 	/* set export directory data dir value */
-	if (curr = (struct dsym *)SymSearch(edataname))
-	{
+    if ( curr = (struct dsym *)SymSearch( edataname ) ) {
 		datadir[IMAGE_DIRECTORY_ENTRY_EXPORT].VirtualAddress = curr->e.seginfo->start_offset;
 		datadir[IMAGE_DIRECTORY_ENTRY_EXPORT].Size = curr->sym.max_offset;
 	}
 
 	/* set import directory and IAT data dir value */
-	if (curr = (struct dsym *)SymSearch(".idata$" IMPDIRSUF))
-	{
+    if ( curr = (struct dsym *)SymSearch( ".idata$" IMPDIRSUF ) ) {
 		struct dsym *idata_null;
 		struct dsym *idata_iat;
 		uint_32 size;
@@ -1595,15 +1440,13 @@ static void pe_set_values(struct calc_param *cp)
 	}
 
 	/* set resource directory data dir value */
-	if (curr = (struct dsym *)SymSearch(".rsrc"))
-	{
+    if ( curr = (struct dsym *)SymSearch(".rsrc") ) {
 		datadir[IMAGE_DIRECTORY_ENTRY_RESOURCE].VirtualAddress = curr->e.seginfo->start_offset;
 		datadir[IMAGE_DIRECTORY_ENTRY_RESOURCE].Size = curr->sym.max_offset;
 	}
 
 	/* set relocation data dir value */
-	if (curr = (struct dsym *)SymSearch(".reloc"))
-	{
+    if ( curr = (struct dsym *)SymSearch(".reloc") ) {
 		datadir[IMAGE_DIRECTORY_ENTRY_BASERELOC].VirtualAddress = curr->e.seginfo->start_offset;
 		datadir[IMAGE_DIRECTORY_ENTRY_BASERELOC].Size = curr->sym.max_offset;
 	}
@@ -1611,23 +1454,19 @@ static void pe_set_values(struct calc_param *cp)
 	/* fixme: TLS entry is not written because there exists a segment .tls, but
 	 * because a _tls_used symbol is found ( type: IMAGE_THREAD_DIRECTORY )
 	 */
-	if (curr = (struct dsym *)SymSearch(".tls"))
-	{
+    if ( curr = (struct dsym *)SymSearch(".tls") ) {
 		datadir[IMAGE_DIRECTORY_ENTRY_TLS].VirtualAddress = curr->e.seginfo->start_offset;
 		datadir[IMAGE_DIRECTORY_ENTRY_TLS].Size = curr->sym.max_offset;
 	}
 
 #if AMD64_SUPPORT
-	if (ModuleInfo.defOfssize == USE64)
-	{
-		if (curr = (struct dsym *)SymSearch(".pdata"))
-		{
+    if ( ModuleInfo.defOfssize == USE64 ) {
+        if ( curr = (struct dsym *)SymSearch( ".pdata" ) ) {
 			datadir[IMAGE_DIRECTORY_ENTRY_EXCEPTION].VirtualAddress = curr->e.seginfo->start_offset;
 			datadir[IMAGE_DIRECTORY_ENTRY_EXCEPTION].Size = curr->sym.max_offset;
 		}
 		cp->imagebase64 = GHF(OptionalHeader.ImageBase);
-	}
-	else
+    } else
 #endif
 		cp->imagebase = GHF(OptionalHeader.ImageBase);
 
@@ -1680,8 +1519,7 @@ static ret_code bin_write_module(struct module_info *modinfo)
 
 	DebugMsg(("bin_write_module: enter\n"));
 
-	for (curr = SymTables[TAB_SEG].head; curr; curr = curr->next)
-	{
+    for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
 		/* reset the offset fields of segments */
 		/* it was used to store the size in there */
 		curr->e.seginfo->start_offset = 0;
@@ -1691,8 +1529,7 @@ static ret_code bin_write_module(struct module_info *modinfo)
 	}
 
 	/* calculate size of header */
-	switch (modinfo->sub_format)
-	{
+    switch( modinfo->sub_format ) {
 #if MZ_SUPPORT
 		case SFORMAT_MZ:
 			reloccnt = GetSegRelocs(NULL);
@@ -1705,8 +1542,7 @@ static ret_code bin_write_module(struct module_info *modinfo)
 	}
 	cp.fileoffset = cp.sizehdr;
 
-	if (cp.sizehdr)
-	{
+    if ( cp.sizehdr ) {
 		hdrbuf = LclAlloc(cp.sizehdr);
 		memset(hdrbuf, 0, cp.sizehdr);
 	}
@@ -1716,25 +1552,19 @@ static ret_code bin_write_module(struct module_info *modinfo)
 
 #if PE_SUPPORT
 	cp.rva = 0;
-	if (modinfo->sub_format == SFORMAT_PE)
-	{
-		if (ModuleInfo.model == MODEL_NONE)
-		{
+    if ( modinfo->sub_format == SFORMAT_PE ) {
+        if ( ModuleInfo.model == MODEL_NONE ) {
 			return(EmitErr(MODEL_IS_NOT_DECLARED));
 		}
 		pe_set_values(&cp);
-	}
-	else
+    } else
 #endif
-		if (modinfo->segorder == SEGORDER_DOSSEG)
-		{
+    if ( modinfo->segorder == SEGORDER_DOSSEG ) {
 			DebugMsg(("bin_write_module: .DOSSEG active\n"));
 			/* for .DOSSEG, regroup segments (CODE, UNDEF, DATA, BSS) */
-			for (i = 0; i < SIZE_DOSSEG; i++)
-			{
+        for ( i = 0 ; i < SIZE_DOSSEG; i++ ) {
 				DebugMsg(("bin_write_module: searching segment types %Xh\n", dosseg_order[i]));
-				for (curr = SymTables[TAB_SEG].head; curr; curr = curr->next)
-				{
+            for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
 					if (curr->e.seginfo->segtype != dosseg_order[i])
 						continue;
 					CalcOffset(curr, &cp);
@@ -1743,17 +1573,13 @@ static ret_code bin_write_module(struct module_info *modinfo)
 				}
 			}
 			SortSegments(0);
-		}
-		else
-		{ /* segment order .SEQ (default) and .ALPHA */
+    } else { /* segment order .SEQ (default) and .ALPHA */
 
-			if (modinfo->segorder == SEGORDER_ALPHA)
-			{
+        if ( modinfo->segorder == SEGORDER_ALPHA ) {
 				DebugMsg(("bin_write_module: .ALPHA active\n"));
 				SortSegments(1);
 			}
-			for (curr = SymTables[TAB_SEG].head; curr; curr = curr->next)
-			{
+        for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
 				/* ignore absolute segments */
 				CalcOffset(curr, &cp);
 				DebugMsg(("bin_write_module(%s): start ofs=%" I32_SPEC "Xh, size=%" I32_SPEC "Xh, file ofs=%" I32_SPEC "Xh, grp=%s\n",
@@ -1763,8 +1589,7 @@ static ret_code bin_write_module(struct module_info *modinfo)
 	DebugMsg(("bin_write_module: all CalcOffset() done\n"));
 
 	/* handle relocs */
-	for (curr = SymTables[TAB_SEG].head; curr; curr = curr->next)
-	{
+    for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
 		DoFixup(curr, &cp);
 #if MZ_SUPPORT
 		if (stack == NULL &&
@@ -1778,12 +1603,9 @@ static ret_code bin_write_module(struct module_info *modinfo)
 
 	/* for plain binaries make sure the start label is at
 	 * the beginning of the first segment */
-	if (modinfo->sub_format == SFORMAT_NONE)
-	{
-		if (modinfo->g.start_label)
-		{
-			if (cp.entryoffset == -1 || cp.entryseg != modinfo->g.start_label->segment)
-			{
+    if ( modinfo->sub_format == SFORMAT_NONE ) {
+        if ( modinfo->g.start_label ) {
+            if ( cp.entryoffset == -1 || cp.entryseg != modinfo->g.start_label->segment ) {
 				return(EmitError(START_LABEL_INVALID));
 			}
 		}
@@ -1793,8 +1615,7 @@ static ret_code bin_write_module(struct module_info *modinfo)
 
 	/* for MZ|PE format, initialize the header */
 
-	switch (modinfo->sub_format)
-	{
+    switch ( modinfo->sub_format ) {
 #if MZ_SUPPORT
 		case SFORMAT_MZ:
 			/* set fields in MZ header */
@@ -1815,8 +1636,7 @@ static ret_code bin_write_module(struct module_info *modinfo)
 
 			/* set stack if there's one defined */
 
-			if (stack)
-			{
+        if ( stack ) {
 				uint_32 addr = stack->e.seginfo->start_offset;
 				if (stack->e.seginfo->group)
 					addr += stack->e.seginfo->group->offset;
@@ -1824,36 +1644,28 @@ static ret_code bin_write_module(struct module_info *modinfo)
 				pMZ->e_ss = (addr >> 4) + ((addr & 0xF) ? 1 : 0); /* SS */
 				/* v2.11: changed sym.offset to sym.max_offset */
 				pMZ->e_sp = stack->sym.max_offset; /* SP */
-			}
-			else
-			{
+        } else {
 				EmitWarn(2, NO_STACK);
 			}
 			pMZ->e_csum = 0; /* checksum */
 
 			/* set entry CS:IP if defined */
 
-			if (modinfo->g.start_label)
-			{
+        if ( modinfo->g.start_label ) {
 				uint_32 addr;
 				curr = (struct dsym *)modinfo->g.start_label->segment;
 				DebugMsg(("bin_write_module, start_label: offs=%" I32_SPEC "Xh, seg.offs=%" I32_SPEC "Xh, group.offs=%" I32_SPEC "Xh\n",
 						 modinfo->g.start_label->offset, curr->e.seginfo->start_offset, curr->e.seginfo->group ? curr->e.seginfo->group->offset : 0));
-				if (curr->e.seginfo->group)
-				{
+            if ( curr->e.seginfo->group ) {
 					addr = curr->e.seginfo->group->offset;
 					pMZ->e_ip = (addr & 0xF) + curr->e.seginfo->start_offset + modinfo->g.start_label->offset; /* IP */
 					pMZ->e_cs = addr >> 4; /* CS */
-				}
-				else
-				{
+            } else {
 					addr = curr->e.seginfo->start_offset;
 					pMZ->e_ip = (addr & 0xF) + modinfo->g.start_label->offset; /* IP */
 					pMZ->e_cs = addr >> 4; /* CS */
 				}
-			}
-			else
-			{
+        } else {
 				DebugMsg(("bin_write_module, ModuleInfo->start_label=%p\n", modinfo->g.start_label));
 				EmitWarn(2, NO_START_LABEL);
 			}
@@ -1865,8 +1677,7 @@ static ret_code bin_write_module(struct module_info *modinfo)
 	}
 
 #if SECTORMAP
-	if (CurrFile[LST])
-	{
+    if( CurrFile[LST] ) {
 		/* go to EOF */
 		fseek(CurrFile[LST], 0, SEEK_END);
 		LstNL();
@@ -1881,8 +1692,7 @@ static ret_code bin_write_module(struct module_info *modinfo)
 	}
 #endif
 
-	if (cp.sizehdr)
-	{
+    if ( cp.sizehdr ) {
 		if (fwrite(hdrbuf, 1, cp.sizehdr, CurrFile[OBJ]) != cp.sizehdr)
 			WriteError();
 #if SECTORMAP
@@ -1893,8 +1703,7 @@ static ret_code bin_write_module(struct module_info *modinfo)
 	}
 
 #ifdef DEBUG_OUT
-	for (curr = SymTables[TAB_SEG].head; curr; curr = curr->next)
-	{
+    for( curr = SymTables[TAB_SEG].head; curr; curr = curr->next ) {
 		DebugMsg(("bin_write_module(%s): type=%u written=%" I32_SPEC "X max=%" I32_SPEC "X start=%" I32_SPEC "X fileofs=%" I32_SPEC "X\n",
 				 curr->sym.name, curr->e.seginfo->segtype,
 				 curr->e.seginfo->bytes_written,
@@ -1905,10 +1714,8 @@ static ret_code bin_write_module(struct module_info *modinfo)
 #endif
 
 	/* write sections */
-	for (curr = SymTables[TAB_SEG].head, first = TRUE; curr; curr = curr->next)
-	{
-		if (curr->e.seginfo->segtype == SEGTYPE_ABS)
-		{
+    for( curr = SymTables[TAB_SEG].head, first = TRUE; curr; curr = curr->next ) {
+        if ( curr->e.seginfo->segtype == SEGTYPE_ABS ) {
 			DebugMsg(("bin_write_module(%s): ABS segment not written\n", curr->sym.name));
 			continue;
 		}
@@ -1924,14 +1731,12 @@ static ret_code bin_write_module(struct module_info *modinfo)
 		sizemem = first ? size : curr->sym.max_offset;
 		/* if no bytes have been written to the segment, check if there's
 		 * any further segments with bytes set. If no, skip write! */
-		if (curr->e.seginfo->bytes_written == 0)
-		{
+        if ( curr->e.seginfo->bytes_written == 0 ) {
 			struct dsym *dir;
 			for (dir = curr->next; dir; dir = dir->next)
 				if (dir->e.seginfo->bytes_written)
 					break;
-			if (!dir)
-			{
+            if ( !dir ) {
 				DebugMsg(("bin_write_module(%s): segment not written, size=% " I32_SPEC "Xh sizemem=%" I32_SPEC "X\n",
 						 curr->sym.name, size, sizemem));
 				size = 0;
@@ -1944,8 +1749,7 @@ static ret_code bin_write_module(struct module_info *modinfo)
 		LstPrintf(szSegLine, curr->sym.name, curr->e.seginfo->fileoffset, first ? curr->e.seginfo->start_offset + curr->e.seginfo->start_loc : curr->e.seginfo->start_offset, size, sizemem);
 		LstNL();
 #endif
-		if (size != 0 && curr->e.seginfo->CodeBuffer)
-		{
+		if (size != 0 && curr->e.seginfo->CodeBuffer) {
 			DebugMsg(("bin_write_module(%s): write %" I32_SPEC "Xh bytes at offset %" I32_SPEC "Xh, initialized bytes=%" I32_SPEC "u, buffer=%p\n",
 					 curr->sym.name, size, curr->e.seginfo->fileoffset, curr->e.seginfo->bytes_written, curr->e.seginfo->CodeBuffer));
 			fseek(CurrFile[OBJ], curr->e.seginfo->fileoffset, SEEK_SET);
@@ -1982,11 +1786,9 @@ static ret_code bin_write_module(struct module_info *modinfo)
 		first = FALSE;
 	}
 #if PE_SUPPORT && RAWSIZE_ROUND
-	if (modinfo->sub_format == SFORMAT_PE || ModuleInfo.sub_format == SFORMAT_64BIT)
-	{
+    if ( modinfo->sub_format == SFORMAT_PE || ModuleInfo.sub_format == SFORMAT_64BIT ) {
 		size = ftell(CurrFile[OBJ]);
-		if (size & (cp.rawpagesize - 1))
-		{
+        if ( size & ( cp.rawpagesize - 1 ) ) {
 			char *tmp;
 			size = cp.rawpagesize - (size & (cp.rawpagesize - 1));
 			tmp = myalloca(size);
@@ -2023,8 +1825,7 @@ static ret_code bin_check_external(struct module_info *modinfo)
 {
 	struct dsym *curr;
 	for (curr = SymTables[TAB_EXT].head; curr != NULL; curr = curr->next)
-		if (curr->sym.weak == FALSE || curr->sym.used == TRUE)
-		{
+        if( curr->sym.weak == FALSE || curr->sym.used == TRUE ) {
 			DebugMsg(("CheckExternal: error, %s weak=%u\n", curr->sym.name, curr->sym.weak));
 			return(EmitErr(FORMAT_DOESNT_SUPPORT_EXTERNALS, curr->sym.name));
 		}
@@ -2036,8 +1837,7 @@ void bin_init(struct module_info *modinfo)
 {
 	modinfo->g.WriteModule = bin_write_module;
 	modinfo->g.Pass1Checks = bin_check_external;
-	switch (modinfo->sub_format)
-	{
+    switch ( modinfo->sub_format ) {
 #if MZ_SUPPORT
 		case SFORMAT_MZ:
 			memcpy(&modinfo->mz_data, &mzdata, sizeof(struct MZDATA));

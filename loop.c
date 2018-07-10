@@ -47,8 +47,7 @@ ret_code LoopDirective(int i, struct asm_tok tokenarray[])
 	i++; /* skip directive */
 	if (ModuleInfo.list == TRUE) LstWriteSrcLine();
 
-	switch (directive)
-	{
+    switch ( directive ) {
 		case T_WHILE:
 			arg_loc = i;
 			/* no break */
@@ -57,19 +56,14 @@ ret_code LoopDirective(int i, struct asm_tok tokenarray[])
 			/* the expression is "critical", that is, no forward
 			 * referenced symbols may be used here!
 			 */
-			if (EvalOperand(&i, tokenarray, Token_Count, &opnd, EXPF_NOUNDEF) == ERROR)
-			{
+        if ( EvalOperand( &i, tokenarray, Token_Count, &opnd, EXPF_NOUNDEF ) == ERROR ) {
 				opnd.value = 0;
 				i = Token_Count;
-			}
-			else if (opnd.kind != EXPR_CONST)
-			{ /* syntax <REPEAT|WHILE 'A'> is valid! */
+        } else if ( opnd.kind != EXPR_CONST ) { /* syntax <REPEAT|WHILE 'A'> is valid! */
 				DebugMsg(("LoopDirective(%s): invalid argument type %u\n", GetResWName(directive, NULL), opnd.kind));
 				EmitError(CONSTANT_EXPECTED);
 				opnd.value = 0;
-			}
-			else if (tokenarray[i].token != T_FINAL)
-			{
+        } else if( tokenarray[i].token != T_FINAL ) {
 				EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos);
 				/* v2.09: don't exit, the macro lines must be read first. */
 				//return( ERROR );
@@ -82,31 +76,26 @@ ret_code LoopDirective(int i, struct asm_tok tokenarray[])
 			 * be a simple T_ID, but also an instruction or something else.
 			 * v2.02: And it can begin with a '.'!
 			 */
-			if (tokenarray[i].token == T_FINAL)
-			{
+        if( tokenarray[i].token == T_FINAL ) {
 				return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i-1].tokpos));
 			}
 			/* v2.02: allow parameter name to begin with a '.' */
 			//c = *tokenarray[i].string_ptr;
 			//if( ( is_valid_id_char(c) == FALSE ) || ( isdigit(c) == TRUE ) ) {
-			if (is_valid_id_first_char(*tokenarray[i].string_ptr) == FALSE)
-			{
+        if( is_valid_id_first_char( *tokenarray[i].string_ptr ) == FALSE ) {
 				DebugMsg(("LoopDirective(FOR/FORC): token %s is not a valid parameter name\n", tokenarray[i].string_ptr));
 				return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 			}
 			arg_loc = i;
 			i++;
 
-			if (directive == T_FORC || directive == T_IRPC)
-			{
-				if (tokenarray[i].token != T_COMMA)
-				{
+        if( directive == T_FORC || directive == T_IRPC ) {
+            if( tokenarray[i].token != T_COMMA ) {
 					return(EmitErr(EXPECTING_COMMA, tokenarray[i].tokpos));
 				}
 				i++;
 				/* FORC/IRPC accepts anything as "argument list", even nothing! */
-				if (tokenarray[i].token == T_STRING && tokenarray[i].string_delim == '<')
-				{
+            if( tokenarray[i].token == T_STRING && tokenarray[i].string_delim == '<' ) {
 					len = tokenarray[i+1].tokpos - (tokenarray[i].tokpos+1);
 					parmstring = myalloca(len);
 					//GetLiteralValue( parmstring, tokenarray[i].string_ptr );
@@ -118,9 +107,7 @@ ret_code LoopDirective(int i, struct asm_tok tokenarray[])
 					 */
 					if (tokenarray[i+1].token != T_FINAL)
 						EmitErr(SYNTAX_ERROR_EX, tokenarray[i+1].tokpos);
-				}
-				else
-				{
+            } else {
 					char *ptr2;
 					ptr = tokenarray[i].tokpos;
 					ptr2 = ptr;
@@ -134,9 +121,7 @@ ret_code LoopDirective(int i, struct asm_tok tokenarray[])
 					memcpy(parmstring, ptr, len);
 					*(parmstring+len) = NULLC;
 				}
-			}
-			else
-			{
+        } else {
 				/* for FOR/IRP, skip everything between the name and the comma!
 				 * these items will be stored as (first) macro parameter.
 				 * for example, valid syntax is:
@@ -145,19 +130,16 @@ ret_code LoopDirective(int i, struct asm_tok tokenarray[])
 				 */
 				while (tokenarray[i].token != T_FINAL && tokenarray[i].token != T_COMMA)
 					i++;
-				if (tokenarray[i].token != T_COMMA)
-				{
+            if( tokenarray[i].token != T_COMMA ) {
 					return(EmitErr(EXPECTING_COMMA, tokenarray[i].tokpos));
 				}
 				i++;
 				/* FOR/IRP accepts a literal enclosed in <> only */
-				if (tokenarray[i].token != T_STRING || tokenarray[i].string_delim != '<')
-				{
+            if( tokenarray[i].token != T_STRING || tokenarray[i].string_delim != '<' ) {
 					return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 				}
 				/* v2.03: also ensure that the literal is the last item */
-				if (tokenarray[i+1].token != T_FINAL)
-				{
+            if( tokenarray[i+1].token != T_FINAL ) {
 					return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i+1].tokpos));
 				}
 				/* v2.08: use myalloca() instead of a fixed-length buffer.
@@ -199,8 +181,7 @@ ret_code LoopDirective(int i, struct asm_tok tokenarray[])
 #endif
 
 	DebugMsg1(("LoopDirective(%s): calling StoreMacro\n", GetResWName(directive, NULL)));
-	if (StoreMacro(macro, i, tokenarray, TRUE) == ERROR)
-	{
+    if( StoreMacro( macro, i, tokenarray, TRUE ) == ERROR ) {
 		ReleaseMacroData(macro);
 		return(ERROR);
 	}
@@ -216,13 +197,11 @@ ret_code LoopDirective(int i, struct asm_tok tokenarray[])
 	 * will loop "forever" in Masm,
 	 */
 	if (macinfo.data) /* added in v2.01 */
-		switch (directive)
-		{
+    switch ( directive ) {
 			case T_REPEAT:
 			case T_REPT:
 				/* negative repeat counts are accepted and are treated like 0 */
-				for (; macro->sym.value < opnd.value; macro->sym.value++)
-				{
+        for ( ; macro->sym.value < opnd.value; macro->sym.value++ ) {
 					/* v2.10: Token_Count becomes volatile if MF_NOSAVE is set */
 					tokenarray[0].token = T_FINAL;
 					Token_Count = 0;
@@ -234,8 +213,7 @@ ret_code LoopDirective(int i, struct asm_tok tokenarray[])
 				}
 				break;
 			case T_WHILE:
-				while (opnd.kind == EXPR_CONST && opnd.value != 0)
-				{
+        while ( opnd.kind == EXPR_CONST && opnd.value != 0 ) {
 					DebugMsg1(("LoopDirective WHILE: cnt=%u\n", count++));
 					RunMacro(macro, Token_Count, tokenarray, NULL, 0, &is_exitm);
 					if (is_exitm)
@@ -248,8 +226,7 @@ ret_code LoopDirective(int i, struct asm_tok tokenarray[])
 				break;
 			case T_FORC:
 			case T_IRPC:
-				for (ptr = parmstring; *ptr; ptr++, macro->sym.value++)
-				{
+        for( ptr = parmstring; *ptr; ptr++, macro->sym.value++ ) {
 					tokenarray[0].token = T_STRING;
 					tokenarray[0].string_delim = NULLC;
 					tokenarray[0].string_ptr = buffer;
@@ -257,24 +234,19 @@ ret_code LoopDirective(int i, struct asm_tok tokenarray[])
 					tokenarray[1].token = T_FINAL;
 					buffer[2] = NULLC;
 					Token_Count = 1;
-					if (*ptr == '!')
-					{
+            if ( *ptr == '!' ) {
 						buffer[0] = *ptr++;
 						buffer[1] = *ptr;
 						if (*ptr == NULLC) /* ensure the macro won't go beyond the 00 */
 							ptr--;
 						tokenarray[0].stringlen = 2;
 						tokenarray[1].tokpos = buffer+2;
-					}
-					else if (isspace(*ptr))
-					{
+            } else if ( isspace( *ptr ) ) {
 						buffer[0] = '!';
 						buffer[1] = *ptr;
 						tokenarray[0].stringlen = 2;
 						tokenarray[1].tokpos = buffer+2;
-					}
-					else
-					{
+            } else {
 						buffer[0] = *ptr;
 						tokenarray[0].stringlen = 1;
 						tokenarray[1].tokpos = buffer+1;
@@ -293,8 +265,7 @@ ret_code LoopDirective(int i, struct asm_tok tokenarray[])
 
 				/* v2.09: if a trailing comma is followed by white space(s), add a blank token */
 				if (i != Token_Count && tokenarray[Token_Count-1].token == T_COMMA &&
-					*(tokenarray[Token_Count-1].tokpos+1))
-				{
+            *(tokenarray[Token_Count-1].tokpos+1) ) {
 					tokenarray[Token_Count].token = T_STRING;
 					tokenarray[Token_Count].string_delim = NULLC;
 					tokenarray[Token_Count].stringlen = strlen(tokenarray[Token_Count].tokpos);
@@ -314,8 +285,7 @@ ret_code LoopDirective(int i, struct asm_tok tokenarray[])
 				/* v2.09: flag MF_IGNARGS introduced. This allows RunMacro() to
 				 * parse the full argument and trigger macro expansion if necessary.
 				 * No need anymore to count commas here. */
-				for (; i < Token_Count; i++, macro->sym.value++)
-				{
+        for( ; i < Token_Count; i++, macro->sym.value++ ) {
 					DebugMsg1(("LoopDirective FOR: cnt=%" I32_SPEC "u, calling RunMacro( param=>%s< )\n", count++, tokenarray[i].tokpos));
 					i = RunMacro(macro, i, tokenarray, NULL, MF_IGNARGS, &is_exitm);
 					if (i < 0 || is_exitm)

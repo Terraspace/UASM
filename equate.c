@@ -59,8 +59,7 @@ static void SetValue(struct asym *sym, struct expr *opndx)
 	sym->isequate = TRUE;
 	sym->state = SYM_INTERNAL;
 	sym->isdefined = TRUE;
-	if (opndx->kind == EXPR_CONST)
-	{
+    if ( opndx->kind == EXPR_CONST ) {
 		/* v2.07: use expression's memtype */
 		//sym->mem_type = MT_ABS;
 		sym->mem_type = opndx->mem_type;
@@ -68,13 +67,10 @@ static void SetValue(struct asym *sym, struct expr *opndx)
 		sym->value3264 = opndx->hvalue;
 		sym->segment = NULL;
 		sym->isproc = FALSE;
-	}
-	else
-	{
+    } else {
 		sym->isproc = opndx->sym->isproc;
 		/* for a PROC alias, copy the procinfo extension! */
-		if (sym->isproc)
-		{
+        if ( sym->isproc ) {
 			struct dsym *dir = (struct dsym *)sym;
 			dir->e.procinfo = ((struct dsym *)opndx->sym)->e.procinfo;
 		}
@@ -85,8 +81,7 @@ static void SetValue(struct asym *sym, struct expr *opndx)
 		 * which is a bad idea in this case. So the original mem_type of the
 		 * label is used instead.
 		 */
-		if (opndx->sym->mem_type == MT_TYPE && opndx->explicit == FALSE)
-		{
+        if ( opndx->sym->mem_type == MT_TYPE && opndx->explicit == FALSE ) {
 			sym->mem_type = opndx->sym->mem_type;
 			sym->type = opndx->sym->type;
 		}
@@ -98,22 +93,17 @@ static void SetValue(struct asym *sym, struct expr *opndx)
 		 * consequently, if the alias was forward referenced, ensure that a third pass
 		 * will be done! regression test forward5.asm.
 		 */
-		if (sym->variable)
-		{
+        if ( sym->variable ) {
 			sym->offset = opndx->sym->offset + opndx->value;
-			if (Parse_Pass == PASS_2 && sym->fwdref)
-			{
+            if ( Parse_Pass == PASS_2 && sym->fwdref ) {
 #ifdef DEBUG_OUT
 				if (!ModuleInfo.PhaseError)
 					DebugMsg(("SetValue(%s): Phase error, enforced by alias equate\n", sym->name));
 #endif
 				ModuleInfo.PhaseError = TRUE;
 			}
-		}
-		else
-		{
-			if (Parse_Pass != PASS_1 && sym->offset != (opndx->sym->offset + opndx->value))
-			{
+        } else {
+            if( Parse_Pass != PASS_1 && sym->offset != ( opndx->sym->offset + opndx->value ) ) {
 #ifdef DEBUG_OUT
 				if (!ModuleInfo.PhaseError)
 					DebugMsg1(("SetValue(%s): Phase error, enforced by alias equate %" I32_SPEC "X != %" I32_SPEC "X\n", sym->name, sym->offset, opndx->sym->offset + opndx->value));
@@ -144,8 +134,7 @@ static struct asym *CreateAssemblyTimeVariable(struct asm_tok tokenarray[])
 
 	/* v2.08: for plain numbers ALWAYS avoid to call evaluator */
 	if (tokenarray[2].token == T_NUM &&
-		tokenarray[3].token == T_FINAL)
-	{
+         tokenarray[3].token == T_FINAL ) {
 		myatoi128(tokenarray[i].string_ptr, &opnd.llvalue, tokenarray[i].numbase, tokenarray[i].itemlen);
 
 	check_number:
@@ -154,22 +143,18 @@ static struct asym *CreateAssemblyTimeVariable(struct asm_tok tokenarray[])
 		/* v2.08: check added. the number must be 32-bit */
 		if (opnd.hlvalue != 0 ||
 			opnd.value64 < minintvalues[ModuleInfo.Ofssize] ||
-			opnd.value64 > maxintvalues[ModuleInfo.Ofssize])
-		{
+            opnd.value64 > maxintvalues[ModuleInfo.Ofssize] ) {
 			EmitConstError(&opnd);
 			return(NULL);
 		}
-	}
-	else
-	{
+    } else {
 		/* v2.09: don't create not-(yet)-defined symbols. Example:
 		 * E1 = E1 or 1
 		 * must NOT create E1.
 		 */
 		if (EvalOperand(&i, tokenarray, Token_Count, &opnd, 0) == ERROR)
 			return(NULL);
-		if (tokenarray[i].token != T_FINAL)
-		{
+        if( tokenarray[i].token != T_FINAL ) {
 			EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr);
 			return(NULL);
 		}
@@ -181,27 +166,23 @@ static struct asym *CreateAssemblyTimeVariable(struct asm_tok tokenarray[])
 		 */
 		if (opnd.kind != EXPR_CONST &&
 			(opnd.kind != EXPR_ADDR || opnd.indirect == TRUE) ||
-			(opnd.sym != NULL && opnd.sym->state != SYM_INTERNAL))
-		{
+            ( opnd.sym != NULL && opnd.sym->state != SYM_INTERNAL ) ) {
 			DebugMsg(("CreateAssemblyTimeVariable(%s) kind=%u sym=%p state=%u\n", name, opnd.kind, opnd.sym, opnd.sym ? opnd.sym->state : 0));
 			/* v2.09: no error if argument is a forward reference,
 			 * but don't create the variable either. Will enforce an
 			 * error if referenced symbol is still undefined in pass 2.
 			 */
-			if (opnd.sym && opnd.sym->state == SYM_UNDEFINED && opnd.indirect == FALSE)
-			{
+            if( opnd.sym && opnd.sym->state == SYM_UNDEFINED && opnd.indirect == FALSE ) {
 #if FASTPASS
 				if (StoreState == FALSE) FStoreLine(0); /* make sure this line is evaluated in pass two */
 #endif
-			}
-			else
+            } else
 				EmitError(CONSTANT_EXPECTED);
 			return(NULL);
 		}
 
 		/* v2.08: accept any result that fits in 64-bits from expression evaluator */
-		if (opnd.hlvalue != 0)
-		{
+        if ( opnd.hlvalue != 0 ) {
 			EmitConstError(&opnd);
 			return(NULL);
 		}
@@ -211,14 +192,10 @@ static struct asym *CreateAssemblyTimeVariable(struct asm_tok tokenarray[])
 	}
 
 	sym = SymSearch(name);
-	if (sym == NULL || sym->state == SYM_UNDEFINED)
-	{
-		if (sym == NULL)
-		{
+    if( sym == NULL || sym->state == SYM_UNDEFINED ) {
+        if( sym == NULL ) {
 			sym = SymCreate(name);
-		}
-		else
-		{
+        } else {
 			sym_remove_table(&SymTables[TAB_UNDEF], (struct dsym *)sym);
 			sym->fwdref = TRUE;
 		}
@@ -227,21 +204,16 @@ static struct asym *CreateAssemblyTimeVariable(struct asm_tok tokenarray[])
 		sym->issaved = StoreState; /* v2.10: added */
 #endif
 	//} else if ( sym->state == SYM_EXTERNAL && sym->weak == TRUE && sym->mem_type == MT_ABS ) {
-	}
-	else if (sym->state == SYM_EXTERNAL && sym->weak == TRUE && sym->mem_type == MT_EMPTY)
-	{
+    } else if ( sym->state == SYM_EXTERNAL && sym->weak == TRUE && sym->mem_type == MT_EMPTY ) {
 		sym_ext2int(sym);
 		//sym->variable  = TRUE;
 #if FASTPASS
 		sym->issaved = StoreState; /* v2.10: added */
 #endif
-	}
-	else
-	{
+    } else {
 		if (sym->state != SYM_INTERNAL ||
 			(sym->variable == FALSE &&
-			(opnd.uvalue != sym->uvalue || opnd.hvalue != sym->value3264)))
-		{
+             ( opnd.uvalue != sym->uvalue || opnd.hvalue != sym->value3264 ) ) ) {
 			EmitErr(SYMBOL_REDEFINITION, sym->name);
 			return(NULL);
 		}
@@ -252,16 +224,14 @@ static struct asym *CreateAssemblyTimeVariable(struct asm_tok tokenarray[])
 		 * defined BEFORE SaveState() has been called.
 		 */
 		 //if ( StoreState && sym->issaved == FALSE && sym->isdefined == TRUE ) {
-		if (StoreState && sym->issaved == FALSE)
-		{
+        if ( StoreState && sym->issaved == FALSE ) {
 			SaveVariableState(sym);
 		}
 #endif
 	}
 	sym->variable = TRUE;
 #ifdef DEBUG_OUT
-	if (Parse_Pass > PASS_1)
-	{
+    if ( Parse_Pass > PASS_1 ) {
 		if (opnd.kind == EXPR_CONST && sym->uvalue != opnd.uvalue)
 			DebugMsg1(("CreateAssemblyTimeVariable(%s): kind=%u, value changed ( %d -> %d )\n", name, opnd.kind, sym->uvalue, opnd.uvalue));
 		else if (opnd.kind == EXPR_ADDR && sym->uvalue != (opnd.uvalue + opnd.sym->uvalue))
@@ -284,14 +254,11 @@ ret_code EqualSgnDirective(int i, struct asm_tok tokenarray[])
 {
 	struct asym *sym;
 
-	if (tokenarray[0].token != T_ID)
-	{
+    if( tokenarray[0].token != T_ID ) {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[0].string_ptr));
 	}
-	if (sym = CreateAssemblyTimeVariable(tokenarray))
-	{
-		if (ModuleInfo.list == TRUE)
-		{
+    if ( sym = CreateAssemblyTimeVariable( tokenarray ) ) {
+        if ( ModuleInfo.list == TRUE ) {
 			LstWrite(LSTTYPE_EQUATE, 0, sym);
 		}
 		return(NOT_ERROR);
@@ -312,15 +279,13 @@ struct asym *CreateVariable(const char *name, int value)
 	DebugMsg1(("CreateVariable(%s, %d ) enter\n", name, value));
 
 	sym = SymSearch(name);
-	if (sym == NULL)
-	{
+	if (sym == NULL) {
 		sym = SymCreate(name);
 #if FASTPASS
 		sym->issaved = StoreState; /* v2.10 */
 #endif
 	}
-	else if (sym->state == SYM_UNDEFINED)
-	{
+	else if (sym->state == SYM_UNDEFINED) {
 		sym->value3264 = 0;   //fixed by HSE on qWord indication
 		sym_remove_table(&SymTables[TAB_UNDEF], (struct dsym *)sym);
 		sym->fwdref = TRUE;
@@ -343,8 +308,7 @@ struct asym *CreateVariable(const char *name, int value)
 		* defined BEFORE SaveState() has been called.
 		*/
 		//if ( StoreState && sym->issaved == FALSE && sym->isdefined == TRUE ) {
-		if (StoreState && sym->issaved == FALSE)
-		{
+		if (StoreState && sym->issaved == FALSE) {
 			SaveVariableState(sym);
 		}
 #endif
@@ -420,24 +384,17 @@ struct asym *CreateConstant(struct asm_tok tokenarray[])
 
 	if (sym == NULL ||
 		sym->state == SYM_UNDEFINED ||
-		(sym->state == SYM_EXTERNAL && sym->weak == TRUE && sym->isproc == FALSE))
-	{
+       ( sym->state == SYM_EXTERNAL && sym->weak == TRUE && sym->isproc == FALSE ) ) {
 		/* It's a "new" equate.
 		 * wait with definition until type of equate is clear
 		 */
-	}
-	else if (sym->state == SYM_TMACRO)
-	{
+    } else if( sym->state == SYM_TMACRO ) {
 		return (SetTextMacro(tokenarray, sym, name, tokenarray[2].tokpos));
-	}
-	else if (sym->isequate == FALSE)
-	{
+    } else if( sym->isequate == FALSE ) {
 		DebugMsg1(("CreateConstant(%s) state=%u, mem_type=%Xh, value=%" I32_SPEC "X, symbol redefinition\n", name, sym->state, sym->mem_type, sym->value));
 		EmitErr(SYMBOL_REDEFINITION, name);
 		return(NULL);
-	}
-	else
-	{
+    } else {
 		if (sym->asmpass == (Parse_Pass & 0xFF))
 			cmpvalue = TRUE;
 		sym->asmpass = Parse_Pass;
@@ -445,8 +402,7 @@ struct asym *CreateConstant(struct asm_tok tokenarray[])
 
 	/* try to evaluate the expression */
 
-	if (tokenarray[2].token == T_NUM && Token_Count == 3)
-	{
+    if ( tokenarray[2].token == T_NUM && Token_Count == 3 ) {
 		p = tokenarray[2].string_ptr;
 	do_single_number:
 		/* value is a plain number. it will be accepted only if it fits into 32-bits.
@@ -461,20 +417,15 @@ struct asym *CreateConstant(struct asm_tok tokenarray[])
 		opnd.flags1 = 0;
 		/* v2.08: does it fit in 32-bits */
 		if (opnd.hlvalue == 0 && opnd.value64 >= minintvalues[ModuleInfo.Ofssize] &&
-			opnd.value64 <= maxintvalues[ModuleInfo.Ofssize])
-		{
+            opnd.value64 <= maxintvalues[ModuleInfo.Ofssize] ) {
 			rc = NOT_ERROR;
 			DebugMsg1(("CreateConstant(%s): simple numeric value=%" I64_SPEC "d\n", name, opnd.value64));
 			i++;
-		}
-		else
+        } else
 			return (SetTextMacro(tokenarray, sym, name, p));
-	}
-	else
-	{
+    } else {
 		p = tokenarray[2].tokpos;
-		if (Parse_Pass == PASS_1)
-		{
+        if ( Parse_Pass == PASS_1 ) {
 			/* if the expression cannot be evaluated to a numeric value,
 			 * it's to become a text macro. The value of this macro will be
 			 * the original (unexpanded!) line - that's why it has to be
@@ -488,8 +439,7 @@ struct asym *CreateConstant(struct asm_tok tokenarray[])
 				 * this is necessary because values of expressions may be 64-bit now.
 				 */
 				p = argbuffer; /* ensure that p points to unexpanded source */
-			if (tokenarray[2].token == T_NUM && Token_Count == 3)
-			{
+                if ( tokenarray[2].token == T_NUM && Token_Count == 3 ) {
 				goto do_single_number;
 			}
 			DebugMsg1(("CreateConstant(%s): after ExpandLineItems: >%s<\n", name, p));
@@ -500,8 +450,7 @@ struct asym *CreateConstant(struct asm_tok tokenarray[])
 		/* v2.10: quoted_string field is != 0 if kind == EXPR_FLOAT,
 		 * so this is a regression in v2.08-2.09.
 		 */
-		if (opnd.quoted_string && opnd.kind == EXPR_CONST)
-		{
+        if ( opnd.quoted_string && opnd.kind == EXPR_CONST ) {
 			i--; /* v2.09: added; regression in v2.08 and v2.08a */
 			goto check_single_number;
 		}
@@ -523,40 +472,28 @@ struct asym *CreateConstant(struct asm_tok tokenarray[])
 		opnd.sym != NULL &&
 		//opnd.sym->state != SYM_EXTERNAL ) ) && /* SYM_SEG, SYM_GROUP are also not ok */
 		opnd.sym->state == SYM_INTERNAL)) &&
-		(opnd.instr == EMPTY))
-	{
-		if (!sym)
-		{
+        ( opnd.instr == EMPTY ) ) {
+
+        if ( !sym ) {
 			sym = SymCreate(name);
 			sym->asmpass = Parse_Pass;
-		}
-		else if (sym->state == SYM_UNDEFINED)
-		{
+        } else if ( sym->state == SYM_UNDEFINED ) {
 			sym_remove_table(&SymTables[TAB_UNDEF], (struct dsym *)sym);
 			sym->fwdref = TRUE;
-		}
-		else if (sym->state == SYM_EXTERNAL)
-		{
+        } else if ( sym->state == SYM_EXTERNAL ) {
 			sym_ext2int(sym);
-		}
-		else if (cmpvalue)
-		{
-			if (opnd.kind == EXPR_CONST)
-			{
+        } else if ( cmpvalue ) {
+            if ( opnd.kind == EXPR_CONST ) {
 				/* for 64bit, it may be necessary to check 64bit value! */
 				/* v2.08: always compare 64-bit values */
 				//if ( sym->value != opnd.value ) {
-				if (sym->value != opnd.value || sym->value3264 != opnd.hvalue)
-				{
+                if ( sym->value != opnd.value || sym->value3264 != opnd.hvalue ) {
 					DebugMsg(("CreateConstant(%s), CONST value changed: old=%X, new=%X\n", name, sym->offset, opnd.value));
 					EmitErr(SYMBOL_REDEFINITION, name);
 					return(NULL);
 				}
-			}
-			else if (opnd.kind == EXPR_ADDR)
-			{
-				if ((sym->offset != (opnd.sym->offset + opnd.value)) || (sym->segment != opnd.sym->segment))
-				{
+            } else if ( opnd.kind == EXPR_ADDR ) {
+                if ( ( sym->offset != ( opnd.sym->offset + opnd.value ) ) || ( sym->segment != opnd.sym->segment ) ) {
 					DebugMsg(("CreateConstant(%s), ADDR value changed: old=%X, new ofs+val=%X+%X\n", name, sym->offset, opnd.sym->offset, opnd.value));
 					EmitErr(SYMBOL_REDEFINITION, name);
 					return(NULL);
@@ -594,16 +531,13 @@ ret_code EquDirective(int i, struct asm_tok tokenarray[])
 {
 	struct asym *sym;
 
-	if (tokenarray[0].token != T_ID)
-	{
+    if( tokenarray[0].token != T_ID ) {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[0].string_ptr));
 	}
 	DebugMsg1(("EquDirective(%s): calling CreateConstant\n", tokenarray[0].string_ptr));
-	if (sym = CreateConstant(tokenarray))
-	{
+    if ( sym = CreateConstant( tokenarray ) ) {
 		/**/myassert(sym->state == SYM_INTERNAL); /* must not be a text macro */
-		if (ModuleInfo.list == TRUE)
-		{
+        if ( ModuleInfo.list == TRUE ) {
 			LstWrite(LSTTYPE_EQUATE, 0, sym);
 		}
 		return(NOT_ERROR);

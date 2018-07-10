@@ -50,8 +50,7 @@ static const char  dots[] = " . . . . . . . . . . . . . . . .";
 
 static const char  szFmtProcStk[] = "  %s %s        %-17s %s %c %04" I32_SPEC "X";
 
-enum list_strings
-{
+enum list_strings {
 #define ltext( index, string ) LS_ ## index,
 #include "ltext.h"
 #undef ltext
@@ -67,8 +66,7 @@ static const char szCount[] = "count";
 
 /* cref definitions */
 
-enum list_queues
-{
+enum list_queues {
 	LQ_MACROS,
 	LQ_STRUCTS,
 #ifdef DEBUG_OUT
@@ -82,13 +80,11 @@ enum list_queues
 	LQ_LAST
 };
 
-enum pr_flags
-{
+enum pr_flags {
 	PRF_ADDSEG = 0x01
 };
 
-struct print_item
-{
+struct print_item {
 	short type;
 	short flags;
 	const short *capitems;
@@ -124,8 +120,7 @@ static const struct print_item cr[] = {
 	{ LQ_PROCS,           0, prccap, log_proc    },
 };
 
-struct lstleft
-{
+struct lstleft {
 	struct lstleft *next;
 	char buffer[4*8];
 	char last;
@@ -161,10 +156,8 @@ void LstWrite(enum lsttype type, uint_32 oldofs, void *value)
 		return;
 	if (ModuleInfo.GeneratedCode && (ModuleInfo.list_generated_code == FALSE))
 		return;
-	if (MacroLevel)
-	{
-		switch (ModuleInfo.list_macro)
-		{
+    if ( MacroLevel ) {
+        switch ( ModuleInfo.list_macro ) {
 			case LM_NOLISTMACRO:
 				return;
 			case LM_LISTMACRO:
@@ -178,16 +171,13 @@ void LstWrite(enum lsttype type, uint_32 oldofs, void *value)
 	DebugMsg1(("LstWrite( %u, %" I32_SPEC "u ): enter [ pos=%" I32_SPEC "u, GeneratedCode=%u, MacroLevel=%u ]\n", type, oldofs, list_pos, ModuleInfo.GeneratedCode, MacroLevel));
 	pSrcline = CurrSource;
 #if FASTPASS
-	if ((Parse_Pass > PASS_1) && UseSavedState)
-	{
-		if (ModuleInfo.GeneratedCode == 0)
-		{
+    if ( ( Parse_Pass > PASS_1 ) && UseSavedState ) {
+        if ( ModuleInfo.GeneratedCode == 0 ) {
 			if (!(ModuleInfo.line_flags & LOF_SKIPPOS))
 				list_pos = LineStoreCurr->list_pos;
 #if USELSLINE /* either use CurrSource + CurrComment or LineStoreCurr->line (see assemble.c, OnePass() */
 			pSrcline = LineStoreCurr->line;
-			if (ModuleInfo.CurrComment)
-			{ /* if comment was removed, readd it! */
+            if ( ModuleInfo.CurrComment ) { /* if comment was removed, readd it! */
 				*(LineStoreCurr->line + strlen(LineStoreCurr->line)) = ';';
 				ModuleInfo.CurrComment = NULL;
 			}
@@ -203,11 +193,9 @@ void LstWrite(enum lsttype type, uint_32 oldofs, void *value)
 		memset(ll.buffer, ' ', sizeof(ll.buffer));
 	srcfile = get_curr_srcfile();
 
-	switch (type)
-	{
+    switch ( type ) {
 		case LSTTYPE_DATA:
-			if (Parse_Pass == PASS_1 && Options.first_pass_listing == FALSE)
-			{
+        if ( Parse_Pass == PASS_1 && Options.first_pass_listing == FALSE ) {
 				break;
 			}
 			/* no break */
@@ -219,28 +207,22 @@ void LstWrite(enum lsttype type, uint_32 oldofs, void *value)
 			if (CurrSeg == NULL)
 				break;
 			//if ( write_to_file == FALSE )
-			if (Options.first_pass_listing)
-			{
+        if ( Options.first_pass_listing ) {
 				if (Parse_Pass > PASS_1)
 					break;
 #ifdef DEBUG_OUT
-			}
-			else if (Options.max_passes == 1)
-			{
+        } else if ( Options.max_passes == 1 ) {
 				; /* write a listing in pass 1 */
 #endif
-			}
-			else if (Parse_Pass == PASS_1)  /* changed v1.96 */
+        } else if ( Parse_Pass == PASS_1 )  /* changed v1.96 */
 				break;
 
 			len = CODEBYTES;
 			p2 = ll.buffer + OFSSIZE + 2;
 
 			if (CurrSeg->e.seginfo->CodeBuffer == NULL ||
-				CurrSeg->e.seginfo->written == FALSE)
-			{
-				while (oldofs < newofs && len)
-				{
+            CurrSeg->e.seginfo->written == FALSE ) {
+            while ( oldofs < newofs && len ) {
 					*p2++ = '0';
 					*p2++ = '0';
 					oldofs++;
@@ -252,25 +234,21 @@ void LstWrite(enum lsttype type, uint_32 oldofs, void *value)
 			/* OMF hold just a small buffer for one LEDATA record */
 			/* if it has been flushed, use LastCodeBufSize */
 			idx = (CurrSeg->e.seginfo->current_loc - CurrSeg->e.seginfo->start_loc) - (newofs - oldofs);
-			if (Options.output_format == OFORMAT_OMF)
-			{
+        if ( Options.output_format == OFORMAT_OMF ) {
 				/* v2.11: additional check to make the hack more robust [ test case:  db 800000h dup (0) ] */
 				if ((idx+LastCodeBufSize) < 0)
 					break; /* just exit. The code bytes area will remain empty */
-				while (idx < 0 && len)
-				{
+            while ( idx < 0 && len ) {
 					sprintf(p2, "%02X", CurrSeg->e.seginfo->CodeBuffer[idx+LastCodeBufSize]);
 					p2 += 2;
 					idx++;
 					oldofs++;
 					len--;
 				}
-			}
-			else if (idx < 0)
+        } else if (idx < 0)
 				idx = 0;
 
-			while (oldofs < newofs && len)
-			{
+        while ( oldofs < newofs && len ) {
 				sprintf(p2, "%02X", CurrSeg->e.seginfo->CodeBuffer[idx]);
 				p2 += 2;
 				idx++;
@@ -282,8 +260,7 @@ void LstWrite(enum lsttype type, uint_32 oldofs, void *value)
 		case LSTTYPE_EQUATE:
 			/* v2.10: display current offset if equate is an alias for a label in this segment */
 			idx = 1;
-			if (sym->segment && sym->segment == &CurrSeg->sym)
-			{
+        if ( sym->segment && sym->segment == &CurrSeg->sym ) {
 				sprintf(ll.buffer, "%08" I32_SPEC "X", GetCurrOffset());
 				idx = 10;
 			}
@@ -298,10 +275,8 @@ void LstWrite(enum lsttype type, uint_32 oldofs, void *value)
 			ll.buffer[1] = '=';
 			//GetLiteralValue( buffer2, sym->string_ptr );
 			//strcpy( buffer2, sym->string_ptr );
-			for (p1 = sym->string_ptr, p2 = &ll.buffer[3], pll = &ll; *p1; )
-			{
-				if (p2 >= &pll->buffer[28])
-				{
+        for ( p1 = sym->string_ptr, p2 = &ll.buffer[3], pll = &ll; *p1; ) {
+            if ( p2 >= &pll->buffer[28] ) {
 					struct lstleft *next = myalloca(sizeof(struct lstleft));
 					pll->next = next;
 					pll = next;
@@ -324,15 +299,13 @@ void LstWrite(enum lsttype type, uint_32 oldofs, void *value)
 			// ll.buffer[8] = ' ';
 			break;
 		case LSTTYPE_DIRECTIVE:
-			if (CurrSeg || value)
-			{
+        if ( CurrSeg || value ) {
 				sprintf(ll.buffer, "%08" I32_SPEC "X", oldofs);
 				//ll.buffer[8] = ' ';
 			}
 			break;
 		default: /* LSTTYPE_MACRO */
-			if (*pSrcline == NULLC && ModuleInfo.CurrComment == NULL && srcfile == ModuleInfo.srcfile)
-			{
+        if ( *pSrcline == NULLC && ModuleInfo.CurrComment == NULL && srcfile == ModuleInfo.srcfile ) {
 				DebugMsg1(("LstWrite: type=%u, writing CRLF\n", type));
 				fwrite(NLSTR, 1, NLSIZ, CurrFile[LST]);
 				list_pos += NLSIZ;
@@ -342,28 +315,23 @@ void LstWrite(enum lsttype type, uint_32 oldofs, void *value)
 	}
 
 #if FASTPASS
-	if (Parse_Pass == PASS_1 || UseSavedState == FALSE)
-	{
+    if ( Parse_Pass == PASS_1 || UseSavedState == FALSE ) {
 #endif
 		idx = sizeof(ll.buffer);
 		if (ModuleInfo.GeneratedCode)
 			ll.buffer[28] = '*';
-		if (MacroLevel)
-		{
+        if ( MacroLevel ) {
 			len = sprintf(&ll.buffer[29], "%u", MacroLevel);
 			ll.buffer[29+len] = ' ';
 		}
-		if (srcfile != ModuleInfo.srcfile)
-		{
+        if ( srcfile != ModuleInfo.srcfile ) {
 			ll.buffer[30] = 'C';
 		}
 #ifdef DEBUG_OUT
 		ll.last = NULLC;
 #endif
 #if FASTPASS
-	}
-	else
-	{
+    } else {
 		idx = OFSSIZE + 2 + 2 * CODEBYTES;
 #ifdef DEBUG_OUT
 		ll.buffer[idx] = NULLC;
@@ -371,8 +339,7 @@ void LstWrite(enum lsttype type, uint_32 oldofs, void *value)
 	}
 #endif
 
-	for (i = 32; i > 0; --i)
-	{
+	for (i = 32; i > 0; --i) {
 		if (ll.buffer[i] == 0)
 			ll.buffer[i] = ' ';
 	}
@@ -387,13 +354,11 @@ void LstWrite(enum lsttype type, uint_32 oldofs, void *value)
 
 	/* write source and comment part */
 #if FASTPASS
-	if (Parse_Pass == PASS_1 || UseSavedState == FALSE)
-	{
+    if ( Parse_Pass == PASS_1 || UseSavedState == FALSE ) {
 #endif
 		if (len)
 			fwrite(pSrcline, 1, len, CurrFile[LST]);
-		if (len2)
-		{
+        if ( len2 ) {
 			fwrite(ModuleInfo.CurrComment, 1, len2, CurrFile[LST]);
 			DebugMsg1(("LstWrite: writing (%u b) >%s%s<\n", len + len2 + NLSIZ, pSrcline, ModuleInfo.CurrComment));
 		}
@@ -408,8 +373,7 @@ void LstWrite(enum lsttype type, uint_32 oldofs, void *value)
 	/* write optional additional lines.
 	 * currently works in pass one only.
 	 */
-	for (pll = ll.next; pll; pll = pll->next)
-	{
+    for ( pll = ll.next; pll; pll = pll->next ) {
 		fwrite(pll->buffer, 1, 32, CurrFile[LST]);
 		fwrite(NLSTR, 1, NLSIZ, CurrFile[LST]);
 		list_pos += 32 + NLSIZ;
@@ -429,8 +393,7 @@ void LstPrintf(const char *format, ...)
 {
 	va_list     args;
 
-	if (CurrFile[LST])
-	{
+    if( CurrFile[LST] ) {
 		va_start(args, format);
 		list_pos += vfprintf(CurrFile[LST], format, args);
 		va_end(args);
@@ -440,8 +403,7 @@ void LstPrintf(const char *format, ...)
 void LstNL(void)
 /****************/
 {
-	if (CurrFile[LST])
-	{
+    if( CurrFile[LST] ) {
 		fwrite(NLSTR, 1, NLSIZ, CurrFile[LST]);
 		list_pos += NLSIZ;
 	}
@@ -456,8 +418,7 @@ void LstNL(void)
 void LstSetPosition(void)
 /*************************/
 {
-	if (CurrFile[LST] && (Parse_Pass > PASS_1) && UseSavedState && ModuleInfo.GeneratedCode == 0)
-	{
+    if( CurrFile[LST] && ( Parse_Pass > PASS_1 ) && UseSavedState && ModuleInfo.GeneratedCode == 0 ) {
 		list_pos = LineStoreCurr->list_pos;
 		fseek(CurrFile[LST], list_pos, SEEK_SET);
 		ModuleInfo.line_flags |= LOF_SKIPPOS;
@@ -468,8 +429,7 @@ void LstSetPosition(void)
 static const char *get_seg_align(const struct seg_info *seg, char *buffer)
 /**************************************************************************/
 {
-	switch (seg->alignment)
-	{
+    switch( seg->alignment ) {
 		case 0:    return(strings[LS_BYTE]);
 		case 1:    return(strings[LS_WORD]);
 		case 2:    return(strings[LS_DWORD]);
@@ -487,8 +447,7 @@ static const char *get_seg_align(const struct seg_info *seg, char *buffer)
 static const char *get_seg_combine(const struct seg_info *seg)
 /**************************************************************/
 {
-	switch (seg->combine)
-	{
+    switch( seg->combine ) {
 		case COMB_INVALID:    return(strings[LS_PRIVATE]);
 		case COMB_STACK:      return(strings[LS_STACK]);
 		case COMB_ADDOFF:     return(strings[LS_PUBLIC]);
@@ -518,8 +477,7 @@ static const char *SimpleTypeString(enum memtype mem_type)
 /**********************************************************/
 {
 	int size = (mem_type &  0x3f) + 1;
-	switch (size)
-	{
+    switch ( size ) {
 		case 1: return(strings[LS_BYTE]);
 		case 2: return(strings[LS_WORD]);
 		case 4: return(strings[LS_DWORD]);
@@ -554,8 +512,7 @@ static const char *GetMemtypeString(const struct asym *sym, char *buffer)
 	if (sym->state == SYM_STACK && sym->is_ptr)
 		mem_type = MT_PTR;
 
-	switch (mem_type)
-	{
+    switch ( mem_type ) {
 		case MT_PTR:
 #if AMD64_SUPPORT
 			if (sym->Ofssize == USE64)
@@ -567,18 +524,15 @@ static const char *GetMemtypeString(const struct asym *sym, char *buffer)
 				else
 					p = strings[LS_NEAR16 + sym->Ofssize];
 
-			if (buffer)
-			{ /* Currently, 'buffer' is only != NULL for typedefs */
+        if ( buffer ) { /* Currently, 'buffer' is only != NULL for typedefs */
 				int i;
 				char *b2 = buffer;
 				/* v2.10: improved pointer TYPEDEF display */
-				for (i = sym->is_ptr; i; i--)
-				{
+            for ( i = sym->is_ptr; i; i-- ) {
 					b2 += sprintf(b2, "%s %s ", p, strings[LS_PTR]);
 				}
 				/* v2.05: added. */
-				if (sym->state == SYM_TYPE && sym->typekind == TYPE_TYPEDEF)
-				{
+            if ( sym->state == SYM_TYPE && sym->typekind == TYPE_TYPEDEF ) {
 					//strcat( buffer, " ");
 					if (sym->target_type)
 						strcpy(b2, sym->target_type->name);
@@ -658,21 +612,16 @@ static void log_struct(const struct asym *sym, const char *name, int_32 ofs)
 		LstPrintf("%s %s        %8" I32_SPEC "X", name, pdots, sym->offset + ofs);
 	LstNL();
 	prefix += 2;
-	for (f = si->head; f; f = f->next)
-	{
+    for( f = si->head; f; f = f->next ) {
 		/* recursion if an embedded struct occurs */
 		/* v2.09: field init_dir removed */
 		//if ( f->sym->mem_type == MT_TYPE && f->init_dir == NULL ) {
-		if (f->sym.mem_type == MT_TYPE && f->ivalue[0] == NULLC)
-		{
+        if ( f->sym.mem_type == MT_TYPE && f->ivalue[0] == NULLC ) {
 			log_struct(f->sym.type, f->sym.name, f->sym.offset + ofs);
-		}
-		else
-		{
+        } else {
 			/* don't list unstructured fields without name */
 			/* but do list them if they are structured */
-			if (*(f->sym.name) || (f->sym.mem_type == MT_TYPE))
-			{
+            if (*(f->sym.name) || (f->sym.mem_type == MT_TYPE)) {
 				i = f->sym.name_size + prefix;
 				pdots = ((i >= DOTSMAX) ? "" : dots + i + 1);
 				for (i = 0; i < prefix; i++)
@@ -706,8 +655,7 @@ static void log_record(const struct asym *sym)
 	for (i = 0, f = si->head; f; f = f->next, i++);
 	LstPrintf("%s %s      %6" I32_SPEC "X  %7X", sym->name, pdots, sym->total_size*8, i);
 	LstNL();
-	for (f = si->head; f; f = f->next)
-	{
+    for( f = si->head; f; f = f->next ) {
 		i = f->sym.name_size + 2;
 		pdots = ((i >= DOTSMAX) ? "" : dots + i + 1);
 		for (i = f->sym.offset, mask = 0; i < f->sym.offset + f->sym.total_size; i++)
@@ -744,12 +692,10 @@ static void log_typedef(const struct asym *sym)
 	pdots = ((i >= DOTSMAX) ? "" : dots + i + 1);
 	p = StringBufferEnd;
 	*p = NULLC;
-	if (sym->mem_type == MT_PROC && sym->target_type)
-	{ /* typedef proto? */
+    if ( sym->mem_type == MT_PROC && sym->target_type ) { /* typedef proto? */
 		strcat(p, strings[LS_PROC]);
 		strcat(p, " ");
-		if (*sym->target_type->name)
-		{  /* the name may be "" */
+        if ( *sym->target_type->name ) {  /* the name may be "" */
 			strcat(p, sym->target_type->name);
 			strcat(p, " ");
 		}
@@ -761,8 +707,7 @@ static void log_typedef(const struct asym *sym)
 		strcat(p, strings[(sym->target_type->mem_type == MT_NEAR ? LS_LNEAR16 : LS_LFAR16) + sym->Ofssize]);
 		strcat(p, " ");
 		strcat(p, GetLanguage(sym->target_type));
-	}
-	else
+    } else
 		p = (char *)GetMemtypeString(sym, p);
 	LstPrintf("%s %s    %8" I32_SPEC "u  %s", sym->name, pdots, sym->total_size, p);
 	LstNL();
@@ -774,25 +719,19 @@ static void log_segment(const struct asym *sym, const struct asym *group)
 	char buffer[32];
 	struct seg_info *seg = ((struct dsym *)sym)->e.seginfo;
 
-	if (seg->group == group)
-	{
+    if( seg->group == group ) {
 		int i = sym->name_size;
 		const char *pdots;
 		pdots = ((i >= DOTSMAX) ? "" : dots + i + 1);
 		LstPrintf("%s %s        ", sym->name, pdots);
-		if (seg->Ofssize == USE32)
-		{
+        if( seg->Ofssize == USE32 ) {
 			//LstPrintf( "32 Bit   %08" I32_SPEC "X ", seg->current_loc );
 			LstPrintf("32 Bit   %08" I32_SPEC "X ", sym->max_offset);
 #if AMD64_SUPPORT
-		}
-		else if (seg->Ofssize == USE64)
-		{
+        } else if( seg->Ofssize == USE64 ) {
 			LstPrintf("64 Bit   %08" I32_SPEC "X ", sym->max_offset);
 #endif
-		}
-		else
-		{
+        } else {
 			//LstPrintf( "16 Bit   %04" I32_SPEC "X     ", seg->current_loc );
 			LstPrintf("16 Bit   %04" I32_SPEC "X     ", sym->max_offset);
 		}
@@ -819,16 +758,12 @@ static void log_group(const struct asym *grp, const struct dsym *segs)
 	LstNL();
 
 	/* the FLAT groups is always empty */
-	if (grp == (struct asym *)ModuleInfo.flat_grp)
-	{
-		for (; segs; segs = segs->next)
-		{
+    if ( grp == (struct asym *)ModuleInfo.flat_grp ) {
+        for( ; segs; segs = segs->next ) {
 			log_segment((struct asym *)segs, grp);
 		}
-	}
-	else
-		for (curr = ((struct dsym *)grp)->e.grpinfo->seglist; curr; curr = curr->next)
-		{
+    } else
+        for( curr = ((struct dsym *)grp)->e.grpinfo->seglist; curr; curr = curr->next ) {
 			log_segment((struct asym *)curr->seg, grp);
 		}
 }
@@ -838,17 +773,14 @@ static const char *get_proc_type(const struct asym *sym)
 {
 	/* if there's no segment associated with the symbol,
 	 add the symbol's offset size to the distance */
-	switch (sym->mem_type)
-	{
+    switch( sym->mem_type ) {
 		case MT_NEAR:
-			if (sym->segment == NULL)
-			{
+        if ( sym->segment == NULL ) {
 				return(strings[LS_NEAR16 + GetSymOfssize(sym)]);
 			}
 			return(strings[LS_NEAR]);
 		case MT_FAR:
-			if (sym->segment == NULL)
-			{
+        if ( sym->segment == NULL ) {
 				return(strings[LS_FAR16 + GetSymOfssize(sym)]);
 			}
 			return(strings[LS_FAR]);
@@ -859,12 +791,9 @@ static const char *get_proc_type(const struct asym *sym)
 static const char *get_sym_seg_name(const struct asym *sym)
 /***********************************************************/
 {
-	if (sym->segment)
-	{
+    if( sym->segment ) {
 		return(sym->segment->name);
-	}
-	else
-	{
+    } else {
 		return(strings[LS_NOSEG]);
 	}
 }
@@ -901,16 +830,11 @@ static void log_proc(const struct asym *sym)
 	if (sym->fwdref)
 		LstPrintf("(F) ");
 #endif
-	if (sym->ispublic)
-	{
+    if( sym->ispublic ) {
 		LstPrintf("%-9s", strings[LS_PUBLIC]);
-	}
-	else if (sym->state == SYM_INTERNAL)
-	{
+    } else if ( sym->state == SYM_INTERNAL ) {
 		LstPrintf("%-9s", strings[LS_PRIVATE]);
-	}
-	else
-	{
+    } else {
 		LstPrintf(sym->weak ? "*%-8s " : "%-9s ", strings[LS_EXTERNAL]);
 #if DLLIMPORT
 		if (sym->dll)
@@ -921,8 +845,7 @@ static void log_proc(const struct asym *sym)
 	LstPrintf("%s", GetLanguage(sym));
 	LstNL();
 	/* for PROTOs, list optional altname */
-	if (sym->state == SYM_EXTERNAL && sym->altname)
-	{
+    if ( sym->state == SYM_EXTERNAL && sym->altname ) {
 		struct asym *sym2 = sym->altname;
 		LstPrintf("  ");
 		LstPrintf(p,
@@ -934,21 +857,18 @@ static void log_proc(const struct asym *sym)
 		LstNL();
 	}
 	/* for PROCs, list parameters and locals */
-	if (sym->state == SYM_INTERNAL)
-	{
+    if ( sym->state == SYM_INTERNAL ) {
 		/* print the procedure's parameters */
 		if (sym->langtype == LANG_C ||
 			sym->langtype == LANG_VECTORCALL ||
 			sym->langtype == LANG_SYSCALL ||
 			sym->langtype == LANG_STDCALL ||
-			sym->langtype == LANG_FASTCALL)
-		{
+      sym->langtype == LANG_FASTCALL ) {
 			int cnt;
 			/* position f2 to last param */
 			for (cnt = 0, f = dir->e.procinfo->paralist; f; f = f->nextparam)
 				cnt++;
-			for (; cnt; cnt--)
-			{
+            for ( ; cnt; cnt-- ) {
 				int curr;
 				for (curr = 1, f = dir->e.procinfo->paralist; curr < cnt; f = f->nextparam, curr++);
 				i = f->sym.name_size;
@@ -967,11 +887,8 @@ static void log_proc(const struct asym *sym)
 							  '+', f->sym.offset);
 				LstNL();
 			}
-		}
-		else
-		{
-			for (f = dir->e.procinfo->paralist; f; f = f->nextparam)
-			{
+        } else {
+            for ( f = dir->e.procinfo->paralist; f; f = f->nextparam ) {
 				i = f->sym.name_size;
 				pdots = ((i >= DOTSMAX-2) ? "" : dots + i + 1 + 2);
 				LstPrintf(szFmtProcStk, f->sym.name, pdots, GetMemtypeString(&f->sym, NULL),
@@ -986,8 +903,7 @@ static void log_proc(const struct asym *sym)
 		}
 
 		/* print the procedure's locals */
-		for (l = dir->e.procinfo->locallist; l; l = l->nextlocal)
-		{
+        for ( l = dir->e.procinfo->locallist; l; l = l->nextlocal ) {
 			char buffer[32];
 			i = l->sym.name_size;
 			pdots = ((i >= DOTSMAX-2) ? "" : dots + i + 1 + 2);
@@ -1006,11 +922,9 @@ static void log_proc(const struct asym *sym)
 			LstNL();
 		}
 
-		for (l = dir->e.procinfo->labellist; l; l = l->e.nextll)
-		{
+        for ( l = dir->e.procinfo->labellist; l ; l = l->e.nextll ) {
 			struct dsym *l2;
-			for (l2 = l; l2; l2 = (struct dsym *)l2->sym.nextitem)
-			{
+            for ( l2 = l; l2; l2 = (struct dsym *)l2->sym.nextitem ) {
 				/* filter params and locals! */
 				if (l2->sym.state == SYM_STACK || l2->sym.state == SYM_TMACRO)
 					continue;
@@ -1047,20 +961,16 @@ static void log_symbol(const struct asym *sym)
 
 	pdots = ((i >= DOTSMAX) ? "" : dots + i + 1);
 
-	switch (sym->state)
-	{
+    switch ( sym->state ) {
 		case SYM_UNDEFINED:
 		case SYM_INTERNAL:
 		case SYM_EXTERNAL:
 			LstPrintf("%s %s        ", sym->name, pdots);
 
-			if (sym->isarray)
-			{
+        if ( sym->isarray ) {
 				i = sprintf(StringBufferEnd, "%s[%u]", GetMemtypeString(sym, NULL), sym->total_length);
 				LstPrintf("%-10s ", StringBufferEnd);
-			}
-			else if (sym->state == SYM_EXTERNAL && sym->iscomm == TRUE)
-			{
+        } else if ( sym->state == SYM_EXTERNAL && sym->iscomm == TRUE ) {
 				LstPrintf("%-10s ", strings[LS_COMM]);
 			}
 			else
@@ -1071,16 +981,14 @@ static void log_symbol(const struct asym *sym)
 			//if ( sym->mem_type == MT_ABS )
 			if (sym->state == SYM_EXTERNAL && sym->iscomm == TRUE)
 				LstPrintf(" %8" I32_SPEC "Xh ", sym->total_size / sym->total_length);
-			else if (sym->mem_type == MT_EMPTY)
-			{ /* also check segment? might be != NULL for equates (var = offset x) */
+        else if ( sym->mem_type == MT_EMPTY ) { /* also check segment? might be != NULL for equates (var = offset x) */
 				if (sym->value3264 != 0 && sym->value3264 != -1)
 					LstPrintf(" %" I64_SPEC "Xh ", sym->uvalue, sym->value3264);
 				else if (sym->value3264 < 0)
 					LstPrintf("-%08" I32_SPEC "Xh ", 0 - sym->uvalue);
 				else
 					LstPrintf(" %8" I32_SPEC "Xh ", sym->offset);
-			}
-			else
+        } else
 				LstPrintf(" %8" I32_SPEC "Xh ", sym->offset);
 
 			/* print segment */
@@ -1100,12 +1008,9 @@ static void log_symbol(const struct asym *sym)
 			if (sym->ispublic)
 				LstPrintf("%s ", strings[LS_PUBLIC]);
 
-			if (sym->state == SYM_EXTERNAL)
-			{
+        if ( sym->state == SYM_EXTERNAL ) {
 				LstPrintf(sym->weak ? "*%s " : "%s ", strings[LS_EXTERNAL]);
-			}
-			else if (sym->state == SYM_UNDEFINED)
-			{
+        } else if ( sym->state == SYM_UNDEFINED ) {
 				LstPrintf("%s ", strings[LS_UNDEFINED]);
 			}
 
@@ -1155,8 +1060,7 @@ void LstWriteCRef(void)
 	struct qdesc    queues[LQ_LAST];
 
 	/* no point going through the motions if lst file isn't open */
-	if (CurrFile[LST] == NULL || Options.no_symbol_listing == TRUE)
-	{
+    if( CurrFile[LST] == NULL || Options.no_symbol_listing == TRUE ) {
 		return;
 	}
 
@@ -1172,17 +1076,14 @@ void LstWriteCRef(void)
 	qsort(syms, SymCount, sizeof(struct asym *), compare_syms);
 
 	memset(queues, 0, sizeof(queues));
-	for (i = 0; i < SymCount; ++i)
-	{
+    for( i = 0; i < SymCount; ++i ) {
 		struct qdesc *q;
 		if (syms[i]->list == FALSE)
 			continue;
-		switch (syms[i]->state)
-		{
+        switch (syms[i]->state) {
 			case SYM_TYPE:
 				si = ((struct dsym *)syms[i])->e.structinfo;
-				switch (syms[i]->typekind)
-				{
+            switch ( syms[i]->typekind ) {
 					case TYPE_RECORD:  idx = LQ_RECORDS; break;
 					case TYPE_TYPEDEF: idx = LQ_TYPEDEFS; break;
 					case TYPE_STRUCT:
@@ -1205,8 +1106,7 @@ void LstWriteCRef(void)
 				break;
 			case SYM_INTERNAL:
 			case SYM_EXTERNAL: /* v2.04: added, since PROTOs are now externals */
-				if (syms[i]->isproc)
-				{
+            if ( syms[i]->isproc ) {
 					idx = LQ_PROCS;
 					break;
 				}
@@ -1215,34 +1115,26 @@ void LstWriteCRef(void)
 				continue;
 		}
 		q = &queues[idx];
-		if (q->head == NULL)
-		{
+        if( q->head == NULL ) {
 			q->head = syms[i];
-		}
-		else
-		{
+        } else {
 			((struct dsym *)q->tail)->next = (struct dsym *)syms[i];
 		}
 		q->tail = syms[i];
 		((struct dsym *)syms[i])->next = NULL;
 	}
-	for (idx = 0; idx < (sizeof(cr) / sizeof(cr[0])); idx++)
-	{
-		if (queues[cr[idx].type].head)
-		{
-			if (cr[idx].capitems)
-			{
+    for ( idx = 0; idx < ( sizeof( cr ) / sizeof(cr[0] ) ); idx++ ) {
+        if ( queues[cr[idx].type].head ) {
+            if ( cr[idx].capitems ) {
 				const short *ps;
-				for (ps = cr[idx].capitems; *ps; ps++)
-				{
+                for ( ps = cr[idx].capitems; *ps; ps++ ) {
 					//if ( *ps == -1 )
 					//    LstNL();
 					//else
 					LstCaption(strings[*ps], ps == cr[idx].capitems ? 2 : 0);
 				}
 			}
-			for (dir = queues[cr[idx].type].head; dir; dir = dir->next)
-			{
+            for( dir = queues[cr[idx].type].head; dir ; dir = dir->next ) {
 				cr[idx].function(&dir->sym, (cr[idx].flags & PRF_ADDSEG) ? queues[LQ_SEGS].head : NULL, 0);
 			}
 		}
@@ -1251,10 +1143,8 @@ void LstWriteCRef(void)
 	/* write out symbols */
 	LstCaption(strings[LS_TXT_SYMBOLS], 2);
 	LstCaption(strings[LS_TXT_SYMCAP], 0);
-	for (i = 0; i < SymCount; ++i)
-	{
-		if (syms[i]->list == TRUE && syms[i]->isproc == FALSE)
-		{
+    for( i = 0; i < SymCount; ++i ) {
+        if ( syms[i]->list == TRUE && syms[i]->isproc == FALSE ) {
 			DebugMsg(("LstWriteCRef: log_symbol( %s )\n", syms[i]->name));
 			log_symbol(syms[i]);
 		}
@@ -1280,8 +1170,7 @@ ret_code ListingDirective(int i, struct asm_tok tokenarray[])
 	int directive = tokenarray[i].tokval;
 	i++;
 
-	switch (directive)
-	{
+    switch ( directive ) {
 		case T_DOT_LIST:
 			if (CurrFile[LST])
 				ModuleInfo.list = TRUE;
@@ -1295,16 +1184,13 @@ ret_code ListingDirective(int i, struct asm_tok tokenarray[])
 			break;
 		case T_DOT_NOCREF:
 		case T_DOT_XCREF:
-			if (i == Token_Count)
-			{
+        if ( i == Token_Count ) {
 				ModuleInfo.cref = FALSE;
 				break;
 			}
-			do
-			{
+        do {
 				struct asym *sym;
-				if (tokenarray[i].token != T_ID)
-				{
+            if ( tokenarray[i].token != T_ID ) {
 					return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 				}
 				/* the name may be a forward reference. In this case it will
@@ -1314,8 +1200,7 @@ ret_code ListingDirective(int i, struct asm_tok tokenarray[])
 				sym = SymLookup(tokenarray[i].string_ptr);
 				sym->list = FALSE;
 				i++;
-				if (i < Token_Count)
-				{
+            if ( i < Token_Count ) {
 					if (tokenarray[i].token != T_COMMA)
 						return(EmitErr(EXPECTING_COMMA, tokenarray[i].tokpos));
 
@@ -1323,8 +1208,7 @@ ret_code ListingDirective(int i, struct asm_tok tokenarray[])
 					if (i < (Token_Count - 1))
 						i++;
 				}
-			}
-			while (i < Token_Count);
+        } while ( i < Token_Count );
 			break;
 		case T_DOT_LISTALL: /* list false conditionals and generated code */
 			if (CurrFile[LST])
@@ -1351,8 +1235,7 @@ ret_code ListingDirective(int i, struct asm_tok tokenarray[])
 			/* this isn't really Masm-compatible, but ensures we don't get
 			 * struct fields with names page, title, subtitle, subttl.
 			 */
-			if (CurrStruct)
-			{
+        if( CurrStruct ) {
 				return(EmitError(STATEMENT_NOT_ALLOWED_INSIDE_STRUCTURE_DEFINITION));
 			}
 			if (Parse_Pass == PASS_1)
@@ -1360,8 +1243,7 @@ ret_code ListingDirective(int i, struct asm_tok tokenarray[])
 			while (tokenarray[i].token != T_FINAL) i++;
 	}
 
-	if (tokenarray[i].token != T_FINAL)
-	{
+    if ( tokenarray[i].token != T_FINAL ) {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
 	}
 
@@ -1373,8 +1255,7 @@ ret_code ListingDirective(int i, struct asm_tok tokenarray[])
 ret_code ListMacroDirective(int i, struct asm_tok tokenarray[])
 /***************************************************************/
 {
-	if (tokenarray[i+1].token != T_FINAL)
-	{
+    if ( tokenarray[i+1].token != T_FINAL ) {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i+1].string_ptr));
 	}
 
@@ -1390,8 +1271,7 @@ void LstInit(void)
 	const char *buffer;
 
 	list_pos = 0;
-	if (Options.write_listing)
-	{
+    if( Options.write_listing ) {
 		int namelen;
 		buffer = MsgGetEx(MSG_UASM);
 		list_pos = strlen(buffer);

@@ -11,8 +11,7 @@ typedef struct _IMAGE_RUNTIME_FUNCTION_ENTRY
 
 /* .xdata items */
 
-enum
-{
+enum {
 	UWOP_PUSH_NONVOL = 0, /* .PUSHREG    - push nonvolative gpr */
 	UWOP_ALLOC_LARGE = 1, /* .ALLOCSTACK - alloc large-sized area on stack */
 	UWOP_ALLOC_SMALL = 2, /* .ALLOCSTACK - alloc small-sized area (8-128) on stack */
@@ -26,10 +25,8 @@ enum
 	UWOP_PUSH_MACHFRAME = 10 /* .PUSHFRAME  - push a machine frame ( SS, RSP, EFL, CS, RIP [ERRCODE] ) */
 };
 
-typedef union _UNWIND_CODE
-{
-	struct
-	{
+typedef union _UNWIND_CODE {
+    struct {
 		uint_8 CodeOffset;    /* offset within prolog */
 		uint_8 UnwindOp : 4;  /* see UWOP_ values */
 		uint_8 OpInfo   : 4;
@@ -37,8 +34,7 @@ typedef union _UNWIND_CODE
 	uint_16 FrameOffset;
 } UNWIND_CODE;
 
-enum
-{
+enum {
 	UNW_FLAG_NHANDLER = 0,
 	UNW_FLAG_EHANDLER = 1, /* function to examine exceptions */
 	UNW_FLAG_UHANDLER = 2, /* function to unwind an exception */
@@ -46,8 +42,7 @@ enum
 	UNW_FLAG_CHAININFO = 4
 };
 
-typedef struct _UNWIND_INFO
-{
+typedef struct _UNWIND_INFO {
 	uint_8 Version       : 3; /* is 1 */
 	uint_8 Flags         : 5; /* see UNW_FLAG_ values */
 	uint_8 SizeOfProlog;      /* size of prolog in bytes */
@@ -56,8 +51,7 @@ typedef struct _UNWIND_INFO
 	uint_8 FrameOffset   : 4; /* offset frame reg from RSP * 16 */
 #if 0
 	UNWIND_CODE UnwindCode[1]; /* unwind codes array */
-	union
-	{
+    union {
 		uint_32 ExceptionHandler; /* if UNW_FLAG_EHANDLER or UNW_FLAG_UHANDLER is set: RVA of language specific handler */
 		uint_32 FunctionEntry;    /* if UNW_FLAG_CHAININFO is set: see IMAGE_RUNTIME_FUNCTION_ENTRY */
 	};

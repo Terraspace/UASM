@@ -100,8 +100,7 @@ msg(PRT_LIST_3, "%C %D %U %L %X");
 #define SIZE_DELTA      64
 
 typedef struct Entry entry, *entry_ptr, **entry_ptr_ptr;
-struct Entry
-{
+struct Entry {
 	entry_ptr       next;
 	void            *mem;
 	_trmem_who      who;
@@ -109,8 +108,7 @@ struct Entry
 	uint_32         when;
 };
 
-struct _trmem_internal
-{
+struct _trmem_internal {
 	entry_ptr   alloc_list;
 	uint_32     mem_used;
 	uint_32     max_mem;
@@ -144,11 +142,10 @@ static size_t getSize(entry_ptr p)
 #pragma warning 579 4;  // reenable pointer truncated warning.
 #endif
 
-static char *mstpcpy(char *dest, const char *src)
+static char *stpcpy( char *dest, const char *src )
 {
 	*dest = *src;
-	while (*dest)
-	{
+    while( *dest ) {
 		++dest;
 		++src;
 		*dest = *src;
@@ -163,8 +160,7 @@ static char *formHex(char *ptr, uint_32 data, uint size)
 	size *= 2;
 	ptr += size;
 	str = ptr;
-	for (; size > 0; size--)
-	{
+    for( ; size > 0; size-- ) {
 		*--str = "0123456789abcdef"[data & 0x0f];
 		data >>= 4;
 	}
@@ -210,20 +206,16 @@ static void trPrt(_trmem_hdl hdl, const char *fmt, ...)
 
 	va_start(args, fmt);
 	ptr = buff;
-	for (;;)
-	{
+    for(;;) {
 		ch = *fmt++;
 		if (ch == '\0') break;
-		if (ch == '%')
-		{
+        if( ch == '%' ) {
 			ch = *fmt++;
-			switch (ch)
-			{
+            switch( ch ) {
 				case 'W':   /* "a1(a2):" */
-					ptr = mstpcpy(ptr, va_arg(args, const char *));
+                ptr = stpcpy( ptr, va_arg( args, const char * ) );
 					who = va_arg(args, _trmem_who);
-					if (who != _TRMEM_NO_ROUTINE)
-					{
+                if( who != _TRMEM_NO_ROUTINE ) {
 						*ptr++ = '(';
 						ptr = formHex(ptr, (uint_32)who, sizeof(who));
 						*ptr++ = ')';
@@ -243,7 +235,7 @@ static void trPrt(_trmem_hdl hdl, const char *fmt, ...)
 #endif
 					break;
 				case 'S':   /* char * (string) pointer */
-					ptr = mstpcpy(ptr, va_arg(args, char *));
+                ptr = stpcpy( ptr, va_arg( args, char * ) );
 					break;
 				case 'U':   /* unsigned integer */
 					ui = va_arg(args, uint);
@@ -258,33 +250,24 @@ static void trPrt(_trmem_hdl hdl, const char *fmt, ...)
 					size = va_arg(args, size_t);
 					if (size > 14) size = 14;
 					xptr = start;
-					for (i = 0; i<14; i++)
-					{
-						if (i < size)
-						{
+                for( i=0; i<14; i++ ) {
+                    if( i < size ) {
 							ptr = formHex(ptr, *xptr, sizeof(char));
 							xptr++;
-						}
-						else
-						{    // no more to print, so make things line up.
+                    } else {    // no more to print, so make things line up.
 							*ptr = ' ';
 							*(ptr + 1) = ' ';
 							ptr += 2;
 						}
-						if (i == 7)
-						{
+                    if( i == 7 ) {
 							*ptr = ' ';
 							ptr++;
 						}
 					}
-					for (i = 0; i < size; i++)
-					{
-						if (isprint(*start))
-						{
+                for( i=0; i < size; i++ ) {
+                    if( isprint( *start ) ) {
 							*ptr = *start;
-						}
-						else
-						{
+                    } else {
 							*ptr = '.';
 						}
 						ptr++;
@@ -295,9 +278,7 @@ static void trPrt(_trmem_hdl hdl, const char *fmt, ...)
 					*ptr++ = ch;
 					break;
 			}
-		}
-		else
-		{
+        } else {
 			*ptr++ = ch;
 		}
 	}
@@ -312,8 +293,7 @@ static entry_ptr allocEntry(_trmem_hdl hdl)
 	entry_ptr   tr;
 
 	tr = (entry_ptr)hdl->alloc(sizeof(entry));
-	if (tr == NULL && (hdl->flags & _TRMEM_OUT_OF_MEMORY))
-	{
+    if( tr == NULL && ( hdl->flags & _TRMEM_OUT_OF_MEMORY ) ) {
 		trPrt(hdl, MSG_OUT_OF_MEMORY);
 	}
 	return(tr);
@@ -335,10 +315,8 @@ static entry_ptr findOnList(void *mem, _trmem_hdl hdl)
 	entry_ptr       walk;
 
 	walk = hdl->alloc_list;
-	while (walk)
-	{
-		if (_PtrCmp(walk->mem, ==, mem))
-		{
+    while( walk ) {
+        if( _PtrCmp( walk->mem, ==, mem ) ) {
 			return(walk);
 		}
 		walk = walk->next;
@@ -353,11 +331,9 @@ static entry_ptr removeFromList(void *mem, _trmem_hdl hdl)
 	entry_ptr       found;
 
 	walk = &hdl->alloc_list;
-	while (*walk)
-	{
+    while( *walk ) {
 		//printf("removeFromList: item=%p, next=%p, mem=%p\n", *walk, (*walk)->next, (*walk)->mem );
-		if (_PtrCmp((*walk)->mem, ==, mem))
-		{
+        if( _PtrCmp( (*walk)->mem, ==, mem ) ) {
 			found = *walk;
 			*walk = found->next;
 			return(found);
@@ -380,8 +356,7 @@ _trmem_hdl _trmem_open(
 	_trmem_hdl  hdl;
 
 	hdl = (_trmem_hdl)alloc(sizeof(struct _trmem_internal));
-	if (hdl == NULL)
-	{
+    if( hdl == NULL ) {
 		return(NULL);
 	}
 	hdl->alloc = alloc;
@@ -406,11 +381,9 @@ int _trmem_validate_all(_trmem_hdl hdl)
 	int result = 1;
 
 	walk = hdl->alloc_list;
-	while (walk)
-	{
+    while( walk ) {
 		//printf("trmem_validate_all: item=%p, next=%p, mem=%p\n", walk, walk->next, walk->mem );
-		if (!isValidChunk(walk, "Validate", 0, hdl))
-		{
+        if( !isValidChunk( walk, "Validate", 0, hdl ) ) {
 			result = 0;
 		}
 		walk = walk->next;
@@ -427,28 +400,22 @@ unsigned _trmem_close(_trmem_hdl hdl)
 	entry_ptr   next;
 
 	chunks = 0;
-	if (hdl->flags & _TRMEM_CLOSE_CHECK_FREE)
-	{
+    if( hdl->flags & _TRMEM_CLOSE_CHECK_FREE ) {
 		mem_used = hdl->mem_used;
 		walk = hdl->alloc_list;
-		while (walk)
-		{
+        while( walk ) {
 			//printf("trmem_close: item=%p, next=%p, mem=%p\n", walk, walk->next, walk->mem );
 			next = walk->next;
 			++chunks;
 			_trmem_free(walk->mem, _TRMEM_NO_ROUTINE, hdl);
 			walk = next;
 		}
-		if (chunks)
-		{
+        if( chunks ) {
 			trPrt(hdl, MSG_CHUNK_BYTE_UNFREED, chunks, mem_used);
 		}
-	}
-	else
-	{
+    } else {
 		walk = hdl->alloc_list;
-		while (walk)
-		{
+        while( walk ) {
 			next = walk->next;
 			++chunks;
 			freeEntry(walk, hdl);
@@ -472,22 +439,17 @@ void *_trmem_alloc(size_t size, _trmem_who who, _trmem_hdl hdl)
 	entry_ptr   tr;
 
 	hdl->alloc_no += 1;
-	if (size == 0 && (hdl->flags & _TRMEM_ALLOC_SIZE_0))
-	{
+    if( size == 0 && ( hdl->flags & _TRMEM_ALLOC_SIZE_0 ) ) {
 		trPrt(hdl, MSG_SIZE_ZERO, "Alloc", who);
 		return (NULL);
-	}
-	else if (size < hdl->min_alloc)
-	{
+    } else if( size < hdl->min_alloc ) {
 		trPrt(hdl, MSG_MIN_ALLOC, "Alloc", who, size);
 	}
 	mem = hdl->alloc(size + 1);
-	if (mem != NULL)
-	{
+    if( mem != NULL ) {
 		MEMSET(mem, ALLOC_BYTE, size + 1);
 		tr = allocEntry(hdl);
-		if (tr != NULL)
-		{
+        if( tr != NULL ) {
 			tr->mem = mem;
 			tr->who = who;
 			tr->when = hdl->alloc_no;
@@ -495,8 +457,7 @@ void *_trmem_alloc(size_t size, _trmem_who who, _trmem_hdl hdl)
 			addToList(tr, hdl);
 		}
 		hdl->mem_used += size;
-		if (hdl->mem_used > hdl->max_mem)
-		{
+        if( hdl->mem_used > hdl->max_mem ) {
 			hdl->max_mem = hdl->mem_used;
 		}
 	}
@@ -515,21 +476,18 @@ static int isValidChunk(entry_ptr tr, const char *rtn,
 	blk_size = *(size_t*)_PtrSub(mem, sizeof(size_t));
 #ifndef __NETWARE__
 #if 0
-	if ((blk_size & 1) == 0)
-	{
+    if(( blk_size & 1 ) == 0 ) {
 		trPrt(hdl, MSG_UNDERRUN_ALLOCATION, rtn, who, mem, tr->who, size);
 		return(0);
 	}
 	blk_size &= ~1;
-	if (size > blk_size || (blk_size - size) > SIZE_DELTA)
-	{
+    if( size > blk_size || ( blk_size - size ) > SIZE_DELTA ) {
 		trPrt(hdl, MSG_UNDERRUN_ALLOCATION, rtn, who, mem, tr->who, size);
 		return(0);
 	}
 #endif
 #endif
-	if (*(unsigned char *)_PtrAdd(mem, size) != ALLOC_BYTE)
-	{
+    if( *(unsigned char *)_PtrAdd( mem, size ) != ALLOC_BYTE ) {
 		trPrt(hdl, MSG_OVERRUN_ALLOCATION, rtn, who, mem, tr->who, size);
 		return(0);
 	}
@@ -542,8 +500,7 @@ int _trmem_validate(void *mem, _trmem_who who, _trmem_hdl hdl)
 	entry_ptr tr;
 
 	tr = findOnList(mem, hdl);
-	if (tr == NULL)
-	{
+    if( tr == NULL ) {
 		trPrt(hdl, MSG_UNOWNED_CHUNK, "Validate", who, mem);
 		return(0);
 	}
@@ -556,10 +513,8 @@ void _trmem_free(void *mem, _trmem_who who, _trmem_hdl hdl)
 	entry_ptr   tr;
 	size_t      size;
 
-	if (mem == NULL)
-	{
-		if (hdl->flags & _TRMEM_FREE_NULL)
-		{
+    if( mem == NULL ) {
+        if( hdl->flags & _TRMEM_FREE_NULL ) {
 			trPrt(hdl, MSG_NULL_PTR, "Free", who);
 		}
 		hdl->free(mem);
@@ -567,8 +522,7 @@ void _trmem_free(void *mem, _trmem_who who, _trmem_hdl hdl)
 	}
 	//printf("trmem_free: item=%p\n", mem );
 	tr = removeFromList(mem, hdl);
-	if (tr == NULL)
-	{
+    if( tr == NULL ) {
 		trPrt(hdl, MSG_UNOWNED_CHUNK, "Free", who, mem);
 		return;
 	}
@@ -589,22 +543,17 @@ static void * ChangeAlloc(void *old, size_t size, _trmem_who who,
 	void *      new_block;
 	size_t      old_size;
 
-	if (fn == (void *)_TRMEM_NO_ROUTINE)
-	{
+    if( fn == (void *) _TRMEM_NO_ROUTINE ) {
 		trPrt(hdl, MSG_NO_ROUTINE, name);
 		return(NULL);
 	}
 
-	if (size == 0)
-	{
-		if (hdl->flags & _TRMEM_REALLOC_SIZE_0)
-		{
+    if( size == 0 ) {
+        if( hdl->flags & _TRMEM_REALLOC_SIZE_0 ) {
 			trPrt(hdl, MSG_SIZE_ZERO, name, who);
 		}
-		if (old == NULL)
-		{
-			if (hdl->flags & _TRMEM_REALLOC_NULL)
-			{
+        if( old == NULL ) {
+            if( hdl->flags & _TRMEM_REALLOC_NULL ) {
 				trPrt(hdl, MSG_NULL_PTR, name, who);
 			}
 			return(fn(NULL, 0));
@@ -612,8 +561,7 @@ static void * ChangeAlloc(void *old, size_t size, _trmem_who who,
 
 		/* old != NULL */
 		tr = removeFromList(old, hdl);
-		if (tr == NULL)
-		{
+        if( tr == NULL ) {
 			trPrt(hdl, MSG_UNOWNED_CHUNK, name, who, old);
 			return(NULL);
 		}
@@ -626,27 +574,22 @@ static void * ChangeAlloc(void *old, size_t size, _trmem_who who,
 	}
 
 	/* size != 0 */
-	if (old == NULL)
-	{
-		if (hdl->flags & _TRMEM_REALLOC_NULL)
-		{
+    if( old == NULL ) {
+        if( hdl->flags & _TRMEM_REALLOC_NULL ) {
 			trPrt(hdl, MSG_NULL_PTR, name, who);
 		}
 		new_block = fn(NULL, size + 1);
-		if (new_block != NULL)
-		{
+        if( new_block != NULL ) {
 			MEMSET(new_block, ALLOC_BYTE, size + 1);
 			tr = allocEntry(hdl);
-			if (tr != NULL)
-			{
+            if( tr != NULL ) {
 				tr->mem = new_block;
 				tr->who = who;
 				setSize(tr, size);
 				addToList(tr, hdl);
 			}
 			hdl->mem_used += size;
-			if (hdl->mem_used > hdl->max_mem)
-			{
+            if( hdl->mem_used > hdl->max_mem ) {
 				hdl->max_mem = hdl->mem_used;
 			}
 		}
@@ -655,34 +598,27 @@ static void * ChangeAlloc(void *old, size_t size, _trmem_who who,
 
 	/* old != NULL && size != 0 */
 	tr = removeFromList(old, hdl);
-	if (tr == NULL)
-	{
+    if( tr == NULL ) {
 		trPrt(hdl, MSG_UNOWNED_CHUNK, name, who, old);
 		return(NULL);
 	}
-	if (!isValidChunk(tr, name, who, hdl))
-	{
+    if( !isValidChunk( tr, name, who, hdl ) ) {
 		return(NULL);
 	}
 	new_block = fn(old, size + 1);
-	if (new_block == NULL)
-	{
+    if( new_block == NULL ) {
 		addToList(tr, hdl);   /* put back on list without change */
 		return(new_block);
 	}
 	old_size = getSize(tr);
-	if (size > old_size)
-	{
+    if( size > old_size ) {
 		MEMSET(_PtrAdd(new_block, old_size), ALLOC_BYTE, size + 1 - old_size);
-	}
-	else
-	{
+    } else {
 		*(unsigned char *)_PtrAdd(new_block, size) = ALLOC_BYTE;
 	}
 	hdl->mem_used -= old_size;
 	hdl->mem_used += size;
-	if (hdl->mem_used > hdl->max_mem)
-	{
+    if( hdl->mem_used > hdl->max_mem ) {
 		hdl->max_mem = hdl->mem_used;
 	}
 	tr->mem = new_block;
@@ -726,10 +662,8 @@ int _trmem_chk_range(void *start, size_t len,
 	void        *end_of_mem;
 
 	tr = hdl->alloc_list;
-	for (;;)
-	{
-		if (tr == 0)
-		{
+    for(;;) {
+        if( tr == 0 ) {
 			trPrt(hdl, MSG_NOT_IN_ALLOCATION, "ChkRange", who,
 				  start);
 			return(0);
@@ -740,8 +674,7 @@ int _trmem_chk_range(void *start, size_t len,
 		tr = tr->next;
 	}
 	end = _PtrAdd(start, len);
-	if (_PtrCmp(end, >, end_of_mem))
-	{
+    if( _PtrCmp( end, >, end_of_mem ) ) {
 		trPrt(hdl, MSG_OVERRUN_2, "ChkRange", who,
 			  start, len, tr->mem, getSize(tr));
 		return(0);
@@ -768,11 +701,9 @@ unsigned _trmem_prt_list(_trmem_hdl hdl)
 	trPrt(hdl, MSG_PRT_LIST_1);
 	trPrt(hdl, MSG_PRT_LIST_2);
 	chunks = 0;
-	do
-	{
+    do {
 		size = getSize(tr);
-		if (chunks < 20)
-		{
+        if( chunks < 20 ) {
 			trPrt(hdl
 				  , MSG_PRT_LIST_3
 				  , tr->who
@@ -784,25 +715,21 @@ unsigned _trmem_prt_list(_trmem_hdl hdl)
 		}
 		++chunks;
 		tr = tr->next;
-	}
-	while (tr);
+    } while( tr );
 	return(chunks);
 }
 
-size_t _trmem_msize(void *mem, _trmem_hdl hdl)
-{
+size_t _trmem_msize( void *mem, _trmem_hdl hdl ) {
 	/************************************************/
 	return(getSize(findOnList(mem, hdl)));
 }
 
-unsigned long _trmem_get_current_usage(_trmem_hdl hdl)
-{
+unsigned long _trmem_get_current_usage( _trmem_hdl hdl ) {
 	/********************************************************/
 	return hdl->mem_used;
 }
 
-unsigned long _trmem_get_peak_usage(_trmem_hdl hdl)
-{
+unsigned long _trmem_get_peak_usage( _trmem_hdl hdl ) {
 	/*****************************************************/
 	return hdl->max_mem;
 }
@@ -845,19 +772,15 @@ static void memLine(FILE *fh, const char *buf, unsigned size)
 void tm_Init(void)
 /******************/
 {
-	if (FileTrmem = fopen(TRMEM_LOGFN, "w"))
-	{
+    if ( FileTrmem = fopen( TRMEM_LOGFN, "w" ) ) {
 		//hTrmem = _trmem_open( malloc, free, realloc, _expand, memFile, memLine,
 		hTrmem = _trmem_open(malloc, free, _TRMEM_NO_REALLOC, _TRMEM_NO_REALLOC, FileTrmem, memLine,
 							 _TRMEM_ALLOC_SIZE_0 | _TRMEM_FREE_NULL | _TRMEM_OUT_OF_MEMORY | _TRMEM_CLOSE_CHECK_FREE);
-		if (hTrmem == NULL)
-		{
+        if( hTrmem == NULL ) {
 			printf("tm_Init: _trmem_open() failed\n");
 			exit(EXIT_FAILURE);
 		}
-	}
-	else
-	{
+    } else {
 		printf("tm_Init: fopen(\"" TRMEM_LOGFN "\") failed [%u]\n", errno);
 		exit(EXIT_FAILURE);
 	}

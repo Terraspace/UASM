@@ -36,8 +36,7 @@
  * T_REG - T_RES_ID match RWT_REG - RWT_RES_ID
  */
 
-enum tok_type
-{
+enum tok_type {
 	T_FINAL,
 	T_INSTRUCTION,       /* 1 */
 	T_REG,               /* 2 (==RWT_REG) */
@@ -65,15 +64,13 @@ enum tok_type
 	T_PERCENT = '%',
 };
 
-struct asm_tok
-{
+struct asm_tok {
 #ifdef __WATCOMC__
 	enum tok_type token;           /* (type of) token */
 #else
 	unsigned char token;
 #endif
-	union
-	{
+    union {
 		unsigned char dirtype;    /* T_DIRECTIVE: type */
 		unsigned char bytval;     /* T_STYPE: memtype */
 		unsigned char precedence; /* T_UNARY_OPERATOR/T_BINARY_OPERATOR */
@@ -83,8 +80,7 @@ struct asm_tok
 		char specval;             /* 1-byte special tokens: flags */
 	};
 	char *string_ptr;
-	union
-	{
+    union {
 		unsigned int tokval;      /* index if token is a reserved word */
 		unsigned int stringlen;   /* T_STRING: size */
 		unsigned int idarg;       /* T_ID: currently not used */

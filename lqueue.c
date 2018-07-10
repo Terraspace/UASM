@@ -22,8 +22,7 @@
 extern struct ReservedWord  ResWordTable[];
 
 /* item of a line queue */
-struct lq_line
-{
+struct lq_line {
 	struct lq_line *next;
 #ifdef DEBUG_OUT
 	char lineno;
@@ -36,10 +35,7 @@ struct lq_line
 #ifdef DEBUG_OUT
 static unsigned lqlines_written; /* lq lines written by AddLineQueue() */
 static unsigned lqlines_read;    /* lq lines read by RunLineQueue() */
-unsigned GetLqLine(void)
-{
-	return(lqlines_read);
-}
+unsigned GetLqLine( void ) { return( lqlines_read ); }
 #endif
 
 /* free items of current line queue */
@@ -49,8 +45,7 @@ void DeleteLineQueue(void)
 {
 	struct qitem *curr;
 	struct qitem *next;
-	for (curr = line_queue.head; curr; curr = next)
-	{
+    for( curr = line_queue.head; curr; curr = next ) {
 		next = curr->next;
 		MemFree(curr);
 	}
@@ -85,12 +80,9 @@ void AddLineQueue(const char *line)
 	DebugCmd(new->lineno = lqlines_written);
 	memcpy(new->line, line, i + 1);
 
-	if (line_queue.head == NULL)
-	{
+    if( line_queue.head == NULL ) {
 		line_queue.head = new;
-	}
-	else
-	{
+    } else {
 		/* insert at the tail */
 		((struct qnode *)line_queue.tail)->next = new;
 	}
@@ -114,13 +106,10 @@ void AddLineQueueX(const char *fmt, ...)
 
 	//DebugMsg(("AddlineQueueX(%s) enter\n", fmt ));
 	va_start(args, fmt);
-	for (s = fmt, d = buffer; *s; s++)
-	{
-		if (*s == '%')
-		{
+    for ( s = fmt, d = buffer; *s; s++ ) {
+        if ( *s == '%' ) {
 			s++;
-			switch (*s)
-			{
+            switch ( *s ) {
 				case 'r':
 					i = va_arg(args, int);
 					GetResWName(i, d);
@@ -153,13 +142,10 @@ void AddLineQueueX(const char *fmt, ...)
 #else
 					l = va_arg(args, int);
 #endif
-					if (*s == 'x')
-					{
+                if ( *s == 'x' ) {
 						myltoa(l, d, 16, FALSE, FALSE);
 						d += strlen(d);
-					}
-					else
-					{
+                } else {
 						myltoa(l, d, 10, l < 0, FALSE);
 						d += strlen(d);
 						/* v2.07: add a 't' suffix if radix is != 10 */
@@ -170,8 +156,7 @@ void AddLineQueueX(const char *fmt, ...)
 				default:
 					*d++ = *s;
 			}
-		}
-		else
+        } else
 			*d++ = *s;
 	}
 	*d = NULLC;
@@ -195,13 +180,10 @@ void BuildCodeLine(char *buffer, const char *fmt, ...)
 
 	//DebugMsg(("AddlineQueueX(%s) enter\n", fmt ));
 	va_start(args, fmt);
-	for (s = fmt, d = buffer; *s; s++)
-	{
-		if (*s == '%')
-		{
+	for (s = fmt, d = buffer; *s; s++) {
+		if (*s == '%') {
 			s++;
-			switch (*s)
-			{
+			switch (*s) {
 				case 'r':
 					i = va_arg(args, int);
 					GetResWName(i, d);
@@ -234,13 +216,11 @@ void BuildCodeLine(char *buffer, const char *fmt, ...)
 #else
 					l = va_arg(args, int);
 #endif
-					if (*s == 'x')
-					{
+				if (*s == 'x') {
 						myltoa(l, d, 16, FALSE, FALSE);
 						d += strlen(d);
 					}
-					else
-					{
+				else {
 						myltoa(l, d, 10, l < 0, FALSE);
 						d += strlen(d);
 						/* v2.07: add a 't' suffix if radix is != 10 */
@@ -289,8 +269,7 @@ void RunLineQueue(void)
 	DebugCmd(lqlines_written = 0); /* reset counter for AddLineQueue() */
 	DebugCmd(lqlines_read = 0); /* reset counter for line-queue reads below */
 
-	for (; currline; )
-	{
+    for ( ; currline; ) {
 		struct lq_line *nextline = currline->next;
 		strcpy(CurrSource, currline->line);
 		DebugCmd(lqlines_read++);
@@ -301,8 +280,7 @@ void RunLineQueue(void)
 	}
 
 #ifdef DEBUG_OUT
-	if (ModuleInfo.EndDirFound == TRUE)
-	{
+    if ( ModuleInfo.EndDirFound == TRUE ) {
 		DebugMsg(("!!!!! Warning: End directive found in generated-code parser loop!\n"));
 	}
 #endif

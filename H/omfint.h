@@ -51,14 +51,12 @@
  /*-----------------------------------------------------*/
 
  /*  A COMENT record needs additional data to be attached. */
-struct coment_info
-{
+struct coment_info {
 	uint_8  attr;           /* attribute field from coment record       */
 	uint_8  cmt_class;      /* class field from coment record           */
 };
 
-struct modend_info
-{
+struct modend_info {
 	uint_8  main_module;  /* module is a main module                  */
 	uint_8  start_addrs;  /* module has start address                 */
 };
@@ -67,26 +65,22 @@ struct modend_info
  *   LNAMES, EXTDEFs, and COMDEFs all use this structure. The actual
  *   LNAMES/etc are in the data attached to the record.
  */
-struct lnames_info
-{
+struct lnames_info {
 	uint_16 first_idx;      /* index of first name in this record       */
 	uint_16 num_names;      /* number of names in this record           */
 };
 
 /* the group's segments are attached */
-struct grpdef_info
-{
+struct grpdef_info {
 	uint_16 idx;            /* index of this grpdef record              */
 };
 
-struct physref
-{
+struct physref {
 	uint_16 frame;          /* frame number of physical reference       */
 	uint_32 offset;         /* offset into reference                    */
 };
 
-struct segdef_info
-{
+struct segdef_info {
 	uint_16 idx;            /* index for this segment                   */
 	uint_8  use_32;         /* use_32 for this segment                  */
 	uint_8  align;          /* align field (see omfspec.h)              */
@@ -101,36 +95,31 @@ struct segdef_info
 };
 
 /* the contents of the LEDATA is attached */
-struct ledata_info
-{
+struct ledata_info {
 	uint_16 idx;            /* index of segment the data belongs to     */
 	uint_32 offset;         /* offset into segment of start of data     */
 };
 
 /* base info is supplied by PUBDEF, LINNUM and COMDAT */
-struct base_info
-{
+struct base_info {
 	uint_16 grp_idx;        /* index of the group base                  */
 	uint_16 seg_idx;        /* index of the segment                     */
 	uint_16 frame;          /* used if grp_idx == 0 && seg_idx == 0     */
 };
 
 /* line number info - the items itself are attached */
-struct linnum_info
-{
+struct linnum_info {
 	struct base_info base;
 };
 
 /* public info - the items itself are attached */
-struct pubdef_info
-{
+struct pubdef_info {
 	struct base_info base;
 };
 
 #if COMDATSUPP
 /* the data that comprises the record is attached. */
-struct comdat_info
-{
+struct comdat_info {
 	uint_8      flags;      /* see COMDAT flags in omfspec.h */
 	uint_8      attributes; /* see COMDAT allocation type + selection criteria in omfspec.h */
 	uint_8      align;      /* see COMDAT alignment in omfspec.h */
@@ -141,22 +130,19 @@ struct comdat_info
 };
 
 /* the line number info is attached. */
-struct linsym_info
-{
+struct linsym_info {
 	uint_8  flags;
 	uint_16 public_lname_idx; /* the COMDAT's public name (lname index) */
 };
 #endif
 
-struct omf_rec
-{
+struct omf_rec {
 	unsigned    length;  /* # of bytes in 'data'    (PRIVATE)  */
 	unsigned    curoff;  /* curr. pos in 'data'     (PRIVATE)  */
 	uint_8      *data;   /* data for this record    (PRIVATE)  */
 	uint_8      command; /* the command field for this record  */
 	uint_8      is_32;   /* a Microsoft 32bit record?          */
-	union
-	{
+    union {
 		struct coment_info  coment;  /* CMD_COMENT */
 		struct modend_info  modend;  /* CMD_MODEND */
 		struct lnames_info  lnames;  /* CMD_LNAMES */
@@ -184,8 +170,7 @@ extern void omf_write_record(const struct omf_rec *);
 #define FIX_GEN_MAX        11   /* max size needed for OmfFixGenFix() */
 #define FIX_GEN_MODEND_MAX  9   /* max size needed for OmfFixGenFixModend() */
 
-enum fixgen_types
-{
+enum fixgen_types {
 	FIX_GEN_INTEL,
 	FIX_GEN_MS386
 };

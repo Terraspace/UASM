@@ -32,8 +32,7 @@
 #define _ASSUME_H_
 
 /* flags for error field, used for GPR's ASSUME:ERROR|NOTHING */
-enum err_flags
-{
+enum err_flags {
 	RL_ERROR = 0x01,
 	RX_ERROR = 0x02,
 	ERX_ERROR = 0x04,
@@ -41,8 +40,7 @@ enum err_flags
 	RH_ERROR = 0x10
 };
 
-struct assume_info
-{
+struct assume_info {
 	struct asym         *symbol;        /* segment, group or type that is to
 										   be associated with the register */
 	unsigned char       error;          /* register assumed to ERROR */
@@ -50,8 +48,7 @@ struct assume_info
 };
 
 /* v2.05: introduced */
-struct stdassume_typeinfo
-{
+struct stdassume_typeinfo {
 	struct asym         *type;
 	struct asym         *target_type;
 	enum memtype        mem_type;

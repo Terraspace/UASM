@@ -83,8 +83,7 @@ static void AddToDgroup(enum sim_seg segm, const char *name)
 static void close_currseg(void)
 /*******************************/
 {
-	if (CurrSeg)
-	{
+    if ( CurrSeg ) {
 		DebugMsg1(("close_currseg: current seg=%s\n", CurrSeg->sym.name));
 		AddLineQueueX("%s %r", CurrSeg->sym.name, T_ENDS);
 	}
@@ -112,8 +111,7 @@ static void SetSimSeg(enum sim_seg segm, const char *name)
 		pAlignSt = align;
 	}
 
-	if (ModuleInfo.defOfssize > USE16)
-	{
+    if ( ModuleInfo.defOfssize > USE16 ) {
 		if (ModuleInfo.model == MODEL_FLAT)
 			pUse = "FLAT";
 		else
@@ -137,22 +135,19 @@ static void SetSimSeg(enum sim_seg segm, const char *name)
 		pAlign = pAlignSt;
 
 	pFmt = "%s %r %s %s %s '%s'";
-	if (name == NULL)
-	{
+    if ( name == NULL ) {
 		name = SegmNames[segm];
 		if (name == NULL && ModuleInfo.flat) name = "_flat";
 		if (ModuleInfo.simseg_init & (1 << segm))
 			pFmt = "%s %r";
-		else
-		{
+        else {
 			ModuleInfo.simseg_init |= (1 << segm);
 			/* v2.05: if segment exists already, use the current attribs.
 			 * This allows a better mix of full and simplified segment
 			 * directives. Masm behaves differently: the attributes
 			 * of the simplified segment directives have highest priority.
 			 */
-			if (Parse_Pass == PASS_1)
-			{
+            if ( Parse_Pass == PASS_1 ) {
 				sym = SymSearch(name);
 				if (sym && sym->state == SYM_SEG && sym->isdefined == TRUE)
 					ModuleInfo.simseg_defd |= (1 << segm);
@@ -160,9 +155,7 @@ static void SetSimSeg(enum sim_seg segm, const char *name)
 			if (ModuleInfo.simseg_defd & (1 << segm))
 				pFmt = "%s %r";
 		}
-	}
-	else
-	{
+    } else {
 		sym = SymSearch(name);
 		/* v2.04: testing for state SYM_SEG isn't enough. The segment
 		 * might have been "defined" by a GROUP directive. Additional
@@ -219,8 +212,7 @@ ret_code SimplifiedSegDir(int i, struct asm_tok tokenarray[])
 
 	DebugMsg1(("SimplifiedSegDir(%s) enter\n", tokenarray[i].string_ptr));
 
-	if (ModuleInfo.model == MODEL_NONE)
-	{
+    if( ModuleInfo.model == MODEL_NONE ) {
 		RewindToWin64();
 		return(ERROR);
 	}
@@ -230,20 +222,16 @@ ret_code SimplifiedSegDir(int i, struct asm_tok tokenarray[])
 	type = GetSflagsSp(tokenarray[i].tokval);
 	i++; /* get past the directive token */
 
-	if (type == SIM_STACK)
-	{
+    if( type == SIM_STACK ) {
 		if (EvalOperand(&i, tokenarray, Token_Count, &opndx, 0) == ERROR)
 			return(ERROR);
 		if (opndx.kind == EXPR_EMPTY)
 			opndx.value = DEFAULT_STACK_SIZE;
-		else if (opndx.kind != EXPR_CONST)
-		{
+        else if( opndx.kind != EXPR_CONST ) {
 			EmitError(CONSTANT_EXPECTED);
 			return(ERROR);
 		}
-	}
-	else
-	{
+    } else {
 		/* Masm accepts a name argument for .CODE and .FARDATA[?] only.
 		 * Uasm also accepts this for .DATA[?] and .CONST unless
 		 * option -Zne is set.
@@ -251,14 +239,12 @@ ret_code SimplifiedSegDir(int i, struct asm_tok tokenarray[])
 		if (tokenarray[i].token == T_ID &&
 			(type == SIM_CODE || type == SIM_FARDATA || type == SIM_FARDATA_UN
 			|| (Options.strict_masm_compat == FALSE &&
-			(type == SIM_DATA || type == SIM_DATA_UN || type == SIM_CONST))))
-		{
+                ( type == SIM_DATA || type == SIM_DATA_UN || type == SIM_CONST )))) {
 			name = tokenarray[i].string_ptr;
 			i++;
 		}
 	}
-	if (tokenarray[i].token != T_FINAL)
-	{
+    if ( tokenarray[i].token != T_FINAL ) {
 		EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr);
 		return(ERROR);
 	}
@@ -269,24 +255,18 @@ ret_code SimplifiedSegDir(int i, struct asm_tok tokenarray[])
 	if (name == NULL)
 		init = (ModuleInfo.simseg_init & (1 << type));
 
-	switch (type)
-	{
+    switch( type ) {
 		case SIM_CODE: /* .code */
 			SetSimSeg(SIM_CODE, name);
 
-			if (ModuleInfo.model == MODEL_TINY)
-			{
+        if( ModuleInfo.model == MODEL_TINY ) {
 				/* v2.05: add the named code segment to DGROUP */
 				if (name)
 					AddToDgroup(SIM_CODE, name);
 				name = szDgroup;
-			}
-			else if (ModuleInfo.model == MODEL_FLAT)
-			{
+        } else if( ModuleInfo.model == MODEL_FLAT ) {
 				name = "FLAT";
-			}
-			else
-			{
+        } else {
 				if (name == NULL)
 					name = SegmNames[SIM_CODE];
 			}
@@ -341,15 +321,11 @@ void SetModelDefaultSegNames(void)
 	memcpy(SegmNames, SegmNamesDef, sizeof(SegmNames));
 
 	/* option -nt set? */
-	if (Options.names[OPTN_TEXT_SEG])
-	{
+    if( Options.names[OPTN_TEXT_SEG] ) {
 		SegmNames[SIM_CODE] = LclAlloc(strlen(Options.names[OPTN_TEXT_SEG]) + 1);
 		strcpy(SegmNames[SIM_CODE], Options.names[OPTN_TEXT_SEG]);
-	}
-	else
-	{
-		if (SIZE_CODEPTR & (1 << ModuleInfo.model))
-		{
+    } else {
+        if ( SIZE_CODEPTR & ( 1 << ModuleInfo.model ) ) {
 			/* for some models, the code segment contains the module name */
 			SegmNames[SIM_CODE] = LclAlloc(strlen(SegmNamesDef[SIM_CODE]) + strlen(ModuleInfo.name) + 1);
 			strcpy(SegmNames[SIM_CODE], ModuleInfo.name);
@@ -358,8 +334,7 @@ void SetModelDefaultSegNames(void)
 	}
 
 	/* option -nd set? */
-	if (Options.names[OPTN_DATA_SEG])
-	{
+    if ( Options.names[OPTN_DATA_SEG] ) {
 		SegmNames[SIM_DATA] = LclAlloc(strlen(Options.names[OPTN_DATA_SEG]) + 1);
 		strcpy(SegmNames[SIM_DATA], Options.names[OPTN_DATA_SEG]);
 	}
@@ -390,15 +365,12 @@ ret_code ModelSimSegmInit(int model)
 	/* create DGROUP for BIN/OMF if model isn't FLAT */
 	if (model != MODEL_FLAT &&
 		(Options.output_format == OFORMAT_OMF
-		|| Options.output_format == OFORMAT_BIN))
-	{
+        || Options.output_format == OFORMAT_BIN)) {
 		strcpy(buffer, "%s %r %s");
-		if (model == MODEL_TINY)
-		{
+        if( model == MODEL_TINY ) {
 			strcat(buffer, ", %s");
 			AddLineQueueX(buffer, szDgroup, T_GROUP, SegmNames[SIM_CODE], SegmNames[SIM_DATA]);
-		}
-		else
+        } else
 			AddLineQueueX(buffer, szDgroup, T_GROUP, SegmNames[SIM_DATA]);
 	}
 
@@ -410,8 +382,7 @@ void ModelSimSegmExit(void)
 /***************************/
 {
 	/* a model is set. Close current segment if one is open. */
-	if (CurrSeg)
-	{
+    if ( CurrSeg ) {
 		close_currseg();
 		RunLineQueue();
 	}

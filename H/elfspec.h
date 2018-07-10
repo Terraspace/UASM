@@ -35,8 +35,7 @@
 
 #define EI_NIDENT       16
 
-typedef struct
-{
+typedef struct {
 	uint_8   e_ident[EI_NIDENT];     // +0 signature & ID info
 	uint_16  e_type;                 // +16 file type (i.e. obj file, exe file)
 	uint_16  e_machine;              // +18 required architecture
@@ -53,8 +52,7 @@ typedef struct
 	uint_16  e_shstrndx;             // +50 section name string table index.
 } Elf32_Ehdr;
 
-typedef struct
-{
+typedef struct {
 	uint_8   e_ident[EI_NIDENT];     // +0 signature & ID info
 	uint_16  e_type;                 // +16 file type (i.e. obj file, exe file)
 	uint_16  e_machine;              // +18 required architecture
@@ -162,8 +160,7 @@ typedef struct
 
 // section header
 
-typedef struct
-{
+typedef struct {
 	uint_32  sh_name;        // +0 name of the section
 	uint_32  sh_type;        // +4 section type
 	uint_32  sh_flags;       // +8
@@ -176,8 +173,7 @@ typedef struct
 	uint_32  sh_entsize;     // +36 entry size for sects with fixed sized entries
 } Elf32_Shdr;
 
-typedef struct
-{
+typedef struct {
 	uint_32  sh_name;        // +0 name of the section
 	uint_32  sh_type;        // +4 section type
 	uint_64  sh_flags;       // +8
@@ -245,8 +241,7 @@ typedef struct
 
 /* symbol table entry */
 
-typedef struct
-{
+typedef struct {
 	uint_32  st_name;        // symbol name index into string table
 	uint_32  st_value;       // symbol "value"
 	uint_32  st_size;        // symbol size
@@ -255,8 +250,7 @@ typedef struct
 	uint_16  st_shndx;       // section index
 } Elf32_Sym;
 
-typedef struct
-{
+typedef struct {
 	uint_32  st_name;        // symbol name index into string table
 	uint_8   st_info;        // symbol's type and binding attribs.
 	uint_8   st_other;       // no meaning yet.
@@ -299,27 +293,23 @@ typedef struct
 
 // relocation entries
 
-typedef struct
-{
+typedef struct {
 	uint_32  r_offset;       // place to apply reloc (from begin of section)
 	uint_32  r_info;         // symbol idx, and type of reloc
 } Elf32_Rel;
 
-typedef struct
-{
+typedef struct {
 	uint_32  r_offset;       // place to apply reloc (from begin of section)
 	uint_32  r_info;         // symbol idx, and type of reloc
 	int_32   r_addend;       // value used as a basis for the reloc.
 } Elf32_Rela;
 
-typedef struct
-{
+typedef struct {
 	uint_64  r_offset;       // place to apply reloc (from begin of section)
 	uint_64  r_info;         // symbol idx, and type of reloc
 } Elf64_Rel;
 
-typedef struct
-{
+typedef struct {
 	uint_64  r_offset;       // place to apply reloc (from begin of section)
 	uint_64  r_info;         // symbol idx, and type of reloc
 	int_64   r_addend;       // value used as a basis for the reloc.
@@ -337,8 +327,7 @@ typedef struct
 
 // relocation types.
 //386
-enum elf32_relocations
-{
+enum elf32_relocations {
 	R_386_NONE = 0,
 	R_386_32 = 1, /* direct,       S + A     */
 	R_386_PC32 = 2, /* PC-relative,  S + A - P */
@@ -359,8 +348,7 @@ enum elf32_relocations
 };
 
 //X86_64
-enum elf64_relocations
-{
+enum elf64_relocations {
 	R_X86_64_NONE = 0,
 	R_X86_64_64 = 1,    /* S + A     */
 	R_X86_64_PC32 = 2,    /* S + A - P */
@@ -394,8 +382,7 @@ enum elf64_relocations
 
 // program header
 
-typedef struct
-{
+typedef struct {
 	uint_32  p_type;         // type of segment
 	uint_32  p_offset;       // offset of segment from beginnning of file
 	uint_32  p_vaddr;        // segment virtual address
@@ -427,8 +414,7 @@ typedef struct
 
 // note entry format
 
-typedef struct
-{
+typedef struct {
 	uint_32       n_namesz; // length of name
 	uint_32       n_descsz; // length of descriptor
 	uint_32       n_type;   // user defined "type" of the note
@@ -444,11 +430,9 @@ typedef struct
 
 // dynamic segment entry information.
 
-typedef struct
-{
+typedef struct {
 	int_32           d_tag;
-	union
-	{
+    union {
 		uint_32      d_val;
 		uint_32      d_ptr;
 	} d_un;
@@ -537,8 +521,7 @@ typedef unsigned long INITTERM(unsigned long modhandle, unsigned long flag);
 
 // operating system information
 
-typedef struct
-{
+typedef struct {
 	uint_32  os_type;
 	uint_32  os_size;
 } Elf32_Os;
@@ -556,8 +539,7 @@ typedef struct
 
 // OS/2-specific information
 
-typedef struct
-{
+typedef struct {
 	unsigned char       os2_sessiontype;
 	unsigned char       os2_sessionflags;
 	unsigned char       os2_reserved[14];
@@ -572,8 +554,7 @@ typedef struct
 
 // import table entry
 
-typedef struct
-{
+typedef struct {
 	uint_32  imp_ordinal;
 	uint_32  imp_name;
 	uint_32  imp_info;
@@ -590,8 +571,7 @@ typedef struct
 
 // export table entry
 
-typedef struct
-{
+typedef struct {
 	uint_32  exp_ordinal;
 	uint_32  exp_symbol;
 	uint_32  exp_name;
@@ -602,8 +582,7 @@ typedef struct
 
 #define RH_NIDENT       16
 
-typedef struct
-{
+typedef struct {
 	unsigned char    rh_ident[RH_NIDENT];
 	uint_32          rh_name;
 	uint_32          rh_itnum;
@@ -648,8 +627,7 @@ typedef struct
 
 #define RI_NIDENT       4
 
-typedef struct
-{
+typedef struct {
 	unsigned char       ri_ident[RI_NIDENT];
 	uint_32          ri_type;
 	uint_32          ri_typename;
@@ -673,16 +651,14 @@ typedef struct
 
 // demangle information structure
 
-typedef struct
-{
+typedef struct {
 	uint_32  idm_dllname;
 	uint_32  idm_initparms;
 } Elf32_Demangle;
 
 // default library structure
 
-typedef struct
-{
+typedef struct {
 	uint_32  lib_name;
 } Elf32_Library;
 

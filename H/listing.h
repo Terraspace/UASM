@@ -7,8 +7,7 @@
 #ifndef _LISTING_H_INCLUDED
 #define _LISTING_H_INCLUDED
 
-enum lsttype
-{
+enum lsttype {
 	LSTTYPE_DATA,
 	LSTTYPE_CODE,
 	LSTTYPE_EQUATE,

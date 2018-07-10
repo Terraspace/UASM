@@ -38,8 +38,7 @@ extern struct asym     *sym_ReservedStack;  /* max stack space required by INVOK
 #endif
 
 /* v2.11: proc status flags */
-enum proc_status
-{
+enum proc_status {
 	PRST_INSIDE_PROLOGUE = 0x01,
 	PRST_INSIDE_EPILOGUE = 0x02,
 	PRST_FPO = 0x04,

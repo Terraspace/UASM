@@ -12,8 +12,7 @@
   which is defined or modified after SaveState() has been called is to be stored
   here - once! */
 
-struct equ_item
-{
+struct equ_item {
 	struct equ_item *next;
 	struct asym *sym;
 	int lvalue;
@@ -27,8 +26,7 @@ struct equ_item
  * in further passes
  */
 
-struct line_item
-{
+struct line_item {
 	struct line_item *next;
 	uint_32 lineno;
 	uint_32 srcfile;
@@ -42,11 +40,9 @@ extern struct line_item *LineStoreCurr;
 /* mod_state: used to store the module state within SaveState()
  */
 
-struct mod_state
-{
+struct mod_state {
 	bool init;           /* is this struct initialized? */
-	struct
-	{
+    struct {
 		struct equ_item *head; /* the list of modified assembly time variables */
 		struct equ_item *tail;
 	} Equ;

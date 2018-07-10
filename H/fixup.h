@@ -33,8 +33,7 @@
 
 /* RELOFF8 - RELOFF32 must be consecutive */
 
-enum fixup_types
-{
+enum fixup_types {
 	FIX_VOID = 0,       /*  0, fixup is to be ignored */
 	FIX_RELOFF8,        /*  1, 1 byte */
 	FIX_RELOFF16,       /*  2, 2 byte */
@@ -93,8 +92,7 @@ enum fixup_types
  * OPTJ_PUSH:     push <label>, assumed byte, may become variable or label.
  */
 
-enum fixup_options
-{
+enum fixup_options {
 	OPTJ_NONE,      /* normal jump */
 	OPTJ_EXPLICIT,
 	OPTJ_EXTEND,
@@ -103,8 +101,7 @@ enum fixup_options
 	OPTJ_PUSH      /* PUSH */
 };
 
-struct fixup
-{
+struct fixup {
 	struct fixup         *nextbp;       /* PASS 1: linked list backpatch */
 	struct fixup         *nextrlc;      /* PASS >1: linked list relocs */
 #ifdef TRMEM
@@ -114,11 +111,9 @@ struct fixup
 	uint_32              locofs;        /* location of fixup */
 	enum fixup_types     type;
 	enum fixup_options   option;
-	union
-	{
+    union {
 		uint_16 flags;
-		struct
-		{
+        struct {
 #if AMD64_SUPPORT
 			/* the IP relative addressing needs to know where the instruction ends.
 			 * the result <end of instruction> - <fixup location> is stored here.
@@ -129,10 +124,8 @@ struct fixup
 			unsigned char orgoccured:1;             /* v2.04 ORG occured behind this fix */
 		};
 	};
-	union
-	{
-		struct
-		{
+    union {
+        struct {
 			int_8           frame_type;     /* frame specifier (SEG=0,GRP=1,,...) */
 			uint_16         frame_datum;    /* additional data, usually index */
 		};

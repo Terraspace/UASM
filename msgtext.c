@@ -76,11 +76,9 @@ static const char *MsgGet(int msgid, char *buffer)
 	int i;
 
 	hRsrc = FindResource(NULL, MAKEINTRESOURCE(1 + (msgid >> 4)), RT_STRING);
-	if (hRsrc)
-	{
+    if (hRsrc) {
 		hRes = LoadResource(NULL, hRsrc);
-		if (hRes)
-		{
+        if (hRes) {
 			pId = LockResource(hRes);
 			for (i = msgid % 16; i; i--)
 				pId += *pId + 1;
@@ -93,14 +91,11 @@ static const char *MsgGet(int msgid, char *buffer)
 		}
 	}
 #else
-	if (msgid < MSG_LAST)
-	{
-		if (buffer)
-		{
+    if ( msgid < MSG_LAST ) {
+        if ( buffer ) {
 			strcpy(buffer, FPTR(msgtexts[msgid]));
 			return(buffer);
-		}
-		else
+        } else
 			return((char *)FPTR(msgtexts[msgid]));
 	}
 #endif

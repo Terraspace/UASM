@@ -73,13 +73,11 @@ struct fixup *CreateFixup(struct asym *sym, enum fixup_types type, enum fixup_op
 	/* add the fixup to the symbol's linked list (used for backpatch)
 	 * this is done for pass 1 only.
 	 */
-	if (Parse_Pass == PASS_1)
-	{
+    if ( Parse_Pass == PASS_1 ) {
 #ifdef DEBUG_OUT
 		if (Options.nobackpatch == FALSE)
 #endif
-			if (sym)
-			{ /* changed v1.96 */
+        if ( sym ) { /* changed v1.96 */
 				fixup->nextbp = sym->bp_fixup;
 				sym->bp_fixup = fixup;
 			}
@@ -91,8 +89,7 @@ struct fixup *CreateFixup(struct asym *sym, enum fixup_types type, enum fixup_op
 #ifdef DEBUG_OUT
 		if (Options.nobackpatch == FALSE)
 #endif
-			if (CurrSeg)
-			{
+        if ( CurrSeg ) {
 				fixup->nextrlc = CurrSeg->e.seginfo->FixupList.head;
 				CurrSeg->e.seginfo->FixupList.head = fixup;
 			}
@@ -123,21 +120,14 @@ void FreeFixup(struct fixup *fixup)
 	struct dsym *dir;
 	struct fixup *fixup2;
 
-	if (Parse_Pass == PASS_1)
-	{
+    if ( Parse_Pass == PASS_1 ) {
 		dir = fixup->def_seg;
-		if (dir)
-		{
-			if (fixup == dir->e.seginfo->FixupList.head)
-			{
+        if ( dir ) {
+            if ( fixup == dir->e.seginfo->FixupList.head ) {
 				dir->e.seginfo->FixupList.head = fixup->nextrlc;
-			}
-			else
-			{
-				for (fixup2 = dir->e.seginfo->FixupList.head; fixup2; fixup2 = fixup2->nextrlc)
-				{
-					if (fixup2->nextrlc == fixup)
-					{
+            } else {
+                for ( fixup2 = dir->e.seginfo->FixupList.head; fixup2; fixup2 = fixup2->nextrlc ) {
+                    if ( fixup2->nextrlc == fixup ) {
 						fixup2->nextrlc = fixup->nextrlc;
 						break;
 					}
@@ -160,21 +150,15 @@ void SetFixupFrame(const struct asym *sym, char ign_grp)
 {
 	struct dsym *grp;
 
-	if (sym)
-	{
-		switch (sym->state)
-		{
+    if( sym ) {
+        switch ( sym->state ) {
 			case SYM_INTERNAL:
 			case SYM_EXTERNAL:
-				if (sym->segment != NULL)
-				{
-					if (ign_grp == FALSE && (grp = (struct dsym *)GetGroup(sym)))
-					{
+            if( sym->segment != NULL ) {
+                if( ign_grp == FALSE && ( grp = (struct dsym *)GetGroup( sym ) ) ) {
 						Frame_Type = FRAME_GRP;
 						Frame_Datum = grp->e.grpinfo->grp_idx;
-					}
-					else
-					{
+                } else {
 						Frame_Type = FRAME_SEG;
 						Frame_Datum = GetSegIdx(sym->segment);
 					}
@@ -233,33 +217,26 @@ void store_fixup(struct fixup *fixup, struct dsym *seg, int_32 *pdata)
 	 * and as long as write_to_file is true! This check is now done in
 	 * codegen() and data_item().
 	 */
-	if ((1 << fixup->type) & ModuleInfo.fmtopt->invalid_fixup_type)
-	{
+    if ( ( 1 << fixup->type ) & ModuleInfo.fmtopt->invalid_fixup_type ) {
 		EmitErr(UNSUPPORTED_FIXUP_TYPE,
 				ModuleInfo.fmtopt->formatname,
 				fixup->sym ? fixup->sym->name : szNull);
 		return(ERROR);
 	}
 #endif
-	if (Options.output_format == OFORMAT_OMF)
-	{
+    if ( Options.output_format == OFORMAT_OMF ) {
 		/* for OMF, the target's offset is stored at the fixup's location. */
-		if (fixup->type != FIX_SEG && fixup->sym)
-		{
+        if( fixup->type != FIX_SEG && fixup->sym ) {
 			*pdata += fixup->sym->offset;
 		}
-	}
-	else
-	{
+    } else {
 #if ELF_SUPPORT
-		if (Options.output_format == OFORMAT_ELF)
-		{
+        if ( Options.output_format == OFORMAT_ELF ) {
 			/* v2.07: inline addend for ELF32 only.
 			 * Also, in 64-bit, pdata may be a int_64 pointer (FIX_OFF64)!
 			 */
 #if AMD64_SUPPORT
-			if (ModuleInfo.defOfssize == USE64)
-			{
+            if ( ModuleInfo.defOfssize == USE64 ) {
 #if 0
 				/* this won't work currently because fixup.offset may have to
 				 * save *(int_64) pdata, but it is 32-bit only!
@@ -269,8 +246,7 @@ void store_fixup(struct fixup *fixup, struct dsym *seg, int_32 *pdata)
 				else
 					*pdata = 0;
 #endif
-			}
-			else
+            } else
 #endif
 				if (fixup->type == FIX_RELOFF32)
 					*pdata = -4;
@@ -286,24 +262,18 @@ void store_fixup(struct fixup *fixup, struct dsym *seg, int_32 *pdata)
 		/* Djgpp's COFF variant needs special handling for
 		 * - at least - relative and direct 32-bit offsets.
 		 */
-		if (fixup->sym && ModuleInfo.sub_format == SFORMAT_DJGPP)
-		{
-			if (fixup->type == FIX_RELOFF32)
-			{ /* probably also for 16-bit */
+        if ( fixup->sym && ModuleInfo.sub_format == SFORMAT_DJGPP ) {
+            if ( fixup->type == FIX_RELOFF32 ) { /* probably also for 16-bit */
 				*pdata -= (fixup->locofs + 4);
-			}
-			else if (fixup->type == FIX_OFF32)
-			{
+            } else if ( fixup->type == FIX_OFF32 ) {
 				*pdata += fixup->sym->offset;
 				fixup->offset += fixup->sym->offset; /* ok? */
 				fixup->segment = fixup->sym->segment;/* ok? */
 			}
-		}
-		else
+        } else
 #endif
 			/* special handling for assembly time variables needed */
-			if (fixup->sym && fixup->sym->variable)
-			{
+        if ( fixup->sym && fixup->sym->variable ) {
 				/* add symbol's offset to the fixup location and fixup's offset */
 				*pdata += fixup->sym->offset;
 				fixup->offset += fixup->sym->offset;
@@ -311,19 +281,15 @@ void store_fixup(struct fixup *fixup, struct dsym *seg, int_32 *pdata)
 				fixup->segment_var = fixup->sym->segment;
 			}
 #if 0   /* fixup without symbol: this is to be resolved internally! */
-			else if (fixup->sym == NULL && fixup->frame == EMPTY)
-			{
+        else if ( fixup->sym == NULL && fixup->frame == EMPTY ) {
 				DebugMsg(("store_fixup: fixup skipped, symbol=0, no frame\n"));
 				return(NOT_ERROR);
 			}
 #endif
 	}
-	if (seg->e.seginfo->FixupList.head == NULL)
-	{
+    if( seg->e.seginfo->FixupList.head == NULL ) {
 		seg->e.seginfo->FixupList.tail = seg->e.seginfo->FixupList.head = fixup;
-	}
-	else
-	{
+    } else {
 		seg->e.seginfo->FixupList.tail->nextrlc = fixup;
 		seg->e.seginfo->FixupList.tail = fixup;
 	}

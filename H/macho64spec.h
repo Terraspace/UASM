@@ -421,8 +421,7 @@ typedef int		vm_prot_t;
  /* The 32-bit mach header appears at the very beginning of the object file for
  * 32-bit architectures.
  */
-struct mach_header
-{
+struct mach_header {
 	uint32_t	magic;		/* mach magic number identifier */
 	cpu_type_t	cputype;	/* cpu specifier */
 	cpu_subtype_t	cpusubtype;	/* machine specifier */
@@ -440,8 +439,7 @@ struct mach_header
 * The 64-bit mach header appears at the very beginning of object files for
 * 64-bit architectures.
 */
-struct mach_header_64
-{
+struct mach_header_64 {
 	uint32_t	magic;		/* mach magic number identifier */
 	cpu_type_t	cputype;	/* cpu specifier */
 	cpu_subtype_t	cpusubtype;	/* machine specifier */
@@ -598,8 +596,7 @@ filetypes. */
 * to these tables will not work well or at all on some machines.  With all
 * padding zeroed like objects will compare byte for byte.
 */
-struct load_command
-{
+struct load_command {
 	uint32_t cmd;		/* type of load command */
 	uint32_t cmdsize;	/* total size of command in bytes */
 };
@@ -682,8 +679,7 @@ like environment variable */
 * Once again any padded bytes to bring the cmdsize field to a multiple
 * of 4 bytes must be zero.
 */
-union lc_str
-{
+union lc_str {
 	uint32_t	offset;	/* offset to the string */
 #ifndef __LP64__
 	char		*ptr;	/* pointer to the string */
@@ -702,8 +698,7 @@ union lc_str
 * section structures directly follow the segment command and their size is
 * reflected in cmdsize.
 */
-struct segment_command
-{ /* for 32-bit architectures */
+struct segment_command { /* for 32-bit architectures */
 	uint32_t	cmd;		/* LC_SEGMENT */
 	uint32_t	cmdsize;	/* includes sizeof section structs */
 	char		segname[16];	/* segment name */
@@ -723,8 +718,7 @@ struct segment_command
 * sections then section_64 structures directly follow the 64-bit segment
 * command and their size is reflected in cmdsize.
 */
-struct segment_command_64
-{ /* for 64-bit architectures */
+struct segment_command_64 { /* for 64-bit architectures */
 	uint32_t	cmd;		/* LC_SEGMENT_64 */
 	uint32_t	cmdsize;	/* includes sizeof section_64 structs */
 	char		segname[16];	/* segment name */
@@ -781,8 +775,7 @@ segment are protected. */
 * fields of the section structure for mach object files is described in the
 * header file <reloc.h>.
 */
-struct section
-{ /* for 32-bit architectures */
+struct section { /* for 32-bit architectures */
 	char		sectname[16];	/* name of this section */
 	char		segname[16];	/* segment this section goes in */
 	uint32_t	addr;		/* memory address of this section */
@@ -796,8 +789,7 @@ struct section
 	uint32_t	reserved2;	/* reserved (for count or sizeof) */
 };
 
-struct section_64
-{ /* for 64-bit architectures */
+struct section_64 { /* for 64-bit architectures */
 	char		sectname[16];	/* name of this section */
 	char		segname[16];	/* segment this section goes in */
 	uint64_t	addr;		/* memory address of this section */
@@ -983,8 +975,7 @@ relocation entries */
 * minor version number.  The address of where the headers are loaded is in
 * header_addr. (THIS IS OBSOLETE and no longer supported).
 */
-struct fvmlib
-{
+struct fvmlib {
 	union lc_str	name;		/* library's target pathname */
 	uint32_t	minor_version;	/* library's minor version number */
 	uint32_t	header_addr;	/* library's header address */
@@ -997,8 +988,7 @@ struct fvmlib
 * fvmlib_command (cmd == LC_LOADFVMLIB) for each library it uses.
 * (THIS IS OBSOLETE and no longer supported).
 */
-struct fvmlib_command
-{
+struct fvmlib_command {
 	uint32_t	cmd;		/* LC_IDFVMLIB or LC_LOADFVMLIB */
 	uint32_t	cmdsize;	/* includes pathname string */
 	struct fvmlib	fvmlib;		/* the library identification */
@@ -1013,8 +1003,7 @@ struct fvmlib_command
 * built and copied into user so it can be use to determined if the library used
 * at runtime is exactly the same as used to built the program.
 */
-struct dylib
-{
+struct dylib {
 	union lc_str  name;			/* library's path name */
 	uint32_t timestamp;			/* library's build time stamp */
 	uint32_t current_version;		/* library's current version number */
@@ -1028,8 +1017,7 @@ struct dylib
 * dylib_command (cmd == LC_LOAD_DYLIB, LC_LOAD_WEAK_DYLIB, or
 * LC_REEXPORT_DYLIB) for each library it uses.
 */
-struct dylib_command
-{
+struct dylib_command {
 	uint32_t	cmd;		/* LC_ID_DYLIB, LC_LOAD_{,WEAK_}DYLIB,
 							LC_REEXPORT_DYLIB */
 	uint32_t	cmdsize;	/* includes pathname string */
@@ -1046,8 +1034,7 @@ struct dylib_command
 * The name of the umbrella framework for subframeworks is recorded in the
 * following structure.
 */
-struct sub_framework_command
-{
+struct sub_framework_command {
 	uint32_t	cmd;		/* LC_SUB_FRAMEWORK */
 	uint32_t	cmdsize;	/* includes umbrella string */
 	union lc_str 	umbrella;	/* the umbrella framework name */
@@ -1062,8 +1049,7 @@ struct sub_framework_command
 * usually a framework name.  It can also be a name used for bundles clients
 * where the bundle is built with "-client_name client_name".
 */
-struct sub_client_command
-{
+struct sub_client_command {
 	uint32_t	cmd;		/* LC_SUB_CLIENT */
 	uint32_t	cmdsize;	/* includes client string */
 	union lc_str 	client;		/* the client name */
@@ -1082,8 +1068,7 @@ struct sub_client_command
 * Zero or more sub_umbrella frameworks may be use by an umbrella framework.
 * The name of a sub_umbrella framework is recorded in the following structure.
 */
-struct sub_umbrella_command
-{
+struct sub_umbrella_command {
 	uint32_t	cmd;		/* LC_SUB_UMBRELLA */
 	uint32_t	cmdsize;	/* includes sub_umbrella string */
 	union lc_str 	sub_umbrella;	/* the sub_umbrella framework name */
@@ -1104,8 +1089,7 @@ struct sub_umbrella_command
 * The name of a sub_library framework is recorded in the following structure.
 * For example /usr/lib/libobjc_profile.A.dylib would be recorded as "libobjc".
 */
-struct sub_library_command
-{
+struct sub_library_command {
 	uint32_t	cmd;		/* LC_SUB_LIBRARY */
 	uint32_t	cmdsize;	/* includes sub_library string */
 	union lc_str 	sub_library;	/* the sub_library name */
@@ -1120,8 +1104,7 @@ struct sub_library_command
 * of the first byte.  So the bit for the Nth module is:
 * (linked_modules[N/8] >> N%8) & 1
 */
-struct prebound_dylib_command
-{
+struct prebound_dylib_command {
 	uint32_t	cmd;		/* LC_PREBOUND_DYLIB */
 	uint32_t	cmdsize;	/* includes strings */
 	union lc_str	name;		/* library's path name */
@@ -1137,8 +1120,7 @@ struct prebound_dylib_command
 * This struct is also used for the LC_DYLD_ENVIRONMENT load command and
 * contains string for dyld to treat like environment variable.
 */
-struct dylinker_command
-{
+struct dylinker_command {
 	uint32_t	cmd;		/* LC_ID_DYLINKER, LC_LOAD_DYLINKER or
 							LC_DYLD_ENVIRONMENT */
 	uint32_t	cmdsize;	/* includes pathname string */
@@ -1166,8 +1148,7 @@ struct dylinker_command
 * created (based on the shell's limit for the stack size).  Command arguments
 * and environment variables are copied onto that stack.
 */
-struct thread_command
-{
+struct thread_command {
 	uint32_t	cmd;		/* LC_THREAD or  LC_UNIXTHREAD */
 	uint32_t	cmdsize;	/* total size of this command */
 							/* uint32_t flavor		   flavor of thread state */
@@ -1184,8 +1165,7 @@ struct thread_command
 * and then calls it.  This gets called before any module initialization
 * routines (used for C++ static constructors) in the library.
 */
-struct routines_command
-{ /* for 32-bit architectures */
+struct routines_command { /* for 32-bit architectures */
 	uint32_t	cmd;		/* LC_ROUTINES */
 	uint32_t	cmdsize;	/* total size of this command */
 	uint32_t	init_address;	/* address of initialization routine */
@@ -1202,8 +1182,7 @@ struct routines_command
 /*
 * The 64-bit routines command.  Same use as above.
 */
-struct routines_command_64
-{ /* for 64-bit architectures */
+struct routines_command_64 { /* for 64-bit architectures */
 	uint32_t	cmd;		/* LC_ROUTINES_64 */
 	uint32_t	cmdsize;	/* total size of this command */
 	uint64_t	init_address;	/* address of initialization routine */
@@ -1222,8 +1201,7 @@ struct routines_command_64
 * "stab" style symbol table information as described in the header files
 * <nlist.h> and <stab.h>.
 */
-struct symtab_command
-{
+struct symtab_command {
 	uint32_t	cmd;		/* LC_SYMTAB */
 	uint32_t	cmdsize;	/* sizeof(struct symtab_command) */
 	uint32_t	symoff;		/* symbol table offset */
@@ -1272,8 +1250,7 @@ struct symtab_command
 * For executable and object modules the relocation entries continue to hang
 * off the section structures.
 */
-struct dysymtab_command
-{
+struct dysymtab_command {
 	uint32_t cmd;	/* LC_DYSYMTAB */
 	uint32_t cmdsize;	/* sizeof(struct dysymtab_command) */
 
@@ -1399,8 +1376,7 @@ struct dysymtab_command
 #define INDIRECT_SYMBOL_ABS	0x40000000
 
 /* a table of contents entry */
-struct dylib_table_of_contents
-{
+struct dylib_table_of_contents {
 	uint32_t symbol_index;	/* the defined external symbol
 							(index into the symbol table) */
 	uint32_t module_index;	/* index into the module table this symbol
@@ -1408,8 +1384,7 @@ struct dylib_table_of_contents
 };
 
 /* a module table entry */
-struct dylib_module
-{
+struct dylib_module {
 	uint32_t module_name;	/* the module name (index into string table) */
 
 	uint32_t iextdefsym;	/* index into externally defined symbols */
@@ -1436,8 +1411,7 @@ struct dylib_module
 };
 
 /* a 64-bit module table entry */
-struct dylib_module_64
-{
+struct dylib_module_64 {
 	uint32_t module_name;	/* the module name (index into string table) */
 
 	uint32_t iextdefsym;	/* index into externally defined symbols */
@@ -1471,8 +1445,7 @@ struct dylib_module_64
 * reference that is being made.  The constants for the flags are defined in
 * <mach-o/nlist.h> as they are also used for symbol table entries.
 */
-struct dylib_reference
-{
+struct dylib_reference {
 	uint32_t isym : 24,		/* index into the symbol table */
 		flags : 8;	/* flags to indicate the type of reference */
 };
@@ -1481,8 +1454,7 @@ struct dylib_reference
 * The twolevel_hints_command contains the offset and number of hints in the
 * two-level namespace lookup hints table.
 */
-struct twolevel_hints_command
-{
+struct twolevel_hints_command {
 	uint32_t cmd;	/* LC_TWOLEVEL_HINTS */
 	uint32_t cmdsize;	/* sizeof(struct twolevel_hints_command) */
 	uint32_t offset;	/* offset to the hint table */
@@ -1505,8 +1477,7 @@ struct twolevel_hints_command
 * library's table of contents.  This is used as the starting point of the
 * binary search or a directed linear search.
 */
-struct twolevel_hint
-{
+struct twolevel_hint {
 	uint32_t
 		isub_image : 8,	/* index into the sub images */
 		itoc : 24;	/* index into the table of contents */
@@ -1522,8 +1493,7 @@ struct twolevel_hint
 * is re-done and the cksum field is non-zero it is left unchanged from the
 * input file.
 */
-struct prebind_cksum_command
-{
+struct prebind_cksum_command {
 	uint32_t cmd;	/* LC_PREBIND_CKSUM */
 	uint32_t cmdsize;	/* sizeof(struct prebind_cksum_command) */
 	uint32_t cksum;	/* the check sum or zero */
@@ -1533,8 +1503,7 @@ struct prebind_cksum_command
 * The uuid load command contains a single 128-bit unique random number that
 * identifies an object produced by the static link editor.
 */
-struct uuid_command
-{
+struct uuid_command {
 	uint32_t	cmd;		/* LC_UUID */
 	uint32_t	cmdsize;	/* sizeof(struct uuid_command) */
 	uint8_t	uuid[16];	/* the 128-bit uuid */
@@ -1544,8 +1513,7 @@ struct uuid_command
 * The rpath_command contains a path which at runtime should be added to
 * the current run path used to find @rpath prefixed dylibs.
 */
-struct rpath_command
-{
+struct rpath_command {
 	uint32_t	 cmd;		/* LC_RPATH */
 	uint32_t	 cmdsize;	/* includes string */
 	union lc_str path;		/* path to add to run path */
@@ -1555,8 +1523,7 @@ struct rpath_command
 * The linkedit_data_command contains the offsets and sizes of a blob
 * of data in the __LINKEDIT segment.
 */
-struct linkedit_data_command
-{
+struct linkedit_data_command {
 	uint32_t	cmd;		/* LC_CODE_SIGNATURE, LC_SEGMENT_SPLIT_INFO,
 							LC_FUNCTION_STARTS, LC_DATA_IN_CODE,
 							LC_DYLIB_CODE_SIGN_DRS or
@@ -1570,8 +1537,7 @@ struct linkedit_data_command
 * The encryption_info_command contains the file offset and size of an
 * of an encrypted segment.
 */
-struct encryption_info_command
-{
+struct encryption_info_command {
 	uint32_t	cmd;		/* LC_ENCRYPTION_INFO */
 	uint32_t	cmdsize;	/* sizeof(struct encryption_info_command) */
 	uint32_t	cryptoff;	/* file offset of encrypted range */
@@ -1584,8 +1550,7 @@ struct encryption_info_command
 * The encryption_info_command_64 contains the file offset and size of an
 * of an encrypted segment (for use in x86_64 targets).
 */
-struct encryption_info_command_64
-{
+struct encryption_info_command_64 {
 	uint32_t	cmd;		/* LC_ENCRYPTION_INFO_64 */
 	uint32_t	cmdsize;	/* sizeof(struct encryption_info_command_64) */
 	uint32_t	cryptoff;	/* file offset of encrypted range */
@@ -1600,8 +1565,7 @@ struct encryption_info_command_64
 * The version_min_command contains the min OS version on which this
 * binary was built to run.
 */
-struct version_min_command
-{
+struct version_min_command {
 	uint32_t	cmd;		/* LC_VERSION_MIN_MACOSX or
 							LC_VERSION_MIN_IPHONEOS or
 							LC_VERSION_MIN_WATCHOS or
@@ -1619,8 +1583,7 @@ struct version_min_command
 * is encoded using byte streams, so no endian swapping is needed
 * to interpret it.
 */
-struct dyld_info_command
-{
+struct dyld_info_command {
 	uint32_t   cmd;		/* LC_DYLD_INFO or LC_DYLD_INFO_ONLY */
 	uint32_t   cmdsize;		/* sizeof(struct dyld_info_command) */
 
@@ -1786,8 +1749,7 @@ struct dyld_info_command
 /*
 * The linker_option_command contains linker options embedded in object files.
 */
-struct linker_option_command
-{
+struct linker_option_command {
 	uint32_t  cmd;	/* LC_LINKER_OPTION only used in MH_OBJECT filetypes */
 	uint32_t  cmdsize;
 	uint32_t  count;	/* number of strings */
@@ -1804,8 +1766,7 @@ struct linker_option_command
 * roots also being a multiple of a long.  Also the padding must again be
 * zeroed. (THIS IS OBSOLETE and no longer supported).
 */
-struct symseg_command
-{
+struct symseg_command {
 	uint32_t	cmd;		/* LC_SYMSEG */
 	uint32_t	cmdsize;	/* sizeof(struct symseg_command) */
 	uint32_t	offset;		/* symbol segment offset */
@@ -1818,8 +1779,7 @@ struct symseg_command
 * the command is padded out with zero bytes to a multiple of 4 bytes/
 * (THIS IS OBSOLETE and no longer supported).
 */
-struct ident_command
-{
+struct ident_command {
 	uint32_t cmd;		/* LC_IDENT */
 	uint32_t cmdsize;	/* strings that follow this command */
 };
@@ -1830,8 +1790,7 @@ struct ident_command
 * internal use.  The kernel ignores this command when loading a program into
 * memory).
 */
-struct fvmfile_command
-{
+struct fvmfile_command {
 	uint32_t cmd;			/* LC_FVMFILE */
 	uint32_t cmdsize;		/* includes pathname string */
 	union lc_str	name;		/* files pathname */
@@ -1844,8 +1803,7 @@ struct fvmfile_command
 * of main().  If -stack_size was used at link time, the stacksize
 * field will contain the stack size need for the main thread.
 */
-struct entry_point_command
-{
+struct entry_point_command {
 	uint32_t  cmd;	/* LC_MAIN only used in MH_EXECUTE filetypes */
 	uint32_t  cmdsize;	/* 24 */
 	uint64_t  entryoff;	/* file (__TEXT) offset of main() */
@@ -1856,8 +1814,7 @@ struct entry_point_command
 * The source_version_command is an optional load command containing
 * the version of the sources used to build the binary.
 */
-struct source_version_command
-{
+struct source_version_command {
 	uint32_t  cmd;	/* LC_SOURCE_VERSION */
 	uint32_t  cmdsize;	/* 16 */
 	uint64_t  version;	/* A.B.C.D.E packed as a24.b10.c10.d10.e10 */
@@ -1868,8 +1825,7 @@ struct source_version_command
 * to point to an array of data_in_code_entry entries. Each entry
 * describes a range of data in a code section.
 */
-struct data_in_code_entry
-{
+struct data_in_code_entry {
 	uint32_t	offset;  /* from mach_header to start of data range*/
 	uint16_t	length;  /* number of bytes in data range */
 	uint16_t	kind;    /* a DICE_KIND_* value  */
@@ -1899,10 +1855,8 @@ struct tlv_descriptor
 * number of sections not just the three sections (text, data and bss) in a BSD
 * file.
 */
-struct nlist
-{
-	union
-	{
+struct nlist {
+	union {
 #ifndef __LP64__
 		char *n_name;	/* for use when in-core */
 #endif
@@ -1917,10 +1871,8 @@ struct nlist
 /*
 * This is the symbol table entry structure for 64-bit architectures.
 */
-struct nlist_64
-{
-	union
-	{
+struct nlist_64 {
+	union {
 		uint32_t  n_strx; /* index into the string table */
 	} n_un;
 	uint8_t n_type;        /* type flag, see below */
@@ -2296,9 +2248,6 @@ enum reloc_type_x86_64
 	X86_64_RELOC_TLV,		// for thread local variables
 };
 
-struct relocation_info
-{
-	int32_t r_address; uint32_t r_symbolnum : 24, r_pcrel : 1, r_length : 2, r_extern : 1, r_type : 4;
-};
+struct relocation_info { int32_t r_address; uint32_t r_symbolnum : 24, r_pcrel : 1, r_length : 2, r_extern : 1, r_type : 4; };
 
 #endif /* End of MACHO64SPEC_H */

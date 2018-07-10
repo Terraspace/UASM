@@ -46,12 +46,9 @@ void QInit(struct qdesc *q)
 void QEnqueue(struct qdesc *q, void *item)
 /******************************************/
 {
-	if (q->head == NULL)
-	{
+    if( q->head == NULL ) {
 		q->head = q->tail = item;
-	}
-	else
-	{
+    } else {
 		/**/    myassert(q->tail != NULL);
 		*(void **)q->tail = item;
 		q->tail = item;
@@ -75,16 +72,11 @@ void QAddItem(struct qdesc *q, const void *data)
 void QJoinQueue(struct qdesc *dest, struct qdesc *src)
 /******************************************************/
 {
-	if (dest->head == NULL)
-	{
+    if( dest->head == NULL ) {
 		dest->head = src->head;
-	}
-	else if (src->head == NULL)
-	{
+    } else if( src->head == NULL ) {
 		return;
-	}
-	else
-	{
+    } else {
 		/**/    myassert(dest->tail != NULL);
 		*((void **)dest->tail) = src->head;
 	}
@@ -100,14 +92,12 @@ void *QDequeue(struct qdesc *q)
 {
 	void *item;
 
-	if (q->head == NULL)
-	{
+    if( q->head == NULL ) {
 		return(NULL);
 	}
 	item = q->head;
 	q->head = *(void**)item;
-	if (q->head == NULL)
-	{
+    if( q->head == NULL ) {
 		q->tail = NULL;
 	}
 	return(item);

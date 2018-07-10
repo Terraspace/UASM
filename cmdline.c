@@ -188,19 +188,14 @@ static void StripQuotes(char *fname)
 	char *s;
 	char *d;
 
-	if (*fname == '"')
-	{
+    if( *fname == '"' ) {
 		/* string will shrink so we can reduce in place */
 		d = fname;
-		for (s = d + 1; *s && *s != '"'; ++s)
-		{
+        for( s = d + 1; *s && *s != '"'; ++s ) {
 			/* collapse double backslashes, only then look for escaped quotes */
-			if (s[0] == '\\' && s[1] == '\\')
-			{
+            if( s[0] == '\\' && s[1] == '\\' ) {
 				++s;
-			}
-			else if (s[0] == '\\' && s[1] == '"')
-			{
+            } else if( s[0] == '\\' && s[1] == '"' ) {
 				++s;
 			}
 			*d++ = *s;
@@ -224,8 +219,7 @@ static char *GetAFileName(void)
 static void SetTargName(char *name, unsigned len)
 /*************************************************/
 {
-	if (Options.names[OPTN_BUILD_TARGET] != NULL)
-	{
+    if( Options.names[OPTN_BUILD_TARGET] != NULL ) {
 		MemFree(Options.names[OPTN_BUILD_TARGET]);
 		Options.names[OPTN_BUILD_TARGET] = NULL;
 	}
@@ -245,33 +239,25 @@ static void SetCpuCmdline(enum cpu_info value, const char *parm)
 	Options.cpu &= ~(P_CPU_MASK | P_EXT_MASK | P_PM);
 	Options.cpu |= value;
 
-	for (; *parm; parm++)
-	{
-		if (*parm == 'p' && Options.cpu >= P_286)
-		{
+    for( ; *parm ; parm++ ) {
+        if( *parm == 'p' && Options.cpu >= P_286 ) {
 			Options.cpu |= P_PM;      /* set privileged mode */
 #if MANGLERSUPP
-		}
-		else if (*parm == '"')
-		{       /* set default mangler */
+        } else if( *parm == '"' ) {       /* set default mangler */
 			char *dest;
 			parm++;
 			dest = strchr(parm, '"');
-			if (Options.names[OPTN_DEFNAME_MANGLER] != NULL)
-			{
+            if( Options.names[OPTN_DEFNAME_MANGLER] != NULL ) {
 				MemFree(Options.names[OPTN_DEFNAME_MANGLER);
 			}
 			Options.names[OPTN_DEFNAME_MANGLER] = MemAlloc(dest - parm + 1);
 			dest = Options.names[OPTN_DEFNAME_MANGLER];
-			for (; *parm != '"'; dest++, parm++)
-			{
+            for( ; *parm != '"'; dest++, parm++ ) {
 				*dest = *parm;
 			}
 			*dest = NULLC;
 #endif
-		}
-		else
-		{
+        } else {
 			EmitWarn(1, CPU_OPTION_INVALID, parm);
 			break;
 		}
@@ -293,12 +279,10 @@ static void queue_item(int i, const char *string)
 	p->next = NULL;
 	strcpy(p->value, string);
 	q = Options.queues[i];
-	if (q)
-	{
+    if ( q ) {
 		for (; q->next; q = q->next);
 		q->next = p;
-	}
-	else
+    } else
 		Options.queues[i] = p;
 	return;
 }
@@ -321,12 +305,10 @@ static void get_fname(int type, const char *token)
 	 * If name's ending with a '\' (or '/' in Unix), it's supposed
 	 * to be a directory name only.
 	 */
-	if (*pName == NULLC)
-	{
+    if( *pName == NULLC ) {
 		DebugMsg(("get_fname(%u, >%s< ) name is empty or a directory\n", type, token));
 		/* v2.10: ensure type is < NUM_FILE_TYPES */
-		if (type < NUM_FILE_TYPES)
-		{
+        if ( type < NUM_FILE_TYPES ) {
 			if (DefaultDir[type])
 				MemFree(DefaultDir[type]);
 			DefaultDir[type] = MemAlloc(strlen(token) + 1);
@@ -337,27 +319,23 @@ static void get_fname(int type, const char *token)
 	/* v2.10: ensure type is < NUM_FILE_TYPES */
 	//if ( drive[0] == NULLC && dir[0] == NULLC && type < NUM_FILE_TYPES && DefaultDir[type] ) {
 	name[0] = NULLC;
-	if (pName == token && type < NUM_FILE_TYPES && DefaultDir[type])
-	{
+    if ( pName == token && type < NUM_FILE_TYPES && DefaultDir[type] ) {
 		DebugMsg(("get_fname: default drive+dir used: %s\n"));
 		//_splitpath( DefaultDir[type], drive, dir, NULL, NULL );
 		strcpy(name, DefaultDir[type]);
 	}
 	strcat(name, token);
 #if 0 /* v2.12: extension will be set in SetFileNames() */
-	if (type && type < NUM_FILE_TYPES)
-	{
+    if( type && type < NUM_FILE_TYPES ) {
 		char *pExt = GetExtPart(name);
-		if (*pExt == NULLC)
-		{
+        if ( *pExt == NULLC ) {
 			*pExt++ = '.';
 			strcpy(pExt, DefaultExt[type-1]);
 		}
 	}
 #endif
 	//_makepath( name, drive, dir, fname, pExt );
-	if (Options.names[type] != NULL)
-	{
+    if( Options.names[type] != NULL ) {
 		MemFree(Options.names[type]);
 	}
 	Options.names[type] = MemAlloc(strlen(name) + 1);
@@ -373,14 +351,12 @@ static void set_option_n_name(int idx, const char *name)
  * - nc: code class
  */
 {
-	if (*name != '.' && !is_valid_id_char(*name))
-	{
+    if ( *name != '.' && !is_valid_id_char( *name ) ) {
 		EmitError(N_OPTION_NEEDS_A_NAME_PARAMETER);
 		return;
 	}
 
-	if (Options.names[idx] != NULL)
-	{
+    if( Options.names[idx] != NULL ) {
 		MemFree(Options.names[idx]);
 	}
 	Options.names[idx] = MemAlloc(strlen(name) + 1);
@@ -390,34 +366,18 @@ static void set_option_n_name(int idx, const char *name)
 //static void OPTQUAL Ignore( void ) {};
 
 #if BUILD_TARGET
-static void OPTQUAL Set_bt(void)
-{
-	SetTargName(OptName, strlen(OptName));
-}
+static void OPTQUAL Set_bt( void ) { SetTargName( OptName,  strlen(OptName) ); }
 #endif
 
-static void OPTQUAL Set_c(void)
-{}
+static void OPTQUAL Set_c( void ) { }
 
 #ifdef DEBUG_OUT
-static void OPTQUAL Set_ce(void)
-{
-	rspidx = 1 / rspidx;
-}
+static void OPTQUAL Set_ce( void ) { rspidx = 1 / rspidx; }
 #endif
 
-static void OPTQUAL Set_Cp(void)
-{
-	Options.case_sensitive = TRUE;   Options.convert_uppercase = FALSE;
-}
-static void OPTQUAL Set_Cu(void)
-{
-	Options.case_sensitive = FALSE;  Options.convert_uppercase = TRUE;
-}
-static void OPTQUAL Set_Cx(void)
-{
-	Options.case_sensitive = FALSE;  Options.convert_uppercase = FALSE;
-}
+static void OPTQUAL Set_Cp( void ) { Options.case_sensitive = TRUE;   Options.convert_uppercase = FALSE; }
+static void OPTQUAL Set_Cu( void ) { Options.case_sensitive = FALSE;  Options.convert_uppercase = TRUE;  }
+static void OPTQUAL Set_Cx( void ) { Options.case_sensitive = FALSE;  Options.convert_uppercase = FALSE; }
 
 static void OPTQUAL Set_SSE(void)
 {
@@ -457,10 +417,7 @@ static void OPTQUAL Set_LessOutput(void)
 	Options.lessoutput = TRUE;
 }
 
-static void OPTQUAL Set_Zd(void)
-{
-	Options.line_numbers = TRUE;
-}
+static void OPTQUAL Set_Zd( void ) { Options.line_numbers = TRUE; }
 static void OPTQUAL Set_Zi(void)
 {
 	Set_Zd();
@@ -477,8 +434,7 @@ static void OPTQUAL Set_Zp(void)
 {
 	uint_8 power;
 	for (power = 0; (1 << power) <= MAX_STRUCT_ALIGN; power++)
-		if ((1 << power) == OptValue)
-		{
+        if ( ( 1 << power ) == OptValue ) {
 			Options.fieldalign = power;
 			return;
 		}
@@ -491,8 +447,7 @@ static void OPTQUAL Set_Sp(void)
 {
 	uint_8 power;
 	for (power = 0; (1 << power) <= MAX_SEGMENT_ALIGN; power++)
-		if ((1 << power) == OptValue)
-		{
+		if ((1 << power) == OptValue) {
 			Options.seg_align = power;
 			return;
 		}
@@ -500,72 +455,27 @@ static void OPTQUAL Set_Sp(void)
 	return;
 }
 
-static void OPTQUAL Set_D(void)
-{
-	queue_item(OPTQ_MACRO, GetAFileName());
-}
-static void OPTQUAL Set_Fi(void)
-{
-	queue_item(OPTQ_FINCLUDE, GetAFileName());
-}
-static void OPTQUAL Set_I(void)
-{
-	queue_item(OPTQ_INCPATH, GetAFileName());
-}
+static void OPTQUAL Set_D( void )  { queue_item( OPTQ_MACRO,    GetAFileName() ); }
+static void OPTQUAL Set_Fi( void ) { queue_item( OPTQ_FINCLUDE, GetAFileName() ); }
+static void OPTQUAL Set_I( void )  { queue_item( OPTQ_INCPATH,  GetAFileName() ); }
 
-static void OPTQUAL Set_e(void)
-{
-	Options.error_limit = OptValue;
-}
+static void OPTQUAL Set_e( void ) { Options.error_limit = OptValue; }
 
-static void OPTQUAL Set_nologo(void)
-{
-	banner_printed = TRUE;
-}
-static void OPTQUAL Set_q(void)
-{
-	Set_nologo(); Options.quiet = TRUE;
-}
-static void OPTQUAL Set_EP(void)
-{
-	Options.preprocessor_stdout = TRUE; Set_q();
-}
+static void OPTQUAL Set_nologo( void ) { banner_printed = TRUE; }
+static void OPTQUAL Set_q( void )      { Set_nologo(); Options.quiet = TRUE; }
+static void OPTQUAL Set_EP( void ) { Options.preprocessor_stdout = TRUE; Set_q(); }
 
 #if DLLIMPORT
-static void OPTQUAL Set_Fd(void)
-{
-	get_fname(OPTN_LNKDEF_FN, GetAFileName()); Options.write_impdef = TRUE;
-}
+static void OPTQUAL Set_Fd( void ) { get_fname( OPTN_LNKDEF_FN, GetAFileName() ); Options.write_impdef = TRUE;}
 #endif
-static void OPTQUAL Set_Fw(void)
-{
-	get_fname(OPTN_ERR_FN, GetAFileName());
-}
-static void OPTQUAL Set_Fs(void)
-{
-	get_fname(OPTN_SYM_FN, GetAFileName()); Options.dumpSymbols = TRUE;
-}
-static void OPTQUAL Set_Fl(void)
-{
-	get_fname(OPTN_LST_FN, GetAFileName()); Options.write_listing = TRUE;
-}
-static void OPTQUAL Set_Fo(void)
-{
-	get_fname(OPTN_OBJ_FN, GetAFileName());
-}
+static void OPTQUAL Set_Fw( void ) { get_fname( OPTN_ERR_FN, GetAFileName() ); }
+static void OPTQUAL Set_Fs( void ) { get_fname( OPTN_SYM_FN, GetAFileName() ); Options.dumpSymbols = TRUE; }
+static void OPTQUAL Set_Fl( void ) { get_fname( OPTN_LST_FN, GetAFileName() ); Options.write_listing = TRUE;}
+static void OPTQUAL Set_Fo( void ) { get_fname( OPTN_OBJ_FN, GetAFileName() ); }
 
-static void OPTQUAL Set_fp(void)
-{
-	Options.cpu &= ~P_FPU_MASK; Options.cpu = OptValue;
-}
-static void OPTQUAL Set_FPx(void)
-{
-	Options.floating_point = OptValue;
-}
-static void OPTQUAL Set_G(void)
-{
-	Options.langtype = OptValue;
-}
+static void OPTQUAL Set_fp( void ) { Options.cpu &= ~P_FPU_MASK; Options.cpu = OptValue; }
+static void OPTQUAL Set_FPx( void ) { Options.floating_point = OptValue; }
+static void OPTQUAL Set_G( void ) { Options.langtype = OptValue; }
 
 static void OPTQUAL Set_Sa(void)
 /********************************/
@@ -582,31 +492,16 @@ static void OPTQUAL Set_True(void)
 	*p = TRUE;
 }
 
-static void OPTQUAL Set_m(void)
-{
-	Options.model = OptValue;
-}
-static void OPTQUAL Set_n(void)
-{
-	set_option_n_name(OptValue, OptName);
-}
+static void OPTQUAL Set_m( void ) { Options.model = OptValue; }
+static void OPTQUAL Set_n( void ) { set_option_n_name( OptValue, OptName ); }
 
 #ifdef DEBUG_OUT
-static void OPTQUAL Set_pm(void)
-{
-	Options.max_passes = OptValue;
-};
+static void OPTQUAL Set_pm( void ) { Options.max_passes = OptValue; };
 #endif
 
-static void OPTQUAL Set_WX(void)
-{
-	Options.warning_error = TRUE;
-}
+static void OPTQUAL Set_WX( void ) { Options.warning_error = TRUE; }
 
-static void OPTQUAL Set_w(void)
-{
-	Set_WX(); Options.warning_level = 0;
-}
+static void OPTQUAL Set_w( void ) { Set_WX(); Options.warning_level = 0; }
 
 static void OPTQUAL Set_W(void)
 /*******************************/
@@ -637,38 +532,23 @@ static void OPTQUAL Set_ofmt(void)
 	}
 }
 
-static void OPTQUAL Set_zcm(void)
-{
-	Options.no_cdecl_decoration = FALSE;
-}
+static void OPTQUAL Set_zcm( void ) { Options.no_cdecl_decoration = FALSE; }
 #if OWFC_SUPPORT
-static void OPTQUAL Set_zf(void)
-{
-	Options.fctype = OptValue;
-}
+static void OPTQUAL Set_zf( void )  { Options.fctype = OptValue; }
 #endif
 
-static void OPTQUAL Set_zt(void)
-{
-	Options.stdcall_decoration = OptValue;
-}
-static void OPTQUAL Set_zv(void)
-{
-	Options.vectorcall_decoration = OptValue;
-}
+static void OPTQUAL Set_zt( void ) { Options.stdcall_decoration = OptValue; }
+static void OPTQUAL Set_zv(void){	Options.vectorcall_decoration = OptValue; }
+
 #ifndef __SW_BD
-static void OPTQUAL Set_h(void)
-{
-	PrintUsage();  exit(1);
-}
+static void OPTQUAL Set_h( void ) {  PrintUsage();  exit(1); }
 #endif
 
 #ifdef DEBUG_OUT
 static void OPTQUAL Set_dm(void)
 {
 	int i;
-	for (i = 0; i < MSG_LAST; i++)
-	{
+    for ( i = 0; i < MSG_LAST; i++ ) {
 		printf("%3u: %s\n", i, MsgGetEx(i));
 	}
 }
@@ -695,8 +575,7 @@ static void OPTQUAL Set_nbp(void)
 }
 #endif
 
-struct  cmdloption
-{
+struct  cmdloption {
 	const char  *name;
 	unsigned    value;
 	void OPTQUAL(*function)(void);
@@ -896,28 +775,21 @@ static const char *GetNameToken(char *dst, const char *str, int max, char type)
 	DebugMsg(("GetNameToken( %s, %u, '%c' ) enter, rspidx=%u\n", str, max, type, rspidx));
 	//while( isspace( *str ) ) ++str;  /* no spaces allowed! */
 is_quote:
-	if (*str == '"')
-	{
+    if( *str == '"' ) {
 		++str;
-		for (; max && *str; max--)
-		{
-			if (*str == '"')
-			{
+        for( ; max && *str; max-- ) {
+            if ( *str == '"' ) {
 				++str;
 				break;
 			}
 			/* handle the \" case */
-			if (*str == '\\' && *(str+1) == '"')
-			{
+            if ( *str == '\\' && *(str+1) == '"' ) {
 				++str;
 			}
 			*dst++ = *str++;
 		}
-	}
-	else
-	{
-		for (; max; max--)
-		{
+    } else {
+        for( ; max; max-- ) {
 			/* v2.10: don't stop for white spaces */
 			//if ( *str == NULLC || *str == ' ' || *str == '\t' )
 			if (*str == NULLC)
@@ -932,8 +804,7 @@ is_quote:
 #endif
 					)
 					break;
-			if (*str == '=' && type == '$' && equatefound == FALSE)
-			{
+            if ( *str == '=' && type == '$' && equatefound == FALSE ) {
 				equatefound = TRUE;
 				*dst++ = *str++;
 				if (*str == '"')
@@ -963,16 +834,14 @@ static char *ReadParamFile(const char *name)
 	DebugMsg(("ReadParamFile(%s) enter\n"));
 	env = NULL;
 	file = fopen(name, "rb");
-	if (file == NULL)
-	{
+    if( file == NULL ) {
 		/* v2.10: changed to fatal error */
 		//EmitErr( CANNOT_OPEN_FILE, name, ErrnoStr() );
 		Fatal(CANNOT_OPEN_FILE, name, ErrnoStr());
 		return(NULL);
 	}
 	len = 0;
-	if (fseek(file, 0, SEEK_END) == 0)
-	{
+    if ( fseek( file, 0, SEEK_END ) == 0 ) {
 		len = ftell(file);
 		rewind(file);
 		env = MemAlloc(len + 1);
@@ -988,16 +857,13 @@ static char *ReadParamFile(const char *name)
 		return(NULL);
 	/* zip through characters changing \r, \n etc into ' ' */
 	str = env;
-	while (*str)
-	{
+    while( *str ) {
 		ch = *str;
-		if (ch == '\r' || ch == '\n')
-		{
+        if( ch == '\r' || ch == '\n' ) {
 			*str = ' ';
 		}
 #if HANDLECTRLZ
-		if (ch == 0x1A)
-		{      /* if end of file */
+        if( ch == 0x1A ) {      /* if end of file */
 			*str = '\0';        /* - mark end of str */
 			break;
 		}
@@ -1016,8 +882,7 @@ static const char *getnextcmdstring(const char **cmdline)
 	const char **dst;
 
 	/* something onto the response file stack? */
-	if (rspidx)
-	{
+    if ( rspidx ) {
 		rspidx--;
 		if (cmdbuffers[rspidx])
 			MemFree((void *)cmdbuffers[rspidx]);
@@ -1060,11 +925,9 @@ static void ProcessOption(const char **cmdline, char *buffer)
 	/* numeric option (-0, -1, ... ) handled separately since
 	 * the value can be >= 10.
 	 */
-	if (*p >= '0' && *p <= '9')
-	{
+    if ( *p >= '0' && *p <= '9' ) {
 		p = GetNumber(p);
-		if (OptValue < sizeof(cpuoption)/sizeof(cpuoption[0]))
-		{
+        if ( OptValue < sizeof(cpuoption)/sizeof(cpuoption[0]) ) {
 			p = GetNameToken(buffer, p, 16, 0); /* get optional 'p' */
 			*cmdline = p;
 			SetCpuCmdline(cpuoption[OptValue], buffer);
@@ -1072,11 +935,9 @@ static void ProcessOption(const char **cmdline, char *buffer)
 		}
 		p = *cmdline; /* v2.11: restore option pointer */
 	}
-	for (i = 0; i < (sizeof(cmdl_options) / sizeof(cmdl_options[0])); i++)
-	{
+    for( i = 0; i < ( sizeof(cmdl_options) / sizeof(cmdl_options[0]) ); i++ ) {
 		//DebugMsg(("ProcessOption(%s): %s\n", p, opt ));
-		if (*p == *cmdl_options[i].name)
-		{
+        if( *p == *cmdl_options[i].name ) {
 			for (opt = cmdl_options[i].name+1, j = 1; isalnum(*opt) && *opt == p[j]; opt++, j++);
 			/* make sure end of option is reached */
 			if (isalnum(*opt))
@@ -1084,10 +945,8 @@ static void ProcessOption(const char **cmdline, char *buffer)
 			p += j;
 			OptValue = cmdl_options[i].value;
 			//DebugMsg(("ProcessOption(%s): Option found\n", p ));
-			for (;; opt++)
-			{
-				switch (*opt)
-				{
+            for( ;; opt++) {
+                switch ( *opt ) {
 					//case '*': /* don't know what this is supposed to do? */
 					case NULLC:
 						if (!IsOptionDelimiter(*p))
@@ -1106,8 +965,7 @@ static void ProcessOption(const char **cmdline, char *buffer)
 #if 0  /* v2.05: removed */
 						if (rspidx)
 							p = GetNameToken(buffer, p, FILENAME_MAX - 1, *opt);
-						else
-						{
+                    else {
 							j = strlen(p);
 							memcpy(buffer, p, (j >= FILENAME_MAX) ? FILENAME_MAX : j + 1);
 							p += j;
@@ -1123,11 +981,9 @@ static void ProcessOption(const char **cmdline, char *buffer)
 						break;
 					case '^':    /* skip spaces before argument */
 						while (isspace(*p)) p++;
-						if (*p == NULLC)
-						{
+                    if ( *p == NULLC ) {
 							p = getnextcmdstring(cmdline);
-							if (p == NULL)
-							{
+                        if ( p == NULL ) {
 								EmitWarn(1, MISSING_ARGUMENT_FOR_CMDLINE_OPTION);
 								return;
 							}
@@ -1155,28 +1011,18 @@ opt_error_exit:
 static void set_default_build_target(void)
 /******************************************/
 {
-	if (Options.names[OPTN_BUILD_TARGET] == NULL)
-	{
+    if( Options.names[OPTN_BUILD_TARGET] == NULL ) {
 		Options.names[OPTN_BUILD_TARGET] = MemAlloc(MAX_OS_NAME_SIZE + 1);
 #if defined(__OSI__)
-		if (__OS == OS_DOS)
-		{
+        if( __OS == OS_DOS ) {
 			strcpy(Options.names[OPTN_BUILD_TARGET], "DOS");
-		}
-		else if (__OS == OS_OS2)
-		{
+        } else if( __OS == OS_OS2 ) {
 			strcpy(Options.names[OPTN_BUILD_TARGET], "OS2");
-		}
-		else if (__OS == OS_NT)
-		{
+        } else if( __OS == OS_NT ) {
 			strcpy(Options.names[OPTN_BUILD_TARGET], "NT");
-		}
-		else if (__OS == OS_WIN)
-		{
+        } else if( __OS == OS_WIN ) {
 			strcpy(Options.names[OPTN_BUILD_TARGET], "WINDOWS");
-		}
-		else
-		{
+        } else {
 			strcpy(Options.names[OPTN_BUILD_TARGET], "XXX");
 		}
 #elif defined(__QNX__)
@@ -1215,8 +1061,7 @@ char * EXPQUAL ParseCmdline(const char **cmdline, int *pCntArgs)
 	char paramfile[FILENAME_MAX];
 
 	for (i = 0; i < NUM_FILE_TYPES; i++)
-		if (Options.names[i] != NULL)
-		{
+        if ( Options.names[i] != NULL ) {
 			MemFree(Options.names[i]);
 			Options.names[i] = NULL;
 		}
@@ -1224,10 +1069,8 @@ char * EXPQUAL ParseCmdline(const char **cmdline, int *pCntArgs)
 	/* enable next line if debug log is to be active, but -dt cannot be set */
 	//Set_dt();
 
-	for (; str; )
-	{
-		switch (*str)
-		{
+    for( ; str; ) {
+        switch( *str ) {
 			case ' ':
 			case '\t':
 				str++;
@@ -1246,8 +1089,7 @@ char * EXPQUAL ParseCmdline(const char **cmdline, int *pCntArgs)
 				str = *cmdline;
 				break;
 			case '@':
-				if (rspidx >= MAX_RSP_NESTING)
-				{
+            if ( rspidx >= MAX_RSP_NESTING ) {
 					EmitErr(NESTING_LEVEL_TOO_DEEP);
 					*cmdline = "";
 					return(NULL);
@@ -1255,12 +1097,9 @@ char * EXPQUAL ParseCmdline(const char **cmdline, int *pCntArgs)
 				str++;
 #if 1 /* v2.06: was '0' in v2.05, now '1' again since it didn't work with quoted names */
 				/* todo: might be unnecessary since v.2.10, since GetNameToken() handles spaces inside filenames differently */
-				if (rspidx)
-				{
+            if ( rspidx ) {
 					cmdsave[rspidx] = GetNameToken(paramfile, str, sizeof(paramfile) - 1, '@');
-				}
-				else
-				{
+            } else {
 					strcpy(paramfile, str); /* fixme: no overflow check */
 					cmdsave[rspidx] = str + strlen(str);
 				}
@@ -1271,12 +1110,10 @@ char * EXPQUAL ParseCmdline(const char **cmdline, int *pCntArgs)
 				str = NULL;
 				if (paramfile[0])
 					str = getenv(paramfile);
-				if (str == NULL)
-				{
+            if( str == NULL ) {
 					str = ReadParamFile(paramfile);
 					cmdbuffers[rspidx] = str;
-					if (str == NULL)
-					{
+                if ( str == NULL ) {
 						str = cmdsave[rspidx];
 						break;
 					}
@@ -1288,13 +1125,10 @@ char * EXPQUAL ParseCmdline(const char **cmdline, int *pCntArgs)
 				set_default_build_target();
 #endif
 #if 1 /* v2.06: activated (was removed in v2.05). Needed for quoted filenames */
-				if (rspidx)
-				{
+            if ( rspidx ) {
 					str = GetNameToken(paramfile, str, sizeof(paramfile) - 1, '@');
 					get_fname(OPTN_ASM_FN, paramfile);
-				}
-				else
-				{
+            } else {
 					int len;
 					len = strlen(str);
 					get_fname(OPTN_ASM_FN, str);
@@ -1321,26 +1155,21 @@ void EXPQUAL CmdlineFini(void)
 {
 	int i;
 	DebugMsg(("CmdLineFini enter\n"));
-	for (i = 0; i < NUM_FILE_TYPES; i++)
-	{
-		if (DefaultDir[i] != NULL)
-		{
+    for ( i = 0; i < NUM_FILE_TYPES; i++ ) {
+        if ( DefaultDir[i] != NULL ) {
 			MemFree(DefaultDir[i]);
 			DefaultDir[i] = NULL;
 		}
 	}
 	for (i = 0; i < OPTN_LAST; i++)
-		if (Options.names[i] != NULL)
-		{
+        if ( Options.names[i] != NULL ) {
 			MemFree(Options.names[i]);
 			Options.names[i] = NULL;
 		}
-	for (i = 0; i < OPTQ_LAST; i++)
-	{
+    for ( i = 0; i < OPTQ_LAST; i++ ) {
 		struct qitem *p;
 		struct qitem *q;
-		for (q = Options.queues[i]; q; )
-		{
+        for ( q = Options.queues[i]; q; ) {
 			p = q->next;
 			MemFree(q);
 			q = p;

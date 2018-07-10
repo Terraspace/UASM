@@ -111,13 +111,10 @@ void sym_add_table(struct symbol_queue *queue, struct dsym *item)
 	if (queue == &SymTables[TAB_UNDEF])
 		item->sym.fwdref = TRUE;
 #endif
-	if (queue->head == NULL)
-	{
+    if( queue->head == NULL ) {
 		queue->head = queue->tail = item;
 		item->next = item->prev = NULL;
-	}
-	else
-	{
+    } else {
 		item->prev = queue->tail;
 		queue->tail->next = item;
 		queue->tail = item;
@@ -162,8 +159,7 @@ void sym_ext2int(struct asym *sym)
  */
 {
 	/* v2.07: GlobalQueue has been removed */
-	if (sym->isproc == FALSE && sym->ispublic == FALSE)
-	{
+    if ( sym->isproc == FALSE && sym->ispublic == FALSE ) {
 		sym->ispublic = TRUE;
 		AddPublicData(sym);
 	}
@@ -176,19 +172,16 @@ void sym_ext2int(struct asym *sym)
 ret_code GetLangType(int *i, struct asm_tok tokenarray[], enum lang_type *plang)
 /********************************************************************************/
 {
-	if (tokenarray[*i].token == T_RES_ID)
-	{
+    if( tokenarray[*i].token == T_RES_ID ) {
 #if 1 /* v2.03: simplified */
 		if (tokenarray[(*i)].tokval >= T_C &&
-			tokenarray[(*i)].tokval <= T_BORLAND)
-		{ /* 2.15 implemented the VECTORCALL */
+            tokenarray[(*i)].tokval <= T_BORLAND ) { /* 2.15 implemented the VECTORCALL */
 			*plang = tokenarray[(*i)].bytval;
 			(*i)++;
 			return(NOT_ERROR);
 		}
 #else
-		switch (tokenarray[(*i)].tokval)
-		{
+        switch( tokenarray[(*i)].tokval ) {
 			case T_C:         *plang = LANG_C;          break;
 			case T_SYSCALL:   *plang = LANG_SYSCALL;    break;
 			case T_STDCALL:   *plang = LANG_STDCALL;    break;
@@ -253,8 +246,7 @@ int SizeFromRegister(int registertoken)
 int SizeFromMemtype(enum memtype mem_type, int Ofssize, struct asym *type)
 /**************************************************************************/
 {
-	if ((mem_type & MT_SPECIAL) == 0)
-	{
+if ((mem_type & MT_SPECIAL) == 0){
 #if AVXSUPP
 		if (mem_type == MT_ZMMWORD)
 			return (0x40);
@@ -265,8 +257,7 @@ int SizeFromMemtype(enum memtype mem_type, int Ofssize, struct asym *type)
 	if (Ofssize == USE_EMPTY)
 		Ofssize = ModuleInfo.Ofssize;
 
-	switch (mem_type)
-	{
+    switch ( mem_type ) {
 		case MT_NEAR:
 			DebugMsg1(("SizeFromMemtype( MT_NEAR, Ofssize=%u )=%u\n", Ofssize, 2 << Ofssize));
 			return (2 << Ofssize);
@@ -296,25 +287,19 @@ ret_code MemtypeFromSize(int size, enum memtype *ptype)
 /*******************************************************/
 {
 	int i;
-	for (i = T_BYTE; SpecialTable[i].type == RWT_STYPE; i++)
-	{
-		if ((SpecialTable[i].bytval & MT_SPECIAL) == 0)
-		{
+    for ( i = T_BYTE; SpecialTable[i].type == RWT_STYPE; i++ ) {
+        if( ( SpecialTable[i].bytval & MT_SPECIAL ) == 0 ) {
 			/* the size is encoded 0-based in field mem_type */
 #if AVXSUPP
-			if (SpecialTable[i].bytval == MT_ZMMWORD)
-			{
-				if (((SpecialTable[i].bytval & 0x3f) + 1) == size)
-				{
+          if (SpecialTable[i].bytval == MT_ZMMWORD){
+            if (((SpecialTable[i].bytval & 0x3f) + 1) == size) {
 					*ptype = SpecialTable[i].bytval;
 					return(NOT_ERROR);
 				}
 			}
-			else
-			{
+            else{
 #endif
-				if (((SpecialTable[i].bytval & MT_SIZE_MASK) + 1) == size)
-				{
+              if (((SpecialTable[i].bytval & MT_SIZE_MASK) + 1) == size) {
 					*ptype = SpecialTable[i].bytval;
 					return(NOT_ERROR);
 				}
@@ -445,65 +430,38 @@ int OperandSize(enum operand_type opnd, const struct code_info *CodeInfo)
 /*************************************************************************/
 {
 	/* v2.0: OP_M8_R8 and OP_M16_R16 have the DFT bit set! */
-	if (opnd == OP_NONE)
-	{
+    if( opnd == OP_NONE ) {
 		return(0);
-	}
-	else if (opnd == OP_M)
-	{
+    } else if( opnd == OP_M ) {
 		return(SizeFromMemtype(CodeInfo->mem_type, CodeInfo->Ofssize, NULL));
-	}
-	else if (opnd & (OP_R8 | OP_M08 | OP_I8))
-	{
+    } else if( opnd & ( OP_R8 | OP_M08 | OP_I8 ) ) {
 		return(1);
-	}
-	else if (opnd & (OP_R16 | OP_M16 | OP_I16 | OP_SR))
-	{
+    } else if( opnd & ( OP_R16 | OP_M16 | OP_I16 | OP_SR ) ) {
 		return(2);
-	}
-	else if (opnd & (OP_R32 | OP_M32 | OP_I32))
-	{
+    } else if( opnd & ( OP_R32 | OP_M32 | OP_I32 ) ) {
 		return(4);
 #if AMD64_SUPPORT
-	}
-	else if (opnd & (OP_R64 | OP_M64 | OP_MMX | OP_I64))
-	{
+    } else if( opnd & ( OP_R64 | OP_M64 | OP_MMX | OP_I64 ) ) {
 #else
-	}
-	else if (opnd & (OP_M64 | OP_MMX))
-	{
+    } else if( opnd & ( OP_M64 | OP_MMX ) ) {
 #endif
 		return(8);
 		//    } else if( opnd & ( OP_I | OP_I48 ) ) {
-	}
-	else if (opnd & (OP_I48 | OP_M48))
-	{
+    } else if( opnd & ( OP_I48 | OP_M48 ) ) {
 		return(6);
-	}
-	else if (opnd & (OP_STI | OP_M80))
-	{
+    } else if( opnd & ( OP_STI | OP_M80 ) ) {
 		return(10);
-	}
-	else if (opnd & (OP_XMM | OP_M128))
-	{
+    } else if( opnd & ( OP_XMM | OP_M128 ) ) {
 		return(16);
 #if AVXSUPP
-	}
-	else if (opnd & (OP_K | OP_M64))
-	{
+    }else if (opnd & (OP_K | OP_M64)) {
 		return(8);
-	}
-	else if (opnd & (OP_YMM | OP_M256))
-	{
+    }else if (opnd & (OP_YMM | OP_M256)) {
 		return(32);
-	}
-	else if (opnd & (OP_ZMM | OP_M512))
-	{
+    }else if (opnd & (OP_ZMM | OP_M512)) {
 		return(64);
 #endif
-	}
-	else if (opnd & OP_RSPEC)
-	{
+    } else if( opnd & OP_RSPEC ) {
 #if AMD64_SUPPORT
 		return((CodeInfo->Ofssize == USE64) ? 8 : 4);
 #else
@@ -521,18 +479,15 @@ static int comp_mem16(int reg1, int reg2)
 - call by set_rm_sib() only;
 */
 {
-	switch (reg1)
-	{
+    switch( reg1 ) {
 		case T_BX:
-			switch (reg2)
-			{
+        switch( reg2 ) {
 				case T_SI: return(RM_BX_SI); /* 00 */
 				case T_DI: return(RM_BX_DI); /* 01 */
 			}
 			break;
 		case T_BP:
-			switch (reg2)
-			{
+        switch( reg2 ) {
 				case T_SI: return(RM_BP_SI); /* 02 */
 				case T_DI: return(RM_BP_DI); /* 03 */
 			}
@@ -562,30 +517,22 @@ static void check_assume(struct code_info *CodeInfo, const struct asym *sym, enu
 	DebugMsg1(("check_assume(%s): calling SetFixupFrame(%s, FALSE)\n", sym ? sym->name : "NULL", assume ? assume->name : "NULL"));
 	SetFixupFrame(assume, FALSE);
 
-	if (reg == ASSUME_NOTHING)
-	{
-		if (sym)
-		{
+    if( reg == ASSUME_NOTHING ) {
+        if ( sym ) {
 			//if( sym->state != SYM_EXTERNAL && sym->state != SYM_STACK ) {
 			/* v1.95: condition changed. Now there's an error msg only if
 			 * the symbol has an explicite segment.
 			 */
-			if (sym->segment != NULL)
-			{
+            if( sym->segment != NULL ) {
 				DebugMsg1(("check_assume: no segment register available to access label %s\n", sym->name));
 				EmitErr(CANNOT_ACCESS_LABEL_THROUGH_SEGMENT_REGISTERS, sym->name);
-			}
-			else
+            } else
 				CodeInfo->prefix.RegOverride = default_reg;
-		}
-		else
-		{
+        } else {
 			DebugMsg1(("check_assume: no segment register available to access seg-label %s\n", SegOverride->name));
 			EmitErr(CANNOT_ACCESS_LABEL_THROUGH_SEGMENT_REGISTERS, SegOverride->name);
 		}
-	}
-	else if (default_reg != EMPTY)
-	{
+    } else if( default_reg != EMPTY ) {
 		CodeInfo->prefix.RegOverride = reg;
 	}
 }
@@ -608,15 +555,13 @@ static void seg_override(struct code_info *CodeInfo, int seg_reg, const struct a
 		CodeInfo->pinstr->allowed_prefix == AP_REPxx)
 		return;
 
-	if (CodeInfo->token == T_LEA)
-	{
+    if( CodeInfo->token == T_LEA ) {
 		CodeInfo->prefix.RegOverride = EMPTY; /* skip segment override */
 		SetFixupFrame(sym, FALSE);
 		return;
 	}
 
-	switch (seg_reg)
-	{
+    switch( seg_reg ) {
 		//case T_SS: /* doesn't happen */
 		case T_BP:
 		case T_EBP:
@@ -628,26 +573,19 @@ static void seg_override(struct code_info *CodeInfo, int seg_reg, const struct a
 			default_seg = ASSUME_DS;
 	}
 
-	if (CodeInfo->prefix.RegOverride != EMPTY)
-	{
+    if( CodeInfo->prefix.RegOverride != EMPTY ) {
 		assume = GetOverrideAssume(CodeInfo->prefix.RegOverride);
 		/* assume now holds assumed SEG/GRP symbol */
-		if (sym)
-		{
+        if ( sym ) {
 			DebugMsg1(("seg_override: sym=%s\n", sym->name));
 			SetFixupFrame(assume ? assume : sym, FALSE);
-		}
-		else if (direct)
-		{
+        } else if ( direct ) {
 			/* no label attached (DS:[0]). No fixup is to be created! */
-			if (assume)
-			{
+            if ( assume ) {
 				DebugMsg1(("seg_override, direct addressing: prefix.adrsiz will be set, assume=%s CI->ofssize=%u\n", assume->name, CodeInfo->Ofssize));
 				CodeInfo->prefix.adrsiz = ADDRSIZE(CodeInfo->Ofssize, GetSymOfssize(assume));
 				//DebugMsg1(("seg_override: CI->prefix.adrsiz=%u\n", CodeInfo->prefix.adrsiz ));
-			}
-			else
-			{
+            } else {
 				/* v2.01: if -Zm, then use current CS offset size.
 				 * This isn't how Masm v6 does it, but it matches Masm v5.
 				 */
@@ -657,19 +595,15 @@ static void seg_override(struct code_info *CodeInfo, int seg_reg, const struct a
 					CodeInfo->prefix.adrsiz = ADDRSIZE(CodeInfo->Ofssize, ModuleInfo.defOfssize);
 			}
 		}
-	}
-	else
-	{
+    } else {
 		if (sym || SegOverride)
 			check_assume(CodeInfo, sym, default_seg);
-		if (sym == NULL && SegOverride)
-		{
+        if ( sym == NULL && SegOverride ) {
 			CodeInfo->prefix.adrsiz = ADDRSIZE(CodeInfo->Ofssize, GetSymOfssize(SegOverride));
 		}
 	}
 
-	if (CodeInfo->prefix.RegOverride == default_seg)
-	{
+    if( CodeInfo->prefix.RegOverride == default_seg ) {
 		CodeInfo->prefix.RegOverride = EMPTY;
 	}
 }
@@ -732,27 +666,22 @@ static ret_code set_rm_sib(struct code_info *CodeInfo, unsigned CurrOpnd, char s
 	bit3_idx = 0;
 	rex = 0;
 #endif
-	if (CodeInfo->opnd[CurrOpnd].InsFixup != NULL)
-	{ /* symbolic displacement given? */
+  if (CodeInfo->opnd[CurrOpnd].InsFixup != NULL) { /* symbolic displacement given? */
 		mod_field = MOD_10;
 	}
-	else if ((CodeInfo->opnd[CurrOpnd].data32l == 0) || (base == T_RIP))
-	{ /* no displacement (or 0) */
+  else if ((CodeInfo->opnd[CurrOpnd].data32l == 0) || (base == T_RIP)) { /* no displacement (or 0) */
 		mod_field = MOD_00;
 	}
 	else if ((CodeInfo->opnd[CurrOpnd].data32l > SCHAR_MAX)
-			 || (CodeInfo->opnd[CurrOpnd].data32l < SCHAR_MIN))
-	{
+           || (CodeInfo->opnd[CurrOpnd].data32l < SCHAR_MIN)) {
 		mod_field = MOD_10; /* full size displacement */
 	}
-	else
-	{
+  else {
 		mod_field = MOD_01; /* byte size displacement */
 	}
 	/* In the case of suppressed base register it has to be awapped with index v2.38 */
 	temp = GetValueSp(base);                                 /* get value from SpecialTable */
-	if (temp == OP_XMM || temp == OP_YMM || temp == OP_ZMM)
-	{   /* base can be only GP register*/
+  if (temp == OP_XMM || temp == OP_YMM || temp == OP_ZMM){   /* base can be only GP register*/
 		temp = index;                                            /* swap index with base */
 		index = base;
 		base = temp;
@@ -763,8 +692,7 @@ static ret_code set_rm_sib(struct code_info *CodeInfo, unsigned CurrOpnd, char s
 		else                                                       /* temp contains register number from index */
 			CodeInfo->basereg = temp;                                /* use reg number from index */
 	}
-	if ((index == EMPTY) && (base == EMPTY))
-	{
+    if( ( index == EMPTY ) && ( base == EMPTY ) ) {
 		/* direct memory.
 		 * clear the rightmost 3 bits
 		 */
@@ -778,30 +706,22 @@ static ret_code set_rm_sib(struct code_info *CodeInfo, unsigned CurrOpnd, char s
 				  CodeInfo->Ofssize, CodeInfo->prefix.adrsiz, CodeInfo->opnd[CurrOpnd].data32l));
 		//if( !IS_ADDR32( CodeInfo ) ) {
 		if ((CodeInfo->Ofssize == USE16 && CodeInfo->prefix.adrsiz == 0) ||
-			(CodeInfo->Ofssize == USE32 && CodeInfo->prefix.adrsiz == 1))
-		{
-			if (!InWordRange(CodeInfo->opnd[CurrOpnd].data32l))
-			{
+            ( CodeInfo->Ofssize == USE32 && CodeInfo->prefix.adrsiz == 1 )) {
+            if( !InWordRange( CodeInfo->opnd[CurrOpnd].data32l ) ) {
 				/* expect 16-bit but got 32-bit address */
 				DebugMsg1(("set_rm_sib: error, Ofssize=%u, adrsize=%u, data=%" I32_SPEC "X\n",
 						  CodeInfo->Ofssize, CodeInfo->prefix.adrsiz, CodeInfo->opnd[CurrOpnd].data32l));
 				return(EmitError(MAGNITUDE_OF_OFFSET_EXCEEDS_16BIT));
 			}
 			rm_field = RM_D16; /* D16=110b */
-		}
-		else
-		{
+        } else {
 			rm_field = RM_D32; /* D32=101b */
 #if AMD64_SUPPORT
-			if (CodeInfo->Ofssize == USE64)
-			{
-				if (CodeInfo->opnd[CurrOpnd].InsFixup == NULL)
-				{
+	    if ( CodeInfo->Ofssize == USE64 ) {
+		   if ( CodeInfo->opnd[CurrOpnd].InsFixup == NULL ) {				
 					rm_field = RM_SIB;    /* 64-bit non-RIP direct addressing */
 					CodeInfo->sib = 0x25; /* IIIBBB, base=101b, index=100b */
-				}
-				else if (CodeInfo->opnd[CurrOpnd].InsFixup->type == FIX_OFF32)
-				{
+		  } else if ( CodeInfo->opnd[CurrOpnd].InsFixup->type == FIX_OFF32 ) {
 					/* added v2.42 */
 					CodeInfo->opnd[CurrOpnd].InsFixup->type = FIX_RELOFF32;
 				}
@@ -809,15 +729,12 @@ static ret_code set_rm_sib(struct code_info *CodeInfo, unsigned CurrOpnd, char s
 #endif
 		}
 		DebugMsg1(("set_rm_sib, direct, CodeInfo->prefix.adrsiz=%u\n", CodeInfo->prefix.adrsiz));
-	}
-	else if ((index == EMPTY) && (base != EMPTY))
-	{
+    } else if( ( index == EMPTY ) && ( base != EMPTY ) ) {
 		/* for SI, DI and BX: default is DS:[],
 		 * DS: segment override is not needed
 		 * for BP: default is SS:[], SS: segment override is not needed
 		 */
-		switch (base)
-		{
+        switch( base ) {
 			case T_SI:
 				rm_field = RM_SI; /* 4 */
 				break;
@@ -826,8 +743,7 @@ static ret_code set_rm_sib(struct code_info *CodeInfo, unsigned CurrOpnd, char s
 				break;
 			case T_BP:
 				rm_field = RM_BP; /* 6 */
-				if (mod_field == MOD_00)
-				{
+            if( mod_field == MOD_00 ) {
 					if (base != T_RIP) mod_field = MOD_01;
 				}
 				break;
@@ -844,14 +760,11 @@ static ret_code set_rm_sib(struct code_info *CodeInfo, unsigned CurrOpnd, char s
 #endif
 				rm_field = base_reg;
 				DebugMsg1(("set_rm_sib: base_reg is %u\n", base_reg));
-				if (base_reg == 4)
-				{
+            if ( base_reg == 4 ) {
 					/* 4 is RSP/ESP or R12/R12D, which must use SIB encoding.
 					 * SSIIIBBB, ss = 00, index = 100b ( no index ), base = 100b ( ESP ) */
 					CodeInfo->sib = 0x24;
-				}
-				else if (base_reg == 5 && mod_field == MOD_00)
-				{
+            } else if ( base_reg == 5 && mod_field == MOD_00 ) {
 					/* 5 is [E|R]BP or R13[D]. Needs displacement */
 				   // 5 is also RIP register but doesn't need MOD_01
 					if (base != T_RIP)  //added by habran
@@ -869,9 +782,7 @@ static ret_code set_rm_sib(struct code_info *CodeInfo, unsigned CurrOpnd, char s
 		DebugMsg1(("set_rm_sib, indirect with base, rm_field=%X\n", rm_field));
 #endif
 		seg_override(CodeInfo, base, sym, FALSE);
-	}
-	else if ((index != EMPTY) && (base == EMPTY))
-	{
+    } else if( ( index != EMPTY ) && ( base == EMPTY ) ) {
 		idx_reg = GetRegNo(index);
 #if AVXSUPP
 		CodeInfo->indextype = GetValueSp(index);
@@ -891,9 +802,7 @@ static ret_code set_rm_sib(struct code_info *CodeInfo, unsigned CurrOpnd, char s
 #endif
 		/* default is DS:[], DS: segment override is not needed */
 		seg_override(CodeInfo, T_DS, sym, FALSE);
-	}
-	else
-	{
+    } else {
 		/* base != EMPTY && index != EMPTY */
 		base_reg = GetRegNo(base);
 		idx_reg = GetRegNo(index);
@@ -905,12 +814,10 @@ static ret_code set_rm_sib(struct code_info *CodeInfo, unsigned CurrOpnd, char s
 		base_reg &= BIT_012;
 		idx_reg &= BIT_012;
 #endif
-		if ((GetSflagsSp(base) & GetSflagsSp(index) & SFR_SIZMSK) == 0)
-		{
+        if ( ( GetSflagsSp( base ) & GetSflagsSp( index ) & SFR_SIZMSK ) == 0 ) {
 #if AVXSUPP
 			CodeInfo->indextype = GetValueSp(index);
-			if (CodeInfo->indextype == OP_XMM || CodeInfo->indextype == OP_YMM || CodeInfo->indextype == OP_ZMM)
-			{
+           if (CodeInfo->indextype == OP_XMM || CodeInfo->indextype == OP_YMM || CodeInfo->indextype == OP_ZMM){
 				;
 			}
 			else
@@ -918,8 +825,7 @@ static ret_code set_rm_sib(struct code_info *CodeInfo, unsigned CurrOpnd, char s
 				return(EmitError(CANNOT_MIX_16_AND_32_BIT_REGISTERS));
 		}
 
-		switch (index)
-		{
+        switch( index ) {
 			case T_BX:
 			case T_BP:
 				if ((temp = comp_mem16(index, base)) == ERROR)
@@ -942,10 +848,8 @@ static ret_code set_rm_sib(struct code_info *CodeInfo, unsigned CurrOpnd, char s
 				//EmitErr( CANNOT_BE_USED_AS_INDEX_REGISTER, ??? );
 				return(EmitError(INVALID_USE_OF_REGISTER));
 			default:
-				if (base_reg == 5)
-				{ /* v2.03: EBP/RBP/R13/R13D? */
-					if (mod_field == MOD_00)
-					{
+            if( base_reg == 5 ) { /* v2.03: EBP/RBP/R13/R13D? */
+                if( mod_field == MOD_00 ) {
 						if (base != T_RIP) mod_field = MOD_01;     //ADDED BY HABRAN
 					}
 				}
@@ -964,8 +868,7 @@ static ret_code set_rm_sib(struct code_info *CodeInfo, unsigned CurrOpnd, char s
 		DebugMsg1(("set_rm_sib, indirect, base+index: rm_field=%X\n", rm_field));
 #endif
 	}
-	if (CurrOpnd == OPND2)
-	{
+    if( CurrOpnd == OPND2 ) {
 		/* shift the register field to left by 3 bit */
 		if (base == T_RIP)      //added by habran
 			mod_field &= BIT_012;
@@ -976,9 +879,7 @@ static ret_code set_rm_sib(struct code_info *CodeInfo, unsigned CurrOpnd, char s
 		//CodeInfo->prefix.rex |= (rex >> 2 );
 		CodeInfo->prefix.rex |= ((rex >> 2) | (rex & REX_X) | ((rex & 1) << 2));
 #endif
-	}
-	else if (CurrOpnd == OPND1)
-	{
+    } else if( CurrOpnd == OPND1 ) {
 		if (base == T_RIP)     //added by habran
 			mod_field &= BIT_012;
 		CodeInfo->rm_byte = mod_field | rm_field;
@@ -1004,33 +905,26 @@ ret_code segm_override(const struct expr *opndx, struct code_info *CodeInfo)
 {
 	struct asym      *sym;
 
-	if (opndx->override != NULL)
-	{
-		if (opndx->override->token == T_REG)
-		{
+    if( opndx->override != NULL ) {
+        if( opndx->override->token == T_REG ) {
 			int temp = GetRegNo(opndx->override->tokval);
-			if (SegAssumeTable[temp].error)
-			{
+            if ( SegAssumeTable[temp].error ) {
 				DebugMsg(("segm_override: assume error, reg=%u\n", temp));
 				return(EmitError(USE_OF_REGISTER_ASSUMED_TO_ERROR));
 			}
 #if AMD64_SUPPORT
 			/* ES,CS,SS and DS overrides are invalid in 64-bit */
-			if (CodeInfo && CodeInfo->Ofssize == USE64 && temp < ASSUME_FS)
-			{
+            if ( CodeInfo && CodeInfo->Ofssize == USE64 && temp < ASSUME_FS ) {
 				return(EmitError(ILLEGAL_USE_OF_SEGMENT_REGISTER));
 			}
 #endif
 			sym = GetOverrideAssume(temp);
-			if (CodeInfo)
-			{
+            if ( CodeInfo ) {
 				/* hack: save the previous reg override value (needed for CMPS) */
 				LastRegOverride = CodeInfo->prefix.RegOverride;
 				CodeInfo->prefix.RegOverride = temp;
 			}
-		}
-		else
-		{
+        } else {
 			sym = SymSearch(opndx->override->string_ptr);
 		}
 		if (sym && (sym->state == SYM_GRP || sym->state == SYM_SEG))
@@ -1058,8 +952,7 @@ static ret_code idata_nofixup(struct code_info *CodeInfo, unsigned CurrOpnd, con
 	DebugMsg1(("idata_nofixup( CurrOpnd=%u ) enter [opnd kind=%u mem_type=%Xh value=%" I64_SPEC "X]\n", CurrOpnd, opndx->kind, opndx->mem_type, opndx->value64));
 
 	/* jmp/call/jxx/loop/jcxz/jecxz? */
-	if (IS_ANY_BRANCH(CodeInfo->token))
-	{
+    if( IS_ANY_BRANCH( CodeInfo->token ) ) {
 		return(process_branch(CodeInfo, CurrOpnd, opndx));
 	}
 	value = opndx->value;
@@ -1068,8 +961,7 @@ static ret_code idata_nofixup(struct code_info *CodeInfo, unsigned CurrOpnd, con
 #if AMD64_SUPPORT
 	/* 64bit immediates are restricted to MOV <reg>,<imm64>
 	*/
-	if (opndx->value64 > 0xFFFFFFFF && CodeInfo->token != T_MOV)
-	{ /* magnitude > 64 bits? */
+	if (opndx->value64 > 0xFFFFFFFF && CodeInfo->token != T_MOV) { /* magnitude > 64 bits? */
 		DebugMsg1(("idata_nofixup: error, hlvalue=%" I64_SPEC "X\n", opndx->hlvalue));
 		return(EmitConstError(opndx));
 	}
@@ -1088,8 +980,7 @@ static ret_code idata_nofixup(struct code_info *CodeInfo, unsigned CurrOpnd, con
 		CurrOpnd == OPND2 &&
 		(CodeInfo->opnd[OPND1].type & OP_R64) &&
 		(opndx->value64 > H_LONG_MAX || opndx->value64 < H_LONG_MIN ||
-		(opndx->explicit && (opndx->mem_type == MT_QWORD || opndx->mem_type == MT_SQWORD))))
-	{
+         (opndx->explicit && ( opndx->mem_type == MT_QWORD || opndx->mem_type == MT_SQWORD ) ) ) ) {
 		// CodeInfo->iswide = 1; /* has been set by first operand already */
 		CodeInfo->opnd[CurrOpnd].type = OP_I64;
 		CodeInfo->opnd[CurrOpnd].data32h = opndx->hvalue;
@@ -1108,16 +999,14 @@ static ret_code idata_nofixup(struct code_info *CodeInfo, unsigned CurrOpnd, con
 	 * signed and unsigned arguments (ADD, CMP, ... ).
 	 */
 
-	if (opndx->explicit)
-	{
+    if ( opndx->explicit ) {
 		/* size coercion for immediate value */
 		CodeInfo->const_size_fixed = TRUE;
 		size = SizeFromMemtype(opndx->mem_type,
 							   opndx->Ofssize,
 							   opndx->type);
 		/* don't check if size and value are compatible. */
-		switch (size)
-		{
+        switch ( size ) {
 			case 1: op_type = OP_I8;  break;
 			case 2: op_type = OP_I16; break;
 			case 4: op_type = OP_I32; break;
@@ -1125,9 +1014,7 @@ static ret_code idata_nofixup(struct code_info *CodeInfo, unsigned CurrOpnd, con
 				DebugMsg1(("idata_nofixup: invalid size %d for immediate operand\n", size));
 				return(EmitError(INVALID_INSTRUCTION_OPERANDS));
 		}
-	}
-	else
-	{
+    } else {
 		/* use true signed values for BYTE only! */
 		if ((int_8)value == value)
 			op_type = OP_I8;
@@ -1140,17 +1027,14 @@ static ret_code idata_nofixup(struct code_info *CodeInfo, unsigned CurrOpnd, con
 		//else if( value <= USHRT_MAX && value >= - USHRT_MAX )
 		else if (value <= USHRT_MAX && value >= 0L - USHRT_MAX)
 			op_type = OP_I16;
-		else
-		{
+        else {
 			op_type = OP_I32;
 		}
 	}
 
-	switch (CodeInfo->token)
-	{
+    switch ( CodeInfo->token ) {
 		case T_PUSH:
-			if (opndx->explicit == FALSE)
-			{
+        if ( opndx->explicit == FALSE ) {
 				if (CodeInfo->Ofssize > USE16 && op_type == OP_I16)
 					op_type = OP_I32;
 			}
@@ -1160,11 +1044,9 @@ static ret_code idata_nofixup(struct code_info *CodeInfo, unsigned CurrOpnd, con
 				CodeInfo->prefix.opsiz = OPSIZE32(CodeInfo);
 			break;
 		case T_PUSHW:
-			if (op_type != OP_I32)
-			{
+        if ( op_type != OP_I32 ) {
 				op_type = OP_I16;
-				if ((int_8)value == (int_16)value)
-				{
+            if( (int_8)value == (int_16)value ) {
 					op_type = OP_I8;
 				}
 			}
@@ -1179,8 +1061,7 @@ static ret_code idata_nofixup(struct code_info *CodeInfo, unsigned CurrOpnd, con
 	 * actually, it should only be set if immediate is second operand
 	 * ( and first operand is a memory ref with a size > 1 )
 	 */
-	if (CurrOpnd == OPND2)
-	{
+    if (CurrOpnd == OPND2){
 #if AVXSUPP
 		if (CodeInfo->mem_type == MT_ZMMWORD) CodeInfo->iswide = 1;
 		else
@@ -1216,33 +1097,24 @@ ret_code idata_fixup(struct code_info *CodeInfo, unsigned CurrOpnd, struct expr 
 	DebugMsg1(("idata_fixup( CurrOpnd=%u ) enter [opndx.kind=%u mem_type=%Xh, CodeInfo.mem_type=%Xh]\n", CurrOpnd, opndx->kind, opndx->mem_type, CodeInfo->mem_type));
 
 	/* jmp/call/jcc/loopcc/jxcxz? */
-	if (IS_ANY_BRANCH(CodeInfo->token))
-	{
+    if( IS_ANY_BRANCH( CodeInfo->token ) ) {
 		return(process_branch(CodeInfo, CurrOpnd, opndx));
 	}
 	CodeInfo->opnd[CurrOpnd].data32l = opndx->value;
 
-	if (opndx->Ofssize != USE_EMPTY)
-	{
+    if ( opndx->Ofssize != USE_EMPTY ) {
 		Ofssize = opndx->Ofssize;
-	}
-	else if ((opndx->sym->state == SYM_SEG)
+    } else if( ( opndx->sym->state == SYM_SEG )
 			 || (opndx->sym->state == SYM_GRP)
-			 || (opndx->instr == T_SEG))
-	{
+        || ( opndx->instr == T_SEG ) ) {
 		Ofssize = USE16;
-	}
-	else if (opndx->is_abs)
-	{  /* an (external) absolute symbol? */
+    } else if( opndx->is_abs ) {  /* an (external) absolute symbol? */
 		Ofssize = USE16;
-	}
-	else
-	{
+    } else {
 		Ofssize = GetSymOfssize(opndx->sym);
 	}
 
-	if (opndx->instr == T_SHORT)
-	{
+    if( opndx->instr == T_SHORT ) {
 		/* short works for branch instructions only */
 		return(EmitErr(INVALID_INSTRUCTION_OPERANDS));
 	}
@@ -1258,25 +1130,20 @@ ret_code idata_fixup(struct code_info *CodeInfo, unsigned CurrOpnd, struct expr 
 	 /* v2.06: added */
 	 /* v2.10: modified */
 	 //if ( opndx->explicit ) {
-	if (opndx->explicit && !opndx->is_abs)
-	{
+    if ( opndx->explicit && !opndx->is_abs ) {
 		CodeInfo->const_size_fixed = TRUE;
 		if (CodeInfo->mem_type == MT_EMPTY)
 			CodeInfo->mem_type = opndx->mem_type;
 	}
 	/* v2.03: don't ignore a "NEAR32 ptr" qualifier */
 	//if ( CodeInfo->mem_type == MT_EMPTY && CurrOpnd > OPND1 ) {
-	if (CodeInfo->mem_type == MT_EMPTY && CurrOpnd > OPND1 && opndx->Ofssize == USE_EMPTY)
-	{
+    if ( CodeInfo->mem_type == MT_EMPTY && CurrOpnd > OPND1 && opndx->Ofssize == USE_EMPTY ) {
 		size = OperandSize(CodeInfo->opnd[OPND1].type, CodeInfo);
 		/* may be a forward reference, so wait till pass 2 */
-		if (Parse_Pass > PASS_1 && opndx->instr != EMPTY)
-		{
-			switch (opndx->instr)
-			{
+        if( Parse_Pass > PASS_1 && opndx->instr != EMPTY ) {
+            switch ( opndx->instr ) {
 				case T_SEG: /* v2.04a: added */
-					if (size && (size < 2))
-					{
+                if( size && (size < 2 ) ) {
 						return(EmitErr(OPERANDS_MUST_BE_THE_SAME_SIZE, size, 2));
 					}
 					break;
@@ -1288,14 +1155,12 @@ ret_code idata_fixup(struct code_info *CodeInfo, unsigned CurrOpnd, struct expr 
 #if SECTIONRELSUPP
 				case T_SECTIONREL:
 #endif
-					if (size && (size < 2 || (Ofssize && size < 4)))
-					{
+                if( size && (size < 2 || ( Ofssize && size < 4 ))) {
 						return(EmitErr(OPERANDS_MUST_BE_THE_SAME_SIZE, size, (2 << Ofssize)));
 					}
 			}
 		}
-		switch (size)
-		{
+        switch ( size ) {
 			case 1:
 				/* v2.05: if () added */
 				if (opndx->is_abs || opndx->instr == T_LOW || opndx->instr == T_HIGH)
@@ -1319,8 +1184,7 @@ ret_code idata_fixup(struct code_info *CodeInfo, unsigned CurrOpnd, struct expr 
 				 */
 				 //case 8: CodeInfo->mem_type = MT_QWORD;break;
 				 /* v2.05a: added */
-				if (Ofssize == USE64)
-				{
+            if ( Ofssize == USE64 ) {
 					if (CodeInfo->token == T_MOV &&
 						(CodeInfo->opnd[OPND1].type & OP_R64))
 						CodeInfo->mem_type = MT_QWORD;
@@ -1332,28 +1196,18 @@ ret_code idata_fixup(struct code_info *CodeInfo, unsigned CurrOpnd, struct expr 
 #endif
 		}
 	}
-	if (CodeInfo->mem_type == MT_EMPTY)
-	{
-		if (opndx->is_abs)
-		{
+    if ( CodeInfo->mem_type == MT_EMPTY ) {
+        if( opndx->is_abs ) {
 			//if( opndx->mem_type != MT_EMPTY && opndx->mem_type != MT_ABS ) {
-			if (opndx->mem_type != MT_EMPTY)
-			{
+            if( opndx->mem_type != MT_EMPTY ) {
 				CodeInfo->mem_type = opndx->mem_type;
-			}
-			else if (CodeInfo->token == T_PUSHW)
-			{ /* v2.10: special handling PUSHW */
+            } else if ( CodeInfo->token == T_PUSHW ) { /* v2.10: special handling PUSHW */
 				CodeInfo->mem_type = MT_WORD;
-			}
-			else
-			{
+            } else {
 				CodeInfo->mem_type = (IS_OPER_32(CodeInfo) ? MT_DWORD : MT_WORD);
 			}
-		}
-		else
-		{
-			switch (CodeInfo->token)
-			{
+        } else {
+            switch ( CodeInfo->token ) {
 				case T_PUSHW:
 				case T_PUSHD:
 				case T_PUSH:
@@ -1361,10 +1215,8 @@ ret_code idata_fixup(struct code_info *CodeInfo, unsigned CurrOpnd, struct expr 
 					/* v2.02: don't assume BYTE if it is SEG/GRP */
 					//if ( opndx->mem_type == MT_EMPTY ) {
 					/* v2.07: added cases IMAGEREL and SECTIONREL */
-					if (opndx->mem_type == MT_EMPTY)
-					{
-						switch (opndx->instr)
-						{
+                if ( opndx->mem_type == MT_EMPTY  ) {
+                    switch( opndx->instr ) {
 							case EMPTY:
 							case T_LOW:
 							case T_HIGH:
@@ -1386,13 +1238,10 @@ ret_code idata_fixup(struct code_info *CodeInfo, unsigned CurrOpnd, struct expr 
 					if (opndx->mem_type == MT_FAR && (opndx->explicit == FALSE))
 						opndx->mem_type = MT_NEAR;
 					/* v2.04: curly brackets added */
-					if (CodeInfo->token == T_PUSHW)
-					{
+                if ( CodeInfo->token == T_PUSHW ) {
 						if (SizeFromMemtype(opndx->mem_type, Ofssize, opndx->type) < 2)
 							opndx->mem_type = MT_WORD;
-					}
-					else if (CodeInfo->token == T_PUSHD)
-					{
+                } else if ( CodeInfo->token == T_PUSHD ) {
 						if (SizeFromMemtype(opndx->mem_type, Ofssize, opndx->type) < 4)
 							opndx->mem_type = MT_DWORD;
 					}
@@ -1403,12 +1252,10 @@ ret_code idata_fixup(struct code_info *CodeInfo, unsigned CurrOpnd, struct expr 
 			if (opndx->mem_type != MT_EMPTY)
 				CodeInfo->mem_type = opndx->mem_type;
 			/* v2.04: assume BYTE size if symbol is undefined */
-			else if (opndx->sym->state == SYM_UNDEFINED)
-			{
+            else if ( opndx->sym->state == SYM_UNDEFINED ) {
 				CodeInfo->mem_type = MT_BYTE;
 				fixup_option = OPTJ_PUSH;
-			}
-			else
+            } else
 #if AMD64_SUPPORT
 				/* v2.06d: changed */
 				CodeInfo->mem_type = (Ofssize == USE64 ? MT_QWORD : Ofssize == USE32 ? MT_DWORD : MT_WORD);
@@ -1418,8 +1265,7 @@ ret_code idata_fixup(struct code_info *CodeInfo, unsigned CurrOpnd, struct expr 
 		}
 	}
 	size = SizeFromMemtype(CodeInfo->mem_type, Ofssize, NULL);
-	switch (size)
-	{
+    switch( size ) {
 		case 1:
 			CodeInfo->opnd[CurrOpnd].type = OP_I8;
 			CodeInfo->prefix.opsiz = FALSE; /* v2.10: reset opsize is not really a good idea - might have been set by previous operand */
@@ -1430,22 +1276,17 @@ ret_code idata_fixup(struct code_info *CodeInfo, unsigned CurrOpnd, struct expr 
 		case 8:
 			/* v2.05: do only assume size 8 if the constant won't fit in 4 bytes. */
 			if (opndx->value64 > H_LONG_MAX || opndx->value64 < H_LONG_MIN ||
-				(opndx->explicit && (opndx->mem_type & MT_SIZE_MASK) == 7))
-			{
+            (opndx->explicit && ( opndx->mem_type & MT_SIZE_MASK ) == 7 ) ) {
 				CodeInfo->opnd[CurrOpnd].type = OP_I64;
 				CodeInfo->opnd[CurrOpnd].data32h = opndx->hvalue;
 				//} else if ( Ofssize == USE64 ) { /* v2.11: assume 64-bit only for OFFSET or MOV r64, xxx */
-			}
-			else if (Ofssize == USE64 && (opndx->instr == T_OFFSET || (CodeInfo->token == T_MOV && (CodeInfo->opnd[OPND1].type & OP_R64))))
-			{
+        } else if ( Ofssize == USE64 && ( opndx->instr == T_OFFSET || ( CodeInfo->token == T_MOV && ( CodeInfo->opnd[OPND1].type & OP_R64 ) ) ) ) {
 				/* v2.06d: in 64-bit, ALWAYS set OP_I64, so "mov m64, ofs" will fail,
 				 * This was accepted in v2.05-v2.06c)
 				 */
 				CodeInfo->opnd[CurrOpnd].type = OP_I64;
 				CodeInfo->opnd[CurrOpnd].data32h = opndx->hvalue;
-			}
-			else
-			{
+        } else {
 				CodeInfo->opnd[CurrOpnd].type = OP_I32;
 			}
 			CodeInfo->prefix.opsiz = OPSIZE32(CodeInfo);
@@ -1460,27 +1301,19 @@ ret_code idata_fixup(struct code_info *CodeInfo, unsigned CurrOpnd, struct expr 
 
 	/* set fixup_type */
 
-	if (opndx->instr == T_SEG)
-	{
+    if( opndx->instr == T_SEG ) {
 		fixup_type = FIX_SEG;
-	}
-	else if (CodeInfo->mem_type == MT_BYTE)
-	{
+    } else if( CodeInfo->mem_type == MT_BYTE ) {
 		DebugMsg1(("idata_fixup, mem_type=BYTE\n"));
-		if (opndx->instr == T_HIGH)
-		{
+        if ( opndx->instr == T_HIGH ) {
 			DebugMsg1(("idata_fixup, FIX_HIBYTE\n"));
 			fixup_type = FIX_HIBYTE;
-		}
-		else
-		{
+        } else {
 			DebugMsg1(("idata_fixup, FIX_OFF8\n"));
 			fixup_type = FIX_OFF8;
 		}
 #if 0
-	}
-	else if (CodeInfo->mem_type == MT_FAR)
-	{
+    } else if( CodeInfo->mem_type == MT_FAR ) {
 		/* v2.04: to be tested. this code is most likely obsolete.
 		 * There's never a PTR16|PTR32 fixup here. Far JMP/CALL are handled
 		 * elsewhere, and data items also.
@@ -1492,9 +1325,7 @@ ret_code idata_fixup(struct code_info *CodeInfo, unsigned CurrOpnd, struct expr 
 		if (opndx->Ofssize != USE_EMPTY)
 			CodeInfo->Ofssize = opndx->Ofssize;
 #endif
-	}
-	else if (IS_OPER_32(CodeInfo))
-	{
+    } else if( IS_OPER_32( CodeInfo ) ) {
 #if AMD64_SUPPORT
 		/* v2.06: changed */
 		//if ( Ofssize == USE64 && CodeInfo->mem_type == MT_QWORD )
@@ -1507,8 +1338,7 @@ ret_code idata_fixup(struct code_info *CodeInfo, unsigned CurrOpnd, struct expr 
 			/* v2.04: changed, no longer depends on OfsSize */
 			/* v2.05a: changed, so size==8 won't get a FIX_OFF16 type */
 			//if ( size == 4 )
-			if (size >= 4 && opndx->instr != T_LOWWORD)
-			{
+            if ( size >= 4 && opndx->instr != T_LOWWORD ) {
 				/* v2.06: added branch for PTR16 fixup.
 				 * it's only done if type coercion is FAR (Masm-compat)
 				 */
@@ -1516,12 +1346,9 @@ ret_code idata_fixup(struct code_info *CodeInfo, unsigned CurrOpnd, struct expr 
 					fixup_type = FIX_PTR16;
 				else
 					fixup_type = FIX_OFF32;
-			}
-			else
+            } else
 				fixup_type = FIX_OFF16;
-	}
-	else
-	{
+    } else {
 		/* v2.04: changed, no longer depends on OfsSize */
 		//if ( CodeInfo->mem_type == MT_DWORD ) {
 			/* fixme !!!! warning
@@ -1589,17 +1416,13 @@ static void SetPtrMemtype(struct code_info *CodeInfo, struct expr *opndx)
 
 	/* v2.10: the "explicit" condition is now handled FIRST */
 #if 1 /* v2.0: handle PF16 ptr [ebx], which didn't work in v1.96 */
-	if (opndx->explicit && opndx->type)
-	{
+    if ( opndx->explicit && opndx->type ) {
 		size = opndx->type->total_size;
 		CodeInfo->isfar = opndx->type->isfar;
-	}
-	else
+    } else
 #endif
-		if (sym)
-		{
-			if (sym->type)
-			{
+    if ( sym ) {
+        if ( sym->type ) {
 				size = sym->type->total_size;
 				CodeInfo->isfar = sym->type->isfar;
 
@@ -1607,24 +1430,17 @@ static void SetPtrMemtype(struct code_info *CodeInfo, struct expr *opndx)
 				 since they can be either NEAR32 or FAR16 */
 				if (size == 4 && sym->type->Ofssize != CodeInfo->Ofssize)
 					opndx->Ofssize = sym->type->Ofssize;
-			}
-			else if (sym->mem_type == MT_PTR)
-			{
+        } else if ( sym->mem_type == MT_PTR ) {
 				size = SizeFromMemtype(sym->isfar ? MT_FAR : MT_NEAR, sym->Ofssize, NULL);
 				CodeInfo->isfar = sym->isfar;
-			}
-			else
-			{
+        } else  {
 				if (sym->isarray)
 					size = sym->total_size / sym->total_length;
 				else
 					size = sym->total_size;
 			}
-		}
-		else
-		{
-			if (SIZE_DATAPTR & (1 << ModuleInfo.model))
-			{
+    } else {
+        if ( SIZE_DATAPTR & ( 1 << ModuleInfo.model ) ) {
 				DebugMsg1(("SetPtrMemtype: model with FAR data pointers\n"));
 				size = 2;
 			}
@@ -1654,8 +1470,7 @@ static void Set_Memtype(struct code_info *CodeInfo, enum memtype mem_type)
 
 	CodeInfo->mem_type = mem_type;
 
-	if (CodeInfo->Ofssize > USE16)
-	{
+    if( CodeInfo->Ofssize > USE16 ) {
 		/* if we are in use32 mode, we have to add OPSIZ prefix for
 		 * most of the 386 instructions when operand has type WORD.
 		 * Exceptions ( MOVSX and MOVZX ) are handled in check_size().
@@ -1671,10 +1486,8 @@ static void Set_Memtype(struct code_info *CodeInfo, enum memtype mem_type)
 		 /* v2.06: with AVX, SSE tokens may exist twice, one
 		  * for "legacy", the other for VEX encoding!
 		  */
-		else if (IS_MEMTYPE_SIZ(mem_type, sizeof(uint_64)))
-		{
-			switch (CodeInfo->token)
-			{
+        else if ( IS_MEMTYPE_SIZ( mem_type, sizeof( uint_64 ) ) ) {
+            switch( CodeInfo->token ) {
 				case T_PUSH: /* for PUSH/POP, REX_W isn't needed (no 32-bit variants in 64-bit mode) */
 				case T_POP:
 				case T_CMPXCHG8B:
@@ -1689,8 +1502,7 @@ static void Set_Memtype(struct code_info *CodeInfo, enum memtype mem_type)
 					/* don't set REX for opcodes that accept memory operands
 					 * of any size.
 					 */
-					if (opnd_clstab[CodeInfo->pinstr->opclsidx].opnd_type[OPND1] == OP_M_ANY)
-					{
+                if ( opnd_clstab[CodeInfo->pinstr->opclsidx].opnd_type[OPND1] == OP_M_ANY ) {
 						//printf( "Set_Memtype: OP_M_ANY detected, file=%s, instr=%s\n", CurrFName[ASM], GetResWName( CodeInfo->token, NULL ) );
 						break;
 					}
@@ -1698,10 +1510,8 @@ static void Set_Memtype(struct code_info *CodeInfo, enum memtype mem_type)
 					if (CodeInfo->pinstr->cpu & P_FPU_MASK)
 						break;
 					/* don't set REX for - most - MMX/SSE opcodes */
-					if (CodeInfo->pinstr->cpu & P_EXT_MASK)
-					{
-						switch (CodeInfo->token)
-						{
+                if ( CodeInfo->pinstr->cpu & P_EXT_MASK ) {
+                    switch ( CodeInfo->token ) {
 							/* [V]CMPSD and [V]MOVSD are also candidates,
 							 * but currently they are handled in HandleStringInstructions()
 							 */
@@ -1731,17 +1541,13 @@ static void Set_Memtype(struct code_info *CodeInfo, enum memtype mem_type)
 
 		/* v2.05: IS_MEM_TYPE() doesn't work with MT_REALx */
 		//} else if( CodeInfo->Ofssize == USE16 && ( IS_MEM_TYPE( mem_type, DWORD ) ) ) {
-	}
-	else
-	{
-		if (IS_MEMTYPE_SIZ(mem_type, sizeof(uint_32)))
-		{
+    } else {
+        if( IS_MEMTYPE_SIZ( mem_type, sizeof(uint_32) ) ) {
 			/* in 16bit mode, a DWORD memory access usually requires an OPSIZ
 			 * prefix. A few instructions, which access m16:16 operands,
 			 * are exceptions.
 			 */
-			switch (CodeInfo->token)
-			{
+            switch( CodeInfo->token ) {
 				case T_LDS:
 				case T_LES:
 				case T_LFS:
@@ -1760,17 +1566,12 @@ static void Set_Memtype(struct code_info *CodeInfo, enum memtype mem_type)
 		/* v2.06: added because in v2.05, 64-bit memory operands were
 		 * accepted in 16-bit code
 		 */
-		else if (IS_MEMTYPE_SIZ(mem_type, sizeof(uint_64)))
-		{
-			if (opnd_clstab[CodeInfo->pinstr->opclsidx].opnd_type[OPND1] == OP_M_ANY)
-			{
+        else if ( IS_MEMTYPE_SIZ( mem_type, sizeof(uint_64) ) ) {
+            if ( opnd_clstab[CodeInfo->pinstr->opclsidx].opnd_type[OPND1] == OP_M_ANY ) {
 				//printf( "Set_Memtype: OP_M_ANY detected, file=%s, instr=%s\n", CurrFName[ASM], GetResWName( CodeInfo->token, NULL ) );
-			}
-			else if (CodeInfo->pinstr->cpu & (P_FPU_MASK | P_EXT_MASK))
-			{
+            } else if ( CodeInfo->pinstr->cpu & ( P_FPU_MASK | P_EXT_MASK ) ) {
 				;
-			}
-			else if (CodeInfo->token != T_CMPXCHG8B)
+            } else if ( CodeInfo->token != T_CMPXCHG8B )
 				/* setting REX.W will cause an error in codegen */
 				CodeInfo->prefix.rex |= REX_W;
 		}
@@ -1820,8 +1621,7 @@ static ret_code memory_operand(struct code_info *CodeInfo, unsigned CurrOpnd, st
 	//if ( ( opndx->mem_type & MT_SPECIAL_MASK ) == MT_ADDRESS && opndx->instr == EMPTY )
 	if (opndx->mem_type == MT_PTR)
 		SetPtrMemtype(CodeInfo, opndx);
-	else if ((opndx->mem_type & MT_SPECIAL_MASK) == MT_ADDRESS)
-	{
+    else if ( ( opndx->mem_type & MT_SPECIAL_MASK ) == MT_ADDRESS ) {
 		int size;
 		if (opndx->Ofssize == USE_EMPTY && sym)
 			opndx->Ofssize = GetSymOfssize(sym);
@@ -1832,8 +1632,7 @@ static ret_code memory_operand(struct code_info *CodeInfo, unsigned CurrOpnd, st
 	}
 
 	Set_Memtype(CodeInfo, opndx->mem_type);
-	if (opndx->mbr != NULL)
-	{
+    if( opndx->mbr != NULL ) {
 		/* if the struct field is just another struct, use it's total size
 		 * to set CodeInfo->mem_type.
 		 */
@@ -1841,13 +1640,11 @@ static ret_code memory_operand(struct code_info *CodeInfo, unsigned CurrOpnd, st
 		 /* v2: don't overwrite opndx->mem_type,
 		  *    testcase: cmp (dword ptr <struct_field>), 0
 		  */
-		if (opndx->mbr->mem_type == MT_TYPE && opndx->mem_type == MT_EMPTY)
-		{
+        if ( opndx->mbr->mem_type == MT_TYPE && opndx->mem_type == MT_EMPTY ) {
 			enum memtype mem_type;
 			DebugMsg1(("memory_operand: mbr %s has mem_type MT_TYPE, total_size=%u\n", opndx->mbr->name, opndx->mbr->total_size));
 #if AVXSUPP
-			if (CodeInfo->token == T_VMOVSS)
-			{       //MemtypeFromSize returns OP_M128
+            if (CodeInfo->token == T_VMOVSS){       //MemtypeFromSize returns OP_M128
 				mem_type = MT_DWORD;                  //but we need MT_DWORD ;habran
 				Set_Memtype(CodeInfo, mem_type);
 			}
@@ -1864,8 +1661,7 @@ static ret_code memory_operand(struct code_info *CodeInfo, unsigned CurrOpnd, st
 	}
 
 	/* instruction-specific handling */
-	switch (CodeInfo->token)
-	{
+    switch ( CodeInfo->token ) {
 		case T_JMP:
 		case T_CALL:
 			/* the 2 branch instructions are peculiar because they
@@ -1875,12 +1671,10 @@ static ret_code memory_operand(struct code_info *CodeInfo, unsigned CurrOpnd, st
 			  * For memory operands, expressions of type MT_NEAR/MT_FAR are
 			  * call [bx+<code_label>]
 			  */
-			if (CodeInfo->mem_type == MT_EMPTY)
-			{
+        if ( CodeInfo->mem_type == MT_EMPTY ) {
 				/* with -Zm, no size needed for indirect CALL/JMP */
 				if (ModuleInfo.m510 == FALSE &&
-					(Parse_Pass > PASS_1 && opndx->sym == NULL))
-				{
+                ( Parse_Pass > PASS_1 && opndx->sym == NULL ) ) {
 					DebugMsg1(("memory_operand, JMP/CALL: CodeInfo->memtype=empty, instruction operand must have size\n"));
 					return(EmitError(INSTRUCTION_OPERAND_MUST_HAVE_SIZE));
 				}
@@ -1897,8 +1691,7 @@ static ret_code memory_operand(struct code_info *CodeInfo, unsigned CurrOpnd, st
 #if AMD64_SUPPORT
 				&& (CodeInfo->Ofssize != USE64)
 #endif
-				)
-			{
+        ) {
 				/* CALL/JMP possible for WORD/DWORD/FWORD memory operands only */
 				DebugMsg1(("memory_operand: invalid operand, size=%u\n", j));
 				return(EmitError(INVALID_OPERAND_SIZE));
@@ -1910,26 +1703,22 @@ static ret_code memory_operand(struct code_info *CodeInfo, unsigned CurrOpnd, st
 #endif
 				(CodeInfo->mem_type == MT_DWORD &&
 				((CodeInfo->Ofssize == USE16 && opndx->Ofssize != USE32) ||
-				(CodeInfo->Ofssize == USE32 && opndx->Ofssize == USE16))))
-			{
+               ( CodeInfo->Ofssize == USE32 && opndx->Ofssize == USE16 )))) {
 				CodeInfo->isfar = TRUE;
 			}
 			DebugMsg1(("memory_operand: JMP/CALL, CodeInfo->far=%u\n", CodeInfo->isfar));
 			break;
 	}
 
-	if ((CodeInfo->mem_type & MT_SPECIAL) == 0)
-	{
+    if ( ( CodeInfo->mem_type & MT_SPECIAL) == 0 ) {
 #if AVXSUPP
 		if ((CodeInfo->mem_type & 0x3f) == MT_YMMWORD)
 			CodeInfo->opnd[CurrOpnd].type = OP_M256;
 		else if ((CodeInfo->mem_type & 0x3f) == MT_ZMMWORD)
 			CodeInfo->opnd[CurrOpnd].type = OP_M512;
-		else
-		{
+        else {
 #endif
-			switch (CodeInfo->mem_type & MT_SIZE_MASK)
-			{
+          switch (CodeInfo->mem_type & MT_SIZE_MASK) {
 				/* size is encoded 0-based */
 				case  MT_BYTE:    CodeInfo->opnd[CurrOpnd].type = OP_M08;  break;
 				case  MT_WORD:    CodeInfo->opnd[CurrOpnd].type = OP_M16;  break;
@@ -1951,24 +1740,19 @@ static ret_code memory_operand(struct code_info *CodeInfo, unsigned CurrOpnd, st
 		if (CodeInfo->opnd_type[CurrOpnd] & (OP_M16 | OP_M32 | OP_M64))
 			CodeInfo->iswide = 1;
 #endif
-	}
-	else if (CodeInfo->mem_type == MT_EMPTY)
-	{
+    } else if ( CodeInfo->mem_type == MT_EMPTY ) {
 		/* v2.05: added */
-		switch (CodeInfo->token)
-		{
+        switch ( CodeInfo->token ) {
 			case T_INC:
 			case T_DEC:
 				/* Uasm v1.94-v2.04 accepted unsized operand for INC/DEC */
-				if (opndx->sym == NULL)
-				{
+            if ( opndx->sym == NULL ) {
 					return(EmitError(INSTRUCTION_OPERAND_MUST_HAVE_SIZE));
 				}
 				break;
 			case T_PUSH:
 			case T_POP:
-				if (opndx->mem_type == MT_TYPE)
-				{
+            if ( opndx->mem_type == MT_TYPE ) {
 					return(EmitError(INVALID_INSTRUCTION_OPERANDS));
 				}
 				break;
@@ -1977,8 +1761,7 @@ static ret_code memory_operand(struct code_info *CodeInfo, unsigned CurrOpnd, st
 	base = (opndx->base_reg ? opndx->base_reg->tokval : EMPTY);
 	index = (opndx->idx_reg ? opndx->idx_reg->tokval : EMPTY);
 	/* swap registers if base is AVX register, v2.38*/
-	if (GetValueSp(base) == OP_XMM || GetValueSp(base) == OP_YMM || GetValueSp(base) == OP_ZMM)
-	{
+    if (GetValueSp(base) == OP_XMM || GetValueSp(base) == OP_YMM || GetValueSp(base) == OP_ZMM){
 		temp = base;
 		base = index;
 		index = temp;
@@ -1989,24 +1772,18 @@ static ret_code memory_operand(struct code_info *CodeInfo, unsigned CurrOpnd, st
 	if (index != EMPTY) CodeInfo->indexreg = GetRegNo(index);
 	if (base != EMPTY)  CodeInfo->basereg = GetRegNo(base);
 	/* use base + index from here - don't use opndx-> base_reg/idx_reg! */
-	if (index != EMPTY && base == EMPTY && swapped)
-	{
+      if (index != EMPTY && base == EMPTY && swapped){
 		base = 0x87;     /* VEX index with omitted base EG: [+ymm1] */
 		CodeInfo->basereg = GetRegNo(base);
 		CodeInfo->indexreg = GetRegNo(index);
 	}
 #if 0 /* v2.10: moved to expreval.c */
-	if (sym && sym->state == SYM_STACK)
-	{
-		if (base != EMPTY)
-		{
-			if (index != EMPTY)
-			{
+    if ( sym && sym->state == SYM_STACK ) {
+        if( base != EMPTY ) {
+            if( index != EMPTY ) {
 				/* no free index register */
 				return(EmitError(MULTIPLE_INDEX_REGISTERS_NOT_ALLOWED));
-			}
-			else
-			{
+            } else {
 				index = base;
 			}
 		}
@@ -2016,21 +1793,18 @@ static ret_code memory_operand(struct code_info *CodeInfo, unsigned CurrOpnd, st
 
 	/* check for base registers */
 
-	if (base != EMPTY)
-	{
+    if ( base != EMPTY ) {
 		if (((GetValueSp(base) & OP_R32) && CodeInfo->Ofssize == USE32) ||
 #if AMD64_SUPPORT
 		((GetValueSp(base) & OP_R64) && CodeInfo->Ofssize == USE64) ||
 #endif
 			((GetValueSp(base) & OP_R16) && CodeInfo->Ofssize == USE16))
 			CodeInfo->prefix.adrsiz = FALSE;
-		else
-		{
+        else {
 			CodeInfo->prefix.adrsiz = TRUE;
 #if AMD64_SUPPORT
 			/* 16bit addressing modes don't exist in long mode */
-			if ((GetValueSp(base) & OP_R16) && CodeInfo->Ofssize == USE64)
-			{
+            if ( ( GetValueSp( base ) & OP_R16) && CodeInfo->Ofssize == USE64 ) {
 				return(EmitError(INVALID_ADDRESSING_MODE_WITH_CURRENT_CPU_SETTING));
 			}
 #endif
@@ -2039,18 +1813,14 @@ static ret_code memory_operand(struct code_info *CodeInfo, unsigned CurrOpnd, st
 
 	/* check for index registers */
 
-	if (index != EMPTY)
-	{
+    if( index != EMPTY ) {
 		if (((GetValueSp(index) & OP_R32) && CodeInfo->Ofssize == USE32) ||
 #if AMD64_SUPPORT
 		((GetValueSp(index) & OP_R64) && CodeInfo->Ofssize == USE64) ||
 #endif
-			((GetValueSp(index) & OP_R16) && CodeInfo->Ofssize == USE16))
-		{
+            ( ( GetValueSp( index ) & OP_R16) && CodeInfo->Ofssize == USE16 ) ) {
 			CodeInfo->prefix.adrsiz = FALSE;
-		}
-		else
-		{
+        } else {
 			CodeInfo->prefix.adrsiz = TRUE;
 		}
 
@@ -2061,20 +1831,16 @@ static ret_code memory_operand(struct code_info *CodeInfo, unsigned CurrOpnd, st
 #if 0
 			&& (GetResWName(index, NULL) <= T_RBP)
 #endif
-			)
-		{ /* [E|R]SP? */
+			) { /* [E|R]SP? */
 
 		 //if ( (GetRegNo( index ) == 4) && (GetResWName( index, NULL ) <= T_RBP )) { /* [E|R]SP? */ /* Removed in 2.13 in favour of above */
 
 			DebugMsg(("memory_operand: error, base regno=%u, index regno=%u, opnd.scale=%u\n", GetRegNo(base), GetRegNo(index), opndx->scale));
 			//int tmp = index;
-			if (opndx->scale)
-			{ /* no scale must be set */
+            if( opndx->scale ) { /* no scale must be set */
 				EmitErr(CANNOT_BE_USED_AS_INDEX_REGISTER, GetResWName(index, NULL));
 				//return( ERROR );
-			}
-			else
-			{
+            } else {
 				//if ( GetRegNo( base ) == 4 ) {
 				EmitErr(MULTIPLE_BASE_REGISTERS_NOT_ALLOWED);
 				//return( ERROR );
@@ -2084,9 +1850,7 @@ static ret_code memory_operand(struct code_info *CodeInfo, unsigned CurrOpnd, st
 			//index = base;
 			//base = tmp;
 #if 0
-		}
-		else if (Options.masm_compat_gencode && opndx->scale == 0 && GetRegNo(base) != 4)
-		{
+        } else if ( Options.masm_compat_gencode && opndx->scale == 0 && GetRegNo( base ) != 4 ) {
 			/* v2.08: Masm 6+ swaps base and index, even if -Zm is set (Masm 5.1 does NOT swap) */
 			int tmp = index;
 			/* swap base and index */
@@ -2100,13 +1864,10 @@ static ret_code memory_operand(struct code_info *CodeInfo, unsigned CurrOpnd, st
 #if AMD64_SUPPORT
 			CodeInfo->Ofssize == USE64  ||
 #endif
-			(CodeInfo->Ofssize == USE32 && CodeInfo->prefix.adrsiz == 0))
-		{
-			if ((ModuleInfo.curr_cpu & P_CPU_MASK) >= P_386)
-			{
+           ( CodeInfo->Ofssize == USE32 && CodeInfo->prefix.adrsiz == 0 ) ) {
+            if( ( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_386 ) {
 				/* scale, 0 or 1->00, 2->40, 4->80, 8->C0 */
-				switch (opndx->scale)
-				{
+                switch( opndx->scale ) {
 					case 0:
 					case 1:  break; /* ss = 00 */
 					case 2: ss = SCALE_FACTOR_2; break; /* ss = 01 */
@@ -2115,46 +1876,34 @@ static ret_code memory_operand(struct code_info *CodeInfo, unsigned CurrOpnd, st
 					default: /* must be * 1, 2, 4 or 8 */
 						return(EmitError(SCALE_FACTOR_MUST_BE_1_2_4_OR_8));
 				}
-			}
-			else
-			{
+            } else {
 				/* 286 and down cannot use this memory mode */
 				return(EmitError(INVALID_ADDRESSING_MODE_WITH_CURRENT_CPU_SETTING));
 			}
-		}
-		else
-		{
+        } else {
 			/* v2.01: 16-bit addressing mode. No scale possible */
-			if (opndx->scale)
-			{
+            if ( opndx->scale ) {
 				return(EmitError(INVALID_USE_OF_REGISTER));
 			}
 		}
 	}
 
-	if (with_fixup)
-	{
-		if (opndx->is_abs)
-		{
+    if( with_fixup ) {
+
+        if( opndx->is_abs ) {
 			Ofssize = IS_ADDR32(CodeInfo);
-		}
-		else if (sym)
-		{
+        } else if ( sym ) {
 			Ofssize = GetSymOfssize(sym);
-		}
-		else if (SegOverride)
-		{
+        } else if ( SegOverride ) {
 			Ofssize = GetSymOfssize(SegOverride);
-		}
-		else
+        } else
 			Ofssize = CodeInfo->Ofssize;
 
 		/* now set fixup_type.
 		 * for direct addressing, the fixup type can easily be set by
 		 * the symbol's offset size.
 		 */
-		if (base == EMPTY && index == EMPTY)
-		{
+        if( base == EMPTY && index == EMPTY ) {
 			CodeInfo->prefix.adrsiz = ADDRSIZE(CodeInfo->Ofssize, Ofssize);
 #if AMD64_SUPPORT
 			if (Ofssize == USE64)
@@ -2168,20 +1917,15 @@ static ret_code memory_operand(struct code_info *CodeInfo, unsigned CurrOpnd, st
 #endif
 				fixup_type = (Ofssize) ? FIX_OFF32 : FIX_OFF16;
 			DebugMsg1(("memory_operand: direct addressing, fixup type=%u\n", fixup_type));
-		}
-		else
-		{
+        } else {
 			DebugMsg1(("memory_operand: CodeInfo->Ofssize=%u/prefix.adrsize=%u, Ofssize=%u\n",
 					  CodeInfo->Ofssize, CodeInfo->prefix.adrsiz, Ofssize));
 #if AMD64_SUPPORT
-			if (Ofssize == USE64)
-			{
+            if( Ofssize == USE64 ) {
 				fixup_type = FIX_OFF32;
-			}
-			else
+            } else
 #endif
-				if (IS_ADDR32(CodeInfo))
-				{ /* address prefix needed? */
+            if( IS_ADDR32( CodeInfo ) ) { /* address prefix needed? */
 /* changed for v1.95. Probably more tests needed!
  * test case:
  *   mov eax,[ebx*2-10+offset var] ;code and var are 16bit!
@@ -2192,12 +1936,9 @@ static ret_code memory_operand(struct code_info *CodeInfo, unsigned CurrOpnd, st
  */
  //fixup_type = ( Ofssize ) ? FIX_OFF32 : FIX_OFF16;
 					fixup_type = FIX_OFF32;
-				}
-				else
-				{
+            } else {
 					fixup_type = FIX_OFF16;
-					if (Ofssize && Parse_Pass == PASS_2)
-					{
+                if( Ofssize && Parse_Pass == PASS_2 ) {
 						/* address size is 16bit but label is 32-bit.
 						 * example: use a 16bit register as base in FLAT model:
 						 *   test buff[di],cl */
@@ -2217,20 +1958,17 @@ static ret_code memory_operand(struct code_info *CodeInfo, unsigned CurrOpnd, st
 		 * However, CMPSD and MOVSD are also SSE2 opcodes, so the fixups must be generated
 		 * anyways.
 		 */
-		if (CodeInfo->token != T_XLAT && CodeInfo->token != T_XLATB)
-		{
+        if ( CodeInfo->token != T_XLAT && CodeInfo->token != T_XLATB ) {
 			//DebugMsg1(("memory_operand: calling CreateFixup(%s, fixup=%u) [CodeInfo->memtype=%Xh]\n", sym ? sym->name : "NULL", fixup_type, CodeInfo->mem_type));
 			CodeInfo->opnd[CurrOpnd].InsFixup = CreateFixup(sym, fixup_type, OPTJ_NONE);
 		}
 	}
 
-	if (set_rm_sib(CodeInfo, CurrOpnd, ss, index, base, sym) == ERROR)
-	{
+    if( set_rm_sib( CodeInfo, CurrOpnd, ss, index, base, sym ) == ERROR ) {
 		return(ERROR);
 	}
 	/* set frame type/data in fixup if one was created */
-	if (CodeInfo->opnd[CurrOpnd].InsFixup)
-	{
+    if ( CodeInfo->opnd[CurrOpnd].InsFixup ) {
 		CodeInfo->opnd[CurrOpnd].InsFixup->frame_type = Frame_Type;
 		CodeInfo->opnd[CurrOpnd].InsFixup->frame_datum = Frame_Datum;
 	}
@@ -2248,8 +1986,7 @@ static ret_code process_address(struct code_info *CodeInfo, unsigned CurrOpnd, s
  * valid return values: NOT_ERROR, ERROR
  */
 {
-	if (opndx->indirect)
-	{  /* indirect register operand or stack var */
+    if( opndx->indirect ) {  /* indirect register operand or stack var */
 
 		DebugMsg1(("process_address: INDIRECT, sym=%s mbr=%s ci.adrsiz=%u\n",
 				  opndx->sym ? opndx->sym->name : "NULL",
@@ -2261,44 +1998,33 @@ static ret_code process_address(struct code_info *CodeInfo, unsigned CurrOpnd, s
 		 * warns (level 3) in the other modes.
 		 * todo: this check should also be done for direct addressing!
 		 */
-		if (opndx->hvalue && (opndx->hvalue != -1 || opndx->value >= 0))
-		{
+        if ( opndx->hvalue && ( opndx->hvalue != -1 || opndx->value >= 0 ) ) {
 			DebugMsg1(("process_address: displacement doesn't fit in 32 bits: %" I64_SPEC "X\n", opndx->value64));
 #if AMD64_SUPPORT
-			if (ModuleInfo.Ofssize == USE64)
-			{
+            if ( ModuleInfo.Ofssize == USE64 ) {
 				return(EmitConstError(opndx));
 			}
 #endif
 			EmitWarn(3, DISPLACEMENT_OUT_OF_RANGE, opndx->value64);
 		}
-		if (opndx->sym == NULL || opndx->sym->state == SYM_STACK)
-		{
+        if( opndx->sym == NULL || opndx->sym->state == SYM_STACK ) {
 			return(memory_operand(CodeInfo, CurrOpnd, opndx, FALSE));
 		}
 		/* do default processing */
-	}
-	else if (opndx->instr != EMPTY)
-	{
+    } else if( opndx->instr != EMPTY ) {
 		/* instr is OFFSET | LROFFSET | SEG | LOW | LOWWORD, ... */
 		DebugMsg1(("process_address: instr=%s\n", GetResWName(opndx->instr, NULL)));
-		if (opndx->sym == NULL)
-		{ /* better to check opndx->type? */
+        if( opndx->sym == NULL ) { /* better to check opndx->type? */
 			return(idata_nofixup(CodeInfo, CurrOpnd, opndx));
-		}
-		else
-		{
+        } else {
 			/* allow "lea <reg>, [offset <sym>]" */
 			if (CodeInfo->token == T_LEA && opndx->instr == T_OFFSET)
 				return(memory_operand(CodeInfo, CurrOpnd, opndx, TRUE));
 			return(idata_fixup(CodeInfo, CurrOpnd, opndx));
 		}
-	}
-	else if (opndx->sym == NULL)
-	{ /* direct operand without symbol */
+    } else if( opndx->sym == NULL ) { /* direct operand without symbol */
 		DebugMsg1(("process_address: symbol=NULL\n"));
-		if (opndx->override != NULL)
-		{
+        if( opndx->override != NULL ) {
 			/* direct absolute memory without symbol.
 			 DS:[0] won't create a fixup, but
 			 DGROUP:[0] will create one! */
@@ -2318,13 +2044,10 @@ static ret_code process_address(struct code_info *CodeInfo, unsigned CurrOpnd, s
 		else if (opndx->isptr)
 		{
 		}
-		else
-		{
+		else {
 			return(idata_nofixup(CodeInfo, CurrOpnd, opndx));
 		}
-	}
-	else if ((opndx->sym->state == SYM_UNDEFINED) && !opndx->explicit)
-	{
+    } else if( ( opndx->sym->state == SYM_UNDEFINED ) && !opndx->explicit ) {
 		DebugMsg1(("process_address: sym=SYM_UNDEFINED, name=%s, state=%X\n", opndx->sym->name, opndx->sym->state));
 		/* v2.04: unnecessary, the expression evaluator will have emitted an error already */
 		//if( Parse_Pass != PASS_1 ) {
@@ -2339,14 +2062,12 @@ static ret_code process_address(struct code_info *CodeInfo, unsigned CurrOpnd, s
 		if (IS_ANY_BRANCH(CodeInfo->token))
 			return(process_branch(CodeInfo, CurrOpnd, opndx));
 
-		switch (CodeInfo->token)
-		{
+        switch( CodeInfo->token ) {
 			case T_PUSH:
 			case T_PUSHW:
 			case T_PUSHD:
 				/* v2.0: don't assume immediate operand if cpu is 8086 */
-				if ((ModuleInfo.curr_cpu & P_CPU_MASK) > P_86)
-				{
+            if ( ( ModuleInfo.curr_cpu & P_CPU_MASK ) > P_86 ) {
 					//return( idata_nofixup( CodeInfo, opndx ) ); /* v1.96: changed */
 					return(idata_fixup(CodeInfo, CurrOpnd, opndx));
 				}
@@ -2357,59 +2078,44 @@ static ret_code process_address(struct code_info *CodeInfo, unsigned CurrOpnd, s
 				 * instruction table if the instruction allows an immediate!
 				 * If so, assume the undefined symbol is a constant.
 				 */
-				if (CurrOpnd == OPND2 && ((CodeInfo->opnd[OPND1].type & OP_SR) == 0))
-				{
+            if ( CurrOpnd == OPND2 && (( CodeInfo->opnd[OPND1].type & OP_SR ) == 0 ) ) {
 					const struct instr_item  *p = CodeInfo->pinstr;
-					do
-					{
-						if (opnd_clstab[p->opclsidx].opnd_type[OPND2] & OP_I)
-						{
+                do {
+                    if ( opnd_clstab[p->opclsidx].opnd_type[OPND2] & OP_I ) {
 							return(idata_fixup(CodeInfo, CurrOpnd, opndx));
 						}
 						p++;
-					}
-					while (p->first == FALSE);
+                } while ( p->first == FALSE );
 				}
 				/* v2.10: if current operand is the third argument, always assume an immediate */
 				if (CurrOpnd == OPND3)
 					return(idata_fixup(CodeInfo, CurrOpnd, opndx));
 		}
 		/* do default processing */
-	}
-	else if ((opndx->sym->state == SYM_SEG) ||
-		(opndx->sym->state == SYM_GRP))
-	{
+    } else if( ( opndx->sym->state == SYM_SEG ) ||
+               ( opndx->sym->state == SYM_GRP ) ) {
 		DebugMsg1(("process_address: sym->state=SEG/GROUP\n"));
 		/* SEGMENT and GROUP symbol is converted to SEG symbol
 		 * for next processing */
 		opndx->instr = T_SEG;
 		return(idata_fixup(CodeInfo, CurrOpnd, opndx));
-	}
-	else
-	{
+    } else {
 		DebugMsg1(("process_address direct, sym=%s sym.memtype=%X opndx.memtype=%X\n", opndx->sym->name, opndx->sym->mem_type, opndx->mem_type));
 
 		/* symbol external, but absolute? */
-		if (opndx->is_abs)
-		{
+        if( opndx->is_abs ) {
 			return(idata_fixup(CodeInfo, CurrOpnd, opndx));
 		}
 
 		/* CODE location is converted to OFFSET symbol */
-		if (opndx->mem_type == MT_NEAR || opndx->mem_type == MT_FAR)
-		{
-			if (CodeInfo->token == T_LEA)
-			{
+        if ( opndx->mem_type == MT_NEAR || opndx->mem_type == MT_FAR ) {
+            if( CodeInfo->token == T_LEA ) {
 				return(memory_operand(CodeInfo, CurrOpnd, opndx, TRUE));
 				//} else if( opndx->sym == &symPC ) {
 				//    return( idata_fixup( CodeInfo, opndx ) );
-			}
-			else if (opndx->mbr != NULL)
-			{ /* structure field? */
+            } else if( opndx->mbr != NULL ) { /* structure field? */
 				return(memory_operand(CodeInfo, CurrOpnd, opndx, TRUE));
-			}
-			else
-			{
+            } else {
 				return(idata_fixup(CodeInfo, CurrOpnd, opndx));
 			}
 		}
@@ -2428,18 +2134,14 @@ static ret_code process_const(struct code_info *CodeInfo, unsigned CurrOpnd, str
 #if 0 /* v2.06: obsolete */
 	/* hack for IMUL: compress the operands so there are 2 only */
 	if ((CodeInfo->token == T_IMUL) &&
-		(CodeInfo->opnd_type[OPND1] & OP_R))
-	{
-		if (CurrOpnd == OPND2)
-		{
+       ( CodeInfo->opnd_type[OPND1] & OP_R ) ) {
+        if( CurrOpnd == OPND2 ) {
 #if AMD64_SUPPORT
 			CodeInfo->prefix.rex |= ((CodeInfo->prefix.rex & REX_B) ? REX_R : 0);
 #endif
 			CodeInfo->rm_byte = (CodeInfo->rm_byte & ~BIT_345)
 				| ((CodeInfo->rm_byte & BIT_012) << 3);
-		}
-		else if (CurrOpnd == OPND3)
-		{
+        } else if( CurrOpnd == OPND3 ) {
 			/* v2.04b: if op2 was assumed an immediate due to fwd ref,
 			 * change it back to a mem ref now.
 			 */
@@ -2466,8 +2168,7 @@ static ret_code process_const(struct code_info *CodeInfo, unsigned CurrOpnd, str
 	 /* v2.06: moved here and checked the opcode directly, so
 	  * RETD and RETW are also handled. */
 	if (((CodeInfo->pinstr->opcode & 0xf7) == 0xc2) &&
-		CurrOpnd == OPND1 && opndx->value == 0)
-	{
+        CurrOpnd == OPND1 && opndx->value == 0 ) {
 		//     (CodeInfo.token == T_RET ||
 		//      CodeInfo.token == T_RETN ||
 		//      CodeInfo.token == T_RETF)) {
@@ -2506,21 +2207,18 @@ static ret_code process_register(struct code_info *CodeInfo, unsigned CurrOpnd, 
 		else if (evex && regno > 15)
 			CodeInfo->evex_flag = TRUE;
 	}
-	if (CodeInfo->opnd[CurrOpnd].type == OP_ZMM)
-	{
+	if (CodeInfo->opnd[CurrOpnd].type == OP_ZMM) {
 		if (evex)
 			CodeInfo->evex_flag = TRUE;
 		else
 			return(EmitError(UNAUTHORISED_USE_OF_EVEX_REGISTERS));
 	}
-	if (CodeInfo->opnd[CurrOpnd].type == OP_K && regno > 7)
-	{
+	if (CodeInfo->opnd[CurrOpnd].type == OP_K && regno > 7) {
 		DebugMsg(("process_register: assume error, reg=%u\n", regno));
 		return(EmitError(USE_OF_REGISTER_ASSUMED_TO_ERROR));
 	}
 #endif
-	if (flags & OP_R8)
-	{
+	if ( flags & OP_R8 ) {
 		/* it's probably better to not reset the wide bit at all */
 		if (flags != OP_CL)      /* problem: SHL AX|AL, CL */
 			CodeInfo->iswide = 0;
@@ -2532,47 +2230,33 @@ static ret_code process_register(struct code_info *CodeInfo, unsigned CurrOpnd, 
 			else
 				CodeInfo->x64lo_used = 1; /* it's SPL,BPL,SIL,DIL */
 #endif
-		if (StdAssumeTable[regno].error & ((regtok >= T_AH && regtok <= T_BH) ? RH_ERROR : RL_ERROR))
-		{
+        if ( StdAssumeTable[regno].error & (( regtok >= T_AH && regtok <= T_BH ) ? RH_ERROR : RL_ERROR ) ) {
 			DebugMsg(("process_register: assume error, reg=%u\n", regno));
 			return(EmitError(USE_OF_REGISTER_ASSUMED_TO_ERROR));
 		}
-	}
-	else if (flags & OP_R)
-	{ /* 16-, 32- or 64-bit GPR? */
+    } else if ( flags & OP_R ) { /* 16-, 32- or 64-bit GPR? */
 		CodeInfo->iswide = 1;
-		if (StdAssumeTable[regno].error & flags & OP_R)
-		{
+        if ( StdAssumeTable[regno].error & flags & OP_R ) {
 			DebugMsg(("process_register: assume error, reg=%u\n", regno));
 			return(EmitError(USE_OF_REGISTER_ASSUMED_TO_ERROR));
 		}
-		if (flags & OP_R16)
-		{
+        if ( flags & OP_R16 ) {
 			if (CodeInfo->Ofssize > USE16)
 				CodeInfo->prefix.opsiz = TRUE;
-		}
-		else
-		{
+        } else {
 			if (CodeInfo->Ofssize == USE16)
 				CodeInfo->prefix.opsiz = TRUE;
 		}
-	}
-	else if (flags & OP_SR)
-	{
-		if (regno == 1)
-		{ /* 1 is CS */
+    } else if ( flags & OP_SR ) {
+        if( regno == 1 ) { /* 1 is CS */
 /* POP CS is not allowed */
-			if (CodeInfo->token == T_POP)
-			{
+            if( CodeInfo->token == T_POP ) {
 				return(EmitError(POP_CS_IS_NOT_ALLOWED));
 			}
 		}
-	}
-	else if (flags & OP_ST)
-	{
+    } else if ( flags & OP_ST ) {
 		regno = opndx[CurrOpnd].st_idx;
-		if (regno > 7)
-		{ /* v1.96: index check added */
+        if ( regno > 7 ) { /* v1.96: index check added */
 			return(EmitError(INVALID_COPROCESSOR_REGISTER));
 		}
 		CodeInfo->rm_byte |= regno;
@@ -2580,11 +2264,8 @@ static ret_code process_register(struct code_info *CodeInfo, unsigned CurrOpnd, 
 			CodeInfo->opnd[CurrOpnd].type = OP_ST_REG;
 		/* v2.06: exit, rm_byte is already set. */
 		return(NOT_ERROR);
-	}
-	else if (flags & OP_RSPEC)
-	{ /* CRx, DRx, TRx */
-		if (CodeInfo->token != T_MOV)
-		{
+    } else if ( flags & OP_RSPEC ) { /* CRx, DRx, TRx */
+        if( CodeInfo->token != T_MOV ) {
 			return(EmitError(ONLY_MOV_CAN_USE_SPECIAL_REGISTER));
 		}
 		/* v2.04: previously there were 3 flags, OP_CR, OP_DR and OP_TR.
@@ -2594,20 +2275,17 @@ static ret_code process_register(struct code_info *CodeInfo, unsigned CurrOpnd, 
 		 * used now: CRx are numbers 0-F, DRx are numbers 0x10-0x1F and
 		 * TRx are 0x20-0x2F.
 		 */
-		if (regno >= 0x20)
-		{ /* TRx? */
+		if (regno >= 0x20) { /* TRx? */
 			CodeInfo->opc_or |= 0x04;
 			/* TR3-TR5 are available on 486-586
 			* TR6+TR7 are available on 386-586
 			* v2.11: simplified.
 			*/
-			if ((ModuleInfo.curr_cpu & P_CPU_MASK) >= P_686)
-			{
+			if ((ModuleInfo.curr_cpu & P_CPU_MASK) >= P_686) {
 				return(EmitErr(CANNOT_USE_TRN_TO_TRM_WITH_CURRENT_CPU_SETTING, regno > 0x25 ? 6 : 3, regno > 0x25 ? 7 : 5));
 			}
 		}
-		else if (regno >= 0x10)
-		{ /* DRx? */
+		else if (regno >= 0x10) { /* DRx? */
 			CodeInfo->opc_or |= 0x01;
 		}
 		regno &= 0x0F;
@@ -2615,15 +2293,13 @@ static ret_code process_register(struct code_info *CodeInfo, unsigned CurrOpnd, 
 #if AMD64_SUPPORT
 
 	/* if it's a x86-64 register (SIL, R8W, R8D, RSI, ... */
-	if ((SpecialTable[regtok].cpu & P_CPU_MASK) == P_64)
-	{
+    if ( ( SpecialTable[regtok].cpu & P_CPU_MASK ) == P_64 ) {
 		CodeInfo->prefix.rex |= 0x40;
 		if (flags & OP_R64)
 			CodeInfo->prefix.rex |= REX_W;
 	}
 #endif
-	if (CurrOpnd == OPND1)
-	{
+    if( CurrOpnd == OPND1 ) {
 		/* the first operand
 		 * r/m is treated as a 'reg' field */
 		CodeInfo->rm_byte |= MOD_11;
@@ -2633,22 +2309,17 @@ static ret_code process_register(struct code_info *CodeInfo, unsigned CurrOpnd, 
 #endif
 		/* fill the r/m field */
 		CodeInfo->rm_byte |= regno;
-	}
-	else
-	{
+    } else {
 		/* the second operand
 		 * XCHG can use short form if op1 is AX/EAX/RAX */
 		if ((CodeInfo->token == T_XCHG) && (CodeInfo->opnd[OPND1].type & OP_A) &&
-			(0 == (CodeInfo->opnd[OPND1].type & OP_R8)))
-		{
+             ( 0 == (CodeInfo->opnd[OPND1].type & OP_R8 ) ) ) {
 #if AMD64_SUPPORT
 			CodeInfo->prefix.rex |= (regno & 8) >> 3; /* set REX_B */
 			regno &= BIT_012;
 #endif
 			CodeInfo->rm_byte = (CodeInfo->rm_byte & BIT_67) | regno;
-		}
-		else
-		{
+        } else {
 			/* fill reg field with reg */
 #if AMD64_SUPPORT
 			CodeInfo->prefix.rex |= (regno & 8) >> 1; /* set REX_R */
@@ -2679,8 +2350,7 @@ static void HandleStringInstructions(struct code_info *CodeInfo, const struct ex
 	int opndidx = OPND1;
 	int op_size;
 
-	switch (CodeInfo->token)
-	{
+    switch( CodeInfo->token ) {
 #if AVXSUPP
 		case T_VCMPSD:
 		case T_VPCMPD:
@@ -2690,8 +2360,7 @@ static void HandleStringInstructions(struct code_info *CodeInfo, const struct ex
 #endif
 		case T_CMPSD:
 			/* filter SSE2 opcode CMPSD */
-			if (CodeInfo->opnd[OPND1].type & (OP_XMM | OP_MMX))
-			{
+        if ( CodeInfo->opnd[OPND1].type & (OP_XMM | OP_MMX)) {
 				/* v2.01: QWORD operand for CMPSD/MOVSD may have set REX_W! */
 #if AMD64_SUPPORT
 				CodeInfo->prefix.rex &= ~REX_W;
@@ -2706,12 +2375,9 @@ static void HandleStringInstructions(struct code_info *CodeInfo, const struct ex
 		case T_CMPSQ:
 #endif
 			/* cmps allows prefix for the first operand (=source) only */
-			if (CodeInfo->prefix.RegOverride != EMPTY)
-			{
-				if (opndx[OPND2].override != NULL)
-				{
-					if (CodeInfo->prefix.RegOverride == ASSUME_ES)
-					{
+        if ( CodeInfo->prefix.RegOverride != EMPTY ) {
+            if ( opndx[OPND2].override != NULL ) {
+                if ( CodeInfo->prefix.RegOverride == ASSUME_ES ) {
 						/* content of LastRegOverride is valid if
 						 * CodeInfo->RegOverride is != EMPTY.
 						 */
@@ -2719,15 +2385,11 @@ static void HandleStringInstructions(struct code_info *CodeInfo, const struct ex
 							CodeInfo->prefix.RegOverride = EMPTY;
 						else
 							CodeInfo->prefix.RegOverride = LastRegOverride;
-					}
-					else
-					{
+                } else {
 						DebugMsg1(("HandleStringInstructions: CMPS: CodeInfo->RegOverride=%X, opndx->override=%s\n", CodeInfo->prefix.RegOverride, opndx[OPND2].override->string_ptr));
 						EmitError(INVALID_INSTRUCTION_OPERANDS);
 					}
-				}
-				else if (CodeInfo->prefix.RegOverride == ASSUME_DS)
-				{
+            } else if ( CodeInfo->prefix.RegOverride == ASSUME_DS ) {
 					/* prefix for first operand? */
 					CodeInfo->prefix.RegOverride = EMPTY;
 				}
@@ -2742,8 +2404,7 @@ static void HandleStringInstructions(struct code_info *CodeInfo, const struct ex
 
 			/* filter SSE2 opcode MOVSD */
 			if ((CodeInfo->opnd[OPND1].type & (OP_XMM | OP_MMX | OP_YMM | OP_ZMM)) ||
-				(CodeInfo->opnd[OPND2].type & (OP_XMM | OP_MMX | OP_YMM | OP_ZMM)))
-			{
+            ( CodeInfo->opnd[OPND2].type & (OP_XMM | OP_MMX | OP_YMM | OP_ZMM) ) ) {
 				/* v2.01: QWORD operand for CMPSD/MOVSD may have set REX_W! */
 #if AMD64_SUPPORT
 				CodeInfo->prefix.rex &= ~REX_W;
@@ -2796,8 +2457,7 @@ static void HandleStringInstructions(struct code_info *CodeInfo, const struct ex
 					EmitError(INVALID_INSTRUCTION_OPERANDS);
 	}
 
-	if (opnd_clstab[CodeInfo->pinstr->opclsidx].opnd_type[opndidx] == OP_NONE)
-	{
+    if ( opnd_clstab[CodeInfo->pinstr->opclsidx].opnd_type[opndidx] == OP_NONE ) {
 		CodeInfo->iswide = 0;
 		CodeInfo->prefix.opsiz = FALSE;
 	}
@@ -2807,8 +2467,7 @@ static void HandleStringInstructions(struct code_info *CodeInfo, const struct ex
 	 */
 	 //if ( CodeInfo->pinstr->opnd_type[opndidx] != OP_NONE &&
 	if (opnd_clstab[CodeInfo->pinstr->opclsidx].opnd_type[opndidx] != OP_NONE &&
-		CodeInfo->opnd[opndidx].type != OP_NONE)
-	{
+        CodeInfo->opnd[opndidx].type != OP_NONE ) {
 		if (CodeInfo->token == T_KMOVB) op_size = 1;
 		else if (CodeInfo->token == T_KMOVW) op_size = 2;
 		else if (CodeInfo->token == T_KMOVD) op_size = 4;
@@ -2817,14 +2476,12 @@ static void HandleStringInstructions(struct code_info *CodeInfo, const struct ex
 		/* v2.06: added. if memory operand has no size */
 		if (op_size == 0)
 			op_size = OperandSize(CodeInfo->opnd[opndidx+1].type, CodeInfo);
-		if (op_size == 0)
-		{
+        if ( op_size == 0 ) {
 			if (CodeInfo->opnd[opndidx].InsFixup == NULL || CodeInfo->opnd[opndidx].InsFixup->sym->state != SYM_UNDEFINED)
 				EmitError(INSTRUCTION_OPERAND_MUST_HAVE_SIZE);
 			op_size = 1; /* assume shortest format */
 		}
-		switch (op_size)
-		{
+        switch( op_size ) {
 			case 1:
 				CodeInfo->iswide = 0;
 				//if( CodeInfo->Ofssize )
@@ -2840,8 +2497,7 @@ static void HandleStringInstructions(struct code_info *CodeInfo, const struct ex
 				break;
 #if AMD64_SUPPORT
 			case 8:
-				if (CodeInfo->Ofssize == USE64)
-				{
+            if ( CodeInfo->Ofssize == USE64 ) {
 					CodeInfo->iswide = 1;
 					CodeInfo->prefix.opsiz = FALSE;
 					CodeInfo->prefix.rex = REX_W;
@@ -2870,8 +2526,7 @@ static ret_code check_size(struct code_info *CodeInfo, const struct expr opndx[]
 	int         op2_size;
 	//int         op_size = 0;
 	DebugMsg1(("check_size enter, optype1=%" I32_SPEC "X, optype2=%" I32_SPEC "X\n", op1, op2));
-	if (CodeInfo->token >= T_KADDB && CodeInfo->token <= T_KUNPCKDQ)
-	{
+    if (CodeInfo->token >= T_KADDB && CodeInfo->token <= T_KUNPCKDQ){
 		//int op3_size;
 		if ((CodeInfo->opnd[OPND1].type != OP_K) && (CodeInfo->opnd[OPND2].type != OP_K) &&
 			(CodeInfo->opnd[OPND3].type != OP_K))
@@ -2884,23 +2539,19 @@ static ret_code check_size(struct code_info *CodeInfo, const struct expr opndx[]
 		goto def_check;
 	}
 
-	switch (CodeInfo->token)
-	{
+    switch( CodeInfo->token ) {
 		case T_IN:
-			if (op2 == OP_DX)
-			{
+        if( op2 == OP_DX ) {
 				/* wide and size is NOT determined by DX, but
 				 * by the first operand, AL|AX|EAX
 				 */
-				switch (op1)
-				{
+            switch( op1 ) {
 					case OP_AX:
 						break;
 					case OP_AL:
 						CodeInfo->iswide = 0;         /* clear w-bit */
 					case OP_EAX:
-						if (CodeInfo->Ofssize)
-						{
+                if( CodeInfo->Ofssize ) {
 							CodeInfo->prefix.opsiz = FALSE;
 						}
 						break;
@@ -2908,17 +2559,14 @@ static ret_code check_size(struct code_info *CodeInfo, const struct expr opndx[]
 			}
 			break;
 		case T_OUT:
-			if (op1 == OP_DX)
-			{
-				switch (op2)
-				{
+        if( op1 == OP_DX ) {
+            switch( op2 ) {
 					case OP_AX:
 						break;
 					case OP_AL:
 						CodeInfo->iswide = 0;         /* clear w-bit */
 					case OP_EAX:
-						if (CodeInfo->Ofssize)
-						{
+                if( CodeInfo->Ofssize ) {
 							CodeInfo->prefix.opsiz = FALSE;
 						}
 				}
@@ -2935,8 +2583,7 @@ static ret_code check_size(struct code_info *CodeInfo, const struct expr opndx[]
 			 are all valid. However, Masm sometimes complains
 			 "cannot use 16-bit register with a 32-bit address"
 			 */
-			switch (OperandSize(op1, CodeInfo))
-			{
+        switch( OperandSize( op1, CodeInfo ) ) {
 				case 2:
 				case 4:
 					break;
@@ -2957,8 +2604,7 @@ static ret_code check_size(struct code_info *CodeInfo, const struct expr opndx[]
 		case T_SHR:
 			/* v2.11: added */
 			if (CodeInfo->opnd[OPND1].type == OP_M && CodeInfo->undef_sym == FALSE &&
-				(opndx[OPND1].sym == NULL || opndx[OPND1].sym->state != SYM_UNDEFINED))
-			{
+            ( opndx[OPND1].sym == NULL || opndx[OPND1].sym->state != SYM_UNDEFINED ) ) {
 				EmitErr(INSTRUCTION_OPERAND_MUST_HAVE_SIZE);
 				rc = ERROR;
 				break;
@@ -2973,8 +2619,7 @@ static ret_code check_size(struct code_info *CodeInfo, const struct expr opndx[]
 				Parse_Pass == PASS_1 &&
 				opndx[OPND2].indirect == FALSE &&
 				opndx[OPND2].sym &&
-				opndx[OPND2].sym->state == SYM_UNDEFINED)
-			{
+            opndx[OPND2].sym->state == SYM_UNDEFINED ) {
 				CodeInfo->opnd[OPND2].type = OP_I8;
 				CodeInfo->opnd[OPND2].data32l = 1;
 			}
@@ -2984,8 +2629,7 @@ static ret_code check_size(struct code_info *CodeInfo, const struct expr opndx[]
 			if (OperandSize(op1, CodeInfo) > 1)
 				CodeInfo->iswide = 1;
 			/* v2.06: makes the OP_CL_ONLY case in codegen.c obsolete */
-			if (op2 == OP_CL)
-			{
+        if ( op2 == OP_CL ) {
 				/* CL is encoded in bit 345 of rm_byte, but we don't need it
 				 * so clear it here */
 				CodeInfo->rm_byte &= NOT_BIT_345;
@@ -2998,19 +2642,16 @@ static ret_code check_size(struct code_info *CodeInfo, const struct expr opndx[]
 		case T_LSS:
 			op1_size = OperandSize(op1, CodeInfo) + 2; /* add 2 for the impl. segment register */
 			op2_size = OperandSize(op2, CodeInfo);
-			if (op2_size != 0 && op1_size != op2_size)
-			{
+        if ( op2_size != 0 && op1_size != op2_size ) {
 				return(EmitError(INVALID_OPERAND_SIZE));
 			}
 			break;
 		case T_ENTER:
 #if 0 /* v2.11: operand sizes are checked in codegen */
 			/* ENTER has to be OP_I16, OP_I8_U */
-			if (op1 == OP_I32)
-			{
+        if( op1 == OP_I32 ) {
 				/* parse_phase_1 will treat 16-bit data as OP_I32 if CPU is 386 */
-				if (CodeInfo->opnd[OPND1].data32l > (int_32)USHRT_MAX)
-				{
+            if( CodeInfo->opnd[OPND1].data32l > (int_32)USHRT_MAX ) {
 					/* if op1 is really 32-bit data, then error */
 					EmitError(INVALID_OPERAND_SIZE);
 					rc = ERROR;
@@ -3019,10 +2660,8 @@ static ret_code check_size(struct code_info *CodeInfo, const struct expr opndx[]
 			/* type cast op1 to OP_I16 */
 			CodeInfo->opnd[OPND1].type = OP_I16;
 			/* op2 have to be 8-bit data */
-			if (op2 >= OP_I16)
-			{
-				if (CodeInfo->opnd[OPND2].data32l > UCHAR_MAX)
-				{
+        if( op2 >= OP_I16 ) {
+            if( CodeInfo->opnd[OPND2].data32l > UCHAR_MAX ) {
 					EmitError(INVALID_OPERAND_SIZE);
 					rc = ERROR;
 				}
@@ -3037,14 +2676,11 @@ static ret_code check_size(struct code_info *CodeInfo, const struct expr opndx[]
 			op2_size = OperandSize(op2, CodeInfo);
 			DebugMsg1(("check_size, MOVZX/MOVSX: op2_size=%u, opndx.memtype=%Xh, opndx.sym=%X\n", op2_size, opndx[OPND2].mem_type, opndx[OPND2].sym));
 			if (op2_size == 0 && Parse_Pass == PASS_2)
-				if (op1_size == 2)
-				{
+            if ( op1_size == 2 ) {
 					EmitWarn(2, SIZE_NOT_SPECIFIED_ASSUMING, "BYTE");
-				}
-				else
+            } else
 					EmitErr(INSTRUCTION_OPERAND_MUST_HAVE_SIZE);
-			switch (op1_size)
-			{
+        switch( op1_size ) {
 #if AMD64_SUPPORT
 				case 8:
 					//if ( CodeInfo->Ofssize == USE64 )
@@ -3055,16 +2691,14 @@ static ret_code check_size(struct code_info *CodeInfo, const struct expr opndx[]
 						;
 					else if (op2_size == 2)
 						CodeInfo->iswide = 1;
-					else
-					{
+            else {
 						EmitError(OP2_TOO_BIG);
 						rc = ERROR;
 					}
 					CodeInfo->prefix.opsiz = CodeInfo->Ofssize ? FALSE : TRUE;
 					break;
 				case 2:
-					if (op2_size >= 2)
-					{
+            if( op2_size >= 2 ) {
 						EmitError(OP2_TOO_BIG);
 						rc = ERROR;
 					}
@@ -3094,8 +2728,7 @@ static ret_code check_size(struct code_info *CodeInfo, const struct expr opndx[]
 			 * ensure it has size WORD ( or 0 if a forward ref )
 			 */
 			op2_size = OperandSize(op2, CodeInfo);
-			if (op2_size != 2 && op2_size != 0)
-			{
+        if ( op2_size != 2 && op2_size != 0 ) {
 				return(EmitError(INVALID_OPERAND_SIZE));
 			}
 			/* the opsize prefix depends on the FIRST operand only! */
@@ -3104,8 +2737,7 @@ static ret_code check_size(struct code_info *CodeInfo, const struct expr opndx[]
 				CodeInfo->prefix.opsiz = FALSE;
 #else
 			op1_size = OperandSize(op1, CodeInfo);
-			switch (op1_size)
-			{
+        switch( op1_size ) {
 				case 2:
 					if (CodeInfo->Ofssize)
 						CodeInfo->prefix.opsiz = TRUE;
@@ -3118,8 +2750,7 @@ static ret_code check_size(struct code_info *CodeInfo, const struct expr opndx[]
 					return(EmitError(INVALID_OPERAND_SIZE));
 			}
 			op2_size = OperandSize(op2, CodeInfo);
-			switch (op2_size)
-			{
+        switch( op2_size ) {
 				case 2:
 				case 4:
 					break;
@@ -3132,15 +2763,13 @@ static ret_code check_size(struct code_info *CodeInfo, const struct expr opndx[]
 			break;
 #endif
 		case T_IMUL: /* v2.06: check for 3rd operand must be done here */
-			if (CodeInfo->opnd[OPND3].type != OP_NONE)
-			{
+        if ( CodeInfo->opnd[OPND3].type != OP_NONE ) {
 				int op3_size;
 				op1_size = OperandSize(op1, CodeInfo);
 				op3_size = OperandSize(CodeInfo->opnd[OPND3].type, CodeInfo);
 				/* the only case which must be checked here
 				 * is a WORD register as op1 and a DWORD immediate as op3 */
-				if (op1_size == 2 && op3_size > 2)
-				{
+            if ( op1_size == 2 && op3_size > 2 ) {
 					EmitErr(OPERANDS_MUST_BE_THE_SAME_SIZE, op1_size, op3_size);
 					rc = ERROR;
 					break;
@@ -3180,8 +2809,7 @@ static ret_code check_size(struct code_info *CodeInfo, const struct expr opndx[]
 		case T_VCVTPD2DQ:
 		case T_VCVTTPD2DQ:
 		case T_VCVTPD2PS:
-			if (op2 == OP_M && opndx[OPND2].indirect)
-			{
+        if ( op2 == OP_M && opndx[OPND2].indirect ) {
 				return(EmitError(INSTRUCTION_OPERAND_MUST_HAVE_SIZE));
 			}
 			break;
@@ -3215,8 +2843,7 @@ static ret_code check_size(struct code_info *CodeInfo, const struct expr opndx[]
 		case T_BNDMOV:
 		case T_BNDLDX:
 		case T_BNDSTX:
-			if (CodeInfo->mem_type == MT_BYTE || CodeInfo->mem_type == MT_WORD)
-			{
+         if (CodeInfo->mem_type == MT_BYTE || CodeInfo->mem_type == MT_WORD ){
 				EmitError(INVALID_OPERAND_SIZE);
 				rc = ERROR;
 			}
@@ -3227,43 +2854,34 @@ static ret_code check_size(struct code_info *CodeInfo, const struct expr opndx[]
 			op1_size = OperandSize(op1, CodeInfo);
 			op2_size = OperandSize(op2, CodeInfo);
 			if ((op1_size != 0) && (op1_size != 4)
-				|| (op2_size != 0) && (op2_size != 4))
-			{
+            || ( op2_size != 0 ) && ( op2_size != 4 ) ) {
 				EmitErr(OPERANDS_MUST_BE_THE_SAME_SIZE, op1_size, op2_size);
 				rc = ERROR;
 			}
 #endif
 			break;
 		case T_MOV:
-			if (op1 & OP_SR)
-			{ /* segment register as op1? */
+        if( op1 & OP_SR ) { /* segment register as op1? */
 				op2_size = OperandSize(op2, CodeInfo);
 				if ((op2_size == 2) || (op2_size == 4)
 #if AMD64_SUPPORT
 					|| (op2_size == 8 && ModuleInfo.Ofssize == USE64)
 #endif
-					)
-				{
+              ) {
 					return(NOT_ERROR);
 				}
-			}
-			else if (op2 & OP_SR)
-			{
+        } else if( op2 & OP_SR ) {
 				op1_size = OperandSize(op1, CodeInfo);
 				if ((op1_size == 2) || (op1_size == 4)
 #if AMD64_SUPPORT
 					|| (op1_size == 8 && ModuleInfo.Ofssize == USE64)
 #endif
-					)
-				{
+              ) {
 					return(NOT_ERROR);
 				}
-			}
-			else if ((op1 & OP_M) && (op2 & OP_A))
-			{ /* 1. operand memory reference, 2. AL|AX|EAX|RAX? */
+        } else if( ( op1 & OP_M ) && ( op2 & OP_A ) ) { /* 1. operand memory reference, 2. AL|AX|EAX|RAX? */
 
-				if (CodeInfo->isdirect == FALSE)
-				{
+            if ( CodeInfo->isdirect == FALSE ) {
 					/* address mode is indirect.
 					 * don't use the short format (opcodes A0-A3) - it exists for direct
 					 * addressing only. Reset OP_A flag!
@@ -3271,9 +2889,7 @@ static ret_code check_size(struct code_info *CodeInfo, const struct expr opndx[]
 					CodeInfo->opnd[OPND2].type &= ~OP_A;
 					DebugMsg1(("check_size: OP_A flag reset, new op2=%X\n", CodeInfo->opnd[OPND2].type));
 #if AMD64_SUPPORT
-				}
-				else if (CodeInfo->Ofssize == USE64 && (CodeInfo->opnd[OPND1].data64 < 0x80000000 || CodeInfo->opnd[OPND1].data64 >= 0xffffffff80000000))
-				{
+            } else if ( CodeInfo->Ofssize == USE64 && ( CodeInfo->opnd[OPND1].data64 < 0x80000000 || CodeInfo->opnd[OPND1].data64 >= 0xffffffff80000000 ) ) {
 					/* for 64bit, opcodes A0-A3 ( direct memory addressing with AL/AX/EAX/RAX )
 					 * are followed by a full 64-bit moffs. This is only used if the offset won't fit
 					 * in a 32-bit signed value.
@@ -3282,18 +2898,13 @@ static ret_code check_size(struct code_info *CodeInfo, const struct expr opndx[]
 					DebugMsg1(("check_size: OP_A flag reset, new op2=%X\n", CodeInfo->opnd[OPND2].type));
 #endif
 				}
-			}
-			else if ((op1 & OP_A) && (op2 & OP_M))
-			{ /* 2. operand memory reference, 1. AL|AX|EAX|RAX? */
+        } else if( ( op1 & OP_A ) && ( op2 & OP_M ) ) { /* 2. operand memory reference, 1. AL|AX|EAX|RAX? */
 
-				if (CodeInfo->isdirect == FALSE)
-				{
+            if ( CodeInfo->isdirect == FALSE ) {
 					CodeInfo->opnd[OPND1].type &= ~OP_A;
 					DebugMsg1(("check_size: OP_A flag reset, new op1=%X\n", CodeInfo->opnd[OPND1].type));
 #if AMD64_SUPPORT
-				}
-				else if (CodeInfo->Ofssize == USE64 && (CodeInfo->opnd[OPND2].data64 < 0x80000000 || CodeInfo->opnd[OPND2].data64 >= 0xffffffff80000000))
-				{
+            } else if ( CodeInfo->Ofssize == USE64 && ( CodeInfo->opnd[OPND2].data64 < 0x80000000 || CodeInfo->opnd[OPND2].data64 >= 0xffffffff80000000 ) ) {
 					CodeInfo->opnd[OPND1].type &= ~OP_A;
 					DebugMsg1(("check_size: OP_A flag reset, new op2=%X\n", CodeInfo->opnd[OPND1].type));
 #endif
@@ -3308,10 +2919,8 @@ static ret_code check_size(struct code_info *CodeInfo, const struct expr opndx[]
 			op1_size = OperandSize(op1, CodeInfo);
 			op2_size = OperandSize(op2, CodeInfo);
 			DebugMsg1(("check_size default: op1_size1=%u, op2_size=%u\n", op1_size, op2_size));
-			if (op1_size > op2_size)
-			{
-				if ((op2 >= OP_I8) && (op2 <= OP_I32))
-				{     /* immediate */
+        if( op1_size > op2_size ) {
+            if( ( op2 >= OP_I8 ) && ( op2 <= OP_I32 ) ) {     /* immediate */
 					op2_size = op1_size;    /* promote to larger size */
 				}
 			}
@@ -3324,8 +2933,7 @@ static ret_code check_size(struct code_info *CodeInfo, const struct expr opndx[]
 			if ((op1_size == 1) && (op2 == OP_I16) &&
 				(CodeInfo->opnd[OPND2].data32l <= UCHAR_MAX) &&
 				//CodeInfo->opnd[OPND2].data32l >= -128 ) ) {
-				(CodeInfo->opnd[OPND2].data32l >= -255))
-			{
+            ( CodeInfo->opnd[OPND2].data32l >= -255 ) ) {
 				return(rc); /* OK cause no sign extension */
 			}
 #endif
@@ -3338,34 +2946,26 @@ static ret_code check_size(struct code_info *CodeInfo, const struct expr opndx[]
 			 * which is rejected by Masm.
 			 */
 			if ((op1_size == 2) && (op2 == OP_I32)
-				&& (CodeInfo->data[OPND2] <= USHRT_MAX))
-			{
+            && ( CodeInfo->data[OPND2] <= USHRT_MAX ) ) {
 				return(rc); /* OK cause no sign extension */
 			}
 #endif
-			if (op1_size != op2_size)
-			{
+        if( op1_size != op2_size ) {
 				/* if one or more are !defined, set them appropriately */
 #if AVXSUPP
-				if ((op1 | op2) & (OP_MMX | OP_XMM | OP_YMM | OP_K | OP_ZMM))
-				{
+            if( ( op1 | op2 ) & ( OP_MMX | OP_XMM | OP_YMM | OP_K | OP_ZMM ) ) {
 #else
-				if ((op1 | op2) & (OP_MMX | OP_XMM))
-				{
+            if( ( op1 | op2 ) & ( OP_MMX | OP_XMM ) ) {
 #endif
 				}
-				else if ((op1_size != 0) && (op2_size != 0))
-				{
+            else if( ( op1_size != 0 ) && ( op2_size != 0 ) ) {
 					if ((CodeInfo->token == T_VCVTSD2USI)||(CodeInfo->token == T_VCVTSS2USI)||
 						(CodeInfo->token == T_VCVTTSD2USI)||(CodeInfo->token == T_VCVTTSS2USI))
 						CodeInfo->evex_flag = TRUE;
-					else
-					{
-						if (CodeInfo->token >= T_BNDMK && CodeInfo->token <= T_BNDSTX)
-						{
+              else{
+                if (CodeInfo->token >= T_BNDMK && CodeInfo->token <= T_BNDSTX){
 							//__debugbreak();
-							switch (CodeInfo->token)
-							{
+                  switch (CodeInfo->token){
 								case T_BNDMK:
 								case T_BNDCL:
 								case T_BNDCU:
@@ -3373,8 +2973,7 @@ static ret_code check_size(struct code_info *CodeInfo, const struct expr opndx[]
 									if (CodeInfo->mem_type == MT_DWORD || CodeInfo->mem_type == MT_QWORD ||
 										CodeInfo->mem_type ==  MT_EMPTY)
 										;
-									else
-									{
+                                else{
 										EmitErr(OPERANDS_MUST_BE_THE_SAME_SIZE, op1_size, op2_size);
 										rc = ERROR;
 									}
@@ -3383,8 +2982,7 @@ static ret_code check_size(struct code_info *CodeInfo, const struct expr opndx[]
 									if (CodeInfo->mem_type == MT_DWORD || CodeInfo->mem_type == MT_QWORD ||
 										CodeInfo->mem_type == MT_OWORD || CodeInfo->mem_type ==  MT_EMPTY)
 										;
-									else
-									{
+                                else{
 										EmitErr(OPERANDS_MUST_BE_THE_SAME_SIZE, op1_size, op2_size);
 										rc = ERROR;
 									}
@@ -3394,16 +2992,14 @@ static ret_code check_size(struct code_info *CodeInfo, const struct expr opndx[]
 									if (CodeInfo->mem_type == MT_DWORD || CodeInfo->mem_type == MT_QWORD ||
 										CodeInfo->mem_type ==  MT_EMPTY)
 										;
-									else
-									{
+                                else{
 										EmitErr(OPERANDS_MUST_BE_THE_SAME_SIZE, op1_size, op2_size);
 										rc = ERROR;
 									}
 									break;
 							}
 						}
-						else
-						{
+                else{
 							EmitErr(OPERANDS_MUST_BE_THE_SAME_SIZE, op1_size, op2_size);
 							rc = ERROR;
 						}
@@ -3413,91 +3009,64 @@ static ret_code check_size(struct code_info *CodeInfo, const struct expr opndx[]
 				 * is also the case of an "empty" struct or union. The
 				 * latter case isn't handled correctly.
 				 */
-				if (op1_size == 0)
-				{
-					if ((op1 & OP_M_ANY) && (op2 & OP_I))
-					{
+            if( op1_size == 0 ) {
+                if( ( op1 & OP_M_ANY ) && ( op2 & OP_I ) ) {
 						char *p = "WORD";
-						if ((uint_32)CodeInfo->opnd[OPND2].data32l > USHRT_MAX || op2_size == 4)
-						{
+                    if( (uint_32)CodeInfo->opnd[OPND2].data32l > USHRT_MAX || op2_size == 4 ) {
 							CodeInfo->iswide = 1;
 							DebugMsg1(("check_size: op1=%X op1_size=0, op2=%X, op2_size=%u CodeInfo->data[2]=%X\n", op1, op2, op2_size, CodeInfo->opnd[OPND2].data32l));
 #if 1 /* added v1.95: in 16bit code, 'mov [di],8000h' should warn: assuming WORD */
 							if (ModuleInfo.Ofssize == USE16 && op2_size > 2 && InWordRange(CodeInfo->opnd[OPND2].data32l))
 								op2_size = 2;
 #endif
-							if (op2_size <= 2 && CodeInfo->opnd[OPND2].data32l > SHRT_MIN && ModuleInfo.Ofssize == USE16)
-							{
+                        if (op2_size <= 2 && CodeInfo->opnd[OPND2].data32l > SHRT_MIN && ModuleInfo.Ofssize == USE16 ) {
 								CodeInfo->mem_type = MT_WORD;
 								CodeInfo->opnd[OPND2].type = OP_I16;
-							}
-							else
-							{
+                        } else {
 								CodeInfo->mem_type = MT_DWORD;
 								CodeInfo->opnd[OPND2].type = OP_I32;
 								p = "DWORD";
 							}
-						}
-						else if ((uint_32)CodeInfo->opnd[OPND2].data32l > UCHAR_MAX || op2_size == 2)
-						{
+                    } else if( (uint_32)CodeInfo->opnd[OPND2].data32l > UCHAR_MAX || op2_size == 2 ) {
 							CodeInfo->mem_type = MT_WORD;
 							CodeInfo->iswide = 1;
 							CodeInfo->opnd[OPND2].type = OP_I16;
-						}
-						else
-						{
+                    } else {
 							CodeInfo->mem_type = MT_BYTE;
 							CodeInfo->opnd[OPND2].type = OP_I8;
 							CodeInfo->opnd[OPND1].type = OP_M08;
 							p = "BYTE";
 						}
-						if (opndx[OPND2].explicit == FALSE)
-						{
+                    if( opndx[OPND2].explicit == FALSE ) {
 							/* v2.06: emit warning at pass one if mem op isn't a forward ref */
 							/* v2.06b: added "undefined" check */
 							if ((CodeInfo->opnd[OPND1].InsFixup == NULL && Parse_Pass == PASS_1 && CodeInfo->undef_sym == FALSE) ||
 								(CodeInfo->opnd[OPND1].InsFixup && Parse_Pass == PASS_2))
 								EmitWarn(1, SIZE_NOT_SPECIFIED_ASSUMING, p);  //ovde je greska
 						}
-					}
-					else if ((op1 & OP_M_ANY) && (op2 & (OP_R | OP_SR)))
-					{
-					}
-					else if ((op1 & (OP_MMX | OP_XMM)) && (op2 & OP_I))
-					{
-						if ((uint_32)CodeInfo->opnd[OPND2].data32l > USHRT_MAX)
-						{
+                } else if( ( op1 & OP_M_ANY ) && ( op2 & ( OP_R | OP_SR ) ) ) {
+                } else if( ( op1 & ( OP_MMX | OP_XMM ) ) && ( op2 & OP_I ) ) {
+                    if( (uint_32)CodeInfo->opnd[OPND2].data32l > USHRT_MAX ) {
 							CodeInfo->opnd[OPND2].type = OP_I32;
-						}
-						else if ((uint_32)CodeInfo->opnd[OPND2].data32l > UCHAR_MAX)
-						{
+                    } else if( (uint_32)CodeInfo->opnd[OPND2].data32l > UCHAR_MAX ) {
 							CodeInfo->opnd[OPND2].type = OP_I16;
-						}
-						else
-						{
+                    } else {
 							CodeInfo->opnd[OPND2].type = OP_I8;
 						}
-					}
-					else if ((op1 | op2) & (OP_MMX | OP_XMM))
-					{
-					}
-					else
-					{
+                } else if( ( op1 | op2 ) & ( OP_MMX | OP_XMM ) ) {
+                } else {
 						//AsmIntErr( 1 ); /* printf("internal error = %u", 1 ) */
-						switch (op2_size)
-						{
+                    switch( op2_size ) {
 							case 1:
 								CodeInfo->mem_type = MT_BYTE;
-								if ((Parse_Pass == PASS_1) && (op2 & OP_I))
-								{
+                        if( ( Parse_Pass == PASS_1 ) && ( op2 & OP_I ) ) {
 									EmitWarn(1, SIZE_NOT_SPECIFIED_ASSUMING, "BYTE");
 								}
 								break;
 							case 2:
 								CodeInfo->mem_type = MT_WORD;
 								CodeInfo->iswide = 1;
-								if ((Parse_Pass == PASS_1) && (op2 & OP_I))
-								{
+                        if( ( Parse_Pass == PASS_1 ) && ( op2 & OP_I ) ) {
 									EmitWarn(1, SIZE_NOT_SPECIFIED_ASSUMING, "WORD");
 								}
 								if (CodeInfo->Ofssize)
@@ -3506,8 +3075,7 @@ static ret_code check_size(struct code_info *CodeInfo, const struct expr opndx[]
 							case 4:
 								CodeInfo->mem_type = MT_DWORD;
 								CodeInfo->iswide = 1;
-								if ((Parse_Pass == PASS_1) && (op2 & OP_I))
-								{
+                        if( ( Parse_Pass == PASS_1 ) && ( op2 & OP_I ) ) {
 									EmitWarn(1, SIZE_NOT_SPECIFIED_ASSUMING, "DWORD");
 								}
 								break;
@@ -3682,8 +3250,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 	}
 
 	/* Does line start with a code label? */
-	if (tokenarray[0].token == T_ID && (tokenarray[1].token == T_COLON || tokenarray[1].token == T_DBL_COLON))
-	{
+  if (tokenarray[0].token == T_ID && (tokenarray[1].token == T_COLON || tokenarray[1].token == T_DBL_COLON)) {
 		i = 2;
 		DebugMsg1(("ParseLine T_COLON, code label=%s\n", tokenarray[0].string_ptr));
 		if (ProcStatus & PRST_PROLOGUE_NOT_DONE) write_prologue(tokenarray);
@@ -3702,13 +3269,11 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 
 		/* create a global or local code label */
 		if (CreateLabel(tokenarray[0].string_ptr, MT_NEAR, NULL,
-			(ModuleInfo.scoped && CurrProc && tokenarray[1].token != T_DBL_COLON)) == NULL)
-		{
+      (ModuleInfo.scoped && CurrProc && tokenarray[1].token != T_DBL_COLON)) == NULL) {
 			DebugMsg(("ParseLine, CreateLabel(%s) failed, exit\n", tokenarray[0].string_ptr));
 			return(ERROR);
 		}
-		if (tokenarray[i].token == T_FINAL)
-		{
+    if (tokenarray[i].token == T_FINAL) {
 			/* v2.06: this is a bit too late. Should be done BEFORE
 			 * CreateLabel, because of '@@'. There's a flag supposed to
 			 * be used for this handling, LOF_STORED in line_flags.
@@ -3718,8 +3283,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 			 * been moved to module_vars (see global.h).
 			 */
 			FStoreLine(0);
-			if (CurrFile[LST])
-			{
+      if (CurrFile[LST]) {
 				LstWrite(LSTTYPE_LABEL, 0, NULL);
 			}
 			return(NOT_ERROR);
@@ -3727,13 +3291,11 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 	}
 
 	/* handle directives and (anonymous) data items */
-	if (tokenarray[i].token != T_INSTRUCTION)
-	{
+  if (tokenarray[i].token != T_INSTRUCTION) {
 		/* a code label before a data item is only accepted in Masm5 compat mode */
 		Frame_Type = FRAME_NONE;
 		SegOverride = NULL;
-		if (i == 0 && tokenarray[0].token == T_ID)
-		{
+    if (i == 0 && tokenarray[0].token == T_ID) {
 			/* token at pos 0 may be a label.
 			 * it IS a label if:
 			 * 1. token at pos 1 is a directive (lbl dd ...)
@@ -3744,8 +3306,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 			 */
 			if (tokenarray[1].token == T_DIRECTIVE)
 				i++;
-			else
-			{
+      else {
 				sym = IsType(tokenarray[0].string_ptr);
 				if (sym == NULL)
 					i++;
@@ -3755,59 +3316,48 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 					i++;
 			}
 		}
-		switch (tokenarray[i].token)
-		{
+    switch (tokenarray[i].token) {
 			case T_DIRECTIVE:
 				DebugMsg1(("ParseLine: T_DIRECTIVE >%s<\n", tokenarray[i].string_ptr));
-				if (tokenarray[i].dirtype == DRT_DATADIR)
-				{
+      if (tokenarray[i].dirtype == DRT_DATADIR) {
 					return(data_dir(i, tokenarray, NULL));
 				}
 				dirflags = GetValueSp(tokenarray[i].tokval);
-				if (CurrStruct && (dirflags & DF_NOSTRUC))
-				{
+      if (CurrStruct && (dirflags & DF_NOSTRUC)) {
 					return(EmitError(STATEMENT_NOT_ALLOWED_INSIDE_STRUCTURE_DEFINITION));
 				}
 				/* label allowed for directive? */
 				//if ( tokenarray[i].flags & DF_LABEL ) {
-				if (dirflags & DF_LABEL)
-				{
-					if (i && tokenarray[0].token != T_ID)
-					{
+      if (dirflags & DF_LABEL) {
+        if (i && tokenarray[0].token != T_ID) {
 						return(EmitErr(SYNTAX_ERROR_EX, tokenarray[0].string_ptr));
 					}
 				}
-				else if (i && tokenarray[i - 1].token != T_COLON && tokenarray[i - 1].token != T_DBL_COLON)
-				{
+      else if (i && tokenarray[i - 1].token != T_COLON && tokenarray[i - 1].token != T_DBL_COLON) {
 					return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i - 1].string_ptr));
 				}
 				/* must be done BEFORE FStoreLine()! */
 				if ((ProcStatus & PRST_PROLOGUE_NOT_DONE) && (dirflags & DF_PROC)) write_prologue(tokenarray);
 #if FASTPASS
-				if (StoreState || (dirflags & DF_STORE))
-				{
+      if (StoreState || (dirflags & DF_STORE)) {
 					/* v2.07: the comment must be stored as well
 					 * if a listing (with -Sg) is to be written and
 					 * the directive will generate lines
 					 */
-					if ((dirflags & DF_CGEN) && ModuleInfo.CurrComment && ModuleInfo.list_generated_code)
-					{
+        if ((dirflags & DF_CGEN) && ModuleInfo.CurrComment && ModuleInfo.list_generated_code) {
 						FStoreLine(1);
 					}
 					else
 						FStoreLine(0);
 				}
 #endif
-				if (tokenarray[i].dirtype > DRT_DATADIR)
-				{
+      if (tokenarray[i].dirtype > DRT_DATADIR) {
 					temp = directive_tab[tokenarray[i].dirtype](i, tokenarray);
 				}
-				else
-				{
+      else {
 					temp = ERROR;
 					/* ENDM, EXITM and GOTO directives should never be seen here */
-					switch (tokenarray[i].tokval)
-					{
+        switch (tokenarray[i].tokval) {
 						case T_ENDM:
 							EmitError(UNMATCHED_MACRO_NESTING);
 							break;
@@ -3840,14 +3390,12 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 				return(data_dir(i, tokenarray, NULL));
 			case T_ID:
 				DebugMsg1(("ParseLine: T_ID >%s<\n", tokenarray[i].string_ptr));
-				if (sym = IsType(tokenarray[i].string_ptr))
-				{
+      if (sym = IsType(tokenarray[i].string_ptr)) {
 					return(data_dir(i, tokenarray, sym));
 				}
 				break;
 			default:
-				if (tokenarray[i].token == T_COLON)
-				{
+      if (tokenarray[i].token == T_COLON) {
 					DebugMsg(("ParseLine: unexpected colon\n"));
 					return(EmitError(SYNTAX_ERROR_UNEXPECTED_COLON));
 				}
@@ -3861,8 +3409,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 
 	DebugMsg1(("ParseLine: %s\n", tokenarray[i].string_ptr));
 	/* v2.04 added */
-	if (CurrStruct)
-	{
+  if (CurrStruct) {
 		return(EmitError(STATEMENT_NOT_ALLOWED_INSIDE_STRUCTURE_DEFINITION));
 	}
 
@@ -3882,8 +3429,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 	CodeInfo.prefix.adrsiz = FALSE;
 	CodeInfo.prefix.opsiz = FALSE;
 	CodeInfo.mem_type = MT_EMPTY;
-	for (j = 0; j < MAX_OPND; j++)
-	{
+  for (j = 0; j < MAX_OPND; j++) {
 		CodeInfo.opnd[j].type = OP_NONE;
 #ifdef DEBUG_OUT
 		CodeInfo.opnd[j].data32l = -1;
@@ -3910,12 +3456,10 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 	CodeInfo.basereg = 0xff;
 	CodeInfo.indexreg = 0xff;
 	CodeInfo.zreg = 0;
-	if (tokenarray[0].tokval >= T_KADDB && tokenarray[0].tokval <= T_KMOVW)
-	{
+  if (tokenarray[0].tokval >= T_KADDB && tokenarray[0].tokval <= T_KMOVW){
 		CodeInfo.evex_flag = FALSE;
 	}
-	else
-	{
+  else{
 		//Init EVEX three bytes
 		CodeInfo.evex_p0 = 0;      /* P0[3 : 2] Must be 0 */
 		CodeInfo.evex_p1 = 0x4;    /* P1[2]    Must be 1  */
@@ -3936,8 +3480,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 		i++;
 
 		/* prefix has to be followed by an instruction */
-		if (tokenarray[i].token != T_INSTRUCTION)
-		{
+    if (tokenarray[i].token != T_INSTRUCTION) {
 			DebugMsg(("ParseLine: unexpected token %u after prefix, exit, error\n", tokenarray[i].token));
 			return(EmitError(PREFIX_MUST_BE_FOLLOWED_BY_AN_INSTRUCTION));
 		}
@@ -3945,10 +3488,8 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 		DebugMsg1(("ParseLine: %s\n", tokenarray[i].tokpos));
 	};
 
-	if (CurrProc)
-	{
-		switch (tokenarray[i].tokval)
-		{
+  if (CurrProc) {
+    switch (tokenarray[i].tokval) {
 			case T_RETN:
 			case T_RET:
 			case T_IRET:  /* IRET is always 16-bit; OTOH, IRETW doesn't exist */
@@ -3958,8 +3499,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 #endif
 				if ((!(ProcStatus & PRST_INSIDE_EPILOGUE) && ModuleInfo.epiloguemode != PEM_NONE && tokenarray[i].tokval != T_RETN) ||
 					(!(ProcStatus & PRST_INSIDE_EPILOGUE) && (CurrProc->e.procinfo->basereg == T_ESP || CurrProc->e.procinfo->basereg == T_RSP))
-					)
-				{
+		  ) {
 					/* v2.07: special handling for RET/IRET */
 					FStoreLine((ModuleInfo.CurrComment && ModuleInfo.list_generated_code) ? 1 : 0);
 					ProcStatus |= PRST_INSIDE_EPILOGUE;
@@ -3984,12 +3524,10 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 	CodeInfo.pinstr = &InstrTable[IndexFromToken(CodeInfo.token)];
 	i++;
 
-	if (CurrSeg == NULL)
-	{
+  if (CurrSeg == NULL) {
 		return(EmitError(MUST_BE_IN_SEGMENT_BLOCK));
 	}
-	if (CurrSeg->e.seginfo->segtype == SEGTYPE_UNDEF)
-	{
+  if (CurrSeg->e.seginfo->segtype == SEGTYPE_UNDEF) {
 		CurrSeg->e.seginfo->segtype = SEGTYPE_CODE;
 	}
 	if (ModuleInfo.CommentDataInCode)
@@ -4019,8 +3557,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 
 	/* get the instruction's arguments.
 	 * This loop accepts up to 4 arguments if AVXSUPP is on */
-	for (j = 0; j < sizeof(opndx) / sizeof(opndx[0]) && tokenarray[i].token != T_FINAL; j++)
-	{
+  for (j = 0; j < sizeof(opndx) / sizeof(opndx[0]) && tokenarray[i].token != T_FINAL; j++) {
 		if (j)
 		{
 			if (tokenarray[i].token != T_COMMA)
@@ -4029,8 +3566,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 		}
 
 		DebugMsg1(("ParseLine(%s): calling EvalOperand, i=%u\n", instr, i));
-		if (EvalOperand(&i, tokenarray, Token_Count, &opndx[j], 0) == ERROR)
-		{
+    if (EvalOperand(&i, tokenarray, Token_Count, &opndx[j], 0) == ERROR) {
 			DebugMsg(("ParseLine(%s): EvalOperand() failed\n", instr));
 			return(ERROR);
 		}
@@ -4069,20 +3605,16 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 				opndx[j].override = &dsOver;
 		}
 
-		if (j == 2 && (opndx[j].kind == EXPR_REG))
-		{
+    if (j == 2 && (opndx[j].kind == EXPR_REG)){
 			regtok = opndx[OPND3].base_reg->tokval;
 			CodeInfo.reg3 = GetRegNo(regtok);
 		}
-		switch (opndx[j].kind)
-		{
+    switch (opndx[j].kind) {
 			case EXPR_FLOAT:
 				/* v2.06: accept float constants for PUSH */
-				if (j == OPND2 || CodeInfo.token == T_PUSH || CodeInfo.token == T_PUSHD)
-				{
+      if (j == OPND2 || CodeInfo.token == T_PUSH || CodeInfo.token == T_PUSHD) {
 #if FPIMMEDIATE
-					if (Options.strict_masm_compat == FALSE)
-					{
+        if (Options.strict_masm_compat == FALSE) {
 						/* convert to REAL4, unless REAL8 coercion is requested */
 						atofloat(&opndx[j].fvalue, opndx[j].float_tok->string_ptr, opndx[j].mem_type == MT_REAL8 ? 8 : 4, opndx[j].negative, opndx[j].float_tok->floattype);
 						opndx[j].kind = EXPR_CONST;
@@ -4122,14 +3654,12 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 	/* UASM 2.36 SIMD aligned check */
 	/* ********************************************************* */
 	if (opndx[0].kind == EXPR_REG && (GetValueSp(opndx[0].base_reg->tokval) == OP_XMM ||
-		GetValueSp(opndx[0].base_reg->tokval) == OP_YMM|| GetValueSp(opndx[0].base_reg->tokval) == OP_ZMM))
-	{
+      GetValueSp(opndx[0].base_reg->tokval) == OP_YMM|| GetValueSp(opndx[0].base_reg->tokval) == OP_ZMM)){
 		if (GetValueSp(opndx[0].base_reg->tokval) == OP_XMM)
 			alignCheck = 16;
 		else if (GetValueSp(opndx[0].base_reg->tokval) == OP_YMM)
 			alignCheck = 32;
-		else if (GetValueSp(opndx[0].base_reg->tokval) == OP_ZMM)
-		{
+    else if (GetValueSp(opndx[0].base_reg->tokval) == OP_ZMM){
 			CodeInfo.zreg = 1;
 			alignCheck = 64;
 		}
@@ -4182,14 +3712,12 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 	else if (opndx[0].kind == EXPR_ADDR && opndx[0].sym)
 	{
 		if (opndx[1].kind == EXPR_REG && (GetValueSp(opndx[1].base_reg->tokval) == OP_XMM ||
-			GetValueSp(opndx[1].base_reg->tokval) == OP_YMM|| GetValueSp(opndx[1].base_reg->tokval) == OP_ZMM))
-		{
+         GetValueSp(opndx[1].base_reg->tokval) == OP_YMM|| GetValueSp(opndx[1].base_reg->tokval) == OP_ZMM)){
 			if (GetValueSp(opndx[1].base_reg->tokval) == OP_XMM)
 				alignCheck = 16;
 			else if (GetValueSp(opndx[1].base_reg->tokval) == OP_YMM)
 				alignCheck = 32;
-			else if (GetValueSp(opndx[1].base_reg->tokval) == OP_ZMM)
-			{
+        else if (GetValueSp(opndx[1].base_reg->tokval) == OP_ZMM){
 				CodeInfo.zreg = 1;
 				alignCheck = 64;
 			}
@@ -4219,8 +3747,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 		}
 	}
 
-	for (CurrOpnd = 0; CurrOpnd < j && CurrOpnd < MAX_OPND; CurrOpnd++)
-	{
+for (CurrOpnd = 0; CurrOpnd < j && CurrOpnd < MAX_OPND; CurrOpnd++) {
 		Frame_Type = FRAME_NONE;
 		SegOverride = NULL; /* segreg prefix is stored in RegOverride */
 		CodeInfo.opnd[CurrOpnd].data32l = 0;
@@ -4231,39 +3758,32 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 		 */
 		if (CodeInfo.token >= VEX_START &&
 			CurrOpnd == OPND2 &&
-			(CodeInfo.opnd[OPND1].type & (OP_XMM | OP_YMM | OP_M | OP_M256 | OP_R32 | OP_R64 | OP_K | OP_ZMM | OP_M64 | OP_M512)))
-		{
+      (CodeInfo.opnd[OPND1].type & (OP_XMM | OP_YMM | OP_M | OP_M256 | OP_R32 | OP_R64 | OP_K | OP_ZMM | OP_M64 | OP_M512))) {
 			//CodeInfo.indexreg = 0xff;
 			//CodeInfo.basereg = 0xff;
 			CodeInfo.r1type = 10000000;
 			CodeInfo.r2type = 10000000;
-			if (CodeInfo.token == T_VMOVSD || CodeInfo.token == T_VMOVSS)
-			{
+      if (CodeInfo.token == T_VMOVSD || CodeInfo.token == T_VMOVSS){
 				if (opndx[1].kind == EXPR_CONST)
-					return(EmitErr(INVALID_INSTRUCTION_OPERANDS));
-			}
-			if (opndx[OPND1].kind == EXPR_REG)
-			{
+          return(EmitErr(INVALID_INSTRUCTION_OPERANDS));       }
+      if (opndx[OPND1].kind == EXPR_REG){
 				regtok = opndx[OPND1].base_reg->tokval;
 				CodeInfo.reg1 = GetRegNo(regtok);
 				if (opndx[OPND1].idx_reg) CodeInfo.indexreg = opndx[OPND1].idx_reg->bytval;
 				if (CodeInfo.reg1 > 15) CodeInfo.evex_flag = TRUE;
 				CodeInfo.r1type = GetValueSp(opndx[OPND1].base_reg->tokval);
-				if (CodeInfo.r1type == OP_ZMM)
-				{
+      if (CodeInfo.r1type == OP_ZMM){
 					CodeInfo.zreg = 1;
 					CodeInfo.evex_flag = TRUE;
 				}
 			}
-			if (opndx[OPND2].kind == EXPR_REG)
-			{
+      if (opndx[OPND2].kind == EXPR_REG){
 				regtok = opndx[OPND2].base_reg->tokval;
 				CodeInfo.reg2 = GetRegNo(regtok);
 				if (opndx[OPND2].idx_reg) CodeInfo.indexreg = opndx[OPND2].idx_reg->bytval;
 				if (CodeInfo.reg2 > 15) CodeInfo.evex_flag = TRUE;
 				CodeInfo.r2type = GetValueSp(opndx[OPND2].base_reg->tokval);
-				if (CodeInfo.r2type == OP_ZMM)
-				{
+       if (CodeInfo.r2type == OP_ZMM){
 					CodeInfo.zreg = 1;
 					CodeInfo.evex_flag = TRUE;
 				}
@@ -4282,11 +3802,9 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 					 ((CodeInfo.token == T_VMOVSD || CodeInfo.token == T_VMOVSS) &&
 					 (opndx[OPND2].kind != EXPR_REG || opndx[OPND2].indirect == TRUE))))
 				;
-			else
-			{
+      else {
 				if (opndx[OPND2].kind != EXPR_REG ||
-					(!(GetValueSp(opndx[CurrOpnd].base_reg->tokval) & (OP_R32 | OP_R64 |OP_K | OP_XMM | OP_YMM | OP_ZMM))))
-				{
+          (!(GetValueSp(opndx[CurrOpnd].base_reg->tokval) & (OP_R32 | OP_R64 |OP_K | OP_XMM | OP_YMM | OP_ZMM)))) {
 					DebugMsg(("ParseLine(%s,%u): avx invalid operand, op2.kind=%u\n", instr, CurrOpnd, opndx[OPND2].kind));
 					if ((CodeInfo.token < T_KMOVB) && (CodeInfo.token > T_KMOVW))
 						return(EmitErr(INVALID_INSTRUCTION_OPERANDS));
@@ -4295,8 +3813,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 				 * if no, there's no point to continue with switch (opndx[].kind).
 				 * v2.11: additional check for j <= 2 added
 				 */
-				if (j <= 2)
-				{
+        if (j <= 2) {
 					DebugMsg(("ParseLine(%s,%u): avx not enough operands (%u)\n", instr, CurrOpnd, opndx[OPND2].kind, j));
 					/* v2.11: next line should be activated - currently the error is emitted below as syntax error */
 					//return( EmitErr( INVALID_INSTRUCTION_OPERANDS ) );
@@ -4305,8 +3822,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 
 					/* flag VX_DST is set if an immediate is expected as operand 3 */
 					if ((vex_flags[CodeInfo.token - VEX_START] & VX_DST) &&
-						(opndx[OPND3].kind == EXPR_CONST))
-					{
+				(opndx[OPND3].kind == EXPR_CONST)) {
 						DebugMsg1(("ParseLine(%s,%u): avx VX_DST, op3.kind=CONST (value=%u), numops=%u\n", instr, CurrOpnd, opndx[OPND3].kind, opndx[OPND3].value, j));
 						if (opndx[OPND2].idx_reg)
 							CodeInfo.indexreg = opndx[OPND2].idx_reg->bytval;
@@ -4314,8 +3830,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 							CodeInfo.basereg = opndx[OPND2].base_reg->bytval;
 						/* third operand data goes in CodeInfo.vexconst used in codegen.c */
 						CodeInfo.vexconst = opndx[CurrOpnd].value;
-						if (opndx[OPND1].base_reg)
-						{
+				if (opndx[OPND1].base_reg) {
 							/* first operand register is moved to vexregop */
 							/* handle VEX.NDD */
 							CodeInfo.vexregop = opndx[OPND1].base_reg->bytval + 1;
@@ -4346,8 +3861,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 							if ((flags & (OP_XMM | OP_M128)) &&
 								(CodeInfo.opnd[OPND1].type & (OP_YMM | OP_M256)) ||
 								(flags & (OP_YMM | OP_M256)) &&
-								(CodeInfo.opnd[OPND1].type & (OP_XMM | OP_M128)))
-							{
+                (CodeInfo.opnd[OPND1].type & (OP_XMM | OP_M128))) {
 								DebugMsg(("ParseLine(%s,%u): avx invalid opnd 2, flags=%X ci.type[0]=%X\n", instr, CurrOpnd, flags, CodeInfo.opnd[OPND1].type));
 								return(EmitErr(INVALID_INSTRUCTION_OPERANDS));
 							}
@@ -4369,8 +3883,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 		}
 #endif
 		DebugMsg1(("ParseLine(%s,%u): type/value/mem_type/ofssize=%Xh/%" I64_SPEC "Xh/%Xh/%d\n", instr, CurrOpnd, opndx[CurrOpnd].kind, opndx[CurrOpnd].value64, opndx[CurrOpnd].mem_type, opndx[CurrOpnd].Ofssize));
-		switch (opndx[CurrOpnd].kind)
-		{
+    switch (opndx[CurrOpnd].kind) {
 			case EXPR_DECORATOR:
 				CodeInfo.evex_sae = opndx[CurrOpnd].saeflags;
 				return(codegen(&CodeInfo, oldofs));
@@ -4386,31 +3899,25 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 				break;
 			case EXPR_REG:
 				DebugMsg1(("ParseLine(%s,%u): type REG\n", instr, CurrOpnd));
-				if (opndx[CurrOpnd].indirect)
-				{ /* indirect operand ( "[EBX+...]" )? */
+      if (opndx[CurrOpnd].indirect) { /* indirect operand ( "[EBX+...]" )? */
 					if (process_address(&CodeInfo, CurrOpnd, &opndx[CurrOpnd]) == ERROR)
 						return(ERROR);
 				}
-				else
-				{
+      else {
 					/* process_register() can't handle 3rd operand */
-					if (!CodeInfo.vexregop)
-					{
-						if (CurrOpnd == OPND1)
-						{
+        if (!CodeInfo.vexregop){
+          if (CurrOpnd == OPND1){
 							regtok = opndx[OPND1].base_reg->tokval;
 							CodeInfo.reg1 = GetRegNo(regtok);
 							if (CodeInfo.reg1 > 15) CodeInfo.evex_flag = TRUE;
 						}
-						else if (CurrOpnd == OPND2)
-						{
+          else if (CurrOpnd == OPND2){
 							regtok = opndx[OPND2].base_reg->tokval;
 							CodeInfo.reg2 = GetRegNo(regtok);
 							if (CodeInfo.reg2 > 15) CodeInfo.evex_flag = TRUE;
 						}
 					}
-					if (CurrOpnd == OPND3)
-					{
+        if (CurrOpnd == OPND3) {
 						CodeInfo.opnd[OPND3].type = GetValueSp(opndx[OPND3].base_reg->tokval);
 						CodeInfo.opnd[OPND3].data32l = opndx[OPND3].base_reg->bytval;
 						regtok = opndx[OPND3].base_reg->tokval;
@@ -4425,8 +3932,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 	} /* end for */
 #if AVXSUPP
 	 /* 4 arguments are valid vor AVX only */
-	if (CurrOpnd != j)
-	{
+   if (CurrOpnd != j) {
 		for (; tokenarray[i].token != T_COMMA; i--);
 		DebugMsg(("ParseLine(%s): CurrOpnd != j ( %u - %u ) >%s<\n", instr, CurrOpnd, j, tokenarray[i].tokpos));
 		if (CodeInfo.token < VEX_START)
@@ -4435,11 +3941,9 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 			if ((CodeInfo.token == T_VMASKMOVPS || CodeInfo.token == T_VMASKMOVPD) && (j < 3))
 				return(EmitErr(MISSING_OPERATOR_IN_EXPRESSION));
 	}
-	if (CodeInfo.token == T_VBLENDVPS || CodeInfo.token == T_VBLENDVPD)
-	{
+   if (CodeInfo.token == T_VBLENDVPS || CodeInfo.token == T_VBLENDVPD) {
 		DebugMsg(("ParseLine(%s): ( %u - %u ) >%s<\n", instr, CurrOpnd, j, tokenarray[i].tokpos));
-		if (CodeInfo.opnd[OPND3].type == OP_NONE)
-		{
+	   if (CodeInfo.opnd[OPND3].type == OP_NONE) {
 			return (EmitErr(MISSING_OPERATOR_IN_EXPRESSION));
 		}
 	}
@@ -4451,27 +3955,20 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 	 * the "near" entries, that's why it's needed to skip all items
 	 * until the next "first" item is found.
 	 */
-	if (CodeInfo.isfar)
-	{
-		if (CodeInfo.token == T_CALL || CodeInfo.token == T_JMP)
-		{
-			do
-			{
+  if (CodeInfo.isfar) {
+    if (CodeInfo.token == T_CALL || CodeInfo.token == T_JMP) {
+      do {
 				CodeInfo.pinstr++;
-			}
-			while (CodeInfo.pinstr->first == FALSE);
+      } while (CodeInfo.pinstr->first == FALSE);
 		}
 	}
 	/* special handling for string instructions */
 
 	if (CodeInfo.pinstr->allowed_prefix == AP_REP ||
-		CodeInfo.pinstr->allowed_prefix == AP_REPxx)
-	{
+    CodeInfo.pinstr->allowed_prefix == AP_REPxx) {
 		HandleStringInstructions(&CodeInfo, opndx);
 #if SVMSUPP /* v2.09, not active because a bit too hackish yet - it "works", though. */
-	}
-	else if (CodeInfo.token >= T_VMRUN && CodeInfo.token <= T_INVLPGA && CodeInfo.pinstr->opclsidx)
-	{
+  } else if ( CodeInfo.token >= T_VMRUN && CodeInfo.token <= T_INVLPGA && CodeInfo.pinstr->opclsidx ) {
 		/* the size of the first operand is to trigger the address size byte 67h,
 		 * not the operand size byte 66h!
 		 */
@@ -4480,8 +3977,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 		/* the first op must be EAX/AX or RAX/EAX. The operand class
 		 * used in the instruction table is OP_A ( which is AL/AX/EAX/RAX ).
 		 */
-		if ((CodeInfo.opnd[OPND1].type & (CodeInfo.Ofssize == USE64 ? OP_R64 | OP_R32 : OP_R32 | OP_R16)) == 0)
-		{
+    if ( ( CodeInfo.opnd[OPND1].type & ( CodeInfo.Ofssize == USE64 ? OP_R64 | OP_R32 : OP_R32 | OP_R16 ) ) == 0 ) {
 			DebugMsg(("ParseLine(%s): opnd1 unexpected type=%X\n", instr, CodeInfo.opnd[OPND1].type));
 			return(EmitErr(INVALID_INSTRUCTION_OPERANDS));
 		}
@@ -4489,47 +3985,37 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 		 * operand class for ECX alone. So it has to be ensured here that the register IS ecx.
 		 */
 		if (CodeInfo.token == T_INVLPGA)
-			if ((CodeInfo.rm_byte & BIT_345) != (1 << 3))
-			{ /* ECX is register 1 */
+      if ( ( CodeInfo.rm_byte & BIT_345 ) != ( 1 << 3 ) ) { /* ECX is register 1 */
 				DebugMsg(("ParseLine(%s): opnd2 is not ecx\n", instr));
 				return(EmitErr(INVALID_INSTRUCTION_OPERANDS));
 			}
 #endif
 	}
-	else
-	{
-		if (CurrOpnd > 1)
-		{
+  else {
+    if (CurrOpnd > 1) {
 			/* v1.96: check if a third argument is ok */
-			if (CurrOpnd > 2)
-			{
-				do
-				{
+      if (CurrOpnd > 2) {
+        do {
 					//if ( CodeInfo.pinstr->opnd_type_3rd != OP3_NONE )
 					if ((opnd_clstab[CodeInfo.pinstr->opclsidx].opnd_type_3rd != OP3_NONE) ||
-						(opndx[CurrOpnd].kind == EXPR_DECORATOR))
-					{
+            (opndx[CurrOpnd].kind == EXPR_DECORATOR)){
 						if (opndx[CurrOpnd].kind == EXPR_DECORATOR)CodeInfo.evex_sae = opndx[CurrOpnd].saeflags;
 						break;
 					}
 					CodeInfo.pinstr++;           //work here for {sae}
-					if ((CodeInfo.pinstr->first == TRUE))
-					{
+          if ((CodeInfo.pinstr->first == TRUE)) {
 						DebugMsg(("ParseLine(%s): no third operand expected\n", instr));
 						for (; tokenarray[i].token != T_COMMA; i--);
 						return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 					}
-				}
-				while (1);
+        } while (1);
 			}
 			/* v2.06: moved here from process_const() */
-			if (CodeInfo.token == T_IMUL)
-			{
+      if (CodeInfo.token == T_IMUL) {
 				/* the 2-operand form with an immediate as second op
 				 * is actually a 3-operand form. That's why the rm byte
 				 * has to be adjusted. */
-				if (CodeInfo.opnd[OPND3].type == OP_NONE && (CodeInfo.opnd[OPND2].type & OP_I))
-				{
+        if (CodeInfo.opnd[OPND3].type == OP_NONE && (CodeInfo.opnd[OPND2].type & OP_I)) {
 #if AMD64_SUPPORT
 					CodeInfo.prefix.rex |= ((CodeInfo.prefix.rex & REX_B) ? REX_R : 0);
 #endif
@@ -4541,15 +4027,13 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 						 CodeInfo.opnd[OPND2].InsFixup->sym->state == SYM_UNDEFINED)
 					CodeInfo.opnd[OPND2].type = OP_M;
 			}
-			if (check_size(&CodeInfo, opndx) == ERROR)
-			{
+      if (check_size(&CodeInfo, opndx) == ERROR) {
 				DebugMsg(("ParseLine(%s): check_size() failed, exit\n", instr));
 				return(ERROR);
 			}
 		}
 #if AMD64_SUPPORT
-		if (CodeInfo.Ofssize == USE64)
-		{
+    if (CodeInfo.Ofssize == USE64) {
 			//if ( CodeInfo.x86hi_used && ( CodeInfo.x64lo_used || CodeInfo.prefix.rex & 7 ))
 			if (CodeInfo.x86hi_used && CodeInfo.prefix.rex)
 				EmitError(INVALID_USAGE_OF_AHBHCHDH);
@@ -4557,8 +4041,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 			/* for some instructions, the "wide" flag has to be removed selectively.
 			 * this is to be improved - by a new flag in struct instr_item.
 			 */
-			switch (CodeInfo.token)
-			{
+      switch (CodeInfo.token) {
 				case T_PUSH:
 				case T_POP:
 					/* v2.06: REX.W prefix is always 0, because size is either 2 or 8 */
@@ -4596,8 +4079,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 	temp = codegen(&CodeInfo, oldofs);
 nopor:
 	/* now reset EVEX maskflags for the next line */
-	if (CodeInfo.token >= VEX_START)
-	{
+  if (CodeInfo.token >= VEX_START){
 		decoflags = 0;
 		broadflags = 0;
 	}
@@ -4667,8 +4149,7 @@ void ProcessFile(struct asm_tok tokenarray[])
 				if (Options.preprocessor_stdout == TRUE && Parse_Pass == PASS_1)
 					WritePreprocessedLine(CurrSource);
 			}
-		}
-		while (ModuleInfo.EndDirFound == FALSE && GetTextLine(CurrSource));
+		} while (ModuleInfo.EndDirFound == FALSE && GetTextLine(CurrSource));
 	}
 	return;
 }

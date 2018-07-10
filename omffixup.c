@@ -42,8 +42,7 @@ extern const char szNull[];
 extern unsigned omf_GetGrpIdx(struct asym *sym);
 
 /* logical data for fixup subrecord creation */
-struct logref
-{
+struct logref {
 	uint_8  frame;          /* see enum frame_methods in omfspec.h      */
 	uint_16 frame_datum;    /* datum for certain frame methods          */
 	uint_8  is_secondary;   /* can write target in a secondary manner   */
@@ -55,8 +54,7 @@ struct logref
 static uint_8 *putIndex(uint_8 *p, uint_16 index)
 /*************************************************/
 {
-	if (index > 0x7f)
-	{
+    if( index > 0x7f ) {
 		*p++ = 0x80 | (index >> 8);
 	}
 	*p++ = index;
@@ -80,8 +78,7 @@ static uint_8 *put32(uint_8 *p, uint_32 value)
 static uint_8 *putFrameDatum(uint_8 *p, uint_8 method, uint_16 datum)
 /*********************************************************************/
 {
-	switch (method)
-	{
+    switch( method ) {
 		case FRAME_SEG:
 		case FRAME_GRP:
 		case FRAME_EXT:
@@ -99,8 +96,7 @@ static uint_8 *putTargetDatum(uint_8 *p, uint_8 method, uint_16 datum)
 /**********************************************************************/
 {
 #if 0 /* v2.12: Uasm won't use TARGE_ABSxx; also, it's not defined for FIXUP sub-records */
-	if ((method & 0x03) == TARGET_ABSWD)
-	{
+    if( ( method & 0x03 ) == TARGET_ABSWD ) {
 		return(put16(p, datum));
 	}
 #endif
@@ -135,8 +131,7 @@ static unsigned TranslateLogref(const struct logref *lr, uint_8 *buf, enum fixge
 	 * displacement field is 0.  So we use the is_secondary field.
 	 */
 	target = lr->target;
-	if (lr->target_offset == 0 && lr->is_secondary)
-	{
+    if( lr->target_offset == 0 && lr->is_secondary ) {
 		target |= 0x04; /* P=1 -> no displacement field */
 	}
 	p = buf;
@@ -153,14 +148,10 @@ static unsigned TranslateLogref(const struct logref *lr, uint_8 *buf, enum fixge
 	*p++ = (lr->frame << 4) | (target);
 	p = putFrameDatum(p, lr->frame, lr->frame_datum);
 	p = putTargetDatum(p, target, lr->target_datum);
-	if ((target & 0x04) == 0)
-	{
-		if (type == FIX_GEN_MS386)
-		{
+    if( ( target & 0x04 ) == 0 ) {
+        if( type == FIX_GEN_MS386 ) {
 			p = put32(p, (uint_32)lr->target_offset);
-		}
-		else
-		{
+        } else {
 			p = put16(p, (uint_16)lr->target_offset);
 		}
 	}
@@ -212,22 +203,18 @@ unsigned OmfFixGenFixModend(const struct fixup *fixup, uint_8 *buf, uint_32 disp
 	/* symbol is always a code label (near or far), internal or external */
 	/* now set Target and Frame */
 
-	if (sym->state == SYM_EXTERNAL)
-	{
+    if( sym->state == SYM_EXTERNAL ) {
 		DebugMsg(("omf_write_modend(%p): fixup->frame_type/datum=%u/%u, EXTERNAL sym=%s\n",
 				 fixup, fixup->frame_type, fixup->frame_datum, sym->name));
 
 		lr.target = TARGET_EXT & TARGET_WITH_DISPL;
 		lr.target_datum = sym->ext_idx1;
 
-		if (fixup->frame_type == FRAME_GRP && fixup->frame_datum == 0)
-		{
+        if( fixup->frame_type == FRAME_GRP && fixup->frame_datum == 0 ) {
 			/* set the frame to the frame of the corresponding segment */
 			lr.frame_datum = omf_GetGrpIdx(sym);
 		}
-	}
-	else
-	{ /* SYM_INTERNAL */
+    } else { /* SYM_INTERNAL */
 		DebugMsg(("OmfFixGenFixModend(%p): fixup->frame_type/datum=%u/%u sym->name=%s state=%X segm=%s\n",
 				 fixup, fixup->frame_type, fixup->frame_datum, sym->name, sym->state, sym->segment ? sym->segment->name : "NULL"));
 		/**/myassert(sym->state == SYM_INTERNAL);
@@ -236,12 +223,9 @@ unsigned OmfFixGenFixModend(const struct fixup *fixup, uint_8 *buf, uint_32 disp
 		lr.target_datum = GetSegIdx(sym->segment);
 	}
 
-	if (fixup->frame_type != FRAME_NONE && fixup->frame_type != FRAME_SEG)
-	{
+    if( fixup->frame_type != FRAME_NONE && fixup->frame_type != FRAME_SEG ) {
 		lr.frame = (uint_8)fixup->frame_type;
-	}
-	else
-	{
+    } else {
 		lr.frame = FRAME_TARG;
 	}
 	return(TranslateLogref(&lr, buf, type));
@@ -263,111 +247,82 @@ static int omf_fill_logref(const struct fixup *fixup, struct logref *lr)
 	/* Determine the Target and the Frame */
 	/*------------------------------------*/
 
-	if (sym == NULL)
-	{
+    if( sym == NULL ) {
 		DebugMsg(("omf_fill_logref: sym is NULL, frame_type=%u\n", fixup->frame_type));
 		if (fixup->frame_type == FRAME_NONE) /* v1.96: nothing to do without a frame */
 			return(0);
 		lr->target = fixup->frame_type;
 		lr->target_datum = fixup->frame_datum;
 		lr->frame = FRAME_TARG;
-	}
-	else if (sym->state == SYM_UNDEFINED)
-	{ /* shouldn't happen */
+    } else if( sym->state == SYM_UNDEFINED ) { /* shouldn't happen */
 
 		DebugMsg(("omf_fill_logref: sym->state is SYM_UNDEFINED\n"));
 		EmitErr(SYMBOL_NOT_DEFINED, sym->name);
 		return(0);
-	}
-	else if (sym->state == SYM_GRP)
-	{
+    } else if( sym->state == SYM_GRP ) {
 		DebugMsg1(("omf_fill_logref: sym->state is SYM_GRP\n"));
 		lr->target = TARGET_GRP;
 		lr->target_datum = ((struct dsym *)sym)->e.grpinfo->grp_idx;
-		if (fixup->frame_type != FRAME_NONE)
-		{
+        if( fixup->frame_type != FRAME_NONE ) {
 			lr->frame = fixup->frame_type;
 			lr->frame_datum = fixup->frame_datum;
-		}
-		else
-		{
+        } else {
 			lr->frame = FRAME_GRP;
 			lr->frame_datum = lr->target_datum;
 		}
-	}
-	else if (sym->state == SYM_SEG)
-	{
+    } else if( sym->state == SYM_SEG ) {
 		DebugMsg1(("omf_fill_logref: sym->state is SYM_SEG %s\n"));
 		lr->target = TARGET_SEG;
 		lr->target_datum = GetSegIdx(sym);
-		if (fixup->frame_type != FRAME_NONE)
-		{
+        if( fixup->frame_type != FRAME_NONE ) {
 			lr->frame = fixup->frame_type;
 			lr->frame_datum = fixup->frame_datum;
-		}
-		else
-		{
+        } else {
 			lr->frame = FRAME_SEG;
 			lr->frame_datum = lr->target_datum;
 		}
-	}
-	else
-	{
+    } else {
 		/* symbol is a label */
 
 		lr->frame_datum = fixup->frame_datum;
-		if (sym->state == SYM_EXTERNAL)
-		{
+        if( sym->state == SYM_EXTERNAL ) {
 			DebugMsg1(("omf_fill_logref: sym->state is SYM_EXTERNAL, fixup->frame_type/datum=%u/%u\n",
 					  fixup->frame_type, fixup->frame_datum));
 			lr->target = TARGET_EXT;
 			lr->target_datum = sym->ext_idx1;
 
-			if (fixup->frame_type == FRAME_GRP && fixup->frame_datum == 0)
-			{
+            if( fixup->frame_type == FRAME_GRP && fixup->frame_datum == 0 ) {
 				/* set the frame to the frame of the corresponding segment */
 				lr->frame_datum = omf_GetGrpIdx(sym);
 			}
-		}
-		else
-		{
+        } else {
 			/* must be SYM_INTERNAL */
 			/**/myassert(sym->state == SYM_INTERNAL);
 			DebugMsg1(("omf_fill_logref: sym->state is SYM_INTERNAL, sym->segment=%s, fixup->frame/datum=%u/%u\n",
 					  sym->segment ? sym->segment->name : "NULL", fixup->frame_type, fixup->frame_datum));
 			/* v2.08: don't use info from assembly-time variables */
-			if (sym->variable)
-			{
+            if ( sym->variable ) {
 				lr->target = (fixup->frame_type == FRAME_GRP ? TARGET_GRP : TARGET_SEG);
 				lr->target_datum = fixup->frame_datum;
-			}
-			else if (sym->segment == NULL)
-			{ /* shouldn't happen */
+            } else if ( sym->segment == NULL ) { /* shouldn't happen */
 				EmitErr(SEGMENT_MISSING_FOR_FIXUP, sym->name);
 				return (0);
 #if COMDATSUPP
-			}
-			else if (((struct dsym *)sym->segment)->e.seginfo->comdat_selection)
-			{
+            } else if ( ( (struct dsym *)sym->segment)->e.seginfo->comdat_selection ) {
 				lr->target = TARGET_EXT;
 				lr->target_datum = ((struct dsym *)sym->segment)->e.seginfo->seg_idx;
 				lr->frame = FRAME_TARG;
 				return(1);
 #endif
-			}
-			else
-			{
+            } else {
 				lr->target = TARGET_SEG;
 				lr->target_datum = GetSegIdx(sym->segment);
 			}
 		}
 
-		if (fixup->frame_type != FRAME_NONE)
-		{
+        if( fixup->frame_type != FRAME_NONE ) {
 			lr->frame = (uint_8)fixup->frame_type;
-		}
-		else
-		{
+        } else {
 			lr->frame = FRAME_TARG;
 		}
 	}
@@ -376,8 +331,7 @@ static int omf_fill_logref(const struct fixup *fixup, struct logref *lr)
 	/* Optimize the fixup */
 	/*--------------------*/
 
-	if (lr->frame == (lr->target - TARGET_SEG))
-	{
+    if( lr->frame == ( lr->target - TARGET_SEG ) ) {
 		lr->frame = FRAME_TARG;
 	}
 
@@ -418,8 +372,7 @@ unsigned OmfFixGenFix(const struct fixup *fixup, uint_32 start_loc, uint_8 *buf,
 	lr.is_secondary = TRUE;
 	lr.target_offset = 0;
 
-	switch (fixup->type)
-	{
+    switch( fixup->type ) {
 		case FIX_RELOFF8:
 			self_relative = TRUE;
 			/* no break */

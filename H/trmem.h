@@ -48,8 +48,7 @@ typedef void *(*_trmem_realloc_who)(void*, size_t);
 	the ones you're interested in and pass them to _trmem_open in the __flags
 	parameter.
 */
-enum
-{
+enum {
 	_TRMEM_ALLOC_SIZE_0 = 0x0001,/* attempted alloc of size 0 */
 	_TRMEM_REALLOC_SIZE_0 = 0x0002,/* attempted realloc/expand of size 0 */
 	_TRMEM_REALLOC_NULL = 0x0004,/* attempted realloc/expand of a NULL ptr */

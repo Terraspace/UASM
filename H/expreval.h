@@ -33,8 +33,7 @@
 
 /* v2.11: EXPR_UNDEF changed to EXPR_ERROR, value -1 */
 
-enum exprtype
-{
+enum exprtype {
 	EXPR_EMPTY = EMPTY,
 	EXPR_ERROR = ERROR, /* undefined type when error occures or result is undefined */
 	EXPR_CONST = 0,     /* constant; note that "label1 - label2" -> constant */
@@ -48,8 +47,7 @@ enum exprtype
 
 /* argument types accepted by unary operators */
 
-enum oparg_types
-{
+enum oparg_types {
 	AT_TYPE = 0x01, /* type */
 	AT_LABEL = 0x02, /* label (direct memory) */
 	AT_IND = 0x04, /* indirect memory */
@@ -74,17 +72,13 @@ enum oparg_types
 
 /* expression, returned by expression evaluator */
 
-struct expr
-{
-	union
-	{                         /* value of expression */
-		struct
-		{
+struct expr {
+    union {                         /* value of expression */
+        struct {
 			int_32  value;
 			int_32  hvalue;
 		};
-		struct
-		{
+        struct {
 			uint_64 llvalue;
 			uint_64 hlvalue;
 		};
@@ -94,16 +88,14 @@ struct expr
 		int         st_idx;         /* EXPR_REG: index if reg is ST */
 		uint_8      chararray[16];
 	};
-	union
-	{
+    union {
 		struct asm_tok *quoted_string; /* for EXPR_CONST + quoted strings only */
 		struct asm_tok *float_tok;     /* for EXPR_FLOAT only */
 	};
 	struct asm_tok  *base_reg;      /* EXPR_ADDR: base register token */
 									/* EXPR_REG: register token */
 	struct asm_tok  *idx_reg;       /* EXPR_ADDR: index register token */
-	union
-	{
+    union {
 		struct asm_tok  *label_tok; /* token holding the label (EXPR_ADDR, used for overrides, inside expreval only) */
 		struct asm_tok  *type_tok;  /* v2.10: token if target type of a label (SYM_STACK, MT_PTR) is to be stored */
 	};
@@ -120,11 +112,9 @@ struct expr
 //    uint_8          kzflags;        /* evex: {k1}{z}, or {k1} */
   //  uint_8          broadflags;      /* evex: {1to2}, {1to4},{1to8},{1to16}  */
 #endif
-	union
-	{
+    union {
 		uint_8      flags1;
-		struct
-		{
+        struct {
 			unsigned indirect : 1;  /* indirect addressing used */
 			unsigned explicit : 1;  /* Whether expression type explicitly given (to be removed!) */
 			unsigned is_abs   : 1;  /* external ABS */
@@ -143,8 +133,7 @@ struct expr
 };
 
 /* flags for last argument of EvalOperand() */
-enum expr_flags
-{
+enum expr_flags {
 	EXPF_NOERRMSG = 1,  /* suppress error messages */
 	EXPF_NOUNDEF = 2,  /* don't accept or create undefined symbols */
 	EXPF_ONEOPND = 4,  /* private flag, used inside expreval.c only */

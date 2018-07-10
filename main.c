@@ -79,8 +79,7 @@ int main(int argc, char **argv)
 
 #if 0 //def DEBUG_OUT    /* DebugMsg() cannot be used that early */
 	int i;
-	for (i = 1; i < argc; i++)
-	{
+	for ( i = 1; i < argc; i++ ) {
 		printf("argv[%u]=>%s<\n", i, argv[i]);
 	}
 #endif
@@ -112,14 +111,12 @@ int main(int argc, char **argv)
 #endif
 
 	/* ParseCmdLine() returns NULL if no source file name has been found (anymore) */
-	while (ParseCmdline((const char **)argv, &numArgs))
-	{
+	while (ParseCmdline((const char **)argv, &numArgs)) {
 		numFiles++;
 		write_logo();
 #if WILDCARDS
 
-		if ((fh = _findfirst(Options.names[ASM], &finfo)) == -1)
-		{
+		if ((fh = _findfirst(Options.names[ASM], &finfo)) == -1) {
 			DebugMsg(("main: _findfirst(%s) failed\n", Options.names[ASM]));
 			EmitErr(CANNOT_OPEN_FILE, Options.names[ASM], ErrnoStr());
 			break;
@@ -127,21 +124,18 @@ int main(int argc, char **argv)
 		pfn = GetFNamePart(Options.names[ASM]);
 		dirsize = pfn - Options.names[ASM];
 		memcpy(fname, Options.names[ASM], dirsize);
-		do
-		{
+			do {
 			strcpy(&fname[dirsize], finfo.name);
 			DebugMsg(("main: fname=%s\n", fname));
 			rc = AssembleModule(fname);  /* assemble 1 module */
-		}
-		while ((_findnext(fh, &finfo) != -1));
+			} while ((_findnext(fh, &finfo) != -1));
 		_findclose(fh);
 #else
 		rc = AssembleModule(Options.names[ASM]);
 #endif
 	};
 	CmdlineFini();
-	if (numArgs == 0)
-	{
+	if (numArgs == 0) {
 		write_logo();
 		printf("%s", MsgGetEx(MSG_USAGE));
 	}

@@ -4,8 +4,7 @@
 #define _TYPES_H_INCLUDED_
 
 /* qualified_type us used for parsing a qualified type. */
-struct qualified_type
-{
+struct qualified_type {
 	int             size;
 	struct asym     *symtype;
 	enum memtype    mem_type;

@@ -29,8 +29,7 @@ void atofloat(void *out, const char *inp, unsigned size, bool negative, uint_8 f
 	float   float_value;
 
 	/* v2.04: accept and handle 'real number designator' */
-	if (ftype)
-	{
+    if ( ftype ) {
 		uint_8 *p;
 		uint_8 *end;
 		/* convert hex string with float "designator" to float.
@@ -41,22 +40,17 @@ void atofloat(void *out, const char *inp, unsigned size, bool negative, uint_8 f
 		 */
 		myatoi128(inp, (uint_64 *)out, 16, strlen(inp) - 1);
 		for (p = (uint_8 *)out + size, end = (uint_8 *)out + 16; p < end; p++)
-			if (*p != NULLC)
-			{
+            if ( *p != NULLC ) {
 				EmitErr(INVALID_DATA_INITIALIZER, inp);
 				break;
 			}
-	}
-	else
-	{
-		switch (size)
-		{
+    } else {
+        switch ( size ) {
 			case 4:
 #if USESTRTOF
 				errno = 0;
 				float_value = strtof(inp, NULL);
-				if (errno == ERANGE)
-				{
+            if ( errno == ERANGE ) {
 					DebugMsg(("atofloat(%s, 4): magnitude too large\n", inp));
 					EmitErr(MAGNITUDE_TOO_LARGE_FOR_SPECIFIED_SIZE);
 				}
@@ -67,8 +61,7 @@ void atofloat(void *out, const char *inp, unsigned size, bool negative, uint_8 f
 				/* v2.06: check FLT_MAX added */
 				/* v2.11: check FLT_MIN (min positive value) added */
 				//if ( double_value > FLT_MAX )
-				if (double_value > FLT_MAX || (double_value < FLT_MIN && double_value != 0))
-				{
+            if ( double_value > FLT_MAX || ( double_value < FLT_MIN && double_value != 0 ) ) {
 					DebugMsg(("atofloat(%s, 4): magnitude too large; FLT_MAX=%e FLT_MIN=%e\n", inp, FLT_MAX, FLT_MIN));
 					EmitErr(MAGNITUDE_TOO_LARGE_FOR_SPECIFIED_SIZE);
 				}
@@ -82,8 +75,7 @@ void atofloat(void *out, const char *inp, unsigned size, bool negative, uint_8 f
 				errno = 0; /* v2.11: init errno; errno is set on over- and under-flow */
 				double_value = strtod(inp, NULL);
 				/* v2.11: check added */
-				if (errno == ERANGE)
-				{
+            if ( errno == ERANGE ) {
 					DebugMsg(("atofloat(%s, 8): magnitude too large\n", inp));
 					EmitErr(MAGNITUDE_TOO_LARGE_FOR_SPECIFIED_SIZE);
 				}

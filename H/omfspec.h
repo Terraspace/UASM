@@ -35,8 +35,7 @@
 /*
  *  INTEL Segment Alignment Specifiers - A field
  */
-enum segment_alignment_specifiers
-{
+enum segment_alignment_specifiers {
 	ALIGN_ABS = 0,        /* absolute segment - no alignment  */
 	ALIGN_BYTE = 1,        /* relocatable seg - byte aligned   */
 	ALIGN_WORD = 2,        /* relocatable seg - word aligned   */
@@ -53,8 +52,7 @@ enum segment_alignment_specifiers
 };
 #endif
 
-enum segdef_align_values
-{
+enum segdef_align_values {
 	SEGDEF_ALIGN_ABS = 0,/* absolute segment - no alignment          */
 	SEGDEF_ALIGN_BYTE = 1,/* relocatable seg  - byte aligned          */
 	SEGDEF_ALIGN_WORD = 2,/*                  - word aligned          */
@@ -71,8 +69,7 @@ enum segdef_align_values
  *  Uasm uses COMB_INVALID, COMB_ADDOFF, COMB_STACK & COMB_COMMON
  */
 
-enum combine_attributes
-{
+enum combine_attributes {
 	COMB_INVALID = 0,  /* PRIVATE attribute */
 	COMB_ABOVEALL = 1,  /* marked as "reserved" */
 	COMB_ADDOFF = 2,  /* PUBLIC attribute */
@@ -86,8 +83,7 @@ enum combine_attributes
 #if 0
 #define SEGATTR_A( a )  (ALIGN_##a << 5)
 #define SEGATTR_C( a )  (COMB_##a << 2)
-enum
-{
+enum {
 	SEGATTR_BIG = 1<< 1,   /* exactly 64k or 2**32 */
 	SEGATTR_P = 1,       /* use 32 */
 };
@@ -99,8 +95,7 @@ enum
  *  FRAME_NONE should never appear in object modules, it's just
  *  a void used by jwasm internally.
  */
-enum frame_methods
-{
+enum frame_methods {
 	FRAME_SEG = 0,        /* segment index                    */
 	FRAME_GRP = 1,        /* group index                      */
 	FRAME_EXT = 2,        /* external index                   */
@@ -115,8 +110,7 @@ enum frame_methods
  *  TARGET_ABS[WD] is supported for THREAD sub-records only, according to TIS OMF docs;
  *  Since Uasm won't write THREAD sub-records, those methods are invalid.
  */
-enum target_methods
-{
+enum target_methods {
 	TARGET_SEGWD = 0,        /* segment index with displacement  */
 	TARGET_GRPWD = 1,        /* group index with displacement    */
 	TARGET_EXTWD = 2,        /* external index with displacement */
@@ -132,8 +126,7 @@ enum target_methods
 
 /*  Bits in FIXUPP records */
 
-enum
-{
+enum {
 	FIXUPP_FIXUP = 0x80,
 
 	FIXDAT_FTHREAD = 0x80,
@@ -157,8 +150,7 @@ enum
  *  INTEL Object Record Types
  */
 
-enum cmd_omf
-{
+enum cmd_omf {
 #if 0 /* these cmds aren't used (and ignored by MS link) */
 	CMD_MIN_CMD = 0x6e,     /* minimum cmd enum                  */
 	CMD_RHEADR = 0x6e,     /* R-Module Header                   */
@@ -238,8 +230,7 @@ CMD_NBKP32 = CMD_NBKPAT+1,
 
 /* OMF fixup types; 4-bit-"location"-field in FIXUP sub-records; see omffixup.c.
  */
-enum omf_fixup_types
-{
+enum omf_fixup_types {
 	LOC_OFFSET_LO = 0,    /* 8-bit (lowbyte) offset             */
 	LOC_OFFSET = 1,    /* 16-bit offset                      */
 	LOC_BASE = 2,    /* segment (always 16-bit)            */
@@ -257,8 +248,7 @@ enum omf_fixup_types
 
 /* Comment Type */
 
-enum
-{
+enum {
 	CMT_TNP = 0x80,   /* no purge bit */
 	CMT_TNL = 0x40,   /* no list bit */
 };
@@ -274,8 +264,7 @@ enum
  * - CMT_DISASM_DIRECTIVE : wdis special
  * - CMT_LINKER_DIRECTIVE : wlink specials
  */
-enum omf_comment_classes
-{
+enum omf_comment_classes {
 	//CMT_LANGUAGE_TRANS  = 0x00, /* Language translator comment          */
 	//CMT_INTEL_COPYRIGHT = 0x01, /* INTEL Copyright record               */
 	//CMT_MS_PADDING      = 0x01, /* Microsoft uses this for padding      */
@@ -305,8 +294,7 @@ enum omf_comment_classes
 /*
  * Comment Class Subtype for CMT_OMF_EXT
  */
-enum omf_ext_subtype
-{
+enum omf_ext_subtype {
 	CMT_EXT_IMPDEF = 0x01, /* Subtype IMPDEF of OMF extension class    */
 	CMT_EXT_EXPDEF = 0x02, /* Subtype EXPDEF of OMF extension class    */
 	CMT_EXT_INCDEF = 0x03, /* Subtype INCDEF of OMF extension class    */
@@ -322,8 +310,7 @@ enum omf_ext_subtype
  *  Linker directives ( CMT_LINKER_DIRECTIVE - mostly WLINK directives )
  *  Uasm uses LDIR_OPT_FAR_CALLS only
  */
-enum linker_directives
-{
+enum linker_directives {
 	LDIR_SOURCE_LANGUAGE = 'D',  /* dbg maj/min and source language      */
 	LDIR_DEFAULT_LIBRARY = 'L',  /* default library cmd                  */
 	LDIR_OPT_FAR_CALLS = 'O',  /* optimize far calls/jmps for this seg */
@@ -340,8 +327,7 @@ enum linker_directives
  *  Disasm directives ( CMT_DISASM_DIRECTIVE )
  *  this is a feature supported by OW WDis.
  */
-enum disasm_directives
-{
+enum disasm_directives {
 	/*
 	 *  DDIR_SCAN_TABLE is used by the code generator to indicate data in a
 	 *  code segment.  i.e., scan tables generated for switch()s, floating point
@@ -358,8 +344,7 @@ enum disasm_directives
 /*
  *  COMDEF types
  */
-enum comdef_types
-{
+enum comdef_types {
 	COMDEF_FAR = 0x61, /* FAR variable                         */
 	COMDEF_NEAR = 0x62, /* NEAR variable                        */
 	COMDEF_LEAF_SIZE = 0x80, /* bit set if size > 0x7f               */
@@ -372,8 +357,7 @@ enum comdef_types
  * record type 0xC2/0xC3;
  * MS extension introduced for MSC 7.
  */
-enum comdat_flags
-{
+enum comdat_flags {
 	/*
 	 *  COMDAT flags
 	 */

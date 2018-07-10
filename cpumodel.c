@@ -51,8 +51,7 @@ const char * const ModelToken[] = {
 #define INIT_STACK      0x2
 #define INIT_OS         0x4
 
-struct typeinfo
-{
+struct typeinfo {
 	uint_8 value;  /* value assigned to the token */
 	uint_8 init;   /* kind of token */
 };
@@ -88,10 +87,8 @@ static int FindToken(const char *token, const char * const *table, int size)
 /****************************************************************************/
 {
 	int i;
-	for (i = 0; i < size; i++, table++)
-	{
-		if (_stricmp(*table, token) == 0)
-		{
+    for( i = 0; i < size; i++, table++ ) {
+        if( _stricmp( *table, token ) == 0 ) {
 			return(i);
 		}
 	}
@@ -113,8 +110,7 @@ static ret_code SetDefaultOfssize(int size)
 /*******************************************/
 {
 	/* outside any segments? */
-	if (CurrSeg == NULL)
-	{
+    if( CurrSeg == NULL ) {
 		ModuleInfo.defOfssize = size;
 	}
 	return(SetOfssize());
@@ -143,8 +139,7 @@ void SetModel(void)
 
 	DebugMsg1(("SetModel() enter (model=%u)\n", ModuleInfo.model));
 	/* if model is set, it disables OT_SEGMENT of -Zm switch */
-	if (ModuleInfo.model == MODEL_FLAT)
-	{
+    if ( ModuleInfo.model == MODEL_FLAT ) {
 		ModuleInfo.offsettype = OT_FLAT;
 #if AMD64_SUPPORT
 		SetDefaultOfssize(((ModuleInfo.curr_cpu & P_CPU_MASK) >= P_64) ? USE64 : USE32);
@@ -154,10 +149,8 @@ void SetModel(void)
 		 * to enable the win64 ABI from the source.
 		 */
 		if ((ModuleInfo.curr_cpu & P_CPU_MASK) == P_64)
-			if (ModuleInfo.langtype == LANG_FASTCALL || ModuleInfo.langtype == LANG_SYSVCALL)
-			{
-				if (Options.output_format != OFORMAT_ELF)
-				{
+            if ( ModuleInfo.langtype == LANG_FASTCALL || ModuleInfo.langtype == LANG_SYSVCALL) {
+                if ( Options.output_format != OFORMAT_ELF ) {
 					DebugMsg(("SetModel: FASTCALL type set to WIN64\n"));
 					ModuleInfo.fctype = FCT_WIN64;
 				}
@@ -167,8 +160,7 @@ void SetModel(void)
 #endif
 		/* v2.11: define symbol FLAT - after default offset size has been set! */
 		DefineFlatGroup();
-	}
-	else
+    } else
 		ModuleInfo.offsettype = OT_GROUP;
 
 	ModelSimSegmInit(ModuleInfo.model); /* create segments in first pass */
@@ -183,12 +175,9 @@ void SetModel(void)
 		return;
 
 	/* Set @CodeSize */
-	if (SIZE_CODEPTR & (1 << ModuleInfo.model))
-	{
+    if ( SIZE_CODEPTR & ( 1 << ModuleInfo.model ) ) {
 		value = 1;
-	}
-	else
-	{
+    } else {
 		value = 0;
 	}
 
@@ -196,8 +185,7 @@ void SetModel(void)
 	AddPredefinedText("@code", SimGetSegName(SIM_CODE));
 
 	/* Set @DataSize */
-	switch (ModuleInfo.model)
-	{
+    switch( ModuleInfo.model ) {
 		case MODEL_COMPACT:
 		case MODEL_LARGE:
 			value = 1;
@@ -269,8 +257,7 @@ ret_code ModelDirective(int i, struct asm_tok tokenarray[])
 	 * this may have caused errors because contents of the ModuleInfo
 	 * structure was saved before the .MODEL directive.
 	 */
-	if (Parse_Pass != PASS_1 && ModuleInfo.model != MODEL_NONE)
-	{
+    if( Parse_Pass != PASS_1 && ModuleInfo.model != MODEL_NONE ) {
 		/* just set the model with SetModel() if pass is != 1.
 		 * This won't set the language ( which can be modified by
 		 * OPTION LANGUAGE directive ), but the language in ModuleInfo
@@ -281,48 +268,36 @@ ret_code ModelDirective(int i, struct asm_tok tokenarray[])
 	}
 
 	i++;
-	if (tokenarray[i].token == T_FINAL)
-	{
+    if ( tokenarray[i].token == T_FINAL ) {
 		return(EmitError(EXPECTED_MEMORY_MODEL));
 	}
 	/* get the model argument */
 	index = FindToken(tokenarray[i].string_ptr, ModelToken, sizeof(ModelToken)/sizeof(ModelToken[0]));
-	if (index >= 0)
-	{
-		if (ModuleInfo.model != MODEL_NONE)
-		{
+    if( index >= 0 ) {
+        if( ModuleInfo.model != MODEL_NONE ) {
 			EmitWarn(2, MODEL_DECLARED_ALREADY);
 		}
 		model = index + 1; /* model is one-base ( 0 is MODEL_NONE ) */
 		i++;
-	}
-	else
-	{
+    } else {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
 	}
 
 	/* get the optional arguments: language, stack distance, os */
 	init = 0;
-	while (i < (Token_Count - 1) && tokenarray[i].token == T_COMMA)
-	{
+    while ( i < ( Token_Count - 1 ) && tokenarray[i].token == T_COMMA ) {
 		i++;
-		if (tokenarray[i].token != T_COMMA)
-		{
-			if (GetLangType(&i, tokenarray, &language) == NOT_ERROR)
-			{
+        if ( tokenarray[i].token != T_COMMA ) {
+            if ( GetLangType( &i, tokenarray, &language ) == NOT_ERROR ) {
 				initv = INIT_LANG;
-			}
-			else
-			{
+            } else {
 				index = FindToken(tokenarray[i].string_ptr, ModelAttr, sizeof(ModelAttr)/sizeof(ModelAttr[0]));
 				if (index < 0)
 					break;
 				initv = ModelAttrValue[index].init;
-				switch (initv)
-				{
+                switch ( initv ) {
 					case INIT_STACK:
-						if (model == MODEL_FLAT)
-						{
+                    if ( model == MODEL_FLAT ) {
 							return(EmitError(INVALID_MODEL_PARAM_FOR_FLAT));
 						}
 						distance = ModelAttrValue[index].value;
@@ -334,8 +309,7 @@ ret_code ModelDirective(int i, struct asm_tok tokenarray[])
 				i++;
 			}
 			/* attribute set already? */
-			if (initv & init)
-			{
+            if ( initv & init ) {
 				i--;
 				break;
 			}
@@ -343,21 +317,17 @@ ret_code ModelDirective(int i, struct asm_tok tokenarray[])
 		}
 	}
 	/* everything parsed successfully? */
-	if (tokenarray[i].token != T_FINAL)
-	{
+    if ( tokenarray[i].token != T_FINAL ) {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 	}
 
-	if (model == MODEL_FLAT)
-	{
-		if ((ModuleInfo.curr_cpu & P_CPU_MASK) < P_386)
-		{
+    if ( model == MODEL_FLAT ) {
+        if ( ( ModuleInfo.curr_cpu & P_CPU_MASK) < P_386 ) {
 			return(EmitError(INSTRUCTION_OR_REGISTER_NOT_ACCEPTED_IN_CURRENT_CPU_MODE));
 		}
 #if AMD64_SUPPORT
 		if ((ModuleInfo.curr_cpu & P_CPU_MASK) >= P_64) /* cpu 64-bit? */
-			switch (Options.output_format)
-			{
+            switch ( Options.output_format ) {
 				case OFORMAT_COFF: ModuleInfo.fmtopt = &coff64_fmtopt; break;
 				case OFORMAT_ELF:  ModuleInfo.fmtopt = &elf64_fmtopt;  break;
 			};
@@ -392,8 +362,7 @@ ret_code SetCPU(enum cpu_info newcpu)
 	int temp;
 
 	DebugMsg1(("SetCPU(%X) enter\n", newcpu));
-	if (newcpu == P_86 || (newcpu & P_CPU_MASK))
-	{
+    if ( newcpu == P_86 || ( newcpu & P_CPU_MASK ) ) {
 		/* reset CPU and EXT bits */
 		ModuleInfo.curr_cpu &= ~(P_CPU_MASK | P_PM);
 
@@ -402,8 +371,7 @@ ret_code SetCPU(enum cpu_info newcpu)
 
 		/* set default FPU bits if nothing is given and .NO87 not active */
 		if ((ModuleInfo.curr_cpu & P_FPU_MASK) != P_NO87 &&
-			(newcpu & P_FPU_MASK) == 0)
-		{
+            ( newcpu & P_FPU_MASK ) == 0 ) {
 			ModuleInfo.curr_cpu &= ~P_FPU_MASK;
 			if ((ModuleInfo.curr_cpu & P_CPU_MASK) < P_286)
 				ModuleInfo.curr_cpu |= P_87;
@@ -413,8 +381,7 @@ ret_code SetCPU(enum cpu_info newcpu)
 				ModuleInfo.curr_cpu |= P_387;
 		}
 	}
-	if (newcpu & P_FPU_MASK)
-	{
+    if( newcpu & P_FPU_MASK ) {
 		ModuleInfo.curr_cpu &= ~P_FPU_MASK;
 		ModuleInfo.curr_cpu |= (newcpu & P_FPU_MASK);
 	}
@@ -423,8 +390,7 @@ ret_code SetCPU(enum cpu_info newcpu)
 	if ((newcpu & P_CPU_MASK) == P_64)
 		ModuleInfo.curr_cpu |= P_EXT_ALL;
 #endif
-	if (newcpu & P_EXT_MASK)
-	{
+    if( newcpu & P_EXT_MASK ) {
 		ModuleInfo.curr_cpu &= ~P_EXT_MASK;
 		ModuleInfo.curr_cpu |= (newcpu & P_EXT_MASK);
 	}
@@ -432,8 +398,7 @@ ret_code SetCPU(enum cpu_info newcpu)
 	/* set the Masm compatible @Cpu value */
 
 	temp = ModuleInfo.curr_cpu & P_CPU_MASK;
-	switch (temp)
-	{
+    switch ( temp ) {
 		case P_186: ModuleInfo.cpu = M_8086 | M_186; break;
 		case P_286: ModuleInfo.cpu = M_8086 | M_186 | M_286; break;
 		case P_386: ModuleInfo.cpu = M_8086 | M_186 | M_286 | M_386; break;
@@ -449,8 +414,7 @@ ret_code SetCPU(enum cpu_info newcpu)
 		ModuleInfo.cpu = ModuleInfo.cpu | M_PROT;
 
 	temp = ModuleInfo.curr_cpu & P_FPU_MASK;
-	switch (temp)
-	{
+    switch (temp) {
 		case P_87:  ModuleInfo.cpu = ModuleInfo.cpu | M_8087;     break;
 		case P_287: ModuleInfo.cpu = ModuleInfo.cpu | M_8087 | M_287; break;
 		case P_387: ModuleInfo.cpu = ModuleInfo.cpu | M_8087 | M_287 | M_387; break;
@@ -460,11 +424,9 @@ ret_code SetCPU(enum cpu_info newcpu)
 
 	if (ModuleInfo.model == MODEL_NONE)
 #if AMD64_SUPPORT
-		if ((ModuleInfo.curr_cpu & P_CPU_MASK) >= P_64)
-		{
+        if ( ( ModuleInfo.curr_cpu & P_CPU_MASK) >= P_64 ) {
 			SetDefaultOfssize(USE64);
-		}
-		else
+        } else
 #endif
 			SetDefaultOfssize(((ModuleInfo.curr_cpu & P_CPU_MASK) >= P_386) ? USE32 : USE16);
 
@@ -496,13 +458,11 @@ ret_code CpuDirective(int i, struct asm_tok tokenarray[])
 	enum cpu_info newcpu;
 	int x;
 
-	if (tokenarray[i].tokval == T_DOT_WIN64)
-	{
+	if (tokenarray[i].tokval == T_DOT_WIN64) {
 		if (!UseSavedState && Options.sub_format != SFORMAT_64BIT)
 			RewindToWin64();
 
-		if (tokenarray[i + 1].token == T_COLON)
-		{
+		if (tokenarray[i + 1].token == T_COLON) {
 			x = i + 2;
 			SetWin64(&x, tokenarray);
 		}
@@ -515,41 +475,34 @@ ret_code CpuDirective(int i, struct asm_tok tokenarray[])
 		newcpu = GetSflagsSp(tokenarray[i].tokval);
 
 	if (tokenarray[i].tokval == T_DOT_X64 ||
-		tokenarray[i].tokval == T_DOT_AMD64)
-	{
-		if (tokenarray[i + 1].token == T_COLON)
-		{
+		tokenarray[i].tokval == T_DOT_AMD64) {
+		if (tokenarray[i + 1].token == T_COLON) {
 			x = i + 2;
 			SetWin64(&x, tokenarray);
 		}
 	}
 
 #if DOT_XMMARG
-	.if (tokenarray[i].tokval == T_DOT_XMM && tokenarray[i+1].token != T_FINAL)
-	{
+    .if ( tokenarray[i].tokval == T_DOT_XMM && tokenarray[i+1].token != T_FINAL ) {
 		struct expr opndx;
 		i++;
 		if (EvalOperand(&i, Token_Count, &opndx, 0) == ERROR)
 			return(ERROR);
-		if (opndx.kind != EXPR_CONST || opndx.value < 1 || opndx.value > 4)
-		{
+        if ( opndx.kind != EXPR_CONST || opndx.value < 1 || opndx.value > 4 ) {
 			return(EmitConstError(&opndx));
 		}
 		newcpy &= ~P_SSEALL;
-		switch (opndx.value)
-		{
+        switch ( opndx.value ) {
 			case 4: newcpy |= P_SSE4;
 			case 3: newcpy |= P_SSE3|P_SSSE3;
 			case 2: newcpy |= P_SSE2;
 			case 1: newcpy |= P_SSE1; break;
 		}
-	}
-	else
+    } else
 #endif
 		i++;
 
-	if (tokenarray[i].token != T_FINAL)
-	{
+    if ( tokenarray[i].token != T_FINAL ) {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
 	}
 

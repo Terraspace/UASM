@@ -48,20 +48,17 @@
 #define MAXUI64    0xffffffffffffffffui64
 #endif
 
-union u192
-{
+union u192 {
 	uint_64 m64[3];
 	uint_32 m32[6];
 };
 
-union u96
-{
+union u96 {
 	uint_32 m32[3];
 };
 
 /* extended (112-bit, 96+16) long double */
-struct ELD
-{
+struct ELD {
 	uint_32 m32[3];
 	unsigned short e;
 };
@@ -111,32 +108,19 @@ static int cmp_u96_max(const union u96 *x)
 	overflow after multiply by 10
 */
 {
-	if (x->m32[2] > 0x19999999UL)
-	{
+    if( x->m32[2] > 0x19999999UL ) {
 		return(1);
-	}
-	else if (x->m32[2] < 0x19999999UL)
-	{
+    } else if( x->m32[2] < 0x19999999UL ) {
 		return(-1);
-	}
-	else if (x->m32[1] > 0x99999999UL)
-	{
+    } else if( x->m32[1] > 0x99999999UL ) {
 		return(1);
-	}
-	else if (x->m32[1] < 0x99999999UL)
-	{
+    } else if( x->m32[1] < 0x99999999UL ) {
 		return(-1);
-	}
-	else if (x->m32[0] > 0x99999998UL)
-	{
+    } else if( x->m32[0] > 0x99999998UL ) {
 		return(1);
-	}
-	else if (x->m32[0] < 0x99999998UL)
-	{
+    } else if( x->m32[0] < 0x99999998UL ) {
 		return(-1);
-	}
-	else
-	{
+    } else {
 		return(0);
 	}
 }
@@ -150,15 +134,11 @@ static int add_check_u96_overflow(union u96 *x, unsigned int c)
 	uint_64 cy;
 	int i;
 
-	if (cmp_u96_max(x) > 0)
-	{
+    if( cmp_u96_max( x ) > 0 ) {
 		return(1);
-	}
-	else
-	{
+    } else {
 		cy = c;
-		for (i = 0; i < 3; i++)
-		{
+        for( i = 0; i < 3; i++ ) {
 			cy += (uint_64)x->m32[i] * 10;
 			x->m32[i] = cy;
 			cy >>= 32;
@@ -174,8 +154,7 @@ static int bitsize32(uint_32 x)
 {
 	int i;
 
-	for (i = 32; i > 0; i--)
-	{
+    for( i = 32; i > 0 ; i-- ) {
 		if (x & 0x80000000U) break;
 		x <<= 1;
 	}
@@ -189,8 +168,7 @@ static int bitsize64(uint_64 x)
 {
 	int i;
 
-	for (i = 64; i > 0; i--)
-	{
+    for( i = 64; i > 0 ; i-- ) {
 		if (x & MAXUI64BIT) break;
 		x <<= 1;
 	}
@@ -207,30 +185,24 @@ static int U96LD(const union u96 *op, struct ELD *res)
 
 	memcpy(res, op, sizeof(union u96));
 	bs = bitsize32(res->m32[2]) + 64;
-	if (bs == 64)
-	{
+    if( bs == 64 ) {
 		res->m32[2] = res->m32[1];
 		res->m32[1] = res->m32[0];
 		res->m32[0] = 0;
 		bs = bitsize32(res->m32[2]) + 32;
 	}
-	if (bs == 32)
-	{
+    if( bs == 32 ) {
 		res->m32[2] = res->m32[1];
 		res->m32[1] = res->m32[0];
 		res->m32[0] = 0;
 		bs = bitsize32(res->m32[2]);
 	}
-	if (bs == 0)
-	{
+    if( bs == 0 ) {
 		res->e = 0;
-	}
-	else
-	{
+    } else {
 		res->e = bs - 1 + EXPONENT_BIAS;
 		bs %= 32;
-		if (bs)
-		{
+        if( bs ) {
 			shft = 32 - bs;
 			res->m32[2] <<= shft;
 			res->m32[2] |= res->m32[1] >> bs;
@@ -253,27 +225,23 @@ static int normalize(union u192 *res)
 	int bs1;
 
 	bs = bitsize64(res->m64[2]) + 128;
-	if (bs == 128)
-	{
+    if( bs == 128 ) {
 		res->m64[2] = res->m64[1];
 		res->m64[1] = res->m64[0];
 		res->m64[0] = 0;
 		bs = bitsize64(res->m64[2]) + 64;
 	}
-	if (bs == 64)
-	{
+    if( bs == 64 ) {
 		res->m64[2] = res->m64[1];
 		res->m64[1] = res->m64[0];
 		res->m64[0] = 0;
 		bs = bitsize64(res->m64[2]);
 	}
-	if (bs == 0)
-	{
+    if( bs == 0 ) {
 		return(0);
 	}
 	bs1 = bs % 64;
-	if (bs1)
-	{
+    if ( bs1 ) {
 		shft = 64 - bs1;
 		res->m64[2] <<= shft;
 		res->m64[2] |= res->m64[1] >> bs1;
@@ -293,15 +261,13 @@ static int add192(union u192 *res, const uint_64 x, int pos)
 	int i;
 
 	cy = (uint_32)x;
-	for (i = pos; i < 6; i++)
-	{
+    for( i = pos; i < 6; i++ ) {
 		cy += res->m32[i];
 		res->m32[i] = cy;
 		cy >>= 32;
 	}
 	cy = x >> 32;
-	for (i = pos + 1; i < 6; i++)
-	{
+    for( i = pos + 1; i < 6; i++ ) {
 		cy += res->m32[i];
 		res->m32[i] = cy;
 		cy >>= 32;
@@ -337,17 +303,13 @@ static int multiply(const struct ELD *op1, const struct ELD *op2, struct ELD *re
 	add192(&r1, x1, 3);
 	exp += normalize(&r1);
 	/* round result */
-	if (r1.m32[2] & 0x80000000U)
-	{
-		if (r1.m32[5] == 0xffffffffU && r1.m32[4] == 0xffffffffU && r1.m32[3] == 0xffffffffU)
-		{
+    if( r1.m32[2] & 0x80000000U ) {
+        if( r1.m32[5] == 0xffffffffU && r1.m32[4] == 0xffffffffU && r1.m32[3] == 0xffffffffU ) {
 			r1.m32[3] = 0;
 			r1.m32[4] = 0;
 			r1.m32[5] = 0x80000000U;
 			exp++;
-		}
-		else
-		{
+        } else {
 			x1 = 1L;
 			add192(&r1, x1, 3);
 		}
@@ -369,41 +331,31 @@ static int TB_create(union u96 *value, int_32 exponent, struct TB_LD *ld)
 	int i;
 	struct ELD res;
 
-	if (exponent < 0)
-	{
+    if( exponent < 0 ) {
 		exponent = -exponent;
 		tabExp = tab_minus_exp;
-	}
-	else
-	{
+    } else {
 		tabExp = tab_plus_exp;
 	}
 	U96LD(value, &res);
-	for (i = 0; i < MAX_EXP_INDEX; i++)
-	{
-		if (exponent & 1)
-		{
+    for( i = 0; i < MAX_EXP_INDEX; i++ ) {
+        if ( exponent & 1 ) {
 			multiply(&res, tabExp + i, &res);
 		}
 		exponent >>= 1;
 		if (exponent == 0) break;
 	}
-	if (exponent != 0)
-	{
+    if( exponent != 0 ) {
 		/* exponent overflow */
 	}
 	ld->e = res.e;
 	ld->m = res.m32[1] + ((uint_64)res.m32[2] << 32);
 	/* round result */
-	if (res.m32[0] & 0x80000000U)
-	{
-		if (ld->m == MAXUI64)
-		{
+    if( res.m32[0] & 0x80000000U ) {
+        if( ld->m == MAXUI64 ) {
 			ld->m = MAXUI64BIT;
 			ld->e++;
-		}
-		else
-		{
+        } else {
 			ld->m++;
 		}
 	}
@@ -427,8 +379,7 @@ struct TB_LD *strtotb(const char *p, struct TB_LD *ld, char negative)
 	union u96        value_tmp;
 
 	while (isspace(*p)) p++;
-	switch (*p)
-	{
+    switch (*p) {
 		case '-':
 			sign = -1;
 		case '+':
@@ -436,8 +387,7 @@ struct TB_LD *strtotb(const char *p, struct TB_LD *ld, char negative)
 		default:
 			break;
 	}
-	if (negative)
-	{
+    if( negative ) {
 		sign = -sign;
 	}
 	memset(&value, 0, sizeof(value));
@@ -446,50 +396,34 @@ struct TB_LD *strtotb(const char *p, struct TB_LD *ld, char negative)
 	exp1 = 0;
 	exponent_tmp = 0;
 	overflow = 0;
-	while ((unsigned int)(*p - '0') < 10u)
-	{
-		if (overflow)
-		{
+    while ( (unsigned int)(*p - '0') < 10u ) {
+        if( overflow ) {
 			exponent_tmp++;
 			exp1++;
-		}
-		else
-		{
-			if (add_check_u96_overflow(&value_tmp, *p - '0'))
-			{
+        } else {
+            if( add_check_u96_overflow( &value_tmp, *p - '0' ) ) {
 				overflow = 1;
 				exponent_tmp++;
 				exp1++;
-			}
-			else if (*p != '0')
-			{
+            } else if( *p != '0' ) {
 				memcpy(&value, &value_tmp, sizeof(value));
 				exp1 = 0;
-			}
-			else if (U96ISNOTZERO(value))
-			{
+            } else if( U96ISNOTZERO(value) ) {
 				exp1++;
 			}
 		}
 		p++;
 	}
 	exponent = exp1;
-	if (*p == '.')
-	{
+    if ( *p == '.' ) {
 		p++;
-		while ((unsigned int)(*p - '0') < 10u)
-		{
-			if (overflow == 0)
-			{
-				if (add_check_u96_overflow(&value_tmp, *p - '0'))
-				{
+        while ( (unsigned int)(*p - '0') < 10u ) {
+            if( overflow == 0 ) {
+                if( add_check_u96_overflow( &value_tmp, *p - '0' ) ) {
 					overflow = 1;
-				}
-				else
-				{
+                } else {
 					exponent_tmp--;
-					if (*p != '0')
-					{
+                    if( *p != '0' ) {
 						memcpy(&value, &value_tmp, sizeof(value));
 						exponent = exponent_tmp;
 					}
@@ -499,10 +433,8 @@ struct TB_LD *strtotb(const char *p, struct TB_LD *ld, char negative)
 		}
 	}
 	exp_value = 0;
-	if ((*p | 0x20) == 'e')
-	{
-		switch (*++p)
-		{
+    if ( (*p | 0x20) == 'e' ) {
+        switch ( *++p ) {
 			case '-':
 				exp_sign = -1;
 			case '+': p++;

@@ -14,8 +14,7 @@
 #define IMAGE_FILE_LARGE_ADDRESS_AWARE       0x0020  // App can handle >2gb addresses
 #define IMAGE_FILE_32BIT_MACHINE             0x0100  // 32 bit word machine.
 
-struct IMAGE_FILE_HEADER
-{
+struct IMAGE_FILE_HEADER {
 	uint_16 Machine;
 	uint_16 NumberOfSections;
 	uint_32 TimeDateStamp;
@@ -27,11 +26,9 @@ struct IMAGE_FILE_HEADER
 
 #define IMAGE_SIZEOF_SHORT_NAME 8
 
-struct IMAGE_SECTION_HEADER
-{
+struct IMAGE_SECTION_HEADER {
 	char Name[IMAGE_SIZEOF_SHORT_NAME];
-	union
-	{
+    union {
 		uint_32 PhysicalAddress;
 		uint_32 VirtualSize;
 	} Misc;
@@ -91,10 +88,8 @@ struct IMAGE_SECTION_HEADER
 #define IMAGE_SCN_MEM_WRITE       0x80000000
 
 #pragma pack(push,2)
-typedef struct _IMAGE_RELOCATION
-{
-	union
-	{
+typedef struct _IMAGE_RELOCATION {
+    union {
 		uint_32 VirtualAddress;
 		uint_32 RelocCount;
 	};
@@ -136,15 +131,12 @@ typedef struct _IMAGE_RELOCATION
 #define IMAGE_SIZEOF_AUX_SYMBOL 18
 
 #pragma pack(push,2)
-typedef struct _IMAGE_SYMBOL
-{
-	union
-	{
+typedef struct _IMAGE_SYMBOL {
+    union {
 		/* v2.08 */
 		//char ShortName[8];
 		uint_8 ShortName[8];
-		struct
-		{
+        struct {
 			uint_32 Short;
 			uint_32 Long;
 		} Name;
@@ -233,45 +225,36 @@ typedef struct _IMAGE_SYMBOL
 #define IMAGE_WEAK_EXTERN_SEARCH_LIBRARY    2
 #define IMAGE_WEAK_EXTERN_SEARCH_ALIAS      3
 
-typedef union _IMAGE_AUX_SYMBOL
-{
+typedef union _IMAGE_AUX_SYMBOL {
 	/* AUX format 2: .bf and .ef entries */
-	struct
-	{
+    struct {
 		uint_32 TagIndex;
-		union
-		{
-			struct
-			{
+        union {
+            struct {
 				uint_16 Linenumber;
 				uint_16 Size;
 			} LnSz;
 			uint_32 TotalSize;
 		} Misc;
-		union
-		{
-			struct
-			{
+        union {
+            struct {
 				uint_32 PointerToLinenumber;
 				uint_32 PointerToNextFunction;
 			} Function;
-			struct
-			{
+            struct {
 				uint_16 Dimension[4];
 			} Array;
 		} FcnAry;
 		uint_16 TvIndex;
 	} Sym;
 	/* AUX format 4: file entries */
-	struct
-	{
+    struct {
 		/* v2.08 */
 		//char Name[IMAGE_SIZEOF_SYMBOL];
 		uint_8 Name[IMAGE_SIZEOF_SYMBOL];
 	} File;
 	/* AUX format 5: section entries */
-	struct
-	{
+    struct {
 		uint_32 Length;
 		uint_16 NumberOfRelocations;
 		uint_16 NumberOfLinenumbers;
@@ -282,8 +265,7 @@ typedef union _IMAGE_AUX_SYMBOL
 } IMAGE_AUX_SYMBOL;
 #pragma pack(pop)
 
-typedef struct _IMAGE_COFF_SYMBOLS_HEADER
-{
+typedef struct _IMAGE_COFF_SYMBOLS_HEADER {
 	uint_32 NumberOfSymbols;
 	uint_32 LvaToFirstSymbol;
 	uint_32 NumberOfLinenumbers;
@@ -295,10 +277,8 @@ typedef struct _IMAGE_COFF_SYMBOLS_HEADER
 } IMAGE_COFF_SYMBOLS_HEADER;
 
 #pragma pack(push,2)
-typedef struct _IMAGE_LINENUMBER
-{
-	union
-	{
+typedef struct _IMAGE_LINENUMBER {
+    union {
 		uint_32 SymbolTableIndex;
 		uint_32 VirtualAddress;
 	} Type;

@@ -5,8 +5,7 @@
 #ifndef PE_H
 #define PE_H
 
-struct IMAGE_DOS_HEADER
-{
+struct IMAGE_DOS_HEADER {
 	uint_16 e_magic;          // Magic number
 	uint_16 e_cblp;           // Bytes on last page of file
 	uint_16 e_cp;             // Pages in file
@@ -30,8 +29,7 @@ struct IMAGE_DOS_HEADER
 
 #if PE_SUPPORT
 
-struct IMAGE_DATA_DIRECTORY
-{
+struct IMAGE_DATA_DIRECTORY {
 	uint_32 VirtualAddress;
 	uint_32 Size;
 };
@@ -68,8 +66,7 @@ struct IMAGE_DATA_DIRECTORY
 #define IMAGE_SUBSYSTEM_EFI_ROM              13
 #define IMAGE_SUBSYSTEM_XBOX                 14
 
-struct IMAGE_OPTIONAL_HEADER32
-{
+struct IMAGE_OPTIONAL_HEADER32 {
 	uint_16 Magic;
 	uint_8  MajorLinkerVersion;
 	uint_8  MinorLinkerVersion;
@@ -106,8 +103,7 @@ struct IMAGE_OPTIONAL_HEADER32
 	struct IMAGE_DATA_DIRECTORY DataDirectory[IMAGE_NUMBEROF_DIRECTORY_ENTRIES];
 };
 
-struct IMAGE_PE_HEADER32
-{
+struct IMAGE_PE_HEADER32 {
 	uint_32 Signature;
 	struct IMAGE_FILE_HEADER FileHeader;
 	struct IMAGE_OPTIONAL_HEADER32 OptionalHeader;
@@ -115,8 +111,7 @@ struct IMAGE_PE_HEADER32
 
 #if AMD64_SUPPORT
 
-struct IMAGE_OPTIONAL_HEADER64
-{
+struct IMAGE_OPTIONAL_HEADER64 {
 	uint_16 Magic;
 	uint_8  MajorLinkerVersion;
 	uint_8  MinorLinkerVersion;
@@ -149,8 +144,7 @@ struct IMAGE_OPTIONAL_HEADER64
 	struct IMAGE_DATA_DIRECTORY DataDirectory[IMAGE_NUMBEROF_DIRECTORY_ENTRIES];
 };
 
-struct IMAGE_PE_HEADER64
-{
+struct IMAGE_PE_HEADER64 {
 	uint_32 Signature;
 	struct IMAGE_FILE_HEADER FileHeader;
 	struct IMAGE_OPTIONAL_HEADER64 OptionalHeader;
@@ -160,8 +154,7 @@ struct IMAGE_PE_HEADER64
 
 /* base relocations */
 
-struct IMAGE_BASE_RELOCATION
-{
+struct IMAGE_BASE_RELOCATION {
 	uint_32 VirtualAddress;
 	uint_32 SizeOfBlock;
 };
@@ -176,8 +169,7 @@ struct IMAGE_BASE_RELOCATION
 
 /* PE resource directory structure */
 
-struct IMAGE_RESOURCE_DIRECTORY
-{ /* size 16 */
+struct IMAGE_RESOURCE_DIRECTORY { /* size 16 */
 	uint_32 Characteristics;
 	uint_32 TimeDateStamp;
 	uint_16 MajorVersion;
@@ -186,37 +178,30 @@ struct IMAGE_RESOURCE_DIRECTORY
 	uint_16 NumberOfIdEntries;
 };
 
-struct IMAGE_RESOURCE_DIRECTORY_ENTRY
-{ /* size 8 */
-	union
-	{
-		struct
-		{
+struct IMAGE_RESOURCE_DIRECTORY_ENTRY { /* size 8 */
+    union {
+        struct {
 			uint_32 NameOffset:31;
 			uint_32 NameIsString:1; /* is 1 if id is a name */
 		};
 		uint_32 Name; /* ID is an offset to an IMAGE_RESOURCE_DIR_STRING_U struct */
 		uint_16 Id;   /* ID is an integer (usually a resource type ) */
 	};
-	union
-	{
+    union {
 		uint_32 OffsetToData;
-		struct
-		{
+        struct {
 			uint_32 OffsetToDirectory:31;
 			uint_32 DataIsDirectory:1;
 		};
 	};
 };
 
-struct IMAGE_RESOURCE_DIR_STRING_U
-{
+struct IMAGE_RESOURCE_DIR_STRING_U {
 	uint_16 Length;
 	int_16  NameString[1];
 };
 
-struct IMAGE_RESOURCE_DATA_ENTRY
-{
+struct IMAGE_RESOURCE_DATA_ENTRY {
 	uint_32 OffsetToData;
 	uint_32 Size;
 	uint_32 CodePage;

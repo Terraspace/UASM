@@ -31,8 +31,7 @@
 #ifndef _TBYTE_H
 #define _TBYTE_H
 
-struct TB_LD
-{
+struct TB_LD {
 	uint_64 m;
 	unsigned short e;
 };

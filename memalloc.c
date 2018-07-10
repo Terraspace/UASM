@@ -68,8 +68,7 @@
 #endif
 #endif
 
-struct linked_list
-{
+struct linked_list {
 	struct linked_list *next;
 };
 static struct linked_list *pBase; /* start list of 512 kB blocks; to be moved to ModuleInfo.g */
@@ -96,8 +95,7 @@ uint_32 sys_call2(uint_32 func, uint_32 r_ebx, uint_32 r_ecx);
     parm [eax] [ebx] [ecx]                      \
     value [eax];
 
-struct mmap
-{
+struct mmap {
 	uint_32 base;   /* linear base (or 0) */
 	uint_32 size;   /* size in bytes */
 	uint_32 access; /* 3 = PROT_READ | PROT_WRITE */
@@ -172,8 +170,7 @@ void MemFini(void)
 	if (Options.quiet == FALSE)
 		printf("memory used: %u kB\n", (blocks * BLKSIZE - currfree) / 1024);
 #endif
-	while (pBase)
-	{
+    while ( pBase ) {
 		struct linked_list *pNext = pBase->next;
 		BLKFREE(pBase);
 		pBase = pNext;
@@ -192,13 +189,11 @@ void *LclAlloc(size_t size)
 
 #if FASTMEM
 	size = (size + sizeof(void *)-1) & ~(sizeof(void *)-1);
-	if (currfree < size)
-	{
+    if ( currfree < size ) {
 		DebugMsg(("LclAlloc: new block needed, req. size=%Xh > currfree=%Xh\n", size, currfree));
 		currfree = (size <= (BLKSIZE - sizeof(struct linked_list)) ? BLKSIZE - sizeof(struct linked_list) : size);
 		BLKALLOC(pCurr, currfree + sizeof(struct linked_list));
-		if (!pCurr)
-		{
+        if ( !pCurr ) {
 			currfree = 0;
 			Fatal(OUT_OF_MEMORY);
 		}
@@ -217,8 +212,7 @@ void *LclAlloc(size_t size)
 #ifdef TRMEM
 	DebugMsg1(("LclAlloc(0x%X)=%p cnt=%" I32_SPEC "u\n", size, ptr, ++memcalls));
 #endif
-	if (ptr == NULL)
-	{
+    if( ptr == NULL ) {
 		Fatal(OUT_OF_MEMORY);
 	}
 #endif
@@ -234,8 +228,7 @@ void *LclAlloc(size_t size)
 void LclFree(void *ptr)
 /***********************/
 {
-	if (ptr != NULL)
-	{
+    if( ptr != NULL ) {
 #ifdef TRMEM
 		DebugMsg1(("LclFree(0x%p) cnt=%" I32_SPEC "u\n", ptr, --memcalls));
 #endif
@@ -250,8 +243,7 @@ void *MemAlloc(size_t size)
 	void        *ptr;
 	ptr = malloc(size);
 	DebugMsg1(("MemAlloc(0x%X)=%p cnt=%" I32_SPEC "u\n", size, ptr, ++memcalls));
-	if (ptr == NULL)
-	{
+    if( ptr == NULL ) {
 		Fatal(OUT_OF_MEMORY);
 	}
 #ifdef _DEBUG
@@ -275,8 +267,7 @@ void *MemRealloc(void *ptr, size_t size)
 	void *new;
 
 	new = realloc(ptr, size);
-	if (new == NULL && size != 0)
-	{
+    if( new == NULL && size != 0 ) {
 		Fatal(OUT_OF_MEMORY);
 	}
 	return(new);

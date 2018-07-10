@@ -3,8 +3,7 @@
 #ifndef _COFF_H_INCLUDED
 #define _COFF_H_INCLUDED
 
-struct qditem
-{
+struct qditem {
 	uint_8 *next;
 	unsigned size;
 };

@@ -39,8 +39,7 @@
  * v2.01: SYM_PROC has been removed.
  * v2.01: SYM_LIB has been removed.
  */
-enum sym_state
-{
+enum sym_state {
 	SYM_UNDEFINED,
 	SYM_INTERNAL,       /*  1 internal label */
 	SYM_EXTERNAL,       /*  2 external       */
@@ -58,8 +57,7 @@ enum sym_state
 /* v2.04: MT_SHORT removed */
 /* v2.07: MT_ABS (0xC2) removed */
 
-enum memtype
-{
+enum memtype {
 	/* 0x1F changed to 0x3F to cover ZMM registers, Uasm 2.16 */
 	MT_SIZE_MASK = 0x1F, /* if MT_SPECIAL==0 then bits 0-4 = size - 1 */
 	MT_FLOAT = 0x20, /* bit 5=1 */
@@ -97,8 +95,7 @@ enum memtype
 #define IS_SIGNED(x)  (((x) & MT_SPECIAL_MASK) == MT_SIGNED)
 
 /* UASM 2.34 added return type from proc enum */
-enum returntype
-{
+enum returntype {
 	RT_SIGNED = 0x40,
 	RT_FLOAT = 0x20,
 	RT_BYTE = 0,
@@ -132,8 +129,7 @@ struct macro_instance;
 
 typedef void(*internal_func)(struct asym *, void *);
 
-struct debug_info
-{
+struct debug_info {
 	uint_32 start_line;  /* procs's start line */
 	uint_32 end_line;    /* procs's last line */
 	uint_32 ln_fileofs;  /* file offset to line numbers */
@@ -143,13 +139,11 @@ struct debug_info
 	unsigned next_file;  /* index next file */
 };
 
-struct asym
-{
+struct asym {
 	struct asym     *nextitem;       /* next symbol in hash line */
 	char            *name;           /* symbol name */
 	char           *string_ptr;  /* used by SYM_TMACRO */
-	union
-	{
+	union {
 		int_32         offset;       /* used by SYM_INTERNAL (labels), SYM_TYPE, SYM_STACK, v2.11: SYM_SEG */
 		int_32         value;        /* used by SYM_INTERNAL (equates) */
 		uint_32        uvalue;       /* v2.01: equates (they are 33-bit!) */
@@ -183,8 +177,7 @@ struct asym
 	fwdref:1,     /* symbol was forward referenced */
 		included:1,   /* COFF: static symbol added to public queue. ELF:symbol added to symbol table (SYM_INTERNAL) */
 		isparam:1;    /* symbol is local parametar above rsp */
-	union
-	{
+    union {
 		/* for SYM_INTERNAL (data labels, memtype != NEAR|FAR), SYM_STRUCT_FIELD */
 		uint_32         first_size;   /* size of 1st initializer's dimension in bytes */
 		/* for SYM_INTERNAL (memtype == NEAR|FAR),
@@ -193,12 +186,10 @@ struct asym
 		 * SYM_STACK (Ofssize, isfar, is_vararg, is_ptr, ptr_memtype ),
 		 * SYM_TYPE, TYPE_TYPEDEF (Ofssize, isfar, is_ptr, ptr_memtype )
 		 */
-		struct
-		{
+        struct {
 			unsigned char   Ofssize;   /* offset size (USE16, USE32) */
 			unsigned char   is_ptr;    /* PTR indirection */
-			union
-			{
+            union {
 				unsigned char ptr_memtype;/* pointer target type */
 				unsigned char asmpass;    /* SYM_INTERNAL (mem_type NEAR|FAR) */
 			};
@@ -209,8 +200,7 @@ struct asym
 			unsigned char   is_vararg:1;/* SYM_STACK, VARARG param */
 		};
 		/* for SYM_MACRO */
-		struct
-		{
+        struct {
 			unsigned char   mac_vararg:1,/* accept additional params */
 				isfunc:1,   /* it's a macro function */
 #if MACROLABEL
@@ -222,8 +212,7 @@ struct asym
 				purged:1;   /* macro has been PURGEd */
 		};
 	};
-	union
-	{
+    union {
 		/* for SYM_INTERNAL (data labels only), SYM_STRUCT_FIELD */
 		uint_32         first_length; /* size of 1st initializer's dimension in item units */
 		/* SYM_TYPE (TYPEKIND_STRUCT or TYPEKIND_UNION) */
@@ -233,8 +222,7 @@ struct asym
 		/* SYM_TMACRO (if it's a register variable for FASTCALL) */
 		uint_16         regist[2];
 	};
-	union
-	{
+    union {
 		/* for SYM_INTERNAL, SYM_STRUCT_FIELD,
 		 * SYM_TYPE, SYM_STACK,
 		 * SYM_EXTERNAL (comm=1)
@@ -249,8 +237,7 @@ struct asym
 		/* for SYM_SEG; v2.11: moved here to make segment's offset field contain "local start offset" (=0) */
 		int_32          max_offset;
 	};
-	union
-	{
+    union {
 		/* SYM_INTERNAL, SYM_STRUCT_FIELD,
 		 * SYM_STACK, SYM_EXTERNAL (comm==1):
 		 * total number of elements (LENGTHOF)
@@ -259,8 +246,7 @@ struct asym
 		struct asym    *altname;     /* SYM_EXTERNAL (comm==0): alternative name */
 		struct debug_info *debuginfo;/* SYM_INTERNAL (isproc==1): debug info (COFF) */
 		internal_func  sfunc_ptr;    /* SYM_INTERNAL+predefined */
-		struct
-		{ /* SYM_TYPE */
+        struct { /* SYM_TYPE */
 	/* codeview type index (used after assembly steps)
 	 * v2.04: moved from first_length, were it didn't work anymore
 	 * since the addition of field max_mbr_size.
@@ -275,21 +261,18 @@ struct asym
 	uint_16         name_size;
 #endif
 	uint_16  langtype; //enum lang_type
-	union
-	{
+	union {
 		/* SYM_INTERNAL, SYM_UNDEFINED, SYM_EXTERNAL: backpatching fixup */
 		struct fixup *bp_fixup;
 		/* for SYM_EXTERNAL */
 		unsigned     ext_idx;     /* table index ( for coff and elf ) */
-		struct
-		{
+        struct {
 			/* omf indices are 16-bit only! */
 			uint_16  ext_idx1;    /* omf: (external definition) index */
 			uint_16  ext_idx2;    /* omf: (external definition) index for weak external */
 		};
 	};
-	union
-	{
+	union {
 		struct asym *type;        /* set if memtype is MT_TYPE */
 		struct dsym *ttype;       /* for easier debugging */
 	};
@@ -302,14 +285,12 @@ struct asym
 /* procedure and symbolic integer constants.                                 */
 /*---------------------------------------------------------------------------*/
 
-struct seg_item
-{
+struct seg_item {
 	struct seg_item     *next;
 	struct dsym         *seg;
 };
 
-struct grp_info
-{
+struct grp_info {
 	struct seg_item     *seglist;       /* list of segments in the group */
 	int                 grp_idx;        /* its group index (OMF) */
 	int                 lname_idx;      /* LNAME index (OMF only) */
@@ -318,12 +299,10 @@ struct grp_info
 
 typedef uint_8 * (*FlushSegFunc)(struct dsym *, uint_8 *, unsigned, void *);
 
-struct seg_info
-{
+struct seg_info {
 	struct asym         *group;         /* segment's group or NULL */
 	uint_32             start_loc;      /* starting offset of current ledata or lidata */
-	union
-	{
+    union {
 		uint_32         current_loc;    /* current offset in current ledata or lidata */
 		uint_32         reloc_offset;   /* ELF: reloc file offset */
 		uint_32         start_offset;   /* BIN: start offset in group */
@@ -334,18 +313,15 @@ struct seg_info
 	uint_8              *CodeBuffer;
 #endif
 	uint_32             bytes_written;  /* initialized bytes in segment */
-	union
-	{
+    union {
 		struct asym     *label_list;    /* linked list of labels in this seg */
 		FlushSegFunc    flushfunc;      /* to flush the segment buffer */
 	};
-	struct
-	{
+    struct {
 		struct fixup    *head;          /* fixup queue head */
 		struct fixup    *tail;          /* fixup queue tail */
 	} FixupList;
-	union
-	{
+    union {
 		void            *LinnumQueue;   /* for COFF line numbers */
 		uint_32         fileoffset;     /* used by BIN + ELF */
 		uint_32         num_linnums;    /* used by COFF (after LinnumQueue has been read) */
@@ -355,16 +331,14 @@ struct seg_info
 	enum seg_type       segtype;        /* segment's type (code, data, ...) */
 	int                 lname_idx;      /* segment's name LNAME index (OMF only) */
 	struct asym         *clsym;         /* segment's class name (stored in an asym item) */
-	union
-	{
+    union {
 		uint_16         abs_frame;      /* ABS seg, frame number (OMF,BIN) */
 #if COMDATSUPP
 		uint_16         comdat_number;  /* associated COMDAT segno (COFF) */
 		uint_16         comdat_idx;     /* lname index of COMDAT symbol (OMF) */
 #endif
 	};
-	union
-	{
+    union {
 		uint_32         abs_offset;     /* ABS seg, offset (OMF only) */
 		char            *aliasname;     /* ALIAS name (COFF/ELF only) */
 	};
@@ -389,14 +363,12 @@ unsigned char       comdat_selection:3; /* if > 0, it's a COMDAT (COFF/OMF) */
 
 /* PROC item */
 
-struct proc_info
-{
+struct proc_info {
 	uint_16             *regslist;      /* PROC: list of registers to be saved */
 	struct dsym         *paralist;      /* list of parameters */
 	struct dsym         *locallist;     /* PROC: list of local variables */
 	struct dsym         *labellist;     /* PROC: list of local labels */
 	unsigned            parasize;       /* total no. of bytes used by parameters */
-	//unsigned            mmparasize;     /* total no. of bytes used by (x)mm and reg parameters */
 	unsigned            localsize;      /* PROC: total no. of bytes used by local variables */
 	unsigned            locals;
 	unsigned             vsize;
@@ -431,11 +403,9 @@ struct proc_info
 	char                home_used[6];   /* used shadows home space */
 #endif
 	uint_32             prolog_list_pos;/* PROC: prologue list pos */
-	union
-	{
+    union {
 		unsigned char   flags;
-		struct
-		{
+        struct {
 			unsigned char  has_vararg:1;/* last param is VARARG */
 			unsigned char  pe_type:1;   /* PROC: prolog-epilog type, 1=use LEAVE */
 			unsigned char  isexport:1;  /* PROC: EXPORT attribute set */
@@ -460,8 +430,7 @@ struct proc_info
 
 /* macro parameter */
 
-struct mparm_list
-{
+struct mparm_list {
 	//const char          *label;         /* name of parameter */
 	char                *deflt;         /* optional default parm */
 	unsigned char       required:1;     /* is parm required (REQ) */
@@ -469,8 +438,7 @@ struct mparm_list
 
 /* macro line */
 
-struct srcline
-{
+struct srcline {
 	struct srcline      *next;
 	uint_8              ph_count; /* placeholders contained in this line */
 	char                line[1];
@@ -478,11 +446,9 @@ struct srcline
 
 /* macro item */
 
-struct macro_info
-{
+struct macro_info {
 	uint_16             parmcnt;    /* no of params */
-	union
-	{
+    union {
 		uint_16         localcnt;   /* no of locals */
 		uint_16         autoexp;    /* auto-expansion flags if predefined macro */
 	};
@@ -496,8 +462,7 @@ struct macro_info
 
 /* STRUCT field */
 
-struct sfield
-{
+struct sfield {
 	struct asym         sym;        /* field symbol ( state=SYM_STRUCT_FIELD ) */
 	struct sfield       *next;      /* next field in STRUCT,UNION,RECORD */
 	//char                *init_dir; /* v2.09: removed ; previously: not used by record fields */
@@ -510,8 +475,7 @@ struct sfield
 //    char                ivalue[1];  /* v2.09: type changed from char * to char[] */
 //};
 
-enum type_kind
-{
+enum type_kind {
 	TYPE_NONE,
 	TYPE_STRUCT,
 	TYPE_UNION,
@@ -526,8 +490,7 @@ enum struct_simd
 	MM256,
 	MM512
 };
-struct struct_info
-{
+struct struct_info {
 	struct sfield       *head; /* STRUCT/UNION/RECORD: start of field list */
 	struct sfield       *tail; /* STRUCT/UNION/RECORD: current/next field */
 	/* v2.08: typekind moved to struct asym */
@@ -542,11 +505,9 @@ struct struct_info
 	uint_8              isHFA;
 	uint_32             memberCount;
 	uint_8              alignment;   /* STRUCT: 1,2,4,8,16 or 32 */
-	union
-	{
+    union {
 		uint_8          flags;
-		struct
-		{
+        struct {
 			unsigned char   isInline:1;  /* STRUCT/UNION: inline (unused) */
 			unsigned char   isOpen:1;    /* STRUCT/UNION: set until the matching ENDS is found */
 			unsigned char   OrgInside:1; /* STRUCT: struct contains an ORG */
@@ -558,11 +519,9 @@ struct struct_info
  * the additional 3 fields are used differently depending on symbol's type.
  */
 
-struct dsym
-{
+struct dsym {
 	struct asym sym;
-	union
-	{
+    union {
 		struct seg_info     *seginfo;   /* SYM_SEG (segments) */
 		struct grp_info     *grpinfo;   /* SYM_GRP (groups) */
 		struct proc_info    *procinfo;  /* SYM_INTERNAL|SYM_EXTERNAL (procs, isproc=1) */
@@ -584,8 +543,7 @@ struct dsym
 	 * linked list of labels for current segment (used for BackPatch)
 	 */
 	struct dsym *next;
-	union
-	{
+    union {
 		/* for SYM_UNDEFINED, SYM_EXTERNAL, SYM_ALIAS and SYM_GRP:
 		 * predecessor of current symbol with the same state, to allow fast removes.
 		 * Actually, the only symbols which may change the state and thus

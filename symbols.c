@@ -106,8 +106,7 @@ static const char szTimeFmt[] = "%X"; /* locale's time */
 
 static struct asym *symPC; /* the $ symbol */
 
-struct tmitem
-{
+struct tmitem {
 	const char *name;
 	char *value;
 	struct asym **store;
@@ -129,8 +128,7 @@ static const struct tmitem tmtab[] = {
 	{"@CurSeg",   "", &symCurSeg }
 };
 
-struct eqitem
-{
+struct eqitem {
 	const char *name;
 	uint_32 value;
 	void(*sfunc_ptr)(struct asym *, void *);
@@ -160,8 +158,7 @@ static unsigned int hashpjw(const char *s)
 	uint_64 fnv_basis = 14695981039346656037;
 	uint_64 register fnv_prime = 1099511628211;
 	uint_64 h;
-	for (h = fnv_basis; *s; ++s)
-	{
+	for (h = fnv_basis; *s; ++s) {
 		h ^= (*s | ' ');
 		h *= fnv_prime;
 	}
@@ -192,10 +189,8 @@ void SymGetLocal(struct asym *proc)
 	int i;
 	struct dsym  **l = &((struct dsym *)proc)->e.procinfo->labellist;
 
-	for (i = 0; i < LHASH_TABLE_SIZE; i++)
-	{
-		if (lsym_table[i])
-		{
+    for ( i = 0; i < LHASH_TABLE_SIZE; i++ ) {
+        if ( lsym_table[i] ) {
 			*l = (struct dsym *)lsym_table[i];
 			l = &(*l)->e.nextll;
 		}
@@ -218,8 +213,7 @@ void SymSetLocal(struct asym *proc)
 	struct dsym *l;
 
 	SymClearLocal();
-	for (l = ((struct dsym *)proc)->e.procinfo->labellist; l; l = l->e.nextll)
-	{
+    for ( l = ((struct dsym *)proc)->e.procinfo->labellist; l; l = l->e.nextll ) {
 		DebugMsg1(("SymSetLocal(%s): label=%s\n", proc->name, l->sym.name));
 		i = hashpjw(l->sym.name) % LHASH_TABLE_SIZE;
 		lsym_table[i] = &l->sym;
@@ -240,8 +234,7 @@ struct asym *SymAlloc(const char *name)
 #if 1
 	/* the tokenizer ensures that identifiers are within limits, so
 	 * this check probably is redundant */
-	if (len > MAX_ID_LEN)
-	{
+    if( len > MAX_ID_LEN ) {
 		EmitError(IDENTIFIER_TOO_LONG);
 		len = MAX_ID_LEN;
 	}
@@ -249,13 +242,11 @@ struct asym *SymAlloc(const char *name)
 	sym->name_size = len;
 	sym->list = ModuleInfo.cref;
 	sym->mem_type = MT_EMPTY;
-	if (len)
-	{
+    if ( len ) {
 		sym->name = LclAlloc(len + 1);
 		memcpy(sym->name, name, len);
 		sym->name[len] = NULLC;
-	}
-	else
+    } else
 		sym->name = "";
 	return(sym);
 }
@@ -275,10 +266,8 @@ struct asym *SymFind(const char *name)
 	len = strlen(name);
 	i = hashpjw(name);
 
-	if (CurrProc)
-	{
-		for (lsym = &lsym_table[i % LHASH_TABLE_SIZE]; *lsym; lsym = &((*lsym)->nextitem))
-		{
+	if (CurrProc) {
+		for (lsym = &lsym_table[i % LHASH_TABLE_SIZE]; *lsym; lsym = &((*lsym)->nextitem)) {
 			if (len == (*lsym)->name_size && SYMCMP(name, (*lsym)->name, len) == 0)
 			{
 				if ((*lsym)->ttype && (*lsym)->ttype->e.structinfo)
@@ -294,8 +283,7 @@ struct asym *SymFind(const char *name)
 		}
 	}
 
-	for (gsym = &gsym_table[i % GHASH_TABLE_SIZE]; *gsym; gsym = &((*gsym)->nextitem))
-	{
+	for (gsym = &gsym_table[i % GHASH_TABLE_SIZE]; *gsym; gsym = &((*gsym)->nextitem)) {
 		if ((*gsym)->name && len == (*gsym)->name_size && SYMCMP(name, (*gsym)->name, len) == 0)
 		{
 			if ((*gsym)->ttype && (*gsym)->ttype->e.structinfo)
@@ -324,10 +312,8 @@ struct asym *SymCheck(const char *name)
 	len = strlen(name);
 	i = hashpjw(name);
 
-	if (CurrProc)
-	{
-		for (lsym = &lsym_table[i % LHASH_TABLE_SIZE]; *lsym; lsym = &((*lsym)->nextitem))
-		{
+	if (CurrProc) {
+		for (lsym = &lsym_table[i % LHASH_TABLE_SIZE]; *lsym; lsym = &((*lsym)->nextitem)) {
 			if (len == (*lsym)->name_size && SYMCMP(name, (*lsym)->name, len) == 0)
 			{
 				if ((*lsym)->ttype && (*lsym)->ttype->e.structinfo)
@@ -343,8 +329,7 @@ struct asym *SymCheck(const char *name)
 		}
 	}
 
-	for (gsym = &gsym_table[i % GHASH_TABLE_SIZE]; *gsym; gsym = &((*gsym)->nextitem))
-	{
+	for (gsym = &gsym_table[i % GHASH_TABLE_SIZE]; *gsym; gsym = &((*gsym)->nextitem)) {
 		if ((*gsym)->name && len == (*gsym)->name_size && SYMCMP(name, (*gsym)->name, len) == 0)
 		{
 			return(*gsym);
@@ -366,12 +351,9 @@ struct asym *SymFindLocal(const char *name)
 	len = strlen(name);
 	i = hashpjw(name);
 
-	if (CurrProc)
-	{
-		for (lsym = &lsym_table[i % LHASH_TABLE_SIZE]; *lsym; lsym = &((*lsym)->nextitem))
-		{
-			if (len == (*lsym)->name_size && SYMCMP(name, (*lsym)->name, len) == 0)
-			{
+	if (CurrProc) {
+		for (lsym = &lsym_table[i % LHASH_TABLE_SIZE]; *lsym; lsym = &((*lsym)->nextitem)) {
+			if (len == (*lsym)->name_size && SYMCMP(name, (*lsym)->name, len) == 0) {
 				DebugMsg1(("SymFindLocal(%s): found in local table, state=%u, local=%u\n", name, (*lsym)->state, (*lsym)->scoped));
 				(*lsym)->used = TRUE;
 				return(*lsym);
@@ -398,22 +380,17 @@ struct asym *SymFindDeclare(const char *name)
 	len = strlen(name);
 	i = hashpjw(name);
 
-	if (CurrProc)
-	{
-		for (lsym = &lsym_table[i % LHASH_TABLE_SIZE]; *lsym; lsym = &((*lsym)->nextitem))
-		{
-			if (len == (*lsym)->name_size && SYMCMP(name, (*lsym)->name, len) == 0)
-			{
+	if (CurrProc) {
+		for (lsym = &lsym_table[i % LHASH_TABLE_SIZE]; *lsym; lsym = &((*lsym)->nextitem)) {
+			if (len == (*lsym)->name_size && SYMCMP(name, (*lsym)->name, len) == 0) {
 				DebugMsg1(("SymFind(%s): found in local table, state=%u, local=%u\n", name, (*lsym)->state, (*lsym)->scoped));
 				return(*lsym);
 			}
 		}
 	}
 
-	for (gsym = &gsym_table[i % GHASH_TABLE_SIZE]; *gsym; gsym = &((*gsym)->nextitem))
-	{
-		if (len == (*gsym)->name_size && SYMCMP(name, (*gsym)->name, len) == 0)
-		{
+	for (gsym = &gsym_table[i % GHASH_TABLE_SIZE]; *gsym; gsym = &((*gsym)->nextitem)) {
+		if (len == (*gsym)->name_size && SYMCMP(name, (*gsym)->name, len) == 0) {
 			DebugMsg1(("SymFind(%s): found, state=%u memtype=%X lang=%u\n", name, (*gsym)->state, (*gsym)->mem_type, (*gsym)->langtype));
 			return(*gsym);
 		}
@@ -455,15 +432,12 @@ struct asym *SymLookupLocal(const char *name)
 {
 	struct asym *sym;
 	sym = SymFind(name);
-	if (sym == NULL)
-	{
+    if ( sym == NULL ) {
 		sym = SymAlloc(name);
 		sym->scoped = TRUE;
 		/* add the label to the local hash table */
 		*lsym = sym;
-	}
-	else if (sym->state == SYM_UNDEFINED && sym->scoped == FALSE)
-	{
+    } else if( sym->state == SYM_UNDEFINED && sym->scoped == FALSE ) {
 		/* if the label was defined due to a FORWARD reference,
 		 * its scope is to be changed from global to local. */
 		 /* remove the label from the global hash table */
@@ -483,8 +457,7 @@ static void free_ext(struct asym *sym)
 /**************************************/
 {
 	DebugMsg(("free_ext: item=%p name=%s state=%u\n", sym, sym->name, sym->state));
-	switch (sym->state)
-	{
+    switch( sym->state ) {
 		case SYM_INTERNAL:
 			if (sym->isproc)
 				DeleteProc((struct dsym *)sym);
@@ -497,8 +470,7 @@ static void free_ext(struct asym *sym)
 			 * However, this is an independant item and must not be released here
 			 */
 #ifdef DEBUG_OUT /* to be removed, this can't happen anymore. */
-			if (sym->mem_type == MT_TYPE && *sym->type->name == NULLC)
-			{
+        if ( sym->mem_type == MT_TYPE && *sym->type->name == NULLC ) {
 				DebugMsg(("free_ext: external with private type: %s\n", sym->name));
 				SymFree(sym->type);
 			}
@@ -526,8 +498,7 @@ static void free_ext(struct asym *sym)
 #ifdef DEBUG_OUT
 		case SYM_STACK:
 			/* to be removed, this can't happen anymore. */
-			if (sym->mem_type == MT_TYPE && *sym->type->name == NULLC)
-			{
+        if ( sym->mem_type == MT_TYPE && *sym->type->name == NULLC ) { 
 				DebugMsg(("free_ext: case SYM_STACK, sym=%s with private type\n", sym->name));
 				/* symbol has a "private" type */
 				SymFree(sym->type);
@@ -549,11 +520,9 @@ void SymFree(struct asym *sym)
 	//DebugMsg(("SymFree: free %X, name=%s, state=%X\n", sym, sym->name, sym->state));
 	free_ext(sym);
 #if FASTMEM==0
-	if (sym->state != SYM_EXTERNAL)
-	{
+    if ( sym->state != SYM_EXTERNAL ) {
 		struct fixup *fix;
-		for (fix = sym->bp_fixup; fix; )
-		{
+        for( fix = sym->bp_fixup ; fix; ) {
 			struct fixup *next = fix->nextbp;
 			DebugMsg(("SymFree: free bp fixup %p\n", fix));
 			LclFree(fix);
@@ -577,8 +546,7 @@ struct asym *SymAddLocal(struct asym *sym, const char *name)
 	struct asym *sym2;
 	/* v2.10: ignore symbols with state SYM_UNDEFINED! */
 	//if( SymFind( name ) ) {
-	if ((sym2 = SymFind(name)) && sym2->state != SYM_UNDEFINED)
-	{
+    if( ( sym2 = SymFind( name ) ) && sym2->state != SYM_UNDEFINED ) {
 		/* shouldn't happen */
 		EmitErr(SYMBOL_ALREADY_DEFINED, name);
 		return(NULL);
@@ -602,8 +570,7 @@ struct asym *SymAddLocal(struct asym *sym, const char *name)
 struct asym *SymAddGlobal(struct asym *sym)
 	/*******************************************/
 {
-	if (SymFind(sym->name))
-	{
+    if( SymFind( sym->name ) ) {
 		EmitErr(SYMBOL_ALREADY_DEFINED, sym->name);
 		return(NULL);
 	}
@@ -619,8 +586,7 @@ struct asym *SymCreate(const char *name)
 {
 	struct asym *sym;
 
-	if (SymFind(name))
-	{
+    if( SymFind( name ) ) {
 		EmitErr(SYMBOL_ALREADY_DEFINED, name);
 		return(NULL);
 	}
@@ -641,8 +607,7 @@ struct asym *SymLCreate(const char *name)
 
 	/* v2.10: ignore symbols with state SYM_UNDEFINED */
 	//if( SymFind( name ) ) {
-	if ((sym = SymFindDeclare(name)) && sym->state != SYM_UNDEFINED)
-	{
+    if( ( sym = SymFindDeclare( name ) ) && sym->state != SYM_UNDEFINED ) {
 		EmitErr(SYMBOL_ALREADY_DEFINED, name);
 		return(NULL);
 	}
@@ -657,10 +622,8 @@ void SymMakeAllSymbolsPublic(void)
 	int i;
 	struct asym  *sym;
 
-	for (i = 0; i < GHASH_TABLE_SIZE; i++)
-	{
-		for (sym = gsym_table[i]; sym; sym = sym->nextitem)
-		{
+    for( i = 0; i < GHASH_TABLE_SIZE; i++ ) {
+        for( sym = gsym_table[i]; sym; sym = sym->nextitem ) {
 			if (sym->state == SYM_INTERNAL &&
 				/* v2.07: MT_ABS is obsolete */
 				//sym->mem_type != MT_ABS &&  /* no EQU or '=' constants */
@@ -669,8 +632,7 @@ void SymMakeAllSymbolsPublic(void)
 				sym->included == FALSE && /* v2.09: symbol already added to public queue? */
 				//sym->scoped == FALSE && /* v2.09: no procs that are marked as "private" */
 				sym->name[1] != '&' && /* v2.10: no @@ code labels */
-				sym->ispublic == FALSE)
-			{
+                sym->ispublic == FALSE ) {
 				sym->ispublic = TRUE;
 				AddPublicData(sym);
 			}
@@ -690,16 +652,12 @@ void SymFini(void)
 #endif
 
 #ifdef DEBUG_OUT
-	if (Options.dump_symbols_hash)
-	{
-		for (i = 0; i < GHASH_TABLE_SIZE; i++)
-		{
+    if ( Options.dump_symbols_hash ) {
+        for( i = 0; i < GHASH_TABLE_SIZE; i++ ) {
 			struct asym  *sym = gsym_table[i];
-			if (sym)
-			{
+            if ( sym ) {
 				printf("%4u ", i);
-				for (; sym; sym = sym->nextitem)
-				{
+                for( ; sym; sym = sym->nextitem ) {
 					printf("%-16s ", sym->name);
 				}
 				printf("\n");
@@ -711,12 +669,10 @@ void SymFini(void)
 
 #if FASTMEM==0 || defined( DEBUG_OUT )
 	/* free the symbol table */
-	for (i = 0; i < GHASH_TABLE_SIZE; i++)
-	{
+    for( i = 0; i < GHASH_TABLE_SIZE; i++ ) {
 		struct asym  *sym;
 		struct asym  *next;
-		for (sym = gsym_table[i]; sym; )
-		{
+        for( sym = gsym_table[i]; sym; ) {
 			next = sym->nextitem;
 			SymFree(sym);
 			SymCount--;
@@ -755,8 +711,7 @@ void SymInit(void)
 	sprintf(szTime, "%02u:%02u:%02u", now->tm_hour, now->tm_min, now->tm_sec);
 #endif
 
-	for (i = 0; i < sizeof(tmtab) / sizeof(tmtab[0]); i++)
-	{
+    for( i = 0; i < sizeof(tmtab) / sizeof(tmtab[0]); i++ ) {
 		sym = SymCreate(tmtab[i].name);
 		sym->state = SYM_TMACRO;
 		sym->isdefined = TRUE;
@@ -766,8 +721,7 @@ void SymInit(void)
 			*tmtab[i].store = sym;
 	}
 
-	for (i = 0; i < sizeof(eqtab) / sizeof(eqtab[0]); i++)
-	{
+    for( i = 0; i < sizeof(eqtab) / sizeof(eqtab[0]); i++ ) {
 		sym = SymCreate(eqtab[i].name);
 		sym->state = SYM_INTERNAL;
 		/* v2.07: MT_ABS is obsolete */
@@ -811,13 +765,10 @@ void SymPassInit(int pass)
 	 * - SYM_MACRO - macros
 	 * - SYM_TMACRO - text macros
 	 */
-	for (i = 0; i < GHASH_TABLE_SIZE; i++)
-	{
+    for( i = 0; i < GHASH_TABLE_SIZE; i++ ) {
 		struct asym *sym;
-		for (sym = gsym_table[i]; sym; sym = sym->nextitem)
-		{
-			if (sym->predefined == FALSE)
-			{
+        for( sym = gsym_table[i]; sym; sym = sym->nextitem ) {
+            if ( sym->predefined == FALSE ) {
 				/* v2.04: all symbol's "defined" flag is now reset. */
 				// if ( sym->state == SYM_TMACRO ||
 				//    sym->state == SYM_MACRO  ||
@@ -844,10 +795,8 @@ void SymGetAll(struct asym **syms)
 	unsigned            i, j;
 
 	/* copy symbols to table */
-	for (i = j = 0; i < GHASH_TABLE_SIZE; i++)
-	{
-		for (sym = gsym_table[i]; sym; sym = sym->nextitem)
-		{
+    for( i = j = 0; i < GHASH_TABLE_SIZE; i++ ) {
+        for( sym = gsym_table[i]; sym; sym = sym->nextitem ) {
 			syms[j++] = sym;
 		}
 	}
@@ -861,13 +810,10 @@ void SymGetAll(struct asym **syms)
 struct asym *SymEnum(struct asym *sym, int *pi)
 	/***********************************************/
 {
-	if (sym == NULL)
-	{
+    if ( sym == NULL ) {
 		*pi = 0;
 		sym = gsym_table[*pi];
-	}
-	else
-	{
+    } else {
 		sym = sym->nextitem;
 	}
 
@@ -928,13 +874,11 @@ void SymSimd(struct dsym *sym)
 	// Ensure unions of multiple MM128 or MM256 types default to a 4/8 member float arrangement.
 	if (sym->sym.typekind == TYPE_UNION && sym->e.structinfo->isHomogenous == 1)
 	{
-		if (sym->e.structinfo->stype == MM128)
-		{
+	  if (sym->e.structinfo->stype == MM128) {
 			memberCount = 4;
 			sym->e.structinfo->memberCount = memberCount;
 		}
-		if (sym->e.structinfo->stype == MM256)
-		{
+	  if (sym->e.structinfo->stype == MM256) {
 			memberCount = 8;
 			sym->e.structinfo->memberCount = memberCount;
 		}
@@ -1110,8 +1054,7 @@ static void DumpSymbol(struct asym *sym)
 	uint_64     value = sym->uvalue;
 	//const char  *langtype;
 
-	switch (sym->state)
-	{
+    switch( sym->state ) {
 		case SYM_UNDEFINED:
 			type = "Undefined";
 			break;
@@ -1119,12 +1062,10 @@ static void DumpSymbol(struct asym *sym)
 			if (sym->isproc)
 				type = "Procedure";
 			//else if ( sym->mem_type == MT_ABS )
-			else if (sym->segment == NULL)
-			{
+        else if ( sym->segment == NULL ) {
 				type = "Number";
 				value += ((uint_64)(uint_32)sym->value3264) << 32;
-			}
-			else if (sym->mem_type == MT_NEAR || sym->mem_type == MT_FAR)
+        } else if ( sym->mem_type == MT_NEAR || sym->mem_type == MT_FAR )
 				type = "Code Label";
 			else
 				type = "Data Label";
@@ -1154,8 +1095,7 @@ static void DumpSymbol(struct asym *sym)
 			type = "Struct Field";
 			break;
 		case SYM_TYPE:
-			switch (sym->typekind)
-			{
+        switch ( sym->typekind ) {
 				case TYPE_STRUCT:  type = "Structure"; break;
 				case TYPE_UNION:   type = "Union";     break;
 				case TYPE_TYPEDEF: type = "Typedef";   break;
@@ -1196,18 +1136,14 @@ static void DumpSymbols(void)
 	unsigned            curr = 0;
 
 	DebugMsg(("DumpSymbols enter\n"));
-	if (Options.dump_symbols)
-	{
+    if ( Options.dump_symbols ) {
 		printf("   # Addr     Type                     Value MT    Ext   P  pName   Name\n");
 		printf("--------------------------------------------------------------------------------\n");
 	}
-	for (i = 0; i < GHASH_TABLE_SIZE; i++)
-	{
-		for (sym = gsym_table[i], curr = 0; sym; sym = sym->nextitem)
-		{
+    for( i = 0; i < GHASH_TABLE_SIZE; i++ ) {
+        for( sym = gsym_table[i], curr = 0; sym; sym = sym->nextitem ) {
 			curr++;
-			if (Options.dump_symbols)
-			{
+            if ( Options.dump_symbols ) {
 				printf("%4u %8p ", i, sym);
 				DumpSymbol(sym);
 			}
@@ -1224,8 +1160,7 @@ static void DumpSymbols(void)
 		if (max < curr)
 			max = curr;
 	}
-	if (Options.quiet == FALSE)
-	{
+    if ( Options.quiet == FALSE ) {
 		printf("%u items in symbol table, expected %u\n", count, SymCount);
 		printf("max items in a line=%u, lines with 0/1/<=5/<=10 items=%u/%u/%u/%u, \n", max, num0, num1, num5, num10);
 	}

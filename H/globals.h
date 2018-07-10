@@ -298,8 +298,7 @@ enum fpo
  * the order cannot be changed, it's
  * returned by OPATTR and used in user-defined prologue/epilogue.
  */
-enum lang_type
-{
+enum lang_type {
 	LANG_NONE = 0,
 	LANG_C = 1,
 	LANG_SYSCALL = 2,
@@ -317,8 +316,7 @@ enum lang_type
  * the order cannot be changed, it's
  * the value of the predefined @Model symbol.
  */
-enum model_type
-{
+enum model_type {
 	MODEL_NONE = 0,
 	MODEL_TINY = 1,
 	MODEL_SMALL = 2,
@@ -332,16 +330,14 @@ enum model_type
 #define SIZE_DATAPTR 0x68 /* far for COMPACT, LARGE, HUGE */
 #define SIZE_CODEPTR 0x70 /* far for MEDIUM, LARGE, HUGE  */
 
-enum seg_order
-{
+enum seg_order {
 	SEGORDER_SEQ = 0,  /* .SEQ (default) */
 	SEGORDER_DOSSEG,   /* .DOSSEG */
 	SEGORDER_ALPHA     /* .ALPHA */
 };
 
 /* .NOLISTMACRO, .LISTMACRO and .LISTMACROALL directives setting */
-enum listmacro
-{
+enum listmacro {
 	LM_NOLISTMACRO,
 	LM_LISTMACRO,
 	LM_LISTMACROALL
@@ -350,8 +346,7 @@ enum listmacro
 /* assume values are used as index in codegen.c / invoke.c.
  * Order must match the one in special.h. Don't change!
  */
-enum assume_segreg
-{
+enum assume_segreg {
 	ASSUME_NOTHING = EMPTY,
 	ASSUME_ES = 0,
 	ASSUME_CS,
@@ -361,8 +356,7 @@ enum assume_segreg
 	ASSUME_GS
 };
 
-enum cpu_info
-{
+enum cpu_info {
 	/* bit count from left:
 	 * bit 0-2:   Math coprocessor
 	 * bit 3:     privileged?
@@ -441,8 +435,7 @@ enum cpu_info
 };
 
 /* the MASM compatible @CPU value flags: */
-enum masm_cpu
-{
+enum masm_cpu {
 	M_8086 = 0x0001, /* 8086 */
 	M_186 = 0x0002, /* 186 */
 	M_286 = 0x0004, /* 286 */
@@ -458,8 +451,7 @@ enum masm_cpu
 };
 
 #if MANGLERSUPP
-enum naming_types
-{
+enum naming_types {
 	NC_DO_NOTHING,
 	/*  put uscores on the front of labels & the back of procedures.
 	 * this is what the OW compiler does with /3r
@@ -472,8 +464,7 @@ enum naming_types
 };
 #endif
 
-enum segofssize
-{
+enum segofssize {
 	USE_EMPTY = 0xFE,
 	USE16 = 0, /* don't change values of USE16,USE32,USE64! */
 	USE32 = 1,
@@ -485,19 +476,16 @@ enum segofssize
 /* fastcall types. if order is to be changed or entries
  * added, also adjust tables in proc.c, mangle.c and probably invoke.c!
  */
-enum fastcall_type
-{
+enum fastcall_type {
 	FCT_MSC,        /* MS 16-/32-bit fastcall (ax,dx,cx / ecx,edx) */
 	FCT_WATCOMC,    /* OW register calling convention (eax, ebx, ecx, edx) */
 	FCT_WIN64       /* Win64 fastcall convention (rcx, rdx, r8, r9) */
 };
-enum delphi_type
-{
+enum delphi_type {
 	FCT_DELPHI       /* delphi fastcall convention (eax, edx, ecx ) */
 };
 
-enum stdcall_decoration
-{
+enum stdcall_decoration {
 	STDCALL_FULL,
 	STDCALL_NONE,
 	STDCALL_HALF
@@ -510,15 +498,13 @@ enum vectorcall_decoration
 	VECTORCALL_HALF
 };
 
-struct qitem
-{
-	void *next;
-	char value[1];
+struct qitem {
+    void *next;
+    char value[1];
 };
 
 /* file extensions. Order must match first entries in enum opt_names! */
-enum file_extensions
-{
+enum file_extensions {
 	ASM, /* must be first; see SetFilenames() in assembly.c */
 	OBJ,
 	LST,
@@ -527,8 +513,7 @@ enum file_extensions
 };
 
 /* first 4 entries must match enum file_extensions! */
-enum opt_names
-{
+enum opt_names {
 	OPTN_ASM_FN,
 	OPTN_OBJ_FN,              /* -Fo option */
 	OPTN_LST_FN,              /* -Fl option */
@@ -551,45 +536,39 @@ enum opt_names
 };
 
 /* queues to store multiple cmdline switch values */
-enum opt_queues
-{
+enum opt_queues {
 	OPTQ_FINCLUDE, /* -Fi option values */
 	OPTQ_MACRO,    /* -D option values */
 	OPTQ_INCPATH,  /* -I option values */
 	OPTQ_LAST
 };
 
-enum prologue_epilogue_mode
-{
+enum prologue_epilogue_mode {
 	PEM_DEFAULT, /* must be value 0 */
 	PEM_MACRO,
 	PEM_NONE
 };
 
 /* Stack distance */
-enum dist_type
-{
+enum dist_type {
 	//STACK_NONE,
 	STACK_NEAR,
 	STACK_FAR,
 };
 
 /* Type of operating system */
-enum os_type
-{
+enum os_type {
 	OPSYS_DOS,
 	OPSYS_OS2,
 };
 
-enum offset_type
-{
+enum offset_type {
 	OT_GROUP = 0,  /* OFFSET:GROUP (default, must be 0) */
 	OT_FLAT,       /* OFFSET:FLAT    */
 	OT_SEGMENT     /* OFFSET:SEGMENT */
 };
 
-enum line_output_flags
-{
+enum line_output_flags {
 	LOF_LISTED = 1, /* line written to .LST file */
 #if FASTPASS
 	LOF_SKIPPOS = 2, /* suppress setting list_pos */
@@ -598,8 +577,7 @@ enum line_output_flags
 };
 
 /* flags for win64_flags */
-enum win64_flag_values
-{
+enum win64_flag_values {
 	W64F_SAVEREGPARAMS = 0x01, /* 1=save register params in shadow space on proc entry */
 	W64F_AUTOSTACKSP = 0x02, /* 1=calculate required stack space for arguments of INVOKE */
 	W64F_STACKALIGN16 = 0x04, /* 1=stack variables are 16-byte aligned; added in v2.12 */
@@ -609,8 +587,7 @@ enum win64_flag_values
 };
 
 /* codeview debug info extend */
-enum cvex_values
-{
+enum cvex_values {
 	CVEX_MIN = 0, /* globals */
 	CVEX_REDUCED = 1, /* globals and locals */
 	CVEX_NORMAL = 2, /* globals, locals and types */
@@ -618,13 +595,11 @@ enum cvex_values
 };
 
 /* codeview debug info option flags */
-enum cvoption_flags
-{
+enum cvoption_flags {
 	CVO_STATICTLS = 1, /* handle static tls */
 };
 
-enum seg_type
-{
+enum seg_type {
 	SEGTYPE_UNDEF,
 	SEGTYPE_CODE,
 	SEGTYPE_DATA,
@@ -640,8 +615,7 @@ enum seg_type
 #endif
 };
 
-struct global_options
-{
+struct global_options {
 	bool        quiet;                 /* -q option */
 	bool        line_numbers;          /* -Zd option */
 	uint_8      debug_symbols;         /* -Zi option */
@@ -727,8 +701,7 @@ struct global_options
 
 #if MZ_SUPPORT
 /* if the structure changes, option.c, SetMZ() might need adjustment! */
-struct MZDATA
-{
+struct MZDATA {
 	uint_16 ofs_fixups; /* offset start fixups */
 	uint_16 alignment; /* header alignment: 16,32,64,128,256,512 */
 	uint_16 heapmin;
@@ -737,8 +710,7 @@ struct MZDATA
 #endif
 
 #if DLLIMPORT
-struct dll_desc
-{
+struct dll_desc {
 	struct dll_desc *next;
 	int cnt;     /* a function of this dll was used by INVOKE */
 	char name[1];
@@ -751,8 +723,7 @@ struct src_item;
 struct hll_item;
 struct context;
 
-struct fname_item
-{
+struct fname_item {
 	char    *fname;
 	//char    *fullname; /* v2.11: removed */
 	//time_t  mtime; /* v2.11: removed */
@@ -764,8 +735,7 @@ struct fname_item
 
 struct module_info;
 
-struct module_vars
-{
+struct module_vars {
 	unsigned            error_count;     /* total of errors so far */
 	unsigned            warning_count;   /* total of warnings so far */
 	unsigned            num_segs;        /* number of segments in module */
@@ -790,8 +760,7 @@ struct module_vars
 	char                *IncludePath;
 	struct qdesc        line_queue;      /* line queue */
 	struct src_item     *src_stack;      /* source item (files & macros) stack */
-	union
-	{
+    union {
 		struct fixup    *start_fixup;    /* OMF only */
 		struct asym     *start_label;    /* non-OMF only: start label */
 	};
@@ -820,8 +789,7 @@ struct module_vars
 
 struct format_options;
 
-struct module_info
-{
+struct module_info {
 	struct module_vars  g;
 	char                *proc_prologue;  /* prologue macro if PEM_MACRO */
 	char                *proc_epilogue;  /* epilogue macro if PEM_MACRO */
@@ -878,11 +846,9 @@ struct module_info
 	unsigned            NoSignExtend:1;  /* option nosignextend */
 	unsigned            switch_style:1;
 #if ELF_SUPPORT || AMD64_SUPPORT || MZ_SUPPORT
-	union
-	{
+    union {
 #if ELF_SUPPORT || AMD64_SUPPORT
-		struct
-		{
+        struct {
 #if ELF_SUPPORT
 			uint_8          elf_osabi;       /* for ELF */
 #endif
@@ -948,8 +914,7 @@ unsigned char		MODULEARCH;			/* MODULE Architecutre <avx or sse> */
 #define H_LONG_MIN    (-2147483647L - 1) // minimum (signed) long value
 #define H_LONG_MAX      2147483647L      // maximum (signed) long value
 
-struct format_options
-{
+struct format_options {
 	void(*init)(struct module_info *);
 	short invalid_fixup_type;
 	const char formatname[6];

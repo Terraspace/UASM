@@ -210,16 +210,13 @@ UINT_PTR UTF8toWideChar(const unsigned char *pSource, UINT_PTR nSourceLen, UINT_
 int TextItemError(struct asm_tok *item)
 /***************************************/
 {
-	if (item->token == T_STRING && *item->string_ptr == '<')
-	{
+    if ( item->token == T_STRING && *item->string_ptr == '<' ) {
 		return(EmitError(MISSING_ANGLE_BRACKET_OR_BRACE_IN_LITERAL));
 	}
 	/* v2.05: better error msg if (text) symbol isn't defined */
-	if (item->token == T_ID)
-	{
+    if ( item->token == T_ID ) {
 		struct asym *sym = SymSearch(item->string_ptr);
-		if (sym == NULL || sym->state == SYM_UNDEFINED)
-		{
+        if ( sym == NULL || sym->state == SYM_UNDEFINED ) {
 			return(EmitErr(SYMBOL_NOT_DEFINED, item->string_ptr));
 		}
 	}
@@ -245,12 +242,10 @@ ret_code CatStrDir(int i, struct asm_tok tokenarray[])
 
 #if 0 /* can't happen */
 	/* syntax must be <id> CATSTR textitem[,textitem,...] */
-	if (i != 1)
-	{
+    if ( i != 1 ) {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
 	}
-	if (tokenarray[0].token != T_ID)
-	{
+    if ( tokenarray[0].token != T_ID ) {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[0].string_ptr));
 	}
 #endif
@@ -259,18 +254,15 @@ ret_code CatStrDir(int i, struct asm_tok tokenarray[])
 	/* v2.08: don't copy to temp buffer */
 	//*StringBufferEnd = NULLC;
 	/* check correct syntax and length of items */
-	for (count = 0; i < Token_Count; )
-	{
+    for ( count = 0; i < Token_Count; ) {
 		DebugMsg1(("CatStrDir(%s): item[%u]=%s delim=0x%x\n", tokenarray[0].string_ptr, i, tokenarray[i].string_ptr, tokenarray[i].string_delim));
-		if (tokenarray[i].token != T_STRING || tokenarray[i].string_delim != '<')
-		{
+        if ( tokenarray[i].token != T_STRING || tokenarray[i].string_delim != '<' ) {
 			DebugMsg(("CatStrDir: error, not a <>-literal: %s\n", tokenarray[i].tokpos));
 			return(TextItemError(&tokenarray[i]));
 		}
 		/* v2.08: using tokenarray.stringlen is not quite correct, since some chars
 		 * are stored in 2 bytes (!) */
-		if ((count + tokenarray[i].stringlen) >= MAX_LINE_LEN)
-		{
+        if ( ( count + tokenarray[i].stringlen ) >= MAX_LINE_LEN ) {
 			DebugMsg(("CatStrDir: error, literal too long: %u + %u >= %u\n", count, tokenarray[i].stringlen, MAX_LINE_LEN));
 			return(EmitError(STRING_OR_TEXT_LITERAL_TOO_LONG));
 		}
@@ -279,21 +271,17 @@ ret_code CatStrDir(int i, struct asm_tok tokenarray[])
 		count = count + tokenarray[i].stringlen;
 		i++;
 		if ((tokenarray[i].token != T_COMMA) &&
-			(tokenarray[i].token != T_FINAL))
-		{
+            ( tokenarray[i].token != T_FINAL ) ) {
 			return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
 		}
 		i++;
 	}
 
 	sym = SymSearch(tokenarray[0].string_ptr);
-	if (sym == NULL)
-	{
+    if ( sym == NULL ) {
 		sym = SymCreate(tokenarray[0].string_ptr);
 		DebugMsg1(("CatStrDir: new symbol %s created\n", sym->name));
-	}
-	else if (sym->state == SYM_UNDEFINED)
-	{
+    } else if( sym->state == SYM_UNDEFINED ) {
 		/* v2.01: symbol has been used already. Using
 		 * a textmacro before it has been defined is
 		 * somewhat problematic.
@@ -303,9 +291,7 @@ ret_code CatStrDir(int i, struct asm_tok tokenarray[])
 		SkipSavedState(); /* further passes must be FULL! */
 #endif
 		EmitWarn(2, TEXT_MACRO_USED_PRIOR_TO_DEFINITION, sym->name);
-	}
-	else if (sym->state != SYM_TMACRO)
-	{
+    } else if( sym->state != SYM_TMACRO ) {
 		/* it is defined as something else, get out */
 		DebugMsg(("CatStrDir(%s) exit, symbol redefinition\n", sym->name));
 		return(EmitErr(SYMBOL_REDEFINITION, sym->name));
@@ -319,8 +305,7 @@ ret_code CatStrDir(int i, struct asm_tok tokenarray[])
 	sym->string_ptr = (char *)LclAlloc(count + 1);
 #else
 	/* v2.08: reuse string space if fastmem is on */
-	if (sym->total_size < (count+1))
-	{
+    if ( sym->total_size < ( count+1 ) ) {
 		LclFree(sym->string_ptr); /* is a noop if fastmem is on */
 		sym->string_ptr = (char *)LclAlloc(count + 1);
 		sym->total_size = count + 1;
@@ -328,8 +313,7 @@ ret_code CatStrDir(int i, struct asm_tok tokenarray[])
 #endif
 	/* v2.08: don't use temp buffer */
 	//memcpy( sym->string_ptr, StringBufferEnd, count + 1 );
-	for (i = 2, p = sym->string_ptr; i < Token_Count; i += 2)
-	{
+    for ( i = 2, p = sym->string_ptr; i < Token_Count; i += 2 ) {
 		memcpy(p, tokenarray[i].string_ptr, tokenarray[i].stringlen);
 		p += tokenarray[i].stringlen;
 	}
@@ -358,8 +342,7 @@ struct asym *SetTextMacro(struct asm_tok tokenarray[], struct asym *sym, const c
 
 	if (sym == NULL)
 		sym = SymCreate(name);
-	else if (sym->state == SYM_UNDEFINED)
-	{
+    else if ( sym->state == SYM_UNDEFINED ) {
 		sym_remove_table(&SymTables[TAB_UNDEF], (struct dsym *)sym);
 #if FASTPASS
 		/* the text macro was referenced before being defined.
@@ -369,9 +352,7 @@ struct asym *SetTextMacro(struct asm_tok tokenarray[], struct asym *sym, const c
 		SkipSavedState();
 #endif
 		EmitWarn(2, TEXT_MACRO_USED_PRIOR_TO_DEFINITION, sym->name);
-	}
-	else if (sym->state != SYM_TMACRO)
-	{
+    } else if ( sym->state != SYM_TMACRO ) {
 		EmitErr(SYMBOL_REDEFINITION, name);
 		return(NULL);
 	}
@@ -379,20 +360,16 @@ struct asym *SetTextMacro(struct asm_tok tokenarray[], struct asym *sym, const c
 	sym->state = SYM_TMACRO;
 	sym->isdefined = TRUE;
 
-	if (tokenarray[2].token == T_STRING && tokenarray[2].string_delim == '<')
-	{
+    if ( tokenarray[2].token == T_STRING && tokenarray[2].string_delim == '<' ) {
 		/* the simplest case: value is a literal. define a text macro! */
 		/* just ONE literal is allowed */
-		if (tokenarray[3].token != T_FINAL)
-		{
+        if ( tokenarray[3].token != T_FINAL ) {
 			EmitErr(SYNTAX_ERROR_EX, tokenarray[3].tokpos);
 			return(NULL);
 		}
 		value = tokenarray[2].string_ptr;
 		count = tokenarray[2].stringlen;
-	}
-	else
-	{
+    } else {
 		/*
 		 * the original source is used, since the tokenizer has
 		 * deleted some information.
@@ -409,8 +386,7 @@ struct asym *SetTextMacro(struct asm_tok tokenarray[], struct asym *sym, const c
 		LclFree(sym->string_ptr);
 	sym->string_ptr = (char *)LclAlloc(count + 1);
 #else
-	if (sym->total_size < (count + 1))
-	{
+    if ( sym->total_size < ( count + 1 ) ) {
 		LclFree(sym->string_ptr); /* is a noop if fastmem is on */
 		sym->string_ptr = (char *)LclAlloc(count + 1);
 		sym->total_size = count + 1;
@@ -473,12 +449,10 @@ ret_code SubStrDir(int i, struct asm_tok tokenarray[])
 	 * ID SUBSTR SRC_ID , POS [, LENGTH]
 	 */
 #if 0 /* can't happen */
-	if (i != 1)
-	{
+    if ( i != 1 ) {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
 	}
-	if (tokenarray[0].token != T_ID)
-	{
+    if ( tokenarray[0].token != T_ID ) {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[0].string_ptr));
 	}
 #endif
@@ -488,8 +462,7 @@ ret_code SubStrDir(int i, struct asm_tok tokenarray[])
 
 	/* third item must be a string */
 
-	if (tokenarray[i].token != T_STRING || tokenarray[i].string_delim != '<')
-	{
+    if ( tokenarray[i].token != T_STRING || tokenarray[i].string_delim != '<' ) {
 		DebugMsg(("SubStrDir: error, no text item\n"));
 		return(TextItemError(&tokenarray[i]));
 	}
@@ -499,8 +472,7 @@ ret_code SubStrDir(int i, struct asm_tok tokenarray[])
 	i++;
 	DebugMsg1(("SubStrDir(%s): src=>%s<\n", name, p));
 
-	if (tokenarray[i].token != T_COMMA)
-	{
+    if ( tokenarray[i].token != T_COMMA ) {
 		return(EmitErr(EXPECTING_COMMA, tokenarray[i].tokpos));
 	}
 	i++;
@@ -508,61 +480,50 @@ ret_code SubStrDir(int i, struct asm_tok tokenarray[])
 	/* get pos, must be a numeric value and > 0 */
 	/* v2.11: flag NOUNDEF added - no forward ref possible */
 
-	if (EvalOperand(&i, tokenarray, Token_Count, &opndx, EXPF_NOUNDEF) == ERROR)
-	{
+    if ( EvalOperand( &i, tokenarray, Token_Count, &opndx, EXPF_NOUNDEF ) == ERROR ) {
 		DebugMsg(("SubStrDir(%s): invalid pos value\n", name));
 		return(ERROR);
 	}
 
 	/* v2.04: "string" constant allowed as second argument */
 	//if ( opndx.kind != EXPR_CONST || opndx.string != NULL ) {
-	if (opndx.kind != EXPR_CONST)
-	{
+    if ( opndx.kind != EXPR_CONST ) {
 		DebugMsg(("SubStrDir(%s): pos value is not a constant\n", name));
 		return(EmitError(CONSTANT_EXPECTED));
 	}
 
 	/* pos is expected to be 1-based */
 	pos = opndx.value;
-	if (pos <= 0)
-	{
+    if ( pos <= 0 ) {
 		return(EmitError(POSITIVE_VALUE_EXPECTED));
 	}
-	if (tokenarray[i].token != T_FINAL)
-	{
-		if (tokenarray[i].token != T_COMMA)
-		{
+    if ( tokenarray[i].token != T_FINAL ) {
+        if ( tokenarray[i].token != T_COMMA ) {
 			return(EmitErr(EXPECTING_COMMA, tokenarray[i].tokpos));
 		}
 		i++;
 		/* get size, must be a constant */
 		/* v2.11: flag NOUNDEF added - no forward ref possible */
-		if (EvalOperand(&i, tokenarray, Token_Count, &opndx, EXPF_NOUNDEF) == ERROR)
-		{
+        if ( EvalOperand( &i, tokenarray, Token_Count, &opndx, EXPF_NOUNDEF ) == ERROR ) {
 			DebugMsg(("SubStrDir(%s): invalid size value\n", name));
 			return(ERROR);
 		}
 		/* v2.04: string constant ok */
 		//if ( opndx.kind != EXPR_CONST || opndx.string != NULL ) {
-		if (opndx.kind != EXPR_CONST)
-		{
+        if ( opndx.kind != EXPR_CONST ) {
 			DebugMsg(("SubStrDir(%s): size value is not a constant\n", name));
 			return(EmitError(CONSTANT_EXPECTED));
 		}
 		size = opndx.value;
-		if (tokenarray[i].token != T_FINAL)
-		{
+        if ( tokenarray[i].token != T_FINAL ) {
 			DebugMsg(("SubStrDir(%s): additional items found\n", name));
 			return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
 		}
-		if (size < 0)
-		{
+        if ( size < 0 ) {
 			return(EmitError(COUNT_MUST_BE_POSITIVE_OR_ZERO));
 		}
 		chksize = TRUE;
-	}
-	else
-	{
+    } else {
 		size = -1;
 		chksize = FALSE;
 	}
@@ -572,8 +533,7 @@ ret_code SubStrDir(int i, struct asm_tok tokenarray[])
 	for (pos--; pos > 0 && *p; pos--, p++)
 		if (*p == '!' && *(p+1) != NULLC)
 			p++;
-	if (*p == NULLC)
-	{
+    if ( *p == NULLC ) {
 		return(EmitErr(INDEX_VALUE_PAST_END_OF_STRING, cnt));
 	}
 	if (*p == '!' && *(p+1) != NULLC)
@@ -582,19 +542,16 @@ ret_code SubStrDir(int i, struct asm_tok tokenarray[])
 		if (*p == '!' && *(p+1) != NULLC)
 			p++;
 	/* v2.04: check added */
-	if (chksize && cnt)
-	{
+    if ( chksize && cnt ) {
 		return(EmitError(COUNT_VALUE_TOO_LARGE));
 	}
 	size = p - newvalue;
 	p = newvalue;
 #else
-	if (pos > cnt)
-	{
+    if ( pos > cnt ) {
 		return(EmitErr(INDEX_VALUE_PAST_END_OF_STRING, pos));
 	}
-	if (chksize && (pos+size-1) > cnt)
-	{
+    if ( chksize && (pos+size-1) > cnt )  {
 		return(EmitError(COUNT_VALUE_TOO_LARGE));
 	}
 	p += pos - 1;
@@ -605,12 +562,9 @@ ret_code SubStrDir(int i, struct asm_tok tokenarray[])
 	sym = SymSearch(name);
 
 	/* if we've never seen it before, put it in */
-	if (sym == NULL)
-	{
+    if( sym == NULL ) {
 		sym = SymCreate(name);
-	}
-	else if (sym->state == SYM_UNDEFINED)
-	{
+    } else if( sym->state == SYM_UNDEFINED ) {
 		/* it was referenced before being defined. This is
 		 * a bad idea for preprocessor text items, because it
 		 * will require a full second pass!
@@ -620,9 +574,7 @@ ret_code SubStrDir(int i, struct asm_tok tokenarray[])
 		SkipSavedState();
 		EmitWarn(2, TEXT_MACRO_USED_PRIOR_TO_DEFINITION, sym->name);
 #endif
-	}
-	else if (sym->state != SYM_TMACRO)
-	{
+    } else if( sym->state != SYM_TMACRO ) {
 		/* it is defined as something incompatible, get out */
 		DebugMsg(("SubStrDir(%s) error, incompatible type\n", sym->name));
 		return(EmitErr(SYMBOL_REDEFINITION, sym->name));
@@ -636,8 +588,7 @@ ret_code SubStrDir(int i, struct asm_tok tokenarray[])
 		LclFree(sym->string_ptr);
 	sym->string_ptr = (char *)LclAlloc(size + 1);
 #else
-	if (sym->total_size < (size + 1))
-	{
+    if ( sym->total_size < ( size + 1 ) ) {
 		LclFree(sym->string_ptr);
 		sym->string_ptr = LclAlloc(size + 1);
 		sym->total_size = size + 1;
@@ -664,22 +615,18 @@ ret_code SizeStrDir(int i, struct asm_tok tokenarray[])
 	DebugMsg1(("SizeStrDir entry\n"));
 	DebugCmd(sizstrcnt++);
 
-	if (i != 1)
-	{
+    if ( i != 1 ) {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
 	}
 #if 0 /* this is checked in ParseLine() */
-	if (tokenarray[0].token != T_ID)
-	{
+    if ( tokenarray[0].token != T_ID ) {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[0].string_ptr));
 	}
 #endif
-	if (tokenarray[2].token != T_STRING || tokenarray[2].string_delim != '<')
-	{
+    if ( tokenarray[2].token != T_STRING || tokenarray[2].string_delim != '<' ) {
 		return(TextItemError(&tokenarray[2]));
 	}
-	if (Token_Count > 3)
-	{
+    if ( Token_Count > 3 ) {
 		DebugMsg(("SizeStrDir: syntax error, name=%s, Token_Count=%u\n", tokenarray[0].string_ptr, Token_Count));
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[3].string_ptr));
 	}
@@ -687,8 +634,7 @@ ret_code SizeStrDir(int i, struct asm_tok tokenarray[])
 	//sizestr = GetLiteralValue( StringBufferEnd, tokenarray[2].string_ptr );
 	sizestr = tokenarray[2].stringlen;
 
-	if (sym = CreateVariable(tokenarray[0].string_ptr, sizestr))
-	{
+    if ( sym = CreateVariable( tokenarray[0].string_ptr, sizestr ) ) {
 		DebugMsg1(("SizeStrDir(%s) exit, value=%u\n", tokenarray[0].string_ptr, sizestr));
 		LstWrite(LSTTYPE_EQUATE, 0, sym);
 		return(NOT_ERROR);
@@ -719,46 +665,39 @@ ret_code InStrDir(int i, struct asm_tok tokenarray[])
 	DebugMsg1(("InStrDir entry\n"));
 	DebugCmd(instrcnt++);
 
-	if (i != 1)
-	{
+    if ( i != 1) {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
 	}
 #if 0 /* this is checked in ParseLine() */
-	if (tokenarray[0].token != T_ID)
-	{
+    if ( tokenarray[0].token != T_ID ) {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[0].string_ptr));
 	}
 #endif
 
 	i++; /* go past INSTR */
 
-	if (tokenarray[i].token != T_STRING || tokenarray[i].string_delim != '<')
-	{
+    if ( tokenarray[i].token != T_STRING || tokenarray[i].string_delim != '<' ) {
 		/* v2.11: flag NOUNDEF added - no forward reference accepted */
 		if (EvalOperand(&i, tokenarray, Token_Count, &opndx, EXPF_NOUNDEF) == ERROR)
 			return(ERROR);
-		if (opndx.kind != EXPR_CONST)
-		{
+        if ( opndx.kind != EXPR_CONST ) {
 			return(EmitError(CONSTANT_EXPECTED));
 		}
 		start = opndx.value;
-		if (start <= 0)
-		{
+        if ( start <= 0 ) {
 			/* v2.05: don't change the value. if it's invalid, the result
 			 * is to be 0. Emit a level 3 warning instead.
 			 */
 			 //start = 1;
 			EmitWarn(3, POSITIVE_VALUE_EXPECTED);
 		}
-		if (tokenarray[i].token != T_COMMA)
-		{
+        if ( tokenarray[i].token != T_COMMA ) {
 			return(EmitErr(EXPECTING_COMMA, tokenarray[i].tokpos));
 		}
 		i++; /* skip comma */
 	}
 
-	if (tokenarray[i].token != T_STRING || tokenarray[i].string_delim != '<')
-	{
+    if ( tokenarray[i].token != T_STRING || tokenarray[i].string_delim != '<' ) {
 		return(TextItemError(&tokenarray[i]));
 	}
 
@@ -772,21 +711,18 @@ ret_code InStrDir(int i, struct asm_tok tokenarray[])
 	sizestr = tokenarray[i].stringlen;
 	DebugMsg1(("InStrDir: first string >%s< \n", src));
 
-	if (start > sizestr)
-	{
+    if ( start > sizestr ) {
 		return(EmitErr(INDEX_VALUE_PAST_END_OF_STRING, start));
 	}
 	p = src + start - 1;
 
 	i++;
-	if (tokenarray[i].token != T_COMMA)
-	{
+    if ( tokenarray[i].token != T_COMMA ) {
 		return(EmitErr(EXPECTING_COMMA, tokenarray[i].tokpos));
 	}
 	i++;
 
-	if (tokenarray[i].token != T_STRING || tokenarray[i].string_delim != '<')
-	{
+    if ( tokenarray[i].token != T_STRING || tokenarray[i].string_delim != '<' ) {
 		return(TextItemError(&tokenarray[i]));
 	}
 	//q = GetAlignedPointer( src, sizestr );
@@ -795,8 +731,7 @@ ret_code InStrDir(int i, struct asm_tok tokenarray[])
 	j = tokenarray[i].stringlen;
 	DebugMsg1(("InStrDir: second string >%s< \n", q));
 	i++;
-	if (tokenarray[i].token != T_FINAL)
-	{
+    if ( tokenarray[i].token != T_FINAL ) {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
 	}
 
@@ -806,8 +741,7 @@ ret_code InStrDir(int i, struct asm_tok tokenarray[])
 	if ((start > 0) && (sizestr >= j) && j && (string1 = strstr(p, q)))
 		strpos = string1 - src + 1;
 
-	if (sym = CreateVariable(tokenarray[0].string_ptr, strpos))
-	{
+    if ( sym = CreateVariable( tokenarray[0].string_ptr, strpos ) ) {
 		DebugMsg1(("InStrDir(%s) exit, value=%u\n", tokenarray[0].string_ptr, strpos));
 		LstWrite(LSTTYPE_EQUATE, 0, sym);
 		return (NOT_ERROR);
@@ -830,8 +764,7 @@ static ret_code CatStrFunc(struct macro_instance *mi, char *buffer, struct asm_t
 
 	DebugMsg1(("@CatStr( %s )\n", mi->parm_array[0] ? mi->parm_array[0] : "NULL"));
 
-	for (p = mi->parm_array[0]; mi->parmcnt; mi->parmcnt--)
-	{
+    for ( p = mi->parm_array[0]; mi->parmcnt; mi->parmcnt-- ) {
 		DebugMsg1(("@CatStr.%u: >%s<\n", cnt++, p));
 		i = strlen(p);
 		memcpy(buffer, p, i);
@@ -856,14 +789,12 @@ static ret_code GetNumber(char *string, int *pi, struct asm_tok tokenarray[])
 
 	last = Tokenize(string, Token_Count+1, tokenarray, TOK_RESCAN);
 	i = Token_Count+1;
-	if (EvalOperand(&i, tokenarray, last, &opndx, EXPF_NOUNDEF) == ERROR)
-	{
+    if( EvalOperand( &i, tokenarray, last, &opndx, EXPF_NOUNDEF ) == ERROR ) {
 		return(ERROR);
 	}
 	/* v2.11: string constants are accepted ( although hardly useful ) */
 	//if( opndx.kind != EXPR_CONST || opndx.quoted_string != NULL || tokenarray[i].token != T_FINAL ) {
-	if (opndx.kind != EXPR_CONST || tokenarray[i].token != T_FINAL)
-	{
+    if( opndx.kind != EXPR_CONST || tokenarray[i].token != T_FINAL ) {
 		return(EmitErr(SYNTAX_ERROR_EX, string));
 	}
 	*pi = opndx.value;
@@ -890,12 +821,10 @@ static ret_code InStrFunc(struct macro_instance *mi, char *buffer, struct asm_to
 	*buffer = '0';
 	*(buffer+1) = NULLC;
 
-	if (mi->parm_array[0])
-	{
+    if ( mi->parm_array[0] ) {
 		if (GetNumber(mi->parm_array[0], &pos, tokenarray) == ERROR)
 			return(ERROR);
-		if (pos == 0)
-		{
+        if ( pos == 0 ) {
 			/* adjust index 0. Masm also accepts 0 (and any negative index),
 			 * but the result will always be 0 then */
 			DebugMsg(("@InStr(): index value is 0, changed to 1\n"));
@@ -903,16 +832,13 @@ static ret_code InStrFunc(struct macro_instance *mi, char *buffer, struct asm_to
 		}
 	}
 
-	if (pos > strlen(mi->parm_array[1]))
-	{
+    if ( pos > strlen( mi->parm_array[1] ) ) {
 		return(EmitErr(INDEX_VALUE_PAST_END_OF_STRING, pos));
 	}
 	/* v2.08: if() added, empty searchstr is to return 0 */
-	if (*(mi->parm_array[2]) != NULLC)
-	{
+    if ( *(mi->parm_array[2]) != NULLC ) {
 		p = strstr(mi->parm_array[1] + pos - 1, mi->parm_array[2]);
-		if (p)
-		{
+        if ( p ) {
 			found = p - mi->parm_array[1] + 1;
 			myltoa(found, buffer, ModuleInfo.radix, FALSE, TRUE);
 		}
@@ -933,8 +859,7 @@ static ret_code SizeStrFunc(struct macro_instance *mi, char *buffer, struct asm_
 	DebugMsg1(("@SizeStr(%s)\n", mi->parm_array[0] ? mi->parm_array[0] : ""));
 	if (mi->parm_array[0])
 		myltoa(strlen(mi->parm_array[0]), buffer, ModuleInfo.radix, FALSE, TRUE);
-	else
-	{
+    else {
 		buffer[0] = '0';
 		buffer[1] = NULLC;
 	}
@@ -960,14 +885,12 @@ static ret_code SubStrFunc(struct macro_instance *mi, char *buffer, struct asm_t
 	if (GetNumber(mi->parm_array[1], &pos, tokenarray) == ERROR)
 		return(ERROR);
 
-	if (pos <= 0)
-	{
+    if ( pos <= 0 ) {
 		/* Masm doesn't check if index is < 0;
 		 * might cause an "internal assembler error".
 		 * v2.09: negative index no longer silently changed to 1.
 		 */
-		if (pos)
-		{
+        if ( pos ) {
 			return(EmitErr(INDEX_VALUE_PAST_END_OF_STRING, pos));
 		}
 		DebugMsg(("@SubStr(): index value 0 changed to 1\n", pos));
@@ -975,24 +898,20 @@ static ret_code SubStrFunc(struct macro_instance *mi, char *buffer, struct asm_t
 	}
 
 	size = strlen(src);
-	if (pos > size)
-	{
+    if ( pos > size ) {
 		return(EmitErr(INDEX_VALUE_PAST_END_OF_STRING, pos));
 	}
 
 	size = size - pos + 1;
 
-	if (mi->parm_array[2])
-	{
+    if ( mi->parm_array[2] ) {
 		int sizereq;
 		if (GetNumber(mi->parm_array[2], &sizereq, tokenarray) == ERROR)
 			return(ERROR);
-		if (sizereq < 0)
-		{
+        if ( sizereq < 0 ) {
 			return(EmitError(COUNT_MUST_BE_POSITIVE_OR_ZERO));
 		}
-		if (sizereq > size)
-		{
+        if ( sizereq > size ) {
 			return(EmitError(COUNT_VALUE_TOO_LARGE));
 		}
 		size = sizereq;
@@ -1051,8 +970,7 @@ void StringInit(void)
 	macro->e.macroinfo->parmcnt = 3;
 	macro->e.macroinfo->autoexp = 1; /* param 1 (pos) is expanded */
 	macro->e.macroinfo->parmlist = LclAlloc(sizeof(struct mparm_list) * 3);
-	for (i = 0; i < 3; i++)
-	{
+    for (i = 0; i < 3; i++) {
 		macro->e.macroinfo->parmlist[i].deflt = NULL;
 		//macro->e.macroinfo->parmlist[i].label = parmnames[i];
 		macro->e.macroinfo->parmlist[i].required = (i != 0);
@@ -1083,8 +1001,7 @@ void StringInit(void)
 	macro->e.macroinfo->parmcnt = 3;
 	macro->e.macroinfo->autoexp = 2 + 4; /* param 2 (pos) and 3 (size) are expanded */
 	macro->e.macroinfo->parmlist = LclAlloc(sizeof(struct mparm_list) * 3);
-	for (i = 0; i < 3; i++)
-	{
+    for (i = 0; i < 3; i++) {
 		macro->e.macroinfo->parmlist[i].deflt = NULL;
 		//macro->e.macroinfo->parmlist[i].label = parmnames[i];
 		macro->e.macroinfo->parmlist[i].required = (i < 2);

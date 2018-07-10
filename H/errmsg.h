@@ -35,8 +35,7 @@
 /* error IDs */
 #undef pick
 #define pick( code, text )  code,
-enum msgno
-{
+enum msgno {
 #include "msgdef.h"
 	MSG_LAST
 };

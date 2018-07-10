@@ -31,8 +31,7 @@
 #ifndef _INPUT_H_INCLUDED
 #define _INPUT_H_INCLUDED
 
-struct macro_instance
-{
+struct macro_instance {
 	struct srcline *currline;
 	struct srcline *startline;
 	uint_32 localstart;
@@ -45,14 +44,12 @@ struct macro_instance
  * in a list in the very same order as they appear in
  * the input stream.
  */
-struct file_seq
-{
+struct file_seq {
 	struct file_seq *next;
 	uint_16         file;  /* index of file in FNames */
 };
 
-struct input_status
-{
+struct input_status {
 	char *token_stringbuf;
 	char *currsource;
 	char *CurrComment;

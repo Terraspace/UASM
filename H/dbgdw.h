@@ -9,8 +9,7 @@
 
  /* tags - values according to dwarf documentation v4, section 7 */
 
-enum dwarf_tag
-{
+enum dwarf_tag {
 	DW_TAG_array_type = 0x01,
 	DW_TAG_class_type = 0x02,
 	DW_TAG_entry_point = 0x03,
@@ -81,14 +80,12 @@ enum dwarf_tag
 	DW_TAG_hi_user = 0xffff,
 };
 
-enum dwarf_child_determination
-{
+enum dwarf_child_determination {
 	DW_CHILDREN_no = 0x00,
 	DW_CHILDREN_yes = 0x01,
 };
 
-enum dwarf_attribute
-{
+enum dwarf_attribute {
 	DW_AT_sibling = 0x01,
 	DW_AT_location = 0x02,
 	DW_AT_name = 0x03,
@@ -186,8 +183,7 @@ enum dwarf_attribute
 	DW_AT_hi_user = 0x3fff,
 };
 
-enum dwarf_information_format
-{
+enum dwarf_information_format {
 	DW_FORM_addr = 0x01,
 	DW_FORM_block2 = 0x03,
 	DW_FORM_block4 = 0x04,
@@ -216,8 +212,7 @@ enum dwarf_information_format
 };
 
 /* operation encodings in dwarf expressions */
-enum dwarf_op
-{
+enum dwarf_op {
 	DW_OP_addr = 0x03,
 	DW_OP_deref = 0x06,
 	DW_OP_const1u = 0x08,
@@ -378,8 +373,7 @@ enum dwarf_op
 };
 
 /* DW_AT_encoding */
-enum dwarf_base_type_attribute_encoding
-{
+enum dwarf_base_type_attribute_encoding {
 	DW_ATE_address = 0x01,
 	DW_ATE_boolean = 0x02,
 	DW_ATE_complex_float = 0x03,
@@ -402,8 +396,7 @@ enum dwarf_base_type_attribute_encoding
 };
 
 /* DW_AT_decimal_sign */
-enum dwarf_decimal_sign
-{
+enum dwarf_decimal_sign {
 	DW_DS_unsigned = 0x01,
 	DW_DS_leading_overpunch = 0x02,
 	DW_DS_trailing_overpunch = 0x03,
@@ -412,8 +405,7 @@ enum dwarf_decimal_sign
 };
 
 /* DW_AT_endianity */
-enum dwarf_endianity
-{
+enum dwarf_endianity {
 	DW_END_default = 0x00,
 	DW_END_big = 0x01,
 	DW_END_little = 0x02,
@@ -423,32 +415,28 @@ enum dwarf_endianity
 };
 
 /* DW_AT_accessibility */
-enum dwarf_accessibility
-{
+enum dwarf_accessibility {
 	DW_ACCESS_public = 0x01,
 	DW_ACCESS_protected = 0x02,
 	DW_ACCESS_private = 0x03,
 };
 
 /* DW_AT_visibility */
-enum dwarf_visibility
-{
+enum dwarf_visibility {
 	DW_VIS_local = 0x01,
 	DW_VIS_exported = 0x02,
 	DW_VIS_qualified = 0x03,
 };
 
 /* DW_AT_virtuality */
-enum dwarf_virtuality
-{
+enum dwarf_virtuality {
 	DW_VIRTUALITY_none = 0x00,
 	DW_VIRTUALITY_virtual = 0x01,
 	DW_VIRTUALITY_pure_virtual = 0x02,
 };
 
 /* DW_AT_language */
-enum dwarf_language
-{
+enum dwarf_language {
 	DW_LANG_C89 = 0x0001,
 	DW_LANG_C = 0x0002,
 	DW_LANG_Ada83 = 0x0003,
@@ -475,8 +463,7 @@ enum dwarf_language
 };
 
 /* DW_AT_identifier_case */
-enum dwarf_identifier_case
-{
+enum dwarf_identifier_case {
 	DW_ID_case_sensitive = 0x00,
 	DW_ID_up_case = 0x01,
 	DW_ID_down_case = 0x02,
@@ -484,8 +471,7 @@ enum dwarf_identifier_case
 };
 
 /* DW_AT_calling_convention */
-enum dwarf_calling_convention
-{
+enum dwarf_calling_convention {
 	DW_CC_normal = 0x01,
 	DW_CC_program = 0x02,
 	DW_CC_nocall = 0x03,
@@ -495,8 +481,7 @@ enum dwarf_calling_convention
 };
 
 /* DW_AT_inline */
-enum dwarf_inline
-{
+enum dwarf_inline {
 	DW_INL_not_inlined = 0x00,
 	DW_INL_inlined = 0x01,
 	DW_INL_declared_not_inlined = 0x02,
@@ -504,22 +489,19 @@ enum dwarf_inline
 };
 
 /* DW_AT_ordering */
-enum dwarf_array_ordering
-{
+enum dwarf_array_ordering {
 	DW_ORD_row_major = 0x00,
 	DW_ORD_col_major = 0x01,
 };
 
 /* DW_AT_discr_list */
-enum dwarf_discriminant
-{
+enum dwarf_discriminant {
 	DW_DSC_label = 0x00,
 	DW_DSC_range = 0x01,
 };
 
 /* line number information standard opcodes (7.21) */
-enum dwarf_line_number_standard
-{
+enum dwarf_line_number_standard {
 	DW_LNS_copy = 0x01,
 	DW_LNS_advance_pc = 0x02,
 	DW_LNS_advance_line = 0x03,
@@ -535,8 +517,7 @@ enum dwarf_line_number_standard
 };
 
 /* line number information extended opcodes (7.21) */
-enum dwarf_line_number_extended
-{
+enum dwarf_line_number_extended {
 	DW_LNE_end_sequence = 0x01,
 	DW_LNE_set_address = 0x02,
 	DW_LNE_define_file = 0x03,
@@ -545,8 +526,7 @@ enum dwarf_line_number_extended
 	DW_LNE_hi_user = 0xff,
 };
 
-enum dwarf_macinfo_type
-{
+enum dwarf_macinfo_type {
 	DW_MACINFO_define = 0x01,
 	DW_MACINFO_undef = 0x02,
 	DW_MACINFO_start_file = 0x03,
@@ -554,8 +534,7 @@ enum dwarf_macinfo_type
 	DW_MACINFO_vendor_ext = 0xff,
 };
 
-enum dwarf_call_frame
-{
+enum dwarf_call_frame {
 	DW_CFA_advance_loc = 0x01,
 	DW_CFA_offset = 0x02,
 	DW_CFA_restore = 0x03,
@@ -595,8 +574,7 @@ enum dwarf_call_frame
 
  /* header for compilation unit */
 
-struct dwarf_compilation_unit_header32
-{
+struct dwarf_compilation_unit_header32 {
 	uint_32 unit_length;
 	uint_16 version;
 	uint_32 debug_abbrev_offset;
@@ -605,8 +583,7 @@ struct dwarf_compilation_unit_header32
 
 /* header for type unit */
 
-struct dwarf_type_unit_header32
-{
+struct dwarf_type_unit_header32 {
 	uint_32 unit_length;
 	uint_16 version;
 	uint_32 debug_abbrev_offset;
@@ -617,8 +594,7 @@ struct dwarf_type_unit_header32
 
 #if 0
 
-struct dwarf_stmt_prologue
-{
+struct dwarf_stmt_prologue {
 	uint_32 total_length;
 	uint_16 version;
 	uint_32 prologue_length;
@@ -630,27 +606,23 @@ struct dwarf_stmt_prologue
 	uint_8  standard_opcode_lengths[DWLINE_OPCODE_BASE - 1];
 };
 
-struct dwarf_segmented_arange_tuple
-{
+struct dwarf_segmented_arange_tuple {
 	uint_32 offset;
 	uint_16 segment;
 	uint_32 length;
 };
 
-struct dwarf_flat_arange_tuple
-{
+struct dwarf_flat_arange_tuple {
 	uint_32 offset;
 	uint_32 length;
 };
 
-union dwarf_arange_tuple
-{
+union dwarf_arange_tuple {
 	struct segmented_arange_tuple  s;
 	struct flat_arange_tuple       f;
 };
 
-struct dwarf_arange_prologue
-{
+struct dwarf_arange_prologue {
 	uint_32 length;
 	uint_16 version;
 	uint_32 debug_offset;
@@ -658,8 +630,7 @@ struct dwarf_arange_prologue
 	uint_8  segment_size;
 };
 
-struct dwarf_pubnames_prologue
-{
+struct dwarf_pubnames_prologue {
 	uint_32 length;
 	uint_16 version;
 	uint_32 debug_offset;

@@ -94,8 +94,7 @@
   * v2.06: magnitude of this field extended to 8 (previously 4).
   * the entries with 38/3A must be last in the 0F group!
   */
-enum byte1_info
-{
+enum byte1_info {
 	F_16 = 1,      /* 16bit variant, 66h switches */
 	F_32,          /* 32bit variant, 66h switches */
 	F_16A,         /* 16bit variant, 67h switches */
@@ -124,8 +123,7 @@ enum byte1_info
 
 #if AVXSUPP
 /* VX_NND is only needed if instruction has more than 2 operands */
-enum vex_info
-{
+enum vex_info {
 	VX_L = 0x01,    /* VEX.L supported */
 	VX_NND = 0x02,    /* VEX.NDS/NDD not supported */
 	VX_DST = 0x04,    /* VEX.NDD (if op3 is an immediate) */

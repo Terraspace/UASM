@@ -119,8 +119,7 @@ void DoDebugMsg1(const char *format, ...)
 		fdbglog = fopen(DBGLOGFILE, "w");
 #endif
 	//if ( CurrFName[ASM] )
-	if (ModuleInfo.g.src_stack)
-	{
+    if ( ModuleInfo.g.src_stack ) {
 #ifdef DBGLOGFILE
 		fprintf(fdbglog, "%" I32_SPEC "u%s. ", GetLineNumber(), GetTopLine(buffer));
 #else
@@ -156,8 +155,7 @@ int write_logo(void)
 	GetConsoleScreenBufferInfo(hConsole, &screenBufferInfo);
 #endif
 
-	if (banner_printed == FALSE)
-	{
+    if( banner_printed == FALSE ) {
 		banner_printed = TRUE;
 
 #ifdef _WIN32
@@ -195,15 +193,13 @@ void PrintUsage(void)
 
 #ifdef _WIN32
 	SetConsoleTextAttribute(hConsole, WIN_LTYELLOW);
-	for (p = usage2; *p != '\n'; )
-	{
+		for (p = usage2; *p != '\n'; ) {
 		const char *p2 = p + strlen(p) + 1;
 		printf("%-20s %s\n", p, p2);
 		p = p2 + strlen(p2) + 1;
 	}
 #else
-	for (p = usage2; *p != '\n'; )
-	{
+		for (p = usage2; *p != '\n'; ) {
 		const char *p2 = p + strlen(p) + 1;
 		printf(FYEL("%-20s %s\n"), p, p2);
 		p = p2 + strlen(p2) + 1;
@@ -212,16 +208,14 @@ void PrintUsage(void)
 
 #ifdef _WIN32
 	SetConsoleTextAttribute(hConsole, WIN_WHITE);
-	for (p = usage; *p != '\n'; )
-	{
+		for (p = usage; *p != '\n'; ) {
 		const char *p2 = p + strlen(p) + 1;
 		printf("%-20s %s\n", p, p2);
 		p = p2 + strlen(p2) + 1;
 	}
 	SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
 #else
-	for (p = usage; *p != '\n'; )
-	{
+		for (p = usage; *p != '\n'; ) {
 		const char *p2 = p + strlen(p) + 1;
 		printf(FWHT("%-20s %s\n"), p, p2);
 		p = p2 + strlen(p2) + 1;
@@ -245,15 +239,13 @@ static void PutMsg(FILE *fp, int severity, int msgnum, va_list args)
 	GetConsoleScreenBufferInfo(hConsole, &screenBufferInfo);
 #endif
 
-	if (fp != NULL)
-	{
-		if (severity && (j = GetCurrSrcPos(buffer)))
-		{
+    if( fp != NULL ) {
+
+        if ( severity && ( j = GetCurrSrcPos( buffer ) ) ) {
 			fwrite(buffer, 1, j, fp);
 		}
 		pMsg = MsgGetEx(msgnum);
-		switch (severity)
-		{
+        switch ( severity ) {
 			case 1:  type = MsgGetEx(MSG_FATAL_PREFIX);   break;
 			case 2:  type = MsgGetEx(MSG_ERROR_PREFIX);   break;
 			case 4:  type = MsgGetEx(MSG_WARNING_PREFIX); break;
@@ -287,8 +279,7 @@ static void PutMsg(FILE *fp, int severity, int msgnum, va_list args)
 		if (CurrFile[LST] &&
 			severity &&
 			Parse_Pass == PASS_1 &&
-			fp == CurrFile[ERR])
-		{
+             fp == CurrFile[ERR] ) {
 			LstWrite(LSTTYPE_DIRECTIVE, GetCurrOffset(), 0);
 			/* size of "blank" prefix to be explained! */
 			LstPrintf("                           %s", buffer);
@@ -304,11 +295,9 @@ static void PrtMsg(int severity, int msgnum, va_list args1, va_list args2)
 	write_logo();
 #endif
 	/* open .err file if not already open and a name is given */
-	if (CurrFile[ERR] == NULL && CurrFName[ERR] != NULL)
-	{
+    if( CurrFile[ERR] == NULL && CurrFName[ERR] != NULL ) {
 		CurrFile[ERR] = fopen(CurrFName[ERR], "w");
-		if (CurrFile[ERR] == NULL)
-		{
+        if( CurrFile[ERR] == NULL ) {
 			/* v2.06: no fatal error anymore if error file cannot be written */
 			char *p = CurrFName[ERR];
 			CurrFName[ERR] = NULL; /* set to NULL before EmitErr()! */
@@ -319,13 +308,11 @@ static void PrtMsg(int severity, int msgnum, va_list args1, va_list args2)
 	}
 
 	/* v2.05: new option -eq */
-	if (Options.no_error_disp == FALSE)
-	{
+    if ( Options.no_error_disp == FALSE ) {
 		PutMsg(errout, severity, msgnum, args1);
 		fflush(errout);                       /* 27-feb-90 */
 	}
-	if (CurrFile[ERR])
-	{
+    if( CurrFile[ERR] ) {
 		//Errfile_Written = TRUE;
 		PutMsg(CurrFile[ERR], severity, msgnum, args2);
 	}
@@ -378,20 +365,16 @@ void EmitWarn(int level, int msgnum, ...)
 {
 	va_list args1, args2;
 
-	if (level <= Options.warning_level)
-	{
+    if( level <= Options.warning_level ) {
 #ifdef DEBUG_OUT
 		printf("%s\n", ModuleInfo.tokenarray ? ModuleInfo.tokenarray[0].tokpos : "");
 #endif
 		va_start(args1, msgnum);
 		va_start(args2, msgnum);
-		if (!Options.warning_error)
-		{
+        if( !Options.warning_error ) {
 			PrtMsg(4, msgnum, args1, args2);
 			ModuleInfo.g.warning_count++;
-		}
-		else
-		{
+        } else {
 			PrtMsg(2, msgnum, args1, args2);
 			ModuleInfo.g.error_count++;
 		}

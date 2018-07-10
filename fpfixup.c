@@ -40,8 +40,7 @@
 #include "omf.h"
 #include "omfspec.h"
 
-enum fp_patches
-{
+enum fp_patches {
 	FPP_WAIT,
 	FPP_NORMAL,
 	FPP_ES, /* last 6 entries match order of ASSUME_ES, ... */
@@ -76,30 +75,22 @@ void AddFloatingPointEmulationFixup(struct code_info *CodeInfo)
 
 	DebugMsg(("AddFloatingPointEmulationFixup enter, token=%u, regoverride=%d\n", CodeInfo->token, CodeInfo->prefix.RegOverride));
 
-	if (CodeInfo->token == T_FWAIT)
-	{
+    if( CodeInfo->token == T_FWAIT ) {
 		patch = FPP_WAIT;
-	}
-	else if (CodeInfo->prefix.RegOverride == EMPTY)
-	{
+    } else if ( CodeInfo->prefix.RegOverride == EMPTY ) {
 		patch = FPP_NORMAL;
-	}
-	else
-	{
+    } else {
 		patch = CodeInfo->prefix.RegOverride + 2;
 	}
 
 	/* emit 1-2 externals for the patch if not done already */
-	for (i = 0; i < 2; i++)
-	{
+    for ( i = 0; i < 2; i++ ) {
 		sym[i] = NULL;
-		if (patchmask & (1 << (i*8+patch)))
-		{
+        if ( patchmask & ( 1 << ( i*8+patch ) ) ) {
 			name[1] = 'I' + i;
 			name[2] = patchchr2[patch];
 			sym[i] = SymSearch(name);
-			if (sym[i] == NULL || sym[i]->state == SYM_UNDEFINED)
-			{
+            if( sym[i] == NULL || sym[i]->state == SYM_UNDEFINED ) {
 				sym[i] = MakeExtern(name, MT_FAR, NULL, sym[i], USE16);
 				sym[i]->langtype = LANG_NONE;
 			}
@@ -118,10 +109,8 @@ void AddFloatingPointEmulationFixup(struct code_info *CodeInfo)
 		(CurrSeg->e.seginfo->current_loc - CurrSeg->e.seginfo->start_loc + 3) > MAX_LEDATA_THRESHOLD)
 		omf_FlushCurrSeg();
 
-	for (i = 0; i < 2; i++)
-	{
-		if (sym[i])
-		{
+    for ( i = 0; i < 2 ; i++ ) {
+        if ( sym[i] ) {
 			fixup = CreateFixup(sym[i], FIX_OFF16, OPTJ_NONE);
 			fixup->frame_type = FRAME_TARG;
 			/* assume locofs has been set inside CreateFixup() */

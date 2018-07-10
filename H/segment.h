@@ -57,8 +57,7 @@ extern void             pop_seg(void);
 
 /* simplified segment functions */
 
-enum sim_seg
-{
+enum sim_seg {
 	SIM_CODE = 0,
 	SIM_STACK,
 	SIM_DATA,
