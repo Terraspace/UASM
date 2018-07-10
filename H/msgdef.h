@@ -275,7 +275,7 @@ pick( msg_filler24, "" )
 #endif
 pick( MUST_USE_FLOAT_INITIALIZER,        "Must use floating-point initializer" )
 pick( ORG_NOT_ALLOWED_IN_UNIONS,         "ORG directive not allowed in unions" )
-pick( STRUCT_ALIGN_TOO_HIGH,             "Struct alignment must be 1, 2, 4, 8, 16 or 32" )
+pick(STRUCT_ALIGN_TOO_HIGH, "Struct alignment must be 1, 2, 4, 8, 16, 32 or 64")
 pick( STRUCT_CANNOT_BE_INSTANCED,        "Structure cannot be instanced" )
 pick( MISSING_ANGLE_BRACKET_OR_BRACE_IN_LITERAL, "Missing angle bracket or brace in literal" )
 pick( NONDIGIT_IN_NUMBER,                "Nondigit in number: %s" )

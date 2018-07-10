@@ -65,11 +65,11 @@
 
 #endif
 
-#define MAX_LINE_LEN            1024  /* no restriction for this number */
+#define MAX_LINE_LEN            25600  /* no restriction for this number */
 #define MAX_TOKEN  MAX_LINE_LEN - 32  /* max tokens in one line */
 #define MAX_STRING_LEN          MAX_LINE_LEN - 32 /* must be < MAX_LINE_LEN */
-#define MAX_ID_LEN              247  /* must be < MAX_LINE_LEN */
-#define MAX_STRUCT_ALIGN        32
+#define MAX_ID_LEN              MAX_LINE_LEN - 32 /*247*/  /* must be < MAX_LINE_LEN */
+#define MAX_STRUCT_ALIGN        64
 #define MAX_SEGMENT_ALIGN       4096 /* maximum alignment/packing setting for segments */
 #define MAX_IF_NESTING          20 /* IFxx block nesting. Must be <=32, see condasm.c */
 #define MAX_SEG_NESTING         20 /* limit for segment nesting  */
@@ -181,9 +181,9 @@
 #define VARARGML 1    /* multi line vararg for macros */
 
 /* old Wasm extensions */
-#define PAGE4K       0 /* support 4kB-page OMF segment alignment */
+#define PAGE4K       1 /* support 4kB-page OMF segment alignment */
 #define BUILD_TARGET 0 /* support "build target" (obsolete)   */
-#define COCTALS      0 /* allow C form of octals              */
+#define COCTALS      1 /* allow C form of octals              */
 #define CHEXPREFIX   1 /* accept "0x" as hex number prefix    */
 #define MANGLERSUPP  0 /* support Wasm's "mangler" extension  */
 
@@ -493,6 +493,13 @@ enum stdcall_decoration {
     STDCALL_HALF
 };
 
+enum vectorcall_decoration
+{
+	VECTORCALL_FULL,
+	VECTORCALL_NONE,
+	VECTORCALL_HALF
+};
+
 struct qitem {
     void *next;
     char value[1];
@@ -652,6 +659,7 @@ struct global_options {
 #endif
     bool        no_cdecl_decoration;     /* -zcw & -zcm option */
     uint_8      stdcall_decoration;      /* -zt<0|1|2> option */
+	uint_8      vectorcall_decoration;   /* -zv<0|1|2> option */
     bool        no_export_decoration;    /* -zze option */
     bool        entry_decorated;         /* -zzs option  */
     bool        write_listing;           /* -Fl option  */

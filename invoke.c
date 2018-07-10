@@ -997,7 +997,7 @@ vcall:
 					if ((param->sym.mem_type == MT_TYPE)) {
 						t = param->sym.ttype;
 
-						if (vcallpass == 0 && opnd->kind == EXPR_REG && opnd->indirect == FALSE && reg < T_XMM6 && index < 6 && info->vecregs[(reg - T_XMM0)] != 0 && (index != reg - T_XMM0))
+						if (vcallpass == 0 && opnd->kind == EXPR_REG && opnd->indirect == FALSE && reg < T_XMM6 && index < 6 && info->vregs[(reg - T_XMM0)] != 0 && (index != reg - T_XMM0))
 						{
 							EmitErr(REGISTER_VALUE_OVERWRITTEN_BY_INVOKE, index);
 							return(1);

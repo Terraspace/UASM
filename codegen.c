@@ -368,17 +368,17 @@ static void output_opc(struct code_info *CodeInfo)
         case   T_VXORPD: 
         case   T_VORPS: 
         case   T_VXORPS:
-        case   T_PSLLDQ:
-        case   T_PSRLDQ:
-        case   T_PSLLW:
-        case   T_PSLLD:
-        case   T_PSLLQ:
-        case   T_PSRAW:
-        case   T_PSRAD:
-        case   T_PSRAQ:
-        case   T_PSRLW:
-        case   T_PSRLD:
-        case   T_PSRLQ:
+		 case   T_VPSLLDQ:
+		 case   T_VPSRLDQ:
+		 case   T_VPSLLW:
+		 case   T_VPSLLD:
+		 case   T_VPSLLQ:
+		 case   T_VPSRAW:
+		 case   T_VPSRAD:
+		 case   T_VPSRAQ:
+		 case   T_VPSRLW:
+		 case   T_VPSRLD:
+		 case   T_VPSRLQ:
         if (CodeInfo->r2type == OP_XMM || CodeInfo->r2type == OP_YMM || CodeInfo->r2type == OP_ZMM)
           break;
           EmitError(INVALID_INSTRUCTION_OPERANDS);
@@ -393,10 +393,20 @@ static void output_opc(struct code_info *CodeInfo)
         CodeInfo->token == T_VRANGEPD ||CodeInfo->token == T_VRANGEPS ||
         CodeInfo->token == T_VPTESTNMD ||CodeInfo->token == T_VPTESTNMQ ||
         CodeInfo->token == T_VPERM2I128) {
+	}
+	//}
 
+ /*	if (CodeInfo->token >= T_VPORD && CodeInfo->token <= T_PSRLDQ){
 		if (decoflags == 0 && CodeInfo->r1type != OP_K)
 	        CodeInfo->evex_flag = 0;
 
+  }
+  if (CodeInfo->token == T_VCVTPH2PS || CodeInfo->token == T_VCVTPS2PD ||
+	  CodeInfo->token == T_VRANGEPD ||CodeInfo->token == T_VRANGEPS ||
+	  CodeInfo->token == T_VPTESTNMD ||CodeInfo->token == T_VPTESTNMQ ||
+	  CodeInfo->token == T_VPERM2I128) {
+	  if (decoflags == 0 && CodeInfo->r1type != OP_K)
+		  CodeInfo->evex_flag = 0;
 	}*/
       /* these are only EVEX instructions, v2.46 */
   if ((CodeInfo->pinstr->prefix & 0xF00) == IZSZ)

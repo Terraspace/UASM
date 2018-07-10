@@ -467,7 +467,6 @@ unsigned get_curr_srcfile( void )
 void set_curr_srcfile( unsigned file, uint_32 line_num )
 /******************************************************/
 {
-    if ( file != 0xFFF ) /* 0xFFF is the special value for macro lines */
         src_stack->srcfile = file;
     src_stack->line_num = line_num;
     return;
@@ -489,10 +488,14 @@ int GetCurrSrcPos( char *buffer )
 /*******************************/
 {
     struct src_item *curr;
+	char *p;
 
-    for( curr = src_stack; curr; curr = curr->next ) {
-        if ( curr->type == SIT_FILE ) {
-            return( sprintf( buffer, ModuleInfo.EndDirFound == FALSE ? "%s(%" I32_SPEC "u) : " : "%s : ", GetFName( curr->srcfile )->fname , curr->line_num ) );
+	for (curr = src_stack; curr; curr = curr->next)
+	{
+		p = GetFName(curr->srcfile)->fname;
+		if (curr->type == SIT_FILE)
+		{
+			return(sprintf(buffer, ModuleInfo.EndDirFound == FALSE ? "%s(%" I32_SPEC "u) : " : "%s : ", p, curr->line_num));
         }
     }
     *buffer = NULLC;

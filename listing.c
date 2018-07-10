@@ -862,6 +862,7 @@ static void log_proc( const struct asym *sym )
 
         /* print the procedure's parameters */
         if ( sym->langtype == LANG_C ||
+			sym->langtype == LANG_VECTORCALL ||
             sym->langtype == LANG_SYSCALL ||
             sym->langtype == LANG_STDCALL ||
             sym->langtype == LANG_FASTCALL ) {

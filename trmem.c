@@ -34,6 +34,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#ifdef __GNUC__
+#include <errno.h>
+#endif
 
 #if defined( _M_IX86 ) && defined(__WATCOMC__)
 #include <i86.h>
