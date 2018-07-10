@@ -437,6 +437,7 @@
     <None Include="..\..\gccmod.inc">
       <Filter>Headers</Filter>
     </None>
+    <None Include="..\..\.gitignore" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">

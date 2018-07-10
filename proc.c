@@ -935,25 +935,13 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 				/* UASM 2.46.10 prevent symbols that are moved to stack whose size is turned from ptr to machine word size from breaking the proto vs proc defition of a ptr type */
 				if (ti.mem_type == MT_PTR && paracurr->sym.state == SYM_STACK && 
 					(paracurr->sym.mem_type == MT_QWORD && CurrWordSize == 8) || 
-					(paracurr->sym.mem_type == MT_OWORD && CurrWordSize == 8) ||
-					(paracurr->sym.mem_type == MT_YMMWORD && CurrWordSize == 8) ||
-					(paracurr->sym.mem_type == MT_ZMMWORD && CurrWordSize == 8) ||
-					(paracurr->sym.mem_type == MT_DWORD && CurrWordSize == 4) ||
-					(paracurr->sym.mem_type == MT_OWORD && CurrWordSize == 4) ||
-					(paracurr->sym.mem_type == MT_YMMWORD && CurrWordSize == 4) ||
-					(paracurr->sym.mem_type == MT_ZMMWORD && CurrWordSize == 4))
+					(paracurr->sym.mem_type == MT_DWORD && CurrWordSize == 4) )
 				{
 
 				}
 				else if (paracurr->sym.mem_type == MT_PTR && paracurr->sym.state == SYM_STACK &&
 					(ti.mem_type == MT_QWORD && CurrWordSize == 8) ||
-					(ti.mem_type == MT_OWORD && CurrWordSize == 8) ||
-					(ti.mem_type == MT_YMMWORD && CurrWordSize == 8) ||
-					(ti.mem_type == MT_ZMMWORD && CurrWordSize == 8) ||
-					(ti.mem_type == MT_DWORD && CurrWordSize == 4) ||
-					(ti.mem_type == MT_OWORD && CurrWordSize == 4) ||
-					(ti.mem_type == MT_YMMWORD && CurrWordSize == 4) ||
-					(ti.mem_type == MT_ZMMWORD && CurrWordSize == 4))
+					(ti.mem_type == MT_DWORD && CurrWordSize == 4))
 				{
 
 				}
@@ -1068,54 +1056,61 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 				* For PROTOs and TYPEs use member seg_ofssize.
 				*/
 				//proc->e.procinfo->parasize += ROUND_UP( ti.size, CurrWordSize );
-				switch (CurrWordSize)
+				if (paranode->sym.langtype == LANG_VECTORCALL)
 				{
-					case 8:
-						switch (ti.mem_type)
-						{
-							case MT_OWORD:
-								proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 2 * CurrWordSize : 2 * (2 << proc->sym.seg_ofssize));
-								break;
+					switch (CurrWordSize)
+					{
+						case 8:
+							switch (ti.mem_type)
+							{
+								case MT_OWORD:
+									proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 2 * CurrWordSize : 2 * (2 << proc->sym.seg_ofssize));
+									break;
 
-							case MT_YMMWORD:
-								proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 4 * CurrWordSize : 4 * (2 << proc->sym.seg_ofssize));
-								break;
+								case MT_YMMWORD:
+									proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 4 * CurrWordSize : 4 * (2 << proc->sym.seg_ofssize));
+									break;
 
-							case MT_ZMMWORD:
-								proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 8 * CurrWordSize : 8 * (2 << proc->sym.seg_ofssize));
-								break;
+								case MT_ZMMWORD:
+									proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 8 * CurrWordSize : 8 * (2 << proc->sym.seg_ofssize));
+									break;
 
-							default:
-								proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? CurrWordSize : (2 << proc->sym.seg_ofssize));
-								break;
-						}
-						break;
+								default:
+									proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? CurrWordSize : (2 << proc->sym.seg_ofssize));
+									break;
+							}
+							break;
 
-					case 4:
-						switch (ti.mem_type)
-						{
-							case MT_OWORD:
-								proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 4 * CurrWordSize : 4 * (2 << proc->sym.seg_ofssize));
-								break;
+						case 4:
+							switch (ti.mem_type)
+							{
+								case MT_OWORD:
+									proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 4 * CurrWordSize : 4 * (2 << proc->sym.seg_ofssize));
+									break;
 
-							case MT_YMMWORD:
-								proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 8 * CurrWordSize : 8 * (2 << proc->sym.seg_ofssize));
-								break;
+								case MT_YMMWORD:
+									proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 8 * CurrWordSize : 8 * (2 << proc->sym.seg_ofssize));
+									break;
 
-							case MT_ZMMWORD:
-								proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 16 * CurrWordSize : 16 * (2 << proc->sym.seg_ofssize));
-								break;
+								case MT_ZMMWORD:
+									proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 16 * CurrWordSize : 16 * (2 << proc->sym.seg_ofssize));
+									break;
 
-							default:
-								proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? CurrWordSize : (2 << proc->sym.seg_ofssize));
-								break;
-						}
-						break;
+								default:
+									proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? CurrWordSize : (2 << proc->sym.seg_ofssize));
+									break;
+							}
+							break;
 
-					default:
-				proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? CurrWordSize : (2 << proc->sym.seg_ofssize));
-						break;
+						default:
+							proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? CurrWordSize : (2 << proc->sym.seg_ofssize));
+							break;
+					}
+
+				} else {
+					proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? CurrWordSize : (2 << proc->sym.seg_ofssize));
 				}
+
 			}
 
 			/* v2.05: the PROC's vararg flag has been set already */

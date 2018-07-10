@@ -84,6 +84,7 @@
     <ClCompile Include="..\..\types.c" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\.gitignore" />
     <None Include="..\..\gccmod.inc" />
     <None Include="..\..\msmod.inc" />
     <None Include="..\..\owmod.inc" />
@@ -271,6 +272,9 @@
       <SubSystem>Console</SubSystem>
       <ImageHasSafeExceptionHandlers>true</ImageHasSafeExceptionHandlers>
     </Link>
+    <PostBuildEvent>
+      <Command>copy $(OutDir)$(TargetName)$(TargetExt) $(UASM_PATH)\v141\x86</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -296,6 +300,9 @@
       </AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
+    <PostBuildEvent>
+      <Command>copy $(OutDir)$(TargetName)$(TargetExt) $(UASM_PATH)\v141\x64</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>

@@ -116,7 +116,7 @@ static int ms32_decorate( const struct asym *sym, char *buffer )
 /**************************************************************/
 {
 	const struct dsym *dir = (struct dsym *)sym;
-	if (Options.vectorcall_decoration == VECTORCALL_FULL && sym->isproc)	{
+	if ((sym->langtype == LANG_VECTORCALL) && (Options.vectorcall_decoration == VECTORCALL_FULL) && sym->isproc) {
 		return(sprintf(buffer, "%s@@%d", sym->name, dir->e.procinfo->parasize));
 	}
 	else if (Options.fctype == FCT_MSC && sym->isproc) {
@@ -183,7 +183,7 @@ static int ms64_decorate( const struct asym *sym, char *buffer )
 /**************************************************************/
 {
 	const struct dsym *dir = (struct dsym *)sym;
-	if (Options.vectorcall_decoration == VECTORCALL_FULL && sym->isproc)	{
+	if ((sym->langtype == LANG_VECTORCALL) && (Options.vectorcall_decoration == VECTORCALL_FULL) && sym->isproc) {
 		return(sprintf(buffer, "%s@@%d", sym->name, dir->e.procinfo->parasize));
 	}	else	{
     memcpy( buffer, sym->name, sym->name_size + 1 );
@@ -242,8 +242,8 @@ int Mangle( struct asym *sym, char *buffer )
     case LANG_BASIC:
         mangler = UCaseMangler;
         break;
-    case LANG_FASTCALL:          /* registers passing parameters */
-		case LANG_VECTORCALL:
+	case LANG_FASTCALL:          /* registers passing parameters */
+	case LANG_VECTORCALL:
         mangler = fcmanglers[ModuleInfo.fctype];
         break;
     default: /* LANG_NONE */
