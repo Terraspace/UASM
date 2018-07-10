@@ -26,10 +26,10 @@ struct equ_item {
  * has been called, all preprocessed lines are written in pass one and read
  * in further passes
  */
-
 struct line_item {
     struct line_item *next;
     uint_32 lineno:20, srcfile:12;
+    uint_32 macro_level;
     uint_32 list_pos; /* position .LST file */
     char line[1];
 };

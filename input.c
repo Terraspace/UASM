@@ -467,8 +467,8 @@ unsigned get_curr_srcfile( void )
 void set_curr_srcfile( unsigned file, uint_32 line_num )
 /******************************************************/
 {
-    if ( file != 0xFFF ) /* 0xFFF is the special value for macro lines */
-        src_stack->srcfile = file;
+    //if ( file != 0xFFF ) /* 0xFFF is the special value for macro lines */
+    src_stack->srcfile = file;
     src_stack->line_num = line_num;
     return;
 }
