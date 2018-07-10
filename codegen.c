@@ -380,6 +380,7 @@ static void output_opc(struct code_info *CodeInfo)
 			if (CodeInfo->r2type == OP_XMM || CodeInfo->r2type == OP_YMM || CodeInfo->r2type == OP_ZMM)
 				break;
 			EmitError(INVALID_INSTRUCTION_OPERANDS);
+
 	}
 	//}
 
@@ -501,6 +502,7 @@ static void output_opc(struct code_info *CodeInfo)
 	}
 	//if (CodeInfo->token == T_VMOVSD)
 	//  __debugbreak();
+
 
 #if AVXSUPP
        if (CodeInfo->indextype == OP_XMM || CodeInfo->indextype == OP_YMM || CodeInfo->indextype == OP_ZMM) {
@@ -730,6 +732,7 @@ static void output_opc(struct code_info *CodeInfo)
             else{
 				/* These instructions if, not 0x62, can be only 0xC5, Uasm 2.16 */
                 if (CodeInfo->token == T_VPMOVMSKB){
+
 					if (ins->byte1_info == F_0F && (CodeInfo->prefix.rex & REX_B == 0)&&
 						(CodeInfo->prefix.rex & REX_X == 0) && (CodeInfo->prefix.rex & REX_W == 8))
 						goto outC5;    // go handle 0xC5 instruction
@@ -743,6 +746,7 @@ static void output_opc(struct code_info *CodeInfo)
 						EmitError(INVALID_INSTRUCTION_OPERANDS);
 					if ((CodeInfo->reg2 <= 7)&&(CodeInfo->reg3 <= 7) && ((CodeInfo->opnd[OPND2].type & OP_M_ANY) == 0))
 						goto outC5;    // go handle 0xC5 instruction
+
 
 						  /* John: Validate 3 operand vex form */
 					if (CodeInfo->opnd[OPND3].type == OP_NONE && CodeInfo->vexregop == 0 &&
