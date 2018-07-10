@@ -9,9 +9,9 @@
 
 /*---------------------------------------------------------------------------*/
 
-extern void      ContextInit( int );
+extern void      ContextInit(int);
 #if FASTMEM==0
-extern void      ContextFini( void );
+extern void      ContextFini(void);
 #endif
 
 #endif

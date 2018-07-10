@@ -33,7 +33,7 @@
 #endif
 
 /* prototypes */
-extern ret_code idata_fixup( struct code_info *, unsigned, struct expr * );
+extern ret_code idata_fixup(struct code_info *, unsigned, struct expr *);
 
 struct code_line {
     const char *src;
@@ -271,20 +271,19 @@ ret_code EndDirective( int i, struct asm_tok tokenarray[] )
         } else if ( opndx.sym->state != SYM_INTERNAL && opndx.sym->state != SYM_EXTERNAL ) {
             DebugMsg(("EndDirective: start address invalid, sym->state=%X\n", opndx.sym->state ));
         } else {
-            DebugMsg(("EndDirective: start address not a code label, mem_type=%Xh\n", opndx.mem_type ));
-        }
+			DebugMsg(("EndDirective: start address not a code label, mem_type=%Xh\n", opndx.mem_type));
+		}
 #endif
-        return( EmitError( OPERAND_MUST_BE_RELOCATABLE ) );
-    }
+		return(EmitError(OPERAND_MUST_BE_RELOCATABLE));
+	}
 
-    /* close open segments */
-    SegmentModuleExit();
+	/* close open segments */
+	SegmentModuleExit();
 
-    if ( ModuleInfo.g.EndDirHook )
-        ModuleInfo.g.EndDirHook( &ModuleInfo );
+	if (ModuleInfo.g.EndDirHook)
+		ModuleInfo.g.EndDirHook(&ModuleInfo);
 
-    ModuleInfo.EndDirFound = TRUE;
+	ModuleInfo.EndDirFound = TRUE;
 
-    return( NOT_ERROR );
+	return(NOT_ERROR);
 }
-

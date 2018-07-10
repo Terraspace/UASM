@@ -24,9 +24,9 @@
 #define _MACHO64SPEC_H_INCLUDED_
 
 #ifdef _WIN32
-	#include <inttypes.h>
+#include <inttypes.h>
 #else
-	#include <stdint.h>
+#include <stdint.h>
 #endif
 
 typedef int integer_t;
@@ -88,7 +88,6 @@ typedef integer_t	cpu_threadtype_t;
 #define CPU_SUBTYPE_MASK	0xff000000	/* mask for feature flags */
 #define CPU_SUBTYPE_LIB64	0x80000000	/* 64 bit libraries */
 
-
 /*
 *	Object files that are hand-crafted to run on any
 *	implementation of an architecture are tagged with
@@ -115,7 +114,7 @@ typedef integer_t	cpu_threadtype_t;
 *	ID assigned by DEC available via the SID register).
 */
 
-#define	CPU_SUBTYPE_VAX_ALL	((cpu_subtype_t) 0) 
+#define	CPU_SUBTYPE_VAX_ALL	((cpu_subtype_t) 0)
 #define CPU_SUBTYPE_VAX780	((cpu_subtype_t) 1)
 #define CPU_SUBTYPE_VAX785	((cpu_subtype_t) 2)
 #define CPU_SUBTYPE_VAX750	((cpu_subtype_t) 3)
@@ -148,7 +147,7 @@ typedef integer_t	cpu_threadtype_t;
 
 #define	CPU_SUBTYPE_MC680x0_ALL		((cpu_subtype_t) 1)
 #define CPU_SUBTYPE_MC68030		((cpu_subtype_t) 1) /* compat */
-#define CPU_SUBTYPE_MC68040		((cpu_subtype_t) 2) 
+#define CPU_SUBTYPE_MC68040		((cpu_subtype_t) 2)
 #define	CPU_SUBTYPE_MC68030_ONLY	((cpu_subtype_t) 3)
 
 /*
@@ -193,7 +192,6 @@ typedef integer_t	cpu_threadtype_t;
 #define CPU_SUBTYPE_X86_64_ALL		((cpu_subtype_t)3)
 #define CPU_SUBTYPE_X86_ARCH1		((cpu_subtype_t)4)
 #define CPU_SUBTYPE_X86_64_H		((cpu_subtype_t)8)	/* Haswell feature subset */
-
 
 #define CPU_THREADTYPE_INTEL_HTT	((cpu_threadtype_t) 1)
 
@@ -374,7 +372,6 @@ typedef int		vm_prot_t;
 
 #define VM_PROT_COPY            ((vm_prot_t) 0x10)
 
-
 /*
 *	Another invalid protection value.
 *	Used only by memory_object_data_request upon an object
@@ -387,7 +384,6 @@ typedef int		vm_prot_t;
 */
 
 #define VM_PROT_WANTS_COPY	((vm_prot_t) 0x10)
-
 
 /*
 * 	Another invalid protection value.
@@ -422,9 +418,9 @@ typedef int		vm_prot_t;
 *
  ------------------------------------------------------------------------------------------------------------------------- */
 
-/* The 32-bit mach header appears at the very beginning of the object file for
-* 32-bit architectures.
-*/
+ /* The 32-bit mach header appears at the very beginning of the object file for
+ * 32-bit architectures.
+ */
 struct mach_header {
 	uint32_t	magic;		/* mach magic number identifier */
 	cpu_type_t	cputype;	/* cpu specifier */
@@ -544,19 +540,19 @@ external weak symbols */
 #define MH_BINDS_TO_WEAK 0x10000	/* the final linked image uses
 weak symbols */
 
-#define MH_ALLOW_STACK_EXECUTION 0x20000/* When this bit is set, all stacks 
+#define MH_ALLOW_STACK_EXECUTION 0x20000/* When this bit is set, all stacks
 in the task will be given stack
 execution privilege.  Only used in
 MH_EXECUTE filetypes. */
-#define MH_ROOT_SAFE 0x40000           /* When this bit is set, the binary 
+#define MH_ROOT_SAFE 0x40000           /* When this bit is set, the binary
 declares it is safe for use in
 processes with uid zero */
 
-#define MH_SETUID_SAFE 0x80000         /* When this bit is set, the binary 
+#define MH_SETUID_SAFE 0x80000         /* When this bit is set, the binary
 declares it is safe for use in
 processes when issetugid() is true */
 
-#define MH_NO_REEXPORTED_DYLIBS 0x100000 /* When this bit is set on a dylib, 
+#define MH_NO_REEXPORTED_DYLIBS 0x100000 /* When this bit is set on a dylib,
 the static linker does not need to
 examine dependent dylibs to see
 if any are re-exported */
@@ -571,7 +567,7 @@ will automatically not create a
 LC_LOAD_DYLIB load command to the
 dylib if no symbols are being
 referenced from the dylib. */
-#define MH_HAS_TLV_DESCRIPTORS 0x800000 /* Contains a section of type 
+#define MH_HAS_TLV_DESCRIPTORS 0x800000 /* Contains a section of type
 S_THREAD_LOCAL_VARIABLES */
 
 #define MH_NO_HEAP_EXECUTION 0x1000000	/* When this bit is set, the OS will
@@ -687,7 +683,7 @@ union lc_str {
 	uint32_t	offset;	/* offset to the string */
 #ifndef __LP64__
 	char		*ptr;	/* pointer to the string */
-#endif 
+#endif
 };
 
 /*
@@ -858,7 +854,7 @@ function pointers for
 interposing */
 #define	S_16BYTE_LITERALS		0xe	/* section with only 16 byte
 literals */
-#define	S_DTRACE_DOF			0xf	/* section contains 
+#define	S_DTRACE_DOF			0xf	/* section contains
 DTrace Object Format */
 #define	S_LAZY_DYLIB_SYMBOL_POINTERS	0x10	/* section with only lazy
 symbol pointers to lazy
@@ -866,12 +862,12 @@ loaded dylibs */
 /*
 * Section types to support thread local variables
 */
-#define S_THREAD_LOCAL_REGULAR                   0x11  /* template of initial 
+#define S_THREAD_LOCAL_REGULAR                   0x11  /* template of initial
 values for TLVs */
-#define S_THREAD_LOCAL_ZEROFILL                  0x12  /* template of initial 
+#define S_THREAD_LOCAL_ZEROFILL                  0x12  /* template of initial
 values for TLVs */
 #define S_THREAD_LOCAL_VARIABLES                 0x13  /* TLV descriptors */
-#define S_THREAD_LOCAL_VARIABLE_POINTERS         0x14  /* pointers to TLV 
+#define S_THREAD_LOCAL_VARIABLE_POINTERS         0x14  /* pointers to TLV
 descriptors */
 #define S_THREAD_LOCAL_INIT_FUNCTION_POINTERS    0x15  /* functions to call
 to initialize TLV
@@ -914,7 +910,6 @@ relocation entries */
 #define S_ATTR_LOC_RELOC	 0x00000100	/* section has local
 relocation entries */
 
-
 /*
 * The names of segments and sections in them are mostly meaningless to the
 * link-editor.  But there are few things to support traditional UNIX
@@ -934,7 +929,6 @@ relocation entries */
 #define	SEG_PAGEZERO	"__PAGEZERO"	/* the pagezero segment which has no */
 /* protections and catches NULL */
 /* references for MH_EXECUTE files */
-
 
 #define	SEG_TEXT	"__TEXT"	/* the tradition UNIX text segment */
 #define	SECT_TEXT	"__text"	/* the real text part of the text */
@@ -1369,7 +1363,6 @@ struct dysymtab_command {
 						*/
 	uint32_t locreloff;	/* offset to local relocation entries */
 	uint32_t nlocrel;	/* number of local relocation entries */
-
 };
 
 /*
@@ -1381,7 +1374,6 @@ struct dysymtab_command {
 */
 #define INDIRECT_SYMBOL_LOCAL	0x80000000
 #define INDIRECT_SYMBOL_ABS	0x40000000
-
 
 /* a table of contents entry */
 struct dylib_table_of_contents {
@@ -1713,7 +1705,6 @@ struct dyld_info_command {
 #define REBASE_OPCODE_DO_REBASE_ADD_ADDR_ULEB			0x70
 #define REBASE_OPCODE_DO_REBASE_ULEB_TIMES_SKIPPING_ULEB	0x80
 
-
 /*
 * The following are used to encode binding information
 */
@@ -1743,7 +1734,6 @@ struct dyld_info_command {
 #define BIND_OPCODE_DO_BIND_ADD_ADDR_ULEB			0xA0
 #define BIND_OPCODE_DO_BIND_ADD_ADDR_IMM_SCALED			0xB0
 #define BIND_OPCODE_DO_BIND_ULEB_TIMES_SKIPPING_ULEB		0xC0
-
 
 /*
 * The following are used on the flags byte of a terminal node
@@ -1807,7 +1797,6 @@ struct fvmfile_command {
 	uint32_t	header_addr;	/* files virtual address */
 };
 
-
 /*
 * The entry_point_command is a replacement for thread_command.
 * It is used for main executables to specify the location (file offset)
@@ -1821,7 +1810,6 @@ struct entry_point_command {
 	uint64_t  stacksize;/* if not zero, initial stack size */
 };
 
-
 /*
 * The source_version_command is an optional load command containing
 * the version of the sources used to build the binary.
@@ -1831,7 +1819,6 @@ struct source_version_command {
 	uint32_t  cmdsize;	/* 16 */
 	uint64_t  version;	/* A.B.C.D.E packed as a24.b10.c10.d10.e10 */
 };
-
 
 /*
 * The LC_DATA_IN_CODE load commands uses a linkedit_data_command
@@ -2089,7 +2076,7 @@ struct nlist_64 {
 * be called to get the address of the real function to use.
 * This bit is only available in .o files (MH_OBJECT filetype)
 */
-#define N_SYMBOL_RESOLVER  0x0100 
+#define N_SYMBOL_RESOLVER  0x0100
 
 /*
 * The N_ALT_ENTRY bit of the n_desc field indicates that the
@@ -2264,4 +2251,3 @@ enum reloc_type_x86_64
 struct relocation_info { int32_t r_address; uint32_t r_symbolnum : 24, r_pcrel : 1, r_length : 2, r_extern : 1, r_type : 4; };
 
 #endif /* End of MACHO64SPEC_H */
-

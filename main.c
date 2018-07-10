@@ -33,29 +33,29 @@
 
 #if WILDCARDS
 
- #ifdef __UNIX__
-  #include <unistd.h>
- #else
-  #include <io.h>
- #endif
+#ifdef __UNIX__
+#include <unistd.h>
+#else
+#include <io.h>
+#endif
 #endif
 
 #ifdef TRMEM
-void tm_Init( void );
-void tm_Fini( void );
+void tm_Init(void);
+void tm_Fini(void);
 #endif
 
-static void genfailure( int signo )
+static void genfailure(int signo)
 /*********************************/
 {
 #if CATCHBREAK
-    if (signo != SIGBREAK)
+	if (signo != SIGBREAK)
 #else
-    if (signo != SIGTERM)
+	if (signo != SIGTERM)
 #endif
-        EmitError( GENERAL_FAILURE );
-    close_files();
-    exit( EXIT_FAILURE );
+		EmitError(GENERAL_FAILURE);
+	close_files();
+	exit(EXIT_FAILURE);
 }
 int main(int argc, char **argv)
 /*******************************/
@@ -80,7 +80,7 @@ int main(int argc, char **argv)
 #if 0 //def DEBUG_OUT    /* DebugMsg() cannot be used that early */
 	int i;
 	for ( i = 1; i < argc; i++ ) {
-		printf("argv[%u]=>%s<\n", i, argv[i] );
+		printf("argv[%u]=>%s<\n", i, argv[i]);
 	}
 #endif
 
@@ -92,7 +92,7 @@ int main(int argc, char **argv)
 	if (pEnv == NULL)
 		pEnv = "";
 	argv[0] = pEnv;
-	
+
 	/* Set the default module architecture to SSE */
 	MODULEARCH = ARCH_SSE;
 
@@ -110,7 +110,7 @@ int main(int argc, char **argv)
 	memset(&finfo, 0, sizeof(finfo));
 #endif
 
-		/* ParseCmdLine() returns NULL if no source file name has been found (anymore) */
+	/* ParseCmdLine() returns NULL if no source file name has been found (anymore) */
 	while (ParseCmdline((const char **)argv, &numArgs)) {
 		numFiles++;
 		write_logo();
@@ -125,13 +125,13 @@ int main(int argc, char **argv)
 		dirsize = pfn - Options.names[ASM];
 		memcpy(fname, Options.names[ASM], dirsize);
 			do {
-				strcpy(&fname[dirsize], finfo.name);
-				DebugMsg(("main: fname=%s\n", fname));
-				rc = AssembleModule(fname);  /* assemble 1 module */
+			strcpy(&fname[dirsize], finfo.name);
+			DebugMsg(("main: fname=%s\n", fname));
+			rc = AssembleModule(fname);  /* assemble 1 module */
 			} while ((_findnext(fh, &finfo) != -1));
-		    _findclose(fh);
+		_findclose(fh);
 #else
-		rc = AssembleModule( Options.names[ASM] );
+		rc = AssembleModule(Options.names[ASM]);
 #endif
 	};
 	CmdlineFini();
@@ -149,5 +149,3 @@ int main(int argc, char **argv)
 	DebugMsg(("main: exit, return code=%u\n", 1 - rc));
 	return(1 - rc); /* zero if no errors */
 }
-
-

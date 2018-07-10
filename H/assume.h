@@ -33,27 +33,27 @@
 
 /* flags for error field, used for GPR's ASSUME:ERROR|NOTHING */
 enum err_flags {
-    RL_ERROR  = 0x01,
-    RX_ERROR  = 0x02,
-    ERX_ERROR = 0x04,
-    RRX_ERROR = 0x08,
-    RH_ERROR  = 0x10
+	RL_ERROR = 0x01,
+	RX_ERROR = 0x02,
+	ERX_ERROR = 0x04,
+	RRX_ERROR = 0x08,
+	RH_ERROR = 0x10
 };
 
 struct assume_info {
-    struct asym         *symbol;        /* segment, group or type that is to
-                                           be associated with the register */
-    unsigned char       error;          /* register assumed to ERROR */
-    unsigned char       is_flat;        /* register assumed to FLAT  */
+	struct asym         *symbol;        /* segment, group or type that is to
+										   be associated with the register */
+	unsigned char       error;          /* register assumed to ERROR */
+	unsigned char       is_flat;        /* register assumed to FLAT  */
 };
 
 /* v2.05: introduced */
 struct stdassume_typeinfo {
-    struct asym         *type;
-    struct asym         *target_type;
-    enum memtype        mem_type;
-    unsigned char       ptr_memtype;
-    unsigned char       is_ptr;
+	struct asym         *type;
+	struct asym         *target_type;
+	enum memtype        mem_type;
+	unsigned char       ptr_memtype;
+	unsigned char       is_ptr;
 };
 
 /* segment assume table is sorted by seg reg number: ES,CS,SS,DS,FS,GS.
@@ -66,19 +66,19 @@ extern struct assume_info StdAssumeTable[];
 
 #define NUM_SEGREGS 6
 
-extern void AssumeInit( int );     /* init assume tables */
+extern void AssumeInit(int);     /* init assume tables */
 
-extern enum assume_segreg search_assume( const struct asym *sym, enum assume_segreg def, bool search_grps );
-extern enum assume_segreg GetAssume( const struct asym *, const struct asym *, enum assume_segreg, struct asym * * );
+extern enum assume_segreg search_assume(const struct asym *sym, enum assume_segreg def, bool search_grps);
+extern enum assume_segreg GetAssume(const struct asym *, const struct asym *, enum assume_segreg, struct asym * *);
 
-extern struct asym      *GetOverrideAssume( enum assume_segreg );
-extern struct asym      *GetStdAssume( int );
-extern struct asym      *GetStdAssumeEx( int );
+extern struct asym      *GetOverrideAssume(enum assume_segreg);
+extern struct asym      *GetStdAssume(int);
+extern struct asym      *GetStdAssumeEx(int);
 
-extern void             ModelAssumeInit( void );
-extern void             SetSegAssumeTable( void * );
-extern void             GetSegAssumeTable( void * );
-extern void             SetStdAssumeTable( void *, struct stdassume_typeinfo * );
-extern void             GetStdAssumeTable( void *, struct stdassume_typeinfo * );
+extern void             ModelAssumeInit(void);
+extern void             SetSegAssumeTable(void *);
+extern void             GetSegAssumeTable(void *);
+extern void             SetStdAssumeTable(void *, struct stdassume_typeinfo *);
+extern void             GetStdAssumeTable(void *, struct stdassume_typeinfo *);
 
 #endif

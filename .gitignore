@@ -15,8 +15,6 @@
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
-x64/
-x86/
 bld/
 [Bb]in/
 [Oo]bj/
@@ -27,6 +25,8 @@ GccUnixR/
 GccUnixD/
 MinGW-w64R/
 MinGW-w64D/
+
+.codelite
 
 *.exe
 
@@ -242,6 +242,7 @@ FakesAssemblies/
 
 # Visual Studio 6 build log
 *.plg
+*.tlog
 
 # Visual Studio 6 workspace options file
 *.opt

@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeLite_Project Name="uasm" Version="10.0.0" InternalType="Console">
+  <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00020001N0005Debug0000000000000001N0007Release000000000000]]>
+    </Plugin>
+  </Plugins>
+  <VirtualDirectory Name="Resource">
+    <File Name="../../resource.h"/>
+    <File Name="../../UASM.rc" ExcludeProjConfig="Release;Debug;"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="H">
+    <File Name="../../H/winconsole.h"/>
+    <File Name="../../H/win64seh.h"/>
+    <File Name="../../H/win32.h"/>
+    <File Name="../../H/usage2.h"/>
+    <File Name="../../H/usage.h"/>
+    <File Name="../../H/unaryop.h"/>
+    <File Name="../../H/types.h"/>
+    <File Name="../../H/trmem.h"/>
+    <File Name="../../H/tokenize.h"/>
+    <File Name="../../H/token.h"/>
+    <File Name="../../H/tbyte.h"/>
+    <File Name="../../H/symbols.h"/>
+    <File Name="../../H/special.h"/>
+    <File Name="../../H/simd.h"/>
+    <File Name="../../H/segment.h"/>
+    <File Name="../../H/segattr.h"/>
+    <File Name="../../H/reswords.h"/>
+    <File Name="../../H/queue.h"/>
+    <File Name="../../H/proc.h"/>
+    <File Name="../../H/preproc.h"/>
+    <File Name="../../H/posndir.h"/>
+    <File Name="../../H/pespec.h"/>
+    <File Name="../../H/parser.h"/>
+    <File Name="../../H/orgfixup.h"/>
+    <File Name="../../H/opndcls.h"/>
+    <File Name="../../H/operands.h"/>
+    <File Name="../../H/omfspec.h"/>
+    <File Name="../../H/omfint.h"/>
+    <File Name="../../H/omf.h"/>
+    <File Name="../../H/myassert.h"/>
+    <File Name="../../H/msgtext.h"/>
+    <File Name="../../H/msgdef.h"/>
+    <File Name="../../H/memalloc.h"/>
+    <File Name="../../H/mangle.h"/>
+    <File Name="../../H/macrolib.h"/>
+    <File Name="../../H/macro.h"/>
+    <File Name="../../H/macho64spec.h"/>
+    <File Name="../../H/macho64.h"/>
+    <File Name="../../H/ltext.h"/>
+    <File Name="../../H/lqueue.h"/>
+    <File Name="../../H/listing.h"/>
+    <File Name="../../H/linnum.h"/>
+    <File Name="../../H/label.h"/>
+    <File Name="../../H/inttype.h"/>
+    <File Name="../../H/instruct.h"/>
+    <File Name="../../H/instravx.h"/>
+    <File Name="../../H/instr64.h"/>
+    <File Name="../../H/input.h"/>
+    <File Name="../../H/hll.h"/>
+    <File Name="../../H/globals.h"/>
+    <File Name="../../H/fpfixup.h"/>
+    <File Name="../../H/fixup.h"/>
+    <File Name="../../H/fastpass.h"/>
+    <File Name="../../H/extern.h"/>
+    <File Name="../../H/expreval.h"/>
+    <File Name="../../H/errmsg.h"/>
+    <File Name="../../H/equate.h"/>
+    <File Name="../../H/elfspec.h"/>
+    <File Name="../../H/elf.h"/>
+    <File Name="../../H/dirtype.h"/>
+    <File Name="../../H/directve.h"/>
+    <File Name="../../H/dbgdw.h"/>
+    <File Name="../../H/dbgcv.h"/>
+    <File Name="../../H/data.h"/>
+    <File Name="../../H/cpumodel.h"/>
+    <File Name="../../H/context.h"/>
+    <File Name="../../H/condasm.h"/>
+    <File Name="../../H/Colors.h"/>
+    <File Name="../../H/coffspec.h"/>
+    <File Name="../../H/coff.h"/>
+    <File Name="../../H/codegen.h"/>
+    <File Name="../../H/cmdline.h"/>
+    <File Name="../../H/bool.h"/>
+    <File Name="../../H/bin.h"/>
+    <File Name="../../H/atofloat.h"/>
+    <File Name="../../H/assume.h"/>
+  </VirtualDirectory>
+  <Description/>
+  <Dependencies/>
+  <VirtualDirectory Name="src">
+    <File Name="../../types.c"/>
+    <File Name="../../trmem.c"/>
+    <File Name="../../tokenize.c"/>
+    <File Name="../../tbyte.c"/>
+    <File Name="../../symbols.c"/>
+    <File Name="../../string.c"/>
+    <File Name="../../simsegm.c"/>
+    <File Name="../../simd.c"/>
+    <File Name="../../segment.c"/>
+    <File Name="../../safeseh.c"/>
+    <File Name="../../reswords.c"/>
+    <File Name="../../queue.c"/>
+    <File Name="../../proc.c"/>
+    <File Name="../../preproc.c"/>
+    <File Name="../../posndir.c"/>
+    <File Name="../../parser.c"/>
+    <File Name="../../orgfixup.c"/>
+    <File Name="../../option.c"/>
+    <File Name="../../omfint.c"/>
+    <File Name="../../omffixup.c"/>
+    <File Name="../../omf.c"/>
+    <File Name="../../msgtext.c"/>
+    <File Name="../../memalloc.c"/>
+    <File Name="../../mangle.c"/>
+    <File Name="../../main.c"/>
+    <File Name="../../macrolib.c"/>
+    <File Name="../../macro.c"/>
+    <File Name="../../macho64.c"/>
+    <File Name="../../ltype.c"/>
+    <File Name="../../lqueue.c"/>
+    <File Name="../../loop.c"/>
+    <File Name="../../listing.c"/>
+    <File Name="../../linnum.c"/>
+    <File Name="../../label.c"/>
+    <File Name="../../invoke.c"/>
+    <File Name="../../input.c"/>
+    <File Name="../../hll.c"/>
+    <File Name="../../fpfixup.c"/>
+    <File Name="../../fixup.c"/>
+    <File Name="../../fastpass.c"/>
+    <File Name="../../extern.c"/>
+    <File Name="../../expreval.c"/>
+    <File Name="../../expans.c"/>
+    <File Name="../../errmsg.c"/>
+    <File Name="../../equate.c"/>
+    <File Name="../../end.c"/>
+    <File Name="../../elf.c"/>
+    <File Name="../../directiv.c"/>
+    <File Name="../../dbgcv.c"/>
+    <File Name="../../data.c"/>
+    <File Name="../../cpumodel.c"/>
+    <File Name="../../context.c"/>
+    <File Name="../../condasm.c"/>
+    <File Name="../../coff.c"/>
+    <File Name="../../codegen.c"/>
+    <File Name="../../cmdline.c"/>
+    <File Name="../../branch.c"/>
+    <File Name="../../bin.c"/>
+    <File Name="../../backptch.c"/>
+    <File Name="../../atofloat.c"/>
+    <File Name="../../assume.c"/>
+    <File Name="../../assemble.c"/>
+    <File Name="../../apiemu.c"/>
+  </VirtualDirectory>
+  <Settings Type="Executable">
+    <GlobalSettings>
+      <Compiler Options="" C_Options="" Assembler="">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="">
+        <LibraryPath Value="."/>
+      </Linker>
+      <ResourceCompiler Options=""/>
+    </GlobalSettings>
+    <Configuration Name="Debug" CompilerType="GCC" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g;-O0;-std=c++11;-march=x86_64;-target x86_64-unknown-linux-gnu;-fPIC" C_Options="-g;-O0;-std=c11;-march=x86_64;-target x86_64-unknown-linux-gnu;-fPIC" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+        <IncludePath Value="."/>
+        <IncludePath Value="../../H"/>
+        <Preprocessor Value="DEBUG_OUT"/>
+        <Preprocessor Value="__LINUX__"/>
+        <Preprocessor Value="__UNIX__"/>
+        <Preprocessor Value="_DEBUG"/>
+      </Compiler>
+      <Linker Options="" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <BuildSystem Name="Default"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="" IsExtended="no">
+        <DebuggerSearchPaths/>
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no" EnableCpp14="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+    <Configuration Name="Release" CompilerType="clang( https://git.llvm.org/git/llvm 4fcda06d85c6b4374088b3ced4c06609ade251a8 )" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-O2;-std=c++11;-march=icelake-client;-target x86_64-unknown-linux-gnu;-fPIC" C_Options="-O2;-std=c11;-march=icelake-client;-target x86_64-unknown-linux-gnu;-fPIC" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+        <IncludePath Value="."/>
+        <IncludePath Value="../../H"/>
+        <Preprocessor Value="DEBUG_OUT"/>
+        <Preprocessor Value="__UNIX__"/>
+        <Preprocessor Value="__LINUX__"/>
+        <Preprocessor Value="NDEBUG"/>
+      </Compiler>
+      <Linker Options="" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Release" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <BuildSystem Name="Default"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="" IsExtended="no">
+        <DebuggerSearchPaths/>
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no" EnableCpp14="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+  </Settings>
+</CodeLite_Project>

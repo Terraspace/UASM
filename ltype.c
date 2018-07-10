@@ -1,4 +1,4 @@
-#include <globals.h>
+#include "globals.h"
 
 unsigned char _ltype[257] = {
 	0,			/* -1 EOF   */

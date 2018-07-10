@@ -29,7 +29,6 @@
 *
 ****************************************************************************/
 
-
 #ifndef _ERRMSG_H_INCLUDED
 #define _ERRMSG_H_INCLUDED
 
@@ -38,20 +37,20 @@
 #define pick( code, text )  code,
 enum msgno {
 #include "msgdef.h"
-    MSG_LAST
+	MSG_LAST
 };
 #undef pick
 
 #ifdef DEBUG_OUT
-    extern void DoDebugMsg( const char *format, ... );
-    extern void DoDebugMsg1( const char *format, ... );
-    #define DebugMsg( x ) DoDebugMsg x
-    #define DebugMsg1( x ) DoDebugMsg1 x
-    #define DebugCmd( x ) x
+extern void DoDebugMsg(const char *format, ...);
+extern void DoDebugMsg1(const char *format, ...);
+#define DebugMsg( x ) DoDebugMsg x
+#define DebugMsg1( x ) DoDebugMsg1 x
+#define DebugCmd( x ) x
 #else
-    #define DebugMsg( x )
-    #define DebugMsg1( x )
-    #define DebugCmd( x )
+#define DebugMsg( x )
+#define DebugMsg1( x )
+#define DebugCmd( x )
 #endif
 
 #if defined( __UNIX__ ) || defined ( __SW_BD )
@@ -60,15 +59,15 @@ enum msgno {
 #define errout stdout
 #endif
 
-extern void Fatal( int msgnum, ... );
-extern int  EmitError( int msgnum );
-extern int  EmitErr( int msgnum, ... );
-extern void EmitWarn( int level, int msgnum, ... );
-extern void PrintNote( int msgnum, ... );
-extern char *ErrnoStr( void );
-extern int  write_logo( void );
-extern void PrintUsage( void );
+extern void Fatal(int msgnum, ...);
+extern int  EmitError(int msgnum);
+extern int  EmitErr(int msgnum, ...);
+extern void EmitWarn(int level, int msgnum, ...);
+extern void PrintNote(int msgnum, ...);
+extern char *ErrnoStr(void);
+extern int  write_logo(void);
+extern void PrintUsage(void);
 //extern void SeekError( void );
-extern void WriteError( void );
+extern void WriteError(void);
 
 #endif

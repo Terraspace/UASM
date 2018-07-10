@@ -1,4 +1,3 @@
-
 /* text constants for listing */
 
 ltext(BYTE, "Byte")
@@ -63,6 +62,9 @@ ltext(PASCAL, "PASCAL")
 ltext(FORTRAN, "FORTRAN")
 ltext(BASIC, "BASIC")
 ltext(FASTCALL, "FASTCALL")
+ltext(VECTORCALL, "VECTORCALL")
+ltext(SYSVCALL, "SYSVCALL")
+ltext(DELPHICALL, "DELPHICALL")
 
 ltext(TXT_MACROS, "Macros:")
 ltext(TXT_MACROCAP, "                N a m e                 Type")
