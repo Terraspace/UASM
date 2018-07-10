@@ -10,5 +10,5 @@
 #define EXPQUAL
 #endif
 
-extern char * EXPQUAL ParseCmdline( const char **cmdline, int * );
-extern void EXPQUAL CmdlineFini( void );
+extern char * EXPQUAL ParseCmdline(const char **cmdline, int *);
+extern void EXPQUAL CmdlineFini(void);

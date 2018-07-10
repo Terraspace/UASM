@@ -53,7 +53,7 @@ struct macho_section_entry
 	uint64_t relocOfs;
 };
 
-struct macho_module 
+struct macho_module
 {
 	char *srcname;
 	struct mach_header_64 header;
@@ -72,11 +72,11 @@ struct macho_module
 	int undefSymCount;
 };
 
-static int padbyte[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+static int padbyte[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-/* ========================================================================================== 
-Calculate the number of sections required for the MACHO64 Obj file 
--> An object file only contains 1 segment with sections, 
+/* ==========================================================================================
+Calculate the number of sections required for the MACHO64 Obj file
+-> An object file only contains 1 segment with sections,
 -> our internal segments become sections.
 ========================================================================================== */
 int macho_section_count()
@@ -100,17 +100,17 @@ int macho_section_count()
 /* ==========================================================================================
 Build a segment_command_64 structure.
 ========================================================================================== */
-struct segment_command_64 * macho_build_seg_cmd( int fileofs )
+struct segment_command_64 * macho_build_seg_cmd(int fileofs)
 {
 	struct segment_command_64 *pCmd = NULL;
 	pCmd = malloc(sizeof(struct segment_command_64));
-	memset(pCmd,0,sizeof(struct segment_command_64));
-	
-	pCmd->cmd      = LC_SEGMENT_64;
-	pCmd->cmdsize  = sizeof(struct segment_command_64) + (sizeof(struct section_64) * macho_section_count());
+	memset(pCmd, 0, sizeof(struct segment_command_64));
+
+	pCmd->cmd = LC_SEGMENT_64;
+	pCmd->cmdsize = sizeof(struct segment_command_64) + (sizeof(struct section_64) * macho_section_count());
 	pCmd->flags = 0;
 	pCmd->initprot = VM_PROT_ALL;
-	pCmd->maxprot  = VM_PROT_ALL;
+	pCmd->maxprot = VM_PROT_ALL;
 	pCmd->nsects = macho_section_count();
 	pCmd->vmaddr = 0;
 	pCmd->fileoff = fileofs;
@@ -200,7 +200,7 @@ int macho_build_string_tbl(struct symtab_command *pSymCmd, struct macho_module *
 	{
 		if (strcmp(sym->name, "$xdatasym") == 0) continue;
 		if (sym->state != SYM_MACRO && sym->state != SYM_SEG && sym->state != SYM_TMACRO && sym->predefined == 0 && sym->state != SYM_GRP && sym->isequate == 0)
-		{ 
+		{
 			if (sym->state != SYM_EXTERNAL && !sym->ispublic && sym->used)
 			{
 				tblSize += strlen(sym->name) + 1;
@@ -265,7 +265,7 @@ static int GetSymbolIndex(const char *pName, struct macho_module *mm)
 {
 	struct strentry *currStr = mm->strings;
 	int idx = 0;
-	for (currStr = mm->strings;currStr;currStr = currStr->next)
+	for (currStr = mm->strings; currStr; currStr = currStr->next)
 	{
 		if (strcmp(pName, currStr->pstr) == 0)
 		{
@@ -279,7 +279,7 @@ static int GetSymbolIndex(const char *pName, struct macho_module *mm)
 /* ==========================================================================================
 Build a macho_section_entry structure.
 ========================================================================================== */
-struct section_64 * macho_build_section( const char *secName, const char *segName, uint32_t flags, const char *srcName )
+struct section_64 * macho_build_section(const char *secName, const char *segName, uint32_t flags, const char *srcName)
 {
 	struct macho_section_entry *pSec = NULL;
 	pSec = malloc(sizeof(struct macho_section_entry));
@@ -341,7 +341,7 @@ static int GetSegFixups(struct dsym *seg)
 {
 	struct fixup *curr;
 	int fixupcnt = 0;
-	for (curr = seg->e.seginfo->FixupList.head;curr;curr = curr->nextrlc)
+	for (curr = seg->e.seginfo->FixupList.head; curr; curr = curr->nextrlc)
 	{
 		fixupcnt++;
 	}
@@ -382,7 +382,7 @@ static int GetRelocationCount(struct macho_module *mm, int baseOfs)
 /* ==========================================================================================
 Create all the macho obj file structures and calculate offsets.
 ========================================================================================== */
-static void macho_build_structures( struct module_info *modinfo, struct macho_module mm )
+static void macho_build_structures(struct module_info *modinfo, struct macho_module mm)
 {
 	int cnt = 0;
 	struct dsym *curr;
@@ -409,7 +409,7 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 	mm.sectAlign = 1;
 
 	/* Setup the load segment command */
-	pCmd = macho_build_seg_cmd( fileofs );
+	pCmd = macho_build_seg_cmd(fileofs);
 	mm.pSegCmd = pCmd;
 	mm.header.ncmds++;
 	mm.header.sizeofcmds += sizeof(struct segment_command_64);
@@ -432,19 +432,19 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 			currSec = macho_build_section("__text", "__TEXT", S_REGULAR, curr->sym.name);
 			macho_add_section(currSec, &mm);
 			currSec->data = curr->e.seginfo->CodeBuffer;
-			currSec->size = ROUND_UP(curr->e.seginfo->bytes_written,mm.sectAlign);
+			currSec->size = ROUND_UP(curr->e.seginfo->bytes_written, mm.sectAlign);
 			currSec->dif = currSec->size - curr->e.seginfo->bytes_written;
 			currSec->section.size = currSec->size;
 			currSec->section.addr = currAddr;
 			currAddr += currSec->size;
-			currAddr = ROUND_UP(currAddr, mm.sectAlign); 
+			currAddr = ROUND_UP(currAddr, mm.sectAlign);
 			pCmd->filesize += currSec->size;
 			currSec->idx = secIdx++;
 			currSec->section.flags |= (S_ATTR_SOME_INSTRUCTIONS | S_ATTR_PURE_INSTRUCTIONS);
 			fileofs += sizeof(struct section_64);
 			pCmd->vmsize += currSec->size;
 		}
-		
+
 		else if (strcmp(curr->sym.name, "_DATA") == 0)
 		{
 			currSec = macho_build_section("__data", "__DATA", S_REGULAR, curr->sym.name);
@@ -493,10 +493,9 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 			currSec->idx = secIdx++;
 			fileofs += sizeof(struct section_64);
 			pCmd->vmsize += currSec->size;
-
 		}
 	}
-	/* At this point only the section offsets (file) need to still be set 
+	/* At this point only the section offsets (file) need to still be set
 	-> Once we have the size of the remaining commands. */
 
 	/* Build sym table command */
@@ -515,7 +514,7 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 
 	/* Set section file offsets */
 	sectionDataSize = 0;
-	for (currSec = mm.sections;currSec;currSec = currSec->next)
+	for (currSec = mm.sections; currSec; currSec = currSec->next)
 	{
 		currSec->section.offset = fileofs + sectionDataSize;
 		currSec->ofs = fileofs + sectionDataSize;
@@ -524,7 +523,7 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 	pCmd->fileoff = mm.sections->section.offset; // Set segment command file offset = first section offset.
 
 	/* Build the string table data */
-	stringTableSize = macho_build_string_tbl(pSymCmd,&mm) + 1; /* add one for the "" string entry */
+	stringTableSize = macho_build_string_tbl(pSymCmd, &mm) + 1; /* add one for the "" string entry */
 
 	/* Update number of symbols being written to object file */
 	pSymCmd->nsyms = mm.symCount;
@@ -550,13 +549,13 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 	/* Write out the macho header */
 	if (fwrite(&mm.header, 1, sizeof(mm.header), CurrFile[OBJ]) != sizeof(mm.header))
 		WriteError();
-	
+
 	/* Write out the segment command */
 	if (fwrite(pCmd, 1, sizeof(struct segment_command_64), CurrFile[OBJ]) != sizeof(struct segment_command_64))
 		WriteError();
 
 	/* Write out the section_64 list */
-	for (currSec = mm.sections;currSec;currSec = currSec->next)
+	for (currSec = mm.sections; currSec; currSec = currSec->next)
 	{
 		if (fwrite(&currSec->section, 1, sizeof(struct section_64), CurrFile[OBJ]) != sizeof(struct section_64))
 			WriteError();
@@ -573,7 +572,7 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 		WriteError();
 
 	/* Write out the section data */
-	for (currSec = mm.sections;currSec;currSec = currSec->next)
+	for (currSec = mm.sections; currSec; currSec = currSec->next)
 	{
 		if (fwrite(currSec->data, 1, currSec->size-currSec->dif, CurrFile[OBJ]) != currSec->size-currSec->dif)
 			WriteError();
@@ -619,7 +618,7 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 					{
 						machotype = X86_64_RELOC_SIGNED;
 					}
-	
+
 					reloc.r_type = machotype;
 					switch (currFixup->addbytes)
 					{
@@ -645,7 +644,7 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 	}
 
 	/* Write out symbol table entries */
-	for (currStr = mm.strings;currStr;currStr = currStr->next)
+	for (currStr = mm.strings; currStr; currStr = currStr->next)
 	{
 		if (!currStr->sym->used && !currStr->sym->ispublic)
 			continue;
@@ -667,10 +666,10 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 			else
 				symEntry.n_type = N_SECT;
 			symEntry.n_value = (uint64_t)currStr->sym->offset;
-			
+
 			/* The offset is relative to the start of the segment, so we must add any previous sections total sizes */
 			ofsAdj = 0;
-			for (currSec = mm.sections;currSec->idx < symEntry.n_sect;currSec = currSec->next)
+			for (currSec = mm.sections; currSec->idx < symEntry.n_sect; currSec = currSec->next)
 				ofsAdj += currSec->size;
 			symEntry.n_value += ofsAdj;
 
@@ -689,8 +688,8 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 
 	/* Write out string table */
 	if (fwrite(&padbyte, 1, 1, CurrFile[OBJ]) != 1)	/* Write index 0 as the default null ("") string */
-		WriteError(); 
-	for (currStr = mm.strings;currStr;currStr = currStr->next)
+		WriteError();
+	for (currStr = mm.strings; currStr; currStr = currStr->next)
 	{
 		int len = strlen(currStr->pstr) + 1;
 		if (fwrite(currStr->pstr, 1, len, CurrFile[OBJ]) != len)
@@ -698,7 +697,7 @@ static void macho_build_structures( struct module_info *modinfo, struct macho_mo
 	}
 }
 
-static ret_code macho_write_module( struct module_info *modinfo )
+static ret_code macho_write_module(struct module_info *modinfo)
 {
 	struct macho_module mm;
 	int fileofs = 0;
@@ -711,21 +710,21 @@ static ret_code macho_write_module( struct module_info *modinfo )
 	/* the path part is stripped. todo: check if this is ok to do */
 	mm.srcname += strlen(mm.srcname);
 	while (mm.srcname > CurrFName[ASM] &&
-		*(mm.srcname - 1) != '/' &&
-		*(mm.srcname - 1) != '\\') mm.srcname--;
+		   *(mm.srcname - 1) != '/' &&
+		   *(mm.srcname - 1) != '\\') mm.srcname--;
 #endif
 	/* position at 0 ( probably unnecessary, since there were no writes yet ) */
 	fseek(CurrFile[OBJ], 0, SEEK_SET);
-	
-	if( modinfo->defOfssize == USE64)
+
+	if (modinfo->defOfssize == USE64)
 	{
 		mm.header.magic = MH_MAGIC_64;
 		mm.header.cputype = CPU_TYPE_X86_64;
 		mm.header.cpusubtype = CPU_SUBTYPE_LITTLE_ENDIAN | CPU_SUBTYPE_X86_64_ALL;
 		mm.header.filetype = MH_OBJECT;
 		mm.header.flags = NULL;
-		
-		macho_build_structures(modinfo, mm);	
+
+		macho_build_structures(modinfo, mm);
 	}
 	else
 	{
@@ -737,7 +736,7 @@ static ret_code macho_write_module( struct module_info *modinfo )
 	return(NOT_ERROR);
 }
 
-void macho_init( struct module_info *modinfo )
+void macho_init(struct module_info *modinfo)
 {
 	modinfo->osx_osabi = MACHOABI_OSX64;
 	modinfo->g.WriteModule = macho_write_module;

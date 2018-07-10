@@ -32,12 +32,12 @@
 #define _INPUT_H_INCLUDED
 
 struct macro_instance {
-    struct srcline *currline;
-    struct srcline *startline;
-    uint_32 localstart;
-    char * *parm_array;
-    struct asym *macro;
-    unsigned parmcnt;
+	struct srcline *currline;
+	struct srcline *startline;
+	uint_32 localstart;
+	char * *parm_array;
+	struct asym *macro;
+	unsigned parmcnt;
 };
 
 /* for line numbers, the source files have to be stored
@@ -45,53 +45,53 @@ struct macro_instance {
  * the input stream.
  */
 struct file_seq {
-    struct file_seq *next;
-    uint_16         file;  /* index of file in FNames */
+	struct file_seq *next;
+	uint_16         file;  /* index of file in FNames */
 };
 
 struct input_status {
-    char *token_stringbuf;
-    char *currsource;
-    char *CurrComment;
-    int token_count;
-    char line_flags;/* v2.08: added */
+	char *token_stringbuf;
+	char *currsource;
+	char *CurrComment;
+	int token_count;
+	char line_flags;/* v2.08: added */
 #ifdef __I86__
-    char *stringbufferend;
-    struct asm_tok *tokenarray;
+	char *stringbufferend;
+	struct asm_tok *tokenarray;
 #endif
 };
 
-extern uint_32  GetLineNumber( void );
+extern uint_32  GetLineNumber(void);
 //#define LineNumber GetLineNumber()
 
-extern const char *GetFNamePart( const char *fname );
-extern char     *GetExtPart( const char *fname );
+extern const char *GetFNamePart(const char *fname);
+extern char     *GetExtPart(const char *fname);
 
 extern struct src_item *PushSrcItem(char type, void *pv);
 
-extern FILE     *SearchFile( const char *path, bool );
-extern char     *GetTextLine( char *buffer );
-extern void     PushMacro( struct macro_instance * );
-extern void     SetLineNumber( unsigned );
+extern FILE     *SearchFile(const char *path, bool);
+extern char     *GetTextLine(char *buffer);
+extern void     PushMacro(struct macro_instance *);
+extern void     SetLineNumber(unsigned);
 #if FASTMEM==0
-extern bool     MacroInUse( struct dsym * );
+extern bool     MacroInUse(struct dsym *);
 #endif
-extern void     AddStringToIncludePath( const char *string );
-extern void     InputInit( void );
-extern void     InputPassInit( void );
-extern void     InputFini( void );
-extern struct asm_tok *PushInputStatus( struct input_status * );
-extern void     PopInputStatus( struct input_status * );
-extern int      GetCurrSrcPos( char * );
-extern void     ClearSrcStack( void );
-extern unsigned get_curr_srcfile( void );
+extern void     AddStringToIncludePath(const char *string);
+extern void     InputInit(void);
+extern void     InputPassInit(void);
+extern void     InputFini(void);
+extern struct asm_tok *PushInputStatus(struct input_status *);
+extern void     PopInputStatus(struct input_status *);
+extern int      GetCurrSrcPos(char *);
+extern void     ClearSrcStack(void);
+extern unsigned get_curr_srcfile(void);
 #if FASTPASS
-extern void     set_curr_srcfile( unsigned, uint_32 );
+extern void     set_curr_srcfile(unsigned, uint_32);
 #endif
-extern const struct fname_item *GetFName( unsigned );
+extern const struct fname_item *GetFName(unsigned);
 #ifdef DEBUG_OUT
-extern char     *GetTopLine( char * );
-extern char     *GetTopSrcName( void );
+extern char     *GetTopLine(char *);
+extern char     *GetTopSrcName(void);
 #endif
 
 #define GetAlignedPointer( x, size ) ( x + ( ( size + 1 + sizeof(void *) - 1 ) & ~( sizeof(void *) - 1 ) ) )

@@ -7,6 +7,6 @@
 #ifndef _POSNDIR_H_
 #define _POSNDIR_H_
 
-extern void AlignCurrOffset( int );
+extern void AlignCurrOffset(int);
 
 #endif

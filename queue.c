@@ -35,71 +35,71 @@
 #include "myassert.h"
 
 #if 0 /* v2.04: not needed */
-void QInit( struct qdesc *q )
+void QInit(struct qdesc *q)
 /***************************/
 {
-    q->head = NULL;
-    q->tail = NULL;
+	q->head = NULL;
+	q->tail = NULL;
 }
 #endif
 
-void QEnqueue( struct qdesc *q, void *item )
+void QEnqueue(struct qdesc *q, void *item)
 /******************************************/
 {
     if( q->head == NULL ) {
-        q->head = q->tail = item;
+		q->head = q->tail = item;
     } else {
-/**/    myassert( q->tail != NULL );
-        *(void **)q->tail = item;
-        q->tail = item;
-    }
-    *(void**)item = NULL;
+		/**/    myassert(q->tail != NULL);
+		*(void **)q->tail = item;
+		q->tail = item;
+	}
+	*(void**)item = NULL;
 }
 
 /* add a new node to a queue */
 
-void QAddItem( struct qdesc *q, const void *data )
+void QAddItem(struct qdesc *q, const void *data)
 /************************************************/
 {
-    struct qnode    *node;
+	struct qnode    *node;
 
-    node = LclAlloc( sizeof( struct qnode ) );
-    node->elmt = data;
-    QEnqueue( q, node );
+	node = LclAlloc(sizeof(struct qnode));
+	node->elmt = data;
+	QEnqueue(q, node);
 }
 
 #if 0
-void QJoinQueue( struct qdesc *dest, struct qdesc *src )
+void QJoinQueue(struct qdesc *dest, struct qdesc *src)
 /******************************************************/
 {
     if( dest->head == NULL ) {
-        dest->head = src->head;
+		dest->head = src->head;
     } else if( src->head == NULL ) {
-        return;
+		return;
     } else {
-/**/    myassert( dest->tail != NULL );
-        *((void **)dest->tail) = src->head;
-    }
-    dest->tail = src->tail;
-    *(void **)src->tail = NULL;
+		/**/    myassert(dest->tail != NULL);
+		*((void **)dest->tail) = src->head;
+	}
+	dest->tail = src->tail;
+	*(void **)src->tail = NULL;
 }
 #endif
 
 #if 0 /* v2.04: not needed anymore */
 
-void *QDequeue( struct qdesc *q )
+void *QDequeue(struct qdesc *q)
 /*******************************/
 {
-    void *item;
+	void *item;
 
     if( q->head == NULL ) {
-        return( NULL );
-    }
-    item = q->head;
-    q->head = *(void**)item;
+		return(NULL);
+	}
+	item = q->head;
+	q->head = *(void**)item;
     if( q->head == NULL ) {
-        q->tail = NULL;
-    }
-    return( item );
+		q->tail = NULL;
+	}
+	return(item);
 }
 #endif
