@@ -28,7 +28,6 @@
 *
 ****************************************************************************/
 
-
 #ifndef _ELFSPEC_H_INCLUDED_
 #define _ELFSPEC_H_INCLUDED_
 
@@ -37,37 +36,37 @@
 #define EI_NIDENT       16
 
 typedef struct {
-    uint_8   e_ident[EI_NIDENT];     // +0 signature & ID info
-    uint_16  e_type;                 // +16 file type (i.e. obj file, exe file)
-    uint_16  e_machine;              // +18 required architecture
-    uint_32  e_version;              // +20 version of the file
-    uint_32  e_entry;                // +24 program entry point
-    uint_32  e_phoff;                // +28 program header offset
-    uint_32  e_shoff;                // +32 section header offset
-    uint_32  e_flags;                // +36 processor specific flags
-    uint_16  e_ehsize;               // +40 elf header size
-    uint_16  e_phentsize;            // +42 program header entry size
-    uint_16  e_phnum;                // +44 number of program header entries
-    uint_16  e_shentsize;            // +46 section header entry size
-    uint_16  e_shnum;                // +48 number of section header entries
-    uint_16  e_shstrndx;             // +50 section name string table index.
+	uint_8   e_ident[EI_NIDENT];     // +0 signature & ID info
+	uint_16  e_type;                 // +16 file type (i.e. obj file, exe file)
+	uint_16  e_machine;              // +18 required architecture
+	uint_32  e_version;              // +20 version of the file
+	uint_32  e_entry;                // +24 program entry point
+	uint_32  e_phoff;                // +28 program header offset
+	uint_32  e_shoff;                // +32 section header offset
+	uint_32  e_flags;                // +36 processor specific flags
+	uint_16  e_ehsize;               // +40 elf header size
+	uint_16  e_phentsize;            // +42 program header entry size
+	uint_16  e_phnum;                // +44 number of program header entries
+	uint_16  e_shentsize;            // +46 section header entry size
+	uint_16  e_shnum;                // +48 number of section header entries
+	uint_16  e_shstrndx;             // +50 section name string table index.
 } Elf32_Ehdr;
 
 typedef struct {
-    uint_8   e_ident[EI_NIDENT];     // +0 signature & ID info
-    uint_16  e_type;                 // +16 file type (i.e. obj file, exe file)
-    uint_16  e_machine;              // +18 required architecture
-    uint_32  e_version;              // +20 version of the file
-    uint_64  e_entry;                // +24 program entry point
-    uint_64  e_phoff;                // +32 program header offset
-    uint_64  e_shoff;                // +40 section header offset
-    uint_32  e_flags;                // +48 processor specific flags
-    uint_16  e_ehsize;               // +52 elf header size
-    uint_16  e_phentsize;            // +54 program header entry size
-    uint_16  e_phnum;                // +56 number of program header entries
-    uint_16  e_shentsize;            // +58 section header entry size
-    uint_16  e_shnum;                // +60 number of section header entries
-    uint_16  e_shstrndx;             // +62 section name string table index.
+	uint_8   e_ident[EI_NIDENT];     // +0 signature & ID info
+	uint_16  e_type;                 // +16 file type (i.e. obj file, exe file)
+	uint_16  e_machine;              // +18 required architecture
+	uint_32  e_version;              // +20 version of the file
+	uint_64  e_entry;                // +24 program entry point
+	uint_64  e_phoff;                // +32 program header offset
+	uint_64  e_shoff;                // +40 section header offset
+	uint_32  e_flags;                // +48 processor specific flags
+	uint_16  e_ehsize;               // +52 elf header size
+	uint_16  e_phentsize;            // +54 program header entry size
+	uint_16  e_phnum;                // +56 number of program header entries
+	uint_16  e_shentsize;            // +58 section header entry size
+	uint_16  e_shnum;                // +60 number of section header entries
+	uint_16  e_shstrndx;             // +62 section name string table index.
 } Elf64_Ehdr;
 
 // e_ident field indicies
@@ -104,7 +103,6 @@ typedef struct {
 // the current elf version number (EI_VERSION)
 
 #define EV_CURRENT      1
-
 
 // contents of the EI_OSABI field index
 
@@ -163,29 +161,29 @@ typedef struct {
 // section header
 
 typedef struct {
-    uint_32  sh_name;        // +0 name of the section
-    uint_32  sh_type;        // +4 section type
-    uint_32  sh_flags;       // +8
-    uint_32  sh_addr;        // +12 starting address of section in image
-    uint_32  sh_offset;      // +16 start of section in file
-    uint_32  sh_size;        // +20 size of section (in file if type != SHT_NOBITS)
-    uint_32  sh_link;        // +24 multipurpose field   (based on type)
-    uint_32  sh_info;        // +28 another multipurpose field (based on type)
-    uint_32  sh_addralign;   // +32 address alignment
-    uint_32  sh_entsize;     // +36 entry size for sects with fixed sized entries
+	uint_32  sh_name;        // +0 name of the section
+	uint_32  sh_type;        // +4 section type
+	uint_32  sh_flags;       // +8
+	uint_32  sh_addr;        // +12 starting address of section in image
+	uint_32  sh_offset;      // +16 start of section in file
+	uint_32  sh_size;        // +20 size of section (in file if type != SHT_NOBITS)
+	uint_32  sh_link;        // +24 multipurpose field   (based on type)
+	uint_32  sh_info;        // +28 another multipurpose field (based on type)
+	uint_32  sh_addralign;   // +32 address alignment
+	uint_32  sh_entsize;     // +36 entry size for sects with fixed sized entries
 } Elf32_Shdr;
 
 typedef struct {
-    uint_32  sh_name;        // +0 name of the section
-    uint_32  sh_type;        // +4 section type
-    uint_64  sh_flags;       // +8
-    uint_64  sh_addr;        // +16 starting address of section in image
-    uint_64  sh_offset;      // +24 start of section in file
-    uint_64  sh_size;        // +32 size of section (in file if type != SHT_NOBITS)
-    uint_32  sh_link;        // +40 multipurpose field   (based on type)
-    uint_32  sh_info;        // +44 another multipurpose field (based on type)
-    uint_64  sh_addralign;   // +48 address alignment
-    uint_64  sh_entsize;     // +56 entry size for sects with fixed sized entries
+	uint_32  sh_name;        // +0 name of the section
+	uint_32  sh_type;        // +4 section type
+	uint_64  sh_flags;       // +8
+	uint_64  sh_addr;        // +16 starting address of section in image
+	uint_64  sh_offset;      // +24 start of section in file
+	uint_64  sh_size;        // +32 size of section (in file if type != SHT_NOBITS)
+	uint_32  sh_link;        // +40 multipurpose field   (based on type)
+	uint_32  sh_info;        // +44 another multipurpose field (based on type)
+	uint_64  sh_addralign;   // +48 address alignment
+	uint_64  sh_entsize;     // +56 entry size for sects with fixed sized entries
 } Elf64_Shdr;
 
 // section types
@@ -234,7 +232,7 @@ typedef struct {
 #define SHF_MERGE       0x00000010      // 4 section can be merged
 #define SHF_STRINGS     0x00000020      // 5 section contains asciiz strings
 #define SHF_BEGIN       0x01000000      // 24 section to be placed at the beginning
-                                        // of like-named sections by static link
+										// of like-named sections by static link
 #define SHF_END         0x02000000      // 25 same, end.
 #define SHF_MASKPROC    0xf0000000      // processor specific flags
 
@@ -244,21 +242,21 @@ typedef struct {
 /* symbol table entry */
 
 typedef struct {
-    uint_32  st_name;        // symbol name index into string table
-    uint_32  st_value;       // symbol "value"
-    uint_32  st_size;        // symbol size
-    uint_8   st_info;        // symbol's type and binding attribs.
-    uint_8   st_other;       // no meaning yet.
-    uint_16  st_shndx;       // section index
+	uint_32  st_name;        // symbol name index into string table
+	uint_32  st_value;       // symbol "value"
+	uint_32  st_size;        // symbol size
+	uint_8   st_info;        // symbol's type and binding attribs.
+	uint_8   st_other;       // no meaning yet.
+	uint_16  st_shndx;       // section index
 } Elf32_Sym;
 
 typedef struct {
-    uint_32  st_name;        // symbol name index into string table
-    uint_8   st_info;        // symbol's type and binding attribs.
-    uint_8   st_other;       // no meaning yet.
-    uint_16  st_shndx;       // section index
-    uint_64  st_value;       // symbol "value"
-    uint_64  st_size;        // symbol size
+	uint_32  st_name;        // symbol name index into string table
+	uint_8   st_info;        // symbol's type and binding attribs.
+	uint_8   st_other;       // no meaning yet.
+	uint_16  st_shndx;       // section index
+	uint_64  st_value;       // symbol "value"
+	uint_64  st_size;        // symbol size
 } Elf64_Sym;
 
 // symbol info field contents
@@ -296,25 +294,25 @@ typedef struct {
 // relocation entries
 
 typedef struct {
-    uint_32  r_offset;       // place to apply reloc (from begin of section)
-    uint_32  r_info;         // symbol idx, and type of reloc
+	uint_32  r_offset;       // place to apply reloc (from begin of section)
+	uint_32  r_info;         // symbol idx, and type of reloc
 } Elf32_Rel;
 
 typedef struct {
-    uint_32  r_offset;       // place to apply reloc (from begin of section)
-    uint_32  r_info;         // symbol idx, and type of reloc
-    int_32   r_addend;       // value used as a basis for the reloc.
+	uint_32  r_offset;       // place to apply reloc (from begin of section)
+	uint_32  r_info;         // symbol idx, and type of reloc
+	int_32   r_addend;       // value used as a basis for the reloc.
 } Elf32_Rela;
 
 typedef struct {
-    uint_64  r_offset;       // place to apply reloc (from begin of section)
-    uint_64  r_info;         // symbol idx, and type of reloc
+	uint_64  r_offset;       // place to apply reloc (from begin of section)
+	uint_64  r_info;         // symbol idx, and type of reloc
 } Elf64_Rel;
 
 typedef struct {
-    uint_64  r_offset;       // place to apply reloc (from begin of section)
-    uint_64  r_info;         // symbol idx, and type of reloc
-    int_64   r_addend;       // value used as a basis for the reloc.
+	uint_64  r_offset;       // place to apply reloc (from begin of section)
+	uint_64  r_info;         // symbol idx, and type of reloc
+	int_64   r_addend;       // value used as a basis for the reloc.
 } Elf64_Rela;
 
 // r_info field contents
@@ -330,69 +328,69 @@ typedef struct {
 // relocation types.
 //386
 enum elf32_relocations {
- R_386_NONE      =  0,
- R_386_32        =  1, /* direct,       S + A     */
- R_386_PC32      =  2, /* PC-relative,  S + A - P */
- R_386_GOT32     =  3, /* GOT entry,    G + A     */
- R_386_PLT32     =  4, /* PLT entry,    L + A - P */
- R_386_COPY      =  5,
- R_386_GLOB_DAT  =  6, /* create GOT entry, S */
- R_386_JMP_SLOT  =  7, /* create PLT entry, S */
- R_386_RELATIVE  =  8, /* rel. to program base, B + A */
- R_386_GOTOFF    =  9, /* offset to GOT, S + A - GOT */
- R_386_GOTPC     = 10, /* GOT + A - P */
- R_386_32PLT     = 11, /* L + A       */
-/* GNU extensions for LD */
- R_386_16        = 20, /* 16-bit direct,      S + A     */
- R_386_PC16      = 21, /* 16-bit PC-relative, S + A - P */
- R_386_8         = 22, /* 8-bit direct,       S + A     */
- R_386_PC8       = 23  /* 8-bit PC-relative,  S + A - P */
+	R_386_NONE = 0,
+	R_386_32 = 1, /* direct,       S + A     */
+	R_386_PC32 = 2, /* PC-relative,  S + A - P */
+	R_386_GOT32 = 3, /* GOT entry,    G + A     */
+	R_386_PLT32 = 4, /* PLT entry,    L + A - P */
+	R_386_COPY = 5,
+	R_386_GLOB_DAT = 6, /* create GOT entry, S */
+	R_386_JMP_SLOT = 7, /* create PLT entry, S */
+	R_386_RELATIVE = 8, /* rel. to program base, B + A */
+	R_386_GOTOFF = 9, /* offset to GOT, S + A - GOT */
+	R_386_GOTPC = 10, /* GOT + A - P */
+	R_386_32PLT = 11, /* L + A       */
+   /* GNU extensions for LD */
+   R_386_16 = 20, /* 16-bit direct,      S + A     */
+   R_386_PC16 = 21, /* 16-bit PC-relative, S + A - P */
+   R_386_8 = 22, /* 8-bit direct,       S + A     */
+   R_386_PC8 = 23  /* 8-bit PC-relative,  S + A - P */
 };
 
 //X86_64
 enum elf64_relocations {
- R_X86_64_NONE        =   0,
- R_X86_64_64          =   1,    /* S + A     */
- R_X86_64_PC32        =   2,    /* S + A - P */
- R_X86_64_GOT32       =   3,    /* G + A     */
- R_X86_64_PLT32       =   4,    /* L + A - P */
- R_X86_64_COPY        =   5,    /*           */
- R_X86_64_GLOB_DAT    =   6,    /* S         */
- R_X86_64_JUMP_SLOT   =   7,    /* S         */
- R_X86_64_RELATIVE    =   8,    /* B + A     */
- R_X86_64_GOTPCREL    =   9,    /* G + GOT + A - P */
- R_X86_64_32          =  10,    /* S + A     */
- R_X86_64_32S         =  11,    /* S + A     */
- R_X86_64_16          =  12,    /* S + A     */
- R_X86_64_PC16        =  13,    /* S + A - P */
- R_X86_64_8           =  14,    /* S + A     */
- R_X86_64_PC8         =  15,    /* S + A - P */
- R_X86_64_DPTMOD64    =  16,
- R_X86_64_DTPOFF64    =  17,
- R_X86_64_TPOFF64     =  18,
- R_X86_64_TLSGD       =  19,
- R_X86_64_TLSLD       =  20,
- R_X86_64_DTPOFF32    =  21,
- R_X86_64_GOTTPOFF    =  22,
- R_X86_64_TPOFF32     =  23,
- R_X86_64_PC64        =  24,    /* S + A - P   */
- R_X86_64_GOTOFF64    =  25,    /* S + A - GOT */
- R_X86_64_GOTPC32     =  26,    /* GOT + A - P */
- R_X86_64_SIZE32      =  32,
- R_X86_64_SIZE64      =  33
+	R_X86_64_NONE = 0,
+	R_X86_64_64 = 1,    /* S + A     */
+	R_X86_64_PC32 = 2,    /* S + A - P */
+	R_X86_64_GOT32 = 3,    /* G + A     */
+	R_X86_64_PLT32 = 4,    /* L + A - P */
+	R_X86_64_COPY = 5,    /*           */
+	R_X86_64_GLOB_DAT = 6,    /* S         */
+	R_X86_64_JUMP_SLOT = 7,    /* S         */
+	R_X86_64_RELATIVE = 8,    /* B + A     */
+	R_X86_64_GOTPCREL = 9,    /* G + GOT + A - P */
+	R_X86_64_32 = 10,    /* S + A     */
+	R_X86_64_32S = 11,    /* S + A     */
+	R_X86_64_16 = 12,    /* S + A     */
+	R_X86_64_PC16 = 13,    /* S + A - P */
+	R_X86_64_8 = 14,    /* S + A     */
+	R_X86_64_PC8 = 15,    /* S + A - P */
+	R_X86_64_DPTMOD64 = 16,
+	R_X86_64_DTPOFF64 = 17,
+	R_X86_64_TPOFF64 = 18,
+	R_X86_64_TLSGD = 19,
+	R_X86_64_TLSLD = 20,
+	R_X86_64_DTPOFF32 = 21,
+	R_X86_64_GOTTPOFF = 22,
+	R_X86_64_TPOFF32 = 23,
+	R_X86_64_PC64 = 24,    /* S + A - P   */
+	R_X86_64_GOTOFF64 = 25,    /* S + A - GOT */
+	R_X86_64_GOTPC32 = 26,    /* GOT + A - P */
+	R_X86_64_SIZE32 = 32,
+	R_X86_64_SIZE64 = 33
 };
 
 // program header
 
 typedef struct {
-    uint_32  p_type;         // type of segment
-    uint_32  p_offset;       // offset of segment from beginnning of file
-    uint_32  p_vaddr;        // segment virtual address
-    uint_32  p_paddr;        // segment physical address
-    uint_32  p_filesz;       // size of segment in file
-    uint_32  p_memsz;        // size of segment in memory
-    uint_32  p_flags;
-    uint_32  p_align;        // segment align value (in mem & file)
+	uint_32  p_type;         // type of segment
+	uint_32  p_offset;       // offset of segment from beginnning of file
+	uint_32  p_vaddr;        // segment virtual address
+	uint_32  p_paddr;        // segment physical address
+	uint_32  p_filesz;       // size of segment in file
+	uint_32  p_memsz;        // size of segment in memory
+	uint_32  p_flags;
+	uint_32  p_align;        // segment align value (in mem & file)
 } Elf32_Phdr;
 
 // segment types
@@ -417,11 +415,11 @@ typedef struct {
 // note entry format
 
 typedef struct {
-    uint_32       n_namesz; // length of name
-    uint_32       n_descsz; // length of descriptor
-    uint_32       n_type;   // user defined "type" of the note
-    //char        name[];   // variable length name
-    //uint_32     desc[];   // descriptors go here
+	uint_32       n_namesz; // length of name
+	uint_32       n_descsz; // length of descriptor
+	uint_32       n_type;   // user defined "type" of the note
+	//char        name[];   // variable length name
+	//uint_32     desc[];   // descriptors go here
 } Elf_Note;
 
 // note types (used in core files)
@@ -433,11 +431,11 @@ typedef struct {
 // dynamic segment entry information.
 
 typedef struct {
-    int_32           d_tag;
+	int_32           d_tag;
     union {
-        uint_32      d_val;
-        uint_32      d_ptr;
-    } d_un;
+		uint_32      d_val;
+		uint_32      d_ptr;
+	} d_un;
 } Elf32_Dyn;
 
 // dynamic array tags
@@ -494,7 +492,7 @@ typedef struct {
 #define DT_ITPRTY_O     33      // relative priority of init and term to other functions
 #define DT_LOUSER_O     0x60000000      // range of user-definable tags. will not
 #define DT_HIUSER_O     0x6FFFFFFF      // conflict with system-defined tags
-                                        // Ha Ha Ha!
+										// Ha Ha Ha!
 
 // description of DT_IT tag:
 // Describe type for initalization and termination of DLL
@@ -511,7 +509,7 @@ typedef struct {
 
 // DT_INITTERM function prototype
 
-typedef unsigned long INITTERM ( unsigned long modhandle, unsigned long flag );
+typedef unsigned long INITTERM(unsigned long modhandle, unsigned long flag);
 
 // elf segment flag bits
 
@@ -524,8 +522,8 @@ typedef unsigned long INITTERM ( unsigned long modhandle, unsigned long flag );
 // operating system information
 
 typedef struct {
-    uint_32  os_type;
-    uint_32  os_size;
+	uint_32  os_type;
+	uint_32  os_size;
 } Elf32_Os;
 
 #define EOS_NONE        0       // bad or unknown
@@ -542,9 +540,9 @@ typedef struct {
 // OS/2-specific information
 
 typedef struct {
-    unsigned char       os2_sessiontype;
-    unsigned char       os2_sessionflags;
-    unsigned char       os2_reserved[14];
+	unsigned char       os2_sessiontype;
+	unsigned char       os2_sessionflags;
+	unsigned char       os2_reserved[14];
 } Elf32_OS2Info;
 
 // os2_sessiontype values
@@ -557,10 +555,10 @@ typedef struct {
 // import table entry
 
 typedef struct {
-    uint_32  imp_ordinal;
-    uint_32  imp_name;
-    uint_32  imp_info;
-    uint_32  imp_reserved;
+	uint_32  imp_ordinal;
+	uint_32  imp_name;
+	uint_32  imp_info;
+	uint_32  imp_reserved;
 } Elf32_Import;
 
 #define ELF32_IMP_TYPE(i)       ((i) >> 24)
@@ -574,10 +572,10 @@ typedef struct {
 // export table entry
 
 typedef struct {
-    uint_32  exp_ordinal;
-    uint_32  exp_symbol;
-    uint_32  exp_name;
-    uint_32  exp_reserved;
+	uint_32  exp_ordinal;
+	uint_32  exp_symbol;
+	uint_32  exp_name;
+	uint_32  exp_reserved;
 } Elf32_Export;
 
 // Resource header
@@ -585,12 +583,12 @@ typedef struct {
 #define RH_NIDENT       16
 
 typedef struct {
-    unsigned char    rh_ident[RH_NIDENT];
-    uint_32          rh_name;
-    uint_32          rh_itnum;
-    uint_32          rh_rhsize;
-    uint_32          rh_size;
-    uint_32          rh_strtab;
+	unsigned char    rh_ident[RH_NIDENT];
+	uint_32          rh_name;
+	uint_32          rh_itnum;
+	uint_32          rh_rhsize;
+	uint_32          rh_size;
+	uint_32          rh_strtab;
 } Elf32_Rhdr;
 
 // rh_ident field indices
@@ -630,15 +628,15 @@ typedef struct {
 #define RI_NIDENT       4
 
 typedef struct {
-    unsigned char       ri_ident[RI_NIDENT];
-    uint_32          ri_type;
-    uint_32          ri_typename;
-    uint_32          ri_ordinal;
-    uint_32          ri_ordname;
-    uint_32          ri_data;
-    uint_32          ri_flags;
-    uint_32          ri_size;
-    uint_32          ri_reserved;
+	unsigned char       ri_ident[RI_NIDENT];
+	uint_32          ri_type;
+	uint_32          ri_typename;
+	uint_32          ri_ordinal;
+	uint_32          ri_ordname;
+	uint_32          ri_data;
+	uint_32          ri_flags;
+	uint_32          ri_size;
+	uint_32          ri_reserved;
 } Elf32_Ritem;
 
 // ri_ident field indices
@@ -654,14 +652,14 @@ typedef struct {
 // demangle information structure
 
 typedef struct {
-    uint_32  idm_dllname;
-    uint_32  idm_initparms;
+	uint_32  idm_dllname;
+	uint_32  idm_initparms;
 } Elf32_Demangle;
 
 // default library structure
 
 typedef struct {
-    uint_32  lib_name;
+	uint_32  lib_name;
 } Elf32_Library;
 
 #endif // _ELFSPEC_H_INCLUDED_

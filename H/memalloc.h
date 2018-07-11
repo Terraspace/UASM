@@ -31,15 +31,15 @@
 #ifndef _MEMALLOC_H_
 #define _MEMALLOC_H_
 
-extern void MemInit( void );
-extern void MemFini( void );
-extern void *MemAlloc( size_t size );
-extern void *MemRealloc( void *ptr, size_t size );
-extern void MemFree( void *ptr );
+extern void MemInit(void);
+extern void MemFini(void);
+extern void *MemAlloc(size_t size);
+extern void *MemRealloc(void *ptr, size_t size);
+extern void MemFree(void *ptr);
 
 #if defined(__WATCOMC__) || defined(__BORLANDC__) || defined(__OCC__)
 
-	#define alloca(x)  __builtin_alloca(x)
+#define alloca(x)  __builtin_alloca(x)
 
 #define myalloca  alloca
 #include <malloc.h>
@@ -69,12 +69,12 @@ extern void MemFree( void *ptr );
 /* LclAlloc() and LclFree() are fast variants, which
  * are to be used for all allocations which aren't "global"
  */
-extern  void    *LclAlloc( size_t );
+extern  void    *LclAlloc(size_t);
 #if FASTMEM
 /* be careful not to use a function call as argument for LclFree()! */
 #define LclFree( p ) ;
 #else
-extern  void    LclFree( void * );
+extern  void    LclFree(void *);
 #endif
 
 #endif
