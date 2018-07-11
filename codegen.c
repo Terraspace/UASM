@@ -322,7 +322,6 @@ static void output_opc(struct code_info *CodeInfo)
 #endif
   }
 
-
 #if AVXSUPP  
       if ((CodeInfo->token >= T_VSHUFF32X4) && (CodeInfo->token <= T_VSHUFI64X2) &&
       ((CodeInfo->opnd[OPND1].type & OP_XMM) || (CodeInfo->opnd[OPND2].type & OP_XMM)))
@@ -401,6 +400,7 @@ static void output_opc(struct code_info *CodeInfo)
       /* these are only EVEX instructions, v2.46 */
   if ((CodeInfo->pinstr->prefix & 0xF00) == IZSZ)
 	  CodeInfo->evex_flag = TRUE;
+
   if (!evex){
 	  CodeInfo->evex_flag = FALSE;
     if (ResWordTable[CodeInfo->token].flags & RWF_VEX) {
@@ -453,12 +453,12 @@ static void output_opc(struct code_info *CodeInfo)
   
   if (CodeInfo->prefix.adrsiz == TRUE && (CodeInfo->token < T_VPGATHERDD || CodeInfo->token > T_VSCATTERQPD)&&
       CodeInfo->token != T_VCVTPH2PS && CodeInfo->token != T_VCVTPS2PD) {
-
 	  if (CodeInfo->basereg == 0x10) /* RIP used for relative addressing v2.36 */
 		  ;/* don't output 0x67 */
 	  else
 		  OutputCodeByte(ADRSIZ);
     
+
 #ifdef DEBUG_OUT
     if (fpfix)
       DebugMsg(("output_opc: ERROR: FP emulation byte sequence destroyed by 32-bit address prefix!\n"));
@@ -506,6 +506,7 @@ static void output_opc(struct code_info *CodeInfo)
   }
     //if (CodeInfo->token == T_VMOVSD)
     //  __debugbreak();
+
 
 #if AVXSUPP
        if (CodeInfo->indextype == OP_XMM || CodeInfo->indextype == OP_YMM || CodeInfo->indextype == OP_ZMM) {
@@ -570,7 +571,6 @@ static void output_opc(struct code_info *CodeInfo)
       lbyte |= EVEX_P1VVVV;
       CodeInfo->evex_p2 |= EVEX_P2VMASK;
     }
-
 
   /* If there is no decoflags then it is AVX2 instruction with 3 parameters, Uasm 2.15 */
   if (CodeInfo->token >= T_VBROADCASTSS && CodeInfo->token <= T_VPBROADCASTMW2D)
@@ -736,6 +736,7 @@ static void output_opc(struct code_info *CodeInfo)
             else{
               /* These instructions if, not 0x62, can be only 0xC5, Uasm 2.16 */
                 if (CodeInfo->token == T_VPMOVMSKB){
+
                   if(ins->byte1_info == F_0F && (CodeInfo->prefix.rex & REX_B == 0)&& 
                      (CodeInfo->prefix.rex & REX_X == 0) && (CodeInfo->prefix.rex & REX_W == 8))
                         goto outC5;    // go handle 0xC5 instruction
@@ -749,6 +750,7 @@ static void output_opc(struct code_info *CodeInfo)
                      EmitError(INVALID_INSTRUCTION_OPERANDS);
                   if ((CodeInfo->reg2 <= 7)&&(CodeInfo->reg3 <= 7) && ((CodeInfo->opnd[OPND2].type & OP_M_ANY ) == 0))
                   goto outC5;    // go handle 0xC5 instruction
+
 
 					/* John: Validate 3 operand vex form */
 				  if (CodeInfo->opnd[OPND3].type == OP_NONE && CodeInfo->vexregop == 0 &&
@@ -1293,7 +1295,6 @@ static void output_opc(struct code_info *CodeInfo)
                 if (CodeInfo->evex_flag == 0) lbyte &= ~EVEX_P1WMASK;
                 else lbyte |= EVEX_P1WMASK;
                 }
-
 
           /* this is a temporary fix v2.46 */
           if (CodeInfo->token == T_VMOVQ) {
@@ -2039,6 +2040,7 @@ static void output_opc(struct code_info *CodeInfo)
                       CodeInfo->tuple = TRUE;  
                   }
                   
+
                   else{
                     if (CodeInfo->token < T_VPSLLD && CodeInfo->token > T_VPRORVQ)
                     EmitError(INVALID_OPERAND_SIZE);
@@ -3015,6 +3017,7 @@ static ret_code match_phase_3( struct code_info *CodeInfo, enum operand_type opn
     
 #if AVXSUPP 
                                
+
     if ( CodeInfo->token >= VEX_START && ( vex_flags[ CodeInfo->token - VEX_START ] & VX_L ) ) {
         if ( CodeInfo->opnd[OPND1].type & (OP_K | OP_YMM | OP_ZMM | OP_M256) ) {
             if ( opnd2 & OP_ZMM || opnd2 & OP_YMM || opnd2 & OP_K)
@@ -3221,7 +3224,6 @@ static ret_code check_operand_2( struct code_info *CodeInfo, enum operand_type o
 		CodeInfo->opnd[OPND2].type = OP_A;
 	}
 
-
     if( CodeInfo->opnd[OPND2].type == OP_NONE ) {
       if (opnd_clstab[CodeInfo->pinstr->opclsidx].opnd_type[OPND2] != OP_NONE){
         if (CodeInfo->token == T_VGETEXPPD || CodeInfo->token == T_VGETEXPPS)
@@ -3335,7 +3337,7 @@ ret_code codegen( struct code_info *CodeInfo, uint_32 oldofs )
                CodeInfo->rm_byte, CodeInfo->sib,
                CodeInfo->prefix.rex, CodeInfo->prefix.opsiz ));
 #endif
-	
+
 	/* UASM 2.37: force immediate indirect addressing conversion */
 	if (( (CodeInfo->token == T_MOV && CodeInfo->opnd[OPND1].type == OP_R64) || CodeInfo->opnd[OPND1].type == OP_R32 || CodeInfo->opnd[OPND1].type == OP_R16 || CodeInfo->opnd[OPND1].type == OP_R8) && CodeInfo->isptr && CodeInfo->opnd[OPND1].data32h > 0)
 	{
@@ -3398,4 +3400,3 @@ ret_code codegen( struct code_info *CodeInfo, uint_32 oldofs )
     EmitError( INVALID_INSTRUCTION_OPERANDS );
     return( ERROR );
 }
-

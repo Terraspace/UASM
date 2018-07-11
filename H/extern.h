@@ -9,8 +9,8 @@
 
 /*---------------------------------------------------------------------------*/
 
-extern struct asym   *MakeExtern( const char *name, enum memtype type, struct asym * vartype, struct asym *, unsigned char );
-extern void        AddPublicData( struct asym *sym );
-extern void        FreePubQueue( void );
+extern struct asym   *MakeExtern(const char *name, enum memtype type, struct asym * vartype, struct asym *, unsigned char);
+extern void        AddPublicData(struct asym *sym);
+extern void        FreePubQueue(void);
 
 #endif

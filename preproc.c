@@ -27,7 +27,7 @@
 
 #define REMOVECOMENT 0 /* 1=remove comments from source       */
 
-extern ret_code (* const directive_tab[])( int, struct asm_tok[] );
+extern ret_code(*const directive_tab[])(int, struct asm_tok[]);
 
 #ifdef DEBUG_OUT
 int_32 cntppl0;    /* count preprocessed lines 1 */
@@ -38,32 +38,32 @@ int_32 cntppl2;    /* count lines NOT handled by preprocessor */
 /* preprocessor directive or macro procedure is preceded
  * by a code label.
  */
-ret_code WriteCodeLabel( char *line, struct asm_tok tokenarray[] )
+ret_code WriteCodeLabel(char *line, struct asm_tok tokenarray[])
 /****************************************************************/
 {
-    int oldcnt;
-    int oldtoken;
-    char oldchar;
+	int oldcnt;
+	int oldtoken;
+	char oldchar;
 
     if ( tokenarray[0].token != T_ID ) {
-        return( EmitErr( SYNTAX_ERROR_EX, tokenarray[0].string_ptr ) );
-    }
-    /* ensure the listing is written with the FULL source line */
-    if ( CurrFile[LST] ) LstWrite( LSTTYPE_LABEL, 0, NULL );
-    /* v2.04: call ParseLine() to parse the "label" part of the line */
-    oldcnt = Token_Count;
-    oldtoken = tokenarray[2].token;
-    oldchar = *tokenarray[2].tokpos;
-    Token_Count = 2;
-    tokenarray[2].token = T_FINAL;
-    *tokenarray[2].tokpos = NULLC;
-    ParseLine( tokenarray );
-    if ( Options.preprocessor_stdout == TRUE )
-        WritePreprocessedLine( line );
-    Token_Count = oldcnt;
-    tokenarray[2].token = oldtoken;
-    *tokenarray[2].tokpos = oldchar;
-    return( NOT_ERROR );
+		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[0].string_ptr));
+	}
+	/* ensure the listing is written with the FULL source line */
+	if (CurrFile[LST]) LstWrite(LSTTYPE_LABEL, 0, NULL);
+	/* v2.04: call ParseLine() to parse the "label" part of the line */
+	oldcnt = Token_Count;
+	oldtoken = tokenarray[2].token;
+	oldchar = *tokenarray[2].tokpos;
+	Token_Count = 2;
+	tokenarray[2].token = T_FINAL;
+	*tokenarray[2].tokpos = NULLC;
+	ParseLine(tokenarray);
+	if (Options.preprocessor_stdout == TRUE)
+		WritePreprocessedLine(line);
+	Token_Count = oldcnt;
+	tokenarray[2].token = oldtoken;
+	*tokenarray[2].tokpos = oldchar;
+	return(NOT_ERROR);
 }
 
 /* Verify a matched pair of function call brackets, assuming initial opening bracket position
@@ -82,7 +82,7 @@ int VerifyBrackets(struct asm_tok tokenarray[], int openIdx, bool inParam)
 
 	if (!inParam)
 	{
-		for (i = 0;i < openIdx;i++)
+		for (i = 0; i < openIdx; i++)
 		{
 			if (tokenarray[i].token == T_OP_BRACKET || tokenarray[i].token == '(')
 				opCnt++;
@@ -92,7 +92,7 @@ int VerifyBrackets(struct asm_tok tokenarray[], int openIdx, bool inParam)
 	if (tokenarray[i + 1].token == T_CL_BRACKET)
 		return(i + 1);
 
-	for (i = Token_Count-1;i > openIdx; i--)
+	for (i = Token_Count-1; i > openIdx; i--)
 	{
 		if (tokenarray[i].token == T_CL_BRACKET && opCnt == 0)
 			return(i);
@@ -109,11 +109,11 @@ static void VerifyNesting(char *line, bool exprBracket)
 {
 	int depth = 0;
 	int maxdepth = (exprBracket) ? 3 : 2;
-	
+
 	// Reduce allowed nesting for system-v calls as arginvoke doesn't support it yet.
 	if ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)
 		maxdepth = (exprBracket) ? 2 : 1;
-	
+
 	// Same for 32bit code for now..
 	if (Options.sub_format != SFORMAT_64BIT)
 		maxdepth = (exprBracket) ? 2 : 1;
@@ -136,7 +136,7 @@ static void VerifyNesting(char *line, bool exprBracket)
 
 static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 {
-	int i,j;
+	int i, j;
 	struct dsym *sym;
 	struct dsym *type;
 	struct dsym *tsym;
@@ -187,7 +187,6 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 		{
 			if (tokenarray[i].token == T_POINTER)
 			{
-
 				/* Scan backwards to check if we're in an HLL expression or call parameter */
 				if (i > 0)
 				{
@@ -204,15 +203,15 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 							break;
 						}
 						else if ((tokenarray[j].token == T_DIRECTIVE && tokenarray[j].dirtype == DRT_INVOKE) ||
-							strcmp(tokenarray[j].string_ptr, "arginvoke") == 0 ||
-							strcmp(tokenarray[j].string_ptr, "_INVOKE") == 0 ||
-							strcmp(tokenarray[j].string_ptr, "_I") == 0 ||
-							strcmp(tokenarray[j].string_ptr, "_VINVOKE") == 0 ||
-							strcmp(tokenarray[j].string_ptr, "_V") == 0 ||
-							strcmp(tokenarray[j].string_ptr, "_SINVOKE") == 0 ||
-							strcmp(tokenarray[j].string_ptr, "_DEREF") == 0 ||
-							strcmp(tokenarray[j].string_ptr, "_DEREFI") == 0 ||
-							strcmp(tokenarray[j].string_ptr, "uinvoke") == 0)
+								 strcmp(tokenarray[j].string_ptr, "arginvoke") == 0 ||
+								 strcmp(tokenarray[j].string_ptr, "_INVOKE") == 0 ||
+								 strcmp(tokenarray[j].string_ptr, "_I") == 0 ||
+								 strcmp(tokenarray[j].string_ptr, "_VINVOKE") == 0 ||
+								 strcmp(tokenarray[j].string_ptr, "_V") == 0 ||
+								 strcmp(tokenarray[j].string_ptr, "_SINVOKE") == 0 ||
+								 strcmp(tokenarray[j].string_ptr, "_DEREF") == 0 ||
+								 strcmp(tokenarray[j].string_ptr, "_DEREFI") == 0 ||
+								 strcmp(tokenarray[j].string_ptr, "uinvoke") == 0)
 						{
 							inParam = TRUE;
 							break;
@@ -226,7 +225,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 					}
 				}
 
-				if(derefCount == 0)
+				if (derefCount == 0)
 					foundType = FALSE;
 				foundProc = FALSE;
 				// The item to the left of the pointer must be an ID with type or register or register indirect.
@@ -320,7 +319,6 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 						// Append the item to the pType.
 						strcpy(pType + strlen(pType), ".");
 						strcpy(pType + strlen(pType), tokenarray[i - 1].string_ptr);
-
 					}
 					if (!foundType)
 						EmitError(INVALID_POINTER);
@@ -419,7 +417,6 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 						strcpy(pRefStr, type->sym.name);
 						pRefStr += strlen(type->sym.name);
 						strcpy(pType, type->sym.name); // Reset pType to the type name.
-
 					}
 					else
 						EmitError(INVALID_POINTER);
@@ -502,7 +499,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 						{
 							strcpy(pStr, tokenarray[j].string_ptr);
 							pStr += strlen(tokenarray[j].string_ptr);
-							if (strncmp(tokenarray[j].string_ptr, "ADDR",4) == 0)
+							if (strncmp(tokenarray[j].string_ptr, "ADDR", 4) == 0)
 								pStr = strcpy(pStr, " ") + 1;
 						}
 					}
@@ -553,8 +550,6 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 			Token_Count = Tokenize(line, 0, tokenarray, TOK_RESCAN);
 		}
 	}
-
-
 }
 
 /* Expand static object type method invocations */
@@ -587,7 +582,6 @@ static void ExpandStaticObjCalls(char *line, struct asm_tok tokenarray[])
 			{
 				if (tokenarray[i + 1].token == T_DOT && tokenarray[i + 2].token == T_ID && tokenarray[i + 3].token == T_OP_BRACKET)
 				{
-					
 					/* Scan backwards to check if we're in an HLL expression or call parameter */
 					if (i > 0)
 					{
@@ -604,15 +598,15 @@ static void ExpandStaticObjCalls(char *line, struct asm_tok tokenarray[])
 								break;
 							}
 							else if ((tokenarray[j].token == T_DIRECTIVE && tokenarray[j].dirtype == DRT_INVOKE) ||
-								strcmp(tokenarray[j].string_ptr, "arginvoke") == 0 ||
-								strcmp(tokenarray[j].string_ptr, "_INVOKE") == 0 ||
-								strcmp(tokenarray[j].string_ptr, "_I") == 0 ||
-								strcmp(tokenarray[j].string_ptr, "_VINVOKE") == 0 ||
-								strcmp(tokenarray[j].string_ptr, "_V") == 0 ||
-								strcmp(tokenarray[j].string_ptr, "_SINVOKE") == 0 ||
-								strcmp(tokenarray[j].string_ptr, "_DEREF") == 0 ||
-								strcmp(tokenarray[j].string_ptr, "_DEREFI") == 0 ||
-								strcmp(tokenarray[j].string_ptr, "uinvoke") == 0)
+									 strcmp(tokenarray[j].string_ptr, "arginvoke") == 0 ||
+									 strcmp(tokenarray[j].string_ptr, "_INVOKE") == 0 ||
+									 strcmp(tokenarray[j].string_ptr, "_I") == 0 ||
+									 strcmp(tokenarray[j].string_ptr, "_VINVOKE") == 0 ||
+									 strcmp(tokenarray[j].string_ptr, "_V") == 0 ||
+									 strcmp(tokenarray[j].string_ptr, "_SINVOKE") == 0 ||
+									 strcmp(tokenarray[j].string_ptr, "_DEREF") == 0 ||
+									 strcmp(tokenarray[j].string_ptr, "_DEREFI") == 0 ||
+									 strcmp(tokenarray[j].string_ptr, "uinvoke") == 0)
 							{
 								inParam = TRUE;
 								break;
@@ -625,7 +619,7 @@ static void ExpandStaticObjCalls(char *line, struct asm_tok tokenarray[])
 							}
 						}
 					}
-					
+
 					// Allow expansion in an instruction.
 					if (tokenarray[i - 1].token == T_COMMA)
 						inExpr = TRUE;
@@ -675,7 +669,7 @@ static void ExpandStaticObjCalls(char *line, struct asm_tok tokenarray[])
 						pStr = strcpy(pStr, " ") + 1;
 					}
 
-					if(inProc || inParam || inExpr)
+					if (inProc || inParam || inExpr)
 						pStr = strcpy(pStr, "_STATIC(") + 8;
 					else
 						pStr = strcpy(pStr, "_SINVOKE ") + 9;
@@ -745,7 +739,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 	int tokenCount;
 	struct asm_tok *tokenarray2;
 	char *p = &newline;
-	char idxStack[] = { 0, 0, 0, 0 };
+	char idxStack[] = {0, 0, 0, 0};
 	int stackPt = -1;
 	char idxline[MAX_LINE_LEN];
 	char invCnt = 1;
@@ -756,7 +750,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 	strcpy(&newline, line);
 	memset(&idxline, 0, MAX_LINE_LEN);
 
-	for (i = 0;i < Token_Count;i++)
+	for (i = 0; i < Token_Count; i++)
 	{
 		if (tokenarray[i].token == T_ID)
 		{
@@ -764,14 +758,13 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 
 			sym = TraverseEquate(sym); /* We may have an equate chain that points to a proc, as we expand here before macro substitution we need to consider this */
 
-			if(sym && (sym->sym.isproc || (sym->sym.isfunc && sym->sym.state == SYM_EXTERNAL)) && tokenarray[i+1].tokval != T_PROC && tokenarray[i+1].tokval != T_PROTO && 
-				tokenarray[i+1].tokval != T_ENDP && tokenarray[i+1].tokval != T_EQU && tokenarray[i+1].token == T_OP_BRACKET) 
-			{ 
-		
+			if (sym && (sym->sym.isproc || (sym->sym.isfunc && sym->sym.state == SYM_EXTERNAL)) && tokenarray[i+1].tokval != T_PROC && tokenarray[i+1].tokval != T_PROTO &&
+				tokenarray[i+1].tokval != T_ENDP && tokenarray[i+1].tokval != T_EQU && tokenarray[i+1].token == T_OP_BRACKET)
+			{
 				/* Scan backwards to check if we're in an HLL expression or call parameter */
 				if (i > 0)
 				{
-					for (j = i - 1;j >= 0;j--)
+					for (j = i - 1; j >= 0; j--)
 					{
 						if (tokenarray[j].token == T_DIRECTIVE && (tokenarray[j].dirtype == DRT_HLLSTART || tokenarray[j].dirtype == DRT_HLLEND))
 						{
@@ -783,15 +776,15 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 							break;
 						}
 						else if ((tokenarray[j].token == T_DIRECTIVE && tokenarray[j].dirtype == DRT_INVOKE) ||
-							strcmp(tokenarray[j].string_ptr, "arginvoke") == 0 ||
-							strcmp(tokenarray[j].string_ptr, "_INVOKE") == 0 ||
-							strcmp(tokenarray[j].string_ptr, "_I") == 0 ||
-							strcmp(tokenarray[j].string_ptr, "_VINVOKE") == 0 ||
-							strcmp(tokenarray[j].string_ptr, "_SINVOKE") == 0 ||
-							strcmp(tokenarray[j].string_ptr, "_V") == 0 ||
-							strcmp(tokenarray[j].string_ptr, "_DEREF") == 0 ||
-							strcmp(tokenarray[j].string_ptr, "_DEREFI") == 0 ||
-							strcmp(tokenarray[j].string_ptr, "uinvoke") == 0)
+								 strcmp(tokenarray[j].string_ptr, "arginvoke") == 0 ||
+								 strcmp(tokenarray[j].string_ptr, "_INVOKE") == 0 ||
+								 strcmp(tokenarray[j].string_ptr, "_I") == 0 ||
+								 strcmp(tokenarray[j].string_ptr, "_VINVOKE") == 0 ||
+								 strcmp(tokenarray[j].string_ptr, "_SINVOKE") == 0 ||
+								 strcmp(tokenarray[j].string_ptr, "_V") == 0 ||
+								 strcmp(tokenarray[j].string_ptr, "_DEREF") == 0 ||
+								 strcmp(tokenarray[j].string_ptr, "_DEREFI") == 0 ||
+								 strcmp(tokenarray[j].string_ptr, "uinvoke") == 0)
 						{
 							inParam = TRUE;
 							break;
@@ -802,18 +795,18 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 				/* If we've identifed a Proc Name, there are several more cases where it must not be expanded */
 				if (i > 0 && (tokenarray[i - 1].token == T_COLON || tokenarray[i - 1].tokval == T_EQU ||  //(tokenarray[i - 1].token == T_COMMA && !inParam) ||
 					tokenarray[i - 1].tokval == T_INVOKE || tokenarray[i - 1].token == T_INSTRUCTION || tokenarray[i - 1].tokval == T_ADDR ||
-					tokenarray[i - 1].tokval == T_OFFSET || tokenarray[i - 1].tokval == T_PTR || tokenarray[i - 1].tokval == T_END || 
+					tokenarray[i - 1].tokval == T_OFFSET || tokenarray[i - 1].tokval == T_PTR || tokenarray[i - 1].tokval == T_END ||
 					(tokenarray[i - 1].token == T_DIRECTIVE && tokenarray[i - 1].dirtype == DRT_DATADIR) || tokenarray[i - 1].token == T_UNARY_OPERATOR ||  tokenarray[i - 1].tokval == T_PROC ||
-					strcmp(tokenarray[i - 1].string_ptr,"arginvoke") == 0 || strcmp(tokenarray[i - 1].string_ptr, "@what") == 0)) continue;
-					
+					strcmp(tokenarray[i - 1].string_ptr, "arginvoke") == 0 || strcmp(tokenarray[i - 1].string_ptr, "@what") == 0)) continue;
+
 				// Allow expansion in an instruction.
 				if (tokenarray[i - 1].token == T_COMMA)
 					inExpr = TRUE;
-					
+
 				// Allow expansion in a memory address [].
 				if (i > 0)
 				{
-					for (j = i - 1;j >= 0;j--)
+					for (j = i - 1; j >= 0; j--)
 					{
 						if (tokenarray[j].token == T_OP_SQ_BRACKET)
 						{
@@ -828,7 +821,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 				clIdx = VerifyBrackets(tokenarray, opIdx, inParam);
 				if (clIdx == -1)
 					return;
-					
+
 				expandedCall = TRUE;
 
 				/* scan all tokens between opIdx and clIdx and replace & operator with ADDR */
@@ -874,7 +867,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 					for (j = Token_Count+1; j > i; j--)
 						tokenarray[j] = tokenarray[j - 1];
 
-					Token_Count+=2;
+					Token_Count += 2;
 					tokenarray[Token_Count].string_ptr = "";
 					tokenarray[Token_Count].token = T_FINAL;
 					if (clIdx > opIdx + 1)
@@ -903,15 +896,15 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 					else if (inParam)
 					{
 						tokenarray[i].string_ptr = "arginvoke(%%,%%,";
-						tokenarray[i + 1].string_ptr = ""; 
-						tokenarray[i + 1].token = 0; 
+						tokenarray[i + 1].string_ptr = "";
+						tokenarray[i + 1].token = 0;
 					}
 				}
-					
+
 				i += 2;
-					
+
 				/* Rebuild string */
-				for (j = 0;j <= Token_Count; j++)
+				for (j = 0; j <= Token_Count; j++)
 				{
 					strcpy(p, tokenarray[j].string_ptr);
 					tokenarray[j].tokpos = p;
@@ -924,7 +917,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 				}
 
 				/* Reset string pointer*/
-				p = &newline;			
+				p = &newline;
 			}
 		}
 	}
@@ -988,7 +981,7 @@ static bool PossibleCallExpansion(struct asm_tok tokenarray[])
 	bool gotOp = FALSE;
 	bool gotCl = FALSE;
 	int i = 0;
-	for (i = 0;i < Token_Count;i++)
+	for (i = 0; i < Token_Count; i++)
 	{
 		if (tokenarray[i].token == T_POINTER)
 		{
@@ -1025,7 +1018,7 @@ void EvaluatePreprocessItems(char *line, struct asm_tok tokenarray[])
 	memset(&opndx, 0, sizeof(opndx));
 
 	/* pre parse inline records and c-style procedure calls UASM v2.46 */
-	for (i = 0;i < Token_Count; i++)
+	for (i = 0; i < Token_Count; i++)
 	{
 		/* only a token of type ID could possibly be an inline record */
 		if (tokenarray[i].token == T_ID)
@@ -1039,7 +1032,6 @@ void EvaluatePreprocessItems(char *line, struct asm_tok tokenarray[])
 				}
 				recsym->sym.used = FALSE;
 			}
-
 		}
 	}
 }
@@ -1049,42 +1041,42 @@ void EvaluatePreprocessItems(char *line, struct asm_tok tokenarray[])
  * 2. (text) macros are expanded by ExpandLine()
  * 3. "preprocessor" directives are executed
  */
-int PreprocessLine( char *line, struct asm_tok tokenarray[] )
+int PreprocessLine(char *line, struct asm_tok tokenarray[])
 /***********************************************************/
 {
-    int i;
+	int i;
 	char cline[MAX_LINE_LEN];
 
 	ModuleInfo.CurrComment = NULL;
-    ModuleInfo.line_flags = 0;
-    Token_Count = Tokenize( line, 0, tokenarray, TOK_DEFAULT );
+	ModuleInfo.line_flags = 0;
+	Token_Count = Tokenize(line, 0, tokenarray, TOK_DEFAULT);
 
 #ifdef DEBUG_OUT
-    cntppl0++;
-    if ( ModuleInfo.GeneratedCode )
-        DebugMsg1(("PreprocessLine: >%s<\n", line ));
-    else
-        DebugMsg1(("PreprocessLine(%s): >%s< cmt=%s\n", GetTopSrcName(), line, ModuleInfo.CurrComment ? ModuleInfo.CurrComment : "" ));
+	cntppl0++;
+	if (ModuleInfo.GeneratedCode)
+		DebugMsg1(("PreprocessLine: >%s<\n", line));
+	else
+		DebugMsg1(("PreprocessLine(%s): >%s< cmt=%s\n", GetTopSrcName(), line, ModuleInfo.CurrComment ? ModuleInfo.CurrComment : ""));
 #endif
 
 #if REMOVECOMENT == 0
-    if ( Token_Count == 0 && ( CurrIfState == BLOCK_ACTIVE || ModuleInfo.listif ) )
-        LstWriteSrcLine();
+	if (Token_Count == 0 && (CurrIfState == BLOCK_ACTIVE || ModuleInfo.listif))
+		LstWriteSrcLine();
 #endif
 
-    if ( Token_Count == 0 )
-        return( 0 );
+	if (Token_Count == 0)
+		return(0);
 
 #ifdef DEBUG_OUT
-    /* option -np, skip preprocessor? */
-    if ( Options.skip_preprocessor )
-        return( Token_Count );
+	/* option -np, skip preprocessor? */
+	if (Options.skip_preprocessor)
+		return(Token_Count);
 #endif
 
 	if (!Options.nomlib && Options.hlcall)
 	{
 		// Hll and Object style call expansion is only valid inside a code section, AND if the line contains ( ) or ->.
-		if (CurrSeg && (strcmp(CurrSeg->sym.name, "_TEXT") == 0 || strcmp(CurrSeg->sym.name, "_flat") == 0) && PossibleCallExpansion( tokenarray ))
+		if (CurrSeg && (strcmp(CurrSeg->sym.name, "_TEXT") == 0 || strcmp(CurrSeg->sym.name, "_flat") == 0) && PossibleCallExpansion(tokenarray))
 		{
 			strcpy(&cline, line);
 			ExpandStaticObjCalls(&cline, tokenarray);
@@ -1108,82 +1100,81 @@ int PreprocessLine( char *line, struct asm_tok tokenarray[] )
 		}
 	}
 
-	EvaluatePreprocessItems( line, tokenarray );
+	EvaluatePreprocessItems(line, tokenarray);
 
-    /* CurrIfState != BLOCK_ACTIVE && Token_Count == 1 | 3 may happen
-     * if a conditional assembly directive has been detected by Tokenize().
-     * However, it's important NOT to expand then */
-    if ( CurrIfState == BLOCK_ACTIVE ) 
+	/* CurrIfState != BLOCK_ACTIVE && Token_Count == 1 | 3 may happen
+	 * if a conditional assembly directive has been detected by Tokenize().
+	 * However, it's important NOT to expand then */
+	if (CurrIfState == BLOCK_ACTIVE)
 	{
-        if ( ( tokenarray[Token_Count].bytval & TF3_EXPANSION ? ExpandText( line, tokenarray, TRUE ) : ExpandLine( line, tokenarray ) ) < NOT_ERROR )
-            return( 0 );
-    }
+		if ((tokenarray[Token_Count].bytval & TF3_EXPANSION ? ExpandText(line, tokenarray, TRUE) : ExpandLine(line, tokenarray)) < NOT_ERROR)
+			return(0);
+	}
 
-    DebugCmd( cntppl1++ );
+	DebugCmd(cntppl1++);
 
-    i = 0;
-    if ( Token_Count > 2 && ( tokenarray[1].token == T_COLON || tokenarray[1].token == T_DBL_COLON ) )
-        i = 2;
+	i = 0;
+	if (Token_Count > 2 && (tokenarray[1].token == T_COLON || tokenarray[1].token == T_DBL_COLON))
+		i = 2;
 
-    /* handle "preprocessor" directives:
-     * IF, ELSE, ENDIF, ...
-     * FOR, REPEAT, WHILE, ...
-     * PURGE
-     * INCLUDE
-     * since v2.05, error directives are no longer handled here!
-     */
-    if ( tokenarray[i].token == T_DIRECTIVE && tokenarray[i].dirtype <= DRT_INCLUDE ) 
+	/* handle "preprocessor" directives:
+	 * IF, ELSE, ENDIF, ...
+	 * FOR, REPEAT, WHILE, ...
+	 * PURGE
+	 * INCLUDE
+	 * since v2.05, error directives are no longer handled here!
+	 */
+	if (tokenarray[i].token == T_DIRECTIVE && tokenarray[i].dirtype <= DRT_INCLUDE)
 	{
-        /* if i != 0, then a code label is located before the directive */
-        if ( i > 1 ) 
+		/* if i != 0, then a code label is located before the directive */
+		if (i > 1)
 		{
-            if ( ERROR == WriteCodeLabel( line, tokenarray ) )
-                return( 0 );
-        }
-        directive_tab[tokenarray[i].dirtype]( i, tokenarray );
-        return( 0 );
-    }
+			if (ERROR == WriteCodeLabel(line, tokenarray))
+				return(0);
+		}
+		directive_tab[tokenarray[i].dirtype](i, tokenarray);
+		return(0);
+	}
 
-    /* handle preprocessor directives which need a label */
-    if ( tokenarray[0].token == T_ID && tokenarray[1].token == T_DIRECTIVE ) 
+	/* handle preprocessor directives which need a label */
+	if (tokenarray[0].token == T_ID && tokenarray[1].token == T_DIRECTIVE)
 	{
-        struct asym *sym;
+		struct asym *sym;
         switch ( tokenarray[1].dirtype ) {
-        case DRT_EQU:
-            /*
-             * EQU is a special case:
-             * If an EQU directive defines a text equate
-             * it MUST be handled HERE and 0 must be returned to the caller.
-             * This will prevent further processing, nothing will be stored
-             * if FASTPASS is on.
-             * Since one cannot decide whether EQU defines a text equate or
-             * a number before it has scanned its argument, we'll have to
-             * handle it in ANY case and if it defines a number, the line
-             * must be stored and, if -EP is set, written to stdout.
-             */
+			case DRT_EQU:
+				/*
+				 * EQU is a special case:
+				 * If an EQU directive defines a text equate
+				 * it MUST be handled HERE and 0 must be returned to the caller.
+				 * This will prevent further processing, nothing will be stored
+				 * if FASTPASS is on.
+				 * Since one cannot decide whether EQU defines a text equate or
+				 * a number before it has scanned its argument, we'll have to
+				 * handle it in ANY case and if it defines a number, the line
+				 * must be stored and, if -EP is set, written to stdout.
+				 */
             if ( sym = CreateConstant( tokenarray ) ) {
                 if ( sym->state != SYM_TMACRO ) {
 #if FASTPASS
-                    if ( StoreState ) FStoreLine( 0 );
+						if (StoreState) FStoreLine(0);
 #endif
-                    if ( Options.preprocessor_stdout == TRUE )
-                        WritePreprocessedLine( line );
-                }
-                /* v2.03: LstWrite() must be called AFTER StoreLine()! */
+						if (Options.preprocessor_stdout == TRUE)
+							WritePreprocessedLine(line);
+					}
+					/* v2.03: LstWrite() must be called AFTER StoreLine()! */
                 if ( ModuleInfo.list == TRUE ) {
-                    LstWrite( sym->state == SYM_INTERNAL ? LSTTYPE_EQUATE : LSTTYPE_TMACRO, 0, sym );
-                }
-            }
-            return( 0 );
-        case DRT_MACRO:
-        case DRT_CATSTR: /* CATSTR + TEXTEQU directives */
-        case DRT_SUBSTR:
-            directive_tab[tokenarray[1].dirtype]( 1, tokenarray );
-            return( 0 );
-        }
-    }
+						LstWrite(sym->state == SYM_INTERNAL ? LSTTYPE_EQUATE : LSTTYPE_TMACRO, 0, sym);
+					}
+				}
+				return(0);
+			case DRT_MACRO:
+			case DRT_CATSTR: /* CATSTR + TEXTEQU directives */
+			case DRT_SUBSTR:
+				directive_tab[tokenarray[1].dirtype](1, tokenarray);
+				return(0);
+		}
+	}
 
-    DebugCmd( cntppl2++ );
-    return( Token_Count );
+	DebugCmd(cntppl2++);
+	return(Token_Count);
 }
-
