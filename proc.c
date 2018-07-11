@@ -92,9 +92,9 @@ struct asym *sym_ReservedStack; /* max stack space required by INVOKE */
 								* And params on stack are in PASCAL order.
 								*/
 								//static const enum special_token ms32_regs16[] = { T_CX, T_DX };
-static const enum special_token ms32_regs16[] = {T_AX, T_DX, T_BX};
-static const enum special_token ms32_regs32[] = {T_ECX,T_EDX};
-static const enum special_token delphi_regs32[] = {T_EAX, T_EDX, T_ECX,};
+static const enum special_token ms32_regs16[] = { T_AX, T_DX, T_BX };
+static const enum special_token ms32_regs32[] = { T_ECX,T_EDX };
+static const enum special_token delphi_regs32[] = { T_EAX, T_EDX, T_ECX, };
 
 /* v2.07: added */
 static const int ms32_maxreg[] = {
@@ -108,23 +108,23 @@ static const int delphi_maxreg[] = {
 };
 
 #if OWFC_SUPPORT
-static const enum special_token watc_regs8[] = {T_AL, T_DL, T_BL, T_CL};
-static const enum special_token watc_regs16[] = {T_AX, T_DX, T_BX, T_CX};
-static const enum special_token watc_regs32[] = {T_EAX, T_EDX, T_EBX, T_ECX};
-static const enum special_token watc_regs_qw[] = {T_AX, T_BX, T_CX, T_DX};
+static const enum special_token watc_regs8[] = { T_AL, T_DL, T_BL, T_CL };
+static const enum special_token watc_regs16[] = { T_AX, T_DX, T_BX, T_CX };
+static const enum special_token watc_regs32[] = { T_EAX, T_EDX, T_EBX, T_ECX };
+static const enum special_token watc_regs_qw[] = { T_AX, T_BX, T_CX, T_DX };
 #endif
 
 #if AMD64_SUPPORT
 
-static const enum special_token ms64_regs[] = {T_RCX, T_RDX, T_R8, T_R9};
+static const enum special_token ms64_regs[] = { T_RCX, T_RDX, T_R8, T_R9 };
 
-static const enum special_token sysV64_regs[] = {T_RDI, T_RSI, T_RDX, T_RCX, T_R8, T_R9};
-static const enum special_token sysV64_regs32[] = {T_EDI, T_ESI, T_EDX, T_ECX, T_R8D, T_R9D};
-static const enum special_token sysV64_regs16[] = {T_DI, T_SI, T_DX, T_CX, T_R8W, T_R9W};
-static const enum special_token sysV64_regs8[] = {T_DIL, T_SIL, T_DL, T_CL, T_R8B, T_R9B};
-static const enum special_token sysV64_regsXMM[] = {T_XMM0, T_XMM1, T_XMM2, T_XMM3, T_XMM4, T_XMM5, T_XMM6, T_XMM7};
-static const enum special_token sysV64_regsYMM[] = {T_YMM0, T_YMM1, T_YMM2, T_YMM3, T_YMM4, T_YMM5, T_YMM6, T_YMM7};
-static const enum special_token sysV64_regsZMM[] = {T_ZMM0, T_ZMM1, T_ZMM2, T_ZMM3, T_ZMM4, T_ZMM5, T_ZMM6, T_ZMM7};
+static const enum special_token sysV64_regs[] = { T_RDI, T_RSI, T_RDX, T_RCX, T_R8, T_R9 };
+static const enum special_token sysV64_regs32[] = { T_EDI, T_ESI, T_EDX, T_ECX, T_R8D, T_R9D };
+static const enum special_token sysV64_regs16[] = { T_DI, T_SI, T_DX, T_CX, T_R8W, T_R9W };
+static const enum special_token sysV64_regs8[] = { T_DIL, T_SIL, T_DL, T_CL, T_R8B, T_R9B };
+static const enum special_token sysV64_regsXMM[] = { T_XMM0, T_XMM1, T_XMM2, T_XMM3, T_XMM4, T_XMM5, T_XMM6, T_XMM7 };
+static const enum special_token sysV64_regsYMM[] = { T_YMM0, T_YMM1, T_YMM2, T_YMM3, T_YMM4, T_YMM5, T_YMM6, T_YMM7 };
+static const enum special_token sysV64_regsZMM[] = { T_ZMM0, T_ZMM1, T_ZMM2, T_ZMM3, T_ZMM4, T_ZMM5, T_ZMM6, T_ZMM7 };
 
 /* win64 non-volatile GPRs: T_RBX, T_RBP, T_RSI, T_RDI, T_R12, T_R13, T_R14, T_R15 */
 static const uint_16 win64_nvgpr = 0xF0E8;
@@ -211,12 +211,12 @@ static const struct vectorcall_conv vectorcall_tab[] = {
 
 static const struct sysvcall_conv sysvcall_tab[] = {
 	{ ms32_pcheck, ms32_return },  /* FCT_MSC */
-#if OWFC_SUPPORT
+#if OWFC_SUPPORT		
 	{ watc_pcheck, watc_return },  /* FCT_WATCOMC */
-#endif
-#if SYSV_SUPPORT
+#endif		
+#if SYSV_SUPPORT		
 	{ sysv_pcheck, sysv_return }   /* FCT_WIN64 / SYSTEMV */
-#endif
+#endif		
 };
 
 static const struct delphicall_conv delphicall_tab[] = {
@@ -229,7 +229,7 @@ static const struct delphicall_conv delphicall_tab[] = {
 #endif
 };
 
-const enum special_token stackreg[] = {T_SP, T_ESP,
+const enum special_token stackreg[] = { T_SP, T_ESP,
 #if AMD64_SUPPORT
 T_RSP
 #endif
@@ -329,42 +329,42 @@ static int watc_pcheck(struct dsym *proc, struct dsym *paranode, int *used)
 
 	paranode->sym.state = SYM_TMACRO;
 	switch (size) {
-		case 1:
-			paranode->sym.regist[0] = watc_regs8[firstreg];
-			break;
-		case 2:
+	case 1:
+		paranode->sym.regist[0] = watc_regs8[firstreg];
+		break;
+	case 2:
+		paranode->sym.regist[0] = watc_regs16[firstreg];
+		break;
+	case 4:
+		if (Ofssize) {
+			paranode->sym.regist[0] = watc_regs32[firstreg];
+		}
+		else {
 			paranode->sym.regist[0] = watc_regs16[firstreg];
-			break;
-		case 4:
+			paranode->sym.regist[1] = watc_regs16[firstreg + 1];
+		}
+		break;
+	case 8:
 		if (Ofssize) {
-				paranode->sym.regist[0] = watc_regs32[firstreg];
-			}
+			paranode->sym.regist[0] = watc_regs32[firstreg];
+			paranode->sym.regist[1] = watc_regs32[firstreg + 1];
+		}
 		else {
-				paranode->sym.regist[0] = watc_regs16[firstreg];
-				paranode->sym.regist[1] = watc_regs16[firstreg + 1];
-			}
-			break;
-		case 8:
-		if (Ofssize) {
-				paranode->sym.regist[0] = watc_regs32[firstreg];
-				paranode->sym.regist[1] = watc_regs32[firstreg + 1];
-			}
-		else {
-				/* the AX:BX:CX:DX sequence is for 16-bit only.
-				* fixme: no support for codeview debug info yet;
-				* the S_REGISTER record supports max 2 registers only.
-				*/
+			/* the AX:BX:CX:DX sequence is for 16-bit only.
+			* fixme: no support for codeview debug info yet;
+			* the S_REGISTER record supports max 2 registers only.
+			*/
 			for (firstreg = 0, regname[0] = NULLC; firstreg < 4; firstreg++) {
-					GetResWName(watc_regs_qw[firstreg], regname + strlen(regname));
-					if (firstreg != 3)
-						strcat(regname, "::");
-				}
+				GetResWName(watc_regs_qw[firstreg], regname + strlen(regname));
+				if (firstreg != 3)
+					strcat(regname, "::");
 			}
+		}
 	}
 	if (paranode->sym.regist[1]) {
 		sprintf(regname, "%s::%s",
-				GetResWName(paranode->sym.regist[1], regist),
-				GetResWName(paranode->sym.regist[0], NULL));
+			GetResWName(paranode->sym.regist[1], regist),
+			GetResWName(paranode->sym.regist[0], NULL));
 	}
 	else if (paranode->sym.regist[0]) {
 		GetResWName(paranode->sym.regist[0], regname);
@@ -665,19 +665,19 @@ ret_code LocalDir(int i, struct asm_tok tokenarray[])
 		local->sym.isdefined = TRUE;
 		local->sym.total_length = 1; /* v2.04: added */
 		switch (ti.Ofssize) {
-			case USE16:
-				local->sym.mem_type = MT_WORD;
-				ti.size = sizeof(uint_16);
-				break;
+		case USE16:
+			local->sym.mem_type = MT_WORD;
+			ti.size = sizeof(uint_16);
+			break;
 #if AMD64_SUPPORT
-				/* v2.08: default type for locals in 64-bit is still DWORD (at least in Win64) */
-				//case USE64: local->sym.mem_type = MT_QWORD; break;
-				//ti.size = sizeof( uint_64 );
+			/* v2.08: default type for locals in 64-bit is still DWORD (at least in Win64) */
+			//case USE64: local->sym.mem_type = MT_QWORD; break;
+			//ti.size = sizeof( uint_64 );
 #endif
-			default:
-				local->sym.mem_type = MT_DWORD;
-				ti.size = sizeof(uint_32);
-				break;
+		default:
+			local->sym.mem_type = MT_DWORD;
+			ti.size = sizeof(uint_32);
+			break;
 		}
 
 		i++; /* go past name */
@@ -727,9 +727,9 @@ ret_code LocalDir(int i, struct asm_tok tokenarray[])
 				local->sym.target_type = ti.symtype;
 			}
 			DebugMsg1(("LocalDir: memtype=%X, type=%s, size=%u*%u\n",
-					  local->sym.mem_type,
-					  ti.symtype ? ti.symtype->name : "NULL",
-					  ti.size, local->sym.total_length));
+				local->sym.mem_type,
+				ti.symtype ? ti.symtype->name : "NULL",
+				ti.size, local->sym.total_length));
 		}
 		local->sym.is_ptr = ti.is_ptr;
 		local->sym.isfar = ti.is_far;
@@ -860,26 +860,26 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 				return(EmitError(COLON_EXPECTED));
 			}
 			switch (ti.Ofssize) {
-				case USE16:
-					ti.mem_type = MT_WORD; break;
+			case USE16:
+				ti.mem_type = MT_WORD; break;
 #if AMD64_SUPPORT
-					/* v2.08: default size for arguments is DWORD in 64-bit ( Win64 ) */
-					//case USE64: ti.mem_type = MT_QWORD; break;
+				/* v2.08: default size for arguments is DWORD in 64-bit ( Win64 ) */
+				//case USE64: ti.mem_type = MT_QWORD; break;
 #endif
-				default:
-					ti.mem_type = MT_DWORD; break;
+			default:
+				ti.mem_type = MT_DWORD; break;
 			}
 		}
 		else {
 			i++;
 			if ((tokenarray[i].token == T_RES_ID) && (tokenarray[i].tokval == T_VARARG)) {
 				switch (proc->sym.langtype) {
-					case LANG_NONE:
-					case LANG_BASIC:
-					case LANG_FORTRAN:
-					case LANG_PASCAL:
-					case LANG_STDCALL:
-						return(EmitError(VARARG_REQUIRES_C_CALLING_CONVENTION));
+				case LANG_NONE:
+				case LANG_BASIC:
+				case LANG_FORTRAN:
+				case LANG_PASCAL:
+				case LANG_STDCALL:
+					return(EmitError(VARARG_REQUIRES_C_CALLING_CONVENTION));
 				}
 				/* v2.05: added check */
 				if (tokenarray[i + 1].token != T_FINAL)
@@ -924,13 +924,13 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 				(ti.mem_type == MT_TYPE && tn != to) ||
 				(ti.mem_type == MT_PTR &&
 				(ti.is_far != paracurr->sym.isfar ||
-				on != oo ||
-				ti.ptr_memtype != paracurr->sym.ptr_memtype ||
+					on != oo ||
+					ti.ptr_memtype != paracurr->sym.ptr_memtype ||
 					tn != to))) {
 
 				/* UASM 2.46.10 prevent symbols that are moved to stack whose size is turned from ptr to machine word size from breaking the proto vs proc defition of a ptr type */
-				if (ti.mem_type == MT_PTR && paracurr->sym.state == SYM_STACK &&
-					(paracurr->sym.mem_type == MT_QWORD && CurrWordSize == 8) ||
+				if (ti.mem_type == MT_PTR && paracurr->sym.state == SYM_STACK && 
+					(paracurr->sym.mem_type == MT_QWORD && CurrWordSize == 8) || 
 					(paracurr->sym.mem_type == MT_OWORD && CurrWordSize == 8) ||
 					(paracurr->sym.mem_type == MT_YMMWORD && CurrWordSize == 8) ||
 					(paracurr->sym.mem_type == MT_ZMMWORD && CurrWordSize == 8) ||
@@ -954,14 +954,14 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 				else
 				{
 					DebugMsg(("ParseParams: old-new memtype=%X-%X type=%X(%s)-%X(%s) far=%u-%u ind=%u-%u ofss=%d-%d pmt=%X-%X\n",
-							 paracurr->sym.mem_type, ti.mem_type,
-							 (paracurr->sym.mem_type == MT_TYPE) ? paracurr->sym.type : paracurr->sym.target_type,
-							 (paracurr->sym.mem_type == MT_TYPE) ? paracurr->sym.type->name : paracurr->sym.target_type ? paracurr->sym.target_type->name : "",
-							 ti.symtype, ti.symtype ? ti.symtype->name : "",
-							 paracurr->sym.isfar, ti.is_far,
-							 paracurr->sym.is_ptr, ti.is_ptr,
-							 paracurr->sym.Ofssize, ti.Ofssize,
-							 paracurr->sym.ptr_memtype, ti.ptr_memtype));
+						paracurr->sym.mem_type, ti.mem_type,
+						(paracurr->sym.mem_type == MT_TYPE) ? paracurr->sym.type : paracurr->sym.target_type,
+						(paracurr->sym.mem_type == MT_TYPE) ? paracurr->sym.type->name : paracurr->sym.target_type ? paracurr->sym.target_type->name : "",
+						ti.symtype, ti.symtype ? ti.symtype->name : "",
+						paracurr->sym.isfar, ti.is_far,
+						paracurr->sym.is_ptr, ti.is_ptr,
+						paracurr->sym.Ofssize, ti.Ofssize,
+						paracurr->sym.ptr_memtype, ti.ptr_memtype));
 					EmitErr(CONFLICTING_PARAMETER_DEFINITION, name);
 				}
 			}
@@ -981,8 +981,8 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 				proc->sym.langtype == LANG_STDCALL) {
 				struct dsym *l;
 				for (l = proc->e.procinfo->paralist;
-					 l && (l->nextparam != paracurr);
-					 l = l->nextparam);
+					l && (l->nextparam != paracurr);
+					l = l->nextparam);
 				paracurr = l;
 			}
 			else
@@ -1120,107 +1120,57 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 
 			
 
-				switch (CurrWordSize)
-				{
-					case 8:
-						switch (ti.mem_type)
-						{
-							case MT_OWORD:
-								proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 2 * CurrWordSize : 2 * (2 << proc->sym.seg_ofssize));
-								break;
+			/* v2.05: the PROC's vararg flag has been set already */
+			//proc->e.procinfo->is_vararg |= paranode->sym.is_vararg;
 
-							case MT_YMMWORD:
-								proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 4 * CurrWordSize : 4 * (2 << proc->sym.seg_ofssize));
-								break;
-
-							case MT_ZMMWORD:
-								proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 8 * CurrWordSize : 8 * (2 << proc->sym.seg_ofssize));
-								break;
-
-							default:
-								proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? CurrWordSize : (2 << proc->sym.seg_ofssize));
-								break;
-						}
-						break;
-
-					case 4:
-						switch (ti.mem_type)
-						{
-							case MT_OWORD:
-								proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 2 * CurrWordSize : 4 * (2 << proc->sym.seg_ofssize));
-								break;
-
-							case MT_YMMWORD:
-								proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 4 * CurrWordSize : 8 * (2 << proc->sym.seg_ofssize));
-								break;
-
-							case MT_ZMMWORD:
-								proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 8 * CurrWordSize : 16 * (2 << proc->sym.seg_ofssize));
-								break;
-
-							default:
-								proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? CurrWordSize : (2 << proc->sym.seg_ofssize));
-								break;
-						}
-						break;
-
-					default:
-						proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? CurrWordSize : (2 << proc->sym.seg_ofssize));
-						break;
-				}
-			}
-
-		/* v2.05: the PROC's vararg flag has been set already */
-		//proc->e.procinfo->is_vararg |= paranode->sym.is_vararg;
-
-		/* Parameters usually are stored in "push" order.
-		* However, for Win64, it's better to store them
-		* the "natural" way from left to right, since the
-		* arguments aren't "pushed".
-		*/
+			/* Parameters usually are stored in "push" order.
+			* However, for Win64, it's better to store them
+			* the "natural" way from left to right, since the
+			* arguments aren't "pushed".
+			*/
 
 			switch (proc->sym.langtype) {
-				case LANG_BASIC:
-				case LANG_FORTRAN:
-				case LANG_PASCAL:
-				left_to_right:
-					paranode->nextparam = NULL;
+			case LANG_BASIC:
+			case LANG_FORTRAN:
+			case LANG_PASCAL:
+			left_to_right:
+				paranode->nextparam = NULL;
 				if (proc->e.procinfo->paralist == NULL) {
-						proc->e.procinfo->paralist = paranode;
-					}
+					proc->e.procinfo->paralist = paranode;
+				}
 				else {
 					for (paracurr = proc->e.procinfo->paralist;; paracurr = paracurr->nextparam) {
 						if (paracurr->nextparam == NULL) {
-								break;
-							}
+							break;
 						}
-						paracurr->nextparam = paranode;
-						paracurr = NULL;
 					}
-					break;
-					//#if AMD64_SUPPORT
-					//case LANG_SYSVCALL:
-					//paranode->nextparam = proc->e.procinfo->paralist;
-					// proc->e.procinfo->paralist = paranode;
-					//break;
-					// #endif
-				case LANG_FASTCALL:
-				case LANG_VECTORCALL:
-				case LANG_DELPHICALL:
+					paracurr->nextparam = paranode;
+					paracurr = NULL;
+				}
+				break;
+				//#if AMD64_SUPPORT
+				//case LANG_SYSVCALL:
+				//paranode->nextparam = proc->e.procinfo->paralist;
+				// proc->e.procinfo->paralist = paranode;
+				//break;
+				// #endif
+			case LANG_FASTCALL:
+			case LANG_VECTORCALL:
+			case LANG_DELPHICALL:
 #if AMD64_SUPPORT
-				case LANG_SYSVCALL:
-					if (ti.Ofssize == USE64)
-						goto left_to_right;
+			case LANG_SYSVCALL:
+				if (ti.Ofssize == USE64)
+					goto left_to_right;
 #endif
-					/* v2.07: MS fastcall 16-bit is PASCAL! */
-					if (ti.Ofssize == USE16 && ModuleInfo.fctype == FCT_MSC)
-						goto left_to_right;
-					else if (ti.Ofssize == USE32 && ModuleInfo.fctype == FCT_DELPHI && proc->sym.langtype == LANG_DELPHICALL)
-						goto left_to_right;
-				default:
-					paranode->nextparam = proc->e.procinfo->paralist;
-					proc->e.procinfo->paralist = paranode;
-					break;
+				/* v2.07: MS fastcall 16-bit is PASCAL! */
+				if (ti.Ofssize == USE16 && ModuleInfo.fctype == FCT_MSC)
+					goto left_to_right;
+				else if (ti.Ofssize == USE32 && ModuleInfo.fctype == FCT_DELPHI && proc->sym.langtype == LANG_DELPHICALL)
+					goto left_to_right;
+			default:
+				paranode->nextparam = proc->e.procinfo->paralist;
+				proc->e.procinfo->paralist = paranode;
+				break;
 			}
 		}
 		if (tokenarray[i].token != T_FINAL) {
@@ -1285,8 +1235,8 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 						proc->e.procinfo->stackparam = TRUE;
 						offset += ROUND_UP(paranode->sym.total_size, CurrWordSize);
 						/* set isparam var for W64F_SMART */
-						//if (ModuleInfo.win64_flags & W64F_SMART)
-						if (ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RSP)
+						//if (ModuleInfo.win64_flags & W64F_SMART) 
+						if(ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RSP)
 							paranode->sym.isparam = TRUE;
 					}
 			}
@@ -1364,7 +1314,7 @@ ret_code ParseProc(struct dsym *proc, int i, struct asm_tok tokenarray[], bool I
 				//proc->e.procinfo->pe_type = ( ( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_286 );
 				proc->e.procinfo->pe_type = (ModuleInfo.Ofssize > USE16 ||
 					(ModuleInfo.curr_cpu & P_CPU_MASK) == P_286 ||
-											 (ModuleInfo.curr_cpu & P_CPU_MASK) >= P_586) ? 1 : 0;
+					(ModuleInfo.curr_cpu & P_CPU_MASK) >= P_586) ? 1 : 0;
 			}
 			else {
 				/* use LEAVE for 286, 386 (and x64) */
@@ -1372,7 +1322,7 @@ ret_code ParseProc(struct dsym *proc, int i, struct asm_tok tokenarray[], bool I
 #if AMD64_SUPPORT
 				(ModuleInfo.curr_cpu & P_CPU_MASK) == P_64 ||
 #endif
-											 (ModuleInfo.curr_cpu & P_CPU_MASK) == P_386) ? 1 : 0;
+					(ModuleInfo.curr_cpu & P_CPU_MASK) == P_386) ? 1 : 0;
 			}
 	}
 
@@ -1471,134 +1421,134 @@ ret_code ParseProc(struct dsym *proc, int i, struct asm_tok tokenarray[], bool I
 	{
 		i += 3;
 	}
-	else if (tokenarray[i].token == T_OP_BRACKET && tokenarray[i+2].token == T_CL_BRACKET && tokenarray[i+1].token == T_ID)
+	else if (tokenarray[i].token == T_OP_BRACKET && tokenarray[i+2].token == T_CL_BRACKET && tokenarray[i+1].token == T_ID )
 	{
 		sym = SymLookup(tokenarray[i + 1].string_ptr);
 		while (sym)
 		{
 			switch (sym->mem_type)
 			{
-				case MT_EMPTY:
-					/* UASM 2.46.10 - Could be a vectorcall type return */
-					if (sym->state == SYM_TYPE)
-					{
-						if (sym->total_size == 16)
-							ret_type = RT_XMM;
-						else if (sym->total_size == 32)
-							ret_type = RT_YMM;
-						else if (sym->total_size == 64)
-							ret_type = RT_ZMM;
-					}
-					break;
-				case MT_BYTE:
-					ret_type = RT_BYTE;
-					break;
-				case MT_SBYTE:
-					ret_type = RT_SBYTE;
-					break;
-				case MT_WORD:
-					ret_type = RT_WORD;
-					break;
-				case MT_SWORD:
-					ret_type = RT_SWORD;
-					break;
-				case MT_DWORD:
-					ret_type = RT_DWORD;
-					break;
-				case MT_SDWORD:
-					ret_type = RT_SDWORD;
-					break;
-				case MT_QWORD:
-					ret_type = RT_QWORD;
-					break;
-				case MT_SQWORD:
-					ret_type = RT_SQWORD;
-					break;
-				case MT_FLOAT:
-					ret_type = RT_FLOAT;
-					break;
-				case MT_OWORD:
-					ret_type = RT_XMM;
-					break;
-				case MT_PTR:
-					ret_type = RT_PTR;
-					break;
-				case MT_YMMWORD:
-					ret_type = RT_YMM;
-					break;
-				case MT_ZMMWORD:
-					ret_type = RT_ZMM;
-					break;
-				case MT_REAL4:
-					ret_type = RT_REAL4;
-					break;
-				case MT_REAL8:
-					ret_type = RT_REAL8;
-					break;
-				case MT_REAL10:
-					ret_type = RT_REAL10;
-					break;
+			case MT_EMPTY:
+				/* UASM 2.46.10 - Could be a vectorcall type return */
+				if (sym->state == SYM_TYPE)
+				{
+					if (sym->total_size == 16)
+						ret_type = RT_XMM;
+					else if (sym->total_size == 32)
+						ret_type = RT_YMM;
+					else if (sym->total_size == 64)
+						ret_type = RT_ZMM;
+				}
+				break;
+			case MT_BYTE:
+				ret_type = RT_BYTE;
+				break;
+			case MT_SBYTE:
+				ret_type = RT_SBYTE;
+				break;
+			case MT_WORD:
+				ret_type = RT_WORD;
+				break;
+			case MT_SWORD:
+				ret_type = RT_SWORD;
+				break;
+			case MT_DWORD:
+				ret_type = RT_DWORD;
+				break;
+			case MT_SDWORD:
+				ret_type = RT_SDWORD;
+				break;
+			case MT_QWORD:
+				ret_type = RT_QWORD;
+				break;
+			case MT_SQWORD:
+				ret_type = RT_SQWORD;
+				break;
+			case MT_FLOAT:
+				ret_type = RT_FLOAT;
+				break;
+			case MT_OWORD:
+				ret_type = RT_XMM;
+				break;
+			case MT_PTR:
+				ret_type = RT_PTR;
+				break;
+			case MT_YMMWORD:
+				ret_type = RT_YMM;
+				break;
+			case MT_ZMMWORD:
+				ret_type = RT_ZMM;
+				break;
+			case MT_REAL4:
+				ret_type = RT_REAL4;
+				break;
+			case MT_REAL8:
+				ret_type = RT_REAL8;
+				break;
+			case MT_REAL10:
+				ret_type = RT_REAL10;
+				break;
 			}
 			if (sym->target_type && sym->mem_type != MT_EMPTY)
 				sym = sym->target_type;
 			else
 				break;
 		}
-		i += 3;
+		i+=3;
 	}
-	else if (tokenarray[i].token == T_OP_BRACKET && tokenarray[i + 2].token == T_CL_BRACKET &&
-		(tokenarray[i+1].token == T_STYPE || (tokenarray[i+1].token == T_BINARY_OPERATOR && tokenarray[i+1].tokval == T_PTR)))
+	else if (tokenarray[i].token == T_OP_BRACKET && tokenarray[i + 2].token == T_CL_BRACKET && 
+		     (tokenarray[i+1].token == T_STYPE || (tokenarray[i+1].token == T_BINARY_OPERATOR && tokenarray[i+1].tokval == T_PTR)) )
 	{
 		switch (tokenarray[i+1].tokval)
 		{
-			case T_PTR:
-				ret_type = RT_PTR;
-				break;
-			case T_REAL4:
-				ret_type = RT_REAL4;
-				break;
-			case T_REAL8:
-				ret_type = RT_REAL8;
-				break;
-			case T_BYTE:
-				ret_type = RT_BYTE;
-				break;
-			case T_WORD:
-				ret_type = RT_WORD;
-				break;
-			case T_DWORD:
-				ret_type = RT_DWORD;
-				break;
-			case T_QWORD:
-				ret_type = RT_QWORD;
-				break;
-			case T_SBYTE:
-				ret_type = RT_SBYTE;
-				break;
-			case T_SWORD:
-				ret_type = RT_SWORD;
-				break;
-			case T_SDWORD:
-				ret_type = RT_SDWORD;
-				break;
-			case T_SQWORD:
-				ret_type = RT_SQWORD;
-				break;
-			case T_XMMWORD:
-				ret_type = RT_XMM;
-				break;
-			case T_YMMWORD:
-				ret_type = RT_YMM;
-				break;
-			case T_ZMMWORD:
-				ret_type = RT_ZMM;
-				break;
-			default:
-				ret_type = RT_NONE;
-				break;
+		case T_PTR:
+			ret_type = RT_PTR;
+			break;
+		case T_REAL4:
+			ret_type = RT_REAL4;
+			break;
+		case T_REAL8:
+			ret_type = RT_REAL8;
+			break;
+		case T_BYTE:
+			ret_type = RT_BYTE;
+			break;
+		case T_WORD:
+			ret_type = RT_WORD;
+			break;
+		case T_DWORD:
+			ret_type = RT_DWORD;
+			break;
+		case T_QWORD:
+			ret_type = RT_QWORD;
+			break;
+		case T_SBYTE:
+			ret_type = RT_SBYTE;
+			break;
+		case T_SWORD:
+			ret_type = RT_SWORD;
+			break;
+		case T_SDWORD:
+			ret_type = RT_SDWORD;
+			break;
+		case T_SQWORD:
+			ret_type = RT_SQWORD;
+			break;
+		case T_XMMWORD:
+			ret_type = RT_XMM;
+			break;
+		case T_YMMWORD:
+			ret_type = RT_YMM;
+			break;
+		case T_ZMMWORD:
+			ret_type = RT_ZMM;
+			break;
+		default:
+			ret_type = RT_NONE;
+			break;
 		}
 
-		i += 3;
+		i+=3;
 	}
 	else
 	{
@@ -1738,7 +1688,7 @@ ret_code ParseProc(struct dsym *proc, int i, struct asm_tok tokenarray[], bool I
 				sym_add_table(&SymTables[TAB_UNDEF], (struct dsym *)sym); /* add UNDEFINED */
 			}
 			else if (sym->state != SYM_UNDEFINED &&
-					 sym->state != SYM_INTERNAL &&
+				sym->state != SYM_INTERNAL &&
 				sym->state != SYM_EXTERNAL) {
 				return(EmitErr(SYMBOL_REDEFINITION, sym->name));
 			}
@@ -1858,26 +1808,26 @@ struct asym *CreateProc(struct asym *sym, const char *name, enum sym_state state
 		info->flags = 0;
 		info->ret_type = 0xff;
 		switch (sym->state) {
-			case SYM_INTERNAL:
-				/* v2.04: don't use sym_add_table() and thus
-				* free the <next> member field!
-				*/
-				if (SymTables[TAB_PROC].head == NULL)
-					SymTables[TAB_PROC].head = (struct dsym *)sym;
+		case SYM_INTERNAL:
+			/* v2.04: don't use sym_add_table() and thus
+			* free the <next> member field!
+			*/
+			if (SymTables[TAB_PROC].head == NULL)
+				SymTables[TAB_PROC].head = (struct dsym *)sym;
 			else {
-					SymTables[TAB_PROC].tail->nextproc = (struct dsym *)sym;
-				}
-				SymTables[TAB_PROC].tail = (struct dsym *)sym;
-				procidx++;
+				SymTables[TAB_PROC].tail->nextproc = (struct dsym *)sym;
+			}
+			SymTables[TAB_PROC].tail = (struct dsym *)sym;
+			procidx++;
 			if (Options.line_numbers) {
-					sym->debuginfo = LclAlloc(sizeof(struct debug_info));
-					sym->debuginfo->file = get_curr_srcfile();
-				}
-				break;
-			case SYM_EXTERNAL:
-				sym->weak = TRUE;
-				sym_add_table(&SymTables[TAB_EXT], (struct dsym *)sym);
-				break;
+				sym->debuginfo = LclAlloc(sizeof(struct debug_info));
+				sym->debuginfo->file = get_curr_srcfile();
+			}
+			break;
+		case SYM_EXTERNAL:
+			sym->weak = TRUE;
+			sym_add_table(&SymTables[TAB_EXT], (struct dsym *)sym);
+			break;
 		}
 	}
 	return(sym);
@@ -2079,9 +2029,9 @@ ret_code ProcDir(int i, struct asm_tok tokenarray[])
 
 		if (ofs != sym->offset) {
 			DebugMsg(("ProcDir(%s): %spass %u, old ofs=%" I32_SPEC "X, new ofs=%" I32_SPEC "X\n",
-					 sym->name,
-					 ModuleInfo.PhaseError ? "" : "phase error ",
-					 Parse_Pass + 1, sym->offset, ofs));
+				sym->name,
+				ModuleInfo.PhaseError ? "" : "phase error ",
+				Parse_Pass + 1, sym->offset, ofs));
 			sym->offset = ofs;
 			ModuleInfo.PhaseError = TRUE;
 		}
@@ -2164,7 +2114,7 @@ ret_code CopyPrototype(struct dsym *proc, struct dsym *src)
 		}
 	}
 	DebugMsg1(("CopyPrototype(%s,src=%s): ofssize=%u\n",
-			  proc->sym.name, src->sym.name, src->sym.seg_ofssize));
+		proc->sym.name, src->sym.name, src->sym.seg_ofssize));
 	return(NOT_ERROR);
 }
 
@@ -2181,7 +2131,7 @@ static void ProcFini(struct dsym *proc)
 	}
 	else {
 		DebugMsg1(("ProcFini(%s): unmatched block nesting error, proc->seg=%s, CurrSeg=%s\n",
-				  proc->sym.name, proc->sym.segment->name, CurrSeg ? CurrSeg->sym.name : "NULL"));
+			proc->sym.name, proc->sym.segment->name, CurrSeg ? CurrSeg->sym.name : "NULL"));
 		EmitErr(UNMATCHED_BLOCK_NESTING, proc->sym.name);
 		proc->sym.total_size = CurrProc->sym.segment->offset - proc->sym.offset;
 	}
@@ -2319,8 +2269,8 @@ static void WriteSEHData(struct dsym *proc)
 	* v2.11: 't'-suffix added to ensure the values are correct if radix is != 10.
 	*/
 	AddLineQueueX("db %ut + (0%xh shl 3), %ut, %ut, 0%xh + (0%xh shl 4)",
-				  UNW_VERSION, unw_info.Flags, unw_info.SizeOfProlog,
-				  unw_info.CountOfCodes, unw_info.FrameRegister, unw_info.FrameOffset);
+		UNW_VERSION, unw_info.Flags, unw_info.SizeOfProlog,
+		unw_info.CountOfCodes, unw_info.FrameRegister, unw_info.FrameOffset);
 	if (unw_info.CountOfCodes) {
 		char *pfx = "dw";
 		buffer[0] = NULLC;
@@ -2366,9 +2316,9 @@ static void WriteSEHData(struct dsym *proc)
 		AddLineQueueX("%s %r align(%u) flat read 'DATA'", segname, T_SEGMENT, 4);
 	/* write the .pdata stuff ( type IMAGE_RUNTIME_FUNCTION_ENTRY )*/
 	AddLineQueueX("dd %r %s, %r %s+0%xh, %r $xdatasym+0%xh",
-				  T_IMAGEREL, proc->sym.name,
-				  T_IMAGEREL, proc->sym.name, proc->sym.total_size,
-				  T_IMAGEREL, xdataofs);
+		T_IMAGEREL, proc->sym.name,
+		T_IMAGEREL, proc->sym.name, proc->sym.total_size,
+		T_IMAGEREL, xdataofs);
 	AddLineQueueX("%s %r", segname, T_ENDS);
 	olddotname = ModuleInfo.dotname;
 	ModuleInfo.dotname = TRUE; /* set OPTION DOTNAME because .pdata and .xdata */
@@ -2424,223 +2374,223 @@ ret_code ExcFrameDirective(int i, struct asm_tok tokenarray[])
 	*/
 
 	switch (token) {
-		case T_DOT_ALLOCSTACK: /* syntax: .ALLOCSTACK size */
-			if (ERROR == EvalOperand(&i, tokenarray, Token_Count, &opndx, 0))
-				return(ERROR);
-			if (opndx.kind == EXPR_ADDR && opndx.sym->state == SYM_UNDEFINED) /* v2.11: allow forward references */
-				;
+	case T_DOT_ALLOCSTACK: /* syntax: .ALLOCSTACK size */
+		if (ERROR == EvalOperand(&i, tokenarray, Token_Count, &opndx, 0))
+			return(ERROR);
+		if (opndx.kind == EXPR_ADDR && opndx.sym->state == SYM_UNDEFINED) /* v2.11: allow forward references */
+			;
 		else if (opndx.kind != EXPR_CONST) {
-				return(EmitError(CONSTANT_EXPECTED));
-			}
-			/* v2.11: check added */
+			return(EmitError(CONSTANT_EXPECTED));
+		}
+		/* v2.11: check added */
 		if (opndx.hvalue) {
-				return(EmitConstError(&opndx));
-			}
+			return(EmitConstError(&opndx));
+		}
 		if (opndx.uvalue == 0) {
-				return(EmitError(NONZERO_VALUE_EXPECTED));
-			}
+			return(EmitError(NONZERO_VALUE_EXPECTED));
+		}
 		if (opndx.value & 7) {
-				return(EmitError(BAD_ALIGNMENT_FOR_OFFSET_IN_UNWIND_CODE));
-			}
-			//opndx.value -= 8; /* v2.11: subtract 8 only for UWOP_ALLOC_SMALL! */
+			return(EmitError(BAD_ALIGNMENT_FOR_OFFSET_IN_UNWIND_CODE));
+		}
+		//opndx.value -= 8; /* v2.11: subtract 8 only for UWOP_ALLOC_SMALL! */
 		if (opndx.uvalue > 16 * 8) {
 			if (opndx.uvalue >= 65536 * 8) {
-					/* allocation size 512k - 4G-8 */
-					/* v2.11: value is stored UNSCALED in 2 WORDs! */
-					puc->FrameOffset = (opndx.uvalue >> 16);
-					puc++;
-					puc->FrameOffset = opndx.uvalue & 0xFFFF;
-					puc++;
-					unw_info.CountOfCodes += 2;
-					puc->OpInfo = 1;
-					DebugMsg1(("ExcFrameDirective: UWOP_ALLOC_LARGE, operation info 1, size=%Xh\n", opndx.value));
-				}
-			else {
-					/* allocation size 128+8 - 512k-8 */
-					puc->FrameOffset = (opndx.uvalue >> 3);
-					puc++;
-					unw_info.CountOfCodes++;
-					puc->OpInfo = 0;
-					DebugMsg1(("ExcFrameDirective: UWOP_ALLOC_LARGE, operation info 0, size=%Xh\n", opndx.value));
-				}
-				puc->UnwindOp = UWOP_ALLOC_LARGE;
-			}
-		else {
-				/* allocation size 8-128 bytes */
-				puc->UnwindOp = UWOP_ALLOC_SMALL;
-				/* v2.11: subtract 8 only for UWOP_ALLOC_SMALL! */
-				//puc->OpInfo = ( opndx.value >> 3 );
-				puc->OpInfo = ((opndx.uvalue - 8) >> 3);
-				DebugMsg1(("ExcFrameDirective: UWOP_ALLOC_SMALL, size=%Xh\n", opndx.value));
-			}
-			puc->CodeOffset = ofs;
-			unw_info.CountOfCodes++;
-			break;
-		case T_DOT_ENDPROLOG: /* syntax: .ENDPROLOG */
-			opndx.value = GetCurrOffset() - CurrProc->sym.offset;
-		if (opndx.uvalue > 255) {
-				return(EmitError(SIZE_OF_PROLOG_TOO_BIG));
-			}
-			unw_info.SizeOfProlog = (uint_8)opndx.uvalue;
-			endprolog_found = TRUE;
-			break;
-		case T_DOT_PUSHFRAME: /* syntax: .PUSHFRAME [code] */
-			puc->CodeOffset = ofs;
-			puc->UnwindOp = UWOP_PUSH_MACHFRAME;
-			puc->OpInfo = 0;
-		if (tokenarray[i].token == T_ID && (_stricmp(tokenarray[i].string_ptr, "CODE") == 0)) {
+				/* allocation size 512k - 4G-8 */
+				/* v2.11: value is stored UNSCALED in 2 WORDs! */
+				puc->FrameOffset = (opndx.uvalue >> 16);
+				puc++;
+				puc->FrameOffset = opndx.uvalue & 0xFFFF;
+				puc++;
+				unw_info.CountOfCodes += 2;
 				puc->OpInfo = 1;
-				i++;
+				DebugMsg1(("ExcFrameDirective: UWOP_ALLOC_LARGE, operation info 1, size=%Xh\n", opndx.value));
 			}
-			unw_info.CountOfCodes++;
-			break;
-		case T_DOT_PUSHREG: /* syntax: .PUSHREG r64 */
-		if (tokenarray[i].token != T_REG || !(GetValueSp(tokenarray[i].tokval) & OP_R64)) {
-				return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
+			else {
+				/* allocation size 128+8 - 512k-8 */
+				puc->FrameOffset = (opndx.uvalue >> 3);
+				puc++;
+				unw_info.CountOfCodes++;
+				puc->OpInfo = 0;
+				DebugMsg1(("ExcFrameDirective: UWOP_ALLOC_LARGE, operation info 0, size=%Xh\n", opndx.value));
 			}
-			puc->CodeOffset = ofs;
-			puc->UnwindOp = UWOP_PUSH_NONVOL;
-			puc->OpInfo = GetRegNo(tokenarray[i].tokval);
-			unw_info.CountOfCodes++;
+			puc->UnwindOp = UWOP_ALLOC_LARGE;
+		}
+		else {
+			/* allocation size 8-128 bytes */
+			puc->UnwindOp = UWOP_ALLOC_SMALL;
+			/* v2.11: subtract 8 only for UWOP_ALLOC_SMALL! */
+			//puc->OpInfo = ( opndx.value >> 3 );
+			puc->OpInfo = ((opndx.uvalue - 8) >> 3);
+			DebugMsg1(("ExcFrameDirective: UWOP_ALLOC_SMALL, size=%Xh\n", opndx.value));
+		}
+		puc->CodeOffset = ofs;
+		unw_info.CountOfCodes++;
+		break;
+	case T_DOT_ENDPROLOG: /* syntax: .ENDPROLOG */
+		opndx.value = GetCurrOffset() - CurrProc->sym.offset;
+		if (opndx.uvalue > 255) {
+			return(EmitError(SIZE_OF_PROLOG_TOO_BIG));
+		}
+		unw_info.SizeOfProlog = (uint_8)opndx.uvalue;
+		endprolog_found = TRUE;
+		break;
+	case T_DOT_PUSHFRAME: /* syntax: .PUSHFRAME [code] */
+		puc->CodeOffset = ofs;
+		puc->UnwindOp = UWOP_PUSH_MACHFRAME;
+		puc->OpInfo = 0;
+		if (tokenarray[i].token == T_ID && (_stricmp(tokenarray[i].string_ptr, "CODE") == 0)) {
+			puc->OpInfo = 1;
 			i++;
-			break;
-		case T_DOT_SAVEREG:    /* syntax: .SAVEREG r64, offset       */
-		case T_DOT_SAVEXMM128: /* syntax: .SAVEXMM128 xmmreg, offset */
-		case T_DOT_SAVEYMM256: /* syntax: .SAVEYMM256 ymmreg, offset */
-		case T_DOT_SAVEZMM512: /* syntax: .SAVEXMM512 zmmreg, offset */
-		case T_DOT_SETFRAME:   /* syntax: .SETFRAME r64, offset      */
+		}
+		unw_info.CountOfCodes++;
+		break;
+	case T_DOT_PUSHREG: /* syntax: .PUSHREG r64 */
+		if (tokenarray[i].token != T_REG || !(GetValueSp(tokenarray[i].tokval) & OP_R64)) {
+			return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
+		}
+		puc->CodeOffset = ofs;
+		puc->UnwindOp = UWOP_PUSH_NONVOL;
+		puc->OpInfo = GetRegNo(tokenarray[i].tokval);
+		unw_info.CountOfCodes++;
+		i++;
+		break;
+	case T_DOT_SAVEREG:    /* syntax: .SAVEREG r64, offset       */
+	case T_DOT_SAVEXMM128: /* syntax: .SAVEXMM128 xmmreg, offset */
+	case T_DOT_SAVEYMM256: /* syntax: .SAVEYMM256 ymmreg, offset */
+	case T_DOT_SAVEZMM512: /* syntax: .SAVEXMM512 zmmreg, offset */
+	case T_DOT_SETFRAME:   /* syntax: .SETFRAME r64, offset      */
 		if (tokenarray[i].token != T_REG) {
-				return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
-			}
+			return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
+		}
 		if (token == T_DOT_SAVEXMM128) {
 			if (!(GetValueSp(tokenarray[i].tokval) & OP_XMM)) {
-					return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
-				}
-			}
-		else if (token == T_DOT_SAVEYMM256) {
-			if (!(GetValueSp(tokenarray[i].tokval) & OP_YMM)) {
-					return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
-				}
-			}
-		else if (token == T_DOT_SAVEZMM512) {
-			if (!(GetValueSp(tokenarray[i].tokval) & OP_ZMM)) {
-					return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
-				}
-			}
-		else {
-			if (!(GetValueSp(tokenarray[i].tokval) & OP_R64)) {
-					return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
-				}
-			}
-			reg = GetRegNo(tokenarray[i].tokval);
-			if (token == T_DOT_SAVEREG)
-				size = 8;
-			else
-				size = 16;
-
-			i++;
-		if (tokenarray[i].token != T_COMMA) {
 				return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
 			}
-			i++;
-			if (ERROR == EvalOperand(&i, tokenarray, Token_Count, &opndx, 0))
-				return(ERROR);
-			if (opndx.kind == EXPR_ADDR && opndx.sym->state == SYM_UNDEFINED) /* v2.11: allow forward references */
-				;
+		}
+		else if (token == T_DOT_SAVEYMM256) {
+			if (!(GetValueSp(tokenarray[i].tokval) & OP_YMM)) {
+				return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
+			}
+		}
+		else if (token == T_DOT_SAVEZMM512) {
+			if (!(GetValueSp(tokenarray[i].tokval) & OP_ZMM)) {
+				return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
+			}
+		}
+		else {
+			if (!(GetValueSp(tokenarray[i].tokval) & OP_R64)) {
+				return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
+			}
+		}
+		reg = GetRegNo(tokenarray[i].tokval);
+		if (token == T_DOT_SAVEREG)
+			size = 8;
+		else
+			size = 16;
+
+		i++;
+		if (tokenarray[i].token != T_COMMA) {
+			return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
+		}
+		i++;
+		if (ERROR == EvalOperand(&i, tokenarray, Token_Count, &opndx, 0))
+			return(ERROR);
+		if (opndx.kind == EXPR_ADDR && opndx.sym->state == SYM_UNDEFINED) /* v2.11: allow forward references */
+			;
 		else if (opndx.kind != EXPR_CONST) {
-				return(EmitError(CONSTANT_EXPECTED));
-			}
+			return(EmitError(CONSTANT_EXPECTED));
+		}
 		if (opndx.value & (size - 1)) {
-				return(EmitError(BAD_ALIGNMENT_FOR_OFFSET_IN_UNWIND_CODE));
-			}
+			return(EmitError(BAD_ALIGNMENT_FOR_OFFSET_IN_UNWIND_CODE));
+		}
 		switch (token) {
-				case T_DOT_SAVEREG:
-					puc->OpInfo = reg;
+		case T_DOT_SAVEREG:
+			puc->OpInfo = reg;
 			if (opndx.value > 65536 * size) {
-						puc->FrameOffset = (opndx.value >> 19);
-						puc++;
-						puc->FrameOffset = (opndx.value >> 3);
-						puc++;
-						puc->UnwindOp = UWOP_SAVE_NONVOL_FAR;
-						unw_info.CountOfCodes += 3;
-					}
-			else {
-						puc->FrameOffset = (opndx.value >> 3);
-						puc++;
-						puc->UnwindOp = UWOP_SAVE_NONVOL;
-						unw_info.CountOfCodes += 2;
-					}
-					puc->CodeOffset = ofs;
-					puc->OpInfo = reg;
-					break;
-				case T_DOT_SAVEXMM128:
-				case T_DOT_SAVEYMM256:
-			if (opndx.value > 65536 * size) {
-						puc->FrameOffset = (opndx.value >> 20);
-						puc++;
-						puc->FrameOffset = (opndx.value >> 4);
-						puc++;
-						puc->UnwindOp = UWOP_SAVE_XMM128_FAR;
-						unw_info.CountOfCodes += 3;
-					}
-			else {
-						puc->FrameOffset = (opndx.value >> 4);
-						puc++;
-						puc->UnwindOp = UWOP_SAVE_XMM128;
-						unw_info.CountOfCodes += 2;
-					}
-					puc->CodeOffset = ofs;
-					puc->OpInfo = reg;
-					break;
-					//case T_DOT_SAVEYMM256:
-					//    if ( opndx.value > 65536 * size ) {
-					//        puc->FrameOffset = ( opndx.value >> 20 );
-					//        puc++;
-					//        puc->FrameOffset = ( opndx.value >> 4 );
-					//        puc++;
-					//        puc->UnwindOp = UWOP_SAVE_YMM256_FAR;
-					//        unw_info.CountOfCodes += 3;
-					//    } else {
-					//        puc->FrameOffset = ( opndx.value >> 4 );
-					//        puc++;
-					//        puc->UnwindOp = UWOP_SAVE_YMM256;
-					//        unw_info.CountOfCodes += 2;
-					//    }
-					//    puc->CodeOffset = ofs;
-					//    puc->OpInfo = reg;
-					//    break;
-				case T_DOT_SAVEZMM512:
-			if (opndx.value > 65536 * size) {
-						puc->FrameOffset = (opndx.value >> 20);
-						puc++;
-						puc->FrameOffset = (opndx.value >> 4);
-						puc++;
-						puc->UnwindOp = UWOP_SAVE_XMM128_FAR;
-						unw_info.CountOfCodes += 3;
-					}
-			else {
-						puc->FrameOffset = (opndx.value >> 4);
-						puc++;
-						puc->UnwindOp = UWOP_SAVE_XMM128;
-						unw_info.CountOfCodes += 2;
-					}
-					puc->CodeOffset = ofs;
-					puc->OpInfo = reg;
-					break;
-				case T_DOT_SETFRAME:
-			if (opndx.uvalue > 240) {
-						return(EmitConstError(&opndx));
-					}
-					unw_info.FrameRegister = reg;
-					unw_info.FrameOffset = (opndx.uvalue >> 4);
-					puc->CodeOffset = ofs;
-					puc->UnwindOp = UWOP_SET_FPREG;
-					//puc->OpInfo = ( opndx.uvalue >> 4 );
-					puc->OpInfo = reg;
-					unw_info.CountOfCodes++;
-					break;
+				puc->FrameOffset = (opndx.value >> 19);
+				puc++;
+				puc->FrameOffset = (opndx.value >> 3);
+				puc++;
+				puc->UnwindOp = UWOP_SAVE_NONVOL_FAR;
+				unw_info.CountOfCodes += 3;
 			}
+			else {
+				puc->FrameOffset = (opndx.value >> 3);
+				puc++;
+				puc->UnwindOp = UWOP_SAVE_NONVOL;
+				unw_info.CountOfCodes += 2;
+			}
+			puc->CodeOffset = ofs;
+			puc->OpInfo = reg;
 			break;
+		case T_DOT_SAVEXMM128:
+		case T_DOT_SAVEYMM256:
+			if (opndx.value > 65536 * size) {
+				puc->FrameOffset = (opndx.value >> 20);
+				puc++;
+				puc->FrameOffset = (opndx.value >> 4);
+				puc++;
+				puc->UnwindOp = UWOP_SAVE_XMM128_FAR;
+				unw_info.CountOfCodes += 3;
+			}
+			else {
+				puc->FrameOffset = (opndx.value >> 4);
+				puc++;
+				puc->UnwindOp = UWOP_SAVE_XMM128;
+				unw_info.CountOfCodes += 2;
+			}
+			puc->CodeOffset = ofs;
+			puc->OpInfo = reg;
+			break;
+			//case T_DOT_SAVEYMM256:
+			//    if ( opndx.value > 65536 * size ) {
+			//        puc->FrameOffset = ( opndx.value >> 20 );
+			//        puc++;
+			//        puc->FrameOffset = ( opndx.value >> 4 );
+			//        puc++;
+			//        puc->UnwindOp = UWOP_SAVE_YMM256_FAR;
+			//        unw_info.CountOfCodes += 3;
+			//    } else {
+			//        puc->FrameOffset = ( opndx.value >> 4 );
+			//        puc++;
+			//        puc->UnwindOp = UWOP_SAVE_YMM256;
+			//        unw_info.CountOfCodes += 2;
+			//    }
+			//    puc->CodeOffset = ofs;
+			//    puc->OpInfo = reg;
+			//    break;
+		case T_DOT_SAVEZMM512:
+			if (opndx.value > 65536 * size) {
+				puc->FrameOffset = (opndx.value >> 20);
+				puc++;
+				puc->FrameOffset = (opndx.value >> 4);
+				puc++;
+				puc->UnwindOp = UWOP_SAVE_XMM128_FAR;
+				unw_info.CountOfCodes += 3;
+			}
+			else {
+				puc->FrameOffset = (opndx.value >> 4);
+				puc++;
+				puc->UnwindOp = UWOP_SAVE_XMM128;
+				unw_info.CountOfCodes += 2;
+			}
+			puc->CodeOffset = ofs;
+			puc->OpInfo = reg;
+			break;
+		case T_DOT_SETFRAME:
+			if (opndx.uvalue > 240) {
+				return(EmitConstError(&opndx));
+			}
+			unw_info.FrameRegister = reg;
+			unw_info.FrameOffset = (opndx.uvalue >> 4);
+			puc->CodeOffset = ofs;
+			puc->UnwindOp = UWOP_SET_FPREG;
+			//puc->OpInfo = ( opndx.uvalue >> 4 );
+			puc->OpInfo = reg;
+			unw_info.CountOfCodes++;
+			break;
+		}
+		break;
 	}
 	if (tokenarray[i].token != T_FINAL) {
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
@@ -2738,8 +2688,8 @@ static ret_code write_userdef_prologue(struct asm_tok tokenarray[])
 	* both macro arguments and EXITM return value.
 	*/
 	sprintf(buffer, " (%s, 0%XH, 0%XH, 0%XH, <<%s>>, <%s>)",
-			CurrProc->sym.name, flags, info->parasize, info->localsize,
-			reglst, info->prologuearg ? info->prologuearg : "");
+		CurrProc->sym.name, flags, info->parasize, info->localsize,
+		reglst, info->prologuearg ? info->prologuearg : "");
 	i = Token_Count + 1;
 	Token_Count = Tokenize(buffer, i, tokenarray, TOK_RESCAN);
 
@@ -2877,7 +2827,7 @@ static void win64_StoreRegHome(struct proc_info *info)
 				continue;
 			else ++grcount;                                       //find how many general registers to save
 		}
-		//for (i = 0, freeshadow = 0; i<4; i++){
+		//for (i = 0, freeshadow = 0; i<4; i++){                  
 		//  if (info->home_used[i] == 0) ++freeshadow;
 		//}
 		freeshadow -= info->home_taken;                         //find out how many free shadows
@@ -2885,7 +2835,7 @@ static void win64_StoreRegHome(struct proc_info *info)
 			if (grcount == 1) memset(info->home_used, 1, 4);      //1 register only? don't store it, push it to prevent 'sub rsp,...8'
 			else if (grcount == 2 && freeshadow >= 2) {            //store only one egister, another push to prevent 'sub rsp,...8'
 				for (i = 0; i<4; i++) {
-					if (info->home_used[i] == 0) break;               //we need only one space
+					if (info->home_used[i] == 0) break;               //we need only one space   
 				}
 				for (++i; i<4; i++)                                 //the rest of free spaces render as taken
 					info->home_used[i] = 1;
@@ -2905,12 +2855,12 @@ static void win64_StoreRegHome(struct proc_info *info)
 			}
 			else if (grcount == 4 && freeshadow == 4) {          //easy case
 				info->home_used[3] = 1;                           //render the last shadow spaces as taken
-			}                                                   //remember the first space is 0 than 1, 2 and 3 follow
+			}                                                   //remember the first space is 0 than 1, 2 and 3 follow 
 			else if (grcount > 4) {                              //if more registars than spaces
 				freeshadow = grcount - freeshadow;                //find out how many we can store
 				if (!(freeshadow & 1)) {                           //if it is even number
 					for (i = 0; i<4; i++) {                          //than we have to disable one space
-						if (info->home_used[i] == 0) break;           //find the first free space
+						if (info->home_used[i] == 0) break;           //find the first free space 
 					}
 					info->home_used[i] = 1;                         //and render it as taken
 				}
@@ -2943,7 +2893,7 @@ static void win64_StoreRegHome(struct proc_info *info)
 /* ========================================================================================================= */
 /* WIN64 Return a correctly sized sub register from a 64bit fastcall parameter register                      */
 /* ========================================================================================================= */
-static enum special_token GetWin64SubReg(enum special_token srcReg, int type)
+static enum special_token GetWin64SubReg(enum special_token srcReg,int type)
 {
 	if (type == 0)
 	{
@@ -3001,18 +2951,18 @@ static void win64_SaveRegParams_RBP(struct proc_info *info)
 			else if (param->sym.used)
 			{
 				if (param->sym.mem_type == MT_BYTE || param->sym.mem_type == MT_SBYTE)
-					AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, GetWin64SubReg(ms64_regs[i], 0));
+					AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, GetWin64SubReg(ms64_regs[i], 0) );
 				else if (param->sym.mem_type == MT_WORD || param->sym.mem_type == MT_SWORD)
-					AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, GetWin64SubReg(ms64_regs[i], 1));
-				else if (param->sym.mem_type == MT_DWORD || param->sym.mem_type == MT_SDWORD)
-					AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, GetWin64SubReg(ms64_regs[i], 2));
+					AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, GetWin64SubReg(ms64_regs[i], 1) );
+				else if(param->sym.mem_type == MT_DWORD || param->sym.mem_type == MT_SDWORD)
+					AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, GetWin64SubReg(ms64_regs[i], 2) );
 				else
-					AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
+					AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i] );
 			}
 			param = param->nextparam;
 		}
-		else
-		{
+		else 
+		{ 
 			AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
 		}
 	}
@@ -3037,6 +2987,7 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
 	DebugMsg1(("write_win64_default_prologue_RBP enter\n"));
 	check_proc_fpo(info);
 
+	
 	info->pushed_reg = 0;
 
 	if (ModuleInfo.win64_flags & W64F_SAVEREGPARAMS)
@@ -3062,6 +3013,7 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
 				AddLineQueueX("%r %r", T_DOT_PUSHREG, info->basereg);
 		}
 
+	
 		/* Save the non-volatile registers */
 		cntxmm = 0;
 		if (info->regslist) {
@@ -3134,7 +3086,7 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
 			* .ALLOCSTACK localsize
 			*/
 			ppfmt = (resstack ? fmtstk1 : fmtstk0);
-#if STACKPROBE
+			#if STACKPROBE
 			if (info->localsize + stackadj + resstack > 0x1000) {
 				AddLineQueueX(*(ppfmt + 2), T_RAX, NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
 				AddLineQueue("externdef __chkstk:PROC");
@@ -3142,14 +3094,14 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
 				AddLineQueueX("mov %r, %r", T_RSP, T_RAX);
 			}
 			else
-#endif
-				if (info->localsize + stackadj + resstack > 0)
-				{
-					subAmt = info->localsize + stackadj + sym_ReservedStack->value;
-					AddLineQueueX(*(ppfmt + 0), T_RSP, NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
-					if (info->isframe && ModuleInfo.frame_auto)
-						AddLineQueueX(*(ppfmt + 1), T_DOT_ALLOCSTACK, NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
-				}
+			#endif
+			if (info->localsize + stackadj + resstack > 0)
+			{
+				subAmt = info->localsize + stackadj + sym_ReservedStack->value;
+				AddLineQueueX(*(ppfmt + 0), T_RSP, NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
+				if (info->isframe && ModuleInfo.frame_auto)
+					AddLineQueueX(*(ppfmt + 1), T_DOT_ALLOCSTACK, NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
+			}
 		}
 		else if (stackadj + info->localsize > 0 && ModuleInfo.frame_auto)
 		{
@@ -3230,7 +3182,7 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
 				AddLineQueueX("mov %r, %r", info->basereg, T_RSP);
 
 			if (info->isframe && ModuleInfo.frame_auto)
-				AddLineQueueX("%r %r, %d", T_DOT_SETFRAME, info->basereg, info->frameofs);
+				AddLineQueueX( "%r %r, %d", T_DOT_SETFRAME, info->basereg, info->frameofs );
 		}
 
 		if (info->isframe && ModuleInfo.frame_auto)
@@ -3291,34 +3243,34 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 
 	//if (ModuleInfo.win64_flags & W64F_SMART)
 	//{
-	cntxmm = 0;
+		cntxmm = 0;
 		if (info->regslist) {
-		n = 0;
-		regist = info->regslist;
+			n = 0;
+			regist = info->regslist;
 			for (cnt = *regist++; cnt; cnt--, regist++) {
 				if (GetValueSp(*regist) & OP_XMM) {
-				cntxmm += 1;
-			}
+					cntxmm += 1;
+				}
 				else if (GetValueSp(*regist) & OP_YMM) {
-				cntxmm += 1;
-				ymmflag = 1;
-			}
+					cntxmm += 1;
+					ymmflag = 1;
+				}
 				else if (GetValueSp(*regist) & OP_ZMM) {
-				cntxmm += 1;
-				zmmflag = 1;
-			}
+					cntxmm += 1;
+					zmmflag = 1;
+				}
 				else {
-				if (n < info->stored_reg) n++;
+					if (n < info->stored_reg) n++;
 					else {
-					info->pushed_reg += 1;
-					AddLineQueueX("push %r", *regist);
+						info->pushed_reg += 1;
+						AddLineQueueX("push %r", *regist);
 						if ((1 << GetRegNo(*regist)) & win64_nvgpr) {
-						AddLineQueueX("%r %r", T_DOT_PUSHREG, *regist);
+							AddLineQueueX("%r %r", T_DOT_PUSHREG, *regist);
+						}
 					}
 				}
-			}
-		} /* end for */
-	}
+			} /* end for */
+		}
 	//}
 
 	if (zmmflag) XYZMMsize = 64;
@@ -3503,82 +3455,82 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 								continue;                    //REAL4, FLOAT and REAL8 are stored in homespace
 							else if (xreg) {
 								switch (xsize) {
-									case 4:
-										//if (xreg == 2){
-										//  /* this can only happen if there is 2 real4 */
-										//  AddLineQueueX("vmovsd qword ptr [rsp+%d],%r", vsize + vectstart, T_XMM0 + n);
-										//  vsize += 8;
-										//  }
-										//else{
+								case 4:
+									//if (xreg == 2){
+									//  /* this can only happen if there is 2 real4 */
+									//  AddLineQueueX("vmovsd qword ptr [rsp+%d],%r", vsize + vectstart, T_XMM0 + n);
+									//  vsize += 8;
+									//  }
+									//else{
 									for (i = 0, j = 0; i < xreg; i++) {
-											while (xyused[j] != 0) j++;
-											AddLineQueueX("%s dword ptr [rsp+%d],%r", MOVE_SINGLE, vsize + vectstart, T_XMM0 + j);
-											xyused[j] = 1;
-											vsize += 4;
-										}
-										//}
-										break;
-									case 8:
+										while (xyused[j] != 0) j++;
+										AddLineQueueX("%s dword ptr [rsp+%d],%r", MOVE_SINGLE, vsize + vectstart, T_XMM0 + j);
+										xyused[j] = 1;
+										vsize += 4;
+									}
+									//}
+									break;
+								case 8:
 									if (xreg <= 3) {
 										for (i = 0, j = 0; i < xreg; i++) {
-												while (xyused[j] != 0) j++;
-												AddLineQueueX("%s qword ptr [rsp+%d],%r", MOVE_DOUBLE, vsize + vectstart, T_XMM0 + j);
-												xyused[j] = 1;
-												vsize += 8;
-											}
+											while (xyused[j] != 0) j++;
+											AddLineQueueX("%s qword ptr [rsp+%d],%r", MOVE_DOUBLE, vsize + vectstart, T_XMM0 + j);
+											xyused[j] = 1;
+											vsize += 8;
 										}
-										/* this can only happen if there is 8 real8 */
+									}
+									/* this can only happen if there is 8 real8 */
 									else {
-											AddLineQueueX("vmovups ymmword ptr [rsp+%d],%r", vsize + vectstart, T_YMM0 + n);
-											vsize += 64;
-											xyused[n] = 1;
-										}
-										break;
-									case 16:
+										AddLineQueueX("vmovups ymmword ptr [rsp+%d],%r", vsize + vectstart, T_YMM0 + n);
+										vsize += 64;
+										xyused[n] = 1;
+									}
+									break;
+								case 16:
 									if (xreg == 1) {
-											AddLineQueueX("%s oword ptr [rsp+%d],%r", MOVE_UNALIGNED_FLOAT, vsize + vectstart, T_XMM0 + n);
-											xyused[n] = 1;
+										AddLineQueueX("%s oword ptr [rsp+%d],%r", MOVE_UNALIGNED_FLOAT, vsize + vectstart, T_XMM0 + n);
+										xyused[n] = 1;
+										vsize += 16;
+									}
+									else {
+										for (i = 0, j = 0; i < xreg; i++) {
+											while (xyused[j] != 0) j++;
+											AddLineQueueX("%s oword ptr [rsp+%d],%r", MOVE_UNALIGNED_FLOAT, vsize + vectstart, T_XMM0 + j);
+											xyused[j] = 1;
 											vsize += 16;
 										}
+									}
+									break;
+								case 32:
+									if (xreg == 1) {
+										AddLineQueueX("vmovups ymmword ptr [rsp+%d],%r", vsize + vectstart, T_YMM0 + n);
+										xyused[n] = 1;
+										vsize += 32;
+									}
 									else {
 										for (i = 0, j = 0; i < xreg; i++) {
-												while (xyused[j] != 0) j++;
-												AddLineQueueX("%s oword ptr [rsp+%d],%r", MOVE_UNALIGNED_FLOAT, vsize + vectstart, T_XMM0 + j);
-												xyused[j] = 1;
-												vsize += 16;
-											}
-										}
-										break;
-									case 32:
-									if (xreg == 1) {
-											AddLineQueueX("vmovups ymmword ptr [rsp+%d],%r", vsize + vectstart, T_YMM0 + n);
-											xyused[n] = 1;
+											while (xyused[j] != 0) j++;
+											AddLineQueueX("vmovups ymmword ptr [rsp+%d],%r", vsize + vectstart, T_YMM0 + j);
+											xyused[j] = 1;
 											vsize += 32;
 										}
+									}
+									break;
+								case 64:
+									if (xreg == 1) {
+										AddLineQueueX("vmovups zmmword ptr [rsp+%d],%r", vsize + vectstart + xsize, T_ZMM0 + n);
+										xyused[n] = 1;
+										vsize += 64;
+									}
 									else {
 										for (i = 0, j = 0; i < xreg; i++) {
-												while (xyused[j] != 0) j++;
-												AddLineQueueX("vmovups ymmword ptr [rsp+%d],%r", vsize + vectstart, T_YMM0 + j);
-												xyused[j] = 1;
-												vsize += 32;
-											}
-										}
-										break;
-									case 64:
-									if (xreg == 1) {
-											AddLineQueueX("vmovups zmmword ptr [rsp+%d],%r", vsize + vectstart + xsize, T_ZMM0 + n);
-											xyused[n] = 1;
+											while (xyused[j] != 0) j++;
+											AddLineQueueX("vmovups zmmword ptr [rsp+%d],%r", vsize + vectstart + xsize, T_ZMM0 + j);
+											xyused[j] = 1;
 											vsize += 64;
 										}
-									else {
-										for (i = 0, j = 0; i < xreg; i++) {
-												while (xyused[j] != 0) j++;
-												AddLineQueueX("vmovups zmmword ptr [rsp+%d],%r", vsize + vectstart + xsize, T_ZMM0 + j);
-												xyused[j] = 1;
-												vsize += 64;
-											}
-										}
-										break;
+									}
+									break;
 								}
 							}
 						}
@@ -3608,9 +3560,9 @@ static void check_proc_fpo(struct proc_info *info)
 	int usedLocals = 0;
 
 	for (paracurr = info->paralist; paracurr; paracurr = paracurr->nextparam)
-		usedParams++;
+			usedParams++;
 	for (paracurr = info->locallist; paracurr; paracurr = paracurr->nextlocal)
-		usedLocals++;
+			usedLocals++;
 
 	if (info->pushed_reg > 0)
 	{
@@ -3754,7 +3706,7 @@ static void write_win64_default_epilogue_RBP(struct proc_info *info)
 	/*
 	* RESTORE RSP from RBP
 	*/
-	if ((info->isframe && ModuleInfo.frame_auto) || !info->isframe)
+	if ( (info->isframe && ModuleInfo.frame_auto) || !info->isframe )
 	{
 		if (!info->fpo || info->stackparam || info->has_vararg || ModuleInfo.win64_flags & W64F_STACKALIGN16 || ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
 		{
@@ -3781,6 +3733,7 @@ static void write_win64_default_epilogue_RBP(struct proc_info *info)
 
 		pop_register(CurrProc->e.procinfo->regslist);
 
+	
 		if (!info->fpo)
 			AddLineQueueX("pop %r", info->basereg);
 	}
@@ -3943,18 +3896,18 @@ shadow space    |
 /* ========================================================================================================= */
 static void SetLocalOffsets_RBP(struct proc_info *info)
 {
-	struct dsym *curr = NULL;
-	int         cntxmm = 0;
-	int         cntstd = 0;
-	int         start = 0;
-	int         rspalign = TRUE;
-	int         align = CurrWordSize;
-	int         cnt = 0;
-	uint_16     *regs = NULL;
-	int         stackAdj = 0;
+	struct dsym *curr     = NULL;
+	int         cntxmm    = 0;
+	int         cntstd    = 0;
+	int         start     = 0;
+	int         rspalign  = TRUE;
+	int         align     = CurrWordSize;
+	int         cnt       = 0;
+	uint_16     *regs     = NULL;
+	int         stackAdj  = 0;
 	int         paramBase = 0;
-	int         curOfs = 0;
-	int         resstack = ((ModuleInfo.win64_flags & W64F_AUTOSTACKSP) ? sym_ReservedStack->value : 0);
+	int         curOfs    = 0;
+	int         resstack  = ((ModuleInfo.win64_flags & W64F_AUTOSTACKSP) ? sym_ReservedStack->value : 0);
 
 	/* Check if the procedure requires 16byte alignment of all locals */
 	if (ModuleInfo.win64_flags & W64F_STACKALIGN16)
@@ -3983,7 +3936,7 @@ static void SetLocalOffsets_RBP(struct proc_info *info)
 	info->localsize = (16 * cntxmm);
 
 	/* Calculate total space required for locals */
-	for (curr = info->locallist; curr; curr = curr->nextlocal)
+	for (curr = info->locallist; curr; curr = curr->nextlocal) 
 	{
 		uint_32 totalsize = curr->sym.total_size;
 		if (totalsize >= 16)
@@ -4304,26 +4257,26 @@ static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int 
 	/* v2.29: for codeview debug info, store the register index in the symbol */
 	switch (size)
 	{
-		case 8:
-			GetResWName(sysV64_regs[*used], regname);
-			paranode->sym.total_size = 8;
-			paranode->sym.tokval = sysV64_regs[*used];   /* Store register tokval so invoke can use it */
-			break;
-		case 4:
-			GetResWName(sysV64_regs32[*used], regname);
-			paranode->sym.total_size = 4;
-			paranode->sym.tokval = sysV64_regs32[*used]; /* Store register tokval so invoke can use it */
-			break;
-		case 2:
-			GetResWName(sysV64_regs16[*used], regname);
-			paranode->sym.total_size = 2;
-			paranode->sym.tokval = sysV64_regs16[*used]; /* Store register tokval so invoke can use it */
-			break;
-		case 1:
-			GetResWName(sysV64_regs8[*used], regname);
-			paranode->sym.total_size = 1;
-			paranode->sym.tokval = sysV64_regs8[*used];  /* Store register tokval so invoke can use it */
-			break;
+	case 8:
+		GetResWName(sysV64_regs[*used], regname);
+		paranode->sym.total_size = 8;
+		paranode->sym.tokval = sysV64_regs[*used];   /* Store register tokval so invoke can use it */
+		break;
+	case 4:
+		GetResWName(sysV64_regs32[*used], regname);
+		paranode->sym.total_size = 4;
+		paranode->sym.tokval = sysV64_regs32[*used]; /* Store register tokval so invoke can use it */
+		break;
+	case 2:
+		GetResWName(sysV64_regs16[*used], regname);
+		paranode->sym.total_size = 2;
+		paranode->sym.tokval = sysV64_regs16[*used]; /* Store register tokval so invoke can use it */
+		break;
+	case 1:
+		GetResWName(sysV64_regs8[*used], regname);
+		paranode->sym.total_size = 1;
+		paranode->sym.tokval = sysV64_regs8[*used];  /* Store register tokval so invoke can use it */
+		break;
 	}
 
 	paranode->sym.string_ptr = LclAlloc(strlen(regname) + 1);
@@ -4377,7 +4330,7 @@ static void write_sysv_default_prologue_RBP(struct proc_info *info)
 			if (GetValueSp(*regist) & OP_XMM)
 				cntxmm += 1;                         // 1 * 16
 			else if (GetValueSp(*regist) & OP_YMM)
-				cntxmm += 2;                         // 2 * 16
+				cntxmm += 2;                         // 2 * 16		
 			else if (GetValueSp(*regist) & OP_ZMM)
 				cntxmm += 4;                         // 4 * 16
 			else
@@ -5001,7 +4954,7 @@ void write_prologue(struct asm_tok tokenarray[])
 			/* We need this to run over multiple passes to ensure FPO is handled */
 			CurrProc->e.procinfo->localsize = 0;
 			if ((Options.output_format == OFORMAT_COFF || Options.output_format == OFORMAT_BIN) && CurrProc->e.procinfo->isframe)
-				SetLocalOffsets_RBP(CurrProc->e.procinfo);
+				SetLocalOffsets_RBP(CurrProc->e.procinfo); 
 			else if ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)
 				SetLocalOffsets_RBP_SYSV(CurrProc->e.procinfo);
 			else
@@ -5129,6 +5082,7 @@ static void write_generic_epilogue(struct proc_info *info)
 	int resstack = 0;
 	int stackadj = 0;
 
+	
 	check_proc_fpo(info);
 
 	if (ModuleInfo.Ofssize == USE64 && ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP))
@@ -5294,8 +5248,8 @@ static ret_code write_userdef_epilogue(bool flag_iret, struct asm_tok tokenarray
 	/* v2.07: make the numeric arguments more Masm-compatible */
 	//sprintf( buffer,"%s %s, %02XH, %02XH, %02XH, <<%s>>, <%s>", ModuleInfo.proc_epilogue,
 	sprintf(buffer, "%s, 0%XH, 0%XH, 0%XH, <<%s>>, <%s>",
-			CurrProc->sym.name, flags, info->parasize, info->localsize,
-			reglst, info->prologuearg ? info->prologuearg : "");
+		CurrProc->sym.name, flags, info->parasize, info->localsize,
+		reglst, info->prologuearg ? info->prologuearg : "");
 	i = Token_Count + 1;
 	Tokenize(buffer, i, tokenarray, TOK_RESCAN);
 
@@ -5388,7 +5342,7 @@ ret_code RetInstr(int i, struct asm_tok tokenarray[], int count)
 	}
 
 	/* skip this part for IRET */
-	if (is_iret == FALSE)
+	if (is_iret == FALSE) 
 	{
 		if (CurrProc->e.procinfo->basereg == T_ESP || CurrProc->e.procinfo->basereg == T_RSP)
 		{
@@ -5413,9 +5367,9 @@ ret_code RetInstr(int i, struct asm_tok tokenarray[], int count)
 	if (is_iret == FALSE && count == i) {
 		if (ModuleInfo.epiloguemode != PEM_NONE) {
 			switch (CurrProc->sym.langtype) {
-				case LANG_BASIC:
-				case LANG_FORTRAN:
-				case LANG_PASCAL:
+			case LANG_BASIC:
+			case LANG_FORTRAN:
+			case LANG_PASCAL:
 				if (info->parasize != 0) {
 					sprintf(p, "%d%c", info->parasize, ModuleInfo.radix != 10 ? 't' : NULLC);
 				}
@@ -5431,14 +5385,14 @@ ret_code RetInstr(int i, struct asm_tok tokenarray[], int count)
 				break;
 			case LANG_STDCALL:
 				if (!info->has_vararg && info->parasize != 0) {
-						sprintf(p, "%d%c", info->parasize, ModuleInfo.radix != 10 ? 't' : NULLC);
-					}
-					break;
-				case LANG_DELPHICALL:
+					sprintf(p, "%d%c", info->parasize, ModuleInfo.radix != 10 ? 't' : NULLC);
+				}
+				break;
+			case LANG_DELPHICALL:
 				if (info->ReservedStack > 0) {
-						sprintf(p, "%d%c", info->ReservedStack, ModuleInfo.radix != 10 ? 't' : NULLC);
-					}
-					break;
+					sprintf(p, "%d%c", info->ReservedStack, ModuleInfo.radix != 10 ? 't' : NULLC);
+				}
+				break;
 			}
 		}
 	}
