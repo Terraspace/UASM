@@ -65,7 +65,7 @@
 #endif
 
 #define MAX_LINE_LEN            25600  /* no restriction for this number */
-#define MAX_TOKEN				MAX_LINE_LEN - 32  /* max tokens in one line */
+#define MAX_TOKEN  MAX_LINE_LEN - 32  /* max tokens in one line */
 #define MAX_STRING_LEN          MAX_LINE_LEN - 32 /* must be < MAX_LINE_LEN */
 #define MAX_ID_LEN              MAX_LINE_LEN - 32 /*247*/  /* must be < MAX_LINE_LEN */
 #define MAX_STRUCT_ALIGN        64

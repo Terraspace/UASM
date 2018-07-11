@@ -74,22 +74,20 @@ void StoreLine( const char *srcline, int flags, uint_32 lst_position )
     if ( Options.nofastpass )
         return;
 #endif
-    if ( ModuleInfo.GeneratedCode ) /* don't store generated lines! */
-        return;
-    if ( StoreState == FALSE ) /* line store already started? */
-        SaveState();
 
-    i = strlen( srcline );
-    j = ( ( ( flags & 1 ) && ModuleInfo.CurrComment ) ? strlen( ModuleInfo.CurrComment ) : 0 );
-    LineStoreCurr = LclAlloc( i + j + sizeof( struct line_item ) );
-    LineStoreCurr->next = NULL;
-    LineStoreCurr->lineno = GetLineNumber();
-    if ( MacroLevel ) {
-        LineStoreCurr->srcfile = 0xfff;
-    } else {
-        LineStoreCurr->srcfile = get_curr_srcfile();
-    }
-    LineStoreCurr->list_pos = ( lst_position ? lst_position : list_pos );
+	if (ModuleInfo.GeneratedCode) /* don't store generated lines! */
+		return;
+	if (StoreState == FALSE) /* line store already started? */
+		SaveState();
+
+	i = strlen(srcline);
+	j = (((flags & 1) && ModuleInfo.CurrComment) ? strlen(ModuleInfo.CurrComment) : 0);
+	LineStoreCurr = LclAlloc(i + j + sizeof(struct line_item));
+	LineStoreCurr->next = NULL;
+	LineStoreCurr->lineno = GetLineNumber();
+	LineStoreCurr->srcfile = get_curr_srcfile();
+	LineStoreCurr->macro_level = MacroLevel;
+	LineStoreCurr->list_pos = (lst_position ? lst_position : list_pos);
     if ( j ) {
         memcpy( LineStoreCurr->line, srcline, i );
         memcpy( LineStoreCurr->line + i, ModuleInfo.CurrComment, j + 1 );

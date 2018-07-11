@@ -247,6 +247,7 @@ int Mangle(struct asym *sym, char *buffer)
 			mangler = fcmanglers[ModuleInfo.fctype];
 			break;
 		default: /* LANG_NONE */
+
 #if MANGLERSUPP
 			mangler = sym->mangler;
 			if (mangler == NULL)

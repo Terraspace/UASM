@@ -25,9 +25,9 @@ GccUnixR/
 GccUnixD/
 MinGW-w64R/
 MinGW-w64D/
+result/
 
 .codelite
-
 *.exe
 
 # Visual Studio 2015 cache/options directory

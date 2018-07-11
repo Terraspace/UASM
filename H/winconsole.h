@@ -1,4 +1,3 @@
-
 #ifndef _MSC_VER
 # define __in
 # define _In_

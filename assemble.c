@@ -1188,6 +1188,7 @@ static int OnePass( void )
         while ( LineStoreCurr && ModuleInfo.EndDirFound == FALSE ) {
             /* the source line is modified in Tokenize() if it contains a comment! */
 #if USELSLINE==0
+
             strcpy( CurrSource, LineStoreCurr->line );
 #endif
             set_curr_srcfile( LineStoreCurr->srcfile, LineStoreCurr->lineno );
@@ -1196,6 +1197,7 @@ static int OnePass( void )
             MacroLevel = ( LineStoreCurr->srcfile == 0xFFF ? 1 : 0 );
             DebugMsg1(("OnePass(%u) cur/nxt=%X/%X src=%X.%u mlvl=%u: >%s<\n", Parse_Pass+1, LineStoreCurr, LineStoreCurr->next, LineStoreCurr->srcfile, LineStoreCurr->lineno, MacroLevel, LineStoreCurr->line ));
             ModuleInfo.CurrComment = NULL; /* v2.08: added (var is never reset because GetTextLine() isn't called) */
+
 #if USELSLINE
             if ( Token_Count = Tokenize( LineStoreCurr->line, 0, ModuleInfo.tokenarray, TOK_DEFAULT ) )
 #else
