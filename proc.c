@@ -1118,7 +1118,7 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 					proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? CurrWordSize : (2 << proc->sym.seg_ofssize));
 				}
 
-			}
+			
 
 			/* v2.05: the PROC's vararg flag has been set already */
 			//proc->e.procinfo->is_vararg |= paranode->sym.is_vararg;

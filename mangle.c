@@ -189,7 +189,6 @@ static int ms64_decorate( const struct asym *sym, char *buffer )
     memcpy( buffer, sym->name, sym->name_size + 1 );
     return( sym->name_size );
 }
-}
 #endif
 
 #if MANGLERSUPP

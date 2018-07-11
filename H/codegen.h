@@ -83,57 +83,57 @@
 #define IS_MEM_TYPE( op, typ ) ( (op) == MT_##typ || (op) == MT_S##typ )
 #define IS_MEMTYPE_SIZ( op, siz ) ( ( ( (op) & MT_SPECIAL_MASK ) < MT_SPECIAL ) && ( ( (op) & MT_SIZE_MASK ) == ( siz - 1 ) ) )
 
- /*
-  * values for <byte1_info>
-  * 000  : the first byte is opcode, follow by rm_byte
-  * F_16 : the first byte is OPSIZ prefix if in use32 segment
-  * F_32 : the first byte is OPSIZ prefix if in use16 segment
-  * F_0F : the first byte is 0x0F, follow by opcode and rm_byte
-  * the entries must be sorted related to F_0F prefix:
-  * entries < F_0F emit NO 0F prefix, entries >= F_0F emit one.
-  * v2.06: magnitude of this field extended to 8 (previously 4).
-  * the entries with 38/3A must be last in the 0F group!
-  */
+/*
+ * values for <byte1_info>
+ * 000  : the first byte is opcode, follow by rm_byte
+ * F_16 : the first byte is OPSIZ prefix if in use32 segment
+ * F_32 : the first byte is OPSIZ prefix if in use16 segment
+ * F_0F : the first byte is 0x0F, follow by opcode and rm_byte
+ * the entries must be sorted related to F_0F prefix:
+ * entries < F_0F emit NO 0F prefix, entries >= F_0F emit one.
+ * v2.06: magnitude of this field extended to 8 (previously 4).
+ * the entries with 38/3A must be last in the 0F group!
+ */
 enum byte1_info {
-	F_16 = 1,      /* 16bit variant, 66h switches */
-	F_32,          /* 32bit variant, 66h switches */
-	F_16A,         /* 16bit variant, 67h switches */
-	F_32A,         /* 32bit variant, 67h switches */
-	F_F3,          /* F3 prefix (pause: F3 90)    */
+    F_16 = 1,      /* 16bit variant, 66h switches */
+    F_32,          /* 32bit variant, 66h switches */
+    F_16A,         /* 16bit variant, 67h switches */
+    F_32A,         /* 32bit variant, 67h switches */
+    F_F3,          /* F3 prefix (pause: F3 90)    */
 #if AMD64_SUPPORT
-	F_48,          /* REX.W prefix                */
+    F_48,          /* REX.W prefix                */
 #endif
-	F_0F = 16,     /* 0F escape                   */
-	F_0F0F,        /* AMD 3DNow "prefix"          */
-	F_660F,        /* SSEx prefix 1               */
-	F_F20F,        /* SSEx prefix 2               */
-	F_F30F,        /* SSEx prefix 3               */
-	F_0FNO66,      /* 0F escape, no size prefix   */
+    F_0F = 16,     /* 0F escape                   */
+    F_0F0F,        /* AMD 3DNow "prefix"          */
+    F_660F,        /* SSEx prefix 1               */
+    F_F20F,        /* SSEx prefix 2               */
+    F_F30F,        /* SSEx prefix 3               */
+    F_0FNO66,      /* 0F escape, no size prefix   */
 #if AMD64_SUPPORT
-	F_480F,        /* REX.W + 0F prefix ( cmpxchg16b ) */
+    F_480F,        /* REX.W + 0F prefix ( cmpxchg16b ) */
 #endif
-	F_0F38,        /* must be first of 38/3A variants */
-	F_0F3A,
-	F_660F38,
-	F_660F3A,
-	F_F20F38,
-	F_F30F38,
-	F_F20F3A,
+    F_0F38,        /* must be first of 38/3A variants */
+    F_0F3A,
+    F_660F38,
+    F_660F3A,
+    F_F20F38,
+    F_F30F38,
+    F_F20F3A,
 };
 
 #if AVXSUPP
 /* VX_NND is only needed if instruction has more than 2 operands */
 enum vex_info {
-	VX_L = 0x01,    /* VEX.L supported */
-	VX_NND = 0x02,    /* VEX.NDS/NDD not supported */
-	VX_DST = 0x04,    /* VEX.NDD (if op3 is an immediate) */
-	VX_IMM = 0x08,    /* no VEX.NDS if op3 is an immediate */
-	VX_NMEM = 0x10,    /* no VEX.NDS if op1 is a mem ref (vmovs[d|s], vmov[h|l]p[d|s] ) */
-	VX_HALF = 0x20,    /* op2 is half-sized */
-	VX_LL = 0x40,    /* EVEX.LL supported */
+    VX_L     = 0x01,    /* VEX.L supported */
+    VX_NND   = 0x02,    /* VEX.NDS/NDD not supported */
+    VX_DST   = 0x04,    /* VEX.NDD (if op3 is an immediate) */
+    VX_IMM   = 0x08,    /* no VEX.NDS if op3 is an immediate */
+    VX_NMEM  = 0x10,    /* no VEX.NDS if op1 is a mem ref (vmovs[d|s], vmov[h|l]p[d|s] ) */
+    VX_HALF  = 0x20,    /* op2 is half-sized */
+    VX_LL    = 0x40,    /* EVEX.LL supported */
 };
 
 #endif
-extern ret_code         codegen(struct code_info *, uint_32);
+extern ret_code         codegen( struct code_info *, uint_32 );
 
 #endif

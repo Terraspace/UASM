@@ -367,17 +367,17 @@ static void output_opc(struct code_info *CodeInfo)
         case   T_VXORPD: 
         case   T_VORPS: 
         case   T_VXORPS:
-		case   T_VPSLLDQ:
-		case   T_VPSRLDQ:
-		case   T_VPSLLW:
-		case   T_VPSLLD:
-		case   T_VPSLLQ:
-		case   T_VPSRAW:
-		case   T_VPSRAD:
-		case   T_VPSRAQ:
-		case   T_VPSRLW:
-		case   T_VPSRLD:
-		case   T_VPSRLQ:
+		 case   T_VPSLLDQ:
+		 case   T_VPSRLDQ:
+		 case   T_VPSLLW:
+		 case   T_VPSLLD:
+		 case   T_VPSLLQ:
+		 case   T_VPSRAW:
+		 case   T_VPSRAD:
+		 case   T_VPSRAQ:
+		 case   T_VPSRLW:
+		 case   T_VPSRLD:
+		 case   T_VPSRLQ:
         if (CodeInfo->r2type == OP_XMM || CodeInfo->r2type == OP_YMM || CodeInfo->r2type == OP_ZMM)
           break;
           EmitError(INVALID_INSTRUCTION_OPERANDS);
@@ -458,7 +458,6 @@ static void output_opc(struct code_info *CodeInfo)
 	  else
 		  OutputCodeByte(ADRSIZ);
     
-
 #ifdef DEBUG_OUT
     if (fpfix)
       DebugMsg(("output_opc: ERROR: FP emulation byte sequence destroyed by 32-bit address prefix!\n"));
@@ -506,8 +505,6 @@ static void output_opc(struct code_info *CodeInfo)
   }
     //if (CodeInfo->token == T_VMOVSD)
     //  __debugbreak();
-
-
 #if AVXSUPP
        if (CodeInfo->indextype == OP_XMM || CodeInfo->indextype == OP_YMM || CodeInfo->indextype == OP_ZMM) {
          if (CodeInfo->token >= T_VPGATHERDD && CodeInfo->token <= T_VSCATTERQPD)
@@ -750,7 +747,6 @@ static void output_opc(struct code_info *CodeInfo)
                      EmitError(INVALID_INSTRUCTION_OPERANDS);
                   if ((CodeInfo->reg2 <= 7)&&(CodeInfo->reg3 <= 7) && ((CodeInfo->opnd[OPND2].type & OP_M_ANY ) == 0))
                   goto outC5;    // go handle 0xC5 instruction
-
 
 					/* John: Validate 3 operand vex form */
 				  if (CodeInfo->opnd[OPND3].type == OP_NONE && CodeInfo->vexregop == 0 &&
@@ -2039,8 +2035,6 @@ static void output_opc(struct code_info *CodeInfo)
                     if ((CodeInfo->opnd[OPND3].data32h > 0x20)||(CodeInfo->opnd[OPND3].data32h > ~0x20)) 
                       CodeInfo->tuple = TRUE;  
                   }
-                  
-
                   else{
                     if (CodeInfo->token < T_VPSLLD && CodeInfo->token > T_VPRORVQ)
                     EmitError(INVALID_OPERAND_SIZE);
@@ -3016,8 +3010,6 @@ static ret_code match_phase_3( struct code_info *CodeInfo, enum operand_type opn
     DebugMsg1(("match_phase_3 enter, opnd1=%" I32_SPEC "X, searching op2=%" I32_SPEC "X\n", opnd1, opnd2 ));
     
 #if AVXSUPP 
-                               
-
     if ( CodeInfo->token >= VEX_START && ( vex_flags[ CodeInfo->token - VEX_START ] & VX_L ) ) {
         if ( CodeInfo->opnd[OPND1].type & (OP_K | OP_YMM | OP_ZMM | OP_M256) ) {
             if ( opnd2 & OP_ZMM || opnd2 & OP_YMM || opnd2 & OP_K)
@@ -3224,6 +3216,7 @@ static ret_code check_operand_2( struct code_info *CodeInfo, enum operand_type o
 		CodeInfo->opnd[OPND2].type = OP_A;
 	}
 
+
     if( CodeInfo->opnd[OPND2].type == OP_NONE ) {
       if (opnd_clstab[CodeInfo->pinstr->opclsidx].opnd_type[OPND2] != OP_NONE){
         if (CodeInfo->token == T_VGETEXPPD || CodeInfo->token == T_VGETEXPPS)
@@ -3337,7 +3330,7 @@ ret_code codegen( struct code_info *CodeInfo, uint_32 oldofs )
                CodeInfo->rm_byte, CodeInfo->sib,
                CodeInfo->prefix.rex, CodeInfo->prefix.opsiz ));
 #endif
-
+	
 	/* UASM 2.37: force immediate indirect addressing conversion */
 	if (( (CodeInfo->token == T_MOV && CodeInfo->opnd[OPND1].type == OP_R64) || CodeInfo->opnd[OPND1].type == OP_R32 || CodeInfo->opnd[OPND1].type == OP_R16 || CodeInfo->opnd[OPND1].type == OP_R8) && CodeInfo->isptr && CodeInfo->opnd[OPND1].data32h > 0)
 	{
@@ -3399,4 +3392,6 @@ ret_code codegen( struct code_info *CodeInfo, uint_32 oldofs )
     DebugMsg(("codegen: no matching format found\n"));
     EmitError( INVALID_INSTRUCTION_OPERANDS );
     return( ERROR );
+
 }
+
