@@ -32,10 +32,10 @@
 #define _TBYTE_H
 
 struct TB_LD {
-    uint_64 m;
-    unsigned short e;
+	uint_64 m;
+	unsigned short e;
 };
 
-struct TB_LD *strtotb( const char *bufptr, struct TB_LD *pld, char negative );
+struct TB_LD *strtotb(const char *bufptr, struct TB_LD *pld, char negative);
 
 #endif

@@ -41,7 +41,7 @@
 #endif
 #endif
 
-typedef int (*mangle_func)( const struct asym *, char * );
+typedef int(*mangle_func)( const struct asym *, char * );
 
 static int ms32_decorate( const struct asym *sym, char *buffer );
 #if OWFC_SUPPORT
@@ -247,6 +247,7 @@ int Mangle( struct asym *sym, char *buffer )
         mangler = fcmanglers[ModuleInfo.fctype];
         break;
     default: /* LANG_NONE */
+
 #if MANGLERSUPP
         mangler = sym->mangler;
         if( mangler == NULL )
