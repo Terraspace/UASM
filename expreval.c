@@ -1163,7 +1163,6 @@ static ret_code get_operand(struct expr *opnd, int *idx, struct asm_tok tokenarr
                 if ( opnd->type && *opnd->type->name ) {
 						fnEmitErr(MEMBER_NOT_DEFINED, opnd->type->name, tmp);
                 } else {
-
                   if ((0 == _memicmp(tokenarray[0].tokpos, "if", 2)) &&
                       (0 == _memicmp(tokenarray[1].tokpos, "0", 1)) &&
                       (0 == _memicmp(tokenarray[2].tokpos, "and", 3)))

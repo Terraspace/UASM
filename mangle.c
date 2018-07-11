@@ -190,6 +190,7 @@ static int ms64_decorate(const struct asym *sym, char *buffer)
 		return(sym->name_size);
 	}
 }
+}
 #endif
 
 #if MANGLERSUPP
@@ -247,6 +248,7 @@ int Mangle(struct asym *sym, char *buffer)
 			mangler = fcmanglers[ModuleInfo.fctype];
 			break;
 		default: /* LANG_NONE */
+
 #if MANGLERSUPP
 			mangler = sym->mangler;
 			if (mangler == NULL)

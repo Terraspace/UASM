@@ -1063,6 +1063,63 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 				*/
 				//proc->e.procinfo->parasize += ROUND_UP( ti.size, CurrWordSize );
 
+				if (paranode->sym.langtype == LANG_VECTORCALL)
+				{
+					switch (CurrWordSize)
+					{
+						case 8:
+							switch (ti.mem_type)
+							{
+								case MT_OWORD:
+									proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 2 * CurrWordSize : 2 * (2 << proc->sym.seg_ofssize));
+									break;
+
+								case MT_YMMWORD:
+									proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 4 * CurrWordSize : 4 * (2 << proc->sym.seg_ofssize));
+									break;
+
+								case MT_ZMMWORD:
+									proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 8 * CurrWordSize : 8 * (2 << proc->sym.seg_ofssize));
+									break;
+
+								default:
+									proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? CurrWordSize : (2 << proc->sym.seg_ofssize));
+									break;
+							}
+							break;
+
+						case 4:
+							switch (ti.mem_type)
+							{
+								case MT_OWORD:
+									proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 4 * CurrWordSize : 4 * (2 << proc->sym.seg_ofssize));
+									break;
+
+								case MT_YMMWORD:
+									proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 8 * CurrWordSize : 8 * (2 << proc->sym.seg_ofssize));
+									break;
+
+								case MT_ZMMWORD:
+									proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 16 * CurrWordSize : 16 * (2 << proc->sym.seg_ofssize));
+									break;
+
+								default:
+									proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? CurrWordSize : (2 << proc->sym.seg_ofssize));
+									break;
+							}
+							break;
+
+						default:
+							proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? CurrWordSize : (2 << proc->sym.seg_ofssize));
+							break;
+					}
+
+				} else {
+					proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? CurrWordSize : (2 << proc->sym.seg_ofssize));
+				}
+
+			}
+
 				switch (CurrWordSize)
 				{
 					case 8:
@@ -5360,19 +5417,19 @@ ret_code RetInstr(int i, struct asm_tok tokenarray[], int count)
 				case LANG_FORTRAN:
 				case LANG_PASCAL:
 				if (info->parasize != 0) {
-						sprintf(p, "%d%c", info->parasize, ModuleInfo.radix != 10 ? 't' : NULLC);
-					}
-					break;
-				case LANG_FASTCALL:
-					fastcall_tab[ModuleInfo.fctype].handlereturn(CurrProc, buffer);
-					break;
+					sprintf(p, "%d%c", info->parasize, ModuleInfo.radix != 10 ? 't' : NULLC);
+				}
+				break;
+			case LANG_FASTCALL:
+				fastcall_tab[ModuleInfo.fctype].handlereturn(CurrProc, buffer);
+				break;
 				case LANG_VECTORCALL:
 					vectorcall_tab[ModuleInfo.fctype].handlereturn(CurrProc, buffer);
 					break;
-				case LANG_SYSVCALL:
-					sysvcall_tab[ModuleInfo.fctype].handlereturn(CurrProc, buffer);
-					break;
-				case LANG_STDCALL:
+			case LANG_SYSVCALL:
+				sysvcall_tab[ModuleInfo.fctype].handlereturn(CurrProc, buffer);
+				break;
+			case LANG_STDCALL:
 				if (!info->has_vararg && info->parasize != 0) {
 						sprintf(p, "%d%c", info->parasize, ModuleInfo.radix != 10 ? 't' : NULLC);
 					}
