@@ -935,13 +935,25 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 				/* UASM 2.46.10 prevent symbols that are moved to stack whose size is turned from ptr to machine word size from breaking the proto vs proc defition of a ptr type */
 				if (ti.mem_type == MT_PTR && paracurr->sym.state == SYM_STACK && 
 					(paracurr->sym.mem_type == MT_QWORD && CurrWordSize == 8) || 
-					(paracurr->sym.mem_type == MT_DWORD && CurrWordSize == 4) )
+					(paracurr->sym.mem_type == MT_OWORD && CurrWordSize == 8) ||
+					(paracurr->sym.mem_type == MT_YMMWORD && CurrWordSize == 8) ||
+					(paracurr->sym.mem_type == MT_ZMMWORD && CurrWordSize == 8) ||
+					(paracurr->sym.mem_type == MT_DWORD && CurrWordSize == 4) ||
+					(paracurr->sym.mem_type == MT_OWORD && CurrWordSize == 4) ||
+					(paracurr->sym.mem_type == MT_YMMWORD && CurrWordSize == 4) ||
+					(paracurr->sym.mem_type == MT_ZMMWORD && CurrWordSize == 4))
 				{
 
 				}
 				else if (paracurr->sym.mem_type == MT_PTR && paracurr->sym.state == SYM_STACK &&
 					(ti.mem_type == MT_QWORD && CurrWordSize == 8) ||
-					(ti.mem_type == MT_DWORD && CurrWordSize == 4))
+					(ti.mem_type == MT_OWORD && CurrWordSize == 8) ||
+					(ti.mem_type == MT_YMMWORD && CurrWordSize == 8) ||
+					(ti.mem_type == MT_ZMMWORD && CurrWordSize == 8) ||
+					(ti.mem_type == MT_DWORD && CurrWordSize == 4) ||
+					(ti.mem_type == MT_OWORD && CurrWordSize == 4) ||
+					(ti.mem_type == MT_YMMWORD && CurrWordSize == 4) ||
+					(ti.mem_type == MT_ZMMWORD && CurrWordSize == 4))
 				{
 
 				}

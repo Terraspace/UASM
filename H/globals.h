@@ -134,7 +134,7 @@
 #define VMXSUPP      1 /* support VMX extensions                 */
 #endif
 #ifndef SVMSUPP
-#define SVMSUPP      0 /* support SVM (=AMD-V) extensions        */
+#define SVMSUPP      1 /* support SVM (=AMD-V) extensions        */
 #endif
 #ifndef SSSE3SUPP
 #define SSSE3SUPP    1 /* support SSSE3 instruction set          */
@@ -146,7 +146,7 @@
 #define AVXSUPP      1 /* support AVX extensions                 */
 #endif
 #ifndef EVEXSUPP
-#define EVEXSUPP      0 /* support AVX extensions                 */
+#define EVEXSUPP      1 /* support AVX extensions                 */
 #endif
 #ifndef COMDATSUPP
 #define COMDATSUPP   1 /* support COMDAT segment attribute       */
@@ -163,7 +163,7 @@
 #define BACKQUOTES   1 /* allow IDs enclosed in `                */
 #define FPIMMEDIATE  1 /* allow float immediates: mov eax,1.0    */
 #define INCBINSUPP   1 /* support INCBIN directive               */
-#define INTELMOVQ    0 /* 1=MOVQ moves to/from 64-bit registers  */
+#define INTELMOVQ    1 /* 1=MOVQ moves to/from 64-bit registers  */
 #ifndef OWFC_SUPPORT
 #define OWFC_SUPPORT 1 /* support OW fastcall flavor             */
 #endif

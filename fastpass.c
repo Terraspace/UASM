@@ -84,8 +84,8 @@ void StoreLine( const char *srcline, int flags, uint_32 lst_position )
     LineStoreCurr = LclAlloc( i + j + sizeof( struct line_item ) );
     LineStoreCurr->next = NULL;
     LineStoreCurr->lineno = GetLineNumber();
-        LineStoreCurr->srcfile = get_curr_srcfile();
-	LineStoreCurr->macro_level = MacroLevel;
+    LineStoreCurr->srcfile = get_curr_srcfile();
+    LineStoreCurr->macro_level = MacroLevel;
     LineStoreCurr->list_pos = ( lst_position ? lst_position : list_pos );
     if ( j ) {
         memcpy( LineStoreCurr->line, srcline, i );
