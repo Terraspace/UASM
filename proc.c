@@ -933,15 +933,28 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 					tn != to))) {
 
 				/* UASM 2.46.10 prevent symbols that are moved to stack whose size is turned from ptr to machine word size from breaking the proto vs proc defition of a ptr type */
+				/* UASM 2.47.1 added additional types */
 				if (ti.mem_type == MT_PTR && paracurr->sym.state == SYM_STACK && 
-					(paracurr->sym.mem_type == MT_QWORD && CurrWordSize == 8) || 
-					(paracurr->sym.mem_type == MT_DWORD && CurrWordSize == 4) )
+					(paracurr->sym.mem_type == MT_QWORD && CurrWordSize == 8) ||
+					(paracurr->sym.mem_type == MT_OWORD && CurrWordSize == 8) ||
+					(paracurr->sym.mem_type == MT_YMMWORD && CurrWordSize == 8) ||
+					(paracurr->sym.mem_type == MT_ZMMWORD && CurrWordSize == 8) ||
+					(paracurr->sym.mem_type == MT_DWORD && CurrWordSize == 4) ||
+					(paracurr->sym.mem_type == MT_OWORD && CurrWordSize == 4) ||
+					(paracurr->sym.mem_type == MT_YMMWORD && CurrWordSize == 4) ||
+					(paracurr->sym.mem_type == MT_ZMMWORD && CurrWordSize == 4))
 				{
 
 				}
 				else if (paracurr->sym.mem_type == MT_PTR && paracurr->sym.state == SYM_STACK &&
 					(ti.mem_type == MT_QWORD && CurrWordSize == 8) ||
-					(ti.mem_type == MT_DWORD && CurrWordSize == 4))
+					(ti.mem_type == MT_OWORD && CurrWordSize == 8) ||
+					(ti.mem_type == MT_YMMWORD && CurrWordSize == 8) ||
+					(ti.mem_type == MT_ZMMWORD && CurrWordSize == 8) ||
+					(ti.mem_type == MT_DWORD && CurrWordSize == 4) ||
+					(ti.mem_type == MT_OWORD && CurrWordSize == 4) ||
+					(ti.mem_type == MT_YMMWORD && CurrWordSize == 4) ||
+					(ti.mem_type == MT_ZMMWORD && CurrWordSize == 4))
 				{
 
 				}
@@ -1015,7 +1028,7 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 				/* this is where vectors are intercepted  and writen to the proc */
 				if (proc->sym.langtype == LANG_VECTORCALL) {
 					if (ti.mem_type == MT_REAL4 || ti.mem_type == MT_REAL8 ||
-						ti.mem_type == MT_OWORD || ti.mem_type == MT_YMMWORD) {
+						ti.mem_type == MT_OWORD || ti.mem_type == MT_YMMWORD || ti.mem_type == MT_ZMMWORD) {
 						proc->e.procinfo->vecregsize[cntParam] = ti.size;
 						proc->e.procinfo->vecregs[cntParam] = 1;
 						if (ti.size >= 16) proc->e.procinfo->vsize += ti.size;
@@ -1051,11 +1064,63 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 			paranode->sym.total_size = ti.size;
 
 			if (paranode->sym.is_vararg == FALSE)
-				/* v2.11: CurrWordSize does reflect the default parameter size only for PROCs.
-				* For PROTOs and TYPEs use member seg_ofssize.
-				*/
-				//proc->e.procinfo->parasize += ROUND_UP( ti.size, CurrWordSize );
-				proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? CurrWordSize : (2 << proc->sym.seg_ofssize));
+			{
+				if (proc->sym.langtype == LANG_VECTORCALL)
+				{
+					switch (CurrWordSize)
+					{
+					case 8:
+						switch (ti.mem_type)
+						{
+						case MT_OWORD:
+							proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 2 * CurrWordSize : 2 * (2 << proc->sym.seg_ofssize));
+							break;
+
+						case MT_YMMWORD:
+							proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 4 * CurrWordSize : 4 * (2 << proc->sym.seg_ofssize));
+							break;
+
+						case MT_ZMMWORD:
+							proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 8 * CurrWordSize : 8 * (2 << proc->sym.seg_ofssize));
+							break;
+
+						default:
+							proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? CurrWordSize : (2 << proc->sym.seg_ofssize));
+							break;
+						}
+						break;
+
+					case 4:
+						switch (ti.mem_type)
+						{
+						case MT_OWORD:
+							proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 4 * CurrWordSize : 4 * (2 << proc->sym.seg_ofssize));
+							break;
+
+						case MT_YMMWORD:
+							proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 8 * CurrWordSize : 8 * (2 << proc->sym.seg_ofssize));
+							break;
+
+						case MT_ZMMWORD:
+							proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 16 * CurrWordSize : 16 * (2 << proc->sym.seg_ofssize));
+							break;
+
+						default:
+							proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? CurrWordSize : (2 << proc->sym.seg_ofssize));
+							break;
+						}
+						break;
+
+					default:
+						proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? CurrWordSize : (2 << proc->sym.seg_ofssize));
+						break;
+					}
+				}
+				else
+				{
+					proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? CurrWordSize : (2 << proc->sym.seg_ofssize));
+				}
+			}
 
 			/* v2.05: the PROC's vararg flag has been set already */
 			//proc->e.procinfo->is_vararg |= paranode->sym.is_vararg;
@@ -5322,6 +5387,9 @@ ret_code RetInstr(int i, struct asm_tok tokenarray[], int count)
 			case LANG_FASTCALL:
 				fastcall_tab[ModuleInfo.fctype].handlereturn(CurrProc, buffer);
 				break;
+			case LANG_VECTORCALL:
+				vectorcall_tab[ModuleInfo.fctype].handlereturn(CurrProc, buffer);
+				break;
 			case LANG_SYSVCALL:
 				sysvcall_tab[ModuleInfo.fctype].handlereturn(CurrProc, buffer);
 				break;
@@ -5365,14 +5433,8 @@ void ProcInit(void)
 	ModuleInfo.epiloguemode = PEM_DEFAULT;
 	/* v2.06: no forward references in INVOKE if -Zne is set */
 	ModuleInfo.invoke_exprparm = (Options.strict_masm_compat ? EXPF_NOUNDEF : 0);
-#if STACKBASESUPP
 	ModuleInfo.basereg[USE16] = T_BP;
 	ModuleInfo.basereg[USE32] = T_EBP;
-#if AMD64_SUPPORT
 	ModuleInfo.basereg[USE64] = T_RBP;
-#endif
-#endif
-#if AMD64_SUPPORT
 	unw_segs_defined = 0;
-#endif
 }

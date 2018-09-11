@@ -110,12 +110,23 @@ static int StdcallMangler( const struct asym *sym, char *buffer )
     }
 }
 
-/* MS FASTCALL 32bit */
+/* MS FASTCALL or VECTORCALL 32bit */
 
 static int ms32_decorate( const struct asym *sym, char *buffer )
 /**************************************************************/
 {
-    return ( sprintf( buffer, "@%s@%u", sym->name, ((struct dsym *)sym)->e.procinfo->parasize ) );
+   // return ( sprintf( buffer, "@%s@%u", sym->name, ((struct dsym *)sym)->e.procinfo->parasize ) );
+	const struct dsym *dir = (struct dsym *)sym;
+	if ((sym->langtype == LANG_VECTORCALL) && (Options.vectorcall_decoration == VECTORCALL_FULL) && sym->isproc) {
+		return(sprintf(buffer, "%s@@%d", sym->name, dir->e.procinfo->parasize));
+	}
+	else if (Options.fctype == FCT_MSC && sym->isproc) {
+		return (sprintf(buffer, "@%s@%u", sym->name, ((struct dsym *)sym)->e.procinfo->parasize));
+	}
+	else {
+		memcpy(buffer, sym->name, sym->name_size + 1);
+		return(sym->name_size);
+	}
 }
 
 #if OWFC_SUPPORT
@@ -168,13 +179,21 @@ static int ow_decorate( const struct asym *sym, char *buffer )
 
 #if AMD64_SUPPORT
 
-/* MS FASTCALL 64bit */
+/* MS FASTCALL or VECTORCALL 64bit */
 
 static int ms64_decorate( const struct asym *sym, char *buffer )
 /**************************************************************/
 {
-    memcpy( buffer, sym->name, sym->name_size + 1 );
-    return( sym->name_size );
+    //memcpy( buffer, sym->name, sym->name_size + 1 );
+    //return( sym->name_size );
+	const struct dsym *dir = (struct dsym *)sym;
+	if ((sym->langtype == LANG_VECTORCALL) && (Options.vectorcall_decoration == VECTORCALL_FULL) && sym->isproc) {
+		return(sprintf(buffer, "%s@@%d", sym->name, dir->e.procinfo->parasize));
+	}
+	else {
+		memcpy(buffer, sym->name, sym->name_size + 1);
+		return(sym->name_size);
+	}
 }
 #endif
 
@@ -228,6 +247,7 @@ int Mangle( struct asym *sym, char *buffer )
     case LANG_BASIC:
         mangler = UCaseMangler;
         break;
+	case LANG_VECTORCALL:
     case LANG_FASTCALL:          /* registers passing parameters */
         mangler = fcmanglers[ModuleInfo.fctype];
         break;

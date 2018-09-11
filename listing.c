@@ -864,6 +864,8 @@ static void log_proc( const struct asym *sym )
         if ( sym->langtype == LANG_C ||
             sym->langtype == LANG_SYSCALL ||
             sym->langtype == LANG_STDCALL ||
+			sym->langtype == LANG_VECTORCALL ||
+			sym->langtype == LANG_SYSVCALL ||
             sym->langtype == LANG_FASTCALL ) {
             int cnt;
             /* position f2 to last param */
