@@ -178,7 +178,7 @@ void AddSimdTypes()
 	AddLineQueue("d64 __m256d <>");
 	AddLineQueue("q64 __m256q <>");
 	AddLineQueue("__m256 ends");
-	/*
+	
 	AddLineQueue("__m512b struct");
 	AddLineQueue("b0 BYTE ?");
 	AddLineQueue("b1 BYTE ?");
@@ -349,7 +349,7 @@ void AddSimdTypes()
 	AddLineQueue("d64 __m512d <>");
 	AddLineQueue("q64 __m512q <>");
 	AddLineQueue("__m512 ends");
-	*/
+	
 	RunLineQueue();
 
 }
