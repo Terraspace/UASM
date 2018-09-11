@@ -69,7 +69,7 @@
 #define MAX_TOKEN  MAX_LINE_LEN - 32  /* max tokens in one line */
 #define MAX_STRING_LEN          MAX_LINE_LEN - 32 /* must be < MAX_LINE_LEN */
 #define MAX_ID_LEN              247  /* must be < MAX_LINE_LEN */
-#define MAX_STRUCT_ALIGN        32
+#define MAX_STRUCT_ALIGN        64
 #define MAX_SEGMENT_ALIGN       4096 /* maximum alignment/packing setting for segments */
 #define MAX_IF_NESTING          20 /* IFxx block nesting. Must be <=32, see condasm.c */
 #define MAX_SEG_NESTING         20 /* limit for segment nesting  */
@@ -493,6 +493,13 @@ enum stdcall_decoration {
     STDCALL_HALF
 };
 
+enum vectorcall_decoration
+{
+	VECTORCALL_FULL,
+	VECTORCALL_NONE,
+	VECTORCALL_HALF
+};
+
 struct qitem {
     void *next;
     char value[1];
@@ -644,7 +651,6 @@ struct global_options {
 #endif
     bool        no_comment_data_in_code_records; /* -zlc option */
     bool        no_opt_farcall;          /* -zld option */
-//    bool        no_dependencies;         /* -zld option */
 #if COFF_SUPPORT
     bool        no_file_entry;           /* -zlf option */
     bool        no_static_procs;         /* -zlp option */
@@ -652,6 +658,7 @@ struct global_options {
 #endif
     bool        no_cdecl_decoration;     /* -zcw & -zcm option */
     uint_8      stdcall_decoration;      /* -zt<0|1|2> option */
+	uint_8      vectorcall_decoration;   /* -zv<0|1|2> option */
     bool        no_export_decoration;    /* -zze option */
     bool        entry_decorated;         /* -zzs option  */
     bool        write_listing;           /* -Fl option  */
@@ -733,8 +740,6 @@ struct module_vars {
     unsigned            error_count;     /* total of errors so far */
     unsigned            warning_count;   /* total of warnings so far */
     unsigned            num_segs;        /* number of segments in module */
-    /* v2.07: GlobalQueue is obsolete */
-    //struct qdesc        GlobalQueue;     /* GLOBAL items ( =externdefs ) */
     struct qdesc        PubQueue;        /* PUBLIC items */
     struct qdesc        LnameQueue;      /* LNAME items (segments, groups and classes) */
 #if COFF_SUPPORT
@@ -929,9 +934,6 @@ extern char *MOVE_SIMD_QWORD;
 /* global flag to indicate when inside macro body */
 extern bool inMacroBody;
 
-/* track total auto-generated literal string count */
-//extern uint_32 literalCnt;
-
 extern struct global_options Options;
 extern struct module_info    ModuleInfo;
 extern unsigned int          Parse_Pass;    /* assembly pass */
@@ -939,9 +941,6 @@ extern unsigned int          Parse_Pass;    /* assembly pass */
 extern uint_8                MacroLevel;    /* macro nesting level */
 extern bool                  write_to_file; /* 1=write the object module */
 extern bool                  gmaskflag;
-/* Information about source, object, listing and error files */
-//extern FILE                  *CurrFile[];   /* ASM, ERR, OBJ and LST */
-//extern char                  *CurrFName[];  /* ASM, ERR, OBJ and LST */
 
 /* functions in assemble.c */
 

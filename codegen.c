@@ -368,23 +368,37 @@ static void output_opc(struct code_info *CodeInfo)
         case   T_VXORPD: 
         case   T_VORPS: 
         case   T_VXORPS:
-        case   T_PSLLDQ:
-        case   T_PSRLDQ:
-        case   T_PSLLW:
-        case   T_PSLLD:
-        case   T_PSLLQ:
-        case   T_PSRAW:
-        case   T_PSRAD:
-        case   T_PSRAQ:
-        case   T_PSRLW:
-        case   T_PSRLD:
-        case   T_PSRLQ:
+        /*case   T_VPSLLDQ:
+          case   T_VPSRLDQ:
+          case   T_VPSLLW:
+          case   T_VPSLLD:
+          case   T_VPSLLQ:
+          case   T_VPSRAW:
+          case   T_VPSRAD:
+          case   T_VPSRAQ:
+          case   T_VPSRLW:
+          case   T_VPSRLD:
+          case   T_VPSRLQ:*/
         if (CodeInfo->r2type == OP_XMM || CodeInfo->r2type == OP_YMM || CodeInfo->r2type == OP_ZMM)
           break;
           EmitError(INVALID_INSTRUCTION_OPERANDS);
         }
       //}
-
+      /* AVX512 instructions only, the first parameter must be Kn register:
+        VPCMPB,VPCMPUB,VPCMPD,VPCMPUD,VPCMPQ,VPCMPUQ,VPCMPW,VPCMPUW */
+      switch (CodeInfo->token){
+        case   T_VPCMPD:
+        case   T_VPCMPUD:
+        case   T_VPCMPQ:
+        case   T_VPCMPUQ:
+        case   T_VPCMPW:
+        case   T_VPCMPUW:
+        case   T_VPCMPB:
+        case   T_VPCMPUB:
+          if (CodeInfo->r1type == OP_K)
+          break;
+          EmitError(INVALID_INSTRUCTION_OPERANDS);
+      }
    /*	if (CodeInfo->token >= T_VPORD && CodeInfo->token <= T_PSRLDQ){
 		if (decoflags == 0 && CodeInfo->r1type != OP_K)
         CodeInfo->evex_flag = 0;

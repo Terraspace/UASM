@@ -28,7 +28,6 @@
 *
 ****************************************************************************/
 
-
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -37,6 +36,10 @@
 
 #if defined( _M_IX86 ) && defined(__WATCOMC__)
 #include <i86.h>
+#endif
+
+#ifdef __GNUC__
+#include <errno.h>
 #endif
 
 #include "trmem.h"

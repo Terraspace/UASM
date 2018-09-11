@@ -1,3 +1,10 @@
+
+#ifndef _MSC_VER
+	# define __in
+	# define _In_
+	# define _Out_
+#endif
+
 #define STD_OUTPUT_HANDLE   ((DWORD)-11)
 typedef void *HANDLE;
 

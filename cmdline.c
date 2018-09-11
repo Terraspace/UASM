@@ -114,6 +114,7 @@ struct global_options Options = {
 #endif
     /* no_cdecl_decoration   */     FALSE,
     /* stdcall_decoration    */     STDCALL_FULL,
+	/* vectorcall_decoration */     VECTORCALL_FULL,
     /* no_export_decoration  */     FALSE,
     /* entry_decorated       */     FALSE,
     /* write_listing         */     FALSE,
@@ -542,6 +543,8 @@ static void OPTQUAL Set_zt( void ) { Options.stdcall_decoration = OptValue; }
 static void OPTQUAL Set_h( void ) {  PrintUsage();  exit(1); }
 #endif
 
+static void OPTQUAL Set_zv(void) { Options.vectorcall_decoration = OptValue; }
+
 #ifdef DEBUG_OUT
 static void OPTQUAL Set_dm( void )
 {
@@ -746,6 +749,9 @@ static struct cmdloption const cmdl_options[] = {
     { "zt0",    STDCALL_NONE, Set_zt },
     { "zt1",    STDCALL_HALF, Set_zt },
     { "zt2",    STDCALL_FULL, Set_zt },
+	{ "zv0",    VECTORCALL_NONE, Set_zv },
+	{ "zv1",    VECTORCALL_HALF, Set_zv },
+	{ "zv2",    VECTORCALL_FULL, Set_zv },
     { "Zv8",    optofs( masm8_proc_visibility ), Set_True },
     { "zze",    optofs( no_export_decoration ),  Set_True },
 #if COFF_SUPPORT
