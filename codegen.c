@@ -3350,6 +3350,20 @@ ret_code codegen( struct code_info *CodeInfo, uint_32 oldofs )
                CodeInfo->prefix.rex, CodeInfo->prefix.opsiz ));
 #endif
 	
+	/* UASM 2.47 force non-sized jmp to match current word size */
+	if (CodeInfo->token == T_JMP && CodeInfo->mem_type == MT_EMPTY)
+	{
+		if (CodeInfo->opnd[0].type == OP_IGE8)
+		{
+			if (CurrWordSize == 2)
+				CodeInfo->mem_type = MT_WORD;
+			else if (CurrWordSize == 4)
+				CodeInfo->mem_type = MT_DWORD;
+			else if (CurrWordSize == 8)
+				CodeInfo->mem_type = MT_QWORD;
+		}
+	}
+
 	/* UASM 2.37: force immediate indirect addressing conversion */
 	if (( (CodeInfo->token == T_MOV && CodeInfo->opnd[OPND1].type == OP_R64) || CodeInfo->opnd[OPND1].type == OP_R32 || CodeInfo->opnd[OPND1].type == OP_R16 || CodeInfo->opnd[OPND1].type == OP_R8) && CodeInfo->isptr && CodeInfo->opnd[OPND1].data32h > 0)
 	{

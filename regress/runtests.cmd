@@ -31,6 +31,8 @@ for %%f in (..\src\flat16\*.asm) do call :flat16 %%f
 for %%f in (..\src\avxerr\*.asm) do call :avxerr %%f
 for %%f in (..\src\invoke64err\*.asm) do call :invoke64err %%f
 for %%f in (..\src\avx512\*.asm) do call :cmpavx512 %%f
+for %%f in (..\src\defined\*.asm) do call :defined %%f
+for %%f in (..\src\vectorcall\*.asm) do call :vectorcall %%f
 
 cd ..
 echo .
@@ -243,6 +245,30 @@ echo .
 echo .
 %ASMX% -q -bin %1
 %FCMP% %~n1.bin ..\exp\avx512\%~n1.bin
+if errorlevel 1 goto end
+del %~n1.bin
+goto end
+
+:defined
+echo ****************************************************************
+ECHO %1
+echo ****************************************************************
+echo .
+echo .
+%ASMX% -c -win64 -Zp8 %1
+%FCMP% /O16 %~n1.obj ..\exp\vectorcall\%~n1.obj
+if errorlevel 1 goto end
+del %~n1.bin
+goto end
+
+:vectorcall
+echo ****************************************************************
+ECHO %1
+echo ****************************************************************
+echo .
+echo .
+%ASMX% -c -win64 -Zp8 %1
+%FCMP% /O16 %~n1.obj ..\exp\vectorcall\%~n1.obj
 if errorlevel 1 goto end
 del %~n1.bin
 goto end
