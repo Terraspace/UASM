@@ -57,6 +57,7 @@ $(OUTD)/simd.o     \
 $(OUTD)/simsegm.o  \
 $(OUTD)/string.o   \
 $(OUTD)/symbols.o  \
+$(OUTD)/simd.o     \
 $(OUTD)/tbyte.o    \
 $(OUTD)/tokenize.o \
 $(OUTD)/types.o
