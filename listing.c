@@ -274,8 +274,6 @@ void LstWrite( enum lsttype type, uint_32 oldofs, void *value )
         break;
     case LSTTYPE_TMACRO:
         ll.buffer[1] = '=';
-        //GetLiteralValue( buffer2, sym->string_ptr );
-        //strcpy( buffer2, sym->string_ptr );
         for ( p1 = sym->string_ptr, p2 = &ll.buffer[3], pll = &ll; *p1; ) {
             if ( p2 >= &pll->buffer[28] ) {
                 struct lstleft *next = myalloca( sizeof( struct lstleft ) );

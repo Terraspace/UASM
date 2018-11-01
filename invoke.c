@@ -3126,7 +3126,7 @@ static int ParamIsString(char *pStr, int param, struct dsym* proc) {
 		}
 	}
 
-	if (p && mtype != MT_PTR && !p->sym.is_vararg)
+	if (!p)
 		return(FALSE);
 
 	c = *pS;
@@ -3144,6 +3144,13 @@ static int ParamIsString(char *pStr, int param, struct dsym* proc) {
 		}
 		pS++;
 	}
+
+	if (p && mtype != MT_PTR && !p->sym.is_vararg)
+	{
+		EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, param);
+		return(FALSE);
+	}
+
 	return(TRUE);
 }
 
