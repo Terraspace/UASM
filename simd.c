@@ -3,6 +3,7 @@
 Create the predefined SIMD data types 
 __m128
 __m256
+__m512
 and their sub-types
 */
 
