@@ -7,9 +7,6 @@
 		
 	ExitProcess proto :DWORD
 
-      
-	include xmmtypes.inc
-	
     includelib <kernel32.lib>
     includelib <user32.lib>
 

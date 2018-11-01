@@ -255,8 +255,8 @@ ECHO %1
 echo ****************************************************************
 echo .
 echo .
-%ASMX% -c -win64 -Zp8 %1
-%FCMP% /O16 %~n1.obj ..\exp\vectorcall\%~n1.obj
+%ASMX% -c -bin %1
+%FCMP% %~n1.bin ..\exp\defined\%~n1.bin
 if errorlevel 1 goto end
 del %~n1.bin
 goto end
@@ -268,7 +268,7 @@ echo ****************************************************************
 echo .
 echo .
 %ASMX% -c -win64 -Zp8 %1
-%FCMP% /O16 %~n1.obj ..\exp\vectorcall\%~n1.obj
+%FCMP% /O32 %~n1.obj ..\exp\vectorcall\%~n1.obj
 if errorlevel 1 goto end
 del %~n1.obj
 goto end
