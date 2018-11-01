@@ -3267,6 +3267,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
     if (ProcStatus & PRST_PROLOGUE_NOT_DONE) write_prologue(tokenarray);
 
 	/* If we're in the .data or .data? section force code style label to create <name> LABEL BYTE */
+	/* Removed for UASM 2.47 I honestly don't remember why this fix was required :( 
 	if (ModuleInfo.currseg)
 	{
 		c0 = strncmp(ModuleInfo.currseg->sym.name, "_DATA", 5);
@@ -3276,7 +3277,7 @@ ret_code ParseLine(struct asm_tok tokenarray[])
 			AddLineQueueX("%s %s", tokenarray[0].string_ptr, "LABEL BYTE");
 			return(NOT_ERROR);
 		}
-	}
+	} */
 
     /* create a global or local code label */
     if (CreateLabel(tokenarray[0].string_ptr, MT_NEAR, NULL,

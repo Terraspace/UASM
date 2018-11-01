@@ -6,34 +6,6 @@
 	
 	ExitProcess proto :DWORD
 
-	CStr macro Text:VARARG
-		local szText
-	    .data
-	szText  db Text,0
-	    .code
-	    exitm <ADDR szText>
-	endm
-	
-	FP4 MACRO value
-        LOCAL vname
-        .data
-        align 4
-          vname REAL4 value
-        .code
-        EXITM <vname>
-    ENDM
-
-    FP8 MACRO value
-        LOCAL vname
-        .data
-        align 8
-          vname REAL8 value
-        .code
-        EXITM <vname>
-    ENDM
-      
-	include xmmtypes.inc
-	
     includelib <kernel32.lib>
     includelib <user32.lib>
 

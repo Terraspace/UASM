@@ -270,7 +270,7 @@ echo .
 %ASMX% -c -win64 -Zp8 %1
 %FCMP% /O16 %~n1.obj ..\exp\vectorcall\%~n1.obj
 if errorlevel 1 goto end
-del %~n1.bin
+del %~n1.obj
 goto end
 
 :end
