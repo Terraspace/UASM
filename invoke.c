@@ -4178,6 +4178,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	struct dsym    *curr;
 	struct expr    opnd;
 	struct asym    *lastret;
+	bool           wasEquateProc = FALSE;
 
 	i++; /* skip INVOKE directive */
 	namepos = i;
@@ -4212,6 +4213,13 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	{
 		opnd.base_reg = NULL;
 		sym = SymSearch(tokenarray[i].string_ptr);
+		
+		/* UASM 2.47 using an equate in place of a PROC symbol will redirect to the actual PROC symbol to ensure proper relocations are generated */
+		if (sym && sym->variable && sym->procptr) {
+			sym = sym->procptr;
+			wasEquateProc = TRUE;
+		}
+
 		i++;
 	}
 
@@ -4551,9 +4559,20 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 		}
 	}
 #endif
-	size = tokenarray[parmpos].tokpos - tokenarray[namepos].tokpos;
-	memcpy(p, tokenarray[namepos].tokpos, size);
-	*(p + size) = NULLC;
+
+	/* UASM 2.47 using an equate in place of a PROC symbol will use the PROC name instead of the expression extracted from tokenarray */
+	if (wasEquateProc) {
+		size = strlen(sym->name);
+		memcpy(p, sym->name, size);
+		*(p + size) = NULLC;
+	}
+	else
+	{
+		size = tokenarray[parmpos].tokpos - tokenarray[namepos].tokpos;
+		memcpy(p, tokenarray[namepos].tokpos, size);
+		*(p + size) = NULLC;
+	}
+
 #if 0  /* v2.09: uselabel obsolete */
 }
 #endif
