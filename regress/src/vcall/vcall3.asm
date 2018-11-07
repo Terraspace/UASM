@@ -10,7 +10,6 @@
     includelib <kernel32.lib>
     includelib <user32.lib>
 
-
 ; Define an HVA 2 element structure.
 ; Both elements are 128bit XMM types.		
 	hva2 struct
@@ -185,7 +184,7 @@ Scene8_Recurse PROTO VECTORCALL node:BYTE, depth:DWORD, s:REAL4, opos:__m128
 	Particle ends
 	
 	align 16
-	voxel db (128*128*128) DUP (0)
+	voxel db (12*12*12) DUP (0)
 	
 	align 64
 	ZMM_BITS30 DD 3FFFFFFFh,0,3FFFFFFFh,0,3FFFFFFFh,0,3FFFFFFFh,0

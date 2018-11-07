@@ -1728,9 +1728,9 @@ int EXPQUAL AssembleModule( const char *source )
 			
 			// console output.
 			#ifdef _WIN32
-				SetConsoleTextAttribute(hConsole, WIN_LTWHITE);
+				SetConsoleTextAttribute(hConsole, WIN_LTWHITE | (screenBufferInfo.wAttributes & 0xfff0) );
 				printf( "%s", GetFNamePart(GetFName(ModuleInfo.srcfile)->fname));
-				SetConsoleTextAttribute(hConsole, WIN_LTGREEN);
+				SetConsoleTextAttribute(hConsole, WIN_LTGREEN | (screenBufferInfo.wAttributes & 0xfff0) );
 				printf(": ok\n");
 				SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
 			#else
@@ -1747,13 +1747,13 @@ int EXPQUAL AssembleModule( const char *source )
 
 			// console output.
 			#ifdef _WIN32
-				SetConsoleTextAttribute(hConsole, WIN_LTWHITE);
+				SetConsoleTextAttribute(hConsole, WIN_LTWHITE | (screenBufferInfo.wAttributes & 0xfff0));
 				printf("%s : ", GetFNamePart(GetFName(ModuleInfo.srcfile)->fname));
-				SetConsoleTextAttribute(hConsole, WIN_YELLOW);
+				SetConsoleTextAttribute(hConsole, WIN_YELLOW | (screenBufferInfo.wAttributes & 0xfff0));
 				printf("%u warnings", ModuleInfo.g.warning_count);
-				SetConsoleTextAttribute(hConsole, WIN_LTWHITE);
+				SetConsoleTextAttribute(hConsole, WIN_LTWHITE | (screenBufferInfo.wAttributes & 0xfff0));
 				printf(", ");
-				SetConsoleTextAttribute(hConsole, WIN_LTRED);
+				SetConsoleTextAttribute(hConsole, WIN_LTRED | (screenBufferInfo.wAttributes & 0xfff0));
 				printf("%u errors\n", ModuleInfo.g.error_count);
 				SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
 			#else
@@ -1778,21 +1778,21 @@ int EXPQUAL AssembleModule( const char *source )
 		if (Options.quiet == FALSE)
 		{
 			#ifdef _WIN32
-						SetConsoleTextAttribute(hConsole, WIN_LTWHITE);
+						SetConsoleTextAttribute(hConsole, WIN_LTWHITE | (screenBufferInfo.wAttributes & 0xfff0));
 						printf("%s: %lu lines, ", GetFNamePart(GetFName(ModuleInfo.srcfile)->fname), GetLineNumber());
-						SetConsoleTextAttribute(hConsole, WIN_LTGREEN);
+						SetConsoleTextAttribute(hConsole, WIN_LTGREEN | (screenBufferInfo.wAttributes & 0xfff0));
 						printf("%u passes", Parse_Pass + 1);
-						SetConsoleTextAttribute(hConsole, WIN_LTWHITE);
+						SetConsoleTextAttribute(hConsole, WIN_LTWHITE | (screenBufferInfo.wAttributes & 0xfff0));
 						printf(", ");
-						SetConsoleTextAttribute(hConsole, WIN_CYAN);
+						SetConsoleTextAttribute(hConsole, WIN_CYAN | (screenBufferInfo.wAttributes & 0xfff0));
 						printf("%u ms", endtime - starttime);
-						SetConsoleTextAttribute(hConsole, WIN_LTWHITE);
+						SetConsoleTextAttribute(hConsole, WIN_LTWHITE | (screenBufferInfo.wAttributes & 0xfff0));
 						printf(", ");
-						SetConsoleTextAttribute(hConsole, WIN_YELLOW);
+						SetConsoleTextAttribute(hConsole, WIN_LTYELLOW | (screenBufferInfo.wAttributes & 0xfff0));
 						printf("%u warnings", ModuleInfo.g.warning_count);
-						SetConsoleTextAttribute(hConsole, WIN_LTWHITE);
+						SetConsoleTextAttribute(hConsole, WIN_LTWHITE | (screenBufferInfo.wAttributes & 0xfff0));
 						printf(", ");
-						SetConsoleTextAttribute(hConsole, WIN_LTRED);
+						SetConsoleTextAttribute(hConsole, WIN_LTRED | (screenBufferInfo.wAttributes & 0xfff0));
 						printf("%u errors\n", ModuleInfo.g.error_count);
 						SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
 			#else

@@ -135,6 +135,7 @@ TestProc22    PROTO VECTORCALL a:DWORD, b:REAL4, cc:hfa4, d:hfa4
 TestProc23    PROTO VECTORCALL a:DWORD, b:REAL4, c1:__m128, c2:__m128,c3:__m128,c4:__m128,c5:__m128
 TestProc24    PROTO VECTORCALL a:DWORD, b:REAL4, c1:__m128, c2:__m128,c3:__m128,c4:__m128,c5:__m128, c6:__m128f
 TestProc25    PROTO VECTORCALL a:DWORD, b:REAL4, cc:__m128f, d:__m128
+TestProc26    PROTO VECTORCALL a:__m128f, b:REAL4, cc:REAL4
 
 .data
 	
@@ -168,6 +169,8 @@ MainCRT PROC FRAME
 	
 	local aba:__m128f
 
+	invoke TestProc26, xmm2, 1.0, 2.0
+	
 	invoke TestProc12, hf3, hf3                				
 	
 	invoke TestProc11, 10, 2.0, MyVector2, MyVector, hv1, xmm6	
@@ -210,6 +213,15 @@ MainCRT PROC FRAME
 
 	ret
 MainCRT ENDP
+
+TestProc26 PROC VECTORCALL FRAME a:__m128f, b:REAL4, cc:REAL4
+
+vmovaps xmm0,a
+vmovss xmm1,b
+vmovss xmm2,cc
+
+ret
+TestProc26 ENDP
 
 TestProc21 PROC VECTORCALL FRAME a:__m128f, b:hva2
 

@@ -159,10 +159,9 @@ int write_logo( void )
         banner_printed = TRUE;
 		
 		#ifdef _WIN32
-			SetConsoleTextAttribute(hConsole, WIN_LTGREEN);
+			SetConsoleTextAttribute(hConsole, WIN_LTGREEN | (screenBufferInfo.wAttributes & 0xfff0) );
 			printf("%s", MsgGetEx(MSG_UASM));
-
-			SetConsoleTextAttribute(hConsole, WIN_CYAN);
+			SetConsoleTextAttribute(hConsole, WIN_CYAN | (screenBufferInfo.wAttributes & 0xfff0) );
 			printf("%s\n", MsgGetEx(MSG_UASM2));
 
 			SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
@@ -192,7 +191,7 @@ void PrintUsage( void )
 	write_logo();
 	
 	#ifdef _WIN32
-		SetConsoleTextAttribute(hConsole, WIN_LTYELLOW);
+		SetConsoleTextAttribute(hConsole, WIN_LTYELLOW | (screenBufferInfo.wAttributes & 0xfff0));
 		for (p = usage2; *p != '\n'; ) {
 			const char *p2 = p + strlen(p) + 1;
 			printf("%-20s %s\n", p, p2);
@@ -208,7 +207,7 @@ void PrintUsage( void )
 
 	
 	#ifdef _WIN32
-		SetConsoleTextAttribute(hConsole, WIN_WHITE);
+		SetConsoleTextAttribute(hConsole, WIN_WHITE | (screenBufferInfo.wAttributes & 0xfff0));
 		for (p = usage; *p != '\n'; ) {
 			const char *p2 = p + strlen(p) + 1;
 			printf("%-20s %s\n", p, p2);
@@ -258,9 +257,9 @@ static void PutMsg( FILE *fp, int severity, int msgnum, va_list args )
 
 		#ifdef _WIN32
 			if (severity == 4)
-				SetConsoleTextAttribute(hConsole, WIN_YELLOW);
+				SetConsoleTextAttribute(hConsole, WIN_YELLOW | (screenBufferInfo.wAttributes & 0xfff0));
 			else if (severity == 2)
-				SetConsoleTextAttribute(hConsole, WIN_LTRED);
+				SetConsoleTextAttribute(hConsole, WIN_LTRED | (screenBufferInfo.wAttributes & 0xfff0));
 			fwrite(buffer, 1, i, fp);
 			fwrite("\n", 1, 1, fp);
 			SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);

@@ -1024,6 +1024,7 @@ OPTFUNC(SetWin64)
     SkipOption(pi, tokenarray);
     return(NOT_ERROR);
     }
+
   if (EvalOperand(&i, tokenarray, Token_Count, &opndx, 0) == ERROR)
       return(ERROR);
   if (opndx.kind == EXPR_CONST) {
