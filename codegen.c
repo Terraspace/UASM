@@ -518,7 +518,7 @@ static void output_opc(struct code_info *CodeInfo)
     CodeInfo->prefix.rex = (tmp & 0xFA) | ((tmp & REX_R) >> 2) | ((tmp & REX_B) << 2);
 #endif
   }
-    //if (CodeInfo->token == T_VMOVSD)
+    //if (CodeInfo->token == T_VPGATHERDD)
     //  __debugbreak();
 
 #if AVXSUPP
@@ -2614,9 +2614,12 @@ static void output_opc(struct code_info *CodeInfo)
               case T_VPSCATTERQQ:
 				  if (CodeInfo->evex_flag && CodeInfo->tuple == 0 )/* && decoflags != 0 */
 				  {
-					  tmp &= NOT_BIT_67;
-					  tmp |= MOD_10;
-					  CodeInfo->rm_byte = tmp;
+            if (CodeInfo->opnd[OPND2].type == OP_NONE)/* that means that Kn register is used as a mask register */
+             {
+              tmp &= NOT_BIT_67;
+              tmp |= MOD_10;                    /* use long word displacement */
+              CodeInfo->rm_byte = tmp;
+             }
 				  }
 				  break;
 			  case T_VMOVUPD:
@@ -2629,7 +2632,7 @@ static void output_opc(struct code_info *CodeInfo)
 					if (CodeInfo->evex_flag && CodeInfo->tuple == 0) /* && decoflags != 0 */
 					{
 						tmp &= NOT_BIT_67;
-						tmp |= MOD_10;
+            tmp |= MOD_10;               /* use long word displacement */
 						CodeInfo->rm_byte = tmp;
 					}
 				}
@@ -2637,8 +2640,10 @@ static void output_opc(struct code_info *CodeInfo)
             }
 		    OutputCodeByte( tmp );
 
-        if( ( CodeInfo->Ofssize == USE16 && CodeInfo->prefix.adrsiz == 0 ) ||
-           ( CodeInfo->Ofssize == USE32 && CodeInfo->prefix.adrsiz == 1 ) )
+        //if( ( CodeInfo->Ofssize == USE16 && CodeInfo->prefix.adrsiz == 0 ) ||
+        //   ( CodeInfo->Ofssize == USE32 && CodeInfo->prefix.adrsiz == 1 ) )
+        //    return; /* no SIB for 16bit */
+        if ( CodeInfo->Ofssize == USE16 && CodeInfo->prefix.adrsiz == 0 ) 
             return; /* no SIB for 16bit */
 
         switch ( tmp & NOT_BIT_345 ) {

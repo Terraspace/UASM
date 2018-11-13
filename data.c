@@ -490,7 +490,6 @@ static void output_float( const struct expr *opnd, unsigned size )
     /* v2.07: buffer extended to max size of a data item (=32).
      * test case: XMMWORD REAL10 ptr 1.0
      */
-    //char buffer[12];
     char buffer[32];
 	char tstr[32];
 
@@ -1294,8 +1293,6 @@ ret_code data_dir( int i, struct asm_tok tokenarray[], struct asym *type_sym )
 	struct sfield   *f;
 	struct sfield   *f2;
 	struct sfield   *fPrev;
-	//struct sfield   *fnext;
-	//struct sfield   *f2next;
 	bool foundSubType = FALSE;
 	uint_32 subid = 0;
 	uint_32 subcnt = 0;
@@ -1303,7 +1300,7 @@ ret_code data_dir( int i, struct asm_tok tokenarray[], struct asym *type_sym )
 
     DebugMsg1(("data_dir( i=%u, type=%s ) enter\n", i, type_sym ? type_sym->name : "NULL" ));
 
-    /* v2.05: the previous test in parser.c wasn't fool-proved */
+    /* v2.05: the previous test in parser.c wasn't fool-proofed */
     if ( i > 1 && ModuleInfo.m510 == FALSE ) {
         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].string_ptr ) );
     }

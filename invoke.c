@@ -3223,128 +3223,137 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 		if (tokenarray[i].token == T_COMMA) {
 			currParm++;
 		}
-		else if (ParamIsString(tokenarray[i].string_ptr, currParm, proc))
+		// UASM 2.47 Only check the string type information if we're on the actual reqParam.
+		if (currParm == reqParam && curr)
 		{
-
-			// Preserve current Segment.
-			curseg = ModuleInfo.currseg;
-			// Find Data Segment.
-			prev = NULL;
-			currs = NULL;
-			for (currs = SymTables[TAB_SEG].head; currs && currs->next; prev = currs, currs = currs->next)
+			if (ParamIsString(tokenarray[i].string_ptr, currParm, proc))
 			{
-				if (strcmp(currs->sym.name, "_DATA") == 0)
-					break;
+
+				// Preserve current Segment.
+				curseg = ModuleInfo.currseg;
+				// Find Data Segment.
+				prev = NULL;
+				currs = NULL;
+				for (currs = SymTables[TAB_SEG].head; currs && currs->next; prev = currs, currs = currs->next)
+				{
+					if (strcmp(currs->sym.name, "_DATA") == 0)
+						break;
+				}
+				// Set CurrSeg
+				CurrSeg = currs;
+
+				// Transfer raw String Data.
+				slen = strlen(tokenarray[i].string_ptr) - 2;
+				pSrc = (tokenarray[i].string_ptr) + 1;
+
+				sprintf(buf, "%s%d", labelstr, hashpjw(tokenarray[i].string_ptr));
+
+				lbl = SymLookup(buf);
+				SetSymSegOfs(lbl);
+				memset(&buff, 0, 256);
+				pDest = &buff;
+				finallen = slen;
+
+				while (*pSrc != '"')
+				{
+					c1 = *pSrc++;
+					c2 = *(pSrc);
+					if (c1 == '\\' && c2 == 'n')
+					{
+						*pDest++ = 10;
+						finallen--;
+						pSrc++;
+					}
+					else if (c1 == '\\' && c2 == 'r')
+					{
+						*pDest++ = 13;
+						finallen--;
+						pSrc++;
+					}
+					else if (c1 == '\\' && c2 == 't')
+					{
+						*pDest++ = 9;
+						finallen--;
+						pSrc++;
+					}
+					else
+						*pDest++ = c1;
+				}
+				*pDest++ = 0;
+
+				OutputBytes((unsigned char *)&buff, finallen + 1, NULL);
+				lbl->isdefined = TRUE;
+				lbl->isarray = TRUE;
+				lbl->mem_type = MT_BYTE;
+				lbl->state = SYM_INTERNAL;
+				lbl->first_size = finallen;
+				lbl->first_length = slen;
+				lbl->total_length = finallen;
+				lbl->total_size = finallen;
+				//lbl->max_offset = finallen + lbl->offset;
+				lbl->debuginfo = FALSE;
+				lbl->ispublic = 0;
+
+				BackPatch(lbl);
+
+				// invoke parameter is a raw ascii string, substitute in the our new label pointing to this raw string in .data segment. 
+				sprintf(stringparam[currParm], "%s", buf);
+				isString[currParm] = TRUE;
+
+				// Restore current Sement.
+				CurrSeg = curseg;
 			}
-			// Set CurrSeg
-			CurrSeg = currs;
-
-			// Transfer raw String Data.
-			slen = strlen(tokenarray[i].string_ptr) - 2;
-			pSrc = (tokenarray[i].string_ptr) + 1;
-
-			sprintf(buf, "%s%d", labelstr, hashpjw(tokenarray[i].string_ptr));
-
-			lbl = SymLookup(buf);
-			SetSymSegOfs(lbl);
-			memset(&buff, 0, 256);
-			pDest = &buff;
-			finallen = slen;
-			//for (j = 0; j < finallen; j++)
-			while (*pSrc != '"')
+			else if (strcmp(tokenarray[i].string_ptr, "L") == 0 && ParamIsString(tokenarray[i + 1].string_ptr, currParm, proc))
 			{
-				c1 = *pSrc++;
-				c2 = *(pSrc);
-				if (c1 == '\\' && c2 == 'n')
+				// Preserve current Segment.
+				curseg = ModuleInfo.currseg;
+				// Find Data Segment.
+				prev = NULL;
+				currs = NULL;
+				for (currs = SymTables[TAB_SEG].head; currs && currs->next; prev = currs, currs = currs->next)
 				{
-					*pDest++ = 10;
-					finallen--;
-					pSrc++;
+					if (strcmp(currs->sym.name, "_DATA") == 0)
+						break;
 				}
-				else if (c1 == '\\' && c2 == 'r')
-				{
-					*pDest++ = 13;
-					finallen--;
-					pSrc++;
-				}
-				else if (c1 == '\\' && c2 == 't')
-				{
-					*pDest++ = 9;
-					finallen--;
-					pSrc++;
-				}
-				else
-					*pDest++ = c1;
+
+				// Set CurrSeg
+				CurrSeg = currs;
+
+				slen = strlen(tokenarray[i + 1].string_ptr) - 2;
+				pSrc = (tokenarray[i + 1].string_ptr) + 1;
+				sprintf(buf, "%s%d", labelstr, hashpjw(pSrc));
+				lbl = SymLookup(buf);
+				memset(&buff, 0, 256);
+				j = UTF8toWideChar(pSrc, slen, NULL, (unsigned short *)&buff, slen);
+				/* j contains a proper number of wide chars, it can be different than slen, v2.38 */
+				SetSymSegOfs(lbl);
+				OutputBytes((unsigned char *)&buff, (j * 2) + 2, NULL);
+				lbl->isdefined = TRUE;
+				lbl->isarray = TRUE;
+				lbl->mem_type = MT_BYTE;
+				lbl->state = SYM_INTERNAL;
+				lbl->first_size = finallen;
+				lbl->first_length = slen;
+				lbl->total_length = j;
+				lbl->total_size = j;
+				//lbl->max_offset = j + lbl->offset;
+				lbl->debuginfo = FALSE;
+				lbl->ispublic = 0;
+
+				BackPatch(lbl);
+
+				// invoke parameter is a raw ascii string, substitute in the our new label pointing to this raw string in .data segment.
+				sprintf(stringparam[currParm], "%s", buf);
+				isString[currParm] = TRUE;
+
+				// Restore current Sement.
+				CurrSeg = curseg;
+				i++;
 			}
-			*pDest++ = 0;
-			OutputBytes((unsigned char *)&buff, finallen + 1, NULL);
-			lbl->isdefined = TRUE;
-			lbl->isarray = TRUE;
-			lbl->mem_type = MT_BYTE;
-			lbl->state = SYM_INTERNAL;
-			lbl->first_size = 2;
-			lbl->first_length = 1;
-			lbl->total_length = finallen;
-			lbl->total_size = finallen;
-			lbl->max_offset = finallen + lbl->offset;
-			lbl->debuginfo = FALSE;
-			lbl->ispublic = 0;
-
-			// invoke parameter is a raw ascii string, substitute in the our new label pointing to this raw string in .data segment. 
-			sprintf(stringparam[currParm], "%s", buf);
-			isString[currParm] = TRUE;
-
-			// Restore current Sement.
-			CurrSeg = curseg;
-		}
-		else if (strcmp(tokenarray[i].string_ptr, "L") == 0 && ParamIsString(tokenarray[i + 1].string_ptr, currParm, proc))
-		{
-			// Preserve current Segment.
-			curseg = ModuleInfo.currseg;
-			// Find Data Segment.
-			prev = NULL;
-			currs = NULL;
-			for (currs = SymTables[TAB_SEG].head; currs && currs->next; prev = currs, currs = currs->next)
+			else
 			{
-				if (strcmp(currs->sym.name, "_DATA") == 0)
-					break;
+				isString[currParm] = FALSE;
 			}
-
-			// Set CurrSeg
-			CurrSeg = currs;
-
-			slen = strlen(tokenarray[i + 1].string_ptr) - 2;
-			pSrc = (tokenarray[i + 1].string_ptr) + 1;
-			sprintf(buf, "%s%d", labelstr, hashpjw(pSrc));
-			lbl = SymLookup(buf);
-			memset(&buff, 0, 256);
-			j = UTF8toWideChar(pSrc, slen, NULL, (unsigned short *)&buff, slen);
-			/* j contains a proper number of wide chars, it can be different than slen, v2.38 */
-			SetSymSegOfs(lbl);
-			OutputBytes((unsigned char *)&buff, (j * 2) + 2, NULL);
-			lbl->isdefined = TRUE;
-			lbl->isarray = TRUE;
-			lbl->mem_type = MT_BYTE;
-			lbl->state = SYM_INTERNAL;
-			lbl->first_size = 2;
-			lbl->first_length = 1;
-			lbl->total_length = j;
-			lbl->total_size = j;
-			lbl->max_offset = j + lbl->offset;
-			lbl->debuginfo = FALSE;
-			lbl->ispublic = 0;
-
-			// invoke parameter is a raw ascii string, substitute in the our new label pointing to this raw string in .data segment.
-			sprintf(stringparam[currParm], "%s", buf);
-			isString[currParm] = TRUE;
-
-			// Restore current Sement.
-			CurrSeg = curseg;
-			i++;
-		}
-		else
-		{
-			isString[currParm] = FALSE;
 		}
 		i++;
 	}

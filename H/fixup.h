@@ -41,15 +41,16 @@ enum fixup_types {
         FIX_OFF8,           /*  4, 1 byte, OMF, BIN + GNU-ELF only */
         FIX_OFF16,          /*  5, 2 byte */
         FIX_OFF32,          /*  6, 4 byte */
-#if AMD64_SUPPORT
         FIX_OFF64,          /*  7, 8 byte, COFF64, ELF64 + BIN only */
-#endif
         FIX_SEG = 8,        /*  8, 2 byte */
         FIX_PTR16,          /*  9, 4 byte, OMF+BIN-MZ only */
         FIX_PTR32,          /* 10, 6 byte, OMF+BIN-MZ only */
         FIX_HIBYTE,         /* 11, 1 byte, OMF+BIN-MZ only */
         FIX_OFF32_IMGREL,   /* 12, 4 byte, COFF+ELF only */
         FIX_OFF32_SECREL,   /* 13, 4 byte, COFF+ELF only */
+		FIX_GOTPCREL64,		/* 14, 4 byte, GOT table RIP relative ELF64/MACHO only */
+		FIX_GOT64,			/* 15, 4 byte, GOT table RIP relative */
+		FIX_PLT64,			/* 16, 4 byte, GOT.PLT table RIP relative */
         FIX_LAST
 };
 
@@ -116,8 +117,7 @@ struct fixup {
         struct {
 #if AMD64_SUPPORT
             /* the IP relative addressing needs to know where the instruction ends.
-             * the result <end of instruction> - <fixup location> is stored here.
-             */
+             * the result <end of instruction> - <fixup location> is stored here. */
             uint_8        addbytes;
 #endif
             unsigned char loader_resolved:1;        /* operator LROFFSET */
