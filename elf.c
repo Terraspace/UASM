@@ -932,12 +932,10 @@ static int elf_write_section_table64( struct module_info *modinfo, struct elfmod
     int         i;
     struct dsym *curr;
     uint_8      *p;
-    //uint_32     fileoffset;
     Elf64_Shdr  shdr64;
 
     DebugMsg(("elf_write_section_table64( fileofs=%X ): enter\n", fileoffset ));
 
-    //fileoffset = sizeof(Elf64_Ehdr) + ehdr->e_shnum * ehdr->e_shentsize;
     fileoffset = (fileoffset + 0xF) & ~0xF;
 
     /* set contents and size of internal .shstrtab section */

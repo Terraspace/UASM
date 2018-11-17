@@ -681,7 +681,7 @@ static ret_code set_rm_sib(struct code_info *CodeInfo, unsigned CurrOpnd, char s
   else {
     mod_field = MOD_01; /* byte size displacement */
     }
-  /* In the case of suppressed base register it has to be awapped with index v2.38 */
+  /* In the case of suppressed base register it has to be swapped with index v2.38 */
   temp = GetValueSp( base );                                 /* get value from SpecialTable */
   if (temp == OP_XMM || temp == OP_YMM || temp == OP_ZMM){   /* base can be only GP register*/
     temp = index;                                            /* swap index with base */
@@ -1862,13 +1862,12 @@ static ret_code memory_operand( struct code_info *CodeInfo, unsigned CurrOpnd, s
             base = tmp;
 #endif
         }
-
         /* 32/64 bit indirect addressing? */
         if( ( CodeInfo->Ofssize == USE16 && CodeInfo->prefix.adrsiz == 1 ) ||
 #if AMD64_SUPPORT
            CodeInfo->Ofssize == USE64  ||
 #endif
-           ( CodeInfo->Ofssize == USE32 && CodeInfo->prefix.adrsiz == 0 ) ) {
+			(CodeInfo->Ofssize == USE32 && (CodeInfo->prefix.adrsiz == 0) || (CodeInfo->evex_flag == 1))) {
             if( ( ModuleInfo.curr_cpu & P_CPU_MASK ) >= P_386 ) {
                 /* scale, 0 or 1->00, 2->40, 4->80, 8->C0 */
                 switch( opndx->scale ) {
@@ -3584,7 +3583,6 @@ ret_code ParseLine(struct asm_tok tokenarray[])
       DebugMsg(("ParseLine(%s): EvalOperand() failed\n", instr));
       return(ERROR);
     }
-
 	/* UASM 2.37: For immediate indirect memory addresses, allow DS override assumption in 32 and 64bit, and apply memory size info */
 	/* ********************************************************************************************************************************* */
 	if (opndx[j].kind == EXPR_CONST && opndx[j].isptr)

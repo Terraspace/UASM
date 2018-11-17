@@ -518,7 +518,7 @@ static void output_opc(struct code_info *CodeInfo)
     CodeInfo->prefix.rex = (tmp & 0xFA) | ((tmp & REX_R) >> 2) | ((tmp & REX_B) << 2);
 #endif
   }
-    //if (CodeInfo->token == T_VPGATHERDD)
+    //if (CodeInfo->token == T_VGATHERPF0DPD)
     //  __debugbreak();
 
 #if AVXSUPP
@@ -2614,10 +2614,11 @@ static void output_opc(struct code_info *CodeInfo)
               case T_VPSCATTERQQ:
 				  if (CodeInfo->evex_flag && CodeInfo->tuple == 0 )/* && decoflags != 0 */
 				  {
-            if (CodeInfo->opnd[OPND2].type == OP_NONE)/* that means that Kn register is used as a mask register */
+            if (((CodeInfo->opnd[OPND1].type & OP_M_ANY) && (CodeInfo->opnd[OPND1].data32l)) ||
+                ((CodeInfo->opnd[OPND2].type & OP_M_ANY) && (CodeInfo->opnd[OPND2].data32l)))
              {
               tmp &= NOT_BIT_67;
-              tmp |= MOD_10;                    /* use long word displacement */
+              tmp |= MOD_10;                    /* use dword displacement */
               CodeInfo->rm_byte = tmp;
              }
 				  }
@@ -2782,7 +2783,7 @@ static void output_data(const struct code_info *CodeInfo, enum operand_type dete
             break;
         case MOD_10:  /* 16- or 32-bit displacement */
             if( ( CodeInfo->Ofssize == USE16 && CodeInfo->prefix.adrsiz == 0 ) ||
-               ( CodeInfo->Ofssize == USE32 && CodeInfo->prefix.adrsiz == 1 ) ) {
+               ( CodeInfo->Ofssize == USE32 && CodeInfo->prefix.adrsiz == 1 ) && (CodeInfo->evex_flag == 0)) {
                 size = 2;
             } else {
                 size = 4;
@@ -3328,8 +3329,10 @@ ret_code codegen( struct code_info *CodeInfo, uint_32 oldofs )
 				}
 				if (opnd1 & OP_XMM || opnd1 & OP_YMM || opnd1 & OP_K || opnd1 & OP_ZMM)
 					opnd1 |= OP_XMM;
-				else
+        else{
 					opnd1 |= OP_M128;
+          opnd1 |= OP_M;
+          }
 			}
 		}
 		/* Here is probably possible to find better solution     */

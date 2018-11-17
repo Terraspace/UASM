@@ -1423,7 +1423,7 @@ static ret_code index_connect( struct expr *opnd1, const struct expr *opnd2 )
              * was previously in parser.c, and only done
              * if -Zg was active.
              */
-            if ( opnd1->base_reg->bytval != 4 ) {   /* if base isn't [E|R]SP, exchange regs */
+            if ( opnd2->base_reg->bytval == 4 ) {   /* if opnd2->base_reg->bytval is [E|R]SP, exchange regs */
                 opnd1->idx_reg = opnd1->base_reg;
                 opnd1->base_reg = opnd2->base_reg;
             } else {

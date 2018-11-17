@@ -1815,10 +1815,8 @@ int EXPQUAL AssembleModule( const char *source )
         LstPrintf( CurrSource );
         LstNL();
     }
-#if 1 //def __SW_BD
 done:
-#endif
-    
+   
 	AssembleFini();
 	ResetOrgFixup();
     DebugMsg(("AssembleModule exit\n"));
