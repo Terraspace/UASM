@@ -33,7 +33,7 @@ pick(Z_DECORATOR_EXPECTED, "z decorator expected")
 pick(K_REGISTER_EXPECTED, "K register expected")
 pick(EMBEDDED_ROUNDING_IS_AVAILABLE_ONLY_WITH_REG_REG_OP, "Embedded rounding is available only with reg-reg op")
 pick(UNAUTHORISED_USE_OF_EVEX_REGISTERS, "Use of zmm register not allowed")
-pick (msg_unused11,                                        "" )
+pick(BROADCAST_DECORATORS_NOT_ALLOWED_FOR_THIS_INSTRUCTION,  "Broadcast decorators not allowed for this instruction" )
 
 #if COMDATSUPP
 pick( VALUE_NOT_WITHIN_ALLOWED_RANGE,    "Value not within allowed range %s" )
