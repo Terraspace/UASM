@@ -110,6 +110,8 @@ void BuildInstructionTable(void)
 enum op_type DemoteOperand(enum op_type op) {
 	enum op_type ret = op;
 	if (op == R8_AL)
+		ret = R8E;
+	else if (op == R8E)
 		ret = R8;
 	else if (op == R16_AX)
 		ret = R16;
@@ -127,6 +129,10 @@ enum op_type DemoteOperand(enum op_type op) {
 ret_code CodeGenV2(struct code_info *CodeInfo, uint_32 oldofs) 
 {
 	ret_code retcode = ERROR;
+	
 	retcode = EMPTY;
 	return retcode;
 }
+
+//  /c /DX86_64 /DWINDOWS64 -win64 /DARCH=SKX -Fl=out.lst /Foamd64\zr4dwpn_skx.obj zr4dwpn.asm
+//  d:\foo2
