@@ -116,6 +116,6 @@ void BuildInstructionTable(void)
 ret_code CodeGenV2(struct code_info *CodeInfo, uint_32 oldofs) 
 {
 	ret_code retcode = ERROR;
-	retcode = NOT_ERROR;
+	retcode = EMPTY;
 	return retcode;
 }

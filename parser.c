@@ -4017,8 +4017,12 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 		}
 	}
 
-	/* now call the code generator */
-	temp = codegen( &CodeInfo, oldofs );
+	/* ===================================================================================================== */
+	/* UASM 2.48 Invoke the new Code Generator and fallback to the legacy one for unimplemented instructions */
+	/* ===================================================================================================== */
+	temp = CodeGenV2( &CodeInfo, oldofs );
+	if( temp == EMPTY )
+		temp = codegen( &CodeInfo, oldofs );
 
 nopor:
 	/* now reset EVEX maskflags for the next line */
