@@ -28,6 +28,7 @@
     <ClCompile Include="branch.c" />
     <ClCompile Include="cmdline.c" />
     <ClCompile Include="codegen.c" />
+    <ClCompile Include="codegenv2.c" />
     <ClCompile Include="coff.c" />
     <ClCompile Include="condasm.c" />
     <ClCompile Include="context.c" />
@@ -94,6 +95,7 @@
     <ClInclude Include="H\bool.h" />
     <ClInclude Include="H\cmdline.h" />
     <ClInclude Include="H\codegen.h" />
+    <ClInclude Include="H\codegenv2.h" />
     <ClInclude Include="H\coff.h" />
     <ClInclude Include="H\coffspec.h" />
     <ClInclude Include="H\Colors.h" />

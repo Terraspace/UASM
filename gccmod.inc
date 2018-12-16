@@ -9,6 +9,7 @@ $(OUTD)/bin.o      \
 $(OUTD)/branch.o   \
 $(OUTD)/cmdline.o  \
 $(OUTD)/codegen.o  \
+$(OUTD)/codegenv2.o  \
 $(OUTD)/coff.o     \
 $(OUTD)/condasm.o  \
 $(OUTD)/context.o  \

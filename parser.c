@@ -35,6 +35,7 @@
 #include "preproc.h"
 #include "reswords.h"
 #include "codegen.h"
+#include "codegenv2.h"
 #include "expreval.h"
 #include "fixup.h"
 #include "types.h"
@@ -3117,996 +3118,918 @@ static struct asym *IsType( const char *name )
  * - for other directives: call directive[]()
  * - for instructions: fill CodeInfo and call codegen()
  */
-
-ret_code ParseLine(struct asm_tok tokenarray[])
-/**********************************************/
-{
-  int                 i;
-  int                 j;
-  unsigned            dirflags;
-  unsigned            CurrOpnd;
-  ret_code            temp;
-  struct asym         *sym;
-  uint_32             oldofs;
-  enum special_token regtok;
-  int                c0;
-  int                c1;
-  unsigned           flags;
-  char               *pnlbl;
-  int                alignCheck = 16;
-  int                infSize = 0;
-  int                oldi = 0;
-  struct dsym       *recsym = 0;
+ret_code ParseLine(struct asm_tok tokenarray[]) {
+	int                i;
+	int                j;
+	unsigned           dirflags;
+	unsigned           CurrOpnd;
+	ret_code           temp;
+	struct asym        *sym;
+	uint_32            oldofs;
+	enum special_token regtok;
+	int                c0;
+	int                c1;
+	unsigned           flags;
+	char               *pnlbl;
+	int                alignCheck = 16;
+	int                infSize    = 0;
+	int                oldi       = 0;
+	struct dsym        *recsym    = 0;
+	struct code_info   CodeInfo;
+	struct expr        opndx[MAX_OPND + 1];
 
 #ifdef DEBUG_OUT
-  char                *instr;
-#endif
-  struct code_info    CodeInfo;
-#if AVXSUPP
-  struct expr         opndx[MAX_OPND + 1];
-  memset(&opndx, 0, sizeof(opndx));
-#else
-  struct expr         opndx[MAX_OPND];
-  memset(&opndx, 0, sizeof(opndx));
+	char               *instr     = NULL;
 #endif
 
-  memset(&CodeInfo, 0, sizeof(CodeInfo));
+	memset(&opndx, 0, sizeof(opndx));
+	memset(&CodeInfo, 0, sizeof(CodeInfo));
   
-  DebugMsg1(("ParseLine enter, Token_Count=%u, ofs=%Xh\n",
-    Token_Count, GetCurrOffset()));
-  i = 0;
+	DebugMsg1(("ParseLine enter, Token_Count=%u, ofs=%Xh\n", Token_Count, GetCurrOffset()));
+	i = 0;
   
-  if (tokenarray[0].token == T_ID && (strncmp(tokenarray[0].string_ptr, "use16", 5) == 0 || strncmp(tokenarray[0].string_ptr, "USE16", 5) == 0))
-  {
-	  ModuleInfo.frame_auto = 0;
-	  ModuleInfo.win64_flags = 0;
-	  ModuleInfo.offsettype = OT_GROUP;
-	  ModuleInfo.Ofssize = USE16;
-	  ModuleInfo.wordsize = 2;
-	  ModuleInfo.defOfssize = USE16;
-	  ModuleInfo.sub_format = SFORMAT_NONE;
-	  ModuleInfo.basereg[ModuleInfo.Ofssize] = T_SP;
-	  if (ModuleInfo.currseg)
-	  {
-		  ModuleInfo.currseg->e.seginfo->Ofssize = USE16;
-		  ModuleInfo.currseg->e.seginfo->segtype = SEGTYPE_CODE;
-		  ModuleInfo.currseg->sym.segment->Ofssize = USE16;
-	  }
-	  if (CurrSeg)
-	  {
-		  CurrSeg->e.seginfo->Ofssize = USE16;
-		  CurrSeg->e.seginfo->segtype = SEGTYPE_CODE;
-		  CurrSeg->sym.segment->Ofssize = USE16;
-		  CurrSeg->sym.Ofssize = USE16;
-	  }
-	  sym = SymCheck("_flat");
-	  if (sym)
-	  {
-		  sym->isdefined = TRUE;
-		  UpdateCurrSegVars();
-		  SetOfssize();
-	  }
-	  FStoreLine(1);
-	  return(NOT_ERROR);
-  }
-  else if (tokenarray[0].token == T_ID && (strncmp(tokenarray[0].string_ptr, "use32", 5) == 0 || strncmp(tokenarray[0].string_ptr, "USE32", 5) == 0))
-  {
-	  ModuleInfo.frame_auto = 0;
-	  ModuleInfo.win64_flags = 0;
-	  ModuleInfo.offsettype = OT_GROUP;
-	  ModuleInfo.Ofssize = USE32;
-	  ModuleInfo.wordsize = 4;
-	  ModuleInfo.defOfssize = USE32;
-	  ModuleInfo.sub_format = SFORMAT_NONE;
-	  ModuleInfo.basereg[ModuleInfo.Ofssize] = T_ESP;
-	  if (ModuleInfo.currseg)
-	  {
-		  ModuleInfo.currseg->e.seginfo->Ofssize = USE32;
-		  ModuleInfo.currseg->e.seginfo->segtype = SEGTYPE_CODE;
-		  ModuleInfo.currseg->sym.segment->Ofssize = USE32;
-	  }
-	  if (CurrSeg)
-	  {
-		  CurrSeg->e.seginfo->Ofssize = USE32;
-		  CurrSeg->e.seginfo->segtype = SEGTYPE_CODE;
-		  CurrSeg->sym.segment->Ofssize = USE32;
-		  CurrSeg->sym.Ofssize = USE32;
-	  }
-	  sym = SymCheck("_flat");
-	  if (sym)
-	  {
-		  sym->isdefined = TRUE;
-		  UpdateCurrSegVars();
-		  SetOfssize();
-	  }
-	  FStoreLine(1);
-	  return(NOT_ERROR);
-  }
-  else if (tokenarray[0].token == T_ID && (strncmp(tokenarray[0].string_ptr, "use64", 5) == 0 || strncmp(tokenarray[0].string_ptr, "USE64", 5) == 0))
-  {
-	  ModuleInfo.frame_auto = 1;
-	  ModuleInfo.win64_flags = 11;
-	  ModuleInfo.offsettype = OT_FLAT;
-	  ModuleInfo.Ofssize = USE64;
-	  ModuleInfo.wordsize = 8;
-	  ModuleInfo.defOfssize = USE64;
-	  ModuleInfo.langtype = LANG_FASTCALL;
-	  ModuleInfo.sub_format = SFORMAT_NONE;
-	  ModuleInfo.basereg[ModuleInfo.Ofssize] = T_RSP;
-	  if (ModuleInfo.currseg)
-	  {
-		  ModuleInfo.currseg->e.seginfo->Ofssize = USE64;
-		  ModuleInfo.currseg->e.seginfo->segtype = SEGTYPE_CODE;
-		  ModuleInfo.currseg->sym.segment->Ofssize = USE64;
-		  ModuleInfo.currseg->e.seginfo->alignment = 12;
-	  }
-	  if (CurrSeg)
-	  {
-		  CurrSeg->e.seginfo->Ofssize = USE64;
-		  CurrSeg->e.seginfo->segtype = SEGTYPE_CODE;
-		  CurrSeg->sym.segment->Ofssize = USE64;
-		  CurrSeg->sym.Ofssize = USE64;
-		  CurrSeg->e.seginfo->alignment = 12;
-	  }
-	  sym = SymCheck("_flat");
-	  if (sym)
-	  {
-		  sym->isdefined = TRUE;
-		  UpdateCurrSegVars();
-		  SetOfssize();
-	  }
-	  FStoreLine(1);
-	  return(NOT_ERROR);
-  }
-
-  /* Does line start with a code label? */
-  if (tokenarray[0].token == T_ID && (tokenarray[1].token == T_COLON || tokenarray[1].token == T_DBL_COLON)) {
-    i = 2;
-    DebugMsg1(("ParseLine T_COLON, code label=%s\n", tokenarray[0].string_ptr));
-    if (ProcStatus & PRST_PROLOGUE_NOT_DONE) write_prologue(tokenarray);
-
-	/* If we're in the .data or .data? section force code style label to create <name> LABEL BYTE */
-	/* Removed for UASM 2.47 I honestly don't remember why this fix was required :( 
-	if (ModuleInfo.currseg)
-	{
-		c0 = strncmp(ModuleInfo.currseg->sym.name, "_DATA", 5);
-		c1 = strncmp(ModuleInfo.currseg->sym.name, "_BSS", 4);
-		if (c0 == 0 || c1 == 0)
+	/* ************************************************************** */
+	/* Support direct usage of USE16, USE32, USE64 for UASM Flat Mode */
+	/* ************************************************************** */
+	if (tokenarray[0].token == T_ID && (strncmp(tokenarray[0].string_ptr, "use16", 5) == 0 || strncmp(tokenarray[0].string_ptr, "USE16", 5) == 0)) {
+		ModuleInfo.frame_auto = 0;
+		ModuleInfo.win64_flags = 0;
+		ModuleInfo.offsettype = OT_GROUP;
+		ModuleInfo.Ofssize = USE16;
+		ModuleInfo.wordsize = 2;
+		ModuleInfo.defOfssize = USE16;
+		ModuleInfo.sub_format = SFORMAT_NONE;
+		ModuleInfo.basereg[ModuleInfo.Ofssize] = T_SP;
+		if (ModuleInfo.currseg)
 		{
-			AddLineQueueX("%s %s", tokenarray[0].string_ptr, "LABEL BYTE");
+			ModuleInfo.currseg->e.seginfo->Ofssize = USE16;
+			ModuleInfo.currseg->e.seginfo->segtype = SEGTYPE_CODE;
+			ModuleInfo.currseg->sym.segment->Ofssize = USE16;
+		}
+		if (CurrSeg)
+		{
+			CurrSeg->e.seginfo->Ofssize = USE16;
+			CurrSeg->e.seginfo->segtype = SEGTYPE_CODE;
+			CurrSeg->sym.segment->Ofssize = USE16;
+			CurrSeg->sym.Ofssize = USE16;
+		}
+		sym = SymCheck("_flat");
+		if (sym)
+		{
+			sym->isdefined = TRUE;
+			UpdateCurrSegVars();
+			SetOfssize();
+		}
+		FStoreLine(1);
+		return(NOT_ERROR);
+	}
+	else if (tokenarray[0].token == T_ID && (strncmp(tokenarray[0].string_ptr, "use32", 5) == 0 || strncmp(tokenarray[0].string_ptr, "USE32", 5) == 0)) {
+		ModuleInfo.frame_auto = 0;
+		ModuleInfo.win64_flags = 0;
+		ModuleInfo.offsettype = OT_GROUP;
+		ModuleInfo.Ofssize = USE32;
+		ModuleInfo.wordsize = 4;
+		ModuleInfo.defOfssize = USE32;
+		ModuleInfo.sub_format = SFORMAT_NONE;
+		ModuleInfo.basereg[ModuleInfo.Ofssize] = T_ESP;
+		if (ModuleInfo.currseg)
+		{
+			ModuleInfo.currseg->e.seginfo->Ofssize = USE32;
+			ModuleInfo.currseg->e.seginfo->segtype = SEGTYPE_CODE;
+			ModuleInfo.currseg->sym.segment->Ofssize = USE32;
+		}
+		if (CurrSeg)
+		{
+			CurrSeg->e.seginfo->Ofssize = USE32;
+			CurrSeg->e.seginfo->segtype = SEGTYPE_CODE;
+			CurrSeg->sym.segment->Ofssize = USE32;
+			CurrSeg->sym.Ofssize = USE32;
+		}
+		sym = SymCheck("_flat");
+		if (sym)
+		{
+			sym->isdefined = TRUE;
+			UpdateCurrSegVars();
+			SetOfssize();
+		}
+		FStoreLine(1);
+		return(NOT_ERROR);
+	}
+	else if (tokenarray[0].token == T_ID && (strncmp(tokenarray[0].string_ptr, "use64", 5) == 0 || strncmp(tokenarray[0].string_ptr, "USE64", 5) == 0)) {
+		ModuleInfo.frame_auto = 1;
+		ModuleInfo.win64_flags = 11;
+		ModuleInfo.offsettype = OT_FLAT;
+		ModuleInfo.Ofssize = USE64;
+		ModuleInfo.wordsize = 8;
+		ModuleInfo.defOfssize = USE64;
+		ModuleInfo.langtype = LANG_FASTCALL;
+		ModuleInfo.sub_format = SFORMAT_NONE;
+		ModuleInfo.basereg[ModuleInfo.Ofssize] = T_RSP;
+		if (ModuleInfo.currseg)
+		{
+			ModuleInfo.currseg->e.seginfo->Ofssize = USE64;
+			ModuleInfo.currseg->e.seginfo->segtype = SEGTYPE_CODE;
+			ModuleInfo.currseg->sym.segment->Ofssize = USE64;
+			ModuleInfo.currseg->e.seginfo->alignment = 12;
+		}
+		if (CurrSeg)
+		{
+			CurrSeg->e.seginfo->Ofssize = USE64;
+			CurrSeg->e.seginfo->segtype = SEGTYPE_CODE;
+			CurrSeg->sym.segment->Ofssize = USE64;
+			CurrSeg->sym.Ofssize = USE64;
+			CurrSeg->e.seginfo->alignment = 12;
+		}
+		sym = SymCheck("_flat");
+		if (sym)
+		{
+			sym->isdefined = TRUE;
+			UpdateCurrSegVars();
+			SetOfssize();
+		}
+		FStoreLine(1);
+		return(NOT_ERROR);
+	}
+	/* ************************************************************** */
+
+	/* ************************************************************** */
+	/* Does line start with a code label?                             */
+	/* ************************************************************** */
+	if (tokenarray[0].token == T_ID && (tokenarray[1].token == T_COLON || tokenarray[1].token == T_DBL_COLON)) {
+		i = 2;
+		DebugMsg1(("ParseLine T_COLON, code label=%s\n", tokenarray[0].string_ptr));
+		if (ProcStatus & PRST_PROLOGUE_NOT_DONE) 
+			write_prologue(tokenarray);
+
+		/* create a global or local code label */
+		if (CreateLabel(tokenarray[0].string_ptr, MT_NEAR, NULL,(ModuleInfo.scoped && CurrProc && tokenarray[1].token != T_DBL_COLON)) == NULL) {
+			DebugMsg(("ParseLine, CreateLabel(%s) failed, exit\n", tokenarray[0].string_ptr));
+			return(ERROR);
+		}
+		if (tokenarray[i].token == T_FINAL) {
+			FStoreLine(0);
+			if (CurrFile[LST]) {
+				LstWrite(LSTTYPE_LABEL, 0, NULL);
+			}
 			return(NOT_ERROR);
 		}
-	} */
-
-    /* create a global or local code label */
-    if (CreateLabel(tokenarray[0].string_ptr, MT_NEAR, NULL,
-      (ModuleInfo.scoped && CurrProc && tokenarray[1].token != T_DBL_COLON)) == NULL) {
-      DebugMsg(("ParseLine, CreateLabel(%s) failed, exit\n", tokenarray[0].string_ptr));
-      return(ERROR);
-    }
-    if (tokenarray[i].token == T_FINAL) {
-      /* v2.06: this is a bit too late. Should be done BEFORE
-       * CreateLabel, because of '@@'. There's a flag supposed to
-       * be used for this handling, LOF_STORED in line_flags.
-       * It's only a problem if a '@@:' is the first line
-       * in the code section.
-       * v2.10: is no longer an issue because the label counter has
-       * been moved to module_vars (see global.h).
-       */
-      FStoreLine(0);
-      if (CurrFile[LST]) {
-        LstWrite(LSTTYPE_LABEL, 0, NULL);
-      }
-      return(NOT_ERROR);
-    }
-  }
-
-  /* handle directives and (anonymous) data items */
-  if (tokenarray[i].token != T_INSTRUCTION) {
-    /* a code label before a data item is only accepted in Masm5 compat mode */
-    Frame_Type = FRAME_NONE;
-    SegOverride = NULL;
-    if (i == 0 && tokenarray[0].token == T_ID) {
-      /* token at pos 0 may be a label.
-       * it IS a label if:
-       * 1. token at pos 1 is a directive (lbl dd ...)
-       * 2. token at pos 0 is NOT a userdef type ( lbl DWORD ...)
-       * 3. inside a struct and token at pos 1 is a userdef type
-       *    or a predefined type. (usertype DWORD|usertype ... )
-       *    the separate namespace allows this syntax here.
-       */
-      if (tokenarray[1].token == T_DIRECTIVE)
-        i++;
-      else {
-        sym = IsType(tokenarray[0].string_ptr);
-        if (sym == NULL)
-          i++;
-        else if (CurrStruct &&
-          ((tokenarray[1].token == T_STYPE) ||
-          (tokenarray[1].token == T_ID && (IsType(tokenarray[1].string_ptr)))))
-          i++;
-      }
-    }
-    switch (tokenarray[i].token) {
-    case T_DIRECTIVE:
-      DebugMsg1(("ParseLine: T_DIRECTIVE >%s<\n", tokenarray[i].string_ptr));
-      if (tokenarray[i].dirtype == DRT_DATADIR) {
-        return(data_dir(i, tokenarray, NULL));
-      }
-      dirflags = GetValueSp(tokenarray[i].tokval);
-      if (CurrStruct && (dirflags & DF_NOSTRUC)) {
-        return(EmitError(STATEMENT_NOT_ALLOWED_INSIDE_STRUCTURE_DEFINITION));
-      }
-      /* label allowed for directive? */
-      //if ( tokenarray[i].flags & DF_LABEL ) {
-      if (dirflags & DF_LABEL) {
-        if (i && tokenarray[0].token != T_ID) {
-          return(EmitErr(SYNTAX_ERROR_EX, tokenarray[0].string_ptr));
-        }
-      }
-      else if (i && tokenarray[i - 1].token != T_COLON && tokenarray[i - 1].token != T_DBL_COLON) {
-        return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i - 1].string_ptr));
-      }
-      /* must be done BEFORE FStoreLine()! */
-      if ((ProcStatus & PRST_PROLOGUE_NOT_DONE) && (dirflags & DF_PROC)) write_prologue(tokenarray);
-#if FASTPASS
-      if (StoreState || (dirflags & DF_STORE)) {
-        /* v2.07: the comment must be stored as well
-         * if a listing (with -Sg) is to be written and
-         * the directive will generate lines
-         */
-        if ((dirflags & DF_CGEN) && ModuleInfo.CurrComment && ModuleInfo.list_generated_code) {
-          FStoreLine(1);
-        }
-        else
-          FStoreLine(0);
-      }
-#endif
-      if (tokenarray[i].dirtype > DRT_DATADIR) {
-        temp = directive_tab[tokenarray[i].dirtype](i, tokenarray);
-      }
-      else {
-        temp = ERROR;
-        /* ENDM, EXITM and GOTO directives should never be seen here */
-        switch (tokenarray[i].tokval) {
-        case T_ENDM:
-          EmitError(UNMATCHED_MACRO_NESTING);
-          break;
-        case T_EXITM:
-        case T_GOTO:
-          EmitError(DIRECTIVE_MUST_APPEAR_INSIDE_A_MACRO);
-          break;
-        default:
-          /* this error may happen if
-           * CATSTR, SUBSTR, MACRO, ...
-           * aren't at pos 1
-           */
-          EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr);
-          break;
-        }
-      }
-      /* v2.0: for generated code it's important that list file is
-       * written in ALL passes, to update file position! */
-      //if ( ModuleInfo.list && (( line_flags & LOF_LISTED ) == 0 ) && Parse_Pass == PASS_1 )
-#if FASTPASS
-      /* v2.08: UseSavedState == FALSE added */
-      if (ModuleInfo.list && (Parse_Pass == PASS_1 || ModuleInfo.GeneratedCode || UseSavedState == FALSE))
-#else
-      if ( ModuleInfo.list )
-#endif
-        LstWriteSrcLine();
-      return(temp);
-    case T_STYPE:
-      DebugMsg1(("ParseLine: T_STYPE >%s<\n", tokenarray[i].string_ptr));
-	  return(data_dir(i, tokenarray, NULL));
-    case T_ID:
-      DebugMsg1(("ParseLine: T_ID >%s<\n", tokenarray[i].string_ptr));
-      if (sym = IsType(tokenarray[i].string_ptr)) {
-        return(data_dir(i, tokenarray, sym));
-      }
-      break;
-    default:
-      if (tokenarray[i].token == T_COLON) {
-        DebugMsg(("ParseLine: unexpected colon\n"));
-        return(EmitError(SYNTAX_ERROR_UNEXPECTED_COLON));
-      }
-      break;
-    } /* end switch (tokenarray[i].token) */
-    if (i && tokenarray[i - 1].token == T_ID)
-      i--;
-    DebugMsg(("ParseLine: unexpected token=%u, i=%u, string=%s\n", tokenarray[i].token, i, tokenarray[i].string_ptr));
-    return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
-  }
-
-  DebugMsg1(("ParseLine: %s\n", tokenarray[i].string_ptr));
-  /* v2.04 added */
-  if (CurrStruct) {
-    return(EmitError(STATEMENT_NOT_ALLOWED_INSIDE_STRUCTURE_DEFINITION));
-  }
-
-  if (ProcStatus & PRST_PROLOGUE_NOT_DONE) write_prologue(tokenarray);
-
-  /* v2.07: moved because special handling is needed for RET/IRET */
-  //FStoreLine(); /* must be placed AFTER write_prologue() */
-
-  if (CurrFile[LST]) oldofs = GetCurrOffset();
-
-  /* init CodeInfo */
-  CodeInfo.prefix.ins = EMPTY;
-  CodeInfo.prefix.RegOverride = EMPTY;
-#if AMD64_SUPPORT
-  CodeInfo.prefix.rex = 0;
-#endif
-  CodeInfo.prefix.adrsiz = FALSE;
-  CodeInfo.prefix.opsiz = FALSE;
-  CodeInfo.mem_type = MT_EMPTY;
-  for (j = 0; j < MAX_OPND; j++) {
-    CodeInfo.opnd[j].type = OP_NONE;
-#ifdef DEBUG_OUT
-    CodeInfo.opnd[j].data32l = -1;
-    /* make sure it's invalid */
-    CodeInfo.opnd[j].InsFixup = (void *)0xffffffff;
-#endif
-  }
-  CodeInfo.rm_byte = 0;
-  CodeInfo.sib = 0;            /* assume ss is *1 */
-  CodeInfo.Ofssize = ModuleInfo.Ofssize;
-  CodeInfo.opc_or = 0;
-  CodeInfo.basetype = 0;
-  CodeInfo.indextype = 0;
-#if AVXSUPP
-  CodeInfo.evex_sae = 0;
-  CodeInfo.vexregop = 0;
-  CodeInfo.tuple = 0;
-  CodeInfo.isptr = FALSE;
-  CodeInfo.vexconst = 0;
-  CodeInfo.evex_flag = FALSE;  /* if TRUE will output 0x62 */
-  CodeInfo.reg1 = 0;
-  CodeInfo.reg2 = 0;
-  CodeInfo.reg3 = 0xff;          /* if not reg3 make it negative  */
-  CodeInfo.basereg = 0xff;
-  CodeInfo.indexreg = 0xff;
-  CodeInfo.zreg = 0;
-  if (tokenarray[0].tokval >= T_KADDB && tokenarray[0].tokval <= T_KMOVW){
-    CodeInfo.evex_flag = FALSE;
-  }
-  else{
-    //Init EVEX three bytes
-    CodeInfo.evex_p0 = 0;      /* P0[3 : 2] Must be 0 */
-    CodeInfo.evex_p1 = 0x4;    /* P1[2]    Must be 1  */
-    CodeInfo.evex_p2 = 0;
-    if (broadflags || decoflags)
-      CodeInfo.evex_flag = TRUE;   /* if TRUE will output 0x62 */
-  }
-#endif
-  CodeInfo.flags = 0;
-    //if (tokenarray[i].tokval == T_VSCATTERDPD) 
-    //__debugbreak();
-
-  /* instruction prefix?
-   * T_LOCK, T_REP, T_REPE, T_REPNE, T_REPNZ, T_REPZ */
-  if (tokenarray[i].tokval >= T_LOCK && tokenarray[i].tokval <= T_REPZ) 
-  {
-    
-	CodeInfo.prefix.ins = tokenarray[i].tokval;
-    i++;
-    
-	/* prefix has to be followed by an instruction */
-    if (tokenarray[i].token != T_INSTRUCTION) {
-      DebugMsg(("ParseLine: unexpected token %u after prefix, exit, error\n", tokenarray[i].token));
-      return(EmitError(PREFIX_MUST_BE_FOLLOWED_BY_AN_INSTRUCTION));
-    }
-
-	DebugMsg1(("ParseLine: %s\n", tokenarray[i].tokpos));
-  };
-
-  if (CurrProc) {
-    switch (tokenarray[i].tokval) {
-	case T_RETN:
-    case T_RET:
-    case T_IRET:  /* IRET is always 16-bit; OTOH, IRETW doesn't exist */
-    case T_IRETD:
-#if AMD64_SUPPORT
-    case T_IRETQ:
-#endif
-      if ( (!(ProcStatus & PRST_INSIDE_EPILOGUE) && ModuleInfo.epiloguemode != PEM_NONE && tokenarray[i].tokval != T_RETN) ||
-		   (!(ProcStatus & PRST_INSIDE_EPILOGUE) && (CurrProc->e.procinfo->basereg == T_ESP || CurrProc->e.procinfo->basereg == T_RSP) )
-		  ) {
-        /* v2.07: special handling for RET/IRET */
-        FStoreLine((ModuleInfo.CurrComment && ModuleInfo.list_generated_code) ? 1 : 0);
-        ProcStatus |= PRST_INSIDE_EPILOGUE;
-        temp = RetInstr(i, tokenarray, Token_Count);
-        ProcStatus &= ~PRST_INSIDE_EPILOGUE;
-        return(temp);
-      }
-      /* default translation: just RET to RETF if proc is far */
-      /* v2.08: this code must run even if PRST_INSIDE_EPILOGUE is set */
-      if (tokenarray[i].tokval == T_RET && CurrProc->sym.mem_type == MT_FAR)
-        tokenarray[i].tokval = T_RETF;
-    }
-  }
-
-  FStoreLine(0); /* must be placed AFTER write_prologue() */
-
-#ifdef DEBUG_OUT
-  instr = tokenarray[i].string_ptr;
-#endif
-  CodeInfo.token = tokenarray[i].tokval;
-  /* get the instruction's start position in InstrTable[] */
-  CodeInfo.pinstr = &InstrTable[IndexFromToken(CodeInfo.token)];
-  i++;
-
-  if (CurrSeg == NULL) {
-    return(EmitError(MUST_BE_IN_SEGMENT_BLOCK));
-  }
-  if (CurrSeg->e.seginfo->segtype == SEGTYPE_UNDEF) {
-    CurrSeg->e.seginfo->segtype = SEGTYPE_CODE;
-  }
-  if (ModuleInfo.CommentDataInCode)
-    omf_OutSelect(FALSE);
-
-  /* UASM 2.37: Calculate an inferred memory size if any operand is a register, this can be used when no memory size info is available */
-  /* ********************************************************************************************************************************* */
-  oldi = i;
-  for (j = 0; j < sizeof(opndx) / sizeof(opndx[0]) && tokenarray[i].token != T_FINAL; j++) 
-  {
-	  if (j)
-	  {
-		  if (tokenarray[i].token != T_COMMA)
-			  break;
-		  i++;
-	  }
-	  if (EvalOperand(&i, tokenarray, Token_Count, &opndx[j], 0) == ERROR)
-		  return(ERROR);
-	
-	  if (opndx[j].kind == EXPR_REG)
-	  {
-		  infSize = SizeFromRegister(opndx[j].base_reg->tokval);
-		  break;
-	  }
-  }
-  i = oldi;
-
-  /* get the instruction's arguments.
-   * This loop accepts up to 4 arguments if AVXSUPP is on */
-  for (j = 0; j < sizeof(opndx) / sizeof(opndx[0]) && tokenarray[i].token != T_FINAL; j++) {
-
-    if (j) 
-	{
-		if (tokenarray[i].token != T_COMMA)
-			break;
-		i++;
-    }
-
-    DebugMsg1(("ParseLine(%s): calling EvalOperand, i=%u\n", instr, i));
-    if (EvalOperand(&i, tokenarray, Token_Count, &opndx[j], 0) == ERROR) {
-      DebugMsg(("ParseLine(%s): EvalOperand() failed\n", instr));
-      return(ERROR);
-    }
-	/* UASM 2.37: For immediate indirect memory addresses, allow DS override assumption in 32 and 64bit, and apply memory size info */
-	/* ********************************************************************************************************************************* */
-	if (opndx[j].kind == EXPR_CONST && opndx[j].isptr)
-	{
-		CodeInfo.isptr = TRUE;
-		if (opndx[j].mem_type == MT_EMPTY)
-		{
-			switch (infSize)
-			{
-			case 1:
-				opndx[j].mem_type = MT_BYTE;
-				break;
-			case 2:
-				opndx[j].mem_type = MT_WORD;
-				break;
-			case 4:
-				opndx[j].mem_type = MT_DWORD;
-				break;
-			case 8:
-				opndx[j].mem_type = MT_QWORD;
-				break;
-			case 16:
-				opndx[j].mem_type = MT_OWORD;
-				break;
-			case 32:
-				opndx[j].mem_type = MT_YMMWORD;
-				break;
-			}
-			
-		}
-		opndx[j].kind = EXPR_ADDR;
-		if(ModuleInfo.Ofssize != USE64)
-			opndx[j].override = &dsOver;
-
 	}
 
-    if (j == 2 && (opndx[j].kind == EXPR_REG)){
-      regtok = opndx[OPND3].base_reg->tokval;
-      CodeInfo.reg3 = GetRegNo(regtok);
-    }
-    switch (opndx[j].kind) {
-    case EXPR_FLOAT:
-      /* v2.06: accept float constants for PUSH */
-      if (j == OPND2 || CodeInfo.token == T_PUSH || CodeInfo.token == T_PUSHD) {
-#if FPIMMEDIATE
-        if (Options.strict_masm_compat == FALSE) {
-          /* convert to REAL4, unless REAL8 coercion is requested */
-          atofloat(&opndx[j].fvalue, opndx[j].float_tok->string_ptr, opndx[j].mem_type == MT_REAL8 ? 8 : 4, opndx[j].negative, opndx[j].float_tok->floattype);
-          opndx[j].kind = EXPR_CONST;
-          opndx[j].float_tok = NULL;
-          break;
-        }
-#endif
-        /* Masm message is: real or BCD number not allowed */
-        return(EmitError(FP_INITIALIZER_IGNORED));
-      }
-#if AVXSUPP
- /* here is handled EVEX Static Rounding Mode {sae}, {rn-sae}, {rd-sae}, {ru-sae}, {rz-sae} */
-    case EXPR_DECORATOR:
-      if (opndx[j - 1].indirect || opndx[j - 2].indirect)
-        return(EmitError(EMBEDDED_ROUNDING_IS_AVAILABLE_ONLY_WITH_REG_REG_OP));
-        CodeInfo.evex_sae = opndx[j].saeflags;
-        j--;
-        break;
-      /* fall through */
-#endif
-    case EXPR_EMPTY:
-      if (i == Token_Count)
-        i--;  /* v2.08: if there was a terminating comma, display it */
-      /* fall through */
-    case EXPR_ERROR:
-      DebugMsg(("ParseLine(%s): unexpected operand kind=%d, error, exit\n", instr, opndx[j].kind));
-      return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
-    }
-  }
+	/* ************************************************************** */
+	/* handle directives and (anonymous) data items                   */
+	/* ************************************************************** */
+	if (tokenarray[i].token != T_INSTRUCTION) 
+	{
+		/* a code label before a data item is only accepted in Masm5 compat mode */
+		Frame_Type = FRAME_NONE;
+		SegOverride = NULL;
+		if (i == 0 && tokenarray[0].token == T_ID) {
+			/* token at pos 0 may be a label.
+			* it IS a label if:
+			* 1. token at pos 1 is a directive (lbl dd ...)
+			* 2. token at pos 0 is NOT a userdef type ( lbl DWORD ...)
+			* 3. inside a struct and token at pos 1 is a userdef type or a predefined type. (usertype DWORD|usertype ... )
+			*    the separate namespace allows this syntax here. */
+			if (tokenarray[1].token == T_DIRECTIVE)
+				i++;
+			else {
+				sym = IsType(tokenarray[0].string_ptr);
+				if (sym == NULL)
+					i++;
+				else if (CurrStruct && ((tokenarray[1].token == T_STYPE) || (tokenarray[1].token == T_ID && (IsType(tokenarray[1].string_ptr)))))
+					i++;
+			}
+		}
+		
+		switch (tokenarray[i].token) 
+		{
+			case T_DIRECTIVE:
 
-  if (tokenarray[i].token != T_FINAL) 
-  {
-    DebugMsg(("ParseLine(%s): too many operands (%s) \n", instr, tokenarray[i].tokpos));
-    return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
-  }
+				DebugMsg1(("ParseLine: T_DIRECTIVE >%s<\n", tokenarray[i].string_ptr));
+				if (tokenarray[i].dirtype == DRT_DATADIR) {
+					return(data_dir(i, tokenarray, NULL));
+				}
+				dirflags = GetValueSp(tokenarray[i].tokval);
+				if (CurrStruct && (dirflags & DF_NOSTRUC)) {
+					return(EmitError(STATEMENT_NOT_ALLOWED_INSIDE_STRUCTURE_DEFINITION));
+				}
+			    /* label allowed for directive? */
+				if (dirflags & DF_LABEL) {
+					if (i && tokenarray[0].token != T_ID) {
+						return(EmitErr(SYNTAX_ERROR_EX, tokenarray[0].string_ptr));
+					}
+				}
+				else if (i && tokenarray[i - 1].token != T_COLON && tokenarray[i - 1].token != T_DBL_COLON) {
+					return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i - 1].string_ptr));
+				}
+				/* must be done BEFORE FStoreLine()! */
+				if ((ProcStatus & PRST_PROLOGUE_NOT_DONE) && (dirflags & DF_PROC)) 
+					write_prologue(tokenarray);
 
+				if (StoreState || (dirflags & DF_STORE)) {
+					if ((dirflags & DF_CGEN) && ModuleInfo.CurrComment && ModuleInfo.list_generated_code) {
+						FStoreLine(1);
+					}
+					else
+						FStoreLine(0);
+				}
 
-  /* UASM 2.36 SIMD aligned check */
-  /* ********************************************************* */
-  if (opndx[0].kind == EXPR_REG && (GetValueSp(opndx[0].base_reg->tokval) == OP_XMM || 
-      GetValueSp(opndx[0].base_reg->tokval) == OP_YMM|| GetValueSp(opndx[0].base_reg->tokval) == OP_ZMM)){
-    if (GetValueSp(opndx[0].base_reg->tokval) == OP_XMM)
-      alignCheck = 16;
-    else if (GetValueSp(opndx[0].base_reg->tokval) == OP_YMM)
-      alignCheck = 32;
-    else if (GetValueSp(opndx[0].base_reg->tokval) == OP_ZMM){
-      CodeInfo.zreg = 1;
-      alignCheck = 64;
-    }
-	  if (opndx[1].kind == EXPR_ADDR && opndx[1].sym)
-	  {
+				if (tokenarray[i].dirtype > DRT_DATADIR) {
+					temp = directive_tab[tokenarray[i].dirtype](i, tokenarray);
+				}
+				else {
+					temp = ERROR;
+					/* ENDM, EXITM and GOTO directives should never be seen here */
+					switch (tokenarray[i].tokval) 
+					{
+						case T_ENDM:
+							EmitError(UNMATCHED_MACRO_NESTING);
+							break;
+						case T_EXITM:
+						case T_GOTO:
+							EmitError(DIRECTIVE_MUST_APPEAR_INSIDE_A_MACRO);
+							break;
+						default:
+							/* this error may happen if CATSTR, SUBSTR, MACRO, ...a ren't at pos 1 */
+							EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr);
+							break;
+					}
+				}
 
-		  /* Check the symbol size, if it's compatible force xmmword/ymmword type */
-		  if (opndx[1].sym->total_size == alignCheck && !IsScalarSimdInstr(CodeInfo.token) )
-		  {
-			  if (alignCheck == 16)
-			  {
-				  opndx[1].mem_type = MT_OWORD;
-			  }
-			  else if (alignCheck == 32)
-			  {
-				  opndx[1].mem_type = MT_YMMWORD;
-			  }
-			  else
-			  {
-				  opndx[1].mem_type = MT_ZMMWORD;
-			  }
-		  }
+				/* v2.0: for generated code it's important that list file is written in ALL passes, to update file position! */
+		        /* v2.08: UseSavedState == FALSE added */
+				if (ModuleInfo.list && (Parse_Pass == PASS_1 || ModuleInfo.GeneratedCode || UseSavedState == FALSE))
+					LstWriteSrcLine();
+				return(temp);
 
-		  if (CodeInfo.token == T_MOVAPS || CodeInfo.token == T_VMOVAPS || CodeInfo.token == T_MOVDQA || 
-			  CodeInfo.token == T_VMOVDQA || CodeInfo.token == T_MOVAPD || CodeInfo.token == T_VMOVAPD || CodeInfo.token == T_MOVNTDQA || CodeInfo.token == T_VMOVNTDQA)
-		  {
-			  if (opndx[1].sym->state != SYM_STACK && (opndx[1].sym->offset % alignCheck != 0) && Parse_Pass == PASS_2)
-				  EmitWarn(2, UNALIGNED_SIMD_USE);
-		  }
-	  }
-	  else if (opndx[2].kind == EXPR_ADDR && opndx[2].sym)
-	  {
-		  /* Check the symbol size, if it's compatible force xmmword/ymmword type */
-		  if (opndx[2].sym->total_size == alignCheck && !IsScalarSimdInstr(CodeInfo.token))
-		  {
-			  if (alignCheck == 16)
-			  {
-				  opndx[2].mem_type = MT_OWORD;
-			  }
-			  else if (alignCheck == 32)
-			  {
-				  opndx[2].mem_type = MT_YMMWORD;
-			  }
-			  else
-			  {
-				  opndx[2].mem_type = MT_ZMMWORD;
-			  }
-		  }
-	  }
-  }
-  else if (opndx[0].kind == EXPR_ADDR && opndx[0].sym)
-  {
-	  if (opndx[1].kind == EXPR_REG && (GetValueSp(opndx[1].base_reg->tokval) == OP_XMM ||
-         GetValueSp(opndx[1].base_reg->tokval) == OP_YMM|| GetValueSp(opndx[1].base_reg->tokval) == OP_ZMM)){
-        if (GetValueSp(opndx[1].base_reg->tokval) == OP_XMM)
-          alignCheck = 16;
-        else if (GetValueSp(opndx[1].base_reg->tokval) == OP_YMM)
-          alignCheck = 32;
-        else if (GetValueSp(opndx[1].base_reg->tokval) == OP_ZMM){
-          CodeInfo.zreg = 1;
-          alignCheck = 64;
-        }		  
-		  /* Check the symbol size, if it's compatible force xmmword/ymmword type */
-		  if (opndx[0].sym->total_size == alignCheck && !IsScalarSimdInstr(CodeInfo.token))
-		  {
-			  if (alignCheck == 16)
-			  {
-				  opndx[0].mem_type = MT_OWORD;
-			  }
-			  else if (alignCheck == 32)
-			  {
-				  opndx[0].mem_type = MT_YMMWORD;
-			  }
-			  else
-			  {
-				  opndx[0].mem_type = MT_ZMMWORD;
-			  }
-		  }
+			case T_STYPE:
+      
+				DebugMsg1(("ParseLine: T_STYPE >%s<\n", tokenarray[i].string_ptr));
+				return(data_dir(i, tokenarray, NULL));
 
-		  if (CodeInfo.token == T_MOVAPS || CodeInfo.token == T_VMOVAPS || CodeInfo.token == T_MOVDQA ||
-			  CodeInfo.token == T_VMOVDQA || CodeInfo.token == T_MOVAPD || CodeInfo.token == T_VMOVAPD || CodeInfo.token == T_MOVNTDQA || CodeInfo.token == T_VMOVNTDQA)
-		  {
-			  if (opndx[0].sym->state != SYM_STACK && (opndx[0].sym->offset % alignCheck != 0) && Parse_Pass == PASS_2)
-				  EmitWarn(2, UNALIGNED_SIMD_USE);
-		  }
-	  }
-  }
+			case T_ID:
+      
+				DebugMsg1(("ParseLine: T_ID >%s<\n", tokenarray[i].string_ptr));
+				if (sym = IsType(tokenarray[i].string_ptr)) {
+					return(data_dir(i, tokenarray, sym));
+				}
+				break;
 
+			default:
+				if (tokenarray[i].token == T_COLON) {
+					DebugMsg(("ParseLine: unexpected colon\n"));
+					return(EmitError(SYNTAX_ERROR_UNEXPECTED_COLON));
+				}
+				break;
+		} /* end switch (tokenarray[i].token) */
+
+		if (i && tokenarray[i - 1].token == T_ID)
+			i--;
+		DebugMsg(("ParseLine: unexpected token=%u, i=%u, string=%s\n", tokenarray[i].token, i, tokenarray[i].string_ptr));
+		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
+
+	} /* end of != T_INSTRUCTION */
+
+	DebugMsg1(("ParseLine: %s\n", tokenarray[i].string_ptr));
+
+	if (CurrStruct) {
+		return(EmitError(STATEMENT_NOT_ALLOWED_INSIDE_STRUCTURE_DEFINITION));
+	}
+
+	if (ProcStatus & PRST_PROLOGUE_NOT_DONE) 
+		write_prologue(tokenarray);
+
+	/* v2.07: moved because special handling is needed for RET/IRET */
+	if (CurrFile[LST]) oldofs = GetCurrOffset();
+
+	/* ************************************************************** */
+	/* INIT: CodeInfo                                                 */
+	/* ************************************************************** */
+	CodeInfo.prefix.ins         = EMPTY;
+	CodeInfo.prefix.RegOverride = EMPTY;
+	CodeInfo.prefix.rex         = 0;
+	CodeInfo.prefix.adrsiz      = FALSE;
+	CodeInfo.prefix.opsiz       = FALSE;
+	CodeInfo.mem_type           = MT_EMPTY;
+	for (j = 0; j < MAX_OPND; j++) {
+		CodeInfo.opnd[j].type = OP_NONE;
+	}
+	CodeInfo.rm_byte   = 0;
+	CodeInfo.sib       = 0;
+	CodeInfo.Ofssize   = ModuleInfo.Ofssize;
+	CodeInfo.opc_or    = 0;
+	CodeInfo.basetype  = 0;
+	CodeInfo.indextype = 0;
+	CodeInfo.evex_sae  = 0;
+	CodeInfo.vexregop  = 0;
+	CodeInfo.tuple     = 0;
+	CodeInfo.isptr     = FALSE;
+	CodeInfo.vexconst  = 0;
+	CodeInfo.evex_flag = FALSE;  /* if TRUE will output 0x62 */
+	CodeInfo.reg1      = 0;
+	CodeInfo.reg2      = 0;
+	CodeInfo.reg3      = 0xff;   /* if not reg3 make it negative  */
+	CodeInfo.basereg   = 0xff;
+	CodeInfo.indexreg  = 0xff;
+	CodeInfo.zreg      = 0;
+	if (tokenarray[0].tokval >= T_KADDB && tokenarray[0].tokval <= T_KMOVW) {
+		CodeInfo.evex_flag = FALSE;
+	}
+	else {
+		//Init EVEX three bytes
+		CodeInfo.evex_p0 = 0;      /* P0[3 : 2] Must be 0 */
+		CodeInfo.evex_p1 = 0x4;    /* P1[2]    Must be 1  */
+		CodeInfo.evex_p2 = 0;
+		if (broadflags || decoflags)
+			CodeInfo.evex_flag = TRUE;   /* if TRUE will output 0x62 */
+	}
+	CodeInfo.flags = 0;
+
+	/* ************************************************************** */
+	/* instruction prefix? T_LOCK, T_REP, T_REPE, T_REPNE, T_REPNZ, T_REPZ */
+	/* ************************************************************** */
+	if (tokenarray[i].tokval >= T_LOCK && tokenarray[i].tokval <= T_REPZ) 
+	{
+		CodeInfo.prefix.ins = tokenarray[i].tokval;
+		i++;
+		/* prefix has to be followed by an instruction */
+		if (tokenarray[i].token != T_INSTRUCTION) {
+			DebugMsg(("ParseLine: unexpected token %u after prefix, exit, error\n", tokenarray[i].token));
+			return(EmitError(PREFIX_MUST_BE_FOLLOWED_BY_AN_INSTRUCTION));
+		}
+		DebugMsg1(("ParseLine: %s\n", tokenarray[i].tokpos));
+	};
+
+	/* ************************************************************** */
+	/* Handle RETURNS inside CurrProc                                 */
+	/* ************************************************************** */
+	if (CurrProc) 
+	{
+		switch (tokenarray[i].tokval) 
+		{
+			case T_RETN:
+			case T_RET:
+			case T_IRET:  /* IRET is always 16-bit; OTOH, IRETW doesn't exist */
+			case T_IRETD:
+		    case T_IRETQ:
+				if ( (!(ProcStatus & PRST_INSIDE_EPILOGUE) && ModuleInfo.epiloguemode != PEM_NONE && tokenarray[i].tokval != T_RETN) ||
+					 (!(ProcStatus & PRST_INSIDE_EPILOGUE) && (CurrProc->e.procinfo->basereg == T_ESP || CurrProc->e.procinfo->basereg == T_RSP) )) {
+					/* v2.07: special handling for RET/IRET */
+					FStoreLine((ModuleInfo.CurrComment && ModuleInfo.list_generated_code) ? 1 : 0);
+					ProcStatus |= PRST_INSIDE_EPILOGUE;
+					temp = RetInstr(i, tokenarray, Token_Count);
+					ProcStatus &= ~PRST_INSIDE_EPILOGUE;
+					return(temp);
+				}
+				/* default translation: just RET to RETF if proc is far */
+				/* v2.08: this code must run even if PRST_INSIDE_EPILOGUE is set */
+				if (tokenarray[i].tokval == T_RET && CurrProc->sym.mem_type == MT_FAR)
+					tokenarray[i].tokval = T_RETF;
+		}
+	}
+
+	FStoreLine(0); /* must be placed AFTER write_prologue() */
+
+	CodeInfo.token = tokenarray[i].tokval;
+	/* get the instruction's start position in InstrTable[] */
+	CodeInfo.pinstr = &InstrTable[IndexFromToken(CodeInfo.token)];
+	i++;
+
+	if (CurrSeg == NULL) {
+		return(EmitError(MUST_BE_IN_SEGMENT_BLOCK));
+	}
+	if (CurrSeg->e.seginfo->segtype == SEGTYPE_UNDEF) {
+		CurrSeg->e.seginfo->segtype = SEGTYPE_CODE;
+	}
+	if (ModuleInfo.CommentDataInCode)
+		omf_OutSelect(FALSE);
+
+	/* UASM 2.37: Calculate an inferred memory size if any operand is a register, this can be used when no memory size info is available */
+	/* ********************************************************************************************************************************* */
+	oldi = i;
+	for (j = 0; j < sizeof(opndx) / sizeof(opndx[0]) && tokenarray[i].token != T_FINAL; j++) {
+		if (j) {
+			if (tokenarray[i].token != T_COMMA)
+				break;
+			i++;
+		}
+		if (EvalOperand(&i, tokenarray, Token_Count, &opndx[j], 0) == ERROR)
+			return(ERROR);
+	
+		if (opndx[j].kind == EXPR_REG)
+		{
+			infSize = SizeFromRegister(opndx[j].base_reg->tokval);
+			break;
+		}
+	}
+	i = oldi;
+
+	/* ************************************************************** */
+    /* Get Instruction Arguments (Up to 4 with AVXSUPP)               */
+    /* ************************************************************** */
+	for (j = 0; j < sizeof(opndx) / sizeof(opndx[0]) && tokenarray[i].token != T_FINAL; j++) {
+
+		if (j) 
+		{
+			if (tokenarray[i].token != T_COMMA)
+				break;
+			i++;
+		}
+
+		DebugMsg1(("ParseLine(%s): calling EvalOperand, i=%u\n", instr, i));
+		
+		if (EvalOperand(&i, tokenarray, Token_Count, &opndx[j], 0) == ERROR) {
+			DebugMsg(("ParseLine(%s): EvalOperand() failed\n", instr));
+			return(ERROR);
+		}
+
+		/* UASM 2.37: For immediate indirect memory addresses, allow DS override assumption in 32 and 64bit, and apply memory size info      */
+		/* ********************************************************************************************************************************* */
+		if (opndx[j].kind == EXPR_CONST && opndx[j].isptr) {
+			CodeInfo.isptr = TRUE;
+			if (opndx[j].mem_type == MT_EMPTY)
+			{
+				switch (infSize)
+				{
+					case 1:
+						opndx[j].mem_type = MT_BYTE;
+						break;
+					case 2:
+						opndx[j].mem_type = MT_WORD;
+						break;
+					case 4:
+						opndx[j].mem_type = MT_DWORD;
+						break;
+					case 8:
+						opndx[j].mem_type = MT_QWORD;
+						break;
+					case 16:
+						opndx[j].mem_type = MT_OWORD;
+						break;
+					case 32:
+						opndx[j].mem_type = MT_YMMWORD;
+						break;
+				}
+			}
+			opndx[j].kind = EXPR_ADDR;
+			if(ModuleInfo.Ofssize != USE64)
+				opndx[j].override = &dsOver;
+		}
+
+		if (j == 2 && (opndx[j].kind == EXPR_REG)) {
+			regtok = opndx[OPND3].base_reg->tokval;
+			CodeInfo.reg3 = GetRegNo(regtok);
+		}
+
+		switch (opndx[j].kind) 
+		{
+			case EXPR_FLOAT:
+				/* v2.06: accept float constants for PUSH */
+				if (j == OPND2 || CodeInfo.token == T_PUSH || CodeInfo.token == T_PUSHD) {
+					#if FPIMMEDIATE
+					if (Options.strict_masm_compat == FALSE) {
+						/* convert to REAL4, unless REAL8 coercion is requested */
+						atofloat(&opndx[j].fvalue, opndx[j].float_tok->string_ptr, opndx[j].mem_type == MT_REAL8 ? 8 : 4, opndx[j].negative, opndx[j].float_tok->floattype);
+						opndx[j].kind = EXPR_CONST;
+						opndx[j].float_tok = NULL;
+						break;
+					}
+					#endif
+					/* Masm message is: real or BCD number not allowed */
+					return(EmitError(FP_INITIALIZER_IGNORED));
+				}
+
+			/* Handle EVEX Static Rounding Mode {sae}, {rn-sae}, {rd-sae}, {ru-sae}, {rz-sae} */
+			case EXPR_DECORATOR:
+				if (opndx[j - 1].indirect || opndx[j - 2].indirect)
+					return(EmitError(EMBEDDED_ROUNDING_IS_AVAILABLE_ONLY_WITH_REG_REG_OP));
+				CodeInfo.evex_sae = opndx[j].saeflags;
+				j--;
+				break;
+
+			case EXPR_EMPTY:
+				if (i == Token_Count)
+					i--;  /* v2.08: if there was a terminating comma, display it */
+      
+		    case EXPR_ERROR:
+				DebugMsg(("ParseLine(%s): unexpected operand kind=%d, error, exit\n", instr, opndx[j].kind));
+				return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
+		}
+	}
+
+	if (tokenarray[i].token != T_FINAL) 
+	{
+		DebugMsg(("ParseLine(%s): too many operands (%s) \n", instr, tokenarray[i].tokpos));
+		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
+	}
+
+	/* UASM 2.36 SIMD aligned check                              */
+	/* ********************************************************* */
+	if (opndx[0].kind == EXPR_REG && (GetValueSp(opndx[0].base_reg->tokval) == OP_XMM || 
+		GetValueSp(opndx[0].base_reg->tokval) == OP_YMM|| GetValueSp(opndx[0].base_reg->tokval) == OP_ZMM)) {
+
+		if (GetValueSp(opndx[0].base_reg->tokval) == OP_XMM)
+			alignCheck = 16;
+		else if (GetValueSp(opndx[0].base_reg->tokval) == OP_YMM)
+			alignCheck = 32;
+		else if (GetValueSp(opndx[0].base_reg->tokval) == OP_ZMM) {
+			CodeInfo.zreg = 1;
+			alignCheck = 64;
+		}
+
+		if (opndx[1].kind == EXPR_ADDR && opndx[1].sym) {
+			/* Check the symbol size, if it's compatible force xmmword/ymmword type */
+			if (opndx[1].sym->total_size == alignCheck && !IsScalarSimdInstr(CodeInfo.token) )
+			{
+				if (alignCheck == 16)
+					opndx[1].mem_type = MT_OWORD;
+				else if (alignCheck == 32)
+					opndx[1].mem_type = MT_YMMWORD;
+				else
+					opndx[1].mem_type = MT_ZMMWORD;
+			}
+
+			if (CodeInfo.token == T_MOVAPS || CodeInfo.token == T_VMOVAPS || CodeInfo.token == T_MOVDQA || 
+				CodeInfo.token == T_VMOVDQA || CodeInfo.token == T_MOVAPD || CodeInfo.token == T_VMOVAPD || CodeInfo.token == T_MOVNTDQA || CodeInfo.token == T_VMOVNTDQA) {
+				
+				if (opndx[1].sym->state != SYM_STACK && (opndx[1].sym->offset % alignCheck != 0) && Parse_Pass == PASS_2)
+					EmitWarn(2, UNALIGNED_SIMD_USE);
+			}
+		}
+		else if (opndx[2].kind == EXPR_ADDR && opndx[2].sym) {
+			/* Check the symbol size, if it's compatible force xmmword/ymmword type */
+			if (opndx[2].sym->total_size == alignCheck && !IsScalarSimdInstr(CodeInfo.token))
+			{
+				if (alignCheck == 16)
+					opndx[2].mem_type = MT_OWORD;
+	 			else if (alignCheck == 32)
+  					opndx[2].mem_type = MT_YMMWORD;
+				else
+					opndx[2].mem_type = MT_ZMMWORD;
+			}
+		}
+
+	}
+	else if (opndx[0].kind == EXPR_ADDR && opndx[0].sym) {
+		
+		if (opndx[1].kind == EXPR_REG && (GetValueSp(opndx[1].base_reg->tokval) == OP_XMM ||
+			GetValueSp(opndx[1].base_reg->tokval) == OP_YMM|| GetValueSp(opndx[1].base_reg->tokval) == OP_ZMM)) {
+
+	        if (GetValueSp(opndx[1].base_reg->tokval) == OP_XMM)
+				alignCheck = 16;
+			else if (GetValueSp(opndx[1].base_reg->tokval) == OP_YMM)
+				alignCheck = 32;
+			else if (GetValueSp(opndx[1].base_reg->tokval) == OP_ZMM) {
+				CodeInfo.zreg = 1;
+				alignCheck = 64;
+			}
+
+			/* Check the symbol size, if it's compatible force xmmword/ymmword type */
+			if (opndx[0].sym->total_size == alignCheck && !IsScalarSimdInstr(CodeInfo.token)) {
+				if (alignCheck == 16)
+					opndx[0].mem_type = MT_OWORD;
+				else if (alignCheck == 32)
+					opndx[0].mem_type = MT_YMMWORD;
+				else
+					opndx[0].mem_type = MT_ZMMWORD;
+			}
+
+			if (CodeInfo.token == T_MOVAPS || CodeInfo.token == T_VMOVAPS || CodeInfo.token == T_MOVDQA ||
+				CodeInfo.token == T_VMOVDQA || CodeInfo.token == T_MOVAPD || CodeInfo.token == T_VMOVAPD || CodeInfo.token == T_MOVNTDQA || CodeInfo.token == T_VMOVNTDQA) {
+				
+				if (opndx[0].sym->state != SYM_STACK && (opndx[0].sym->offset % alignCheck != 0) && Parse_Pass == PASS_2)
+					EmitWarn(2, UNALIGNED_SIMD_USE);
+			}
+		}
+	}
   
-for (CurrOpnd = 0; CurrOpnd < j && CurrOpnd < MAX_OPND; CurrOpnd++) {
+	for (CurrOpnd = 0; CurrOpnd < j && CurrOpnd < MAX_OPND; CurrOpnd++) {
 
-    Frame_Type = FRAME_NONE;
-    SegOverride = NULL; /* segreg prefix is stored in RegOverride */
-    CodeInfo.opnd[CurrOpnd].data32l = 0;
-    CodeInfo.opnd[CurrOpnd].InsFixup = NULL;
-#if AVXSUPP
-    /* if encoding is VEX and destination op is XMM, YMM or memory,
-     * the second argument may be stored in the vexregop field.
-     */
-    if (CodeInfo.token >= VEX_START &&
-      CurrOpnd == OPND2 &&
-      (CodeInfo.opnd[OPND1].type & (OP_XMM | OP_YMM | OP_M | OP_M256 | OP_R32 | OP_R64 | OP_K | OP_ZMM | OP_M64 | OP_M512))) {
-      //CodeInfo.indexreg = 0xff;
-      //CodeInfo.basereg = 0xff;
-	    CodeInfo.r1type = 10000000;
-	    CodeInfo.r2type = 10000000;
-      if (CodeInfo.token == T_VMOVSD || CodeInfo.token == T_VMOVSS){
-          if (opndx[1].kind == EXPR_CONST)
-          return(EmitErr(INVALID_INSTRUCTION_OPERANDS));       }
-      if (opndx[OPND1].kind == EXPR_REG){
-        regtok = opndx[OPND1].base_reg->tokval;
-      CodeInfo.reg1 = GetRegNo(regtok);
-      if (opndx[OPND1].idx_reg) CodeInfo.indexreg = opndx[OPND1].idx_reg->bytval;
-      if (CodeInfo.reg1 > 15) CodeInfo.evex_flag = TRUE;
-      CodeInfo.r1type = GetValueSp(opndx[OPND1].base_reg->tokval);
-      if (CodeInfo.r1type == OP_ZMM){
-        CodeInfo.zreg = 1;
-        CodeInfo.evex_flag = TRUE;
-        }
-      }
-      if (opndx[OPND2].kind == EXPR_REG){
-        regtok = opndx[OPND2].base_reg->tokval;
-      CodeInfo.reg2 = GetRegNo(regtok);
-      if (opndx[OPND2].idx_reg) CodeInfo.indexreg = opndx[OPND2].idx_reg->bytval;
-      if (CodeInfo.reg2 > 15) CodeInfo.evex_flag = TRUE;
-       CodeInfo.r2type = GetValueSp(opndx[OPND2].base_reg->tokval);
-       if (CodeInfo.r2type == OP_ZMM){
-         CodeInfo.zreg = 1;
-         CodeInfo.evex_flag = TRUE;
-         }
-       }
-      if (((CodeInfo.token == T_ANDN)||(CodeInfo.token == T_MULX)||
-        (CodeInfo.token == T_PEXT)||(CodeInfo.token == T_PDEP)) &&
-        (CurrOpnd == OPND2 )) goto putinvex;
-      if (vex_flags[CodeInfo.token - VEX_START] & VX_NND)
-        ;
-      else if ((vex_flags[CodeInfo.token - VEX_START] & VX_IMM) &&
-        (opndx[OPND3].kind == EXPR_CONST) && (j > 2))
-        ;
-      else if ((vex_flags[CodeInfo.token - VEX_START] & VX_NMEM) &&
-        ((CodeInfo.opnd[OPND1].type & OP_M) ||
-        /* v2.11: VMOVSD and VMOVSS always have 2 ops if a memory op is involved */
-        ((CodeInfo.token == T_VMOVSD || CodeInfo.token == T_VMOVSS) &&
-        (opndx[OPND2].kind != EXPR_REG || opndx[OPND2].indirect == TRUE))))
-         ;
-      else {
-        if (opndx[OPND2].kind != EXPR_REG ||
-          (!(GetValueSp(opndx[CurrOpnd].base_reg->tokval) & (OP_R32 | OP_R64 |OP_K | OP_XMM | OP_YMM | OP_ZMM)))) {
-          DebugMsg(("ParseLine(%s,%u): avx invalid operand, op2.kind=%u\n", instr, CurrOpnd, opndx[OPND2].kind));
-          if ((CodeInfo.token < T_KMOVB) && (CodeInfo.token > T_KMOVW))
-            return(EmitErr(INVALID_INSTRUCTION_OPERANDS));
-        }
-        /* fixme: check if there's an operand behind OPND2 at all!
-         * if no, there's no point to continue with switch (opndx[].kind).
-         * v2.11: additional check for j <= 2 added
-         */
-        if (j <= 2) {
-          DebugMsg(("ParseLine(%s,%u): avx not enough operands (%u)\n", instr, CurrOpnd, opndx[OPND2].kind, j));
-          /* v2.11: next line should be activated - currently the error is emitted below as syntax error */
-          //return( EmitErr( INVALID_INSTRUCTION_OPERANDS ) );
-        }
-        else
+		Frame_Type = FRAME_NONE;
+		SegOverride = NULL; /* segreg prefix is stored in RegOverride */
+		CodeInfo.opnd[CurrOpnd].data32l = 0;
+		CodeInfo.opnd[CurrOpnd].InsFixup = NULL;
 
-		  /* flag VX_DST is set if an immediate is expected as operand 3 */
-			if ((vex_flags[CodeInfo.token - VEX_START] & VX_DST) &&
-				(opndx[OPND3].kind == EXPR_CONST)) {
-				DebugMsg1(("ParseLine(%s,%u): avx VX_DST, op3.kind=CONST (value=%u), numops=%u\n", instr, CurrOpnd, opndx[OPND3].kind, opndx[OPND3].value, j));
-				if (opndx[OPND2].idx_reg)
+	    /* if encoding is VEX and destination op is XMM, YMM or memory,
+		 * the second argument may be stored in the vexregop field. */
+		if (CodeInfo.token >= VEX_START && CurrOpnd == OPND2 &&
+		   (CodeInfo.opnd[OPND1].type & (OP_XMM | OP_YMM | OP_M | OP_M256 | OP_R32 | OP_R64 | OP_K | OP_ZMM | OP_M64 | OP_M512))) {
+			
+			CodeInfo.r1type = 10000000;
+			CodeInfo.r2type = 10000000;
+			if (CodeInfo.token == T_VMOVSD || CodeInfo.token == T_VMOVSS) {
+				if (opndx[1].kind == EXPR_CONST)
+					return(EmitErr(INVALID_INSTRUCTION_OPERANDS));       
+			}
+			if (opndx[OPND1].kind == EXPR_REG) {
+				regtok = opndx[OPND1].base_reg->tokval;
+				CodeInfo.reg1 = GetRegNo(regtok);
+				if (opndx[OPND1].idx_reg) 
+					CodeInfo.indexreg = opndx[OPND1].idx_reg->bytval;
+				if (CodeInfo.reg1 > 15) 
+					CodeInfo.evex_flag = TRUE;
+				CodeInfo.r1type = GetValueSp(opndx[OPND1].base_reg->tokval);
+				if (CodeInfo.r1type == OP_ZMM) {
+					CodeInfo.zreg = 1;
+					CodeInfo.evex_flag = TRUE;
+				}
+			}
+			if (opndx[OPND2].kind == EXPR_REG) {
+				regtok = opndx[OPND2].base_reg->tokval;
+				CodeInfo.reg2 = GetRegNo(regtok);
+				if (opndx[OPND2].idx_reg) 
 					CodeInfo.indexreg = opndx[OPND2].idx_reg->bytval;
-				if (opndx[OPND2].base_reg)
-					CodeInfo.basereg = opndx[OPND2].base_reg->bytval;
-				/* third operand data goes in CodeInfo.vexconst used in codegen.c */
-				CodeInfo.vexconst = opndx[CurrOpnd].value;
-				if (opndx[OPND1].base_reg) {
-					/* first operand register is moved to vexregop */
-					/* handle VEX.NDD */
-					CodeInfo.vexregop = opndx[OPND1].base_reg->bytval + 1;
-					memcpy(&opndx[OPND1], &opndx[CurrOpnd], sizeof(opndx[0]) * 3);
-					CodeInfo.rm_byte = 0;
-					if (process_register(&CodeInfo, OPND1, opndx) == ERROR)
-						return(ERROR);
+				if (CodeInfo.reg2 > 15) 
+					CodeInfo.evex_flag = TRUE;
+				CodeInfo.r2type = GetValueSp(opndx[OPND2].base_reg->tokval);
+				if (CodeInfo.r2type == OP_ZMM) {
+					CodeInfo.zreg = 1;
+					CodeInfo.evex_flag = TRUE;
 				}
 			}
 
-          else if (CodeInfo.token < T_VGETMANTPD || CodeInfo.token > T_VGETMANTPS ) 
-		  {
-			  if (opndx[CurrOpnd].base_reg == NULL)
-				  return(EmitErr(INVALID_INSTRUCTION_OPERANDS));
+			if (( (CodeInfo.token == T_ANDN) || (CodeInfo.token == T_MULX) || (CodeInfo.token == T_PEXT) || (CodeInfo.token == T_PDEP)) && (CurrOpnd == OPND2 )) goto putinvex;
+      
+			if (vex_flags[CodeInfo.token - VEX_START] & VX_NND)
+				;
+			else if ((vex_flags[CodeInfo.token - VEX_START] & VX_IMM) && (opndx[OPND3].kind == EXPR_CONST) && (j > 2))
+				;
+			else if ((vex_flags[CodeInfo.token - VEX_START] & VX_NMEM) && ((CodeInfo.opnd[OPND1].type & OP_M) ||
+				/* v2.11: VMOVSD and VMOVSS always have 2 ops if a memory op is involved */
+				((CodeInfo.token == T_VMOVSD || CodeInfo.token == T_VMOVSS) &&
+				(opndx[OPND2].kind != EXPR_REG || opndx[OPND2].indirect == TRUE))))
+				;
+			else {
+				if (opndx[OPND2].kind != EXPR_REG || (!(GetValueSp(opndx[CurrOpnd].base_reg->tokval) & (OP_R32 | OP_R64 |OP_K | OP_XMM | OP_YMM | OP_ZMM)))) {
+					DebugMsg(("ParseLine(%s,%u): avx invalid operand, op2.kind=%u\n", instr, CurrOpnd, opndx[OPND2].kind));
+					if ((CodeInfo.token < T_KMOVB) && (CodeInfo.token > T_KMOVW))
+						return(EmitErr(INVALID_INSTRUCTION_OPERANDS));
+				}
+				if (j <= 2) {
+					DebugMsg(("ParseLine(%s,%u): avx not enough operands (%u)\n", instr, CurrOpnd, opndx[OPND2].kind, j));
+				}
+				else
+
+					/* flag VX_DST is set if an immediate is expected as operand 3 */
+					if ((vex_flags[CodeInfo.token - VEX_START] & VX_DST) && (opndx[OPND3].kind == EXPR_CONST)) {
+						DebugMsg1(("ParseLine(%s,%u): avx VX_DST, op3.kind=CONST (value=%u), numops=%u\n", instr, CurrOpnd, opndx[OPND3].kind, opndx[OPND3].value, j));
+						if (opndx[OPND2].idx_reg)
+							CodeInfo.indexreg = opndx[OPND2].idx_reg->bytval;
+						if (opndx[OPND2].base_reg)
+							CodeInfo.basereg = opndx[OPND2].base_reg->bytval;
+						/* third operand data goes in CodeInfo.vexconst used in codegen.c */
+						CodeInfo.vexconst = opndx[CurrOpnd].value;
+						if (opndx[OPND1].base_reg) {
+							/* first operand register is moved to vexregop */
+							/* handle VEX.NDD */
+							CodeInfo.vexregop = opndx[OPND1].base_reg->bytval + 1;
+							memcpy(&opndx[OPND1], &opndx[CurrOpnd], sizeof(opndx[0]) * 3);
+							CodeInfo.rm_byte = 0;
+							if (process_register(&CodeInfo, OPND1, opndx) == ERROR)
+								return(ERROR);
+						}
+					}
+
+					else if (CodeInfo.token < T_VGETMANTPD || CodeInfo.token > T_VGETMANTPS )  {
+						if (opndx[CurrOpnd].base_reg == NULL)
+							return(EmitErr(INVALID_INSTRUCTION_OPERANDS));
             
-			  flags = GetValueSp(opndx[CurrOpnd].base_reg->tokval);
+						flags = GetValueSp(opndx[CurrOpnd].base_reg->tokval);
+						DebugMsg1(("ParseLine(%s,%u): opnd2 is avx reg (%s), flags=%X ci.type[0]=%X numops=%u\n", instr, CurrOpnd, opndx[CurrOpnd].base_reg->string_ptr, flags, CodeInfo.opnd[OPND1].type, j));
 
-            //CodeInfo.rtype = GetValueSp(opndx[CurrOpnd].base_reg->tokval);
-            DebugMsg1(("ParseLine(%s,%u): opnd2 is avx reg (%s), flags=%X ci.type[0]=%X numops=%u\n",
-              instr, CurrOpnd, opndx[CurrOpnd].base_reg->string_ptr, flags, CodeInfo.opnd[OPND1].type, j));
-//#if 1
-            /* v2.08: no error here if first op is an untyped memory reference
-             * note that OP_M includes OP_M128, but not OP_M256 (to be fixed?)
-             */
-            if (CodeInfo.opnd[OPND1].type == OP_M)
-              ; else
-//#endif
-              if ((flags & (OP_XMM | OP_M128)) &&
-                (CodeInfo.opnd[OPND1].type & (OP_YMM | OP_M256)) ||
-                (flags & (OP_YMM | OP_M256)) &&
-                (CodeInfo.opnd[OPND1].type & (OP_XMM | OP_M128))) {
-                DebugMsg(("ParseLine(%s,%u): avx invalid opnd 2, flags=%X ci.type[0]=%X\n", instr, CurrOpnd, flags, CodeInfo.opnd[OPND1].type));
-                return(EmitErr(INVALID_INSTRUCTION_OPERANDS));
-              }
-            /* second operand register is moved to vexregop */
-            /* to be fixed: CurrOpnd is always OPND2, so use this const here */
-            //CodeInfo.vexdata is containing I_U8 data of EXPR_CONST ,habran
-       putinvex:
-            CodeInfo.vexconst = opndx[CurrOpnd].value;
-            CodeInfo.vexregop = opndx[CurrOpnd].base_reg->bytval + 1;
-            memcpy(&opndx[CurrOpnd], &opndx[CurrOpnd + 1], sizeof(opndx[0]) * 2);
-          }
-          else
-          {
-            CodeInfo.vexconst = opndx[CurrOpnd + 1].value;
-            j++;
-          }
-          j--;
-      }
+						if (CodeInfo.opnd[OPND1].type == OP_M)
+							; 
+						else
+			              if ((flags & (OP_XMM | OP_M128)) && (CodeInfo.opnd[OPND1].type & (OP_YMM | OP_M256)) ||
+							 (flags & (OP_YMM | OP_M256)) && (CodeInfo.opnd[OPND1].type & (OP_XMM | OP_M128))) {
+								DebugMsg(("ParseLine(%s,%u): avx invalid opnd 2, flags=%X ci.type[0]=%X\n", instr, CurrOpnd, flags, CodeInfo.opnd[OPND1].type));
+								return(EmitErr(INVALID_INSTRUCTION_OPERANDS));
+						  }
+            
+						/* second operand register is moved to vexregop */
+						/* to be fixed: CurrOpnd is always OPND2, so use this const here */
+						//CodeInfo.vexdata is containing I_U8 data of EXPR_CONST ,habran
+					putinvex:
+            
+						CodeInfo.vexconst = opndx[CurrOpnd].value;
+						CodeInfo.vexregop = opndx[CurrOpnd].base_reg->bytval + 1;
+						memcpy(&opndx[CurrOpnd], &opndx[CurrOpnd + 1], sizeof(opndx[0]) * 2);
+					}
+					else
+					{
+						CodeInfo.vexconst = opndx[CurrOpnd + 1].value;
+						j++;
+					}
+			j--;
+		}
     }
-#endif
+
     DebugMsg1(("ParseLine(%s,%u): type/value/mem_type/ofssize=%Xh/%" I64_SPEC "Xh/%Xh/%d\n", instr, CurrOpnd, opndx[CurrOpnd].kind, opndx[CurrOpnd].value64, opndx[CurrOpnd].mem_type, opndx[CurrOpnd].Ofssize));
-    switch (opndx[CurrOpnd].kind) {
-    case EXPR_DECORATOR:
-      CodeInfo.evex_sae = opndx[CurrOpnd].saeflags;
-      return( codegen( &CodeInfo, oldofs ) );
-    case EXPR_ADDR:
-      DebugMsg1(("ParseLine(%s,%u): type ADDRESS\n", instr, CurrOpnd));
-      if (process_address(&CodeInfo, CurrOpnd, &opndx[CurrOpnd]) == ERROR)
-        return(ERROR);
-      break;
-    case EXPR_CONST:
-      DebugMsg1(("ParseLine(%s,%u): type CONST, opndx.memtype=%Xh\n", instr, CurrOpnd, opndx[CurrOpnd].mem_type));
-      if (process_const(&CodeInfo, CurrOpnd, &opndx[CurrOpnd]) == ERROR)
-        return(ERROR);
-      break;
-    case EXPR_REG:
-      DebugMsg1(("ParseLine(%s,%u): type REG\n", instr, CurrOpnd));
-      if (opndx[CurrOpnd].indirect) { /* indirect operand ( "[EBX+...]" )? */
-        if (process_address(&CodeInfo, CurrOpnd, &opndx[CurrOpnd]) == ERROR)
-          return(ERROR);
-      }
-      else {
-        /* process_register() can't handle 3rd operand */
-        if (!CodeInfo.vexregop){
-          if (CurrOpnd == OPND1){
-            regtok = opndx[OPND1].base_reg->tokval;
-            CodeInfo.reg1 = GetRegNo(regtok);
-            if (CodeInfo.reg1 > 15) CodeInfo.evex_flag = TRUE;
-          }
-          else if (CurrOpnd == OPND2){
-            regtok = opndx[OPND2].base_reg->tokval;
-            CodeInfo.reg2 = GetRegNo(regtok);
-            if (CodeInfo.reg2 > 15) CodeInfo.evex_flag = TRUE;
-          }
-        }
-        if (CurrOpnd == OPND3) {
-          CodeInfo.opnd[OPND3].type = GetValueSp(opndx[OPND3].base_reg->tokval);
-          CodeInfo.opnd[OPND3].data32l = opndx[OPND3].base_reg->bytval;
-          regtok = opndx[OPND3].base_reg->tokval;
-          CodeInfo.reg3 = GetRegNo(regtok);
-          if (CodeInfo.reg3 > 15) CodeInfo.evex_flag = TRUE;
-        }
-        else if (process_register(&CodeInfo, CurrOpnd, opndx) == ERROR)
-          return(ERROR);
-      }
-      break;
-    }
-   } /* end for */
-#if AVXSUPP
-	 /* 4 arguments are valid vor AVX only */
-   if (CurrOpnd != j) {
-	   for (; tokenarray[i].token != T_COMMA; i--);
-	   DebugMsg(("ParseLine(%s): CurrOpnd != j ( %u - %u ) >%s<\n", instr, CurrOpnd, j, tokenarray[i].tokpos));
-	   if (CodeInfo.token < VEX_START)
-		   return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
-	   else
-		   if ((CodeInfo.token == T_VMASKMOVPS || CodeInfo.token == T_VMASKMOVPD) && (j < 3))
-			   return(EmitErr(MISSING_OPERATOR_IN_EXPRESSION));
-   }
-   if (CodeInfo.token == T_VBLENDVPS || CodeInfo.token == T_VBLENDVPD) {
-	   DebugMsg(("ParseLine(%s): ( %u - %u ) >%s<\n", instr, CurrOpnd, j, tokenarray[i].tokpos));
-	   if (CodeInfo.opnd[OPND3].type == OP_NONE) {
-		   return (EmitErr(MISSING_OPERATOR_IN_EXPRESSION));
-	   }
-   }
+    
+	switch (opndx[CurrOpnd].kind) 
+	{
+		case EXPR_DECORATOR:
+			CodeInfo.evex_sae = opndx[CurrOpnd].saeflags;
+			return( codegen( &CodeInfo, oldofs ) );
+		
+		case EXPR_ADDR:
+			DebugMsg1(("ParseLine(%s,%u): type ADDRESS\n", instr, CurrOpnd));
+			if (process_address(&CodeInfo, CurrOpnd, &opndx[CurrOpnd]) == ERROR)
+				return(ERROR);
+			break;
 
-#endif
+		case EXPR_CONST:
+			DebugMsg1(("ParseLine(%s,%u): type CONST, opndx.memtype=%Xh\n", instr, CurrOpnd, opndx[CurrOpnd].mem_type));
+			if (process_const(&CodeInfo, CurrOpnd, &opndx[CurrOpnd]) == ERROR)
+				return(ERROR);
+			break;
 
-  /* for FAR calls/jmps some special handling is required:
-   * in the instruction tables, the "far" entries are located BEHIND
-   * the "near" entries, that's why it's needed to skip all items
-   * until the next "first" item is found.
-   */
-  if (CodeInfo.isfar) {
-    if (CodeInfo.token == T_CALL || CodeInfo.token == T_JMP) {
-      do {
-        CodeInfo.pinstr++;
-      } while (CodeInfo.pinstr->first == FALSE);
-    }
-  }
-  /* special handling for string instructions */
+		case EXPR_REG:
+			DebugMsg1(("ParseLine(%s,%u): type REG\n", instr, CurrOpnd));
+			if (opndx[CurrOpnd].indirect) { /* indirect operand ( "[EBX+...]" )? */
+				if (process_address(&CodeInfo, CurrOpnd, &opndx[CurrOpnd]) == ERROR)
+					return(ERROR);
+			}
+			else 
+			{
+				/* process_register() can't handle 3rd operand */
+				if (!CodeInfo.vexregop) {
+					if (CurrOpnd == OPND1) {
+						regtok = opndx[OPND1].base_reg->tokval;
+						CodeInfo.reg1 = GetRegNo(regtok);
+						if (CodeInfo.reg1 > 15) 
+							CodeInfo.evex_flag = TRUE;
+					}
+					else if (CurrOpnd == OPND2) {
+						regtok = opndx[OPND2].base_reg->tokval;
+						CodeInfo.reg2 = GetRegNo(regtok);
+						if (CodeInfo.reg2 > 15) 
+							CodeInfo.evex_flag = TRUE;
+					}
+				}
 
-  if (CodeInfo.pinstr->allowed_prefix == AP_REP ||
-    CodeInfo.pinstr->allowed_prefix == AP_REPxx) {
-    HandleStringInstructions(&CodeInfo, opndx);
-#if SVMSUPP /* v2.09, not active because a bit too hackish yet - it "works", though. */
-  } else if ( CodeInfo.token >= T_VMRUN && CodeInfo.token <= T_INVLPGA && CodeInfo.pinstr->opclsidx ) {
-    /* the size of the first operand is to trigger the address size byte 67h,
-     * not the operand size byte 66h!
-     */
-    CodeInfo.prefix.adrsiz = CodeInfo.prefix.opsiz;
-    CodeInfo.prefix.opsiz = 0;
-    /* the first op must be EAX/AX or RAX/EAX. The operand class
-     * used in the instruction table is OP_A ( which is AL/AX/EAX/RAX ).
-     */
-    if ( ( CodeInfo.opnd[OPND1].type & ( CodeInfo.Ofssize == USE64 ? OP_R64 | OP_R32 : OP_R32 | OP_R16 ) ) == 0 ) {
-      DebugMsg(("ParseLine(%s): opnd1 unexpected type=%X\n", instr, CodeInfo.opnd[OPND1].type ));
-      return( EmitErr( INVALID_INSTRUCTION_OPERANDS ) );
-    }
-    /* the INVLPGA instruction has a fix second operand (=ECX). However, there's no
-     * operand class for ECX alone. So it has to be ensured here that the register IS ecx.
-     */
-    if ( CodeInfo.token == T_INVLPGA )
-      if ( ( CodeInfo.rm_byte & BIT_345 ) != ( 1 << 3 ) ) { /* ECX is register 1 */
-        DebugMsg(("ParseLine(%s): opnd2 is not ecx\n", instr ));
-        return( EmitErr( INVALID_INSTRUCTION_OPERANDS ) );
-      }
-#endif
-  }
-  else {
-    if (CurrOpnd > 1) {
-      /* v1.96: check if a third argument is ok */
-      if (CurrOpnd > 2) {
-        do {
-          //if ( CodeInfo.pinstr->opnd_type_3rd != OP3_NONE )
-          if ((opnd_clstab[CodeInfo.pinstr->opclsidx].opnd_type_3rd != OP3_NONE) ||
-            (opndx[CurrOpnd].kind == EXPR_DECORATOR)){
-            if (opndx[CurrOpnd].kind == EXPR_DECORATOR)CodeInfo.evex_sae = opndx[CurrOpnd].saeflags;
-            break;
-          }
-          CodeInfo.pinstr++;           //work here for {sae}
-          if ((CodeInfo.pinstr->first == TRUE)) {
-            DebugMsg(("ParseLine(%s): no third operand expected\n", instr));
-            for (; tokenarray[i].token != T_COMMA; i--);
-            return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
-          }
-        } while (1);
-      }
-      /* v2.06: moved here from process_const() */
-      if (CodeInfo.token == T_IMUL) {
-        /* the 2-operand form with an immediate as second op
-         * is actually a 3-operand form. That's why the rm byte
-         * has to be adjusted. */
-        if (CodeInfo.opnd[OPND3].type == OP_NONE && (CodeInfo.opnd[OPND2].type & OP_I)) {
-#if AMD64_SUPPORT
-          CodeInfo.prefix.rex |= ((CodeInfo.prefix.rex & REX_B) ? REX_R : 0);
-#endif
-          CodeInfo.rm_byte = (CodeInfo.rm_byte & ~BIT_345) | ((CodeInfo.rm_byte & BIT_012) << 3);
-        }
-        else if ((CodeInfo.opnd[OPND3].type != OP_NONE) &&
-          (CodeInfo.opnd[OPND2].type & OP_I) &&
-          CodeInfo.opnd[OPND2].InsFixup &&
-          CodeInfo.opnd[OPND2].InsFixup->sym->state == SYM_UNDEFINED)
-          CodeInfo.opnd[OPND2].type = OP_M;
-      }
-      if (check_size(&CodeInfo, opndx) == ERROR) {
-        DebugMsg(("ParseLine(%s): check_size() failed, exit\n", instr));
-        return(ERROR);
-      }
-    }
-#if AMD64_SUPPORT
-    if (CodeInfo.Ofssize == USE64) {
+				if (CurrOpnd == OPND3) {
+					CodeInfo.opnd[OPND3].type = GetValueSp(opndx[OPND3].base_reg->tokval);
+					CodeInfo.opnd[OPND3].data32l = opndx[OPND3].base_reg->bytval;
+					regtok = opndx[OPND3].base_reg->tokval;
+					CodeInfo.reg3 = GetRegNo(regtok);
+					if (CodeInfo.reg3 > 15) 
+						CodeInfo.evex_flag = TRUE;
+				}
 
-      //if ( CodeInfo.x86hi_used && ( CodeInfo.x64lo_used || CodeInfo.prefix.rex & 7 ))
-      if (CodeInfo.x86hi_used && CodeInfo.prefix.rex)
-        EmitError(INVALID_USAGE_OF_AHBHCHDH);
+				else if (process_register(&CodeInfo, CurrOpnd, opndx) == ERROR)
+					return(ERROR);
+			}
+			break;
+		}
+	} /* end for */
 
-      /* for some instructions, the "wide" flag has to be removed selectively.
-       * this is to be improved - by a new flag in struct instr_item.
-       */
-      switch (CodeInfo.token) {
-      case T_PUSH:
-      case T_POP:
-        /* v2.06: REX.W prefix is always 0, because size is either 2 or 8 */
-        //if ( CodeInfo.opnd_type[OPND1] & OP_R64 )
-        CodeInfo.prefix.rex &= 0x7;
-        break;
-      case T_CALL:
-      case T_JMP:
-#if VMXSUPP /* v2.09: added */
-      case T_VMREAD:
-      case T_VMWRITE:
-#endif
-        /* v2.02: previously rex-prefix was cleared entirely,
-         * but bits 0-2 are needed to make "call rax" and "call r8"
-         * distinguishable!
-         */
-        //CodeInfo.prefix.rex = 0;
-        CodeInfo.prefix.rex &= 0x7;
-        break;
-      case T_MOV:
-        /* don't use the Wide bit for moves to/from special regs */
-        if (CodeInfo.opnd[OPND1].type & OP_RSPEC || CodeInfo.opnd[OPND2].type & OP_RSPEC)
-          CodeInfo.prefix.rex &= 0x7;
-        break;
-      case  T_POR:
-      case T_VPOR:
-        if (gmaskflag)
-          goto nopor;
-        break;
-      }
-    }
-#endif
-  }
-  /* now call the code generator */
-  temp = codegen( &CodeInfo, oldofs );
+	/* 4 arguments are valid for AVX only */
+	if (CurrOpnd != j) {
+		for (; tokenarray[i].token != T_COMMA; i--);
+		DebugMsg(("ParseLine(%s): CurrOpnd != j ( %u - %u ) >%s<\n", instr, CurrOpnd, j, tokenarray[i].tokpos));
+		if (CodeInfo.token < VEX_START)
+			return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
+		else
+			if ((CodeInfo.token == T_VMASKMOVPS || CodeInfo.token == T_VMASKMOVPD) && (j < 3))
+				return(EmitErr(MISSING_OPERATOR_IN_EXPRESSION));
+	}
+	if (CodeInfo.token == T_VBLENDVPS || CodeInfo.token == T_VBLENDVPD) {
+		DebugMsg(("ParseLine(%s): ( %u - %u ) >%s<\n", instr, CurrOpnd, j, tokenarray[i].tokpos));
+		if (CodeInfo.opnd[OPND3].type == OP_NONE) {
+			return (EmitErr(MISSING_OPERATOR_IN_EXPRESSION));
+		}
+	}
+
+	/* for FAR calls/jmps some special handling is required:
+	* in the instruction tables, the "far" entries are located BEHIND
+	* the "near" entries, that's why it's needed to skip all items
+	* until the next "first" item is found. */
+	if (CodeInfo.isfar) {
+		if (CodeInfo.token == T_CALL || CodeInfo.token == T_JMP) {
+			do {
+				CodeInfo.pinstr++;
+			} while (CodeInfo.pinstr->first == FALSE);
+		}
+	}
+
+	/* special handling for string instructions */
+	if (CodeInfo.pinstr->allowed_prefix == AP_REP || CodeInfo.pinstr->allowed_prefix == AP_REPxx) {
+		HandleStringInstructions(&CodeInfo, opndx);
+	#if SVMSUPP /* v2.09, not active because a bit too hackish yet - it "works", though. */
+	} 
+	else if ( CodeInfo.token >= T_VMRUN && CodeInfo.token <= T_INVLPGA && CodeInfo.pinstr->opclsidx ) {
+		/* the size of the first operand is to trigger the address size byte 67h,
+		* not the operand size byte 66h! */
+		CodeInfo.prefix.adrsiz = CodeInfo.prefix.opsiz;
+		CodeInfo.prefix.opsiz = 0;
+		/* the first op must be EAX/AX or RAX/EAX. The operand class
+		* used in the instruction table is OP_A ( which is AL/AX/EAX/RAX ). */
+		if ( ( CodeInfo.opnd[OPND1].type & ( CodeInfo.Ofssize == USE64 ? OP_R64 | OP_R32 : OP_R32 | OP_R16 ) ) == 0 ) {
+			DebugMsg(("ParseLine(%s): opnd1 unexpected type=%X\n", instr, CodeInfo.opnd[OPND1].type ));
+			return( EmitErr( INVALID_INSTRUCTION_OPERANDS ) );
+		}
+		/* the INVLPGA instruction has a fix second operand (=ECX). However, there's no
+		 * operand class for ECX alone. So it has to be ensured here that the register IS ecx. */
+		if ( CodeInfo.token == T_INVLPGA )
+			if ( ( CodeInfo.rm_byte & BIT_345 ) != ( 1 << 3 ) ) { /* ECX is register 1 */
+				DebugMsg(("ParseLine(%s): opnd2 is not ecx\n", instr ));
+				return( EmitErr( INVALID_INSTRUCTION_OPERANDS ) );
+			}
+	#endif
+	}
+	else {
+		if (CurrOpnd > 1) {
+			/* v1.96: check if a third argument is ok */
+			if (CurrOpnd > 2) {
+				do {
+					if ((opnd_clstab[CodeInfo.pinstr->opclsidx].opnd_type_3rd != OP3_NONE) || (opndx[CurrOpnd].kind == EXPR_DECORATOR)) {
+						if (opndx[CurrOpnd].kind == EXPR_DECORATOR)
+							CodeInfo.evex_sae = opndx[CurrOpnd].saeflags;
+						break;
+					}
+					CodeInfo.pinstr++;           //work here for {sae}
+					if ((CodeInfo.pinstr->first == TRUE)) {
+						DebugMsg(("ParseLine(%s): no third operand expected\n", instr));
+						for (; tokenarray[i].token != T_COMMA; i--);
+						return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
+					}
+				} while (1);
+			}
+      
+			/* v2.06: moved here from process_const() */
+			if (CodeInfo.token == T_IMUL) {
+
+				/* the 2-operand form with an immediate as second op
+				 * is actually a 3-operand form. That's why the rm byte
+				 * has to be adjusted. */
+				if (CodeInfo.opnd[OPND3].type == OP_NONE && (CodeInfo.opnd[OPND2].type & OP_I)) {
+					CodeInfo.prefix.rex |= ((CodeInfo.prefix.rex & REX_B) ? REX_R : 0);
+			        CodeInfo.rm_byte = (CodeInfo.rm_byte & ~BIT_345) | ((CodeInfo.rm_byte & BIT_012) << 3);
+				}
+				else if ((CodeInfo.opnd[OPND3].type != OP_NONE) && (CodeInfo.opnd[OPND2].type & OP_I) && CodeInfo.opnd[OPND2].InsFixup &&
+						 CodeInfo.opnd[OPND2].InsFixup->sym->state == SYM_UNDEFINED)
+					CodeInfo.opnd[OPND2].type = OP_M;
+			}
+
+			if (check_size(&CodeInfo, opndx) == ERROR) {
+				DebugMsg(("ParseLine(%s): check_size() failed, exit\n", instr));
+				return(ERROR);
+			}
+
+		}
+
+		if (CodeInfo.Ofssize == USE64) {
+
+			if (CodeInfo.x86hi_used && CodeInfo.prefix.rex)
+				EmitError(INVALID_USAGE_OF_AHBHCHDH);
+
+		  /* for some instructions, the "wide" flag has to be removed selectively.
+		   * this is to be improved - by a new flag in struct instr_item. */
+			switch (CodeInfo.token) {
+				case T_PUSH:
+				case T_POP:
+					/* v2.06: REX.W prefix is always 0, because size is either 2 or 8 */
+					CodeInfo.prefix.rex &= 0x7;
+					break;
+				case T_CALL:
+				case T_JMP:
+			#if VMXSUPP /* v2.09: added */
+				case T_VMREAD:
+				case T_VMWRITE:
+			#endif
+					/* v2.02: previously rex-prefix was cleared entirely,
+					* but bits 0-2 are needed to make "call rax" and "call r8"
+					* distinguishable! */
+					CodeInfo.prefix.rex &= 0x7;
+					break;
+				case T_MOV:
+					/* don't use the Wide bit for moves to/from special regs */
+					if (CodeInfo.opnd[OPND1].type & OP_RSPEC || CodeInfo.opnd[OPND2].type & OP_RSPEC)
+						CodeInfo.prefix.rex &= 0x7;
+					break;
+				case  T_POR:
+				case T_VPOR:
+					if (gmaskflag)
+						goto nopor;
+					break;
+			}
+		}
+	}
+
+	/* now call the code generator */
+	temp = codegen( &CodeInfo, oldofs );
+
 nopor:
-  /* now reset EVEX maskflags for the next line */
-  if (CodeInfo.token >= VEX_START){
-    decoflags = 0;
-    broadflags = 0;
+	/* now reset EVEX maskflags for the next line */
+	if (CodeInfo.token >= VEX_START) {
+		decoflags  = 0;
+		broadflags = 0;
     }
-  return( temp );
+	return( temp );
 }
 
 /* process a file. introduced in v2.11 */
-
 void ProcessFile( struct asm_tok tokenarray[] )
 /*********************************************/
 {
