@@ -14,6 +14,7 @@
 #include "msgtext.h"
 #include "cmdline.h"
 #include "input.h" /* GetFNamePart() */
+#include "codegenv2.h"
 
 #if defined(__UNIX__) || defined(__CYGWIN__) || defined(__DJGPP__)
 
@@ -105,6 +106,9 @@ int main(int argc, char **argv)
 #else
 	signal(SIGTERM, genfailure);
 #endif
+
+	/* Build CodeGen V2 Instruction Table ONCE only */
+	BuildInstructionTable();
 
 #if WILDCARDS
 	memset(&finfo, 0, sizeof(finfo));

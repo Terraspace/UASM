@@ -4008,7 +4008,7 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 					if (CodeInfo.opnd[OPND1].type & OP_RSPEC || CodeInfo.opnd[OPND2].type & OP_RSPEC)
 						CodeInfo.prefix.rex &= 0x7;
 					break;
-				case  T_POR:
+				case T_POR:
 				case T_VPOR:
 					if (gmaskflag)
 						goto nopor;

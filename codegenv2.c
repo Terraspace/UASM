@@ -107,7 +107,18 @@ void BuildInstructionTable(void)
 	}
 }
 
-//DemoteOperand();
+enum op_type DemoteOperand(enum op_type op) {
+	enum op_type ret = op;
+	if (op == R8_AL)
+		ret = R8;
+	else if (op == R16_AX)
+		ret = R16;
+	else if (op == R32_EAX)
+		ret = R32;
+	else if (op == R64_RAX)
+		ret = R64;
+	return(ret);
+}
 
 //void MatchOperand();
 

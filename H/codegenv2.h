@@ -111,6 +111,7 @@ extern void BuildInstructionTable(void);
 extern ret_code CodeGenV2(struct code_info *CodeInfo, uint_32 oldofs);
 
 /* Private functions */
+enum op_type DemoteOperand(enum op_type op);
 void InsertInstruction(struct Instr_Def* pInstruction, uint_32 hash);
 struct Instr_Def* AllocInstruction();
 uint_32 GenerateInstrHash(struct Instr_Def* pInstruction);
