@@ -3137,6 +3137,8 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 	struct dsym        *recsym    = 0;
 	struct code_info   CodeInfo;
 	struct expr        opndx[MAX_OPND + 1];
+	char               *opcodePtr = NULL;
+	uint_32			   opCount    = 0;
 
 #ifdef DEBUG_OUT
 	char               *instr     = NULL;
@@ -3491,6 +3493,8 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 	FStoreLine(0); /* must be placed AFTER write_prologue() */
 
 	CodeInfo.token = tokenarray[i].tokval;
+	opcodePtr = tokenarray[i].string_ptr;
+
 	/* get the instruction's start position in InstrTable[] */
 	CodeInfo.pinstr = &InstrTable[IndexFromToken(CodeInfo.token)];
 	i++;
@@ -3615,6 +3619,8 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 				DebugMsg(("ParseLine(%s): unexpected operand kind=%d, error, exit\n", instr, opndx[j].kind));
 				return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
 		}
+
+		opCount = j;
 	}
 
 	if (tokenarray[i].token != T_FINAL) 
@@ -4020,8 +4026,8 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 	/* ===================================================================================================== */
 	/* UASM 2.48 Invoke the new Code Generator and fallback to the legacy one for unimplemented instructions */
 	/* ===================================================================================================== */
-	temp = CodeGenV2( &CodeInfo, oldofs );
-	if( temp == EMPTY )
+	//temp = CodeGenV2( opcodePtr, &CodeInfo, oldofs, opCount+1 );
+	//if( temp == EMPTY )
 		temp = codegen( &CodeInfo, oldofs );
 
 nopor:

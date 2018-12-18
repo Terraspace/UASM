@@ -12,28 +12,30 @@
 #include "types.h"
 #include "macro.h"
 
+#define OutputCodeByte( x ) OutputByte( x )
+
 struct Instr_Def* InstrHash[16384];
 
 struct Instr_Def InstrTableV2[] = {
 	
-	/* | mnemonic | operand count | operand types | encoding group | flags | opcode len | opcode bytes | OSO | ASO | */
-	{ "mov", 2, { R8,  R8  }, GP0, NO_FLAGS, 1, 0x88, 0x0, 0x0, 0,                0, 0, NULL },
-	{ "mov", 2, { R8E, R8E }, GP0, REX,      1, 0x88, 0x0, 0x0, 0,                0, 0, NULL },
-	{ "mov", 2, { R16, R16 }, GP0, NO_FLAGS, 1, 0x89, 0x0, 0x0, OP_SIZE_OVERRIDE, 0, 0, NULL },
-	{ "mov", 2, { R32, R32 }, GP0, NO_FLAGS, 1, 0x89, 0x0, 0x0, OP_SIZE_OVERRIDE, 0, 0, NULL },
-	{ "mov", 2, { R64, R64 }, GP0, REXW,     1, 0x89, 0x0, 0x0, 0,                0, 0, NULL },
+	/* | mnemonic | operand count | operand types | encoding group | flags | opcode len | opcode bytes | op size | modRM | sib | OSO | ASO | Valid CPU modes | opnd direction | mandatory prefix type | */
+	{ "mov", 2, { R8,  R8  }, GP0, F_MODRM,        1, { 0x88, 0x0, 0x0 }, 1, 0xc0, 0, 0,                0,                  (X16 | X32 | X64), REG_DST, NO_PREFIX, 0, NULL },
+	{ "mov", 2, { R8E, R8E }, GP0, REX | F_MODRM,  1, { 0x88, 0x0, 0x0 }, 1, 0xc0, 0, 0,                0,                  (            X64), REG_DST, NO_PREFIX, 0, NULL },
+	{ "mov", 2, { R16, R16 }, GP0, F_MODRM,        1, { 0x89, 0x0, 0x0 }, 2, 0xc0, 0, OP_SIZE_OVERRIDE, 0,                  (X16 | X32 | X64), REG_DST, NO_PREFIX, 0, NULL },
+	{ "mov", 2, { R32, R32 }, GP0, F_MODRM,        1, { 0x89, 0x0, 0x0 }, 4, 0xc0, 0, OP_SIZE_OVERRIDE, 0,                  (X16 | X32 | X64), REG_DST, NO_PREFIX, 0, NULL },
+	{ "mov", 2, { R64, R64 }, GP0, REXW | F_MODRM, 1, { 0x89, 0x0, 0x0 }, 8, 0xc0, 0, 0,                0,                  (            X64), REG_DST, NO_PREFIX, 0, NULL },
 
-	{ "mov", 2, { M8,  R8  }, GP0, NO_FLAGS, 1, 0x88, 0x0, 0x0, 0,                ADDR_SIZE_OVERRIDE, 0, NULL },
-	{ "mov", 2, { M8,  R8E }, GP0, REX,      1, 0x88, 0x0, 0x0, 0,                ADDR_SIZE_OVERRIDE, 0, NULL },
-	{ "mov", 2, { M16, R16 }, GP0, NO_FLAGS, 1, 0x89, 0x0, 0x0, OP_SIZE_OVERRIDE, ADDR_SIZE_OVERRIDE, 0, NULL },
-	{ "mov", 2, { M32, R32 }, GP0, NO_FLAGS, 1, 0x89, 0x0, 0x0, OP_SIZE_OVERRIDE, ADDR_SIZE_OVERRIDE, 0, NULL },
-	{ "mov", 2, { M64, R64 }, GP0, REXW,     1, 0x89, 0x0, 0x0, 0,                ADDR_SIZE_OVERRIDE, 0, NULL },
+	{ "mov", 2, { M8,  R8  }, GP0, F_MODRM,        1, { 0x88, 0x0, 0x0 }, 1, 0xc0, 0, 0,                ADDR_SIZE_OVERRIDE, (X16 | X32 | X64), REG_DST, NO_PREFIX, 0, NULL },
+	{ "mov", 2, { M8,  R8E }, GP0, REX | F_MODRM,  1, { 0x88, 0x0, 0x0 }, 1, 0xc0, 0, 0,                ADDR_SIZE_OVERRIDE, (            X64), REG_DST, NO_PREFIX, 0, NULL },
+	{ "mov", 2, { M16, R16 }, GP0, F_MODRM,        1, { 0x89, 0x0, 0x0 }, 2, 0xc0, 0, OP_SIZE_OVERRIDE, ADDR_SIZE_OVERRIDE, (X16 | X32 | X64), REG_DST, NO_PREFIX, 0, NULL },
+	{ "mov", 2, { M32, R32 }, GP0, F_MODRM,        1, { 0x89, 0x0, 0x0 }, 4, 0xc0, 0, OP_SIZE_OVERRIDE, ADDR_SIZE_OVERRIDE, (X16 | X32 | X64), REG_DST, NO_PREFIX, 0, NULL },
+	{ "mov", 2, { M64, R64 }, GP0, REXW | F_MODRM, 1, { 0x89, 0x0, 0x0 }, 8, 0xc0, 0, 0,                ADDR_SIZE_OVERRIDE, (            X64), REG_DST, NO_PREFIX, 0, NULL },
 
-	{ "mov", 2, { R8,  M8  }, GP0, NO_FLAGS, 1, 0x8a, 0x0, 0x0, 0,                ADDR_SIZE_OVERRIDE, 0, NULL },
-	{ "mov", 2, { R8E, M8  }, GP0, REX,      1, 0x8a, 0x0, 0x0, 0,                ADDR_SIZE_OVERRIDE, 0, NULL },
-	{ "mov", 2, { R16, M16 }, GP0, NO_FLAGS, 1, 0x8b, 0x0, 0x0, OP_SIZE_OVERRIDE, ADDR_SIZE_OVERRIDE, 0, NULL },
-	{ "mov", 2, { R32, M32 }, GP0, NO_FLAGS, 1, 0x8b, 0x0, 0x0, OP_SIZE_OVERRIDE, ADDR_SIZE_OVERRIDE, 0, NULL },
-	{ "mov", 2, { R64, M64 }, GP0, REXW,     1, 0x8b, 0x0, 0x0, 0,                ADDR_SIZE_OVERRIDE, 0, NULL },
+	{ "mov", 2, { R8,  M8  }, GP0, F_MODRM,        1, { 0x8a, 0x0, 0x0 }, 1, 0xc0, 0, 0,                ADDR_SIZE_OVERRIDE, (X16 | X32 | X64), REG_DST, NO_PREFIX, 0, NULL },
+	{ "mov", 2, { R8E, M8  }, GP0, REX | F_MODRM,  1, { 0x8a, 0x0, 0x0 }, 1, 0xc0, 0, 0,                ADDR_SIZE_OVERRIDE, (            X64), REG_DST, NO_PREFIX, 0, NULL },
+	{ "mov", 2, { R16, M16 }, GP0, F_MODRM,        1, { 0x8b, 0x0, 0x0 }, 2, 0xc0, 0, OP_SIZE_OVERRIDE, ADDR_SIZE_OVERRIDE, (X16 | X32 | X64), REG_DST, NO_PREFIX, 0, NULL },
+	{ "mov", 2, { R32, M32 }, GP0, F_MODRM,        1, { 0x8b, 0x0, 0x0 }, 4, 0xc0, 0, OP_SIZE_OVERRIDE, ADDR_SIZE_OVERRIDE, (X16 | X32 | X64), REG_DST, NO_PREFIX, 0, NULL },
+	{ "mov", 2, { R64, M64 }, GP0, REXW | F_MODRM, 1, { 0x8b, 0x0, 0x0 }, 8, 0xc0, 0, 0,                ADDR_SIZE_OVERRIDE, (            X64), REG_DST, NO_PREFIX, 0, NULL },
 
 };
 
@@ -122,15 +124,198 @@ enum op_type DemoteOperand(enum op_type op) {
 	return(ret);
 }
 
-//void MatchOperand();
+enum op_type MatchOperand(struct opnd_item op) {
+	enum op_type result;
+	switch (op.type)
+	{
+		case OP_K:
+			result = R_K;
+			break;
+		case OP_RIP:
+			result = R_RIP;
+			break;
+		case OP_AL:
+			result = R8_AL;
+			break;
+		case OP_AX:
+			result = R16_AX;
+			break;
+		case OP_EAX:
+			result = R32_EAX;
+			break;
+		case OP_RAX:
+			result = R64_RAX;
+			break;
+		case OP_NONE:
+			result = OP_N;
+			break;
+		case OP_R8:
+			result = R8;
+			/* If the register operand is sil,dil,spl,bpl,r8b-r15b */
+			
+			break;
+		case OP_R16:
+			result = R16;
+			break;
+		case OP_R32:
+			result = R32;
+			break;
+		case OP_R64:
+			result = R64;
+			break;
+		case OP_I8:
+			result = IMM8;
+			break;
+		case OP_I16:
+			result = IMM16;
+			break;
+		case OP_I32:
+			result = IMM32;
+			break;
+		case OP_I64:
+			result = IMM64;
+			break;
+		case OP_M08:
+			result = M8;
+			break;
+		case OP_M16:
+			result = M16;
+			break;
+		case OP_M32:
+			result = M32;
+			break;
+		case OP_M64:
+			result = M64;
+			break;
+		case OP_M128:
+			result = M128;
+			break;
+		case OP_M256:
+			result = M256;
+			break;
+		case OP_M512:
+			result = M512;
+			break;
+		case OP_XMM:
+			result = SSE128;
+			/* If register xmm8-xmm15 USE AVX128 */
+			/* If register xmm16-xmm31 USE AVX512_128 */
+			break;
+		case OP_YMM:
+			result = AVX256;
+			/* If register ymm16-ymm31 USE AVX512_256 */
+			break;
+		case OP_ZMM:
+			result = AVX512;
+			break;
+	}
+	return result;
+}
 
-//
+struct Instr_Def* LookupInstruction(struct Instr_Def* instr) {
+	uint_32 hash;
+	struct Instr_Def* pInstruction = NULL;
+	bool first = TRUE;
+	bool matched = FALSE;
+	hash = GenerateInstrHash(instr);
+    pInstruction = InstrHash[hash];
+	while (pInstruction->next != NULL || first)
+	{
+		if (strcasecmp(pInstruction->mnemonic, instr->mnemonic) == 0 &&
+			pInstruction->operand_types[0] == instr->operand_types[0] &&
+			pInstruction->operand_types[1] == instr->operand_types[1] &&
+			pInstruction->operand_types[2] == instr->operand_types[2] &&
+			pInstruction->operand_types[3] == instr->operand_types[3]) {
+			matched = TRUE;
+			break;
+		}
+		pInstruction = pInstruction->next;
+		first = FALSE;
+	}
+	if (!matched)
+		pInstruction = NULL;
+	return pInstruction;
+}
 
-ret_code CodeGenV2(struct code_info *CodeInfo, uint_32 oldofs) 
+bool Require_OPND_Size_Override(struct Instr_Def* instr, struct code_info* CodeInfo)
 {
-	ret_code retcode = ERROR;
-	
-	retcode = EMPTY;
+	if ((instr->op_size == 2 || instr->op_size == 4) &&
+		CodeInfo->Ofssize != ModuleInfo.Ofssize)
+		return TRUE;
+	return FALSE;
+}
+
+bool Require_ADDR_Size_Override(struct Instr_Def* instr, struct code_info* CodeInfo)
+{
+	return FALSE;
+}
+
+bool IsValidInCPUMode(struct Instr_Def* instr)
+{
+	bool result = TRUE;
+	unsigned char cpuModes = instr->validModes;
+	if (ModuleInfo.Ofssize != 8 && cpuModes == X64)
+		result = FALSE;
+	return result;
+}
+
+ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs, uint_32 opCount)
+{
+	ret_code retcode = NOT_ERROR;
+	struct Instr_Def instrToMatch;
+	struct Instr_Def* matchedInstr = NULL;
+	uint_32 i = 0;
+	unsigned char modRM = 0;
+	unsigned char sib   = 0;
+
+	memset(&instrToMatch, 0, sizeof(struct Instr_Def));
+	instrToMatch.mnemonic = instr;
+	instrToMatch.operand_count = opCount;
+	for (i = 0; i < opCount; i++)
+		instrToMatch.operand_types[i] = MatchOperand(CodeInfo->opnd[i]); //need more info, actual register name etc.
+
+	matchedInstr = LookupInstruction(&instrToMatch);
+	if(matchedInstr == NULL)
+		retcode = EMPTY;
+	else
+	{
+		// Add line number debugging info.
+		if (Options.line_numbers)
+			AddLinnumDataRef(get_curr_srcfile(), GetLineNumber());
+
+		// Check if instruction is valid in current mode.
+		if (!IsValidInCPUMode(matchedInstr))
+		{
+			EmitError(NOT_SUPPORTED_WITH_CURR_FORMAT);
+			return;
+		}
+
+		// Check if address or operand size override prefixes are required.
+		if (Require_OPND_Size_Override(matchedInstr, CodeInfo))
+			OutputCodeByte(OP_SIZE_OVERRIDE);
+
+		if (Require_ADDR_Size_Override(matchedInstr, CodeInfo))
+			OutputCodeByte(ADDR_SIZE_OVERRIDE);
+
+		// Output FPU FWAIT if required.
+
+		// Output mandatory prefix.
+
+		// Output opcode bytes.
+		for(i=0;i<matchedInstr->opcode_bytes;i++)
+			OutputCodeByte(matchedInstr->opcode[i]);
+
+		// Output ModR/M
+		if ((matchedInstr->flags | F_MODRM) != 0) {
+			modRM = matchedInstr->modRM;
+			OutputCodeByte(modRM);
+		}
+
+		// Output SIB
+		if (sib != 0)
+			OutputCodeByte(sib);
+
+	}
 	return retcode;
 }
 

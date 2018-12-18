@@ -45,6 +45,11 @@ enum op_type {
 	AVX256,
 	/* AVX 512 registers (zmm0-31) */
 	AVX512,
+	AVX512_128,
+	AVX512_256,
+	/* RIP Register and K Registers */
+	R_RIP,
+	R_K,
 	/* Generic memory operands (8-64bit) */
 	M8,
 	M16,
@@ -72,7 +77,7 @@ enum op_type {
 	IMM8,
 	IMM16,
 	IMM32,
-	IMM64
+	IMM64,
 };
 
 #define NO_FLAGS   (0)
@@ -82,9 +87,20 @@ enum op_type {
 #define ALLOW_BND  (1<<3)
 #define REX        (1<<4)
 #define REXW       (1<<5)
+#define F_MODRM    (1<<6)
 
 #define OP_SIZE_OVERRIDE   0x66
 #define ADDR_SIZE_OVERRIDE 0x67
+
+#define X16 0x01
+#define X32 0x02
+#define X64 0x04
+
+#define NO_PREFIX 0
+
+/* operation direction */
+#define REG_DST 0
+#define RM_DST 0
 
 struct Instr_Def {
 	const char*       mnemonic;
@@ -93,12 +109,15 @@ struct Instr_Def {
 	enum instr_group  group;
 	unsigned int      flags;
 	unsigned char     opcode_bytes;
-	unsigned char     opcode0;
-	unsigned char     opcode1;
-	unsigned char     opcode2;
-	unsigned char     opcode3;
+	unsigned char     opcode[4];
+	unsigned char     op_size;
+	unsigned char     modRM;
+	unsigned char     SIB;
 	unsigned char     useOSO;
 	unsigned char     useASO;
+	unsigned char     validModes;
+	unsigned char     op_dir; // reg->rm ..or.. rm->reg
+	unsigned char     mandatory_prefix;
 	unsigned int      hash;
 	struct Instr_Def* next;
 };
@@ -108,7 +127,7 @@ extern struct Instr_Def InstrTableV2[];
 
 /* Public functions */
 extern void BuildInstructionTable(void);
-extern ret_code CodeGenV2(struct code_info *CodeInfo, uint_32 oldofs);
+extern ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs, uint_32 opCount);
 
 /* Private functions */
 enum op_type DemoteOperand(enum op_type op);
@@ -116,3 +135,8 @@ void InsertInstruction(struct Instr_Def* pInstruction, uint_32 hash);
 struct Instr_Def* AllocInstruction();
 uint_32 GenerateInstrHash(struct Instr_Def* pInstruction);
 
+struct Instr_Def* LookupInstruction(struct Instr_Def* instr);
+
+bool Require_OPND_Size_Override(struct Instr_Def* instr, struct code_info* CodeInfo);
+bool Require_ADDR_Size_Override(struct Instr_Def* instr, struct code_info* CodeInfo);
+bool IsValidInCPUMode(struct Instr_Def* instr);
