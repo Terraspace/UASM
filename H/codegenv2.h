@@ -140,3 +140,7 @@ struct Instr_Def* LookupInstruction(struct Instr_Def* instr);
 bool Require_OPND_Size_Override(struct Instr_Def* instr, struct code_info* CodeInfo);
 bool Require_ADDR_Size_Override(struct Instr_Def* instr, struct code_info* CodeInfo);
 bool IsValidInCPUMode(struct Instr_Def* instr);
+
+unsigned char BuildSIB(struct Instr_Def* instr);	/* Build instruction SIB byte */
+unsigned char BuildModRM(struct Instr_Def* instr);	/* Build instruction ModRM byte */
+unsigned char GetRegisterNo(void);

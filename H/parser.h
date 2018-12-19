@@ -289,7 +289,9 @@ struct opnd_item {
         uint_64       data64;
     };
     struct fixup      *InsFixup;
+	const char        *tokenPtr;
 };
+
 /* compressed tuple types upper bits 4,3,2,1,0 of resw_strings[].prefix : tuple & 0x1F  */
 enum ttypes {
     FV    =  1,

@@ -259,6 +259,24 @@ bool IsValidInCPUMode(struct Instr_Def* instr)
 	return result;
 }
 
+unsigned char BuildModRM(struct Instr_Def* instr)
+{
+	unsigned char modRM = instr->modRM;
+	return modRM;
+}
+
+unsigned char BuildSIB(struct Instr_Def* instr)
+{
+	unsigned char sib = 0;
+	return sib;
+}
+
+unsigned char GetRegisterNo(void)
+{
+	unsigned char regNo = 0;
+	return regNo;
+}
+
 ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs, uint_32 opCount)
 {
 	ret_code retcode = NOT_ERROR;
@@ -268,15 +286,20 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 	unsigned char modRM = 0;
 	unsigned char sib   = 0;
 
+	return EMPTY; // stubbed out for now
+
 	memset(&instrToMatch, 0, sizeof(struct Instr_Def));
-	instrToMatch.mnemonic = instr;
-	instrToMatch.operand_count = opCount;
-	for (i = 0; i < opCount; i++)
+	instrToMatch.mnemonic      = instr;		/* Instruction mnemonic string */
+	instrToMatch.operand_count = opCount;	/* Number of operands */
+	for (i = 0; i < opCount; i++)			/* Translate to CodeGenV2 operand types */
 		instrToMatch.operand_types[i] = MatchOperand(CodeInfo->opnd[i]); //need more info, actual register name etc.
 
+	/* Lookup the instruction */
 	matchedInstr = LookupInstruction(&instrToMatch);
+	/* We don't have it in CodeGenV2 so fall-back */
 	if(matchedInstr == NULL)
 		retcode = EMPTY;
+	/* Proceed to generate the instruction */
 	else
 	{
 		// Add line number debugging info.
@@ -300,6 +323,10 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		// Output FPU FWAIT if required.
 
 		// Output mandatory prefix.
+		if (matchedInstr->mandatory_prefix != 0)
+		{
+			
+		}
 
 		// Output opcode bytes.
 		for(i=0;i<matchedInstr->opcode_bytes;i++)
@@ -307,14 +334,18 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 
 		// Output ModR/M
 		if ((matchedInstr->flags | F_MODRM) != 0) {
-			modRM = matchedInstr->modRM;
+			modRM = BuildModRM(matchedInstr);
 			OutputCodeByte(modRM);
 		}
 
 		// Output SIB
+		sib = BuildSIB(matchedInstr);
 		if (sib != 0)
 			OutputCodeByte(sib);
 
+		// Output Displacement.
+
+		// Output Immediate Data.
 	}
 	return retcode;
 }

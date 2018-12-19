@@ -3137,8 +3137,8 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 	struct dsym        *recsym    = 0;
 	struct code_info   CodeInfo;
 	struct expr        opndx[MAX_OPND + 1];
-	char               *opcodePtr = NULL;
-	uint_32			   opCount    = 0;
+	const char         *opcodePtr  = NULL;
+	int                opndCount = 0;
 
 #ifdef DEBUG_OUT
 	char               *instr     = NULL;
@@ -3531,7 +3531,8 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 	/* ************************************************************** */
     /* Get Instruction Arguments (Up to 4 with AVXSUPP)               */
     /* ************************************************************** */
-	for (j = 0; j < sizeof(opndx) / sizeof(opndx[0]) && tokenarray[i].token != T_FINAL; j++) {
+	for (j = 0; j < sizeof(opndx) / sizeof(opndx[0]) && tokenarray[i].token != T_FINAL; j++) 
+	{
 
 		if (j) 
 		{
@@ -3608,6 +3609,7 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 				if (opndx[j - 1].indirect || opndx[j - 2].indirect)
 					return(EmitError(EMBEDDED_ROUNDING_IS_AVAILABLE_ONLY_WITH_REG_REG_OP));
 				CodeInfo.evex_sae = opndx[j].saeflags;
+        CodeInfo.evex_flag = TRUE;  /* {sae} must set evex_flag v247.2 */
 				j--;
 				break;
 
@@ -3620,8 +3622,9 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 				return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
 		}
 
-		opCount = j;
+		opndCount = j;
 	}
+	opndCount++;
 
 	if (tokenarray[i].token != T_FINAL) 
 	{
@@ -4014,7 +4017,7 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 					if (CodeInfo.opnd[OPND1].type & OP_RSPEC || CodeInfo.opnd[OPND2].type & OP_RSPEC)
 						CodeInfo.prefix.rex &= 0x7;
 					break;
-				case T_POR:
+				case  T_POR:
 				case T_VPOR:
 					if (gmaskflag)
 						goto nopor;
@@ -4023,19 +4026,17 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 		}
 	}
 
-	/* ===================================================================================================== */
-	/* UASM 2.48 Invoke the new Code Generator and fallback to the legacy one for unimplemented instructions */
-	/* ===================================================================================================== */
-	//temp = CodeGenV2( opcodePtr, &CodeInfo, oldofs, opCount+1 );
-	//if( temp == EMPTY )
+	/* now call the code generator */
+	temp = CodeGenV2( opcodePtr, &CodeInfo, oldofs, opndCount );
+	if(temp == EMPTY)
 		temp = codegen( &CodeInfo, oldofs );
 
 nopor:
 	/* now reset EVEX maskflags for the next line */
-	if (CodeInfo.token >= VEX_START) {
+	//if (CodeInfo.token >= VEX_START) {
 		decoflags  = 0;
 		broadflags = 0;
-    }
+    //}
 	return( temp );
 }
 
