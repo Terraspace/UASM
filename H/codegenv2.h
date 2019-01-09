@@ -173,22 +173,74 @@ enum op_type {
 #define MODRM_DISP  0x80	/* ModRM mode for 16bit/32bit displacement */
 
 /* Memory Address Encoding Info */
-#define MEMF_USEMODRM (1<<0)
-#define MEMF_USESIB   (1<<1)
+#define MEMF_MODRM (1<<0)	/* Memory address requires modrm byte */
+#define MEMF_SIB   (1<<1)	/* Memory address requires sib byte */
+#define MEMF_DSP   (1<<2)	/* Memory address requires displacement (even if 0) */
+#define MEMF_DSP32 (1<<3)	/* Memory address requires 32bit displacement (even if 0) */
+#define NO_ENCODE  (1<<4)	/* This mode is not encodable! */
 
-#define NO_REX 0x00
+/* ModRM values */
+#define SIB_ONLY 0x04		/* ModRM value when Encoding uses SIB for both base and index */
+#define RM_AX  0x00
+#define RM_CX  0x01
+#define RM_DX  0x02
+#define RM_BX  0x03
+#define RM_SP  0x04
+#define RM_BP  0x05
+#define RM_SI  0x06
+#define RM_DI  0x07
+#define RM_R8  0x00
+#define RM_R9  0x01
+#define RM_R10 0x02
+#define RM_R11 0x03
+#define RM_R12 0x04
+#define RM_R13 0x05
+#define RM_R14 0x06
+#define RM_R15 0x07
+#define RM_RIP 0x05
 
-#define RM_AX 0x00
-#define RM_CX 0x01
-#define RM_DX 0x02
-#define RM_BX 0x02
+/* SIB values */
+#define NO_SIB       0x00		/* Encoding has no SIB value */
+#define SIB_BASE_AX  0x00
+#define SIB_BASE_CX  0x01
+#define SIB_BASE_DX  0x02
+#define SIB_BASE_BX  0x03
+#define SIB_BASE_SP  0x04
+#define SIB_BASE_BP  0x05
+#define SIB_BASE_SI  0x06
+#define SIB_BASE_DI  0x07
+#define SIB_BASE_R8  0x00
+#define SIB_BASE_R9  0x01
+#define SIB_BASE_R10 0x02
+#define SIB_BASE_R11 0x03
+#define SIB_BASE_R12 0x04
+#define SIB_BASE_R13 0x05
+#define SIB_BASE_R14 0x06
+#define SIB_BASE_R15 0x07
+#define SIB_BASE_RIP 0x05
+
+#define SIB_IDX_AX  (0x00) << 3
+#define SIB_IDX_CX  (0x01) << 3
+#define SIB_IDX_DX  (0x02) << 3
+#define SIB_IDX_BX  (0x03) << 3
+#define SIB_IDX_SP  (0x04) << 3
+#define SIB_IDX_BP  (0x05) << 3
+#define SIB_IDX_SI  (0x06) << 3
+#define SIB_IDX_DI  (0x07) << 3
+#define SIB_IDX_R8  (0x00) << 3
+#define SIB_IDX_R9  (0x01) << 3
+#define SIB_IDX_R10 (0x02) << 3
+#define SIB_IDX_R11 (0x03) << 3
+#define SIB_IDX_R12 (0x04) << 3
+#define SIB_IDX_R13 (0x05) << 3
+#define SIB_IDX_R14 (0x06) << 3
+#define SIB_IDX_R15 (0x07) << 3
+#define SIB_IDX_RIP (0x05) << 3
 
 struct Mem_Def {
 	unsigned char  modRM;
 	unsigned char  flags;
 	unsigned char  SIB;
-	unsigned char  modes;
-	unsigned short rex;
 };
 
 struct Instr_Def {
@@ -234,8 +286,8 @@ bool Require_ADDR_Size_Override(struct Instr_Def* instr, struct code_info* CodeI
 bool IsValidInCPUMode(struct Instr_Def* instr);
 bool SegmentPrefixAllowed();
 
-unsigned char BuildModRM(unsigned char modRM, struct Instr_Def* instr, struct expr opnd[4]);	/* Build instruction ModRM byte */
+unsigned char BuildModRM(unsigned char modRM, struct Instr_Def* instr, struct expr opnd[4], bool* needRM, bool* needSIB);	/* Build instruction ModRM byte */
 unsigned char BuildREX(unsigned char RexByte, struct Instr_Def* instr, struct expr opnd[4]);	/* Build REX prefix byte */
-void          BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned char* pREX, 
+int           BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned char* pREX, bool* needRM, bool* needSIB,
 	                              unsigned int* dispSize, int* pDisp, struct Instr_Def* instr, struct expr opExpr[4]);
 unsigned char GetRegisterNo(struct asym *regTok);												/* Get Register Encoding Number from Token */

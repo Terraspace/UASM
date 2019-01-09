@@ -3,8 +3,68 @@ option flat:1
 .code
 
 	use64
+	
+	; Combination Modes (Base/Index/Scale/Disp)
+	mov r8b,BYTE PTR [rax+rax*4+0xc80]
+	
+	mov al,[rax]
+	mov bl,[rax+rax]
+	mov cl,[rax+rax*4]
+	mov ah,[rax+32]
+	mov sil,[rax+rax+32]
+	mov r8b,[rax+rax*4+32]
 
-	mov al,[rax+32]
+	mov al,[rcx]
+	mov bl,[rcx+rcx]
+	mov cl,[rcx+rcx*4]
+	mov ah,[rcx+32]
+	mov sil,[rcx+rcx+32]
+	mov r8b,[rcx+rcx*4+32]
+	
+	mov al,[rax]
+	mov bl,[rax+rax]
+	mov cl,[rax+rax*4]
+	mov ah,[rax+32]
+	mov sil,[rax+rax+3200]
+	mov r8b,[rax+rax*4+3200]	
+
+	mov al,[rax]
+	mov bl,[rax+rcx]
+	mov cl,[rax+rdx*4]
+	mov ah,[rbx+32]
+	mov dil,[rax+rdx+32]
+	mov r8b,[rdx+rbx*4+32]
+	mov al,[rsi]
+	mov bl,[rax+rsi]
+	mov cl,[rdx+rdi*4]
+	mov ah,[rdi+32000]
+	mov sil,[rax+rbp+32]
+	mov r8b,[rsp+rbp*4+32]	
+
+	mov al,[rax]
+	mov bl,[rax+r8]
+	mov cl,[r10+rdx*4]
+	mov ah,[rbx+32]
+	mov dil,[rax+r9+32]
+	mov r8b,[rdx+rbx*4+32]
+	mov al,[rsi]
+	mov bl,[r12+rsi]
+	mov cl,[rdx+rdi*4]
+	mov sil,[r8+rbp+32]
+	mov r8b,[rsp+r8*4+32]	
+	mov r8b,[rsp+r10*4+32]	
+	
+	mov al,fs:[rax]
+	mov bl,gs:[rax+rax]
+	mov al,fs:[r8]
+	
+	; Compatibility 32bit addressing
+	mov al,[eax]
+	mov ch,[ebx]
+	
+COMMENT %	
+	; Basic indirect memory
+	mov al,[rax]
 	mov al,[rbx]
 	mov al,[rcx]
 	mov al,[rdx]
@@ -51,37 +111,6 @@ option flat:1
 	mov rbx,0x1234123412341234
 	mov r10,0x1234123412341234
 	
-;0:  b0 0a                   mov    al,0xa
-;2:  b0 20                   mov    al,0x20
-;4:  b1 19                   mov    cl,0x19
-;6:  b6 78                   mov    dh,0x78
-;8:  b3 ff                   mov    bl,0xff
-;a:  41 b2 16                mov    r10b,0x16
-;d:  b4 20                   mov    ah,0x20
-;f:  66 b8 0a 00             mov    ax,0xa
-;13: 66 b8 20 00             mov    ax,0x20
-;17: 66 b9 19 00             mov    cx,0x19
-;1b: 66 41 ba 16 00          mov    r10w,0x16
-;20: 66 41 b8 0f 0f          mov    r8w,0xf0f
-;25: b8 0a 00 00 00          mov    eax,0xa
-;2a: b8 20 00 00 00          mov    eax,0x20
-;2f: b9 19 00 00 00          mov    ecx,0x19
-;34: 41 ba 16 00 00 00       mov    r10d,0x16
-;3a: 41 b8 10 00 00 00       mov    r8d,0x10
-;40: b8 0a 00 00 00          mov    eax,0xa
-;45: 48 c7 c0 0a 00 00 00    mov    rax,0xa
-;4c: 48 c7 c0 20 00 00 00    mov    rax,0x20
-;53: 48 c7 c1 19 00 00 00    mov    rcx,0x19
-;5a: 49 c7 c2 16 00 00 00    mov    r10,0x16
-;61: 49 c7 c0 10 00 00 00    mov    r8,0x10
-;68: 48 c7 c0 0a 00 00 00    mov    rax,0xa
-;6f: 48 b8 34 12 34 12 34    movabs rax,0x1234123412341234
-;76: 12 34 12
-;79: 48 bb 34 12 34 12 34    movabs rbx,0x1234123412341234
-;80: 12 34 12
-;83: 49 ba 34 12 34 12 34    movabs r10,0x1234123412341234
-;8a: 12 34 12
-
 	; (8bit immediates)
 	mov al,10
 	mov al,0x20
@@ -212,3 +241,4 @@ option flat:1
 	mov sil,dil		;
 	mov bpl,spl		;
 	mov r14b,r15b	;
+%
