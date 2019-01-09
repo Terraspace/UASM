@@ -3137,8 +3137,8 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 	struct dsym        *recsym    = 0;
 	struct code_info   CodeInfo;
 	struct expr        opndx[MAX_OPND + 1];
-	const char         *opcodePtr  = NULL;
-	int                opndCount = 0;
+	const char         *opcodePtr = NULL;
+	int                opndCount  = 0;
 
 #ifdef DEBUG_OUT
 	char               *instr     = NULL;
@@ -4026,17 +4026,18 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 		}
 	}
 
-	/* now call the code generator */
-	temp = CodeGenV2( opcodePtr, &CodeInfo, oldofs, opndCount );
+	/* *********************************************************** */
+	/* Use the V2 CodeGen, else fallback to the standard CodeGen   */
+	/* *********************************************************** */
+	temp = CodeGenV2( opcodePtr, &CodeInfo, oldofs, opndCount, opndx );
 	if(temp == EMPTY)
 		temp = codegen( &CodeInfo, oldofs );
 
 nopor:
 	/* now reset EVEX maskflags for the next line */
-	//if (CodeInfo.token >= VEX_START) {
-		decoflags  = 0;
-		broadflags = 0;
-    //}
+	decoflags  = 0;
+	broadflags = 0;
+
 	return( temp );
 }
 

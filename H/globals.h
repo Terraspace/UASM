@@ -65,18 +65,18 @@
 
 #endif
 
-#define MAX_LINE_LEN            1024  /* no restriction for this number */
-#define MAX_TOKEN  MAX_LINE_LEN - 32  /* max tokens in one line */
+#define MAX_LINE_LEN            1024 /* no restriction for this number */
+#define MAX_TOKEN  MAX_LINE_LEN - 32 /* max tokens in one line */
 #define MAX_STRING_LEN          MAX_LINE_LEN - 32 /* must be < MAX_LINE_LEN */
 #define MAX_ID_LEN              247  /* must be < MAX_LINE_LEN */
 #define MAX_STRUCT_ALIGN        64
 #define MAX_SEGMENT_ALIGN       4096 /* maximum alignment/packing setting for segments */
-#define MAX_IF_NESTING          20 /* IFxx block nesting. Must be <=32, see condasm.c */
-#define MAX_SEG_NESTING         20 /* limit for segment nesting  */
-#define MAX_MACRO_NESTING       128 /* macro call nesting  */
-#define MAX_STRUCT_NESTING      32 /* limit for "anonymous structs" only */
-#define MAX_LNAME              255 /* OMF lnames - length must fit in 1 byte */
-#define LNAME_NULL             0   /* OMF first entry in lnames array */
+#define MAX_IF_NESTING          20   /* IFxx block nesting. Must be <=32, see condasm.c */
+#define MAX_SEG_NESTING         20   /* limit for segment nesting  */
+#define MAX_MACRO_NESTING       128  /* macro call nesting  */
+#define MAX_STRUCT_NESTING      32   /* limit for "anonymous structs" only */
+#define MAX_LNAME               255  /* OMF lnames - length must fit in 1 byte */
+#define LNAME_NULL              0    /* OMF first entry in lnames array */
 
 /* output format switches */
 #ifndef BIN_SUPPORT
@@ -202,11 +202,11 @@
 
 /* Uasm version info */
 #ifdef _WIN64
-#define _UASM_VERSION_STR_ "2.47"
+#define _UASM_VERSION_STR_ "2.48"
 #else
-#define _UASM_VERSION_STR_ "2.47"
+#define _UASM_VERSION_STR_ "2.48"
 #endif
-#define _UASM_VERSION_INT_ 247
+#define _UASM_VERSION_INT_ 248
 #define _UASM_VERSION_SUFFIX_ "pre"
 #define _UASM_VERSION_ _UASM_VERSION_STR_ //_UASM_VERSION_SUFFIX_
 
