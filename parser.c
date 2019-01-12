@@ -917,9 +917,10 @@ ret_code segm_override( const struct expr *opndx, struct code_info *CodeInfo )
             }
 #if AMD64_SUPPORT
             /* ES,CS,SS and DS overrides are invalid in 64-bit */
-            if ( CodeInfo && CodeInfo->Ofssize == USE64 && temp < ASSUME_FS ) {
+			/* UASM 2.48 Allow movabs encoding of any segment register in 64bit */
+            if ( CodeInfo && CodeInfo->Ofssize == USE64 && temp < ASSUME_FS && CodeInfo->token != T_MOVABS) {
                 return( EmitError( ILLEGAL_USE_OF_SEGMENT_REGISTER ) );
-            }
+            } 
 #endif
             sym = GetOverrideAssume( temp );
             if ( CodeInfo ) {
@@ -4029,9 +4030,14 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 	/* *********************************************************** */
 	/* Use the V2 CodeGen, else fallback to the standard CodeGen   */
 	/* *********************************************************** */
-	temp = CodeGenV2( opcodePtr, &CodeInfo, oldofs, opndCount, opndx );
-	if(temp == EMPTY)
-		temp = codegen( &CodeInfo, oldofs );
+	if (ModuleInfo.Ofssize == USE32 || ModuleInfo.Ofssize == USE64)
+	{
+		temp = CodeGenV2(opcodePtr, &CodeInfo, oldofs, opndCount, opndx);
+		if (temp == EMPTY)
+			temp = codegen(&CodeInfo, oldofs);
+	}
+	else
+		temp = codegen(&CodeInfo, oldofs);
 
 nopor:
 	/* now reset EVEX maskflags for the next line */

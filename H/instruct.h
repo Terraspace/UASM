@@ -348,6 +348,10 @@ insn(PUSHW,  1,                 OpCls( I16,      NONE,       NONE ), F_16,  0,  
 ins (PUSHF,  pushf,             OpCls( NONE,     NONE,       NONE ), F_16,  0,  no_RM,  0x9C,     0x00,       P_86,        0)
 ins (POPF,  popf,               OpCls( NONE,     NONE,       NONE ), F_16,  0,  no_RM,  0x9D,     0x00,       P_86,        0)
 
+/* UASM 2.48 Legacy CodeGen detection of MOVABS pseudo-instruction */
+ins (MOVABS, movabs,             OpCls(A,         MS,         NONE), 0,      1,  no_RM,  0xA0,     0x00,       P_86,        0)
+insn(MOVABS, 1,                  OpCls(MS,        A,          NONE), 0,      0,  no_RM,  0xA2,     0x00,       P_86,        0)
+
 /* MOV */
 
 ins (MOV, mov,                  OpCls( A,        MS,         NONE ), 0,      1,  no_RM,  0xA0,     0x00,       P_86,        0)

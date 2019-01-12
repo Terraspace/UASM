@@ -27,313 +27,329 @@ struct Mem_Def MemTable[] = {
 	/*  |																																		  */																							
 	/*  v																																		  */
 	/* AX */     { SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_AX | SIB_IDX_AX) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_AX | SIB_IDX_CX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_AX | SIB_IDX_DX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_AX | SIB_IDX_BX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_AX | SIB_IDX_SP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_AX | SIB_IDX_BP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_AX | SIB_IDX_SI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_AX | SIB_IDX_DI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_AX | SIB_IDX_R8 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_AX | SIB_IDX_R9 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_AX | SIB_IDX_R10) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_AX | SIB_IDX_R11) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_AX | SIB_IDX_R12) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_AX | SIB_IDX_R13) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_AX | SIB_IDX_R14) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_AX | SIB_IDX_R15) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE), (SIB_BASE_AX | SIB_IDX_RIP) },
-																{ (RM_AX),   (MEMF_MODRM                       ), (NO_SIB                   ) },
-	/* CX */     { SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_CX | SIB_IDX_AX) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_CX | SIB_IDX_CX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_CX | SIB_IDX_DX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_CX | SIB_IDX_BX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_CX | SIB_IDX_SP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_CX | SIB_IDX_BP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_CX | SIB_IDX_SI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_CX | SIB_IDX_DI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_CX | SIB_IDX_R8 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_CX | SIB_IDX_R9 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_CX | SIB_IDX_R10) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_CX | SIB_IDX_R11) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_CX | SIB_IDX_R12) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_CX | SIB_IDX_R13) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_CX | SIB_IDX_R14) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_CX | SIB_IDX_R15) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE), (SIB_BASE_CX | SIB_IDX_RIP) },
-																{ (RM_CX),   (MEMF_MODRM                       ), (NO_SIB                   ) },
-	/* DX */     { SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_DX | SIB_IDX_AX) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DX | SIB_IDX_CX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DX | SIB_IDX_DX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DX | SIB_IDX_BX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DX | SIB_IDX_SP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DX | SIB_IDX_BP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DX | SIB_IDX_SI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DX | SIB_IDX_DI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DX | SIB_IDX_R8 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DX | SIB_IDX_R9 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DX | SIB_IDX_R10) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DX | SIB_IDX_R11) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DX | SIB_IDX_R12) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DX | SIB_IDX_R13) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DX | SIB_IDX_R14) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DX | SIB_IDX_R15) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE), (SIB_BASE_DX | SIB_IDX_RIP) },
-																{ (RM_DX),   (MEMF_MODRM                       ), (NO_SIB                   ) },
-	/* BX */     { SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_BX | SIB_IDX_AX) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BX | SIB_IDX_CX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BX | SIB_IDX_DX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BX | SIB_IDX_BX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BX | SIB_IDX_SP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BX | SIB_IDX_BP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BX | SIB_IDX_SI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BX | SIB_IDX_DI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BX | SIB_IDX_R8 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BX | SIB_IDX_R9 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BX | SIB_IDX_R10) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BX | SIB_IDX_R11) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BX | SIB_IDX_R12) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BX | SIB_IDX_R13) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BX | SIB_IDX_R14) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BX | SIB_IDX_R15) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE), (SIB_BASE_BX | SIB_IDX_RIP) },
-																{ (RM_BX),   (MEMF_MODRM                       ), (NO_SIB                   ) },
-	/* SP */     { SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_SP | SIB_IDX_AX) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SP | SIB_IDX_CX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SP | SIB_IDX_DX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SP | SIB_IDX_BX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SP | SIB_IDX_SP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SP | SIB_IDX_BP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SP | SIB_IDX_SI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SP | SIB_IDX_DI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SP | SIB_IDX_R8 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SP | SIB_IDX_R9 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SP | SIB_IDX_R10) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SP | SIB_IDX_R11) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SP | SIB_IDX_R12) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SP | SIB_IDX_R13) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SP | SIB_IDX_R14) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SP | SIB_IDX_R15) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE), (SIB_BASE_SP | SIB_IDX_RIP) },
-																{ (RM_SP),   (MEMF_MODRM | MEMF_SIB            ), 0x24 },
-	/* BP */     {  SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_BP | SIB_IDX_AX) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BP | SIB_IDX_CX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BP | SIB_IDX_DX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BP | SIB_IDX_BX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BP | SIB_IDX_SP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BP | SIB_IDX_BP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BP | SIB_IDX_SI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BP | SIB_IDX_DI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BP | SIB_IDX_R8 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BP | SIB_IDX_R9 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BP | SIB_IDX_R10) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BP | SIB_IDX_R11) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BP | SIB_IDX_R12) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BP | SIB_IDX_R13) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BP | SIB_IDX_R14) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_BP | SIB_IDX_R15) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE), (SIB_BASE_BP | SIB_IDX_RIP) },
-																{ (RM_BP),   (MEMF_MODRM | MEMF_DSP            ), (NO_SIB                   ) },
-	/* SI */     { SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_SI | SIB_IDX_AX) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SI | SIB_IDX_CX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SI | SIB_IDX_DX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SI | SIB_IDX_BX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SI | SIB_IDX_SP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SI | SIB_IDX_BP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SI | SIB_IDX_SI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SI | SIB_IDX_DI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SI | SIB_IDX_R8 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SI | SIB_IDX_R9 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SI | SIB_IDX_R10) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SI | SIB_IDX_R11) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SI | SIB_IDX_R12) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SI | SIB_IDX_R13) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SI | SIB_IDX_R14) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_SI | SIB_IDX_R15) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE), (SIB_BASE_SI | SIB_IDX_RIP) },
-																{ (RM_SI),   (MEMF_MODRM                       ), (NO_SIB                   ) },
-	/* DI */     { SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_DI | SIB_IDX_AX) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DI | SIB_IDX_CX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DI | SIB_IDX_DX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DI | SIB_IDX_BX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DI | SIB_IDX_SP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DI | SIB_IDX_BP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DI | SIB_IDX_SI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DI | SIB_IDX_DI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DI | SIB_IDX_R8 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DI | SIB_IDX_R9 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DI | SIB_IDX_R10) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DI | SIB_IDX_R11) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DI | SIB_IDX_R12) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DI | SIB_IDX_R13) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DI | SIB_IDX_R14) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_DI | SIB_IDX_R15) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE), (SIB_BASE_DI | SIB_IDX_RIP) },
-																{ (RM_DI),   (MEMF_MODRM                       ), (NO_SIB                   ) },
-	/* R8 */     { SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_R8 | SIB_IDX_AX) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R8 | SIB_IDX_CX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R8 | SIB_IDX_DX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R8 | SIB_IDX_BX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R8 | SIB_IDX_SP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R8 | SIB_IDX_BP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R8 | SIB_IDX_SI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R8 | SIB_IDX_DI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R8 | SIB_IDX_R8 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R8 | SIB_IDX_R9 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R8 | SIB_IDX_R10) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R8 | SIB_IDX_R11) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R8 | SIB_IDX_R12) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R8 | SIB_IDX_R13) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R8 | SIB_IDX_R14) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R8 | SIB_IDX_R15) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE), (SIB_BASE_R8 | SIB_IDX_RIP) },
-																{ (RM_R8),   (MEMF_MODRM                       ), (NO_SIB                   ) },
-	/* R9 */     { SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_R9 | SIB_IDX_AX) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R9 | SIB_IDX_CX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R9 | SIB_IDX_DX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R9 | SIB_IDX_BX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R9 | SIB_IDX_SP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R9 | SIB_IDX_BP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R9 | SIB_IDX_SI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R9 | SIB_IDX_DI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R9 | SIB_IDX_R8 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R9 | SIB_IDX_R9 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R9 | SIB_IDX_R10) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R9 | SIB_IDX_R11) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R9 | SIB_IDX_R12) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R9 | SIB_IDX_R13) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R9 | SIB_IDX_R14) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R9 | SIB_IDX_R15) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE), (SIB_BASE_R9 | SIB_IDX_RIP) },
-																{ (RM_R9),   (MEMF_MODRM                       ), (NO_SIB                   ) },
-	/* R10 */    { SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_R10 | SIB_IDX_AX) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R10 | SIB_IDX_CX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R10 | SIB_IDX_DX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R10 | SIB_IDX_BX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R10 | SIB_IDX_SP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R10 | SIB_IDX_BP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R10 | SIB_IDX_SI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R10 | SIB_IDX_DI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R10 | SIB_IDX_R8 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R10 | SIB_IDX_R9 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R10 | SIB_IDX_R10) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R10 | SIB_IDX_R11) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R10 | SIB_IDX_R12) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R10 | SIB_IDX_R13) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R10 | SIB_IDX_R14) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R10 | SIB_IDX_R15) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE), (SIB_BASE_R10 | SIB_IDX_RIP) },
-																{ (RM_R10),  (MEMF_MODRM                       ), (NO_SIB                    ) },
-	/* R11 */    { SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_R11 | SIB_IDX_AX) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R11 | SIB_IDX_CX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R11 | SIB_IDX_DX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R11 | SIB_IDX_BX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R11 | SIB_IDX_SP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R11 | SIB_IDX_BP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R11 | SIB_IDX_SI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R11 | SIB_IDX_DI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R11 | SIB_IDX_R8 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R11 | SIB_IDX_R9 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R11 | SIB_IDX_R10) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R11 | SIB_IDX_R11) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R11 | SIB_IDX_R12) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R11 | SIB_IDX_R13) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R11 | SIB_IDX_R14) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R11 | SIB_IDX_R15) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE), (SIB_BASE_R11 | SIB_IDX_RIP) },
-																{ (RM_R11),  (MEMF_MODRM                       ), (NO_SIB                    ) },
-	/* R12 */    { SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_R12 | SIB_IDX_AX) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R12 | SIB_IDX_CX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R12 | SIB_IDX_DX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R12 | SIB_IDX_BX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R12 | SIB_IDX_SP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R12 | SIB_IDX_BP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R12 | SIB_IDX_SI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R12 | SIB_IDX_DI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R12 | SIB_IDX_R8 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R12 | SIB_IDX_R9 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R12 | SIB_IDX_R10) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R12 | SIB_IDX_R11) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R12 | SIB_IDX_R12) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R12 | SIB_IDX_R13) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R12 | SIB_IDX_R14) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R12 | SIB_IDX_R15) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE), (SIB_BASE_R12 | SIB_IDX_RIP) },
-																{ (RM_R12),  (MEMF_MODRM | MEMF_SIB            ), 0x24                         },
-	/* R13 */    { SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_R13 | SIB_IDX_AX) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R13 | SIB_IDX_CX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R13 | SIB_IDX_DX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R13 | SIB_IDX_BX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R13 | SIB_IDX_SP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R13 | SIB_IDX_BP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R13 | SIB_IDX_SI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R13 | SIB_IDX_DI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R13 | SIB_IDX_R8 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R13 | SIB_IDX_R9 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R13 | SIB_IDX_R10) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R13 | SIB_IDX_R11) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R13 | SIB_IDX_R12) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R13 | SIB_IDX_R13) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R13 | SIB_IDX_R14) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R13 | SIB_IDX_R15) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE), (SIB_BASE_R13 | SIB_IDX_RIP) },
-																{ (RM_R13),  (MEMF_MODRM | MEMF_DSP            ), (NO_SIB                    ) },
-	/* R14 */    { SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_R14 | SIB_IDX_AX) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R14 | SIB_IDX_CX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R14 | SIB_IDX_DX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R14 | SIB_IDX_BX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R14 | SIB_IDX_SP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R14 | SIB_IDX_BP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R14 | SIB_IDX_SI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R14 | SIB_IDX_DI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R14 | SIB_IDX_R8 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R14 | SIB_IDX_R9 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R14 | SIB_IDX_R10) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R14 | SIB_IDX_R11) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R14 | SIB_IDX_R12) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R14 | SIB_IDX_R13) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R14 | SIB_IDX_R14) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R14 | SIB_IDX_R15) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE), (SIB_BASE_R14 | SIB_IDX_RIP) },
-																{ (RM_R14),  (MEMF_MODRM                       ), (NO_SIB                    ) },
-	/* R15 */    { SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_R15 | SIB_IDX_AX) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R15 | SIB_IDX_CX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R15 | SIB_IDX_DX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R15 | SIB_IDX_BX ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R15 | SIB_IDX_SP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R15 | SIB_IDX_BP ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R15 | SIB_IDX_SI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R15 | SIB_IDX_DI ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R15 | SIB_IDX_R8 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R15 | SIB_IDX_R9 ) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R15 | SIB_IDX_R10) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R15 | SIB_IDX_R11) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R15 | SIB_IDX_R12) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R15 | SIB_IDX_R13) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R15 | SIB_IDX_R14) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB            ), (SIB_BASE_R15 | SIB_IDX_R15) },
-																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE), (SIB_BASE_R15 | SIB_IDX_RIP) },
-																{ (RM_R15),  (MEMF_MODRM                       ), (NO_SIB                    ) },
-	/* RIP */    { SIB_ONLY,  (NO_ENCODE            )            , 0x00 },
-																{ SIB_ONLY,  (NO_ENCODE			               ), (NO_SIB                    ) },
-																{ SIB_ONLY,  (NO_ENCODE			               ), (NO_SIB                    ) },
-																{ SIB_ONLY,  (NO_ENCODE			               ), (NO_SIB                    ) },
-																{ SIB_ONLY,  (NO_ENCODE			               ), (NO_SIB                    ) },
-																{ SIB_ONLY,  (NO_ENCODE			               ), (NO_SIB                    ) },
-																{ SIB_ONLY,  (NO_ENCODE			               ), (NO_SIB                    ) },
-																{ SIB_ONLY,  (NO_ENCODE			               ), (NO_SIB                    ) },
-																{ SIB_ONLY,  (NO_ENCODE			               ), (NO_SIB                    ) },
-																{ SIB_ONLY,  (NO_ENCODE			               ), (NO_SIB                    ) },
-																{ SIB_ONLY,  (NO_ENCODE			               ), (NO_SIB                    ) },
-																{ SIB_ONLY,  (NO_ENCODE			               ), (NO_SIB                    ) },
-																{ SIB_ONLY,  (NO_ENCODE			               ), (NO_SIB                    ) },
-																{ SIB_ONLY,  (NO_ENCODE			               ), (NO_SIB                    ) },
-																{ SIB_ONLY,  (NO_ENCODE			               ), (NO_SIB                    ) },
-																{ SIB_ONLY,  (NO_ENCODE			               ), (NO_SIB                    ) },
-																{ SIB_ONLY,  (NO_ENCODE			               ), (NO_SIB                    ) },
-																{ (RM_RIP),  (MEMF_MODRM | MEMF_DSP32          ), (NO_SIB                    ) },
-	/* NONE */
-	
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_AX | SIB_IDX_CX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_AX | SIB_IDX_DX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_AX | SIB_IDX_BX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_AX | SIB_IDX_SP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_AX | SIB_IDX_BP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_AX | SIB_IDX_SI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_AX | SIB_IDX_DI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_AX | SIB_IDX_R8 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_AX | SIB_IDX_R9 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_AX | SIB_IDX_R10) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_AX | SIB_IDX_R11) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_AX | SIB_IDX_R12) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_AX | SIB_IDX_R13) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_AX | SIB_IDX_R14) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_AX | SIB_IDX_R15) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE  ), (SIB_BASE_AX | SIB_IDX_RIP) },
+																{ (RM_AX),   (MEMF_MODRM                         ), (NO_SIB                   ) },
+	/* CX */     { SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_CX | SIB_IDX_AX) },						     
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_CX | SIB_IDX_CX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_CX | SIB_IDX_DX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_CX | SIB_IDX_BX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_CX | SIB_IDX_SP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_CX | SIB_IDX_BP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_CX | SIB_IDX_SI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_CX | SIB_IDX_DI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_CX | SIB_IDX_R8 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_CX | SIB_IDX_R9 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_CX | SIB_IDX_R10) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_CX | SIB_IDX_R11) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_CX | SIB_IDX_R12) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_CX | SIB_IDX_R13) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_CX | SIB_IDX_R14) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_CX | SIB_IDX_R15) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE  ), (SIB_BASE_CX | SIB_IDX_RIP) },
+																{ (RM_CX),   (MEMF_MODRM                         ), (NO_SIB                   ) },
+	/* DX */     { SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_DX | SIB_IDX_AX) },						     
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DX | SIB_IDX_CX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DX | SIB_IDX_DX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DX | SIB_IDX_BX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DX | SIB_IDX_SP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DX | SIB_IDX_BP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DX | SIB_IDX_SI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DX | SIB_IDX_DI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DX | SIB_IDX_R8 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DX | SIB_IDX_R9 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DX | SIB_IDX_R10) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DX | SIB_IDX_R11) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DX | SIB_IDX_R12) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DX | SIB_IDX_R13) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DX | SIB_IDX_R14) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DX | SIB_IDX_R15) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE  ), (SIB_BASE_DX | SIB_IDX_RIP) },
+																{ (RM_DX),   (MEMF_MODRM                         ), (NO_SIB                   ) },
+	/* BX */     { SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_BX | SIB_IDX_AX) },						     
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BX | SIB_IDX_CX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BX | SIB_IDX_DX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BX | SIB_IDX_BX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BX | SIB_IDX_SP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BX | SIB_IDX_BP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BX | SIB_IDX_SI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BX | SIB_IDX_DI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BX | SIB_IDX_R8 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BX | SIB_IDX_R9 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BX | SIB_IDX_R10) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BX | SIB_IDX_R11) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BX | SIB_IDX_R12) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BX | SIB_IDX_R13) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BX | SIB_IDX_R14) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BX | SIB_IDX_R15) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE  ), (SIB_BASE_BX | SIB_IDX_RIP) },
+																{ (RM_BX),   (MEMF_MODRM                         ), (NO_SIB                   ) },
+	/* SP */     { SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_SP | SIB_IDX_AX) },						     
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SP | SIB_IDX_CX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SP | SIB_IDX_DX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SP | SIB_IDX_BX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SP | SIB_IDX_SP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SP | SIB_IDX_BP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SP | SIB_IDX_SI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SP | SIB_IDX_DI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SP | SIB_IDX_R8 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SP | SIB_IDX_R9 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SP | SIB_IDX_R10) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SP | SIB_IDX_R11) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SP | SIB_IDX_R12) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SP | SIB_IDX_R13) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SP | SIB_IDX_R14) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SP | SIB_IDX_R15) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE  ), (SIB_BASE_SP | SIB_IDX_RIP) },
+																{ (RM_SP),   (MEMF_MODRM | MEMF_SIB              ), 0x24 },
+	/* BP */     {  SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_BP | SIB_IDX_AX) },						     
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BP | SIB_IDX_CX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BP | SIB_IDX_DX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BP | SIB_IDX_BX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BP | SIB_IDX_SP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BP | SIB_IDX_BP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BP | SIB_IDX_SI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BP | SIB_IDX_DI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BP | SIB_IDX_R8 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BP | SIB_IDX_R9 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BP | SIB_IDX_R10) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BP | SIB_IDX_R11) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BP | SIB_IDX_R12) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BP | SIB_IDX_R13) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BP | SIB_IDX_R14) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_BP | SIB_IDX_R15) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE  ), (SIB_BASE_BP | SIB_IDX_RIP) },
+																{ (RM_BP),   (MEMF_MODRM | MEMF_DSP              ), (NO_SIB                   ) },
+	/* SI */     { SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_SI | SIB_IDX_AX) },						     
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SI | SIB_IDX_CX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SI | SIB_IDX_DX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SI | SIB_IDX_BX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SI | SIB_IDX_SP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SI | SIB_IDX_BP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SI | SIB_IDX_SI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SI | SIB_IDX_DI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SI | SIB_IDX_R8 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SI | SIB_IDX_R9 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SI | SIB_IDX_R10) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SI | SIB_IDX_R11) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SI | SIB_IDX_R12) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SI | SIB_IDX_R13) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SI | SIB_IDX_R14) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_SI | SIB_IDX_R15) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE  ), (SIB_BASE_SI | SIB_IDX_RIP) },
+																{ (RM_SI),   (MEMF_MODRM                         ), (NO_SIB                   ) },
+	/* DI */     { SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_DI | SIB_IDX_AX) },						     
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DI | SIB_IDX_CX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DI | SIB_IDX_DX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DI | SIB_IDX_BX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DI | SIB_IDX_SP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DI | SIB_IDX_BP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DI | SIB_IDX_SI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DI | SIB_IDX_DI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DI | SIB_IDX_R8 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DI | SIB_IDX_R9 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DI | SIB_IDX_R10) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DI | SIB_IDX_R11) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DI | SIB_IDX_R12) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DI | SIB_IDX_R13) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DI | SIB_IDX_R14) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_DI | SIB_IDX_R15) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE  ), (SIB_BASE_DI | SIB_IDX_RIP) },
+																{ (RM_DI),   (MEMF_MODRM                         ), (NO_SIB                   ) },
+	/* R8 */     { SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_R8 | SIB_IDX_AX) },						     
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R8 | SIB_IDX_CX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R8 | SIB_IDX_DX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R8 | SIB_IDX_BX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R8 | SIB_IDX_SP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R8 | SIB_IDX_BP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R8 | SIB_IDX_SI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R8 | SIB_IDX_DI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R8 | SIB_IDX_R8 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R8 | SIB_IDX_R9 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R8 | SIB_IDX_R10) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R8 | SIB_IDX_R11) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R8 | SIB_IDX_R12) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R8 | SIB_IDX_R13) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R8 | SIB_IDX_R14) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R8 | SIB_IDX_R15) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE  ), (SIB_BASE_R8 | SIB_IDX_RIP) },
+																{ (RM_R8),   (MEMF_MODRM                         ), (NO_SIB                   ) },
+	/* R9 */     { SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_R9 | SIB_IDX_AX) },						     
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R9 | SIB_IDX_CX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R9 | SIB_IDX_DX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R9 | SIB_IDX_BX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R9 | SIB_IDX_SP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R9 | SIB_IDX_BP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R9 | SIB_IDX_SI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R9 | SIB_IDX_DI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R9 | SIB_IDX_R8 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R9 | SIB_IDX_R9 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R9 | SIB_IDX_R10) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R9 | SIB_IDX_R11) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R9 | SIB_IDX_R12) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R9 | SIB_IDX_R13) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R9 | SIB_IDX_R14) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R9 | SIB_IDX_R15) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE  ), (SIB_BASE_R9 | SIB_IDX_RIP) },
+																{ (RM_R9),   (MEMF_MODRM                         ), (NO_SIB                   ) },
+	/* R10 */    { SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_R10 | SIB_IDX_AX) },						     
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R10 | SIB_IDX_CX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R10 | SIB_IDX_DX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R10 | SIB_IDX_BX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R10 | SIB_IDX_SP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R10 | SIB_IDX_BP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R10 | SIB_IDX_SI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R10 | SIB_IDX_DI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R10 | SIB_IDX_R8 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R10 | SIB_IDX_R9 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R10 | SIB_IDX_R10) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R10 | SIB_IDX_R11) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R10 | SIB_IDX_R12) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R10 | SIB_IDX_R13) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R10 | SIB_IDX_R14) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R10 | SIB_IDX_R15) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE  ), (SIB_BASE_R10 | SIB_IDX_RIP) },
+																{ (RM_R10),  (MEMF_MODRM                         ), (NO_SIB                    ) },
+	/* R11 */    { SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_R11 | SIB_IDX_AX) },						     
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R11 | SIB_IDX_CX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R11 | SIB_IDX_DX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R11 | SIB_IDX_BX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R11 | SIB_IDX_SP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R11 | SIB_IDX_BP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R11 | SIB_IDX_SI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R11 | SIB_IDX_DI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R11 | SIB_IDX_R8 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R11 | SIB_IDX_R9 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R11 | SIB_IDX_R10) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R11 | SIB_IDX_R11) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R11 | SIB_IDX_R12) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R11 | SIB_IDX_R13) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R11 | SIB_IDX_R14) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R11 | SIB_IDX_R15) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE  ), (SIB_BASE_R11 | SIB_IDX_RIP) },
+																{ (RM_R11),  (MEMF_MODRM                         ), (NO_SIB                    ) },
+	/* R12 */    { SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_R12 | SIB_IDX_AX) },						     
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R12 | SIB_IDX_CX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R12 | SIB_IDX_DX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R12 | SIB_IDX_BX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R12 | SIB_IDX_SP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R12 | SIB_IDX_BP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R12 | SIB_IDX_SI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R12 | SIB_IDX_DI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R12 | SIB_IDX_R8 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R12 | SIB_IDX_R9 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R12 | SIB_IDX_R10) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R12 | SIB_IDX_R11) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R12 | SIB_IDX_R12) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R12 | SIB_IDX_R13) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R12 | SIB_IDX_R14) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R12 | SIB_IDX_R15) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE  ), (SIB_BASE_R12 | SIB_IDX_RIP) },
+																{ (RM_R12),  (MEMF_MODRM | MEMF_SIB              ), 0x24                         },
+	/* R13 */    { SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_R13 | SIB_IDX_AX) },						     
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R13 | SIB_IDX_CX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R13 | SIB_IDX_DX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R13 | SIB_IDX_BX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R13 | SIB_IDX_SP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R13 | SIB_IDX_BP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R13 | SIB_IDX_SI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R13 | SIB_IDX_DI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R13 | SIB_IDX_R8 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R13 | SIB_IDX_R9 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R13 | SIB_IDX_R10) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R13 | SIB_IDX_R11) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R13 | SIB_IDX_R12) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R13 | SIB_IDX_R13) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R13 | SIB_IDX_R14) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R13 | SIB_IDX_R15) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE  ), (SIB_BASE_R13 | SIB_IDX_RIP) },
+																{ (RM_R13),  (MEMF_MODRM | MEMF_DSP              ), (NO_SIB                    ) },
+	/* R14 */    { SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_R14 | SIB_IDX_AX) },						     
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R14 | SIB_IDX_CX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R14 | SIB_IDX_DX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R14 | SIB_IDX_BX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R14 | SIB_IDX_SP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R14 | SIB_IDX_BP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R14 | SIB_IDX_SI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R14 | SIB_IDX_DI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R14 | SIB_IDX_R8 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R14 | SIB_IDX_R9 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R14 | SIB_IDX_R10) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R14 | SIB_IDX_R11) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R14 | SIB_IDX_R12) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R14 | SIB_IDX_R13) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R14 | SIB_IDX_R14) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R14 | SIB_IDX_R15) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE  ), (SIB_BASE_R14 | SIB_IDX_RIP) },
+																{ (RM_R14),  (MEMF_MODRM                         ), (NO_SIB                    ) },
+	/* R15 */    { SIB_ONLY,  (MEMF_MODRM | MEMF_SIB), (SIB_BASE_R15 | SIB_IDX_AX) },						     
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R15 | SIB_IDX_CX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R15 | SIB_IDX_DX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R15 | SIB_IDX_BX ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R15 | SIB_IDX_SP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R15 | SIB_IDX_BP ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R15 | SIB_IDX_SI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R15 | SIB_IDX_DI ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R15 | SIB_IDX_R8 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R15 | SIB_IDX_R9 ) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R15 | SIB_IDX_R10) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R15 | SIB_IDX_R11) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R15 | SIB_IDX_R12) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R15 | SIB_IDX_R13) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R15 | SIB_IDX_R14) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB              ), (SIB_BASE_R15 | SIB_IDX_R15) },
+																{ SIB_ONLY,  (MEMF_MODRM | MEMF_SIB | NO_ENCODE  ), (SIB_BASE_R15 | SIB_IDX_RIP) },
+																{ (RM_R15),  (MEMF_MODRM                         ), (NO_SIB                    ) },
+	/* RIP */    { SIB_ONLY,  (NO_ENCODE            )            , 0x00 },									     
+																{ SIB_ONLY,  (NO_ENCODE			                 ), (NO_SIB                    ) },
+																{ SIB_ONLY,  (NO_ENCODE			                 ), (NO_SIB                    ) },
+																{ SIB_ONLY,  (NO_ENCODE			                 ), (NO_SIB                    ) },
+																{ SIB_ONLY,  (NO_ENCODE			                 ), (NO_SIB                    ) },
+																{ SIB_ONLY,  (NO_ENCODE			                 ), (NO_SIB                    ) },
+																{ SIB_ONLY,  (NO_ENCODE			                 ), (NO_SIB                    ) },
+																{ SIB_ONLY,  (NO_ENCODE			                 ), (NO_SIB                    ) },
+																{ SIB_ONLY,  (NO_ENCODE			                 ), (NO_SIB                    ) },
+																{ SIB_ONLY,  (NO_ENCODE			                 ), (NO_SIB                    ) },
+																{ SIB_ONLY,  (NO_ENCODE			                 ), (NO_SIB                    ) },
+																{ SIB_ONLY,  (NO_ENCODE			                 ), (NO_SIB                    ) },
+																{ SIB_ONLY,  (NO_ENCODE			                 ), (NO_SIB                    ) },
+																{ SIB_ONLY,  (NO_ENCODE			                 ), (NO_SIB                    ) },
+																{ SIB_ONLY,  (NO_ENCODE			                 ), (NO_SIB                    ) },
+																{ SIB_ONLY,  (NO_ENCODE			                 ), (NO_SIB                    ) },
+																{ SIB_ONLY,  (NO_ENCODE			                 ), (NO_SIB                    ) },
+																{ (RM_RIP),  (MEMF_MODRM | MEMF_DSP32            ), (NO_SIB                    ) },
+	/* NONE */	{ SIB_ONLY,  (NO_ENCODE			    )            , 0x00 },									     
+																{ SIB_ONLY,  (NO_ENCODE						     ), (NO_SIB					   ) },
+																{ SIB_ONLY,  (NO_ENCODE						     ), (NO_SIB					   ) },
+																{ SIB_ONLY,  (NO_ENCODE						     ), (NO_SIB					   ) },
+																{ SIB_ONLY,  (NO_ENCODE						     ), (NO_SIB					   ) },
+																{ SIB_ONLY,  (NO_ENCODE						     ), (NO_SIB					   ) },
+																{ SIB_ONLY,  (NO_ENCODE						     ), (NO_SIB					   ) },
+																{ SIB_ONLY,  (NO_ENCODE						     ), (NO_SIB					   ) },
+																{ SIB_ONLY,  (NO_ENCODE						     ), (NO_SIB					   ) },
+																{ SIB_ONLY,  (NO_ENCODE						     ), (NO_SIB					   ) },
+																{ SIB_ONLY,  (NO_ENCODE						     ), (NO_SIB					   ) },
+																{ SIB_ONLY,  (NO_ENCODE						     ), (NO_SIB					   ) },
+																{ SIB_ONLY,  (NO_ENCODE						     ), (NO_SIB					   ) },
+																{ SIB_ONLY,  (NO_ENCODE						     ), (NO_SIB					   ) },
+																{ SIB_ONLY,  (NO_ENCODE						     ), (NO_SIB					   ) },
+																{ SIB_ONLY,  (NO_ENCODE						     ), (NO_SIB					   ) },
+																{ SIB_ONLY,  (NO_ENCODE						     ), (NO_SIB					   ) },
+																{ (RM_ABS),  (MEMF_MODRM | MEMF_DSP32 | MEMF_SIB ), (SIB_BASE_BP | SIB_IDX_SP  ) }, /* [none+none] == abs */
 };
 
 struct Instr_Def* InstrHash[16384];
@@ -342,85 +358,111 @@ struct Instr_Def InstrTableV2[] = {
 	
 	/* | mnemonic | operand count | operand types | encoding group | flags | opcode len | opcode bytes | op size | modRM | sib | OSO | ASO | Valid segment modes | opnd direction | mandatory prefix type | immediate Operand? | memory Operand? | CPU mode | */
 	/* General Purpose Reg->Reg moves */
-	{ "mov", 2, { R8,      R8      }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  1, { 0x88, 0x00, 0x00 }, 1, MOD_REG_REG, 0, 0,                0,                  (X16 | X32 | X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_86,  0, NULL },
+	{ "mov", 2, { R8,      R8 }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM), 1, { 0x88, 0x00, 0x00 }, 1, MOD_REG_REG, 0, 0, 0, (X16 | X32 | X64), RM_DST, NO_PREFIX, NO_IMM, NO_MEM, P_86, 0, NULL },
 	{ "mov", 2, { R8,      R8H     }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  1, { 0x88, 0x00, 0x00 }, 1, MOD_REG_REG, 0, 0,                0,                  (X16 | X32 | X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_86,  0, NULL },
 	{ "mov", 2, { R8H,     R8      }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  1, { 0x88, 0x00, 0x00 }, 1, MOD_REG_REG, 0, 0,                0,                  (X16 | X32 | X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_86,  0, NULL },
 	{ "mov", 2, { R8H,     R8H     }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  1, { 0x88, 0x00, 0x00 }, 1, MOD_REG_REG, 0, 0,                0,                  (X16 | X32 | X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_86,  0, NULL },
-	{ "mov", 2, { R8E,     R8E     }, GP3, (REX | REXB | REXR) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),		  1, { 0x88, 0x00, 0x00 }, 1, MOD_REG_REG, 0, 0,                0,                  (            X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R8,      R8E     }, GP3, (REX | REXR) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x88, 0x00, 0x00 }, 1, MOD_REG_REG, 0, 0,                0,                  (			 X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R8E,     R8      }, GP3, (REX | REXB) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x88, 0x00, 0x00 }, 1, MOD_REG_REG, 0, 0,                0,                  (		   	 X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R8U,     R8      }, GP3, (REX) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),					  1, { 0x88, 0x00, 0x00 }, 1, MOD_REG_REG, 0, 0,                0,                  (		     X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R8E,     R8E     }, GP3, (REX | REXB | REXR) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),		  1, { 0x88, 0x00, 0x00 }, 1, MOD_REG_REG, 0, 0,                0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R8,      R8E     }, GP3, (REX | REXR) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x88, 0x00, 0x00 }, 1, MOD_REG_REG, 0, 0,                0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R8E,     R8      }, GP3, (REX | REXB) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x88, 0x00, 0x00 }, 1, MOD_REG_REG, 0, 0,                0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R8U,     R8      }, GP3, (REX) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),					  1, { 0x88, 0x00, 0x00 }, 1, MOD_REG_REG, 0, 0,                0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
 	{ "mov", 2, { R16,     R16     }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  1, { 0x89, 0x00, 0x00 }, 2, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (X16 | X32 | X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_86,  0, NULL },
-	{ "mov", 2, { R16E,    R16E    }, GP3, (REX | REXB | REXR) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),		  1, { 0x89, 0x00, 0x00 }, 2, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (            X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R16E,    R16     }, GP3, (REX | REXB) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x89, 0x00, 0x00 }, 2, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (            X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R16,     R16E    }, GP3, (REX | REXR) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x89, 0x00, 0x00 }, 2, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (            X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R16E,    R16E    }, GP3, (REX | REXB | REXR) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),		  1, { 0x89, 0x00, 0x00 }, 2, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R16E,    R16     }, GP3, (REX | REXB) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x89, 0x00, 0x00 }, 2, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R16,     R16E    }, GP3, (REX | REXR) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x89, 0x00, 0x00 }, 2, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
 	{ "mov", 2, { R32,     R32     }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  1, { 0x89, 0x00, 0x00 }, 4, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (X16 | X32 | X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_86,  0, NULL },
-	{ "mov", 2, { R32E,    R32E    }, GP3, (REX | REXB | REXR) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),		  1, { 0x89, 0x00, 0x00 }, 4, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (            X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R32E,    R32     }, GP3, (REX | REXB) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x89, 0x00, 0x00 }, 4, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (            X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R32,     R32E    }, GP3, (REX | REXR) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x89, 0x00, 0x00 }, 4, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (            X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R64,     R64     }, GP3, (REX | REXW) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),		          1, { 0x89, 0x00, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (            X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R64E,    R64E    }, GP3, (REX | REXR | REXB | REXW) | (F_MODRM | F_MODRM_REG | F_MODRM_RM), 1, { 0x89, 0x00, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (			 X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R64,     R64E    }, GP3, (REX | REXR | REXW) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),		  1, { 0x89, 0x00, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (			 X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R64E,    R64     }, GP3, (REX | REXB | REXW) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),		  1, { 0x89, 0x00, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (			 X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	/* CR0-CR8 register moves */
-	{ "mov", 2, { R32,     R_CR    }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  2, { 0x0f, 0x20, 0x00 }, 4, MOD_REG_REG, 0, 0,                0,                  (X16 | X32      ), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_86,  0, NULL },
-	{ "mov", 2, { R64,     R_CR    }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  2, { 0x0f, 0x20, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (		     X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R64E,    R_CR    }, GP3, (REX | REXB) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),			      2, { 0x0f, 0x20, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (			 X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R64,     R_CR8   }, GP3, (REX | REXR) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  2, { 0x0f, 0x20, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (			 X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R64E,    R_CR8   }, GP3, (REX | REXB | REXR) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),	      2, { 0x0f, 0x20, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (			 X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R_CR,    R32     }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  2, { 0x0f, 0x22, 0x00 }, 4, MOD_REG_REG, 0, 0,                0,                  (X16 | X32      ), REG_DST, NO_PREFIX, NO_IMM,     NO_MEM,     P_86,  0, NULL },
-	{ "mov", 2, { R_CR,    R64     }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  2, { 0x0f, 0x22, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (			 X64), REG_DST, NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R_CR,    R64E    }, GP3, (REX | REXB) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  2, { 0x0f, 0x22, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (			 X64), REG_DST, NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R_CR8,   R64     }, GP3, (REX | REXR) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  2, { 0x0f, 0x22, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (            X64), REG_DST, NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R_CR8,   R64E    }, GP3, (REX | REXB | REXR) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),		  2, { 0x0f, 0x22, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (            X64), REG_DST, NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R32E,    R32E    }, GP3, (REX | REXB | REXR) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),		  1, { 0x89, 0x00, 0x00 }, 4, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R32E,    R32     }, GP3, (REX | REXB) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x89, 0x00, 0x00 }, 4, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R32,     R32E    }, GP3, (REX | REXR) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x89, 0x00, 0x00 }, 4, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R64,     R64     }, GP3, (REX | REXW) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),		          1, { 0x89, 0x00, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R64E,    R64E    }, GP3, (REX | REXR | REXB | REXW) | (F_MODRM | F_MODRM_REG | F_MODRM_RM), 1, { 0x89, 0x00, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R64,     R64E    }, GP3, (REX | REXR | REXW) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),		  1, { 0x89, 0x00, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R64E,    R64     }, GP3, (REX | REXB | REXW) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),		  1, { 0x89, 0x00, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+		/* CR0-CR8 register moves */
+	{ "mov", 2, { R32,     R_CR    }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  2, { 0x0f, 0x20, 0x00 }, 4, MOD_REG_REG, 0, 0,                0,                  (X16 | X32), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_86,  0, NULL },
+	{ "mov", 2, { R64,     R_CR    }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  2, { 0x0f, 0x20, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R64E,    R_CR    }, GP3, (REX | REXB) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),			      2, { 0x0f, 0x20, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R64,     R_CR8   }, GP3, (REX | REXR) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  2, { 0x0f, 0x20, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R64E,    R_CR8   }, GP3, (REX | REXB | REXR) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),	      2, { 0x0f, 0x20, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R_CR,    R32     }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  2, { 0x0f, 0x22, 0x00 }, 4, MOD_REG_REG, 0, 0,                0,                  (X16 | X32), REG_DST, NO_PREFIX, NO_IMM,     NO_MEM,     P_86,  0, NULL },
+	{ "mov", 2, { R_CR,    R64     }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  2, { 0x0f, 0x22, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (X64), REG_DST, NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R_CR,    R64E    }, GP3, (REX | REXB) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  2, { 0x0f, 0x22, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (X64), REG_DST, NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R_CR8,   R64     }, GP3, (REX | REXR) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  2, { 0x0f, 0x22, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (X64), REG_DST, NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R_CR8,   R64E    }, GP3, (REX | REXB | REXR) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),		  2, { 0x0f, 0x22, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (X64), REG_DST, NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
 	/* DR0-DR7 register moves */
-	{ "mov", 2, { R32,     R_DR    }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  2, { 0x0f, 0x21, 0x00 }, 4, MOD_REG_REG, 0, 0,                0,                  (X16 | X32      ), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_86,  0, NULL },
-	{ "mov", 2, { R64,     R_DR    }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  2, { 0x0f, 0x21, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (			 X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R64E,    R_DR    }, GP3, (REX | REXB) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),			      2, { 0x0f, 0x21, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (	         X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R_DR,    R32     }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  2, { 0x0f, 0x23, 0x00 }, 4, MOD_REG_REG, 0, 0,                0,                  (X16 | X32      ), REG_DST, NO_PREFIX, NO_IMM,     NO_MEM,     P_86,  0, NULL },
-	{ "mov", 2, { R_DR,    R64     }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  2, { 0x0f, 0x23, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (			 X64), REG_DST, NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R_DR,    R64E    }, GP3, (REX | REXB) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  2, { 0x0f, 0x23, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (			 X64), REG_DST, NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R32,     R_DR    }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  2, { 0x0f, 0x21, 0x00 }, 4, MOD_REG_REG, 0, 0,                0,                  (X16 | X32), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_86,  0, NULL },
+	{ "mov", 2, { R64,     R_DR    }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  2, { 0x0f, 0x21, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R64E,    R_DR    }, GP3, (REX | REXB) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),			      2, { 0x0f, 0x21, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R_DR,    R32     }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  2, { 0x0f, 0x23, 0x00 }, 4, MOD_REG_REG, 0, 0,                0,                  (X16 | X32), REG_DST, NO_PREFIX, NO_IMM,     NO_MEM,     P_86,  0, NULL },
+	{ "mov", 2, { R_DR,    R64     }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  2, { 0x0f, 0x23, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (X64), REG_DST, NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R_DR,    R64E    }, GP3, (REX | REXB) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  2, { 0x0f, 0x23, 0x00 }, 8, MOD_REG_REG, 0, 0,                0,                  (X64), REG_DST, NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
 	/* Segment register to register moves */
 	{ "mov", 2, { R16,     R_SEG   }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  1, { 0x8c, 0x00, 0x00 }, 2, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (X16 | X32 | X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_86,  0, NULL },
-	{ "mov", 2, { R16,     R_SEGE  }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  1, { 0x8c, 0x00, 0x00 }, 2, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (      X32 | X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_386, 0, NULL },
-	{ "mov", 2, { R32,     R_SEG   }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  1, { 0x8c, 0x00, 0x00 }, 4, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (      X32 | X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_386, 0, NULL },
-	{ "mov", 2, { R32,     R_SEGE  }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  1, { 0x8c, 0x00, 0x00 }, 4, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (      X32 | X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_386, 0, NULL },
-	{ "mov", 2, { R64,     R_SEG   }, GP3, (REX | REXW) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x8c, 0x00, 0x00 }, 8, MOD_REG_REG, 0, 0,				0,                  (            X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R64,     R_SEGE  }, GP3, (REX | REXW) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x8c, 0x00, 0x00 }, 8, MOD_REG_REG, 0, 0,				0,                  (            X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R16E,    R_SEG   }, GP3, (REX | REXB) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x8c, 0x00, 0x00 }, 2, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (            X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R16E,    R_SEGE  }, GP3, (REX | REXB) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x8c, 0x00, 0x00 }, 2, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (            X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R32E,    R_SEG   }, GP3, (REX | REXB) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x8c, 0x00, 0x00 }, 4, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (            X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R32E,    R_SEGE  }, GP3, (REX | REXB) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x8c, 0x00, 0x00 }, 4, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (            X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R64E,    R_SEG   }, GP3, (REX | REXB | REXW) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),		  1, { 0x8c, 0x00, 0x00 }, 8, MOD_REG_REG, 0, 0,				0,                  (            X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R64E,    R_SEGE  }, GP3, (REX | REXB | REXW) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),		  1, { 0x8c, 0x00, 0x00 }, 8, MOD_REG_REG, 0, 0,				0,                  (            X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R16,     R_SEGE  }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  1, { 0x8c, 0x00, 0x00 }, 2, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (X32 | X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_386, 0, NULL },
+	{ "mov", 2, { R32,     R_SEG   }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  1, { 0x8c, 0x00, 0x00 }, 4, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (X32 | X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_386, 0, NULL },
+	{ "mov", 2, { R32,     R_SEGE  }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  1, { 0x8c, 0x00, 0x00 }, 4, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (X32 | X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_386, 0, NULL },
+	{ "mov", 2, { R64,     R_SEG   }, GP3, (REX | REXW) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x8c, 0x00, 0x00 }, 8, MOD_REG_REG, 0, 0,				0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R64,     R_SEGE  }, GP3, (REX | REXW) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x8c, 0x00, 0x00 }, 8, MOD_REG_REG, 0, 0,				0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R16E,    R_SEG   }, GP3, (REX | REXB) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x8c, 0x00, 0x00 }, 2, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R16E,    R_SEGE  }, GP3, (REX | REXB) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x8c, 0x00, 0x00 }, 2, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R32E,    R_SEG   }, GP3, (REX | REXB) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x8c, 0x00, 0x00 }, 4, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R32E,    R_SEGE  }, GP3, (REX | REXB) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x8c, 0x00, 0x00 }, 4, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R64E,    R_SEG   }, GP3, (REX | REXB | REXW) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),		  1, { 0x8c, 0x00, 0x00 }, 8, MOD_REG_REG, 0, 0,				0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R64E,    R_SEGE  }, GP3, (REX | REXB | REXW) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),		  1, { 0x8c, 0x00, 0x00 }, 8, MOD_REG_REG, 0, 0,				0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
 	{ "mov", 2, { R_SEG,   R16     }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  1, { 0x8e, 0x00, 0x00 }, 2, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (X16 | X32 | X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_86,  0, NULL },
-	{ "mov", 2, { R_SEGE,  R16     }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  1, { 0x8e, 0x00, 0x00 }, 2, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (      X32 | X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_386, 0, NULL },
-	{ "mov", 2, { R_SEG,   R32     }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  1, { 0x8e, 0x00, 0x00 }, 4, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (      X32 | X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_386, 0, NULL },
-	{ "mov", 2, { R_SEGE,  R32     }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  1, { 0x8e, 0x00, 0x00 }, 4, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (      X32 | X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_386, 0, NULL },
-	{ "mov", 2, { R_SEG,   R64     }, GP3, (REX | REXW) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x8e, 0x00, 0x00 }, 8, MOD_REG_REG, 0, 0,				0,                  (            X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R_SEGE,  R64     }, GP3, (REX | REXW) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x8e, 0x00, 0x00 }, 8, MOD_REG_REG, 0, 0,				0,                  (			 X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R_SEG,   R16E    }, GP3, (REX | REXR) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x8e, 0x00, 0x00 }, 2, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (			 X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R_SEGE,  R16E    }, GP3, (REX | REXR) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x8e, 0x00, 0x00 }, 2, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (			 X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R_SEG,   R32E    }, GP3, (REX | REXR) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x8e, 0x00, 0x00 }, 4, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (			 X64), RM_DST,  NO_PREFIX, NO_IMM,	   NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R_SEGE,  R32E    }, GP3, (REX | REXR) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x8e, 0x00, 0x00 }, 4, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (			 X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R_SEG,   R64E    }, GP3, (REX | REXR | REXW) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),		  1, { 0x8e, 0x00, 0x00 }, 8, MOD_REG_REG, 0, 0,				0,                  (			 X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R_SEGE,  R64E    }, GP3, (REX | REXR | REXW) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),		  1, { 0x8e, 0x00, 0x00 }, 8, MOD_REG_REG, 0, 0,				0,                  (			 X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R_SEGE,  R16     }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  1, { 0x8e, 0x00, 0x00 }, 2, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (X32 | X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_386, 0, NULL },
+	{ "mov", 2, { R_SEG,   R32     }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  1, { 0x8e, 0x00, 0x00 }, 4, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (X32 | X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_386, 0, NULL },
+	{ "mov", 2, { R_SEGE,  R32     }, GP0, (F_MODRM | F_MODRM_REG | F_MODRM_RM),							  1, { 0x8e, 0x00, 0x00 }, 4, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (X32 | X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_386, 0, NULL },
+	{ "mov", 2, { R_SEG,   R64     }, GP3, (REX | REXW) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x8e, 0x00, 0x00 }, 8, MOD_REG_REG, 0, 0,				0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R_SEGE,  R64     }, GP3, (REX | REXW) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x8e, 0x00, 0x00 }, 8, MOD_REG_REG, 0, 0,				0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R_SEG,   R16E    }, GP3, (REX | REXR) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x8e, 0x00, 0x00 }, 2, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R_SEGE,  R16E    }, GP3, (REX | REXR) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x8e, 0x00, 0x00 }, 2, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R_SEG,   R32E    }, GP3, (REX | REXR) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x8e, 0x00, 0x00 }, 4, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,	   NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R_SEGE,  R32E    }, GP3, (REX | REXR) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),				  1, { 0x8e, 0x00, 0x00 }, 4, MOD_REG_REG, 0, OP_SIZE_OVERRIDE, 0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R_SEG,   R64E    }, GP3, (REX | REXR | REXW) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),		  1, { 0x8e, 0x00, 0x00 }, 8, MOD_REG_REG, 0, 0,				0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R_SEGE,  R64E    }, GP3, (REX | REXR | REXW) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),		  1, { 0x8e, 0x00, 0x00 }, 8, MOD_REG_REG, 0, 0,				0,                  (X64), RM_DST,  NO_PREFIX, NO_IMM,     NO_MEM,     P_64,  0, NULL },
 	/* Reg->Immediate moves */
 	{ "mov", 2, { R8,      IMM8    }, GP0, (F_OPCODE_REG),												      1, { 0xb0, 0x00, 0x00 }, 1, NO_MOD,      0, 0,				0,                  (X16 | X32 | X64), NO_DST,  NO_PREFIX, IMM_OPND_1, NO_MEM,     P_86,  0, NULL },
 	{ "mov", 2, { R8H,     IMM8    }, GP0, (F_OPCODE_REG),													  1, { 0xb0, 0x00, 0x00 }, 1, NO_MOD,      0, 0,				0,                  (X16 | X32 | X64), NO_DST,  NO_PREFIX, IMM_OPND_1, NO_MEM,     P_86,  0, NULL },
-	{ "mov", 2, { R8U,     IMM8    }, GP3, (REX | REXB) | (F_OPCODE_REG),									  1, { 0xb0, 0x00, 0x00 }, 1, NO_MOD,      0, 0,				0,                  (			 X64), NO_DST,  NO_PREFIX, IMM_OPND_1, NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R8E,     IMM8    }, GP3, (REX | REXB) | (F_OPCODE_REG),							          1, { 0xb0, 0x00, 0x00 }, 1, NO_MOD,      0, 0,				0,                  (			 X64), NO_DST,  NO_PREFIX, IMM_OPND_1, NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R8U,     IMM8    }, GP3, (REX | REXB) | (F_OPCODE_REG),									  1, { 0xb0, 0x00, 0x00 }, 1, NO_MOD,      0, 0,				0,                  (X64), NO_DST,  NO_PREFIX, IMM_OPND_1, NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R8E,     IMM8    }, GP3, (REX | REXB) | (F_OPCODE_REG),							          1, { 0xb0, 0x00, 0x00 }, 1, NO_MOD,      0, 0,				0,                  (X64), NO_DST,  NO_PREFIX, IMM_OPND_1, NO_MEM,     P_64,  0, NULL },
 	{ "mov", 2, { R16,     IMM16   }, GP0, (F_OPCODE_REG),												      1, { 0xb8, 0x00, 0x00 }, 2, NO_MOD,      0, OP_SIZE_OVERRIDE, 0,                  (X16 | X32 | X64), NO_DST,  NO_PREFIX, IMM_OPND_1, NO_MEM,     P_86,  0, NULL },
-	{ "mov", 2, { R16E,    IMM16   }, GP3, (REX | REXB) | (F_OPCODE_REG),								      1, { 0xb8, 0x00, 0x00 }, 2, NO_MOD,      0, OP_SIZE_OVERRIDE,	0,                  (            X64), NO_DST,  NO_PREFIX, IMM_OPND_1, NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R16E,    IMM16   }, GP3, (REX | REXB) | (F_OPCODE_REG),								      1, { 0xb8, 0x00, 0x00 }, 2, NO_MOD,      0, OP_SIZE_OVERRIDE,	0,                  (X64), NO_DST,  NO_PREFIX, IMM_OPND_1, NO_MEM,     P_64,  0, NULL },
 	{ "mov", 2, { R32,     IMM32   }, GP0, (F_OPCODE_REG),												      1, { 0xb8, 0x00, 0x00 }, 4, NO_MOD,      0, OP_SIZE_OVERRIDE, 0,                  (X16 | X32 | X64), NO_DST,  NO_PREFIX, IMM_OPND_1, NO_MEM,     P_86,  0, NULL },
-	{ "mov", 2, { R32E,    IMM32   }, GP3, (REX | REXB) | (F_OPCODE_REG),								      1, { 0xb8, 0x00, 0x00 }, 4, NO_MOD,      0, OP_SIZE_OVERRIDE,	0,                  (            X64), NO_DST,  NO_PREFIX, IMM_OPND_1, NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R64,     IMM64   }, GP3, (REX | REXW) | (F_OPCODE_REG),								      1, { 0xb8, 0x00, 0x00 }, 8, NO_MOD,      0, 0,				0,                  (            X64), NO_DST,  NO_PREFIX, IMM_OPND_1, NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R64E,    IMM64   }, GP3, (REX | REXW | REXB) | (F_OPCODE_REG),						      1, { 0xb8, 0x00, 0x00 }, 8, NO_MOD,      0, 0,				0,                  (            X64), NO_DST,  NO_PREFIX, IMM_OPND_1, NO_MEM,     P_64,  0, NULL },
-	{ "mov", 2, { R64,     IMM32   }, GP3, (REX | REXW) | (F_OPCODE_REG),								      1, { 0xc7, 0x00, 0x00 }, 8, NO_MOD,      0, 0,				0,                  (            X64), NO_DST,  NO_PREFIX, IMM_OPND_1, NO_MEM,	   P_64,  0, NULL },
-	{ "mov", 2, { R64E,    IMM32   }, GP3, (REX | REXW | REXB) | (F_OPCODE_REG),						      1, { 0xc7, 0x00, 0x00 }, 8, NO_MOD,      0, 0,				0,                  (            X64), NO_DST,  NO_PREFIX, IMM_OPND_1, NO_MEM,	   P_64,  0, NULL },
+	{ "mov", 2, { R32E,    IMM32   }, GP3, (REX | REXB) | (F_OPCODE_REG),								      1, { 0xb8, 0x00, 0x00 }, 4, NO_MOD,      0, OP_SIZE_OVERRIDE,	0,                  (X64), NO_DST,  NO_PREFIX, IMM_OPND_1, NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R64,     IMM64   }, GP3, (REX | REXW) | (F_OPCODE_REG),								      1, { 0xb8, 0x00, 0x00 }, 8, NO_MOD,      0, 0,				0,                  (X64), NO_DST,  NO_PREFIX, IMM_OPND_1, NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R64E,    IMM64   }, GP3, (REX | REXW | REXB) | (F_OPCODE_REG),						      1, { 0xb8, 0x00, 0x00 }, 8, NO_MOD,      0, 0,				0,                  (X64), NO_DST,  NO_PREFIX, IMM_OPND_1, NO_MEM,     P_64,  0, NULL },
+	{ "mov", 2, { R64,     IMM32   }, GP3, (REX | REXW) | (F_OPCODE_REG),								      1, { 0xc7, 0x00, 0x00 }, 8, NO_MOD,      0, 0,				0,                  (X64), NO_DST,  NO_PREFIX, IMM_OPND_1, NO_MEM,	   P_64,  0, NULL },
+	{ "mov", 2, { R64E,    IMM32   }, GP3, (REX | REXW | REXB) | (F_OPCODE_REG),						      1, { 0xc7, 0x00, 0x00 }, 8, NO_MOD,      0, 0,				0,                  (X64), NO_DST,  NO_PREFIX, IMM_OPND_1, NO_MEM,	   P_64,  0, NULL },
 	/* Mem->Reg moves */
-	{ "mov", 2, { R8,      M_ANY   }, GP0, ALLOW_SEG | (F_MODRM | F_MODRM_REG),				                  1, { 0x8a, 0x00, 0x00 }, 1, MOD_REG_MEM, 0, OP_SIZE_OVERRIDE,	ADDR_SIZE_OVERRIDE, (X16 | X32 | X64), REG_DST, NO_PREFIX, NO_IMM    , MEM_OPND_1, P_86,  0, NULL },
-	{ "mov", 2, { R8E,     M_ANY   }, GP3, ALLOW_SEG | (REX | REXR) | (F_MODRM | F_MODRM_REG),	              1, { 0x8a, 0x00, 0x00 }, 1, MOD_REG_MEM, 0, OP_SIZE_OVERRIDE,	ADDR_SIZE_OVERRIDE, (            X64), REG_DST, NO_PREFIX, NO_IMM    , MEM_OPND_1, P_64,  0, NULL },
+	{ "mov", 2, { R8,      M_ANY   }, GP0, ALLOW_SEG | (F_MODRM | F_MODRM_REG),				                  1, { 0x8a, 0x00, 0x00 }, 1, MOD_REG_MEM, 0, 0,				ADDR_SIZE_OVERRIDE, (X16 | X32 | X64), REG_DST, NO_PREFIX, NO_IMM    , MEM_OPND_1, P_86,  0, NULL },
+	{ "mov", 2, { R8E,     M_ANY   }, GP3, ALLOW_SEG | (REX | REXR) | (F_MODRM | F_MODRM_REG),	              1, { 0x8a, 0x00, 0x00 }, 1, MOD_REG_MEM, 0, 0,				ADDR_SIZE_OVERRIDE, (X64), REG_DST, NO_PREFIX, NO_IMM    , MEM_OPND_1, P_64,  0, NULL },
+	{ "mov", 2, { R16,     M_ANY   }, GP0, ALLOW_SEG | (F_MODRM | F_MODRM_REG),				                  1, { 0x8b, 0x00, 0x00 }, 2, MOD_REG_MEM, 0, OP_SIZE_OVERRIDE,	ADDR_SIZE_OVERRIDE, (X16 | X32 | X64), REG_DST, NO_PREFIX, NO_IMM    , MEM_OPND_1, P_86,  0, NULL },
+	{ "mov", 2, { R16E,    M_ANY   }, GP3, ALLOW_SEG | (REX | REXR) | (F_MODRM | F_MODRM_REG),	              1, { 0x8b, 0x00, 0x00 }, 2, MOD_REG_MEM, 0, OP_SIZE_OVERRIDE,	ADDR_SIZE_OVERRIDE, (X64), REG_DST, NO_PREFIX, NO_IMM    , MEM_OPND_1, P_64,  0, NULL },
+	{ "mov", 2, { R32,     M_ANY   }, GP0, ALLOW_SEG | (F_MODRM | F_MODRM_REG),				                  1, { 0x8b, 0x00, 0x00 }, 4, MOD_REG_MEM, 0, OP_SIZE_OVERRIDE,	ADDR_SIZE_OVERRIDE, (X16 | X32 | X64), REG_DST, NO_PREFIX, NO_IMM    , MEM_OPND_1, P_86,  0, NULL },
+	{ "mov", 2, { R32E,    M_ANY   }, GP3, ALLOW_SEG | (REX | REXR) | (F_MODRM | F_MODRM_REG),	              1, { 0x8b, 0x00, 0x00 }, 4, MOD_REG_MEM, 0, OP_SIZE_OVERRIDE,	ADDR_SIZE_OVERRIDE, (X64), REG_DST, NO_PREFIX, NO_IMM    , MEM_OPND_1, P_64,  0, NULL },
+	{ "mov", 2, { R64,     M_ANY   }, GP0, ALLOW_SEG | (REX | REXW) | (F_MODRM | F_MODRM_REG),				  1, { 0x8b, 0x00, 0x00 }, 8, MOD_REG_MEM, 0, 0,				ADDR_SIZE_OVERRIDE, (X16 | X32 | X64), REG_DST, NO_PREFIX, NO_IMM    , MEM_OPND_1, P_64,  0, NULL },
+	{ "mov", 2, { R64E,    M_ANY   }, GP3, ALLOW_SEG | (REX | REXW | REXR) | (F_MODRM | F_MODRM_REG),	      1, { 0x8b, 0x00, 0x00 }, 8, MOD_REG_MEM, 0, 0,				ADDR_SIZE_OVERRIDE, (X64), REG_DST, NO_PREFIX, NO_IMM    , MEM_OPND_1, P_64,  0, NULL },
+	{ "mov", 2, { M_ANY,   R8      }, GP0, ALLOW_SEG | (F_MODRM | F_MODRM_REG),				                  1, { 0x88, 0x00, 0x00 }, 1, MOD_MEM_REG, 0, 0,				ADDR_SIZE_OVERRIDE, (X16 | X32 | X64), RM_DST,  NO_PREFIX, NO_IMM    , MEM_OPND_0, P_86,  0, NULL },
+	{ "mov", 2, { M_ANY,   R8E     }, GP3, ALLOW_SEG | (REX | REXR) | (F_MODRM | F_MODRM_REG),	              1, { 0x88, 0x00, 0x00 }, 1, MOD_MEM_REG, 0, 0,				ADDR_SIZE_OVERRIDE, (X64), RM_DST,  NO_PREFIX, NO_IMM    , MEM_OPND_0, P_64,  0, NULL },
+	{ "mov", 2, { M_ANY,   R16     }, GP0, ALLOW_SEG | (F_MODRM | F_MODRM_REG),				                  1, { 0x89, 0x00, 0x00 }, 2, MOD_MEM_REG, 0, OP_SIZE_OVERRIDE,	ADDR_SIZE_OVERRIDE, (X16 | X32 | X64), RM_DST,  NO_PREFIX, NO_IMM    , MEM_OPND_0, P_86,  0, NULL },
+	{ "mov", 2, { M_ANY,   R16E    }, GP3, ALLOW_SEG | (REX | REXR) | (F_MODRM | F_MODRM_REG),	              1, { 0x89, 0x00, 0x00 }, 2, MOD_MEM_REG, 0, OP_SIZE_OVERRIDE,	ADDR_SIZE_OVERRIDE, (X64), RM_DST,  NO_PREFIX, NO_IMM    , MEM_OPND_0, P_64,  0, NULL },
+	{ "mov", 2, { M_ANY,   R32     }, GP0, ALLOW_SEG | (F_MODRM | F_MODRM_REG),				                  1, { 0x89, 0x00, 0x00 }, 4, MOD_MEM_REG, 0, OP_SIZE_OVERRIDE,	ADDR_SIZE_OVERRIDE, (X16 | X32 | X64), RM_DST,  NO_PREFIX, NO_IMM    , MEM_OPND_0, P_86,  0, NULL },
+	{ "mov", 2, { M_ANY,   R32E    }, GP3, ALLOW_SEG | (REX | REXR) | (F_MODRM | F_MODRM_REG),	              1, { 0x89, 0x00, 0x00 }, 4, MOD_MEM_REG, 0, OP_SIZE_OVERRIDE,	ADDR_SIZE_OVERRIDE, (X64), RM_DST,  NO_PREFIX, NO_IMM    , MEM_OPND_0, P_64,  0, NULL },
+	{ "mov", 2, { M_ANY,   R64     }, GP0, ALLOW_SEG | (REX | REXW) | (F_MODRM | F_MODRM_REG),			      1, { 0x89, 0x00, 0x00 }, 8, MOD_MEM_REG, 0, 0,				ADDR_SIZE_OVERRIDE, (X64), RM_DST,  NO_PREFIX, NO_IMM    , MEM_OPND_0, P_64,  0, NULL },
+	{ "mov", 2, { M_ANY,   R64E    }, GP3, ALLOW_SEG | (REX | REXW | REXR) | (F_MODRM | F_MODRM_REG),	      1, { 0x89, 0x00, 0x00 }, 8, MOD_MEM_REG, 0, 0,				ADDR_SIZE_OVERRIDE, (X64), RM_DST,  NO_PREFIX, NO_IMM    , MEM_OPND_0, P_64,  0, NULL },
+	/* Moffset moves */
+	{ "mov", 2, { R8_AL,    M_ANY    }, GP0, (ALLOW_SEG | ALLOW_SEGX) | (NO_FLAGS) | (DSPW),		          1, { 0xa0, 0x00, 0x00 }, 1, NO_MOD,      0, 0,				0,                  (X16 | X32 | X64), REG_DST, NO_PREFIX, NO_IMM    , MEM_ABS_1, P_86,  0, NULL },
+	{ "mov", 2, { M_ANY,    R8_AL    }, GP0, (ALLOW_SEG | ALLOW_SEGX) | (NO_FLAGS) | (DSPW),		          1, { 0xa2, 0x00, 0x00 }, 1, NO_MOD,      0, 0,				0,                  (X16 | X32 | X64), RM_DST,  NO_PREFIX, NO_IMM    , MEM_ABS_0, P_86,  0, NULL },
+	{ "movabs", 2, { R8_AL,    M_ANY    }, GP0, (ALLOW_SEG | ALLOW_SEGX) | (NO_FLAGS) | (DSPW),		          1, { 0xa0, 0x00, 0x00 }, 1, NO_MOD,      0, 0,				0,                  (X16 | X32 | X64), REG_DST, NO_PREFIX, NO_IMM    , MEM_ABS_1, P_86,  0, NULL },
+	{ "movabs", 2, { M_ANY,    R8_AL    }, GP0, (ALLOW_SEG | ALLOW_SEGX) | (NO_FLAGS) | (DSPW),		          1, { 0xa2, 0x00, 0x00 }, 1, NO_MOD,      0, 0,				0,                  (X16 | X32 | X64), RM_DST,  NO_PREFIX, NO_IMM    , MEM_ABS_0, P_86,  0, NULL },
+
+	{ "movabs", 2, { R16_AX,   M_ANY    }, GP0, (ALLOW_SEG | ALLOW_SEGX) | (NO_FLAGS) | (DSPW),		          1, { 0xa1, 0x00, 0x00 }, 2, NO_MOD,      0, OP_SIZE_OVERRIDE,	0,					(X16 | X32 | X64), REG_DST, NO_PREFIX, NO_IMM    , MEM_ABS_1, P_86,  0, NULL },
+	{ "movabs", 2, { M_ANY,    R16_AX   }, GP0, (ALLOW_SEG | ALLOW_SEGX) | (NO_FLAGS) | (DSPW),		          1, { 0xa3, 0x00, 0x00 }, 2, NO_MOD,      0, OP_SIZE_OVERRIDE, 0,                  (X16 | X32 | X64), RM_DST,  NO_PREFIX, NO_IMM    , MEM_ABS_0, P_86,  0, NULL },
+	{ "movabs", 2, { R32_EAX,  M_ANY    }, GP0, (ALLOW_SEG | ALLOW_SEGX) | (NO_FLAGS) | (DSPW),               1, { 0xa1, 0x00, 0x00 }, 4, NO_MOD,      0, 0,                0,                  (X16 | X32 | X64), REG_DST, NO_PREFIX, NO_IMM, MEM_ABS_1, P_86, 0, NULL },
+	{ "movabs", 2, { M_ANY,    R32_EAX  }, GP0, (ALLOW_SEG | ALLOW_SEGX) | (NO_FLAGS) | (DSPW),		          1, { 0xa3, 0x00, 0x00 }, 4, NO_MOD,      0, 0,				0,                  (X16 | X32 | X64), RM_DST,  NO_PREFIX, NO_IMM    , MEM_ABS_0, P_86,  0, NULL },
+	{ "movabs", 2, { R64_RAX,  M_ANY    }, GP0, (ALLOW_SEG | ALLOW_SEGX) | (REX | REXW) | (NO_FLAGS) | (DSPW),1, { 0xa1, 0x00, 0x00 }, 8, NO_MOD,      0, 0,				0,                  (		     X64), REG_DST, NO_PREFIX, NO_IMM    , MEM_ABS_1, P_64,  0, NULL },
+	{ "movabs", 2, { M_ANY,    R64_RAX  }, GP0, (ALLOW_SEG | ALLOW_SEGX) | (REX | REXW) | (NO_FLAGS) | (DSPW),1, { 0xa3, 0x00, 0x00 }, 8, NO_MOD,      0, 0,				0,                  (			 X64), RM_DST,  NO_PREFIX, NO_IMM    , MEM_ABS_0, P_64,  0, NULL },
 
 	/* Mem->Immediate moves*/
 };
@@ -433,10 +475,10 @@ static unsigned int hash(const uint_8* data, int size)
 	uint_64 h = fnv_basis;
 	int cnt = 0;
 	for (cnt = 0; cnt<size; cnt++) {
-		h ^= *data;
+		h ^= *data++;
 		h *= fnv_prime;
 	}
-	return((((h >> 16) ^ h) & 0xffff));
+	return((((h >> 49) ^ h) & 0x3fff));
 }
 
 struct Instr_Def* AllocInstruction() 
@@ -642,6 +684,11 @@ enum op_type MatchOperand(struct code_info *CodeInfo, struct opnd_item op, struc
 			break;
 		case OP_R8:
 			result = R8;
+			
+			/* If AL is somehow passed in as an OP_R8, promote it first */
+			if (strcasecmp(opExpr.base_reg->string_ptr, "al") == 0)
+				result = R8_AL;
+
 			/* If the register operand is ah,bh,ch,dh */
 			if (strcasecmp(opExpr.base_reg->string_ptr, "ah") == 0 ||
 				strcasecmp(opExpr.base_reg->string_ptr, "bh") == 0 ||
@@ -675,6 +722,11 @@ enum op_type MatchOperand(struct code_info *CodeInfo, struct opnd_item op, struc
 			break;
 		case OP_R16:
 			result = R16;
+
+			/* If AX is somehow passed in as an OP_R16, promote it first */
+			if (strcasecmp(opExpr.base_reg->string_ptr, "ax") == 0)
+				result = R16_AX;
+
 			/* If the register operand is r8w-r15w */
 			if (strcasecmp(opExpr.base_reg->string_ptr, "r8w") == 0 ||
 				strcasecmp(opExpr.base_reg->string_ptr, "r9w") == 0 ||
@@ -690,6 +742,11 @@ enum op_type MatchOperand(struct code_info *CodeInfo, struct opnd_item op, struc
 			break;
 		case OP_R32:
 			result = R32;
+
+			/* If EAX is somehow passed in as an OP_R32, promote it first */
+			if (strcasecmp(opExpr.base_reg->string_ptr, "eax") == 0)
+				result = R32_EAX;
+
 			/* If the register operand is r8d-r15d */
 			if (strcasecmp(opExpr.base_reg->string_ptr, "r8d") == 0 ||
 				strcasecmp(opExpr.base_reg->string_ptr, "r9d") == 0 ||
@@ -705,6 +762,11 @@ enum op_type MatchOperand(struct code_info *CodeInfo, struct opnd_item op, struc
 			break;
 		case OP_R64:
 			result = R64;
+			
+			/* If RAX is somehow passed in as an OP_R64, promote it first */
+			if (strcasecmp(opExpr.base_reg->string_ptr, "rax") == 0)
+				result = R64_RAX;
+
 			/* If the register operand is r8-r15 */
 			if (strcasecmp(opExpr.base_reg->string_ptr, "r8") == 0 ||
 				strcasecmp(opExpr.base_reg->string_ptr, "r9") == 0 ||
@@ -1070,21 +1132,28 @@ unsigned char BuildREX(unsigned char RexByte, struct Instr_Def* instr, struct ex
   Build up instruction SIB, ModRM and REX bytes for memory operand.
   ===================================================================== */
 int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned char* pREX, bool* needModRM, bool* needSIB,
-	                     unsigned int* dispSize, int* pDisp, struct Instr_Def* instr, struct expr opExpr[4]) 
+	                     unsigned int* dispSize, uint_64* pDisp, struct Instr_Def* instr, struct expr opExpr[4]) 
 {
-	int returnASO = 0;
+	int           returnASO   = 0;
+	unsigned char sibScale    = 0;
+	uint_32       memModeIdx  = 0;
+	unsigned char baseRegNo   = 17; 
+	unsigned char idxRegNo    = 17;
+	int           baseRegSize = 0;
+	int           idxRegSize  = 0;
 
-	unsigned char sibScale  = 0;
-	unsigned char baseRegNo = GetRegisterNo(opExpr[instr->memOpnd].base_reg);
-	unsigned char idxRegNo  = GetRegisterNo(opExpr[instr->memOpnd].idx_reg);
+	/* Absolute addressing modes can skip this */
+	if(instr->memOpnd != MEM_ABS_1)
+	{ 
+		baseRegNo = GetRegisterNo(opExpr[instr->memOpnd].base_reg);
+		idxRegNo  = GetRegisterNo(opExpr[instr->memOpnd].idx_reg);
 
-	/* Get base and index register sizes in bytes */
-	int baseRegSize = 0;
-	int idxRegSize  = 0;
-	if(opExpr[instr->memOpnd].base_reg)
-		baseRegSize = SizeFromRegister(opExpr[instr->memOpnd].base_reg->tokval);
-	if(opExpr[instr->memOpnd].idx_reg)
-		idxRegSize  = SizeFromRegister(opExpr[instr->memOpnd].idx_reg->tokval);
+		/* Get base and index register sizes in bytes */
+		if (opExpr[instr->memOpnd].base_reg)
+			baseRegSize = SizeFromRegister(opExpr[instr->memOpnd].base_reg->tokval);
+		if (opExpr[instr->memOpnd].idx_reg)
+			idxRegSize = SizeFromRegister(opExpr[instr->memOpnd].idx_reg->tokval);
+	}
 
 	/* Base and Index registers must be of the same size (except for VSIB) */
 	if (baseRegSize != idxRegSize && idxRegSize < 16 && idxRegSize > 0)
@@ -1108,26 +1177,29 @@ int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned cha
 
 	/* Use the memory encoding table to populate the initial modRM, sib values */
 	/* ----------------------------------------------------------------------- */
-	uint_32 memModeIdx = (baseRegNo*18) + (idxRegNo);
+	memModeIdx = (baseRegNo*18) + (idxRegNo);
 
-	// Addressing form cannot be encoded.
-	if (MemTable[memModeIdx].flags & NO_ENCODE)
+	if (instr->memOpnd < NO_MEM) // MEM_ABS_x for moffset type addresses don't need to be processed.
 	{
-		EmitError(INVALID_ADDRESSING_MODE_WITH_CURRENT_CPU_SETTING);
-		return returnASO;
-	}
+		// Addressing form cannot be encoded.
+		if (MemTable[memModeIdx].flags & NO_ENCODE)
+		{
+			EmitError(INVALID_ADDRESSING_MODE_WITH_CURRENT_CPU_SETTING);
+			return returnASO;
+		}
 
-	// Setup ModRM.
-	if (MemTable[memModeIdx].flags & MEMF_MODRM)
-	{
-		*pmodRM |= MemTable[memModeIdx].modRM;
-		*needModRM |= TRUE;
-	}
-	// Setup SIB.
-	if (MemTable[memModeIdx].flags & MEMF_SIB)
-	{
-		*pSIB |= MemTable[memModeIdx].SIB;
-		*needSIB |= TRUE;
+		// Setup ModRM.
+		if (MemTable[memModeIdx].flags & MEMF_MODRM)
+		{
+			*pmodRM |= MemTable[memModeIdx].modRM;
+			*needModRM |= TRUE;
+		}
+		// Setup SIB.
+		if (MemTable[memModeIdx].flags & MEMF_SIB)
+		{
+			*pSIB |= MemTable[memModeIdx].SIB;
+			*needSIB |= TRUE;
+		}
 	}
 
 	// Does the memory address require a displacement?
@@ -1135,33 +1207,53 @@ int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned cha
 	// Either: User specified
 	//         RIP relative addressing mandates it
 	//         Specified address format can only be encoded with a displacement.
-	if (opExpr[instr->memOpnd].value != 0 || (ModuleInfo.Ofssize == USE64 && opExpr[instr->memOpnd].base_reg->token == T_RIP) || MemTable[memModeIdx].flags & MEMF_DSP || MemTable[memModeIdx].flags & MEMF_DSP32)
+	if (instr->memOpnd > NO_MEM || opExpr[instr->memOpnd].value != 0 || 
+		(ModuleInfo.Ofssize == USE64 && opExpr[instr->memOpnd].base_reg && opExpr[instr->memOpnd].base_reg->token == T_RIP) ||
+		MemTable[memModeIdx].flags & MEMF_DSP || MemTable[memModeIdx].flags & MEMF_DSP32)
 	{
-		// Is it 8bit or 16/32bit (RIP only allows 32bit)?
-		if ( (opExpr[instr->memOpnd].value >= -128 && opExpr[instr->memOpnd].value <= 127) || MemTable[memModeIdx].flags & MEMF_DSP)
+		if (instr->memOpnd > NO_MEM)
 		{
-			*dispSize = 1;
-			*pmodRM |= MODRM_DISP8;
+			switch (ModuleInfo.Ofssize)
+			{
+			case USE16:
+				*dispSize = 2;
+				break;
+			case USE32:
+				*dispSize = 4;
+				break;
+			case USE64:
+				*dispSize = 8;
+				break;
+			}
 		}
 		else
 		{
-			if (ModuleInfo.Ofssize == USE16)
-				*dispSize = 2;	// 16bit addressing.
+			// Is it 8bit or 16/32bit (RIP only allows 32bit)?
+			if ((((MemTable[memModeIdx].flags & MEMF_DSP32) == 0) && (opExpr[instr->memOpnd].value >= -128 && opExpr[instr->memOpnd].value <= 127)) || (MemTable[memModeIdx].flags & MEMF_DSP))
+			{
+				*dispSize = 1;
+				*pmodRM |= MODRM_DISP8;
+			}
 			else
-				*dispSize = 4;	// 32bit or 64bit sign extended addressing.
+			{
+				if (ModuleInfo.Ofssize == USE16)
+					*dispSize = 2;	// 16bit addressing.
+				else
+					*dispSize = 4;	// 32bit or 64bit sign extended addressing.
 
-			if((int)(MemTable[memModeIdx].flags & MEMF_DSP32) == 0)
-				*pmodRM |= MODRM_DISP;
+				if ((int)(MemTable[memModeIdx].flags & MEMF_DSP32) == 0)
+					*pmodRM |= MODRM_DISP;
+			}
 		}
-		*pDisp = opExpr[instr->memOpnd].value;
+		*pDisp = opExpr[(instr->memOpnd & 7)].value64;
 	}
 
 	// Extend REX(.B) and REX(.X) to account for 64bit base and index registers.
 	// We use RegNo==16 to represent RIP (even though it's not directly encodable).
 	/* ----------------------------------------------------------------------- */
-	if (baseRegNo > 7 && baseRegNo < 17) 
+	if (baseRegNo > 7 && baseRegNo < 16) 
 		*pREX |= 0x41;
-	if (idxRegNo > 7 && idxRegNo < 17)
+	if (idxRegNo > 7 && idxRegNo < 16)
 		*pREX |= 0x42;
 
 	//  scale index    base
@@ -1174,7 +1266,7 @@ int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned cha
 
 	/* (E/R)SP or R12 or presence of scale or index register requires SIB addressing modes */
 	/* ----------------------------------------------------------------------- */
-	if (opExpr[instr->memOpnd].scale > 1 || opExpr[instr->memOpnd].idx_reg != 0 || (MemTable[memModeIdx].flags & MEMF_SIB))
+	if (instr->memOpnd < NO_MEM && (opExpr[instr->memOpnd].scale > 1 || opExpr[instr->memOpnd].idx_reg != 0 || (MemTable[memModeIdx].flags & MEMF_SIB)))
 	{
 		switch (opExpr[instr->memOpnd].scale)
 		{
@@ -1217,8 +1309,8 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 	
 	union
 	{
-		int displacement32;
-		unsigned char byte[4];
+		uint_64 displacement64;
+		unsigned char byte[8];
 	} displacement;
 
 	union
@@ -1300,7 +1392,7 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 						break;
 					}
 				}
-				else if (ModuleInfo.Ofssize == USE64)
+				else if (ModuleInfo.Ofssize == USE64 && ((matchedInstr->flags & ALLOW_SEGX) == 0))
 				{ 
 					EmitError(ILLEGAL_USE_OF_SEGMENT_REGISTER);
 					return;
@@ -1336,14 +1428,18 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 				return;
 			}
 		}
+
+		//----------------------------------------------------------
+		// Validate and output other prefixes (LOCK,REPx, BND)
+		//----------------------------------------------------------
+
 		//----------------------------------------------------------
 		// Check if address or operand size override prefixes are required.
 		//----------------------------------------------------------
-		if (Require_OPND_Size_Override(matchedInstr, CodeInfo))
-			OutputCodeByte(OP_SIZE_OVERRIDE);
-
 		if (Require_ADDR_Size_Override(matchedInstr, CodeInfo) || aso)
 			OutputCodeByte(ADDR_SIZE_OVERRIDE);
+		if (Require_OPND_Size_Override(matchedInstr, CodeInfo))
+			OutputCodeByte(OP_SIZE_OVERRIDE);
 
 		// Output FPU FWAIT if required.
 
@@ -1397,13 +1493,8 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		//----------------------------------------------------------
 		// Output Displacement.
 		//----------------------------------------------------------
-		if (dispSize == 1)
-			OutputCodeByte(displacement.byte[0]);
-		else if (dispSize == 4)
-		{
-			for (i = 0; i < 4; i++)
-				OutputCodeByte(displacement.byte[i]);
-		}
+		for (i = 0; i < dispSize; i++)
+			OutputCodeByte(displacement.byte[i]);
 
 		//----------------------------------------------------------
 		// Output Immediate Data.

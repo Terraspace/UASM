@@ -55,7 +55,7 @@
 #if HASH_MAGNITUDE==12
 #define GHASH_TABLE_SIZE 2003
 #else
-#define GHASH_TABLE_SIZE 8009
+#define GHASH_TABLE_SIZE 16384 //8009
 #endif
 
 /* size of local hash table */
@@ -162,7 +162,7 @@ static unsigned int hashpjw( const char *s )
 		h ^= (*s | ' ');
 		h *= fnv_prime;
 	}
-	return((((h >> 16) ^ h) & 0xffff));
+	return((((h >> 49) ^ h) & 0x3fff));
 }
 
 void SymSetCmpFunc( void )

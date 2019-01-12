@@ -129,6 +129,8 @@ enum op_type {
 #define VEX_3BYTE    (1<<18)
 #define VEX_NR       (1<<19)
 #define EVEX         (1<<20)
+#define DSPW         (1<<21)	/* Instruction requires a machine-word sized displacement always */
+#define ALLOW_SEGX   (1<<22)	/* movabs allows encoding of segment register other than fs/gs, this indicates that condition */
 
 /* Required ASO/OSO flags */
 #define OP_SIZE_OVERRIDE   0x66
@@ -157,11 +159,15 @@ enum op_type {
 #define IMM_OPND_3 3
 
 /* memOpnd -> Which operand contains an indirect memory address? */
-#define NO_MEM     4
+#define NO_MEM     5
 #define MEM_OPND_0 0
 #define MEM_OPND_1 1
 #define MEM_OPND_2 2
 #define MEM_OPND_3 3
+#define MEM_ABS_0  8+0	/* Used for special moffset type memory operands */
+#define MEM_ABS_1  8+1	/* Used for special moffset type memory operands */
+#define MEM_ABS_2  8+2	/* Used for special moffset type memory operands */
+#define MEM_ABS_3  8+3	/* Used for special moffset type memory operands */
 
 /* ModRM Modes */
 #define NO_MOD      0x00
@@ -181,23 +187,24 @@ enum op_type {
 
 /* ModRM values */
 #define SIB_ONLY 0x04		/* ModRM value when Encoding uses SIB for both base and index */
-#define RM_AX  0x00
-#define RM_CX  0x01
-#define RM_DX  0x02
-#define RM_BX  0x03
-#define RM_SP  0x04
-#define RM_BP  0x05
-#define RM_SI  0x06
-#define RM_DI  0x07
-#define RM_R8  0x00
-#define RM_R9  0x01
-#define RM_R10 0x02
-#define RM_R11 0x03
-#define RM_R12 0x04
-#define RM_R13 0x05
-#define RM_R14 0x06
-#define RM_R15 0x07
-#define RM_RIP 0x05
+#define RM_AX    0x00
+#define RM_CX    0x01
+#define RM_DX    0x02
+#define RM_BX    0x03
+#define RM_SP    0x04
+#define RM_BP    0x05
+#define RM_SI    0x06
+#define RM_DI    0x07
+#define RM_R8    0x00
+#define RM_R9    0x01
+#define RM_R10   0x02
+#define RM_R11   0x03
+#define RM_R12   0x04
+#define RM_R13   0x05
+#define RM_R14   0x06
+#define RM_R15   0x07
+#define RM_RIP   0x05
+#define RM_ABS   0x04
 
 /* SIB values */
 #define NO_SIB       0x00		/* Encoding has no SIB value */
