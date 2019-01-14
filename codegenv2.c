@@ -916,15 +916,15 @@ int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned cha
 
 ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs, uint_32 opCount, struct expr opExpr[4])
 {
-	ret_code retcode = NOT_ERROR;
-	struct Instr_Def instrToMatch;
+	struct Instr_Def  instrToMatch;
+	ret_code          retcode      = NOT_ERROR;
 	struct Instr_Def* matchedInstr = NULL;
-	uint_32 i = 0;
+	uint_32           i            = 0;
 
 	bool needModRM = FALSE;
 	bool needSIB   = FALSE;
 	bool needFixup = FALSE;
-	int  aso       = 0;
+	int  aso       = 0; /* Build Memory Encoding forced address size override */
 
 	unsigned char opcodeByte = 0;
 	unsigned char rexByte    = 0;
@@ -944,13 +944,13 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		unsigned char byte[8];
 	} immValue;
 
-	// Determine which Memory Encoding Format Table to Use.
+	/* Determine which Memory Encoding Format Table to Use. */
 	if (CodeInfo->Ofssize == USE64)
 		MemTable = &MemTable64;
 	else
 		MemTable = &MemTable32;
 
-	// Force JWASM style FLAT: override back to legacy CodeGen.
+	/* Force JWASM style FLAT: override back to legacy CodeGen. */
 	if (opExpr[1].override && opExpr[1].override->tokval == T_FLAT)
 		return EMPTY;
 	
@@ -1020,7 +1020,7 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 				                &dispSize, &displacement, matchedInstr, opExpr);					/* This could result in modifications to REX, modRM and SIB bytes */
 		modRM   |= BuildModRM(matchedInstr->modRM, matchedInstr, opExpr, &needModRM, &needSIB);		/* Modify the modRM value for any non-memory operands */
 		if(CodeInfo->Ofssize == USE64)
-			rexByte |= BuildREX(rexByte, matchedInstr, opExpr);										    /* Modify the REX prefix for non-memory operands/sizing */
+			rexByte |= BuildREX(rexByte, matchedInstr, opExpr);									    /* Modify the REX prefix for non-memory operands/sizing */
 
 		//----------------------------------------------------------
 		// Check if address or operand size override prefixes are required.
@@ -1118,7 +1118,9 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		else if (CodeInfo->prefix.ins == T_REPNZ)
 			OutputCodeByte(REPNZ);
 
+		//----------------------------------------------------------
 		// Output FPU FWAIT if required.
+		//----------------------------------------------------------
 
 		//----------------------------------------------------------
 		// Output mandatory prefix.

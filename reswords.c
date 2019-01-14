@@ -965,7 +965,7 @@ static unsigned get_hash(const char *s, unsigned char size)
 	  h ^= (*s++ | ' ');
 	  h *= fnv_prime;
   }
-  return( ( ((h >> 16) ^ h) & 0xffff ) % HASH_TABITEMS);
+  return( ( ((h >> 49) ^ h) & 0x3fff ) % HASH_TABITEMS);
 }
 
 unsigned FindResWord(const char *name, unsigned char size)

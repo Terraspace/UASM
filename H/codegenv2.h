@@ -31,7 +31,8 @@ enum legacy_prefix {
 	REP   = 0xf3,
 	REPE  = 0xf3,
 	REPZ  = 0xf3,
-	BND   = 0xf2
+	BND   = 0xf2,
+	FWAIT = 0x00
 };
 
 enum op_type {
@@ -145,6 +146,8 @@ enum op_type {
 #define DSPW         (1<<21)	/* Instruction requires a machine-word sized displacement always */
 #define ALLOW_SEGX   (1<<22)	/* movabs allows encoding of segment register other than fs/gs, this indicates that condition */
 #define REXP_MEM     (1<<23)	/* Instruction promoted to 64bit special mode if specified memory operand is qword sized */
+#define FWAIT        (1<<24)
+#define NO_FWAIT     (1<<25)
 
 /* Required ASO/OSO flags */
 #define OP_SIZE_OVERRIDE   0x66

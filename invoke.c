@@ -3164,7 +3164,7 @@ static unsigned int hashpjw(const char *s)
 		h ^= (*s | ' ');
 		h *= fnv_prime;
 	}
-	return((((h >> 16) ^ h) & 0xffff));
+	return((((h >> 49) ^ h) & 0x3fff));
 }
 
 /*
