@@ -10,7 +10,9 @@ enum instr_group {
 	GP3,        /* 64bit only */
 	VEX0,
 	EVEX0,
-	MVEX0
+	MVEX0,
+	FP0,
+	FP1
 };
 
 enum seg_prefix {
@@ -20,6 +22,16 @@ enum seg_prefix {
 	PREFIX_DS = 0x3E,
 	PREFIX_FS = 0x64,
 	PREFIX_GS = 0x65
+};
+
+enum legacy_prefix {
+	LOCK  = 0xf0,
+	REPNE = 0xf2,
+	REPNZ = 0xf2,
+	REP   = 0xf3,
+	REPE  = 0xf3,
+	REPZ  = 0xf3,
+	BND   = 0xf2
 };
 
 enum op_type {
@@ -101,6 +113,7 @@ enum op_type {
 	M512,
 	M_ANY,
 	/* Immediate operand (8-64bit) */
+	IMM,
 	IMM8,
 	IMM16,
 	IMM32,
@@ -131,6 +144,7 @@ enum op_type {
 #define EVEX         (1<<20)
 #define DSPW         (1<<21)	/* Instruction requires a machine-word sized displacement always */
 #define ALLOW_SEGX   (1<<22)	/* movabs allows encoding of segment register other than fs/gs, this indicates that condition */
+#define REXP_MEM     (1<<23)	/* Instruction promoted to 64bit special mode if specified memory operand is qword sized */
 
 /* Required ASO/OSO flags */
 #define OP_SIZE_OVERRIDE   0x66
@@ -174,6 +188,8 @@ enum op_type {
 #define MOD_REG_REG 0xc0
 #define MOD_REG_MEM 0x00
 #define MOD_MEM_REG 0x00
+#define MOD_MEM_IMM 0x00
+#define MOD_REG_IMM 0xc0
 
 #define MODRM_DISP8 0x40	/* ModRM mode for 8bit displacement        */
 #define MODRM_DISP  0x80	/* ModRM mode for 16bit/32bit displacement */

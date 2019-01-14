@@ -371,8 +371,8 @@ insn(MOV, 11,                   OpCls( MS,       I,          NONE ), 0,      0, 
 insn(MOV, 12,                   OpCls( MS,       SR,         NONE ), 0,      0,  no_WDS, 0x8C,     0x00,       P_86,        0)
 insn(MOV, 13,                   OpCls( RGT16,    RSPEC,      NONE ), F_0FNO66,0, no_WDS, 0x20,     0xC0,       P_386,       0)
 insn(MOV, 14,                   OpCls( RSPEC,    RGT16,      NONE ), F_0FNO66,1, no_WDS, 0x22,     0xC0,       P_386,       0)
-ins (MOVBE, movbe,              OpCls( RGT8,     MGT8,       NONE ), F_0F38,  1,  no_WDS,      0xF0,     0x00,       P_486,       0)
-insn(MOVBE, 1,                  OpCls( MGT8,     RGT8,       NONE ), F_0F38,  0,  no_WDS,  0xF1,     0x00,       P_486,       0)
+ins (MOVBE, movbe,              OpCls( RGT8,     MGT8,       NONE ), F_0F38,  1, no_WDS, 0xF0,     0x00,       P_486,       0)
+insn(MOVBE, 1,                  OpCls( MGT8,     RGT8,       NONE ), F_0F38,  0, no_WDS, 0xF1,     0x00,       P_486,       0)
 
 /* rest */
 

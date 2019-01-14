@@ -504,7 +504,7 @@ static ret_code DoFixup( struct dsym *curr, struct calc_param *cp )
             default:
                 /* v2.01: don't use group if fixup explicitely refers the segment! */
                 //if ( seg->e.seginfo->group ) {
-                if ( seg->e.seginfo->group && fixup->frame_type != FRAME_SEG ) {
+                if ( seg && seg->e.seginfo->group && fixup->frame_type != FRAME_SEG ) {
                     value = (seg->e.seginfo->group->offset & 0xF) + seg->e.seginfo->start_offset + fixup->offset + offset;
 #if PE_SUPPORT
                     if ( ModuleInfo.sub_format == SFORMAT_PE || ModuleInfo.sub_format == SFORMAT_64BIT ) {

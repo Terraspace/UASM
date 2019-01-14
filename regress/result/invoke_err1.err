@@ -1,0 +1,6 @@
+..\src\invoke64err\invoke_err1.asm(24) : Error A2169: Register value overwritten by INVOKE
+..\src\invoke64err\invoke_err1.asm(25) : Error A2169: Register value overwritten by INVOKE
+..\src\invoke64err\invoke_err1.asm(26) : Error A2169: Register value overwritten by INVOKE
+..\src\invoke64err\invoke_err1.asm(27) : Error A2169: Register value overwritten by INVOKE
+..\src\invoke64err\invoke_err1.asm(29) : Error A2169: Register value overwritten by INVOKE
+..\src\invoke64err\invoke_err1.asm(30) : Error A2169: Register value overwritten by INVOKE

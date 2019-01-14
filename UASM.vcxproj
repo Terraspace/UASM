@@ -121,6 +121,7 @@
     <ClInclude Include="H\input.h" />
     <ClInclude Include="H\instr64.h" />
     <ClInclude Include="H\instravx.h" />
+    <ClInclude Include="H\InstrTableV2.h" />
     <ClInclude Include="H\instruct.h" />
     <ClInclude Include="H\intrin.h" />
     <ClInclude Include="H\inttype.h" />
@@ -135,6 +136,8 @@
     <ClInclude Include="H\macrolib.h" />
     <ClInclude Include="H\mangle.h" />
     <ClInclude Include="H\memalloc.h" />
+    <ClInclude Include="H\MemTable32.h" />
+    <ClInclude Include="H\MemTable64.h" />
     <ClInclude Include="H\msgdef.h" />
     <ClInclude Include="H\msgtext.h" />
     <ClInclude Include="H\myassert.h" />

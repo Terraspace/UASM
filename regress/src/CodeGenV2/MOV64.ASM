@@ -1,12 +1,27 @@
 
 option flat:1
+
+.data
+
+dbVar db 10
+dwVar dw 10
+ddVar dd 10
+dqVar dq 10
+
 .code
 
 	use64
 
 	;---------------------------------------------------------------------------------------------------
+	; OFFSETS
+	;---------------------------------------------------------------------------------------------------
+	mov rax,OFFSET ddVar
+	mov eax,OFFSET ddVar 
+	
+	;---------------------------------------------------------------------------------------------------
 	; Mixed and sized immediates
 	;---------------------------------------------------------------------------------------------------
+	mov rax,10  ; sign-extended 32bit imm.
 	mov al,10
 	mov al,130
 	mov cl,-25
@@ -29,8 +44,7 @@ option flat:1
 	mov rax,0x20
 	mov rcx,25
 	mov r10,22
-	mov r8,16
-	mov rax,10
+	mov r8,16 
 	mov rax,0x1234123412341234
 	mov rbx,0x1234123412341234
 	mov r10,0x1234123412341234
@@ -70,86 +84,6 @@ option flat:1
 	mov rbx,1234123412341234h
 	mov r10,1234123412341234h
 
-	comment %	
-	;---------------------------------------------------------------------------------------------------
-	; Special MOFFSET mov modes
-	; JWASM was wrong, 64bit does support encoding of segment registers with moffset
-	; These new forms don't require FLAT: like jwasm, they work like masm.
-	; To ensure compatibility, in this mode we STILL wont allow seg overrides other than fs/gs like JWASM.
-	; To use any seg reg, use the movabs psuedo form.
-	;---------------------------------------------------------------------------------------------------
-	mov al,[0x00]
-	mov al,[0x0000]
-	mov al,[0x00000000]
-	mov al,[0x0000000000000000]
-	mov al,gs:[0x20]
-	mov al,fs:[0x2020]
-	mov al,[0x10203040]
-	mov al,[0x1234567812345678]
-
-	mov [0x00],al
-	mov [0x0000],al
-	mov [0x00000000],al
-	mov [0x0000000000000000],al
-	mov gs:[0x20],al
-	mov fs:[0x2020],al
-	mov [0x10203040],al
-	mov [0x1234567812345678],al
-
-	mov ax,[0x00]
-	mov ax,[0x0000]
-	mov ax,[0x00000000]
-	mov ax,[0x0000000000000000]
-	mov ax,gs:[0x20]
-	mov ax,fs:[0x2020]
-	mov ax,[0x10203040]
-	mov ax,[0x1234567812345678]
-
-	mov [0x00],ax
-	mov [0x0000],ax
-	mov [0x00000000],ax
-	mov [0x0000000000000000],ax
-	mov gs:[0x20],ax
-	mov fs:[0x2020],ax
-	mov [0x10203040],ax
-	mov [0x1234567812345678],ax
-
-	mov eax,[0x00]
-	mov eax,[0x0000]
-	mov eax,[0x00000000]
-	mov eax,[0x0000000000000000]
-	mov eax,gs:[0x20]
-	mov eax,fs:[0x2020]
-	mov eax,[0x10203040]
-	mov eax,[0x1234567812345678]
-
-	mov [0x00],eax
-	mov [0x0000],eax
-	mov [0x00000000],eax
-	mov [0x0000000000000000],eax
-	mov gs:[0x20],eax
-	mov fs:[0x2020],eax
-	mov [0x10203040],eax
-	mov [0x1234567812345678],eax
-
-	mov rax,[0x00]
-	mov rax,[0x0000]
-	mov rax,[0x00000000]
-	mov rax,[0x0000000000000000]
-	mov rax,gs:[0x20]
-	mov rax,fs:[0x2020]
-	mov rax,[0x10203040]
-	mov rax,[0x1234567812345678]
-
-	mov [0x00],rax
-	mov [0x0000],rax
-	mov [0x00000000],rax
-	mov [0x0000000000000000],rax
-	mov gs:[0x20],rax
-	mov fs:[0x2020],rax
-	mov [0x10203040],rax
-	mov [0x1234567812345678],rax
-	
 	;---------------------------------------------------------------------------------------------------
 	; Special MOFFSET mov modes
 	; JWASM was wrong, 64bit does support encoding of segment registers with moffset
@@ -242,10 +176,11 @@ option flat:1
 	mov [0x100],eax
 	mov [0x1000],rax
 	mov [20],r8d
-	
+
 	;---------------------------------------------------------------------------------------------------
 	; MEM/REG Combination Modes (Base/Index/Scale/Disp) 8bit
 	;---------------------------------------------------------------------------------------------------
+
 	mov [rax+rax*4+0xc80],r8b
 	
 	mov [rax],al
@@ -897,7 +832,8 @@ option flat:1
 	mov es,rax
 	mov cs,rdi
 	mov ds,r9		;
-
+	mov fs,r10
+	
 	; Special Moves (CR/DR)
 	mov rax,cr0		; 0x0f 0x20 0xc0
 	mov rcx,cr2		; 0x0f 0x20 0xd1
@@ -970,4 +906,61 @@ option flat:1
 	mov sil,dil		;
 	mov bpl,spl		;
 	mov r14b,r15b	;
-%
+	
+	;---------------------------------------------------------------------------------------------------
+	; Memory/Immediate Forms
+	;---------------------------------------------------------------------------------------------------
+	mov ddVar,10
+	mov [ddVar],1000
+	mov ddVar,0xffff1234
+	mov ddVar,0x12341234
+	mov dwVar,20
+	mov dwVar,1000
+	mov dbVar,10
+	mov dqVar,0x12341234
+	mov dqVar,0x100
+	
+	mov dwVarF,20
+	mov dwVarF,1000
+	mov dbVarF,10
+	mov dqVarF,0x12341234
+	mov dqVarF,0x100
+	
+	; Should be RIP relative, thus allow displacement.
+	mov ddVar+20,10
+	mov [ddVar-20],1000
+	mov [ddVar+20],0xffff1234
+	mov ddVar-20,0x12341234
+	mov dwVar+20,20
+	mov dwVar+20,1000
+	mov [dbVar+20],10	
+
+	mov byte ptr ddVar,10
+	mov dword ptr dbVar,10
+	
+  	mov qword ptr [rdi],0x12341234
+	mov qword ptr [rdi],10
+	mov dword ptr [rsi],0x20
+	mov [rsi],2000
+	mov [rdi],0xffff1223
+	mov dword ptr [rdi],0xffff1223
+	mov qword ptr [rdi],0xffff1223
+		
+	mov [rax],3
+	mov [rcx],0x10
+	mov word ptr [rsi+rax],10
+	mov [rsi+rax*4],10
+	mov [rdi+rax*4+0x20],10
+	mov [r8+rax],10
+	mov [r8+rax*4],10
+	
+	mov [rsp+0x10],10
+	mov [rbp-0x10],10	
+
+.data
+
+dbVarF db 10
+dwVarF dw 10
+ddVarF dd 10
+dqVarF dq 10
+ddArrF dd 100 DUP (0)

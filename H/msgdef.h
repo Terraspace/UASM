@@ -56,6 +56,7 @@ pick( INSTRUCTION_OR_REGISTER_NOT_ACCEPTED_IN_CURRENT_CPU_MODE, "Instruction or 
 pick( INVALID_ADDRESSING_MODE_WITH_CURRENT_CPU_SETTING,         "invalid addressing mode with current CPU setting" )
 pick( BASE_INDEX_MEMORY_SIZE_ERROR, "base and index registers must be of the same size")
 pick( BITS16_MEM_NOT_ALLOWED_IN_LONG_MODE, "16bit memory addressing is not supported in 64bit code")
+pick( SIGN64_PROMOTION_NOT_POSSIBLE, "Promotion via sign-extension to 64bit QWORD not possible")
 pick( CANNOT_USE_TRN_TO_TRM_WITH_CURRENT_CPU_SETTING,           "Cannot use TR%u-TR%u with current CPU setting" )
 pick( MUST_BE_INDEX_OR_BASE_REGISTER,       "Must be index or base register" )
 pick( MULTIPLE_INDEX_REGISTERS_NOT_ALLOWED, "Multiple index registers not allowed" )
