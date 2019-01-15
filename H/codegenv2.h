@@ -205,25 +205,25 @@ enum op_type {
 #define NO_ENCODE  (1<<4)	/* This mode is not encodable! */
 
 /* ModRM values */
-#define SIB_ONLY 0x04		/* ModRM value when Encoding uses SIB for both base and index */
-#define RM_AX    0x00
-#define RM_CX    0x01
-#define RM_DX    0x02
-#define RM_BX    0x03
-#define RM_SP    0x04
-#define RM_BP    0x05
-#define RM_SI    0x06
-#define RM_DI    0x07
-#define RM_R8    0x00
-#define RM_R9    0x01
-#define RM_R10   0x02
-#define RM_R11   0x03
-#define RM_R12   0x04
-#define RM_R13   0x05
-#define RM_R14   0x06
-#define RM_R15   0x07
-#define RM_RIP   0x05
-#define RM_ABS   0x04
+#define SIB_ONLY  0x04		/* ModRM value when Encoding uses SIB for both base and index */
+#define MRM_AX    0x00
+#define MRM_CX    0x01
+#define MRM_DX    0x02
+#define MRM_BX    0x03
+#define MRM_SP    0x04
+#define MRM_BP    0x05
+#define MRM_SI    0x06
+#define MRM_DI    0x07
+#define MRM_R8    0x00
+#define MRM_R9    0x01
+#define MRM_R10   0x02
+#define MRM_R11   0x03
+#define MRM_R12   0x04
+#define MRM_R13   0x05
+#define MRM_R14   0x06
+#define MRM_R15   0x07
+#define MRM_RIP   0x05
+#define MRM_ABS   0x04
 
 /* SIB values */
 #define NO_SIB       0x00		/* Encoding has no SIB value */
