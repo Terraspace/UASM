@@ -614,8 +614,15 @@ next_item:  /* <--- continue scan if a comma has been detected */
         }
     }
 
-    if ( tokenarray[i].token == T_QUESTION_MARK )
-        opndx.kind = EXPR_EMPTY;
+	if (tokenarray[i].token == T_QUESTION_MARK)
+	{
+		opndx.kind = EXPR_EMPTY;
+		/* UASM 2.48 Warn about BSS data in BIN, as the space won't be allocated */
+		if (Options.output_format == OFORMAT_BIN && !inside_struct)
+		{
+//			EmitWarn(2, UNINIT_DATA_IN_BIN);
+		}
+	}
     else
         if ( EvalOperand( &i, tokenarray, end, &opndx, 0 ) == ERROR )
             return( ERROR );

@@ -941,21 +941,21 @@ dqVar dq 10
   	mov qword ptr [rdi],0x12341234
 	mov qword ptr [rdi],10
 	mov dword ptr [rsi],0x20
-	mov [rsi],2000
-	mov [rdi],0xffff1223
+	mov word ptr [rsi],2000
+	mov dword ptr [rdi],0xffff1223
 	mov dword ptr [rdi],0xffff1223
 	mov qword ptr [rdi],0xffff1223
 		
-	mov [rax],3
-	mov [rcx],0x10
+	mov byte ptr [rax],3
+	mov byte ptr [rcx],0x10
 	mov word ptr [rsi+rax],10
-	mov [rsi+rax*4],10
-	mov [rdi+rax*4+0x20],10
-	mov [r8+rax],10
-	mov [r8+rax*4],10
+	mov byte ptr [rsi+rax*4],10
+	mov byte ptr [rdi+rax*4+0x20],10
+	mov byte ptr [r8+rax],10
+	mov byte ptr [r8+rax*4],10
 	
-	mov [rsp+0x10],10
-	mov [rbp-0x10],10	
+	mov byte ptr [rsp+0x10],10
+	mov byte ptr [rbp-0x10],10	
 
 .data
 

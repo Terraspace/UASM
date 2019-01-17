@@ -35,7 +35,7 @@
 #include "preproc.h"
 #include "reswords.h"
 #include "codegen.h"
-//#include "codegenv2.h"
+#include "codegenv2.h"
 #include "expreval.h"
 #include "fixup.h"
 #include "types.h"
@@ -4030,13 +4030,13 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 	/* *********************************************************** */
 	/* Use the V2 CodeGen, else fallback to the standard CodeGen   */
 	/* *********************************************************** */
-/*	if (ModuleInfo.Ofssize == USE32 || ModuleInfo.Ofssize == USE64)
+	if (ModuleInfo.Ofssize == USE32 || ModuleInfo.Ofssize == USE64)
 	{
 		temp = CodeGenV2(opcodePtr, &CodeInfo, oldofs, opndCount, opndx);
 		if (temp == EMPTY)
 			temp = codegen(&CodeInfo, oldofs);
 	}
-	else*/
+	else
 		temp = codegen(&CodeInfo, oldofs);
 
 nopor:

@@ -33,6 +33,8 @@ for %%f in (..\src\avxerr\*.asm) do call :avxerr %%f
 for %%f in (..\src\invoke64err\*.asm) do call :invoke64err %%f
 for %%f in (..\src\avx512\*.asm) do call :cmpavx512 %%f
 for %%f in (..\src\vcall\*.asm) do call :vectorcall %%f
+for %%f in (..\src\CodeGenV2\*.asm) do call :cgv2 %%f
+for %%f in (..\src\CodeGenV2Error\*.asm) do call :cgv2err %%f
 
 cd ..
 echo .
@@ -272,6 +274,30 @@ echo .
 %FCMP% /O32 %~n1.obj ..\exp\vcall\%~n1.obj
 if errorlevel 1 goto end
 del %~n1.obj
+goto end
+
+:cgv2
+echo ****************************************************************
+ECHO %1
+echo ****************************************************************
+echo .
+echo .
+%ASMX% -c -bin %1
+%FCMP% %~n1.bin ..\exp\CodeGenV2\%~n1.bin
+if errorlevel 1 goto end
+del %~n1.bin
+goto end
+
+:cgv2err
+echo ****************************************************************
+ECHO %1
+echo ****************************************************************
+echo .
+echo .
+%ASMX% -c -bin %1
+%FCMP% %~n1.err ..\exp\CodeGenV2Error\%~n1.err
+if errorlevel 1 goto end
+del %~n1.err
 goto end
 
 :end

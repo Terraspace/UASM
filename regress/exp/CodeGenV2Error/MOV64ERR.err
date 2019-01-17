@@ -1,0 +1,23 @@
+..\src\CodeGenV2Error\MOV64ERR.ASM(7) : Error A2089: Cannot access label through segment registers: FLAT
+..\src\CodeGenV2Error\MOV64ERR.ASM(9) : Error A2028: Instruction prefix not allowed
+..\src\CodeGenV2Error\MOV64ERR.ASM(10) : Error A2028: Instruction prefix not allowed
+..\src\CodeGenV2Error\MOV64ERR.ASM(11) : Error A2028: Instruction prefix not allowed
+..\src\CodeGenV2Error\MOV64ERR.ASM(12) : Error A2028: Instruction prefix not allowed
+..\src\CodeGenV2Error\MOV64ERR.ASM(13) : Error A2028: Instruction prefix not allowed
+..\src\CodeGenV2Error\MOV64ERR.ASM(14) : Error A2028: Instruction prefix not allowed
+..\src\CodeGenV2Error\MOV64ERR.ASM(15) : Error A2028: Instruction prefix not allowed
+..\src\CodeGenV2Error\MOV64ERR.ASM(17) : Error A2256: Registers AH-DH may not be used with SPL-DIL or R8-R15
+..\src\CodeGenV2Error\MOV64ERR.ASM(18) : Error A2256: Registers AH-DH may not be used with SPL-DIL or R8-R15
+..\src\CodeGenV2Error\MOV64ERR.ASM(20) : Error A2171: Invalid use of register
+..\src\CodeGenV2Error\MOV64ERR.ASM(21) : Error A2277: Illegal use of segment register
+..\src\CodeGenV2Error\MOV64ERR.ASM(22) : Error A2036: Scale factor must be 1, 2, 4 or 8
+..\src\CodeGenV2Error\MOV64ERR.ASM(23) : Error A2034: Multiple index registers not allowed
+..\src\CodeGenV2Error\MOV64ERR.ASM(24) : Error A2171: Invalid use of register
+..\src\CodeGenV2Error\MOV64ERR.ASM(26) : Error A2037: Cannot be used as index register: rsp
+..\src\CodeGenV2Error\MOV64ERR.ASM(27) : Error A2037: Cannot be used as index register: rsp
+..\src\CodeGenV2Error\MOV64ERR.ASM(28) : Error A2037: Cannot be used as index register: rsp
+..\src\CodeGenV2Error\MOV64ERR.ASM(30) : Error A2256: Registers AH-DH may not be used with SPL-DIL or R8-R15
+..\src\CodeGenV2Error\MOV64ERR.ASM(31) : Error A2048: Operands must be the same size: 1 - 4
+..\src\CodeGenV2Error\MOV64ERR.ASM(33) : Error A2031: invalid addressing mode with current CPU setting
+..\src\CodeGenV2Error\MOV64ERR.ASM(35) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2Error\MOV64ERR.ASM(37) : Error A2048: Operands must be the same size: 1 - 2

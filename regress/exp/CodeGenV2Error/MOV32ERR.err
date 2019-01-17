@@ -1,0 +1,17 @@
+..\src\CodeGenV2Error\MOV32ERR.ASM(10) : Error A2089: Cannot access label through segment registers: FLAT
+..\src\CodeGenV2Error\MOV32ERR.ASM(12) : Error A2028: Instruction prefix not allowed
+..\src\CodeGenV2Error\MOV32ERR.ASM(13) : Error A2028: Instruction prefix not allowed
+..\src\CodeGenV2Error\MOV32ERR.ASM(14) : Error A2028: Instruction prefix not allowed
+..\src\CodeGenV2Error\MOV32ERR.ASM(15) : Error A2028: Instruction prefix not allowed
+..\src\CodeGenV2Error\MOV32ERR.ASM(16) : Error A2028: Instruction prefix not allowed
+..\src\CodeGenV2Error\MOV32ERR.ASM(17) : Error A2028: Instruction prefix not allowed
+..\src\CodeGenV2Error\MOV32ERR.ASM(18) : Error A2028: Instruction prefix not allowed
+..\src\CodeGenV2Error\MOV32ERR.ASM(20) : Error A2171: Invalid use of register
+..\src\CodeGenV2Error\MOV32ERR.ASM(22) : Error A2036: Scale factor must be 1, 2, 4 or 8
+..\src\CodeGenV2Error\MOV32ERR.ASM(23) : Error A2034: Multiple index registers not allowed
+..\src\CodeGenV2Error\MOV32ERR.ASM(25) : Error A2037: Cannot be used as index register: esp
+..\src\CodeGenV2Error\MOV32ERR.ASM(26) : Error A2037: Cannot be used as index register: esp
+..\src\CodeGenV2Error\MOV32ERR.ASM(27) : Error A2037: Cannot be used as index register: esp
+..\src\CodeGenV2Error\MOV32ERR.ASM(29) : Error A2048: Operands must be the same size: 1 - 4
+..\src\CodeGenV2Error\MOV32ERR.ASM(31) : Error A2049: Invalid instruction operands
+..\src\CodeGenV2Error\MOV32ERR.ASM(33) : Error A2048: Operands must be the same size: 1 - 2

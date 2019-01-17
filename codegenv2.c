@@ -370,7 +370,7 @@ enum op_type MatchOperand(struct code_info *CodeInfo, struct opnd_item op, struc
 	return result;
 }
 
-struct Instr_Def* LookupInstruction(struct Instr_Def* instr) {
+struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg) {
 	uint_32           hash;
 	struct Instr_Def* pInstruction = NULL;
 	bool              matched      = FALSE;
@@ -384,9 +384,14 @@ struct Instr_Def* LookupInstruction(struct Instr_Def* instr) {
 			pInstruction->operand_types[1] == instr->operand_types[1] &&
 			pInstruction->operand_types[2] == instr->operand_types[2] &&
 			pInstruction->operand_types[3] == instr->operand_types[3]) {
+			/* If the instruction only supports absolute or displacement only addressing 
+			and we have a register in the memory expression, this is not a match */
+			if (memReg && ((pInstruction->flags & NO_MEM_REG) != 0))
+				goto nextInstr;
 			matched = TRUE;
 			break;
 		}
+		nextInstr:
 		pInstruction = pInstruction->next;
 	}
 	if (!matched)
@@ -430,195 +435,282 @@ bool IsValidInCPUMode(struct Instr_Def* instr)
 	return result;
 }
 
-bool SegmentPrefixAllowed()
-{
-	return TRUE;
-}
-
 /* =====================================================================
   Given an input token (string) for a register name, match it and return
   the correct register number for encoding reg/rm fields.
   ===================================================================== */
-unsigned char GetRegisterNo(struct asym *regTok)
+unsigned char GetRegisterNo(struct asm_tok *regTok)
 {
 	unsigned char regNo = 17;
 	if (regTok)
 	{
-		if (strcasecmp(regTok->name, "al") == 0)
+		switch (regTok->tokval)
+		{
+		/* 8bit */
+		case T_AL:
 			regNo = 0;
-		else if (strcasecmp(regTok->name, "cl") == 0)
+			break;
+		case T_CL:
 			regNo = 1;
-		else if (strcasecmp(regTok->name, "dl") == 0)
+			break;
+		case T_DL:
 			regNo = 2;
-		else if (strcasecmp(regTok->name, "bl") == 0)
+			break;
+		case T_BL:
 			regNo = 3;
-		else if (strcasecmp(regTok->name, "ah") == 0 || strcasecmp(regTok->name, "spl") == 0)
+			break;
+		case T_AH:
 			regNo = 4;
-		else if (strcasecmp(regTok->name, "ch") == 0 || strcasecmp(regTok->name, "bpl") == 0)
+			break;
+		case T_SPL:
+			regNo = 4;
+			break;
+		case T_CH:
 			regNo = 5;
-		else if (strcasecmp(regTok->name, "dh") == 0 || strcasecmp(regTok->name, "sil") == 0)
+			break;
+		case T_BPL:
+			regNo = 5;
+			break;
+		case T_DH:
 			regNo = 6;
-		else if (strcasecmp(regTok->name, "bh") == 0 || strcasecmp(regTok->name, "dil") == 0)
+			break;
+		case T_SIL:
+			regNo = 6;
+			break;
+		case T_BH:
 			regNo = 7;
-		else if (strcasecmp(regTok->name, "r8b") == 0)
+			break;
+		case T_DIL:
+			regNo = 7;
+			break;
+		case T_R8B:
 			regNo = 8;
-		else if (strcasecmp(regTok->name, "r9b") == 0)
+			break;
+		case T_R9B:
 			regNo = 9;
-		else if (strcasecmp(regTok->name, "r10b") == 0)
+			break;
+		case T_R10B:
 			regNo = 10;
-		else if (strcasecmp(regTok->name, "r11b") == 0)
+			break;
+		case T_R11B:
 			regNo = 11;
-		else if (strcasecmp(regTok->name, "r12b") == 0)
+			break;
+		case T_R12B:
 			regNo = 12;
-		else if (strcasecmp(regTok->name, "r13b") == 0)
+			break;
+		case T_R13B:
 			regNo = 13;
-		else if (strcasecmp(regTok->name, "r14b") == 0)
+			break;
+		case T_R14B:
 			regNo = 14;
-		else if (strcasecmp(regTok->name, "r15b") == 0)
+			break;
+		case T_R15B:
 			regNo = 15;
-		else if (strcasecmp(regTok->name, "ax") == 0)
+			break;
+		/* 16bit */
+		case T_AX:
 			regNo = 0;
-		else if (strcasecmp(regTok->name, "cx") == 0)
+			break;
+		case T_CX:
 			regNo = 1;
-		else if (strcasecmp(regTok->name, "dx") == 0)
+			break;
+		case T_DX:
 			regNo = 2;
-		else if (strcasecmp(regTok->name, "bx") == 0)
+			break;
+		case T_BX:
 			regNo = 3;
-		else if (strcasecmp(regTok->name, "sp") == 0)
+			break;
+		case T_SP:
 			regNo = 4;
-		else if (strcasecmp(regTok->name, "bp") == 0)
+			break;
+		case T_BP:
 			regNo = 5;
-		else if (strcasecmp(regTok->name, "si") == 0)
+			break;
+		case T_SI:
 			regNo = 6;
-		else if (strcasecmp(regTok->name, "di") == 0)
+			break;
+		case T_DI:
 			regNo = 7;
-		else if (strcasecmp(regTok->name, "r8w") == 0)
+			break;
+		case T_R8W:
 			regNo = 8;
-		else if (strcasecmp(regTok->name, "r9w") == 0)
+			break;
+		case T_R9W:
 			regNo = 9;
-		else if (strcasecmp(regTok->name, "r10w") == 0)
+			break;
+		case T_R10W:
 			regNo = 10;
-		else if (strcasecmp(regTok->name, "r11w") == 0)
+			break;
+		case T_R11W:
 			regNo = 11;
-		else if (strcasecmp(regTok->name, "r12w") == 0)
+			break;
+		case T_R12W:
 			regNo = 12;
-		else if (strcasecmp(regTok->name, "r13w") == 0)
+			break;
+		case T_R13W:
 			regNo = 13;
-		else if (strcasecmp(regTok->name, "r14w") == 0)
+			break;
+		case T_R14W:
 			regNo = 14;
-		else if (strcasecmp(regTok->name, "r15w") == 0)
+			break;
+		case T_R15W:
 			regNo = 15;
-		else if (strcasecmp(regTok->name, "eax") == 0)
+			break;
+		/* 32bit */
+		case T_EAX:
 			regNo = 0;
-		else if (strcasecmp(regTok->name, "ecx") == 0)
+			break;
+		case T_ECX:
 			regNo = 1;
-		else if (strcasecmp(regTok->name, "edx") == 0)
+			break;
+		case T_EDX:
 			regNo = 2;
-		else if (strcasecmp(regTok->name, "ebx") == 0)
+			break;
+		case T_EBX:
 			regNo = 3;
-		else if (strcasecmp(regTok->name, "esp") == 0)
+			break;
+		case T_ESP:
 			regNo = 4;
-		else if (strcasecmp(regTok->name, "ebp") == 0)
+			break;
+		case T_EBP:
 			regNo = 5;
-		else if (strcasecmp(regTok->name, "esi") == 0)
+			break;
+		case T_ESI:
 			regNo = 6;
-		else if (strcasecmp(regTok->name, "edi") == 0)
+			break;
+		case T_EDI:
 			regNo = 7;
-		else if (strcasecmp(regTok->name, "r8d") == 0)
+			break;
+		case T_R8D:
 			regNo = 8;
-		else if (strcasecmp(regTok->name, "r9d") == 0)
+			break;
+		case T_R9D:
 			regNo = 9;
-		else if (strcasecmp(regTok->name, "r10d") == 0)
+			break;
+		case T_R10D:
 			regNo = 10;
-		else if (strcasecmp(regTok->name, "r11d") == 0)
+			break;
+		case T_R11D:
 			regNo = 11;
-		else if (strcasecmp(regTok->name, "r12d") == 0)
+			break;
+		case T_R12D:
 			regNo = 12;
-		else if (strcasecmp(regTok->name, "r13d") == 0)
+			break;
+		case T_R13D:
 			regNo = 13;
-		else if (strcasecmp(regTok->name, "r14d") == 0)
+			break;
+		case T_R14D:
 			regNo = 14;
-		else if (strcasecmp(regTok->name, "r15d") == 0)
+			break;
+		case T_R15D:
 			regNo = 15;
-		else if (strcasecmp(regTok->name, "rax") == 0)
+			break;
+		/* 64bit */
+		case T_RAX:
 			regNo = 0;
-		else if (strcasecmp(regTok->name, "rcx") == 0)
+			break;
+		case T_RCX:
 			regNo = 1;
-		else if (strcasecmp(regTok->name, "rdx") == 0)
+			break;
+		case T_RDX:
 			regNo = 2;
-		else if (strcasecmp(regTok->name, "rbx") == 0)
+			break;
+		case T_RBX:
 			regNo = 3;
-		else if (strcasecmp(regTok->name, "rsp") == 0)
+			break;
+		case T_RSP:
 			regNo = 4;
-		else if (strcasecmp(regTok->name, "rbp") == 0)
+			break;
+		case T_RBP:
 			regNo = 5;
-		else if (strcasecmp(regTok->name, "rsi") == 0)
+			break;
+		case T_RSI:
 			regNo = 6;
-		else if (strcasecmp(regTok->name, "rdi") == 0)
+			break;
+		case T_RDI:
 			regNo = 7;
-		else if (strcasecmp(regTok->name, "r8") == 0)
+			break;
+		case T_R8:
 			regNo = 8;
-		else if (strcasecmp(regTok->name, "r9") == 0)
+			break;
+		case T_R9:
 			regNo = 9;
-		else if (strcasecmp(regTok->name, "r10") == 0)
+			break;
+		case T_R10:
 			regNo = 10;
-		else if (strcasecmp(regTok->name, "r11") == 0)
+			break;
+		case T_R11:
 			regNo = 11;
-		else if (strcasecmp(regTok->name, "r12") == 0)
+			break;
+		case T_R12:
 			regNo = 12;
-		else if (strcasecmp(regTok->name, "r13") == 0)
+			break;
+		case T_R13:
 			regNo = 13;
-		else if (strcasecmp(regTok->name, "r14") == 0)
+			break;
+		case T_R14:
 			regNo = 14;
-		else if (strcasecmp(regTok->name, "r15") == 0)
+			break;
+		case T_R15:
 			regNo = 15;
-
-		else if (strcasecmp(regTok->name, "cr0") == 0)
+			break;
+		/* specials */
+		case T_RIP:
+			regNo = 16;
+			break;
+		case T_CR0:
 			regNo = 0;
-		else if (strcasecmp(regTok->name, "cr2") == 0)
+			break;
+		case T_CR2:
 			regNo = 2;
-		else if (strcasecmp(regTok->name, "cr3") == 0)
+			break;
+		case T_CR3:
 			regNo = 3;
-		else if (strcasecmp(regTok->name, "cr4") == 0)
+			break;
+		case T_CR4:
 			regNo = 4;
-		else if (strcasecmp(regTok->name, "cr8") == 0)
+			break;
+		case T_CR8:
 			regNo = 8;
-
-		else if (strcasecmp(regTok->name, "dr0") == 0)
+			break;
+		case T_DR0:
 			regNo = 0;
-		else if (strcasecmp(regTok->name, "dr1") == 0)
+			break;
+		case T_DR1:
 			regNo = 1;
-		else if (strcasecmp(regTok->name, "dr2") == 0)
+			break;
+		case T_DR2:
 			regNo = 2;
-		else if (strcasecmp(regTok->name, "dr3") == 0)
+			break;
+		case T_DR3:
 			regNo = 3;
-		else if (strcasecmp(regTok->name, "dr4") == 0)
-			regNo = 4;
-		else if (strcasecmp(regTok->name, "dr5") == 0)
-			regNo = 5;
-		else if (strcasecmp(regTok->name, "dr6") == 0)
+			break;
+		case T_DR6:
 			regNo = 6;
-		else if (strcasecmp(regTok->name, "dr7") == 0)
+			break;
+		case T_DR7:
 			regNo = 7;
-
-		else if (strcasecmp(regTok->name, "cs") == 0)
+			break;
+		/* segments */
+		case T_CS:
 			regNo = 1;
-		else if (strcasecmp(regTok->name, "ds") == 0)
+			break;
+		case T_DS:
 			regNo = 3;
-		else if (strcasecmp(regTok->name, "es") == 0)
+			break;
+		case T_ES:
 			regNo = 0;
-		else if (strcasecmp(regTok->name, "fs") == 0)
+			break;
+		case T_FS:
 			regNo = 4;
-		else if (strcasecmp(regTok->name, "gs") == 0)
+			break;
+		case T_GS:
 			regNo = 5;
-		else if (strcasecmp(regTok->name, "ss") == 0)
+			break;
+		case T_SS:
 			regNo = 2;
-
-		else if (strcasecmp(regTok->name, "rip") == 0)
-		regNo = 16;
-		else if (strcasecmp(regTok->name, "eip") == 0)
-		regNo = 16;
-
+			break;
+		}
 	}
 	return regNo;
 }
@@ -751,8 +843,8 @@ int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned cha
 	{
 		symSize = SizeFromMemtype(opExpr[instr->memOpnd].mem_type, ModuleInfo.Ofssize, opExpr[instr->memOpnd].sym);
 		
-		if(ModuleInfo.Ofssize == USE64)
-			baseRegNo = 16; // For 64bit mode, all symbol references are RIP relative.
+		if(ModuleInfo.Ofssize == USE64 && opExpr[instr->memOpnd].sym->state != SYM_STACK)
+			baseRegNo = 16; // For 64bit mode, all symbol references are RIP relative, unless the symbol is on the stack.
 
 	}
 	else
@@ -924,6 +1016,7 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 	bool needModRM = FALSE;
 	bool needSIB   = FALSE;
 	bool needFixup = FALSE;
+	bool hasMemReg = FALSE;
 	int  aso       = 0; /* Build Memory Encoding forced address size override */
 
 	unsigned char opcodeByte = 0;
@@ -954,23 +1047,35 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 	if (opExpr[1].override && opExpr[1].override->tokval == T_FLAT)
 		return EMPTY;
 	
-	return EMPTY; // Uncomment this to disable new CodeGenV2.
+	//return EMPTY; // Uncomment this to disable new CodeGenV2.
 
 	memset(&instrToMatch, 0, sizeof(struct Instr_Def));
 	instrToMatch.mnemonic      = instr;		/* Instruction mnemonic string */
 	instrToMatch.operand_count = opCount;	/* Number of operands */
-	for (i = 0; i < opCount; i++)			/* Translate to CodeGenV2 operand types */
-		instrToMatch.operand_types[i] = MatchOperand(CodeInfo, CodeInfo->opnd[i], opExpr[i]); 
-
+	/* Translate to CodeGenV2 operand types */
+	for (i = 0; i < opCount; i++)
+	{
+		instrToMatch.operand_types[i] = MatchOperand(CodeInfo, CodeInfo->opnd[i], opExpr[i]);
+		/* Determine if we have a memory operand, if it contains registers */
+		if (opExpr[i].kind == EXPR_ADDR && (opExpr[i].base_reg || opExpr[i].idx_reg))
+			hasMemReg = TRUE;
+		/* Is indirect with reg (this would indicate RIP) */
+		if (opExpr[i].kind == EXPR_REG && opExpr[i].indirect)
+			hasMemReg = TRUE;
+		/* Refers to a symbol in 64bit mode (in which case a RIP relative mode is better) */
+		if (CodeInfo->Ofssize == USE64 && opExpr[i].sym)
+			hasMemReg = TRUE;
+	}
+	
 	/* Lookup the instruction */
-	matchedInstr = LookupInstruction(&instrToMatch);
+	matchedInstr = LookupInstruction(&instrToMatch, hasMemReg);
 
 	/* Try once again with demoted operands */
 	if (matchedInstr == NULL)
 	{
 		for (i = 0; i < opCount; i++)
 			instrToMatch.operand_types[i] = DemoteOperand(instrToMatch.operand_types[i]);
-		matchedInstr = LookupInstruction(&instrToMatch);
+		matchedInstr = LookupInstruction(&instrToMatch, hasMemReg);
 	}
 
 	/* We don't have it in CodeGenV2 so fall-back */
@@ -1037,7 +1142,7 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		{
 			if (matchedInstr->flags & ALLOW_SEG)
 			{
-				if (ModuleInfo.Ofssize == USE64 && (CodeInfo->prefix.RegOverride == ASSUME_FS || CodeInfo->prefix.RegOverride == ASSUME_GS))
+				if (ModuleInfo.Ofssize == USE64 && (CodeInfo->prefix.RegOverride == ASSUME_FS || CodeInfo->prefix.RegOverride == ASSUME_GS || CodeInfo->prefix.RegOverride == ASSUME_SS))
 				{
 					switch (CodeInfo->prefix.RegOverride)
 					{
@@ -1046,6 +1151,9 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 						break;
 					case ASSUME_GS:
 						OutputCodeByte(PREFIX_GS);
+						break;
+					case ASSUME_SS:
+						OutputCodeByte(PREFIX_SS);
 						break;
 					}
 				}
@@ -1190,10 +1298,6 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 						OutputBytes((unsigned char *)&displacement.byte, dispSize, CodeInfo->opnd[matchedInstr->memOpnd].InsFixup);
 				}
 			}
-			else
-			{
-				OutputBytes((unsigned char *)&displacement.byte, dispSize, NULL);
-			}
 		}
 
 		//----------------------------------------------------------
@@ -1202,23 +1306,35 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		if (matchedInstr->immOpnd != NO_IMM)
 		{
 			immValue.full = CodeInfo->opnd[matchedInstr->immOpnd].data64;
-			// An immediate entry could require a fixup if it was generated from an OFFSET or Symbol value.
-			if (dispSize == 0 && needFixup)
+			// An immediate entry could require a fixup if it was generated from an OFFSET directive or Symbol value.
+			if (CodeInfo->opnd[matchedInstr->immOpnd].InsFixup && needFixup)
 			{
-				CodeInfo->opnd[OPND2].InsFixup->locofs = GetCurrOffset();
-				OutputBytes((unsigned char *)&immValue.byte, matchedInstr->op_size, CodeInfo->opnd[OPND2].InsFixup);
+				if (Parse_Pass > PASS_1)
+					if ((1 << CodeInfo->opnd[matchedInstr->immOpnd].InsFixup->type) & ModuleInfo.fmtopt->invalid_fixup_type)
+					{
+						EmitErr(UNSUPPORTED_FIXUP_TYPE, ModuleInfo.fmtopt->formatname, CodeInfo->opnd[matchedInstr->immOpnd].InsFixup->sym ? CodeInfo->opnd[matchedInstr->immOpnd].InsFixup->sym->name : szNullStr);
+					}
+				//			if (dispSize == 0 && needFixup)
+				//			{
+				if (write_to_file)
+				{
+					CodeInfo->opnd[matchedInstr->immOpnd].InsFixup->locofs = GetCurrOffset();
+					if (CodeInfo->isptr)
+						OutputBytes((unsigned char *)&immValue.byte, matchedInstr->op_size, NULL);
+					else
+						OutputBytes((unsigned char *)&immValue.byte, matchedInstr->op_size, CodeInfo->opnd[matchedInstr->immOpnd].InsFixup);
+				}
+				//		}
+					//	else 
+						//	OutputBytes((unsigned char *)&immValue.byte, matchedInstr->op_size, NULL);
 			}
-			else
-				OutputBytes((unsigned char *)&immValue.byte, matchedInstr->op_size, NULL);
 		}
 
 		//----------------------------------------------------------
 		// Finalize fixup post immediate data.
 		//----------------------------------------------------------
-		if (needFixup)
-		{
-			if (CodeInfo->Ofssize == USE64 && CodeInfo->opnd[OPND1].InsFixup && CodeInfo->opnd[OPND1].InsFixup->type == FIX_RELOFF32)
-				CodeInfo->opnd[OPND1].InsFixup->addbytes = GetCurrOffset() - CodeInfo->opnd[OPND1].InsFixup->locofs;
+		//if (needFixup)
+		//{
 			// For rip-relative fixups, the instruction end is needed
 			if (CodeInfo->Ofssize == USE64)
 			{
@@ -1227,7 +1343,7 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 				if (CodeInfo->opnd[OPND2].InsFixup && CodeInfo->opnd[OPND2].InsFixup->type == FIX_RELOFF32)
 					CodeInfo->opnd[OPND2].InsFixup->addbytes = GetCurrOffset() - CodeInfo->opnd[OPND2].InsFixup->locofs;
 			}
-		}
+		//}
 	}
 
 	// Write out listing.

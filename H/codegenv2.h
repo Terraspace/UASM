@@ -148,6 +148,7 @@ enum op_type {
 #define REXP_MEM     (1<<23)	/* Instruction promoted to 64bit special mode if specified memory operand is qword sized */
 #define FWAIT        (1<<24)
 #define NO_FWAIT     (1<<25)
+#define NO_MEM_REG   (1<<26)	/* This indicates that only an absolute or displacement only memory address is supported */
 
 /* Required ASO/OSO flags */
 #define OP_SIZE_OVERRIDE   0x66
@@ -304,16 +305,15 @@ enum op_type      DemoteOperand(enum op_type op);
 void              InsertInstruction(struct Instr_Def* pInstruction, uint_32 hash);
 struct Instr_Def* AllocInstruction();
 uint_32           GenerateInstrHash(struct Instr_Def* pInstruction);
-struct Instr_Def* LookupInstruction(struct Instr_Def* instr);
+struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg);
 enum op_type      MatchOperand(struct code_info *CodeInfo, struct opnd_item op, struct expr opExpr);
 
 bool Require_OPND_Size_Override(struct Instr_Def* instr, struct code_info* CodeInfo);
 bool Require_ADDR_Size_Override(struct Instr_Def* instr, struct code_info* CodeInfo);
 bool IsValidInCPUMode(struct Instr_Def* instr);
-bool SegmentPrefixAllowed();
 
 unsigned char BuildModRM(unsigned char modRM, struct Instr_Def* instr, struct expr opnd[4], bool* needRM, bool* needSIB);	/* Build instruction ModRM byte */
 unsigned char BuildREX(unsigned char RexByte, struct Instr_Def* instr, struct expr opnd[4]);	/* Build REX prefix byte */
 int           BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned char* pREX, bool* needRM, bool* needSIB,
 	                              unsigned int* dispSize, int* pDisp, struct Instr_Def* instr, struct expr opExpr[4]);
-unsigned char GetRegisterNo(struct asym *regTok);												/* Get Register Encoding Number from Token */
+unsigned char GetRegisterNo(struct asm_tok *regTok);												/* Get Register Encoding Number from Token */

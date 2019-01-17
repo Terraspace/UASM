@@ -530,17 +530,17 @@ ddVarA dd 10 DUP (0)
 	mov byte ptr ddVar,10
 	mov dword ptr dbVar,10
 	
-	mov [esi],2000
-	mov [edi],0xffff1223
+	mov word ptr [esi],2000
+	mov dword ptr [edi],0xffff1223
 	
-	mov [eax],3
-	mov [ecx],0x10
+	mov byte ptr [eax],3
+	mov byte ptr [ecx],0x10
 	mov word ptr [esi+eax],10
-	mov [esi+eax*4],10
-	mov [edi+eax*4+0x20],10
+	mov byte ptr [esi+eax*4],10
+	mov byte ptr [edi+eax*4+0x20],10
 	
-	mov [esp+0x10],10
-	mov [ebp-0x10],10	
+	mov byte ptr [esp+0x10],10
+	mov byte ptr [ebp-0x10],10	
 	
 	;---------------------------------------------------------------------------------------------------
 	; Address Size override memory access in 32bit.
