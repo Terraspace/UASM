@@ -3,11 +3,13 @@
 #include "globals.h"
 #include "expreval.h"
 
+/* This order must remain as-is! */
 enum instr_group {
 	GP0,		/* i86+ encoding group  */
 	GP1,		/* i286+ encoding group */
 	GP2,		/* i386+ encoding group */
 	GP3,        /* 64bit only */
+	SSE0,       /* SSE */
 	VEX0,
 	EVEX0,
 	MVEX0,
@@ -76,11 +78,16 @@ enum op_type {
 	R_SEGE,
 	/* MMX registers */
 	MMX64,
-	/* SSE registers (xmm0-xmm7) */
-	SSE128,
-	/* AVX 128 (xmm0-xmm15) or 256bit (ymm0-ymm15) registers */
-	AVX128,
-	AVX256,
+
+	/* x86 XMM registers (xmm0-xmm7)  */
+	R_XMM,
+	/* x64 XMM registers (xmm8-xmm15) */
+	R_XMME,
+	/* x86 YMM registers (ymm0-ymm7)  */
+	R_YMM,
+	/* x64 YMM registers (ymm8-ymm15) */
+	R_YMME,
+
 	/* AVX 512 registers (zmm0-31) */
 	AVX512,
 	AVX512_128,
@@ -149,6 +156,7 @@ enum op_type {
 #define FWAIT        (1<<24)
 #define NO_FWAIT     (1<<25)
 #define NO_MEM_REG   (1<<26)	/* This indicates that only an absolute or displacement only memory address is supported */
+#define NO_PREFIX    (1<<27)    /* Manual refers to this as NP (66/f2/f3 prefixes prohibited) */
 
 /* Required ASO/OSO flags */
 #define OP_SIZE_OVERRIDE   0x66
@@ -160,7 +168,8 @@ enum op_type {
 #define X64 0x04
 
 /* mandatory_prefix -> Which mandatory prefix sequence is used by the instruction */
-#define NO_PREFIX 0
+#define NO_PREFIX  0
+#define PFX_0xF    1
 
 /* op_dir -> operation direction */
 #define REG_DST  0

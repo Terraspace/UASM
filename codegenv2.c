@@ -119,7 +119,7 @@ enum op_type DemoteOperand(enum op_type op) {
 		ret = R64;
 
 	/* We must be careful that an instruction can only have one demotable operand at a time */
-	else if (op == M8 || op == M16 || op == M32 || op == M48 || op == M64 || op == M80)
+	else if (op == M8 || op == M16 || op == M32 || op == M48 || op == M64 || op == M80 || op == M128 || op == M256 || op == M512)
 		ret = M_ANY;
 
 	return(ret);
@@ -355,12 +355,23 @@ enum op_type MatchOperand(struct code_info *CodeInfo, struct opnd_item op, struc
 			result = IMM64;
 			break;
 		case OP_XMM:
-			result = SSE128;
-			/* If register xmm8-xmm15 USE AVX128 */
+			result = R_XMM;
+			/* If register xmm8-xmm15 USE R_XMME */
+			if (strcasecmp(opExpr.base_reg->string_ptr, "xmm8") == 0 ||
+				strcasecmp(opExpr.base_reg->string_ptr, "xmm9") == 0 ||
+				strcasecmp(opExpr.base_reg->string_ptr, "xmm10") == 0 ||
+				strcasecmp(opExpr.base_reg->string_ptr, "xmm11") == 0 ||
+				strcasecmp(opExpr.base_reg->string_ptr, "xmm12") == 0 ||
+				strcasecmp(opExpr.base_reg->string_ptr, "xmm13") == 0 ||
+				strcasecmp(opExpr.base_reg->string_ptr, "xmm14") == 0 ||
+				strcasecmp(opExpr.base_reg->string_ptr, "xmm15") == 0)
+			{
+				result = R_XMME;
+			}
 			/* If register xmm16-xmm31 USE AVX512_128 */
 			break;
 		case OP_YMM:
-			result = AVX256;
+			result = R_YMM;
 			/* If register ymm16-ymm31 USE AVX512_256 */
 			break;
 		case OP_ZMM:
@@ -710,6 +721,133 @@ unsigned char GetRegisterNo(struct asm_tok *regTok)
 		case T_SS:
 			regNo = 2;
 			break;
+		/* FPU */
+		case T_ST:
+			regNo = 0;
+			break;
+		/* MMX */
+		case T_MM0:
+			regNo = 0;
+			break;
+		case T_MM1:
+			regNo = 1;
+			break;
+		case T_MM2:
+			regNo = 2;
+			break;
+		case T_MM3:
+			regNo = 3;
+			break;
+		case T_MM4:
+			regNo = 4;
+			break;
+		case T_MM5:
+			regNo = 5;
+			break;
+		case T_MM6:
+			regNo = 6;
+			break;
+		case T_MM7:
+			regNo = 7;
+			break;
+		/* SIMD */
+		case T_XMM0:
+			regNo = 0;
+			break;
+		case T_XMM1:
+			regNo = 1;
+			break;
+		case T_XMM2:
+			regNo = 2;
+			break;
+		case T_XMM3:
+			regNo = 3;
+			break;
+		case T_XMM4:
+			regNo = 4;
+			break;
+		case T_XMM5:
+			regNo = 5;
+			break;
+		case T_XMM6:
+			regNo = 6;
+			break;
+		case T_XMM7:
+			regNo = 7;
+			break;
+		case T_XMM8:
+			regNo = 8;
+			break;
+		case T_XMM9:
+			regNo = 9;
+			break;
+		case T_XMM10:
+			regNo = 10;
+			break;
+		case T_XMM11:
+			regNo = 11;
+			break;
+		case T_XMM12:
+			regNo = 12;
+			break;
+		case T_XMM13:
+			regNo = 13;
+			break;
+		case T_XMM14:
+			regNo = 14;
+			break;
+		case T_XMM15:
+			regNo = 15;
+			break;
+		/* AVX */
+		case T_YMM0:
+			regNo = 0;
+			break;
+		case T_YMM1:
+			regNo = 1;
+			break;
+		case T_YMM2:
+			regNo = 2;
+			break;
+		case T_YMM3:
+			regNo = 3;
+			break;
+		case T_YMM4:
+			regNo = 4;
+			break;
+		case T_YMM5:
+			regNo = 5;
+			break;
+		case T_YMM6:
+			regNo = 6;
+			break;
+		case T_YMM7:
+			regNo = 7;
+			break;
+		case T_YMM8:
+			regNo = 8;
+			break;
+		case T_YMM9:
+			regNo = 9;
+			break;
+		case T_YMM10:
+			regNo = 10;
+			break;
+		case T_YMM11:
+			regNo = 11;
+			break;
+		case T_YMM12:
+			regNo = 12;
+			break;
+		case T_YMM13:
+			regNo = 13;
+			break;
+		case T_YMM14:
+			regNo = 14;
+			break;
+		case T_YMM15:
+			regNo = 15;
+			break;
 		}
 	}
 	return regNo;
@@ -925,7 +1063,7 @@ int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned cha
 	//         Specified address format can only be encoded with a displacement.
 	if (instr->memOpnd > NO_MEM || opExpr[instr->memOpnd].value != 0 || 
 		(ModuleInfo.Ofssize == USE64 && opExpr[instr->memOpnd].base_reg && opExpr[instr->memOpnd].base_reg->token == T_RIP) ||
-		MemTable[memModeIdx].flags & MEMF_DSP || MemTable[memModeIdx].flags & MEMF_DSP32 || opExpr[instr->memOpnd].sym)
+		MemTable[memModeIdx].flags & MEMF_DSP || MemTable[memModeIdx].flags & MEMF_DSP32 || (opExpr[instr->memOpnd].sym && opExpr[instr->memOpnd].sym->state != SYM_STACK))
 	{
 		if (instr->memOpnd > NO_MEM)
 		{
@@ -1072,7 +1210,7 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 	matchedInstr = LookupInstruction(&instrToMatch, hasMemReg);
 
 	/* If we have an absolute memory addressing mode but the disp is 32bit or less, fallback to using a non abs mode */
-	if(matchedInstr && matchedInstr->memOpnd != NO_MEM && CodeInfo->Ofssize == USE64 && CodeInfo->token != T_MOVABS)
+	if(matchedInstr && matchedInstr->memOpnd != NO_MEM && CodeInfo->Ofssize == USE64 && CodeInfo->token != T_MOVABS && (int)matchedInstr->group < SSE0)
 	{
 		if ((int)CodeInfo->opnd[(matchedInstr->memOpnd & 7)].data64 > INT_MIN && CodeInfo->opnd[(matchedInstr->memOpnd & 7)].data64 < UINT_MAX)
 		{
@@ -1137,7 +1275,7 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		if(matchedInstr->memOpnd != NO_MEM)
 			aso = BuildMemoryEncoding(&modRM, &sib, &rexByte, &needModRM, &needSIB,
 				                &dispSize, &displacement, matchedInstr, opExpr);					/* This could result in modifications to REX, modRM and SIB bytes */
-		modRM   |= BuildModRM(matchedInstr->modRM, matchedInstr, opExpr, &needModRM, &needSIB);		/* Modify the modRM value for any non-memory operands */
+		modRM |= BuildModRM(matchedInstr->modRM, matchedInstr, opExpr, &needModRM, &needSIB);		/* Modify the modRM value for any non-memory operands */
 		if(CodeInfo->Ofssize == USE64)
 			rexByte |= BuildREX(rexByte, matchedInstr, opExpr);									    /* Modify the REX prefix for non-memory operands/sizing */
 
@@ -1245,14 +1383,6 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		//----------------------------------------------------------
 
 		//----------------------------------------------------------
-		// Output mandatory prefix.
-		//----------------------------------------------------------
-		if (matchedInstr->mandatory_prefix != 0)
-		{
-			
-		}
-
-		//----------------------------------------------------------
 		// Output VEX prefix if required.
 		//----------------------------------------------------------
 
@@ -1261,6 +1391,16 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		//----------------------------------------------------------
 		if (rexByte != 0)
 			OutputCodeByte(rexByte);
+
+		//----------------------------------------------------------
+		// Output mandatory prefix.
+		//----------------------------------------------------------
+		switch (matchedInstr->mandatory_prefix)
+		{
+		case PFX_0xF:
+			OutputCodeByte(0x0f);
+			break;
+		}
 
 		//----------------------------------------------------------
 		// Output opcode byte(s).

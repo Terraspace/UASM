@@ -210,5 +210,15 @@ struct Instr_Def InstrTableV2[] = {
 	{ "mov",    2, { M64,      IMM16   }, GP3, ALLOW_SEG | (REXP_MEM) | (F_MODRM),								  1, { 0xc7, 0x00, 0x00 }, 4, MOD_MEM_IMM, 0, OP_SIZE_OVERRIDE,	ADDR_SIZE_OVERRIDE, (X16 | X32 | X64), RM_DST,  NO_PREFIX, IMM_OPND_1, MEM_OPND_0,P_86,  0, NULL },
 	{ "mov",    2, { M64,      IMM32   }, GP3, ALLOW_SEG | (REXP_MEM) | (F_MODRM),								  1, { 0xc7, 0x00, 0x00 }, 4, MOD_MEM_IMM, 0, OP_SIZE_OVERRIDE,	ADDR_SIZE_OVERRIDE, (X16 | X32 | X64), RM_DST,  NO_PREFIX, IMM_OPND_1, MEM_OPND_0,P_86,  0, NULL },
 
+	/* SSE */
+	{ "movaps", 2, { R_XMM,    R_XMM   }, SSE0, (NO_PREFIX) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),						  1, { 0x28, 0x00, 0x00 }, 16, MOD_REG_REG, 0, 0               ,0                  , (      X32 | X64), REG_DST, PFX_0xF  , NO_IMM,     NO_MEM,    P_686|P_SSE1,0, NULL },
+	{ "movaps", 2, { R_XMM,    M_ANY   }, SSE0, (NO_PREFIX) | (F_MODRM | F_MODRM_REG),									  1, { 0x28, 0x00, 0x00 }, 16, MOD_REG_MEM, 0, 0               ,0                  , (      X32 | X64), REG_DST, PFX_0xF  , NO_IMM,     MEM_OPND_1,P_686|P_SSE1,0, NULL },
+	{ "movaps", 2, { M_ANY,    R_XMM   }, SSE0, (NO_PREFIX) | (F_MODRM | F_MODRM_REG),									  1, { 0x29, 0x00, 0x00 }, 16, MOD_MEM_REG, 0, 0               ,0                  , (      X32 | X64), RM_DST,  PFX_0xF  , NO_IMM,     MEM_OPND_0,P_686|P_SSE1,0, NULL },
+	{ "movaps", 2, { R_XMME,   R_XMME  }, SSE0, (REX | REXR | REXB) | (NO_PREFIX) | (F_MODRM | F_MODRM_REG | F_MODRM_RM), 1, { 0x28, 0x00, 0x00 }, 16, MOD_REG_REG, 0, 0               ,0                  , (            X64), REG_DST, PFX_0xF  , NO_IMM,     NO_MEM,    P_686|P_SSE1,0, NULL },
+	{ "movaps", 2, { R_XMME,   M_ANY   }, SSE0, (REX | REXR) | (NO_PREFIX) | (F_MODRM | F_MODRM_REG),					  1, { 0x28, 0x00, 0x00 }, 16, MOD_REG_MEM, 0, 0               ,0                  , (            X64), REG_DST, PFX_0xF  , NO_IMM,     MEM_OPND_1,P_686|P_SSE1,0, NULL },
+	{ "movaps", 2, { M_ANY,    R_XMME  }, SSE0, (REX | REXR) | (NO_PREFIX) | (F_MODRM | F_MODRM_REG),					  1, { 0x29, 0x00, 0x00 }, 16, MOD_MEM_REG, 0, 0               ,0                  , (            X64), RM_DST,  PFX_0xF  , NO_IMM,     MEM_OPND_0,P_686|P_SSE1,0, NULL },
+	{ "movaps", 2, { R_XMME,   R_XMM   }, SSE0, (REX | REXR) | (NO_PREFIX) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),		  1, { 0x28, 0x00, 0x00 }, 16, MOD_REG_REG, 0, 0               ,0                  , (            X64), REG_DST, PFX_0xF  , NO_IMM,     NO_MEM,    P_686|P_SSE1,0, NULL },
+	{ "movaps", 2, { R_XMM,    R_XMME  }, SSE0, (REX | REXB) | (NO_PREFIX) | (F_MODRM | F_MODRM_REG | F_MODRM_RM),		  1, { 0x28, 0x00, 0x00 }, 16, MOD_REG_REG, 0, 0               ,0                  , (            X64), REG_DST, PFX_0xF  , NO_IMM,     NO_MEM,    P_686|P_SSE1,0, NULL },
 
+	/* AVX */
 };
