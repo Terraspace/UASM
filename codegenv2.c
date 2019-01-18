@@ -945,7 +945,7 @@ int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned cha
 		else
 		{
 			// Is it 8bit or 16/32bit (RIP only allows 32bit)?
-			if (!opExpr[instr->memOpnd].sym && (((MemTable[memModeIdx].flags & MEMF_DSP32) == 0) && (opExpr[instr->memOpnd].value >= -128 && opExpr[instr->memOpnd].value <= 127)) || (MemTable[memModeIdx].flags & MEMF_DSP))
+			if ( ((!opExpr[instr->memOpnd].sym) || (opExpr[instr->memOpnd].sym && opExpr[instr->memOpnd].sym->state == SYM_STACK)) && (((MemTable[memModeIdx].flags & MEMF_DSP32) == 0) && (opExpr[instr->memOpnd].value >= -128 && opExpr[instr->memOpnd].value <= 127)) || (MemTable[memModeIdx].flags & MEMF_DSP))
 			{
 				*dispSize = 1;
 				*pmodRM |= MODRM_DISP8;
@@ -1044,7 +1044,8 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		MemTable = &MemTable32;
 
 	/* Force JWASM style FLAT: override back to legacy CodeGen. */
-	if (opExpr[1].override && opExpr[1].override->tokval == T_FLAT)
+	if ( (opExpr[1].override && opExpr[1].override->tokval == T_FLAT) ||
+		 (opExpr[0].override && opExpr[0].override->tokval == T_FLAT))
 		return EMPTY;
 	
 	//return EMPTY; // Uncomment this to disable new CodeGenV2.
@@ -1070,6 +1071,15 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 	/* Lookup the instruction */
 	matchedInstr = LookupInstruction(&instrToMatch, hasMemReg);
 
+	/* If we have an absolute memory addressing mode but the disp is 32bit or less, fallback to using a non abs mode */
+	if(matchedInstr && matchedInstr->memOpnd != NO_MEM && CodeInfo->Ofssize == USE64 && CodeInfo->token != T_MOVABS)
+	{
+		if ((int)CodeInfo->opnd[(matchedInstr->memOpnd & 7)].data64 > INT_MIN && CodeInfo->opnd[(matchedInstr->memOpnd & 7)].data64 < UINT_MAX)
+		{
+			matchedInstr = NULL;
+		}
+	}
+	
 	/* Try once again with demoted operands */
 	if (matchedInstr == NULL)
 	{
@@ -1104,14 +1114,18 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		// Decide if a fixup is required.
 		// -> A fixup is only required if a memory opnd is used
 		// -> And only then if it refers to a symbol
+		// -> On stack symbols don't need
 		//----------------------------------------------------------
 		if (matchedInstr->memOpnd != NO_MEM)
 		{
-			if (opExpr[matchedInstr->memOpnd].sym)
+			if (opExpr[(matchedInstr->memOpnd & 7)].sym && opExpr[(matchedInstr->memOpnd & 7)].sym->state != SYM_STACK)
 				needFixup = TRUE;
 		}
-		if (CodeInfo->opnd[OPND2].InsFixup)
-			needFixup = TRUE;
+		if (matchedInstr->immOpnd != NO_IMM)
+		{
+			if(CodeInfo->opnd[matchedInstr->immOpnd].InsFixup)
+				needFixup = TRUE;
+		}
 
 		//----------------------------------------------------------
 		// Build Memory Encoding Format.
@@ -1282,22 +1296,24 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		//----------------------------------------------------------
 		if (dispSize) 
 		{
-			if (CodeInfo->opnd[matchedInstr->memOpnd].InsFixup && needFixup)
+			if (CodeInfo->opnd[(matchedInstr->memOpnd & 7)].InsFixup && needFixup)
 			{
 				if (Parse_Pass > PASS_1)
-					if ((1 << CodeInfo->opnd[matchedInstr->memOpnd].InsFixup->type) & ModuleInfo.fmtopt->invalid_fixup_type) 
-					{
-						EmitErr(UNSUPPORTED_FIXUP_TYPE, ModuleInfo.fmtopt->formatname, CodeInfo->opnd[matchedInstr->memOpnd].InsFixup->sym ? CodeInfo->opnd[matchedInstr->memOpnd].InsFixup->sym->name : szNullStr);
-					}
+					if ((1 << CodeInfo->opnd[(matchedInstr->memOpnd & 7)].InsFixup->type) & ModuleInfo.fmtopt->invalid_fixup_type)
+						EmitErr(UNSUPPORTED_FIXUP_TYPE, ModuleInfo.fmtopt->formatname, CodeInfo->opnd[(matchedInstr->memOpnd & 7)].InsFixup->sym ? CodeInfo->opnd[(matchedInstr->memOpnd & 7)].InsFixup->sym->name : szNullStr);
 				if (write_to_file) 
 				{
-					CodeInfo->opnd[matchedInstr->memOpnd].InsFixup->locofs = GetCurrOffset();
+					CodeInfo->opnd[(matchedInstr->memOpnd & 7)].InsFixup->locofs = GetCurrOffset();
 					if (CodeInfo->isptr)
 						OutputBytes((unsigned char *)&displacement.byte, dispSize, NULL);
 					else
-						OutputBytes((unsigned char *)&displacement.byte, dispSize, CodeInfo->opnd[matchedInstr->memOpnd].InsFixup);
+						OutputBytes((unsigned char *)&displacement.byte, dispSize, CodeInfo->opnd[(matchedInstr->memOpnd & 7)].InsFixup);
 				}
+				else
+					OutputBytes((unsigned char *)&displacement.byte, dispSize, NULL);
 			}
+			else
+				OutputBytes((unsigned char *)&displacement.byte, dispSize, NULL);
 		}
 
 		//----------------------------------------------------------
@@ -1311,11 +1327,7 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 			{
 				if (Parse_Pass > PASS_1)
 					if ((1 << CodeInfo->opnd[matchedInstr->immOpnd].InsFixup->type) & ModuleInfo.fmtopt->invalid_fixup_type)
-					{
 						EmitErr(UNSUPPORTED_FIXUP_TYPE, ModuleInfo.fmtopt->formatname, CodeInfo->opnd[matchedInstr->immOpnd].InsFixup->sym ? CodeInfo->opnd[matchedInstr->immOpnd].InsFixup->sym->name : szNullStr);
-					}
-				//			if (dispSize == 0 && needFixup)
-				//			{
 				if (write_to_file)
 				{
 					CodeInfo->opnd[matchedInstr->immOpnd].InsFixup->locofs = GetCurrOffset();
@@ -1324,26 +1336,24 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 					else
 						OutputBytes((unsigned char *)&immValue.byte, matchedInstr->op_size, CodeInfo->opnd[matchedInstr->immOpnd].InsFixup);
 				}
-				//		}
-					//	else 
-						//	OutputBytes((unsigned char *)&immValue.byte, matchedInstr->op_size, NULL);
+				else 
+					OutputBytes((unsigned char *)&immValue.byte, matchedInstr->op_size, NULL);
 			}
+			else
+				OutputBytes((unsigned char *)&immValue.byte, matchedInstr->op_size, NULL);
 		}
 
 		//----------------------------------------------------------
 		// Finalize fixup post immediate data.
 		//----------------------------------------------------------
-		//if (needFixup)
-		//{
-			// For rip-relative fixups, the instruction end is needed
-			if (CodeInfo->Ofssize == USE64)
-			{
-				if (CodeInfo->opnd[OPND1].InsFixup && CodeInfo->opnd[OPND1].InsFixup->type == FIX_RELOFF32)
-					CodeInfo->opnd[OPND1].InsFixup->addbytes = GetCurrOffset() - CodeInfo->opnd[OPND1].InsFixup->locofs;
-				if (CodeInfo->opnd[OPND2].InsFixup && CodeInfo->opnd[OPND2].InsFixup->type == FIX_RELOFF32)
-					CodeInfo->opnd[OPND2].InsFixup->addbytes = GetCurrOffset() - CodeInfo->opnd[OPND2].InsFixup->locofs;
-			}
-		//}
+		// For rip-relative fixups, the instruction end is needed
+		if (CodeInfo->Ofssize == USE64)
+		{
+			if (CodeInfo->opnd[OPND1].InsFixup && CodeInfo->opnd[OPND1].InsFixup->type == FIX_RELOFF32)
+				CodeInfo->opnd[OPND1].InsFixup->addbytes = GetCurrOffset() - CodeInfo->opnd[OPND1].InsFixup->locofs;
+			if (CodeInfo->opnd[OPND2].InsFixup && CodeInfo->opnd[OPND2].InsFixup->type == FIX_RELOFF32)
+				CodeInfo->opnd[OPND2].InsFixup->addbytes = GetCurrOffset() - CodeInfo->opnd[OPND2].InsFixup->locofs;
+		}
 	}
 
 	// Write out listing.

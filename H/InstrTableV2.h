@@ -125,7 +125,7 @@ struct Instr_Def InstrTableV2[] = {
 	/* Reg->Immediate moves */
 	{ "mov",    2, { R8,       IMM8    }, GP0, (F_OPCODE_REG),												      1, { 0xb0, 0x00, 0x00 }, 1, NO_MOD,      0, 0,				0,                  (X16 | X32 | X64), NO_DST,  NO_PREFIX, IMM_OPND_1, NO_MEM,     P_86,  0, NULL },
 	{ "mov",    2, { R8H,      IMM8    }, GP0, (F_OPCODE_REG),													  1, { 0xb0, 0x00, 0x00 }, 1, NO_MOD,      0, 0,				0,                  (X16 | X32 | X64), NO_DST,  NO_PREFIX, IMM_OPND_1, NO_MEM,     P_86,  0, NULL },
-	{ "mov",    2, { R8U,      IMM8    }, GP3, (REX | REXB) | (F_OPCODE_REG),									  1, { 0xb0, 0x00, 0x00 }, 1, NO_MOD,      0, 0,				0,                  (X64), NO_DST,  NO_PREFIX, IMM_OPND_1, NO_MEM,     P_64,  0, NULL },
+	{ "mov",    2, { R8U,      IMM8    }, GP3, (REX) | (F_OPCODE_REG),											  1, { 0xb0, 0x00, 0x00 }, 1, NO_MOD,      0, 0,				0,                  (X64), NO_DST,  NO_PREFIX, IMM_OPND_1, NO_MEM,     P_64,  0, NULL },
 	{ "mov",    2, { R8E,      IMM8    }, GP3, (REX | REXB) | (F_OPCODE_REG),							          1, { 0xb0, 0x00, 0x00 }, 1, NO_MOD,      0, 0,				0,                  (X64), NO_DST,  NO_PREFIX, IMM_OPND_1, NO_MEM,     P_64,  0, NULL },
 	{ "mov",    2, { R16,      IMM8    }, GP0, (F_OPCODE_REG),												      1, { 0xb8, 0x00, 0x00 }, 2, NO_MOD,      0, OP_SIZE_OVERRIDE, 0,                  (X16 | X32 | X64), NO_DST,  NO_PREFIX, IMM_OPND_1, NO_MEM,     P_86,  0, NULL },
 	{ "mov",    2, { R16E,     IMM8    }, GP3, (REX | REXB) | (F_OPCODE_REG),								      1, { 0xb8, 0x00, 0x00 }, 2, NO_MOD,      0, OP_SIZE_OVERRIDE,	0,                  (X64), NO_DST,  NO_PREFIX, IMM_OPND_1, NO_MEM,     P_64,  0, NULL },

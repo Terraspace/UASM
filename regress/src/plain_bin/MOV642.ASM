@@ -11,7 +11,6 @@ endif
 vq	dq 0
 
 	.code
-
 if 1
 	mov rdx,[vq]
 	mov rdx,gs:[30h]
