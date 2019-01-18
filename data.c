@@ -620,7 +620,7 @@ next_item:  /* <--- continue scan if a comma has been detected */
 		/* UASM 2.48 Warn about BSS data in BIN, as the space won't be allocated */
 		if (Options.output_format == OFORMAT_BIN && !inside_struct)
 		{
-//			EmitWarn(2, UNINIT_DATA_IN_BIN);
+			EmitWarn(2, UNINIT_DATA_IN_BIN);
 		}
 	}
     else

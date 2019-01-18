@@ -56,6 +56,9 @@ echo .
 %FCMP% %~n1.bin ..\exp\plain_bin\%~n1.bin
 if errorlevel 1 goto end
 del %~n1.bin
+%FCMP% %~n1.err ..\exp\plain_bin\%~n1.err
+if errorlevel 1 goto end
+del %~n1.err
 goto end
 
 :cmppebin
@@ -68,6 +71,9 @@ echo .
 %FCMP% %~n1.exe ..\exp\pe64_bin\%~n1.exe
 if errorlevel 1 goto end
 del %~n1.exe
+%FCMP% %~n1.err ..\exp\pe64_bin\%~n1.err
+if errorlevel 1 goto end
+del %~n1.err
 goto end
 
 :cmpwin64
@@ -214,6 +220,9 @@ echo .
 %FCMP% %~n1.exe ..\exp\mz\%~n1.exe
 if errorlevel 1 goto end
 del %~n1.exe
+%FCMP% %~n1.err ..\exp\mz\%~n1.err
+if errorlevel 1 goto end
+del %~n1.err
 goto end
 
 :flat16
