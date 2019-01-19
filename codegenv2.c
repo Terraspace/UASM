@@ -591,16 +591,118 @@ unsigned char BuildREX(unsigned char RexByte, struct Instr_Def* instr, struct ex
 /* =====================================================================
   Build up instruction VEX prefix bytes.
   ===================================================================== */
-void BuildVEX()
+void BuildVEX(bool* needVex, unsigned char* vexSize, unsigned char* vexBytes, struct Instr_Def* instr, struct expr opnd[4],bool needB, bool needX)
 {
+	/* VEX 3 byte form */
+	/*   7                           0     7                           0    */
+	/* +---+---+---+---+---+---+---+---+   +---+---+---+---+---+---+---+---+*/
+	/* |~R |~X |~B | map_select        |   |W/E|    ~vvvv      | L |   pp  |*/
+	/* +---+---+---+---+---+---+---+---+   +---+---+---+---+---+---+---+---+*/
 
+	// A VEX instruction whose values for certain fields are VEX.~X == 1, VEX.~B == 1, VEX.W/E == 0 and map_select == b00001 may be encoded using the two byte VEX.
+
+	/* VEX 2 byte form */
+	/*  7                           0    */
+	/* +---+---+---+---+---+---+---+---+ */
+	/* |~R |     ~vvvv     | L |   pp  | */
+	/* +---+---+---+---+---+---+---+---+ */
+	/*
+	~R			1 bit	This 1 - bit value is an 'inverted' extension to the MODRM.reg field.The inverse of REX.R.See Registers.
+	~X			1 bit	This 1 - bit value is an 'inverted' extension to the SIB.index field.The inverse of REX.X.See 64 - bit addressing.
+	~B			1 bit	This 1 - bit value is an 'inverted' extension to the MODRM.rm field or the SIB.base field.The inverse of REX.B.See 64 - bit addressing.
+	map_select	5 bits	Specifies the opcode map to use.
+	W / E		1 bit	For integer instructions : when 1, a 64 - bit operand size is used; otherwise, when 0, the default operand size is used(equivalent with REX.W).For non - integer instructions, this bit is a general opcode extension bit.
+	~vvvv		4 bits	An additional operand for the instruction.The value of the XMM or YMM register (see Registers) is 'inverted'.
+	L			1 bit	When 0, a 128 - bit vector lengh is used.Otherwise, when 1, a 256 - bit vector length is used.
+	pp			2 bits	Specifies an implied mandatory prefix for the opcode.
+						Value	Implied mandatory prefix
+						b00		none
+						b01		0x66
+						b10		0xF3
+						b11		0xF2
+	*/
+	unsigned char VEXl     = 0;
+	unsigned char VEXpp    = 0;
+	unsigned char VEXwe    = 0;
+	unsigned char VEXvvvv  = 0;
+	unsigned char VEXr     = 1;
+	unsigned char VEXb     = 1;
+	unsigned char VEXx     = 1;
+	unsigned char VEXmmmmm = 0;
+
+	*needVex = TRUE;
+	*vexSize = 0;
+
+	/* VEX.pp value (used in both 2 and 3 byte forms) */
+	if ((instr->vexflags & VEX_66) != 0)
+		VEXpp = 0x01;
+	else if ((instr->vexflags & VEX_F3) != 0)
+		VEXpp = 0x02;
+	else if ((instr->vexflags & VEX_F2) != 0)
+		VEXpp = 0x03;
+
+	/* VEX.L value (used in both 2 and 3 byte forms) */
+	if (instr->op_size == 16)
+		VEXl = 0;
+	else if (instr->op_size == 32)
+		VEXl = 1;
+
+	/* VEX.w/e value (only present in 3 byte form) */
+	if ((instr->vexflags & VEX_W0) != 0)
+		VEXwe = 0;
+	else if ((instr->vexflags & VEX_W1) != 0)
+	{
+		VEXwe = 1;
+		*vexSize = 3;
+	}
+
+	/* Either of these flags mandate 3-byte VEX form */
+	if ((instr->vexflags & VEX_0F38) != 0 || (instr->vexflags & VEX_0F3A) != 0)
+		*vexSize = 3;
+
+	/* VEX.mmmmm field - determinant for 2/3 byte size */
+	if ((instr->vexflags & VEX_0F) != 0)
+		VEXmmmmm = 0;
+	else if ((instr->vexflags & VEX_0F38) != 0)
+		VEXmmmmm = 1;
+	else if ((instr->vexflags & VEX_0F3A) != 0)
+		VEXmmmmm = 2;
+
+	/* VEX.~r extension value */
+	if ((instr->vexflags & VEX_R) != 0)
+		VEXr = 0;
+	/* VEX.~x extension value */
+	if ((instr->vexflags & VEX_X) != 0 || needX)
+		VEXx = 0;
+	/* VEX.~b extension value */
+	if ((instr->vexflags & VEX_B) != 0 || needB)
+		VEXb = 0;
+
+	/* If VEX.WIG is present and we don't ned VEX.mmmmm use 2byte form */
+	if ((instr->vexflags & VEX_WIG) != 0 && *vexSize != 3 && VEXx == 1 && VEXb == 1)
+		*vexSize = 2;
+	
+	/* Invert VEX.vvvv value */
+	VEXvvvv = ~VEXvvvv;
+
+	/* Output 2byte VEX form */
+	if (*vexSize == 2)
+	{
+		vexBytes[0] = 0xc5;
+		vexBytes[1] = (VEXpp) | (VEXl << 2) | ((VEXvvvv&0xf) << 3) | (VEXr << 7);
+	}
+	/* Output 3byte VEX form */
+	else if (*vexSize == 3)
+	{
+		vexBytes[0] = 0xc4;
+	}
 }
 
 /* =====================================================================
   Build up instruction SIB, ModRM and REX bytes for memory operand.
   ===================================================================== */
 int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned char* pREX, bool* needModRM, bool* needSIB,
-	                     unsigned int* dispSize, uint_64* pDisp, struct Instr_Def* instr, struct expr opExpr[4]) 
+	                     unsigned int* dispSize, uint_64* pDisp, struct Instr_Def* instr, struct expr opExpr[4], bool* needB, bool* needX) 
 {
 	int             returnASO   = 0;
 	unsigned char   sibScale    = 0;
@@ -636,6 +738,13 @@ int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned cha
 	if (ModuleInfo.Ofssize == USE64 && baseRegSize == 2)
 	{
 		EmitError(BITS16_MEM_NOT_ALLOWED_IN_LONG_MODE);
+		return returnASO;
+	}
+
+	/* Don't allow 64bit only registers in 32/16 bit modes */
+	if ((idxRegNo > 7 || baseRegNo > 7) && ModuleInfo.Ofssize != USE64 && idxRegNo < 16 && baseRegNo < 16)
+	{
+		EmitError(INVALID_ADDRESSING_MODE_WITH_CURRENT_CPU_SETTING);
 		return returnASO;
 	}
 
@@ -765,13 +874,19 @@ int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned cha
 		*pDisp = opExpr[(instr->memOpnd & 7)].value64;
 	}
 
-	// Extend REX(.B) and REX(.X) to account for 64bit base and index registers.
+	// Extend V/REX(.B) and V/REX(.X) to account for 64bit base and index registers.
 	// We use RegNo==16 to represent RIP (even though it's not directly encodable).
 	/* ----------------------------------------------------------------------- */
-	if (baseRegNo > 7 && baseRegNo < 16) 
+	if (baseRegNo > 7 && baseRegNo < 16)
+	{
 		*pREX |= 0x41;
+		*needB = TRUE;
+	}
 	if (idxRegNo > 7 && idxRegNo < 16)
+	{
 		*pREX |= 0x42;
+		*needX = TRUE;
+	}
 
 	//  scale index    base
 	// +--+--+--+--+--+--+--+--+
@@ -818,10 +933,16 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 	bool needSIB   = FALSE;
 	bool needFixup = FALSE;
 	bool hasMemReg = FALSE;
+	bool needVEX   = FALSE;
+	bool needB     = FALSE; /* Instruction needs REX.B or VEX.~B promotion (filled in by BuildMemoryEncoding) */
+	bool needX     = FALSE;	/* Instruction needs REX.X or VEX.~X promotion (filled in by BuildMemoryEncoding) */
+
 	int  aso       = 0; /* Build Memory Encoding forced address size override */
 
 	unsigned char opcodeByte = 0;
 	unsigned char rexByte    = 0;
+	unsigned char vexSize    = 0;
+	unsigned char vexBytes[3];
 	unsigned char modRM      = 0;
 	unsigned char sib        = 0;
 	unsigned int  dispSize   = 0;
@@ -937,10 +1058,14 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		/* If the matched instruction requires processing of a memory address */
 		if(matchedInstr->memOpnd != NO_MEM)
 			aso = BuildMemoryEncoding(&modRM, &sib, &rexByte, &needModRM, &needSIB,
-				                &dispSize, &displacement, matchedInstr, opExpr);					/* This could result in modifications to REX, modRM and SIB bytes */
+				                &dispSize, &displacement, matchedInstr, opExpr, &needB, &needX);	/* This could result in modifications to REX, modRM and SIB bytes */
 		modRM |= BuildModRM(matchedInstr->modRM, matchedInstr, opExpr, &needModRM, &needSIB);		/* Modify the modRM value for any non-memory operands */
-		if(CodeInfo->Ofssize == USE64)
-			rexByte |= BuildREX(rexByte, matchedInstr, opExpr);									    /* Modify the REX prefix for non-memory operands/sizing */
+		
+		/* Create REX or VEX prefixes */
+		if ((matchedInstr->vexflags & VEX) != 0)
+			BuildVEX(&needVEX, &vexSize, &vexBytes, matchedInstr, opExpr, needB, needX);			/* Create the VEX prefix bytes for both reg and memory operands */
+		else if(CodeInfo->Ofssize == USE64)
+			rexByte |= BuildREX(rexByte, matchedInstr, opExpr, FALSE);							    /* Modify the REX prefix for non-memory operands/sizing */
 
 		//----------------------------------------------------------
 		// Check if address or operand size override prefixes are required.
@@ -1048,6 +1173,8 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		//----------------------------------------------------------
 		// Output VEX prefix if required.
 		//----------------------------------------------------------
+		if (needVEX)
+			OutputBytes((unsigned char *)&vexBytes, vexSize, NULL);
 
 		//----------------------------------------------------------
 		// Output REX prefix if required.

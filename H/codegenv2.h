@@ -10,7 +10,7 @@ enum instr_group {
 	GP2,		/* i386+ encoding group */
 	GP3,        /* 64bit only */
 	SSE0,       /* SSE */
-	VEX0,
+	AVX0,
 	EVEX0,
 	MVEX0,
 	FP0,
@@ -145,18 +145,33 @@ enum op_type {
 #define F_ADDST      (1<<13)	/* ST(n) register number is added to opcode byte */
 #define F_OPCODE_REG (1<<14)	/* Register value is encoded in low 3 bits of opcode byte + REX.b */
 #define ALLOW_SEG    (1<<15)	/* Instruction permits a segment override prefix */
-#define VEX          (1<<16)
-#define VEX_2BYTE    (1<<17)
-#define VEX_3BYTE    (1<<18)
-#define VEX_NR       (1<<19)
-#define EVEX         (1<<20)
-#define DSPW         (1<<21)	/* Instruction requires a machine-word sized displacement always */
-#define ALLOW_SEGX   (1<<22)	/* movabs allows encoding of segment register other than fs/gs, this indicates that condition */
-#define REXP_MEM     (1<<23)	/* Instruction promoted to 64bit special mode if specified memory operand is qword sized */
-#define FWAIT        (1<<24)
-#define NO_FWAIT     (1<<25)
-#define NO_MEM_REG   (1<<26)	/* This indicates that only an absolute or displacement only memory address is supported */
-#define NO_PREFIX    (1<<27)    /* Manual refers to this as NP (66/f2/f3 prefixes prohibited) */
+#define DSPW         (1<<16)	/* Instruction requires a machine-word sized displacement always */
+#define ALLOW_SEGX   (1<<17)	/* movabs allows encoding of segment register other than fs/gs, this indicates that condition */
+#define REXP_MEM     (1<<18)	/* Instruction promoted to 64bit special mode if specified memory operand is qword sized */
+#define FWAIT        (1<<19)
+#define NO_FWAIT     (1<<20)
+#define NO_MEM_REG   (1<<21)	/* This indicates that only an absolute or displacement only memory address is supported */
+#define NO_PREFIX    (1<<22)    /* Manual refers to this as NP (66/f2/f3 prefixes prohibited) */
+
+/* VEX flags */
+#define NO_VEX		 (0)
+#define VEX          (1<<0)		/* Instruction requires a VEX prefix */
+#define VEX_WIG      (1<<1)		/* Instruction can use C5h(2byte) form (if no VEX.mmmmm) or VEX.W is ignored in C4H(3byte) form */
+#define VEX_W0       (1<<2)     /* VEX.W = 0, extended opcode bit, or promotion to 64bit of gp register or memory operand */
+#define VEX_W1       (1<<3)		/* "" */
+#define VEX_66		 (1<<4)
+#define VEX_F2       (1<<5)
+#define VEX_F3       (1<<6)
+#define VEX_0F		 (1<<7)
+#define VEX_0F3A     (1<<8)
+#define VEX_0F38     (1<<9)
+#define VEX_LIG      (1<<10)
+#define VEX_NDS      (1<<11)	/* Specifies VEX.vvvv is valid for encoding of register operand NDS encodes first source */
+#define VEX_NDD      (1<<12)    /* NDD encode destination not encodable in ModR/M:reg field */
+#define VEX_DDS      (1<<13)	/* DDS encode the second source register in 3-op form when first source overwritten by result */
+#define VEX_R		 (1<<14)
+#define VEX_B        (1<<15)
+#define VEX_X        (1<<16)
 
 /* Required ASO/OSO flags */
 #define OP_SIZE_OVERRIDE   0x66
@@ -285,6 +300,7 @@ struct Instr_Def {
 	enum op_type      operand_types[5];
 	enum instr_group  group;
 	uint_32			  flags;
+	uint_32			  vexflags;
 	unsigned char     opcode_bytes;
 	unsigned char     opcode[4];
 	unsigned char     op_size;			/* Size in bytes of operation */
@@ -323,7 +339,9 @@ bool IsValidInCPUMode(struct Instr_Def* instr);
 
 unsigned char BuildModRM(unsigned char modRM, struct Instr_Def* instr, struct expr opnd[4], bool* needRM, bool* needSIB);	/* Build instruction ModRM byte */
 unsigned char BuildREX(unsigned char RexByte, struct Instr_Def* instr, struct expr opnd[4]);								/* Build REX prefix byte        */
-void          BuildVEX();																									/* Build VEX prefix bytes       */
+void          BuildVEX(bool* needVex, unsigned char* vexSize, unsigned char* vexBytes, 
+	                   struct Instr_Def* instr, struct expr opnd[4], bool needB, bool needX);								/* Build VEX prefix bytes       */
 int           BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned char* pREX, bool* needRM, bool* needSIB,
-	                              unsigned int* dispSize, int* pDisp, struct Instr_Def* instr, struct expr opExpr[4]);
-unsigned char GetRegisterNo(struct asm_tok *regTok);												/* Get Register Encoding Number from Token */
+	                              unsigned int* dispSize, int* pDisp, struct Instr_Def* instr, 
+								  struct expr opExpr[4], bool* needB, bool* needX);											/* Build Memory encoding ModRM/SIB bytes   */
+unsigned char GetRegisterNo(struct asm_tok *regTok);																		/* Get Register Encoding Number from Token */
