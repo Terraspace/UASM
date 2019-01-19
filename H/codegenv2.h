@@ -322,7 +322,8 @@ bool Require_ADDR_Size_Override(struct Instr_Def* instr, struct code_info* CodeI
 bool IsValidInCPUMode(struct Instr_Def* instr);
 
 unsigned char BuildModRM(unsigned char modRM, struct Instr_Def* instr, struct expr opnd[4], bool* needRM, bool* needSIB);	/* Build instruction ModRM byte */
-unsigned char BuildREX(unsigned char RexByte, struct Instr_Def* instr, struct expr opnd[4]);	/* Build REX prefix byte */
+unsigned char BuildREX(unsigned char RexByte, struct Instr_Def* instr, struct expr opnd[4]);								/* Build REX prefix byte        */
+void          BuildVEX();																									/* Build VEX prefix bytes       */
 int           BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned char* pREX, bool* needRM, bool* needSIB,
 	                              unsigned int* dispSize, int* pDisp, struct Instr_Def* instr, struct expr opExpr[4]);
 unsigned char GetRegisterNo(struct asm_tok *regTok);												/* Get Register Encoding Number from Token */

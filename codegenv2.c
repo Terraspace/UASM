@@ -248,37 +248,21 @@ enum op_type MatchOperand(struct code_info *CodeInfo, struct opnd_item op, struc
 			result = R8;
 			
 			/* If AL is somehow passed in as an OP_R8, promote it first */
-			if (strcasecmp(opExpr.base_reg->string_ptr, "al") == 0)
+			if (opExpr.base_reg->tokval == T_AL)
 				result = R8_AL;
 
 			/* If the register operand is ah,bh,ch,dh */
-			if (strcasecmp(opExpr.base_reg->string_ptr, "ah") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "bh") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "ch") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "dh") == 0)
-			{
+			if (opExpr.base_reg->tokval >= T_AH && opExpr.base_reg->tokval <= T_BH)
 				result = R8H;
-			}
+
 			/* If the register operand is r8b-r15b */
-			else if (strcasecmp(opExpr.base_reg->string_ptr, "r8b") == 0 ||
-					 strcasecmp(opExpr.base_reg->string_ptr, "r9b") == 0 ||
-					 strcasecmp(opExpr.base_reg->string_ptr, "r10b") == 0 ||
-					 strcasecmp(opExpr.base_reg->string_ptr, "r11b") == 0 ||
-					 strcasecmp(opExpr.base_reg->string_ptr, "r12b") == 0 ||
-					 strcasecmp(opExpr.base_reg->string_ptr, "r13b") == 0 ||
-					 strcasecmp(opExpr.base_reg->string_ptr, "r14b") == 0 ||
-					 strcasecmp(opExpr.base_reg->string_ptr, "r15b") == 0)
-			{
+			else if (opExpr.base_reg->tokval >= T_R8B && opExpr.base_reg->tokval <= T_R15B)
 				result = R8E;
-			}
-			else if (strcasecmp(opExpr.base_reg->string_ptr, "sil") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "dil") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "spl") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "bpl") == 0)
-			{
+
+			else if (opExpr.base_reg->tokval >= T_SPL && opExpr.base_reg->tokval <= T_DIL)
 				result = R8U;
-			}
 			break;
+
 		case OP_DX:
 			result = R16;
 			break;
@@ -286,62 +270,38 @@ enum op_type MatchOperand(struct code_info *CodeInfo, struct opnd_item op, struc
 			result = R16;
 
 			/* If AX is somehow passed in as an OP_R16, promote it first */
-			if (strcasecmp(opExpr.base_reg->string_ptr, "ax") == 0)
+			if (opExpr.base_reg->tokval == T_AX)
 				result = R16_AX;
 
 			/* If the register operand is r8w-r15w */
-			if (strcasecmp(opExpr.base_reg->string_ptr, "r8w") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "r9w") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "r10w") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "r11w") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "r12w") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "r13w") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "r14w") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "r15w") == 0)
-			{
+			else if (opExpr.base_reg->tokval >= T_R8W && opExpr.base_reg->tokval <= T_R15W)
 				result = R16E;
-			}
 			break;
+
 		case OP_R32:
 			result = R32;
 
 			/* If EAX is somehow passed in as an OP_R32, promote it first */
-			if (strcasecmp(opExpr.base_reg->string_ptr, "eax") == 0)
+			if (opExpr.base_reg->tokval == T_EAX)
 				result = R32_EAX;
 
 			/* If the register operand is r8d-r15d */
-			if (strcasecmp(opExpr.base_reg->string_ptr, "r8d") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "r9d") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "r10d") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "r11d") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "r12d") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "r13d") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "r14d") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "r15d") == 0)
-			{
+			else if (opExpr.base_reg->tokval >= T_R8D && opExpr.base_reg->tokval <= T_R15D)
 				result = R32E;
-			}
 			break;
+
 		case OP_R64:
 			result = R64;
 			
 			/* If RAX is somehow passed in as an OP_R64, promote it first */
-			if (strcasecmp(opExpr.base_reg->string_ptr, "rax") == 0)
+			if (opExpr.base_reg->tokval == T_RAX)
 				result = R64_RAX;
 
 			/* If the register operand is r8-r15 */
-			if (strcasecmp(opExpr.base_reg->string_ptr, "r8") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "r9") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "r10") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "r11") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "r12") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "r13") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "r14") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "r15") == 0)
-			{
+			else if (opExpr.base_reg->tokval >= T_R8 && opExpr.base_reg->tokval <= T_R15)
 				result = R64E;
-			}
 			break;
+
 		case OP_I8:
 			result = IMM8;
 			break;
@@ -357,19 +317,11 @@ enum op_type MatchOperand(struct code_info *CodeInfo, struct opnd_item op, struc
 		case OP_XMM:
 			result = R_XMM;
 			/* If register xmm8-xmm15 USE R_XMME */
-			if (strcasecmp(opExpr.base_reg->string_ptr, "xmm8") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "xmm9") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "xmm10") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "xmm11") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "xmm12") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "xmm13") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "xmm14") == 0 ||
-				strcasecmp(opExpr.base_reg->string_ptr, "xmm15") == 0)
-			{
+			if (opExpr.base_reg->tokval >= T_XMM8 && opExpr.base_reg->tokval <= T_XMM15)
 				result = R_XMME;
-			}
 			/* If register xmm16-xmm31 USE AVX512_128 */
 			break;
+
 		case OP_YMM:
 			result = R_YMM;
 			/* If register ymm16-ymm31 USE AVX512_256 */
@@ -455,399 +407,102 @@ unsigned char GetRegisterNo(struct asm_tok *regTok)
 	unsigned char regNo = 17;
 	if (regTok)
 	{
-		switch (regTok->tokval)
+		if (regTok->tokval >= T_RAX && regTok->tokval <= T_RIP)
+			regNo = (unsigned char)(regTok->tokval - T_RAX);
+		else if (regTok->tokval >= T_EAX && regTok->tokval <= T_EDI)
+			regNo = (unsigned char)(regTok->tokval - T_EAX);
+		else if (regTok->tokval >= T_R8D && regTok->tokval <= T_R15D)
+			regNo = (unsigned char)((regTok->tokval - T_R8D) + 8);
+		else if (regTok->tokval >= T_R8W && regTok->tokval <= T_R15W)
+			regNo = (unsigned char)((regTok->tokval - T_R8W) + 8);
+		else if (regTok->tokval >= T_AL && regTok->tokval <= T_BH)
+			regNo = (unsigned char)(regTok->tokval - T_AL);
+		else if (regTok->tokval >= T_R8B && regTok->tokval <= T_R15B)
+			regNo = (unsigned char)((regTok->tokval - T_R8B) + 8);
+		else if (regTok->tokval >= T_AX && regTok->tokval <= T_DI)
+			regNo = (unsigned char)(regTok->tokval - T_AX);
+		else if (regTok->tokval >= T_XMM0 && regTok->tokval <= T_XMM7)
+			regNo = (unsigned char)(regTok->tokval - T_XMM0);
+		else if (regTok->tokval >= T_XMM8 && regTok->tokval <= T_XMM15)
+			regNo = (unsigned char)((regTok->tokval - T_XMM8) + 8);
+		else if (regTok->tokval >= T_MM0 && regTok->tokval <= T_MM7)
+			regNo = (unsigned char)(regTok->tokval - T_MM0);
+		else if (regTok->tokval >= T_YMM0 && regTok->tokval <= T_YMM7)
+			regNo = (unsigned char)(regTok->tokval - T_YMM0);
+		else if (regTok->tokval >= T_YMM8 && regTok->tokval <= T_YMM15)
+			regNo = (unsigned char)((regTok->tokval - T_YMM8) + 8);
+		else
 		{
-		/* 8bit */
-		case T_AL:
-			regNo = 0;
-			break;
-		case T_CL:
-			regNo = 1;
-			break;
-		case T_DL:
-			regNo = 2;
-			break;
-		case T_BL:
-			regNo = 3;
-			break;
-		case T_AH:
-			regNo = 4;
-			break;
-		case T_SPL:
-			regNo = 4;
-			break;
-		case T_CH:
-			regNo = 5;
-			break;
-		case T_BPL:
-			regNo = 5;
-			break;
-		case T_DH:
-			regNo = 6;
-			break;
-		case T_SIL:
-			regNo = 6;
-			break;
-		case T_BH:
-			regNo = 7;
-			break;
-		case T_DIL:
-			regNo = 7;
-			break;
-		case T_R8B:
-			regNo = 8;
-			break;
-		case T_R9B:
-			regNo = 9;
-			break;
-		case T_R10B:
-			regNo = 10;
-			break;
-		case T_R11B:
-			regNo = 11;
-			break;
-		case T_R12B:
-			regNo = 12;
-			break;
-		case T_R13B:
-			regNo = 13;
-			break;
-		case T_R14B:
-			regNo = 14;
-			break;
-		case T_R15B:
-			regNo = 15;
-			break;
-		/* 16bit */
-		case T_AX:
-			regNo = 0;
-			break;
-		case T_CX:
-			regNo = 1;
-			break;
-		case T_DX:
-			regNo = 2;
-			break;
-		case T_BX:
-			regNo = 3;
-			break;
-		case T_SP:
-			regNo = 4;
-			break;
-		case T_BP:
-			regNo = 5;
-			break;
-		case T_SI:
-			regNo = 6;
-			break;
-		case T_DI:
-			regNo = 7;
-			break;
-		case T_R8W:
-			regNo = 8;
-			break;
-		case T_R9W:
-			regNo = 9;
-			break;
-		case T_R10W:
-			regNo = 10;
-			break;
-		case T_R11W:
-			regNo = 11;
-			break;
-		case T_R12W:
-			regNo = 12;
-			break;
-		case T_R13W:
-			regNo = 13;
-			break;
-		case T_R14W:
-			regNo = 14;
-			break;
-		case T_R15W:
-			regNo = 15;
-			break;
-		/* 32bit */
-		case T_EAX:
-			regNo = 0;
-			break;
-		case T_ECX:
-			regNo = 1;
-			break;
-		case T_EDX:
-			regNo = 2;
-			break;
-		case T_EBX:
-			regNo = 3;
-			break;
-		case T_ESP:
-			regNo = 4;
-			break;
-		case T_EBP:
-			regNo = 5;
-			break;
-		case T_ESI:
-			regNo = 6;
-			break;
-		case T_EDI:
-			regNo = 7;
-			break;
-		case T_R8D:
-			regNo = 8;
-			break;
-		case T_R9D:
-			regNo = 9;
-			break;
-		case T_R10D:
-			regNo = 10;
-			break;
-		case T_R11D:
-			regNo = 11;
-			break;
-		case T_R12D:
-			regNo = 12;
-			break;
-		case T_R13D:
-			regNo = 13;
-			break;
-		case T_R14D:
-			regNo = 14;
-			break;
-		case T_R15D:
-			regNo = 15;
-			break;
-		/* 64bit */
-		case T_RAX:
-			regNo = 0;
-			break;
-		case T_RCX:
-			regNo = 1;
-			break;
-		case T_RDX:
-			regNo = 2;
-			break;
-		case T_RBX:
-			regNo = 3;
-			break;
-		case T_RSP:
-			regNo = 4;
-			break;
-		case T_RBP:
-			regNo = 5;
-			break;
-		case T_RSI:
-			regNo = 6;
-			break;
-		case T_RDI:
-			regNo = 7;
-			break;
-		case T_R8:
-			regNo = 8;
-			break;
-		case T_R9:
-			regNo = 9;
-			break;
-		case T_R10:
-			regNo = 10;
-			break;
-		case T_R11:
-			regNo = 11;
-			break;
-		case T_R12:
-			regNo = 12;
-			break;
-		case T_R13:
-			regNo = 13;
-			break;
-		case T_R14:
-			regNo = 14;
-			break;
-		case T_R15:
-			regNo = 15;
-			break;
-		/* specials */
-		case T_RIP:
-			regNo = 16;
-			break;
-		case T_CR0:
-			regNo = 0;
-			break;
-		case T_CR2:
-			regNo = 2;
-			break;
-		case T_CR3:
-			regNo = 3;
-			break;
-		case T_CR4:
-			regNo = 4;
-			break;
-		case T_CR8:
-			regNo = 8;
-			break;
-		case T_DR0:
-			regNo = 0;
-			break;
-		case T_DR1:
-			regNo = 1;
-			break;
-		case T_DR2:
-			regNo = 2;
-			break;
-		case T_DR3:
-			regNo = 3;
-			break;
-		case T_DR6:
-			regNo = 6;
-			break;
-		case T_DR7:
-			regNo = 7;
-			break;
-		/* segments */
-		case T_CS:
-			regNo = 1;
-			break;
-		case T_DS:
-			regNo = 3;
-			break;
-		case T_ES:
-			regNo = 0;
-			break;
-		case T_FS:
-			regNo = 4;
-			break;
-		case T_GS:
-			regNo = 5;
-			break;
-		case T_SS:
-			regNo = 2;
-			break;
-		/* FPU */
-		case T_ST:
-			regNo = 0;
-			break;
-		/* MMX */
-		case T_MM0:
-			regNo = 0;
-			break;
-		case T_MM1:
-			regNo = 1;
-			break;
-		case T_MM2:
-			regNo = 2;
-			break;
-		case T_MM3:
-			regNo = 3;
-			break;
-		case T_MM4:
-			regNo = 4;
-			break;
-		case T_MM5:
-			regNo = 5;
-			break;
-		case T_MM6:
-			regNo = 6;
-			break;
-		case T_MM7:
-			regNo = 7;
-			break;
-		/* SIMD */
-		case T_XMM0:
-			regNo = 0;
-			break;
-		case T_XMM1:
-			regNo = 1;
-			break;
-		case T_XMM2:
-			regNo = 2;
-			break;
-		case T_XMM3:
-			regNo = 3;
-			break;
-		case T_XMM4:
-			regNo = 4;
-			break;
-		case T_XMM5:
-			regNo = 5;
-			break;
-		case T_XMM6:
-			regNo = 6;
-			break;
-		case T_XMM7:
-			regNo = 7;
-			break;
-		case T_XMM8:
-			regNo = 8;
-			break;
-		case T_XMM9:
-			regNo = 9;
-			break;
-		case T_XMM10:
-			regNo = 10;
-			break;
-		case T_XMM11:
-			regNo = 11;
-			break;
-		case T_XMM12:
-			regNo = 12;
-			break;
-		case T_XMM13:
-			regNo = 13;
-			break;
-		case T_XMM14:
-			regNo = 14;
-			break;
-		case T_XMM15:
-			regNo = 15;
-			break;
-		/* AVX */
-		case T_YMM0:
-			regNo = 0;
-			break;
-		case T_YMM1:
-			regNo = 1;
-			break;
-		case T_YMM2:
-			regNo = 2;
-			break;
-		case T_YMM3:
-			regNo = 3;
-			break;
-		case T_YMM4:
-			regNo = 4;
-			break;
-		case T_YMM5:
-			regNo = 5;
-			break;
-		case T_YMM6:
-			regNo = 6;
-			break;
-		case T_YMM7:
-			regNo = 7;
-			break;
-		case T_YMM8:
-			regNo = 8;
-			break;
-		case T_YMM9:
-			regNo = 9;
-			break;
-		case T_YMM10:
-			regNo = 10;
-			break;
-		case T_YMM11:
-			regNo = 11;
-			break;
-		case T_YMM12:
-			regNo = 12;
-			break;
-		case T_YMM13:
-			regNo = 13;
-			break;
-		case T_YMM14:
-			regNo = 14;
-			break;
-		case T_YMM15:
-			regNo = 15;
-			break;
+			switch (regTok->tokval)
+			{
+				/* 8bit */
+			case T_SPL:
+				regNo = 4;
+				break;
+			case T_BPL:
+				regNo = 5;
+				break;
+			case T_SIL:
+				regNo = 6;
+				break;
+			case T_DIL:
+				regNo = 7;
+				break;
+			case T_CR0:
+				regNo = 0;
+				break;
+			case T_CR2:
+				regNo = 2;
+				break;
+			case T_CR3:
+				regNo = 3;
+				break;
+			case T_CR4:
+				regNo = 4;
+				break;
+			case T_CR8:
+				regNo = 8;
+				break;
+			case T_DR0:
+				regNo = 0;
+				break;
+			case T_DR1:
+				regNo = 1;
+				break;
+			case T_DR2:
+				regNo = 2;
+				break;
+			case T_DR3:
+				regNo = 3;
+				break;
+			case T_DR6:
+				regNo = 6;
+				break;
+			case T_DR7:
+				regNo = 7;
+				break;
+			case T_CS:
+				regNo = 1;
+				break;
+			case T_DS:
+				regNo = 3;
+				break;
+			case T_ES:
+				regNo = 0;
+				break;
+			case T_FS:
+				regNo = 4;
+				break;
+			case T_GS:
+				regNo = 5;
+				break;
+			case T_SS:
+				regNo = 2;
+				break;
+			case T_ST:
+				regNo = 0;
+				break;
+			}
 		}
 	}
 	return regNo;
@@ -931,6 +586,14 @@ unsigned char BuildREX(unsigned char RexByte, struct Instr_Def* instr, struct ex
 			RexByte |= 0x48;
 	}
 	return RexByte;
+}
+
+/* =====================================================================
+  Build up instruction VEX prefix bytes.
+  ===================================================================== */
+void BuildVEX()
+{
+
 }
 
 /* =====================================================================
@@ -1505,6 +1168,3 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 
 	return retcode;
 }
-
-//  /c /DX86_64 /DWINDOWS64 -win64 /DARCH=SKX -Fl=out.lst /Foamd64\zr4dwpn_skx.obj zr4dwpn.asm
-//  d:\foo2
