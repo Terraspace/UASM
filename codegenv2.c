@@ -890,12 +890,14 @@ int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned cha
 	/* ----------------------------------------------------------------------- */
 	if (baseRegNo > 7 && baseRegNo < 16)
 	{
-		*pREX |= 0x41;
+		if(instr->vexflags == NO_VEX)
+			*pREX |= 0x41;
 		*needB = TRUE;
 	}
 	if (idxRegNo > 7 && idxRegNo < 16)
 	{
-		*pREX |= 0x42;
+		if (instr->vexflags == NO_VEX)
+			*pREX |= 0x42;
 		*needX = TRUE;
 	}
 
