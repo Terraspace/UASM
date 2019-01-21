@@ -324,10 +324,14 @@ enum op_type MatchOperand(struct code_info *CodeInfo, struct opnd_item op, struc
 
 		case OP_YMM:
 			result = R_YMM;
+			/* If register is ymm8-ymm15 USE R_YMME */
+			if (opExpr.base_reg->tokval >= T_YMM8 && opExpr.base_reg->tokval <= T_YMM15)
+				result = R_YMME;
 			/* If register ymm16-ymm31 USE AVX512_256 */
 			break;
+
 		case OP_ZMM:
-			result = AVX512;
+			result = R_ZMM;
 			break;
 	}
 	return result;
@@ -662,11 +666,11 @@ void BuildVEX(bool* needVex, unsigned char* vexSize, unsigned char* vexBytes, st
 
 	/* VEX.mmmmm field - determinant for 2/3 byte size */
 	if ((instr->vexflags & VEX_0F) != 0)
-		VEXmmmmm = 0;
-	else if ((instr->vexflags & VEX_0F38) != 0)
 		VEXmmmmm = 1;
-	else if ((instr->vexflags & VEX_0F3A) != 0)
+	else if ((instr->vexflags & VEX_0F38) != 0)
 		VEXmmmmm = 2;
+	else if ((instr->vexflags & VEX_0F3A) != 0)
+		VEXmmmmm = 3;
 
 	/* VEX.~r extension value */
 	if ((instr->vexflags & VEX_R) != 0)
@@ -679,9 +683,14 @@ void BuildVEX(bool* needVex, unsigned char* vexSize, unsigned char* vexBytes, st
 		VEXb = 0;
 
 	/* If VEX.WIG is present and we don't ned VEX.mmmmm use 2byte form */
-	if ((instr->vexflags & VEX_WIG) != 0 && *vexSize != 3 && VEXx == 1 && VEXb == 1)
+	if (((instr->vexflags & VEX_WIG) != 0 && VEXx == 1 && VEXb == 1 ) || 
+		(*vexSize != 3 && VEXx == 1 && VEXb == 1))
 		*vexSize = 2;
 	
+	/* Either VEX.x or VEX.b set require 3byte  form */
+	if (VEXx == 0 || VEXb == 0)
+		*vexSize = 3;
+
 	/* Invert VEX.vvvv value */
 	VEXvvvv = ~VEXvvvv;
 
@@ -695,6 +704,8 @@ void BuildVEX(bool* needVex, unsigned char* vexSize, unsigned char* vexBytes, st
 	else if (*vexSize == 3)
 	{
 		vexBytes[0] = 0xc4;
+		vexBytes[1] = (VEXr << 7) | (VEXx << 6) | (VEXb << 5) | (VEXmmmmm);
+		vexBytes[2] = (VEXwe << 7) | ((VEXvvvv & 0xf) << 3) | (VEXl << 2) | (VEXpp);
 	}
 }
 

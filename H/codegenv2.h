@@ -89,9 +89,8 @@ enum op_type {
 	R_YMME,
 
 	/* AVX 512 registers (zmm0-31) */
-	AVX512,
-	AVX512_128,
-	AVX512_256,
+	R_ZMM,
+
 	/* RIP Register and K Registers */
 	R_RIP,
 	R_K,
