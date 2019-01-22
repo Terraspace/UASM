@@ -122,6 +122,12 @@ enum op_type DemoteOperand(enum op_type op) {
 	else if (op == M8 || op == M16 || op == M32 || op == M48 || op == M64 || op == M80 || op == M128 || op == M256 || op == M512)
 		ret = M_ANY;
 
+	else if (op == R_XMM || op == R_XMME)
+		ret = R_XMM_ANY;
+
+	else if (op == R_YMM || op == R_YMME)
+		ret = R_YMM_ANY;
+
 	return(ret);
 }
 

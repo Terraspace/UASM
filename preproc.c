@@ -1062,6 +1062,7 @@ int PreprocessLine( char *line, struct asm_tok tokenarray[] )
 	still requires expansion, and then they accidentally remain set when moving onto a regular line via codegen */
 	decoflags = 0;
 	broadflags = 0;
+	evexflag = 0;
 
     Token_Count = Tokenize( line, 0, tokenarray, TOK_DEFAULT );
 

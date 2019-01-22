@@ -413,7 +413,7 @@ static void output_opc(struct code_info *CodeInfo)
 
 	}*/
       /* these are only EVEX instructions, v2.46 */
-  if ((CodeInfo->pinstr->prefix & 0xF00) == IZSZ)
+  if ((CodeInfo->pinstr->prefix & 0xF00) == IZSZ || (evexflag == TRUE))
 	  CodeInfo->evex_flag = TRUE;
   if (!evex){
 	  CodeInfo->evex_flag = FALSE;

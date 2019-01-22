@@ -83,11 +83,14 @@ enum op_type {
 	R_XMM,
 	/* x64 XMM registers (xmm8-xmm15) */
 	R_XMME,
+	/* ANY XMM register (used as a demoted type for 3 opnd forms) */
+	R_XMM_ANY,
 	/* x86 YMM registers (ymm0-ymm7)  */
 	R_YMM,
 	/* x64 YMM registers (ymm8-ymm15) */
 	R_YMME,
-
+	/* ANY YMM register (used as a demoted type for 3 opnd forms) */
+	R_YMM_ANY,
 	/* AVX 512 registers (zmm0-31) */
 	R_ZMM,
 

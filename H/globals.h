@@ -897,6 +897,7 @@ struct module_info {
 	unsigned char       decoflags;          /* EVEX  sets up decorator flags in P2: z, aaa   */
 	unsigned char       broadflags;         /* EVEX  sets up decorator flags in P2: b        */
 	unsigned char       evex;               /* EVEX  encoding  */
+	unsigned char       evexflag;			/* UASM 2.48 User specified EVEX promotion */
 	unsigned char       ZEROLOCALS;         /* zero local variables  */
 #endif
 

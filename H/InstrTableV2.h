@@ -246,4 +246,6 @@ struct Instr_Def InstrTableV2[] = {
 	{ "vmovaps", 2, { M_ANY,   R_XMME  }, AVX0, (F_MODRM | F_MODRM_REG),              (VEX | VEX_R | VEX_WIG | VEX_0F) ,		  1, { 0x29, 0x00, 0x00 }, 16, MOD_MEM_REG, 0, 0               ,0                  , (      X32 | X64), RM_DST,  NO_PREFIX, NO_IMM,     MEM_OPND_0, P_686 | P_AVX, 0, NULL },
 	{ "vmovaps", 2, { M_ANY,   R_YMM   }, AVX0, (F_MODRM | F_MODRM_REG),              (VEX | VEX_WIG | VEX_0F) ,                  1, { 0x29, 0x00, 0x00 }, 32, MOD_MEM_REG, 0, 0               ,0                  , (      X32 | X64), RM_DST,  NO_PREFIX, NO_IMM,     MEM_OPND_0, P_686 | P_AVX, 0, NULL },
 	{ "vmovaps", 2, { M_ANY,   R_YMME  }, AVX0, (F_MODRM | F_MODRM_REG),              (VEX | VEX_R | VEX_WIG | VEX_0F) ,		  1, { 0x29, 0x00, 0x00 }, 32, MOD_MEM_REG, 0, 0               ,0                  , (      X32 | X64), RM_DST,  NO_PREFIX, NO_IMM,     MEM_OPND_0, P_686 | P_AVX, 0, NULL },
+
+	{ "vmulps",  3, { R_XMM, R_XMM_ANY, R_XMM }, AVX0, (F_MODRM | F_MODRM_REG | F_MODRM_RM), (VEX | VEX_WIG | VEX_0F | VEX_NDS) , 1, { 0x59, 0x00, 0x00 }, 16, MOD_REG_REG, 0, 0               ,0                  , (      X32 | X64), REG_DST, NO_PREFIX, NO_IMM,     NO_MEM,     P_686 | P_AVX, 0, NULL },
 };

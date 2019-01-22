@@ -1197,6 +1197,16 @@ int Tokenize( char *line, unsigned int start, struct asm_tok tokenarray[], unsig
             ModuleInfo.CurrComment = commentbuffer;
             *p.input = NULLC;
         }
+		
+		/* UASM 2.48 Handle {evex} promotion decorator */
+		if (*p.input == '{') {
+			if (_memicmp(p.input + 1, "evex", 4) == 0)
+			{
+				evexflag = TRUE;
+				p.input += 6;
+				continue;
+			}
+		}
 
         tokenarray[p.index].tokpos = p.input;
         if( *p.input == NULLC ) {

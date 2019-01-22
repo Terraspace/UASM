@@ -248,7 +248,7 @@ enum directive_type {
 };
 #undef  res
 
-#define MAX_OPND 3
+#define MAX_OPND 4
 
 struct opnd_item {
     enum operand_type type;
@@ -361,6 +361,7 @@ struct code_info {
 #define OPND1 0
 #define OPND2 1
 #define OPND3 2
+#define OPND4 3
 
 /* branch instructions are still sorted:
  * CALL, JMP, Jcc, J[e|r]CXZ, LOOP, LOOPcc

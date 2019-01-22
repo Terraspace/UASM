@@ -2,32 +2,32 @@
 
     .x64
     .model flat
-;    option evex:1
+    option evex:1
     .code
 
 
-    {evex} vmovntdq  oword ptr [rax],xmm0
-    {evex} vmovntdqa xmm0,oword ptr [rax]
-    {evex} vmovntpd  oword ptr [rax],xmm0
-    {evex} vmovntps  oword ptr [rax],xmm0
-    {evex} vmovntdq  yword ptr [rax],ymm0
-    {evex} vmovntdqa ymm0,yword ptr [rax]
-    {evex} vmovntpd  yword ptr [rax],ymm0
-    {evex} vmovntps  yword ptr [rax],ymm0
+    {evex} vmovntdq  xmmword ptr [rax],xmm0
+    {evex} vmovntdqa xmm0,xmmword ptr [rax]
+    {evex} vmovntpd  xmmword ptr [rax],xmm0
+    {evex} vmovntps  xmmword ptr [rax],xmm0
+    {evex} vmovntdq  ymmword ptr [rax],ymm0
+    {evex} vmovntdqa ymm0,ymmword ptr [rax]
+    {evex} vmovntpd  ymmword ptr [rax],ymm0
+    {evex} vmovntps  ymmword ptr [rax],ymm0
     {evex} vbroadcastss xmm0,dword ptr [rax]
     {evex} vbroadcastss ymm0,dword ptr [rax]
     {evex} vbroadcastsd ymm0,qword ptr [rax]
     {evex} vpermilpd xmm0,xmm1,xmm2
-    {evex} vpermilpd xmm0,xmm1,oword ptr [rax]
+    {evex} vpermilpd xmm0,xmm1,xmmword ptr [rax]
     {evex} vpermilpd xmm0,xmm1,1
     {evex} vpermilpd ymm0,ymm1,ymm2
-    {evex} vpermilpd ymm0,ymm1,yword ptr [rax]
+    {evex} vpermilpd ymm0,ymm1,ymmword ptr [rax]
     {evex} vpermilpd ymm0,ymm1,1
     {evex} vpermilps xmm0,xmm1,xmm2
-    {evex} vpermilps xmm0,xmm1,oword ptr [rax]
+    {evex} vpermilps xmm0,xmm1,xmmword ptr [rax]
     {evex} vpermilps xmm0,xmm1,1
     {evex} vpermilps ymm0,ymm1,ymm2
-    {evex} vpermilps ymm0,ymm1,yword ptr [rax]
+    {evex} vpermilps ymm0,ymm1,ymmword ptr [rax]
     {evex} vpermilps ymm0,ymm1,1
     {evex} vcomisd xmm1,xmm0
     {evex} vcomisd xmm0,xmm0
@@ -149,25 +149,25 @@
     {evex} vcvtdq2ps ymm0,ymm1
     {evex} vcvtdq2ps ymm0,[rax]
     {evex} vcvtpd2dq xmm0,xmm1
-    {evex} vcvtpd2dq xmm0,oword ptr [rax]
+    {evex} vcvtpd2dq xmm0,xmmword ptr [rax]
     {evex} vcvtpd2dq xmm0,ymm1
-    {evex} vcvtpd2dq xmm0,yword ptr [rax]
+    {evex} vcvtpd2dq xmm0,ymmword ptr [rax]
     {evex} vcvttpd2dq xmm0,xmm1
-    {evex} vcvttpd2dq xmm0,oword ptr [rax]
+    {evex} vcvttpd2dq xmm0,xmmword ptr [rax]
     {evex} vcvttpd2dq xmm0,ymm1
-    {evex} vcvttpd2dq xmm0,yword ptr [rax]
+    {evex} vcvttpd2dq xmm0,ymmword ptr [rax]
     {evex} vcvtpd2ps xmm0,xmm1
-    {evex} vcvtpd2ps xmm0,oword ptr [rax]
+    {evex} vcvtpd2ps xmm0,xmmword ptr [rax]
     {evex} vcvtpd2ps xmm0,ymm1
-    {evex} vcvtpd2ps xmm0,yword ptr [rax]
+    {evex} vcvtpd2ps xmm0,ymmword ptr [rax]
     {evex} vcvtps2dq xmm0,xmm1
-    {evex} vcvtps2dq xmm0,oword ptr [rax]
+    {evex} vcvtps2dq xmm0,xmmword ptr [rax]
     {evex} vcvtps2dq ymm0,ymm1
-    {evex} vcvtps2dq ymm0,yword ptr [rax]
+    {evex} vcvtps2dq ymm0,ymmword ptr [rax]
     {evex} vcvttps2dq xmm0,xmm1
-    {evex} vcvttps2dq xmm0,oword ptr [rax]
+    {evex} vcvttps2dq xmm0,xmmword ptr [rax]
     {evex} vcvttps2dq ymm0,ymm1
-    {evex} vcvttps2dq ymm0,yword ptr [rax]
+    {evex} vcvttps2dq ymm0,ymmword ptr [rax]
     {evex} vcvtps2pd xmm0,xmm1
     {evex} vcvtps2pd ymm0,xmm1
     {evex} vcvtsd2si eax,xmm1
@@ -187,29 +187,29 @@
     {evex} vcvttss2si eax,xmm1
     {evex} vcvttss2si eax,[rax]
     {evex} vmovapd xmm0,xmm1
-    {evex} vmovapd xmm0,oword ptr [rax]
-    {evex} vmovapd oword ptr [rax],xmm1
+    {evex} vmovapd xmm0,xmmword ptr [rax]
+    {evex} vmovapd xmmword ptr [rax],xmm1
     {evex} vmovapd ymm0,ymm1
-    {evex} vmovapd ymm0,yword ptr [rax]
-    {evex} vmovapd yword ptr [rax],ymm1
+    {evex} vmovapd ymm0,ymmword ptr [rax]
+    {evex} vmovapd ymmword ptr [rax],ymm1
     {evex} vmovaps xmm0,xmm1
-    {evex} vmovaps xmm0,oword ptr [rax]
-    {evex} vmovaps oword ptr [rax],xmm1
+    {evex} vmovaps xmm0,xmmword ptr [rax]
+    {evex} vmovaps xmmword ptr [rax],xmm1
     {evex} vmovaps ymm0,ymm1
-    {evex} vmovaps ymm0,yword ptr [rax]
-    {evex} vmovaps yword ptr [rax],ymm1
+    {evex} vmovaps ymm0,ymmword ptr [rax]
+    {evex} vmovaps ymmword ptr [rax],ymm1
     {evex} vmovupd xmm0,xmm1
-    {evex} vmovupd xmm0,oword ptr [rax]
-    {evex} vmovupd oword ptr [rax],xmm1
+    {evex} vmovupd xmm0,xmmword ptr [rax]
+    {evex} vmovupd xmmword ptr [rax],xmm1
     {evex} vmovupd ymm0,ymm1
-    {evex} vmovupd ymm0,yword ptr [rax]
-    {evex} vmovupd yword ptr [rax],ymm1
+    {evex} vmovupd ymm0,ymmword ptr [rax]
+    {evex} vmovupd ymmword ptr [rax],ymm1
     {evex} vmovups xmm0,xmm1
-    {evex} vmovups xmm0,oword ptr [rax]
-    {evex} vmovups oword ptr [rax],xmm1
+    {evex} vmovups xmm0,xmmword ptr [rax]
+    {evex} vmovups xmmword ptr [rax],xmm1
     {evex} vmovups ymm0,ymm1
-    {evex} vmovups ymm0,yword ptr [rax]
-    {evex} vmovups yword ptr [rax],ymm1
+    {evex} vmovups ymm0,ymmword ptr [rax]
+    {evex} vmovups ymmword ptr [rax],ymm1
     {evex} vmovhlps xmm0,xmm1,xmm2
     {evex} vmovlhps xmm0,xmm1,xmm2
     {evex} vmovhpd xmm0,xmm1,qword ptr [rax]
@@ -239,7 +239,7 @@
     {evex} vmovddup xmm0,xmm1
     {evex} vmovddup xmm0,qword ptr [rax]
     {evex} vmovddup ymm0,ymm1
-    {evex} vmovddup ymm0,yword ptr [rax]
+    {evex} vmovddup ymm0,ymmword ptr [rax]
     {evex} vpaddb   xmm0,xmm0,xmm1
     {evex} vpaddw   xmm0,xmm0,xmm1
     {evex} vpaddd   xmm0,xmm0,xmm1
@@ -262,7 +262,7 @@
     {evex} vpavgw   ymm0,ymm0,ymm1
 
     {evex} vpsrlvq xmm2,xmm6,xmm4
-    {evex} vpsrlvq xmm2,xmm6,OWORD PTR [rcx]
+    {evex} vpsrlvq xmm2,xmm6,xmmword ptr [rcx]
     {evex} vpermpd ymm2,ymm6,0x7
     {evex} vpermpd ymm6,YMMWORD PTR [rcx],0x7
     {evex} vpermq  ymm2,ymm6,0x7

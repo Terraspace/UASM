@@ -3154,7 +3154,7 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 	/* ************************************************************** */
 	/* Support direct usage of USE16, USE32, USE64 for UASM Flat Mode */
 	/* ************************************************************** */
-	if (tokenarray[0].token == T_ID && (strncmp(tokenarray[0].string_ptr, "use16", 5) == 0 || strncmp(tokenarray[0].string_ptr, "USE16", 5) == 0)) {
+	if (tokenarray[0].token == T_ID && strcasecmp(tokenarray[0].string_ptr, "use16") == 0) {
 		ModuleInfo.frame_auto = 0;
 		ModuleInfo.win64_flags = 0;
 		ModuleInfo.offsettype = OT_GROUP;
@@ -3186,7 +3186,7 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 		FStoreLine(1);
 		return(NOT_ERROR);
 	}
-	else if (tokenarray[0].token == T_ID && (strncmp(tokenarray[0].string_ptr, "use32", 5) == 0 || strncmp(tokenarray[0].string_ptr, "USE32", 5) == 0)) {
+	else if (tokenarray[0].token == T_ID && strcasecmp(tokenarray[0].string_ptr, "use32") == 0) {
 		ModuleInfo.frame_auto = 0;
 		ModuleInfo.win64_flags = 0;
 		ModuleInfo.offsettype = OT_GROUP;
@@ -3218,7 +3218,7 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 		FStoreLine(1);
 		return(NOT_ERROR);
 	}
-	else if (tokenarray[0].token == T_ID && (strncmp(tokenarray[0].string_ptr, "use64", 5) == 0 || strncmp(tokenarray[0].string_ptr, "USE64", 5) == 0)) {
+	else if (tokenarray[0].token == T_ID && strcasecmp(tokenarray[0].string_ptr, "use64") == 0) {
 		ModuleInfo.frame_auto = 1;
 		ModuleInfo.win64_flags = 11;
 		ModuleInfo.offsettype = OT_FLAT;
@@ -3380,7 +3380,7 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 
 			default:
 				if (tokenarray[i].token == T_COLON) {
-					DebugMsg(("ParseLine: unexpected colon\n"));
+					DebugMsg1(("ParseLine: unexpected colon\n"));
 					return(EmitError(SYNTAX_ERROR_UNEXPECTED_COLON));
 				}
 				break;
@@ -3414,9 +3414,8 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 	CodeInfo.prefix.adrsiz      = FALSE;
 	CodeInfo.prefix.opsiz       = FALSE;
 	CodeInfo.mem_type           = MT_EMPTY;
-	for (j = 0; j < MAX_OPND; j++) {
+	for (j = 0; j < MAX_OPND; j++)
 		CodeInfo.opnd[j].type = OP_NONE;
-	}
 	CodeInfo.rm_byte   = 0;
 	CodeInfo.sib       = 0;
 	CodeInfo.Ofssize   = ModuleInfo.Ofssize;
@@ -3435,15 +3434,15 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 	CodeInfo.basereg   = 0xff;
 	CodeInfo.indexreg  = 0xff;
 	CodeInfo.zreg      = 0;
-	if (tokenarray[0].tokval >= T_KADDB && tokenarray[0].tokval <= T_KMOVW) {
+	if (tokenarray[0].tokval >= T_KADDB && tokenarray[0].tokval <= T_KMOVW)
 		CodeInfo.evex_flag = FALSE;
-	}
-	else {
+	else 
+	{
 		//Init EVEX three bytes
 		CodeInfo.evex_p0 = 0;      /* P0[3 : 2] Must be 0 */
 		CodeInfo.evex_p1 = 0x4;    /* P1[2]    Must be 1  */
 		CodeInfo.evex_p2 = 0;
-		if (broadflags || decoflags)
+		if (broadflags || decoflags || evexflag)
 			CodeInfo.evex_flag = TRUE;   /* if TRUE will output 0x62 */
 	}
 	CodeInfo.flags = 0;
@@ -3500,20 +3499,20 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 	CodeInfo.pinstr = &InstrTable[IndexFromToken(CodeInfo.token)];
 	i++;
 
-	if (CurrSeg == NULL) {
+	if (CurrSeg == NULL)
 		return(EmitError(MUST_BE_IN_SEGMENT_BLOCK));
-	}
-	if (CurrSeg->e.seginfo->segtype == SEGTYPE_UNDEF) {
+	if (CurrSeg->e.seginfo->segtype == SEGTYPE_UNDEF)
 		CurrSeg->e.seginfo->segtype = SEGTYPE_CODE;
-	}
 	if (ModuleInfo.CommentDataInCode)
 		omf_OutSelect(FALSE);
 
 	/* UASM 2.37: Calculate an inferred memory size if any operand is a register, this can be used when no memory size info is available */
 	/* ********************************************************************************************************************************* */
 	oldi = i;
-	for (j = 0; j < sizeof(opndx) / sizeof(opndx[0]) && tokenarray[i].token != T_FINAL; j++) {
-		if (j) {
+	for (j = 0; j < sizeof(opndx) / sizeof(opndx[0]) && tokenarray[i].token != T_FINAL; j++) 
+	{
+		if (j) 
+		{
 			if (tokenarray[i].token != T_COMMA)
 				break;
 			i++;
@@ -3534,7 +3533,6 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
     /* ************************************************************** */
 	for (j = 0; j < sizeof(opndx) / sizeof(opndx[0]) && tokenarray[i].token != T_FINAL; j++) 
 	{
-
 		if (j) 
 		{
 			if (tokenarray[i].token != T_COMMA)
@@ -3551,7 +3549,8 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 
 		/* UASM 2.37: For immediate indirect memory addresses, allow DS override assumption in 32 and 64bit, and apply memory size info      */
 		/* ********************************************************************************************************************************* */
-		if (opndx[j].kind == EXPR_CONST && opndx[j].isptr) {
+		if (opndx[j].kind == EXPR_CONST && opndx[j].isptr) 
+		{
 			CodeInfo.isptr = TRUE;
 			if (opndx[j].mem_type == MT_EMPTY)
 			{
@@ -3574,6 +3573,9 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 						break;
 					case 32:
 						opndx[j].mem_type = MT_YMMWORD;
+						break;
+					case 64:
+						opndx[j].mem_type = MT_ZMMWORD;
 						break;
 				}
 			}
@@ -3610,7 +3612,7 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 				if (opndx[j - 1].indirect || opndx[j - 2].indirect)
 					return(EmitError(EMBEDDED_ROUNDING_IS_AVAILABLE_ONLY_WITH_REG_REG_OP));
 				CodeInfo.evex_sae = opndx[j].saeflags;
-        CodeInfo.evex_flag = TRUE;  /* {sae} must set evex_flag v247.2 */
+				CodeInfo.evex_flag = TRUE;  /* {sae} must set evex_flag v247.2 */
 				j--;
 				break;
 
@@ -4043,6 +4045,7 @@ nopor:
 	/* now reset EVEX maskflags for the next line */
 	decoflags  = 0;
 	broadflags = 0;
+	evexflag   = 0;
 
 	return( temp );
 }
