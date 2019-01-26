@@ -174,6 +174,7 @@ enum op_type {
 #define VEX_R		 (1<<14)
 #define VEX_B        (1<<15)
 #define VEX_X        (1<<16)
+#define VEX_DUP_NDS  (1<<17)	/* We allow special 2 opnd vex forms which are automatically promoted to 3 with duplicate destination and first source */
 
 /* Required ASO/OSO flags */
 #define OP_SIZE_OVERRIDE   0x66
@@ -339,7 +340,8 @@ bool Require_OPND_Size_Override(struct Instr_Def* instr, struct code_info* CodeI
 bool Require_ADDR_Size_Override(struct Instr_Def* instr, struct code_info* CodeInfo);
 bool IsValidInCPUMode(struct Instr_Def* instr);
 
-unsigned char BuildModRM(unsigned char modRM, struct Instr_Def* instr, struct expr opnd[4], bool* needRM, bool* needSIB);	/* Build instruction ModRM byte */
+unsigned char BuildModRM(unsigned char modRM, struct Instr_Def* instr, struct expr opnd[4], bool* needRM, bool* needSIB,
+						 bool isVEX);																						/* Build instruction ModRM byte */
 unsigned char BuildREX(unsigned char RexByte, struct Instr_Def* instr, struct expr opnd[4]);								/* Build REX prefix byte        */
 void          BuildVEX(bool* needVex, unsigned char* vexSize, unsigned char* vexBytes, 
 	                   struct Instr_Def* instr, struct expr opnd[4], bool needB, bool needX);								/* Build VEX prefix bytes       */

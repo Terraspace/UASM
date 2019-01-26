@@ -598,6 +598,9 @@ static void output_opc(struct code_info *CodeInfo)
         }
       }
     }
+  if (evexflag == TRUE)
+	  CodeInfo->evex_flag = TRUE;
+
   /* If a Kn mask register not present than it is AVX2 instruction v2.38 */
     if (CodeInfo->token >= T_VPGATHERDD && CodeInfo->token <= T_VGATHERQPS)
     {

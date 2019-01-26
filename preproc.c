@@ -1033,11 +1033,12 @@ void EvaluatePreprocessItems(char *line, struct asm_tok tokenarray[])
 			recsym = SymCheck(tokenarray[i].string_ptr);
 			if (recsym && recsym->sym.typekind == TYPE_RECORD && CurrProc)
 			{
-				if (EvalOperand(&i, tokenarray, Token_Count, &opndx[0], 0) == ERROR)
+				if (CurrSeg && (strcmp(CurrSeg->sym.name, "_TEXT") == 0 || strcmp(CurrSeg->sym.name, "_flat") == 0))
 				{
-					EmitErr(INVALID_INSTRUCTION_OPERANDS);
+					if (EvalOperand(&i, tokenarray, Token_Count, &opndx[0], 0) == ERROR)
+						EmitErr(INVALID_INSTRUCTION_OPERANDS);
+					recsym->sym.used = FALSE;
 				}
-				recsym->sym.used = FALSE;
 			}
 
 		}

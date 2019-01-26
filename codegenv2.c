@@ -521,8 +521,15 @@ unsigned char GetRegisterNo(struct asm_tok *regTok)
 /* =====================================================================
   Build up instruction ModRM byte.
   ===================================================================== */
-unsigned char BuildModRM(unsigned char modRM, struct Instr_Def* instr, struct expr opnd[4], bool* needModRM, bool* needSIB)
+unsigned char BuildModRM(unsigned char modRM, struct Instr_Def* instr, struct expr opnd[4], bool* needModRM, bool* needSIB, bool isVEX)
 {
+	int sourceIdx = 1;
+	
+	/* VEX encoded instructions use the middle (NDS) registers in the VEX prefix bytes, so in this case
+	   the 3rd operand reg/mem is the one that is actually encoded in the mod rm byte */
+	if (isVEX)
+		sourceIdx = 2;
+
 	if (instr->flags & F_MODRM)			// Only if the instruction requires a ModRM byte, else return 0.
 	{
 		*needModRM |= TRUE;
@@ -541,12 +548,12 @@ unsigned char BuildModRM(unsigned char modRM, struct Instr_Def* instr, struct ex
 		else if (instr->flags & F_MODRM_REG && instr->op_dir == RM_DST)
 		{
 			// Build REG field as source.
-			modRM |= (GetRegisterNo(opnd[1].base_reg) & 0x07) << 3;
+			modRM |= (GetRegisterNo(opnd[sourceIdx].base_reg) & 0x07) << 3;
 		}
 		if (instr->flags & F_MODRM_RM && instr->op_dir == REG_DST)
 		{
 			// Build RM field as source.
-			modRM |= (GetRegisterNo(opnd[1].base_reg) & 0x07);
+			modRM |= (GetRegisterNo(opnd[sourceIdx].base_reg) & 0x07);
 		}
 		else if (instr->flags & F_MODRM_RM && instr->op_dir == RM_DST)
 		{
@@ -642,6 +649,10 @@ void BuildVEX(bool* needVex, unsigned char* vexSize, unsigned char* vexBytes, st
 
 	*needVex = TRUE;
 	*vexSize = 0;
+
+	/* VEX.vvvv */
+	if ((instr->vexflags & VEX_NDS) != 0)
+		VEXvvvv = GetRegisterNo(opnd[1].base_reg);
 
 	/* VEX.pp value (used in both 2 and 3 byte forms) */
 	if ((instr->vexflags & VEX_66) != 0)
@@ -1011,22 +1022,26 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 	
 	/* Lookup the instruction */
 	matchedInstr = LookupInstruction(&instrToMatch, hasMemReg);
-
-	/* If we have an absolute memory addressing mode but the disp is 32bit or less, fallback to using a non abs mode */
-	if(matchedInstr && matchedInstr->memOpnd != NO_MEM && CodeInfo->Ofssize == USE64 && CodeInfo->token != T_MOVABS && (int)matchedInstr->group < SSE0)
-	{
-		if ((int)CodeInfo->opnd[(matchedInstr->memOpnd & 7)].data64 > INT_MIN && CodeInfo->opnd[(matchedInstr->memOpnd & 7)].data64 < UINT_MAX)
-		{
-			matchedInstr = NULL;
-		}
-	}
 	
 	/* Try once again with demoted operands */
 	if (matchedInstr == NULL)
 	{
 		for (i = 0; i < opCount; i++)
-			instrToMatch.operand_types[i] = DemoteOperand(instrToMatch.operand_types[i]);
+		{
+			/* Special check on operand 1 here as that could be the VEX NDS register which must be demoted ONLY */
+			if((opCount >= 3 && (instrToMatch.operand_types[i] == R_XMM || instrToMatch.operand_types[i] == R_XMME) && i == 1) || (opCount < 3))
+				instrToMatch.operand_types[i] = DemoteOperand(instrToMatch.operand_types[i]);
+		}
 		matchedInstr = LookupInstruction(&instrToMatch, hasMemReg);
+	}
+	
+	/* If we have an absolute memory addressing mode but the disp is 32bit or less, fallback to using a non abs mode */
+	if (matchedInstr && matchedInstr->memOpnd != NO_MEM && CodeInfo->Ofssize == USE64 && CodeInfo->token != T_MOVABS && (int)matchedInstr->group < SSE0)
+	{
+		if ((int)CodeInfo->opnd[(matchedInstr->memOpnd & 7)].data64 > INT_MIN && CodeInfo->opnd[(matchedInstr->memOpnd & 7)].data64 < UINT_MAX)
+		{
+			matchedInstr = NULL;
+		}
 	}
 
 	/* We don't have it in CodeGenV2 so fall-back */
@@ -1036,6 +1051,14 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 	/* Proceed to generate the instruction */
 	else
 	{
+		//----------------------------------------------------------
+		// Handle UASM special implicit NDS forms of VEX instructions 
+		//----------------------------------------------------------
+		if ((matchedInstr->vexflags & VEX) != 0 && opCount == 2 && (matchedInstr->vexflags & VEX_DUP_NDS) != 0)
+		{
+
+		}
+
 		//----------------------------------------------------------
 		// Add line number debugging info.
 		//----------------------------------------------------------
@@ -1078,7 +1101,8 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		if(matchedInstr->memOpnd != NO_MEM)
 			aso = BuildMemoryEncoding(&modRM, &sib, &rexByte, &needModRM, &needSIB,
 				                &dispSize, &displacement, matchedInstr, opExpr, &needB, &needX);	/* This could result in modifications to REX, modRM and SIB bytes */
-		modRM |= BuildModRM(matchedInstr->modRM, matchedInstr, opExpr, &needModRM, &needSIB);		/* Modify the modRM value for any non-memory operands */
+		modRM |= BuildModRM(matchedInstr->modRM, matchedInstr, opExpr, &needModRM, &needSIB,
+							(matchedInstr->vexflags & VEX));										/* Modify the modRM value for any non-memory operands */
 		
 		/* Create REX or VEX prefixes */
 		if ((matchedInstr->vexflags & VEX) != 0)
