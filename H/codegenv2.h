@@ -11,6 +11,7 @@ enum instr_group {
 	GP3,        /* 64bit only */
 	SSE0,       /* SSE */
 	AVX0,
+	AVX1,
 	EVEX0,
 	MVEX0,
 	FP0,
@@ -154,6 +155,7 @@ enum op_type {
 #define NO_FWAIT     (1<<20)
 #define NO_MEM_REG   (1<<21)	/* This indicates that only an absolute or displacement only memory address is supported */
 #define NO_PREFIX    (1<<22)    /* Manual refers to this as NP (66/f2/f3 prefixes prohibited) */
+#define IMM8_ONLY    (1<<23)	/* The instruction entry assume immediates match the opsize, however some instructions use ONLY an imm8 */
 
 /* VEX flags */
 #define NO_VEX		 (0)
@@ -175,6 +177,8 @@ enum op_type {
 #define VEX_B        (1<<15)
 #define VEX_X        (1<<16)
 #define VEX_DUP_NDS  (1<<17)	/* We allow special 2 opnd vex forms which are automatically promoted to 3 with duplicate destination and first source */
+#define VEX_2OPND    (1<<17)	/* This is just for clarity sake but has the same effect of using a 2 opnd form for modrm+sib calculations */
+#define VEX_VSIB     (1<<18)	/* Instruction uses VSIB addressing */
 
 /* Required ASO/OSO flags */
 #define OP_SIZE_OVERRIDE   0x66
@@ -188,6 +192,7 @@ enum op_type {
 /* mandatory_prefix -> Which mandatory prefix sequence is used by the instruction */
 #define NO_PREFIX  0
 #define PFX_0xF    1
+#define PFX_0x66F  2
 
 /* op_dir -> operation direction */
 #define REG_DST  0
@@ -333,7 +338,7 @@ enum op_type      DemoteOperand(enum op_type op);
 void              InsertInstruction(struct Instr_Def* pInstruction, uint_32 hash);
 struct Instr_Def* AllocInstruction();
 uint_32           GenerateInstrHash(struct Instr_Def* pInstruction);
-struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg);
+struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg, unsigned char encodeMode);
 enum op_type      MatchOperand(struct code_info *CodeInfo, struct opnd_item op, struct expr opExpr);
 
 bool Require_OPND_Size_Override(struct Instr_Def* instr, struct code_info* CodeInfo);

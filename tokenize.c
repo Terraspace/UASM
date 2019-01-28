@@ -1154,8 +1154,9 @@ int Tokenize( char *line, unsigned int start, struct asm_tok tokenarray[], unsig
  * flags: 1=if the line has been tokenized already.
  */
 {
-    int                         rc;
-    struct line_status          p;
+    int                rc;
+    struct line_status p;
+	char*              input1 = NULL;
 
     p.input = line;
     p.start = line;
@@ -1199,12 +1200,28 @@ int Tokenize( char *line, unsigned int start, struct asm_tok tokenarray[], unsig
         }
 		
 		/* UASM 2.48 Handle {evex} promotion decorator */
-		if (*p.input == '{') {
+		/*if (*p.input == '{') {
 			if (_memicmp(p.input + 1, "evex", 4) == 0)
 			{
 				evexflag = TRUE;
 				p.input += 6;
 				continue;
+			}
+		}*/
+		if (*p.input == '{') 
+		{
+			input1 = p.input + 1; /* skip '{' */
+			while (isspace(*input1))
+				input1++;
+			if ((_memicmp(input1, "evex", 4) == 0)) 
+			{
+				evexflag = TRUE;
+				while (*input1 != '}') 
+					input1++;
+				input1++;          /* skip '}' */
+				while (isspace(*input1)) 
+					input1++;
+				p.input = input1;  /* skip '{evex}' */
 			}
 		}
 

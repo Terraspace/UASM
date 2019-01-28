@@ -5,6 +5,69 @@ option flat:1
 
 	use64
 	
+	; 4 opnd form
+	;------------------------------------------
+	;vblendvps
+	
+	; VSIB addressing
+	;------------------------------------------
+	vgatherdps xmm0, [xmm1], xmm2
+	vgatherdps xmm0, [rdi+xmm1], xmm2
+	vgatherdps xmm0, [rax+xmm1*4], xmm2
+	vgatherdps xmm0, [r8+xmm1*4], xmm2
+	vgatherdps xmm0, [r8+xmm9*4], xmm2
+
+	vgatherdps ymm0, [ymm1], xmm2
+	vgatherdps ymm0, [rdi+ymm1], xmm2
+	vgatherdps ymm0, [rax+ymm1*4], xmm2
+	vgatherdps ymm0, [r8+ymm1*4], xmm2
+	vgatherdps ymm0, [r8+ymm9*4], xmm2
+	
+	; 2 opnd forms with imm
+	;------------------------------------------
+	vpshufd xmm0, xmm0, 1
+	vpshufd xmm0, xmm3, 0
+	vpshufd xmm0, xmm8, 0xff
+	vpshufd xmm8, xmm3, 2
+	vpshufd xmm8, xmm9, 10
+
+	vpshufd ymm0, ymm0, 1
+	vpshufd ymm0, ymm3, 0
+	vpshufd ymm0, ymm8, 0xff
+	vpshufd ymm8, ymm3, 2
+	vpshufd ymm8, ymm9, 10
+	
+	vpshufd xmm0, [rdi], 1
+	vpshufd xmm2, [rdi+rax*2], 3
+	vpshufd xmm3, [rsp], 4
+	vpshufd xmm4, [rbp-4], 5
+	vpshufd xmm8, [rdi], 1
+	vpshufd xmm9, [rdi+rax*2], 2
+	vpshufd xmm10, [rsp], 3
+	vpshufd xmm11, [rbp-4], 4	
+	
+	vpshufd xmm0, myVector, 1
+	vpshufd xmm9, myVector, 2
+	
+	; 3 opnd forms with implicit NDS
+	; This is common for users who just add v to 
+	; existing sse instructions
+	;------------------------------------------
+	;REG/REG
+	vmulps xmm0,xmm2
+	vmulps xmm0,xmm0
+	vmulps xmm8,xmm2
+	vmulps xmm0,xmm2
+	vmulps xmm2,xmm10
+	vmulps xmm8,xmm10
+
+	vmulps ymm0,ymm2
+	vmulps ymm0,ymm0
+	vmulps ymm8,ymm2
+	vmulps ymm0,ymm2
+	vmulps ymm2,ymm10
+	vmulps ymm8,ymm10
+	
 	; 3 opnd forms
 	;------------------------------------------
 	;REG/MEM
@@ -20,6 +83,18 @@ option flat:1
 	vmulps xmm0,xmm8,[rdi]
 	vmulps xmm8,xmm9,[rdi]
 
+	vmulps ymm0,ymm1,[rdi+rax*2]
+	vmulps ymm0,ymm8,[rdi+rax*2]
+	vmulps ymm8,ymm9,[rdi+rax*2]
+	
+	vmulps ymm0,ymm1,myVector
+	vmulps ymm0,ymm8,myVector
+	vmulps ymm8,ymm9,myVector
+
+	vmulps ymm0,ymm1,[rdi]
+	vmulps ymm0,ymm8,[rdi]
+	vmulps ymm8,ymm9,[rdi]
+	
 	;REG/REG
 	vmulps xmm0,xmm1,xmm2
 	vmulps xmm0,xmm0,xmm0
@@ -28,37 +103,21 @@ option flat:1
 	vmulps xmm2,xmm4,xmm10
 	vmulps xmm8,xmm9,xmm10
 
-	; 3 opnd forms with implicit NDS
-	;------------------------------------------
-	;REG/REG
-	vmulps xmm0,xmm2
-	vmulps xmm0,xmm0
-	vmulps xmm8,xmm2
-	vmulps xmm0,xmm2
-	vmulps xmm2,xmm10
-	vmulps xmm8,xmm10
+	vmulps ymm0,ymm1,ymm2
+	vmulps ymm0,ymm0,ymm0
+	vmulps ymm8,ymm1,ymm2
+	vmulps ymm0,ymm8,ymm2
+	vmulps ymm2,ymm4,ymm10
+	vmulps ymm8,ymm9,ymm10
 
-	; 2 opnd forms with imm
-	;------------------------------------------
-	vpshufd xmm0, xmm0, 1
-	
 	; 3 opnd with imm
 	;------------------------------------------
 	vmpsadbw xmm0, xmm1, xmm2, 1
 		
 	; 3 opnd with imm and implicit NDS
 	;------------------------------------------
-	vmpsadbw xmm0, xmm2, 1
-	
-	; VSIB addressing
-	;------------------------------------------
-	vgatherdps xmm0, [rdi+xmm1], xmm2
-	vgatherdps xmm0, [xmm1], xmm2
-	vgatherdps xmm0, [rax+xmm1*4], xmm2
-	vgatherdps xmm0, [r8+xmm1*4], xmm2
-	
-	; 4 opnd form
-	vblendvps
+	;vmpsadbw xmm0, xmm2, 1
+
 	
 .data
 

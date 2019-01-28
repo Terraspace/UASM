@@ -343,7 +343,7 @@ enum op_type MatchOperand(struct code_info *CodeInfo, struct opnd_item op, struc
 	return result;
 }
 
-struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg) {
+struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg, unsigned char encodeMode) {
 	uint_32           hash;
 	struct Instr_Def* pInstruction = NULL;
 	bool              matched      = FALSE;
@@ -356,7 +356,8 @@ struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg) {
 			pInstruction->operand_types[0] == instr->operand_types[0] &&
 			pInstruction->operand_types[1] == instr->operand_types[1] &&
 			pInstruction->operand_types[2] == instr->operand_types[2] &&
-			pInstruction->operand_types[3] == instr->operand_types[3]) {
+			pInstruction->operand_types[3] == instr->operand_types[3] &&
+			(pInstruction->validModes & encodeMode) != 0) {
 			/* If the instruction only supports absolute or displacement only addressing 
 			and we have a register in the memory expression, this is not a match */
 			if (memReg && ((pInstruction->flags & NO_MEM_REG) != 0))
@@ -526,8 +527,9 @@ unsigned char BuildModRM(unsigned char modRM, struct Instr_Def* instr, struct ex
 	int sourceIdx = 1;
 	
 	/* VEX encoded instructions use the middle (NDS) registers in the VEX prefix bytes, so in this case
-	   the 3rd operand reg/mem is the one that is actually encoded in the mod rm byte */
-	if (isVEX)
+	   the 3rd operand reg/mem is the one that is actually encoded in the mod rm byte.
+	   For Implicit NDS (2 opnd promotion we leave source as 1) */
+	if (isVEX && (instr->vexflags & VEX_DUP_NDS) == 0)
 		sourceIdx = 2;
 
 	if (instr->flags & F_MODRM)			// Only if the instruction requires a ModRM byte, else return 0.
@@ -653,6 +655,15 @@ void BuildVEX(bool* needVex, unsigned char* vexSize, unsigned char* vexBytes, st
 	/* VEX.vvvv */
 	if ((instr->vexflags & VEX_NDS) != 0)
 		VEXvvvv = GetRegisterNo(opnd[1].base_reg);
+	if ((instr->vexflags & VEX_DDS) != 0)
+		VEXvvvv = GetRegisterNo(opnd[2].base_reg);
+
+	/* Generated implicit NDS form and warn user about assumed source1 */
+	if ((instr->vexflags & VEX_DUP_NDS) != 0)
+	{
+		EmitWarn(1, AVX_REQUIRES_THREE_REGISTERS);
+		VEXvvvv = GetRegisterNo(opnd[0].base_reg);
+	}
 
 	/* VEX.pp value (used in both 2 and 3 byte forms) */
 	if ((instr->vexflags & VEX_66) != 0)
@@ -747,6 +758,14 @@ int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned cha
 	{ 
 		baseRegNo = GetRegisterNo(opExpr[instr->memOpnd].base_reg);
 		idxRegNo  = GetRegisterNo(opExpr[instr->memOpnd].idx_reg);
+
+		/* For VSIB indexes the Parser sends us the vector idx register in base NOT idx when there is ONLY an index! */
+		if ((instr->vexflags & VEX_VSIB) != 0 && baseRegNo != 0x11 && idxRegNo == 0x11)
+		{
+			unsigned char temp = baseRegNo;
+			baseRegNo = idxRegNo;
+			idxRegNo = temp;
+		}
 
 		/* Get base and index register sizes in bytes */
 		if (opExpr[instr->memOpnd].base_reg)
@@ -969,14 +988,16 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 
 	int  aso       = 0; /* Build Memory Encoding forced address size override */
 
-	unsigned char opcodeByte = 0;
-	unsigned char rexByte    = 0;
-	unsigned char vexSize    = 0;
-	unsigned char vexBytes[3];
-	unsigned char modRM      = 0;
-	unsigned char sib        = 0;
-	unsigned int  dispSize   = 0;
-	
+	unsigned char opcodeByte  = 0;
+	unsigned char rexByte     = 0;
+	unsigned char vexSize     = 0;
+	unsigned char vexBytes[3] = { 0,0,0 };
+	unsigned char modRM       = 0;
+	unsigned char sib         = 0;
+	unsigned int  dispSize    = 0;
+	unsigned int  immSize     = 0;
+	unsigned char encodeMode  = 0;
+
 	union
 	{
 		uint_64 displacement64;
@@ -1020,8 +1041,22 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 			hasMemReg = TRUE;
 	}
 	
+	/* Determine encoding model for x16/x32 or x64 */
+	switch (CodeInfo->Ofssize)
+	{
+	case USE16:
+		encodeMode = X16;
+		break;
+	case USE32:
+		encodeMode = X32;
+		break;
+	case USE64:
+		encodeMode = X64;
+		break;
+	}
+
 	/* Lookup the instruction */
-	matchedInstr = LookupInstruction(&instrToMatch, hasMemReg);
+	matchedInstr = LookupInstruction(&instrToMatch, hasMemReg, encodeMode);
 	
 	/* Try once again with demoted operands */
 	if (matchedInstr == NULL)
@@ -1029,14 +1064,15 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		for (i = 0; i < opCount; i++)
 		{
 			/* Special check on operand 1 here as that could be the VEX NDS register which must be demoted ONLY */
-			if((opCount >= 3 && (instrToMatch.operand_types[i] == R_XMM || instrToMatch.operand_types[i] == R_XMME) && i == 1) || (opCount < 3))
+			if((opCount >= 3 && (instrToMatch.operand_types[i] == R_XMM || instrToMatch.operand_types[i] == R_XMME || instrToMatch.operand_types[i] == R_YMM || instrToMatch.operand_types[i] == R_YMME) && 
+				i == 1) || (opCount < 3))
 				instrToMatch.operand_types[i] = DemoteOperand(instrToMatch.operand_types[i]);
 		}
-		matchedInstr = LookupInstruction(&instrToMatch, hasMemReg);
+		matchedInstr = LookupInstruction(&instrToMatch, hasMemReg, encodeMode);
 	}
 	
 	/* If we have an absolute memory addressing mode but the disp is 32bit or less, fallback to using a non abs mode */
-	if (matchedInstr && matchedInstr->memOpnd != NO_MEM && CodeInfo->Ofssize == USE64 && CodeInfo->token != T_MOVABS && (int)matchedInstr->group < SSE0)
+	if (matchedInstr && matchedInstr->memOpnd != NO_MEM && CodeInfo->Ofssize == USE64 && CodeInfo->token != T_MOVABS && (int)matchedInstr->group < SSE0 && !hasMemReg)
 	{
 		if ((int)CodeInfo->opnd[(matchedInstr->memOpnd & 7)].data64 > INT_MIN && CodeInfo->opnd[(matchedInstr->memOpnd & 7)].data64 < UINT_MAX)
 		{
@@ -1051,14 +1087,6 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 	/* Proceed to generate the instruction */
 	else
 	{
-		//----------------------------------------------------------
-		// Handle UASM special implicit NDS forms of VEX instructions 
-		//----------------------------------------------------------
-		if ((matchedInstr->vexflags & VEX) != 0 && opCount == 2 && (matchedInstr->vexflags & VEX_DUP_NDS) != 0)
-		{
-
-		}
-
 		//----------------------------------------------------------
 		// Add line number debugging info.
 		//----------------------------------------------------------
@@ -1220,18 +1248,32 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 			OutputBytes((unsigned char *)&vexBytes, vexSize, NULL);
 
 		//----------------------------------------------------------
+		// Output mandatory prefix (part 1).
+		// Some mandatory prefixes must be split across a REX.
+		//----------------------------------------------------------
+		switch (matchedInstr->mandatory_prefix)
+		{
+		case PFX_0x66F:
+			OutputCodeByte(0x66); // first part.
+			break;
+		}
+
+		//----------------------------------------------------------
 		// Output REX prefix if required.
 		//----------------------------------------------------------
 		if (rexByte != 0)
 			OutputCodeByte(rexByte);
 
 		//----------------------------------------------------------
-		// Output mandatory prefix.
+		// Output mandatory prefix (part 2).
 		//----------------------------------------------------------
 		switch (matchedInstr->mandatory_prefix)
 		{
 		case PFX_0xF:
 			OutputCodeByte(0x0f);
+			break;
+		case PFX_0x66F:
+			OutputCodeByte(0x0f); // second part.
 			break;
 		}
 
@@ -1295,6 +1337,12 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		if (matchedInstr->immOpnd != NO_IMM)
 		{
 			immValue.full = CodeInfo->opnd[matchedInstr->immOpnd].data64;
+
+			// Default is we assume the immediate is the operation size.
+			immSize = matchedInstr->op_size;
+			if ((matchedInstr->flags & IMM8_ONLY) != 0)
+				immSize = 1; // Forced 1 byte immediate size.
+
 			// An immediate entry could require a fixup if it was generated from an OFFSET directive or Symbol value.
 			if (CodeInfo->opnd[matchedInstr->immOpnd].InsFixup && needFixup)
 			{
@@ -1305,15 +1353,15 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 				{
 					CodeInfo->opnd[matchedInstr->immOpnd].InsFixup->locofs = GetCurrOffset();
 					if (CodeInfo->isptr)
-						OutputBytes((unsigned char *)&immValue.byte, matchedInstr->op_size, NULL);
+						OutputBytes((unsigned char *)&immValue.byte, immSize, NULL);
 					else
-						OutputBytes((unsigned char *)&immValue.byte, matchedInstr->op_size, CodeInfo->opnd[matchedInstr->immOpnd].InsFixup);
+						OutputBytes((unsigned char *)&immValue.byte, immSize, CodeInfo->opnd[matchedInstr->immOpnd].InsFixup);
 				}
 				else 
-					OutputBytes((unsigned char *)&immValue.byte, matchedInstr->op_size, NULL);
+					OutputBytes((unsigned char *)&immValue.byte, immSize, NULL);
 			}
 			else
-				OutputBytes((unsigned char *)&immValue.byte, matchedInstr->op_size, NULL);
+				OutputBytes((unsigned char *)&immValue.byte, immSize, NULL);
 		}
 
 		//----------------------------------------------------------
