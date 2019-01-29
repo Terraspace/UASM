@@ -295,6 +295,9 @@ echo .
 %FCMP% %~n1.bin ..\exp\CodeGenV2\%~n1.bin
 if errorlevel 1 goto end
 del %~n1.bin
+%FCMP% %~n1.err ..\exp\CodeGenV2\%~n1.err
+if errorlevel 1 goto end
+del %~n1.err
 goto end
 
 :cgv2err
