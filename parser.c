@@ -1743,7 +1743,10 @@ static ret_code memory_operand( struct code_info *CodeInfo, unsigned CurrOpnd, s
 	{
         if ( ( ( GetValueSp( index ) & OP_R32) && CodeInfo->Ofssize == USE32 ) ||
             ( ( GetValueSp( index ) & OP_R64) && CodeInfo->Ofssize == USE64 ) ||
-            ( ( GetValueSp( index ) & OP_R16) && CodeInfo->Ofssize == USE16 ) ) 
+            ( ( GetValueSp( index ) & OP_R16) && CodeInfo->Ofssize == USE16 ) || 
+			( ( GetValueSp( index ) & OP_XMM) && CodeInfo->Ofssize == USE32 ) || // UASM 2.48 missing support base+xmm/ymm vsib addressing.
+			( ( GetValueSp( index ) & OP_YMM) && CodeInfo->Ofssize == USE32 )
+			) 
 		{
             CodeInfo->prefix.adrsiz = FALSE;
         } 
@@ -3735,7 +3738,8 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 					putinvex:
             
 						CodeInfo.vexconst = opndx[CurrOpnd].value;
-						CodeInfo.vexregop = opndx[CurrOpnd].base_reg->bytval + 1;
+						if(opndx[CurrOpnd].base_reg)
+							CodeInfo.vexregop = opndx[CurrOpnd].base_reg->bytval + 1;
 						memcpy(&opndx[CurrOpnd], &opndx[CurrOpnd + 1], sizeof(opndx[0]) * 2);
 					}
 					else
@@ -3971,7 +3975,7 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 	/* *********************************************************** */
 	/* Use the V2 CodeGen, else fallback to the standard CodeGen   */
 	/* *********************************************************** */
-	if (ModuleInfo.Ofssize == USE32 || ModuleInfo.Ofssize == USE64)
+	if (!evexflag && CodeInfo.evex_flag == 0 && (ModuleInfo.Ofssize == USE32 || ModuleInfo.Ofssize == USE64))
 	{
 		temp = CodeGenV2(opcodePtr, &CodeInfoV2, oldofs, opndCount, opndxV2);
 		if (temp == EMPTY)

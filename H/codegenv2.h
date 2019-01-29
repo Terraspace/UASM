@@ -177,8 +177,9 @@ enum op_type {
 #define VEX_B        (1<<15)
 #define VEX_X        (1<<16)
 #define VEX_DUP_NDS  (1<<17)	/* We allow special 2 opnd vex forms which are automatically promoted to 3 with duplicate destination and first source */
-#define VEX_2OPND    (1<<17)	/* This is just for clarity sake but has the same effect of using a 2 opnd form for modrm+sib calculations */
-#define VEX_VSIB     (1<<18)	/* Instruction uses VSIB addressing */
+#define VEX_2OPND    (1<<18)	/* This is just for clarity sake but has the same effect of using a 2 opnd form for modrm+sib calculations as a DUP_NDS */
+#define VEX_VSIB     (1<<19)	/* Instruction uses VSIB addressing */
+#define VEX_4OPND    (1<<20)	/* Special 4 opnd form where final register is immediate-encoded */
 
 /* Required ASO/OSO flags */
 #define OP_SIZE_OVERRIDE   0x66
@@ -190,9 +191,11 @@ enum op_type {
 #define X64 0x04
 
 /* mandatory_prefix -> Which mandatory prefix sequence is used by the instruction */
-#define NO_PREFIX  0
-#define PFX_0xF    1
-#define PFX_0x66F  2
+#define NO_PREFIX   0
+#define PFX_0xF     1
+#define PFX_0x66F   2
+#define PFX_0x66F38 3
+#define PFX_0x66F3A 4
 
 /* op_dir -> operation direction */
 #define REG_DST  0
@@ -349,7 +352,7 @@ unsigned char BuildModRM(unsigned char modRM, struct Instr_Def* instr, struct ex
 						 bool isVEX);																						/* Build instruction ModRM byte */
 unsigned char BuildREX(unsigned char RexByte, struct Instr_Def* instr, struct expr opnd[4]);								/* Build REX prefix byte        */
 void          BuildVEX(bool* needVex, unsigned char* vexSize, unsigned char* vexBytes, 
-	                   struct Instr_Def* instr, struct expr opnd[4], bool needB, bool needX);								/* Build VEX prefix bytes       */
+	                   struct Instr_Def* instr, struct expr opnd[4], bool needB, bool needX, uint_32 opCount);				/* Build VEX prefix bytes       */
 int           BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned char* pREX, bool* needRM, bool* needSIB,
 	                              unsigned int* dispSize, int* pDisp, struct Instr_Def* instr, 
 								  struct expr opExpr[4], bool* needB, bool* needX);											/* Build Memory encoding ModRM/SIB bytes   */

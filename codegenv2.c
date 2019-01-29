@@ -529,7 +529,7 @@ unsigned char BuildModRM(unsigned char modRM, struct Instr_Def* instr, struct ex
 	/* VEX encoded instructions use the middle (NDS) registers in the VEX prefix bytes, so in this case
 	   the 3rd operand reg/mem is the one that is actually encoded in the mod rm byte.
 	   For Implicit NDS (2 opnd promotion we leave source as 1) */
-	if (isVEX && (instr->vexflags & VEX_DUP_NDS) == 0)
+	if (isVEX && (instr->vexflags & VEX_DUP_NDS) == 0 && (instr->vexflags & VEX_2OPND) == 0)
 		sourceIdx = 2;
 
 	if (instr->flags & F_MODRM)			// Only if the instruction requires a ModRM byte, else return 0.
@@ -610,7 +610,7 @@ unsigned char BuildREX(unsigned char RexByte, struct Instr_Def* instr, struct ex
 /* =====================================================================
   Build up instruction VEX prefix bytes.
   ===================================================================== */
-void BuildVEX(bool* needVex, unsigned char* vexSize, unsigned char* vexBytes, struct Instr_Def* instr, struct expr opnd[4],bool needB, bool needX)
+void BuildVEX(bool* needVex, unsigned char* vexSize, unsigned char* vexBytes, struct Instr_Def* instr, struct expr opnd[4],bool needB, bool needX, uint_32 opCount)
 {
 	/* VEX 3 byte form */
 	/*   7                           0     7                           0    */
@@ -711,7 +711,7 @@ void BuildVEX(bool* needVex, unsigned char* vexSize, unsigned char* vexBytes, st
 		VEXb = 0;
 
 	/* If VEX.WIG is present and we don't ned VEX.mmmmm use 2byte form */
-	if (((instr->vexflags & VEX_WIG) != 0 && VEXx == 1 && VEXb == 1 ) || 
+	if (((instr->vexflags & VEX_WIG) != 0 && VEXx == 1 && VEXb == 1 && VEXmmmmm == 1) ||
 		(*vexSize != 3 && VEXx == 1 && VEXb == 1))
 		*vexSize = 2;
 	
@@ -1064,8 +1064,8 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		for (i = 0; i < opCount; i++)
 		{
 			/* Special check on operand 1 here as that could be the VEX NDS register which must be demoted ONLY */
-			if((opCount >= 3 && (instrToMatch.operand_types[i] == R_XMM || instrToMatch.operand_types[i] == R_XMME || instrToMatch.operand_types[i] == R_YMM || instrToMatch.operand_types[i] == R_YMME) && 
-				i == 1) || (opCount < 3))
+			if((opCount >= 3 && (instrToMatch.operand_types[i] == R_XMM || instrToMatch.operand_types[i] == R_XMME || instrToMatch.operand_types[i] == R_YMM || instrToMatch.operand_types[i] == R_YMME) &&	i == 1) || 
+				(opCount < 3 && (instrToMatch.operand_types[i] != R_XMM && instrToMatch.operand_types[i] != R_XMME && instrToMatch.operand_types[i] != R_YMM && instrToMatch.operand_types[i] != R_YMME)))
 				instrToMatch.operand_types[i] = DemoteOperand(instrToMatch.operand_types[i]);
 		}
 		matchedInstr = LookupInstruction(&instrToMatch, hasMemReg, encodeMode);
@@ -1134,7 +1134,7 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		
 		/* Create REX or VEX prefixes */
 		if ((matchedInstr->vexflags & VEX) != 0)
-			BuildVEX(&needVEX, &vexSize, &vexBytes, matchedInstr, opExpr, needB, needX);			/* Create the VEX prefix bytes for both reg and memory operands */
+			BuildVEX(&needVEX, &vexSize, &vexBytes, matchedInstr, opExpr, needB, needX, opCount);	/* Create the VEX prefix bytes for both reg and memory operands */
 		else if(CodeInfo->Ofssize == USE64)
 			rexByte |= BuildREX(rexByte, matchedInstr, opExpr, FALSE);							    /* Modify the REX prefix for non-memory operands/sizing */
 
@@ -1253,6 +1253,8 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		//----------------------------------------------------------
 		switch (matchedInstr->mandatory_prefix)
 		{
+		case PFX_0x66F3A:
+		case PFX_0x66F38:
 		case PFX_0x66F:
 			OutputCodeByte(0x66); // first part.
 			break;
@@ -1274,6 +1276,14 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 			break;
 		case PFX_0x66F:
 			OutputCodeByte(0x0f); // second part.
+			break;
+		case PFX_0x66F38:
+			OutputCodeByte(0x0f); // second part.
+			OutputCodeByte(0x38); // second part.
+			break;
+		case PFX_0x66F3A:
+			OutputCodeByte(0x0f); // second part.
+			OutputCodeByte(0x3a); // second part.
 			break;
 		}
 
@@ -1337,6 +1347,12 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		if (matchedInstr->immOpnd != NO_IMM)
 		{
 			immValue.full = CodeInfo->opnd[matchedInstr->immOpnd].data64;
+
+			// VEX encoded 4th operand as immediate data.
+			if((matchedInstr->vexflags & VEX_4OPND) != 0)
+			{
+				immValue.full <<= 4;
+			}
 
 			// Default is we assume the immediate is the operation size.
 			immSize = matchedInstr->op_size;
