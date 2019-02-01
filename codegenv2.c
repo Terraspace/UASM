@@ -321,18 +321,20 @@ enum op_type MatchOperand(struct code_info *CodeInfo, struct opnd_item op, struc
 			result = IMM64;
 			break;
 		case OP_XMM:
-			result = R_XMM;
 			/* If register xmm8-xmm15 USE R_XMME */
 			if (opExpr.base_reg->tokval >= T_XMM8 && opExpr.base_reg->tokval <= T_XMM15)
 				result = R_XMME;
+			else
+				result = R_XMM;
 			/* If register xmm16-xmm31 USE AVX512_128 */
 			break;
 
 		case OP_YMM:
-			result = R_YMM;
 			/* If register is ymm8-ymm15 USE R_YMME */
 			if (opExpr.base_reg->tokval >= T_YMM8 && opExpr.base_reg->tokval <= T_YMM15)
 				result = R_YMME;
+			else
+				result = R_YMM;
 			/* If register ymm16-ymm31 USE AVX512_256 */
 			break;
 
@@ -442,6 +444,15 @@ unsigned char GetRegisterNo(struct asm_tok *regTok)
 			regNo = (unsigned char)(regTok->tokval - T_YMM0);
 		else if (regTok->tokval >= T_YMM8 && regTok->tokval <= T_YMM15)
 			regNo = (unsigned char)((regTok->tokval - T_YMM8) + 8);
+
+		else if (regTok->tokval >= T_ZMM0 && regTok->tokval <= T_ZMM7)
+			regNo = (unsigned char)(regTok->tokval - T_ZMM0);
+		else if (regTok->tokval >= T_ZMM8 && regTok->tokval <= T_ZMM31)
+			regNo = (unsigned char)((regTok->tokval - T_ZMM8) + 8);
+
+		else if (regTok->tokval >= T_K0 && regTok->tokval <= T_K7)
+			regNo = (unsigned char)(regTok->tokval - T_K0);
+
 		else
 		{
 			switch (regTok->tokval)
@@ -710,7 +721,12 @@ void BuildVEX(bool* needVex, unsigned char* vexSize, unsigned char* vexBytes, st
 	if ((instr->vexflags & VEX_B) != 0 || needB)
 		VEXb = 0;
 
-	/* If VEX.WIG is present and we don't ned VEX.mmmmm use 2byte form */
+//	if (opnd[0].base_reg && GetRegisterNo(opnd[0].base_reg) > 7)
+		//VEXr = 0;
+	//if (opnd[instr->srcidx].base_reg && GetRegisterNo(opnd[instr->srcidx].base_reg) > 7)
+//		VEXb = 0;
+
+	/* If VEX.WIG is present and we don't need VEX.mmmmm use 2byte form */
 	if (((instr->vexflags & VEX_WIG) != 0 && VEXx == 1 && VEXb == 1 && VEXmmmmm == 1) ||
 		(*vexSize != 3 && VEXx == 1 && VEXb == 1))
 		*vexSize = 2;
@@ -735,6 +751,134 @@ void BuildVEX(bool* needVex, unsigned char* vexSize, unsigned char* vexBytes, st
 		vexBytes[1] = (VEXr << 7) | (VEXx << 6) | (VEXb << 5) | (VEXmmmmm);
 		vexBytes[2] = (VEXwe << 7) | ((VEXvvvv & 0xf) << 3) | (VEXl << 2) | (VEXpp);
 	}
+}
+
+/* =====================================================================
+  Build up instruction EVEX prefix bytes.
+  ===================================================================== */
+void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr, struct expr opnd[4], bool needB, bool needX, bool needRR, uint_32 opCount, struct code_info *CodeInfo)
+{
+	// BYTE0: EVEX prefix is always 4 bytes and the first byte is always 0x62.
+
+	// BYTE1:
+	// | 7 | 6 | 5 | 4  | 3 | 2 | 1-0 |
+	// | R | X | B | R’ | 0 | 0 |  m  |
+
+	// BYTE2:
+	// | 7 | 6-3    | 2 | 1-0 |
+	// | W |     v	| 1	|  p  |
+
+	// BYTE3:
+	// | 7 | 6  | 5 | 4 | 3  | 2-0 |
+	// | z | L' | L | b | V' |  a  |
+
+	unsigned char EVEXpp = 0;
+	unsigned char EVEXmm = 0;
+	unsigned char EVEXr = 1;
+	unsigned char EVEXx = 1;
+	unsigned char EVEXb = 1;
+	unsigned char EVEXnr = 1;
+	unsigned char EVEXl = 0;
+	unsigned char EVEXnl = 1;
+	unsigned char EVEXw = 0;
+	unsigned char EVEXvvvv = 0;
+	unsigned char EVEXaaa = 0;
+	unsigned char EVEXz = 0;
+	unsigned char EVEXbr = 0;
+	unsigned char EVEXnv = 1;
+
+	/* EVEX.vvvv */
+	if ((instr->vexflags & VEX_NDS) != 0)
+		EVEXvvvv = GetRegisterNo(opnd[1].base_reg);
+	if ((instr->vexflags & VEX_DDS) != 0)
+		EVEXvvvv = GetRegisterNo(opnd[2].base_reg);
+	EVEXvvvv = ~EVEXvvvv;
+
+	/* EVEX.L and L' fields */
+	if (instr->op_size == 16)
+		EVEXl = 0;
+	else if (instr->op_size == 32)
+		EVEXl = 1;
+	else if (instr->op_size == 64)
+	{
+		EVEXl  = 0;
+		EVEXnl = 0;
+	}
+
+	EVEXnl = ~EVEXnl;
+
+	/* EVEX.w field */
+	if ((instr->vexflags & EVEX_W0) != 0)
+		EVEXw = 0;
+	else if ((instr->vexflags & EVEX_W1) != 0)
+		EVEXw = 1;
+
+	/* EVEX.pp field */
+	if ((instr->vexflags & VEX_66) != 0)
+		EVEXpp = 0x01;
+	else if ((instr->vexflags & VEX_F3) != 0)
+		EVEXpp = 0x02;
+	else if ((instr->vexflags & VEX_F2) != 0)
+		EVEXpp = 0x03;
+
+	/* EVEX.mm field */
+	if ((instr->vexflags & VEX_0F) != 0)
+		EVEXmm = 1;
+	else if ((instr->vexflags & VEX_0F38) != 0)
+		EVEXmm = 2;
+	else if ((instr->vexflags & VEX_0F3A) != 0)
+		EVEXmm = 3;
+
+	/* EVEX.R and R~ extension value */
+	if ((instr->vexflags & VEX_R) != 0)
+		EVEXr = 0;
+	if (GetRegisterNo(opnd[0].base_reg) > 15)
+	{
+		EVEXnr = 0;
+		if (GetRegisterNo(opnd[0].base_reg) > 23)
+			EVEXr = 0;
+		else
+			EVEXr = 1;
+	}
+	else
+	{
+		EVEXnr = 1;
+		if (GetRegisterNo(opnd[0].base_reg) > 7)
+			EVEXr = 0;
+		else
+			EVEXr = 1;
+	}
+
+	/* EVEX.B and X extension value */
+	if ((instr->vexflags & VEX_B) != 0 || needB)
+		EVEXb = 0;
+	if (GetRegisterNo(opnd[instr->srcidx].base_reg) > 15)
+	{
+		EVEXx = 0;
+		if (GetRegisterNo(opnd[instr->srcidx].base_reg) > 23)
+			EVEXb = 0;
+		else
+			EVEXb = 1;
+	}
+	else
+	{
+		EVEXx = 1;
+		if (GetRegisterNo(opnd[instr->srcidx].base_reg) > 7)
+			EVEXb = 0;
+		else
+			EVEXb = 1;
+	}
+
+	/* EVEX.X extension value */
+	if ((instr->vexflags & VEX_X) != 0 || needX)
+		EVEXx = 0;
+
+	evexBytes[0] = 0x62;
+	evexBytes[1] = ((EVEXr & 0x1) << 7) | ((EVEXx & 0x1) << 6) | ((EVEXb & 0x1) << 5) | ((EVEXnr & 0x1) << 4) | (EVEXmm & 0x3);
+	evexBytes[2] = ((EVEXw & 0x1) << 7) | ((EVEXvvvv & 0xf) << 3) | (0x04) | (EVEXpp & 0x3);
+	evexBytes[3] = ((EVEXz & 0x1) << 7) | ((EVEXnl & 0x1) << 6) | ((EVEXl & 0x1) << 5) | ((EVEXbr & 0x1) << 4) | ((EVEXnv & 0x1) << 3) | (EVEXaaa & 0x7);
+
+	*needEvex = TRUE;
 }
 
 /* =====================================================================
@@ -983,20 +1127,23 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 	bool needFixup = FALSE;
 	bool hasMemReg = FALSE;
 	bool needVEX   = FALSE;
-	bool needB     = FALSE; /* Instruction needs REX.B or VEX.~B promotion (filled in by BuildMemoryEncoding) */
-	bool needX     = FALSE;	/* Instruction needs REX.X or VEX.~X promotion (filled in by BuildMemoryEncoding) */
+	bool needEVEX  = FALSE;
+	bool needB     = FALSE; /* Instruction needs REX.B or (E)VEX.~B promotion (filled in by BuildMemoryEncoding) */
+	bool needX     = FALSE;	/* Instruction needs REX.X or (E)VEX.~X promotion (filled in by BuildMemoryEncoding) */
+	bool needRR    = FALSE; /* Instruction needs EVEX.R~ promotion to use upper 16 registers */
 
-	int  aso       = 0; /* Build Memory Encoding forced address size override */
+	int  aso       = 0;		/* Build Memory Encoding forced address size override */
 
-	unsigned char opcodeByte  = 0;
-	unsigned char rexByte     = 0;
-	unsigned char vexSize     = 0;
-	unsigned char vexBytes[3] = { 0,0,0 };
-	unsigned char modRM       = 0;
-	unsigned char sib         = 0;
-	unsigned int  dispSize    = 0;
-	unsigned int  immSize     = 0;
-	unsigned char encodeMode  = 0;
+	unsigned char opcodeByte   = 0;
+	unsigned char rexByte      = 0;
+	unsigned char vexSize      = 0;
+	unsigned char vexBytes[3]  = { 0, 0, 0 };
+	unsigned char evexBytes[4] = { 0, 0, 0, 0 };
+	unsigned char modRM        = 0;
+	unsigned char sib          = 0;
+	unsigned int  dispSize     = 0;
+	unsigned int  immSize      = 0;
+	unsigned char encodeMode   = 0;
 
 	union
 	{
@@ -1128,15 +1275,22 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		/* If the matched instruction requires processing of a memory address */
 		if(matchedInstr->memOpnd != NO_MEM)
 			aso = BuildMemoryEncoding(&modRM, &sib, &rexByte, &needModRM, &needSIB,
-				                &dispSize, &displacement, matchedInstr, opExpr, &needB, &needX);	/* This could result in modifications to REX, modRM and SIB bytes */
+				                &dispSize, &displacement, matchedInstr, opExpr, &needB, &needX);				/* This could result in modifications to REX, modRM and SIB bytes */
 		modRM |= BuildModRM(matchedInstr->modRM, matchedInstr, opExpr, &needModRM, &needSIB,
-							(matchedInstr->vexflags & VEX));										/* Modify the modRM value for any non-memory operands */
+							(matchedInstr->vexflags & VEX));													/* Modify the modRM value for any non-memory operands */
 		
-		/* Create REX or VEX prefixes */
+		//----------------------------------------------------------
+		// Create REX, VEX or EVEX prefixes                      
+		//----------------------------------------------------------
 		if ((matchedInstr->vexflags & VEX) != 0)
-			BuildVEX(&needVEX, &vexSize, &vexBytes, matchedInstr, opExpr, needB, needX, opCount);	/* Create the VEX prefix bytes for both reg and memory operands */
+			BuildVEX(&needVEX, &vexSize, &vexBytes, matchedInstr, opExpr, needB, needX, opCount);				/* Create the VEX prefix bytes for both reg and memory operands */
+		
+		// Either the instruction can ONLY be EVEX encoded, or user requested VEX->EVEX promotion.
+		if ((matchedInstr->vexflags & EVEX_ONLY) != 0)
+			BuildEVEX(&needEVEX, &evexBytes, matchedInstr, opExpr, needB, needX, needRR, opCount, CodeInfo);	/* Create the EVEX prefix bytes if the instruction supports an EVEX form */
+		
 		else if(CodeInfo->Ofssize == USE64)
-			rexByte |= BuildREX(rexByte, matchedInstr, opExpr, FALSE);							    /* Modify the REX prefix for non-memory operands/sizing */
+			rexByte |= BuildREX(rexByte, matchedInstr, opExpr, FALSE);											/* Modify the REX prefix for non-memory operands/sizing */
 
 		//----------------------------------------------------------
 		// Check if address or operand size override prefixes are required.
@@ -1248,8 +1402,15 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 			OutputBytes((unsigned char *)&vexBytes, vexSize, NULL);
 
 		//----------------------------------------------------------
+		// Output EVEX prefix if required.
+		// -> This is mutually exclusive with VEX above.
+		//----------------------------------------------------------
+		if (needEVEX)
+			OutputBytes((unsigned char*)&evexBytes, 4, NULL);
+
+		//----------------------------------------------------------
 		// Output mandatory prefix (part 1).
-		// Some mandatory prefixes must be split across a REX.
+		// -> Some mandatory prefixes must be split across a REX.
 		//----------------------------------------------------------
 		switch (matchedInstr->mandatory_prefix)
 		{
@@ -1262,6 +1423,7 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 
 		//----------------------------------------------------------
 		// Output REX prefix if required.
+		// -> Not required for VEX or EVEX.
 		//----------------------------------------------------------
 		if (rexByte != 0)
 			OutputCodeByte(rexByte);
@@ -1279,11 +1441,11 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 			break;
 		case PFX_0x66F38:
 			OutputCodeByte(0x0f); // second part.
-			OutputCodeByte(0x38); // second part.
+			OutputCodeByte(0x38);
 			break;
 		case PFX_0x66F3A:
 			OutputCodeByte(0x0f); // second part.
-			OutputCodeByte(0x3a); // second part.
+			OutputCodeByte(0x3a); 
 			break;
 		}
 

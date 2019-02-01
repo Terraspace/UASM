@@ -3976,6 +3976,7 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 	/* Use the V2 CodeGen, else fallback to the standard CodeGen   */
 	/* *********************************************************** */
 	if (!evexflag && CodeInfo.evex_flag == 0 && (ModuleInfo.Ofssize == USE32 || ModuleInfo.Ofssize == USE64))
+	//if (ModuleInfo.Ofssize == USE32 || ModuleInfo.Ofssize == USE64)
 	{
 		temp = CodeGenV2(opcodePtr, &CodeInfoV2, oldofs, opndCount, opndxV2);
 		if (temp == EMPTY)
