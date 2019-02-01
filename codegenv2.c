@@ -122,11 +122,11 @@ enum op_type DemoteOperand(enum op_type op) {
 	else if (op == M8 || op == M16 || op == M32 || op == M48 || op == M64 || op == M80 || op == M128 || op == M256 || op == M512)
 		ret = M_ANY;
 
-	else if (op == R_XMM || op == R_XMME)
-		ret = R_XMM_ANY;
+	//else if (op == R_XMM || op == R_XMME)
+		//ret = R_XMM_ANY;
 
-	else if (op == R_YMM || op == R_YMME)
-		ret = R_YMM_ANY;
+	//else if (op == R_YMM || op == R_YMME)
+		//ret = R_YMM_ANY;
 
 	return(ret);
 }
@@ -322,18 +322,18 @@ enum op_type MatchOperand(struct code_info *CodeInfo, struct opnd_item op, struc
 			break;
 		case OP_XMM:
 			/* If register xmm8-xmm15 USE R_XMME */
-			if (opExpr.base_reg->tokval >= T_XMM8 && opExpr.base_reg->tokval <= T_XMM15)
-				result = R_XMME;
-			else
+		//	if (opExpr.base_reg->tokval >= T_XMM8 && opExpr.base_reg->tokval <= T_XMM15)
+			//	result = R_XMME;
+			//else
 				result = R_XMM;
 			/* If register xmm16-xmm31 USE AVX512_128 */
 			break;
 
 		case OP_YMM:
 			/* If register is ymm8-ymm15 USE R_YMME */
-			if (opExpr.base_reg->tokval >= T_YMM8 && opExpr.base_reg->tokval <= T_YMM15)
-				result = R_YMME;
-			else
+			//if (opExpr.base_reg->tokval >= T_YMM8 && opExpr.base_reg->tokval <= T_YMM15)
+				//result = R_YMME;
+			//else
 				result = R_YMM;
 			/* If register ymm16-ymm31 USE AVX512_256 */
 			break;
@@ -721,17 +721,26 @@ void BuildVEX(bool* needVex, unsigned char* vexSize, unsigned char* vexBytes, st
 	if ((instr->vexflags & VEX_B) != 0 || needB)
 		VEXb = 0;
 
-//	if (opnd[0].base_reg && GetRegisterNo(opnd[0].base_reg) > 7)
-		//VEXr = 0;
-	//if (opnd[instr->srcidx].base_reg && GetRegisterNo(opnd[instr->srcidx].base_reg) > 7)
-//		VEXb = 0;
+	if (opnd[0].base_reg && GetRegisterNo(opnd[0].base_reg) > 7)
+		VEXr = 0; /* REG_DST requires R~ extension */
+	if (opnd[instr->srcidx].base_reg && GetRegisterNo(opnd[instr->srcidx].base_reg) > 7)
+		VEXb = 0; /* RM_SRC requires B~ extension */
+
+	/* Here we optimise a 3byte form back to 2byte by swapping the opcode direction when we have src reg > 7 and dst reg <= 7 
+	   -> If this occurs, we would already have done the opnd swap before mem-encoding to ensure correct sib and mod r/m */
+	if (VEXr == 1 && VEXb == 0 && !needB && VEXx == 1 && VEXmmmmm == 1)
+	{
+		VEXr = 0;
+		VEXb = 1;
+		*vexSize = 2;
+	}
 
 	/* If VEX.WIG is present and we don't need VEX.mmmmm use 2byte form */
 	if (((instr->vexflags & VEX_WIG) != 0 && VEXx == 1 && VEXb == 1 && VEXmmmmm == 1) ||
 		(*vexSize != 3 && VEXx == 1 && VEXb == 1))
 		*vexSize = 2;
 	
-	/* Either VEX.x or VEX.b set require 3byte  form */
+	/* Either VEX.x or VEX.b set require 3byte form */
 	if (VEXx == 0 || VEXb == 0)
 		*vexSize = 3;
 
@@ -1144,6 +1153,7 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 	unsigned int  dispSize     = 0;
 	unsigned int  immSize      = 0;
 	unsigned char encodeMode   = 0;
+	unsigned char curDir = 0;
 
 	union
 	{
@@ -1264,6 +1274,14 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		{
 			if(CodeInfo->opnd[matchedInstr->immOpnd].InsFixup)
 				needFixup = TRUE;
+		}
+
+		curDir = matchedInstr->op_dir;
+		if ((opExpr[0].base_reg && GetRegisterNo(opExpr[0].base_reg) <= 7) &&
+			(opExpr[matchedInstr->srcidx].base_reg && GetRegisterNo(opExpr[matchedInstr->srcidx].base_reg) > 7) &&
+			(matchedInstr->vexflags & VEX) != 0)
+		{
+			matchedInstr->op_dir = RM_DST;
 		}
 
 		//----------------------------------------------------------
@@ -1553,6 +1571,8 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 			if (CodeInfo->opnd[OPND2].InsFixup && CodeInfo->opnd[OPND2].InsFixup->type == FIX_RELOFF32)
 				CodeInfo->opnd[OPND2].InsFixup->addbytes = GetCurrOffset() - CodeInfo->opnd[OPND2].InsFixup->locofs;
 		}
+
+		matchedInstr->op_dir = curDir;
 	}
 
 	// Write out listing.
