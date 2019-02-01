@@ -583,6 +583,7 @@ unsigned char BuildModRM(unsigned char modRM, struct Instr_Def* instr, struct ex
 unsigned char BuildREX(unsigned char RexByte, struct Instr_Def* instr, struct expr opnd[4])
 {
 	// Only if the identified instruction requires a REX prefix.
+	// REX flag is set which indicates the instruction table entry has preset values defining REX.R,.X,.B
 	if (((uint_32)instr->flags & (uint_32)REX) != 0)
 	{
 		/* +---+---+---+---+---+---+---+---+ */
@@ -592,9 +593,7 @@ unsigned char BuildREX(unsigned char RexByte, struct Instr_Def* instr, struct ex
 		// R == extend ModRM.reg
 		// X == extend SIB.index
 		// B == extend ModRM.rm or SIB.base
-
-		RexByte |= 0x40;		// Fixed base value for REX prefix.
-		
+		RexByte |= 0x40;					// Fixed base value for REX prefix.	
 		if ((instr->flags & (uint_32)REXB) != 0)
 			RexByte |= 0x01;
 		if ((instr->flags & (uint_32)REXX) != 0)
@@ -604,6 +603,24 @@ unsigned char BuildREX(unsigned char RexByte, struct Instr_Def* instr, struct ex
 		if ((instr->flags & (uint_32)REXW) != 0)
 			RexByte |= 0x08;
 
+	}
+	// EREX (or extended with REX) means we must programmatically determine the REX extensions.
+	else if (((uint_32)instr->flags & (uint_32)EREX) != 0)
+	{
+		if (instr->op_dir == REG_DST)
+		{
+			if (opnd[0].base_reg && GetRegisterNo(opnd[0].base_reg) > 7)
+				RexByte |= 0x44; // Add REX.R
+			if (opnd[instr->srcidx].base_reg && GetRegisterNo(opnd[instr->srcidx].base_reg) > 7)
+				RexByte |= 0x41; // Add REX.B
+		}
+		else
+		{
+			if (opnd[0].base_reg && GetRegisterNo(opnd[0].base_reg) > 7)
+				RexByte |= 0x41; // Add REX.B
+			if (opnd[instr->srcidx].base_reg && GetRegisterNo(opnd[instr->srcidx].base_reg) > 7)
+				RexByte |= 0x44; // Add REX.R
+		}
 	}
 	/* Instruction promoted with REX.W if specified memory operand is QWORD sized */
 	else if ((uint_32)(instr->flags & (uint_32)REXP_MEM) != 0)
@@ -721,14 +738,24 @@ void BuildVEX(bool* needVex, unsigned char* vexSize, unsigned char* vexBytes, st
 	if ((instr->vexflags & VEX_B) != 0 || needB)
 		VEXb = 0;
 
-	if (opnd[0].base_reg && GetRegisterNo(opnd[0].base_reg) > 7)
-		VEXr = 0; /* REG_DST requires R~ extension */
-	if (opnd[instr->srcidx].base_reg && GetRegisterNo(opnd[instr->srcidx].base_reg) > 7)
-		VEXb = 0; /* RM_SRC requires B~ extension */
+	if (instr->op_dir == REG_DST)
+	{
+		if (opnd[0].base_reg && GetRegisterNo(opnd[0].base_reg) > 7)
+			VEXr = 0; /* REG_DST requires R~ extension */
+		if (opnd[instr->srcidx].base_reg && GetRegisterNo(opnd[instr->srcidx].base_reg) > 7)
+			VEXb = 0; /* RM_SRC requires B~ extension */
+	}
+	else
+	{
+		if (opnd[0].base_reg && GetRegisterNo(opnd[0].base_reg) > 7)
+			VEXb = 0; /* RM_DST requires R~ extension */
+		if (opnd[instr->srcidx].base_reg && GetRegisterNo(opnd[instr->srcidx].base_reg) > 7)
+			VEXr = 0; /* REG_SRC requires B~ extension */
+	}
 
 	/* Here we optimise a 3byte form back to 2byte by swapping the opcode direction when we have src reg > 7 and dst reg <= 7 
 	   -> If this occurs, we would already have done the opnd swap before mem-encoding to ensure correct sib and mod r/m */
-	if (VEXr == 1 && VEXb == 0 && !needB && VEXx == 1 && VEXmmmmm == 1)
+	if (VEXr == 1 && VEXb == 0 && !needB && VEXx == 1 && VEXmmmmm == 1 && *vexSize != 3)
 	{
 		VEXr = 0;
 		VEXb = 1;
@@ -1153,7 +1180,8 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 	unsigned int  dispSize     = 0;
 	unsigned int  immSize      = 0;
 	unsigned char encodeMode   = 0;
-	unsigned char curDir = 0;
+	unsigned char curDir       = 0;
+	unsigned char opcodeShift  = 0;
 
 	union
 	{
@@ -1279,9 +1307,10 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		curDir = matchedInstr->op_dir;
 		if ((opExpr[0].base_reg && GetRegisterNo(opExpr[0].base_reg) <= 7) &&
 			(opExpr[matchedInstr->srcidx].base_reg && GetRegisterNo(opExpr[matchedInstr->srcidx].base_reg) > 7) &&
-			(matchedInstr->vexflags & VEX) != 0)
+			(matchedInstr->vexflags & VEX) != 0 && curDir == REG_DST)
 		{
 			matchedInstr->op_dir = RM_DST;
+			opcodeShift = 1;
 		}
 
 		//----------------------------------------------------------
@@ -1302,7 +1331,10 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		//----------------------------------------------------------
 		if ((matchedInstr->vexflags & VEX) != 0)
 			BuildVEX(&needVEX, &vexSize, &vexBytes, matchedInstr, opExpr, needB, needX, opCount);				/* Create the VEX prefix bytes for both reg and memory operands */
-		
+		// 3byte VEX forms will never use the opcode swap.
+		if (vexSize == 3)
+			opcodeShift = 0;
+
 		// Either the instruction can ONLY be EVEX encoded, or user requested VEX->EVEX promotion.
 		if ((matchedInstr->vexflags & EVEX_ONLY) != 0)
 			BuildEVEX(&needEVEX, &evexBytes, matchedInstr, opExpr, needB, needX, needRR, opCount, CodeInfo);	/* Create the EVEX prefix bytes if the instruction supports an EVEX form */
@@ -1481,7 +1513,15 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		else
 		{
 			for (i = 0; i < matchedInstr->opcode_bytes; i++)
-				OutputCodeByte(matchedInstr->opcode[i]);
+			{
+				if (i == (matchedInstr->opcode_bytes - 1))
+				{
+					// If we swapped a VEX opcode to favour 2byte form, add the shift amount in to the opcode byte.
+					OutputCodeByte(matchedInstr->opcode[i] + opcodeShift);
+				}
+				else
+					OutputCodeByte(matchedInstr->opcode[i]);
+			}
 		}
 
 		//----------------------------------------------------------

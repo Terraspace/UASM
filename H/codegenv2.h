@@ -156,6 +156,7 @@ enum op_type {
 #define NO_MEM_REG   (1<<21)	/* This indicates that only an absolute or displacement only memory address is supported */
 #define NO_PREFIX    (1<<22)    /* Manual refers to this as NP (66/f2/f3 prefixes prohibited) */
 #define IMM8_ONLY    (1<<23)	/* The instruction entry assume immediates match the opsize, however some instructions use ONLY an imm8 */
+#define EREX         (1<<24)	/* The instruction is extended with a REX prefix only if the src/dst register no > 7 */
 
 /* VEX flags */
 #define NO_VEX		 (0)
