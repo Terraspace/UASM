@@ -6,6 +6,7 @@ option flat:1
 	use64
 	
 	;REG/REG
+	
 	vmovaps xmm0,xmm0
 	vmovaps xmm0,xmm4
 	vmovaps xmm4,xmm2

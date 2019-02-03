@@ -345,7 +345,7 @@ enum op_type MatchOperand(struct code_info *CodeInfo, struct opnd_item op, struc
 	return result;
 }
 
-struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg, unsigned char encodeMode) {
+struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg, unsigned char encodeMode, int srcRegNo, int dstRegNo) {
 	uint_32           hash;
 	struct Instr_Def* pInstruction = NULL;
 	bool              matched      = FALSE;
@@ -359,11 +359,17 @@ struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg, unsign
 			pInstruction->operand_types[1] == instr->operand_types[1] &&
 			pInstruction->operand_types[2] == instr->operand_types[2] &&
 			pInstruction->operand_types[3] == instr->operand_types[3] &&
-			(pInstruction->validModes & encodeMode) != 0) {
+			(pInstruction->validModes & encodeMode) != 0) 
+		{
 			/* If the instruction only supports absolute or displacement only addressing 
 			and we have a register in the memory expression, this is not a match */
 			if (memReg && ((pInstruction->flags & NO_MEM_REG) != 0))
 				goto nextInstr;
+
+			/* We have duplicate entries in the table when there is a limiting factor based on register no, rule it out */
+			if ((((uint_32)pInstruction->flags & (uint_32)SRCHDSTL) != 0) && ((srcRegNo<=7 && dstRegNo>7) || (srcRegNo<=7 && dstRegNo<=7) || (srcRegNo>7 && dstRegNo>7)))
+				goto nextInstr;
+
 			matched = TRUE;
 			break;
 		}
@@ -742,24 +748,15 @@ void BuildVEX(bool* needVex, unsigned char* vexSize, unsigned char* vexBytes, st
 	{
 		if (opnd[0].base_reg && GetRegisterNo(opnd[0].base_reg) > 7)
 			VEXr = 0; /* REG_DST requires R~ extension */
-		if (opnd[instr->srcidx].base_reg && GetRegisterNo(opnd[instr->srcidx].base_reg) > 7)
+		if (opnd[instr->srcidx].base_reg && !opnd[instr->srcidx].indirect && GetRegisterNo(opnd[instr->srcidx].base_reg) > 7)
 			VEXb = 0; /* RM_SRC requires B~ extension */
 	}
-	else
+	else if (instr->op_dir == RM_DST)
 	{
-		if (opnd[0].base_reg && GetRegisterNo(opnd[0].base_reg) > 7)
-			VEXb = 0; /* RM_DST requires R~ extension */
 		if (opnd[instr->srcidx].base_reg && GetRegisterNo(opnd[instr->srcidx].base_reg) > 7)
-			VEXr = 0; /* REG_SRC requires B~ extension */
-	}
-
-	/* Here we optimise a 3byte form back to 2byte by swapping the opcode direction when we have src reg > 7 and dst reg <= 7 
-	   -> If this occurs, we would already have done the opnd swap before mem-encoding to ensure correct sib and mod r/m */
-	if (VEXr == 1 && VEXb == 0 && !needB && VEXx == 1 && VEXmmmmm == 1 && *vexSize != 3)
-	{
-		VEXr = 0;
-		VEXb = 1;
-		*vexSize = 2;
+			VEXr = 0; /* REG_DST requires R~ extension */
+		if (opnd[0].base_reg && !opnd[0].indirect && GetRegisterNo(opnd[0].base_reg) > 7)
+			VEXb = 0; /* RM_SRC requires B~ extension */
 	}
 
 	/* If VEX.WIG is present and we don't need VEX.mmmmm use 2byte form */
@@ -1180,8 +1177,8 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 	unsigned int  dispSize     = 0;
 	unsigned int  immSize      = 0;
 	unsigned char encodeMode   = 0;
-	unsigned char curDir       = 0;
-	unsigned char opcodeShift  = 0;
+	unsigned int  srcRegNo     = 0;
+	unsigned int  dstRegNo     = 0;
 
 	union
 	{
@@ -1240,20 +1237,21 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		break;
 	}
 
+	/* Get the src/dst register numbers to limit instruction lookups where required */
+	if(opExpr[0].base_reg)
+		dstRegNo = GetRegisterNo(opExpr[0].base_reg);
+	if (opExpr[1].base_reg)
+		srcRegNo = GetRegisterNo(opExpr[1].base_reg);
+
 	/* Lookup the instruction */
-	matchedInstr = LookupInstruction(&instrToMatch, hasMemReg, encodeMode);
+	matchedInstr = LookupInstruction(&instrToMatch, hasMemReg, encodeMode, srcRegNo, dstRegNo);
 	
 	/* Try once again with demoted operands */
 	if (matchedInstr == NULL)
 	{
 		for (i = 0; i < opCount; i++)
-		{
-			/* Special check on operand 1 here as that could be the VEX NDS register which must be demoted ONLY */
-			if((opCount >= 3 && (instrToMatch.operand_types[i] == R_XMM || instrToMatch.operand_types[i] == R_XMME || instrToMatch.operand_types[i] == R_YMM || instrToMatch.operand_types[i] == R_YMME) &&	i == 1) || 
-				(opCount < 3 && (instrToMatch.operand_types[i] != R_XMM && instrToMatch.operand_types[i] != R_XMME && instrToMatch.operand_types[i] != R_YMM && instrToMatch.operand_types[i] != R_YMME)))
 				instrToMatch.operand_types[i] = DemoteOperand(instrToMatch.operand_types[i]);
-		}
-		matchedInstr = LookupInstruction(&instrToMatch, hasMemReg, encodeMode);
+		matchedInstr = LookupInstruction(&instrToMatch, hasMemReg, encodeMode, srcRegNo, dstRegNo);
 	}
 	
 	/* If we have an absolute memory addressing mode but the disp is 32bit or less, fallback to using a non abs mode */
@@ -1304,15 +1302,6 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 				needFixup = TRUE;
 		}
 
-		curDir = matchedInstr->op_dir;
-		if ((opExpr[0].base_reg && GetRegisterNo(opExpr[0].base_reg) <= 7) &&
-			(opExpr[matchedInstr->srcidx].base_reg && GetRegisterNo(opExpr[matchedInstr->srcidx].base_reg) > 7) &&
-			(matchedInstr->vexflags & VEX) != 0 && curDir == REG_DST)
-		{
-			matchedInstr->op_dir = RM_DST;
-			opcodeShift = 1;
-		}
-
 		//----------------------------------------------------------
 		// Build Memory Encoding Format.
 		// -> When an indirect memory operand is used, this will build
@@ -1324,19 +1313,16 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 			aso = BuildMemoryEncoding(&modRM, &sib, &rexByte, &needModRM, &needSIB,
 				                &dispSize, &displacement, matchedInstr, opExpr, &needB, &needX);				/* This could result in modifications to REX, modRM and SIB bytes */
 		modRM |= BuildModRM(matchedInstr->modRM, matchedInstr, opExpr, &needModRM, &needSIB,
-							(matchedInstr->vexflags & VEX));													/* Modify the modRM value for any non-memory operands */
-		
+			(matchedInstr->vexflags & VEX));																	/* Modify the modRM value for any non-memory operands */
+
 		//----------------------------------------------------------
 		// Create REX, VEX or EVEX prefixes                      
 		//----------------------------------------------------------
 		if ((matchedInstr->vexflags & VEX) != 0)
 			BuildVEX(&needVEX, &vexSize, &vexBytes, matchedInstr, opExpr, needB, needX, opCount);				/* Create the VEX prefix bytes for both reg and memory operands */
-		// 3byte VEX forms will never use the opcode swap.
-		if (vexSize == 3)
-			opcodeShift = 0;
 
 		// Either the instruction can ONLY be EVEX encoded, or user requested VEX->EVEX promotion.
-		if ((matchedInstr->vexflags & EVEX_ONLY) != 0)
+		else if ((matchedInstr->vexflags & EVEX_ONLY) != 0)
 			BuildEVEX(&needEVEX, &evexBytes, matchedInstr, opExpr, needB, needX, needRR, opCount, CodeInfo);	/* Create the EVEX prefix bytes if the instruction supports an EVEX form */
 		
 		else if(CodeInfo->Ofssize == USE64)
@@ -1513,15 +1499,7 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		else
 		{
 			for (i = 0; i < matchedInstr->opcode_bytes; i++)
-			{
-				if (i == (matchedInstr->opcode_bytes - 1))
-				{
-					// If we swapped a VEX opcode to favour 2byte form, add the shift amount in to the opcode byte.
-					OutputCodeByte(matchedInstr->opcode[i] + opcodeShift);
-				}
-				else
-					OutputCodeByte(matchedInstr->opcode[i]);
-			}
+				OutputCodeByte(matchedInstr->opcode[i]);
 		}
 
 		//----------------------------------------------------------
@@ -1612,7 +1590,6 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 				CodeInfo->opnd[OPND2].InsFixup->addbytes = GetCurrOffset() - CodeInfo->opnd[OPND2].InsFixup->locofs;
 		}
 
-		matchedInstr->op_dir = curDir;
 	}
 
 	// Write out listing.

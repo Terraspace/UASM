@@ -157,6 +157,7 @@ enum op_type {
 #define NO_PREFIX    (1<<22)    /* Manual refers to this as NP (66/f2/f3 prefixes prohibited) */
 #define IMM8_ONLY    (1<<23)	/* The instruction entry assume immediates match the opsize, however some instructions use ONLY an imm8 */
 #define EREX         (1<<24)	/* The instruction is extended with a REX prefix only if the src/dst register no > 7 */
+#define SRCHDSTL     (1<<25)	/* Some instructions have an optimised encodable form, ie: vmovaps by using a different opcode with swapped reg, rm dst and this flag limits instruction search for these */
 
 /* VEX flags */
 #define NO_VEX		 (0)
@@ -348,7 +349,8 @@ enum op_type      DemoteOperand(enum op_type op);
 void              InsertInstruction(struct Instr_Def* pInstruction, uint_32 hash);
 struct Instr_Def* AllocInstruction();
 uint_32           GenerateInstrHash(struct Instr_Def* pInstruction);
-struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg, unsigned char encodeMode);
+struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg, unsigned char encodeMode, 
+	                                int srcRegNo, int dstRegNo);
 enum op_type      MatchOperand(struct code_info *CodeInfo, struct opnd_item op, struct expr opExpr);
 
 bool Require_OPND_Size_Override(struct Instr_Def* instr, struct code_info* CodeInfo);
