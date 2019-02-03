@@ -805,20 +805,32 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 	// | 7 | 6  | 5 | 4 | 3  | 2-0 |
 	// | z | L' | L | b | V' |  a  |
 
-	unsigned char EVEXpp = 0;
-	unsigned char EVEXmm = 0;
-	unsigned char EVEXr = 1;
-	unsigned char EVEXx = 1;
-	unsigned char EVEXb = 1;
-	unsigned char EVEXnr = 1;
-	unsigned char EVEXl = 0;
-	unsigned char EVEXnl = 1;
-	unsigned char EVEXw = 0;
+	//{sae},   {rn-sae},{rd-sae},{ru-sae} {rz-sae} in opnd->saeflag
+	//broadflags = {1to2} {1to4} {1to8} {1to16}
+
+	unsigned char EVEXpp   = 0;
+	unsigned char EVEXmm   = 0;
+	unsigned char EVEXr    = 1;
+	unsigned char EVEXx    = 1;
+	unsigned char EVEXb    = 1;
+	unsigned char EVEXnr   = 1;
+	unsigned char EVEXl    = 0;
+	unsigned char EVEXnl   = 1;
+	unsigned char EVEXw    = 0;
 	unsigned char EVEXvvvv = 0;
-	unsigned char EVEXaaa = 0;
-	unsigned char EVEXz = 0;
-	unsigned char EVEXbr = 0;
-	unsigned char EVEXnv = 1;
+	unsigned char EVEXaaa  = 0;
+	unsigned char EVEXz    = 0;
+	unsigned char EVEXbr   = 0;
+	unsigned char EVEXnv   = 1;
+
+	/* {z} decorator */
+	EVEXz = (decoflags & 0x80) >> 7;
+	
+	/* {kn} opmask */
+	EVEXaaa = (decoflags & 7);
+
+	if ((instr->vexflags & EVEX_MASK) == 0 && ((EVEXz == 1) || (EVEXaaa != 0)))
+		EmitError(EVEX_DECORATOR_NOT_ALLOWED);
 
 	/* EVEX.vvvv */
 	if ((instr->vexflags & VEX_NDS) != 0)
@@ -1318,11 +1330,12 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		//----------------------------------------------------------
 		// Create REX, VEX or EVEX prefixes                      
 		//----------------------------------------------------------
-		if ((matchedInstr->vexflags & VEX) != 0)
+		if ((matchedInstr->vexflags & VEX) != 0 && CodeInfo->evex_flag == 0)
 			BuildVEX(&needVEX, &vexSize, &vexBytes, matchedInstr, opExpr, needB, needX, opCount);				/* Create the VEX prefix bytes for both reg and memory operands */
 
 		// Either the instruction can ONLY be EVEX encoded, or user requested VEX->EVEX promotion.
-		else if ((matchedInstr->vexflags & EVEX_ONLY) != 0)
+		else if ((matchedInstr->vexflags & EVEX_ONLY) != 0 || 
+			((CodeInfo->evex_flag) && (matchedInstr->vexflags & EVEX) != 0))
 			BuildEVEX(&needEVEX, &evexBytes, matchedInstr, opExpr, needB, needX, needRR, opCount, CodeInfo);	/* Create the EVEX prefix bytes if the instruction supports an EVEX form */
 		
 		else if(CodeInfo->Ofssize == USE64)

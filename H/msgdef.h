@@ -381,3 +381,4 @@ pick( BASE_INDEX_MEMORY_SIZE_ERROR, "base and index registers must be of the sam
 pick( BITS16_MEM_NOT_ALLOWED_IN_LONG_MODE, "16bit memory addressing is not supported in 64bit code")
 pick( SIGN64_PROMOTION_NOT_POSSIBLE, "Promotion via sign-extension to 64bit QWORD not possible")
 pick( UNINIT_DATA_IN_BIN, "BSS data in BIN output could have side effects")
+pick( EVEX_DECORATOR_NOT_ALLOWED, "EVEX decorator not supported")

@@ -187,6 +187,11 @@ enum op_type {
 #define EVEX_NR      (1<<23)
 #define EVEX_W0      (1<<24)
 #define EVEX_W1      (1<<25)
+#define EVEX_BROAD   (1<<26)	/* EVEX encoded instruction allows broadcast flags {1to2},{1to4},{1to8},{1to16}*/
+#define EVEX_MASK    (1<<27)	/* EVEX encoded instruction allows a k opmask and z flag */
+#define EVEX_SAE     (1<<28)	/* EVEX encoded instruction allows SAE flag */
+#define EVEX_RND     (1<<29)	/* EVEX encoded instruction allows rounding mode specifier */
+#define EVEX_COMP8   (1<<30)	/* EVEX encoded instruction requires comp8 displacement */
 
 /* Required ASO/OSO flags */
 #define OP_SIZE_OVERRIDE   0x66
