@@ -355,7 +355,7 @@ void              InsertInstruction(struct Instr_Def* pInstruction, uint_32 hash
 struct Instr_Def* AllocInstruction();
 uint_32           GenerateInstrHash(struct Instr_Def* pInstruction);
 struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg, unsigned char encodeMode, 
-	                                int srcRegNo, int dstRegNo);
+	                                int srcRegNo, int dstRegNo, struct code_info *CodeInfo);
 enum op_type      MatchOperand(struct code_info *CodeInfo, struct opnd_item op, struct expr opExpr);
 
 bool Require_OPND_Size_Override(struct Instr_Def* instr, struct code_info* CodeInfo);
@@ -371,5 +371,5 @@ void          BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_D
 						bool needB, bool needX, bool needRR, uint_32 opCount, struct code_info* CodeInfo);					/* Build EVEX prefix bytes      */
 int           BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned char* pREX, bool* needRM, bool* needSIB,
 	                              unsigned int* dispSize, int* pDisp, struct Instr_Def* instr, 
-								  struct expr opExpr[4], bool* needB, bool* needX);											/* Build Memory encoding ModRM/SIB bytes   */
+								  struct expr opExpr[4], bool* needB, bool* needX, struct code_info *CodeInfo);				/* Build Memory encoding ModRM/SIB bytes   */
 unsigned char GetRegisterNo(struct asm_tok *regTok);																		/* Get Register Encoding Number from Token */

@@ -5,7 +5,7 @@ option evex:1
 .code
 
 	use64
-	
+	vmovaps xmm24,[rbp-0x04]
 	;REG/REG
 	vmovaps zmm0, zmm1
 	vmovaps zmm9, zmm1
@@ -42,12 +42,12 @@ option evex:1
 	vmovaps xmm23{k5}{z},[rdi+r12]
 	vmovaps xmm26,myVector
 	vmovaps xmm27,XMMWORD PTR myVector
-comment $	
+
 	vmovaps ymm20,[rdi]
 	vmovaps ymm22{z},[rdi+rax]
 	vmovaps ymm22,[rsi+rbx*2]
 	vmovaps ymm24,[rbp-0x04]
-	vmovaps ymm25{k3},[rsp]
+	vmovaps ymm25{k3}{z},[rsp]
 	vmovaps ymm23,[rdi+r12]
 	vmovaps ymm26,myVector
 	vmovaps ymm27,YMMWORD PTR myVector
@@ -71,7 +71,7 @@ comment $
 	{evex} vmovaps xmm7,XMMWORD PTR myVector
 	
 	{evex} vmovaps xmm8,[rdi]
-	{evex} vmovaps xmm9,[rdi+rax]
+	{evex} vmovaps xmm9{k2}{z},[rdi+rax]
 	{evex} vmovaps xmm9,[rsi+rbx*2]
 	{evex} vmovaps xmm10,[rbp-0x04]
 	{evex} vmovaps xmm15,[rsp]
@@ -82,7 +82,7 @@ comment $
 	{evex} vmovaps ymm0,[rdi]
 	{evex} vmovaps ymm2,[rdi+rax]
 	{evex} vmovaps ymm2,[rsi+rbx*2]
-	{evex} vmovaps ymm4,[rbp-0x04]
+	{evex} vmovaps ymm4{k3},[rbp-0x04]
 	{evex} vmovaps ymm5,[rsp]
 	{evex} vmovaps ymm6,myVector
 	{evex} vmovaps ymm7,YMMWORD PTR myVector
@@ -105,7 +105,7 @@ comment $
 	{evex} vmovaps myVector,xmm6
 	{evex} vmovaps XMMWORD PTR myVector,xmm7
 	
-	{evex} vmovaps [rdi],xmm8
+	{evex} vmovaps [rdi]{k2}{z},xmm8
 	{evex} vmovaps [rdi+rax],xmm9
 	{evex} vmovaps [rsi+rbx*2],xmm9
 	{evex} vmovaps [rbp-0x04],xmm10
@@ -136,7 +136,7 @@ comment $
 	vmovaps [rbp-0x04],xmm20
 	vmovaps [rsi+r11],xmm23
 	vmovaps [rsp],xmm25
-	vmovaps myVector{z},xmm21
+;	vmovaps myVector{k1},xmm21
 	vmovaps XMMWORD PTR myVector,xmm22
 
 	vmovaps [rdi],ymm20
@@ -154,7 +154,7 @@ comment $
 	vmovaps [rsp],zmm25
 	vmovaps myVector,zmm21
 	vmovaps XMMWORD PTR myVector,zmm22	
-	$
+
 .data
 
 align 32

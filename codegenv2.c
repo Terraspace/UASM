@@ -345,7 +345,8 @@ enum op_type MatchOperand(struct code_info *CodeInfo, struct opnd_item op, struc
 	return result;
 }
 
-struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg, unsigned char encodeMode, int srcRegNo, int dstRegNo) {
+struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg, unsigned char encodeMode, int srcRegNo, int dstRegNo, struct code_info *CodeInfo) 
+{
 	uint_32           hash;
 	struct Instr_Def* pInstruction = NULL;
 	bool              matched      = FALSE;
@@ -366,8 +367,8 @@ struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg, unsign
 			if (memReg && ((pInstruction->flags & NO_MEM_REG) != 0))
 				goto nextInstr;
 
-			/* We have duplicate entries in the table when there is a limiting factor based on register no, rule it out */
-			if ((((uint_32)pInstruction->flags & (uint_32)SRCHDSTL) != 0) && ((srcRegNo<=7 && dstRegNo>7) || (srcRegNo<=7 && dstRegNo<=7) || (srcRegNo>7 && dstRegNo>7)))
+			/* We have duplicate entries in the table when there is a limiting factor based on register no, rule it out, this doesn't apply to evex */
+			if ((((uint_32)pInstruction->flags & (uint_32)SRCHDSTL) != 0) && ((srcRegNo<=7 && dstRegNo>7) || (srcRegNo<=7 && dstRegNo<=7) || (srcRegNo>7 && dstRegNo>7) || CodeInfo->evex_flag))
 				goto nextInstr;
 
 			matched = TRUE;
@@ -440,16 +441,27 @@ unsigned char GetRegisterNo(struct asm_tok *regTok)
 			regNo = (unsigned char)((regTok->tokval - T_R8B) + 8);
 		else if (regTok->tokval >= T_AX && regTok->tokval <= T_DI)
 			regNo = (unsigned char)(regTok->tokval - T_AX);
+
+		else if (regTok->tokval >= T_MM0 && regTok->tokval <= T_MM7)
+			regNo = (unsigned char)(regTok->tokval - T_MM0);
+
 		else if (regTok->tokval >= T_XMM0 && regTok->tokval <= T_XMM7)
 			regNo = (unsigned char)(regTok->tokval - T_XMM0);
 		else if (regTok->tokval >= T_XMM8 && regTok->tokval <= T_XMM15)
 			regNo = (unsigned char)((regTok->tokval - T_XMM8) + 8);
-		else if (regTok->tokval >= T_MM0 && regTok->tokval <= T_MM7)
-			regNo = (unsigned char)(regTok->tokval - T_MM0);
+		else if (regTok->tokval >= T_XMM16 && regTok->tokval <= T_XMM23)
+			regNo = (unsigned char)((regTok->tokval - T_XMM16) + 16);
+		else if (regTok->tokval >= T_XMM24 && regTok->tokval <= T_XMM31)
+			regNo = (unsigned char)((regTok->tokval - T_XMM24) + 24);
+
 		else if (regTok->tokval >= T_YMM0 && regTok->tokval <= T_YMM7)
 			regNo = (unsigned char)(regTok->tokval - T_YMM0);
 		else if (regTok->tokval >= T_YMM8 && regTok->tokval <= T_YMM15)
 			regNo = (unsigned char)((regTok->tokval - T_YMM8) + 8);
+		else if (regTok->tokval >= T_YMM16 && regTok->tokval <= T_YMM23)
+			regNo = (unsigned char)((regTok->tokval - T_YMM16) + 16);
+		else if (regTok->tokval >= T_YMM24 && regTok->tokval <= T_YMM31)
+			regNo = (unsigned char)((regTok->tokval - T_YMM24) + 24);
 
 		else if (regTok->tokval >= T_ZMM0 && regTok->tokval <= T_ZMM7)
 			regNo = (unsigned char)(regTok->tokval - T_ZMM0);
@@ -829,6 +841,9 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 	/* {kn} opmask */
 	EVEXaaa = (decoflags & 7);
 
+	/* {1toN} broadcast */
+
+
 	if ((instr->vexflags & EVEX_MASK) == 0 && ((EVEXz == 1) || (EVEXaaa != 0)))
 		EmitError(EVEX_DECORATOR_NOT_ALLOWED);
 
@@ -927,10 +942,33 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 }
 
 /* =====================================================================
+  Check for an EVEX Comp8 Displacement and amend value if required.
+  ===================================================================== */
+bool CompDisp(struct expr memOpnd, struct Instr_Def* instr, struct code_info *CodeInfo)
+{
+	if (CodeInfo->evex_flag)
+	{
+		// Memory displacement is between -8n and +8n.
+		if (memOpnd.value >= -(128 * instr->op_size) && memOpnd.value <= (127 * instr->op_size))
+		{
+			// Is a multiple of the operation size.
+			if (memOpnd.value % instr->op_size == 0)
+			{
+				memOpnd.value   = (memOpnd.value / instr->op_size);
+				memOpnd.value64 = (memOpnd.value64 / instr->op_size);
+				return TRUE;
+			}
+		}
+		return FALSE;
+	}
+	return TRUE;
+}
+
+/* =====================================================================
   Build up instruction SIB, ModRM and REX bytes for memory operand.
   ===================================================================== */
 int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned char* pREX, bool* needModRM, bool* needSIB,
-	                     unsigned int* dispSize, uint_64* pDisp, struct Instr_Def* instr, struct expr opExpr[4], bool* needB, bool* needX) 
+	                     unsigned int* dispSize, uint_64* pDisp, struct Instr_Def* instr, struct expr opExpr[4], bool* needB, bool* needX, struct code_info *CodeInfo)
 {
 	int             returnASO   = 0;
 	unsigned char   sibScale    = 0;
@@ -1090,8 +1128,10 @@ int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned cha
 		}
 		else
 		{
-			// Is it 8bit or 16/32bit (RIP only allows 32bit)?
-			if ( ((!opExpr[instr->memOpnd].sym) || (opExpr[instr->memOpnd].sym && opExpr[instr->memOpnd].sym->state == SYM_STACK)) && (((MemTable[memModeIdx].flags & MEMF_DSP32) == 0) && (opExpr[instr->memOpnd].value >= -128 && opExpr[instr->memOpnd].value <= 127)) || (MemTable[memModeIdx].flags & MEMF_DSP))
+			// Is it 8bit or 16/32bit (RIP only allows 32bit).
+			if (CompDisp(opExpr[(instr->memOpnd & 7)], instr, CodeInfo) && 
+				(((!opExpr[instr->memOpnd].sym) || (opExpr[instr->memOpnd].sym && opExpr[instr->memOpnd].sym->state == SYM_STACK)) && 
+				(((MemTable[memModeIdx].flags & MEMF_DSP32) == 0) && (opExpr[instr->memOpnd].value >= -128 && opExpr[instr->memOpnd].value <= 127)) || (MemTable[memModeIdx].flags & MEMF_DSP)))
 			{
 				*dispSize = 1;
 				*pmodRM |= MODRM_DISP8;
@@ -1256,14 +1296,14 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		srcRegNo = GetRegisterNo(opExpr[1].base_reg);
 
 	/* Lookup the instruction */
-	matchedInstr = LookupInstruction(&instrToMatch, hasMemReg, encodeMode, srcRegNo, dstRegNo);
+	matchedInstr = LookupInstruction(&instrToMatch, hasMemReg, encodeMode, srcRegNo, dstRegNo, CodeInfo);
 	
 	/* Try once again with demoted operands */
 	if (matchedInstr == NULL)
 	{
 		for (i = 0; i < opCount; i++)
 				instrToMatch.operand_types[i] = DemoteOperand(instrToMatch.operand_types[i]);
-		matchedInstr = LookupInstruction(&instrToMatch, hasMemReg, encodeMode, srcRegNo, dstRegNo);
+		matchedInstr = LookupInstruction(&instrToMatch, hasMemReg, encodeMode, srcRegNo, dstRegNo, CodeInfo);
 	}
 	
 	/* If we have an absolute memory addressing mode but the disp is 32bit or less, fallback to using a non abs mode */
@@ -1323,7 +1363,7 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		/* If the matched instruction requires processing of a memory address */
 		if(matchedInstr->memOpnd != NO_MEM)
 			aso = BuildMemoryEncoding(&modRM, &sib, &rexByte, &needModRM, &needSIB,
-				                &dispSize, &displacement, matchedInstr, opExpr, &needB, &needX);				/* This could result in modifications to REX, modRM and SIB bytes */
+				                &dispSize, &displacement, matchedInstr, opExpr, &needB, &needX, CodeInfo);		/* This could result in modifications to REX, modRM and SIB bytes */
 		modRM |= BuildModRM(matchedInstr->modRM, matchedInstr, opExpr, &needModRM, &needSIB,
 			(matchedInstr->vexflags & VEX));																	/* Modify the modRM value for any non-memory operands */
 
