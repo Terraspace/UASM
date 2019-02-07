@@ -822,7 +822,7 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 	unsigned char EVEXr    = 1;
 	unsigned char EVEXx    = 1;
 	unsigned char EVEXb    = 1;
-	unsigned char EVEXnr   = 1;
+	unsigned char EVEXnr   = 0;
 	unsigned char EVEXl    = 0;
 	unsigned char EVEXnl   = 1;
 	unsigned char EVEXw    = 0;
@@ -948,45 +948,101 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 	else if ((instr->vexflags & VEX_0F3A) != 0)
 		EVEXmm = 3;
 
+
+
+	if (instr->op_dir == REG_DST)
+	{
+		if (!opnd[0].indirect)
+		{
+			if (GetRegisterNo(opnd[0].base_reg) > 15)
+			{
+				EVEXnr = 0;
+				if (GetRegisterNo(opnd[0].base_reg) > 23)
+					EVEXr = 0;
+				else
+					EVEXr = 1;
+			}
+			else
+			{
+				EVEXnr = 1;
+				if (GetRegisterNo(opnd[0].base_reg) > 7)
+					EVEXr = 0;
+				else
+					EVEXr = 1;
+			}
+		}
+
+		if (!opnd[instr->srcidx].indirect)
+		{
+			if (GetRegisterNo(opnd[instr->srcidx].base_reg) > 15)
+			{
+				EVEXx = 0;
+				if (GetRegisterNo(opnd[instr->srcidx].base_reg) > 23)
+					EVEXb = 0;
+				else
+					EVEXb = 1;
+			}
+			else
+			{
+				EVEXx = 1;
+				if (GetRegisterNo(opnd[instr->srcidx].base_reg) > 7)
+					EVEXb = 0;
+				else
+					EVEXb = 1;
+			}
+		}
+	}
+	else if (instr->op_dir == RM_DST)
+	{
+		if (!opnd[instr->srcidx].indirect)
+		{
+			if (GetRegisterNo(opnd[instr->srcidx].base_reg) > 15)
+			{
+				EVEXnr = 0;
+				if (GetRegisterNo(opnd[instr->srcidx].base_reg) > 23)
+					EVEXr = 0;
+				else
+					EVEXr = 1;
+			}
+			else
+			{
+				EVEXnr = 1;
+				if (GetRegisterNo(opnd[instr->srcidx].base_reg) > 7)
+					EVEXr = 0;
+				else
+					EVEXr = 1;
+			}
+		}
+
+		if (!opnd[0].indirect)
+		{
+			if (GetRegisterNo(opnd[0].base_reg) > 15)
+			{
+				EVEXx = 0;
+				if (GetRegisterNo(opnd[0].base_reg) > 23)
+					EVEXb = 0;
+				else
+					EVEXb = 1;
+			}
+			else
+			{
+				EVEXx = 1;
+				if (GetRegisterNo(opnd[0].base_reg) > 7)
+					EVEXb = 0;
+				else
+					EVEXb = 1;
+			}
+		}
+	}
+	
+	/* DIRECT or Memory Inferred settings */
 	/* EVEX.R and R~ extension value */
 	if ((instr->vexflags & VEX_R) != 0)
 		EVEXr = 0;
-	if (GetRegisterNo(opnd[0].base_reg) > 15)
-	{
-		EVEXnr = 0;
-		if (GetRegisterNo(opnd[0].base_reg) > 23)
-			EVEXr = 0;
-		else
-			EVEXr = 1;
-	}
-	else
-	{
-		EVEXnr = 1;
-		if (GetRegisterNo(opnd[0].base_reg) > 7)
-			EVEXr = 0;
-		else
-			EVEXr = 1;
-	}
 
 	/* EVEX.B and X extension value */
 	if ((instr->vexflags & VEX_B) != 0 || needB)
 		EVEXb = 0;
-	if (GetRegisterNo(opnd[instr->srcidx].base_reg) > 15)
-	{
-		EVEXx = 0;
-		if (GetRegisterNo(opnd[instr->srcidx].base_reg) > 23)
-			EVEXb = 0;
-		else
-			EVEXb = 1;
-	}
-	else
-	{
-		EVEXx = 1;
-		if (GetRegisterNo(opnd[instr->srcidx].base_reg) > 7)
-			EVEXb = 0;
-		else
-			EVEXb = 1;
-	}
 
 	/* EVEX.X extension value */
 	if ((instr->vexflags & VEX_X) != 0 || needX)

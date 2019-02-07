@@ -1,0 +1,2 @@
+..\src\CodeGenV2Error\EVEX0_64ERR.asm(8) : Error A2301: {z} mask not permitted when first operand is memory
+..\src\CodeGenV2Error\EVEX0_64ERR.asm(9) : Error A2018: mismatch in the number of broadcasting elements

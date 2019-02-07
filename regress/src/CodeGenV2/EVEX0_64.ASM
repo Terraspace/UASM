@@ -5,7 +5,7 @@ option evex:1
 .code
 
 	use64
-
+	
 	;REG/REG
 	vmovaps zmm0, zmm1
 	vmovaps zmm9, zmm1
@@ -96,6 +96,7 @@ option evex:1
 	{evex} vmovaps ymm12,YMMWORD PTR myVector	
 	
 	; MEM/REG
+
 	{evex} vmovaps [rdi],xmm0
 	{evex} vmovaps [rdi+rax],xmm2
 	{evex} vmovaps [rsi+rbx*2],xmm2
