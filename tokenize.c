@@ -151,7 +151,7 @@ void get_broads(struct line_status *p) {
   }
 
 /* EVEX Mask decorators are handled here: {k1) or {k1){z} or {z}{k1) or {z} */
-void get_decos(struct line_status *p) 
+void get_decos(struct line_status *p,bool zallowed) 
 {
 	unsigned char c;
 	struct        asym *sym = NULL;
@@ -166,7 +166,10 @@ void get_decos(struct line_status *p)
 	p->input++;
 	/* if first decorator is {z}  */
   if (c == 'z' && *p->input == '}'){               /*  ZLLBVAAA  */
+    if (zallowed)
       decoflags |= 0x80;                           /*  10000000  */
+    else
+      EmitError(Z_MASK_NOT_PERMITTED_WHEN_FIRST_OPERATOR_IS_MEMORY);
      c = *p->input;
      if (c != '}'){
        EmitError(DECORATOR_OR_BRACE_EXPECTED);
@@ -230,7 +233,10 @@ writenum:
        while ( isspace( *p->input )) p->input++;
        c = (*p->input | 0x20);
        if (c == 'z'){
-         decoflags |= 0x80;
+          if (zallowed)
+            decoflags |= 0x80;                           /*  10000000  */
+          else
+            EmitError(Z_MASK_NOT_PERMITTED_WHEN_FIRST_OPERATOR_IS_MEMORY);
          p->input++;
          while ( isspace( *p->input )) p->input++;
          c = *p->input;
@@ -354,6 +360,7 @@ static ret_code get_string( struct asm_tok *buf, struct line_status *p )
     char    c;
     char    *src = p->input;
     char    *dst = p->output;
+    char    *input1 = NULL;
     int     count = 0;
     int     level;
 
@@ -385,7 +392,25 @@ static ret_code get_string( struct asm_tok *buf, struct line_status *p )
         }
         break;  /* end of string marker is the same */
     case '{':
-        if ( p->flags & TOK_NOCURLBRACES )
+         input1 = p->input+1;
+           while ( isspace( *input1 )) input1++;
+           if ((*input1 | 0x20) == 'z'){
+             EmitError(Z_MASK_NOT_PERMITTED_WHEN_FIRST_OPERATOR_IS_MEMORY);
+             return;
+             }
+         else if ((*input1 | 0x20) == 'k'){
+            p->input++;
+            get_decos( p , FALSE) ;    // mask decorators
+            while ( isspace( *p->input )) p->input++;
+            if (*p->input == ',') {
+              p->input++;
+              buf->token = T_COMMA;
+            return( NOT_ERROR );
+           }
+            else 
+              EmitError(TOO_MANY_DECORATORS);
+        }
+          else if ( p->flags & TOK_NOCURLBRACES )
             goto undelimited_string;
     case '<':
         buf->string_delim = symbol_o;
@@ -638,8 +663,12 @@ static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
         {
           p->input++;
            while ( isspace( *p->input )) p->input++;
-          if ((*p->input | 0x20) == 'k' || (*p->input | 0x20) == 'z')
-            get_decos( p ) ;    // mask decorators
+           if ((*p->input | 0x20) == 'z'){
+            EmitError(Z_MASK_NOT_PERMITTED_WHEN_FIRST_OPERATOR_IS_MEMORY);
+             return;
+             }
+          else if ((*p->input | 0x20) == 'k')
+            get_decos( p, FALSE ) ;    // mask decorators
           else
             get_broads( p ) ;   // broadcast decorators
         }
@@ -1043,7 +1072,7 @@ continue_scan:
 			while (isspace(*p->input)) p->input++;
 			if (*p->input == '{') {
 				p->input++;
-				get_decos(p); // mask decorators
+				get_decos(p,TRUE); // mask decorators
 			}
 		}
 		else

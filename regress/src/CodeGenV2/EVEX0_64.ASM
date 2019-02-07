@@ -5,7 +5,7 @@ option evex:1
 .code
 
 	use64
-	vmovaps xmm24,[rbp-0x04]
+
 	;REG/REG
 	vmovaps zmm0, zmm1
 	vmovaps zmm9, zmm1
@@ -105,7 +105,7 @@ option evex:1
 	{evex} vmovaps myVector,xmm6
 	{evex} vmovaps XMMWORD PTR myVector,xmm7
 	
-	{evex} vmovaps [rdi]{k2}{z},xmm8
+	{evex} vmovaps [rdi]{k2},xmm8
 	{evex} vmovaps [rdi+rax],xmm9
 	{evex} vmovaps [rsi+rbx*2],xmm9
 	{evex} vmovaps [rbp-0x04],xmm10
@@ -136,7 +136,7 @@ option evex:1
 	vmovaps [rbp-0x04],xmm20
 	vmovaps [rsi+r11],xmm23
 	vmovaps [rsp],xmm25
-;	vmovaps myVector{k1},xmm21
+	vmovaps myVector{k1},xmm21
 	vmovaps XMMWORD PTR myVector,xmm22
 
 	vmovaps [rdi],ymm20
@@ -148,8 +148,8 @@ option evex:1
 	vmovaps YMMWORD PTR myVector,ymm27
 	
 	vmovaps [rdi]{k1},zmm28
-	vmovaps [rdi+rax]{z},zmm29
-	vmovaps [rsi+rbx*2]{k2}{z},zmm29
+	vmovaps [rdi+rax],zmm29
+	vmovaps [rsi+rbx*2]{k2},zmm29
 	vmovaps [rbp-0x04],zmm20
 	vmovaps [rsp],zmm25
 	vmovaps myVector,zmm21

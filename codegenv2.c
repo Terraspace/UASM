@@ -817,9 +817,6 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 	// | 7 | 6  | 5 | 4 | 3  | 2-0 |
 	// | z | L' | L | b | V' |  a  |
 
-	//{sae},   {rn-sae},{rd-sae},{ru-sae} {rz-sae} in opnd->saeflag
-	//broadflags = {1to2} {1to4} {1to8} {1to16}
-
 	unsigned char EVEXpp   = 0;
 	unsigned char EVEXmm   = 0;
 	unsigned char EVEXr    = 1;
@@ -841,17 +838,50 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 	/* {kn} opmask */
 	EVEXaaa = (decoflags & 7);
 
+	/* {sae} */
+
 	/* {1toN} broadcast */
+	// {1to2}  == 0x10
+	// {1to4}  == 0x20
+	// {1to8}  == 0x30
+	// {1to16} == 0x40
+	if (instr->op_elements == 16 && broadflags != 0x40 && broadflags != 0)
+		EmitError(MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS);
+	if (instr->op_elements == 8 && broadflags != 0x30 && broadflags != 0)
+		EmitError(MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS);
+	if (instr->op_elements == 4 && broadflags != 0x20 && broadflags != 0)
+		EmitError(MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS);
+	if (instr->op_elements == 2 && broadflags != 0x10 && broadflags != 0)
+		EmitError(MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS);
+	if (instr->op_elements == 1 && broadflags != 0x00)
+		EmitError(MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS);
+	if (broadflags != 0 && (instr->evexflags & EVEX_BRD) == 0)
+		EmitError(BROADCAST_DECORATORS_NOT_ALLOWED_FOR_THIS_INSTRUCTION);
 
+	if (broadflags != 0)
+		EVEXbr = 1;
 
-	if ((instr->vexflags & EVEX_MASK) == 0 && ((EVEXz == 1) || (EVEXaaa != 0)))
+	if ((instr->evexflags & EVEX_MASK) == 0 && (EVEXaaa != 0))
 		EmitError(EVEX_DECORATOR_NOT_ALLOWED);
+
+	if ((instr->evexflags & EVEX_Z) == 0 && (EVEXz == 1))
+		EmitError(Z_MASK_NOT_PERMITTED_WHEN_FIRST_OPERATOR_IS_MEMORY);
 
 	/* EVEX.vvvv */
 	if ((instr->vexflags & VEX_NDS) != 0)
+	{
 		EVEXvvvv = GetRegisterNo(opnd[1].base_reg);
+		/* EVEX.V' */
+		if (GetRegisterNo(opnd[1].base_reg) > 15)
+			EVEXnv = 0;
+	}
 	if ((instr->vexflags & VEX_DDS) != 0)
+	{
 		EVEXvvvv = GetRegisterNo(opnd[2].base_reg);
+		/* EVEX.V' */
+		if (GetRegisterNo(opnd[2].base_reg) > 15)
+			EVEXnv = 0;
+	}
 	EVEXvvvv = ~EVEXvvvv;
 
 	/* EVEX.L and L' fields */
@@ -867,10 +897,39 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 
 	EVEXnl = ~EVEXnl;
 
+	/* {static rounding} */
+	if (CodeInfo->evex_sae != 0 && (instr->evexflags & EVEX_RND) == 0)
+		EmitError(EMBEDDED_ROUNDING_IS_AVAILABLE_ONLY_WITH_REG_REG_OP);
+
+	if (CodeInfo->evex_sae == 0x40) // rd-sae
+	{
+		EVEXnl = 0;
+		EVEXl  = 1;
+		EVEXbr = 1;
+	}
+	else if (CodeInfo->evex_sae == 0x20) // rn-sae
+	{
+		EVEXnl = 0;
+		EVEXl  = 0;
+		EVEXbr = 1;
+	}
+	else if (CodeInfo->evex_sae == 0x60) // ru-sae
+	{
+		EVEXnl = 1;
+		EVEXl  = 0;
+		EVEXbr = 1;
+	}
+	else if (CodeInfo->evex_sae == 0x80) // rz-sae
+	{
+		EVEXnl = 1;
+		EVEXl  = 1;
+		EVEXbr = 1;
+	}
+
 	/* EVEX.w field */
-	if ((instr->vexflags & EVEX_W0) != 0)
+	if ((instr->evexflags & EVEX_W0) != 0)
 		EVEXw = 0;
-	else if ((instr->vexflags & EVEX_W1) != 0)
+	else if ((instr->evexflags & EVEX_W1) != 0)
 		EVEXw = 1;
 
 	/* EVEX.pp field */
@@ -944,18 +1003,19 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 /* =====================================================================
   Check for an EVEX Comp8 Displacement and amend value if required.
   ===================================================================== */
-bool CompDisp(struct expr memOpnd, struct Instr_Def* instr, struct code_info *CodeInfo)
+bool CompDisp(struct expr* memOpnd, struct Instr_Def* instr, struct code_info *CodeInfo)
 {
+	int_32 elements = (broadflags == 0) ? 1 : instr->op_elements;
+	int_32 elemSize = (instr->op_size / elements);
 	if (CodeInfo->evex_flag)
 	{
 		// Memory displacement is between -8n and +8n.
-		if (memOpnd.value >= -(128 * instr->op_size) && memOpnd.value <= (127 * instr->op_size))
+		if (memOpnd->value >= -(128 * elemSize) && memOpnd->value <= (127 * elemSize))
 		{
-			// Is a multiple of the operation size.
-			if (memOpnd.value % instr->op_size == 0)
+			// Is a multiple of the operation size / elements.
+			if (memOpnd->value % elemSize == 0)
 			{
-				memOpnd.value   = (memOpnd.value / instr->op_size);
-				memOpnd.value64 = (memOpnd.value64 / instr->op_size);
+				memOpnd->value   = (memOpnd->value / elemSize);
 				return TRUE;
 			}
 		}
@@ -1129,7 +1189,7 @@ int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned cha
 		else
 		{
 			// Is it 8bit or 16/32bit (RIP only allows 32bit).
-			if (CompDisp(opExpr[(instr->memOpnd & 7)], instr, CodeInfo) && 
+			if (CompDisp(&opExpr[(instr->memOpnd & 7)], instr, CodeInfo) && 
 				(((!opExpr[instr->memOpnd].sym) || (opExpr[instr->memOpnd].sym && opExpr[instr->memOpnd].sym->state == SYM_STACK)) && 
 				(((MemTable[memModeIdx].flags & MEMF_DSP32) == 0) && (opExpr[instr->memOpnd].value >= -128 && opExpr[instr->memOpnd].value <= 127)) || (MemTable[memModeIdx].flags & MEMF_DSP)))
 			{
@@ -1365,7 +1425,7 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 			aso = BuildMemoryEncoding(&modRM, &sib, &rexByte, &needModRM, &needSIB,
 				                &dispSize, &displacement, matchedInstr, opExpr, &needB, &needX, CodeInfo);		/* This could result in modifications to REX, modRM and SIB bytes */
 		modRM |= BuildModRM(matchedInstr->modRM, matchedInstr, opExpr, &needModRM, &needSIB,
-			(matchedInstr->vexflags & VEX));																	/* Modify the modRM value for any non-memory operands */
+			((matchedInstr->vexflags & VEX) || (matchedInstr->vexflags & EVEX)));								/* Modify the modRM value for any non-memory operands */
 
 		//----------------------------------------------------------
 		// Create REX, VEX or EVEX prefixes                      
@@ -1374,7 +1434,7 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 			BuildVEX(&needVEX, &vexSize, &vexBytes, matchedInstr, opExpr, needB, needX, opCount);				/* Create the VEX prefix bytes for both reg and memory operands */
 
 		// Either the instruction can ONLY be EVEX encoded, or user requested VEX->EVEX promotion.
-		else if ((matchedInstr->vexflags & EVEX_ONLY) != 0 || 
+		else if ((matchedInstr->evexflags & EVEX_ONLY) != 0 || 
 			((CodeInfo->evex_flag) && (matchedInstr->vexflags & EVEX) != 0))
 			BuildEVEX(&needEVEX, &evexBytes, matchedInstr, opExpr, needB, needX, needRR, opCount, CodeInfo);	/* Create the EVEX prefix bytes if the instruction supports an EVEX form */
 		

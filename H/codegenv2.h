@@ -183,15 +183,19 @@ enum op_type {
 #define VEX_VSIB     (1<<19)	/* Instruction uses VSIB addressing */
 #define VEX_4OPND    (1<<20)	/* Special 4 opnd form where final register is immediate-encoded */
 #define EVEX         (1<<21)	/* Does this VEX instruction have an extended EVEX form available ? */
-#define EVEX_ONLY    (1<<22)	/* Instruction can ONLY be encoded as an EVEX instruction */
-#define EVEX_NR      (1<<23)
-#define EVEX_W0      (1<<24)
-#define EVEX_W1      (1<<25)
-#define EVEX_BROAD   (1<<26)	/* EVEX encoded instruction allows broadcast flags {1to2},{1to4},{1to8},{1to16}*/
-#define EVEX_MASK    (1<<27)	/* EVEX encoded instruction allows a k opmask and z flag */
-#define EVEX_SAE     (1<<28)	/* EVEX encoded instruction allows SAE flag */
-#define EVEX_RND     (1<<29)	/* EVEX encoded instruction allows rounding mode specifier */
-#define EVEX_COMP8   (1<<30)	/* EVEX encoded instruction requires comp8 displacement */
+
+/* EVEX flags */
+#define NO_EVEX      (0)
+#define EVEX_ONLY    (1<<0)		/* Instruction can ONLY be encoded as an EVEX instruction */
+#define EVEX_NR      (1<<1)
+#define EVEX_W0      (1<<2)
+#define EVEX_W1      (1<<3)
+#define EVEX_BRD     (1<<4)		/* EVEX encoded instruction allows broadcast flags {1to2},{1to4},{1to8},{1to16}*/
+#define EVEX_MASK    (1<<5)		/* EVEX encoded instruction allows a k opmask */
+#define EVEX_Z       (1<<6)		/* EVEX encoded instructions allows a {z} mask */
+#define EVEX_SAE     (1<<7)		/* EVEX encoded instruction allows SAE flag */
+#define EVEX_RND     (1<<8)		/* EVEX encoded instruction allows rounding mode specifier */
+#define EVEX_COMP8   (1<<9)		/* EVEX encoded instruction requires comp8 displacement */
 
 /* Required ASO/OSO flags */
 #define OP_SIZE_OVERRIDE   0x66
@@ -324,6 +328,8 @@ struct Instr_Def {
 	enum instr_group  group;
 	uint_32			  flags;
 	uint_32			  vexflags;
+	uint_32			  evexflags;
+	unsigned char     op_elements;		/* Number of elements effected by operation */
 	unsigned char     opcode_bytes;
 	unsigned char     opcode[4];
 	unsigned char     op_size;			/* Size in bytes of operation */

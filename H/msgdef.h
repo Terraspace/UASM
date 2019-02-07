@@ -34,7 +34,6 @@ pick(K_REGISTER_EXPECTED, "K register expected")
 pick(EMBEDDED_ROUNDING_IS_AVAILABLE_ONLY_WITH_REG_REG_OP, "Embedded rounding is available only with reg-reg op")
 pick(UNAUTHORISED_USE_OF_EVEX_REGISTERS, "Use of zmm register not allowed")
 pick(BROADCAST_DECORATORS_NOT_ALLOWED_FOR_THIS_INSTRUCTION,  "Broadcast decorators not allowed for this instruction" )
-
 #if COMDATSUPP
 pick( VALUE_NOT_WITHIN_ALLOWED_RANGE,    "Value not within allowed range %s" )
 pick( INVALID_ASSOCIATED_SEGMENT,        "Invalid associated segment: %s" )
@@ -382,3 +381,4 @@ pick( BITS16_MEM_NOT_ALLOWED_IN_LONG_MODE, "16bit memory addressing is not suppo
 pick( SIGN64_PROMOTION_NOT_POSSIBLE, "Promotion via sign-extension to 64bit QWORD not possible")
 pick( UNINIT_DATA_IN_BIN, "BSS data in BIN output could have side effects")
 pick( EVEX_DECORATOR_NOT_ALLOWED, "EVEX decorator not supported")
+pick( Z_MASK_NOT_PERMITTED_WHEN_FIRST_OPERATOR_IS_MEMORY, "{z} mask not permitted when first operand is memory")
