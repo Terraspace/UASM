@@ -68,6 +68,48 @@ option evex:1
 	{evex} vmulps ymm2,ymm4,ymm10
 	{evex} vmulps ymm8,ymm9,ymm10
 
+	; 2 opnd forms with imm
+	;------------------------------------------
+	vpshufd zmm0, zmm0, 1
+	vpshufd zmm0{k1}, zmm3, 0
+	vpshufd zmm0{z}, zmm8, 0xff
+	vpshufd zmm8, zmm3, 2
+	vpshufd zmm8{k3}{z}, zmm9, 10
+	vpshufd zmm9, zmm19, 10
+	vpshufd zmm18, zmm23, 11
+	vpshufd zmm0{k3}{z}, [rdi]{1to16}, 1
+	vpshufd zmm2, [rdi+rax*2], 3
+	vpshufd zmm9{z}, [rsp], 4
+	vpshufd zmm15, [rbp-4], 5
+	vpshufd zmm18, [rdi]{1to16}, 1
+	vpshufd zmm29{k2}, [rdi+rax*2], 2
+	vpshufd zmm10, [rsp], 3
+	vpshufd zmm11, [rbp-4], 4	
+	
+	{evex} vpshufd xmm0, xmm0, 1
+	{evex} vpshufd xmm0, xmm3, 0
+	{evex} vpshufd xmm0, xmm8, 0xff
+	{evex} vpshufd xmm8, xmm3, 2
+	{evex} vpshufd xmm8, xmm9, 10
+
+	{evex} vpshufd ymm0, ymm0, 1
+	{evex} vpshufd ymm0, ymm3, 0
+	{evex} vpshufd ymm0, ymm8, 0xff
+	{evex} vpshufd ymm8, ymm3, 2
+	{evex} vpshufd ymm8, ymm9, 10
+	
+	{evex} vpshufd xmm0, [rdi], 1
+	{evex} vpshufd xmm2, [rdi+rax*2], 3
+	{evex} vpshufd xmm3, [rsp], 4
+	{evex} vpshufd xmm4, [rbp-4], 5
+	{evex} vpshufd xmm8, [rdi], 1
+	{evex} vpshufd xmm9, [rdi+rax*2], 2
+	{evex} vpshufd xmm10, [rsp], 3
+	{evex} vpshufd xmm11, [rbp-4], 4	
+	
+	{evex} vpshufd xmm0, myVector, 1
+	{evex} vpshufd xmm9, myVector, 2
+	
 	comment %
 	; 4 opnd form
 	;------------------------------------------
@@ -145,31 +187,7 @@ option evex:1
 	vgatherdps ymm0, [r8+ymm1*4], ymm2
 	vgatherdps ymm0, [r8+ymm9*4], ymm2
 	
-	; 2 opnd forms with imm
-	;------------------------------------------
-	vpshufd xmm0, xmm0, 1
-	vpshufd xmm0, xmm3, 0
-	vpshufd xmm0, xmm8, 0xff
-	vpshufd xmm8, xmm3, 2
-	vpshufd xmm8, xmm9, 10
 
-	vpshufd ymm0, ymm0, 1
-	vpshufd ymm0, ymm3, 0
-	vpshufd ymm0, ymm8, 0xff
-	vpshufd ymm8, ymm3, 2
-	vpshufd ymm8, ymm9, 10
-	
-	vpshufd xmm0, [rdi], 1
-	vpshufd xmm2, [rdi+rax*2], 3
-	vpshufd xmm3, [rsp], 4
-	vpshufd xmm4, [rbp-4], 5
-	vpshufd xmm8, [rdi], 1
-	vpshufd xmm9, [rdi+rax*2], 2
-	vpshufd xmm10, [rsp], 3
-	vpshufd xmm11, [rbp-4], 4	
-	
-	vpshufd xmm0, myVector, 1
-	vpshufd xmm9, myVector, 2
 	%
 	
 .data

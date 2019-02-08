@@ -151,7 +151,7 @@ void get_broads(struct line_status *p) {
   }
 
 /* EVEX Mask decorators are handled here: {k1) or {k1){z} or {z}{k1) or {z} */
-void get_decos(struct line_status *p,bool zallowed) 
+void get_decos(struct line_status *p,bool zdeclined) 
 {
 	unsigned char c;
 	struct        asym *sym = NULL;
@@ -166,7 +166,7 @@ void get_decos(struct line_status *p,bool zallowed)
 	p->input++;
 	/* if first decorator is {z}  */
   if (c == 'z' && *p->input == '}'){               /*  ZLLBVAAA  */
-    if (zallowed)
+    if (!zdeclined)
       decoflags |= 0x80;                           /*  10000000  */
     else
       EmitError(Z_MASK_NOT_PERMITTED_WHEN_FIRST_OPERATOR_IS_MEMORY);
@@ -233,7 +233,7 @@ writenum:
        while ( isspace( *p->input )) p->input++;
        c = (*p->input | 0x20);
        if (c == 'z'){
-          if (zallowed)
+          if (!zdeclined)
             decoflags |= 0x80;                           /*  10000000  */
           else
             EmitError(Z_MASK_NOT_PERMITTED_WHEN_FIRST_OPERATOR_IS_MEMORY);
@@ -262,6 +262,7 @@ checkifvar:
       *p1 = '\0';                  /* make it C string */
       sym = SymSearch(buff);       /* check if the variable is declared */
         if (sym == NULL){
+          if (Parse_Pass)
           EmitError(TOO_MANY_DECORATORS);
           return;
           }
@@ -400,15 +401,15 @@ static ret_code get_string( struct asm_tok *buf, struct line_status *p )
              }
          else if ((*input1 | 0x20) == 'k'){
             p->input++;
-            get_decos( p , FALSE) ;    // mask decorators
+            get_decos( p , TRUE) ;    // mask decorators
             while ( isspace( *p->input )) p->input++;
             if (*p->input == ',') {
               p->input++;
               buf->token = T_COMMA;
             return( NOT_ERROR );
            }
-            else 
-              EmitError(TOO_MANY_DECORATORS);
+            //else 
+            //  EmitError(TOO_MANY_DECORATORS);
         }
           else if ( p->flags & TOK_NOCURLBRACES )
             goto undelimited_string;
@@ -1072,7 +1073,7 @@ continue_scan:
 			while (isspace(*p->input)) p->input++;
 			if (*p->input == '{') {
 				p->input++;
-				get_decos(p,TRUE); // mask decorators
+				get_decos(p,FALSE); // mask decorators
 			}
 		}
 		else
