@@ -7,4 +7,4 @@ option evex:1
 
 	vmovaps myVector{z},xmm21				; Unsupported masking operator.
 	vmulps zmm20{k2}{z}, zmm0, [rdi]{1to8}	; Broadcast wrong size.
-	
+	vgatherdps zmm0, [zmm1]					; vgatherdps requires mask register.

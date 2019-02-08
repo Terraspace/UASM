@@ -837,6 +837,8 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 	
 	/* {kn} opmask */
 	EVEXaaa = (decoflags & 7);
+	if ((instr->evexflags & EVEX_MMASK) != 0 && EVEXaaa == 0)
+		EmitError(K_REGISTER_EXPECTED);
 
 	/* {sae} */
 
@@ -875,7 +877,7 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 		if (GetRegisterNo(opnd[1].base_reg) > 15)
 			EVEXnv = 0;
 	}
-	if ((instr->vexflags & VEX_DDS) != 0)
+	else if ((instr->vexflags & VEX_DDS) != 0)
 	{
 		EVEXvvvv = GetRegisterNo(opnd[2].base_reg);
 		/* EVEX.V' */
@@ -1081,6 +1083,38 @@ bool CompDisp(struct expr* memOpnd, struct Instr_Def* instr, struct code_info *C
 }
 
 /* =====================================================================
+  Return true if register a simd register (xmm,ymm,zmm).
+  ===================================================================== */
+bool IsSimdRegister(struct asm_tok *regTok)
+{
+	bool result = FALSE;
+	if (regTok)
+	{
+		if (regTok->tokval >= T_XMM0 && regTok->tokval <= T_XMM7)
+			result = TRUE;
+		else if (regTok->tokval >= T_XMM8 && regTok->tokval <= T_XMM15)
+			result = TRUE;
+		else if (regTok->tokval >= T_XMM16 && regTok->tokval <= T_XMM23)
+			result = TRUE;
+		else if (regTok->tokval >= T_XMM24 && regTok->tokval <= T_XMM31)
+			result = TRUE;
+		else if (regTok->tokval >= T_YMM0 && regTok->tokval <= T_YMM7)
+			result = TRUE;
+		else if (regTok->tokval >= T_YMM8 && regTok->tokval <= T_YMM15)
+			result = TRUE;
+		else if (regTok->tokval >= T_YMM16 && regTok->tokval <= T_YMM23)
+			result = TRUE;
+		else if (regTok->tokval >= T_YMM24 && regTok->tokval <= T_YMM31)
+			result = TRUE;
+		else if (regTok->tokval >= T_ZMM0 && regTok->tokval <= T_ZMM7)
+			result = TRUE;
+		else if (regTok->tokval >= T_ZMM8 && regTok->tokval <= T_ZMM31)
+			result = TRUE;
+	}
+	return result;
+}
+
+/* =====================================================================
   Build up instruction SIB, ModRM and REX bytes for memory operand.
   ===================================================================== */
 int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned char* pREX, bool* needModRM, bool* needSIB,
@@ -1103,7 +1137,8 @@ int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned cha
 		idxRegNo  = GetRegisterNo(opExpr[instr->memOpnd].idx_reg);
 
 		/* For VSIB indexes the Parser sends us the vector idx register in base NOT idx when there is ONLY an index! */
-		if ((instr->vexflags & VEX_VSIB) != 0 && baseRegNo != 0x11 && idxRegNo == 0x11)
+		/* We can detect this situation when the base register is a simd register (xmm, ymm or zmm) */
+		if ((instr->vexflags & VEX_VSIB) != 0 && IsSimdRegister(opExpr[instr->memOpnd].base_reg))
 		{
 			unsigned char temp = baseRegNo;
 			baseRegNo = idxRegNo;
@@ -1192,7 +1227,10 @@ int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned cha
 	{
 		/* Use the memory encoding table to populate the initial modRM, sib values */
 		/* ----------------------------------------------------------------------- */
-		memModeIdx = (baseRegNo * 18) + (idxRegNo);
+
+		// It's possible the idxRegNo is (0-31) for EVEX, but no such mem-encoding entries exist.
+		// These must be wrapped around to the low 17.
+		memModeIdx = (baseRegNo * 18) + (idxRegNo % 18); 
 
 		if (instr->memOpnd < NO_MEM) // MEM_ABS_x for moffset type addresses don't need to be processed.
 		{

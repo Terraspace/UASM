@@ -196,6 +196,7 @@ enum op_type {
 #define EVEX_SAE     (1<<7)		/* EVEX encoded instruction allows SAE flag */
 #define EVEX_RND     (1<<8)		/* EVEX encoded instruction allows rounding mode specifier */
 #define EVEX_COMP8   (1<<9)		/* EVEX encoded instruction requires comp8 displacement */
+#define EVEX_MMASK   (1<<10)	/* {kN} mask register is mandatory */
 
 /* Required ASO/OSO flags */
 #define OP_SIZE_OVERRIDE   0x66

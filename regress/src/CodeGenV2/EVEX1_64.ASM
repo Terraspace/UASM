@@ -5,7 +5,7 @@ option evex:1
 .code
 
 	use64
-
+vgatherdps zmm9{k2}, [rax+zmm21*4]
 	vmulps zmm20{k2}{z}, zmm0, [rdi]{1to16}
 	vmulps zmm10{k2}{z}, zmm2, [rbp+4]{1to16}
 	vmulps zmm10{k2}{z}, zmm2, [rbp+16]{1to16}
@@ -109,6 +109,27 @@ option evex:1
 	
 	{evex} vpshufd xmm0, myVector, 1
 	{evex} vpshufd xmm9, myVector, 2
+
+	
+	; VSIB addressing
+	;------------------------------------------
+	vgatherdps zmm0{k1}, [zmm1]
+	vgatherdps zmm2{k3}, [rdi+zmm1]
+	vgatherdps zmm9{k2}, [rax+zmm21*4]
+	vgatherdps zmm17{k1}, [r8+zmm11*4]
+	vgatherdps zmm22{k4}, [r8+zmm9*4]
+
+	vgatherdps xmm0{k1}, [xmm1]
+	vgatherdps xmm2{k3}, [rdi+xmm1]
+	vgatherdps xmm9{k2}, [rax+xmm21*4]
+	vgatherdps xmm17{k1}, [r8+xmm11*4]
+	vgatherdps xmm22{k4}, [r8+xmm9*4]
+
+	vgatherdps ymm0{k1}, [ymm1]
+	vgatherdps ymm2{k3}, [rdi+ymm1]
+	vgatherdps ymm9{k2}, [rax+ymm21*4]
+	vgatherdps ymm17{k1}, [r8+ymm11*4]
+	vgatherdps ymm22{k4}, [r8+ymm9*4]
 	
 	comment %
 	; 4 opnd form
@@ -172,22 +193,6 @@ option evex:1
 	vmpsadbw ymm9, ymm8, [edi], 3
 	vmpsadbw ymm0, ymm8, [rdi+rax], 4
 	vmpsadbw ymm10, ymm8, [r8+rax*2], 5
-	
-	; VSIB addressing
-	;------------------------------------------
-	vgatherdps xmm0, [xmm1], xmm2
-	vgatherdps xmm0, [rdi+xmm1], xmm2
-	vgatherdps xmm0, [rax+xmm1*4], xmm2
-	vgatherdps xmm0, [r8+xmm1*4], xmm2
-	vgatherdps xmm0, [r8+xmm9*4], xmm2
-
-	vgatherdps ymm0, [ymm1], ymm2
-	vgatherdps ymm0, [rdi+ymm1], ymm2
-	vgatherdps ymm0, [rax+ymm1*4], ymm2
-	vgatherdps ymm0, [r8+ymm1*4], ymm2
-	vgatherdps ymm0, [r8+ymm9*4], ymm2
-	
-
 	%
 	
 .data
