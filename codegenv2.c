@@ -837,7 +837,7 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 	
 	/* {kn} opmask */
 	EVEXaaa = (decoflags & 7);
-	if ((instr->evexflags & EVEX_MMASK) != 0 && EVEXaaa == 0)
+	if ((instr->evexflags & EVEX_K) != 0 && EVEXaaa == 0)
 		EmitError(K_REGISTER_EXPECTED);
 
 	/* {sae} */
@@ -885,6 +885,25 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 			EVEXnv = 0;
 	}
 	EVEXvvvv = ~EVEXvvvv;
+
+	/* VSIB extension into V' */
+	if ((instr->evexflags & EVEX_VSIB) != 0)
+	{
+		if ( (opnd[instr->memOpnd].idx_reg && GetRegisterNo(opnd[instr->memOpnd].idx_reg) > 15) ||
+			 (opnd[instr->memOpnd].base_reg && GetRegisterNo(opnd[instr->memOpnd].base_reg) > 15))
+		{
+			EVEXnv = 0;
+		}
+		else
+			EVEXnv = 1;
+		if ((opnd[instr->memOpnd].idx_reg && GetRegisterNo(opnd[instr->memOpnd].idx_reg) > 23) ||
+			(opnd[instr->memOpnd].base_reg && GetRegisterNo(opnd[instr->memOpnd].base_reg) > 23))
+		{
+			EVEXx = 0;
+		}
+		else
+			EVEXx = 1;
+	}
 
 	/* EVEX.L and L' fields */
 	if (instr->op_size == 16)
@@ -1063,7 +1082,7 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
   ===================================================================== */
 bool CompDisp(struct expr* memOpnd, struct Instr_Def* instr, struct code_info *CodeInfo)
 {
-	int_32 elements = (broadflags == 0) ? 1 : instr->op_elements;
+	int_32 elements = (broadflags == 0 && (instr->evexflags & EVEX_BRD) != 0) ? 1 : instr->op_elements;
 	int_32 elemSize = (instr->op_size / elements);
 	if (CodeInfo->evex_flag)
 	{
@@ -1131,7 +1150,7 @@ int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned cha
 	bool			skipSIB     = FALSE;
 
 	/* Absolute addressing modes can skip this */
-	if(instr->memOpnd != MEM_ABS_1)
+	if(instr->memOpnd != MEM_ABS_1 && instr->memOpnd != MEM_ABS_0)
 	{ 
 		baseRegNo = GetRegisterNo(opExpr[instr->memOpnd].base_reg);
 		idxRegNo  = GetRegisterNo(opExpr[instr->memOpnd].idx_reg);
@@ -1144,6 +1163,10 @@ int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned cha
 			baseRegNo = idxRegNo;
 			idxRegNo = temp;
 		}
+
+		/* For EVEX VSIB extension, we just keep the low 3 bits. */
+		if ((instr->evexflags & EVEX_VSIB) != 0 && idxRegNo > 15)
+			idxRegNo &= 7;
 
 		/* Get base and index register sizes in bytes */
 		if (opExpr[instr->memOpnd].base_reg)
@@ -1532,6 +1555,9 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 			((CodeInfo->evex_flag) && (matchedInstr->vexflags & EVEX) != 0))
 			BuildEVEX(&needEVEX, &evexBytes, matchedInstr, opExpr, needB, needX, needRR, opCount, CodeInfo);	/* Create the EVEX prefix bytes if the instruction supports an EVEX form */
 		
+		if (CodeInfo->evex_flag && matchedInstr->evexflags == NO_EVEX)											/* Not possible to EVEX encode instruction per users request */
+			EmitError(NO_EVEX_FORM);
+
 		else if(CodeInfo->Ofssize == USE64)
 			rexByte |= BuildREX(rexByte, matchedInstr, opExpr, FALSE);											/* Modify the REX prefix for non-memory operands/sizing */
 

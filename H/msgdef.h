@@ -382,3 +382,4 @@ pick( SIGN64_PROMOTION_NOT_POSSIBLE, "Promotion via sign-extension to 64bit QWOR
 pick( UNINIT_DATA_IN_BIN, "BSS data in BIN output could have side effects")
 pick( EVEX_DECORATOR_NOT_ALLOWED, "EVEX decorator not supported")
 pick( Z_MASK_NOT_PERMITTED_WHEN_FIRST_OPERATOR_IS_MEMORY, "{z} mask not permitted when first operand is memory")
+pick( NO_EVEX_FORM, "Not possible to EVEX encode requested instruction")

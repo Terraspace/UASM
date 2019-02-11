@@ -5,7 +5,7 @@ option evex:1
 .code
 
 	use64
-vgatherdps zmm9{k2}, [rax+zmm21*4]
+
 	vmulps zmm20{k2}{z}, zmm0, [rdi]{1to16}
 	vmulps zmm10{k2}{z}, zmm2, [rbp+4]{1to16}
 	vmulps zmm10{k2}{z}, zmm2, [rbp+16]{1to16}
@@ -113,6 +113,11 @@ vgatherdps zmm9{k2}, [rax+zmm21*4]
 	
 	; VSIB addressing
 	;------------------------------------------
+	vgatherdps zmm30{k1}, [r9+zmm31*1+0x100]
+	vgatherdps zmm30{k1},ZMMWORD PTR [r14+zmm31*8+0x7b]
+	vgatherdps zmm0{k1}, [zmm1]
+	vgatherdps zmm9{k2}, [rax+zmm21*4]
+
 	vgatherdps zmm0{k1}, [zmm1]
 	vgatherdps zmm2{k3}, [rdi+zmm1]
 	vgatherdps zmm9{k2}, [rax+zmm21*4]
@@ -130,70 +135,6 @@ vgatherdps zmm9{k2}, [rax+zmm21*4]
 	vgatherdps ymm9{k2}, [rax+ymm21*4]
 	vgatherdps ymm17{k1}, [r8+ymm11*4]
 	vgatherdps ymm22{k4}, [r8+ymm9*4]
-	
-	comment %
-	; 4 opnd form
-	;------------------------------------------
-	vblendvps xmm1,xmm2,xmm3,xmm4
-	vblendvps xmm1,xmm2,myVector,xmm4
-	vblendvps xmm1,xmm2,[rdi],xmm4
-	vblendvps xmm1,xmm2,[edi],xmm4
-	vblendvps xmm1,xmm2,[edi+eax*2],xmm4
-	vblendvps xmm1,xmm2,[rdi+rax*2],xmm4
-	
-	vblendvps xmm2,xmm8,xmm3,xmm4
-	vblendvps xmm1,xmm2,xmm3,xmm8
-	vblendvps xmm9,xmm2,xmm3,xmm4
-	vblendvps xmm3,xmm2,xmm10,xmm8
-	vblendvps xmm9,xmm2,myVector,xmm4
-	vblendvps xmm9,xmm2,[rdi],xmm4
-	vblendvps xmm9,xmm9,[rdi+rax*2],xmm11
-	
-	vblendvps ymm1,ymm2,ymm3,ymm4
-	vblendvps ymm1,ymm2,myVector,ymm4
-	vblendvps ymm1,ymm2,[rdi],ymm4
-	vblendvps ymm1,ymm2,[edi],ymm4
-	vblendvps ymm1,ymm2,[edi+eax*2],ymm4
-	vblendvps ymm1,ymm2,[rdi+rax*2],ymm4
-	
-	; 3 opnd with imm and implicit NDS
-	;------------------------------------------
-	vmpsadbw xmm0, xmm2, 1
-	vmpsadbw xmm0, xmm2, 2
-	vmpsadbw xmm9, xmm2, 3
-	vmpsadbw xmm0, xmm9, 4
-	vmpsadbw xmm10, xmm11, 5
-
-	vmpsadbw ymm0, ymm2, 1
-	vmpsadbw ymm0, ymm2, 2
-	vmpsadbw ymm9, ymm2, 3
-	vmpsadbw ymm0, ymm9, 4
-	vmpsadbw ymm10, ymm11, 5
-	
-	; 3 opnd with imm
-	;------------------------------------------
-	vmpsadbw xmm0, xmm1, xmm2, 1
-	vmpsadbw xmm0, xmm8, xmm2, 2
-	vmpsadbw xmm9, xmm8, xmm2, 3
-	vmpsadbw xmm0, xmm8, xmm9, 4
-	vmpsadbw xmm10, xmm8, xmm11, 5
-	vmpsadbw xmm0, xmm1, myVector, 1
-	vmpsadbw xmm0, xmm8, [rdi], 2
-	vmpsadbw xmm9, xmm8, [edi], 3
-	vmpsadbw xmm0, xmm8, [rdi+rax], 4
-	vmpsadbw xmm10, xmm8, [r8+rax*2], 5
-
-	vmpsadbw ymm0, ymm1, ymm2, 1
-	vmpsadbw ymm0, ymm8, ymm2, 2
-	vmpsadbw ymm9, ymm8, ymm2, 3
-	vmpsadbw ymm0, ymm8, ymm9, 4
-	vmpsadbw ymm10, ymm8, ymm11, 5
-	vmpsadbw ymm0, ymm1, myVector, 1
-	vmpsadbw ymm0, ymm8, [rdi], 2
-	vmpsadbw ymm9, ymm8, [edi], 3
-	vmpsadbw ymm0, ymm8, [rdi+rax], 4
-	vmpsadbw ymm10, ymm8, [r8+rax*2], 5
-	%
 	
 .data
 

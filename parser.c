@@ -99,6 +99,38 @@ struct asm_tok      dsOver;
  * - aliases            TAB_ALIAS */
 struct symbol_queue SymTables[TAB_LAST];
 
+/* =====================================================================
+  Return true if register a simd register (xmm,ymm,zmm).
+  ===================================================================== */
+bool IsSimdReg(struct asm_tok *regTok)
+{
+	bool result = FALSE;
+	if (regTok)
+	{
+		if (regTok->tokval >= T_XMM0 && regTok->tokval <= T_XMM7)
+			result = TRUE;
+		else if (regTok->tokval >= T_XMM8 && regTok->tokval <= T_XMM15)
+			result = TRUE;
+		else if (regTok->tokval >= T_XMM16 && regTok->tokval <= T_XMM23)
+			result = TRUE;
+		else if (regTok->tokval >= T_XMM24 && regTok->tokval <= T_XMM31)
+			result = TRUE;
+		else if (regTok->tokval >= T_YMM0 && regTok->tokval <= T_YMM7)
+			result = TRUE;
+		else if (regTok->tokval >= T_YMM8 && regTok->tokval <= T_YMM15)
+			result = TRUE;
+		else if (regTok->tokval >= T_YMM16 && regTok->tokval <= T_YMM23)
+			result = TRUE;
+		else if (regTok->tokval >= T_YMM24 && regTok->tokval <= T_YMM31)
+			result = TRUE;
+		else if (regTok->tokval >= T_ZMM0 && regTok->tokval <= T_ZMM7)
+			result = TRUE;
+		else if (regTok->tokval >= T_ZMM8 && regTok->tokval <= T_ZMM31)
+			result = TRUE;
+	}
+	return result;
+}
+
 /* add item to linked list of symbols */
 void sym_add_table( struct symbol_queue *queue, struct dsym *item )
 /*****************************************************************/
@@ -3645,7 +3677,7 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 				CodeInfo.reg1 = GetRegNo(regtok);
 				if (opndx[OPND1].idx_reg) 
 					CodeInfo.indexreg = opndx[OPND1].idx_reg->bytval;
-				if (CodeInfo.reg1 > 15) 
+				if (CodeInfo.reg1 > 15 && IsSimdReg(opndx[OPND1].idx_reg))
 					CodeInfo.evex_flag = TRUE;
 				CodeInfo.r1type = GetValueSp(opndx[OPND1].base_reg->tokval);
 				if (CodeInfo.r1type == OP_ZMM) 
@@ -3660,7 +3692,7 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 				CodeInfo.reg2 = GetRegNo(regtok);
 				if (opndx[OPND2].idx_reg) 
 					CodeInfo.indexreg = opndx[OPND2].idx_reg->bytval;
-				if (CodeInfo.reg2 > 15) 
+				if (CodeInfo.reg2 > 15 && IsSimdReg(opndx[OPND2].idx_reg))
 					CodeInfo.evex_flag = TRUE;
 				CodeInfo.r2type = GetValueSp(opndx[OPND2].base_reg->tokval);
 				if (CodeInfo.r2type == OP_ZMM) 
@@ -3783,14 +3815,14 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 						{
 							regtok = opndx[OPND1].base_reg->tokval;
 							CodeInfo.reg1 = GetRegNo(regtok);
-							if (CodeInfo.reg1 > 15) 
+							if (CodeInfo.reg1 > 15 && IsSimdReg(opndx[OPND1].base_reg))
 								CodeInfo.evex_flag = TRUE;
 						}
 						else if (CurrOpnd == OPND2) 
 						{
 							regtok = opndx[OPND2].base_reg->tokval;
 							CodeInfo.reg2 = GetRegNo(regtok);
-							if (CodeInfo.reg2 > 15) 
+							if (CodeInfo.reg2 > 15 && IsSimdReg(opndx[OPND2].base_reg))
 								CodeInfo.evex_flag = TRUE;
 						}
 					}
@@ -3801,7 +3833,7 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 						CodeInfo.opnd[OPND3].data32l = opndx[OPND3].base_reg->bytval;
 						regtok = opndx[OPND3].base_reg->tokval;
 						CodeInfo.reg3 = GetRegNo(regtok);
-						if (CodeInfo.reg3 > 15) 
+						if (CodeInfo.reg3 > 15 && IsSimdReg(opndx[OPND3].base_reg))
 							CodeInfo.evex_flag = TRUE;
 					}
 
