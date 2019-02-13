@@ -1547,7 +1547,7 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		//----------------------------------------------------------
 		// Create REX, VEX or EVEX prefixes                      
 		//----------------------------------------------------------
-		if ((matchedInstr->vexflags & VEX) != 0 && CodeInfo->evex_flag == 0)
+		if ((matchedInstr->vexflags & VEX) != 0 && (matchedInstr->evexflags & EVEX_ONLY) == 0 && CodeInfo->evex_flag == 0)
 			BuildVEX(&needVEX, &vexSize, &vexBytes, matchedInstr, opExpr, needB, needX, opCount);				/* Create the VEX prefix bytes for both reg and memory operands */
 
 		// Either the instruction can ONLY be EVEX encoded, or user requested VEX->EVEX promotion.

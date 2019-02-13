@@ -1,0 +1,4 @@
+..\src\CodeGenV2Error\EVEX1_64ERR.ASM(9) : Error A2023: Broadcast decorators not allowed for this instruction
+..\src\CodeGenV2Error\EVEX1_64ERR.ASM(10) : Error A2018: mismatch in the number of broadcasting elements
+..\src\CodeGenV2Error\EVEX1_64ERR.ASM(11) : Error A2018: mismatch in the number of broadcasting elements
+..\src\CodeGenV2Error\EVEX1_64ERR.ASM(12) : Error A2018: mismatch in the number of broadcasting elements

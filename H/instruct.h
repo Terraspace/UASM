@@ -1649,7 +1649,7 @@ insx(VGETMANTSD, vgetmantsd,       OpCls( XMM,  XMM_M64,  I8_U), F_660F3A, 1,  n
 insx(VGETMANTSS, vgetmantss,       OpCls( XMM,  XMM_M32,  I8_U), F_660F3A, 1,  no_WDS,0x27,     0x00,     P_686|P_AVX ,IZSZ|DSIZE|T1S,RWF_EVEX|RWF_VEX)
 insx(VALIGND,    valignd,          OpCls( XMM,  XMM_M128, I8_U), F_660F3A, 1,  no_WDS,0x03,     0x00,     P_686|P_AVX ,IZSZ|DSIZE|FV,RWF_EVEX|RWF_VEX)
 insx(VALIGNQ,    valignq,          OpCls( XMM,  XMM_M128, I8_U), F_660F3A, 1,  no_WDS,0x03,     0x00,     P_686|P_AVX ,W1|IZSZ|QSIZE|FV,RWF_EVEX|RWF_VEX)
-insx(VBLENDMPD, vblendmpd,         OpCls( XMM,  XMM, XMM_M128),  F_660F38, 1,  no_WDS,0x65,     0x00,     P_686|P_AVX ,W1|IZSZ|QSIZE|FV,RWF_EVEX|RWF_VEX)
+insx(VBLENDMPD, vblendmpd,         OpCls( XMM,  XMM_M128, I8_U),  F_660F38, 1,  no_WDS,0x65,     0x00,     P_686|P_AVX ,W1|IZSZ|QSIZE|FV,RWF_EVEX|RWF_VEX)
 insx(VBLENDMPS, vblendmps,         OpCls( XMM,  XMM, XMM_M128),  F_660F38, 1,  no_WDS,0x65,     0x00,     P_686|P_AVX ,IZSZ|DSIZE|FV,RWF_EVEX|RWF_VEX)
 insx(VCOMPRESSPD, vcompresspd,     OpCls( XMM_M128, XMM, NONE ), F_660F38, 0,  no_WDS,0x8A,     0x00,     P_686|P_AVX, W1|IZSZ|QSIZE|T1S, RWF_EVEX|RWF_VEX )
 insx(VCOMPRESSPS, vcompressps,     OpCls( XMM_M128, XMM, NONE ), F_660F38, 0,  no_WDS,0x8A,     0x00,     P_686|P_AVX, IZSZ|DSIZE|T1S, RWF_EVEX|RWF_VEX )
