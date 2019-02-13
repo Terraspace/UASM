@@ -618,7 +618,7 @@ next_item:  /* <--- continue scan if a comma has been detected */
 	{
 		opndx.kind = EXPR_EMPTY;
 		/* UASM 2.48 Warn about BSS data in BIN, as the space won't be allocated */
-		if (Options.output_format == OFORMAT_BIN && !inside_struct)
+		if (Options.output_format == OFORMAT_BIN && !inside_struct && Options.sub_format != SFORMAT_PE)
 		{
 			EmitWarn(2, UNINIT_DATA_IN_BIN);
 		}

@@ -256,18 +256,19 @@ static void PutMsg( FILE *fp, int severity, int msgnum, va_list args )
         i += vsprintf( buffer+i, pMsg, args );
 
 		#ifdef _WIN32
-			if (severity == 4)
-				SetConsoleTextAttribute(hConsole, WIN_YELLOW | (screenBufferInfo.wAttributes & 0xfff0));
-			else if (severity == 2)
+			if (severity <= 2)
 				SetConsoleTextAttribute(hConsole, WIN_LTRED | (screenBufferInfo.wAttributes & 0xfff0));
+			else
+				SetConsoleTextAttribute(hConsole, WIN_LTYELLOW | (screenBufferInfo.wAttributes & 0xfff0));
+
 			fwrite(buffer, 1, i, fp);
 			fwrite("\n", 1, 1, fp);
 			SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
 		#else	
-			if (severity == 4)
-				printf(KYEL);
-			else if (severity == 2)
+			if (severity <= 2)
 				printf(KRED);
+			else
+				printf(KYEL);
 			fflush(NULL);
 			fwrite(buffer, 1, i, fp);
 			fwrite("\n", 1, 1, fp);
