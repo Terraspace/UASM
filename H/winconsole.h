@@ -1,10 +1,4 @@
 
-#ifndef _MSC_VER
-	# define __in
-	# define _In_
-	# define _Out_
-#endif
-
 #define STD_OUTPUT_HANDLE   ((DWORD)-11)
 typedef void *HANDLE;
 
@@ -38,34 +32,13 @@ typedef unsigned long       DWORD;
 typedef int                 BOOL;
 
 #ifdef _WIN64
-
-#define WINAPI __fastcall
-
+	#define WINAPI __fastcall
 #else
-
-#define WINAPI __stdcall
-
+	#define WINAPI __stdcall
 #endif
 
-WINBASEAPI
-HANDLE
-WINAPI
-GetStdHandle(
-    __in DWORD nStdHandle
-    );
+WINBASEAPI HANDLE WINAPI GetStdHandle(DWORD nStdHandle);
 
-WINBASEAPI
-BOOL
-WINAPI
-GetConsoleScreenBufferInfo(
-    _In_ HANDLE hConsoleOutput,
-    _Out_ PCONSOLE_SCREEN_BUFFER_INFO lpConsoleScreenBufferInfo
-    );
+WINBASEAPI BOOL WINAPI GetConsoleScreenBufferInfo(HANDLE hConsoleOutput, PCONSOLE_SCREEN_BUFFER_INFO lpConsoleScreenBufferInfo);
 
-WINBASEAPI
-BOOL
-WINAPI
-SetConsoleTextAttribute(
-    _In_ HANDLE hConsoleOutput,
-    _In_ WORD wAttributes
-    );
+WINBASEAPI BOOL WINAPI SetConsoleTextAttribute(HANDLE hConsoleOutput, WORD wAttributes);
