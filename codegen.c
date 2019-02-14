@@ -1489,7 +1489,8 @@ static void output_opc(struct code_info *CodeInfo)
                     (CodeInfo->token == T_VEXTRACTF64x4)|| (CodeInfo->token == T_VEXTRACTF32x8)||
                     (CodeInfo->token == T_VEXTRACTI32x4)||(CodeInfo->token == T_VEXTRACTI64x4)||
                     (CodeInfo->token == T_VEXTRACTI64x2)|| (CodeInfo->token == T_VEXTRACTI32x8)||
-                  (CodeInfo->token == T_VEXTRACTPS)|| (CodeInfo->token == T_VEXTRACTPS)){
+                  (CodeInfo->token == T_VEXTRACTPS))
+				  {
                     CodeInfo->evex_p2 &= ~EVEX_P2BMASK;
                     if (CodeInfo->r2type == OP_YMM)
                       CodeInfo->evex_p2 |= EVEX_P2LMASK;

@@ -2623,8 +2623,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				if (info->stackOfs % 16 != 0)
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r+%u], ymm8", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL info->stackAdj);
 				else
-
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 32", T_RSP);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 32", T_RSP);
 				info->stackOfs += 32;
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymm8, ymmword ptr %s", MOVE_UNALIGNED_INT, paramvalue);
 			}

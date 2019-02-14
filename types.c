@@ -1713,16 +1713,20 @@ ret_code RecordDirective( int i, struct asm_tok tokenarray[] )
 
     /* now calc size in bytes and set the bit positions */
 
-    if ( cntBits > 16 ) {
-        if ( cntBits > 64 ) {
-            newr->sym.total_size = 128 ;
+    if ( cntBits > 16 ) 
+	{
+        if ( cntBits > 64 ) 
+		{
+            newr->sym.total_size = 128;
             newr->sym.mem_type = MT_OWORD;
-        } else 
-
-        if ( cntBits > 32 ) {
+        } 
+		else if ( cntBits > 32 ) 
+		{
             newr->sym.total_size = sizeof( uint_64 );
             newr->sym.mem_type = MT_QWORD;
-        } else {
+        } 
+		else 
+		{
             newr->sym.total_size = sizeof( uint_32 );
             newr->sym.mem_type = MT_DWORD;
         }

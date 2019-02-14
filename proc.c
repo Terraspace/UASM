@@ -4532,7 +4532,7 @@ static void SetLocalOffsets_RBP_SYSV(struct proc_info *info)
 					cntxmm++;
 				else if (GetValueSp(*regs) & OP_YMM)
 					cntxmm += 2;
-				else if (GetValueSp(*regs) & OP_YMM)
+				else if (GetValueSp(*regs) & OP_ZMM)
 					cntxmm += 4;
 				else
 					cntstd++;
