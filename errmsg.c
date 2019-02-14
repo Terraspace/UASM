@@ -178,6 +178,7 @@ int write_logo( void )
 void PrintUsage( void )
 /*********************/
 {
+	const char *p;
 	#ifdef _WIN32
 		CONSOLE_SCREEN_BUFFER_INFO screenBufferInfo;
 		HANDLE hConsole;
@@ -185,9 +186,7 @@ void PrintUsage( void )
 		hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 		GetConsoleScreenBufferInfo(hConsole, &screenBufferInfo);
 	#endif
-    
-	const char *p;
-    
+       
 	write_logo();
 	
 	#ifdef _WIN32

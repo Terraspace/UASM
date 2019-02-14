@@ -354,7 +354,7 @@ struct asym *CreateConstant( struct asm_tok tokenarray[] )
     struct asym         *sym;
 	struct asym         *symA;
 	char                retok[MAX_LINE_LEN];
-	char *p2 = &retok;
+	char *p2 = retok;
 	char *pSrc;
 	struct asm_tok      tokenarray2[32];
     const char          *name = tokenarray[0].string_ptr;
@@ -388,7 +388,7 @@ struct asym *CreateConstant( struct asm_tok tokenarray[] )
 		}
 		*(p2++) = '>';
 
-		Tokenize(&retok, 0, tokenarray2, TOK_RESCAN);
+		Tokenize(retok, 0, tokenarray2, TOK_RESCAN);
 		return (SetTextMacro(tokenarray2, sym, name, NULL));
 	}
 

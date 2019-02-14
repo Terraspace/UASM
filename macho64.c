@@ -13,6 +13,7 @@
 
 #include <ctype.h>
 #include <time.h>
+#include <stdint.h>
 
 #include "globals.h"
 #include "memalloc.h"

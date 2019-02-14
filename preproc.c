@@ -109,7 +109,8 @@ static void VerifyNesting(char *line, bool exprBracket)
 {
 	int depth = 0;
 	int maxdepth = (exprBracket) ? 3 : 2;
-	
+	char *p = line;
+
 	// Reduce allowed nesting for system-v calls as arginvoke doesn't support it yet.
 	if ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)
 		maxdepth = (exprBracket) ? 2 : 1;
@@ -117,8 +118,7 @@ static void VerifyNesting(char *line, bool exprBracket)
 	// Same for 32bit code for now..
 	if (Options.sub_format != SFORMAT_64BIT)
 		maxdepth = (exprBracket) ? 2 : 1;
-
-	char *p = line;
+	
 	while (*p)
 	{
 		if (*p == '(')
@@ -155,8 +155,8 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 	bool gotOpenSqr = FALSE;
 	char methodName[MAX_LINE_LEN];
 	char indirectAddr[MAX_LINE_LEN];
-	char *pMethodStr = &methodName;
-	char *pStr = &newline;
+	char *pMethodStr = methodName;
+	char *pStr = newline;
 	char *pType = NULL;
 	bool inExpr = FALSE;
 	bool hasExprBracket = FALSE;
@@ -167,10 +167,10 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 	char pcs[16];
 	bool didExpand = TRUE;
 	char refStr[MAX_LINE_LEN];
-	char *pRefStr = &refStr;
+	char *pRefStr = refStr;
 	struct sfield *field = NULL;
 
-	strcpy(&newline, line);
+	strcpy(newline, line);
 
 	// Scan through tokens, looking for pointer operators.
 	while (didExpand)
@@ -179,8 +179,8 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 		memset(&methodName, 0, MAX_LINE_LEN);
 		memset(&newline, 0, MAX_LINE_LEN);
 		memset(&refStr, 0, MAX_LINE_LEN);
-		pStr = &newline;
-		pRefStr = &refStr;
+		pStr = newline;
+		pRefStr = refStr;
 		didExpand = FALSE;
 		paramCount = 0;
 		for (i = 0; i < Token_Count; i++)
@@ -277,7 +277,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 							if (sym && sym->sym.isClass)
 							{
 								foundType = TRUE;
-								pType = &indirectAddr;
+								pType = indirectAddr;
 								pType = strcpy(pType, "[") + 1;
 								for (j = opSqIdx + 1; j < clSqIdx; j++)
 								{
@@ -285,7 +285,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 									pType += strlen(tokenarray[j].string_ptr);
 								}
 								pType = strcpy(pType, "]") + 1;
-								pType = &indirectAddr;
+								pType = indirectAddr;
 								type = (struct dsym *)sym;
 								firstDeRefIdx = opSqIdx - 1; /* pointer->item */
 							}
@@ -481,9 +481,9 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 					pStr += strlen(pMethodStr);
 					pStr = strcpy(pStr, ",") + 1;
 
-					sprintf(&pcs, "%d", paramCount - 1); //-1 due to thisPtr implicit
-					strcpy(pStr, &pcs);
-					pStr += strlen(&pcs);
+					sprintf(pcs, "%d", paramCount - 1); //-1 due to thisPtr implicit
+					strcpy(pStr, pcs);
+					pStr += strlen(pcs);
 
 					pStr = strcpy(pStr, ",") + 1;
 
@@ -509,8 +509,8 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 					pStr = strcpy(pStr, ",") + 1;
 					if (derefCount > 0)
 					{
-						strcpy(pStr, &refStr);
-						pStr += strlen(&refStr);
+						strcpy(pStr, refStr);
+						pStr += strlen(refStr);
 						pStr = strcpy(pStr, ",") + 1;
 					}
 					if (derefCount == 0)
@@ -576,7 +576,7 @@ static void ExpandStaticObjCalls(char *line, struct asm_tok tokenarray[])
 	struct dsym *tsym = NULL;
 
 	memset(&newline, 0, MAX_LINE_LEN);
-	pStr = &newline;
+	pStr = newline;
 
 	for (i = 0; i < Token_Count; i++)
 	{
@@ -715,7 +715,7 @@ static void ExpandStaticObjCalls(char *line, struct asm_tok tokenarray[])
 						}
 					}
 
-					strcpy(line, &newline);
+					strcpy(line, newline);
 					Token_Count = Tokenize(line, 0, tokenarray, TOK_RESCAN);
 				}
 			}

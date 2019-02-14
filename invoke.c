@@ -3109,7 +3109,7 @@ static int ParamIsString(char *pStr, int param, struct dsym* proc) {
 			if (p->sym.target_type)
 			{
 				type = p->sym.target_type;
-				while (type->target_type && type->target_type > 0x2000)
+				while (type->target_type && (int)type->target_type > 0x2000)
 				{
 					type = type->target_type;
 					if (type->mem_type == MT_PTR)
@@ -3250,7 +3250,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				lbl = SymLookup(buf);
 				SetSymSegOfs(lbl);
 				memset(&buff, 0, 256);
-				pDest = &buff;
+				pDest = buff;
 				finallen = slen;
 
 				while (*pSrc != '"')

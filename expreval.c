@@ -870,8 +870,8 @@ static ret_code get_operand( struct expr *opnd, int *idx, struct asm_tok tokenar
 		if ((tokenarray[*idx].token == T_DOT && tokenarray[(*idx) + 1].token == T_ID))
 		{
 			// check that T_ID is a label
-			sprintf(&clabel, "%s%s", ".", tokenarray[(*idx) + 1].string_ptr);
-			labelsym = SymFind(&clabel);
+			sprintf(clabel, "%s%s", ".", tokenarray[(*idx) + 1].string_ptr);
+			labelsym = SymFind(clabel);
 			labelsym2 = SymFind(tokenarray[(*idx) + 1].string_ptr);
 
 			if ((*idx) > 0)
@@ -883,7 +883,7 @@ static ret_code get_operand( struct expr *opnd, int *idx, struct asm_tok tokenar
 				(labelsym != NULL && labelsym->label))
 			{
 				(*idx)++;
-				strcpy(&clabel, tokenarray[(*idx)].string_ptr);
+				strcpy(clabel, tokenarray[(*idx)].string_ptr);
 				sprintf(tokenarray[(*idx)].string_ptr, "%s%s", ".", &clabel);
 			}
 			else if (labelsym == NULL && labelsym2 == NULL)
@@ -4042,8 +4042,8 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 	if ( (tokenarray[*i].token == T_DOT && tokenarray[(*i) + 1].token == T_ID) && opnd1->kind != EXPR_REG )
 	{
 		// check that T_ID is a label
-		sprintf(&clabel, "%s%s", ".", tokenarray[(*i) + 1].string_ptr);
-		labelsym = SymFind(&clabel);
+		sprintf(clabel, "%s%s", ".", tokenarray[(*i) + 1].string_ptr);
+		labelsym = SymFind(clabel);
 		labelsym2 = SymFind(tokenarray[(*i)+1].string_ptr);
 
 		if ((*i) > 0)
@@ -4055,7 +4055,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 			(labelsym != NULL && labelsym->label))
 		{
 			(*i)++;
-			strcpy(&clabel, tokenarray[(*i)].string_ptr);
+			strcpy(clabel, tokenarray[(*i)].string_ptr);
 			sprintf(tokenarray[(*i)].string_ptr, "%s%s", ".", &clabel);
 		}
 		else if (labelsym == NULL && labelsym2 == NULL)
@@ -4066,8 +4066,8 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 	if ((tokenarray[*i].tokval == T_SHORT || tokenarray[*i].tokval == T_OFFSET) && tokenarray[(*i) + 1].token == T_DOT && tokenarray[(*i) + 2].token == T_ID)
 	{
 		// check that T_ID is a label
-		sprintf(&clabel, "%s%s", ".", tokenarray[(*i) + 2].string_ptr);
-		labelsym = SymFind(&clabel);
+		sprintf(clabel, "%s%s", ".", tokenarray[(*i) + 2].string_ptr);
+		labelsym = SymFind(clabel);
 		labelsym2 = SymFind(tokenarray[(*i) + 2].string_ptr);
 
 		if ((*i) > 0)
@@ -4079,7 +4079,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 			(labelsym != NULL && labelsym->label))
 		{
 			//(*i)++;
-			strcpy(&clabel, tokenarray[(*i)+2].string_ptr);
+			strcpy(clabel, tokenarray[(*i)+2].string_ptr);
 			sprintf(tokenarray[(*i)+2].string_ptr, "%s%s", ".", &clabel);
 			tokenarray[(*i) + 1].string_ptr = tokenarray[(*i) + 2].string_ptr;
 			tokenarray[(*i) + 1].token = T_ID;
