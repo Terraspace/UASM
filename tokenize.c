@@ -395,11 +395,17 @@ static ret_code get_string( struct asm_tok *buf, struct line_status *p )
     case '{':
          input1 = p->input+1;
            while ( isspace( *input1 )) input1++;
-           if ((*input1 | 0x20) == 'z'){
-             EmitError(Z_MASK_NOT_PERMITTED_WHEN_FIRST_OPERATOR_IS_MEMORY);
-             return;
+           if ((*input1 | 0x20) == 'z') {
+             p->input++;
+             get_decos(p, FALSE);    // mask decorators
+             while (isspace(*p->input)) p->input++;
+             if (*p->input == ',') {
+               p->input++;
+               buf->token = T_COMMA;
+               return(NOT_ERROR);
              }
-         if ((*input1 | 0x20) == 'k'){
+           }
+         else if ((*input1 | 0x20) == 'k'){
             p->input++;
             get_decos( p , TRUE) ;    // mask decorators
             while ( isspace( *p->input )) p->input++;
@@ -408,6 +414,8 @@ static ret_code get_string( struct asm_tok *buf, struct line_status *p )
               buf->token = T_COMMA;
             return( NOT_ERROR );
            }
+            //else 
+            //  EmitError(TOO_MANY_DECORATORS);
         }
           else if ( p->flags & TOK_NOCURLBRACES )
             goto undelimited_string;

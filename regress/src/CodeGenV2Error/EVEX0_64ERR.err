@@ -1,0 +1,7 @@
+EVEX0_64ERR.asm(8) : Error A2301: {z} mask not permitted when first operand is memory
+EVEX0_64ERR.asm(9) : Error A2018: mismatch in the number of broadcasting elements
+EVEX0_64ERR.asm(10) : Error A2020: K register expected
+EVEX0_64ERR.asm(12) : Error A2302: Not possible to EVEX encode requested instruction
+EVEX0_64ERR.asm(13) : Error A2302: Not possible to EVEX encode requested instruction
+EVEX0_64ERR.asm(14) : Error A2302: Not possible to EVEX encode requested instruction
+EVEX0_64ERR.asm(15) : Error A2302: Not possible to EVEX encode requested instruction
