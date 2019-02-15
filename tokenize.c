@@ -399,7 +399,7 @@ static ret_code get_string( struct asm_tok *buf, struct line_status *p )
              EmitError(Z_MASK_NOT_PERMITTED_WHEN_FIRST_OPERATOR_IS_MEMORY);
              return;
              }
-         else if ((*input1 | 0x20) == 'k'){
+         if ((*input1 | 0x20) == 'k'){
             p->input++;
             get_decos( p , TRUE) ;    // mask decorators
             while ( isspace( *p->input )) p->input++;
@@ -408,8 +408,6 @@ static ret_code get_string( struct asm_tok *buf, struct line_status *p )
               buf->token = T_COMMA;
             return( NOT_ERROR );
            }
-            //else 
-            //  EmitError(TOO_MANY_DECORATORS);
         }
           else if ( p->flags & TOK_NOCURLBRACES )
             goto undelimited_string;

@@ -9,7 +9,10 @@ zfmsubpd MACRO reg, mask, reg2, reg3, reg4
 ENDM
 
 .code
+
 USE64
+
+zfmsubpd zmm15 {k7}{z}, zmm15, zmm27, zmm11 ; works directly when passed to macro.
 
 ;--------------------------------------------------------
 
@@ -18,6 +21,9 @@ vsubpd zmm0 {KMASK}, zmm1, zmm2 ; direct macro substitution works.
 ;--------------------------------------------------------
 
 znoconst_rounding_single_nottp MACRO zmmval, zmmcarry, kwritemask
+
+zfmsubpd zmm15 {k7}{z}, zmm15, zmm27, zmm11 ; works directly when passed to macro from INSIDE a macro.
+
 zfmsubpd zmmcarry, {kwritemask}, zmmval, zmm24, zmm20
 zfmsubpd zmm16, {kwritemask}, zmmcarry, zmm26, zmm22
 vsubpd zmmval {kwritemask}, zmmval, zmm16

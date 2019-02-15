@@ -1574,7 +1574,6 @@ int EXPQUAL AssembleModule( const char *source )
     struct dsym   *seg;
 
 	struct module_info tempInfo;
-	memset(&tempInfo, 0, sizeof(tempInfo));
 
 #ifdef _WIN32
 	CONSOLE_SCREEN_BUFFER_INFO screenBufferInfo;
@@ -1583,6 +1582,7 @@ int EXPQUAL AssembleModule( const char *source )
 	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	GetConsoleScreenBufferInfo(hConsole, &screenBufferInfo);
 #endif
+	memset(&tempInfo, 0, sizeof(tempInfo));
 
     DebugMsg(("AssembleModule(\"%s\") enter\n", source ));
 

@@ -209,7 +209,6 @@ enum op_type {
 #define X64 0x04
 
 /* mandatory_prefix -> Which mandatory prefix sequence is used by the instruction */
-#define NO_PREFIX   0
 #define PFX_0xF     1
 #define PFX_0x66F   2
 #define PFX_0x66F38 3
