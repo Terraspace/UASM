@@ -134,7 +134,7 @@ enum op_type {
 #define NO_FLAGS     (0)
 #define ALLOW_REP    (1<<0)		/* Instruction allows use of rep prefix */
 #define ALLOW_LOCK   (1<<1)		/* Instruction allows use of lock prefix */
-#define IS_BRANCH    (1<<2)		/* Instruction is a branch */
+#define IS_BRNCH     (1<<2)		/* Instruction is a branch */
 #define ALLOW_BND    (1<<3)		/* Instruction allows a BND prefix */
 #define REX          (1<<4)		/* Instruction requires a REX prefix */
 #define REXW         (1<<5)		/* Instruction uses REX.W to extend it's default mode to 64bit */
