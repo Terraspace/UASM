@@ -3677,7 +3677,7 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 				CodeInfo.reg1 = GetRegNo(regtok);
 				if (opndx[OPND1].idx_reg) 
 					CodeInfo.indexreg = opndx[OPND1].idx_reg->bytval;
-				if (CodeInfo.reg1 > 15 && IsSimdReg(opndx[OPND1].idx_reg))
+				if (CodeInfo.reg1 > 15 && IsSimdReg(opndx[OPND1].base_reg))
 					CodeInfo.evex_flag = TRUE;
 				CodeInfo.r1type = GetValueSp(opndx[OPND1].base_reg->tokval);
 				if (CodeInfo.r1type == OP_ZMM) 
@@ -3692,7 +3692,7 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 				CodeInfo.reg2 = GetRegNo(regtok);
 				if (opndx[OPND2].idx_reg) 
 					CodeInfo.indexreg = opndx[OPND2].idx_reg->bytval;
-				if (CodeInfo.reg2 > 15 && IsSimdReg(opndx[OPND2].idx_reg))
+				if (CodeInfo.reg2 > 15 && IsSimdReg(opndx[OPND2].base_reg))
 					CodeInfo.evex_flag = TRUE;
 				CodeInfo.r2type = GetValueSp(opndx[OPND2].base_reg->tokval);
 				if (CodeInfo.r2type == OP_ZMM) 
