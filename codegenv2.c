@@ -322,25 +322,19 @@ enum op_type MatchOperand(struct code_info *CodeInfo, struct opnd_item op, struc
 			result = IMM64;
 			break;
 		case OP_XMM:
-			/* If register xmm8-xmm15 USE R_XMME */
-		//	if (opExpr.base_reg->tokval >= T_XMM8 && opExpr.base_reg->tokval <= T_XMM15)
-			//	result = R_XMME;
-			//else
-				result = R_XMM;
-			/* If register xmm16-xmm31 USE AVX512_128 */
+			result = R_XMM;
 			break;
-
 		case OP_YMM:
-			/* If register is ymm8-ymm15 USE R_YMME */
-			//if (opExpr.base_reg->tokval >= T_YMM8 && opExpr.base_reg->tokval <= T_YMM15)
-				//result = R_YMME;
-			//else
-				result = R_YMM;
-			/* If register ymm16-ymm31 USE AVX512_256 */
+			result = R_YMM;
 			break;
-
 		case OP_ZMM:
 			result = R_ZMM;
+			break;
+		case OP_ST:
+			result = R_ST0;
+			break;
+		case OP_ST_REG:
+			result = R_ST;
 			break;
 	}
 	return result;

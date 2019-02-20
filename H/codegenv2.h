@@ -129,6 +129,9 @@ enum op_type {
 	IMM16,
 	IMM32,
 	IMM64, /* 64bit ONLY immediate */	
+
+	R_ST0,
+	R_ST
 };
 
 #define NO_FLAGS     (0)
