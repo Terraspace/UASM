@@ -125,7 +125,7 @@ void get_broads(struct line_status *p) {
 	/************************************************/
 	if (!evex)
 		EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
-
+  
 	if (_memicmp(p->input, "1to2", 4) == 0) {
 		broadflags = 0x10;           /*  ZLLBVAAA  */
 		p->input += 4;               /*  00010000  */
@@ -147,7 +147,6 @@ void get_broads(struct line_status *p) {
     while ( isspace( *p->input )) p->input++;
     if (*p->input++ != '}')
       EmitError(DECORATOR_OR_BRACE_EXPECTED);
-
   }
 
 /* EVEX Mask decorators are handled here: {k1) or {k1){z} or {z}{k1) or {z} */
@@ -353,224 +352,234 @@ static ret_code ConcatLine( char *src, int cnt, char *out, struct line_status *l
     return( EMPTY );
 }
 
-static ret_code get_string( struct asm_tok *buf, struct line_status *p )
+static ret_code get_string(struct asm_tok *buf, struct line_status *p)
 /**********************************************************************/
 {
-    char    symbol_o;
-    char    symbol_c;
-    char    c;
-    char    *src = p->input;
-    char    *dst = p->output;
-    char    *input1 = NULL;
-    int     count = 0;
-    int     level;
+  char    symbol_o;
+  char    symbol_c;
+  char    c;
+  char    *src = p->input;
+  char    *dst = p->output;
+  char    *input1 = NULL;
+  int     count = 0;
+  int     level;
 
-    symbol_o = *src;
+  symbol_o = *src;
 
-    switch( symbol_o ) {
-    case '"':
-    case '\'':
-        buf->string_delim = symbol_o;
-        *dst++ = symbol_o;
+  switch (symbol_o) {
+  case '"':
+  case '\'':
+    buf->string_delim = symbol_o;
+    *dst++ = symbol_o;
+    src++;
+    for (; count < MAX_STRING_LEN; src++, count++) {
+      c = *src;
+      if (c == symbol_o) { /* another quote? */
+        *dst++ = c; /* store it */
         src++;
-        for ( ; count < MAX_STRING_LEN; src++, count++ ) {
-            c = *src;
-            if( c == symbol_o ) { /* another quote? */
-                *dst++ = c; /* store it */
-                src++;
-                if( *src != c )
-                    break; /* exit loop */
-                /* a pair of quotes inside the string is
-                 * handled as a single quote */
-            } else if( c == NULLC ) {
-                /* missing terminating quote, change to undelimited string */
-                buf->string_delim = NULLC;
-                count++; /* count the first quote */
-                break;
-            } else {
-                *dst++ = c;
-            }
-        }
-        break;  /* end of string marker is the same */
-    case '{':
-         input1 = p->input+1;
-           while ( isspace( *input1 )) input1++;
-           if ((*input1 | 0x20) == 'z') {
-             p->input++;
-             get_decos(p, FALSE);    // mask decorators
-             while (isspace(*p->input)) p->input++;
-             if (*p->input == ',') {
-               p->input++;
-               buf->token = T_COMMA;
-               return(NOT_ERROR);
-             }
-           }
-         else if ((*input1 | 0x20) == 'k'){
-            p->input++;
-            get_decos( p , TRUE) ;    // mask decorators
-            while ( isspace( *p->input )) p->input++;
-            if (*p->input == ',') {
-              p->input++;
-              buf->token = T_COMMA;
-            return( NOT_ERROR );
-           }
-            //else 
-            //  EmitError(TOO_MANY_DECORATORS);
-        }
-          else if ( p->flags & TOK_NOCURLBRACES )
-            goto undelimited_string;
-    case '<':
-        buf->string_delim = symbol_o;
-        symbol_c = ( symbol_o == '<' ? '>' : '}' );
-        src++;
-        for( level = 0; count < MAX_STRING_LEN; ) {
-            c = *src;
-            if( c == symbol_o ) { /* < or { ? */
-                level++;
-                *dst++ = c; src++;
-                count++;
-            } else if( c == symbol_c ) { /* > or }? */
-                if( level ) {
-                    level--;
-                    *dst++ = c; src++;
-                    count++;
-                } else {
-                    /* store the string delimiter unless it is <> */
-                    /* v2.08: don't store delimiters for {}-literals */
-                    //if (symbol_o != '<')
-                    //    *dst++ = c;
-                    src++;
-                    break; /* exit loop */
-                }
-#if 1
-            /*
-             a " or ' inside a <>/{} string? Since it's not a must that
-             [double-]quotes are paired in a literal it must be done
-             directive-dependant!
-             see: IFIDN <">,<">
-             */
-            } else if( ( c == '"' || c == '\'' ) && ( p->flags2 & DF_STRPARM ) == 0 ) {
-                char delim = c;
-                char *tdst;
-                char *tsrc;
-                int tcount;
-                *dst++ = c; src++;
-                count++;
-                tdst = dst;
-                tsrc = src;
-                tcount = count;
-                while (*src != delim && *src != NULLC && count < MAX_STRING_LEN-1 ) {
-                    if ( symbol_o == '<' && *src == '!' && *(src+1) != NULLC )
-                        src++;
-                    *dst++ = *src++;
-                    count++;
-                }
-                if ( *src == delim ) {
-                    *dst++ = *src++;
-                    count++;
-                    continue;
-                } else {
-                    /* restore values */
-                    src = tsrc;
-                    dst = tdst;
-                    count = tcount;
-                }
-#endif
-            } else if( c == '!' && symbol_o == '<' && *(src+1) ) {
-                /* handle literal-character operator '!'.
-                 * it makes the next char to enter the literal uninterpreted.
-                 */
-                /* v2.09: don't store the '!' */
-                //*dst++ = c; src++;
-                //count++;
-                //if ( count == MAX_STRING_LEN )
-                //    break;
-                src++;
-                *dst++ = *src++;
-                count++;
-            } else if( c == '\\' &&  ConcatLine( src, count, dst, p ) != EMPTY ) {
-                p->flags3 |= TF3_ISCONCAT;
-            } else if( c == NULLC || ( c == ';' && symbol_o == '{' )) {
-                if ( p->flags == TOK_DEFAULT && (( p->flags2 & DF_NOCONCAT ) == 0 ) ) { /* <{ */
-                    /* if last nonspace character was a comma
-                     * get next line and continue string scan
-                     */
-                    char *tmp = dst-1;
-                    while ( isspace(*tmp) ) tmp--;
-                    if ( *tmp == ',' ) {
-                        DebugMsg1(("Tokenize.get_string: comma concatenation: %s\n", src ));
-                        tmp = GetAlignedPointer( p->output, strlen( p->output ) );
-                        if( GetTextLine( tmp ) ) {
-                            /* skip leading spaces */
-                            while ( isspace( *tmp ) ) tmp++;
-                            /* this size check isn't fool-proved yet */
-                            if ( strlen( tmp ) + count >= MAX_LINE_LEN ) {
-                                EmitError( LINE_TOO_LONG );
-                                return( ERROR );
-                            }
-                            strcpy( src, tmp );
-                            continue;
-                        }
-                    }
-                }
-                src = p->input;
-                dst = p->output;
-                *dst++ = *src++;
-                count = 1;
-                goto undelimited_string;
-            } else {
-                *dst++ = c; src++;
-                count++;
-            }
-        }
-        break;
-    default:
-        undelimited_string:
+        if (*src != c)
+          break; /* exit loop */
+      /* a pair of quotes inside the string is
+       * handled as a single quote */
+      }
+      else if (c == NULLC) {
+        /* missing terminating quote, change to undelimited string */
         buf->string_delim = NULLC;
-        /* this is an undelimited string,
-         * so just copy it until we hit something that looks like the end.
-         * this format is used by the INCLUDE directive, but may also
-         * occur inside the string macros!
-         */
-        /* v2.05: also stop if a ')' is found - see literal2.asm regression test */
-        //for( count = 0 ; count < MAX_STRING_LEN && *src != NULLC && !isspace( *src ) && *src != ',' && *src != ';'; ) {
-        for( ; count < MAX_STRING_LEN &&
-            /* v2.08: stop also at < and % */
-            //*src != NULLC && !isspace( *src ) && *src != ',' && *src != ';' && *src != ')'; ) {
-            //*src && !isspace( *src ) && *src != ',' && *src != ')' && *src != '<' && *src != '%'; ) {
-            *src && !islspace( *src ) && *src != ',' && *src != ')' && *src != '%'; ) {
-            if ( *src == ';' && p->flags == TOK_DEFAULT )
-                break;
-            /* v2.11: handle '\' also for expanded lines */
-            //if (  *src == '\\' && !( p->flags & TOK_NOCURLBRACES ) ) {
-            if (  *src == '\\' && ( p->flags == TOK_DEFAULT || ( p->flags & TOK_LINE ) ) ) {
-                if ( ConcatLine( src, count, dst, p ) != EMPTY ) {
-                    DebugMsg1(("Tokenize.get_string: backslash concatenation: >%s<\n", src ));
-                    p->flags3 |= TF3_ISCONCAT;
-                    if ( count )
-                        continue;
-                    return( EMPTY );
-                }
-            }
-            /* v2.08: handle '!' operator */
-            if ( *src == '!' && *(src+1) && count < MAX_STRING_LEN - 1 )
-                *dst++ = *src++;
-            *dst++ = *src++;
-            count++;
-        }
+        count++; /* count the first quote */
         break;
+      }
+      else {
+        *dst++ = c;
+      }
     }
+    break;  /* end of string marker is the same */
+  case '{':
+    input1 = p->input + 1;
+    while (isspace(*input1)) input1++;
+    if ((*input1 | 0x20) == 'z') {
+      p->input++;
+      get_decos(p, FALSE);    // mask decorators
+      while (isspace(*p->input)) p->input++;
+      if (*p->input == ',') {
+        p->input++;
+        buf->token = T_COMMA;
+        return(NOT_ERROR);
+      }
+    }
+    else if ((*input1 | 0x20) == 'k') {
+      p->input++;
+      get_decos(p, TRUE);    // mask decorators
+      while (isspace(*p->input)) p->input++;
+      if (*p->input == ',') {
+        p->input++;
+        buf->token = T_COMMA;
+        return(NOT_ERROR);
+      }
+      //else 
+      //  EmitError(TOO_MANY_DECORATORS);
+    }
+    else if (p->flags & TOK_NOCURLBRACES)
+      goto undelimited_string;
+  case '<':
+    buf->string_delim = symbol_o;
+    symbol_c = (symbol_o == '<' ? '>' : '}');
+    src++;
+    for (level = 0; count < MAX_STRING_LEN; ) {
+      c = *src;
+      if (c == symbol_o) { /* < or { ? */
+        level++;
+        *dst++ = c; src++;
+        count++;
+      }
+      else if (c == symbol_c) { /* > or }? */
+        if (level) {
+          level--;
+          *dst++ = c; src++;
+          count++;
+        }
+        else {
+          /* store the string delimiter unless it is <> */
+          /* v2.08: don't store delimiters for {}-literals */
+          //if (symbol_o != '<')
+          //    *dst++ = c;
+          src++;
+          break; /* exit loop */
+        }
+#if 1
+        /*
+         a " or ' inside a <>/{} string? Since it's not a must that
+         [double-]quotes are paired in a literal it must be done
+         directive-dependant!
+         see: IFIDN <">,<">
+         */
+      }
+      else if ((c == '"' || c == '\'') && (p->flags2 & DF_STRPARM) == 0) {
+        char delim = c;
+        char *tdst;
+        char *tsrc;
+        int tcount;
+        *dst++ = c; src++;
+        count++;
+        tdst = dst;
+        tsrc = src;
+        tcount = count;
+        while (*src != delim && *src != NULLC && count < MAX_STRING_LEN - 1) {
+          if (symbol_o == '<' && *src == '!' && *(src + 1) != NULLC)
+            src++;
+          *dst++ = *src++;
+          count++;
+        }
+        if (*src == delim) {
+          *dst++ = *src++;
+          count++;
+          continue;
+        }
+        else {
+          /* restore values */
+          src = tsrc;
+          dst = tdst;
+          count = tcount;
+        }
+#endif
+      }
+      else if (c == '!' && symbol_o == '<' && *(src + 1)) {
+        /* handle literal-character operator '!'.
+         * it makes the next char to enter the literal uninterpreted.
+         */
+         /* v2.09: don't store the '!' */
+         //*dst++ = c; src++;
+         //count++;
+         //if ( count == MAX_STRING_LEN )
+         //    break;
+        src++;
+        *dst++ = *src++;
+        count++;
+      }
+      else if (c == '\\' &&  ConcatLine(src, count, dst, p) != EMPTY) {
+        p->flags3 |= TF3_ISCONCAT;
+      }
+      else if (c == NULLC || (c == ';' && symbol_o == '{')) {
+        if (p->flags == TOK_DEFAULT && ((p->flags2 & DF_NOCONCAT) == 0)) { /* <{ */
+            /* if last nonspace character was a comma
+             * get next line and continue string scan
+             */
+          char *tmp = dst - 1;
+          while (isspace(*tmp)) tmp--;
+          if (*tmp == ',') {
+            DebugMsg1(("Tokenize.get_string: comma concatenation: %s\n", src));
+            tmp = GetAlignedPointer(p->output, strlen(p->output));
+            if (GetTextLine(tmp)) {
+              /* skip leading spaces */
+              while (isspace(*tmp)) tmp++;
+              /* this size check isn't fool-proved yet */
+              if (strlen(tmp) + count >= MAX_LINE_LEN) {
+                EmitError(LINE_TOO_LONG);
+                return(ERROR);
+              }
+              strcpy(src, tmp);
+              continue;
+            }
+          }
+        }
+        src = p->input;
+        dst = p->output;
+        *dst++ = *src++;
+        count = 1;
+        goto undelimited_string;
+      }
+      else {
+        *dst++ = c; src++;
+        count++;
+      }
+    }
+    break;
+  default:
+  undelimited_string:
+    buf->string_delim = NULLC;
+    /* this is an undelimited string,
+     * so just copy it until we hit something that looks like the end.
+     * this format is used by the INCLUDE directive, but may also
+     * occur inside the string macros!
+     */
+     /* v2.05: also stop if a ')' is found - see literal2.asm regression test */
+     //for( count = 0 ; count < MAX_STRING_LEN && *src != NULLC && !isspace( *src ) && *src != ',' && *src != ';'; ) {
+    for (; count < MAX_STRING_LEN &&
+      /* v2.08: stop also at < and % */
+      //*src != NULLC && !isspace( *src ) && *src != ',' && *src != ';' && *src != ')'; ) {
+      //*src && !isspace( *src ) && *src != ',' && *src != ')' && *src != '<' && *src != '%'; ) {
+      *src && !islspace(*src) && *src != ',' && *src != ')' && *src != '%'; ) {
+      if (*src == ';' && p->flags == TOK_DEFAULT)
+        break;
+      /* v2.11: handle '\' also for expanded lines */
+      //if (  *src == '\\' && !( p->flags & TOK_NOCURLBRACES ) ) {
+      if (*src == '\\' && (p->flags == TOK_DEFAULT || (p->flags & TOK_LINE))) {
+        if (ConcatLine(src, count, dst, p) != EMPTY) {
+          DebugMsg1(("Tokenize.get_string: backslash concatenation: >%s<\n", src));
+          p->flags3 |= TF3_ISCONCAT;
+          if (count)
+            continue;
+          return(EMPTY);
+        }
+      }
+      /* v2.08: handle '!' operator */
+      if (*src == '!' && *(src + 1) && count < MAX_STRING_LEN - 1)
+        *dst++ = *src++;
+      *dst++ = *src++;
+      count++;
+    }
+    break;
+  }
 
-    if ( count == MAX_STRING_LEN ) {
-        EmitError( STRING_OR_TEXT_LITERAL_TOO_LONG );
-        return( ERROR );
-    }
-    *dst++ = NULLC;
-    buf->token = T_STRING;
-    buf->stringlen = count;
-    p->input = src;
-    p->output = dst;
-    return( NOT_ERROR );
+  if (count == MAX_STRING_LEN) {
+    EmitError(STRING_OR_TEXT_LITERAL_TOO_LONG);
+    return(ERROR);
+  }
+  *dst++ = NULLC;
+  buf->token = T_STRING;
+  buf->stringlen = count;
+  p->input = src;
+  p->output = dst;
+  return(NOT_ERROR);
 }
 
 static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
@@ -947,7 +956,13 @@ static ret_code get_id( struct asm_tok *buf, struct line_status *p )
     unsigned size;
 	int len = 0;
 	int i = 0;
-
+  //if (_memicmp(p->input, "dword bcst[rax]", 15) == 0) {
+  //  __debugbreak();
+  //  strcpy (p->input, "dword ptr [rax]");
+  //  broadflags = 0x40;
+  //  p->input+=15;
+  //  //return(NOT_ERROR);
+  //}
 #if CONCATID || DOTNAMEX
 continue_scan:
 #endif
@@ -1192,14 +1207,16 @@ int Tokenize( char *line, unsigned int start, struct asm_tok tokenarray[], unsig
 {
     int                rc;
     struct line_status p;
-	char*              input1 = NULL;
-
+	  char*  input1 = NULL;
+    char*  p1 = NULL;
+    int    cnt = 0;
     p.input = line;
     p.start = line;
     p.index = start;
     p.flags = flags;
     p.flags2 = 0;
     p.flags3 = 0;
+    char* buff[256];
     if ( p.index == 0 ) 
 	{
 #ifdef DEBUG_OUT
@@ -1234,33 +1251,117 @@ int Tokenize( char *line, unsigned int start, struct asm_tok tokenarray[], unsig
             ModuleInfo.CurrComment = commentbuffer;
             *p.input = NULLC;
         }
-		
-		/* UASM 2.48 Handle {evex} promotion decorator */
-		/*if (*p.input == '{') {
-			if (_memicmp(p.input + 1, "evex", 4) == 0)
-			{
-				evexflag = TRUE;
-				p.input += 6;
-				continue;
-			}
-		}*/
-		if (*p.input == '{') 
-		{
-			input1 = p.input + 1; /* skip '{' */
-			while (isspace(*input1))
-				input1++;
-			if ((_memicmp(input1, "evex", 4) == 0)) 
-			{
-				evexflag = TRUE;
-				while (*input1 != '}') 
-					input1++;
-				input1++;          /* skip '}' */
-				while (isspace(*input1)) 
-					input1++;
-				p.input = input1;  /* skip '{evex}' */
-			}
-		}
-
+        /* Next to routines will work only if option evex: 1 */
+        if (evex) {
+          /* UASM 2.48 Handle {evex} promotion decorator */
+          if (*p.input == '{')
+          {
+            input1 = p.input + 1;      /* skip '{' */
+            while (isspace(*input1))
+              input1++;
+            if ((_memicmp(input1, "evex", 4) == 0))
+            {
+              evexflag = TRUE;
+              while (*input1 != '}')
+                input1++;
+              input1++;                /* skip '}' */
+              while (isspace(*input1))
+                input1++;
+              p.input = input1;        /* skip '{evex}' */
+              goto nobcst;
+            }
+          }
+          else if (*p.input == 'v') {
+            /* Implement ml64 BCST for broadcast */
+            for (p1 = p.input; *p1 != 0; p1++) {     /* start from the beginning of string */
+              if (*p1 == 'b' || *p1 == 'B') {        /* found  'b' */
+                if ((_memicmp(p1, "bcst", 4) == 0))  /* found "bcst" ? */
+                  break;                             /* found "bcst" */
+              }                                      /* if it was {kn} or {z} search till end */
+            }
+            if (*p1 != 0) {                        /* if 'bcst' present p1 is pointing to "bcst" */
+              input1 = p1 + 4;                     /* skip "bcst" and save location in input1 */
+              while (isspace(*input1)) input1++;   /* skip the space, now pointing to address  */
+              p1 = p.input;                        /* start again from begining of string */
+              while (*p1 > ' ') p1++;               /* skip instruction */
+              while (isspace(*p1)) p1++;
+              /* find which register is used */
+              if (*p1 == 'k' || *p1 == 'K') {      /* check if it is mask register */
+                if ((*(p1 + 1) >= '1') && (*(p1 + 1) <= '7')) {
+                  p1++;                            /* skip register number */
+                  while (*p1 != ',') p1++;          /* find the comma  */
+                  p1++;                            /* skip the comma  */
+                  while (isspace(*p1)) p1++;       /* skip the space  */
+                }
+              }
+              if (0 == _memicmp(p1, "xmm", 3))
+                cnt = 2;                           /* 2 qword for xmm registers */
+              else if (0 == _memicmp(p1, "ymm", 3))
+                cnt = 4;                           /* 4 qword for ymm registers */
+              else if (0 == _memicmp(p1, "zmm", 3))
+                cnt = 8;                           /* 8 qword for zmm registers */
+              else
+                goto nobcst;                       /* let parser throw error */
+              /* find is it dword or qword */
+              for (; *p1 != 0; p1++)
+              {
+                if (0 == _memicmp(p1, "word", 4))    /* it is faster to find "word" first */
+                  break;
+              }
+              if (*p1 == 0)goto nobcst;            /* let parser throw error */
+              p1--;                                /* get the 'q' or 'd' */
+              if (*p1 == 'd' || *p1 == 'D')
+                cnt += cnt;                        /* double it for dword */
+              else if (*p1 != 'q' || *p1 == 'Q')   /* incorret size? */
+                goto nobcst;                       /* let parser throw error */
+              if (*input1 != '\[') {               /* if address is not inside [] */
+                *p1++ = '\[';                      /* force it   */
+                for (; *input1 > ','; p1++, input1++)  /* input1 points to [address] */
+                  *p1 = *input1;                     /* copy first memory part over 'qword bcst */
+                *p1++ = '\]';
+                while (isspace(*input1)) input1++;   /* skip the space, now pointing to address  */
+              }
+              else {
+                for (; *input1 != '\]'; p1++, input1++) /* input1 points to [address] */
+                  *p1 = *input1;                     /* copy first memory part over 'qword bcst */
+                *p1++ = *input1++;                   /* copy ']' */
+              }
+              /* now add broadcast size */
+              if (cnt == 2)       strcpy(p1, "\{1to2\}");
+              else if (cnt == 4)  strcpy(p1, "\{1to4\}");
+              else if (cnt == 8)  strcpy(p1, "\{1to8\}");
+              else if (cnt == 16) strcpy(p1, "\{1to16\}");
+              else goto nobcst;                   /* let parser throw error */
+              strcat(p1, input1);
+            }
+            else {
+              /* here force '[]' around a variable */
+              for (p1 = p.input; *p1 != 0; p1++) {     /* start from the beginning of string */
+                if (*p1 == '\{') {                     /* found  '{' */
+                  if ((_memicmp(p1, "\{1to", 4) == 0))
+                    break;                             /* found "bcst" */
+                }                                      /* if it was {kn} or {z} search till end */
+              }
+              if (*p1 == '\{') {                       /* if found {1toN} */
+                p1--;                                  /* go back 1 byte to check if ']' is present */
+                while (isspace(*p1)) --p1;             /* skip the space  */
+                if (*p1 != '\]') {                     /* if not present insert it  */
+                  while (*p1 != ',') --p1;             /* step backwards till the comma */
+                  p1++;                                /* skip the comma forward  */
+                  input1 = p1;                         /* save that location in input1  */
+                  while (isspace(*p1)) p1++;           /* skip the space  */
+                  strcpy(buff, p1);                    /* copy to the buffer from variable on  */
+                  *input1++ = '\[';                    /* skip the space  */
+                  for (p1 = buff; *p1 != '\{'; p1++, input1++) /* till the end of var  */
+                    *input1 = *p1;                      /* copy it back to input string  */
+                  *input1++ = '\]';                    /* insert ']' before '{' */
+                  strcpy(input1, p1);                  /* now copy the rest of string from buffer */
+                }
+              }
+            }
+          }
+        }
+    nobcst:
         tokenarray[p.index].tokpos = p.input;
         if( *p.input == NULLC ) {
             /* if a comma is last token, concat lines ... with some exceptions
