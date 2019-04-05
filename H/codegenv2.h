@@ -220,7 +220,6 @@ enum op_type {
 #define PFX_0xF30F  5
 #define PFX_0xF20F  6
 #define PFX_0x0F38  7
-#define PFX_0xF30F  8
 
 /* op_dir -> operation direction */
 #define REG_DST  0
