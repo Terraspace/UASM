@@ -373,12 +373,17 @@ struct proc_info {
     unsigned            parasize;       /* total no. of bytes used by parameters */
     unsigned            localsize;      /* PROC: total no. of bytes used by local variables */
     unsigned            locals;
-    unsigned             vsize;
+    unsigned            vsize;
     char                *prologuearg;   /* PROC: prologuearg attribute */
     unsigned char       vecregs[6];
     unsigned char       vecregsize[6];
     unsigned char       vregs[6];
     unsigned char       xyzused[6];
+    unsigned            regcsize;
+    unsigned char       regcregs[16];
+    unsigned char       regcregsize[16];
+    unsigned char       rgcregs[16];
+    unsigned char       regcxyzused[16];
     unsigned char       delregsused[3]; /* added for delphi used registers v.29 */
     unsigned char       vecused;
 	
@@ -399,10 +404,11 @@ struct proc_info {
     struct asym         *exc_handler;   /* PROC: exc handler set by FRAME */
     int                 ReservedStack;  /* PROC: win64: additional reserved stack */
     int                 stored_reg;     /* number of stored general registers in home spaces */
-    int					        pushed_reg;		  /* number of pushed registers */
+    int                 pushed_reg;     /* number of pushed registers */
     int                 home_taken;     /* number of taken spaces in a home space */
     int                 xmmsize;        /* size of saved xmm registers */
-    char                home_used[6];   /* used shadows home space */
+	char                home_used[6];   /* used shadows home space */
+	char                regcallmshome_used[16];   /* used shadows home space */
 #endif
     uint_32             prolog_list_pos;/* PROC: prologue list pos */
     union {

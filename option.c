@@ -333,6 +333,9 @@ OPTFUNC( SetCaseMap )
 		if (Options.nomlib == FALSE && ModuleInfo.defOfssize == USE64) 
 		{
 			CreateMacroLibCases();
+#if !(NOX86MACROLIB)
+			x86CreateMacroLibCases();
+#endif
 		}
 
     } else {
@@ -773,7 +776,7 @@ OPTFUNC( SetSegment )
 }
 
 #if FIELDALIGN
-/* OPTION FIELDALIGN:1|2|4|8|16|32 */
+/* OPTION FIELDALIGN:1|2|4|8|16|32|64 */
 
 OPTFUNC( SetFieldAlign )
 /**********************/
@@ -801,7 +804,7 @@ OPTFUNC( SetFieldAlign )
 #endif
 
 #if PROCALIGN
-/* OPTION PROCALIGN:1|2|4|8|16|32 */
+/* OPTION PROCALIGN:1|2|4|8|16|32|64 */
 
 OPTFUNC( SetProcAlign )
 /*********************/
@@ -1076,9 +1079,14 @@ OPTFUNC(SetWin64)
 
   if ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)
   {
-	  Options.langtype = LANG_SYSVCALL;
-	  ModuleInfo.langtype = LANG_SYSVCALL;
-	  ModuleInfo.fctype = FCT_WIN64; /* sys proc/invoke tables use same ordinal as FCTWIN64 */
+	  if (Options.langtype != LANG_SYSVCALL && Options.langtype != LANG_REGCALL)
+		  Options.langtype = LANG_SYSVCALL;
+	  if (ModuleInfo.langtype != LANG_SYSVCALL && ModuleInfo.langtype != LANG_REGCALL)
+		  ModuleInfo.langtype = LANG_SYSVCALL;
+	  if (ModuleInfo.fctype != FCT_WIN64)
+		  ModuleInfo.fctype = FCT_WIN64; /* sys proc/invoke tables use same ordinal as FCTWIN64 */
+	  if (ModuleInfo.frame_auto != 1)
+		  ModuleInfo.frame_auto = 1;
   }
 
   if (sym_ReservedStack == NULL && ModuleInfo.defOfssize == USE64)
@@ -1094,9 +1102,12 @@ OPTFUNC(SetWin64)
   if (ModuleInfo.model == MODEL_NONE)
   {
 	  ModuleInfo.model = MODEL_FLAT;
-	  Options.langtype = LANG_FASTCALL;
-	  ModuleInfo.langtype = LANG_FASTCALL;
-	  ModuleInfo.fctype = FCT_WIN64;
+	  if (Options.langtype != LANG_FASTCALL && Options.langtype != LANG_VECTORCALL && Options.langtype != LANG_SYSVCALL && Options.langtype != LANG_REGCALL)
+		  Options.langtype = LANG_FASTCALL;
+	  if (ModuleInfo.langtype != LANG_FASTCALL && Options.langtype != LANG_VECTORCALL && ModuleInfo.langtype != LANG_SYSVCALL && ModuleInfo.langtype != LANG_REGCALL)
+		  ModuleInfo.langtype = LANG_FASTCALL;
+	  if (ModuleInfo.fctype != FCT_WIN64)
+		  ModuleInfo.fctype = FCT_WIN64;
   }
 
     *pi = i;

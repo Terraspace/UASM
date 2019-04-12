@@ -1,6 +1,7 @@
 #pragma once
 
 #include "globals.h"
+#include "parser.h"
 #include "expreval.h"
 
 /* This order must remain as-is! */
@@ -161,6 +162,7 @@ enum op_type {
 #define IMM8_ONLY    (1<<23)	/* The instruction entry assume immediates match the opsize, however some instructions use ONLY an imm8 */
 #define EREX         (1<<24)	/* The instruction is extended with a REX prefix only if the src/dst register no > 7 */
 #define SRCHDSTL     (1<<25)	/* Some instructions have an optimised encodable form, ie: vmovaps by using a different opcode with swapped reg, rm dst and this flag limits instruction search for these */
+#define OPCODE_EXT   (1<<26)	/* The Mod RM field uses only the RM portion, the Reg field contains an opcode extension value as noted /digit in the Intel manuals */
 
 /* VEX flags */
 #define NO_VEX		 (0)
@@ -168,10 +170,10 @@ enum op_type {
 #define VEX_WIG      (1<<1)		/* Instruction can use C5h(2byte) form (if no VEX.mmmmm) or VEX.W is ignored in C4H(3byte) form */
 #define VEX_W0       (1<<2)     /* VEX.W = 0, extended opcode bit, or promotion to 64bit of gp register or memory operand */
 #define VEX_W1       (1<<3)		/* "" */
-#define VEX_66		 (1<<4)
+#define VEX_66		   (1<<4)
 #define VEX_F2       (1<<5)
 #define VEX_F3       (1<<6)
-#define VEX_0F		 (1<<7)
+#define VEX_0F		   (1<<7)
 #define VEX_0F3A     (1<<8)
 #define VEX_0F38     (1<<9)
 #define VEX_LIG      (1<<10)
@@ -216,6 +218,9 @@ enum op_type {
 #define PFX_0x66F   2
 #define PFX_0x66F38 3
 #define PFX_0x66F3A 4
+#define PFX_0xF30F  5
+#define PFX_0xF20F  6
+#define PFX_0x0F38  7
 
 /* op_dir -> operation direction */
 #define REG_DST  0
@@ -357,7 +362,7 @@ extern struct Instr_Def InstrTableV2[];
 
 /* Public functions */
 extern void     BuildInstructionTable(void);
-extern ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs, uint_32 opCount, struct expr opExpr[4]);
+extern ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs, uint_32 opCount, struct expr opExpr[4]);
 
 /* Private functions */
 enum op_type      DemoteOperand(enum op_type op);
@@ -365,8 +370,8 @@ void              InsertInstruction(struct Instr_Def* pInstruction, uint_32 hash
 struct Instr_Def* AllocInstruction();
 uint_32           GenerateInstrHash(struct Instr_Def* pInstruction);
 struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg, unsigned char encodeMode, 
-	                                int srcRegNo, int dstRegNo, struct code_info *CodeInfo);
-enum op_type      MatchOperand(struct code_info *CodeInfo, struct opnd_item op, struct expr opExpr);
+	                                int srcRegNo, int dstRegNo, struct code_info* CodeInfo);
+enum op_type      MatchOperand(struct code_info* CodeInfo, struct opnd_item op, struct expr opExpr);
 
 bool Require_OPND_Size_Override(struct Instr_Def* instr, struct code_info* CodeInfo);
 bool Require_ADDR_Size_Override(struct Instr_Def* instr, struct code_info* CodeInfo);
@@ -379,7 +384,8 @@ void          BuildVEX(bool* needVex, unsigned char* vexSize, unsigned char* vex
 	                   struct Instr_Def* instr, struct expr opnd[4], bool needB, bool needX, uint_32 opCount);				/* Build VEX prefix bytes       */
 void          BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr, struct expr opnd[4],
 						bool needB, bool needX, bool needRR, uint_32 opCount, struct code_info* CodeInfo);					/* Build EVEX prefix bytes      */
-int           BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned char* pREX, bool* needRM, bool* needSIB,
-	                              unsigned int* dispSize, int* pDisp, struct Instr_Def* instr, 
-								  struct expr opExpr[4], bool* needB, bool* needX, struct code_info *CodeInfo);				/* Build Memory encoding ModRM/SIB bytes   */
+int           BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned char* pREX, bool* needModRM, bool* needSIB,
+	                              unsigned int* dispSize, uint_64* pDisp, struct Instr_Def* instr, 
+								  struct expr opExpr[4], bool* needB, bool* needX, 
+								  bool* needRR, struct code_info* CodeInfo);											    /* Build Memory encoding ModRM/SIB bytes   */
 unsigned char GetRegisterNo(struct asm_tok *regTok);																		/* Get Register Encoding Number from Token */

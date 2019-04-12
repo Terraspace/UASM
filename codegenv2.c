@@ -132,7 +132,7 @@ enum op_type DemoteOperand(enum op_type op) {
 	return(ret);
 }
 
-enum op_type MatchOperand(struct code_info *CodeInfo, struct opnd_item op, struct expr opExpr) {
+enum op_type MatchOperand(struct code_info* CodeInfo, struct opnd_item op, struct expr opExpr) {
 	enum op_type result;
 	switch (op.type)
 	{
@@ -340,7 +340,7 @@ enum op_type MatchOperand(struct code_info *CodeInfo, struct opnd_item op, struc
 	return result;
 }
 
-struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg, unsigned char encodeMode, int srcRegNo, int dstRegNo, struct code_info *CodeInfo) 
+struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg, unsigned char encodeMode, int srcRegNo, int dstRegNo, struct code_info* CodeInfo) 
 {
 	uint_32           hash;
 	struct Instr_Def* pInstruction = NULL;
@@ -559,6 +559,7 @@ unsigned char BuildModRM(unsigned char modRM, struct Instr_Def* instr, struct ex
 	if (instr->flags & F_MODRM)			// Only if the instruction requires a ModRM byte, else return 0.
 	{
 		*needModRM |= TRUE;
+		
 		//  7       5           2       0
 		// +---+---+---+---+---+---+---+---+
 		// |  mod  |    reg    |    rm     |
@@ -566,6 +567,14 @@ unsigned char BuildModRM(unsigned char modRM, struct Instr_Def* instr, struct ex
 		// MODRM.mod (2bits) == b11, register to register direct, otherwise register indirect.
 		// MODRM.reg (3bits) == 3bit opcode extension, 3bit register value as source. REX.R, VEX.~R can 1bit extend this field.
 		// MODRM.rm  (3bits) == 3bit direct or indirect register operand, optionally with displacement. REX.B, VEX.~B can 1bit extend this field.
+		
+		if (instr->flags & OPCODE_EXT)
+		{
+			// If the instruction uses an opcode extension value in the ModRM.REG, its value 
+			// will be specified as an extra byte in the opcode byte data.
+			modRM |= (instr->opcode[(int)instr->opcode_bytes]) << 3;
+		}
+
 		if (instr->flags & F_MODRM_REG && instr->op_dir == REG_DST)
 		{
 			// Build REG field as destination.
@@ -796,7 +805,7 @@ void BuildVEX(bool* needVex, unsigned char* vexSize, unsigned char* vexBytes, st
 /* =====================================================================
   Build up instruction EVEX prefix bytes.
   ===================================================================== */
-void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr, struct expr opnd[4], bool needB, bool needX, bool needRR, uint_32 opCount, struct code_info *CodeInfo)
+void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr, struct expr opnd[4], bool needB, bool needX, bool needRR, uint_32 opCount, struct code_info* CodeInfo)
 {
 	// BYTE0: EVEX prefix is always 4 bytes and the first byte is always 0x62.
 
@@ -987,6 +996,11 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 					EVEXr = 1;
 			}
 		}
+		else
+		{
+			if (needRR)
+				EVEXnr = 1;
+		}
 
 		if (!opnd[instr->srcidx].indirect)
 		{
@@ -1050,7 +1064,11 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 			}
 		}
 	}
-	
+
+	/* If the instruction uses the REG field as an opcode extension, ensure EVEX.R~ is set */
+	if ((instr->flags & OPCODE_EXT) != 0)
+		EVEXnr = 1;
+
 	/* DIRECT or Memory Inferred settings */
 	/* EVEX.R and R~ extension value */
 	if ((instr->vexflags & VEX_R) != 0)
@@ -1075,7 +1093,7 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 /* =====================================================================
   Check for an EVEX Comp8 Displacement and amend value if required.
   ===================================================================== */
-bool CompDisp(struct expr* memOpnd, struct Instr_Def* instr, struct code_info *CodeInfo)
+bool CompDisp(struct expr* memOpnd, struct Instr_Def* instr, struct code_info* CodeInfo)
 {
 	int_32 elements = (broadflags == 0 && (instr->evexflags & EVEX_BRD) != 0) ? 1 : instr->op_elements;
 	int_32 elemSize = (instr->op_size / elements);
@@ -1132,7 +1150,8 @@ bool IsSimdRegister(struct asm_tok *regTok)
   Build up instruction SIB, ModRM and REX bytes for memory operand.
   ===================================================================== */
 int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned char* pREX, bool* needModRM, bool* needSIB,
-	                     unsigned int* dispSize, uint_64* pDisp, struct Instr_Def* instr, struct expr opExpr[4], bool* needB, bool* needX, struct code_info *CodeInfo)
+	                    unsigned int* dispSize, uint_64* pDisp, struct Instr_Def* instr, struct expr opExpr[4], bool* needB, 
+						bool* needX, bool* needRR, struct code_info *CodeInfo)
 {
 	int             returnASO   = 0;
 	unsigned char   sibScale    = 0;
@@ -1161,7 +1180,10 @@ int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned cha
 
 		/* For EVEX VSIB extension, we just keep the low 3 bits. */
 		if ((instr->evexflags & EVEX_VSIB) != 0 && idxRegNo > 15)
+		{
 			idxRegNo &= 7;
+			*needRR = TRUE;
+		}
 
 		/* Get base and index register sizes in bytes */
 		if (opExpr[instr->memOpnd].base_reg)
@@ -1372,7 +1394,7 @@ int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned cha
 	return returnASO;
 }
 
-ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs, uint_32 opCount, struct expr opExpr[4])
+ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs, uint_32 opCount, struct expr opExpr[4])
 {
 	struct Instr_Def  instrToMatch;
 	ret_code          retcode      = NOT_ERROR;
@@ -1534,8 +1556,8 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		//----------------------------------------------------------
 		/* If the matched instruction requires processing of a memory address */
 		if(matchedInstr->memOpnd != NO_MEM)
-			aso = BuildMemoryEncoding(&modRM, &sib, &rexByte, &needModRM, &needSIB,
-				                &dispSize, &displacement, matchedInstr, opExpr, &needB, &needX, CodeInfo);		/* This could result in modifications to REX, modRM and SIB bytes */
+			aso = BuildMemoryEncoding(&modRM, &sib, &rexByte, &needModRM, &needSIB,								/* This could result in modifications to REX/VEX/EVEX, modRM and SIB bytes */
+				                &dispSize, &displacement, matchedInstr, opExpr, &needB, &needX, &needRR, CodeInfo);		
 		modRM |= BuildModRM(matchedInstr->modRM, matchedInstr, opExpr, &needModRM, &needSIB,
 			((matchedInstr->vexflags & VEX) || (matchedInstr->vexflags & EVEX)));								/* Modify the modRM value for any non-memory operands */
 
@@ -1554,7 +1576,7 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 			EmitError(NO_EVEX_FORM);
 
 		else if(CodeInfo->Ofssize == USE64)
-			rexByte |= BuildREX(rexByte, matchedInstr, opExpr, FALSE);											/* Modify the REX prefix for non-memory operands/sizing */
+			rexByte |= BuildREX(rexByte, matchedInstr, opExpr);											/* Modify the REX prefix for non-memory operands/sizing */
 
 		//----------------------------------------------------------
 		// Check if address or operand size override prefixes are required.
@@ -1711,6 +1733,18 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 			OutputCodeByte(0x0f); // second part.
 			OutputCodeByte(0x3a); 
 			break;
+		case PFX_0xF30F:
+			OutputCodeByte(0xf3); // second part.
+			OutputCodeByte(0x0f);
+			break;
+		case PFX_0xF20F:
+		    OutputCodeByte(0xf2); // second part.
+		    OutputCodeByte(0x0f);
+		    break;
+		case PFX_0x0F38:
+		    OutputCodeByte(0x0f); // second part.
+		    OutputCodeByte(0x38);
+		    break;
 		}
 
 		//----------------------------------------------------------
