@@ -352,6 +352,38 @@
         Switch="-ze0" />
     </EnumProperty>
 
+    <EnumProperty
+      Name="RegCALLVersionNumber"
+      Category="Advanced"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="Set REGCALL version number"
+      Description="Set REGCALL version number to pass for the symbol decoration, -ge0|1|2|3|4|5">
+      <EnumValue
+        Name="5"
+        DisplayName="regcall5"
+        Switch="-ge5" />
+      <EnumValue
+        Name="4"
+        DisplayName="regcall4"
+        Switch="-ge4" />
+      <EnumValue
+        Name="3"
+        DisplayName="regcall3"
+        Switch="-ge3" />
+      <EnumValue
+        Name="2"
+        DisplayName="regcall2"
+        Switch="-ge2" />
+      <EnumValue
+        Name="1"
+        DisplayName="regcall1"
+        Switch="-ge1" />
+      <EnumValue
+        Name="0"
+        DisplayName="regcall"
+        Switch="-ge0" />
+    </EnumProperty>
+
     <BoolProperty
       Name="NoDecoratedName"
       Category="Object File"

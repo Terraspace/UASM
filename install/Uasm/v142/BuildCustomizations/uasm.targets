@@ -76,6 +76,7 @@
       STDCALLSymbolDecoration="%(UASM.STDCALLSymbolDecoration)"
       VectorCALLSymbolDecoration="%(UASM.VectorCALLSymbolDecoration)"
       RegCALLSymbolDecoration="%(UASM.RegCALLSymbolDecoration)"
+      RegCALLVersionNumber="%(UASM.RegCALLVersionNumber)"
       NoDecoratedName="%(UASM.NoDecoratedName)"
       AddLineNumberDebugInformation="%(UASM.AddLineNumberDebugInformation)"
       MakeAllSymbolsPublic="%(UASM.MakeAllSymbolsPublic)"

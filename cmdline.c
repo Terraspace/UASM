@@ -115,7 +115,8 @@ struct global_options Options = {
     /* no_cdecl_decoration   */     FALSE,
     /* stdcall_decoration    */     STDCALL_FULL,
 	/* vectorcall_decoration */     VECTORCALL_FULL,
-	/* regcall_decoration */        REGCALL_FULL,
+    /* regcall_decoration */        REGCALL_FULL,
+    /* regcall_version */           RGCV_4,
     /* no_export_decoration  */     FALSE,
     /* entry_decorated       */     FALSE,
     /* write_listing         */     FALSE,
@@ -344,7 +345,7 @@ static void get_fname( int type, const char *token )
     strcpy( Options.names[type], name );
 }
 
-static void set_option_n_name( int idx, const char *name )
+static void set_option_n_name(int idx, const char* name)
 /********************************************************/
 /* option -n: set name of
  * - nd: data seg
@@ -353,16 +354,18 @@ static void set_option_n_name( int idx, const char *name )
  * - nc: code class
  */
 {
-    if ( *name != '.' && !is_valid_id_char( *name ) ) {
-        EmitError( N_OPTION_NEEDS_A_NAME_PARAMETER );
+    if (*name != '.' && !is_valid_id_char(*name))
+    {
+        EmitError(N_OPTION_NEEDS_A_NAME_PARAMETER);
         return;
     }
 
-    if( Options.names[idx] != NULL ) {
-        MemFree( Options.names[idx] );
+    if (Options.names[idx] != NULL)
+    {
+        MemFree(Options.names[idx]);
     }
-    Options.names[idx] = MemAlloc( strlen( name ) + 1 );
-    strcpy( Options.names[idx], name );
+    Options.names[idx] = MemAlloc(strlen(name) + 1);
+    strcpy(Options.names[idx], name);
 }
 
 //static void OPTQUAL Ignore( void ) {};
@@ -546,6 +549,8 @@ static void OPTQUAL Set_h( void ) {  PrintUsage();  exit(1); }
 static void OPTQUAL Set_zv(void) { Options.vectorcall_decoration = OptValue; }
 
 static void OPTQUAL Set_zr(void) { Options.regcall_decoration = OptValue; }
+
+static void OPTQUAL Set_gev( void )  { Options.regcall_version = OptValue; }
 
 #ifdef DEBUG_OUT
 static void OPTQUAL Set_dm( void )
@@ -760,6 +765,12 @@ static struct cmdloption const cmdl_options[] = {
     { "zv1",    VECTORCALL_FULL, Set_zv },
     { "ze0",    REGCALL_NONE, Set_zr },
     { "ze1",    REGCALL_FULL, Set_zr },
+    { "ge0",    RGCV_0,       Set_gev },
+    { "ge1",    RGCV_1,       Set_gev },
+    { "ge2",    RGCV_2,       Set_gev },
+    { "ge3",    RGCV_3,       Set_gev },
+    { "ge4",    RGCV_4,       Set_gev },
+    { "ge5",    RGCV_5,       Set_gev },
     { "Zv8",    optofs( masm8_proc_visibility ), Set_True },
     { "zze",    optofs( no_export_decoration ),  Set_True },
 #if COFF_SUPPORT

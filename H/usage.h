@@ -76,9 +76,9 @@
 "-Zs\0"             "Perform syntax check only\0"
 "-zt<0|1|2>\0"      "Set STDCALL symbol decoration: 0=No name decoration,\0"
 "\0"                "1=No '@size' suffix for functions, 2=Full (default)\0"
-"-zv<0|1>\0"		"Set VECTORCALL symbol decoration: 0=No name decoration,\0"
-"-ze<0|1>\0"		"Set REGCALL symbol decoration: 0=No name decoration,\0"
-"\0"                "1=No '@size' suffix for functions, 2=Full (default)\0"
+"-zv<0|1>\0"		"Set VECTORCALL symbol decoration: 0=No name decoration\0"
+"-ze<0|1>\0"		"Set REGCALL symbol decoration: 0=No name decoration\0"
+"-ge<0|1|2|3|4|5>\0" "Set REGCALL version number\0"
 "-Zv8\0"            "Enable Masm v8+ PROC visibility\0"
 "-zze\0"            "No name decoration for exported symbols\0"
 #if COFF_SUPPORT
