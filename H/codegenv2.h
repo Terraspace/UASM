@@ -179,7 +179,7 @@ enum op_type {
 #define VEX_NDS      (1<<11)	/* Specifies VEX.vvvv is valid for encoding of register operand NDS encodes first source */
 #define VEX_NDD      (1<<12)    /* NDD encode destination not encodable in ModR/M:reg field */
 #define VEX_DDS      (1<<13)	/* DDS encode the second source register in 3-op form when first source overwritten by result */
-#define VEX_R		 (1<<14)
+#define VEX_R		     (1<<14)
 #define VEX_B        (1<<15)
 #define VEX_X        (1<<16)
 #define VEX_DUP_NDS  (1<<17)	/* We allow special 2 opnd vex forms which are automatically promoted to 3 with duplicate destination and first source */
@@ -220,6 +220,8 @@ enum op_type {
 #define PFX_0xF30F  5
 #define PFX_0xF20F  6
 #define PFX_0x0F38  7
+#define PFX_0xF3F38 8
+#define PFX_0xF2F38 9
 
 /* op_dir -> operation direction */
 #define REG_DST  0

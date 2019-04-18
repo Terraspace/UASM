@@ -559,7 +559,6 @@ unsigned char BuildModRM(unsigned char modRM, struct Instr_Def* instr, struct ex
 	if (instr->flags & F_MODRM)			// Only if the instruction requires a ModRM byte, else return 0.
 	{
 		*needModRM |= TRUE;
-		
 		//  7       5           2       0
 		// +---+---+---+---+---+---+---+---+
 		// |  mod  |    reg    |    rm     |
@@ -1705,6 +1704,12 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		case PFX_0x66F:
 			OutputCodeByte(0x66); // first part.
 			break;
+    case PFX_0xF3F38:
+      OutputCodeByte(0xf3); // first part.
+      break;
+    case PFX_0xF2F38:
+      OutputCodeByte(0xf2); // first part.
+      break;
 		}
 
 		//----------------------------------------------------------
@@ -1742,6 +1747,8 @@ ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs
 		    OutputCodeByte(0x0f);
 		    break;
 		case PFX_0x0F38:
+    case PFX_0xF3F38:
+    case PFX_0xF2F38:
 		    OutputCodeByte(0x0f); // second part.
 		    OutputCodeByte(0x38);
 		    break;
