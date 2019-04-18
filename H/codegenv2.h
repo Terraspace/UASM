@@ -169,24 +169,25 @@ enum op_type {
 #define VEX_WIG      (1<<1)		/* Instruction can use C5h(2byte) form (if no VEX.mmmmm) or VEX.W is ignored in C4H(3byte) form */
 #define VEX_W0       (1<<2)     /* VEX.W = 0, extended opcode bit, or promotion to 64bit of gp register or memory operand */
 #define VEX_W1       (1<<3)		/* "" */
-#define VEX_66		   (1<<4)
+#define VEX_66		 (1<<4)
 #define VEX_F2       (1<<5)
 #define VEX_F3       (1<<6)
-#define VEX_0F		   (1<<7)
+#define VEX_0F		 (1<<7)
 #define VEX_0F3A     (1<<8)
 #define VEX_0F38     (1<<9)
 #define VEX_LIG      (1<<10)
 #define VEX_NDS      (1<<11)	/* Specifies VEX.vvvv is valid for encoding of register operand NDS encodes first source */
 #define VEX_NDD      (1<<12)    /* NDD encode destination not encodable in ModR/M:reg field */
 #define VEX_DDS      (1<<13)	/* DDS encode the second source register in 3-op form when first source overwritten by result */
-#define VEX_R		     (1<<14)
+#define VEX_R		 (1<<14)
 #define VEX_B        (1<<15)
 #define VEX_X        (1<<16)
 #define VEX_DUP_NDS  (1<<17)	/* We allow special 2 opnd vex forms which are automatically promoted to 3 with duplicate destination and first source */
 #define VEX_2OPND    (1<<18)	/* This is just for clarity sake but has the same effect of using a 2 opnd form for modrm+sib calculations as a DUP_NDS */
 #define VEX_VSIB     (1<<19)	/* Instruction uses VSIB addressing */
 #define VEX_4OPND    (1<<20)	/* Special 4 opnd form where final register is immediate-encoded */
-#define EVEX         (1<<21)	/* Does this VEX instruction have an extended EVEX form available ? */
+#define VEX_3RD_OP   (1<<21)	/* Some VEX encoded instructions put the 3rd operand into the VEX prefix - functionality equivalent to the above */
+#define EVEX         (1<<22)	/* Does this VEX instruction have an extended EVEX form available ? */
 
 /* EVEX flags */
 #define NO_EVEX      (0)

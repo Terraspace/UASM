@@ -553,7 +553,7 @@ unsigned char BuildModRM(unsigned char modRM, struct Instr_Def* instr, struct ex
 	/* VEX encoded instructions use the middle (NDS) registers in the VEX prefix bytes, so in this case
 	   the 3rd operand reg/mem is the one that is actually encoded in the mod rm byte.
 	   For Implicit NDS (2 opnd promotion we leave source as 1) */
-	if (isVEX && (instr->vexflags & VEX_DUP_NDS) == 0 && (instr->vexflags & VEX_2OPND) == 0)
+	if (isVEX && (instr->vexflags & VEX_DUP_NDS) == 0 && (instr->vexflags & VEX_2OPND) == 0 && (instr->vexflags & VEX_3RD_OP) == 0)
 		sourceIdx = 2;
 
 	if (instr->flags & F_MODRM)			// Only if the instruction requires a ModRM byte, else return 0.
@@ -702,9 +702,11 @@ void BuildVEX(bool* needVex, unsigned char* vexSize, unsigned char* vexBytes, st
 	*vexSize = 0;
 
 	/* VEX.vvvv */
-	if ((instr->vexflags & VEX_NDS) != 0)
+	if ((instr->vexflags & VEX_3RD_OP) != 0)
+		VEXvvvv = GetRegisterNo(opnd[2].base_reg);
+	else if ((instr->vexflags & VEX_NDS) != 0)
 		VEXvvvv = GetRegisterNo(opnd[1].base_reg);
-	if ((instr->vexflags & VEX_DDS) != 0)
+	else if ((instr->vexflags & VEX_DDS) != 0)
 		VEXvvvv = GetRegisterNo(opnd[2].base_reg);
 
 	/* Generated implicit NDS form and warn user about assumed source1 */
