@@ -4145,7 +4145,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				lbl = SymLookup(buf);
 				SetSymSegOfs(lbl);
 				memset(&buff, 0, 256);
-				pDest = buff;
+				pDest = (char*)buff;
 				finallen = slen;
 
 				while (*pSrc != '"')
@@ -5106,7 +5106,8 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 								qual = T_LOW32;
 								instr = "d";
 								break;
-							}
+                            }
+                            break;
 						default:
 							DebugMsg1(("PushInvokeParm(%u): error, CONST, asize=%u, psize=%u, pushsize=%u\n",
 								reqParam, asize, psize, pushsize));

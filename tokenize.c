@@ -681,7 +681,7 @@ static ret_code get_special_symbol( struct asm_tok *buf, struct line_status *p )
            while ( isspace( *p->input )) p->input++;
            if ((*p->input | 0x20) == 'z'){
             EmitError(Z_MASK_NOT_PERMITTED_WHEN_FIRST_OPERATOR_IS_MEMORY);
-             return;
+             return ERROR;
              }
           else if ((*p->input | 0x20) == 'k')
             get_decos( p, FALSE ) ;    // mask decorators
@@ -1152,6 +1152,7 @@ continue_scan:
  * varname.abc -> . is an operator
  */
 
+#undef is_valid_id_start
 #define is_valid_id_start( ch )  ( islalpha(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' )
 
 ret_code GetToken( struct asm_tok token[], struct line_status *p )

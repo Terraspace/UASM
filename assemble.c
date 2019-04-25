@@ -555,6 +555,7 @@ static ret_code WriteModule( struct module_info *modinfo )
     return( NOT_ERROR );
 }
 
+#undef is_valid_first_char
 #define is_valid_first_char( ch )  ( isalpha(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' || ch=='.' )
 
 /* check name of text macros defined via -D option */

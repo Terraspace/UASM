@@ -187,7 +187,8 @@ enum op_type {
 #define VEX_2OPND    (1<<18)	/* This is just for clarity sake but has the same effect of using a 2 opnd form for modrm+sib calculations as a DUP_NDS */
 #define VEX_VSIB     (1<<19)	/* Instruction uses VSIB addressing */
 #define VEX_4OPND    (1<<20)	/* Special 4 opnd form where final register is immediate-encoded */
-#define EVEX         (1<<21)	/* Does this VEX instruction have an extended EVEX form available ? */
+#define VEX_3RD_OP   (1<<21)	/* Some VEX encoded instructions put the 3rd operand into the VEX prefix - functionality equivalent to the above */
+#define EVEX         (1<<22)	/* Does this VEX instruction have an extended EVEX form available ? */
 
 /* EVEX flags */
 #define NO_EVEX      (0)
@@ -221,6 +222,8 @@ enum op_type {
 #define PFX_0xF30F  5
 #define PFX_0xF20F  6
 #define PFX_0x0F38  7
+#define PFX_0xF3F38 8
+#define PFX_0xF2F38 9
 
 /* op_dir -> operation direction */
 #define REG_DST  0
