@@ -96,10 +96,18 @@ static const enum special_token ms32_regs16[] = { T_AX, T_DX, T_BX };
 static const enum special_token ms32_regs32[] = { T_ECX,T_EDX };
 static const enum special_token delphi_regs32[] = { T_EAX, T_EDX, T_ECX, };
 
+static const enum special_token thiscall16_regs[] = { T_CX };
+static const enum special_token thiscall32_regs[] = { T_ECX };
+
 /* v2.07: added */
 static const int ms32_maxreg[] = {
 	sizeof(ms32_regs16) / sizeof(ms32_regs16[0]),
 	sizeof(ms32_regs32) / sizeof(ms32_regs32[0]),
+};
+
+static const int thiscall_maxreg[] = {
+	sizeof(thiscall32_regs) / sizeof(thiscall32_regs[0]),
+	sizeof(thiscall32_regs) / sizeof(thiscall32_regs[0]),
 };
 
 static const int delphi_maxreg[] = {
@@ -126,15 +134,67 @@ static const enum special_token sysV64_regsXMM[] = { T_XMM0, T_XMM1, T_XMM2, T_X
 static const enum special_token sysV64_regsYMM[] = { T_YMM0, T_YMM1, T_YMM2, T_YMM3, T_YMM4, T_YMM5, T_YMM6, T_YMM7 };
 static const enum special_token sysV64_regsZMM[] = { T_ZMM0, T_ZMM1, T_ZMM2, T_ZMM3, T_ZMM4, T_ZMM5, T_ZMM6, T_ZMM7 };
 
+static const enum special_token regcallunix64_regs[] = { T_RAX, T_RCX, T_RDX, T_RDI, T_RSI, T_R8, T_R9, T_R10, T_R11, T_R12, T_R14, T_R15 };
+static const enum special_token regcallunix64_regs32[] = { T_EAX, T_ECX, T_EDX, T_EDI, T_ESI, T_R8D, T_R9D, T_R10D, T_R11D, T_R12D, T_R14D, T_R15D };
+static const enum special_token regcallunix64_regs16[] = { T_AX, T_CX, T_DX, T_DI, T_SI, T_R8W, T_R9W, T_R10W, T_R11W, T_R12W, T_R14W, T_R15W };
+static const enum special_token regcallunix64_regs8[] = { T_AL, T_CL, T_DL, T_DIL, T_SIL, T_R8B, T_R9B, T_R10B, T_R11B, T_R12B, T_R14B, T_R15B };
+
+static const enum special_token regcallms64_regs[] = { T_RAX, T_RCX, T_RDX, T_RDI, T_RSI, T_R8, T_R9, T_R11, T_R12, T_R14, T_R15 };
+static const enum special_token regcallms64_regs32[] = { T_EAX, T_ECX, T_EDX, T_EDI, T_ESI, T_R8D, T_R9D, T_R11D, T_R12D, T_R14D, T_R15D };
+static const enum special_token regcallms64_regs16[] = { T_AX, T_CX, T_DX, T_DI, T_SI, T_R8W, T_R9W, T_R11W, T_R12W, T_R14W, T_R15W };
+static const enum special_token regcallms64_regs8[] = { T_AL, T_CL, T_DL, T_DIL, T_SIL, T_R8B, T_R9B, T_R11B, T_R12B, T_R14B, T_R15B };
+
+static const enum special_token regcall64_regsXMM[] = { T_XMM0, T_XMM1, T_XMM2, T_XMM3, T_XMM4, T_XMM5, T_XMM6, T_XMM7, T_XMM8, T_XMM9, T_XMM10, T_XMM11, T_XMM12, T_XMM13, T_XMM14, T_XMM15 };
+static const enum special_token regcall64_regsYMM[] = { T_YMM0, T_YMM1, T_YMM2, T_YMM3, T_YMM4, T_YMM5, T_YMM6, T_YMM7, T_YMM8, T_YMM9, T_YMM10, T_YMM11, T_YMM12, T_YMM13, T_YMM14, T_YMM15 };
+static const enum special_token regcall64_regsZMM[] = { T_ZMM0, T_ZMM1, T_ZMM2, T_ZMM3, T_ZMM4, T_ZMM5, T_ZMM6, T_ZMM7, T_ZMM8, T_ZMM9, T_ZMM10, T_ZMM11, T_ZMM12, T_ZMM13, T_ZMM14, T_ZMM15 };
+
+static const enum special_token regcallunix32_regs32[] = { T_EAX, T_ECX, T_EDX, T_EDI, T_ESI };
+static const enum special_token regcallunix32_regs16[] = { T_AX, T_CX, T_DX, T_DI, T_SI };
+static const enum special_token regcallunix32_regs8[] = { T_AL, T_CL, T_DL, T_DIL, T_SIL };
+
+static const enum special_token regcallms32_regs32[] = { T_ECX, T_EDX, T_EDI, T_ESI };
+static const enum special_token regcallms32_regs16[] = { T_CX, T_DX, T_DI, T_SI };
+static const enum special_token regcallms32_regs8[] = { T_CL, T_DL, T_DIL, T_SIL };
+
+static const enum special_token regcall32_regsXMM[] = { T_XMM0, T_XMM1, T_XMM2, T_XMM3, T_XMM4, T_XMM5, T_XMM6, T_XMM7 };
+static const enum special_token regcall32_regsYMM[] = { T_YMM0, T_YMM1, T_YMM2, T_YMM3, T_YMM4, T_YMM5, T_YMM6, T_YMM7 };
+static const enum special_token regcall32_regsZMM[] = { T_ZMM0, T_ZMM1, T_ZMM2, T_ZMM3, T_ZMM4, T_ZMM5, T_ZMM6, T_ZMM7 };
+
 /* win64 non-volatile GPRs: T_RBX, T_RBP, T_RSI, T_RDI, T_R12, T_R13, T_R14, T_R15 */
 static const uint_16 win64_nvgpr = 0xF0E8;
 
 /* win64 non-volatile XMM regs: XMM6-XMM15 */
 static const uint_16 win64_nvxmm = 0xFFC0;
 
+/* win64 regcall non-volatile GPRs: T_RBX, T_RBP, T_R12, T_R13, T_R14, T_R15 */
+static const uint_16 regcallwin64_nvgpr = 0xF028;
+
+/* win64 regcall non-volatile XMM regs: XMM8 - XMM15 as long as they were not used for passing a parameter or returning a value*/
+static const uint_16 regcallwin64_nvxmm = 0xFF00;
+
 static const int sysv_maxreg[] = {
 	sizeof(sysV64_regs) / sizeof(sysV64_regs[0]),
 	sizeof(sysV64_regs) / sizeof(sysV64_regs[0]),
+};
+
+static const int regcallms32_maxreg[] = {
+	sizeof(regcallms32_regs32) / sizeof(regcallms32_regs32[0]),
+	sizeof(regcallms32_regs32) / sizeof(regcallms32_regs32[0]),
+};
+
+static const int regcallms64_maxreg[] = {
+	sizeof(regcallms64_regs) / sizeof(regcallms64_regs[0]),
+	sizeof(regcallms64_regs) / sizeof(regcallms64_regs[0]),
+};
+
+static const int regcallunix32_maxreg[] = {
+	sizeof(regcallunix32_regs32) / sizeof(regcallunix32_regs32[0]),
+	sizeof(regcallunix32_regs32) / sizeof(regcallunix32_regs32[0]),
+};
+
+static const int regcallunix64_maxreg[] = {
+	sizeof(regcallunix64_regs) / sizeof(regcallunix64_regs[0]),
+	sizeof(regcallunix64_regs) / sizeof(regcallunix64_regs[0]),
 };
 
 #endif
@@ -143,6 +203,11 @@ static const int sysv_maxreg[] = {
 struct fastcall_conv {
 	int(*paramcheck)(struct dsym *, struct dsym *, int *);
 	void(*handlereturn)(struct dsym *, char *buffer);
+};
+
+struct thiscall_conv {
+	int(*paramcheck)(struct dsym*, struct dsym*, int*);
+	void(*handlereturn)(struct dsym*, char* buffer);
 };
 
 struct vectorcall_conv {
@@ -155,11 +220,20 @@ struct sysvcall_conv {
 	void(*handlereturn)(struct dsym *, char *buffer);
 };
 
+struct regcallms_conv {
+	int(*paramcheck)(struct dsym*, struct dsym*, int*, int*);
+	void(*handlereturn)(struct dsym*, char* buffer);
+};
+
+struct regcallunix_conv {
+	int(*paramcheck)(struct dsym*, struct dsym*, int*, int*);
+	void(*handlereturn)(struct dsym*, char* buffer);
+};
+
 struct delphicall_conv {
 	int(*paramcheck)(struct dsym *, struct dsym *, int *);
 	void(*handlereturn)(struct dsym *, char *buffer);
 };
-
 
 static  int ms32_pcheck(struct dsym *, struct dsym *, int *);
 static void ms32_return(struct dsym *, char *);
@@ -201,6 +275,16 @@ static const struct fastcall_conv fastcall_tab[] = {
 #endif
 };
 
+static const struct thiscall_conv thiscall_tab[] = {
+	{ ms32_pcheck, ms32_return },  /* FCT_MSC */
+#if OWFC_SUPPORT
+	{ watc_pcheck, watc_return },  /* FCT_WATCOMC */
+#endif
+#if AMD64_SUPPORT
+	{ ms64_pcheck, ms64_return }   /* FCT_WIN64 */
+#endif
+};
+
 static const struct vectorcall_conv vectorcall_tab[] = {
 	{ ms32_pcheck, ms32_return },  /* FCT_MSC */
 #if OWFC_SUPPORT
@@ -212,6 +296,26 @@ static const struct vectorcall_conv vectorcall_tab[] = {
 };
 
 static const struct sysvcall_conv sysvcall_tab[] = {
+	{ ms32_pcheck, ms32_return },  /* FCT_MSC */
+#if OWFC_SUPPORT		
+	{ watc_pcheck, watc_return },  /* FCT_WATCOMC */
+#endif		
+#if SYSV_SUPPORT		
+	{ sysv_pcheck, sysv_return }   /* FCT_WIN64 / SYSTEMV */
+#endif		
+};
+
+static const struct regcallms_conv regcallms_tab[] = {
+	{ ms32_pcheck, ms32_return },  /* FCT_MSC */
+#if OWFC_SUPPORT
+	{ watc_pcheck, watc_return },  /* FCT_WATCOMC */
+#endif
+#if AMD64_SUPPORT
+	{ ms64_pcheck, ms64_return }   /* FCT_WIN64 */
+#endif
+};
+
+static const struct regcallunix_conv regcallunix_tab[] = {
 	{ ms32_pcheck, ms32_return },  /* FCT_MSC */
 #if OWFC_SUPPORT		
 	{ watc_pcheck, watc_return },  /* FCT_WATCOMC */
@@ -403,26 +507,118 @@ static int ms32_pcheck(struct dsym *proc, struct dsym *paranode, int *used)
 
 	/* v2.07: 16-bit has 3 register params (AX,DX,BX) */
 	//if ( size > CurrWordSize || *used >= 2 )
-	if (size > CurrWordSize || *used >= ms32_maxreg[ModuleInfo.Ofssize] || paranode->sym.mem_type == MT_REAL4 || paranode->sym.mem_type == MT_REAL8)
-		return(0);
+	if (proc->sym.langtype == LANG_REGCALL) {
+		if (Options.output_format == OFORMAT_COFF) {
+			if (size > CurrWordSize || *used >= regcallms32_maxreg[ModuleInfo.Ofssize] /*|| paranode->sym.mem_type == MT_REAL4 || paranode->sym.mem_type == MT_REAL8*/)
+				return(0);
+		}
+		else if (Options.output_format == OFORMAT_ELF) {
+			if (size > CurrWordSize || *used >= regcallunix32_maxreg[ModuleInfo.Ofssize] /*|| paranode->sym.mem_type == MT_REAL4 || paranode->sym.mem_type == MT_REAL8*/)
+				return(0);
+		}
+	}
+	else if (proc->sym.langtype == LANG_THISCALL && Options.output_format == OFORMAT_COFF) {
+		if (size > CurrWordSize || *used >= thiscall_maxreg[ModuleInfo.Ofssize] || paranode->sym.mem_type == MT_REAL4 || paranode->sym.mem_type == MT_REAL8)
+			return(0);
+	}
+	else {
+		if (size > CurrWordSize || *used >= ms32_maxreg[ModuleInfo.Ofssize] || paranode->sym.mem_type == MT_REAL4 || paranode->sym.mem_type == MT_REAL8)
+			return(0);
+	}
 	paranode->sym.state = SYM_TMACRO;
 	/* v2.10: for codeview debug info, store the register index in the symbol */
-	paranode->sym.regist[0] = ModuleInfo.Ofssize ? ms32_regs32[*used] : ms32_regs16[*used];
-	GetResWName(ModuleInfo.Ofssize ? ms32_regs32[*used] : ms32_regs16[*used], regname);
+	if (proc->sym.langtype == LANG_REGCALL) {
+		if (Options.output_format == OFORMAT_COFF) {
+			paranode->sym.regist[0] = regcallms32_regs32[*used];
+			GetResWName(regcallms32_regs32[*used], regname);
+		}
+		else if (Options.output_format == OFORMAT_ELF) {
+			paranode->sym.regist[0] = regcallunix32_regs32[*used];
+			GetResWName(regcallunix32_regs32[*used], regname);
+		}
+	}
+	else if (proc->sym.langtype == LANG_THISCALL && Options.output_format == OFORMAT_COFF) {
+		paranode->sym.regist[0] = thiscall32_regs[*used];
+		GetResWName(thiscall32_regs[*used], regname);
+	}
+	else {
+		paranode->sym.regist[0] = ModuleInfo.Ofssize ? ms32_regs32[*used] : ms32_regs16[*used];
+		GetResWName(ModuleInfo.Ofssize ? ms32_regs32[*used] : ms32_regs16[*used], regname);
+	}
 
 	if (paranode->sym.mem_type == MT_WORD || paranode->sym.mem_type == MT_SWORD)
 	{
-		if (_stricmp(regname, "ECX") == 0)
-			strcpy(regname, "cx");
-		else if (_stricmp(regname, "EDX") == 0)
-			strcpy(regname, "dx");
+		if (proc->sym.langtype == LANG_REGCALL) {
+			if (Options.output_format == OFORMAT_COFF) {
+				if (_stricmp(regname, "ECX") == 0)
+					strcpy(regname, "cx");
+				else if (_stricmp(regname, "EDX") == 0)
+					strcpy(regname, "dx");
+				else if (_stricmp(regname, "EDI") == 0)
+					strcpy(regname, "di");
+				else if (_stricmp(regname, "ESI") == 0)
+					strcpy(regname, "si");
+			}
+			else if (Options.output_format == OFORMAT_ELF) {
+				if (_stricmp(regname, "EAX") == 0)
+					strcpy(regname, "ax");
+				else if (_stricmp(regname, "ECX") == 0)
+					strcpy(regname, "cx");
+				else if (_stricmp(regname, "EDX") == 0)
+					strcpy(regname, "dx");
+				else if (_stricmp(regname, "EDI") == 0)
+					strcpy(regname, "di");
+				else if (_stricmp(regname, "ESI") == 0)
+					strcpy(regname, "si");
+			}
+		}
+		else if (proc->sym.langtype == LANG_THISCALL && Options.output_format == OFORMAT_COFF) {
+			if (_stricmp(regname, "ECX") == 0)
+				strcpy(regname, "cx");
+		}
+		else {
+			if (_stricmp(regname, "ECX") == 0)
+				strcpy(regname, "cx");
+			else if (_stricmp(regname, "EDX") == 0)
+				strcpy(regname, "dx");
+		}
 	}
 	else if (paranode->sym.mem_type == MT_BYTE || paranode->sym.mem_type == MT_SBYTE)
 	{
-		if (_stricmp(regname, "ECX") == 0)
-			strcpy(regname, "cl");
-		else if (_stricmp(regname, "EDX") == 0)
-			strcpy(regname, "dl");
+		if (proc->sym.langtype == LANG_REGCALL) {
+			if (Options.output_format == OFORMAT_COFF) {
+				if (_stricmp(regname, "ECX") == 0)
+					strcpy(regname, "cx");
+				else if (_stricmp(regname, "EDX") == 0)
+					strcpy(regname, "dx");
+				else if (_stricmp(regname, "EDI") == 0)
+					strcpy(regname, "di");
+				else if (_stricmp(regname, "ESI") == 0)
+					strcpy(regname, "si");
+			}
+			else if (Options.output_format == OFORMAT_ELF) {
+				if (_stricmp(regname, "EAX") == 0)
+					strcpy(regname, "ax");
+				else if (_stricmp(regname, "ECX") == 0)
+					strcpy(regname, "cx");
+				else if (_stricmp(regname, "EDX") == 0)
+					strcpy(regname, "dx");
+				else if (_stricmp(regname, "EDI") == 0)
+					strcpy(regname, "di");
+				else if (_stricmp(regname, "ESI") == 0)
+					strcpy(regname, "si");
+			}
+		}
+		else if (proc->sym.langtype == LANG_THISCALL && Options.output_format == OFORMAT_COFF) {
+			if (_stricmp(regname, "ECX") == 0)
+				strcpy(regname, "cl");
+		}
+		else {
+			if (_stricmp(regname, "ECX") == 0)
+				strcpy(regname, "cl");
+			else if (_stricmp(regname, "EDX") == 0)
+				strcpy(regname, "dl");
+		}
 	}
 
 	paranode->sym.string_ptr = LclAlloc(strlen(regname) + 1);
@@ -437,8 +633,24 @@ static void ms32_return(struct dsym *proc, char *buffer)
 	/* v2.07: changed */
 	//if( proc->e.procinfo->parasize > ( 2 * CurrWordSize ) )
 	//    sprintf( buffer + strlen( buffer ), "%d%c", proc->e.procinfo->parasize - (2 * CurrWordSize), ModuleInfo.radix != 10 ? 't' : NULLC );
-	if (proc->e.procinfo->parasize > (ms32_maxreg[ModuleInfo.Ofssize] * CurrWordSize))
-		sprintf(buffer + strlen(buffer), "%d%c", proc->e.procinfo->parasize - (ms32_maxreg[ModuleInfo.Ofssize] * CurrWordSize), ModuleInfo.radix != 10 ? 't' : NULLC);
+	if (proc->sym.langtype == LANG_REGCALL) {
+		if (Options.output_format == OFORMAT_COFF) {
+			if (proc->e.procinfo->parasize > (regcallms32_maxreg[ModuleInfo.Ofssize] * CurrWordSize))
+				sprintf(buffer + strlen(buffer), "%d%c", proc->e.procinfo->parasize - (regcallms32_maxreg[ModuleInfo.Ofssize] * CurrWordSize), ModuleInfo.radix != 10 ? 't' : NULLC);
+		}
+		else if (Options.output_format == OFORMAT_ELF) {
+			if (proc->e.procinfo->parasize > (regcallunix32_maxreg[ModuleInfo.Ofssize] * CurrWordSize))
+				sprintf(buffer + strlen(buffer), "%d%c", proc->e.procinfo->parasize - (regcallunix32_maxreg[ModuleInfo.Ofssize] * CurrWordSize), ModuleInfo.radix != 10 ? 't' : NULLC);
+		}
+	}
+	else if (proc->sym.langtype == LANG_THISCALL && Options.output_format == OFORMAT_COFF) {
+		if (proc->e.procinfo->parasize > (thiscall_maxreg[ModuleInfo.Ofssize] * CurrWordSize))
+			sprintf(buffer + strlen(buffer), "%d%c", proc->e.procinfo->parasize - (thiscall_maxreg[ModuleInfo.Ofssize] * CurrWordSize), ModuleInfo.radix != 10 ? 't' : NULLC);
+	}
+	else {
+		if (proc->e.procinfo->parasize > (ms32_maxreg[ModuleInfo.Ofssize] * CurrWordSize))
+			sprintf(buffer + strlen(buffer), "%d%c", proc->e.procinfo->parasize - (ms32_maxreg[ModuleInfo.Ofssize] * CurrWordSize), ModuleInfo.radix != 10 ? 't' : NULLC);
+	}
 	return;
 }
 
@@ -815,6 +1027,8 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 		(proc->sym.langtype == LANG_FASTCALL && ModuleInfo.Ofssize != USE64) ||
 		(proc->sym.langtype == LANG_VECTORCALL && ModuleInfo.Ofssize != USE64) ||
 		(proc->sym.langtype == LANG_SYSVCALL && ModuleInfo.Ofssize != USE64) ||
+		(proc->sym.langtype == LANG_REGCALL && ModuleInfo.Ofssize != USE64) ||
+		proc->sym.langtype == LANG_THISCALL && ModuleInfo.Ofssize != USE64 ||
 		proc->sym.langtype == LANG_STDCALL)
 		for (paracurr = proc->e.procinfo->paralist; paracurr && paracurr->nextparam; paracurr = paracurr->nextparam);
 	else
@@ -883,6 +1097,7 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 				case LANG_FORTRAN:
 				case LANG_PASCAL:
 				case LANG_STDCALL:
+				//case LANG_THISCALL:
 					return(EmitError(VARARG_REQUIRES_C_CALLING_CONVENTION));
 				}
 				/* v2.05: added check */
@@ -928,33 +1143,35 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 				(ti.mem_type == MT_TYPE && tn != to) ||
 				(ti.mem_type == MT_PTR &&
 				(ti.is_far != paracurr->sym.isfar ||
-					on != oo ||
-					ti.ptr_memtype != paracurr->sym.ptr_memtype ||
-					tn != to))) {
+				on != oo ||
+				ti.ptr_memtype != paracurr->sym.ptr_memtype ||
+				tn != to)))
+			{
 
-				/* UASM 2.46.10 prevent symbols that are moved to stack whose size is turned from ptr to machine word size from breaking the proto vs proc defition of a ptr type */
+				/* UASM 2.46.10 prevent symbols that are moved to stack whose size is turned from ptr to machine word size from breaking the proto vs proc definition of a ptr type */
 				/* UASM 2.47.1 added additional types */
 				if (ti.mem_type == MT_PTR && paracurr->sym.state == SYM_STACK && 
-					(paracurr->sym.mem_type == MT_QWORD && CurrWordSize == 8) ||
-					(paracurr->sym.mem_type == MT_OWORD && CurrWordSize == 8) ||
-					(paracurr->sym.mem_type == MT_YMMWORD && CurrWordSize == 8) ||
-					(paracurr->sym.mem_type == MT_ZMMWORD && CurrWordSize == 8) ||
-					(paracurr->sym.mem_type == MT_DWORD && CurrWordSize == 4) ||
-					(paracurr->sym.mem_type == MT_OWORD && CurrWordSize == 4) ||
-					(paracurr->sym.mem_type == MT_YMMWORD && CurrWordSize == 4) ||
-					(paracurr->sym.mem_type == MT_ZMMWORD && CurrWordSize == 4))
+										((paracurr->sym.mem_type == MT_QWORD && CurrWordSize == 8)   ||
+										(paracurr->sym.mem_type == MT_OWORD && CurrWordSize == 8)    ||
+										(paracurr->sym.mem_type == MT_YMMWORD && CurrWordSize == 8)  ||
+										(paracurr->sym.mem_type == MT_ZMMWORD && CurrWordSize == 8)  ||
+										(paracurr->sym.mem_type == MT_DWORD && CurrWordSize == 4)    ||
+										(paracurr->sym.mem_type == MT_OWORD && CurrWordSize == 4)    ||
+										(paracurr->sym.mem_type == MT_YMMWORD && CurrWordSize == 4)  ||
+										(paracurr->sym.mem_type == MT_ZMMWORD && CurrWordSize == 4)))
 				{
 
 				}
 				else if (paracurr->sym.mem_type == MT_PTR && paracurr->sym.state == SYM_STACK &&
-					(ti.mem_type == MT_QWORD && CurrWordSize == 8) ||
-					(ti.mem_type == MT_OWORD && CurrWordSize == 8) ||
-					(ti.mem_type == MT_YMMWORD && CurrWordSize == 8) ||
-					(ti.mem_type == MT_ZMMWORD && CurrWordSize == 8) ||
-					(ti.mem_type == MT_DWORD && CurrWordSize == 4) ||
-					(ti.mem_type == MT_OWORD && CurrWordSize == 4) ||
-					(ti.mem_type == MT_YMMWORD && CurrWordSize == 4) ||
-					(ti.mem_type == MT_ZMMWORD && CurrWordSize == 4))
+					                    ((ti.mem_type == MT_QWORD && CurrWordSize == 8)    ||
+										(ti.mem_type == MT_OWORD && CurrWordSize == 8)     ||
+										(ti.mem_type == MT_YMMWORD && CurrWordSize == 8)   ||
+										(ti.mem_type == MT_ZMMWORD && CurrWordSize == 8)   ||
+										(ti.mem_type == MT_DWORD && CurrWordSize == 4)     ||
+										(ti.mem_type == MT_OWORD && CurrWordSize == 4)     ||
+										(ti.mem_type == MT_YMMWORD && CurrWordSize == 4)   ||
+										(ti.mem_type == MT_ZMMWORD && CurrWordSize == 4)))
+
 				{
 
 				}
@@ -985,6 +1202,8 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 				(proc->sym.langtype == LANG_FASTCALL && ti.Ofssize != USE64) ||
 				(proc->sym.langtype == LANG_VECTORCALL && ti.Ofssize != USE64) ||
 				(proc->sym.langtype == LANG_SYSVCALL && ti.Ofssize != USE64) ||
+				(proc->sym.langtype == LANG_REGCALL && ti.Ofssize != USE64) ||
+				(proc->sym.langtype == LANG_THISCALL && ti.Ofssize != USE64) ||
 				proc->sym.langtype == LANG_STDCALL) {
 				struct dsym *l;
 				for (l = proc->e.procinfo->paralist;
@@ -1022,16 +1241,31 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 					proc->e.procinfo->vsize += ti.size;
 					ti.size = MT_QWORD;
 				}
+				else if (proc->sym.langtype == LANG_REGCALL) {
+					proc->e.procinfo->regcregsize[cntParam] = ti.symtype->max_mbr_size;
+					proc->e.procinfo->regcregs[cntParam] = ti.size / ti.symtype->max_mbr_size;
+					proc->e.procinfo->regcsize += ti.size;
+					ti.size = MT_QWORD;
+				}
 			}
 			else {
 				paranode->sym.target_type = ti.symtype;
-				/* this is where vectors are intercepted  and writen to the proc */
+				/* this is where vectors are intercepted  and written to the proc */
 				if (proc->sym.langtype == LANG_VECTORCALL) {
 					if (ti.mem_type == MT_REAL4 || ti.mem_type == MT_REAL8 ||
 						ti.mem_type == MT_OWORD || ti.mem_type == MT_YMMWORD || ti.mem_type == MT_ZMMWORD) {
 						proc->e.procinfo->vecregsize[cntParam] = ti.size;
 						proc->e.procinfo->vecregs[cntParam] = 1;
 						if (ti.size >= 16) proc->e.procinfo->vsize += ti.size;
+						ti.size = MT_QWORD;
+					}
+				}
+				else if (proc->sym.langtype == LANG_REGCALL) {
+					if (ti.mem_type == MT_REAL4 || ti.mem_type == MT_REAL8 ||
+						ti.mem_type == MT_OWORD || ti.mem_type == MT_YMMWORD || ti.mem_type == MT_ZMMWORD) {
+						proc->e.procinfo->regcregsize[cntParam] = ti.size;
+						proc->e.procinfo->regcregs[cntParam] = 1;
+						if (ti.size >= 16) proc->e.procinfo->regcsize += ti.size;
 						ti.size = MT_QWORD;
 					}
 				}
@@ -1052,6 +1286,15 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 			else if (proc->sym.langtype == LANG_SYSVCALL && sysvcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint))
 			{
 			}
+			else if (proc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF && regcallms_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint))
+			{
+			}
+			else if (proc->sym.langtype == LANG_REGCALL && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && regcallunix_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint))
+			{
+			}
+			else if (proc->sym.langtype == LANG_THISCALL && thiscall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint))
+			{
+			}
 			else if (proc->sym.langtype == LANG_DELPHICALL && delphicall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint))
 			{
 			}
@@ -1065,7 +1308,7 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 
 			if (paranode->sym.is_vararg == FALSE)
 			{
-				if (proc->sym.langtype == LANG_VECTORCALL)
+				if ((proc->sym.langtype == LANG_VECTORCALL) || (proc->sym.langtype == LANG_SYSVCALL) || (proc->sym.langtype == LANG_REGCALL))
 				{
 					switch (CurrWordSize)
 					{
@@ -1093,6 +1336,10 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 					case 4:
 						switch (ti.mem_type)
 						{
+						case MT_QWORD:
+							proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 2 * CurrWordSize : 2 * (2 << proc->sym.seg_ofssize));
+							break;
+
 						case MT_OWORD:
 							proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 4 * CurrWordSize : 4 * (2 << proc->sym.seg_ofssize));
 							break;
@@ -1158,6 +1405,8 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 				// #endif
 			case LANG_FASTCALL:
 			case LANG_VECTORCALL:
+			case LANG_REGCALL:
+			case LANG_THISCALL:
 			case LANG_DELPHICALL:
 #if AMD64_SUPPORT
 			case LANG_SYSVCALL:
@@ -1169,6 +1418,10 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 					goto left_to_right;
 				else if (ti.Ofssize == USE32 && ModuleInfo.fctype == FCT_DELPHI && proc->sym.langtype == LANG_DELPHICALL)
 					goto left_to_right;
+				/*else if (ti.Ofssize == USE32 && ModuleInfo.fctype == FCT_MSC && proc->sym.langtype == LANG_REGCALL)
+					goto left_to_right;
+				else if (ti.Ofssize == USE32 && ModuleInfo.fctype == FCT_MSC && proc->sym.langtype == LANG_THISCALL)
+					goto left_to_right;*/
 			default:
 				paranode->nextparam = proc->e.procinfo->paralist;
 				proc->e.procinfo->paralist = paranode;
@@ -1227,7 +1480,7 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 
 #if AMD64_SUPPORT
 		if (ModuleInfo.Ofssize == USE64) {
-			if (proc->sym.langtype == LANG_FASTCALL || proc->sym.langtype == LANG_VECTORCALL || proc->sym.langtype == LANG_SYSVCALL)
+			if (proc->sym.langtype == LANG_FASTCALL || proc->sym.langtype == LANG_VECTORCALL || proc->sym.langtype == LANG_SYSVCALL || proc->sym.langtype == LANG_REGCALL)
 			{
 				for (paranode = proc->e.procinfo->paralist; paranode; paranode = paranode->nextparam)
 					if (paranode->sym.state == SYM_TMACRO) /* register param */
@@ -2720,18 +2973,19 @@ static ret_code write_userdef_prologue(struct asm_tok tokenarray[])
 #if AMD64_SUPPORT
 
 /* ========================================================================================================= */
-/* OPTION WIN64:1 - save up to 4 register parameters for WIN64 fastcall */
+/* OPTION WIN64:1 - save up to 4 register parameters for WIN64 fastcall, 11 for WIN64 regcall                */
 /* ========================================================================================================= */
-static void win64_SaveRegParams_RSP(struct proc_info *info)
+static void win64_SaveRegParams_RSP(struct proc_info* info)
 /*******************************************************/
-{
+	{
 	int i;
-	struct dsym *param;
+	struct dsym* param;
 	if (ModuleInfo.win64_flags & W64F_SMART) {
 		//int			   cnt;
-		uint_16        *regist;
+		uint_16* regist;
 		info->home_taken = 0;
 		memset(info->home_used, 0, 6);
+		memset(info->regcallmshome_used, 0, 16);
 		if (info->regslist)
 			regist = info->regslist;
 		if (CurrProc->sym.langtype == LANG_VECTORCALL) {
@@ -2746,8 +3000,7 @@ static void win64_SaveRegParams_RSP(struct proc_info *info)
 						info->home_used[i] = 1;
 						++info->home_taken;
 					}
-					else if ((param->sym.mem_type == MT_TYPE) && param->sym.used)
-					{
+					else if ((param->sym.mem_type == MT_TYPE) && param->sym.used) {
 						//						if(info->vecregs[i] == 0)
 						//						AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
 						info->home_used[i] = 1;
@@ -2765,10 +3018,48 @@ static void win64_SaveRegParams_RSP(struct proc_info *info)
 						}
 					}
 					param = param->nextparam;
-				}
+					}
 				else { /* v2.09: else branch added */
 					AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
 					info->home_used[i] = 1;
+					++info->home_taken;
+				}
+			}
+		}
+		else if (CurrProc->sym.langtype == LANG_REGCALL) {
+			for (i = 0, param = info->paralist; param && (i < 16); i++) {
+				/* v2.05: save XMMx if type is float/double */
+				if (param->sym.is_vararg == FALSE) {
+					if ((param->sym.mem_type & MT_FLOAT) && param->sym.used) {  // added  && param->sym.used
+						if (param->sym.mem_type == MT_REAL8)
+							AddLineQueueX("%s qword ptr[%r+%u], %r", MOVE_DOUBLE, T_RSP, 8 + i * 8, T_XMM0 + i);
+						else if (param->sym.mem_type == MT_REAL4)
+							AddLineQueueX("%s dword ptr[%r+%u], %r", MOVE_SINGLE, T_RSP, 8 + i * 8, T_XMM0 + i);
+						info->regcallmshome_used[i] = 1;
+						++info->home_taken;
+					}
+					else if ((param->sym.mem_type == MT_TYPE) && param->sym.used) {
+						//						if(info->vecregs[i] == 0)
+						//						AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, regcallms64_regs[i]);
+						info->regcallmshome_used[i] = 1;
+						++info->home_taken;
+						info->vecused = TRUE;
+					}
+					else {
+						if (((param->sym.mem_type != MT_TYPE) && param->sym.used) &&
+							(param->sym.mem_type <= MT_QWORD) && param->sym.used) {   //here as well   
+							if (i < 11) {
+								AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, regcallms64_regs[i]);
+								info->regcallmshome_used[i] = 1;
+								++info->home_taken;
+							}
+						}
+					}
+					param = param->nextparam;
+				}
+				else { /* v2.09: else branch added */
+					AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, regcallms64_regs[i]);
+					info->regcallmshome_used[i] = 1;
 					++info->home_taken;
 				}
 			}
@@ -2781,7 +3072,7 @@ static void win64_SaveRegParams_RSP(struct proc_info *info)
 						AddLineQueueX("%s [%r+%u], %r", MOVE_SIMD_QWORD, T_RSP, 8 + i * 8, T_XMM0 + i);
 						info->home_used[i] = 1;
 						++info->home_taken;
-					}
+						}
 					else {
 						if (param->sym.used) {                                    //here as well 
 							AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
@@ -2790,12 +3081,27 @@ static void win64_SaveRegParams_RSP(struct proc_info *info)
 						}
 					}
 					param = param->nextparam;
-				}
+					}
 				else { /* v2.09: else branch added */
 					AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
 					info->home_used[i] = 1;
 					++info->home_taken;
 				}
+			}
+		}
+	}
+	else if (CurrProc->sym.langtype == LANG_REGCALL) {
+		for (i = 0, param = info->paralist; param && (i < 11); i++) {
+			/* v2.05: save XMMx if type is float/double */
+			if (param->sym.is_vararg == FALSE) {
+				if (param->sym.mem_type & MT_FLOAT)
+					AddLineQueueX("%s [%r+%u], %r", MOVE_SIMD_QWORD, T_RSP, 8 + i * 8, T_XMM0 + i);
+				else
+					AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, regcallms64_regs[i]);
+				param = param->nextparam;
+			}
+			else { /* v2.09: else branch added */
+				AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, regcallms64_regs[i]);
 			}
 		}
 	}
@@ -2823,11 +3129,12 @@ static void win64_SaveRegParams_RSP(struct proc_info *info)
 static void win64_StoreRegHome(struct proc_info *info)
 /*******************************************************/
 {
-	int			       i = 0;
-	int			       cnt;
+	int            i = 0;
+	int            cnt;
 	int            grcount = 0;
-	int			       sizestd = 0;
+	int            sizestd = 0;
 	int            freeshadow = 4;
+	int            regcallfreeshadow = 11;
 	uint_16        *regist;
 	info->stored_reg = 0;
 	if (info->regslist) {
@@ -2836,65 +3143,593 @@ static void win64_StoreRegHome(struct proc_info *info)
 				continue;
 			else ++grcount;                                       //find how many general registers to save
 		}
-		//for (i = 0, freeshadow = 0; i<4; i++){                  
-		//  if (info->home_used[i] == 0) ++freeshadow;
-		//}
-		freeshadow -= info->home_taken;                         //find out how many free shadows
-		if (freeshadow) {                                        //skip if all shadow spaces are taken  
-			if (grcount == 1) memset(info->home_used, 1, 4);      //1 register only? don't store it, push it to prevent 'sub rsp,...8'
-			else if (grcount == 2 && freeshadow >= 2) {            //store only one egister, another push to prevent 'sub rsp,...8'
-				for (i = 0; i<4; i++) {
-					if (info->home_used[i] == 0) break;               //we need only one space   
-				}
-				for (++i; i<4; i++)                                 //the rest of free spaces render as taken
-					info->home_used[i] = 1;
-			}
-			else if (grcount == 3) {                               //3 registers?
-				if (freeshadow == 1) memset(info->home_used, 1, 4); //if only 1 free shadow, don't store it, push them
-				if (freeshadow >= 3) {                               //enen if there is enough space we will store only two
-					for (i = 0; i<4; i++) {                            //the third one we will push to keep uneven stack 
-						if (info->home_used[i] == 0) break;             //found first availible
+		if (CurrProc->sym.langtype == LANG_REGCALL) {
+			//for (i = 0, regcallfreeshadow = 0; i<11; i++){                  
+			//  if (info->regcallmshome_used[i] == 0) ++regcallfreeshadow;
+			//}
+			regcallfreeshadow -= info->home_taken;                                      //find out how many free shadows
+			if (regcallfreeshadow) {                                                    //skip if all shadow spaces are taken  
+				if (grcount == 1) memset(info->regcallmshome_used, 1, 11);              //1 register only? don't store it, push it to prevent 'sub rsp,...8'
+				else if (grcount == 2 && regcallfreeshadow >= 2) {                      //store only one register, another push to prevent 'sub rsp,...8'
+					for (i = 0; i < 11; i++) {
+						if (info->regcallmshome_used[i] == 0) break;                    //we need only one space   
 					}
-					for (++i; i<4; i++) {
-						if (info->home_used[i] == 0) break;            //found second availible
+					for (++i; i < 11; i++)                                              //the rest of free spaces render as taken
+						info->regcallmshome_used[i] = 1;
+				} else if (grcount == 3) {                                              //3 registers?
+					if (regcallfreeshadow == 1) memset(info->regcallmshome_used, 1, 11);//if only 1 free shadow, don't store it, push them
+					if (regcallfreeshadow >= 3) {                                       //even if there is enough space we will store only two
+						for (i = 0; i < 11; i++) {                                      //the third one we will push to keep uneven stack 
+							if (info->regcallmshome_used[i] == 0) break;                //found first available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found second available
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
 					}
-					for (++i; i<4; i++)
-						info->home_used[i] = 1;                        //render the rest of the shadow spaces as taken
+				} else if (grcount == 4) {                                              //4 registers?
+					if (regcallfreeshadow == 1) memset(info->regcallmshome_used, 1, 11);//if only 1 free shadow, don't store it, push them
+					if (regcallfreeshadow == 2) {
+						for (i = 0; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                 //we need only one space   
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+					if (regcallfreeshadow == 3) {                                       //even if there is enough space we will store only two
+						for (i = 0; i < 11; i++) {                                      //the third one we will push to keep uneven stack 
+							if (info->regcallmshome_used[i] == 0) break;                //found first available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found second available
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+					if (regcallfreeshadow >= 4) {
+						for (i = 0; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found first available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found second available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found third available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found fourth available
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+				} else if (grcount == 5) {                                              //5 registers?
+					if (regcallfreeshadow == 1) memset(info->regcallmshome_used, 1, 11);//if only 1 free shadow, don't store it, push them
+					if (regcallfreeshadow == 2) {
+						for (i = 0; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                 //we need only one space   
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+					if (regcallfreeshadow == 3) {                                       //even if there is enough space we will store only two
+						for (i = 0; i < 11; i++) {                                      //the third one we will push to keep uneven stack 
+							if (info->regcallmshome_used[i] == 0) break;                //found first available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found second available
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+					if (regcallfreeshadow >= 4) {                                       //even if there is enough space we will store only four
+						for (i = 0; i < 11; i++) {                                      //the fifth one we will push to keep uneven stack 
+							if (info->regcallmshome_used[i] == 0) break;                //found first available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found second available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found third available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found fourth available
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+				} else if (grcount == 6) {                                              //6 registers?
+					if (regcallfreeshadow == 1) memset(info->regcallmshome_used, 1, 11);//if only 1 free shadow, don't store it, push them
+					if (regcallfreeshadow == 2) {
+						for (i = 0; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                 //we need only one space   
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+					if (regcallfreeshadow == 3) {                                       //even if there is enough space we will store only two
+						for (i = 0; i < 11; i++) {                                      //the third one we will push to keep uneven stack 
+							if (info->regcallmshome_used[i] == 0) break;                //found first available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found second available
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+					if (regcallfreeshadow >= 4 && regcallfreeshadow < 6) {              //even if there is enough space we will store only four
+						for (i = 0; i < 11; i++) {                                      //the fifth one we will push to keep uneven stack 
+							if (info->regcallmshome_used[i] == 0) break;                //found first available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found second available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found third available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found fourth available
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+					if (regcallfreeshadow >= 6) {
+						for (i = 0; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found first available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found second available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found third available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found fourth available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found fifth available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found sixth available
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+				} else if (grcount == 7) {                                              //7 registers?
+					if (regcallfreeshadow == 1) memset(info->regcallmshome_used, 1, 11);//if only 1 free shadow, don't store it, push them
+					if (regcallfreeshadow == 2) {
+						for (i = 0; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                 //we need only one space   
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+					if (regcallfreeshadow == 3) {                                       //even if there is enough space we will store only two
+						for (i = 0; i < 11; i++) {                                      //the third one we will push to keep uneven stack 
+							if (info->regcallmshome_used[i] == 0) break;                //found first available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found second available
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+					if (regcallfreeshadow >= 4 && regcallfreeshadow < 6) {              //even if there is enough space we will store only four
+						for (i = 0; i < 11; i++) {                                      //the fifth one we will push to keep uneven stack 
+							if (info->regcallmshome_used[i] == 0) break;                //found first available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found second available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found third available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found fourth available
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+					if (regcallfreeshadow >= 6) {                                       //even if there is enough space we will store only six
+						for (i = 0; i < 11; i++) {                                      //the seventh one we will push to keep uneven stack 
+							if (info->regcallmshome_used[i] == 0) break;                //found first available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found second available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found third available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found fourth available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found fifth available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found sixth available
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+				} else if (grcount == 8) {                                              //8 registers?
+					if (regcallfreeshadow == 1) memset(info->regcallmshome_used, 1, 11);//if only 1 free shadow, don't store it, push them
+					if (regcallfreeshadow == 2) {
+						for (i = 0; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                 //we need only one space   
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+					if (regcallfreeshadow == 3) {                                       //even if there is enough space we will store only two
+						for (i = 0; i < 11; i++) {                                      //the third one we will push to keep uneven stack 
+							if (info->regcallmshome_used[i] == 0) break;                //found first available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found second available
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+					if (regcallfreeshadow >= 4 && regcallfreeshadow < 6) {              //even if there is enough space we will store only four
+						for (i = 0; i < 11; i++) {                                      //the fifth one we will push to keep uneven stack 
+							if (info->regcallmshome_used[i] == 0) break;                //found first available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found second available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found third available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found fourth available
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+					if (regcallfreeshadow >= 6 && regcallfreeshadow < 8) {              //even if there is enough space we will store only six
+						for (i = 0; i < 11; i++) {                                      //the seventh one we will push to keep uneven stack 
+							if (info->regcallmshome_used[i] == 0) break;                //found first available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found second available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found third available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found fourth available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found fifth available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found sixth available
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+					if (regcallfreeshadow >= 8) {                                       //even if there is enough space we will store only eight
+						for (i = 0; i < 11; i++) {                                      //the ninth one we will push to keep uneven stack
+							if (info->regcallmshome_used[i] == 0) break;                //found first available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found second available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found third available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found fourth available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found fifth available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found sixth available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found seventh available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found eighth available
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+				} else if (grcount == 9) {                                              //9 registers?
+					if (regcallfreeshadow == 1) memset(info->regcallmshome_used, 1, 11);//if only 1 free shadow, don't store it, push them
+					if (regcallfreeshadow == 2) {
+						for (i = 0; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                 //we need only one space   
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+					if (regcallfreeshadow == 3) {                                       //even if there is enough space we will store only two
+						for (i = 0; i < 11; i++) {                                      //the third one we will push to keep uneven stack 
+							if (info->regcallmshome_used[i] == 0) break;                //found first available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found second available
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+					if (regcallfreeshadow >= 4 && regcallfreeshadow < 6) {              //even if there is enough space we will store only four
+						for (i = 0; i < 11; i++) {                                      //the fifth one we will push to keep uneven stack 
+							if (info->regcallmshome_used[i] == 0) break;                //found first available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found second available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found third available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found fourth available
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+					if (regcallfreeshadow >= 6 && regcallfreeshadow < 8) {              //even if there is enough space we will store only six
+						for (i = 0; i < 11; i++) {                                      //the seventh one we will push to keep uneven stack 
+							if (info->regcallmshome_used[i] == 0) break;                //found first available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found second available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found third available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found fourth available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found fifth available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found sixth available
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+					if (regcallfreeshadow >= 8) {
+						for (i = 0; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found first available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found second available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found third available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found fourth available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found fifth available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found sixth available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found seventh available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found eighth available
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+				} else if (grcount == 10) {                                              //9 registers?
+					if (regcallfreeshadow == 1) memset(info->regcallmshome_used, 1, 11);//if only 1 free shadow, don't store it, push them
+					if (regcallfreeshadow == 2) {
+						for (i = 0; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                 //we need only one space   
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+					if (regcallfreeshadow == 3) {                                       //even if there is enough space we will store only two
+						for (i = 0; i < 11; i++) {                                      //the third one we will push to keep uneven stack 
+							if (info->regcallmshome_used[i] == 0) break;                //found first available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found second available
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+					if (regcallfreeshadow >= 4 && regcallfreeshadow < 6) {              //even if there is enough space we will store only four
+						for (i = 0; i < 11; i++) {                                      //the fifth one we will push to keep uneven stack 
+							if (info->regcallmshome_used[i] == 0) break;                //found first available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found second available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found third available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found fourth available
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+					if (regcallfreeshadow >= 6 && regcallfreeshadow < 8) {              //even if there is enough space we will store only six
+						for (i = 0; i < 11; i++) {                                      //the seventh one we will push to keep uneven stack 
+							if (info->regcallmshome_used[i] == 0) break;                //found first available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found second available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found third available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found fourth available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found fifth available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found sixth available
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+					if (regcallfreeshadow >= 8 && regcallfreeshadow < 10) {
+						for (i = 0; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found first available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found second available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found third available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found fourth available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found fifth available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found sixth available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found seventh available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found eighth available
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+					if (regcallfreeshadow >= 10) {
+						for (i = 0; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found first available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found second available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found third available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found fourth available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found fifth available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found sixth available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found seventh available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found eighth available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found ninth available
+						}
+						for (++i; i < 11; i++) {
+							if (info->regcallmshome_used[i] == 0) break;                //found tenth available
+						}
+						for (++i; i < 11; i++)
+							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
+					}
+				} else if (grcount == 11 && regcallfreeshadow == 11) {                  //easy case
+					info->regcallmshome_used[11] = 1;                                   //render the last shadow spaces as taken
+				}                                                                       //remember the first space is 0 than 1, 2 and 3 follow 
+				else if (grcount > 1) {                                                 //if more registers than spaces
+					regcallfreeshadow = grcount - regcallfreeshadow;                    //find out how many we can store
+					if (!(regcallfreeshadow & 1)) {                                     //if it is even number
+						for (i = 0; i < 11; i++) {                                      //than we have to disable one space
+							if (info->regcallmshome_used[i] == 0) break;                //find the first free space 
+						}
+						info->regcallmshome_used[i] = 1;                                //and render it as taken
+					}
 				}
 			}
-			else if (grcount == 4 && freeshadow == 4) {          //easy case
-				info->home_used[3] = 1;                           //render the last shadow spaces as taken
-			}                                                   //remember the first space is 0 than 1, 2 and 3 follow 
-			else if (grcount > 4) {                              //if more registars than spaces
-				freeshadow = grcount - freeshadow;                //find out how many we can store
-				if (!(freeshadow & 1)) {                           //if it is even number
-					for (i = 0; i<4; i++) {                          //than we have to disable one space
-						if (info->home_used[i] == 0) break;           //find the first free space 
+			for (i = 0, regist = info->regslist, cnt = *regist++; cnt; cnt--, regist++, i++) {
+				if ((GetValueSp(*regist) & OP_YMM) || (GetValueSp(*regist) & OP_XMM) || (GetValueSp(*regist) & OP_ZMM)) {
+					i--;
+					continue;
+				} else {
+					sizestd += 8;
+					if (i < 11)
+					{
+						if (info->regcallmshome_used[i] == 0) {
+							AddLineQueueX("mov [%r+%u], %r", T_RSP, NUMQUAL sizestd, *regist);
+							AddLineQueueX("%r %r, %u", T_DOT_SAVEREG, *regist, NUMQUAL sizestd);
+							info->stored_reg++;
+						} else {
+							cnt++; regist--;
+						}
 					}
-					info->home_used[i] = 1;                         //and render it as taken
 				}
-			}
+			}/* end for */
 		}
-		for (i = 0, regist = info->regslist, cnt = *regist++; cnt; cnt--, regist++, i++) {
-			if ((GetValueSp(*regist) & OP_YMM) || (GetValueSp(*regist) & OP_XMM) || (GetValueSp(*regist) & OP_ZMM)) {
-				i--;
-				continue;
-			}
-			else {
-				sizestd += 8;
-				if (i < 4)
-				{
-					if (info->home_used[i] == 0) {
-						AddLineQueueX("mov [%r+%u], %r", T_RSP, NUMQUAL sizestd, *regist);
-						AddLineQueueX("%r %r, %u", T_DOT_SAVEREG, *regist, NUMQUAL sizestd);
-						info->stored_reg++;
+		else {
+			//for (i = 0, freeshadow = 0; i<4; i++){                  
+			//  if (info->home_used[i] == 0) ++freeshadow;
+			//}
+			freeshadow -= info->home_taken;                         //find out how many free shadows
+			if (freeshadow) {                                        //skip if all shadow spaces are taken  
+				if (grcount == 1) memset(info->home_used, 1, 4);      //1 register only? don't store it, push it to prevent 'sub rsp,...8'
+				else if (grcount == 2 && freeshadow >= 2) {            //store only one register, another push to prevent 'sub rsp,...8'
+					for (i = 0; i < 4; i++) {
+						if (info->home_used[i] == 0) break;               //we need only one space   
 					}
-					else {
-						cnt++; regist--;
+					for (++i; i < 4; i++)                                 //the rest of free spaces render as taken
+						info->home_used[i] = 1;
+				} else if (grcount == 3) {                               //3 registers?
+					if (freeshadow == 1) memset(info->home_used, 1, 4); //if only 1 free shadow, don't store it, push them
+					if (freeshadow >= 3) {                               //even if there is enough space we will store only two
+						for (i = 0; i < 4; i++) {                            //the third one we will push to keep uneven stack 
+							if (info->home_used[i] == 0) break;             //found first available
+						}
+						for (++i; i < 4; i++) {
+							if (info->home_used[i] == 0) break;            //found second available
+						}
+						for (++i; i < 4; i++)
+							info->home_used[i] = 1;                        //render the rest of the shadow spaces as taken
+					}
+				} else if (grcount == 4 && freeshadow == 4) {          //easy case
+					info->home_used[3] = 1;                           //render the last shadow spaces as taken
+				}                                                   //remember the first space is 0 than 1, 2 and 3 follow 
+				else if (grcount > 4) {                              //if more registers than spaces
+					freeshadow = grcount - freeshadow;                //find out how many we can store
+					if (!(freeshadow & 1)) {                           //if it is even number
+						for (i = 0; i < 4; i++) {                          //than we have to disable one space
+							if (info->home_used[i] == 0) break;           //find the first free space 
+						}
+						info->home_used[i] = 1;                         //and render it as taken
 					}
 				}
 			}
-		}/* end for */
+			for (i = 0, regist = info->regslist, cnt = *regist++; cnt; cnt--, regist++, i++) {
+				if ((GetValueSp(*regist) & OP_YMM) || (GetValueSp(*regist) & OP_XMM) || (GetValueSp(*regist) & OP_ZMM)) {
+					i--;
+					continue;
+				} else {
+					sizestd += 8;
+					if (i < 4)
+					{
+						if (info->home_used[i] == 0) {
+							AddLineQueueX("mov [%r+%u], %r", T_RSP, NUMQUAL sizestd, *regist);
+							AddLineQueueX("%r %r, %u", T_DOT_SAVEREG, *regist, NUMQUAL sizestd);
+							info->stored_reg++;
+						} else {
+							cnt++; regist--;
+						}
+					}
+				}
+			}/* end for */
+		}
 	}
 	return;
 }
@@ -2904,75 +3739,178 @@ static void win64_StoreRegHome(struct proc_info *info)
 /* ========================================================================================================= */
 static enum special_token GetWin64SubReg(enum special_token srcReg,int type)
 {
-	if (type == 0)
-	{
-		if (srcReg == T_RCX)
-			return(T_CL);
-		if (srcReg == T_RDX)
-			return(T_DL);
-		if (srcReg == T_R8)
-			return(T_R8B);
-		if (srcReg == T_R9)
-			return(T_R9B);
+	if (CurrProc->sym.langtype == LANG_REGCALL) {
+		if (type == 0) {
+			if (srcReg == T_RAX)
+				return(T_AL);
+			if (srcReg == T_RCX)
+				return(T_CL);
+			if (srcReg == T_RDX)
+				return(T_DL);
+			if (srcReg == T_RDI)
+				return(T_DIL);
+			if (srcReg == T_RSI)
+				return(T_SIL);
+			if (srcReg == T_R8)
+				return(T_R8B);
+			if (srcReg == T_R9)
+				return(T_R9B);
+			if (srcReg == T_R11)
+				return(T_R11B);
+			if (srcReg == T_R12)
+				return(T_R12B);
+			if (srcReg == T_R14)
+				return(T_R14B);
+			if (srcReg == T_R15)
+				return(T_R15B);
+		}
+		else if (type == 1)	{
+			if (srcReg == T_RAX)
+				return(T_AX);
+			if (srcReg == T_RCX)
+				return(T_CX);
+			if (srcReg == T_RDX)
+				return(T_DX);
+			if (srcReg == T_RDI)
+				return(T_DI);
+			if (srcReg == T_RSI)
+				return(T_SI);
+			if (srcReg == T_R8)
+				return(T_R8W);
+			if (srcReg == T_R9)
+				return(T_R9W);
+			if (srcReg == T_R11)
+				return(T_R11W);
+			if (srcReg == T_R12)
+				return(T_R12W);
+			if (srcReg == T_R14)
+				return(T_R14W);
+			if (srcReg == T_R15)
+				return(T_R15W);
+		}
+		else if (type == 2) {
+			if (srcReg == T_RAX)
+				return(T_EAX);
+			if (srcReg == T_RCX)
+				return(T_ECX);
+			if (srcReg == T_RDX)
+				return(T_EDX);
+			if (srcReg == T_RDI)
+				return(T_EDI);
+			if (srcReg == T_RSI)
+				return(T_ESI);
+			if (srcReg == T_R8)
+				return(T_R8D);
+			if (srcReg == T_R9)
+				return(T_R9D);
+			if (srcReg == T_R11)
+				return(T_R11D);
+			if (srcReg == T_R12)
+				return(T_R12D);
+			if (srcReg == T_R14)
+				return(T_R14D);
+			if (srcReg == T_R15)
+				return(T_R15D);
+		}
 	}
-	else if (type == 1)
-	{
-		if (srcReg == T_RCX)
-			return(T_CX);
-		if (srcReg == T_RDX)
-			return(T_DX);
-		if (srcReg == T_R8)
-			return(T_R8W);
-		if (srcReg == T_R9)
-			return(T_R9W);
-	}
-	else if (type == 2)
-	{
-		if (srcReg == T_RCX)
-			return(T_ECX);
-		if (srcReg == T_RDX)
-			return(T_EDX);
-		if (srcReg == T_R8)
-			return(T_R8D);
-		if (srcReg == T_R9)
-			return(T_R9D);
+	else {
+		if (type == 0)
+		{
+			if (srcReg == T_RCX)
+				return(T_CL);
+			if (srcReg == T_RDX)
+				return(T_DL);
+			if (srcReg == T_R8)
+				return(T_R8B);
+			if (srcReg == T_R9)
+				return(T_R9B);
+		} else if (type == 1)
+		{
+			if (srcReg == T_RCX)
+				return(T_CX);
+			if (srcReg == T_RDX)
+				return(T_DX);
+			if (srcReg == T_R8)
+				return(T_R8W);
+			if (srcReg == T_R9)
+				return(T_R9W);
+		} else if (type == 2)
+		{
+			if (srcReg == T_RCX)
+				return(T_ECX);
+			if (srcReg == T_RDX)
+				return(T_EDX);
+			if (srcReg == T_R8)
+				return(T_R8D);
+			if (srcReg == T_R9)
+				return(T_R9D);
+		}
 	}
 	return(srcReg);
 }
 
 /* ========================================================================================================= */
-/* OPTION WIN64:1 - save up to 4 register parameters for WIN64 fastcall                                      */
+/* OPTION WIN64:1 - save up to 4 register parameters for WIN64 fastcall, 11 for WIN64 regcall                */
 /* ========================================================================================================= */
 static void win64_SaveRegParams_RBP(struct proc_info *info)
 /*******************************************************/
 {
 	int i;
-	struct dsym *param;
-	for (i = 0, param = info->paralist; param && (i < 4); i++)
-	{
-		/* v2.05: save XMMx if type is float/double */
-		if (param->sym.is_vararg == FALSE)
+	struct dsym* param;
+	if (CurrProc->sym.langtype == LANG_REGCALL) {
+		for (i = 0, param = info->paralist; param && (i < 11); i++)
 		{
-			if (param->sym.mem_type & MT_FLOAT && param->sym.total_size == 4 && param->sym.used)
-				AddLineQueueX("%s [%r+%u], %r", MOVE_SINGLE, T_RSP, 8 + i * 8, T_XMM0 + i);
-			else if (param->sym.mem_type & MT_FLOAT && param->sym.total_size == 8 && param->sym.used)
-				AddLineQueueX("%s [%r+%u], %r", MOVE_DOUBLE, T_RSP, 8 + i * 8, T_XMM0 + i);
-			else if (param->sym.used)
+			/* v2.05: save XMMx if type is float/double */
+			if (param->sym.is_vararg == FALSE)
 			{
-				if (param->sym.mem_type == MT_BYTE || param->sym.mem_type == MT_SBYTE)
-					AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, GetWin64SubReg(ms64_regs[i], 0) );
-				else if (param->sym.mem_type == MT_WORD || param->sym.mem_type == MT_SWORD)
-					AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, GetWin64SubReg(ms64_regs[i], 1) );
-				else if(param->sym.mem_type == MT_DWORD || param->sym.mem_type == MT_SDWORD)
-					AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, GetWin64SubReg(ms64_regs[i], 2) );
-				else
-					AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i] );
+				if (param->sym.mem_type & MT_FLOAT && param->sym.total_size == 4 && param->sym.used)
+					AddLineQueueX("%s [%r+%u], %r", MOVE_SINGLE, T_RSP, 8 + i * 8, T_XMM0 + i);
+				else if (param->sym.mem_type & MT_FLOAT && param->sym.total_size == 8 && param->sym.used)
+					AddLineQueueX("%s [%r+%u], %r", MOVE_DOUBLE, T_RSP, 8 + i * 8, T_XMM0 + i);
+				else if (param->sym.used)
+				{
+					if (param->sym.mem_type == MT_BYTE || param->sym.mem_type == MT_SBYTE)
+						AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, GetWin64SubReg(regcallms64_regs[i], 0));
+					else if (param->sym.mem_type == MT_WORD || param->sym.mem_type == MT_SWORD)
+						AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, GetWin64SubReg(regcallms64_regs[i], 1));
+					else if (param->sym.mem_type == MT_DWORD || param->sym.mem_type == MT_SDWORD)
+						AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, GetWin64SubReg(regcallms64_regs[i], 2));
+					else
+						AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, regcallms64_regs[i]);
+				}
+				param = param->nextparam;
+			} else
+			{
+				AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, regcallms64_regs[i]);
 			}
-			param = param->nextparam;
 		}
-		else 
-		{ 
-			AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
+	}
+	else {
+		for (i = 0, param = info->paralist; param && (i < 4); i++)
+		{
+			/* v2.05: save XMMx if type is float/double */
+			if (param->sym.is_vararg == FALSE)
+			{
+				if (param->sym.mem_type & MT_FLOAT && param->sym.total_size == 4 && param->sym.used)
+					AddLineQueueX("%s [%r+%u], %r", MOVE_SINGLE, T_RSP, 8 + i * 8, T_XMM0 + i);
+				else if (param->sym.mem_type & MT_FLOAT && param->sym.total_size == 8 && param->sym.used)
+					AddLineQueueX("%s [%r+%u], %r", MOVE_DOUBLE, T_RSP, 8 + i * 8, T_XMM0 + i);
+				else if (param->sym.used)
+				{
+					if (param->sym.mem_type == MT_BYTE || param->sym.mem_type == MT_SBYTE)
+						AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, GetWin64SubReg(ms64_regs[i], 0));
+					else if (param->sym.mem_type == MT_WORD || param->sym.mem_type == MT_SWORD)
+						AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, GetWin64SubReg(ms64_regs[i], 1));
+					else if (param->sym.mem_type == MT_DWORD || param->sym.mem_type == MT_SDWORD)
+						AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, GetWin64SubReg(ms64_regs[i], 2));
+					else
+						AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
+				}
+				param = param->nextparam;
+			} else
+			{
+				AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs[i]);
+			}
 		}
 	}
 	return;
@@ -3039,9 +3977,17 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
 				else {
 					info->pushed_reg += 1;
 					AddLineQueueX("push %r", *regist);
-					if ((1 << GetRegNo(*regist)) & win64_nvgpr) {
-						if (info->isframe && ModuleInfo.frame_auto)
-							AddLineQueueX("%r %r", T_DOT_PUSHREG, *regist);
+					if (CurrProc->sym.langtype == LANG_REGCALL) {
+						if ((1 << GetRegNo(*regist)) & regcallwin64_nvgpr) {
+							if (info->isframe && ModuleInfo.frame_auto)
+								AddLineQueueX("%r %r", T_DOT_PUSHREG, *regist);
+						}
+					} 
+					else {
+						if ((1 << GetRegNo(*regist)) & win64_nvgpr) {
+							if (info->isframe && ModuleInfo.frame_auto)
+								AddLineQueueX("%r %r", T_DOT_PUSHREG, *regist);
+						}
 					}
 				}
 			} /* end for */
@@ -3207,12 +4153,14 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 	uint_16             *regist;
 	const char * const  *ppfmt;
 	int                 cntxmm;
-	unsigned char xyused[6];  /* flags for used sse registers in vectorcall */
+	unsigned char       xyused[6];  /* flags for used sse registers in vectorcall */
+	unsigned char       regcxyused[16];  /* flags for used sse registers in regcall */
 	unsigned char       xreg;
 	unsigned char       xsize;
 	unsigned char       ymmflag = 0;
 	unsigned char       zmmflag = 0;
 	int                 vsize = 0;
+	int                 regcsize = 0;
 	int                 vectstart = 0;
 	int                 n;
 	int                 m;
@@ -3226,11 +4174,13 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 	if (Parse_Pass == PASS_1)
 	{
 		info->vsize = 0;
+		info->regcsize = 0;
 		info->xmmsize = 0;
 	}
 
 	DebugMsg1(("write_win64_default_prologue_RSP enter\n"));
 	memset(xyused, 0, 6);
+	memset(regcxyused, 0, 16);
 	info->vecused = 0;
 	XYZMMsize = 16;
 
@@ -3270,9 +4220,17 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 					if (n < info->stored_reg) n++;
 					else {
 						info->pushed_reg += 1;
-						AddLineQueueX("push %r", *regist);
-						if ((1 << GetRegNo(*regist)) & win64_nvgpr) {
-							AddLineQueueX("%r %r", T_DOT_PUSHREG, *regist);
+						if (CurrProc->sym.langtype == LANG_REGCALL) {
+							AddLineQueueX("push %r", *regist);
+							if ((1 << GetRegNo(*regist)) & regcallwin64_nvgpr) {
+								AddLineQueueX("%r %r", T_DOT_PUSHREG, *regist);
+							}
+						}
+						else {
+							AddLineQueueX("push %r", *regist);
+							if ((1 << GetRegNo(*regist)) & win64_nvgpr) {
+								AddLineQueueX("%r %r", T_DOT_PUSHREG, *regist);
+							}
 						}
 					}
 				}
@@ -3304,7 +4262,7 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 					((!(info->pushed_reg & 1)) && (!(info->localsize & 0xF))) && (!(info->pushed_reg & 1)) && (!(cntxmm)))
 				{
 					info->localsize += 8;
-					if (CurrProc->sym.langtype == LANG_VECTORCALL) {
+					if (CurrProc->sym.langtype == LANG_VECTORCALL || CurrProc->sym.langtype == LANG_REGCALL) {
 						vectstart = 0;
 					}
 				}
@@ -3435,7 +4393,7 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 								{
 									if (pp->sym.ttype)
 									{
-										if (pp->sym.ttype->e.structinfo->isHFA == 1 || pp->sym.ttype->e.structinfo->isHVA == 1 || pp->sym.ttype->e.structinfo->stype == MM128 || pp->sym.ttype->e.structinfo->stype == MM256)
+										if (pp->sym.ttype->e.structinfo->isHFA == 1 || pp->sym.ttype->e.structinfo->isHVA == 1 || pp->sym.ttype->e.structinfo->stype == MM128 || pp->sym.ttype->e.structinfo->stype == MM256 || pp->sym.ttype->e.structinfo->stype == MM512)
 										{
 											stackSize = info->localsize + resstack + info->vsize + info->xmmsize + 8 + info->pushed_reg * 8 + n * 8;
 											if ((stackSize & 7) != 0) stackSize = (stackSize + 7)&(-8);
@@ -3538,6 +4496,164 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 										}
 									}
 									break;
+								}
+							}
+						}
+					}
+				}
+			}
+			else if (CurrProc->sym.langtype == LANG_REGCALL)
+			{
+				vectstart = info->localsize + info->xmmsize & ~(16 - 1);
+				if (info->vecused)
+				{
+					if (info->regcregs)
+					{
+						for (n = 0, m = 0, xsize = 0; n < 16; n++)
+						{
+							xreg = info->regcregs[n];
+							if (xreg == 1 && info->regcregsize[n] < 16)
+								continue;//REAL4, FLOAT and REAL8 are stored in homespace
+							else if (xreg)
+							{
+								AddLineQueueX("lea %r,[%r + %d]", T_RAX, T_RSP, vectstart + xsize);
+								stackSize = info->localsize + resstack + info->regcsize + info->xmmsize + 8 + info->pushed_reg * 8 + n * 8;
+								if ((stackSize & 7) != 0) stackSize = (stackSize + 7) & (-8);
+								AddLineQueueX("mov [%r + %d], %r", T_RSP, stackSize, T_RAX);
+								xsize += info->regcregsize[n] * xreg;
+							}
+							else if (info->rgcregs[n] != 0 && xreg == 0 && n < 11) /* JPH */
+							{
+								struct dsym* pp = info->paralist;
+								int j = 0;
+								for (j = 0; j < n; j++)
+								{
+									if (pp) pp = pp->nextparam;
+								}
+								if (pp)
+								{
+									if (pp->sym.ttype)
+									{
+										if (pp->sym.ttype->e.structinfo->isHFA == 1 || pp->sym.ttype->e.structinfo->isHVA == 1 || pp->sym.ttype->e.structinfo->stype == MM128 || pp->sym.ttype->e.structinfo->stype == MM256 || pp->sym.ttype->e.structinfo->stype == MM512)
+										{
+											stackSize = info->localsize + resstack + info->regcsize + info->xmmsize + 8 + info->pushed_reg * 8 + n * 8;
+											if ((stackSize & 7) != 0) stackSize = (stackSize + 7) & (-8);
+											AddLineQueueX("mov [%r + %d], %r", T_RSP, stackSize, regcallms64_regs[n]);
+											//xsize += 8;
+											xsize += info->regcregsize[n] * xreg;
+										}
+									}
+								}
+							}
+						}
+						/* set available registers to zero including the ones that are greater than 1 */
+						for (i = 0; i < 16; i++)
+						{
+							if (info->regcregs[i] == 1) regcxyused[i] = 1;
+							else if ((info->regcregs[i] >= 1) && (regcxyused[i] != 1))
+								regcxyused[i] = 0;
+						}
+						for (n = 0, m = 0; n < 16; n++)
+						{
+							xreg = info->regcregs[n];       // it can be 0, 1, 2 or 4 eg: 0, 4, 0, 2, 0, 0
+							xsize = info->regcregsize[n];   // xmm = 16, ymm = 32 or zmm = 64
+							m += xreg;
+							if (m > 16) break;              // max 6 AVX registers
+							if (xreg == 1 && info->regcregsize[n] < 16)
+								continue;                    //REAL4, FLOAT and REAL8 are stored in homespace
+							else if (xreg)
+							{
+								switch (xsize)
+								{
+									case 4:
+										//if (xreg == 2){
+										//  /* this can only happen if there is 2 real4 */
+										//  AddLineQueueX("vmovsd qword ptr [rsp+%d],%r", regcsize + vectstart, T_XMM0 + n);
+										//  regcsize += 8;
+										//  }
+										//else{
+										for (i = 0, j = 0; i < xreg; i++)
+										{
+											while (regcxyused[j] != 0) j++;
+											AddLineQueueX("%s dword ptr [rsp+%d],%r", MOVE_SINGLE, regcsize + vectstart, T_XMM0 + j);
+											regcxyused[j] = 1;
+											regcsize += 4;
+										}
+										//}
+										break;
+									case 8:
+										if (xreg <= 3)
+										{
+											for (i = 0, j = 0; i < xreg; i++)
+											{
+												while (regcxyused[j] != 0) j++;
+												AddLineQueueX("%s qword ptr [rsp+%d],%r", MOVE_DOUBLE, regcsize + vectstart, T_XMM0 + j);
+												regcxyused[j] = 1;
+												regcsize += 8;
+											}
+										}
+										/* this can only happen if there is 8 real8 */
+										else
+										{
+											AddLineQueueX("vmovups ymmword ptr [rsp+%d],%r", regcsize + vectstart, T_YMM0 + n);
+											regcsize += 64;
+											regcxyused[n] = 1;
+										}
+										break;
+									case 16:
+										if (xreg == 1)
+										{
+											AddLineQueueX("%s oword ptr [rsp+%d],%r", MOVE_UNALIGNED_FLOAT, regcsize + vectstart, T_XMM0 + n);
+											regcxyused[n] = 1;
+											regcsize += 16;
+										}
+										else
+										{
+											for (i = 0, j = 0; i < xreg; i++)
+											{
+												while (regcxyused[j] != 0) j++;
+												AddLineQueueX("%s oword ptr [rsp+%d],%r", MOVE_UNALIGNED_FLOAT, regcsize + vectstart, T_XMM0 + j);
+												regcxyused[j] = 1;
+												regcsize += 16;
+											}
+										}
+										break;
+									case 32:
+										if (xreg == 1)
+										{
+											AddLineQueueX("vmovups ymmword ptr [rsp+%d],%r", regcsize + vectstart, T_YMM0 + n);
+											regcxyused[n] = 1;
+											regcsize += 32;
+										}
+										else
+										{
+											for (i = 0, j = 0; i < xreg; i++)
+											{
+												while (regcxyused[j] != 0) j++;
+												AddLineQueueX("vmovups ymmword ptr [rsp+%d],%r", regcsize + vectstart, T_YMM0 + j);
+												regcxyused[j] = 1;
+												regcsize += 32;
+											}
+										}
+										break;
+									case 64:
+										if (xreg == 1)
+										{
+											AddLineQueueX("vmovups zmmword ptr [rsp+%d],%r", regcsize + vectstart + xsize, T_ZMM0 + n);
+											regcxyused[n] = 1;
+											regcsize += 64;
+										}
+										else
+										{
+											for (i = 0, j = 0; i < xreg; i++)
+											{
+												while (regcxyused[j] != 0) j++;
+												AddLineQueueX("vmovups zmmword ptr [rsp+%d],%r", regcsize + vectstart + xsize, T_ZMM0 + j);
+												regcxyused[j] = 1;
+												regcsize += 64;
+											}
+										}
+										break;
 								}
 							}
 						}
@@ -3815,10 +4931,24 @@ static void write_win64_default_epilogue_RSP(struct proc_info *info)
 
 	if (ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP)) {
 		anysize = info->localsize + sym_ReservedStack->value + info->xmmsize;
-		if (info->vecused) anysize += info->vsize;
+		if (CurrProc->sym.langtype == LANG_REGCALL)
+		{
+			if (info->vecused) anysize += info->regcsize;
+		}
+		else
+		{
+			if (info->vecused) anysize += info->vsize;
+		}
 		if (anysize)
 		{
-			stackSize = info->localsize + info->vsize + info->xmmsize;
+			if (CurrProc->sym.langtype == LANG_REGCALL)
+			{
+				stackSize = info->localsize + info->regcsize + info->xmmsize;
+			}
+			else
+			{
+				stackSize = info->localsize + info->vsize + info->xmmsize;
+			}
 			if ((stackSize & 7) != 0) stackSize = (stackSize + 7)&(-8);
 			AddLineQueueX("add %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL stackSize, sym_ReservedStack->name);
 		}
@@ -3965,7 +5095,7 @@ static void SetLocalOffsets_RBP(struct proc_info *info)
 	info->frameofs = 0;
 	if (!info->fpo)
 	{
-		info->frameofs = (info->localsize >> 1) + resstack; /* Center the stack frame for optimised 1 byte displacements */
+		info->frameofs = (info->localsize >> 1) + resstack; /* Center the stack frame for optimized 1 byte displacements */
 		info->frameofs = ROUND_UP(info->frameofs, 16);
 		if (info->frameofs > 128) info->frameofs = 128;
 	}
@@ -4194,14 +5324,33 @@ static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int 
 	// Parameter is either XMM, float, double or __M128
 	if ((paranode->sym.mem_type == MT_REAL4) || (paranode->sym.mem_type == MT_REAL8) || (paranode->sym.mem_type == MT_TYPE && _stricmp(paranode->sym.type->name, "__m128") == 0) || paranode->sym.mem_type == MT_OWORD)
 	{
-		if (*vecused >= 8)
+		if (CurrProc->sym.langtype == LANG_REGCALL)
 		{
-			paranode->sym.string_ptr = NULL;
-			return(0);
+			if (*vecused >= 16)
+			{
+				paranode->sym.string_ptr = NULL;
+				return(0);
+			}
+		}
+		else
+		{
+			if (*vecused >= 8)
+			{
+				paranode->sym.string_ptr = NULL;
+				return(0);
+			}
 		}
 		paranode->sym.state = SYM_TMACRO;
-		GetResWName(sysV64_regsXMM[*vecused], regname);
-		paranode->sym.tokval = sysV64_regsXMM[*vecused]; /* Store register tokval so invoke can use it */
+		if (CurrProc->sym.langtype == LANG_REGCALL)
+		{
+			GetResWName(regcall64_regsXMM[*vecused], regname);
+			paranode->sym.tokval = regcall64_regsXMM[*vecused]; /* Store register tokval so invoke can use it */
+		}
+		else
+		{
+			GetResWName(sysV64_regsXMM[*vecused], regname);
+			paranode->sym.tokval = sysV64_regsXMM[*vecused]; /* Store register tokval so invoke can use it */
+		}
 		paranode->sym.total_size = 0;
 		paranode->sym.string_ptr = LclAlloc(strlen(regname) + 1);
 		strcpy(paranode->sym.string_ptr, regname);
@@ -4212,14 +5361,33 @@ static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int 
 	// Parameter is either YMM or __m256
 	if ((paranode->sym.mem_type == MT_TYPE && _stricmp(paranode->sym.type->name, "__m256") == 0) || paranode->sym.mem_type == MT_YMMWORD)
 	{
-		if (*vecused >= 8)
+		if (CurrProc->sym.langtype == LANG_REGCALL)
 		{
-			paranode->sym.string_ptr = NULL;
-			return(0);
+			if (*vecused >= 16)
+			{
+				paranode->sym.string_ptr = NULL;
+				return(0);
+			}
+		}
+		else
+		{
+			if (*vecused >= 8)
+			{
+				paranode->sym.string_ptr = NULL;
+				return(0);
+			}
 		}
 		paranode->sym.state = SYM_TMACRO;
-		GetResWName(sysV64_regsYMM[*vecused], regname);
-		paranode->sym.tokval = sysV64_regsYMM[*vecused]; /* Store register tokval so invoke can use it */
+		if (CurrProc->sym.langtype == LANG_REGCALL)
+		{
+			GetResWName(regcall64_regsYMM[*vecused], regname);
+			paranode->sym.tokval = regcall64_regsYMM[*vecused]; /* Store register tokval so invoke can use it */
+		}
+		else
+		{
+			GetResWName(sysV64_regsYMM[*vecused], regname);
+			paranode->sym.tokval = sysV64_regsYMM[*vecused]; /* Store register tokval so invoke can use it */
+		}
 		paranode->sym.total_size = 0;
 		paranode->sym.string_ptr = LclAlloc(strlen(regname) + 1);
 		strcpy(paranode->sym.string_ptr, regname);
@@ -4230,14 +5398,33 @@ static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int 
 	// Parameter is either ZMM or __m512
 	if ((paranode->sym.mem_type == MT_TYPE && _stricmp(paranode->sym.type->name, "__m512") == 0) || paranode->sym.mem_type == MT_ZMMWORD)
 	{
-		if (*vecused >= 8)
+		if (CurrProc->sym.langtype == LANG_REGCALL)
 		{
-			paranode->sym.string_ptr = NULL;
-			return(0);
+			if (*vecused >= 16)
+			{
+				paranode->sym.string_ptr = NULL;
+				return(0);
+			}
+		}
+		else
+		{
+			if (*vecused >= 8)
+			{
+				paranode->sym.string_ptr = NULL;
+				return(0);
+			}
 		}
 		paranode->sym.state = SYM_TMACRO;
-		GetResWName(sysV64_regsZMM[*vecused], regname);
-		paranode->sym.tokval = sysV64_regsZMM[*vecused]; /* Store register tokval so invoke can use it */
+		if (CurrProc->sym.langtype == LANG_REGCALL)
+		{
+			GetResWName(regcall64_regsZMM[*vecused], regname);
+			paranode->sym.tokval = regcall64_regsZMM[*vecused]; /* Store register tokval so invoke can use it */
+		}
+		else
+		{
+			GetResWName(sysV64_regsZMM[*vecused], regname);
+			paranode->sym.tokval = sysV64_regsZMM[*vecused]; /* Store register tokval so invoke can use it */
+		}
 		paranode->sym.total_size = 0;
 		paranode->sym.string_ptr = LclAlloc(strlen(regname) + 1);
 		strcpy(paranode->sym.string_ptr, regname);
@@ -4255,38 +5442,74 @@ static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int 
 	//===============================================================================================================
 	// HANDLE Integer -> GPR Parameter Types
 	//===============================================================================================================
-	if (size > CurrWordSize || *used >= 6 || paranode->sym.is_vararg)
+	if (CurrProc->sym.langtype == LANG_REGCALL)
 	{
-		paranode->sym.string_ptr = NULL;
-		return(0);
-	}
-	paranode->sym.state = SYM_TMACRO;
+		if (size > CurrWordSize || *used >= 12 || paranode->sym.is_vararg)
+		{
+			paranode->sym.string_ptr = NULL;
+			return(0);
+		}
+		paranode->sym.state = SYM_TMACRO;
 
-	/* v2.29: for codeview debug info, store the register index in the symbol */
-	switch (size)
+		/* v2.29: for codeview debug info, store the register index in the symbol */
+		switch (size)
+		{
+			case 8:
+				GetResWName(regcallunix64_regs[*used], regname);
+				paranode->sym.total_size = 8;
+				paranode->sym.tokval = regcallunix64_regs[*used];   /* Store register tokval so invoke can use it */
+				break;
+			case 4:
+				GetResWName(regcallunix64_regs32[*used], regname);
+				paranode->sym.total_size = 4;
+				paranode->sym.tokval = regcallunix64_regs32[*used]; /* Store register tokval so invoke can use it */
+				break;
+			case 2:
+				GetResWName(regcallunix64_regs16[*used], regname);
+				paranode->sym.total_size = 2;
+				paranode->sym.tokval = regcallunix64_regs16[*used]; /* Store register tokval so invoke can use it */
+				break;
+			case 1:
+				GetResWName(regcallunix64_regs8[*used], regname);
+				paranode->sym.total_size = 1;
+				paranode->sym.tokval = regcallunix64_regs8[*used];  /* Store register tokval so invoke can use it */
+				break;
+		}
+	}
+	else
 	{
-	case 8:
-		GetResWName(sysV64_regs[*used], regname);
-		paranode->sym.total_size = 8;
-		paranode->sym.tokval = sysV64_regs[*used];   /* Store register tokval so invoke can use it */
-		break;
-	case 4:
-		GetResWName(sysV64_regs32[*used], regname);
-		paranode->sym.total_size = 4;
-		paranode->sym.tokval = sysV64_regs32[*used]; /* Store register tokval so invoke can use it */
-		break;
-	case 2:
-		GetResWName(sysV64_regs16[*used], regname);
-		paranode->sym.total_size = 2;
-		paranode->sym.tokval = sysV64_regs16[*used]; /* Store register tokval so invoke can use it */
-		break;
-	case 1:
-		GetResWName(sysV64_regs8[*used], regname);
-		paranode->sym.total_size = 1;
-		paranode->sym.tokval = sysV64_regs8[*used];  /* Store register tokval so invoke can use it */
-		break;
-	}
+		if (size > CurrWordSize || *used >= 6 || paranode->sym.is_vararg)
+		{
+			paranode->sym.string_ptr = NULL;
+			return(0);
+		}
+		paranode->sym.state = SYM_TMACRO;
 
+		/* v2.29: for codeview debug info, store the register index in the symbol */
+		switch (size)
+		{
+			case 8:
+				GetResWName(sysV64_regs[*used], regname);
+				paranode->sym.total_size = 8;
+				paranode->sym.tokval = sysV64_regs[*used];   /* Store register tokval so invoke can use it */
+				break;
+			case 4:
+				GetResWName(sysV64_regs32[*used], regname);
+				paranode->sym.total_size = 4;
+				paranode->sym.tokval = sysV64_regs32[*used]; /* Store register tokval so invoke can use it */
+				break;
+			case 2:
+				GetResWName(sysV64_regs16[*used], regname);
+				paranode->sym.total_size = 2;
+				paranode->sym.tokval = sysV64_regs16[*used]; /* Store register tokval so invoke can use it */
+				break;
+			case 1:
+				GetResWName(sysV64_regs8[*used], regname);
+				paranode->sym.total_size = 1;
+				paranode->sym.tokval = sysV64_regs8[*used];  /* Store register tokval so invoke can use it */
+				break;
+		}
+	}
 	paranode->sym.string_ptr = LclAlloc(strlen(regname) + 1);
 	strcpy(paranode->sym.string_ptr, regname);
 	(*used)++;
@@ -4692,7 +5915,7 @@ static ret_code write_generic_prologue(struct proc_info *info)
 		resstack == 0 && info->regslist == NULL && !info->fpo)
 		return(NOT_ERROR);
 
-	if (info->fpo && stackadj > 0 && CurrProc->sym.langtype == LANG_FASTCALL && !info->isleaf)
+	if (info->fpo && stackadj > 0 && (CurrProc->sym.langtype == LANG_FASTCALL || CurrProc->sym.langtype == LANG_VECTORCALL || (CurrProc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF)) && !info->isleaf)
 	{
 		AddLineQueueX("sub %r, %d", T_RSP, stackadj);
 	}
@@ -4700,9 +5923,9 @@ static ret_code write_generic_prologue(struct proc_info *info)
 	/* initialize shadow space for register params */
 	if (ModuleInfo.Ofssize == USE64 && ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_SAVEREGPARAMS))
 	{
-		if (CurrProc->sym.langtype == LANG_FASTCALL && ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RSP)
+		if ((CurrProc->sym.langtype == LANG_FASTCALL || CurrProc->sym.langtype == LANG_VECTORCALL || (CurrProc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF)) && ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RSP)
 			win64_SaveRegParams_RSP(info);
-		else if (CurrProc->sym.langtype == LANG_FASTCALL && ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RBP)
+		else if ((CurrProc->sym.langtype == LANG_FASTCALL || CurrProc->sym.langtype == LANG_VECTORCALL || (CurrProc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF)) && ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RBP)
 			win64_SaveRegParams_RBP(info);
 	}
 
@@ -4774,11 +5997,11 @@ static ret_code write_default_prologue(void)
 	{
 		if (ModuleInfo.basereg[USE64] == T_RSP)
 			write_win64_default_prologue_RSP(info);
-		else if ((ModuleInfo.basereg[USE64] == T_RBP) && CurrProc->sym.langtype == LANG_FASTCALL && info->isframe)
+		else if ((ModuleInfo.basereg[USE64] == T_RBP) && (CurrProc->sym.langtype == LANG_FASTCALL || CurrProc->sym.langtype == LANG_VECTORCALL || (CurrProc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF)) && info->isframe)
 			write_win64_default_prologue_RBP(info);
-		else if ((ModuleInfo.basereg[USE64] == T_RBP) && CurrProc->sym.langtype == LANG_FASTCALL)
+		else if ((ModuleInfo.basereg[USE64] == T_RBP) && (CurrProc->sym.langtype == LANG_FASTCALL || CurrProc->sym.langtype == LANG_VECTORCALL || (CurrProc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF)))
 			write_generic_prologue(info);
-		else if ((ModuleInfo.basereg[USE64] == T_RBP) && CurrProc->sym.langtype == LANG_SYSVCALL)
+		else if ((ModuleInfo.basereg[USE64] == T_RBP) && CurrProc->sym.langtype == LANG_SYSVCALL || (CurrProc->sym.langtype == LANG_REGCALL && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC)))
 			write_sysv_default_prologue_RBP(info);
 
 		/* v2.11: line queue is now run here */
@@ -4933,8 +6156,16 @@ void write_prologue(struct asm_tok tokenarray[])
 
 	if (ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP))
 	{
-		/* in pass one init reserved stack with 4*8 to force stack frame creation */
-		sym_ReservedStack->value = (Parse_Pass == PASS_1 ? 4 * sizeof(uint_64) : CurrProc->e.procinfo->ReservedStack);
+		if (CurrProc->sym.langtype == LANG_REGCALL)
+		{
+			/* in pass one init reserved stack with 11*8 to force stack frame creation */
+			sym_ReservedStack->value = (Parse_Pass == PASS_1 ? 11 * sizeof(uint_64) : CurrProc->e.procinfo->ReservedStack);
+		}
+		else
+		{
+			/* in pass one init reserved stack with 4*8 to force stack frame creation */
+			sym_ReservedStack->value = (Parse_Pass == PASS_1 ? 4 * sizeof(uint_64) : CurrProc->e.procinfo->ReservedStack);
+		}
 		if (Parse_Pass == PASS_1)
 		{
 			sym_ReservedStack->value = 0;
@@ -5185,13 +6416,13 @@ static void write_default_epilogue(void)
 
 	if (ModuleInfo.Ofssize == USE64)
 	{
-		if (ModuleInfo.basereg[USE64] == T_RSP && (CurrProc->sym.langtype == LANG_FASTCALL || CurrProc->sym.langtype == LANG_VECTORCALL))
+		if (ModuleInfo.basereg[USE64] == T_RSP && (CurrProc->sym.langtype == LANG_FASTCALL || CurrProc->sym.langtype == LANG_VECTORCALL || (CurrProc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF)))
 			write_win64_default_epilogue_RSP(info);
-		else if (ModuleInfo.basereg[USE64] == T_RBP && CurrProc->sym.langtype == LANG_FASTCALL && info->isframe)
+		else if (ModuleInfo.basereg[USE64] == T_RBP && (CurrProc->sym.langtype == LANG_FASTCALL || CurrProc->sym.langtype == LANG_VECTORCALL || (CurrProc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF)) && info->isframe)
 			write_win64_default_epilogue_RBP(info); /* UASM win64:N style epilogue */
-		else if (ModuleInfo.basereg[USE64] == T_RBP && CurrProc->sym.langtype == LANG_FASTCALL)
+		else if (ModuleInfo.basereg[USE64] == T_RBP && (CurrProc->sym.langtype == LANG_FASTCALL || CurrProc->sym.langtype == LANG_VECTORCALL || (CurrProc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF)))
 			write_generic_epilogue(info);
-		else if (ModuleInfo.basereg[USE64] == T_RBP && CurrProc->sym.langtype == LANG_SYSVCALL)
+		else if (ModuleInfo.basereg[USE64] == T_RBP && (CurrProc->sym.langtype == LANG_SYSVCALL || (CurrProc->sym.langtype == LANG_REGCALL && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC))))
 			write_sysv_default_epilogue_RBP(info);
 	}
 	else
@@ -5231,7 +6462,10 @@ static ret_code write_userdef_epilogue(bool flag_iret, struct asm_tok tokenarray
 #endif
 	if (CurrProc->sym.langtype == LANG_C ||
 		CurrProc->sym.langtype == LANG_SYSCALL ||
-		CurrProc->sym.langtype == LANG_FASTCALL ||
+		CurrProc->sym.langtype == LANG_FASTCALL || 
+		CurrProc->sym.langtype == LANG_VECTORCALL ||
+		CurrProc->sym.langtype == LANG_REGCALL ||
+		CurrProc->sym.langtype == LANG_THISCALL ||
 		CurrProc->sym.langtype == LANG_SYSVCALL)
 		flags |= 0x10;
 
@@ -5392,6 +6626,18 @@ ret_code RetInstr(int i, struct asm_tok tokenarray[], int count)
 				break;
 			case LANG_SYSVCALL:
 				sysvcall_tab[ModuleInfo.fctype].handlereturn(CurrProc, buffer);
+				break;
+			case LANG_REGCALL:
+				if (Options.output_format == OFORMAT_COFF)
+				{
+					regcallms_tab[ModuleInfo.fctype].handlereturn(CurrProc, buffer); break;
+				}
+				if (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC)
+				{
+					regcallunix_tab[ModuleInfo.fctype].handlereturn(CurrProc, buffer); break;
+				}
+			case LANG_THISCALL:
+				thiscall_tab[ModuleInfo.fctype].handlereturn(CurrProc, buffer);
 				break;
 			case LANG_STDCALL:
 				if (!info->has_vararg && info->parasize != 0) {

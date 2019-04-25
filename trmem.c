@@ -38,7 +38,7 @@
 #include <i86.h>
 #endif
 
-#ifdef __GNUC__
+#if defined(__GNUC__) || defined(__POCC__)
 #include <errno.h>
 #endif
 

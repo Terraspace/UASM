@@ -1285,14 +1285,16 @@ static ret_code get_operand( struct expr *opnd, int *idx, struct asm_tok tokenar
                       cnt = cnt * 8;
                       cnt += sym->offset + CurrProc->e.procinfo->localsize + CurrProc->e.procinfo->xmmsize; //pointing to RSP
                       if (CurrProc->sym.langtype == LANG_VECTORCALL)
-                        cnt += CurrProc->e.procinfo->vsize ;     //pointing abowe RSP to the shadow space off RCX RDX R8 R9                      
+						  cnt += CurrProc->e.procinfo->vsize;     //pointing above RSP to the shadow space off RCX RDX R8 R9   
+					  if (CurrProc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF && Options.sub_format == SFORMAT_64BIT)
+						  cnt += CurrProc->e.procinfo->regcsize;     //pointing above RSP to the shadow space off RAX RCX RDX RDI RSI R8 R9 R11 R12 R14 R15                   
                       //else 
                         cnt -= 8;
                         if ((cnt & 7) != 0) cnt = (cnt + 7)&(-8);
                       opnd->llvalue = cnt;
                     }
                     else 
-                      opnd->llvalue = (int_64)(sym->offset + (int)StackAdj);
+                      opnd->llvalue = (int_64)sym->offset + (int_64)StackAdj;
 #else
                     opnd->llvalue = sym->offset;
 #endif
@@ -4056,7 +4058,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 		{
 			(*i)++;
 			strcpy(clabel, tokenarray[(*i)].string_ptr);
-			sprintf(tokenarray[(*i)].string_ptr, "%s%s", ".", &clabel);
+			sprintf(tokenarray[(*i)].string_ptr, "%s%s", ".", clabel);
 		}
 		else if (labelsym == NULL && labelsym2 == NULL)
 		{
@@ -4080,7 +4082,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 		{
 			//(*i)++;
 			strcpy(clabel, tokenarray[(*i)+2].string_ptr);
-			sprintf(tokenarray[(*i)+2].string_ptr, "%s%s", ".", &clabel);
+			sprintf(tokenarray[(*i)+2].string_ptr, "%s%s", ".", clabel);
 			tokenarray[(*i) + 1].string_ptr = tokenarray[(*i) + 2].string_ptr;
 			tokenarray[(*i) + 1].token = T_ID;
 			tokenarray[(*i) + 2].token = T_FINAL;
@@ -4120,7 +4122,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 				{
 					if (opnd1->type != NULL)
 					{
-						recordsym = SymSearch(opnd1->type->name);
+						recordsym = (struct dsym*)SymSearch(opnd1->type->name);
 						/* if it is a RECORD don't throw an error but decorate it with an actual value v2.41*/
 						if (recordsym && recordsym->sym.typekind == TYPE_RECORD)
 						{

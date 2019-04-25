@@ -1181,7 +1181,7 @@ static ret_code CheckCXZLines(char *p)
 				for (p--, i = strlen(p); i >= 0; i--) {
 					*(p + addchars + i) = *(p + i);
 				}
-				memcpy(p, px, strlen(px));
+                strcpy(p, px);
 			}
 #if 0 /* handle ".untilcxz 1" like masm does */
 			else if (*p == ' ' && *(p + 1) == EOLCHAR && lines == 0) {

@@ -150,8 +150,8 @@ void SetModel( void )
          * to enable the win64 ABI from the source.
          */
         if ( ( ModuleInfo.curr_cpu & P_CPU_MASK ) == P_64 )
-            if ( ModuleInfo.langtype == LANG_FASTCALL || ModuleInfo.langtype == LANG_SYSVCALL) {
-                if ( Options.output_format != OFORMAT_ELF ) {
+            if ( ModuleInfo.langtype == LANG_FASTCALL || ModuleInfo.langtype == LANG_VECTORCALL || ModuleInfo.langtype == LANG_REGCALL || ModuleInfo.langtype == LANG_SYSVCALL) {
+                if (ModuleInfo.sub_format == SFORMAT_64BIT) {
                     DebugMsg(("SetModel: FASTCALL type set to WIN64\n"));
                     ModuleInfo.fctype = FCT_WIN64;
                 }
@@ -487,22 +487,28 @@ ret_code CpuDirective( int i, struct asm_tok tokenarray[] )
 	}
 
 #if DOT_XMMARG
-    .if ( tokenarray[i].tokval == T_DOT_XMM && tokenarray[i+1].token != T_FINAL ) {
+    if (tokenarray[i].tokval == T_DOT_XMM && tokenarray[i + 1].token == T_FINAL)
+    {
         struct expr opndx;
         i++;
-        if ( EvalOperand( &i, Token_Count, &opndx, 0 ) == ERROR )
-            return( ERROR );
-        if ( opndx.kind != EXPR_CONST || opndx.value < 1 || opndx.value > 4 ) {
-            return( EmitConstError( &opndx ) );
+        if (EvalOperand(&i, tokenarray, Token_Count, &opndx, 0) == ERROR)
+            return(ERROR);
+        if (opndx.kind != EXPR_CONST || opndx.value < 1 || opndx.value > 4)
+        {
+            opndx.value = 4;
         }
-        newcpy &= ~P_SSEALL; 
-        switch ( opndx.value ) {
-        case 4: newcpy |= P_SSE4;
-        case 3: newcpy |= P_SSE3|P_SSSE3;
-        case 2: newcpy |= P_SSE2;
-        case 1: newcpy |= P_SSE1; break;
-        }
-    } else
+        if ((ModuleInfo.curr_cpu & P_686) != P_686)
+            return EmitErr(CPU_OPTION_INVALID, tokenarray[i - 1].string_ptr);
+        newcpu = ~P_SSEALL;
+        switch (opndx.value)
+        {
+            case 4: newcpu |= P_SSE4;
+            case 3: newcpu |= P_SSE3 | P_SSSE3;
+            case 2: newcpu |= P_SSE2;
+            case 1: newcpu |= P_SSE1; break;
+}
+    }
+    else
 #endif
     i++;
 

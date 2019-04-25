@@ -65,6 +65,20 @@
 
 #endif
 
+#if !(NOINCREASEDMAXLINELEN)
+#define MAX_LINE_LEN            25600  /* no restriction for this number */
+#define MAX_TOKEN  MAX_LINE_LEN - 32  /* max tokens in one line */
+#define MAX_STRING_LEN          MAX_LINE_LEN - 32 /* must be < MAX_LINE_LEN */
+#define MAX_ID_LEN              MAX_LINE_LEN - 32 /*247*/  /* must be < MAX_LINE_LEN */
+#define MAX_STRUCT_ALIGN        64
+#define MAX_SEGMENT_ALIGN       4096 /* maximum alignment/packing setting for segments */
+#define MAX_IF_NESTING          32 /* IFxx block nesting. Must be <=32, see condasm.c */
+#define MAX_SEG_NESTING         32 /* limit for segment nesting  */
+#define MAX_MACRO_NESTING       200 /* macro call nesting  */
+#define MAX_STRUCT_NESTING      32 /* limit for "anonymous structs" only */
+#define MAX_LNAME               255 /* OMF lnames - length must fit in 1 byte */
+#define LNAME_NULL              0   /* OMF first entry in lnames array */
+#else
 #define MAX_LINE_LEN            1024 /* no restriction for this number */
 #define MAX_TOKEN  MAX_LINE_LEN - 32 /* max tokens in one line */
 #define MAX_STRING_LEN          MAX_LINE_LEN - 32 /* must be < MAX_LINE_LEN */
@@ -77,6 +91,7 @@
 #define MAX_STRUCT_NESTING      32   /* limit for "anonymous structs" only */
 #define MAX_LNAME               255  /* OMF lnames - length must fit in 1 byte */
 #define LNAME_NULL              0    /* OMF first entry in lnames array */
+#endif
 
 /* output format switches */
 #ifndef BIN_SUPPORT
@@ -122,12 +137,16 @@
 #define AMD64_SUPPORT 1 /* 1=support 64bit */
 #endif
 
-#ifndef SYSV_SUPPORT		
-#define SYSV_SUPPORT 1 /* 1=support 64bit */		
+#ifndef SYSV_SUPPORT
+#define SYSV_SUPPORT 1 /* 1=support 64bit */
 #endif
 
-#ifndef DELPHI_SUPPORT		
-#define DELPHI_SUPPORT 1 /* 1=support 64bit */		
+#ifndef DELPHI_SUPPORT
+#define DELPHI_SUPPORT 1 /* 1=support 64bit */
+#endif
+
+#ifndef REGCALL_SUPPORT
+#define REGCALL_SUPPORT 1 /* 1=support 64bit */
 #endif
 
 #ifndef VMXSUPP
@@ -202,11 +221,11 @@
 
 /* Uasm version info */
 #ifdef _WIN64
-#define _UASM_VERSION_STR_ "2.48"
+#define _UASM_VERSION_STR_ "2.49"
 #else
-#define _UASM_VERSION_STR_ "2.48"
+#define _UASM_VERSION_STR_ "2.49"
 #endif
-#define _UASM_VERSION_INT_ 248
+#define _UASM_VERSION_INT_ 249
 #define _UASM_VERSION_SUFFIX_ "pre"
 #define _UASM_VERSION_ _UASM_VERSION_STR_ //_UASM_VERSION_SUFFIX_
 
@@ -309,8 +328,10 @@ enum lang_type {
     LANG_BASIC      = 6,
     LANG_FASTCALL   = 7,
     LANG_VECTORCALL = 8,
-	LANG_SYSVCALL   = 9,
-	LANG_DELPHICALL = 10
+    LANG_SYSVCALL   = 9,
+    LANG_REGCALL	= 10,
+    LANG_THISCALL	= 11,
+	LANG_DELPHICALL = 12  // 
 };
 
 /* Memory model type.
@@ -496,8 +517,23 @@ enum stdcall_decoration {
 enum vectorcall_decoration
 {
 	VECTORCALL_FULL,
-	VECTORCALL_NONE,
-	VECTORCALL_HALF
+	VECTORCALL_NONE
+};
+
+enum regcall_decoration
+{
+	REGCALL_FULL,
+	REGCALL_NONE
+};
+
+enum regcall_version
+{
+    RGCV_0,        
+    RGCV_1,     /* 1 */
+    RGCV_2,     /* 2 */
+    RGCV_3,     /* 3 */
+    RGCV_4,     /* 4 */
+    RGCV_5     /* 5 */
 };
 
 struct qitem {
@@ -658,11 +694,13 @@ struct global_options {
 #endif
     bool        no_cdecl_decoration;     /* -zcw & -zcm option */
     uint_8      stdcall_decoration;      /* -zt<0|1|2> option */
-	uint_8      vectorcall_decoration;   /* -zv<0|1|2> option */
+    uint_8      vectorcall_decoration;   /* -zv<0|1> option */
+    uint_8      regcall_decoration;      /* -ze<0|1> option */
+    uint_8      regcall_version;         /* -Ge<0|1|2|3|4|5> option  */
     bool        no_export_decoration;    /* -zze option */
     bool        entry_decorated;         /* -zzs option  */
     bool        write_listing;           /* -Fl option  */
-	bool        dumpSymbols;             /* -Fs option  */
+    bool        dumpSymbols;             /* -Fs option  */
     bool        write_impdef;            /* -Fd option  */
     bool        case_sensitive;          /* -C<p|x|u> options */
     bool        convert_uppercase;       /* -C<p|x|u> options */
@@ -682,7 +720,7 @@ struct global_options {
     enum oformat output_format;          /* -bin, -omf, -coff, -elf options */
     enum sformat sub_format;             /* -mz, -pe, -win64, -elf64 options */
     uint_8      fieldalign;              /* -Zp option  */
-    enum lang_type langtype;             /* -Gc|d|z option */
+    enum lang_type langtype;             /* -G<c|d|r|z|v|y|e|t>   "Use Pascal, C, Fastcall, Stdcall, Vectorcall, SystemV, Regcall, Thiscall calling convention */
     enum model_type model;               /* -mt|s|m|c|l|h|f option */
     enum cpu_info cpu;                   /* -0|1|2|3|4|5|6 & -fp{0|2|3|5|6|c} option */
     enum fastcall_type fctype;           /* -zf0 & -zf1 option */

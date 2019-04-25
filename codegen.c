@@ -992,7 +992,7 @@ static void output_opc(struct code_info *CodeInfo)
                   }
                 /* fix v2.46 */
                 if (CodeInfo->token == T_VCVTPS2PD || CodeInfo->token == T_VCVTPH2PS || 
-                    CodeInfo->token == T_VCVTPS2PH | CodeInfo->token == T_VCVTQQ2PD){
+                    CodeInfo->token == T_VCVTPS2PH || CodeInfo->token == T_VCVTQQ2PD){
                   /* don't check for memory to reg here */
                   if (CodeInfo->opnd[OPND2].type & OP_M_ANY || CodeInfo->opnd[OPND1].type & OP_M_ANY)
                     ; /* skip */

@@ -1,0 +1,387 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\apiemu.c" />
+    <ClCompile Include="..\..\assemble.c" />
+    <ClCompile Include="..\..\assume.c" />
+    <ClCompile Include="..\..\atofloat.c" />
+    <ClCompile Include="..\..\backptch.c" />
+    <ClCompile Include="..\..\bin.c" />
+    <ClCompile Include="..\..\branch.c" />
+    <ClCompile Include="..\..\cmdline.c" />
+    <ClCompile Include="..\..\codegen.c" />
+    <ClCompile Include="..\..\codegenv2.c" />
+    <ClCompile Include="..\..\coff.c" />
+    <ClCompile Include="..\..\condasm.c" />
+    <ClCompile Include="..\..\context.c" />
+    <ClCompile Include="..\..\cpumodel.c" />
+    <ClCompile Include="..\..\data.c" />
+    <ClCompile Include="..\..\dbgcv.c" />
+    <ClCompile Include="..\..\directiv.c" />
+    <ClCompile Include="..\..\elf.c" />
+    <ClCompile Include="..\..\end.c" />
+    <ClCompile Include="..\..\equate.c" />
+    <ClCompile Include="..\..\errmsg.c" />
+    <ClCompile Include="..\..\expans.c" />
+    <ClCompile Include="..\..\expreval.c" />
+    <ClCompile Include="..\..\extern.c" />
+    <ClCompile Include="..\..\fastpass.c" />
+    <ClCompile Include="..\..\fixup.c" />
+    <ClCompile Include="..\..\fpfixup.c" />
+    <ClCompile Include="..\..\hll.c" />
+    <ClCompile Include="..\..\input.c" />
+    <ClCompile Include="..\..\invoke.c" />
+    <ClCompile Include="..\..\label.c" />
+    <ClCompile Include="..\..\linnum.c" />
+    <ClCompile Include="..\..\listing.c" />
+    <ClCompile Include="..\..\loop.c" />
+    <ClCompile Include="..\..\lqueue.c" />
+    <ClCompile Include="..\..\ltype.c" />
+    <ClCompile Include="..\..\macho64.c" />
+    <ClCompile Include="..\..\macro.c" />
+    <ClCompile Include="..\..\macrolib.c" />
+    <ClCompile Include="..\..\main.c" />
+    <ClCompile Include="..\..\mangle.c" />
+    <ClCompile Include="..\..\memalloc.c" />
+    <ClCompile Include="..\..\msgtext.c" />
+    <ClCompile Include="..\..\omf.c" />
+    <ClCompile Include="..\..\omffixup.c" />
+    <ClCompile Include="..\..\omfint.c" />
+    <ClCompile Include="..\..\option.c" />
+    <ClCompile Include="..\..\orgfixup.c" />
+    <ClCompile Include="..\..\parser.c" />
+    <ClCompile Include="..\..\posndir.c" />
+    <ClCompile Include="..\..\preproc.c" />
+    <ClCompile Include="..\..\proc.c" />
+    <ClCompile Include="..\..\queue.c" />
+    <ClCompile Include="..\..\reswords.c" />
+    <ClCompile Include="..\..\safeseh.c" />
+    <ClCompile Include="..\..\segment.c" />
+    <ClCompile Include="..\..\simd.c" />
+    <ClCompile Include="..\..\simsegm.c" />
+    <ClCompile Include="..\..\string.c" />
+    <ClCompile Include="..\..\symbols.c" />
+    <ClCompile Include="..\..\tbyte.c" />
+    <ClCompile Include="..\..\tokenize.c" />
+    <ClCompile Include="..\..\trmem.c" />
+    <ClCompile Include="..\..\types.c" />
+    <ClCompile Include="..\..\x86macros.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\.gitignore" />
+    <None Include="..\..\gccmod.inc" />
+    <None Include="..\..\install\Uasm\v142\BuildCustomizations\uasm.props" />
+    <None Include="..\..\install\Uasm\v142\BuildCustomizations\uasm.targets" />
+    <None Include="..\..\msmod.inc" />
+    <None Include="..\..\owmod.inc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\H\assume.h" />
+    <ClInclude Include="..\..\H\atofloat.h" />
+    <ClInclude Include="..\..\H\bin.h" />
+    <ClInclude Include="..\..\H\bool.h" />
+    <ClInclude Include="..\..\H\cmdline.h" />
+    <ClInclude Include="..\..\H\codegen.h" />
+    <ClInclude Include="..\..\H\codegenv2.h" />
+    <ClInclude Include="..\..\H\coff.h" />
+    <ClInclude Include="..\..\H\coffspec.h" />
+    <ClInclude Include="..\..\H\Colors.h" />
+    <ClInclude Include="..\..\H\condasm.h" />
+    <ClInclude Include="..\..\H\context.h" />
+    <ClInclude Include="..\..\H\cpumodel.h" />
+    <ClInclude Include="..\..\H\data.h" />
+    <ClInclude Include="..\..\H\dbgcv.h" />
+    <ClInclude Include="..\..\H\dbgdw.h" />
+    <ClInclude Include="..\..\H\directve.h" />
+    <ClInclude Include="..\..\H\dirtype.h" />
+    <ClInclude Include="..\..\H\elf.h" />
+    <ClInclude Include="..\..\H\elfspec.h" />
+    <ClInclude Include="..\..\H\equate.h" />
+    <ClInclude Include="..\..\H\errmsg.h" />
+    <ClInclude Include="..\..\H\expreval.h" />
+    <ClInclude Include="..\..\H\extern.h" />
+    <ClInclude Include="..\..\H\fastpass.h" />
+    <ClInclude Include="..\..\H\fixup.h" />
+    <ClInclude Include="..\..\H\fpfixup.h" />
+    <ClInclude Include="..\..\H\globals.h" />
+    <ClInclude Include="..\..\H\hll.h" />
+    <ClInclude Include="..\..\H\input.h" />
+    <ClInclude Include="..\..\H\instr64.h" />
+    <ClInclude Include="..\..\H\instravx.h" />
+    <ClInclude Include="..\..\H\InstrTableV2.h" />
+    <ClInclude Include="..\..\H\instruct.h" />
+    <ClInclude Include="..\..\H\intrin.h" />
+    <ClInclude Include="..\..\H\inttype.h" />
+    <ClInclude Include="..\..\H\label.h" />
+    <ClInclude Include="..\..\H\linnum.h" />
+    <ClInclude Include="..\..\H\listing.h" />
+    <ClInclude Include="..\..\H\lqueue.h" />
+    <ClInclude Include="..\..\H\ltext.h" />
+    <ClInclude Include="..\..\H\macho64.h" />
+    <ClInclude Include="..\..\H\macho64spec.h" />
+    <ClInclude Include="..\..\H\macro.h" />
+    <ClInclude Include="..\..\H\macrolib.h" />
+    <ClInclude Include="..\..\H\malloc.h" />
+    <ClInclude Include="..\..\H\MemTable32.h" />
+    <ClInclude Include="..\..\H\MemTable64.h" />
+    <ClInclude Include="..\..\H\mangle.h" />
+    <ClInclude Include="..\..\H\memalloc.h" />
+    <ClInclude Include="..\..\H\msgdef.h" />
+    <ClInclude Include="..\..\H\msgtext.h" />
+    <ClInclude Include="..\..\H\myassert.h" />
+    <ClInclude Include="..\..\H\omf.h" />
+    <ClInclude Include="..\..\H\omfint.h" />
+    <ClInclude Include="..\..\H\omfspec.h" />
+    <ClInclude Include="..\..\H\operands.h" />
+    <ClInclude Include="..\..\H\opndcls.h" />
+    <ClInclude Include="..\..\H\orgfixup.h" />
+    <ClInclude Include="..\..\H\parser.h" />
+    <ClInclude Include="..\..\H\pespec.h" />
+    <ClInclude Include="..\..\H\posndir.h" />
+    <ClInclude Include="..\..\H\preproc.h" />
+    <ClInclude Include="..\..\H\proc.h" />
+    <ClInclude Include="..\..\H\queue.h" />
+    <ClInclude Include="..\..\H\reswords.h" />
+    <ClInclude Include="..\..\H\segattr.h" />
+    <ClInclude Include="..\..\H\segment.h" />
+    <ClInclude Include="..\..\H\simd.h" />
+    <ClInclude Include="..\..\H\special.h" />
+    <ClInclude Include="..\..\H\symbols.h" />
+    <ClInclude Include="..\..\H\tbyte.h" />
+    <ClInclude Include="..\..\H\token.h" />
+    <ClInclude Include="..\..\H\tokenize.h" />
+    <ClInclude Include="..\..\H\trmem.h" />
+    <ClInclude Include="..\..\H\types.h" />
+    <ClInclude Include="..\..\H\unaryop.h" />
+    <ClInclude Include="..\..\H\usage.h" />
+    <ClInclude Include="..\..\H\usage2.h" />
+    <ClInclude Include="..\..\H\win32.h" />
+    <ClInclude Include="..\..\H\win64seh.h" />
+    <ClInclude Include="..\..\H\winconsole.h" />
+    <ClInclude Include="..\..\H\x86macros.h" />
+    <ClInclude Include="..\..\resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\UASM.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\..\install\Uasm\v142\BuildCustomizations\uasm.xml" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals" />
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{742E0A2F-D723-4729-8B5A-367DD9295AA1}</ProjectGuid>
+    <Keyword>ManagedCProj</Keyword>
+    <RootNamespace>HJWasm</RootNamespace>
+    <ProjectName>uasm</ProjectName>
+    <PlatformToolset>v140</PlatformToolset>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <TargetRuntime>Native</TargetRuntime>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CLRSupport>false</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CLRSupport>false</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CLRSupport>false</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CLRSupport>false</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetName>$(ProjectName)</TargetName>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
+    <TargetName>$(ProjectName)</TargetName>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>DEBUG_OUT;NOX86MACROLIB=0;NOINCREASEDMAXLINELEN=0;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <CompileAsManaged>false</CompileAsManaged>
+      <AdditionalIncludeDirectories>..\..\H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsC</CompileAs>
+      <ExpandAttributedSource>false</ExpandAttributedSource>
+      <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <FavorSizeOrSpeed>
+      </FavorSizeOrSpeed>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <OmitFramePointers />
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies />
+      <SubSystem>Console</SubSystem>
+      <ImageHasSafeExceptionHandlers>true</ImageHasSafeExceptionHandlers>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy $(OutDir)$(TargetName)$(TargetExt) $(UASM_PATH)\v142\x86</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>DEBUG_OUT;NOX86MACROLIB=0;NOINCREASEDMAXLINELEN=0;WIN64;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <CompileAsManaged>false</CompileAsManaged>
+      <AdditionalIncludeDirectories>..\..\H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsC</CompileAs>
+      <ExpandAttributedSource>false</ExpandAttributedSource>
+      <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <FavorSizeOrSpeed>
+      </FavorSizeOrSpeed>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy $(OutDir)$(TargetName)$(TargetExt) $(UASM_PATH)\v142\x64</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <PreprocessorDefinitions>DEBUG_OUT;NOX86MACROLIB=0;NOINCREASEDMAXLINELEN=0;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <CompileAsManaged>false</CompileAsManaged>
+      <AdditionalIncludeDirectories>..\..\H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsC</CompileAs>
+      <CallingConvention>Cdecl</CallingConvention>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <FavorSizeOrSpeed>
+      </FavorSizeOrSpeed>
+      <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <OmitFramePointers />
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies />
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>
+      </OptimizeReferences>
+      <EnableCOMDATFolding>
+      </EnableCOMDATFolding>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy $(OutDir)$(TargetName)$(TargetExt) $(UASM_PATH)\v142\x86</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <PreprocessorDefinitions>DEBUG_OUT;NOX86MACROLIB=0;NOINCREASEDMAXLINELEN=0;WIN64;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <CompileAsManaged>false</CompileAsManaged>
+      <AdditionalIncludeDirectories>..\..\H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MinimalRebuild>false</MinimalRebuild>
+      <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>CompileAsC</CompileAs>
+      <FavorSizeOrSpeed />
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+      <HeapReserveSize>
+      </HeapReserveSize>
+      <HeapCommitSize>
+      </HeapCommitSize>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy $(OutDir)$(TargetName)$(TargetExt) $(UASM_PATH)\v142\x64</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>
+      </Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
