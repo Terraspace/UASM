@@ -2865,6 +2865,7 @@ static ret_code check_size( struct code_info *CodeInfo, const struct expr opndx[
             ( CodeInfo->opnd[OPND2].data32l <= UCHAR_MAX ) &&
             //CodeInfo->opnd[OPND2].data32l >= -128 ) ) {
             ( CodeInfo->opnd[OPND2].data32l >= -255 ) ) {
+
             return( rc ); /* OK cause no sign extension */
         }
 #endif
@@ -2895,7 +2896,6 @@ static ret_code check_size( struct code_info *CodeInfo, const struct expr opndx[
                 CodeInfo->evex_flag = TRUE;
               else{
                 if (CodeInfo->token >= T_BNDMK && CodeInfo->token <= T_BNDSTX){
-                  //__debugbreak();
                   switch (CodeInfo->token){
                     case T_BNDMK:
                     case T_BNDCL:
@@ -2958,14 +2958,14 @@ static ret_code check_size( struct code_info *CodeInfo, const struct expr opndx[
                             CodeInfo->opnd[OPND2].type = OP_I32;
                             p = "DWORD";
                         }
-                    } else if( (uint_32)CodeInfo->opnd[OPND2].data32l > UCHAR_MAX || op2_size == 2 ) {
+                    } else if( (uint_32)CodeInfo->opnd[OPND2].data32l > UCHAR_MAX  ) {//|| op2_size == 2
                          CodeInfo->mem_type = MT_WORD;
                          CodeInfo->iswide = 1;
                          CodeInfo->opnd[OPND2].type = OP_I16;
                     } else {
                          CodeInfo->mem_type = MT_BYTE;
                          CodeInfo->opnd[OPND2].type = OP_I8;
-						 CodeInfo->opnd[OPND1].type = OP_M08;
+						             CodeInfo->opnd[OPND1].type = OP_M08;
                          p = "BYTE";
                     }
                     if( opndx[OPND2].explicit == FALSE ) {

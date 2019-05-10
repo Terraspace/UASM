@@ -4020,6 +4020,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 {
     ret_code rc = NOT_ERROR;
     char *p;
+    char *p1;
 	char clabel[100];
 	struct asym *labelsym;
 	struct asym *labelsym2;
@@ -4224,14 +4225,17 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
             rc = calculate( opnd1, &opnd2, &tokenarray[curr_operator] );
           }
         /* here we get the mask 128 v2.45  */
-          if (0 == _memicmp(tokenarray[3].string_ptr, "MASK", 4)){
-            if (0 == _memicmp(tokenarray[1].string_ptr, "xmm", 3)){
-              if (GetMask128(opnd1, 3, tokenarray) != ERROR)
-                rc = NOT_ERROR;
+          p1 = tokenarray[3].string_ptr;
+          if ((*p1 & 0xdf) == 'M') {    
+            if (0 == _memicmp(p1, "MASK", 4)) {
+              if (0 == _memicmp(tokenarray[1].string_ptr, "xmm", 3)) {
+                if (GetMask128(opnd1, 3, tokenarray) != ERROR)
+                  rc = NOT_ERROR;
                 opnd2.kind = EXPR_ADDR;
                 opnd2.mem_type = MT_OWORD;
               }
             }
+          }
         if( flags & EXPF_ONEOPND ) /* stop after one operand? */
            break;
     }

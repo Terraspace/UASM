@@ -1,0 +1,7 @@
+..\src\CodeGenV2\MOV32_6.asm(14) : Warning A4073: Size not specified, assuming: BYTE
+..\src\CodeGenV2\MOV32_6.asm(15) : Warning A4073: Size not specified, assuming: BYTE
+..\src\CodeGenV2\MOV32_6.asm(16) : Warning A4073: Size not specified, assuming: WORD
+..\src\CodeGenV2\MOV32_6.asm(19) : Warning A4073: Size not specified, assuming: BYTE
+..\src\CodeGenV2\MOV32_6.asm(20) : Warning A4073: Size not specified, assuming: BYTE
+..\src\CodeGenV2\MOV32_6.asm(21) : Warning A4073: Size not specified, assuming: BYTE
+..\src\CodeGenV2\MOV32_6.asm(22) : Warning A4073: Size not specified, assuming: BYTE

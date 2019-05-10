@@ -128,6 +128,7 @@ enum op_type {
 	IMM8,
 	IMM16,
 	IMM32,
+  IMM48,
 	IMM64, /* 64bit ONLY immediate */	
 
 	R_ST0,
@@ -161,6 +162,7 @@ enum op_type {
 #define IMM8_ONLY    (1<<23)	/* The instruction entry assume immediates match the opsize, however some instructions use ONLY an imm8 */
 #define EREX         (1<<24)	/* The instruction is extended with a REX prefix only if the src/dst register no > 7 */
 #define SRCHDSTL     (1<<25)	/* Some instructions have an optimised encodable form, ie: vmovaps by using a different opcode with swapped reg, rm dst and this flag limits instruction search for these */
+#define OPCODE_EXT   (1<<26)	/* The Mod RM field uses only the RM portion, the Reg field contains an opcode extension value as noted /digit in the Intel manuals */
 
 /* VEX flags */
 #define NO_VEX		 (0)
@@ -185,7 +187,8 @@ enum op_type {
 #define VEX_2OPND    (1<<18)	/* This is just for clarity sake but has the same effect of using a 2 opnd form for modrm+sib calculations as a DUP_NDS */
 #define VEX_VSIB     (1<<19)	/* Instruction uses VSIB addressing */
 #define VEX_4OPND    (1<<20)	/* Special 4 opnd form where final register is immediate-encoded */
-#define EVEX         (1<<21)	/* Does this VEX instruction have an extended EVEX form available ? */
+#define VEX_3RD_OP   (1<<21)	/* Some VEX encoded instructions put the 3rd operand into the VEX prefix - functionality equivalent to the above */
+#define EVEX         (1<<22)	/* Does this VEX instruction have an extended EVEX form available ? */
 
 /* EVEX flags */
 #define NO_EVEX      (0)
@@ -216,6 +219,11 @@ enum op_type {
 #define PFX_0x66F   2
 #define PFX_0x66F38 3
 #define PFX_0x66F3A 4
+#define PFX_0xF30F  5
+#define PFX_0xF20F  6
+#define PFX_0x0F38  7
+#define PFX_0xF3F38 8
+#define PFX_0xF2F38 9
 
 /* op_dir -> operation direction */
 #define REG_DST  0
@@ -381,5 +389,6 @@ void          BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_D
 						bool needB, bool needX, bool needRR, uint_32 opCount, struct code_info* CodeInfo);					/* Build EVEX prefix bytes      */
 int           BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned char* pREX, bool* needRM, bool* needSIB,
 	                              unsigned int* dispSize, int* pDisp, struct Instr_Def* instr, 
-								  struct expr opExpr[4], bool* needB, bool* needX, struct code_info *CodeInfo);				/* Build Memory encoding ModRM/SIB bytes   */
+								  struct expr opExpr[4], bool* needB, bool* needX, 
+								  bool* needRR, struct code_info *CodeInfo);											    /* Build Memory encoding ModRM/SIB bytes   */
 unsigned char GetRegisterNo(struct asm_tok *regTok);																		/* Get Register Encoding Number from Token */
