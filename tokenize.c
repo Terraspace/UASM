@@ -1337,6 +1337,8 @@ int Tokenize( char *line, unsigned int start, struct asm_tok tokenarray[], unsig
             else {
               /* here force '[]' around a variable */
               for (p1 = p.input; *p1 != 0; p1++) {     /* start from the beginning of string */
+                if (*p1 == ';')                        /* found  ';' */
+                  break;                               /* that means '{' is in comment */
                 if (*p1 == '\{') {                     /* found  '{' */
                   if ((_memicmp(p1, "\{1to", 4) == 0))
                     break;                             /* found "bcst" */

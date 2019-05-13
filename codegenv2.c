@@ -1008,10 +1008,10 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 
 		if (!opnd[instr->srcidx].indirect)
 		{
-			if (GetRegisterNo(opnd[instr->srcidx].base_reg) > 15)
+			if (opnd[instr->srcidx].base_reg && GetRegisterNo(opnd[instr->srcidx].base_reg) > 15)
 			{
 				EVEXx = 0;
-				if (GetRegisterNo(opnd[instr->srcidx].base_reg) > 23)
+				if (opnd[instr->srcidx].base_reg && GetRegisterNo(opnd[instr->srcidx].base_reg) > 23)
 					EVEXb = 0;
 				else
 					EVEXb = 1;
@@ -1019,7 +1019,7 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 			else
 			{
 				EVEXx = 1;
-				if (GetRegisterNo(opnd[instr->srcidx].base_reg) > 7)
+				if (opnd[instr->srcidx].base_reg && GetRegisterNo(opnd[instr->srcidx].base_reg) > 7)
 					EVEXb = 0;
 				else
 					EVEXb = 1;
