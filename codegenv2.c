@@ -1222,8 +1222,12 @@ int BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned cha
 	{
 		symSize = SizeFromMemtype(opExpr[instr->memOpnd].mem_type, ModuleInfo.Ofssize, opExpr[instr->memOpnd].sym);
 		
-		if(ModuleInfo.Ofssize == USE64 && opExpr[instr->memOpnd].sym->state != SYM_STACK)
-			baseRegNo = 16; // For 64bit mode, all symbol references are RIP relative, unless the symbol is on the stack.
+		// For 64bit mode, all symbol references are RIP relative, unless the symbol is on the stack.
+		// EXCEPT, if the memory address includes a register.
+		if (ModuleInfo.Ofssize == USE64 && opExpr[instr->memOpnd].sym->state != SYM_STACK && baseRegNo == 0x11)
+		{
+			baseRegNo = 16; 
+		}
 
 	}
 	else
