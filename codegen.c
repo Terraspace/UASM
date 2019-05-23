@@ -486,22 +486,26 @@ static void output_opc(struct code_info *CodeInfo)
       //return( ERROR ); /* v2.06: don't skip instruction */
     }
 #endif
-    if (CodeInfo->token == T_MOVQ && CodeInfo->basereg != 0x10){
-      if (CodeInfo->opnd[OPND1].type == OP_XMM && (CodeInfo->opnd[OPND2].type & OP_MS)){
-        CodeInfo->prefix.opsiz = FALSE;
-        OutputCodeByte(0xF3);
-        }
-      else if ((CodeInfo->opnd[OPND1].type & OP_MS) && CodeInfo->opnd[OPND2].type == OP_XMM){
-        CodeInfo->prefix.opsiz = TRUE;
-        OutputCodeByte(OPSIZ);
-        }
-	  else if ((CodeInfo->opnd[OPND1].type == OP_XMM) && (CodeInfo->opnd[OPND2].type & OP_R64)) {
-		  CodeInfo->prefix.opsiz = TRUE;
-		  OutputCodeByte(OPSIZ);
-	  }
-    }
-    else
-    OutputCodeByte(OPSIZ);
+	if (CodeInfo->token == T_MOVQ && CodeInfo->basereg != 0x10) {
+		if (CodeInfo->opnd[OPND1].type == OP_XMM && (CodeInfo->opnd[OPND2].type & OP_MS)) {
+			CodeInfo->prefix.opsiz = FALSE;
+			OutputCodeByte(0xF3);
+		}
+		else if ((CodeInfo->opnd[OPND1].type & OP_MS) && CodeInfo->opnd[OPND2].type == OP_XMM) {
+			CodeInfo->prefix.opsiz = TRUE;
+			OutputCodeByte(OPSIZ);
+		}
+		else if ((CodeInfo->opnd[OPND1].type == OP_XMM) && (CodeInfo->opnd[OPND2].type & OP_R64)) {
+			CodeInfo->prefix.opsiz = TRUE;
+			OutputCodeByte(OPSIZ);
+		}
+		else if ((CodeInfo->opnd[OPND2].type == OP_XMM) && (CodeInfo->opnd[OPND1].type & OP_R64)) {
+			CodeInfo->prefix.opsiz = TRUE;
+			OutputCodeByte(OPSIZ);
+		}
+	}
+	else
+		OutputCodeByte(OPSIZ);
   }
   /*
    * Output segment prefix

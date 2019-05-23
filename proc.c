@@ -3336,9 +3336,10 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 				if (info->localsize <= 128)
 				{
 					AddLineQueueX("mov %r, %u", T_EAX, info->localsize);
-					AddLineQueueX("dec %r", T_EAX);
-					AddLineQueueX("mov byte ptr [%r + %r], 0", T_RSP, T_RAX);
-					AddLineQueueX("dw 0F875h");
+					AddLineQueueX("dw 02ebh");       /* jmp L2 */
+					AddLineQueueX("dec %r", T_EAX);  /* L1: */
+					AddLineQueueX("mov byte ptr [%r + %r], 0", T_RSP, T_RAX); /* L2: */
+					AddLineQueueX("dw 0F875h"); /* jne L1: */
 				}
 				else
 				{
