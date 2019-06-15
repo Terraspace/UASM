@@ -818,7 +818,7 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
   // | R | X | B | R’ | 0 | 0 |  m  |
 
   // BYTE2:
-  // | 7 | 6-3    | 2 | 1-0 |
+  // | 7 | 6-3      | 2 | 1-0 |
   // | W |     v	| 1	|  p  |
 
   // BYTE3:
@@ -927,32 +927,42 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
   EVEXnl = ~EVEXnl;
 
   /* {static rounding} */
-  if (CodeInfo->evex_sae != 0 && (instr->evexflags & EVEX_RND) == 0)
-    EmitError(EMBEDDED_ROUNDING_IS_AVAILABLE_ONLY_WITH_REG_REG_OP);
+  if (CodeInfo->evex_sae != 0) 
+  {
+	  if ((instr->evexflags & EVEX_RND) == 0)
+		  EmitError(EMBEDDED_ROUNDING_IS_AVAILABLE_ONLY_WITH_REG_REG_OP);
 
-  if (CodeInfo->evex_sae == 0x40) // rd-sae
-  {
-    EVEXnl = 0;
-    EVEXl = 1;
-    EVEXbr = 1;
-  }
-  else if (CodeInfo->evex_sae == 0x20) // rn-sae
-  {
-    EVEXnl = 0;
-    EVEXl = 0;
-    EVEXbr = 1;
-  }
-  else if (CodeInfo->evex_sae == 0x60) // ru-sae
-  {
-    EVEXnl = 1;
-    EVEXl = 0;
-    EVEXbr = 1;
-  }
-  else if (CodeInfo->evex_sae == 0x80) // rz-sae
-  {
-    EVEXnl = 1;
-    EVEXl = 1;
-    EVEXbr = 1;
+	  switch (CodeInfo->evex_sae) 
+	  {
+	  case 0x10:       // sae
+	  case 0x20:       // rn-sae
+	  {
+		  EVEXnl = 0;
+		  EVEXl = 0;
+		  EVEXbr = 1;
+		  break;
+	  }
+	  case  0x40:     // rd-sae
+	  {
+		  EVEXnl = 0;
+		  EVEXl = 1;
+		  EVEXbr = 1;
+		  break;
+	  }
+	  case 0x60:      // ru-sae
+	  {
+		  EVEXnl = 1;
+		  EVEXl = 0;
+		  EVEXbr = 1;
+		  break;
+	  }
+	  case 0x80:     // rz-sae
+	  {
+		  EVEXnl = 1;
+		  EVEXl = 1;
+		  EVEXbr = 1;
+	  }
+	  }
   }
 
   /* EVEX.w field */
