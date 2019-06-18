@@ -1021,22 +1021,25 @@ continue_scan:
         return( NOT_ERROR );
     }
     /* filter pseudo instructions */
-    if (index >= T_CMPEQPD && index <= T_CMPORDSS) {
-      index = get_pseudoCMPXX(dst, p->input, index);
-      strcpy (buf[0].string_ptr,dst);
-    }
-    else if (index >= T_VCMPEQPD && index <= T_VCMPTRUE_USSS) {
-      index = get_pseudoVCMPXX(dst, p->input, index);
-      strcpy(buf[0].string_ptr, dst);
-    }
-    else if (index >= T_PCLMULLQLQDQ && index <= T_PCLMULHQHQDQ) {
-      index = get_pseudoPCLMULXX(dst, p->input, index);
-      strcpy(buf[0].string_ptr, dst);
-    }
-    else if (index >= T_VPCLMULLQLQDQ && index <= T_VPCLMULHQHQDQ) {
-      index = get_pseudoVPCLMULXX(dst, p->input, index);
-      strcpy(buf[0].string_ptr, dst);
-    }
+	if (!inMacroBody)
+	{
+		if (index >= T_CMPEQPD && index <= T_CMPORDSS) {
+			index = get_pseudoCMPXX(dst, p->input, index);
+			strcpy(buf[0].string_ptr, dst);
+		}
+		else if (index >= T_VCMPEQPD && index <= T_VCMPTRUE_USSS) {
+			index = get_pseudoVCMPXX(dst, p->input, index);
+			strcpy(buf[0].string_ptr, dst);
+		}
+		else if (index >= T_PCLMULLQLQDQ && index <= T_PCLMULHQHQDQ) {
+			index = get_pseudoPCLMULXX(dst, p->input, index);
+			strcpy(buf[0].string_ptr, dst);
+		}
+		else if (index >= T_VPCLMULLQLQDQ && index <= T_VPCLMULHQHQDQ) {
+			index = get_pseudoVPCLMULXX(dst, p->input, index);
+			strcpy(buf[0].string_ptr, dst);
+		}
+	}
     /* end of filter pseudo instructions */
 
     p->input = src;

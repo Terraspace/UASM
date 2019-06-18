@@ -294,6 +294,13 @@ ret_code SimplifiedSegDir( int i, struct asm_tok tokenarray[] )
         break;
     case SIM_DATA:    /* .data  */
     case SIM_DATA_UN: /* .data? */
+
+		/* UASM 2.49 Warn about BSS data in BIN, as the space won't be allocated */
+		if (Options.output_format == OFORMAT_BIN && Options.sub_format != SFORMAT_PE && ModuleInfo.flat)
+		{
+			EmitWarn(2, UNINIT_DATA_IN_BIN);
+		}
+
     case SIM_CONST:   /* .const */
         SetSimSeg( type, name );
         AddLineQueueX( "%r %r:ERROR", T_ASSUME, T_CS );

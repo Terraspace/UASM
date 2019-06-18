@@ -9,6 +9,7 @@
 ..\src\CodeGenV2\AVX1_32.asm(92) : Warning A4285: AVX requires 3 registers for this instruction, first register used twice
 ..\src\CodeGenV2\AVX1_32.asm(93) : Warning A4285: AVX requires 3 registers for this instruction, first register used twice
 ..\src\CodeGenV2\AVX1_32.asm(94) : Warning A4285: AVX requires 3 registers for this instruction, first register used twice
+..\src\CodeGenV2\AVX1_32.asm(115) : Warning A4299: BSS data in BIN output could have side effects
 ..\src\CodeGenV2\AVX1_32.asm(30) : Warning A4285: AVX requires 3 registers for this instruction, first register used twice
 ..\src\CodeGenV2\AVX1_32.asm(31) : Warning A4285: AVX requires 3 registers for this instruction, first register used twice
 ..\src\CodeGenV2\AVX1_32.asm(32) : Warning A4285: AVX requires 3 registers for this instruction, first register used twice
@@ -20,3 +21,5 @@
 ..\src\CodeGenV2\AVX1_32.asm(92) : Warning A4285: AVX requires 3 registers for this instruction, first register used twice
 ..\src\CodeGenV2\AVX1_32.asm(93) : Warning A4285: AVX requires 3 registers for this instruction, first register used twice
 ..\src\CodeGenV2\AVX1_32.asm(94) : Warning A4285: AVX requires 3 registers for this instruction, first register used twice
+..\src\CodeGenV2\AVX1_32.asm(115) : Warning A4299: BSS data in BIN output could have side effects
+..\src\CodeGenV2\AVX1_32.asm(115) : Warning A4299: BSS data in BIN output could have side effects
