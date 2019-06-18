@@ -138,6 +138,10 @@ static void SetSimSeg( enum sim_seg segm, const char *name )
     if ( name == NULL ) {
         name = SegmNames[segm];
 		if (name == NULL && ModuleInfo.flat) name = "_flat";
+		
+		/* UASM 2.49 Prevent empty object with no options from crashing the assembler */
+		if (name == NULL) name = "_TEXT";
+
         if ( ModuleInfo.simseg_init & ( 1 << segm ) )
             pFmt = "%s %r";
         else {
@@ -259,10 +263,6 @@ ret_code SimplifiedSegDir( int i, struct asm_tok tokenarray[] )
     switch( type ) {
     case SIM_CODE: /* .code */
         
-		if (name == NULL)
-		{
-			return ERROR;
-		}
 		SetSimSeg( SIM_CODE, name );
 
         if( ModuleInfo.model == MODEL_TINY ) {
