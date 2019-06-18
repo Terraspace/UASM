@@ -258,7 +258,12 @@ ret_code SimplifiedSegDir( int i, struct asm_tok tokenarray[] )
 
     switch( type ) {
     case SIM_CODE: /* .code */
-        SetSimSeg( SIM_CODE, name );
+        
+		if (name == NULL)
+		{
+			return ERROR;
+		}
+		SetSimSeg( SIM_CODE, name );
 
         if( ModuleInfo.model == MODEL_TINY ) {
             /* v2.05: add the named code segment to DGROUP */
