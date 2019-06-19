@@ -480,6 +480,8 @@ static void ms64_fcend(struct dsym const *proc, int numparams, int value)
 * the first 4 parameters are held in registers: rcx, rdx, r8, r9 for non-float arguments,
 * xmm0, xmm1, xmm2, xmm3 for float arguments. If parameter size is > 8, the address of
 * the argument is used instead of the value.
+* UASM 2.49 For structs that are not 1/2/4/8 bytes in size the address is used too, else they're passed
+* in registers.
 */
 static int ms64_param(struct dsym const *proc, int index, struct dsym *param, bool addr, struct expr *opnd, char *paramvalue, uint_8 *regs_used)
 /************************************************************************************************************************************************/
@@ -521,6 +523,15 @@ static int ms64_param(struct dsym const *proc, int index, struct dsym *param, bo
 	}
 	else
 		psize = SizeFromMemtype(param->sym.mem_type, USE64, param->sym.type);
+
+	/* UASM 2.49 Force odd-sized structures to error: pass by reference! */
+	if (psize == 3 || psize == 5 || psize == 6 || psize == 7)
+	{
+		if (param->sym.mem_type == MT_TYPE)
+		{
+			EmitErr(INVALID_REG_STRUCT_SIZE);
+		}
+	}
 
 	if (vcallpass == 1)
 		goto vcall;

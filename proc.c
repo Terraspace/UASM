@@ -2130,6 +2130,7 @@ ret_code CopyPrototype(struct dsym *proc, struct dsym *src)
 static void ProcFini(struct dsym *proc)
 /***************************************/
 {
+	struct asym* procline = NULL;
 	struct dsym *curr;
 	/* v2.06: emit an error if current segment isn't equal to
 	* the one of the matching PROC directive. Close the proc anyway!
@@ -2201,6 +2202,10 @@ static void ProcFini(struct dsym *proc)
 		}
 		SymGetLocal((struct asym *)CurrProc);
 	}
+
+	/* UASM 2.49 Ensure ProcLine value is reset */
+	procline = SymFind("@ProcLine");
+	procline->value = 0;
 
 	CurrProc = pop_proc();
 	if (CurrProc)
