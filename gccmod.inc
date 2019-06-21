@@ -59,5 +59,6 @@ $(OUTD)/simsegm.o  \
 $(OUTD)/string.o   \
 $(OUTD)/symbols.o  \
 $(OUTD)/tbyte.o    \
+$(OUTD)/pseudoFilter.o \
 $(OUTD)/tokenize.o \
 $(OUTD)/types.o

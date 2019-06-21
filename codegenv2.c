@@ -19,6 +19,14 @@ const char        szNullStr[] = { "<NULL>" };
 struct Mem_Def* MemTable = NULL;
 struct Instr_Def* InstrHash[16384];
 
+#ifdef _WIN32
+#else
+	#define INT_MIN     (-2147483647 - 1) // minimum (signed) int value
+	#define INT_MAX       2147483647    // maximum (signed) int value
+	#define UINT_MAX      0xffffffff    // maximum unsigned int value
+	#define UCHAR_MAX     0xff      // maximum unsigned char value
+#endif
+
 #include "MemTable32.h"
 #include "MemTable64.h"
 #include "InstrTableV2.h"
@@ -1165,6 +1173,7 @@ bool IsSimdRegister(struct asm_tok* regTok)
 	return result;
 }
 
+
 /* =====================================================================
   Build up instruction SIB, ModRM and REX bytes for memory operand.
   ===================================================================== */
@@ -1653,7 +1662,7 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 			EmitError(NO_EVEX_FORM);
 
 		else if (CodeInfo->Ofssize == USE64)
-			rexByte |= BuildREX(rexByte, matchedInstr, opExpr, FALSE);											/* Modify the REX prefix for non-memory operands/sizing */
+			rexByte |= BuildREX(rexByte, matchedInstr, opExpr);													/* Modify the REX prefix for non-memory operands/sizing */
 
 		  //----------------------------------------------------------
 		  // Check if address or operand size override prefixes are required.
