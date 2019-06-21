@@ -3692,6 +3692,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				DebugMsg1(("PushInvokeParm(%u): asize=%u added to size_vararg, now=%u\n",
 					reqParam, asize > pushsize ? asize : pushsize, size_vararg));
 			}
+
 			if (asize > pushsize) {
 
 				short dw = T_WORD;
@@ -3707,7 +3708,35 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 					opnd.explicit = FALSE;
 				}
 
-				while (asize > 0) {
+				/* UASM 2.49 32bit struct size for invoke fix */
+				if (ModuleInfo.Ofssize != USE32)
+					goto only64;
+				if (asize == 5) {
+					if (pushsize == 4) {
+						AddLineQueueX(" sub %r, 2", T_ESP);
+						AddLineQueueX(" mov al, byte ptr %s[7]", fullparam); 
+						AddLineQueueX(" push ax");
+						AddLineQueueX(" push dword ptr %s", fullparam);
+					}
+				}
+				else if (asize == 6 && curr->sym.mem_type != MT_FWORD) {
+					if (pushsize == 4) {
+						AddLineQueueX(" sub %r, 2", T_ESP);
+						AddLineQueueX(" push word ptr %s[6]", fullparam);
+						AddLineQueueX(" push dword ptr %s", fullparam);
+					}
+				}
+				else if (asize == 7) {
+					if (pushsize == 4) {
+						AddLineQueueX(" mov al, byte ptr %s[6]", fullparam);
+						AddLineQueue(" push ax");
+						AddLineQueueX(" push word ptr %s[10]", fullparam);
+						AddLineQueueX(" push dword ptr %s[6]", fullparam);
+					}
+				}
+				else {
+				only64:         
+					while (asize > 0) {
 
 					if (asize & 2) {
 
@@ -3738,6 +3767,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 						asize -= pushsize;
 
 					}
+				}
 				}
 				//return( NOT_ERROR );
 
@@ -3831,7 +3861,23 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 						}
 						break;
 					default:
-						AddLineQueueX(" push %s", fullparam);
+						/* fix for v2.49 */
+						if (asize == 3) 
+						{
+							if (pushsize == 4) 
+							{
+								AddLineQueueX(" mov al, byte ptr %s[2]", fullparam);
+								AddLineQueue(" push ax");
+								AddLineQueueX(" push word ptr %s[2]", fullparam);
+							}
+							else 
+							{
+								AddLineQueueX(" push word ptr %s[2]", fullparam);
+								AddLineQueueX(" push word ptr %s", fullparam);
+							}
+						}
+						else
+							AddLineQueueX(" push %s", fullparam);
 					}
 				}
 			}

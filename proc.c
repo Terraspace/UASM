@@ -4872,8 +4872,10 @@ static void SetLocalOffsets(struct proc_info *info)
 		info->localsize += curr->sym.total_size;
 		if (itemsize > align)
 			info->localsize = ROUND_UP(info->localsize, align);
-		else if (itemsize) /* v2.04: skip if size == 0 */
+		else if (itemsize) { /* v2.04: skip if size == 0 */
+			if ((CurrWordSize == 4) && (itemsize == 3)) itemsize = CurrWordSize; /* fix v2.49 (32bit only) */
 			info->localsize = ROUND_UP(info->localsize, itemsize);
+		}
 		curr->sym.offset = -info->localsize;
 	}
 
