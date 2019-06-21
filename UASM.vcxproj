@@ -71,6 +71,7 @@
     <ClCompile Include="posndir.c" />
     <ClCompile Include="preproc.c" />
     <ClCompile Include="proc.c" />
+    <ClCompile Include="pseudoFilter.c" />
     <ClCompile Include="queue.c" />
     <ClCompile Include="reswords.c" />
     <ClCompile Include="safeseh.c" />
@@ -152,6 +153,7 @@
     <ClInclude Include="H\posndir.h" />
     <ClInclude Include="H\preproc.h" />
     <ClInclude Include="H\proc.h" />
+    <ClInclude Include="H\pseudoFilter.h" />
     <ClInclude Include="H\queue.h" />
     <ClInclude Include="H\reswords.h" />
     <ClInclude Include="H\segattr.h" />

@@ -1205,6 +1205,11 @@ static int OnePass( void )
 		ModuleInfo.list = 0;
 		AddSimdTypes();
 		ModuleInfo.list = alist;
+    /* UASM 2.49 Ensure these are reset here in pre-process, as this can be set on a line that
+    still requires expansion, and then they accidentally remain set when moving onto a regular line via codegen */
+    decoflags = 0;
+    broadflags = 0;
+    evexflag = 0;
 	}
 
 #if FASTPASS

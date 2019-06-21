@@ -138,6 +138,10 @@ static void SetSimSeg( enum sim_seg segm, const char *name )
     if ( name == NULL ) {
         name = SegmNames[segm];
 		if (name == NULL && ModuleInfo.flat) name = "_flat";
+		
+		/* UASM 2.49 Prevent empty object with no options from crashing the assembler */
+		if (name == NULL) name = "_TEXT";
+
         if ( ModuleInfo.simseg_init & ( 1 << segm ) )
             pFmt = "%s %r";
         else {
@@ -258,7 +262,8 @@ ret_code SimplifiedSegDir( int i, struct asm_tok tokenarray[] )
 
     switch( type ) {
     case SIM_CODE: /* .code */
-        SetSimSeg( SIM_CODE, name );
+        
+		SetSimSeg( SIM_CODE, name );
 
         if( ModuleInfo.model == MODEL_TINY ) {
             /* v2.05: add the named code segment to DGROUP */
@@ -289,6 +294,13 @@ ret_code SimplifiedSegDir( int i, struct asm_tok tokenarray[] )
         break;
     case SIM_DATA:    /* .data  */
     case SIM_DATA_UN: /* .data? */
+
+		/* UASM 2.49 Warn about BSS data in BIN, as the space won't be allocated */
+		if (Options.output_format == OFORMAT_BIN && Options.sub_format != SFORMAT_PE && ModuleInfo.flat)
+		{
+			EmitWarn(2, UNINIT_DATA_IN_BIN);
+		}
+
     case SIM_CONST:   /* .const */
         SetSimSeg( type, name );
         AddLineQueueX( "%r %r:ERROR", T_ASSUME, T_CS );

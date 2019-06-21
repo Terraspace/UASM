@@ -1,0 +1,5 @@
+..\src\plain_bin\rv2.asm(6) : Warning A4299: BSS data in BIN output could have side effects
+..\src\plain_bin\rv2.asm(28) : Warning A4299: BSS data in BIN output could have side effects
+..\src\plain_bin\rv2.asm(6) : Warning A4299: BSS data in BIN output could have side effects
+..\src\plain_bin\rv2.asm(28) : Warning A4299: BSS data in BIN output could have side effects
+..\src\plain_bin\rv2.asm(28) : Warning A4299: BSS data in BIN output could have side effects

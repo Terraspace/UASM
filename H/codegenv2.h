@@ -129,6 +129,7 @@ enum op_type {
 	IMM8,
 	IMM16,
 	IMM32,
+  IMM48,
 	IMM64, /* 64bit ONLY immediate */	
 
 	R_ST0,
@@ -387,8 +388,8 @@ void          BuildVEX(bool* needVex, unsigned char* vexSize, unsigned char* vex
 	                   struct Instr_Def* instr, struct expr opnd[4], bool needB, bool needX, uint_32 opCount);				/* Build VEX prefix bytes       */
 void          BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr, struct expr opnd[4],
 						bool needB, bool needX, bool needRR, uint_32 opCount, struct code_info* CodeInfo);					/* Build EVEX prefix bytes      */
-int           BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned char* pREX, bool* needModRM, bool* needSIB,
-	                              unsigned int* dispSize, uint_64* pDisp, struct Instr_Def* instr, 
+int           BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned char* pREX, bool* needRM, bool* needSIB,
+	                              unsigned int* dispSize, int* pDisp, struct Instr_Def* instr, 
 								  struct expr opExpr[4], bool* needB, bool* needX, 
-								  bool* needRR, struct code_info* CodeInfo);											    /* Build Memory encoding ModRM/SIB bytes   */
+								  bool* needRR, struct code_info *CodeInfo);											    /* Build Memory encoding ModRM/SIB bytes   */
 unsigned char GetRegisterNo(struct asm_tok *regTok);																		/* Get Register Encoding Number from Token */

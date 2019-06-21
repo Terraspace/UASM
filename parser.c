@@ -2866,6 +2866,7 @@ static ret_code check_size( struct code_info *CodeInfo, const struct expr opndx[
             ( CodeInfo->opnd[OPND2].data32l <= UCHAR_MAX ) &&
             //CodeInfo->opnd[OPND2].data32l >= -128 ) ) {
             ( CodeInfo->opnd[OPND2].data32l >= -255 ) ) {
+
             return( rc ); /* OK cause no sign extension */
         }
 #endif
@@ -2896,7 +2897,6 @@ static ret_code check_size( struct code_info *CodeInfo, const struct expr opndx[
                 CodeInfo->evex_flag = TRUE;
               else{
                 if (CodeInfo->token >= T_BNDMK && CodeInfo->token <= T_BNDSTX){
-                  //__debugbreak();
                   switch (CodeInfo->token){
                     case T_BNDMK:
                     case T_BNDCL:
@@ -2959,14 +2959,14 @@ static ret_code check_size( struct code_info *CodeInfo, const struct expr opndx[
                             CodeInfo->opnd[OPND2].type = OP_I32;
                             p = "DWORD";
                         }
-                    } else if( (uint_32)CodeInfo->opnd[OPND2].data32l > UCHAR_MAX || op2_size == 2 ) {
+                    } else if( (uint_32)CodeInfo->opnd[OPND2].data32l > UCHAR_MAX  ) {//|| op2_size == 2
                          CodeInfo->mem_type = MT_WORD;
                          CodeInfo->iswide = 1;
                          CodeInfo->opnd[OPND2].type = OP_I16;
                     } else {
                          CodeInfo->mem_type = MT_BYTE;
                          CodeInfo->opnd[OPND2].type = OP_I8;
-						 CodeInfo->opnd[OPND1].type = OP_M08;
+						             CodeInfo->opnd[OPND1].type = OP_M08;
                          p = "BYTE";
                     }
                     if( opndx[OPND2].explicit == FALSE ) {
@@ -3248,14 +3248,10 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 				if (dirflags & DF_LABEL) 
 				{
 					if (i && tokenarray[0].token != T_ID) 
-					{
 						return(EmitErr(SYNTAX_ERROR_EX, tokenarray[0].string_ptr));
-					}
 				}
 				else if (i && tokenarray[i - 1].token != T_COLON && tokenarray[i - 1].token != T_DBL_COLON) 
-				{
 					return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i - 1].string_ptr));
-				}
 				
 				/* must be done BEFORE FStoreLine()! */
 				if ((ProcStatus & PRST_PROLOGUE_NOT_DONE) && (dirflags & DF_PROC)) 
@@ -3286,7 +3282,7 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 							break;
 						default:
 							/* this error may happen if CATSTR, SUBSTR, MACRO, ...a ren't at pos 1 */
-							EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr);
+              EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr);
 							break;
 					}
 				}
@@ -3318,7 +3314,6 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 
 		if (i && tokenarray[i - 1].token == T_ID)
 			i--;
-
 		return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].string_ptr));
 
 	} /* end of != T_INSTRUCTION */
@@ -3865,8 +3860,9 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 	if (CurrOpnd != j) 
 	{
 		for (; tokenarray[i].token != T_COMMA; i--);
-		if (CodeInfo.token < VEX_START)
-			return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
+    if (CodeInfo.token < VEX_START) {
+      return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
+    }
 		else
 			if ((CodeInfo.token == T_VMASKMOVPS || CodeInfo.token == T_VMASKMOVPD) && (j < 3))
 				return(EmitErr(MISSING_OPERATOR_IN_EXPRESSION));
@@ -3937,6 +3933,22 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 							CodeInfo.evex_sae = opndx[CurrOpnd].saeflags;
 						break;
 					}
+
+          if (CodeInfo.opnd[OPND3].type == OP_I8) {
+            switch (CodeInfo.token) {
+            case T_CMPPD:
+            case T_CMPPS:
+            case T_CMPSD:
+            case T_CMPSS:
+            case T_VCMPPD:
+            case T_VCMPPS:
+            case T_VCMPSD:
+            case T_VCMPSS:
+            case T_PCLMULQDQ:
+            case T_VPCLMULQDQ:
+              goto noterror;
+            }
+          }
 					CodeInfo.pinstr++; // work here for {sae}
 					if ((CodeInfo.pinstr->first == TRUE)) 
 					{
@@ -3945,7 +3957,7 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 					}
 				} while (1);
 			}
-      
+   noterror:   
 			/* v2.06: moved here from process_const() */
 			if (CodeInfo.token == T_IMUL) 
 			{
@@ -4007,7 +4019,6 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 			}
 		}
 	}
-	
 	/* *********************************************************** */
 	/* Use the V2 CodeGen, else fallback to the standard CodeGen   */
 	/* *********************************************************** */

@@ -2383,6 +2383,7 @@ ret_code CopyPrototype(struct dsym *proc, struct dsym *src)
 static void ProcFini(struct dsym *proc)
 /***************************************/
 {
+	struct asym* procline = NULL;
 	struct dsym *curr;
 	/* v2.06: emit an error if current segment isn't equal to
 	* the one of the matching PROC directive. Close the proc anyway!
@@ -2454,6 +2455,10 @@ static void ProcFini(struct dsym *proc)
 		}
 		SymGetLocal((struct asym *)CurrProc);
 	}
+
+	/* UASM 2.49 Ensure ProcLine value is reset */
+	procline = SymFind("@ProcLine");
+	procline->value = 0;
 
 	CurrProc = pop_proc();
 	if (CurrProc)
@@ -4294,9 +4299,10 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 				if (info->localsize <= 128)
 				{
 					AddLineQueueX("mov %r, %u", T_EAX, info->localsize);
-					AddLineQueueX("dec %r", T_EAX);
-					AddLineQueueX("mov byte ptr [%r + %r], 0", T_RSP, T_RAX);
-					AddLineQueueX("dw 0F875h");
+					AddLineQueueX("dw 02ebh");       /* jmp L2 */
+					AddLineQueueX("dec %r", T_EAX);  /* L1: */
+					AddLineQueueX("mov byte ptr [%r + %r], 0", T_RSP, T_RAX); /* L2: */
+					AddLineQueueX("dw 0F875h"); /* jne L1: */
 				}
 				else
 				{
@@ -6089,8 +6095,10 @@ static void SetLocalOffsets(struct proc_info *info)
 		info->localsize += curr->sym.total_size;
 		if (itemsize > align)
 			info->localsize = ROUND_UP(info->localsize, align);
-		else if (itemsize) /* v2.04: skip if size == 0 */
+		else if (itemsize) { /* v2.04: skip if size == 0 */
+			if ((CurrWordSize == 4) && (itemsize == 3)) itemsize = CurrWordSize; /* fix v2.49 (32bit only) */
 			info->localsize = ROUND_UP(info->localsize, itemsize);
+		}
 		curr->sym.offset = -info->localsize;
 	}
 
