@@ -913,6 +913,12 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 				/* Rebuild string */
 				for (j = 0;j <= Token_Count; j++)
 				{
+					if (tokenarray[j].tokval == T_PTR)
+					{
+						// Ensure we put a space between type and PTR UASM 2.50
+						strcpy(p, " ");
+						p++;
+					}
 					strcpy(p, tokenarray[j].string_ptr);
 					tokenarray[j].tokpos = p;
 					p += strlen(tokenarray[j].string_ptr);

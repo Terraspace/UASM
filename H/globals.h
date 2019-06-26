@@ -202,11 +202,11 @@
 
 /* Uasm version info */
 #ifdef _WIN64
-#define _UASM_VERSION_STR_ "2.49"
+#define _UASM_VERSION_STR_ "2.50"
 #else
-#define _UASM_VERSION_STR_ "2.49"
+#define _UASM_VERSION_STR_ "2.50"
 #endif
-#define _UASM_VERSION_INT_ 249
+#define _UASM_VERSION_INT_ 250
 #define _UASM_VERSION_SUFFIX_ "pre"
 #define _UASM_VERSION_ _UASM_VERSION_STR_ //_UASM_VERSION_SUFFIX_
 
@@ -901,7 +901,7 @@ struct module_info {
 	unsigned char       ZEROLOCALS;         /* zero local variables  */
 #endif
 
-	unsigned char		MODULEARCH;			/* MODULE Architecutre <avx or sse> */
+	unsigned char		MODULEARCH = ARCH_SSE;			/* MODULE Architecutre <avx or sse> */
 
 #define CurrSource      ModuleInfo.currsource
 #define Token_Count     ModuleInfo.token_count

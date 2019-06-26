@@ -332,7 +332,11 @@ OPTFUNC( SetCaseMap )
 
 		if (Options.nomlib == FALSE && ModuleInfo.defOfssize == USE64) 
 		{
-			CreateMacroLibCases();
+			CreateMacroLibCases64();
+		}
+		else if (Options.nomlib == FALSE && ModuleInfo.defOfssize == USE32)
+		{
+			CreateMacroLibCases32();
 		}
 
     } else {

@@ -147,7 +147,37 @@ char *macDef32[] = {
 	"ENDMETHODS MACRO"
 };
 
-void CreateMacroLibCases(void)
+void CreateMacroLibCases64(void)
+{
+	/* Create case alternative names for macrolib functions */
+	if (ModuleInfo.case_sensitive && !ModuleInfo.convert_uppercase)
+	{
+		AddLineQueue("uinvoke EQU UINVOKE");
+		AddLineQueue("Uinvoke EQU UINVOKE");
+		AddLineQueue("asfloat EQU ASFLOAT");
+		AddLineQueue("asdouble EQU ASDOUBLE");
+		AddLineQueue("r4p EQU R4P");
+		AddLineQueue("r8p EQU R8P");
+		AddLineQueue("cstr EQU CSTR");
+		AddLineQueue("CStr EQU CSTR");
+		AddLineQueue("wstr EQU WSTR");
+		AddLineQueue("WStr EQU WSTR");
+		AddLineQueue("memalign EQU MEMALIGN");
+		AddLineQueue("define EQU DEFINE");
+		AddLineQueue("Define EQU DEFINE");
+		AddLineQueue("mov64 EQU MOV64");
+		AddLineQueue("mov128 EQU MOV128");
+		AddLineQueue("movxmmr128 EQU MOVXMMR128");
+		AddLineQueue("slxmmr EQU SLXMMR");
+		AddLineQueue("shiftleft128 EQU SHIFTLEFT128");
+		AddLineQueue("srxmmr EQU SRXMMR");
+		AddLineQueue("shiftright128 EQU SHIFTRIGHT128");
+		AddLineQueue("notmask128 EQU NOTMASK128");
+		AddLineQueue("getmask128 EQU GETMASK128");
+	}
+}
+
+void CreateMacroLibCases32(void)
 {
 	/* Create case alternative names for macrolib functions */
 	if (ModuleInfo.case_sensitive && !ModuleInfo.convert_uppercase)
@@ -282,7 +312,7 @@ void InitAutoMacros32(void)
 	uint_32 start_pos = 0;
 	char  *srcLines[128]; // NB: 128 is the max number of lines of macro code per macro.
 
-	uint_32 macroLen[] = {17, 11, 3, 3, 8, 54, 46, 54, 46, 7, 6, 6, 6, 7, 7, 7, 8, 10, 3, 7, 11, 19, 10, 10, 35, 1, 1, 1, 1, 37, 6, 2, 23, 54, 10, 6 }; // Count of individual lines of macro-body code.
+	uint_32 macroLen[] = {17, 11, 3, 3, 8, 54, 46, 54, 46, 7, 6, 6, 6, 7, 7, 7, 8, 10, 3, 7, 11, 19, 10, 10, 37, 1, 1, 1, 1, 37, 6, 2, 23, 54, 10, 6 }; // Count of individual lines of macro-body code.
 	char *macCode[] = {
 		"IFNDEF GMASK",".data","GMASK OWORD 0","ENDIF","IFNDEF NOTMASK",".data","NOTMASK OWORD -1","ENDIF",".code","IF @Arch EQ 1","movups reg, MASK field","pxor reg, NOTMASK","ELSE","vmovups reg, MASK field","vpxor reg, reg, NOTMASK","ENDIF","ENDM",NULL,
 		"IFNDEF GMASK",".data","GMASK OWORD 0","ENDIF",".code","IF @Arch EQ 1","movups reg, MASK field","ELSE","vmovups reg, MASK field","ENDIF","ENDM",NULL,
@@ -308,7 +338,7 @@ void InitAutoMacros32(void)
 		"LOCAL prefix1, wrd, nu, varname", "prefix1 SUBSTR <txtitm>, 1, 1", "IFIDN prefix1, <&>", "nu SUBSTR <txtitm>, 2", "wrd CATSTR <ADDR >, nu", "EXITM <wrd>", "ENDIF", "IFIDN prefix1, <*>", "nu SUBSTR <txtitm>, 2", ".data ?", "varname dq ?", ".code", "mov eax, nu", "mov eax,[eax]", "mov varname, eax", "EXITM <varname>", "ENDIF", "EXITM <txtitm>", "ENDM", NULL,
 		".data", "align 4", "vname dd value", ".code", "IF @Arch EQ 0", "movss reg, vname", "ELSE", "vmovss reg, vname", "ENDIF", "ENDM", NULL,
 		".data", "align 8", "bname dq value", ".code", "IF @Arch EQ 0", "movsd reg, bname", "ELSE", "vmovsd reg, bname", "ENDIF", "ENDM", NULL,
-		"IFB <args>", "invoke func", "ELSE", "invoke func, args", "ENDIF", "IF @LastReturnType EQ 0", "EXITM <al>", "ELSEIF @LastReturnType EQ 0x40", "EXITM <al>", "ELSEIF @LastReturnType EQ 1", "EXITM <ax>", "ELSEIF @LastReturnType EQ 0x41", "EXITM <ax>", "ELSEIF @LastReturnType EQ 2", "EXITM <eax>", "ELSEIF @LastReturnType EQ 0x42", "EXITM <eax>", "ELSEIF @LastReturnType EQ 3", "EXITM <rax>", "ELSEIF @LastReturnType EQ 0x43", "EXITM <rax>", "ELSEIF @LastReturnType EQ 0xc3", "EXITM <rax>", "ELSEIF @LastReturnType EQ 6", "EXITM <xmm0>", "ELSEIF @LastReturnType EQ 7", "EXITM <ymm0>", "ELSEIF @LastReturnType EQ 8", "EXITM <zmm0>", "ELSEIF @LastReturnType EQ 0x22", "EXITM <xmm0>", "ELSEIF @LastReturnType EQ 0x23", "EXITM <xmm0>", "ENDIF", "ENDM", NULL,
+		"IFB <args>", "invoke func", "ELSE", "invoke func, args", "ENDIF", "IF @LastReturnType EQ 0", "EXITM <al>", "ELSEIF @LastReturnType EQ 0x40", "EXITM <al>", "ELSEIF @LastReturnType EQ 1", "EXITM <ax>", "ELSEIF @LastReturnType EQ 0x41", "EXITM <ax>", "ELSEIF @LastReturnType EQ 2", "EXITM <eax>", "ELSEIF @LastReturnType EQ 0x42", "EXITM <eax>", "ELSEIF @LastReturnType EQ 3", "EXITM <rax>", "ELSEIF @LastReturnType EQ 0x43", "EXITM <rax>", "ELSEIF @LastReturnType EQ 0xc3", "EXITM <rax>", "ELSEIF @LastReturnType EQ 6", "EXITM <xmm0>", "ELSEIF @LastReturnType EQ 7", "EXITM <ymm0>", "ELSEIF @LastReturnType EQ 8", "EXITM <zmm0>", "ELSEIF @LastReturnType EQ 0x22", "EXITM <xmm0>", "ELSEIF @LastReturnType EQ 0x23", "EXITM <xmm0>", "ELSE", "EXITM <eax>", "ENDIF", "ENDM", NULL,
 		"EXITM <REAL4 PTR reg> ", NULL,
 		"EXITM <REAL8 PTR reg> ", NULL,
 		"EXITM <REAL4 PTR reg> ", NULL,
