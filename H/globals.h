@@ -65,7 +65,14 @@
 
 #endif
 
-#if !(NOINCREASEDMAXLINELEN)
+#if (defined(X86MACROLIB) && (X86MACROLIB >= 1))
+#   define INCREASEDMAXLINELENGHT   1
+#   if (defined(INCREASEDMAXLINELENGHT) && (INCREASEDMAXLINELENGHT >= 1))
+#       define BUILD_X86MACROLIB   1
+#   endif
+#endif
+
+#if (defined(INCREASEDMAXLINELENGHT) && (INCREASEDMAXLINELENGHT >= 1))
 #define MAX_LINE_LEN            25600  /* no restriction for this number */
 #define MAX_TOKEN  MAX_LINE_LEN - 32  /* max tokens in one line */
 #define MAX_STRING_LEN          MAX_LINE_LEN - 32 /* must be < MAX_LINE_LEN */

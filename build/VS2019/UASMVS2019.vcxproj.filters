@@ -196,6 +196,9 @@
     <ClCompile Include="..\..\codegenv2.c">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\pseudoFilter.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\H\assume.h">
@@ -448,6 +451,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\H\MemTable64.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\H\pseudoFilter.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

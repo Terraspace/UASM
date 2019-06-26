@@ -1191,7 +1191,7 @@ static int OnePass( void )
 		else
 		{
 			InitAutoMacros64();
-#if !(NOX86MACROLIB)
+#if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))
 			Addx86defs();
 			Initx86AutoMacros64();
 #endif

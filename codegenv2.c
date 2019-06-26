@@ -19,6 +19,22 @@ const char        szNullStr[] = { "<NULL>" };
 struct Mem_Def* MemTable = NULL;
 struct Instr_Def* InstrHash[16384];
 
+#ifdef _WIN32
+#else
+#ifndef INT_MIN
+	#define INT_MIN     (-2147483647 - 1) // minimum (signed) int value
+#endif
+#ifndef INT_MAX
+	#define INT_MAX       2147483647    // maximum (signed) int value
+#endif
+#ifndef UINT_MAX
+	#define UINT_MAX      0xffffffff    // maximum unsigned int value
+#endif
+#ifndef UCHAR_MAX
+	#define UCHAR_MAX     0xff      // maximum unsigned char value
+#endif
+#endif
+
 #include "MemTable32.h"
 #include "MemTable64.h"
 #include "InstrTableV2.h"
@@ -1633,7 +1649,7 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 		/* If the matched instruction requires processing of a memory address */
 		if (matchedInstr->memOpnd != NO_MEM)
 			aso = BuildMemoryEncoding(&modRM, &sib, &rexByte, &needModRM, &needSIB,								/* This could result in modifications to REX/VEX/EVEX, modRM and SIB bytes */
-				&dispSize, &displacement, matchedInstr, opExpr, &needB, &needX, &needRR, CodeInfo);
+				&dispSize, &displacement.displacement64, matchedInstr, opExpr, &needB, &needX, &needRR, CodeInfo);
 		modRM |= BuildModRM(matchedInstr->modRM, matchedInstr, opExpr, &needModRM, &needSIB,
 			((matchedInstr->vexflags & VEX) || (matchedInstr->vexflags & EVEX)));								/* Modify the modRM value for any non-memory operands */
 

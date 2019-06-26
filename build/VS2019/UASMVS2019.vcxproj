@@ -71,6 +71,7 @@
     <ClCompile Include="..\..\posndir.c" />
     <ClCompile Include="..\..\preproc.c" />
     <ClCompile Include="..\..\proc.c" />
+    <ClCompile Include="..\..\pseudoFilter.c" />
     <ClCompile Include="..\..\queue.c" />
     <ClCompile Include="..\..\reswords.c" />
     <ClCompile Include="..\..\safeseh.c" />
@@ -158,6 +159,7 @@
     <ClInclude Include="..\..\H\posndir.h" />
     <ClInclude Include="..\..\H\preproc.h" />
     <ClInclude Include="..\..\H\proc.h" />
+    <ClInclude Include="..\..\H\pseudoFilter.h" />
     <ClInclude Include="..\..\H\queue.h" />
     <ClInclude Include="..\..\H\reswords.h" />
     <ClInclude Include="..\..\H\segattr.h" />
@@ -264,7 +266,7 @@
     <ClCompile>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>DEBUG_OUT;NOX86MACROLIB=0;NOINCREASEDMAXLINELEN=0;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DEBUG_OUT;X86MACROLIB=1;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <CompileAsManaged>false</CompileAsManaged>
       <AdditionalIncludeDirectories>..\..\H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsC</CompileAs>
@@ -293,7 +295,7 @@
     <ClCompile>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>DEBUG_OUT;NOX86MACROLIB=0;NOINCREASEDMAXLINELEN=0;WIN64;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DEBUG_OUT;X86MACROLIB=1;WIN64;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <CompileAsManaged>false</CompileAsManaged>
       <AdditionalIncludeDirectories>..\..\H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsC</CompileAs>
@@ -320,7 +322,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
-      <PreprocessorDefinitions>DEBUG_OUT;NOX86MACROLIB=0;NOINCREASEDMAXLINELEN=0;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DEBUG_OUT;X86MACROLIB=1;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <CompileAsManaged>false</CompileAsManaged>
       <AdditionalIncludeDirectories>..\..\H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsC</CompileAs>
@@ -350,7 +352,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
-      <PreprocessorDefinitions>DEBUG_OUT;NOX86MACROLIB=0;NOINCREASEDMAXLINELEN=0;WIN64;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DEBUG_OUT;X86MACROLIB=1;WIN64;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <CompileAsManaged>false</CompileAsManaged>
       <AdditionalIncludeDirectories>..\..\H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
