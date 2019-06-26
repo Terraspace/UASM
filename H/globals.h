@@ -250,17 +250,17 @@
 //#define fast_is_valid_id_char( ch )  ( isalnum(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' )
 //#define is_valid_id_char( ch )  ( isalnum(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' || ((unsigned char)ch > 127 && (unsigned char)ch <= 255)  )
 //#define is_valid_id_first_char( ch )  ( isalpha(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' || (ch == '.' && ModuleInfo.dotname == TRUE ))
-#define _LUPPER		0x01	/* upper case letter */
-#define _LLOWER		0x02	/* lower case letter */
-#define _LDIGIT		0x04	/* digit[0-9] */
-#define _LSPACE		0x08	/* tab, carriage return, newline, */
+#define _LUPPER     0x01    /* upper case letter */
+#define _LLOWER     0x02    /* lower case letter */
+#define _LDIGIT     0x04    /* digit[0-9] */
+#define _LSPACE     0x08    /* tab, carriage return, newline, */
 /* vertical tab or form feed */
-#define _LPUNCT		0x10	/* punctuation character */
-#define _LCONTROL	0x20	/* control character */
-#define _LABEL		0x40	/* UPPER + LOWER + '@' + '_' + '$' + '?' */
-#define _LHEX		0x80	/* hexadecimal digit */
+#define _LPUNCT     0x10    /* punctuation character */
+#define _LCONTROL   0x20    /* control character */
+#define _LABEL      0x40    /* UPPER + LOWER + '@' + '_' + '$' + '?' */
+#define _LHEX       0x80    /* hexadecimal digit */
 
-extern unsigned char _ltype[];	/* Label type array */
+extern unsigned char _ltype[];  /* Label type array */
 
 #define islalnum(c)  (_ltype[(unsigned char)(c) + 1] & (_LDIGIT | _LUPPER | _LLOWER))
 #define islalpha(c)  (_ltype[(unsigned char)(c) + 1] & (_LUPPER | _LLOWER))
@@ -278,7 +278,7 @@ extern unsigned char _ltype[];	/* Label type array */
 #define fast_is_valid_id_char( c ) (_ltype[(unsigned char)(c)+1] & (_LABEL | _LDIGIT))
 #define is_valid_id_char( c ) (_ltype[(unsigned char)(c)+1] & (_LABEL | _LDIGIT))
 #define is_valid_id_first_char( c ) \
-	((_ltype[(unsigned char)(c) + 1] & _LABEL) || ((c) == '.' && ModuleInfo.dotname))
+    ((_ltype[(unsigned char)(c) + 1] & _LABEL) || ((c) == '.' && ModuleInfo.dotname))
 #define is_valid_id_start( c ) (_ltype[(unsigned char)(c) + 1] & _LABEL)
 #define is_valid_first_char( c ) ((_ltype[(unsigned char)(c) + 1] & _LABEL) || ((c) == '.' ))
 
@@ -304,7 +304,7 @@ enum oformat
     OFORMAT_OMF,
     OFORMAT_COFF,/* used by -coff, -djgpp and -win64 */
     OFORMAT_ELF, /* used by -elf and elf64 */
-	OFORMAT_MAC, /* used by -macho64 */
+    OFORMAT_MAC, /* used by -macho64 */
 };
 
 enum sformat 
@@ -336,9 +336,9 @@ enum lang_type {
     LANG_FASTCALL   = 7,
     LANG_VECTORCALL = 8,
     LANG_SYSVCALL   = 9,
-    LANG_REGCALL	= 10,
-    LANG_THISCALL	= 11,
-	LANG_DELPHICALL = 12  // 
+    LANG_REGCALL    = 10,
+    LANG_THISCALL   = 11,
+    LANG_DELPHICALL = 12  // 
 };
 
 /* Memory model type.
@@ -523,14 +523,14 @@ enum stdcall_decoration {
 
 enum vectorcall_decoration
 {
-	VECTORCALL_FULL,
-	VECTORCALL_NONE
+    VECTORCALL_FULL,
+    VECTORCALL_NONE
 };
 
 enum regcall_decoration
 {
-	REGCALL_FULL,
-	REGCALL_NONE
+    REGCALL_FULL,
+    REGCALL_NONE
 };
 
 enum regcall_version
@@ -563,7 +563,7 @@ enum opt_names {
     OPTN_OBJ_FN,              /* -Fo option */
     OPTN_LST_FN,              /* -Fl option */
     OPTN_ERR_FN,              /* -Fr option */
-	OPTN_SYM_FN,              /* -Fs option */
+    OPTN_SYM_FN,              /* -Fs option */
 #if DLLIMPORT
     OPTN_LNKDEF_FN,           /* -Fd option */
 #endif
@@ -732,14 +732,14 @@ struct global_options {
     enum cpu_info cpu;                   /* -0|1|2|3|4|5|6 & -fp{0|2|3|5|6|c} option */
     enum fastcall_type fctype;           /* -zf0 & -zf1 option */
     bool        syntax_check_only;       /* -Zs option */
-	bool		nomlib;					 /* -nomlib option */
-	bool        lessoutput;              /* -less option */
-	bool        bnd;                     /* -mpx or option bnd */
-	uint_16     seg_align;               /* -Sp(n) set segment packing or alignment */
-	bool        literal_strings;         /* Allow use of literal strings in invoke and wide data dw declarations */
-	bool        vtable;                  /* Use vtable based method invocation */
-	bool        hlcall;                  /* Allow High Level C style Calling and object invocation */
-	bool        pie;					 /* Generate Position Independant Executable (Unix) */
+    bool        nomlib;                  /* -nomlib option */
+    bool        lessoutput;              /* -less option */
+    bool        bnd;                     /* -mpx or option bnd */
+    uint_16     seg_align;               /* -Sp(n) set segment packing or alignment */
+    bool        literal_strings;         /* Allow use of literal strings in invoke and wide data dw declarations */
+    bool        vtable;                  /* Use vtable based method invocation */
+    bool        hlcall;                  /* Allow High Level C style Calling and object invocation */
+    bool        pie;                     /* Generate Position Independant Executable (Unix) */
 #if MANGLERSUPP
     enum naming_types naming_convention; /* OW naming peculiarities */
 #endif
@@ -863,9 +863,9 @@ struct module_info {
     unsigned char       defOfssize;      /* default segment offset size (16,32 [,64]-bit) */
     unsigned char       wordsize;        /* current word size (2,4,8) */
     unsigned char       inside_comment;  /* v2.10: moved from tokenize.c */
-	
-	unsigned			arch : 1;		 /* option arch:{avx/sse} 1=AVX(default architecture), 0=SSE for generated code */
-	unsigned            redzone : 1;     /* option redzone:{yes/no} 1=use, 0=dont use redzone */
+    
+    unsigned            arch : 1;        /* option arch:{avx/sse} 1=AVX(default architecture), 0=SSE for generated code */
+    unsigned            redzone : 1;     /* option redzone:{yes/no} 1=use, 0=dont use redzone */
 
     unsigned            case_sensitive:1;     /* option casemap */
     unsigned            convert_uppercase:1;  /* option casemap */
@@ -901,7 +901,7 @@ struct module_info {
         uint_8          win64_flags;     /* for WIN64 + PE(32+) */
 #endif
 #if MACHO_SUPPORT
-		uint_8			osx_osabi;		/* for OSX Macho */
+        uint_8          osx_osabi;      /* for OSX Macho */
 #endif
         };
 #endif
@@ -935,18 +935,18 @@ struct module_info {
     unsigned            basereg[3];      /* stack base register (16-, 32-, 64-bit */
 #endif
     char                name[FILENAME_MAX];/* name of module */
-	bool                flat;
+    bool                flat;
 };
 
 #if AVXSUPP
-	unsigned char       decoflags;          /* EVEX  sets up decorator flags in P2: z, aaa   */
-	unsigned char       broadflags;         /* EVEX  sets up decorator flags in P2: b        */
-	unsigned char       evex;               /* EVEX  encoding  */
-	unsigned char       evexflag;			/* UASM 2.48 User specified EVEX promotion */
-	unsigned char       ZEROLOCALS;         /* zero local variables  */
+    unsigned char       decoflags;          /* EVEX  sets up decorator flags in P2: z, aaa   */
+    unsigned char       broadflags;         /* EVEX  sets up decorator flags in P2: b        */
+    unsigned char       evex;               /* EVEX  encoding  */
+    unsigned char       evexflag;           /* UASM 2.48 User specified EVEX promotion */
+    unsigned char       ZEROLOCALS;         /* zero local variables  */
 #endif
 
-	unsigned char		MODULEARCH = ARCH_SSE;			/* MODULE Architecutre <avx or sse> */
+extern unsigned char        MODULEARCH;         /* MODULE Architecture <avx or sse> */
 
 #define CurrSource      ModuleInfo.currsource
 #define Token_Count     ModuleInfo.token_count
