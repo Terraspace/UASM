@@ -6120,8 +6120,8 @@ char *x86macName64[] = {
     "ALIGNXMMFIELDPROC",
     "ALIGNYMMFIELDPROC",
     "ALIGNZMMFIELDPROC",
-    "FUNCSTART",
-    "FUNCEND",
+    "PROCSTART",
+    "PROCEND",
     "SHUFFLE4",
     "SHUFFLER4",
     "SHUFFLE2",
@@ -6182,8 +6182,8 @@ char *x86macDef64[] = {
     "ALIGNXMMFIELDPROC MACRO",
     "ALIGNYMMFIELDPROC MACRO",
     "ALIGNZMMFIELDPROC MACRO",
-    "FUNCSTART MACRO functionName:REQ, callconvType:REQ, retType:REQ, usesStr:REQ, args:VARARG",
-    "FUNCEND MACRO",
+    "PROCSTART MACRO functionName:REQ, callconvType:REQ, retType:REQ, inpFrame:REQ, usesStr:REQ, args:VARARG",
+    "PROCEND MACRO",
     "SHUFFLE4 MACRO V3, V2, V1, V0",
     "SHUFFLER4 MACRO V0, V1, V2, V3",
     "SHUFFLE2 MACRO V1, V0",
@@ -6250,8 +6250,8 @@ void x86CreateMacroLibCases(void)
         AddLineQueue("alignxmmfieldproc EQU <ALIGNXMMFIELDPROC>");
         AddLineQueue("alignymmfieldproc EQU ALIGNYMMFIELDPROC");
         AddLineQueue("alignzmmfieldproc EQU ALIGNZMMFIELDPROC");
-        AddLineQueue("funcstart EQU FUNCSTART");
-        AddLineQueue("funcend EQU FUNCEND");
+        AddLineQueue("procstart EQU PROCSTART");
+        AddLineQueue("procend EQU PROCEND");
 
         AddLineQueue("shuffle4 EQU SHUFFLE4");
         AddLineQueue("shuffler4 EQU SHUFFLER4");
@@ -9938,8 +9938,8 @@ void Initx86AutoMacros64(void)
     /*25 ALIGNXMMFIELDPROC*/    "xmm_pfield_option_alignment TEXTEQU <>","xmm_fproc_option_alignment TEXTEQU <>","xmm_pfield_option_alignment CATSTR xmm_pfield_option_alignment, <option fieldalign:XMM_SIZE>","xmm_fproc_option_alignment CATSTR xmm_fproc_option_alignment, <option procalign:XMM_SIZE>","xmm_pfield_option_alignment","xmm_fproc_option_alignment","ENDM",NULL,
     /*26 ALIGNYMMFIELDPROC*/    "ymm_pfield_option_alignment TEXTEQU <>","ymm_fproc_option_alignment TEXTEQU <>","ymm_pfield_option_alignment CATSTR ymm_pfield_option_alignment, <option fieldalign:YMM_SIZE>","ymm_fproc_option_alignment CATSTR ymm_fproc_option_alignment, <option procalign:YMM_SIZE>","ymm_pfield_option_alignment","ymm_fproc_option_alignment","ENDM",NULL,
     /*27 ALIGNZMMFIELDPROC*/    "zmm_pfield_option_alignment TEXTEQU <>","zmm_fproc_option_alignment TEXTEQU <>","zmm_pfield_option_alignment CATSTR zmm_pfield_option_alignment, <option fieldalign:ZMM_SIZE>","zmm_fproc_option_alignment CATSTR zmm_fproc_option_alignment, <option procalign:ZMM_SIZE>","zmm_pfield_option_alignment","zmm_fproc_option_alignment","ENDM",NULL,
-    /*28 FUNCSTART*/            "_curfunctionName_ TEXTEQU <functionName>","fnexproto TEXTEQU <>","fnexproto CATSTR fnexproto, <&functionName&>","fnexproto CATSTR fnexproto, < PROTO >, <&callconvType&>, < >, <(&retType&)>, < >, <&args&>","fnexproc TEXTEQU <>","fnexproc CATSTR fnexproc, <&functionName&>","fnexproc CATSTR fnexproc, < PROC >, <&callconvType&>, < >, <(&retType&)>, < >, <FRAME>, < >, <&usesStr&>, < >, <&args&>","fnexproto","fnexproc","ENDM",NULL,
-    /*29 FUNCEND*/              "fnexfuncend TEXTEQU <>","fnexfuncend CATSTR fnexfuncend, _curfunctionName_","fnexfuncend CATSTR fnexfuncend, < ENDP>","fnexfuncend","ENDM",NULL,
+    /*28 PROCSTART*/            "_curfunctionName_ TEXTEQU <functionName>","fnexproto TEXTEQU <>","fnexproto CATSTR fnexproto, <&functionName&>","fnexproto CATSTR fnexproto, < PROTO >, <&callconvType&>, < >, <(&retType&)>, < >, <&args&>","fnexproc TEXTEQU <>","fnexproc CATSTR fnexproc, <&functionName&>","fnexproc CATSTR fnexproc, < PROC >, <&callconvType&>, < >, <(&retType&)>, < >, <&inpFrame&>, < >, <&usesStr&>, < >, <&args&>","fnexproto","fnexproc","ENDM",NULL,
+    /*29 PROCEND*/              "fnexprocend TEXTEQU <>","fnexprocend CATSTR fnexprocend, _curfunctionName_","fnexprocend CATSTR fnexprocend, < ENDP>","fnexprocend","ENDM",NULL,
     /*30 SHUFFLE4*/             "EXITM %((V3 shl 6) or (V2 shl 4) or (V1 shl 2) or (V0))","ENDM",NULL,
     /*31 SHUFFLER4*/            "EXITM %((V0) or (V1 shl 2) or (V2 shl 4) or (V3 shl 6))","ENDM",NULL,
     /*32 SHUFFLE2*/             "EXITM %((V1 shl 1) or (V0))","ENDM",NULL,
@@ -9959,11 +9959,11 @@ void Initx86AutoMacros64(void)
     /*46 VV64CI*/               "vmm64fnex TEXTEQU <>","vmm64fnex CATSTR vmm64fnex, <&functionName&>","public vmm64fnex","vmm64fnex CATSTR vmm64fnex, < vectorType>,  < { <V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1> } >","vmm64fnex","ENDM",NULL,
     /*47 VV64CI64*/             "vmm64fnex64 TEXTEQU <>","vmm64fnex64 CATSTR vmm64fnex64, <&functionName&>","public vmm64fnex64","vmm64fnex64 CATSTR vmm64fnex64, < vectorType>, < { <V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16, V17, V18, V19, V20, V21, V22, V23, V24, V25, V26, V27, V28, V29, V30, V31, V32, V33, V34, V35, V36, V37, V38, V39, V40, V41, V42, V43, V44, V45, V46, V47, V48, V49, V50, V51, V52, V53, V54, V55, V56, V57, V58, V59, V60, V61, V62, V63, V64> } >","vmm64fnex64","ENDM",NULL,
     /*48 VV32CI*/               "vmm32fnex TEXTEQU <>","vmm32fnex CATSTR vmm32fnex, <&functionName&>","public vmm32fnex","vmm32fnex CATSTR vmm32fnex, < vectorType>,  < { <V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1> } >","vmm32fnex","ENDM",NULL,
-    /*49 VV32CI32*/             "mm32fnex32 TEXTEQU <>","mm32fnex32 CATSTR mm32fnex32, <&functionName&>","public mm32fnex32","mm32fnex32 CATSTR mm32fnex32, < vectorType>, < { <V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16, V17, V18, V19, V20, V21, V22, V23, V24, V25, V26, V27, V28, V29, V30, V31, V32> } >","mm32fnex32","ENDM",NULL,
+    /*49 VV32CI32*/             "vmm32fnex32 TEXTEQU <>","vmm32fnex32 CATSTR vmm32fnex32, <&functionName&>","public vmm32fnex32","vmm32fnex32 CATSTR vmm32fnex32, < vectorType>, < { <V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16, V17, V18, V19, V20, V21, V22, V23, V24, V25, V26, V27, V28, V29, V30, V31, V32> } >","vmm32fnex32","ENDM",NULL,
     /*50 VV16CI*/               "vmm16fnex TEXTEQU <>","vmm16fnex CATSTR vmm16fnex, <&functionName&>","public vmm16fnex","vmm16fnex CATSTR vmm16fnex, < vectorType>,  < { <V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1, V1> } >","vmm16fnex","ENDM",NULL,
-    /*51 VV16CI16*/             "mm16fnex16 TEXTEQU <>","mm16fnex16 CATSTR mm16fnex16, <&functionName&>","public mm16fnex16","mm16fnex16 CATSTR mm16fnex16, < vectorType>, < { <V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16> } >","mm16fnex16","ENDM",NULL,
+    /*51 VV16CI16*/             "vmm16fnex16 TEXTEQU <>","vmm16fnex16 CATSTR vmm16fnex16, <&functionName&>","public vmm16fnex16","vmm16fnex16 CATSTR vmm16fnex16, < vectorType>, < { <V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16> } >","vmm16fnex16","ENDM",NULL,
     /*52 VV8CI*/                "vmm8fnex TEXTEQU <>","vmm8fnex CATSTR vmm8fnex, <&functionName&>","public vmm8fnex","vmm8fnex CATSTR vmm8fnex, < vectorType>,  < { <V1, V1, V1, V1, V1, V1, V1, V1> } >","vmm8fnex","ENDM",NULL,
-    /*53 VV8CI8*/               "mm8fnex8 TEXTEQU <>","mm8fnex8 CATSTR mm8fnex8, <&functionName&>","public mm8fnex8","mm8fnex8 CATSTR mm8fnex8, < vectorType>, < { <V1, V2, V3, V4, V5, V6, V7, V8> } >","mm8fnex8","ENDM",NULL,
+    /*53 VV8CI8*/               "vmm8fnex8 TEXTEQU <>","vmm8fnex8 CATSTR vmm8fnex8, <&functionName&>","public vmm8fnex8","vmm8fnex8 CATSTR vmm8fnex8, < vectorType>, < { <V1, V2, V3, V4, V5, V6, V7, V8> } >","vmm8fnex8","ENDM",NULL,
     /*54 VV4CI*/                "vmm4fnex TEXTEQU <>","vmm4fnex CATSTR vmm4fnex, <&functionName&>","public vmm4fnex","vmm4fnex CATSTR vmm4fnex, < vectorType>,  < { <V1, V1, V1, V1> } >","vmm4fnex","ENDM",NULL,
     /*55 VV4CI4*/               "vmm4fnex4 TEXTEQU <>","vmm4fnex4 CATSTR vmm4fnex4, <&functionName&>","public vmm4fnex4","vmm4fnex4 CATSTR vmm4fnex4, < vectorType>, < { <V1, V2, V3, V4> } >","vmm4fnex4","ENDM",NULL,
     /*56 VV2CI*/                "vmm2fnex TEXTEQU <>","vmm2fnex CATSTR vmm2fnex, <&functionName&>","public vmm2fnex","vmm2fnex CATSTR vmm2fnex, < vectorType>,  < { <V1, V1> } >","vmm2fnex","ENDM",NULL,

@@ -1097,7 +1097,7 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 				case LANG_FORTRAN:
 				case LANG_PASCAL:
 				case LANG_STDCALL:
-				//case LANG_THISCALL:
+				case LANG_THISCALL:
 					return(EmitError(VARARG_REQUIRES_C_CALLING_CONVENTION));
 				}
 				/* v2.05: added check */
@@ -1911,7 +1911,7 @@ ret_code ParseProc(struct dsym *proc, int i, struct asm_tok tokenarray[], bool I
 	/* ALL stackbase:rsp and rbp procs will be forced to be FRAME based to ensure consistency and simplicity */
 	if (ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RSP || ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RBP)
 	{
-		/* dont apply this setting to proto,export or when the prologue/epilgoue has been changed by the user or if frame:auto isn't set */
+		/* dont apply this setting to proto,export or when the prologue/epilogue has been changed by the user or if frame:auto isn't set */
 		if (ModuleInfo.prologuemode == PEM_DEFAULT && IsPROC && ModuleInfo.frame_auto == 1)
 			proc->e.procinfo->isframe = TRUE;
 	}
