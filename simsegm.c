@@ -293,6 +293,11 @@ ret_code SimplifiedSegDir( int i, struct asm_tok tokenarray[] )
                 AddToDgroup( SIM_STACK, NULL );
         break;
     case SIM_DATA:    /* .data  */
+		SetSimSeg(type, name);
+		AddLineQueueX("%r %r:ERROR", T_ASSUME, T_CS);
+		if (name || (!init))
+			AddToDgroup(type, name);
+		break;
     case SIM_DATA_UN: /* .data? */
 
 		/* UASM 2.49 Warn about BSS data in BIN, as the space won't be allocated */

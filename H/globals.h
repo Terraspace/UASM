@@ -901,7 +901,7 @@ struct module_info {
 	unsigned char       ZEROLOCALS;         /* zero local variables  */
 #endif
 
-	unsigned char		MODULEARCH = ARCH_SSE;			/* MODULE Architecutre <avx or sse> */
+	unsigned char		MODULEARCH;			/* MODULE Architecutre <avx or sse> */
 
 #define CurrSource      ModuleInfo.currsource
 #define Token_Count     ModuleInfo.token_count
