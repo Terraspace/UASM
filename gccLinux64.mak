@@ -1,7 +1,7 @@
 
-# This makefile creates the HJWasm Elf binary for Linux/FreeBSD.
+# This makefile creates the UASM Elf binary for Linux/FreeBSD.
 
-TARGET1=hjwasm
+TARGET1=uasm
 
 ifndef DEBUG
 DEBUG=0
@@ -12,7 +12,7 @@ inc_dirs  = -IH
 #cflags stuff
 
 ifeq ($(DEBUG),0)
-extra_c_flags = -DNDEBUG -O2 -ansi -funsigned-char -fwritable-strings
+extra_c_flags = -DNDEBUG -O2 -funsigned-char -Wwrite-strings
 OUTD=GccUnixR
 else
 extra_c_flags = -DDEBUG_OUT -g
@@ -21,7 +21,7 @@ endif
 
 c_flags =-D __UNIX__ $(extra_c_flags)
 
-CC = clang-3.8
+CC = gcc
 
 .SUFFIXES:
 .SUFFIXES: .c .o
@@ -57,4 +57,3 @@ clean:
 	rm $(OUTD)/$(TARGET1)
 	rm $(OUTD)/*.o
 	rm $(OUTD)/*.map
-

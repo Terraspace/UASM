@@ -1166,6 +1166,12 @@ static int OnePass( void )
 	else if (Options.output_format == OFORMAT_MAC && Options.sub_format == SFORMAT_64BIT )
 		platform->value = 4;
 
+	if (Parse_Pass == PASS_1)
+	{
+		struct asym* archSym = SymFind("@Arch");
+		archSym->value = ModuleInfo.arch;
+	}
+
 	/* Process our built-in macro library to make it available to the rest of the source */
 	if (Parse_Pass == PASS_1 && Options.nomlib == FALSE) 
 	{
@@ -1624,7 +1630,7 @@ int EXPQUAL AssembleModule( const char *source )
 #endif
 
     AssembleInit( source );
-
+	
     starttime = clock();
 
 #if 0 /* 1=trigger a protection fault */

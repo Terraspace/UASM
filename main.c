@@ -95,7 +95,7 @@ int main(int argc, char **argv)
 	argv[0] = pEnv;
 	
 	/* Set the default module architecture to SSE */
-	MODULEARCH = ARCH_SSE;
+	//MODULEARCH = ARCH_SSE;
 
 #ifndef DEBUG_OUT
 	signal(SIGSEGV, genfailure);

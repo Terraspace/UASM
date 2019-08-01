@@ -143,7 +143,7 @@ static const struct eqitem eqtab[] = {
     { "$",         0,                   UpdateCurPC, &symPC },
     { "@Line",     0,                   UpdateLineNumber, &LineCur },
 	{ "@ProcLine", 0,                   NULL, NULL },
-	{ "@Arch",     ARCH_AVX,            NULL, NULL },
+	{ "@Arch",     ARCH_SSE,            NULL, NULL },
 	{ "@Platform", 0,                   NULL, NULL },
 	{ "@LastReturnType", 0,             NULL, NULL },
 	{ "@ProcName", 0,                   NULL, NULL },
