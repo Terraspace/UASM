@@ -1275,9 +1275,10 @@ void LstInit( void )
     if( Options.write_listing ) {
         int namelen;
         buffer = MsgGetEx( MSG_UASM );
-        list_pos = strlen( buffer );
+        list_pos = strlen( buffer ) - 1;
         fwrite( buffer, 1, list_pos, CurrFile[LST] );
         LstNL();
+		LstNL();
         fn = GetFName( ModuleInfo.srcfile );
         namelen = strlen( fn->fname );
         fwrite( fn->fname, 1, namelen, CurrFile[LST] );
