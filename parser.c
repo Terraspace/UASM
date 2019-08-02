@@ -2739,10 +2739,11 @@ static ret_code check_size( struct code_info *CodeInfo, const struct expr opndx[
     case T_VCVTPD2DQ:
     case T_VCVTTPD2DQ:
     case T_VCVTPD2PS:
-        if ( op2 == OP_M && opndx[OPND2].indirect ) {
-            return( EmitError( INSTRUCTION_OPERAND_MUST_HAVE_SIZE ) );
-        }
-        break;
+      if ((op2 == OP_M) && opndx[OPND2].indirect) {
+        if (!broadflags) /* v2.49 fix for bcst */
+          return(EmitError(INSTRUCTION_OPERAND_MUST_HAVE_SIZE));
+      }
+      break;
     case T_VMOVDDUP:
         if ( !( op1 & OP_YMM ) )
             break;
@@ -3930,23 +3931,30 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 							CodeInfo.evex_sae = opndx[CurrOpnd].saeflags;
 						break;
 					}
-
+          /* workaround for codegenv2 because there is no CodeInfo.pinstr, we have only instruction token 
+           * To do: find the way to avoid CodeInfo.pinstr */
           if (CodeInfo.opnd[OPND3].type == OP_I8) {
             switch (CodeInfo.token) {
             case T_CMPPD:
             case T_CMPPS:
             case T_CMPSD:
             case T_CMPSS:
+            case T_DPPD:
+            case T_DPPS:
+            case T_EXTRACTPS:
             case T_VCMPPD:
             case T_VCMPPS:
             case T_VCMPSD:
             case T_VCMPSS:
+            case T_VDPPD:
+            case T_VDPPS:
             case T_PCLMULQDQ:
             case T_VPCLMULQDQ:
+            case T_VEXTRACTPS:
               goto noterror;
             }
           }
-					CodeInfo.pinstr++; // work here for {sae}
+					CodeInfo.pinstr++; 
 					if ((CodeInfo.pinstr->first == TRUE)) 
 					{
 						for (; tokenarray[i].token != T_COMMA; i--);

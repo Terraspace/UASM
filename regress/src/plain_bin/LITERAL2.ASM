@@ -7,7 +7,7 @@
 	option casemap:none ; case sensitive
 	option proc:private
 
-CStr macro y:VARARG
+CStrX macro y:VARARG
 local sym
 CONST segment dword public 'CONST'
 sym db y,0
@@ -37,8 +37,8 @@ AsmCtrl_ProgidEntries label REGSTRUCT
 ;--- did also contain the closing bracket(s), because the tokenizer
 ;--- did stop only if a white space, a comma or a semi-colon was detected.
 
-	REGSTRUCT {HKEY_CLASSES_ROOT,CStr(".", @CatStr(!",%Version_AsmCtrl,!")),0,CStr("X")}
-	REGSTRUCT {HKEY_CLASSES_ROOT,CStr(".", @CatStr(!",%Version_AsmCtrl,!"),"\X"),0,-1}
+	REGSTRUCT {HKEY_CLASSES_ROOT,CStrX(".", @CatStr(!",%Version_AsmCtrl,!")),0,CStrX("X")}
+	REGSTRUCT {HKEY_CLASSES_ROOT,CStrX(".", @CatStr(!",%Version_AsmCtrl,!"),"\X"),0,-1}
 NUMREGSTRUCTENTRIES2 equ ($ - offset AsmCtrl_ProgidEntries) / sizeof REGSTRUCT
 
 	end

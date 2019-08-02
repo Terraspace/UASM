@@ -70,7 +70,7 @@ uint_32 GenerateInstrHash(struct Instr_Def* pInstruction)
 {
 	uint_8 hashBuffer[32];
 	int len = 0;
-	char* pDst = (char*)& hashBuffer;
+	char* pDst = (char*)&hashBuffer;
 	strcpy(pDst, pInstruction->mnemonic);
 
 	// String hash is case-insensitive.
@@ -348,6 +348,8 @@ enum op_type MatchOperand(struct code_info* CodeInfo, struct opnd_item op, struc
 	case OP_ZMM:
 		result = R_ZMM;
 		break;
+	case OP_MMX:
+		result = MMX64;
 	case OP_ST:
 		result = R_ST0;
 		break;
@@ -384,6 +386,25 @@ struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg, unsign
 			if ((((uint_32)pInstruction->flags & (uint_32)SRCHDSTL) != 0) && ((srcRegNo <= 7 && dstRegNo > 7) || (srcRegNo <= 7 && dstRegNo <= 7) || (srcRegNo > 7 && dstRegNo > 7) || CodeInfo->evex_flag))
 				goto nextInstr;
 
+			/* NO LIKE */
+			/* Here we match broadcast size and element count v2.50 */
+			if (broadflags) {
+				if (CodeInfo->token == T_VCVTPD2PS || CodeInfo->token == T_VCVTTPD2DQ) {
+					if ((pInstruction->op_elements == 2) && (broadflags == 0x10)) {
+						if (broadflags == pInstruction->op_size)
+							;
+					}
+					else if ((pInstruction->op_elements == 4) && (broadflags == 0x20)) {
+						if (broadflags == pInstruction->op_size)
+							;
+					}
+					else if ((pInstruction->op_elements == 8) && (broadflags == 0x30)) {
+						if (pInstruction->op_size == 0X40)
+							;
+					}
+					else goto nextInstr; /* here we can throw an error because these 3 were the only correct options */
+				}
+			}
 			matched = TRUE;
 			break;
 		}
@@ -573,6 +594,9 @@ unsigned char BuildModRM(unsigned char modRM, struct Instr_Def* instr, struct ex
 	   For Implicit NDS (2 opnd promotion we leave source as 1) */
 	if (isVEX && (instr->vexflags & VEX_DUP_NDS) == 0 && (instr->vexflags & VEX_2OPND) == 0 && (instr->vexflags & VEX_3RD_OP) == 0)
 		sourceIdx = 2;
+
+//	if ((instr->vexflags & VEX_DUP_NDS) && (instr->evexflags))
+	//	EmitError(EVEX_DECORATOR_NOT_ALLOWED);
 
 	if (instr->flags & F_MODRM)			// Only if the instruction requires a ModRM byte, else return 0.
 	{
@@ -942,8 +966,19 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 	/* {static rounding} */
 	if (CodeInfo->evex_sae != 0)
 	{
-		if ((instr->evexflags & EVEX_RND) == 0)
-			EmitError(EMBEDDED_ROUNDING_IS_AVAILABLE_ONLY_WITH_REG_REG_OP);
+		if ((instr->evexflags & EVEX_SAE) != 0) 
+		{
+			if (CodeInfo->evex_sae > 0x10)
+				EmitError(EMBEDDED_ROUNDING_IS_AVAILABLE_ONLY_WITH_REG_REG_OP);
+		}
+		else if ((instr->evexflags & EVEX_RND) != 0) 
+		{
+			if (CodeInfo->evex_sae == 0x10)
+				EmitError(EMBEDDED_ROUNDING_IS_AVAILABLE_ONLY_WITH_REG_REG_OP);
+			else if ((CodeInfo->opnd[OPND1].type & OP_M_ANY) || (CodeInfo->opnd[OPND2].type & OP_M_ANY) ||
+				(CodeInfo->opnd[OPND3].type & OP_M_ANY))
+				EmitError(EMBEDDED_ROUNDING_IS_AVAILABLE_ONLY_WITH_REG_REG_OP);
+		}
 
 		switch (CodeInfo->evex_sae)
 		{
@@ -1458,14 +1493,14 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 	uint_32           i = 0;
 
 	bool needModRM = FALSE;
-	bool needSIB = FALSE;
+	bool needSIB   = FALSE;
 	bool needFixup = FALSE;
 	bool hasMemReg = FALSE;
-	bool needVEX = FALSE;
-	bool needEVEX = FALSE;
-	bool needB = FALSE;	/* Instruction needs REX.B or (E)VEX.~B promotion (filled in by BuildMemoryEncoding) */
-	bool needX = FALSE;	/* Instruction needs REX.X or (E)VEX.~X promotion (filled in by BuildMemoryEncoding) */
-	bool needRR = FALSE;	/* Instruction needs EVEX.R~ promotion to use upper 16 registers */
+	bool needVEX   = FALSE;
+	bool needEVEX  = FALSE;
+	bool needB     = FALSE;	/* Instruction needs REX.B or (E)VEX.~B promotion (filled in by BuildMemoryEncoding) */
+	bool needX     = FALSE;	/* Instruction needs REX.X or (E)VEX.~X promotion (filled in by BuildMemoryEncoding) */
+	bool needRR    = FALSE;	/* Instruction needs EVEX.R~ promotion to use upper 16 registers */
 
 	int  aso = 0;				/* Build Memory Encoding forced address size override */
 
@@ -1791,9 +1826,11 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 			OutputCodeByte(0x66); // first part.
 			break;
 		case PFX_0xF3F38:
+		case PFX_0xF30F:
 			OutputCodeByte(0xf3); // first part.
 			break;
 		case PFX_0xF2F38:
+		case PFX_0xF20F:
 			OutputCodeByte(0xf2); // first part.
 			break;
 		}
@@ -1825,11 +1862,7 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 			OutputCodeByte(0x3a);
 			break;
 		case PFX_0xF30F:
-			OutputCodeByte(0xf3); // second part.
-			OutputCodeByte(0x0f);
-			break;
 		case PFX_0xF20F:
-			OutputCodeByte(0xf2); // second part.
 			OutputCodeByte(0x0f);
 			break;
 		case PFX_0x0F38:
