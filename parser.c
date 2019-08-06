@@ -3942,6 +3942,7 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
             case T_DPPD:
             case T_DPPS:
             case T_EXTRACTPS:
+			case T_INSERTPS:
             case T_VCMPPD:
             case T_VCMPPS:
             case T_VCMPSD:
@@ -3951,6 +3952,7 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
             case T_PCLMULQDQ:
             case T_VPCLMULQDQ:
             case T_VEXTRACTPS:
+			case T_VINSERTPS:
               goto noterror;
             }
           }

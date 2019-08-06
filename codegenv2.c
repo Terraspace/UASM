@@ -596,7 +596,7 @@ unsigned char BuildModRM(unsigned char modRM, struct Instr_Def* instr, struct ex
 		sourceIdx = 2;
 
 //	if ((instr->vexflags & VEX_DUP_NDS) && (instr->evexflags))
-	//	EmitError(EVEX_DECORATOR_NOT_ALLOWED);
+//		EmitError(EVEX_DECORATOR_NOT_ALLOWED);
 
 	if (instr->flags & F_MODRM)			// Only if the instruction requires a ModRM byte, else return 0.
 	{
@@ -1863,7 +1863,7 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 			break;
 		case PFX_0xF30F:
 		case PFX_0xF20F:
-			OutputCodeByte(0x0f);
+			OutputCodeByte(0x0f); // second part.
 			break;
 		case PFX_0x0F38:
 		case PFX_0xF3F38:
