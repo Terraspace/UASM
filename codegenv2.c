@@ -386,7 +386,6 @@ struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg, unsign
 			if ((((uint_32)pInstruction->flags & (uint_32)SRCHDSTL) != 0) && ((srcRegNo <= 7 && dstRegNo > 7) || (srcRegNo <= 7 && dstRegNo <= 7) || (srcRegNo > 7 && dstRegNo > 7) || CodeInfo->evex_flag))
 				goto nextInstr;
 
-			/* NO LIKE */
 			/* Here we match broadcast size and element count v2.50 */
 			if (broadflags) {
 				if (CodeInfo->token == T_VCVTPD2PS || CodeInfo->token == T_VCVTTPD2DQ) {
