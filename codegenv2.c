@@ -1536,7 +1536,7 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 				CodeInfo->opnd[OPND1].type = OP_M08;
 				CodeInfo->opnd[OPND2].type = OP_I8;
 			}
-			else if (CodeInfo->opnd[OPND1].type == OP_R8 || CodeInfo->opnd[OPND1].type == OP_AL)
+			else if (CodeInfo->opnd[OPND1].type == OP_R8 || CodeInfo->opnd[OPND1].type == OP_AL || CodeInfo->opnd[OPND1].type == OP_CL)
 				CodeInfo->opnd[OPND2].type = OP_I8;
 			else {
 				switch (CodeInfo->token) {

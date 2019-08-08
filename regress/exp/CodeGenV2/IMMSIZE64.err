@@ -1,0 +1,3 @@
+..\src\CodeGenV2\IMMSIZE64.ASM(19) : Warning A4073: Size not specified, assuming: BYTE
+..\src\CodeGenV2\IMMSIZE64.ASM(20) : Warning A4073: Size not specified, assuming: WORD
+..\src\CodeGenV2\IMMSIZE64.ASM(21) : Warning A4073: Size not specified, assuming: DWORD
