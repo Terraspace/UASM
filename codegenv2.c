@@ -1698,11 +1698,12 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 		else if (CodeInfo->Ofssize == USE64)
 			rexByte |= BuildREX(rexByte, matchedInstr, opExpr);													/* Modify the REX prefix for non-memory operands/sizing */
 
-		  //----------------------------------------------------------
-		  // Check if address or operand size override prefixes are required.
-		  //----------------------------------------------------------
+		//----------------------------------------------------------
+		// Check if address or operand size override prefixes are required.
+		//----------------------------------------------------------
 		if (Require_ADDR_Size_Override(matchedInstr, CodeInfo) || aso)
 			OutputCodeByte(ADDR_SIZE_OVERRIDE);
+
 		//----------------------------------------------------------
 		// Validate and output other prefixes (LOCK,REPx, BND)
 		//----------------------------------------------------------
