@@ -16,7 +16,8 @@ enum instr_group {
 	EVX0,
 	MVX0,
 	FP0,
-	FP1
+	FP1,
+	MMX0
 };
 
 enum seg_prefix {
@@ -366,7 +367,7 @@ extern struct Instr_Def InstrTableV2[];
 
 /* Public functions */
 extern void     BuildInstructionTable(void);
-extern ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs, uint_32 opCount, struct expr opExpr[4]);
+extern ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs, uint_32 opCount, struct expr opExpr[4]);
 
 /* Private functions */
 enum op_type      DemoteOperand(enum op_type op);
@@ -374,8 +375,8 @@ void              InsertInstruction(struct Instr_Def* pInstruction, uint_32 hash
 struct Instr_Def* AllocInstruction();
 uint_32           GenerateInstrHash(struct Instr_Def* pInstruction);
 struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg, unsigned char encodeMode, 
-	                                int srcRegNo, int dstRegNo, struct code_info* CodeInfo);
-enum op_type      MatchOperand(struct code_info* CodeInfo, struct opnd_item op, struct expr opExpr);
+	                                int srcRegNo, int dstRegNo, struct code_info *CodeInfo);
+enum op_type      MatchOperand(struct code_info *CodeInfo, struct opnd_item op, struct expr opExpr);
 
 bool Require_OPND_Size_Override(struct Instr_Def* instr, struct code_info* CodeInfo);
 bool Require_ADDR_Size_Override(struct Instr_Def* instr, struct code_info* CodeInfo);
@@ -389,7 +390,7 @@ void          BuildVEX(bool* needVex, unsigned char* vexSize, unsigned char* vex
 void          BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr, struct expr opnd[4],
 						bool needB, bool needX, bool needRR, uint_32 opCount, struct code_info* CodeInfo);					/* Build EVEX prefix bytes      */
 int           BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned char* pREX, bool* needModRM, bool* needSIB,
-	                              unsigned int* dispSize, uint_64* pDisp, struct Instr_Def* instr, 
+	                              unsigned int* dispSize, uint_64* pDisp, struct Instr_Def* instr,
 								  struct expr opExpr[4], bool* needB, bool* needX, 
-								  bool* needRR, struct code_info* CodeInfo);											    /* Build Memory encoding ModRM/SIB bytes   */
+								  bool* needRR, struct code_info *CodeInfo);											    /* Build Memory encoding ModRM/SIB bytes   */
 unsigned char GetRegisterNo(struct asm_tok *regTok);																		/* Get Register Encoding Number from Token */

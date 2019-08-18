@@ -85,7 +85,6 @@ res(DOT_XALL,         .xall,          0,           DRT_LISTMAC, 0,  P_86, LM_LIS
 res(DOT_LALL,         .lall,          0,           DRT_LISTMAC, 0,  P_86, LM_LISTMACROALL)
 res(DOT_SALL,         .sall,          0,           DRT_LISTMAC, 0,  P_86, LM_NOLISTMACRO)
 
-
 res(DOT_ALPHA,     .alpha,       0,          DRT_SEGORDER, 0,  P_86, SEGORDER_ALPHA )
 res(DOT_DOSSEG,    .dosseg,      0,          DRT_SEGORDER, 0,  P_86, SEGORDER_DOSSEG)
 res(DOT_SEQ,       .seq,         0,          DRT_SEGORDER, 0,  P_86, SEGORDER_SEQ   )

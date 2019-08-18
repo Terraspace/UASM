@@ -1,8 +1,9 @@
 
+#include "codegenv2.h"
+
 #include <time.h>
 #include "globals.h"
 #include "parser.h"
-#include "codegenv2.h"
 #include "segment.h"
 #include "extern.h"
 #include "fixup.h"
@@ -78,7 +79,7 @@ uint_32 GenerateInstrHash(struct Instr_Def* pInstruction)
 {
 	uint_8 hashBuffer[32];
 	int len = 0;
-	char* pDst = (char*)& hashBuffer;
+	char* pDst = (char*)&hashBuffer;
 	strcpy(pDst, pInstruction->mnemonic);
 
 	// String hash is case-insensitive.
@@ -356,6 +357,8 @@ enum op_type MatchOperand(struct code_info* CodeInfo, struct opnd_item op, struc
 	case OP_ZMM:
 		result = R_ZMM;
 		break;
+	case OP_MMX:
+		result = MMX64;
 	case OP_ST:
 		result = R_ST0;
 		break;
@@ -392,6 +395,24 @@ struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg, unsign
 			if ((((uint_32)pInstruction->flags & (uint_32)SRCHDSTL) != 0) && ((srcRegNo <= 7 && dstRegNo > 7) || (srcRegNo <= 7 && dstRegNo <= 7) || (srcRegNo > 7 && dstRegNo > 7) || CodeInfo->evex_flag))
 				goto nextInstr;
 
+			/* Here we match broadcast size and element count v2.50 */
+			if (broadflags) {
+				if (CodeInfo->token == T_VCVTPD2PS || CodeInfo->token == T_VCVTTPD2DQ) {
+					if ((pInstruction->op_elements == 2) && (broadflags == 0x10)) {
+						if (broadflags == pInstruction->op_size)
+							;
+					}
+					else if ((pInstruction->op_elements == 4) && (broadflags == 0x20)) {
+						if (broadflags == pInstruction->op_size)
+							;
+					}
+					else if ((pInstruction->op_elements == 8) && (broadflags == 0x30)) {
+						if (pInstruction->op_size == 0X40)
+							;
+					}
+					else goto nextInstr; /* here we can throw an error because these 3 were the only correct options */
+				}
+			}
 			matched = TRUE;
 			break;
 		}
@@ -582,6 +603,9 @@ unsigned char BuildModRM(unsigned char modRM, struct Instr_Def* instr, struct ex
 	if (isVEX && (instr->vexflags & VEX_DUP_NDS) == 0 && (instr->vexflags & VEX_2OPND) == 0 && (instr->vexflags & VEX_3RD_OP) == 0)
 		sourceIdx = 2;
 
+//	if ((instr->vexflags & VEX_DUP_NDS) && (instr->evexflags))
+//		EmitError(EVEX_DECORATOR_NOT_ALLOWED);
+
 	if (instr->flags & F_MODRM)			// Only if the instruction requires a ModRM byte, else return 0.
 	{
 		*needModRM |= TRUE;
@@ -592,6 +616,7 @@ unsigned char BuildModRM(unsigned char modRM, struct Instr_Def* instr, struct ex
 		// MODRM.mod (2bits) == b11, register to register direct, otherwise register indirect.
 		// MODRM.reg (3bits) == 3bit opcode extension, 3bit register value as source. REX.R, VEX.~R can 1bit extend this field.
 		// MODRM.rm  (3bits) == 3bit direct or indirect register operand, optionally with displacement. REX.B, VEX.~B can 1bit extend this field.
+
 		if (instr->flags & OPCODE_EXT)
 		{
 			// If the instruction uses an opcode extension value in the ModRM.REG, its value 
@@ -648,7 +673,6 @@ unsigned char BuildREX(unsigned char RexByte, struct Instr_Def* instr, struct ex
 			RexByte |= 0x04;
 		if ((instr->flags & (uint_32)REXW) != 0)
 			RexByte |= 0x08;
-
 	}
 	// EREX (or extended with REX) means we must programmatically determine the REX extensions.
 	else if (((uint_32)instr->flags & (uint_32)EREX) != 0)
@@ -949,8 +973,19 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 	/* {static rounding} */
 	if (CodeInfo->evex_sae != 0)
 	{
-		if ((instr->evexflags & EVEX_RND) == 0)
-			EmitError(EMBEDDED_ROUNDING_IS_AVAILABLE_ONLY_WITH_REG_REG_OP);
+		if ((instr->evexflags & EVEX_SAE) != 0) 
+		{
+			if (CodeInfo->evex_sae > 0x10)
+				EmitError(EMBEDDED_ROUNDING_IS_AVAILABLE_ONLY_WITH_REG_REG_OP);
+		}
+		else if ((instr->evexflags & EVEX_RND) != 0) 
+		{
+			if (CodeInfo->evex_sae == 0x10)
+				EmitError(EMBEDDED_ROUNDING_IS_AVAILABLE_ONLY_WITH_REG_REG_OP);
+			else if ((CodeInfo->opnd[OPND1].type & OP_M_ANY) || (CodeInfo->opnd[OPND2].type & OP_M_ANY) ||
+				(CodeInfo->opnd[OPND3].type & OP_M_ANY))
+				EmitError(EMBEDDED_ROUNDING_IS_AVAILABLE_ONLY_WITH_REG_REG_OP);
+		}
 
 		switch (CodeInfo->evex_sae)
 		{
@@ -1179,6 +1214,7 @@ bool IsSimdRegister(struct asm_tok* regTok)
 	}
 	return result;
 }
+
 
 /* =====================================================================
   Build up instruction SIB, ModRM and REX bytes for memory operand.
@@ -1464,14 +1500,14 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 	uint_32           i = 0;
 
 	bool needModRM = FALSE;
-	bool needSIB = FALSE;
+	bool needSIB   = FALSE;
 	bool needFixup = FALSE;
 	bool hasMemReg = FALSE;
-	bool needVEX = FALSE;
-	bool needEVEX = FALSE;
-	bool needB = FALSE;	/* Instruction needs REX.B or (E)VEX.~B promotion (filled in by BuildMemoryEncoding) */
-	bool needX = FALSE;	/* Instruction needs REX.X or (E)VEX.~X promotion (filled in by BuildMemoryEncoding) */
-	bool needRR = FALSE;	/* Instruction needs EVEX.R~ promotion to use upper 16 registers */
+	bool needVEX   = FALSE;
+	bool needEVEX  = FALSE;
+	bool needB     = FALSE;	/* Instruction needs REX.B or (E)VEX.~B promotion (filled in by BuildMemoryEncoding) */
+	bool needX     = FALSE;	/* Instruction needs REX.X or (E)VEX.~X promotion (filled in by BuildMemoryEncoding) */
+	bool needRR    = FALSE;	/* Instruction needs EVEX.R~ promotion to use upper 16 registers */
 
 	int  aso = 0;				/* Build Memory Encoding forced address size override */
 
@@ -1507,7 +1543,7 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 				CodeInfo->opnd[OPND1].type = OP_M08;
 				CodeInfo->opnd[OPND2].type = OP_I8;
 			}
-			else if (CodeInfo->opnd[OPND1].type == OP_R8 || CodeInfo->opnd[OPND1].type == OP_AL)
+			else if (CodeInfo->opnd[OPND1].type == OP_R8 || CodeInfo->opnd[OPND1].type == OP_AL || CodeInfo->opnd[OPND1].type == OP_CL)
 				CodeInfo->opnd[OPND2].type = OP_I8;
 			else {
 				switch (CodeInfo->token) {
@@ -1649,7 +1685,7 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 		/* If the matched instruction requires processing of a memory address */
 		if (matchedInstr->memOpnd != NO_MEM)
 			aso = BuildMemoryEncoding(&modRM, &sib, &rexByte, &needModRM, &needSIB,								/* This could result in modifications to REX/VEX/EVEX, modRM and SIB bytes */
-				&dispSize, &displacement.displacement64, matchedInstr, opExpr, &needB, &needX, &needRR, CodeInfo);
+				&dispSize, &displacement, matchedInstr, opExpr, &needB, &needX, &needRR, CodeInfo);
 		modRM |= BuildModRM(matchedInstr->modRM, matchedInstr, opExpr, &needModRM, &needSIB,
 			((matchedInstr->vexflags & VEX) || (matchedInstr->vexflags & EVEX)));								/* Modify the modRM value for any non-memory operands */
 
@@ -1657,7 +1693,7 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 		  // Create REX, VEX or EVEX prefixes                      
 		  //----------------------------------------------------------
 		if ((matchedInstr->vexflags & VEX) != 0 && (matchedInstr->evexflags & EVEX_ONLY) == 0 && CodeInfo->evex_flag == 0)
-			BuildVEX(&needVEX, &vexSize, vexBytes, matchedInstr, opExpr, needB, needX, opCount);				/* Create the VEX prefix bytes for both reg and memory operands */
+			BuildVEX(&needVEX, &vexSize, &vexBytes, matchedInstr, opExpr, needB, needX, opCount);				/* Create the VEX prefix bytes for both reg and memory operands */
 
 		  // Either the instruction can ONLY be EVEX encoded, or user requested VEX->EVEX promotion.
 		else if ((matchedInstr->evexflags & EVEX_ONLY) != 0 ||
@@ -1668,13 +1704,14 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 			EmitError(NO_EVEX_FORM);
 
 		else if (CodeInfo->Ofssize == USE64)
-			rexByte |= BuildREX(rexByte, matchedInstr, opExpr, FALSE);											/* Modify the REX prefix for non-memory operands/sizing */
+			rexByte |= BuildREX(rexByte, matchedInstr, opExpr);													/* Modify the REX prefix for non-memory operands/sizing */
 
-		  //----------------------------------------------------------
-		  // Check if address or operand size override prefixes are required.
-		  //----------------------------------------------------------
+		//----------------------------------------------------------
+		// Check if address or operand size override prefixes are required.
+		//----------------------------------------------------------
 		if (Require_ADDR_Size_Override(matchedInstr, CodeInfo) || aso)
 			OutputCodeByte(ADDR_SIZE_OVERRIDE);
+
 		//----------------------------------------------------------
 		// Validate and output other prefixes (LOCK,REPx, BND)
 		//----------------------------------------------------------
@@ -1734,7 +1771,7 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 				else if (ModuleInfo.Ofssize == USE64 && ((matchedInstr->flags & ALLOW_SEGX) == 0))
 				{
 					EmitError(ILLEGAL_USE_OF_SEGMENT_REGISTER);
-					return ERROR;
+                    return ERROR;
 				}
 				else
 				{
@@ -1764,7 +1801,7 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 			else
 			{
 				EmitError(ILLEGAL_USE_OF_SEGMENT_REGISTER);
-				return ERROR;
+                return ERROR;
 			}
 		}
 
@@ -1797,9 +1834,11 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 			OutputCodeByte(0x66); // first part.
 			break;
 		case PFX_0xF3F38:
+		case PFX_0xF30F:
 			OutputCodeByte(0xf3); // first part.
 			break;
 		case PFX_0xF2F38:
+		case PFX_0xF20F:
 			OutputCodeByte(0xf2); // first part.
 			break;
 		}
@@ -1831,12 +1870,8 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 			OutputCodeByte(0x3a);
 			break;
 		case PFX_0xF30F:
-			OutputCodeByte(0xf3); // second part.
-			OutputCodeByte(0x0f);
-			break;
 		case PFX_0xF20F:
-			OutputCodeByte(0xf2); // second part.
-			OutputCodeByte(0x0f);
+			OutputCodeByte(0x0f); // second part.
 			break;
 		case PFX_0x0F38:
 		case PFX_0xF3F38:

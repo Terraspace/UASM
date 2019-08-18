@@ -241,7 +241,7 @@ void InitAutoMacros64(void)
 /*17 FP10*/				"local vname", ".data", "align 8", "vname REAL10 value", ".code", "exitm <vname>", "endm", NULL,
 /*18 LOADSS*/			"IF @Arch EQ 0", "mov eax, val", "movd reg, eax", "ELSE", "mov eax, val", "vmovd reg, eax", "ENDIF", "ENDM", NULL,
 /*19 LOADSD*/			"IF @Arch EQ 0", "mov rax, real8 ptr val", "movq reg, rax", "ELSE", "mov rax, real8 ptr val", "vmovq reg, rax", "ENDIF", "ENDM", NULL,
-/*20 LOADPS*/			"IF @Arch EQ 0", "mov eax, val", "movd reg, eax", "pshufd reg, 0", "ELSE", "mov eax, val", "vmovd reg, eax", "vpshufd reg, reg, 0", "ENDIF", "ENDM", NULL,
+/*20 LOADPS*/			"IF @Arch EQ 0", "mov eax, val", "movd reg, eax", "pshufd reg, reg, 0", "ELSE", "mov eax, val", "vmovd reg, eax", "vpshufd reg, reg, 0", "ENDIF", "ENDM", NULL,
 /*21 MEMALIGN*/			"add reg, number - 1", "and reg, -number", "ENDM", NULL,
 /*22 RV*/				"arg equ <invoke FuncName>", "FOR var, <args>", "arg CATSTR arg, <, EXPAND_PREFIX(var)>", "ENDM", "arg", "EXITM <rax>", "ENDM", NULL,
 /*23 REPARG*/			"LOCAL nustr", "quot SUBSTR <arg>, 1, 1", "IFIDN quot, <\">", ".data", "nustr db arg, 0", ".code", "EXITM <ADDR nustr>", "ELSE", "EXITM <ADDR arg>", "ENDIF", "ENDM", NULL,

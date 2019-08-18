@@ -379,6 +379,11 @@ struct proc_info {
     unsigned char       vecregsize[6];
     unsigned char       vregs[6];
     unsigned char       xyzused[6];
+    unsigned            ms64vsize;
+    unsigned char       ms64vecregs[4];
+    unsigned char       ms64vecregsize[4];
+    unsigned char       ms64vregs[4];
+    unsigned char       ms64xyzused[4];
     unsigned            regcsize;
     unsigned char       regcregs[16];
     unsigned char       regcregsize[16];
@@ -394,7 +399,7 @@ struct proc_info {
 	unsigned char       firstGPR;		/* Added for systemv call vararg to track the first available registers that can be used */
 	unsigned char       firstVEC;
 	unsigned char       vararg_vecs;	/* Count of vector registers used in vararg */
-	char                stackOps[64][MAX_LINE_LEN];
+	char                stackOps[64][MAX_RESTRICT_LINE_LEN];
 	unsigned            stackOpCount;
 	unsigned            stackOfs;
 	unsigned            stackAdj;

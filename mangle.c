@@ -143,7 +143,7 @@ static int ms32_decorate( const struct asym *sym, char *buffer )
 	if ((sym->langtype == LANG_VECTORCALL) && (Options.vectorcall_decoration == VECTORCALL_FULL) && sym->isproc) {
 		return(sprintf(buffer, "%s@@%d", sym->name, dir->e.procinfo->parasize));
 	}
-	else if (Options.fctype == FCT_MSC && sym->isproc) {
+	else if ((sym->langtype == LANG_FASTCALL) && (Options.fastcall_decoration == FASTCALL_FULL) && (Options.fctype == FCT_MSC && sym->isproc)) {
 		return (sprintf(buffer, "@%s@%u", sym->name, dir->e.procinfo->parasize));
 	}
 	else {
@@ -257,7 +257,7 @@ int Mangle( struct asym *sym, char *buffer )
     switch( sym->langtype ) {
     case LANG_C:
         /* leading underscore for C? */
-        mangler = Options.no_cdecl_decoration ? VoidMangler : UScoreMangler;
+        mangler = (Options.sub_format == SFORMAT_64BIT) ? VoidMangler : Options.no_cdecl_decoration ? VoidMangler : UScoreMangler;
         break;
 	case LANG_SYSCALL:
 	case LANG_SYSVCALL:
@@ -265,18 +265,18 @@ int Mangle( struct asym *sym, char *buffer )
         mangler = VoidMangler;
         break;
     case LANG_STDCALL:
-        mangler = ( Options.stdcall_decoration == STDCALL_NONE ) ? VoidMangler : StdcallMangler;
+        mangler = (Options.sub_format == SFORMAT_64BIT) ? VoidMangler : ( Options.stdcall_decoration == STDCALL_NONE ) ? VoidMangler : StdcallMangler;
         break;
     case LANG_PASCAL:
     case LANG_FORTRAN:
     case LANG_BASIC:
-        mangler = UCaseMangler;
+        mangler = (Options.sub_format == SFORMAT_64BIT) ? VoidMangler : UCaseMangler;
         break;
 	case LANG_VECTORCALL:
 		mangler = (Options.vectorcall_decoration == VECTORCALL_NONE) ? VoidMangler : fcmanglers[ModuleInfo.fctype];
 		break;
     case LANG_FASTCALL:          /* registers passing parameters */
-        mangler = fcmanglers[ModuleInfo.fctype];
+        mangler = ((Options.fastcall_decoration == FASTCALL_NONE) || (Options.sub_format == SFORMAT_64BIT)) ? VoidMangler : fcmanglers[ModuleInfo.fctype];
 		break;
 	case LANG_REGCALL:
 		mangler = (Options.regcall_decoration == REGCALL_NONE) ? VoidMangler : RegcallMangler;

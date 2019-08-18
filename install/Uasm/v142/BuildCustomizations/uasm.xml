@@ -319,6 +319,22 @@
         DisplayName="No name decoration"
         Switch="-zt0" />
     </EnumProperty>
+    
+    <EnumProperty
+      Name="FASTCALLSymbolDecoration"
+      Category="Advanced"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="Set FASTCALL symbol decoration"
+      Description="Set FASTCALL symbol decoration: 0=No name decoration, 1==Full (default), -zv0|1">
+      <EnumValue
+        Name="0"
+        DisplayName="Full (default)"
+        Switch="-zr1" />
+      <EnumValue
+        Name="1"
+        DisplayName="No name decoration"
+        Switch="-zr0" />
+    </EnumProperty>
 
     <EnumProperty
       Name="VectorCALLSymbolDecoration"

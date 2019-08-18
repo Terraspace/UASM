@@ -755,10 +755,7 @@ static int GetStartLabel( char *buffer, bool msg )
         else {
             if ( ModuleInfo.g.start_label->langtype != LANG_C &&
                 ModuleInfo.g.start_label->langtype != LANG_STDCALL &&
-				ModuleInfo.g.start_label->langtype != LANG_SYSCALL &&
-				ModuleInfo.g.start_label->langtype != LANG_VECTORCALL &&
-				ModuleInfo.g.start_label->langtype != LANG_REGCALL &&
-				ModuleInfo.g.start_label->langtype != LANG_THISCALL) {
+                ModuleInfo.g.start_label->langtype != LANG_SYSCALL ) {
                 if ( *ModuleInfo.g.start_label->name != '_' ) {
                     if ( msg && ( ModuleInfo.fctype != FCT_WIN64 ) )
                         EmitWarn( 2, LEADING_UNDERSCORE_REQUIRED_FOR_START_LABEL, ModuleInfo.g.start_label->name );

@@ -956,13 +956,6 @@ static ret_code get_id( struct asm_tok *buf, struct line_status *p )
     unsigned size;
 	int len = 0;
 	int i = 0;
-  //if (_memicmp(p->input, "dword bcst[rax]", 15) == 0) {
-  //  __debugbreak();
-  //  strcpy (p->input, "dword ptr [rax]");
-  //  broadflags = 0x40;
-  //  p->input+=15;
-  //  //return(NOT_ERROR);
-  //}
 #if CONCATID || DOTNAMEX
 continue_scan:
 #endif

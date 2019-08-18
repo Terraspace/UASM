@@ -330,17 +330,20 @@ OPTFUNC( SetCaseMap )
         i++;
         SymSetCmpFunc();
 
-		if (Options.nomlib == FALSE && ModuleInfo.defOfssize == USE64) 
-		{
-			CreateMacroLibCases64();
+        if (Options.nomlib == FALSE && ModuleInfo.defOfssize == USE64) 
+        {
+            CreateMacroLibCases64();
 #if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))
-			x86CreateMacroLibCases();
+            x86CreateMacroLibCases64();
 #endif
-		}
-		else if (Options.nomlib == FALSE && ModuleInfo.defOfssize == USE32)
-		{
-			CreateMacroLibCases32();
-		}
+        }
+        else if (Options.nomlib == FALSE && ModuleInfo.defOfssize == USE32)
+        {
+            CreateMacroLibCases32();
+#if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))
+            x86CreateMacroLibCases32();
+#endif
+        }
 
     } else {
         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
@@ -530,7 +533,7 @@ OPTFUNC( SetNoKeyword )
     return( NOT_ERROR );
 }
 
-/* OPTION LANGUAGE:{C|PASCAL|BASIC|FORTRAN|SYSCALL|STDCALL|FASTCALL|VECTORCALL|SYSVCALL|BORLAND} */
+/* OPTION LANGUAGE:{C|PASCAL|BASIC|FORTRAN|SYSCALL|STDCALL|FASTCALL|VECTORCALL|SYSVCALL|REGCALL|BORLAND} */
 
 OPTFUNC( SetLanguage )
 /********************/
@@ -1081,16 +1084,32 @@ OPTFUNC(SetWin64)
   
   ModuleInfo.win64_flags = opndx.llvalue;
 
-  if ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)
+  if ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC || Options.output_format == OFORMAT_COFF) && Options.sub_format == SFORMAT_64BIT)
   {
-	  if (Options.langtype != LANG_SYSVCALL && Options.langtype != LANG_REGCALL)
-		  Options.langtype = LANG_SYSVCALL;
-	  if (ModuleInfo.langtype != LANG_SYSVCALL && ModuleInfo.langtype != LANG_REGCALL)
-		  ModuleInfo.langtype = LANG_SYSVCALL;
-	  if (ModuleInfo.fctype != FCT_WIN64)
-		  ModuleInfo.fctype = FCT_WIN64; /* sys proc/invoke tables use same ordinal as FCTWIN64 */
-	  if (ModuleInfo.frame_auto != 1)
-		  ModuleInfo.frame_auto = 1;
+      if (ModuleInfo.sub_format != SFORMAT_64BIT)
+          ModuleInfo.sub_format = SFORMAT_64BIT;
+      if (Options.langtype != LANG_FASTCALL && Options.langtype != LANG_VECTORCALL && Options.langtype != LANG_SYSVCALL && Options.langtype != LANG_REGCALL)
+      {
+          if (Options.output_format == OFORMAT_COFF)
+              Options.langtype = LANG_FASTCALL;
+          else if (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC)
+              Options.langtype = LANG_SYSVCALL;
+      }
+      if (ModuleInfo.langtype != LANG_FASTCALL && ModuleInfo.langtype != LANG_VECTORCALL && ModuleInfo.langtype != LANG_SYSVCALL && ModuleInfo.langtype != LANG_REGCALL)
+      {
+          if (Options.output_format == OFORMAT_COFF)
+              ModuleInfo.langtype = LANG_FASTCALL;
+          else if (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC)
+              ModuleInfo.langtype = LANG_SYSVCALL;
+      }
+      if (Options.model == MODEL_NONE)
+          Options.model = MODEL_FLAT;
+      if (ModuleInfo.model == MODEL_NONE)
+          ModuleInfo.model = MODEL_FLAT;
+      if (ModuleInfo.fctype != FCT_WIN64)
+          ModuleInfo.fctype = FCT_WIN64; /* sys proc/invoke tables use same ordinal as FCTWIN64 */
+      if (ModuleInfo.frame_auto != 1)
+          ModuleInfo.frame_auto = 1;
   }
 
   if (sym_ReservedStack == NULL && ModuleInfo.defOfssize == USE64)
@@ -1102,17 +1121,6 @@ OPTFUNC(SetWin64)
 	  ModuleInfo.langtype = LANG_FASTCALL;
 	  ModuleInfo.fctype = FCT_WIN64;
   }*/
-
-  if (ModuleInfo.model == MODEL_NONE)
-  {
-	  ModuleInfo.model = MODEL_FLAT;
-	  if (Options.langtype != LANG_FASTCALL && Options.langtype != LANG_VECTORCALL && Options.langtype != LANG_SYSVCALL && Options.langtype != LANG_REGCALL)
-		  Options.langtype = LANG_FASTCALL;
-	  if (ModuleInfo.langtype != LANG_FASTCALL && Options.langtype != LANG_VECTORCALL && ModuleInfo.langtype != LANG_SYSVCALL && ModuleInfo.langtype != LANG_REGCALL)
-		  ModuleInfo.langtype = LANG_FASTCALL;
-	  if (ModuleInfo.fctype != FCT_WIN64)
-		  ModuleInfo.fctype = FCT_WIN64;
-  }
 
     *pi = i;
     return( NOT_ERROR );

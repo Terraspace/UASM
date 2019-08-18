@@ -259,51 +259,36 @@ static const struct regcall_conv regcallunix_tab[] = {
 
 static const enum special_token regax[] = { T_AX, T_EAX,
 #if AMD64_SUPPORT
-T_RAX
+                                            T_RAX
 #endif
 };
 
 /* 16-bit MS fastcall uses up to 3 registers (AX, DX, BX )
  * and additional params are pushed in PASCAL order!
  */
-static const enum special_token ms16_regs[] = {
-    T_AX, T_DX, T_BX
-};
-static const enum special_token ms32_regs[] = {
-    T_ECX, T_EDX
-};
-/* added for delphi in v2.28 */
-static const enum special_token delphi32_regs[] = {
-   T_EAX, T_EDX, T_ECX  
-};
+static const enum special_token ms16_regs[] = { T_AX, T_DX, T_BX };
+static const enum special_token ms32_regs[] = { T_ECX, T_EDX };
 
-static const enum special_token thiscall16_regs[] = { T_CX };
+/* added for delphi in v2.28 */
+static const enum special_token delphi32_regs[] = { T_EAX, T_EDX, T_ECX };
+
 static const enum special_token thiscall32_regs[] = { T_ECX };
 
 #if AMD64_SUPPORT
-static const enum special_token ms64_regs[] = {
- T_CL,  T_DL,  T_R8B, T_R9B,
- T_CX,  T_DX,  T_R8W, T_R9W,
- T_ECX, T_EDX, T_R8D, T_R9D,
- T_RCX, T_RDX, T_R8,  T_R9
-};
+static const enum special_token ms64_regs[] = { T_CL,  T_DL,  T_R8B, T_R9B,
+                                                T_CX,  T_DX,  T_R8W, T_R9W,
+                                                T_ECX, T_EDX, T_R8D, T_R9D,
+                                                T_RCX, T_RDX, T_R8,  T_R9 };
 #endif
-#if SYSV_SUPPORT		
-static const enum special_token sysV64_regs[] = {
-	T_DIL, T_SIL, T_DL,  T_CL,  T_R8B, T_R9B,		
-	T_DI,  T_SI,  T_DX,  T_CX,  T_R8W, T_R9W,
-	T_EDI, T_ESI, T_EDX, T_ECX, T_R8D, T_R9D,
-	T_RDI, T_RSI, T_RDX, T_RCX, T_R8,  T_R9
-};
-static const enum special_token sysV64_regsXMM[] = {
-	T_XMM0, T_XMM1, T_XMM2, T_XMM3, T_XMM4, T_XMM5, T_XMM6, T_XMM7
-};
-static const enum special_token sysV64_regsYMM[] = {
-	T_YMM0, T_YMM1, T_YMM2, T_YMM3, T_YMM4, T_YMM5, T_YMM6, T_YMM7
-};
-static const enum special_token sysV64_regsZMM[] = {
-	T_ZMM0, T_ZMM1, T_ZMM2, T_ZMM3, T_ZMM4, T_ZMM5, T_ZMM6, T_ZMM7
-};
+#if SYSV_SUPPORT
+static const enum special_token sysV64_regs[] = { T_DIL, T_SIL, T_DL,  T_CL,  T_R8B, T_R9B,
+                                                  T_DI,  T_SI,  T_DX,  T_CX,  T_R8W, T_R9W,
+                                                  T_EDI, T_ESI, T_EDX, T_ECX, T_R8D, T_R9D,
+                                                  T_RDI, T_RSI, T_RDX, T_RCX, T_R8,  T_R9 };
+
+static const enum special_token sysV64_regsXMM[] = { T_XMM0, T_XMM1, T_XMM2, T_XMM3, T_XMM4, T_XMM5, T_XMM6, T_XMM7 };
+static const enum special_token sysV64_regsYMM[] = { T_YMM0, T_YMM1, T_YMM2, T_YMM3, T_YMM4, T_YMM5, T_YMM6, T_YMM7 };
+static const enum special_token sysV64_regsZMM[] = { T_ZMM0, T_ZMM1, T_ZMM2, T_ZMM3, T_ZMM4, T_ZMM5, T_ZMM6, T_ZMM7 };
 #endif
 
 #if REGCALL_SUPPORT
@@ -315,48 +300,37 @@ static const enum special_token regcallunix32_regs[] = {
 	T_RAX, T_RCX, T_RDX, T_RDI, T_RSI,
 };
 static const enum special_token regcallms32_regs[] = {
-	T_CL,  T_DL,  T_DIL, T_SIL,
-	T_CX,  T_DX,  T_DI,  T_SI,
-	T_ECX, T_EDX, T_EDI, T_ESI,
-	T_RCX, T_RDX, T_RDI, T_RSI,
+    T_CL,  T_DL,  T_DIL, T_SIL,
+    T_CX,  T_DX,  T_DI,  T_SI,
+    T_ECX, T_EDX, T_EDI, T_ESI,
+    T_RCX, T_RDX, T_RDI, T_RSI,
 };*/
-static const enum special_token regcallunix32_regs[] = {
-	T_EAX, T_ECX, T_EDX, T_EDI, T_ESI,
-};
-static const enum special_token regcallms32_regs[] = {
-	T_ECX, T_EDX, T_EDI, T_ESI,
-};
-static const enum special_token regcallunix64_regs[] = {
-	T_AL,  T_CL,  T_DL,  T_DIL, T_SIL, T_R8B, T_R9B, T_R10B, T_R11B, T_R12B, T_R14B, T_R15B,
-	T_AX,  T_CX,  T_DX,  T_DI,  T_SI,  T_R8W, T_R9W, T_R10W, T_R11W, T_R12W, T_R14W, T_R15W,
-	T_EAX, T_ECX, T_EDX, T_EDI, T_ESI, T_R8D, T_R9D, T_R10D, T_R11D, T_R12D, T_R14D, T_R15D,
-	T_RAX, T_RCX, T_RDX, T_RDI, T_RSI, T_R8,  T_R9,  T_R10,  T_R11,  T_R12,  T_R14,  T_R15
-};
-static const enum special_token regcallms64_regs[] = {
-	T_AL,  T_CL,  T_DL,  T_DIL, T_SIL, T_R8B, T_R9B, T_R11B, T_R12B, T_R14B, T_R15B,
-	T_AX,  T_CX,  T_DX,  T_DI,  T_SI,  T_R8W, T_R9W, T_R11W, T_R12W, T_R14W, T_R15W,
-	T_EAX, T_ECX, T_EDX, T_EDI, T_ESI, T_R8D, T_R9D, T_R11D, T_R12D, T_R14D, T_R15D,
-	T_RAX, T_RCX, T_RDX, T_RDI, T_RSI, T_R8,  T_R9,  T_R11,  T_R12,  T_R14,  T_R15
-};
-static const enum special_token regcall32_regsXMM[] = {
-	T_XMM0, T_XMM1, T_XMM2, T_XMM3, T_XMM4, T_XMM5, T_XMM6, T_XMM7
-};
-static const enum special_token regcall32_regsYMM[] = {
-	T_YMM0, T_YMM1, T_YMM2, T_YMM3, T_YMM4, T_YMM5, T_YMM6, T_YMM7
-};
-static const enum special_token regcall32_regsZMM[] = {
-	T_ZMM0, T_ZMM1, T_ZMM2, T_ZMM3, T_ZMM4, T_ZMM5, T_ZMM6, T_ZMM7
-};
-static const enum special_token regcall64_regsXMM[] = {
-	T_XMM0, T_XMM1, T_XMM2, T_XMM3, T_XMM4, T_XMM5, T_XMM6, T_XMM7, T_XMM8, T_XMM9, T_XMM10, T_XMM11, T_XMM12, T_XMM13, T_XMM14, T_XMM15
-};
-static const enum special_token regcall64_regsYMM[] = {
-	T_YMM0, T_YMM1, T_YMM2, T_YMM3, T_YMM4, T_YMM5, T_YMM6, T_YMM7, T_YMM8, T_YMM9, T_YMM10, T_YMM11, T_YMM12, T_YMM13, T_YMM14, T_YMM15
-};
-static const enum special_token regcall64_regsZMM[] = {
-	T_ZMM0, T_ZMM1, T_ZMM2, T_ZMM3, T_ZMM4, T_ZMM5, T_ZMM6, T_ZMM7, T_ZMM8, T_ZMM9, T_ZMM10, T_ZMM11, T_ZMM12, T_ZMM13, T_ZMM14, T_ZMM15
-};
+static const enum special_token regcallunix32_regs[] = { T_EAX, T_ECX, T_EDX, T_EDI, T_ESI };
+static const enum special_token regcallms32_regs[] = { T_ECX, T_EDX, T_EDI, T_ESI };
+
+static const enum special_token regcallunix64_regs[] = { T_AL,  T_CL,  T_DL,  T_DIL, T_SIL, T_R8B, T_R9B, T_R10B, T_R11B, T_R12B, T_R14B, T_R15B,
+                                                         T_AX,  T_CX,  T_DX,  T_DI,  T_SI,  T_R8W, T_R9W, T_R10W, T_R11W, T_R12W, T_R14W, T_R15W,
+                                                         T_EAX, T_ECX, T_EDX, T_EDI, T_ESI, T_R8D, T_R9D, T_R10D, T_R11D, T_R12D, T_R14D, T_R15D,
+                                                         T_RAX, T_RCX, T_RDX, T_RDI, T_RSI, T_R8,  T_R9,  T_R10,  T_R11,  T_R12,  T_R14,  T_R15 };
+
+static const enum special_token regcallms64_regs[] = { T_AL,  T_CL,  T_DL,  T_DIL, T_SIL, T_R8B, T_R9B, T_R11B, T_R12B, T_R14B, T_R15B,
+                                                       T_AX,  T_CX,  T_DX,  T_DI,  T_SI,  T_R8W, T_R9W, T_R11W, T_R12W, T_R14W, T_R15W,
+                                                       T_EAX, T_ECX, T_EDX, T_EDI, T_ESI, T_R8D, T_R9D, T_R11D, T_R12D, T_R14D, T_R15D,
+                                                       T_RAX, T_RCX, T_RDX, T_RDI, T_RSI, T_R8,  T_R9,  T_R11,  T_R12,  T_R14,  T_R15 };
+
+static const enum special_token regcall32_regsXMM[] = { T_XMM0, T_XMM1, T_XMM2, T_XMM3, T_XMM4, T_XMM5, T_XMM6, T_XMM7 };
+static const enum special_token regcall32_regsYMM[] = { T_YMM0, T_YMM1, T_YMM2, T_YMM3, T_YMM4, T_YMM5, T_YMM6, T_YMM7 };
+static const enum special_token regcall32_regsZMM[] = { T_ZMM0, T_ZMM1, T_ZMM2, T_ZMM3, T_ZMM4, T_ZMM5, T_ZMM6, T_ZMM7 };
+
+static const enum special_token regcall64_regsXMM[] = { T_XMM0, T_XMM1, T_XMM2, T_XMM3, T_XMM4, T_XMM5, T_XMM6, T_XMM7, T_XMM8, T_XMM9, T_XMM10, T_XMM11, T_XMM12, T_XMM13, T_XMM14, T_XMM15 };
+static const enum special_token regcall64_regsYMM[] = { T_YMM0, T_YMM1, T_YMM2, T_YMM3, T_YMM4, T_YMM5, T_YMM6, T_YMM7, T_YMM8, T_YMM9, T_YMM10, T_YMM11, T_YMM12, T_YMM13, T_YMM14, T_YMM15 };
+static const enum special_token regcall64_regsZMM[] = { T_ZMM0, T_ZMM1, T_ZMM2, T_ZMM3, T_ZMM4, T_ZMM5, T_ZMM6, T_ZMM7, T_ZMM8, T_ZMM9, T_ZMM10, T_ZMM11, T_ZMM12, T_ZMM13, T_ZMM14, T_ZMM15 };
 #endif
+
+static const enum special_token vectorcall32_regsXMM[] = { T_XMM0, T_XMM1, T_XMM2, T_XMM3, T_XMM4, T_XMM5 };
+static const enum special_token vectorcall32_regsYMM[] = { T_YMM0, T_YMM1, T_YMM2, T_YMM3, T_YMM4, T_YMM5 };
+static const enum special_token vectorcall32_regsZMM[] = { T_ZMM0, T_ZMM1, T_ZMM2, T_ZMM3, T_ZMM4, T_ZMM5 };
+
 
 /* segment register names, order must match ASSUME_ enum */
 //static const enum special_token segreg_tab[] = {
@@ -397,36 +371,20 @@ static int ms32_param( struct dsym const *proc, int index, struct dsym *param, b
         pst = ms16_regs + fcscratch;
 		fcscratch++;
 	}
-	else if (proc->sym.langtype == LANG_REGCALL)
-	{
-		if (Options.output_format == OFORMAT_ELF)
-		{
-			fcscratch--;
-			pst = regcallunix32_regs + fcscratch;
-		}
-		else if (Options.output_format == OFORMAT_COFF)
-		{
-			fcscratch--;
-			pst = regcallms32_regs + fcscratch;
-		}
-		else
-		{
-			fcscratch--;
-			pst = ms32_regs + fcscratch;
-		}
-	}
-	else if (proc->sym.langtype == LANG_THISCALL)
-	{
-		if (Options.output_format == OFORMAT_COFF)
-		{
-			fcscratch--;
-			pst = thiscall32_regs + fcscratch;
-		}
-		else
-		{
-			fcscratch--;
-			pst = ms32_regs + fcscratch;
-		}
+    else if (proc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_ELF)
+    {
+        fcscratch--;
+        pst = regcallunix32_regs + fcscratch;
+    }
+    else if (proc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF)
+    {
+        fcscratch--;
+        pst = regcallms32_regs + fcscratch;
+    }
+	else if (proc->sym.langtype == LANG_THISCALL && Options.output_format == OFORMAT_COFF)
+    {
+        fcscratch--;
+        pst = thiscall32_regs + fcscratch;
 	}
 	else
 	{
@@ -457,10 +415,8 @@ static int ms32_param( struct dsym const *proc, int index, struct dsym *param, b
             AddLineQueueX( " mov %r, %s", reg, paramvalue );
         }
     }
-	//if (!proc->sym.langtype == LANG_REGCALL && !Options.output_format == OFORMAT_ELF && !Options.output_format == OFORMAT_MAC) {
-		if (*pst == T_AX)
-			*r0used |= R0_USED;
-	//}
+    if (*pst == T_AX)
+        * r0used |= R0_USED;
     return( 1 );
 }
 
@@ -651,1425 +607,1545 @@ static void ms64_fcend(struct dsym const *proc, int numparams, int value)
 * UASM 2.49 For structs that are not 1/2/4/8 bytes in size the address is used too, else they're passed
 * in registers.
 */
-static int ms64_param(struct dsym const *proc, int index, struct dsym *param, bool addr, struct expr *opnd, char *paramvalue, uint_8 *regs_used)
+static int ms64_param(struct dsym const* proc, int index, struct dsym* param, bool addr, struct expr* opnd, char* paramvalue, uint_8* regs_used)
 /************************************************************************************************************************************************/
 {
-	uint_32 size;
-	uint_32 psize;
-	int reg;
-	int reg2;
-	int i;
-	int j = 0;
-	int tCount = 0;
-	int freevecregs = 0;
-	int vecidx = -1;
-	int membersize = 0;     /* used for vectorcall array */
-	int memberCount = 0;     /* used for vectorcall array */
-	int base;
-	struct proc_info *info = proc->e.procinfo;
-	struct dsym *t = NULL; /* used for vectorcall array member size */
-	bool destroyed = FALSE;
-	struct asym *sym = NULL;
+    uint_32 size;
+    uint_32 psize;
+    int reg;
+    int reg2;
+    int i;
+    int j = 0;
+    int tCount = 0;
+    int freevecregs = 0;
+    int vecidx = -1;
+    int membersize = 0;     /* used for vectorcall array */
+    int memberCount = 0;     /* used for vectorcall array */
+    int base;
+    struct proc_info* info = proc->e.procinfo;
+    struct dsym* t = NULL; /* used for vectorcall array member size */
+    bool destroyed = FALSE;
+    struct asym* sym = NULL;
 
-	DebugMsg1(("ms64_param(%s, index=%u, param.memtype=%Xh, addr=%u) enter\n", proc->sym.name, index, param->sym.mem_type, addr));
+    DebugMsg1(("ms64_param(%s, index=%u, param.memtype=%Xh, addr=%u) enter\n", proc->sym.name, index, param->sym.mem_type, addr));
 
-	/* v2.11: default size is 32-bit, not 64-bit */
-	if (param->sym.is_vararg) 
-	{
-		psize = 0;
-		/* v2.46 support automatic promotion of 64bit immediates in vararg invoke */
-		if (opnd->kind == EXPR_CONST && (opnd->llvalue > INT_MAX || opnd->llvalue < INT_MIN))
-			psize = 8;
-		else if (addr || opnd->instr == T_OFFSET)
-			psize = 8;
-		else if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
-			psize = SizeFromRegister(opnd->base_reg->tokval);
-		else if (opnd->mem_type != MT_EMPTY)
-			psize = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
-		if (psize < 4)
-			psize = 4;
-	}
-	else
-		psize = SizeFromMemtype(param->sym.mem_type, USE64, param->sym.type);
+    /* v2.11: default size is 32-bit, not 64-bit */
+    if (param->sym.is_vararg)
+    {
+        psize = 0;
+        /* v2.46 support automatic promotion of 64bit immediates in vararg invoke */
+        if (opnd->kind == EXPR_CONST && (opnd->llvalue > INT_MAX || opnd->llvalue < INT_MIN))
+            psize = 8;
+        else if (addr || opnd->instr == T_OFFSET)
+            psize = 8;
+        else if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+            psize = SizeFromRegister(opnd->base_reg->tokval);
+        else if (opnd->mem_type != MT_EMPTY)
+            psize = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
+        if (psize < 4)
+            psize = 4;
+    }
+    else
+        psize = SizeFromMemtype(param->sym.mem_type, USE64, param->sym.type);
 
-	/* UASM 2.49 Force odd-sized structures to error: pass by reference! */
-	if (psize == 3 || psize == 5 || psize == 6 || psize == 7)
-	{
-		if (param->sym.mem_type == MT_TYPE)
-		{
-			EmitErr(INVALID_REG_STRUCT_SIZE);
-		}
-	}
+    /* UASM 2.49 Force odd-sized structures to error: pass by reference! */
+    if (psize == 3 || psize == 5 || psize == 6 || psize == 7)
+    {
+        if (param->sym.mem_type == MT_TYPE)
+        {
+            EmitErr(INVALID_REG_STRUCT_SIZE);
+        }
+    }
 
-	if (vcallpass == 1)
-		goto vcall;
+    if (vcallpass == 1)
+        goto vcall;
 
-	/* check for register overwrites; v2.11: moved out the if( index >= 4 ) block */
-	if (opnd->base_reg != NULL) 
-	{
-		reg = opnd->base_reg->tokval;
-		if (GetValueSp(reg) & OP_R) {
-			i = GetRegNo(reg);
-			if ((proc->sym.langtype == LANG_REGCALL) && (REGCALLPAR_WIN64 & (1 << i))) {
-				base = GetregcallmsParmIndex(i);
-				if (*regs_used & (1 << (base + RPAR_START)))
-					destroyed = TRUE;
-			}
-			else if (REGPAR_WIN64 & (1 << i)) {
-				base = GetParmIndex(i);
-				if (*regs_used & (1 << (base + RPAR_START)))
-					destroyed = TRUE;
-			}
-			else if ((*regs_used & R0_USED) && ((GetValueSp(reg) & OP_A) || reg == T_AH)) {
-				destroyed = TRUE;
-			}
-		}
-	}
-	if (opnd->idx_reg != NULL) 
-	{
-		reg2 = opnd->idx_reg->tokval;
-		if (GetValueSp(reg2) & OP_R) {
-			i = GetRegNo(reg2);
-			if ((proc->sym.langtype == LANG_REGCALL) && (REGCALLPAR_WIN64 & (1 << i))) {
-				base = GetregcallmsParmIndex(i);
-				if (*regs_used & (1 << (base + RPAR_START)))
-					destroyed = TRUE;
-			}
-			else if (REGPAR_WIN64 & (1 << i)) {
-				base = GetParmIndex(i);
-				if (*regs_used & (1 << (base + RPAR_START)))
-					destroyed = TRUE;
-			}
-			else if ((*regs_used & R0_USED) && ((GetValueSp(reg2) & OP_A) || reg2 == T_AH)) {
-				destroyed = TRUE;
-			}
-		}
-	}
-	
-	if (destroyed) 
-	{
-		EmitErr(REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
-		*regs_used = 0;
-	}
-	if ( ( (proc->sym.langtype == LANG_REGCALL) && (index >= 16) ) ||
-		 ( (proc->sym.langtype == LANG_VECTORCALL) && (index >= 6) ) ||
-		 ( (proc->sym.langtype == LANG_FASTCALL) && (index >= 4) ) ) {
-		if (addr) 
-		{ 
-			if (psize == 4)
-				i = T_EAX;
-			else {
-				i = T_RAX;
-				if (psize < 8)
-					EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
-			}
-			*regs_used |= R0_USED;
-			AddLineQueueX(" lea %r, %s", i, paramvalue);
-			AddLineQueueX(" mov [%r+%u], %r", T_RSP, NUMQUAL index * 8, i);
-			DebugMsg(("ms64_param(%s, param=%u): ADDR flags=%X\n", proc->sym.name, index, *regs_used));
-			return(1);
-		}
-		if (opnd->kind == EXPR_CONST ||
-			(opnd->kind == EXPR_ADDR && opnd->indirect == FALSE && opnd->mem_type == MT_EMPTY && opnd->instr != T_OFFSET)) {
-			/* v2.06: support 64-bit constants for params > 4 */
-			if (psize == 8 &&
-				(opnd->value64 > H_LONG_MAX || opnd->value64 < H_LONG_MIN)) {
-				AddLineQueueX(" mov %r ptr [%r+%u], %r ( %s )", T_DWORD, T_RSP, NUMQUAL index * 8, T_LOW32, paramvalue);
-				AddLineQueueX(" mov %r ptr [%r+%u], %r ( %s )", T_DWORD, T_RSP, NUMQUAL index * 8 + 4, T_HIGH32, paramvalue);
-				return(1);
-			}
-			else {
-				/* v2.11: no expansion if target type is a pointer and argument is an address part */
-				if (param->sym.mem_type == MT_PTR && opnd->kind == EXPR_ADDR && opnd->sym->state != SYM_UNDEFINED) {
-					DebugMsg(("ms64_param(%s, param=%u): MT_PTR, type error, psize=%u\n", proc->sym.name, index, psize));
-					EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
-				}
-				switch (psize) {
-				case 1:   i = T_BYTE; break;
-				case 2:   i = T_WORD; break;
-				case 4:   i = T_DWORD; break;
-				default:  i = T_QWORD; break;
-				}
-				AddLineQueueX(" mov %r ptr [%r+%u], %s", i, T_RSP, NUMQUAL index * 8, paramvalue);
-				return(1);
-			}
-			DebugMsg(("ms64_param(%s, param=%u): MT_EMPTY size.p=%u flags=%X\n", proc->sym.name, index, psize, *regs_used));
+    /* check for register overwrites; v2.11: moved out the if( index >= 4 ) block */
+    if (opnd->base_reg != NULL)
+    {
+        reg = opnd->base_reg->tokval;
+        if (GetValueSp(reg) & OP_R)
+        {
+            i = GetRegNo(reg);
+            if ((proc->sym.langtype == LANG_REGCALL) && (REGCALLPAR_WIN64 & (1 << i)))
+            {
+                base = GetregcallmsParmIndex(i);
+                if (*regs_used & (1 << (base + RPAR_START)))
+                    destroyed = TRUE;
+            }
+            else if (REGPAR_WIN64 & (1 << i))
+            {
+                base = GetParmIndex(i);
+                if (*regs_used & (1 << (base + RPAR_START)))
+                    destroyed = TRUE;
+            }
+            else if ((*regs_used & R0_USED) && ((GetValueSp(reg) & OP_A) || reg == T_AH))
+            {
+                destroyed = TRUE;
+            }
+        }
+    }
+    if (opnd->idx_reg != NULL)
+    {
+        reg2 = opnd->idx_reg->tokval;
+        if (GetValueSp(reg2) & OP_R)
+        {
+            i = GetRegNo(reg2);
+            if ((proc->sym.langtype == LANG_REGCALL) && (REGCALLPAR_WIN64 & (1 << i)))
+            {
+                base = GetregcallmsParmIndex(i);
+                if (*regs_used & (1 << (base + RPAR_START)))
+                    destroyed = TRUE;
+            }
+            else if (REGPAR_WIN64 & (1 << i))
+            {
+                base = GetParmIndex(i);
+                if (*regs_used & (1 << (base + RPAR_START)))
+                    destroyed = TRUE;
+            }
+            else if ((*regs_used & R0_USED) && ((GetValueSp(reg2) & OP_A) || reg2 == T_AH))
+            {
+                destroyed = TRUE;
+            }
+        }
+    }
 
-		}
-		else if (opnd->kind == EXPR_FLOAT) 
-		{
-			if (param->sym.mem_type == MT_REAL8) {
-				AddLineQueueX(" mov %r ptr [%r+%u+0], %r (%s)", T_DWORD, T_RSP, NUMQUAL index * 8, T_LOW32, paramvalue);
-				AddLineQueueX(" mov %r ptr [%r+%u+4], %r (%s)", T_DWORD, T_RSP, NUMQUAL index * 8, T_HIGH32, paramvalue);
-				return(1);
-			}
-			else {
-				AddLineQueueX(" mov %r ptr [%r+%u], %s", T_DWORD, T_RSP, NUMQUAL index * 8, paramvalue);
-				return(1);
-			}
-		}
-		else { /* it's a register or variable */
+    if (destroyed)
+    {
+        EmitErr(REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
+        *regs_used = 0;
+    }
+    if (((proc->sym.langtype == LANG_REGCALL) && (index >= 16)) ||
+        ((proc->sym.langtype == LANG_VECTORCALL) && (index >= 6)) ||
+        ((proc->sym.langtype == LANG_FASTCALL) && (index >= 4)))
+    {
+        if (addr)
+        {
+            if (psize == 4)
+                i = T_EAX;
+            else
+            {
+                i = T_RAX;
+                if (psize < 8)
+                    EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
+            }
+            *regs_used |= R0_USED;
+            AddLineQueueX(" lea %r, %s", i, paramvalue);
+            AddLineQueueX(" mov [%r+%u], %r", T_RSP, NUMQUAL index * 8, i);
+            DebugMsg(("ms64_param(%s, param=%u): ADDR flags=%X\n", proc->sym.name, index, *regs_used));
+            return(1);
+        }
+        if (opnd->kind == EXPR_CONST ||
+            (opnd->kind == EXPR_ADDR && opnd->indirect == FALSE && opnd->mem_type == MT_EMPTY && opnd->instr != T_OFFSET))
+        {
+            /* v2.06: support 64-bit constants for params > 4 */
+            if (psize == 8 &&
+                (opnd->value64 > H_LONG_MAX || opnd->value64 < H_LONG_MIN))
+            {
+                AddLineQueueX(" mov %r ptr [%r+%u], %r ( %s )", T_DWORD, T_RSP, NUMQUAL index * 8, T_LOW32, paramvalue);
+                AddLineQueueX(" mov %r ptr [%r+%u], %r ( %s )", T_DWORD, T_RSP, NUMQUAL index * 8 + 4, T_HIGH32, paramvalue);
+                return(1);
+            }
+            else
+            {
+                /* v2.11: no expansion if target type is a pointer and argument is an address part */
+                if (param->sym.mem_type == MT_PTR && opnd->kind == EXPR_ADDR && opnd->sym->state != SYM_UNDEFINED)
+                {
+                    DebugMsg(("ms64_param(%s, param=%u): MT_PTR, type error, psize=%u\n", proc->sym.name, index, psize));
+                    EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
+                }
+                switch (psize)
+                {
+                    case 1:   i = T_BYTE; break;
+                    case 2:   i = T_WORD; break;
+                    case 4:   i = T_DWORD; break;
+                    default:  i = T_QWORD; break;
+                }
+                AddLineQueueX(" mov %r ptr [%r+%u], %s", i, T_RSP, NUMQUAL index * 8, paramvalue);
+                return(1);
+            }
+            DebugMsg(("ms64_param(%s, param=%u): MT_EMPTY size.p=%u flags=%X\n", proc->sym.name, index, psize, *regs_used));
 
-			if (opnd->kind == EXPR_REG && opnd->indirect == FALSE) 
-			{
-				size = SizeFromRegister(reg);
-				if (size == 0x10 && param->sym.mem_type == MT_REAL4)
-				{
-					AddLineQueueX(" %s %r ptr [%r+%u], %s", MOVE_SINGLE, T_DWORD, T_RSP, NUMQUAL index*8, paramvalue);
-					return(1);
-				}
-				if (size == 0x10 && param->sym.mem_type == MT_REAL8)
-				{
-					AddLineQueueX(" %s %r ptr [%r+%u], %s", MOVE_DOUBLE, T_QWORD, T_RSP, NUMQUAL index * 8, paramvalue);
-					return(1);
-				}
+        }
+        else if (opnd->kind == EXPR_FLOAT)
+        {
+            if (param->sym.mem_type == MT_REAL8)
+            {
+                AddLineQueueX(" mov %r ptr [%r+%u+0], %r (%s)", T_DWORD, T_RSP, NUMQUAL index * 8, T_LOW32, paramvalue);
+                AddLineQueueX(" mov %r ptr [%r+%u+4], %r (%s)", T_DWORD, T_RSP, NUMQUAL index * 8, T_HIGH32, paramvalue);
+                return(1);
+            }
+            else
+            {
+                AddLineQueueX(" mov %r ptr [%r+%u], %s", T_DWORD, T_RSP, NUMQUAL index * 8, paramvalue);
+                return(1);
+            }
+        }
+        else
+        { /* it's a register or variable */
 
-				if (size == psize)
-					i = reg;
-				else {
-					if (size > psize || (size < psize && param->sym.mem_type == MT_PTR)) {
-						DebugMsg(("ms64_param(%s, param=%u): type error size.p/a=%u/%u flags=%X\n", proc->sym.name, index, psize, size, *regs_used));
-						EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
-						psize = size;
-					}
-					switch (psize) {
-					case 1:  i = T_AL;  break;
-					case 2:  i = T_AX;  break;
-					case 4:  i = T_EAX; break;
-					default: i = T_RAX; break;
-					}
-					*regs_used |= R0_USED;
-				}
-				DebugMsg(("ms64_param(%s, param=%u): REG size.p/a=%u/%u flags=%X\n", proc->sym.name, index, psize, size, *regs_used));
-			}
-			else {
-				if (opnd->mem_type == MT_EMPTY)
-					size = (opnd->instr == T_OFFSET ? 8 : 4);
-				else
-					size = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
-				DebugMsg(("ms64_param(%s, param=%u): MEM size.p/a=%u/%u flags=%X\n", proc->sym.name, index, psize, size, *regs_used));
-				switch (psize) {
-				case 1:  i = T_AL;  break;
-				case 2:  i = T_AX;  break;
-				case 4:  i = T_EAX; break;
-				default: i = T_RAX; break;
-				}
-				if (proc->sym.langtype == LANG_VECTORCALL || proc->sym.langtype == LANG_REGCALL) return(1);
-				*regs_used |= R0_USED;
-			}
+            if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+            {
+                size = SizeFromRegister(reg);
+                if (size == 0x10 && param->sym.mem_type == MT_REAL4)
+                {
+                    AddLineQueueX(" %s %r ptr [%r+%u], %s", MOVE_SINGLE, T_DWORD, T_RSP, NUMQUAL index * 8, paramvalue);
+                    return(1);
+                }
+                if (size == 0x10 && param->sym.mem_type == MT_REAL8)
+                {
+                    AddLineQueueX(" %s %r ptr [%r+%u], %s", MOVE_DOUBLE, T_QWORD, T_RSP, NUMQUAL index * 8, paramvalue);
+                    return(1);
+                }
 
-			/* v2.11: no expansion if target type is a pointer */
-			if (size > psize || (size < psize && param->sym.mem_type == MT_PTR)) 
-			{
-				EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
-			}
-			if (size != psize) 
-			{
-				if (size == 4) {
-					if (IS_SIGNED(opnd->mem_type))
-						AddLineQueueX(" movsxd %r, %s", i, paramvalue);
-					else
-						AddLineQueueX(" mov %r, %s", i, paramvalue);
-				}
-				else
-					AddLineQueueX(" mov%sx %r, %s", IS_SIGNED(opnd->mem_type) ? "s" : "z", i, paramvalue);
-			}
-			else if (opnd->kind != EXPR_REG || opnd->indirect == TRUE)
-				AddLineQueueX(" mov %r, %s", i, paramvalue);
+                if (size == psize)
+                    i = reg;
+                else
+                {
+                    if (size > psize || (size < psize && param->sym.mem_type == MT_PTR))
+                    {
+                        DebugMsg(("ms64_param(%s, param=%u): type error size.p/a=%u/%u flags=%X\n", proc->sym.name, index, psize, size, *regs_used));
+                        EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
+                        psize = size;
+                    }
+                    switch (psize)
+                    {
+                        case 1:  i = T_AL;  break;
+                        case 2:  i = T_AX;  break;
+                        case 4:  i = T_EAX; break;
+                        default: i = T_RAX; break;
+                    }
+                    *regs_used |= R0_USED;
+                }
+                DebugMsg(("ms64_param(%s, param=%u): REG size.p/a=%u/%u flags=%X\n", proc->sym.name, index, psize, size, *regs_used));
+            }
+            else
+            {
+                if (opnd->mem_type == MT_EMPTY)
+                    size = (opnd->instr == T_OFFSET ? 8 : 4);
+                else
+                    size = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
+                DebugMsg(("ms64_param(%s, param=%u): MEM size.p/a=%u/%u flags=%X\n", proc->sym.name, index, psize, size, *regs_used));
+                switch (psize)
+                {
+                    case 1:  i = T_AL;  break;
+                    case 2:  i = T_AX;  break;
+                    case 4:  i = T_EAX; break;
+                    default: i = T_RAX; break;
+                }
+                if (proc->sym.langtype == LANG_VECTORCALL || proc->sym.langtype == LANG_REGCALL) return(1);
+                *regs_used |= R0_USED;
+            }
 
-			AddLineQueueX(" mov [%r+%u], %r", T_RSP, NUMQUAL index * 8, i);
-			return(1);
-		}
+            /* v2.11: no expansion if target type is a pointer */
+            if (size > psize || (size < psize && param->sym.mem_type == MT_PTR))
+            {
+                EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
+            }
+            if (size != psize)
+            {
+                if (size == 4)
+                {
+                    if (IS_SIGNED(opnd->mem_type))
+                        AddLineQueueX(" movsxd %r, %s", i, paramvalue);
+                    else
+                        AddLineQueueX(" mov %r, %s", i, paramvalue);
+                }
+                else
+                    AddLineQueueX(" mov%sx %r, %s", IS_SIGNED(opnd->mem_type) ? "s" : "z", i, paramvalue);
+            }
+            else if (opnd->kind != EXPR_REG || opnd->indirect == TRUE)
+                AddLineQueueX(" mov %r, %s", i, paramvalue);
 
-	}
-	else if (param->sym.mem_type == MT_REAL4 || param->sym.mem_type == MT_REAL8) 
-	{
-		/* v2.04: check if argument is the correct XMM register already */
-		if (opnd->kind == EXPR_REG && opnd->indirect == FALSE) {
-			if (GetValueSp(reg) & OP_XMM) {
-				if (proc->sym.langtype == LANG_REGCALL)
-					info->rgcregs[index] = 1;
-				if (proc->sym.langtype == LANG_VECTORCALL)
-					info->vregs[index] = 1;
-				if (reg == T_XMM0 + index)
-					DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
-				else
-				{
-					if (param->sym.mem_type == MT_REAL4)
-						AddLineQueueX(" %s %r, %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
-					else
-						AddLineQueueX(" %s %r, %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
-				}
-				return(1);
-			}
-		}
-		else if (opnd->kind == EXPR_REG && opnd->indirect == TRUE) {
-			if (reg == T_XMM0 + index)
-				DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
-			else
-			{
-				if (param->sym.mem_type == MT_REAL4)
-					AddLineQueueX(" %s %r, %s", MOVE_SIMD_DWORD, T_XMM0 + index, paramvalue);
-				else
-					AddLineQueueX(" %s %r, %s", MOVE_SIMD_QWORD, T_XMM0 + index, paramvalue);
-			}
-			return(1);
-		}
+            AddLineQueueX(" mov [%r+%u], %r", T_RSP, NUMQUAL index * 8, i);
+            return(1);
+        }
 
-		if (opnd->kind == EXPR_FLOAT) {
-			if (proc->sym.langtype == LANG_REGCALL)
-			{
-				info->rgcregs[index] = 1;
-				info->regcxyzused[index] = 1; /* JPH */
-			}
-			if (proc->sym.langtype == LANG_VECTORCALL)
-			{
-				info->vregs[index] = 1;
-				info->xyzused[index] = 1; /* JPH */
-			}
-			*regs_used |= R0_USED;
-			if (param->sym.mem_type == MT_REAL4) {
+    }
+    else if (param->sym.mem_type == MT_REAL4 || param->sym.mem_type == MT_REAL8)
+    {
+        /* v2.04: check if argument is the correct XMM register already */
+        if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+        {
+            if (GetValueSp(reg) & OP_XMM)
+            {
+                if (proc->sym.langtype == LANG_REGCALL)
+                    info->rgcregs[index] = 1;
+                if (proc->sym.langtype == LANG_VECTORCALL)
+                    info->vregs[index] = 1;
+                if (reg == T_XMM0 + index)
+                    DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
+                else
+                {
+                    if (param->sym.mem_type == MT_REAL4)
+                        AddLineQueueX(" %s %r, %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
+                    else
+                        AddLineQueueX(" %s %r, %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
+                }
+                return(1);
+            }
+        }
+        else if (opnd->kind == EXPR_REG && opnd->indirect == TRUE)
+        {
+            if (reg == T_XMM0 + index)
+                DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
+            else
+            {
+                if (param->sym.mem_type == MT_REAL4)
+                    AddLineQueueX(" %s %r, %s", MOVE_SIMD_DWORD, T_XMM0 + index, paramvalue);
+                else
+                    AddLineQueueX(" %s %r, %s", MOVE_SIMD_QWORD, T_XMM0 + index, paramvalue);
+            }
+            return(1);
+        }
 
-				AddLineQueueX("mov %r, %s", T_EAX, paramvalue);
-				AddLineQueueX("%s %r, %r", MOVE_SIMD_DWORD, T_XMM0 + index, T_EAX);
-				return(1);
-			}
-			else {
-				AddLineQueueX("mov %r, %r ptr %s", T_RAX, T_REAL8, paramvalue);
-				AddLineQueueX("%s %r, %r", MOVE_SIMD_QWORD, T_XMM0 + index, T_RAX);
-				return(1);
-			}
-		}
-		if (opnd->kind == EXPR_ADDR) {
-			if (proc->sym.langtype == LANG_VECTORCALL)
-			{
-				*regs_used |= R0_USED;
-				info->vregs[index] = 1;
-				info->xyzused[index] = 1; /* JPH */
-				if (opnd->sym->mem_type == MT_REAL8)
-				{
-					AddLineQueueX("%s %r,qword ptr %s", MOVE_DOUBLE, T_XMM0 + index, paramvalue);
-				}
-				else
-				{
-					AddLineQueueX("%s %r,dword ptr %s", MOVE_SINGLE, T_XMM0 + index, paramvalue);
-				}
-			}
-			else if(proc->sym.langtype == LANG_REGCALL)
-			{
-				*regs_used |= R0_USED;
-				info->rgcregs[index] = 1;
-				info->regcxyzused[index] = 1; /* JPH */
-				if (opnd->sym->mem_type == MT_REAL8)
-				{
-					AddLineQueueX("%s %r,qword ptr %s", MOVE_DOUBLE, T_XMM0 + index, paramvalue);
-				}
-				else
-				{
-					AddLineQueueX("%s %r,dword ptr %s", MOVE_SINGLE, T_XMM0 + index, paramvalue);
-				}
-			}
-			else
-			{
-				if (param->sym.mem_type == MT_REAL8)
-					AddLineQueueX("%s %r,qword ptr %s", MOVE_SIMD_QWORD, T_XMM0 + index, paramvalue);
-				else if (param->sym.mem_type == MT_REAL4)
-					AddLineQueueX("%s %r,dword ptr %s", MOVE_SIMD_DWORD, T_XMM0 + index, paramvalue);
-			}
-			return(1);
-		}
-	}
-	if (vcallpass == 1)
-		goto vcalldone;
+        if (opnd->kind == EXPR_FLOAT)
+        {
+            if (proc->sym.langtype == LANG_REGCALL)
+            {
+                info->rgcregs[index] = 1;
+                info->regcxyzused[index] = 1; /* JPH */
+            }
+            if (proc->sym.langtype == LANG_VECTORCALL)
+            {
+                info->vregs[index] = 1;
+                info->xyzused[index] = 1; /* JPH */
+            }
+            *regs_used |= R0_USED;
+            if (param->sym.mem_type == MT_REAL4)
+            {
+
+                AddLineQueueX("mov %r, %s", T_EAX, paramvalue);
+                AddLineQueueX("%s %r, %r", MOVE_SIMD_DWORD, T_XMM0 + index, T_EAX);
+                return(1);
+            }
+            else
+            {
+                AddLineQueueX("mov %r, %r ptr %s", T_RAX, T_REAL8, paramvalue);
+                AddLineQueueX("%s %r, %r", MOVE_SIMD_QWORD, T_XMM0 + index, T_RAX);
+                return(1);
+            }
+        }
+        if (opnd->kind == EXPR_ADDR)
+        {
+            if (proc->sym.langtype == LANG_VECTORCALL)
+            {
+                *regs_used |= R0_USED;
+                info->vregs[index] = 1;
+                info->xyzused[index] = 1; /* JPH */
+                if (opnd->sym->mem_type == MT_REAL8)
+                {
+                    AddLineQueueX("%s %r,qword ptr %s", MOVE_DOUBLE, T_XMM0 + index, paramvalue);
+                }
+                else
+                {
+                    AddLineQueueX("%s %r,dword ptr %s", MOVE_SINGLE, T_XMM0 + index, paramvalue);
+                }
+            }
+            else if (proc->sym.langtype == LANG_REGCALL)
+            {
+                *regs_used |= R0_USED;
+                info->rgcregs[index] = 1;
+                info->regcxyzused[index] = 1; /* JPH */
+                if (opnd->sym->mem_type == MT_REAL8)
+                {
+                    AddLineQueueX("%s %r,qword ptr %s", MOVE_DOUBLE, T_XMM0 + index, paramvalue);
+                }
+                else
+                {
+                    AddLineQueueX("%s %r,dword ptr %s", MOVE_SINGLE, T_XMM0 + index, paramvalue);
+                }
+            }
+            else
+            {
+                if (param->sym.mem_type == MT_REAL8)
+                    AddLineQueueX("%s %r,qword ptr %s", MOVE_SIMD_QWORD, T_XMM0 + index, paramvalue);
+                else if (param->sym.mem_type == MT_REAL4)
+                    AddLineQueueX("%s %r,dword ptr %s", MOVE_SIMD_DWORD, T_XMM0 + index, paramvalue);
+            }
+            return(1);
+        }
+    }
+    if (vcallpass == 1)
+        goto vcalldone;
 
 vcall:
-	if ((proc->sym.langtype == LANG_VECTORCALL) && (psize == 8) && (param->sym.ttype != 0) && (param->sym.ttype->e.structinfo->isHFA) && (param->sym.mem_type == MT_TYPE)) {
-			/* it can be only HFA data type made of 2 REAL4 */
-		t = param->sym.ttype;
-		if (t != 0 && t->e.structinfo->isHFA && (vcallpass == 1))
-		{
-			freevecregs = 0;
-			vecidx = -1;
-			for (i = 0; i < 6; i++)
-			{
-				if (info->vregs[i] == 0)
-				{
-					if (vecidx == -1) vecidx = i;
-					freevecregs++;
-				}
-			}
+    if ((proc->sym.langtype == LANG_VECTORCALL) && (psize == 8) && (param->sym.ttype != 0) && (param->sym.ttype->e.structinfo->isHFA) && (param->sym.mem_type == MT_TYPE))
+    {
+        /* it can be only HFA data type made of 2 REAL4 */
+        t = param->sym.ttype;
+        if (t != 0 && t->e.structinfo->isHFA && (vcallpass == 1))
+        {
+            freevecregs = 0;
+            vecidx = -1;
+            for (i = 0; i < 6; i++)
+            {
+                if (info->vregs[i] == 0)
+                {
+                    if (vecidx == -1) vecidx = i;
+                    freevecregs++;
+                }
+            }
 
-			memberCount = t->e.structinfo->memberCount;
-			if (memberCount > freevecregs) goto uselea;
-			membersize = psize / memberCount;     //get the size of a single element which is REAL4 in this case        
-			j = 0;
-			tCount = memberCount;
-			while (tCount > 0)
-			{
-				if (info->vregs[vecidx] == 0)
-				{
-					info->vregs[vecidx] = 1;
-					info->vecregs[index] = memberCount;         //store number of members in proper location pointed by index
-					info->vsize += membersize;                  //vsize contains total size 
-					info->vecregsize[vecidx] = membersize;      //size of data tu be put in register
-					info->xyzused[vecidx] = 1;                  //mark that the placeholder for register is used
-					AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE, T_XMM0 + vecidx, paramvalue, j* membersize);
-					tCount--;
-					j++;
-				}
-				vecidx++;
-			}
-		}
-	}
-	else if ((proc->sym.langtype == LANG_REGCALL) && (psize == 8) && (param->sym.ttype != 0) && (param->sym.ttype->e.structinfo->isHFA) && (param->sym.mem_type == MT_TYPE)) {
-			/* it can be only HFA data type made of 2 REAL4 */
-			t = param->sym.ttype;
-			if (t != 0 && t->e.structinfo->isHFA && (vcallpass == 1))
-			{
-				freevecregs = 0;
-				vecidx = -1;
-				for (i = 0; i < 16; i++)
-				{
-					if (info->rgcregs[i] == 0)
-					{
-						if (vecidx == -1) vecidx = i;
-						freevecregs++;
-					}
-				}
+            memberCount = t->e.structinfo->memberCount;
+            if (memberCount > freevecregs) goto uselea;
+            membersize = psize / memberCount;     //get the size of a single element which is REAL4 in this case        
+            j = 0;
+            tCount = memberCount;
+            while (tCount > 0)
+            {
+                if (info->vregs[vecidx] == 0)
+                {
+                    info->vregs[vecidx] = 1;
+                    info->vecregs[index] = memberCount;         //store number of members in proper location pointed by index
+                    info->vsize += membersize;                  //vsize contains total size 
+                    info->vecregsize[vecidx] = membersize;      //size of data tu be put in register
+                    info->xyzused[vecidx] = 1;                  //mark that the placeholder for register is used
+                    AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE, T_XMM0 + vecidx, paramvalue, j * membersize);
+                    tCount--;
+                    j++;
+                }
+                vecidx++;
+            }
+        }
+    }
+    else if ((proc->sym.langtype == LANG_REGCALL) && (psize == 8) && (param->sym.ttype != 0) && (param->sym.ttype->e.structinfo->isHFA) && (param->sym.mem_type == MT_TYPE))
+    {
+        /* it can be only HFA data type made of 2 REAL4 */
+        t = param->sym.ttype;
+        if (t != 0 && t->e.structinfo->isHFA && (vcallpass == 1))
+        {
+            freevecregs = 0;
+            vecidx = -1;
+            for (i = 0; i < 16; i++)
+            {
+                if (info->rgcregs[i] == 0)
+                {
+                    if (vecidx == -1) vecidx = i;
+                    freevecregs++;
+                }
+            }
 
-				memberCount = t->e.structinfo->memberCount;
-				if (memberCount > freevecregs) goto uselea;
-				membersize = psize / memberCount;     //get the size of a single element which is REAL4 in this case        
-				j = 0;
-				tCount = memberCount;
-				while (tCount > 0)
-				{
-					if (info->rgcregs[vecidx] == 0)
-					{
-						info->rgcregs[vecidx] = 1;
-						info->regcregs[index] = memberCount;         //store number of members in proper location pointed by index
-						info->regcsize += membersize;                  //vsize contains total size 
-						info->regcregsize[vecidx] = membersize;      //size of data tu be put in register
-						info->regcxyzused[vecidx] = 1;                  //mark that the placeholder for register is used
-						AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE, T_XMM0 + vecidx, paramvalue, j* membersize);
-						tCount--;
-						j++;
-					}
-					vecidx++;
-				}
-			}
-	}
-	else if ((proc->sym.langtype == LANG_VECTORCALL) && (psize == 16) && (param->sym.ttype != 0) && (param->sym.ttype->e.structinfo->isHFA) && (param->sym.mem_type == MT_TYPE)) {
-		/* it can be only HFA data type made of 2 REAL8 */
-		t = param->sym.ttype;
-		if (t != 0 && t->e.structinfo->isHFA && (vcallpass == 1))
-		{
+            memberCount = t->e.structinfo->memberCount;
+            if (memberCount > freevecregs) goto uselea;
+            membersize = psize / memberCount;     //get the size of a single element which is REAL4 in this case        
+            j = 0;
+            tCount = memberCount;
+            while (tCount > 0)
+            {
+                if (info->rgcregs[vecidx] == 0)
+                {
+                    info->rgcregs[vecidx] = 1;
+                    info->regcregs[index] = memberCount;         //store number of members in proper location pointed by index
+                    info->regcsize += membersize;                  //vsize contains total size 
+                    info->regcregsize[vecidx] = membersize;      //size of data tu be put in register
+                    info->regcxyzused[vecidx] = 1;                  //mark that the placeholder for register is used
+                    AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE, T_XMM0 + vecidx, paramvalue, j * membersize);
+                    tCount--;
+                    j++;
+                }
+                vecidx++;
+            }
+        }
+    }
+    else if ((proc->sym.langtype == LANG_VECTORCALL) && (psize == 16) && (param->sym.ttype != 0) && (param->sym.ttype->e.structinfo->isHFA) && (param->sym.mem_type == MT_TYPE))
+    {
+        /* it can be only HFA data type made of 2 REAL8 */
+        t = param->sym.ttype;
+        if (t != 0 && t->e.structinfo->isHFA && (vcallpass == 1))
+        {
 
-			freevecregs = 0;
-			vecidx = -1;
-			for (i = 0; i < 6; i++)
-			{
-				if (info->vregs[i] == 0)
-				{
-					if (vecidx == -1) vecidx = i;
-					freevecregs++;
-				}
-			}
+            freevecregs = 0;
+            vecidx = -1;
+            for (i = 0; i < 6; i++)
+            {
+                if (info->vregs[i] == 0)
+                {
+                    if (vecidx == -1) vecidx = i;
+                    freevecregs++;
+                }
+            }
 
-			memberCount = t->e.structinfo->memberCount;
-			if (memberCount > freevecregs) goto uselea;
-			membersize = psize / memberCount;          //get the size of a single element which is REAL4 in this case        
-			j = 0;
-			tCount = memberCount;
-			if (membersize == 8)
-			{
-				while (tCount > 0)
-				{
-					if (info->vregs[vecidx] == 0)
-					{
-						info->vregs[vecidx] = 1;
-						info->vecregs[index] = memberCount;        //store number of members in proper location pointed by index
-						info->vsize += membersize;                      //vsize contains total size 
-						info->vecregsize[vecidx] = membersize;      //size of data tu be put in register
-						info->xyzused[vecidx] = 1;                  //mark that the placeholder for register is used
-						AddLineQueueX("%s %r,qword ptr [%s+%d]", MOVE_DOUBLE, T_XMM0 + vecidx, paramvalue, j * membersize);
-						tCount--;
-						j++;
-					}
-					vecidx++;
-				}
-			}
-			/* HFA data type made of 4 REAL4 */
-			else if (membersize == 4)
-			{
-				while (tCount > 0)
-				{
-					if (info->vregs[vecidx] == 0)
-					{
-						info->vregs[vecidx] = 1;
-						info->vecregs[index] = memberCount;         //store number of members in proper location pointed by index
-						info->vsize += membersize;                  //vsize contains total size 
-						info->vecregsize[vecidx] = membersize;      //size of data tu be put in register
-						info->xyzused[vecidx] = 1;                  //mark that the placeholder for register is used
-						AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE, T_XMM0 + vecidx, paramvalue, j * membersize);
-						tCount--;
-						j++;
-					}
-					vecidx++;
-				}
-			}
-		}
-	}
-	else if ((proc->sym.langtype == LANG_REGCALL) && (psize == 16) && (param->sym.ttype != 0) && (param->sym.ttype->e.structinfo->isHFA) && (param->sym.mem_type == MT_TYPE)) {
-		/* it can be only HFA data type made of 2 REAL8 */
-		t = param->sym.ttype;
-		if (t != 0 && t->e.structinfo->isHFA && (vcallpass == 1))
-		{
+            memberCount = t->e.structinfo->memberCount;
+            if (memberCount > freevecregs) goto uselea;
+            membersize = psize / memberCount;          //get the size of a single element which is REAL4 in this case        
+            j = 0;
+            tCount = memberCount;
+            if (membersize == 8)
+            {
+                while (tCount > 0)
+                {
+                    if (info->vregs[vecidx] == 0)
+                    {
+                        info->vregs[vecidx] = 1;
+                        info->vecregs[index] = memberCount;        //store number of members in proper location pointed by index
+                        info->vsize += membersize;                      //vsize contains total size 
+                        info->vecregsize[vecidx] = membersize;      //size of data tu be put in register
+                        info->xyzused[vecidx] = 1;                  //mark that the placeholder for register is used
+                        AddLineQueueX("%s %r,qword ptr [%s+%d]", MOVE_DOUBLE, T_XMM0 + vecidx, paramvalue, j * membersize);
+                        tCount--;
+                        j++;
+                    }
+                    vecidx++;
+                }
+            }
+            /* HFA data type made of 4 REAL4 */
+            else if (membersize == 4)
+            {
+                while (tCount > 0)
+                {
+                    if (info->vregs[vecidx] == 0)
+                    {
+                        info->vregs[vecidx] = 1;
+                        info->vecregs[index] = memberCount;         //store number of members in proper location pointed by index
+                        info->vsize += membersize;                  //vsize contains total size 
+                        info->vecregsize[vecidx] = membersize;      //size of data tu be put in register
+                        info->xyzused[vecidx] = 1;                  //mark that the placeholder for register is used
+                        AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE, T_XMM0 + vecidx, paramvalue, j * membersize);
+                        tCount--;
+                        j++;
+                    }
+                    vecidx++;
+                }
+            }
+        }
+    }
+    else if ((proc->sym.langtype == LANG_REGCALL) && (psize == 16) && (param->sym.ttype != 0) && (param->sym.ttype->e.structinfo->isHFA) && (param->sym.mem_type == MT_TYPE))
+    {
+        /* it can be only HFA data type made of 2 REAL8 */
+        t = param->sym.ttype;
+        if (t != 0 && t->e.structinfo->isHFA && (vcallpass == 1))
+        {
 
-			freevecregs = 0;
-			vecidx = -1;
-			for (i = 0; i < 16; i++)
-			{
-				if (info->rgcregs[i] == 0)
-				{
-					if (vecidx == -1) vecidx = i;
-					freevecregs++;
-				}
-			}
+            freevecregs = 0;
+            vecidx = -1;
+            for (i = 0; i < 16; i++)
+            {
+                if (info->rgcregs[i] == 0)
+                {
+                    if (vecidx == -1) vecidx = i;
+                    freevecregs++;
+                }
+            }
 
-			memberCount = t->e.structinfo->memberCount;
-			if (memberCount > freevecregs) goto uselea;
-			membersize = psize / memberCount;          //get the size of a single element which is REAL4 in this case        
-			j = 0;
-			tCount = memberCount;
-			if (membersize == 8)
-			{
-				while (tCount > 0)
-				{
-					if (info->rgcregs[vecidx] == 0)
-					{
-						info->rgcregs[vecidx] = 1;
-						info->regcregs[index] = memberCount;        //store number of members in proper location pointed by index
-						info->regcsize += membersize;                 //vsize contains total size 
-						info->regcregsize[vecidx] = membersize;      //size of data tu be put in register
-						info->regcxyzused[vecidx] = 1;                  //mark that the placeholder for register is used
-						AddLineQueueX("%s %r,qword ptr [%s+%d]", MOVE_DOUBLE, T_XMM0 + vecidx, paramvalue, j * membersize);
-						tCount--;
-						j++;
-					}
-					vecidx++;
-				}
-			}
-			/* HFA data type made of 4 REAL4 */
-			else if (membersize == 4)
-			{
-				while (tCount > 0)
-				{
-					if (info->rgcregs[vecidx] == 0)
-					{
-						info->rgcregs[vecidx] = 1;
-						info->regcregs[index] = memberCount;         //store number of members in proper location pointed by index
-						info->regcsize += membersize;                  //vsize contains total size 
-						info->regcregsize[vecidx] = membersize;      //size of data tu be put in register
-						info->regcxyzused[vecidx] = 1;                  //mark that the placeholder for register is used
-						AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE, T_XMM0 + vecidx, paramvalue, j * membersize);
-						tCount--;
-						j++;
-					}
-					vecidx++;
-				}
-			}
-		}
-	}
-	else if ((proc->sym.langtype == LANG_VECTORCALL) && (psize == 12) && (param->sym.ttype != 0) && (param->sym.ttype->e.structinfo->isHFA) && (param->sym.mem_type == MT_TYPE)) {
-		/* it can be only HFA data type made of 3 REAL4 */
-		t = param->sym.ttype;
-		if (t != 0 && t->e.structinfo->isHFA && (vcallpass == 1))
-		{
-			freevecregs = 0;
-			vecidx = -1;
-			for (i = 0; i < 6; i++)
-			{
-				if (info->vregs[i] == 0)
-				{
-					if (vecidx == -1) vecidx = i;
-					freevecregs++;
-				}
-			}
+            memberCount = t->e.structinfo->memberCount;
+            if (memberCount > freevecregs) goto uselea;
+            membersize = psize / memberCount;          //get the size of a single element which is REAL4 in this case        
+            j = 0;
+            tCount = memberCount;
+            if (membersize == 8)
+            {
+                while (tCount > 0)
+                {
+                    if (info->rgcregs[vecidx] == 0)
+                    {
+                        info->rgcregs[vecidx] = 1;
+                        info->regcregs[index] = memberCount;        //store number of members in proper location pointed by index
+                        info->regcsize += membersize;                 //vsize contains total size 
+                        info->regcregsize[vecidx] = membersize;      //size of data tu be put in register
+                        info->regcxyzused[vecidx] = 1;                  //mark that the placeholder for register is used
+                        AddLineQueueX("%s %r,qword ptr [%s+%d]", MOVE_DOUBLE, T_XMM0 + vecidx, paramvalue, j * membersize);
+                        tCount--;
+                        j++;
+                    }
+                    vecidx++;
+                }
+            }
+            /* HFA data type made of 4 REAL4 */
+            else if (membersize == 4)
+            {
+                while (tCount > 0)
+                {
+                    if (info->rgcregs[vecidx] == 0)
+                    {
+                        info->rgcregs[vecidx] = 1;
+                        info->regcregs[index] = memberCount;         //store number of members in proper location pointed by index
+                        info->regcsize += membersize;                  //vsize contains total size 
+                        info->regcregsize[vecidx] = membersize;      //size of data tu be put in register
+                        info->regcxyzused[vecidx] = 1;                  //mark that the placeholder for register is used
+                        AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE, T_XMM0 + vecidx, paramvalue, j * membersize);
+                        tCount--;
+                        j++;
+                    }
+                    vecidx++;
+                }
+            }
+        }
+    }
+    else if ((proc->sym.langtype == LANG_VECTORCALL) && (psize == 12) && (param->sym.ttype != 0) && (param->sym.ttype->e.structinfo->isHFA) && (param->sym.mem_type == MT_TYPE))
+    {
+        /* it can be only HFA data type made of 3 REAL4 */
+        t = param->sym.ttype;
+        if (t != 0 && t->e.structinfo->isHFA && (vcallpass == 1))
+        {
+            freevecregs = 0;
+            vecidx = -1;
+            for (i = 0; i < 6; i++)
+            {
+                if (info->vregs[i] == 0)
+                {
+                    if (vecidx == -1) vecidx = i;
+                    freevecregs++;
+                }
+            }
 
-			memberCount = t->e.structinfo->memberCount;
-			if (memberCount > freevecregs) goto uselea;
-			membersize = psize / memberCount;               //get the size of a single element which is REAL4 in this case        
-			j = 0;
-			tCount = memberCount;
-			while (tCount > 0)
-			{
-				if (info->vregs[vecidx] == 0)
-				{
-					info->vregs[vecidx] = 1;
-					info->vecregs[index] = memberCount;         //store number of members in proper location pointed by index
-					info->vsize += membersize;                  //vsize contains total size 
-					info->vecregsize[vecidx] = membersize;      //size of data tu be put in register
-					info->xyzused[vecidx] = 1;                  //mark that the placeholder for register is used
-					AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE, T_XMM0 + vecidx, paramvalue, j * membersize);
-					tCount--;
-					j++;
-				}
-				vecidx++;
-			}
-		}
-	}
-	else if ((proc->sym.langtype == LANG_REGCALL) && (psize == 12) && (param->sym.ttype != 0) && (param->sym.ttype->e.structinfo->isHFA) && (param->sym.mem_type == MT_TYPE)) {
-		/* it can be only HFA data type made of 3 REAL4 */
-		t = param->sym.ttype;
-		if (t != 0 && t->e.structinfo->isHFA && (vcallpass == 1))
-		{
-			freevecregs = 0;
-			vecidx = -1;
-			for (i = 0; i < 16; i++)
-			{
-				if (info->rgcregs[i] == 0)
-				{
-					if (vecidx == -1) vecidx = i;
-					freevecregs++;
-				}
-			}
+            memberCount = t->e.structinfo->memberCount;
+            if (memberCount > freevecregs) goto uselea;
+            membersize = psize / memberCount;               //get the size of a single element which is REAL4 in this case        
+            j = 0;
+            tCount = memberCount;
+            while (tCount > 0)
+            {
+                if (info->vregs[vecidx] == 0)
+                {
+                    info->vregs[vecidx] = 1;
+                    info->vecregs[index] = memberCount;         //store number of members in proper location pointed by index
+                    info->vsize += membersize;                  //vsize contains total size 
+                    info->vecregsize[vecidx] = membersize;      //size of data tu be put in register
+                    info->xyzused[vecidx] = 1;                  //mark that the placeholder for register is used
+                    AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE, T_XMM0 + vecidx, paramvalue, j * membersize);
+                    tCount--;
+                    j++;
+                }
+                vecidx++;
+            }
+        }
+    }
+    else if ((proc->sym.langtype == LANG_REGCALL) && (psize == 12) && (param->sym.ttype != 0) && (param->sym.ttype->e.structinfo->isHFA) && (param->sym.mem_type == MT_TYPE))
+    {
+        /* it can be only HFA data type made of 3 REAL4 */
+        t = param->sym.ttype;
+        if (t != 0 && t->e.structinfo->isHFA && (vcallpass == 1))
+        {
+            freevecregs = 0;
+            vecidx = -1;
+            for (i = 0; i < 16; i++)
+            {
+                if (info->rgcregs[i] == 0)
+                {
+                    if (vecidx == -1) vecidx = i;
+                    freevecregs++;
+                }
+            }
 
-			memberCount = t->e.structinfo->memberCount;
-			if (memberCount > freevecregs) goto uselea;
-			membersize = psize / memberCount;               //get the size of a single element which is REAL4 in this case        
-			j = 0;
-			tCount = memberCount;
-			while (tCount > 0)
-			{
-				if (info->rgcregs[vecidx] == 0)
-				{
-					info->rgcregs[vecidx] = 1;
-					info->regcregs[index] = memberCount;         //store number of members in proper location pointed by index
-					info->regcsize += membersize;                  //vsize contains total size 
-					info->regcregsize[vecidx] = membersize;      //size of data tu be put in register
-					info->regcxyzused[vecidx] = 1;                  //mark that the placeholder for register is used
-					AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE, T_XMM0 + vecidx, paramvalue, j * membersize);
-					tCount--;
-					j++;
-				}
-				vecidx++;
-			}
-		}
-	}
-	else if ((proc->sym.langtype == LANG_VECTORCALL) && (psize == 24) && (param->sym.ttype != 0) && (param->sym.ttype->e.structinfo->isHFA) && (param->sym.mem_type == MT_TYPE)) {
-		/* it can be only HFA data type made of 3 REAL8 */
-		t = param->sym.ttype;
-		if (t != 0 && t->e.structinfo->isHFA && (vcallpass == 1))
-		{
+            memberCount = t->e.structinfo->memberCount;
+            if (memberCount > freevecregs) goto uselea;
+            membersize = psize / memberCount;               //get the size of a single element which is REAL4 in this case        
+            j = 0;
+            tCount = memberCount;
+            while (tCount > 0)
+            {
+                if (info->rgcregs[vecidx] == 0)
+                {
+                    info->rgcregs[vecidx] = 1;
+                    info->regcregs[index] = memberCount;         //store number of members in proper location pointed by index
+                    info->regcsize += membersize;                  //vsize contains total size 
+                    info->regcregsize[vecidx] = membersize;      //size of data tu be put in register
+                    info->regcxyzused[vecidx] = 1;                  //mark that the placeholder for register is used
+                    AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE, T_XMM0 + vecidx, paramvalue, j * membersize);
+                    tCount--;
+                    j++;
+                }
+                vecidx++;
+            }
+        }
+    }
+    else if ((proc->sym.langtype == LANG_VECTORCALL) && (psize == 24) && (param->sym.ttype != 0) && (param->sym.ttype->e.structinfo->isHFA) && (param->sym.mem_type == MT_TYPE))
+    {
+        /* it can be only HFA data type made of 3 REAL8 */
+        t = param->sym.ttype;
+        if (t != 0 && t->e.structinfo->isHFA && (vcallpass == 1))
+        {
 
-			freevecregs = 0;
-			vecidx = -1;
-			for (i = 0; i < 6; i++)
-			{
-				if (info->vregs[i] == 0)
-				{
-					if (vecidx == -1) vecidx = i;
-					freevecregs++;
-				}
-			}
+            freevecregs = 0;
+            vecidx = -1;
+            for (i = 0; i < 6; i++)
+            {
+                if (info->vregs[i] == 0)
+                {
+                    if (vecidx == -1) vecidx = i;
+                    freevecregs++;
+                }
+            }
 
-			memberCount = t->e.structinfo->memberCount;
-			if (memberCount > freevecregs) goto uselea;
-			membersize = psize / memberCount;          //get the size of a single element which is REAL8 in this case        
-			j = 0;
-			tCount = memberCount;
-			while (tCount > 0)
-			{
-				if (info->vregs[vecidx] == 0)
-				{
-					info->vregs[vecidx] = 1;
-					info->vecregs[index] = memberCount;        //store number of members in proper location pointed by index
-					info->vsize += membersize;                      //vsize contains total size 
-					info->vecregsize[vecidx] = membersize;      //size of data tu be put in register
-					info->xyzused[vecidx] = 1;                  //mark that the placeholder for register is used
-					AddLineQueueX("%s %r,qword ptr [%s+%d]", MOVE_DOUBLE, T_XMM0 + vecidx, paramvalue, j * membersize);
-					tCount--;
-					j++;
-				}
-				vecidx++;
-			}
-		}
-	}
-	else if ((proc->sym.langtype == LANG_REGCALL) && (psize == 24) && (param->sym.ttype != 0) && (param->sym.ttype->e.structinfo->isHFA) && (param->sym.mem_type == MT_TYPE)) {
-		/* it can be only HFA data type made of 3 REAL8 */
-		t = param->sym.ttype;
-		if (t != 0 && t->e.structinfo->isHFA && (vcallpass == 1))
-		{
+            memberCount = t->e.structinfo->memberCount;
+            if (memberCount > freevecregs) goto uselea;
+            membersize = psize / memberCount;          //get the size of a single element which is REAL8 in this case        
+            j = 0;
+            tCount = memberCount;
+            while (tCount > 0)
+            {
+                if (info->vregs[vecidx] == 0)
+                {
+                    info->vregs[vecidx] = 1;
+                    info->vecregs[index] = memberCount;        //store number of members in proper location pointed by index
+                    info->vsize += membersize;                      //vsize contains total size 
+                    info->vecregsize[vecidx] = membersize;      //size of data tu be put in register
+                    info->xyzused[vecidx] = 1;                  //mark that the placeholder for register is used
+                    AddLineQueueX("%s %r,qword ptr [%s+%d]", MOVE_DOUBLE, T_XMM0 + vecidx, paramvalue, j * membersize);
+                    tCount--;
+                    j++;
+                }
+                vecidx++;
+            }
+        }
+    }
+    else if ((proc->sym.langtype == LANG_REGCALL) && (psize == 24) && (param->sym.ttype != 0) && (param->sym.ttype->e.structinfo->isHFA) && (param->sym.mem_type == MT_TYPE))
+    {
+        /* it can be only HFA data type made of 3 REAL8 */
+        t = param->sym.ttype;
+        if (t != 0 && t->e.structinfo->isHFA && (vcallpass == 1))
+        {
 
-			freevecregs = 0;
-			vecidx = -1;
-			for (i = 0; i < 16; i++)
-			{
-				if (info->rgcregs[i] == 0)
-				{
-					if (vecidx == -1) vecidx = i;
-					freevecregs++;
-				}
-			}
+            freevecregs = 0;
+            vecidx = -1;
+            for (i = 0; i < 16; i++)
+            {
+                if (info->rgcregs[i] == 0)
+                {
+                    if (vecidx == -1) vecidx = i;
+                    freevecregs++;
+                }
+            }
 
-			memberCount = t->e.structinfo->memberCount;
-			if (memberCount > freevecregs) goto uselea;
-			membersize = psize / memberCount;          //get the size of a single element which is REAL8 in this case        
-			j = 0;
-			tCount = memberCount;
-			while (tCount > 0)
-			{
-				if (info->rgcregs[vecidx] == 0)
-				{
-					info->rgcregs[vecidx] = 1;
-					info->regcregs[index] = memberCount;        //store number of members in proper location pointed by index
-					info->regcsize += membersize;                      //vsize contains total size 
-					info->regcregsize[vecidx] = membersize;      //size of data tu be put in register
-					info->regcxyzused[vecidx] = 1;                  //mark that the placeholder for register is used
-					AddLineQueueX("%s %r,qword ptr [%s+%d]", MOVE_DOUBLE, T_XMM0 + vecidx, paramvalue, j * membersize);
-					tCount--;
-					j++;
-				}
-				vecidx++;
-			}
-		}
-	}
-	else if ((proc->sym.langtype == LANG_VECTORCALL) && (psize == 32) && (param->sym.ttype != 0) && (param->sym.ttype->e.structinfo->isHFA) && (param->sym.mem_type == MT_TYPE)) {
-		/* it can be only HFA data type made of 4 REAL8 */
-		t = param->sym.ttype;
-		if (t != 0 && t->e.structinfo->isHFA && (vcallpass == 1))
-		{
+            memberCount = t->e.structinfo->memberCount;
+            if (memberCount > freevecregs) goto uselea;
+            membersize = psize / memberCount;          //get the size of a single element which is REAL8 in this case        
+            j = 0;
+            tCount = memberCount;
+            while (tCount > 0)
+            {
+                if (info->rgcregs[vecidx] == 0)
+                {
+                    info->rgcregs[vecidx] = 1;
+                    info->regcregs[index] = memberCount;        //store number of members in proper location pointed by index
+                    info->regcsize += membersize;                      //vsize contains total size 
+                    info->regcregsize[vecidx] = membersize;      //size of data tu be put in register
+                    info->regcxyzused[vecidx] = 1;                  //mark that the placeholder for register is used
+                    AddLineQueueX("%s %r,qword ptr [%s+%d]", MOVE_DOUBLE, T_XMM0 + vecidx, paramvalue, j * membersize);
+                    tCount--;
+                    j++;
+                }
+                vecidx++;
+            }
+        }
+    }
+    else if ((proc->sym.langtype == LANG_VECTORCALL) && (psize == 32) && (param->sym.ttype != 0) && (param->sym.ttype->e.structinfo->isHFA) && (param->sym.mem_type == MT_TYPE))
+    {
+        /* it can be only HFA data type made of 4 REAL8 */
+        t = param->sym.ttype;
+        if (t != 0 && t->e.structinfo->isHFA && (vcallpass == 1))
+        {
 
-			freevecregs = 0;
-			vecidx = -1;
-			for (i = 0; i < 6; i++)
-			{
-				if (info->vregs[i] == 0)
-				{
-					if (vecidx == -1) vecidx = i;
-					freevecregs++;
-				}
-			}
+            freevecregs = 0;
+            vecidx = -1;
+            for (i = 0; i < 6; i++)
+            {
+                if (info->vregs[i] == 0)
+                {
+                    if (vecidx == -1) vecidx = i;
+                    freevecregs++;
+                }
+            }
 
-			memberCount = t->e.structinfo->memberCount;
-			if (memberCount > freevecregs) goto uselea;
-			membersize = psize / memberCount;          //get the size of a single element which is REAL4 in this case        
-			j = 0;
-			tCount = memberCount;
-			while (tCount > 0)
-			{
-				if (info->vregs[vecidx] == 0)
-				{
-					info->vregs[vecidx] = 1;
-					info->vecregs[index] = memberCount;        //store number of members in proper location pointed by index
-					info->vsize += membersize;                      //vsize contains total size 
-					info->vecregsize[vecidx] = membersize;      //size of data tu be put in register
-					info->xyzused[vecidx] = 1;                  //mark that the placeholder for register is used
-					AddLineQueueX("%s %r,qword ptr [%s+%d]", MOVE_DOUBLE, T_XMM0 + vecidx, paramvalue, j * 8);
-					tCount--;
-					j++;
-				}
-				vecidx++;
-			}
-		}
-	}
-	else if ((proc->sym.langtype == LANG_REGCALL) && (psize == 32) && (param->sym.ttype != 0) && (param->sym.ttype->e.structinfo->isHFA) && (param->sym.mem_type == MT_TYPE)) {
-		/* it can be only HFA data type made of 4 REAL8 */
-		t = param->sym.ttype;
-		if (t != 0 && t->e.structinfo->isHFA && (vcallpass == 1))
-		{
+            memberCount = t->e.structinfo->memberCount;
+            if (memberCount > freevecregs) goto uselea;
+            membersize = psize / memberCount;          //get the size of a single element which is REAL4 in this case        
+            j = 0;
+            tCount = memberCount;
+            while (tCount > 0)
+            {
+                if (info->vregs[vecidx] == 0)
+                {
+                    info->vregs[vecidx] = 1;
+                    info->vecregs[index] = memberCount;        //store number of members in proper location pointed by index
+                    info->vsize += membersize;                      //vsize contains total size 
+                    info->vecregsize[vecidx] = membersize;      //size of data tu be put in register
+                    info->xyzused[vecidx] = 1;                  //mark that the placeholder for register is used
+                    AddLineQueueX("%s %r,qword ptr [%s+%d]", MOVE_DOUBLE, T_XMM0 + vecidx, paramvalue, j * 8);
+                    tCount--;
+                    j++;
+                }
+                vecidx++;
+            }
+        }
+    }
+    else if ((proc->sym.langtype == LANG_REGCALL) && (psize == 32) && (param->sym.ttype != 0) && (param->sym.ttype->e.structinfo->isHFA) && (param->sym.mem_type == MT_TYPE))
+    {
+        /* it can be only HFA data type made of 4 REAL8 */
+        t = param->sym.ttype;
+        if (t != 0 && t->e.structinfo->isHFA && (vcallpass == 1))
+        {
 
-			freevecregs = 0;
-			vecidx = -1;
-			for (i = 0; i < 16; i++)
-			{
-				if (info->rgcregs[i] == 0)
-				{
-					if (vecidx == -1) vecidx = i;
-					freevecregs++;
-				}
-			}
+            freevecregs = 0;
+            vecidx = -1;
+            for (i = 0; i < 16; i++)
+            {
+                if (info->rgcregs[i] == 0)
+                {
+                    if (vecidx == -1) vecidx = i;
+                    freevecregs++;
+                }
+            }
 
-			memberCount = t->e.structinfo->memberCount;
-			if (memberCount > freevecregs) goto uselea;
-			membersize = psize / memberCount;          //get the size of a single element which is REAL4 in this case        
-			j = 0;
-			tCount = memberCount;
-			while (tCount > 0)
-			{
-				if (info->rgcregs[vecidx] == 0)
-				{
-					info->rgcregs[vecidx] = 1;
-					info->regcregs[index] = memberCount;        //store number of members in proper location pointed by index
-					info->regcsize += membersize;                      //vsize contains total size 
-					info->regcregsize[vecidx] = membersize;      //size of data tu be put in register
-					info->regcxyzused[vecidx] = 1;                  //mark that the placeholder for register is used
-					AddLineQueueX("%s %r,qword ptr [%s+%d]", MOVE_DOUBLE, T_XMM0 + vecidx, paramvalue, j * 8);
-					tCount--;
-					j++;
-				}
-				vecidx++;
-			}
-		}
-	}
-	else {
-		if (addr || psize > 8) { /* psize > 8 should happen only for vectorcall */
-			if (psize >= 4) {
-				if (proc->sym.langtype == LANG_VECTORCALL) {
-					if ((param->sym.mem_type == MT_TYPE)) {
-						t = param->sym.ttype;
+            memberCount = t->e.structinfo->memberCount;
+            if (memberCount > freevecregs) goto uselea;
+            membersize = psize / memberCount;          //get the size of a single element which is REAL4 in this case        
+            j = 0;
+            tCount = memberCount;
+            while (tCount > 0)
+            {
+                if (info->rgcregs[vecidx] == 0)
+                {
+                    info->rgcregs[vecidx] = 1;
+                    info->regcregs[index] = memberCount;        //store number of members in proper location pointed by index
+                    info->regcsize += membersize;                      //vsize contains total size 
+                    info->regcregsize[vecidx] = membersize;      //size of data tu be put in register
+                    info->regcxyzused[vecidx] = 1;                  //mark that the placeholder for register is used
+                    AddLineQueueX("%s %r,qword ptr [%s+%d]", MOVE_DOUBLE, T_XMM0 + vecidx, paramvalue, j * 8);
+                    tCount--;
+                    j++;
+                }
+                vecidx++;
+            }
+        }
+    }
+    else
+    {
+        if (addr || psize > 8)
+        { /* psize > 8 should happen only for vectorcall */
+            if (psize >= 4)
+            {
+                if (proc->sym.langtype == LANG_VECTORCALL)
+                {
+                    if ((param->sym.mem_type == MT_TYPE))
+                    {
+                        t = param->sym.ttype;
 
-						if (vcallpass == 0 && opnd->kind == EXPR_REG && opnd->indirect == FALSE && reg < T_XMM6 && index < 6 && info->xyzused[(reg - T_XMM0)] != 0 && (index != reg - T_XMM0))
-						{
-							EmitErr(REGISTER_VALUE_OVERWRITTEN_BY_INVOKE, index);
-							return(1);
-						}
+                        if (vcallpass == 0 && opnd->kind == EXPR_REG && opnd->indirect == FALSE && reg < T_XMM6 && index < 6 && info->xyzused[(reg - T_XMM0)] != 0 && (index != reg - T_XMM0))
+                        {
+                            EmitErr(REGISTER_VALUE_OVERWRITTEN_BY_INVOKE, index);
+                            return(1);
+                        }
 
-						if (t->e.structinfo->stype == MM128 && vcallpass == 0) {
-							if (opnd->kind == EXPR_REG && opnd->indirect == FALSE) {
-								if ((GetValueSp(reg) & OP_XMM) || t->e.structinfo->isHFA) {
+                        if (t->e.structinfo->stype == MM128 && vcallpass == 0)
+                        {
+                            if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+                            {
+                                if ((GetValueSp(reg) & OP_XMM) || t->e.structinfo->isHFA)
+                                {
 
-									t->e.structinfo->memberCount = 1;
-									info->vregs[index] = 1;
-									info->vecregs[index] = 1;
-									info->xyzused[index] = 1;
-									info->vsize += 16;
-									info->vecregsize[index] = 16;
-									if (reg == T_XMM0 + index)
-										DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
-									else
-										AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
-									return(1);
-								}
-							}
-						}
-						else if (t->e.structinfo->stype == MM256 && vcallpass == 0) {
-							if (opnd->kind == EXPR_REG && opnd->indirect == FALSE) {
-								if (GetValueSp(reg) & OP_YMM) {
-									t->e.structinfo->memberCount = 1;
-									info->vregs[index] = 1;
-									info->xyzused[index] = 1;
-									info->vsize += 32;
-									info->vecregsize[index] = 32;
-									if (reg == T_YMM0 + index)
-										DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
-									else
-										AddLineQueueX("vmovaps %r,ymmword ptr %s", T_YMM0 + index, paramvalue);
-									return(1);
-								}
-							}
-						}
-						else if (t->e.structinfo->stype == MM512 && vcallpass == 0) {
-							if (opnd->kind == EXPR_REG && opnd->indirect == FALSE) {
-								if (GetValueSp(reg) & OP_YMM) {
-									t->e.structinfo->memberCount = 1;
-									info->vregs[index] = 1;
-									info->xyzused[index] = 1;
-									info->vsize += 64;
-									info->vecregsize[index] = 64;
-									if (reg == T_YMM0 + index)
-										DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
-									else
-										AddLineQueueX("vmovaps %r,ymmword ptr %s", T_YMM0 + index, paramvalue);
-									return(1);
-								}
-							}
-						}
-						if (t->e.structinfo->stype == MM128)
-							membersize = 16;
-						else if (t->e.structinfo->stype == MM256)
-							membersize = 32;
-						else if (t->e.structinfo->stype == MM512)
-							membersize = 64;
-						memberCount = t->e.structinfo->memberCount;
-						if (t->e.structinfo->isHVA) {
-							if (memberCount)
-								membersize = psize / memberCount;
-						}
-						else if ((t->e.structinfo->isHFA) || (proc->e.procinfo->paralist->sym.type && proc->e.procinfo->paralist->sym.type->max_mbr_size == 4)) {
-							membersize = psize;
-							memberCount = 1;
-						}
-						else if ((vcallpass == 0) && (t->e.structinfo->stype != MM128) && (t->e.structinfo->stype != MM256) && (t->e.structinfo->stype != MM512)) {
-							goto uselea;
-						}
-						if (t->e.structinfo->isHFA) memberCount = 1;
-						info->vecregs[index] = memberCount;
-						info->vsize += psize;
-						info->vecregsize[index] = membersize;
-						if (((vcallpass == 1) && t->e.structinfo->isHVA) || (t->e.structinfo->stype == MM128) || (t->e.structinfo->stype == MM256) || (t->e.structinfo->stype == MM512)) {
-							for (i = 0, j = 0; i < 6; i++) {
-								j += info->vregs[i];
-								if (info->vregs[i]) {
-									info->xyzused[i] = 1;
-								}
-								else if ((info->vregs[i] >= 1) && (info->xyzused[i] != 1))
-									info->xyzused[i] = 0;
-							}
-							if (j > 6)goto uselea;
-							for (i = 0, j = 0; i < 6; i++) {
-								if (info->xyzused[i] == 0)
-									j++;
-							}
-							if (vcallpass == 1 && memberCount > j && (t->e.structinfo->isHFA || t->e.structinfo->isHVA)) goto uselea;
+                                    t->e.structinfo->memberCount = 1;
+                                    info->vregs[index] = 1;
+                                    info->vecregs[index] = 1;
+                                    info->xyzused[index] = 1;
+                                    info->vsize += 16;
+                                    info->vecregsize[index] = 16;
+                                    if (reg == T_XMM0 + index)
+                                        DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
+                                    else
+                                        AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
+                                    return(1);
+                                }
+                            }
+                        }
+                        else if (t->e.structinfo->stype == MM256 && vcallpass == 0)
+                        {
+                            if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+                            {
+                                if (GetValueSp(reg) & OP_YMM)
+                                {
+                                    t->e.structinfo->memberCount = 1;
+                                    info->vregs[index] = 1;
+                                    info->xyzused[index] = 1;
+                                    info->vsize += 32;
+                                    info->vecregsize[index] = 32;
+                                    if (reg == T_YMM0 + index)
+                                        DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
+                                    else
+                                        AddLineQueueX("vmovaps %r,ymmword ptr %s", T_YMM0 + index, paramvalue);
+                                    return(1);
+                                }
+                            }
+                        }
+                        else if (t->e.structinfo->stype == MM512 && vcallpass == 0)
+                        {
+                            if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+                            {
+                                if (GetValueSp(reg) & OP_ZMM)
+                                {
+                                    t->e.structinfo->memberCount = 1;
+                                    info->vregs[index] = 1;
+                                    info->xyzused[index] = 1;
+                                    info->vsize += 64;
+                                    info->vecregsize[index] = 64;
+                                    if (reg == T_ZMM0 + index)
+                                        DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
+                                    else
+                                        AddLineQueueX("vmovaps %r,zmmword ptr %s", T_ZMM0 + index, paramvalue);
+                                    return(1);
+                                }
+                            }
+                        }
+                        if (t->e.structinfo->stype == MM128)
+                            membersize = 16;
+                        else if (t->e.structinfo->stype == MM256)
+                            membersize = 32;
+                        else if (t->e.structinfo->stype == MM512)
+                            membersize = 64;
+                        memberCount = t->e.structinfo->memberCount;
+                        if (t->e.structinfo->isHVA)
+                        {
+                            if (memberCount)
+                                membersize = psize / memberCount;
+                        }
+                        else if ((t->e.structinfo->isHFA) || (proc->e.procinfo->paralist->sym.type && proc->e.procinfo->paralist->sym.type->max_mbr_size == 4))
+                        {
+                            membersize = psize;
+                            memberCount = 1;
+                        }
+                        else if ((vcallpass == 0) && (t->e.structinfo->stype != MM128) && (t->e.structinfo->stype != MM256) && (t->e.structinfo->stype != MM512))
+                        {
+                            goto uselea;
+                        }
+                        if (t->e.structinfo->isHFA) memberCount = 1;
+                        info->vecregs[index] = memberCount;
+                        info->vsize += psize;
+                        info->vecregsize[index] = membersize;
+                        if (((vcallpass == 1) && t->e.structinfo->isHVA) || (t->e.structinfo->stype == MM128) || (t->e.structinfo->stype == MM256) || (t->e.structinfo->stype == MM512))
+                        {
+                            for (i = 0, j = 0; i < 6; i++)
+                            {
+                                j += info->vregs[i];
+                                if (info->vregs[i])
+                                {
+                                    info->xyzused[i] = 1;
+                                }
+                                else if ((info->vregs[i] >= 1) && (info->xyzused[i] != 1))
+                                    info->xyzused[i] = 0;
+                            }
+                            if (j > 6)goto uselea;
+                            for (i = 0, j = 0; i < 6; i++)
+                            {
+                                if (info->xyzused[i] == 0)
+                                    j++;
+                            }
+                            if (vcallpass == 1 && memberCount > j && (t->e.structinfo->isHFA || t->e.structinfo->isHVA)) goto uselea;
 
-							switch (membersize) {
-							case 4:                             /* it could be 3 or more REAL4 */
-								for (i = 0, j = 0; i < membersize; i++) {
-									while (info->xyzused[j] != 0) j++;
-									if (i == 0) AddLineQueueX("%s %r,dword ptr %s", MOVE_SINGLE, T_XMM0 + j, paramvalue);
-									else      AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE, T_XMM0 + j, paramvalue, i * 4);
-									info->xyzused[j] = 1;
-								}
-								break;
-							case 8:
-								for (i = 0, j = 0; i < memberCount; i++) {
-									while (info->xyzused[j] != 0) j++;
-									if (i == 0) AddLineQueueX("%s %r,oword ptr %s", MOVE_DOUBLE, T_XMM0 + j, paramvalue);
-									else      AddLineQueueX("%s %r,oword ptr [%s+%d]", MOVE_DOUBLE, T_XMM0 + j, paramvalue, i * 8);
-									info->xyzused[j] = 1;
-								}
-								break;
-							case 16:
-								if ((vcallpass == 0) && t->e.structinfo->stype == MM128)
-								{
-									AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
-									info->xyzused[index] = 1;
-								}
-								else if ((vcallpass == 1) && (t->e.structinfo->isHFA || t->e.structinfo->isHVA))
-								{
-									for (i = 0, j = 0; i < memberCount; i++) {
-										while (info->xyzused[j] != 0) j++;
-										if (i == 0) AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + j, paramvalue);
-										else      AddLineQueueX("%s %r,oword ptr [%s+%d]", MOVE_ALIGNED_FLOAT, T_XMM0 + j, paramvalue, i * 16);
-										info->xyzused[j] = 1;
-									}
-								}
-								break;
-							case 32:
-								if ((vcallpass == 0) && t->e.structinfo->stype == MM256)
-								{
-									AddLineQueueX("vmovups %r,oword ptr %s", T_YMM0 + index, paramvalue);
-									info->xyzused[index] = 1;
-								}
-								else if ((vcallpass == 1) && (t->e.structinfo->isHFA || t->e.structinfo->isHVA))
-								{
-									for (i = 0, j = 0; i < memberCount; i++) {
-										while (info->xyzused[j] != 0) j++;
-										if (i == 0) AddLineQueueX("vmovups %r,ymmword ptr %s", T_YMM0 + j, paramvalue);
-										else      AddLineQueueX("vmovups %r,ymmword ptr [%s+%d]", T_YMM0 + j, paramvalue, i * 32);
-										info->xyzused[j] = 1;
-									}
-								}
-								break;
-							case 64:
-								if ((vcallpass == 0) && t->e.structinfo->stype == MM512)
-								{
-									AddLineQueueX("vmovups %r,oword ptr %s", T_ZMM0 + index, paramvalue);
-									info->xyzused[index] = 1;
-								}
-								else if ((vcallpass == 1) && (t->e.structinfo->isHFA || t->e.structinfo->isHVA))
-								{
-									for (i = 0, j = 0; i < memberCount; i++) {
-										while (info->xyzused[j] != 0) j++;
-										if (i == 0) AddLineQueueX("vmovups %r,zmmword ptr %s", T_ZMM0 + j, paramvalue);
-										else      AddLineQueueX("vmovups %r,zmmword ptr [%s+%d]", T_ZMM0 + j, paramvalue, i * 64);
-										info->xyzused[j] = 1;
-									}
-								}
-								break;
-							}
-						}
-					}
-					else if (vcallpass == 0) {
-						switch (psize) {
-						case 4:
-							if (opnd->kind == EXPR_FLOAT) {
-								AddLineQueueX("%s %r,dword ptr %s", MOVE_SINGLE, T_XMM0 + index, paramvalue);
-								info->vregs[index] = 1;
-							}
-							else
-								AddLineQueueX("mov %r, qword ptr %s", ms64_regs[index + 2 * 4], paramvalue);
-							break;
-						case 8:
-							if (opnd->kind == EXPR_FLOAT) {
-								AddLineQueueX("%s %r,qword ptr %s", MOVE_DOUBLE, T_XMM0 + index, paramvalue);
-								info->vregs[index] = 1;
-							}
-							else
-								AddLineQueueX("mov %r, qword ptr %s", ms64_regs[index + 2 * 4], paramvalue);
-							break;
-						case 16:
-							if (opnd->kind == EXPR_REG && opnd->indirect == FALSE) {
-								if (GetValueSp(reg) & OP_XMM) {
-									if (reg == T_XMM0 + index)
-										DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
-									else
-										AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
-								}
-							}
-							else
-								AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
-							info->vregs[index] = 1;
-							break;
-						case 32:
-							info->vregs[index] = 1;
-							AddLineQueueX("vmovups %r,oword ptr %s", T_YMM0 + index, paramvalue);
-							break;
-						case 64:
-							info->vregs[index] = 1;
-							AddLineQueueX("vmovups %r,zmmword ptr %s", T_ZMM0 + index, paramvalue);
-							break;
-						}
-					}
-				}
-				else if (proc->sym.langtype == LANG_REGCALL) {
-					if ((param->sym.mem_type == MT_TYPE)) {
-						t = param->sym.ttype;
+                            switch (membersize)
+                            {
+                                case 4:                             /* it could be 3 or more REAL4 */
+                                    for (i = 0, j = 0; i < membersize; i++)
+                                    {
+                                        while (info->xyzused[j] != 0) j++;
+                                        if (i == 0) AddLineQueueX("%s %r,dword ptr %s", MOVE_SINGLE, T_XMM0 + j, paramvalue);
+                                        else      AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE, T_XMM0 + j, paramvalue, i * 4);
+                                        info->xyzused[j] = 1;
+                                    }
+                                    break;
+                                case 8:
+                                    for (i = 0, j = 0; i < memberCount; i++)
+                                    {
+                                        while (info->xyzused[j] != 0) j++;
+                                        if (i == 0) AddLineQueueX("%s %r,oword ptr %s", MOVE_DOUBLE, T_XMM0 + j, paramvalue);
+                                        else      AddLineQueueX("%s %r,oword ptr [%s+%d]", MOVE_DOUBLE, T_XMM0 + j, paramvalue, i * 8);
+                                        info->xyzused[j] = 1;
+                                    }
+                                    break;
+                                case 16:
+                                    if ((vcallpass == 0) && t->e.structinfo->stype == MM128)
+                                    {
+                                        AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
+                                        info->xyzused[index] = 1;
+                                    }
+                                    else if ((vcallpass == 1) && (t->e.structinfo->isHFA || t->e.structinfo->isHVA))
+                                    {
+                                        for (i = 0, j = 0; i < memberCount; i++)
+                                        {
+                                            while (info->xyzused[j] != 0) j++;
+                                            if (i == 0) AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + j, paramvalue);
+                                            else      AddLineQueueX("%s %r,oword ptr [%s+%d]", MOVE_ALIGNED_FLOAT, T_XMM0 + j, paramvalue, i * 16);
+                                            info->xyzused[j] = 1;
+                                        }
+                                    }
+                                    break;
+                                case 32:
+                                    if ((vcallpass == 0) && t->e.structinfo->stype == MM256)
+                                    {
+                                        AddLineQueueX("vmovups %r,ymmword ptr %s", T_YMM0 + index, paramvalue);
+                                        info->xyzused[index] = 1;
+                                    }
+                                    else if ((vcallpass == 1) && (t->e.structinfo->isHFA || t->e.structinfo->isHVA))
+                                    {
+                                        for (i = 0, j = 0; i < memberCount; i++)
+                                        {
+                                            while (info->xyzused[j] != 0) j++;
+                                            if (i == 0) AddLineQueueX("vmovups %r,ymmword ptr %s", T_YMM0 + j, paramvalue);
+                                            else      AddLineQueueX("vmovups %r,ymmword ptr [%s+%d]", T_YMM0 + j, paramvalue, i * 32);
+                                            info->xyzused[j] = 1;
+                                        }
+                                    }
+                                    break;
+                                case 64:
+                                    if ((vcallpass == 0) && t->e.structinfo->stype == MM512)
+                                    {
+                                        AddLineQueueX("vmovups %r,zmmword ptr %s", T_ZMM0 + index, paramvalue);
+                                        info->xyzused[index] = 1;
+                                    }
+                                    else if ((vcallpass == 1) && (t->e.structinfo->isHFA || t->e.structinfo->isHVA))
+                                    {
+                                        for (i = 0, j = 0; i < memberCount; i++)
+                                        {
+                                            while (info->xyzused[j] != 0) j++;
+                                            if (i == 0) AddLineQueueX("vmovups %r,zmmword ptr %s", T_ZMM0 + j, paramvalue);
+                                            else      AddLineQueueX("vmovups %r,zmmword ptr [%s+%d]", T_ZMM0 + j, paramvalue, i * 64);
+                                            info->xyzused[j] = 1;
+                                        }
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+                    else if (vcallpass == 0)
+                    {
+                        switch (psize)
+                        {
+                            case 4:
+                                if (opnd->kind == EXPR_FLOAT)
+                                {
+                                    AddLineQueueX("%s %r,dword ptr %s", MOVE_SINGLE, T_XMM0 + index, paramvalue);
+                                    info->vregs[index] = 1;
+                                }
+                                else
+                                    AddLineQueueX("mov %r, qword ptr %s", ms64_regs[index + 2 * 4], paramvalue);
+                                break;
+                            case 8:
+                                if (opnd->kind == EXPR_FLOAT)
+                                {
+                                    AddLineQueueX("%s %r,qword ptr %s", MOVE_DOUBLE, T_XMM0 + index, paramvalue);
+                                    info->vregs[index] = 1;
+                                }
+                                else
+                                    AddLineQueueX("mov %r, qword ptr %s", ms64_regs[index + 2 * 4], paramvalue);
+                                break;
+                            case 16:
+                                if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+                                {
+                                    if (GetValueSp(reg) & OP_XMM)
+                                    {
+                                        if (reg == T_XMM0 + index)
+                                            DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
+                                        else
+                                            AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
+                                    }
+                                }
+                                else
+                                    AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
+                                info->vregs[index] = 1;
+                                break;
+                            case 32:
+                                info->vregs[index] = 1;
+                                AddLineQueueX("vmovups %r,ymmword ptr %s", T_YMM0 + index, paramvalue);
+                                break;
+                            case 64:
+                                info->vregs[index] = 1;
+                                AddLineQueueX("vmovups %r,zmmword ptr %s", T_ZMM0 + index, paramvalue);
+                                break;
+                        }
+                    }
+                }
+                else if (proc->sym.langtype == LANG_REGCALL)
+                {
+                    if ((param->sym.mem_type == MT_TYPE))
+                    {
+                        t = param->sym.ttype;
 
-						if (vcallpass == 0 && opnd->kind == EXPR_REG && opnd->indirect == FALSE && reg < T_XMM16 && index < 16 && info->regcxyzused[(reg - T_XMM0)] != 0 && (index != reg - T_XMM0))
-						{
-							EmitErr(REGISTER_VALUE_OVERWRITTEN_BY_INVOKE, index);
-							return(1);
-						}
+                        if (vcallpass == 0 && opnd->kind == EXPR_REG && opnd->indirect == FALSE && reg < T_XMM16 && index < 16 && info->regcxyzused[(reg - T_XMM0)] != 0 && (index != reg - T_XMM0))
+                        {
+                            EmitErr(REGISTER_VALUE_OVERWRITTEN_BY_INVOKE, index);
+                            return(1);
+                        }
 
-						if (t->e.structinfo->stype == MM128 && vcallpass == 0) {
-							if (opnd->kind == EXPR_REG && opnd->indirect == FALSE) {
-								if ((GetValueSp(reg) & OP_XMM) || t->e.structinfo->isHFA) {
+                        if (t->e.structinfo->stype == MM128 && vcallpass == 0)
+                        {
+                            if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+                            {
+                                if ((GetValueSp(reg) & OP_XMM) || t->e.structinfo->isHFA)
+                                {
 
-									t->e.structinfo->memberCount = 1;
-									info->rgcregs[index] = 1;
-									info->regcregs[index] = 1;
-									info->regcxyzused[index] = 1;
-									info->regcsize += 16;
-									info->regcregsize[index] = 16;
-									if (reg == T_XMM0 + index)
-										DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
-									else
-										AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
-									return(1);
-								}
-							}
-						}
-						else if (t->e.structinfo->stype == MM256 && vcallpass == 0) {
-							if (opnd->kind == EXPR_REG && opnd->indirect == FALSE) {
-								if (GetValueSp(reg) & OP_YMM) {
-									t->e.structinfo->memberCount = 1;
-									info->rgcregs[index] = 1;
-									info->regcxyzused[index] = 1;
-									info->regcsize += 32;
-									info->regcregsize[index] = 32;
-									if (reg == T_YMM0 + index)
-										DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
-									else
-										AddLineQueueX("vmovaps %r,ymmword ptr %s", T_YMM0 + index, paramvalue);
-									return(1);
-								}
-							}
-						}
-						else if (t->e.structinfo->stype == MM512 && vcallpass == 0) {
-							if (opnd->kind == EXPR_REG && opnd->indirect == FALSE) {
-								if (GetValueSp(reg) & OP_YMM) {
-									t->e.structinfo->memberCount = 1;
-									info->rgcregs[index] = 1;
-									info->regcxyzused[index] = 1;
-									info->regcsize += 64;
-									info->regcregsize[index] = 64;
-									if (reg == T_YMM0 + index)
-										DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
-									else
-										AddLineQueueX("vmovaps %r,ymmword ptr %s", T_YMM0 + index, paramvalue);
-									return(1);
-								}
-							}
-						}
-						if (t->e.structinfo->stype == MM128)
-							membersize = 16;
-						else if (t->e.structinfo->stype == MM256)
-							membersize = 32;
-						else if (t->e.structinfo->stype == MM512)
-							membersize = 64;
-						memberCount = t->e.structinfo->memberCount;
-						if (t->e.structinfo->isHVA) {
-							if (memberCount)
-								membersize = psize / memberCount;
-						}
-						else if ((t->e.structinfo->isHFA) || (proc->e.procinfo->paralist->sym.type && proc->e.procinfo->paralist->sym.type->max_mbr_size == 4)) {
-							membersize = psize;
-							memberCount = 1;
-						}
-						else if ((vcallpass == 0) && (t->e.structinfo->stype != MM128) && (t->e.structinfo->stype != MM256) && (t->e.structinfo->stype != MM512)) {
-							goto uselea;
-						}
-						if (t->e.structinfo->isHFA) memberCount = 1;
-						info->regcregs[index] = memberCount;
-						info->regcsize += psize;
-						info->regcregsize[index] = membersize;
-						if (((vcallpass == 1) && t->e.structinfo->isHVA) || (t->e.structinfo->stype == MM128) || (t->e.structinfo->stype == MM256) || (t->e.structinfo->stype == MM512)) {
-							for (i = 0, j = 0; i < 16; i++) {
-								j += info->rgcregs[i];
-								if (info->rgcregs[i]) {
-									info->regcxyzused[i] = 1;
-								}
-								else if ((info->rgcregs[i] >= 1) && (info->regcxyzused[i] != 1))
-									info->regcxyzused[i] = 0;
-							}
-							if (j > 16)goto uselea;
-							for (i = 0, j = 0; i < 16; i++) {
-								if (info->regcxyzused[i] == 0)
-									j++;
-							}
-							if (vcallpass == 1 && memberCount > j && (t->e.structinfo->isHFA || t->e.structinfo->isHVA)) goto uselea;
+                                    t->e.structinfo->memberCount = 1;
+                                    info->rgcregs[index] = 1;
+                                    info->regcregs[index] = 1;
+                                    info->regcxyzused[index] = 1;
+                                    info->regcsize += 16;
+                                    info->regcregsize[index] = 16;
+                                    if (reg == T_XMM0 + index)
+                                        DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
+                                    else
+                                        AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
+                                    return(1);
+                                }
+                            }
+                        }
+                        else if (t->e.structinfo->stype == MM256 && vcallpass == 0)
+                        {
+                            if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+                            {
+                                if (GetValueSp(reg) & OP_YMM)
+                                {
+                                    t->e.structinfo->memberCount = 1;
+                                    info->rgcregs[index] = 1;
+                                    info->regcxyzused[index] = 1;
+                                    info->regcsize += 32;
+                                    info->regcregsize[index] = 32;
+                                    if (reg == T_YMM0 + index)
+                                        DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
+                                    else
+                                        AddLineQueueX("vmovaps %r,ymmword ptr %s", T_YMM0 + index, paramvalue);
+                                    return(1);
+                                }
+                            }
+                        }
+                        else if (t->e.structinfo->stype == MM512 && vcallpass == 0)
+                        {
+                            if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+                            {
+                                if (GetValueSp(reg) & OP_ZMM)
+                                {
+                                    t->e.structinfo->memberCount = 1;
+                                    info->rgcregs[index] = 1;
+                                    info->regcxyzused[index] = 1;
+                                    info->regcsize += 64;
+                                    info->regcregsize[index] = 64;
+                                    if (reg == T_ZMM0 + index)
+                                        DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
+                                    else
+                                        AddLineQueueX("vmovaps %r,zmmword ptr %s", T_ZMM0 + index, paramvalue);
+                                    return(1);
+                                }
+                            }
+                        }
+                        if (t->e.structinfo->stype == MM128)
+                            membersize = 16;
+                        else if (t->e.structinfo->stype == MM256)
+                            membersize = 32;
+                        else if (t->e.structinfo->stype == MM512)
+                            membersize = 64;
+                        memberCount = t->e.structinfo->memberCount;
+                        if (t->e.structinfo->isHVA)
+                        {
+                            if (memberCount)
+                                membersize = psize / memberCount;
+                        }
+                        else if ((t->e.structinfo->isHFA) || (proc->e.procinfo->paralist->sym.type && proc->e.procinfo->paralist->sym.type->max_mbr_size == 4))
+                        {
+                            membersize = psize;
+                            memberCount = 1;
+                        }
+                        else if ((vcallpass == 0) && (t->e.structinfo->stype != MM128) && (t->e.structinfo->stype != MM256) && (t->e.structinfo->stype != MM512))
+                        {
+                            goto uselea;
+                        }
+                        if (t->e.structinfo->isHFA) memberCount = 1;
+                        info->regcregs[index] = memberCount;
+                        info->regcsize += psize;
+                        info->regcregsize[index] = membersize;
+                        if (((vcallpass == 1) && t->e.structinfo->isHVA) || (t->e.structinfo->stype == MM128) || (t->e.structinfo->stype == MM256) || (t->e.structinfo->stype == MM512))
+                        {
+                            for (i = 0, j = 0; i < 16; i++)
+                            {
+                                j += info->rgcregs[i];
+                                if (info->rgcregs[i])
+                                {
+                                    info->regcxyzused[i] = 1;
+                                }
+                                else if ((info->rgcregs[i] >= 1) && (info->regcxyzused[i] != 1))
+                                    info->regcxyzused[i] = 0;
+                            }
+                            if (j > 16)goto uselea;
+                            for (i = 0, j = 0; i < 16; i++)
+                            {
+                                if (info->regcxyzused[i] == 0)
+                                    j++;
+                            }
+                            if (vcallpass == 1 && memberCount > j && (t->e.structinfo->isHFA || t->e.structinfo->isHVA)) goto uselea;
 
-							switch (membersize) {
-							case 4:                             /* it could be 3 or more REAL4 */
-								for (i = 0, j = 0; i < membersize; i++) {
-									while (info->regcxyzused[j] != 0) j++;
-									if (i == 0) AddLineQueueX("%s %r,dword ptr %s", MOVE_SINGLE, T_XMM0 + j, paramvalue);
-									else      AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE, T_XMM0 + j, paramvalue, i * 4);
-									info->regcxyzused[j] = 1;
-								}
-								break;
-							case 8:
-								for (i = 0, j = 0; i < memberCount; i++) {
-									while (info->regcxyzused[j] != 0) j++;
-									if (i == 0) AddLineQueueX("%s %r,oword ptr %s", MOVE_DOUBLE, T_XMM0 + j, paramvalue);
-									else      AddLineQueueX("%s %r,oword ptr [%s+%d]", MOVE_DOUBLE, T_XMM0 + j, paramvalue, i * 8);
-									info->regcxyzused[j] = 1;
-								}
-								break;
-							case 16:
-								if ((vcallpass == 0) && t->e.structinfo->stype == MM128)
-								{
-									AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
-									info->regcxyzused[index] = 1;
-								}
-								else if ((vcallpass == 1) && (t->e.structinfo->isHFA || t->e.structinfo->isHVA))
-								{
-									for (i = 0, j = 0; i < memberCount; i++) {
-										while (info->regcxyzused[j] != 0) j++;
-										if (i == 0) AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + j, paramvalue);
-										else      AddLineQueueX("%s %r,oword ptr [%s+%d]", MOVE_ALIGNED_FLOAT, T_XMM0 + j, paramvalue, i * 16);
-										info->regcxyzused[j] = 1;
-									}
-								}
-								break;
-							case 32:
-								if ((vcallpass == 0) && t->e.structinfo->stype == MM256)
-								{
-									AddLineQueueX("vmovups %r,oword ptr %s", T_YMM0 + index, paramvalue);
-									info->regcxyzused[index] = 1;
-								}
-								else if ((vcallpass == 1) && (t->e.structinfo->isHFA || t->e.structinfo->isHVA))
-								{
-									for (i = 0, j = 0; i < memberCount; i++) {
-										while (info->regcxyzused[j] != 0) j++;
-										if (i == 0) AddLineQueueX("vmovups %r,ymmword ptr %s", T_YMM0 + j, paramvalue);
-										else      AddLineQueueX("vmovups %r,ymmword ptr [%s+%d]", T_YMM0 + j, paramvalue, i * 32);
-										info->regcxyzused[j] = 1;
-									}
-								}
-								break;
-							case 64:
-								if ((vcallpass == 0) && t->e.structinfo->stype == MM512)
-								{
-									AddLineQueueX("vmovups %r,oword ptr %s", T_ZMM0 + index, paramvalue);
-									info->regcxyzused[index] = 1;
-								}
-								else if ((vcallpass == 1) && (t->e.structinfo->isHFA || t->e.structinfo->isHVA))
-								{
-									for (i = 0, j = 0; i < memberCount; i++) {
-										while (info->regcxyzused[j] != 0) j++;
-										if (i == 0) AddLineQueueX("vmovups %r,zmmword ptr %s", T_ZMM0 + j, paramvalue);
-										else      AddLineQueueX("vmovups %r,zmmword ptr [%s+%d]", T_ZMM0 + j, paramvalue, i * 64);
-										info->regcxyzused[j] = 1;
-									}
-								}
-								break;
-							}
-						}
-					}
-					else if (vcallpass == 0) {
-						switch (psize) {
-						case 4:
-							if (opnd->kind == EXPR_FLOAT) {
-								AddLineQueueX("%s %r,dword ptr %s", MOVE_SINGLE, T_XMM0 + index, paramvalue);
-								info->rgcregs[index] = 1;
-							}
-							else
-								AddLineQueueX("mov %r, qword ptr %s", regcallms64_regs[index + 2 * 11], paramvalue);
-							break;
-						case 8:
-							if (opnd->kind == EXPR_FLOAT) {
-								AddLineQueueX("%s %r,qword ptr %s", MOVE_DOUBLE, T_XMM0 + index, paramvalue);
-								info->rgcregs[index] = 1;
-							}
-							else
-								AddLineQueueX("mov %r, qword ptr %s", regcallms64_regs[index + 2 * 11], paramvalue);
-							break;
-						case 16:
-							if (opnd->kind == EXPR_REG && opnd->indirect == FALSE) {
-								if (GetValueSp(reg) & OP_XMM) {
-									if (reg == T_XMM0 + index)
-										DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
-									else
-										AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
-								}
-							}
-							else
-								AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
-							info->rgcregs[index] = 1;
-							break;
-						case 32:
-							info->rgcregs[index] = 1;
-							AddLineQueueX("vmovups %r,oword ptr %s", T_YMM0 + index, paramvalue);
-							break;
-						case 64:
-							info->rgcregs[index] = 1;
-							AddLineQueueX("vmovups %r,zmmword ptr %s", T_ZMM0 + index, paramvalue);
-							break;
-						}
-					}
-				}
-				else
-				{
-				uselea:
+                            switch (membersize)
+                            {
+                                case 4:                             /* it could be 3 or more REAL4 */
+                                    for (i = 0, j = 0; i < membersize; i++)
+                                    {
+                                        while (info->regcxyzused[j] != 0) j++;
+                                        if (i == 0) AddLineQueueX("%s %r,dword ptr %s", MOVE_SINGLE, T_XMM0 + j, paramvalue);
+                                        else      AddLineQueueX("%s %r,dword ptr [%s+%d]", MOVE_SINGLE, T_XMM0 + j, paramvalue, i * 4);
+                                        info->regcxyzused[j] = 1;
+                                    }
+                                    break;
+                                case 8:
+                                    for (i = 0, j = 0; i < memberCount; i++)
+                                    {
+                                        while (info->regcxyzused[j] != 0) j++;
+                                        if (i == 0) AddLineQueueX("%s %r,oword ptr %s", MOVE_DOUBLE, T_XMM0 + j, paramvalue);
+                                        else      AddLineQueueX("%s %r,oword ptr [%s+%d]", MOVE_DOUBLE, T_XMM0 + j, paramvalue, i * 8);
+                                        info->regcxyzused[j] = 1;
+                                    }
+                                    break;
+                                case 16:
+                                    if ((vcallpass == 0) && t->e.structinfo->stype == MM128)
+                                    {
+                                        AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
+                                        info->regcxyzused[index] = 1;
+                                    }
+                                    else if ((vcallpass == 1) && (t->e.structinfo->isHFA || t->e.structinfo->isHVA))
+                                    {
+                                        for (i = 0, j = 0; i < memberCount; i++)
+                                        {
+                                            while (info->regcxyzused[j] != 0) j++;
+                                            if (i == 0) AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + j, paramvalue);
+                                            else      AddLineQueueX("%s %r,oword ptr [%s+%d]", MOVE_ALIGNED_FLOAT, T_XMM0 + j, paramvalue, i * 16);
+                                            info->regcxyzused[j] = 1;
+                                        }
+                                    }
+                                    break;
+                                case 32:
+                                    if ((vcallpass == 0) && t->e.structinfo->stype == MM256)
+                                    {
+                                        AddLineQueueX("vmovups %r,ymmword ptr %s", T_YMM0 + index, paramvalue);
+                                        info->regcxyzused[index] = 1;
+                                    }
+                                    else if ((vcallpass == 1) && (t->e.structinfo->isHFA || t->e.structinfo->isHVA))
+                                    {
+                                        for (i = 0, j = 0; i < memberCount; i++)
+                                        {
+                                            while (info->regcxyzused[j] != 0) j++;
+                                            if (i == 0) AddLineQueueX("vmovups %r,ymmword ptr %s", T_YMM0 + j, paramvalue);
+                                            else      AddLineQueueX("vmovups %r,ymmword ptr [%s+%d]", T_YMM0 + j, paramvalue, i * 32);
+                                            info->regcxyzused[j] = 1;
+                                        }
+                                    }
+                                    break;
+                                case 64:
+                                    if ((vcallpass == 0) && t->e.structinfo->stype == MM512)
+                                    {
+                                        AddLineQueueX("vmovups %r,zmmword ptr %s", T_ZMM0 + index, paramvalue);
+                                        info->regcxyzused[index] = 1;
+                                    }
+                                    else if ((vcallpass == 1) && (t->e.structinfo->isHFA || t->e.structinfo->isHVA))
+                                    {
+                                        for (i = 0, j = 0; i < memberCount; i++)
+                                        {
+                                            while (info->regcxyzused[j] != 0) j++;
+                                            if (i == 0) AddLineQueueX("vmovups %r,zmmword ptr %s", T_ZMM0 + j, paramvalue);
+                                            else      AddLineQueueX("vmovups %r,zmmword ptr [%s+%d]", T_ZMM0 + j, paramvalue, i * 64);
+                                            info->regcxyzused[j] = 1;
+                                        }
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+                    else if (vcallpass == 0)
+                    {
+                        switch (psize)
+                        {
+                            case 4:
+                                if (opnd->kind == EXPR_FLOAT)
+                                {
+                                    AddLineQueueX("%s %r,dword ptr %s", MOVE_SINGLE, T_XMM0 + index, paramvalue);
+                                    info->rgcregs[index] = 1;
+                                }
+                                else
+                                    AddLineQueueX("mov %r, qword ptr %s", regcallms64_regs[index + 2 * 11], paramvalue);
+                                break;
+                            case 8:
+                                if (opnd->kind == EXPR_FLOAT)
+                                {
+                                    AddLineQueueX("%s %r,qword ptr %s", MOVE_DOUBLE, T_XMM0 + index, paramvalue);
+                                    info->rgcregs[index] = 1;
+                                }
+                                else
+                                    AddLineQueueX("mov %r, qword ptr %s", regcallms64_regs[index + 2 * 11], paramvalue);
+                                break;
+                            case 16:
+                                if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+                                {
+                                    if (GetValueSp(reg) & OP_XMM)
+                                    {
+                                        if (reg == T_XMM0 + index)
+                                            DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
+                                        else
+                                            AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
+                                    }
+                                }
+                                else
+                                    AddLineQueueX("%s %r,oword ptr %s", MOVE_ALIGNED_FLOAT, T_XMM0 + index, paramvalue);
+                                info->rgcregs[index] = 1;
+                                break;
+                            case 32:
+                                info->rgcregs[index] = 1;
+                                AddLineQueueX("vmovups %r,ymmword ptr %s", T_YMM0 + index, paramvalue);
+                                break;
+                            case 64:
+                                info->rgcregs[index] = 1;
+                                AddLineQueueX("vmovups %r,zmmword ptr %s", T_ZMM0 + index, paramvalue);
+                                break;
+                        }
+                    }
+                }
+                else
+                {
+                uselea:
 
-					if ((proc->sym.langtype == LANG_VECTORCALL))
-					{
-						if (index < 4)
-						{
-							*regs_used |= (1 << (index + RPAR_START)); /* Flag the appropriate GP register as used now for the reference */
-							info->vecregs[index] = 0; /* In this case the vectorcall item is passed by reference in a GP register, so prevent it being homed in PROC */
-							AddLineQueueX(" lea %r, %s", ms64_regs[index + 2 * 4 + (psize > 4 ? 4 : 0)], paramvalue);
-						}
-						else
-						{
-							*regs_used |= R0_USED;
-							AddLineQueueX(" lea %r, %s", T_RAX, paramvalue);
-							AddLineQueueX(" mov qword ptr [%r+%u], %r", T_RSP, NUMQUAL index * 8, T_RAX);
-							return(1);
+                    if ((proc->sym.langtype == LANG_VECTORCALL))
+                    {
+                        if (index < 4)
+                        {
+                            *regs_used |= (1 << (index + RPAR_START)); /* Flag the appropriate GP register as used now for the reference */
+                            info->vecregs[index] = 0; /* In this case the vectorcall item is passed by reference in a GP register, so prevent it being homed in PROC */
+                            AddLineQueueX(" lea %r, %s", ms64_regs[index + 2 * 4 + (psize > 4 ? 4 : 0)], paramvalue);
+                        }
+                        else
+                        {
+                            *regs_used |= R0_USED;
+                            AddLineQueueX(" lea %r, %s", T_RAX, paramvalue);
+                            AddLineQueueX(" mov qword ptr [%r+%u], %r", T_RSP, NUMQUAL index * 8, T_RAX);
+                            return(1);
 
-						}
-					}
-					else if ((proc->sym.langtype == LANG_REGCALL))
-					{
-						if (index < 11)
-						{
-							*regs_used |= (1 << (index + RPAR_START)); /* Flag the appropriate GP register as used now for the reference */
-							info->regcregs[index] = 0; /* In this case the vectorcall item is passed by reference in a GP register, so prevent it being homed in PROC */
-							AddLineQueueX(" lea %r, %s", regcallms64_regs[index + 2 * 11 + (psize > 4 ? 11 : 0)], paramvalue);
-						}
-						else
-						{
-							*regs_used |= R0_USED;
-							AddLineQueueX(" lea %r, %s", T_RAX, paramvalue);
-							AddLineQueueX(" mov qword ptr [%r+%u], %r", T_RSP, NUMQUAL index * 8, T_RAX);
-							return(1);
-						}
-					}
-					else
-					{
-						*regs_used |= (1 << (index + RPAR_START)); /* Flag the appropriate GP register as used now for the reference */
-						AddLineQueueX(" lea %r, %s", ms64_regs[index + 2 * 4 + (psize > 4 ? 4 : 0)], paramvalue);
-					}
-				}
-			}
-			else
-				EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
-			return(1);
-		}
+                        }
+                    }
+                    else if ((proc->sym.langtype == LANG_REGCALL))
+                    {
+                        if (index < 11)
+                        {
+                            *regs_used |= (1 << (index + RPAR_START)); /* Flag the appropriate GP register as used now for the reference */
+                            info->regcregs[index] = 0; /* In this case the vectorcall item is passed by reference in a GP register, so prevent it being homed in PROC */
+                            AddLineQueueX(" lea %r, %s", regcallms64_regs[index + 2 * 11 + (psize > 4 ? 11 : 0)], paramvalue);
+                        }
+                        else
+                        {
+                            *regs_used |= R0_USED;
+                            AddLineQueueX(" lea %r, %s", T_RAX, paramvalue);
+                            AddLineQueueX(" mov qword ptr [%r+%u], %r", T_RSP, NUMQUAL index * 8, T_RAX);
+                            return(1);
+                        }
+                    }
+                    else
+                    {
+                        *regs_used |= (1 << (index + RPAR_START)); /* Flag the appropriate GP register as used now for the reference */
+                        AddLineQueueX(" lea %r, %s", ms64_regs[index + 2 * 4 + (psize > 4 ? 4 : 0)], paramvalue);
+                    }
+                }
+            }
+            else
+                EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
+            return(1);
+        }
 
-		if (vcallpass == 0)
-		{
-			/* register argument? */
-			if (opnd->kind == EXPR_REG && opnd->indirect == FALSE) {
-				reg = opnd->base_reg->tokval;
-				size = SizeFromRegister(reg);
-			}
-			else if (opnd->kind == EXPR_CONST || opnd->kind == EXPR_FLOAT) {
-				size = psize;
-			}
-			else if (opnd->mem_type != MT_EMPTY) {
-				size = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
-			}
-			else if (opnd->kind == EXPR_ADDR && opnd->sym != NULL && opnd->sym->state == SYM_UNDEFINED) {
-				DebugMsg1(("ms64_param(%s, param=%u): forward ref=%s, assumed size=%u\n", proc->sym.name, index, opnd->sym->name, psize));
-				size = psize;
-			}
-			else if (opnd->kind == EXPR_ADDR && opnd->sym == NULL) {
-				size = psize;
-			}
-			else if (opnd->kind == EXPR_REG && opnd->indirect == TRUE)
-			{
-				size = psize;
-			}
-			else
-				size = (opnd->instr == T_OFFSET ? 8 : 4);
+        if (vcallpass == 0)
+        {
+            /* register argument? */
+            if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+            {
+                reg = opnd->base_reg->tokval;
+                size = SizeFromRegister(reg);
+            }
+            else if (opnd->kind == EXPR_CONST || opnd->kind == EXPR_FLOAT)
+            {
+                size = psize;
+            }
+            else if (opnd->mem_type != MT_EMPTY)
+            {
+                size = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
+            }
+            else if (opnd->kind == EXPR_ADDR && opnd->sym != NULL && opnd->sym->state == SYM_UNDEFINED)
+            {
+                DebugMsg1(("ms64_param(%s, param=%u): forward ref=%s, assumed size=%u\n", proc->sym.name, index, opnd->sym->name, psize));
+                size = psize;
+            }
+            else if (opnd->kind == EXPR_ADDR && opnd->sym == NULL)
+            {
+                size = psize;
+            }
+            else if (opnd->kind == EXPR_REG && opnd->indirect == TRUE)
+            {
+                size = psize;
+            }
+            else
+                size = (opnd->instr == T_OFFSET ? 8 : 4);
 
-			/* v2.11: allow argument extension, so long as the target isn't a pointer */
-			//if ( size != psize && param->sym.is_vararg == FALSE ) {
-			if (size > psize || (size < psize && param->sym.mem_type == MT_PTR)) {
-				DebugMsg(("ms64_param(%s, param=%u): type error size.p/a=%u/%u flags=%X\n", proc->sym.name, index, psize, size, *regs_used));
-				EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
-			}
+            /* v2.11: allow argument extension, so long as the target isn't a pointer */
+            //if ( size != psize && param->sym.is_vararg == FALSE ) {
+            if (size > psize || (size < psize && param->sym.mem_type == MT_PTR))
+            {
+                DebugMsg(("ms64_param(%s, param=%u): type error size.p/a=%u/%u flags=%X\n", proc->sym.name, index, psize, size, *regs_used));
+                EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
+            }
 
-			if ((proc->sym.langtype == LANG_REGCALL)) {
-				/* v2.11: use parameter size to allow argument extension */
-				j = 11;
-				switch (psize)
-				{
-				case 1: base = 0 * j; break;
-				case 2: base = 1 * j; break;
-				case 4: base = 2 * j; break;
-				default:base = 3 * j; break;
-				}
+            if (proc->sym.langtype == LANG_REGCALL)
+            {
+                /* v2.11: use parameter size to allow argument extension */
+                j = 11;
+                switch (psize)
+                {
+                    case 1: base = 0 * j; break;
+                    case 2: base = 1 * j; break;
+                    case 4: base = 2 * j; break;
+                    default:base = 3 * j; break;
+                }
 
-				/* optimization if the register holds the value already */
-				if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
-				{
+                /* optimization if the register holds the value already */
+                if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+                {
 
-					if (GetValueSp(reg) & OP_R) {
-						if (regcallms64_regs[index + base] == reg) {
-							DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
-							return(1);
-						}
-						i = GetRegNo(reg);
-						if (REGCALLPAR_WIN64 & (1 << i)) {
-							i = GetregcallmsParmIndex(i);
-							if (*regs_used & (1 << (i + RPAR_START)))
-								EmitErr(REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
-						}
-					}
-				}
+                    if (GetValueSp(reg) & OP_R)
+                    {
+                        if (regcallms64_regs[index + base] == reg)
+                        {
+                            DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
+                            return(1);
+                        }
+                        i = GetRegNo(reg);
+                        if (REGCALLPAR_WIN64 & (1 << i))
+                        {
+                            i = GetregcallmsParmIndex(i);
+                            if (*regs_used & (1 << (i + RPAR_START)))
+                                EmitErr(REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
+                        }
+                    }
+                }
 
-				/* v2.11: allow argument extension */
-				if (size < psize)
-				{
-					if (size == 4)
-					{
-						if (IS_SIGNED(opnd->mem_type))
-							AddLineQueueX(" movsxd %r, %s", regcallms64_regs[index + base], paramvalue);
-						else
-							AddLineQueueX(" mov %r, %s", regcallms64_regs[index + 2 * 11], paramvalue);
-					}
-					else
-						AddLineQueueX(" mov%sx %r, %s", IS_SIGNED(opnd->mem_type) ? "s" : "z", regcallms64_regs[index + base], paramvalue);
+                /* v2.11: allow argument extension */
+                if (size < psize)
+                {
+                    if (size == 4)
+                    {
+                        if (IS_SIGNED(opnd->mem_type))
+                            AddLineQueueX(" movsxd %r, %s", regcallms64_regs[index + base], paramvalue);
+                        else
+                            AddLineQueueX(" mov %r, %s", regcallms64_regs[index + 2 * 11], paramvalue);
+                    }
+                    else
+                        AddLineQueueX(" mov%sx %r, %s", IS_SIGNED(opnd->mem_type) ? "s" : "z", regcallms64_regs[index + base], paramvalue);
 
-					*regs_used |= (1 << (index + RPAR_START));
-				}
-				else
-				{
-					*regs_used |= (1 << (index + RPAR_START));
-					DebugMsg1(("ms64_param(%s, param=%u): size=%u flags=%X\n", proc->sym.name, index, size, *regs_used));
+                    *regs_used |= (1 << (index + RPAR_START));
+                }
+                else
+                {
+                    *regs_used |= (1 << (index + RPAR_START));
+                    DebugMsg1(("ms64_param(%s, param=%u): size=%u flags=%X\n", proc->sym.name, index, size, *regs_used));
 
-					/* v2.12 added by habran : if parameter  is zero use 'xor reg,reg' instead of 'mov reg,0' */
-					sym = SymLookup(paramvalue); /* UASM 2.46 added by John to optimize a zero valued equate */
-					if ((sym && sym->isequate && sym->value == 0) || (!strcasecmp(paramvalue, "0") || (!strcasecmp(paramvalue, "NULL")) || (!strcasecmp(paramvalue, "FALSE"))))
-					{
-						if (regcallms64_regs[index + base] > T_R15D)
-							index -= 4;
-						AddLineQueueX(" xor %r, %r", regcallms64_regs[index + base], regcallms64_regs[index + base]);
-						return(1);
-					}
-					else
-					{
-						if (index > 3)
-						{
-							switch (psize) {
-							case 1:   i = T_BYTE; break;
-							case 2:   i = T_WORD; break;
-							case 4:   i = T_DWORD; break;
-							default:  i = T_QWORD; break;
-							}
-							AddLineQueueX(" mov %r ptr [%r+%u], %s", i, T_RSP, NUMQUAL index * 8, paramvalue);
-						}
-						else
-							AddLineQueueX(" mov %r, %s", regcallms64_regs[index + base], paramvalue);
-					}
-				}
-			}
-			else { // MS64 ABI PATH
-				/* v2.11: use parameter size to allow argument extension */
-				j = 4;
-				switch (psize)
-				{
-				case 1: base = 0 * j; break;
-				case 2: base = 1 * j; break;
-				case 4: base = 2 * j; break;
-				default:base = 3 * j; break;
-				}
+                    /* v2.12 added by habran : if parameter  is zero use 'xor reg,reg' instead of 'mov reg,0' */
+                    sym = SymLookup(paramvalue); /* UASM 2.46 added by John to optimize a zero valued equate */
+                    if ((sym && sym->isequate && sym->value == 0) || (!strcasecmp(paramvalue, "0") || (!strcasecmp(paramvalue, "NULL")) || (!strcasecmp(paramvalue, "FALSE"))))
+                    {
+                        if (regcallms64_regs[index + base] > T_R15D)
+                            index -= 4;
+                        AddLineQueueX(" xor %r, %r", regcallms64_regs[index + base], regcallms64_regs[index + base]);
+                        return(1);
+                    }
+                    else
+                    {
+                        if (index > 3)
+                        {
+                            switch (psize)
+                            {
+                                case 1:   i = T_BYTE; break;
+                                case 2:   i = T_WORD; break;
+                                case 4:   i = T_DWORD; break;
+                                default:  i = T_QWORD; break;
+                            }
+                            AddLineQueueX(" mov %r ptr [%r+%u], %s", i, T_RSP, NUMQUAL index * 8, paramvalue);
+                        }
+                        else
+                            AddLineQueueX(" mov %r, %s", regcallms64_regs[index + base], paramvalue);
+                    }
+                }
+            }
+            else
+            { // MS64 ABI PATH
+          /* v2.11: use parameter size to allow argument extension */
+                j = 4;
+                switch (psize)
+                {
+                    case 1: base = 0 * j; break;
+                    case 2: base = 1 * j; break;
+                    case 4: base = 2 * j; break;
+                    default:base = 3 * j; break;
+                }
 
-				/* optimization if the register holds the value already */
-				if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
-				{
+                /* optimization if the register holds the value already */
+                if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+                {
 
-					if (GetValueSp(reg) & OP_R) {
-						if (ms64_regs[index + base] == reg) {
-							DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
-							return(1);
-						}
-						i = GetRegNo(reg);
-						if (REGPAR_WIN64 & (1 << i)) {
-							i = GetParmIndex(i);
-							if (*regs_used & (1 << (i + RPAR_START)))
-								EmitErr(REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
-						}
-					}
-				}
+                    if (GetValueSp(reg) & OP_R)
+                    {
+                        if (ms64_regs[index + base] == reg)
+                        {
+                            DebugMsg(("ms64_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
+                            return(1);
+                        }
+                        i = GetRegNo(reg);
+                        if (REGPAR_WIN64 & (1 << i))
+                        {
+                            i = GetParmIndex(i);
+                            if (*regs_used & (1 << (i + RPAR_START)))
+                                EmitErr(REGISTER_VALUE_OVERWRITTEN_BY_INVOKE);
+                        }
+                    }
+                }
 
-				/* v2.11: allow argument extension */
-				if (size < psize)
-				{
-					if (size == 4)
-					{
-						if (IS_SIGNED(opnd->mem_type))
-							AddLineQueueX(" movsxd %r, %s", ms64_regs[index + base], paramvalue);
-						else
-							AddLineQueueX(" mov %r, %s", ms64_regs[index + 2 * 4], paramvalue);
-					}
-					else
-						AddLineQueueX(" mov%sx %r, %s", IS_SIGNED(opnd->mem_type) ? "s" : "z", ms64_regs[index + base], paramvalue);
+                /* v2.11: allow argument extension */
+                if (size < psize)
+                {
+                    if (size == 4)
+                    {
+                        if (IS_SIGNED(opnd->mem_type))
+                            AddLineQueueX(" movsxd %r, %s", ms64_regs[index + base], paramvalue);
+                        else
+                            AddLineQueueX(" mov %r, %s", ms64_regs[index + 2 * 4], paramvalue);
+                    }
+                    else
+                        AddLineQueueX(" mov%sx %r, %s", IS_SIGNED(opnd->mem_type) ? "s" : "z", ms64_regs[index + base], paramvalue);
 
-					*regs_used |= (1 << (index + RPAR_START));
-				}
-				else
-				{
-					*regs_used |= (1 << (index + RPAR_START));
-					DebugMsg1(("ms64_param(%s, param=%u): size=%u flags=%X\n", proc->sym.name, index, size, *regs_used));
+                    *regs_used |= (1 << (index + RPAR_START));
+                }
+                else
+                {
+                    *regs_used |= (1 << (index + RPAR_START));
+                    DebugMsg1(("ms64_param(%s, param=%u): size=%u flags=%X\n", proc->sym.name, index, size, *regs_used));
 
-					/* v2.12 added by habran : if parameter  is zero use 'xor reg,reg' instead of 'mov reg,0' */
-					sym = SymLookup(paramvalue); /* UASM 2.46 added by John to optimize a zero valued equate */
-					if ((sym && sym->isequate && sym->value == 0) || (!strcasecmp(paramvalue, "0") || (!strcasecmp(paramvalue, "NULL")) || (!strcasecmp(paramvalue, "FALSE"))))
-					{
-						if (ms64_regs[index + base] > T_R9D)
-							index -= 4;
-						AddLineQueueX(" xor %r, %r", ms64_regs[index + base], ms64_regs[index + base]);
-						return(1);
-					}
-					else
-					{
-						if (index > 3)
-						{
-							switch (psize) {
-							case 1:   i = T_BYTE; break;
-							case 2:   i = T_WORD; break;
-							case 4:   i = T_DWORD; break;
-							default:  i = T_QWORD; break;
-							}
-							AddLineQueueX(" mov %r ptr [%r+%u], %s", i, T_RSP, NUMQUAL index * 8, paramvalue);
-						}
-						else
-							AddLineQueueX(" mov %r, %s", ms64_regs[index + base], paramvalue);
-					}
-				}
-			}
-		}
-	}
+                    /* v2.12 added by habran : if parameter  is zero use 'xor reg,reg' instead of 'mov reg,0' */
+                    sym = SymLookup(paramvalue); /* UASM 2.46 added by John to optimize a zero valued equate */
+                    if ((sym && sym->isequate && sym->value == 0) || (!strcasecmp(paramvalue, "0") || (!strcasecmp(paramvalue, "NULL")) || (!strcasecmp(paramvalue, "FALSE"))))
+                    {
+                        if (ms64_regs[index + base] > T_R9D)
+                            index -= 4;
+                        AddLineQueueX(" xor %r, %r", ms64_regs[index + base], ms64_regs[index + base]);
+                        return(1);
+                    }
+                    else
+                    {
+                        if (index > 3)
+                        {
+                            switch (psize)
+                            {
+                                case 1:   i = T_BYTE; break;
+                                case 2:   i = T_WORD; break;
+                                case 4:   i = T_DWORD; break;
+                                default:  i = T_QWORD; break;
+                            }
+                            AddLineQueueX(" mov %r ptr [%r+%u], %s", i, T_RSP, NUMQUAL index * 8, paramvalue);
+                        }
+                        else
+                            AddLineQueueX(" mov %r, %s", ms64_regs[index + base], paramvalue);
+                    }
+                }
+            }
+        }
+    }
 
 vcalldone:
-	return(1);
+    return(1);
 }
 
 #endif
@@ -2823,9 +2899,17 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 		reg = opnd->base_reg->tokval;
 		if (GetValueSp(reg) & OP_XMM || GetValueSp(reg) & OP_YMM || GetValueSp(reg) & OP_ZMM)
 		{
-			i = sysv_reg(proc, reg);
-			if (i <= 7 && info->vecused & (1 << i))
-				destroyed = TRUE;
+            i = sysv_reg(proc, reg);
+            if (proc->sym.langtype == LANG_REGCALL)
+            {
+                if (i <= 11 && info->vecused & (1 << i))
+                    destroyed = TRUE;
+            }
+            else
+            {
+                if (i <= 7 && info->vecused & (1 << i))
+                    destroyed = TRUE;
+            }
 		}
 	}
 
@@ -3151,7 +3235,8 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 					if (_stricmp(param->sym.string_ptr, paramvalue) == 0)
 						DebugMsg(("sysv_param(%s, param=%u): argument optimized\n", proc->sym.name, index));
 					else
-						AddLineQueueX("%s %s, %s", MOVE_ALIGNED_INT, param->sym.string_ptr, paramvalue);
+						AddLineQueueX("vmovdqa %s, %s", param->sym.string_ptr, paramvalue);
+						//AddLineQueueX("%s %s, %s", MOVE_ALIGNED_INT, param->sym.string_ptr, paramvalue);
 				}
 				else
 				{
@@ -3163,14 +3248,16 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 			/* Vector register load from indirect register ie: [rax] etc */
 			if (opnd->kind == EXPR_REG && opnd->indirect == TRUE)
 			{
-				AddLineQueueX("%s %s, zmmword ptr %s", MOVE_UNALIGNED_INT, param->sym.string_ptr, paramvalue);
+                AddLineQueueX("vmovdqu %s, zmmword ptr %s", param->sym.string_ptr, paramvalue);
+				//AddLineQueueX("%s %s, zmmword ptr %s", MOVE_UNALIGNED_INT, param->sym.string_ptr, paramvalue);
 				return(1);
 			}
 			/* Operand is a memory address (IE: symbol name) or memory address expression like [rbp+rax] etc */
 			if (opnd->kind == EXPR_ADDR && !addr)
 			{
-				if (psize == param->sym.total_size || opnd->mem_type == MT_EMPTY)
-					AddLineQueueX("%s %s, zmmword ptr %s", MOVE_UNALIGNED_INT, param->sym.string_ptr, paramvalue);
+                if (psize == param->sym.total_size || opnd->mem_type == MT_EMPTY)
+                    AddLineQueueX("vmovdqu %s, zmmword ptr %s", param->sym.string_ptr, paramvalue);
+					//AddLineQueueX("%s %s, zmmword ptr %s", MOVE_UNALIGNED_INT, param->sym.string_ptr, paramvalue);
 				else
 					EmitErr(INVOKE_ARGUMENT_TYPE_MISMATCH, index + 1);
 				return(1);
@@ -5623,7 +5710,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 #endif
 AddLineQueue(StringBufferEnd);
 
-if ((sym->langtype == LANG_C || sym->langtype == LANG_SYSCALL) &&
+if ((!(ModuleInfo.win64_flags & W64F_AUTOSTACKSP)) && (sym->langtype == LANG_C || sym->langtype == LANG_SYSCALL) &&
 	(info->parasize || (info->has_vararg && size_vararg))) {
 	if (info->has_vararg) {
 		DebugMsg1(("InvokeDir: size of fix args=%u, var args=%u\n", info->parasize, size_vararg));
@@ -5643,7 +5730,7 @@ else if (sym->langtype == LANG_SYSVCALL) {
 }
 else if (sym->langtype == LANG_REGCALL && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC))
 {
-	sysvcall_tab[ModuleInfo.fctype].invokeend(proc, numParam, value);
+    regcallunix_tab[ModuleInfo.fctype].invokeend(proc, numParam, value);
 }
 else if (sym->langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF)
 {
@@ -5663,4 +5750,3 @@ RunLineQueue();
 
 return(NOT_ERROR);
 }
-

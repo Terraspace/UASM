@@ -74,9 +74,10 @@
 
 #if (defined(INCREASEDMAXLINELENGHT) && (INCREASEDMAXLINELENGHT >= 1))
 #define MAX_LINE_LEN            25600  /* no restriction for this number */
-#define MAX_TOKEN  MAX_LINE_LEN - 32  /* max tokens in one line */
-#define MAX_STRING_LEN          MAX_LINE_LEN - 32 /* must be < MAX_LINE_LEN */
-#define MAX_ID_LEN              MAX_LINE_LEN - 32 /*247*/  /* must be < MAX_LINE_LEN */
+#define MAX_RESTRICT_LINE_LEN   1024  /*(MAX_LINE_LEN/25)*/  /* no restriction for this number */
+#define MAX_TOKEN               MAX_RESTRICT_LINE_LEN - 32  /* max tokens in one line */
+#define MAX_STRING_LEN          MAX_RESTRICT_LINE_LEN - 32 /* must be < MAX_LINE_LEN */
+#define MAX_ID_LEN              MAX_RESTRICT_LINE_LEN - 769 /*247*/  /* must be < MAX_LINE_LEN */
 #define MAX_STRUCT_ALIGN        64
 #define MAX_SEGMENT_ALIGN       4096 /* maximum alignment/packing setting for segments */
 #define MAX_IF_NESTING          32 /* IFxx block nesting. Must be <=32, see condasm.c */
@@ -87,6 +88,7 @@
 #define LNAME_NULL              0   /* OMF first entry in lnames array */
 #else
 #define MAX_LINE_LEN            1024 /* no restriction for this number */
+#define MAX_RESTRICT_LINE_LEN   MAX_LINE_LEN /* no restriction for this number */
 #define MAX_TOKEN  MAX_LINE_LEN - 32 /* max tokens in one line */
 #define MAX_STRING_LEN          MAX_LINE_LEN - 32 /* must be < MAX_LINE_LEN */
 #define MAX_ID_LEN              247  /* must be < MAX_LINE_LEN */
@@ -153,7 +155,7 @@
 #endif
 
 #ifndef REGCALL_SUPPORT
-#define REGCALL_SUPPORT 1 /* 1=support 64bit */
+#define REGCALL_SUPPORT 1 /* 1=support REGCALL */
 #endif
 
 #ifndef VMXSUPP
@@ -514,6 +516,11 @@ enum delphi_type {
     FCT_DELPHI       /* delphi fastcall convention (eax, edx, ecx ) */
 };
 
+enum fastcall_decoration
+{
+    FASTCALL_FULL,
+    FASTCALL_NONE
+};
 
 enum stdcall_decoration {
     STDCALL_FULL,
@@ -701,9 +708,10 @@ struct global_options {
 #endif
     bool        no_cdecl_decoration;     /* -zcw & -zcm option */
     uint_8      stdcall_decoration;      /* -zt<0|1|2> option */
+    uint_8      fastcall_decoration;     /* -zr<0|1> option */
     uint_8      vectorcall_decoration;   /* -zv<0|1> option */
     uint_8      regcall_decoration;      /* -ze<0|1> option */
-    uint_8      regcall_version;         /* -Ge<0|1|2|3|4|5> option  */
+    uint_8      regcall_version;         /* -ge<0|1|2|3|4|5> option  */
     bool        no_export_decoration;    /* -zze option */
     bool        entry_decorated;         /* -zzs option  */
     bool        write_listing;           /* -Fl option  */
@@ -946,7 +954,7 @@ struct module_info {
     unsigned char       ZEROLOCALS;         /* zero local variables  */
 #endif
 
-extern unsigned char        MODULEARCH;         /* MODULE Architecture <avx or sse> */
+    unsigned char        MODULEARCH;         /* MODULE Architecture <avx or sse> */
 
 #define CurrSource      ModuleInfo.currsource
 #define Token_Count     ModuleInfo.token_count

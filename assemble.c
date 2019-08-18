@@ -113,8 +113,6 @@ static const struct format_options formatoptions[] = {
 #endif
 };
 
-unsigned char       MODULEARCH = ARCH_SSE;          /* MODULE Architecutre <avx or sse> */
-
 struct module_info      ModuleInfo;
 unsigned int            Parse_Pass;     /* assembly pass */
 //unsigned int            GeneratedCode; /* v2.10: moved to ModuleInfo */
@@ -191,10 +189,9 @@ static void CheckBOM(FILE *f)
 
 extern void RewindToWin64() 
 {
-
     if (!(Options.output_format == OFORMAT_BIN && Options.sub_format == SFORMAT_NONE))
     {
-        if (Options.output_format != OFORMAT_BIN)
+        if (Options.output_format != OFORMAT_BIN && Options.output_format != OFORMAT_ELF && Options.output_format != OFORMAT_MAC)
             Options.output_format = OFORMAT_COFF;
         else
         {
@@ -793,7 +790,7 @@ static void ModulePassInit( void )
         ModuleInfo.fctype = Options.fctype;
 
         #if AMD64_SUPPORT
-        if (Options.output_format == OFORMAT_ELF)
+        if ((Options.output_format == OFORMAT_COFF || Options.output_format == OFORMAT_ELF  || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)
         {
             ModuleInfo.fctype = FCT_WIN64;
             Options.fctype = FCT_WIN64; /* SYSV proc/invoke tables use the same ordinal as FCT_WIN64 so set it now, instead of FCT_MSC */
@@ -816,12 +813,7 @@ static void ModulePassInit( void )
                 if (ModuleInfo.langtype != LANG_FASTCALL && ModuleInfo.langtype != LANG_VECTORCALL && ModuleInfo.langtype != LANG_REGCALL)
                     ModuleInfo.langtype = LANG_FASTCALL;
             }
-            if (ModuleInfo.langtype == LANG_NONE && Options.output_format == OFORMAT_ELF)
-            {
-                if (ModuleInfo.langtype != LANG_SYSVCALL && ModuleInfo.langtype != LANG_REGCALL)
-                    ModuleInfo.langtype = LANG_SYSVCALL;
-            }
-            if (ModuleInfo.langtype == LANG_NONE && Options.output_format == OFORMAT_MAC)
+            if (ModuleInfo.langtype == LANG_NONE && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC))
             {
                 if (ModuleInfo.langtype != LANG_SYSVCALL && ModuleInfo.langtype != LANG_REGCALL)
                     ModuleInfo.langtype = LANG_SYSVCALL;
@@ -1181,6 +1173,12 @@ static int OnePass( void )
     else if (Options.output_format == OFORMAT_MAC && Options.sub_format == SFORMAT_64BIT )
         platform->value = 4;
 
+	if (Parse_Pass == PASS_1)
+	{
+		struct asym* archSym = SymFind("@Arch");
+		archSym->value = ModuleInfo.arch;
+	}
+
     /* Process our built-in macro library to make it available to the rest of the source */
     if (Parse_Pass == PASS_1 && Options.nomlib == FALSE) 
     {
@@ -1189,12 +1187,16 @@ static int OnePass( void )
         if(platform->value == 0)
     {
             InitAutoMacros32();
+#if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))
+            Addx86defs32();
+            Initx86AutoMacros32();
+#endif
         }
         else
         {
             InitAutoMacros64();
 #if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))
-            Addx86defs();
+            Addx86defs64();
             Initx86AutoMacros64();
 #endif
         }
