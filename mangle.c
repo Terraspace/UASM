@@ -101,7 +101,21 @@ static int RegcallMangler(const struct asym* sym, char* buffer)
 /**************************************************************/
 {
     const struct dsym* dir = (struct dsym*)sym;
-    return(sprintf(buffer, "__regcall4__%s", sym->name, dir->e.procinfo->parasize));
+    switch (Options.regcall_version)
+    {
+        case RGCV_1:
+            return(sprintf(buffer, "__regcall1__%s", sym->name, dir->e.procinfo->parasize));
+        case RGCV_2:
+            return(sprintf(buffer, "__regcall2__%s", sym->name, dir->e.procinfo->parasize));
+        case RGCV_3:
+            return(sprintf(buffer, "__regcall3__%s", sym->name, dir->e.procinfo->parasize));
+        case RGCV_4:
+            return(sprintf(buffer, "__regcall4__%s", sym->name, dir->e.procinfo->parasize));
+        case RGCV_5:
+            return(sprintf(buffer, "__regcall5__%s", sym->name, dir->e.procinfo->parasize));
+        default:
+            return(sprintf(buffer, "__regcall__%s", sym->name, dir->e.procinfo->parasize));
+    }
 }
 
 /* StdcallMangler: add '_' prefix and '@size' suffix to proc names */
