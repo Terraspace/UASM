@@ -1184,20 +1184,20 @@ static int OnePass( void )
     {
         unsigned  alist = ModuleInfo.list;
         ModuleInfo.list = 0;
-        if(platform->value == 0)
-    {
-            InitAutoMacros32();
-#if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))
-            Addx86defs32();
-            Initx86AutoMacros32();
-#endif
-        }
-        else
+        if (platform->value >= 1 && platform->value != 2)
         {
             InitAutoMacros64();
 #if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))
             Addx86defs64();
             Initx86AutoMacros64();
+#endif
+        }
+        else
+        {
+            InitAutoMacros32();
+#if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))
+            Addx86defs32();
+            Initx86AutoMacros32();
 #endif
         }
 

@@ -540,16 +540,6 @@ enum regcall_decoration
     REGCALL_NONE
 };
 
-enum regcall_version
-{
-    RGCV_0,        
-    RGCV_1,     /* 1 */
-    RGCV_2,     /* 2 */
-    RGCV_3,     /* 3 */
-    RGCV_4,     /* 4 */
-    RGCV_5     /* 5 */
-};
-
 struct qitem {
     void *next;
     char value[1];
@@ -711,7 +701,6 @@ struct global_options {
     uint_8      fastcall_decoration;     /* -zr<0|1> option */
     uint_8      vectorcall_decoration;   /* -zv<0|1> option */
     uint_8      regcall_decoration;      /* -ze<0|1> option */
-    uint_8      regcall_version;         /* -ge<0|1|2|3|4|5> option  */
     bool        no_export_decoration;    /* -zze option */
     bool        entry_decorated;         /* -zzs option  */
     bool        write_listing;           /* -Fl option  */
