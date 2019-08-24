@@ -1,0 +1,301 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x86">
+      <Configuration>Debug</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x86">
+      <Configuration>Release</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7ed9331b-15b0-44b8-bc5c-ab83c629878d}</ProjectGuid>
+    <Keyword>Linux</Keyword>
+    <RootNamespace>uasm</RootNamespace>
+    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
+    <ApplicationType>Linux</ApplicationType>
+    <ApplicationTypeRevision>1.0</ApplicationTypeRevision>
+    <TargetLinuxPlatform>Generic</TargetLinuxPlatform>
+    <LinuxProjectType>{D51BCBC9-82E9-4017-911E-C93873C4EA2B}</LinuxProjectType>
+    <ProjectName>uasm</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetExt />
+    <MultiProcNumber>10</MultiProcNumber>
+    <ProjectPublicIncludePath>.;../../H;../H;./H;$(ProjectPublicIncludePath)</ProjectPublicIncludePath>
+    <RemoteCCompileToolExe>clang</RemoteCCompileToolExe>
+    <RemoteCppCompileToolExe>clang++</RemoteCppCompileToolExe>
+    <RemoteLdToolExe>clang++</RemoteLdToolExe>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <TargetExt />
+    <MultiProcNumber>10</MultiProcNumber>
+    <ProjectPublicIncludePath>.;../../H;../H;./H;$(ProjectPublicIncludePath)</ProjectPublicIncludePath>
+    <RemoteCCompileToolExe>clang</RemoteCCompileToolExe>
+    <RemoteCppCompileToolExe>clang++</RemoteCppCompileToolExe>
+    <RemoteLdToolExe>clang++</RemoteLdToolExe>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <TargetExt />
+    <MultiProcNumber>10</MultiProcNumber>
+    <ProjectPublicIncludePath>.;../../H;../H;./H;$(ProjectPublicIncludePath)</ProjectPublicIncludePath>
+    <RemoteCCompileToolExe>clang</RemoteCCompileToolExe>
+    <RemoteCppCompileToolExe>clang++</RemoteCppCompileToolExe>
+    <RemoteLdToolExe>clang++</RemoteLdToolExe>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <TargetExt />
+    <MultiProcNumber>10</MultiProcNumber>
+    <ProjectPublicIncludePath>.;../../H;../H;./H;$(ProjectPublicIncludePath)</ProjectPublicIncludePath>
+    <RemoteCCompileToolExe>clang</RemoteCCompileToolExe>
+    <RemoteCppCompileToolExe>clang++</RemoteCppCompileToolExe>
+    <RemoteLdToolExe>clang++</RemoteLdToolExe>
+  </PropertyGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\apiemu.c" />
+    <ClCompile Include="..\..\assemble.c" />
+    <ClCompile Include="..\..\assume.c" />
+    <ClCompile Include="..\..\atofloat.c" />
+    <ClCompile Include="..\..\backptch.c" />
+    <ClCompile Include="..\..\bin.c" />
+    <ClCompile Include="..\..\branch.c" />
+    <ClCompile Include="..\..\cmdline.c" />
+    <ClCompile Include="..\..\codegen.c" />
+    <ClCompile Include="..\..\codegenv2.c" />
+    <ClCompile Include="..\..\coff.c" />
+    <ClCompile Include="..\..\condasm.c" />
+    <ClCompile Include="..\..\context.c" />
+    <ClCompile Include="..\..\cpumodel.c" />
+    <ClCompile Include="..\..\data.c" />
+    <ClCompile Include="..\..\dbgcv.c" />
+    <ClCompile Include="..\..\directiv.c" />
+    <ClCompile Include="..\..\elf.c" />
+    <ClCompile Include="..\..\end.c" />
+    <ClCompile Include="..\..\equate.c" />
+    <ClCompile Include="..\..\errmsg.c" />
+    <ClCompile Include="..\..\expans.c" />
+    <ClCompile Include="..\..\expreval.c" />
+    <ClCompile Include="..\..\extern.c" />
+    <ClCompile Include="..\..\fastpass.c" />
+    <ClCompile Include="..\..\fixup.c" />
+    <ClCompile Include="..\..\fpfixup.c" />
+    <ClCompile Include="..\..\hll.c" />
+    <ClCompile Include="..\..\input.c" />
+    <ClCompile Include="..\..\invoke.c" />
+    <ClCompile Include="..\..\label.c" />
+    <ClCompile Include="..\..\linnum.c" />
+    <ClCompile Include="..\..\listing.c" />
+    <ClCompile Include="..\..\loop.c" />
+    <ClCompile Include="..\..\lqueue.c" />
+    <ClCompile Include="..\..\ltype.c" />
+    <ClCompile Include="..\..\macho64.c" />
+    <ClCompile Include="..\..\macro.c" />
+    <ClCompile Include="..\..\macrolib.c" />
+    <ClCompile Include="..\..\main.c" />
+    <ClCompile Include="..\..\mangle.c" />
+    <ClCompile Include="..\..\memalloc.c" />
+    <ClCompile Include="..\..\msgtext.c" />
+    <ClCompile Include="..\..\omf.c" />
+    <ClCompile Include="..\..\omffixup.c" />
+    <ClCompile Include="..\..\omfint.c" />
+    <ClCompile Include="..\..\option.c" />
+    <ClCompile Include="..\..\orgfixup.c" />
+    <ClCompile Include="..\..\parser.c" />
+    <ClCompile Include="..\..\posndir.c" />
+    <ClCompile Include="..\..\preproc.c" />
+    <ClCompile Include="..\..\proc.c" />
+    <ClCompile Include="..\..\pseudoFilter.c" />
+    <ClCompile Include="..\..\queue.c" />
+    <ClCompile Include="..\..\reswords.c" />
+    <ClCompile Include="..\..\safeseh.c" />
+    <ClCompile Include="..\..\segment.c" />
+    <ClCompile Include="..\..\simd.c" />
+    <ClCompile Include="..\..\simsegm.c" />
+    <ClCompile Include="..\..\string.c" />
+    <ClCompile Include="..\..\symbols.c" />
+    <ClCompile Include="..\..\tbyte.c" />
+    <ClCompile Include="..\..\tokenize.c" />
+    <ClCompile Include="..\..\trmem.c" />
+    <ClCompile Include="..\..\types.c" />
+    <ClCompile Include="..\..\x86macros.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\.gitignore" />
+    <None Include="..\..\gccmod.inc" />
+    <None Include="..\..\install\Uasm\v142\BuildCustomizations\uasm.props" />
+    <None Include="..\..\install\Uasm\v142\BuildCustomizations\uasm.targets" />
+    <None Include="..\..\msmod.inc" />
+    <None Include="..\..\owmod.inc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\H\assume.h" />
+    <ClInclude Include="..\..\H\atofloat.h" />
+    <ClInclude Include="..\..\H\bin.h" />
+    <ClInclude Include="..\..\H\bool.h" />
+    <ClInclude Include="..\..\H\cmdline.h" />
+    <ClInclude Include="..\..\H\codegen.h" />
+    <ClInclude Include="..\..\H\codegenv2.h" />
+    <ClInclude Include="..\..\H\coff.h" />
+    <ClInclude Include="..\..\H\coffspec.h" />
+    <ClInclude Include="..\..\H\Colors.h" />
+    <ClInclude Include="..\..\H\condasm.h" />
+    <ClInclude Include="..\..\H\context.h" />
+    <ClInclude Include="..\..\H\cpumodel.h" />
+    <ClInclude Include="..\..\H\data.h" />
+    <ClInclude Include="..\..\H\dbgcv.h" />
+    <ClInclude Include="..\..\H\dbgdw.h" />
+    <ClInclude Include="..\..\H\directve.h" />
+    <ClInclude Include="..\..\H\dirtype.h" />
+    <ClInclude Include="..\..\H\elf.h" />
+    <ClInclude Include="..\..\H\elfspec.h" />
+    <ClInclude Include="..\..\H\equate.h" />
+    <ClInclude Include="..\..\H\errmsg.h" />
+    <ClInclude Include="..\..\H\expreval.h" />
+    <ClInclude Include="..\..\H\extern.h" />
+    <ClInclude Include="..\..\H\fastpass.h" />
+    <ClInclude Include="..\..\H\fixup.h" />
+    <ClInclude Include="..\..\H\fpfixup.h" />
+    <ClInclude Include="..\..\H\globals.h" />
+    <ClInclude Include="..\..\H\hll.h" />
+    <ClInclude Include="..\..\H\input.h" />
+    <ClInclude Include="..\..\H\instr64.h" />
+    <ClInclude Include="..\..\H\instravx.h" />
+    <ClInclude Include="..\..\H\InstrTableV2.h" />
+    <ClInclude Include="..\..\H\instruct.h" />
+    <ClInclude Include="..\..\H\inttype.h" />
+    <ClInclude Include="..\..\H\label.h" />
+    <ClInclude Include="..\..\H\linnum.h" />
+    <ClInclude Include="..\..\H\listing.h" />
+    <ClInclude Include="..\..\H\lqueue.h" />
+    <ClInclude Include="..\..\H\ltext.h" />
+    <ClInclude Include="..\..\H\macho64.h" />
+    <ClInclude Include="..\..\H\macho64spec.h" />
+    <ClInclude Include="..\..\H\macro.h" />
+    <ClInclude Include="..\..\H\macrolib.h" />
+    <ClInclude Include="..\..\H\malloc.h" />
+    <ClInclude Include="..\..\H\MemTable32.h" />
+    <ClInclude Include="..\..\H\MemTable64.h" />
+    <ClInclude Include="..\..\H\mangle.h" />
+    <ClInclude Include="..\..\H\memalloc.h" />
+    <ClInclude Include="..\..\H\msgdef.h" />
+    <ClInclude Include="..\..\H\msgtext.h" />
+    <ClInclude Include="..\..\H\myassert.h" />
+    <ClInclude Include="..\..\H\omf.h" />
+    <ClInclude Include="..\..\H\omfint.h" />
+    <ClInclude Include="..\..\H\omfspec.h" />
+    <ClInclude Include="..\..\H\operands.h" />
+    <ClInclude Include="..\..\H\opndcls.h" />
+    <ClInclude Include="..\..\H\orgfixup.h" />
+    <ClInclude Include="..\..\H\parser.h" />
+    <ClInclude Include="..\..\H\pespec.h" />
+    <ClInclude Include="..\..\H\posndir.h" />
+    <ClInclude Include="..\..\H\preproc.h" />
+    <ClInclude Include="..\..\H\proc.h" />
+    <ClInclude Include="..\..\H\pseudoFilter.h" />
+    <ClInclude Include="..\..\H\queue.h" />
+    <ClInclude Include="..\..\H\reswords.h" />
+    <ClInclude Include="..\..\H\segattr.h" />
+    <ClInclude Include="..\..\H\segment.h" />
+    <ClInclude Include="..\..\H\simd.h" />
+    <ClInclude Include="..\..\H\special.h" />
+    <ClInclude Include="..\..\H\symbols.h" />
+    <ClInclude Include="..\..\H\tbyte.h" />
+    <ClInclude Include="..\..\H\token.h" />
+    <ClInclude Include="..\..\H\tokenize.h" />
+    <ClInclude Include="..\..\H\trmem.h" />
+    <ClInclude Include="..\..\H\types.h" />
+    <ClInclude Include="..\..\H\unaryop.h" />
+    <ClInclude Include="..\..\H\usage.h" />
+    <ClInclude Include="..\..\H\usage2.h" />
+    <ClInclude Include="..\..\H\win32.h" />
+    <ClInclude Include="..\..\H\win64seh.h" />
+    <ClInclude Include="..\..\H\winconsole.h" />
+    <ClInclude Include="..\..\H\x86macros.h" />
+    <ClInclude Include="..\..\resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\..\install\Uasm\v142\BuildCustomizations\uasm.xml" />
+  </ItemGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>DEBUG_OUT;X86MACROLIB=1;__UNIX__;__LINUX__;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ShowIncludes>true</ShowIncludes>
+      <AdditionalOptions>-g -O0 -std=c11 -march=broadwell -target x86_64-unknown-linux-gnu</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <OmitFramePointers>false</OmitFramePointers>
+    </ClCompile>
+    <Link />
+    <RemotePostBuildEvent>
+      <Command>\cp /root/projects/uasm/bin/x64/Release/uasm.out /usr/bin/uasm</Command>
+    </RemotePostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <ClCompile>
+      <PreprocessorDefinitions>DEBUG_OUT;X86MACROLIB=1;__UNIX__;__LINUX__;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ShowIncludes>true</ShowIncludes>
+      <AdditionalOptions>-g -O0 -std=c11 -march=broadwell -target x86_64-unknown-linux-gnu</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <OmitFramePointers>false</OmitFramePointers>
+    </ClCompile>
+    <Link />
+    <RemotePostBuildEvent>
+      <Command>\cp /root/projects/uasm/bin/x64/Release/uasm.out /usr/bin/uasm</Command>
+    </RemotePostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>DEBUG_OUT;X86MACROLIB=1;__UNIX__;__LINUX__;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ShowIncludes>true</ShowIncludes>
+      <AdditionalOptions>-g -O0 -std=c11 -march=broadwell -target x86_64-unknown-linux-gnu</AdditionalOptions>
+    </ClCompile>
+    <Link />
+    <RemotePostBuildEvent>
+      <Command>\cp /root/projects/uasm/bin/x64/Debug/uasm.out /usr/bin/uasm</Command>
+    </RemotePostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <ClCompile>
+      <PreprocessorDefinitions>DEBUG_OUT;X86MACROLIB=1;__UNIX__;__LINUX__;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ShowIncludes>true</ShowIncludes>
+      <AdditionalOptions>-g -O0 -std=c11 -march=broadwell -target x86_64-unknown-linux-gnu</AdditionalOptions>
+    </ClCompile>
+    <Link />
+    <RemotePostBuildEvent>
+      <Command>\cp /root/projects/uasm/bin/x64/Debug/uasm.out /usr/bin/uasm</Command>
+    </RemotePostBuildEvent>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

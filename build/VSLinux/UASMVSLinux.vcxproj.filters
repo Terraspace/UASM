@@ -487,11 +487,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\..\UASM.rc">
-      <Filter>Resources</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
     <Xml Include="..\..\install\Uasm\v142\BuildCustomizations\uasm.xml">
       <Filter>BuildCustomizations</Filter>
     </Xml>

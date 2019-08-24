@@ -129,7 +129,6 @@
     <ClInclude Include="..\..\H\instravx.h" />
     <ClInclude Include="..\..\H\InstrTableV2.h" />
     <ClInclude Include="..\..\H\instruct.h" />
-    <ClInclude Include="..\..\H\intrin.h" />
     <ClInclude Include="..\..\H\inttype.h" />
     <ClInclude Include="..\..\H\label.h" />
     <ClInclude Include="..\..\H\linnum.h" />

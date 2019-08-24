@@ -170,7 +170,7 @@ struct regcall_conv {
 #endif
 
 #if SYSV_SUPPORT
-	static  int sysv_reg          ( unsigned int );
+	static  int sysv_reg          ( struct dsym const *, unsigned int );
 	static  int sysv_fcstart      ( struct dsym const *, int, int, struct asm_tok[], int * );
 	static void sysv_fcend        ( struct dsym const *, int, int );
 	static  int sysv_param        ( struct dsym const *, int, struct dsym *, bool, struct expr *, char *, uint_8 * );
@@ -2199,7 +2199,7 @@ static void sysv_fcend(struct dsym const *proc, int numparams, int value)
 
 // add dsym struct param for implementation propagation
 /* Return a 0-7 index for any SystemV call reserved register */
-static int sysv_reg(struct dsym const* proc, unsigned int reg )
+static int sysv_reg(struct dsym const* proc, unsigned int reg)
 {
 	int i;
 	int base = -1;

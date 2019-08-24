@@ -258,7 +258,7 @@ struct delphicall_conv {
 	void(*handlereturn)(struct dsym *, char *buffer);
 };
 
-static  int ms32_pcheck(struct dsym *, struct dsym *, int *);
+static  int ms32_pcheck(struct dsym *, struct dsym *, int *, int*);
 static void ms32_return(struct dsym *, char *);
 
 #if OWFC_SUPPORT
@@ -987,7 +987,7 @@ static void delphi_return(struct dsym *proc, char *buffer)
 * [esp+16] for param 2,... The parameter names refer to those stack
 * locations, not to the register names.
 */
-static int ms64_pcheck(struct dsym *proc, struct dsym *paranode, int *used)
+static int ms64_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int* vecused)
 /***************************************************************************/
 {
 	/* since the parameter names refer the stack-backup locations,
