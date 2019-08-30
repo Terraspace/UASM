@@ -135,9 +135,9 @@ static const enum special_token ms64_regs32[] = { T_ECX, T_EDX, T_R8D, T_R9D };
 static const enum special_token ms64_regs16[] = { T_CX, T_DX, T_R8W, T_R9W };
 static const enum special_token ms64_regs8[] = { T_CL, T_DL, T_R8B, T_R9B };
 static const enum special_token ms64_regsXMM[] = { T_XMM0, T_XMM1, T_XMM2, T_XMM3 };
-/*
-static const enum special_token ms64_regsYMM[] = { T_YMM0, T_YMM1, T_YMM2, T_YMM3 };
+/*static const enum special_token ms64_regsYMM[] = { T_YMM0, T_YMM1, T_YMM2, T_YMM3 };
 static const enum special_token ms64_regsZMM[] = { T_ZMM0, T_ZMM1, T_ZMM2, T_ZMM3 };*/
+
 static const enum special_token vectorcallms64_regsXMM[] = { T_XMM0, T_XMM1, T_XMM2, T_XMM3, T_XMM4, T_XMM5 };
 static const enum special_token vectorcallms64_regsYMM[] = { T_YMM0, T_YMM1, T_YMM2, T_YMM3, T_YMM4, T_YMM5 };
 static const enum special_token vectorcallms64_regsZMM[] = { T_ZMM0, T_ZMM1, T_ZMM2, T_ZMM3, T_ZMM4, T_ZMM5 };
@@ -6291,13 +6291,13 @@ static ret_code write_default_prologue(void)
 
 	if (ModuleInfo.Ofssize == USE64)
 	{
-		if (ModuleInfo.basereg[USE64] == T_RSP)
+		if (ModuleInfo.basereg[USE64] == T_RSP && Options.output_format == OFORMAT_COFF)
 			write_win64_default_prologue_RSP(info);
-		else if ((ModuleInfo.basereg[USE64] == T_RBP) && (CurrProc->sym.langtype == LANG_FASTCALL || CurrProc->sym.langtype == LANG_VECTORCALL || (CurrProc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF)) && info->isframe)
+		else if (ModuleInfo.basereg[USE64] == T_RBP && Options.output_format == OFORMAT_COFF && info->isframe)
 			write_win64_default_prologue_RBP(info);
-		else if ((ModuleInfo.basereg[USE64] == T_RBP) && (CurrProc->sym.langtype == LANG_FASTCALL || CurrProc->sym.langtype == LANG_VECTORCALL || (CurrProc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF)))
+		else if (ModuleInfo.basereg[USE64] == T_RBP && Options.output_format == OFORMAT_COFF)
 			write_generic_prologue(info);
-		else if ((ModuleInfo.basereg[USE64] == T_RBP) && CurrProc->sym.langtype == LANG_SYSVCALL || (CurrProc->sym.langtype == LANG_REGCALL && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC)))
+		else if (ModuleInfo.basereg[USE64] == T_RBP && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC))
 			write_sysv_default_prologue_RBP(info);
 
 		/* v2.11: line queue is now run here */
@@ -6729,13 +6729,13 @@ static void write_default_epilogue(void)
 
 	if (ModuleInfo.Ofssize == USE64)
 	{
-		if (ModuleInfo.basereg[USE64] == T_RSP && (CurrProc->sym.langtype == LANG_FASTCALL || CurrProc->sym.langtype == LANG_VECTORCALL || (CurrProc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF)))
+		if (ModuleInfo.basereg[USE64] == T_RSP && Options.output_format == OFORMAT_COFF)
 			write_win64_default_epilogue_RSP(info);
-		else if (ModuleInfo.basereg[USE64] == T_RBP && (CurrProc->sym.langtype == LANG_FASTCALL || CurrProc->sym.langtype == LANG_VECTORCALL || (CurrProc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF)) && info->isframe)
+		else if (ModuleInfo.basereg[USE64] == T_RBP && Options.output_format == OFORMAT_COFF && info->isframe)
 			write_win64_default_epilogue_RBP(info); /* UASM win64:N style epilogue */
-		else if (ModuleInfo.basereg[USE64] == T_RBP && (CurrProc->sym.langtype == LANG_FASTCALL || CurrProc->sym.langtype == LANG_VECTORCALL || (CurrProc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF)))
+		else if (ModuleInfo.basereg[USE64] == T_RBP && Options.output_format == OFORMAT_COFF)
 			write_generic_epilogue(info);
-		else if (ModuleInfo.basereg[USE64] == T_RBP && (CurrProc->sym.langtype == LANG_SYSVCALL || (CurrProc->sym.langtype == LANG_REGCALL && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC))))
+		else if (ModuleInfo.basereg[USE64] == T_RBP && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC))
 			write_sysv_default_epilogue_RBP(info);
 	}
 	else

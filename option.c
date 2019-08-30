@@ -1088,19 +1088,21 @@ OPTFUNC(SetWin64)
   {
       if (ModuleInfo.sub_format != SFORMAT_64BIT)
           ModuleInfo.sub_format = SFORMAT_64BIT;
-      if (Options.langtype != LANG_FASTCALL && Options.langtype != LANG_VECTORCALL && Options.langtype != LANG_SYSVCALL && Options.langtype != LANG_REGCALL)
+      if (Options.output_format == OFORMAT_COFF && Options.langtype != LANG_FASTCALL && Options.langtype != LANG_VECTORCALL && Options.langtype != LANG_REGCALL)
       {
-          if (Options.output_format == OFORMAT_COFF)
-              Options.langtype = LANG_FASTCALL;
-          else if (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC)
-              Options.langtype = LANG_SYSVCALL;
+          Options.langtype = LANG_FASTCALL;
       }
-      if (ModuleInfo.langtype != LANG_FASTCALL && ModuleInfo.langtype != LANG_VECTORCALL && ModuleInfo.langtype != LANG_SYSVCALL && ModuleInfo.langtype != LANG_REGCALL)
+      else if ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.langtype != LANG_SYSVCALL && Options.langtype != LANG_REGCALL)
       {
-          if (Options.output_format == OFORMAT_COFF)
-              ModuleInfo.langtype = LANG_FASTCALL;
-          else if (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC)
-              ModuleInfo.langtype = LANG_SYSVCALL;
+          Options.langtype = LANG_SYSVCALL;
+      }
+      if (Options.output_format == OFORMAT_COFF && ModuleInfo.langtype != LANG_FASTCALL && ModuleInfo.langtype != LANG_VECTORCALL && ModuleInfo.langtype != LANG_REGCALL)
+      {
+          ModuleInfo.langtype = LANG_FASTCALL;
+      }
+      else if ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && ModuleInfo.langtype != LANG_SYSVCALL && ModuleInfo.langtype != LANG_REGCALL)
+      {
+          ModuleInfo.langtype = LANG_SYSVCALL;
       }
       if (Options.model == MODEL_NONE)
           Options.model = MODEL_FLAT;

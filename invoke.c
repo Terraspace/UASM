@@ -5385,7 +5385,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	lastret->value = info->ret_type;
 
 	// Reset SYSTEMV pass values.
-	if (proc->sym.langtype == LANG_SYSVCALL || (proc->sym.langtype == LANG_REGCALL && ((Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_64BIT) || Options.output_format == OFORMAT_MAC) && (Options.sub_format == SFORMAT_64BIT)))
+	if (proc->sym.langtype == LANG_SYSVCALL || (proc->sym.langtype == LANG_REGCALL && ((Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_64BIT) || Options.output_format == OFORMAT_MAC)))
 	{
 		// For SYSV calls, we use vecused to track used xmm registers for overwrite so reset it each pass.
 		info->vecused = 0;

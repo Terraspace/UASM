@@ -524,7 +524,7 @@ static void OPTQUAL Set_ofmt( void )
 {
     Options.output_format = OptValue & 0xff;
     Options.sub_format = OptValue >> 8;
-	if ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT && Options.langtype != LANG_SYSVCALL && Options.langtype != LANG_REGCALL)
+	if ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)
 	{
 		if (Options.langtype != LANG_SYSVCALL && Options.langtype != LANG_REGCALL)
 			Options.langtype = LANG_SYSVCALL;

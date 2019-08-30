@@ -808,14 +808,12 @@ static void ModulePassInit( void )
              * there's no other model than FLAT possible.
              */
             model = MODEL_FLAT;
-            if (ModuleInfo.langtype == LANG_NONE && Options.output_format == OFORMAT_COFF)
+            if (ModuleInfo.langtype != LANG_FASTCALL && ModuleInfo.langtype != LANG_VECTORCALL && ModuleInfo.langtype != LANG_REGCALL && Options.output_format == OFORMAT_COFF)
             {
-                if (ModuleInfo.langtype != LANG_FASTCALL && ModuleInfo.langtype != LANG_VECTORCALL && ModuleInfo.langtype != LANG_REGCALL)
                     ModuleInfo.langtype = LANG_FASTCALL;
             }
-            if (ModuleInfo.langtype == LANG_NONE && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC))
+            if ((ModuleInfo.langtype != LANG_SYSVCALL && ModuleInfo.langtype != LANG_REGCALL) && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC))
             {
-                if (ModuleInfo.langtype != LANG_SYSVCALL && ModuleInfo.langtype != LANG_REGCALL)
                     ModuleInfo.langtype = LANG_SYSVCALL;
             }
 

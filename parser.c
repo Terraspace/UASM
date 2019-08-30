@@ -3148,12 +3148,13 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 		ModuleInfo.Ofssize = USE64;
 		ModuleInfo.wordsize = 8;
 		ModuleInfo.defOfssize = USE64;
-        if (ModuleInfo.langtype != LANG_FASTCALL && ModuleInfo.langtype != LANG_VECTORCALL && ModuleInfo.langtype != LANG_SYSVCALL && ModuleInfo.langtype != LANG_REGCALL)
+        if (Options.output_format == OFORMAT_COFF && ModuleInfo.langtype != LANG_FASTCALL && ModuleInfo.langtype != LANG_VECTORCALL && ModuleInfo.langtype != LANG_REGCALL)
         {
-            if (Options.output_format == OFORMAT_COFF)
-                ModuleInfo.langtype = LANG_FASTCALL;
-            else if (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC)
-                ModuleInfo.langtype = LANG_SYSVCALL;
+            ModuleInfo.langtype = LANG_FASTCALL;
+        }
+        else if ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && ModuleInfo.langtype != LANG_SYSVCALL && ModuleInfo.langtype != LANG_REGCALL)
+        {
+            ModuleInfo.langtype = LANG_SYSVCALL;
         }
 		if (ModuleInfo.sub_format != SFORMAT_64BIT)
 			ModuleInfo.sub_format = SFORMAT_NONE;
