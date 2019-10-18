@@ -3220,6 +3220,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 	char c2;
 	size_t finallen;
 	uint_16 buff[256];
+	uint_8  buff2[256];
 
 	DebugMsg1(("PushInvokeParam(%s, param=%s:%u, i=%u ) enter\n", proc->sym.name, curr ? curr->sym.name : "NULL", reqParam, i));
 
@@ -3334,7 +3335,38 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				sprintf(buf, "%s%d", labelstr, hashpjw(pSrc));
 				lbl = SymLookup(buf);
 				memset(&buff, 0, 256);
-				j = UTF8toWideChar(pSrc, slen, NULL, (unsigned short *)&buff, slen);
+
+				pDest = buff2;
+				finallen = slen;
+
+				while (*pSrc != '"')
+				{
+					c1 = *pSrc++;
+					c2 = *(pSrc);
+					if (c1 == '\\' && c2 == 'n')
+					{
+						*pDest++ = 10;
+						finallen--;
+						pSrc++;
+					}
+					else if (c1 == '\\' && c2 == 'r')
+					{
+						*pDest++ = 13;
+						finallen--;
+						pSrc++;
+					}
+					else if (c1 == '\\' && c2 == 't')
+					{
+						*pDest++ = 9;
+						finallen--;
+						pSrc++;
+					}
+					else
+						*pDest++ = c1;
+				}
+				*pDest++ = 0;
+
+				j = UTF8toWideChar(&buff2, slen, NULL, (unsigned short *)&buff, slen);
 				/* j contains a proper number of wide chars, it can be different than slen, v2.38 */
 				SetSymSegOfs(lbl);
 				OutputBytes((unsigned char *)&buff, (j * 2) + 2, NULL);

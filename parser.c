@@ -3640,6 +3640,13 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 		}
 	}
 
+	/* This is a fix for use of memory size after [], v2.50 */
+	/*if (opndx[0].mem_type != MT_EMPTY)
+		CodeInfo.mem_type = opndx[0].mem_type;
+	else if (opndx[1].mem_type != MT_EMPTY)
+		CodeInfo.mem_type = opndx[1].mem_type;
+		*/
+
 	/* ********************************************************* */
 	/* Make copy of Code Generation structures for V2 CodeGen.   */
 	/* ********************************************************* */

@@ -279,6 +279,7 @@ struct asym {
 	};
 	bool isClass;
 	bool isCOM;
+	bool isPtrTable;
 	struct asym* procptr;
 };
 
