@@ -1648,7 +1648,7 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 		if (!IsValidInCPUMode(matchedInstr))
 		{
 			EmitError(INSTRUCTION_OR_REGISTER_NOT_ACCEPTED_IN_CURRENT_CPU_MODE);
-			return;
+			return ERROR;
 		}
 
 		//----------------------------------------------------------
@@ -1763,7 +1763,7 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 				else if (ModuleInfo.Ofssize == USE64 && ((matchedInstr->flags & ALLOW_SEGX) == 0))
 				{
 					EmitError(ILLEGAL_USE_OF_SEGMENT_REGISTER);
-					return;
+					return ERROR;
 				}
 				else
 				{
@@ -1793,7 +1793,7 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 			else
 			{
 				EmitError(ILLEGAL_USE_OF_SEGMENT_REGISTER);
-				return;
+				return ERROR;
 			}
 		}
 
