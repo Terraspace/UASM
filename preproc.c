@@ -254,8 +254,15 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 							type = (struct dsym*)sym->sym.type->target_type;
 							firstDeRefIdx = i - 2; /* pointer->item */
 						}
+						else if (sym && sym->sym.type && sym->sym.type->target_type && sym->sym.type->target_type > 0x200000 && sym->sym.type->target_type->isPtrTable)
+						{
+							foundType = TRUE;
+							pType = tokenarray[i - 1].string_ptr;
+							type = (struct dsym*)sym->sym.type->target_type;
+							firstDeRefIdx = 0; /* pointer->item */
+						}
 						/* Indirect register using .TYPE */
-						else if (sym && sym->sym.isClass)
+						else if (sym && (sym->sym.isClass || sym->sym.isPtrTable))
 						{
 							gotCloseSqr = TRUE;
 							gotOpenSqr = FALSE;
@@ -274,7 +281,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 								EmitError(INVALID_POINTER);
 							// The tokens between opSqIdx and clSqIdx make up the indirect address.
 							// -> the first register(base) must be assumed to an object pointer.
-							if (sym && sym->sym.isClass)
+							if (sym && (sym->sym.isClass || sym->sym.isPtrTable))
 							{
 								foundType = TRUE;
 								pType = indirectAddr;
@@ -463,17 +470,37 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 
 				if (foundProc)
 				{
-					for (j = 0; j <= firstDeRefIdx; j++)
+					if (!type->sym.isPtrTable)
 					{
-						pStr = strcpy(pStr, " ") + 1;
-						strcpy(pStr, tokenarray[j].string_ptr);
-						pStr += strlen(tokenarray[j].string_ptr);
-						pStr = strcpy(pStr, " ") + 1;
+						for (j = 0; j <= firstDeRefIdx; j++)
+						{
+							pStr = strcpy(pStr, " ") + 1;
+							strcpy(pStr, tokenarray[j].string_ptr);
+							pStr += strlen(tokenarray[j].string_ptr);
+							pStr = strcpy(pStr, " ") + 1;
+						}
 					}
 					if (inExpr || inParam)
 						pStr = strcpy(pStr, "_DEREFI(") + 8;
-					else
+					else if (!type->sym.isPtrTable)
 						pStr = strcpy(pStr, "_DEREF ") + 7;
+					else if (type->sym.isPtrTable)
+					{
+						if (tokenarray[i - 3].token == T_CL_SQ_BRACKET)
+						{
+							pStr = strcpy(pStr, "_DEREFRR ") + 9;
+							strcpy(pStr, pType);
+							pStr += strlen(pType);
+							pStr = strcpy(pStr, ",") + 1;
+						}
+						else
+						{
+							pStr = strcpy(pStr, "_DEREFR ") + 8;
+							strcpy(pStr, tokenarray[i - 1].string_ptr);
+							pStr += strlen(tokenarray[i - 1].string_ptr);
+							pStr = strcpy(pStr, ",") + 1;
+						}
+					}
 					strcpy(pStr, type->sym.name);
 					pStr += strlen(type->sym.name);
 					pStr = strcpy(pStr, ",") + 1;
@@ -481,17 +508,20 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 					pStr += strlen(pMethodStr);
 					pStr = strcpy(pStr, ",") + 1;
 
-					sprintf(pcs, "%d", paramCount - 1); //-1 due to thisPtr implicit
+					if(type->sym.isPtrTable)
+						sprintf(pcs, "%d", paramCount); // no -1, these are raw functions
+					else
+						sprintf(pcs, "%d", paramCount - 1); //-1 due to thisPtr implicit
 					strcpy(pStr, pcs);
 					pStr += strlen(pcs);
 
 					pStr = strcpy(pStr, ",") + 1;
 
-					if (paramCount - 1 == 0) // For no argument case, put a dummy 0 in to be filtered out by deref
+					if ((paramCount - 1) == 0 && !type->sym.isPtrTable) // For no argument case, put a dummy 0 in to be filtered out by deref
 					{
 						pStr = strcpy(pStr, "0") + 1;
 					}
-					else
+					else if(!type->sym.isPtrTable)
 						pStr = strcpy(pStr, "0,") + 2;
 
 					for (j = opIdx + 1; j < clIdx; j++)
@@ -506,14 +536,17 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 								pStr = strcpy(pStr, " ") + 1;
 						}
 					}
-					pStr = strcpy(pStr, ",") + 1;
+
+					if(!type->sym.isPtrTable)
+						pStr = strcpy(pStr, ",") + 1;
+
 					if (derefCount > 0)
 					{
 						strcpy(pStr, refStr);
 						pStr += strlen(refStr);
 						pStr = strcpy(pStr, ",") + 1;
 					}
-					if (derefCount == 0)
+					if (derefCount == 0 && !type->sym.isPtrTable)
 					{
 						strcpy(pStr, pType);
 						pStr += strlen(pType);
@@ -521,7 +554,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 						strcpy(pStr, type->sym.name);
 						pStr += strlen(type->sym.name);
 					}
-					else
+					else if(!type->sym.isPtrTable)
 					{
 						pStr = strcpy(pStr, "rcx,") + 4;
 						strcpy(pStr, pType);

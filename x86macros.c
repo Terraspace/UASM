@@ -3209,7 +3209,7 @@ void Addx86defs64()
     AddLineQueue("I32_0 EQU 0x00000000");
     AddLineQueue("I32_1 EQU 0x00000001");
     AddLineQueue("I32_NEG0 EQU 0x80000000");
-    AddLineQueue("I32_meg1 EQU 0xffffffff");
+    AddLineQueue("I32_NEG1 EQU 0xffffffff");
     /*qword*/
     AddLineQueue("MM_SIZE EQU 8");
     AddLineQueue("M64_SIZE EQU 8");
@@ -7937,7 +7937,7 @@ void Addx86defs32()
     AddLineQueue("I32_0 EQU 0x00000000");
     AddLineQueue("I32_1 EQU 0x00000001");
     AddLineQueue("I32_NEG0 EQU 0x80000000");
-    AddLineQueue("I32_meg1 EQU 0xffffffff");
+    AddLineQueue("I32_NEG1 EQU 0xffffffff");
     /*qword*/
     AddLineQueue("MM_SIZE EQU 8");
     AddLineQueue("M64_SIZE EQU 8");

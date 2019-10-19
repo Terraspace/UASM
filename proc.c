@@ -224,7 +224,7 @@ static const int regcallunix64_maxreg[] = {
 
 
 struct fastcall_conv {
-	int(*paramcheck)(struct dsym *, struct dsym *, int *);
+	int(*paramcheck)(struct dsym *, struct dsym *, int *, int*);
 	void(*handlereturn)(struct dsym *, char *buffer);
 };
 
@@ -234,7 +234,7 @@ struct thiscall_conv {
 };
 
 struct vectorcall_conv {
-	int(*paramcheck)(struct dsym *, struct dsym *, int *);
+	int(*paramcheck)(struct dsym *, struct dsym *, int *, int*);
 	void(*handlereturn)(struct dsym *, char *buffer);
 };
 
@@ -1555,10 +1555,10 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 			paranode->sym.is_ptr = ti.is_ptr;
 			paranode->sym.ptr_memtype = ti.ptr_memtype;
 			paranode->sym.is_vararg = is_vararg;
-			if (proc->sym.langtype == LANG_FASTCALL && fastcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint))
+			if (proc->sym.langtype == LANG_FASTCALL && fastcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint))
 			{
 			}
-			else if (proc->sym.langtype == LANG_VECTORCALL && vectorcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint))
+			else if (proc->sym.langtype == LANG_VECTORCALL && vectorcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint))
 			{
 			}
 			else if (proc->sym.langtype == LANG_SYSVCALL && sysvcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint))
