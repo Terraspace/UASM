@@ -1522,7 +1522,7 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 	} immValue;
 
 	/* Fix for byte sized immediate converted to OP_I16 */
-	if (CodeInfo->opnd[OPND2].type == OP_I16 || CodeInfo->opnd[OPND2].type == OP_I8) {
+	/*if (CodeInfo->opnd[OPND2].type == OP_I16 || CodeInfo->opnd[OPND2].type == OP_I8) {
 		if ((CodeInfo->opnd[OPND2].data32l <= UCHAR_MAX) && (CodeInfo->opnd[OPND2].data32l >= -255)) {
 			if (CodeInfo->opnd[OPND1].type == OP_M || CodeInfo->opnd[OPND1].type == OP_M08) {
 				CodeInfo->opnd[OPND1].type = OP_M08;
@@ -1540,7 +1540,7 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 				}
 			}
 		}
-	}
+	}*/
 
 	/* Determine which Memory Encoding Format Table to Use. */
 	if (CodeInfo->Ofssize == USE64)
