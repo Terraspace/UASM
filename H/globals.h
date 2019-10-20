@@ -923,14 +923,14 @@ struct format_options {
 /* global variables */
 
 /* global strings for arch:sse/avx instructions to use */
-extern char *MOVE_ALIGNED_FLOAT;
-extern char *MOVE_ALIGNED_INT;
-extern char *MOVE_UNALIGNED_FLOAT;
-extern char *MOVE_UNALIGNED_INT;
-extern char *MOVE_SINGLE;
-extern char *MOVE_DOUBLE;
-extern char *MOVE_SIMD_DWORD;
-extern char *MOVE_SIMD_QWORD;
+extern const char* MOVE_ALIGNED_FLOAT();
+extern const char* MOVE_ALIGNED_INT();
+extern const char* MOVE_UNALIGNED_FLOAT();
+extern const char* MOVE_UNALIGNED_INT();
+extern const char* MOVE_SINGLE();
+extern const char* MOVE_DOUBLE();
+extern const char* MOVE_SIMD_DWORD();
+extern const char* MOVE_SIMD_QWORD();
 
 /* global flag to indicate when inside macro body */
 extern bool inMacroBody;

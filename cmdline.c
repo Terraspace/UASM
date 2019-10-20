@@ -383,29 +383,13 @@ static void OPTQUAL Set_Cx( void ) { Options.case_sensitive = FALSE;  Options.co
 static void OPTQUAL Set_SSE(void) 
 { 
 	ModuleInfo.arch = ARCH_SSE; 
-	MODULEARCH = ARCH_SSE; 
-	strcpy(MOVE_ALIGNED_FLOAT, "movaps");
-	strcpy(MOVE_ALIGNED_INT, "movdqa");
-	strcpy(MOVE_UNALIGNED_FLOAT, "movups");
-	strcpy(MOVE_UNALIGNED_INT, "movdqu");
-	strcpy(MOVE_SINGLE, "movss");
-	strcpy(MOVE_DOUBLE, "movsd");
-	strcpy(MOVE_SIMD_DWORD, "movd");
-	strcpy(MOVE_SIMD_QWORD, "movq");
+	MODULEARCH = ARCH_SSE; 	
 }
 
 static void OPTQUAL Set_AVX(void) 
 { 
 	ModuleInfo.arch = ARCH_AVX; 
 	MODULEARCH = ARCH_AVX;
-	strcpy(MOVE_ALIGNED_FLOAT, "vmovaps");
-	strcpy(MOVE_ALIGNED_INT, "vmovdqa");
-	strcpy(MOVE_UNALIGNED_FLOAT, "vmovups");
-	strcpy(MOVE_UNALIGNED_INT, "vmovdqu");
-	strcpy(MOVE_SINGLE, "vmovss");
-	strcpy(MOVE_DOUBLE, "vmovsd");
-	strcpy(MOVE_SIMD_DWORD, "vmovd");
-	strcpy(MOVE_SIMD_QWORD, "vmovq");
 }
 
 static void OPTQUAL Set_NOMLIB(void)
