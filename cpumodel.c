@@ -151,9 +151,10 @@ void SetModel( void )
          */
         if ( ( ModuleInfo.curr_cpu & P_CPU_MASK ) == P_64 )
             if ( ModuleInfo.langtype == LANG_FASTCALL || ModuleInfo.langtype == LANG_VECTORCALL || ModuleInfo.langtype == LANG_REGCALL || ModuleInfo.langtype == LANG_SYSVCALL) {
-                if (ModuleInfo.sub_format == SFORMAT_64BIT) {
+                if (ModuleInfo.sub_format == SFORMAT_64BIT && (Options.output_format == OFORMAT_COFF || Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC)) {
                     DebugMsg(("SetModel: FASTCALL type set to WIN64\n"));
                     ModuleInfo.fctype = FCT_WIN64;
+                    Options.fctype = FCT_WIN64;
                 }
             }
 #else

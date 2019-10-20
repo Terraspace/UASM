@@ -58,6 +58,8 @@ enum op_type {
 	R16_CX,
 	R32_ECX,
 	R64_RCX,
+	/* Special DX only register */
+	R16_DX,
 	/* 8 - 64bit sized general purpose registers (64bit mode only) --> EXCLUDING high byte access (AH,BH,CH,DH) and SIL,DIL,BPL,SPL */
 	R8E,
 	R16E,

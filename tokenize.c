@@ -1287,7 +1287,7 @@ int Tokenize( char *line, unsigned int start, struct asm_tok tokenarray[], unsig
               goto nobcst;
             }
           }
-          else if (*p.input == 'v' || *p.input == 'V') {
+		  else if (*p.input == 'v' || *p.input == 'V') {
             /* Implement ml64 BCST for broadcast */
             for (p1 = p.input; *p1 != 0; p1++) {     /* start from the beginning of string */
               if (*p1 == ';')

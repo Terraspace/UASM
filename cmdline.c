@@ -386,7 +386,7 @@ static void OPTQUAL Set_Cx( void ) { Options.case_sensitive = FALSE;  Options.co
 static void OPTQUAL Set_SSE(void) 
 { 
 	ModuleInfo.arch = ARCH_SSE; 
-	MODULEARCH = ARCH_SSE; 
+	MODULEARCH = ARCH_SSE; 	
 }
 
 static void OPTQUAL Set_AVX(void) 
@@ -508,15 +508,15 @@ static void OPTQUAL Set_ofmt( void )
 {
     Options.output_format = OptValue & 0xff;
     Options.sub_format = OptValue >> 8;
-	if ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)
-	{
-		if (Options.langtype != LANG_SYSVCALL && Options.langtype != LANG_REGCALL)
-			Options.langtype = LANG_SYSVCALL;
-		if (ModuleInfo.fctype != FCT_WIN64)
-			ModuleInfo.fctype = FCT_WIN64; /* sys proc/invoke tables use same ordinal as FCTWIN64 */
+    if ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)
+    {
+        if (Options.langtype != LANG_REGCALL)
+            Options.langtype = LANG_SYSVCALL;
+        ModuleInfo.fctype = FCT_WIN64; /* sys proc/invoke tables use same ordinal as FCTWIN64 */
+        Options.fctype = FCT_WIN64; /* sys proc/invoke tables use same ordinal as FCTWIN64 */
+        if (Options.langtype == LANG_SYSVCALL || Options.langtype == LANG_REGCALL)
+            ModuleInfo.frame_auto = 1;
     }
-    if ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT && (Options.langtype == LANG_SYSVCALL || Options.langtype == LANG_REGCALL) && ModuleInfo.frame_auto != 1)
-        ModuleInfo.frame_auto = 1;
 }
 
 static void OPTQUAL Set_zcm( void ) { Options.no_cdecl_decoration = FALSE; }

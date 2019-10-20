@@ -705,12 +705,6 @@
         DisplayName="Use Pascal Calling Convention (/Gc)"
         Switch="-Gc" />
     </EnumProperty>
-	
-    <StringProperty
-      Name="CommandLineTemplate"
-      DisplayName="Command Line"
-      Visible="False"
-      IncludeInCommandLine="False" />
 
     <DynamicEnumProperty
      Name="UASMBeforeTargets"
@@ -779,6 +773,11 @@
         <sys:String>Additional Options</sys:String>
       </StringProperty.Description>
     </StringProperty>
+      <StringProperty
+        Name="CommandLineTemplate"
+        DisplayName="Command Line"
+        Visible="False"
+        IncludeInCommandLine="False" />
   </Rule>
   <ItemType
     Name="UASM"

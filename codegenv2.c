@@ -97,13 +97,13 @@ uint_32 GenerateInstrHash(struct Instr_Def* pInstruction)
 	*(pDst + 4) = pInstruction->operand_types[4];
 	len += 4;
 	pDst += 4;
-	return hash(hashBuffer, len);
+	return hash(&hashBuffer, len);
 }
 
 void BuildInstructionTable(void)
 {
 	uint_32 hash = 0;
-	struct Instr_Def* pInstrTbl = InstrTableV2;
+	struct Instr_Def* pInstrTbl = &InstrTableV2;
 	uint_32 i = 0;
 	uint_32 instrCount = sizeof(InstrTableV2) / sizeof(struct Instr_Def);
 
@@ -1531,21 +1531,26 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 	} immValue;
 
 	/* Fix for byte sized immediate converted to OP_I16 */
-	if (CodeInfo->opnd[OPND2].type == OP_I16 || CodeInfo->opnd[OPND2].type == OP_I8) {
-		if ((CodeInfo->opnd[OPND2].data32l <= UCHAR_MAX) && (CodeInfo->opnd[OPND2].data32l >= -255)) {
-			if (CodeInfo->opnd[OPND1].type == OP_M || CodeInfo->opnd[OPND1].type == OP_M08) {
+	if ((CodeInfo->opnd[OPND2].type == OP_I16 || CodeInfo->opnd[OPND2].type == OP_I8) && opExpr[1].mem_type != MT_WORD) 
+	{
+		if ((CodeInfo->opnd[OPND2].data32l <= UCHAR_MAX) && (CodeInfo->opnd[OPND2].data32l >= -255)) 
+		{
+			if (CodeInfo->opnd[OPND1].type == OP_M || CodeInfo->opnd[OPND1].type == OP_M08) 
+			{
 				CodeInfo->opnd[OPND1].type = OP_M08;
 				CodeInfo->opnd[OPND2].type = OP_I8;
 			}
 			else if (CodeInfo->opnd[OPND1].type == OP_R8 || CodeInfo->opnd[OPND1].type == OP_AL || CodeInfo->opnd[OPND1].type == OP_CL)
 				CodeInfo->opnd[OPND2].type = OP_I8;
-			else {
-				switch (CodeInfo->token) {
-				case T_BT:
-				case T_BTC:
-				case T_BTR:
-				case T_BTS:
-					CodeInfo->opnd[OPND2].type = OP_I8;
+			else 
+			{
+				switch (CodeInfo->token) 
+				{
+					case T_BT:
+					case T_BTC:
+					case T_BTR:
+					case T_BTS:
+						CodeInfo->opnd[OPND2].type = OP_I8;
 				}
 			}
 		}
@@ -1553,9 +1558,9 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 
 	/* Determine which Memory Encoding Format Table to Use. */
 	if (CodeInfo->Ofssize == USE64)
-		MemTable = MemTable64;
+		MemTable = &MemTable64;
 	else
-		MemTable = MemTable32;
+		MemTable = &MemTable32;
 
 	/* Force JWASM style FLAT: override back to legacy CodeGen. */
 	if ((opExpr[1].override && opExpr[1].override->tokval == T_FLAT) ||

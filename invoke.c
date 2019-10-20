@@ -610,58 +610,58 @@ static void ms64_fcend(struct dsym const *proc, int numparams, int value)
 * UASM 2.49 For structs that are not 1/2/4/8 bytes in size the address is used too, else they're passed
 * in registers.
 */
-static int ms64_param(struct dsym const* proc, int index, struct dsym* param, bool addr, struct expr* opnd, char* paramvalue, uint_8* regs_used)
+static int ms64_param(struct dsym const *proc, int index, struct dsym *param, bool addr, struct expr *opnd, char *paramvalue, uint_8 *regs_used)
 /************************************************************************************************************************************************/
 {
-    uint_32 size;
-    uint_32 psize;
-    int reg;
-    int reg2;
-    int i;
-    int j = 0;
-    int tCount = 0;
-    int freevecregs = 0;
-    int vecidx = -1;
-    int membersize = 0;     /* used for vectorcall array */
-    int memberCount = 0;     /* used for vectorcall array */
-    int base;
-    struct proc_info* info = proc->e.procinfo;
-    struct dsym* t = NULL; /* used for vectorcall array member size */
-    bool destroyed = FALSE;
-    struct asym* sym = NULL;
+	uint_32 size;
+	uint_32 psize;
+	int reg;
+	int reg2;
+	int i;
+	int j = 0;
+	int tCount = 0;
+	int freevecregs = 0;
+	int vecidx = -1;
+	int membersize = 0;     /* used for vectorcall array */
+	int memberCount = 0;     /* used for vectorcall array */
+	int base;
+	struct proc_info *info = proc->e.procinfo;
+	struct dsym *t = NULL; /* used for vectorcall array member size */
+	bool destroyed = FALSE;
+	struct asym *sym = NULL;
 
-    DebugMsg1(("ms64_param(%s, index=%u, param.memtype=%Xh, addr=%u) enter\n", proc->sym.name, index, param->sym.mem_type, addr));
+	DebugMsg1(("ms64_param(%s, index=%u, param.memtype=%Xh, addr=%u) enter\n", proc->sym.name, index, param->sym.mem_type, addr));
 
-    /* v2.11: default size is 32-bit, not 64-bit */
-    if (param->sym.is_vararg)
-    {
-        psize = 0;
-        /* v2.46 support automatic promotion of 64bit immediates in vararg invoke */
-        if (opnd->kind == EXPR_CONST && (opnd->llvalue > INT_MAX || opnd->llvalue < INT_MIN))
-            psize = 8;
-        else if (addr || opnd->instr == T_OFFSET)
-            psize = 8;
-        else if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
-            psize = SizeFromRegister(opnd->base_reg->tokval);
-        else if (opnd->mem_type != MT_EMPTY)
-            psize = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
-        if (psize < 4)
-            psize = 4;
-    }
-    else
-        psize = SizeFromMemtype(param->sym.mem_type, USE64, param->sym.type);
+	/* v2.11: default size is 32-bit, not 64-bit */
+	if (param->sym.is_vararg) 
+	{
+		psize = 0;
+		/* v2.46 support automatic promotion of 64bit immediates in vararg invoke */
+		if (opnd->kind == EXPR_CONST && (opnd->llvalue > INT_MAX || opnd->llvalue < INT_MIN))
+			psize = 8;
+		else if (addr || opnd->instr == T_OFFSET)
+			psize = 8;
+		else if (opnd->kind == EXPR_REG && opnd->indirect == FALSE)
+			psize = SizeFromRegister(opnd->base_reg->tokval);
+		else if (opnd->mem_type != MT_EMPTY)
+			psize = SizeFromMemtype(opnd->mem_type, USE64, opnd->type);
+		if (psize < 4)
+			psize = 4;
+	}
+	else
+		psize = SizeFromMemtype(param->sym.mem_type, USE64, param->sym.type);
 
-    /* UASM 2.49 Force odd-sized structures to error: pass by reference! */
-    if (psize == 3 || psize == 5 || psize == 6 || psize == 7)
-    {
-        if (param->sym.mem_type == MT_TYPE)
-        {
-            EmitErr(INVALID_REG_STRUCT_SIZE);
-        }
-    }
+	/* UASM 2.49 Force odd-sized structures to error: pass by reference! */
+	if (psize == 3 || psize == 5 || psize == 6 || psize == 7)
+	{
+		if (param->sym.mem_type == MT_TYPE)
+		{
+			EmitErr(INVALID_REG_STRUCT_SIZE);
+		}
+	}
 
-    if (vcallpass == 1)
-        goto vcall;
+	if (vcallpass == 1)
+		goto vcall;
 
     /* check for register overwrites; v2.11: moved out the if( index >= 4 ) block */
     if (opnd->base_reg != NULL)
@@ -2639,7 +2639,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 			}
 			else if (GetValueSp(reg) & OP_YMM)
 			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r], %s", MOVE_UNALIGNED_INT(), T_RSP, paramvalue);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r], %s", "vmovdqu", T_RSP, paramvalue);
 				if (info->stackOfs % 16 != 0)
 				{
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 40", T_RSP);
@@ -2653,7 +2653,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 			}
 			else if (GetValueSp(reg) & OP_ZMM)
 			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r], %s", MOVE_UNALIGNED_INT(), T_RSP, paramvalue);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r], %s", "vmovdqu", T_RSP, paramvalue);
 				if (info->stackOfs % 16 != 0)
 				{
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 72", T_RSP);
@@ -2797,7 +2797,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		reg = sysv_GetNextVEC(proc, info, 32);
 		if (reg != -1)
 		{
-			AddLineQueueX("%s %r, ymmword ptr %s", MOVE_ALIGNED_INT(), reg, paramvalue);
+			AddLineQueueX("%s %r, ymmword ptr %s", "vmovdqa", reg, paramvalue);
 			/* Mark vector register as written */
 			info->vecused |= (1 << sysv_reg(proc, reg));
 			/* Increment count of vectors used in vararg call */
@@ -2807,12 +2807,12 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		else
 		{
 			if (info->stackOfs % 16 != 0)
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r+%u], ymm8", MOVE_UNALIGNED_INT(), T_RSP, NUMQUAL info->stackAdj);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r+%u], ymm8", "vmovdqu", T_RSP, NUMQUAL info->stackAdj);
 			else
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r], ymm8", MOVE_UNALIGNED_INT(), T_RSP);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r], ymm8", "vmovdqu", T_RSP);
 			BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 32", T_RSP);
 			info->stackOfs += 32;
-			BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymm8, ymmword ptr %s", MOVE_UNALIGNED_INT(), paramvalue);
+			BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymm8, ymmword ptr %s", "vmovdqu", paramvalue);
 		}
 		return(1);
 	}
@@ -2824,7 +2824,7 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		reg = sysv_GetNextVEC(proc, info, 64);
 		if (reg != -1)
 		{
-			AddLineQueueX("%s %r, zmmword ptr %s", MOVE_ALIGNED_INT(), reg, paramvalue);
+			AddLineQueueX("%s %r, zmmword ptr %s", "vmovdqa", reg, paramvalue);
 			/* Mark vector register as written */
 			info->vecused |= (1 << sysv_reg(proc, reg));
 			/* Increment count of vectors used in vararg call */
@@ -2834,12 +2834,12 @@ static int sysv_vararg_param(struct dsym const *proc, int index, struct dsym *pa
 		else
 		{
 			if (info->stackOfs % 16 != 0)
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r+%u], zmm8", MOVE_UNALIGNED_INT(), T_RSP, NUMQUAL info->stackAdj);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r+%u], zmm8", "vmovdqu", T_RSP, NUMQUAL info->stackAdj);
 			else
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r], zmm8", MOVE_UNALIGNED_INT(), T_RSP);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r], zmm8", "vmovdqu", T_RSP);
 			BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 64", T_RSP);
 			info->stackOfs += 64;
-			BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmm8, zmmword ptr %s", MOVE_UNALIGNED_INT(), paramvalue);
+			BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmm8, zmmword ptr %s", "vmovdqu", paramvalue);
 		}
 		return(1);
 	}
@@ -3601,20 +3601,20 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 			if (opnd->kind == EXPR_REG)
 			{
 				if (info->stackOfs % 16 != 0)
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r+%u], %s", MOVE_UNALIGNED_INT(), T_RSP, NUMQUAL info->stackAdj, paramvalue);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r+%u], %s", "vmovdqu", T_RSP, NUMQUAL info->stackAdj, paramvalue);
 				else
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r], %s", MOVE_UNALIGNED_INT(), T_RSP, paramvalue);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r], %s", "vmovdqu", T_RSP, paramvalue);
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 32", T_RSP);
 				info->stackOfs += 32;
 			}
 			else
 			{
 				if (info->stackOfs % 16 != 0)
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r+%u], ymm8", MOVE_UNALIGNED_INT(), T_RSP, NUMQUAL info->stackAdj);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r+%u], ymm8", "vmovdqu", T_RSP, NUMQUAL info->stackAdj);
 				else
 					BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 32", T_RSP);
 				info->stackOfs += 32;
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymm8, ymmword ptr %s", MOVE_UNALIGNED_INT(), paramvalue);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymm8, ymmword ptr %s", "vmovdqu", paramvalue);
 			}
 			return(1);
 		}
@@ -3626,18 +3626,18 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 			if (opnd->kind == EXPR_REG)
 			{
 				if (info->stackOfs % 16 != 0)
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r+%u], %s", MOVE_UNALIGNED_INT(), T_RSP, NUMQUAL info->stackAdj, paramvalue);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r+%u], %s", "vmovdqu", T_RSP, NUMQUAL info->stackAdj, paramvalue);
 				else
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r], %s", MOVE_UNALIGNED_INT(), T_RSP, paramvalue);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r], %s", "vmovdqu", T_RSP, paramvalue);
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 64", T_RSP);
 				info->stackOfs += 64;
 			}
 			else
 			{
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r+%u], zmm8", MOVE_UNALIGNED_INT(), T_RSP, NUMQUAL info->stackAdj);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r+%u], zmm8", "vmovdqu", T_RSP, NUMQUAL info->stackAdj);
 				BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 64", T_RSP);
 				info->stackOfs += 64;
-				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmm8, zmmword ptr %s", MOVE_UNALIGNED_INT(), paramvalue);
+				BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmm8, zmmword ptr %s", "vmovdqu", paramvalue);
 			}
 			return(1);
 		}
@@ -3729,7 +3729,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				}
 				else if (GetValueSp(reg) & OP_YMM)
 				{
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r], %s", MOVE_UNALIGNED_INT(), T_RSP, paramvalue);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s ymmword ptr [%r], %s", "vmovdqu", T_RSP, paramvalue);
 					if (info->stackOfs % 16 != 0)
 					{
 						BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 40", T_RSP);
@@ -3743,7 +3743,7 @@ static int sysv_param(struct dsym const *proc, int index, struct dsym *param, bo
 				}
 				else if (GetValueSp(reg) & OP_ZMM)
 				{
-					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r], %s", MOVE_UNALIGNED_INT(), T_RSP, paramvalue);
+					BuildCodeLine(info->stackOps[info->stackOpCount++], "%s zmmword ptr [%r], %s", "vmovdqu", T_RSP, paramvalue);
 					if (info->stackOfs % 16 != 0)
 					{
 						BuildCodeLine(info->stackOps[info->stackOpCount++], "sub %r, 72", T_RSP);
@@ -4509,20 +4509,20 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				else
 					GetResWName(T_DS, buffer);
 				AddLineQueueX(" push %s", buffer);
-			}
-			/* this is a fix for ADDR in DELPHI v2.29 */
-			if (proc->sym.langtype == LANG_DELPHICALL)
-			{
-				AddLineQueueX("push %r", T_EAX);
-				AddLineQueueX("lea %r, %s", regax[ModuleInfo.Ofssize], fullparam);
-				AddLineQueueX("xchg eax,[esp]");
-			}
-			else
-			{
-				AddLineQueueX(" lea %r, %s", regax[ModuleInfo.Ofssize], fullparam);
-				*r0flags |= R0_USED;
-				AddLineQueueX(" push %r", regax[ModuleInfo.Ofssize]);
-			}
+        }
+      /* this is a fix for ADDR in DELPHI v2.29 */
+      if (proc->sym.langtype == LANG_DELPHICALL)
+	  {
+          AddLineQueueX("push %r", T_EAX);
+          AddLineQueueX("lea %r, %s", regax[ModuleInfo.Ofssize], fullparam);
+          AddLineQueueX("xchg eax,[esp]");
+      }
+      else
+	  {
+        AddLineQueueX(" lea %r, %s", regax[ModuleInfo.Ofssize], fullparam);
+        *r0flags |= R0_USED;
+        AddLineQueueX(" push %r", regax[ModuleInfo.Ofssize]);
+      }
 
 		}
 		else {

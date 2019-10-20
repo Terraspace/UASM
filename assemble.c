@@ -109,7 +109,7 @@ static const struct format_options formatoptions[] = {
     { elf_init,  ELF32_DISALLOWED,  "ELF"  },
 #endif
 #if MACHO_SUPPORT
-    { macho_init,  MACHO32_DISALLOWED,  "MACHO" },
+	{ macho_init,  MACHO32_DISALLOWED,  "MACHO" },
 #endif
 };
 
@@ -171,10 +171,10 @@ static const enum seg_type stt[] = {
 
 static void CheckBOM(FILE *f)
 {
-    unsigned long bom;
-    fread(&bom, 3, 1, f);
-    if ((bom & 0xFFFFFF) != 0xBFBBEF)
-        rewind(f);
+	unsigned long bom;
+	fread(&bom, 3, 1, f);
+	if ((bom & 0xFFFFFF) != 0xBFBBEF)
+		rewind(f);
 }
 
 extern void RewindToWin64() 
@@ -185,7 +185,7 @@ extern void RewindToWin64()
             Options.output_format = OFORMAT_COFF;
         else
         {
-            if (Options.langtype != LANG_FASTCALL && Options.langtype != LANG_SYSVCALL && Options.langtype != LANG_VECTORCALL && Options.langtype != LANG_REGCALL)
+            if (Options.langtype != LANG_SYSVCALL && Options.langtype != LANG_VECTORCALL && Options.langtype != LANG_REGCALL)
                 Options.langtype = LANG_FASTCALL;
         }
         Options.sub_format = SFORMAT_64BIT;
@@ -276,41 +276,41 @@ void OutputByte( unsigned char byte )
 /* Added 2.14: to accelerate bulk writing of incbin data */
 void OutputBinBytes(unsigned char* pBytes, uint_32 len)
 {
-    int i;
+	int i;
 
-    if (write_to_file == TRUE) {
-        uint_32 idx = CurrSeg->e.seginfo->current_loc - CurrSeg->e.seginfo->start_loc;
+	if (write_to_file == TRUE) {
+		uint_32 idx = CurrSeg->e.seginfo->current_loc - CurrSeg->e.seginfo->start_loc;
 #ifdef DEBUG_OUT
-        if (CurrSeg->e.seginfo->current_loc < CurrSeg->e.seginfo->start_loc) {
-            ;//_asm int 3;
-        }
+		if (CurrSeg->e.seginfo->current_loc < CurrSeg->e.seginfo->start_loc) {
+			;//_asm int 3;
+		}
 #endif
-        /**/myassert(CurrSeg->e.seginfo->current_loc >= CurrSeg->e.seginfo->start_loc);
-        if (Options.output_format == OFORMAT_OMF && idx >= MAX_LEDATA_THRESHOLD) {
-            omf_FlushCurrSeg();
-            idx = CurrSeg->e.seginfo->current_loc - CurrSeg->e.seginfo->start_loc;
-        }
-        //DebugMsg(("OutputByte: buff=%p, idx=%" I32_SPEC "X, byte=%X, codebuff[0]=%X\n", CurrSeg->e.seginfo->CodeBuffer, idx, byte, *CurrSeg->e.seginfo->CodeBuffer ));
-        for (i = 0; i < len; i++)
-        {
-            CurrSeg->e.seginfo->CodeBuffer[idx++] = *(pBytes++);
-        }
+		/**/myassert(CurrSeg->e.seginfo->current_loc >= CurrSeg->e.seginfo->start_loc);
+		if (Options.output_format == OFORMAT_OMF && idx >= MAX_LEDATA_THRESHOLD) {
+			omf_FlushCurrSeg();
+			idx = CurrSeg->e.seginfo->current_loc - CurrSeg->e.seginfo->start_loc;
+		}
+		//DebugMsg(("OutputByte: buff=%p, idx=%" I32_SPEC "X, byte=%X, codebuff[0]=%X\n", CurrSeg->e.seginfo->CodeBuffer, idx, byte, *CurrSeg->e.seginfo->CodeBuffer ));
+		for (i = 0; i < len; i++)
+		{
+			CurrSeg->e.seginfo->CodeBuffer[idx++] = *(pBytes++);
+		}
 
-    }
+	}
 #if 1
-    /* check this in pass 1 only */
-    else if (CurrSeg->e.seginfo->current_loc < CurrSeg->e.seginfo->start_loc) {
-        DebugMsg(("OutputByte: segment start loc changed from %" I32_SPEC "Xh to %" I32_SPEC "Xh\n",
-            CurrSeg->e.seginfo->start_loc,
-            CurrSeg->e.seginfo->current_loc));
-        CurrSeg->e.seginfo->start_loc = CurrSeg->e.seginfo->current_loc;
-    }
+	/* check this in pass 1 only */
+	else if (CurrSeg->e.seginfo->current_loc < CurrSeg->e.seginfo->start_loc) {
+		DebugMsg(("OutputByte: segment start loc changed from %" I32_SPEC "Xh to %" I32_SPEC "Xh\n",
+			CurrSeg->e.seginfo->start_loc,
+			CurrSeg->e.seginfo->current_loc));
+		CurrSeg->e.seginfo->start_loc = CurrSeg->e.seginfo->current_loc;
+	}
 #endif
-    CurrSeg->e.seginfo->current_loc+=len;
-    CurrSeg->e.seginfo->bytes_written+=len;
-    CurrSeg->e.seginfo->written = TRUE;
-    if (CurrSeg->e.seginfo->current_loc > CurrSeg->sym.max_offset)
-        CurrSeg->sym.max_offset = CurrSeg->e.seginfo->current_loc;
+	CurrSeg->e.seginfo->current_loc+=len;
+	CurrSeg->e.seginfo->bytes_written+=len;
+	CurrSeg->e.seginfo->written = TRUE;
+	if (CurrSeg->e.seginfo->current_loc > CurrSeg->sym.max_offset)
+		CurrSeg->sym.max_offset = CurrSeg->e.seginfo->current_loc;
 }
 
 #if 0 /* v2.03: OutputCodeByte is obsolete */
@@ -335,36 +335,36 @@ void FillDataBytes( unsigned char byte, int len )
 void OutputSegmentBytes(struct dsym* segg, const unsigned char *pbytes, int len, struct fixup *fixup)
 /***************************************************************************/
 {
-    if (write_to_file == TRUE) {
-        uint_32 idx = segg->e.seginfo->current_loc - segg->e.seginfo->start_loc;
+	if (write_to_file == TRUE) {
+		uint_32 idx = segg->e.seginfo->current_loc - segg->e.seginfo->start_loc;
 #if 0 /* def DEBUG_OUT */
-        if (CurrSeg->e.seginfo->current_loc < CurrSeg->e.seginfo->start_loc)
-            _asm int 3;
+		if (CurrSeg->e.seginfo->current_loc < CurrSeg->e.seginfo->start_loc)
+			_asm int 3;
 #endif
-        /**/myassert(segg->e.seginfo->current_loc >= segg->e.seginfo->start_loc);
-        if (Options.output_format == OFORMAT_OMF && ((idx + len) > MAX_LEDATA_THRESHOLD)) {
-            omf_FlushCurrSeg();
-            idx = segg->e.seginfo->current_loc - segg->e.seginfo->start_loc;
-        }
-        if (fixup)
-            store_fixup(fixup, segg, (int_32 *)pbytes);
-        //DebugMsg(("OutputBytes: buff=%p, idx=%" I32_SPEC "X, byte=%X\n", CurrSeg->e.seginfo->CodeBuffer, idx, *pbytes ));
-        memcpy(&segg->e.seginfo->CodeBuffer[idx], pbytes, len);
-    }
+		/**/myassert(segg->e.seginfo->current_loc >= segg->e.seginfo->start_loc);
+		if (Options.output_format == OFORMAT_OMF && ((idx + len) > MAX_LEDATA_THRESHOLD)) {
+			omf_FlushCurrSeg();
+			idx = segg->e.seginfo->current_loc - segg->e.seginfo->start_loc;
+		}
+		if (fixup)
+			store_fixup(fixup, segg, (int_32 *)pbytes);
+		//DebugMsg(("OutputBytes: buff=%p, idx=%" I32_SPEC "X, byte=%X\n", CurrSeg->e.seginfo->CodeBuffer, idx, *pbytes ));
+		memcpy(&segg->e.seginfo->CodeBuffer[idx], pbytes, len);
+	}
 #if 1
-    /* check this in pass 1 only */
-    else if (segg->e.seginfo->current_loc < segg->e.seginfo->start_loc) {
-        DebugMsg(("OutputBytes: segment start loc changed from %" I32_SPEC "Xh to %" I32_SPEC "Xh\n",
-            segg->e.seginfo->start_loc,
-            segg->e.seginfo->current_loc));
-        segg->e.seginfo->start_loc = segg->e.seginfo->current_loc;
-    }
+	/* check this in pass 1 only */
+	else if (segg->e.seginfo->current_loc < segg->e.seginfo->start_loc) {
+		DebugMsg(("OutputBytes: segment start loc changed from %" I32_SPEC "Xh to %" I32_SPEC "Xh\n",
+			segg->e.seginfo->start_loc,
+			segg->e.seginfo->current_loc));
+		segg->e.seginfo->start_loc = segg->e.seginfo->current_loc;
+	}
 #endif
-    segg->e.seginfo->current_loc += len;
-    segg->e.seginfo->bytes_written += len;
-    segg->e.seginfo->written = TRUE;
-    if (segg->e.seginfo->current_loc > segg->sym.max_offset)
-        segg->sym.max_offset = segg->e.seginfo->current_loc;
+	segg->e.seginfo->current_loc += len;
+	segg->e.seginfo->bytes_written += len;
+	segg->e.seginfo->written = TRUE;
+	if (segg->e.seginfo->current_loc > segg->sym.max_offset)
+		segg->sym.max_offset = segg->e.seginfo->current_loc;
 }
 
 /*
@@ -409,45 +409,45 @@ void OutputBytes( const unsigned char *pbytes, int len, struct fixup *fixup )
 /* Used to output a string to current segment in wide-char format with interleaved zeros */
 void OutputInterleavedBytes(const unsigned char *pbytes, int len, struct fixup *fixup)
 {
-    int i = 0;
-    char *pOut = NULL;
+	int i = 0;
+	char *pOut = NULL;
 
-    if (write_to_file == TRUE) {
-        uint_32 idx = CurrSeg->e.seginfo->current_loc - CurrSeg->e.seginfo->start_loc;
+	if (write_to_file == TRUE) {
+		uint_32 idx = CurrSeg->e.seginfo->current_loc - CurrSeg->e.seginfo->start_loc;
 #if 0 /* def DEBUG_OUT */
-        if (CurrSeg->e.seginfo->current_loc < CurrSeg->e.seginfo->start_loc)
-            _asm int 3;
+		if (CurrSeg->e.seginfo->current_loc < CurrSeg->e.seginfo->start_loc)
+			_asm int 3;
 #endif
-        /**/myassert(CurrSeg->e.seginfo->current_loc >= CurrSeg->e.seginfo->start_loc);
-        if (Options.output_format == OFORMAT_OMF && ((idx + len) > MAX_LEDATA_THRESHOLD)) {
-            omf_FlushCurrSeg();
-            idx = CurrSeg->e.seginfo->current_loc - CurrSeg->e.seginfo->start_loc;
-        }
-        if (fixup)
-            store_fixup(fixup, CurrSeg, (int_32 *)pbytes);
-        pOut = &CurrSeg->e.seginfo->CodeBuffer[idx];
-        for (i = 0; i < len*2; i++)
-        {
-            if (i % 2 == 1)
-                *pOut++ = 0;
-            else
-                *pOut++ = *pbytes++;
-        }
-    }
+		/**/myassert(CurrSeg->e.seginfo->current_loc >= CurrSeg->e.seginfo->start_loc);
+		if (Options.output_format == OFORMAT_OMF && ((idx + len) > MAX_LEDATA_THRESHOLD)) {
+			omf_FlushCurrSeg();
+			idx = CurrSeg->e.seginfo->current_loc - CurrSeg->e.seginfo->start_loc;
+		}
+		if (fixup)
+			store_fixup(fixup, CurrSeg, (int_32 *)pbytes);
+		pOut = &CurrSeg->e.seginfo->CodeBuffer[idx];
+		for (i = 0; i < len*2; i++)
+		{
+			if (i % 2 == 1)
+				*pOut++ = 0;
+			else
+				*pOut++ = *pbytes++;
+		}
+	}
 #if 1
-    /* check this in pass 1 only */
-    else if (CurrSeg->e.seginfo->current_loc < CurrSeg->e.seginfo->start_loc) {
-        DebugMsg(("OutputBytes: segment start loc changed from %" I32_SPEC "Xh to %" I32_SPEC "Xh\n",
-            CurrSeg->e.seginfo->start_loc,
-            CurrSeg->e.seginfo->current_loc));
-        CurrSeg->e.seginfo->start_loc = CurrSeg->e.seginfo->current_loc;
-    }
+	/* check this in pass 1 only */
+	else if (CurrSeg->e.seginfo->current_loc < CurrSeg->e.seginfo->start_loc) {
+		DebugMsg(("OutputBytes: segment start loc changed from %" I32_SPEC "Xh to %" I32_SPEC "Xh\n",
+			CurrSeg->e.seginfo->start_loc,
+			CurrSeg->e.seginfo->current_loc));
+		CurrSeg->e.seginfo->start_loc = CurrSeg->e.seginfo->current_loc;
+	}
 #endif
-    CurrSeg->e.seginfo->current_loc += len*2;
-    CurrSeg->e.seginfo->bytes_written += len*2;
-    CurrSeg->e.seginfo->written = TRUE;
-    if (CurrSeg->e.seginfo->current_loc > CurrSeg->sym.max_offset)
-        CurrSeg->sym.max_offset = CurrSeg->e.seginfo->current_loc;
+	CurrSeg->e.seginfo->current_loc += len*2;
+	CurrSeg->e.seginfo->bytes_written += len*2;
+	CurrSeg->e.seginfo->written = TRUE;
+	if (CurrSeg->e.seginfo->current_loc > CurrSeg->sym.max_offset)
+		CurrSeg->sym.max_offset = CurrSeg->e.seginfo->current_loc;
 }
 
 /* set current offset in a segment (usually CurrSeg) without to write anything */
@@ -798,11 +798,11 @@ static void ModulePassInit( void )
              * there's no other model than FLAT possible.
              */
             model = MODEL_FLAT;
-            if (ModuleInfo.langtype != LANG_FASTCALL && ModuleInfo.langtype != LANG_VECTORCALL && ModuleInfo.langtype != LANG_REGCALL && Options.output_format == OFORMAT_COFF)
+            if (ModuleInfo.langtype != LANG_VECTORCALL && ModuleInfo.langtype != LANG_REGCALL && Options.output_format == OFORMAT_COFF)
             {
                     ModuleInfo.langtype = LANG_FASTCALL;
             }
-            if ((ModuleInfo.langtype != LANG_SYSVCALL && ModuleInfo.langtype != LANG_REGCALL) && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC))
+            if ((ModuleInfo.langtype != LANG_REGCALL) && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC))
             {
                     ModuleInfo.langtype = LANG_SYSVCALL;
             }
@@ -913,7 +913,7 @@ static void PassOneChecks( void )
     HllCheckOpen();
     CondCheckOpen();
 
-    /* Don't require END directive for bin output */
+	/* Don't require END directive for bin output */
     if( ModuleInfo.EndDirFound == FALSE  && Options.output_format != OFORMAT_BIN)
         EmitError( END_DIRECTIVE_REQUIRED );
 
@@ -1003,18 +1003,18 @@ static void PassOneChecks( void )
     /* scan the EXTERN/EXTERNDEF items */
 
     for( curr = SymTables[TAB_EXT].head ; curr; curr = next ) 
-    {
+	{
         next = curr->next;
         /* v2.01: externdefs which have been "used" become "strong" */
         if ( curr->sym.used )
             curr->sym.weak = FALSE;
         /* remove unused EXTERNDEF/PROTO items from queue. */
         if ( curr->sym.weak == TRUE && curr->sym.iat_used == FALSE )
-        {
+		{
             sym_remove_table( &SymTables[TAB_EXT], curr );
-            #ifdef DEBUG_OUT
-                cntUnusedExt++;
-            #endif
+			#ifdef DEBUG_OUT
+		        cntUnusedExt++;
+			#endif
             continue;
         }
 
@@ -1042,16 +1042,16 @@ static void PassOneChecks( void )
          */
 #if FASTPASS
         if ( curr->sym.altname ) 
-        {
+		{
             if ( curr->sym.altname->state == SYM_INTERNAL ) 
-            {
+			{
                 /* for COFF/ELF, the altname must be public or external */
                 if ( curr->sym.altname->ispublic == FALSE && ( Options.output_format == OFORMAT_COFF || Options.output_format == OFORMAT_ELF ) ) 
-                {
+				{
                     SkipSavedState();
                 }
             } else if ( curr->sym.altname->state != SYM_EXTERNAL ) 
-            {
+			{
                 /* do not use saved state, scan full source in second pass */
                 SkipSavedState();
             }
@@ -1109,7 +1109,7 @@ static int OnePass( void )
 /************************/
 {
 
-    struct asym*    platform;
+	struct asym*    platform;
 
     InputPassInit();
     ModulePassInit();
@@ -1127,7 +1127,7 @@ static int OnePass( void )
     ModuleInfo.EndDirFound = FALSE;
     ModuleInfo.PhaseError  = FALSE;
 
-    LinnumInit();
+	LinnumInit();
 
 #ifdef DEBUG_OUT
     if ( Parse_Pass > PASS_1 ) {
@@ -1142,24 +1142,24 @@ static int OnePass( void )
     }
 #endif
 
-    /* the functions above might have written something to the line queue */
+	/* the functions above might have written something to the line queue */
     if ( is_linequeue_populated() )
         RunLineQueue();
 
-    /* Set platform type */
-    platform = SymFind("@Platform");
-    if ( Options.output_format == OFORMAT_BIN && Options.sub_format == SFORMAT_NONE )
-        platform->value = 1;
-    else if ( Options.output_format == OFORMAT_COFF && Options.sub_format == SFORMAT_NONE )
-        platform->value = 0;
-    else if( Options.output_format == OFORMAT_COFF && Options.sub_format == SFORMAT_64BIT )
-        platform->value = 1;
-    else if (Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_NONE )
-        platform->value = 2;
-    else if (Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_64BIT )
-        platform->value = 3;
-    else if (Options.output_format == OFORMAT_MAC && Options.sub_format == SFORMAT_64BIT )
-        platform->value = 4;
+	/* Set platform type */
+	platform = SymFind("@Platform");
+	if ( Options.output_format == OFORMAT_BIN && Options.sub_format == SFORMAT_NONE )
+		platform->value = 1;
+	else if ( Options.output_format == OFORMAT_COFF && Options.sub_format == SFORMAT_NONE )
+		platform->value = 0;
+	else if( Options.output_format == OFORMAT_COFF && Options.sub_format == SFORMAT_64BIT )
+		platform->value = 1;
+	else if (Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_NONE )
+		platform->value = 2;
+	else if (Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_64BIT )
+		platform->value = 3;
+	else if (Options.output_format == OFORMAT_MAC && Options.sub_format == SFORMAT_64BIT )
+		platform->value = 4;
 
 	if (Parse_Pass == PASS_1)
 	{
@@ -1188,21 +1188,20 @@ static int OnePass( void )
             Initx86AutoMacros32();
 #endif
         }
-
         ModuleInfo.list = alist;
     }
-    if (Parse_Pass == PASS_1)
-    {
-        unsigned  alist = ModuleInfo.list;
-        ModuleInfo.list = 0;
-        AddSimdTypes();
-        ModuleInfo.list = alist;
+	if (Parse_Pass == PASS_1)
+	{
+		unsigned  alist = ModuleInfo.list;
+		ModuleInfo.list = 0;
+		AddSimdTypes();
+		ModuleInfo.list = alist;
     /* UASM 2.49 Ensure these are reset here in pre-process, as this can be set on a line that
     still requires expansion, and then they accidentally remain set when moving onto a regular line via codegen */
     decoflags = 0;
     broadflags = 0;
     evexflag = 0;
-    }
+	}
 
 #if FASTPASS
     StoreState = FALSE;
@@ -1216,7 +1215,7 @@ static int OnePass( void )
             set_curr_srcfile( LineStoreCurr->srcfile, LineStoreCurr->lineno );
             /* v2.06: list flags now initialized on the top level */
             ModuleInfo.line_flags = 0;
-            MacroLevel = LineStoreCurr->macro_level;
+            MacroLevel = ( LineStoreCurr->srcfile == 0xFFF ? 1 : 0 );
             DebugMsg1(("OnePass(%u) cur/nxt=%X/%X src=%X.%u mlvl=%u: >%s<\n", Parse_Pass+1, LineStoreCurr, LineStoreCurr->next, LineStoreCurr->srcfile, LineStoreCurr->lineno, MacroLevel, LineStoreCurr->line ));
             ModuleInfo.CurrComment = NULL; /* v2.08: added (var is never reset because GetTextLine() isn't called) */
 #if USELSLINE
@@ -1341,13 +1340,13 @@ static void ReswTableInit( void )
 {
     ResWordsInit();
     if ( Options.output_format == OFORMAT_OMF ) 
-    {
+	{
         /* for OMF, IMAGEREL and SECTIONREL are disabled */
         DisableKeyword( T_IMAGEREL );
         DisableKeyword( T_SECTIONREL );
     }
     if ( Options.strict_masm_compat == TRUE ) 
-    {
+	{
         DisableKeyword( T_INCBIN );
         DisableKeyword( T_FASTCALL );
     }
@@ -1367,7 +1366,7 @@ static void open_files( void )
         DebugMsg(("open_files(): cannot open source file, fopen(\"%s\") failed\n", CurrFName[ASM] ));
         Fatal( CANNOT_OPEN_FILE, CurrFName[ASM], ErrnoStr() );
     }
-    //CheckBOM(CurrFile[ASM]);
+	//CheckBOM(CurrFile[ASM]);
 
     /* open OBJ file */
     if ( Options.syntax_check_only == FALSE ) {
@@ -1592,37 +1591,37 @@ int EXPQUAL AssembleModule( const char *source )
     int           endtime;
     struct dsym   *seg;
 
-    struct module_info tempInfo;
+	struct module_info tempInfo;
 
 #ifdef _WIN32
-    CONSOLE_SCREEN_BUFFER_INFO screenBufferInfo;
-    HANDLE hConsole;
-    memset(&screenBufferInfo, 0, sizeof(screenBufferInfo));
-    hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    GetConsoleScreenBufferInfo(hConsole, &screenBufferInfo);
+	CONSOLE_SCREEN_BUFFER_INFO screenBufferInfo;
+	HANDLE hConsole;
+	memset(&screenBufferInfo, 0, sizeof(screenBufferInfo));
+	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	GetConsoleScreenBufferInfo(hConsole, &screenBufferInfo);
 #endif
-    memset(&tempInfo, 0, sizeof(tempInfo));
+	memset(&tempInfo, 0, sizeof(tempInfo));
 
     DebugMsg(("AssembleModule(\"%s\") enter\n", source ));
 
-    tempInfo.frame_auto   = ModuleInfo.frame_auto;
-    tempInfo.fctype       = ModuleInfo.fctype;
-    tempInfo.langtype     = ModuleInfo.langtype;
-    tempInfo.sub_format   = ModuleInfo.sub_format;
-    tempInfo.win64_flags  = ModuleInfo.win64_flags;
-    tempInfo.switch_style = ModuleInfo.switch_style;
+	tempInfo.frame_auto   = ModuleInfo.frame_auto;
+	tempInfo.fctype       = ModuleInfo.fctype;
+	tempInfo.langtype     = ModuleInfo.langtype;
+	tempInfo.sub_format   = ModuleInfo.sub_format;
+	tempInfo.win64_flags  = ModuleInfo.win64_flags;
+	tempInfo.switch_style = ModuleInfo.switch_style;
 
     memset( &ModuleInfo, 0, sizeof(ModuleInfo) );
 
-    ModuleInfo.frame_auto   = tempInfo.frame_auto;
-    ModuleInfo.fctype       = tempInfo.fctype;
-    ModuleInfo.langtype     = tempInfo.langtype;
-    ModuleInfo.sub_format   = tempInfo.sub_format;
-    ModuleInfo.win64_flags  = tempInfo.win64_flags;
-    ModuleInfo.switch_style = tempInfo.switch_style;
+	ModuleInfo.frame_auto   = tempInfo.frame_auto;
+	ModuleInfo.fctype       = tempInfo.fctype;
+	ModuleInfo.langtype     = tempInfo.langtype;
+	ModuleInfo.sub_format   = tempInfo.sub_format;
+	ModuleInfo.win64_flags  = tempInfo.win64_flags;
+	ModuleInfo.switch_style = tempInfo.switch_style;
 
-    /* set architecture */
-    ModuleInfo.arch = MODULEARCH;
+	/* set architecture */
+	ModuleInfo.arch = MODULEARCH;
 
     DebugCmd( ModuleInfo.cref = TRUE ); /* enable debug displays */
 
@@ -1638,7 +1637,7 @@ int EXPQUAL AssembleModule( const char *source )
 #endif
 
     AssembleInit( source );
-
+	
     starttime = clock();
 
 #if 0 /* 1=trigger a protection fault */
@@ -1648,7 +1647,7 @@ int EXPQUAL AssembleModule( const char *source )
 
     for( Parse_Pass = PASS_1; ; Parse_Pass++ ) {
 
-        ResetOrgFixup();
+		ResetOrgFixup();
 
         DebugMsg(( "*************\npass %u\n*************\n", Parse_Pass + 1 ));
         OnePass();
@@ -1725,8 +1724,8 @@ int EXPQUAL AssembleModule( const char *source )
     if ( ( Parse_Pass > PASS_1 ) && write_to_file )
         WriteModule( &ModuleInfo );
 
-    if (Options.dumpSymbols)
-        WriteSymbols();
+	if (Options.dumpSymbols)
+		WriteSymbols();
 
     if ( ModuleInfo.pCodeBuff ) {
         LclFree( ModuleInfo.pCodeBuff );
@@ -1738,106 +1737,106 @@ int EXPQUAL AssembleModule( const char *source )
 
     endtime = clock(); /* is in ms already */
 
-    if (Options.lessoutput)
-    {
-        if (ModuleInfo.g.warning_count == 0 && ModuleInfo.g.error_count == 0)
-        {
-            sprintf(CurrSource, MsgGetEx(MSG_ASSEMBLY_RESULTS_QUIETER),
-                GetFNamePart(GetFName(ModuleInfo.srcfile)->fname)); // write normal string for listing.
-            
-            // console output.
-            #ifdef _WIN32
-                SetConsoleTextAttribute(hConsole, WIN_LTWHITE | (screenBufferInfo.wAttributes & 0xfff0) );
-                printf( "%s", GetFNamePart(GetFName(ModuleInfo.srcfile)->fname));
-                SetConsoleTextAttribute(hConsole, WIN_LTGREEN | (screenBufferInfo.wAttributes & 0xfff0) );
-                printf(": ok\n");
-                SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
-            #else
-                printf(FWHT("%s"), GetFNamePart(GetFName(ModuleInfo.srcfile)->fname));
-                printf(FGRN(": ok\n"));
-            #endif
-        }
-        else
-        {
-            sprintf(CurrSource, MsgGetEx(MSG_ASSEMBLY_RESULTS_QUIET),
-                GetFNamePart(GetFName(ModuleInfo.srcfile)->fname),
-                ModuleInfo.g.warning_count,
-                ModuleInfo.g.error_count); // write normal string for listing.
+	if (Options.lessoutput)
+	{
+		if (ModuleInfo.g.warning_count == 0 && ModuleInfo.g.error_count == 0)
+		{
+			sprintf(CurrSource, MsgGetEx(MSG_ASSEMBLY_RESULTS_QUIETER),
+				GetFNamePart(GetFName(ModuleInfo.srcfile)->fname)); // write normal string for listing.
+			
+			// console output.
+			#ifdef _WIN32
+				SetConsoleTextAttribute(hConsole, WIN_LTWHITE | (screenBufferInfo.wAttributes & 0xfff0) );
+				printf( "%s", GetFNamePart(GetFName(ModuleInfo.srcfile)->fname));
+				SetConsoleTextAttribute(hConsole, WIN_LTGREEN | (screenBufferInfo.wAttributes & 0xfff0) );
+				printf(": ok\n");
+				SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
+			#else
+				printf(FWHT("%s"), GetFNamePart(GetFName(ModuleInfo.srcfile)->fname));
+				printf(FGRN(": ok\n"));
+			#endif
+		}
+		else
+		{
+			sprintf(CurrSource, MsgGetEx(MSG_ASSEMBLY_RESULTS_QUIET),
+				GetFNamePart(GetFName(ModuleInfo.srcfile)->fname),
+				ModuleInfo.g.warning_count,
+				ModuleInfo.g.error_count); // write normal string for listing.
 
-            // console output.
-            #ifdef _WIN32
-                SetConsoleTextAttribute(hConsole, WIN_LTWHITE | (screenBufferInfo.wAttributes & 0xfff0));
-                printf("%s : ", GetFNamePart(GetFName(ModuleInfo.srcfile)->fname));
-                SetConsoleTextAttribute(hConsole, WIN_YELLOW | (screenBufferInfo.wAttributes & 0xfff0));
-                printf("%u warnings", ModuleInfo.g.warning_count);
-                SetConsoleTextAttribute(hConsole, WIN_LTWHITE | (screenBufferInfo.wAttributes & 0xfff0));
-                printf(", ");
-                SetConsoleTextAttribute(hConsole, WIN_LTRED | (screenBufferInfo.wAttributes & 0xfff0));
-                printf("%u errors\n", ModuleInfo.g.error_count);
-                SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
-            #else
-                printf(FWHT("%s : "), GetFNamePart(GetFName(ModuleInfo.srcfile)->fname));
-                printf(FYEL("%u warnings"), ModuleInfo.g.warning_count);
-                printf(", ");
-                printf(FRED("%u errors"), ModuleInfo.g.error_count);
-            #endif
-        }
-    }
-    else
-    {
-        sprintf(CurrSource, MsgGetEx(MSG_ASSEMBLY_RESULTS),
-            GetFName(ModuleInfo.srcfile)->fname,
-            GetLineNumber(),
-            Parse_Pass + 1,
-            endtime - starttime,
-            ModuleInfo.g.warning_count,
-            ModuleInfo.g.error_count); // write normal string for listing.
+			// console output.
+			#ifdef _WIN32
+				SetConsoleTextAttribute(hConsole, WIN_LTWHITE | (screenBufferInfo.wAttributes & 0xfff0));
+				printf("%s : ", GetFNamePart(GetFName(ModuleInfo.srcfile)->fname));
+				SetConsoleTextAttribute(hConsole, WIN_YELLOW | (screenBufferInfo.wAttributes & 0xfff0));
+				printf("%u warnings", ModuleInfo.g.warning_count);
+				SetConsoleTextAttribute(hConsole, WIN_LTWHITE | (screenBufferInfo.wAttributes & 0xfff0));
+				printf(", ");
+				SetConsoleTextAttribute(hConsole, WIN_LTRED | (screenBufferInfo.wAttributes & 0xfff0));
+				printf("%u errors\n", ModuleInfo.g.error_count);
+				SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
+			#else
+				printf(FWHT("%s : "), GetFNamePart(GetFName(ModuleInfo.srcfile)->fname));
+				printf(FYEL("%u warnings"), ModuleInfo.g.warning_count);
+				printf(", ");
+				printf(FRED("%u errors"), ModuleInfo.g.error_count);
+			#endif
+		}
+	}
+	else
+	{
+		sprintf(CurrSource, MsgGetEx(MSG_ASSEMBLY_RESULTS),
+			GetFName(ModuleInfo.srcfile)->fname,
+			GetLineNumber(),
+			Parse_Pass + 1,
+			endtime - starttime,
+			ModuleInfo.g.warning_count,
+			ModuleInfo.g.error_count); // write normal string for listing.
 
-        // console output. "%s: %lu lines, %u passes, %u ms, %u warnings, %u errors"
-        if (Options.quiet == FALSE)
-        {
-            #ifdef _WIN32
-                        SetConsoleTextAttribute(hConsole, WIN_LTWHITE | (screenBufferInfo.wAttributes & 0xfff0));
-                        printf("%s: %lu lines, ", GetFNamePart(GetFName(ModuleInfo.srcfile)->fname), GetLineNumber());
-                        SetConsoleTextAttribute(hConsole, WIN_LTGREEN | (screenBufferInfo.wAttributes & 0xfff0));
-                        printf("%u passes", Parse_Pass + 1);
-                        SetConsoleTextAttribute(hConsole, WIN_LTWHITE | (screenBufferInfo.wAttributes & 0xfff0));
-                        printf(", ");
-                        SetConsoleTextAttribute(hConsole, WIN_CYAN | (screenBufferInfo.wAttributes & 0xfff0));
-                        printf("%u ms", endtime - starttime);
-                        SetConsoleTextAttribute(hConsole, WIN_LTWHITE | (screenBufferInfo.wAttributes & 0xfff0));
-                        printf(", ");
-                        SetConsoleTextAttribute(hConsole, WIN_LTYELLOW | (screenBufferInfo.wAttributes & 0xfff0));
-                        printf("%u warnings", ModuleInfo.g.warning_count);
-                        SetConsoleTextAttribute(hConsole, WIN_LTWHITE | (screenBufferInfo.wAttributes & 0xfff0));
-                        printf(", ");
-                        SetConsoleTextAttribute(hConsole, WIN_LTRED | (screenBufferInfo.wAttributes & 0xfff0));
-                        printf("%u errors\n", ModuleInfo.g.error_count);
-                        SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
-            #else
-                        printf(FWHT("%s: %lu lines, "), GetFNamePart(GetFName(ModuleInfo.srcfile)->fname), GetLineNumber());
-                        printf(FGRN("%u passes"), Parse_Pass + 1);
-                        printf(", ");
-                        printf(FCYN("%u ms"), endtime - starttime);
-                        printf(", ");
-                        printf(FYEL("%u warnings"), ModuleInfo.g.warning_count);
-                        printf(", ");
-                        printf(FRED("%u errors\n"), ModuleInfo.g.error_count);
-            #endif
-        }
-    }
-    if (Options.quiet == FALSE)
-    {
-        fflush(stdout); /* Force flush of each modules assembly progress */
-    }
+		// console output. "%s: %lu lines, %u passes, %u ms, %u warnings, %u errors"
+		if (Options.quiet == FALSE)
+		{
+			#ifdef _WIN32
+						SetConsoleTextAttribute(hConsole, WIN_LTWHITE | (screenBufferInfo.wAttributes & 0xfff0));
+						printf("%s: %lu lines, ", GetFNamePart(GetFName(ModuleInfo.srcfile)->fname), GetLineNumber());
+						SetConsoleTextAttribute(hConsole, WIN_LTGREEN | (screenBufferInfo.wAttributes & 0xfff0));
+						printf("%u passes", Parse_Pass + 1);
+						SetConsoleTextAttribute(hConsole, WIN_LTWHITE | (screenBufferInfo.wAttributes & 0xfff0));
+						printf(", ");
+						SetConsoleTextAttribute(hConsole, WIN_CYAN | (screenBufferInfo.wAttributes & 0xfff0));
+						printf("%u ms", endtime - starttime);
+						SetConsoleTextAttribute(hConsole, WIN_LTWHITE | (screenBufferInfo.wAttributes & 0xfff0));
+						printf(", ");
+						SetConsoleTextAttribute(hConsole, WIN_LTYELLOW | (screenBufferInfo.wAttributes & 0xfff0));
+						printf("%u warnings", ModuleInfo.g.warning_count);
+						SetConsoleTextAttribute(hConsole, WIN_LTWHITE | (screenBufferInfo.wAttributes & 0xfff0));
+						printf(", ");
+						SetConsoleTextAttribute(hConsole, WIN_LTRED | (screenBufferInfo.wAttributes & 0xfff0));
+						printf("%u errors\n", ModuleInfo.g.error_count);
+						SetConsoleTextAttribute(hConsole, screenBufferInfo.wAttributes);
+			#else
+						printf(FWHT("%s: %lu lines, "), GetFNamePart(GetFName(ModuleInfo.srcfile)->fname), GetLineNumber());
+						printf(FGRN("%u passes"), Parse_Pass + 1);
+						printf(", ");
+						printf(FCYN("%u ms"), endtime - starttime);
+						printf(", ");
+						printf(FYEL("%u warnings"), ModuleInfo.g.warning_count);
+						printf(", ");
+						printf(FRED("%u errors\n"), ModuleInfo.g.error_count);
+ 			#endif
+		}
+	}
+	if (Options.quiet == FALSE)
+	{
+		fflush(stdout); /* Force flush of each modules assembly progress */
+	}
     if ( CurrFile[LST] ) {
         LstPrintf( CurrSource );
         LstNL();
     }
 done:
    
-    AssembleFini();
-    ResetOrgFixup();
+	AssembleFini();
+	ResetOrgFixup();
     DebugMsg(("AssembleModule exit\n"));
     return( ModuleInfo.g.error_count == 0 );
 }
@@ -1845,40 +1844,40 @@ done:
 /* ARCH SSE/AVX specific instructions */
 const char* MOVE_ALIGNED_FLOAT()
 {
-    if (MODULEARCH == ARCH_AVX) return "vmovaps"; else return "movaps";
+	if (MODULEARCH == ARCH_AVX) return "vmovaps"; else return "movaps";
 }
 
 const char* MOVE_ALIGNED_INT()
 {
-    if (MODULEARCH == ARCH_AVX) return "vmovdqa"; else return "movdqa";
+	if (MODULEARCH == ARCH_AVX) return "vmovdqa"; else return "movdqa";
 }
 
 const char* MOVE_UNALIGNED_FLOAT()
 {
-    if (MODULEARCH == ARCH_AVX) return "vmovups"; else return "movups";
+	if (MODULEARCH == ARCH_AVX) return "vmovups"; else return "movups";
 }
 
 const char* MOVE_UNALIGNED_INT()
 {
-    if (MODULEARCH == ARCH_AVX) return "vmovdqu"; else return "movdqu";
+	if (MODULEARCH == ARCH_AVX) return "vmovdqu"; else return "movdqu";
 }
 
 const char* MOVE_SINGLE()
 {
-    if (MODULEARCH == ARCH_AVX) return "vmovss"; else return "movss";
+	if (MODULEARCH == ARCH_AVX) return "vmovss"; else return "movss";
 }
 
 const char* MOVE_DOUBLE()
 {
-    if (MODULEARCH == ARCH_AVX) return "vmovsd"; else return "movsd";
+	if (MODULEARCH == ARCH_AVX) return "vmovsd"; else return "movsd";
 }
 
 const char* MOVE_SIMD_DWORD()
 {
-    if (MODULEARCH == ARCH_AVX) return "vmovd"; else return "movd";
+	if (MODULEARCH == ARCH_AVX) return "vmovd"; else return "movd";
 }
 
 const char* MOVE_SIMD_QWORD()
 {
-    if (MODULEARCH == ARCH_AVX) return "vmovq"; else return "movq";
+	if (MODULEARCH == ARCH_AVX) return "vmovq"; else return "movq";
 }

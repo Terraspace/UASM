@@ -480,7 +480,7 @@ all:
              ParseLine(tokenarray);
          }
          /* now write new line with "movups xmm1, GTEMP"   */
-          strcpy(buffer1, MOVE_UNALIGNED_FLOAT());
+		  strcpy(buffer1, MOVE_UNALIGNED_FLOAT());
           strcat(buffer1,buffer);
           strcat(buffer1," , ");
           strcat(buffer1,"GTEMP");
@@ -4059,7 +4059,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 		{
 			(*i)++;
 			strcpy(clabel, tokenarray[(*i)].string_ptr);
-			sprintf(tokenarray[(*i)].string_ptr, "%s%s", ".", clabel);
+			sprintf(tokenarray[(*i)].string_ptr, "%s%s", ".", &clabel);
 		}
 		else if (labelsym == NULL && labelsym2 == NULL)
 		{
@@ -4083,7 +4083,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 		{
 			//(*i)++;
 			strcpy(clabel, tokenarray[(*i)+2].string_ptr);
-			sprintf(tokenarray[(*i)+2].string_ptr, "%s%s", ".", clabel);
+			sprintf(tokenarray[(*i)+2].string_ptr, "%s%s", ".", &clabel);
 			tokenarray[(*i) + 1].string_ptr = tokenarray[(*i) + 2].string_ptr;
 			tokenarray[(*i) + 1].token = T_ID;
 			tokenarray[(*i) + 2].token = T_FINAL;
@@ -4123,7 +4123,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 				{
 					if (opnd1->type != NULL)
 					{
-						recordsym = (struct dsym*)SymSearch(opnd1->type->name);
+						recordsym = SymSearch(opnd1->type->name);
 						/* if it is a RECORD don't throw an error but decorate it with an actual value v2.41*/
 						if (recordsym && recordsym->sym.typekind == TYPE_RECORD)
 						{

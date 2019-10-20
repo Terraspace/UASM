@@ -175,10 +175,10 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 	// Scan through tokens, looking for pointer operators.
 	while (didExpand)
 	{
-		memset(indirectAddr, 0, MAX_LINE_LEN);
-		memset(methodName, 0, MAX_LINE_LEN);
-		memset(newline, 0, MAX_LINE_LEN);
-		memset(refStr, 0, MAX_LINE_LEN);
+		memset(&indirectAddr, 0, MAX_LINE_LEN);
+		memset(&methodName, 0, MAX_LINE_LEN);
+		memset(&newline, 0, MAX_LINE_LEN);
+		memset(&refStr, 0, MAX_LINE_LEN);
 		pStr = newline;
 		pRefStr = refStr;
 		didExpand = FALSE;
@@ -370,7 +370,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 					if (sym && sym->sym.target_type)
 					{
 						foundType = TRUE;
-						pType = indirectAddr;
+						pType = &indirectAddr;
 						pType = strcpy(pType, "[") + 1;
 						for (j = opSqIdx + 1; j < clSqIdx; j++)
 						{
@@ -378,7 +378,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 							pType += strlen(tokenarray[j].string_ptr);
 						}
 						pType = strcpy(pType, "]") + 1;
-						pType = indirectAddr;
+						pType = &indirectAddr;
 						type = (struct dsym*)sym->sym.target_type;
 						firstDeRefIdx = opSqIdx-1; /* pointer->item */
 					}
@@ -391,14 +391,14 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 					EmitError(INVALID_POINTER);
 				else
 				{
-					pMethodStr = methodName;
+					pMethodStr = &methodName;
 					pMethodStr = strcpy(pMethodStr, "_") + 1;
 					strcpy(pMethodStr, type->sym.name);
 					pMethodStr += strlen(type->sym.name);
 					pMethodStr = strcpy(pMethodStr, "_") + 1;
 					strcpy(pMethodStr, tokenarray[i + 1].string_ptr);
 					pMethodStr += strlen(tokenarray[i + 1].string_ptr);
-					pMethodStr = methodName;
+					pMethodStr = &methodName;
 
 					sym = (struct dsym*)SymCheck(pMethodStr);
 					if (sym && sym->sym.isproc)
@@ -582,7 +582,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 		/* Transfer new source line back for token rescan */
 		if (didExpand)
 		{
-			strcpy(line, newline);
+			strcpy(line, &newline);
 			Token_Count = Tokenize(line, 0, tokenarray, TOK_RESCAN);
 		}
 	}
@@ -608,7 +608,7 @@ static void ExpandStaticObjCalls(char *line, struct asm_tok tokenarray[])
 	bool hasExprBracket = FALSE;
 	struct dsym *tsym = NULL;
 
-	memset(newline, 0, MAX_LINE_LEN);
+	memset(&newline, 0, MAX_LINE_LEN);
 	pStr = newline;
 
 	for (i = 0; i < Token_Count; i++)
@@ -777,7 +777,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 	int clIdx, opIdx;
 	int tokenCount;
 	struct asm_tok *tokenarray2;
-	char *p = newline;
+	char *p = &newline;
 	char idxStack[] = { 0, 0, 0, 0 };
 	int stackPt = -1;
 	char idxline[MAX_LINE_LEN];
@@ -786,8 +786,8 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 	bool expandedCall = FALSE;
 	char uCnt = 0;
 
-	strcpy(newline, line);
-	memset(idxline, 0, MAX_LINE_LEN);
+	strcpy(&newline, line);
+	memset(&idxline, 0, MAX_LINE_LEN);
 
 	for (i = 0;i < Token_Count;i++)
 	{
@@ -963,7 +963,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 				}
 
 				/* Reset string pointer*/
-				p = newline;			
+				p = &newline;			
 			}
 		}
 	}
@@ -978,12 +978,12 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 	//finally replace place-holder with idxline value
 	if (expandedCall)
 	{
-		p = newline;
+		p = &newline;
 		p = strstr(p, "invoke"); // even if the line only contains uinvoke, such as in an HLL expression this will still find it.
 		if (p != NULL)
 		{
 			bool inBrackets = FALSE;
-			j = (int)(p - (char *)newline);
+			j = (int)(p - (char *)&newline);
 			stackPt++;
 			idxStack[stackPt] = 0;
 			while (*p)
@@ -998,9 +998,9 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 				p++;
 			}
 		}
-		p = newline;
+		p = &newline;
 		p = strstr(p, "arginvoke(");
-		j = (int)(p - (char *)newline);
+		j = (int)(p - (char *)&newline);
 		while (p)
 		{
 			if (idxline[j] == 0) idxline[j] = 1;
@@ -1010,15 +1010,15 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 			*(p + 14) = (char)(((invCnt & 0x0f)) + 48);
 			p = strstr(p + 1, "arginvoke(");
 			invCnt++;
-			j = (int)(p - (char *)newline);
+			j = (int)(p - (char *)&newline);
 		}
 
 		/* Ensure max nesting depth isn't exceeded */
-		VerifyNesting(newline, hasExprBracket);
+		VerifyNesting(&newline, hasExprBracket);
 	}
 
 	/* Transfer new source line back for token rescan */
-	strcpy(line, newline);
+	strcpy(line, &newline);
 }
 
 static bool PossibleCallExpansion(struct asm_tok tokenarray[])
@@ -1061,7 +1061,7 @@ void EvaluatePreprocessItems(char *line, struct asm_tok tokenarray[])
 	struct dsym *recsym;
 	struct expr opndx[1];
 
-	memset(opndx, 0, sizeof(opndx));
+	memset(&opndx, 0, sizeof(opndx));
 
 	/* pre parse inline records and c-style procedure calls UASM v2.46 */
 	for (i = 0;i < Token_Count; i++)
@@ -1133,23 +1133,23 @@ int PreprocessLine( char *line, struct asm_tok tokenarray[] )
 		// Hll and Object style call expansion is only valid inside a code section, AND if the line contains ( ) or ->.
 		if (CurrSeg && (strcmp(CurrSeg->sym.name, "_TEXT") == 0 || strcmp(CurrSeg->sym.name, "_flat") == 0) && PossibleCallExpansion( tokenarray ))
 		{
-			strcpy(cline, line);
-			ExpandStaticObjCalls(cline, tokenarray);
-			if (strcmp(cline, line) != 0)
+			strcpy(&cline, line);
+			ExpandStaticObjCalls(&cline, tokenarray);
+			if (strcmp(&cline, line) != 0)
 			{
-				strcpy(line, cline);
+				strcpy(line, &cline);
 				Token_Count = Tokenize(line, 0, tokenarray, TOK_RESCAN);
 			}
-			ExpandObjCalls(cline, tokenarray);
-			if (strcmp(cline, line) != 0)
+			ExpandObjCalls(&cline, tokenarray);
+			if (strcmp(&cline, line) != 0)
 			{
-				strcpy(line, cline);
+				strcpy(line, &cline);
 				Token_Count = Tokenize(line, 0, tokenarray, TOK_RESCAN);
 			}
-			ExpandHllCalls(cline, tokenarray, FALSE, 0, FALSE);
-			if (strcmp(cline, line) != 0)
+			ExpandHllCalls(&cline, tokenarray, FALSE, 0, FALSE);
+			if (strcmp(&cline, line) != 0)
 			{
-				strcpy(line, cline);
+				strcpy(line, &cline);
 				Token_Count = Tokenize(line, 0, tokenarray, TOK_RESCAN);
 			}
 		}

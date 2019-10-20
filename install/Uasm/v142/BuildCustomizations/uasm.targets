@@ -96,8 +96,8 @@
       SegmentAlignmentBoundary="%(UASM.SegmentAlignmentBoundary)"
       PackAlignmentBoundary="%(UASM.PackAlignmentBoundary)"
       CallingConvention="%(UASM.CallingConvention)"
-      CommandLineTemplate="%(UASM.CommandLineTemplate)"
       AdditionalOptions="%(UASM.AdditionalOptions)"
+      CommandLineTemplate="%(UASM.CommandLineTemplate)"
       Inputs="%(UASM.Identity)" />
   </Target>
   <Target
