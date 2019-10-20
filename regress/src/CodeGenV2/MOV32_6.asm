@@ -11,9 +11,9 @@ option flat:1
 	mov byte ptr [edi],0e8h
 	mov byte ptr [esi],2ah
 	
-	mov [edi],10    ; assume byte not word
-	mov [eax],0xe8  ; assume byte not word
-	mov [eax],0x1000 ; assume word not dword ?
+	mov [edi],10    ; assume byte 
+	mov [eax],0xe8  ; assume byte 
+	mov [eax],0x1000 ; assume word 
 	
 	and BYTE PTR[eax], 128
 	and [ebx], 128

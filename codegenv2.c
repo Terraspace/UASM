@@ -1522,25 +1522,30 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 	} immValue;
 
 	/* Fix for byte sized immediate converted to OP_I16 */
-	/*if (CodeInfo->opnd[OPND2].type == OP_I16 || CodeInfo->opnd[OPND2].type == OP_I8) {
-		if ((CodeInfo->opnd[OPND2].data32l <= UCHAR_MAX) && (CodeInfo->opnd[OPND2].data32l >= -255)) {
-			if (CodeInfo->opnd[OPND1].type == OP_M || CodeInfo->opnd[OPND1].type == OP_M08) {
+	if ((CodeInfo->opnd[OPND2].type == OP_I16 || CodeInfo->opnd[OPND2].type == OP_I8) && opExpr[1].mem_type != MT_WORD) 
+	{
+		if ((CodeInfo->opnd[OPND2].data32l <= UCHAR_MAX) && (CodeInfo->opnd[OPND2].data32l >= -255)) 
+		{
+			if (CodeInfo->opnd[OPND1].type == OP_M || CodeInfo->opnd[OPND1].type == OP_M08) 
+			{
 				CodeInfo->opnd[OPND1].type = OP_M08;
 				CodeInfo->opnd[OPND2].type = OP_I8;
 			}
 			else if (CodeInfo->opnd[OPND1].type == OP_R8 || CodeInfo->opnd[OPND1].type == OP_AL || CodeInfo->opnd[OPND1].type == OP_CL)
 				CodeInfo->opnd[OPND2].type = OP_I8;
-			else {
-				switch (CodeInfo->token) {
-				case T_BT:
-				case T_BTC:
-				case T_BTR:
-				case T_BTS:
-					CodeInfo->opnd[OPND2].type = OP_I8;
+			else 
+			{
+				switch (CodeInfo->token) 
+				{
+					case T_BT:
+					case T_BTC:
+					case T_BTR:
+					case T_BTS:
+						CodeInfo->opnd[OPND2].type = OP_I8;
 				}
 			}
 		}
-	}*/
+	}
 
 	/* Determine which Memory Encoding Format Table to Use. */
 	if (CodeInfo->Ofssize == USE64)
