@@ -3277,9 +3277,9 @@ static void win64_SaveRegParams_RSP(struct proc_info* info)
 				if (param->sym.is_vararg == FALSE) {
 					if ((param->sym.mem_type & MT_FLOAT) && param->sym.used) {  // added  && param->sym.used
 						if (param->sym.mem_type == MT_REAL8)
-							AddLineQueueX("%s qword ptr[%r+%u], %r", MOVE_DOUBLE, T_RSP, 8 + i * 8, T_XMM0 + i);
+							AddLineQueueX("%s qword ptr[%r+%u], %r", MOVE_DOUBLE(), T_RSP, 8 + i * 8, T_XMM0 + i);
 						else if (param->sym.mem_type == MT_REAL4)
-							AddLineQueueX("%s dword ptr[%r+%u], %r", MOVE_SINGLE, T_RSP, 8 + i * 8, T_XMM0 + i);
+							AddLineQueueX("%s dword ptr[%r+%u], %r", MOVE_SINGLE(), T_RSP, 8 + i * 8, T_XMM0 + i);
 						info->home_used[i] = 1;
 						++info->home_taken;
 					}
@@ -3315,9 +3315,9 @@ static void win64_SaveRegParams_RSP(struct proc_info* info)
 				if (param->sym.is_vararg == FALSE) {
 					if ((param->sym.mem_type & MT_FLOAT) && param->sym.used) {  // added  && param->sym.used
 						if (param->sym.mem_type == MT_REAL8)
-							AddLineQueueX("%s qword ptr[%r+%u], %r", MOVE_DOUBLE, T_RSP, 8 + i * 8, T_XMM0 + i);
+							AddLineQueueX("%s qword ptr[%r+%u], %r", MOVE_DOUBLE(), T_RSP, 8 + i * 8, T_XMM0 + i);
 						else if (param->sym.mem_type == MT_REAL4)
-							AddLineQueueX("%s dword ptr[%r+%u], %r", MOVE_SINGLE, T_RSP, 8 + i * 8, T_XMM0 + i);
+							AddLineQueueX("%s dword ptr[%r+%u], %r", MOVE_SINGLE(), T_RSP, 8 + i * 8, T_XMM0 + i);
 						info->regcallmshome_used[i] = 1;
 						++info->home_taken;
 					}
@@ -3352,7 +3352,7 @@ static void win64_SaveRegParams_RSP(struct proc_info* info)
 				/* v2.05: save XMMx if type is float/double */
 				if (param->sym.is_vararg == FALSE) {
 					if ((param->sym.mem_type & MT_FLOAT) && param->sym.used) {  // added  && param->sym.used
-						AddLineQueueX("%s [%r+%u], %r", MOVE_SIMD_QWORD, T_RSP, 8 + i * 8, T_XMM0 + i);
+						AddLineQueueX("%s [%r+%u], %r", MOVE_SIMD_QWORD(), T_RSP, 8 + i * 8, T_XMM0 + i);
 						info->home_used[i] = 1;
 						++info->home_taken;
 						}
@@ -3378,7 +3378,7 @@ static void win64_SaveRegParams_RSP(struct proc_info* info)
 			/* v2.05: save XMMx if type is float/double */
 			if (param->sym.is_vararg == FALSE) {
 				if (param->sym.mem_type & MT_FLOAT)
-					AddLineQueueX("%s [%r+%u], %r", MOVE_SIMD_QWORD, T_RSP, 8 + i * 8, T_XMM0 + i);
+					AddLineQueueX("%s [%r+%u], %r", MOVE_SIMD_QWORD(), T_RSP, 8 + i * 8, T_XMM0 + i);
 				else
 					AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, regcallms64_regs64[i]);
 				param = param->nextparam;
@@ -3393,7 +3393,7 @@ static void win64_SaveRegParams_RSP(struct proc_info* info)
 			/* v2.05: save XMMx if type is float/double */
 			if (param->sym.is_vararg == FALSE) {
 				if (param->sym.mem_type & MT_FLOAT)
-					AddLineQueueX("%s [%r+%u], %r", MOVE_SIMD_QWORD, T_RSP, 8 + i * 8, T_XMM0 + i);
+					AddLineQueueX("%s [%r+%u], %r", MOVE_SIMD_QWORD(), T_RSP, 8 + i * 8, T_XMM0 + i);
 				else
 					AddLineQueueX("mov [%r+%u], %r", T_RSP, 8 + i * 8, ms64_regs64[i]);
 				param = param->nextparam;
@@ -4147,9 +4147,9 @@ static void win64_SaveRegParams_RBP(struct proc_info *info)
 			if (param->sym.is_vararg == FALSE)
 			{
 				if (param->sym.mem_type & MT_FLOAT && param->sym.total_size == 4 && param->sym.used)
-					AddLineQueueX("%s [%r+%u], %r", MOVE_SINGLE, T_RSP, 8 + i * 8, T_XMM0 + i);
+					AddLineQueueX("%s [%r+%u], %r", MOVE_SINGLE(), T_RSP, 8 + i * 8, T_XMM0 + i);
 				else if (param->sym.mem_type & MT_FLOAT && param->sym.total_size == 8 && param->sym.used)
-					AddLineQueueX("%s [%r+%u], %r", MOVE_DOUBLE, T_RSP, 8 + i * 8, T_XMM0 + i);
+					AddLineQueueX("%s [%r+%u], %r", MOVE_DOUBLE(), T_RSP, 8 + i * 8, T_XMM0 + i);
 				else if (param->sym.used)
 				{
 					if (param->sym.mem_type == MT_BYTE || param->sym.mem_type == MT_SBYTE)
@@ -4175,9 +4175,9 @@ static void win64_SaveRegParams_RBP(struct proc_info *info)
 			if (param->sym.is_vararg == FALSE)
 			{
 				if (param->sym.mem_type & MT_FLOAT && param->sym.total_size == 4 && param->sym.used)
-					AddLineQueueX("%s [%r+%u], %r", MOVE_SINGLE, T_RSP, 8 + i * 8, T_XMM0 + i);
+					AddLineQueueX("%s [%r+%u], %r", MOVE_SINGLE(), T_RSP, 8 + i * 8, T_XMM0 + i);
 				else if (param->sym.mem_type & MT_FLOAT && param->sym.total_size == 8 && param->sym.used)
-					AddLineQueueX("%s [%r+%u], %r", MOVE_DOUBLE, T_RSP, 8 + i * 8, T_XMM0 + i);
+					AddLineQueueX("%s [%r+%u], %r", MOVE_DOUBLE(), T_RSP, 8 + i * 8, T_XMM0 + i);
 				else if (param->sym.used)
 				{
 					if (param->sym.mem_type == MT_BYTE || param->sym.mem_type == MT_SBYTE)
@@ -4358,19 +4358,19 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
 			for (cnt = *regist++; cnt; cnt--, regist++) {
 				if (resstack) {                         //sym_ReservedStack has value
 					if (GetValueSp(*regist) & OP_XMM) {
-						AddLineQueueX("%s [%r+%u+%s], %r", MOVE_ALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
+						AddLineQueueX("%s [%r+%u+%s], %r", MOVE_ALIGNED_INT(), T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
 						if (info->isframe && ModuleInfo.frame_auto)
 							AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEXMM128, *regist, NUMQUAL i, sym_ReservedStack->name);
 						i += 16;
 					}
 					else if (GetValueSp(*regist) & OP_YMM) {
-						AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
+						AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT(), T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
 						if (info->isframe && ModuleInfo.frame_auto)
 							AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEYMM256, *regist, NUMQUAL i, sym_ReservedStack->name);
 						i += 32;
 					}
 					else if (GetValueSp(*regist) & OP_ZMM) {
-						AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
+						AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT(), T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
 						if (info->isframe && ModuleInfo.frame_auto)
 							AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEZMM512, *regist, NUMQUAL i, sym_ReservedStack->name);
 						i += 64;
@@ -4378,19 +4378,19 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
 				}
 				else {                                   // sym_ReservedStack has no value
 					if (GetValueSp(*regist) & OP_XMM) {
-						AddLineQueueX("%s [%r+%u], %r", MOVE_ALIGNED_INT, T_RSP, NUMQUAL i, *regist);
+						AddLineQueueX("%s [%r+%u], %r", MOVE_ALIGNED_INT(), T_RSP, NUMQUAL i, *regist);
 						if (info->isframe && ModuleInfo.frame_auto)
 							AddLineQueueX("%r %r, %u", T_DOT_SAVEXMM128, *regist, NUMQUAL i);
 						i += 16;
 					}
 					else if (GetValueSp(*regist) & OP_YMM) {
-						AddLineQueueX("%s [%r+%u], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, *regist);
+						AddLineQueueX("%s [%r+%u], %r", MOVE_UNALIGNED_INT(), T_RSP, NUMQUAL i, *regist);
 						if (info->isframe && ModuleInfo.frame_auto)
 							AddLineQueueX("%r %r, %u", T_DOT_SAVEYMM256, *regist, NUMQUAL i);
 						i += 32;
 					}
 					else if (GetValueSp(*regist) & OP_ZMM) {
-						AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, *regist);
+						AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT(), T_RSP, NUMQUAL i, *regist);
 						if (info->isframe && ModuleInfo.frame_auto)
 							AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEZMM512, *regist, NUMQUAL i);
 						i += 64;
@@ -4609,7 +4609,7 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 							if (resstack) {
 								//if ( ( 1 << GetRegNo( *regist ) ) & win64_nvxmm )  {
 								if (GetValueSp(*regist) & OP_XMM) {
-									AddLineQueueX("%s [%r+%u+%s], %r", MOVE_ALIGNED_INT, T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
+									AddLineQueueX("%s [%r+%u+%s], %r", MOVE_ALIGNED_INT(), T_RSP, NUMQUAL i, sym_ReservedStack->name, *regist);
 									AddLineQueueX("%r %r, %u+%s", T_DOT_SAVEXMM128, *regist, NUMQUAL i, sym_ReservedStack->name);
 									i += 16;// XYZMMsize;
 								}
@@ -4628,7 +4628,7 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 							else {
 								// if ( ( 1 << GetRegNo( *regist ) ) & win64_nvxmm )  {
 								if (GetValueSp(*regist) & OP_XMM) {
-									AddLineQueueX("%s [%r+%u], %r", MOVE_ALIGNED_INT, T_RSP, NUMQUAL i, *regist);
+									AddLineQueueX("%s [%r+%u], %r", MOVE_ALIGNED_INT(), T_RSP, NUMQUAL i, *regist);
 									AddLineQueueX("%r %r, %u", T_DOT_SAVEXMM128, *regist, NUMQUAL i);
 									i += 16;// XYZMMsize;
 								}
@@ -4713,7 +4713,7 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 									//else{
 									for (i = 0, j = 0; i < xreg; i++) {
 										while (xyused[j] != 0) j++;
-										AddLineQueueX("%s dword ptr [rsp+%d],%r", MOVE_SINGLE, vsize + vectstart, T_XMM0 + j);
+										AddLineQueueX("%s dword ptr [rsp+%d],%r", MOVE_SINGLE(), vsize + vectstart, T_XMM0 + j);
 										xyused[j] = 1;
 										vsize += 4;
 									}
@@ -4723,7 +4723,7 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 									if (xreg <= 3) {
 										for (i = 0, j = 0; i < xreg; i++) {
 											while (xyused[j] != 0) j++;
-											AddLineQueueX("%s qword ptr [rsp+%d],%r", MOVE_DOUBLE, vsize + vectstart, T_XMM0 + j);
+											AddLineQueueX("%s qword ptr [rsp+%d],%r", MOVE_DOUBLE(), vsize + vectstart, T_XMM0 + j);
 											xyused[j] = 1;
 											vsize += 8;
 										}
@@ -4737,14 +4737,14 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 									break;
 								case 16:
 									if (xreg == 1) {
-										AddLineQueueX("%s oword ptr [rsp+%d],%r", MOVE_UNALIGNED_FLOAT, vsize + vectstart, T_XMM0 + n);
+										AddLineQueueX("%s oword ptr [rsp+%d],%r", MOVE_UNALIGNED_FLOAT(), vsize + vectstart, T_XMM0 + n);
 										xyused[n] = 1;
 										vsize += 16;
 									}
 									else {
 										for (i = 0, j = 0; i < xreg; i++) {
 											while (xyused[j] != 0) j++;
-											AddLineQueueX("%s oword ptr [rsp+%d],%r", MOVE_UNALIGNED_FLOAT, vsize + vectstart, T_XMM0 + j);
+											AddLineQueueX("%s oword ptr [rsp+%d],%r", MOVE_UNALIGNED_FLOAT(), vsize + vectstart, T_XMM0 + j);
 											xyused[j] = 1;
 											vsize += 16;
 										}
@@ -4859,7 +4859,7 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 										for (i = 0, j = 0; i < xreg; i++)
 										{
 											while (regcxyused[j] != 0) j++;
-											AddLineQueueX("%s dword ptr [rsp+%d],%r", MOVE_SINGLE, regcsize + vectstart, T_XMM0 + j);
+											AddLineQueueX("%s dword ptr [rsp+%d],%r", MOVE_SINGLE(), regcsize + vectstart, T_XMM0 + j);
 											regcxyused[j] = 1;
 											regcsize += 4;
 										}
@@ -4871,7 +4871,7 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 											for (i = 0, j = 0; i < xreg; i++)
 											{
 												while (regcxyused[j] != 0) j++;
-												AddLineQueueX("%s qword ptr [rsp+%d],%r", MOVE_DOUBLE, regcsize + vectstart, T_XMM0 + j);
+												AddLineQueueX("%s qword ptr [rsp+%d],%r", MOVE_DOUBLE(), regcsize + vectstart, T_XMM0 + j);
 												regcxyused[j] = 1;
 												regcsize += 8;
 											}
@@ -4887,7 +4887,7 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 									case 16:
 										if (xreg == 1)
 										{
-											AddLineQueueX("%s oword ptr [rsp+%d],%r", MOVE_UNALIGNED_FLOAT, regcsize + vectstart, T_XMM0 + n);
+											AddLineQueueX("%s oword ptr [rsp+%d],%r", MOVE_UNALIGNED_FLOAT(), regcsize + vectstart, T_XMM0 + n);
 											regcxyused[n] = 1;
 											regcsize += 16;
 										}
@@ -4896,7 +4896,7 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 											for (i = 0, j = 0; i < xreg; i++)
 											{
 												while (regcxyused[j] != 0) j++;
-												AddLineQueueX("%s oword ptr [rsp+%d],%r", MOVE_UNALIGNED_FLOAT, regcsize + vectstart, T_XMM0 + j);
+												AddLineQueueX("%s oword ptr [rsp+%d],%r", MOVE_UNALIGNED_FLOAT(), regcsize + vectstart, T_XMM0 + j);
 												regcxyused[j] = 1;
 												regcsize += 16;
 											}
@@ -5085,25 +5085,25 @@ static void write_win64_default_epilogue_RBP(struct proc_info *info)
 					if (GetValueSp(*regs) & OP_XMM) {
 						DebugMsg1(("write_win64_default_epilogue(%s): restore %s, offset=%d\n", CurrProc->sym.name, GetResWName(*regs, NULL), i));
 						if (ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
-							AddLineQueueX("%s %r, [%r + %d + %s]", MOVE_ALIGNED_INT, *regs, restoreReg, NUMQUAL i - info->frameofs, sym_ReservedStack->name);
+							AddLineQueueX("%s %r, [%r + %d + %s]", MOVE_ALIGNED_INT(), *regs, restoreReg, NUMQUAL i - info->frameofs, sym_ReservedStack->name);
 						else
-							AddLineQueueX("%s %r, [%r + %d]", MOVE_ALIGNED_INT, *regs, restoreReg, NUMQUAL i - info->frameofs);
+							AddLineQueueX("%s %r, [%r + %d]", MOVE_ALIGNED_INT(), *regs, restoreReg, NUMQUAL i - info->frameofs);
 						i += 16;
 					}
 					else if (GetValueSp(*regs) & OP_YMM) {
 						DebugMsg1(("write_win64_default_epilogue(%s): restore %s, offset=%d\n", CurrProc->sym.name, GetResWName(*regs, NULL), i));
 						if (ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
-							AddLineQueueX("%s %r, [%r + %d + %s]", MOVE_UNALIGNED_INT, *regs, restoreReg, NUMQUAL i - info->frameofs, sym_ReservedStack->name);
+							AddLineQueueX("%s %r, [%r + %d + %s]", MOVE_UNALIGNED_INT(), *regs, restoreReg, NUMQUAL i - info->frameofs, sym_ReservedStack->name);
 						else
-							AddLineQueueX("%s %r, [%r + %d]", MOVE_UNALIGNED_INT, *regs, restoreReg, NUMQUAL i - info->frameofs);
+							AddLineQueueX("%s %r, [%r + %d]", MOVE_UNALIGNED_INT(), *regs, restoreReg, NUMQUAL i - info->frameofs);
 						i += 32;
 					}
 					else if (GetValueSp(*regs) & OP_ZMM) {
 						DebugMsg1(("write_win64_default_epilogue(%s): restore %s, offset=%d\n", CurrProc->sym.name, GetResWName(*regs, NULL), i));
 						if (ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
-							AddLineQueueX("%s %r, [%r + %d + %s]", MOVE_UNALIGNED_INT, *regs, restoreReg, NUMQUAL i - info->frameofs, sym_ReservedStack->name);
+							AddLineQueueX("%s %r, [%r + %d + %s]", MOVE_UNALIGNED_INT(), *regs, restoreReg, NUMQUAL i - info->frameofs, sym_ReservedStack->name);
 						else
-							AddLineQueueX("%s %r, [%r + %d]", MOVE_UNALIGNED_INT, *regs, restoreReg, NUMQUAL i - info->frameofs);
+							AddLineQueueX("%s %r, [%r + %d]", MOVE_UNALIGNED_INT(), *regs, restoreReg, NUMQUAL i - info->frameofs);
 						i += 64;
 					}
 				}
@@ -5185,7 +5185,7 @@ static void write_win64_default_epilogue_RSP(struct proc_info *info)
 					{
 						if (GetValueSp(*regs) & OP_XMM)
 						{
-							AddLineQueueX("%s %r, [%r + %u + %s]", MOVE_ALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i, sym_ReservedStack->name);
+							AddLineQueueX("%s %r, [%r + %u + %s]", MOVE_ALIGNED_INT(), *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i, sym_ReservedStack->name);
 							i += 16;
 						}
 						else if (GetValueSp(*regs) & OP_YMM)
@@ -5203,7 +5203,7 @@ static void write_win64_default_epilogue_RSP(struct proc_info *info)
 					{
 						if (GetValueSp(*regs) & OP_XMM)
 						{
-							AddLineQueueX("%s %r, [%r + %u]", MOVE_ALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i);
+							AddLineQueueX("%s %r, [%r + %u]", MOVE_ALIGNED_INT(), *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i);
 							i += 16;
 						}
 						else if (GetValueSp(*regs) & OP_YMM)
@@ -5916,15 +5916,15 @@ static void write_sysv_default_prologue_RBP(struct proc_info *info)
 			for (cnt = *regist++; cnt; cnt--, regist++)
 			{
 				if (GetValueSp(*regist) & OP_XMM) {
-					AddLineQueueX("%s [%r+%u], %r", MOVE_ALIGNED_INT, T_RSP, NUMQUAL i, *regist);
+					AddLineQueueX("%s [%r+%u], %r", MOVE_ALIGNED_INT(), T_RSP, NUMQUAL i, *regist);
 					i += 16;
 				}
 				else if (GetValueSp(*regist) & OP_YMM) {
-					AddLineQueueX("%s [%r+%u], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, *regist);
+					AddLineQueueX("%s [%r+%u], %r", MOVE_UNALIGNED_INT(), T_RSP, NUMQUAL i, *regist);
 					i += 32;
 				}
 				else if (GetValueSp(*regist) & OP_ZMM) {
-					AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT, T_RSP, NUMQUAL i, *regist);
+					AddLineQueueX("%s [%r+%u+%s], %r", MOVE_UNALIGNED_INT(), T_RSP, NUMQUAL i, *regist);
 					i += 64;
 				}
 			}
@@ -5982,17 +5982,17 @@ static void write_sysv_default_epilogue_RBP(struct proc_info *info)
 			{
 				if (GetValueSp(*regs) & OP_XMM)
 				{
-					AddLineQueueX("%s %r, [%r + %u]", MOVE_ALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i);
+					AddLineQueueX("%s %r, [%r + %u]", MOVE_ALIGNED_INT(), *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i);
 					i += 16;
 				}
 				if (GetValueSp(*regs) & OP_YMM)
 				{
-					AddLineQueueX("%s %r, [%r + %u]", MOVE_UNALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i);
+					AddLineQueueX("%s %r, [%r + %u]", MOVE_UNALIGNED_INT(), *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i);
 					i += 32;
 				}
 				if (GetValueSp(*regs) & OP_ZMM)
 				{
-					AddLineQueueX("%s %r, [%r + %u]", MOVE_UNALIGNED_INT, *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i);
+					AddLineQueueX("%s %r, [%r + %u]", MOVE_UNALIGNED_INT(), *regs, stackreg[ModuleInfo.Ofssize], NUMQUAL i);
 					i += 64;
 				}
 			}

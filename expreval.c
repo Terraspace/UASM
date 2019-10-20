@@ -480,7 +480,7 @@ all:
              ParseLine(tokenarray);
          }
          /* now write new line with "movups xmm1, GTEMP"   */
-          strcpy(buffer1, MOVE_UNALIGNED_FLOAT);
+          strcpy(buffer1, MOVE_UNALIGNED_FLOAT());
           strcat(buffer1,buffer);
           strcat(buffer1," , ");
           strcat(buffer1,"GTEMP");

@@ -120,16 +120,6 @@ struct qdesc            LinnumQueue;    /* queue of line_num_info items */
 
 bool write_to_file;     /* write object module */
 
-/* ARCH SSE/AVX specific instructions */
-char *MOVE_ALIGNED_FLOAT = "movaps";
-char *MOVE_ALIGNED_INT = "movdqa";
-char *MOVE_UNALIGNED_FLOAT = "movups";
-char *MOVE_UNALIGNED_INT = "movdqu";
-char *MOVE_SINGLE = "movss";
-char *MOVE_DOUBLE = "movsd";
-char *MOVE_SIMD_DWORD = "movd";
-char *MOVE_SIMD_QWORD = "movq";
-
 #if 0
 /* for OW, it would be good to remove the CharUpperA() emulation
  * implemented in apiemu.c. Unfortunately, OW isn't happy with
@@ -1850,4 +1840,45 @@ done:
     ResetOrgFixup();
     DebugMsg(("AssembleModule exit\n"));
     return( ModuleInfo.g.error_count == 0 );
+}
+
+/* ARCH SSE/AVX specific instructions */
+const char* MOVE_ALIGNED_FLOAT()
+{
+    if (MODULEARCH == ARCH_AVX) return "vmovaps"; else return "movaps";
+}
+
+const char* MOVE_ALIGNED_INT()
+{
+    if (MODULEARCH == ARCH_AVX) return "vmovdqa"; else return "movdqa";
+}
+
+const char* MOVE_UNALIGNED_FLOAT()
+{
+    if (MODULEARCH == ARCH_AVX) return "vmovups"; else return "movups";
+}
+
+const char* MOVE_UNALIGNED_INT()
+{
+    if (MODULEARCH == ARCH_AVX) return "vmovdqu"; else return "movdqu";
+}
+
+const char* MOVE_SINGLE()
+{
+    if (MODULEARCH == ARCH_AVX) return "vmovss"; else return "movss";
+}
+
+const char* MOVE_DOUBLE()
+{
+    if (MODULEARCH == ARCH_AVX) return "vmovsd"; else return "movsd";
+}
+
+const char* MOVE_SIMD_DWORD()
+{
+    if (MODULEARCH == ARCH_AVX) return "vmovd"; else return "movd";
+}
+
+const char* MOVE_SIMD_QWORD()
+{
+    if (MODULEARCH == ARCH_AVX) return "vmovq"; else return "movq";
 }
