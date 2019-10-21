@@ -11,7 +11,8 @@
 "-C<p|u|x>\0"       "Set OPTION CASEMAP: p=NONE, u=ALL, x=NOTPUBLIC (default)\0"
 "-archSSE\0"		"Set OPTION ARCH: SSE = Use SSE in generated code (default)\0"
 "-archAVX\0"		"Set OPTION ARCH: AVX = Use AVX in generated code\0"
-"-nomlib\0"         "Disable internal Macro Library\0"
+"-nomlib\0"         "Disable the internal Macro Library\0"
+"-withx86mlib\0"    "Use the internal x86 Macro Library\0"
 "-D<name>[=text]\0" "Define text macro\0"
 "-e<number>\0"      "Set error limit number (default=50)\0"
 "-EP\0"             "Output preprocessed listing to stdout\0"
@@ -85,7 +86,6 @@
 #if COFF_SUPPORT
 "-zzs\0"            "Store decorated name of start address (COFF only)\0"
 #endif
-"@env_var\0"        "Environment variable or file containing further commands\0"
 "output formats:\0\0"
 #if BIN_SUPPORT
 "-bin\0"            "plain binary file\0"

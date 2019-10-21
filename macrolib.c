@@ -35,10 +35,10 @@
 
 /* MACRO names  */
 char *macName64[] = {
-  "NOTMASK128", "GETMASK128", "REGS15STORAGE", "MOV64", "MOV128", "MOVXMMR128","SLXMMR","SHIFTLEFT128","SRXMMR","SHIFTRIGHT128","MEMALLOC", "MEMFREE", "CSTR", "WSTR", "FP4", "FP8", "FP10", "LOADSS", "LOADSD", "LOADPS", "MEMALIGN", "RV", "REPARG", "EXPAND_PREFIX", "_ARRAY", "_DELETEARRAY", "OINTERFACE", "ENDOINTERFACE", "CVIRTUAL", "CLASS", "ENDCLASS", "CMETHOD", "METHOD", "STATICMETHOD", "VECMETHOD", "STATICVECMETHOD", "ENDMETHOD", "_DECLARE", "_STATICREF", "_NEW", "_RBXNEW", "_ITEM", "_ITEMR", "_INVOKE", "_I", "_STATIC", "_DELETE", "_VINVOKE", "_V", "CSTATIC", "LOADMSS", "LOADMSD", "UINVOKE", "ASFLOAT", "ASDOUBLE", "R4P", "R8P", "ARGINVOKE", "COMINTERFACE", "ENDCOMINTERFACE", "ENDMETHODS", "_DEREF", "_DEREFI", "_SINVOKE", "RAWINTERFACE", "ENDRAWINTERFACE", "_DEREFR", "_DEREFRR","STDFUNC"
+  "NOTMASK128", "GETMASK128", "REGS15STORAGE", "MOV64", "MOV128", "MOVXMMR128","SLXMMR","SHIFTLEFT128","SRXMMR","SHIFTRIGHT128","MEMALLOC", "MEMFREE", "CSTR", "WSTR", "FP4", "FP8", "FP10", "LOADSS", "LOADSD", "LOADPS", "ALIGNADDR", "RV", "REPARG", "EXPAND_PREFIX", "_ARRAY", "_DELETEARRAY", "OINTERFACE", "ENDOINTERFACE", "CVIRTUAL", "CLASS", "ENDCLASS", "CMETHOD", "METHOD", "STATICMETHOD", "VECMETHOD", "STATICVECMETHOD", "ENDMETHOD", "_DECLARE", "_STATICREF", "_NEW", "_RBXNEW", "_ITEM", "_ITEMR", "_INVOKE", "_I", "_STATIC", "_DELETE", "_VINVOKE", "_V", "CSTATIC", "LOADMSS", "LOADMSD", "UINVOKE", "ASFLOAT", "ASDOUBLE", "R4P", "R8P", "ARGINVOKE", "COMINTERFACE", "ENDCOMINTERFACE", "ENDMETHODS", "_DEREF", "_DEREFI", "_SINVOKE", "RAWINTERFACE", "ENDRAWINTERFACE", "_DEREFR", "_DEREFRR","STDFUNC"
 };
 char *macName32[] = {
- "NOTMASK128", "GETMASK128", "MOV64", "MOV128", "MOVXMMR128","SLXMMR","SHIFTLEFT128","SRXMMR","SHIFTRIGHT128","MEMALLOC","MEMFREE","CSTR","WSTR","FP4","FP8","FP10","LOADSS","LOADPS","MEMALIGN", "RV", "REPARG", "EXPAND_PREFIX", "LOADMSS", "LOADMSD", "UINVOKE", "ASFLOAT", "ASDOUBLE", "R4P", "R8P", "ARGINVOKE", "COMINTERFACE", "ENDCOMINTERFACE", "_VINVOKE", "_V", "CVIRTUAL", "ENDMETHODS"
+ "NOTMASK128", "GETMASK128", "MOV64", "MOV128", "MOVXMMR128","SLXMMR","SHIFTLEFT128","SRXMMR","SHIFTRIGHT128","MEMALLOC","MEMFREE","CSTR","WSTR","FP4","FP8","FP10","LOADSS","LOADPS","ALIGNADDR", "RV", "REPARG", "EXPAND_PREFIX", "LOADMSS", "LOADMSD", "UINVOKE", "ASFLOAT", "ASDOUBLE", "R4P", "R8P", "ARGINVOKE", "COMINTERFACE", "ENDCOMINTERFACE", "_VINVOKE", "_V", "CVIRTUAL", "ENDMETHODS"
 };
 
 /* MACRO definitions */
@@ -63,7 +63,7 @@ char *macDef64[] = {
 	"LOADSS MACRO reg, val",
 	"LOADSD MACRO reg, val",
 	"LOADPS MACRO reg, val",
-	"MEMALIGN MACRO reg, number",
+	"ALIGNADDR MACRO reg, number",
 	"RV MACRO FuncName:REQ, args:VARARG",
 	"REPARG MACRO arg",
 	"EXPAND_PREFIX MACRO txtitm",
@@ -132,7 +132,7 @@ char *macDef32[] = {
 	"FP10 macro value:REQ",
 	"LOADSS MACRO reg, val",
 	"LOADPS MACRO reg, val",
-	"MEMALIGN MACRO reg, number",
+	"ALIGNADDR MACRO reg, number",
 	"RV MACRO FuncName:REQ, args:VARARG",
 	"REPARG MACRO arg",
 	"EXPAND_PREFIX MACRO txtitm",
@@ -159,16 +159,16 @@ void CreateMacroLibCases64(void)
 	{
 		AddLineQueue("uinvoke EQU UINVOKE");
 		AddLineQueue("Uinvoke EQU UINVOKE");
+		AddLineQueue("arginvoke EQU ARGINVOKE");
 		AddLineQueue("asfloat EQU ASFLOAT");
 		AddLineQueue("asdouble EQU ASDOUBLE");
 		AddLineQueue("r4p EQU R4P");
 		AddLineQueue("r8p EQU R8P");
-		AddLineQueue("arginvoke EQU ARGINVOKE");
 		AddLineQueue("cstr EQU CSTR");
 		AddLineQueue("CStr EQU CSTR");
 		AddLineQueue("wstr EQU WSTR");
 		AddLineQueue("WStr EQU WSTR");
-		AddLineQueue("memalign EQU MEMALIGN");
+		AddLineQueue("alignaddr EQU ALIGNADDR");
 		AddLineQueue("define EQU DEFINE");
 		AddLineQueue("Define EQU DEFINE");
 		AddLineQueue("mov64 EQU MOV64");
@@ -190,16 +190,16 @@ void CreateMacroLibCases32(void)
 	{
 		AddLineQueue("uinvoke EQU UINVOKE");
 		AddLineQueue("Uinvoke EQU UINVOKE");
+		AddLineQueue("arginvoke EQU ARGINVOKE");
 		AddLineQueue("asfloat EQU ASFLOAT");
 		AddLineQueue("asdouble EQU ASDOUBLE");
 		AddLineQueue("r4p EQU R4P");
 		AddLineQueue("r8p EQU R8P");
-		AddLineQueue("arginvoke EQU ARGINVOKE");
 		AddLineQueue("cstr EQU CSTR");
 		AddLineQueue("CStr EQU CSTR");
 		AddLineQueue("wstr EQU WSTR");
 		AddLineQueue("WStr EQU WSTR");
-		AddLineQueue("memalign EQU MEMALIGN");
+		AddLineQueue("alignaddr EQU ALIGNADDR");
 		AddLineQueue("define EQU DEFINE");
 		AddLineQueue("Define EQU DEFINE");
 		AddLineQueue("mov64 EQU MOV64");
@@ -249,7 +249,7 @@ void InitAutoMacros64(void)
 /*18 LOADSS*/			"IF @Arch EQ 0", "mov eax, val", "movd reg, eax", "ELSE", "mov eax, val", "vmovd reg, eax", "ENDIF", "ENDM", NULL,
 /*19 LOADSD*/			"IF @Arch EQ 0", "mov rax, real8 ptr val", "movq reg, rax", "ELSE", "mov rax, real8 ptr val", "vmovq reg, rax", "ENDIF", "ENDM", NULL,
 /*20 LOADPS*/			"IF @Arch EQ 0", "mov eax, val", "movd reg, eax", "pshufd reg, reg, 0", "ELSE", "mov eax, val", "vmovd reg, eax", "vpshufd reg, reg, 0", "ENDIF", "ENDM", NULL,
-/*21 MEMALIGN*/			"add reg, number - 1", "and reg, -number", "ENDM", NULL,
+/*21 ALIGNADDR*/		"add reg, number - 1", "and reg, -number", "ENDM", NULL,
 /*22 RV*/				"arg equ <invoke FuncName>", "FOR var, <args>", "arg CATSTR arg, <, EXPAND_PREFIX(var)>", "ENDM", "arg", "EXITM <rax>", "ENDM", NULL,
 /*23 REPARG*/			"LOCAL nustr", "quot SUBSTR <arg>, 1, 1", "IFIDN quot, <\">", ".data", "nustr db arg, 0", ".code", "EXITM <ADDR nustr>", "ELSE", "EXITM <ADDR arg>", "ENDIF", "ENDM", NULL,
 /*24 EXPAND_PREFIX*/	"LOCAL prefix1, wrd, nu, varname", "prefix1 SUBSTR <txtitm>, 1, 1", "IFIDN prefix1, <&>", "nu SUBSTR <txtitm>, 2", "wrd CATSTR <ADDR >, nu", "EXITM <wrd>", "ENDIF", "IFIDN prefix1, <*>", "nu SUBSTR <txtitm>, 2", ".data ?", "varname dq ?", ".code", "mov rax, nu", "mov rax,[rax]", "mov varname, rax", "EXITM <varname>", "ENDIF", "EXITM <txtitm>", "ENDM", NULL,

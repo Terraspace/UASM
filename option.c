@@ -318,14 +318,20 @@ OPTFUNC( SetCaseMap )
         {
             CreateMacroLibCases64();
 #if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))
-            x86CreateMacroLibCases64();
+            if (Options.withx86mlib == TRUE)
+            {
+                x86CreateMacroLibCases64();
+            }
 #endif
         }
         else if (Options.nomlib == FALSE && ModuleInfo.defOfssize == USE32)
         {
             CreateMacroLibCases32();
 #if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))
-            x86CreateMacroLibCases32();
+            if (Options.withx86mlib == TRUE)
+            {
+                x86CreateMacroLibCases32();
+            }
 #endif
         }
 
@@ -424,6 +430,34 @@ OPTFUNC( SetNoLJmp )
 {
     ModuleInfo.ljmp = FALSE;
     return( NOT_ERROR );
+}
+
+OPTFUNC( SetMLib )
+/******************/
+{
+    Options.nomlib = FALSE;
+    return( NOT_ERROR );
+}
+
+OPTFUNC( SetNoMLib )
+/******************/
+{
+    Options.nomlib = TRUE;
+    return( NOT_ERROR );
+}
+
+OPTFUNC( SetWithx86MLib )
+/******************/
+{
+    Options.withx86mlib = FALSE;
+    return(NOT_ERROR);
+}
+
+OPTFUNC( SetNox86MLib )
+/******************/
+{
+    Options.withx86mlib = TRUE;
+    return(NOT_ERROR);
 }
 
 /* OPTION NOREADONLY */
@@ -1302,6 +1336,10 @@ static const struct asm_option optiontab[] = {
     { "NOEMULATOR",   SetNoEmulator  },
     { "LJMP",         SetLJmp        },
     { "NOLJMP",       SetNoLJmp      },
+    { "MACROLIB",     SetMLib        },
+    { "NOMACROLIB",   SetNoLJmp      },
+    { "X86MACROLIB",  SetWithx86MLib },
+    { "NOX86MACROLIB",SetNox86MLib   },
     { "READONLY",     Unsupported    },
     { "NOREADONLY",   SetNoReadonly  },
     { "OLDMACROS",    Unsupported    },
