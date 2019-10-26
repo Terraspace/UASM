@@ -138,7 +138,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 {
 	int i,j;
 	struct dsym *sym;
-	struct dsym *type;
+	struct dsym *type = NULL;
 	struct dsym *tsym;
 	struct dsym *param;
 	bool foundType = FALSE;
@@ -387,7 +387,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 				}
 
 				// The right of the pointer must be an ID (either a method(proc) or another type).
-				if (tokenarray[i + 1].token != T_ID)
+				if (!type || tokenarray[i + 1].token != T_ID)
 					EmitError(INVALID_POINTER);
 				else
 				{
@@ -870,7 +870,8 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 					if (*(tokenarray[j].string_ptr) == '&')
 					{
 						// token identifier begins with address of operator.
-						strcpy(tokenarray[j].string_ptr, "ADDR ");
+						//strcpy(tokenarray[j].string_ptr, "ADDR ");
+						tokenarray[j].string_ptr = "ADDR ";
 					}
 				}
 
