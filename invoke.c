@@ -530,9 +530,14 @@ static int ms64_fcstart(struct dsym const *proc, int numparams, int start, struc
 		sym_ReservedStack->hasinvoke = 1;
 	DebugMsg1(("ms64_fcstart(%s, numparams=%u) vararg=%u\n", proc->sym.name, numparams, proc->e.procinfo->has_vararg));
 
-	if (proc->sym.langtype == LANG_REGCALL) { j = 11; 
-	} else { j = 4; 
-	}
+    if (proc->sym.langtype == LANG_REGCALL)
+    {
+        j = 11;
+    }
+    else
+    {
+        j = 4;
+    }
 	
 	if (numparams < j)
 		numparams = j;

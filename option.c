@@ -13,6 +13,7 @@
 #include "globals.h"
 #include "memalloc.h"
 #include "macrolib.h"
+#include "x86macrolib.h"
 #include "parser.h"
 #include "reswords.h"
 #include "expreval.h"
@@ -449,14 +450,14 @@ OPTFUNC( SetNoMLib )
 OPTFUNC( SetWithx86MLib )
 /******************/
 {
-    Options.withx86mlib = FALSE;
+    Options.withx86mlib = TRUE;
     return(NOT_ERROR);
 }
 
 OPTFUNC( SetNox86MLib )
 /******************/
 {
-    Options.withx86mlib = TRUE;
+    Options.withx86mlib = FALSE;
     return(NOT_ERROR);
 }
 
@@ -1107,7 +1108,6 @@ OPTFUNC(SetWin64)
 
     if ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC || Options.output_format == OFORMAT_COFF) && Options.sub_format == SFORMAT_64BIT)
     {
-        if (ModuleInfo.sub_format != SFORMAT_64BIT)
             ModuleInfo.sub_format = SFORMAT_64BIT;
         if (Options.output_format == OFORMAT_COFF && Options.langtype != LANG_VECTORCALL && Options.langtype != LANG_REGCALL)
         {

@@ -397,6 +397,10 @@ struct proc_info {
 	bool                isleaf;
 
 #if SYSV_SUPPORT
+    unsigned            sysvsize;
+    unsigned char       sysvregs[16];
+    unsigned char       sysvregsize[16];
+    unsigned char       sysvxyzused[16];
 	unsigned char       firstGPR;		/* Added for systemv call vararg to track the first available registers that can be used */
 	unsigned char       firstVEC;
 	unsigned char       vararg_vecs;	/* Count of vector registers used in vararg */

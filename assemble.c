@@ -43,6 +43,7 @@
 #include "lqueue.h"
 #include "orgfixup.h"
 #include "macrolib.h"
+#include "x86macrolib.h"
 //#include "simd.h"
 
 #if DLLIMPORT
@@ -1172,7 +1173,7 @@ static int OnePass( void )
     {
         unsigned  alist = ModuleInfo.list;
         ModuleInfo.list = 0;
-        if (platform->value >= 1 && platform->value != 2)
+        if (platform->value != 2 && platform->value >= 1)
         {
             InitAutoMacros64();
 #if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))

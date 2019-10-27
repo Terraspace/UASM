@@ -150,6 +150,10 @@ static const enum special_token sysV64_regsXMM[] = { T_XMM0, T_XMM1, T_XMM2, T_X
 static const enum special_token sysV64_regsYMM[] = { T_YMM0, T_YMM1, T_YMM2, T_YMM3, T_YMM4, T_YMM5, T_YMM6, T_YMM7 };
 static const enum special_token sysV64_regsZMM[] = { T_ZMM0, T_ZMM1, T_ZMM2, T_ZMM3, T_ZMM4, T_ZMM5, T_ZMM6, T_ZMM7 };
 
+static const enum special_token sysV32_regsXMM[] = { T_XMM0, T_XMM1, T_XMM2 };
+static const enum special_token sysV32_regsYMM[] = { T_YMM0, T_YMM1, T_YMM2 };
+static const enum special_token sysV32_regsZMM[] = { T_ZMM0, T_ZMM1, T_ZMM2 };
+
 #if REGCALL_SUPPORT
 static const enum special_token regcallunix64_regs64[] = { T_RAX, T_RCX, T_RDX, T_RDI, T_RSI, T_R8, T_R9, T_R10, T_R11, T_R12, T_R14, T_R15 };
 static const enum special_token regcallunix64_regs32[] = { T_EAX, T_ECX, T_EDX, T_EDI, T_ESI, T_R8D, T_R9D, T_R10D, T_R11D, T_R12D, T_R14D, T_R15D };
@@ -541,7 +545,7 @@ static int ms32_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int*
                 || (paranode->sym.mem_type == MT_TYPE && _stricmp(paranode->sym.type->name, "__m256") == 0) || paranode->sym.mem_type == MT_YMMWORD \
                 || (paranode->sym.mem_type == MT_TYPE && _stricmp(paranode->sym.type->name, "__m512") == 0) || paranode->sym.mem_type == MT_ZMMWORD) \
                 && (size > CurrWordSize || *used >= regcallms32_maxreg[ModuleInfo.Ofssize]))
-                return(0);
+                return(NOT_ERROR);
         }
         else if (Options.output_format == OFORMAT_ELF)
         {
@@ -550,7 +554,7 @@ static int ms32_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int*
                 || (paranode->sym.mem_type == MT_TYPE && _stricmp(paranode->sym.type->name, "__m256") == 0) || paranode->sym.mem_type == MT_YMMWORD \
                 || (paranode->sym.mem_type == MT_TYPE && _stricmp(paranode->sym.type->name, "__m512") == 0) || paranode->sym.mem_type == MT_ZMMWORD) \
                 && (size > CurrWordSize || *used >= regcallunix32_maxreg[ModuleInfo.Ofssize]))
-                return(0);
+                return(NOT_ERROR);
         }
     }
     else  if (proc->sym.langtype == LANG_VECTORCALL && Options.output_format == OFORMAT_COFF)
@@ -560,7 +564,7 @@ static int ms32_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int*
             || (paranode->sym.mem_type == MT_TYPE && _stricmp(paranode->sym.type->name, "__m256") == 0) || paranode->sym.mem_type == MT_YMMWORD \
             || (paranode->sym.mem_type == MT_TYPE && _stricmp(paranode->sym.type->name, "__m512") == 0) || paranode->sym.mem_type == MT_ZMMWORD) \
             && (size > CurrWordSize || *used >= ms32_maxreg[ModuleInfo.Ofssize]))
-            return(0);
+            return(NOT_ERROR);
     }
     else if (proc->sym.langtype == LANG_THISCALL && Options.output_format == OFORMAT_COFF)
     {
@@ -568,7 +572,16 @@ static int ms32_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int*
             || (paranode->sym.mem_type == MT_TYPE && _stricmp(paranode->sym.type->name, "__m128") == 0) || paranode->sym.mem_type == MT_OWORD \
             || (paranode->sym.mem_type == MT_TYPE && _stricmp(paranode->sym.type->name, "__m256") == 0) || paranode->sym.mem_type == MT_YMMWORD \
             || (paranode->sym.mem_type == MT_TYPE && _stricmp(paranode->sym.type->name, "__m512") == 0) || paranode->sym.mem_type == MT_ZMMWORD)
-            return(0);
+            return(NOT_ERROR);
+    }
+    else if (proc->sym.langtype == LANG_SYSVCALL && Options.output_format == OFORMAT_ELF)
+    {
+        if (!(paranode->sym.mem_type == MT_REAL4 || paranode->sym.mem_type == MT_REAL8 \
+            || (paranode->sym.mem_type == MT_TYPE && _stricmp(paranode->sym.type->name, "__m128") == 0) || paranode->sym.mem_type == MT_OWORD \
+            || (paranode->sym.mem_type == MT_TYPE && _stricmp(paranode->sym.type->name, "__m256") == 0) || paranode->sym.mem_type == MT_YMMWORD) \
+            && (((paranode->sym.mem_type == MT_TYPE && _stricmp(paranode->sym.type->name, "__m512") == 0) || paranode->sym.mem_type == MT_ZMMWORD) \
+            || (size > CurrWordSize || *used >= 1)))
+            return(NOT_ERROR);
     }
     else
     {
@@ -576,7 +589,7 @@ static int ms32_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int*
             || (paranode->sym.mem_type == MT_TYPE && _stricmp(paranode->sym.type->name, "__m128") == 0) || paranode->sym.mem_type == MT_OWORD \
             || (paranode->sym.mem_type == MT_TYPE && _stricmp(paranode->sym.type->name, "__m256") == 0) || paranode->sym.mem_type == MT_YMMWORD \
             || (paranode->sym.mem_type == MT_TYPE && _stricmp(paranode->sym.type->name, "__m512") == 0) || paranode->sym.mem_type == MT_ZMMWORD)
-            return(0);
+            return(NOT_ERROR);
     }
 
     //===============================================================================================================
@@ -590,7 +603,7 @@ static int ms32_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int*
             if (*vecused >= 8)
             {
                 paranode->sym.string_ptr = NULL;
-                return(0);
+                return(NOT_ERROR);
             }
         }
         else if (proc->sym.langtype == LANG_VECTORCALL && Options.output_format == OFORMAT_COFF)
@@ -598,13 +611,21 @@ static int ms32_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int*
             if (*vecused >= 6)
             {
                 paranode->sym.string_ptr = NULL;
-                return(0);
+                return(NOT_ERROR);
+            }
+        }
+        else if (proc->sym.langtype == LANG_SYSVCALL && Options.output_format == OFORMAT_ELF)
+        {
+            if (*vecused >= 3)
+            {
+                paranode->sym.string_ptr = NULL;
+                return(NOT_ERROR);
             }
         }
         else
         {
             paranode->sym.string_ptr = NULL;
-            return(0);
+            return(NOT_ERROR);
         }
         paranode->sym.state = SYM_TMACRO;
         if (proc->sym.langtype == LANG_REGCALL && (Options.output_format == OFORMAT_COFF || Options.output_format == OFORMAT_ELF))
@@ -616,6 +637,11 @@ static int ms32_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int*
         {
             GetResWName(vectorcall32_regsXMM[*vecused], regname);
             paranode->sym.tokval = vectorcall32_regsXMM[*vecused]; /* Store register tokval so invoke can use it */
+        }
+        else if (proc->sym.langtype == LANG_SYSVCALL && Options.output_format == OFORMAT_ELF)
+        {
+            GetResWName(sysV32_regsXMM[*vecused], regname);
+            paranode->sym.tokval = sysV32_regsXMM[*vecused]; /* Store register tokval so invoke can use it */
         }
         paranode->sym.total_size = 0;
         paranode->sym.string_ptr = LclAlloc(strlen(regname) + 1);
@@ -632,7 +658,7 @@ static int ms32_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int*
             if (*vecused >= 8)
             {
                 paranode->sym.string_ptr = NULL;
-                return(0);
+                return(NOT_ERROR);
             }
         }
         else if (proc->sym.langtype == LANG_VECTORCALL && Options.output_format == OFORMAT_COFF)
@@ -640,13 +666,21 @@ static int ms32_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int*
             if (*vecused >= 6)
             {
                 paranode->sym.string_ptr = NULL;
-                return(0);
+                return(NOT_ERROR);
             }
         }
+        /*else if (proc->sym.langtype == LANG_SYSVCALL && Options.output_format == OFORMAT_ELF)
+        {
+            if (*vecused >= 3)
+            {
+                paranode->sym.string_ptr = NULL;
+                return(NOT_ERROR);
+            }
+        }*/
         else
         {
             paranode->sym.string_ptr = NULL;
-            return(0);
+            return(NOT_ERROR);
         }
         paranode->sym.state = SYM_TMACRO;
         if (proc->sym.langtype == LANG_REGCALL && (Options.output_format == OFORMAT_COFF || Options.output_format == OFORMAT_ELF))
@@ -659,6 +693,11 @@ static int ms32_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int*
             GetResWName(vectorcall32_regsYMM[*vecused], regname);
             paranode->sym.tokval = vectorcall32_regsYMM[*vecused]; /* Store register tokval so invoke can use it */
         }
+        /*else if (proc->sym.langtype == LANG_SYSVCALL && Options.output_format == OFORMAT_ELF)
+        {
+            GetResWName(sysV32_regsYMM[*vecused], regname);
+            paranode->sym.tokval = sysV32_regsYMM[*vecused]; / * Store register tokval so invoke can use it * /
+        }*/
         paranode->sym.total_size = 0;
         paranode->sym.string_ptr = LclAlloc(strlen(regname) + 1);
         strcpy(paranode->sym.string_ptr, regname);
@@ -674,7 +713,7 @@ static int ms32_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int*
             if (*vecused >= 8)
             {
                 paranode->sym.string_ptr = NULL;
-                return(0);
+                return(NOT_ERROR);
             }
         }
         else if (proc->sym.langtype == LANG_VECTORCALL && Options.output_format == OFORMAT_COFF)
@@ -682,13 +721,21 @@ static int ms32_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int*
             if (*vecused >= 6)
             {
                 paranode->sym.string_ptr = NULL;
-                return(0);
+                return(NOT_ERROR);
             }
         }
+        /*else if (proc->sym.langtype == LANG_SYSVCALL && Options.output_format == OFORMAT_ELF)
+        {
+            if (*vecused >= 3)
+            {
+                paranode->sym.string_ptr = NULL;
+                return(NOT_ERROR);
+            }
+        }*/
         else
         {
             paranode->sym.string_ptr = NULL;
-            return(0);
+            return(NOT_ERROR);
         }
         paranode->sym.state = SYM_TMACRO;
         if (proc->sym.langtype == LANG_REGCALL && (Options.output_format == OFORMAT_COFF || Options.output_format == OFORMAT_ELF))
@@ -701,6 +748,11 @@ static int ms32_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int*
             GetResWName(vectorcall32_regsZMM[*vecused], regname);
             paranode->sym.tokval = vectorcall32_regsZMM[*vecused]; /* Store register tokval so invoke can use it */
         }
+        /*else if (proc->sym.langtype == LANG_SYSVCALL && Options.output_format == OFORMAT_ELF)
+        {
+            GetResWName(sysV32_regsZMM[*vecused], regname);
+            paranode->sym.tokval = sysV32_regsZMM[*vecused]; / * Store register tokval so invoke can use it * /
+        }*/
         paranode->sym.total_size = 0;
         paranode->sym.string_ptr = LclAlloc(strlen(regname) + 1);
         strcpy(paranode->sym.string_ptr, regname);
@@ -712,7 +764,7 @@ static int ms32_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int*
     {
         /* Unsupported argument type */
         EmitErr(INVOKE_ARGUMENT_NOT_SUPPORTED);
-        return(0);
+        return(NOT_ERROR);
     }
 
     //===============================================================================================================
@@ -723,7 +775,7 @@ static int ms32_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int*
         if (size > CurrWordSize || (Options.output_format == OFORMAT_ELF && *used >= 5) || (Options.output_format == OFORMAT_COFF && *used >= 4) || paranode->sym.is_vararg)
         {
             paranode->sym.string_ptr = NULL;
-            return(0);
+            return(NOT_ERROR);
         }
 
         /* v2.29: for codeview debug info, store the register index in the symbol */
@@ -774,12 +826,12 @@ static int ms32_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int*
             }
         }
     }
-    else if (CurrProc->sym.langtype == LANG_VECTORCALL && Options.output_format == OFORMAT_COFF)
+    else if ((CurrProc->sym.langtype == LANG_VECTORCALL || CurrProc->sym.langtype == LANG_FASTCALL) && Options.output_format == OFORMAT_COFF)
     {
         if (size > CurrWordSize || (Options.output_format == OFORMAT_COFF && *used >= 2) || paranode->sym.is_vararg)
         {
             paranode->sym.string_ptr = NULL;
-            return(0);
+            return(NOT_ERROR);
         }
         paranode->sym.state = SYM_TMACRO;
         paranode->sym.regist[0] = ms32_regs32[*used];
@@ -807,7 +859,7 @@ static int ms32_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int*
         if (size > CurrWordSize || (Options.output_format == OFORMAT_COFF && *used >= 1) || paranode->sym.is_vararg)
         {
             paranode->sym.string_ptr = NULL;
-            return(0);
+            return(NOT_ERROR);
         }
         paranode->sym.state = SYM_TMACRO;
         paranode->sym.regist[0] = thiscall_regs32[*used];
@@ -832,10 +884,15 @@ static int ms32_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int*
     }
     else
     {
-        if (size > CurrWordSize || (ModuleInfo.Ofssize == USE16 && *used >= 3) || (ModuleInfo.Ofssize == USE32 && *used >= 2) || paranode->sym.is_vararg)
+        if (CurrProc->sym.langtype == LANG_SYSVCALL && Options.output_format == OFORMAT_ELF)
         {
             paranode->sym.string_ptr = NULL;
-            return(0);
+            return(NOT_ERROR);
+        }
+        else if (size > CurrWordSize || (ModuleInfo.Ofssize == USE16 && *used >= 3) || (ModuleInfo.Ofssize == USE32 && *used >= 2) || paranode->sym.is_vararg)
+        {
+            paranode->sym.string_ptr = NULL;
+            return(NOT_ERROR);
         }
 
         if (ModuleInfo.Ofssize == USE32)
@@ -885,7 +942,7 @@ static int ms32_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int*
 	strcpy(paranode->sym.string_ptr, regname);
     (*used)++;
     proc->e.procinfo->firstGPR = *used;
-	return(1);
+	return(STRING_EXPANDED);
 }
 
 static void ms32_return(struct dsym *proc, char *buffer)
@@ -907,7 +964,11 @@ static void ms32_return(struct dsym *proc, char *buffer)
 	else if (proc->sym.langtype == LANG_THISCALL && Options.output_format == OFORMAT_COFF) {
 		if (proc->e.procinfo->parasize > (thiscall_maxreg[ModuleInfo.Ofssize] * CurrWordSize))
 			sprintf(buffer + strlen(buffer), "%d%c", proc->e.procinfo->parasize - (thiscall_maxreg[ModuleInfo.Ofssize] * CurrWordSize), ModuleInfo.radix != 10 ? 't' : NULLC);
-	}
+    }
+    else if (CurrProc->sym.langtype == LANG_SYSVCALL && Options.output_format == OFORMAT_ELF)
+    {
+        return;
+    }
 	else {
 		if (proc->e.procinfo->parasize > (ms32_maxreg[ModuleInfo.Ofssize] * CurrWordSize))
 			sprintf(buffer + strlen(buffer), "%d%c", proc->e.procinfo->parasize - (ms32_maxreg[ModuleInfo.Ofssize] * CurrWordSize), ModuleInfo.radix != 10 ? 't' : NULLC);
@@ -1508,6 +1569,13 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 					proc->e.procinfo->regcsize += ti.size;
 					ti.size = MT_QWORD;
                 }
+                else if (proc->sym.langtype == LANG_SYSVCALL && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC))
+                {
+                    proc->e.procinfo->sysvregsize[cntParam] = ti.symtype->max_mbr_size;
+                    proc->e.procinfo->sysvregs[cntParam] = ti.size / ti.symtype->max_mbr_size;
+                    proc->e.procinfo->sysvsize += ti.size;
+                    ti.size = MT_QWORD;
+                }
                 /*else if (proc->sym.langtype == LANG_FASTCALL && Options.sub_format == SFORMAT_64BIT && Options.output_format == OFORMAT_COFF)
                 {
                     proc->e.procinfo->ms64vecregsize[cntParam] = ti.symtype->max_mbr_size;
@@ -1537,6 +1605,17 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 						ti.size = MT_QWORD;
 					}
                 }
+                else if (proc->sym.langtype == LANG_SYSVCALL && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC))
+                {
+                    if (ti.mem_type == MT_REAL4 || ti.mem_type == MT_REAL8 ||
+                        ti.mem_type == MT_OWORD /*|| ti.mem_type == MT_YMMWORD || ti.mem_type == MT_ZMMWORD*/)
+                    {
+                        proc->e.procinfo->sysvregsize[cntParam] = ti.size;
+                        proc->e.procinfo->sysvregs[cntParam] = 1;
+                        if (ti.size >= 16) proc->e.procinfo->sysvsize += ti.size;
+                        ti.size = MT_QWORD;
+                    }
+                }
                 else if (proc->sym.langtype == LANG_FASTCALL && Options.sub_format == SFORMAT_64BIT && Options.output_format == OFORMAT_COFF)
                 {
                     if (ti.mem_type == MT_REAL4 || ti.mem_type == MT_REAL8)
@@ -1558,10 +1637,10 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 			if (proc->sym.langtype == LANG_FASTCALL && fastcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint))
 			{
 			}
-			else if (proc->sym.langtype == LANG_VECTORCALL && vectorcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint))
+			else if (proc->sym.langtype == LANG_VECTORCALL && Options.output_format == OFORMAT_COFF && vectorcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint))
 			{
 			}
-			else if (proc->sym.langtype == LANG_SYSVCALL && sysvcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint))
+			else if (proc->sym.langtype == LANG_SYSVCALL && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && sysvcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint))
 			{
 			}
 			else if (proc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF && regcallms_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint))
@@ -1695,7 +1774,7 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 					goto left_to_right;
 				else if (ti.Ofssize == USE32 && ModuleInfo.fctype == FCT_DELPHI && proc->sym.langtype == LANG_DELPHICALL)
 					goto left_to_right;
-				else if (ti.Ofssize == USE32 && ModuleInfo.fctype == FCT_MSC && (proc->sym.langtype == LANG_REGCALL || proc->sym.langtype == LANG_VECTORCALL || proc->sym.langtype == LANG_FASTCALL))
+				else if (ti.Ofssize == USE32 && ModuleInfo.fctype == FCT_MSC && (proc->sym.langtype == LANG_REGCALL || proc->sym.langtype == LANG_VECTORCALL || proc->sym.langtype == LANG_SYSVCALL || proc->sym.langtype == LANG_FASTCALL))
 					goto left_to_right;
 			default:
 				paranode->nextparam = proc->e.procinfo->paralist;
@@ -6213,7 +6292,10 @@ static ret_code write_generic_prologue(struct proc_info *info)
 
 	if (info->fpo && stackadj > 0 && (CurrProc->sym.langtype == LANG_FASTCALL || CurrProc->sym.langtype == LANG_VECTORCALL || (CurrProc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF)) && !info->isleaf)
 	{
-		AddLineQueueX("sub %r, %d", T_RSP, stackadj);
+        if (ModuleInfo.sub_format == SFORMAT_64BIT)
+            AddLineQueueX("sub %r, %d", T_RSP, stackadj);
+        else
+            AddLineQueueX("sub %r, %d", T_ESP, stackadj);
 	}
 
 	/* initialize shadow space for register params */

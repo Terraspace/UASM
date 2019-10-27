@@ -84,7 +84,7 @@
     <ClCompile Include="..\..\tokenize.c" />
     <ClCompile Include="..\..\trmem.c" />
     <ClCompile Include="..\..\types.c" />
-    <ClCompile Include="..\..\x86macros.c" />
+    <ClCompile Include="..\..\x86macrolib.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\.gitignore" />
@@ -177,7 +177,7 @@
     <ClInclude Include="..\..\H\win32.h" />
     <ClInclude Include="..\..\H\win64seh.h" />
     <ClInclude Include="..\..\H\winconsole.h" />
-    <ClInclude Include="..\..\H\x86macros.h" />
+    <ClInclude Include="..\..\H\x86macrolib.h" />
     <ClInclude Include="..\..\resource.h" />
   </ItemGroup>
   <ItemGroup>
