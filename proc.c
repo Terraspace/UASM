@@ -3577,12 +3577,6 @@ static void check_proc_fpo(struct proc_info *info)
 	for (paracurr = info->locallist; paracurr; paracurr = paracurr->nextlocal)
 			usedLocals++;
 
-	if (info->pushed_reg > 0)
-	{
-		info->fpo = FALSE;
-		return;
-	}
-
 	if (info->exc_handler && ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RBP)
 	{
 		info->fpo = FALSE;
