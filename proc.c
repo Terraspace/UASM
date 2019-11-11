@@ -3726,7 +3726,7 @@ static void write_win64_default_epilogue_RBP(struct proc_info *info)
 				else
 					AddLineQueueX("mov %r, %r", T_RSP, info->basereg);
 			}
-			else
+			else if (info->localsize + stackadj + resstack > 0)
 			{
 				AddLineQueueX("add %r, %d + %s", T_RSP, NUMQUAL stackadj + info->localsize, sym_ReservedStack->name);
 			}
