@@ -208,7 +208,7 @@
 
 	vcvtsi2sd xmm0, xmm1, [ebx]
 
-	vcvtsi2ss xmm0, xmm1, [ebx]
+	vcvtsi2ss xmm0, xmm1, [ebx] 
 
 	vcvtss2sd xmm0, xmm1, [ebx]
 
