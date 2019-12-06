@@ -254,9 +254,9 @@ static void output_opc(struct code_info *CodeInfo)
     /* instruction prefix must be ok. However, with -Zm, the plain REP
      * is also ok for instructions which expect REPxx.
      */
-    if (ModuleInfo.m510 == TRUE &&
-      tmp == AP_REP &&
-      ins->allowed_prefix == AP_REPxx)
+    /* if (ModuleInfo.m510 == TRUE && tmp == AP_REP && ins->allowed_prefix == AP_REPxx) */
+	/* UASM 2.50 Allow REP in all cases without -Zm */
+	if (tmp == AP_REP && ins->allowed_prefix == AP_REPxx)
       tmp = AP_REPxx;
 
     if (ins->allowed_prefix != tmp) {
