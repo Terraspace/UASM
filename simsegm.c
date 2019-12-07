@@ -227,6 +227,12 @@ ret_code SimplifiedSegDir( int i, struct asm_tok tokenarray[] )
     type = GetSflagsSp( tokenarray[i].tokval );
     i++; /* get past the directive token */
 
+	/* UASM 2.50, Force .data to be same segment as .code for OPTION FLAT */
+	/*if (ModuleInfo.flat == TRUE && type == SIM_DATA)
+	{
+		type = SIM_CODE;
+	}*/
+
     if( type == SIM_STACK ) {
         if ( EvalOperand( &i, tokenarray, Token_Count, &opndx, 0 ) == ERROR )
             return( ERROR );
@@ -254,8 +260,15 @@ ret_code SimplifiedSegDir( int i, struct asm_tok tokenarray[] )
         return( ERROR );
     }
 
-    if( type != SIM_STACK )
-        close_currseg();  /* emit a "xxx ENDS" line to close current seg */
+	if (type != SIM_STACK)
+	{
+		/* UASM 2.50 Don't close .CODE if trying to switch to .data for OPTION FLAT */
+		//if (ModuleInfo.flat != TRUE ||
+			//(ModuleInfo.flat == TRUE && type != SIM_DATA))
+		//{
+			close_currseg();  /* emit a "xxx ENDS" line to close current seg */
+		//}
+	}
 
     if ( name == NULL )
         init = ( ModuleInfo.simseg_init & ( 1 << type ) );
@@ -293,10 +306,14 @@ ret_code SimplifiedSegDir( int i, struct asm_tok tokenarray[] )
                 AddToDgroup( SIM_STACK, NULL );
         break;
     case SIM_DATA:    /* .data  */
-		SetSimSeg(type, name);
-		AddLineQueueX("%r %r:ERROR", T_ASSUME, T_CS);
-		if (name || (!init))
-			AddToDgroup(type, name);
+		/* UASM 2.50 in flat mode, .data does nothing */
+		//if (ModuleInfo.flat != TRUE)
+		//{
+			SetSimSeg(type, name);
+			AddLineQueueX("%r %r:ERROR", T_ASSUME, T_CS);
+			if (name || (!init))
+				AddToDgroup(type, name);
+		//}
 		break;
     case SIM_DATA_UN: /* .data? */
 
