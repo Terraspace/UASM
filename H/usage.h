@@ -86,6 +86,7 @@
 #if COFF_SUPPORT
 "-zzs\0"            "Store decorated name of start address (COFF only)\0"
 #endif
+"@env_var\0"        "Environment variable or file containing further commands\0"
 "output formats:\0\0"
 #if BIN_SUPPORT
 "-bin\0"            "plain binary file\0"

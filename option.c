@@ -1109,34 +1109,32 @@ OPTFUNC(SetWin64)
     if ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC || Options.output_format == OFORMAT_COFF) && Options.sub_format == SFORMAT_64BIT)
     {
             ModuleInfo.sub_format = SFORMAT_64BIT;
-        if (Options.output_format == OFORMAT_COFF && Options.langtype != LANG_VECTORCALL && Options.langtype != LANG_REGCALL)
+        if (Options.output_format == OFORMAT_COFF)
         {
-            Options.langtype = LANG_FASTCALL;
+            if (Options.langtype != LANG_REGCALL && Options.langtype != LANG_VECTORCALL)
+                Options.langtype = LANG_FASTCALL;
+            if (ModuleInfo.langtype != LANG_REGCALL && ModuleInfo.langtype != LANG_VECTORCALL)
+                ModuleInfo.langtype = LANG_FASTCALL;
         }
-        else if ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.langtype != LANG_REGCALL)
+        if (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC)
         {
-            Options.langtype = LANG_SYSVCALL;
-        }
-        if (Options.output_format == OFORMAT_COFF && ModuleInfo.langtype != LANG_VECTORCALL && ModuleInfo.langtype != LANG_REGCALL)
-        {
-            ModuleInfo.langtype = LANG_FASTCALL;
-        }
-        else if ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && ModuleInfo.langtype != LANG_REGCALL)
-        {
-            ModuleInfo.langtype = LANG_SYSVCALL;
-            ModuleInfo.frame_auto = 1;
+            if (Options.langtype != LANG_REGCALL)
+                Options.langtype = LANG_SYSVCALL;
+            if (ModuleInfo.langtype != LANG_REGCALL)
+                ModuleInfo.langtype = LANG_SYSVCALL;
         }
     }
+
+    if (sym_ReservedStack == NULL && ModuleInfo.defOfssize == USE64)
+        sym_ReservedStack = AddPredefinedConstant("@ReservedStack", 0);
 
     if (Options.model == MODEL_NONE)
         Options.model = MODEL_FLAT;
     if (ModuleInfo.model == MODEL_NONE)
         ModuleInfo.model = MODEL_FLAT;
+
     Options.fctype = FCT_WIN64; /* sys proc/invoke tables use same ordinal as FCTWIN64 */
     ModuleInfo.fctype = FCT_WIN64; /* sys proc/invoke tables use same ordinal as FCTWIN64 */
-
-    if (sym_ReservedStack == NULL && ModuleInfo.defOfssize == USE64)
-        sym_ReservedStack = AddPredefinedConstant("@ReservedStack", 0);
 
     /*else
     {

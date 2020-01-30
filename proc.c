@@ -4607,7 +4607,7 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 		/* v2.11: now done in write_prologue() */
 		if (ModuleInfo.win64_flags & W64F_HABRAN)
 		{
-			if (Parse_Pass && sym_ReservedStack->hasinvoke == 0) resstack = 0;
+			// if (Parse_Pass && sym_ReservedStack->hasinvoke == 0) resstack = 0; 
 			if (!(info->locallist) && !(resstack)) info->localsize = 0;
 			if ((info->localsize == 0) && (cntxmm))
 			{

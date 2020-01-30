@@ -1287,7 +1287,7 @@ static ret_code get_operand( struct expr *opnd, int *idx, struct asm_tok tokenar
                       if (CurrProc->sym.langtype == LANG_VECTORCALL)
                       cnt += CurrProc->e.procinfo->vsize;     //pointing above RSP to the shadow space off RCX RDX R8 R9   
                       if (CurrProc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF && Options.sub_format == SFORMAT_64BIT)
-                      cnt += CurrProc->e.procinfo->regcsize;     //pointing above RSP to the shadow space off RAX RCX RDX RDI RSI R8 R9 R11 R12 R14 R15                   
+                      cnt += CurrProc->e.procinfo->regcsize;     //pointing above RSP to the shadow space off RAX RCX RDX RDI RSI R8 R9 R11 R12 R14 R15
                       //else 
                         cnt -= 8;
                         if ((cnt & 7) != 0) cnt = (cnt + 7)&(-8);
