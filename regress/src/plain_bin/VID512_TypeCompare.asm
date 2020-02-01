@@ -1,6 +1,6 @@
-.x64
-option flat:1
-.code
+ .x64
+    .model flat
+    .code
 HANDLE typedef ptr
 MY_STRUCT STRUCT
   hProcess    HANDLE ?
