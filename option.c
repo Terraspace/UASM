@@ -1210,6 +1210,11 @@ OPTFUNC( SetStackBase )
 	/* Setup everything for stackbase RSP based stack */
 	if (ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RSP)
 	{
+        /* UASM 2.50 prevent RSP stackbase with ELF64 */
+        if (Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_64BIT)
+        {
+            return( EmitError(STACKBASE_NOT_SUPPORTED) );
+        }
 		if (!ModuleInfo.g.StackBase)
 		{
 			ModuleInfo.g.StackBase = CreateVariable("@StackBase", 0);
