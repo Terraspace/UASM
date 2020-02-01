@@ -3577,12 +3577,6 @@ static void check_proc_fpo(struct proc_info *info)
 	for (paracurr = info->locallist; paracurr; paracurr = paracurr->nextlocal)
 			usedLocals++;
 
-	if (info->pushed_reg > 0)
-	{
-		info->fpo = FALSE;
-		return;
-	}
-
 	if (info->exc_handler && ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RBP)
 	{
 		info->fpo = FALSE;
@@ -3732,7 +3726,7 @@ static void write_win64_default_epilogue_RBP(struct proc_info *info)
 				else
 					AddLineQueueX("mov %r, %r", T_RSP, info->basereg);
 			}
-			else
+			else if (info->localsize + stackadj + resstack > 0)
 			{
 				AddLineQueueX("add %r, %d + %s", T_RSP, NUMQUAL stackadj + info->localsize, sym_ReservedStack->name);
 			}
