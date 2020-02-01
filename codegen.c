@@ -3366,6 +3366,15 @@ ret_code codegen( struct code_info *CodeInfo, uint_32 oldofs )
                CodeInfo->prefix.rex, CodeInfo->prefix.opsiz ));
 #endif
 	
+    /* UASM 2.50 error for movq xmmN,r32 */
+    if (CodeInfo->token == T_MOVQ && CodeInfo->opnd[0].type == OP_XMM)
+    {
+        if (CodeInfo->opnd[1].type == OP_R32 || CodeInfo->opnd[1].type == OP_EAX)
+        {
+            EmitError(INVALID_INSTRUCTION_OPERANDS);
+            return(ERROR);
+        }
+    }
 	/* UASM 2.47 force non-sized jmp to match current word size */
 	if (CodeInfo->token == T_JMP && CodeInfo->mem_type == MT_EMPTY)
 	{
