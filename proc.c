@@ -3731,7 +3731,10 @@ static void write_win64_default_epilogue_RBP(struct proc_info *info)
 				else
 					AddLineQueueX("mov %r, %r", T_RSP, info->basereg);
 			}
+<<<<<<< HEAD
 			// UASM 2.50 Modified by PR from db4.
+=======
+>>>>>>> 0fcb4327f5183a2c91f7fc892792ce6da709df1e
 			else if (info->localsize + stackadj + resstack > 0)
 			{
 				AddLineQueueX("add %r, %d + %s", T_RSP, NUMQUAL stackadj + info->localsize, sym_ReservedStack->name);
