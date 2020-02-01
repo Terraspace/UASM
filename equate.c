@@ -251,7 +251,6 @@ static struct asym *CreateAssemblyTimeVariable( struct asm_tok tokenarray[] )
 	/* UASM 2.47 Fix old JWASM issue that [var] = [proc] doesn't transfer language type info */
 	if (opnd.kind == EXPR_ADDR && opnd.sym != NULL && opnd.sym->isproc) {
 		sym->langtype = opnd.sym->langtype;
-		sym->hasinvoke = opnd.sym->hasinvoke;
 		sym->isproc = opnd.sym->isproc;
 		sym->procptr = opnd.sym;
 	}

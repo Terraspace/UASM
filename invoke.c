@@ -433,8 +433,7 @@ static int ms64_fcstart(struct dsym const *proc, int numparams, int start, struc
 
 			}
 	}
-	if (sym_ReservedStack)
-		sym_ReservedStack->hasinvoke = 1;
+
 	DebugMsg1(("ms64_fcstart(%s, numparams=%u) vararg=%u\n", proc->sym.name, numparams, proc->e.procinfo->has_vararg));
 	j = 4;
 

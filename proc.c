@@ -3292,7 +3292,6 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 		/* v2.11: now done in write_prologue() */
 		if (ModuleInfo.win64_flags & W64F_HABRAN)
 		{
-			if (Parse_Pass && sym_ReservedStack->hasinvoke == 0) resstack = 0;
 			if (!(info->locallist) && !(resstack)) info->localsize = 0;
 			if ((info->localsize == 0) && (cntxmm))
 			{
@@ -3577,11 +3576,11 @@ static void check_proc_fpo(struct proc_info *info)
 	for (paracurr = info->locallist; paracurr; paracurr = paracurr->nextlocal)
 			usedLocals++;
 
-	if (info->pushed_reg > 0)
-	{
-		info->fpo = FALSE;
-		return;
-	}
+	//if (info->pushed_reg > 0)
+	//{
+	//	info->fpo = FALSE;
+	//	return;
+	//}
 
 	if (info->exc_handler && ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RBP)
 	{
@@ -3732,7 +3731,8 @@ static void write_win64_default_epilogue_RBP(struct proc_info *info)
 				else
 					AddLineQueueX("mov %r, %r", T_RSP, info->basereg);
 			}
-			else
+			// UASM 2.50 Modified by PR from db4.
+			else if (info->localsize + stackadj + resstack > 0)
 			{
 				AddLineQueueX("add %r, %d + %s", T_RSP, NUMQUAL stackadj + info->localsize, sym_ReservedStack->name);
 			}
@@ -4946,7 +4946,6 @@ void write_prologue(struct asm_tok tokenarray[])
 		if (Parse_Pass == PASS_1)
 		{
 			sym_ReservedStack->value = 0;
-			sym_ReservedStack->hasinvoke = 0;
 		}
 	}
 
