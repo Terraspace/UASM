@@ -294,3 +294,4 @@ OpCls( RGT8,     MGT8,     NONE )
 
 OpCls( R64_M64,  MMX,      NONE)
 OpCls( MMX,      R64_M64,  NONE)
+OpCls( R64,      MMX,      NONE)

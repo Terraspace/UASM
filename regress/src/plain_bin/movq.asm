@@ -17,6 +17,7 @@
 	movd mm0,eax
 	movd eax,mm0
 	movq rax,mm0
+	;----
 	movd xmm0,eax
 	movq xmm0,rax
 	movd eax,xmm0
