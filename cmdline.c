@@ -153,6 +153,7 @@ struct global_options Options = {
 	/* vtable                */     TRUE,
 	/* hlcall                */     TRUE,
 	/* pie                   */     FALSE,
+    /* frame preserves flags */     FALSE,
 
 #if MANGLERSUPP
     /* naming_convention*/          NC_DO_NOTHING,

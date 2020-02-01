@@ -3430,8 +3430,10 @@ ret_code codegen( struct code_info *CodeInfo, uint_32 oldofs )
                 break;
             }
             if( retcode == NOT_ERROR) {
-                if ( CurrFile[LST] )
-                    LstWrite( LSTTYPE_CODE, oldofs, NULL );
+                if (CurrFile[LST])
+                {
+                    LstWrite(LSTTYPE_CODE, oldofs, NULL);
+                }
                 return( NOT_ERROR );
             }
         }

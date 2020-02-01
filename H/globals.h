@@ -695,6 +695,7 @@ struct global_options {
 	bool        vtable;                  /* Use vtable based method invocation */
 	bool        hlcall;                  /* Allow High Level C style Calling and object invocation */
 	bool        pie;					 /* Generate Position Independant Executable (Unix) */
+    bool        frameflags;              /* Use Lea instead of Add/Sub to preserve flags in frame prologue/epilogue */
 #if MANGLERSUPP
     enum naming_types naming_convention; /* OW naming peculiarities */
 #endif

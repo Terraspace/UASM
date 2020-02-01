@@ -248,6 +248,30 @@ OPTFUNC(SetVTable)
 	return(NOT_ERROR);
 }
 
+/* OPTION FRAMEPRESERVEFLAGS:ON | OFF(default) */
+OPTFUNC(SetFPS)
+{
+    int i = *pi;
+    if (tokenarray[i].token == T_ID) {
+        if (0 == _stricmp(tokenarray[i].string_ptr, "ON")) {
+            Options.frameflags = TRUE;
+        }
+        else if (0 == _stricmp(tokenarray[i].string_ptr, "OFF")) {
+            Options.frameflags = FALSE;
+        }
+        else {
+            return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
+        }
+        DebugMsg1(("SetFPS(%s) ok\n", tokenarray[i].string_ptr));
+        i++;
+    }
+    else {
+        return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
+    }
+    *pi = i;
+    return(NOT_ERROR);
+}
+
 /* OPTION HLCall:ON | OFF(default) */
 OPTFUNC(SetHLCall)
 /*******************/
@@ -1338,7 +1362,8 @@ static const struct asm_option optiontab[] = {
   { "BND",              SetBnd },        /* BND:ON or OFF */
   { "LITERALS",         SetLiterals },   /* LITERALS:ON or OFF */
   { "VTABLE",           SetVTable },     /* VTABLE:ON or OFF */
-  { "HLCALL",           SetHLCall }      /* HLCALL:ON or OFF */
+  { "HLCALL",           SetHLCall },     /* HLCALL:ON or OFF */
+  { "FRAMEPRESERVEFLAGS", SetFPS }       /* FRAMEPRESERVEFLAGS:ON or OFF */
 };
 
 #define TABITEMS sizeof( optiontab) / sizeof( optiontab[0] )

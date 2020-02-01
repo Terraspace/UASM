@@ -1,3 +1,5 @@
+.x64
+option flat:1
 .code
 HANDLE typedef ptr
 MY_STRUCT STRUCT
