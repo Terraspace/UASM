@@ -154,7 +154,6 @@ struct asym {
         int_32         class_lname_idx; /* used by SYM_CLASS_LNAME */
     };
 	unsigned int    tokval;			/* Used to track a PROC parameter symbol that has an assigned register */
-	uint_32         hasinvoke;      /* if there is no invoke no need to reserve a shadow space */
 	struct asym     *segment;       /* used by SYM_INTERNAL, SYM_EXTERNAL */
     enum sym_state  state;
     enum memtype    mem_type;

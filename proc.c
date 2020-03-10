@@ -1343,15 +1343,17 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 	/*
 	* find "first" parameter ( that is, the first to be pushed in INVOKE ).
 	*/
-	if (proc->sym.langtype == LANG_C ||
-		proc->sym.langtype == LANG_SYSCALL ||
-		proc->sym.langtype == LANG_DELPHICALL ||
-		(proc->sym.langtype == LANG_FASTCALL && ModuleInfo.Ofssize != USE64) ||
-		(proc->sym.langtype == LANG_VECTORCALL && ModuleInfo.Ofssize != USE64) ||
-		(proc->sym.langtype == LANG_SYSVCALL && ModuleInfo.Ofssize != USE64) ||
-		(proc->sym.langtype == LANG_REGCALL && ModuleInfo.Ofssize != USE64) ||
-		proc->sym.langtype == LANG_THISCALL ||
-		proc->sym.langtype == LANG_STDCALL)
+    if (
+        proc->sym.langtype == LANG_STDCALL										||
+		proc->sym.langtype == LANG_C											||
+		proc->sym.langtype == LANG_SYSCALL										||
+		(proc->sym.langtype == LANG_FASTCALL && ModuleInfo.Ofssize != USE64)	||
+		(proc->sym.langtype == LANG_VECTORCALL && ModuleInfo.Ofssize != USE64)	||
+		(proc->sym.langtype == LANG_SYSVCALL && ModuleInfo.Ofssize != USE64)	||
+		(proc->sym.langtype == LANG_REGCALL && ModuleInfo.Ofssize != USE64)		||
+        proc->sym.langtype == LANG_THISCALL										||
+        proc->sym.langtype == LANG_DELPHICALL
+		)
 		for (paracurr = proc->e.procinfo->paralist; paracurr && paracurr->nextparam; paracurr = paracurr->nextparam);
 	else
 		paracurr = proc->e.procinfo->paralist;
@@ -1518,15 +1520,18 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 				SymAddLocal(&paracurr->sym, name);
 			}
 			/* set paracurr to next parameter */
-			if (proc->sym.langtype == LANG_C ||
-				proc->sym.langtype == LANG_SYSCALL ||
-				proc->sym.langtype == LANG_DELPHICALL ||
-				(proc->sym.langtype == LANG_FASTCALL && ti.Ofssize != USE64) ||
-				(proc->sym.langtype == LANG_VECTORCALL && ti.Ofssize != USE64) ||
-				(proc->sym.langtype == LANG_SYSVCALL && ti.Ofssize != USE64) ||
-				(proc->sym.langtype == LANG_REGCALL && ti.Ofssize != USE64) ||
-				(proc->sym.langtype == LANG_THISCALL) ||
-				proc->sym.langtype == LANG_STDCALL) {
+            if (
+                proc->sym.langtype == LANG_STDCALL								||
+                proc->sym.langtype == LANG_C									||
+                proc->sym.langtype == LANG_SYSCALL								||
+                (proc->sym.langtype == LANG_FASTCALL && ti.Ofssize != USE64)	||
+                (proc->sym.langtype == LANG_VECTORCALL && ti.Ofssize != USE64)	||
+                (proc->sym.langtype == LANG_SYSVCALL && ti.Ofssize != USE64)	||
+                (proc->sym.langtype == LANG_REGCALL && ti.Ofssize != USE64)		||
+                proc->sym.langtype == LANG_THISCALL								||
+                proc->sym.langtype == LANG_DELPHICALL
+                )
+				{
 				struct dsym *l;
 				for (l = proc->e.procinfo->paralist;
 					l && (l->nextparam != paracurr);
@@ -4413,7 +4418,19 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
 			if (info->localsize + stackadj + resstack > 0)
 			{
 				subAmt = info->localsize + stackadj + sym_ReservedStack->value;
-				AddLineQueueX(*(ppfmt + 0), T_RSP, NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
+				
+				if (Options.frameflags)
+				{
+					if (resstack)
+						AddLineQueueX("lea %r, [%r-(%d+%s)]", T_RSP, T_RSP, NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
+					else
+						AddLineQueueX("lea %r, [%r-%d]", T_RSP, T_RSP, NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
+				}
+				else
+				{
+					AddLineQueueX(*(ppfmt + 0), T_RSP, NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
+				}
+
 				if (info->isframe && ModuleInfo.frame_auto)
 					AddLineQueueX(*(ppfmt + 1), T_DOT_ALLOCSTACK, NUMQUAL info->localsize + stackadj, sym_ReservedStack->name);
 			}
@@ -4421,7 +4438,16 @@ static void write_win64_default_prologue_RBP(struct proc_info *info)
 		else if (stackadj + info->localsize > 0 && ModuleInfo.frame_auto)
 		{
 			subAmt = info->localsize + stackadj;
-			AddLineQueueX("sub %r, %d", T_RSP, NUMQUAL stackadj + info->localsize);
+
+			if (Options.frameflags)
+			{
+				AddLineQueueX("lea %r, [%r-%d]", T_RSP, T_RSP, NUMQUAL stackadj + info->localsize);
+			}
+			else
+			{
+				AddLineQueueX("sub %r, %d", T_RSP, NUMQUAL stackadj + info->localsize);
+			}
+
 			if (info->isframe && ModuleInfo.frame_auto)
 				AddLineQueueX("%r %d", T_DOT_ALLOCSTACK, NUMQUAL stackadj + info->localsize);
 		}
@@ -4607,7 +4633,6 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 		/* v2.11: now done in write_prologue() */
 		if (ModuleInfo.win64_flags & W64F_HABRAN)
 		{
-			// if (Parse_Pass && sym_ReservedStack->hasinvoke == 0) resstack = 0; 
 			if (!(info->locallist) && !(resstack)) info->localsize = 0;
 			if ((info->localsize == 0) && (cntxmm))
 			{
@@ -4647,7 +4672,17 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 				stackSize = info->localsize + info->vsize + info->xmmsize;
 			if ((stackSize & 7) != 0) stackSize = (stackSize + 7)&(-8);
 
-			AddLineQueueX(*(ppfmt + 0), T_RSP, NUMQUAL stackSize, sym_ReservedStack->name);
+			if (Options.frameflags)
+			{
+				if(resstack)
+					AddLineQueueX("lea %r, [%r-(%d+%s)]", T_RSP, T_RSP, NUMQUAL stackSize, sym_ReservedStack->name);
+				else
+					AddLineQueueX("lea %r, [%r-%d]", T_RSP, T_RSP, NUMQUAL stackSize, sym_ReservedStack->name);
+			}
+			else
+			{
+				AddLineQueueX(*(ppfmt + 0), T_RSP, NUMQUAL stackSize, sym_ReservedStack->name);
+			}
 			AddLineQueueX(*(ppfmt + 1), T_DOT_ALLOCSTACK, NUMQUAL stackSize, sym_ReservedStack->name);
 
 			/* Handle ZEROLOCALS option */
@@ -5027,7 +5062,14 @@ static void write_win64_default_prologue_RSP(struct proc_info *info)
 		else if (info->localsize > 0)
 		{
 			stackSize = info->localsize;
-			AddLineQueueX("sub %r, %d", stackreg[ModuleInfo.Ofssize], stackSize);
+			if (Options.frameflags)
+			{
+				AddLineQueueX("lea %r, [%r-%d]", stackreg[ModuleInfo.Ofssize], stackreg[ModuleInfo.Ofssize], stackSize);
+			}
+			else
+			{
+				AddLineQueueX("sub %r, %d", stackreg[ModuleInfo.Ofssize], stackSize);
+			}
 		}
 
 		AddLineQueueX("%r", T_DOT_ENDPROLOG);
@@ -5050,11 +5092,11 @@ static void check_proc_fpo(struct proc_info *info)
 	for (paracurr = info->locallist; paracurr; paracurr = paracurr->nextlocal)
 			usedLocals++;
 
-	if (info->pushed_reg > 0)
-	{
-		info->fpo = FALSE;
-		return;
-	}
+	//if (info->pushed_reg > 0)
+	//{
+	//	info->fpo = FALSE;
+	//	return;
+	//}
 
 	if (info->exc_handler && ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RBP)
 	{
@@ -5169,7 +5211,7 @@ static void write_win64_default_epilogue_RBP(struct proc_info *info)
 							AddLineQueueX("%s %r, [%r + %d]", MOVE_ALIGNED_INT(), *regs, restoreReg, NUMQUAL i - info->frameofs);
 						i += 16;
 					}
-					else if (GetValueSp(*regs) & OP_YMM) {
+					if (GetValueSp(*regs) & OP_YMM) {
 						DebugMsg1(("write_win64_default_epilogue(%s): restore %s, offset=%d\n", CurrProc->sym.name, GetResWName(*regs, NULL), i));
 						if (ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
 							AddLineQueueX("%s %r, [%r + %d + %s]","vmovdqu", *regs, restoreReg, NUMQUAL i - info->frameofs, sym_ReservedStack->name);
@@ -5177,7 +5219,7 @@ static void write_win64_default_epilogue_RBP(struct proc_info *info)
 							AddLineQueueX("%s %r, [%r + %d]","vmovdqu", *regs, restoreReg, NUMQUAL i - info->frameofs);
 						i += 32;
 					}
-					else if (GetValueSp(*regs) & OP_ZMM) {
+					if (GetValueSp(*regs) & OP_ZMM) {
 						DebugMsg1(("write_win64_default_epilogue(%s): restore %s, offset=%d\n", CurrProc->sym.name, GetResWName(*regs, NULL), i));
 						if (ModuleInfo.win64_flags & W64F_AUTOSTACKSP)
 							AddLineQueueX("%s %r, [%r + %d + %s]","vmovdqu", *regs, restoreReg, NUMQUAL i - info->frameofs, sym_ReservedStack->name);
@@ -5201,13 +5243,24 @@ static void write_win64_default_epilogue_RBP(struct proc_info *info)
 			{
 				ppfmt = (resstack ? fmtstk3 : fmtstk2);
 				if (info->localsize + stackadj + resstack > 0)
+				{
 					AddLineQueueX(*(ppfmt + 0), T_RSP, info->basereg, NUMQUAL stackadj + info->localsize - info->frameofs, sym_ReservedStack->name);
+				}
 				else
 					AddLineQueueX("mov %r, %r", T_RSP, info->basereg);
 			}
-			else
+
+			// UASM 2.50 Modified by PR from db4.
+			else if (info->localsize + stackadj + resstack > 0)
 			{
-				AddLineQueueX("add %r, %d + %s", T_RSP, NUMQUAL stackadj + info->localsize, sym_ReservedStack->name);
+				if (Options.frameflags)
+				{
+					AddLineQueueX("lea %r, [%r+(%d+%s)]", T_RSP, T_RSP, NUMQUAL stackadj + info->localsize, sym_ReservedStack->name);
+				}
+				else
+				{
+					AddLineQueueX("add %r, %d + %s", T_RSP, NUMQUAL stackadj + info->localsize, sym_ReservedStack->name);
+				}
 			}
 		}
 		else if (stackadj + info->localsize > 0 && ModuleInfo.frame_auto)
@@ -5215,7 +5268,16 @@ static void write_win64_default_epilogue_RBP(struct proc_info *info)
 			if (!info->fpo)
 				AddLineQueueX("lea %r, [%r + %d]", T_RSP, info->basereg, NUMQUAL stackadj + info->localsize - info->frameofs);
 			else
-				AddLineQueueX("add %r, %d", T_RSP, NUMQUAL stackadj + info->localsize);
+			{
+				if (Options.frameflags)
+				{
+					AddLineQueueX("lea %r, [%r+%d]", T_RSP, T_RSP, NUMQUAL stackadj + info->localsize);
+				}
+				else
+				{
+					AddLineQueueX("add %r, %d", T_RSP, NUMQUAL stackadj + info->localsize);
+				}
+			}
 		}
 
 		pop_register(CurrProc->e.procinfo->regslist);
@@ -5236,11 +5298,6 @@ static void write_win64_default_epilogue_RSP(struct proc_info *info)
 	int  stackSize;
 	int  resstack = ((ModuleInfo.win64_flags & W64F_AUTOSTACKSP) ? sym_ReservedStack->value : 0);
 
-#if STACKBASESUPP
-	/* v2.12: obsolete */
-	//if ( GetRegNo( info->basereg ) == 4 || ( info->parasize == 0 && info->locallist == NULL ) )
-	//    sizestd = 8;
-#endif
 	/* restore non-volatile xmm registers */
 	if (info->regslist) {
 		uint_16 *regs;
@@ -5296,7 +5353,6 @@ static void write_win64_default_epilogue_RSP(struct proc_info *info)
                             i += 64;
                         }
 					}
-					//					i += XYZMMsize;
 				}
 			}
 		}
@@ -5323,13 +5379,28 @@ static void write_win64_default_epilogue_RSP(struct proc_info *info)
 				stackSize = info->localsize + info->vsize + info->xmmsize;
 			}
 			if ((stackSize & 7) != 0) stackSize = (stackSize + 7)&(-8);
-			AddLineQueueX("add %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL stackSize, sym_ReservedStack->name);
+			
+			if (Options.frameflags)
+			{
+				AddLineQueueX("lea %r, [%r+(%d+%s)]", stackreg[ModuleInfo.Ofssize], stackreg[ModuleInfo.Ofssize], NUMQUAL stackSize, sym_ReservedStack->name);
+			}
+			else
+			{
+				AddLineQueueX("add %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL stackSize, sym_ReservedStack->name);
+			}
 		}
 	}
 	else if (info->localsize > 0)
 	{
 		stackSize = info->localsize;
-		AddLineQueueX("add %r, %d", stackreg[ModuleInfo.Ofssize], stackSize);
+		if (Options.frameflags)
+		{
+			AddLineQueueX("lea %r, [%r+%d]", stackreg[ModuleInfo.Ofssize], stackreg[ModuleInfo.Ofssize], stackSize);
+		}
+		else
+		{
+			AddLineQueueX("add %r, %d", stackreg[ModuleInfo.Ofssize], stackSize);
+		}
 	}
 	pop_register(CurrProc->e.procinfo->regslist); //make sure we pop before correcting RSP.
 
@@ -5363,7 +5434,6 @@ static void write_win64_default_epilogue_RSP(struct proc_info *info)
 			}
 		}
 	}
-	//if ( !info->fpo )
 	if (GetRegNo(info->basereg) != 4 && (info->parasize != 0 || info->locallist != NULL))
 		AddLineQueueX("pop %r", info->basereg);
 #else
@@ -5976,13 +6046,29 @@ static void write_sysv_default_prologue_RBP(struct proc_info *info)
 		if (ModuleInfo.redzone == 1 && (info->localsize + resstack) < 128 && resstack == 0)
 			;
 		else
+		{
 			// localsize includes the saved xmms, restack valid and a multiple of 16 or 0.
-			AddLineQueueX("sub %r, %d", T_RSP, NUMQUAL(info->localsize + stackadj + resstack));
+			if (Options.frameflags)
+			{
+				AddLineQueueX("lea %r, [%r-%d]", T_RSP, T_RSP, NUMQUAL(info->localsize + stackadj + resstack));
+			}
+			else
+			{
+				AddLineQueueX("sub %r, %d", T_RSP, NUMQUAL(info->localsize + stackadj + resstack));
+			}
+		}
 	}
 	/* No locals, still account for stackadj */
 	else if (stackadj > 0)
 	{
-		AddLineQueueX("sub %r, %d", T_RSP, NUMQUAL(stackadj + resstack));
+		if (Options.frameflags)
+		{
+			AddLineQueueX("lea %r, [%r-%d]", T_RSP, T_RSP, NUMQUAL(stackadj + resstack));
+		}
+		else
+		{
+			AddLineQueueX("sub %r, %d", T_RSP, NUMQUAL(stackadj + resstack));
+		}
 	}
 
 	/* save USED vector registers */
@@ -6082,7 +6168,16 @@ static void write_sysv_default_epilogue_RBP(struct proc_info *info)
 	if (ModuleInfo.redzone == 1 && (info->localsize + resstack < 128) && resstack == 0)
 		;
 	else if (info->localsize + stackadj > 0)
-		AddLineQueueX("add %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + stackadj);
+	{
+		if (Options.frameflags)
+		{
+			AddLineQueueX("lea %r, [%r+%d]", stackreg[ModuleInfo.Ofssize], stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + stackadj);
+		}
+		else
+		{
+			AddLineQueueX("add %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize + stackadj);
+		}
+	}
 
 	pop_register(CurrProc->e.procinfo->regslist);
 
@@ -6291,11 +6386,18 @@ static ret_code write_generic_prologue(struct proc_info *info)
 		return(NOT_ERROR);
 
 	if (info->fpo && stackadj > 0 && (CurrProc->sym.langtype == LANG_FASTCALL || CurrProc->sym.langtype == LANG_VECTORCALL || (CurrProc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF)) && !info->isleaf)
-	{
-        if (ModuleInfo.sub_format == SFORMAT_64BIT)
-            AddLineQueueX("sub %r, %d", T_RSP, stackadj);
+    {
+        if (Options.frameflags)
+        {
+            AddLineQueueX("lea %r, [%r-%d]", T_RSP, T_RSP, stackadj);
+        }
         else
-            AddLineQueueX("sub %r, %d", T_ESP, stackadj);
+        {
+            if (ModuleInfo.sub_format == SFORMAT_64BIT)
+                AddLineQueueX("sub %r, %d", T_RSP, stackadj);
+            else
+                AddLineQueueX("sub %r, %d", T_ESP, stackadj);
+        }
 	}
 
 	/* initialize shadow space for register params */
@@ -6327,20 +6429,34 @@ static ret_code write_generic_prologue(struct proc_info *info)
 				AddLineQueueX("push %r", *regist);
 			regist = NULL;
 		}
-		AddLineQueueX("sub %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize, sym_ReservedStack->name);
+		if (Options.frameflags)
+		{
+			AddLineQueueX("lea %r, [%r-(%d+%s)]", stackreg[ModuleInfo.Ofssize], stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize, sym_ReservedStack->name);
+		}
+		else
+		{
+			AddLineQueueX("sub %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize, sym_ReservedStack->name);
+		}
 	}
 	else
 	{
 		if (info->localsize)
 		{
-			/* using ADD and the 2-complement has one advantage:
-			* it will generate short instructions up to a size of 128.
-			* with SUB, short instructions work up to 127 only.
-			*/
-			if (Options.masm_compat_gencode || info->localsize <= 128)
-				AddLineQueueX("add %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL -info->localsize);
+			if (Options.frameflags)
+			{
+				AddLineQueueX("lea %r, [%r-%d]", stackreg[ModuleInfo.Ofssize], stackreg[ModuleInfo.Ofssize], info->localsize);
+			}
 			else
-				AddLineQueueX("sub %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize);
+			{
+				/* using ADD and the 2-complement has one advantage:
+				* it will generate short instructions up to a size of 128.
+				* with SUB, short instructions work up to 127 only.
+				*/
+				if (Options.masm_compat_gencode || info->localsize <= 128)
+					AddLineQueueX("add %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL - info->localsize);
+				else
+					AddLineQueueX("sub %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize);
+			}
 		}
 	}
 
@@ -6373,13 +6489,13 @@ static ret_code write_default_prologue(void)
 
 	if (ModuleInfo.Ofssize == USE64)
 	{
-		if (ModuleInfo.basereg[USE64] == T_RSP && Options.output_format == OFORMAT_COFF)
+		if (ModuleInfo.basereg[USE64] == T_RSP && Options.output_format == OFORMAT_COFF && (CurrProc->sym.langtype == LANG_FASTCALL || CurrProc->sym.langtype == LANG_VECTORCALL || CurrProc->sym.langtype == LANG_REGCALL))
 			write_win64_default_prologue_RSP(info);
-		else if (ModuleInfo.basereg[USE64] == T_RBP && Options.output_format == OFORMAT_COFF && info->isframe)
+		else if ((ModuleInfo.basereg[USE64] == T_RBP) && Options.output_format == OFORMAT_COFF && (CurrProc->sym.langtype == LANG_FASTCALL || CurrProc->sym.langtype == LANG_VECTORCALL || CurrProc->sym.langtype == LANG_REGCALL) && info->isframe)
 			write_win64_default_prologue_RBP(info);
-		else if (ModuleInfo.basereg[USE64] == T_RBP && Options.output_format == OFORMAT_COFF)
+		else if ((ModuleInfo.basereg[USE64] == T_RBP) && Options.output_format == OFORMAT_COFF && (CurrProc->sym.langtype == LANG_FASTCALL || CurrProc->sym.langtype == LANG_VECTORCALL || CurrProc->sym.langtype == LANG_REGCALL))
 			write_generic_prologue(info);
-		else if (ModuleInfo.basereg[USE64] == T_RBP && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC))
+		else if ((ModuleInfo.basereg[USE64] == T_RBP) && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && (CurrProc->sym.langtype == LANG_SYSVCALL || CurrProc->sym.langtype == LANG_REGCALL))
 			write_sysv_default_prologue_RBP(info);
 
 		/* v2.11: line queue is now run here */
@@ -6534,12 +6650,12 @@ void write_prologue(struct asm_tok tokenarray[])
 	if (ModuleInfo.basereg[USE64] == T_RSP)
 		CurrProc->e.procinfo->fpo = TRUE;
 
-	if (ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP))
-	{
-		if (CurrProc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF)
-		{
-			/* in pass one init reserved stack with 11*8 to force stack frame creation */
-			sym_ReservedStack->value = (Parse_Pass == PASS_1 ? 11 * sizeof(uint_64) : CurrProc->e.procinfo->ReservedStack);
+    if (ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP))
+    {
+        if (CurrProc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF)
+        {
+            /* in pass one init reserved stack with 11*8 to force stack frame creation */
+            sym_ReservedStack->value = (Parse_Pass == PASS_1 ? 11 * sizeof(uint_64) : CurrProc->e.procinfo->ReservedStack);
         }
         else if (CurrProc->sym.langtype == LANG_REGCALL && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC))
         {
@@ -6556,17 +6672,16 @@ void write_prologue(struct asm_tok tokenarray[])
             /* in pass one init reserved stack with 11*8 to force stack frame creation */
             sym_ReservedStack->value = (Parse_Pass == PASS_1 ? 6 * sizeof(uint_64) : CurrProc->e.procinfo->ReservedStack);
         }
-		else
-		{
-			/* in pass one init reserved stack with 4*8 to force stack frame creation */
-			sym_ReservedStack->value = (Parse_Pass == PASS_1 ? 4 * sizeof(uint_64) : CurrProc->e.procinfo->ReservedStack);
-		}
-		if (Parse_Pass == PASS_1)
-		{
-			sym_ReservedStack->value = 0;
-			sym_ReservedStack->hasinvoke = 0;
-		}
-	}
+        else
+        {
+            /* in pass one init reserved stack with 4*8 to force stack frame creation */
+            sym_ReservedStack->value = (Parse_Pass == PASS_1 ? 4 * sizeof(uint_64) : CurrProc->e.procinfo->ReservedStack);
+        }
+        if (Parse_Pass == PASS_1)
+        {
+            sym_ReservedStack->value = 0;
+        }
+    }
 
 	/* UASM 2.42 - Any proc with no prologue will have no stack frame, so set fpo and force use of esp if option stackbase:xSP is set. */
 	if (ModuleInfo.prologuemode == PEM_NONE && CurrProc->e.procinfo->forceframe == FALSE && (CurrProc->e.procinfo->basereg == T_ESP))
@@ -6723,8 +6838,14 @@ static void write_generic_epilogue(struct proc_info *info)
 	if (ModuleInfo.Ofssize == USE64 && ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP))
 	{
 		resstack = sym_ReservedStack->value;
-		if (resstack)
+		if (Options.frameflags)
+		{
+			AddLineQueueX("lea %r, [%r+(%d+%s)]", stackreg[ModuleInfo.Ofssize], stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize, sym_ReservedStack->name);
+		}
+		else if (resstack)
+		{
 			AddLineQueueX("add %r, %d + %s", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize, sym_ReservedStack->name);
+		}
 	}
 
 	/* Pop the registers */
@@ -6758,7 +6879,14 @@ static void write_generic_epilogue(struct proc_info *info)
 
 	if (ModuleInfo.Ofssize == USE64 && stackadj > 0 && info->fpo && !info->isleaf)
 	{
-		AddLineQueueX("add %r, %d", T_RSP, stackadj);
+		if (Options.frameflags)
+		{
+			AddLineQueueX("lea %r, [%r+%d]", T_RSP, stackadj);
+		}
+		else
+		{
+			AddLineQueueX("add %r, %d", T_RSP, stackadj);
+		}
 	}
 
 	if ((info->locallist == NULL) && info->stackparam == FALSE && info->has_vararg == FALSE && resstack == 0 && info->forceframe == FALSE)
@@ -6782,8 +6910,16 @@ static void write_generic_epilogue(struct proc_info *info)
 				if (ModuleInfo.Ofssize == USE64 && ModuleInfo.fctype == FCT_WIN64 && (ModuleInfo.win64_flags & W64F_AUTOSTACKSP))
 					;
 				else
-					if (info->localsize)
+				{
+					if (Options.frameflags)
+					{
+						AddLineQueueX("lea %r, [%r+%d]", stackreg[ModuleInfo.Ofssize], stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize);
+					}
+					else if (info->localsize)
+					{
 						AddLineQueueX("add %r, %d", stackreg[ModuleInfo.Ofssize], NUMQUAL info->localsize);
+					}
+				}
 				return;
 			}
 			else
@@ -6811,13 +6947,13 @@ static void write_default_epilogue(void)
 
 	if (ModuleInfo.Ofssize == USE64)
 	{
-		if (ModuleInfo.basereg[USE64] == T_RSP && Options.output_format == OFORMAT_COFF)
+		if (ModuleInfo.basereg[USE64] == T_RSP && Options.output_format == OFORMAT_COFF && (CurrProc->sym.langtype == LANG_FASTCALL || CurrProc->sym.langtype == LANG_VECTORCALL || CurrProc->sym.langtype == LANG_REGCALL))
 			write_win64_default_epilogue_RSP(info);
-		else if (ModuleInfo.basereg[USE64] == T_RBP && Options.output_format == OFORMAT_COFF && info->isframe)
+		else if (ModuleInfo.basereg[USE64] == T_RBP && Options.output_format == OFORMAT_COFF && (CurrProc->sym.langtype == LANG_FASTCALL || CurrProc->sym.langtype == LANG_VECTORCALL || CurrProc->sym.langtype == LANG_REGCALL) && info->isframe)
 			write_win64_default_epilogue_RBP(info); /* UASM win64:N style epilogue */
-		else if (ModuleInfo.basereg[USE64] == T_RBP && Options.output_format == OFORMAT_COFF)
+		else if (ModuleInfo.basereg[USE64] == T_RBP && Options.output_format == OFORMAT_COFF && (CurrProc->sym.langtype == LANG_FASTCALL || CurrProc->sym.langtype == LANG_VECTORCALL || CurrProc->sym.langtype == LANG_REGCALL))
 			write_generic_epilogue(info);
-		else if (ModuleInfo.basereg[USE64] == T_RBP && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC))
+		else if (ModuleInfo.basereg[USE64] == T_RBP && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && (CurrProc->sym.langtype == LANG_SYSVCALL || CurrProc->sym.langtype == LANG_REGCALL))
 			write_sysv_default_epilogue_RBP(info);
 	}
 	else

@@ -249,6 +249,30 @@ OPTFUNC(SetVTable)
 	return(NOT_ERROR);
 }
 
+/* OPTION FRAMEPRESERVEFLAGS:ON | OFF(default) */
+OPTFUNC(SetFPS)
+{
+    int i = *pi;
+    if (tokenarray[i].token == T_ID) {
+        if (0 == _stricmp(tokenarray[i].string_ptr, "ON")) {
+            Options.frameflags = TRUE;
+        }
+        else if (0 == _stricmp(tokenarray[i].string_ptr, "OFF")) {
+            Options.frameflags = FALSE;
+        }
+        else {
+            return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
+        }
+        DebugMsg1(("SetFPS(%s) ok\n", tokenarray[i].string_ptr));
+        i++;
+    }
+    else {
+        return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
+    }
+    *pi = i;
+    return(NOT_ERROR);
+}
+
 /* OPTION HLCall:ON | OFF(default) */
 OPTFUNC(SetHLCall)
 /*******************/
@@ -1043,105 +1067,90 @@ OPTFUNC(SetRenameKey)
 #if AMD64_SUPPORT
 OPTFUNC(SetWin64)
 /*****************/
-{
-    int i = *pi;
-    struct expr opndx;
+  {
+  int i = *pi;
+  struct expr opndx;
 
-    /* if -win64 isn't set, skip the option */
-    /* v2.09: skip option if Ofssize != USE64 */
-    if (ModuleInfo.defOfssize != USE64)
-    {
-        SkipOption(pi, tokenarray);
-        return(NOT_ERROR);
+  /* if -win64 isn't set, skip the option */
+  /* v2.09: skip option if Ofssize != USE64 */
+  if (ModuleInfo.defOfssize != USE64) {
+    SkipOption(pi, tokenarray);
+    return(NOT_ERROR);
     }
 
-    if (EvalOperand(&i, tokenarray, Token_Count, &opndx, 0) == ERROR)
-        return(ERROR);
-    if (opndx.kind == EXPR_CONST)
-    {
-        if (opndx.llvalue & (~W64F_ALL))
-        {
-            return(EmitConstError(&opndx));
-        }
+  if (EvalOperand(&i, tokenarray, Token_Count, &opndx, 0) == ERROR)
+      return(ERROR);
+  if (opndx.kind == EXPR_CONST) {
+    if (opndx.llvalue & (~W64F_ALL)) {
+      return(EmitConstError(&opndx));
+      }
 
 
-        /* OPTION win64:11 can work only with OPTION STACKBASE:RSP */
-        if (opndx.llvalue & W64F_SMART || opndx.llvalue > 7)
-        {
-            /* In this case STACKBASESUPP must be set */
-#ifndef STACKBASESUPP
-#define STACKBASESUPP 1       /* support OPTION STACKBASE              */
-#endif
-/* ensure that W64F_SAVEREGPARAMS and W64F_AUTOSTACKSP options are also set */
-            if (opndx.llvalue != 15)
-                opndx.llvalue = 11;        /* All values will be forced to 11 (except 15) and implies stackbase RSP */
-            ModuleInfo.frame_auto = 1; /* frame auto must also be implied for all stackbase rsp options */
+    /* OPTION win64:11 can work only with OPTION STACKBASE:RSP */
+    if (opndx.llvalue & W64F_SMART || opndx.llvalue > 7) 
+	{  
+        /* In this case STACKBASESUPP must be set */
+        #ifndef STACKBASESUPP
+        #define STACKBASESUPP 1       /* support OPTION STACKBASE              */
+        #endif
+		/* ensure that W64F_SAVEREGPARAMS and W64F_AUTOSTACKSP options are also set */
+		if(opndx.llvalue != 15)
+			opndx.llvalue = 11;        /* All values will be forced to 11 (except 15) and implies stackbase RSP */
+		ModuleInfo.frame_auto = 1; /* frame auto must also be implied for all stackbase rsp options */
+      
+		/* ensure that basereg is RSP */
+		if (ModuleInfo.basereg[ModuleInfo.Ofssize] != T_RSP)
+		{
+			ModuleInfo.basereg[ModuleInfo.Ofssize] = T_RSP;
+			if (!ModuleInfo.g.StackBase) 
+			{
+				ModuleInfo.g.StackBase = CreateVariable("@StackBase", 0);
+				ModuleInfo.g.StackBase->predefined = TRUE;
+				ModuleInfo.g.StackBase->sfunc_ptr = UpdateStackBase;
+				ModuleInfo.g.ProcStatus = CreateVariable("@ProcStatus", 0);
+				ModuleInfo.g.ProcStatus->predefined = TRUE;
+				ModuleInfo.g.ProcStatus->sfunc_ptr = UpdateProcStatus;
+			}
+		}
+	}
+	else
+	{
+		ModuleInfo.frame_auto = 1; /* frame auto must also be implied for all stackbase rsp options */
+		ModuleInfo.win64_flags = opndx.llvalue;
+		ModuleInfo.win64_flags |= W64F_AUTOSTACKSP;
+	}
+  } 
+  else 
+  {
+	return( EmitError( CONSTANT_EXPECTED ) );
+  }
+  
+  ModuleInfo.win64_flags = opndx.llvalue;
 
-            /* ensure that basereg is RSP */
-            if (ModuleInfo.basereg[ModuleInfo.Ofssize] != T_RSP)
-            {
-                ModuleInfo.basereg[ModuleInfo.Ofssize] = T_RSP;
-                if (!ModuleInfo.g.StackBase)
-                {
-                    ModuleInfo.g.StackBase = CreateVariable("@StackBase", 0);
-                    ModuleInfo.g.StackBase->predefined = TRUE;
-                    ModuleInfo.g.StackBase->sfunc_ptr = UpdateStackBase;
-                    ModuleInfo.g.ProcStatus = CreateVariable("@ProcStatus", 0);
-                    ModuleInfo.g.ProcStatus->predefined = TRUE;
-                    ModuleInfo.g.ProcStatus->sfunc_ptr = UpdateProcStatus;
-                }
-            }
-        }
-        else
-        {
-            ModuleInfo.frame_auto = 1; /* frame auto must also be implied for all stackbase rsp options */
-            ModuleInfo.win64_flags = opndx.llvalue;
-            ModuleInfo.win64_flags |= W64F_AUTOSTACKSP;
-        }
-    }
-    else
-    {
-        return(EmitError(CONSTANT_EXPECTED));
-    }
+  if ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)
+  {
+	  Options.langtype = LANG_SYSVCALL;
+	  ModuleInfo.langtype = LANG_SYSVCALL;
+	  ModuleInfo.fctype = FCT_WIN64; /* sys proc/invoke tables use same ordinal as FCTWIN64 */
+  }
 
-    ModuleInfo.win64_flags = opndx.llvalue;
+  if (sym_ReservedStack == NULL && ModuleInfo.defOfssize == USE64)
+	  sym_ReservedStack = AddPredefinedConstant("@ReservedStack", 0);
 
-    if ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC || Options.output_format == OFORMAT_COFF) && Options.sub_format == SFORMAT_64BIT)
-    {
-            ModuleInfo.sub_format = SFORMAT_64BIT;
-        if (Options.output_format == OFORMAT_COFF)
-        {
-            if (Options.langtype != LANG_REGCALL && Options.langtype != LANG_VECTORCALL)
-                Options.langtype = LANG_FASTCALL;
-            if (ModuleInfo.langtype != LANG_REGCALL && ModuleInfo.langtype != LANG_VECTORCALL)
-                ModuleInfo.langtype = LANG_FASTCALL;
-        }
-        if (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC)
-        {
-            if (Options.langtype != LANG_REGCALL)
-                Options.langtype = LANG_SYSVCALL;
-            if (ModuleInfo.langtype != LANG_REGCALL)
-                ModuleInfo.langtype = LANG_SYSVCALL;
-        }
-    }
+  /*else
+  {
+	  Options.langtype = LANG_FASTCALL;
+	  ModuleInfo.langtype = LANG_FASTCALL;
+	  ModuleInfo.fctype = FCT_WIN64;
+  }*/
 
-    if (sym_ReservedStack == NULL && ModuleInfo.defOfssize == USE64)
-        sym_ReservedStack = AddPredefinedConstant("@ReservedStack", 0);
-
-    if (Options.model == MODEL_NONE)
-        Options.model = MODEL_FLAT;
-    if (ModuleInfo.model == MODEL_NONE)
-        ModuleInfo.model = MODEL_FLAT;
-
-    Options.fctype = FCT_WIN64; /* sys proc/invoke tables use same ordinal as FCTWIN64 */
-    ModuleInfo.fctype = FCT_WIN64; /* sys proc/invoke tables use same ordinal as FCTWIN64 */
-
-    /*else
-    {
-        Options.langtype = LANG_FASTCALL;
-        ModuleInfo.langtype = LANG_FASTCALL;
-        ModuleInfo.fctype = FCT_WIN64;
-    }*/
+  if (ModuleInfo.model == MODEL_NONE)
+  {
+	  ModuleInfo.model = MODEL_FLAT;
+	  Options.langtype = LANG_FASTCALL;
+	  ModuleInfo.langtype = LANG_FASTCALL;
+	  ModuleInfo.fctype = FCT_WIN64;
+  }
 
     *pi = i;
     return(NOT_ERROR);
@@ -1242,6 +1251,11 @@ OPTFUNC( SetStackBase )
 	/* Setup everything for stackbase RSP based stack */
 	if (ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RSP)
 	{
+        /* UASM 2.50 prevent RSP stackbase with ELF64 */
+        if (Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_64BIT)
+        {
+            return( EmitError(STACKBASE_NOT_SUPPORTED) );
+        }
 		if (!ModuleInfo.g.StackBase)
 		{
 			ModuleInfo.g.StackBase = CreateVariable("@StackBase", 0);
@@ -1398,7 +1412,8 @@ static const struct asm_option optiontab[] = {
   { "BND",              SetBnd },        /* BND:ON or OFF */
   { "LITERALS",         SetLiterals },   /* LITERALS:ON or OFF */
   { "VTABLE",           SetVTable },     /* VTABLE:ON or OFF */
-  { "HLCALL",           SetHLCall }      /* HLCALL:ON or OFF */
+  { "HLCALL",           SetHLCall },     /* HLCALL:ON or OFF */
+  { "FRAMEPRESERVEFLAGS", SetFPS }       /* FRAMEPRESERVEFLAGS:ON or OFF */
 };
 
 #define TABITEMS sizeof( optiontab) / sizeof( optiontab[0] )

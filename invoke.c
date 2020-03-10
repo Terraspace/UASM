@@ -526,8 +526,7 @@ static int ms64_fcstart(struct dsym const *proc, int numparams, int start, struc
 
 			}
 	}
-	if (sym_ReservedStack)
-		sym_ReservedStack->hasinvoke = 1;
+
 	DebugMsg1(("ms64_fcstart(%s, numparams=%u) vararg=%u\n", proc->sym.name, numparams, proc->e.procinfo->has_vararg));
 
     if (proc->sym.langtype == LANG_REGCALL)
@@ -2402,7 +2401,6 @@ static int sysv_regTo64(unsigned int reg)
 	}
 }
 
-// add dsym struct param for implementation propagation
 /* Return the first free GPR register useable in a SystemV invoke/call */
 static int sysv_GetNextGPR(struct dsym const* proc, struct proc_info *info, int size)
 {
@@ -4252,7 +4250,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 				lbl = SymLookup(buf);
 				SetSymSegOfs(lbl);
 				memset(&buff, 0, 256);
-				pDest = (char*)buff;
+				pDest = buff;
 				finallen = slen;
 
 				while (*pSrc != '"')
@@ -5290,8 +5288,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 								qual = T_LOW32;
 								instr = "d";
 								break;
-                            }
-                            break;
+							}
 						default:
 							DebugMsg1(("PushInvokeParm(%u): error, CONST, asize=%u, psize=%u, pushsize=%u\n",
 								reqParam, asize, psize, pushsize));
@@ -5425,7 +5422,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	lastret->value = info->ret_type;
 
 	// Reset SYSTEMV pass values.
-	if (proc->sym.langtype == LANG_SYSVCALL || (proc->sym.langtype == LANG_REGCALL && ((Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_64BIT) || Options.output_format == OFORMAT_MAC)))
+	if ((proc->sym.langtype == LANG_SYSVCALL || proc->sym.langtype == LANG_REGCALL) && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)
 	{
 		// For SYSV calls, we use vecused to track used xmm registers for overwrite so reset it each pass.
 		info->vecused = 0;
@@ -5489,8 +5486,8 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 		}
 	}
 	else {
-		// SystemV vararg handling is in-line in the normal procedures, so we need to do it below AFTER normal operands.
-		if (proc->sym.langtype != LANG_SYSVCALL && !(proc->sym.langtype == LANG_REGCALL && ((Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_64BIT) || Options.output_format == OFORMAT_MAC)))
+        // SystemV vararg handling is in-line in the normal procedures, so we need to do it below AFTER normal operands.
+        if (!((proc->sym.langtype == LANG_SYSVCALL || proc->sym.langtype == LANG_REGCALL) && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT))
 		{
 			int j = (Token_Count - i) / 2;
 			/* for VARARG procs, just push the additional params with
@@ -5505,7 +5502,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 			/* move to first non-vararg parameter, if any */
 			for (curr = info->paralist; curr && curr->sym.is_vararg == TRUE; curr = curr->nextparam);
 		}
-		else if ((proc->sym.langtype == LANG_SYSVCALL || (proc->sym.langtype == LANG_REGCALL && ((Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_64BIT) || Options.output_format == OFORMAT_MAC))) && info->has_vararg)
+        else if (((proc->sym.langtype == LANG_SYSVCALL || proc->sym.langtype == LANG_REGCALL) && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT) && info->has_vararg)
 		{
 			numParam = 0;
 			for (curr = info->paralist, numParam = 0; curr && (curr->sym.is_vararg == FALSE); curr = curr->nextparam, numParam++)
@@ -5523,15 +5520,17 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	* This if() must match the one in proc.c, ParseParams().
 	*/
 
-	if ( sym->langtype == LANG_C                      ||
-		 sym->langtype == LANG_SYSCALL                ||
+    if (
+        sym->langtype == LANG_STDCALL                 ||
+		sym->langtype == LANG_C                       ||
+		sym->langtype == LANG_SYSCALL                 ||
 		(sym->langtype == LANG_FASTCALL && porder)    ||
 		(sym->langtype == LANG_VECTORCALL && porder)  ||
 		(sym->langtype == LANG_SYSVCALL && porder)    ||
 		(sym->langtype == LANG_REGCALL && porder)     ||
 		(sym->langtype == LANG_THISCALL && porder)    ||
-        (sym->langtype == LANG_DELPHICALL && porder)  ||
-		sym->langtype == LANG_STDCALL)
+        (sym->langtype == LANG_DELPHICALL && porder)
+		)
 	{
 
 		/* v2.23 if stack base is ESP */
@@ -5593,7 +5592,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 			}
 		}	
 		/* Handle VARARG operands AFTER normal ones for SYSTEMV */
-		if ((proc->sym.langtype == LANG_SYSVCALL || (proc->sym.langtype == LANG_REGCALL && ((Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_64BIT) || Options.output_format == OFORMAT_MAC))) && proc->e.procinfo->has_vararg)
+		if (((proc->sym.langtype == LANG_SYSVCALL || proc->sym.langtype == LANG_REGCALL) && ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)) && proc->e.procinfo->has_vararg)
 		{
 			int j = numParam;
 			for (; j < ((Token_Count - i) / 2); j++)
@@ -5601,7 +5600,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 		}
 
 		/* Reverse Write out all Stack based operations */
-		if (proc->sym.langtype == LANG_SYSVCALL || (proc->sym.langtype == LANG_REGCALL && ((Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_64BIT) || Options.output_format == OFORMAT_MAC)))
+		if ((proc->sym.langtype == LANG_SYSVCALL || (proc->sym.langtype == LANG_REGCALL) && ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)))
 		{
 			for (j = proc->e.procinfo->stackOpCount; j >= 0; j--)
 			{
@@ -5626,7 +5625,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	/* -----------------------------------------------------------------------------------------------
 	HANDLE PARAMETERS (SECOND PASS FOR VECTORCALL)
 	----------------------------------------------------------------------------------------------- */
-	if (sym->langtype == LANG_VECTORCALL || (proc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF && Options.sub_format == SFORMAT_64BIT))
+	if ((sym->langtype == LANG_VECTORCALL || (proc->sym.langtype == LANG_REGCALL) && Options.output_format == OFORMAT_COFF && Options.sub_format == SFORMAT_64BIT))
 	{
 		vcallpass = 1;
 		info->vsize = 0;
@@ -5750,7 +5749,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 #endif
 AddLineQueue(StringBufferEnd);
 
-if ((!(ModuleInfo.win64_flags & W64F_AUTOSTACKSP)) && (sym->langtype == LANG_C || sym->langtype == LANG_SYSCALL) &&
+if ((sym->langtype == LANG_C || sym->langtype == LANG_SYSCALL) &&
 	(info->parasize || (info->has_vararg && size_vararg))) {
 	if (info->has_vararg) {
 		DebugMsg1(("InvokeDir: size of fix args=%u, var args=%u\n", info->parasize, size_vararg));

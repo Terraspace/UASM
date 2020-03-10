@@ -180,35 +180,16 @@ static void CheckBOM(FILE *f)
 
 extern void RewindToWin64() 
 {
-    if (!(Options.output_format == OFORMAT_BIN && Options.sub_format == SFORMAT_NONE))
-    {
-        if (Options.output_format != OFORMAT_BIN) 
-        {
-            if (Options.output_format != OFORMAT_ELF && Options.output_format != OFORMAT_MAC)
-            {
-                Options.output_format = OFORMAT_COFF;
-                if (Options.langtype != LANG_VECTORCALL && Options.langtype != LANG_REGCALL)
-                    Options.langtype = LANG_FASTCALL;
-            }
-            if (Options.output_format != OFORMAT_COFF && Options.output_format != OFORMAT_MAC)
-            {
-                Options.output_format = OFORMAT_ELF;
-                if (Options.langtype != LANG_REGCALL)
-                    Options.langtype = LANG_SYSVCALL;
-            }
-            if (Options.output_format != OFORMAT_ELF && Options.output_format != OFORMAT_COFF)
-            {
-                Options.output_format = OFORMAT_MAC;
-                if (Options.langtype != LANG_REGCALL)
-                    Options.langtype = LANG_SYSVCALL;
-            }
-            else
-            {
-                Options.langtype = LANG_FASTCALL;
-            }
-        }
-        Options.sub_format = SFORMAT_64BIT;
-    }
+
+	if (!(Options.output_format == OFORMAT_BIN && Options.sub_format == SFORMAT_NONE))
+	{
+		if (Options.output_format != OFORMAT_BIN)
+			Options.output_format = OFORMAT_COFF;
+		else
+			Options.langtype = LANG_FASTCALL;
+		Options.sub_format = SFORMAT_64BIT;
+
+	}
 }
 
 /*
@@ -797,17 +778,17 @@ static void ModulePassInit( void )
         ModuleInfo.langtype = Options.langtype;
         ModuleInfo.fctype = Options.fctype;
 
-        #if AMD64_SUPPORT
-        if ((Options.output_format == OFORMAT_COFF || Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)
-        {
-            ModuleInfo.fctype = FCT_WIN64;
-            Options.fctype = FCT_WIN64; /* SYSV proc/invoke tables use the same ordinal as FCT_WIN64 so set it now, instead of FCT_MSC */
-        }
-        #endif 
+		#if AMD64_SUPPORT
+		if (Options.output_format == OFORMAT_ELF)
+		{
+			ModuleInfo.fctype = FCT_WIN64;
+			Options.fctype = FCT_WIN64; /* SYSV proc/invoke tables use the same ordinal as FCT_WIN64 so set it now, instead of FCT_MSC */
+		}
+		#endif 
 
 #if AMD64_SUPPORT
         if ( ModuleInfo.sub_format == SFORMAT_64BIT ) 
-        {
+		{
 
             /* v2.06: force cpu to be at least P_64, without side effect to Options.cpu */
             if ( ( cpu &  P_CPU_MASK ) < P_64 ) /* enforce cpu to be 64-bit */
@@ -817,13 +798,11 @@ static void ModulePassInit( void )
              */
             model = MODEL_FLAT;
             if (ModuleInfo.langtype == LANG_NONE && Options.output_format == OFORMAT_COFF)
-            {
-                    ModuleInfo.langtype = LANG_FASTCALL;
-            }
-            if (ModuleInfo.langtype == LANG_NONE && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC))
-            {
-                    ModuleInfo.langtype = LANG_SYSVCALL;
-            }
+                ModuleInfo.langtype = LANG_FASTCALL;
+			if (ModuleInfo.langtype == LANG_NONE && Options.output_format == OFORMAT_ELF)
+				ModuleInfo.langtype = LANG_SYSVCALL;
+			if (ModuleInfo.langtype == LANG_NONE && Options.output_format == OFORMAT_MAC)
+				ModuleInfo.langtype = LANG_SYSVCALL;
 
         } else
 #endif

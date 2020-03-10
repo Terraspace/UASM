@@ -156,6 +156,7 @@ struct global_options Options = {
 	/* vtable                */     TRUE,
 	/* hlcall                */     TRUE,
 	/* pie                   */     FALSE,
+    /* frame preserves flags */     FALSE,
 
 #if MANGLERSUPP
     /* naming_convention*/          NC_DO_NOTHING,
@@ -515,15 +516,16 @@ static void OPTQUAL Set_ofmt( void )
 {
     Options.output_format = OptValue & 0xff;
     Options.sub_format = OptValue >> 8;
-    if ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)
-    {
-        if (Options.langtype != LANG_REGCALL)
-            Options.langtype = LANG_SYSVCALL;
-        ModuleInfo.fctype = FCT_WIN64; /* sys proc/invoke tables use same ordinal as FCTWIN64 */
-        Options.fctype = FCT_WIN64; /* sys proc/invoke tables use same ordinal as FCTWIN64 */
-        if (Options.langtype == LANG_SYSVCALL || Options.langtype == LANG_REGCALL)
-            ModuleInfo.frame_auto = 1;
-    }
+	if (Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_64BIT)
+	{
+		Options.langtype = LANG_SYSVCALL;
+		ModuleInfo.frame_auto = 1;
+	}
+	if (Options.output_format == OFORMAT_MAC && Options.sub_format == SFORMAT_64BIT)
+	{
+		Options.langtype = LANG_SYSVCALL;
+		ModuleInfo.frame_auto = 1;
+	}
 }
 
 static void OPTQUAL Set_zcm( void ) { Options.no_cdecl_decoration = FALSE; }

@@ -869,6 +869,9 @@ insn(MOVQ, 3,                   OpCls( M64,      XMM,      NONE ), F_660F, 0,  n
 insn(MOVQ, 4,                   OpCls( MMX,      MMX_M64,  NONE ), F_0F,   1,  no_WDS, 0x6F,     0x00,       P_586|P_MMX, QSIZE)
 insn(MOVQ, 5,                   OpCls( XMM,      XMM_M64,  NONE ), F_F30F, 1,  no_WDS, 0x7E,     0x00,       P_686|P_SSE2,W1|QSIZE|T1S)
 insn(MOVQ, 6,                   OpCls( M64,      MMX,      NONE ), F_0F,   0,  no_WDS, 0x7F,     0x00,       P_586|P_MMX, QSIZE)
+insn(MOVQ, 7,                   OpCls( M64,      MMX,      NONE ), F_0F,   1,  no_WDS, 0x7F,     0x00,       P_686|P_MMX, W1|QSIZE|T1S)
+insn(MOVQ, 8,                   OpCls( MMX,      R64_M64,  NONE ), F_0F,   1,  no_WDS, 0x6E,     0x00,       P_686|P_MMX, W1|QSIZE|T1S)
+insn(MOVQ, 9,                   OpCls( R64,      MMX,      NONE ), F_0F,   1,  no_WDS, 0x7E,     0x00,       P_686|P_MMX, W1|QSIZE|T1S)
 #endif
 
 ins (MOVAPD, movapd,            OpCls( XMM,      XMM_M128, NONE ), F_660F, 1,  no_WDS, 0x28,     0x00,       P_686|P_SSE2,W1|QSIZE|FVM)

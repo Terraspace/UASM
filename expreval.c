@@ -3306,9 +3306,19 @@ static void cmp_types( struct expr *opnd1, struct expr *opnd2, int trueval )
     /* v2.10: special handling of pointer types. */
     //if ( opnd1->mem_type == MT_PTR && opnd2->mem_type == MT_PTR && opnd1->type && opnd2->type ) {
     if ( opnd1->mem_type == MT_PTR && opnd2->mem_type == MT_PTR ) {
-        /**/myassert( ( opnd1->type || opnd1->type_tok ) && ( opnd2->type || opnd2->type_tok ) );
-        type1 = ( opnd1->type ? opnd1->type : SymSearch( opnd1->type_tok->string_ptr ) );
-        type2 = ( opnd2->type ? opnd2->type : SymSearch( opnd2->type_tok->string_ptr ) );
+        /*myassert( ( opnd1->type || opnd1->type_tok ) && ( opnd2->type || opnd2->type_tok ) );*/
+        
+        if(opnd1->type || opnd1->type_tok)
+            type1 = ( opnd1->type ? opnd1->type : SymSearch( opnd1->type_tok->string_ptr ) );
+
+        if(opnd2->type || opnd2->type_tok)
+            type2 = ( opnd2->type ? opnd2->type : SymSearch( opnd2->type_tok->string_ptr ) );
+
+        if (!type1 || !type2)
+        {
+            EmitError(INVALID_TYPE_EXPRESSION);
+        }
+
         //opnd1->value64 = ( ( type1->is_ptr == type2->is_ptr &&
         opnd1->value64 = ( ( type1->is_ptr == type2->is_ptr &&
                             type1->ptr_memtype == type2->ptr_memtype &&
