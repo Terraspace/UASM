@@ -190,10 +190,13 @@
     <ClCompile Include="..\..\simd.c">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\x86macros.c">
+    <ClCompile Include="..\..\codegenv2.c">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\codegenv2.c">
+    <ClCompile Include="..\..\pseudoFilter.c">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\x86macrolib.c">
       <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -294,9 +297,6 @@
     <ClInclude Include="..\..\H\instruct.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\H\intrin.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\H\inttype.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -358,9 +358,6 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\H\orgfixup.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\H\parser.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\H\pespec.h">
@@ -432,9 +429,6 @@
     <ClInclude Include="..\..\H\simd.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\H\x86macros.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\H\malloc.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -448,6 +442,15 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\H\MemTable64.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\H\pseudoFilter.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\H\x86macrolib.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\H\parser.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

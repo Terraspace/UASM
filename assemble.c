@@ -9,7 +9,7 @@
 ****************************************************************************/
 
 #ifdef __GNUC__
-	#define _BITS_FLOATN_COMMON_H
+    #define _BITS_FLOATN_COMMON_H
 #endif
 
 #include <ctype.h>
@@ -43,6 +43,7 @@
 #include "lqueue.h"
 #include "orgfixup.h"
 #include "macrolib.h"
+#include "x86macrolib.h"
 //#include "simd.h"
 
 #if DLLIMPORT
@@ -120,16 +121,6 @@ struct qdesc            LinnumQueue;    /* queue of line_num_info items */
 
 bool write_to_file;     /* write object module */
 
-/* ARCH SSE/AVX specific instructions */
-char *MOVE_ALIGNED_FLOAT = "movaps";
-char *MOVE_ALIGNED_INT = "movdqa";
-char *MOVE_UNALIGNED_FLOAT = "movups";
-char *MOVE_UNALIGNED_INT = "movdqu";
-char *MOVE_SINGLE = "movss";
-char *MOVE_DOUBLE = "movsd";
-char *MOVE_SIMD_DWORD = "movd";
-char *MOVE_SIMD_QWORD = "movq";
-
 #if 0
 /* for OW, it would be good to remove the CharUpperA() emulation
  * implemented in apiemu.c. Unfortunately, OW isn't happy with
@@ -195,10 +186,7 @@ extern void RewindToWin64()
 		if (Options.output_format != OFORMAT_BIN)
 			Options.output_format = OFORMAT_COFF;
 		else
-		{
-			if (Options.langtype != LANG_FASTCALL && Options.langtype != LANG_SYSVCALL && Options.langtype != LANG_VECTORCALL && Options.langtype != LANG_REGCALL)
-				Options.langtype = LANG_FASTCALL;
-		}
+			Options.langtype = LANG_FASTCALL;
 		Options.sub_format = SFORMAT_64BIT;
 
 	}
@@ -809,21 +797,12 @@ static void ModulePassInit( void )
              * there's no other model than FLAT possible.
              */
             model = MODEL_FLAT;
-			if (ModuleInfo.langtype == LANG_NONE && Options.output_format == OFORMAT_COFF)
-			{
-				if (ModuleInfo.langtype != LANG_FASTCALL && ModuleInfo.langtype != LANG_VECTORCALL && ModuleInfo.langtype != LANG_REGCALL)
-					ModuleInfo.langtype = LANG_FASTCALL;
-			}
+            if (ModuleInfo.langtype == LANG_NONE && Options.output_format == OFORMAT_COFF)
+                ModuleInfo.langtype = LANG_FASTCALL;
 			if (ModuleInfo.langtype == LANG_NONE && Options.output_format == OFORMAT_ELF)
-			{
-				if (ModuleInfo.langtype != LANG_SYSVCALL && ModuleInfo.langtype != LANG_REGCALL)
-					ModuleInfo.langtype = LANG_SYSVCALL;
-			}
+				ModuleInfo.langtype = LANG_SYSVCALL;
 			if (ModuleInfo.langtype == LANG_NONE && Options.output_format == OFORMAT_MAC)
-			{
-				if (ModuleInfo.langtype != LANG_SYSVCALL && ModuleInfo.langtype != LANG_REGCALL)
-					ModuleInfo.langtype = LANG_SYSVCALL;
-			}
+				ModuleInfo.langtype = LANG_SYSVCALL;
 
         } else
 #endif
@@ -1179,26 +1158,41 @@ static int OnePass( void )
 	else if (Options.output_format == OFORMAT_MAC && Options.sub_format == SFORMAT_64BIT )
 		platform->value = 4;
 
-	/* Process our built-in macro library to make it available to the rest of the source */
-	if (Parse_Pass == PASS_1 && Options.nomlib == FALSE) 
+	if (Parse_Pass == PASS_1)
 	{
-		unsigned  alist = ModuleInfo.list;
-		ModuleInfo.list = 0;
-		if(platform->value == 0)
-    {
-			InitAutoMacros32();
-		}
-		else
-		{
-			InitAutoMacros64();
-#if !(NOX86MACROLIB)
-			Addx86defs();
-			Initx86AutoMacros64();
-#endif
-		}
-
-		ModuleInfo.list = alist;
+		struct asym* archSym = SymFind("@Arch");
+		archSym->value = ModuleInfo.arch;
 	}
+
+    /* Process our built-in macro library to make it available to the rest of the source */
+    if (Parse_Pass == PASS_1 && Options.nomlib == FALSE) 
+    {
+        unsigned  alist = ModuleInfo.list;
+        ModuleInfo.list = 0;
+        if (platform->value != 2 && platform->value >= 1)
+        {
+            InitAutoMacros64();
+#if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))
+            if (Options.withx86mlib == TRUE)
+            {
+                Addx86defs64();
+                Initx86AutoMacros64();
+            }
+#endif
+        }
+        else
+        {
+            InitAutoMacros32();
+#if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))
+            if (Options.withx86mlib == TRUE)
+            {
+                Addx86defs32();
+                Initx86AutoMacros32();
+            }
+#endif
+        }
+        ModuleInfo.list = alist;
+    }
 	if (Parse_Pass == PASS_1)
 	{
 		unsigned  alist = ModuleInfo.list;
@@ -1224,7 +1218,7 @@ static int OnePass( void )
             set_curr_srcfile( LineStoreCurr->srcfile, LineStoreCurr->lineno );
             /* v2.06: list flags now initialized on the top level */
             ModuleInfo.line_flags = 0;
-            MacroLevel = LineStoreCurr->macro_level;
+            MacroLevel = ( LineStoreCurr->srcfile == 0xFFF ? 1 : 0 );
             DebugMsg1(("OnePass(%u) cur/nxt=%X/%X src=%X.%u mlvl=%u: >%s<\n", Parse_Pass+1, LineStoreCurr, LineStoreCurr->next, LineStoreCurr->srcfile, LineStoreCurr->lineno, MacroLevel, LineStoreCurr->line ));
             ModuleInfo.CurrComment = NULL; /* v2.08: added (var is never reset because GetTextLine() isn't called) */
 #if USELSLINE
@@ -1646,7 +1640,7 @@ int EXPQUAL AssembleModule( const char *source )
 #endif
 
     AssembleInit( source );
-
+	
     starttime = clock();
 
 #if 0 /* 1=trigger a protection fault */
@@ -1848,4 +1842,45 @@ done:
 	ResetOrgFixup();
     DebugMsg(("AssembleModule exit\n"));
     return( ModuleInfo.g.error_count == 0 );
+}
+
+/* ARCH SSE/AVX specific instructions */
+const char* MOVE_ALIGNED_FLOAT()
+{
+	if (MODULEARCH == ARCH_AVX) return "vmovaps"; else return "movaps";
+}
+
+const char* MOVE_ALIGNED_INT()
+{
+	if (MODULEARCH == ARCH_AVX) return "vmovdqa"; else return "movdqa";
+}
+
+const char* MOVE_UNALIGNED_FLOAT()
+{
+	if (MODULEARCH == ARCH_AVX) return "vmovups"; else return "movups";
+}
+
+const char* MOVE_UNALIGNED_INT()
+{
+	if (MODULEARCH == ARCH_AVX) return "vmovdqu"; else return "movdqu";
+}
+
+const char* MOVE_SINGLE()
+{
+	if (MODULEARCH == ARCH_AVX) return "vmovss"; else return "movss";
+}
+
+const char* MOVE_DOUBLE()
+{
+	if (MODULEARCH == ARCH_AVX) return "vmovsd"; else return "movsd";
+}
+
+const char* MOVE_SIMD_DWORD()
+{
+	if (MODULEARCH == ARCH_AVX) return "vmovd"; else return "movd";
+}
+
+const char* MOVE_SIMD_QWORD()
+{
+	if (MODULEARCH == ARCH_AVX) return "vmovq"; else return "movq";
 }

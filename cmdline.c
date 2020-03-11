@@ -114,6 +114,7 @@ struct global_options Options = {
 #endif
     /* no_cdecl_decoration   */     FALSE,
     /* stdcall_decoration    */     STDCALL_FULL,
+    /* fastcall_decoration */       FASTCALL_FULL,
 	/* vectorcall_decoration */     VECTORCALL_FULL,
     /* regcall_decoration */        REGCALL_FULL,
     /* regcall_version */           RGCV_4,
@@ -155,6 +156,7 @@ struct global_options Options = {
 	/* vtable                */     TRUE,
 	/* hlcall                */     TRUE,
 	/* pie                   */     FALSE,
+    /* frame preserves flags */     FALSE,
 
 #if MANGLERSUPP
     /* naming_convention*/          NC_DO_NOTHING,
@@ -345,7 +347,7 @@ static void get_fname( int type, const char *token )
     strcpy( Options.names[type], name );
 }
 
-static void set_option_n_name(int idx, const char* name)
+static void set_option_n_name( int idx, const char *name )
 /********************************************************/
 /* option -n: set name of
  * - nd: data seg
@@ -354,18 +356,16 @@ static void set_option_n_name(int idx, const char* name)
  * - nc: code class
  */
 {
-    if (*name != '.' && !is_valid_id_char(*name))
-    {
-        EmitError(N_OPTION_NEEDS_A_NAME_PARAMETER);
+    if ( *name != '.' && !is_valid_id_char( *name ) ) {
+        EmitError( N_OPTION_NEEDS_A_NAME_PARAMETER );
         return;
     }
 
-    if (Options.names[idx] != NULL)
-    {
-        MemFree(Options.names[idx]);
+    if( Options.names[idx] != NULL ) {
+        MemFree( Options.names[idx] );
     }
-    Options.names[idx] = MemAlloc(strlen(name) + 1);
-    strcpy(Options.names[idx], name);
+    Options.names[idx] = MemAlloc( strlen( name ) + 1 );
+    strcpy( Options.names[idx], name );
 }
 
 //static void OPTQUAL Ignore( void ) {};
@@ -387,35 +387,26 @@ static void OPTQUAL Set_Cx( void ) { Options.case_sensitive = FALSE;  Options.co
 static void OPTQUAL Set_SSE(void) 
 { 
 	ModuleInfo.arch = ARCH_SSE; 
-	MODULEARCH = ARCH_SSE; 
-	strcpy(MOVE_ALIGNED_FLOAT, "movaps");
-	strcpy(MOVE_ALIGNED_INT, "movdqa");
-	strcpy(MOVE_UNALIGNED_FLOAT, "movups");
-	strcpy(MOVE_UNALIGNED_INT, "movdqu");
-	strcpy(MOVE_SINGLE, "movss");
-	strcpy(MOVE_DOUBLE, "movsd");
-	strcpy(MOVE_SIMD_DWORD, "movd");
-	strcpy(MOVE_SIMD_QWORD, "movq");
+	MODULEARCH = ARCH_SSE; 	
 }
 
 static void OPTQUAL Set_AVX(void) 
 { 
 	ModuleInfo.arch = ARCH_AVX; 
 	MODULEARCH = ARCH_AVX;
-	strcpy(MOVE_ALIGNED_FLOAT, "vmovaps");
-	strcpy(MOVE_ALIGNED_INT, "vmovdqa");
-	strcpy(MOVE_UNALIGNED_FLOAT, "vmovups");
-	strcpy(MOVE_UNALIGNED_INT, "vmovdqu");
-	strcpy(MOVE_SINGLE, "vmovss");
-	strcpy(MOVE_DOUBLE, "vmovsd");
-	strcpy(MOVE_SIMD_DWORD, "vmovd");
-	strcpy(MOVE_SIMD_QWORD, "vmovq");
 }
 
 static void OPTQUAL Set_NOMLIB(void)
 {
 	Options.nomlib = TRUE;
 }
+
+#if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))
+static void OPTQUAL Set_WITHX86MLIB(void)
+{
+    Options.withx86mlib = TRUE;
+}
+#endif
 
 static void OPTQUAL Set_LessOutput(void)
 {
@@ -525,14 +516,15 @@ static void OPTQUAL Set_ofmt( void )
 {
     Options.output_format = OptValue & 0xff;
     Options.sub_format = OptValue >> 8;
-	if ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT && Options.langtype != LANG_SYSVCALL && Options.langtype != LANG_REGCALL)
+	if (Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_64BIT)
 	{
-		if (Options.langtype != LANG_SYSVCALL && Options.langtype != LANG_REGCALL)
-			Options.langtype = LANG_SYSVCALL;
-		if (ModuleInfo.fctype != FCT_WIN64)
-			ModuleInfo.fctype = FCT_WIN64; /* sys proc/invoke tables use same ordinal as FCTWIN64 */
-		if (ModuleInfo.frame_auto != 1)
-			ModuleInfo.frame_auto = 1;
+		Options.langtype = LANG_SYSVCALL;
+		ModuleInfo.frame_auto = 1;
+	}
+	if (Options.output_format == OFORMAT_MAC && Options.sub_format == SFORMAT_64BIT)
+	{
+		Options.langtype = LANG_SYSVCALL;
+		ModuleInfo.frame_auto = 1;
 	}
 }
 
@@ -546,9 +538,11 @@ static void OPTQUAL Set_zt( void ) { Options.stdcall_decoration = OptValue; }
 static void OPTQUAL Set_h( void ) {  PrintUsage();  exit(EXIT_SUCCESS); }
 #endif
 
+static void OPTQUAL Set_zr(void) { Options.fastcall_decoration = OptValue; }
+
 static void OPTQUAL Set_zv(void) { Options.vectorcall_decoration = OptValue; }
 
-static void OPTQUAL Set_zr(void) { Options.regcall_decoration = OptValue; }
+static void OPTQUAL Set_ze(void) { Options.regcall_decoration = OptValue; }
 
 static void OPTQUAL Set_gev( void )  { Options.regcall_version = OptValue; }
 
@@ -616,7 +610,10 @@ static struct cmdloption const cmdl_options[] = {
     { "Cx",     0,        Set_Cx },
 	{ "archSSE",0,        Set_SSE },
 	{ "archAVX",0,        Set_AVX },
-	{ "nomlib", 0,        Set_NOMLIB },
+    { "nomlib", 0,        Set_NOMLIB },
+#if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))
+    { "withx86mlib", 0,   Set_WITHX86MLIB },
+#endif
 	{ "less",   0,        Set_LessOutput },
 #ifdef DEBUG_OUT
     { "ce",     0,        Set_ce },
@@ -761,10 +758,12 @@ static struct cmdloption const cmdl_options[] = {
     { "zt0",    STDCALL_NONE, Set_zt },
     { "zt1",    STDCALL_HALF, Set_zt },
     { "zt2",    STDCALL_FULL, Set_zt },
+    { "zr0",    FASTCALL_NONE, Set_zr },
+    { "zr1",    FASTCALL_FULL, Set_zr },
     { "zv0",    VECTORCALL_NONE, Set_zv },
     { "zv1",    VECTORCALL_FULL, Set_zv },
-    { "ze0",    REGCALL_NONE, Set_zr },
-    { "ze1",    REGCALL_FULL, Set_zr },
+    { "ze0",    REGCALL_NONE, Set_ze },
+    { "ze1",    REGCALL_FULL, Set_ze },
     { "ge0",    RGCV_0,       Set_gev },
     { "ge1",    RGCV_1,       Set_gev },
     { "ge2",    RGCV_2,       Set_gev },

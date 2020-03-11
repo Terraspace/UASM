@@ -380,13 +380,13 @@ res(STDCALL, stdcall, RWT_RES_ID, 0, LANG_STDCALL, 0, P_86, 0)
 res(PASCAL, pascal, RWT_RES_ID, 0, LANG_PASCAL, 0, P_86, 0)
 res(FORTRAN, fortran, RWT_RES_ID, 0, LANG_FORTRAN, 0, P_86, 0)
 res(BASIC, basic, RWT_RES_ID, 0, LANG_BASIC, 0, P_86, 0)
-res(FASTCALL, fastcall, RWT_RES_ID, 0, LANG_FASTCALL, 0, P_64, 0)
+res(FASTCALL, fastcall, RWT_RES_ID, 0, LANG_FASTCALL, 0, P_86, 0)
 /* 2.15 implemented the VECTORCALL */
-res(VECTORCALL, vectorcall, RWT_RES_ID, 0, LANG_VECTORCALL, 0, P_64, 0)
+res(VECTORCALL, vectorcall, RWT_RES_ID, 0, LANG_VECTORCALL, 0, P_86, 0)
 /* 2.24 system v and delphi 32 */
-res(SYSVCALL, systemv, RWT_RES_ID, 0, LANG_SYSVCALL, 0, P_64, 0)
-res(REGCALL, regcall, RWT_RES_ID, 0, LANG_REGCALL, 0, P_64, 0)
-res(THISCALL, thiscall, RWT_RES_ID, 0, LANG_THISCALL, 0, P_64, 0)
+res(SYSVCALL, systemv, RWT_RES_ID, 0, LANG_SYSVCALL, 0, P_86, 0)
+res(REGCALL, regcall, RWT_RES_ID, 0, LANG_REGCALL, 0, P_86, 0)
+res(THISCALL, thiscall, RWT_RES_ID, 0, LANG_THISCALL, 0, P_86, 0)
 res(BORLAND, borland, RWT_RES_ID, 0, LANG_DELPHICALL, 0, P_86, 0)
 /* 2.46.9 support VOID return type */
 res(VOIDARG,   voidarg,    RWT_RES_ID, 0, 0, 0, P_86, 0)

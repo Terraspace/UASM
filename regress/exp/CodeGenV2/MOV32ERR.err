@@ -15,4 +15,3 @@
 ..\src\CodeGenV2Error\MOV32ERR.ASM(29) : Error A2048: Operands must be the same size: 1 - 4
 ..\src\CodeGenV2Error\MOV32ERR.ASM(31) : Error A2049: Invalid instruction operands
 ..\src\CodeGenV2Error\MOV32ERR.ASM(33) : Error A2048: Operands must be the same size: 1 - 2
-..\src\CodeGenV2Error\MOV32ERR.ASM(35) : Warning A4299: BSS data in BIN output could have side effects

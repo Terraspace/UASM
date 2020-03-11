@@ -480,7 +480,7 @@ all:
              ParseLine(tokenarray);
          }
          /* now write new line with "movups xmm1, GTEMP"   */
-          strcpy(buffer1, MOVE_UNALIGNED_FLOAT);
+		  strcpy(buffer1, MOVE_UNALIGNED_FLOAT());
           strcat(buffer1,buffer);
           strcat(buffer1," , ");
           strcat(buffer1,"GTEMP");
@@ -1285,9 +1285,9 @@ static ret_code get_operand( struct expr *opnd, int *idx, struct asm_tok tokenar
                       cnt = cnt * 8;
                       cnt += sym->offset + CurrProc->e.procinfo->localsize + CurrProc->e.procinfo->xmmsize; //pointing to RSP
                       if (CurrProc->sym.langtype == LANG_VECTORCALL)
-						  cnt += CurrProc->e.procinfo->vsize;     //pointing above RSP to the shadow space off RCX RDX R8 R9   
-					  if (CurrProc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF && Options.sub_format == SFORMAT_64BIT)
-						  cnt += CurrProc->e.procinfo->regcsize;     //pointing above RSP to the shadow space off RAX RCX RDX RDI RSI R8 R9 R11 R12 R14 R15                   
+                      cnt += CurrProc->e.procinfo->vsize;     //pointing above RSP to the shadow space off RCX RDX R8 R9   
+                      if (CurrProc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF && Options.sub_format == SFORMAT_64BIT)
+                      cnt += CurrProc->e.procinfo->regcsize;     //pointing above RSP to the shadow space off RAX RCX RDX RDI RSI R8 R9 R11 R12 R14 R15
                       //else 
                         cnt -= 8;
                         if ((cnt & 7) != 0) cnt = (cnt + 7)&(-8);
@@ -3306,9 +3306,19 @@ static void cmp_types( struct expr *opnd1, struct expr *opnd2, int trueval )
     /* v2.10: special handling of pointer types. */
     //if ( opnd1->mem_type == MT_PTR && opnd2->mem_type == MT_PTR && opnd1->type && opnd2->type ) {
     if ( opnd1->mem_type == MT_PTR && opnd2->mem_type == MT_PTR ) {
-        /**/myassert( ( opnd1->type || opnd1->type_tok ) && ( opnd2->type || opnd2->type_tok ) );
-        type1 = ( opnd1->type ? opnd1->type : SymSearch( opnd1->type_tok->string_ptr ) );
-        type2 = ( opnd2->type ? opnd2->type : SymSearch( opnd2->type_tok->string_ptr ) );
+        /*myassert( ( opnd1->type || opnd1->type_tok ) && ( opnd2->type || opnd2->type_tok ) );*/
+        
+        if(opnd1->type || opnd1->type_tok)
+            type1 = ( opnd1->type ? opnd1->type : SymSearch( opnd1->type_tok->string_ptr ) );
+
+        if(opnd2->type || opnd2->type_tok)
+            type2 = ( opnd2->type ? opnd2->type : SymSearch( opnd2->type_tok->string_ptr ) );
+
+        if (!type1 || !type2)
+        {
+            EmitError(INVALID_TYPE_EXPRESSION);
+        }
+
         //opnd1->value64 = ( ( type1->is_ptr == type2->is_ptr &&
         opnd1->value64 = ( ( type1->is_ptr == type2->is_ptr &&
                             type1->ptr_memtype == type2->ptr_memtype &&
@@ -4059,7 +4069,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 		{
 			(*i)++;
 			strcpy(clabel, tokenarray[(*i)].string_ptr);
-			sprintf(tokenarray[(*i)].string_ptr, "%s%s", ".", clabel);
+			sprintf(tokenarray[(*i)].string_ptr, "%s%s", ".", &clabel);
 		}
 		else if (labelsym == NULL && labelsym2 == NULL)
 		{
@@ -4083,7 +4093,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 		{
 			//(*i)++;
 			strcpy(clabel, tokenarray[(*i)+2].string_ptr);
-			sprintf(tokenarray[(*i)+2].string_ptr, "%s%s", ".", clabel);
+			sprintf(tokenarray[(*i)+2].string_ptr, "%s%s", ".", &clabel);
 			tokenarray[(*i) + 1].string_ptr = tokenarray[(*i) + 2].string_ptr;
 			tokenarray[(*i) + 1].token = T_ID;
 			tokenarray[(*i) + 2].token = T_FINAL;
@@ -4123,7 +4133,7 @@ static ret_code evaluate( struct expr *opnd1, int *i, struct asm_tok tokenarray[
 				{
 					if (opnd1->type != NULL)
 					{
-						recordsym = (struct dsym*)SymSearch(opnd1->type->name);
+						recordsym = SymSearch(opnd1->type->name);
 						/* if it is a RECORD don't throw an error but decorate it with an actual value v2.41*/
 						if (recordsym && recordsym->sym.typekind == TYPE_RECORD)
 						{

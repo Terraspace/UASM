@@ -1,7 +1,4 @@
-..\src\CodeGenV2\EVEX0_64.ASM(159) : Warning A4299: BSS data in BIN output could have side effects
 ..\src\CodeGenV2\EVEX0_64.ASM(61) : Warning A4281: Unaligned SIMD access
 ..\src\CodeGenV2\EVEX0_64.ASM(62) : Warning A4281: Unaligned SIMD access
 ..\src\CodeGenV2\EVEX0_64.ASM(156) : Warning A4281: Unaligned SIMD access
 ..\src\CodeGenV2\EVEX0_64.ASM(157) : Warning A4281: Unaligned SIMD access
-..\src\CodeGenV2\EVEX0_64.ASM(159) : Warning A4299: BSS data in BIN output could have side effects
-..\src\CodeGenV2\EVEX0_64.ASM(159) : Warning A4299: BSS data in BIN output could have side effects

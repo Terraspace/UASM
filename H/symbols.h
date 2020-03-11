@@ -154,7 +154,6 @@ struct asym {
         int_32         class_lname_idx; /* used by SYM_CLASS_LNAME */
     };
 	unsigned int    tokval;			/* Used to track a PROC parameter symbol that has an assigned register */
-	uint_32         hasinvoke;      /* if there is no invoke no need to reserve a shadow space */
 	struct asym     *segment;       /* used by SYM_INTERNAL, SYM_EXTERNAL */
     enum sym_state  state;
     enum memtype    mem_type;
@@ -279,6 +278,7 @@ struct asym {
 	};
 	bool isClass;
 	bool isCOM;
+	bool isPtrTable;
 	struct asym* procptr;
 };
 
@@ -379,6 +379,11 @@ struct proc_info {
     unsigned char       vecregsize[6];
     unsigned char       vregs[6];
     unsigned char       xyzused[6];
+    unsigned            ms64vsize;
+    unsigned char       ms64vecregs[4];
+    unsigned char       ms64vecregsize[4];
+    unsigned char       ms64vregs[4];
+    unsigned char       ms64xyzused[4];
     unsigned            regcsize;
     unsigned char       regcregs[16];
     unsigned char       regcregsize[16];
@@ -391,10 +396,14 @@ struct proc_info {
 	bool                isleaf;
 
 #if SYSV_SUPPORT
+    unsigned            sysvsize;
+    unsigned char       sysvregs[16];
+    unsigned char       sysvregsize[16];
+    unsigned char       sysvxyzused[16];
 	unsigned char       firstGPR;		/* Added for systemv call vararg to track the first available registers that can be used */
 	unsigned char       firstVEC;
 	unsigned char       vararg_vecs;	/* Count of vector registers used in vararg */
-	char                stackOps[64][MAX_LINE_LEN];
+	char                stackOps[64][MAX_RESTRICT_LINE_LEN];
 	unsigned            stackOpCount;
 	unsigned            stackOfs;
 	unsigned            stackAdj;

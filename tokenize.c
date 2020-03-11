@@ -956,16 +956,6 @@ static ret_code get_id( struct asm_tok *buf, struct line_status *p )
     unsigned size;
 	int len = 0;
 	int i = 0;
-<<<<<<< HEAD
-  //if (_memicmp(p->input, "dword bcst[rax]", 15) == 0) {
-  //  __debugbreak();
-  //  strcpy (p->input, "dword ptr [rax]");
-  //  broadflags = 0x40;
-  //  p->input+=15;
-  //  //return(NOT_ERROR);
-  //}
-=======
->>>>>>> v2.49.1
 #if CONCATID || DOTNAMEX
 continue_scan:
 #endif
@@ -1297,27 +1287,17 @@ int Tokenize( char *line, unsigned int start, struct asm_tok tokenarray[], unsig
               goto nobcst;
             }
           }
-<<<<<<< HEAD
-          else if (*p.input == 'v') {
-            /* Implement ml64 BCST for broadcast */
-            for (p1 = p.input; *p1 != 0; p1++) {     /* start from the beginning of string */
-=======
 		  else if (*p.input == 'v' || *p.input == 'V') {
             /* Implement ml64 BCST for broadcast */
             for (p1 = p.input; *p1 != 0; p1++) {     /* start from the beginning of string */
               if (*p1 == ';')
                 break;
->>>>>>> v2.49.1
               if (*p1 == 'b' || *p1 == 'B') {        /* found  'b' */
                 if ((_memicmp(p1, "bcst", 4) == 0))  /* found "bcst" ? */
                   break;                             /* found "bcst" */
               }                                      /* if it was {kn} or {z} search till end */
             }
-<<<<<<< HEAD
-            if (*p1 != 0) {                        /* if 'bcst' present p1 is pointing to "bcst" */
-=======
             if (*p1 != 0 && *p1 != ';') {                        /* if 'bcst' present p1 is pointing to "bcst" */
->>>>>>> v2.49.1
               input1 = p1 + 4;                     /* skip "bcst" and save location in input1 */
               while (isspace(*input1)) input1++;   /* skip the space, now pointing to address  */
               p1 = p.input;                        /* start again from begining of string */
@@ -1350,15 +1330,6 @@ int Tokenize( char *line, unsigned int start, struct asm_tok tokenarray[], unsig
               p1--;                                /* get the 'q' or 'd' */
               if (*p1 == 'd' || *p1 == 'D')
                 cnt += cnt;                        /* double it for dword */
-<<<<<<< HEAD
-              else if (*p1 != 'q' || *p1 == 'Q')   /* incorret size? */
-                goto nobcst;                       /* let parser throw error */
-              if (*input1 != '\[') {               /* if address is not inside [] */
-                *p1++ = '\[';                      /* force it   */
-                for (; *input1 > ','; p1++, input1++)  /* input1 points to [address] */
-                  *p1 = *input1;                     /* copy first memory part over 'qword bcst */
-                *p1++ = '\]';
-=======
               else if (*p1 == 'q' || *p1 == 'Q')   /* incorret size? */
                 ;//OK QWORD
               else
@@ -1373,7 +1344,6 @@ int Tokenize( char *line, unsigned int start, struct asm_tok tokenarray[], unsig
                 *p1++ = '\]';
                 if (*input1 == ';')
                   *input1 = 0;
->>>>>>> v2.49.1
                 while (isspace(*input1)) input1++;   /* skip the space, now pointing to address  */
               }
               else {
@@ -1392,12 +1362,9 @@ int Tokenize( char *line, unsigned int start, struct asm_tok tokenarray[], unsig
             else {
               /* here force '[]' around a variable */
               for (p1 = p.input; *p1 != 0; p1++) {     /* start from the beginning of string */
-<<<<<<< HEAD
-=======
                 if (*p1 == ';') {                        /* found  ';' */
                   *p1 = 0;                             /* that means '{' is in comment */
                 }
->>>>>>> v2.49.1
                 if (*p1 == '\{') {                     /* found  '{' */
                   if ((_memicmp(p1, "\{1to", 4) == 0))
                     break;                             /* found "bcst" */

@@ -825,7 +825,8 @@ ins (CVTSS2SI, cvtss2si,        OpCls( RGT16,    XMM_M32,  NONE ), F_F30F, 1,  n
 ins (CVTPI2PD, cvtpi2pd,        OpCls( XMM,      MMX_M64,  NONE ), F_660F, 1,  no_WDS, 0x2A,     0x00,       P_686|P_SSE2,QSIZE)
 ins (CVTPI2PS, cvtpi2ps,        OpCls( XMM,      MMX_M64,  NONE ), F_0F,   1,  no_WDS, 0x2A,     0x00,       P_686|P_SSE1,DSIZE)
 ins (CVTSI2SD, cvtsi2sd,        OpCls( XMM,      RMGT16,   NONE ), F_F20F, 1,  no_WDS, 0x2A,     0x00,       P_686|P_SSE2,W1|QSIZE|T1S)
-ins (CVTSI2SS, cvtsi2ss,        OpCls( XMM,      RMGT16,   NONE ), F_F30F, 1,  no_WDS, 0x2A,     0x00,       P_686|P_SSE1,DSIZE|T1S)
+ins(CVTSI2SS, cvtsi2ss, OpCls(NONE, NONE, NONE), 0, 0, 0, 0, 0, 0, 0)
+//ins (CVTSI2SS, cvtsi2ss,        OpCls( XMM,      RMGT16,   NONE ), F_F30F, 1,  no_WDS, 0x2A,     0x00,       P_686|P_SSE1,DSIZE|T1S)
 ins (CVTTPD2PI, cvttpd2pi,      OpCls( MMX,      XMM_M128, NONE ), F_660F, 1,  no_WDS, 0x2C,     0x00,       P_686|P_SSE2,QSIZE)
 ins (CVTTPS2PI, cvttps2pi,      OpCls( MMX,      XMM_M64,  NONE ), F_0F,   1,  no_WDS, 0x2C,     0x00,       P_686|P_SSE1,DSIZE)
 ins (CVTTSD2SI, cvttsd2si,      OpCls( RGT16,    XMM_M64,  NONE ), F_F20F, 1,  no_WDS, 0x2C,     0x00,       P_686|P_SSE2,W1|QSIZE|T1S)
@@ -868,6 +869,9 @@ insn(MOVQ, 3,                   OpCls( M64,      XMM,      NONE ), F_660F, 0,  n
 insn(MOVQ, 4,                   OpCls( MMX,      MMX_M64,  NONE ), F_0F,   1,  no_WDS, 0x6F,     0x00,       P_586|P_MMX, QSIZE)
 insn(MOVQ, 5,                   OpCls( XMM,      XMM_M64,  NONE ), F_F30F, 1,  no_WDS, 0x7E,     0x00,       P_686|P_SSE2,W1|QSIZE|T1S)
 insn(MOVQ, 6,                   OpCls( M64,      MMX,      NONE ), F_0F,   0,  no_WDS, 0x7F,     0x00,       P_586|P_MMX, QSIZE)
+insn(MOVQ, 7,                   OpCls( M64,      MMX,      NONE ), F_0F,   1,  no_WDS, 0x7F,     0x00,       P_686|P_MMX, W1|QSIZE|T1S)
+insn(MOVQ, 8,                   OpCls( MMX,      R64_M64,  NONE ), F_0F,   1,  no_WDS, 0x6E,     0x00,       P_686|P_MMX, W1|QSIZE|T1S)
+insn(MOVQ, 9,                   OpCls( R64,      MMX,      NONE ), F_0F,   1,  no_WDS, 0x7E,     0x00,       P_686|P_MMX, W1|QSIZE|T1S)
 #endif
 
 ins (MOVAPD, movapd,            OpCls( XMM,      XMM_M128, NONE ), F_660F, 1,  no_WDS, 0x28,     0x00,       P_686|P_SSE2,W1|QSIZE|FVM)

@@ -21,4 +21,3 @@
 ..\src\CodeGenV2Error\MOV64ERR.ASM(33) : Error A2031: invalid addressing mode with current CPU setting
 ..\src\CodeGenV2Error\MOV64ERR.ASM(35) : Error A2049: Invalid instruction operands
 ..\src\CodeGenV2Error\MOV64ERR.ASM(37) : Error A2048: Operands must be the same size: 1 - 2
-..\src\CodeGenV2Error\MOV64ERR.ASM(39) : Warning A4299: BSS data in BIN output could have side effects

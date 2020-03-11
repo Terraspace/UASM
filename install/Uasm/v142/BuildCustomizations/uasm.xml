@@ -36,15 +36,22 @@
           SourceType="Item" />
       </StringProperty.DataSource>
     </StringProperty>
-
+    
     <BoolProperty
       Name="NoLogo"
       HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
       DisplayName="Suppress Startup Banner"
-      Description="Suppress the display of the startup banner and information messages.     (/nologo)"
+      Description="Suppress the display of the startup banner.     (/nologo)"
       Switch="-nologo" />
-	  
+
     <BoolProperty
+      Name="Quiet"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="Quiet and Suppress Startup Banner"
+      Description="Quiet and Suppress the display of the startup banner and information messages.     (/quiet)"
+      Switch="-q" />
+
+      <BoolProperty
       Name="GeneratePreprocessedSourceListing"
       Category="Listing File"
       HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
@@ -60,6 +67,22 @@
       Description="Turns on listing of all available information.     (/Sa)"
       Switch="-Sa" />
 	  
+    <BoolProperty
+      Name="Nomlib"
+      Category="Advanced"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="No macro library"
+      Description="Suppress the macro library.     (/nomlib)"
+      Switch="-nomlib" />
+      
+    <BoolProperty
+      Name="withx86mlib"
+      Category="Advanced"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="Use the x86 macro library"
+      Description="Use the x86 macro library.     (/withx86mlib)"
+      Switch="-withx86mlib" />
+
     <BoolProperty
       Name="UseSafeExceptionHandlers"
       Category="Advanced"
@@ -100,12 +123,21 @@
       Description="Turns on false conditionals in listing.     (/Sx)"
       Switch="-Sx" />
 	  
-    <BoolProperty
-      Name="TreatWarningsAsErrors"
+    <StringProperty
+      Name="SetErrorLimit"
+      Category="Object File"
       HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
-      DisplayName="Treat Warnings As Errors"
-      Description="Returns an error code if warnings are generated.     (/WX)"
-      Switch="-WX" />
+      DisplayName="Set error limit number"
+      Description="Set error limit number (default=50).     (/e[number])"
+      Switch="-e [value]" />
+
+    <StringProperty
+      Name="ErrorsFileName"
+      Category="Object File"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="Set errors file name"
+      Description="Specifies the name of the errors file name.     (/Fo:[file])"
+      Switch="-Fw [value]" />
 
     <BoolProperty
       Name="GenerateDebugInformation"
@@ -208,8 +240,8 @@
         Switch="-mc" />
       <EnumValue
         Name="4"
-        DisplayName="Medium (/mc)"
-        Switch="-mc" />
+        DisplayName="Medium (/mm)"
+        Switch="-mm" />
       <EnumValue
         Name="5"
         DisplayName="Large (/ml)"
@@ -319,6 +351,22 @@
         DisplayName="No name decoration"
         Switch="-zt0" />
     </EnumProperty>
+    
+    <EnumProperty
+      Name="FASTCALLSymbolDecoration"
+      Category="Advanced"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="Set FASTCALL symbol decoration"
+      Description="Set FASTCALL symbol decoration: 0=No name decoration, 1==Full (default), -zv0|1">
+      <EnumValue
+        Name="0"
+        DisplayName="Full (default)"
+        Switch="-zr1" />
+      <EnumValue
+        Name="1"
+        DisplayName="No name decoration"
+        Switch="-zr0" />
+    </EnumProperty>
 
     <EnumProperty
       Name="VectorCALLSymbolDecoration"
@@ -351,7 +399,7 @@
         DisplayName="No name decoration"
         Switch="-ze0" />
     </EnumProperty>
-
+    
     <EnumProperty
       Name="RegCALLVersionNumber"
       Category="Advanced"
@@ -439,6 +487,13 @@
       Description="Defines a text macro with the given name.     (/D[symbol])"
       Switch="-D [value]" />
 
+    <BoolProperty
+      Name="SkipPreprocessorStep"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="Skip preprocessor step"
+      Description="Skip preprocessor step.     (/sp)"
+      Switch="-sp" />
+
     <StringProperty
       Name="WriteImportDefenitionFile"
       Category="Advanced"
@@ -477,7 +532,14 @@
       DisplayName="Include Paths"
       Description="Sets path for include file. A maximum of 10 /I options is allowed.     (/I [path])"
       Switch="-I [value]" />
-	  
+
+    <BoolProperty
+      Name="IgnoreIncludePaths"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="Ignore include environment path"
+      Description="Ignore include environment path.     (/X)"
+      Switch="-X" />
+
     <EnumProperty
       Name="OutputFormat"
       Category="Object File"
@@ -546,6 +608,13 @@
         Switch="-zf2" />
     </EnumProperty>
 	
+      <BoolProperty
+        Name="DontDisplayErrors"
+        HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+        DisplayName="Don't display error messages"
+        Description="Don't display error messages.     (/eq)"
+        Switch="-eq" />
+
     <EnumProperty
       Name="WarningLevel"
       HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
@@ -568,8 +637,77 @@
         DisplayName="Warning Level 3 (/W3)"
         Switch="-W3" />
     </EnumProperty>
+    
+    <BoolProperty
+      Name="TreatWarningsAsErrors"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="Treat Warnings As Errors"
+      Description="Returns an error code if warnings are generated.     (/WX)"
+      Switch="-WX" />
 
     <EnumProperty
+      Name="WarningLevelTreatWarningsAsErrors"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="Warning Level and Treat Warnings As Errors"
+      Description="Sets the warning level and Treat Warnings As Errors, where level = 0, 1, 2, or 3.    (/W0, /W1, /W2, /W3)">
+      <EnumValue
+        Name="0"
+        DisplayName="Warning Level 0 (/W0)"
+        Switch="-w0" />
+      <EnumValue
+        Name="1"
+        DisplayName="Warning Level 1 (/W1)"
+        Switch="-w1" />
+      <EnumValue
+        Name="2"
+        DisplayName="Warning Level 2 (/W2)"
+        Switch="-w2" />
+      <EnumValue
+        Name="3"
+        DisplayName="Warning Level 3 (/W3)"
+        Switch="-w3" />
+    </EnumProperty>
+
+      <EnumProperty
+        Name="SetFPU"
+        Category="Advanced"
+        HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+        DisplayName="Set FPU"
+        Description="Set FPU, is: 0=8087 (default), 2=80287, 3=80387.     (/fp0, /fp1, /fp2, /fp3, /fp4, /fp5, /fp6, /fpc)">
+          <EnumValue
+            Name="0"
+            DisplayName="Default" />
+          <EnumValue
+            Name="1"
+            DisplayName="80287 (/fp1)"
+            Switch="-fp1" />
+          <EnumValue
+            Name="2"
+            DisplayName="80387 (/fp2)"
+            Switch="-fp2" />
+          <EnumValue
+            Name="3"
+            DisplayName="80387 (/fp3)"
+            Switch="-fp3" />
+          <EnumValue
+            Name="4"
+            DisplayName="80387 (/fp4)"
+            Switch="-fp4" />
+          <EnumValue
+            Name="5"
+            DisplayName="80387 (/fp5)"
+            Switch="-fp5" />
+          <EnumValue
+            Name="6"
+            DisplayName="80387 (/fp6)"
+            Switch="-fp6" />
+          <EnumValue
+            Name="7"
+            DisplayName="Disallow floating-point instructions (.NO87) (/fpc)"
+            Switch="-fpc" />
+      </EnumProperty>
+
+      <EnumProperty
       Name="SegmentAlignmentBoundary"
       Category="Advanced"
       HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
@@ -689,14 +827,104 @@
         DisplayName="Use Pascal Calling Convention (/Gc)"
         Switch="-Gc" />
     </EnumProperty>
-	
-    <StringProperty
-      Name="CommandLineTemplate"
-      DisplayName="Command Line"
-      Visible="False"
-      IncludeInCommandLine="False" />
 
-    <DynamicEnumProperty
+    <StringProperty
+      Name="StopAssemblyPassesNumber"
+        Category="Debug"
+      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+      DisplayName="Stop assembly after number passes"
+      Description="Stop assembly after number of passes.     (/pm[value])"
+      Switch="-pm [value]" />
+
+      <BoolProperty
+        Name="NoFastPass"
+      Category="Debug"
+        HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+        DisplayName="Do full subsequent passes disables fastpass"
+        Description="Do full subsequent passes (disables fastpass).     (/nfp)"
+        Switch="-nfp" />
+
+      <BoolProperty
+        Name="DisplayFilesUsed"
+        Category="Debug"
+        HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+        DisplayName="Display all files used in assembly process"
+        Description="Display all files used in assembly process.     (/af)"
+        Switch="-af" />
+
+      <BoolProperty
+        Name="CauseException"
+        Category="Debug"
+        HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+        DisplayName="Cause an exception"
+        Description="Cause an exception.     (/ce)"
+        Switch="-ce" />
+
+      <BoolProperty
+        Name="DisplayAllMessages"
+        Category="Debug"
+        HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+        DisplayName="Display all messages"
+        Description="Display all messages.     (/dm)"
+        Switch="-dm" />
+
+      <BoolProperty
+        Name="DisplayReservedWords"
+        Category="Debug"
+        HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+        DisplayName="Display reserved words"
+        Description="Display reserved words.     (/dr)"
+        Switch="-dr" />
+
+      <BoolProperty
+        Name="DisplayReservedWordsHashTable"
+        Category="Debug"
+        HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+        DisplayName="Display reserved words hash table"
+        Description="Display reserved words hash table.     (/drh)"
+        Switch="-drh" />
+
+      <BoolProperty
+        Name="DisplayGlobalSymbols"
+        Category="Debug"
+        HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+        DisplayName="Display global symbols"
+        Description="Display global symbols.     (/ds)"
+        Switch="-ds" />
+
+      <BoolProperty
+        Name="DisplayGlobalSymbolsHashTable"
+        Category="Debug"
+        HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+        DisplayName="Display global symbols hash table"
+        Description="Display global symbols hash table.     (/dsh)"
+        Switch="-dsh" />
+
+      <BoolProperty
+        Name="DisplayDebugTrace"
+        Category="Debug"
+        HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+        DisplayName="Display debug trace"
+        Description="Display debug trace.     (/dt)"
+        Switch="-dt" />
+
+      <BoolProperty
+        Name="DisplayPreprocessedLineStorage"
+        Category="Debug"
+        HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+        DisplayName="Display preprocessed line storage"
+        Description="Display preprocessed line storage.     (/ls)"
+        Switch="-ls" />
+
+      <BoolProperty
+        Name="DisableBackPatching"
+        Category="Debug"
+        HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
+        DisplayName="Disable backpatching"
+        Description="Disable backpatching.     (/nbp)"
+        Switch="-nbp" />
+
+      <DynamicEnumProperty
      Name="UASMBeforeTargets"
      Category="General"
      EnumProvider="Targets"
@@ -763,6 +991,11 @@
         <sys:String>Additional Options</sys:String>
       </StringProperty.Description>
     </StringProperty>
+      <StringProperty
+        Name="CommandLineTemplate"
+        DisplayName="Command Line"
+        Visible="False"
+        IncludeInCommandLine="False" />
   </Rule>
   <ItemType
     Name="UASM"

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "globals.h"
-#include "parser.h"
 #include "expreval.h"
 
 /* This order must remain as-is! */
@@ -10,13 +9,15 @@ enum instr_group {
 	GP1,		/* i286+ encoding group */
 	GP2,		/* i386+ encoding group */
 	GP3,        /* 64bit only */
+	GP4,        /* 32bit only */
 	SSE0,       /* SSE */
 	AVX0,
 	AVX1,
 	EVX0,
 	MVX0,
 	FP0,
-	FP1
+	FP1,
+	MMX0
 };
 
 enum seg_prefix {
@@ -36,7 +37,7 @@ enum legacy_prefix {
 	REPE  = 0xf3,
 	REPZ  = 0xf3,
 	BND   = 0xf2,
-	FWAIT = 0x00
+	FWAIT = 0x9b
 };
 
 enum op_type {
@@ -57,6 +58,8 @@ enum op_type {
 	R16_CX,
 	R32_ECX,
 	R64_RCX,
+	/* Special DX only register */
+	R16_DX,
 	/* 8 - 64bit sized general purpose registers (64bit mode only) --> EXCLUDING high byte access (AH,BH,CH,DH) and SIL,DIL,BPL,SPL */
 	R8E,
 	R16E,
@@ -131,39 +134,42 @@ enum op_type {
 	IMM32,
   IMM48,
 	IMM64, /* 64bit ONLY immediate */	
-
+	R_STI,
 	R_ST0,
 	R_ST
 };
 
-#define NO_FLAGS     (0)
-#define ALLOW_REP    (1<<0)		/* Instruction allows use of rep prefix */
-#define ALLOW_LOCK   (1<<1)		/* Instruction allows use of lock prefix */
-#define IS_BRNCH     (1<<2)		/* Instruction is a branch */
-#define ALLOW_BND    (1<<3)		/* Instruction allows a BND prefix */
-#define REX          (1<<4)		/* Instruction requires a REX prefix */
-#define REXW         (1<<5)		/* Instruction uses REX.W to extend it's default mode to 64bit */
-#define REXR         (1<<6)		/* Instruction uses REX.R to extend ModRM.reg */
-#define REXB         (1<<7)		/* Instruction uses REX.B to extend ModRM.rm */
-#define REXX         (1<<8)		/* Instruction uses REX.X to extend SIB.index */
-#define F_MODRM      (1<<9)		/* Instruction requires a ModRM byte */
-#define F_MODRM_REG  (1<<10)	/* Instruction uses ModRM.reg */
-#define F_MODRM_RM   (1<<11)	/* Instruction uses ModRM.rm */
-#define F_SIB        (1<<12)	/* Instruction requires a SIB byte */
-#define F_ADDST      (1<<13)	/* ST(n) register number is added to opcode byte */
-#define F_OPCODE_REG (1<<14)	/* Register value is encoded in low 3 bits of opcode byte + REX.b */
-#define ALLOW_SEG    (1<<15)	/* Instruction permits a segment override prefix */
-#define DSPW         (1<<16)	/* Instruction requires a machine-word sized displacement always */
-#define ALLOW_SEGX   (1<<17)	/* movabs allows encoding of segment register other than fs/gs, this indicates that condition */
-#define REXP_MEM     (1<<18)	/* Instruction promoted to 64bit special mode if specified memory operand is qword sized */
-#define FWAIT        (1<<19)
-#define NO_FWAIT     (1<<20)
-#define NO_MEM_REG   (1<<21)	/* This indicates that only an absolute or displacement only memory address is supported */
-#define NO_PREFIX    (1<<22)    /* Manual refers to this as NP (66/f2/f3 prefixes prohibited) */
-#define IMM8_ONLY    (1<<23)	/* The instruction entry assume immediates match the opsize, however some instructions use ONLY an imm8 */
-#define EREX         (1<<24)	/* The instruction is extended with a REX prefix only if the src/dst register no > 7 */
-#define SRCHDSTL     (1<<25)	/* Some instructions have an optimised encodable form, ie: vmovaps by using a different opcode with swapped reg, rm dst and this flag limits instruction search for these */
-#define OPCODE_EXT   (1<<26)	/* The Mod RM field uses only the RM portion, the Reg field contains an opcode extension value as noted /digit in the Intel manuals */
+#define NO_FLAGS      (0)
+#define ALLOW_REP     (1<<0)	/* Instruction allows use of rep prefix */
+#define ALLOW_LOCK    (1<<1)	/* Instruction allows use of lock prefix */
+#define IS_BRNCH      (1<<2)	/* Instruction is a branch */
+#define ALLOW_BND     (1<<3)	/* Instruction allows a BND prefix */
+#define REX           (1<<4)	/* Instruction requires a REX prefix */
+#define REXW          (1<<5)	/* Instruction uses REX.W to extend it's default mode to 64bit */
+#define REXR          (1<<6)	/* Instruction uses REX.R to extend ModRM.reg */
+#define REXB          (1<<7)	/* Instruction uses REX.B to extend ModRM.rm */
+#define REXX          (1<<8)	/* Instruction uses REX.X to extend SIB.index */
+#define F_MODRM       (1<<9)	/* Instruction requires a ModRM byte */
+#define F_MODRM_REG   (1<<10)	/* Instruction uses ModRM.reg */
+#define F_MODRM_RM    (1<<11)	/* Instruction uses ModRM.rm */
+#define F_SIB         (1<<12)	/* Instruction requires a SIB byte */
+#define F_ADDST       (1<<13)	/* ST(n) register number is added to opcode byte */
+#define F_OPCODE_REG  (1<<14)	/* Register value is encoded in low 3 bits of opcode byte + REX.b */
+#define F_OPCODE2_REG (1<<15)   /* Register value is encoded in low 3 bits of second opcode  */
+#define F_OPCODE_REG2 (1<<16)   /* Register value is encoded in low 3 bits of second opcode  */
+#define ALLOW_SEG     (1<<17)	/* Instruction permits a segment override prefix */
+#define DSPW          (1<<18)	/* Instruction requires a machine-word sized displacement always */
+#define ALLOW_SEGX    (1<<19)	/* movabs allows encoding of segment register other than fs/gs, this indicates that condition */
+#define REXP_MEM      (1<<20)	/* Instruction promoted to 64bit special mode if specified memory operand is qword sized */
+#define ALLOW_FWAIT   (1<<21)
+#define NO_FWAIT      (1<<22)
+#define NO_MEM_REG    (1<<23)	/* This indicates that only an absolute or displacement only memory address is supported */
+#define NO_PREFIX     (1<<24)   /* Manual refers to this as NP (66/f2/f3 prefixes prohibited) */
+#define IMM8_ONLY     (1<<25)	/* The instruction entry assume immediates match the opsize, however some instructions use ONLY an imm8 */
+#define EREX          (1<<26)	/* The instruction is extended with a REX prefix only if the src/dst register no > 7 */
+#define SRCHDSTL      (1<<27)	/* Some instructions have an optimised encodable form, ie: vmovaps by using a different opcode with swapped reg, rm dst and this flag limits instruction search for these */
+#define OPCODE_EXT    (1<<28)	/* The Mod RM field uses only the RM portion, the Reg field contains an opcode extension value as noted /digit in the Intel manuals */
+#define F_OPCODE2_STI (1<<29)
 
 /* VEX flags */
 #define NO_VEX		 (0)
@@ -217,14 +223,15 @@ enum op_type {
 
 /* mandatory_prefix -> Which mandatory prefix sequence is used by the instruction */
 #define PFX_0xF     1
-#define PFX_0x66F   2
-#define PFX_0x66F38 3
-#define PFX_0x66F3A 4
-#define PFX_0xF30F  5
-#define PFX_0xF20F  6
-#define PFX_0x0F38  7
-#define PFX_0xF3F38 8
-#define PFX_0xF2F38 9
+#define PFX_0xF3    2
+#define PFX_0x66F   3
+#define PFX_0x66F38 4
+#define PFX_0x66F3A 5
+#define PFX_0xF30F  6
+#define PFX_0xF20F  7
+#define PFX_0x0F38  8
+#define PFX_0xF3F38 9
+#define PFX_0xF2F38 10
 
 /* op_dir -> operation direction */
 #define REG_DST  0
@@ -353,7 +360,7 @@ struct Instr_Def {
 	unsigned char     useASO;			/* Must use Address Size Override when required */
 	unsigned char     validModes;		/* Valid CPU modes */
 	unsigned char     op_dir;			/* ModRM direction Reg->RM or RM->Reg */
-	unsigned char     mandatory_prefix;	/* Mandatory encoding prefix bytes */
+	uint_32           mandatory_prefix;	/* Mandatory encoding prefix bytes */
 	unsigned char     immOpnd;			/* Which operand is an immediate ? (1-4) */
 	unsigned char     memOpnd;          /* Which operand is a memory address ? (1-4) */
 	unsigned short    cpu;              /* Minimum CPU supported */
@@ -366,7 +373,7 @@ extern struct Instr_Def InstrTableV2[];
 
 /* Public functions */
 extern void     BuildInstructionTable(void);
-extern ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs, uint_32 opCount, struct expr opExpr[4]);
+extern ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs, uint_32 opCount, struct expr opExpr[4]);
 
 /* Private functions */
 enum op_type      DemoteOperand(enum op_type op);
@@ -374,8 +381,8 @@ void              InsertInstruction(struct Instr_Def* pInstruction, uint_32 hash
 struct Instr_Def* AllocInstruction();
 uint_32           GenerateInstrHash(struct Instr_Def* pInstruction);
 struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg, unsigned char encodeMode, 
-	                                int srcRegNo, int dstRegNo, struct code_info* CodeInfo);
-enum op_type      MatchOperand(struct code_info* CodeInfo, struct opnd_item op, struct expr opExpr);
+	                                int srcRegNo, int dstRegNo, struct code_info *CodeInfo);
+enum op_type      MatchOperand(struct code_info *CodeInfo, struct opnd_item op, struct expr opExpr);
 
 bool Require_OPND_Size_Override(struct Instr_Def* instr, struct code_info* CodeInfo);
 bool Require_ADDR_Size_Override(struct Instr_Def* instr, struct code_info* CodeInfo);
@@ -388,8 +395,8 @@ void          BuildVEX(bool* needVex, unsigned char* vexSize, unsigned char* vex
 	                   struct Instr_Def* instr, struct expr opnd[4], bool needB, bool needX, uint_32 opCount);				/* Build VEX prefix bytes       */
 void          BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr, struct expr opnd[4],
 						bool needB, bool needX, bool needRR, uint_32 opCount, struct code_info* CodeInfo);					/* Build EVEX prefix bytes      */
-int           BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned char* pREX, bool* needRM, bool* needSIB,
-	                              unsigned int* dispSize, int* pDisp, struct Instr_Def* instr, 
+int           BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned char* pREX, bool* needModRM, bool* needSIB,
+	                              unsigned int* dispSize, uint_64* pDisp, struct Instr_Def* instr,
 								  struct expr opExpr[4], bool* needB, bool* needX, 
 								  bool* needRR, struct code_info *CodeInfo);											    /* Build Memory encoding ModRM/SIB bytes   */
 unsigned char GetRegisterNo(struct asm_tok *regTok);																		/* Get Register Encoding Number from Token */

@@ -85,7 +85,6 @@ res(DOT_XALL,         .xall,          0,           DRT_LISTMAC, 0,  P_86, LM_LIS
 res(DOT_LALL,         .lall,          0,           DRT_LISTMAC, 0,  P_86, LM_LISTMACROALL)
 res(DOT_SALL,         .sall,          0,           DRT_LISTMAC, 0,  P_86, LM_NOLISTMACRO)
 
-
 res(DOT_ALPHA,     .alpha,       0,          DRT_SEGORDER, 0,  P_86, SEGORDER_ALPHA )
 res(DOT_DOSSEG,    .dosseg,      0,          DRT_SEGORDER, 0,  P_86, SEGORDER_DOSSEG)
 res(DOT_SEQ,       .seq,         0,          DRT_SEGORDER, 0,  P_86, SEGORDER_SEQ   )
@@ -235,6 +234,7 @@ res(STRUC,       struc,       DF_LABEL,             DRT_STRUCT, 0,  P_86, 0)
 res(STRUCT,      struct,      DF_LABEL,             DRT_STRUCT, 0,  P_86, 0)
 res(CSTRUCT,     cstruct,     DF_LABEL,             DRT_CSTRUCT, 0,  P_86, 0)
 res(COMSTRUCT,   comstruct,   DF_LABEL,             DRT_COMSTRUCT, 0, P_86, 0)
+res(RAWSTRUCT,   rawstruct,   DF_LABEL,             DRT_RAWSTRUCT, 0, P_86, 0)
 res(UNION,       union,       DF_LABEL,             DRT_STRUCT, 0,  P_86, 0)
 res(TYPEDEF,     typedef,     DF_LABEL,             DRT_TYPEDEF,0,  P_86, 0)
 res(RECORD,      record,      DF_LABEL,             DRT_RECORD, 0,  P_86, 0)

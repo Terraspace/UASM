@@ -13,6 +13,7 @@
 #include "globals.h"
 #include "memalloc.h"
 #include "macrolib.h"
+#include "x86macrolib.h"
 #include "parser.h"
 #include "reswords.h"
 #include "expreval.h"
@@ -178,27 +179,11 @@ OPTFUNC( SetArch )
 		if (0 == _stricmp(tokenarray[i].string_ptr, "SSE")) {
 			MODULEARCH = ARCH_SSE;
 			ModuleInfo.arch = ARCH_SSE;
-			strcpy(MOVE_ALIGNED_FLOAT, "movaps");
-			strcpy(MOVE_ALIGNED_INT, "movdqa");
-			strcpy(MOVE_UNALIGNED_FLOAT, "movups");
-			strcpy(MOVE_UNALIGNED_INT, "movdqu");
-			strcpy(MOVE_SINGLE, "movss");
-			strcpy(MOVE_DOUBLE, "movsd");
-			strcpy(MOVE_SIMD_DWORD, "movd");
-			strcpy(MOVE_SIMD_QWORD, "movq");
 			archSym->value = ARCH_SSE;
 		}
 		else if (0 == _stricmp(tokenarray[i].string_ptr, "AVX")) {
 			MODULEARCH = ARCH_AVX;
 			ModuleInfo.arch = ARCH_AVX;
-			strcpy(MOVE_ALIGNED_FLOAT, "vmovaps");
-			strcpy(MOVE_ALIGNED_INT, "vmovdqa");
-			strcpy(MOVE_UNALIGNED_FLOAT, "vmovups");
-			strcpy(MOVE_UNALIGNED_INT, "vmovdqu");
-			strcpy(MOVE_SINGLE, "vmovss");
-			strcpy(MOVE_DOUBLE, "vmovsd");
-			strcpy(MOVE_SIMD_DWORD, "vmovd");
-			strcpy(MOVE_SIMD_QWORD, "vmovq");
 			archSym->value = ARCH_AVX;
 		}
 		else {
@@ -262,6 +247,30 @@ OPTFUNC(SetVTable)
 	}
 	*pi = i;
 	return(NOT_ERROR);
+}
+
+/* OPTION FRAMEPRESERVEFLAGS:ON | OFF(default) */
+OPTFUNC(SetFPS)
+{
+    int i = *pi;
+    if (tokenarray[i].token == T_ID) {
+        if (0 == _stricmp(tokenarray[i].string_ptr, "ON")) {
+            Options.frameflags = TRUE;
+        }
+        else if (0 == _stricmp(tokenarray[i].string_ptr, "OFF")) {
+            Options.frameflags = FALSE;
+        }
+        else {
+            return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
+        }
+        DebugMsg1(("SetFPS(%s) ok\n", tokenarray[i].string_ptr));
+        i++;
+    }
+    else {
+        return(EmitErr(SYNTAX_ERROR_EX, tokenarray[i].tokpos));
+    }
+    *pi = i;
+    return(NOT_ERROR);
 }
 
 /* OPTION HLCall:ON | OFF(default) */
@@ -330,13 +339,26 @@ OPTFUNC( SetCaseMap )
         i++;
         SymSetCmpFunc();
 
-		if (Options.nomlib == FALSE && ModuleInfo.defOfssize == USE64) 
-		{
-			CreateMacroLibCases();
-#if !(NOX86MACROLIB)
-			x86CreateMacroLibCases();
+        if (Options.nomlib == FALSE && ModuleInfo.defOfssize == USE64) 
+        {
+            CreateMacroLibCases64();
+#if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))
+            if (Options.withx86mlib == TRUE)
+            {
+                x86CreateMacroLibCases64();
+            }
 #endif
-		}
+        }
+        else if (Options.nomlib == FALSE && ModuleInfo.defOfssize == USE32)
+        {
+            CreateMacroLibCases32();
+#if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))
+            if (Options.withx86mlib == TRUE)
+            {
+                x86CreateMacroLibCases32();
+            }
+#endif
+        }
 
     } else {
         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
@@ -435,6 +457,34 @@ OPTFUNC( SetNoLJmp )
     return( NOT_ERROR );
 }
 
+OPTFUNC( SetMLib )
+/******************/
+{
+    Options.nomlib = FALSE;
+    return( NOT_ERROR );
+}
+
+OPTFUNC( SetNoMLib )
+/******************/
+{
+    Options.nomlib = TRUE;
+    return( NOT_ERROR );
+}
+
+OPTFUNC( SetWithx86MLib )
+/******************/
+{
+    Options.withx86mlib = TRUE;
+    return(NOT_ERROR);
+}
+
+OPTFUNC( SetNox86MLib )
+/******************/
+{
+    Options.withx86mlib = FALSE;
+    return(NOT_ERROR);
+}
+
 /* OPTION NOREADONLY */
 
 OPTFUNC( SetNoReadonly )
@@ -526,7 +576,7 @@ OPTFUNC( SetNoKeyword )
     return( NOT_ERROR );
 }
 
-/* OPTION LANGUAGE:{C|PASCAL|BASIC|FORTRAN|SYSCALL|STDCALL|FASTCALL|VECTORCALL|SYSVCALL|BORLAND} */
+/* OPTION LANGUAGE:{C|PASCAL|BASIC|FORTRAN|SYSCALL|STDCALL|FASTCALL|VECTORCALL|SYSVCALL|REGCALL|BORLAND} */
 
 OPTFUNC( SetLanguage )
 /********************/
@@ -1079,14 +1129,9 @@ OPTFUNC(SetWin64)
 
   if ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)
   {
-	  if (Options.langtype != LANG_SYSVCALL && Options.langtype != LANG_REGCALL)
-		  Options.langtype = LANG_SYSVCALL;
-	  if (ModuleInfo.langtype != LANG_SYSVCALL && ModuleInfo.langtype != LANG_REGCALL)
-		  ModuleInfo.langtype = LANG_SYSVCALL;
-	  if (ModuleInfo.fctype != FCT_WIN64)
-		  ModuleInfo.fctype = FCT_WIN64; /* sys proc/invoke tables use same ordinal as FCTWIN64 */
-	  if (ModuleInfo.frame_auto != 1)
-		  ModuleInfo.frame_auto = 1;
+	  Options.langtype = LANG_SYSVCALL;
+	  ModuleInfo.langtype = LANG_SYSVCALL;
+	  ModuleInfo.fctype = FCT_WIN64; /* sys proc/invoke tables use same ordinal as FCTWIN64 */
   }
 
   if (sym_ReservedStack == NULL && ModuleInfo.defOfssize == USE64)
@@ -1102,16 +1147,13 @@ OPTFUNC(SetWin64)
   if (ModuleInfo.model == MODEL_NONE)
   {
 	  ModuleInfo.model = MODEL_FLAT;
-	  if (Options.langtype != LANG_FASTCALL && Options.langtype != LANG_VECTORCALL && Options.langtype != LANG_SYSVCALL && Options.langtype != LANG_REGCALL)
-		  Options.langtype = LANG_FASTCALL;
-	  if (ModuleInfo.langtype != LANG_FASTCALL && Options.langtype != LANG_VECTORCALL && ModuleInfo.langtype != LANG_SYSVCALL && ModuleInfo.langtype != LANG_REGCALL)
-		  ModuleInfo.langtype = LANG_FASTCALL;
-	  if (ModuleInfo.fctype != FCT_WIN64)
-		  ModuleInfo.fctype = FCT_WIN64;
+	  Options.langtype = LANG_FASTCALL;
+	  ModuleInfo.langtype = LANG_FASTCALL;
+	  ModuleInfo.fctype = FCT_WIN64;
   }
 
     *pi = i;
-    return( NOT_ERROR );
+    return(NOT_ERROR);
 }
 #endif
 
@@ -1209,6 +1251,11 @@ OPTFUNC( SetStackBase )
 	/* Setup everything for stackbase RSP based stack */
 	if (ModuleInfo.basereg[ModuleInfo.Ofssize] == T_RSP)
 	{
+        /* UASM 2.50 prevent RSP stackbase with ELF64 */
+        if (Options.output_format == OFORMAT_ELF && Options.sub_format == SFORMAT_64BIT)
+        {
+            return( EmitError(STACKBASE_NOT_SUPPORTED) );
+        }
 		if (!ModuleInfo.g.StackBase)
 		{
 			ModuleInfo.g.StackBase = CreateVariable("@StackBase", 0);
@@ -1301,6 +1348,10 @@ static const struct asm_option optiontab[] = {
     { "NOEMULATOR",   SetNoEmulator  },
     { "LJMP",         SetLJmp        },
     { "NOLJMP",       SetNoLJmp      },
+    { "MACROLIB",     SetMLib        },
+    { "NOMACROLIB",   SetNoLJmp      },
+    { "X86MACROLIB",  SetWithx86MLib },
+    { "NOX86MACROLIB",SetNox86MLib   },
     { "READONLY",     Unsupported    },
     { "NOREADONLY",   SetNoReadonly  },
     { "OLDMACROS",    Unsupported    },
@@ -1361,7 +1412,8 @@ static const struct asm_option optiontab[] = {
   { "BND",              SetBnd },        /* BND:ON or OFF */
   { "LITERALS",         SetLiterals },   /* LITERALS:ON or OFF */
   { "VTABLE",           SetVTable },     /* VTABLE:ON or OFF */
-  { "HLCALL",           SetHLCall }      /* HLCALL:ON or OFF */
+  { "HLCALL",           SetHLCall },     /* HLCALL:ON or OFF */
+  { "FRAMEPRESERVEFLAGS", SetFPS }       /* FRAMEPRESERVEFLAGS:ON or OFF */
 };
 
 #define TABITEMS sizeof( optiontab) / sizeof( optiontab[0] )

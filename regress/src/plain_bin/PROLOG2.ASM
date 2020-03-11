@@ -23,7 +23,7 @@
 		exitm %localbyte
 endm
 
-CStr macro text
+CStrX macro text
 local x
 	.const
 x	db text,0
@@ -44,7 +44,7 @@ p1 proc uses ebx esi x:dword
 p1 endp
 
 p2 proc uses ebx esi x:dword
-	invoke x1, CStr("abc")
+	invoke x1, CStrX("abc")
 	ret
 p2 endp
 
