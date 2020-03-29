@@ -66,6 +66,9 @@ void Addx86defs64()
     AddLineQueue("IFNDEF __X86");
     AddLineQueue("DEFINE __X86");
     AddLineQueue("ENDIF");
+    AddLineQueue("IFNDEF X86");
+    AddLineQueue("DEFINE X86");
+    AddLineQueue("ENDIF");
     AddLineQueue("IFNDEF WINDOWS");
     AddLineQueue("DEFINE WINDOWS");
     AddLineQueue("ENDIF");
@@ -83,6 +86,9 @@ void Addx86defs64()
     AddLineQueue("ENDIF");
     AddLineQueue("IFNDEF __X32");
     AddLineQueue("DEFINE __X32");
+    AddLineQueue("ENDIF");
+    AddLineQueue("IFNDEF X32");
+    AddLineQueue("DEFINE X32");
     AddLineQueue("ENDIF");
     AddLineQueue("IFDEF __KNC__");
     AddLineQueue(".ERR <KNC not available in windows>");
@@ -114,6 +120,9 @@ void Addx86defs64()
     AddLineQueue("IFNDEF __X86_64");
     AddLineQueue("DEFINE __X86_64");
     AddLineQueue("ENDIF");
+    AddLineQueue("IFNDEF X86_64");
+    AddLineQueue("DEFINE X86_64");
+    AddLineQueue("ENDIF");
     AddLineQueue("IFNDEF WINDOWS");
     AddLineQueue("DEFINE WINDOWS");
     AddLineQueue("ENDIF");
@@ -131,6 +140,9 @@ void Addx86defs64()
     AddLineQueue("ENDIF");
     AddLineQueue("IFNDEF __X64");
     AddLineQueue("DEFINE __X64");
+    AddLineQueue("ENDIF");
+    AddLineQueue("IFNDEF X64");
+    AddLineQueue("DEFINE X64");
     AddLineQueue("ENDIF");
     AddLineQueue("IFDEF __KNC__");
     AddLineQueue(".ERR <KNC not available in windows>");
@@ -152,6 +164,9 @@ void Addx86defs64()
     AddLineQueue("ENDIF");
     AddLineQueue("IFNDEF __X86");
     AddLineQueue("DEFINE __X86");
+    AddLineQueue("ENDIF");
+    AddLineQueue("IFNDEF X86");
+    AddLineQueue("DEFINE X86");
     AddLineQueue("ENDIF");
     AddLineQueue("IFNDEF UNIX32");
     AddLineQueue("DEFINE UNIX32");
@@ -195,6 +210,9 @@ void Addx86defs64()
     AddLineQueue("IFNDEF __X32");
     AddLineQueue("DEFINE __X32");
     AddLineQueue("ENDIF");
+    AddLineQueue("IFNDEF X32");
+    AddLineQueue("DEFINE X32");
+    AddLineQueue("ENDIF");
     AddLineQueue("IFDEF __KNC__");
     AddLineQueue(".ERR <KNC not available in unix/linux 32-bits>");
     AddLineQueue("ENDIF");
@@ -209,6 +227,9 @@ void Addx86defs64()
     AddLineQueue("ENDIF");
     AddLineQueue("IFNDEF __X86_64");
     AddLineQueue("DEFINE __X86_64");
+    AddLineQueue("ENDIF");
+    AddLineQueue("IFNDEF X86_64");
+    AddLineQueue("DEFINE X86_64");
     AddLineQueue("ENDIF");
     AddLineQueue("IFNDEF UNIX64");
     AddLineQueue("DEFINE UNIX64");
@@ -252,6 +273,9 @@ void Addx86defs64()
     AddLineQueue("IFNDEF __X64");
     AddLineQueue("DEFINE __X64");
     AddLineQueue("ENDIF");
+    AddLineQueue("IFNDEF X64");
+    AddLineQueue("DEFINE X64");
+    AddLineQueue("ENDIF");
     AddLineQueue("ENDIF");
 
     AddLineQueue("IF @Platform EQ 4");
@@ -260,6 +284,9 @@ void Addx86defs64()
     AddLineQueue("ENDIF");
     AddLineQueue("IFNDEF __X86_64");
     AddLineQueue("DEFINE __X86_64");
+    AddLineQueue("ENDIF");
+    AddLineQueue("IFNDEF X86_64");
+    AddLineQueue("DEFINE X86_64");
     AddLineQueue("ENDIF");
     AddLineQueue("IFNDEF UNIX64");
     AddLineQueue("DEFINE UNIX64");
@@ -302,6 +329,9 @@ void Addx86defs64()
     AddLineQueue("ENDIF");
     AddLineQueue("IFNDEF __X64");
     AddLineQueue("DEFINE __X64");
+    AddLineQueue("ENDIF");
+    AddLineQueue("IFNDEF X64");
+    AddLineQueue("DEFINE X64");
     AddLineQueue("ENDIF");
     AddLineQueue("IFDEF __KNC__");
     AddLineQueue(".ERR <KNC not available in MAC OS>");
@@ -7718,6 +7748,9 @@ void Addx86defs32()
     AddLineQueue("IFNDEF __X86");
     AddLineQueue("DEFINE __X86");
     AddLineQueue("ENDIF");
+    AddLineQueue("IFNDEF X86");
+    AddLineQueue("DEFINE X86");
+    AddLineQueue("ENDIF");
     AddLineQueue("IFNDEF WINDOWS");
     AddLineQueue("DEFINE WINDOWS");
     AddLineQueue("ENDIF");
@@ -7735,6 +7768,9 @@ void Addx86defs32()
     AddLineQueue("ENDIF");
     AddLineQueue("IFNDEF __X32");
     AddLineQueue("DEFINE __X32");
+    AddLineQueue("ENDIF");
+    AddLineQueue("IFNDEF X32");
+    AddLineQueue("DEFINE X32");
     AddLineQueue("ENDIF");
     AddLineQueue("IFDEF __KNC__");
     AddLineQueue(".ERR <KNC not available in windows>");
@@ -7756,6 +7792,9 @@ void Addx86defs32()
     AddLineQueue("ENDIF");
     AddLineQueue("IFNDEF __X86");
     AddLineQueue("DEFINE __X86");
+    AddLineQueue("ENDIF");
+    AddLineQueue("IFNDEF X86");
+    AddLineQueue("DEFINE X86");
     AddLineQueue("ENDIF");
     AddLineQueue("IFNDEF UNIX32");
     AddLineQueue("DEFINE UNIX32");
@@ -7798,6 +7837,9 @@ void Addx86defs32()
     AddLineQueue("ENDIF");
     AddLineQueue("IFNDEF __X32");
     AddLineQueue("DEFINE __X32");
+    AddLineQueue("ENDIF");
+    AddLineQueue("IFNDEF X32");
+    AddLineQueue("DEFINE_X32");
     AddLineQueue("ENDIF");
     AddLineQueue("IFDEF __KNC__");
     AddLineQueue(".ERR <KNC not available in unix/linux 32-bits>");
@@ -13839,11 +13881,17 @@ void x86CreateMacroLibCases64(void)
         AddLineQueue("IFDEF __X86");
         AddLineQueue("__x86 EQU __X86");
         AddLineQueue("ENDIF");
+        AddLineQueue("IFDEF X86");
+        AddLineQueue("x86 EQU X86");
+        AddLineQueue("ENDIF");
         AddLineQueue("IFDEF __X32__");
         AddLineQueue("__x32__ EQU __X32__");
         AddLineQueue("ENDIF");
         AddLineQueue("IFDEF __X32");
         AddLineQueue("__x32 EQU __X32");
+        AddLineQueue("ENDIF");
+        AddLineQueue("IFDEF X32");
+        AddLineQueue("x32 EQU X32");
         AddLineQueue("ENDIF");
 
         AddLineQueue("IFDEF __X86_64__");
@@ -13852,11 +13900,17 @@ void x86CreateMacroLibCases64(void)
         AddLineQueue("IFDEF __X86_64");
         AddLineQueue("__x86_64 EQU __X86_64");
         AddLineQueue("ENDIF");
+        AddLineQueue("IFDEF X86_64");
+        AddLineQueue("x86_64 EQU X86_64");
+        AddLineQueue("ENDIF");
         AddLineQueue("IFDEF __X64__");
         AddLineQueue("__x64__ EQU __X64__");
         AddLineQueue("ENDIF");
         AddLineQueue("IFDEF __X64");
         AddLineQueue("__x64 EQU __X64");
+        AddLineQueue("ENDIF");
+        AddLineQueue("IFDEF X64");
+        AddLineQueue("x64 EQU X64");
         AddLineQueue("ENDIF");
 
         AddLineQueue("vectorcallopt EQU VECTORCALLOPT");
@@ -18664,11 +18718,17 @@ void x86CreateMacroLibCases32(void)
         AddLineQueue("IFDEF __X86");
         AddLineQueue("__x86 EQU __X86");
         AddLineQueue("ENDIF");
+        AddLineQueue("IFDEF X86");
+        AddLineQueue("x86 EQU X86");
+        AddLineQueue("ENDIF");
         AddLineQueue("IFDEF __X32__");
         AddLineQueue("__x32__ EQU __X32__");
         AddLineQueue("ENDIF");
         AddLineQueue("IFDEF __X32");
         AddLineQueue("__x32 EQU __X32");
+        AddLineQueue("ENDIF");
+        AddLineQueue("IFDEF X32");
+        AddLineQueue("x32 EQU X32");
         AddLineQueue("ENDIF");
 
         AddLineQueue("vectorcallopt EQU VECTORCALLOPT");

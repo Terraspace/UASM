@@ -349,7 +349,7 @@ OPTFUNC( SetCaseMap )
             }
 #endif
         }
-        else if (Options.nomlib == FALSE && ModuleInfo.defOfssize == USE32)
+        if (Options.nomlib == FALSE && ModuleInfo.defOfssize == USE32)
         {
             CreateMacroLibCases32();
 #if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))
@@ -474,7 +474,9 @@ OPTFUNC( SetNoMLib )
 OPTFUNC( SetWithx86MLib )
 /******************/
 {
+#if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))
     Options.withx86mlib = TRUE;
+#endif
     return(NOT_ERROR);
 }
 

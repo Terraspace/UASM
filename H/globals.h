@@ -741,9 +741,7 @@ struct global_options {
     enum fastcall_type fctype;           /* -zf0 & -zf1 option */
     bool        syntax_check_only;       /* -Zs option */
     bool        nomlib;                  /* -nomlib option */
-#if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))
     bool        withx86mlib;             /* -withx86mlib option */
-#endif
     bool        lessoutput;              /* -less option */
     bool        bnd;                     /* -mpx or option bnd */
     uint_16     seg_align;               /* -Sp(n) set segment packing or alignment */

@@ -401,12 +401,12 @@ static void OPTQUAL Set_NOMLIB(void)
 	Options.nomlib = TRUE;
 }
 
-#if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))
 static void OPTQUAL Set_WITHX86MLIB(void)
 {
+#if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))
     Options.withx86mlib = TRUE;
-}
 #endif
+}
 
 static void OPTQUAL Set_LessOutput(void)
 {
@@ -611,9 +611,7 @@ static struct cmdloption const cmdl_options[] = {
 	{ "archSSE",0,        Set_SSE },
 	{ "archAVX",0,        Set_AVX },
     { "nomlib", 0,        Set_NOMLIB },
-#if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))
     { "withx86mlib", 0,   Set_WITHX86MLIB },
-#endif
 	{ "less",   0,        Set_LessOutput },
 #ifdef DEBUG_OUT
     { "ce",     0,        Set_ce },
