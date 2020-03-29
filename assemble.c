@@ -1169,7 +1169,7 @@ static int OnePass( void )
     {
         unsigned  alist = ModuleInfo.list;
         ModuleInfo.list = 0;
-        if (platform->value != 2 && platform->value >= 1)
+        if ((platform->value >= 1) && (platform->value != 2))
         {
             InitAutoMacros64();
 #if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))
@@ -1180,7 +1180,7 @@ static int OnePass( void )
             }
 #endif
         }
-        else
+        if((platform->value < 1) || (platform->value == 2))
         {
             InitAutoMacros32();
 #if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))
