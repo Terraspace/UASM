@@ -293,6 +293,21 @@ typedef struct {
 #define STT_LOPROC      13      // processor specific semantics
 #define STT_HIPROC      15
 
+/*
+ * Note header
+ */
+typedef struct {
+    uint_32 n_namesz;	/* Name size */
+    uint_32 n_descsz;	/* Content size */
+    uint_32 n_type;		/* Content type */
+} Elf32_Nhdr;
+
+typedef struct {
+    uint_32 n_namesz;	/* Name size */
+    uint_32 n_descsz;	/* Content size */
+    uint_32 n_type;		/* Content type */
+} Elf64_Nhdr;
+
 // relocation entries
 
 typedef struct {
@@ -346,7 +361,10 @@ enum elf32_relocations {
  R_386_16        = 20, /* 16-bit direct,      S + A     */
  R_386_PC16      = 21, /* 16-bit PC-relative, S + A - P */
  R_386_8         = 22, /* 8-bit direct,       S + A     */
- R_386_PC8       = 23  /* 8-bit PC-relative,  S + A - P */
+ R_386_PC8       = 23, /* 8-bit PC-relative,  S + A - P */
+ R_386_SEG16     = 45, /* A 16-bit real-mode segment */
+ R_386_SUB16     = 46, /* Subtract 16-bit value */
+ R_386_SUB32     = 47  /* Subtract 32-bit value */
 };
 
 //X86_64
@@ -378,8 +396,22 @@ enum elf64_relocations {
  R_X86_64_PC64        =  24,    /* S + A - P   */
  R_X86_64_GOTOFF64    =  25,    /* S + A - GOT */
  R_X86_64_GOTPC32     =  26,    /* GOT + A - P */
+ R_X86_64_GOT64       =  27,    /* G + A */
+ R_X86_64_GOTPCREL64  =  28,    /* G + GOT - P + A */
+ R_X86_64_GOTPC64     =  29,    /* GOT - P + A */
+ R_X86_64_GOTPLT64    =  30,    /* G + A */
+ R_X86_64_PLTOFF64    =  31,    /* L - GOT + A */
  R_X86_64_SIZE32      =  32,
- R_X86_64_SIZE64      =  33
+ R_X86_64_SIZE64      =  33,
+ R_X86_64_GOTPC32_TLSDESC = 34, /* word32 */
+ R_X86_64_TLSDESC_CALL = 35,    /* none */
+ R_X86_64_TLSDESC     =  36,    /* word64?2 */
+ R_X86_64_IRELATIVE   =  37,    /*wordclass indirect(B + A)*/
+ R_X86_64_RELATIVE64  =  38,    /*word64 B + A*/
+ Deprecated           =  39,
+ Deprecated           =  40,
+ R_X86_64_GOTPCRELX   =  41,    /*G + GOT + A - P*/
+ R_X86_64_REX_GOTPCRELX = 42    /*G + GOT + A - P*/
 };
 
 // program header
@@ -394,6 +426,17 @@ typedef struct {
     uint_32  p_flags;
     uint_32  p_align;        // segment align value (in mem & file)
 } Elf32_Phdr;
+
+typedef struct {
+    uint_32  p_type;
+    uint_32  p_flags;
+    uint_64  p_offset;
+    uint_64  p_vaddr;
+    uint_64  p_paddr;
+    uint_64  p_filesz;
+    uint_64  p_memsz;
+    uint_64  p_align;
+} Elf64_Phdr;
 
 // segment types
 

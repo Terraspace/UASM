@@ -43,7 +43,6 @@
 #include "lqueue.h"
 #include "orgfixup.h"
 #include "macrolib.h"
-#include "x86macrolib.h"
 //#include "simd.h"
 
 #if DLLIMPORT
@@ -1165,34 +1164,15 @@ static int OnePass( void )
 	}
 
     /* Process our built-in macro library to make it available to the rest of the source */
+#if (defined(BUILD_MACROLIB) && (BUILD_MACROLIB >= 1))
     if (Parse_Pass == PASS_1 && Options.nomlib == FALSE) 
     {
         unsigned  alist = ModuleInfo.list;
         ModuleInfo.list = 0;
-        if ((platform->value >= 1) && (platform->value != 2))
-        {
-            InitAutoMacros64();
-#if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))
-            if (Options.withx86mlib == TRUE)
-            {
-                Addx86defs64();
-                Initx86AutoMacros64();
-            }
-#endif
-        }
-        if((platform->value < 1) || (platform->value == 2))
-        {
-            InitAutoMacros32();
-#if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))
-            if (Options.withx86mlib == TRUE)
-            {
-                Addx86defs32();
-                Initx86AutoMacros32();
-            }
-#endif
-        }
+        Adddefs();
         ModuleInfo.list = alist;
     }
+#endif
 	if (Parse_Pass == PASS_1)
 	{
 		unsigned  alist = ModuleInfo.list;

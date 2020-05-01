@@ -136,33 +136,33 @@ struct lstleft {
  *
  */
 
-void LstWrite( enum lsttype type, uint_32 oldofs, void *value )
+void LstWrite(enum lsttype type, uint_32 oldofs, void* value)
 /*************************************************************/
 {
     uint_32 newofs = 0;
-    struct asym *sym = value;
+    struct asym* sym = value;
     int     len;
-	int     i;
+    int     i;
     int     len2;
     int     idx;
     int     srcfile;
-    char    *p1;
-    char    *p2;
-    char    *pSrcline;
-    struct lstleft *pll;
+    char* p1;
+    char* p2;
+    char* pSrcline;
+    struct lstleft* pll;
     struct lstleft ll;
     //char    buffer2[MAX_LINE_LEN]; /* stores text macro value */
 
-    if ( ModuleInfo.list == FALSE || CurrFile[LST] == NULL || ( ModuleInfo.line_flags & LOF_LISTED ) )
+    if (ModuleInfo.list == FALSE || CurrFile[LST] == NULL || (ModuleInfo.line_flags & LOF_LISTED))
         return;
-    if ( ModuleInfo.GeneratedCode && ( ModuleInfo.list_generated_code == FALSE ) )
+    if (ModuleInfo.GeneratedCode && (ModuleInfo.list_generated_code == FALSE))
         return;
-    if ( MacroLevel ) {
-        switch ( ModuleInfo.list_macro ) {
+    if (MacroLevel) {
+        switch (ModuleInfo.list_macro) {
         case LM_NOLISTMACRO:
             return;
         case LM_LISTMACRO:
-            /* todo: filter certain macro lines */
+            type = LSTTYPE_CODE;
             break;
         }
     }

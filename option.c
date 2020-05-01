@@ -13,7 +13,6 @@
 #include "globals.h"
 #include "memalloc.h"
 #include "macrolib.h"
-#include "x86macrolib.h"
 #include "parser.h"
 #include "reswords.h"
 #include "expreval.h"
@@ -339,26 +338,12 @@ OPTFUNC( SetCaseMap )
         i++;
         SymSetCmpFunc();
 
-        if (Options.nomlib == FALSE && ModuleInfo.defOfssize == USE64) 
+#if (defined(BUILD_MACROLIB) && (BUILD_MACROLIB >= 1))
+        if (Parse_Pass == PASS_1 && Options.nomlib == FALSE)
         {
-            CreateMacroLibCases64();
-#if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))
-            if (Options.withx86mlib == TRUE)
-            {
-                x86CreateMacroLibCases64();
-            }
-#endif
+            CreateMacroLibCases();
         }
-        if (Options.nomlib == FALSE && ModuleInfo.defOfssize == USE32)
-        {
-            CreateMacroLibCases32();
-#if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))
-            if (Options.withx86mlib == TRUE)
-            {
-                x86CreateMacroLibCases32();
-            }
 #endif
-        }
 
     } else {
         return( EmitErr( SYNTAX_ERROR_EX, tokenarray[i].tokpos ) );
@@ -469,22 +454,6 @@ OPTFUNC( SetNoMLib )
 {
     Options.nomlib = TRUE;
     return( NOT_ERROR );
-}
-
-OPTFUNC( SetWithx86MLib )
-/******************/
-{
-#if (defined(BUILD_X86MACROLIB) && (BUILD_X86MACROLIB >= 1))
-    Options.withx86mlib = TRUE;
-#endif
-    return(NOT_ERROR);
-}
-
-OPTFUNC( SetNox86MLib )
-/******************/
-{
-    Options.withx86mlib = FALSE;
-    return(NOT_ERROR);
 }
 
 /* OPTION NOREADONLY */
@@ -1352,8 +1321,6 @@ static const struct asm_option optiontab[] = {
     { "NOLJMP",       SetNoLJmp      },
     { "MACROLIB",     SetMLib        },
     { "NOMACROLIB",   SetNoLJmp      },
-    { "X86MACROLIB",  SetWithx86MLib },
-    { "NOX86MACROLIB",SetNox86MLib   },
     { "READONLY",     Unsupported    },
     { "NOREADONLY",   SetNoReadonly  },
     { "OLDMACROS",    Unsupported    },

@@ -65,10 +65,10 @@
 
 #endif
 
-#if (defined(X86MACROLIB) && (X86MACROLIB >= 1))
+#if (defined(MACROLIB) && (MACROLIB >= 1))
 #   define INCREASEDMAXLINELENGHT   1
 #   if (defined(INCREASEDMAXLINELENGHT) && (INCREASEDMAXLINELENGHT >= 1))
-#       define BUILD_X86MACROLIB   1
+#       define BUILD_MACROLIB   1
 #   endif
 #endif
 
@@ -77,7 +77,7 @@
 #define MAX_RESTRICT_LINE_LEN   1024  /*(MAX_LINE_LEN/25)*/  /* no restriction for this number */
 #define MAX_TOKEN               MAX_RESTRICT_LINE_LEN - 32  /* max tokens in one line */
 #define MAX_STRING_LEN          MAX_RESTRICT_LINE_LEN - 32 /* must be < MAX_LINE_LEN */
-#define MAX_ID_LEN              MAX_RESTRICT_LINE_LEN - 769 /*247*/  /* must be < MAX_LINE_LEN */
+#define MAX_ID_LEN              MAX_RESTRICT_LINE_LEN - 247 /* must be < MAX_LINE_LEN */
 #define MAX_STRUCT_ALIGN        64
 #define MAX_SEGMENT_ALIGN       4096 /* maximum alignment/packing setting for segments */
 #define MAX_IF_NESTING          32 /* IFxx block nesting. Must be <=32, see condasm.c */
@@ -741,7 +741,6 @@ struct global_options {
     enum fastcall_type fctype;           /* -zf0 & -zf1 option */
     bool        syntax_check_only;       /* -Zs option */
     bool        nomlib;                  /* -nomlib option */
-    bool        withx86mlib;             /* -withx86mlib option */
     bool        lessoutput;              /* -less option */
     bool        bnd;                     /* -mpx or option bnd */
     uint_16     seg_align;               /* -Sp(n) set segment packing or alignment */
@@ -965,6 +964,7 @@ struct module_info {
 #define CurrFName       ModuleInfo.g.curr_fname
 #define CurrSeg         ModuleInfo.currseg
 #define CurrWordSize    ModuleInfo.wordsize
+#define CurrLangType    ModuleInfo.langtype
 
 #define H_LONG_MIN    (-2147483647L - 1) // minimum (signed) long value
 #define H_LONG_MAX      2147483647L      // maximum (signed) long value

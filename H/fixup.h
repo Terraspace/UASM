@@ -48,7 +48,7 @@ enum fixup_types {
         FIX_HIBYTE,         /* 11, 1 byte, OMF+BIN-MZ only */
         FIX_OFF32_IMGREL,   /* 12, 4 byte, COFF+ELF only */
         FIX_OFF32_SECREL,   /* 13, 4 byte, COFF+ELF only */
-		FIX_GOTPCREL64,		/* 14, 4 byte, GOT table RIP relative ELF64/MACHO only */
+		FIX_GOTPCREL64,		/* 14, 8 byte, GOT table RIP relative ELF64/MACHO only */
 		FIX_GOT64,			/* 15, 4 byte, GOT table RIP relative */
 		FIX_PLT64,			/* 16, 4 byte, GOT.PLT table RIP relative */
         FIX_LAST

@@ -1170,9 +1170,9 @@ static void write_relocs64( struct dsym *curr )
         //case FIX_???:        elftype = R_X86_64_PLT32;       break;
         //case FIX_???:        elftype = R_X86_64_COPY;        break;
         case FIX_GOT64:        elftype = R_X86_64_GLOB_DAT;    break; /* UASM 2.47 added these plt/got types + fixup.h changes in prep for plt/got support */
-        case FIX_PLT64:		   elftype = R_X86_64_JUMP_SLOT;   break;
+        case FIX_PLT64:        elftype = R_X86_64_JUMP_SLOT;   break;
         case FIX_OFF32_IMGREL: elftype = R_X86_64_RELATIVE;    break;
-        case FIX_GOTPCREL64:   elftype = R_X86_64_GOTPCREL;    break;
+        case FIX_GOTPCREL64:   elftype = R_X86_64_GOTPCREL64;  break;
         case FIX_OFF32:        elftype = R_X86_64_32;          break;
         //case FIX_???:        elftype = R_X86_64_32S;         break;
         case FIX_OFF16:        elftype = R_X86_64_16;          break;

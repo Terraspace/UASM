@@ -79,7 +79,8 @@ extern struct asym *LineCur;  /* @Line symbol       */
 extern struct asym *symCurSeg;/* @CurSeg symbol     */
 
 extern void   UpdateLineNumber( struct asym *, void * );
-extern void   UpdateWordSize( struct asym *, void * );
+extern void   UpdateWordSize(struct asym*, void*);
+extern void   UpdateLangType(struct asym*, void*);
 extern void   UpdateCurPC( struct asym *sym, void *p );
 
 static struct asym   *gsym_table[ GHASH_TABLE_SIZE ];
@@ -145,8 +146,9 @@ static const struct eqitem eqtab[] = {
 	{ "@ProcLine", 0,                   NULL, NULL },
 	{ "@Arch",     ARCH_SSE,            NULL, NULL },
 	{ "@Platform", 0,                   NULL, NULL },
-	{ "@LastReturnType", 0,             NULL, NULL },
-	{ "@ProcName", 0,                   NULL, NULL },
+    { "@LastReturnType", 0,             NULL, NULL },
+    { "@ProcName", 0,                   NULL, NULL },
+    { "@LangType", 0,                   UpdateLangType, NULL },
     { "@WordSize", 0,                   UpdateWordSize, NULL }, /* must be last (see SymInit()) */
 };
 

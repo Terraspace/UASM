@@ -376,27 +376,27 @@ extern void     BuildInstructionTable(void);
 extern ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs, uint_32 opCount, struct expr opExpr[4]);
 
 /* Private functions */
-enum op_type      DemoteOperand(enum op_type op);
-void              InsertInstruction(struct Instr_Def* pInstruction, uint_32 hash);
-struct Instr_Def* AllocInstruction();
-uint_32           GenerateInstrHash(struct Instr_Def* pInstruction);
-struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg, unsigned char encodeMode, 
+extern enum op_type      DemoteOperand(enum op_type op);
+extern void              InsertInstruction(struct Instr_Def* pInstruction, uint_32 hash);
+extern struct Instr_Def* AllocInstruction();
+extern uint_32           GenerateInstrHash(struct Instr_Def* pInstruction);
+extern struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg, unsigned char encodeMode,
 	                                int srcRegNo, int dstRegNo, struct code_info *CodeInfo);
-enum op_type      MatchOperand(struct code_info *CodeInfo, struct opnd_item op, struct expr opExpr);
+extern enum op_type      MatchOperand(struct code_info *CodeInfo, struct opnd_item op, struct expr opExpr);
 
-bool Require_OPND_Size_Override(struct Instr_Def* instr, struct code_info* CodeInfo);
-bool Require_ADDR_Size_Override(struct Instr_Def* instr, struct code_info* CodeInfo);
-bool IsValidInCPUMode(struct Instr_Def* instr);
+extern bool Require_OPND_Size_Override(struct Instr_Def* instr, struct code_info* CodeInfo);
+extern bool Require_ADDR_Size_Override(struct Instr_Def* instr, struct code_info* CodeInfo);
+extern bool IsValidInCPUMode(struct Instr_Def* instr);
 
-unsigned char BuildModRM(unsigned char modRM, struct Instr_Def* instr, struct expr opnd[4], bool* needRM, bool* needSIB,
+extern unsigned char BuildModRM(unsigned char modRM, struct Instr_Def* instr, struct expr opnd[4], bool* needRM, bool* needSIB,
 						 bool isVEX);																						/* Build instruction ModRM byte */
-unsigned char BuildREX(unsigned char RexByte, struct Instr_Def* instr, struct expr opnd[4]);								/* Build REX prefix byte        */
-void          BuildVEX(bool* needVex, unsigned char* vexSize, unsigned char* vexBytes, 
+extern unsigned char BuildREX(unsigned char RexByte, struct Instr_Def* instr, struct expr opnd[4]);								/* Build REX prefix byte        */
+extern void          BuildVEX(bool* needVex, unsigned char* vexSize, unsigned char* vexBytes,
 	                   struct Instr_Def* instr, struct expr opnd[4], bool needB, bool needX, uint_32 opCount);				/* Build VEX prefix bytes       */
-void          BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr, struct expr opnd[4],
+extern void          BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr, struct expr opnd[4],
 						bool needB, bool needX, bool needRR, uint_32 opCount, struct code_info* CodeInfo);					/* Build EVEX prefix bytes      */
-int           BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned char* pREX, bool* needModRM, bool* needSIB,
+extern int           BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned char* pREX, bool* needModRM, bool* needSIB,
 	                              unsigned int* dispSize, uint_64* pDisp, struct Instr_Def* instr,
 								  struct expr opExpr[4], bool* needB, bool* needX, 
 								  bool* needRR, struct code_info *CodeInfo);											    /* Build Memory encoding ModRM/SIB bytes   */
-unsigned char GetRegisterNo(struct asm_tok *regTok);																		/* Get Register Encoding Number from Token */
+extern unsigned char GetRegisterNo(struct asm_tok *regTok);																		/* Get Register Encoding Number from Token */

@@ -77,7 +77,7 @@ enum memtype {
     MT_TBYTE = 10 - 1,
     MT_REAL10= MT_TBYTE | MT_FLOAT,
     MT_OWORD = 16 - 1,
-#if AVXSUPP    
+#if AVXSUPP
     MT_YMMWORD  = 32 - 1,
     MT_ZMMWORD  = 64 - 1,
 #endif

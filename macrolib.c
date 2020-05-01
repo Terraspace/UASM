@@ -1,7 +1,8 @@
 
+#include "globals.h"
+#if (defined(BUILD_MACROLIB) && (BUILD_MACROLIB >= 1))
 #include <ctype.h>
 #include <time.h>
-#include "globals.h"
 #include "memalloc.h"
 #include "input.h"
 #include "parser.h"
@@ -16,7 +17,7 @@
 #include "context.h"
 #include "types.h"
 #include "label.h"
-#include "macro.h"
+#include "MACRO.h"
 #include "extern.h"
 #include "fixup.h"
 #include "omf.h"
@@ -28,7 +29,42 @@
 #include "cpumodel.h"
 #include "lqueue.h"
 #include "orgfixup.h"
+#include "symbols.h"
 #include "macrolib.h"
+
+extern void     AddLineQueue(const char* line);
+extern void     AddLineQueueX(const char* fmt, ...);
+
+void Adddefs()
+{
+    AddLineQueue("IFNDEF WITHMACROLIB");
+    AddLineQueue(" WITHMACROLIB EQU 1");
+    AddLineQueue("ENDIF");
+    RunLineQueue();
+    /* detect casemap */
+    if (Options.case_sensitive && !Options.convert_uppercase)
+    {
+        AddLineQueue("IFNDEF CASEMAPNONE");
+        AddLineQueue("CASEMAPNONE EQU 1");
+        AddLineQueue("ENDIF");
+    }
+}
+
+void CreateMacroLibCases(void)
+{
+    /* Create case alternative names for macrolib functions */
+    if (ModuleInfo.case_sensitive && !ModuleInfo.convert_uppercase)
+    {
+        AddLineQueue("IFDEF CASEMAPNONE");
+        AddLineQueue("casemapnone EQU CASEMAPNONE");
+        AddLineQueue("ENDIF");
+        AddLineQueue("IFNDEF WITHMACROLIB");
+        AddLineQueue("withmacrolib EQU WITHMACROLIB");
+        AddLineQueue("ENDIF");
+    }
+}
+
+#endif //BUILD_MACROLIB
 
 #define MACRO_COUNT64 69
 #define MACRO_COUNT32 36
@@ -53,13 +89,13 @@ char *macDef64[] = {
     "SHIFTLEFT128 MACRO mmr:REQ,cnt:REQ",  
 	"SRXMMR MACRO xmm128:REQ,cnt:REQ",
 	"SHIFTRIGHT128 MACRO mmr:REQ,cnt:REQ",
-	"MEMALLOC macro aSize:REQ",
-	"MEMFREE macro memPtr:REQ",
-	"CSTR macro Text:VARARG",
-	"WSTR macro Text:VARARG",
-	"FP4 macro value:REQ",
-	"FP8 macro value:REQ",
-	"FP10 macro value:REQ",
+	"MEMALLOC MACRO aSize:REQ",
+	"MEMFREE MACRO memPtr:REQ",
+	"CSTR MACRO Text:VARARG",
+	"WSTR MACRO Text:VARARG",
+	"FP4 MACRO value:REQ",
+	"FP8 MACRO value:REQ",
+	"FP10 MACRO value:REQ",
 	"LOADSS MACRO reg, val",
 	"LOADSD MACRO reg, val",
 	"LOADPS MACRO reg, val",
@@ -69,30 +105,30 @@ char *macDef64[] = {
 	"EXPAND_PREFIX MACRO txtitm",
 	"_ARRAY MACRO arrType:REQ,sizeArr:REQ",
 	"_DELETEARRAY MACRO arrPtr:REQ",
-	"OINTERFACE MACRO CName : REQ",
+	"OINTERFACE MACRO CName:REQ",
 	"ENDOINTERFACE MACRO",
 	"CVIRTUAL MACRO method:REQ, retType:REQ, protoDef:VARARG",
-	"CLASS MACRO CName : REQ",
+	"CLASS MACRO CName:REQ",
 	"ENDCLASS MACRO",
-	"CMETHOD MACRO method : REQ",
+	"CMETHOD MACRO method:REQ",
 	"METHOD MACRO className:REQ, method:REQ, retType:=<dword>, usesStr:=<USES rbx rsi rdi>, args:VARARG",
 	"STATICMETHOD MACRO className:REQ, method:REQ, retType:=<dword>, usesStr:=<USES rbx rsi rdi>, args:VARARG",
 	"VECMETHOD MACRO className:REQ, method:REQ, retType:=<dword>, usesStr:=<USES rbx rsi rdi>, args:VARARG",
 	"STATICVECMETHOD MACRO className:REQ, method:REQ, retType:=<dword>, usesStr:=<USES rbx rsi rdi>, args:VARARG",
 	"ENDMETHOD MACRO",
-	"_DECLARE MACRO varName : REQ, typeName : VARARG",
+	"_DECLARE MACRO varName:REQ, typeName:VARARG",
 	"_STATICREF MACRO reg:REQ, classType:REQ",
-	"_NEW MACRO className : REQ, ctorArgs : VARARG",
-	"_RBXNEW MACRO className : REQ, ctorArgs : VARARG",
-	"_ITEM MACRO objPtr : REQ, idx : REQ",
-	"_ITEMR MACRO objPtr : REQ, idx : REQ",
-	"_INVOKE MACRO className : REQ, method : REQ, objPtr : REQ, args : VARARG",
-	"_I MACRO className : REQ, method : REQ, objPtr : REQ, args : VARARG",
+	"_NEW MACRO className:REQ, ctorArgs:VARARG",
+	"_RBXNEW MACRO className:REQ, ctorArgs:VARARG",
+	"_ITEM MACRO objPtr:REQ, idx:REQ",
+	"_ITEMR MACRO objPtr:REQ, idx:REQ",
+	"_INVOKE MACRO className:REQ, method:REQ, objPtr:REQ, args:VARARG",
+	"_I MACRO className:REQ, method:REQ, objPtr:REQ, args:VARARG",
 	"_STATIC MACRO className:REQ, method:REQ, args:VARARG",
-	"_DELETE MACRO objPtr : REQ",
-	"_VINVOKE MACRO pInterface : REQ, Interface : REQ, Function : REQ, args : VARARG",
-	"_V MACRO pInterface : REQ, Interface : REQ, Function : REQ, args : VARARG",
-	"CSTATIC MACRO method : REQ",
+	"_DELETE MACRO objPtr:REQ",
+	"_VINVOKE MACRO pInterface:REQ, Interface:REQ, Function:REQ, args:VARARG",
+	"_V MACRO pInterface:REQ, Interface:REQ, Function:REQ, args:VARARG",
+	"CSTATIC MACRO method:REQ",
 	"LOADMSS MACRO reg, value",
 	"LOADMSD MACRO reg, value",
 	"UINVOKE MACRO func:REQ, args:VARARG",
@@ -101,7 +137,7 @@ char *macDef64[] = {
 	"R4P MACRO reg:REQ",
 	"R8P MACRO reg:REQ",
 	"ARGINVOKE MACRO argNo:REQ, invCount:REQ, func:REQ, args:VARARG",
-	"COMINTERFACE MACRO CName : REQ",
+	"COMINTERFACE MACRO CName:REQ",
 	"ENDCOMINTERFACE MACRO",
 	"ENDMETHODS MACRO",
 	"_DEREF MACRO itype:REQ, proc:REQ, argCount:REQ, argsAndRefs:VARARG",
@@ -123,13 +159,13 @@ char *macDef32[] = {
 	"SHIFTLEFT128 MACRO mmr:REQ,cnt:REQ",  
 	"SRXMMR MACRO xmm128:REQ,cnt:REQ",
 	"SHIFTRIGHT128 MACRO mmr:REQ,cnt:REQ",
-	"MEMALLOC macro aSize:REQ",
-	"MEMFREE macro memPtr:REQ",
-	"CSTR macro Text:VARARG",
-	"WSTR macro Text:VARARG",
-	"FP4 macro value:REQ",
-	"FP8 macro value:REQ",
-	"FP10 macro value:REQ",
+	"MEMALLOC MACRO aSize:REQ",
+	"MEMFREE MACRO memPtr:REQ",
+	"CSTR MACRO Text:VARARG",
+	"WSTR MACRO Text:VARARG",
+	"FP4 MACRO value:REQ",
+	"FP8 MACRO value:REQ",
+	"FP10 MACRO value:REQ",
 	"LOADSS MACRO reg, val",
 	"LOADPS MACRO reg, val",
 	"ALIGNADDR MACRO reg, number",
@@ -144,7 +180,7 @@ char *macDef32[] = {
 	"R4P MACRO reg:REQ",
 	"R8P MACRO reg:REQ",
 	"ARGINVOKE MACRO argNo:REQ, invCount:REQ, func:REQ, args:VARARG",
-	"COMINTERFACE MACRO CName : REQ",
+	"COMINTERFACE MACRO CName:REQ",
 	"ENDCOMINTERFACE MACRO",
 	"_VINVOKE MACRO pInterface:REQ, Interface:REQ, Function:REQ, args:VARARG",
 	"_V MACRO pInterface:REQ, Interface:REQ, Function:REQ, args:VARARG",
@@ -215,7 +251,7 @@ void CreateMacroLibCases32(void)
 }
 
 /* 
-Create the built-in 64bit macro library 
+Create the built-in 64bit MACRO library 
 This is called once initially as the macros always exist
 */
 void InitAutoMacros64(void)
@@ -224,10 +260,10 @@ void InitAutoMacros64(void)
 	uint_32 i = 0;
 	uint_32 j = 0;
 	uint_32 start_pos = 0;
-	char  *srcLines[512]; // NB: 512 is the max number of lines of macro code per macro.  
+	char  *srcLines[512]; // NB: 512 is the max number of lines of MACRO code per MACRO.  
 
 	//                    1   2   3   4  5  6  7   8   9   10  11 12 13  14 15 16 17 18 19 20  21 22 23  24  25  26 27 28  29  30  31  32 33  34  35  36  37  38 39 40  41  42 43 44  45  46  47  48  49  50 51  52  53  54 55 56 57 58   59  60 61 62   63   64  65  66 67 68 69
-	uint_32 macroLen[] = {17, 11, 29, 3, 3, 8, 37, 33, 37, 33, 7, 6, 10, 6, 7, 7, 7, 8, 8, 10, 3, 7, 11, 19, 10, 2, 10, 2, 18,  9, 14, 6, 39, 39, 39, 39, 12, 5, 2, 20, 21, 2, 2, 11, 38, 38, 11, 45, 91, 6, 10, 10, 37, 1, 1, 1, 1, 256, 10, 6, 6, 106, 137, 11, 7 , 2, 9, 4, 18 }; // Count of individual lines of macro-body code.
+	uint_32 macroLen[] = {17, 11, 29, 3, 3, 8, 37, 33, 37, 33, 7, 6, 10, 6, 7, 7, 7, 8, 8, 10, 3, 7, 11, 19, 10, 2, 10, 2, 18,  9, 14, 6, 39, 39, 39, 39, 12, 5, 2, 20, 21, 2, 2, 11, 38, 38, 11, 45, 91, 6, 10, 10, 37, 1, 1, 1, 1, 256, 10, 6, 6, 106, 137, 11, 7 , 2, 9, 4, 18 }; // Count of individual lines of MACRO-body code.
 	char *macCode[] = {
 /*1 NOTMASK128*/		"IFNDEF GMASK",".data","GMASK OWORD 0","ENDIF","IFNDEF NOTMASK",".data","NOTMASK OWORD -1","ENDIF",".code","IF @Arch EQ 1","movups reg, MASK field","pxor reg, NOTMASK","ELSE","vmovups reg, MASK field","vpxor reg, reg, NOTMASK","ENDIF","ENDM", NULL,
 /*2 GETMASK128*/		"IFNDEF GMASK",".data","GMASK OWORD 0","ENDIF",".code","IF @Arch EQ 1","movups reg, MASK field","ELSE","vmovups reg, MASK field","ENDIF","ENDM", NULL,
@@ -322,9 +358,9 @@ void InitAutoMacros32(void)
 	uint_32 i = 0;
 	uint_32 j = 0;
 	uint_32 start_pos = 0;
-	char  *srcLines[128]; // NB: 128 is the max number of lines of macro code per macro.
+	char  *srcLines[128]; // NB: 128 is the max number of lines of MACRO code per MACRO.
 
-	uint_32 macroLen[] = {17, 11, 3, 3, 8, 54, 46, 54, 46, 7, 6, 6, 6, 7, 7, 7, 8, 10, 3, 7, 11, 19, 10, 10, 37, 1, 1, 1, 1, 37, 6, 2, 23, 54, 10, 6 }; // Count of individual lines of macro-body code.
+	uint_32 macroLen[] = {17, 11, 3, 3, 8, 54, 46, 54, 46, 7, 6, 6, 6, 7, 7, 7, 8, 10, 3, 7, 11, 19, 10, 10, 37, 1, 1, 1, 1, 37, 6, 2, 23, 54, 10, 6 }; // Count of individual lines of MACRO-body code.
 	char *macCode[] = {
 		"IFNDEF GMASK",".data","GMASK OWORD 0","ENDIF","IFNDEF NOTMASK",".data","NOTMASK OWORD -1","ENDIF",".code","IF @Arch EQ 1","movups reg, MASK field","pxor reg, NOTMASK","ELSE","vmovups reg, MASK field","vpxor reg, reg, NOTMASK","ENDIF","ENDM", NULL,
 		"IFNDEF GMASK",".data","GMASK OWORD 0","ENDIF",".code","IF @Arch EQ 1","movups reg, MASK field","ELSE","vmovups reg, MASK field","ENDIF","ENDM", NULL,

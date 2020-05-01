@@ -76,14 +76,6 @@
       Switch="-nomlib" />
       
     <BoolProperty
-      Name="withx86mlib"
-      Category="Advanced"
-      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
-      DisplayName="Use the x86 macro library"
-      Description="Use the x86 macro library.     (/withx86mlib)"
-      Switch="-withx86mlib" />
-
-    <BoolProperty
       Name="UseSafeExceptionHandlers"
       Category="Advanced"
       HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"

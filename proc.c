@@ -129,7 +129,6 @@ static const enum special_token watc_regs_qw[] = { T_AX, T_BX, T_CX, T_DX };
 #endif
 
 #if AMD64_SUPPORT
-
 static const enum special_token ms64_regs64[] = { T_RCX, T_RDX, T_R8, T_R9 };
 static const enum special_token ms64_regs32[] = { T_ECX, T_EDX, T_R8D, T_R9D };
 static const enum special_token ms64_regs16[] = { T_CX, T_DX, T_R8W, T_R9W };
@@ -150,10 +149,6 @@ static const enum special_token sysV64_regsXMM[] = { T_XMM0, T_XMM1, T_XMM2, T_X
 static const enum special_token sysV64_regsYMM[] = { T_YMM0, T_YMM1, T_YMM2, T_YMM3, T_YMM4, T_YMM5, T_YMM6, T_YMM7 };
 static const enum special_token sysV64_regsZMM[] = { T_ZMM0, T_ZMM1, T_ZMM2, T_ZMM3, T_ZMM4, T_ZMM5, T_ZMM6, T_ZMM7 };
 
-static const enum special_token sysV32_regsXMM[] = { T_XMM0, T_XMM1, T_XMM2 };
-static const enum special_token sysV32_regsYMM[] = { T_YMM0, T_YMM1, T_YMM2 };
-static const enum special_token sysV32_regsZMM[] = { T_ZMM0, T_ZMM1, T_ZMM2 };
-
 #if REGCALL_SUPPORT
 static const enum special_token regcallunix64_regs64[] = { T_RAX, T_RCX, T_RDX, T_RDI, T_RSI, T_R8, T_R9, T_R10, T_R11, T_R12, T_R14, T_R15 };
 static const enum special_token regcallunix64_regs32[] = { T_EAX, T_ECX, T_EDX, T_EDI, T_ESI, T_R8D, T_R9D, T_R10D, T_R11D, T_R12D, T_R14D, T_R15D };
@@ -168,24 +163,7 @@ static const enum special_token regcallms64_regs8[] = { T_AL, T_CL, T_DL, T_DIL,
 static const enum special_token regcall64_regsXMM[] = { T_XMM0, T_XMM1, T_XMM2, T_XMM3, T_XMM4, T_XMM5, T_XMM6, T_XMM7, T_XMM8, T_XMM9, T_XMM10, T_XMM11, T_XMM12, T_XMM13, T_XMM14, T_XMM15 };
 static const enum special_token regcall64_regsYMM[] = { T_YMM0, T_YMM1, T_YMM2, T_YMM3, T_YMM4, T_YMM5, T_YMM6, T_YMM7, T_YMM8, T_YMM9, T_YMM10, T_YMM11, T_YMM12, T_YMM13, T_YMM14, T_YMM15 };
 static const enum special_token regcall64_regsZMM[] = { T_ZMM0, T_ZMM1, T_ZMM2, T_ZMM3, T_ZMM4, T_ZMM5, T_ZMM6, T_ZMM7, T_ZMM8, T_ZMM9, T_ZMM10, T_ZMM11, T_ZMM12, T_ZMM13, T_ZMM14, T_ZMM15 };
-
-static const enum special_token regcallunix32_regs32[] = { T_EAX, T_ECX, T_EDX, T_EDI, T_ESI };
-static const enum special_token regcallunix32_regs16[] = { T_AX, T_CX, T_DX, T_DI, T_SI };
-static const enum special_token regcallunix32_regs8[] = { T_AL, T_CL, T_DL, T_DIL, T_SIL };
-
-static const enum special_token regcallms32_regs32[] = { T_ECX, T_EDX, T_EDI, T_ESI };
-static const enum special_token regcallms16_regs16[] = { T_CX, T_DX, T_DI, T_SI };
-static const enum special_token regcallms32_regs8[] = { T_CL, T_DL, T_DIL, T_SIL };
-
-static const enum special_token regcall32_regsXMM[] = { T_XMM0, T_XMM1, T_XMM2, T_XMM3, T_XMM4, T_XMM5, T_XMM6, T_XMM7 };
-static const enum special_token regcall32_regsYMM[] = { T_YMM0, T_YMM1, T_YMM2, T_YMM3, T_YMM4, T_YMM5, T_YMM6, T_YMM7 };
-static const enum special_token regcall32_regsZMM[] = { T_ZMM0, T_ZMM1, T_ZMM2, T_ZMM3, T_ZMM4, T_ZMM5, T_ZMM6, T_ZMM7 };
 #endif
-
-static const enum special_token vectorcall32_regsXMM[] = { T_XMM0, T_XMM1, T_XMM2, T_XMM3, T_XMM4, T_XMM5 };
-static const enum special_token vectorcall32_regsYMM[] = { T_YMM0, T_YMM1, T_YMM2, T_YMM3, T_YMM4, T_YMM5 };
-static const enum special_token vectorcall32_regsZMM[] = { T_ZMM0, T_ZMM1, T_ZMM2, T_ZMM3, T_ZMM4, T_ZMM5 };
-
 
 /* win64 non-volatile GPRs: T_RBX, T_RBP, T_RSI, T_RDI, T_R12, T_R13, T_R14, T_R15 */
 static const uint_16 win64_nvgpr = 0xF0E8;
@@ -204,19 +182,9 @@ static const int sysv_maxreg[] = {
 	sizeof(sysV64_regs64) / sizeof(sysV64_regs64[0]),
 };
 
-static const int regcallms32_maxreg[] = {
-	sizeof(regcallms32_regs32) / sizeof(regcallms32_regs32[0]),
-	sizeof(regcallms32_regs32) / sizeof(regcallms32_regs32[0]),
-};
-
 static const int regcallms64_maxreg[] = {
 	sizeof(regcallms64_regs64) / sizeof(regcallms64_regs64[0]),
 	sizeof(regcallms64_regs64) / sizeof(regcallms64_regs64[0]),
-};
-
-static const int regcallunix32_maxreg[] = {
-	sizeof(regcallunix32_regs32) / sizeof(regcallunix32_regs32[0]),
-	sizeof(regcallunix32_regs32) / sizeof(regcallunix32_regs32[0]),
 };
 
 static const int regcallunix64_maxreg[] = {
@@ -224,7 +192,39 @@ static const int regcallunix64_maxreg[] = {
 	sizeof(regcallunix64_regs64) / sizeof(regcallunix64_regs64[0]),
 };
 
+#endif /*AMD64_SUPPORT*/
+
+static const enum special_token sysV32_regsXMM[] = { T_XMM0, T_XMM1, T_XMM2 };
+static const enum special_token sysV32_regsYMM[] = { T_YMM0, T_YMM1, T_YMM2 };
+static const enum special_token sysV32_regsZMM[] = { T_ZMM0, T_ZMM1, T_ZMM2 };
+
+#if REGCALL_SUPPORT
+static const enum special_token regcallunix32_regs32[] = { T_EAX, T_ECX, T_EDX, T_EDI, T_ESI };
+static const enum special_token regcallunix32_regs16[] = { T_AX, T_CX, T_DX, T_DI, T_SI };
+static const enum special_token regcallunix32_regs8[] = { T_AL, T_CL, T_DL, T_DIL, T_SIL };
+
+static const enum special_token regcallms32_regs32[] = { T_ECX, T_EDX, T_EDI, T_ESI };
+static const enum special_token regcallms32_regs16[] = { T_CX, T_DX, T_DI, T_SI };
+static const enum special_token regcallms32_regs8[] = { T_CL, T_DL, T_DIL, T_SIL };
+
+static const enum special_token regcall32_regsXMM[] = { T_XMM0, T_XMM1, T_XMM2, T_XMM3, T_XMM4, T_XMM5, T_XMM6, T_XMM7 };
+static const enum special_token regcall32_regsYMM[] = { T_YMM0, T_YMM1, T_YMM2, T_YMM3, T_YMM4, T_YMM5, T_YMM6, T_YMM7 };
+static const enum special_token regcall32_regsZMM[] = { T_ZMM0, T_ZMM1, T_ZMM2, T_ZMM3, T_ZMM4, T_ZMM5, T_ZMM6, T_ZMM7 };
 #endif
+
+static const enum special_token vectorcall32_regsXMM[] = { T_XMM0, T_XMM1, T_XMM2, T_XMM3, T_XMM4, T_XMM5 };
+static const enum special_token vectorcall32_regsYMM[] = { T_YMM0, T_YMM1, T_YMM2, T_YMM3, T_YMM4, T_YMM5 };
+static const enum special_token vectorcall32_regsZMM[] = { T_ZMM0, T_ZMM1, T_ZMM2, T_ZMM3, T_ZMM4, T_ZMM5 };
+
+static const int regcallms32_maxreg[] = {
+    sizeof(regcallms32_regs32) / sizeof(regcallms32_regs32[0]),
+    sizeof(regcallms32_regs32) / sizeof(regcallms32_regs32[0]),
+};
+
+static const int regcallunix32_maxreg[] = {
+    sizeof(regcallunix32_regs32) / sizeof(regcallunix32_regs32[0]),
+    sizeof(regcallunix32_regs32) / sizeof(regcallunix32_regs32[0]),
+};
 
 
 struct fastcall_conv {
@@ -814,9 +814,9 @@ static int ms32_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int*
                     paranode->sym.tokval = regcallms32_regs32[*used]; /* Store register tokval so invoke can use it */
                     break;
                 case 2:
-                    GetResWName(regcallms16_regs16[*used], regname);
+                    GetResWName(regcallms32_regs16[*used], regname);
                     paranode->sym.total_size = 2;
-                    paranode->sym.tokval = regcallms16_regs16[*used]; /* Store register tokval so invoke can use it */
+                    paranode->sym.tokval = regcallms32_regs16[*used]; /* Store register tokval so invoke can use it */
                     break;
                 case 1:
                     GetResWName(regcallms32_regs8[*used], regname);
@@ -1581,13 +1581,13 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
                     proc->e.procinfo->sysvsize += ti.size;
                     ti.size = MT_QWORD;
                 }
-                /*else if (proc->sym.langtype == LANG_FASTCALL && Options.sub_format == SFORMAT_64BIT && Options.output_format == OFORMAT_COFF)
+                else if (proc->sym.langtype == LANG_FASTCALL && Options.sub_format == SFORMAT_64BIT && Options.output_format == OFORMAT_COFF)
                 {
                     proc->e.procinfo->ms64vecregsize[cntParam] = ti.symtype->max_mbr_size;
                     proc->e.procinfo->ms64vecregs[cntParam] = ti.size / ti.symtype->max_mbr_size;
                     proc->e.procinfo->ms64vsize += ti.size;
                     ti.size = MT_QWORD;
-                }*/
+                }
 			}
 			else {
 				paranode->sym.target_type = ti.symtype;
@@ -1613,7 +1613,7 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
                 else if (proc->sym.langtype == LANG_SYSVCALL && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC))
                 {
                     if (ti.mem_type == MT_REAL4 || ti.mem_type == MT_REAL8 ||
-                        ti.mem_type == MT_OWORD /*|| ti.mem_type == MT_YMMWORD || ti.mem_type == MT_ZMMWORD*/)
+                        ti.mem_type == MT_OWORD || ti.mem_type == MT_YMMWORD || ti.mem_type == MT_ZMMWORD)
                     {
                         proc->e.procinfo->sysvregsize[cntParam] = ti.size;
                         proc->e.procinfo->sysvregs[cntParam] = 1;
@@ -1676,21 +1676,21 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 					{
 					case 8:
 						switch (ti.mem_type)
-						{
+                        {
 						case MT_OWORD:
-							proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 2 * CurrWordSize : 2 * (2 << proc->sym.seg_ofssize));
+                            proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 2 * CurrWordSize : 2 * (2 << proc->sym.seg_ofssize));
 							break;
 
-						case MT_YMMWORD:
-							proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 4 * CurrWordSize : 4 * (2 << proc->sym.seg_ofssize));
+                        case MT_YMMWORD:
+                            proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 4 * CurrWordSize : 4 * (2 << proc->sym.seg_ofssize));
 							break;
 
                         case MT_ZMMWORD:
-							proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 8 * CurrWordSize : 8 * (2 << proc->sym.seg_ofssize));
+                            proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 8 * CurrWordSize : 8 * (2 << proc->sym.seg_ofssize));
 							break;
 
 						default:
-							proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? CurrWordSize : (2 << proc->sym.seg_ofssize));
+                            proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? CurrWordSize : (2 << proc->sym.seg_ofssize));
 							break;
 						}
 						break;
@@ -1698,24 +1698,24 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 					case 4:
 						switch (ti.mem_type)
 						{
-						case MT_QWORD:
-							proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 2 * CurrWordSize : 2 * (2 << proc->sym.seg_ofssize));
+                        case MT_QWORD:
+                            proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 2 * CurrWordSize : 2 * (2 << proc->sym.seg_ofssize));
 							break;
 
-						case MT_OWORD:
-							proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 4 * CurrWordSize : 4 * (2 << proc->sym.seg_ofssize));
+                        case MT_OWORD:
+                            proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 4 * CurrWordSize : 4 * (2 << proc->sym.seg_ofssize));
 							break;
 
                         case MT_YMMWORD:
-							proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 8 * CurrWordSize : 8 * (2 << proc->sym.seg_ofssize));
+                            proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 8 * CurrWordSize : 8 * (2 << proc->sym.seg_ofssize));
 							break;
 
                         case MT_ZMMWORD:
-							proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 16 * CurrWordSize : 16 * (2 << proc->sym.seg_ofssize));
+                            proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? 16 * CurrWordSize : 16 * (2 << proc->sym.seg_ofssize));
 							break;
 
 						default:
-							proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? CurrWordSize : (2 << proc->sym.seg_ofssize));
+                            proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? CurrWordSize : (2 << proc->sym.seg_ofssize));
 							break;
 						}
 						break;
@@ -1726,8 +1726,8 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 					}
 				}
 				else
-				{
-					proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? CurrWordSize : (2 << proc->sym.seg_ofssize));
+                {
+                    proc->e.procinfo->parasize += ROUND_UP(ti.size, IsPROC ? CurrWordSize : (2 << proc->sym.seg_ofssize));
 				}
 			}
 
@@ -3889,7 +3889,7 @@ static void win64_StoreRegHome(struct proc_info *info)
 						for (++i; i < 11; i++)
 							info->regcallmshome_used[i] = 1;                            //render the rest of the shadow spaces as taken
 					}
-				} else if (grcount == 10) {                                              //9 registers?
+				} else if (grcount == 10) {                                              //10 registers?
 					if (regcallfreeshadow == 1) memset(info->regcallmshome_used, 1, 11);//if only 1 free shadow, don't store it, push them
 					if (regcallfreeshadow == 2) {
 						for (i = 0; i < 11; i++) {

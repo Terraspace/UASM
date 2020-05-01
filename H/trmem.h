@@ -93,7 +93,7 @@ enum {
     _trmem_open can/will use any of __alloc, __free, or __prt_line; so be
     sure they are initialized before calling _trmem_open.
 */
-_trmem_hdl _trmem_open(
+extern _trmem_hdl _trmem_open(
     void *(*__alloc)(size_t),
     void (*__free)(void*),
     void * (*__realloc)(void*,size_t),
@@ -109,7 +109,7 @@ _trmem_hdl _trmem_open(
     allocated chunks were freed before closing the handle.
     Returns number of unfreed chunks.
 */
-unsigned _trmem_close( _trmem_hdl );
+extern unsigned _trmem_close( _trmem_hdl );
 
 
 /*
@@ -118,29 +118,29 @@ unsigned _trmem_close( _trmem_hdl );
     with
         ptr = _trmem_alloc( size, _trmem_guess_who(), hdl );
 */
-void *_trmem_alloc( size_t, _trmem_who, _trmem_hdl );
-void _trmem_free( void *, _trmem_who, _trmem_hdl );
-void *_trmem_realloc( void *, size_t, _trmem_who, _trmem_hdl );
-void *_trmem_expand( void *, size_t, _trmem_who, _trmem_hdl );
-char *_trmem_strdup( const char *str, _trmem_who who, _trmem_hdl hdl );
-size_t _trmem_msize( void *, _trmem_hdl );
+extern void *_trmem_alloc( size_t, _trmem_who, _trmem_hdl );
+extern void _trmem_free( void *, _trmem_who, _trmem_hdl );
+extern void *_trmem_realloc( void *, size_t, _trmem_who, _trmem_hdl );
+extern void *_trmem_expand( void *, size_t, _trmem_who, _trmem_hdl );
+extern char *_trmem_strdup( const char *str, _trmem_who who, _trmem_hdl hdl );
+extern size_t _trmem_msize( void *, _trmem_hdl );
 
 
 /*
     _trmem_prt_usage prints the current memory usage, and peak usage.
     _trmem_prt_list prints a list of all currently allocated chunks.
 */
-void _trmem_prt_usage( _trmem_hdl );
-unsigned _trmem_prt_list( _trmem_hdl );
+extern void _trmem_prt_usage( _trmem_hdl );
+extern unsigned _trmem_prt_list( _trmem_hdl );
 
 /*
     _trmem_get_current_usage retrieves the current memory usage.
     _trmem_get_peak_usage retrieves the peak memory usage.
 */
-unsigned long _trmem_get_current_usage( _trmem_hdl );
-unsigned long _trmem_get_peak_usage( _trmem_hdl );
+extern unsigned long _trmem_get_current_usage( _trmem_hdl );
+extern unsigned long _trmem_get_peak_usage( _trmem_hdl );
 
-_trmem_who  _trmem_guess_who( void * );
+extern _trmem_who  _trmem_guess_who( void * );
 #ifdef __WATCOMC__
 #pragma aux _trmem_guess_who = \
     0x8b 0x45 0x04      /*  mov eax,[ebp+4] */ \

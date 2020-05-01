@@ -54,7 +54,6 @@
       GeneratePreprocessedSourceListing="%(UASM.GeneratePreprocessedSourceListing)"
       ListAllAvailableInformation="%(UASM.ListAllAvailableInformation)"
       Nomlib="%(UASM.Nomlib)"
-      withx86mlib="%(UASM.withx86mlib)"
       UseSafeExceptionHandlers="%(UASM.UseSafeExceptionHandlers)"
       AddFirstPassListing="%(UASM.AddFirstPassListing)"
       EnableAssemblyGeneratedCodeListing="%(UASM.EnableAssemblyGeneratedCodeListing)"

@@ -18,7 +18,7 @@ struct line_num_info {
     };
 };
 
-void LinnumInit( void );
-void LinnumFini( void );
-void QueueDeleteLinnum( struct qdesc * );
+extern void LinnumInit( void );
+extern void LinnumFini( void );
+extern void QueueDeleteLinnum( struct qdesc * );
 

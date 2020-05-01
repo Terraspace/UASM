@@ -15,8 +15,8 @@
       <PackAlignmentBoundary>0</PackAlignmentBoundary>
       <CallingConvention>0</CallingConvention>
       <ErrorReporting>0</ErrorReporting>
-      <CommandLineTemplate Condition="'$(Platform)' == 'Win32'">$(UASM_PATH)\$(PlatformToolset)\$(PlatformTarget)\uasm.exe -c [AllOptions] [AdditionalOptions] [Inputs]</CommandLineTemplate>
-      <CommandLineTemplate Condition="'$(Platform)' == 'X64'">$(UASM_PATH)\$(PlatformToolset)\$(PlatformTarget)\uasm.exe -c [AllOptions] [AdditionalOptions] [Inputs]</CommandLineTemplate>
+      <CommandLineTemplate Condition="'$(Platform)' == 'Win32'">$(UASM_PATH)\$(PlatformToolset)\$(PlatformTarget)\uasm.exe -c -I $(UASM_PATH)\include [AllOptions] [AdditionalOptions] [Inputs]</CommandLineTemplate>
+      <CommandLineTemplate Condition="'$(Platform)' == 'X64'">$(UASM_PATH)\$(PlatformToolset)\$(PlatformTarget)\uasm.exe -c -I $(UASM_PATH)\include [AllOptions] [AdditionalOptions] [Inputs]</CommandLineTemplate>
       <CommandLineTemplate Condition="'$(Platform)' != 'Win32' and '$(Platform)' != 'X64'">echo UASM not supported on this platform</CommandLineTemplate>
       <ExecutionDescription>Assembling %(Identity)...</ExecutionDescription>
     </UASM>

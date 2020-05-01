@@ -70,15 +70,15 @@ extern bool StoreState; /* is 1 if states are to be stored in pass one */
 extern bool UseSavedState; 
 
 //void SaveState( void );
-void FastpassInit( void );
-void SegmentSaveState( void );
-void AssumeSaveState( void );
-void ContextSaveState( void );
-void StoreLine( const char *, int, uint_32 );
-void SkipSavedState( void );
-struct line_item *RestoreState( void );
-void SaveVariableState( struct asym *sym );
-void FreeLineStore( void );
+extern void FastpassInit( void );
+extern void SegmentSaveState( void );
+extern void AssumeSaveState( void );
+extern void ContextSaveState( void );
+extern void StoreLine( const char *, int, uint_32 );
+extern void SkipSavedState( void );
+extern struct line_item *RestoreState( void );
+extern void SaveVariableState( struct asym *sym );
+extern void FreeLineStore( void );
 
 #define FStoreLine( flags ) if ( Parse_Pass == PASS_1 ) StoreLine( CurrSource, flags, 0 ); else
 

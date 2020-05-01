@@ -493,6 +493,14 @@ void UpdateWordSize( struct asym *sym, void *p )
     return;
 }
 
+/* get/set value of predefined symbol @LangType */
+void UpdateLangType(struct asym* sym, void* p)
+/**********************************************/
+{
+    sym->value = CurrLangType;
+    return;
+}
+
 /* called by SEGMENT and ENDS directives */
 ret_code SetOfssize( void )
 /*************************/
