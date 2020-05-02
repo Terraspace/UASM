@@ -149,6 +149,12 @@ static const enum special_token sysV64_regsXMM[] = { T_XMM0, T_XMM1, T_XMM2, T_X
 static const enum special_token sysV64_regsYMM[] = { T_YMM0, T_YMM1, T_YMM2, T_YMM3, T_YMM4, T_YMM5, T_YMM6, T_YMM7 };
 static const enum special_token sysV64_regsZMM[] = { T_ZMM0, T_ZMM1, T_ZMM2, T_ZMM3, T_ZMM4, T_ZMM5, T_ZMM6, T_ZMM7 };
 
+/*64-bit SYSCALL instruction entry. Up to 6 arguments in registers:https://github.com/torvalds/linux/blob/v5.5/arch/x86/entry/entry_64.S*/
+static const enum special_token syscallunix64_regs64[] = { T_RDI, T_RSI, T_RDX, T_R10, T_R8, T_R9 };
+static const enum special_token syscallunix64_regs32[] = { T_EDI, T_ESI, T_EDX, T_R10D, T_R8D, T_R9D };
+static const enum special_token syscallunix64_regs16[] = { T_DI, T_SI, T_DX, T_R10W, T_R8W, T_R9W };
+static const enum special_token syscallunix64_regs8[] = { T_DIL, T_SIL, T_DL, T_R10B, T_R8B, T_R9B };
+
 #if REGCALL_SUPPORT
 static const enum special_token regcallunix64_regs64[] = { T_RAX, T_RCX, T_RDX, T_RDI, T_RSI, T_R8, T_R9, T_R10, T_R11, T_R12, T_R14, T_R15 };
 static const enum special_token regcallunix64_regs32[] = { T_EAX, T_ECX, T_EDX, T_EDI, T_ESI, T_R8D, T_R9D, T_R10D, T_R11D, T_R12D, T_R14D, T_R15D };
@@ -177,19 +183,9 @@ static const uint_16 regcallwin64_nvgpr = 0xF028;
 /* win64 regcall non-volatile XMM regs: XMM8 - XMM15 as long as they were not used for passing a parameter or returning a value*/
 static const uint_16 regcallwin64_nvxmm = 0xFF00;
 
-static const int sysv_maxreg[] = {
-	sizeof(sysV64_regs64) / sizeof(sysV64_regs64[0]),
-	sizeof(sysV64_regs64) / sizeof(sysV64_regs64[0]),
-};
-
 static const int regcallms64_maxreg[] = {
 	sizeof(regcallms64_regs64) / sizeof(regcallms64_regs64[0]),
 	sizeof(regcallms64_regs64) / sizeof(regcallms64_regs64[0]),
-};
-
-static const int regcallunix64_maxreg[] = {
-	sizeof(regcallunix64_regs64) / sizeof(regcallunix64_regs64[0]),
-	sizeof(regcallunix64_regs64) / sizeof(regcallunix64_regs64[0]),
 };
 
 #endif /*AMD64_SUPPORT*/
@@ -1645,7 +1641,7 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 			else if (proc->sym.langtype == LANG_VECTORCALL && Options.output_format == OFORMAT_COFF && vectorcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint))
 			{
 			}
-			else if (proc->sym.langtype == LANG_SYSVCALL && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && sysvcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint))
+			else if ((proc->sym.langtype == LANG_SYSVCALL || proc->sym.langtype == LANG_SYSCALL) && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && sysvcall_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint))
 			{
 			}
 			else if (proc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF && regcallms_tab[ModuleInfo.fctype].paramcheck(proc, paranode, &fcint, &vecint))
@@ -1764,7 +1760,8 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 				//paranode->nextparam = proc->e.procinfo->paralist;
 				// proc->e.procinfo->paralist = paranode;
 				//break;
-				// #endif
+                // #endif
+            case LANG_SYSCALL:
 			case LANG_FASTCALL:
 			case LANG_VECTORCALL:
 			case LANG_REGCALL:
@@ -1839,7 +1836,7 @@ static ret_code ParseParams(struct dsym *proc, int i, struct asm_tok tokenarray[
 
 #if AMD64_SUPPORT
 		if (ModuleInfo.Ofssize == USE64) {
-			if (proc->sym.langtype == LANG_FASTCALL || proc->sym.langtype == LANG_VECTORCALL || proc->sym.langtype == LANG_SYSVCALL || proc->sym.langtype == LANG_REGCALL)
+			if (proc->sym.langtype == LANG_FASTCALL || proc->sym.langtype == LANG_VECTORCALL || proc->sym.langtype == LANG_SYSVCALL || proc->sym.langtype == LANG_REGCALL || (proc->sym.langtype == LANG_SYSCALL && ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)))
 			{
 				for (paranode = proc->e.procinfo->paralist; paranode; paranode = paranode->nextparam)
 					if (paranode->sym.state == SYM_TMACRO) /* register param */
@@ -2796,7 +2793,7 @@ static void ProcFini(struct dsym *proc)
 		LstSetPosition(); /* needed if generated code is done BEFORE the line is listed */
 #endif
 						  /* Don't attempt to write SEH data for SYSTEM V calls */
-		if (proc->sym.langtype != LANG_SYSVCALL)
+		if (proc->sym.langtype != LANG_SYSVCALL && !(proc->sym.langtype == LANG_SYSCALL && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC)))
 			WriteSEHData(proc);
 	}
 #endif
@@ -5774,7 +5771,15 @@ static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int 
 				paranode->sym.string_ptr = NULL;
 				return(0);
 			}
-		}
+        }
+        else if (CurrProc->sym.langtype == LANG_SYSCALL)
+        {
+            if (*vecused >= 1)
+            {
+                paranode->sym.string_ptr = NULL;
+                return(0);
+            }
+        }
 		else
 		{
 			if (*vecused >= 8)
@@ -5789,7 +5794,7 @@ static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int 
 			GetResWName(regcall64_regsXMM[*vecused], regname);
 			paranode->sym.tokval = regcall64_regsXMM[*vecused]; /* Store register tokval so invoke can use it */
 		}
-		else
+		else if (!CurrProc->sym.langtype == LANG_SYSCALL)
 		{
 			GetResWName(sysV64_regsXMM[*vecused], regname);
 			paranode->sym.tokval = sysV64_regsXMM[*vecused]; /* Store register tokval so invoke can use it */
@@ -5811,7 +5816,15 @@ static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int 
 				paranode->sym.string_ptr = NULL;
 				return(0);
 			}
-		}
+        }
+        else if (CurrProc->sym.langtype == LANG_SYSCALL)
+        {
+            if (*vecused >= 1)
+            {
+                paranode->sym.string_ptr = NULL;
+                return(0);
+            }
+        }
 		else
 		{
 			if (*vecused >= 8)
@@ -5825,8 +5838,8 @@ static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int 
 		{
 			GetResWName(regcall64_regsYMM[*vecused], regname);
 			paranode->sym.tokval = regcall64_regsYMM[*vecused]; /* Store register tokval so invoke can use it */
-		}
-		else
+        }
+        else if (!CurrProc->sym.langtype == LANG_SYSCALL)
 		{
 			GetResWName(sysV64_regsYMM[*vecused], regname);
 			paranode->sym.tokval = sysV64_regsYMM[*vecused]; /* Store register tokval so invoke can use it */
@@ -5848,7 +5861,15 @@ static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int 
 				paranode->sym.string_ptr = NULL;
 				return(0);
 			}
-		}
+        }
+        else if (CurrProc->sym.langtype == LANG_SYSCALL)
+        {
+            if (*vecused >= 1)
+            {
+                paranode->sym.string_ptr = NULL;
+                return(0);
+            }
+        }
 		else
 		{
 			if (*vecused >= 8)
@@ -5862,8 +5883,8 @@ static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int 
 		{
 			GetResWName(regcall64_regsZMM[*vecused], regname);
 			paranode->sym.tokval = regcall64_regsZMM[*vecused]; /* Store register tokval so invoke can use it */
-		}
-		else
+        }
+        else if (!CurrProc->sym.langtype == LANG_SYSCALL)
 		{
 			GetResWName(sysV64_regsZMM[*vecused], regname);
 			paranode->sym.tokval = sysV64_regsZMM[*vecused]; /* Store register tokval so invoke can use it */
@@ -5882,43 +5903,77 @@ static int sysv_pcheck(struct dsym *proc, struct dsym *paranode, int *used, int 
 		return(0);
 	}
 
-	//===============================================================================================================
-	// HANDLE Integer -> GPR Parameter Types
-	//===============================================================================================================
-	if (CurrProc->sym.langtype == LANG_REGCALL)
-	{
-		if (size > CurrWordSize || *used >= 12 || paranode->sym.is_vararg)
-		{
-			paranode->sym.string_ptr = NULL;
-			return(0);
-		}
-		paranode->sym.state = SYM_TMACRO;
+    //===============================================================================================================
+    // HANDLE Integer -> GPR Parameter Types
+    //===============================================================================================================
+    if (CurrProc->sym.langtype == LANG_REGCALL)
+    {
+        if (size > CurrWordSize || *used >= 12 || paranode->sym.is_vararg)
+        {
+            paranode->sym.string_ptr = NULL;
+            return(0);
+        }
+        paranode->sym.state = SYM_TMACRO;
 
-		/* v2.29: for codeview debug info, store the register index in the symbol */
-		switch (size)
-		{
-			case 8:
-				GetResWName(regcallunix64_regs64[*used], regname);
-				paranode->sym.total_size = 8;
-				paranode->sym.tokval = regcallunix64_regs64[*used];   /* Store register tokval so invoke can use it */
-				break;
-			case 4:
-				GetResWName(regcallunix64_regs32[*used], regname);
-				paranode->sym.total_size = 4;
-				paranode->sym.tokval = regcallunix64_regs32[*used]; /* Store register tokval so invoke can use it */
-				break;
-			case 2:
-				GetResWName(regcallunix64_regs16[*used], regname);
-				paranode->sym.total_size = 2;
-				paranode->sym.tokval = regcallunix64_regs16[*used]; /* Store register tokval so invoke can use it */
-				break;
-			case 1:
-				GetResWName(regcallunix64_regs8[*used], regname);
-				paranode->sym.total_size = 1;
-				paranode->sym.tokval = regcallunix64_regs8[*used];  /* Store register tokval so invoke can use it */
-				break;
-		}
-	}
+        /* v2.29: for codeview debug info, store the register index in the symbol */
+        switch (size)
+        {
+            case 8:
+                GetResWName(regcallunix64_regs64[*used], regname);
+                paranode->sym.total_size = 8;
+                paranode->sym.tokval = regcallunix64_regs64[*used];   /* Store register tokval so invoke can use it */
+                break;
+            case 4:
+                GetResWName(regcallunix64_regs32[*used], regname);
+                paranode->sym.total_size = 4;
+                paranode->sym.tokval = regcallunix64_regs32[*used]; /* Store register tokval so invoke can use it */
+                break;
+            case 2:
+                GetResWName(regcallunix64_regs16[*used], regname);
+                paranode->sym.total_size = 2;
+                paranode->sym.tokval = regcallunix64_regs16[*used]; /* Store register tokval so invoke can use it */
+                break;
+            case 1:
+                GetResWName(regcallunix64_regs8[*used], regname);
+                paranode->sym.total_size = 1;
+                paranode->sym.tokval = regcallunix64_regs8[*used];  /* Store register tokval so invoke can use it */
+                break;
+        }
+    }
+    else if(CurrProc->sym.langtype == LANG_SYSCALL)
+    {
+        if (size > CurrWordSize || *used >= 6 || paranode->sym.is_vararg)
+        {
+            paranode->sym.string_ptr = NULL;
+            return(0);
+        }
+        paranode->sym.state = SYM_TMACRO;
+
+        /* v2.29: for codeview debug info, store the register index in the symbol */
+        switch (size)
+        {
+        case 8:
+            GetResWName(syscallunix64_regs64[*used], regname);
+            paranode->sym.total_size = 8;
+            paranode->sym.tokval = syscallunix64_regs64[*used];   /* Store register tokval so invoke can use it */
+            break;
+        case 4:
+            GetResWName(syscallunix64_regs32[*used], regname);
+            paranode->sym.total_size = 4;
+            paranode->sym.tokval = syscallunix64_regs32[*used]; /* Store register tokval so invoke can use it */
+            break;
+        case 2:
+            GetResWName(syscallunix64_regs16[*used], regname);
+            paranode->sym.total_size = 2;
+            paranode->sym.tokval = syscallunix64_regs16[*used]; /* Store register tokval so invoke can use it */
+            break;
+        case 1:
+            GetResWName(syscallunix64_regs8[*used], regname);
+            paranode->sym.total_size = 1;
+            paranode->sym.tokval = syscallunix64_regs8[*used];  /* Store register tokval so invoke can use it */
+            break;
+        }
+    }
 	else
 	{
 		if (size > CurrWordSize || *used >= 6 || paranode->sym.is_vararg)
@@ -6495,7 +6550,7 @@ static ret_code write_default_prologue(void)
 			write_win64_default_prologue_RBP(info);
 		else if ((ModuleInfo.basereg[USE64] == T_RBP) && Options.output_format == OFORMAT_COFF && (CurrProc->sym.langtype == LANG_FASTCALL || CurrProc->sym.langtype == LANG_VECTORCALL || CurrProc->sym.langtype == LANG_REGCALL))
 			write_generic_prologue(info);
-		else if ((ModuleInfo.basereg[USE64] == T_RBP) && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && (CurrProc->sym.langtype == LANG_SYSVCALL || CurrProc->sym.langtype == LANG_REGCALL))
+		else if ((ModuleInfo.basereg[USE64] == T_RBP) && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && (CurrProc->sym.langtype == LANG_SYSVCALL || CurrProc->sym.langtype == LANG_REGCALL || (CurrProc->sym.langtype == LANG_SYSCALL && ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT))))
 			write_sysv_default_prologue_RBP(info);
 
 		/* v2.11: line queue is now run here */
@@ -6659,17 +6714,17 @@ void write_prologue(struct asm_tok tokenarray[])
         }
         else if (CurrProc->sym.langtype == LANG_REGCALL && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC))
         {
-            /* in pass one init reserved stack with 11*8 to force stack frame creation */
+            /* in pass one init reserved stack with 12*8 to force stack frame creation */
             sym_ReservedStack->value = (Parse_Pass == PASS_1 ? 12 * sizeof(uint_64) : CurrProc->e.procinfo->ReservedStack);
         }
         else if (CurrProc->sym.langtype == LANG_VECTORCALL || CurrProc->sym.langtype == LANG_FASTCALL)
         {
-            /* in pass one init reserved stack with 11*8 to force stack frame creation */
+            /* in pass one init reserved stack with 4*8 to force stack frame creation */
             sym_ReservedStack->value = (Parse_Pass == PASS_1 ? 4 * sizeof(uint_64) : CurrProc->e.procinfo->ReservedStack);
         }
-        else if (CurrProc->sym.langtype == LANG_SYSVCALL)
+        else if (CurrProc->sym.langtype == LANG_SYSVCALL || (CurrProc->sym.langtype == LANG_SYSCALL && ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)))
         {
-            /* in pass one init reserved stack with 11*8 to force stack frame creation */
+            /* in pass one init reserved stack with 6*8 to force stack frame creation */
             sym_ReservedStack->value = (Parse_Pass == PASS_1 ? 6 * sizeof(uint_64) : CurrProc->e.procinfo->ReservedStack);
         }
         else
@@ -6953,7 +7008,7 @@ static void write_default_epilogue(void)
 			write_win64_default_epilogue_RBP(info); /* UASM win64:N style epilogue */
 		else if (ModuleInfo.basereg[USE64] == T_RBP && Options.output_format == OFORMAT_COFF && (CurrProc->sym.langtype == LANG_FASTCALL || CurrProc->sym.langtype == LANG_VECTORCALL || CurrProc->sym.langtype == LANG_REGCALL))
 			write_generic_epilogue(info);
-		else if (ModuleInfo.basereg[USE64] == T_RBP && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && (CurrProc->sym.langtype == LANG_SYSVCALL || CurrProc->sym.langtype == LANG_REGCALL))
+		else if (ModuleInfo.basereg[USE64] == T_RBP && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && (CurrProc->sym.langtype == LANG_SYSVCALL || CurrProc->sym.langtype == LANG_REGCALL || CurrProc->sym.langtype == LANG_SYSCALL))
 			write_sysv_default_epilogue_RBP(info);
 	}
 	else

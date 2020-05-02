@@ -289,7 +289,8 @@
       <ImageHasSafeExceptionHandlers>true</ImageHasSafeExceptionHandlers>
     </Link>
     <PostBuildEvent>
-      <Command>copy $(OutDir)$(TargetName)$(TargetExt) $(UASM_PATH)\v142\x86</Command>
+      <Command>copy $(OutDir)$(TargetName)$(TargetExt) $(UASM_PATH)\v142\x86
+xcopy  ..\..\include $(UASM_PATH)\include /hisery</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -319,7 +320,7 @@
     </Link>
     <PostBuildEvent>
       <Command>copy $(OutDir)$(TargetName)$(TargetExt) $(UASM_PATH)\v142\x64
-xcopy  ..\..\install\Uasm\include $(UASM_PATH)\include /hisery</Command>
+xcopy  ..\..\include $(UASM_PATH)\include /hisery</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -349,7 +350,8 @@ xcopy  ..\..\install\Uasm\include $(UASM_PATH)\include /hisery</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
     <PostBuildEvent>
-      <Command>copy $(OutDir)$(TargetName)$(TargetExt) $(UASM_PATH)\v142\x86</Command>
+      <Command>copy $(OutDir)$(TargetName)$(TargetExt) $(UASM_PATH)\v142\x86
+xcopy  ..\..\include $(UASM_PATH)\include /hisery</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -385,7 +387,7 @@ xcopy  ..\..\install\Uasm\include $(UASM_PATH)\include /hisery</Command>
     </Link>
     <PostBuildEvent>
       <Command>copy $(OutDir)$(TargetName)$(TargetExt) $(UASM_PATH)\v142\x64
-xcopy  ..\..\install\Uasm\include $(UASM_PATH)\include /hisery</Command>
+xcopy  ..\..\include $(UASM_PATH)\include /hisery</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>

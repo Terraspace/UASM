@@ -409,7 +409,7 @@ enum elf64_relocations {
  R_X86_64_IRELATIVE   =  37,    /*wordclass indirect(B + A)*/
  R_X86_64_RELATIVE64  =  38,    /*word64 B + A*/
  Deprecated           =  39,
- Deprecated           =  40,
+ Deprecated2           =  40,
  R_X86_64_GOTPCRELX   =  41,    /*G + GOT + A - P*/
  R_X86_64_REX_GOTPCRELX = 42    /*G + GOT + A - P*/
 };

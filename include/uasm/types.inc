@@ -182,7 +182,7 @@
     PTR_SIZE_T TEXTEQU <PTR QWORD>
     SIZE_T_PTR TEXTEQU <QWORD PTR>
     PTR32 TEXTEQU <QWORD>
-    PTR64 TEXTEQU <QWORD 
+    PTR64 TEXTEQU <QWORD>
     ENDIF ;/*__X64__*/
 
     IFDEF __X32__
@@ -352,7 +352,7 @@
     sint16_t TEXTEQU <SINT16_T>
     char16_t TEXTEQU <CHAR16_T>
     wchar_t TEXTEQU <WCHAR_T>
-   ;/*AddLineQueue("int TEXTEQU <INT> cannot be used instruction type*/
+   ;/*int TEXTEQU <INT> cannot be used instruction type*/
     bool TEXTEQU <BOOL>
     int32 TEXTEQU <INT32>
     uint32 TEXTEQU <UINT32>
@@ -501,7 +501,7 @@
     sint16_t_ptr TEXTEQU <SINT16_T_PTR>
     char16_t_ptr TEXTEQU <CHAR16_T_PTR>
     wchar_t_ptr TEXTEQU <WCHAR_T_PTR>
-  ; /*AddLinTEXTEQUeue("int TEXTEQU <INT> cannot be used instruction type*/
+  ; /*int TEXTEQU <INT> cannot be used instruction type*/
     int32_ptr TEXTEQU <INT32_PTR>
     uint32_ptr TEXTEQU <UINT32_PTR>
     sint32_ptr TEXTEQU <SINT32_PTR>
@@ -568,7 +568,7 @@
     ptr_int16_t TEXTEQU <PTR_INT16_T>
     ptr_uint16_t TEXTEQU <PTR_UINT16_T>
     ptr_sint16_t TEXTEQU <PTR_SINT16_T>
-  ; /*AddLinTEXTEQUeue("int TEXTEQU <INT> cannot be used instruction type*/
+  ; /*int TEXTEQU <INT> cannot be used instruction type*/
     ptr_int32 TEXTEQU <PTR_INT32>
     ptr_uint32 TEXTEQU <PTR_UINT32>
     ptr_sint32 TEXTEQU <PTR_SINT32>

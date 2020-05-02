@@ -1320,7 +1320,7 @@ static const struct asm_option optiontab[] = {
     { "LJMP",         SetLJmp        },
     { "NOLJMP",       SetNoLJmp      },
     { "MACROLIB",     SetMLib        },
-    { "NOMACROLIB",   SetNoLJmp      },
+    { "NOMACROLIB",   SetNoMLib      },
     { "READONLY",     Unsupported    },
     { "NOREADONLY",   SetNoReadonly  },
     { "OLDMACROS",    Unsupported    },

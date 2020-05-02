@@ -291,6 +291,11 @@ static const enum special_token sysV64_regsYMM[] = { T_YMM0, T_YMM1, T_YMM2, T_Y
 static const enum special_token sysV64_regsZMM[] = { T_ZMM0, T_ZMM1, T_ZMM2, T_ZMM3, T_ZMM4, T_ZMM5, T_ZMM6, T_ZMM7 };
 #endif
 
+static const enum special_token syscallunix64_regs[] = { T_DIL, T_SIL, T_DL,  T_R10B,  T_R8B, T_R9B,
+                                                         T_DI,  T_SI,  T_DX,  T_R10W,  T_R8W, T_R9W,
+                                                         T_EDI, T_ESI, T_EDX, T_R10D,  T_R8D, T_R9D,
+                                                         T_RDI, T_RSI, T_RDX, T_R10,   T_R8,  T_R9 };
+
 #if REGCALL_SUPPORT
 /*
 static const enum special_token regcallunix32_regs[] = {
@@ -2204,7 +2209,6 @@ static void sysv_fcend(struct dsym const *proc, int numparams, int value)
 	return;
 }
 
-// add dsym struct param for implementation propagation
 /* Return a 0-7 index for any SystemV call reserved register */
 static int sysv_reg(struct dsym const* proc, unsigned int reg)
 {
@@ -2427,14 +2431,17 @@ static int sysv_GetNextGPR(struct dsym const* proc, struct proc_info *info, int 
 	if (proc->sym.langtype == LANG_REGCALL) {
 		if (info->firstGPR >= 12) return(-1);
 		return(regcallunix64_regs[(base*12)+info->firstGPR++]);
-	}
+    }
+    else if (proc->sym.langtype == LANG_SYSCALL) {
+        if (info->firstGPR >= 6) return(-1);
+        return(syscallunix64_regs[(base * 6) + info->firstGPR++]);
+    }
 	else {
 		if (info->firstGPR >= 6) return(-1);
 		return(sysV64_regs[(base*6)+info->firstGPR++]);
 	}
 }
 
-// add dsym struct param for implementation propagation
 /* Return the first free Vector register useable in a SystemV invoke/call */
 static int sysv_GetNextVEC(struct dsym const* proc, struct proc_info *info, int size)
 {
@@ -4483,7 +4490,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 			if (vectorcall_tab[ModuleInfo.fctype].handleparam(proc, reqParam, curr, addr, &opnd, fullparam, r0flags))
 				return(NOT_ERROR);
 		}
-		else if (proc->sym.langtype == LANG_SYSVCALL) {
+		else if (proc->sym.langtype == LANG_SYSVCALL || (proc->sym.langtype == LANG_SYSCALL && ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT))) {
 			if (sysvcall_tab[ModuleInfo.fctype].handleparam(proc, reqParam, curr, addr, &opnd, fullparam, r0flags))
 				return(NOT_ERROR);
 		}
@@ -4678,7 +4685,7 @@ static int PushInvokeParam(int i, struct asm_tok tokenarray[], struct dsym *proc
 			if (fastcall_tab[ModuleInfo.fctype].handleparam(proc, reqParam, curr, addr, &opnd, fullparam, r0flags))
 				return(NOT_ERROR);
 		}
-		if (proc->sym.langtype == LANG_SYSVCALL) {
+		if (proc->sym.langtype == LANG_SYSVCALL || (proc->sym.langtype == LANG_SYSCALL && ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT))) {
 			if (sysvcall_tab[ModuleInfo.fctype].handleparam(proc, reqParam, curr, addr, &opnd, fullparam, r0flags))
 				return(NOT_ERROR);
 		}
@@ -5422,7 +5429,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	lastret->value = info->ret_type;
 
 	// Reset SYSTEMV pass values.
-	if ((proc->sym.langtype == LANG_SYSVCALL || proc->sym.langtype == LANG_REGCALL) && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)
+	if ((proc->sym.langtype == LANG_SYSVCALL || proc->sym.langtype == LANG_REGCALL || proc->sym.langtype == LANG_SYSCALL) && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)
 	{
 		// For SYSV calls, we use vecused to track used xmm registers for overwrite so reset it each pass.
 		info->vecused = 0;
@@ -5461,7 +5468,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 		porder = fastcall_tab[ModuleInfo.fctype].invokestart(proc, numParam, i, tokenarray, &value);
 	else if (proc->sym.langtype == LANG_VECTORCALL)
 		porder = vectorcall_tab[ModuleInfo.fctype].invokestart(proc, numParam, i, tokenarray, &value);
-	else if (proc->sym.langtype == LANG_SYSVCALL)
+	else if (proc->sym.langtype == LANG_SYSVCALL || (proc->sym.langtype == LANG_SYSCALL && ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)))
 		porder = sysvcall_tab[ModuleInfo.fctype].invokestart(proc, numParam, i, tokenarray, &value);
 	else if (proc->sym.langtype == LANG_REGCALL && Options.output_format == OFORMAT_COFF)
 		porder = regcallms_tab[ModuleInfo.fctype].invokestart(proc, numParam, i, tokenarray, &value);
@@ -5487,7 +5494,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 	}
 	else {
         // SystemV vararg handling is in-line in the normal procedures, so we need to do it below AFTER normal operands.
-        if (!((proc->sym.langtype == LANG_SYSVCALL || proc->sym.langtype == LANG_REGCALL) && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT))
+        if (!((proc->sym.langtype == LANG_SYSVCALL || proc->sym.langtype == LANG_REGCALL || proc->sym.langtype == LANG_SYSCALL) && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT))
 		{
 			int j = (Token_Count - i) / 2;
 			/* for VARARG procs, just push the additional params with
@@ -5502,7 +5509,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 			/* move to first non-vararg parameter, if any */
 			for (curr = info->paralist; curr && curr->sym.is_vararg == TRUE; curr = curr->nextparam);
 		}
-        else if (((proc->sym.langtype == LANG_SYSVCALL || proc->sym.langtype == LANG_REGCALL) && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT) && info->has_vararg)
+        else if (((proc->sym.langtype == LANG_SYSVCALL || proc->sym.langtype == LANG_REGCALL || proc->sym.langtype == LANG_SYSCALL) && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT) && info->has_vararg)
 		{
 			numParam = 0;
 			for (curr = info->paralist, numParam = 0; curr && (curr->sym.is_vararg == FALSE); curr = curr->nextparam, numParam++)
@@ -5592,7 +5599,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 			}
 		}	
 		/* Handle VARARG operands AFTER normal ones for SYSTEMV */
-		if (((proc->sym.langtype == LANG_SYSVCALL || proc->sym.langtype == LANG_REGCALL) && ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)) && proc->e.procinfo->has_vararg)
+		if (((proc->sym.langtype == LANG_SYSVCALL || proc->sym.langtype == LANG_REGCALL || proc->sym.langtype == LANG_SYSCALL) && ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)) && proc->e.procinfo->has_vararg)
 		{
 			int j = numParam;
 			for (; j < ((Token_Count - i) / 2); j++)
@@ -5600,7 +5607,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 		}
 
 		/* Reverse Write out all Stack based operations */
-		if ((proc->sym.langtype == LANG_SYSVCALL || (proc->sym.langtype == LANG_REGCALL) && ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)))
+		if ((proc->sym.langtype == LANG_SYSVCALL || (proc->sym.langtype == LANG_REGCALL || proc->sym.langtype == LANG_SYSCALL) && ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)))
 		{
 			for (j = proc->e.procinfo->stackOpCount; j >= 0; j--)
 			{
@@ -5749,7 +5756,7 @@ ret_code InvokeDirective(int i, struct asm_tok tokenarray[])
 #endif
 AddLineQueue(StringBufferEnd);
 
-if ((sym->langtype == LANG_C || sym->langtype == LANG_SYSCALL) &&
+if ((sym->langtype == LANG_C || (sym->langtype == LANG_SYSCALL && !((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT))) &&
 	(info->parasize || (info->has_vararg && size_vararg))) {
 	if (info->has_vararg) {
 		DebugMsg1(("InvokeDir: size of fix args=%u, var args=%u\n", info->parasize, size_vararg));
@@ -5764,7 +5771,7 @@ else if (sym->langtype == LANG_FASTCALL) {
 else if (sym->langtype == LANG_VECTORCALL) {
 	vectorcall_tab[ModuleInfo.fctype].invokeend(proc, numParam, value);
 }
-else if (sym->langtype == LANG_SYSVCALL) {
+else if (sym->langtype == LANG_SYSVCALL || (proc->sym.langtype == LANG_SYSCALL && ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT))) {
 	sysvcall_tab[ModuleInfo.fctype].invokeend(proc, numParam, value);
 }
 else if (sym->langtype == LANG_REGCALL && (Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC))

@@ -33,8 +33,8 @@
     INCLUDE types.inc
     INCLUDE limits.inc
     INCLUDE cpubits.inc
-    INCLUDE params.inc
     INCLUDE macros.inc
+    INCLUDE params.inc
 
     ENDIF ;WITHMACROLIB
 

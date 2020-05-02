@@ -95,6 +95,15 @@
                             EXITM
                         ENDIF
                     ENDM
+                ELSEIF @LangType EQ LANG_SYSCALL
+                    cnt = -1
+                    FOR arg,<DIL,SIL,DL,R10B,R8B,R9B,SPL,SPL,SPL,SPL,SPL,SPL,SPL,SPL,SPL,SPL>
+                        cnt = cnt + 1
+                        IF cnt EQ num
+                            rptxt TEXTEQU <arg>
+                            EXITM
+                        ENDIF
+                    ENDM
                 ELSE
                     cnt = -1
                     FOR arg,<DIL,SIL,DL,CL,R8B,R9B,SPL,SPL,SPL,SPL,SPL,SPL,SPL,SPL,SPL,SPL>
@@ -193,6 +202,15 @@
                 IF @LangType EQ LANG_REGCALL
                     cnt = -1
                     FOR arg,<AX,CX,DX,DI,SI,R8W,R9W,R10W,R11W,R12W,R14W,R15W,SP,SP,SP,SP>
+                        cnt = cnt + 1
+                        IF cnt EQ num
+                            rptxt TEXTEQU <arg>
+                            EXITM
+                        ENDIF
+                    ENDM
+                ELSEIF @LangType EQ LANG_SYSCALL
+                    cnt = -1
+                    FOR arg,<DI,SI,DX,R10W,R8W,R9W,SP,SP,SP,SP,SP,SP,SP,SP,SP,SP>
                         cnt = cnt + 1
                         IF cnt EQ num
                             rptxt TEXTEQU <arg>
@@ -303,6 +321,15 @@
                             EXITM
                         ENDIF
                     ENDM
+                ELSEIF @LangType EQ LANG_SYSCALL
+                    cnt = -1
+                    FOR arg,<EDI,ESI,EDX,R10D,R8D,R9D,ESP,ESP,ESP,ESP,ESP,ESP,ESP,ESP,ESP,ESP>
+                        cnt = cnt + 1
+                        IF cnt EQ num
+                            rptxt TEXTEQU <arg>
+                            EXITM
+                        ENDIF
+                    ENDM
                 ELSE
                     cnt = -1
                     FOR arg,<EDI,ESI,EDX,ECX,R8D,R9D,ESP,ESP,ESP,ESP,ESP,ESP,ESP,ESP,ESP,ESP>
@@ -407,6 +434,15 @@
                             EXITM
                         ENDIF
                     ENDM
+                ELSEIF @LangType EQ LANG_SYSCALL
+                    cnt = -1
+                    FOR arg,<RDI,RSI,RDX,R10,R8,R9,RSP,RSP,RSP,RSP,RSP,RSP,RSP,RSP,RSP,RSP>
+                        cnt = cnt + 1
+                        IF cnt EQ num
+                            rptxt TEXTEQU <arg>
+                            EXITM
+                        ENDIF
+                    ENDM
                 ELSE
                     cnt = -1
                     FOR arg,<RDI,RSI,RDX,RCX,R8,R9,RSP,RSP,RSP,RSP,RSP,RSP,RSP,RSP,RSP,RSP>
@@ -476,6 +512,15 @@
                 IF @LangType EQ LANG_REGCALL
                     cnt = -1
                     FOR arg,<[AL+pf],[CL+pf],[DL+pf],[DIL+pf],[SIL+pf],[R8B+pf],[R9B+pf],[SPL+pf],[R11B+pf],[R12B+pf],[R14B+pf],[R15B+pf],[SPL+pf],[SPL+pf],[SPL+pf],[SPL+pf]>
+                        cnt = cnt + 1
+                        IF cnt EQ num
+                            rptxt TEXTEQU <arg>
+                            EXITM
+                        ENDIF
+                    ENDM
+                ELSEIF @LangType EQ LANG_SYSCALL
+                    cnt = -1
+                    FOR arg,<[DIL+pf],[SIL+pf],[DL+pf],[R10B+pf],[R8B+pf],[R9B+pf],[SPL+pf],[SPL+pf],[SPL+pf],[SPL+pf],[SPL+pf],[SPL+pf],[SPL+pf],[SPL+pf],[SPL+pf],[SPL+pf]>
                         cnt = cnt + 1
                         IF cnt EQ num
                             rptxt TEXTEQU <arg>
@@ -586,9 +631,18 @@
                             EXITM
                         ENDIF
                     ENDM
+                ELSEIF @LangType EQ LANG_SYSCALL
+                    cnt = -1
+                    FOR arg,<[DI+pf],[SI+pf],[DX+pf],[R10W+pf],[R8W+pf],[R9W+pf],[SP+pf],[SP+pf],[SP+pf],[SP+pf],[SP+pf],[SP+pf],[SP+pf],[SP+pf],[SP+pf],[SP+pf]>
+                        cnt = cnt + 1
+                        IF cnt EQ num
+                            rptxt TEXTEQU <arg>
+                            EXITM
+                        ENDIF
+                    ENDM
                 ELSE
                     cnt = -1
-                    FOR arg,<[DI+pf],[SI+pf],DX,[CX+pf],[R8W+pf],[R9W+pf],[SP+pf],[SP+pf],[SP+pf],[SP+pf],[SP+pf],[SP+pf],[SP+pf],[SP+pf],[SP+pf],[SP+pf]>
+                    FOR arg,<[DI+pf],[SI+pf],[DX+pf],[CX+pf],[R8W+pf],[R9W+pf],[SP+pf],[SP+pf],[SP+pf],[SP+pf],[SP+pf],[SP+pf],[SP+pf],[SP+pf],[SP+pf],[SP+pf]>
                         cnt = cnt + 1
                         IF cnt EQ num
                             rptxt TEXTEQU <arg>
@@ -684,6 +738,15 @@
                 IF @LangType EQ LANG_REGCALL
                     cnt = -1
                     FOR arg,<[EAX+pf],[ECX+pf],[EDX+pf],[EDI+pf],[ESI+pf],[R8D+pf],[R9D+pf],[R10D+pf],[R11D+pf],[R12D+pf],[R14D+pf],[R15D+pf],[ESP+pf],[ESP+pf],[ESP+pf],[ESP+pf]>
+                        cnt = cnt + 1
+                        IF cnt EQ num
+                            rptxt TEXTEQU <arg>
+                            EXITM
+                        ENDIF
+                    ENDM
+                ELSEIF @LangType EQ LANG_SYSCALL
+                    cnt = -1
+                    FOR arg,<[EDI+pf],[ESI+pf],[EDX+pf],[R10D+pf],[R8D+pf],[R9D+pf],[ESP+pf],[ESP+pf],[ESP+pf],[ESP+pf],[ESP+pf],[ESP+pf],[ESP+pf],[ESP+pf],[ESP+pf],[ESP+pf]>
                         cnt = cnt + 1
                         IF cnt EQ num
                             rptxt TEXTEQU <arg>
@@ -788,6 +851,15 @@
                 IF @LangType EQ LANG_REGCALL
                     cnt = -1
                     FOR arg,<[RAX+pf],[RCX+pf],[RDX+pf],[RDI+pf],[RSI+pf],[R8+pf],[R9+pf],[R10+pf],[R11+pf],[R12+pf],[R14+pf],[R15+pf],[RSP+pf],[RSP+pf],[RSP+pf],[RSP+pf]>
+                        cnt = cnt + 1
+                        IF cnt EQ num
+                            rptxt TEXTEQU <arg>
+                            EXITM
+                        ENDIF
+                    ENDM
+                ELSEIF @LangType EQ LANG_SYSCALL
+                    cnt = -1
+                    FOR arg,<[RDI+pf],[RSI+pf],[RDX+pf],[R10+pf],[R8+pf],[R9+pf],[RSP+pf],[RSP+pf],[RSP+pf],[RSP+pf],[RSP+pf],[RSP+pf],[RSP+pf],[RSP+pf],[RSP+pf],[RSP+pf]>
                         cnt = cnt + 1
                         IF cnt EQ num
                             rptxt TEXTEQU <arg>
@@ -1038,6 +1110,8 @@
         IFDEF __UNIX64__
             IF @LangType EQ LANG_REGCALL
                 EXITM <RDI>
+            ELSEIF @LangType EQ LANG_SYSCALL
+                EXITM <R10>
             ELSE
                 EXITM <RCX>
             ENDIF
@@ -1515,6 +1589,8 @@
         IFDEF __UNIX64__
             IF @LangType EQ LANG_REGCALL
                 EXITM <EDI>
+            ELSEIF @LangType EQ LANG_SYSCALL
+                EXITM <R10D>
             ELSE
                 EXITM <ECX>
             ENDIF
@@ -1992,6 +2068,8 @@
         IFDEF __UNIX64__
             IF @LangType EQ LANG_REGCALL
                 EXITM <DI>
+            ELSEIF @LangType EQ LANG_SYSCALL
+                EXITM <R10W>
             ELSE
                 EXITM <CX>
             ENDIF
@@ -2469,6 +2547,8 @@
         IFDEF __UNIX64__
             IF @LangType EQ LANG_REGCALL
                 EXITM <DIL>
+            ELSEIF @LangType EQ LANG_SYSCALL
+                EXITM <R10B>
             ELSE
                 EXITM <CL>
             ENDIF

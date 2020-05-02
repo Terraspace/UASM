@@ -150,7 +150,7 @@ void SetModel( void )
          * to enable the win64 ABI from the source.
          */
         if ( ( ModuleInfo.curr_cpu & P_CPU_MASK ) == P_64 )
-            if ( ModuleInfo.langtype == LANG_FASTCALL || ModuleInfo.langtype == LANG_SYSVCALL) {
+            if ( ModuleInfo.langtype == LANG_FASTCALL || ModuleInfo.langtype == LANG_SYSVCALL || ModuleInfo.langtype == LANG_SYSCALL) {
                 if ( Options.output_format != OFORMAT_ELF ) {
                     DebugMsg(("SetModel: FASTCALL type set to WIN64\n"));
                     ModuleInfo.fctype = FCT_WIN64;
