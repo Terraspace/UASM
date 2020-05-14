@@ -1,6 +1,6 @@
 language: c
 compiler:
-  - gcc
+  - clang
 script: make -f Makefile_Linux
 deploy:
   provider: s3
