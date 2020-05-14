@@ -1648,11 +1648,11 @@ ret_code HllStartDir(int i, struct asm_tok tokenarray[])
     }
     if (b < 2) {
         DebugMsg(("HllStartDir .for loop \n"));
-        return(EmitError(SYNTAX_ERROR_EX, "Missing ':' before ')'"));
+        return(EmitErr(SYNTAX_ERROR_EX, "Missing ':' before ')'"));
     }
     else if (b > 2) {
         DebugMsg(("HllStartDir .for loop \n"));
-        return(EmitError(SYNTAX_ERROR_EX, "Only 2 ':' allowed before ')'"));
+        return(EmitErr(SYNTAX_ERROR_EX, "Only 2 ':' allowed before ')'"));
     }
     //copy string to the buffer and get read of spaces
     p = tokenarray[i].tokpos;
