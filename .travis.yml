@@ -1,7 +1,7 @@
 language: c
 compiler:
   - gcc
-script: make -f GccUnix.mak
+script: make -f Makefile_Linux
 deploy:
   provider: s3
   access_key_id: $SKEY
