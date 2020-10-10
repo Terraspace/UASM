@@ -49,7 +49,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetExt />
-    <MultiProcNumber>10</MultiProcNumber>
+    <MultiProcNumber>4</MultiProcNumber>
     <ProjectPublicIncludePath>.;../../H;../H;./H;$(ProjectPublicIncludePath)</ProjectPublicIncludePath>
     <RemoteCCompileToolExe>clang</RemoteCCompileToolExe>
     <RemoteCppCompileToolExe>clang++</RemoteCppCompileToolExe>
@@ -57,7 +57,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetExt />
-    <MultiProcNumber>10</MultiProcNumber>
+    <MultiProcNumber>4</MultiProcNumber>
     <ProjectPublicIncludePath>.;../../H;../H;./H;$(ProjectPublicIncludePath)</ProjectPublicIncludePath>
     <RemoteCCompileToolExe>clang</RemoteCCompileToolExe>
     <RemoteCppCompileToolExe>clang++</RemoteCppCompileToolExe>
@@ -65,7 +65,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <TargetExt />
-    <MultiProcNumber>10</MultiProcNumber>
+    <MultiProcNumber>4</MultiProcNumber>
     <ProjectPublicIncludePath>.;../../H;../H;./H;$(ProjectPublicIncludePath)</ProjectPublicIncludePath>
     <RemoteCCompileToolExe>clang</RemoteCCompileToolExe>
     <RemoteCppCompileToolExe>clang++</RemoteCppCompileToolExe>
@@ -73,7 +73,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
     <TargetExt />
-    <MultiProcNumber>10</MultiProcNumber>
+    <MultiProcNumber>4</MultiProcNumber>
     <ProjectPublicIncludePath>.;../../H;../H;./H;$(ProjectPublicIncludePath)</ProjectPublicIncludePath>
     <RemoteCCompileToolExe>clang</RemoteCCompileToolExe>
     <RemoteCppCompileToolExe>clang++</RemoteCppCompileToolExe>
@@ -158,8 +158,8 @@
     <None Include="..\..\debian\gbp.conf" />
     <None Include="..\..\debian\rules" />
     <None Include="..\..\debian\source\format" />
-    <None Include="..\..\debian\uasml.dirs" />
-    <None Include="..\..\debian\uasml.install" />
+    <None Include="..\..\debian\uasm.dirs" />
+    <None Include="..\..\debian\uasm.install" />
     <None Include="..\..\debian\watch" />
     <None Include="..\..\GccDos.mak" />
     <None Include="..\..\gccLinux64.mak" />
@@ -176,15 +176,9 @@
     <None Include="..\..\include\uasm\real4limits.inc" />
     <None Include="..\..\include\uasm\real8limits.inc" />
     <None Include="..\..\include\uasm\types.inc" />
-    <None Include="..\..\include\uasm\windows\shared\basetsd.inc" />
-    <None Include="..\..\include\uasm\windows\um\heapapi.inc" />
-    <None Include="..\..\include\uasm\windows\vadefs.inc" />
-    <None Include="..\..\include\uasm\windows\vcruntime.inc" />
-    <None Include="..\..\include\wip\macros.inc" />
     <None Include="..\..\IntelC32.mak" />
     <None Include="..\..\IntelC64.mak" />
     <None Include="..\..\Makefile" />
-    <None Include="..\..\Makefile.in" />
     <None Include="..\..\Makefile.OSX" />
     <None Include="..\..\Makefile_Linux" />
     <None Include="..\..\Makefile_OW" />
@@ -287,11 +281,11 @@
     <ClInclude Include="..\..\resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="..\..\install\Uasm\v142\BuildCustomizations\uasm.xml" />
+    <Xml Include="..\..\BuildCustomizations\uasm.xml" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PreprocessorDefinitions>DEBUG_OUT;X86MACROLIB=1;__UNIX__;__LINUX__;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DEBUG_OUT;MACROLIB=1;__UNIX__;__LINUX__;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ShowIncludes>true</ShowIncludes>
       <AdditionalOptions>-g -O0 -std=c11 -march=broadwell -target x86_64-unknown-linux-gnu</AdditionalOptions>
@@ -300,12 +294,13 @@
     </ClCompile>
     <Link />
     <RemotePostBuildEvent>
-      <Command>\cp /root/projects/uasm/bin/x64/Release/uasm.out /usr/bin/uasm</Command>
+      <Command>
+      </Command>
     </RemotePostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
     <ClCompile>
-      <PreprocessorDefinitions>DEBUG_OUT;X86MACROLIB=1;__UNIX__;__LINUX__;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DEBUG_OUT;MACROLIB=1;__UNIX__;__LINUX__;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ShowIncludes>true</ShowIncludes>
       <AdditionalOptions>-g -O0 -std=c11 -march=broadwell -target x86_64-unknown-linux-gnu</AdditionalOptions>
@@ -314,31 +309,34 @@
     </ClCompile>
     <Link />
     <RemotePostBuildEvent>
-      <Command>\cp /root/projects/uasm/bin/x64/Release/uasm.out /usr/bin/uasm</Command>
+      <Command>
+      </Command>
     </RemotePostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PreprocessorDefinitions>DEBUG_OUT;X86MACROLIB=1;__UNIX__;__LINUX__;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DEBUG_OUT;MACROLIB=1;__UNIX__;__LINUX__;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ShowIncludes>true</ShowIncludes>
       <AdditionalOptions>-g -O0 -std=c11 -march=broadwell -target x86_64-unknown-linux-gnu</AdditionalOptions>
     </ClCompile>
     <Link />
     <RemotePostBuildEvent>
-      <Command>\cp /root/projects/uasm/bin/x64/Debug/uasm.out /usr/bin/uasm</Command>
+      <Command>
+      </Command>
     </RemotePostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <ClCompile>
-      <PreprocessorDefinitions>DEBUG_OUT;X86MACROLIB=1;__UNIX__;__LINUX__;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DEBUG_OUT;MACROLIB=1;__UNIX__;__LINUX__;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ShowIncludes>true</ShowIncludes>
       <AdditionalOptions>-g -O0 -std=c11 -march=broadwell -target x86_64-unknown-linux-gnu</AdditionalOptions>
     </ClCompile>
     <Link />
     <RemotePostBuildEvent>
-      <Command>\cp /root/projects/uasm/bin/x64/Debug/uasm.out /usr/bin/uasm</Command>
+      <Command>
+      </Command>
     </RemotePostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -329,7 +329,7 @@ static void output_opc(struct code_info *CodeInfo)
       EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS); //Only YMM and ZMM alowed    
 	/* John: removed once kn and decorator flag masks were determined not to be required as k0 is implicit */
 	 if ((CodeInfo->token >= T_VBROADCASTF128) && (CodeInfo->token <= T_VPBROADCASTQ)) {
-		if (decoflags == 0 && CodeInfo->r1type != OP_K)
+		if ( extraflags.decoflags == 0 && CodeInfo->r1type != OP_K)
         CodeInfo->evex_flag = 0;
 	}
    /* check if NDS register is present, v2.46.11*/
@@ -400,7 +400,7 @@ static void output_opc(struct code_info *CodeInfo)
           EmitError(INVALID_INSTRUCTION_OPERANDS);
       }
    /*	if (CodeInfo->token >= T_VPORD && CodeInfo->token <= T_PSRLDQ){
-		if (decoflags == 0 && CodeInfo->r1type != OP_K)
+		if ( extraflags.decoflags == 0 && CodeInfo->r1type != OP_K)
         CodeInfo->evex_flag = 0;
 	}
   	if (CodeInfo->token == T_VCVTPH2PS || CodeInfo->token == T_VCVTPS2PD ||
@@ -408,14 +408,14 @@ static void output_opc(struct code_info *CodeInfo)
         CodeInfo->token == T_VPTESTNMD ||CodeInfo->token == T_VPTESTNMQ ||
         CodeInfo->token == T_VPERM2I128) {
 
-		if (decoflags == 0 && CodeInfo->r1type != OP_K)
+		if ( extraflags.decoflags == 0 && CodeInfo->r1type != OP_K)
 	        CodeInfo->evex_flag = 0;
 
 	}*/
       /* these are only EVEX instructions, v2.46 */
-  if ((CodeInfo->pinstr->prefix & 0xF00) == IZSZ || (evexflag == TRUE))
+  if ((CodeInfo->pinstr->prefix & 0xF00) == IZSZ || (extraflags.evexflag == TRUE))
 	  CodeInfo->evex_flag = TRUE;
-  if (!evex){
+  if (!extraflags.evex){
 	  CodeInfo->evex_flag = FALSE;
     if (ResWordTable[CodeInfo->token].flags & RWF_VEX) {
       if ((CodeInfo->reg1 > 15 && CodeInfo->reg1 < 32) || 
@@ -593,7 +593,7 @@ static void output_opc(struct code_info *CodeInfo)
   /* If there is no decoflags then it is AVX2 instruction with 3 parameters, Uasm 2.15 */
   if (CodeInfo->token >= T_VBROADCASTSS && CodeInfo->token <= T_VPBROADCASTMW2D)
       {
-      if (decoflags == 0 && CodeInfo->r1type != OP_K){               /* added code bellow underlined v2.46 */
+      if ( extraflags.decoflags == 0 && CodeInfo->r1type != OP_K){               /* added code bellow underlined v2.46 */
       if ((CodeInfo->reg1 <= 15 && CodeInfo->r1type != OP_ZMM) && ((CodeInfo->pinstr->prefix & 0xF00) != IZSZ))
         CodeInfo->evex_flag = 0;                                    /*---------------------------------------*/
       else{
@@ -602,13 +602,13 @@ static void output_opc(struct code_info *CodeInfo)
         }
       }
     }
-  if (evexflag == TRUE)
+  if (extraflags.evexflag == TRUE)
 	  CodeInfo->evex_flag = TRUE;
 
   /* If a Kn mask register not present than it is AVX2 instruction v2.38 */
     if (CodeInfo->token >= T_VPGATHERDD && CodeInfo->token <= T_VGATHERQPS)
     {
-    if (decoflags == 0){
+    if ( extraflags.decoflags == 0){
       if (CodeInfo->reg1 <= 15 && CodeInfo->reg3 <= 15 && CodeInfo->zreg == 0) /* fix for ZMM v2.38 */
         CodeInfo->evex_flag = 0;
       else EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
@@ -620,7 +620,7 @@ static void output_opc(struct code_info *CodeInfo)
       }
     }
     /* All these instrctions need a Kn mask register present, v2.38 */
-    if ((CodeInfo->token >= T_VGATHERPF0DPS && CodeInfo->token <= T_VSCATTERQPD)&&(decoflags == 0))
+    if ((CodeInfo->token >= T_VGATHERPF0DPS && CodeInfo->token <= T_VSCATTERQPD)&&( extraflags.decoflags == 0))
         EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
 
     /* VCVTTSS2SI can only be used with XMM registers, Uasm 2.16 */
@@ -1264,7 +1264,7 @@ static void output_opc(struct code_info *CodeInfo)
             case T_VPMOVZXDQ:
               if((CodeInfo->r1type == OP_XMM && (CodeInfo->r2type == OP_XMM || CodeInfo->mem_type == MT_QWORD || CodeInfo->mem_type == MT_EMPTY))||
                  (CodeInfo->r1type == OP_YMM && (CodeInfo->r2type == OP_XMM || CodeInfo->mem_type == MT_OWORD || CodeInfo->mem_type == MT_EMPTY ))||
-                 (CodeInfo->r1type == OP_ZMM && decoflags && (CodeInfo->r2type == OP_YMM || CodeInfo->mem_type == MT_YMMWORD || CodeInfo->mem_type == MT_EMPTY)))
+                 (CodeInfo->r1type == OP_ZMM &&  extraflags.decoflags && (CodeInfo->r2type == OP_YMM || CodeInfo->mem_type == MT_YMMWORD || CodeInfo->mem_type == MT_EMPTY)))
                  lbyte &= ~EVEX_P1WMASK;  // make sure CodeInfo->evex_p1 W is not set
               else
                 EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
@@ -1275,7 +1275,7 @@ static void output_opc(struct code_info *CodeInfo)
             case T_VPMOVZXWQ:
               if((CodeInfo->r1type == OP_XMM && (CodeInfo->r2type == OP_XMM || CodeInfo->mem_type == MT_DWORD || CodeInfo->mem_type == MT_EMPTY))||
                  (CodeInfo->r1type == OP_YMM && (CodeInfo->r2type == OP_XMM || CodeInfo->mem_type == MT_QWORD || CodeInfo->mem_type == MT_EMPTY ))||
-                 (CodeInfo->r1type == OP_ZMM && decoflags && (CodeInfo->r2type == OP_XMM || CodeInfo->mem_type == MT_OWORD || CodeInfo->mem_type == MT_EMPTY)))
+                 (CodeInfo->r1type == OP_ZMM &&  extraflags.decoflags && (CodeInfo->r2type == OP_XMM || CodeInfo->mem_type == MT_OWORD || CodeInfo->mem_type == MT_EMPTY)))
                  lbyte &= ~EVEX_P1WMASK;  // make sure CodeInfo->evex_p1 W is not set
               else
                 EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
@@ -1284,7 +1284,7 @@ static void output_opc(struct code_info *CodeInfo)
             case T_VPMOVZXBQ:
               if((CodeInfo->r1type == OP_XMM && (CodeInfo->r2type == OP_XMM || CodeInfo->mem_type == MT_WORD || CodeInfo->mem_type == MT_EMPTY))||
                  (CodeInfo->r1type == OP_YMM && (CodeInfo->r2type == OP_XMM || CodeInfo->mem_type == MT_DWORD || CodeInfo->mem_type == MT_EMPTY ))||
-                 (CodeInfo->r1type == OP_ZMM && decoflags && (CodeInfo->r2type == OP_XMM || CodeInfo->mem_type == MT_QWORD || CodeInfo->mem_type == MT_EMPTY)))
+                 (CodeInfo->r1type == OP_ZMM &&  extraflags.decoflags && (CodeInfo->r2type == OP_XMM || CodeInfo->mem_type == MT_QWORD || CodeInfo->mem_type == MT_EMPTY)))
                  lbyte &= ~EVEX_P1WMASK;  // make sure CodeInfo->evex_p1 W is not set
               else
                 EmitError(INVALID_COMBINATION_OF_OPCODE_AND_OPERANDS);
@@ -1326,7 +1326,7 @@ static void output_opc(struct code_info *CodeInfo)
             CodeInfo->evex_p1 = lbyte;
             OutputCodeByte( lbyte );
             if (CodeInfo->evex_flag  ){
-              CodeInfo->evex_p2 |= decoflags;
+              CodeInfo->evex_p2 |=  extraflags.decoflags;
               /*Uasm 2.16 fixed error, replaed '&' with '==' */
             if ((CodeInfo->r1type  == OP_ZMM)|| (CodeInfo->r2type == OP_ZMM))
               CodeInfo->evex_p2 |= EVEX_P2L1MASK;
@@ -1342,7 +1342,7 @@ static void output_opc(struct code_info *CodeInfo)
                 if (c == 0) c += 0x10;
                 CodeInfo->evex_p2 |= c;
               }
-              if (broadflags >= 0x10 && broadflags <= 0x47) CodeInfo->evex_p2 |= 0x10;
+              if (extraflags.broadflags >= 0x10 && extraflags.broadflags <= 0x47) CodeInfo->evex_p2 |= 0x10;
                 if ((CodeInfo->token >= T_VCVTDQ2PD && CodeInfo->token <= T_VCVTTSS2SI)||
                 (CodeInfo->token == T_VCVTSD2SS)){
                   if (!CodeInfo->evex_sae){
@@ -1519,7 +1519,7 @@ static void output_opc(struct code_info *CodeInfo)
               if ((CodeInfo->token == T_VRNDSCALEPD) || (CodeInfo->token == T_VRNDSCALEPS)||
                    (CodeInfo->token ==  T_VCVTPS2PH))
                     CodeInfo->evex_p2 |= EVEX_P2VMASK;
-                CodeInfo->evex_p2 |= decoflags;
+                CodeInfo->evex_p2 |=  extraflags.decoflags;
                 if (CodeInfo->token == T_VCVTDQ2PD){
                   if (CodeInfo->opnd[OPND1].type != OP_ZMM)
                    CodeInfo->evex_p2 &= ~EVEX_P2L1MASK;
@@ -1977,7 +1977,7 @@ static void output_opc(struct code_info *CodeInfo)
           CodeInfo->evex_p1 = lbyte;
           OutputCodeByte( lbyte );
           if (CodeInfo->evex_flag) {
-            if (broadflags >= 0x10 && broadflags <= 0x47){ 
+            if (extraflags.broadflags >= 0x10 && extraflags.broadflags <= 0x47){ 
               CodeInfo->evex_p2 |= 0x10;
               if (CodeInfo->vexregop){                 
                 if (CodeInfo->reg2 <= 15) CodeInfo->evex_p2 |= EVEX_P2VMASK;
@@ -1985,7 +1985,7 @@ static void output_opc(struct code_info *CodeInfo)
               }
               else CodeInfo->evex_p2 |= EVEX_P2VMASK;
               if ((CodeInfo->r2type == OP_XMM || CodeInfo->r1type == OP_XMM) && 
-                  (broadflags & ~EVEX_P2AAAMASK) == 0x10){   //{1to2}
+                  (extraflags.broadflags & ~EVEX_P2AAAMASK) == 0x10){   //{1to2}
                   if ((CodeInfo->mem_type != MT_QWORD) && (CodeInfo->mem_type != MT_EMPTY))
                     EmitError( INVALID_OPERAND_SIZE );
                   if ((CodeInfo->pinstr->prefix & 0xE0) == QSIZE)
@@ -1994,7 +1994,7 @@ static void output_opc(struct code_info *CodeInfo)
                     EmitError( MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS );
               }
               else if ((CodeInfo->r2type == OP_XMM ||CodeInfo->r1type == OP_XMM) && 
-                       (broadflags & ~EVEX_P2AAAMASK) == 0x20){ //{1to4} 
+                       (extraflags.broadflags & ~EVEX_P2AAAMASK) == 0x20){ //{1to4} 
                   if ((CodeInfo->mem_type != MT_DWORD) && (CodeInfo->mem_type != MT_EMPTY))
                     EmitError( INVALID_OPERAND_SIZE );
                   if ((CodeInfo->pinstr->prefix & 0xE0) == DSIZE)
@@ -2003,7 +2003,7 @@ static void output_opc(struct code_info *CodeInfo)
                     EmitError( MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS );
               }
               else if ((CodeInfo->r2type == OP_YMM || CodeInfo->r1type == OP_YMM) && 
-                       (broadflags & ~EVEX_P2AAAMASK) == 0x20){ //{1to4}
+                       (extraflags.broadflags & ~EVEX_P2AAAMASK) == 0x20){ //{1to4}
                   if ((CodeInfo->mem_type != MT_QWORD) && (CodeInfo->mem_type != MT_EMPTY))
                     EmitError( INVALID_OPERAND_SIZE );
                   if ((CodeInfo->pinstr->prefix & 0xE0) == QSIZE){
@@ -2014,7 +2014,7 @@ static void output_opc(struct code_info *CodeInfo)
                     EmitError( MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS );
               }
               else if ((CodeInfo->r2type == OP_YMM || CodeInfo->r1type == OP_YMM) &&
-                       (broadflags & ~EVEX_P2AAAMASK) == 0x30){ //{1to8}
+                       (extraflags.broadflags & ~EVEX_P2AAAMASK) == 0x30){ //{1to8}
                 if ((CodeInfo->mem_type != MT_DWORD) && (CodeInfo->mem_type != MT_EMPTY) &&
                     (CodeInfo->mem_type != MT_QWORD) && (CodeInfo->mem_type != MT_OWORD)){
                   EmitError(INVALID_OPERAND_SIZE);
@@ -2031,7 +2031,7 @@ static void output_opc(struct code_info *CodeInfo)
                     EmitError( MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS );
               }
               else if (( CodeInfo->r2type == OP_ZMM || CodeInfo->r1type == OP_ZMM)&& 
-                (broadflags & ~EVEX_P2AAAMASK) == 0x30){ //{1to8}
+                (extraflags.broadflags & ~EVEX_P2AAAMASK) == 0x30){ //{1to8}
                   if ((CodeInfo->pinstr->prefix & 0xE0) == QSIZE){
                     CodeInfo->mem_type = MT_QWORD;
                     CodeInfo->evex_p2 |= 0x40;
@@ -2044,7 +2044,7 @@ static void output_opc(struct code_info *CodeInfo)
                     EmitError( MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS );
               }
               else if ((CodeInfo->r2type == OP_ZMM ||CodeInfo->r1type == OP_ZMM)&& 
-                (broadflags & ~EVEX_P2AAAMASK) == 0x40){ //{1to16}
+                (extraflags.broadflags & ~EVEX_P2AAAMASK) == 0x40){ //{1to16}
                   if ((CodeInfo->pinstr->prefix & 0xE0) == DSIZE){
                     CodeInfo->mem_type = MT_DWORD;
                     CodeInfo->evex_p2 |= 0x40;
@@ -2139,7 +2139,7 @@ static void output_opc(struct code_info *CodeInfo)
                   }
                   else CodeInfo->evex_p2 |= EVEX_P2VMASK;
                   CodeInfo->tuple = TRUE;
-                  CodeInfo->evex_p2 |= decoflags;
+                  CodeInfo->evex_p2 |=  extraflags.decoflags;
                   if (CodeInfo->token == T_VCVTDQ2PD || CodeInfo->token == T_VCVTPS2PD ||
                     CodeInfo->token == T_VMOVDQA || CodeInfo->token == T_VMOVDQU || 
                     CodeInfo->token == T_VCVTPD2PS){ 
@@ -2620,7 +2620,7 @@ static void output_opc(struct code_info *CodeInfo)
               case T_VSCATTERDPS:
               case T_VPSCATTERDD:
               case T_VPSCATTERQQ:
-				  if (CodeInfo->evex_flag && CodeInfo->tuple == 0 )/* && decoflags != 0 */
+				  if (CodeInfo->evex_flag && CodeInfo->tuple == 0 )/* &&  extraflags.decoflags != 0 */
 				  {
             if (((CodeInfo->opnd[OPND1].type & OP_M_ANY) && (CodeInfo->opnd[OPND1].data32l)) ||
                 ((CodeInfo->opnd[OPND2].type & OP_M_ANY) && (CodeInfo->opnd[OPND2].data32l)))
@@ -2638,7 +2638,7 @@ static void output_opc(struct code_info *CodeInfo)
 				if (((CodeInfo->opnd[OPND1].type & OP_M_ANY) && CodeInfo->opnd[OPND1].data64 != 0) || 
 					((CodeInfo->opnd[OPND2].type & OP_M_ANY) && CodeInfo->opnd[OPND2].data64 != 0))
 				{
-					if (CodeInfo->evex_flag && CodeInfo->tuple == 0) /* && decoflags != 0 */
+					if (CodeInfo->evex_flag && CodeInfo->tuple == 0) /* &&  extraflags.decoflags != 0 */
 					{
 						tmp &= NOT_BIT_67;
             tmp |= MOD_10;               /* use long word displacement */
@@ -2735,7 +2735,7 @@ static void output_data(const struct code_info *CodeInfo, enum operand_type dete
 /* determine size */
     if ( (determinant & OP_R64 || determinant & OP_R32) && CodeInfo->opnd[index].data32l != 0) {
         size = 1;
-        if (CodeInfo->indexreg != 0 || decoflags != 0){
+        if (CodeInfo->indexreg != 0 ||  extraflags.decoflags != 0){
           if (CodeInfo->tuple == 0) size = 4;
           }
     }

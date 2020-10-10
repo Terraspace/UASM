@@ -393,17 +393,17 @@ struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg, unsign
 				goto nextInstr;
 
 			/* Here we match broadcast size and element count v2.50 */
-			if (broadflags) {
+			if (extraflags.broadflags) {
 				if (CodeInfo->token == T_VCVTPD2PS || CodeInfo->token == T_VCVTTPD2DQ) {
-					if ((pInstruction->op_elements == 2) && (broadflags == 0x10)) {
-						if (broadflags == pInstruction->op_size)
+					if ((pInstruction->op_elements == 2) && (extraflags.broadflags == 0x10)) {
+						if (extraflags.broadflags == pInstruction->op_size)
 							;
 					}
-					else if ((pInstruction->op_elements == 4) && (broadflags == 0x20)) {
-						if (broadflags == pInstruction->op_size)
+					else if ((pInstruction->op_elements == 4) && (extraflags.broadflags == 0x20)) {
+						if (extraflags.broadflags == pInstruction->op_size)
 							;
 					}
-					else if ((pInstruction->op_elements == 8) && (broadflags == 0x30)) {
+					else if ((pInstruction->op_elements == 8) && (extraflags.broadflags == 0x30)) {
 						if (pInstruction->op_size == 0X40)
 							;
 					}
@@ -883,10 +883,10 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 	unsigned char EVEXnv = 1;
 
 	/* {z} decorator */
-	EVEXz = (decoflags & 0x80) >> 7;
+	EVEXz = (extraflags.decoflags & 0x80) >> 7;
 
 	/* {kn} opmask */
-	EVEXaaa = (decoflags & 7);
+	EVEXaaa = (extraflags.decoflags & 7);
 	if ((instr->evexflags & EVEX_K) != 0 && EVEXaaa == 0)
 		EmitError(K_REGISTER_EXPECTED);
 
@@ -895,20 +895,20 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
 	   {1to4}  == 0x20
 	   {1to8}  == 0x30
 	   {1to16} == 0x40 */
-	if (instr->op_elements == 16 && broadflags != 0x40 && broadflags != 0)
+	if (instr->op_elements == 16 && extraflags.broadflags != 0x40 && extraflags.broadflags != 0)
 		EmitError(MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS);
-	if (instr->op_elements == 8 && broadflags != 0x30 && broadflags != 0)
+	if (instr->op_elements == 8 && extraflags.broadflags != 0x30 && extraflags.broadflags != 0)
 		EmitError(MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS);
-	if (instr->op_elements == 4 && broadflags != 0x20 && broadflags != 0)
+	if (instr->op_elements == 4 && extraflags.broadflags != 0x20 && extraflags.broadflags != 0)
 		EmitError(MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS);
-	if (instr->op_elements == 2 && broadflags != 0x10 && broadflags != 0)
+	if (instr->op_elements == 2 && extraflags.broadflags != 0x10 && extraflags.broadflags != 0)
 		EmitError(MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS);
-	if (instr->op_elements == 1 && broadflags != 0x00)
+	if (instr->op_elements == 1 && extraflags.broadflags != 0x00)
 		EmitError(MISMATCH_IN_THE_NUMBER_OF_BROADCASTING_ELEMENTS);
-	if (broadflags != 0 && (instr->evexflags & EVEX_BRD) == 0)
+	if (extraflags.broadflags != 0 && (instr->evexflags & EVEX_BRD) == 0)
 		EmitError(BROADCAST_DECORATORS_NOT_ALLOWED_FOR_THIS_INSTRUCTION);
 
-	if (broadflags != 0)
+	if (extraflags.broadflags != 0)
 		EVEXbr = 1;
 
 	if ((instr->evexflags & EVEX_MASK) == 0 && (EVEXaaa != 0))
@@ -1160,7 +1160,7 @@ void BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr
   ===================================================================== */
 bool CompDisp(struct expr* memOpnd, struct Instr_Def* instr, struct code_info* CodeInfo)
 {
-	int_32 elements = (broadflags == 0 && (instr->evexflags & EVEX_BRD) != 0) ? 1 : instr->op_elements;
+	int_32 elements = (extraflags.broadflags == 0 && (instr->evexflags & EVEX_BRD) != 0) ? 1 : instr->op_elements;
 	int_32 elemSize = (instr->op_size / elements);
 	if (CodeInfo->evex_flag)
 	{
@@ -1478,12 +1478,12 @@ void PromoteBroadcast(struct Instr_Def* instr, struct code_info* CodeInfo)
 	   {1to16} == 0x40 */
 	if (strcasecmp(instr->mnemonic, "VCVTDQ2PD") == 0)
 	{
-		if (broadflags == 0x40 && instr->operand_types[0] == R_ZMM)
-			broadflags = 0x30;
-		else if (broadflags == 0x30 && instr->operand_types[0] == R_YMM)
-			broadflags = 0x20;
-		else if (broadflags == 0x20 && instr->operand_types[0] == R_XMM)
-			broadflags = 0x10;
+		if (extraflags.broadflags == 0x40 && instr->operand_types[0] == R_ZMM)
+			extraflags.broadflags = 0x30;
+		else if (extraflags.broadflags == 0x30 && instr->operand_types[0] == R_YMM)
+			extraflags.broadflags = 0x20;
+		else if (extraflags.broadflags == 0x20 && instr->operand_types[0] == R_XMM)
+			extraflags.broadflags = 0x10;
 	}
 }
 

@@ -913,7 +913,7 @@ static ret_code get_operand( struct expr *opnd, int *idx, struct asm_tok tokenar
 			* which will be subtracted in codegen.c
 			*/
 			/* optimized and alowed white space after '{' and before '}', v2.38 */
-			if (tokenarray[i].string_delim == '{' && evex) {
+			if (tokenarray[i].string_delim == '{' && extraflags.evex) {
 				p = tokenarray[i].string_ptr;
 				while (isspace(*p)) p++;           /* skip white spaces*/
 				if (memcmp(p, "rn-sae", 6) == 0) {

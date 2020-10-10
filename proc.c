@@ -4709,7 +4709,7 @@ static void write_win64_default_prologue_RSP(struct proc_info* info)
         AddLineQueueX(*(ppfmt + 1), T_DOT_ALLOCSTACK, NUMQUAL stackSize, sym_ReservedStack->name);
 
         /* Handle ZEROLOCALS option */
-        if (ZEROLOCALS && info->localsize)
+        if (extraflags.ZEROLOCALS && info->localsize)
         {
             if (info->localsize <= 128)
             {

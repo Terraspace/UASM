@@ -113,6 +113,7 @@ static const struct format_options formatoptions[] = {
 #endif
 };
 
+struct extra_flags      extraflags;
 struct module_info      ModuleInfo;
 unsigned int            Parse_Pass;     /* assembly pass */
 //unsigned int            GeneratedCode; /* v2.10: moved to ModuleInfo */
@@ -1181,9 +1182,9 @@ static int OnePass( void )
 		ModuleInfo.list = alist;
     /* UASM 2.49 Ensure these are reset here in pre-process, as this can be set on a line that
     still requires expansion, and then they accidentally remain set when moving onto a regular line via codegen */
-    decoflags = 0;
-    broadflags = 0;
-    evexflag = 0;
+        extraflags.decoflags = 0;
+        extraflags.broadflags = 0;
+        extraflags.evexflag = 0;
 	}
 
 #if FASTPASS
@@ -1604,7 +1605,7 @@ int EXPQUAL AssembleModule( const char *source )
 	ModuleInfo.switch_style = tempInfo.switch_style;
 
 	/* set architecture */
-	ModuleInfo.arch = MODULEARCH;
+	ModuleInfo.arch = extraflags.MODULEARCH;
 
     DebugCmd( ModuleInfo.cref = TRUE ); /* enable debug displays */
 
@@ -1827,40 +1828,40 @@ done:
 /* ARCH SSE/AVX specific instructions */
 const char* MOVE_ALIGNED_FLOAT()
 {
-	if (MODULEARCH == ARCH_AVX) return "vmovaps"; else return "movaps";
+	if (extraflags.MODULEARCH == ARCH_AVX) return "vmovaps"; else return "movaps";
 }
 
 const char* MOVE_ALIGNED_INT()
 {
-	if (MODULEARCH == ARCH_AVX) return "vmovdqa"; else return "movdqa";
+	if (extraflags.MODULEARCH == ARCH_AVX) return "vmovdqa"; else return "movdqa";
 }
 
 const char* MOVE_UNALIGNED_FLOAT()
 {
-	if (MODULEARCH == ARCH_AVX) return "vmovups"; else return "movups";
+	if (extraflags.MODULEARCH == ARCH_AVX) return "vmovups"; else return "movups";
 }
 
 const char* MOVE_UNALIGNED_INT()
 {
-	if (MODULEARCH == ARCH_AVX) return "vmovdqu"; else return "movdqu";
+	if (extraflags.MODULEARCH == ARCH_AVX) return "vmovdqu"; else return "movdqu";
 }
 
 const char* MOVE_SINGLE()
 {
-	if (MODULEARCH == ARCH_AVX) return "vmovss"; else return "movss";
+	if (extraflags.MODULEARCH == ARCH_AVX) return "vmovss"; else return "movss";
 }
 
 const char* MOVE_DOUBLE()
 {
-	if (MODULEARCH == ARCH_AVX) return "vmovsd"; else return "movsd";
+	if (extraflags.MODULEARCH == ARCH_AVX) return "vmovsd"; else return "movsd";
 }
 
 const char* MOVE_SIMD_DWORD()
 {
-	if (MODULEARCH == ARCH_AVX) return "vmovd"; else return "movd";
+	if (extraflags.MODULEARCH == ARCH_AVX) return "vmovd"; else return "movd";
 }
 
 const char* MOVE_SIMD_QWORD()
 {
-	if (MODULEARCH == ARCH_AVX) return "vmovq"; else return "movq";
+	if (extraflags.MODULEARCH == ARCH_AVX) return "vmovq"; else return "movq";
 }

@@ -477,27 +477,6 @@
     <None Include="..\..\include\uasm\types.inc">
       <Filter>include</Filter>
     </None>
-    <None Include="..\..\include\uasm\windows\vadefs.inc">
-      <Filter>include\windows</Filter>
-    </None>
-    <None Include="..\..\include\uasm\windows\vcruntime.inc">
-      <Filter>include\windows</Filter>
-    </None>
-    <None Include="..\..\BuildCustomizations\uasm.props">
-      <Filter>BuildCustomizations</Filter>
-    </None>
-    <None Include="..\..\BuildCustomizations\uasm.targets">
-      <Filter>BuildCustomizations</Filter>
-    </None>
-    <None Include="..\..\include\wip\macros.inc">
-      <Filter>include\wip</Filter>
-    </None>
-    <None Include="..\..\include\uasm\windows\um\heapapi.inc">
-      <Filter>include\windows\um</Filter>
-    </None>
-    <None Include="..\..\include\uasm\windows\shared\basetsd.inc">
-      <Filter>include\windows\shared</Filter>
-    </None>
     <None Include="..\..\debian\changelog">
       <Filter>debian</Filter>
     </None>
@@ -514,12 +493,6 @@
       <Filter>debian</Filter>
     </None>
     <None Include="..\..\debian\rules">
-      <Filter>debian</Filter>
-    </None>
-    <None Include="..\..\debian\uasml.dirs">
-      <Filter>debian</Filter>
-    </None>
-    <None Include="..\..\debian\uasml.install">
       <Filter>debian</Filter>
     </None>
     <None Include="..\..\debian\watch">
@@ -603,8 +576,17 @@
     <None Include="..\..\owmod.inc">
       <Filter>Makefiles</Filter>
     </None>
-    <None Include="..\..\Makefile.in">
-      <Filter>Makefiles</Filter>
+    <None Include="..\..\BuildCustomizations\uasm.props">
+      <Filter>BuildCustomizations</Filter>
+    </None>
+    <None Include="..\..\BuildCustomizations\uasm.targets">
+      <Filter>BuildCustomizations</Filter>
+    </None>
+    <None Include="..\..\debian\uasm.dirs">
+      <Filter>debian</Filter>
+    </None>
+    <None Include="..\..\debian\uasm.install">
+      <Filter>debian</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -623,18 +605,6 @@
     <Filter Include="include">
       <UniqueIdentifier>{7a53866a-29be-4e3d-ab7c-b7f452330cbd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include\windows">
-      <UniqueIdentifier>{0845921e-33c1-4857-8ce0-1db134eaa485}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="include\wip">
-      <UniqueIdentifier>{2edc7995-eb00-4427-b216-4cd786fb2185}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="include\windows\um">
-      <UniqueIdentifier>{f12afb51-3138-486e-a848-f7cb01a44dc1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="include\windows\shared">
-      <UniqueIdentifier>{ab1ef93f-6461-4f77-9695-e15b43435805}</UniqueIdentifier>
-    </Filter>
     <Filter Include="debian">
       <UniqueIdentifier>{0b02db6e-22b8-4ce4-b103-d5dbcf9a6ba4}</UniqueIdentifier>
     </Filter>
@@ -646,7 +616,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="..\..\install\Uasm\v142\BuildCustomizations\uasm.xml">
+    <Xml Include="..\..\BuildCustomizations\uasm.xml">
       <Filter>BuildCustomizations</Filter>
     </Xml>
   </ItemGroup>

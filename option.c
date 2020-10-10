@@ -57,7 +57,7 @@ OPTFUNC( SetEvex )
 		if (opndx.llvalue > 1) {
 			return(EmitConstError(&opndx));
 		}
-		evex = opndx.llvalue;
+		extraflags.evex = opndx.llvalue;
 	}
 	else {
 		return(EmitError(CONSTANT_EXPECTED));
@@ -98,7 +98,7 @@ OPTFUNC( SetZeroLocals )
 		if (opndx.llvalue > 1) {
 			return(EmitConstError(&opndx));
 		}
-		ZEROLOCALS = opndx.llvalue;
+		extraflags.ZEROLOCALS = opndx.llvalue;
 	}
 	else {
 		return(EmitError(CONSTANT_EXPECTED));
@@ -176,12 +176,12 @@ OPTFUNC( SetArch )
 
 	if (tokenarray[i].token == T_ID) {
 		if (0 == _stricmp(tokenarray[i].string_ptr, "SSE")) {
-			MODULEARCH = ARCH_SSE;
+			extraflags.MODULEARCH = ARCH_SSE;
 			ModuleInfo.arch = ARCH_SSE;
 			archSym->value = ARCH_SSE;
 		}
 		else if (0 == _stricmp(tokenarray[i].string_ptr, "AVX")) {
-			MODULEARCH = ARCH_AVX;
+			extraflags.MODULEARCH = ARCH_AVX;
 			ModuleInfo.arch = ARCH_AVX;
 			archSym->value = ARCH_AVX;
 		}

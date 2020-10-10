@@ -952,15 +952,17 @@ struct module_info {
     bool                flat;
 };
 
+struct extra_flags {
 #if AVXSUPP
-    extern unsigned char       decoflags;          /* EVEX  sets up decorator flags in P2: z, aaa   */
-    extern unsigned char       broadflags;         /* EVEX  sets up decorator flags in P2: b        */
-    extern unsigned char       evex;               /* EVEX  encoding  */
-    extern unsigned char       evexflag;           /* UASM 2.48 User specified EVEX promotion */
-    extern unsigned char       ZEROLOCALS;         /* zero local variables  */
+    unsigned char       decoflags;          /* EVEX  sets up decorator flags in P2: z, aaa   */
+    unsigned char       broadflags;         /* EVEX  sets up decorator flags in P2: b        */
+    unsigned char       evex;               /* EVEX  encoding  */
+    unsigned char       evexflag;           /* UASM 2.48 User specified EVEX promotion */
+    unsigned char       ZEROLOCALS;         /* zero local variables  */
 #endif
 
-    extern unsigned char        MODULEARCH;         /* MODULE Architecture <avx or sse> */
+    unsigned char       MODULEARCH;         /* MODULE Architecture <avx or sse> */
+};
 
 #define CurrSource      ModuleInfo.currsource
 #define Token_Count     ModuleInfo.token_count
@@ -995,6 +997,7 @@ extern const char* MOVE_SIMD_QWORD();
 /* global flag to indicate when inside macro body */
 extern bool inMacroBody;
 
+extern struct extra_flags    extraflags;
 extern struct global_options Options;
 extern struct module_info    ModuleInfo;
 extern unsigned int          Parse_Pass;    /* assembly pass */

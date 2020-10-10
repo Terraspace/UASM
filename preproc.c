@@ -1101,9 +1101,9 @@ int PreprocessLine( char *line, struct asm_tok tokenarray[] )
 
 	/* UASM 2.48 Ensure these are reset here in pre-process, as this can be set on a line that 
 	still requires expansion, and then they accidentally remain set when moving onto a regular line via codegen */
-	//decoflags = 0;
-	//broadflags = 0;
-	//evexflag = 0;
+	//extraflags.decoflags = 0;
+	//extraflags.broadflags = 0;
+	//extraflags.evexflag = 0;
 
     Token_Count = Tokenize( line, 0, tokenarray, TOK_DEFAULT );
 

@@ -387,13 +387,13 @@ static void OPTQUAL Set_Cx( void ) { Options.case_sensitive = FALSE;  Options.co
 static void OPTQUAL Set_SSE(void) 
 { 
 	ModuleInfo.arch = ARCH_SSE; 
-	MODULEARCH = ARCH_SSE; 	
+	extraflags.MODULEARCH = ARCH_SSE; 	
 }
 
 static void OPTQUAL Set_AVX(void) 
 { 
 	ModuleInfo.arch = ARCH_AVX; 
-	MODULEARCH = ARCH_AVX;
+	extraflags.MODULEARCH = ARCH_AVX;
 }
 
 static void OPTQUAL Set_NOMLIB(void)

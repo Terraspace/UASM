@@ -2113,15 +2113,15 @@ static ret_code process_register( struct code_info *CodeInfo, unsigned CurrOpnd,
 
 	if (CodeInfo->opnd[CurrOpnd].type == OP_XMM || CodeInfo->opnd[CurrOpnd].type == OP_YMM)
 	{
-		if (!evex && regno > 15)
+		if (!extraflags.evex && regno > 15)
 			return(EmitError(UNAUTHORISED_USE_OF_EVEX_REGISTERS));
         /* this fixes suppressed Kn mask register if evex on v2.38 */
-        else if (evex && regno > 15)
+        else if (extraflags.evex && regno > 15)
           CodeInfo->evex_flag = TRUE;
 	}
 	if (CodeInfo->opnd[CurrOpnd].type == OP_ZMM) 
 	{
-		if (evex)
+		if (extraflags.evex)
 			CodeInfo->evex_flag = TRUE;
 		else
 			return(EmitError(UNAUTHORISED_USE_OF_EVEX_REGISTERS));
@@ -2741,7 +2741,7 @@ static ret_code check_size( struct code_info *CodeInfo, const struct expr opndx[
     case T_VCVTTPD2DQ:
     case T_VCVTPD2PS:
       if ((op2 == OP_M) && opndx[OPND2].indirect) {
-        if (!broadflags) /* v2.49 fix for bcst */
+        if (!extraflags.broadflags) /* v2.49 fix for bcst */
           return(EmitError(INSTRUCTION_OPERAND_MUST_HAVE_SIZE));
       }
       break;
@@ -3363,7 +3363,7 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 		CodeInfo.evex_p0 = 0;      /* P0[3 : 2] Must be 0 */
 		CodeInfo.evex_p1 = 0x4;    /* P1[2]     Must be 1 */
 		CodeInfo.evex_p2 = 0;
-		if (broadflags || decoflags || evexflag)
+		if (extraflags.broadflags ||  extraflags.decoflags || extraflags.evexflag)
 			CodeInfo.evex_flag = TRUE;   /* if TRUE will output 0x62 */
 	}
 	CodeInfo.flags = 0;
@@ -4037,7 +4037,7 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 	/* *********************************************************** */
 	/* Use the V2 CodeGen, else fallback to the standard CodeGen   */
 	/* *********************************************************** */
-	//if (!evexflag && CodeInfo.evex_flag == 0 && (ModuleInfo.Ofssize == USE32 || ModuleInfo.Ofssize == USE64))
+	//if (!extraflags.evexflag && CodeInfo.evex_flag == 0 && (ModuleInfo.Ofssize == USE32 || ModuleInfo.Ofssize == USE64))
 	if (ModuleInfo.Ofssize == USE32 || ModuleInfo.Ofssize == USE64)
 	{
 		temp = CodeGenV2(opcodePtr, &CodeInfoV2, oldofs, opndCount, opndxV2);
@@ -4049,9 +4049,9 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 
 nopor:
 	/* now reset EVEX maskflags for the next line */
-	decoflags  = 0;
-	broadflags = 0;
-	evexflag   = 0;
+    extraflags.decoflags  = 0;
+    extraflags.broadflags = 0;
+    extraflags.evexflag   = 0;
 
 	return( temp );
 }

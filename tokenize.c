@@ -122,23 +122,23 @@ static bool IsMultiLine( struct asm_tok tokenarray[] )
 /* EVEX Broadcast decorators are handled here */
 void get_broads(struct line_status *p) {
 	/************************************************/
-	if (!evex)
+	if (!extraflags.evex)
 		EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
   
 	if (_memicmp(p->input, "1to2", 4) == 0) {
-		broadflags = 0x10;           /*  ZLLBVAAA  */
+        extraflags.broadflags = 0x10;           /*  ZLLBVAAA  */
 		p->input += 4;               /*  00010000  */
 	}
 	else if (_memicmp(p->input, "1to4", 4) == 0){
-      broadflags = 0x20;             /*  ZLLBVAAA  */
+        extraflags.broadflags = 0x20;             /*  ZLLBVAAA  */
       p->input += 4;                 /*  00100000  */
     }
     else if (_memicmp(p->input, "1to8", 4) == 0){
-      broadflags = 0x30;             /*  ZLLBVAAA  */
+        extraflags.broadflags = 0x30;             /*  ZLLBVAAA  */
       p->input += 4;                 /*  00110000  */
     }
     else if (_memicmp(p->input, "1to16", 5) == 0){
-      broadflags = 0x40;             /*  ZLLBVAAA  */
+        extraflags.broadflags = 0x40;             /*  ZLLBVAAA  */
       p->input += 5;                 /*  01000000  */
     }
     else
@@ -156,7 +156,7 @@ void get_decos(struct line_status *p,bool zdeclined)
 	char          buff[32];
 	char         *p1 = buff;
 
-	if (!evex)
+	if (!extraflags.evex)
 		EmitError(UNAUTHORISED_USE_OF_EVEX_ENCODING);
      while ( isspace( *p->input )) p->input++;
 	c = (*p->input | 0x20);
@@ -165,7 +165,7 @@ void get_decos(struct line_status *p,bool zdeclined)
 	/* if first decorator is {z}  */
   if (c == 'z' && *p->input == '}'){               /*  ZLLBVAAA  */
     if (!zdeclined)
-      decoflags |= 0x80;                           /*  10000000  */
+       extraflags.decoflags |= 0x80;                           /*  10000000  */
     else
       EmitError(Z_MASK_NOT_PERMITTED_WHEN_FIRST_OPERATOR_IS_MEMORY);
      c = *p->input;
@@ -193,7 +193,7 @@ void get_decos(struct line_status *p,bool zdeclined)
          EmitError(WRONG_MASK_REGISTER_NUBER);
          return;
        }
-       decoflags |= (c & 0x7);
+        extraflags.decoflags |= (c & 0x7);
        p->input++;
        while ( isspace( *p->input )) p->input++;
        c = *p->input;
@@ -214,7 +214,7 @@ writenum:
        EmitError(WRONG_MASK_REGISTER_NUBER);
        return;
      }
-     decoflags |= (c & 0x7);
+      extraflags.decoflags |= (c & 0x7);
      p->input++;
      while ( isspace( *p->input )) p->input++;
      c = *p->input;
@@ -232,7 +232,7 @@ writenum:
        c = (*p->input | 0x20);
        if (c == 'z'){
           if (!zdeclined)
-            decoflags |= 0x80;                           /*  10000000  */
+             extraflags.decoflags |= 0x80;                           /*  10000000  */
           else
             EmitError(Z_MASK_NOT_PERMITTED_WHEN_FIRST_OPERATOR_IS_MEMORY);
          p->input++;
@@ -1268,7 +1268,7 @@ int Tokenize( char *line, unsigned int start, struct asm_tok tokenarray[], unsig
             *p.input = NULLC;
         }
         /* Next to routines will work only if option evex: 1 */
-        if (evex) {
+        if (extraflags.evex) {
           /* UASM 2.48 Handle {evex} promotion decorator */
           if (*p.input == '{')
           {
@@ -1277,7 +1277,7 @@ int Tokenize( char *line, unsigned int start, struct asm_tok tokenarray[], unsig
               input1++;
             if ((_memicmp(input1, "evex", 4) == 0))
             {
-              evexflag = TRUE;
+              extraflags.evexflag = TRUE;
               while (*input1 != '}')
                 input1++;
               input1++;                /* skip '}' */
