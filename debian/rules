@@ -24,15 +24,18 @@ ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
     MAKEFLAGS += -j$(NUMJOBS)
 endif
 
-%:
-    dh $@
-
 override_dh_auto_build:
-    dh_auto_build
-    $(MAKE)
+    #dh_auto_build
+    $(MAKE) -C all
 
 # empty override, fills example directory with lots of files
 override_dh_auto_test:
 
+override_dh_auto_clean:
+    dh_auto_clean
+
 override_dh_auto_install:
-    dh_auto_install -- install_rdf
+    dh_auto_install
+
+%:
+    dh $@ --buildsystem=makefile
