@@ -1,5 +1,8 @@
 #! /usr/bin/make -f
 
+# Uncomment this to turn on verbose mode.
+export DH_VERBOSE=1
+
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 DPKG_EXPORT_BUILDFLAGS = 1
 include /usr/share/dpkg/buildflags.mk
@@ -24,18 +27,21 @@ ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
     MAKEFLAGS += -j$(NUMJOBS)
 endif
 
+SRC_DIR_C = ./
+
+%:
+    dh $@ --buildsystem=makefile
+
 override_dh_auto_build:
-    dh_auto_build
-    $(MAKE) -C all
+	dh_auto_build -- all -C $(SRC_DIR_C) -f makefile.clang
 
 # empty override, fills example directory with lots of files
 override_dh_auto_test:
 
 override_dh_auto_clean:
-    dh_auto_clean
+	$(MAKE) clean -C $(SRC_DIR_C) -f makefile.gcc
+    rm -rf GccUnixR
 
-override_dh_auto_install:
-    dh_auto_install
+#override_dh_auto_install:
+#    dh_auto_install
 
-%:
-    dh $@ --buildsystem=makefile
