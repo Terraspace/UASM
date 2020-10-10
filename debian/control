@@ -11,12 +11,12 @@ Vcs-Git: https://github.com/Terraspace/UASM.git
 Vcs-Browser: https://github.com/Terraspace/UASM
 
 Package: uasm
-Architecture: all
-Multi-Arch: foreign
+Architecture: any
 Depends:
  dpkg (>= 1.15.4) | install-info,
  ${misc:Depends},
  ${shlibs:Depends},
+ libc6-dev,
 Description: UASM is a free MASM-compatible assembler
  based on JWasm with more and enhanced features.
  .
