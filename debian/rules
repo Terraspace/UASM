@@ -23,6 +23,11 @@ override_dh_auto_clean:
 	rm -rf GccUnixR
 
 #override_dh_auto_install:
+	$(MAKE) -C $(SRC_DIR_C) install -f makefile.clang DESTDIR=`pwd`/debian/tmp
+	mkdir -p debian/tmp/usr/bin
+	cp -pf GccUnixR/uasm debian/tmp/usr/bin
+	mkdir -p debian/tmp/usr/include/uasm
+	cp -pf include/uasm/* debian/tmp/usr/include/uasm
 #	dh_auto_install
 
 %:

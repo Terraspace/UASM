@@ -1,4 +1,2 @@
 usr/bin/*
-usr/include/*
 usr/include/uasm/*
-usr/include/*/uasm
