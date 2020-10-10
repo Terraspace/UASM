@@ -25,7 +25,7 @@ ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
 endif
 
 override_dh_auto_build:
-    #dh_auto_build
+    dh_auto_build
     $(MAKE) -C all
 
 # empty override, fills example directory with lots of files
