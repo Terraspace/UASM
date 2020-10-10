@@ -15,11 +15,11 @@ ifeq ($(DEBUG),0)
 extra_c_flags = -g -O0 -std=c11 -march=broadwell -target x86_64-unknown-linux-gnu -DNDEBUG -ansi -funsigned-char -fwritable-strings
 OUTD=GccUnixR
 else
-extra_c_flags = -g -O0 -std=c11 -march=broadwell -target x86_64-unknown-linux-gnu -DDEBUG -DDEBUG_OUT -ansi -funsigned-char -fwritable-strings
+extra_c_flags = -g -O0 -std=c11 -march=broadwell -target x86_64-unknown-linux-gnu -D_DEBUG -DDEBUG_OUT -ansi -funsigned-char -fwritable-strings
 OUTD=GccUnixD
 endif
 
-c_flags =-D __UNIX__ $(extra_c_flags)
+c_flags = -DMACROLIB=1 -D__UNIX__ -D__LINUX__ $(extra_c_flags)
 
 CC = clang
 

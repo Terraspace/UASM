@@ -179,6 +179,7 @@
     <None Include="..\..\IntelC32.mak" />
     <None Include="..\..\IntelC64.mak" />
     <None Include="..\..\Makefile" />
+    <None Include="..\..\makefile.clang" />
     <None Include="..\..\Makefile.OSX" />
     <None Include="..\..\Makefile_Linux" />
     <None Include="..\..\Makefile_OW" />

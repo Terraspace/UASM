@@ -588,6 +588,9 @@
     <None Include="..\..\debian\uasm.install">
       <Filter>debian</Filter>
     </None>
+    <None Include="..\..\makefile.clang">
+      <Filter>Makefiles</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">

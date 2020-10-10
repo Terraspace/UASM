@@ -71,7 +71,7 @@
 #   define BUILD_MACROLIB   1
 #endif
 
-#if (defined(MACROLIB) && (MACROLIB >= 1))
+#if (defined(BUILD_MACROLIB) && (BUILD_MACROLIB >= 1))
 #   define INCREASEDMAXLINELENGHT   1
 #else
 #   define INCREASEDMAXLINELENGHT   0
@@ -80,9 +80,9 @@
 #if (defined(INCREASEDMAXLINELENGHT) && (INCREASEDMAXLINELENGHT >= 1))
 #define MAX_LINE_LEN            25600  /* no restriction for this number */
 #define MAX_RESTRICT_LINE_LEN   1024  /*(MAX_LINE_LEN/25)*/  /* no restriction for this number */
-#define MAX_TOKEN               MAX_RESTRICT_LINE_LEN - 32  /* max tokens in one line */
-#define MAX_STRING_LEN          MAX_RESTRICT_LINE_LEN - 32 /* must be < MAX_LINE_LEN */
-#define MAX_ID_LEN              MAX_RESTRICT_LINE_LEN - 247 /* must be < MAX_LINE_LEN */
+#define MAX_TOKEN               MAX_RESTRICT_LINE_LEN - 800  /* max tokens in one line */
+#define MAX_STRING_LEN          MAX_RESTRICT_LINE_LEN - 800 /* must be < MAX_LINE_LEN */
+#define MAX_ID_LEN              MAX_RESTRICT_LINE_LEN - 6175 /* must be < MAX_LINE_LEN */
 #define MAX_STRUCT_ALIGN        64
 #define MAX_SEGMENT_ALIGN       4096 /* maximum alignment/packing setting for segments */
 #define MAX_IF_NESTING          32 /* IFxx block nesting. Must be <=32, see condasm.c */
@@ -94,7 +94,7 @@
 #else
 #define MAX_LINE_LEN            1024 /* no restriction for this number */
 #define MAX_RESTRICT_LINE_LEN   MAX_LINE_LEN /* no restriction for this number */
-#define MAX_TOKEN  MAX_LINE_LEN - 32 /* max tokens in one line */
+#define MAX_TOKEN               MAX_LINE_LEN - 32 /* max tokens in one line */
 #define MAX_STRING_LEN          MAX_LINE_LEN - 32 /* must be < MAX_LINE_LEN */
 #define MAX_ID_LEN              247  /* must be < MAX_LINE_LEN */
 #define MAX_STRUCT_ALIGN        64
