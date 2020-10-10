@@ -2,7 +2,7 @@
 ; / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
 ; / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
 ; / /                                                                               / /
-; / /    Copyright 2020 UASM macro library for the Open Source Initiative           / /
+; / /                Copyright 2020 (c) UASM macro assembly library                 / /
 ; / /                                                                               / /
 ; / /    Licensed under the Apache License, Version 2.0 (the "License");            / /
 ; / /    you may not use this file except in compliance with the License.           / /
@@ -344,6 +344,18 @@
     IFNDEF __MACH__
     __MACH__ EQU 1
     ENDIF
+    IFNDEF MAC
+    MAC EQU 1
+    ENDIF
+    IFNDEF _MAC
+    _MAC EQU 1
+    ENDIF
+    IFNDEF __MAC
+    __MAC EQU 1
+    ENDIF
+    IFNDEF __MAC__
+    __MAC__ EQU 1
+    ENDIF
     IFNDEF APPLE
     APPLE EQU 1
     ENDIF
@@ -620,6 +632,18 @@
     ENDIF
     IFDEF __MACH__
     __mach__ EQU __MACH__
+    ENDIF
+    IFDEF MAC
+    mac EQU MAC
+    ENDIF
+    IFDEF _MAC
+    _mac EQU _MAC
+    ENDIF
+    IFDEF __MAC
+    __mac EQU __MAC
+    ENDIF
+    IFDEF __MAC__
+    __mac__ EQU __MAC__
     ENDIF
     IFDEF APPLE
     apple EQU APPLE

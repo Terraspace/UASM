@@ -2,7 +2,7 @@
 ; / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
 ; / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
 ; / /                                                                               / /
-; / /    Copyright 2020 UASM macro library for the Open Source Initiative           / /
+; / /                Copyright 2020 (c) UASM macro assembly library                 / /
 ; / /                                                                               / /
 ; / /    Licensed under the Apache License, Version 2.0 (the "License");            / /
 ; / /    you may not use this file except in compliance with the License.           / /
@@ -1029,6 +1029,9 @@
     ENDIF
 
     IFDEF __X64__
+    IFNDEF STACK_SIZE
+    STACK_SIZE EQU 16
+    ENDIF
     IFNDEF SIZE_T_SIZE
     SIZE_T_SIZE EQU 8
     ENDIF
@@ -1200,11 +1203,14 @@
     ENDIF ;/*__X64__*/
 
     IFDEF __X32__
-    IFNDEF PTRDIFF_T_SIZE
-    PTRDIFF_T_SIZE EQU 4
+    IFNDEF STACK_SIZE
+    STACK_SIZE EQU 8
     ENDIF
     IFNDEF SIZE_T_SIZE
     SIZE_T_SIZE EQU 4
+    ENDIF
+    IFNDEF PTRDIFF_T_SIZE
+    PTRDIFF_T_SIZE EQU 4
     ENDIF
     IFNDEF INTPTR_T_SIZE
     INTPTR_T_SIZE EQU 4
@@ -2617,6 +2623,9 @@
     dbl_error EQU DBL_ERROR
     ENDIF
 
+    IFDEF STACK_SIZE
+    stack_size EQU STACK_SIZE
+    ENDIF
     IFDEF SIZE_T_SIZE
     size_t_size EQU SIZE_T_SIZE
     ENDIF

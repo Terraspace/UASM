@@ -1,211 +1,103 @@
-;//
-;// vcruntime.h
-;//
-;//      Copyright (c) Microsoft Corporation. All rights reserved.
-;//
-;// Declarations used throughout the VCRuntime library.
-;//
-;#pragma once
-;//
-;// Note on use of "deprecate":
-;//
-;// Various places in this header and other headers use
-;// __declspec(deprecate) or macros that have the term DEPRECATE in them.
-;// We use "deprecate" here ONLY to signal the compiler to emit a warning
-;// about these items. The use of "deprecate" should NOT be taken to imply
-;// that any standard committee has deprecated these functions from the
-;// relevant standards.  In fact, these functions are NOT deprecated from
-;// the standard.
-;//
-;// Full details can be found in our documentation by searching for
-;// "Security Enhancements in the CRT".
-;//
-    IFNDEF _VCRUNTIME_INC
-    _VCRUNTIME_INC EQU 1
-    
-    IFDEF WITHMACROLIB
 
-    IFNDEF MACROLIB_INC
-    .ERR <"_VCRUNTIME_INC must be included by MACROLIB_INC">
-    ENDIF
-    
-    IFNDEF DEFINES_INC
-    .ERR <"_VCRUNTIME_INC requires DEFINES_INC">
-    ENDIF
-    
-    IFNDEF TYPES_INC
-    .ERR <"_VCRUNTIME_INC requires TYPES_INC">
-    ENDIF
-    
-    IFNDEF MACROS_INC
-    .ERR <"_VCRUNTIME_INC requires MACROS_INC">
-    ENDIF
-    
-    IFNDEF __X86ORX64__
-    .ERR <"_VCRUNTIME_INC requires one x86 or x64 platform type">
-    ENDIF
-    
-    IFNDEF _VCRT_COMPILER_PREPROCESSOR
-;// Many VCRuntime headers avoid exposing their contents to non-compilers like
-;// the Windows resource compiler and Qt's meta-object compiler (moc).
-    IF (RC_INVOKED EQ 1 OR Q_MOC_RUN EQ 1)
-    _VCRT_COMPILER_PREPROCESSOR EQU 0
-    ELSE
-    _VCRT_COMPILER_PREPROCESSOR EQU 1
-    ENDIF
-    ENDIF ; // _VCRT_COMPILER_PREPROCESSOR
+; / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
+; / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
+; / /                                                                               / /
+; / /    Copyright 2020 UASM macro library for the Open Source Initiative           / /
+; / /                                                                               / /
+; / /    Licensed under the Apache License, Version 2.0 (the "License");            / /
+; / /    you may not use this file except in compliance with the License.           / /
+; / /    You may obtain a copy of the License at                                    / /
+; / /                                                                               / /
+; / /        http://www.apache.org/licenses/LICENSE-2.0                             / /
+; / /                                                                               / /
+; / /    Unless required by applicable law or agreed to in writing, software        / /
+; / /    distributed under the License is distributed on an "AS IS" BASIS,          / /
+; / /    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.   / /
+; / /    See the License for the specific language governing permissions and        / /
+; / /    limitations under the License.                                             / /
+; / /                                                                               / /
+; / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
+; / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
-    IFNDEF _UCRT
-    _UCRT EQU 1
-    ENDIF
+ifdef WITHMACROLIB
 
-    IFNDEF __INT64
-    __INT64 TEXTEQU <QWORD>
-    IFDEF CASEMAPNONE
-    __int64 TEXTEQU <__INT64>
-    ENDIF
-    ENDIF
+ifndef _VCRUNTIME_INC
+define _VCRUNTIME_INC
 
-    IFNDEF __INT32
-    __INT32 TEXTEQU <DWORD>
-    IFDEF CASEMAPNONE
-    __int32 TEXTEQU <__INT32>
-    ENDIF
-    ENDIF
+ifndef MACROLIB_INC
+.err <"_VCRUNTIME_INC must be included by MACROLIB_INC">
+endif
 
-    IFNDEF __INT16
-    __INT16 TEXTEQU <WORD>
-    IFDEF CASEMAPNONE
-    __int16 TEXTEQU <__INT6>
-    ENDIF
-    ENDIF
+ifndef DEFINES_INC
+.err <"_VCRUNTIME_INC requires DEFINES_INC">
+endif
 
-    IFNDEF __INT8
-    __INT8 TEXTEQU <BYTE>
-    IFDEF CASEMAPNONE
-    __int8 TEXTEQU <__INT8>
-    ENDIF
-    ENDIF
-    
-    IFNDEF __CDECL
-    __CDECL TEXTEQU <CDECL>
-    IFDEF CASEMAPNONE
-    __cdecl TEXTEQU <__CDECL>
-    ENDIF
-    ENDIF
-    
-    IFNDEF __STDCALL
-    __STDCALL TEXTEQU <STDCALL>
-    IFDEF CASEMAPNONE
-    __stdcall TEXTEQU <__STDCALL>
-    ENDIF
-    ENDIF
-    
-    IFNDEF __FASTCALL
-    __FASTCALL TEXTEQU <FASTCALL>
-    IFDEF CASEMAPNONE
-    __fastcall TEXTEQU <__FASTCALL>
-    ENDIF
-    ENDIF
-    
-    IFNDEF __THISCALL
-    __THISCALL TEXTEQU <THISCALL>
-    IFDEF CASEMAPNONE
-    __thiscall TEXTEQU <__THISCALL>
-    ENDIF
-    ENDIF
-    
-    IFNDEF __VECTORCALL
-    __VECTORCALL TEXTEQU <VECTORCALL>
-    IFDEF CASEMAPNONE
-    __vectorcall TEXTEQU <__VECTORCALL>
-    ENDIF
-    ENDIF
-    
-    IFNDEF __REGCALL
-    __REGCALL TEXTEQU <REGCALL>
-    IFDEF CASEMAPNONE
-    __regcall TEXTEQU <__REGCALL>
-    ENDIF
-    ENDIF
-    
-;// The _CRTIMP macro is not used in the VCRuntime or the CoreCRT anymore, but
-;// there is a lot of existing code that declares CRT functions using this macro,
-;// and if we remove its definition, we break that existing code.  It is thus
-;// defined here only for compatibility.
-    IFNDEF _CRTIMP
-    _VCRT_DEFINED_CRTIMP EQU 1
-    ;#if defined CRTDLL && defined _CRTBLD
-    ;    #define _CRTIMP __declspec(dllexport)
-    ;#else
-    ;    #ifdef _DLL
-    ;        #define _CRTIMP __declspec(dllimport)
-    ;    #else
-    ;        #define _CRTIMP
-    ;    #endif
-    ;#endif
-    _CRTIMP EQU 1
-    ENDIF
+ifndef TYPES_INC
+.err <"_VCRUNTIME_INC requires TYPES_INC">
+endif
 
-;INCLUDE sal.inc
-    INCLUDE vadefs.inc
+ifndef MACROS_INC
+.err <"_VCRUNTIME_INC requires MACROS_INC">
+endif
 
-;#pragma warning(push)
-;#pragma warning(disable: _VCRUNTIME_DISABLED_WARNINGS)
+ifndef __X86ORX64__
+.err <"_VCRUNTIME_INC requires x86 or x64 platform type">
+endif
 
-;// All C headers have a common prologue and epilogue, to enclose the header in
-;// an extern "C" declaration when the header is #included in a C++ translation
-;// unit and to push/pop the packing.
-;#if defined __cplusplus
+ifndef CASEMAPNONE
+.err <"_VCRUNTIME_INC requires CASEMAPNONE">
+endif
 
-;    #define _CRT_BEGIN_C_HEADER            \
-;        __pragma(pack(push, _CRT_PACKING)) \
-;        extern "C" {
+ifndef _VCRT_COMPILER_PREPROCESSOR
+if defined(RC_INVOKED) or defined(Q_MOC_RUN))
+    define _VCRT_COMPILER_PREPROCESSOR, 0
+else
+    define _VCRT_COMPILER_PREPROCESSOR, 1
+endif
+endif
 
-;    #define _CRT_END_C_HEADER \
-;        }                     \
-;        __pragma(pack(pop))
+ifndef _UCRT
+    define _UCRT
+endif
 
-;#elif defined __midl
+ifndef _CRTIMP
+    define _VCRT_DEFINED_CRTIMP
+    if defined CRTDLL && defined _CRTBLD
+        define _CRTIMP, < >, text
+    else
+        ifdef _DLL
+            define _CRTIMP, < >, text
+        else
+            define _CRTIMP, < >, text
+        endif
+    endif
+endif
 
-;    #define _CRT_BEGIN_C_HEADER                         \
-;        cpp_quote("__pragma(pack(push, _CRT_PACKING))") \
-;        cpp_quote("extern \"C\" {")
+; include sal.inc
+include vadefs.inc
 
-;    #define _CRT_END_C_HEADER            \
-;        cpp_quote("}")                   \
-;        cpp_quote("__pragma(pack(pop))")
+define _CRT_BEGIN_C_HEADER, alignfieldproc _CRT_PACKING, text
+define _CRT_END_C_HEADER, < >, text
 
-;#else
-
-;    #define _CRT_BEGIN_C_HEADER            \
-;        __pragma(pack(push, _CRT_PACKING))
-
-;    #define _CRT_END_C_HEADER \
-;        __pragma(pack(pop))
-
-;#endif
-
-;_CRT_BEGIN_C_HEADER
+_CRT_BEGIN_C_HEADER
 
 
-
-IFNDEF _HAS_EXCEPTIONS ;// Predefine as 0 to disable exceptions
-    IFDEF _KERNEL_MODE
-         _HAS_EXCEPTIONS EQU 0
-    ELSE
-         _HAS_EXCEPTIONS EQU 1
-    ENDIF ;/* _KERNEL_MODE */
-ENDIF ;/* _HAS_EXCEPTIONS */
+ifndef _HAS_EXCEPTIONS
+    ifdef _KERNEL_MODE
+         define _HAS_EXCEPTIONS, 0
+    else
+         define _HAS_EXCEPTIONS, 1
+    endif
+endif
 
 
 _CRT_STRINGIZE_ MACRO x
     EXITM %x
 ENDM
-_CRT_STRINGIZE TEXTEQU <_CRT_STRINGIZE_>
+define _CRT_STRINGIZE, _CRT_STRINGIZE_, text
 
-#define _CRT_WIDE_(s) L ## s
-#define _CRT_WIDE(s) _CRT_WIDE_(s)
+define _CRT_WIDE_, WSTR, text
+define _CRT_WIDE, _CRT_WIDE_, text
 
 #define _CRT_CONCATENATE_(a, b) a ## b
 #define _CRT_CONCATENATE(a, b)  _CRT_CONCATENATE_(a, b)
@@ -452,6 +344,6 @@ _CRT_END_C_HEADER
 
 #pragma warning(pop) // _VCRUNTIME_DISABLED_WARNINGS
 
-    ENDIF    ;WITHMACROLIB
+endif ;// _VCRUNTIME_INC
 
-    ENDIF ;// _VCRUNTIME_INC
+endif    ;WITHMACROLIB

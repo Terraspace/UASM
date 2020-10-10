@@ -1,0 +1,38 @@
+Source: uasm
+Section: devel
+Priority: optional
+Maintainer: Navegos QA <navegos@outlook.com>
+Uploaders:
+ Navegos QA <navegos@outlook.com>,
+Standards-Version: 4.4.0
+Build-Depends:
+ debhelper (>= 12),
+ dpkg-dev (>= 1.16.1~),
+Homepage: http://www.terraspace.co.uk/uasm.html
+Vcs-Git: https://github.com/Terraspace/UASM.git
+Vcs-Browser: https://github.com/Terraspace/UASM
+
+Package: uasm
+Architecture: any
+Depends:
+ dpkg (>= 1.15.4) | install-info,
+ ${misc:Depends},
+ ${shlibs:Depends},
+Description: UASM is a free MASM-compatible assembler based on JWasm with these features:
+  * native support for output formats Intel OMF, MS Coff (32/64-bit), Elf (32/64-bit), Binary, Windows PE (32/64-bit) and DOS MZ.
+  * precompiled UASM binaries are available for Windows, Linux and OSX.
+  * Instructions up to AVX2 and AVX512F are supported including all new extensions for VMX, MPX, AES, BND, F16C etc.
+  * Support for MS Vectorcall on x64.
+  * Support for Borland Register Calling Convention.
+  * Full support for SystemV Calling Convention.
+  * Integrated Macro Library with OO support.
+  * Numerous new HLL features (as described in the extended manual).
+  * UASM is written in C. The source is portable and has successfully been tested with Open Watcom, MS VC, GCC and more.
+  * As far as programming for MS Windows is concerned, UASM can be used with both WinInc (32/64-bit) and Masm32 (32-bit).
+  * C header files can be converted to include files for UASM with h2incX.
+  * UASM's source code is released under the Sybase Open Watcom Public License, which allows free commercial and non-commercial use.
+  * There's a bunch of source samples available - they are supplied with the precompiled binary packages.
+  * JWasm started as a fork of Open Watcom's Wasm in March 2008. Today, the part of Wasm source lines still contained in JWasm is approximately 15%.
+  * UASM is a continued evolution of JWasm.
+ .
+ UASM is released under the GNU Lesser General Public License (LGPL).

@@ -65,11 +65,16 @@
 
 #endif
 
+#if (defined(MACROLIB) && (MACROLIB <= 0))
+#   define BUILD_MACROLIB   0
+#else
+#   define BUILD_MACROLIB   1
+#endif
+
 #if (defined(MACROLIB) && (MACROLIB >= 1))
 #   define INCREASEDMAXLINELENGHT   1
-#   if (defined(INCREASEDMAXLINELENGHT) && (INCREASEDMAXLINELENGHT >= 1))
-#       define BUILD_MACROLIB   1
-#   endif
+#else
+#   define INCREASEDMAXLINELENGHT   0
 #endif
 
 #if (defined(INCREASEDMAXLINELENGHT) && (INCREASEDMAXLINELENGHT >= 1))

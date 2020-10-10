@@ -1,0 +1,109 @@
+From: Jordan Justen <jordan.l.justen@intel.com>
+Date: Sun, 29 Jan 2017 17:39:54 -0800
+Subject: [PATCH] debian: debian/patches/03-ndisasm.man.patch
+
+Note: I (Jordan) did not author this patch. I'm just adding it to git.
+
+Signed-off-by: Jordan Justen <jordan.l.justen@intel.com>
+---
+ ndisasm.man | 91 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 91 insertions(+)
+ create mode 100644 ndisasm.man
+
+diff --git a/ndisasm.man b/ndisasm.man
+new file mode 100644
+index 0000000..3228903
+--- /dev/null
++++ b/ndisasm.man
+@@ -0,0 +1,91 @@
++NDISASM(1)                                                          NDISASM(1)
++
++
++
++NNAAMMEE
++       ndisasm - the Netwide Disassembler - 80x86 binary file disassembler
++
++SSYYNNOOPPSSIISS
++       nnddiissaassmm [ --oo origin ] [ --ss sync‐point [...]]  [ --aa | --ii ] [ --bb bits ] [
++       ‐‐uu ] [ --ee hdrlen ] [ --kk offset,length [...]]  infile
++       nnddiissaassmm --hh
++       nnddiissaassmm --rr
++
++DDEESSCCRRIIPPTTIIOONN
++       The nnddiissaassmm command generates a disassembly listing of the binary  file
++       _i_n_f_i_l_e and directs it to stdout.
++
++   OOPPTTIIOONNSS
++       --hh     Causes  nnddiissaassmm  to  exit immediately, after giving a summary of
++              its invocation options.
++
++       --rr     Causes nnddiissaassmm to exit immediately, after displaying its version
++              number.
++
++       --oo _o_r_i_g_i_n
++              Specifies  the  notional  load address for the file. This option
++              causes nnddiissaassmm to get the addresses it lists down the left  hand
++              margin, and the target addresses of PC‐relative jumps and calls,
++              right.
++
++       --ss _s_y_n_c_‐_p_o_i_n_t
++              Manually specifies a synchronisation address, such that  nnddiissaassmm
++              will  not output any machine instruction which encompasses bytes
++              on both sides of the address. Hence the instruction which _s_t_a_r_t_s
++              at that address will be correctly disassembled.
++
++       --ee _h_d_r_l_e_n
++              Specifies a number of bytes to discard from the beginning of the
++              file before starting disassembly. This does  not  count  towards
++              the  calculation  of the disassembly offset: the first _d_i_s_a_s_s_e_m_‐
++              _b_l_e_d instruction will  be  shown  starting  at  the  given  load
++              address.
++
++       --kk _o_f_f_s_e_t_,_l_e_n_g_t_h
++              Specifies  that  _l_e_n_g_t_h  bytes, starting from disassembly offset
++              _o_f_f_s_e_t, should be skipped over without  generating  any  output.
++              The  skipped  bytes  still  count towards the calculation of the
++              disassembly offset.
++
++       --aa or --ii
++              Enables automatic (or intelligent) sync mode, in  which  nnddiissaassmm
++              will attempt to guess where synchronisation should be performed,
++              by means of examining the target addresses of the relative jumps
++              and calls it disassembles.
++
++       --bb _b_i_t_s
++              Specifies  either  16‐bit  or 32‐bit mode. The default is 16‐bit
++              mode.
++
++       --uu     Specifies 32‐bit mode, more compactly than using ‘‐b 32’.
++
++       --pp _v_e_n_d_o_r
++              Prefers instructions as defined by _v_e_n_d_o_r in case of a conflict.
++              Known  _v_e_n_d_o_r  names  include  iinntteell,  aammdd, ccyyrriixx, and iiddtt.  The
++              default is iinntteell.
++
++
++RREESSTTRRIICCTTIIOONNSS
++       nnddiissaassmm only disassembles binary files: it has no understanding of  the
++       header  information  present in object or executable files. If you want
++       to disassemble an object file, you should probably be using oobbjjdduummpp(11).
++
++       Auto‐sync  mode  won’t  necessarily cure all your synchronisation prob‐
++       lems: a sync marker can only be placed automatically if a jump or  call
++       instruction  is  found to refer to it _b_e_f_o_r_e nnddiissaassmm actually disassem‐
++       bles that part of the code. Also, if spurious  jumps  or  calls  result
++       from  disassembling  non‐machine‐code data, sync markers may get placed
++       in strange places. Feel free to turn auto‐sync off and go back to doing
++       it manually if necessary.
++
++       nnddiissaassmm  can  only  keep track of 8192 sync markers internally at once:
++       this is to do with portability, since DOS machines don’t take kindly to
++       more than 64K being allocated at a time.
++
++
++SSEEEE AALLSSOO
++       oobbjjdduummpp(11).
++
++
++
++                         The Netwide Assembler Project              NDISASM(1)

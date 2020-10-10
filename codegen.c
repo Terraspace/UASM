@@ -368,17 +368,17 @@ static void output_opc(struct code_info *CodeInfo)
         case   T_VXORPD: 
         case   T_VORPS: 
         case   T_VXORPS:
-        /*case   T_VPSLLDQ:
-          case   T_VPSRLDQ:
-          case   T_VPSLLW:
-          case   T_VPSLLD:
-          case   T_VPSLLQ:
-          case   T_VPSRAW:
-          case   T_VPSRAD:
-          case   T_VPSRAQ:
-          case   T_VPSRLW:
-          case   T_VPSRLD:
-          case   T_VPSRLQ:*/
+        case   T_VPSLLDQ:
+        case   T_VPSRLDQ:
+        case   T_VPSLLW:
+        case   T_VPSLLD:
+        case   T_VPSLLQ:
+        case   T_VPSRAW:
+        case   T_VPSRAD:
+        case   T_VPSRAQ:
+        case   T_VPSRLW:
+        case   T_VPSRLD:
+        case   T_VPSRLQ:
         if (CodeInfo->r2type == OP_XMM || CodeInfo->r2type == OP_YMM || CodeInfo->r2type == OP_ZMM)
           break;
           EmitError(INVALID_INSTRUCTION_OPERANDS);

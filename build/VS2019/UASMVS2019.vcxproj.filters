@@ -486,9 +486,6 @@
     <None Include="..\..\include\uasm\types.inc">
       <Filter>include</Filter>
     </None>
-    <None Include="..\..\include\uasm\windows\basetsd.inc">
-      <Filter>include\windows</Filter>
-    </None>
     <None Include="..\..\include\uasm\windows\vadefs.inc">
       <Filter>include\windows</Filter>
     </None>
@@ -503,6 +500,12 @@
     </None>
     <None Include="..\..\include\wip\macros.inc">
       <Filter>include\wip</Filter>
+    </None>
+    <None Include="..\..\include\uasm\windows\um\heapapi.inc">
+      <Filter>include\windows\um</Filter>
+    </None>
+    <None Include="..\..\include\uasm\windows\shared\basetsd.inc">
+      <Filter>include\windows\shared</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -526,6 +529,12 @@
     </Filter>
     <Filter Include="include\wip">
       <UniqueIdentifier>{2edc7995-eb00-4427-b216-4cd786fb2185}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\windows\um">
+      <UniqueIdentifier>{f12afb51-3138-486e-a848-f7cb01a44dc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\windows\shared">
+      <UniqueIdentifier>{ab1ef93f-6461-4f77-9695-e15b43435805}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

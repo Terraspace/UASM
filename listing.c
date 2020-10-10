@@ -162,7 +162,7 @@ void LstWrite(enum lsttype type, uint_32 oldofs, void* value)
         case LM_NOLISTMACRO:
             return;
         case LM_LISTMACRO:
-            type = LSTTYPE_CODE;
+            type = LSTTYPE_CODE; /* this is a fix */
             break;
         }
     }

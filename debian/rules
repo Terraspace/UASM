@@ -1,0 +1,38 @@
+#! /usr/bin/make -f
+
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+DPKG_EXPORT_BUILDFLAGS = 1
+include /usr/share/dpkg/buildflags.mk
+include /usr/share/dpkg/architecture.mk
+include /usr/share/dpkg/pkg-info.mk
+
+CFLAGS += $(CPPFLAGS)
+
+SHELL=/bin/bash
+
+package=uasm
+
+# For generating the manpages
+export VERSION=$(DEB_VERSION_UPSTREAM)
+
+ifneq ($(DEB_HOST_GNU_TYPE),$(DEB_BUILD_GNU_TYPE))
+    export CROSS_COMPILE ?= $(DEB_HOST_GNU_TYPE)-
+endif
+
+ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+    NUMJOBS = $(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+    MAKEFLAGS += -j$(NUMJOBS)
+endif
+
+%:
+    dh $@
+
+override_dh_auto_build:
+    dh_auto_build
+    $(MAKE)
+
+# empty override, fills example directory with lots of files
+override_dh_auto_test:
+
+override_dh_auto_install:
+    dh_auto_install -- install_rdf

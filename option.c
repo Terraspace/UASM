@@ -339,7 +339,7 @@ OPTFUNC( SetCaseMap )
         SymSetCmpFunc();
 
 #if (defined(BUILD_MACROLIB) && (BUILD_MACROLIB >= 1))
-        if (Parse_Pass == PASS_1 && Options.nomlib == FALSE)
+        if (Options.nomlib == FALSE)
         {
             CreateMacroLibCases();
         }

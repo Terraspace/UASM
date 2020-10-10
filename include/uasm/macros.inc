@@ -2,7 +2,7 @@
 ; / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
 ; / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
 ; / /                                                                               / /
-; / /    Copyright 2020 UASM macro library for the Open Source Initiative           / /
+; / /                Copyright 2020 (c) UASM macro assembly library                 / /
 ; / /                                                                               / /
 ; / /    Licensed under the Apache License, Version 2.0 (the "License");            / /
 ; / /    you may not use this file except in compliance with the License.           / /
@@ -39,7 +39,7 @@
     IFNDEF X86ORX64
     .ERR <"MACROS_INC requires one x86 OR x64 platform type">
     ENDIF
-    
+
     IFNDEF CDECL
     CDECL TEXTEQU <C>
     ENDIF
@@ -152,10 +152,10 @@
     FASTCALLOPT TEXTEQU < >
     ENDIF
     IFNDEF CALLCONV
-    CALLCONV TEXTEQU < >
+    CALLCONV TEXTEQU <SYSTEMV>
     ENDIF
     IFNDEF CALLCONVOPT
-    CALLCONVOPT TEXTEQU < >
+    CALLCONVOPT TEXTEQU <OPTION LANGUAGE:SYSTEMV>
     ENDIF
     IFNDEF STDCALLOPT
     STDCALLOPT TEXTEQU < >
@@ -167,13 +167,55 @@
     SYSCALLOPT TEXTEQU < >
     ENDIF
     ENDIF ;__UNIX32__
-    
-    IFNDEF ALIGNSTACK
-    ALIGNSTACK MACRO
-            ALIGN 16
+
+    IFNDEF DEFINE
+    DEFINE MACRO DefName:REQ, defargs, textargs
+        deffnex TEXTEQU <>
+        deffnex CATSTR deffnex, <&DefName& >
+        IFB <textargs>
+            IFB <defargs>
+                deffnex CATSTR deffnex, <EQU 1>
+            ELSE
+                deffnex CATSTR deffnex, <EQU defargs>
+            ENDIF
+        ELSE
+                deffnex CATSTR deffnex, <TEXTEQU <defargs>>
+        ENDIF
+        deffnex
     ENDM
     ENDIF
-    
+
+    IFNDEF DEFINED
+    DEFINED MACRO defarg
+        IFDEF defarg
+            EXITM <-1>
+        ELSE
+            EXITM <0>
+        ENDIF
+    ENDM
+    ENDIF
+
+    IFNDEF NOTDEFINED
+    NOTDEFINED MACRO defarg
+        IFNDEF defarg
+            EXITM <-1>
+        ELSE
+            EXITM <0>
+        ENDIF
+    ENDM
+    ENDIF
+
+    IFNDEF ALIGNSTACK
+    ALIGNSTACK MACRO
+        IFDEF __X64__
+            ALIGN 16
+        ENDIF
+        IFDEF __X32__
+            ALIGN 8
+        ENDIF
+    ENDM
+    ENDIF
+
     IFNDEF ALIGNSIZE_T
     ALIGNSIZE_T MACRO
         IFDEF __X64__
@@ -228,7 +270,12 @@
     
     IFNDEF ALIGNSTACKFIELD
     ALIGNSTACKFIELD MACRO
+        IFDEF __X64__
             OPTION FIELDALIGN:16
+        ENDIF
+        IFDEF __X32__
+            OPTION FIELDALIGN:8
+        ENDIF
     ENDM
     ENDIF
     
@@ -286,7 +333,12 @@
     
     IFNDEF ALIGNSTACKPROC
     ALIGNSTACKPROC MACRO
+        IFDEF __X64__
             OPTION PROCALIGN:16
+        ENDIF
+        IFDEF __X32__
+            OPTION PROCALIGN:8
+        ENDIF
     ENDM
     ENDIF
     
@@ -342,14 +394,20 @@
         OPTION PROCALIGN:AlignSize
     ENDM
     ENDIF
-    
+
     IFNDEF ALIGNSTACKFIELDPROC
     ALIGNSTACKFIELDPROC MACRO
+        IFDEF __X64__
             OPTION FIELDALIGN:16
             OPTION PROCALIGN:16
+        ENDIF
+        IFDEF __X32__
+            OPTION FIELDALIGN:8
+            OPTION PROCALIGN:8
+        ENDIF
     ENDM
     ENDIF
-    
+
     IFNDEF ALIGNSIZE_TFIELDPROC
     ALIGNSIZE_TFIELDPROC MACRO
         IFDEF __X64__
@@ -743,22 +801,38 @@
     REGS15STORAGE MACRO
     IFNDEF RRAX
         .DATA?
-        RRAX DQ ?
-        RRCX DQ ?
-        RRDX DQ ?
-        RRBX DQ ?
-        RRDI DQ ?
-        RRSI DQ ?
-        RRBP DQ ?
-        RRSP DQ ?
-        RR8  DQ ?
-        RR9  DQ ?
-        RR10 DQ ?
-        RR11 DQ ?
-        RR12 DQ ?
-        RR13 DQ ?
-        RR14 DQ ?
-        RR15 DQ ?
+        RRP0 SIZE_T ?
+        RRP1 SIZE_T ?
+        RRP2 SIZE_T ?
+        RRP3 SIZE_T ?
+        RRP4 SIZE_T ?
+        RRP5 SIZE_T ?
+        RRP6 SIZE_T ?
+        RRP7 SIZE_T ?
+        RRP8 SIZE_T ?
+        RRP9 SIZE_T ?
+        RRP10 SIZE_T ?
+        RRP11 SIZE_T ?
+        RRP12 SIZE_T ?
+        RRP13 SIZE_T ?
+        RRP14 SIZE_T ?
+        RRP15 SIZE_T ?
+        RRAX SIZE_T ?
+        RRCX SIZE_T ?
+        RRDX SIZE_T ?
+        RRBX SIZE_T ?
+        RRDI SIZE_T ?
+        RRSI SIZE_T ?
+        RRBP SIZE_T ?
+        RRSP SIZE_T ?
+        RR8  SIZE_T ?
+        RR9  SIZE_T ?
+        RR10 SIZE_T ?
+        RR11 SIZE_T ?
+        RR12 SIZE_T ?
+        RR13 SIZE_T ?
+        RR14 SIZE_T ?
+        RR15 SIZE_T ?
         RXMM0 OWORD ?
         RXMM1 OWORD ?
         RXMM2 OWORD ?
@@ -1200,7 +1274,7 @@
         .DATA?
         savedeax ISIZE_T ?
         .CODE
-        MOV savedeax, RRET
+        MOV savedeax, RRET()
     IF @Arch EQ ARCH_AVX
         MOV EAX, val
         VMOVD reg, EAX
@@ -1208,7 +1282,7 @@
         MOV EAX, val
         MOVD reg, EAX
     ENDIF
-        MOV RRET, savedeax
+        MOV RRET(), savedeax
     ENDM
     ENDIF ;LOADSS
     
@@ -1218,7 +1292,7 @@
         .DATA?
         savedeax ISIZE_T ?
         .CODE
-        MOV savedeax, RRET
+        MOV savedeax, RRET()
     IF @Arch EQ ARCH_AVX
         MOV EAX, val
         VMOVD reg, EAX
@@ -1228,7 +1302,7 @@
         MOVD reg, EAX
         PSHUFD reg, reg, 0
     ENDIF
-        MOV RRET, savedeax
+        MOV RRET(), savedeax
     ENDM
     ENDIF ;LOAD1PS
     
@@ -1262,7 +1336,7 @@
         savedxmm0 OWORD ?
         ENDIF
         .CODE
-        MOV savedeax, RRET
+        MOV savedeax, RRET()
     IF @Arch EQ ARCH_AVX
         IFDIFI <reg>, <XMM3>
         VMOVDQU savedxmm3, XMM3
@@ -1338,7 +1412,7 @@
         MOVDQU XMM0, savedxmm0
         ENDIF
     ENDIF ;;ARCH_SSE
-        MOV RRET, savedeax
+        MOV RRET(), savedeax
     ENDM
     ENDIF ;LOADPS
     
@@ -1349,7 +1423,7 @@
         .DATA?
         savedeax ISIZE_T ?
         .CODE
-        MOV savedeax, RRET
+        MOV savedeax, RRET()
     IF @Arch EQ ARCH_AVX
         MOV RAX, REAL8 PTR val
         VMOVQ reg, RAX
@@ -1357,7 +1431,7 @@
         MOV RAX, REAL8 PTR val
         MOVQ reg, RAX
     ENDIF
-        MOV RRET, savedeax
+        MOV RRET(), savedeax
     ENDM
     ENDIF ;LOADSD
     
@@ -1367,7 +1441,7 @@
         .DATA?
         savedeax ISIZE_T ?
         .CODE
-        MOV savedeax, RRET
+        MOV savedeax, RRET()
     IF @Arch EQ ARCH_AVX
         MOV RAX, val
         VMOVQ reg, RAX
@@ -1377,7 +1451,7 @@
         MOVQ reg, RAX
         PUNPCKLQDQ      reg,           reg        ;;shuffle2(0,0)
     ENDIF
-        MOV RRET, savedeax
+        MOV RRET(), savedeax
     ENDM
     ENDIF ;LOAD1PD
    
@@ -1399,7 +1473,7 @@
         savedxmm0 OWORD ?
         ENDIF
         .CODE
-        MOV savedeax, RRET
+        MOV savedeax, RRET()
     IF @Arch EQ ARCH_AVX
         IFDIFI <reg>, <XMM1>
         VMOVDQU savedxmm1, XMM1
@@ -1439,7 +1513,7 @@
         MOVDQU XMM0, savedxmm0
         ENDIF
     ENDIF ;;ARCH_SSE
-        MOV RRET, savedeax
+        MOV RRET(), savedeax
     ENDM
     ENDIF ;LOADPD
     ENDIF ;__X64__
@@ -1458,11 +1532,7 @@
         szText DB Text,0
         ALIGN SIZE_T_SIZE
         .CODE
-        IFDEF WINDOWS
-          EXITM <OFFSET szText>
-        ELSE
           EXITM <ADDR szText>
-        ENDIF
     ENDM
     ENDIF ;CSTR
     
@@ -1473,11 +1543,7 @@
         szText DW Text,0
         ALIGN SIZE_T_SIZE
         .CODE
-        IFDEF WINDOWS
-          EXITM <OFFSET szText>
-        ELSE
           EXITM <ADDR szText>
-        ENDIF
     ENDM
     ENDIF ;WSTR
     
@@ -1492,11 +1558,7 @@
         ENDIF
         ALIGN SIZE_T_SIZE
         .CODE
-        IFDEF WINDOWS
-          EXITM <OFFSET szText>
-        ELSE
           EXITM <ADDR szText>
-        ENDIF
     ENDM
     ENDIF ;CHR$
     
@@ -1513,11 +1575,7 @@
           ENDIF
           ALIGN SIZE_T_SIZE
           .CODE
-          IFDEF WINDOWS
-            EXITM <OFFSET nustr>
-          ELSE
             EXITM <ADDR nustr>
-          ENDIF
         ELSE
           EXITM <ADDR arg>
         ENDIF
@@ -1537,15 +1595,11 @@
           ENDIF
           ALIGN SIZE_T_SIZE
           .CODE
-          IFDEF WINDOWS
-            MOV RRET, OFFSET nustr
-          ELSE
-            MOV RRET, ADDR nustr
-          ENDIF
-          EXITM <RRET>
+            MOV RRET(), ADDR nustr
+          EXITM <RRET()>
         ELSE
-          MOV RRET, arg
-          EXITM <RRET>
+          MOV RRET(), arg
+          EXITM <RRET()>
         ENDIF
     ENDM
     ENDIF ;REPARGV
@@ -1564,9 +1618,9 @@
           .DATA?
           varname ISIZE_T ?
           .CODE
-          MOV RRET, nu
-          MOV RRET, [RRET]
-          MOV varname, RRET
+          MOV RRET(), nu
+          MOV RRET(), [RRET()]
+          MOV varname, RRET()
           EXITM <varname>
         ENDIF
         EXITM <txtitm>
@@ -1580,7 +1634,7 @@
         arg CATSTR arg, <, EXPAND_PREFIX(REPARG(var))>
         ENDM
         arg
-        EXITM <RRET>
+        EXITM <RRET()>
     ENDM
     ENDIF ;RV
     
@@ -1645,6 +1699,10 @@
       EXITM <buff>
     ENDM
     ENDIF ;ARGREV
+    
+        ;IFNDEF HeapFree
+        ;    PROTO BOOL HeapFree hHeap:HANDLE, dwFlags:DWORD, lpMem:LPVOID
+        ;ENDIF
 
     IFNDEF MEMALLOC
     MEMALLOC MACRO aSize:REQ
@@ -1653,7 +1711,7 @@
     ELSE
         INVOKE malloc,aSize
     ENDIF
-        ALIGNADDR RRET, 16
+        ALIGNADDR RRET(), 16
     ENDM
     ENDIF ;MEMALLOC
     
@@ -1812,23 +1870,23 @@
          INVOKE func, args
          ENDIF
          IF @LastReturnType EQ 0            ;; BYTE
-         EXITM <AL>
+         EXITM <BRET()>
          ELSEIF @LastReturnType EQ 0x40     ;; SIGNED BYTE
-         EXITM <AL>
+         EXITM <BRET()>
          ELSEIF @LastReturnType EQ 1        ;; WORD
-         EXITM <AX>
+         EXITM <WRET()>
          ELSEIF @LastReturnType EQ 0x41     ;; SIGNED WORD
-         EXITM <AX>
+         EXITM <WRET()>
          ELSEIF @LastReturnType EQ 2        ;; DWORD
-         EXITM <EAX>
+         EXITM <DRET()>
          ELSEIF @LastReturnType EQ 0x42     ;; SIGNED DWORD
-         EXITM <EAX>
+         EXITM <DRET()>
          ELSEIF @LastReturnType EQ 3        ;; QWORD
-         EXITM <RRET>
+         EXITM <RRET()>
          ELSEIF @LastReturnType EQ 0x43     ;; SIGNED QWORD
-         EXITM <RRET>
+         EXITM <RRET()>
          ELSEIF @LastReturnType EQ 0xc3     ;; PTR
-         EXITM <RRET>
+         EXITM <RRET()>
          ELSEIF @LastReturnType EQ 6        ;; XMM
          EXITM <XMM0>
          ELSEIF @LastReturnType EQ 7        ;; YMM
@@ -1840,7 +1898,7 @@
          ELSEIF @LastReturnType EQ 0x23     ;; REAL8
          EXITM <XMM0>
          ELSE
-         EXITM <EAX>
+         EXITM <DRET()>
          ENDIF
     ENDM
     ENDIF ;UINVOKE
@@ -1872,22 +1930,22 @@
     IFNDEF ARGINVOKE
     ARGINVOKE MACRO argNo:REQ, invCount:REQ, func:REQ, args:VARARG
     IFDEF __X64__
-        LOCAL dstSize, stackPos
+        LOCAL dstSize, stackPos, argNum
         REGS15STORAGE
         IFB <args>
             INVOKE func
         ELSE
             IF invCount GE 2
                 IF argNo EQ 2
-                    MOV RRCX,RCX
+                    MOV RRP0,RP0()
                         IF @Arch EQ ARCH_AVX
                             VMOVAPS RXMM0,XMM0
                         ELSE
                             MOVAPS RXMM0,XMM0
                         ENDIF
                 ELSEIF argNo EQ 3
-                    MOV RRCX,RCX
-                    MOV RRDX,RDX
+                    MOV RRP0,RP0()
+                    MOV RRP1,RP1()
                     IF @Arch EQ ARCH_AVX
                         VMOVAPS RXMM0,XMM0
                         VMOVAPS RXMM1,XMM1
@@ -1896,9 +1954,9 @@
                     MOVAPS RXMM1,XMM1
                     ENDIF
                 ELSEIF argNo EQ 4
-                    MOV RRCX,RCX
-                    MOV RRDX,RDX
-                    MOV RR8,R8
+                    MOV RRP0,RP0()
+                    MOV RRP1,RP1()
+                    MOV RRP2,RP2()
                     IF @Arch EQ ARCH_AVX
                         VMOVAPS RXMM0,XMM0
                         VMOVAPS RXMM1,XMM1
@@ -1908,11 +1966,11 @@
                         MOVAPS RXMM1,XMM1
                         MOVAPS RXMM2,XMM2
                     ENDIF
-                ELSEIF argNo GE 5
-                    MOV RRCX,RCX
-                    MOV RRDX,RDX
-                    MOV RR8,R8
-                    MOV RR9,R9
+                ELSEIF argNo EQ 5
+                    MOV RRP0,RP0()
+                    MOV RRP1,RP1()
+                    MOV RRP2,RP2()
+                    MOV RRP3,RP3()
                     IF @Arch EQ ARCH_AVX
                         VMOVAPS RXMM0,XMM0
                         VMOVAPS RXMM1,XMM1
@@ -1924,20 +1982,60 @@
                         MOVAPS RXMM2,XMM2
                         MOVAPS RXMM3,XMM3
                     ENDIF
-                ENDIF ;; IF argNo
+                ELSEIF argNo EQ 6
+                    MOV RRP0,RP0()
+                    MOV RRP1,RP1()
+                    MOV RRP2,RP2()
+                    MOV RRP3,RP3()
+                    MOV RRP4,RP4()
+                    IF @Arch EQ ARCH_AVX
+                        VMOVAPS RXMM0,XMM0
+                        VMOVAPS RXMM1,XMM1
+                        VMOVAPS RXMM2,XMM2
+                        VMOVAPS RXMM3,XMM3
+                        VMOVAPS RXMM4,XMM4
+                    ELSE
+                        MOVAPS RXMM0,XMM0
+                        MOVAPS RXMM1,XMM1
+                        MOVAPS RXMM2,XMM2
+                        MOVAPS RXMM3,XMM3
+                        MOVAPS RXMM4,XMM4
+                    ENDIF
+                ELSEIF argNo GE 7
+                    MOV RRP0,RP0()
+                    MOV RRP1,RP1()
+                    MOV RRP2,RP2()
+                    MOV RRP3,RP3()
+                    MOV RRP4,RP4()
+                    MOV RRP5,RP5()
+                    IF @Arch EQ ARCH_AVX
+                        VMOVAPS RXMM0,XMM0
+                        VMOVAPS RXMM1,XMM1
+                        VMOVAPS RXMM2,XMM2
+                        VMOVAPS RXMM3,XMM3
+                        VMOVAPS RXMM4,XMM4
+                        VMOVAPS RXMM5,XMM5
+                    ELSE
+                        MOVAPS RXMM0,XMM0
+                        MOVAPS RXMM1,XMM1
+                        MOVAPS RXMM2,XMM2
+                        MOVAPS RXMM3,XMM3
+                        MOVAPS RXMM4,XMM4
+                        MOVAPS RXMM5,XMM5
+                    ENDIF
             ENDIF ;; IF invCount
             INVOKE func, args
             IF invCount GE 2
                 IF argNo EQ 2
-                    MOV RCX,RRCX
+                    MOV RP0(),RRP0
                     IF @Arch EQ ARCH_AVX
                         VMOVAPS XMM0,RXMM0
                     ELSE
                         MOVAPS XMM0,RXMM0
                     ENDIF
                 ELSEIF argNo EQ 3
-                    MOV RCX,RRCX
-                    MOV RDX,RRDX
+                    MOV RP0(),RRP0
+                    MOV RP1(),RRP1
                     IF @Arch EQ ARCH_AVX
                         VMOVAPS XMM0,RXMM0
                         VMOVAPS XMM1,RXMM1
@@ -1946,9 +2044,9 @@
                         MOVAPS XMM1,RXMM1
                     ENDIF
                 ELSEIF argNo EQ 4
-                    MOV RCX,RRCX
-                    MOV RDX,RRDX
-                    MOV R8,RR8
+                    MOV RP0(),RRP0
+                    MOV RP1(),RRP1
+                    MOV RP2(),RRP2
                     IF @Arch EQ ARCH_AVX
                         VMOVAPS XMM0,RXMM0
                         VMOVAPS XMM1,RXMM1
@@ -1958,11 +2056,11 @@
                         MOVAPS XMM1,RXMM1
                         MOVAPS XMM2,RXMM2
                     ENDIF
-                ELSEIF argNo GE 5
-                    MOV RCX,RRCX
-                    MOV RDX,RRDX
-                    MOV R8,RR8
-                    MOV R9,RR9
+                ELSEIF argNo EQ 5
+                    MOV RP0(),RRP0
+                    MOV RP1(),RRP1
+                    MOV RP2(),RRP2
+                    MOV RP3(),RRP3
                     IF @Arch EQ ARCH_AVX
                         VMOVAPS XMM0,RXMM0
                         VMOVAPS XMM1,RXMM1
@@ -1973,6 +2071,47 @@
                         MOVAPS XMM1,RXMM1
                         MOVAPS XMM2,RXMM2
                         MOVAPS XMM3,RXMM3
+                    ENDIF
+                ELSEIF argNo EQ 6
+                    MOV RP0(),RRP0
+                    MOV RP1(),RRP1
+                    MOV RP2(),RRP2
+                    MOV RP3(),RRP3
+                    MOV RP4(),RRP4
+                    IF @Arch EQ ARCH_AVX
+                        VMOVAPS XMM0,RXMM0
+                        VMOVAPS XMM1,RXMM1
+                        VMOVAPS XMM2,RXMM2
+                        VMOVAPS XMM3,RXMM3
+                        VMOVAPS XMM4,RXMM4
+                    ELSE
+                        MOVAPS XMM0,RXMM0
+                        MOVAPS XMM1,RXMM1
+                        MOVAPS XMM2,RXMM2
+                        MOVAPS XMM3,RXMM3
+                        MOVAPS XMM4,RXMM4
+                    ENDIF
+                ELSEIF argNo GE 7
+                    MOV RP0(),RRP0
+                    MOV RP1(),RRP1
+                    MOV RP2(),RRP2
+                    MOV RP3(),RRP3
+                    MOV RP4(),RRP4
+                    MOV RP5(),RRP5
+                    IF @Arch EQ ARCH_AVX
+                        VMOVAPS XMM0,RXMM0
+                        VMOVAPS XMM1,RXMM1
+                        VMOVAPS XMM2,RXMM2
+                        VMOVAPS XMM3,RXMM3
+                        VMOVAPS XMM4,RXMM4
+                        VMOVAPS XMM5,RXMM5
+                    ELSE
+                        MOVAPS XMM0,RXMM0
+                        MOVAPS XMM1,RXMM1
+                        MOVAPS XMM2,RXMM2
+                        MOVAPS XMM3,RXMM3
+                        MOVAPS XMM4,RXMM4
+                        MOVAPS XMM5,RXMM5
                     ENDIF
                 ENDIF ;; IF argNo
             ENDIF ;; IF invCount
@@ -2010,17 +2149,17 @@
         ENDIF
         IF argNo EQ 1
             IF dstSize EQ 1
-                MOV cl,AL
-                EXITM <cl>
+                MOV BP0(),BRET()
+                EXITM <BP0()>
             ELSEIF dstSize EQ 2
-                MOV cx,AX
-                EXITM <cx>
+                MOV WP0(),WRET()
+                EXITM <WP0()>
             ELSEIF dstSize EQ 4
-                MOV ECX,EAX
-                EXITM <ECX>
+                MOV DP0(),DRET()
+                EXITM <DP0()>
             ELSEIF dstSize EQ 8
-                MOV RCX,RAX
-                EXITM <RCX>
+                MOV RP0(),RRET()
+                EXITM <RP0()>
             ELSEIF dstSize EQ 16
                 EXITM <XMM0>
             ELSEIF dstSize EQ 32
@@ -2030,17 +2169,17 @@
             ENDIF
         ELSEIF argNo EQ 2
             IF dstSize EQ 1
-                MOV dl,AL
-                EXITM <dl>
+                MOV BP1(),BRET()
+                EXITM <BP1()>
             ELSEIF dstSize EQ 2
-                MOV dx,AX
-                EXITM <dx>
+                MOV WP1(),WRET()
+                EXITM <WP1()>
             ELSEIF dstSize EQ 4
-                MOV edx,EAX
-                EXITM <edx>
+                MOV DP1(),DRET()
+                EXITM <DP1()>
             ELSEIF dstSize EQ 8
-                MOV RDX,RAX
-                EXITM <RDX>
+                MOV RP1(),RRET()
+                EXITM <RP1()>
             ELSEIF dstSize EQ 16
                 IF @Arch EQ ARCH_AVX
                     VMOVDQA XMM1,XMM0
@@ -2057,17 +2196,17 @@
             ENDIF
         ELSEIF argNo EQ 3
             IF dstSize EQ 1
-                MOV R8B,AL
-                EXITM <R8B>
+                MOV BP2(),BRET()
+                EXITM <BP2()>
             ELSEIF dstSize EQ 2
-                MOV R8W,AX
-                EXITM <R8W>
+                MOV WP2(),WRET()
+                EXITM <WP2()>
             ELSEIF dstSize EQ 4
-                MOV R8D,EAX
-                EXITM <R8D>
+                MOV DP2(),DRET()
+                EXITM <DP2()>
             ELSEIF dstSize EQ 8
-                MOV R8,RAX
-                EXITM <R8>
+                MOV RP2(),RRET()
+                EXITM <RP2()>
             ELSEIF dstSize EQ 16
                 IF @Arch EQ ARCH_AVX
                     VMOVDQA XMM2,XMM0
@@ -2084,17 +2223,17 @@
             ENDIF
         ELSEIF argNo EQ 4
             IF dstSize EQ 1
-                MOV R9B,AL
-                EXITM <R9B>
+                MOV BP3(),BRET()
+                EXITM <BP3()>
             ELSEIF dstSize EQ 2
-                MOV R9W,AX
-                EXITM <R9W>
+                MOV WP3(),WRET()
+                EXITM <WP3()>
             ELSEIF dstSize EQ 4
-                MOV R9D,EAX
-                EXITM <R9D>
+                MOV DP3(),DRET()
+                EXITM <DP3()>
             ELSEIF dstSize EQ 8
-                MOV R9,RAX
-                EXITM <R9>
+                MOV RP3(),RRET()
+                EXITM <RP3()>
             ELSEIF dstSize EQ 16
                 IF @Arch EQ ARCH_AVX
                     VMOVDQA XMM3,XMM0
@@ -2109,23 +2248,86 @@
                 VMOVDQA ZMM3,ZMM0
                 EXITM <ZMM3>
             ENDIF
-        ELSE
+        ELSEIF(argNo EQ 5) AND (@LangType EQ LANG_REGCALL OR @LangType EQ LANG_SYSVCALL OR @LangType EQ LANG_SYSCALL)
+                argNum = 5
             IF dstSize EQ 1
-                MOV      [RSP + 0x20 + ((argNo - 5) * 8)],AL
+                MOV BP4(),BRET()
+                EXITM <BP4()>
             ELSEIF dstSize EQ 2
-                MOV      [RSP + 0x20 + ((argNo - 5) * 8)],AX
+                MOV WP4(),WRET()
+                EXITM <WP4()>
             ELSEIF dstSize EQ 4
-                MOV      [RSP + 0x20 + ((argNo - 5) * 8)],EAX
+                MOV DP4(),DRET()
+                EXITM <DP4()>
             ELSEIF dstSize EQ 8
-                MOV      [RSP + 0x20 + ((argNo - 5) * 8)],RAX
+                MOV RP4(),RRET()
+                EXITM <RP4()>
+            ELSEIF dstSize EQ 16
+                IF @Arch EQ ARCH_AVX
+                    VMOVDQA XMM4,XMM0
+                ELSE
+                    MOVDQA XMM4,XMM0
+                ENDIF
+                EXITM <XMM4>
+            ELSEIF dstSize EQ 32
+                VMOVDQA YMM4,YMM0
+                EXITM <YMM4>
+            ELSEIF dstSize EQ 64
+                VMOVDQA ZMM4,ZMM0
+                EXITM <ZMM4>
+            ENDIF
+        ELSEIF(argNo EQ 6) AND (@LangType EQ LANG_REGCALL OR @LangType EQ LANG_SYSVCALL OR @LangType EQ LANG_SYSCALL)
+                argNum = 6
+            IF dstSize EQ 1
+                MOV BP5(),BRET()
+                EXITM <BP5()>
+            ELSEIF dstSize EQ 2
+                MOV WP5(),WRET()
+                EXITM <WP5()>
+            ELSEIF dstSize EQ 4
+                MOV DP5(),DRET()
+                EXITM <DP5()>
+            ELSEIF dstSize EQ 8
+                MOV RP5(),RRET()
+                EXITM <RP5()>
+            ELSEIF dstSize EQ 16
+                IF @Arch EQ ARCH_AVX
+                    VMOVDQA XMM5,XMM0
+                ELSE
+                    MOVDQA XMM5,XMM0
+                ENDIF
+                EXITM <XMM5>
+            ELSEIF dstSize EQ 32
+                VMOVDQA YMM5,YMM0
+                EXITM <YMM5>
+            ELSEIF dstSize EQ 64
+                VMOVDQA ZMM5,ZMM0
+                EXITM <ZMM5>
+            ENDIF
+        ELSE
+            IF argNo EQ 5
+                argNum = 5
+            ELSEIF argNo EQ 6
+                argNum = 6
+            ELSE
+                argNum = 7
+            ENDIF
+            IF dstSize EQ 1
+                MOV      [RSPTR() + ((argNo-1)*SIZE_T_SIZE) + ((argNo - argNum) * SIZE_T_SIZE)],BRET()
+            ELSEIF dstSize EQ 2
+                MOV      [RSPTR() + ((argNo-1)*SIZE_T_SIZE) + ((argNo - argNum) * SIZE_T_SIZE)],WRET()
+            ELSEIF dstSize EQ 4
+                MOV      [RSPTR() + ((argNo-1)*SIZE_T_SIZE) + ((argNo - argNum) * SIZE_T_SIZE)],DRET()
+            ELSEIF dstSize EQ 8
+                MOV      [RSPTR() + ((argNo-1)*SIZE_T_SIZE) + ((argNo - argNum) * SIZE_T_SIZE)],RRET()
             ELSEIF(dstSize EQ 16) OR (dstSize EQ 32) OR (dstSize EQ 64)
                 IF @Arch EQ ARCH_AVX
-                    VMOVSD         [RSP + 0x20 + ((argNo - 5) * 8)],XMM0
+                    VMOVSD     [RSPTR() + ((argNo-1)*SIZE_T_SIZE) + ((argNo - argNum) * SIZE_T_SIZE)],XMM0
                 ELSE
-                    MOVSD      [RSP + 0x20 + ((argNo - 5) * 8)],XMM0
+                    MOVSD      [RSPTR() + ((argNo-1)*SIZE_T_SIZE) + ((argNo - argNum) * SIZE_T_SIZE)],XMM0
                 ENDIF
             ENDIF
-            EXITM <[RSP + 0x20 + ((argNo - 5) * 8)]>
+            EXITM <[RSPTR() + ((argNo-1)*SIZE_T_SIZE) + ((argNo - argNum) * SIZE_T_SIZE)]>
         ENDIF
     ELSE
         LOCAL arg
@@ -2135,23 +2337,23 @@
         ENDM
         arg
         IF @LastReturnType EQ 0
-        EXITM <AL>
+        EXITM <BRET()>
         ELSEIF @LastReturnType EQ 0x40
-        EXITM <AL>
+        EXITM <BRET()>
         ELSEIF @LastReturnType EQ 1
-        EXITM <AX>
+        EXITM <WRET()>
         ELSEIF @LastReturnType EQ 0x41
-        EXITM <AX>
+        EXITM <WRET()>
         ELSEIF @LastReturnType EQ 2
-        EXITM <EAX>
+        EXITM <DRET()>
         ELSEIF @LastReturnType EQ 0x42
-        EXITM <EAX>
+        EXITM <DRET()>
         ELSEIF @LastReturnType EQ 3
-        EXITM <RRET>
+        EXITM <RRET()>
         ELSEIF @LastReturnType EQ 0x43
-        EXITM <RRET>
+        EXITM <RRET()>
         ELSEIF @LastReturnType EQ 0xc3
-        EXITM <RRET>
+        EXITM <RRET()>
         ELSEIF @LastReturnType EQ 6
         EXITM <XMM0>
         ELSEIF @LastReturnType EQ 7
@@ -2163,7 +2365,7 @@
         ELSEIF @LastReturnType EQ 0x23
         EXITM <XMM0>
         ELSE
-        EXITM <EAX>
+        EXITM <DRET()>
         ENDIF
     ENDIF ;__X64__
     ENDM
@@ -2194,7 +2396,7 @@
     IFNDEF COMINTERFACE
     COMINTERFACE MACRO CName:REQ
         curClass TEXTEQU <CName>
-        % __&CName&_size = 24
+        % __&CName&_size = 3*SIZE_T_SIZE
         @CatStr(CName, <vtbl COMSTRUCT >)
         ptrDefS TEXTEQU <PTR>
         ptrDefS CATSTR ptrDefS, <&curClass&>, < TYPEDEF PTR >, <&curClass&>
@@ -2233,38 +2435,38 @@
         .DATA?
         SAVERP1 ISIZE_T ?
         .CODE
-        MOV SAVERP1, RP1
+        MOV SAVERP1, RP1()
         IF(OPATTR(pInterface)) AND 00010000b
             IFNB <args>
-                IFDIFI <&pInterface>,<RP0>
-                    MOV RP0,&pInterface
+                IFDIFI <&pInterface>,<RTHIS()>
+                    MOV RTHIS(),&pInterface
                 ENDIF
-                MOV RP1,[RP0]
-                INVOKE(InterfacePtr PTR[RP1].&Interface&vtbl.&Function), RP0, &args
+                MOV RP1(),[RTHIS()]
+                INVOKE(InterfacePtr PTR[RP1()].&Interface&vtbl.&Function), RTHIS(), &args
             ELSE
-                IFDIFI <&pInterface>,<RP0>
-                    MOV RP0,&pInterface
+                IFDIFI <&pInterface>,<RTHIS()>
+                    MOV RTHIS(),&pInterface
                 ENDIF
-                MOV RP1,[RP0]
-                INVOKE(InterfacePtr PTR[RP1].&Interface&vtbl.&Function), RP0
+                MOV RP1(),[RTHIS()]
+                INVOKE(InterfacePtr PTR[RP1()].&Interface&vtbl.&Function), RTHIS()
             ENDIF
         ELSE
-            IFDIFI <&pInterface>,<RP0>
-                MOV RP0,pInterface
+            IFDIFI <&pInterface>,<RTHIS()>
+                MOV RTHIS(),pInterface
             ENDIF
-            MOV RP1,[RP0]
+            MOV RP1(),[RTHIS()]
             IFNB <args>
                 FOR arg, <args>
-                    IFIDNI <&arg>, <RP0>
-                        .ERR <RP0" is not allowed as a Method parameter with indirect object label">
+                    IFIDNI <&arg>, <RTHIS()>
+                        .ERR <RTHIS()" is not allowed as a Method parameter with indirect object label">
                     ENDIF
                 ENDM
-                INVOKE(InterfacePtr PTR[RP1].&Interface&vtbl.&Function), RP0, &args
+                INVOKE(InterfacePtr PTR[RP1()].&Interface&vtbl.&Function), RTHIS(), &args
             ELSE
-                INVOKE(InterfacePtr PTR[RP1].&Interface&vtbl.&Function), RP0
+                INVOKE(InterfacePtr PTR[RP1()].&Interface&vtbl.&Function), RTHIS()
             ENDIF
         ENDIF
-        MOV RP1, SAVERP1
+        MOV RP1(), SAVERP1
     ENDM
     ENDIF ;_VINVOKE
     
@@ -2276,56 +2478,56 @@
         .DATA?
         SAVERP1 ISIZE_T ?
         .CODE
-        MOV SAVERP1, RP1
+        MOV SAVERP1, RP1()
         IF(OPATTR(pInterface)) AND 00010000b
             IFNB <args>
-                IFDIFI <&pInterface>,<RP0>
-                    MOV RP0,&pInterface
+                IFDIFI <&pInterface>,<RTHIS()>
+                    MOV RTHIS(),&pInterface
                 ENDIF
-                MOV RP1,[RP0]
-                INVOKE(InterfacePtr PTR[RP1].&Interface&vtbl.&Function), RP0, &args
+                MOV RP1(),[RTHIS()]
+                INVOKE(InterfacePtr PTR[RP1()].&Interface&vtbl.&Function), RTHIS(), &args
             ELSE
-                IFDIFI <&pInterface>,<RP0>
-                    MOV RP0,&pInterface
+                IFDIFI <&pInterface>,<RTHIS()>
+                    MOV RTHIS(),&pInterface
                 ENDIF
-                MOV RP1,[RP0]
-                INVOKE(InterfacePtr PTR[RP1].&Interface&vtbl.&Function), RP0
+                MOV RP1(),[RTHIS()]
+                INVOKE(InterfacePtr PTR[RP1()].&Interface&vtbl.&Function), RTHIS()
             ENDIF
         ELSE
-            IFDIFI <&pInterface>,<RP0>
-                MOV RP0,pInterface
+            IFDIFI <&pInterface>,<RTHIS()>
+                MOV RTHIS(),pInterface
             ENDIF
-            MOV RP1,[RP0]
+            MOV RP1(),[RTHIS()]
             IFNB <args>
                 FOR arg, <args>
-                    IFIDNI <&arg>, <RP0>
-                    .ERR <RP0" is not allowed as a Method parameter with indirect object label">
+                    IFIDNI <&arg>, <RTHIS()>
+                    .ERR <RTHIS()" is not allowed as a Method parameter with indirect object label">
                     ENDIF
                 ENDM
-                INVOKE(InterfacePtr PTR[RP1].&Interface&vtbl.&Function), RP0, &args
+                INVOKE(InterfacePtr PTR[RP1()].&Interface&vtbl.&Function), RTHIS(), &args
             ELSE
-                INVOKE(InterfacePtr PTR[RP1].&Interface&vtbl.&Function), RP0
+                INVOKE(InterfacePtr PTR[RP1()].&Interface&vtbl.&Function), RTHIS()
             ENDIF
         ENDIF
-        MOV RP1, SAVERP1
+        MOV RP1(), SAVERP1
         IF @LastReturnType EQ 0
-            EXITM <AL>
+            EXITM <BRET()>
         ELSEIF @LastReturnType EQ 0x40
-            EXITM <AL>
+            EXITM <BRET()>
         ELSEIF @LastReturnType EQ 1
-            EXITM <AX>
+            EXITM <WRET()>
         ELSEIF @LastReturnType EQ 0x41
-            EXITM <AX>
+            EXITM <WRET()>
         ELSEIF @LastReturnType EQ 2
-            EXITM <EAX>
+            EXITM <DRET()>
         ELSEIF @LastReturnType EQ 0x42
-            EXITM <EAX>
+            EXITM <DRET()>
         ELSEIF @LastReturnType EQ 3
-            EXITM <RRET
+            EXITM <RRET()
         ELSEIF @LastReturnType EQ 0x43
-            EXITM <RRET>
+            EXITM <RRET()>
         ELSEIF @LastReturnType EQ 0xc3
-            EXITM <RRET>
+            EXITM <RRET()>
         ELSEIF @LastReturnType EQ 6
             EXITM <XMM0>
         ELSEIF @LastReturnType EQ 7
@@ -2337,7 +2539,7 @@
         ELSEIF @LastReturnType EQ 0x23
             EXITM <XMM0>
         ELSE
-            EXITM <EAX>
+            EXITM <DRET()>
         ENDIF
     ENDM
     ENDIF ;_V
@@ -2349,16 +2551,16 @@
         .DATA?
         SAVERP1 ISIZE_T ?
         .CODE
-        MOV SAVERP1, RP1
+        MOV SAVERP1, RP1()
         % IFDEF cdef
-            MOV RP1, SIZE_T_SIZE
+            MOV RP1(), SIZE_T_SIZE
         ELSE
-            MOV RP1,SIZEOF(arrType)
+            MOV RP1(),SIZEOF(arrType)
         ENDIF
-        IMUL RP1,sizeArr
-        MEMALLOC(RP1)
-        MOV RP1, SAVERP1
-        EXITM <RRET>
+        IMUL RP1(),sizeArr
+        MEMALLOC(RP1())
+        MOV RP1(), SAVERP1
+        EXITM <RRET()>
     ENDM
     ENDIF ;_ARRAY
     
@@ -2430,7 +2632,7 @@
     ENDIF ;CMETHOD
 
     IFNDEF METHOD
-    METHOD MACRO className:REQ, method:REQ, retType:=<dword>, usesStr:=<USES RBASE RSIDX RDIDX>, args:VARARG
+    METHOD MACRO className:REQ, method:REQ, retType:=<dword>, usesStr:=<USES RBASE() RSIDX() RDIDX()>, args:VARARG
         curClass TEXTEQU <className>
         curMethod TEXTEQU <method>
         methodfnex TEXTEQU <_>
@@ -2462,14 +2664,14 @@
         methodfnex CATSTR methodfnex, <, >, <&args&>
         ELSE
         ENDIF
-        assume RP0:PTR curClass
+        assume RTHIS():PTR curClass
         ALIGN 16
         methodfnex
     ENDM
     ENDIF ;METHOD
 
     IFNDEF STATICMETHOD
-    STATICMETHOD MACRO className:REQ, method:REQ, retType:=<dword>, usesStr:=<USES RBASE RSIDX RDIDX>, args:VARARG
+    STATICMETHOD MACRO className:REQ, method:REQ, retType:=<dword>, usesStr:=<USES RBASE() RSIDX() RDIDX()>, args:VARARG
         curClass TEXTEQU <className>
         curMethod TEXTEQU <method>
         stmethodfnex TEXTEQU <_>
@@ -2501,14 +2703,14 @@
             stmethodfnex CATSTR stmethodfnex, < >, <&args&>
         ELSE
         ENDIF
-        assume RP0:PTR curClass
+        assume RTHIS():PTR curClass
         ALIGN 16
         stmethodfnex
     ENDM
     ENDIF ;STATICMETHOD
 
     IFNDEF VECMETHOD
-    VECMETHOD MACRO className:REQ, method:REQ, retType:=<dword>, usesStr:=<USES RBASE RSIDX RDIDX>, args:VARARG
+    VECMETHOD MACRO className:REQ, method:REQ, retType:=<dword>, usesStr:=<USES RBASE() RSIDX() RDIDX()>, args:VARARG
         curClass TEXTEQU <className>
         curMethod TEXTEQU <method>
         vecmethodfnex TEXTEQU <_>
@@ -2540,21 +2742,21 @@
             vecmethodfnex CATSTR vecmethodfnex, <, >, <&args&>
         ELSE
         ENDIF
-        assume RP0:PTR curClass
+        assume RTHIS():PTR curClass
         ALIGN 16
         vecmethodfnex
     ENDM
     ENDIF ;VECMETHOD
     
     IFNDEF STATICVECMETHOD
-    STATICVECMETHOD MACRO className:REQ, method:REQ, retType:=<dword>, usesStr:=<USES RBASE RSIDX RDIDX>, args:VARARG
+    STATICVECMETHOD MACRO className:REQ, method:REQ, retType:=<dword>, usesStr:=<USES RBASE() RSIDX() RDIDX()>, args:VARARG
         curClass TEXTEQU <className>
         curMethod TEXTEQU <method>
         stvecmethodfnex TEXTEQU <_>
         stvecmethodfnex CATSTR stvecmethodfnex, <&className&>
         stvecmethodfnex CATSTR stvecmethodfnex, <_>
         stvecmethodfnex CATSTR stvecmethodfnex, <&method&>
-        stvecmethodfnex CATSTR stvecmethodfnex, < PROTO VECTORCALL >, <(&retType&)>
+        stvecmethodfnex CATSTR stvecmethodfnex, < PROTO CALLCONV >, <(&retType&)>
         IFNB <args>
             stvecmethodfnex CATSTR stvecmethodfnex, < >, <&args&>
         ELSE
@@ -2564,7 +2766,7 @@
         stvecmethodfnex CATSTR stvecmethodfnex, <&className&>
         stvecmethodfnex CATSTR stvecmethodfnex, <_>
         stvecmethodfnex CATSTR stvecmethodfnex, <&method&>
-        stvecmethodfnex CATSTR stvecmethodfnex, <Pto TYPEDEF PROTO VECTORCALL >,<(&retType&)>
+        stvecmethodfnex CATSTR stvecmethodfnex, <Pto TYPEDEF PROTO CALLCONV >,<(&retType&)>
         IFNB <args>
             stvecmethodfnex CATSTR stvecmethodfnex, < >, <&args&>
         ELSE
@@ -2574,12 +2776,12 @@
         stvecmethodfnex CATSTR stvecmethodfnex, <&className&>
         stvecmethodfnex CATSTR stvecmethodfnex, <_>
         stvecmethodfnex CATSTR stvecmethodfnex, <&method&>
-        stvecmethodfnex CATSTR stvecmethodfnex,< PROC VECTORCALL >, <(&retType&)>, < >, <&usesStr&>
+        stvecmethodfnex CATSTR stvecmethodfnex,< PROC CALLCONV >, <(&retType&)>, < >, <&usesStr&>
         IFNB <args>
             stvecmethodfnex CATSTR stvecmethodfnex, < >, <&args&>
         ELSE
         ENDIF
-        assume RP0:PTR curClass
+        assume RTHIS():PTR curClass
         ALIGN 16
         stvecmethodfnex
     ENDM
@@ -2587,7 +2789,7 @@
 
     IFNDEF ENDMETHOD
     ENDMETHOD MACRO
-        assume RP0:nothing
+        assume RTHIS():nothing
         endmethodfnex TEXTEQU <_>
         endmethodfnex CATSTR endmethodfnex, curClass
         endmethodfnex CATSTR endmethodfnex, <_>
@@ -2619,30 +2821,29 @@
         SAVERP1 ISIZE_T ?
         SAVERCOUNT ISIZE_T ?
         .CODE
-        MOV SAVERP1, RP1
-        MOV SAVERCOUNT, RCOUNT
-        % MOV RP1, SIZEOF(className)
-        MEMALLOC(RP1)
-        .IF (RRET != 0)
-            MOV RDIDX,RRET
+        MOV SAVERP1, RP1()
+        MOV SAVERCOUNT, RCOUNT()
+        % MOV RP1(), SIZEOF(className)
+        MEMALLOC(RP1())
+        .IF (RRET() != 0)
+            MOV RDIDX(),RRET()
+            % LEA RSIDX(),_stat&className
+            % MOV RCOUNT(), SIZEOF(className)
+            REP MOVSB
+            fnex TEXTEQU <_>
+            fnex CATSTR fnex, <&className&>
+            fnex CATSTR fnex, <_>
+            fnex CATSTR fnex, <Init>
+            IFNB <ctorArgs>
+                fnex2 TEXTEQU <INVOKE fnex, RRET(), ctorArgs>
+            ELSE
+                fnex2 TEXTEQU <INVOKE fnex, RRET()>
+            ENDIF
+            fnex2
         .ENDIF
-        % LEA RSIDX,_stat&className
-        % MOV RCOUNT, SIZEOF(className)
-        REP MOVSB
-        fnex TEXTEQU <_>
-        fnex CATSTR fnex, <&className&>
-        fnex CATSTR fnex, <_>
-        fnex CATSTR fnex, <Init>
-        IFNB <ctorArgs>
-            fnex2 TEXTEQU <INVOKE fnex, RRET, ctorArgs>
-        ELSE
-            fnex2 TEXTEQU <INVOKE fnex, RRET>
-        ENDIF
-        fnex2
-        .ENDIF
-        MOV RCOUNT, SAVERCOUNT
-        MOV RP1, SAVERP1
-        EXITM <RRET>
+        MOV RCOUNT(), SAVERCOUNT
+        MOV RP1(), SAVERP1
+        EXITM <RRET()>
     ENDM
     ENDIF ;_NEW
 
@@ -2653,31 +2854,30 @@
         SAVERP1 ISIZE_T ?
         SAVERCOUNT ISIZE_T ?
         .CODE
-        MOV SAVERP1, RP1
-        MOV SAVERCOUNT, RCOUNT
-        % MOV RP1, SIZEOF(className)
-        MEMALLOC(RP1)
-        .IF (RRET != 0)
-            MOV RDIDX,RRET
+        MOV SAVERP1, RP1()
+        MOV SAVERCOUNT, RCOUNT()
+        % MOV RP1(), SIZEOF(className)
+        MEMALLOC(RP1())
+        .IF (RRET() != 0)
+            MOV RDIDX(),RRET()
+            % LEA RSIDX(),_stat&className
+            % MOV RCOUNT(), SIZEOF(className)
+            REP MOVSB
+            fnex TEXTEQU <_>
+            fnex CATSTR fnex, <&className&>
+            fnex CATSTR fnex, <_>
+            fnex CATSTR fnex, <Init>
+            IFNB <ctorArgs>
+                fnex2 TEXTEQU <INVOKE fnex, RRET(), ctorArgs>
+            ELSE
+                fnex2 TEXTEQU <INVOKE fnex, RRET()>
+            ENDIF
+            fnex2
+            MOV RBASE(), RRET()
         .ENDIF
-        % LEA RSIDX,_stat&className
-        % MOV RCOUNT, SIZEOF(className)
-        REP MOVSB
-        fnex TEXTEQU <_>
-        fnex CATSTR fnex, <&className&>
-        fnex CATSTR fnex, <_>
-        fnex CATSTR fnex, <Init>
-        IFNB <ctorArgs>
-            fnex2 TEXTEQU <INVOKE fnex, RRET, ctorArgs>
-        ELSE
-            fnex2 TEXTEQU <INVOKE fnex, RRET>
-        ENDIF
-        fnex2
-        MOV RBASE, RRET
-        MOV RCOUNT, SAVERCOUNT
-        MOV RP1, SAVERP1
-        .ENDIF
-        EXITM <RBASE>
+        MOV RCOUNT(), SAVERCOUNT
+        MOV RP1(), SAVERP1
+        EXITM <RBASE()>
     ENDM
     ENDIF ;_RBXNEW
 
@@ -2717,23 +2917,23 @@
         fnex2 TEXTEQU <INVOKE fnex, &objPtr&, &args&>
         fnex2
         IF @LastReturnType EQ 0
-        EXITM <AL>
+        EXITM <BRET()>
         ELSEIF @LastReturnType EQ 0x40
-        EXITM <AL>
+        EXITM <BRET()>
         ELSEIF @LastReturnType EQ 1
-        EXITM <AX>
+        EXITM <WRET()>
         ELSEIF @LastReturnType EQ 0x41
-        EXITM <AX>
+        EXITM <WRET()>
         ELSEIF @LastReturnType EQ 2
-        EXITM <EAX>
+        EXITM <DRET()>
         ELSEIF @LastReturnType EQ 0x42
-        EXITM <EAX>
+        EXITM <DRET()>
         ELSEIF @LastReturnType EQ 3
-        EXITM <RRET>
+        EXITM <RRET()>
         ELSEIF @LastReturnType EQ 0x43
-        EXITM <RRET>
+        EXITM <RRET()>
         ELSEIF @LastReturnType EQ 0xc3
-        EXITM <RRET>
+        EXITM <RRET()>
         ELSEIF @LastReturnType EQ 6
         EXITM <XMM0>
         ELSEIF @LastReturnType EQ 7
@@ -2745,7 +2945,7 @@
         ELSEIF @LastReturnType EQ 0x23
         EXITM <XMM0>
         ELSE
-        EXITM <EAX>
+        EXITM <DRET()>
         ENDIF
     ENDM
     ENDIF ;_I
@@ -2759,23 +2959,23 @@
         fnex2 TEXTEQU <INVOKE fnex, &args&>
         fnex2
         IF @LastReturnType EQ 0
-        EXITM <AL>
+        EXITM <BRET()>
         ELSEIF @LastReturnType EQ 0x40
-        EXITM <AL>
+        EXITM <BRET()>
         ELSEIF @LastReturnType EQ 1
-        EXITM <AX>
+        EXITM <WRET()>
         ELSEIF @LastReturnType EQ 0x41
-        EXITM <AX>
+        EXITM <WRET()>
         ELSEIF @LastReturnType EQ 2
-        EXITM <EAX>
+        EXITM <DRET()>
         ELSEIF @LastReturnType EQ 0x42
-        EXITM <EAX>
+        EXITM <DRET()>
         ELSEIF @LastReturnType EQ 3
-        EXITM <RRET>
+        EXITM <RRET()>
         ELSEIF @LastReturnType EQ 0x43
-        EXITM <RRET>
+        EXITM <RRET()>
         ELSEIF @LastReturnType EQ 0xc3
-        EXITM <RRET>
+        EXITM <RRET()>
         ELSEIF @LastReturnType EQ 6
         EXITM <XMM0>
         ELSEIF @LastReturnType EQ 7
@@ -2787,16 +2987,16 @@
         ELSEIF @LastReturnType EQ 0x23
         EXITM <XMM0>
         ELSE
-        EXITM <EAX>
+        EXITM <DRET()>
         ENDIF
     ENDM
     ENDIF ;_STATIC
 
     IFNDEF _DELETE
     _DELETE MACRO objPtr:REQ
-        MOV RP0, objPtr
-        MOV RRET,[RP0]
-        CALL SIZE_T PTR[RRET + SIZE_T_SIZE]
+        MOV RTHIS(), objPtr
+        MOV RRET(),[RTHIS()]
+        CALL SIZE_T PTR[RRET() + SIZE_T_SIZE]
         MEMFREE(objPtr)
     ENDM
     ENDIF ;_DELETE
@@ -2828,12 +3028,12 @@
                 typestr TEXTEQU <&dref&>
                     IF(i - argCount) EQ 1
                         % IF(OPATTR(ptrstr)) EQ 0x30
-                            % MOV RP0, &ptrstr&
+                            % MOV RTHIS(), &ptrstr&
                           ELSE
-                            % MOV RP0, @CatStr(<[>, <&ptrstr&>, <].>, <&typestr&>)
+                            % MOV RTHIS(), @CatStr(<[>, <&ptrstr&>, <].>, <&typestr&>)
                           ENDIF
                     ELSE
-                        % MOV RP0, @CatStr(<[>, <&ptrstr&>, <].>, <&typestr&>)
+                        % MOV RTHIS(), @CatStr(<[>, <&ptrstr&>, <].>, <&typestr&>)
                     ENDIF
                 ENDIF
             ENDIF
@@ -2848,57 +3048,57 @@
         .DATA?
         SAVERP1 ISIZE_T ?
         .CODE
-        MOV SAVERP1, RP1
+        MOV SAVERP1, RP1()
         IF argCount GT 0
             InterfacePtr TEXTEQU <_>
             InterfacePtr CATSTR InterfacePtr, <&itype>, <_>, <&iproc>, <Pto>
-            IF(OPATTR(RP0)) AND 00010000b
+            IF(OPATTR(RTHIS())) AND 00010000b
                 % IF argCount GT 0
-                    MOV RP1,[RP0]
-                    % INVOKE(InterfacePtr PTR[RP1].&itype&vtbl.&iproc), RP0, &argstr
+                    MOV RP1(),[RTHIS()]
+                    % INVOKE(InterfacePtr PTR[RP1()].&itype&vtbl.&iproc), RTHIS(), &argstr
                   ELSE
-                    MOV RP1,[RP0]
-                    % INVOKE(InterfacePtr PTR[RP1].&itype&vtbl.&iproc), RP0
+                    MOV RP1(),[RTHIS()]
+                    % INVOKE(InterfacePtr PTR[RP1()].&itype&vtbl.&iproc), RTHIS()
                   ENDIF
             ELSE
-                MOV RP1,[RP0]
+                MOV RP1(),[RTHIS()]
                 IF argCount GT 0
                     FOR arg, <argstr>
-                        IFIDNI <&arg>, <RP0>
-                           .ERR <RP0" is not allowed as a Method parameter with indirect object label">
+                        IFIDNI <&arg>, <RTHIS()>
+                           .ERR <RTHIS()" is not allowed as a Method parameter with indirect object label">
                         ENDIF
                     ENDM
-                        % INVOKE(InterfacePtr PTR[RP1].&itype&vtbl.&iproc), RP0, &argstr
+                        % INVOKE(InterfacePtr PTR[RP1()].&itype&vtbl.&iproc), RTHIS(), &argstr
                 ELSE
-                    INVOKE(InterfacePtr PTR[RP1].&itype&vtbl.&iproc), RP0
+                    INVOKE(InterfacePtr PTR[RP1()].&itype&vtbl.&iproc), RTHIS()
                 ENDIF
             ENDIF
         ELSE
             InterfacePtr TEXTEQU <_>
             InterfacePtr CATSTR InterfacePtr, <&itype>, <_>, <&iproc>, <Pto>
-            IF(OPATTR(RP0)) AND 00010000b
+            IF(OPATTR(RTHIS())) AND 00010000b
                 IF argCount GT 0
-                    MOV RP1,[RP0]
-                    % INVOKE(InterfacePtr PTR[RP1].&itype&vtbl.&iproc), RP0, &argstr
+                    MOV RP1(),[RTHIS()]
+                    % INVOKE(InterfacePtr PTR[RP1()].&itype&vtbl.&iproc), RTHIS(), &argstr
                 ELSE
-                    MOV RP1,[RP0]
-                    INVOKE(InterfacePtr PTR[RP1].&itype&vtbl.&iproc), RP0
+                    MOV RP1(),[RTHIS()]
+                    INVOKE(InterfacePtr PTR[RP1()].&itype&vtbl.&iproc), RTHIS()
                 ENDIF
             ELSE
-                MOV RP1,[RP0]
+                MOV RP1(),[RTHIS()]
                 IF argCount GT 0
                     FOR arg, <argstr>
-                        IFIDNI <&arg>, <RP0>
-                            .ERR <RP0" is not allowed as a Method parameter with indirect object label">
+                        IFIDNI <&arg>, <RTHIS()>
+                            .ERR <RTHIS()" is not allowed as a Method parameter with indirect object label">
                         ENDIF
                     ENDM
-                    % INVOKE(InterfacePtr PTR[RP1].&itype&vtbl.&iproc), RP0, &argstr
+                    % INVOKE(InterfacePtr PTR[RP1()].&itype&vtbl.&iproc), RTHIS(), &argstr
                 ELSE
-                    INVOKE(InterfacePtr PTR[RP1].&itype&vtbl.&iproc), RP0
+                    INVOKE(InterfacePtr PTR[RP1()].&itype&vtbl.&iproc), RTHIS()
                 ENDIF
             ENDIF
         ENDIF
-        MOV RP1, SAVERP1
+        MOV RP1(), SAVERP1
     ENDM
     ENDIF ;_DEREF
     
@@ -2919,12 +3119,12 @@
                     typestr TEXTEQU <&dref&>
                         IF(i - argCount) EQ 1
                             % IF(OPATTR(ptrstr)) EQ 0x30
-                                % MOV RP0, &ptrstr&
+                                % MOV RTHIS(), &ptrstr&
                               ELSE
-                                % MOV RP0, @CatStr(<[>, <&ptrstr&>, <].>, <&typestr&>)
+                                % MOV RTHIS(), @CatStr(<[>, <&ptrstr&>, <].>, <&typestr&>)
                               ENDIF
                         ELSE
-                            % MOV RP0, @CatStr(<[>, <&ptrstr&>, <].>, <&typestr&>)
+                            % MOV RTHIS(), @CatStr(<[>, <&ptrstr&>, <].>, <&typestr&>)
                         ENDIF
                 ENDIF
             ENDIF
@@ -2939,75 +3139,75 @@
         .DATA?
         SAVERP1 ISIZE_T ?
         .CODE
-        MOV SAVERP1, RP1
+        MOV SAVERP1, RP1()
         IF argCount GT 0
             InterfacePtr TEXTEQU <_>
             InterfacePtr CATSTR InterfacePtr, <&itype>, <_>, <&iproc>, <Pto>
-            IF(OPATTR(RP0)) AND 00010000b
+            IF(OPATTR(RTHIS())) AND 00010000b
                 % IF argCount GT 0
-                     MOV RP1,[RP0]
-                     % INVOKE(InterfacePtr PTR[RP1].&itype&vtbl.&iproc), RP0, &argstr
+                     MOV RP1(),[RTHIS()]
+                     % INVOKE(InterfacePtr PTR[RP1()].&itype&vtbl.&iproc), RTHIS(), &argstr
                   ELSE
-                     MOV RP1,[RP0]
-                     % INVOKE(InterfacePtr PTR[RP1].&itype&vtbl.&iproc), RP0
+                     MOV RP1(),[RTHIS()]
+                     % INVOKE(InterfacePtr PTR[RP1()].&itype&vtbl.&iproc), RTHIS()
                   ENDIF
             ELSE
-                MOV RP1,[RP0]
+                MOV RP1(),[RTHIS()]
                 IF argCount GT 0
                     FOR arg, <argstr>
-                        IFIDNI <&arg>, <RP0>
-                            .ERR <RP0" is not allowed as a Method parameter with indirect object label">
+                        IFIDNI <&arg>, <RTHIS()>
+                            .ERR <RTHIS()" is not allowed as a Method parameter with indirect object label">
                         ENDIF
                     ENDM
-                    % INVOKE(InterfacePtr PTR[RP1].&itype&vtbl.&iproc), RP0, &argstr
+                    % INVOKE(InterfacePtr PTR[RP1()].&itype&vtbl.&iproc), RTHIS(), &argstr
                 ELSE
-                    INVOKE(InterfacePtr PTR[RP1].&itype&vtbl.&iproc), RP0
+                    INVOKE(InterfacePtr PTR[RP1()].&itype&vtbl.&iproc), RTHIS()
                 ENDIF
             ENDIF
         ELSE
             InterfacePtr TEXTEQU <_>
             InterfacePtr CATSTR InterfacePtr, <&itype>, <_>, <&iproc>, <Pto>
-            IF(OPATTR(RP0)) AND 00010000b
+            IF(OPATTR(RTHIS())) AND 00010000b
                 IF argCount GT 0
-                    MOV RP1,[RP0]
-                    % INVOKE(InterfacePtr PTR[RP1].&itype&vtbl.&iproc), RP0, &argstr
+                    MOV RP1(),[RTHIS()]
+                    % INVOKE(InterfacePtr PTR[RP1()].&itype&vtbl.&iproc), RTHIS(), &argstr
                 ELSE
-                    MOV RP1,[RP0]
-                    INVOKE(InterfacePtr PTR[RP1].&itype&vtbl.&iproc), RP0
+                    MOV RP1(),[RTHIS()]
+                    INVOKE(InterfacePtr PTR[RP1()].&itype&vtbl.&iproc), RTHIS()
                 ENDIF
             ELSE
-                MOV RP1,[RP0]
+                MOV RP1(),[RTHIS()]
                 IF argCount GT 0
                     FOR arg, <argstr>
-                        IFIDNI <&arg>, <RP0>
-                            .ERR <RP0" is not allowed as a Method parameter with indirect object label">
+                        IFIDNI <&arg>, <RTHIS()>
+                            .ERR <RTHIS()" is not allowed as a Method parameter with indirect object label">
                         ENDIF
                     ENDM
-                    % INVOKE(InterfacePtr PTR[RP1].&itype&vtbl.&iproc), RP0, &argstr
+                    % INVOKE(InterfacePtr PTR[RP1()].&itype&vtbl.&iproc), RTHIS(), &argstr
                 ELSE
-                    INVOKE(InterfacePtr PTR[RP1].&itype&vtbl.&iproc), RP0
+                    INVOKE(InterfacePtr PTR[RP1()].&itype&vtbl.&iproc), RTHIS()
                 ENDIF
             ENDIF
         ENDIF
-        MOV RP1, SAVERP1
+        MOV RP1(), SAVERP1
         IF @LastReturnType EQ 0
-        EXITM <AL>
+        EXITM <BRET()>
         ELSEIF @LastReturnType EQ 0x40
-        EXITM <AL>
+        EXITM <BRET()>
         ELSEIF @LastReturnType EQ 1
-        EXITM <AX>
+        EXITM <WRET()>
         ELSEIF @LastReturnType EQ 0x41
-        EXITM <AX>
+        EXITM <WRET()>
         ELSEIF @LastReturnType EQ 2
-        EXITM <EAX>
+        EXITM <DRET()>
         ELSEIF @LastReturnType EQ 0x42
-        EXITM <EAX>
+        EXITM <DRET()>
         ELSEIF @LastReturnType EQ 3
-        EXITM <RRET>
+        EXITM <RRET()>
         ELSEIF @LastReturnType EQ 0x43
-        EXITM <RRET>
+        EXITM <RRET()>
         ELSEIF @LastReturnType EQ 0xc3
-        EXITM <RRET>
+        EXITM <RRET()>
         ELSEIF @LastReturnType EQ 6
         EXITM <XMM0>
         ELSEIF @LastReturnType EQ 7
@@ -3019,7 +3219,7 @@
         ELSEIF @LastReturnType EQ 0x23
         EXITM <XMM0>
         ELSE
-        EXITM <EAX>
+        EXITM <DRET()>
         ENDIF
     ENDM
     ENDIF ;_DEREFI
@@ -3060,11 +3260,11 @@
     _DEREFR MACRO dref:REQ, itype:REQ, iproc:REQ, argCount:REQ, argsAndRefs:VARARG
         LOCAL argstr
         argstr TEXTEQU <>
-        IFNB <&argsAndRegs&>
-            MOV RRET,dref
-            % INVOKE [RRET].&itype.&iproc, &argsAndRefs
+        IFNB <&argsAndRefs&>
+            MOV RRET(),dref
+            % INVOKE [RRET()].&itype.&iproc, &argsAndRefs
         ELSE
-            % INVOKE [RRET].&itype.&iproc
+            % INVOKE [RRET()].&itype.&iproc
         ENDIF
     ENDM
     ENDIF ;_DEREFR
@@ -3099,6 +3299,17 @@
     ENDM
     ENDIF ;STDFUNC
 
+    IFNDEF ADDRESSOF
+    ADDRESSOF MACRO argaddress
+        EXITM <ADDR argaddress>
+    ENDM
+    ENDIF ;ADDRESSOF
+
+    IFNDEF ALIGNOF
+    ALIGNOF MACRO argaddress
+        EXITM <SIZEOF argaddress>
+    ENDM
+    ENDIF ;ADDRESSOF
 
 
     IFDEF CASEMAPNONE
@@ -3135,7 +3346,15 @@
     IFDEF SYSCALLOPT
     syscallopt TEXTEQU <SYSCALLOPT>
     ENDIF
-    
+    IFDEF DEFINE
+    define TEXTEQU <DEFINE>
+    ENDIF
+    IFDEF DEFINED
+    defined TEXTEQU <DEFINED>
+    ENDIF
+    IFDEF NOTDEFINED
+    notdefined TEXTEQU <NOTDEFINED>
+    ENDIF
     IFDEF ALIGNSTACK
     alignstack TEXTEQU <ALIGNSTACK>
     ENDIF
@@ -3320,6 +3539,9 @@
     ENDIF
     IFDEF VV2CI2
     vv2ci2 TEXTEQU <VV2CI2>
+    ENDIF
+    IFDEF V1CI
+    v1ci TEXTEQU <V1CI>
     ENDIF
     
     IFDEF NOTMASK128
@@ -3562,7 +3784,13 @@
     IFDEF STDFUNC
     stdfunc TEXTEQU <STDFUNC>
     ENDIF
-    
+    IFDEF ADDRESSOF
+    addressof TEXTEQU <ADDRESSOF>
+    ENDIF
+    IFDEF ALIGNOF
+    alignof TEXTEQU <ALIGNOF>
+    ENDIF
+
     ENDIF ;CASEMAPNONE
 
     ENDIF ;WITHMACROLIB

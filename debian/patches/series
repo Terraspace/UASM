@@ -1,0 +1,7 @@
+0001-debian-debian-patches-02-nasm.man.patch.patch
+0002-debian-debian-patches-03-ndisasm.man.patch.patch
+0003-debian-debian-patches-04-reproducible-build.patch.patch
+0004-doc-psfonts.ph-Reflow-lines-to-less-than-80-columns.patch
+0005-doc-psfonts.ph-Add-liberation-font-options-for-all-s.patch
+0006-debian-Set-INSTALLROOT-to-DESTDIR-in-Makefile.in.patch
+0007-doc-sort-keys-for-reproducibility.patch

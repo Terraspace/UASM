@@ -3046,7 +3046,7 @@ ret_code ParseLine(struct asm_tok tokenarray[]) {
 	unsigned           CurrOpnd;
 	ret_code           temp;
 	struct asym        *sym;
-	uint_32            oldofs;
+	uint_32            oldofs = 0;
 	enum special_token regtok;
 	int                c0;
 	int                c1;

@@ -17,7 +17,7 @@
 #include "context.h"
 #include "types.h"
 #include "label.h"
-#include "MACRO.h"
+#include "macro.h"
 #include "extern.h"
 #include "fixup.h"
 #include "omf.h"

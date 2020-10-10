@@ -99,7 +99,8 @@
     <None Include="..\..\include\uasm\real4limits.inc" />
     <None Include="..\..\include\uasm\real8limits.inc" />
     <None Include="..\..\include\uasm\types.inc" />
-    <None Include="..\..\include\uasm\windows\basetsd.inc" />
+    <None Include="..\..\include\uasm\windows\shared\basetsd.inc" />
+    <None Include="..\..\include\uasm\windows\um\heapapi.inc" />
     <None Include="..\..\include\uasm\windows\vadefs.inc" />
     <None Include="..\..\include\uasm\windows\vcruntime.inc" />
     <None Include="..\..\include\wip\macros.inc" />
@@ -274,10 +275,7 @@
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <OmitFramePointers>true</OmitFramePointers>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <IntelJCCErratum>true</IntelJCCErratum>
@@ -304,10 +302,7 @@ xcopy  ..\..\include $(UASM_PATH)\include /hisery</Command>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <OmitFramePointers>true</OmitFramePointers>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <IntelJCCErratum>true</IntelJCCErratum>
@@ -326,7 +321,7 @@ xcopy  ..\..\include $(UASM_PATH)\include /hisery</Command>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
-      <PreprocessorDefinitions>DEBUG_OUT;MACROLIB=1;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>MACROLIB=1;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsC</CompileAs>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -357,7 +352,7 @@ xcopy  ..\..\include $(UASM_PATH)\include /hisery</Command>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
-      <PreprocessorDefinitions>DEBUG_OUT;MACROLIB=1;WIN64;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>MACROLIB=1;WIN64;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>

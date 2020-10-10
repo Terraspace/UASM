@@ -111,7 +111,7 @@ static void VerifyNesting(char *line, bool exprBracket)
 	int maxdepth = (exprBracket) ? 3 : 2;
 	char *p = line;
 
-	// Reduce allowed nesting for system-v calls as arginvoke doesn't support it yet.
+	// Reduce allowed nesting for system-v calls as ARGINVOKE doesn't support it yet.
 	if ((Options.output_format == OFORMAT_ELF || Options.output_format == OFORMAT_MAC) && Options.sub_format == SFORMAT_64BIT)
 		maxdepth = (exprBracket) ? 2 : 1;
 	
@@ -204,7 +204,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 							break;
 						}
 						else if ((tokenarray[j].token == T_DIRECTIVE && tokenarray[j].dirtype == DRT_INVOKE) ||
-							strcmp(tokenarray[j].string_ptr, "arginvoke") == 0 ||
+							strcmp(tokenarray[j].string_ptr, "ARGINVOKE") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "_INVOKE") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "_I") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "_VINVOKE") == 0 ||
@@ -212,7 +212,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 							strcmp(tokenarray[j].string_ptr, "_SINVOKE") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "_DEREF") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "_DEREFI") == 0 ||
-							strcmp(tokenarray[j].string_ptr, "uinvoke") == 0)
+							strcmp(tokenarray[j].string_ptr, "UINVOKE") == 0)
 						{
 							inParam = TRUE;
 							break;
@@ -420,7 +420,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 						}
 						else
 						{
-							pRefStr = strcpy(pRefStr, "rcx") + 3;
+							pRefStr = strcpy(pRefStr, "RCX") + 3;
 						}
 						pRefStr = strcpy(pRefStr, ",") + 1;
 						strcpy(pRefStr, type->sym.name);
@@ -556,7 +556,7 @@ static void ExpandObjCalls(char *line, struct asm_tok tokenarray[])
 					}
 					else if(!type->sym.isPtrTable)
 					{
-						pStr = strcpy(pStr, "rcx,") + 4;
+						pStr = strcpy(pStr, "RCX,") + 4;
 						strcpy(pStr, pType);
 						pStr += strlen(pType);
 					}
@@ -637,7 +637,7 @@ static void ExpandStaticObjCalls(char *line, struct asm_tok tokenarray[])
 								break;
 							}
 							else if ((tokenarray[j].token == T_DIRECTIVE && tokenarray[j].dirtype == DRT_INVOKE) ||
-								strcmp(tokenarray[j].string_ptr, "arginvoke") == 0 ||
+								strcmp(tokenarray[j].string_ptr, "ARGINVOKE") == 0 ||
 								strcmp(tokenarray[j].string_ptr, "_INVOKE") == 0 ||
 								strcmp(tokenarray[j].string_ptr, "_I") == 0 ||
 								strcmp(tokenarray[j].string_ptr, "_VINVOKE") == 0 ||
@@ -645,7 +645,7 @@ static void ExpandStaticObjCalls(char *line, struct asm_tok tokenarray[])
 								strcmp(tokenarray[j].string_ptr, "_SINVOKE") == 0 ||
 								strcmp(tokenarray[j].string_ptr, "_DEREF") == 0 ||
 								strcmp(tokenarray[j].string_ptr, "_DEREFI") == 0 ||
-								strcmp(tokenarray[j].string_ptr, "uinvoke") == 0)
+								strcmp(tokenarray[j].string_ptr, "UINVOKE") == 0)
 							{
 								inParam = TRUE;
 								break;
@@ -816,7 +816,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 							break;
 						}
 						else if ((tokenarray[j].token == T_DIRECTIVE && tokenarray[j].dirtype == DRT_INVOKE) ||
-							strcmp(tokenarray[j].string_ptr, "arginvoke") == 0 ||
+							strcmp(tokenarray[j].string_ptr, "ARGINVOKE") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "_INVOKE") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "_I") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "_VINVOKE") == 0 ||
@@ -824,7 +824,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 							strcmp(tokenarray[j].string_ptr, "_V") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "_DEREF") == 0 ||
 							strcmp(tokenarray[j].string_ptr, "_DEREFI") == 0 ||
-							strcmp(tokenarray[j].string_ptr, "uinvoke") == 0)
+							strcmp(tokenarray[j].string_ptr, "UINVOKE") == 0)
 						{
 							inParam = TRUE;
 							break;
@@ -837,7 +837,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 					tokenarray[i - 1].tokval == T_INVOKE || tokenarray[i - 1].token == T_INSTRUCTION || tokenarray[i - 1].tokval == T_ADDR ||
 					tokenarray[i - 1].tokval == T_OFFSET || tokenarray[i - 1].tokval == T_PTR || tokenarray[i - 1].tokval == T_END || 
 					(tokenarray[i - 1].token == T_DIRECTIVE && tokenarray[i - 1].dirtype == DRT_DATADIR) || tokenarray[i - 1].token == T_UNARY_OPERATOR ||  tokenarray[i - 1].tokval == T_PROC ||
-					strcmp(tokenarray[i - 1].string_ptr,"arginvoke") == 0 || strcmp(tokenarray[i - 1].string_ptr, "@what") == 0)) continue;
+					strcmp(tokenarray[i - 1].string_ptr,"ARGINVOKE") == 0 || strcmp(tokenarray[i - 1].string_ptr, "@what") == 0)) continue;
 					
 				// Allow expansion in an instruction.
 				if (tokenarray[i - 1].token == T_COMMA)
@@ -896,7 +896,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 					tokenarray[i].token = T_DIRECTIVE;
 					tokenarray[i].tokval = T_INVOKE;
 					tokenarray[i].dirtype = DRT_INVOKE;
-					tokenarray[i].string_ptr = "invoke";
+					tokenarray[i].string_ptr = "INVOKE";
 				}
 				else
 				{
@@ -925,7 +925,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 					tokenarray[i].dirtype = 0;
 					if (inExpr && !inParam)
 					{
-						tokenarray[i].string_ptr = "uinvoke";
+						tokenarray[i].string_ptr = "UINVOKE";
 						tokenarray[i + 1].string_ptr = "(";
 						tokenarray[i + 1].token = '(';
 						uCnt++; // Increment count of uinvokes, as we only allow 1 per expression.
@@ -936,7 +936,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 					}
 					else if (inParam)
 					{
-						tokenarray[i].string_ptr = "arginvoke(%%,%%,";
+						tokenarray[i].string_ptr = "ARGINVOKE(%%,%%,";
 						tokenarray[i + 1].string_ptr = ""; 
 						tokenarray[i + 1].token = 0; 
 					}
@@ -971,16 +971,16 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 
 	/* Scan string and insert argument numbers */
 	// MyProc(MyProc3(), 20)	 MyProc(10, MyProc4())
-	// invoke MyProc,arginvoke(0,MyProc3),20
-	// invoke MyProc,10,arginvoke(0,MyProc4)
+	// invoke MyProc,ARGINVOKE(0,MyProc3),20
+	// invoke MyProc,10,ARGINVOKE(0,MyProc4)
 	//find invoke, increment stackPt and set argno 1... for every comma not in () increment argno
-	//find uinvoke or arginvoke increment stackPt and set argno 1... for every comma after opIdx and before closeIdx and not in () increment argno... at closeIdx decrement StackPt
+	//find UINVOKE or ARGINVOKE increment stackPt and set argno 1... for every comma after opIdx and before closeIdx and not in () increment argno... at closeIdx decrement StackPt
 	//at each step write argno to idxline string
 	//finally replace place-holder with idxline value
 	if (expandedCall)
 	{
 		p = &newline;
-		p = strstr(p, "invoke"); // even if the line only contains uinvoke, such as in an HLL expression this will still find it.
+		p = strstr(p, "INVOKE"); // even if the line only contains UINVOKE, such as in an HLL expression this will still find it.
 		if (p != NULL)
 		{
 			bool inBrackets = FALSE;
@@ -1000,7 +1000,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 			}
 		}
 		p = &newline;
-		p = strstr(p, "arginvoke(");
+		p = strstr(p, "ARGINVOKE(");
 		j = (int)(p - (char *)&newline);
 		while (p)
 		{
@@ -1009,7 +1009,7 @@ static void ExpandHllCalls(char *line, struct asm_tok tokenarray[], bool inParam
 			*(p + 11) = (char)(((idxline[j] & 0x0f)) + 48);
 			*(p + 13) = (char)(((invCnt & 0xf0) >> 4) + 48);
 			*(p + 14) = (char)(((invCnt & 0x0f)) + 48);
-			p = strstr(p + 1, "arginvoke(");
+			p = strstr(p + 1, "ARGINVOKE(");
 			invCnt++;
 			j = (int)(p - (char *)&newline);
 		}

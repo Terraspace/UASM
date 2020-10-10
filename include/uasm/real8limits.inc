@@ -2,7 +2,7 @@
 ; / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
 ; / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
 ; / /                                                                               / /
-; / /    Copyright 2020 UASM macro library for the Open Source Initiative           / /
+; / /                Copyright 2020 (c) UASM macro assembly library                 / /
 ; / /                                                                               / /
 ; / /    Licensed under the Apache License, Version 2.0 (the "License");            / /
 ; / /    you may not use this file except in compliance with the License.           / /
@@ -110,7 +110,7 @@
     DBL_INVSIGN_MSK EQU 0x7fffffffffffffff
 
     DBL_INF_MSK EQU 0x7ff0000000000000
-    DBL_FIN_MSK EQU 0xff00000000000000
+    DBL_FIN_MSK EQU 0xffe0000000000000
     DBL_INVINF_MSK EQU 0x800fffffffffffff
     DBL_NEGINF_MSK EQU 0xfff0000000000000
     DBL_NAN_MSK EQU 0x7fffffffffffffff
@@ -362,7 +362,7 @@
     DBL_INVSIGN_INT EQU 9223372036854775807
 
     DBL_INF_INT EQU 9218868437227405312
-    DBL_FIN_INT EQU (-72057594037927936)
+    DBL_FIN_INT EQU (-9007199254740992)
     DBL_INVINF_INT EQU (-9218868437227405313)
     DBL_NEGINF_INT EQU (-4503599627370496)
     DBL_NAN_INT EQU 9223372036854775807

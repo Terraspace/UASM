@@ -16,50 +16,50 @@
 
 ;--*/
 
-IFNDEF _BASETSD_INC_
-_BASETSD_INC_ EQU 1
+IFNDEF _BASETSD_H_
+define _BASETSD_H_
 
 ;#if _MSC_VER >= 1200
 ;#pragma warning(push)
 ;#pragma warning(disable:4668) // #if not_defined treated as #if 0
 ;#endif
 
-#if !defined(_MAC) && (defined(_M_MRX000) || defined(_WIN64)) && (_MSC_VER >= 1100) && !(defined(MIDL_PASS) || defined(RC_INVOKED))
- #define POINTER_64 __ptr64
- typedef unsigned __int64 POINTER_64_INT;
- #if defined(_WIN64)
-  #define POINTER_32 __ptr32
- #else
-  #define POINTER_32
- #endif
-#else
- #if defined(_MAC) && defined(_MAC_INT_64)
-  #define POINTER_64 __ptr64
-  typedef unsigned __int64 POINTER_64_INT;
- #else
-  #if (_MSC_VER >= 1300) && !(defined(MIDL_PASS) || defined(RC_INVOKED))
-   #define POINTER_64 __ptr64
-  #else
-   #define POINTER_64
-  #endif
-  typedef unsigned long POINTER_64_INT;
- #endif
- #define POINTER_32
-#endif
+if (notdefined(_MAC) and (defined(_M_MRX000) or defined(_WIN64)) and (_MSC_VER ge 1100) and (notdefined(MIDL_PASS) or defined(RC_INVOKED))
+ define POINTER_64, __ptr64
+ POINTER_64_INT typedef unsigned __int64
+ if defined(_WIN64)
+  define POINTER_32, __ptr32
+ else
+  define POINTER_32, __ptr32
+ endif
+else
+ if defined(_MAC) and defined(_MAC_INT_64)
+  define POINTER_64, __ptr64
+  POINTER_64_INT typedef unsigned __int64
+ else
+  if (_MSC_VER ge 1300) and (notdefined(MIDL_PASS) or defined(RC_INVOKED))
+   define POINTER_64, __ptr64
+  else
+   define POINTER_64, __ptr64
+  endif
+  POINTER_64_INT typedef unsigned long
+ endif
+ define POINTER_32, __ptr32
+endif
 
-#if defined(_WIN64)
-#define FIRMWARE_PTR
-#else
-#define FIRMWARE_PTR POINTER_32
-#endif
+if defined(_WIN64)
+define FIRMWARE_PTR, POINTER_64
+else
+define FIRMWARE_PTR, POINTER_32
+endif
 
-#if (_MSC_FULL_VER >= 140041204) && !defined(MIDL_PASS) && !defined(RC_INVOKED)
-#define POINTER_SIGNED __sptr
-#define POINTER_UNSIGNED __uptr
-#else
-#define POINTER_SIGNED
-#define POINTER_UNSIGNED
-#endif
+if (_MSC_FULL_VER ge 140041204) and (notdefined(MIDL_PASS) and (notdefined(RC_INVOKED)
+define POINTER_SIGNED, __sptr
+define POINTER_UNSIGNED, __uptr
+else
+define POINTER_SIGNED,
+define POINTER_UNSIGNED,
+endif
 
 #define SPOINTER_32 POINTER_SIGNED POINTER_32
 #define UPOINTER_32 POINTER_UNSIGNED POINTER_32
@@ -501,4 +501,4 @@ typedef KAFFINITY *PKAFFINITY;
 #pragma warning(pop)
 #endif
 
-#endif // _BASETSD_INC_
+#endif // _BASETSD_H_

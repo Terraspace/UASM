@@ -2,7 +2,7 @@
 ; / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
 ; / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
 ; / /                                                                               / /
-; / /    Copyright 2020 UASM macro library for the Open Source Initiative           / /
+; / /                Copyright 2020 (c) UASM macro assembly library                 / /
 ; / /                                                                               / /
 ; / /    Licensed under the Apache License, Version 2.0 (the "License");            / /
 ; / /    you may not use this file except in compliance with the License.           / /
@@ -31,34 +31,47 @@
     IFNDEF X86ORX64
     .ERR <"TYPES_INC requires one x86 or x64 platform type">
     ENDIF
-
+    
+    CHAR TEXTEQU <BYTE>
     INT8 TEXTEQU <BYTE>
     UINT8 TEXTEQU <BYTE>
+    SCHAR TEXTEQU <SBYTE>
     SINT8 TEXTEQU <SBYTE>
+    CHAR8_T TEXTEQU <BYTE>
     INT8_T TEXTEQU <BYTE>
     UINT8_T TEXTEQU <BYTE>
+    SCHAR8_T TEXTEQU <SBYTE>
     SINT8_T TEXTEQU <SBYTE>
-    CHAR TEXTEQU <BYTE>
-    CHAR8_T TEXTEQU <BYTE>
     INT16 TEXTEQU <WORD>
     UINT16 TEXTEQU <WORD>
     SINT16 TEXTEQU <SWORD>
+    CHAR16_T TEXTEQU <WORD>
     INT16_T TEXTEQU <WORD>
     UINT16_T TEXTEQU <WORD>
+    SCHAR16_T TEXTEQU <SWORD>
     SINT16_T TEXTEQU <SWORD>
-    CHAR16_T TEXTEQU <WORD>
     WCHAR_T TEXTEQU <WORD>
+    IFDEF UNICODE
+    TCHAR TEXTEQU <WORD>
+    ELSE
+    TCHAR TEXTEQU <BYTE>
+    ENDIF
    ;/INT TEXTEQU <DWORD> cannot be used instruction type*/
     BOOL TEXTEQU <DWORD>
+    LONG TEXTEQU <DWORD>
     INT32 TEXTEQU <DWORD>
     UINT32 TEXTEQU <DWORD>
+    SLONG TEXTEQU <SDWORD>
     SINT32 TEXTEQU <SDWORD>
+    CHAR32_T TEXTEQU <DWORD>
     INT32_T TEXTEQU <DWORD>
     UINT32_T TEXTEQU <DWORD>
+    SCHAR32_T TEXTEQU <SDWORD>
     SINT32_T TEXTEQU <SDWORD>
-    CHAR32_T TEXTEQU <DWORD>
+    LONGLONG TEXTEQU <QWORD>
     INT64 TEXTEQU <QWORD>
     UINT64 TEXTEQU <QWORD>
+    SLONGLONG TEXTEQU <SQWORD>
     SINT64 TEXTEQU <SQWORD>
     INT64_T TEXTEQU <QWORD>
     UINT64_T TEXTEQU <QWORD>
@@ -69,8 +82,12 @@
     BFLT16 TEXTEQU <WORD>
     FLOAT TEXTEQU <REAL4>
     FLT TEXTEQU <REAL4>
+    FLOAT32 TEXTEQU <REAL4>
+    FLT32 TEXTEQU <REAL4>
     DOUBLE TEXTEQU <REAL8>
     DBL TEXTEQU <REAL8>
+    FLOAT64 TEXTEQU <REAL8>
+    FLT64 TEXTEQU <REAL8>
     XM128 TEXTEQU <XMMWORD>
     XM256 TEXTEQU <YMMWORD>
     XM512 TEXTEQU <ZMMWORD>
@@ -102,34 +119,47 @@
     INT64_256 TEXTEQU <__m256q>
     INT64_512 TEXTEQU <__m512q>
     VOID TEXTEQU <VOIDARG>
-
+    
+    ICHAR TEXTEQU <DB>
     IINT8 TEXTEQU <DB>
     IUINT8 TEXTEQU <DB>
+    ISCHAR TEXTEQU <DB>
     ISINT8 TEXTEQU <DB>
+    ICHAR8_T TEXTEQU <DB>
     IINT8_T TEXTEQU <DB>
     IUINT8_T TEXTEQU <DB>
+    ISCHAR8_T TEXTEQU <DB>
     ISINT8_T TEXTEQU <DB>
-    ICHAR TEXTEQU <DB>
-    ICHAR8_T TEXTEQU <DB>
     IINT16 TEXTEQU <DW>
     IUINT16 TEXTEQU <DW>
     ISINT16 TEXTEQU <DW>
+    ICHAR16_T TEXTEQU <DW>
     IINT16_T TEXTEQU <DW>
     IUINT16_T TEXTEQU <DW>
+    ISCHAR16_T TEXTEQU <DW>
     ISINT16_T TEXTEQU <DW>
-    ICHAR16_T TEXTEQU <DW>
     IWCHAR_T TEXTEQU <DW>
+    IFDEF UNICODE
+    ITCHAR TEXTEQU <DW>
+    ELSE
+    ITCHAR TEXTEQU <DB>
+    ENDIF
    ;/IINT TEXTEQU <DWORD> cannot be used instruction type*/
     IBOOL TEXTEQU <DD>
+    ILONG TEXTEQU <DD>
     IINT32 TEXTEQU <DD>
     IUINT32 TEXTEQU <DD>
+    ISLONG TEXTEQU <DD>
     ISINT32 TEXTEQU <DD>
+    ICHAR32_T TEXTEQU <DD>
     IINT32_T TEXTEQU <DD>
     IUINT32_T TEXTEQU <DD>
+    ISCHAR32_T TEXTEQU <DD>
     ISINT32_T TEXTEQU <DD>
-    ICHAR32_T TEXTEQU <DD>
+    ILONGLONG TEXTEQU <DQ>
     IINT64 TEXTEQU <DQ>
     IUINT64 TEXTEQU <DQ>
+    ISLONGLONG TEXTEQU <DQ>
     ISINT64 TEXTEQU <DQ>
     IINT64_T TEXTEQU <DQ>
     IUINT64_T TEXTEQU <DQ>
@@ -140,8 +170,12 @@
     IBFLT16 TEXTEQU <DW>
     IFLOAT TEXTEQU <REAL4>
     IFLT TEXTEQU <REAL4>
+    IFLOAT32 TEXTEQU <REAL4>
+    IFLT32 TEXTEQU <REAL4>
     IDOUBLE TEXTEQU <REAL8>
     IDBL TEXTEQU <REAL8>
+    IFLOAT64 TEXTEQU <REAL8>
+    IFLT64 TEXTEQU <REAL8>
     IXM128 TEXTEQU <XMMWORD>
     IXM256 TEXTEQU <YMMWORD>
     IXM512 TEXTEQU <ZMMWORD>
@@ -213,6 +247,11 @@
     SINT16_T_PTR TEXTEQU <SWORD PTR>
     CHAR16_T_PTR TEXTEQU <WORD PTR>
     WCHAR_T_PTR TEXTEQU <WORD PTR>
+    IFDEF UNICODE
+    TCHAR_PTR TEXTEQU <WORD PTR>
+    ELSE
+    TCHAR_PTR TEXTEQU <BYTE PTR>
+    ENDIF
    ;/INT TEXTEQU <DWORD> cannot be used instruction type*/
     INT32_PTR TEXTEQU <DWORD PTR>
     UINT32_PTR TEXTEQU <DWORD PTR>
@@ -233,8 +272,12 @@
     BFLT16_PTR TEXTEQU <WORD PTR>
     FLOAT_PTR TEXTEQU <REAL4 PTR>
     FLT_PTR TEXTEQU <REAL4 PTR>
+    FLOAT32_PTR TEXTEQU <REAL4 PTR>
+    FLT32_PTR TEXTEQU <REAL4 PTR>
     DOUBLE_PTR TEXTEQU <REAL8 PTR>
     DBL_PTR TEXTEQU <REAL8 PTR>
+    FLOAT64_PTR TEXTEQU <REAL8 PTR>
+    FLT64_PTR TEXTEQU <REAL8 PTR>
     XM128_PTR TEXTEQU <XMMWORD PTR>
     XM256_PTR TEXTEQU <YMMWORD PTR>
     XM512_PTR TEXTEQU <ZMMWORD PTR>
@@ -282,6 +325,11 @@
     PTR_SINT16_T TEXTEQU <PTR SWORD>
     PTR_CHAR16_T TEXTEQU <PTR WORD>
     PTR_WCHAR_T TEXTEQU <PTR WORD>
+    IFDEF UNICODE
+    PTR_TCHAR TEXTEQU <PTR WORD>
+    ELSE
+    PTR_TCHAR TEXTEQU <PTR BYTE>
+    ENDIF
    ;/INT TEXTEQU <DWORD> cannot be used instruction type*/
     PTR_INT32 TEXTEQU <PTR DWORD>
     PTR_UINT32 TEXTEQU <PTR DWORD>
@@ -302,8 +350,12 @@
     PTR_BFLT16 TEXTEQU <PTR WORD>
     PTR_FLOAT TEXTEQU <PTR REAL4>
     PTR_FLT TEXTEQU <PTR REAL4>
+    PTR_FLOAT32 TEXTEQU <PTR REAL4>
+    PTR_FLT32 TEXTEQU <PTR REAL4>
     PTR_DOUBLE TEXTEQU <PTR REAL8>
     PTR_DBL TEXTEQU <PTR REAL8>
+    PTR_FLOAT64 TEXTEQU <PTR REAL8>
+    PTR_FLT64 TEXTEQU <PTR REAL8>
     PTR_XM128 TEXTEQU <PTR XMMWORD>
     PTR_XM256 TEXTEQU <PTR YMMWORD>
     PTR_XM512 TEXTEQU <PTR ZMMWORD>
@@ -336,33 +388,42 @@
     PTR_INT64_512 TEXTEQU <PTR __m512q>
     
     IFDEF CASEMAPNONE
+    char TEXTEQU <CHAR>
     int8 TEXTEQU <INT8>
     uint8 TEXTEQU <UINT8>
+    schar TEXTEQU <SCHAR>
     sint8 TEXTEQU <SINT8>
+    char8_t TEXTEQU <CHAR8_T>
     int8_t TEXTEQU <INT8_T>
     uint8_t TEXTEQU <UINT8_T>
+    schar8_t TEXTEQU <SCHAR8_T>
     sint8_t TEXTEQU <SINT8_T>
-    char TEXTEQU <CHAR>
-    char8_t TEXTEQU <CHAR8_T>
     int16 TEXTEQU <INT16>
     uint16 TEXTEQU <UINT16>
     sint16 TEXTEQU <SINT16>
+    char16_t TEXTEQU <CHAR16_T>
     int16_t TEXTEQU <INT16_T>
     uint16_t TEXTEQU <UINT16_T>
+    schar16_t TEXTEQU <SCHAR16_T>
     sint16_t TEXTEQU <SINT16_T>
-    char16_t TEXTEQU <CHAR16_T>
     wchar_t TEXTEQU <WCHAR_T>
+    tchar TEXTEQU <TCHAR>
    ;/*int TEXTEQU <INT> cannot be used instruction type*/
     bool TEXTEQU <BOOL>
+    long TEXTEQU <LONG>
     int32 TEXTEQU <INT32>
     uint32 TEXTEQU <UINT32>
+    slong TEXTEQU <SLONG>
     sint32 TEXTEQU <SINT32>
+    char32_t TEXTEQU <CHAR32_T>
     int32_t TEXTEQU <INT32_T>
     uint32_t TEXTEQU <UINT32_T>
+    schar32_t TEXTEQU <SCHAR32_T>
     sint32_t TEXTEQU <SINT32_T>
-    char32_t TEXTEQU <CHAR32_T>
+    longlong TEXTEQU <LONGLONG>
     int64 TEXTEQU <INT64>
     uint64 TEXTEQU <UINT64>
+    slonglong TEXTEQU <SLONGLONG>
     sint64 TEXTEQU <SINT64>
     int64_t TEXTEQU <INT64_T>
     uint64_t TEXTEQU <UINT64_T>
@@ -373,8 +434,12 @@
     bflt16 TEXTEQU <BFLT16>
     float TEXTEQU <FLOAT>
     flt TEXTEQU <FLT>
+    float32 TEXTEQU <FLOAT32>
+    flt32 TEXTEQU <FLT32>
     double TEXTEQU <DOUBLE>
     dbl TEXTEQU <DBL>
+    float64 TEXTEQU <FLOAT64>
+    flt64 TEXTEQU <FLT64>
     xm128 TEXTEQU <XM128>
     xm256 TEXTEQU <XM256>
     xm512 TEXTEQU <XM512>
@@ -406,34 +471,43 @@
     int64_256 TEXTEQU <INT64_256>
     int64_512 TEXTEQU <INT64_512>
     void TEXTEQU <VOID>
-
+    
+    ichar TEXTEQU <ICHAR>
     iint8 TEXTEQU <IINT8>
     iuint8 TEXTEQU <IUINT8>
+    ischar TEXTEQU <ISCHAR>
     isint8 TEXTEQU <ISINT8>
+    ichar8_t TEXTEQU <ICHAR8_T>
     iint8_t TEXTEQU <IINT8_T>
     iuint8_t TEXTEQU <IUINT8_T>
+    ischar8_t TEXTEQU <ISCHAR8_T>
     isint8_t TEXTEQU <ISINT8_T>
-    ichar TEXTEQU <ICHAR>
-    ichar8_t TEXTEQU <ICHAR8_T>
     iint16 TEXTEQU <IINT16>
     iuint16 TEXTEQU <IUINT16>
     isint16 TEXTEQU <ISINT16>
+    ichar16_t TEXTEQU <ICHAR16_T>
     iint16_t TEXTEQU <IINT16_T>
     iuint16_t TEXTEQU <IUINT16_T>
+    ischar16_t TEXTEQU <ISCHAR16_T>
     isint16_t TEXTEQU <ISINT16_T>
-    ichar16_t TEXTEQU <ICHAR16_T>
     iwchar_t TEXTEQU <IWCHAR_T>
+    itchar TEXTEQU <ITCHAR>
    ;/*AddLineQueue("iint TEXTEQU <IINT> cannot be used instruction type*/
     ibool TEXTEQU <IBOOL>
+    ilong TEXTEQU <ILONG>
     iint32 TEXTEQU <IINT32>
     iuint32 TEXTEQU <IUINT32>
+    islong TEXTEQU <ISLONG>
     isint32 TEXTEQU <ISINT32>
+    ichar32_t TEXTEQU <ICHAR32_T>
     iint32_t TEXTEQU <IINT32_T>
     iuint32_t TEXTEQU <IUINT32_T>
+    ischar32_t TEXTEQU <ISCHAR32_T>
     isint32_t TEXTEQU <ISINT32_T>
-    ichar32_t TEXTEQU <ICHAR32_T>
+    ilonglong TEXTEQU <ILONGLONG>
     iint64 TEXTEQU <IINT64>
     iuint64 TEXTEQU <IUINT64>
+    islonglong TEXTEQU <ISLONGLONG>
     isint64 TEXTEQU <ISINT64>
     iint64_t TEXTEQU <IINT64_T>
     iuint64_t TEXTEQU <IUINT64_T>
@@ -444,8 +518,12 @@
     ibflt16 TEXTEQU <IBFLT16>
     ifloat TEXTEQU <IFLOAT>
     iflt TEXTEQU <IFLT>
+    ifloat32 TEXTEQU <IFLOAT32>
+    iflt32 TEXTEQU <IFLT32>
     idouble TEXTEQU <IDOUBLE>
     idbl TEXTEQU <IDBL>
+    ifloat64 TEXTEQU <IFLOAT64>
+    iflt64 TEXTEQU <IFLT64>
     ixm128 TEXTEQU <IXM128>
     ixm256 TEXTEQU <IXM256>
     ixm512 TEXTEQU <IXM512>
@@ -501,6 +579,7 @@
     sint16_t_ptr TEXTEQU <SINT16_T_PTR>
     char16_t_ptr TEXTEQU <CHAR16_T_PTR>
     wchar_t_ptr TEXTEQU <WCHAR_T_PTR>
+    tchar_ptr TEXTEQU <TCHAR_PTR>
   ; /*int TEXTEQU <INT> cannot be used instruction type*/
     int32_ptr TEXTEQU <INT32_PTR>
     uint32_ptr TEXTEQU <UINT32_PTR>
@@ -521,8 +600,12 @@
     bflt16_ptr TEXTEQU <BFLT16_PTR>
     float_ptr TEXTEQU <FLOAT_PTR>
     flt_ptr TEXTEQU <FLT_PTR>
+    float32_ptr TEXTEQU <FLOAT32_PTR>
+    flt32_ptr TEXTEQU <FLT32_PTR>
     double_ptr TEXTEQU <DOUBLE_PTR>
     dbl_ptr TEXTEQU <DBL_PTR>
+    float64_ptr TEXTEQU <FLOAT64_PTR>
+    flt64_ptr TEXTEQU <FLT64_PTR>
     xm128_ptr TEXTEQU <XM128_PTR>
     xm256_ptr TEXTEQU <XM256_PTR>
     xm512_ptr TEXTEQU <XM512_PTR>
@@ -568,6 +651,9 @@
     ptr_int16_t TEXTEQU <PTR_INT16_T>
     ptr_uint16_t TEXTEQU <PTR_UINT16_T>
     ptr_sint16_t TEXTEQU <PTR_SINT16_T>
+    ptr_char16_t TEXTEQU <PTR_CHAR16_T>
+    ptr_wchar_t TEXTEQU <PTR_WCHAR_T>
+    ptr_tchar TEXTEQU <PTR_TCHAR>
   ; /*int TEXTEQU <INT> cannot be used instruction type*/
     ptr_int32 TEXTEQU <PTR_INT32>
     ptr_uint32 TEXTEQU <PTR_UINT32>
@@ -588,8 +674,12 @@
     ptr_bflt16 TEXTEQU <PTR_BFLT16>
     ptr_float TEXTEQU <PTR_FLOAT>
     ptr_flt TEXTEQU <PTR_FLT>
+    ptr_float32 TEXTEQU <PTR_FLOAT32>
+    ptr_flt32 TEXTEQU <PTR_FLT32>
     ptr_double TEXTEQU <PTR_DOUBLE>
     ptr_dbl TEXTEQU <PTR_DBL>
+    ptr_float64 TEXTEQU <PTR_FLOAT64>
+    ptr_flt64 TEXTEQU <PTR_FLT64>
     ptr_xm128 TEXTEQU <PTR_XM128>
     ptr_xm256 TEXTEQU <PTR_XM256>
     ptr_xm512 TEXTEQU <PTR_XM512>

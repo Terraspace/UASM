@@ -145,15 +145,61 @@
     <ClCompile Include="..\..\tokenize.c" />
     <ClCompile Include="..\..\trmem.c" />
     <ClCompile Include="..\..\types.c" />
-    <ClCompile Include="..\..\x86macros.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\.gitignore" />
+    <None Include="..\..\BuildCustomizations\uasm.props" />
+    <None Include="..\..\BuildCustomizations\uasm.targets" />
+    <None Include="..\..\ClangOSX64.mak" />
+    <None Include="..\..\debian\changelog" />
+    <None Include="..\..\debian\compat" />
+    <None Include="..\..\debian\control" />
+    <None Include="..\..\debian\copyright" />
+    <None Include="..\..\debian\gbp.conf" />
+    <None Include="..\..\debian\rules" />
+    <None Include="..\..\debian\source\format" />
+    <None Include="..\..\debian\uasml.dirs" />
+    <None Include="..\..\debian\uasml.install" />
+    <None Include="..\..\debian\watch" />
+    <None Include="..\..\GccDos.mak" />
+    <None Include="..\..\gccLinux64.mak" />
     <None Include="..\..\gccmod.inc" />
-    <None Include="..\..\install\Uasm\v142\BuildCustomizations\uasm.props" />
-    <None Include="..\..\install\Uasm\v142\BuildCustomizations\uasm.targets" />
+    <None Include="..\..\GccUnix.mak" />
+    <None Include="..\..\GccWin.mak" />
+    <None Include="..\..\GccWin64.mak" />
+    <None Include="..\..\include\uasm\cpubits.inc" />
+    <None Include="..\..\include\uasm\defines.inc" />
+    <None Include="..\..\include\uasm\limits.inc" />
+    <None Include="..\..\include\uasm\macrolib.inc" />
+    <None Include="..\..\include\uasm\macros.inc" />
+    <None Include="..\..\include\uasm\params.inc" />
+    <None Include="..\..\include\uasm\real4limits.inc" />
+    <None Include="..\..\include\uasm\real8limits.inc" />
+    <None Include="..\..\include\uasm\types.inc" />
+    <None Include="..\..\include\uasm\windows\shared\basetsd.inc" />
+    <None Include="..\..\include\uasm\windows\um\heapapi.inc" />
+    <None Include="..\..\include\uasm\windows\vadefs.inc" />
+    <None Include="..\..\include\uasm\windows\vcruntime.inc" />
+    <None Include="..\..\include\wip\macros.inc" />
+    <None Include="..\..\IntelC32.mak" />
+    <None Include="..\..\IntelC64.mak" />
+    <None Include="..\..\Makefile" />
+    <None Include="..\..\Makefile.in" />
+    <None Include="..\..\Makefile.OSX" />
+    <None Include="..\..\Makefile_Linux" />
+    <None Include="..\..\Makefile_OW" />
     <None Include="..\..\msmod.inc" />
+    <None Include="..\..\Msvc.mak" />
+    <None Include="..\..\Msvc64.mak" />
+    <None Include="..\..\MsvcDll.mak" />
+    <None Include="..\..\NIX64_Makefile" />
+    <None Include="..\..\OC.mak" />
+    <None Include="..\..\OWDOS16.mak" />
+    <None Include="..\..\OWLinux.mak" />
     <None Include="..\..\owmod.inc" />
+    <None Include="..\..\PCC.mak" />
+    <None Include="..\..\PellesC.mak" />
+    <None Include="..\..\TCC.mak" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\H\assume.h" />
@@ -238,7 +284,6 @@
     <ClInclude Include="..\..\H\win32.h" />
     <ClInclude Include="..\..\H\win64seh.h" />
     <ClInclude Include="..\..\H\winconsole.h" />
-    <ClInclude Include="..\..\H\x86macros.h" />
     <ClInclude Include="..\..\resource.h" />
   </ItemGroup>
   <ItemGroup>

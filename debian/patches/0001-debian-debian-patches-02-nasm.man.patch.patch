@@ -1,0 +1,289 @@
+From: Jordan Justen <jordan.l.justen@intel.com>
+Date: Sun, 29 Jan 2017 17:39:54 -0800
+Subject: [PATCH] debian: debian/patches/02-nasm.man.patch
+
+Note: I (Jordan) did not author this patch. I'm just adding it to git.
+
+Signed-off-by: Jordan Justen <jordan.l.justen@intel.com>
+---
+ nasm.man | 271 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 271 insertions(+)
+ create mode 100644 nasm.man
+
+diff --git a/nasm.man b/nasm.man
+new file mode 100644
+index 0000000..35c92f6
+--- /dev/null
++++ b/nasm.man
+@@ -0,0 +1,271 @@
++NASM(1)                                                                NASM(1)
++
++
++
++NNAAMMEE
++       nasm - the Netwide Assembler - portable 80x86 assembler
++
++SSYYNNOOPPSSIISS
++       nnaassmm [ --ff format ] [ --oo outfile ] [ _o_p_t_i_o_n_s...  ] infile
++       nnaassmm --hh
++       nnaassmm --rr
++
++DDEESSCCRRIIPPTTIIOONN
++       The  nnaassmm  command  assembles the file _i_n_f_i_l_e and directs output to the
++       file _o_u_t_f_i_l_e if specified. If  _o_u_t_f_i_l_e  is  not  specified,  nnaassmm  will
++       derive a default output file name from the name of its input file, usu‐
++       ally by appending ‘.o’ or ‘.obj’, or by removing all extensions  for  a
++       raw binary file. Failing that, the output file name will be ‘nasm.out’.
++
++   OOPPTTIIOONNSS
++       --hh     Causes nnaassmm to exit immediately, after giving a summary  of  its
++              invocation  options,  and  listing all its supported output file
++              formats.
++
++       --aa     Causes nnaassmm to assemble  the  given  input  file  without  first
++              applying the macro preprocessor.
++
++       --ee     Causes  nnaassmm  to  preprocess the given input file, and write the
++              output to _s_t_d_o_u_t (or the specified output file  name),  and  not
++              actually assemble anything.
++
++       --MM     Causes  nnaassmm  to  output  Makefile‐style dependencies to stdout;
++              normal output is suppressed.
++
++       --EE _f_i_l_e_n_a_m_e
++              Causes nnaassmm to redirect error messages to _f_i_l_e_n_a_m_e.  This option
++              exists  to support operating systems on which stderr is not eas‐
++              ily redirected.
++
++       --rr     Causes nnaassmm to exit immediately, after  displaying  its  version
++              number.  _(_o_b_s_o_l_e_t_e_)
++
++       --vv     Causes  nnaassmm  to  exit immediately, after displaying its version
++              number.
++
++       --ff _f_o_r_m_a_t
++              Specifies the output file format. Formats include _b_i_n,  to  pro‐
++              duce  flat‐form  binary files, and _a_o_u_t and _e_l_f to produce Linux
++              a.out and ELF object files, respectively.
++
++       --oo _o_u_t_f_i_l_e
++              Specifies a precise name for the output file, overriding  nnaassmm’s
++              default means of determining it.
++
++       --ll _l_i_s_t_f_i_l_e
++              Causes  an assembly listing to be directed to the given file, in
++              which the original source is displayed on the  right  hand  side
++              (plus the source for included files and the expansions of multi‐
++              line macros) and the generated code is shown in hex on the left.
++
++       --ss     Causes  nnaassmm to send its error messages and/or help text to _s_t_d_‐
++              _o_u_t instead of _s_t_d_e_r_r.
++
++       --ww_[_+_‐_]_f_o_o
++              Causes nnaassmm to enable or disable certain classes of warning mes‐
++              sages,  for  example  --ww++oorrpphhaann‐‐llaabbeellss  or  --ww‐‐mmaaccrroo‐‐ppaarraammss  to,
++              respectively, enable warnings about labels  alone  on  lines  or
++              disable  warnings about incorrect numbers of parameters in macro
++              calls.
++
++       --II _d_i_r_e_c_t_o_r_y
++              Adds a directory to the  search  path  for  include  files.  The
++              directory  specification  must include the trailing slash, as it
++              will be directly prepended to the name of the include file.
++
++       --ii _d_i_r_e_c_t_o_r_y
++              Same as the --II option.
++
++       --PP _f_i_l_e
++              Specifies a file to be pre‐included, before the main source file
++              starts to be processed.
++
++       --pp _f_i_l_e
++              Same as the --PP option.
++
++       --DD _m_a_c_r_o_[_=_v_a_l_u_e_]
++              Pre‐defines a single‐line macro.
++
++       --dd _m_a_c_r_o_[_=_v_a_l_u_e_]
++              Same as the --DD option.
++
++       --UU _m_a_c_r_o
++              Undefines a single‐line macro.
++
++       --uu _m_a_c_r_o
++              Same as the --UU option.
++
++
++   SSYYNNTTAAXX
++       This  man  page  does  not fully describe the syntax of nnaassmm’s assembly
++       language, but does give a summary of the differences from other  assem‐
++       blers.
++
++       _R_e_g_i_s_t_e_r_s  have  no  leading  ‘%’  sign, unlike ggaass, and floating‐point
++       stack registers are referred to as _s_t_0, _s_t_1, and so on.
++
++       _F_l_o_a_t_i_n_g_‐_p_o_i_n_t _i_n_s_t_r_u_c_t_i_o_n_s may use either the single‐operand  form  or
++       the double. A _T_O keyword is provided; thus, one could either write
++
++                      fadd st0,st1
++                      fadd st1,st0
++
++       or one could use the alternative single‐operand forms
++
++                      fadd st1
++                      fadd to st1
++
++       _U_n_i_n_i_t_i_a_l_i_s_e_d  _s_t_o_r_a_g_e is reserved using the _R_E_S_B, _R_E_S_W, _R_E_S_D, _R_E_S_Q and
++       _R_E_S_T pseudo‐opcodes, each taking one parameter which gives  the  number
++       of bytes, words, doublewords, quadwords or ten‐byte words to reserve.
++
++       _R_e_p_e_t_i_t_i_o_n  of data items is not done by the _D_U_P keyword as seen in DOS
++       assemblers, but by the use of the _T_I_M_E_S prefix, like this:
++
++             message: times 3 db ’abc’
++                      times 64‐$+message db 0
++
++       which defines the string ‘abcabcabc’, followed by the right  number  of
++       zero bytes to make the total length up to 64 bytes.
++
++       _S_y_m_b_o_l  _r_e_f_e_r_e_n_c_e_s  are  always  understood  to  be immediate (i.e. the
++       address of the symbol), unless square brackets are used, in which  case
++       the contents of the memory location are used. Thus:
++
++                      mov ax,wordvar
++
++       loads AX with the address of the variable ‘wordvar’, whereas
++
++                      mov ax,[wordvar]
++                      mov ax,[wordvar+1]
++                      mov ax,[es:wordvar+bx]
++
++       all refer to the _c_o_n_t_e_n_t_s of memory locations. The syntaxes
++
++                      mov ax,es:wordvar[bx]
++                      es mov ax,wordvar[1]
++
++       are not legal at all, although the use of a segment register name as an
++       instruction prefix is valid, and can be used with instructions such  as
++       _L_O_D_S_B which can’t be overridden any other way.
++
++       _C_o_n_s_t_a_n_t_s may be expressed numerically in most formats: a trailing H, Q
++       or B denotes hex, octal or binary respectively, and a leading  ‘0x’  or
++       ‘$’  denotes  hex  as  well. Leading zeros are not treated specially at
++       all.  Character constants may be enclosed in single or  double  quotes;
++       there is no escape character. The ordering is little‐endian (reversed),
++       so that the  character  constant  _’_a_b_c_d_’  denotes  0x64636261  and  not
++       0x61626364.
++
++       _L_o_c_a_l  _l_a_b_e_l_s  begin  with a period, and their ‘locality’ is granted by
++       the assembler prepending the name of  the  previous  non‐local  symbol.
++       Thus  declaring  a  label  ‘.loop’  after  a label ‘label’ has actually
++       defined a symbol called ‘label.loop’.
++
++   DDIIRREECCTTIIVVEESS
++       _S_E_C_T_I_O_N _n_a_m_e or _S_E_G_M_E_N_T _n_a_m_e causes nnaassmm to direct all  following  code
++       to  the  named  section.  Section  names  vary with output file format,
++       although most formats support the names _._t_e_x_t, _._d_a_t_a  and  _._b_s_s.   (The
++       exception is the _o_b_j format, in which all segments are user‐definable.)
++
++       _A_B_S_O_L_U_T_E _a_d_d_r_e_s_s causes nnaassmm to position its notional assembly point at
++       an  absolute  address: so no code or data may be generated, but you can
++       use _R_E_S_B, _R_E_S_W and _R_E_S_D to move the assembly point further on, and  you
++       can  define labels. So this directive may be used to define data struc‐
++       tures. When you have finished doing absolute assembly, you  must  issue
++       another _S_E_C_T_I_O_N directive to return to normal assembly.
++
++       _B_I_T_S  _1_6  or _B_I_T_S _3_2 switches the default processor mode for which nnaassmm
++       is generating code: it is equivalent to _U_S_E_1_6 or _U_S_E_3_2  in  DOS  assem‐
++       blers.
++
++       _E_X_T_E_R_N  _s_y_m_b_o_l  and _G_L_O_B_A_L _s_y_m_b_o_l import and export symbol definitions,
++       respectively, from and to other modules. Note that the _G_L_O_B_A_L directive
++       must appear before the definition of the symbol it refers to.
++
++       _S_T_R_U_C  _s_t_r_u_c_n_a_m_e  and  _E_N_D_S_T_R_U_C, when used to bracket a number of _R_E_S_B,
++       _R_E_S_W or similar instructions, define a data structure. In  addition  to
++       defining  the  offsets  of  the  structure  members, the construct also
++       defines a symbol for the size of the structure,  which  is  simply  the
++       structure name with ___s_i_z_e tacked on to the end.
++
++   FFOORRMMAATT‐‐SSPPEECCIIFFIICC DDIIRREECCTTIIVVEESS
++       _O_R_G  _a_d_d_r_e_s_s  is  used  by  the _b_i_n flat‐form binary output format, and
++       specifies the address at which  the  output  code  will  eventually  be
++       loaded.
++
++       _G_R_O_U_P  _g_r_p_n_a_m_e _s_e_g_1 _s_e_g_2_._._.  is used by the _o_b_j (Microsoft 16‐bit) out‐
++       put  format,  and  defines  segment  groups.  This  format  also   uses
++       _U_P_P_E_R_C_A_S_E,  which directs that all segment, group and symbol names out‐
++       put to the object file should be in uppercase.  Note  that  the  actual
++       assembly is still case sensitive.
++
++       _L_I_B_R_A_R_Y  _l_i_b_n_a_m_e  is used by the _r_d_f output format, and causes a depen‐
++       dency record to be written to the output file which indicates that  the
++       program requires a certain library in order to run.
++
++   MMAACCRROO PPRREEPPRROOCCEESSSSOORR
++       Single‐line  macros are defined using the _%_d_e_f_i_n_e or _%_i_d_e_f_i_n_e commands,
++       in a similar fashion to the C preprocessor. They can be overloaded with
++       respect  to  number  of  parameters,  although defining a macro with no
++       parameters prevents the definition of any macro with the same name tak‐
++       ing  parameters,  and  vice  versa.  _%_d_e_f_i_n_e defines macros whose names
++       match  case‐sensitively,  whereas  _%_i_d_e_f_i_n_e  defines   case‐insensitive
++       macros.
++
++       Multi‐line macros are defined using _%_m_a_c_r_o and _%_i_m_a_c_r_o (the distinction
++       is the same as that between _%_d_e_f_i_n_e and _%_i_d_e_f_i_n_e), whose syntax  is  as
++       follows:
++
++             %macro _n_a_m_e _m_i_n_p_r_m[‐_m_a_x_p_r_m][+][.nolist] [_d_e_f_a_u_l_t_s]
++                      <some lines of macro expansion text>
++             %endmacro
++
++       Again, these macros may be overloaded. The trailing plus sign indicates
++       that any parameters after the last one get subsumed, with  their  sepa‐
++       rating  commas,  into the last parameter. The _d_e_f_a_u_l_t_s part can be used
++       to specify defaults for unspecified macro  parameters  after  _m_i_n_p_a_r_a_m.
++       _%_e_n_d_m is a valid synonym for _%_e_n_d_m_a_c_r_o.
++
++       To  refer to the macro parameters within a macro expansion, you use _%_1,
++       _%_2 and so on. You can also enforce that a macro parameter  should  con‐
++       tain  a  condition  code by using _%_+_1, and you can invert the condition
++       code by using _%_‐_1.  You can also define a label  specific  to  a  macro
++       invocation by prefixing it with a double % sign.
++
++       Files can be included using the _%_i_n_c_l_u_d_e directive, which works like C.
++
++       The preprocessor has a ‘context stack’, which may be used by one  macro
++       to  store  information  that  a later one will retrieve. You can push a
++       context on the stack using _%_p_u_s_h, remove one using _%_p_o_p, and change the
++       name of the top context (without disturbing any associated definitions)
++       using _%_r_e_p_l.  Labels and _%_d_e_f_i_n_e macros specific to the top context may
++       be defined by prefixing their names with %$, and things specific to the
++       next context down with %$$, and so on.
++
++       Conditional assembly is done by means of  _%_i_f_d_e_f,  _%_i_f_n_d_e_f,  _%_e_l_s_e  and
++       _%_e_n_d_i_f  as  in C. (Except that _%_i_f_d_e_f can accept several putative macro
++       names, and will evaluate TRUE if any of them is defined.) In  addition,
++       the  directives _%_i_f_c_t_x and _%_i_f_n_c_t_x can be used to condition on the name
++       of the top context on the context stack. The obvious set  of  ‘else‐if’
++       directives,  _%_e_l_i_f_d_e_f,  _%_e_l_i_f_n_d_e_f, _%_e_l_i_f_c_t_x and _%_e_l_i_f_n_c_t_x are also sup‐
++       ported.
++
++BBUUGGSS
++       There is a reported seg‐fault on some (Linux) systems with  some  large
++       source  files.  This  appears  to  be very hard to reproduce. All other
++       _k_n_o_w_n bugs have been fixed...
++
++RREESSTTRRIICCTTIIOONNSS
++       There is no support  for  listing  files,  symbol  maps,  or  debugging
++       object‐file  records. The advanced features of the ELF and Win32 object
++       file formats are not supported, and there is no means for  warning  the
++       programmer  against  using  an instruction beyond the capability of the
++       target processor.
++
++SSEEEE AALLSSOO
++       aass(11), lldd(11).
++
++
++
++                         The Netwide Assembler Project                 NASM(1)

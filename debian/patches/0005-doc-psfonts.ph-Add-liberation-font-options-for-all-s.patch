@@ -1,0 +1,29 @@
+From: Jordan Justen <jordan.l.justen@intel.com>
+Date: Mon, 8 May 2017 12:13:36 -0700
+Subject: [PATCH] doc/psfonts.ph: Add liberation font options for all styles
+
+Signed-off-by: Jordan Justen <jordan.l.justen@intel.com>
+---
+ doc/psfonts.ph | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/doc/psfonts.ph b/doc/psfonts.ph
+index c33db8b..2e34d84 100644
+--- a/doc/psfonts.ph
++++ b/doc/psfonts.ph
+@@ -10,10 +10,11 @@ my @TItal = ('SourceSansPro-BoldIt', 'ClearSans-BoldItalic',
+ 	     'LiberationSans-BoldItalic', 'Arial-BoldItalic',
+ 	     'Helvetica-BoldItalic');
+ my @TCode = ('SourceCodePro-Bold', 'LiberationMono-Bold', 'Courier-Bold');
+-my @HText = ('SourceSansPro-Semibold', 'ClearSans-Bold', 'Arial-Bold',
+-	     'Helvetica-Bold');
+-my @HItal = ('SourceSansPro-SemiboldIt', 'ClearSans-BoldItalic',
+-	     'Arial-BoldItalic', 'Helvetica-BoldItalic');
++my @HText = ('SourceSansPro-Semibold', 'LiberationMono-Bold', 'ClearSans-Bold',
++	     'Arial-Bold', 'Helvetica-Bold');
++my @HItal = ('SourceSansPro-SemiboldIt', 'LiberationMono-BoldItalic',
++	     'ClearSans-BoldItalic', 'Arial-BoldItalic',
++	     'Helvetica-BoldItalic');
+ my @HCode = ('SourceCodePro-Semibold', 'LiberationMono-Bold', 'Courier-Bold');
+ my @BText = ('SourceSansPro-Regular', 'ClearSans', 'LiberationSans', 'Arial',
+ 	     'Helvetica');

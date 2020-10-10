@@ -1,0 +1,44 @@
+From: Jordan Justen <jordan.l.justen@intel.com>
+Date: Mon, 8 May 2017 12:04:53 -0700
+Subject: [PATCH] doc/psfonts.ph: Reflow lines to less than 80 columns
+
+Signed-off-by: Jordan Justen <jordan.l.justen@intel.com>
+---
+ doc/psfonts.ph | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
+
+diff --git a/doc/psfonts.ph b/doc/psfonts.ph
+index 093d9dc..c33db8b 100644
+--- a/doc/psfonts.ph
++++ b/doc/psfonts.ph
+@@ -6,20 +6,25 @@
+ # Font substitution lists, in order of preference
+ my @TText = ('SourceSansPro-Bold', 'ClearSans-Bold', 'LiberationSans-Bold',
+ 	     'Arial-Bold', 'Helvetica-Bold');
+-my @TItal = ('SourceSansPro-BoldIt', 'ClearSans-BoldItalic', 'LiberationSans-BoldItalic',
+-	     'Arial-BoldItalic', 'Helvetica-BoldItalic');
++my @TItal = ('SourceSansPro-BoldIt', 'ClearSans-BoldItalic',
++	     'LiberationSans-BoldItalic', 'Arial-BoldItalic',
++	     'Helvetica-BoldItalic');
+ my @TCode = ('SourceCodePro-Bold', 'LiberationMono-Bold', 'Courier-Bold');
+-my @HText = ('SourceSansPro-Semibold', 'ClearSans-Bold', 'Arial-Bold', 'Helvetica-Bold');
++my @HText = ('SourceSansPro-Semibold', 'ClearSans-Bold', 'Arial-Bold',
++	     'Helvetica-Bold');
+ my @HItal = ('SourceSansPro-SemiboldIt', 'ClearSans-BoldItalic',
+ 	     'Arial-BoldItalic', 'Helvetica-BoldItalic');
+ my @HCode = ('SourceCodePro-Semibold', 'LiberationMono-Bold', 'Courier-Bold');
+-my @BText = ('SourceSansPro-Regular', 'ClearSans', 'LiberationSans', 'Arial', 'Helvetica');
++my @BText = ('SourceSansPro-Regular', 'ClearSans', 'LiberationSans', 'Arial',
++	     'Helvetica');
+ my @BItal = ('SourceSansPro-It', 'ClearSans-Italic', 'LiberationSans-Italic',
+ 	     'Arial-Italic', 'Helvetica-Italic');
+ my @BCode = ('SourceCodePro-Regular', 'LiberationMono', 'Courier');
+ my @QText = ('SourceSansPro-It', 'ClearSans-Italic', 'LiberationSans-Italic',
+ 	     'Arial-Italic', 'Helvetica-Italic');
+-my @QBold = ('SourceSansPro-BoldIt', 'ClearSans-BoldItalic', 'LiberationSans-BoldItalic', 'Arial-Bold', 'Helvetica-BoldItalic');
++my @QBold = ('SourceSansPro-BoldIt', 'ClearSans-BoldItalic',
++	     'LiberationSans-BoldItalic', 'Arial-Bold',
++	     'Helvetica-BoldItalic');
+ my @QCode = ('SourceCodePro-Regular', 'LiberationMono', 'Courier');
+ 
+ # The fonts we want to use for various things

@@ -2,7 +2,7 @@
 ; / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
 ; / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
 ; / /                                                                               / /
-; / /    Copyright 2020 UASM macro library for the Open Source Initiative           / /
+; / /                Copyright 2020 (c) UASM macro assembly library                 / /
 ; / /                                                                               / /
 ; / /    Licensed under the Apache License, Version 2.0 (the "License");            / /
 ; / /    you may not use this file except in compliance with the License.           / /
@@ -24,10 +24,12 @@
 
     IFDEF WITHMACROLIB
     ;;Uncomment to remove from inclusion
-    ;PARAMS_INC EQU 1
-    ;MACROS_INC EQU 1
+    ;DEFINES_INC EQU 1
+    ;TYPES_INC EQU 1
     ;LIMITS_INC EQU 1
     ;CPUBITS_INC EQU 1
+    ;MACROS_INC EQU 1
+    ;PARAMS_INC EQU 1
 
     INCLUDE defines.inc
     INCLUDE types.inc

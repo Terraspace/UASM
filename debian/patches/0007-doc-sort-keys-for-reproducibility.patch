@@ -1,0 +1,31 @@
+From: Raymond Nicholson <rain1@openmailbox.org>
+Date: Fri, 19 May 2017 00:43:51 -0700
+Subject: [PATCH] doc: sort 'keys' for reproducibility.
+
+Taken from https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=820194
+
+From Raymond original patch, it appears 3 out of the 5 changes had
+been taken care of upstream.
+
+Signed-off-by: Jordan Justen <jordan.l.justen@intel.com>
+---
+ doc/genps.pl | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/doc/genps.pl b/doc/genps.pl
+index 4758bb9..bc119a7 100755
+--- a/doc/genps.pl
++++ b/doc/genps.pl
+@@ -1020,10 +1020,10 @@ print "%%EndComments\n";
+ print "%%BeginProlog\n";
+ 
+ # Emit the configurables as PostScript tokens
+-foreach $c ( keys(%psconf) ) {
++foreach $c ( sort keys(%psconf) ) {
+     print "/$c ", $psconf{$c}, " def\n";
+ }
+-foreach $c ( keys(%psbool) ) {
++foreach $c ( sort keys(%psbool) ) {
+     print "/$c ", ($psbool{$c}?'true':'false'), " def\n";
+ }
+ 

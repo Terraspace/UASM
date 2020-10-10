@@ -190,9 +190,6 @@
     <ClCompile Include="..\..\simd.c">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\x86macros.c">
-      <Filter>Sources</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\codegenv2.c">
       <Filter>Sources</Filter>
     </ClCompile>
@@ -360,9 +357,6 @@
     <ClInclude Include="..\..\H\orgfixup.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\H\parser.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\H\pespec.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -432,9 +426,6 @@
     <ClInclude Include="..\..\H\simd.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\H\x86macros.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\H\malloc.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -453,23 +444,167 @@
     <ClInclude Include="..\..\H\pseudoFilter.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\H\parser.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\msmod.inc">
-      <Filter>Headers</Filter>
+    <None Include="..\..\.gitignore" />
+    <None Include="..\..\include\uasm\cpubits.inc">
+      <Filter>include</Filter>
     </None>
-    <None Include="..\..\owmod.inc">
-      <Filter>Headers</Filter>
+    <None Include="..\..\include\uasm\defines.inc">
+      <Filter>include</Filter>
+    </None>
+    <None Include="..\..\include\uasm\limits.inc">
+      <Filter>include</Filter>
+    </None>
+    <None Include="..\..\include\uasm\macrolib.inc">
+      <Filter>include</Filter>
+    </None>
+    <None Include="..\..\include\uasm\macros.inc">
+      <Filter>include</Filter>
+    </None>
+    <None Include="..\..\include\uasm\params.inc">
+      <Filter>include</Filter>
+    </None>
+    <None Include="..\..\include\uasm\real4limits.inc">
+      <Filter>include</Filter>
+    </None>
+    <None Include="..\..\include\uasm\real8limits.inc">
+      <Filter>include</Filter>
+    </None>
+    <None Include="..\..\include\uasm\types.inc">
+      <Filter>include</Filter>
+    </None>
+    <None Include="..\..\include\uasm\windows\vadefs.inc">
+      <Filter>include\windows</Filter>
+    </None>
+    <None Include="..\..\include\uasm\windows\vcruntime.inc">
+      <Filter>include\windows</Filter>
+    </None>
+    <None Include="..\..\BuildCustomizations\uasm.props">
+      <Filter>BuildCustomizations</Filter>
+    </None>
+    <None Include="..\..\BuildCustomizations\uasm.targets">
+      <Filter>BuildCustomizations</Filter>
+    </None>
+    <None Include="..\..\include\wip\macros.inc">
+      <Filter>include\wip</Filter>
+    </None>
+    <None Include="..\..\include\uasm\windows\um\heapapi.inc">
+      <Filter>include\windows\um</Filter>
+    </None>
+    <None Include="..\..\include\uasm\windows\shared\basetsd.inc">
+      <Filter>include\windows\shared</Filter>
+    </None>
+    <None Include="..\..\debian\changelog">
+      <Filter>debian</Filter>
+    </None>
+    <None Include="..\..\debian\compat">
+      <Filter>debian</Filter>
+    </None>
+    <None Include="..\..\debian\control">
+      <Filter>debian</Filter>
+    </None>
+    <None Include="..\..\debian\copyright">
+      <Filter>debian</Filter>
+    </None>
+    <None Include="..\..\debian\gbp.conf">
+      <Filter>debian</Filter>
+    </None>
+    <None Include="..\..\debian\rules">
+      <Filter>debian</Filter>
+    </None>
+    <None Include="..\..\debian\uasml.dirs">
+      <Filter>debian</Filter>
+    </None>
+    <None Include="..\..\debian\uasml.install">
+      <Filter>debian</Filter>
+    </None>
+    <None Include="..\..\debian\watch">
+      <Filter>debian</Filter>
+    </None>
+    <None Include="..\..\debian\source\format">
+      <Filter>debian\source</Filter>
+    </None>
+    <None Include="..\..\Makefile">
+      <Filter>Makefiles</Filter>
+    </None>
+    <None Include="..\..\Makefile_Linux">
+      <Filter>Makefiles</Filter>
+    </None>
+    <None Include="..\..\Makefile_OW">
+      <Filter>Makefiles</Filter>
+    </None>
+    <None Include="..\..\NIX64_Makefile">
+      <Filter>Makefiles</Filter>
+    </None>
+    <None Include="..\..\GccWin.mak">
+      <Filter>Makefiles</Filter>
+    </None>
+    <None Include="..\..\GccWin64.mak">
+      <Filter>Makefiles</Filter>
+    </None>
+    <None Include="..\..\IntelC32.mak">
+      <Filter>Makefiles</Filter>
+    </None>
+    <None Include="..\..\IntelC64.mak">
+      <Filter>Makefiles</Filter>
+    </None>
+    <None Include="..\..\ClangOSX64.mak">
+      <Filter>Makefiles</Filter>
+    </None>
+    <None Include="..\..\GccDos.mak">
+      <Filter>Makefiles</Filter>
+    </None>
+    <None Include="..\..\gccLinux64.mak">
+      <Filter>Makefiles</Filter>
+    </None>
+    <None Include="..\..\GccUnix.mak">
+      <Filter>Makefiles</Filter>
+    </None>
+    <None Include="..\..\OWLinux.mak">
+      <Filter>Makefiles</Filter>
+    </None>
+    <None Include="..\..\PCC.mak">
+      <Filter>Makefiles</Filter>
+    </None>
+    <None Include="..\..\PellesC.mak">
+      <Filter>Makefiles</Filter>
+    </None>
+    <None Include="..\..\TCC.mak">
+      <Filter>Makefiles</Filter>
+    </None>
+    <None Include="..\..\Msvc.mak">
+      <Filter>Makefiles</Filter>
+    </None>
+    <None Include="..\..\Msvc64.mak">
+      <Filter>Makefiles</Filter>
+    </None>
+    <None Include="..\..\MsvcDll.mak">
+      <Filter>Makefiles</Filter>
+    </None>
+    <None Include="..\..\OC.mak">
+      <Filter>Makefiles</Filter>
+    </None>
+    <None Include="..\..\OWDOS16.mak">
+      <Filter>Makefiles</Filter>
+    </None>
+    <None Include="..\..\Makefile.OSX">
+      <Filter>Makefiles</Filter>
     </None>
     <None Include="..\..\gccmod.inc">
-      <Filter>Headers</Filter>
+      <Filter>Makefiles</Filter>
     </None>
-    <None Include="..\..\.gitignore" />
-    <None Include="..\..\install\Uasm\v142\BuildCustomizations\uasm.props">
-      <Filter>BuildCustomizations</Filter>
+    <None Include="..\..\msmod.inc">
+      <Filter>Makefiles</Filter>
     </None>
-    <None Include="..\..\install\Uasm\v142\BuildCustomizations\uasm.targets">
-      <Filter>BuildCustomizations</Filter>
+    <None Include="..\..\owmod.inc">
+      <Filter>Makefiles</Filter>
+    </None>
+    <None Include="..\..\Makefile.in">
+      <Filter>Makefiles</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -484,6 +619,30 @@
     </Filter>
     <Filter Include="BuildCustomizations">
       <UniqueIdentifier>{eae9c661-4276-4856-801a-662666e68a8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{7a53866a-29be-4e3d-ab7c-b7f452330cbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\windows">
+      <UniqueIdentifier>{0845921e-33c1-4857-8ce0-1db134eaa485}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\wip">
+      <UniqueIdentifier>{2edc7995-eb00-4427-b216-4cd786fb2185}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\windows\um">
+      <UniqueIdentifier>{f12afb51-3138-486e-a848-f7cb01a44dc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\windows\shared">
+      <UniqueIdentifier>{ab1ef93f-6461-4f77-9695-e15b43435805}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="debian">
+      <UniqueIdentifier>{0b02db6e-22b8-4ce4-b103-d5dbcf9a6ba4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="debian\source">
+      <UniqueIdentifier>{18727354-2f67-4a35-8368-b6944a4a3438}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Makefiles">
+      <UniqueIdentifier>{85ec10ab-9674-48c0-bcaa-e51dbce1c36e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

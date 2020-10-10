@@ -114,7 +114,7 @@ static int RegcallMangler(const struct asym* sym, char* buffer)
         case RGCV_5:
             return(sprintf(buffer, "__regcall5__%s", sym->name, dir->e.procinfo->parasize));
         default:
-            return(sprintf(buffer, "__regcall__%s", sym->name, dir->e.procinfo->parasize));
+            return(sprintf(buffer, "__regcall3__%s", sym->name, dir->e.procinfo->parasize));
     }
 }
 
