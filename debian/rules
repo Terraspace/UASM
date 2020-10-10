@@ -1,4 +1,8 @@
 #! /usr/bin/make -f
+include /usr/share/dpkg/architecture.mk
+include /usr/share/dpkg/pkg-info.mk
+
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 
 # Uncomment this to turn on verbose mode.
 export DH_VERBOSE=1
@@ -14,6 +18,10 @@ export DH_OPTIONS
 
 override_dh_auto_build:
 	dh_auto_build -- all -C $(SRC_DIR_C) -f makefile.clang
+	mkdir -p debian/tmp/usr/bin
+	cp -pf GccUnixR/uasm debian/tmp/usr/bin
+	mkdir -p debian/tmp/usr/include/uasm
+	cp -pf include/uasm/* debian/tmp/usr/include/uasm
 
 # empty override, fills example directory with lots of files
 override_dh_auto_test:
@@ -21,13 +29,9 @@ override_dh_auto_test:
 override_dh_auto_clean:
 	#$(MAKE) clean -C $(SRC_DIR_C) -f makefile.clang
 	rm -rf GccUnixR
+	rm -rf debian/tmp
 
 #override_dh_auto_install:
-	$(MAKE) -C $(SRC_DIR_C) install -f makefile.clang DESTDIR=`pwd`/debian/tmp
-	mkdir -p debian/tmp/usr/bin
-	cp -pf GccUnixR/uasm debian/tmp/usr/bin
-	mkdir -p debian/tmp/usr/include/uasm
-	cp -pf include/uasm/* debian/tmp/usr/include/uasm
 #	dh_auto_install
 
 %:
