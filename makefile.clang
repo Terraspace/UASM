@@ -12,10 +12,10 @@ inc_dirs  = -IH
 #cflags stuff
 
 ifeq ($(DEBUG),0)
-extra_c_flags = -g -O0 -std=c11 -march=broadwell -target x86_64-unknown-linux-gnu -DNDEBUG -ansi -funsigned-char -fwritable-strings
+extra_c_flags = -g -O0 -std=c11 -march=broadwell -target x86_64-unknown-linux-gnu -DNDEBUG -ansi -funsigned-char -fwritable-strings -fPIE
 OUTD=GccUnixR
 else
-extra_c_flags = -g -O0 -std=c11 -march=broadwell -target x86_64-unknown-linux-gnu -D_DEBUG -DDEBUG_OUT -ansi -funsigned-char -fwritable-strings
+extra_c_flags = -g -O0 -std=c11 -march=broadwell -target x86_64-unknown-linux-gnu -D_DEBUG -DDEBUG_OUT -ansi -funsigned-char -fwritable-strings -fPIE
 OUTD=GccUnixD
 endif
 
