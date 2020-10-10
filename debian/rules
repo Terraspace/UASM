@@ -18,10 +18,6 @@ export DH_OPTIONS
 
 override_dh_auto_build:
 	dh_auto_build -- all -C $(SRC_DIR_C) -f makefile.clang
-	mkdir -p debian/tmp/usr/bin
-	cp -pf GccUnixR/uasm debian/tmp/usr/bin
-	mkdir -p debian/tmp/usr/include/uasm
-	cp -pf include/uasm/* debian/tmp/usr/include/uasm
 
 # empty override, fills example directory with lots of files
 override_dh_auto_test:
