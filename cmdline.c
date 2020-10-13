@@ -48,12 +48,16 @@
 #if defined(__UNIX__) || defined(__CYGWIN__) || defined(__DJGPP__)
 
 #define HANDLECTRLZ 0
+#ifndef SWITCHCHAR
 #define SWITCHCHAR 0
+#endif
 
 #else
 
 #define HANDLECTRLZ 1
+#ifndef SWITCHCHAR
 #define SWITCHCHAR 1
+#endif
 
 #endif
 
