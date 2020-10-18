@@ -94,7 +94,7 @@ uint_32 GenerateInstrHash(struct Instr_Def* pInstruction)
 void BuildInstructionTable(void)
 {
 	uint_32 hash = 0;
-	struct Instr_Def* pInstrTbl = &InstrTableV2;
+	struct Instr_Def* pInstrTbl = InstrTableV2;
 	uint_32 i = 0;
 	uint_32 instrCount = sizeof(InstrTableV2) / sizeof(struct Instr_Def);
 
