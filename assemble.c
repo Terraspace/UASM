@@ -541,7 +541,8 @@ static ret_code WriteModule( struct module_info *modinfo )
     DebugMsg(("WriteModule exit\n"));
     return( NOT_ERROR );
 }
-
+/* The macro is_valid_first_char is defined differently in globals.h */
+#undef is_valid_first_char
 #define is_valid_first_char( ch )  ( isalpha(ch) || ch=='_' || ch=='@' || ch=='$' || ch=='?' || ch=='.' )
 
 /* check name of text macros defined via -D option */
