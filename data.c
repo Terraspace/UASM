@@ -1290,7 +1290,7 @@ ret_code data_dir( int i, struct asm_tok tokenarray[], struct asym *type_sym )
     enum memtype        mem_type;
     bool                is_float = FALSE;
     int                 idx;
-    char                *name;
+    char const               *name;
 
 	struct dsym *symtype = ((struct dsym *)type_sym);
 	struct sfield   *f;
