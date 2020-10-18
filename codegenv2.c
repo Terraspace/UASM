@@ -1552,7 +1552,7 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 	if (CodeInfo->Ofssize == USE64)
 		MemTable = MemTable64;
 	else
-		MemTable = &MemTable32;
+		MemTable = MemTable32;
 
 	/* Force JWASM style FLAT: override back to legacy CodeGen. */
 	if ((opExpr[1].override && opExpr[1].override->tokval == T_FLAT) ||
