@@ -68,7 +68,7 @@ ret_code EchoDirective( int i, struct asm_tok tokenarray[] )
 ret_code IncludeDirective( int i, struct asm_tok tokenarray[] )
 /*************************************************************/
 {
-    char *name;
+    char const *name;
 
     DebugMsg1(("IncludeDirective enter\n"));
 
