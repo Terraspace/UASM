@@ -16,7 +16,7 @@
 ****************************************************************************/
 
 #include <ctype.h>
-struct macro_instance {};
+
 #include "globals.h"
 #include "memalloc.h"
 #include "parser.h"
