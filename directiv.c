@@ -483,7 +483,7 @@ ret_code SegOrderDirective( int i, struct asm_tok tokenarray[] )
 #if PE_SUPPORT
         || ( Options.output_format == OFORMAT_BIN && ModuleInfo.sub_format == SFORMAT_PE )
 #endif
-       ) {
+       ) { /* FIXME */ extern char const *strupr ();
         if ( Parse_Pass == PASS_1 )
             EmitWarn( 2, NOT_SUPPORTED_WITH_CURR_FORMAT, _strupr( tokenarray[i].string_ptr ) );
     } else
