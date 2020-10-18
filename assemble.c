@@ -14,6 +14,7 @@
 
 #include <ctype.h>
 #include <time.h>
+#include <string.h>
 
 #include "globals.h"
 #include "memalloc.h"
