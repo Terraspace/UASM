@@ -1,4 +1,4 @@
-
+#include <ctype.h>
 #include "codegenv2.h"
 
 #include <time.h>
