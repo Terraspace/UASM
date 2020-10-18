@@ -46,7 +46,7 @@ enum macro_flags {
 extern int      GetLiteralValue( char *, const char * );
 extern int      RunMacro( struct dsym *, int, struct asm_tok[], char *, int, bool * );
 extern ret_code ExpandText( char *, struct asm_tok[], unsigned int );
-extern int      ExpandLineItems( char *, int, struct asm_tok[], int, int );
+extern int      ExpandLineItems( char const [], int, struct asm_tok[], int, int );
 extern ret_code ExpandLine( char *, struct asm_tok[] );
 extern void     ExpandLiterals( int i, struct asm_tok[] );
 
