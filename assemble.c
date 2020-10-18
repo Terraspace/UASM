@@ -14,7 +14,6 @@
 
 #include <ctype.h>
 #include <time.h>
-#include <string.h>
 
 #include "globals.h"
 #include "memalloc.h"
@@ -1177,6 +1176,7 @@ static int OnePass( void )
 	}
 	if (Parse_Pass == PASS_1)
 	{
+		/* FIXME */ extern int AddSimdTypes ();
 		unsigned  alist = ModuleInfo.list;
 		ModuleInfo.list = 0;
 		AddSimdTypes();
@@ -1263,7 +1263,7 @@ static void get_os_include( void )
 static void get_module_name( void )
 /*********************************/
 {
-    char        *p;
+    char        *p; /* FIXME */ extern int strupr (char []);
 
     /* v2.08: prefer name given by -nm option */
     if ( Options.names[OPTN_MODULE_NAME] ) {
