@@ -16,7 +16,7 @@
 ****************************************************************************/
 
 #include <ctype.h>
-int ExpandToken;
+
 #include "globals.h"
 #include "memalloc.h"
 #include "parser.h"
@@ -1142,7 +1142,7 @@ static ret_code RebuildLine( const char *newstring, int i, struct asm_tok tokena
  * *pi: index of token in tokenarray
  * equmode: if 1, dont expand macro functions
  */
-static ret_code ExpandToken( char *line, int *pi, struct asm_tok tokenarray[], int max, int bracket_flags, int equmode )
+static ret_code ExpandToken( char const line[], int *pi, struct asm_tok tokenarray[], int max, int bracket_flags, int equmode )
 /**********************************************************************************************************************/
 {
     int pos;
