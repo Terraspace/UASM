@@ -148,7 +148,7 @@ void FreeLibQueue( void )
 ret_code IncludeLibDirective( int i, struct asm_tok tokenarray[] )
 /****************************************************************/
 {
-    char *name;
+    char const *name;
     //struct asym *sym;
 
     if ( Parse_Pass != PASS_1 ) /* do all work in pass 1 */
