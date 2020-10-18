@@ -233,7 +233,7 @@ int RunMacro( struct dsym *macro, int idx, struct asm_tok tokenarray[], char *ou
     DebugMsg1(( "RunMacro(%s): params=>%s< parmcnt=%u vararg=%u\n", macro->sym.name, tokenarray[idx].tokpos, info->parmcnt, macro->sym.mac_vararg ));
 
     if ( info->parmcnt ) {
-        mi.parm_array = (char **)myalloca( info->parmcnt * sizeof( char * ) + PARMSTRINGSIZE );
+        mi.parm_array = myalloca( info->parmcnt * sizeof( char * ) + PARMSTRINGSIZE );
         parmstrings = (char *)(mi.parm_array + info->parmcnt);
         /* init the macro arguments pointer */
         currparm = parmstrings;
