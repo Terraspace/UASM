@@ -421,7 +421,7 @@ int RunMacro( struct dsym *macro, int idx, struct asm_tok tokenarray[], char *ou
                 }
 
                 if ( tokenarray[idx].token == T_STRING && tokenarray[idx].string_delim == '{' ) {
-                    char *p = tokenarray[idx].string_ptr;
+                    char const *p = tokenarray[idx].string_ptr;
                     int tmp = idx;
                     /* copy the '{' */
                     *ptr++ = '{';
