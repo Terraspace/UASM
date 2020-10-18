@@ -1415,7 +1415,7 @@ void close_files( void )
 
 /* get default file extension for error, object and listing files */
 
-static char *GetExt( int type )
+static char const *GetExt( int type )
 /*****************************/
 {
     switch ( type ) {
