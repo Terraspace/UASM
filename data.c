@@ -856,7 +856,7 @@ next_item:  /* <--- continue scan if a comma has been detected */
 				else
 				{
 					if (string_len > 1 && no_of_bytes > 1 && sym && sym->mem_type == MT_WORD)
-					{
+					{ /* FIXME */ extern int OutputInterleavedBytes();
 						OutputInterleavedDataBytes(pchar, string_len);
 					}
 					else
