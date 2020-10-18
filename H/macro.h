@@ -55,7 +55,7 @@ extern void     ExpandLiterals( int i, struct asm_tok[] );
 extern struct dsym *CreateMacro( const char * );/* create a macro symbol */
 
 extern void     ReleaseMacroData( struct dsym * );
-extern void     fill_placeholders( char const [], const char *, unsigned, unsigned, char * * );
+extern void     fill_placeholders( char *, const char *, unsigned, unsigned, char const * [] );
 extern void     SkipCurrentQueue( struct asm_tok[] );
 extern ret_code StoreMacro( struct dsym *, int, struct asm_tok[], bool );  /* store macro content */
 
