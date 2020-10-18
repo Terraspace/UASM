@@ -360,7 +360,7 @@ struct asym *CreateConstant( struct asm_tok tokenarray[] )
     int                 i = 2;
 	int                 j;
     ret_code            rc;
-    char                *p;
+    char const               *p;
     bool                cmpvalue = FALSE;
     struct expr         opnd;
     char                argbuffer[MAX_LINE_LEN];
