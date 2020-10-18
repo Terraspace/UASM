@@ -16,7 +16,7 @@
 ****************************************************************************/
 
 #include <ctype.h>
-int fill_placeholders, ExpandToken;
+int ExpandToken;
 #include "globals.h"
 #include "memalloc.h"
 #include "parser.h"
