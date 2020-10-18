@@ -1626,7 +1626,7 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 
 	/* Proceed to generate the instruction */
 	else
-	{
+	{ /* FIXME */ extern int get_curr_srcfile();
 
 		/*----------------------------------------------------------
 		 Promote broadcast decorators
