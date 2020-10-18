@@ -308,7 +308,7 @@ ret_code AliasDirective( int i, struct asm_tok tokenarray[] )
 {
     //char *tmp;
     struct asym *sym;
-    char *subst;
+    char const *subst;
 
     i++; /* go past ALIAS */
 
