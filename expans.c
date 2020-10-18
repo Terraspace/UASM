@@ -1367,7 +1367,7 @@ static ret_code ExpandToken( char *line, int *pi, struct asm_tok tokenarray[], i
  * equmode: 1=don't expand macro functions
  */
 
-int ExpandLineItems( char *line, int i, struct asm_tok tokenarray[], int addbrackets, int equmode )
+int ExpandLineItems( char const line[], int i, struct asm_tok tokenarray[], int addbrackets, int equmode )
 /*************************************************************************************************/
 {
     int k;
