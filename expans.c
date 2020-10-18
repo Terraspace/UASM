@@ -16,7 +16,7 @@
 ****************************************************************************/
 
 #include <ctype.h>
-
+int fill_placeholders;
 #include "globals.h"
 #include "memalloc.h"
 #include "parser.h"
