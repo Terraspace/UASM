@@ -1550,7 +1550,7 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 
 	/* Determine which Memory Encoding Format Table to Use. */
 	if (CodeInfo->Ofssize == USE64)
-		MemTable = &MemTable64;
+		MemTable = MemTable64;
 	else
 		MemTable = &MemTable32;
 
