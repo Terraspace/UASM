@@ -1678,7 +1678,7 @@ ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs
 		/* If the matched instruction requires processing of a memory address */
 		if (matchedInstr->memOpnd != NO_MEM)
 			aso = BuildMemoryEncoding(&modRM, &sib, &rexByte, &needModRM, &needSIB,								/* This could result in modifications to REX/VEX/EVEX, modRM and SIB bytes */
-				&dispSize, &displacement, matchedInstr, opExpr, &needB, &needX, &needRR, CodeInfo);
+				&dispSize, &displacement.displacement64, matchedInstr, opExpr, &needB, &needX, &needRR, CodeInfo);
 		modRM |= BuildModRM(matchedInstr->modRM, matchedInstr, opExpr, &needModRM, &needSIB,
 			((matchedInstr->vexflags & VEX) || (matchedInstr->vexflags & EVEX)));								/* Modify the modRM value for any non-memory operands */
 
