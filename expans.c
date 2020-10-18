@@ -16,7 +16,7 @@
 ****************************************************************************/
 
 #include <ctype.h>
-
+int WriteCodeLabel;
 #include "globals.h"
 #include "memalloc.h"
 #include "parser.h"
