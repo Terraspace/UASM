@@ -68,7 +68,7 @@ extern void     MacroFini( void );
 
 /* functions in string.c */
 
-extern struct asym *SetTextMacro( struct asm_tok[], struct asym *, const char *, const char * ); /* EQU for texts */
+extern struct asym *SetTextMacro( struct asm_tok const [], struct asym *, const char [], const char [] ); /* EQU for texts */
 extern struct asym *AddPredefinedText( const char *, const char * );
 extern int         TextItemError( struct asm_tok * );
 
