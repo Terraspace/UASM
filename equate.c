@@ -347,7 +347,7 @@ struct asym *CreateVariable(const char *name, int value)
  * - anything. This will also become a text literal.
  */
 
-struct asym *CreateConstant( struct asm_tok tokenarray[] )
+struct asym *CreateConstant( struct asm_tok const tokenarray[] )
 /********************************************************/
 {
     struct asym         *sym;
