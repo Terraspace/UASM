@@ -41,14 +41,14 @@
 #endif
 #endif
 
-typedef int (*mangle_func)( const struct asym *, char * );
+typedef int (*mangle_func)(const struct asym*, char*);
 
-static int ms32_decorate( const struct asym *sym, char *buffer );
+static int ms32_decorate(const struct asym* sym, char* buffer);
 #if OWFC_SUPPORT
-static int ow_decorate( const struct asym *sym, char *buffer );
+static int ow_decorate(const struct asym* sym, char* buffer);
 #endif
 #if AMD64_SUPPORT
-static int ms64_decorate( const struct asym *sym, char *buffer );
+static int ms64_decorate(const struct asym* sym, char* buffer);
 #endif
 
 /* table of FASTCALL types.
@@ -68,31 +68,31 @@ static const mangle_func fcmanglers[] = {
 
 /* VoidMangler: no change to symbol name */
 
-static int VoidMangler( const struct asym *sym, char *buffer )
+static int VoidMangler(const struct asym* sym, char* buffer)
 /************************************************************/
 {
-    memcpy( buffer, sym->name, sym->name_size + 1 );
-    return( sym->name_size );
+    memcpy(buffer, sym->name, sym->name_size + 1);
+    return(sym->name_size);
 }
 
 /* UCaseMangler: convert symbol name to upper case */
 
-static int UCaseMangler( const struct asym *sym, char *buffer )
+static int UCaseMangler(const struct asym* sym, char* buffer)
 /*************************************************************/
 {
-    memcpy( buffer, sym->name, sym->name_size + 1 );
-    _strupr( buffer );
-    return( sym->name_size );
+    memcpy(buffer, sym->name, sym->name_size + 1);
+    _strupr(buffer);
+    return(sym->name_size);
 }
 
 /* UScoreMangler: add '_' prefix to symbol name */
 
-static int UScoreMangler( const struct asym *sym, char *buffer )
+static int UScoreMangler(const struct asym* sym, char* buffer)
 /**************************************************************/
 {
     buffer[0] = '_';
-    memcpy( buffer+1, sym->name, sym->name_size + 1 );
-    return( sym->name_size + 1 );
+    memcpy(buffer + 1, sym->name, sym->name_size + 1);
+    return(sym->name_size + 1);
 }
 
 /* RegCallMangler: add '__regcall4__' prefix to symbol name */
@@ -103,62 +103,69 @@ static int RegcallMangler(const struct asym* sym, char* buffer)
     const struct dsym* dir = (struct dsym*)sym;
     switch (Options.regcall_version)
     {
-        case RGCV_1:
-            return(sprintf(buffer, "__regcall1__%s", sym->name, dir->e.procinfo->parasize));
-        case RGCV_2:
-            return(sprintf(buffer, "__regcall2__%s", sym->name, dir->e.procinfo->parasize));
-        case RGCV_3:
-            return(sprintf(buffer, "__regcall3__%s", sym->name, dir->e.procinfo->parasize));
-        case RGCV_4:
-            return(sprintf(buffer, "__regcall4__%s", sym->name, dir->e.procinfo->parasize));
-        case RGCV_5:
-            return(sprintf(buffer, "__regcall5__%s", sym->name, dir->e.procinfo->parasize));
-        default:
-            return(sprintf(buffer, "__regcall3__%s", sym->name, dir->e.procinfo->parasize));
+    case RGCV_1:
+        return(sprintf(buffer, "__regcall1__%s", sym->name, dir->e.procinfo->parasize));
+    case RGCV_2:
+        return(sprintf(buffer, "__regcall2__%s", sym->name, dir->e.procinfo->parasize));
+    case RGCV_3:
+        return(sprintf(buffer, "__regcall3__%s", sym->name, dir->e.procinfo->parasize));
+    case RGCV_4:
+        return(sprintf(buffer, "__regcall4__%s", sym->name, dir->e.procinfo->parasize));
+    case RGCV_5:
+        return(sprintf(buffer, "__regcall5__%s", sym->name, dir->e.procinfo->parasize));
+    default:
+        return(sprintf(buffer, "__regcall3__%s", sym->name, dir->e.procinfo->parasize));
     }
 }
 
 /* StdcallMangler: add '_' prefix and '@size' suffix to proc names */
 /*                 add '_' prefix to other symbols */
 
-static int StdcallMangler( const struct asym *sym, char *buffer )
+static int StdcallMangler(const struct asym* sym, char* buffer)
 /***************************************************************/
 {
-    const struct dsym *dir = (struct dsym *)sym;
+    const struct dsym* dir = (struct dsym*)sym;
 
-    if( Options.stdcall_decoration == STDCALL_FULL && sym->isproc ) {
-        return( sprintf( buffer, "_%s@%d", sym->name, dir->e.procinfo->parasize ) );
-    } else {
-        return( UScoreMangler( sym, buffer ) );
+    if (Options.stdcall_decoration == STDCALL_FULL && sym->isproc)
+    {
+        return(sprintf(buffer, "_%s@%d", sym->name, dir->e.procinfo->parasize));
+    }
+    else
+    {
+        return(UScoreMangler(sym, buffer));
     }
 }
 
 /* MS FASTCALL or VECTORCALL 32bit */
 
-static int ms32_decorate( const struct asym *sym, char *buffer )
+static int ms32_decorate(const struct asym* sym, char* buffer)
 /**************************************************************/
 {
-   // return ( sprintf( buffer, "@%s@%u", sym->name, ((struct dsym *)sym)->e.procinfo->parasize ) );
-	const struct dsym *dir = (struct dsym *)sym;
-	if ((sym->langtype == LANG_VECTORCALL) && (Options.vectorcall_decoration == VECTORCALL_FULL) && sym->isproc) {
-		return(sprintf(buffer, "%s@@%d", sym->name, dir->e.procinfo->parasize));
-	}
-	else if ((sym->langtype == LANG_FASTCALL) && (Options.fastcall_decoration == FASTCALL_FULL) && (Options.fctype == FCT_MSC && sym->isproc)) {
-		return (sprintf(buffer, "@%s@%u", sym->name, dir->e.procinfo->parasize));
-	}
-	else {
-		memcpy(buffer, sym->name, sym->name_size + 1);
-		return(sym->name_size);
-	}
+    // return ( sprintf( buffer, "@%s@%u", sym->name, ((struct dsym *)sym)->e.procinfo->parasize ) );
+    const struct dsym* dir = (struct dsym*)sym;
+    if ((sym->langtype == LANG_VECTORCALL) && (Options.vectorcall_decoration == VECTORCALL_FULL) && sym->isproc)
+    {
+        return(sprintf(buffer, "%s@@%d", sym->name, dir->e.procinfo->parasize));
+    }
+    else if ((sym->langtype == LANG_FASTCALL) && (Options.fastcall_decoration == FASTCALL_FULL) && (Options.fctype == FCT_MSC && sym->isproc))
+    {
+        return (sprintf(buffer, "@%s@%u", sym->name, dir->e.procinfo->parasize));
+    }
+    else
+    {
+        memcpy(buffer, sym->name, sym->name_size + 1);
+        return(sym->name_size);
+    }
 }
 
 #if OWFC_SUPPORT
 
 /* flag values used by the OW fastcall name mangler ( changes ) */
-enum changes {
-    NORMAL           = 0,
-    USCORE_FRONT     = 1,
-    USCORE_BACK      = 2
+enum changes
+{
+    NORMAL = 0,
+    USCORE_FRONT = 1,
+    USCORE_BACK = 2
 };
 
 /* FASTCALL OW style:
@@ -166,16 +173,20 @@ enum changes {
  *  add '_' prefix to other symbols
  */
 
-static int ow_decorate( const struct asym *sym, char *buffer )
+static int ow_decorate(const struct asym* sym, char* buffer)
 /************************************************************/
 {
-    char                *name;
+    char* name;
     enum changes        changes = NORMAL;
 
-    if( sym->isproc ) {
+    if (sym->isproc)
+    {
         changes |= USCORE_BACK;
-    } else {
-        switch( sym->mem_type ) {
+    }
+    else
+    {
+        switch (sym->mem_type)
+        {
         case MT_NEAR:
         case MT_FAR:
         case MT_EMPTY:
@@ -188,15 +199,16 @@ static int ow_decorate( const struct asym *sym, char *buffer )
 
     name = buffer;
 
-    if( changes & USCORE_FRONT )
+    if (changes & USCORE_FRONT)
         *name++ = '_';
-    memcpy( name, sym->name, sym->name_size + 1 );
+    memcpy(name, sym->name, sym->name_size + 1);
     name += sym->name_size;
-    if( changes & USCORE_BACK ) {
+    if (changes & USCORE_BACK)
+    {
         *name++ = '_';
         *name = NULLC;
     }
-    return( name - buffer );
+    return(name - buffer);
 }
 #endif
 
@@ -204,89 +216,97 @@ static int ow_decorate( const struct asym *sym, char *buffer )
 
 /* MS FASTCALL or VECTORCALL 64bit */
 
-static int ms64_decorate( const struct asym *sym, char *buffer )
+static int ms64_decorate(const struct asym* sym, char* buffer)
 /**************************************************************/
 {
     //memcpy( buffer, sym->name, sym->name_size + 1 );
     //return( sym->name_size );
-	const struct dsym *dir = (struct dsym *)sym;
-	if ((sym->langtype == LANG_VECTORCALL) && (Options.vectorcall_decoration == VECTORCALL_FULL) && sym->isproc) {
-		return(sprintf(buffer, "%s@@%d", sym->name, dir->e.procinfo->parasize));
-	}
-	else {
-		memcpy(buffer, sym->name, sym->name_size + 1);
-		return(sym->name_size);
-	}
+    const struct dsym* dir = (struct dsym*)sym;
+    if ((sym->langtype == LANG_VECTORCALL) && (Options.vectorcall_decoration == VECTORCALL_FULL) && sym->isproc)
+    {
+        return(sprintf(buffer, "%s@@%d", sym->name, dir->e.procinfo->parasize));
+    }
+    else
+    {
+        memcpy(buffer, sym->name, sym->name_size + 1);
+        return(sym->name_size);
+    }
 }
 #endif
 
 #if MANGLERSUPP
-static char *CMangler( const struct asym *sym, char *buffer )
+static char* CMangler(const struct asym* sym, char* buffer)
 /***********************************************************/
 {
-    if( Options.naming_convention == NC_ADD_USCORES ) {
-        return( UScoreMangler( sym, buffer ) );
-    } else {
-        return( VoidMangler( sym, buffer ) );
+    if (Options.naming_convention == NC_ADD_USCORES)
+    {
+        return(UScoreMangler(sym, buffer));
+    }
+    else
+    {
+        return(VoidMangler(sym, buffer));
     }
 }
 
-static mangle_func GetMangler( const char *mangle_type )
+static mangle_func GetMangler(const char* mangle_type)
 /******************************************************/
 {
-    if( mangle_type != NULL && mangle_type[1] == NULLC ) {
-        switch ( tolower( *mangle_type ) ) {
+    if (mangle_type != NULL && mangle_type[1] == NULLC)
+    {
+        switch (tolower(*mangle_type))
+        {
         case 'c':
-            return( Options.xxx ? CMangler : ow_decorate );
+            return(Options.xxx?CMangler:ow_decorate);
         case 'n':
-            return( VoidMangler );
+            return(VoidMangler);
         }
     }
-    if ( mangle_type )
-        EmitErr( UNKNOWN_MANGLER, mangle_type );
+    if (mangle_type)
+        EmitErr(UNKNOWN_MANGLER, mangle_type);
 
-    return( NULL );
+    return(NULL);
 }
 #endif
 
-int Mangle( struct asym *sym, char *buffer )
+int Mangle(struct asym* sym, char* buffer)
 /******************************************/
 {
     mangle_func mangler;
 
-    switch( sym->langtype ) {
+    switch (sym->langtype)
+    {
     case LANG_C:
         /* leading underscore for C? */
-        mangler = (Options.sub_format == SFORMAT_64BIT) ? VoidMangler : Options.no_cdecl_decoration ? VoidMangler : UScoreMangler;
+        mangler = (Options.sub_format == SFORMAT_64BIT)?VoidMangler:Options.no_cdecl_decoration?VoidMangler:UScoreMangler;
         break;
-	case LANG_SYSCALL:
-	case LANG_SYSVCALL:
-	case LANG_THISCALL:
+    case LANG_SYSCALL:
+    case LANG_SYSVCALL:
+    case LANG_THISCALL:
         mangler = VoidMangler;
         break;
     case LANG_STDCALL:
-        mangler = (Options.sub_format == SFORMAT_64BIT) ? VoidMangler : ( Options.stdcall_decoration == STDCALL_NONE ) ? VoidMangler : StdcallMangler;
+        mangler = (Options.sub_format == SFORMAT_64BIT)?VoidMangler:(Options.stdcall_decoration == STDCALL_NONE)?VoidMangler:StdcallMangler;
         break;
     case LANG_PASCAL:
     case LANG_FORTRAN:
     case LANG_BASIC:
-        mangler = (Options.sub_format == SFORMAT_64BIT) ? VoidMangler : UCaseMangler;
+        mangler = (Options.sub_format == SFORMAT_64BIT)?VoidMangler:UCaseMangler;
         break;
-	case LANG_VECTORCALL:
-		mangler = (Options.vectorcall_decoration == VECTORCALL_NONE) ? VoidMangler : fcmanglers[ModuleInfo.fctype];
-		break;
+    case LANG_VECTORCALL:
+        mangler = (Options.vectorcall_decoration == VECTORCALL_NONE)?VoidMangler:fcmanglers[ModuleInfo.fctype];
+        break;
     case LANG_FASTCALL:          /* registers passing parameters */
-        mangler = ((Options.fastcall_decoration == FASTCALL_NONE) || (Options.sub_format == SFORMAT_64BIT)) ? VoidMangler : fcmanglers[ModuleInfo.fctype];
-		break;
-	case LANG_REGCALL:
-		mangler = (Options.regcall_decoration == REGCALL_NONE) ? VoidMangler : RegcallMangler;
-		break;
+        mangler = ((Options.fastcall_decoration == FASTCALL_NONE) || (Options.sub_format == SFORMAT_64BIT))?VoidMangler:fcmanglers[ModuleInfo.fctype];
+        break;
+    case LANG_REGCALL:
+        mangler = (Options.regcall_decoration == REGCALL_NONE)?VoidMangler:RegcallMangler;
+        break;
     default: /* LANG_NONE */
 #if MANGLERSUPP
         mangler = sym->mangler;
-        if( mangler == NULL )
-            mangler = GetMangler( Options.default_name_mangler );
-        if( mangler == NULL )
+        if (mangler == NULL)
+            mangler = GetMangler(Options.default_name_mangler);
+        if (mangler == NULL)
 #endif
             mangler = VoidMangler;
         break;
@@ -294,30 +314,35 @@ int Mangle( struct asym *sym, char *buffer )
 #if MANGLERSUPP
     sym->mangler = mangler;
 #endif
-    return( mangler( sym, buffer ) );
+    return(mangler(sym, buffer));
 }
 
 /* the "mangle_type" is an extension inherited from OW Wasm
  * accepted are "C" and "N". It's NULL if MANGLESUPP == 0 (standard)
  */
-void SetMangler( struct asym *sym, int langtype, const char *mangle_type )
+void SetMangler(struct asym* sym, uint_16 langtype, const char* mangle_type)
 /************************************************************************/
 {
 #if MANGLERSUPP
     mangle_func mangler;
 #endif
 
-    if( langtype != LANG_NONE )
+    if (langtype != LANG_NONE)
         sym->langtype = langtype;
 
 #if MANGLERSUPP
-    mangler = GetMangler( mangle_type );
-    if( mangler == NULL ) {
+    mangler = GetMangler(mangle_type);
+    if (mangler == NULL)
+    {
         /* nothing to do */
-    } else if( sym->mangler == NULL ) {
+    }
+    else if (sym->mangler == NULL)
+    {
         sym->mangler = mangler;
-    } else if( sym->mangler != mangler ) {
-        EmitErr( CONFLICTING_MANGLER, sym->name );
+    }
+    else if (sym->mangler != mangler)
+    {
+        EmitErr(CONFLICTING_MANGLER, sym->name);
     }
 #endif
 }

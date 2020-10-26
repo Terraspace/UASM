@@ -1,9 +1,10 @@
+#pragma once
 
 /* the MS COFF declarations, as far as it's relevant for Uasm.
  * The full declarations can be found in MS PSDK, WinNT.h.
  */
 
-/* Machine values */
+ /* Machine values */
 #define IMAGE_FILE_MACHINE_I386  0x014c /* Intel 386 or later processors */
 #define IMAGE_FILE_MACHINE_AMD64 0x8664 /* AMD64 (K8)                    */
 

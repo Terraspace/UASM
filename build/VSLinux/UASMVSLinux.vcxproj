@@ -49,7 +49,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetExt />
-    <MultiProcNumber>4</MultiProcNumber>
+    <MultiProcNumber>8</MultiProcNumber>
     <ProjectPublicIncludePath>.;../../H;../H;./H;$(ProjectPublicIncludePath)</ProjectPublicIncludePath>
     <RemoteCCompileToolExe>clang</RemoteCCompileToolExe>
     <RemoteCppCompileToolExe>clang++</RemoteCppCompileToolExe>
@@ -57,7 +57,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetExt />
-    <MultiProcNumber>4</MultiProcNumber>
+    <MultiProcNumber>8</MultiProcNumber>
     <ProjectPublicIncludePath>.;../../H;../H;./H;$(ProjectPublicIncludePath)</ProjectPublicIncludePath>
     <RemoteCCompileToolExe>clang</RemoteCCompileToolExe>
     <RemoteCppCompileToolExe>clang++</RemoteCppCompileToolExe>
@@ -65,7 +65,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <TargetExt />
-    <MultiProcNumber>4</MultiProcNumber>
+    <MultiProcNumber>8</MultiProcNumber>
     <ProjectPublicIncludePath>.;../../H;../H;./H;$(ProjectPublicIncludePath)</ProjectPublicIncludePath>
     <RemoteCCompileToolExe>clang</RemoteCCompileToolExe>
     <RemoteCppCompileToolExe>clang++</RemoteCppCompileToolExe>
@@ -73,12 +73,92 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
     <TargetExt />
-    <MultiProcNumber>4</MultiProcNumber>
+    <MultiProcNumber>8</MultiProcNumber>
     <ProjectPublicIncludePath>.;../../H;../H;./H;$(ProjectPublicIncludePath)</ProjectPublicIncludePath>
     <RemoteCCompileToolExe>clang</RemoteCCompileToolExe>
     <RemoteCppCompileToolExe>clang++</RemoteCppCompileToolExe>
     <RemoteLdToolExe>clang++</RemoteLdToolExe>
   </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>MACROLIB=1;__UNIX__;__LINUX__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ShowIncludes>true</ShowIncludes>
+      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -O2 -std=c11 -march=x86-64 -target x86_64-unknown-linux-gnu -DNDEBUG -funsigned-char -fwritable-strings -mstack-alignment=16</AdditionalOptions>
+      <ExceptionHandling>Disabled</ExceptionHandling>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <Optimization>MaxSpeed</Optimization>
+    </ClCompile>
+    <Link />
+    <RemotePostBuildEvent>
+      <Command>
+      </Command>
+    </RemotePostBuildEvent>
+    <Link>
+      <DebuggerSymbolInformation>OmitDebuggerSymbolInformation</DebuggerSymbolInformation>
+      <NoExecStackRequired>false</NoExecStackRequired>
+      <Relocation>false</Relocation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <ClCompile>
+      <PreprocessorDefinitions>MACROLIB=1;__UNIX__;__LINUX__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ShowIncludes>true</ShowIncludes>
+      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -O2 -std=c11 -march=x86-64 -target x86_64-unknown-linux-gnu -DNDEBUG -funsigned-char -fwritable-strings -mstack-alignment=16</AdditionalOptions>
+      <ExceptionHandling>Disabled</ExceptionHandling>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <Optimization>MaxSpeed</Optimization>
+    </ClCompile>
+    <Link />
+    <RemotePostBuildEvent>
+      <Command>
+      </Command>
+    </RemotePostBuildEvent>
+    <Link>
+      <DebuggerSymbolInformation>OmitDebuggerSymbolInformation</DebuggerSymbolInformation>
+      <NoExecStackRequired>false</NoExecStackRequired>
+      <Relocation>false</Relocation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>MACROLIB=1;__UNIX__;__LINUX__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ShowIncludes>true</ShowIncludes>
+      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -g -O0 -std=c11 -march=x86-64 -target x86_64-unknown-linux-gnu -D_DEBUG -DDEBUG_OUT -funsigned-char -fwritable-strings -mstack-alignment=16</AdditionalOptions>
+      <ExceptionHandling>Disabled</ExceptionHandling>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+    </ClCompile>
+    <Link />
+    <RemotePostBuildEvent>
+      <Command>
+      </Command>
+    </RemotePostBuildEvent>
+    <Link>
+      <NoExecStackRequired>false</NoExecStackRequired>
+      <Relocation>false</Relocation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <ClCompile>
+      <PreprocessorDefinitions>MACROLIB=1;__UNIX__;__LINUX__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ShowIncludes>true</ShowIncludes>
+      <AdditionalOptions>-Wno-sign-conversion -Wno-implicit-int-conversion -Wno-comment -Wno-switch -Wno-implicit-function-declaration -Wno-enum-conversion -g -O0 -std=c11 -march=x86-64 -target x86_64-unknown-linux-gnu -D_DEBUG -DDEBUG_OUT -funsigned-char -fwritable-strings -mstack-alignment=16</AdditionalOptions>
+      <ExceptionHandling>Disabled</ExceptionHandling>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+    </ClCompile>
+    <Link />
+    <RemotePostBuildEvent>
+      <Command>
+      </Command>
+    </RemotePostBuildEvent>
+    <Link>
+      <NoExecStackRequired>false</NoExecStackRequired>
+      <Relocation>false</Relocation>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\apiemu.c" />
     <ClCompile Include="..\..\assemble.c" />
@@ -148,8 +228,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\.gitignore" />
-    <None Include="..\..\BuildCustomizations\uasm.props" />
-    <None Include="..\..\BuildCustomizations\uasm.targets" />
+    <None Include="..\..\Clang3.8Linux.mak" />
+    <None Include="..\..\ClangLinux64.mak" />
     <None Include="..\..\ClangOSX64.mak" />
     <None Include="..\..\debian\changelog" />
     <None Include="..\..\debian\compat" />
@@ -164,7 +244,6 @@
     <None Include="..\..\GccDos.mak" />
     <None Include="..\..\gccLinux64.mak" />
     <None Include="..\..\gccmod.inc" />
-    <None Include="..\..\GccUnix.mak" />
     <None Include="..\..\GccWin.mak" />
     <None Include="..\..\GccWin64.mak" />
     <None Include="..\..\include\uasm\cpubits.inc" />
@@ -178,20 +257,15 @@
     <None Include="..\..\include\uasm\types.inc" />
     <None Include="..\..\IntelC32.mak" />
     <None Include="..\..\IntelC64.mak" />
-    <None Include="..\..\Makefile" />
-    <None Include="..\..\makefile.clang" />
-    <None Include="..\..\Makefile.OSX" />
-    <None Include="..\..\Makefile_Linux" />
-    <None Include="..\..\Makefile_OW" />
     <None Include="..\..\msmod.inc" />
     <None Include="..\..\Msvc.mak" />
     <None Include="..\..\Msvc64.mak" />
     <None Include="..\..\MsvcDll.mak" />
-    <None Include="..\..\NIX64_Makefile" />
     <None Include="..\..\OC.mak" />
     <None Include="..\..\OWDOS16.mak" />
     <None Include="..\..\OWLinux.mak" />
     <None Include="..\..\owmod.inc" />
+    <None Include="..\..\OWWin.mak" />
     <None Include="..\..\PCC.mak" />
     <None Include="..\..\PellesC.mak" />
     <None Include="..\..\TCC.mak" />
@@ -279,67 +353,7 @@
     <ClInclude Include="..\..\H\win32.h" />
     <ClInclude Include="..\..\H\win64seh.h" />
     <ClInclude Include="..\..\H\winconsole.h" />
-    <ClInclude Include="..\..\resource.h" />
   </ItemGroup>
-  <ItemGroup>
-    <Xml Include="..\..\BuildCustomizations\uasm.xml" />
-  </ItemGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ClCompile>
-      <PreprocessorDefinitions>DEBUG_OUT;MACROLIB=1;__UNIX__;__LINUX__;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <ShowIncludes>true</ShowIncludes>
-      <AdditionalOptions>-g -O0 -std=c11 -march=broadwell -target x86_64-unknown-linux-gnu</AdditionalOptions>
-      <Optimization>Disabled</Optimization>
-      <OmitFramePointers>false</OmitFramePointers>
-    </ClCompile>
-    <Link />
-    <RemotePostBuildEvent>
-      <Command>
-      </Command>
-    </RemotePostBuildEvent>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
-    <ClCompile>
-      <PreprocessorDefinitions>DEBUG_OUT;MACROLIB=1;__UNIX__;__LINUX__;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <ShowIncludes>true</ShowIncludes>
-      <AdditionalOptions>-g -O0 -std=c11 -march=broadwell -target x86_64-unknown-linux-gnu</AdditionalOptions>
-      <Optimization>Disabled</Optimization>
-      <OmitFramePointers>false</OmitFramePointers>
-    </ClCompile>
-    <Link />
-    <RemotePostBuildEvent>
-      <Command>
-      </Command>
-    </RemotePostBuildEvent>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClCompile>
-      <PreprocessorDefinitions>DEBUG_OUT;MACROLIB=1;__UNIX__;__LINUX__;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <ShowIncludes>true</ShowIncludes>
-      <AdditionalOptions>-g -O0 -std=c11 -march=broadwell -target x86_64-unknown-linux-gnu</AdditionalOptions>
-    </ClCompile>
-    <Link />
-    <RemotePostBuildEvent>
-      <Command>
-      </Command>
-    </RemotePostBuildEvent>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
-    <ClCompile>
-      <PreprocessorDefinitions>DEBUG_OUT;MACROLIB=1;__UNIX__;__LINUX__;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../H;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <ShowIncludes>true</ShowIncludes>
-      <AdditionalOptions>-g -O0 -std=c11 -march=broadwell -target x86_64-unknown-linux-gnu</AdditionalOptions>
-    </ClCompile>
-    <Link />
-    <RemotePostBuildEvent>
-      <Command>
-      </Command>
-    </RemotePostBuildEvent>
-  </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
 </Project>

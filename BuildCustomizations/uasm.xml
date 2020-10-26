@@ -58,7 +58,7 @@
       DisplayName="Generate Preprocessed Source Listing"
       Description="Generates a preprocessed source listing to the Output Window.     (/EP)"
       Switch="-EP" />
-	  
+      
     <BoolProperty
       Name="ListAllAvailableInformation"
       Category="Listing File"
@@ -66,7 +66,7 @@
       DisplayName="List All Available Information"
       Description="Turns on listing of all available information.     (/Sa)"
       Switch="-Sa" />
-	  
+      
     <BoolProperty
       Name="Nomlib"
       Category="Advanced"
@@ -82,7 +82,7 @@
       DisplayName="Use Safe Exception Handlers"
       Description="Marks the object as either containing no exception handlers or containing exception handlers that are all declared with .SAFESEH.     (/safeseh)"
       Switch="-safeseh" />
-	  
+      
     <BoolProperty
       Name="AddFirstPassListing"
       Category="Listing File"
@@ -90,7 +90,7 @@
       DisplayName="Add First Pass Listing"
       Description="Adds first-pass listing to listing file.     (/Sf)"
       Switch="-Sf" />
-	  
+      
     <BoolProperty
       Name="EnableAssemblyGeneratedCodeListing"
       Category="Listing File"
@@ -98,7 +98,7 @@
       DisplayName="Enable Assembly Generated Code Listing"
       Description="Turns on listing of assembly-generated code.     (/Sg)"
       Switch="-Sg" />
-	  
+      
     <BoolProperty
       Name="DisableSymbolTable"
       Category="Listing File"
@@ -106,7 +106,7 @@
       DisplayName="Disable Symbol Table"
       Description="Turns off symbol table when producing a listing.     (/Sn)"
       Switch="-Sn" />
-	  
+      
     <BoolProperty
       Name="EnableFalseConditionalsInListing"
       Category="Listing File"
@@ -114,7 +114,7 @@
       DisplayName="Enable False Conditionals In Listing"
       Description="Turns on false conditionals in listing.     (/Sx)"
       Switch="-Sx" />
-	  
+      
     <StringProperty
       Name="SetErrorLimit"
       Category="Object File"
@@ -130,13 +130,6 @@
       DisplayName="Set errors file name"
       Description="Specifies the name of the errors file name.     (/Fo:[file])"
       Switch="-Fw [value]" />
-
-    <BoolProperty
-      Name="GenerateDebugInformation"
-      HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
-      DisplayName="Generate Debug Information"
-      Description="Generates Debug Information.     (/Zi)"
-      Switch="-Zi" />
 
     <BoolProperty
       Name="EnableMASM51Compatibility"
@@ -447,7 +440,7 @@
       DisplayName="Make All Symbols Public"
       Description="Makes all symbols public.     (/Zf)"
       Switch="-Zf" />
-	  
+      
     <BoolProperty
       Name="StoreDecoratedNames"
       Category="Object File"
@@ -517,7 +510,7 @@
       DisplayName="Assembled Code Listing File"
       Description="Generates an assembled code listing file.     (/Fl[file])"
       Switch="-Fl [value]" />
-	  
+      
     <StringListProperty
       Name="IncludePaths"
       HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
@@ -598,8 +591,16 @@
         Name="2"
         DisplayName="Borland register convention"
         Switch="-zf2" />
+      <EnumValue
+        Name="3"
+        DisplayName="64 bits MS VC style"
+        Switch="-zf3" />
+      <EnumValue
+        Name="4"
+        DisplayName="64 bits SystemV style"
+        Switch="-zf4" />
     </EnumProperty>
-	
+    
       <BoolProperty
         Name="DontDisplayErrors"
         HelpUrl="https://msdn.microsoft.com/library/default.asp?url=/library/en-us/vcmasm/html/vclrfml.asp"
@@ -776,7 +777,7 @@
         DisplayName="Sixty-Four Byte Boundary (/Zp64)"
         Switch="-Zp64" />
     </EnumProperty>
-	
+    
     <EnumProperty
       Name="CallingConvention"
       Category="Advanced"

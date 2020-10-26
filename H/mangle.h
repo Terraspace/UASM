@@ -27,11 +27,12 @@
 * Description:  Declaration for mangler routines (=name decoration)
 *
 ****************************************************************************/
+#pragma once
 
 #ifndef _MANGLE_H_
 #define _MANGLE_H_
 
-extern int  Mangle( struct asym *, char * );
-extern void SetMangler( struct asym *, int, const char * );
+extern int  Mangle(struct asym*, char*);
+extern void SetMangler(struct asym*, uint_16, const char*);
 
 #endif

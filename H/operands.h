@@ -28,6 +28,7 @@
 *               This file is included by parser.h
 *
 ****************************************************************************/
+#pragma once
 
 #ifndef OPERANDS_H
 #define OPERANDS_H

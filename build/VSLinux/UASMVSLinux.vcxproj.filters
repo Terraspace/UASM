@@ -420,9 +420,6 @@
     <ClInclude Include="..\..\H\winconsole.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\resource.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\H\simd.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -501,18 +498,6 @@
     <None Include="..\..\debian\source\format">
       <Filter>debian\source</Filter>
     </None>
-    <None Include="..\..\Makefile">
-      <Filter>Makefiles</Filter>
-    </None>
-    <None Include="..\..\Makefile_Linux">
-      <Filter>Makefiles</Filter>
-    </None>
-    <None Include="..\..\Makefile_OW">
-      <Filter>Makefiles</Filter>
-    </None>
-    <None Include="..\..\NIX64_Makefile">
-      <Filter>Makefiles</Filter>
-    </None>
     <None Include="..\..\GccWin.mak">
       <Filter>Makefiles</Filter>
     </None>
@@ -532,9 +517,6 @@
       <Filter>Makefiles</Filter>
     </None>
     <None Include="..\..\gccLinux64.mak">
-      <Filter>Makefiles</Filter>
-    </None>
-    <None Include="..\..\GccUnix.mak">
       <Filter>Makefiles</Filter>
     </None>
     <None Include="..\..\OWLinux.mak">
@@ -564,9 +546,6 @@
     <None Include="..\..\OWDOS16.mak">
       <Filter>Makefiles</Filter>
     </None>
-    <None Include="..\..\Makefile.OSX">
-      <Filter>Makefiles</Filter>
-    </None>
     <None Include="..\..\gccmod.inc">
       <Filter>Makefiles</Filter>
     </None>
@@ -576,19 +555,19 @@
     <None Include="..\..\owmod.inc">
       <Filter>Makefiles</Filter>
     </None>
-    <None Include="..\..\BuildCustomizations\uasm.props">
-      <Filter>BuildCustomizations</Filter>
-    </None>
-    <None Include="..\..\BuildCustomizations\uasm.targets">
-      <Filter>BuildCustomizations</Filter>
-    </None>
     <None Include="..\..\debian\uasm.dirs">
       <Filter>debian</Filter>
     </None>
     <None Include="..\..\debian\uasm.install">
       <Filter>debian</Filter>
     </None>
-    <None Include="..\..\makefile.clang">
+    <None Include="..\..\ClangLinux64.mak">
+      <Filter>Makefiles</Filter>
+    </None>
+    <None Include="..\..\Clang3.8Linux.mak">
+      <Filter>Makefiles</Filter>
+    </None>
+    <None Include="..\..\OWWin.mak">
       <Filter>Makefiles</Filter>
     </None>
   </ItemGroup>
@@ -598,12 +577,6 @@
     </Filter>
     <Filter Include="Sources">
       <UniqueIdentifier>{b8189196-4d60-439d-88a1-69f66a58d9d7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources">
-      <UniqueIdentifier>{2e9fce11-6fdf-4850-ad22-516e7cc324ae}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="BuildCustomizations">
-      <UniqueIdentifier>{eae9c661-4276-4856-801a-662666e68a8d}</UniqueIdentifier>
     </Filter>
     <Filter Include="include">
       <UniqueIdentifier>{7a53866a-29be-4e3d-ab7c-b7f452330cbd}</UniqueIdentifier>
@@ -617,10 +590,5 @@
     <Filter Include="Makefiles">
       <UniqueIdentifier>{85ec10ab-9674-48c0-bcaa-e51dbce1c36e}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <Xml Include="..\..\BuildCustomizations\uasm.xml">
-      <Filter>BuildCustomizations</Filter>
-    </Xml>
   </ItemGroup>
 </Project>

@@ -1,3 +1,4 @@
+#pragma once
 
 /* prototypes of functions defined in coff.c */
 
@@ -5,10 +6,10 @@
 #define _COFF_H_INCLUDED
 
 struct qditem {
-    uint_8 *next;
+    uint_8* next;
     unsigned size;
 };
 
-extern void coff_init( struct module_info * );
+extern void coff_init(struct module_info*);
 
 #endif

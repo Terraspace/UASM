@@ -1749,6 +1749,7 @@ insx(VPCMPNEQUB,  vpcmpnequb,     OpCls( XMM,     XMM_M128, NONE), F_660F3A, 1, 
 insx(VPCMPNLTUB,  vpcmpnltub,     OpCls( XMM,     XMM_M128, NONE), F_660F3A, 1,  no_WDS, 0x3E,     0x00,       P_686|P_AVX,BSIZE|FVM, RWF_VEX )
 insx(VPCMPNLEUB,  vpcmpnleub,     OpCls( XMM,     XMM_M128, NONE), F_660F3A, 1,  no_WDS, 0x3E,     0x00,       P_686|P_AVX,BSIZE|FVM, RWF_VEX )
 insx(VPCMPTRUEUB, vpcmptrueub,    OpCls( XMM,     XMM_M128, NONE), F_660F3A, 1,  no_WDS, 0x3E,     0x00,       P_686|P_AVX,BSIZE|FVM, RWF_VEX )
+
 insx(VPERMD, vpermd,              OpCls( XMM,     XMM_M128, NONE), F_660F38, 1,  no_WDS, 0x36,     0x00,       P_686|P_AVX,DSIZE|FV,RWF_VEX )
 insx(VPERMW, vpermw,              OpCls( XMM,     XMM_M128, NONE), F_660F38, 1,  no_WDS, 0x8D,     0x00,       P_686|P_AVX,W1|IZSZ|WSIZE|FV,RWF_EVEX|RWF_VEX )
 insx(VPERMB, vpermb,              OpCls( XMM,     XMM_M128, NONE), F_660F38, 1,  no_WDS, 0x8D,     0x00,       P_686|P_AVX,IZSZ|BSIZE|FV,RWF_EVEX|RWF_VEX )

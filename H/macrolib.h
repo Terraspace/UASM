@@ -1,3 +1,4 @@
+#pragma once
 
 #ifndef _MACROLIB_H_
 #define _MACROLIB_H_

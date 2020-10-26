@@ -1562,6 +1562,10 @@
     ENDM
     ENDIF ;CHR$
     
+    IFNDEF TCHR
+    TCHR TEXTEQU <CHR$>
+    ENDIF ;TCHR
+    
     IFNDEF REPARG
     REPARG MACRO arg
         LOCAL nustr,quot
@@ -3612,6 +3616,9 @@
     ENDIF
     IFDEF CHR$
     chr$ TEXTEQU <CHR$>
+    ENDIF
+    IFDEF TCHR
+    tchr TEXTEQU <TCHR>
     ENDIF
     IFDEF REPARG
     reparg TEXTEQU <REPARG>

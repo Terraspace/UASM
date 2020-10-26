@@ -27,7 +27,7 @@
 * Description:  Executable and Linkable Format (ELF) definitions.
 *
 ****************************************************************************/
-
+#pragma once
 
 #ifndef _ELFSPEC_H_INCLUDED_
 #define _ELFSPEC_H_INCLUDED_
@@ -345,73 +345,73 @@ typedef struct {
 // relocation types.
 //386
 enum elf32_relocations {
- R_386_NONE      =  0,
- R_386_32        =  1, /* direct,       S + A     */
- R_386_PC32      =  2, /* PC-relative,  S + A - P */
- R_386_GOT32     =  3, /* GOT entry,    G + A     */
- R_386_PLT32     =  4, /* PLT entry,    L + A - P */
- R_386_COPY      =  5,
- R_386_GLOB_DAT  =  6, /* create GOT entry, S */
- R_386_JMP_SLOT  =  7, /* create PLT entry, S */
- R_386_RELATIVE  =  8, /* rel. to program base, B + A */
- R_386_GOTOFF    =  9, /* offset to GOT, S + A - GOT */
- R_386_GOTPC     = 10, /* GOT + A - P */
- R_386_32PLT     = 11, /* L + A       */
-/* GNU extensions for LD */
- R_386_16        = 20, /* 16-bit direct,      S + A     */
- R_386_PC16      = 21, /* 16-bit PC-relative, S + A - P */
- R_386_8         = 22, /* 8-bit direct,       S + A     */
- R_386_PC8       = 23, /* 8-bit PC-relative,  S + A - P */
- R_386_SEG16     = 45, /* A 16-bit real-mode segment */
- R_386_SUB16     = 46, /* Subtract 16-bit value */
- R_386_SUB32     = 47  /* Subtract 32-bit value */
+    R_386_NONE = 0,
+    R_386_32 = 1, /* direct,       S + A     */
+    R_386_PC32 = 2, /* PC-relative,  S + A - P */
+    R_386_GOT32 = 3, /* GOT entry,    G + A     */
+    R_386_PLT32 = 4, /* PLT entry,    L + A - P */
+    R_386_COPY = 5,
+    R_386_GLOB_DAT = 6, /* create GOT entry, S */
+    R_386_JMP_SLOT = 7, /* create PLT entry, S */
+    R_386_RELATIVE = 8, /* rel. to program base, B + A */
+    R_386_GOTOFF = 9, /* offset to GOT, S + A - GOT */
+    R_386_GOTPC = 10, /* GOT + A - P */
+    R_386_32PLT = 11, /* L + A       */
+   /* GNU extensions for LD */
+   R_386_16 = 20, /* 16-bit direct,      S + A     */
+   R_386_PC16 = 21, /* 16-bit PC-relative, S + A - P */
+   R_386_8 = 22, /* 8-bit direct,       S + A     */
+   R_386_PC8 = 23, /* 8-bit PC-relative,  S + A - P */
+   R_386_SEG16 = 45, /* A 16-bit real-mode segment */
+   R_386_SUB16 = 46, /* Subtract 16-bit value */
+   R_386_SUB32 = 47  /* Subtract 32-bit value */
 };
 
 //X86_64
 enum elf64_relocations {
- R_X86_64_NONE        =   0,
- R_X86_64_64          =   1,    /* S + A     */
- R_X86_64_PC32        =   2,    /* S + A - P */
- R_X86_64_GOT32       =   3,    /* G + A     */
- R_X86_64_PLT32       =   4,    /* L + A - P */
- R_X86_64_COPY        =   5,    /*           */
- R_X86_64_GLOB_DAT    =   6,    /* S         */
- R_X86_64_JUMP_SLOT   =   7,    /* S         */
- R_X86_64_RELATIVE    =   8,    /* B + A     */
- R_X86_64_GOTPCREL    =   9,    /* G + GOT + A - P */
- R_X86_64_32          =  10,    /* S + A     */
- R_X86_64_32S         =  11,    /* S + A     */
- R_X86_64_16          =  12,    /* S + A     */
- R_X86_64_PC16        =  13,    /* S + A - P */
- R_X86_64_8           =  14,    /* S + A     */
- R_X86_64_PC8         =  15,    /* S + A - P */
- R_X86_64_DPTMOD64    =  16,
- R_X86_64_DTPOFF64    =  17,
- R_X86_64_TPOFF64     =  18,
- R_X86_64_TLSGD       =  19,
- R_X86_64_TLSLD       =  20,
- R_X86_64_DTPOFF32    =  21,
- R_X86_64_GOTTPOFF    =  22,
- R_X86_64_TPOFF32     =  23,
- R_X86_64_PC64        =  24,    /* S + A - P   */
- R_X86_64_GOTOFF64    =  25,    /* S + A - GOT */
- R_X86_64_GOTPC32     =  26,    /* GOT + A - P */
- R_X86_64_GOT64       =  27,    /* G + A */
- R_X86_64_GOTPCREL64  =  28,    /* G + GOT - P + A */
- R_X86_64_GOTPC64     =  29,    /* GOT - P + A */
- R_X86_64_GOTPLT64    =  30,    /* G + A */
- R_X86_64_PLTOFF64    =  31,    /* L - GOT + A */
- R_X86_64_SIZE32      =  32,
- R_X86_64_SIZE64      =  33,
- R_X86_64_GOTPC32_TLSDESC = 34, /* word32 */
- R_X86_64_TLSDESC_CALL = 35,    /* none */
- R_X86_64_TLSDESC     =  36,    /* word64?2 */
- R_X86_64_IRELATIVE   =  37,    /*wordclass indirect(B + A)*/
- R_X86_64_RELATIVE64  =  38,    /*word64 B + A*/
- Deprecated           =  39,
- Deprecated2           =  40,
- R_X86_64_GOTPCRELX   =  41,    /*G + GOT + A - P*/
- R_X86_64_REX_GOTPCRELX = 42    /*G + GOT + A - P*/
+    R_X86_64_NONE = 0,
+    R_X86_64_64 = 1,    /* S + A     */
+    R_X86_64_PC32 = 2,    /* S + A - P */
+    R_X86_64_GOT32 = 3,    /* G + A     */
+    R_X86_64_PLT32 = 4,    /* L + A - P */
+    R_X86_64_COPY = 5,    /*           */
+    R_X86_64_GLOB_DAT = 6,    /* S         */
+    R_X86_64_JUMP_SLOT = 7,    /* S         */
+    R_X86_64_RELATIVE = 8,    /* B + A     */
+    R_X86_64_GOTPCREL = 9,    /* G + GOT + A - P */
+    R_X86_64_32 = 10,    /* S + A     */
+    R_X86_64_32S = 11,    /* S + A     */
+    R_X86_64_16 = 12,    /* S + A     */
+    R_X86_64_PC16 = 13,    /* S + A - P */
+    R_X86_64_8 = 14,    /* S + A     */
+    R_X86_64_PC8 = 15,    /* S + A - P */
+    R_X86_64_DPTMOD64 = 16,
+    R_X86_64_DTPOFF64 = 17,
+    R_X86_64_TPOFF64 = 18,
+    R_X86_64_TLSGD = 19,
+    R_X86_64_TLSLD = 20,
+    R_X86_64_DTPOFF32 = 21,
+    R_X86_64_GOTTPOFF = 22,
+    R_X86_64_TPOFF32 = 23,
+    R_X86_64_PC64 = 24,    /* S + A - P   */
+    R_X86_64_GOTOFF64 = 25,    /* S + A - GOT */
+    R_X86_64_GOTPC32 = 26,    /* GOT + A - P */
+    R_X86_64_GOT64 = 27,    /* G + A */
+    R_X86_64_GOTPCREL64 = 28,    /* G + GOT - P + A */
+    R_X86_64_GOTPC64 = 29,    /* GOT - P + A */
+    R_X86_64_GOTPLT64 = 30,    /* G + A */
+    R_X86_64_PLTOFF64 = 31,    /* L - GOT + A */
+    R_X86_64_SIZE32 = 32,
+    R_X86_64_SIZE64 = 33,
+    R_X86_64_GOTPC32_TLSDESC = 34, /* word32 */
+    R_X86_64_TLSDESC_CALL = 35,    /* none */
+    R_X86_64_TLSDESC = 36,    /* word64?2 */
+    R_X86_64_IRELATIVE = 37,    /*wordclass indirect(B + A)*/
+    R_X86_64_RELATIVE64 = 38,    /*word64 B + A*/
+    Deprecated = 39,
+    Deprecated2 = 40,
+    R_X86_64_GOTPCRELX = 41,    /*G + GOT + A - P*/
+    R_X86_64_REX_GOTPCRELX = 42    /*G + GOT + A - P*/
 };
 
 // program header
@@ -554,7 +554,7 @@ typedef struct {
 
 // DT_INITTERM function prototype
 
-typedef unsigned long INITTERM ( unsigned long modhandle, unsigned long flag );
+typedef unsigned long INITTERM(unsigned long modhandle, unsigned long flag);
 
 // elf segment flag bits
 

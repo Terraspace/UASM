@@ -1,3 +1,4 @@
+#pragma once
 
 /* this is Public Domain.
  fastpass.h defines structures and externals which are needed by the
@@ -9,13 +10,13 @@
 
 #if FASTPASS
 
-/* equ_item: used for a linked list of assembly time variables. Any variable
- which is defined or modified after SaveState() has been called is to be stored
- here - once! */
+ /* equ_item: used for a linked list of assembly time variables. Any variable
+  which is defined or modified after SaveState() has been called is to be stored
+  here - once! */
 
 struct equ_item {
-    struct equ_item *next;
-    struct asym *sym;
+    struct equ_item* next;
+    struct asym* sym;
     int lvalue;
     int hvalue;
     enum memtype mem_type; /* v2.07: added */
@@ -28,13 +29,13 @@ struct equ_item {
  */
 
 struct line_item {
-    struct line_item *next;
-    uint_32 lineno:20, srcfile:12;
+    struct line_item* next;
+    uint_32 lineno : 20, srcfile : 12;
     uint_32 list_pos; /* position .LST file */
     char line[1];
 };
 
-extern struct line_item *LineStoreCurr;
+extern struct line_item* LineStoreCurr;
 
 /* mod_state: used to store the module state within SaveState()
  */
@@ -42,10 +43,10 @@ extern struct line_item *LineStoreCurr;
 struct mod_state {
     bool init;           /* is this struct initialized? */
     struct {
-        struct equ_item *head; /* the list of modified assembly time variables */
-        struct equ_item *tail;
+        struct equ_item* head; /* the list of modified assembly time variables */
+        struct equ_item* tail;
     } Equ;
-    uint_8 modinfo[ sizeof( struct module_info ) - sizeof( struct module_vars ) ];
+    uint_8 modinfo[sizeof(struct module_info) - sizeof(struct module_vars)];
 };
 
 /* source lines start to be "stored" when one of the following is detected:
@@ -57,7 +58,7 @@ struct mod_state {
  * - directive ASSUME if operand is a forward reference
  */
 
-//extern struct mod_state modstate;
+ //extern struct mod_state modstate;
 extern bool StoreState; /* is 1 if states are to be stored in pass one */
 
 /* UseSavedState: is TRUE if preprocessed lines are to be read in pass 2,3,...
@@ -67,20 +68,20 @@ extern bool StoreState; /* is 1 if states are to be stored in pass one */
  * the fix proposal is: set the flag - conditionally - AFTER pass one.
  * Also, rename the flag (perhaps UseSavedLines )!
  */
-extern bool UseSavedState; 
+extern bool UseSavedState;
 
 //void SaveState( void );
-extern void FastpassInit( void );
-extern void SegmentSaveState( void );
-extern void AssumeSaveState( void );
-extern void ContextSaveState( void );
-extern void StoreLine( const char *, int, uint_32 );
-extern void SkipSavedState( void );
-extern struct line_item *RestoreState( void );
-extern void SaveVariableState( struct asym *sym );
-extern void FreeLineStore( void );
+void FastpassInit(void);
+void SegmentSaveState(void);
+void AssumeSaveState(void);
+void ContextSaveState(void);
+void StoreLine(const char*, int, uint_32);
+void SkipSavedState(void);
+struct line_item* RestoreState(void);
+void SaveVariableState(struct asym* sym);
+void FreeLineStore(void);
 
-#define FStoreLine( flags ) if ( Parse_Pass == PASS_1 ) StoreLine( CurrSource, flags, 0 ); else
+#define FStoreLine( flags ) if ( Parse_Pass == PASS_1 ) {StoreLine( CurrSource, flags, 0 );} else {}
 
 #else
 

@@ -27,6 +27,7 @@
 * Description:  tbyte format / long double structure definition
 *
 ****************************************************************************/
+#pragma once
 
 #ifndef _TBYTE_H
 #define _TBYTE_H
@@ -36,6 +37,6 @@ struct TB_LD {
     unsigned short e;
 };
 
-extern struct TB_LD *strtotb( const char *bufptr, struct TB_LD *pld, char negative );
+struct TB_LD* strtotb(const char* bufptr, struct TB_LD* pld, char negative);
 
 #endif

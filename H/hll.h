@@ -3,7 +3,7 @@
 * Description:  hll constructs .IF, ...
 *
 ****************************************************************************/
-
+#pragma once
 
 #ifndef _HLL_H_
 #define _HLL_H_

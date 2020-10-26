@@ -15,14 +15,15 @@ SRC_DIR_C = ./
 export DH_OPTIONS
 
 override_dh_auto_build:
-	dh_auto_build -- -C $(SRC_DIR_C) -f makefile.clang
+	dh_auto_build -- -C $(SRC_DIR_C) -f ClangLinux64.mak
 
 # empty override, fills example directory with lots of files
 override_dh_auto_test:
 
 override_dh_auto_clean:
-	#$(MAKE) clean -C $(SRC_DIR_C) -f makefile.clang
+	#$(MAKE) clean -C $(SRC_DIR_C) -f ClangLinux64.mak
 	rm -rf GccUnixR
+	rm -rf GccUnixD
 	rm -rf debian/tmp
 
 #override_dh_auto_install:

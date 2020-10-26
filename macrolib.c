@@ -1,4 +1,3 @@
-
 #include "globals.h"
 #if (defined(BUILD_MACROLIB) && (BUILD_MACROLIB >= 1))
 #include <ctype.h>

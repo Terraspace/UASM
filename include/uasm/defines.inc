@@ -516,6 +516,33 @@
     IFNDEF LANG_DELPHICALL
     LANG_DELPHICALL EQU 12
     ENDIF
+    
+    IFDEF __UNICODE__
+      IFNDEF _UNICODE
+      _UNICODE EQU 1
+      ENDIF
+      IFNDEF UNICODE
+      UNICODE EQU 1
+      ENDIF
+    ENDIF
+
+    IFDEF _UNICODE
+      IFNDEF __UNICODE__
+      __UNICODE__ EQU 1
+      ENDIF
+      IFNDEF UNICODE
+      UNICODE EQU 1
+      ENDIF
+    ENDIF
+    
+    IFDEF UNICODE
+      IFNDEF __UNICODE__
+      __UNICODE__ EQU 1
+      ENDIF
+      IFNDEF _UNICODE
+      _UNICODE EQU 1
+      ENDIF
+    ENDIF
 
     IFDEF CASEMAPNONE
 
@@ -786,56 +813,110 @@
     ret_none EQU RET_NONE
     ENDIF
     
-    IFNDEF LANG_NONE
+    IFDEF LANG_NONE
     lang_none       EQU LANG_NONE
     ENDIF
     
-    IFNDEF LANG_C
+    IFDEF LANG_C
     lang_c          EQU LANG_C
     ENDIF
     
-    IFNDEF LANG_SYSCALL
+    IFDEF LANG_SYSCALL
     lang_syscall    EQU LANG_SYSCALL
     ENDIF
     
-    IFNDEF LANG_STDCALL
+    IFDEF LANG_STDCALL
     lang_stdcall    EQU LANG_STDCALL
     ENDIF
     
-    IFNDEF LANG_PASCAL
+    IFDEF LANG_PASCAL
     lang_pascall     EQU LANG_PASCAL
     ENDIF
     
-    IFNDEF LANG_FORTRAN
+    IFDEF LANG_FORTRAN
     lang_fortran    EQU LANG_FORTRAN
     ENDIF
     
-    IFNDEF LANG_BASIC
+    IFDEF LANG_BASIC
     lang_basic      EQU LANG_BASIC
     ENDIF
     
-    IFNDEF LANG_FASTCALL
+    IFDEF LANG_FASTCALL
     lang_fastcall   EQU LANG_FASTCALL
     ENDIF
     
-    IFNDEF LANG_VECTORCALL
+    IFDEF LANG_VECTORCALL
     lang_vectorcall EQU LANG_VECTORCALL
     ENDIF
     
-    IFNDEF LANG_SYSVCALL
+    IFDEF LANG_SYSVCALL
     lang_sysvcall   EQU LANG_SYSVCALL
     ENDIF
     
-    IFNDEF LANG_REGCALL
+    IFDEF LANG_REGCALL
     lang_regcall    EQU LANG_REGCALL
     ENDIF
     
-    IFNDEF LANG_THISCALL
+    IFDEF LANG_THISCALL
     lang_thiscall   EQU LANG_THISCALL
     ENDIF
     
-    IFNDEF LANG_DELPHICALL
+    IFDEF LANG_DELPHICALL
     lang_delphicall EQU LANG_DELPHICALL
+    ENDIF
+    
+    IFDEF __UNICODE__
+      IFNDEF __unicode__
+      __unicode__ EQU __UNICODE__
+      ENDIF
+    ENDIF
+    
+    IFDEF _UNICODE
+      IFNDEF _unicode
+      _unicode EQU _UNICODE
+      ENDIF
+    ENDIF
+    
+    IFDEF UNICODE
+      IFNDEF _unicode
+      unicode EQU UNICODE
+      ENDIF
+    ENDIF
+    
+    IFDEF __unicode__
+      IFNDEF _unicode
+      _unicode EQU 1
+      ENDIF
+      IFNDEF unicode
+      unicode EQU 1
+      ENDIF
+      IFNDEF __UNICODE__
+      __UNICODE__ EQU __unicode__
+      ENDIF
+    ENDIF
+
+    IFDEF _unicode
+      IFNDEF __unicode__
+      __unicode__ EQU 1
+      ENDIF
+      IFNDEF unicode
+      unicode EQU 1
+      ENDIF
+      IFNDEF _UNICODE
+      _UNICODE EQU _unicode
+      ENDIF
+    ENDIF
+    
+    IFDEF unicode
+      IFNDEF __unicode__
+      __unicode__ EQU 1
+      ENDIF
+      IFNDEF _unicode
+      _unicode EQU 1
+      ENDIF
+      IFNDEF UNICODE
+      UNICODE EQU unicode
+      ENDIF
     ENDIF
 
     ENDIF ;CASEMAPNONE

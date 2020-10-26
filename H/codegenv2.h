@@ -5,138 +5,138 @@
 
 /* This order must remain as-is! */
 enum instr_group {
-	GP0,		/* i86+ encoding group  */
-	GP1,		/* i286+ encoding group */
-	GP2,		/* i386+ encoding group */
-	GP3,        /* 64bit only */
-	GP4,        /* 32bit only */
-	SSE0,       /* SSE */
-	AVX0,
-	AVX1,
-	EVX0,
-	MVX0,
-	FP0,
-	FP1,
-	MMX0
+    GP0,		/* i86+ encoding group  */
+    GP1,		/* i286+ encoding group */
+    GP2,		/* i386+ encoding group */
+    GP3,        /* 64bit only */
+    GP4,        /* 32bit only */
+    SSE0,       /* SSE */
+    AVX0,
+    AVX1,
+    EVX0,
+    MVX0,
+    FP0,
+    FP1,
+    MMX0
 };
 
 enum seg_prefix {
-	PREFIX_ES = 0x26,
-	PREFIX_CS = 0x2E,
-	PREFIX_SS = 0x36,
-	PREFIX_DS = 0x3E,
-	PREFIX_FS = 0x64,
-	PREFIX_GS = 0x65
+    PREFIX_ES = 0x26,
+    PREFIX_CS = 0x2E,
+    PREFIX_SS = 0x36,
+    PREFIX_DS = 0x3E,
+    PREFIX_FS = 0x64,
+    PREFIX_GS = 0x65
 };
 
 enum legacy_prefix {
-	LOCK  = 0xf0,
-	REPNE = 0xf2,
-	REPNZ = 0xf2,
-	REP   = 0xf3,
-	REPE  = 0xf3,
-	REPZ  = 0xf3,
-	BND   = 0xf2,
-	FWAIT = 0x9b
+    LOCK = 0xf0,
+    REPNE = 0xf2,
+    REPNZ = 0xf2,
+    REP = 0xf3,
+    REPE = 0xf3,
+    REPZ = 0xf3,
+    BND = 0xf2,
+    FWAIT = 0x9b
 };
 
 enum op_type {
-	/* Unused operand */
-	OP_N,
-	/* 8 - 64bit sized general purpose registers */
-	R8,
-	R16,
-	R32,
-	R64,
-	/* Special AL/AX/EAX/RAX only register */
-	R8_AL,
-	R16_AX,
-	R32_EAX,
-	R64_RAX,
-	/* Special CL/CX/ECX/RCX only register */
-	R8_CL,
-	R16_CX,
-	R32_ECX,
-	R64_RCX,
-	/* Special DX only register */
-	R16_DX,
-	/* 8 - 64bit sized general purpose registers (64bit mode only) --> EXCLUDING high byte access (AH,BH,CH,DH) and SIL,DIL,BPL,SPL */
-	R8E,
-	R16E,
-	R32E,
-	R64E,
-	/* control and debug registers */
-	R_CR8,
-	R_CR,
-	R_DR,
-	/* high byte access registers (AH,BH,CH,DH) */
-	R8H,
-	/* Uniform low byte 64bit registers (SIL,DIL,BPL,SPL) */
-	R8U,
-	/* FPU 32 - 80bit sized registers */
-	F32,
-	F64,
-	F80,
-	/* segment registers (CS,DS,ES,SS) */
-	R_SEG,
-	/* 386+ segment register (FS,GS) */
-	R_SEGE,
-	/* MMX registers */
-	MMX64,
+    /* Unused operand */
+    OP_N,
+    /* 8 - 64bit sized general purpose registers */
+    R8,
+    R16,
+    R32,
+    R64,
+    /* Special AL/AX/EAX/RAX only register */
+    R8_AL,
+    R16_AX,
+    R32_EAX,
+    R64_RAX,
+    /* Special CL/CX/ECX/RCX only register */
+    R8_CL,
+    R16_CX,
+    R32_ECX,
+    R64_RCX,
+    /* Special DX only register */
+    R16_DX,
+    /* 8 - 64bit sized general purpose registers (64bit mode only) --> EXCLUDING high byte access (AH,BH,CH,DH) and SIL,DIL,BPL,SPL */
+    R8E,
+    R16E,
+    R32E,
+    R64E,
+    /* control and debug registers */
+    R_CR8,
+    R_CR,
+    R_DR,
+    /* high byte access registers (AH,BH,CH,DH) */
+    R8H,
+    /* Uniform low byte 64bit registers (SIL,DIL,BPL,SPL) */
+    R8U,
+    /* FPU 32 - 80bit sized registers */
+    F32,
+    F64,
+    F80,
+    /* segment registers (CS,DS,ES,SS) */
+    R_SEG,
+    /* 386+ segment register (FS,GS) */
+    R_SEGE,
+    /* MMX registers */
+    MMX64,
 
-	/* x86 XMM registers (xmm0-xmm7)  */
-	R_XMM,
-	/* x64 XMM registers (xmm8-xmm15) */
-	R_XMME,
-	/* ANY XMM register (used as a demoted type for 3 opnd forms) */
-	R_XMM_ANY,
-	/* x86 YMM registers (ymm0-ymm7)  */
-	R_YMM,
-	/* x64 YMM registers (ymm8-ymm15) */
-	R_YMME,
-	/* ANY YMM register (used as a demoted type for 3 opnd forms) */
-	R_YMM_ANY,
-	/* AVX 512 registers (zmm0-31) */
-	R_ZMM,
+    /* x86 XMM registers (xmm0-xmm7)  */
+    R_XMM,
+    /* x64 XMM registers (xmm8-xmm15) */
+    R_XMME,
+    /* ANY XMM register (used as a demoted type for 3 opnd forms) */
+    R_XMM_ANY,
+    /* x86 YMM registers (ymm0-ymm7)  */
+    R_YMM,
+    /* x64 YMM registers (ymm8-ymm15) */
+    R_YMME,
+    /* ANY YMM register (used as a demoted type for 3 opnd forms) */
+    R_YMM_ANY,
+    /* AVX 512 registers (zmm0-31) */
+    R_ZMM,
 
-	/* RIP Register and K Registers */
-	R_RIP,
-	R_K,
-	/* Generic memory operands (8-64bit) */
-	M8,
-	M16,
-	M32,
-	M64,
-	M48,
-	M80,
-	/* Memory operands (8-64 bit unsigned) */
-	M8UINT,
-	M16UINT,
-	M32UINT,
-	M64UINT,
-	/* Memory operands (8-64 bit signed) */
-	M8SINT,
-	M16SINT,
-	M32SINT,
-	M64SINT,
-	/* Memory operands - Floating point scalar */
-	M32FLOAT,
-	M64FLOAT,
-	/* Memory operands SSE, AVX, AVX512 */
-	M128,
-	M256,
-	M512,
-	M_ANY,
-	/* Immediate operand (8-64bit) */
-	IMM,
-	IMM8,
-	IMM16,
-	IMM32,
-  IMM48,
-	IMM64, /* 64bit ONLY immediate */	
-	R_STI,
-	R_ST0,
-	R_ST
+    /* RIP Register and K Registers */
+    R_RIP,
+    R_K,
+    /* Generic memory operands (8-64bit) */
+    M8,
+    M16,
+    M32,
+    M64,
+    M48,
+    M80,
+    /* Memory operands (8-64 bit unsigned) */
+    M8UINT,
+    M16UINT,
+    M32UINT,
+    M64UINT,
+    /* Memory operands (8-64 bit signed) */
+    M8SINT,
+    M16SINT,
+    M32SINT,
+    M64SINT,
+    /* Memory operands - Floating point scalar */
+    M32FLOAT,
+    M64FLOAT,
+    /* Memory operands SSE, AVX, AVX512 */
+    M128,
+    M256,
+    M512,
+    M_ANY,
+    /* Immediate operand (8-64bit) */
+    IMM,
+    IMM8,
+    IMM16,
+    IMM32,
+    IMM48,
+    IMM64, /* 64bit ONLY immediate */
+    R_STI,
+    R_ST0,
+    R_ST
 };
 
 #define NO_FLAGS      (0)
@@ -336,36 +336,36 @@ enum op_type {
 #define SIB_IDX_RIP (0x05) << 3
 
 struct Mem_Def {
-	unsigned char  modRM;
-	unsigned char  flags;
-	unsigned char  SIB;
+    unsigned char  modRM;
+    unsigned char  flags;
+    unsigned char  SIB;
 };
 
 struct Instr_Def {
-	const char*       mnemonic;
-	char              operand_count;
-	enum op_type      operand_types[5];
-	enum instr_group  group;
-	uint_32			  flags;
-	uint_32			  vexflags;
-	uint_32			  evexflags;
-	unsigned char     op_elements;		/* Number of elements effected by operation */
-	unsigned char     opcode_bytes;
-	unsigned char     opcode[4];
-	unsigned char     op_size;			/* Size in bytes of operation */
-	unsigned char     srcidx;			/* Which operand is the final source (IE: Not NDS) */
-	unsigned char     modRM;
-	unsigned char     SIB;		
-	unsigned char     useOSO;			/* Must use Operand Size Override when required */
-	unsigned char     useASO;			/* Must use Address Size Override when required */
-	unsigned char     validModes;		/* Valid CPU modes */
-	unsigned char     op_dir;			/* ModRM direction Reg->RM or RM->Reg */
-	uint_32           mandatory_prefix;	/* Mandatory encoding prefix bytes */
-	unsigned char     immOpnd;			/* Which operand is an immediate ? (1-4) */
-	unsigned char     memOpnd;          /* Which operand is a memory address ? (1-4) */
-	unsigned short    cpu;              /* Minimum CPU supported */
-	unsigned int      hash;
-	struct Instr_Def* next;
+    const char* mnemonic;
+    char              operand_count;
+    enum op_type      operand_types[5];
+    enum instr_group  group;
+    uint_32			  flags;
+    uint_32			  vexflags;
+    uint_32			  evexflags;
+    unsigned char     op_elements;		/* Number of elements effected by operation */
+    unsigned char     opcode_bytes;
+    unsigned char     opcode[4];
+    unsigned char     op_size;			/* Size in bytes of operation */
+    unsigned char     srcidx;			/* Which operand is the final source (IE: Not NDS) */
+    unsigned char     modRM;
+    unsigned char     SIB;
+    unsigned char     useOSO;			/* Must use Operand Size Override when required */
+    unsigned char     useASO;			/* Must use Address Size Override when required */
+    unsigned char     validModes;		/* Valid CPU modes */
+    unsigned char     op_dir;			/* ModRM direction Reg->RM or RM->Reg */
+    uint_32           mandatory_prefix;	/* Mandatory encoding prefix bytes */
+    unsigned char     immOpnd;			/* Which operand is an immediate ? (1-4) */
+    unsigned char     memOpnd;          /* Which operand is a memory address ? (1-4) */
+    unsigned short    cpu;              /* Minimum CPU supported */
+    unsigned int      hash;
+    struct Instr_Def* next;
 };
 
 /* Public data */
@@ -373,30 +373,30 @@ extern struct Instr_Def InstrTableV2[];
 
 /* Public functions */
 extern void     BuildInstructionTable(void);
-extern ret_code CodeGenV2(const char* instr, struct code_info *CodeInfo, uint_32 oldofs, uint_32 opCount, struct expr opExpr[4]);
+extern ret_code CodeGenV2(const char* instr, struct code_info* CodeInfo, uint_32 oldofs, uint_32 opCount, struct expr opExpr[4]);
 
 /* Private functions */
-extern enum op_type      DemoteOperand(enum op_type op);
-extern void              InsertInstruction(struct Instr_Def* pInstruction, uint_32 hash);
-extern struct Instr_Def* AllocInstruction();
-extern uint_32           GenerateInstrHash(struct Instr_Def* pInstruction);
-extern struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg, unsigned char encodeMode,
-	                                int srcRegNo, int dstRegNo, struct code_info *CodeInfo);
-extern enum op_type      MatchOperand(struct code_info *CodeInfo, struct opnd_item op, struct expr opExpr);
+enum op_type      DemoteOperand(enum op_type op);
+void              InsertInstruction(struct Instr_Def* pInstruction, uint_32 hash);
+struct Instr_Def* AllocInstruction();
+uint_32           GenerateInstrHash(struct Instr_Def* pInstruction);
+struct Instr_Def* LookupInstruction(struct Instr_Def* instr, bool memReg, unsigned char encodeMode,
+    int srcRegNo, int dstRegNo, struct code_info* CodeInfo);
+enum op_type      MatchOperand(struct code_info* CodeInfo, struct opnd_item op, struct expr opExpr);
 
-extern bool Require_OPND_Size_Override(struct Instr_Def* instr, struct code_info* CodeInfo);
-extern bool Require_ADDR_Size_Override(struct Instr_Def* instr, struct code_info* CodeInfo);
-extern bool IsValidInCPUMode(struct Instr_Def* instr);
+bool Require_OPND_Size_Override(struct Instr_Def* instr, struct code_info* CodeInfo);
+bool Require_ADDR_Size_Override(struct Instr_Def* instr, struct code_info* CodeInfo);
+bool IsValidInCPUMode(struct Instr_Def* instr);
 
-extern unsigned char BuildModRM(unsigned char modRM, struct Instr_Def* instr, struct expr opnd[4], bool* needRM, bool* needSIB,
-						 bool isVEX);																						/* Build instruction ModRM byte */
-extern unsigned char BuildREX(unsigned char RexByte, struct Instr_Def* instr, struct expr opnd[4]);								/* Build REX prefix byte        */
-extern void          BuildVEX(bool* needVex, unsigned char* vexSize, unsigned char* vexBytes,
-	                   struct Instr_Def* instr, struct expr opnd[4], bool needB, bool needX, uint_32 opCount);				/* Build VEX prefix bytes       */
-extern void          BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr, struct expr opnd[4],
-						bool needB, bool needX, bool needRR, uint_32 opCount, struct code_info* CodeInfo);					/* Build EVEX prefix bytes      */
-extern int           BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned char* pREX, bool* needModRM, bool* needSIB,
-	                              unsigned int* dispSize, uint_64* pDisp, struct Instr_Def* instr,
-								  struct expr opExpr[4], bool* needB, bool* needX, 
-								  bool* needRR, struct code_info *CodeInfo);											    /* Build Memory encoding ModRM/SIB bytes   */
-extern unsigned char GetRegisterNo(struct asm_tok *regTok);																		/* Get Register Encoding Number from Token */
+unsigned char BuildModRM(unsigned char modRM, struct Instr_Def* instr, struct expr opnd[4], bool* needRM, bool* needSIB,
+    bool isVEX);																						/* Build instruction ModRM byte */
+unsigned char BuildREX(unsigned char RexByte, struct Instr_Def* instr, struct expr opnd[4]);								/* Build REX prefix byte        */
+void          BuildVEX(bool* needVex, unsigned char* vexSize, unsigned char* vexBytes,
+    struct Instr_Def* instr, struct expr opnd[4], bool needB, bool needX, uint_32 opCount);				/* Build VEX prefix bytes       */
+void          BuildEVEX(bool* needEvex, unsigned char* evexBytes, struct Instr_Def* instr, struct expr opnd[4],
+    bool needB, bool needX, bool needRR, uint_32 opCount, struct code_info* CodeInfo);					/* Build EVEX prefix bytes      */
+int           BuildMemoryEncoding(unsigned char* pmodRM, unsigned char* pSIB, unsigned char* pREX, bool* needModRM, bool* needSIB,
+    unsigned int* dispSize, uint_64* pDisp, struct Instr_Def* instr,
+    struct expr opExpr[4], bool* needB, bool* needX,
+    bool* needRR, struct code_info* CodeInfo);											    /* Build Memory encoding ModRM/SIB bytes   */
+unsigned char GetRegisterNo(struct asm_tok* regTok);																		/* Get Register Encoding Number from Token */

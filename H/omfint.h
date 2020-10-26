@@ -27,7 +27,7 @@
 * Description:  OMF internal definitions.
 *
 ****************************************************************************/
-
+#pragma once
 
 #ifndef OMFINT_H
 #define OMFINT_H    1
@@ -49,9 +49,9 @@
 #define OBJ_BUFFER_SIZE 0x0FF0
 #endif
 
-/*-----------------------------------------------------*/
+ /*-----------------------------------------------------*/
 
-/*  A COMENT record needs additional data to be attached. */
+ /*  A COMENT record needs additional data to be attached. */
 struct coment_info {
     uint_8  attr;           /* attribute field from coment record       */
     uint_8  cmt_class;      /* class field from coment record           */
@@ -140,7 +140,7 @@ struct linsym_info {
 struct omf_rec {
     unsigned    length;  /* # of bytes in 'data'    (PRIVATE)  */
     unsigned    curoff;  /* curr. pos in 'data'     (PRIVATE)  */
-    uint_8      *data;   /* data for this record    (PRIVATE)  */
+    uint_8* data;   /* data for this record    (PRIVATE)  */
     uint_8      command; /* the command field for this record  */
     uint_8      is_32;   /* a Microsoft 32bit record?          */
     union {
@@ -166,7 +166,7 @@ struct omf_rec {
     } d; /* data depending on record type */
 };
 
-extern void omf_write_record( const struct omf_rec * );
+extern void omf_write_record(const struct omf_rec*);
 
 #define FIX_GEN_MAX        11   /* max size needed for OmfFixGenFix() */
 #define FIX_GEN_MODEND_MAX  9   /* max size needed for OmfFixGenFixModend() */
@@ -176,7 +176,7 @@ enum fixgen_types {
     FIX_GEN_MS386
 };
 
-extern unsigned OmfFixGenFix( const struct fixup *fix, uint_32 start_loc, uint_8 *buf, enum fixgen_types type );
-extern unsigned OmfFixGenFixModend( const struct fixup *, uint_8 *buf, uint_32, enum fixgen_types type );
+extern unsigned OmfFixGenFix(const struct fixup* fix, uint_32 start_loc, uint_8* buf, enum fixgen_types type);
+extern unsigned OmfFixGenFixModend(const struct fixup*, uint_8* buf, uint_32, enum fixgen_types type);
 
 #endif

@@ -27,7 +27,7 @@
 * Description:  Uasm globals and limits.
 *
 ****************************************************************************/
-
+#pragma once
 
 #ifndef _GLOBALS_H_INCLUDED
 #define _GLOBALS_H_INCLUDED
@@ -79,10 +79,9 @@
 
 #if (defined(INCREASEDMAXLINELENGHT) && (INCREASEDMAXLINELENGHT >= 1))
 #define MAX_LINE_LEN            25600  /* no restriction for this number */
-#define MAX_RESTRICT_LINE_LEN   1024  /*(MAX_LINE_LEN/25)*/  /* no restriction for this number */
-#define MAX_TOKEN               MAX_RESTRICT_LINE_LEN - 32  /* max tokens in one line */
-#define MAX_STRING_LEN          MAX_RESTRICT_LINE_LEN - 32 /* must be < MAX_LINE_LEN */
-#define MAX_ID_LEN              MAX_RESTRICT_LINE_LEN - 247 /* must be < MAX_LINE_LEN */
+#define MAX_TOKEN               MAX_LINE_LEN - 800  /* max tokens in one line */
+#define MAX_STRING_LEN          MAX_LINE_LEN - 800 /* must be < MAX_LINE_LEN */
+#define MAX_ID_LEN              MAX_LINE_LEN - 6175 /* must be < MAX_LINE_LEN */
 #define MAX_STRUCT_ALIGN        64
 #define MAX_SEGMENT_ALIGN       4096 /* maximum alignment/packing setting for segments */
 #define MAX_IF_NESTING          32 /* IFxx block nesting. Must be <=32, see condasm.c */
@@ -93,7 +92,6 @@
 #define LNAME_NULL              0   /* OMF first entry in lnames array */
 #else
 #define MAX_LINE_LEN            1024 /* no restriction for this number */
-#define MAX_RESTRICT_LINE_LEN   MAX_LINE_LEN /* no restriction for this number */
 #define MAX_TOKEN               MAX_LINE_LEN - 32 /* max tokens in one line */
 #define MAX_STRING_LEN          MAX_LINE_LEN - 32 /* must be < MAX_LINE_LEN */
 #define MAX_ID_LEN              247  /* must be < MAX_LINE_LEN */
@@ -179,7 +177,7 @@
 #define AVXSUPP      1 /* support AVX extensions                 */
 #endif
 #ifndef EVEXSUPP
-#define EVEXSUPP      0 /* support AVX extensions                 */
+#define EVEXSUPP      1 /* support AVX extensions                 */
 #endif
 #ifndef COMDATSUPP
 #define COMDATSUPP   1 /* support COMDAT segment attribute       */
@@ -290,22 +288,22 @@ extern unsigned char _ltype[];  /* Label type array */
 #define is_valid_first_char( c ) ((_ltype[(unsigned char)(c) + 1] & _LABEL) || ((c) == '.' ))
 
 /* function return values */
-typedef enum 
+typedef enum
 {
- EMPTY           = -2,
- ERROR           = -1,
- NOT_ERROR       = 0,
- STRING_EXPANDED = 1
+    EMPTY = -2,
+    ERROR = -1,
+    NOT_ERROR = 0,
+    STRING_EXPANDED = 1
 } ret_code;
 
-enum 
+enum
 {
     PASS_1 = 0,
     PASS_2
 };
 
 /* output formats. Order must match formatoptions[] in assemble.c */
-enum oformat 
+enum oformat
 {
     OFORMAT_BIN, /* used by -bin, -mz and -pe */
     OFORMAT_OMF,
@@ -314,7 +312,7 @@ enum oformat
     OFORMAT_MAC, /* used by -macho64 */
 };
 
-enum sformat 
+enum sformat
 {
     SFORMAT_NONE,
     SFORMAT_MZ,    /* MZ binary */
@@ -322,7 +320,7 @@ enum sformat
     SFORMAT_64BIT, /* 64bit COFF or ELF */
 };
 
-enum fpo 
+enum fpo
 {
     FPO_NO_EMULATION,  /* -FPi87 (default) */
     FPO_EMULATION      /* -FPi */
@@ -333,18 +331,18 @@ enum fpo
  * returned by OPATTR and used in user-defined prologue/epilogue.
  */
 enum lang_type {
-    LANG_NONE       = 0,
-    LANG_C          = 1,
-    LANG_SYSCALL    = 2,
-    LANG_STDCALL    = 3,
-    LANG_PASCAL     = 4,
-    LANG_FORTRAN    = 5,
-    LANG_BASIC      = 6,
-    LANG_FASTCALL   = 7,
+    LANG_NONE = 0,
+    LANG_C = 1,
+    LANG_SYSCALL = 2,
+    LANG_STDCALL = 3,
+    LANG_PASCAL = 4,
+    LANG_FORTRAN = 5,
+    LANG_BASIC = 6,
+    LANG_FASTCALL = 7,
     LANG_VECTORCALL = 8,
-    LANG_SYSVCALL   = 9,
-    LANG_REGCALL    = 10,
-    LANG_THISCALL   = 11,
+    LANG_SYSVCALL = 9,
+    LANG_REGCALL = 10,
+    LANG_THISCALL = 11,
     LANG_DELPHICALL = 12  // 
 };
 
@@ -353,14 +351,14 @@ enum lang_type {
  * the value of the predefined @Model symbol.
  */
 enum model_type {
-    MODEL_NONE    = 0,
-    MODEL_TINY    = 1,
-    MODEL_SMALL   = 2,
+    MODEL_NONE = 0,
+    MODEL_TINY = 1,
+    MODEL_SMALL = 2,
     MODEL_COMPACT = 3,
-    MODEL_MEDIUM  = 4,
-    MODEL_LARGE   = 5,
-    MODEL_HUGE    = 6,
-    MODEL_FLAT    = 7,
+    MODEL_MEDIUM = 4,
+    MODEL_LARGE = 5,
+    MODEL_HUGE = 6,
+    MODEL_FLAT = 7,
 };
 
 #define SIZE_DATAPTR 0x68 /* far for COMPACT, LARGE, HUGE */
@@ -399,60 +397,60 @@ enum cpu_info {
      * bit 4-7:   cpu type
      * bit 8-15;  extension set
      */
-    P_NO87  = 0x0001,         /* no FPU */
-    P_87    = 0x0002,         /* 8087 */
-    P_287   = 0x0003,         /* 80287 */
-    P_387   = 0x0004,         /* 80387 */
+    P_NO87 = 0x0001,         /* no FPU */
+    P_87 = 0x0002,         /* 8087 */
+    P_287 = 0x0003,         /* 80287 */
+    P_387 = 0x0004,         /* 80387 */
 
-    P_PM    = 0x0008,         /* privileged opcode */
+    P_PM = 0x0008,         /* privileged opcode */
 
-    P_86    = 0x0000,         /* 8086, default */
-    P_186   = 0x0010,         /* 80186 */
-    P_286   = 0x0020,         /* 80286 */
-    P_386   = 0x0030,         /* 80386 */
-    P_486   = 0x0040,         /* 80486 */
-    P_586   = 0x0050,         /* pentium */
-    P_686   = 0x0060,         /* ppro */
+    P_86 = 0x0000,         /* 8086, default */
+    P_186 = 0x0010,         /* 80186 */
+    P_286 = 0x0020,         /* 80286 */
+    P_386 = 0x0030,         /* 80386 */
+    P_486 = 0x0040,         /* 80486 */
+    P_586 = 0x0050,         /* pentium */
+    P_686 = 0x0060,         /* ppro */
 #if AMD64_SUPPORT
-    P_64    = 0x0070,         /* x64 cpu */
+    P_64 = 0x0070,         /* x64 cpu */
 #endif
 
-    P_286p  = P_286 | P_PM,   /* 286, priv mode */
-    P_386p  = P_386 | P_PM,   /* 386, priv mode */
-    P_486p  = P_486 | P_PM,   /* 486, priv mode */
-    P_586p  = P_586 | P_PM,   /* 586, priv mode */
-    P_686p  = P_686 | P_PM,   /* 686, priv mode */
+    P_286p = P_286 | P_PM,   /* 286, priv mode */
+    P_386p = P_386 | P_PM,   /* 386, priv mode */
+    P_486p = P_486 | P_PM,   /* 486, priv mode */
+    P_586p = P_586 | P_PM,   /* 586, priv mode */
+    P_686p = P_686 | P_PM,   /* 686, priv mode */
 #if AMD64_SUPPORT
-    P_64p   = P_64 | P_PM,    /* x64, priv mode */
+    P_64p = P_64 | P_PM,    /* x64, priv mode */
 #endif
 
-    P_MMX   = 0x0100,         /* MMX extension instructions */
+    P_MMX = 0x0100,         /* MMX extension instructions */
 #if K3DSUPP
-    P_K3D   = 0x0200,         /* 3DNow extension instructions */
+    P_K3D = 0x0200,         /* 3DNow extension instructions */
 #endif
-    P_SSE1  = 0x0400,         /* SSE1 extension instructions */
-    P_SSE2  = 0x0800,         /* SSE2 extension instructions */
-    P_SSE3  = 0x1000,         /* SSE3 extension instructions */
+    P_SSE1 = 0x0400,         /* SSE1 extension instructions */
+    P_SSE2 = 0x0800,         /* SSE2 extension instructions */
+    P_SSE3 = 0x1000,         /* SSE3 extension instructions */
 #if SSSE3SUPP
     P_SSSE3 = 0x2000,         /* SSSE3 extension instructions */
 #if SSE4SUPP
-    P_SSE4  = 0x4000,         /* SSE4 extension instructions */
+    P_SSE4 = 0x4000,         /* SSE4 extension instructions */
 #if AVXSUPP
-    P_AVX   = 0x8000,         /* AVX extension instructions */
+    P_AVX = 0x8000,         /* AVX extension instructions */
 #endif
 #endif
 #endif
     /* all SSE extension instructions */
 #if SSSE3SUPP
- #if SSE4SUPP
-  #if AVXSUPP
+#if SSE4SUPP
+#if AVXSUPP
     P_SSEALL = P_SSE1 | P_SSE2 | P_SSE3 | P_SSSE3 | P_SSE4 | P_AVX,
-  #else
+#else
     P_SSEALL = P_SSE1 | P_SSE2 | P_SSE3 | P_SSSE3 | P_SSE4,
-  #endif
- #else
+#endif
+#else
     P_SSEALL = P_SSE1 | P_SSE2 | P_SSE3 | P_SSSE3,
- #endif
+#endif
 #else
     P_SSEALL = P_SSE1 | P_SSE2 | P_SSE3,
 #endif
@@ -463,27 +461,27 @@ enum cpu_info {
 
 #if K3DSUPP
     P_EXT_MASK = P_MMX | P_K3D | P_SSEALL,
-    P_EXT_ALL  = P_MMX | P_K3D | P_SSEALL
+    P_EXT_ALL = P_MMX | P_K3D | P_SSEALL
 #else
     P_EXT_MASK = P_MMX | P_SSEALL,
-    P_EXT_ALL  = P_MMX | P_SSEALL
+    P_EXT_ALL = P_MMX | P_SSEALL
 #endif
 };
 
 /* the MASM compatible @CPU value flags: */
 enum masm_cpu {
     M_8086 = 0x0001, /* 8086 */
-    M_186  = 0x0002, /* 186 */
-    M_286  = 0x0004, /* 286 */
-    M_386  = 0x0008, /* 386 */
-    M_486  = 0x0010, /* 486 */
-    M_586  = 0x0020, /* Pentium */
-    M_686  = 0x0040, /* PPro */
+    M_186 = 0x0002, /* 186 */
+    M_286 = 0x0004, /* 286 */
+    M_386 = 0x0008, /* 386 */
+    M_486 = 0x0010, /* 486 */
+    M_586 = 0x0020, /* Pentium */
+    M_686 = 0x0040, /* PPro */
     M_CPUMSK = 0x007F,
     M_PROT = 0x0080, /* protected instructions ok */
     M_8087 = 0x0100, /* 8087 */
-    M_287  = 0x0400, /* 287 */
-    M_387  = 0x0800  /* 387 */
+    M_287 = 0x0400, /* 287 */
+    M_387 = 0x0800  /* 387 */
 };
 
 #if MANGLERSUPP
@@ -492,11 +490,11 @@ enum naming_types {
     /*  put uscores on the front of labels & the back of procedures.
      * this is what the OW compiler does with /3r
      */
-    NC_ADD_USCORES,
-    /* assume that the user manually put uscores as described above
-     * into the assembly file and take them off
-     */
-    NC_REMOVE_USCORES
+     NC_ADD_USCORES,
+     /* assume that the user manually put uscores as described above
+      * into the assembly file and take them off
+      */
+      NC_REMOVE_USCORES
 };
 #endif
 
@@ -515,8 +513,10 @@ enum segofssize {
 enum fastcall_type {
     FCT_MSC,        /* MS 16-/32-bit fastcall (ax,dx,cx / ecx,edx) */
     FCT_WATCOMC,    /* OW register calling convention (eax, ebx, ecx, edx) */
-    FCT_WIN64       /* Win64 fastcall convention (rcx, rdx, r8, r9) */
+    FCT_WIN64,      /* Win64 fastcall convention (rcx, rdx, r8, r9) */
+    FCT_SYSV64      /* Linux64|MAC calling convention (rdi, rsi, rdx, rcx, r8, r9) */
 };
+
 enum delphi_type {
     FCT_DELPHI       /* delphi fastcall convention (eax, edx, ecx ) */
 };
@@ -556,7 +556,7 @@ enum regcall_version
 };
 
 struct qitem {
-    void *next;
+    void* next;
     char value[1];
 };
 
@@ -628,7 +628,7 @@ enum offset_type {
 enum line_output_flags {
     LOF_LISTED = 1, /* line written to .LST file */
 #if FASTPASS
-    LOF_SKIPPOS  = 2, /* suppress setting list_pos */
+    LOF_SKIPPOS = 2, /* suppress setting list_pos */
     //LOF_STORED = 2  /* line stored in line buffer for FASTPASS */
 #endif
 };
@@ -636,19 +636,19 @@ enum line_output_flags {
 /* flags for win64_flags */
 enum win64_flag_values {
     W64F_SAVEREGPARAMS = 0x01, /* 1=save register params in shadow space on proc entry */
-    W64F_AUTOSTACKSP   = 0x02, /* 1=calculate required stack space for arguments of INVOKE */
-    W64F_STACKALIGN16  = 0x04, /* 1=stack variables are 16-byte aligned; added in v2.12 */
-    W64F_SMART         = 0x08, /* 1=takes care of everything */
+    W64F_AUTOSTACKSP = 0x02, /* 1=calculate required stack space for arguments of INVOKE */
+    W64F_STACKALIGN16 = 0x04, /* 1=stack variables are 16-byte aligned; added in v2.12 */
+    W64F_SMART = 0x08, /* 1=takes care of everything */
     W64F_HABRAN = W64F_SAVEREGPARAMS | W64F_AUTOSTACKSP | W64F_SMART,
     W64F_ALL = W64F_SAVEREGPARAMS | W64F_AUTOSTACKSP | W64F_STACKALIGN16 | W64F_SMART, /* all valid flags */
 };
 
 /* codeview debug info extend */
 enum cvex_values {
-    CVEX_MIN     = 0, /* globals */
+    CVEX_MIN = 0, /* globals */
     CVEX_REDUCED = 1, /* globals and locals */
-    CVEX_NORMAL  = 2, /* globals, locals and types */
-    CVEX_MAX     = 3, /* globals, locals, types and constants */
+    CVEX_NORMAL = 2, /* globals, locals and types */
+    CVEX_MAX = 3, /* globals, locals, types and constants */
 };
 
 /* codeview debug info option flags */
@@ -699,8 +699,8 @@ struct global_options {
     bool        dump_symbols;            /* -ds option */
     bool        dump_symbols_hash;       /* -dsh option */
 #endif
-    char        *names[OPTN_LAST];
-    struct qitem *queues[OPTQ_LAST];
+    char* names[OPTN_LAST];
+    struct qitem* queues[OPTQ_LAST];
 #if COCTALS
     bool        allow_c_octals;          /* -o option */
 #endif
@@ -771,7 +771,7 @@ struct MZDATA {
 
 #if DLLIMPORT
 struct dll_desc {
-    struct dll_desc *next;
+    struct dll_desc* next;
     int cnt;     /* a function of this dll was used by INVOKE */
     char name[1];
 };
@@ -784,7 +784,7 @@ struct hll_item;
 struct context;
 
 struct fname_item {
-    char    *fname;
+    char* fname;
     //char    *fullname; /* v2.11: removed */
     //time_t  mtime; /* v2.11: removed */
 #ifdef DEBUG_OUT
@@ -806,40 +806,40 @@ struct module_vars {
 #endif
     struct qdesc        LibQueue;        /* includelibs */
 #if DLLIMPORT
-    struct dll_desc     *DllQueue;       /* dlls of OPTION DLLIMPORT */
+    struct dll_desc* DllQueue;       /* dlls of OPTION DLLIMPORT */
 #endif
 #if PE_SUPPORT || DLLIMPORT
-    char                *imp_prefix;
+    char* imp_prefix;
 #endif
-    FILE                *curr_file[NUM_FILE_TYPES];  /* ASM, ERR, OBJ and LST */
-    char                *curr_fname[NUM_FILE_TYPES];
-    struct fname_item   *FNames;         /* array of input files */
+    FILE* curr_file[NUM_FILE_TYPES];  /* ASM, ERR, OBJ and LST */
+    char* curr_fname[NUM_FILE_TYPES];
+    struct fname_item* FNames;         /* array of input files */
     unsigned            cnt_fnames;      /* items in FNames array */
-    char                *IncludePath;
+    char* IncludePath;
     struct qdesc        line_queue;      /* line queue */
-    struct src_item     *src_stack;      /* source item (files & macros) stack */
+    struct src_item* src_stack;      /* source item (files & macros) stack */
     union {
-        struct fixup    *start_fixup;    /* OMF only */
-        struct asym     *start_label;    /* non-OMF only: start label */
+        struct fixup* start_fixup;    /* OMF only */
+        struct asym* start_label;    /* non-OMF only: start label */
     };
     uint_32             start_displ;     /* OMF only, optional displ for start label */
-    struct hll_item     *HllStack;       /* for .WHILE, .IF, .REPEAT */
-    struct hll_item     *HllFree;        /* v2.06: stack of free <struct hll>-items */
-    struct context      *ContextStack;
-    struct context      *ContextFree;    /* v2.10: "free items" heap implemented. */
+    struct hll_item* HllStack;       /* for .WHILE, .IF, .REPEAT */
+    struct hll_item* HllFree;        /* v2.06: stack of free <struct hll>-items */
+    struct context* ContextStack;
+    struct context* ContextFree;    /* v2.10: "free items" heap implemented. */
 #if FASTPASS
-    struct context      *SavedContexts;
+    struct context* SavedContexts;
     int                 cntSavedContexts;
 #endif
     /* v2.10: moved here from module_info due to problems if @@: occured on the very first line */
     unsigned            anonymous_label; /* "anonymous label" counter */
 #if STACKBASESUPP
-    struct asym         *StackBase;
-    struct asym         *ProcStatus;
+    struct asym* StackBase;
+    struct asym* ProcStatus;
 #endif
-    ret_code (* WriteModule)( struct module_info * );
-    ret_code (* EndDirHook)( struct module_info * );
-    ret_code (* Pass1Checks)( struct module_info * );
+    ret_code(*WriteModule)(struct module_info*);
+    ret_code(*EndDirHook)(struct module_info*);
+    ret_code(*Pass1Checks)(struct module_info*);
 #if PE_SUPPORT
     uint_8              pe_flags;        /* for PE */
 #endif
@@ -849,12 +849,12 @@ struct format_options;
 
 struct module_info {
     struct module_vars  g;
-    char                *proc_prologue;  /* prologue macro if PEM_MACRO */
-    char                *proc_epilogue;  /* epilogue macro if PEM_MACRO */
+    char* proc_prologue;  /* prologue macro if PEM_MACRO */
+    char* proc_epilogue;  /* epilogue macro if PEM_MACRO */
 #if DLLIMPORT
-    struct dll_desc     *CurrDll;        /* OPTION DLLIMPORT dll */
+    struct dll_desc* CurrDll;        /* OPTION DLLIMPORT dll */
 #endif
-    const struct format_options *fmtopt; /* v2.07: added */
+    const struct format_options* fmtopt; /* v2.07: added */
     unsigned            hll_label;       /* hll directive label counter */
     enum dist_type      distance;        /* stack distance */
     enum model_type     model;           /* memory model */
@@ -877,45 +877,45 @@ struct module_info {
     unsigned char       defOfssize;      /* default segment offset size (16,32 [,64]-bit) */
     unsigned char       wordsize;        /* current word size (2,4,8) */
     unsigned char       inside_comment;  /* v2.10: moved from tokenize.c */
-    
+
     unsigned            arch : 1;        /* option arch:{avx/sse} 1=AVX(default architecture), 0=SSE for generated code */
     unsigned            redzone : 1;     /* option redzone:{yes/no} 1=use, 0=dont use redzone */
 
-    unsigned            case_sensitive:1;     /* option casemap */
-    unsigned            convert_uppercase:1;  /* option casemap */
-    unsigned            procs_private:1; /* option proc:private */
-    unsigned            procs_export:1;  /* option proc:export */
-    unsigned            dotname:1;       /* option dotname */
-    unsigned            ljmp:1;          /* option ljmp */
-    unsigned            m510:1;          /* option m510 */
-    unsigned            scoped:1;        /* option scoped */
-    unsigned            oldstructs:1;    /* option oldstructs */
-    unsigned            emulator:1;      /* option emulator */
-    unsigned            setif2:1;        /* option setif2 */
-    unsigned            list:1;          /* .list/.nolist */
-    unsigned            cref:1;          /* .cref/.nocref */
-    unsigned            listif:1;        /* .listif/.nolistif */
-    unsigned            list_generated_code:1; /* .listall, -Sa, -Sg */
-    unsigned            StartupDirectiveFound:1;
-    unsigned            EndDirFound:1;
+    unsigned            case_sensitive : 1;     /* option casemap */
+    unsigned            convert_uppercase : 1;  /* option casemap */
+    unsigned            procs_private : 1; /* option proc:private */
+    unsigned            procs_export : 1;  /* option proc:export */
+    unsigned            dotname : 1;       /* option dotname */
+    unsigned            ljmp : 1;          /* option ljmp */
+    unsigned            m510 : 1;          /* option m510 */
+    unsigned            scoped : 1;        /* option scoped */
+    unsigned            oldstructs : 1;    /* option oldstructs */
+    unsigned            emulator : 1;      /* option emulator */
+    unsigned            setif2 : 1;        /* option setif2 */
+    unsigned            list : 1;          /* .list/.nolist */
+    unsigned            cref : 1;          /* .cref/.nocref */
+    unsigned            listif : 1;        /* .listif/.nolistif */
+    unsigned            list_generated_code : 1; /* .listall, -Sa, -Sg */
+    unsigned            StartupDirectiveFound : 1;
+    unsigned            EndDirFound : 1;
 #if AMD64_SUPPORT
-    unsigned            frame_auto:1;    /* win64 only */
+    unsigned            frame_auto : 1;    /* win64 only */
 #endif
-    unsigned            NoSignExtend:1;  /* option nosignextend */
-    unsigned            switch_style:1;
+    unsigned            NoSignExtend : 1;  /* option nosignextend */
+    unsigned            switch_style : 1;
 #if ELF_SUPPORT || AMD64_SUPPORT || MZ_SUPPORT
     union {
 #if ELF_SUPPORT || AMD64_SUPPORT
         struct {
 #if ELF_SUPPORT
-        uint_8          elf_osabi;       /* for ELF */
+            uint_8          elf_osabi;       /* for ELF */
 #endif
-        uint_32         switch_size;
+            uint_32         switch_size;
 #if AMD64_SUPPORT
-        uint_8          win64_flags;     /* for WIN64 + PE(32+) */
+            uint_8          win64_flags;     /* for WIN64 + PE(32+) */
 #endif
 #if MACHO_SUPPORT
-        uint_8          osx_osabi;      /* for OSX Macho */
+            uint_8          osx_osabi;      /* for OSX Macho */
 #endif
         };
 #endif
@@ -935,15 +935,15 @@ struct module_info {
     unsigned char       cv_opt;          /* option codeview */
 #endif
     unsigned            srcfile;         /* main source file - is an index for FNames[] */
-    struct dsym         *currseg;        /* currently active segment */
-    struct dsym         *flat_grp;       /* magic FLAT group */
-    uint_8              *pCodeBuff;
+    struct dsym* currseg;        /* currently active segment */
+    struct dsym* flat_grp;       /* magic FLAT group */
+    uint_8* pCodeBuff;
     unsigned int        GeneratedCode;   /* nesting level generated code */
     /* input members */
-    char                *currsource;     /* current source line */
-    char                *CurrComment;    /* current comment */
-    struct asm_tok      *tokenarray;     /* start token buffer */
-    char                *stringbufferend;/* start free space in string buffer */
+    char* currsource;     /* current source line */
+    char* CurrComment;    /* current comment */
+    struct asm_tok* tokenarray;     /* start token buffer */
+    char* stringbufferend;/* start free space in string buffer */
     int                 token_count;     /* number of tokens in curr line */
 #if STACKBASESUPP
     unsigned            basereg[3];      /* stack base register (16-, 32-, 64-bit */
@@ -977,7 +977,7 @@ struct extra_flags {
 #define H_LONG_MAX      2147483647L      // maximum (signed) long value
 
 struct format_options {
-    void (*init)( struct module_info * );
+    void (*init)(struct module_info*);
     short invalid_fixup_type;
     const char formatname[6];
 };
@@ -1010,24 +1010,27 @@ extern bool                  gmaskflag;
 
 struct fixup;
 
-extern void             OutputByte( unsigned char );
-extern void             OutputBinBytes( unsigned char* pBytes, uint_32 len );
+extern void             OutputByte(unsigned char);
+extern void             OutputBinBytes(unsigned char* pBytes, uint_32 len);
 
 //extern void             OutputCodeByte( unsigned char );
-extern void             FillDataBytes( unsigned char, int len );
-extern void             OutputBytes( const unsigned char *, int len, struct fixup * );
+extern void             FillDataBytes(unsigned char, int len);
+extern void             OutputBytes(const unsigned char*, int len, struct fixup*);
 #ifdef __SW_BD
-extern int  __stdcall   AssembleModule( const char * );
+extern int  __stdcall   AssembleModule(const char*);
 #else
-extern int              AssembleModule( const char * );
+extern int              AssembleModule(const char*);
 #endif
-extern void             AddLinnumDataRef( unsigned, uint_32 );
-extern void             SetMasm510( bool );
-extern void             close_files( void );
-extern char             *myltoa( uint_32 value, char *buffer, unsigned radix, bool sign, bool addzero );
-extern char             *myqtoa(uint_64 value, char *buffer, unsigned radix, bool sign, bool addzero);
-extern char             *num2hex64(uint_64 value, char *buffer);
-extern char             *ConvertSectionName( const struct asym *, enum seg_type *pst, char *buffer );
+extern void             AddLinnumDataRef(unsigned, uint_32);
+extern void             SetMasm510(bool);
+extern void             close_files(void);
+extern char* myltoa(uint_32 value, char* buffer, unsigned radix, bool sign, bool addzero);
+extern char* myqtoa(uint_64 value, char* buffer, unsigned radix, bool sign, bool addzero);
+extern char* num2hex64(uint_64 value, char* buffer);
+extern char* ConvertSectionName(const struct asym*, enum seg_type* pst, char* buffer);
 extern void             RewindToWin64(void);
+extern void             RewindToSYSV64(void);
+
+extern char* strupr(char* str);
 
 #endif

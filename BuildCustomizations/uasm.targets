@@ -61,7 +61,6 @@
       EnableFalseConditionalsInListing="%(UASM.EnableFalseConditionalsInListing)"
       SetErrorLimit="%(UASM.SetErrorLimit)"
       ErrorsFileName="%(UASM.ErrorsFileName)"
-      GenerateDebugInformation="%(UASM.GenerateDebugInformation)"
       EnableMASM51Compatibility="%(UASM.EnableMASM51Compatibility)"
       StrictMASMCompatibility="%(UASM.StrictMASMCompatibility)"
       MASMCodeGen="%(UASM.MASMCodeGen)"

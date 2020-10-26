@@ -1,3 +1,4 @@
+#pragma once
 
 /* PE definitions
  * see also: coffspec.h
@@ -183,8 +184,8 @@ struct IMAGE_RESOURCE_DIRECTORY { /* size 16 */
 struct IMAGE_RESOURCE_DIRECTORY_ENTRY { /* size 8 */
     union {
         struct {
-            uint_32 NameOffset:31;
-            uint_32 NameIsString:1; /* is 1 if id is a name */
+            uint_32 NameOffset : 31;
+            uint_32 NameIsString : 1; /* is 1 if id is a name */
         };
         uint_32 Name; /* ID is an offset to an IMAGE_RESOURCE_DIR_STRING_U struct */
         uint_16 Id;   /* ID is an integer (usually a resource type ) */
@@ -192,8 +193,8 @@ struct IMAGE_RESOURCE_DIRECTORY_ENTRY { /* size 8 */
     union {
         uint_32 OffsetToData;
         struct {
-            uint_32 OffsetToDirectory:31;
-            uint_32 DataIsDirectory:1;
+            uint_32 OffsetToDirectory : 31;
+            uint_32 DataIsDirectory : 1;
         };
     };
 };

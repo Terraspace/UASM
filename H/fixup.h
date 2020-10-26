@@ -27,6 +27,7 @@
 * Description:  fixup related variables and routines
 *
 ****************************************************************************/
+#pragma once
 
 #ifndef FIXUP_H
 #define FIXUP_H
@@ -34,24 +35,24 @@
 /* RELOFF8 - RELOFF32 must be consecutive */
 
 enum fixup_types {
-        FIX_VOID = 0,       /*  0, fixup is to be ignored */
-        FIX_RELOFF8,        /*  1, 1 byte */
-        FIX_RELOFF16,       /*  2, 2 byte */
-        FIX_RELOFF32,       /*  3, 4 byte */
-        FIX_OFF8,           /*  4, 1 byte, OMF, BIN + GNU-ELF only */
-        FIX_OFF16,          /*  5, 2 byte */
-        FIX_OFF32,          /*  6, 4 byte */
-        FIX_OFF64,          /*  7, 8 byte, COFF64, ELF64 + BIN only */
-        FIX_SEG = 8,        /*  8, 2 byte */
-        FIX_PTR16,          /*  9, 4 byte, OMF+BIN-MZ only */
-        FIX_PTR32,          /* 10, 6 byte, OMF+BIN-MZ only */
-        FIX_HIBYTE,         /* 11, 1 byte, OMF+BIN-MZ only */
-        FIX_OFF32_IMGREL,   /* 12, 4 byte, COFF+ELF only */
-        FIX_OFF32_SECREL,   /* 13, 4 byte, COFF+ELF only */
-		FIX_GOTPCREL64,		/* 14, 8 byte, GOT table RIP relative ELF64/MACHO only */
-		FIX_GOT64,			/* 15, 4 byte, GOT table RIP relative */
-		FIX_PLT64,			/* 16, 4 byte, GOT.PLT table RIP relative */
-        FIX_LAST
+    FIX_VOID = 0,       /*  0, fixup is to be ignored */
+    FIX_RELOFF8,        /*  1, 1 byte */
+    FIX_RELOFF16,       /*  2, 2 byte */
+    FIX_RELOFF32,       /*  3, 4 byte */
+    FIX_OFF8,           /*  4, 1 byte, OMF, BIN + GNU-ELF only */
+    FIX_OFF16,          /*  5, 2 byte */
+    FIX_OFF32,          /*  6, 4 byte */
+    FIX_OFF64,          /*  7, 8 byte, COFF64, ELF64 + BIN only */
+    FIX_SEG = 8,        /*  8, 2 byte */
+    FIX_PTR16,          /*  9, 4 byte, OMF+BIN-MZ only */
+    FIX_PTR32,          /* 10, 6 byte, OMF+BIN-MZ only */
+    FIX_HIBYTE,         /* 11, 1 byte, OMF+BIN-MZ only */
+    FIX_OFF32_IMGREL,   /* 12, 4 byte, COFF+ELF only */
+    FIX_OFF32_SECREL,   /* 13, 4 byte, COFF+ELF only */
+    FIX_GOTPCREL64,		/* 14, 8 byte, GOT table RIP relative ELF64/MACHO only */
+    FIX_GOT64,			/* 15, 4 byte, GOT table RIP relative */
+    FIX_PLT64,			/* 16, 4 byte, GOT.PLT table RIP relative */
+    FIX_LAST
 };
 
 /*  OMF: nothing (7, 12, 13 can't happen)
@@ -64,7 +65,7 @@ enum fixup_types {
 #define OMF_DISALLOWED 0x0000
 
 #if COFF_SUPPORT
-/* exclude RELOFF8, OFF8, PTR16, PTR32, HIBYTE */
+ /* exclude RELOFF8, OFF8, PTR16, PTR32, HIBYTE */
 #define COFF32_DISALLOWED 0x0E12
 /* exclude RELOFF8, OFF8, PTR16, PTR32, HIBYTE */
 #define COFF64_DISALLOWED 0x0E12
@@ -94,17 +95,17 @@ enum fixup_types {
  */
 
 enum fixup_options {
-        OPTJ_NONE,      /* normal jump */
-        OPTJ_EXPLICIT,
-        OPTJ_EXTEND,
-        OPTJ_JXX,
-        OPTJ_CALL,
-        OPTJ_PUSH      /* PUSH */
+    OPTJ_NONE,      /* normal jump */
+    OPTJ_EXPLICIT,
+    OPTJ_EXTEND,
+    OPTJ_JXX,
+    OPTJ_CALL,
+    OPTJ_PUSH      /* PUSH */
 };
 
 struct fixup {
-    struct fixup         *nextbp;       /* PASS 1: linked list backpatch */
-    struct fixup         *nextrlc;      /* PASS >1: linked list relocs */
+    struct fixup* nextbp;       /* PASS 1: linked list backpatch */
+    struct fixup* nextrlc;      /* PASS >1: linked list relocs */
 #ifdef TRMEM
     uint_16              marker;
 #endif
@@ -120,8 +121,8 @@ struct fixup {
              * the result <end of instruction> - <fixup location> is stored here. */
             uint_8        addbytes;
 #endif
-            unsigned char loader_resolved:1;        /* operator LROFFSET */
-            unsigned char orgoccured:1;             /* v2.04 ORG occured behind this fix */
+            unsigned char loader_resolved : 1;        /* operator LROFFSET */
+            unsigned char orgoccured : 1;             /* v2.04 ORG occured behind this fix */
         };
     };
     union {
@@ -129,17 +130,17 @@ struct fixup {
             int_8           frame_type;     /* frame specifier (SEG=0,GRP=1,,...) */
             uint_16         frame_datum;    /* additional data, usually index */
         };
-        struct asym         *segment_var;   /* symbol's segment if assembly time var */
+        struct asym* segment_var;   /* symbol's segment if assembly time var */
     };
-    struct dsym             *def_seg;       /* segment the fixup is in - pass 1 only */
-    struct asym             *sym;
+    struct dsym* def_seg;       /* segment the fixup is in - pass 1 only */
+    struct asym* sym;
 };
 
-extern struct fixup  *CreateFixup( struct asym *sym, enum fixup_types fixup_type, enum fixup_options fixup_option );
-extern void          SetFixupFrame( const struct asym *sym, char );
-extern void          FreeFixup( struct fixup * );
-extern void          store_fixup( struct fixup *, struct dsym *, int_32 * );
+extern struct fixup* CreateFixup(struct asym* sym, enum fixup_types fixup_type, enum fixup_options fixup_option);
+extern void          SetFixupFrame(const struct asym* sym, char);
+extern void          FreeFixup(struct fixup*);
+extern void          store_fixup(struct fixup*, struct dsym*, int_32*);
 
-extern ret_code      BackPatch( struct asym *sym );
+extern ret_code      BackPatch(struct asym* sym);
 
 #endif

@@ -28,6 +28,7 @@
 *               This file is included by globals.h
 *
 ****************************************************************************/
+#pragma once
 
 #ifndef _INTTYPE_H_INCLUDED_
 #define _INTTYPE_H_INCLUDED_

@@ -27,14 +27,15 @@
 * Description:  label routines prototypes
 *
 ****************************************************************************/
+#pragma once
 
 #ifndef _LABEL_H_
 #define _LABEL_H_
 
 struct qualified_type;
 
-extern void         LabelInit( void );
-extern char         *GetAnonymousLabel( char *, int );
-extern struct asym  *CreateLabel( const char *, enum memtype, struct qualified_type *, bool );
+extern void         LabelInit(void);
+extern char* GetAnonymousLabel(char*, int);
+extern struct asym* CreateLabel(const char*, enum memtype, struct qualified_type*, bool);
 
 #endif

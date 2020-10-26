@@ -27,11 +27,12 @@
 * Description:  EQU and '=' directives interface
 *
 ****************************************************************************/
+#pragma once
 
 #ifndef _EQUATE_H_INCLUDED
 #define _EQUATE_H_INCLUDED
 
-extern struct asym *CreateConstant( struct asm_tok[] );
-extern struct asym *CreateVariable( const char *, int );
+extern struct asym* CreateConstant(struct asm_tok[]);
+extern struct asym* CreateVariable(const char*, int);
 
 #endif

@@ -27,6 +27,7 @@
 * Description:  Parser items
 *
 ****************************************************************************/
+#pragma once
 
 #ifndef PARSER_H
 #define PARSER_H
@@ -111,7 +112,7 @@ enum allowed_prefix {
     AP_REPxx    = 0x03,
     AP_FWAIT    = 0x04,
     AP_NO_FWAIT = 0x05,
-	AP_BND      = 0x06
+    AP_BND      = 0x06
 };
 
 /* values for field type in special_item.
@@ -260,7 +261,7 @@ struct opnd_item {
         uint_64       data64;
     };
     struct fixup      *InsFixup;
-	const char        *tokenPtr;
+    const char        *tokenPtr;
 };
 
 /* compressed tuple types upper bits 4,3,2,1,0 of resw_strings[].prefix : tuple & 0x1F  */
@@ -310,7 +311,7 @@ struct code_info {
         unsigned char   adrsiz:1;      /* address size prefix 0x67 is to be emitted */
         unsigned char   opsiz:1;       /* operand size prefix 0x66 is to be emitted */
     } prefix;
-    const struct instr_item *pinstr;   /* current pointer into InstrTable */
+    struct instr_item *pinstr;   /* current pointer into InstrTable */   // KRAD-change const correctnesses
     enum instr_token token;
     enum memtype    mem_type;          /* byte / word / etc. NOT near/far */
     struct opnd_item opnd[MAX_OPND];
@@ -339,7 +340,7 @@ struct code_info {
     unsigned char   evex_p2;
     unsigned char   zreg;
              bool   tuple;     /* For EVEX Compressed Disp8*N Encoding */
-			 bool   isptr;
+             bool   isptr;
     unsigned char   evex_sae;  /* EVEX Static Rounding Mode */
 #endif
     union {

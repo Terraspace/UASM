@@ -27,6 +27,7 @@
 * Description:  prototypes for conditional assembly and errors
 *
 ****************************************************************************/
+#pragma once
 
 #ifndef _CONDASM_H_
 #define _CONDASM_H_
@@ -50,10 +51,10 @@ enum cond_class {
 
 extern enum if_state CurrIfState;
 
-extern void conditional_assembly_prepare( int );
-extern int  GetIfNestLevel( void );
-extern void SetIfNestLevel( int );
-extern void CondCheckOpen( void );
-extern void CondInit( void );
+extern void conditional_assembly_prepare(int);
+extern int  GetIfNestLevel(void);
+extern void SetIfNestLevel(int);
+extern void CondCheckOpen(void);
+extern void CondInit(void);
 
 #endif
